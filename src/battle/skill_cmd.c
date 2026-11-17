@@ -2337,61 +2337,38 @@ void func_00257DA0(s32 *a0) {
         }
     }
 }
-// GIVEN UP: the field pointer is computed before the register save in the original (scheduling; 4 forms tried)
+// GIVEN UP: differs: size 0x16C vs 0x180 (4 instructions short), the same release shape as func_00254B50 (identical asm but for the global D_0058D4EC): the global store after the if is laid out at the end; 6 forms
 #if 0
-extern s32 D_0058D4EC[];
 extern void func_0022D0E0(s32, s32);
+extern s32 D_0058D4EC[];
+#define SK_REL(p, off) do { if (*(s32 *)((p) + (off))) { func_0022D0E0(*(s32 *)((p) + (off)), 1); } *(s32 *)((p) + (off)) = 0; } while (0)
 void func_00257E30(s32 *a0) {
-    s32 *s2;
-    s32 *s1;
-    s32 *s4;
-    s32 *s3;
-    s32 *v;
-    s32 i;
+    s32 *s2 = a0 + 12;
+    u8 *s4;
+    u8 *s1;
+    u8 *b;
     s32 j;
-
-    v = (s32 *)a0[12];
-    s2 = a0 + 12;
-    if (v != 0) {
-        s1 = v + 12;
-        if (s1[1] != 0) {
-            func_0022D0E0(s1[1], 1);
-        }
-        s1[1] = 0;
-        if (s1[2] != 0) {
-            func_0022D0E0(s1[2], 1);
-        }
-        s1[2] = 0;
-        if (s1[5] != 0) {
-            func_0022D0E0(s1[5], 1);
-        }
-        s1[5] = 0;
-        if (s1[4] != 0) {
-            func_0022D0E0(s1[4], 1);
-        }
-        s1[4] = 0;
-        if (s1[3] != 0) {
-            func_0022D0E0(s1[3], 1);
-        }
-        s1[3] = 0;
-        for (j = 0, s4 = s1; j < 2; j++, s1 += 1, s4 += 2) {
-            if (s1[12] != 0) {
-                func_0022D0E0(s1[12], 1);
-            }
-            s1[12] = 0;
-            if (s1[6] != 0) {
-                func_0022D0E0(s1[6], 1);
-            }
-            s1[6] = 0;
-            for (i = 0, s3 = s4; i < 2; i++, s3 += 1) {
-                if (s3[8] != 0) {
-                    func_0022D0E0(s3[8], 1);
-                }
-                s3[8] = 0;
+    s32 k;
+    s32 q;
+    q = *(s32 *)((u8 *)a0 + 0x30);
+    if (q != 0) {
+        s4 = (u8 *)q + 0x30;
+        SK_REL(s4, 0x4);
+        SK_REL(s4, 0x8);
+        SK_REL(s4, 0x14);
+        SK_REL(s4, 0x10);
+        SK_REL(s4, 0xC);
+        s1 = s4;
+        for (j = 0; j < 2; j++) {
+            b = s4 + 8 * j;
+            SK_REL(s1 + 4 * j, 0x30);
+            SK_REL(s1 + 4 * j, 0x18);
+            for (k = 0; k < 2; k++) {
+                SK_REL(b + 4 * k, 0x20);
             }
         }
-        amTask_Kill(s2[0]);
-        s2[0] = 0;
+        amTask_Kill(*s2);
+        *s2 = 0;
     }
     D_0058D4EC[0] = 0;
 }
