@@ -697,6 +697,93 @@ void func_0020CB90(void *pv) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020CCF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020CF60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D120);
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+void func_00146ED0(void *a, void *b, f32 s);
+
+#if 0
+void func_0020D290(u8 *o, u8 *b, s32 mode, f32 f) {
+    Copy16A t40;
+
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vsub.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%2)\n"
+        : : "r"(*(u8 **)(gBattle + 0x264)), "r"(b + 0x650), "r"(&t40) : "memory");
+    func_00146ED0(&t40, &t40, f);
+    if (mode == 0x19) {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : : "r"(b + 0x720), "r"(b + 0x710), "r"(0x3F000000), "r"(o) : "memory");
+    }
+    else if (mode == 0x17) {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : : "r"(b + 0x740), "r"(b + 0x730), "r"(0x3F000000), "r"(o) : "memory");
+    }
+    else if (mode == 0x18) {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : : "r"(b + 0x6E0), "r"(b + 0x6D0), "r"(0x3F000000), "r"(o) : "memory");
+    }
+    else {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "sqc2 $vf1, 0(%1)\n"
+            : : "r"(b + mode * 16 + 0x650), "r"(o) : "memory");
+    }
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vadd.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(o), "r"(&t40) : "memory");
+}
+// differs: about 70 lines differ: the prologue stores the parameters to saved registers in another order (the table-address computation comes first here), and the mode switch is laid out differently (the six case orders all give 70 to 71 differing lines)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D290);
 #if 0
 void func_0020D400(u8 *out, u8 *x, s32 k) {
