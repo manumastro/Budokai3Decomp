@@ -1,5 +1,19 @@
 #include "common.h"
 
+extern s32 D_0047068C;
+extern f32 D_00470690;
+extern f32 D_00470694;
+typedef struct FPair {
+    f32 a;
+    f32 b;
+} FPair;
+void func_0022DB20(f32, f32);
+void func_0021BEA0(s32, s32);
+void func_0022C560(s32);
+
+extern s32 D_0046A470[];
+void func_002400E0(void);
+
 void func_0022D0E0(s32, s32);
 
 extern u8 *D_00470570;
@@ -23,6 +37,24 @@ extern u8 *D_0046FDFC;
 extern s32 D_00470680;
 extern s32 D_00470684;
 
+#if 0
+void func_0021B130(void) {
+    s32 m = D_00470684 & D_00470680;
+    FPair p;
+
+    if ((m & 0x80000000) && (m & 2) == 2) {
+        if (D_0047068C != 0) {
+            p.b = D_00470690;
+            p.a = D_00470694;
+            func_0022DB20(p.b, p.a);
+            func_0021BEA0(D_0047068C, 0x18);
+            func_0022C560(D_0047068C);
+            func_0022DB20(0.0f, 0.0f);
+        }
+    }
+}
+// differs: the two float arguments are copied through the stack (lwc1 to 24 and 28 of a 0x30 frame) in the original, the same copy as func_0023FBB0 in unk_23A890; the local forms tried do not give that copy
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B1E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
@@ -339,6 +371,29 @@ void func_0021C6A0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C6E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CA20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CAD0);
+#if 0
+void func_0021CCF0(void) {
+    u8 *sys = D_0046FDFC;
+    s32 *tbl = D_0046A470;
+
+    if (*(s32 *)tbl[2] != 0) {
+        amHeap_Free(*(void **)tbl[2]);
+        *(s32 *)tbl[2] = 0;
+    }
+    if (*(s32 *)(sys + 0xE80) != 0) {
+        amHeap_Free(*(void **)(sys + 0xE80));
+        *(s32 *)(sys + 0xE80) = 0;
+    }
+    if (*(s32 *)(sys + 0xE5C) != 0) {
+        amHeap_Free(*(void **)(sys + 0xE5C));
+        *(s32 *)(sys + 0xE5C) = 0;
+    }
+    *(s32 *)(sys + 0xE64) = 0;
+    *(s32 *)(sys + 0xE6C) = 0;
+    func_002400E0();
+}
+// differs: the table address is kept in s0 for its two loads, and the first load is folded into lui/lw in the original (the pointer is set up after it)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CCF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CD80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021D170);
