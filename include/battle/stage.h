@@ -51,7 +51,7 @@ typedef struct StageSlot {
 /* A stage object (0x20 bytes; func_001F8420 builds one). */
 typedef struct StageObj {
     /* 0x00 */ void *src;
-    /* 0x04 */ s32 unk04;
+    /* 0x04 */ s32 *unk04;      /* its first word is the key StageLink*.key names */
     /* 0x08 */ void **unk08;
     /* 0x0C */ void **unk0C;
     /* 0x10 */ void *unk10;
@@ -67,12 +67,37 @@ typedef struct StageGroup {
     /* 0x10 */ u8 unk10[0x14];
 } StageGroup;
 
+/* A reference by key from the stage file to an object (func_001F8740 resolves them). */
+typedef struct StageLinkA {
+    /* 0x00 */ u8 unk00[0x10];
+    /* 0x10 */ s32 key;
+    /* 0x14 */ s32 *ref;
+    /* 0x18 */ StageObj *obj;
+    /* 0x1C */ u8 unk1C[4];
+} StageLinkA;
+
+typedef struct StageLinkB {
+    /* 0x00 */ u8 unk00[0x1C];
+    /* 0x1C */ s32 key;
+    /* 0x20 */ s32 *ref;
+    /* 0x24 */ StageObj *obj;
+    /* 0x28 */ u8 unk28[8];
+} StageLinkB;
+
 typedef struct StageGroupSrc {
     /* 0x00 */ u8 unk00[0x90];
     /* 0x90 */ s32 count;
-    /* 0x94 */ u8 unk94[0xA8 - 0x94];
+    /* 0x94 */ s32 nlinkA;
+    /* 0x98 */ s32 nlinkB;
+    /* 0x9C */ s32 nlinkC;
+    /* 0xA0 */ s32 nlinkD;
+    /* 0xA4 */ u8 unkA4[4];
     /* 0xA8 */ void **objs;
-    /* 0xAC */ u8 unkAC[0xD8 - 0xAC];
+    /* 0xAC */ StageLinkA *linkA;
+    /* 0xB0 */ StageLinkB *linkB;
+    /* 0xB4 */ StageLinkA *linkC;
+    /* 0xB8 */ StageLinkB *linkD;
+    /* 0xBC */ u8 unkBC[0xD8 - 0xBC];
     /* 0xD8 */ s32 *unkD8;
 } StageGroupSrc;
 
@@ -81,9 +106,13 @@ typedef struct StageHeader {
     /* 0x00 */ s32 unk00;
     /* 0x04 */ s32 ngroups;
     /* 0x08 */ s32 nobjs;
-    /* 0x0C */ u8 unk0C[0x20 - 0x0C];
+    /* 0x0C */ s32 nlinkA;
+    /* 0x10 */ s32 nlinkB;
+    /* 0x14 */ u8 unk14[0x20 - 0x14];
     /* 0x20 */ StageGroupSrc **groups;
     /* 0x24 */ void **objs;
+    /* 0x28 */ StageLinkA *linkA;
+    /* 0x2C */ StageLinkB *linkB;
 } StageHeader;
 
 /* The stage's state (.bss, D_0051CCE0). The first 0x40 bytes are the loaded stage (func_001FA320 clears them). */

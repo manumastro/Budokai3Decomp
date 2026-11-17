@@ -17,7 +17,43 @@ void func_001F8DE0(StageWork *w);
 void func_001F9F50(void);
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F8420);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F8740);
+static void func_001F8740(StageGroupSrc *src, StageGroup *grp) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < src->nlinkA; i++) {
+        for (j = 0; j < grp->count; j++) {
+            if (*grp->objs[j].unk04 == src->linkA[i].key) {
+                src->linkA[i].ref = grp->objs[j].unk04;
+                src->linkA[i].obj = &grp->objs[j];
+            }
+        }
+    }
+    for (i = 0; i < src->nlinkB; i++) {
+        for (j = 0; j < grp->count; j++) {
+            if (*grp->objs[j].unk04 == src->linkB[i].key) {
+                src->linkB[i].ref = grp->objs[j].unk04;
+                src->linkB[i].obj = &grp->objs[j];
+            }
+        }
+    }
+    for (i = 0; i < src->nlinkC; i++) {
+        for (j = 0; j < grp->count; j++) {
+            if (*grp->objs[j].unk04 == src->linkC[i].key) {
+                src->linkC[i].ref = grp->objs[j].unk04;
+                src->linkC[i].obj = &grp->objs[j];
+            }
+        }
+    }
+    for (i = 0; i < src->nlinkD; i++) {
+        for (j = 0; j < grp->count; j++) {
+            if (*grp->objs[j].unk04 == src->linkD[i].key) {
+                src->linkD[i].ref = grp->objs[j].unk04;
+                src->linkD[i].obj = &grp->objs[j];
+            }
+        }
+    }
+}
 extern char D_004698D8[];
 extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
 extern void func_001258F8(void *, s32, s32);
@@ -36,7 +72,37 @@ void func_001F89D0(s32 index, StageGroupSrc *src, StageGroup *group) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F8AA0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F8C30);
+void func_001F8C30(StageWork *w) {
+    StageHeader *hdr = w->hdr;
+    s32 i;
+    s32 j;
+
+    if (hdr->ngroups > 0) {
+        for (i = 0; i < hdr->ngroups; i++) {
+            func_001F8740(hdr->groups[i], &w->groups[i]);
+        }
+    }
+    if (hdr->nlinkA > 0) {
+        for (i = 0; i < hdr->nlinkA; i++) {
+            for (j = 0; j < w->nobjs; j++) {
+                if (*w->objs[j].unk04 == hdr->linkA[i].key) {
+                    hdr->linkA[i].ref = w->objs[j].unk04;
+                    hdr->linkA[i].obj = &w->objs[j];
+                }
+            }
+        }
+    }
+    if (hdr->nlinkB > 0) {
+        for (i = 0; i < hdr->nlinkB; i++) {
+            for (j = 0; j < w->nobjs; j++) {
+                if (*w->objs[j].unk04 == hdr->linkB[i].key) {
+                    hdr->linkB[i].ref = w->objs[j].unk04;
+                    hdr->linkB[i].obj = &w->objs[j];
+                }
+            }
+        }
+    }
+}
 StageGroup *func_001F8AA0(StageHeader *hdr);
 
 void func_001F8DE0(StageWork *w) {
