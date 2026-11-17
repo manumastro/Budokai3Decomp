@@ -8,7 +8,7 @@ extern s32 amCdFs_ReadFile(s32, s32, s32);
 extern void amCdFs_SetHeap(s32);
 extern void func_002AFCE0(void);
 extern void func_002AFE00(void);
-extern void func_002B0000(void);
+extern s32 func_002B0000(u8 *, s32 *);
 extern void func_002A9C00(s32, s32, s32, void *, s32);
 extern void func_002A9D30(s32, s32, void *, s32);
 extern s32 func_002B0390(u8 *, s32 *);
@@ -195,6 +195,48 @@ s32 func_002AFFA0(u8 *a, u8 *b) {
     *(void **)(a + 0x10) = func_002AFE00;
     return 3;
 }
+extern u8 D_005BC180[];
+extern s32 amFile_Load(u8 *);
+extern void amCamera_Init(void *);
+#if 0
+s32 func_002B0000(u8 *s, s32 *a1) {
+    u8 *s1 = *(u8 **)(s + 0x1C);
+    s32 a2;
+    u8 *s0;
+    u8 *s3;
+    s32 s4;
+    a2 = *(s32 *)s;
+    if (*(s16 *)(s1 + 4) != 3) {
+        return 3;
+    }
+    *(s32 *)(s + 0x10) = 0;
+    a2 = *(s32 *)a2;
+    s0 = *(u8 **)(s1 + 0x40);
+    s3 = D_005BC180 + a2 * 352 + *a1 * 176;
+    s4 = *(s32 *)(s0 + 0x50);
+    if (*(s32 *)s3 != 0) {
+        amCdFs_ReleaseCache(*(s32 *)s3);
+    }
+    *(u8 **)s3 = s0;
+    *(s32 *)(s3 + 4) = s4;
+    amFile_Load(*(u8 **)(s3 + 4));
+    amCamera_Init(s3 + 0x20);
+    *(s32 *)(s3 + 8) = 0;
+    *(s32 *)(s3 + 0xC) = 0;
+    *(f32 *)(s3 + 0x10) = D_004708F8;
+    *(s32 *)(s3 + 0x14) = 0;
+    *(s32 *)(s1 + 0x40) = 0;
+    amCdFs_Close(s1, 0);
+    if (*(s32 *)(s + 0x18) != 0) {
+        amCdFs_Close(*(void **)(s + 0x18), 0);
+    }
+    *(s32 *)(s + 0x18) = 0;
+    *(s32 *)(s + 0x1C) = 0;
+    amCdFs_SetHeap(0);
+    return 1;
+}
+// differs: 22 of 74 instructions differ: the same pattern as func_002B0390 (copy of the object pointer to s2 placed early here; the original copies it in the beq delay slot and loads *s into a2 first). Two placements of the pointer load tried.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0000);
 s32 func_002B0130(u8 *a, u8 *b) {
     *(s32 *)b = *(s32 *)(*(u8 **)(b + 0x2C) + 4);
