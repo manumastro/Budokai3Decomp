@@ -437,6 +437,53 @@ s32 func_001AC990(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC990);
+extern void func_001D9480(void *);
+/* The battle work as a view: the fields at 0x88D8 and up read in place (no CSE of their addresses). */
+typedef struct BattleView2 {
+    u8 unk0000[0x88D8];
+    s32 count;
+    s32 unk88DC;
+    s32 unk88E0;
+    s32 unk88E4;
+    s32 unk88E8;
+    s32 unk88EC;
+    f32 unk88F0;
+    u8 unk88F4[0x88FC - 0x88F4];
+    s32 unk88FC;
+    s32 unk8900;
+    s32 unk8904;
+    u8 unk8908[0x8AB1 - 0x8908];
+    s8 unk8AB1;
+} BattleView2;
+#if 0
+// differs: 62 of 81: the loop counter and the fighter pointer swap saved registers (i in s3, p in s2 in the original), and the s8 test compiles as slt / beqz where the original has blez
+s32 func_001ACA80(void) {
+    BattleView2 *bw;
+    u8 *base;
+    u8 *p;
+    s32 i;
+    i = 0;
+    bw = (BattleView2 *)D_00470570;
+    base = (u8 *)bw + 0x830;
+    p = base;
+    if (0 < bw->count) {
+        do {
+            func_001D9480(p);
+            i++;
+            p += 0x2020;
+        } while (i < bw->count);
+    }
+    if (0 < bw->unk8AB1) {
+        bw->unk88FC = 4;
+        bw->unk8900 = bw->unk8AB1 - 1;
+        bw->unk8904 = FT_FIELD(base + bw->unk8900 * 0x2020, s16, 0x13A4);
+        FT_FIELD(base + (1 - bw->unk8900) * 0x2020, s32, 0x1AC4) = 0;
+        bw->unk8AB1 = -bw->unk8AB1;
+        return 1;
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001ACA80);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001ACBC0);
 void func_001ACFD0(void) {
@@ -456,6 +503,36 @@ void func_001AD070(void) {
     func_001AC490(D_005116E0);
     func_00264300(-1, func_001B04A0, 0);
 }
+#if 0
+// differs: 2 of 75 after the case order was matched: the remaining differences are the call and pointer relocations, and the image check fails at byte 709021
+extern s32 func_00225380(void);
+extern void func_001B0D60(void);
+extern void (*D_00468300[])(void);
+void func_001AD0E0(void) {
+    s32 v;
+    BW_FIELD(D_00470570, f32, 0x8910) = BW_FIELD(D_00470570, f32, 0x890C);
+    BW_FIELD(D_00470570, f32, 0x890C) = BW_FIELD(D_00470570, f32, 0x88F0) + BW_FIELD(D_00470570, f32, 0x890C);
+    if (BW_FIELD(D_00470570, f32, 0x890C) > 1e8f) {
+        BW_FIELD(D_00470570, f32, 0x8910) = 0.0f;
+        BW_FIELD(D_00470570, f32, 0x890C) = BW_FIELD(D_00470570, f32, 0x88F0);
+    }
+    v = func_00225380();
+    switch (v) {
+    case 4:
+    case 1:
+    case 0:
+        func_001B0D60();
+        break;
+    case 3:
+        D_00468300[0]();
+        break;
+    case 2:
+        D_00470574 = 4;
+        D_00468300[0]();
+        break;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AD0E0);
 #if 0
 // differs: 8 of 49 instructions differ: register assignment of the constants 7 and 5 (the original keeps 7 in a0 and 5 in v1)
@@ -586,7 +663,24 @@ void func_001AE890(void) {
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE890);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE980);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AEBF0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AEDB0);
+extern s32 func_001AC110(void);
+void func_001AEDB0(void) {
+    BW_FIELD(D_00470570, f32, 0x8910) = BW_FIELD(D_00470570, f32, 0x890C);
+    BW_FIELD(D_00470570, f32, 0x890C) = BW_FIELD(D_00470570, f32, 0x88F0) + BW_FIELD(D_00470570, f32, 0x890C);
+    if (BW_FIELD(D_00470570, f32, 0x890C) > 1e8f) {
+        BW_FIELD(D_00470570, f32, 0x8910) = 0.0f;
+        BW_FIELD(D_00470570, f32, 0x890C) = BW_FIELD(D_00470570, f32, 0x88F0);
+    }
+    if (func_001AC110() != 0) {
+        func_00237000(4, 0);
+        func_00219650(0);
+        {
+            BattleWork *bw = D_00470570;
+            BW_FIELD(bw, f32, 0x8920) = 1.0f;
+            BW_FIELD(bw, s32, 0x8924) = 0x3CCCCCCD;
+        }
+    }
+}
 void func_001AEEB0(void) {
     BattleWork *bw = D_00470570;
     s32 tbl[6];
@@ -736,6 +830,50 @@ void func_001AF980(void) {
     s8 *p = (s8 *)((u8 *)D_00470570 + 0x8975);
     *p = 1 - *p;
 }
+#if 0
+// differs: 24 of 67: the compiler keeps the fighter walk pointer and the battle pointer in the other saved registers (s1 / s4 swapped, the byte pointers s2 / s3 / s5 numbered differently) in every declaration order tried
+extern void func_00219E70(void *, s32, s32);
+extern void func_00219EA0(s32, s32, s32);
+extern void func_001AFAB0(void *, s32);
+extern void func_001A37D0(s32, s32);
+extern void func_001A36E0(s32, s32);
+/* The battle work as a view: the fighter count at 0x88D8 read in place (no CSE of the field address). */
+typedef struct BattleView {
+    u8 unk0000[0x88D8];
+    s32 count;
+} BattleView;
+void func_001AF9A0(void) {
+    u8 buf[4];
+    BattleView *bw;
+    u8 *fp;
+    s32 i;
+    s32 j;
+    bw = (BattleView *)D_00470570;
+    i = 0;
+    if (0 < bw->count) {
+        fp = (u8 *)bw;
+        do {
+            if (FT_FIELD(fp, s16, 0x1BD4) > -1) {
+                func_00219E70(buf, FT_FIELD(fp, s16, 0x1BD4), 0);
+                j = FT_FIELD((u8 *)fp + 0x830, s16, 0x13A4);
+                if (j == -1) {
+                    j = 0;
+                    do {
+                        func_001AFAB0(buf, j);
+                        j++;
+                    } while (j < 2);
+                } else {
+                    func_001A37D0(j, buf[2]);
+                    func_001A36E0(j, buf[3]);
+                }
+            }
+            i++;
+            fp += 0x2020;
+        } while (i < bw->count);
+    }
+    func_00219EA0(0, -1, 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF9A0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AFAB0);
 #if 0
@@ -840,6 +978,28 @@ void func_001B04A0(void) {
     func_001EF1E0(D_00470574);
     func_001F0820();
 }
+#if 0
+// differs: 8 of 50 instructions: the compiler copies the parameter into s0 before the two p[0] / p[2] loads, the original loads them from a0 first
+extern char D_00430FC0[];
+extern s32 D_0051CD20[];
+extern f32 func_00200270(s32, f32, f32);
+typedef struct F2Pair {
+    f32 a, b;
+} F2Pair;
+f32 func_001B04D0(f32 *p) {
+    F2Pair *e;
+    f32 t;
+    e = (F2Pair *)(D_00430FC0 + D_0051CCE0.stage * 16) + D_0051CD20[0];
+    t = p[1] - func_00200270(0, p[0], p[2]);
+    if (t < 0.0f) {
+        t = 0.0f;
+    }
+    if (t > 125.0f) {
+        t = 125.0f;
+    }
+    return e->a + ((125.0f - t) / 125.0f) * (e->b - e->a);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B04D0);
 void func_001B05A0(void) {
     amFile_AddLoader(D_00468420, func_001AC400);
@@ -1643,6 +1803,33 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B8380);
 void func_001B84F0(Fighter *f) {
     FIGHTER_FIELD(f, s32, 0x17BC) = 0;
 }
+#if 0
+// differs: size 0xEC against 0x100: the condition's loads and cvt.s.w are scheduled differently (the original tests the limit with lwc1 / cvt before the 182C loads, and its branch target is 8 bytes later)
+extern void (*D_004684C0[])(void *);
+extern void func_00146F10(void *, void *, f32);
+void func_001B8500(Fighter *f) {
+    Copy16 tmp;
+    f32 s;
+    f32 lim;
+    s = BW_FIELD(D_00470570, f32, 0x88F0) * FT_FIELD(f, f32, 0xC9C);
+    func_001E3430(f, 0);
+    lim = (f32)FT_FIELD(f, s32, 0xC5C);
+    if (FT_FIELD(f, s32, 0xC64) != 0 && FT_FIELD(f, f32, 0x182C) - FT_FIELD(f, f32, 0x1830) < lim) {
+        FT_FIELD(f, s8, 0x2004) = 1;
+        FT_FIELD(f, s8, 0x1FFB) = 1;
+        FT_FIELD(f, s16, 0xCB6) = 0;
+        FT_FIELD(f, s8, 0x2006) = 0;
+        D_004684C0[0](f);
+        func_002CBFF0(1, f);
+    } else {
+        func_00146F10(&tmp, (u8 *)f + 0xD0, s);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"((u8 *)f + 0x40), "r"(&tmp));
+        func_001E4E20(f, 0);
+        FT_FIELD(f, f32, 0x44) = FT_FIELD(f, f32, 0x1844);
+        FT_FIELD(f, f32, 0x1830) = FT_FIELD(f, f32, 0x1830) + s;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B8500);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B8600);
 void func_001B8780(Fighter *f) {
