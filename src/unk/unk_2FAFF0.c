@@ -70,7 +70,10 @@ typedef struct SaveWork2FAFF0 {
     SysB2FAFF0 *f30;
     char pad34[0xC];
     char *f40;
-    char pad44[0xC8];
+    struct Pos3_2FAFF0 *f44;
+    char pad48[0x8];
+    f32 f50;
+    char pad54[0xB8];
     Cnt2FAFF0 f10C;
     char pad11C[0x178];
     s32 f294;
@@ -89,6 +92,25 @@ extern void Save_Exit(void);
 extern void func_001F0810(s32, s32);
 
 extern void amTask_Kill(void *);
+typedef struct Vec4_2FAFF0 {
+    f32 x, y, z, w;
+} Vec4_2FAFF0;
+
+/* A position: x, y, z at 0x30, 0x34, 0x38 of the object at D_00470974->f44. */
+typedef struct Pos3_2FAFF0 {
+    char pad0[0x30];
+    f32 f30;
+    f32 f34;
+    f32 f38;
+} Pos3_2FAFF0;
+
+extern s8 D_005CA030[];
+extern s8 D_004B4B63[];
+extern u16 D_00492FCC[];
+extern u16 D_00493084[];
+extern u32 D_00458BA0[];
+extern void func_00146F30(void *);
+extern void func_00146F10(f32, void *);
 
 /* A pair of values (a table of D_00458C20, copied to the stack) and a slot of the work (stride 0x30). */
 typedef struct Pair2FAFF0 {
@@ -317,6 +339,41 @@ void func_00300760(Task2FAFF0 *t) {
     s->f18->f0 = s->f18->f0 + 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300800);
+#if 0
+// differs: not compiling yet: the flag table copy (lq/sq) is in inline asm; the position update and the loop are not compared against the original
+void func_003009E0(void) {
+    Vec4_2FAFF0 v;
+    s32 i;
+    u16 flags;
+
+    asm volatile("lq $v1, 0(%1)\n\tsq $v1, 0(%0)" : : "r"(&v), "r"(D_00458BA0) : "$3");
+    if (D_005CA030[0] == 1) {
+        flags = *(u16 *)((char *)D_00492FCC + 184 * D_004B4B63[0]);
+    } else {
+        flags = D_00492FCC[0] | D_00493084[0];
+    }
+    if (flags & 0x80) {
+        v.x = -1.0f;
+    }
+    if (flags & 0x20) {
+        v.x = 1.0f;
+    }
+    if (flags & 0x10) {
+        v.y = -1.0f;
+    }
+    if (flags & 0x40) {
+        v.y = 1.0f;
+    }
+    func_00146F30(&v);
+    func_00146F10(D_00470974->f50, &v);
+    D_00470974->f44->f30 = D_00470974->f44->f30 + v.x;
+    D_00470974->f44->f34 = D_00470974->f44->f34 + v.y;
+    D_00470974->f44->f38 = D_00470974->f44->f38 + v.z;
+    for (i = 0; i < 4; i++) {
+        func_002FFD20(i);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003009E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300B60);
 void func_00300CA0(Task2FAFF0 *t) {
