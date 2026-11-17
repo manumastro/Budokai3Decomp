@@ -21,13 +21,32 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0390);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0490);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B04F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0590);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B05F0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0610);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0630);
+extern void func_0012F2C0(void);
+s32 func_002B05F0(void) {
+    func_0012F2C0();
+    return 0;
+}
+extern s32 func_002B05F0(void);
+s32 func_002B0610(u8 *a) {
+    *(void **)(a + 0x14) = func_002B05F0;
+    return 1;
+}
+extern void func_0012F290(void);
+s32 func_002B0630(void) {
+    func_0012F290();
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0650);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0680);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0690);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B06A0);
+s32 func_002B0680(void) {
+    return 1;
+}
+s32 func_002B0690(void) {
+    return 1;
+}
+extern f32 D_004708F8;
+f32 func_002B06A0(void) {
+    return D_004708F8;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B06B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0A40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0BF0);
