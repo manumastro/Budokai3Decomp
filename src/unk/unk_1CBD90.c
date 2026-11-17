@@ -99,14 +99,15 @@ extern f32 D_004B4238[];
 
 // func_001CBD90, func_001CBDF0, func_001CBE80: register and scheduling differences; not matched yet.
 // differs: 17 of 22 instructions at best. The Arg pointer stays in v1 in the original (ours takes a0); the flag -(p[0]==0) is sltu+xori in the original, sltiu in ours.
+/* r6 best attempt diff 7 */
 #if 0
 int func_001CBD90(void *unused, Arg *a) {
     int *p = a->p;
-    s32 f = p[0];
-    Side *s = (Side *)gBattle->tbl[p[1]];
-    s32 n = s->n;
-    if (n > 0) {
-        *(s32 *)((char *)s->blk[0] + n * 8 + 8) = -(!(f != 0));
+    Big *b = gBattle;
+    s32 x0 = p[0];
+    Side *s = (Side *)b->tbl[p[1]];
+    if (s->n > 0) {
+        *(s32 *)((char *)s->blk[0] + s->n * 8 + 8) = -((x0 != 0) ^ 1);
     }
     return 1;
 }
