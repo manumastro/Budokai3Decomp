@@ -74,7 +74,44 @@ s32 func_0029EF70(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EF70);
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F070);
+typedef struct DispAnim {
+    /* 0x00 */ f32 f00;
+    /* 0x04 */ f32 f04;
+    /* 0x08 */ f32 f08;
+    /* 0x0C */ f32 f0C;
+    /* 0x10 */ s32 n10;
+} DispAnim;
+
+void func_0029F070(u8 *a0, f32 dt) {
+    DispAnim *a2;
+    s32 mode;
+
+    *(f32 *)(a0 + 0x28) = *(f32 *)(a0 + 0x28) + 1.0f;
+    a2 = (DispAnim *)(a0 + 8);
+    mode = a2->n10;
+    switch (mode) {
+    case 0:
+        if (!(a2->f0C < a2->f00)) {
+            *(s32 *)(a0 + 0x24) = 1;
+            a2->n10++;
+        }
+        a2->f0C = a2->f0C + dt;
+        break;
+    case 1:
+        if (a2->f08 >= 0.0f && (a2->f0C - a2->f00) > a2->f08) {
+            *(s32 *)(a0 + 0x24) = 0;
+            a2->n10++;
+        }
+        a2->f0C = a2->f0C + dt;
+        break;
+    case 2:
+        if ((a2->f0C - a2->f00) - a2->f08 > a2->f04) {
+            a2->n10 = mode + 1;
+        }
+        a2->f0C = a2->f0C + dt;
+        break;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F180);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F350);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F470);
