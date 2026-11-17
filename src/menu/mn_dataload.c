@@ -1,0 +1,22 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265020);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265420);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002655F0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265700);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265800);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002659E0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002659F0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265A00);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265B40);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265BF0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266070);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266150);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002661D0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266390);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002667D0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002668F0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266AC0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266CD0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266EC0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00267090);

@@ -1,0 +1,23 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00304970);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00304CF0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00304DC0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00304E50);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00304E70);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00304F50);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00304FB0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305130);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_003053D0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305590);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305680);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305830);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305910);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305A30);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305AD0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305B60);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305C20);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305CB0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305E90);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00306060);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00306140);

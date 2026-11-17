@@ -1,0 +1,22 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4330);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4450);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4460);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F44E0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4780);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4880);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4A70);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4A80);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4A90);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4B20);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4BB0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4D50);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4E40);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4F70);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F5120);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F5260);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F5480);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F54B0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F54C0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F55E0);
