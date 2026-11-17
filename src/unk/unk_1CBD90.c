@@ -1375,6 +1375,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D01C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D02C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D03E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D05D0);
+/* r6 best attempt diff 3 */
 // differs: 3 of 16. The original tests o != 0 as a materialised flag (sltu + xori, bnez to exit) and enters the loop through a b to the test; ours tests with beqz at the loop top. Four source forms (||, flag local, for-break) tried.
 #if 0
 void *func_001D06F0(void *o, s32 mask) {
