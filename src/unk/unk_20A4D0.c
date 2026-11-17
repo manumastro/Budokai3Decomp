@@ -111,6 +111,11 @@ void func_0020A4D0(s32 idx) {
 #endif
 extern u8 D_0046A380[];
 void func_00209F40(s32);
+extern u8 D_00469CD8[];
+void func_00216880(void);
+extern void (*D_00469CCC[])(void *);
+extern s8 D_004703F4;
+void amMotSet_Apply(void *, s32, f32);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020A4D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020A5F0);
 extern u8 D_005687D0[];
@@ -302,6 +307,51 @@ void func_0020EDA0(s32 i) {
         }
     }
 }
+#if 0
+s32 func_0020EE10(s32 i, s32 flag) {
+    u8 *p = D_00568C90 + i * 0x2140;
+    f32 top = *(f32 *)(p + 0x210C) - 1.0f;
+    s32 v;
+    f32 f2;
+    s32 s0;
+    if (D_00470570 != 0) {
+        v = *(s32 *)(D_00470570 + 0x88EC);
+    } else {
+        v = 0;
+    }
+    if (v != 0) {
+        return 0;
+    }
+    if ((*(s32 *)(p + 0x20EC) & 0x10) != 0) {
+        *(f32 *)(p + 0x2104) = *(f32 *)(p + 0x2104) + *(f32 *)(p + 0x2110);
+    } else {
+        if (D_00470570 != 0) {
+            f2 = *(f32 *)(D_00470570 + 0x88F0);
+        } else if (D_004703F4 == 3) {
+            f2 = 1.2f;
+        } else {
+            f2 = 1.0f;
+        }
+        *(f32 *)(p + 0x2104) = *(f32 *)(p + 0x2104) + *(f32 *)(p + 0x2110) * f2;
+    }
+    if (*(f32 *)(p + 0x2104) < 0.0f) {
+        *(f32 *)(p + 0x2104) = 0.0f;
+    }
+    if (*(f32 *)(p + 0x2104) > top) {
+        if (flag != 0) {
+            *(f32 *)(p + 0x2104) = *(f32 *)(p + 0x2104) - top;
+        } else {
+            *(f32 *)(p + 0x2104) = top;
+        }
+        s0 = 1;
+    } else {
+        s0 = 0;
+    }
+    amMotSet_Apply((void *)(p + 0xA0), *(s32 *)(p + 0x2114), *(f32 *)(p + 0x2104));
+    return s0;
+}
+// differs: 59 of 92 differ: the whole function is out of step from its first instructions (the table base, the store of the float constant and the order of the flag test); the float chain after them was written but not compared
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EE10);
 void func_0020EF80(s32 i, s32 flag) {
     func_0020BBD0(D_00568C90 + i * 0x2140, flag);
@@ -1059,6 +1109,40 @@ void func_00217060(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217070);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217200);
+#if 0
+void func_00217390(u8 *s) {
+    s32 st = *(s32 *)(s + 0xC);
+    if (st == 2) {
+        if (*(s32 *)(D_0046FDD0 + 0x1A8) != 0) {
+            amTask_Kill(*(s32 *)(D_0046FDD0 + 0x1A8));
+            *(s32 *)(D_0046FDD0 + 0x1A8) = 0;
+        }
+        func_00215230(-1, 0x400);
+    } else if (st == 1) {
+            V4Q v;
+            u8 *t;
+            func_0020D780(&v);
+            *(void **)(s + 0x4) = &v;
+            *(s16 *)(s + 0x20) = 0xF;
+            *(s16 *)(s + 0x22) = 0;
+            *(s16 *)(s + 0x24) = 0;
+            jtbl_00469CC4[0](s);
+            t = amTask_Create((void *)func_00216880, 0, 0x5A00, 0x400, 0x40002, D_00469CD8);
+            if (t != 0) {
+                memset(t + 0x30, 0, 0x10);
+                *(s32 *)(D_0046FDD0 + 0x1A8) = (s32)t;
+                *(s32 *)(D_0046FDD0 + 0x1AC) = 0x42C80000;
+            }
+            *(s16 *)(s + 0x22) = 0;
+            *(s16 *)(s + 0x20) = 0x10;
+            *(s16 *)(s + 0x24) = 0;
+            D_00469CCC[0](s);
+        
+    } else {
+    }
+}
+// differs: the st == 2 arm (out of line in the original, after the st == 1 arm) and the else layout: 16 bytes short; the branches with an explicit else and with the arms swapped were tried
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217390);
 void func_002174C0(u8 *s) {
     V4Q v;
