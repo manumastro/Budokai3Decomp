@@ -307,6 +307,56 @@ void func_002CDFE0(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE0A0);
+extern u8 D_0051CD24[];
+extern void func_001F5CB0(u8 *);
+#if 0
+void func_002CE2A0(u8 *a0) {
+    u8 *t3;
+    u8 *t4 = a0 + 0x30;
+    s32 t1 = 0;
+    f32 k = *(f32 *)D_0051CD24;
+    s32 t2;
+    s32 a3;
+    u8 *t0;
+    f32 f2;
+    t3 = *(u8 **)(a0 + 0x30);
+    if (t3 != NULL) {
+        t2 = *(s32 *)t3;
+        do {
+            a3 = *(s32 *)(t3 + 0x4);
+            if (((u32)t1 >> a3 & 1) == 0) {
+                f2 = *(f32 *)(t3 + 0x8);
+                t0 = t4 + (a3 - 6) * 4;
+                *(f32 *)(t0 + 0x10) = *(f32 *)(t0 + 0x10) + f2 * k;
+                f2 = *(f32 *)(t3 + 0xC);
+                *(f32 *)(t0 + 0x20) = *(f32 *)(t0 + 0x20) + f2 * k;
+                f2 = *(f32 *)(t0 + 0x10);
+                if (f2 > 1.0f) {
+                    *(s32 *)(t0 + 0x10) = 0;
+                } else if (f2 < 0.0f) {
+                    *(f32 *)(t0 + 0x10) = 1.0f;
+                }
+                f2 = *(f32 *)(t0 + 0x20);
+                if (f2 > 1.0f) {
+                    *(f32 *)(t0 + 0x20) = 0.0f;
+                } else if (f2 < 0.0f) {
+                    *(f32 *)(t0 + 0x20) = 1.0f;
+                }
+                t1 = t1 | (1 << a3);
+                if (t1 == 0x3C00) {
+                    break;
+                }
+            }
+            t3 = t3 + 0x10;
+        } while (*(s32 *)t3 == t2);
+    }
+    a0 = *(u8 **)(a0 + 0x10);
+    if (*(u8 **)(a0 + 0x10) != NULL) {
+        func_001F5CB0(a0);
+    }
+}
+// differs: a clamp loop over a table of f32 pairs; the constants (k in f3 and 1.0 in f0) and the address registers come out in another order; the clamps are written out in full (not matched)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE2A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE3D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE500);
