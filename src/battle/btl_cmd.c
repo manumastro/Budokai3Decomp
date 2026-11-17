@@ -519,6 +519,50 @@ s32 func_001A90E0(BtlRank *a0, s16 a1) {
     }
     return r;
 }
+// GIVEN UP: a switch lays out its cases in another order than the original's compare chain (4 forms tried)
+#if 0
+s32 func_001A9230(u8 *a0, s32 a1) {
+    s16 k = (s16)a1;
+    s16 p;
+    s16 q;
+
+    switch (k) {
+    case 0xC0:
+        p = *(s16 *)(a0 + 0x430);
+        q = *(s16 *)(a0 + 0x432);
+        break;
+    case 0x60:
+        p = *(s16 *)(a0 + 0x430);
+        q = *(s16 *)(a0 + 0x42E);
+        break;
+    case 0x90:
+        p = *(s16 *)(a0 + 0x42C);
+        q = *(s16 *)(a0 + 0x432);
+        break;
+    case 0x30:
+        p = *(s16 *)(a0 + 0x42C);
+        q = *(s16 *)(a0 + 0x42E);
+        break;
+    case 0x80:
+        return *(s16 *)(a0 + 0x430) == 1;
+    case 0x40:
+        return *(s16 *)(a0 + 0x432) == 1;
+    case 0x20:
+        return *(s16 *)(a0 + 0x42E) == 1;
+    case 0x10:
+        return *(s16 *)(a0 + 0x42C) == 1;
+    default:
+        return 0;
+    }
+    if (p == 1 && q > 0 && q < 5) {
+        return 1;
+    }
+    if (q == 1 && p > 0 && p < 5) {
+        return 1;
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9230);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9460);
 // GIVEN UP: the switch and its blocks match in order, but the registers of the op and the entry differ and the returns are laid out differently
