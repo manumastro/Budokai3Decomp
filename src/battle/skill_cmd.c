@@ -1353,6 +1353,43 @@ void func_002543B0(u8 *a0) {
     }
 }
 #endif
+#if 0
+/* differs: 12 of 58 (declaration orders searched): the argument and the loop pointer share a saved register
+ * in our build (the original keeps the argument in $s4 for its second 0x20 read, and the loop in $s0). */
+void func_002543B0(u8 *a0) {
+    u8 *s4;
+    u8 *s3;
+    u8 *s0;
+    s32 s1;
+    s32 s2;
+    s32 v;
+    s32 a1;
+    s32 *r;
+
+    s4 = a0;
+    s1 = 0;
+    s0 = s4;
+    s3 = *(u8 **)s4 + 0x30;
+    do {
+        s2 = func_0021C460(*(s16 *)(s0 + 0x20));
+        if (s2 == -1) {
+            s2 = 2;
+        }
+        v = func_0021C360(*(s16 *)(s4 + 0x20));
+        if ((v & 1) != 0) {
+            a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA2;
+        } else {
+            a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA1;
+        }
+        r = func_00259CC0(*(s32 **)(s3 + 0x4), a1);
+        if (r != NULL) {
+            func_0022C7D0((s32)r, (f32)s2, 0);
+        }
+        s1++;
+        s0 += 2;
+    } while (s1 < 2);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002543B0);
 void func_002544A0(f32 *a0, s32 a1) {
     s32 v;
@@ -2564,6 +2601,51 @@ s32 func_00259D90(s32 a0, s32 a1) {
     *(s32 *)(s0 + 0x18) = func_0022D570(*(s32 *)(((s32 *)(*(s32 *)(sys + 0xE88)))[5] + (((a0 & 1) + v) << 2)), 0x1000, 0x2000008, 0x3A30);
     ((s32 *)s0)[1] = a1;
     ((s32 *)s0)[2] = 0;
+    return 1;
+}
+#endif
+typedef struct BtlTmp12 {
+    u64 a;
+    f32 b;
+} BtlTmp12;
+
+#if 0
+/* differs: 0x10C bytes against 0x120. The original addresses the 12-byte local through $a1 (sd a0, 0(a1)) and
+ * copies the second argument into $s2 before the table load; ours addresses it through $sp and moves the
+ * copy late. Tried: argument copies into locals (this version). */
+s32 func_00259D90(s32 a0, s32 a1) {
+    BtlTmp12 tmp;
+    u8 *sys;
+    u8 *s0;
+    s32 e;
+    s32 v;
+    s32 s2;
+    s32 s3;
+
+    s3 = a0;
+    s2 = a1;
+    tmp.a = *(u64 *)D_004529B8;
+    tmp.b = *(f32 *)(D_004529B8 + 8);
+    sys = gBtlSys;
+    e = D_0058D4D0[s3];
+    if (e == 0) {
+        return 0;
+    }
+    s0 = (u8 *)e + 0x30;
+    if (*(s32 *)((u8 *)e + 0x34) == s2) {
+        return 1;
+    }
+    func_0022D0B0(*(s32 *)(s0 + 0x18), 1);
+    D_00470704 = *(s32 *)(sys + 0xE84);
+    D_0047070C = 0x4010000;
+    D_00470708 = 0;
+    func_00145CC0(D_00470704, 0x4010000);
+    D_00470238 = 0;
+    v = *(s32 *)(*(s32 *)(sys + 0xE88) + 0x14);
+    v = *(s32 *)((u8 *)v + (((s3 & 1) + ((s32 *)&tmp)[s2]) << 2));
+    *(s32 *)(s0 + 0x18) = func_0022D570(v, 0x1000, 0x2000008, 0x3A30);
+    *(s32 *)(s0 + 0x4) = s2;
+    *(s32 *)(s0 + 0x8) = 0;
     return 1;
 }
 #endif
