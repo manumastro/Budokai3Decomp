@@ -2179,71 +2179,6 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BFD60);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C0130);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C09A0);
 #if 0
-// differs: the early returns share one epilogue in the original (b to the jr); the final 'return 1' falls through (last test laid out differently; 70 instructions differ with the boolean form)
-s32 func_001C21C0(Fighter *f) {
-    s16 *t;
-    s32 n;
-    s32 idx;
-    s32 k;
-    s32 k2;
-    s32 sum;
-    s32 v;
-    t = (s16 *)((u8 *)f + 0x164);
-    n = FT_FIELD(f, s32, 0x50);
-    if (n <= 0) {
-        return 0;
-    }
-    idx = FT_FIELD(f, s32, 0x60);
-    if (t[idx * 2] != 1) {
-        return 0;
-    }
-    sum = t[idx * 2 + 1];
-    if (sum > 0) {
-        return 0;
-    }
-    if (sum < -14) {
-        return 0;
-    }
-    if (sum < 0) {
-        sum = -sum;
-    }
-    k = (idx - 1) & 0x1F;
-    if (t[k * 2] != 0) {
-        return 0;
-    }
-    v = t[k * 2 + 1];
-    if (v > 0) {
-        return 0;
-    }
-    if (v < -9) {
-        return 0;
-    }
-    if (v < 0) {
-        v = -v;
-    }
-    k2 = (k - 1) & 0x1F;
-    sum += v;
-    if (t[k2 * 2] != 1) {
-        return 0;
-    }
-    v = t[k2 * 2 + 1];
-    if (v > 0) {
-        return 0;
-    }
-    if (v < -9) {
-        return 0;
-    }
-    if (v < 0) {
-        v = -v;
-    }
-    sum += v;
-    if (n < sum) {
-        return 0;
-    }
-    return 1;
-}
-#endif
-#if 0
 // differs: sibling of func_001C2340 (same table walk); the final epilogue layout differs: the original jumps every failed test to the shared jr, the compiler keeps a separate exit
 s32 func_001C21C0(Fighter *f) {
     s16 *t;
@@ -2575,45 +2510,51 @@ void func_001C5F20(void) {
 // differs: the constant 1 is kept in another register (v1 for a1 in the original): the store order matches, the register does not
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C5F20);
 #if 0
-// differs: frame and saved registers differ (0x70 against 0x50): the battle pointer and the fighter-pointer stores are folded into shared addresses (84 of 85 differ)
+// differs: the battle pointer and the fighter pointers are kept in saved registers (frame 0x70 against 0x50, 83 of 85 differ) even with struct access
+typedef struct BWY {
+    u8 a[0x88D8];
+    s32 n88D8;
+    u8 b[0x8934 - 0x88DC];
+    void *fighter[2];
+} BWY;
 extern void func_001D8710(void *a);
 extern s32 func_001D89E0(void *f, s32 i);
 void func_001C5FE0(void *a0) {
-    BattleWork *bw;
+    BWY *bx;
     s32 i;
     s32 s2v;
     s32 s3v;
-    bw = D_00470570;
+    bx = (BWY *)D_00470570;
     if (a0 != 0) {
         func_001D8710(a0);
     } else {
-        if (BW_FIELD(bw, s32, 0x88D8) < 3) {
+        if (bx->n88D8 < 3) {
             s3v = 0;
             s2v = 0;
             for (i = 0; i < 2; i++) {
-                if (func_001D89E0((u8 *)bw + 0x830, i) != 0) {
+                if (func_001D89E0((u8 *)bx + 0x830, i) != 0) {
                     s3v = i;
                 }
-                if (func_001D89E0((u8 *)bw + 0x2850, i) != 0) {
+                if (func_001D89E0((u8 *)bx + 0x2850, i) != 0) {
                     s2v = i;
                 }
             }
             if (s3v < s2v) {
-                BW_FIELD(bw, void *, 0x8934) = (u8 *)bw + 0x2850;
+                bx->fighter[0] = (u8 *)bx + 0x2850;
             } else {
-                BW_FIELD(bw, void *, 0x8934) = (u8 *)bw + 0x830;
+                bx->fighter[0] = (u8 *)bx + 0x830;
             }
             if (s3v < s2v) {
-                BW_FIELD(bw, void *, 0x8938) = (u8 *)bw + 0x830;
+                bx->fighter[1] = (u8 *)bx + 0x830;
             } else {
-                BW_FIELD(bw, void *, 0x8938) = (u8 *)bw + 0x2850;
+                bx->fighter[1] = (u8 *)bx + 0x2850;
             }
-        } else if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+        } else if (0 < bx->n88D8) {
             i = 0;
             do {
-                BW_FIELD(bw, s32, 0x8934 + i * 4) = (s32)((u8 *)bw + 0x830 + i * 0x2020);
+                ((s32 *)bx->fighter)[i] = (s32)((u8 *)bx + 0x830 + i * 0x2020);
                 i++;
-            } while (i < BW_FIELD(bw, s32, 0x88D8));
+            } while (i < bx->n88D8);
         }
     }
 }
