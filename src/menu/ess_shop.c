@@ -578,8 +578,6 @@ void func_00276B50(s32 a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276B50);
-#if 0
-// differs: 1 of 54 instructions: the second loop matches (index j, pointer-free store at s1 + j*4 + 4); the remaining difference is the operand order of the addu at 0x276D78 (addu v0,s1,v0 here, the original has addu v0,v0,s1). Store-expression variants (s1 + 4 + j*4, (j << 2), ((s32 *)s1)[j + 1]) did not change it. Other flagged lines are unresolved-symbol placeholders
 void func_00276CE0(u8 *a0, s32 a1) {
     s32 *q;
     s32 j;
@@ -608,7 +606,7 @@ void func_00276CE0(u8 *a0, s32 a1) {
     q = (s32 *)s1;
     do {
         if (q[1] == s0) {
-            *(s32 *)(s1 + j * 4 + 4) = -1;
+            { s32 *t = (s32 *)(s1 + 4); t[j] = -1; }
             break;
         }
         j++;
@@ -616,8 +614,6 @@ void func_00276CE0(u8 *a0, s32 a1) {
     } while (j < 7);
     func_0026E000(s1, 0xF0);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276CE0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276DC0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00277010);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00277310);
