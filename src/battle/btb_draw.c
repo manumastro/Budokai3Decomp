@@ -2245,7 +2245,55 @@ void SceneSw_CommitStrTitle3(Task *t) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ED880);
+extern void SceneSw_CommitStrTitle3(Task *);
+extern void GameOver_TaskMain(void *);
+extern void Result_Open(void);
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
+extern void amAdx_Stop(s32);
+extern void Fade_Request(s32, s32, s32);
+extern char D_004696B8[];
+extern s32 gSceneReady;
+
+void func_001ED880(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (gSceneDone != 0) {
+            TASK_SETFUNC(t, SceneSw_CommitStrTitle3);
+            switch (gSceneNext) {
+            case 6:
+                D_004B4BB0[0] = 1;
+                StrTitle_Start();
+                break;
+            case 8:
+                D_004B4BB0[0] = 1;
+                Flight_Start();
+                break;
+            case 13:
+                D_004B4BB0[0] = 1;
+                D_0047061C = (s32)amTask_Create(GameOver_TaskMain, NULL, 0x1000, 2, 2, D_004696B8);
+                gSceneReady = 1;
+                SoundRpc_SendWord2(-1);
+                SoundRpc_SendWord(0);
+                amAdx_Stop(-1);
+                Fade_Request(-1, 0, 0);
+                break;
+            case 10:
+                D_004B4BB0[0] = 1;
+                Result_Open();
+                break;
+            }
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
