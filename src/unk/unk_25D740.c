@@ -1183,7 +1183,52 @@ s32 func_002603E0(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260410);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002604F0);
+typedef struct Blk2604 {
+    s32 f0;
+    s32 f4;
+    f32 f8;
+    f32 fC;
+    f32 f10;
+    f32 f14;
+    f32 f18;
+    s32 f1C;
+    f32 f20;
+    f32 f24;
+    f32 f28;
+    s32 f2C;
+    f32 f30;
+    f32 f34;
+    f32 f38;
+    f32 f3C;
+    char pad40[0x10];
+} __attribute__((aligned(16))) Blk2604;
+
+extern void func_0020AA20(s32, Blk2604 *);
+
+s32 func_002604F0(void *o, ScrCmd *cmd) {
+    Blk2604 b;
+    s32 arg;
+
+    arg = *(s32 *)((char *)cmd->args + 0x34);
+    b.f10 = *(f32 *)((char *)cmd->args + 0x30);
+    b.f0 = 0;
+    b.f4 = *(s32 *)((char *)cmd->args + 0x2C);
+    b.f8 = *(f32 *)((char *)cmd->args + 0x28);
+    b.fC = *(f32 *)((char *)cmd->args + 0x24);
+    b.f14 = *(f32 *)((char *)cmd->args + 0x20);
+    b.f18 = *(f32 *)((char *)cmd->args + 0x1C);
+    b.f20 = *(f32 *)((char *)cmd->args + 0x18);
+    b.f24 = *(f32 *)((char *)cmd->args + 0x14);
+    b.f28 = *(f32 *)((char *)cmd->args + 0x10);
+    b.f2C = 0x3F800000;
+    b.f30 = *(f32 *)((char *)cmd->args + 0xC);
+    b.f34 = *(f32 *)((char *)cmd->args + 0x8);
+    b.f38 = *(f32 *)((char *)cmd->args + 0x4);
+    b.f3C = *(f32 *)((char *)cmd->args + 0x0);
+    b.f1C = 0;
+    func_0020AA20(arg, &b);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002605C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260690);
 
