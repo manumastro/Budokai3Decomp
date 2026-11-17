@@ -816,27 +816,22 @@ u8 *func_00240F40(s32 i, s32 kind) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00240FF0);
 #if 0
-s32 func_00241010(s32 i) {
-    u8 *base = gBattle + i * 0x2020;
-    u8 *q = base + 0x830;
-    s32 t = *(s32 *)(base + 0x252C);
-    s32 r = 0;
-    u8 *o;
-    u8 *p;
-    s32 v;
+s32 func_00241010(s32 a0) {
+    u8 *b = gBattle + a0 * 0x2020;
+    s32 v = *(s32 *)(b + 0x252C);
+    s32 w;
+    s32 *t;
 
-    if ((u32)(t - 0x28) < 2 || t == 0x12 || t == 5 || (u32)(t - 0x14) < 2 || t == 0x23 ||
-        (u32)(*(s32 *)(q + 0xB9C) - 0x46) < 2 || *(s32 *)(q + 0xB9C) == 0x5C) {
-        o = D_0046FE4C + i * 0x480;
-        p = o + 0x10;
-        v = *(s32 *)(o + 0x24);
-        if (v != -1 && v != *(s32 *)(p + 0x38)) {
-            r = 1;
+    if (!((u32)(v - 0x28) < 2 || v == 0x12 || v == 5 || (u32)(v - 0x14) < 2 || v == 0x23)) {
+        w = *(s32 *)(b + 0x830 + 0xB9C);
+        if ((u32)(w - 0x46) >= 2 && w != 0x5C) {
+            return 1;
         }
     }
-    return r == 0;
+    t = (s32 *)(D_0046FE4C + a0 * 1152);
+    return (t[9] == -1 || t[9] == t[18]);
 }
-// differs: 188 bytes (round 5, u23c): the branch layout matches up to the join (the body at 0x241088 with its two pad nops); the t/r register choice differs (original: t in v1, r in a1, q in a2), and the return is sltu/xori (r != 0) ^ 1 while ours is sltiu. Tried: t2 hoisted to the top (0xB4 bytes), return (r != 0) ^ 1, r declared first.
+// differs: round 6 (u23e): 0xB8 bytes against 0xC0 (two instructions short). The original keeps the base pointer base+0x830 in a2 for the 0xB9C load and ends with sltu v0,zero,a1 / xori (a1 flag, one exit); the returns form and a2 form both give other layouts (34 to 38 of 48 differ)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241010);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002410D0);
