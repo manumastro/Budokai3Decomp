@@ -42,7 +42,6 @@ typedef struct G270 {
     s32 f5DC[0x30];
 } G270;
 
-#if 0
 s32 func_00270020(void) {
     s32 t0 = 0;
     s32 a3 = 0;
@@ -53,7 +52,7 @@ s32 func_00270020(void) {
         s32 *q = (s32 *)((u8 *)D_004707FC + i * 4);
         do {
             if (q[0x5DC / 4] >= 0) {
-                t0 = ((G270 *)D_004707FC)->f5DC[i];
+                t0 = ((s32 *)((u8 *)D_004707FC + 0x5DC))[i];
                 a3 = i;
                 break;
             }
@@ -74,9 +73,6 @@ s32 func_00270020(void) {
     }
     return 0;
 }
-// differs: only the addu that forms &D[i] differs: it is emitted as addu v0, v1, v0 (base first) while the original has v0, v0, v1; the array, pointer and integer-base forms all give the base first
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_00270020);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_002700E0);
 typedef struct Ac270 {
     s32 f0;

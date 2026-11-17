@@ -605,7 +605,7 @@ s32 func_0021C360(s32 id) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C360);
 s32 func_0021C3D0(s32 i) {
-    return ((s8 *)(gBtlSys + 0xCA0))[i];
+    return *(s8 *)(i + (s32)gBtlSys + 0xCA0);
 }
 u8 *func_0021C3E0(s32 i) {
     return gBtlSys + 0xCB0 + i * 0x50;
