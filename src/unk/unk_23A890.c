@@ -2296,7 +2296,65 @@ void func_002479B0(u8 *a0) {
     amMotion_Apply(*(u8 **)(p + 8), 0.0f, 1.0f);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247AB0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247C80);
+void func_002D0110(s32, s32, f32);
+
+void func_00247C80(u8 *o) {
+    u8 *s0;
+    u8 *t0;
+    s32 a3;
+    u8 *a2;
+    s32 i;
+    s32 off;
+    s32 mode;
+
+    s0 = o + 0x30;
+    mode = D_00470734;
+    switch (mode) {
+    case 0:
+        *(s32 *)(s0 + 0x14) = 0x10000;
+        *(s32 *)(s0 + 0x18) = 0;
+        break;
+    case 1:
+        *(s32 *)(s0 + 0x14) = 0x10006;
+        *(s32 *)(s0 + 0x18) = 6;
+        break;
+    case 2:
+        amHeap_Free(*(void **)(s0 + 0x8));
+        amHeap_Free(*(void **)(s0 + 0xC));
+        BtbObj_RemoveFromList(o);
+        D_00470740[0] = 0;
+        return;
+    case 3:
+        *(s32 *)(s0 + 0x14) = 0x10000;
+        *(s32 *)(s0 + 0x18) = 0;
+        break;
+    }
+    t0 = *(u8 **)(s0 + 0x8);
+    a3 = *(s32 *)(s0 + 0x14);
+    a2 = t0 + 0x41C;
+    if (*(s32 *)(t0 + 0x41C) != a3) {
+        if (0 < *(s32 *)(t0 + 0x418)) {
+            i = 0;
+            off = 0;
+            do {
+                *(s32 *)(*(u8 **)(a2 + 0x10) + off + 0x30) = -1;
+                *(s32 *)(*(u8 **)(a2 + 0x10) + off + 0x34) = -1;
+                *(s32 *)(*(u8 **)(a2 + 0x10) + off + 0x38) = -1;
+                i++;
+                off += 0x40;
+            } while (i < *(s32 *)(t0 + 0x418));
+        }
+        *(s32 *)(a2 + 0xC) = 0xBF800000;
+    }
+    *(s32 *)a2 = a3;
+    *(s32 *)(*(u8 **)(s0 + 0x8) + 0x424) = 0;
+    amMotion_Apply(*(u8 **)(s0 + 0x8), 0.0f, 1.0f);
+    if (*(s32 *)s0 != 0) {
+        func_002D04A0(*(s32 *)(s0 + 0x1C));
+        func_002D0110(*(s32 *)s0, 0, (f32)*(s32 *)(s0 + 0x18));
+        func_002D04A0(0);
+    }
+}
 #if 0
 // differs: the loop registers of the table-clear loop (the object pointer in a3, the loop in a0/a1 of the original) and the order of the first moves; 1 attempt, 88 of 94 instructions
 extern f32 D_0051CD24[];
