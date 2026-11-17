@@ -281,6 +281,54 @@ s32 func_001A51E0(MotTrack *a0, s32 a1, f32 t) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A51E0);
+extern void func_0013C1E0(void *, f32, f32);
+extern void amMotion_Update(void *, s32);
+
+// GIVEN UP: 8 of 77 instructions differ: the original computes the table index (the high half minus one) before the
+// low half of the value, and the register choice follows (4 orders tried)
+#if 0
+void func_001A5350(u8 *a0, f32 f12) {
+    s32 a1;
+    s32 v1;
+    u8 *s0;
+    s32 a3;
+    u8 *a2;
+    u8 *pt;
+    s32 hi;
+    s32 i;
+    s32 off;
+    f32 f20;
+
+    f20 = f12;
+    a1 = *(s8 *)(a0 + 0x4F);
+    s0 = *(u8 **)a0;
+    v1 = *(s8 *)(a0 + 0x4D);
+    if (a1 != *(s8 *)(a0 + 0x4E) || v1 != *(s8 *)(a0 + 0x4C)) {
+        a3 = ((*(s32 *)(a0 + 4) + 1) << 16) | (a1 + v1 * 6);
+        a2 = s0 + 0x41C;
+        if (*(s32 *)(s0 + 0x41C) != a3) {
+            if (0 < *(s32 *)(s0 + 0x418)) {
+                i = 0;
+                off = 0;
+                do {
+                    *(s32 *)(*(u8 **)(a2 + 0x10) + off + 0x30) = -1;
+                    *(s32 *)(*(u8 **)(a2 + 0x10) + off + 0x34) = -1;
+                    *(s32 *)(*(u8 **)(a2 + 0x10) + off + 0x38) = -1;
+                    i++;
+                    off += 0x40;
+                } while (i < *(s32 *)(s0 + 0x418));
+            }
+            *(s32 *)(a2 + 0xC) = 0xBF800000;
+        }
+        *(s32 *)a2 = a3;
+        hi = (a3 >> 16) - 1;
+        pt = *(u8 **)(s0 + 0x46C + (hi << 2));
+        *(f32 *)(s0 + 0x424) = (f32)(*(s32 *)(*(u8 **)(pt + 0x14) + ((a3 & 0xFFFF) << 4) + 8) - 1);
+        amMotion_Update(s0, 0);
+    }
+    func_0013C1E0(s0, 0.0f, f20);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5350);
 s32 func_001A5490(MotFile *f, s32 track, f32 t) {
     MotTrack *tr = &f->tracks[track];
@@ -520,46 +568,64 @@ s32 func_001A90E0(BtlRank *a0, s16 a1) {
     }
     return r;
 }
-// GIVEN UP: a switch lays out its cases in another order than the original's compare chain (4 forms tried)
+// GIVEN UP: the switch chain and the case blocks are in the original order, but the pair block loads the
+// first field into another register ($v1 for $a1) and the rest is 0x18 bytes longer (4 forms tried)
 #if 0
+static inline s32 BtlCmd_PairAt(u8 *a0, s32 op, s32 oq) {
+    s16 p = *(s16 *)(a0 + op);
+    if (p == 1 && *(s16 *)(a0 + oq) > 0 && *(s16 *)(a0 + oq) < 5) {
+        return 1;
+    }
+    if (*(s16 *)(a0 + oq) == 1 && p > 0 && p < 5) {
+        return 1;
+    }
+    return 0;
+}
+
 s32 func_001A9230(u8 *a0, s32 a1) {
     s16 k = (s16)a1;
-    s16 p;
-    s16 q;
 
     switch (k) {
-    case 0xC0:
-        p = *(s16 *)(a0 + 0x430);
-        q = *(s16 *)(a0 + 0x432);
+    case 0x10:
+        if (*(s16 *)(a0 + 0x42C) == 1) {
+            return 1;
+        }
         break;
-    case 0x60:
-        p = *(s16 *)(a0 + 0x430);
-        q = *(s16 *)(a0 + 0x42E);
+    case 0x20:
+        if (*(s16 *)(a0 + 0x42E) == 1) {
+            return 1;
+        }
         break;
-    case 0x90:
-        p = *(s16 *)(a0 + 0x42C);
-        q = *(s16 *)(a0 + 0x432);
-        break;
-    case 0x30:
-        p = *(s16 *)(a0 + 0x42C);
-        q = *(s16 *)(a0 + 0x42E);
+    case 0x40:
+        if (*(s16 *)(a0 + 0x432) == 1) {
+            return 1;
+        }
         break;
     case 0x80:
-        return *(s16 *)(a0 + 0x430) == 1;
-    case 0x40:
-        return *(s16 *)(a0 + 0x432) == 1;
-    case 0x20:
-        return *(s16 *)(a0 + 0x42E) == 1;
-    case 0x10:
-        return *(s16 *)(a0 + 0x42C) == 1;
-    default:
-        return 0;
-    }
-    if (p == 1 && q > 0 && q < 5) {
-        return 1;
-    }
-    if (q == 1 && p > 0 && p < 5) {
-        return 1;
+        if (*(s16 *)(a0 + 0x430) == 1) {
+            return 1;
+        }
+        break;
+    case 0x30:
+        if (BtlCmd_PairAt(a0, 0x42C, 0x42E)) {
+            return 1;
+        }
+        break;
+    case 0x90:
+        if (BtlCmd_PairAt(a0, 0x42C, 0x432)) {
+            return 1;
+        }
+        break;
+    case 0x60:
+        if (BtlCmd_PairAt(a0, 0x430, 0x42E)) {
+            return 1;
+        }
+        break;
+    case 0xC0:
+        if (BtlCmd_PairAt(a0, 0x430, 0x432)) {
+            return 1;
+        }
+        break;
     }
     return 0;
 }
@@ -639,6 +705,70 @@ void func_001AA450(BtlRank *a0) {
         }
     }
 }
+extern u8 D_00492FF0[];
+
+// GIVEN UP: the max/min folds are right, but the original keeps the entry address and the flag address in other
+// registers, loads the index in each step and is 18 instructions longer (0x2A0 against 0x258; 4 forms tried)
+#if 0
+static inline void BtlCmd_Fold(s32 *cur, s32 v) {
+    if (v > 0) {
+        if (*cur > 0) {
+            if (*cur < v) {
+                *cur = v;
+            }
+        } else {
+            *cur = v;
+        }
+    } else {
+        if (v < *cur) {
+            *cur = v;
+        }
+    }
+}
+
+void func_001AA5C0(u8 *a0) {
+    s32 idx;
+    s32 t0;
+    s32 a3;
+    s32 v;
+    s32 flags;
+    u8 *ent;
+
+    idx = *(s16 *)(a0 + 0x44);
+    if (idx >= 0) {
+        *(s32 *)(a0 + 0x48) = 0x80000000;
+        *(s32 *)(a0 + 0x4C) = 0x80000000;
+        *(s32 *)(a0 + 0x50) = 0x80000000;
+        *(s32 *)(a0 + 0x54) = 0x80000000;
+        for (t0 = 0; t0 < 2; t0++) {
+            for (a3 = 0; a3 < 8; a3++) {
+                flags = *(s8 *)((u8 *)D_00470570 + idx * 8 + 0x88B0 + a3);
+                ent = D_00492FC0 + *(s16 *)(a0 + 0x44) * 184;
+                if (t0 == 0) {
+                    v = *(s32 *)(ent + a3 * 4 + 0x48);
+                } else {
+                    v = *(s32 *)(ent + a3 * 4 + 0x94);
+                }
+                if ((flags & 1) != 0) {
+                    BtlCmd_Fold((s32 *)(a0 + 0x48), v);
+                }
+                if ((flags & 2) != 0) {
+                    BtlCmd_Fold((s32 *)(a0 + 0x4C), v);
+                }
+                if ((flags & 4) != 0) {
+                    BtlCmd_Fold((s32 *)(a0 + 0x50), v);
+                }
+                if ((flags & 8) != 0) {
+                    BtlCmd_Fold((s32 *)(a0 + 0x54), v);
+                }
+            }
+        }
+        ent = D_00492FF0 + idx * 184;
+        v = *(s32 *)ent;
+        BtlCmd_Fold((s32 *)(a0 + 0x50), v);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA5C0);
 void func_001AA860(BtlRank *a0) {
     s32 x;
@@ -714,5 +844,50 @@ s32 func_001AA9D0(s32 a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA9D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAA60);
+// GIVEN UP: 0x160 against 0x14C: the loop variable of the third loop is kept as s16 (extended before the shift) and its call passes it without the extension (5 forms tried)
+#if 0
+s32 func_001AAEA0(BtlRank *a0, s32 a1) {
+    s32 s3;
+    s32 s2;
+    s16 s1;
+    s32 s0;
+
+    s3 = 0;
+    s2 = 0;
+    s1 = 0;
+    s0 = a1;
+    func_001AA860(a0);
+    func_001AA450(a0);
+    s0 = (s16)s0;
+    if ((s0 & 0xF) != 0) {
+        s3 = 1;
+        do {
+            if (func_001A9460(a0, s3, 0) != 0) {
+                break;
+            }
+            s3 = (s16)(s3 << 1);
+        } while (s3 <= 8);
+    }
+    if ((s0 & 0xF0) != 0) {
+        s2 = 0x10;
+        do {
+            if (func_001A9230(a0, s2) != 0) {
+                break;
+            }
+            s2 = (s16)(s2 << 1);
+        } while (s2 <= 0x80);
+    }
+    if ((s0 & 0x300) != 0) {
+        s1 = 0x100;
+        do {
+            if (func_001A90E0(a0, s1) != 0) {
+                break;
+            }
+            s1 = (s16)(s1 << 1);
+        } while (s1 <= 0x200);
+    }
+    return (s16)(s0 & (s1 | s2 | s3));
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAEA0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AB000);
