@@ -15,6 +15,23 @@ typedef struct CmdHist {
     s32 rd;
 } CmdHist;
 
+typedef struct TutBuf {
+    s32 f0;
+    s32 f4;
+    s16 f8;
+    s16 fA;
+} TutBuf;
+
+typedef struct TutBlk {
+    char pad0[0x14];
+    s16 f14;
+} TutBlk;
+
+typedef struct TutChrB {
+    char pad0[0x1CF4];
+    TutBlk *f1CF4;
+} TutChrB;
+
 /* A fighter, as far as this file reads it. */
 typedef struct TutChr {
     char pad0[0xBA4];
@@ -31,6 +48,8 @@ typedef struct TutChr {
     struct TutChr *f1354;
     char pad1358[8];
     CmdHist f1360;
+    char pad1764[0x1CF4 - 0x1764];
+    TutBlk *f1CF4;
 } TutChr;
 
 /* The training (tutorial) work: one lesson's state. */
@@ -39,7 +58,10 @@ typedef struct TutWork {
     s32 f4;
     s32 f8;
     s32 fC;
-    char pad10[0x10];
+    s32 f10;
+    f32 f14;
+    f32 f18;
+    f32 f1C;
     s32 f20;
     s32 f24;
     char pad28[8];
@@ -64,8 +86,11 @@ extern void amTask_KillGroup(s32, s32, s32);
 extern void func_002EB280(void);
 extern void func_002EB290(void);
 extern void func_002EB560(void *);
+extern void func_001C8020(s32, void *);
+extern void (*D_004564A0[])(void);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAED0);
+/* differs: the test comes out as slti at / beqz; the original keeps slti v0 / bnez v0 with the result in v0 */
 /* differs: the test comes out as slti at / beqz; the original keeps slti v0 / bnez v0 with the result in v0 */
 #if 0
 s32 func_002CAF50(void) {
@@ -85,10 +110,32 @@ s32 func_002CAF50(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAF50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAFA0);
+/* differs: the same ring walk; the original has its nop-padded join and the early exit at a different place (0x80 bytes, ours 0x6C) */
+#if 0
+s32 func_002CB070(void) {
+    TutChr *c = D_0047091C->chr;
+    s32 n = 0;
+    s32 i = c->f1360.rd;
+    s32 lim = *(s32 *)((u8 *)c + 0x1758);
+    s32 end = c->f1360.wr;
+
+    if (i != lim) {
+        do {
+            CmdHistEnt *e = &c->f1360.ent[i];
+            if (e->f8 != NULL && e->f8[1] != 8) {
+                n++;
+            }
+            if (i == end) {
+                break;
+            }
+            i = (i + 1) & 0x1F;
+        } while (i != lim);
+    }
+    return n >= 4;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB070);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB0F0);
-/* differs: the shared "return 0" exit and the slti v0 / bnez pair of the original (6 instructions) */
-#if 0
 s32 func_002CB1D0(void) {
     TutWork *t = D_0047091C;
     s32 *p = &t->f20;
@@ -99,15 +146,27 @@ s32 func_002CB1D0(void) {
     if (t->f32 == 8) {
         p[1]++;
     }
-    if (*p < 2 || p[1] < 2) {
-        return 0;
+    if (*p >= 2 && p[1] >= 2) {
+        return 1;
     }
-    return 1;
+    return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB1D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB250);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB300);
+s32 func_002CB300(void) {
+    TutWork *t = D_0047091C;
+    s32 *p = &t->f20;
+
+    if (t->f32 == 5) {
+        (*p)++;
+    }
+    if (t->f32 == 6) {
+        p[1]++;
+    }
+    if (*p > 0 && p[1] > 0) {
+        return 1;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB370);
 s32 func_002CB420(void) {
     return 2;
@@ -120,8 +179,29 @@ void func_002CB450(void) {
 }
 void func_002CB460(void) {
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB470);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB4F0);
+void func_002CB470(void) {
+    TutWork *t = D_0047091C;
+
+    if (t->f18 >= 180.0f && t != NULL) {
+        t->f8 = 3;
+        t->f1C = -*(f32 *)(D_00470570 + 0x88F0);
+        t->f18 = 0.0f;
+        D_004564A0[t->f8]();
+    }
+}
+void func_002CB4F0(void) {
+    TutBuf buf;
+    TutWork *t = D_0047091C;
+
+    t->fC++;
+    buf.f0 = 3;
+    buf.f8 = 0;
+    buf.fA = 0;
+    func_001C8020(0, &buf);
+    if (t->f30 >= 0) {
+        t->chr->f1CF4->f14 = t->f30;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB550);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB650);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBD40);
