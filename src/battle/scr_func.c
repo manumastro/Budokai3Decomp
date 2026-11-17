@@ -734,6 +734,32 @@ s32 func_002AC710(s32 *a0, s32 *a1) {
     return 0;
 }
 #endif
+extern f32 D_004593A0[];
+extern f32 D_004593B0[];
+// GIVEN UP (round 5 chr2): 7 of 32 differ. The original keeps the index in a0 and the base pointer in v1 (addu v1,v0,v1); ours puts the base in a0.
+// The two copies have their base registers swapped (the asm operand order does not change it). Tried: operand order, index in a1, declaration order.
+#if 0
+s32 func_002AC710(s32 *a0, s32 *a1) {
+    f32 f2;
+    f32 f1;
+    f32 f0;
+    u8 *v1;
+    f32 vec[4] __attribute__((aligned(16)));
+
+    f2 = D_00459390[2];
+    a0 = (s32 *)*(s32 *)(*a0);
+    f1 = D_004593A0[2];
+    f0 = D_004593B0[2];
+    vec[0] = f2;
+    vec[1] = f1;
+    vec[2] = f0;
+    *(s32 *)&vec[3] = 0;
+    v1 = (u8 *)D_005BC440 + (s32)a0 * 144;
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(vec), "r"(*(u8 **)(v1 + 8) + 0x10));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(*(u8 **)(v1 + 8) + 0x20), "r"(v1 + 0x20));
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC710);
 extern s32 func_002AC710(s32 *, s32 *);
 s32 func_002AC790(s32 *a0, s32 *a1) {
