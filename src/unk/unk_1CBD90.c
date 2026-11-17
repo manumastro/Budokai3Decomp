@@ -97,7 +97,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBD90);
 int func_001CBDF0(void *unused, Arg *a) {
     int *p = a->p;
     s32 x0 = p[0];
-    Side *s = (Side *)D_00470570->tbl[p[1]];
+    Side *s = (Side *)gBattle->tbl[p[1]];
     if (p[1] == 0) {
         if (s->m != 0) {
             s->out = x0 + 1;
@@ -187,7 +187,7 @@ int func_001CC1B0(void *unused, Arg *a) {
     int *p = a->p;
     s32 x0 = p[0];
     s32 n = p[1];
-    char *g = (char *)D_00470570;
+    char *g = (char *)gBattle;
     s32 best = 2;
     f32 m;
     s32 i;
@@ -219,11 +219,11 @@ int func_001CC270(void *unused, Arg *a) {
         n = -p[1];
         s1 = 2;
     } else {
-        char *t = D_00470570->tbl[p[1]];
+        char *t = gBattle->tbl[p[1]];
         s1 = *(s32 *)(t + 0x1350) + 3;
         n = *(s32 *)(t + 0xB9C);
     }
-    func_002194C0((char *)D_00470570 + (s1 << 5) + 0x5C4, n, x0, -1);
+    func_002194C0((char *)gBattle + (s1 << 5) + 0x5C4, n, x0, -1);
     *(s32 *)a = s1;
     return 1;
 }
@@ -498,7 +498,7 @@ int func_001CDC00(void *unused, Arg *a) {
 }
 extern f32 func_00200270(s32, f32, f32);
 int func_001CDC30(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[a->p[0]];
+    char *t = gBattle->tbl[a->p[0]];
     f32 r = func_00200270(0, *(f32 *)(t + 0x650), *(f32 *)(t + 0x658));
     *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x44) - r;
     return 1;
@@ -606,15 +606,15 @@ int func_001CDFD0(void *unused, Arg *a) {
 }
 int func_001CE030(void *unused, Arg *a) {
     int *p = a->p;
-    func_001DFC80(D_00470570->tbl[p[2]], p[1], (f32)p[0]);
+    func_001DFC80(gBattle->tbl[p[2]], p[1], (f32)p[0]);
     return 1;
 }
 int func_001CE080(void *unused, Arg *a) {
     int *p = a->p;
     s32 x0 = p[0];
-    void *t = D_00470570->tbl[p[2]];
+    void *t = gBattle->tbl[p[2]];
     s32 f = p[1];
-    if (*(s16 *)((char *)D_00470570 + 0x894C) != 0 || *(s8 *)((char *)D_00470570 + 0x8AB8) != 0) {
+    if (*(s16 *)((char *)gBattle + 0x894C) != 0 || *(s8 *)((char *)gBattle + 0x8AB8) != 0) {
         f |= 0x8000;
     }
     *(s32 *)a = func_001E0200(t, x0, f);
@@ -647,7 +647,7 @@ int func_001CE2A0(void *unused, Arg *a) {
     int *p = a->p;
     s32 x = p[0];
     s32 j = p[1];
-    char *t = D_00470570->tbl[p[2]];
+    char *t = gBattle->tbl[p[2]];
     char *s0 = t + j * 0x680 + 0x650;
     if (j == 0) {
         func_001E2190(t, x);
@@ -671,7 +671,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE340);
 #if 0
 int func_001CE3A0(void *unused, Arg *a) {
     int *p = a->p;
-    *(s8 *)((char *)D_00470570->tbl[p[2]] + p[1] * 0x680 + 0xCBD) = !(p[0] != 0);
+    *(s8 *)((char *)gBattle->tbl[p[2]] + p[1] * 0x680 + 0xCBD) = !(p[0] != 0);
     return 1;
 }
 #endif
@@ -716,7 +716,7 @@ int func_001CE560(void *unused, Arg *a) {
     if (p[0] == 0) {
         f = 0;
     }
-    func_001D7CC0(D_00470570->tbl[p[1]], f);
+    func_001D7CC0(gBattle->tbl[p[1]], f);
     return 1;
 }
 #endif
@@ -862,7 +862,7 @@ int func_001CF030(void *unused, Arg *a) {
 }
 extern void func_001E5040(void *);
 int func_001CF0A0(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[a->p[1]];
+    char *t = gBattle->tbl[a->p[1]];
     *(s32 *)(t + 0x1864) = a->p[0];
     func_001E5040(t);
     func_001E4FA0(t, -1);
@@ -912,7 +912,7 @@ int func_001CF690(void *unused, Arg *a) {
     return 1;
 }
 int func_001CF6D0(void *o, Arg *a) {
-    if (func_001C8780(D_00470570->tbl[*(s8 *)((char *)o + 0x28)], *(s8 *)((char *)o + 0x29))) {
+    if (func_001C8780(gBattle->tbl[*(s8 *)((char *)o + 0x28)], *(s8 *)((char *)o + 0x29))) {
         *(void **)((char *)o + 0x10) = 0;
         return 1;
     }
@@ -1005,7 +1005,7 @@ int func_001CFA00(void *o, Arg *a) {
 int func_001CFA60(void *o, Arg *a) {
     int *p = a->p;
     void *f = func_001CFA00;
-    char *g = (char *)D_00470570;
+    char *g = (char *)gBattle;
     *(s32 *)((char *)o + 0x24) = p[0];
     *(f32 *)((char *)o + 0x2C) = *(f32 *)(g + 0x8914);
     *(void **)((char *)o + 0x10) = f;
