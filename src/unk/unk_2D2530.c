@@ -48,7 +48,9 @@ typedef struct Obj2D2530 {
     Model2D2530 *f2A0;
     char pad2A4[0x24];
     Model2D2530 *f2C8;
-    char pad2CC[0xC];
+    char pad2CC[0x4];
+    Model2D2530 *f2D0;
+    Model2D2530 *f2D4;
     Model2D2530 *f2D8;
     Model2D2530 *f2DC;
     Model2D2530 *f2E0;
@@ -163,10 +165,105 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D2530);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D27E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D2AD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D2E50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D3050);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D3170);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D3290);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D33B0);
+extern f32 D_004E0614[];
+void func_00143F20(s32, s32, f32);
+void func_00143D60(s32, s32, s32, s32);
+
+/* A cursor in [0, count-1] moved by the flags: 0x80 decrements, 0x20 increments; past an end it clamps (idx 0)
+   or wraps (idx 1), and the callees run when the value changed. */
+void func_002D3050(s32 flags, s8 *cur, s32 count, s32 idx) {
+    s32 lo[2] = {0, count - 1};
+    s32 hi[2] = {count - 1, 0};
+    s32 old = *cur;
+
+    if (flags & 0x80) {
+        *cur = old - 1;
+        if (*cur < 0) {
+            *cur = lo[idx];
+        }
+    } else if (flags & 0x20) {
+        *cur = old + 1;
+        if (*cur >= count) {
+            *cur = hi[idx];
+        }
+    }
+    if (old != *cur) {
+        func_00143F20(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            func_00143D60(0, 0, 2, 0);
+        }
+    }
+}
+void func_002D3170(s32 flags, s16 *cur, s32 count, s32 idx) {
+    s32 lo[2] = {0, count - 1};
+    s32 hi[2] = {count - 1, 0};
+    s32 old = *cur;
+
+    if (flags & 0x80) {
+        *cur = old - 1;
+        if (*cur < 0) {
+            *cur = lo[idx];
+        }
+    } else if (flags & 0x20) {
+        *cur = old + 1;
+        if (*cur >= count) {
+            *cur = hi[idx];
+        }
+    }
+    if (old != *cur) {
+        func_00143F20(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            func_00143D60(0, 0, 2, 0);
+        }
+    }
+}
+void func_002D3290(s32 flags, s32 *cur, s32 count, s32 idx) {
+    s32 lo[2] = {0, count - 1};
+    s32 hi[2] = {count - 1, 0};
+    s32 old = *cur;
+
+    if (flags & 0x80) {
+        *cur = old - 1;
+        if (*cur < 0) {
+            *cur = lo[idx];
+        }
+    } else if (flags & 0x20) {
+        *cur = old + 1;
+        if (*cur >= count) {
+            *cur = hi[idx];
+        }
+    }
+    if (old != *cur) {
+        func_00143F20(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            func_00143D60(0, 0, 2, 0);
+        }
+    }
+}
+/* The same cursor with a minimum (min) and a count; flags 0x10 decrements, 0x40 increments. */
+void func_002D33B0(s32 flags, s32 *cur, s32 min, s32 count, s32 idx) {
+    s32 lo[2] = {min, count - 1};
+    s32 hi[2] = {count - 1, min};
+    s32 old = *cur;
+
+    if (flags & 0x10) {
+        *cur = old - 1;
+        if (*cur < min) {
+            *cur = lo[idx];
+        }
+    } else if (flags & 0x40) {
+        *cur = old + 1;
+        if (*cur >= count) {
+            *cur = hi[idx];
+        }
+    }
+    if (old != *cur) {
+        func_00143F20(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            func_00143D60(0, 0, 2, 0);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D34E0);
 void func_002D3650(void) {
     Vec4 v;
@@ -250,18 +347,14 @@ void func_002D4530(Vec4 *p, Vec4 *q) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D4600);
-#if 0
-// differs: four values live across the draws (p0, p1, the object, the model): the original keeps four saved registers, this compiles with three
-void func_002D47E0(Vec4 *p0, Vec4 *p1) {
+void func_002D47E0(Vec4 *a, Vec4 *b) {
     Obj2D2530 *s = D_00470934;
-    Model2D2530 *m = s->f2D8;
+    Model2D2530 *m;
 
-    DrawModel(s, m, 0, p0);
-    m = D_00470934->f2DC;
-    DrawModel(D_00470934, m, 0, p1);
+    DrawModel(s, s->f2D8, 0, a);
+    m = s->f2DC;
+    DrawModel(D_00470934, m, 0, b);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D47E0);
 void func_002D4930(void) {
     Vec4 a;
     Vec4 b;
@@ -283,7 +376,14 @@ void func_002D4930(void) {
         func_002D47E0(&b, &a);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D4A70);
+void func_002D4A70(Vec4 *a, Vec4 *b) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
+
+    DrawModel(s, s->f2D0, 0, a);
+    m = s->f2D4;
+    DrawModel(D_00470934, m, 0, b);
+}
 void func_002D4BC0(void) {
     Vec4 a;
     Vec4 b;
@@ -401,17 +501,22 @@ void func_002D6F40(void) {
     f->f1C = (func_002DF930 == 0) ? 0 : func_002DF930;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7050);
-#if 0
-// differs: the second model is loaded into the register of the first object pointer: mwcc swaps two saved registers
 void func_002D71D0(void) {
-    Obj2D2530 *o = D_00470934;
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
 
-    DrawModel(D_00470934, o->fBC, 0, 0);
-    DrawModel(D_00470934, o->fC0, 0, 0);
+    DrawModel(s, s->fBC, 0, 0);
+    m = s->fC0;
+    DrawModel(D_00470934, m, 0, 0);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D71D0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7310);
+void func_002D7310(void) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
+
+    DrawModel(s, s->fB4, 0, 0);
+    m = s->fB8;
+    DrawModel(D_00470934, m, 0, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7450);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D76E0);
 void func_002D79C0(void) {
