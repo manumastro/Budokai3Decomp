@@ -161,6 +161,50 @@ void func_002EA6C0(void) {
     }
 }
 
+#if 0
+void func_002EA7B0(void) {
+    u8 *v = D_00470958;
+    u8 *s0;
+    u8 *info;
+    u8 *p;
+    s32 s1;
+    s32 s2;
+    s32 s3;
+    s32 a1;
+    f32 f1;
+    *(s32 *)(v + 0xC) = 2;
+    s0 = D_00470958;
+    info = *(u8 **)(v + 0x18);
+    p = *(u8 **)(s0 + 4);
+    s3 = ((s8 *)info)[1];
+    s2 = ((s8 *)info)[2];
+    s1 = *(s32 *)(v + 0xC);
+    if (p != 0) {
+        func_0022D0E0((s32)p, 1);
+        *(s32 *)(s0 + 4) = 0;
+    }
+    a1 = s2 + (s3 << 3);
+    p = *(u8 **)(s0 + 0x4C);
+    f1 = 0.75f * (f32)*(s32 *)(s0 + 0x28 + s2 * 4);
+    if (f1 < (f32)*(s16 *)(p + 0x10)) {
+        a1 += 4;
+    } else {
+        f1 = 0.75f * (f32)*(s32 *)(s0 + 0x38 + s2 * 4);
+        if (f1 < (f32)*(s16 *)(p + 0x12)) {
+            a1 += 4;
+        }
+    }
+    p = *(u8 **)(s0 + 0x50);
+    *(s32 *)(s0 + 4) = func_0022D670(*(s32 *)(*(u8 **)(p + 0x1C) + ((s8 *)D_00457440 + a1)[0] + s1) * 4 + 0, 0.0f);
+    D_00470704 = *(s32 *)(s0 + 0x54);
+    D_0047070C = 0x5000000;
+    D_00470708 = 0;
+    amModel_SetCurrent(*(s32 *)(s0 + 0x54), 0x5000000);
+    D_00470238 = 0;
+    func_0022C060(*(s32 *)(s0 + 4), 0.0f);
+}
+// differs: 53 of 83 instructions differ (50 with one declaration order): the same pointer-and-global pattern as the parked func_002EA940; the info bytes are in the other saved registers and the join of the two clamp arms is laid out differently.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EA7B0);
 void func_002EA8F0(void) {
     u8 *p = D_00470958;
