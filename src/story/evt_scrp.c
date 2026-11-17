@@ -409,6 +409,45 @@ s32 func_002A3A10(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3A10);
+#if 0
+// func_002A3A40: the parameter and the global take the other saved registers in ours (s1/s2 swapped against the original); 3 orders tried
+extern s32 func_002A8330(s32);
+extern void func_00298B70(s32, s32);
+extern void func_002A80D0(void);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void func_002A6E40(Task *);
+extern s32 func_002A3A10(void);
+extern s32 D_004700AC;
+extern char D_0046EA68[];
+
+s32 func_002A3A40(s32 *a0) {
+    s32 *p = (s32 *)a0[0];
+    s32 s0 = p[0];
+    s32 s2 = D_004700AC;
+    s32 s4 = (s32)((u32)s2 >> 16) & 0xFFFF;
+    s32 s3;
+    s32 v;
+    s32 *g;
+    s3 = func_002A8330(s4);
+    if (s4 != 0xBB8) {
+        func_00298B70(s2, s2 | 0x8000);
+    }
+    func_002A80D0();
+    v = amCdFs_ReadFileId(s3, 0, 1);
+    g = gEvtWork;
+    g[0x18 / 4] = v;
+    g[0x14 / 4] = s2;
+    g[0xC / 4] = 0;
+    g[0x8 / 4] = (s32)amTask_Create(func_002A6E40, NULL, 0x2000, 0x4000, 0, D_0046EA68);
+    D_004700AC = -1;
+    g = gEvtWork;
+    g[0] = s0;
+    g[0x10 / 4] = 1;
+    g[0x3C / 4] = 0;
+    a0[0x10 / 4] = (s32)func_002A3A10;
+    return (gEvtWork[0xC / 4] & 2) ? 1 : 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3A40);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3B50);
 extern f32 D_00470410;
