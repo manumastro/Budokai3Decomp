@@ -38,6 +38,16 @@ extern u8 D_005C2070[];
 extern f32 D_00470154;
 extern f32 func_00146E30(s32, s32);
 extern u8 D_005C2068[];
+extern s32 D_0051CD0C[];
+extern s32 func_001A50F0(s32, s32);
+extern s32 func_00209540(s32, s32, s32);
+extern u8 D_0046F218[];
+extern void memset(void *, s32, s32);
+extern u8 D_0046F230[];
+extern void func_002CDD50(void);
+extern void func_002CDD00(void);
+extern void func_001F6F10(s32, s32);
+extern void func_001F5B50(u8 *, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD5F0);
 void func_002CD810(void) {
@@ -117,6 +127,28 @@ void func_002CDA30(u8 *p) {
 // differs: the original saves two registers (p and p+0x30) and computes the field address after the first call; the frame is 0x30 here 0x20
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDA30);
+#if 0
+void func_002CDA90(void) {
+    u8 *s0;
+    s32 s1 = 0;
+    s32 s2 = D_0051CD0C[0];
+    s32 a0 = func_001A50F0(s2, 0xFF);
+    if (a0 != 0) {
+        s1 = func_00209540(a0, 0x2000004, 0);
+        if (s1 != 0) {
+            u8 *p = func_001F5FD0(0x85000000, D_0046F218, 0, func_002CDA30, func_002CD9E0);
+            *(s32 *)(p + 0x20) &= ~0x800;
+            *(s32 *)(p + 0x20) |= 0x800;
+            s0 = p;
+            memset(s0 + 0x30, 0, 0x80);
+            *(s32 *)(s0 + 0x38) = s1;
+            s0 += 0x30;
+            *(s32 *)(s0 + 4) = func_001A50F0(s2, 0x280);
+        }
+    }
+}
+// differs: the driver value and the allocation result take the other two saved registers (s0 against s2 here), and the frame is 0xD0 against 0xE0
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDA90);
 void func_002CDB70(u8 *p) {
     func_00208F70(*(void **)(p + 0x34));
@@ -125,8 +157,52 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDB80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDC20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDD00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDD50);
+#if 0
+void func_002CDDB0(void) {
+    s32 s1 = 0;
+    s32 s2 = D_0051CD0C[0];
+    u8 *s0;
+    s32 a0 = func_001A50F0(s2, 0x212);
+    if (a0 != 0) {
+        s1 = func_00209540(a0, 0x2000004, 0);
+        if (s1 != 0) {
+            s0 = func_001F5FD0(0x85000000, D_0046F230, 0, func_002CDD50, func_002CDD00);
+            *(s32 *)(s0 + 0x20) &= ~0x800;
+            *(s32 *)(s0 + 0x20) |= 0x800;
+            memset(s0 + 0x30, 0, 0x80);
+            *(s32 *)(s0 + 0x38) = s1;
+            s0 += 0x30;
+            *(s32 *)(s0 + 4) = func_001A50F0(s2, 0x280);
+        }
+    }
+}
+// differs: the same allocation pattern as func_002CDA90: the driver value, the result and the node take other saved registers, and the frame is 0xD0 against 0xE0
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDDB0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDE90);
+void func_002CDE90(void) {
+    u8 *v;
+    func_001F7DB0();
+    func_001F7BF0();
+    func_001F7820();
+    func_001F7690();
+    func_001F6E50();
+    switch (D_0051CD20[0]) {
+    case 0:
+        func_001F7470(0);
+        func_001F6F10(4, 2);
+        v = (u8 *)func_001F5EF0(3, 1);
+        *(s16 *)(*(u8 **)(v + 0x10) + 0xE) = 1;
+        func_001F5B50(v, 1);
+        v = (u8 *)func_001F5EF0(0, 0);
+        *(s16 *)(*(u8 **)(v + 0x10) + 0xE) = 2;
+        func_001F5B50(v, 2);
+        func_002CDDB0();
+        break;
+    case 1:
+        func_002CDC20();
+        break;
+    }
+}
 void func_002CDF70(void) {
     func_001F7DB0();
     func_001F7BF0();
