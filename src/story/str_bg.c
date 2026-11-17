@@ -305,6 +305,80 @@ found:
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290410);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_002904C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290780);
+#if 0
+// func_002908D0: 60 of 103 differ: the search loop as continue/break (the original tests the function result with bnez into the counter and falls to a b for the break), and the table fill and store block are scheduled in another order (the original stores s1 before the float load); two loop forms tried
+s32 func_002908D0(s32 a0, s32 a1) {
+    s32 base;
+    s32 s0;
+    s32 s1;
+    s32 s3;
+    s32 t0;
+    s32 a7;
+    s32 a2p;
+    base = D_004708A4;
+    if (*(s32 *)(base + 0x1AB0) == 0) {
+        return -1;
+    }
+    s1 = a1;
+    s3 = base + 0x430;
+    s0 = 0;
+    for (;;) {
+        s32 e = *(s32 *)(s3 + 0x40);
+        if (e == 0 || func_00127940(e, a0) != 0) {
+            s0++;
+            if (s0 >= 0x48) {
+                s0 = -1;
+                break;
+            }
+            s3 += 0x50;
+            continue;
+        }
+        break;
+    }
+    if (s0 < 0x40) {
+        s0 = -1;
+    } else {
+        s0 -= 0x40;
+    }
+    if (s0 == -1) {
+        return -1;
+    }
+    {
+        s32 a3 = D_004708A4;
+        s32 idxp = a3 + (s0 << 2);
+        s1 = s1 | 0x10000;
+        a2p = a3 + ((s0 + 5) << 4);
+        t0 = *(s32 *)(idxp + 0x334);
+        *(s32 *)(a2p + 0x354) = s1;
+        {
+            s32 hi = s1 >> 16;
+            s32 lo = (s1 & 0xFFFF) << 4;
+            s32 p = *(s32 *)((hi - 1) * 4 + t0 + 0x46C);
+            s32 q = *(s32 *)(p + 0x14);
+            *(f32 *)(a2p + 0x358) = (f32)*(s32 *)(q + lo + 8);
+        }
+        *(s32 *)(a2p + 0x35C) = 0;
+        a7 = t0 + 0x41C;
+        if (*(s32 *)(t0 + 0x41C) != s1) {
+            s32 cnt = *(s32 *)(t0 + 0x418);
+            if (0 < cnt) {
+                s32 k = 0;
+                s32 off = 0;
+                do {
+                    k++;
+                    *(s32 *)(*(s32 *)(a7 + 0x10) + off + 0x30) = -1;
+                    *(s32 *)(*(s32 *)(a7 + 0x10) + off + 0x34) = -1;
+                    *(s32 *)(*(s32 *)(a7 + 0x10) + off + 0x38) = -1;
+                    off += 0x40;
+                } while (k < *(s32 *)(t0 + 0x418));
+            }
+            *(s32 *)(a7 + 0xC) = (s32)0xBF800000;
+        }
+        *(s32 *)(a7) = s1;
+    }
+    return s0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_002908D0);
 void func_00290A70(s32 *a0) {
     s32 i = 0;
