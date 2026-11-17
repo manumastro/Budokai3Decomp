@@ -55,6 +55,10 @@ extern s32 D_0051CCE0[];
 extern s32 D_0051CD20[];
 extern char D_00469260[];
 extern void func_001E73C0(void *);
+extern void func_001D80A0(void *, int);
+extern void memset(void *, s32, s32);
+extern void func_001E57C0(s32, s32, void *);
+extern void func_002CBFF0(s32, void *);
 extern void func_001C75D0(void *, int);
 extern void func_001C81D0(void *, int);
 extern void func_001C8210(void *, int);
@@ -167,6 +171,25 @@ int func_001CC850(void *unused, Arg *a) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC890);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCA90);
+// func_001CCBF0: differs: the frame is 0x50 bytes in the original, the buffer is kept in another register
+#if 0
+int func_001CCBF0(void *unused, Arg *a) {
+    f32 *f = (f32 *)a->p;
+    f32 x0 = f[0];
+    f32 x1 = f[1];
+    f32 x2 = f[2];
+    s32 buf[12];
+    f32 *fb = (f32 *)buf;
+    memset(buf, 0, 0x30);
+    buf[0] = 0;
+    fb[4] = x2;
+    fb[5] = x1;
+    fb[6] = x0;
+    fb[7] = 1.0f;
+    func_001E57C0(0, 0, buf);
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCBF0);
 int func_001CCC70(void *unused, Arg *a) {
     func_001E57F0(1);
@@ -244,7 +267,16 @@ int func_001CD000(void *unused, Arg *a) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD050);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD270);
+int func_001CD270(void *unused, Arg *a) {
+    s32 v = *(s32 *)*(s32 **)((char *)a + 0x2C);
+    s32 buf[20];
+    memset(buf, 0, 0x50);
+    buf[12] = v;
+    buf[8] = 0;
+    buf[9] = 0;
+    func_001A8770(1, buf);
+    return 1;
+}
 int func_001CD2C0(void *unused, Arg *a) {
     func_001D8FE0(D_00470570->tbl[a->p[0]], 0);
     return 1;
@@ -542,6 +574,19 @@ int func_001CE740(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE740);
+// func_001CE7C0: differs: the constant 360.0f and the division take other FPU registers
+#if 0
+int func_001CE7C0(void *unused, Arg *a) {
+    int *p = a->p;
+    f32 *f = (f32 *)p;
+    f32 x0 = f[0];
+    char *t = D_00470570->tbl[p[3]];
+    *(s8 *)(t + 0x1A5E) = p[2];
+    *(s8 *)(t + 0x1A5F) = p[1];
+    *(s32 *)(t + 0x1A60) = (s32)(65536.0f * (x0 / 360.0f));
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE7C0);
 int func_001CE820(void *unused, Arg *a) {
     *(f32 *)((char *)D_00470570->tbl[a->p[1]] + 0x182C) = *(f32 *)a->p;
@@ -705,7 +750,12 @@ int func_001CF760(void *unused, Arg *a) {
     *(s32 *)a = func_001C8780(D_00470570->tbl[p[1]], p[0]);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF7B0);
+int func_001CF7B0(void *unused, Arg *a) {
+    int *p = a->p;
+    *(s16 *)((char *)D_00470570 + 0x894E) = p[0] > 0;
+    func_001D80A0(D_00470570->tbl[0], *(s16 *)((char *)D_00470570 + 0x894E) ? 3 : 4);
+    return 1;
+}
 int func_001CF810(void *unused, Arg *a) {
     int *p = a->p;
     char *t = D_00470570->tbl[p[2]];
@@ -715,7 +765,13 @@ int func_001CF810(void *unused, Arg *a) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF850);
+int func_001CF850(void *unused, Arg *a) {
+    int *p = a->p;
+    *(s16 *)((char *)D_00470570 + 0x894C) = p[0];
+    func_001D80A0(D_00470570->tbl[0], 2);
+    func_002CBFF0(7, D_00470570->tbl[0]);
+    return 1;
+}
 int func_001CF8B0(void *unused, Arg *a) {
     if (*a->p != 0) {
         func_0029D8B0(-5, 0);
