@@ -1,0 +1,26 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141280);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001412D0);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001413D0);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001414D0);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001415F0);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001416A0);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141920);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141C30);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141C80);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141CF0);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141E70);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142080);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142100);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142120);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142280);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142370);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142390);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001423F0);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142490);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142560);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142590);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142670);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001427D0);
+INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001429B0);

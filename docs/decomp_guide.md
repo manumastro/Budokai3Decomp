@@ -24,6 +24,22 @@ z3xox/Tenkaichi3Decomp's docs/decomp_guide.md.
    attempt above it inside `#if 0 ... #endif` and a one-line note on what differs.
 5. Record each new name in the area's symbol file (below); the coordinator re-splits and runs the whole build.
 
+## Labels in INCLUDE_ASM functions
+
+mwccgap copies a global symbol that an INCLUDE_ASM function defines into the C object with the section index it
+had in the assembly object, so a branch to it lands in the wrong place. This affects jump-table labels (`jlabel`)
+and alternative entries (`alabel`). For that reason:
+
+- mwccgap gets `include/macro_cc.inc`, not `include/macro.inc`. There, a `jlabel` is a plain local label, so
+  branches to it are resolved inside the function. An `alabel` defines nothing.
+- configure.py writes `build/c_labels.ld`, which gives these labels their original addresses for the jump tables
+  (still in `asm/data`) and for calls. It also covers labels that a hand-written function branches to inside
+  another function.
+
+A hand-written function that falls into the next one (an entry point that is not 16-byte aligned) cannot be its
+own C-file function, because Metrowerks aligns each function to 16. Give the first one a `size:` that covers both
+and name the inner entry `.LXXXXXXXX` with `type:label` in the symbol file (see `func_0012EAE0` in sys.txt).
+
 ## Symbol files
 
 `config/symbols/<area>.txt` (sys, battle, menu, story, unk; lib_sdk, lib_cri for the libraries), listed in the
