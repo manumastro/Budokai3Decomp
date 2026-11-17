@@ -26,7 +26,7 @@ typedef struct G26FB {
 } G26FB;
 
 extern G26FB *D_004707FC;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern f32 D_0047001C;
 extern void func_00271580(void);
 
@@ -171,7 +171,7 @@ void func_00271A70(Ac26F *s) {
 
     n = o->f30 + 1;
     o->f30 = n;
-    f = (f32)(n + 1) * D_004703BC;
+    f = (f32)(n + 1) * gFrameDelta;
     p = &o->f30;
     if (f >= D_0047001C) {
         g = D_004707FC;
