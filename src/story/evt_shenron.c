@@ -292,6 +292,43 @@ void func_00306AD0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306AD0);
+extern void func_00305590(void);
+extern s32 amAdx_IsStopped(s32);
+extern void func_003068E0(void);
+extern void func_003062B0(void);
+extern void func_00306AD0(void);
+extern s32 amTask_Create(void *, s32, s32, s32, s32, void *);
+extern char D_0046F9D8[];
+#if 0
+// func_00306BF0: 19 of 93 differ: the task-pointer store (the original stores f into the task before the amTask_Create argument setup; ours sinks it into the call delay slot) and the end label 2 instructions later; the sibling of 306500 (matched) otherwise
+void func_00306BF0(s32 *a0) {
+    s32 *s0 = (s32 *)D_0047097C;
+    s32 *s1 = a0;
+    f32 t = func_002B06A0();
+    *(f32 *)&s0[0x8 / 4] = *(f32 *)&s0[0x8 / 4] + t;
+    func_00305590();
+    if (!(*(f32 *)&s0[0x8 / 4] < 1400.0f)) {
+        amAdx_PlayAfs(1, 0x21051, 0);
+        {
+            void *f = func_00306AD0;
+            s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+    s0 = (s32 *)D_0047097C;
+    if ((*(u16 *)((char *)D_00492FCE + (s32)D_004B4B63[0] * 184) & 0x8) != 0 || (!(*(f32 *)&s0[0x8 / 4] < 1650.0f) && amAdx_IsStopped(1) != 0)) {
+        *(u16 *)((char *)D_00492FCE + (s32)D_004B4B63[0] * 184) = 0;
+        SoundRpc_SendWord(0);
+        amAdx_Stop(1);
+        {
+            void *f = (void *)func_003068E0;
+            s32 r = (s32)((f == 0) ? 0 : f);
+            s32 *tk = (s32 *)s0[0];
+            tk[0x1C / 4] = r;
+        }
+        amTask_Create((void *)func_003062B0, 0, 0x5000, 0x4000, 2, D_0046F9D8);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306BF0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306D60);
 extern void func_001EF100(void);
