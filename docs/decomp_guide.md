@@ -1,7 +1,7 @@
 # Decompiling a file (working notes)
 
 The goal is C that compiles to the same bytes as the original. The game's code (the two Metrowerks parts) is built
-with Metrowerks CodeWarrior PS2 `mwccps2` 3.0b52 at `-O4,p -sdatathreshold 8` (configure.py's `MWCC_FLAGS`; see
+with Metrowerks CodeWarrior PS2 `mwccps2` 3.0b52 at `-O4,p -sdatathreshold 8 -str readonly` (configure.py's `MWCC_FLAGS`; see
 docs/plan.md, "Compiler"). Every function gets a real name once its job is understood. After the model of
 z3xox/Tenkaichi3Decomp's docs/decomp_guide.md.
 
@@ -35,7 +35,9 @@ Until a function is named in a symbol file, keep its `func_XXXXXXXX` name in C (
 - A C file covers one contiguous range of functions, in address order; nothing skipped.
 - **Define no data in C yet.** The data stays in the assembly data files (asm/data/), so:
   - string literals: declare the original string as `extern char D_XXXXXXXX[];` and use that (a literal would add a
-    `.rodata` or `.sdata` entry to the object and shift everything after it in the linked image);
+    `.rodata` entry to the object and shift everything after it in the linked image). The game's strings, short
+    ones included, are all in `.rodata`: that is `-str readonly` (without it Metrowerks puts strings of 8 bytes or
+    less in `.sdata`);
   - float constants: Metrowerks builds a float whose low 16 bits are zero with `lui` / `mtc1` (write it as a
     literal: `0.5f`); any other float it loads from `.sdata` (`lwc1 $f, %gp_rel(D_XXXXXXXX)($gp)`): write
     `extern f32 D_XXXXXXXX;` and use the variable;

@@ -34,7 +34,9 @@ AS_FLAGS = "-EL -march=r5900 -mabi=eabi -G0 -no-pad-sections -Iinclude"
 # The game's own code: Metrowerks CodeWarrior for PS2 (see docs/plan.md, "Compiler"). Used once a C file is linked.
 MWCC_VERSION = "3.0b52-030722"
 MWCC = f"tools/mwcps2/{MWCC_VERSION}/mwccps2.exe"
-MWCC_FLAGS = "-O4,p -sdatathreshold 8 -Iinclude -Isrc"
+# -str readonly: the game's string literals, short ones included, are in .rodata (without it Metrowerks puts strings of
+# 8 bytes or less in .sdata and reaches them through $gp).
+MWCC_FLAGS = "-O4,p -sdatathreshold 8 -str readonly -Iinclude -Isrc"
 WIBO = "tools/wibo"
 
 
