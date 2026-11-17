@@ -455,7 +455,38 @@ f32 func_002B06A0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B06B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0A40);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0BF0);
+extern s8 D_004B4B41[];
+extern s8 D_004B4B57[];
+s32 func_002B0BF0(s32 i) {
+    u8 *p = D_004E0660 + i * 40;
+    switch (D_004B4B41[0]) {
+    case 1:
+        if (p[0xB] & 0x40) {
+            break;
+        }
+        return 0;
+    case 2:
+        if (p[0xB] & 0x80) {
+            break;
+        }
+        return 0;
+    case 3:
+        if (p[0xB] & 0x10) {
+            break;
+        }
+        if (D_004B4B57[0] == 3) {
+            break;
+        }
+        return 0;
+    case 0:
+    case 4:
+    case 5:
+    case 6:
+    default:
+        break;
+    }
+    return 1;
+}
 extern u8 *gSklEdit;
 #if 0
 s32 func_002B0CA0(u8 *s, s32 n) {
