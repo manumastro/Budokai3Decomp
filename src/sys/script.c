@@ -1,60 +1,78 @@
 #include "common.h"
 
-/* The script interpreter of the am* library. */
+/* The script interpreter of the am* library ("script.c" is the file name it passes to the debug allocator).
+ * A script file (ScrHeader) holds byte code; each machine (ScrMachine, a table of them at D_004704D4) runs entry
+ * points of one file as tasks (ScrTask, started by func_0014DAD0), each with its own context (ScrCtx): 16
+ * registers, a stack and work areas. The opcode handlers take (machine, context, pc): func_0014D3C0 /
+ * func_0014D570 read an int / float operand, func_0014D750 / func_0014D910 the address of an int / float operand,
+ * and func_0014D390 copies four bytes (operands are not aligned). */
 
 typedef struct ScrCtx {
     s32 r[8];
-    u8 *base;   /* 0x20 */
-    s32 x24;
+    u8 *base;   /* 0x20: the code */
+    u8 *x24;
     u8 *x28;
-    s32 *sp;    /* 0x2C */
-    s32 x30;
-    s32 x34;
-    s32 x38;
-    u8 *stack;  /* 0x3C */
+    s32 *sp;    /* 0x2C: the stack, growing down */
+    u8 *x30;
+    u8 *x34;
+    u8 *x38;
+    u8 *stack;  /* 0x3C: the bottom of the stack */
 } ScrCtx;
 
-
-extern s32 func_0014D3C0(ScrCtx *, u8 **);
-extern f32 func_0014D570(ScrCtx *, u8 **);
-extern u8 *func_0014D750(ScrCtx *, u8 **);
-extern u8 *func_0014D910(ScrCtx *, u8 **);
-void func_0014D390(s8 *dst, s8 *src);
-
-#define RD32(p) ((p)[3] << 24 | ((p)[2] << 16 | ((p)[0] | (p)[1] << 8)))
-
-typedef struct Blk80 { u8 b[0x80]; } Blk80;
 typedef struct ScrHeader {
     char pad[0x14];
     s32 codeOffset; /* 0x14 */
     char pad18[8];
     s32 entry[1];   /* 0x20 */
 } ScrHeader;
+
+typedef struct Blk80 { u8 b[0x80]; } Blk80;
+
 typedef struct ScrMachine {
     s32 id;
     ScrHeader *data; /* 0x04 */
-    u8 *code;       /* 0x08 */
-    s32 state;      /* 0x0C */
-    s32 x10;
+    u8 *code;        /* 0x08 */
+    s32 state;       /* 0x0C: 0 free, 1 allocated, 2 running, 4 (?) */
+    s32 x10;         /* the tasks' priority */
     s32 x14;
     s32 x18;
-    s32 n;          /* 0x1C */
-    s32 x20;
+    s32 n;           /* 0x1C: the number of contexts */
+    s32 x20;         /* the number of contexts in use */
     u8 *x24;
-    s32 *x28;
-    s32 *x2C;
-    s32 *x30;
-    Blk80 *x34;
+    u8 *x28;
+    u8 *x2C;
+    u8 *x30;
+    Blk80 *x34;      /* the contexts */
     s32 size38;
     s32 size3C;
-    s32 size40;
+    s32 size40;      /* the stack size */
     void (*cb44)(struct ScrMachine *, s32);
     void (*cb48)(struct ScrMachine *, s32);
     void (*cb4C)(struct ScrMachine *, s32);
     void (*cb50)(void *, void *);
-    void (*cb54)(struct ScrMachine *, s32);
-    u8 *x58;
+    void (*cb54)();
+    s8 *x58;         /* the free context slots */
 } ScrMachine;
+
+typedef struct ScrWork {
+    ScrMachine *m;
+    ScrCtx *ctx;
+    s16 x8;
+    s16 slot;
+    s32 xC;
+    s32 x10;
+    s32 x14;
+} ScrWork;
+
+typedef struct ScrTask {
+    char pad[0x30];
+    ScrWork w;
+} ScrTask;
+
+/* A little-endian int read byte by byte (the operands are not aligned). */
+#define RD32(p) ((p)[3] << 24 | ((p)[2] << 16 | ((p)[0] | (p)[1] << 8)))
+#define STK_FULL(sys, ctx) ((u32)(ctx)->sp >= (u32)((ctx)->stack + (*(sys))->size40))
+#define SCR_ALLOC(size) (dbg == 0 ? func_00124940(0x40, (size)) : func_0013AAB0((size), 0, D_0045F700, 0x82))
 
 extern s32 D_004704B8;
 extern s32 D_004704BC;
@@ -64,32 +82,41 @@ extern s32 *D_004704C8;
 extern s32 *D_004704CC;
 extern Blk80 *D_004704D0;
 extern ScrMachine *D_004704D4;
+extern char D_0045F6F0[];
 extern char D_0045F700[];
-extern void *func_00124940(s32, s32);
-extern void *func_0013AAB0(s32, s32, char *, s32);
-extern void func_00124BC8(void *);
-extern void func_0013AC90(void *);
-extern void func_00145180(s32, s32, s32);
 
-extern f32 func_0011F6B0(f32, f32);
-extern f32 func_0011F4C0(f32);
-extern f32 func_0011F220(f32);
-extern f32 func_0011F5A8(f32);
-extern f32 func_0011F668(f32);
-extern f32 func_0011F650(f32);
+extern void *func_00124940(s32, s32);
+extern void func_00124BC8(void *);
+extern void *func_001258F8(void *, s32, u32);
+extern void *func_0013AAB0(s32, s32, char *, s32);
+extern void func_0013AC90(void *);
+extern ScrTask *func_00144FC0(s32 (*)(), void (*)(ScrTask *), u32, u32, u32, char *);
+extern void func_00145180(s32, s32, s32);
 extern f32 func_0011EE78(f32);
+extern f32 func_0011F220(f32);
+extern f32 func_0011F4C0(f32);
+extern f32 func_0011F5A8(f32);
+extern f32 func_0011F650(f32);
+extern f32 func_0011F668(f32);
 extern f32 func_0011F680(f32, f32);
-extern f32 sqrtf(f32);
-extern u8 *func_0014DAD0(ScrMachine *, u8 *, s32);
-#define STK_FULL(sys, ctx) ((u32)(ctx)->sp >= (u32)((ctx)->stack + (*(sys))->size40))
+extern f32 func_0011F6B0(f32, f32);
+extern f32 sqrtf(f32); /* an intrinsic: sqrt.s */
+
 void func_0014A2C0(void);
-#define SCR_ALLOC(size) (dbg == 0 ? func_00124940(0x40, (size)) : func_0013AAB0((size), 0, D_0045F700, 0x82))
+extern s32 func_0014A7C0();
+void func_0014AAA0(ScrTask *task);
+void func_0014D390(s8 *dst, s8 *src);
+extern s32 func_0014D3C0(ScrCtx *, u8 **);
+extern f32 func_0014D570(ScrCtx *, u8 **);
+extern u8 *func_0014D750(ScrCtx *, u8 **);
+extern u8 *func_0014D910(ScrCtx *, u8 **);
+ScrTask *func_0014DAD0(ScrMachine *, u8 *, s32);
 
 void func_00149E50(s32 count, s32 n, s32 size0, s32 size1, s32 size2, s32 size3, s32 dbg) {
     s32 i;
     ScrMachine *m;
     s32 j;
-    u8 *p;
+    s8 *p;
 
     func_0014A2C0();
     size0 = (size0 + 3) & ~3;
@@ -119,9 +146,9 @@ void func_00149E50(s32 count, s32 n, s32 size0, s32 size1, s32 size2, s32 size3,
         m->n = n;
         m->x20 = 0;
         m->x24 = D_004704C0;
-        m->x28 = D_004704C4 + size1 * i;
-        m->x2C = D_004704C8 + i * (size2 * n);
-        m->x30 = D_004704CC + i * (size3 * n);
+        m->x28 = (u8 *)(D_004704C4 + size1 * i);
+        m->x2C = (u8 *)(D_004704C8 + i * (size2 * n));
+        m->x30 = (u8 *)(D_004704CC + i * (size3 * n));
         m->x34 = D_004704D0 + n * i;
         m->size38 = size1 * 4;
         m->size3C = size2 * 4;
@@ -218,9 +245,38 @@ void func_0014A6A0(s32 i, void *f) { D_004704D4[i].cb50 = f; }
 
 void func_0014A6D0(s32 i, void *f) { D_004704D4[i].cb54 = f; }
 
-INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014A700);
+void func_0014A700(s32 i, s32 entry) {
+    ScrMachine *m = &D_004704D4[i];
+    void (*cb)(void *, void *);
+    ScrTask *r;
+    void (*cb48)(ScrMachine *, s32);
+    if (m->cb48) {
+        cb48 = m->cb48;
+        cb48(m, entry);
+    }
+    r = func_0014DAD0(m, m->code + m->data->entry[entry], 0);
+    cb = m->cb50;
+    if (cb) cb(&r->w, 0);
+    m->state = 2;
+}
+
 INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014A7C0);
-INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014AAA0);
+void func_0014AAA0(ScrTask *task) {
+    ScrWork *w = &task->w;
+    ScrMachine *m = w->m;
+    void (*cb)() = w->m->cb54;
+    void (*cb2)(ScrMachine *, s32);
+    if (cb) cb();
+    m->x58[--m->x20] = w->slot;
+    if (m->state != 4 && m->x20 == 0) {
+        if (m->cb4C) {
+            cb2 = m->cb4C;
+            cb2(m, 0);
+        }
+        m->state = 0;
+    }
+}
+
 s32 func_0014AB50(void) { return 1; }
 
 s32 func_0014AB60(s32 unused, ScrCtx *ctx, u8 **pc) {
@@ -265,8 +321,26 @@ s32 func_0014AD90(s32 unused, ScrCtx *ctx, u8 **pc) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014AE10);
-INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014AE60);
+s32 func_0014AE10(s32 unused, ScrCtx *ctx, u8 **pc) {
+    s32 v = func_0014D3C0(ctx, pc);
+    s32 *p;
+    p = ctx->sp;
+    p--;
+    ctx->sp--;
+    *p = v;
+    return 1;
+}
+
+s32 func_0014AE60(s32 unused, ScrCtx *ctx, u8 **pc) {
+    f32 v = func_0014D570(ctx, pc);
+    f32 *p;
+    p = (f32 *)ctx->sp;
+    p--;
+    ctx->sp--;
+    *p = v;
+    return 1;
+}
+
 s32 func_0014AEB0(s32 unused, ScrCtx *ctx, u8 **pc) {
     s32 *sp = ctx->sp;
     func_0014D390((s8 *)func_0014D750(ctx, pc), (s8 *)sp);
@@ -777,17 +851,17 @@ s32 func_0014D0C0(s32 unused, ScrCtx *ctx, u8 **pc) {
 s32 func_0014D110(ScrMachine **sys, ScrCtx *ctx, u8 **pc) {
     s32 v = func_0014D3C0(ctx, pc);
     s32 n = ctx->sp[1];
-    u8 *r = func_0014DAD0(*sys, ctx->base + v, n);
+    ScrTask *r = func_0014DAD0(*sys, ctx->base + v, n);
     void (*cb)(void *, void *) = (*sys)->cb50;
-    if (cb) cb(r + 0x30, ctx);
+    if (cb) cb(&r->w, ctx);
     return 1;
 }
 
 s32 func_0014D1A0(ScrMachine **sys, ScrCtx *ctx, u8 **pc) {
     s32 a = func_0014D3C0(ctx, pc);
-    u8 *r = func_0014DAD0(*sys, ctx->base + a, func_0014D3C0(ctx, pc));
+    ScrTask *r = func_0014DAD0(*sys, ctx->base + a, func_0014D3C0(ctx, pc));
     void (*cb)(void *, void *) = (*sys)->cb50;
-    if (cb) cb(r + 0x30, ctx);
+    if (cb) cb(&r->w, ctx);
     return 1;
 }
 
@@ -825,7 +899,36 @@ INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014D3C0);
 INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014D570);
 INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014D750);
 INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014D910);
-INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014DAD0);
+ScrTask *func_0014DAD0(ScrMachine *m, u8 *pc, s32 prio) {
+    ScrTask *task;
+    s32 slot;
+    ScrCtx *ctx;
+    task = func_00144FC0(func_0014A7C0, func_0014AAA0, m->x10 + prio, m->x14, m->x18, D_0045F6F0);
+    task->w.m = m;
+    slot = m->x58[m->x20++];
+    task->w.slot = slot;
+    ctx = (ScrCtx *)(m->x34 + slot);
+    task->w.ctx = ctx;
+    task->w.x8 = 0;
+    task->w.xC = 0;
+    task->w.x10 = 0;
+    task->w.x14 = 0;
+    func_001258F8(ctx, 0, 0x80);
+    ctx->base = m->code;
+    ctx->x30 = m->x24;
+    ctx->x34 = m->x28;
+    ctx->x38 = m->x2C + slot * m->size3C;
+    ctx->stack = m->x30 + slot * m->size40;
+    ctx->x24 = pc;
+    ctx->x28 = pc;
+    ctx->sp = (s32 *)(ctx->stack + m->size40);
+    func_001258F8(ctx->x38, 0, m->size3C);
+    return task;
+}
+
+/* func_0014DC10 (the start-up: IOP modules, then every subsystem): its three structures passed by value are
+ * copied from initialized locals (the copies use the argument register as destination), which needs their
+ * initializers, so data in C: left for when this file's data is migrated. */
 INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014DC10);
 INCLUDE_ASM("asm/nonmatchings/sys/script", main);
 INCLUDE_ASM("asm/nonmatchings/sys/script", func_0014E580);
