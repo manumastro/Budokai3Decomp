@@ -103,6 +103,28 @@ void func_002A93E0(void) {
     D_00511768[0] = 0;
 }
 #endif
+// GIVEN UP (round 5 chr2): about 20 differ: the original keeps the table base in a2 and the source in a0 and computes the index into v1;
+// ours swaps them (src in a2). Tried: operand order of the copy, split offsets 0x80 + 0x11C0.
+#if 0
+void func_002A93E0(void) {
+    u8 *src;
+    u8 *p;
+    u8 *q;
+    s32 idx;
+    s32 a1;
+
+    src = D_005AB3A0;
+    a1 = *(s32 *)(src + 0x10);
+    idx = *(s8 *)(D_004E6560 + 0x2EEF0);
+    p = D_004E6560 + idx * 4624;
+    q = p + 0x80;
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(src), "r"(q + 0x11C0));
+    *(s32 *)(q + 0x11D0) = a1;
+    func_00298E10(-1);
+    func_00298E00(-1);
+    D_00511768[0] = 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A93E0);
 extern u8 D_005AB3A0[];
 void Scr_SetRecord(s32 *a0, s32 a1) {
