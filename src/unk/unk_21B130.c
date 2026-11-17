@@ -384,9 +384,9 @@ s32 func_0021C360(s32 id) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C360);
 #if 0
 s32 func_0021C3D0(s32 i) {
-    return *(s8 *)(D_0046FDFC + i + 0xCA0);
+    return *(s8 *)((s32)D_0046FDFC + i + 0xCA0);
 }
-// differs: the sum D + i is added with the operands in the other order (addu v0, a0, v0), not reached by the variants tried
+// differs: the sum D + i is emitted as addu v0, v0, a0 (loaded base first); the i-first forms were not reached
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C3D0);
 u8 *func_0021C3E0(s32 i) {
