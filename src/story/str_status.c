@@ -451,7 +451,37 @@ void func_002BF520(void) {
     amGs_SetReg32(0, s0);
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF610);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF850);
+extern void func_002BE0B0(s32);
+extern void func_00243280(s32);
+extern void func_00240FF0(s32, s32);
+extern void func_00208E50(s32, s32);
+extern u8 D_0051D9A8[];
+
+void func_002BF850(u8 *a0) {
+    u8 *s0 = (u8 *)D_0046FE44;
+    u8 *g;
+    f32 f5;
+    if (*(s16 *)(s0 + 0x100) == 1) {
+        if (D_0047011C[0x1BC / 4] & 1) {
+            func_002BE0B0(*(s32 *)(*(u8 **)(a0 + 0x25C)));
+            f5 = (f32)*(s32 *)(a0 + 0x298);
+            f5 = f5 / 99.0f;
+            *(f32 *)((u8 *)D_0047011C + 0x1C0) = *(f32 *)((u8 *)D_0047011C + 0x1C0) + 0.02f * *(f32 *)D_0051D9A8;
+            if (*(f32 *)((u8 *)D_0047011C + 0x1C0) > 1.0f) {
+                *(f32 *)((u8 *)D_0047011C + 0x1C0) = 1.0f;
+                *(f32 *)(s0 + 0x24) = f5;
+            } else {
+                *(f32 *)(s0 + 0x24) = *(f32 *)((u8 *)D_0047011C + 0x1C0) * f5;
+            }
+            if (*(f32 *)(s0 + 0x24) > 1.0f) {
+                *(f32 *)(s0 + 0x24) = 1.0f;
+            }
+            func_00243280(0);
+            func_00240FF0(0, *(s8 *)(s0 + 0x39));
+            func_00208E50(0x400010, 1);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF970);
 
 void StrStatus_Dispatch(s32 *p) {
