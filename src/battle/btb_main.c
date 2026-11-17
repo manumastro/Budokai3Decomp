@@ -397,6 +397,44 @@ void func_001F9BB0(s32 side, s32 cmd) {
         break;
     }
 }
+typedef struct BtbQuad {
+    u32 w[4];
+} __attribute__((aligned(16))) BtbQuad;
+typedef struct BtbSlotTbl {
+    BtbQuad q[3];
+    s64 tail;
+} __attribute__((aligned(16))) BtbSlotTbl;
+typedef void (*BtbSlotFn)(s32, void *, s32, s32);
+extern u8 D_0044B750[];
+extern s32 D_0051CD0C[];
+extern s32 func_001FFBA0(f32, f32);
+extern s32 func_00209540(void *, s32, s32);
+extern void func_00209B50(void *, void *, s32);
+// differs: round 5 chr2: 2 of 71 differ, both the 8-byte tail of the 56-byte table copy (the original does ld/sd for bytes 48..55, ours lq/sq as the aligned struct copy): ld via s64 tail, u32 pair, separate quad copies tried.
+#if 0
+void func_001F9CD0(s32 a0, s32 a1, void *a2, s32 a3, s32 a4) {
+    BtbSlotTbl t;
+    s32 s4;
+    s32 idx = a1;
+    if (a4 == 0) {
+        a4 |= func_001FFBA0(*(f32 *)a2, *(f32 *)((u8 *)a2 + 8));
+    }
+    if (idx < 14) {
+        t = *(BtbSlotTbl *)D_0044B750;
+        if (((u32 *)&t)[idx] != 0) {
+            ((BtbSlotFn)((u32 *)&t)[idx])(a0, a2, a3, a4);
+        }
+    } else {
+        void *r = (void *)func_001A50F0((void *)D_0051CD0C[0], idx);
+        if (r != 0) {
+            s4 = func_00209540(r, 0x2000001, 0);
+        }
+        if (s4 != 0) {
+            func_00209B50((void *)s4, a2, 0);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F9CD0);
 void func_001F9DF0(void) {
     BtbBg_RunPostObjs();
