@@ -50,6 +50,32 @@ void func_002D9580(void) {
         s->f35C = func_002D92C0;
     }
 }
+/* differs: about 10 of 40: the constant 1.0f/1.2f selection ends in $f0 (the original keeps it in $f2) and the field load
+   moves; reordering the float locals did not change it. */
+#if 0
+extern s8 D_004703F4;
+extern void func_002D9770(s32, f32);
+
+void func_002D95F0(void) {
+    u8 *w = (u8 *)gOptionWork;
+    f32 v;
+    f32 k;
+    f32 f12;
+
+    if (*(f32 *)(w + 0x38C) < 20.0f) {
+        f12 = 1.0f - *(f32 *)(w + 0x38C) / 20.0f;
+    } else {
+        f12 = 0.0f;
+    }
+    func_002D9770(0, f12);
+    k = (D_004703F4 != 3) ? 1.0f : 1.2f;
+    v = *(f32 *)(w + 0x38C) + k;
+    *(f32 *)(w + 0x38C) = v;
+    if (!(v < 30.0f)) {
+        *(s32 *)(w + 0x354) = 0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D95F0);
 extern void func_002D9770(s32, f32);
 
