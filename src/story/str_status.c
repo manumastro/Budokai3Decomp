@@ -415,6 +415,57 @@ void func_002BF310(void) {
         D_0047011C[0x1AC / 4] = 0;
     }
 }
+#if 0
+// func_002BF3B0: 5 instructions short (0x15C vs 0x170): the original keeps the third call result (func_00240EF0) in s2 and has 5 saved registers (frame 0x60); ours keeps it in v0 and has 4; float test layout and the global in s4 done; 120 declaration orders of the pointers and f tried
+extern u8 *func_00240EF0(s32);
+extern u8 *func_00240F40(s32, s32);
+void func_002BF3B0(void) {
+    s32 *s4 = D_0046FE44;
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    u8 *s0;
+    f32 f;
+    s32 a;
+    if (*(s16 *)((u8 *)s4 + 0x100) == 1) {
+        s3 = func_00240F40(0, 0);
+        s0 = *(u8 **)(func_00240F40(0, 1) + 0x24);
+        s1 = *(u8 **)(s3 + 0x24);
+        s2 = func_00240EF0(*(s8 *)((u8 *)s4 + 0x3A));
+        *(s32 **)(s2 + 0x68) = s4;
+        *(s32 **)(s3 + 0x68) = s4;
+        f = *(f32 *)((u8 *)s4 + 0x24);
+        if (f > 0.0f) {
+            *(f32 *)(s3 + 0x60) = *(f32 *)(s2 + 0x0) + *(f32 *)(s2 + 0x4) * f;
+            *(f32 *)(s2 + 0x60) = *(f32 *)(s2 + 0x1C) + *(f32 *)(s2 + 0x20) * f;
+        } else {
+            *(f32 *)(s3 + 0x60) = 0.0f;
+            *(f32 *)(s2 + 0x60) = 0.0f;
+        }
+        a = *(s32 *)((u8 *)s4 + 0x2C);
+        if (a & 2) {
+            *(s32 *)(s3 + 0x54) = 0x40800000;
+            *(f32 *)(s3 + 0x5C) = *(f32 *)(s2 + 0xC);
+            *(f32 *)(s3 + 0x60) = *(f32 *)(s2 + 0x10);
+            *(f32 *)(s1 + 0x60) = *(f32 *)(s2 + 0x14);
+            *(s32 *)(s2 + 0x54) = 0x40800000;
+            *(f32 *)(s2 + 0x5C) = *(f32 *)(s2 + 0x28);
+            *(f32 *)(s2 + 0x60) = *(f32 *)(s2 + 0x2C);
+            *(f32 *)(s0 + 0x60) = *(f32 *)(s2 + 0x30);
+        } else if (a & 0x20) {
+            *(s32 *)(s3 + 0x60) = 0;
+            *(s32 *)(s2 + 0x60) = 0;
+        } else {
+            *(s32 *)(s3 + 0x54) = 0xC0400000;
+            *(f32 *)(s3 + 0x5C) = *(f32 *)(s2 + 0x8);
+            *(f32 *)(s1 + 0x60) = *(f32 *)(s2 + 0x18);
+            *(s32 *)(s2 + 0x54) = 0xC0400000;
+            *(f32 *)(s2 + 0x5C) = *(f32 *)(s2 + 0x24);
+            *(f32 *)(s0 + 0x60) = *(f32 *)(s2 + 0x34);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF3B0);
 extern s32 D_0046FD18;
 extern void func_00133780(s32, s32);
