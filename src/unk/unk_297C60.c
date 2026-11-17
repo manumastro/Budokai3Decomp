@@ -34,7 +34,14 @@ typedef struct SndWork {
     s8 f11E1;
     s8 f11E2;
     s8 f11E3;
+    s8 f11E4;
+    s8 f11E5;
+    s8 f11E6;
 } SndWork;
+
+typedef struct Vec4i {
+    s32 v[4];
+} Vec4i;
 
 typedef struct Ctl {
     char pad0[0x4];
@@ -66,6 +73,37 @@ extern void *D_005AA608[];
 extern s32 D_005AA640[];
 extern s32 D_005AA644[];
 extern char D_0046BB70[];
+extern Vec4i D_00453DA0;
+extern s32 D_00453C80[];
+extern s32 D_00453980[][5];
+extern void *D_005AA554[];
+extern void *D_005AA558[];
+extern void *D_005AA55C[];
+extern void *D_005AA560[];
+extern void *D_005AA564[];
+extern void *D_005AA568[];
+extern void *D_005AA56C[];
+extern void *D_005AA570[];
+extern void func_0029D6C0(Vec4i *);
+extern s32 func_002A8CA0(s32);
+extern void *func_001CAAB0(s32, s32, s32, s32, s32);
+extern void *func_0025C670(s32, s32, s32);
+extern void func_002BFEE0(s32, s32, s32);
+extern void func_002B6140(void);
+extern void func_0029B000(s32);
+extern void func_00291390(s32);
+extern u8 D_004E6560[];
+extern s8 D_00511450[];
+extern Vec4f D_00453D90;
+extern Vec4f D_005AA680;
+extern Vec4f D_005AA690;
+extern s32 D_005AA664[];
+extern s32 D_005AA668[];
+extern s32 D_005AA670[];
+extern void func_001F0660(void);
+extern f32 func_00146E90(Vec4f *);
+extern f32 func_0011F680(f32, f32);
+extern void func_002A9460(Vec4f *, s32);
 
 extern void func_00143B50(s32, s32);
 extern void func_00143870(Msg3 *);
@@ -344,7 +382,62 @@ void func_00298EA0(void) {
 void func_00298FC0(void) {
     D_005AA5A0[0] = func_00144FC0(func_00298770, 0, 0x9000, 2, 0x20000, D_0046BB70);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_00299000);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_00299240);
+void func_00299000(void) {
+    Vec4i v;
+    SndWork *w;
+    s32 k;
+
+    v = D_00453DA0;
+    func_0029D6C0(&v);
+    w = D_005AA604[0];
+    if (D_005AA608[0] != NULL) {
+        func_001CA8A0(D_005AA608[0]);
+    }
+    D_005AA608[0] = func_001CAAB0(func_002A8CA0(w->f11E1), w->f11E2, w->f11E3, 3, 1);
+    D_005AA568[0] = func_0025C670(D_00453C80[w->f11E1], 0, 1);
+    func_002BFEE0(w->f11E1, w->f11E2, 1);
+    func_002B6140();
+    D_005AA550[0] = func_0025C670(0x107E3, 0, 1);
+    D_005AA554[0] = func_0025C670(0x107E4, 0, 1);
+    k = D_005AA604[0]->f11E3;
+    if (D_005AA604[0]->f11E2 >= 3) {
+        k = 4;
+    }
+    D_005AA560[0] = func_0025C670(0xEDE, 0, 1);
+    D_005AA564[0] = func_0025C670(D_00453980[D_005AA604[0]->f11E1][k], 0, 1);
+    D_005AA558[0] = func_0025C670(D_005AA604[0]->f11E6 * 2 + 0xEE0, 0, 1);
+    D_005AA55C[0] = func_0025C670(D_005AA604[0]->f11E6 * 2 + 0xEE1, 0, 1);
+    func_0029B000(D_005AA604[0]->f11E0);
+    func_00291390(D_005AA604[0]->f11E0);
+    D_005AA56C[0] = func_0025C670(0x107E1, 0, 1);
+    D_005AA570[0] = func_0025C670(0x107E0, 0, 1);
+    D_005AA574[0] = func_0025C670(0x107E2, 0, 1);
+}
+void func_00299240(s32 n) {
+    Vec4f v;
+    f32 f;
+
+    func_001258F8(D_005AA550, 0, 0xE30);
+    func_0029A8E0();
+    func_00290320();
+    func_002BFCF0();
+    func_001F0660();
+    D_00511450[0] = n;
+    D_005AA604[0] = (SndWork *)(D_004E6560 + n * 0x1210 + 0x80);
+    v = D_00453D90;
+    D_005AA680.x = 0.0f;
+    D_005AA680.y = 0.0f;
+    D_005AA680.z = func_00146E90(&v);
+    D_005AA680.w = 0.0f;
+    D_005AA690.x = 0.0f;
+    D_005AA690.y = 0.0f;
+    D_005AA690.z = 0.0f;
+    D_005AA690.w = 1.0f;
+    D_005AA664[0] = 0;
+    f = func_0011F680(v.y, v.z);
+    D_005AA670[0] = 0;
+    D_005AA668[0] = -(s32)(32768.0f * f / 3.141592f);
+    func_002A9460(&D_005AA604[0]->f11C0, D_005AA604[0]->f11D0);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_00299390);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_002995F0);

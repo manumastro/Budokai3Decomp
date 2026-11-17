@@ -1,19 +1,24 @@
 #include "common.h"
 
+typedef struct Pair {
+    u8 a;
+    u8 b;
+} Pair;
+
 typedef struct Node {
     u16 f0;
-    u8 f2;
-    u8 f3;
+    Pair p;
     s32 id;
-    char pad8[0x10];
+    s32 f8;
+    s32 fC;
+    char pad10[8];
     struct Node *prev;
     struct Node *next;
 } Node;
 
 typedef struct Out {
     u16 f0;
-    u8 f2;
-    u8 f3;
+    Pair p;
 } Out;
 
 typedef struct RelocEntry {
@@ -28,28 +33,98 @@ typedef struct RelocHdr {
     s32 f18;
 } RelocHdr;
 
-extern u32 D_0047067C;
+extern s32 D_0047067C;
 extern s32 D_00470678;
 extern Node *D_0058A8FC[];
 extern Node D_0058A900[];
 extern Node *D_0058AB20[];
+extern Node D_0058A8E0[];
+extern Node *D_0058A918[];
+extern Node D_0058A920[];
+extern s32 D_00470674;
+extern void func_001258F8(void *, s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_219A80", func_00219A80);
+typedef struct Chan {
+    f32 f0;
+    f32 f4;
+    s32 f8;
+    s32 fC;
+    char pad10[4];
+    s16 f14;
+    s16 f16;
+    f32 f18;
+    s32 f1C;
+} Chan;
+
+typedef struct ChanWork {
+    char pad0[0x5C4];
+    Chan chans[6];
+    s32 f684;
+} ChanWork;
+
+extern ChanWork *D_00470570;
+extern f32 D_004E0610[];
+extern f32 D_004E0614[];
+extern void func_0012D5A0(s32, s32);
+
+void func_00219A80(void) {
+    ChanWork *w = D_00470570;
+    Chan *c = w->chans;
+    s32 flag;
+    s32 i;
+
+    for (i = 0; i < 5; i++, c++) {
+        c->f8 = -1;
+        c->fC = 0;
+        c->f16 = -1;
+        c->f0 = 1.0f;
+        c->f18 = -1.0f;
+        switch (i) {
+        case 0:
+        case 1:
+            c->f4 = D_004E0610[0];
+            flag = 0;
+            c->f8 = i;
+            c->f14 = 0x69;
+            break;
+        case 2:
+        case 3:
+        case 4:
+            c->f4 = D_004E0614[0];
+            flag = 1;
+            c->f8 = -1;
+            c->f14 = -1;
+            c->f1C = 0;
+            break;
+        }
+        func_0012D5A0(i, flag);
+    }
+    w->chans[5].f8 = -1;
+    w->chans[5].fC = 0;
+    w->chans[5].f14 = -1;
+    w->chans[5].f16 = -1;
+    w->chans[5].f0 = 1.0f;
+    w->chans[5].f18 = -1.0f;
+    w->chans[5].f4 = D_004E0614[0];
+    w->chans[5].f8 = -1;
+    w->chans[5].f1C = 0;
+    w->f684 = -1;
+}
 void func_00219BC0(Out *o, s32 id) {
-    u32 cnt = D_0047067C;
+    s32 cnt = D_0047067C;
     Node *n = D_0058A8FC[0];
     u32 sum = 0;
     u32 any = 0;
 
     if (cnt == 0) {
-        o->f2 = 0;
-        o->f3 = 0;
+        o->p.a = 0;
+        o->p.b = 0;
         return;
     }
     while (n != D_0058A900) {
         if (id == -1 || n->id == id || n->id == -1) {
-            sum += n->f2;
-            any |= n->f3;
+            sum += n->p.a;
+            any |= n->p.b;
             n = n->next;
         }
     }
@@ -60,8 +135,8 @@ void func_00219BC0(Out *o, s32 id) {
     if (any != 0) {
         any = 1;
     }
-    o->f2 = sum;
-    o->f3 = any;
+    o->p.a = sum;
+    o->p.b = any;
 }
 void func_00219C70(Out *o, s32 id) {
     Node *n = D_0058A8FC[0];
@@ -71,8 +146,8 @@ void func_00219C70(Out *o, s32 id) {
         if (id == -1 || n->id == id || n->id == -1) {
             if (n->f0 < min) {
                 min = n->f0;
-                o->f2 = n->f2;
-                o->f3 = n->f3;
+                o->p.a = n->p.a;
+                o->p.b = n->p.b;
             }
         }
     }
@@ -85,16 +160,16 @@ void func_00219CF0(Out *o, s32 id) {
 
     for (; n != D_0058A900; n = n->next) {
         if (id == -1 || n->id == id || n->id == -1) {
-            if (a < n->f2) {
-                a = n->f2;
+            if (a < n->p.a) {
+                a = n->p.a;
             }
-            if (b < n->f3) {
-                b = n->f3;
+            if (b < n->p.b) {
+                b = n->p.b;
             }
         }
     }
-    o->f2 = a;
-    o->f3 = b;
+    o->p.a = a;
+    o->p.b = b;
 }
 void func_00219D80(Node *n) {
     Node *prev;
@@ -132,7 +207,46 @@ void func_00219E00(RelocHdr *h) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_219A80", func_00219E70);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_219A80", func_00219EA0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_219A80", func_0021A030);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_219A80", func_0021A120);
+void func_0021A030(Out *o, s32 id, s32 f8, s32 fC) {
+    Node *n;
+    Node *prev;
+
+    if (D_0047067C >= 0x10) {
+        n = NULL;
+    } else {
+        n = D_0058AB20[D_00470674];
+        D_0047067C++;
+        D_00470674 = (D_00470674 + 1) & 0xF;
+        func_001258F8(n, 0, sizeof(Node));
+        prev = D_0058A918[0];
+        prev->next = n;
+        n->next = D_0058A900;
+        n->prev = prev;
+        D_0058A918[0] = n;
+    }
+    if (n != NULL) {
+        n->f0 = o->f0;
+        n->p = o->p;
+        n->id = id;
+        n->f8 = f8;
+        n->fC = fC;
+    }
+}
+void func_0021A120(void) {
+    s32 i;
+
+    func_001258F8(D_0058A8E0, 0, sizeof(Node));
+    func_001258F8(D_0058A900, 0, sizeof(Node));
+    func_001258F8(D_0058A920, 0, sizeof(Node) * 16);
+    func_001258F8(D_0058AB20, 0, sizeof(Node *) * 16);
+    D_0058A8FC[0] = D_0058A900;
+    D_0058A918[0] = D_0058A8E0;
+    for (i = 15; i >= 0; i--) {
+        D_0058AB20[i] = &D_0058A920[i];
+    }
+    D_00470674 = 0;
+    D_00470678 = 0;
+    D_0047067C = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_219A80", func_0021A220);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_219A80", func_0021A390);

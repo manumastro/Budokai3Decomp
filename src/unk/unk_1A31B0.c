@@ -35,12 +35,14 @@ void func_001A32D0(void);
 typedef struct PadPort {
     s32 port;
     s32 slot;
-    char pad8[0x18];
+    s32 handle;
+    char padC[0x14];
     u8 act[8];
-    char pad28[4];
+    u8 *buf;
 } PadPort;
 
 extern PadPort D_00493580[];
+extern s32 D_00470564;
 extern void func_00117458(s32, s32, u8 *);
 s32 func_001A3940(s32);
 void func_001A3EF0(s32);
@@ -86,7 +88,42 @@ void func_001A32D0(void) {
     }
     D_00470560 = NULL;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1A31B0", func_001A3340);
+extern char D_00492EC0[];
+extern u8 D_00493700[][0x400];
+extern void func_00116550(s32);
+extern s32 func_00116978(s32, s32, u8 *);
+extern void sceMtapPortOpen(s32);
+
+void func_001A3340(void) {
+    s32 slot;
+    s32 port;
+    s32 n;
+    s32 i;
+    PadPort *p;
+
+    func_001258F8(D_00492EC0, 0, 0x100);
+    func_001258F8(D_00492FC0, 0, 0x5C0);
+    func_001258F8(D_00493580, 0, 0x160);
+    n = 0;
+    for (slot = 0; slot < 4; slot++) {
+        for (port = 0; port < 2; port++, n++) {
+            D_00493580[n].port = port;
+            D_00493580[n].slot = slot;
+            D_00493580[n].buf = D_00493700[n];
+        }
+    }
+    func_00116550(0);
+    if (D_00470564 & 1) {
+        sceMtapPortOpen(0);
+    }
+    if (D_00470564 & 2) {
+        sceMtapPortOpen(1);
+    }
+    for (i = 0; i < 8; i++) {
+        p = &D_00493580[i];
+        p->handle = func_00116978(p->port, p->slot, p->buf);
+    }
+}
 void func_001A3520(void) {
     s32 i;
 
@@ -161,7 +198,6 @@ s8 func_001A4460(s8 x, s32 dz) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1A31B0", func_001A4460);
-extern s32 D_00470564;
 extern void func_001A1A58(void);
 
 void func_001A4540(s32 a) {
