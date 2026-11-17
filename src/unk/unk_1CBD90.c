@@ -824,14 +824,15 @@ int Scr_CmdGetBattleF8960(void *unused, Arg *a) {
     *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle + 0x8960);
     return 1;
 }
-// differs: 1 of 22 at best: the add of idx*16 and the table pointer is `addu v0,v0,v1` in the original, ours `addu v0,v1,v0`. Operand order, (idx*16 + t), and an explicit shift local tried; base form 5 of 22.
+/* r6 best attempt diff 1 */
+// differs: 1 of 22: addu operand order at 001CDE14 (original `addu v0,v0,v1`, ours `addu v0,v1,v0`); the gp reloc at 001CDDE8 is an artifact. Tried: idx*16 + t, (s32)t + idx*16, (idx<<4) + t, 0x658 + (idx<<4), explicit off local; all give the same 1 difference.
 #if 0
 int func_001CDDE0(void *unused, Arg *a) {
     int *p = a->p;
     s32 idx = p[0];
     char *t = gBattle->tbl[p[1]];
     if (idx >= 0 && idx < 0x16) {
-        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + idx * 16 + 0x658);
+        *(f32 *)((char *)a + 0x40) = *(f32 *)((s32)t + idx * 16 + 0x658);
     } else {
         *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x48);
     }
@@ -1256,15 +1257,19 @@ int Scr_CmdFighterSetup8480(void *unused, Arg *a) {
     func_001C7D90(gBattle->tbl[side], id, gBattle->tbl[1 - side]);
     return 1;
 }
-// differs: Size 0x7C against 0x90. The original also loads p[0] and p[1] into a3/t0 (not used by the visible calls); the source use of those two values is unknown.
+/* r6 best attempt diff 4 */
+// differs: 4 instructions (register choice for the tbl temporaries, gBattle reloc field). The 5-argument call matches the real callee signature; permuter from base 20 reached best score 10 in 450 s, no score 0.
 #if 0
 int func_001CF600(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = gBattle->tbl[p[3]];
+    int i3 = p[3];
     int s0 = p[2];
+    int a3v = p[1];
+    int t0v = p[0];
+    char *t = gBattle->tbl[i3];
     char *q = *(char **)(t + 0x1CF8);
     short v = *(short *)(q + s0 * 20 + 0xD6);
-    func_001C8A50(t, s0, v);
+    func_001C8A50(t, s0, v, a3v, t0v);
     func_001C89A0(t, s0);
     return 1;
 }
