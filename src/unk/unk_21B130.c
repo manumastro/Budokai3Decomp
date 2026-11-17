@@ -616,7 +616,6 @@ u8 *func_0021C400(s32 i) {
 u8 *func_0021C430(s32 i) {
     return gBtlSys + 0x650 + i * 0x190;
 }
-#if 0
 s32 func_0021C460(s32 id) {
     u8 *sys = gBtlSys;
     u8 *cur = sys + id * 0x190;
@@ -638,24 +637,15 @@ s32 func_0021C460(s32 id) {
         }
     } else {
         v = *(s16 *)(oth + 0x3E);
-        if (v != -1) {
-            if (!(v & 1)) {
-                if (c < v) {
-                    return 0;
-                }
-                return 1;
-            }
+        if (v == -1 || (v & 1)) {
+            return 0;
         }
-        return 0;
     }
     if (c < v) {
         return 0;
     }
     return 1;
 }
-// differs: the last test and its join (the compare of the two counters is shared by the two parities in the original; here the code is 4 instructions shorter)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C460);
 void func_0021C540(f32 a, f32 b, f32 c) {
     u8 *sys = gBtlSys;
 

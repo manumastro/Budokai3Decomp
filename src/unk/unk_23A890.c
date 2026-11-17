@@ -1577,7 +1577,7 @@ void func_00244CC0(s32 i, s32 j) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244CC0);
 #if 0
-// differs: one instruction: the slot address is built as addu with the base in the first operand (the original has the scaled index first); the rest matches
+// differs: 1 of 95 (244DC0 `addu v1,v1,a0` in the original, ours `addu v1,a0,v1`: the entry q = base + a1*0x220 with the base first). Round 5: tried q as ((Ent220*)base + a1), &((Ent220*)base)[a1], integer casts, and one expression D + a0*0x480 + a1*0x220: all base first. The slot stores as ((s32*)(s3+0x20))[s1] change the prologue (91 of 98): keep the s0 form.
 extern u8 D_0046AD08[];
 s32 BtlCmd_GetMotEntry(s32, s32);
 s32 func_00127E88(void *, void *, s32);
