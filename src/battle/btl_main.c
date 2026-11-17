@@ -2784,42 +2784,39 @@ void func_001C8480(Fighter *f, s32 i) {
         func_001C7D90(f, i, 0);
     }
 }
-#if 0
-// differs: the slot's neighbours and the counter take saved registers the original does not keep (59 of 67 differ)
 void func_001C8500(Fighter *f, s32 i) {
-    CdSlot *s0;
-    void *s1;
+    s32 *s1;
+    s32 *e = (s32 *)((u8 *)f + i * 28 + 0x1DF8);
     s32 k;
-    CdSlot *s2;
-    s0 = (CdSlot *)((u8 *)f + 0x1DF8 + i * 28);
-    if (s0->unk18 == 0) {
-        s1 = s0->handle;
-        if (s1 != 0) {
-            s0->handle = FT_FIELD(s1, void *, 0x40);
-            s0->unk00 = FT_FIELD(FT_FIELD(s1, void *, 0x40), s32, 0x50);
-            amFile_Load(s0->unk00);
-            s0->unk04 = func_001A50F0(s0->unk00, 0);
-            if (s0->unk04 != 0) {
-                amFile_Load(s0->unk04);
-            }
-            k = 0;
-            s2 = s0;
-            do {
-                FT_FIELD(s2, s32, 0x8) = func_001A50F0(s0->unk00, k + 1);
-                if (FT_FIELD(s2, s32, 0x8) != 0) {
-                    amFile_Load(FT_FIELD(s2, s32, 0x8));
-                }
-                k++;
-                s2 = (CdSlot *)((u8 *)s2 + 4);
-            } while (k < 3);
-            amCdFs_Close(s1, 0);
-            FT_FIELD(s1, s32, 0x40) = 0;
-            s0->unk18 = 1;
-        }
+    s32 *s2;
+
+    if (e[6] != 0) {
+        return;
     }
+    s1 = (s32 *)e[5];
+    if (s1 == 0) {
+        return;
+    }
+    e[5] = s1[16];
+    e[0] = ((s32 *)s1[16])[20];
+    amFile_Load(e[0]);
+    e[1] = func_001A50F0(e[0], 0);
+    if (e[1] != 0) {
+        amFile_Load(e[1]);
+    }
+    k = 0;
+    s2 = e;
+    for (; k < 3; k++) {
+        s2[2] = func_001A50F0(e[0], k + 1);
+        if (s2[2] != 0) {
+            amFile_Load(s2[2]);
+        }
+        s2++;
+    }
+    FT_FIELD(s1, s32, 0x40) = 0;
+    amCdFs_Close(s1, 0);
+    e[6] = 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8500);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8600);
 #if 0
 s32 func_001C8780(Fighter *f, s32 i) {
