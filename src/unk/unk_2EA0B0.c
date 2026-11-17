@@ -172,6 +172,50 @@ void func_002EA8F0(void) {
     D_00470238 = 0;
     func_0022C060(*(s32 *)(p + 4), 1.0f);
 }
+#if 0
+void func_002EA940(void) {
+    s32 a1 = 1;
+    u8 *info;
+    u8 *p;
+    s32 s1;
+    s32 s2;
+    s32 s3;
+    f32 f1;
+    u8 *ob = D_00470958;
+    ob = D_00470958;
+    *(s32 *)(ob + 0xC) = a1;
+    s1 = *(s32 *)(ob + 0xC);
+    ob = D_00470958;
+    info = *(u8 **)(ob + 0x18);
+    p = *(u8 **)(ob + 4);
+    s3 = ((s8 *)info)[1];
+    if (p != 0) {
+        func_0022D0E0((s32)p, 1);
+        *(s32 *)(ob + 4) = 0;
+    }
+    s2 = ((s8 *)info)[2];
+    a1 = s2 + (s3 << 3);
+    p = *(u8 **)(ob + 0x4C);
+    f1 = 0.75f * (f32)*(s32 *)(ob + 0x28 + s2 * 4);
+    if (f1 < (f32)*(s16 *)(p + 0x10)) {
+        a1 += 4;
+    } else {
+        f1 = 0.75f * (f32)*(s32 *)(ob + 0x38 + s2 * 4);
+        if (f1 < (f32)*(s16 *)(p + 0x12)) {
+            a1 += 4;
+        }
+    }
+    p = *(u8 **)(ob + 0x50);
+    *(s32 *)(ob + 4) = func_0022D670(*(s32 *)(*(u8 **)(p + 0x1C) + ((s8 *)D_00457440 + a1)[0] + s1) * 4 + 0, 0.0f);
+    D_00470704 = *(s32 *)(ob + 0x54);
+    D_0047070C = 0x5000000;
+    D_00470708 = 0;
+    amModel_SetCurrent(*(s32 *)(ob + 0x54), 0x5000000);
+    D_00470238 = 0;
+    func_0022C060(*(s32 *)(ob + 4), 0.0f);
+}
+// differs: 60 of 81 instructions differ for every declaration order (all 120 tried): the struct field reads and the float compares are in the same order, but the original keeps the object pointer in s0 and reloads it; the early a1 += 4 arms and the globals D_00470704/0C/08 are right. Structural difference not found.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EA940);
 void func_002EAA80(void) {
     u8 *p = D_00470958;

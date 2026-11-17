@@ -366,6 +366,52 @@ f32 func_002B06A0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B06B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0A40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0BF0);
+extern u8 *gSklEdit;
+#if 0
+s32 func_002B0CA0(u8 *s, s32 n) {
+    s32 *A = (s32 *)(s + 0xB8);
+    s32 s0 = A[n + 1];
+    s32 *s4 = &A[n + 1];
+    s32 i;
+    s32 j;
+    s32 ok = 0;
+    s32 v;
+    s32 a;
+    for (i = 0; i < 7; i++) {
+        v = *(s32 *)(s + 0x2C + i * 4);
+        if (v <= 0) {
+            ok = 1;
+            break;
+        }
+        if (v == s0) {
+            ok = 0;
+            break;
+        }
+    }
+    if (!ok) {
+        *(s32 *)(gSklEdit + 0x30) = 4;
+        return 0;
+    }
+    for (j = 0; j < 7; j++) {
+        if (j == n) {
+            continue;
+        }
+        a = A[j + 1];
+        if (a > 0) {
+            u8 *e = D_004E0660 + a * 40;
+            if (*(u16 *)(e + 0x10) == s0 || *(u16 *)(e + 0x12) == s0) {
+                if (func_002B0CA0(s, j) == 0) {
+                    return 0;
+                }
+            }
+        }
+    }
+    *s4 = -1;
+    A[0] = A[0] - 1;
+    return 1;
+}
+// differs: 82 of 90 instructions differ: a recursive table walk; the original keeps the loop with the counter in a0 and a pointer in v1 (lw v0,44(v1)), with the flags in a0/v0; the compiler reorders the first loop and the early exits. Not retried.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0CA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0E00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1160);
