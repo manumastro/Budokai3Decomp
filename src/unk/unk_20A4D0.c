@@ -2972,6 +2972,96 @@ void func_00212160(u8 *a) {
 // differs: 16 of 77 instructions differ: the original copies the parameter to s1 at entry (before the first test), this build copies it after the test; the VU0 part and the calls match
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212160);
+#if 0
+void func_002122A0(u8 *p) {
+    u8 *s1;
+    u8 *s0;
+    s32 a6;
+    s32 k;
+    s32 w;
+    s32 idx;
+    u8 *slot;
+    u8 *base;
+    u8 *g264;
+    Copy16A t50;
+    Copy16A t40;
+
+    s1 = p + 0x20;
+    a6 = *(s16 *)(p + 0x1C);
+    k = a6 * 257;
+    s0 = gBattle + (k << 5) + 0x830;
+    if (*(s32 *)(p + 0x10) == 0) {
+        return;
+    }
+    D_00470238 = 0;
+    if (*(s32 *)(s1 + 0x20) != 0) {
+        amModel_SetCurrent(*(s32 *)(s1 + 0x20), *(s32 *)(s1 + 0x28));
+    }
+    if (*(s32 *)(s1 + 0x24) != 0) {
+        func_00208D60(*(s32 *)(s1 + 0x24));
+    }
+    func_0013B0B0((u8 *)0);
+    w = *(s32 *)(s1 + 0x2C);
+    if (w & 1) {
+        if (w & 0x40) {
+            func_0020D290((u8 *)&t50, *(u8 **)(s0 + 0x1354), *(s32 *)(s1 + 0x3C), *(f32 *)(s1 + 0x8));
+        } else {
+            func_0020D290((u8 *)&t50, s0, *(s32 *)(s1 + 0x3C), *(f32 *)(s1 + 0x8));
+        }
+        __asm__ volatile (
+            "lqc2 $vf28, 0(%0)\n"
+            "lqc2 $vf29, 0x10(%0)\n"
+            "lqc2 $vf30, 0x20(%0)\n"
+            "lqc2 $vf31, 0x30(%0)\n"
+            : : "r"(gBattle + 0x60) : "memory");
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%2)\n"
+            "vsub.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%1)\n"
+            : : "r"(*(u8 **)(gBattle + 0x264)), "r"(&t40), "r"(&t50) : "memory");
+        func_00209D70((u8 *)&t40);
+        func_0013B060(0);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "vmulax.xyzw ACC, $vf28, $vf1x\n"
+            "vmadday.xyzw ACC, $vf29, $vf1y\n"
+            "vmaddaz.xyzw ACC, $vf30, $vf1z\n"
+            "vmaddw.xyzw $vf31, $vf31, $vf0w\n"
+            : : "r"(&t50) : "memory");
+    } else {
+        __asm__ volatile (
+            "lqc2 $vf28, 0(%0)\n"
+            "lqc2 $vf29, 0x10(%0)\n"
+            "lqc2 $vf30, 0x20(%0)\n"
+            "lqc2 $vf31, 0x30(%0)\n"
+            : : "r"(gBattle + 0x60) : "memory");
+        idx = *(s32 *)(s1 + 0x3C);
+        base = s0 + (idx << 4);
+        g264 = *(u8 **)(gBattle + 0x264);
+        slot = base + 0x650;
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "vsub.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%2)\n"
+            : : "r"(g264), "r"(slot), "r"(&t40) : "memory");
+        func_00209D70((u8 *)&t40);
+        func_0013B060(0);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "vmulax.xyzw ACC, $vf28, $vf1x\n"
+            "vmadday.xyzw ACC, $vf29, $vf1y\n"
+            "vmaddaz.xyzw ACC, $vf30, $vf1z\n"
+            "vmaddw.xyzw $vf31, $vf31, $vf0w\n"
+            : : "r"(s0 + (*(s32 *)(s1 + 0x3C) << 4) + 0x650) : "memory");
+    }
+    func_00208D70(*(s32 *)(p + 0x10));
+    func_00209C50();
+    func_0013B110(1);
+}
+// differs: 4 of 118 differ, all in the no-flag path (w & 1 clear): the table value goes to a1 and the slot address to v0 in the original; the register choice here follows the operand order (tried: operand orders, a slot pointer, a base pointer, the gBattle pointer as a local). The flag path matches
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002122A0);
 void func_0013B060(s32);
 void func_00209D70(void *);
