@@ -7,6 +7,21 @@ extern s32 D_005C9F10[];
 extern s32 D_005C9F18[];
 extern s32 D_005C9F68[];
 extern s32 D_005C9F6C[];
+extern s32 D_005C9F60[];
+extern s32 D_005C9F64[];
+extern s32 D_004573C0[];
+
+/* A current-state record (f10 a float), and a table row of 16-byte entries (fC a float). */
+typedef struct Cur99 {
+    char pad0[0x10];
+    f32 f10;
+} Cur99;
+
+typedef struct Ent99 {
+    char pad0[0xC];
+    f32 fC;
+    char pad10[4];
+} Ent99;
 extern void func_0022D0E0(s32, s32);
 extern s32 D_005C9F1C[];
 extern void func_0022C7D0(s32, s32, f32);
@@ -77,9 +92,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E97E0);
 void func_002E98E0(void) {
     memset(D_005C9F10, 0, 0x6C);
 }
+/* differs: the original reads the index global into $a1 before the table base (its return-1 branch lands on the epilogue 8 bytes earlier) */
+#if 0
+s32 func_002E9900(void) {
+    Cur99 *p = (Cur99 *)D_005C9F6C[0];
+    Ent99 *e;
+    s32 *row;
+    s32 idx;
+    f32 a;
+
+    if (p == NULL) {
+        return 1;
+    }
+    idx = D_005C9F60[0];
+    a = p->f10;
+    row = &D_004573C0[idx];
+    e = (Ent99 *)*row + D_005C9F64[0];
+    return (a < e->fC) ? 0 : 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9900);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9970);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9B10);
+void func_002E9B10(s16 *a, s16 *b) {
+    s32 i = 0;
+    s32 r;
+
+    do {
+        r = func_002537E0(a[i], b[i]);
+        D_005C9F10[i + 4] = r;
+        if (r == -1) {
+            break;
+        }
+        i++;
+    } while (i < 16);
+}
 
 void func_002E9B90(s32 a) {
     D_005C9F18[0] = a;

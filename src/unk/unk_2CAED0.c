@@ -25,6 +25,8 @@ typedef struct TutBuf {
 typedef struct TutBlk {
     char pad0[0x14];
     s16 f14;
+    char pad16[4];
+    s16 f1A;
 } TutBlk;
 
 typedef struct TutChrB {
@@ -87,7 +89,13 @@ extern void func_002EB280(void);
 extern void func_002EB290(void);
 extern void func_002EB560(void *);
 extern void func_001C8020(s32, void *);
+extern void func_001E1510(void *);
+extern void func_002EB3E0(s32, s32);
+extern void func_00226030(s32, void *);
+extern void func_002E9BA0(s32);
 extern void (*D_004564A0[])(void);
+extern void (*D_004564C0[])(void);
+extern void func_002CBFF0(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAED0);
 /* differs: the test comes out as slti at / beqz; the original keeps slti v0 / bnez v0 with the result in v0 */
@@ -205,13 +213,41 @@ void func_002CB4F0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB550);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB650);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBD40);
+/* differs: the original lays the fC == 0x1E call out of line (0xA0 bytes, ours 0x8C) and keeps its local at sp+0x20 */
+#if 0
+void func_002CBEB0(void) {
+    TutWork *t = D_0047091C;
+    s32 buf;
+
+    *(s8 *)(D_00470570 + 0x8AAD) = 1;
+    if (t->fC == 0x1E) {
+        func_001E1510(t->chr);
+    }
+    *(s16 *)((char *)t->chr + 0x13A4) = t->chr->f1CF4->f1A;
+    func_002EB3E0(t->f4, t->fC - t->f10);
+    buf = 0;
+    func_00226030(0x27, &buf);
+    func_002E9BA0(0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBEB0);
 void func_002EB0D0(void);
 
 void func_002CBF50(void) {
     func_002EB0D0();
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBF60);
+void func_002CBF60(void) {
+    TutWork *t = D_0047091C;
+
+    if (*(s32 *)(D_00470570 + 0x88EC) == 0) {
+        if (t->f8 >= 0) {
+            D_004564C0[t->f8]();
+        }
+        t->f1C = t->f18;
+        t->f18 = t->f18 + *(f32 *)(D_00470570 + 0x88F0);
+        func_002CBFF0(0, 0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBFF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC120);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC240);

@@ -50,6 +50,7 @@ extern SysDF0 *D_0046FDFC;
 extern void *D_00470000;
 
 extern void memset(void *, s32, s32);
+extern void func_00125740(void *, void *, s32);
 extern void func_0021C540(f32, f32, f32);
 extern void func_0021C560(s32, f32, f32, f32);
 extern void func_0021C5B0(s32);
@@ -241,6 +242,31 @@ s32 func_0025AE10(void *ctx, ScrCmd *cmd) {
         s[7] &= 0xF;
         s[8] &= 0xF;
         s[9] &= 0xF;
+    }
+    return 1;
+}
+#endif
+/* differs: the global is loaded into $a0 before the argument pointer (9 of 43) */
+#if 0
+s32 func_0025AE10(void *t, ScrCmd *c) {
+    ScrObj *o = D_0058D4E8[0];
+    ScrArg *a = c->args;
+    s32 tmp[5];
+    s32 *p;
+
+    tmp[0] = a[4].i;
+    tmp[1] = a[3].i;
+    tmp[2] = a[2].i;
+    tmp[3] = a[1].i;
+    tmp[4] = a[0].i;
+    if (o != NULL) {
+        p = (s32 *)((char *)o + 0x30);
+        func_00125740(&p[5], tmp, 0x14);
+        p[5] &= 0xF;
+        p[6] &= 0xF;
+        p[7] &= 0xF;
+        p[8] &= 0xF;
+        p[9] &= 0xF;
     }
     return 1;
 }

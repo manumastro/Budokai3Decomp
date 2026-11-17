@@ -143,8 +143,52 @@ static inline f32 Scr_GetSpeed(void) {
 extern void func_0020DDD0(s32, ScrEffect *);
 extern void func_0020DE30(void);
 extern void func_0020DE40(s32);
+
+/* A timed object: a counter at 0x2C against a limit at 0x30, a done flag at 0x10. */
+typedef struct TimedEE10 {
+    char pad0[0x10];
+    s32 f10;
+    char pad14[0x16];
+    s8 f2A;
+    char pad2B;
+    f32 f2C;
+    f32 f30;
+} TimedEE10;
 extern void amTask_Kill(ScrTask *);
+
+/* A script object of this family: a pointer at 0x0 to a record with a counter at 0xC, a task function at 0x10, a byte at 0x28. */
+typedef struct CountRec25 {
+    char pad0[0xC];
+    s32 fC;
+} CountRec25;
+
+typedef struct ObjF28 {
+    CountRec25 *f0;
+    char pad4[0xC];
+    void *f10;
+    char pad14[0x14];
+    s8 f28;
+} ObjF28;
+
+/* A timed script object: a task function at 0x10, two bytes at 0x2A / 0x2B. */
+typedef struct TimedF0C0 {
+    char pad0[0x10];
+    void *f10;
+    char pad14[0x16];
+    s8 f2A;
+    s8 f2B;
+} TimedF0C0;
 extern char D_0046B080[];
+extern char D_0046B060[];
+extern char D_0046B120[];
+extern void func_0025E5A0(void);
+/* The part of a task at 0x30 that these functions fill: a word, then two floats. */
+typedef struct ScrPos30 {
+    s32 f0;
+    f32 f4;
+    f32 f8;
+} ScrPos30;
+extern void func_0025D740(void);
 extern ScrTask *amTask_Create(void *, s32, s32, s32, s32, char *);
 void func_0025D980(ScrTask *);
 extern void func_0020E070(s32, ScrVec *);
@@ -190,6 +234,21 @@ extern void func_00245D30(void *, s32);
 extern void func_0020F4D0(ScrBig *);
 extern void func_0020F5A0(ScrBig *);
 extern ScrEntry *func_0020F6D0(s32);
+extern s32 func_0020B020(s32, s32, s32);
+extern s32 func_0020AD30(s32, s32, s32);
+
+/* Four floats of a slot (16 bytes), in a table of slots inside a ScrObj. */
+typedef struct Slot16 {
+    f32 f0;
+    f32 f4;
+    f32 f8;
+    f32 fC;
+} Slot16;
+
+typedef struct PlyPart {
+    char pad0[0x1350];
+    s32 f1350;
+} PlyPart;
 extern s32 func_0020AE80(s32, s32, s32);
 extern void func_00215990(s32);
 extern void func_0020F700(s32);
@@ -215,7 +274,19 @@ extern char D_0046B140[];
 extern char D_0046B160[];
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025D740);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025D810);
+s32 func_0025D810(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 s1 = a[2].i;
+    s32 s0 = a[1].i;
+    ScrTask *t = amTask_Create(func_0025D740, 0, a[0].i, 0x400, 0x800002, D_0046B060);
+    ScrPos30 *e;
+
+    t->f30 = s1;
+    e = (ScrPos30 *)&t->f30;
+    e->f4 = -Scr_GetSpeed();
+    e->f8 = (f32)s0;
+    return 1;
+}
 
 s32 func_0025D8D0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrEffect e;
@@ -463,7 +534,19 @@ s32 func_0025E550(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025E5A0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025E6A0);
+s32 func_0025E6A0(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 s1 = a[2].i;
+    s32 s0 = a[1].i;
+    ScrTask *t = amTask_Create(func_0025E5A0, 0, a[0].i, 0x400, 0x800002, D_0046B120);
+    ScrPos30 *e;
+
+    t->f30 = s1;
+    e = (ScrPos30 *)&t->f30;
+    e->f4 = -Scr_GetSpeed();
+    e->f8 = (f32)s0;
+    return 1;
+}
 void func_0025E760(ScrFadeTask *task) {
     ScrFade *f = &task->fade;
 
@@ -573,6 +656,23 @@ s32 func_0025ED90(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
+/* differs: the paused test and the out-of-line return 0 (39 of 51 with the helper form) */
+#if 0
+s32 func_0025EE10(TimedEE10 *o) {
+    if (D_00470570 != NULL && D_00470570->f88EC != 0) {
+        return 0;
+    }
+    if (o->f30 != -1.0f) {
+        o->f2C = o->f2C + Scr_GetSpeed();
+        if (o->f2C >= o->f30) {
+            o->f10 = 0;
+            return 1;
+        }
+    }
+    func_0020EE10(o->f2A, 1);
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EE10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EEE0);
 
@@ -588,7 +688,28 @@ s32 func_0025F050(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F0C0);
+s32 func_0025F0C0(TimedF0C0 *o, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 x = a[1].i;
+    s32 y = a[0].i;
+    s32 z = a[2].i;
+
+    o->f2A = z;
+    o->f2B = y;
+    o->f10 = (void *)func_0025F050;
+    func_0020F290(o->f2A, x);
+    func_0020F1D0(o->f2A, 0.0f);
+    if (func_0020EE10(o->f2A, 1) != 0) {
+        if (o->f2B > 0) {
+            o->f2B = o->f2B - 1;
+            if (o->f2B == 0) {
+                o->f10 = NULL;
+                return 1;
+            }
+        }
+    }
+    return 3;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F160);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F230);
 
@@ -604,7 +725,28 @@ s32 func_0025F3A0(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F410);
+s32 func_0025F410(TimedF0C0 *o, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 x = a[1].i;
+    s32 y = a[0].i;
+    s32 z = a[2].i;
+
+    o->f2A = z;
+    o->f2B = y;
+    o->f10 = (void *)func_0025F3A0;
+    func_0020F300(o->f2A, x);
+    func_0020F200(o->f2A, 0.0f);
+    if (func_0020EF80(o->f2A, 1) != 0) {
+        if (o->f2B > 0) {
+            o->f2B = o->f2B - 1;
+            if (o->f2B == 0) {
+                o->f10 = NULL;
+                return 1;
+            }
+        }
+    }
+    return 3;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F4B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F580);
 s32 func_0025F6C0(ScrCtx *ctx, ScrCmd *cmd) {
@@ -816,7 +958,18 @@ s32 func_0025FCF0(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FD50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FF00);
+s32 func_0025FF00(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 s1 = a[1].i;
+    s32 s0 = a[0].i;
+    PlyPart *p = (PlyPart *)D_00470570->f8934[a[2].i];
+    ScrEntry *r;
+
+    r = func_0020F6D0(a[3].i);
+    *(s32 *)((char *)r + 0x88) = func_0020B020(p->f1350, s1, s0);
+    *(s32 *)((char *)r + 0x20E4) = func_0020AD30(p->f1350, s1, s0);
+    return 1;
+}
 
 s32 func_0025FFA0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
@@ -849,6 +1002,36 @@ s32 func_00260080(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020F870(a[0].i);
     return 1;
 }
+/* differs: 2 of 44 (the load of a[5] and a[3] are swapped in the delay slot of the lookup call) */
+#if 0
+s32 func_002600B0(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    f32 f23 = a[3].f;
+    s32 s1 = a[5].i;
+    s32 s0 = a[4].i;
+    f32 f22 = a[2].f;
+    f32 f21 = a[1].f;
+    f32 f20 = a[0].f;
+    ScrObj *o = func_0020A720(a[6].i);
+    Slot16 *p;
+
+    if (s0 & 1) {
+        p = (Slot16 *)((char *)o + 0x60) + s1;
+        p->f0 = f23;
+        p->f4 = f22;
+        p->f8 = f21;
+        p->fC = f20;
+    }
+    if (s0 & 2) {
+        p = (Slot16 *)((char *)o + 0xA0) + s1;
+        p->f0 = f23;
+        p->f4 = f22;
+        p->f8 = f21;
+        p->fC = f20;
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002600B0);
 
 s32 func_00260160(ScrCtx *ctx, ScrCmd *cmd) {
@@ -889,6 +1072,33 @@ s32 func_00260210(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020A4D0(ctx->f28);
     return 3;
 }
+/* differs: the record call goes into the branch delay slot in the original (10 of 42) */
+#if 0
+s32 func_00260270(ObjF28 *o, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 s2 = a[1].i;
+    s32 s1 = a[0].i;
+    f32 f;
+    ScrObj *p;
+    s32 k;
+    s32 r;
+
+    p = func_0020A720(s2);
+    o->f28 = s2;
+    o->f10 = (void *)func_00260210;
+    f = (f32)s1;
+    *(f32 *)((char *)p + 0xE0) = f;
+    *(f32 *)((char *)p + 0xE4) = f;
+    k = o->f0->fC;
+    r = func_0020A5F0(o->f28);
+    if (k != 3 && r != 0) {
+        o->f10 = NULL;
+        return 1;
+    }
+    func_0020A4D0(o->f28);
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260270);
 
 s32 func_00260320(ScrCtx *ctx, ScrCmd *cmd) {
