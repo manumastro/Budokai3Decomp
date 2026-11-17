@@ -809,28 +809,28 @@ void StrStatus_TaskComment(s32 *a0) {
     }
 }
 
-#if 0
 // func_002C03E0: 7 of 35 instructions differ: the function address and the constant 2 swap registers (lui/li); six variants tried
-void func_002C03E0(s32 *a0) {
-    s32 *s0 = a0 + 0x30 / 4;
-    s32 *p;
-    *(s16 *)((char *)a0 + 0x38) = 1;
-    p = (s32 *)a0[0x30 / 4];
-    if (*(s16 *)((char *)p + 4) == 3) {
-        s0[1] = p[0x54 / 4];
-        ((s32 *)s0[0])[0x54 / 4] = 0;
-        amCdFs_Close(s0[0], 0);
-        s0[0] = 0;
-        amFile_Load(s0[1]);
-        *(s16 *)((char *)s0 + 8) = 2;
-        {
-            void *f = StrStatus_TaskComment;
-            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
-        }
+void func_002C03E0(s32 *a0)
+{
+  s32 *s0 = a0 + (0x30 / 4);
+  s32 *p;
+  *((s16 *) (((char *) a0) + 0x38)) = 1;
+  p = (s32 *) a0[0x30 / 4];
+  if ((*((s16 *) (((char *) p) + 4))) == 3)
+  {
+    s0[1] = p[0x54 / 4];
+    ((s32 *) s0[0])[0x54 / 4] = 0;
+    amCdFs_Close(s0[0], 0);
+    s0[0] = 0;
+    amFile_Load(s0[1]);
+    *((s16 *) (((char *) s0) + 8)) = 2;
+    {
+      void *f = StrStatus_TaskComment;
+      a0[0x1C / 4] = (s32) ((f == 0) ? (0) : (StrStatus_TaskComment));
     }
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03E0);
+
 void Obj_CopyVec4F50(u8 *a0, void *a1) {
     u8 *p = a0 + 0x30;
     p += 0x20;
@@ -893,7 +893,6 @@ typedef struct StrCopy16S {
 } __attribute__((aligned(16))) StrCopy16S;
 extern s32 D_004562F0[4] __attribute__((aligned(16)));
 extern s32 D_00456300[4] __attribute__((aligned(16)));
-extern void func_002C03E0(s32 *);
 extern char D_0046EEC8[];
 void *func_002C0630(s32 a0, s32 a1, s32 a2) {
     StrCopy16S b;
@@ -970,55 +969,66 @@ void func_002C0750(char *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0750);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0860);
-#if 0
 // func_002C0FC0: frame 0x50 with s0-s3 in the original, ours 0x60 with s0-s4 (the parameter copy and the loop pointer and index take five registers); 4 layouts tried, the table-read loop is the same shape
-void func_002C0FC0(s32 *a0) {
-    s32 i;
-    s32 off;
-    s32 *s0;
-    {
-        s32 m = a0[1];
-        D_00470704 = m;
-        D_0047070C = 0x2000;
-        D_00470708 = 0;
-        amModel_SetCurrent(m, 0x2000);
-    }
+void func_002C0FC0(s32 *a0)
+{
+  s32 i;
+  s32 off;
+  u8 *new_var2;
+  s32 *s0;
+  s32 *new_var;
+  {
+    s32 m = a0[1];
+    D_00470704 = m;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x2000);
     D_00470238 = 0;
-    if (a0[0xC / 4] != 0) {
-        func_0022D0E0(a0[0xC / 4], 1);
+  }
+  if (a0[0xC / 4] != 0)
+  {
+    func_0022D0E0(a0[0xC / 4], 1);
+  }
+  a0[0xC / 4] = func_0022D670(((s32 *) ((s32 *) a0[0])[0x1C / 4])[0xE8 / 4], 0.0f);
+  if (a0[0x10 / 4] != 0)
+  {
+    func_0022D0E0(a0[0x10 / 4], 1);
+  }
+  a0[0x10 / 4] = func_0022D670(((s32 *) ((s32 *) a0[0])[0x1C / 4])[0xF0 / 4], 0.0f);
+  if (a0[0x2C / 4] != 0)
+  {
+    func_0022D0E0(a0[0x2C / 4], 1);
+  }
+  a0[0x2C / 4] = func_0022D670(((s32 *) ((s32 *) a0[0])[0x1C / 4])[0xE0 / 4], 0.0f);
+  if (a0[0x14 / 4])
+  {
+    func_0022D0E0(a0[0x14 / 4], 1);
+  }
+  a0[0x14 / 4] = func_0022D670(((s32 *) (new_var = (s32 *) a0[0])[0x1C / 4])[0x148 / 4], 0.0f);
+  i = 0;
+  off = 0;
+  new_var2 = (u8 *) a0;
+  s0 = a0;
+  do
+  {
+    if (i < (*((u8 *) (new_var2 + 0xAC))))
+    {
+      s0[0x3C / 4] = func_0022D670(((s32 *) (((u8 *) ((s32 *) a0[0])[0x1C / 4]) + off))[0x128 / 4], 0.0f);
+      s0[0x40 / 4] = func_0022D670(((s32 *) (((u8 *) ((s32 *) a0[0])[0x1C / 4]) + off))[0x100 / 4], 0.0f);
     }
-    a0[0xC / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0xE8 / 4], 0.0f);
-    if (a0[0x10 / 4] != 0) {
-        func_0022D0E0(a0[0x10 / 4], 1);
+    else
+    {
+      s0[0x3C / 4] = 0;
+      s0[0x40 / 4] = 0;
     }
-    a0[0x10 / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0xF0 / 4], 0.0f);
-    if (a0[0x2C / 4] != 0) {
-        func_0022D0E0(a0[0x2C / 4], 1);
-    }
-    a0[0x2C / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0xE0 / 4], 0.0f);
-    if (a0[0x14 / 4] != 0) {
-        func_0022D0E0(a0[0x14 / 4], 1);
-    }
-    a0[0x14 / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0x148 / 4], 0.0f);
-    i = 0;
-    off = 0;
-    s0 = a0;
-    do {
-        if (i < *(u8 *)((u8 *)a0 + 0xAC)) {
-                    s0[0x3C / 4] = func_0022D670(((s32 *)(((u8 *)((s32 *)a0[0])[0x1C / 4]) + off))[0x128 / 4], 0.0f);
-                    s0[0x40 / 4] = func_0022D670(((s32 *)(((u8 *)((s32 *)a0[0])[0x1C / 4]) + off))[0x100 / 4], 0.0f);
-        } else {
-            s0[0x3C / 4] = 0;
-            s0[0x40 / 4] = 0;
-        }
-        s0[0x44 / 4] = 0;
-        i++;
-        off += 4;
-        s0 += 3;
-    } while (i < 8);
+    s0[0x44 / 4] = 0;
+    i++;
+    off += 4;
+    s0 += 3;
+  }
+  while (i < 8);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0FC0);
+
 typedef struct {
     u8 b[16];
 } __attribute__((aligned(16))) StsCp16;
@@ -1238,7 +1248,7 @@ void StrStatus_TaskRequestScene(s32 *a0) {
     }
 }
 extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
-extern void func_002C2470(Task *);
+extern void func_002C2470(s32 *);
 
 #if 0
 // func_002C1BC0: 1 instruction differs: the table byte address is added as v0+s0 in the original (addu v0,v0,s0); three operand orders tried
@@ -1299,7 +1309,6 @@ extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern void func_002C0750(s32 *);
 extern void func_002C1320(s32 *);
-extern void func_002C2FF0(s32 *);
 extern void func_002C0860(s32 *);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
@@ -1308,7 +1317,6 @@ extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern void func_002C0750(s32 *);
 extern void func_002C1320(s32 *);
-extern void func_002C2FF0(s32 *);
 extern void func_002C0860(s32 *);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
@@ -1317,7 +1325,6 @@ extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern void func_002C0750(s32 *);
 extern void func_002C1320(s32 *);
-extern void func_002C2FF0(s32 *);
 extern void func_002C0860(s32 *);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
@@ -1362,10 +1369,8 @@ void func_002C1CF0(s32 *a0) {
     }
 }
 extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
-extern void func_002C2470(Task *);
 
 extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
-extern void func_002C2470(Task *);
 
 #if 0
 // func_002C1E10: the saved registers: ours keeps the parameter and the sub-object in s2/s1 and needs an extra s3 (frame 0x50 against 0x40); the tail (table byte, call with 8 arguments, float and pointer) matches in shape; 2 forms tried
@@ -1423,45 +1428,45 @@ void func_002C1E10(s32 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1E10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1F90);
-#if 0
 // func_002C2470: 7 of 58 differ: the tail (the 0xB byte and the function pointer) takes a0 and v1 the other way round; pointer as void*, s32, direct store tried
 extern f32 gFrameDelta;
 extern void func_002C1F90(void);
-
-void func_002C2470(s32 *a0) {
-    s32 *s1 = (s32 *)a0[0x30 / 4];
-    s32 *s0;
-    s32 v;
-    void *f;
-    v = s1[1];
-    D_00470704 = v;
-    D_0047070C = 0x2000;
-    D_00470708 = 0;
-    amModel_SetCurrent(v, 0x2000);
-    D_00470238 = 0;
-    v = s1[1];
-    D_00470704 = v;
-    D_0047070C = 0x2000;
-    D_00470708 = 0;
-    amModel_SetCurrent(v, 0x2000);
-    D_00470238 = 0;
-    s0 = (s32 *)s1[2];
-    if (s0 != 0) {
-        func_0022C060((s32)s0, 1.0f);
-        func_0022CD00((s32)s0);
-    }
-    func_002C0860(s1);
-    A2d_FlushList();
-    func_00133B50(0, 0);
-    *(f32 *)((char *)s1 + 0xC4) = *(f32 *)((char *)s1 + 0xC4) - gFrameDelta;
-    if (*(f32 *)((char *)s1 + 0xC4) <= 0.0f) {
-        *(u8 *)((char *)s1 + 0xAF) = 0xB;
-        f = (void *)func_002C1F90;
-        a0[7] = (s32)((f == 0) ? 0 : f);
-    }
+void func_002C2470(s32 *a0)
+{
+  s32 *s1 = (s32 *) a0[0x30 / 4];
+  s32 *s0;
+  s32 v;
+  void *f;
+  v = s1[1];
+  D_00470704 = v;
+  D_0047070C = 0x2000;
+  D_00470708 = 0;
+  amModel_SetCurrent(v, 0x2000);
+  D_00470238 = 0;
+  v = s1[1];
+  D_00470704 = v;
+  D_0047070C = 0x2000;
+  D_00470708 = 0;
+  amModel_SetCurrent(v, 0x2000);
+  D_00470238 = 0;
+  s0 = (s32 *) s1[2];
+  if (s0 != 0)
+  {
+    func_0022C060((s32) s0, 1.0f);
+    func_0022CD00((s32) s0);
+  }
+  func_002C0860(s1);
+  A2d_FlushList();
+  func_00133B50(0, 0);
+  *((f32 *) (((char *) s1) + 0xC4)) = (*((f32 *) (((char *) s1) + 0xC4))) - gFrameDelta;
+  if ((*((f32 *) (((char *) s1) + 0xC4))) <= 0.0f)
+  {
+    *((u8 *) (((char *) s1) + 0xAF)) = 0xB;
+    f = (void *) func_002C1F90;
+    a0[7] = (s32) ((f == 0) ? (0) : ((void *) func_002C1F90));
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2470);
+
 
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2560);
 extern void func_002C2560(void);
@@ -1556,51 +1561,51 @@ extern void func_002C29A0(void);
 extern f32 D_004E0618[];
 extern f32 gFrameDelta;
 
-#if 0
 // func_002C2FF0: the pointer and the 6 of the flag take a0 and v1 the other way round (as func_002C2470); 4 tail orders tried
-void func_002C2FF0(s32 *a0) {
-    s32 *s2 = (s32 *)a0[0x30 / 4];
-    s32 *s1;
-    void *f;
-    f32 t;
-    s32 v;
-    v = s2[0x4 / 4];
-    D_00470704 = v;
-    D_0047070C = 0x2000;
-    D_00470708 = 0;
-    amModel_SetCurrent(v, 0x2000);
-    D_00470238 = 0;
-    v = s2[0x4 / 4];
-    D_00470704 = v;
-    D_0047070C = 0x2000;
-    D_00470708 = 0;
-    amModel_SetCurrent(v, 0x2000);
-    D_00470238 = 0;
-    s1 = (s32 *)s2[0x8 / 4];
-    if (s1 != 0) {
-        func_0022C060((s32)s1, 1.0f);
-        func_0022CD00((s32)s1);
-    }
-    func_002C0860(s2);
-    A2d_FlushList();
-    func_00133B50(0, 0);
-    t = *(f32 *)&s2[0xC4 / 4] - gFrameDelta;
-    *(f32 *)&s2[0xC4 / 4] = t;
-    if (t <= 0.0f) {
-        v = amAdx_PlayAfs(1, 0x2119D, 0);
-        s2[0xC8 / 4] = v;
-        amAdx_SetVolume(s2[0xC8 / 4], D_004E0618[0]);
-        amAdx_Pause(s2[0xC8 / 4], 0);
-        Obj_SetF3C((void *)s2[0x9C / 4], 4);
-        f = (void *)func_002C29A0;
-        *(u8 *)((char *)s2 + 0xAF) = 6;
-        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
-    }
+void func_002C2FF0(s32 *a0)
+{
+  s32 *s2 = (s32 *) a0[0x30 / 4];
+  s32 *s1;
+  void *f;
+  f32 t;
+  s32 v;
+  v = s2[0x4 / 4];
+  D_00470704 = v;
+  D_0047070C = 0x2000;
+  D_00470708 = 0;
+  amModel_SetCurrent(v, 0x2000);
+  D_00470238 = 0;
+  v = s2[0x4 / 4];
+  D_00470704 = v;
+  D_0047070C = 0x2000;
+  D_00470708 = 0;
+  amModel_SetCurrent(v, 0x2000);
+  D_00470238 = 0;
+  s1 = (s32 *) s2[0x8 / 4];
+  if (s1 != 0)
+  {
+    func_0022C060((s32) s1, 1.0f);
+    func_0022CD00((s32) s1);
+  }
+  func_002C0860(s2);
+  A2d_FlushList();
+  func_00133B50(0, 0);
+  t = (*((f32 *) (&s2[0xC4 / 4]))) - gFrameDelta;
+  *((f32 *) (&s2[0xC4 / 4])) = t;
+  if (t <= 0.0f)
+  {
+    v = amAdx_PlayAfs(1, 0x2119D, 0);
+    s2[0xC8 / 4] = v;
+    amAdx_SetVolume(s2[0xC8 / 4], D_004E0618[0]);
+    amAdx_Pause(s2[0xC8 / 4], 0);
+    Obj_SetF3C((void *) s2[0x9C / 4], 4);
+    ;
+    *((u8 *) (((char *) s2) + 0xAF)) = 6;
+    a0[0x1C / 4] = (s32) ((((void *) func_002C29A0) == 0) ? (0) : ((void *) func_002C29A0));
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2FF0);
+
 extern void func_002C15E0(s32 *);
-extern void func_002C2FF0(s32 *);
 extern f32 gFrameDelta;
 
 void func_002C3120(s32 *a0) {
@@ -1722,38 +1727,38 @@ extern void func_002C1860(s32 *);
 extern void func_002C3B40(void);
 extern s32 func_0022D670(s32, f32);
 
-#if 0
 // func_002C3D20: 7 of 66 differ: the function pointer and the 0x41F00000 store take v1/a0 the other way round (same as func_002C2470); 3 tail orders tried
-void func_002C3D20(s32 *a0) {
-    s32 *s1 = (s32 *)a0[0x30 / 4];
-    s32 *s0 = (s32 *)gTourMode;
-    void *f;
-    s32 v;
-    if (*(s16 *)((char *)((s32 *)s0[1]) + 4) == 3) {
-        s1[0] = ((s32 *)s0[0])[0x54 / 4];
-        ((s32 *)s0[0])[0x54 / 4] = 0;
-        amCdFs_Close(s0[0], 0);
-        s1[1] = ((s32 *)s0[1])[0x54 / 4];
-        ((s32 *)s0[1])[0x54 / 4] = 0;
-        amCdFs_Close(s0[1], 0);
-        func_0022E0B0(s1[0]);
-        amFile_Load(s1[1]);
-        Fade_Request(-1, 0, 0);
-        v = s1[1];
-        D_00470704 = v;
-        D_0047070C = 0x2000;
-        D_00470708 = 0;
-        amModel_SetCurrent(v, 0x2000);
-        D_00470238 = 0;
-        s1[2] = func_0022D670(((s32 *)((s32 *)s1[0])[0x1C / 4])[0], 0.0f);
-        func_002C1860(s1);
-        *(s32 *)((char *)s1 + 0xC4) = 0x41F00000;
-        f = (void *)func_002C3B40;
-        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
-    }
+void func_002C3D20(s32 *a0)
+{
+  s32 *s1 = (s32 *) a0[0x30 / 4];
+  s32 *s0 = (s32 *) gTourMode;
+  void *f;
+  s32 v;
+  if ((*((s16 *) (((char *) ((s32 *) s0[1])) + 4))) == 3)
+  {
+    s1[0] = ((s32 *) s0[0])[0x54 / 4];
+    ((s32 *) s0[0])[0x54 / 4] = 0;
+    amCdFs_Close(s0[0], 0);
+    s1[1] = ((s32 *) s0[1])[0x54 / 4];
+    ((s32 *) s0[1])[0x54 / 4] = 0;
+    amCdFs_Close(s0[1], 0);
+    func_0022E0B0(s1[0]);
+    amFile_Load(s1[1]);
+    Fade_Request(-1, 0, 0);
+    v = s1[1];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x2000);
+    D_00470238 = 0;
+    s1[2] = func_0022D670(((s32 *) ((s32 *) s1[0])[0x1C / 4])[0], 0.0f);
+    func_002C1860(s1);
+    *((s32 *) (((char *) s1) + 0xC4)) = 0x41F00000;
+    f = (void *) func_002C3B40;
+    a0[0x1C / 4] = (s32) ((f == 0) ? (0) : ((void *) func_002C3B40));
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3D20);
+
 
 void StrStatus_ClearTourMode(void) {
     gTourMode = NULL;

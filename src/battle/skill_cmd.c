@@ -1369,45 +1369,62 @@ void func_002535B0(s32 a0, void *a1) {
 s8 func_002535D0(s32 a0) {
     return ((u8 *)D_004E066A)[a0 * 40] & 3;
 }
-// GIVEN UP: differs: 6 of 36 instructions: the byte count m takes a3 (the original a0) and the second loop counter a0 (original a3); the first loop with its own counter matches. Tried: 0 < m, separate counters, s8 m, declaration orders (8 forms)
-#if 0
-s32 func_00253600(s32 *a0, s32 a1) {
-    s32 *c;
-    s32 *p;
-    s32 i;
-    s32 n;
-    s32 r = 0;
+s32 func_00253600(u8 *arg0, s32 arg1) {
+    s32 var_a3_2;
+    s16 *var_a2;
+    s32 *var_t0;
+    s32 var_a3;
+    s32 temp_a2;
+    s32 var_v0;
+    s8 temp_a0_2;
+    u8 *temp_a0;
+    u8 *temp_v1;
+    u8 *temp_v1_2;
 
-    a0 = (s32 *)a0[2];
-    c = (s32 *)a0[2];
-    n = c[1];
-    p = (s32 *)c[2];
-    for (i = 0; i < n; i++) {
-        if (p[0] == a1) {
-            r++;
+    temp_a0 = *(u8 **)((u8 *)arg0 + 8);
+    var_v0 = 0;
+    temp_v1 = *(u8 **)((u8 *)temp_a0 + 8);
+    temp_a2 = *(s32 *)((u8 *)temp_v1 + 4);
+    var_t0 = *(s32 **)((u8 *)temp_v1 + 8);
+    var_a3 = 0;
+    if (0 < temp_a2) {
+loop_1:
+        if (*var_t0 != arg1) {
+            goto block_3;
         }
-        p += 4;
-    }
-    if (r == 0) {
-        s32 *o = (s32 *)a0[0];
-        s32 m = *(s8 *)((u8 *)o + 0xD);
-        s16 *l = (s16 *)o[2];
-
-        if (0 < m) {
-            i = 0;
-            do {
-                if (a1 == l[0]) {
-                    return 1;
-                }
-                l++;
-                i++;
-            } while (i < m);
+        var_v0 += 1;
+block_3:
+        var_a3 += 1;
+        var_t0 += 4;
+        if (var_a3 < temp_a2) {
+            goto loop_1;
         }
     }
-    return r;
+block_4:
+    if (var_v0 != 0) {
+        goto block_11;
+    }
+    temp_v1_2 = *(u8 **)((u8 *)temp_a0 + 0);
+    temp_a0_2 = *(s8 *)((u8 *)temp_v1_2 + 0xD);
+    var_a3_2 = 0;
+    if (0 < temp_a0_2) {
+        var_a2 = *(s16 **)((u8 *)temp_v1_2 + 8);
+loop_7:
+        if (arg1 != *var_a2) {
+            goto block_10;
+        }
+        return 1;
+block_10:
+        var_a3_2 += 1;
+        var_a2 += 1;
+        if (var_a3_2 < temp_a0_2) {
+            goto loop_7;
+        }
+    }
+block_11:
+    return var_v0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253600);
+
 // GIVEN UP: the original keeps the count field address (t2 + 0xD) in a register and reuses it; the register choice differs
 #if 0
 s32 func_00253690(s32 *a0, s32 a1, s32 *a2) {
@@ -1801,44 +1818,51 @@ void func_002543B0(u8 *a0) {
     } while (s1 < 2);
 }
 #endif
-// differs: 1 of 58 (round 5): the loop pointer is copied from a0 (`move s0,a0`), the original copies it from the
-// saved s4 (`move s0,s4`); `s0 = s4 + 0` and the statement order tried. Declaration order s4,s3,s2,s1,s0 matches the rest.
-// GIVEN UP: 1 of 58 (round 5, skill): the loop pointer is copied from a0 (move s0,a0); the original copies it from the saved s4 (move s0,s4). s0 = (u8 *)s4 and s0 = s4 + 0 do not keep s4 (copy-propagated to a0); a search of the declaration orders (stopped part-way, no match)
-#if 0
-void func_002543B0(u8 *a0) {
-    u8 *s4;
-    s32 s2;
-    s32 s1;
-    s32 *r;
-    s32 a1;
-    s32 v;
-    u8 *s3;
-    u8 *s0;
-
-    s4 = a0;
-    s1 = 0;
-    s0 = (u8 *)s4;
-    s3 = *(u8 **)s4 + 0x30;
-    do {
-        s2 = func_0021C460(*(s16 *)(s0 + 0x20));
-        if (s2 == -1) {
-            s2 = 2;
-        }
-        if ((func_0021C360(*(s16 *)(s4 + 0x20)) & 1) != 0) {
-            a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA2;
-        } else {
-            a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA1;
-        }
-        r = func_00259CC0(*(s32 **)(s3 + 0x4), a1);
-        if (r != NULL) {
-            func_0022C7D0((s32)r, (f32)s2, 0);
-        }
-        s1++;
-        s0 += 2;
-    } while (s1 < 2);
+void func_002543B0(u8 *a0)
+{
+  u8 *s4;
+  u8 *new_var;
+  s32 s2;
+  s32 s1;
+  s32 *r;
+  s32 a1;
+  s32 v;
+  u8 *s3;
+  u8 *s0;
+  s4 = a0;
+  new_var = (*((u8 **) s4)) + 0x30;
+  s1 = 0;
+  s0 = (u8 *) s4;
+  s3 = new_var;
+  do
+  {
+    s2 = func_0021C460(*((s16 *) (s0 + 0x20)));
+    if (s2 == (-1))
+    {
+      s2 = 2;
+    }
+    if ((func_0021C360(*((s16 *) (s4 + 0x20))) & 1) != 0)
+    {
+      a1 = ((func_0021C360(*((s16 *) (s0 + 0x20))) & 1) * 2) + 0xA2;
+    }
+    else
+    {
+      if (!a0)
+      {
+      }
+      a1 = ((func_0021C360(*((s16 *) (s0 + 0x20))) & 1) * 2) + 0xA1;
+    }
+    r = func_00259CC0(*((s32 **) (s3 + 0x4)), a1);
+    if (r != ((void *) 0))
+    {
+      func_0022C7D0((s32) r, (f32) s2, 0);
+    }
+    s1++;
+    s0 += 2;
+  }
+  while (s1 < 2);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002543B0);
+
 void func_002544A0(f32 *a0, s32 a1) {
     s32 v;
     f32 f3;

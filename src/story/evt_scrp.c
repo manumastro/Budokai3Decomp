@@ -20,21 +20,19 @@ extern void Zenie_Draw(void);
 extern void Zenie_Close(s32);
 extern s32 func_002A1020(s32);
 
-#if 0
-// func_002A1640: the original loads the global into a saved register in the delay slot of amTask_Kill (lw s0); ours loads it into v0 after the call; four forms tried
-void func_002A1640(void *a0) {
-    void *p = a0;
-    Zenie_Update(p);
+void func_002A1640(u8 *arg0) {
+    u8 *temp_s0;
+
+    Zenie_Update();
     Zenie_Draw();
     if (func_002A1020(5) == 0) {
-        amTask_Kill(p);
-        gEvtWork[0x40 / 4] = 0;
+        temp_s0 = (u8 *)(gEvtWork);
+        amTask_Kill((void *)(arg0));
+        *(s32 *)((u8 *)temp_s0 + 0x40) = 0;
         Zenie_Close(0);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1640);
-extern void func_002A1640(void *);
+
 extern void Zenie_SetF18(s32);
 extern void Zenie_SetStep(s32);
 
@@ -781,19 +779,24 @@ extern u32 func_0012EAE0(s32);
 
 extern u32 func_0012EAE0(s32);
 
-#if 0
-// func_002A3080: the local registers come out in another order (the copy of a1 and the two loads of the arguments); seven variants tried
-s32 func_002A3080(s32 *a0, char *a1) {
-    s32 *args = *(s32 **)(a1 + 0x2C);
-    s32 *out = (s32 *)a1;
-    s32 s1 = args[1];
-    s32 s0 = args[0];
-    u32 r = func_0012EAE0(0x20) & 0x7FFFFFFF;
-    *out = (s32)(r % (u32)(s0 - s1)) + s1;
+
+s32 func_002A3080(s32 *a0, u8 *a1) {
+    s32 s1;
+    s32 s0;
+    s32 *args;
+    u32 r;
+    s32 m;
+
+    args = *(s32 **)(a1 + 0x2C);
+    s1 = args[1];
+    s0 = args[0];
+    r = func_0012EAE0(0x20) & 0x7FFFFFFF;
+    m = (s32)(r % (u32)(s0 - s1));
+    m += s1;
+    *(s32 *)a1 = m;
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3080);
+
 extern void Zenie_Open(s32);
 extern s32 *gEvtWork;
 
@@ -826,34 +829,45 @@ extern void amCdFs_ReleaseCache(s32);
 extern void memset(void *, s32, s32);
 extern char D_005AB3C0[];
 
-#if 0
-// func_002A37E0: 1 of 76 differs: the index-path load of the key goes through the parameter register (a0), the original through the saved copy s2 (the copy is not kept); 3 forms tried
-s32 func_002A37E0(s32 *a0, char *a1) {
-    s32 *s2 = a0;
-    s32 idx = ((s32 *)*(s32 **)(a1 + 0x2C))[0];
-    s32 k;
-    char *e;
-    if (idx != -1) {
-        e = D_005AB3C0 + *(s32 *)s2[0] * 104 + idx * 52;
-        if (*(s32 *)(e + 4) != 0) {
-            amCdFs_ReleaseCache(*(s32 *)e);
-            *(s32 *)e = 0;
-        }
-        memset(e, 0, 0x34);
-    } else {
-        for (k = 0; k < 2; k++) {
-            e = D_005AB3C0 + *(s32 *)s2[0] * 104 + k * 52;
-            if (*(s32 *)(e + 4) != 0) {
-                amCdFs_ReleaseCache(*(s32 *)e);
-                *(s32 *)e = 0;
-            }
-            memset(e, 0, 0x34);
-        }
+s32 func_002A37E0(s32 **arg0, u8 *arg1)
+{
+  s32 temp_a1;
+  s32 var_s1;
+  s32 var_s0;
+  u8 *temp_s0;
+  u8 *temp_s3;
+  temp_a1 = *(*((s32 **) (((u8 *) arg1) + 0x2C)));
+  if (temp_a1 != (-1))
+  {
+    temp_s0 = (u8 *) ((temp_a1 * 0x34) + (D_005AB3C0 + ((*(*arg0)) * 0x68)));
+    if ((*((s32 *) (((u8 *) temp_s0) + 4))) != 0)
+    {
+      amCdFs_ReleaseCache((s32) ((void *) (*((u8 **) (((u8 *) temp_s0) + 0)))));
+      *((u8 **) (((u8 *) temp_s0) + 0)) = (void *) 0;
     }
-    return 1;
+    memset(temp_s0, 0, 0x34);
+  }
+  else
+  {
+    var_s1 = 0;
+    var_s0 = 0;
+    do
+    {
+      temp_s3 = (u8 *) (var_s0 + (D_005AB3C0 + ((*(*arg0)) * 0x68)));
+      if ((*((s32 *) (((u8 *) temp_s3) + 4))) != 0)
+      {
+        amCdFs_ReleaseCache((s32) ((void *) (*((u8 **) (((u8 *) temp_s3) + 0)))));
+        *((u8 **) (((u8 *) temp_s3) + 0)) = (void *) 0;
+      }
+      memset(temp_s3, 0, 0x34);
+      var_s1 += 1;
+      var_s0 += 0x34;
+    }
+    while (var_s1 < 2);
+  }
+  return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A37E0);
+
 #if 0
 // func_002A3910: the argument and state loads come in another order (the scheduler hoists the state load); three variants tried
 s32 func_002A3910(s32 *a0, char *a1) {
@@ -889,20 +903,15 @@ s32 func_002A39C0(s32 *a0, char *a1) {
 }
 extern s32 *gEvtWork;
 
-#if 0
-// func_002A3A10: the flag test gives movz for both constants (also with an early return), the original branches (b to the end); seven variants tried
 s32 func_002A3A10(void) {
-    s32 *g = gEvtWork;
-    s32 r;
-    if (g[0xC / 4] & 0x2) {
-        r = 1;
-    } else {
-        r = 3;
+    if (!((*(s32 *)((u8 *)(gEvtWork) + (0xC))) & 2)) {
+        goto block_3;
     }
-    return r;
+    return 1;
+block_3:
+    return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3A10);
+
 #if 0
 // func_002A3A40: the parameter and the global take the other saved registers in ours (s1/s2 swapped against the original); 3 orders tried
 extern s32 func_002A8330(s32);
@@ -910,7 +919,6 @@ extern void func_00298B70(s32, s32);
 extern void EvtScrp_Init(void);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void func_002A6E40(Task *);
-extern s32 func_002A3A10(void);
 extern s32 D_004700AC;
 extern char D_0046EA68[];
 
@@ -1149,25 +1157,27 @@ extern void func_002A09C0(s32);
 
 
 
-#if 0
 // func_002A4130: the counter is set in the delay slot of the first call in the original; ours sets it before the call
-s32 func_002A4130(s32 *a0) {
-    s32 n = func_002A1380();
-    s32 i = 0;
-    s32 off = 0;
-    if (0 < n) {
-        do {
-            char *row = D_005AB610 + (**(s32 **)a0) * 240 + off;
-            func_002A09C0(*(s32 *)(row + 0x10));
-            off += 24;
-            i++;
-            n = func_002A1380();
-        } while (i < n);
+s32 func_002A4130(s32 *a0)
+{
+  s32 i = 0;
+  s32 n = func_002A1380();
+  s32 off = 0;
+  if (0 < n)
+  {
+    do
+    {
+      char *row = (D_005AB610 + ((*(*((s32 **) a0))) * 240)) + off;
+      func_002A09C0(*((s32 *) (row + 0x10)));
+      off += 24;
+      i++;
+      n = func_002A1380();
     }
-    return 1;
+    while (i < n);
+  }
+  return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4130);
+
 #if 0
 // func_002A41D0: the original moves a0 to s3 first and loads the slot into a1 before the test; reordering the locals swaps the saved registers s0/s1; 4 variants tried
 s32 func_002A41D0(s32 *a0, char *a1) {
@@ -1520,26 +1530,26 @@ extern s32 func_002A1390();
 extern void func_002A11C0(s32, s32, s32);
 
 
-#if 0
-// func_002A4A30: the counter and the row share registers differently (original: idx in s2, counter in s1 set in the beqz delay slot); the scheduler moves the counter store after the row; four orders tried
-s32 func_002A4A30(s32 *a0) {
-    s32 i;
-    s32 idx = **(s32 **)a0;
-    s32 n = func_002A1390(a0);
-    if (0 < n) {
-        char *row;
-        i = 0;
-        row = D_005AB610 + idx * 240;
+s32 func_002A4A30(s32 **arg0) {
+    s32 temp_s2;
+    s32 var_s1;
+    s32 temp_v0;
+    u8 *var_s2;
+
+    temp_s2 = **arg0;
+    temp_v0 = func_002A1390();
+    var_s1 = 0;
+    if (0 < temp_v0) {
+        var_s2 = (u8 *)(D_005AB610 + (temp_s2 * 0xF0));
         do {
-            func_002A11C0(i, *(s32 *)(row + 4), 0x800000 + ((i + 1) << 8));
-            i++;
-            row += 0x18;
-        } while (i < n);
+            func_002A11C0(var_s1, *(s32 *)((u8 *)var_s2 + 4), ((var_s1 + 1) << 8) + 0x800000);
+            var_s1 += 1;
+            var_s2 += 0x18;
+        } while (var_s1 < temp_v0);
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4A30);
+
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4AD0);
 extern void func_002A4AD0(void);
 #if 0
@@ -1586,23 +1596,25 @@ extern s8 D_004B4B63[];
 extern char D_00492FCE[];
 s32 func_002A4D60(s32 *a0);
 
-#if 0
 // func_002A4CF0: the store of the function pointer comes first (as in the original); the global's test is scheduled before the index load (ours lw before lb); three forms tried
-s32 func_002A4CF0(s32 *a0) {
-    s32 idx;
-    u16 *row;
-    a0[0x10 / 4] = (s32)func_002A4D60;
-    idx = D_004B4B63[0];
-    row = (u16 *)(D_00492FCE + idx * 0xB8);
-    if ((gEvtWork[0x14 / 4] & 0x8000) != 0) {
-        if ((*row & 0x8) != 0) {
-            return 1;
-        }
+s32 func_002A4CF0(s32 *a0)
+{
+  s32 idx;
+  u16 *row;
+  a0[0x10 / 4] = (s32) func_002A4D60;
+  idx = D_004B4B63[0];
+  row = (u16 *) (D_00492FCE + (idx * 0xB8));
+  idx = *row;
+  if ((gEvtWork[0x14 / 4] & 0x8000) != 0)
+  {
+    if ((idx & 0x8) != 0)
+    {
+      return 1;
     }
-    return 3;
+  }
+  return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4CF0);
+
 s32 func_002A4D60(s32 *a0) {
     s32 idx = D_004B4B63[0];
     u16 *row = (u16 *)(D_00492FCE + idx * 0xB8);

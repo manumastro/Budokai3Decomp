@@ -169,50 +169,49 @@ void func_0030DBB0(s32 *a0) {
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
-#if 0
 // func_0030DC00: the original takes the pointer in t1, the short 3 in t0 and the float bits in a1 (temps in other registers); the early-constant forms gave the same code; four forms tried
-void func_0030DC00(s32 *a0) {
-    s32 *t1 = (s32 *)a0[0x34 / 4];
-    s16 n;
-    n = (s16)(*(s32 *)((char *)t1 + 0x10) - 5);
-    *(s16 *)((char *)a0 + 0x38) = n;
-    *(s16 *)((char *)a0 + 0x3A) = 3;
-    *(s16 *)((char *)a0 + 0x3C) = 0;
-    *(f32 *)&a0[0x48 / 4] = 300.0f;
-    *(f32 *)&a0[0x4C / 4] = 342.0f;
-    *(f32 *)&a0[0x40 / 4] = 13260.0f / (f32)n;
-    a0[0x44 / 4] = 0;
-    {
-        void *f = func_0030DBB0;
-        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
-    }
+void func_0030DC00(s32 *a0)
+{
+  s32 *t1 = (s32 *) a0[0x34 / 4];
+  s16 n;
+  n = (s16) ((*((s32 *) (((char *) t1) + 0x10))) - 5);
+  *((s16 *) (((char *) a0) + 0x38)) = n;
+  *((s16 *) (((char *) a0) + 0x3A)) = 3;
+  *((s16 *) (((char *) a0) + 0x3C)) = 0;
+  *((f32 *) (&a0[0x48 / 4])) = 300.0f;
+  *((f32 *) (&a0[0x4C / 4])) = 342.0f;
+  *((f32 *) (&a0[0x40 / 4])) = 13260.0f / ((f32) n);
+  a0[0x44 / 4] = 0;
+  {
+    void *f = func_0030DBB0;
+    a0[0x1C / 4] = (s32) ((f == 0) ? (0) : (func_0030DBB0));
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030DC00);
+
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030DC70);
-#if 0
-// func_0030E170: the two-value test branches to the end in ours; the original branches to a stub that jumps to the end; four forms tried
-void func_0030E170(s32 *a0) {
-    s32 *s0 = a0 + 0x30 / 4;
-    s32 v;
-    func_0030DC70(s0);
-    *(f32 *)&s0[0x8 / 4] = *(f32 *)&s0[0x8 / 4] + gFrameDelta;
-    v = amSofdec_GetStat(s0[0]);
-    if (v == 2) {
+void func_0030E170(s32 *arg0) {
+    s32 temp_v0;
+    s32 temp_a0;
+    s32 *temp_s0;
+
+    temp_s0 = (s32 *)((u8 *)arg0 + 0x30);
+    func_0030DC70(temp_s0);
+    *(f32 *)((u8 *)temp_s0 + 8) = *(f32 *)((u8 *)temp_s0 + 8) + gFrameDelta;
+    temp_v0 = amSofdec_GetStat(*temp_s0);
+    switch (temp_v0) {
+    case 1:
+    case 2:
         return;
     }
-    if (v == 1) {
-        return;
+    temp_a0 = *temp_s0;
+    if (temp_a0 >= 0) {
+        amSofdec_Stop(temp_a0);
+        amSofdec_Destroy(*temp_s0);
+        *temp_s0 = -1;
     }
-    if (s0[0] >= 0) {
-        amSofdec_Stop(s0[0]);
-        amSofdec_Destroy(s0[0]);
-        s0[0] = -1;
-    }
-    a0[0x1C / 4] = 0;
+    *(s32 *)((u8 *)arg0 + 0x1C) = 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E170);
+
 void StaffRoll_TaskEnding(s32 *a0) {
     s32 *a1 = a0 + 0x30 / 4;
     f32 v = *(f32 *)&a0[0x38 / 4] + gFrameDelta;
@@ -509,7 +508,6 @@ void func_0030E890(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E890);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EAE0);
 extern void func_0030E290(s32 *);
-extern void func_0030DC00(s32 *);
 extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
 extern void amFile_Load(void *);

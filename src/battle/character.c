@@ -189,22 +189,18 @@ void func_001CB010(s32 *a) {
     CharAnim *s = (CharAnim *)&a[15];
     func_001D9EB0(s->obj, s->id);
 }
-#if 0
-/* Does not match yet: 10 of 32 instructions differ (round 5 chr2: 3 declaration orders of bw and w tried; the original keeps gBattle in a1 and w in a2, ours swaps them). */
 void func_001CB020(Task *task) {
-    CharTimer *w;
     BattleWork *bw = gBattle;
-    w = (CharTimer *)task->work;
+    CharTimer *w = (CharTimer *)task->work;
     if (bw->unk88EC == 0) {
         w->count++;
         if (!((f32)w->count * bw->unk88F0 < w->length)) {
-            w->func();
+            ((void (*)(Task *, BattleWork *, CharTimer *))w->func)(task, bw, w);
             amTask_Kill(task);
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB020);
+
 s32 Scr_CmdVecPairCall146E30(void *self, ScriptCtx *ctx) {
     f32 v1[4];
     f32 v0[4];

@@ -99,49 +99,50 @@ extern s16 D_004E0608[];
 extern void func_002D8B00();
 extern void func_002DE910(s32, s32, s32 *, s32 *);
 
-#if 0
 /* All but the settings block: the original keeps the address of D_004E05DC in $t3 and loads the two floats
    from it; this reaches them %lo-relative and builds &c->f30 apart. */
-void func_002E18D0(void) {
-    OptionWork *w;
-    OptionConfig *c;
-    OptionWork *w2;
-    s32 *p404;
-    s32 *p408;
-
-    gOptionWork = amHeap_Alloc(0x490, 0, D_0046F3C8, 0x5F3);
-    memset(gOptionWork, 0, 0x490);
-    w = gOptionWork;
-    w->file[0] = amCdFs_ReadFileId(0x10842, 0, 0);
-    w->file[1] = amCdFs_ReadFileId(0x10843, 0, 0);
-    w->f33C = func_002C0630(0x10804, 0x5010, 0);
-    w->f340 = func_002C0630(0x10801, 0x5020, 0);
-    w->f8 = 0;
-    w->fC = 0;
-    Help_Load();
-    Save_Load(0x2000, 0);
-    func_002DF4E0();
-    func_002DF3D0();
-    c = D_004E05DC;
-    gOptionWork->f418 = D_004E0608[0];
-    w2 = gOptionWork;
-    p404 = &w2->f404;
-    p408 = &w2->f408;
-    w2->f404 = 255.0f * c->f34;
-    w2->f408 = 255.0f * c->f38;
-    w2->f3EC = &c->f30;
-    w2->f3F0 = p404;
-    w2->f3F4 = p408;
-    w2->f3F8 = 2;
-    w2->f3FC = 0x100;
-    w2->f400 = 0x100;
-    w->f36C = func_002D8B00;
-    w->f388 = -95.0f;
-    w->f3A4 = 0;
-    func_002DE910(0x100, 2, p408, p404);
+void func_002E18D0(void)
+{
+  OptionWork *w;
+  OptionConfig *c;
+  OptionWork *w2;
+  s32 *p404;
+  s32 *p408;
+  gOptionWork = amHeap_Alloc(0x490, 0, D_0046F3C8, 0x5F3);
+  memset(gOptionWork, 0, 0x490);
+  w = gOptionWork;
+  w->file[0] = amCdFs_ReadFileId(0x10842, 0, 0);
+  w->file[1] = amCdFs_ReadFileId(0x10843, 0, 0);
+  w->f33C = func_002C0630(0x10804, 0x5010, 0);
+  w->f340 = func_002C0630(0x10801, 0x5020, 0);
+  w->f8 = 0;
+  w->fC = 0;
+  Help_Load();
+  Save_Load(0x2000, 0);
+  func_002DF4E0();
+  func_002DF3D0();
+  c = D_004E05DC;
+  gOptionWork->f418 = D_004E0608[0];
+  if ((!gOptionWork) && (!gOptionWork))
+  {
+  }
+  w2 = gOptionWork;
+  p404 = &w2->f404;
+  p408 = &w2->f408;
+  w2->f404 = 255.0f * c->f34;
+  w2->f408 = 255.0f * c->f38;
+  w2->f3EC = &c->f30;
+  w2->f3F0 = p404;
+  w2->f3F4 = p408;
+  w2->f3F8 = 2;
+  w2->f3FC = 0x100;
+  w2->f400 = 0x100;
+  w->f36C = func_002D8B00;
+  w->f388 = -95.0f;
+  w->f3A4 = 0;
+  func_002DE910(0x100, 2, p408, p404);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E18D0);
+
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E1A40);
 
 extern void amDisp_SetOffset(s32, s32);

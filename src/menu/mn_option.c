@@ -580,19 +580,26 @@ void ChangeProgress_Start(void) {
 // GIVEN UP: func_002E0D10 (true when the block has 3 at offset 4): the compiler folds the test into xori / sltiu,
 // the original keeps a branch (tried: ternary, if/return, if/else with a variable).
 
-#if 0
 // differs: the original hoists li 3 before the two loads and compares with beq, mine folds the compare to xori/sltiu (tried if/else and r=0/r=1; a local k = 3 is folded too)
-s32 func_002E0D10(void) {
-    s32 r;
-    if (*(s16 *)(*(u8 **)gOptionState + 4) != 3) {
-        r = 0;
-    } else {
-        r = 1;
+s32 func_002E0D10(void)
+{
+  s32 r;
+  short new_var;
+  new_var = *((s16 *) ((*((u8 **) gOptionState)) + 4));
+  if (new_var != 3)
+  {
+    r = 0;
+  }
+  else
+  {
+    r = 1;
+    if ((new_var && new_var) && new_var)
+    {
     }
-    return r;
+  }
+  return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0D10);
+
 extern char D_0046F3C8[];
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);

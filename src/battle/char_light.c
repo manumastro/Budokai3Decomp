@@ -96,35 +96,35 @@ s32 func_00235B60(void *a0) {
     return ((r / 10) % 100) < (u32)*(s16 *)(s0 + 0x22);
 }
 #endif
-#if 0
 // differs: 13 of 30: call, table store and the magic divide match; the original keeps 1 in v0 and 0xCCCCCCCD in a1 (ours: a0 and v1), and loads lim into v1 after the multu (6 forms tried)
-s32 func_00235B60(s32 *a0) {
-    s32 idx = *(s32 *)((char *)a0 + 0x1350);
-    u8 *s0 = (u8 *)D_0058BBB0 + idx * 192;
-    u32 r = func_0012EAE0(0x20);
-
-    s0[0x35] = 1;
-    return (u32)((r / 10) % 100) < (u32)*(s16 *)(s0 + 0x22);
+s32 func_00235B60(s32 *a0)
+{
+  s32 idx = *((s32 *) (((char *) a0) + 0x1350));
+  int new_var;
+  u8 *s0 = ((u8 *) D_0058BBB0) + (idx * 192);
+  u32 r = func_0012EAE0(0x20);
+  new_var = (r / 10) % 100;
+  r = *((s16 *) (s0 + 0x22));
+  s0[0x35] = 1;
+  return ((u32) new_var) < ((u32) r);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235B60);
+
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235BE0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235D90);
-// GIVEN UP: the branches are laid out with a b to the end (one instruction more than ours, 0x6C against 0x70); the arms swapped and early returns tried
-#if 0
-void func_00236020(u8 *p) {
-    s32 x = *(s32 *)((u8 *)gBattle + *(s8 *)(p + 6) * 0x2020 + 0x1B80);
-    s8 v = *(s8 *)(D_0058BBB0 + x * 0xC0 + 0x42);
+s32 func_0022F900(u8 *, s32, s8);
+s32 func_002300E0(u8 *, s32, s8);
+s32 func_00236020(u8 *arg0) {
+    s32 temp_a1;
+    s8 temp_a2;
 
-    if (v < 0) {
-        func_002300E0();
-    } else {
-        func_0022F900();
+    temp_a2 = *(s8 *)((u8 *)arg0 + 6);
+    temp_a1 = *(s32 *)((u8 *)(((u8 *)gBattle) + (temp_a2 * 0x2020)) + 0x1B80);
+    if (*(s8 *)((u8 *)(D_0058BBB0 + (temp_a1 * 0xC0)) + 0x42) <= -1) {
+        return func_002300E0(arg0, temp_a1, temp_a2);
     }
+    return func_0022F900(arg0, temp_a1, temp_a2);
 }
-#endif
-// round 5 chr2: 8 of 29 with the <= -1 test and two tail calls (f(a0) / g(a0)): the original puts the epilogue ld ra in the b delay slot of the then arm and repeats the epilogue in the else arm; same family as 236090.
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236020);
+
 // GIVEN UP: the original keeps a frame for the two calls (a tail call here)
 // // differs: 11 of 40 (round 4 chr): the original branches to the else arm 4 bytes before ours (no alignment nop before the second call), with the epilogue load in the b delay slot; if/else, ?: and returns in both arms tried.
 #if 0

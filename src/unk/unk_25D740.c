@@ -395,15 +395,13 @@ s32 Scr_CmdCall20E120(ScrCtx *ctx, ScrCmd *cmd) {
 
 /* differs: 2 of 10: the original loads args[1] into $a0 before the call and args[0] into $a1 in its delay slot;
    here the two loads take the opposite registers (tried temps in both declaration orders and the plain call). */
-#if 0
-s32 func_0025DB70(ScrCtx *ctx, ScrCmd *cmd) {
-    ScrArg *a = cmd->args;
-
-    func_0020E210(a[1].i, a[0].i);
-    return 1;
+s32 func_0025DB70(ScrCtx *ctx, ScrCmd *cmd)
+{
+  ScrArg *a = cmd->args;
+  func_0020E210(a[1].i, (unsigned long long) a[0].i);
+  return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DB70);
+
 
 s32 Scr_CmdObjVecCall4C(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
@@ -1387,36 +1385,36 @@ s32 Scr_CmdCall20F870(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 /* differs: 2 of 44 (the load of a[5] and a[3] are swapped in the delay slot of the lookup call) */
-#if 0
-s32 func_002600B0(ScrCtx *ctx, ScrCmd *cmd) {
-    ScrArg *a = cmd->args;
-    f32 f23 = a[3].f;
-    s32 s1 = a[5].i;
-    s32 s0 = a[4].i;
-    f32 f22 = a[2].f;
-    f32 f21 = a[1].f;
-    f32 f20 = a[0].f;
-    ScrObj *o = func_0020A720(a[6].i);
-    Slot16 *p;
-
-    if (s0 & 1) {
-        p = (Slot16 *)((char *)o + 0x60) + s1;
-        p->f0 = f23;
-        p->f4 = f22;
-        p->f8 = f21;
-        p->fC = f20;
-    }
-    if (s0 & 2) {
-        p = (Slot16 *)((char *)o + 0xA0) + s1;
-        p->f0 = f23;
-        p->f4 = f22;
-        p->f8 = f21;
-        p->fC = f20;
-    }
-    return 1;
+s32 func_002600B0(ScrCtx *ctx, ScrCmd *cmd)
+{
+  ScrArg *a = cmd->args;
+  s32 s1 = a[5].i;
+  f32 f23 = a[3].f;
+  s32 s0 = a[4].i;
+  f32 f22 = a[2].f;
+  f32 f21 = a[1].f;
+  f32 f20 = a[0].f;
+  ScrObj *o = func_0020A720(a[6].i);
+  Slot16 *p;
+  if (s0 & 1)
+  {
+    p = ((Slot16 *) (((char *) o) + 0x60)) + s1;
+    p->f0 = f23;
+    p->f4 = f22;
+    p->f8 = f21;
+    p->fC = f20;
+  }
+  if (s0 & 2)
+  {
+    p = ((Slot16 *) (((char *) o) + 0xA0)) + s1;
+    p->f0 = f23;
+    p->f4 = f22;
+    p->f8 = f21;
+    p->fC = f20;
+  }
+  return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002600B0);
+
 
 s32 Scr_CmdObjSetF8F18(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;

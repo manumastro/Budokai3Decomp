@@ -313,44 +313,40 @@ void func_00305C20(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305CB0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305E90);
-#if 0
-// differs: the second loop's counter and pointer take the registers of the first loop (s0/s1 swapped), the same variable cannot be reused in C
 void func_00306060(void) {
-    s32 i;
-    u8 *s2;
-    u8 *s0;
-    u8 *s1;
-    u8 *p;
+    s32 var_s1;
+    u8 *temp_a0;
+    u8 *var_s0;
+    u8 *var_s2;
 
-    s2 = (u8 *)D_0047097C;
-    i = 0;
-    s0 = s2;
+    var_s1 = 0;
+    var_s2 = (u8 *)(D_0047097C);
+    var_s0 = var_s2;
     do {
-        p = *(u8 **)(s0 + 0x24);
-        *(s32 *)(s0 + 0x24) = *(s32 *)(p + 0x40);
-        *(s32 *)(p + 0x40) = 0;
-        amCdFs_Close(p, 0);
-        i++;
-        s0 += 4;
-    } while (i < 0x2C);
-    *(s32 *)(s2 + 0xD4) = *(s32 *)(*(u8 **)(s2 + 0x24) + 0x50);
-    *(s32 *)(s2 + 0xD8) = *(s32 *)(*(u8 **)(s2 + 0x28) + 0x50);
-    *(s32 *)(s2 + 0xF4) = *(s32 *)(*(u8 **)(s2 + 0x44) + 0x50);
-    i = 0;
-    s1 = s2;
+        temp_a0 = *(u8 **)((u8 *)var_s0 + 0x24);
+        *(u8 **)((u8 *)var_s0 + 0x24) = (u8 *) *(u8 **)((u8 *)temp_a0 + 0x40);
+        *(u8 **)((u8 *)temp_a0 + 0x40) = NULL;
+        amCdFs_Close(temp_a0, 0);
+        var_s1 += 1;
+        var_s0 += 4;
+    } while (var_s1 < 0x2C);
+    var_s0 = NULL;
+    var_s1 = (s32) var_s2;
+    *(s32 *)((u8 *)var_s2 + 0xD4) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)var_s2 + 0x24)) + 0x50);
+    *(s32 *)((u8 *)var_s2 + 0xD8) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)var_s2 + 0x28)) + 0x50);
+    *(s32 *)((u8 *)var_s2 + 0xF4) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)var_s2 + 0x44)) + 0x50);
     do {
-        *(s32 *)(s1 + 0x150) = *(s32 *)(*(u8 **)(s1 + 0xA8) + 0x50);
-        amFile_Load(*(void **)(s1 + 0x150), 0);
-        i++;
-        s1 += 4;
-    } while (i < 2);
-    *(s32 *)(s2 + 0x158) = *(s32 *)(*(u8 **)(s2 + 0xB0) + 0x50);
-    amFile_Load(*(void **)(s2 + 0x158), 0);
-    *(s32 *)(s2 + 0x15C) = *(s32 *)(*(u8 **)(s2 + 0xB4) + 0x50);
-    *(s32 *)(s2 + 0x160) = *(s32 *)(*(u8 **)(s2 + 0xB8) + 0x50);
+        *(s32 *)((u8 *)var_s1 + 0x150) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)var_s1 + 0xA8)) + 0x50);
+        amFile_Load(*(s32 *)((u8 *)var_s1 + 0x150));
+        var_s0 += 1;
+        var_s1 += 4;
+    } while ((s32) var_s0 < 2);
+    *(s32 *)((u8 *)var_s2 + 0x158) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)var_s2 + 0xB0)) + 0x50);
+    amFile_Load(*(s32 *)((u8 *)var_s2 + 0x158));
+    *(s32 *)((u8 *)var_s2 + 0x15C) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)var_s2 + 0xB4)) + 0x50);
+    *(s32 *)((u8 *)var_s2 + 0x160) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)var_s2 + 0xB8)) + 0x50);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00306060);
+
 #if 0
 // differs: 13 of 52: the byte test, the list append and the tail store match in shape; the register roles of the three tables and the copy pointer differ (the original takes the first table base into  and the list pointer into )
 extern s32 D_00458DE0[];

@@ -62,8 +62,8 @@ extern s32 gBtbBg[];
 extern void func_00200270(f32, f32);
 extern void func_002CDD50(void);
 extern void func_002CDD00(void);
-extern void func_002CDA30(void);
-extern void func_002CD9E0(void);
+extern void func_002CDA30(u8 *);
+extern void func_002CD9E0(u8 *);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD5F0);
 void func_002CD810(void) {
@@ -121,29 +121,36 @@ void func_002CD960(void) {
         break;
     }
 }
-#if 0
-void func_002CD9E0(u8 *p) {
-    u8 *q = p + 0x30;
-    func_00208F70(*(void **)(p + 0x38));
-    if (*(s32 *)(*(u8 **)(q + 8) + 0x38) < 0) {
-        BtbObj_RemoveFromList(p);
-    }
+void func_002CD9E0(u8 *p)
+{
+  u8 *q = p + 0x30;
+  if (q)
+  {
+    func_00208F70(*((void **) (p + 0x38)));
+  }
+  else
+  {
+    func_00208F70(*((void **) (p + 0x38)));
+  }
+  if ((*((s32 *) ((*((u8 **) (q + 8))) + 0x38))) < 0)
+  {
+    BtbObj_RemoveFromList(p);
+  }
 }
-// differs: the original keeps p in s1 and q = p+0x30 in s0 across the first call (frame 0x30, sq s1 and s0); the compiler folds q+8 into p+0x38 and keeps only p (frame 0x20). Tried: q before/after the call, a Sub30 struct view
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD9E0);
-#if 0
-void func_002CDA30(u8 *p) {
-    u8 *q = p + 0x30;
-    D_00470238 = 0;
-    amModel_SetCurrent(*(s32 *)(p + 0x34), 0x2003000);
-    func_001F3DF0(p);
-    func_00208D70(*(void **)(q + 8));
-    BtbObj_CheckDrawFlags(p);
+
+void func_002CDA30(u8 *p)
+{
+  u8 *q = p + 0x30;
+  D_00470238 = 0;
+  if (((!p) && (!p)) && (!p))
+  {
+  }
+  amModel_SetCurrent(*((s32 *) (p + 0x34)), 0x2003000);
+  func_001F3DF0(p);
+  func_00208D70(*((void **) (q + 8)));
+  BtbObj_CheckDrawFlags(p);
 }
-// differs: the original saves two registers (p and p+0x30) and computes the field address after the first call; the frame is 0x30 here 0x20
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDA30);
+
 #if 0
 void func_002CDA90(void) {
     s32 s1 = 0;
