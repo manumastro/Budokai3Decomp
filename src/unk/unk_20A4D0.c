@@ -765,13 +765,13 @@ void func_00214FD0(void) {
 extern u8 D_00568B90[];
 extern u8 D_00568C10[];
 
-#if 0
 void func_00215040(s16 id, s16 mask, s16 k) {
     u8 *p;
     u8 *q;
     void (*f)(void *);
 
-    for (p = *(u8 **)D_00568B90; p != D_00568C10; p = *(u8 **)p) {
+    p = *(u8 **)D_00568B90;
+    while (p != D_00568C10) {
         if (id == -1 || *(s16 *)(p + 0x1C) == id) {
             if (*(s16 *)(p + 0x1E) & mask) {
                 q = p + 0x20;
@@ -785,11 +785,9 @@ void func_00215040(s16 id, s16 mask, s16 k) {
                 }
             }
         }
+        p = *(u8 **)p;
     }
 }
-// differs: the loop pointer and the offset pointer swap registers (p in s3, q in s4 here, the original the other way round); 12 of 56 differ even with the offset computed before the key test
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215040);
 void func_00209390(s32);
 
 void func_00215120(s16 id, s16 mask, s16 k) {
