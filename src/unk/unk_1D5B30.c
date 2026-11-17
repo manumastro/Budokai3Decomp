@@ -862,33 +862,29 @@ void func_001D8320(Fighter *c) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D83E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D8710);
-#if 0
-void *func_001D89E0(Fighter *c, s32 a1) {
-    s8 *p;
-    s32 i;
-    s32 m1;
+u8 *func_001D89E0(s32 arg0, s32 arg1) {
+    s32 var_t1;
+    s8 temp_a3;
+    u8 *temp_v0;
+    u8 *var_t0;
 
-    p = (s8 *)c->f1CF8;
-    i = 0;
-    m1 = -1;
-    do {
-        if (p[0x64] == m1) {
-            return NULL;
+    var_t0 = *(u8 **)(arg0 + 0x1CF8);
+    for (var_t1 = 0; var_t1 < 12; var_t1++, var_t0 += 4) {
+        temp_a3 = *(s8 *)(var_t0 + 0x64);
+        temp_v0 = var_t0 + 0x64;
+        if (temp_a3 == -1) {
+            break;
         }
-        if (p[0x64] == c->f1354->fB9C) {
-            if (a1 == m1 || p[0x65] == a1) {
-                return p + 0x64;
+        if (temp_a3 == *(s32 *)(*(u8 **)(arg0 + 0x1354) + 0xB9C)) {
+            if (arg1 == -1 || arg1 == *(s8 *)(temp_v0 + 1)) {
+                return temp_v0;
             }
-            return NULL;
+            break;
         }
-        i++;
-        p += 4;
-    } while (i < 12);
+    }
     return NULL;
 }
-#endif
-// differs: same size, but the original keeps the element pointer in v0 and the counter in t1 (28 of 32 differ); three local orders, a result variable and while/for shapes tried
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D89E0);
+
 void func_001D8A50(Fighter *c) {
     if (c->f1AC8 != NULL) {
         amTask_Kill(c->f1AC8);

@@ -779,19 +779,24 @@ extern u32 func_0012EAE0(s32);
 
 extern u32 func_0012EAE0(s32);
 
-#if 0
-// func_002A3080: the local registers come out in another order (the copy of a1 and the two loads of the arguments); seven variants tried
-s32 func_002A3080(s32 *a0, char *a1) {
-    s32 *args = *(s32 **)(a1 + 0x2C);
-    s32 *out = (s32 *)a1;
-    s32 s1 = args[1];
-    s32 s0 = args[0];
-    u32 r = func_0012EAE0(0x20) & 0x7FFFFFFF;
-    *out = (s32)(r % (u32)(s0 - s1)) + s1;
+
+s32 func_002A3080(s32 *a0, u8 *a1) {
+    s32 s1;
+    s32 s0;
+    s32 *args;
+    u32 r;
+    s32 m;
+
+    args = *(s32 **)(a1 + 0x2C);
+    s1 = args[1];
+    s0 = args[0];
+    r = func_0012EAE0(0x20) & 0x7FFFFFFF;
+    m = (s32)(r % (u32)(s0 - s1));
+    m += s1;
+    *(s32 *)a1 = m;
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3080);
+
 extern void Zenie_Open(s32);
 extern s32 *gEvtWork;
 
@@ -1523,26 +1528,26 @@ extern s32 func_002A1390();
 extern void func_002A11C0(s32, s32, s32);
 
 
-#if 0
-// func_002A4A30: the counter and the row share registers differently (original: idx in s2, counter in s1 set in the beqz delay slot); the scheduler moves the counter store after the row; four orders tried
-s32 func_002A4A30(s32 *a0) {
-    s32 i;
-    s32 idx = **(s32 **)a0;
-    s32 n = func_002A1390(a0);
-    if (0 < n) {
-        char *row;
-        i = 0;
-        row = D_005AB610 + idx * 240;
+s32 func_002A4A30(s32 **arg0) {
+    s32 temp_s2;
+    s32 var_s1;
+    s32 temp_v0;
+    u8 *var_s2;
+
+    temp_s2 = **arg0;
+    temp_v0 = func_002A1390();
+    var_s1 = 0;
+    if (0 < temp_v0) {
+        var_s2 = (u8 *)(D_005AB610 + (temp_s2 * 0xF0));
         do {
-            func_002A11C0(i, *(s32 *)(row + 4), 0x800000 + ((i + 1) << 8));
-            i++;
-            row += 0x18;
-        } while (i < n);
+            func_002A11C0(var_s1, *(s32 *)((u8 *)var_s2 + 4), ((var_s1 + 1) << 8) + 0x800000);
+            var_s1 += 1;
+            var_s2 += 0x18;
+        } while (var_s1 < temp_v0);
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4A30);
+
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4AD0);
 extern void func_002A4AD0(void);
 #if 0

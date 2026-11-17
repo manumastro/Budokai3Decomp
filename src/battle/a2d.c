@@ -358,22 +358,20 @@ void func_00225F30(s32 *a) {
     }
 }
 #endif
-#if 0
-// differs: 0x60 vs 0x70: the original keeps the object pointer in s1 across both calls (frame 0x30); ours keeps the loaded value of a0[1] in a saved register instead (3 forms tried in round 5)
-void func_00225F30(s32 *a0) {
-    s32 *v;
-    s32 *s0;
+void func_00225F30(s32 *arg0) {
+    s32 temp_a0;
+    u8 *temp_v0;
 
-    v = (s32 *)BtlSys_GetSlot(a0[0]);
-    v[0] = v[0] | 1;
-    v[5] = a0[1];
-    s0 = func_0023A890(a0[0], a0[1]);
-    if (*(s16 *)((u8 *)s0 + 0x50) < a0[1]) {
-        *(s16 *)((u8 *)s0 + 0x50) = a0[1];
+    temp_v0 = (u8 *)BtlSys_GetSlot(arg0[0]);
+    *(s32 *)temp_v0 = *(s32 *)temp_v0 | 1;
+    *(s32 *)(temp_v0 + 0x14) = arg0[1];
+    func_0023A890(arg0[0], arg0[1]);
+    temp_a0 = arg0[1];
+    if (*(s16 *)(temp_v0 + 0x50) < temp_a0) {
+        *(s16 *)(temp_v0 + 0x50) = (s16) temp_a0;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00225F30);
+
 void func_00225FA0(void) {
 }
 void func_00225FB0(void) {
