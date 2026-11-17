@@ -1,5 +1,8 @@
 #include "common.h"
 
+extern u8 D_0058BF50[];
+void func_00254100(s32);
+
 extern u8 D_0046AD90[];
 u8 *func_001F5FD0(s32, u8 *, s32, void (*)(void), void (*)(void));
 void func_002477C0(void);
@@ -249,6 +252,31 @@ void func_0023FBB0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023FBB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023FC80);
+#if 0
+void func_002400E0(void) {
+    u8 *s2 = D_0058BF50;
+    u8 *s1 = D_0046FDFC;
+    s32 i;
+
+    if (0 < *(s32 *)(D_00470570 + 0x88D8)) {
+        i = 0;
+        do {
+            if (*(s32 *)(s2 + 0x10) != 0) {
+                amCdFs_ReleaseCache(*(s32 *)(s2 + 0x10));
+            }
+            *(s32 *)(s2 + 0x10) = 0;
+            *(s32 *)(s1 + 0xE8C) = 0;
+            if (*(s32 *)(s1 + 0xEC0) != 0) {
+                func_00254100(*(s32 *)(s1 + 0xEC0));
+            }
+            i++;
+            s2 += 4;
+            s1 += 4;
+        } while (i < *(s32 *)(D_00470570 + 0x88D8));
+    }
+}
+// differs: the three locals (the table pointer, the sys pointer and the counter) do not take the registers of the original under any declaration order tried
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002400E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002401A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00240390);
