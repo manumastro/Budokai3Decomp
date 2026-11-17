@@ -32,7 +32,17 @@ void CsModel_CallIfSet(Task *t) {
         func_002B6DC0(t);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B7180);
+extern void func_0029E450(void *);
+extern void amHeap_Free(void *);
+
+void func_002B7180(u8 *a0) {
+    u8 *s0;
+    s0 = *(u8 **)(a0 + 0x30);
+    if (*(void **)s0 != 0) {
+        func_0029E450(*(void **)s0);
+    }
+    amHeap_Free(s0);
+}
 /* Sets the model's mode 4 (fB0) and clears fBC. */
 void CsModel_SetMode(Task *t) {
     CsModelWork *w = (CsModelWork *)t->data.work;
@@ -94,7 +104,29 @@ void CsModel_Start(Task *t) {
     func_002B7690(w);
     func_0022C700();
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8540);
+extern f32 D_004703BC;
+extern void func_001F0830(s32, s32);
+extern void func_001F0810(s32, s32);
+
+void func_002B8540(u8 *a0) {
+    u8 *s0;
+    s32 v;
+    s0 = *(u8 **)(a0 + 0x30);
+    v = *(s32 *)((u8 *)gPracMode + 0xC);
+    D_00470704 = v;
+    D_0047070C = 0x1000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x1000);
+    D_00470238 = 0;
+    func_002B7690(s0);
+    func_0022C700();
+    *(f32 *)(s0 + 0x68) = *(f32 *)(s0 + 0x68) - D_004703BC;
+    if (*(f32 *)(s0 + 0x68) <= 0.0f) {
+        func_001F0830(0x15, 0);
+        func_001F0810(0xA, 0);
+        *(void **)(a0 + 0x1C) = ((void *)CsModel_Start == 0) ? 0 : (void *)CsModel_Start;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B85F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B89E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8B50);
@@ -118,6 +150,35 @@ void CsModel_Start2(Task *t) {
     func_002B7690(w);
     func_0022C700();
 }
+extern f32 D_004703BC;
+extern u8 D_004B4B41[];
+extern u8 D_004B4B59[];
+extern void VsCharasel_Start(s32, s32);
+extern void PracMode_Exit();
+
+#if 0
+// differs: the prologue matches; the if body differs in register use (the original keeps 4, 1 and 2 in v0/v1 and loads the byte twice, lbu then lb)
+void func_002B8C70(u8 *a0) {
+    u8 *s0;
+    s32 v;
+    s0 = *(u8 **)(a0 + 0x30);
+    v = *(s32 *)((u8 *)gPracMode + 0xC);
+    D_00470704 = v;
+    D_0047070C = 0x1000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x1000);
+    D_00470238 = 0;
+    func_002B7690(s0);
+    func_0022C700();
+    *(f32 *)(s0 + 0x68) = *(f32 *)(s0 + 0x68) - D_004703BC;
+    if (*(f32 *)(s0 + 0x68) <= 0.0f) {
+        D_004B4B41[0] = 4;
+        D_004B4B59[0] = (*(u8 *)(s0 + 0x63) != 0) ? 2 : 1;
+        VsCharasel_Start(1, *(s8 *)(s0 + 0x63));
+        PracMode_Exit();
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8C70);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8D20);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B91F0);

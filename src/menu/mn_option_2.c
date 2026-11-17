@@ -156,7 +156,11 @@ void func_002E1BB0(void) {
     amDisp_SetOffset(c->f1E, c->f20);
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E1BB0);
+
+void func_002E1BB0(void) {
+    u8 *p = (u8 *)D_004E05DC;
+    amDisp_SetOffset(*(s16 *)(p + 0x1E), *(s16 *)(p + 0x20));
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E1BD0);
 extern s32 amSofdec_Draw(s32);
 extern void *amPkt_Alloc(s32);
