@@ -1225,7 +1225,50 @@ void func_001D9CA0(Fighter *c, s32 a1) {
     }
     func_001E73C0((Fighter *)((char *)c + 0x650));
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9D20);
+extern void func_002194C0(void *, s32, s32, s32);
+extern void AdxSlot_Pause(void *);
+extern void AdxSlot_Suspend(void *, s32, s32, s32);
+void func_001D9D20(Fighter *c, s32 a1) {
+    s32 s1;
+    char *s0;
+    char *e;
+    char *base;
+    s32 k;
+    s32 *p;
+
+    s0 = (char *)gBattle + ((c->f1350 + 3) << 5) + 0x5C4;
+    s1 = c->fB9C;
+    k = c->fBA8;
+    if (c->fBA4 != k) {
+        base = c->f1CF8;
+        if (*(u16 *)((char *)c + 0x1DB4) & (1 << k)) {
+            e = (char *)c + 0x1D14 + k * 20;
+        } else {
+            e = base + 0xD4 + k * 20;
+        }
+        s1 = *(s16 *)((char *)D_00447450 + *(s16 *)(e + 2) * 96 + *(s16 *)(e + 4) * 8);
+    }
+    if (a1 >= 0x7D0) {
+        func_002194C0(s0, s1, a1 - 0x7D0, -1);
+    } else if (a1 >= 0x3E8) {
+        p = (s32 *)((char *)c + 0x1A70);
+        if (*p >= 0) {
+            func_00144430(p);
+            *p = -1;
+        }
+        func_001E73C0((Fighter *)((char *)c + 0x650));
+        AdxSlot_Pause(s0);
+    } else {
+        AdxSlot_Stop(s0);
+        p = (s32 *)((char *)c + 0x1A70);
+        if (*p >= 0) {
+            func_00144430(p);
+            *p = -1;
+        }
+        func_001E73C0((Fighter *)((char *)c + 0x650));
+        AdxSlot_Suspend(s0, s1, a1, -1);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9EB0);
 void func_001DA150(Fighter *c) {
     c->f1A70 = -1;
@@ -2845,6 +2888,65 @@ void func_001E5C10(Fighter *c, s32 a1, s32 a2) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5C20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E62C0);
+#if 0
+typedef struct P66 {
+    s32 f0;
+    f32 f4;
+    s32 f8;
+    s32 fC;
+} P66;
+
+extern void func_001C8480(s32, s32);
+
+void func_001E66E0(Fighter *c) {
+    P66 *s1;
+    s32 s0;
+    f32 f20;
+    struct {
+        f32 a;
+        s32 b;
+        s32 cc;
+        s32 d;
+    } buf;
+    Fighter *a1;
+
+    a1 = (Fighter *)c->f30;
+    s0 = a1->f568;
+    s1 = (P66 *)((char *)c + 0x30);
+    if (gBattle->f88EC == 0) {
+        s1->f4 = s1->f4 + gBattle->f88F0 * *(f32 *)((char *)a1 + 0x64C);
+    }
+    if (s1->f8 == 0) {
+        f20 = s1->f4 / 5.0f;
+    } else {
+        f20 = (15.0f - s1->f4) / 15.0f;
+    }
+    if (f20 > 1.0f) {
+        f20 = 1.0f;
+    } else if (f20 < 0.0f) {
+        f20 = 0.0f;
+    }
+    if (s1->f4 > 15.0f) {
+        if (s1->f8 == 1) {
+            amTask_Kill(c);
+            return;
+        }
+        if (s1->f8 == 0) {
+            func_001C8480(s0, s1->fC);
+            func_001E2190((Fighter *)s0, s1->fC);
+            func_001E9B00((void *)1, 0x15, 0, 0, 0.0f, 1.0f);
+            s1->f4 = 0.0f;
+            s1->f8 = 1;
+        }
+    }
+    buf.a = f20;
+    buf.b = 0x1000;
+    buf.cc = 0xFFFFFF;
+    buf.d = 0xFFFFFF;
+    func_001E11E0(s0, &buf);
+}
+#endif
+// differs: size 0x198 vs 0x1B0 (6 instructions short): the clamp join keeps the 15.0f constant in a different place (lui/mtc1 at the join, original), the kill arm sits out of line in the original; clamp and kill arm shapes tried (4 combinations)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E66E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6890);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6CE0);
@@ -2923,6 +3025,73 @@ void func_001E7180(Fighter *c) {
 #endif
 // differs: the f88EC test branches the other way (bnez/beqz), the hi/lo reads are scheduled differently, and the float add takes its operands in the other order (9 of 46 instructions differ)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E7180);
+extern void func_001A5510();
+extern void func_001A5350(void *, f32);
+extern void func_001C9EF0();
+#if 0
+extern void func_001A5510();
+extern void func_001A5350(void *, f32);
+extern void func_001C9EF0();
+
+void func_001E7240(Fighter *c) {
+    char *p;
+    s32 a;
+    s32 a2;
+    s32 v;
+    s32 q;
+    s32 ok;
+    f32 f;
+
+    if (c->f66C != 0) {
+        return;
+    }
+    p = (char *)c->f540;
+    if (p == 0) {
+        return;
+    }
+    a = c->f640;
+    ok = 0;
+    if (a >= 0) {
+        v = (a >> 16) - 1;
+        a2 = a & 0xFFFF;
+        if (v >= 0 && v < 16) {
+            q = *(s32 *)(p + 0x2C + v * 4);
+            if (q != 0) {
+                if (a2 >= 0 && a2 < *(s32 *)(q + 0x14)) {
+                    if (*(s32 *)(*(char **)(q + 0x18) + a2 * 16 + 4) > 0) {
+                        ok = 1;
+                    }
+                }
+            }
+        }
+    }
+    if (ok) {
+        if (*(s32 *)(p + 0x78) != a) {
+            *(s8 *)(p + 0x6E) = -1;
+            *(s8 *)(p + 0x6C) = -1;
+            *(s32 *)(p + 0x70) = -1;
+            *(s32 *)(p + 0x74) = 0xBF800000;
+            *(s8 *)(p + 0x6D) = -1;
+            *(s8 *)(p + 0x6F) = -1;
+            *(s32 *)(p + 0x78) = a;
+        }
+        f = *(f32 *)((char *)c + 0x644);
+        if (!(f <= *(f32 *)(p + 0x74))) {
+            *(s32 *)(p + 0x70) = -1;
+        }
+        *(f32 *)(p + 0x7C) = f;
+        func_001A5510(p + 0x20);
+    } else {
+        func_001C9EF0(p, 0, 0);
+    }
+    if (*(s8 *)(p + 0x6C) == *(s8 *)(p + 0x6D)) {
+        func_001A5350(p + 0x20, 0.6f);
+    } else {
+        func_001A5350(p + 0x20, 0.75f);
+    }
+}
+#endif
+// differs: compiled size 0x158 vs 0x180: the flag sits in v0 and the value in a1 in the original (ours a3/a1 swapped), the ok-test chain differs (10 instructions short); the double-vs-float call argument fixed (f32 prototype of 1A5350); declaration orders searched, no size change
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E7240);
 void func_001E73C0(Fighter *c) {
     if (c->f66C == 0) {
@@ -3545,4 +3714,58 @@ void func_001E9E30(void) {
 s32 func_001E9ED0(void) {
     return !D_004705D4;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E9EE0);
+extern void func_001E9980(void *);
+extern void amSound_Command(void *);
+extern void func_00144C00(s32, s32, s32, s32, s32, s32);
+extern void amFile_Load(s32 h);
+extern s32 *func_001A5130(s32 f, s32 i);
+extern void amCdFs_Close(void *, s32);
+extern char D_00469690[];
+void func_001E9EE0(void) {
+    s32 buf[16];
+    char *s2;
+    char *s1;
+    s32 i;
+    s32 s3;
+    s32 *v;
+    char *t;
+
+    s2 = (char *)gBattle + 0x290;
+    if (D_004705D4 != 0) {
+        return;
+    }
+    memset(buf, 0, 0x40);
+    buf[0] = 0;
+    buf[1] = 0x2D000;
+    buf[2] = 0x55000;
+    buf[3] = 0xDC000;
+    buf[4] = 0x147800;
+    buf[15] = 0x2D000;
+    amSound_Command(buf);
+    func_00144C00(3, 3, 0x50A, 0x50A, 0, 0);
+    for (i = 0; i < 4; i++) {
+        s1 = *(char **)(s2 + 0x30);
+        if (s1 != 0) {
+            *(char **)(s2 + 0x30) = *(char **)(s1 + 0x40);
+            s3 = *(s32 *)(*(char **)(s1 + 0x40) + 0x50);
+            amFile_Load(s3);
+            v = func_001A5130(s3, 0);
+            *(s32 *)(s2 + 0x10) = v[0];
+            *(s32 *)(s2 + 0x08) = v[1];
+            v = func_001A5130(s3, 1);
+            *(s32 *)(s2 + 0x0C) = v[0];
+            *(s32 *)(s2 + 0x04) = v[1];
+            v = func_001A5130(s3, 2);
+            *(s32 *)(s2 + 0x28) = v[0];
+            *(s32 *)(s2 + 0x24) = v[1];
+            *(s32 *)(s1 + 0x40) = 0;
+            amCdFs_Close(s1, 0);
+        }
+        s2 += 0xCC;
+    }
+    t = (char *)amTask_Create((void (*)(void *))func_001E9980, 0, 0x4000, 0x20, 0x80000000, D_00469690);
+    *(s32 *)(t + 0x30) = 0;
+    *(s32 *)(t + 0x34) = 0;
+    *(s32 *)(t + 0x38) = 4;
+    D_004705D4 = (s32)t;
+}
