@@ -30,7 +30,7 @@ extern void func_001A8770(int, void *);
 extern void func_001E18B0(void *, int);
 extern void func_001E1A40(void *, int);
 extern void func_001E1BD0(void *, int, int);
-extern void func_001E3550(void *);
+extern void func_001E3550();
 extern void func_001E4FA0(void *, int);
 extern void func_001E4820(void *, f32, int);
 extern void func_001C8A50(void *, int, int);
@@ -612,7 +612,24 @@ int func_001CE220(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE220);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE2A0);
+extern void func_001E2190(void *, s32);
+extern void func_001E7070(void *, s32);
+extern void func_001E8290(void *);
+int func_001CE2A0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x = p[0];
+    s32 j = p[1];
+    char *t = D_00470570->tbl[p[2]];
+    char *s0 = t + j * 0x680 + 0x650;
+    if (j == 0) {
+        func_001E2190(t, x);
+        func_001E3550(t);
+    } else {
+        func_001E7070(s0, x);
+        func_001E8290(s0);
+    }
+    return 1;
+}
 // differs: 18 of 21. The Arg pointer is in v1 in the original (a1 ours); p[0]==0 is sltu+xori in the original, sltiu in ours. Explicit table local and flag local tried.
 #if 0
 int func_001CE340(void *unused, Arg *a) {
