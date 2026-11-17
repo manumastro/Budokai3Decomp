@@ -2673,6 +2673,61 @@ void func_001B9B00(Fighter *f) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9B00);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9CA0);
+extern s32 func_001E9290(Fighter *c);
+#if 0
+// differs: 98 of 132 differ: the first gBattle product block is scheduled differently (the original loads gBattle once per block with lui/addu at); the rest (sub-object counters, the abs table tests, the clamp) matches in shape; 2 forms of the first statement tried
+void func_001B9E70(Fighter *f) {
+    u8 *sub;
+    s16 *t;
+    s32 a;
+    f32 x18 = FT_FIELD(f, f32, 0x18A4);
+    f32 c9c = FT_FIELD(f, f32, 0xC9C);
+    f32 w = gBattle->unk88F0 * c9c;
+    FT_FIELD(f, f32, 0x18A4) = x18 - 3.0f * w;
+    if (gBattle->unk8944 == 0 && gBattle->unk8AB2 == 0) {
+        if (FT_FIELD(f, s16, 0x13A4) < 0) {
+            FT_FIELD(f, f32, 0x18A4) = FT_FIELD(f, f32, 0x18A4) - (f32)func_001E9290(f);
+        } else {
+            sub = (u8 *)f + 0x1360;
+            if (FT_FIELD(sub, s32, 0x48) == 1) {
+                FT_FIELD(f, f32, 0x18A4) = FT_FIELD(f, f32, 0x18A4) - 3.0f;
+            }
+            if (FT_FIELD(sub, s32, 0x4C) == 1) {
+                FT_FIELD(f, f32, 0x18A4) = FT_FIELD(f, f32, 0x18A4) - 3.0f;
+            }
+            if (FT_FIELD(sub, s32, 0x50) == 1) {
+                FT_FIELD(f, f32, 0x18A4) = FT_FIELD(f, f32, 0x18A4) - 3.0f;
+            }
+            if (FT_FIELD(sub, s32, 0x54) == 1) {
+                FT_FIELD(f, f32, 0x18A4) = FT_FIELD(f, f32, 0x18A4) - 3.0f;
+            }
+            t = (s16 *)(sub + (FT_FIELD(sub, s32, 0x58) << 2) + 0x64);
+            if (t[0] != 0) {
+                a = t[1];
+                if (a < 0) {
+                    a = -a;
+                }
+                if (a == 1) {
+                    FT_FIELD(f, f32, 0x18A4) = FT_FIELD(f, f32, 0x18A4) - 3.5f;
+                }
+            }
+            t = (s16 *)(sub + (FT_FIELD(sub, s32, 0x5C) << 2) + 0x64);
+            if (t[0] != 0) {
+                a = t[1];
+                if (a < 0) {
+                    a = -a;
+                }
+                if (a == 1) {
+                    FT_FIELD(f, f32, 0x18A4) = FT_FIELD(f, f32, 0x18A4) - 3.5f;
+                }
+            }
+        }
+    }
+    if (FT_FIELD(f, f32, 0x18A4) < 0.0f) {
+        FT_FIELD(f, f32, 0x18A4) = 0.0f;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9E70);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BA070);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BA570);
@@ -4201,6 +4256,79 @@ void func_001C6780(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C6860);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C7130);
+extern char D_00428C60[];
+extern void func_001D7A70(void *c);
+extern void func_001D79F0(void *c);
+extern void func_001DF1F0(void *c);
+extern void func_001C7130(void);
+#if 0
+// differs: 87 of 115 differ: the case chain is laid out as a switch (reversed case order tried) but the saved registers: the original keeps i in s1, the parameter in s0, the gBattle pointer in s3; ours moves them
+void func_001C73B0(void *pp) {
+    u8 *p;
+    s32 i;
+    u8 *bb;
+    u8 *s2;
+    u8 *v;
+    s32 code;
+    s32 k;
+    p = (u8 *)pp;
+    bb = (u8 *)gBattle;
+    i = 0;
+    do {
+        code = FT_FIELD(p, s16, 0x20);
+        s2 = bb + 0x830;
+        v = p + 0x10;
+        FT_FIELD(bb, s32, 0x252C) = code;
+        FT_FIELD(bb, s32, 0x2530) = FT_FIELD(p, s16, 0x22);
+        switch (code) {
+        case 0x41:
+        case 0x43:
+        case 0x45:
+        case 0x49:
+            if (FT_FIELD(v, s16, 0x14) < 2) {
+                FT_FIELD(v, s16, 0x14) = 1;
+            }
+            if (FT_FIELD(v, s16, 0x16) < 2) {
+                FT_FIELD(v, s16, 0x16) = 1;
+            }
+            break;
+        case 0x47:
+            if (FT_FIELD(v, s16, 0x14) < 3) {
+                FT_FIELD(v, s16, 0x14) = 2;
+            }
+            if (FT_FIELD(v, s16, 0x16) < 3) {
+                FT_FIELD(v, s16, 0x16) = 2;
+            }
+            break;
+        case 0x54:
+            FT_FIELD(v, s16, 0x14) = 1;
+            FT_FIELD(v, s16, 0x16) = 1;
+            FT_FIELD(s2, s32, 0x1CFC) = 0x23;
+            break;
+        case 0x4E:
+            FT_FIELD(v, s16, 0x14) = 2;
+            FT_FIELD(v, s16, 0x16) = 2;
+            FT_FIELD(s2, s32, 0x1CFC) = 0x23;
+            break;
+        case 0x4F:
+            FT_FIELD(v, s16, 0x14) = 3;
+            FT_FIELD(v, s16, 0x16) = 3;
+            FT_FIELD(s2, s32, 0x1CFC) = 0x23;
+            break;
+        }
+        FT_FIELD(s2, void *, 0x1CF4) = v;
+        k = FT_FIELD(s2, s32, 0x1CFC);
+        FT_FIELD(s2, void *, 0x1CF8) = (void *)(D_00428C60 + k * 0x174);
+        func_001D7A70(s2);
+        func_001D79F0(s2);
+        func_001DF1F0(s2);
+        i++;
+        bb += 0x2020;
+        p += 0x50;
+    } while (i < 4);
+    func_001C7130();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C73B0);
 void BtlChara_Reset(s32 i) {
     func_001DF500((u8 *)gBattle + 0x830 + i * 0x2020);
@@ -4448,6 +4576,60 @@ void func_001C8500(Fighter *f, s32 i) {
     amCdFs_Close(s1, 0);
     e[6] = 1;
 }
+extern void func_001C8500(Fighter *f, s32 i);
+extern void func_001E53B0(Fighter *f, s32 i);
+extern void func_001E5C10(void *p, Fighter *f, s32 i);
+#if 0
+// differs: 98 of 100 differ: the frame is 0x50 with four saved registers in the original (f, the slot pointer, the index, the walk pointer) and ours keeps f in s4 with five; the word-view of 0x1ED8 and the two-slot loads did not change the register layout
+void func_001C8600(Fighter *f) {
+    s32 *a;
+    s32 *b;
+    void *s2;
+    void *p;
+    s32 i;
+    a = (s32 *)((u8 *)f + 0x1ED8);
+    b = (s32 *)((u8 *)f + 0x1EF0);
+    s2 = (void *)a[5];
+    if (s2 != 0) {
+        a[5] = (s32)FT_FIELD(s2, void *, 0x40);
+        a[0] = FT_FIELD(FT_FIELD(s2, void *, 0x40), s32, 0x50);
+        amFile_Load(a[0]);
+        FT_FIELD(s2, s32, 0x40) = 0;
+        amCdFs_Close(s2, 0);
+        a[1] = func_001A50F0(a[0], 0);
+        amFile_Load(a[1]);
+        a[3] = func_001A50F0(a[0], 2);
+        amFile_Load(a[3]);
+        a[4] = func_001A50F0(a[0], 3);
+    }
+    s2 = (void *)b[1];
+    if (s2 != 0) {
+        b[1] = (s32)FT_FIELD(s2, void *, 0x40);
+        b[0] = FT_FIELD(FT_FIELD(s2, void *, 0x40), s32, 0x50);
+        amFile_Load(b[0]);
+        FT_FIELD(s2, s32, 0x40) = 0;
+        amCdFs_Close(s2, 0);
+    }
+    i = 0;
+    do {
+        func_001C8500(f, i);
+        p = (void *)FT_FIELD(f, s32, 0x1DB8 + i * 4);
+        if (p != 0) {
+            if (FT_FIELD(p, s32, 0x24) == 0) {
+                func_001CA8F0(p);
+                func_001E53B0(f, i);
+                func_001C7D90(f, i, (void *)0);
+            }
+        }
+        i++;
+    } while (i < 8);
+    i = 0;
+    do {
+        func_001E5C10((u8 *)f + 0x650 + i * 0x680, f, i);
+        i++;
+    } while (i < 2);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8600);
 #if 0
 s32 func_001C8780(Fighter *f, s32 i) {
