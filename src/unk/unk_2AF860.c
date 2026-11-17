@@ -575,6 +575,43 @@ s32 func_002B1C60(u8 *s) {
 // differs: 8 of 65 instructions differ: the original keeps the halfword field pointer (s1+0x1A) in $a1 from the first compare (delay slot of its beqz); with a pointer declared early or used only in the H<9 arm the compiler folds it into lh 0x1A(s1). Tried 3 variants.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1C60);
+#if 0
+void func_002B1D70(u8 *s) {
+    s32 idx = *(s32 *)(s + 0x24);
+    u64 mask = (u64)1 << *(s32 *)(s + 0x1C);
+    u8 *p = s + idx * 28 + 0x48;
+    s16 *t3 = (s16 *)(p + 8);
+    u8 *a3 = D_004E0688;
+    u8 *bp = *(u8 **)(gSklEdit + 0x44) + 1;
+    s32 a1 = 0;
+    s32 v1 = 0;
+    s32 j;
+    for (j = 1; j < 0x253; j++) {
+        if ((*(u64 *)a3 & mask) != 0 && (a3[0xA] & 3) == idx && (a3[8] & 7) != 0 && *bp != 0) {
+            if (a1 >= *(s32 *)p) {
+                if (v1 < 9) {
+                    *t3 = (s16)j;
+                }
+                t3++;
+                v1++;
+            } else {
+                a1++;
+            }
+        }
+        a3 += 0x28;
+        bp++;
+    }
+    *(s16 *)(p + 0x1A) = (s16)(*(s32 *)p + v1);
+    if (v1 < 9) {
+        do {
+            *t3 = -1;
+            t3++;
+            v1++;
+        } while (v1 < 9);
+    }
+}
+// differs: 0x110 against 0x120 bytes (4 instructions short): the same skill-table loop as func_002B1B10; the counters sit in the other registers (the original reuses a1 for the store count and adds j+1 in the store arm). Declaration orders and the signed byte test tried.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1D70);
 extern u8 *D_004706CC;
 void func_002B1E90(u8 *d, u8 *b, s32 idx, s32 flags) {
