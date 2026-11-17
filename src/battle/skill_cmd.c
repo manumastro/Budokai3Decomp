@@ -543,8 +543,6 @@ void SkillKill_Kind08(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C950);
-// GIVEN UP: differs: 4 of 86: the VU0 pair (ob+0x20 and ob+0x30 pointers) is computed in the other order and register, the rest is relocation-masked calls; tried operand order, local pointers (6 of 86), 4 forms
-#if 0
 extern s32 func_00209540(s32, s32, s32);
 extern void func_00146F30(s32 *);
 extern void func_00146F10(s32 *, s32 *, f32);
@@ -568,13 +566,11 @@ void func_0024CB00(SkillObj *ob) {
     r = func_0020B020(side, *(s16 *)(s2 + 0x30), *(s16 *)(s2 + 0x36));
     ob->unk54 = (void *)func_00209540(r, side ? 0x4000020 : 0x4000010, 0);
     __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(*(u8 **)(s1 + 0x1354) + 0x660), "r"(tmp));
-    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%0) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%2)"
-        : : "r"((u8 *)ob + 0x20), "r"(tmp), "r"((u8 *)ob + 0x30));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)"
+        : : "r"((u8 *)ob + 0x30), "r"(tmp), "r"((u8 *)ob + 0x20));
     func_00146F30((s32 *)((u8 *)ob + 0x30));
     func_00146F10((s32 *)((u8 *)ob + 0x30), (s32 *)((u8 *)ob + 0x30), *(f32 *)(s2 + 0x28) * SkillObj_Scale());
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CB00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CC60);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CDD0);
 void SkillKill_Kind07(s32 *p) {
