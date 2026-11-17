@@ -2388,12 +2388,81 @@ void func_002A7B50(struct Task *a0) {
         }
     }
 }
+extern s32 func_0022D860(s32, f32);
+extern char D_0046EAA8[];
+extern s32 D_004700A8;
+extern void func_002A75C0(struct Task *);
+#if 0
+// func_002A7CB0: 161 of 178 differ. The block order is wrong: the original tests 2 first (beq chain), lays out the 4/0 block first, then 5/1, then 2; ours puts the 2 block first (bne to the else chain). Reordering the source is not tried yet; the 2 block keeps the same instructions.
+void func_002A7CB0(struct Task *a0) {
+    s32 *s0 = gEvtWork;
+    s32 s1 = *(u16 *)((char *)s0 + 0x14);
+    s32 *tbl;
+    void *fn;
+    if (s0[0xC / 4] & 1) {
+        func_00264140(-1, 0);
+        s0[0x98 / 4] = 0;
+        D_00470704 = s0[0x78 / 4];
+        D_0047070C = 0x870000;
+        D_00470708 = 0;
+        amModel_SetCurrent(s0[0x78 / 4], 0x870000);
+        D_00470238 = 0;
+        if (s1 == 2) {
+            s0[0x90 / 4] = 0;
+            s0[0x94 / 4] = 1;
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x80 / 4] = func_0022D860(tbl[s0[0x90 / 4]], 0.0f);
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x84 / 4] = func_0022D860(tbl[s0[0x94 / 4]], 0.0f);
+            D_004700A8 = -1;
+            fn = (void *)func_002A7B50;
+            *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        } else if (s1 == 5 || s1 == 1) {
+            s0[0x90 / 4] = 6;
+            s0[0x94 / 4] = 7;
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x80 / 4] = func_0022D860(tbl[s0[0x90 / 4]], 0.0f);
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x84 / 4] = func_0022D860(tbl[s0[0x94 / 4]], 0.0f);
+            s0 = gEvtWork;
+            if (s0 != 0) {
+                s0[0xC / 4] = s0[0xC / 4] | 1;
+                if (s0[0x124 / 4] >= 0) {
+                    s0[0x128 / 4] = (s32)amTask_Create((TaskFunc)func_002A7160, NULL, 0x8000, 0x4000, 0, D_0046EAA8);
+                    s0[0x12C / 4] = 0;
+                }
+            }
+            fn = (void *)func_002A75C0;
+            *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+            D_004700A8 = -1;
+        } else if (s1 == 4 || s1 == 0) {
+            s0[0x90 / 4] = 4;
+            s0[0x94 / 4] = 5;
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x80 / 4] = func_0022D860(tbl[s0[0x90 / 4]], 0.0f);
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x84 / 4] = func_0022D860(tbl[s0[0x94 / 4]], 0.0f);
+            s0 = gEvtWork;
+            if (s0 != 0) {
+                s0[0xC / 4] = s0[0xC / 4] | 1;
+                if (s0[0x124 / 4] >= 0) {
+                    s0[0x128 / 4] = (s32)amTask_Create((TaskFunc)func_002A7160, NULL, 0x8000, 0x4000, 0, D_0046EAA8);
+                    s0[0x12C / 4] = 0;
+                }
+            }
+            D_004700A8 = s1 + 0x40000001;
+            fn = (void *)func_002A7B50;
+            *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7CB0);
 extern f32 func_002B06A0(void);
 extern void func_0022E0B0(s32);
 extern s32 func_0022D670(s32, f32);
 extern void func_0022C7D0(s32, f32, s32);
-extern void func_002A7CB0(void);
+extern void func_002A7CB0(struct Task *);
 void func_002A7F70(struct Task *a0) {
     s32 *s0;
     s32 *p;
