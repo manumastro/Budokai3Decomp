@@ -61,24 +61,20 @@ s32 func_00225380(void) {
     return *(s16 *)(sys + 0xE44);
 }
 
-// GIVEN UP: the original keeps p in s1 and the result in s0 across its calls; no source form tried matched the registers.
-// GIVEN UP: the code is right; the original keeps the result of the second call in a saved register (a 16-byte-larger frame) and the parameter in s1
-#if 0
-void func_002253B0(s32 *a0) {
-    s32 *s;
+void func_002253B0(u8 *arg0) {
+    u8 *temp_s0;
+    u8 *temp_v0;
 
-    BtlSys_GetSlot(a0[0]);
-    s = func_0021C660(a0[0]);
-    if (a0[1] != 0) {
-        s[8] = s[4];
-        s[13] = 0;
-        s[0] |= 0x100000;
-    } else {
-        s[0] &= 0xFFEFFFFF;
+    temp_s0 = (u8 *)BtlSys_GetSlot(*(s32 *)((u8 *)arg0 + 0));
+    temp_v0 = (u8 *)func_0021C660(*(s32 *)((u8 *)arg0 + 0));
+    if (*(s32 *)((u8 *)arg0 + 4) != 0) {
+        *(s32 *)((u8 *)temp_s0 + 0x20) = (s32) *(s32 *)((u8 *)temp_v0 + 0x10);
+        *(s32 *)((u8 *)temp_s0 + 0x34) = 0;
+        *(s32 *)((u8 *)temp_s0 + 0) = (s32) (*(s32 *)((u8 *)temp_s0 + 0) | 0x100000);
+        return;
     }
+    *(s32 *)((u8 *)temp_s0 + 0) = (s32) (*(s32 *)((u8 *)temp_s0 + 0) & 0xFFEFFFFF);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002253B0);
 void func_00225440(void) {
     func_0023A4B0();
 }
