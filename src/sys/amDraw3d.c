@@ -450,7 +450,29 @@ L00131560:
     j func_001315AC
     lhu       $t4, 0x0($a0)
 }
-INCLUDE_ASM("asm/nonmatchings/sys/amDraw3d", func_00131570);
+asm void func_00131570(void) {
+L00131570:
+    srl        $t5, $t4, 4
+    srl        $t6, $t4, 10
+    andi       $t4, $t4, 0x1F
+    andi       $t5, $t5, 0x3E
+    andi       $t6, $t6, 0x1F
+    add        $at, $t4, $t5
+    lhu        $t4, 0x2($a0)
+    add        $at, $at, $t6
+    srl        $at, $at, 2
+    sll        $t5, $at, 5
+    sll        $t6, $at, 10
+    add        $at, $at, $t5
+    add        $at, $at, $t6
+    sh         $at, 0x2000($a0)
+    addi       $a0, $a0, 0x2
+L001315AC:
+    bnez       $a1, L00131570
+    addi      $a1, $a1, -0x2
+    jr         $ra
+    nop
+}
 asm void func_001315C0(s32 a0, s32 a1) {
 L001315C0:
     lw         $t0, -32696($gp)
