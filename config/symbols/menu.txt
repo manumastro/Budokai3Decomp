@@ -15,3 +15,42 @@ MainMenu_Exit = 0x00267BB0; // type:func
 MainMenu_Start = 0x00267C40; // type:func
 MainMenu_Load = 0x00267D60; // type:func
 gMainMenu = 0x004707D8; // size:0x4
+
+// Each menu mode has the same three entry points: X_Load allocates the mode's global block and starts reading its
+// files (func_0025C670, file ids 0x10xxx), X_Start creates its task ("# NAME #") and work area, X_Exit frees them.
+// The files named after a mode that hold one or two functions only (mn_TourMode_2, mn_VsCharasel_2, ...) are these
+// entry points, cut from the rest of their source by the inferred boundaries.
+TourMode_Start = 0x002C4010; // type:func
+TourMode_Load = 0x002C4140; // type:func
+gTourMode = 0x00470914; // size:0x4
+VsCharasel_Start = 0x002805B0; // type:func
+VsCharasel_Load = 0x00280690; // type:func
+gVsCharasel = 0x00470818; // size:0x4
+OutputPass_Start = 0x002F5690; // type:func
+OutputPass_Load = 0x002F5760; // type:func
+gOutputPass = 0x00470970; // size:0x4
+ArenaRegCharList_Start = 0x0030D480; // type:func
+ArenaRegCharList_Load = 0x0030D590; // type:func
+gArenaRegCharList = 0x00470994; // size:0x4
+PracMode_Exit = 0x002B96F0; // type:func
+PracMode_Start = 0x002B9790; // type:func
+PracMode_Load = 0x002B9850; // type:func
+gPracMode = 0x0047090C; // size:0x4
+InputName_Start = 0x002F4090; // type:func
+gInputName = 0x0047096C; // size:0x4
+
+// mn_InputName.c: draws one sprite of the mode's bank centred at (300, 180).
+InputName_DrawSprite = 0x002F4150; // type:func guess
+
+// ess_edit.c: allocates its 0x58-byte work area, reads two files and opens skl_edit on a save slot's record.
+EssEdit_Load = 0x0026F170; // type:func guess
+gEssEdit = 0x004707F4; // size:0x4
+gEssEditSlot = 0x00470814; // size:0x1 guess
+
+// skl_edit.c: a 0x3D8-byte block shared by its users (gSklEditUsers counts them): Open allocates it on the first
+// call and starts its task, Close frees it on the last.
+SklEdit_Init = 0x002B51E0; // type:func
+SklEdit_Close = 0x002B5210; // type:func
+SklEdit_Open = 0x002B5330; // type:func
+gSklEdit = 0x00470900; // size:0x4
+gSklEditUsers = 0x00470904; // size:0x4

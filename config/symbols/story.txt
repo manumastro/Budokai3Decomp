@@ -1,1 +1,7 @@
 // Names for the story files (docs/decomp_guide.md, "Symbol files").
+
+// opening.c / str_title.c: the work area of each, allocated and cleared (the rest of each file is elsewhere).
+Opening_Init = 0x002E2210; // type:func guess
+gOpening = 0x0047093C; // size:0x4
+StrTitle_Load = 0x0029CDF0; // type:func
+gStrTitle = 0x004708BC; // size:0x4
