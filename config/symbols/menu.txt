@@ -1,1 +1,17 @@
 // Names for the menu files (docs/decomp_guide.md, "Symbol files").
+
+// mn_mainmenu.c ("# MAIN MENU #" task): Load allocates the 0x14-byte block and starts reading the menu's four
+// files; Start creates the task (cursor, mode); TaskLoad waits for the files and sets up the work area; TaskOpen
+// counts the opening timer down; TaskMain reads the pad (up/down move the cursor, X picks, triangle goes back);
+// TaskDecide / TaskCancel keep drawing after X / triangle; Exit frees everything.
+MainMenu_InitWork = 0x00267300; // type:func guess
+MainMenu_TaskDecide = 0x00267420; // type:func guess
+MainMenu_TaskCancel = 0x00267430; // type:func guess
+MainMenu_TaskMain = 0x00267440; // type:func
+MainMenu_TaskOpen = 0x00267910; // type:func guess
+MainMenu_TaskLoad = 0x002679F0; // type:func
+MainMenu_Clear = 0x00267BA0; // type:func guess
+MainMenu_Exit = 0x00267BB0; // type:func
+MainMenu_Start = 0x00267C40; // type:func
+MainMenu_Load = 0x00267D60; // type:func
+gMainMenu = 0x004707D8; // size:0x4
