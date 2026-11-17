@@ -501,6 +501,12 @@ def repair(ctext, cerr, decls, filetext=""):
             body = l.strip()
             m = re.match(r"^(?:[\w ]+\s+)?(\*?[\w\[\]\.\->\(\)\*\s]+?)\s=\s(.*);$", body)
             call = re.match(r"^(?:(.*?)\s=\s)?(\w+)\((.*)\);$", body)
+            if call and call.group(1) and frm.endswith("*") and to.endswith("*"):
+                # a pointer returned into a differently typed pointer lhs: cast the call result (the args are never pointers here)
+                if not re.search(r"=\s*\(%s\)\s*%s\(" % (re.escape(want), call.group(2)), body):
+                    lines[i] = f"{ind}{call.group(1)} = ({want}){call.group(2)}({call.group(3)});"
+                    changed = True
+                    break
             if call and call.group(2) in decls:
                 proto = decls[call.group(2)]
                 pm = re.match(r"^extern .*?\b%s\((.*)\);" % call.group(2), proto)
@@ -511,7 +517,7 @@ def repair(ctext, cerr, decls, filetext=""):
                     for a, p in zip(args, ptypes):
                         pt = p.replace("const ", "")
                         simple = re.fullmatch(r"-?(0x[0-9A-Fa-f]+|\d+)", a)
-                        if pt in C_TYPES.values() and pt not in ("f32", "f32 *") and not simple and not a.startswith("("):
+                        if pt in C_TYPES.values() and pt not in ("f32", "f32 *") and not simple and not a.startswith(f"({pt})"):
                             new.append(f"({pt})({a})")
                         else:
                             new.append(a)
@@ -601,6 +607,7 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
             cerr = compile_scratch(scratch, version, flags, obj, incs)
             if not cerr:
                 break
+            if os.environ.get("M2C_DEBUG"): print("ATTEMPT", attempt, first_error(cerr), file=sys.stderr)
             new = repair(ctext, cerr, decls, before)
             for sym in UNDEF_RE.findall(cerr):
                 # a symbol m2c used but nobody declared (a callee whose address is taken, a global of another type)
