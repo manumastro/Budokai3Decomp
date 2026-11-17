@@ -20,10 +20,10 @@ extern u32 D_0047ACC0[];
 extern Spr D_00340390[];
 extern u16 D_00340380[];
 extern u16 D_003402E0[];
-extern void func_00140D30(s32, s32, s32, s32, void *, s32, s32, s32);
+extern void amDma_Request(s32, s32, s32, s32, void *, s32, s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/sys/unk_12EC10", func_0012EC10);
-void func_0012ECB0(void) {
+INCLUDE_ASM("asm/nonmatchings/sys/unk_12EC10", amDbg_Printf);
+void amDbg_Draw(void) {
     f32 sx;
     f32 sy;
     s32 x;
@@ -81,7 +81,7 @@ void func_0012ECB0(void) {
         p = (Spr *)((u32)D_003402E0 | 0x20000000);
         ((u16 *)p)[0] = n + 1;
         ((u16 *)p)[6] = n;
-        func_00140D30(0, 1, 1, 1, D_003402E0, 0, 0, 0);
+        amDma_Request(0, 1, 1, 1, D_003402E0, 0, 0, 0);
     }
 }
 

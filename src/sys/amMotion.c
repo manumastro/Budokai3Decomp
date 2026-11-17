@@ -13,8 +13,8 @@ extern s32 D_00470308;
 extern void **D_004702F0;
 extern char *D_00470300;
 extern char D_003F0800[];
-extern void func_0013BD20(void *);
-s32 func_0013CAE0(char *, char *);
+extern void amMotion_Create(void *);
+s32 amMotion_MatchName(char *, char *);
 extern void func_0013C1E0(void *, f32, f32);
 extern void func_0013B0B0(void *);
 extern void func_0013B110(s32);
@@ -65,7 +65,7 @@ typedef struct Bone {
     struct Bone *next;
 } Bone;
 extern void func_0013B060(void *);
-void func_0013DD60(Bone *);
+void amMotion_WalkTree(Bone *);
 extern void func_00142100(void *, void *);
 
 
@@ -147,7 +147,7 @@ INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BAF0);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BBD0);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BC00);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BC30);
-s32 func_0013BC70(MotHdr *m, u32 flags) {
+s32 amMotion_CalcSize(MotHdr *m, u32 flags) {
     s32 size;
     s32 n;
     size = 0x24B0;
@@ -161,12 +161,12 @@ s32 func_0013BC70(MotHdr *m, u32 flags) {
     }
     return size;
 }
-void func_0013BCF0(MotObj *o) {
+void amMotion_CreateFromObj(MotObj *o) {
     D_00470304 = o;
-    func_0013BD20(*(void **)o->hdr->p1C);
+    amMotion_Create(*(void **)o->hdr->p1C);
 }
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BD20);
-void func_0013C070(MotInst *o, s32 slot, MotHdr *anim) {
+INCLUDE_ASM("asm/nonmatchings/sys/amMotion", amMotion_Create);
+void amMotion_BindAnim(MotInst *o, s32 slot, MotHdr *anim) {
     s16 *map;
     MotHdr *model;
     s32 i;
@@ -179,45 +179,45 @@ void func_0013C070(MotInst *o, s32 slot, MotHdr *anim) {
     for (i = 0; i < model->n10; i++) {
         found = 0;
         for (j = 0; j < anim->n18 && !found; j++) {
-            found = func_0013CAE0((char *)model->p1C + i * 32, (char *)anim->p1C + j * 32);
+            found = amMotion_MatchName((char *)model->p1C + i * 32, (char *)anim->p1C + j * 32);
         }
         map[i] = found ? j - 1 : -1;
     }
 }
-void func_0013C170(MotInst *o, s32 a1) {
+void amMotion_Update(MotInst *o, s32 a1) {
     D_00470308 = a1;
     if (o->slot0.p10) func_0013CC40(o, &o->slot0);
     if (o->slot1.p10) func_0013CC40(o, &o->slot1);
 }
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C1E0);
-void func_0013C500(MotInst *o, f32 a, f32 b) {
+void amMotion_Apply(MotInst *o, f32 a, f32 b) {
     if (b != 0.0f) {
-        func_0013C170(o, 0);
+        amMotion_Update(o, 0);
         func_0013C1E0(o, a, b);
     }
 }
-void func_0013C580(MotInst *o) {
+void amMotion_BuildMatrices(MotInst *o) {
     D_004702F0 = (void **)((char *)o + 8);
     D_00470300 = (char *)o->x408;
     func_0013B0B0(D_003F0800);
-    func_0013DD60((Bone *)o->model->p14);
+    amMotion_WalkTree((Bone *)o->model->p14);
     func_0013B110(1);
 }
-s32 func_0013C5E0(MotHdr *m, void *node) {
+s32 amMotion_FindBone(MotHdr *m, void *node) {
     s32 i;
     if (!m->p1C) return -1;
     for (i = 0; i < m->n10; i++) {
-        if (func_0013CAE0((char *)m->p1C + i * 32, node)) return i;
+        if (amMotion_MatchName((char *)m->p1C + i * 32, node)) return i;
     }
     return -1;
 }
-void func_0013C6A0(MotInst *o) {
+void amMotion_SavePose(MotInst *o) {
     func_0012EFF0(o->p460, o->p45C, (u32)(o->n418 << 7) >> 6);
 }
-void func_0013C6E0(MotInst *o) {
+void amMotion_LoadPose(MotInst *o) {
     func_0012EFF0(o->p45C, o->p460, (u32)(o->n418 << 7) >> 6);
 }
-void func_0013C720(MotInst *dst, MotInst *src) {
+void amMotion_CopyPose(MotInst *dst, MotInst *src) {
     s32 i;
     s32 found;
     s32 j;
@@ -226,7 +226,7 @@ void func_0013C720(MotInst *dst, MotInst *src) {
         for (j = 0; j < dst->n418; j++) {
             if (*(s8 *)((char *)src->model->p1C + i * 32) == 'X') continue;
             if (*(s8 *)((char *)dst->model->p1C + j * 32) == 'X') continue;
-            found = func_0013CAE0((char *)src->model->p1C + i * 32, (char *)dst->model->p1C + j * 32);
+            found = amMotion_MatchName((char *)src->model->p1C + i * 32, (char *)dst->model->p1C + j * 32);
             if (found > 0) break;
         }
         if (found > 0) {
@@ -234,7 +234,7 @@ void func_0013C720(MotInst *dst, MotInst *src) {
         }
     }
 }
-s32 func_0013C860(Track4 *t, f32 frame) {
+s32 amMotion_FindKey4(Track4 *t, f32 frame) {
     s32 i;
     s32 step;
     if (frame < 1.0f) return 0;
@@ -250,7 +250,7 @@ s32 func_0013C860(Track4 *t, f32 frame) {
     }
     return ((f32)t->key[i].frame <= frame) ? i : i - 1;
 }
-s32 func_0013C940(Track8 *t, f32 frame) {
+s32 amMotion_FindKey8(Track8 *t, f32 frame) {
     s32 i;
     s32 step;
     if (frame < 1.0f) return 0;
@@ -266,7 +266,7 @@ s32 func_0013C940(Track8 *t, f32 frame) {
     }
     return ((f32)t->key[i].frame <= frame) ? i : i - 1;
 }
-s32 func_0013CA10(Track16 *t, f32 frame) {
+s32 amMotion_FindKey16(Track16 *t, f32 frame) {
     s32 i;
     s32 step;
     if (frame < 1.0f) return 0;
@@ -282,7 +282,7 @@ s32 func_0013CA10(Track16 *t, f32 frame) {
     }
     return ((f32)t->key[i].frame <= frame) ? i : i - 1;
 }
-s32 func_0013CAE0(char *a, char *b) {
+s32 amMotion_MatchName(char *a, char *b) {
     s32 i;
     s32 j;
     i = func_00127BA0(a) - 1;
@@ -305,7 +305,7 @@ INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013CC40);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013CE50);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013D360);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013D9B0);
-s32 func_0013DA60(Track8s *t, f32 frame, s32 i) {
+s32 amMotion_FindKeyHint8(Track8s *t, f32 frame, s32 i) {
     s32 mid;
     if (frame < 1.0f) return 0;
     if (i == -1) {
@@ -334,7 +334,7 @@ s32 func_0013DA60(Track8s *t, f32 frame, s32 i) {
     }
     return mid;
 }
-s32 func_0013DBF0(Track16 *t, f32 frame, s32 i) {
+s32 amMotion_FindKeyHint16(Track16 *t, f32 frame, s32 i) {
     s32 mid;
     if (frame < 1.0f) return 0;
     if (i == -1) {
@@ -363,7 +363,7 @@ s32 func_0013DBF0(Track16 *t, f32 frame, s32 i) {
     }
     return mid;
 }
-void func_0013DD60(Bone *b) {
+void amMotion_WalkTree(Bone *b) {
     void *m;
     void *pf;
     func_0013B0B0(0);
@@ -390,13 +390,13 @@ void func_0013DD60(Bone *b) {
             : : "r"(D_00470300));
         D_004702F0++;
         D_00470300 += 0x40;
-        if (b->child) func_0013DD60(b->child);
+        if (b->child) amMotion_WalkTree(b->child);
         b = b->next;
         func_0013B060(0);
     }
     func_0013B110(1);
 }
-void func_0013DE60(Bone *b) {
+void amMotion_WalkTreeRest(Bone *b) {
     func_0013B0B0(0);
     while (b) {
         __asm__ volatile (
@@ -414,7 +414,7 @@ void func_0013DE60(Bone *b) {
             "sqc2 $vf31, 0x30(%0)\n"
             : : "r"(D_00470300));
         D_00470300 += 0x40;
-        if (b->child) func_0013DE60(b->child);
+        if (b->child) amMotion_WalkTreeRest(b->child);
         b = b->next;
         func_0013B060(0);
     }

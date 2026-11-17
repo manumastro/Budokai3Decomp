@@ -9,3 +9,382 @@ func_001315C0 = 0x001315C0; // type:func size:0x60
 .L001315D8 = 0x001315D8; // type:label
 func_00131620 = 0x00131620; // type:func size:0xE0
 .L00131644 = 0x00131644; // type:label
+
+// Model-file relocation: turn the offsets of a loaded file into pointers (unk_12C540.c).
+amFile_Relocate = 0x0012C540; // type:func // guess
+// File loaders chosen by the tag after the file's first byte; registration of a loader (unk_12C360.c).
+amFile_Load = 0x0012C360; // type:func // guess
+amFile_AddLoader = 0x0012C480; // type:func // guess
+
+// ADX stream channels: set-up, stop, status, volume, LRU order (unk_12C540.c; they call ADXT_*).
+amAdx_Init = 0x0012D2E0; // type:func // guess
+amAdx_Reset = 0x0012D4F0; // type:func // guess
+amAdx_Enable = 0x0012D5A0; // type:func // guess
+amAdx_PlayFile = 0x0012D650; // type:func // guess
+amAdx_PlayAfs = 0x0012D790; // type:func // guess
+amAdx_Stop = 0x0012D900; // type:func // guess
+amAdx_GetStat = 0x0012D9F0; // type:func // guess
+amAdx_IsStopped = 0x0012DA30; // type:func // guess
+amAdx_SetVolume = 0x0012DB00; // type:func // guess
+amAdx_Pause = 0x0012DC30; // type:func // guess
+amAdx_IsPlaying = 0x0012DC60; // type:func // guess
+amAdx_FindFree = 0x0012DD20; // type:func // guess
+amAdx_Touch = 0x0012DDD0; // type:func // guess
+gAdxStream = 0x0047020C; // size:0x4 // guess
+
+// Camera and trig helpers (unk_12DE80.c): sine table at D_003F0940 read through the uncached mirror.
+amCamera_Init = 0x0012DE80; // type:func // guess
+amCamera_SetScreen = 0x0012DEE0; // type:func // guess
+amCamera_SetView = 0x0012DF60; // type:func // guess
+amCamera_LookAt = 0x0012E640; // type:func // guess
+amMath_SinI = 0x0012E700; // type:func // guess
+amMath_CosI = 0x0012E750; // type:func // guess
+amMath_SinCosI = 0x0012E7A0; // type:func // guess
+amRand_SetSeed = 0x0012EAD0; // type:func // guess
+amDbg_Print = 0x0012EBA0; // type:func // guess
+amDbg_Printf = 0x0012EC10; // type:func // guess
+amDbg_Draw = 0x0012ECB0; // type:func // guess
+amDisp_SetOffset = 0x0012E930; // type:func // guess
+
+// Packet area allocator (unk_12EF80.c).
+amPkt_Init = 0x0012F100; // type:func // guess
+amPkt_Reset = 0x0012F190; // type:func // guess
+amPkt_Alloc = 0x0012F230; // type:func // guess
+amPkt_AllocTop = 0x0012F260; // type:func // guess
+
+// amDraw3d.c: GS set-up and transfers.
+amDraw3d_Sync = 0x0012FBB0; // type:func // guess
+amDraw3d_SetScreen = 0x00130D10; // type:func // guess
+amDraw3d_Flip = 0x001303E0; // type:func // guess
+amDraw3d_SetTexFrame = 0x001308A0; // type:func // guess
+amDraw3d_SetTexZ = 0x00130AE0; // type:func // guess
+amDraw3d_SetDefaultRegs = 0x00131200; // type:func // guess
+amDraw3d_ScreenShot = 0x001313B0; // type:func // guess
+// unk_133620 / unk_137440: build GIF/VIF packets at the bump pointer D_00470228 (one quadword per entry) and count
+// the quadwords in D_00470290 / D_00470294 / D_00470298; func_00137D20 closes the current packet. All guesses.
+gPacketPtr = 0x00470228; // size:0x4 // guess
+gPacketQwc = 0x00470290; // size:0x4 // guess
+amDraw_ClosePacket = 0x00137D20; // type:func // guess
+// Swap-and-return setters of GS register shadows (old value returned).
+amGs_SetReg32 = 0x001339D0; // type:func // guess
+amGs_SetReg64 = 0x00133A50; // type:func // guess
+amGs_SetReg64b = 0x00133AD0; // type:func // guess
+// Scissor and screen setup (GS SCISSOR packing at func_00132F60).
+amDraw_SetScissor = 0x00132F60; // type:func // guess
+
+// unk_137EE0: GS packet helpers and a pool of 32 0x50-byte list nodes (free stack D_0047D4E0, list head/tail).
+amDraw_FlushPacket = 0x00137EE0; // type:func // guess
+amDraw_SetPacketMode = 0x00137FC0; // type:func // guess
+amDraw_KickPending = 0x00137FF0; // type:func // guess
+amDraw_Null = 0x00138380; // type:func // guess
+amDraw_PutTexRegs = 0x00139090; // type:func // guess
+amNode_Clear24 = 0x00139610; // type:func // guess
+amNode_InitPool = 0x001398E0; // type:func
+amNode_Alloc = 0x00139950; // type:func
+amNode_Free = 0x00139A00; // type:func
+gNodePool = 0x0047CAE0; // size:0xA00
+gNodeFreeStack = 0x0047D4E0; // size:0x80
+gNodeUsed = 0x004702A8; // size:0x4
+gNodeHead = 0x004702AC; // size:0x4
+gNodeTail = 0x004702B0; // size:0x4
+
+// unk_139DE0: the heap (64-byte aligned blocks, 0x20-byte headers with magic 0xD2ACD2AC) and light attenuation.
+amModel_SetupPart = 0x00139DE0; // type:func // guess
+// amLight_Update: luminance 0.299/0.587/0.114, near/far falloff
+amLight_Update = 0x0013A690; // type:func // guess
+amHeap_Init = 0x0013A960; // type:func
+amHeap_Reset = 0x0013AA10; // type:func
+amHeap_Alloc = 0x0013AAB0; // type:func
+amHeap_Free = 0x0013AC90; // type:func
+amHeap_FindFree = 0x0013ADE0; // type:func
+gHeapFirst = 0x004702B8; // size:0x4
+gHeapLast = 0x004702BC; // size:0x4
+gHeapCount = 0x004702C0; // size:0x4
+gHeapFree = 0x004702C8; // size:0x4
+gHeapRaw = 0x004702CC; // size:0x4
+gHeapOutOfMemory = 0x004702DC; // size:0x4
+
+// unk_13AE80: heap block split and the VU0 matrix stack (64-byte entries).
+amHeap_Split = 0x0013AE80; // type:func
+amMtxStack_Init = 0x0013AF80; // type:func
+amMtxStack_Pop = 0x0013B000; // type:func // guess
+gMtxStackPtr = 0x004702E0; // size:0x4
+gMtxStackDepth = 0x004702E4; // size:0x4
+
+// amMotion.c: motion instances, bone-name matching, key searches, matrix tree walks.
+amMotion_CalcSize = 0x0013BC70; // type:func
+amMotion_CreateFromObj = 0x0013BCF0; // type:func // guess
+amMotion_Create = 0x0013BD20; // type:func
+amMotion_BindAnim = 0x0013C070; // type:func
+amMotion_Update = 0x0013C170; // type:func // guess
+amMotion_Apply = 0x0013C500; // type:func // guess
+amMotion_BuildMatrices = 0x0013C580; // type:func // guess
+amMotion_FindBone = 0x0013C5E0; // type:func
+amMotion_SavePose = 0x0013C6A0; // type:func // guess
+amMotion_LoadPose = 0x0013C6E0; // type:func // guess
+amMotion_CopyPose = 0x0013C720; // type:func // guess
+amMotion_FindKey4 = 0x0013C860; // type:func
+amMotion_FindKey8 = 0x0013C940; // type:func
+amMotion_FindKey16 = 0x0013CA10; // type:func
+amMotion_MatchName = 0x0013CAE0; // type:func
+amMotion_FindKeyHint8 = 0x0013DA60; // type:func
+amMotion_FindKeyHint16 = 0x0013DBF0; // type:func
+amMotion_WalkTree = 0x0013DD60; // type:func // guess
+amMotion_WalkTreeRest = 0x0013DE60; // type:func // guess
+// Proposed names for group D (amObject.c, unk_13FC20.c, unk_140890.c, unk_141230.c, amSofdec.c, unk_142AA0.c).
+
+// DMA request queues (unk_140890.c, unk_141230.c): two rings of DMA requests (D_0047E080), each started on a free
+// channel; AddDmacHandler2 installs func_00141070 as the channel's queue handler, AddDmacHandler installs
+// func_00141230 as its end handler. func_00140B50 prints the queue's state (D_0045F550) when it is cleared.
+amDma_Init = 0x00140890; // type:func
+amDma_SetQueueMask = 0x00140A10; // type:func // guess
+amDma_InstallHandlers = 0x00140A50; // type:func
+amDma_ResetQueue = 0x00140B50; // type:func
+amDma_WaitQueue = 0x00140BF0; // type:func
+// amDma_SendToSpr: channel 9: toSPR
+amDma_SendToSpr = 0x00140C50; // type:func // guess
+// amDma_SendFromSpr: channel 8: fromSPR
+amDma_SendFromSpr = 0x00140CC0; // type:func // guess
+amDma_Request = 0x00140D30; // type:func
+amDma_StartNext = 0x00140EF0; // type:func
+amDma_QueueHandler = 0x00141070; // type:func
+amDma_EndHandler = 0x00141230; // type:func
+gDmaQueue = 0x0047E080; // size:0x18
+gDmaQueueBusy = 0x004704B0; // size:0x8
+gDmaQueueReqs = 0x00470310; // size:0x8
+gDmaQueueSize = 0x0047030C; // size:0x4
+gDmaChanQueue = 0x0047E040; // size:0x10
+gDmaChanNextQueue = 0x0047E050; // size:0x10
+gDmaChanRegs = 0x003F08D0; // guess
+
+// Motion sets (amSofdec.s 0x141280-0x1414C0): up to 16 motions bound to a skeleton by bone name (0x2044 bytes).
+amMotSet_Init = 0x00141280; // type:func // guess
+amMotSet_Bind = 0x001412D0; // type:func // guess
+amMotSet_Apply = 0x001413D0; // type:func // guess
+
+// Movies (amSofdec.c from 0x142490 on, and unk_142AA0.s up to 0x1432BC): one MWSFD player (D_0047E0A0); the
+// player is created with "amSofdec.c" as the allocation tag (func_001427D0).
+amSofdec_Init = 0x00142490; // type:func
+amSofdec_Exit = 0x00142560; // type:func
+amSofdec_DestroyAll = 0x00142590; // type:func
+amSofdec_Update = 0x00142670; // type:func
+amSofdec_Create = 0x001427D0; // type:func
+amSofdec_Destroy = 0x001429B0; // type:func
+amSofdec_StartFname = 0x00142AA0; // type:func
+amSofdec_StartAfs = 0x00142B70; // type:func
+amSofdec_Stop = 0x00142C30; // type:func
+amSofdec_GetStat = 0x00142D00; // type:func
+amSofdec_IsStopped = 0x00142D60; // type:func
+// amSofdec_Draw: : uploads the decoded frame to the GS as a texture
+amSofdec_Draw = 0x00142E80; // type:func // guess
+gSofdecMovie = 0x0047E0A0; // size:0x108
+gSofdecFree = 0x00470318; // size:0x1
+gSofdecFreeCount = 0x0047031C; // size:0x4
+
+// The sound driver on the IOP (AMSOUND) through SIF RPC (unk_142AA0.s from 0x1432C0): binds RPC server 0x11 and
+// sends one command per call (the command numbers are the second argument of sceSifCallRpc).
+amSound_Init = 0x001432C0; // type:func
+amSound_Command = 0x001437E0; // type:func // guess
+amSound_LoadBank = 0x00143870; // type:func // guess
+amSound_LoadStream = 0x001439C0; // type:func // guess
+amSound_LoadBank2 = 0x00143C10; // type:func // guess
+gSoundRpc = 0x0047E3C0;
+gSoundSendBuf = 0x00470320; // size:0x4
+gSoundRecvBuf = 0x0047E2C0; // guess
+gSoundState = 0x00470328; // size:0x4 // guess
+
+// Camera (amObject.c, unk_13FC20.c): view matrix from a direction (func_0013FC20), projection to the clip
+// rectangle (func_0013FE60), and drawing an object through VU0 (the matrices live in vf24-vf31).
+amObject_GetSize = 0x0013DF20; // type:func
+amObject_Create = 0x0013DF40; // type:func
+amObject_Draw = 0x0013DFE0; // type:func // guess
+amCamera_SetClip = 0x0013FE60; // type:func // guess
+// amMc.c: memory-card layer over Sony's libmc. Each request calls an sceMc* function (func_0011Axxx) and leaves a
+// callback in gMcDoneFn that func_001A1F90 calls when sceMcSync reports the end; the callbacks set gMcState
+// (1 busy, 2 done, 3 error) and gMcResult, then chain gMcNextFn.
+amMc_Init = 0x001A1E80; // type:func
+amMc_Sync = 0x001A1F90; // type:func
+amMc_GetInfo = 0x001A2010; // type:func
+// amMc_Format: sceMcFormat-like call
+amMc_Format = 0x001A20D0; // type:func // guess
+amMc_GetDir = 0x001A2150; // type:func
+amMc_CheckFile = 0x001A21D0; // type:func // guess
+amMc_Delete = 0x001A2270; // type:func // guess
+amMc_Unformat = 0x001A22F0; // type:func // guess
+amMc_Load = 0x001A2370; // type:func
+// amMc_Save: opens with mode 0x202 = create|write
+amMc_Save = 0x001A25A0; // type:func // guess
+amMc_OnGetInfo = 0x001A26D0; // type:func
+amMc_OnFormat = 0x001A2990; // type:func // guess
+amMc_OnGetDir = 0x001A2A10; // type:func
+amMc_OnDelete = 0x001A2A90; // type:func // guess
+amMc_OnUnformat = 0x001A2B10; // type:func // guess
+amMc_OnOpen = 0x001A2B90; // type:func
+amMc_OnRead = 0x001A2C10; // type:func
+amMc_OnWrite = 0x001A2D40; // type:func // guess
+amMc_OnClose = 0x001A2DC0; // type:func // guess
+amMc_CheckFileNext = 0x001A2E40; // type:func // guess
+amMc_LoadNext = 0x001A2F20; // type:func
+amMc_ReadNext = 0x001A30B0; // type:func
+gMcState = 0x004704F8; // size:0x4
+gMcResult = 0x004704FC; // size:0x4
+gMcPort = 0x004704E8; // size:0x4
+gMcSlot = 0x004704EC; // size:0x4
+gMcDoneFn = 0x0047055C; // size:0x4
+gMcNextFn = 0x00470560; // size:0x4
+gMcInfo = 0x00492E40; // size:0x80
+gMcDirEnt = 0x00492E00; // size:0x40
+gMcFileName = 0x00492D50; // guess
+
+// amCdFs.c: file system over CRI ADXF: a queue of read requests (gCdReqHead / gCdReqTail), a cache of files kept
+// in memory, and directories ("Setup host/DVD/CD file system", "CDFS: Close buffer over.").
+amCdFs_Init = 0x0025BEE0; // type:func
+amCdFs_Reset = 0x0025C2A0; // type:func
+amCdFs_SetHeap = 0x0025C400; // type:func // guess
+amCdFs_LoadDir = 0x0025C410; // type:func
+amCdFs_ReadFile = 0x0025C570; // type:func
+amCdFs_ReadFileId = 0x0025C670; // type:func
+amCdFs_CloseAll = 0x0025C780; // type:func
+amCdFs_Close = 0x0025C800; // type:func
+amCdFs_ReleaseCache = 0x0025C9D0; // type:func
+amCdFs_Start = 0x0025CA10; // type:func
+amCdFs_Update = 0x0025CDE0; // type:func
+amCdFs_Main = 0x0025D3D0; // type:func // guess
+amCdFs_AllocReq = 0x0025D400; // type:func
+amCdFs_FreeReq = 0x0025D450; // type:func
+amCdFs_Unlink = 0x0025D4E0; // type:func
+amCdFs_AllocCache = 0x0025D540; // type:func
+amCdFs_FreeCache = 0x0025D590; // type:func
+amCdFs_FindCache = 0x0025D610; // type:func
+amCdFs_CheckDir = 0x0025D6C0; // type:func
+gCdReqHead = 0x00470774; // size:0x4
+gCdReqTail = 0x00470778; // size:0x4
+
+// unk_144CE0: task list ("TCB Head" / "TCB Tail" sentinels), prioritised, with per-task timing.
+amTask_Init = 0x00144CE0; // type:func
+amTask_Run = 0x00144EC0; // type:func
+amTask_Create = 0x00144FC0; // type:func
+amTask_Kill = 0x00145120; // type:func
+amTask_KillGroup = 0x00145180; // type:func
+amTask_KillRange = 0x00145340; // type:func
+amTask_SetPause = 0x00145410; // type:func // guess
+amTask_Free = 0x00145430; // type:func
+gTaskHead = 0x0047E430; // size:0x40
+gTaskTail = 0x0047E470; // size:0x40
+
+// unk_145490: GS memory layout of the two frame / texture areas (0x3FC0 pages of 256 bytes).
+amVram_Init = 0x00145490; // type:func // guess
+amVram_Set = 0x00145860; // type:func // guess
+amVram_Apply = 0x001459B0; // type:func // guess
+// Script machines: the table at gScrMachines, allocated by Scr_Init ("script.c" passed to the debug allocator), one entry per running script file
+Scr_Init = 0x00149E50; // type:func
+Scr_KillAllTasks = 0x0014A240; // type:func // guess
+Scr_Free = 0x0014A2C0; // type:func
+Scr_Alloc = 0x0014A470; // type:func
+Scr_KillTasks = 0x0014A570; // type:func // guess
+Scr_SetData = 0x0014A5D0; // type:func
+Scr_SetCallback44 = 0x0014A610; // type:func // guess
+Scr_SetStartCallback = 0x0014A640; // type:func // guess
+Scr_SetEndCallback = 0x0014A670; // type:func // guess
+Scr_SetTaskStartCallback = 0x0014A6A0; // type:func // guess
+Scr_SetTaskEndCallback = 0x0014A6D0; // type:func // guess
+Scr_Start = 0x0014A700; // type:func
+Scr_TaskMain = 0x0014A7C0; // type:func // guess
+Scr_TaskExit = 0x0014AAA0; // type:func
+Scr_CreateTask = 0x0014DAD0; // type:func
+
+// Operand readers of the byte code: an int / float value, the address of an int / float operand, a 4-byte copy
+Scr_Copy4 = 0x0014D390; // type:func
+Scr_ReadInt = 0x0014D3C0; // type:func
+Scr_ReadFloat = 0x0014D570; // type:func
+Scr_IntOperand = 0x0014D750; // type:func
+Scr_FloatOperand = 0x0014D910; // type:func
+
+// Opcode handlers (machine, context, pc): moves, stack, arithmetic, logic, trigonometry (angles 0x10000 = 2 pi), jumps, calls, returns. Return 1 = next opcode; 2 = stack error; (n << 8) + 3 / 7 = wait; 4, 5, 6 = other requests to the task loop (guess)
+ScrOp_Nop = 0x0014AB50; // type:func // guess
+ScrOp_MovI = 0x0014AB60; // type:func
+ScrOp_ClrI = 0x0014ABD0; // type:func
+ScrOp_MovF = 0x0014AC10; // type:func
+ScrOp_ClrF = 0x0014AC80; // type:func
+ScrOp_OneF = 0x0014ACC0; // type:func
+ScrOp_ItoF = 0x0014AD10; // type:func
+ScrOp_FtoI = 0x0014AD90; // type:func
+ScrOp_PushI = 0x0014AE10; // type:func
+ScrOp_PushF = 0x0014AE60; // type:func
+ScrOp_PopI = 0x0014AEB0; // type:func
+ScrOp_PopF = 0x0014AF10; // type:func
+ScrOp_IncI = 0x0014AF70; // type:func
+ScrOp_DecI = 0x0014AFE0; // type:func
+ScrOp_AddI = 0x0014B060; // type:func
+ScrOp_SubI = 0x0014B100; // type:func
+ScrOp_MulI = 0x0014B1A0; // type:func
+ScrOp_DivI = 0x0014B240; // type:func
+ScrOp_ModI = 0x0014B300; // type:func
+ScrOp_NegI = 0x0014B3C0; // type:func
+ScrOp_PowI = 0x0014B430; // type:func // guess
+ScrOp_IncF = 0x0014B4F0; // type:func
+ScrOp_DecF = 0x0014B570; // type:func
+ScrOp_AddF = 0x0014B5F0; // type:func
+ScrOp_SubF = 0x0014B6A0; // type:func
+ScrOp_MulF = 0x0014B750; // type:func
+ScrOp_DivF = 0x0014B800; // type:func
+ScrOp_ModF = 0x0014B8C0; // type:func
+ScrOp_NegF = 0x0014B9B0; // type:func
+ScrOp_PowF = 0x0014BA30; // type:func // guess
+ScrOp_SqrtF = 0x0014BAE0; // type:func
+ScrOp_And = 0x0014BB60; // type:func
+ScrOp_Or = 0x0014BC10; // type:func
+ScrOp_Xor = 0x0014BCC0; // type:func
+ScrOp_Not = 0x0014BD70; // type:func
+ScrOp_Sin = 0x0014BDF0; // type:func // guess
+ScrOp_Cos = 0x0014BEB0; // type:func // guess
+ScrOp_Tan = 0x0014BF70; // type:func // guess
+ScrOp_Asin = 0x0014C030; // type:func // guess
+ScrOp_Acos = 0x0014C0F0; // type:func // guess
+ScrOp_Atan = 0x0014C1B0; // type:func // guess
+ScrOp_Atan2 = 0x0014C270; // type:func // guess
+ScrOp_GtI = 0x0014C320; // type:func
+ScrOp_TestI = 0x0014C390; // type:func
+ScrOp_GtF = 0x0014C3E0; // type:func
+ScrOp_TestF = 0x0014C460; // type:func
+ScrOp_Shl = 0x0014C4C0; // type:func
+ScrOp_Shr = 0x0014C570; // type:func
+ScrOp_Sar = 0x0014C620; // type:func
+ScrOp_Rol = 0x0014C6D0; // type:func
+ScrOp_Ror = 0x0014C850; // type:func
+ScrOp_Jmp = 0x0014C9D0; // type:func
+ScrOp_JmpIf = 0x0014CA20; // type:func
+ScrOp_JmpIfNot = 0x0014CAA0; // type:func
+ScrOp_Call = 0x0014CB20; // type:func
+ScrOp_CallIf = 0x0014CB90; // type:func
+ScrOp_CallIfNot = 0x0014CC20; // type:func
+ScrOp_Ret = 0x0014CCB0; // type:func
+ScrOp_RetTo = 0x0014CD10; // type:func // guess
+ScrOp_RetIf = 0x0014CDB0; // type:func
+ScrOp_RetToIf = 0x0014CE60; // type:func // guess
+ScrOp_RetIfNot = 0x0014CF20; // type:func
+ScrOp_RetToIfNot = 0x0014CFD0; // type:func // guess
+ScrOp_Sleep = 0x0014D090; // type:func // guess
+ScrOp_SetX28 = 0x0014D0C0; // type:func // guess
+ScrOp_Spawn = 0x0014D110; // type:func // guess
+ScrOp_SpawnPrio = 0x0014D1A0; // type:func // guess
+ScrOp_End = 0x0014D250; // type:func // guess
+ScrOp_Wait = 0x0014D260; // type:func // guess
+ScrOp_Op2 = 0x0014D2A0; // type:func // guess
+ScrOp_Op4 = 0x0014D2B0; // type:func // guess
+ScrOp_Native = 0x0014D2C0; // type:func // guess
+ScrOp_Native2 = 0x0014D310; // type:func // guess
+ScrOp_Op6 = 0x0014D380; // type:func // guess
+
+// Start-up: IOP modules ("Can't load module ..."), then every subsystem; called by main
+Sys_Init = 0x0014DC10; // type:func // guess
+
+// The script machines' table and its shared work areas (Scr_Init, Scr_Free)
+gScrMachineCount = 0x004704B8; // size:0x4
+gScrDebugAlloc = 0x004704BC; // size:0x4
+gScrArea0 = 0x004704C0; // size:0x4 // guess
+gScrArea1 = 0x004704C4; // size:0x4 // guess
+gScrArea2 = 0x004704C8; // size:0x4 // guess
+gScrArea3 = 0x004704CC; // size:0x4 // guess
+gScrContexts = 0x004704D0; // size:0x4
+gScrMachines = 0x004704D4; // size:0x4

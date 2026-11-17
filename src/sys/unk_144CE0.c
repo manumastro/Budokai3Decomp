@@ -1,6 +1,6 @@
 #include "common.h"
 
-/* Tasks: a priority-ordered list between two sentinels (D_0047E430 "TCB Head", D_0047E470 "TCB Tail"), allocated
+/* Tasks: a priority-ordered list between two sentinels (gTaskHead "TCB Head", gTaskTail "TCB Tail"), allocated
  * from a ring of slots (0x40 bytes of header, D_0047035C bytes of work area, then 0x10 bytes of timing). */
 typedef struct Task Task;
 typedef s32 (*TaskFn)(Task *);
@@ -41,19 +41,19 @@ extern s32 D_00470370;
 extern s32 D_00470374;
 extern s32 D_00470378;
 extern s32 D_0047037C;
-extern Task D_0047E430;
-extern Task D_0047E470;
+extern Task gTaskHead;
+extern Task gTaskTail;
 
 extern void *func_00124940(s32, s32);
 extern void func_00128040(char *, char *, s32);
 extern void func_001258F8(void *, s32, s32);
 
-void func_00145430(Task *t);
+void amTask_Free(Task *t);
 
 #if 0
 /* Differs only in the sentinels' exec / kill: the original stores a zero moved into a register first
  * (`daddu v0, $zero, $zero; sw v0`), not $zero; source form not found yet. */
-void func_00144CE0(s32 n, s32 work) {
+void amTask_Init(s32 n, s32 work) {
     Task *t;
     s32 i;
     TaskTime *tt;
@@ -70,24 +70,24 @@ void func_00144CE0(s32 n, s32 work) {
     D_00470360 = n;
     D_00470364 = func_00124940(0x40, (D_0047035C + 0x50) * D_00470360);
     D_00470368 = func_00124940(0x40, D_00470360 * 4);
-    func_00128040(D_0047E430.name, D_0045F5E0, 0x10);
-    D_0047E430.prio = 0;
-    D_0047E430.prev = 0;
-    D_0047E430.next = &D_0047E470;
-    D_0047E430.group = 0;
-    D_0047E430.flags = 1;
-    D_0047E430.magic = 0xD020A0C;
-    D_0047E430.exec = (TaskFn)0L;
-    D_0047E430.kill = (TaskFn)0L;
-    func_00128040(D_0047E470.name, D_0045F5F0, 0x10);
-    D_0047E470.prio = -1;
-    D_0047E470.prev = &D_0047E430;
-    D_0047E470.next = 0;
-    D_0047E470.group = 0;
-    D_0047E470.flags = 1;
-    D_0047E470.magic = 0xD020A0C;
-    D_0047E470.exec = (TaskFn)0L;
-    D_0047E470.kill = (TaskFn)0L;
+    func_00128040(gTaskHead.name, D_0045F5E0, 0x10);
+    gTaskHead.prio = 0;
+    gTaskHead.prev = 0;
+    gTaskHead.next = &gTaskTail;
+    gTaskHead.group = 0;
+    gTaskHead.flags = 1;
+    gTaskHead.magic = 0xD020A0C;
+    gTaskHead.exec = (TaskFn)0L;
+    gTaskHead.kill = (TaskFn)0L;
+    func_00128040(gTaskTail.name, D_0045F5F0, 0x10);
+    gTaskTail.prio = -1;
+    gTaskTail.prev = &gTaskHead;
+    gTaskTail.next = 0;
+    gTaskTail.group = 0;
+    gTaskTail.flags = 1;
+    gTaskTail.magic = 0xD020A0C;
+    gTaskTail.exec = (TaskFn)0L;
+    gTaskTail.kill = (TaskFn)0L;
     t = D_00470364;
     for (i = 0; i < D_00470360; i++) {
         D_00470368[i] = t;
@@ -99,26 +99,26 @@ void func_00144CE0(s32 n, s32 work) {
 }
 
 #endif
-INCLUDE_ASM("asm/nonmatchings/sys/unk_144CE0", func_00144CE0);
+INCLUDE_ASM("asm/nonmatchings/sys/unk_144CE0", amTask_Init);
 
-void func_00144EC0(void) {
+void amTask_Run(void) {
     Task *t;
     volatile u32 start;
     TaskTime *tt;
 
-    for (t = D_0047E430.next; t != &D_0047E470; t = t->next) {
+    for (t = gTaskHead.next; t != &gTaskTail; t = t->next) {
         start = *(volatile u32 *)0x10000000;
         if ((s32)t->exec > 0) t->exec(t);
         tt = TASK_TIME(t);
         tt->time = *(volatile u32 *)0x10000000 - start;
         if (tt->max < tt->time) tt->max = tt->time;
     }
-    for (t = D_0047E430.next; t != &D_0047E470; t = t->next) {
-        if ((s32)t->exec == -1) func_00145430(t);
+    for (t = gTaskHead.next; t != &gTaskTail; t = t->next) {
+        if ((s32)t->exec == -1) amTask_Free(t);
     }
 }
 
-Task *func_00144FC0(TaskFn exec, TaskFn kill, u32 prio, s32 group, s32 flags, char *name) {
+Task *amTask_Create(TaskFn exec, TaskFn kill, u32 prio, s32 group, s32 flags, char *name) {
     Task *t;
     TaskTime *tt;
     Task *q;
@@ -137,7 +137,7 @@ Task *func_00144FC0(TaskFn exec, TaskFn kill, u32 prio, s32 group, s32 flags, ch
     t->flags = flags;
     t->exec = exec == 0 ? 0 : exec;
     t->kill = kill == 0 ? 0 : kill;
-    for (q = D_0047E430.next; q != &D_0047E470 && !(prio < q->prio); q = q->next) {
+    for (q = gTaskHead.next; q != &gTaskTail && !(prio < q->prio); q = q->next) {
     }
     q->prev->next = t;
     t->prev = q->prev;
@@ -146,59 +146,59 @@ Task *func_00144FC0(TaskFn exec, TaskFn kill, u32 prio, s32 group, s32 flags, ch
     return t;
 }
 
-void func_00145120(Task *t) {
+void amTask_Kill(Task *t) {
     if ((s32)t->exec != -1) {
         if ((s32)t->kill > 0) t->kill(t);
         t->exec = (TaskFn)-1;
     }
 }
 
-void func_00145180(s32 group, s32 flags, s32 mode) {
+void amTask_KillGroup(s32 group, s32 flags, s32 mode) {
     Task *t;
 
     if (group == 0) group = -1;
-    t = D_0047E430.next;
+    t = gTaskHead.next;
     switch (mode) {
     case 0:
-        for (; t != &D_0047E470; t = t->next) {
-            if ((t->group & group) && (t->flags & flags)) func_00145120(t);
+        for (; t != &gTaskTail; t = t->next) {
+            if ((t->group & group) && (t->flags & flags)) amTask_Kill(t);
         }
         break;
     case 1:
-        for (; t != &D_0047E470; t = t->next) {
-            if ((t->group & group) && (flags & t->flags) == flags) func_00145120(t);
+        for (; t != &gTaskTail; t = t->next) {
+            if ((t->group & group) && (flags & t->flags) == flags) amTask_Kill(t);
         }
         break;
     case 2:
-        for (; t != &D_0047E470; t = t->next) {
-            if ((t->group & group) && !(t->flags & flags)) func_00145120(t);
+        for (; t != &gTaskTail; t = t->next) {
+            if ((t->group & group) && !(t->flags & flags)) amTask_Kill(t);
         }
         break;
     case 3:
-        for (; t != &D_0047E470; t = t->next) {
-            if ((t->group & group) && (flags & t->flags) != flags) func_00145120(t);
+        for (; t != &gTaskTail; t = t->next) {
+            if ((t->group & group) && (flags & t->flags) != flags) amTask_Kill(t);
         }
         break;
     }
 }
 
-void func_00145340(u32 lo, u32 hi, s32 group) {
+void amTask_KillRange(u32 lo, u32 hi, s32 group) {
     Task *t;
 
-    t = D_0047E430.next;
-    while (t != &D_0047E470 && t->prio < lo) t = t->next;
-    while (t != &D_0047E470 && t->prio <= hi) {
-        if (group == 0 || (t->group & group)) func_00145120(t);
+    t = gTaskHead.next;
+    while (t != &gTaskTail && t->prio < lo) t = t->next;
+    while (t != &gTaskTail && t->prio <= hi) {
+        if (group == 0 || (t->group & group)) amTask_Kill(t);
         t = t->next;
     }
 }
 
-void func_00145410(s32 a, s32 b) {
+void amTask_SetPause(s32 a, s32 b) {
     D_0047036C = a;
     D_00470370 = D_0047036C ? b : 0;
 }
 
-void func_00145430(Task *t) {
+void amTask_Free(Task *t) {
     t->prev->next = t->next;
     t->next->prev = t->prev;
     D_00470368[D_00470358] = t;

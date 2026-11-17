@@ -48,7 +48,7 @@ extern u32 D_00470494;
 extern VramBuf D_0047E4C0[2];
 
 extern void *func_00124940(s32, s32);
-void func_001459B0(s32);
+void amVram_Apply(s32);
 
 typedef struct VramArea {
     u32 count;
@@ -60,7 +60,7 @@ typedef struct VramArea {
     u32 buf;
 } VramArea;
 
-void func_00145490(s32 base, s32 n1, s32 n2, u32 a3, u32 t0, s32 m1, s32 m2) {
+void amVram_Init(s32 base, s32 n1, s32 n2, u32 a3, u32 t0, s32 m1, s32 m2) {
     s32 sz;
     s32 i;
     VramBuf *p;
@@ -139,10 +139,10 @@ void func_00145490(s32 base, s32 n1, s32 n2, u32 a3, u32 t0, s32 m1, s32 m2) {
         p->w20 = 0;
         p->w18 = 0;
     }
-    func_001459B0(2);
+    amVram_Apply(2);
 }
 
-void func_00145860(s32 which, u32 a, u32 b) {
+void amVram_Set(s32 which, u32 a, u32 b) {
     if (which == 0) {
         if (a == -1) {
             D_0046FD5C = D_0046FD64;
@@ -174,10 +174,10 @@ void func_00145860(s32 which, u32 a, u32 b) {
             D_0046FD58 = b;
         }
     }
-    func_001459B0(which);
+    amVram_Apply(which);
 }
 
-void func_001459B0(s32 mask) {
+void amVram_Apply(s32 mask) {
     VramArea a[2] = {0};
     s32 i;
     VramBuf *p;

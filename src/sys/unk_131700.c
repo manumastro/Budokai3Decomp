@@ -24,7 +24,7 @@ typedef struct Q4 {
 } Q4;
 
 extern u64 func_00121288(f32);
-extern void func_00140D30(u32, u32, u32, u32, u32, u32, u32, u32);
+extern void amDma_Request(u32, u32, u32, u32, u32, u32, u32, u32);
 
 extern Screen D_003F01F0;
 extern s8 D_00470404;
@@ -32,7 +32,7 @@ extern u32 D_00470414, D_00470418;
 extern f32 D_0047040C, D_00470410, D_0047042C, D_00470430;
 extern f32 D_00470434, D_00470438, D_00470468;
 extern u32 D_004703DC;
-extern u64 *D_00470228;
+extern u64 *gPacketPtr;
 extern s32 D_00470268;
 extern u8 D_0047026C[4];
 extern Q4 D_0047C950, D_0047C990, D_0047C9D0;
@@ -74,7 +74,7 @@ INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00131F00);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00132610);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00132D20);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00132DF0);
-void func_00132F60(f32 *r, s32 raw) {
+void amDraw_SetScissor(f32 *r, s32 raw) {
     f32 x, y, z, w;
     u64 v;
     u64 *p;
@@ -107,7 +107,7 @@ void func_00132F60(f32 *r, s32 raw) {
         }
         v = func_00121288(x) << 0 | (func_00121288(z) - 1) << 16 | func_00121288(y) << 32 | (func_00121288(w) - 1) << 48;
     }
-    p = D_00470228;
+    p = gPacketPtr;
     p[0] = 0x11000000 | ((u64)0x13000000 << 32);
     p[1] = (u64)0x50000003 << 32;
     p[2] = 0x8002 | ((u64)0x10000000 << 32);
@@ -116,9 +116,9 @@ void func_00132F60(f32 *r, s32 raw) {
     p[5] = 0x40;
     p[6] = v;
     p[7] = 0x41;
-    func_00140D30(0, 1, 1, 0, 0, (u32)p & 0x0FFFFFFF, 4, 0);
+    amDma_Request(0, 1, 1, 0, 0, (u32)p & 0x0FFFFFFF, 4, 0);
     p += 8;
-    D_00470228 = p;
+    gPacketPtr = p;
 }
 
 void func_00133420(s32 mode) {

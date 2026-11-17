@@ -13,7 +13,7 @@ extern s32 func_00127E88(char *, u8 *, s32);
 extern s32 func_00127940(char *, char *);
 extern void func_00127A88(char *, char *);
 
-s32 func_0012C360(u8 *data) {
+s32 amFile_Load(u8 *data) {
     u8 *p;
     s32 (*fn)(u8 *);
     s32 i;
@@ -35,7 +35,7 @@ s32 func_0012C360(u8 *data) {
     return 1;
 }
 
-s32 func_0012C480(char *tag, s32 (*fn)(u8 *)) {
+s32 amFile_AddLoader(char *tag, s32 (*fn)(u8 *)) {
     FileType *t;
 
     if (D_0046FD00 >= 31) return -1;

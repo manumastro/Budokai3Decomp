@@ -23,14 +23,14 @@ typedef struct { s32 pad[2]; void *p8; Slot *slots; } Sub;
 typedef struct { s32 pad; Sub *subs; void *p8; void *pC; void *p10; s32 pad2[3]; } Grp;
 typedef struct { char pad[0x10]; s32 n; Grp *grps; s32 nfiles; u8 **files; s32 nsub; void *p24; } Hdr3;
 
-extern s32 func_0012C360(u8 *);
+extern s32 amFile_Load(u8 *);
 
 typedef struct { s16 nch; u16 sfreq; } StmCfg;
 typedef struct { void *adxt; s32 stat; f32 vol; s32 padC; } Stm;
 extern f32 D_00470200;
 extern s8 D_00470204;
 extern s32 D_0047021C;
-extern Stm *D_0047020C;
+extern Stm *gAdxStream;
 extern s8 *D_00470214;
 extern s8 *D_00470218;
 extern void **D_00470210;
@@ -41,14 +41,14 @@ extern void ADXT_SetOutVol(void *, s32);
 extern s32 ADXT_GetStat(void *);
 extern void ADXT_StartFname(void *, char *);
 extern void ADXT_StartAfs(void *, s32, s32);
-extern s32 func_0012DD20(void);
-extern void func_0012DDD0(s32);
-extern s32 func_0025D6C0(s32, s32);
+extern s32 amAdx_FindFree(void);
+extern void amAdx_Touch(s32);
+extern s32 amCdFs_CheckDir(s32, s32);
 extern f32 func_0011F698(f32);
 extern void ADXT_Pause(void *, s32);
 
 
-void func_0012C540(ModelHdr *h) {
+void amFile_Relocate(ModelHdr *h) {
     Ent *e;
     s32 i;
     Item *it;
@@ -146,7 +146,7 @@ void func_0012CBA0(Hdr3 *h) {
         h->files = (u8 **)((u32)h + (u32)h->files);
         for (f = h->files, i = 0; i < h->nfiles; i++, f++) {
             *f = (u8 *)((u32)h + (u32)*f);
-            func_0012C360(*f);
+            amFile_Load(*f);
         }
     }
     if (h->grps) {
@@ -269,7 +269,7 @@ void func_0012D1B0(Hdr2 *h) {
     }
 }
 
-void func_0012D2E0(s32 n, s32 nstm, StmCfg *cfg) {
+void amAdx_Init(s32 n, s32 nstm, StmCfg *cfg) {
     s32 i;
     s32 size;
     Stm *s;
@@ -277,11 +277,11 @@ void func_0012D2E0(s32 n, s32 nstm, StmCfg *cfg) {
     D_00470200 = 1.0f;
     D_00470204 = n;
     D_0047021C = n;
-    D_0047020C = func_00124940(0x40, n * 16);
+    gAdxStream = func_00124940(0x40, n * 16);
     D_00470214 = func_00124940(0x40, n);
     D_00470218 = func_00124940(0x40, n);
     D_00470210 = func_00124940(0x40, n * 4);
-    for (i = 0, s = D_0047020C; i < D_00470204; i++, s++) {
+    for (i = 0, s = gAdxStream; i < D_00470204; i++, s++) {
         /* the ADX work size for one stream (input buffer rounded to 2 KB, output buffers), plus 64 */
         size = (u32)(cfg[i].nch * 0x40C0 + ((((nstm + 1) * ((cfg[i].sfreq / 1000) * (cfg[i].nch * 25000) / 44) + 0x800) / 0x800) * 0x800 + 0x24)) + 0x40;
         D_00470210[i] = func_00124940(0x40, size);
@@ -294,13 +294,13 @@ void func_0012D2E0(s32 n, s32 nstm, StmCfg *cfg) {
     }
 }
 
-void func_0012D4F0(void) {
+void amAdx_Reset(void) {
     s32 i;
     Stm *s;
 
     D_00470200 = 1.0f;
     D_0047021C = D_00470204;
-    for (i = 0, s = D_0047020C; i < D_00470204; i++, s++) {
+    for (i = 0, s = gAdxStream; i < D_00470204; i++, s++) {
         ADXT_Stop(s->adxt);
         s->stat = 0;
         s->vol = 1.0f;
@@ -311,25 +311,25 @@ void func_0012D4F0(void) {
     }
 }
 
-void func_0012D5A0(s32 ch, s32 on) {
+void amAdx_Enable(s32 ch, s32 on) {
     if (on != D_00470218[ch]) {
         if (on) {
             D_00470214[D_0047021C] = ch;
             D_0047021C++;
             D_00470218[ch] = on;
         } else {
-            func_0012DDD0(ch);
+            amAdx_Touch(ch);
             D_00470218[ch] = on;
             D_0047021C--;
         }
     }
 }
 
-s32 func_0012D650(s32 ch, char *fname, s32 mode) {
+s32 amAdx_PlayFile(s32 ch, char *fname, s32 mode) {
     Stm *s;
 
     if (ch == -1) {
-        ch = func_0012DD20();
+        ch = amAdx_FindFree();
         if (ch == -1) {
             ch = mode;
             if (ch == -1) return -1;
@@ -338,22 +338,22 @@ s32 func_0012D650(s32 ch, char *fname, s32 mode) {
                 ch = D_00470214[0];
             }
         }
-        s = &D_0047020C[ch];
+        s = &gAdxStream[ch];
     } else {
-        s = &D_0047020C[ch];
+        s = &gAdxStream[ch];
         s->stat = ADXT_GetStat(s->adxt);
         if (s->stat != 0 && s->stat != 5 && mode == -1) return -1;
     }
     ADXT_StartFname(s->adxt, fname);
-    func_0012DDD0(ch);
+    amAdx_Touch(ch);
     return ch;
 }
 
-s32 func_0012D790(s32 ch, s32 id, s32 mode) {
+s32 amAdx_PlayAfs(s32 ch, s32 id, s32 mode) {
     Stm *s;
 
     if (ch == -1) {
-        ch = func_0012DD20();
+        ch = amAdx_FindFree();
         if (ch == -1) {
             ch = mode;
             if (ch == -1) return -1;
@@ -362,29 +362,29 @@ s32 func_0012D790(s32 ch, s32 id, s32 mode) {
                 ch = D_00470214[0];
             }
         }
-        s = &D_0047020C[ch];
+        s = &gAdxStream[ch];
     } else {
-        s = &D_0047020C[ch];
+        s = &gAdxStream[ch];
         s->stat = ADXT_GetStat(s->adxt);
         if (s->stat != 0 && s->stat != 5 && mode == -1) return -1;
     }
-    if (func_0025D6C0(id >> 16, 0) < 0) return -2;
+    if (amCdFs_CheckDir(id >> 16, 0) < 0) return -2;
     ADXT_StartAfs(s->adxt, id >> 16, id & 0xFFFF);
-    func_0012DDD0(ch);
+    amAdx_Touch(ch);
     return ch;
 }
 
-void func_0012D900(s32 ch) {
+void amAdx_Stop(s32 ch) {
     s32 i;
     Stm *s;
 
     if (ch != -1) {
-        s = &D_0047020C[ch];
+        s = &gAdxStream[ch];
         s->stat = ADXT_GetStat(s->adxt);
         if (s->stat != 0 && s->stat != 5) ADXT_Stop(s->adxt);
         s->stat = 0;
     } else {
-        for (i = 0, s = D_0047020C; i < D_00470204; i++, s++) {
+        for (i = 0, s = gAdxStream; i < D_00470204; i++, s++) {
             s->stat = ADXT_GetStat(s->adxt);
             if (s->stat != 0 && s->stat != 5) ADXT_Stop(s->adxt);
             s->stat = 0;
@@ -392,25 +392,25 @@ void func_0012D900(s32 ch) {
     }
 }
 
-s32 func_0012D9F0(s32 ch) {
+s32 amAdx_GetStat(s32 ch) {
     Stm *s;
 
-    s = &D_0047020C[ch];
+    s = &gAdxStream[ch];
     s->stat = ADXT_GetStat(s->adxt);
     return s->stat;
 }
 
-s32 func_0012DA30(s32 ch) {
+s32 amAdx_IsStopped(s32 ch) {
     s32 i;
     Stm *s;
     s32 st;
 
     if (ch != -1) {
-        s = &D_0047020C[ch];
+        s = &gAdxStream[ch];
         s->stat = st = ADXT_GetStat(s->adxt);
         if (st != 0 && st != 5) return 0;
     } else {
-        for (i = 0, s = D_0047020C; i < D_00470204; i++, s++) {
+        for (i = 0, s = gAdxStream; i < D_00470204; i++, s++) {
             s->stat = st = ADXT_GetStat(s->adxt);
         if (st != 0 && st != 5) return 0;
         }
@@ -418,7 +418,7 @@ s32 func_0012DA30(s32 ch) {
     return 1;
 }
 
-void func_0012DB00(s32 ch, f32 vol) {
+void amAdx_SetVolume(s32 ch, f32 vol) {
     s32 db;
     s32 i;
     Stm *s;
@@ -431,14 +431,14 @@ void func_0012DB00(s32 ch, f32 vol) {
         db = 200.0f * func_0011F698(v);
     }
     if (ch != -1) {
-        s = &D_0047020C[ch];
+        s = &gAdxStream[ch];
         if (db != s->padC) {
             ADXT_SetOutVol(s->adxt, db);
             s->padC = db;
         }
         s->vol = vol;
     } else {
-        for (i = 0, s = D_0047020C; i < D_00470204; i++, s++) {
+        for (i = 0, s = gAdxStream; i < D_00470204; i++, s++) {
             if (db != s->padC) {
                 ADXT_SetOutVol(s->adxt, db);
                 s->padC = db;
@@ -448,21 +448,21 @@ void func_0012DB00(s32 ch, f32 vol) {
     }
 }
 
-void func_0012DC30(s32 ch, s32 sw) {
-    ADXT_Pause(D_0047020C[ch].adxt, sw);
+void amAdx_Pause(s32 ch, s32 sw) {
+    ADXT_Pause(gAdxStream[ch].adxt, sw);
 }
 
-s32 func_0012DC60(s32 ch) {
+s32 amAdx_IsPlaying(s32 ch) {
     s32 i;
     Stm *s;
     s32 st;
 
     if (ch != -1) {
-        s = &D_0047020C[ch];
+        s = &gAdxStream[ch];
         s->stat = st = ADXT_GetStat(s->adxt);
         if (st != 3) return 0;
     } else {
-        for (i = 0, s = D_0047020C; i < D_00470204; i++, s++) {
+        for (i = 0, s = gAdxStream; i < D_00470204; i++, s++) {
             s->stat = st = ADXT_GetStat(s->adxt);
         if (st != 3) return 0;
         }
@@ -470,11 +470,11 @@ s32 func_0012DC60(s32 ch) {
     return 1;
 }
 
-s32 func_0012DD20(void) {
+s32 amAdx_FindFree(void) {
     s32 i;
     Stm *s;
 
-    for (i = 0, s = D_0047020C; i < D_00470204; i++, s++) {
+    for (i = 0, s = gAdxStream; i < D_00470204; i++, s++) {
         if (D_00470218[i]) {
             s->stat = ADXT_GetStat(s->adxt);
             if (s->stat == 0 || s->stat == 5) return i;
@@ -483,7 +483,7 @@ s32 func_0012DD20(void) {
     return -1;
 }
 
-void func_0012DDD0(s32 ch) {
+void amAdx_Touch(s32 ch) {
     s32 i;
 
     if (D_00470218[ch] == 0) return;

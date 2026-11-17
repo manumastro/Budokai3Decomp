@@ -8,7 +8,7 @@ extern f32 D_00470430;
 
 INCLUDE_ASM("asm/nonmatchings/sys/unk_13FC20", func_0013FC20);
 
-void func_0013FE60(Cam *c, Rect *r) {
+void amCamera_SetClip(Cam *c, Rect *r) {
     f32 w;
     f32 h;
     f32 cx;

@@ -4,7 +4,7 @@ typedef struct ObjHdr { char pad[0x10]; s32 n; } ObjHdr;
 typedef struct ObjSlot { s32 a; s32 b; } ObjSlot;
 typedef struct ObjInst { ObjHdr *hdr; s32 n; ObjSlot slot[1]; } ObjInst;
 extern char D_0045F538[];
-extern void *func_0013AAB0(s32, s32, char *, s32);
+extern void *amHeap_Alloc(s32, s32, char *, s32);
 
 typedef struct Rect { f32 x0, y0, x1, y1; } Rect;
 typedef struct Cam { f32 m[4][4]; f32 view[4][4]; Rect clip; char pad[0x98 - 0x90]; f32 sx; f32 sy; } Cam;
@@ -17,7 +17,7 @@ extern void func_0013FC20(void *, void *);
 extern void func_0013B9C0(void *);
 extern void func_00140420(void *, void *, void *, Rect *);
 extern void func_00140010(void *, void *, Rect *);
-extern void func_0013FE60(Cam *, Rect *);
+extern void amCamera_SetClip(Cam *, Rect *);
 
 
 /* Swaps the two matrices kept in VU0 registers (vf24-vf27 and vf28-vf31). */
@@ -30,22 +30,22 @@ typedef struct ObjI { s32 **a; s32 *b; char data[1]; } ObjI;
 extern char D_00459390[];
 extern void func_0013B160(void *);
 extern void func_0013EE90(void *, s32 *, s32 *);
-extern s32 func_00140D30(s32, s32, s32, s32, s32, s32, s32, s32);
+extern s32 amDma_Request(s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_0013F2A0(void *, void *, s32 *, s32 *);
 extern void func_0013F710(void *, void *, void *, s32 *, s32 *);
 extern void func_0013E590(void *, void *, s32 *, s32 *);
 
 
-s32 func_0013DF20(ObjHdr *h) {
+s32 amObject_GetSize(ObjHdr *h) {
     return (h->n - 1) * sizeof(ObjSlot) + sizeof(ObjInst);
 }
 
 
-ObjInst *func_0013DF40(ObjHdr *h, ObjInst *o) {
+ObjInst *amObject_Create(ObjHdr *h, ObjInst *o) {
     s32 i;
     ObjSlot *s;
     if (o == 0) {
-        o = func_0013AAB0(func_0013DF20(h), 0, D_0045F538, 138);
+        o = amHeap_Alloc(amObject_GetSize(h), 0, D_0045F538, 138);
     }
     o->hdr = h;
     o->n = h->n;
@@ -57,7 +57,7 @@ ObjInst *func_0013DF40(ObjHdr *h, ObjInst *o) {
 }
 
 
-void func_0013DFE0(void *o) {
+void amObject_Draw(void *o) {
     s32 tag;
     s32 size;
     tag = 0;
@@ -66,7 +66,7 @@ void func_0013DFE0(void *o) {
     SWAP_MTX();
     func_0013EE90(o, &tag, &size);
     if (tag) {
-        func_00140D30(0, 1, 1, 1, (u32)tag & 0x0FFFFFFF, 0, 0, 0);
+        amDma_Request(0, 1, 1, 1, (u32)tag & 0x0FFFFFFF, 0, 0, 0);
     }
 }
 
@@ -82,7 +82,7 @@ void func_0013E0A0(ObjI *o) {
     SWAP_MTX();
     func_0013F2A0((void *)o->a[5], &p, &tag, &size);
     if (tag) {
-        func_00140D30(0, 1, 1, 1, (u32)tag & 0x0FFFFFFF, 0, 0, 0);
+        amDma_Request(0, 1, 1, 1, (u32)tag & 0x0FFFFFFF, 0, 0, 0);
     }
 }
 
@@ -108,7 +108,7 @@ void func_0013E170(ObjI *o) {
     }
     func_0013B110(1);
     if (tag) {
-        func_00140D30(0, 1, 1, 1, (u32)tag & 0x0FFFFFFF, 0, 0, 0);
+        amDma_Request(0, 1, 1, 1, (u32)tag & 0x0FFFFFFF, 0, 0, 0);
     }
 }
 
@@ -140,7 +140,7 @@ void func_0013E370(Cam *c, void *eye, Src *s, s32 keep) {
     } else {
         func_00140010(s->b->data, &q, r);
     }
-    func_0013FE60(c, r);
+    amCamera_SetClip(c, r);
     func_0013B110(1);
 }
 

@@ -12,20 +12,20 @@ typedef struct DmaTag {
     u64 pad;
 } DmaTag;
 
-extern void func_00140C50(s32, Q *, s32, s32);
-extern void func_00140CC0(Q *, s32, s32, s32);
+extern void amDma_SendToSpr(s32, Q *, s32, s32);
+extern void amDma_SendFromSpr(Q *, s32, s32, s32);
 /* the packet area (uncached accelerated): start, end, and the two ends allocated from */
 extern u8 *D_00470220;
 extern u8 *D_00470224;
-extern u8 *D_00470228;
+extern u8 *gPacketPtr;
 extern u8 *D_0047022C;
 extern s32 D_00470230, D_00470238, D_00470240, D_00470244, D_00470248, D_0047024C, D_00470270, D_00470288, D_0047028C;
 extern void *D_0047CAA0[10];
 extern DmaTag D_0047C8C0;
 extern u32 D_00459200[];
-extern void func_00139610(void);
+extern void amNode_Clear24(void);
 extern void func_00145B40(s32);
-extern void func_0012F190(void);
+extern void amPkt_Reset(void);
 extern void func_00133780(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/sys/unk_12EF80", func_0012EF80);
@@ -35,8 +35,8 @@ Q *func_0012F040(Q *dst, Q *src, s32 n) {
 
     while (n != 0) {
         c = (n > 0x400) ? 0x400 : n;
-        func_00140C50(0, src, c, 1);
-        func_00140CC0(dst, 0, c, 1);
+        amDma_SendToSpr(0, src, c, 1);
+        amDma_SendFromSpr(dst, 0, c, 1);
         n -= c;
         c <<= 4;
         src = (Q *)((u32)src + c);
@@ -45,22 +45,22 @@ Q *func_0012F040(Q *dst, Q *src, s32 n) {
     return dst;
 }
 
-void func_0012F100(u32 base, s32 size) {
+void amPkt_Init(u32 base, s32 size) {
     s32 i;
 
     D_00470220 = (u8 *)(base | 0x30000000);
-    D_00470228 = D_00470220;
+    gPacketPtr = D_00470220;
     D_00470224 = D_00470220 + size;
     D_0047022C = D_00470224;
     for (i = 0; i < 10; i++) {
         D_0047CAA0[i] = 0;
     }
-    D_0047CAA0[3] = func_00139610;
-    func_0012F190();
+    D_0047CAA0[3] = amNode_Clear24;
+    amPkt_Reset();
 }
 
-void func_0012F190(void) {
-    D_00470228 = D_00470220;
+void amPkt_Reset(void) {
+    gPacketPtr = D_00470220;
     D_0047022C = D_00470224;
     D_00470230 = 0;
     D_00470240 = -1;
@@ -77,20 +77,20 @@ void func_0012F190(void) {
     func_00145B40(2);
 }
 
-u8 *func_0012F230(s32 n) {
-    u8 *p = D_00470228;
-    D_00470228 += (n + 15) & ~15;
+u8 *amPkt_Alloc(s32 n) {
+    u8 *p = gPacketPtr;
+    gPacketPtr += (n + 15) & ~15;
     return p;
 }
 
-u8 *func_0012F260(s32 n) {
+u8 *amPkt_AllocTop(s32 n) {
     n = (n + 15) >> 4;
     D_0047022C -= n << 4;
     return D_0047022C;
 }
 
 void func_0012F290(void) {
-    func_0012F190();
+    amPkt_Reset();
     func_00133780(2, 0);
 }
 

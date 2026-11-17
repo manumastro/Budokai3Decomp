@@ -1,6 +1,6 @@
 #include "common.h"
 
-/* A read request (0x64 bytes): reqs are queued in a doubly linked list, head D_00470774, tail D_00470778. */
+/* A read request (0x64 bytes): reqs are queued in a doubly linked list, head gCdReqHead, tail gCdReqTail. */
 typedef struct CdCache CdCache;
 
 typedef struct CdReq {
@@ -81,8 +81,8 @@ extern s32 D_00470764;
 extern CdReq *D_00470768;
 extern CdReq **D_0047076C;
 extern s32 D_00470770;
-extern CdReq *D_00470774;
-extern CdReq *D_00470778;
+extern CdReq *gCdReqHead;
+extern CdReq *gCdReqTail;
 extern s32 D_0047077C;
 extern CdCache *D_00470780;
 extern CdCache **D_00470784;
@@ -106,15 +106,15 @@ extern void *func_00124940(s32, s32);
 extern void func_00156210(void);
 extern void func_00128040(char *, char *, s32);
 extern s32 func_00127E88(char *, char *, s32);
-extern void func_0013AC90(void *);
+extern void amHeap_Free(void *);
 
-CdReq *func_0025D400(void);
-void func_0025CA10(void);
-void func_0025C800(CdReq *, s32);
-void func_0025C2A0(s32);
-CdCache *func_0025D540(void);
+CdReq *amCdFs_AllocReq(void);
+void amCdFs_Start(void);
+void amCdFs_Close(CdReq *, s32);
+void amCdFs_Reset(s32);
+CdCache *amCdFs_AllocCache(void);
 
-extern void func_0025D590(CdCache *);
+extern void amCdFs_FreeCache(CdCache *);
 
 extern s32 func_00118C08(s32);
 extern s32 func_00119420(s32);
@@ -122,25 +122,25 @@ extern void func_00154710(s32, char *, s32, void *);
 extern s32 func_00155118(char *, s32);
 extern s32 func_00155290(s32, s32);
 extern s32 ADXF_GetFsizeSct(s32);
-extern void *func_0013AAB0(s32, s32, char *, s32);
+extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void func_001553A0(s32);
 extern void ADXF_ReadNw(s32, s32, void *);
-extern CdCache *func_0025D610(CdReq *);
-extern void func_0025D4E0(CdReq *);
+extern CdCache *amCdFs_FindCache(CdReq *);
+extern void amCdFs_Unlink(CdReq *);
 
 extern s32 func_00155FF8(s32);
 extern s32 func_00119988(void);
 extern s32 ADXF_GetStat(s32);
 extern s32 func_00154B68(s32);
 extern void ADXF_StopNw(s32);
-extern CdReq *func_0025C410(s32, char *, s32);
+extern CdReq *amCdFs_LoadDir(s32, char *, s32);
 
 extern void func_00157FF0(void);
 
 INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025BE40);
 INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025BE50);
 
-void func_0025BEE0(s32 a0, s32 a1, s32 mode, s32 stream, s32 nreq, s32 ncache, s32 ndir, s32 *sizes) {
+void amCdFs_Init(s32 a0, s32 a1, s32 mode, s32 stream, s32 nreq, s32 ncache, s32 ndir, s32 *sizes) {
     CdInit host;
     CdInitDvd cd;
     s32 i;
@@ -197,13 +197,13 @@ void func_0025BEE0(s32 a0, s32 a1, s32 mode, s32 stream, s32 nreq, s32 ncache, s
         D_00470794[i].path[0] = 0;
     }
     func_00156210();
-    func_0025C2A0(0);
+    amCdFs_Reset(0);
     D_00470798 = 0;
     func_001258F8(D_0058EAF0, 0, 0x100);
     func_001258F8(D_0058EBF0, 0, 0x100);
 }
 
-void func_0025C2A0(s32 dirs) {
+void amCdFs_Reset(s32 dirs) {
     CdReq *r;
     CdReq **f;
     s32 i;
@@ -242,8 +242,8 @@ void func_0025C2A0(s32 dirs) {
     D_00470770 = 0;
     D_00470754 = 0;
     D_00470758 = 0;
-    D_00470774 = 0;
-    D_00470778 = 0;
+    gCdReqHead = 0;
+    gCdReqTail = 0;
     D_00470788 = 0;
     D_0047075C = 0;
     if (dirs) {
@@ -255,14 +255,14 @@ void func_0025C2A0(s32 dirs) {
     }
 }
 
-void func_0025C400(u8 heap) {
+void amCdFs_SetHeap(u8 heap) {
     D_0047075C = heap;
 }
 
-CdReq *func_0025C410(s32 dir, char *name, s32 pos) {
+CdReq *amCdFs_LoadDir(s32 dir, char *name, s32 pos) {
     CdReq *r;
 
-    r = func_0025D400();
+    r = amCdFs_AllocReq();
     if (r == 0) return (CdReq *)-1;
     r->type = 1;
     r->own = 0;
@@ -276,32 +276,32 @@ CdReq *func_0025C410(s32 dir, char *name, s32 pos) {
     r->state = 0;
     if (D_00470754 == 0) {
         r->next = 0;
-        if (D_00470778) {
-            r->prev = D_00470778;
-            D_00470778->next = r;
+        if (gCdReqTail) {
+            r->prev = gCdReqTail;
+            gCdReqTail->next = r;
         } else {
             r->prev = 0;
-            D_00470774 = r;
+            gCdReqHead = r;
         }
-        D_00470778 = r;
+        gCdReqTail = r;
     } else {
         r->prev = 0;
-        r->next = D_00470774;
-        if (D_00470774) {
-            D_00470774->prev = r;
+        r->next = gCdReqHead;
+        if (gCdReqHead) {
+            gCdReqHead->prev = r;
         } else {
-            D_00470778 = r;
+            gCdReqTail = r;
         }
-        D_00470774 = r;
+        gCdReqHead = r;
     }
-    func_0025CA10();
+    amCdFs_Start();
     return r;
 }
 
-CdReq *func_0025C570(char *name, void *buf, s32 keep) {
+CdReq *amCdFs_ReadFile(char *name, void *buf, s32 keep) {
     CdReq *r;
 
-    r = func_0025D400();
+    r = amCdFs_AllocReq();
     if (r == 0) return (CdReq *)-1;
     r->type = 0;
     r->own = buf == 0;
@@ -314,22 +314,22 @@ CdReq *func_0025C570(char *name, void *buf, s32 keep) {
     r->sectors = 0;
     r->buf = buf;
     r->next = 0;
-    if (D_00470778) {
-        r->prev = D_00470778;
-        D_00470778->next = r;
+    if (gCdReqTail) {
+        r->prev = gCdReqTail;
+        gCdReqTail->next = r;
     } else {
         r->prev = 0;
-        D_00470774 = r;
+        gCdReqHead = r;
     }
-    D_00470778 = r;
-    func_0025CA10();
+    gCdReqTail = r;
+    amCdFs_Start();
     return r;
 }
 
-CdReq *func_0025C670(s32 id, void *buf, s32 keep) {
+CdReq *amCdFs_ReadFileId(s32 id, void *buf, s32 keep) {
     CdReq *r;
 
-    r = func_0025D400();
+    r = amCdFs_AllocReq();
     if (r == 0) return (CdReq *)-1;
     r->type = 0;
     r->own = buf == 0;
@@ -342,42 +342,42 @@ CdReq *func_0025C670(s32 id, void *buf, s32 keep) {
     r->sectors = 0;
     r->buf = buf;
     r->next = 0;
-    if (D_00470778) {
-        r->prev = D_00470778;
-        D_00470778->next = r;
+    if (gCdReqTail) {
+        r->prev = gCdReqTail;
+        gCdReqTail->next = r;
     } else {
         r->prev = 0;
-        D_00470774 = r;
+        gCdReqHead = r;
     }
-    D_00470778 = r;
-    func_0025CA10();
+    gCdReqTail = r;
+    amCdFs_Start();
     return r;
 }
 
-void func_0025C780(s32 arg) {
+void amCdFs_CloseAll(s32 arg) {
     CdReq *r;
     s32 i;
 
     r = D_00470768;
     for (i = 0; i < D_00470764; i++, r++) {
-        if (r->name[0]) func_0025C800(r, arg);
+        if (r->name[0]) amCdFs_Close(r, arg);
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025C800);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", amCdFs_Close);
 
-void func_0025C9D0(CdCache *c) {
+void amCdFs_ReleaseCache(CdCache *c) {
     c->refs--;
-    if (c->refs <= 0) func_0025D590(c);
+    if (c->refs <= 0) amCdFs_FreeCache(c);
 }
 
-void func_0025CA10(void) {
+void amCdFs_Start(void) {
     CdReq *r;
     CdDir *d;
     CdCache *c;
     s32 n;
 
-    r = D_00470774;
+    r = gCdReqHead;
     if (D_00470758) return;
     if (r == 0) return;
     if (r->state) return;
@@ -397,13 +397,13 @@ void func_0025CA10(void) {
             return;
         }
         r->state = 3;
-        func_0025D4E0(r);
-        if (r->pos) func_0025C800(r, 0);
-        func_0025CA10();
+        amCdFs_Unlink(r);
+        if (r->pos) amCdFs_Close(r, 0);
+        amCdFs_Start();
         return;
     case 0:
         if (r->cache) {
-            c = func_0025D610(r);
+            c = amCdFs_FindCache(r);
             if (c) {
                 c->refs++;
                 r->cache = c;
@@ -413,11 +413,11 @@ void func_0025CA10(void) {
                 r->pos = c->pos;
                 r->buf = c->buf;
                 r->state = c->state;
-                func_0025D4E0(r);
-                func_0025CA10();
+                amCdFs_Unlink(r);
+                amCdFs_Start();
                 return;
             }
-            c = func_0025D540();
+            c = amCdFs_AllocCache();
             r->cache = c;
             c->type = r->type;
             c->own = 0;
@@ -434,7 +434,7 @@ void func_0025CA10(void) {
         }
         if (D_0047078C == 0) {
             if (r->cache) {
-                func_0025C9D0(r->cache);
+                amCdFs_ReleaseCache(r->cache);
                 r->cache = (CdCache *)-1;
             }
             D_00470758 = 1;
@@ -443,11 +443,11 @@ void func_0025CA10(void) {
         r->sectors = ADXF_GetFsizeSct(D_0047078C);
         r->size = r->sectors << 11;
         if (r->buf == 0) {
-            r->buf = func_0013AAB0(r->sectors << 11, r->heap, D_0046B050, 0x358);
+            r->buf = amHeap_Alloc(r->sectors << 11, r->heap, D_0046B050, 0x358);
             if (r->buf == 0) {
                 func_001553A0(D_0047078C);
                 if (r->cache) {
-                    func_0025C9D0(r->cache);
+                    amCdFs_ReleaseCache(r->cache);
                     r->cache = (CdCache *)-1;
                 }
                 return;
@@ -465,7 +465,7 @@ void func_0025CA10(void) {
     }
 }
 
-void func_0025CDE0(void) {
+void amCdFs_Update(void) {
     s32 h;
     CdReq *r;
     s32 i;
@@ -476,7 +476,7 @@ void func_0025CDE0(void) {
     s32 cnt;
     s32 j;
 
-    r = D_00470774;
+    r = gCdReqHead;
     n = D_00470798;
     for (i = 0; n > 0; i++) {
         h = D_0058EAF0[i];
@@ -486,7 +486,7 @@ void func_0025CDE0(void) {
                 func_001553A0(h);
                 D_0058EAF0[i] = 0;
                 if (D_0058EBF0[i]) {
-                    func_0013AC90(D_0058EBF0[i]);
+                    amHeap_Free(D_0058EBF0[i]);
                     D_0058EBF0[i] = 0;
                 }
                 D_00470798--;
@@ -519,7 +519,7 @@ void func_0025CDE0(void) {
             if (d->flags & 2) {
                 D_00470754 = 1;
                 d->flags &= ~1;
-                func_0025C410(i, d->name, 1);
+                amCdFs_LoadDir(i, d->name, 1);
                 D_00470754 = 0;
             }
         }
@@ -527,7 +527,7 @@ void func_0025CDE0(void) {
     }
     if (r == 0) return;
     if (r->state == 0) {
-        func_0025CA10();
+        amCdFs_Start();
         return;
     }
     if (r->state < 4) {
@@ -548,7 +548,7 @@ void func_0025CDE0(void) {
                 r->pos += 0x80000;
                 if (r->pos >= r->size) {
                     func_001553A0(D_0047078C);
-                    func_0025D4E0(r);
+                    amCdFs_Unlink(r);
                     if (c) {
                         c->own = r->own;
                         r->own = 0;
@@ -556,7 +556,7 @@ void func_0025CDE0(void) {
                         c->sectors = r->sectors;
                         c->pos = r->pos;
                     }
-                    func_0025CA10();
+                    amCdFs_Start();
                     return;
                 }
                 v = r->size - r->pos;
@@ -571,9 +571,9 @@ void func_0025CDE0(void) {
             case 1:
                 D_00470794[r->id].flags &= ~2;
                 D_00470794[r->id].flags |= 1;
-                func_0025D4E0(r);
-                if (r->pos) func_0025C800(r, 0);
-                func_0025CA10();
+                amCdFs_Unlink(r);
+                if (r->pos) amCdFs_Close(r, 0);
+                amCdFs_Start();
                 return;
             }
             break;
@@ -602,11 +602,11 @@ void func_0025CDE0(void) {
                 }
             }
             if ((s32)c > 0) {
-                func_0025C9D0(c);
+                amCdFs_ReleaseCache(c);
                 r->cache = (CdCache *)-1;
             }
             if (r->own && r->buf) {
-                func_0013AC90(r->buf);
+                amHeap_Free(r->buf);
                 r->buf = 0;
             }
             r->state = 0;
@@ -615,19 +615,19 @@ void func_0025CDE0(void) {
     }
 }
 
-void func_0025D3D0(void) {
+void amCdFs_Main(void) {
     func_00157FF0();
-    func_0025CDE0();
+    amCdFs_Update();
 }
 
-CdReq *func_0025D400(void) {
+CdReq *amCdFs_AllocReq(void) {
     if (D_00470770 >= D_00470764) return 0;
     return D_0047076C[D_00470770++];
 }
 
-void func_0025D450(CdReq *r) {
+void amCdFs_FreeReq(CdReq *r) {
     if (r->own && r->buf) {
-        func_0013AC90(r->buf);
+        amHeap_Free(r->buf);
     }
     r->own = 1;
     r->name[0] = 0;
@@ -640,29 +640,29 @@ void func_0025D450(CdReq *r) {
     D_0047076C[--D_00470770] = r;
 }
 
-void func_0025D4E0(CdReq *r) {
+void amCdFs_Unlink(CdReq *r) {
     if (r->next) {
         r->next->prev = r->prev;
     } else {
-        D_00470778 = r->prev;
+        gCdReqTail = r->prev;
     }
     if (r->prev) {
         r->prev->next = r->next;
     } else {
-        D_00470774 = r->next;
+        gCdReqHead = r->next;
     }
     r->prev = 0;
     r->next = 0;
 }
 
-CdCache *func_0025D540(void) {
+CdCache *amCdFs_AllocCache(void) {
     if (D_00470788 >= D_0047077C) return 0;
     return D_00470784[D_00470788++];
 }
 
-void func_0025D590(CdCache *c) {
+void amCdFs_FreeCache(CdCache *c) {
     if (c->own && c->buf) {
-        func_0013AC90(c->buf);
+        amHeap_Free(c->buf);
     }
     c->name[0] = 0;
     c->refs = -1;
@@ -671,7 +671,7 @@ void func_0025D590(CdCache *c) {
     D_00470784[--D_00470788] = c;
 }
 
-CdCache *func_0025D610(CdReq *r) {
+CdCache *amCdFs_FindCache(CdReq *r) {
     s32 i;
     s32 id;
     CdCache *c;
@@ -684,7 +684,7 @@ CdCache *func_0025D610(CdReq *r) {
     return 0;
 }
 
-s32 func_0025D6C0(s32 dir, char *name) {
+s32 amCdFs_CheckDir(s32 dir, char *name) {
     CdDir *d = &D_00470794[dir];
 
     if (name == 0) name = d->path;

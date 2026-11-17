@@ -12,7 +12,7 @@ typedef struct ScreenCfg {
     u32 zbp;
 } ScreenCfg;
 
-extern void func_00140BF0(s32);
+extern void amDma_WaitQueue(s32);
 extern s32 sceGsSyncPath(s32, s32);
 extern s32 D_0047046C;
 extern s32 D_00470470;
@@ -20,24 +20,24 @@ extern s8 D_0047044C;
 extern u32 D_00470414;
 extern u32 D_00470418;
 extern char D_0045F4F0[]; /* "amDraw3d.c" */
-extern u8 *func_0013AAB0(s32, s32, char *, s32);
+extern u8 *amHeap_Alloc(s32, s32, char *, s32);
 extern void FlushCache(s32);
 extern void func_0012FBF0(u8 *, s32, s32, s32);
 extern void func_0012FFC0(u8 *, s32, s32);
-extern void func_0013AC90(u8 *);
-extern void func_00140C50(s32, u8 *, s32, s32);
-extern void func_00140CC0(u8 *, s32, s32, s32);
+extern void amHeap_Free(u8 *);
+extern void amDma_SendToSpr(s32, u8 *, s32, s32);
+extern void amDma_SendFromSpr(u8 *, s32, s32, s32);
 extern void func_00131560(s32, s32);
 extern void func_001315C0(s32, s32);
 extern void func_00131620(s32, s32);
-extern u8 *func_0012F230(s32);
+extern u8 *amPkt_Alloc(s32);
 extern s8 D_0047045C, D_00470408, D_004703F8;
 extern u32 D_00470474, D_00470484, D_00470490;
 extern s32 D_004703B0, D_004703AC;
 extern void func_0012F2C0(void);
-extern void func_00130D10(ScreenCfg *);
+extern void amDraw3d_SetScreen(ScreenCfg *);
 extern void func_00147650(void);
-extern void func_00131200(void);
+extern void amDraw3d_SetDefaultRegs(void);
 extern u32 D_0047041C, D_00470428;
 extern s8 D_00470454, D_004704A8;
 extern ScreenCfg D_0047E870;
@@ -45,7 +45,7 @@ extern s8 D_00470404, D_00470450, D_00470460;
 extern f32 D_0047040C, D_00470410, D_0047042C, D_00470430, D_00470434, D_00470438, D_00470468;
 extern u32 D_00470478, D_00470494;
 extern s32 D_0047048C, D_00470464, D_004703DC;
-extern void func_00140D30(s32, s32, s32, s32, u32, s32, s32, s32);
+extern void amDma_Request(s32, s32, s32, s32, u32, s32, s32, s32);
 
 typedef unsigned __int128 u128;
 
@@ -85,14 +85,14 @@ typedef struct Pkt131200 {
 void func_0012FBA0(void) {
 }
 
-void func_0012FBB0(void) {
-    func_00140BF0(0);
+void amDraw3d_Sync(void) {
+    amDma_WaitQueue(0);
     sceGsSyncPath(0, 0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/sys/amDraw3d", func_0012FBF0);
 void func_0012FF50(void) {
-    func_00140BF0(0);
+    amDma_WaitQueue(0);
     sceGsSyncPath(0, 0);
     *(volatile u64 *)0x12001040 = 0;
     *(volatile u32 *)0x10003C00 &= ~0x800000;
@@ -101,7 +101,7 @@ void func_0012FF50(void) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/sys/amDraw3d", func_0012FFC0);
-void func_001303E0(ScreenCfg *cfg, f32 *col) {
+void amDraw3d_Flip(ScreenCfg *cfg, f32 *col) {
     u32 frame;
     u32 zbuf;
     u32 xo;
@@ -112,7 +112,7 @@ void func_001303E0(ScreenCfg *cfg, f32 *col) {
     u128 q;
 
     func_0012F2C0();
-    func_00130D10(cfg);
+    amDraw3d_SetScreen(cfg);
     func_00147650();
     FlushCache(0);
     if (cfg != 0 || D_00470408 == 0) {
@@ -127,7 +127,7 @@ void func_001303E0(ScreenCfg *cfg, f32 *col) {
     if (D_004703F8 && D_004703AC) yo += 8;
     sx = (D_00470414 - 1) << 16;
     sy = (D_00470418 - 1) << 16;
-    p = (Pkt1303E0 *)func_0012F230(0x130);
+    p = (Pkt1303E0 *)amPkt_Alloc(0x130);
     PACK128(q, (u64)0x50000001 << 32, (u64)0x11000000);
     p->hdr[0] = q;
     PACK128(q, (u64)0xE, ((u64)0x10000000 << 32) | 0x8000);
@@ -190,11 +190,11 @@ void func_001303E0(ScreenCfg *cfg, f32 *col) {
     } else {
         p->ad[14].reg = 0xD;
     }
-    func_00140D30(0, 1, 1, 0, 0, (u32)p & 0x0FFFFFFF, 0x13, 0);
-    func_00131200();
+    amDma_Request(0, 1, 1, 0, 0, (u32)p & 0x0FFFFFFF, 0x13, 0);
+    amDraw3d_SetDefaultRegs();
 }
 
-void func_001308A0(s32 ctx, s32 filt, s32 tfx, u64 *texa) {
+void amDraw3d_SetTexFrame(s32 ctx, s32 filt, s32 tfx, u64 *texa) {
     PktTex *p;
     u128 q;
     s32 tw;
@@ -202,7 +202,7 @@ void func_001308A0(s32 ctx, s32 filt, s32 tfx, u64 *texa) {
     s32 th;
     u32 tbp;
 
-    p = (PktTex *)func_0012F230(0x60);
+    p = (PktTex *)amPkt_Alloc(0x60);
     for (tw = -1, v = D_00470414; v != 0; tw++, v = (s32)v >> 1) {
     }
     if (D_00470414 != 1 << tw) tw++;
@@ -233,7 +233,7 @@ void func_001308A0(s32 ctx, s32 filt, s32 tfx, u64 *texa) {
     p->ad[3].reg = 0x3B;
 }
 
-void func_00130AE0(s32 ctx, s32 filt, s32 tfx, u64 *texa) {
+void amDraw3d_SetTexZ(s32 ctx, s32 filt, s32 tfx, u64 *texa) {
     PktTex *p;
     u128 q;
     s32 tw;
@@ -241,7 +241,7 @@ void func_00130AE0(s32 ctx, s32 filt, s32 tfx, u64 *texa) {
     s32 th;
     u32 tbp;
 
-    p = (PktTex *)func_0012F230(0x60);
+    p = (PktTex *)amPkt_Alloc(0x60);
     for (tw = -1, v = D_0047041C; v != 0; tw++, v = (s32)v >> 1) {
     }
     if (D_0047041C != 1 << tw) tw++;
@@ -272,7 +272,7 @@ void func_00130AE0(s32 ctx, s32 filt, s32 tfx, u64 *texa) {
     p->ad[3].reg = 0x3B;
 }
 
-void func_00130D10(ScreenCfg *c) {
+void amDraw3d_SetScreen(ScreenCfg *c) {
     s8 def;
     f32 t;
 
@@ -361,11 +361,11 @@ void func_00130D10(ScreenCfg *c) {
     }
 }
 
-void func_00131200(void) {
+void amDraw3d_SetDefaultRegs(void) {
     Pkt131200 *p;
     u128 q;
 
-    p = (Pkt131200 *)func_0012F230(0x100);
+    p = (Pkt131200 *)amPkt_Alloc(0x100);
     PACK128_0(q, (u64)0x6000000F);
     p->dma = q;
     PACK128(q, (u64)0xE, 0x1000000000008000 | 0xE);
@@ -400,17 +400,17 @@ void func_00131200(void) {
     p->ad[12].reg = 0x45;
     p->ad[13].u.d = 0;
     p->ad[13].reg = 0x22;
-    func_00140D30(0, 2, 1, 1, (u32)p & 0x0FFFFFFF, 0, 0, 0);
+    amDma_Request(0, 2, 1, 1, (u32)p & 0x0FFFFFFF, 0, 0, 0);
 }
 
-void func_001313B0(void) {
+void amDraw3d_ScreenShot(void) {
     u8 *buf;
     u8 *p;
     s32 n;
     void (*fn)(s32, s32);
     s32 chunk;
 
-    buf = func_0013AAB0(D_0047046C * 4, 0, D_0045F4F0, 0x704);
+    buf = amHeap_Alloc(D_0047046C * 4, 0, D_0045F4F0, 0x704);
     FlushCache(0);
     func_0012FBF0(buf, 0, 0, 1);
     p = buf;
@@ -430,16 +430,16 @@ void func_001313B0(void) {
     }
     chunk = 0x1E00;
     while (1) {
-        func_00140C50(0, p, chunk >> 4, 1);
+        amDma_SendToSpr(0, p, chunk >> 4, 1);
         fn(0, chunk);
-        func_00140CC0(p, 0x2000, chunk >> 4, 1);
+        amDma_SendFromSpr(p, 0x2000, chunk >> 4, 1);
         p += chunk & ~15;
         n -= chunk;
         if (n <= 0) break;
         if (n < chunk) chunk = n;
     }
     func_0012FFC0(buf, 0, 0);
-    func_0013AC90(buf);
+    amHeap_Free(buf);
 }
 
 INCLUDE_ASM("asm/nonmatchings/sys/amDraw3d", func_00131560);
