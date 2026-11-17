@@ -48,13 +48,20 @@ typedef struct Obj2D2530 {
     Model2D2530 *fB8;
     Model2D2530 *fBC;
     Model2D2530 *fC0;
-    char padC4[0x1A0];
+    char padC4[0x18C];
+    Model2D2530 *f250;
+    Model2D2530 *f254;
+    Model2D2530 *f258;
+    char pad25C[0x8];
     Model2D2530 *f264;
     Model2D2530 *f268;
     Model2D2530 *f26C;
     Model2D2530 *f270;
     Model2D2530 *f274;
-    char pad278[0x10];
+    Model2D2530 *f278;
+    Model2D2530 *f27C;
+    Model2D2530 *f280;
+    char pad284[0x4];
     Model2D2530 *f288;
     char pad28C[0x10];
     Model2D2530 *f29C;
@@ -69,7 +76,18 @@ typedef struct Obj2D2530 {
     Model2D2530 *f2D8;
     Model2D2530 *f2DC;
     Model2D2530 *f2E0;
-    char pad2E4[0x30];
+    s32 f2E4;
+    s32 f2E8;
+    s32 f2EC;
+    s32 f2F0;
+    s32 f2F4;
+    s32 f2F8;
+    s32 f2FC;
+    s32 f300;
+    s32 f304;
+    s32 f308;
+    s32 f30C;
+    s32 f310;
     Model2D2530 *f314;
     Model2D2530 *f318;
     Model2D2530 *f31C;
@@ -313,7 +331,27 @@ void func_002D3650(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D3730);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D3E50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D40A0);
+s32 func_0022D670(s32, f32);
+void func_002D40A0(void) {
+    Obj2D2530 *s = D_00470934;
+
+    s->f2E0 = (Model2D2530 *)func_0022D670(*(s32 *)(s->f8->f1C + 0xE8), 0.0f);
+    s->f314 = (Model2D2530 *)func_0022D670(*(s32 *)(s->f8->f1C + 0x33C), 0.0f);
+    s->f318 = (Model2D2530 *)func_0022D670(*(s32 *)(s->f8->f1C + 0x1B8), 0.0f);
+    s->f31C = (Model2D2530 *)func_0022D670(*(s32 *)(s->f8->f1C + 0x1BC), 0.0f);
+    s->f2E4 = func_0022D670(*(s32 *)(s->f8->f1C + 0x188), 0.0f);
+    s->f2E8 = func_0022D670(*(s32 *)(s->f8->f1C + 0x18C), 0.0f);
+    s->f2EC = func_0022D670(*(s32 *)(s->f8->f1C + 0x190), 0.0f);
+    s->f2F0 = func_0022D670(*(s32 *)(s->f8->f1C + 0x194), 0.0f);
+    s->f2F4 = func_0022D670(*(s32 *)(s->f8->f1C + 0x1A0), 0.0f);
+    s->f2F8 = func_0022D670(*(s32 *)(s->f8->f1C + 0x1A0), 0.0f);
+    s->f2FC = func_0022D670(*(s32 *)(s->f8->f1C + 0x1B4), 0.0f);
+    s->f300 = func_0022D670(*(s32 *)(s->f8->f1C + 0x1B4), 0.0f);
+    s->f304 = func_0022D670(*(s32 *)(s->f8->f1C + 0x1B0), 0.0f);
+    s->f308 = func_0022D670(*(s32 *)(s->f8->f1C + (0x6A - *s->f3EC) * 4), 0.0f);
+    s->f30C = func_0022D670(*(s32 *)(s->f8->f1C + 0x198), 0.0f);
+    s->f310 = func_0022D670(*(s32 *)(s->f8->f1C + 0x1A0), 0.0f);
+}
 void func_002D4260(void) {
     Vec4 v;
     Obj2D2530 *s = D_00470934;
@@ -384,7 +422,15 @@ void func_002D4530(Vec4 *p, Vec4 *q) {
         q->w = 1.0f - o->f398 / 15.0f;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D4600);
+void func_002D4600(Vec4 *a, Vec4 *b, Vec4 *c) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
+
+    DrawModel(s, s->f278, 0, a);
+    DrawModel(D_00470934, s->f27C, 0, b);
+    m = s->f280;
+    DrawModel(D_00470934, m, 0, c);
+}
 void func_002D47E0(Vec4 *a, Vec4 *b) {
     Obj2D2530 *s = D_00470934;
     Model2D2530 *m;
@@ -444,6 +490,23 @@ void func_002D4BC0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D4CF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5090);
+void func_002D4530(Vec4 *, Vec4 *);
+#if 0
+// differs: the two draws keep the object in another saved register (s1/s2 swapped; compiled size 0x1A0 with the draft, the original is 0x1B0): tried reload/cached object and declaration orders
+void func_002D5570(void) {
+    Obj2D2530 *s = D_00470934;
+    Vec4 a;
+    Vec4 b;
+    Model2D2530 *m;
+
+    func_002D4530(&a, &b);
+    m = s->f2A4;
+    DrawModel(D_00470934, m, &a, &b);
+    asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&a));
+    a.y = 185.0f - 1.77f * (f32)(128 - s->f418);
+    DrawModel(D_00470934, s->f2A8, &a, &b);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5570);
 void func_002D5720(void) {
     Obj2D2530 *s = D_00470934;
@@ -522,7 +585,15 @@ void func_002D5E50(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5F30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6160);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6400);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D66B0);
+void func_002D66B0(Vec4 *a, Vec4 *b, Vec4 *c) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
+
+    DrawModel(s, s->f250, 0, a);
+    DrawModel(D_00470934, s->f254, 0, b);
+    m = s->f258;
+    DrawModel(D_00470934, m, 0, c);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6890);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6B10);
 void func_002D6F40(void) {
@@ -576,7 +647,33 @@ void func_002D79C0(void) {
     DrawModel(D_00470934, s->f0A8, &v, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7AA0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7BF0);
+void func_002DDF00(void);
+void func_002DEFE0(void);
+void func_002D7AA0(Vec4 *, Vec4 *);
+void func_002DDF00(void);
+void func_002DEFE0(void);
+void func_002D7AA0(Vec4 *, Vec4 *);
+void func_002D7BF0(void) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
+
+    if (s->f344 == func_002DDF00 || s->f344 == 0 || s->f344 == func_002DEFE0) {
+        m = s->f9C;
+        DrawModel(D_00470934, m, 0, &s->f3C0);
+    } else {
+        m = s->f9C;
+        DrawModel(D_00470934, m, 0, &s->f3B0);
+    }
+    if (s->f360 == func_002D79C0) {
+        if (s->f37C == 0) {
+            func_002D7AA0(&s->f3B0, &s->f3C0);
+        } else {
+            func_002D7AA0(&s->f3C0, &s->f3B0);
+        }
+    } else {
+        func_002D7AA0(&s->f3C0, &s->f3C0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7DC0);
 void func_002D7FC0(void) {
     Vec4 v;
