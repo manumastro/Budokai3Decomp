@@ -97,9 +97,8 @@ extern f32 D_004B4210[];
 extern f32 D_004B423C[];
 extern f32 D_004B4238[];
 
-// func_001CBD90, func_001CBE80, func_001CBEE0: register and scheduling differences; not matched yet.
-// func_001CBD90: best attempt, 7 of 22 instructions differ. The Arg pointer stays in v1 in the original and p[0] is loaded first; the flag is (p[0]!=0) negated then xori, not sltiu.
-/* r6 best attempt diff 7 */
+// func_001CBD90, func_001CBDF0, func_001CBE80: register and scheduling differences; not matched yet.
+// differs: 17 of 22 instructions at best. The Arg pointer stays in v1 in the original (ours takes a0); the flag -(p[0]==0) is sltu+xori in the original, sltiu in ours.
 #if 0
 int func_001CBD90(void *unused, Arg *a) {
     int *p = a->p;
@@ -158,18 +157,19 @@ int func_001CBE80(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBE80);
-// differs: 20 of 26 (21 with locals). The original loads p[0] into a3 before the table walk and keeps p in v0; ours loads p[1] first.
-#if 0
 int func_001CBEE0(void *unused, Arg *a) {
     int *p = a->p;
-    Side *s = (Side *)((char *)gBattle->tbl[p[3]] + p[2] * 0x680);
-    if (p[1] >= 0) {
-        *(s32 *)((char *)s->blk[0] + p[1] * 8 + 8) = p[0];
+    s32 x0 = p[0];
+    s32 n = p[1];
+    s32 i2 = p[2];
+    s32 i3 = p[3];
+    if (n >= 0) {
+        Side *s = (Side *)((char *)gBattle->tbl[i3] + i2 * 0x680);
+        int *b0 = s->blk[0];
+        b0[n * 2 + 2] = x0;
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBEE0);
 int AdxCmd_WaitStop(void *unused, Arg *a) {
     int x = a->p[0];
     return AdxSlot_IsPlaying((char *)gBattle + (x << 5) + 0x5C4) ? 1 : 3;
@@ -552,27 +552,23 @@ int func_001CCA90(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCA90);
-/* r6 best attempt diff 1 */
-#if 0
 int func_001CCBF0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
     f32 x0 = f[0];
     f32 x1 = f[1];
     f32 x2 = f[2];
     s32 buf[12];
-    f32 *fb;
+    f32 *q;
     memset(buf, 0, 0x30);
     buf[0] = 0;
-    fb = (f32 *)&buf[4];
-    fb[0] = x2;
-    fb[1] = x1;
-    fb[2] = x0;
-    buf[7] = 0x3F800000;
+    q = (f32 *)&buf[4];
+    q[0] = x2;
+    q[1] = x1;
+    q[2] = x0;
+    q[3] = 1.0f;
     func_001E57C0(0, 0, buf);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCBF0);
 int Scr_CmdFlagE57F0(void *unused, Arg *a) {
     func_001E57F0(1);
     return 1;
