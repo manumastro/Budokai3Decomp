@@ -477,13 +477,15 @@ s32 ScrAdx_Stop(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 // GIVEN UP: the branch layout of the return values differs (tried two forms); the original has a 0x80-byte frame and a different branch order (0x6C against 0x80)
-#if 0
 s32 func_002ABA70(s32 *a0, s32 *a1) {
     s32 *s0 = (s32 *)a1[11];
-    s32 r = 3;
-
-    if (((s32 *)a0[0])[3] != 3) {
-        if (amAdx_IsPlaying(s0[0])) {
+    s32 r;
+    if (((s32 *)a0[0])[3] == 3) {
+        r = 3;
+    } else {
+        if (!amAdx_IsPlaying(s0[0])) {
+            r = 3;
+        } else {
             amAdx_Pause(s0[0], 0);
             a0[4] = 0;
             r = 1;
@@ -491,26 +493,25 @@ s32 func_002ABA70(s32 *a0, s32 *a1) {
     }
     return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABA70);
 // GIVEN UP: the callback store and the return value are right; the frame keeps one register more than the original and the join differs
-#if 0
 s32 func_002ABAF0(s32 *a0, s32 *a1) {
-    s32 *s0 = (s32 *)a1[11];
-    s32 v = 3;
-
+    s32 *s0;
+    s32 r;
     a0[4] = (s32)func_002ABA70;
-    if (((s32 *)a0[0])[3] != 3) {
-        if (amAdx_IsPlaying(s0[0])) {
+    s0 = (s32 *)a1[11];
+    if (((s32 *)a0[0])[3] == 3) {
+        r = 3;
+    } else {
+        if (!amAdx_IsPlaying(s0[0])) {
+            r = 3;
+        } else {
             amAdx_Pause(s0[0], 0);
             a0[4] = 0;
-            v = 1;
+            r = 1;
         }
     }
-    return v;
+    return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABAF0);
 s32 ScrAdx_Pause(ScriptThread *t, ScriptCtx *ctx) {
     amAdx_Pause(ctx->args[0], 0);
     return 1;
