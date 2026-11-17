@@ -52,7 +52,34 @@ INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A4F0);
 void StrMap_Clear(void) {
     gStrMap = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A8F0);
+extern void amCdFs_Close(s32, s32);
+extern void amCdFs_ReleaseCache(s32);
+extern void amHeap_Free(void *);
+
+void func_0029A8F0(void) {
+    s32 i;
+    for (i = 0; i < 0xE; i++) {
+        if (gStrMap[8 + i] != 0) {
+            amTask_Kill((Task *)gStrMap[8 + i]);
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (gStrMap[i] != 0) {
+            amCdFs_Close(gStrMap[i], 0);
+        }
+        if (gStrMap[4 + i] != 0) {
+            amCdFs_ReleaseCache(gStrMap[4 + i]);
+        }
+    }
+    for (i = 0; i < 0x4D; i++) {
+        if (gStrMap[0x1A + i] != 0) {
+            func_0022D0E0(gStrMap[0x1A + i], 1);
+        }
+    }
+    amHeap_Free(gStrMap);
+    gStrMap = 0;
+}
+
 extern StrMapCopy16 D_00453EA0 __attribute__((aligned(16)));
 extern void func_0028EC80(s32, s32, s32, s32, void *, s32, s32, s32);
 extern void StrBg_SetFlags(void *, s32, s32);
@@ -120,6 +147,37 @@ void StrMap_Start(s32 a0, s32 a1, s32 a2) {
     }
     gStrMap[0x28 / 4] = (s32)amTask_Create(func_0029A250, NULL, a0, 2, a1, D_0046BBB8);
 }
+extern void amFile_Load(s32);
+
+extern void amFile_Load(s32);
+
+#if 0
+// func_0029AEF0: the if-nest with the return 0 at the end matches apart from the loop test: the original computes it in $at (slti $at), ours in v0; for, while, do-while, continue and reversed tests tried
+extern void amFile_Load(s32);
+
+s32 func_0029AEF0(void) {
+    s32 i;
+    if (gStrMap[3] != 0) {
+        if (*(s16 *)((char *)gStrMap[3] + 4) != 3) {
+            return 1;
+        }
+        for (i = 0; i < 4; i++) {
+            if (gStrMap[i] != 0) {
+                gStrMap[4 + i] = *(s32 *)(gStrMap[i] + 0x40);
+                *(s32 *)(gStrMap[i] + 0x40) = 0;
+                amCdFs_Close(gStrMap[i], 0);
+                gStrMap[i] = 0;
+                amFile_Load(*(s32 *)(gStrMap[4 + i] + 0x50));
+            }
+        }
+        gStrMap[0x58 / 4] = *(s32 *)(gStrMap[4] + 0x50);
+        gStrMap[0x60 / 4] = *(s32 *)(gStrMap[5] + 0x50);
+        gStrMap[0x5C / 4] = *(s32 *)(gStrMap[6] + 0x50);
+        gStrMap[0x64 / 4] = *(s32 *)(gStrMap[7] + 0x50);
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029AEF0);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B000);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B130);
