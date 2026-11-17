@@ -204,6 +204,18 @@ s32 func_0025AD50(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
+/* differs: the global is loaded with %lo into $a0 and the value into $a1; ours takes $v1 / $a0 (6 of 12) */
+#if 0
+s32 func_0025ADE0(void *t, ScrCmd *c) {
+    s32 v = c->args->i;
+    ScrObj *g = D_0058D4E8[0];
+
+    if (g != NULL && *(s32 *)&g->f5C < 5) {
+        *(s32 *)((char *)g + 0x60) = v;
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025ADE0);
 /* Same code, but the argument pointer and the object swap $v1 / $a0. */
 #if 0

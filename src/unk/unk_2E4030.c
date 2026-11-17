@@ -11,8 +11,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5040);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5170);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5260);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E53B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5480);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5490);
+extern void func_0022C700(void);
+
+void func_002E5480(void) {
+    func_0022C700();
+}
+void func_002E5490(void) {
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E54A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5600);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5690);
