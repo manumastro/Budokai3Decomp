@@ -906,6 +906,54 @@ void func_002C0750(char *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0750);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0860);
+#if 0
+// func_002C0FC0: frame 0x50 with s0-s3 in the original, ours 0x60 with s0-s4 (the parameter copy and the loop pointer and index take five registers); 4 layouts tried, the table-read loop is the same shape
+void func_002C0FC0(s32 *a0) {
+    s32 i;
+    s32 off;
+    s32 *s0;
+    {
+        s32 m = a0[1];
+        D_00470704 = m;
+        D_0047070C = 0x2000;
+        D_00470708 = 0;
+        amModel_SetCurrent(m, 0x2000);
+    }
+    D_00470238 = 0;
+    if (a0[0xC / 4] != 0) {
+        func_0022D0E0(a0[0xC / 4], 1);
+    }
+    a0[0xC / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0xE8 / 4], 0.0f);
+    if (a0[0x10 / 4] != 0) {
+        func_0022D0E0(a0[0x10 / 4], 1);
+    }
+    a0[0x10 / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0xF0 / 4], 0.0f);
+    if (a0[0x2C / 4] != 0) {
+        func_0022D0E0(a0[0x2C / 4], 1);
+    }
+    a0[0x2C / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0xE0 / 4], 0.0f);
+    if (a0[0x14 / 4] != 0) {
+        func_0022D0E0(a0[0x14 / 4], 1);
+    }
+    a0[0x14 / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0x148 / 4], 0.0f);
+    i = 0;
+    off = 0;
+    s0 = a0;
+    do {
+        if (i < *(u8 *)((u8 *)a0 + 0xAC)) {
+                    s0[0x3C / 4] = func_0022D670(((s32 *)(((u8 *)((s32 *)a0[0])[0x1C / 4]) + off))[0x128 / 4], 0.0f);
+                    s0[0x40 / 4] = func_0022D670(((s32 *)(((u8 *)((s32 *)a0[0])[0x1C / 4]) + off))[0x100 / 4], 0.0f);
+        } else {
+            s0[0x3C / 4] = 0;
+            s0[0x40 / 4] = 0;
+        }
+        s0[0x44 / 4] = 0;
+        i++;
+        off += 4;
+        s0 += 3;
+    } while (i < 8);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0FC0);
 typedef struct {
     u8 b[16];
