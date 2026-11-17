@@ -3489,7 +3489,24 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3740);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F38F0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3A60);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3C10);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3D80);
+extern void func_00133920(s32, s32, s32, s32, s32);
+extern s32 D_00470570;
+extern s32 D_0047064C;
+
+void func_001F3D80(char *o) {
+    s32 f;
+    char *p;
+
+    f = *(s32 *)(o + 0x20);
+    if ((f & 0x800) != 0 || (f & 0x8000) != 0) {
+        D_0047064C = 0;
+        p = (char *)D_00470570;
+        p += 0x10000;
+        if (*(f32 *)(p - 0x76D4) > 0.0f) {
+            func_00133920(0, 0x8000, 0, 0, 0);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3DF0);
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
@@ -3609,6 +3626,53 @@ void func_001F5540(s32 p0, s32 p1, s32 p2, s32 flags) {
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5540);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5660);
+extern char *func_001A50F0(char *, s32);
+extern char *func_00209540(char *, s32, s32);
+extern void func_00209B50(char *, char *, s32);
+extern void *func_001F5FD0(u32, char *, s32, void *, void *);
+extern void memset(void *, s32, s32);
+extern char *D_0051CD0C[];
+extern s32 D_0051CD20[];
+extern char D_00469858[];
+extern void func_001F2150(void);
+
+// differs: constructor: the call func_00209B50(s1, s0, 0) puts a0 = s1 in the delay slot where the original puts a2 = 0 (other argument types tried)
+#if 0
+void func_001F5830(s32 a0, char *s0, s32 a2, s32 flags) {
+    char *s2;
+    s32 s1;
+    s32 a1;
+    char *r;
+    char *p;
+    char *q;
+
+    s2 = D_0051CD0C[0];
+    if ((flags & 4) != 0) {
+        a1 = 0x101;
+    } else {
+        a1 = 1;
+    }
+    a1 += D_0051CD20[0] << 7;
+    s1 = 0;
+    r = func_001A50F0(s2, a1);
+    if (r != NULL) {
+        s1 = (s32)func_00209540(r, 0x2000001, 0);
+    }
+    if (s1 != 0) {
+        func_00209B50((char *)s1, s0, 0);
+        p = func_001F5FD0(0x85000000, D_00469858, 0, (void *)func_001F2150, (void *)func_001F22A0);
+        *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) & ~0x800;
+        *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) | 0x800;
+        memset(p + 0x30, 0, 0x80);
+        *(s32 *)(p + 0x38) = s1;
+        q = func_001A50F0(s2, 0x280);
+        p = p + 0x30;
+        *(char **)(p + 4) = q;
+        *(s32 *)p = flags & 2;
+    }
+}
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5830);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5950);
 extern void func_002D04A0(s32);
@@ -3765,6 +3829,40 @@ void func_001F5CB0(BtbHolder *h) {
         }
     }
 }
+
+extern f32 D_0051CD24[];
+extern void amMotSet_Apply(void *, f32, s32);
+
+// differs: float motion step: the original schedules the s0 field loads and the float constant load around the amMotSet_Apply call with nops in the branch slots (the scheduling differs from the C order)
+#if 0
+void func_001F5D50(char *c) {
+    char *s0;
+    s32 s1;
+    s32 idx;
+    char *base;
+    char *e;
+    f32 f0;
+    f32 f1;
+
+    s0 = *(char **)(c + 0xC);
+    if (D_0051CD24[0] >= 0.0f) {
+        if (*(s32 *)(s0 + 0x18) != 0) {
+            s1 = ((*(s32 *)(s0 + 0x8) + 1) << 16) | *(s32 *)(s0 + 0x10);
+            amMotSet_Apply(*(void **)s0, *(f32 *)(s0 + 0x4), s1);
+            *(f32 *)(s0 + 0x4) = *(f32 *)(s0 + 0x4) + *(f32 *)(s0 + 0x14) * D_0051CD24[0];
+            idx = (s1 >> 16) - 1;
+            base = *(char **)s0;
+            e = *(char **)(*(char **)(base + (idx << 2) + 4) + 0x14);
+            e = e + ((s1 & 0xFFFF) << 4);
+            f1 = (f32)*(s32 *)(e + 0x8);
+            f0 = *(f32 *)(s0 + 0x4);
+            if (f0 >= f1) {
+                *(s32 *)(s0 + 0x4) = 0;
+            }
+        }
+    }
+}
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5D50);
 
