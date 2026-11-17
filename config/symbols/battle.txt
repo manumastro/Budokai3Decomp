@@ -703,3 +703,113 @@ Scr_CmdSetFlag916Mode = 0x0025F6C0; // type:func // guess
 Scr_CmdObjCall245A80 = 0x0025ED50; // type:func // guess
 Scr_CmdFlushFlag916 = 0x0025D940; // type:func // guess
 Scr_CmdCall20A7F0 = 0x002603E0; // type:func // guess
+
+// unk_1CBD90.c, the rest of groups 0x02-0x0C (the fighter-slot handlers): slots are gBattle->tbl[index], each
+// slot's arrays are 0x680 bytes apart (+0x650 .. +0xCBE fields). Names say what the handler sets or reads;
+// guesses.
+Scr_CmdFighterSetVecPair = 0x001CEF00; // type:func // guess
+Scr_CmdFighterSetVec5 = 0x001CE8F0; // type:func // guess
+Scr_CmdFighterSet1A5E = 0x001CE7C0; // type:func // guess
+Scr_CmdFighterSet1A5EF = 0x001CE740; // type:func // guess
+Scr_CmdFighterSlotSet = 0x001CE610; // type:func // guess
+Scr_CmdFighterSlotSetVec = 0x001CE480; // type:func // guess
+Scr_CmdFighterSetVec4 = 0x001CE430; // type:func // guess
+Scr_CmdFighterSlotSetPair = 0x001CE2A0; // type:func // guess
+Scr_CmdGetFighterAnimF = 0x001CE110; // type:func // guess
+Scr_CmdFighterCheckSlot = 0x001CE080; // type:func // guess
+Scr_CmdCallBuf20 = 0x001CD270; // type:func // guess
+Scr_CmdFloatBuf6 = 0x001CCF60; // type:func // guess
+Scr_CmdFloatBuf12 = 0x001CC9A0; // type:func // guess
+Scr_CmdSlotBufCopy = 0x001CC890; // type:func // guess
+Scr_CmdSlotBufCopy2 = 0x001CC710; // type:func // guess
+Scr_CmdSlotBufCopy3 = 0x001CC610; // type:func // guess
+Scr_CmdFighterCountSet = 0x001CC270; // type:func // guess
+
+// unk_25D740.c, the rest of groups 0x16-0x1A (the object and timer handlers, ScrArg operands in cmd->args;
+// f8934[i] = the object table of gBattle). Guesses.
+Scr_CmdObjWaitCheck = 0x0025FAC0; // type:func // guess
+Scr_CmdObjSetCall = 0x0025FFA0; // type:func // guess
+Scr_CmdPlyPartSet = 0x0025FF00; // type:func // guess
+Scr_CmdObjBigCall = 0x0025FCF0; // type:func // guess
+Scr_CmdObjBigCall2 = 0x0025FC90; // type:func // guess
+Scr_CmdObjVecCall = 0x0025ED90; // type:func // guess
+Scr_CmdTimedSet0C0 = 0x0025F410; // type:func // guess
+Scr_CmdTimedSet0C0B = 0x0025F0C0; // type:func // guess
+Scr_CmdCtxWaitF14 = 0x0025EB10; // type:func // guess
+Scr_CmdCtxWaitF14B = 0x0025E910; // type:func // guess
+Scr_CmdCtxWaitF14C = 0x0025E550; // type:func // guess
+Scr_CmdObjVec3Call = 0x0025E350; // type:func // guess
+Scr_CmdObjVecCall4 = 0x0025DC50; // type:func // guess
+Scr_CmdObjVecCall4B = 0x0025DC00; // type:func // guess
+Scr_CmdObjVecCall4C = 0x0025DBA0; // type:func // guess
+Scr_CmdEffectSpawn = 0x0025D8D0; // type:func // guess
+Scr_CmdCtxWaitF14D = 0x00260370; // type:func // guess
+Scr_CmdObjFloat4 = 0x002601A0; // type:func // guess
+Scr_CmdObjSetF8F18 = 0x00260160; // type:func // guess
+
+// character.c, script command groups 0x0D-0x0F and 0x19 (gScrCmdTable_0D, _0E, _0F, _19): one-line handlers that
+// set battle flags, call one fighter or one Sp handler, or do a float vector call. Where the callee has no name
+// yet, the callee's address is in the name. Guesses.
+Scr_CmdFighterCall1D8A50 = 0x001CBA50; // type:func // guess
+Scr_CmdCall1DA4C0 = 0x001CB870; // type:func // guess
+Scr_CmdSetBattle8AB2 = 0x001CB7A0; // type:func // guess
+Scr_CmdResetBattle8AB2 = 0x001CB770; // type:func // guess
+Scr_CmdUpdateLimitXY = 0x001CB740; // type:func // guess
+Scr_CmdResetLimitXY = 0x001CB710; // type:func // guess
+Scr_CmdKillTaskSlot = 0x001CBD40; // type:func // guess
+Scr_CmdSetGlobalFlag470578 = 0x001CB530; // type:func // guess
+Scr_CmdSetWaitCb1CB4A0 = 0x001CB510; // type:func // guess
+Scr_CmdSpCall3 = 0x001CB440; // type:func // guess
+Scr_CmdSetFighter8952 = 0x001CB300; // type:func // guess
+Scr_CmdSpCall0 = 0x001CB3E0; // type:func // guess
+Scr_CmdSqrt = 0x001CB2E0; // type:func // guess
+Scr_CmdSeedRand = 0x001CB2B0; // type:func // guess
+Scr_CmdRandomBelow = 0x001CB250; // type:func // guess
+Scr_CmdVecCall146E90 = 0x001CB120; // type:func // guess
+Scr_CmdVecPairCall146E30 = 0x001CB0A0; // type:func // guess
+Scr_CmdSpCall8 = 0x001CB380; // type:func // guess
+
+// skill_cmd.c, script command groups 0x10-0x12 (gScrCmdTable_10, _11, _12): the background flip and cross-fade
+// commands, the object (BtbObj) commands with the callee's address in the name, and a switch on one operand.
+// Guesses.
+Scr_CmdBtbBgFlip = 0x002532B0; // type:func // guess
+Scr_CmdBtbBgCrossFade = 0x00253140; // type:func // guess
+Scr_CmdGetBtbBgFlip = 0x00253210; // type:func // guess
+Scr_CmdGetBtbBgIdle = 0x002531B0; // type:func // guess
+Scr_CmdSwitchCall1F7470 = 0x00253090; // type:func // guess
+Scr_CmdObjRemoveByIdx = 0x00253060; // type:func // guess
+Scr_CmdObjCall1F5B10 = 0x00252EF0; // type:func // guess
+Scr_CmdObjSetFloatCall1F5BE0 = 0x00253000; // type:func // guess
+Scr_CmdObjSetApplyMotSet = 0x00252FA0; // type:func // guess
+Scr_CmdBtbBgCreatePlanet = 0x00252EC0; // type:func // guess
+Scr_CmdObjFreeFlag400 = 0x00252EA0; // type:func // guess
+Scr_CmdMotionBoneCall1F3FE0 = 0x00252D50; // type:func // guess
+Scr_CmdCall1F9BB0 = 0x00252DF0; // type:func // guess
+Scr_CmdFighterCall1F9B60 = 0x00252D00; // type:func // guess
+
+// unk_25A130.c, script command groups 0x14-0x15 (gScrCmdTable_14, _15): the object commands on D_0058D4F4 and its
+// neighbours (the ScrObj fields at f34..f64 are in the names), the players' pair calls, and the stubs that only
+// return 1. Guesses.
+Scr_CmdPlayersCall25A130 = 0x0025B120; // type:func // guess
+Scr_CmdObjSetF64 = 0x0025B100; // type:func // guess
+Scr_CmdObjSetF4CIfZero = 0x0025B040; // type:func // guess
+Scr_CmdObjSetF40F44 = 0x0025B0B0; // type:func // guess
+Scr_CmdObjSetF3C = 0x0025B080; // type:func // guess
+Scr_CmdPlayersCall25A580 = 0x0025AFB0; // type:func // guess
+Scr_CmdCall25A3A0 = 0x0025AF40; // type:func // guess
+Scr_CmdPlayerCall25AA20 = 0x0025AEC0; // type:func // guess
+Scr_CmdPlayersCall25A7C0 = 0x0025AD50; // type:func // guess
+Scr_CmdObjSetF4CIfZero2 = 0x0025AD10; // type:func // guess
+Scr_CmdCall21C560 = 0x0025ACD0; // type:func // guess
+Scr_CmdCall21C540 = 0x0025ACA0; // type:func // guess
+Scr_CmdSwitchCall21C5B0 = 0x0025AC60; // type:func // guess
+Scr_CmdNop_153 = 0x0025AC50; // type:func // guess
+Scr_CmdNop_154 = 0x0025AC40; // type:func // guess
+Scr_CmdNop_155 = 0x0025AC30; // type:func // guess
+Scr_CmdNop_156 = 0x0025AC20; // type:func // guess
+Scr_CmdA2dCall31 = 0x0025ABC0; // type:func // guess
+Scr_CmdGetBtlSysFDF0 = 0x0025B1B0; // type:func // guess
+
+// unk_20A4D0.c, script command group 0x19 (gScrCmdTable_19, sub 9): a block of two copies of Blk44 and a call
+// through the function table D_00469CB0. Guess.
+Scr_CmdCallTable469CB0 = 0x00217D70; // type:func // guess
