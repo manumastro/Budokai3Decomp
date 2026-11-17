@@ -1,5 +1,14 @@
 #include "common.h"
 
+typedef struct Arr6 {
+    s32 v[6];
+} Arr6;
+extern Arr6 D_004500E0;
+s32 func_0021C2A0(s32);
+u8 *func_0021C400(s32);
+void amDraw_SetPacketMode(s32);
+void func_0022C6B0(s32);
+
 extern u8 D_0058CAA0[];
 void func_00244CC0(s32, s32);
 void func_00209530(s32);
@@ -179,7 +188,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023AEE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B080);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B3C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B4C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B6B0);
+void func_0023B6B0(s32 x) {
+    u8 *sys = D_0046FDFC;
+    u8 *p;
+    Arr6 buf;
+    s32 k;
+    u8 *s2;
+
+    p = (u8 *)func_0021C400(func_0021C3D0(x));
+    buf = D_004500E0;
+    if (func_0021C2A0(0x80000000)) {
+        if (*(s16 *)(sys + 0xE52) == 0 || *(s16 *)(sys + 0xE52) == 1) {
+            s2 = D_0058BF70 + x * 0x70 + 0x3A0;
+            amDraw_SetPacketMode(0);
+            for (k = 0; k < 8; k++) {
+                func_0022C560(*(s32 *)(s2 + 0x30 + k * 4));
+            }
+            for (k = 0; k < 6; k++) {
+                if ((*(u16 *)(p + 0x4C) & buf.v[k]) != 0) {
+                    func_0022C6B0(*(s32 *)(s2 + 0x50 + k * 4));
+                }
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B7D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023BBE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023C690);
