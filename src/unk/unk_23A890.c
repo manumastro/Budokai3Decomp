@@ -816,17 +816,21 @@ s32 func_00241010(s32 i) {
     s32 t = *(s32 *)(base + 0x252C);
     s32 r = 0;
     u8 *o;
+    u8 *p;
+    s32 v;
 
     if ((u32)(t - 0x28) < 2 || t == 0x12 || t == 5 || (u32)(t - 0x14) < 2 || t == 0x23 ||
         (u32)(*(s32 *)(q + 0xB9C) - 0x46) < 2 || *(s32 *)(q + 0xB9C) == 0x5C) {
         o = D_0046FE4C + i * 0x480;
-        if (*(s32 *)(o + 0x24) != -1 && *(s32 *)(o + 0x24) != *(s32 *)(o + 0x48)) {
+        p = o + 0x10;
+        v = *(s32 *)(o + 0x24);
+        if (v != -1 && v != *(s32 *)(p + 0x38)) {
             r = 1;
         }
     }
     return r == 0;
 }
-// differs: the early-exit chain is laid out differently (sltiu into at, and the loads reordered)
+// differs: 188 bytes (round 5, u23c): the branch layout matches up to the join (the body at 0x241088 with its two pad nops); the t/r register choice differs (original: t in v1, r in a1, q in a2), and the return is sltu/xori (r != 0) ^ 1 while ours is sltiu. Tried: t2 hoisted to the top (0xB4 bytes), return (r != 0) ^ 1, r declared first.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241010);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002410D0);
@@ -1658,9 +1662,8 @@ void func_00244580(s32 x, s32 y, s32 z) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244580);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244660);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244A60);
-#if 0
 void func_00244CC0(s32 i, s32 j) {
-    u8 *e = D_0046FE4C + i * 0x480 + j * 0x220 + 0x50;
+    u8 *e = (u8 *)((j * 0x220) + (s32)(D_0046FE4C + i * 0x480)) + 0x50;
     s32 k;
 
     if (*(s32 *)(e + 4) != 0) {
@@ -1681,9 +1684,6 @@ void func_00244CC0(s32 i, s32 j) {
         e += 4;
     }
 }
-// differs: the address sum is formed as (base + j) + i in the original (the operands of the last add swapped here)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244CC0);
 #if 0
 // differs: 1 of 95 (244DC0 `addu v1,v1,a0` in the original, ours `addu v1,a0,v1`: the entry q = base + a1*0x220 with the base first). Round 5: tried q as ((Ent220*)base + a1), &((Ent220*)base)[a1], integer casts, and one expression D + a0*0x480 + a1*0x220: all base first. The slot stores as ((s32*)(s3+0x20))[s1] change the prologue (91 of 98): keep the s0 form.
 extern u8 D_0046AD08[];
@@ -1793,34 +1793,31 @@ void func_00245240(void) {
         func_00244F00(i, 1);
     }
 }
-#if 0
 void func_002453D0(void) {
-    u8 *bw;
+    s32 v;
 
-    if (*(s8 *)(gBattle + 0x8975) != 1) {
-        if (*(s32 *)(gWave + 0x7C) != 0) {
-            func_00215500(2);
-        }
-        if (*(s32 *)(gWave + 0x98) != 0) {
-            func_00215500(0x400);
-        }
-        if (*(s32 *)(gWave + 0x9C) != 0) {
-            bw = gBattle;
-            if (bw != 0 && *(s16 *)(bw + 0x8944) != 0) {
-                if (*(s16 *)(D_0046FE4C + 0x91A) != 0) {
-                    func_00215500(0x800);
-                }
-            } else {
-                *(s16 *)(D_0046FE4C + 0x91A) = 0;
+    if (*(s8 *)(gBattle + 0x8975) == 1) {
+        return;
+    }
+    if (*(s32 *)(gWave + 0x7C) != 0) {
+        func_00215500(2);
+    }
+    if (*(s32 *)(gWave + 0x98) != 0) {
+        func_00215500(0x400);
+    }
+    if (*(s32 *)(gWave + 0x9C) != 0) {
+        v = (gBattle != 0) ? *(s16 *)(gBattle + 0x8944) : 0;
+        if (v != 0) {
+            if (*(s16 *)(D_0046FE4C + 0x91A) != 0) {
                 func_00215500(0x800);
             }
+        } else {
+            *(s16 *)(D_0046FE4C + 0x91A) = 0;
+            func_00215500(0x800);
         }
-        func_00244280();
     }
+    func_00244280();
 }
-// differs: the value read at 0x8944 is merged with a zero in the original, with no sign extension; the merge here extends it, and the combined test is shorter by 4 instructions
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002453D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002454B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00245A80);
 void func_00245BE0(u8 *o) {
@@ -2139,23 +2136,23 @@ void func_00247410(void) {
 // differs: the loop over the two blocks: the original is 4 bytes longer, with the block pointer kept as its own value (not folded into the 0x1350 load); no declaration order tried gives its registers
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247410);
-#if 0
 void func_00247500(void) {
-    u8 *a = D_0058CAB0;
-    u8 *b = D_0058CF30;
-
-    *(s32 *)(a + 0x14) = -1;
-    *(s32 *)(a + 0x1C) = -1;
-    *(s32 *)(a + 0x38) = -1;
-    *(s16 *)(a + 0x2A) = 0;
-    *(s16 *)(a + 0x2C) = 0;
-    *(s16 *)(a + 0x36) = 0;
-    *(s32 *)(b + 0x14) = -1;
-    *(s32 *)(b + 0x1C) = -1;
-    *(s32 *)(b + 0x38) = -1;
-    *(s16 *)(b + 0x2A) = 0;
-    *(s16 *)(b + 0x2C) = 0;
-    *(s16 *)(b + 0x36) = 0;
+    u8 *p;
+    s32 m = -1;
+    p = (u8 *)D_0058CAB0;
+    *(s32 *)(p + 0x14) = -1;
+    *(s32 *)(p + 0x1C) = -1;
+    *(s32 *)(p + 0x38) = -1;
+    *(s16 *)(p + 0x2A) = 0;
+    *(s16 *)(p + 0x2C) = 0;
+    *(s16 *)(p + 0x36) = 0;
+    p = (u8 *)D_0058CF30;
+    *(s32 *)(p + 0x14) = -1;
+    *(s32 *)(p + 0x1C) = -1;
+    *(s32 *)(p + 0x38) = -1;
+    *(s16 *)(p + 0x2A) = 0;
+    *(s16 *)(p + 0x2C) = 0;
+    *(s16 *)(p + 0x36) = 0;
     amTask_Create(func_002454B0, 0, 0x5900, 0x400, 0x800002, D_0046AD80);
     amTask_Create(func_002453D0, 0, 0x3710, 0x400, 0x800002, D_0046AD88);
     func_00248CC0();
@@ -2163,9 +2160,6 @@ void func_00247500(void) {
     func_0025BE50();
     func_002CA4A0();
 }
-// differs: the stores into the two task blocks use lui/at absolute addresses here; the original keeps each block's address in a register (t0, t2) and stores through it
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247500);
 void func_002475D0(void) {
     func_00245240();
 }
