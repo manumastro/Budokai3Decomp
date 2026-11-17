@@ -2,9 +2,36 @@
 
 extern u8 D_005C2050[];
 extern u8 D_005C2060[];
+extern void amTask_Kill(s32);
+extern void func_001F7DB0(void);
+extern void func_001F7BF0(void);
+extern void func_001F7820(void);
+extern void func_001F7690(void);
+extern void func_001F6E50(void);
+extern void func_001F7470(s32);
+extern s32 D_0051CD20[];
+extern void func_001F6D60(void);
+extern void func_002CDC20(void);
+extern void func_00208F70(void *);
+extern void func_001F5F50(void *);
+extern void func_00145CC0(s32, s32);
+extern void func_001F3DF0(void *);
+extern void func_001F3D80(void *);
+extern void func_00208D70(void *);
+extern s32 D_00470238;
+extern void func_001F5D50(void *);
+extern void func_001F5E20(void *);
+extern void amMotion_BuildMatrices(s32);
+extern s32 func_001F5EF0(s32, s32);
+extern u8 *func_001F5FD0(s32, void *, s32, void *, void *);
+extern void func_002CED60(void);
+extern u8 D_0046F258[];
+extern void func_001444E0(void *, f32, s32);
+extern void func_00144430(void *);
+extern u8 D_005C206C[];
+extern u8 D_005C2074[];
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD5F0);
-extern void amTask_Kill(s32);
 void func_002CD810(void) {
     s32 i;
     s32 *p = (s32 *)D_005C2050;
@@ -16,19 +43,10 @@ void func_002CD810(void) {
         p++;
     }
 }
-extern u8 D_005C2050[];
-extern u8 D_005C2060[];
 void memset(void *, s32, s32);
 void func_002CD870(void) {
     memset(D_005C2050, 0, 0x10);
 }
-extern void func_001F7DB0(void);
-extern void func_001F7BF0(void);
-extern void func_001F7820(void);
-extern void func_001F7690(void);
-extern void func_001F6E50(void);
-extern void func_001F7470(s32);
-extern s32 D_0051CD20[];
 void func_002CD890(void) {
     func_001F7DB0();
     func_001F7BF0();
@@ -41,22 +59,6 @@ void func_002CD890(void) {
         break;
     }
 }
-extern void func_001F7DB0(void);
-extern void func_001F7BF0(void);
-extern void func_001F7820(void);
-extern void func_001F7690(void);
-extern void func_001F6E50(void);
-extern void func_001F6D60(void);
-extern void func_001F7470(s32);
-extern s32 D_0051CD20[];
-extern void func_001F7DB0(void);
-extern void func_001F7BF0(void);
-extern void func_001F7820(void);
-extern void func_001F7690(void);
-extern void func_001F6E50(void);
-extern void func_001F6D60(void);
-extern void func_001F7470(s32);
-extern s32 D_0051CD20[];
 void func_002CD8F0(void) {
     func_001F7DB0();
     func_001F7BF0();
@@ -70,8 +72,6 @@ void func_002CD8F0(void) {
         break;
     }
 }
-extern void func_002CDC20(void);
-extern void func_002CDC20(void);
 void func_002CD960(void) {
     func_001F7DB0();
     func_001F7BF0();
@@ -87,8 +87,6 @@ void func_002CD960(void) {
         break;
     }
 }
-extern void func_00208F70(void *);
-extern void func_001F5F50(void *);
 #if 0
 void func_002CD9E0(u8 *p) {
     func_00208F70(*(void **)(p + 0x38));
@@ -99,11 +97,6 @@ void func_002CD9E0(u8 *p) {
 // differs: the original keeps the pointer in s1 and the field address p+0x30 in s0 across the calls; here the address is folded into p+0x38
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD9E0);
-extern void func_00145CC0(s32, s32);
-extern void func_001F3DF0(void *);
-extern void func_001F3D80(void *);
-extern void func_00208D70(void *);
-extern s32 D_00470238;
 #if 0
 void func_002CDA30(u8 *p) {
     u8 *q = p + 0x30;
@@ -117,7 +110,6 @@ void func_002CDA30(u8 *p) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDA30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDA90);
-extern void func_00208F70(void *);
 void func_002CDB70(u8 *p) {
     func_00208F70(*(void **)(p + 0x34));
 }
@@ -153,9 +145,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE980);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CEA60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CEC50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CED60);
-extern void func_001F5D50(void *);
-extern void func_001F5E20(void *);
-extern void amMotion_BuildMatrices(s32);
 void func_002CF010(u8 *a) {
     u8 *s = *(u8 **)(a + 0x10);
     if (*(s32 *)(s + 0xC) != 0) {
@@ -166,7 +155,13 @@ void func_002CF010(u8 *a) {
         amMotion_BuildMatrices(*(s32 *)*(u8 **)(s + 8));
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF070);
+void func_002CF070(void) {
+    s32 v = func_001F5EF0(0, 0);
+    u8 *o = func_001F5FD0(0x84000000, D_0046F258, v, func_002CED60, func_002CF010);
+    *(s32 *)(o + 0x20) &= ~0x100;
+    *(s32 *)(o + 0x20) |= 0x100;
+    memset(o + 0x30, 0, 0x80);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF0E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF180);
 s32 func_002CF280(void) {
@@ -184,13 +179,20 @@ s32 func_002CF3A0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF3B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF500);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF650);
-extern void func_00144430(void *);
-extern u8 D_005C206C[];
-extern u8 D_005C2074[];
-extern void func_00144430(void *);
-extern u8 D_005C206C[];
-extern u8 D_005C2074[];
+void func_002CF650(s32 flag) {
+    s32 i;
+    u8 *p = D_005C2060;
+    for (i = 0; i < 2; i++) {
+        if (*(void **)(p + 0x14) != NULL) {
+            if (flag != 0) {
+                func_001444E0(*(void **)(p + 0x14), 0.0f, 0);
+            } else {
+                func_001444E0(*(void **)(p + 0x14), *(f32 *)(p + 0x10), 0);
+            }
+        }
+        p += 0x28;
+    }
+}
 void func_002CF6E0(s32 i, s32 kind) {
     s32 off;
     switch (kind) {
