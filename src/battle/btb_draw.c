@@ -3661,11 +3661,54 @@ void func_001F1EA0(BtbObj *o) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1F50);
 
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
+
+extern void amModel_SetCurrent(s32, s32);
+extern void *BtbBg_GetStageModel(void);
+extern void func_00133D80(s32);
+extern void func_00133D90(f32);
+extern void func_00208D70(s32);
+extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
+extern s32 gBattle;
+extern s32 D_0047064C;
+extern s32 D_00470238;
+extern f32 D_0051CCD0[];
+
+void func_001F1F50(char *a0) {
+    char *s1;
+    char *s0;
+    s32 fl;
+    s32 fl2;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    D_00470238 = 0;
+    amModel_SetCurrent(*(s32 *)(s1 + 0x54), 0x2003000);
+    fl = *(s32 *)(s1 + 0x20);
+    if ((fl & 0x800) || (fl & 0x8000)) {
+        if (*(s32 *)(s1 + 0x30) != 0) {
+            __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(BtbBg_GetStageModel()), "r"(D_0051CCD0) : "memory");
+            D_0051CCD0[3] = 1.0f;
+            D_0047064C = (s32)D_0051CCD0;
+        }
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            func_00133D80(*(s32 *)((char *)gBattle + 0x8928));
+            func_00133D90(*(f32 *)((char *)gBattle + 0x892C));
+            DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
+        }
+    }
+    func_00208D70(*(s32 *)(s0 + 0x28));
+    fl2 = *(s32 *)(s1 + 0x20);
+    if ((fl2 & 0x800) || (fl2 & 0x8000)) {
+        D_0047064C = 0;
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            DrawFlags_Apply(0, 0x8000, 0, 0, 0);
+        }
+    }
+}
 
 void func_001F20A0(BtbObj *o) {
     BtbSub *s;
@@ -3686,7 +3729,38 @@ void func_001F20A0(BtbObj *o) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2150);
+void func_001F2150(char *a0) {
+    char *s1;
+    char *s0;
+    s32 fl;
+    s32 fl2;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    D_00470238 = 0;
+    amModel_SetCurrent(*(s32 *)(s1 + 0x34), 0x2003000);
+    fl = *(s32 *)(s1 + 0x20);
+    if ((fl & 0x800) || (fl & 0x8000)) {
+        if (*(s32 *)(s1 + 0x30) != 0) {
+            __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(BtbBg_GetStageModel()), "r"(D_0051CCD0) : "memory");
+            D_0051CCD0[3] = 1.0f;
+            D_0047064C = (s32)D_0051CCD0;
+        }
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            func_00133D80(*(s32 *)((char *)gBattle + 0x8928));
+            func_00133D90(*(f32 *)((char *)gBattle + 0x892C));
+            DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
+        }
+    }
+    func_00208D70(*(s32 *)(s0 + 8));
+    fl2 = *(s32 *)(s1 + 0x20);
+    if ((fl2 & 0x800) || (fl2 & 0x8000)) {
+        D_0047064C = 0;
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            DrawFlags_Apply(0, 0x8000, 0, 0, 0);
+        }
+    }
+}
 
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
@@ -3711,7 +3785,45 @@ void BtbObj_ReleaseSub38(BtbObj *o) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2350);
+extern void func_00208D60(s32);
+
+void func_001F2350(char *a0) {
+    char *s1;
+    char *s0;
+    s32 a34;
+    s32 fl;
+    s32 fl2;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    a34 = *(s32 *)(s1 + 0x34);
+    if (a34 != 0) {
+        D_00470238 = 0;
+        amModel_SetCurrent(a34, 0x2004000);
+    }
+    fl = *(s32 *)(s1 + 0x20);
+    if ((fl & 0x800) || (fl & 0x8000)) {
+        if (*(s32 *)(s1 + 0x30) != 0) {
+            __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(BtbBg_GetStageModel()), "r"(D_0051CCD0) : "memory");
+            D_0051CCD0[3] = 1.0f;
+            D_0047064C = (s32)D_0051CCD0;
+        }
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            func_00133D80(*(s32 *)((char *)gBattle + 0x8928));
+            func_00133D90(*(f32 *)((char *)gBattle + 0x892C));
+            DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
+        }
+    }
+    func_00208D60(*(s32 *)s0);
+    func_00208D70(*(s32 *)(s0 + 8));
+    fl2 = *(s32 *)(s1 + 0x20);
+    if ((fl2 & 0x800) || (fl2 & 0x8000)) {
+        D_0047064C = 0;
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            DrawFlags_Apply(0, 0x8000, 0, 0, 0);
+        }
+    }
+}
 
 extern f32 D_0051CD24[];
 extern BtbObj *D_0051C770[];
@@ -4738,7 +4850,108 @@ void func_001F4520(s32 p0, char *vec, s32 p2, s32 flags) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4520);
+#if 0
+typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16f;
+extern char D_004697B8[];
+extern f32 func_00200270(s32, f32, f32);
+extern char *D_0051CD0C[];
+extern s32 D_0051CD20[];
+extern char *func_001A50F0(char *, s32);
+extern char *func_00209540(char *, s32, s32);
+extern void func_00209B50(char *, char *, s32);
+extern void *func_001F5FD0(u32, char *, s32, void *, void *);
+extern void memset(void *, s32, s32);
+
+void func_001F4670(s32 p0, char *vec, s32 p2, s32 flags) {
+    BtbVec16f tmp;
+    s32 s2;
+    char *s1;
+    char *r;
+
+    s32 k;
+    char *ptr;
+    f32 f;
+
+    s2 = (s32)D_0051CD0C[0];
+    k = 0xA;
+    if (flags & 4) {
+        k += 0x100;
+    }
+    k += D_0051CD20[0] << 7;
+    s1 = NULL;
+    ptr = func_001A50F0((char *)s2, k);
+    if (ptr != NULL) {
+        s1 = func_00209540(ptr, 0x2000001, 0);
+    }
+    if (s1 != NULL) {
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(vec), "r"(&tmp) : "memory");
+        f = func_00200270(0, *(f32 *)&tmp.b[0], *(f32 *)&tmp.b[8]);
+        *(f32 *)&tmp.b[4] = f;
+        func_00209B50(s1, (char *)&tmp, 0);
+        r = func_001F5FD0(0x85000000, D_004697B8, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x801;
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x800;
+        memset(r + 0x30, 0, 0x80);
+        *(char **)(r + 0x38) = s1;
+        *(s32 *)(r + 0x34) = (s32)func_001A50F0((char *)s2, 0x280);
+        *(s32 *)(r + 0x30) = flags & 2;
+    }
+}
+
+#endif
+// differs: func_001F4670: 0x13C against 0x150 bytes (the F4520 shape with k = 0xA and D_004697B8): the original's store block and the vector copy are 5 instructions longer; not solved.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4670);
+#if 0
+typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16f;
+extern char D_004697C8[];
+extern f32 func_00200270(s32, f32, f32);
+extern char *D_0051CD0C[];
+extern s32 D_0051CD20[];
+extern char *func_001A50F0(char *, s32);
+extern char *func_00209540(char *, s32, s32);
+extern void func_00209B50(char *, char *, s32);
+extern void *func_001F5FD0(u32, char *, s32, void *, void *);
+extern void memset(void *, s32, s32);
+
+void func_001F47C0(s32 p0, char *vec, s32 p2, s32 flags) {
+    BtbVec16f tmp;
+    s32 s2;
+    char *s1;
+    char *r;
+
+    s32 k;
+    char *ptr;
+    f32 f;
+
+    s2 = (s32)D_0051CD0C[0];
+    k = 0x9;
+    if (flags & 4) {
+        k += 0x100;
+    }
+    k += D_0051CD20[0] << 7;
+    s1 = NULL;
+    ptr = func_001A50F0((char *)s2, k);
+    if (ptr != NULL) {
+        s1 = func_00209540(ptr, 0x2000001, 0);
+    }
+    if (s1 != NULL) {
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(vec), "r"(&tmp) : "memory");
+        f = func_00200270(0, *(f32 *)&tmp.b[0], *(f32 *)&tmp.b[8]);
+        *(f32 *)&tmp.b[4] = f;
+        func_00209B50(s1, (char *)&tmp, 0);
+        r = func_001F5FD0(0x85000000, D_004697C8, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x801;
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x800;
+        memset(r + 0x30, 0, 0x80);
+        *(char **)(r + 0x38) = s1;
+        *(s32 *)(r + 0x34) = (s32)func_001A50F0((char *)s2, 0x280);
+        *(s32 *)(r + 0x30) = flags & 2;
+    }
+}
+
+
+#endif
+// differs: func_001F47C0: 0x13C against 0x150 bytes (same residual as func_001F4670: the original is 5 instructions longer around the memset and the second allocation; not solved).
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F47C0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4910);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4AD0);
@@ -4815,7 +5028,8 @@ extern void memset(void *, s32, s32);
 extern char *D_0051CD0C[];
 extern s32 D_0051CD20[];
 extern char D_00469858[];
-extern void func_001F2150(void);
+extern void func_001F2150(char *);
+extern void func_001F1F50(char *);
 
 // differs: constructor: the call func_00209B50(s1, s0, 0) puts a0 = s1 in the delay slot where the original puts a2 = 0 (other argument types tried)
 #if 0
