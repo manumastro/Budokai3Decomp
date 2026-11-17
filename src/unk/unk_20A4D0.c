@@ -1179,7 +1179,21 @@ void func_00217870(u8 *s) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002178C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002179E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217B00);
+void func_00217B00(u8 *s) {
+    *(s16 *)(s + 0x20) = 8;
+    *(s16 *)(s + 0x22) = 0;
+    *(s16 *)(s + 0x24) = 0;
+    jtbl_00469CC4[0](s);
+}
+void func_00217B20(u8 *s) {
+    V4Q v;
+    func_0020D780(&v);
+    *(void **)(s + 0x4) = &v;
+    *(s16 *)(s + 0x20) = 0x7;
+    *(s16 *)(s + 0x22) = 0;
+    *(s16 *)(s + 0x24) = 0;
+    jtbl_00469CC4[0](s);
+}
 void func_00217B70(u8 *s) {
     V4Q v;
     func_0020D780(&v);
