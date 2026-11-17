@@ -4850,6 +4850,56 @@ void func_001F4520(s32 p0, char *vec, s32 p2, s32 flags) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4520);
+#if 0
+typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16f;
+extern char D_004697B8[];
+extern f32 func_00200270(s32, f32, f32);
+extern char *D_0051CD0C[];
+extern s32 D_0051CD20[];
+extern char *func_001A50F0(char *, s32);
+extern char *func_00209540(char *, s32, s32);
+extern void func_00209B50(char *, char *, s32);
+extern void *func_001F5FD0(u32, char *, s32, void *, void *);
+extern void memset(void *, s32, s32);
+
+void func_001F4670(s32 p0, char *vec, s32 p2, s32 flags) {
+    BtbVec16f tmp;
+    s32 s2;
+    char *s1;
+    char *r;
+
+    s32 k;
+    char *ptr;
+    f32 f;
+
+    s2 = (s32)D_0051CD0C[0];
+    k = 0xA;
+    if (flags & 4) {
+        k += 0x100;
+    }
+    k += D_0051CD20[0] << 7;
+    s1 = NULL;
+    ptr = func_001A50F0((char *)s2, k);
+    if (ptr != NULL) {
+        s1 = func_00209540(ptr, 0x2000001, 0);
+    }
+    if (s1 != NULL) {
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(vec), "r"(&tmp) : "memory");
+        f = func_00200270(0, *(f32 *)&tmp.b[0], *(f32 *)&tmp.b[8]);
+        *(f32 *)&tmp.b[4] = f;
+        func_00209B50(s1, (char *)&tmp, 0);
+        r = func_001F5FD0(0x85000000, D_004697B8, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x801;
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x800;
+        memset(r + 0x30, 0, 0x80);
+        *(char **)(r + 0x38) = s1;
+        *(s32 *)(r + 0x34) = (s32)func_001A50F0((char *)s2, 0x280);
+        *(s32 *)(r + 0x30) = flags & 2;
+    }
+}
+
+#endif
+// differs: func_001F4670: 0x13C against 0x150 bytes (the F4520 shape with k = 0xA and D_004697B8): the original's store block and the vector copy are 5 instructions longer; not solved.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4670);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F47C0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4910);
