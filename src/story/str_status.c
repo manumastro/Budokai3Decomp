@@ -10,6 +10,7 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
 extern void amModel_SetCurrent(s32, s32);
+extern s32 func_0022D670(s32, f32);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
 extern void func_002C0860(s32 *);
@@ -647,7 +648,7 @@ void StrStatus_TaskComment(s32 *a0) {
 }
 
 #if 0
-// func_002C03E0: all but the last two registers agree; the function address and the constant 2 swap registers; four variants tried
+// func_002C03E0: 7 of 35 instructions differ: the function address and the constant 2 swap registers (lui/li); six variants tried
 void func_002C03E0(s32 *a0) {
     s32 *s0 = a0 + 0x30 / 4;
     s32 *p;
@@ -659,9 +660,9 @@ void func_002C03E0(s32 *a0) {
         amCdFs_Close(s0[0], 0);
         s0[0] = 0;
         amFile_Load(s0[1]);
+        *(s16 *)((char *)s0 + 8) = 2;
         {
             void *f = StrStatus_TaskComment;
-            *(s16 *)((char *)s0 + 8) = 2;
             a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
         }
     }
@@ -808,6 +809,60 @@ void func_002C0750(char *a0) {
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0750);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0860);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0FC0);
+typedef struct {
+    u8 b[16];
+} __attribute__((aligned(16))) StsCp16;
+extern u8 D_00456380[];
+
+#if 0
+// differs: 0x1AC against 0x1C0 (five instructions short); the zero loop of the 9-pointer table compiles to bgtz, the original bnez; 1 form tried
+void func_002C1160(s32 *a0) {
+    s32 *ptr[9];
+    s16 t[9] __attribute__((aligned(16)));
+    s32 i;
+    {
+        u8 *q = (u8 *)ptr;
+        s32 n = 0x24;
+        if (q != 0) {
+            do {
+                *q = 0;
+                q++;
+                n--;
+            } while (n != 0);
+        }
+    }
+    ptr[0] = (s32 *)((u8 *)a0 + 0xC);
+    ptr[1] = (s32 *)((u8 *)a0 + 0x10);
+    ptr[2] = (s32 *)((u8 *)a0 + 0x14);
+    ptr[3] = (s32 *)((u8 *)a0 + 0x18);
+    ptr[4] = (s32 *)((u8 *)a0 + 0x1C);
+    ptr[5] = (s32 *)((u8 *)a0 + 0x20);
+    ptr[6] = (s32 *)((u8 *)a0 + 0x2C);
+    ptr[7] = (s32 *)((u8 *)a0 + 0x28);
+    ptr[8] = (s32 *)((u8 *)a0 + 0x30);
+    *(StsCp16 *)t = *(StsCp16 *)D_00456380;
+    t[8] = *(s16 *)(D_00456380 + 0x10);
+    D_00470704 = a0[1];
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    amModel_SetCurrent(a0[1], 0x2000);
+    D_00470238 = 0;
+    for (i = 0; i < 9; i++) {
+        if (*ptr[i] != 0) {
+            func_0022D0E0(*ptr[i], 1);
+        }
+        *ptr[i] = func_0022D670(((s32 *)*(s32 *)((u8 *)a0[0] + 0x1C))[t[i]], 0.0f);
+    }
+    if (a0[0xD] != 0) {
+        func_0022D0E0(a0[0xD], 1);
+        a0[0xD] = func_0022D670(((s32 *)*(s32 *)((u8 *)a0[0] + 0x1C))[0x20], 0.0f);
+    }
+    if (a0[0xE] != 0) {
+        func_0022D0E0(a0[0xE], 1);
+        a0[0xE] = func_0022D670(((s32 *)*(s32 *)((u8 *)a0[0] + 0x1C))[0x21], 0.0f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1160);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1320);
 extern s32 func_0022D670(s32, f32);
@@ -895,15 +950,44 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1860);
 void VsCharaselEd_TaskMain(Task *task) {
     A2d_FlushList(task);
 }
-// func_002C1A00: the loads of the work block and the order of the two calls differ; not matched yet.
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1A00);
+// func_002C1A00: the model pointer is a local in each amModel block (the original loads it into the argument register once).
+void func_002C1A00(s32 *a0) {
+    s32 *s1;
+    s32 *s0;
+
+    s1 = (s32 *)a0[0xC];
+    {
+        s32 m = s1[1];
+        D_00470704 = m;
+        D_0047070C = 0x2000;
+        D_00470708 = 0;
+        amModel_SetCurrent(m, 0x2000);
+    }
+    D_00470238 = 0;
+    {
+        s32 m = s1[1];
+        D_00470704 = m;
+        D_0047070C = 0x2000;
+        D_00470708 = 0;
+        amModel_SetCurrent(m, 0x2000);
+    }
+    D_00470238 = 0;
+    s0 = (s32 *)s1[2];
+    if (s0 != 0) {
+        func_0022C060((s32)s0, 1.0f);
+        func_0022CD00((s32)s0);
+    }
+    func_002C0860(s1);
+    A2d_FlushList();
+    func_00133B50(0, 0);
+}
 extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern char D_005C4140[];
 extern void func_00304DC0(s32, s32);
 extern void Scene_Request(s32, s32);
 extern void Scene_FadeTo(s32, s32);
-extern void func_002C1A00(Task *);
+extern void func_002C1A00(s32 *);
 
 void StrStatus_TaskRequestScene(s32 *a0) {
     s32 *s0 = (s32 *)a0[0x30 / 4];
