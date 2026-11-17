@@ -27,13 +27,18 @@ extern void StrBg_SetPos(void *, f32, f32);
 typedef struct W98D {
     char pad0[0xA8];
     void *fA8;
-    char padAC[0xBC - 0xAC];
+    char padAC[0xB0 - 0xAC];
+    void *fB0;
+    char padB4[0xBC - 0xB4];
     void *fBC;
-    char padC0[0x1C0 - 0xC0];
+    void *fC0;
+    char padC4[0x1C0 - 0xC4];
     void *f1C0;
     char pad1C4[0x1CC - 0x1C4];
     void *f1CC;
-    char pad1D0[0x274 - 0x1D0];
+    char pad1D0[0x1D4 - 0x1D0];
+    void *f1D4;
+    char pad1D8[0x274 - 0x1D8];
     s32 f274;
     s32 f278;
     char pad27C[0x404 - 0x27C];
@@ -48,6 +53,19 @@ extern void func_0022D0E0(void *, s32);
 extern void amTask_Kill(void *);
 extern void func_002BC250(void);
 extern void func_00139620(s32, void *, s32, s32, s32, f32);
+extern V16 D_00455D90;
+extern s8 D_004B4B63[];
+extern u8 D_00492FCE[];
+extern void Help_Open(s64, s32);
+extern void StrStatus_Dispatch(s32 *);
+extern void func_002BCAE0(void);
+
+/* A 24-byte constant (one quadword and one doubleword). */
+typedef struct T24 {
+    s32 v[4];
+    s32 w[2];
+} T24;
+extern V16 D_00455DA0;
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002B98D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002B9C10);
@@ -122,6 +140,56 @@ void func_002BCA30(Ac98D *s) {
         s->f1C = (func_002BC920 == NULL) ? NULL : (void *)func_002BC920;
     }
 }
+/* differs: the 24-byte copy from D_00455DA0 (lq and ld loaded first, the destination address in $a0; 6 of 64) */
+#if 0
+void func_002BCAE0(Ac98D *s) {
+    V16 tmp[2];
+    s32 req[12];
+    W98D *w;
+    V16 *src = (V16 *)&D_00455DA0;
+    V16 a = *src;
+    s64 b = *(s64 *)((char *)src + 16);
+
+    tmp[0] = a;
+    *(s64 *)&tmp[1] = b;
+
+    if (func_0022BF80(gStrStatus->f1D4) == 0xFF) {
+        amTask_Kill(gStrStatus->fB0);
+        gStrStatus->fB0 = NULL;
+        if (gStrStatus->f1D4 != NULL) {
+            func_0022D0E0(gStrStatus->f1D4, 1);
+            gStrStatus->f1D4 = NULL;
+        }
+        if (gStrStatus->fC0 != NULL) {
+            amTask_Kill(gStrStatus->fC0);
+            gStrStatus->fC0 = NULL;
+        }
+        req[5] = 1;
+        req[4] = 3;
+        StrStatus_Dispatch(req);
+        w = gStrStatus;
+        func_0028EE90((char *)w + 0x38, (char *)w + 0x14C, (char *)w + 0x158, (char *)w + 0x168, &tmp, w->f274, w->f278, 0x600000);
+        s->f1C = (func_002BCA30 == NULL) ? NULL : (void *)func_002BCA30;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BCAE0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BCBE0);
+void func_002BCBE0(Ac98D *s) {
+    V16 tmp = D_00455D90;
+    W98D *w;
+    s32 idx;
+    u16 flags;
+
+    if (func_0022BF80(gStrStatus->f1D4) == 0xFF) {
+        idx = D_004B4B63[0];
+        flags = *(u16 *)(D_00492FCE + idx * 184);
+        if (flags & 1) {
+            Help_Open(0x0020000000000000LL, (u8)(1 << idx));
+        } else if (flags & 0x5000) {
+            w = gStrStatus;
+            func_0028EE90((char *)w + 0x38, (char *)w + 0x14C, (char *)w + 0x158, (char *)w + 0x168, &tmp, w->f274, w->f278, 0x600000);
+            s->f1C = (func_002BCAE0 == NULL) ? NULL : (void *)func_002BCAE0;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BCCD0);
