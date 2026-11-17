@@ -1195,6 +1195,65 @@ void func_00254AC0(s32 *a0) {
         }
     }
 }
+// GIVEN UP: the field pointer is computed before the register save in the original (scheduling; 4 forms tried)
+#if 0
+extern s32 D_0058D4F4[];
+extern void func_0022D0E0(s32, s32);
+void func_00254B50(s32 *a0) {
+    s32 *s2;
+    s32 *s1;
+    s32 *s4;
+    s32 *s3;
+    s32 *v;
+    s32 i;
+    s32 j;
+
+    v = (s32 *)a0[12];
+    s2 = a0 + 12;
+    if (v != 0) {
+        s1 = v + 12;
+        if (s1[1] != 0) {
+            func_0022D0E0(s1[1], 1);
+        }
+        s1[1] = 0;
+        if (s1[2] != 0) {
+            func_0022D0E0(s1[2], 1);
+        }
+        s1[2] = 0;
+        if (s1[5] != 0) {
+            func_0022D0E0(s1[5], 1);
+        }
+        s1[5] = 0;
+        if (s1[4] != 0) {
+            func_0022D0E0(s1[4], 1);
+        }
+        s1[4] = 0;
+        if (s1[3] != 0) {
+            func_0022D0E0(s1[3], 1);
+        }
+        s1[3] = 0;
+        for (j = 0, s4 = s1; j < 2; j++, s1 += 1, s4 += 2) {
+            if (s1[12] != 0) {
+                func_0022D0E0(s1[12], 1);
+            }
+            s1[12] = 0;
+            if (s1[6] != 0) {
+                func_0022D0E0(s1[6], 1);
+            }
+            s1[6] = 0;
+            for (i = 0, s3 = s4; i < 2; i++, s3 += 1) {
+                if (s3[8] != 0) {
+                    func_0022D0E0(s3[8], 1);
+                }
+                s3[8] = 0;
+            }
+        }
+        amTask_Kill(s2[0]);
+        s2[0] = 0;
+    }
+    D_0058D4F4[0] = 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254B50);
 // GIVEN UP: the same shape as func_00257FB0 (the two saved pointers swap registers)
 #if 0
@@ -1503,6 +1562,65 @@ void func_00257DA0(s32 *a0) {
         }
     }
 }
+// GIVEN UP: the field pointer is computed before the register save in the original (scheduling; 4 forms tried)
+#if 0
+extern s32 D_0058D4EC[];
+extern void func_0022D0E0(s32, s32);
+void func_00257E30(s32 *a0) {
+    s32 *s2;
+    s32 *s1;
+    s32 *s4;
+    s32 *s3;
+    s32 *v;
+    s32 i;
+    s32 j;
+
+    v = (s32 *)a0[12];
+    s2 = a0 + 12;
+    if (v != 0) {
+        s1 = v + 12;
+        if (s1[1] != 0) {
+            func_0022D0E0(s1[1], 1);
+        }
+        s1[1] = 0;
+        if (s1[2] != 0) {
+            func_0022D0E0(s1[2], 1);
+        }
+        s1[2] = 0;
+        if (s1[5] != 0) {
+            func_0022D0E0(s1[5], 1);
+        }
+        s1[5] = 0;
+        if (s1[4] != 0) {
+            func_0022D0E0(s1[4], 1);
+        }
+        s1[4] = 0;
+        if (s1[3] != 0) {
+            func_0022D0E0(s1[3], 1);
+        }
+        s1[3] = 0;
+        for (j = 0, s4 = s1; j < 2; j++, s1 += 1, s4 += 2) {
+            if (s1[12] != 0) {
+                func_0022D0E0(s1[12], 1);
+            }
+            s1[12] = 0;
+            if (s1[6] != 0) {
+                func_0022D0E0(s1[6], 1);
+            }
+            s1[6] = 0;
+            for (i = 0, s3 = s4; i < 2; i++, s3 += 1) {
+                if (s3[8] != 0) {
+                    func_0022D0E0(s3[8], 1);
+                }
+                s3[8] = 0;
+            }
+        }
+        amTask_Kill(s2[0]);
+        s2[0] = 0;
+    }
+    D_0058D4EC[0] = 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00257E30);
 // GIVEN UP: the same code, but the two pointers (a0 + 0x30 and the field + 0x30) take the other two saved registers
 #if 0
@@ -1837,6 +1955,45 @@ s32 func_00259D90(s32 a0, s32 a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259D90);
+// GIVEN UP: the parameter and the global pointer take the other two saved registers, and the code is 12 bytes shorter (4 declaration orders tried)
+#if 0
+extern s32 amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern u8 D_0046AE80[];
+extern u8 D_0046AE90[];
+extern void func_002599C0(void *);
+s32 func_00259EB0(s32 a0, f32 f12) {
+    s32 *s0;
+    u8 *s1;
+    s32 v;
+    s32 w;
+
+    s0 = &D_0058D4D0[a0];
+    if (*s0 != 0) {
+        return 0;
+    }
+    s1 = D_0046FDFC;
+    v = amTask_Create(func_002599C0, 0, 0x5410, 0x1000, 0x2000000, (char *)D_0046AE80);
+    *s0 = v;
+    s0 = (s32 *)(v + 0x30);
+    memset(s0, 0, 0x1C);
+    s0[5] = a0;
+    {
+        s32 x = *(s32 *)(s1 + 0xE84);
+
+        D_00470704 = x;
+        D_0047070C = 0x4010000;
+        D_00470708 = 0;
+        func_00145CC0(x, 0x4010000);
+        D_00470238 = 0;
+    }
+    s0[6] = func_0022D570(*(s32 *)((u8 *)((s32 *)(*(s32 *)(s1 + 0xE88)))[5] + ((a0 & 1) << 2)), 0x1000, 0x2000008, 0x3A30);
+    w = amTask_Create((void (*)(void *))func_00259920, 0, 0x3A30, 0x1000, 0x2000008, (char *)D_0046AE90);
+    ((f32 *)s0)[3] = f12;
+    s0[0] = w;
+    ((s32 *)w)[12] = (s32)s0;
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259EB0);
 // GIVEN UP: the loop counter and the pointers take other saved registers than in the original (3 orders tried)
 #if 0
