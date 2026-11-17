@@ -613,6 +613,56 @@ void func_001A84B0(u8 *a0) {
     func_00125740(s2 + 0x160, s1, 0x50);
 }
 #endif
+// GIVEN UP: differs: size 0x174 vs 0x180 (3 instructions short); the param copy is in s2 (original s1), and the if on the 7 test is laid out inline (original branches out: beq to the block); 3 forms tried
+#if 0
+extern void func_00125740(void *, void *, s32);
+void func_001A84B0(u8 *a0x) {
+    u8 *a0 = a0x;
+    u8 *s0 = (u8 *)gBattle;
+    u8 *s2 = s0 + 0xA0;
+    u8 *p;
+    u8 *tb;
+    s32 ix;
+
+    if (*(s32 *)(a0 + 0x20) == 0) {
+        *(s32 *)(s2 + 0x130) = 0x3F800000;
+        if (*(s32 *)(a0 + 0x30) & 1) {
+            *(s32 *)(s2 + 0x138) = 0;
+            *(s32 *)(s2 + 0x140) = 0;
+        } else {
+            if (*(u8 **)(s0 + 0x260) != s2 + 0xF0) {
+                func_00125740(s2 + 0xF0, s2 + 0xB0, 0x40);
+                *(s32 *)(s2 + 0x138) = 0x3F800000;
+            }
+            *(s32 *)(s2 + 0x140) = 0x3F800000;
+        }
+        *(u8 **)(s0 + 0x260) = s2 + 0xF0;
+    } else if (*(s32 *)(a0 + 0x20) == 1) {
+        if (*(s32 *)(a0 + 0x24) == 7) {
+            *(f32 *)(s2 + 0x13C) = *(f32 *)(a0 + 0x3C);
+            *(f32 *)(s2 + 0x130) = *(f32 *)(a0 + 0x44);
+            tb = *(u8 **)(*(u8 **)(a0 + 0x34) + 0x14);
+            ix = *(s32 *)(a0 + 0x38);
+            *(f32 *)(a0 + 0x40) = (f32)*(s32 *)(tb + (ix << 4) + 8) - 1.0f;
+        } else {
+            if (*(s32 *)(a0 + 0x30) & 2) {
+                if (*(u8 **)(s0 + 0x260) != s2 + 0xB0) {
+                    func_00125740(s2 + 0xB0, s2 + 0xF0, 0x40);
+                }
+                *(s32 *)(s2 + 0x13C) = 0x3F800000;
+            } else {
+                *(s32 *)(s2 + 0x13C) = 0;
+            }
+            *(s32 *)(s2 + 0x130) = 0x3F800000;
+        }
+        *(u8 **)(s0 + 0x260) = s2 + 0xB0;
+    }
+    p = *(u8 **)(s0 + 0x260);
+    *(s32 *)(p + 0x30) = 0;
+    *(s32 *)(p + 0x38) = *(s32 *)(p + 0x38) | 1;
+    func_00125740(s2 + 0x160, a0, 0x50);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A84B0);
 void func_001A8630(void) {
 }
