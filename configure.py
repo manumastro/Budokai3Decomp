@@ -149,7 +149,8 @@ def write_ninja():
         "  command = printf '.section .data, \"wa\"\\n.incbin \"%s\"\\n' $in > $out.s && $as $as_flags $out.s -o $out",
         "  description = BIN $in",
         "",
-        # C through mwccgap: it compiles with mwccps2 (run by wibo) and splices in the INCLUDE_ASM functions.
+        # C through mwccgap: it compiles with mwccps2 (run by wibo) and splices in the INCLUDE_ASM functions;
+        # fix_jlabels.py then puts the jump-table labels of INCLUDE_ASM functions in their function's section.
         "rule cc",
         f"  command = {py} tools/mwccgap/mwccgap.py --use-wibo --wibo-path={WIBO} --mwcc-path={MWCC} "
         f"--as-path={BINUTILS}as --as-march=r5900 --as-mabi=eabi --macro-inc-path=include/macro_cc.inc "

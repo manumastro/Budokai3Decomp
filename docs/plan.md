@@ -153,12 +153,8 @@ Still open:
 
 - The four 3.0b builds and the two levels tie on everything matched so far. The build uses 3.0b52 at `-O4,p` until
   a function tells them apart.
-- `func_001D5160` does not match yet with any build or source form tried: the original tests `x >= 0` as
-  `slti $at, $v0, 0` / `bnez $at` and keeps a copy of the function's tail in each branch. That `slti $at, x, 0`
-  form appears 99 times in the Metrowerks code, 95 of them in 0x1A2000-0x1E0000 (the battle and character code),
-  while `bltz` / `bgez` appear everywhere, that range included. So it is either a source idiom of those files or
-  files built with other settings; two of the matched probes (0x1CF570, 0x1E3D60) lie in the same range. Not
-  settled: the flags may turn out to be per file.
+- Settled: the `slti $at, x, 0` / `bnez $at` test (99 sites, 95 of them in 0x1A2000-0x1E0000) is the source
+  form `x > -1` (and `x <= -1` gives the `beqz` form); `func_001D5160` matches with it. See docs/decomp_guide.md.
 
 The two library parts are gcc output (branch-likely instructions, `sd` saves, 8-byte function starts); which ee-gcc
 (Tenkaichi 3's libraries match with ee-gcc 2.96) is not checked. A port replaces them anyway (see below).

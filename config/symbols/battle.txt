@@ -1,1 +1,16 @@
 // Names for the battle files (docs/decomp_guide.md, "Symbol files").
+
+// Functions reached only through tables of function pointers in .rodata, which splat takes for jump tables
+// (it labels them jlabel, and the INCLUDE_ASM split would drop them); marked as functions here.
+func_001A83D0 = 0x001A83D0; // type:func
+func_001A83F0 = 0x001A83F0; // type:func
+func_001A84B0 = 0x001A84B0; // type:func
+func_001A8630 = 0x001A8630; // type:func
+func_001C5D50 = 0x001C5D50; // type:func
+func_001C5F20 = 0x001C5F20; // type:func
+func_001C5FE0 = 0x001C5FE0; // type:func
+func_001C6120 = 0x001C6120; // type:func
+func_002369E0 = 0x002369E0; // type:func
+func_00236AF0 = 0x00236AF0; // type:func
+func_00236C70 = 0x00236C70; // type:func
+func_00236D60 = 0x00236D60; // type:func

@@ -76,8 +76,18 @@ Until a function is named in a symbol file, keep its `func_XXXXXXXX` name in C (
 - It saves `$ra` with `sd` and `$s` registers with `sq`; moves are `daddu rd, rs, $zero`.
 - `-O4,p` schedules: loads hoisted to the top, `lui $at` for offsets over 0x7FFF placed early, delay slots filled.
 - It pads branch targets to 8 bytes with a `nop` and every function to 16 bytes.
-- `if (x >= 0)` on a value it can test with a branch on zero gives `bltz`; the original sometimes has
-  `slti $at, x, 0` / `bnez $at` instead (95 of 99 such sites are in 0x1A2000-0x1E0000), source form unknown yet.
+- A sign test is written against -1 in the source when the original has `slti $at, x, 0`: `if (x > -1)` gives
+  `slti $at, x, 0` / `bnez $at` (skip when negative) and `if (x <= -1)` gives `slti $at, x, 0` / `beqz $at`, while
+  `x >= 0`, `x < 0` and `0 > x` give `bltz` / `bgez` (checked: func_001D5160, func_001D51F0, func_001CBAE0,
+  func_001CBC20). So the `slti` form (95 of its 99 sites are in 0x1A2000-0x1E0000) is a source idiom, not other
+  compiler settings.
+- `if (c) { a; return 1; } else { b; return 1; }` with the same test in each branch: write the test and the
+  `return` inside each branch when the original keeps a copy of the tail in each (func_001D5160); a common tail
+  after the `if` is not duplicated by the compiler.
+- A function that returns `s16` is sign-extended by the caller (`dsll32` / `dsra32`) when its result is assigned
+  to a wider variable; one that returns `int` is not. The extension's place tells which prototype the callee has.
+- A small `switch` (two or three cases, no jump table) compiles to a chain of `beq`; the case blocks are laid out
+  in the source order of the `case` labels (func_001CB4A0).
 - Tail calls (`j func` with the stack restored in the delay slot) come from `-O3` and up. The `am*` files have
   none: a `j` there is either hand-written or in gcc code (`func_0014E580`).
 
