@@ -1472,20 +1472,17 @@ extern s32 func_002A4860(s32 *);
 
 extern s32 func_002A4860(s32 *);
 
-#if 0
-// func_002A48A0: the store through the copy of the pointer and the call through the parameter are ordered differently; six variants tried
+extern s32 func_002A0D70();
+
 s32 func_002A48A0(s32 *a0) {
-    s32 *p = a0;
-    func_002A0D70(p);
-    p[0x10 / 4] = (s32)func_002A4860;
-    if (func_002A0D70(p) == 0) {
-        p[0x10 / 4] = 0;
+    func_002A0D70();
+    a0[0x10 / 4] = (s32)func_002A4860;
+    if (func_002A0D70() == 0) {
+        a0[0x10 / 4] = 0;
         return 1;
     }
     return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A48A0);
 extern f32 func_002A1050(s32, s32, s32);
 
 s32 Evt_CmdGetCall2A1050Flag(void *a0, s32 *a1) {
