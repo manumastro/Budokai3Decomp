@@ -79,7 +79,7 @@ extern u8 *gBtlSys;
 s32 func_0021C3D0(s32);
 u8 *func_0021C660(s32);
 u8 *func_0021C430(s32);
-void func_0022C7D0(f32, s32);
+void func_0022C7D0(s32, f32, s32);
 void func_0022ACF0(s32);
 
 extern u8 D_0058CAB0[];
@@ -293,9 +293,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023CE80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D360);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D970);
-#if 0
 void func_0023DB40(s32 a0) {
-    s32 k = a0;
     u8 *sys = gBtlSys;
     s32 r1;
     u8 *p2;
@@ -303,31 +301,30 @@ void func_0023DB40(s32 a0) {
     s32 s0;
     s32 v;
     u8 *s2;
+    s32 a;
 
     r1 = func_0021C3D0(a0);
     p2 = func_0021C660(r1);
     p3 = func_0021C430(r1);
     s0 = *(s16 *)(p2 + 0x42);
     v = *(s16 *)(p3 + 0x42);
-    s2 = D_0058BF70 + k * 0x64 + 0x210;
+    s2 = D_0058BF70 + a0 * 0x64 + 0x210;
     if (v != s0) {
-        if (s0 >= 0x3E8) {
+        if (s0 > 0x3E7) {
             s0 = 0x3E7;
         }
-        D_00470704 = *(s32 *)(sys + 0xE84);
+        a = *(s32 *)(sys + 0xE84);
+        D_00470704 = a;
         D_0047070C = 0x4010000;
         D_00470708 = 0;
-        amModel_SetCurrent(*(s32 *)(sys + 0xE84), 0x4010000);
+        amModel_SetCurrent(a, 0x4010000);
         D_00470238 = 0;
         if (*(s32 *)(s2 + 0xC) != 0) {
-            func_0022C7D0((f32)s0, 1);
+            func_0022C7D0(*(s32 *)(s2 + 0xC), (f32)s0, 1);
             func_0022ACF0(*(s32 *)(s2 + 0xC));
         }
     }
 }
-// differs: 208 bytes (round 5, u23c): the calls, the lh compares, the D_0047070x stores and the amModel call all match in order; the saved registers do not: the original holds gBtlSys in s1 and the argument in s2 (frame 0x40), ours gives sys s2 and the argument s3 (frame 0x50). Tried: the argument copied to a local first, and the pointer local declared last (same), the sys/argument declaration orders (same).
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023DB40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023DC10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023E260);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023E570);
