@@ -2072,21 +2072,24 @@ void func_002472F0(void) {
 }
 #if 0
 void func_00247410(void) {
-    s32 i;
+    s32 i = 0;
     s32 off = 0;
     u8 *e = D_0058CAA0;
-    u8 *s2;
+    u8 *f;
 
-    for (i = 0; i < 2; i++, off += 0x2020, e += 0x480) {
-        s2 = e + 0x10;
+    do {
+        f = e + 0x10;
         if (*(s16 *)(e + 0x3E) == 0) {
-            func_00244CC0(*(s32 *)(gBattle + off + 0x1B80), 1);
+            func_00244CC0(*(s32 *)(gBattle + off + 0x830 + 0x1350), 1);
         }
-        if (*(s32 *)(s2 + 0x30) != 0) {
-            Obj_ResetF38(*(s32 *)(s2 + 0x30));
-            *(s32 *)(s2 + 0x30) = 0;
+        if (*(s32 *)(f + 0x30) != 0) {
+            Obj_ResetF38(*(s32 *)(f + 0x30));
+            *(s32 *)(f + 0x30) = 0;
         }
-    }
+        i++;
+        off += 0x2020;
+        e += 0x480;
+    } while (i < 2);
     amTask_KillGroup(0x400, 0x800002, 0);
     if (*(s16 *)(D_0046FE4C + 0x916) != 0) {
         func_0020DE30();
@@ -2098,7 +2101,7 @@ void func_00247410(void) {
     Wave_Create();
     func_002CA490();
 }
-// differs: 240 bytes (round 5, u23c): the loop matches in shape; the call func_00248C80 has no argument setup in the original (a0 is left by the call before), but the file declares it as func_00248C80(s32), so a no-argument call does not compile. Needs the callee's real signature or a K&R declaration (the other uses of func_00248C80 in the file pass an argument).
+// differs: round 6 (u23e): 0xE8 bytes against 0xF0 (two instructions short). Loop, calls and tail match; the original keeps the table pointer e in s0 and f = e+0x10 in s2 (not s1/s0 as here, no declaration order changes it); one reload of gBattle or D_0046FE4C differs in the if block. Prototype of func_00248C80 is now (void) (line 42), as its definition
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247410);
 void func_00247500(void) {
