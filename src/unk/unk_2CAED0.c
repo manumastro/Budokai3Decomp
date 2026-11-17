@@ -97,7 +97,17 @@ extern void (*D_004564A0[])(void);
 extern void (*D_004564C0[])(void);
 extern void func_002CBFF0(s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAED0);
+s32 func_002CAED0(void) {
+    s32 *p = &D_0047091C->f20;
+
+    if (D_0047091C->chr->fCAC == 4) {
+        *p = (s32)((f32)*p + *(f32 *)(D_00470570 + 0x88F0));
+    }
+    if ((f32)*p >= 120.0f) {
+        return 1;
+    }
+    return 0;
+}
 s32 func_002CAF50(void) {
     TutWork *t = D_0047091C;
     s32 *p = &t->f20;
@@ -206,11 +216,12 @@ void func_002CB4F0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB550);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB650);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBD40);
-/* differs: the original lays the fC == 0x1E call out of line (0xA0 bytes, ours 0x8C) and keeps its local at sp+0x20 */
+/* differs: the original lays the fC == 0x1E call out of line (beq to it, `b` over; 0xA0 bytes, ours 0x8C with bne inline,
+   with or without an empty else). The local buf[4] sits at sp+0x20 as in the original; the value 1 is in a0, the original's in a1 */
 #if 0
 void func_002CBEB0(void) {
     TutWork *t = D_0047091C;
-    s32 buf;
+    s32 buf[4];
 
     *(s8 *)(D_00470570 + 0x8AAD) = 1;
     if (t->fC == 0x1E) {
@@ -218,8 +229,8 @@ void func_002CBEB0(void) {
     }
     *(s16 *)((char *)t->chr + 0x13A4) = t->chr->f1CF4->f1A;
     func_002EB3E0(t->f4, t->fC - t->f10);
-    buf = 0;
-    func_00226030(0x27, &buf);
+    buf[0] = 0;
+    func_00226030(0x27, buf);
     func_002E9BA0(0);
 }
 #endif
