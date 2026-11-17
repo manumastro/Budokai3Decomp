@@ -82,6 +82,9 @@ extern void (*D_00469CB0[])(void *);
 void func_0020BDB0(u8 *);
 void func_0020BA60(void);
 void func_0020B600(void);
+void func_0020CCF0(s16, void *);
+s32 amMotion_FindBone(s32, void *);
+void func_00146ED0(void *a, void *b, f32 s);
 extern void (*D_00469CC8[])(void *);
 void amAdx_Stop(s32);
 void amHeap_Free(void *);
@@ -696,6 +699,88 @@ void func_0020CB90(void *pv) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020CCF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020CF60);
+#if 0
+void func_0020D120(u8 *out, u8 *x, s32 mode, f32 s) {
+    Copy16A t40;
+    u8 *a;
+    u8 *b;
+    s32 h;
+
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vsub.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%2)\n"
+        : : "r"(*(u8 **)(x + 0x1354) + 0x650), "r"(x + 0x650), "r"(&t40) : "memory");
+    func_00146ED0(&t40, &t40, s);
+    switch (mode) {
+    case 0x19:
+        h = 0x3F000000;
+        a = x + 0x720;
+        b = x + 0x710;
+        __asm__ volatile (
+            "mtc1 %2, $f0\n"
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "mfc1 %2, $f0\n"
+            "nop\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : "+r"(h) : "r"(a), "r"(b), "r"(out) : "memory");
+        break;
+    case 0x17:
+        h = 0x3F000000;
+        a = x + 0x740;
+        b = x + 0x730;
+        __asm__ volatile (
+            "mtc1 %2, $f0\n"
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "mfc1 %2, $f0\n"
+            "nop\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : "+r"(h) : "r"(a), "r"(b), "r"(out) : "memory");
+        break;
+    case 0x18:
+        h = 0x3F000000;
+        a = x + 0x6E0;
+        b = x + 0x6D0;
+        __asm__ volatile (
+            "mtc1 %2, $f0\n"
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "mfc1 %2, $f0\n"
+            "nop\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : "+r"(h) : "r"(a), "r"(b), "r"(out) : "memory");
+        break;
+    default:
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "sqc2 $vf1, 0(%1)\n"
+            : : "r"(x + 0x650 + mode * 16), "r"(out) : "memory");
+        break;
+    }
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vadd.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(out), "r"(&t40) : "memory");
+}
+// differs: 34 of 89 instructions differ: the mode switch is laid out in the other order (the original tests 0x19, 0x17, 0x18 with beq and places the 0x19 block last; a switch emits 0x18 first, an if chain puts the 0x19 block before the test), and the lerp asm takes the 0.5f constant in a0 instead of v1
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D120);
 void func_00146ED0(void *a, void *b, f32 s);
 
@@ -1952,9 +2037,63 @@ void func_002116B0(u8 *p) {
     func_0013B110(1);
     func_00209C50();
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002117F0);
-s32 amMotion_FindBone(s32, void *);
-void func_0020CCF0(s16, void *);
+void func_002117F0(u8 *p) {
+    u8 *q;
+    u8 *s1;
+    u8 *s0;
+    s32 a3;
+    s32 k;
+    s32 bone;
+    Copy16A t40[2];
+
+    q = p + 0x20;
+    a3 = *(s16 *)(p + 0x1C);
+    k = a3 * 257;
+    s1 = gBattle + (k << 5) + 0x830;
+    s0 = D_00568C90 + *(s16 *)(p + 0x66) * 0x2140;
+    func_0020CCF0(*(s16 *)(p + 0x5C), &t40[0]);
+    if (*(s32 *)(s0 + 0x94) == 0) {
+        return;
+    }
+    if (*(s32 *)(s0 + 0x9C) == 0) {
+        return;
+    }
+    if (*(s32 *)(q + 0x2C) & 0x80) {
+        func_0020CCF0(*(s16 *)(q + 0x3C), &t40[0]);
+        if (*(s16 *)(q + 0x4C) != 0) {
+            bone = amMotion_FindBone(*(s32 *)(*(s32 *)(*(s32 *)(s1 + 0x1354) + 0xB88) + 4), &t40[0]);
+            s1 = *(u8 **)(s1 + 0x1354);
+            func_0013B160(s1);
+            func_0013B960(*(u8 **)(*(u8 **)(s1 + 0xB88) + 0x408) + bone * 64);
+            __asm__ volatile (
+                "sqc2 $vf28, 0(%0)\n"
+                "sqc2 $vf29, 0x10(%0)\n"
+                "sqc2 $vf30, 0x20(%0)\n"
+                "sqc2 $vf31, 0x30(%0)\n"
+                "vmove.xyzw $vf28, $vf24\n"
+                "vmove.xyzw $vf29, $vf25\n"
+                "vmove.xyzw $vf30, $vf26\n"
+                "vmove.xyzw $vf31, $vf27\n"
+                : : "r"(s0 + 0x40) : "memory");
+        } else {
+            bone = amMotion_FindBone(*(s32 *)(*(s32 *)(s1 + 0xB88) + 4), &t40[0]);
+            func_0013B160(s1);
+            func_0013B960(*(u8 **)(*(u8 **)(s1 + 0xB88) + 0x408) + bone * 64);
+            __asm__ volatile (
+                "sqc2 $vf28, 0(%0)\n"
+                "sqc2 $vf29, 0x10(%0)\n"
+                "sqc2 $vf30, 0x20(%0)\n"
+                "sqc2 $vf31, 0x30(%0)\n"
+                "vmove.xyzw $vf28, $vf24\n"
+                "vmove.xyzw $vf29, $vf25\n"
+                "vmove.xyzw $vf30, $vf26\n"
+                "vmove.xyzw $vf31, $vf27\n"
+                : : "r"(s0 + 0x40) : "memory");
+        }
+    }
+    func_0020BDB0(s0);
+    func_0020B600();
+}
 void func_00211980(u8 *p) {
     u8 *q;
     u8 *s1;
