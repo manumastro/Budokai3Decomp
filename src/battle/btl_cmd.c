@@ -481,7 +481,29 @@ void func_001A80E0(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A81F0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8300);
+extern u8 D_00468190[];
+void func_001A8300(void *a0) {
+    u8 *s3 = (u8 *)gBattle;
+    u8 *s2 = s3 + 0xA0;
+    u8 *s1;
+    u8 *s0;
+    s32 idx;
+
+    func_001A80E0();
+    if (*(u8 **)(s3 + 0x260) == s2 + 0xB0) {
+        s1 = (u8 *)gBattle;
+        s0 = s1 + 0xA0;
+        if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0) {
+            idx = *(s32 *)(s0 + 0x184);
+            ((void (*)(void))(*(s32 *)(D_00468190 + idx * 4)))();
+            *(f32 *)(s0 + 0x13C) = *(f32 *)(s0 + 0x13C) + *(f32 *)(s0 + 0x130) * *(f32 *)(s1 + 0x88F0);
+        }
+    }
+    *(u8 **)(s3 + 0x264) = *(u8 **)(s3 + 0x260);
+    if (*(s32 *)(s3 + 0x88EC) == 0) {
+        __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(s2 + 0x1B0));
+    }
+}
 void func_001A83D0(void) {
     amTask_KillGroup(0x20, 0x20000010, 1);
 }
