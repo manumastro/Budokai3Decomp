@@ -1,15 +1,69 @@
 #include "common.h"
+#include "menu/menu.h"
 #include "menu/mn_TourMode.h"
 #include "story/str_status.h"
 
+extern char D_0046EE10[];
+extern void (*D_0046EE30[])(void *);
+extern void func_0028EB40(Task *, s32, void (*)(Task *), s32);
+extern void func_002BD140(Task *);
+
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD140);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD3A0);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD400);
+void func_002BD3A0(Task *t) {
+    if (((s16 *)D_00470910->f4)[2] == 3) {
+        if (D_00470910->f284 != 0) {
+            func_0028EB40(t, 10, func_002BD140, 0);
+        } else {
+            func_002BD140(t);
+        }
+    }
+}
+typedef struct StrStatusCopy {
+    u8 b00, b01, b02, b03, b04, b05, b06, b07, b08, b09, b0A, b0B;
+    s32 w0C;
+    s32 w10;
+    char pad14[4];
+    s32 w18;
+    s32 w1C;
+    s32 w20;
+    s32 w24;
+    s32 w28;
+    s32 w2C;
+    s32 w30;
+} StrStatusCopy;
+
+void func_002BD400(StrStatusCopy *out) {
+    out->b00 = D_00470910->f288[0];
+    out->b01 = D_00470910->f288[1];
+    out->b02 = D_00470910->f288[2];
+    out->b03 = D_00470910->f288[3];
+    out->b04 = D_00470910->f288[4];
+    out->w0C = D_00470910->f2D4;
+    out->w10 = 0;
+    out->b05 = D_00470910->f288[5];
+    out->b06 = D_00470910->f288[6];
+    out->b07 = D_00470910->f288[7];
+    out->b08 = D_00470910->f288[8];
+    out->b09 = D_00470910->f288[9];
+    out->b0A = D_00470910->f288[10];
+    out->b0B = D_00470910->f288[11];
+    out->w18 = D_00470910->f2DC[0];
+    out->w1C = D_00470910->f2DC[1];
+    out->w20 = D_00470910->f2DC[2];
+    out->w24 = D_00470910->f2DC[3];
+    out->w28 = D_00470910->f2DC[4];
+    out->w2C = D_00470910->f2DC[5];
+    out->w30 = D_00470910->f2DC[6];
+}
 void StrStatus_ClearWork(void) {
     D_00470910 = NULL;
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD510);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD660);
+void func_002BD660(s32 a, s32 b) {
+    D_00470910->f274 = a;
+    D_00470910->f278 = b;
+    D_00470910->f38 = amTask_Create(func_002BD3A0, NULL, a, 2, b, D_0046EE10);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD6B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDC50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDD10);
@@ -36,7 +90,12 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF520);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF610);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF850);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF970);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFC00);
+
+void func_002BFC00(s32 *p) {
+    if (p[4] >= 0 && p[4] < 6) {
+        D_0046EE30[p[4]](p);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFC50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFCF0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFD90);

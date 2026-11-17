@@ -13,15 +13,28 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1C20);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1DB0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1F30);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2020);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A21E0);
+extern void func_002A2020(void);
+
+void func_002A21E0(void) {
+    func_002A2020();
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A21F0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A22C0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2310);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2340);
+void *func_002A2340(void) {
+    return NULL;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2350);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A23D0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2480);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2490);
+s32 func_002A2480(void) {
+    return 3;
+}
+extern s32 func_002A2480(void);
+
+s32 func_002A2490(void *p) {
+    *(void **)((char *)p + 0x10) = func_002A2480;
+    return 3;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A24B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2670);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2730);
@@ -31,7 +44,12 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2BB0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2C70);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2E50);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2F30);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2FD0);
+extern s32 D_004700A0;
+
+s32 func_002A2FD0(void *a0, char *a1) {
+    D_004700A0 = *(s32 *)(*(char **)(a1 + 0x2C));
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2FF0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3020);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3080);
@@ -86,11 +104,19 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4DC0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4E20);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4E90);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4EC0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4EF0);
+s32 func_002A4EF0(void) {
+    return 1;
+}
+// func_002A4F00 (stores 1 into D_004708D0->f144 and returns it): the constant goes to $a0, not $v0; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4F00);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4F10);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4F70);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5010);
+extern s32 D_004700B0;
+
+s32 func_002A5010(void *a0, char *a1) {
+    D_004700B0 = *(s32 *)(*(char **)(a1 + 0x2C));
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5030);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A51E0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A52B0);
@@ -102,7 +128,8 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A56A0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5790);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5870);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5B00);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5D70);
+void func_002A5D70(void) {
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5D80);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5F50);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6090);

@@ -1,11 +1,16 @@
 #include "common.h"
 
+extern s32 D_004708B4;
+extern void *gStrTitle;
+
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_00299CA0);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A090);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A1C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A250);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A4F0);
-INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A8E0);
+void func_0029A8E0(void) {
+    D_004708B4 = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A8F0);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A9F0);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029AAC0);
@@ -27,6 +32,8 @@ INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029C730);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029C9B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029CA40);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029CC20);
-INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029CCB0);
+void func_0029CCB0(void) {
+    gStrTitle = NULL;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029CCC0);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029CDB0);
