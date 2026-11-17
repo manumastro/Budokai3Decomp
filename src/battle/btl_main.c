@@ -1105,23 +1105,25 @@ extern void amTask_Kill(void *);
 extern char D_00468390[];
 void func_001B0440(Fighter *f);
 #if 0
-// differs: the frame: the original keeps the battle pointer in s2 across the loop (4 saved registers here, 3 there); with the global read directly the loop argument is computed each pass as in the original but the frame is 48 against 64
+// differs: 0x124 against 0x140. The original tests the seven values one by one with beq (0x19, 0x15, 0x14, 0x12, 0xF, 9, 3); both the global and a byte local get a sltiu range check for 0x14/0x15, and the frame is 80 against 64 (an extra saved register).
 void func_001AF840(void *f) {
-    s32 *q;
+    s32 *q = (s32 *)((u8 *)f + 0x30);
+    BattleWork *bw;
     s32 (**pf)(void *);
     s32 r;
-    if (D_004B4B40[0] == 0x3 || D_004B4B40[0] == 0x9 || D_004B4B40[0] == 0xF || D_004B4B40[0] == 0x12 ||
-        D_004B4B40[0] == 0x14 || D_004B4B40[0] == 0x15 || D_004B4B40[0] == 0x19) {
-        q = (s32 *)((u8 *)f + 0x30);
+    s8 mode = D_004B4B40[0];
+    if (mode == 0x19 || mode == 0x15 || mode == 0x14 || mode == 0x12 ||
+        mode == 0xF || mode == 0x9 || mode == 0x3) {
         *q = *q - 1;
         if (*q < 0) {
             func_001CA460(2, 0);
+            bw = gBattle;
             pf = D_00468240;
             if (*pf != 0) {
                 do {
-                    r = (*pf)((u8 *)gBattle + 0x690);
+                    r = (*pf)((u8 *)bw + 0x690);
                     if (r != 0) {
-                        BW_FIELD(gBattle, s32, 0x8970) = r;
+                        BW_FIELD(bw, s32, 0x8970) = r;
                     }
                     pf++;
                 } while (*pf != 0);
