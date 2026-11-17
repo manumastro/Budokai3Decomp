@@ -1066,7 +1066,7 @@ extern void func_001F9CD0(s32, s32, s32, s32, s32);
 // use (no common subexpression) and loads the call's fields in another order (2 forms tried)
 // GIVEN UP (round 5, skill): 12 of 31 instructions differ. The VU0 part and the call match; the registers do not:
 // the original keeps &tmp in $a3 from the first instruction and the fighter pointer in $a2, mwcc gives $a2 to &tmp
-// (6 forms tried: operand order, declaration order, fighter pointer as a local or inline in the operands).
+// (9 forms tried: operand order incl. &tmp last, declaration order incl. &tmp first as an s32 local, fighter pointer as a local or inline in the operands).
 #if 0
 s32 func_00252E20(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
@@ -1625,7 +1625,7 @@ void func_00253A50(s32 *a0, u8 *a1) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253A50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253BA0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253E60);
-// GIVEN UP: 12 of 80 differ: the register of the mask constant (lui a3 vs v0) and the order of the res[0] and o+0x30 loads; the struct copies, the memset and the float constants match (declaration orders tried, 4 forms)
+// GIVEN UP: 12 of 80 differ: the register of the mask constant (lui a3 vs v0) and the order of the res[0] and o+0x30 loads; the struct copies, the memset and the float constants match (declaration orders, inlined or hoisted temporaries, reordered loads: 10 forms; the permuter base did not score)
 #if 0
 extern s32 func_00253690(u8 *, s32, u8 *);
 f32 func_00253FC0(u8 *a0, u8 *o) {
