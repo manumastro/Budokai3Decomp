@@ -362,51 +362,245 @@ void func_0030E630(s32 *a0) {
         a0[0x1C / 4] = 0;
     }
 }
+extern void Ball_Start(void);
+extern void func_00137C10(void *, void *);
+extern s8 D_004B4B63[];
+extern u8 D_00492FCE[];
+extern StfVec D_00459140;
+extern StfVec D_00459150;
+
+#if 0
+// differs: about 41 of 128 instructions: the table copies and the zero-loop pointer/counter take other registers
+// (tried: switch with the cases in reverse, bgtz loop, 120 declaration orders, copy order, loop set-up first)
+void func_0030E690(s32 *a0) {
+    u8 *s1;
+    s16 flag;
+    StfVec c60;
+    StfVec c50;
+    StfVec c40;
+    u8 *q;
+    s32 n;
+    void *fn;
+    u8 st;
+
+    s1 = (u8 *)a0[0xC];
+    flag = 0;
+    st = s1[0x1C];
+    switch (st) {
+    case 6:
+        *(f32 *)(s1 + 0x18) = *(f32 *)(s1 + 0x18) - 0.01f * gFrameDelta;
+        if (*(f32 *)(s1 + 0x18) <= 0.0f) {
+            *(f32 *)(s1 + 0x18) = 0.0f;
+            s1[0x1C] = 7;
+        }
+        break;
+    case 7:
+        *(f32 *)(s1 + 0x18) = 0.0f;
+        if (*(u16 *)(D_00492FCE + D_004B4B63[0] * 184) & 8) {
+            s1[0x1C] = 8;
+        }
+        break;
+    case 8:
+        *(f32 *)(s1 + 0x18) = *(f32 *)(s1 + 0x18) + 0.01f * gFrameDelta;
+        if (*(f32 *)(s1 + 0x18) >= 1.0f) {
+            *(f32 *)(s1 + 0x18) = 1.0f;
+            flag = 1;
+        }
+        break;
+    }
+    func_0030D630((s32 *)s1);
+    q = (u8 *)&c40;
+    n = 0x10;
+    c60 = D_00459140;
+    c50 = D_00459150;
+    c50.f[0] = D_0047042C;
+    c50.f[1] = D_00470430;
+    if (q != 0) {
+        do {
+            *q = 0;
+            q++;
+            n--;
+        } while (n != 0);
+    }
+    c40.f[3] = *(f32 *)(s1 + 0x18);
+    func_00136E80(0x900, &c40, -1, 0x44, 5);
+    func_00137C10(&c60, &c50);
+    amDraw_FlushPacket();
+    if (flag != 0) {
+        s1[0x1C] = 9;
+        Ball_Start();
+    }
+    fn = (void *)func_0030E630;
+    *(s32 *)((u8 *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E690);
+#if 0
+// differs: same copy and zero-loop tail as func_0030E690 (the register set of the table copies differs)
+void func_0030E890(s32 *a0) {
+    u8 *s1;
+    s16 flag;
+    StfVec c60;
+    StfVec c50;
+    StfVec c40;
+    u8 *q;
+    s32 n;
+    void *fn;
+    u8 st;
+
+    s1 = (u8 *)a0[0xC];
+    flag = 0;
+    st = s1[0x1C];
+    switch (st) {
+    case 3:
+        *(f32 *)(s1 + 0x18) = *(f32 *)(s1 + 0x18) - 0.01f * gFrameDelta;
+        if (*(f32 *)(s1 + 0x18) <= 0.0f) {
+            *(f32 *)(s1 + 0x18) = 0.0f;
+            s1[0x1C] = 4;
+        }
+        break;
+    case 4:
+        *(f32 *)(s1 + 0x18) = 0.0f;
+        *(f32 *)(s1 + 0x14) = *(f32 *)(s1 + 0x14) - gFrameDelta;
+        if ((*(u16 *)(D_00492FCE + D_004B4B63[0] * 184) & 8) != 0 || *(f32 *)(s1 + 0x14) <= 0.0f) {
+            s1[0x1C] = 5;
+        }
+        break;
+    case 5:
+        *(f32 *)(s1 + 0x18) = *(f32 *)(s1 + 0x18) + 0.01f * gFrameDelta;
+        if (*(f32 *)(s1 + 0x18) >= 1.0f) {
+            *(f32 *)(s1 + 0x18) = 1.0f;
+            flag = 1;
+        }
+        break;
+    }
+    func_0030D7D0((s32 *)s1);
+    c60 = D_00459140;
+    c50 = D_00459150;
+    c50.f[0] = D_0047042C;
+    c50.f[1] = D_00470430;
+    q = (u8 *)&c40;
+    n = 0x10;
+    if (q != 0) {
+        do {
+            *q = 0;
+            q++;
+            n--;
+        } while (n != 0);
+    }
+    c40.f[3] = *(f32 *)(s1 + 0x18);
+    func_00136E80(0x900, &c40, -1, 0x44, 5);
+    func_00137C10(&c60, &c50);
+    amDraw_FlushPacket();
+    if (flag != 0) {
+        if (s1[0x1E] != 0) {
+            s1[0x1C] = 6;
+            fn = (void *)func_0030E690;
+            *(s32 *)((u8 *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        } else {
+            s1[0x1C] = 9;
+            Ball_Start();
+            fn = (void *)func_0030E630;
+            *(s32 *)((u8 *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E890);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EAE0);
+extern void func_0030E290(s32 *);
+extern void func_0030DC00(s32 *);
+extern void amCdFs_Close(void *, s32);
+extern void func_0022E0B0(void *);
+extern void amFile_Load(void *);
+extern s32 func_002A8C50(s32);
+extern void func_002A8A60(void);
+extern void Fade_Request(s32, s32, s32);
+extern void func_0030EAE0(void);
+extern char D_0046FBC8[];
+extern char D_0046FBD8[];
+extern char D_0046FBE8[];
+extern u8 D_004590B0[];
+
+#if 0
+// differs: frame 0x80 with s0-s4 in the original, ours 0x70 with s0-s3; the table at sp+0x60 takes s3 and the loop pointer s2
+// (tried: 120 declaration orders of the five locals, the array size; the whole body is shifted by the frame)
+void func_0030EDA0(s32 *a0) {
+    u8 *s0;
+    s32 *s2;
+    s16 *ps;
+    s32 s4;
+    s32 cnt;
+    void *fn;
+    u8 tbl[0x20] __attribute__((aligned(16)));
+
+    s0 = (u8 *)a0[0xC];
+    s2 = (s32 *)D_00470998;
+    if (*(s16 *)((u8 *)s2[1] + 4) == 3) {
+        *(s32 *)s0 = *(s32 *)((u8 *)s2[0] + 0x54);
+        *(s32 *)((u8 *)s2[0] + 0x54) = 0;
+        amCdFs_Close((void *)s2[0], 0);
+        s2[0] = 0;
+        *(s32 *)(s0 + 4) = *(s32 *)((u8 *)s2[1] + 0x54);
+        *(s32 *)((u8 *)s2[1] + 0x54) = 0;
+        amCdFs_Close((void *)s2[1], 0);
+        s2[1] = 0;
+        func_0022E0B0(*(void **)s0);
+        amFile_Load(*(void **)(s0 + 4));
+        *(void **)(s0 + 8) = amTask_Create((void (*)(struct Task *))func_0030E5B0, 0, 0x2200, 8, 2, D_0046FBC8);
+        *(s32 *)(*(u8 **)(s0 + 8) + 0x30) = *(s32 *)s0;
+        *(s32 *)(*(u8 **)(s0 + 8) + 0x34) = *(s32 *)(s0 + 4);
+        *(s32 *)(*(u8 **)(s0 + 8) + 0x38) = 0;
+        *(s32 *)(*(u8 **)(s0 + 8) + 0x3C) = 0;
+        *(void **)(s0 + 0xC) = amTask_Create((void (*)(struct Task *))func_0030E290, 0, 0x2100, 8, 2, D_0046FBD8);
+        *(s32 *)(*(u8 **)(s0 + 0xC) + 0x38) = 0;
+        *(s32 *)(*(u8 **)(s0 + 0xC) + 0x30) = -1;
+        *(s32 *)(*(u8 **)(s0 + 0xC) + 0x34) = -1;
+        *(void **)(s0 + 0x10) = amTask_Create((void (*)(struct Task *))func_0030DC00, 0, 0x2300, 8, 2, D_0046FBE8);
+        *(s32 *)(*(u8 **)(s0 + 0x10) + 0x30) = *(s32 *)s0;
+        *(s32 *)(*(u8 **)(s0 + 0x10) + 0x34) = *(s32 *)(s0 + 4);
+        *(s32 *)(*(u8 **)(s0 + 0x10) + 0x44) = 0;
+        s0[0x1C] = 1;
+        *(s32 *)tbl = *(s32 *)D_004590B0;
+        *(s32 *)(tbl + 4) = *(s32 *)(D_004590B0 + 4);
+        *(s32 *)(tbl + 8) = *(s32 *)(D_004590B0 + 8);
+        *(s32 *)(tbl + 12) = *(s32 *)(D_004590B0 + 12);
+        *(f32 *)(tbl + 0x10) = *(f32 *)(D_004590B0 + 0x10);
+        *(s16 *)(tbl + 0x14) = *(s16 *)(D_004590B0 + 0x14);
+        s4 = 0;
+        ps = (s16 *)tbl;
+        do {
+            if (func_002A8C50(*ps) != 0) {
+                s0[0x1D] = 1;
+                break;
+            }
+            s4++;
+            ps++;
+        } while (s4 < 11);
+        s0[0x1E] = 1;
+        cnt = 0;
+        ps = (s16 *)tbl;
+        do {
+            if (func_002A8C50(*ps) == 0) {
+                s0[0x1E] = 0;
+                break;
+            }
+            cnt++;
+            ps++;
+        } while (cnt < 11);
+        Fade_Request(-1, 0, 0);
+        fn = (void *)func_0030EAE0;
+        *(s32 *)((u8 *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        func_002A8A60();
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EDA0);
+extern void func_0030EDA0(void);
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void memset(void *, s32, s32);
 extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
 
 void StaffRoll_Load(s32 *a0) {
     s32 *s0 = (s32 *)((char *)a0 + 0x30);

@@ -307,19 +307,20 @@ extern s32 *D_0046FE48;
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern s32 func_00243E50(s32, s32);
 
-#if 0
-// func_002BECB0: the layout of the table test (the then-block after a branch to the join) differs; three forms tried
+// func_002BECB0: the switch with a default gives the out-of-line then-block (the if/else forms did not)
 s32 func_002BECB0(s32 a0, s32 a1) {
     s32 s1 = D_0046EE50[a0];
     s32 s0 = a1;
     s32 *s2;
     s32 r;
-    if (s1 != 7) {
-        ;
-    } else {
+    switch (s1) {
+    case 7:
         if (a1 == 3) {
             s0 = 4;
         }
+        break;
+    default:
+        break;
     }
     *(s32 *)((char *)D_0046FE48 + 0x3C8) = amCdFs_ReadFileId(0xC, 0, 1);
     *(s16 *)((char *)D_0046FE44 + 0x102) = 1;
@@ -335,8 +336,6 @@ s32 func_002BECB0(s32 a0, s32 a1) {
     *(s16 *)((char *)s2 + 0x36) = (s16)s1;
     return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BECB0);
 #if 0
 // func_002BED90: the case tests: the original tests 0x12, 0x11, 0xF, 0x10 in that order with out-of-line blocks; ours (if chain or switch) reorders them; the rest matches
 extern s32 D_005BD1A0;
