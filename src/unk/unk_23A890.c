@@ -1530,28 +1530,32 @@ void func_00244150(void) {
 }
 extern u8 *D_0046FE48;
 #if 0
-extern u8 *D_0046FE48;
-void func_00244190(u8 *p) {
-    s32 i = 0;
-    s32 off = 0;
-    s32 id;
+void func_00244190(u8 *a0) {
+    u8 *t = a0;
+    s32 i;
+    u8 *p;
+    s32 off;
+    s32 v;
 
     *(s32 *)(D_0046FE48 + 0x3C8) = amCdFs_ReadFileId(0xC, 0, 1);
     *(s16 *)(D_0046FE44 + 0x102) = 2;
     if (*(s16 *)(D_0046FE44 + 0x102) > 0) {
+        i = 0;
+        off = 0;
         do {
-            id = *(s16 *)(p + 0x20);
-            if (D_00452130[id] != -1) {
-                *(s32 *)(D_0046FE48 + off) = amCdFs_ReadFileId(D_00452130[id], 0, 1);
+            p = D_0046FE48 + off;
+            v = D_00452130[*(s16 *)(t + 0x20)];
+            if (v != -1) {
+                *(s32 *)p = amCdFs_ReadFileId(v, 0, 1);
             }
             i++;
-            p += 0x50;
+            t += 0x50;
             off += 0x1A4;
         } while (i < *(s16 *)(D_0046FE44 + 0x102));
     }
     *(s16 *)(D_0046FE44 + 0x100) = 0;
 }
-// differs: 240 bytes (round 5, u23c): 36 bytes short (0xCC against 0xF0). The original reads back the field it has just stored (lw D_0046FE48 / lw 0x3C8, value unused) and reloads D_0046FE44 before the loop test; the do-while and the table loop match in shape. Not reproduced: the read-back and the second load of the table count.
+// differs: round 6 (u23e): 0xD0 bytes against 0xF0. Frame, saved registers and the table loop match; the original keeps a dead reload after the table call (sw then lw v0 and move v0,zero joined at the loop end: an assignment-value form gives the same size), so 8 instructions are missing
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244190);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244280);
