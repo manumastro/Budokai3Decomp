@@ -96,7 +96,49 @@ void func_002BD400(StrStatusCopy *out) {
 void StrStatus_ClearWork(void) {
     D_00470910 = NULL;
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD510);
+extern void Character_Release(s32);
+extern void func_0029E450(s32);
+extern void Help_Exit(void);
+extern void func_002F54C0(void);
+
+extern void Character_Release(s32);
+extern void func_0029E450(s32);
+extern void Help_Exit(void);
+extern void func_002F54C0(void);
+
+void func_002BD510(void) {
+    s32 i;
+    if (D_00470910 != 0) {
+        for (i = 0; i < 0x45; i++) {
+            if (((s32 *)D_00470910)[0xE + i] != 0) {
+                amTask_Kill((Task *)((s32 *)D_00470910)[0xE + i]);
+            }
+        }
+        for (i = 0; i < 7; i++) {
+            if (((s32 *)D_00470910)[i] != 0) {
+                amCdFs_Close(((s32 *)D_00470910)[i], 0);
+            }
+            if (((s32 *)D_00470910)[7 + i] != 0) {
+                amCdFs_ReleaseCache(((s32 *)D_00470910)[7 + i]);
+            }
+        }
+        for (i = 0; i < 0x3C; i++) {
+            if (((s32 *)D_00470910)[0x5A + i] != 0) {
+                func_0022D0E0(((s32 *)D_00470910)[0x5A + i], 1);
+            }
+        }
+        if (((s32 *)D_00470910)[0x96] != 0) {
+            Character_Release(((s32 *)D_00470910)[0x96]);
+        }
+        if (((s32 *)D_00470910)[0x97] != 0) {
+            func_0029E450(((s32 *)D_00470910)[0x97]);
+        }
+        Help_Exit();
+        func_002F54C0();
+        amHeap_Free((void *)D_00470910);
+        D_00470910 = 0;
+    }
+}
 void StrStatus_Start(s32 a, s32 b) {
     D_00470910->f274 = a;
     D_00470910->f278 = b;
