@@ -24,6 +24,7 @@ extern void func_002E6BE0(f32, void *);
 extern void func_002E8060(u8 *);
 extern void func_002E8190(u8 *);
 extern void func_002E8270(u8 *);
+extern s32 amSofdec_GetStat(void *);
 extern void *amSofdec_Create(void *);
 extern void amSofdec_StartAfs(void *, s32, s32);
 extern s32 D_0046FD5C;
@@ -329,6 +330,31 @@ void func_002E80F0(u8 *a0) {
         *(void **)(s0 + 0x1C) = ((void *)func_002E8060 == 0) ? 0 : (void *)func_002E8060;
     }
 }
+#if 0
+// differs: 37 of 57 differ: the first branch order is inverted (original beqz on the flag test, mine bnez), the flag test loads are in other registers, and the sofdec call sites need the same reordering
+void func_002E8190(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    s32 v;
+    f32 f1;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    func_002E7400(s0, 1.0f);
+    f1 = *(f32 *)(s0 + 4) - D_004703BC;
+    *(f32 *)(s0 + 4) = f1;
+    if (((D_00492FCE[0] | D_00493086[0]) & 8) == 0) {
+        v = amSofdec_GetStat(*(void **)(s0 + 0xC));
+        if (v == 3 || *(f32 *)(s0 + 4) <= 0.0f) {
+            *(void **)(s1 + 0x1C) = ((void *)func_002E80F0 == 0) ? 0 : (void *)func_002E80F0;
+        }
+    } else {
+        *(f32 *)(s0 + 4) = 50.0f;
+        *(s32 *)(s0 + 8) = 1;
+        *(void **)(s1 + 0x1C) = ((void *)func_002E80F0 == 0) ? 0 : (void *)func_002E80F0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8190);
 #if 0
 // differs: the parameter block is filled in another order (the value 1 is loaded before the frame is set up and stored later), so the scheduling and registers differ
