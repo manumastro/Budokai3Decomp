@@ -71,11 +71,22 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDE80);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDF50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE0B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE320);
+extern s32 *D_0046FE44;
+
+// func_002BE4E0: the layout of the two branches differs (the clear block comes last in the original); not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE4E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE530);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE710);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE7C0);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE830);
+extern s32 *D_0047011C;
+extern void func_002BDF50(void *, void *);
+
+void func_002BE830(char *p) {
+    *(s16 *)(p + 0x2A) = 6;
+    *(s16 *)(p + 0x2C) = 0;
+    *(s32 *)(p + 0x24) = 0x400010;
+    func_002BDF50((char *)D_0047011C + (D_0047011C[0x1A8 / 4] << 2) + 0x160, p);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE870);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEA30);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEB50);
@@ -104,6 +115,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFEE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFFD0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0220);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C02C0);
+// func_002C03B0: the function address test (?:) gets its branch in the other order; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0470);
