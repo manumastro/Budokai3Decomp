@@ -3506,6 +3506,54 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0860);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0A50);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0E20);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1190);
+#if 0
+extern void amHeap_Free(void *);
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+extern f32 D_0051CD24[];
+extern void amMotion_Apply(char *, f32, f32);
+
+typedef struct BtbAcc {
+    char pad0[0xC];
+    void *fC;
+    char pad10[0x4];
+    char *f14;
+    char pad18[0x18];
+    s32 f30;
+    f32 f34;
+    f32 f38;
+} BtbAcc;
+
+void func_001F1380(BtbObj *o) {
+    BtbAcc *s = (BtbAcc *)((char *)o + 0x30);
+    s32 i;
+    f32 f1;
+
+    if (!(D_0051CD24[0] < 0.0f)) {
+        f1 = s->f38 + D_0051CD24[0];
+        s->f38 = f1;
+        if (!(f1 < s->f34)) {
+            if (f1 > (f32)s->f30) {
+                amHeap_Free(s->f14);
+                amHeap_Free(s->fC);
+                for (i = 0; i < 0x100; i++) {
+                    if (D_0051C770[i] == o) {
+                        o->prev->next = o->next;
+                        o->next->prev = o->prev;
+                        D_0051C770[i] = NULL;
+                        D_0047062C--;
+                        break;
+                    }
+                }
+            } else {
+                *(f32 *)(s->f14 + 0x424) = f1;
+                amMotion_Apply(s->f14, 0.0f, 1.0f);
+            }
+        }
+    }
+}
+#endif
+// differs: func_001F1380: 1 of 65 instructions: the table loop's break jumps straight to the join (b 0x1F1470); the original jumps to the loop-exit trampoline (b 0x1F1450). A while loop gives the same; a for with i = 0x100 instead of break gives 0xFC bytes (0x110 needed).
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1380);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1490);
 
@@ -4807,6 +4855,52 @@ void func_001F5830(s32 a0, char *s0, s32 a2, s32 flags) {
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5830);
+extern char D_00469868[];
+extern char *func_001A50F0(char *, s32);
+extern char *func_00209540(char *, s32, s32);
+extern void func_00209B50(char *, char *, s32);
+#if 0
+extern void func_001F2150(void);
+extern void BtbObj_ReleaseSub38(BtbObj *);
+
+void func_001F5950(s32 p0, char *p1, s32 p2, s32 flags) {
+    char *s0;
+    s32 s3;
+    char *s1;
+    char *ptr;
+    char *r;
+    s32 s2;
+    s32 a1;
+
+    s0 = p1;
+    s3 = flags;
+    a1 = 0;
+    if (flags & 4) {
+        a1 += 0x100;
+    }
+    s2 = (s32)D_0051CD0C[0];
+    a1 += D_0051CD20[0] << 7;
+    ptr = func_001A50F0((char *)s2, a1);
+    s1 = NULL;
+    if (ptr != NULL) {
+        s1 = func_00209540(ptr, 0x2000001, 0);
+    }
+    if (s1 != NULL) {
+        func_00209B50(s1, s0, 0);
+        r = (char *)func_001F5FD0(0x85000000, D_00469868, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x801;
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x800;
+        memset(r + 0x30, 0, 0x80);
+        *(char **)(r + 0x38) = s1;
+        *(s32 *)(r + 0x34) = (s32)func_001A50F0((char *)s2, 0x280);
+        *(s32 *)(r + 0x30) = s3 & 2;
+    }
+}
+#endif
+// differs: func_001F5950: 0x114 against 0x120 bytes (3 instructions short). The original tests flags&4 first, keeps the
+// parameter in $s0 (`move s0,a1` before the table lookup) and the 0x20000001 result in $s2. Declaration orders of
+// s0/s1/s2/s3 (24 tried, auto), flags-first: none matched.
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5950);
 extern void func_002D04A0(s32);
 extern void func_002CFDE0(s32);
