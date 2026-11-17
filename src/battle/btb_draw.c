@@ -3761,48 +3761,45 @@ typedef struct MotSlot {
 
 extern void amMotion_Apply(char *, f32, f32);
 
-// differs: 12 of 49 instructions (the load order of the frame word and the object pointer, and their registers)
+extern f32 D_0051CD24[];
 
+// differs: motion update: the reloads of the state pointer and the register choice for the -1 constant differ (15 of 49 instructions, last variant tried)
 #if 0
+extern void amMotion_Apply(char *, f32, f32);
 
-void func_001F5BE0(MotCtl *c) {
-    MotState *s;
-    char *obj;
-    s32 pk;
-    MotSlot *a3;
-    s32 n;
-    s32 i;
-    s32 off;
+void func_001F5BE0(char *c) {
+    char *v1;
+    char *P;
+    char *a3;
+    s32 t1;
+    s32 a2;
+    s32 a1;
 
-    s = c->st;
-    if (s != NULL) {
-        s->f18 = 1;
-        obj = s->obj;
-        pk = ((s->f8 + 1) << 16) | s->f10;
-        a3 = (MotSlot *)(obj + 0x41C);
-        if (a3->pk != pk) {
-            n = *(s32 *)(obj + 0x418);
-            if (0 < n) {
-                i = 0;
-                off = 0;
+    v1 = *(char **)(c + 0x8);
+    if (v1 != NULL) {
+        *(s32 *)(v1 + 0x18) = 1;
+        t1 = ((*(s32 *)(v1 + 0x8) + 1) << 16) | *(s32 *)(v1 + 0x10);
+        P = *(char **)v1;
+        if (*(s32 *)(P + 0x41C) != t1) {
+            a3 = P + 0x41C;
+            if (*(s32 *)(P + 0x418) > 0) {
+                a2 = 0;
+                a1 = 0;
                 do {
-                    i++;
-                    *(s32 *)(a3->p10 + off + 0x30) = -1;
-                    *(s32 *)(a3->p10 + off + 0x34) = -1;
-                    *(s32 *)(a3->p10 + off + 0x38) = -1;
-                    off += 0x40;
-                } while (i < *(s32 *)(obj + 0x418));
+                    *(s32 *)(*(char **)(a3 + 0x10) + a1 + 0x30) = -1;
+                    *(s32 *)(*(char **)(a3 + 0x10) + a1 + 0x34) = -1;
+                    *(s32 *)(*(char **)(a3 + 0x10) + a1 + 0x38) = -1;
+                    a2++;
+                    a1 += 0x40;
+                } while (a2 < *(s32 *)(P + 0x418));
             }
-            a3->fC = 0xBF800000;
+            *(s32 *)(a3 + 0xC) = (s32)0xBF800000;
         }
-        a3->pk = pk;
-        *(f32 *)(s->obj + 0x424) = s->f4;
-        amMotion_Apply(s->obj, 0.0f, s->f1C);
+        *(s32 *)(P + 0x41C) = t1;
+        *(f32 *)(*(char **)v1 + 0x424) = *(f32 *)(v1 + 0x4);
+        amMotion_Apply(*(char **)v1, 0.0f, *(f32 *)(v1 + 0x1C));
     }
 }
-
-
-extern f32 D_0051CD24[];
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5BE0);
