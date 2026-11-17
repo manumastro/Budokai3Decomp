@@ -21,6 +21,13 @@ extern void func_002AF420(Ac2AE *);
 extern s32 func_002AEFD0(Ac2AE *);
 extern u8 D_005BCD20[];
 extern void func_002AE810(void *);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void func_00228410(u8 *, u8 *);
+extern void amModel_SetCurrent(s32);
+extern void func_002AF0A0(void);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AE760);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AE810);
@@ -69,6 +76,35 @@ s32 func_002AF040(Ac2AE *o, Ev2AE *e) {
     return 3;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF0A0);
+/* differs: 21 of 44 instructions. The float constant 1.0f lands in $f1 (the original puts it in $f0 and loads the field
+   into $f1), the field loads of the event and the callee arguments are in another order; no declaration order fixes it
+   (80 orders sampled, best 21). */
+#if 0
+s32 func_002AF170(u8 *a0, u8 *a1) {
+    f32 *p;
+    u8 *s2;
+    f32 f;
+    s32 s1;
+    s32 t8;
+    s32 t14;
+
+    p = *(f32 **)(a1 + 0x2C);
+    f = 1.0f + p[0];
+    s2 = D_005BCD20 + (**(s32 **)a0) * 160 + ((s32 *)p)[1] * 40;
+    *(f32 *)(a0 + 0x30) = f;
+    func_00228410(a0, D_005BCD20);
+    s1 = *(s32 *)(s2 + 0x10);
+    t14 = *(s32 *)(s2 + 0x14);
+    t8 = *(s32 *)(s2 + 0x8);
+    D_00470704 = t8;
+    D_0047070C = t14;
+    amModel_SetCurrent(t8);
+    D_00470708 = s1;
+    D_00470238 = s1;
+    *(void **)(a0 + 0x10) = func_002AF0A0;
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF170);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF220);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF330);

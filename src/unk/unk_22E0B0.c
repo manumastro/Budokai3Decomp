@@ -72,6 +72,49 @@ void func_0022E630(s8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_22E0B0", func_0022E630);
+/* differs: size 0xD8 vs 0x120. The original keeps the range test as two compares (`< 0x30`, `< 0x3A`, then a
+   second `< 0x30`/`>= 0x3A` test on the digit path), sign-extends the char and the dot flag with dsll32/dsra32, and
+   holds 10.0f in $f3. Draft below is the plain shape. */
+#if 0
+extern f32 D_0044FB70[];
+
+f32 func_0022E7A0(s8 *a0, s32 *a1) {
+    f32 f;
+    s32 dot;
+    s32 c;
+    s32 d;
+
+    f = 0.0f;
+    dot = 0;
+    for (;;) {
+        c = *a0;
+        if (c < 0x30 || c >= 0x3A) {
+            if (c != 0x2E) {
+                if (a1 != 0) {
+                    *a1 = (s32)a0;
+                }
+                return -1.0f;
+            }
+            if (dot != 0) {
+                if (a1 != 0) {
+                    *a1 = (s32)a0;
+                }
+                return f;
+            }
+            dot = 1;
+        } else {
+            d = c - 0x30;
+            if (dot == 0) {
+                f = f * 10.0f + (f32)d;
+            } else {
+                f += (f32)d * D_0044FB70[dot];
+                dot++;
+            }
+        }
+        a0++;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_22E0B0", func_0022E7A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_22E0B0", func_0022E8C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_22E0B0", func_0022E9D0);
