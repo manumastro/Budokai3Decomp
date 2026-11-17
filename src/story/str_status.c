@@ -297,6 +297,53 @@ void StrStatus_ReleaseBuffers(void) {
     func_00209450(0x400080, 1);
     memset(D_005BCF80, 0, 0x2E0);
 }
+#if 0
+// func_002BEB50: size matches (0x160) but 22 of 88 instructions differ: the original keeps the list in s4, the entry in s3, the call result in s2, the counter in s1 and the offset in s0 (the global is loaded into a0 there, v1 here); the layout of the >= 0 test is fixed; 24 orders of list/ent/res/i tried
+extern void *BtlCmd_GetMotEntry(void *, s32);
+extern s32 func_001A50F0(s32, s32);
+extern s32 func_00127E88(s32, char *, s32);
+extern void func_0020A100(s32);
+extern void *amObject_Create(void *, void *);
+extern char D_0046EEA8[];
+void func_002BEB50(void) {
+    s32 *list;
+    s32 *ent;
+    s32 res;
+    s32 i;
+    s32 *p;
+    s32 off;
+    p = (s32 *)D_0047011C[0x2D4 / 4];
+    if (p != 0) {
+        D_0047011C[0x2D4 / 4] = p[0x40 / 4];
+        D_0047011C[0x2D8 / 4] = ((s32 *)p[0x40 / 4])[0x50 / 4];
+        amFile_Load(D_0047011C[0x2D8 / 4]);
+        p[0x40 / 4] = 0;
+        amCdFs_Close((s32)p, 0);
+        list = (s32 *)D_0047011C[0x2D8 / 4];
+        if (0 < list[0x10 / 4]) {
+            i = 0;
+            off = 0;
+            do {
+                ent = (s32 *)BtlCmd_GetMotEntry(list, i);
+                res = func_001A50F0((s32)list, i);
+                if (ent[0x8 / 4] >= 0) {
+                    amFile_Load(res);
+                } else {
+                    if (func_00127E88(res, D_0046EEA8, 4) == 0) {
+                        func_0020A100(res);
+                    }
+                }
+                *(s32 *)((u8 *)D_0047011C + off + 0x1D4) = res;
+                if (ent[0x8 / 4] == 1) {
+                    *(s32 *)((u8 *)D_0047011C + off + 0x254) = (s32)amObject_Create(*(void **)((u8 *)D_0047011C + off + 0x1D4), 0);
+                }
+                i++;
+                off += 4;
+            } while (i < list[0x10 / 4]);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEB50);
 extern s16 D_0046EE50[];
 extern s32 *D_0046FE48;
