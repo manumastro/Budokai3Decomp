@@ -1,0 +1,23 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025BE40);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025BE50);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025BEE0);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025C2A0);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025C400);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025C410);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025C570);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025C670);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025C780);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025C800);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025C9D0);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025CA10);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025CDE0);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025D3D0);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025D400);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025D450);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025D4E0);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025D540);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025D590);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025D610);
+INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025D6C0);

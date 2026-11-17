@@ -1,1 +1,11 @@
 // Names for the sys files (docs/decomp_guide.md, "Symbol files").
+
+// Hand-written loops entered in the middle: the code before each loop jumps to the loop's test, so the loop head
+// is a label inside one function, not a function of its own (it is not 16-byte aligned, and Metrowerks aligns
+// every function it emits to 16). The sizes make splat keep each pair in one function.
+func_0012EAE0 = 0x0012EAE0; // type:func size:0x40
+.L0012EAEC = 0x0012EAEC; // type:label
+func_001315C0 = 0x001315C0; // type:func size:0x60
+.L001315D8 = 0x001315D8; // type:label
+func_00131620 = 0x00131620; // type:func size:0xE0
+.L00131644 = 0x00131644; // type:label
