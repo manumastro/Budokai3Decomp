@@ -304,7 +304,59 @@ found:
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290410);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_002904C0);
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290780);
+void func_00290780(s32 *a0) {
+    char *o = (char *)D_004708A4;
+    s32 i;
+    char *a1 = o + 0x354;
+    s32 *q;
+    if (*(s32 *)(o + 0x1AB0) != 0) {
+        q = (s32 *)(o + 0x334);
+        for (i = 5; i < 13; i++) {
+            char *tt;
+            s32 t5;
+            char *t4;
+            *(s32 *)a1 = a0[0];
+            *(s32 *)(a1 + 8) = 0;
+            if (q[0] != 0) {
+                s32 hi = a0[0] >> 16;
+                s32 lo = a0[0] & 0xFFFF;
+                s32 *P = *(s32 **)((char *)q[0] + ((hi - 1) << 2) + 0x46C);
+                s32 *Q = *(s32 **)((char *)P + 0x14);
+                *(f32 *)(a1 + 4) = (f32)*(s32 *)((char *)Q + (lo << 4) + 8);
+                tt = (char *)q[0];
+                t5 = a0[0];
+                t4 = tt + 0x41C;
+                if (*(s32 *)(tt + 0x41C) != t5) {
+                    if (0 < *(s32 *)(tt + 0x418)) {
+                        s32 t3 = 0;
+                        s32 t2 = 0;
+                        do {
+                            *(s32 *)((char *)*(s32 **)(t4 + 0x10) + t2 + 0x30) = -1;
+                            *(s32 *)((char *)*(s32 **)(t4 + 0x10) + t2 + 0x34) = -1;
+                            *(s32 *)((char *)*(s32 **)(t4 + 0x10) + t2 + 0x38) = -1;
+                            t3++;
+                            t2 += 0x40;
+                        } while (t3 < *(s32 *)(tt + 0x418));
+                    }
+                    *(s32 *)(t4 + 0xC) = 0xBF800000;
+                }
+                *(s32 *)t4 = t5;
+            }
+            a1 += 0x10;
+            a0++;
+            q++;
+        }
+    } else {
+        *(s32 *)a1 = a0[0];
+        *(s32 *)(a1 + 0x10) = a0[1];
+        *(s32 *)(a1 + 0x20) = a0[2];
+        *(s32 *)(a1 + 0x30) = a0[3];
+        *(s32 *)(a1 + 0x40) = a0[4];
+        *(s32 *)(a1 + 0x50) = a0[5];
+        *(s32 *)(a1 + 0x60) = a0[6];
+        *(s32 *)(a1 + 0x70) = a0[7];
+    }
+}
 #if 0
 // func_002908D0: 60 of 103 differ: the search loop as continue/break (the original tests the function result with bnez into the counter and falls to a b for the break), and the table fill and store block are scheduled in another order (the original stores s1 before the float load); two loop forms tried
 s32 func_002908D0(s32 a0, s32 a1) {
