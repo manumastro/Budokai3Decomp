@@ -839,7 +839,8 @@ int func_001CDDE0(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDDE0);
-// differs: 1 of 22 at best: the same add-order difference as func_001CDDE0 (base 5 of 22).
+/* r6 best attempt diff 1 */
+// differs: 1 of 22: addu operand order at the element add (original `addu v0,v0,v1`, ours `addu v0,v1,v0`), the same as func_001CDDE0. The (s32)t cast form gave 5 of 22, not adopted.
 #if 0
 int func_001CDE40(void *unused, Arg *a) {
     int *p = a->p;
@@ -853,7 +854,8 @@ int func_001CDE40(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDE40);
-// differs: 1 of 22 at best: the same add-order difference as func_001CDDE0 (base 5 of 22).
+/* r6 best attempt diff 1 */
+// differs: 1 of 22: addu operand order at the element add (original `addu v0,v0,v1`, ours `addu v0,v1,v0`), the same as func_001CDDE0. The (s32)t cast form gave 5 of 22, not adopted.
 #if 0
 int func_001CDEA0(void *unused, Arg *a) {
     int *p = a->p;
@@ -870,7 +872,8 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDEA0);
 int Scr_CmdNop(void *unused, Arg *a) {
     return 1;
 }
-// differs: 1 of 28 at best: the add of the table index and the address (the original loads p[0] and the table entry before the sh); the u8 table load order differs by one instruction.
+/* r6 best attempt diff 1 */
+// differs: 1 of 28: the add of the table index and the address (the original loads p[0] and the table entry before the sh); the u8 table load order differs by one instruction.
 #if 0
 int func_001CDF10(void *unused, Arg *a) {
     int *p = a->p;
