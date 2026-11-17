@@ -997,7 +997,24 @@ int Scr_CmdFighterSlotSetVec(void *unused, Arg *a) {
     *(f32 *)(t + e + 0xCA8) = x0;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE4E0);
+extern void func_001E5040(void *);
+
+int func_001CE4E0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 v = p[0];
+    char *b = (char *)gBattle->tbl[p[1]];
+    if (*(s8 *)(b + 0x1FF9) == v) {
+        return 1;
+    }
+    *(s8 *)(b + 0x1FF9) = (s8)v;
+    if (v == 0) {
+        *(s32 *)(b + 0x1864) = 9;
+    } else {
+        *(s32 *)(b + 0x1864) = 3;
+    }
+    func_001E5040(b);
+    return 1;
+}
 // differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?: and if forms tried did not give movz.
 // differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?:, if and flag-local forms tried did not give movz.
 #if 0
