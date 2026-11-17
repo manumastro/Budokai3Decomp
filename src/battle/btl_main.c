@@ -607,8 +607,6 @@ void func_001AD0E0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AD0E0);
-#if 0
-// differs: 8 of 49 instructions differ: register assignment of the constants 7 and 5 (the original keeps 7 in a0 and 5 in v1)
 void func_001AD210(void) {
     BattleWork *bw = gBattle;
     s32 tmp[3];
@@ -623,7 +621,7 @@ void func_001AD210(void) {
         ft = bw->fighter[1];
         tmp[0] = ft->unk1350;
         tmp[1] = ft->unk13A4;
-        tmp[2] = 5;
+        tmp[2] = 1;
         func_00226030(0, tmp);
         break;
     case 1:
@@ -635,8 +633,6 @@ void func_001AD210(void) {
         break;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AD210);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AD2E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AD570);
 extern void (*D_004682F8[])(void);
