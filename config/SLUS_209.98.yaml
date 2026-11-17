@@ -131,7 +131,7 @@ segments:
       - [0x160CB0, asm, unk/unk_260CB0]
       - [0x164480, asm, menu/mn_title]
       - [0x165020, asm, menu/mn_dataload]
-      - [0x167300, asm, menu/mn_mainmenu]
+      - [0x167300, c, menu/mn_mainmenu]
       - [0x167E00, asm, menu/mn_vsmode]
       - [0x169A00, asm, menu/ess_main]
       - [0x16D9C0, asm, menu/ess_main_2]

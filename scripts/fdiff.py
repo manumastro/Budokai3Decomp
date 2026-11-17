@@ -15,6 +15,7 @@ define, nor that the whole build still matches: ninja does that.
 
 import argparse
 import re
+import struct
 import sys
 import tempfile
 from pathlib import Path
@@ -98,6 +99,10 @@ def main():
             if any(tail) or len(tail) >= 16:
                 print(f"{name}: compiled size 0x{4 * len(words):X}, the original is 0x{nxt - addr:X} long")
                 bad += 1
+                if args.v:
+                    n = (nxt - addr) // 4
+                    full = list(struct.unpack(f"<{n}I", rom[addr - 0x100000:nxt - 0x100000]))
+                    mwmatch.show(words + [0] * max(0, n - len(words)), full + [0] * max(0, len(words) - n), addr)
                 continue
         if diffs:
             bad += 1
