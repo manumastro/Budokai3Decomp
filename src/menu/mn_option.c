@@ -209,6 +209,50 @@ void func_002DF4E0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF4E0);
+#if 0
+// differs: 16 bytes short (0x100 vs 0x110): the original saves a second register (s1, holding the heap block of case 4) and loads gOptionWork into s0 before Save_GetState; the same frame problem as func_002DEFF0
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern char D_0046F3C8[];
+extern s8 D_0058F680[];
+extern s8 D_004B4B63[];
+extern void func_00125740(void *, void *, s32);
+extern void func_001EF510(void *, s32);
+extern void amHeap_Free(void *);
+extern void amTask_Kill(void *);
+extern void func_001F0790();
+extern void func_002DF100();
+extern void func_002DE910();
+extern void func_002DD2B0();
+extern void amDisp_SetOffset(s32, s32);
+
+void func_002DF5D0(void) {
+    u8 *s1;
+    u8 *s0;
+    s32 st;
+    s0 = (u8 *)gOptionWork;
+    st = Save_GetState();
+    switch (st) {
+    case 4:
+        s1 = (u8 *)amHeap_Alloc(0xD680, 0, D_0046F3C8, 0x733);
+        func_00125740(s1, D_0058F680 + D_004B4B63[0] * 0xD680, 0xD680);
+        func_001EF510(s1, 0xD680);
+        amHeap_Free(s1);
+        break;
+    case 3:
+    case 5:
+        func_001F0790();
+        if (*(void **)(s0 + 0x324) != 0) {
+            amTask_Kill(*(void **)(s0 + 0x324));
+            *(s32 *)(s0 + 0x324) = 0;
+        }
+        func_002DF100();
+        func_002DE910();
+        amDisp_SetOffset(*(s16 *)((u8 *)D_004E05DC + 0x1E), *(s16 *)((u8 *)D_004E05DC + 0x20));
+        *(void **)(s0 + 0x344) = (void *)func_002DD2B0;
+        break;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF5D0);
 extern void A2d_SetMode(s32);
 extern void A2d_FlushList(void);

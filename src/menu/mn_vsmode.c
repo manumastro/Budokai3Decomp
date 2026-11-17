@@ -6,6 +6,62 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_002682E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00268550);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00268860);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00268A80);
+#if 0
+// differs: 14 of 65: the call sequence and the three pointer loops match in shape; the D_004707DC load is hoisted ahead of the s0 load and the s1 load is scheduled before the D_00470238 store (the original keeps both after)
+extern void *D_004707DC;
+extern void func_00145CC0(s32, s32);
+extern void func_0022C060(s32, f32);
+extern void func_0022CD00(s32);
+extern void func_00268170();
+extern void func_00267E00();
+extern void func_0022C700();
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+
+void func_00268BF0(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    s32 s3;
+    s32 s2;
+    s0 = *(u8 **)(a0 + 0x30);
+    D_00470704 = *(s32 *)((u8 *)D_004707DC + 0xC);
+    D_0047070C = 0x1000;
+    func_00145CC0(*(s32 *)((u8 *)D_004707DC + 0xC), 0x1000);
+    D_00470708 = 0;
+    D_00470238 = 0;
+    s1 = *(u8 **)s0;
+    if (s1 != 0) {
+        func_0022C060((s32)s1, 1.0f);
+        func_0022CD00((s32)s1);
+    }
+    s2 = 0;
+    s1 = s0;
+    do {
+        s3 = *(s32 *)(s1 + 0x2C);
+        if (s3 != 0) {
+            func_0022C060(s3, 1.0f);
+            func_0022CD00(s3);
+        }
+        s2++;
+        s1 += 4;
+    } while (s2 < 2);
+    func_00268170(s0);
+    func_00267E00(s0);
+    s3 = 0;
+    do {
+        s2 = *(s32 *)(s0 + 4);
+        if (s2 != 0) {
+            func_0022C060(s2, 1.0f);
+            func_0022CD00(s2);
+        }
+        s3++;
+        s0 += 4;
+    } while (s3 < 2);
+    func_0022C700();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00268BF0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00268D00);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00268E40);
