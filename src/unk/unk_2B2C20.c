@@ -7,10 +7,49 @@ typedef struct SklRec {
     s32 f4C;
     s32 f50;
     s32 f54;
-    char pad58[0x1C8 - 0x58];
+    char pad58[0x120 - 0x58];
+    s32 f120;
+    char pad124[4];
+    s32 f128;
+    char pad12C[0x1C8 - 0x12C];
 } SklRec;
 
 extern SklRec *gSklEdit;
+
+/* A source block: a word, then seven floats. */
+typedef struct SklSrc {
+    s32 w0;
+    f32 f4;
+    f32 f8;
+    f32 fC;
+    f32 f10;
+    f32 f14;
+    f32 f18;
+    f32 f1C;
+} SklSrc;
+
+/* The body of a skill-edit record from its f48 pointer (offsets as the original reads them). */
+typedef struct SklBody {
+    char pad0[0xC];
+    s32 fC;
+    char pad10[4];
+    s32 f14;
+    char pad18[4];
+    s32 f1C;
+    s32 f20;
+    char pad24[0xB8 - 0x24];
+    s32 fB8;
+    f32 fBC;
+    f32 fC0;
+    f32 fC4;
+    f32 fC8;
+    f32 fCC;
+    f32 fD0;
+    f32 fD4;
+} SklBody;
+
+extern s16 D_0046B560[];
+extern u8 D_004E0660[];
 
 /* A skill-edit actor, as far as these functions read it. */
 typedef struct SklAct {
@@ -26,7 +65,48 @@ extern s32 func_00283BF0(void *);
 extern void SklSheet_Free(void);
 extern void func_002B3D90(void);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B2C20);
+/* The skill-edit record from its f48 word on (offsets are from the f48 pointer, as the original code reads them). */
+typedef struct SklEdTail {
+    char pad0[0xE0];
+    s32 fE0;
+    char padE4[0x110 - 0xE4];
+    s32 f110;
+    char pad114[0x140 - 0x114];
+    s32 f140;
+    char pad144[0x170 - 0x144];
+    s32 f170;
+    char pad174[0x1A0 - 0x174];
+    s32 f1A0;
+} SklEdTail;
+
+extern void func_00133780(s32, s32);
+extern s32 amGs_SetReg32(s32, s32);
+extern void func_00228430(s32);
+extern void func_002284D0(s32);
+extern void func_002B2400(void *);
+extern void func_002B1FF0(void *);
+extern void func_00228410(void);
+
+void func_002B2C20(SklAct *s) {
+    s32 s1;
+    SklEdTail *p;
+
+    func_00133780(0, 1);
+    s1 = amGs_SetReg32(0, 0x30000);
+    p = (SklEdTail *)&gSklEdit[s->f30].f48;
+    func_00228430(0);
+    func_002284D0(0);
+    func_002B2400(p);
+    p->fE0 += 1;
+    p->f140 += 1;
+    func_002B1FF0(p);
+    p->f110 += 1;
+    p->f170 += 1;
+    p->f1A0 += 1;
+    func_00228410();
+    amGs_SetReg32(0, s1);
+    func_00133780(0, 0);
+}
 void func_002B2D00(SklAct *s) {
     s32 *p;
 
@@ -91,7 +171,43 @@ void func_002B3BA0(SklAct *s) {
         s->f1C = (func_002B2E40 == NULL) ? 0 : (s32)func_002B2E40;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B3C40);
+/* The record view from its f48 pointer: f54 and f5C of the record. */
+typedef struct SklP48 {
+    char pad0[0xC];
+    s32 fC;
+    char pad10[4];
+    s32 f14;
+} SklP48;
+
+extern void amTask_Kill(void *);
+void func_002B3D40(SklAct *s);
+
+void func_002B3C40(SklAct *s) {
+    SklRec *r;
+    s32 *f30;
+    SklP48 *p;
+    s32 *q;
+    s32 i;
+
+    f30 = &s->f30;
+    r = &gSklEdit[s->f30];
+    p = (SklP48 *)&r->f48;
+    if (func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f120], (f32)r->f128 * gFrameDelta) == 0xFF) {
+        p->fC = 9;
+        if (p->f14 != 0) {
+            s->f1C = (func_002B3D40 == NULL) ? 0 : (s32)func_002B3D40;
+        } else {
+            q = (s32 *)((u8 *)gSklEdit + *f30 * 8 + 0x18);
+            i = 0;
+            do {
+                amTask_Kill((void *)*q);
+                *q = 0;
+                i++;
+                q++;
+            } while (i < 2);
+        }
+    }
+}
 void func_002B3D40(SklAct *s) {
     SklRec *r;
 
@@ -101,6 +217,53 @@ void func_002B3D40(SklAct *s) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B3D90);
+/* differs: 3 of 83 (the zeroing of the sum and the pointer setup are scheduled after the cnt > 0 test;
+   the original keeps them before it: the same loop as func_002B4AF0 below, with the top check; declaration order
+   (q, t1, i, cnt) and `0 < cnt` and `q[1] * 5` found by search). */
+#if 0
+void func_002B4680(SklAct *s) {
+    SklRec *r;
+    SklBody *p;
+    s32 *q;
+    s32 t1;
+    s32 i;
+    s32 cnt;
+
+    r = &gSklEdit[s->f30];
+    p = (SklBody *)&r->f48;
+    if (func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f120], (f32)r->f128 * gFrameDelta) == 0xFF) {
+        cnt = p->fB8;
+        q = (s32 *)&p->fB8;
+        t1 = 0;
+        if (0 < cnt) {
+            i = 0;
+            for (;;) {
+                if (i >= 8) {
+                    break;
+                }
+                t1 += D_004E0660[(q[1] * 5) * 8 + 8] & 7;
+                q++;
+                i++;
+                if (i >= cnt) {
+                    break;
+                }
+            }
+        }
+        if (t1 < 7) {
+            p->f20 = t1 + 1;
+        } else {
+            p->f20 = 7;
+        }
+        if (p->f14 != 0) {
+            p->fC = 4;
+            s->f1C = (func_002B3D40 == NULL) ? 0 : (s32)func_002B3D40;
+        } else {
+            p->fC = 5;
+            s->f1C = (func_002B3D90 == NULL) ? 0 : (s32)func_002B3D90;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B47D0);
 /* differs: about 14 of 40: the register roles now match; the fC update (2 -> 3, 0 -> 1) and the join branch are laid out
@@ -168,6 +331,71 @@ u16 func_002B4AD0(s32 a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4AD0);
+
+/* differs: 37 of 81: the loop (count in a3, sum in t1, pointer in t2 in the original) and the float copy order
+   (the original loads f4..f10 into f3..f0 before the stores); declaration orders of the locals tried (24). */
+#if 0
+void func_002B4AF0(s32 a0, s32 a1, SklSrc *src) {
+    SklRec *r;
+    SklBody *b;
+    s32 *q;
+    s32 cnt;
+    s32 t1;
+    s32 i;
+
+    a1 = D_0046B560[a1];
+    if (a1 < 0) {
+        return;
+    }
+    r = gSklEdit + (a0 >> 1);
+    b = (SklBody *)&r->f48;
+    if (b->f1C == a1) {
+        return;
+    }
+    b->f1C = a1;
+    memset((char *)b + 0x48, 0, 0x70);
+    b->fB8 = src->w0;
+    {
+        f32 x0 = src->f4;
+        f32 x1 = src->f8;
+        f32 x2 = src->fC;
+        f32 x3 = src->f10;
+
+        b->fBC = x0;
+        b->fC0 = x1;
+        b->fC4 = x2;
+        b->fC8 = x3;
+    }
+    {
+        f32 y0 = src->f14;
+        f32 y1 = src->f18;
+        f32 y2 = src->f1C;
+
+        b->fCC = y0;
+        b->fD0 = y1;
+        b->fD4 = y2;
+    }
+    t1 = 0;
+    cnt = b->fB8;
+    if (cnt > 0) {
+        q = (s32 *)&b->fB8;
+        i = 0;
+        while (i < 8) {
+            t1 += D_004E0660[((q[1] << 2) + q[1]) * 8 + 8] & 7;
+            q++;
+            i++;
+            if (!(i < cnt)) {
+                break;
+            }
+        }
+    }
+    if (t1 < 7) {
+        b->f20 = t1 + 1;
+    } else {
+        b->f20 = 7;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4AF0);
 void func_002B4C40(s32 a) {
     SklRec *r = gSklEdit + (a >> 1);
@@ -211,7 +439,7 @@ void func_002B4CC0(s32 a0, void *dst) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4CC0);
-extern void func_002B3C40(void);
+/* func_002B3C40 is defined above. */
 
 void func_002B4D90(s32 a0) {
     void **q = (void **)((char *)gSklEdit + (a0 >> 1) * 8 + 0x18);

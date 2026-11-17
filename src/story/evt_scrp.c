@@ -1219,7 +1219,52 @@ s32 Evt_CmdVecCall2A0AD0(void *a0, char *a1) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4580);
+extern void func_002A0B70(s32, s32, s32, f32 *);
+
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4620);
+#if 0
+// differs: VU0 qmtc2 leaf (twin of 2A4580): FPU registers of the four fa loads and of t differ (original f5..f2 for fa[3..0], t in f0); 200 declaration orders and a 0.0f constant tried, no match
+s32 func_002A4620(void *a0, char *a1) {
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    f32 *fa = (f32 *)args;
+    f32 v[4] __attribute__((aligned(16)));
+    f32 t;
+    u32 tz1;
+    u32 tz2;
+    u32 tz3;
+    u32 tt;
+    f32 x3 = fa[3];
+    s32 a0v = args[6];
+    s32 a1v = args[5];
+    f32 x2 = fa[2];
+    s32 a2v = args[4];
+    f32 x1 = fa[1];
+    f32 x0 = fa[0];
+    t = x3 - 1.0f;
+    v[3] = 1.0f;
+    v[0] = x2;
+    v[1] = x1;
+    v[2] = x0;
+    __asm__ volatile (
+        "mfc1 %3, %5\n\t"
+        "mfc1 %0, %4\n\t"
+        "mfc1 %1, %4\n\t"
+        "mfc1 %2, %4\n\t"
+        "lqc2 $vf5, 0(%6)\n\t"
+        "qmtc2.ni %0, $vf1\n\t"
+        "qmtc2.ni %1, $vf2\n\t"
+        "qmtc2.ni %2, $vf3\n\t"
+        "qmtc2.ni %3, $vf4\n\t"
+        "vaddx.x $vf5, $vf5, $vf1x\n\t"
+        "vaddx.y $vf5, $vf5, $vf2x\n\t"
+        "vaddx.z $vf5, $vf5, $vf3x\n\t"
+        "vaddx.w $vf5, $vf5, $vf4x\n\t"
+        "sqc2 $vf5, 0(%6)"
+        : "=&r"(tz1), "=&r"(tz2), "=&r"(tz3), "=&r"(tt) : "f"(0.0f), "f"(t), "r"(v) : "memory");
+    func_002A0B70(a0v, a1v, a2v, v);
+    return 1;
+}
+#endif
 extern void func_002A0BC0(s32, s32, s32, f32 *);
 
 s32 Evt_CmdVecCall2A0BC0(void *a0, char *a1) {
@@ -2003,7 +2048,74 @@ void func_002A6E40(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6E40);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6FD0);
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00228430(s32);
+extern void func_0022C060(s32, f32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+extern f32 D_004E0614[];
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
+void func_002A6FD0(void) {
+    s32 *s0;
+    s32 a14;
+    s32 c7c;
+    s32 t0;
+    s32 v;
+    s32 a1;
+    s32 t;
+    s32 x;
+    u16 *row;
+    x = D_004B4B63[0];
+    row = (u16 *)(D_00492FCE + x * 0xB8);
+    s0 = gEvtWork;
+    if (*row & 0x50) {
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 2, 0);
+        }
+        s0[0x7C / 4] = s0[0x7C / 4] + 1;
+        s0[0x7C / 4] = s0[0x7C / 4] & 1;
+    }
+    a14 = s0[0x14 / 4];
+    c7c = s0[0x7C / 4];
+    v = a14 + (s32)0xC0000000;
+    if (c7c == 0) {
+        t0 = s0[0x78 / 4];
+        a1 = (v << 9) + 0x890000;
+        D_00470704 = t0;
+        D_0047070C = a1;
+        D_00470708 = 0;
+        amModel_SetCurrent(t0, a1);
+        D_00470238 = 0;
+        t = s0[0x88 / 4];
+        func_00228430(0);
+        func_00228430(0);
+        func_0022C060(t, 1.0f);
+        func_00228410();
+        func_0022CD00(t);
+        func_00228410();
+    } else {
+        t0 = s0[0x78 / 4];
+        a1 = (v << 9) + 0x890000;
+        D_00470704 = t0;
+        D_0047070C = a1;
+        D_00470708 = 0;
+        amModel_SetCurrent(t0, a1);
+        D_00470238 = 0;
+        t = s0[0x8C / 4];
+        func_00228430(0);
+        func_00228430(0);
+        func_0022C060(t, 1.0f);
+        func_00228410();
+        func_0022CD00(t);
+        func_00228410();
+    }
+}
 extern f32 func_002B06A0(void);
 extern void func_0029AAC0(s32, s32, s32);
 extern s32 *gStrMap;
@@ -2040,7 +2152,71 @@ void func_002A7160(s32 a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7240);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7400);
+extern void func_00133B50(s32, s32);
+extern void A2d_SetMode(s32);
+extern void A2d_FlushList(void);
+extern void func_00228430(s32);
+extern void func_0022C060(s32, f32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+extern void amModel_SetCurrent(s32, s32);
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern s32 D_004700A0;
+extern s8 D_004708D4;
+extern void func_002A7240(void);
+void func_002A7400(struct Task *a0) {
+    s32 *s0 = gEvtWork;
+    s32 s2;
+    s32 t0;
+    s32 x;
+    s32 x2;
+    u16 *row;
+    char *base;
+    void *fn;
+    func_00133B50(0, 0);
+    A2d_SetMode(D_004E05F8[0]);
+    t0 = s0[0x78 / 4];
+    D_00470704 = t0;
+    D_0047070C = 0x890100;
+    D_00470708 = 0;
+    amModel_SetCurrent(t0, 0x890100);
+    D_00470238 = 0;
+    s2 = s0[0x80 / 4];
+    func_00228430(0);
+    func_00228430(0);
+    func_0022C060(s2, 1.0f);
+    func_00228410();
+    func_0022CD00(s2);
+    func_00228410();
+    func_002A6FD0();
+    A2d_FlushList();
+    x = D_004B4B63[0];
+    row = (u16 *)(D_00492FCE + x * 0xB8);
+    if (*row & 0x4000) {
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 3, 0);
+        }
+        if (s0[0x7C / 4] == 0) {
+            if (D_004708D4 == 1) {
+                x2 = D_00511450[0];
+                base = (char *)D_004E6560 + x2 * 4624;
+                D_004700A0 = *(s32 *)(base + 0x1254);
+                *(s32 *)(base + 0x1254) = -1;
+            }
+            D_004708D4 = 0;
+            if (s0[0x14 / 4] == 0x40000005) {
+                Fade_SetRequest(10, 0, 0);
+            }
+        }
+        s0[0x98 / 4] = 0;
+        fn = (void *)func_002A7240;
+        *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+    }
+}
 #if 0
 // func_002A75C0: 60 of 71 differ on registers: the original keeps the Task in s1, gEvtWork in s0 and the value in s2; ours puts the Task in s2 and gEvtWork in s1 (declaration orders tried, none changed it); the float field is reloaded after the call as the original does
 extern void func_00133B50(s32, s32);
@@ -2257,12 +2433,81 @@ void func_002A7B50(struct Task *a0) {
         }
     }
 }
+extern s32 func_0022D860(s32, f32);
+extern char D_0046EAA8[];
+extern s32 D_004700A8;
+extern void func_002A75C0(struct Task *);
+#if 0
+// func_002A7CB0: 161 of 178 differ. The block order is wrong: the original tests 2 first (beq chain), lays out the 4/0 block first, then 5/1, then 2; ours puts the 2 block first (bne to the else chain). Reordering the source is not tried yet; the 2 block keeps the same instructions.
+void func_002A7CB0(struct Task *a0) {
+    s32 *s0 = gEvtWork;
+    s32 s1 = *(u16 *)((char *)s0 + 0x14);
+    s32 *tbl;
+    void *fn;
+    if (s0[0xC / 4] & 1) {
+        func_00264140(-1, 0);
+        s0[0x98 / 4] = 0;
+        D_00470704 = s0[0x78 / 4];
+        D_0047070C = 0x870000;
+        D_00470708 = 0;
+        amModel_SetCurrent(s0[0x78 / 4], 0x870000);
+        D_00470238 = 0;
+        if (s1 == 2) {
+            s0[0x90 / 4] = 0;
+            s0[0x94 / 4] = 1;
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x80 / 4] = func_0022D860(tbl[s0[0x90 / 4]], 0.0f);
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x84 / 4] = func_0022D860(tbl[s0[0x94 / 4]], 0.0f);
+            D_004700A8 = -1;
+            fn = (void *)func_002A7B50;
+            *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        } else if (s1 == 5 || s1 == 1) {
+            s0[0x90 / 4] = 6;
+            s0[0x94 / 4] = 7;
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x80 / 4] = func_0022D860(tbl[s0[0x90 / 4]], 0.0f);
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x84 / 4] = func_0022D860(tbl[s0[0x94 / 4]], 0.0f);
+            s0 = gEvtWork;
+            if (s0 != 0) {
+                s0[0xC / 4] = s0[0xC / 4] | 1;
+                if (s0[0x124 / 4] >= 0) {
+                    s0[0x128 / 4] = (s32)amTask_Create((TaskFunc)func_002A7160, NULL, 0x8000, 0x4000, 0, D_0046EAA8);
+                    s0[0x12C / 4] = 0;
+                }
+            }
+            fn = (void *)func_002A75C0;
+            *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+            D_004700A8 = -1;
+        } else if (s1 == 4 || s1 == 0) {
+            s0[0x90 / 4] = 4;
+            s0[0x94 / 4] = 5;
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x80 / 4] = func_0022D860(tbl[s0[0x90 / 4]], 0.0f);
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x84 / 4] = func_0022D860(tbl[s0[0x94 / 4]], 0.0f);
+            s0 = gEvtWork;
+            if (s0 != 0) {
+                s0[0xC / 4] = s0[0xC / 4] | 1;
+                if (s0[0x124 / 4] >= 0) {
+                    s0[0x128 / 4] = (s32)amTask_Create((TaskFunc)func_002A7160, NULL, 0x8000, 0x4000, 0, D_0046EAA8);
+                    s0[0x12C / 4] = 0;
+                }
+            }
+            D_004700A8 = s1 + 0x40000001;
+            fn = (void *)func_002A7B50;
+            *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7CB0);
 extern f32 func_002B06A0(void);
 extern void func_0022E0B0(s32);
 extern s32 func_0022D670(s32, f32);
 extern void func_0022C7D0(s32, f32, s32);
-extern void func_002A7CB0(void);
+extern void func_002A7CB0(struct Task *);
 void func_002A7F70(struct Task *a0) {
     s32 *s0;
     s32 *p;
@@ -2345,5 +2590,54 @@ void EvtScrp_Init(void) {
     g[0x64 / 4] = 0;
     g[0x68 / 4] = 0;
 }
+extern u8 D_004700B4[];
+extern u8 D_004700B8[];
+#if 0
+// func_002A81B0: 0x160 vs 0x180 bytes. The original tests the high halfword against 0x6A/0x68/0x66/0x64 with beq chains to one switch block, then compares the low halfword in the order 0x22, 0x11, 7, 0xD, 0xC ... 0 (beq chains); a switch sorts the cases and merges the shared table bodies (ascending chain); an if/else chain gets range tests (sltiu). Tried: if/else chain (0x138), switch (0x160).
+void func_002A81B0(s32 a0) {
+    s8 x = D_00511450[0];
+    s32 key = (u32)(a0 & 0xFFFF0000) >> 16;
+    s32 low = a0 & 0xFFFF;
+    char *v;
+    s32 idx;
+    v = (char *)D_004E6560 + x * 4624 + 0x80;
+    if (key == 0x6A || key == 0x68 || key == 0x66 || key == 0x64) {
+        switch (low) {
+        case 0x22:
+            *(s32 *)(v + 0x11DC) = 5;
+            break;
+        case 0x11:
+            *(s32 *)(v + 0x11DC) = 4;
+            break;
+        case 7:
+            idx = key - 0x64;
+            if (idx < 0) {
+                idx += 1;
+            }
+            idx >>= 1;
+            *(s32 *)(v + 0x11DC) = D_004700B8[idx];
+            break;
+        case 0xD:
+        case 0xC:
+        case 0xB:
+        case 0xA:
+        case 4:
+        case 3:
+        case 2:
+        case 0:
+            idx = key - 0x64;
+            if (idx < 0) {
+                idx += 1;
+            }
+            idx >>= 1;
+            *(s32 *)(v + 0x11DC) = D_004700B4[idx];
+            break;
+        default:
+            *(s32 *)(v + 0x11DC) = 0;
+            break;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A81B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A8330);

@@ -382,7 +382,203 @@ s32 func_002FCF60(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCF60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD090);
+#if 0
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+// differs: 128-131 of 160 instructions (fdiff counts relocations too): the loops and the rand branch match in shape, the saved registers do not (entry pointer in s4, s0 in the original); 24 orders of the four saved ints x 2 pointer places tried
+void func_002FD560(void) {
+    s8 *s0;
+    s32 s4, s3, s2, s1, a0, a1, a2, v1;
+    s8 *e;
+    u8 *gt;
+
+    if (0 < (1 << D_005D0082[0])) {
+        s1 = 0;
+        s2 = 0;
+        do {
+            gt = (u8 *)gTourMap;
+            e = (s8 *)(gt + s2);
+            s0 = (s8 *)((u8 *)e + 0x2EC);
+            if (*(s16 *)(e + 0x2F6) != -1) {
+                goto nxt;
+            }
+            a0 = s0[4];
+            if (a0 != 1) {
+                goto nxt;
+            }
+            a0 = s0[7];
+            if (a0 != D_004B4B58[0]) {
+                goto nxt;
+            }
+            if (((s1 >> a0) & 1) == 0) {
+                goto bclear;
+            }
+            a2 = 1 << a0;
+            a1 = (s1 - a2) >> a0;
+            s4 = a1 << a0;
+            a2 = s4 + a2;
+            if (s4 < a2) {
+                s3 = s4;
+                e = (s8 *)(gt + s4 * 20);
+                for (; s3 < a2; s3++, e += 0x14) {
+                    if (e[0x2F3] == a0) {
+                        if (!(func_0012EAE0(0x20) & 1)) {
+                            v1 = s3 * 20;
+                            e = (s8 *)((u8 *)gTourMap + v1);
+                            e[0x2F3]++;
+                            s0[4] = 5;
+                        } else {
+                            *((u8 *)gTourMap + s3 * 20 + 0x2F0) = 5;
+                            s0[7]++;
+                        }
+                        goto chk;
+                    }
+                }
+            }
+            goto chk;
+        bclear:
+            a2 = 1 << a0;
+            a1 = (s1 + a2) >> a0;
+            s4 = a1 << a0;
+            a2 = s4 + a2;
+            if (s4 < a2) {
+                s3 = s4;
+                e = (s8 *)(gt + s4 * 20);
+                for (; s3 < a2; s3++, e += 0x14) {
+                    if (e[0x2F3] == a0) {
+                        if (!(func_0012EAE0(0x20) & 1)) {
+                            v1 = s3 * 20;
+                            e = (s8 *)((u8 *)gTourMap + v1);
+                            e[0x2F3]++;
+                            s0[4] = 5;
+                        } else {
+                            *((u8 *)gTourMap + s3 * 20 + 0x2F0) = 5;
+                            s0[7]++;
+                        }
+                        goto chk;
+                    }
+                }
+            }
+        chk:
+            a0 = s0[7];
+            if (s3 == s4 + (1 << a0)) {
+                s0[7] = a0 + 1;
+            }
+        nxt:
+            s1++;
+            s2 += 0x14;
+        } while (s1 < (1 << D_005D0082[0]));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD560);
+
+#if 0
+// differs: 122 of 138 instructions (register choice and the placement of the return-5 exit; 4 layouts tried)
+extern s8 D_005D0080[];
+extern s8 D_005D0081[];
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+
+s32 func_002FD7E0(s32 a0) {
+    s32 ret;
+    s32 t5, t4, t3, t2, t6, t8, a2, a3, v0, m;
+    u8 *t1;
+    u8 *a1;
+    u8 *gt;
+
+    if (a0 != 0) {
+        D_005D0081[0] = -1;
+        D_005D0080[0] = -1;
+    }
+    t2 = D_005CA030[0];
+    if (!(0 < t2)) {
+        goto five;
+    }
+    {
+        t6 = 0;
+        t5 = D_005D0082[0];
+        gt = (u8 *)gTourMap;
+        t8 = 1;
+        t3 = t8 << t5;
+        t4 = D_004B4B58[0];
+        a3 = 2;
+        do {
+            if (0 < t3) {
+                t1 = gt;
+                for (a2 = 0; a2 < t3; a2++, t1 += 0x14) {
+                    if (*(s16 *)(t1 + 0x2F6) != t6) {
+                        continue;
+                    }
+                    a1 = t1 + 0x2EC;
+                    v0 = a1[4];
+                    if (v0 != t8 && v0 != a3) {
+                        continue;
+                    }
+                    v0 = a1[7];
+                    if (v0 == t5) {
+                        goto five;
+                    }
+                    if (v0 != t4) {
+                        continue;
+                    }
+                    a3 = (a2 >> v0) & 1;
+                    if (a3 != 0) {
+                        m = t8 << v0;
+                        a3 = (a2 - m) >> v0;
+                        t3 = a3 << v0;
+                        a3 = t3 + m;
+                        if (t3 < a3) {
+                            t1 = gt + t3 * 20;
+                            for (t2 = t3; t2 < t3 + (t8 << v0); t2++, t1 += 0x14) {
+                                if (t1[0x2F3] == v0 && a0 != 0) {
+                                    D_005D0080[0] = t2;
+                                    D_005D0081[0] = a2;
+                                }
+                                v0 = a1[7];
+                            }
+                        }
+                    } else {
+                        m = t8 << v0;
+                        a3 = (a2 + m) >> v0;
+                        t3 = a3 << v0;
+                        a3 = t3 + m;
+                        if (t3 < a3) {
+                            t2 = t3;
+                            t1 = gt + t3 * 20;
+                            for (; t2 < t3 + (t8 << v0); t2++, t1 += 0x14) {
+                                if (t1[0x2F3] == v0 && a0 != 0) {
+                                    D_005D0080[0] = a2;
+                                    D_005D0081[0] = t2;
+                                }
+                                v0 = a1[7];
+                            }
+                        }
+                    }
+                    goto tail;
+                }
+            }
+            t6++;
+        } while (t6 < t2);
+    }
+    goto five;
+tail:
+    ret = 3;
+    if (a0 != 0) {
+        if (D_005D0080[0] == -1 && D_005D0081[0] == -1) {
+            *(s32 *)(gt + 0x70) = (s32)a1;
+            ret = 4;
+        }
+    }
+    goto out;
+five:
+    ret = 5;
+out:
+    return ret;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD7E0);
 extern u32 func_0012EAE0(s32);
 extern s16 D_0046B5B0[];
@@ -421,7 +617,57 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FE1B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FE5A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FE7A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FEBD0);
+#if 0
+// differs: 0x158 vs 0x170 (6 instructions short): the original has two out-of-line early returns (b to the epilogue) and two extra nops after the last call; the z store to the copied vector (k.z) and the aligned(16) copy are right
+extern u8 D_00458BE0[];
+extern s32 func_00136870(s32, s32, void *, s32, s32, s32, f32);
+extern void func_00137B60(void *);
+extern void amDraw_FlushPacket(void);
+
+typedef struct Vq2FED60 {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} __attribute__((aligned(16))) Vq2FED60;
+
+void func_002FED60(f32 a, f32 b, f32 c) {
+    Vq2FED60 p;
+    Vq2FED60 k;
+    f32 t;
+
+    if (a >= -5.0f) {
+        if (a <= 805.0f) {
+            if (b > c) {
+                t = c;
+                c = b;
+                b = t;
+            }
+            if (c >= -5.0f) {
+                if (b <= 605.0f) {
+                    __asm__ volatile("sqc2 $vf0, 0x0(%0)" : : "r"(&p) : "memory");
+                    p.x = a - 2.5f;
+                    p.y = b;
+                    k = *(Vq2FED60 *)D_00458BE0;
+                    k.z = *(f32 *)((u8 *)gTourMap->f40 + 0x34);
+                    func_00136870(1, 0x910, &k, -1, 0x44, 0, a);
+                    func_00137B60(&p);
+                    p.x = p.x + 5.0f;
+                    func_00137B60(&p);
+                    p.y = c;
+                    p.x = p.x - 5.0f;
+                    func_00137B60(&p);
+                    p.x = p.x + 5.0f;
+                    func_00137B60(&p);
+                    amDraw_FlushPacket();
+                }
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FED60);
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FEED0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FF610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FFD20);

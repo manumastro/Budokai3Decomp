@@ -584,25 +584,26 @@ s32 func_0021C2E0(s32 id) {
 // (see the note above the function: the test is the BtlCnt view now)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2E0);
-#if 0
-// differs: the count is kept as a pointer (gBattle + 0x88D8) in the original, reloaded in the loop test; round 5: the test `*(gBattle + 0x10000 - 0x7728)` (4 spellings) folds to 0x88D8 and the cp is hoisted above it (19 of 28 differ); the BtlCnt view (see 21C2E0) gives the split; 0x58 bytes against 0x70: the sys/cnt pointer forms and the do-while were tried. Round 5: the test `0 < *(s32*)(gBattle + 0x88D8)` first with cp formed in the body gives 0x60 bytes (the original reads the count through lui 0x1 + offset -0x7728 and forms cp (li at 0x88D8 / addu a1) in the if body before the loop: the two instructions are missing here); the array form and gBattle + 0x10000 - 0x7728 fold to the same code; cp computed before the test gives 0x60 too; cp first 0x58.
 s32 func_0021C360(s32 id) {
-    u8 *sys = gBtlSys;
-    u8 *cp = gBattle + 0x88D8;
-    s32 i = 0;
+    s32 i;
+    u8 *sys;
+    u8 *bw;
+    s32 c;
 
-    if (0 < *(s32 *)cp) {
+    bw = gBattle + 0x10000;
+    sys = gBtlSys;
+    i = 0;
+    if (0 < *(s32 *)(bw - 0x7728)) {
         do {
-            if (*(s8 *)(sys + i + 0xCA0) == id) {
+            c = *(s8 *)(sys + i + 0xCA0);
+            if (c == id) {
                 return i;
             }
             i++;
-        } while (i < *(s32 *)cp);
+        } while (i < *(s32 *)(gBattle + 0x88D8));
     }
     return -1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C360);
 s32 func_0021C3D0(s32 i) {
     return *(s8 *)(i + (s32)gBtlSys + 0xCA0);
 }

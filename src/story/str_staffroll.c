@@ -27,10 +27,121 @@ extern void func_0022C560(s32);
 extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D860(s32, f32);
 extern void func_0030E4D0(s32 *);
+extern void func_00136E80(s32, void *, s32, s32, s32);
+extern void func_00137560(void *, void *);
+extern void amDraw_FlushPacket(void);
+extern f32 D_0047042C;
+extern f32 D_00470430;
 
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030D630);
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030D7D0);
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030D970);
+typedef struct {
+    f32 f[4];
+} __attribute__((aligned(16))) StfVec;
+extern StfVec D_004591A0;
+extern StfVec D_004591B0;
+extern StfVec D_004591C0;
+extern StfVec D_004591D0;
+extern StfVec D_00459100;
+extern StfVec D_00459110;
+extern StfVec D_00459120;
+extern StfVec D_00459130;
+extern StfVec D_00459160;
+extern StfVec D_00459170;
+extern StfVec D_00459180;
+extern StfVec D_00459190;
+
+void func_0030D630(s32 *a0) {
+    StfVec c50;
+    StfVec c40;
+    StfVec c30;
+    StfVec c20;
+    u8 *p;
+    u8 *e;
+    u8 *tb;
+    s32 idx;
+
+    c50 = D_004591A0;
+    c40 = D_004591B0;
+    c30 = D_004591C0;
+    c20 = D_004591D0;
+    p = (u8 *)a0[1];
+    idx = (s16)(*(s32 *)(p + 0x10) - 2);
+    tb = (u8 *)(*(s32 *)(p + 0x14) + (s32)p);
+    e = p + *(s32 *)(tb + ((idx - *(s32 *)(p + 0x18)) << 2));
+    c50.f[0] = (D_0047042C - (f32)*(s16 *)(e + 0x10)) / 2.0f;
+    c40.f[0] = (D_0047042C + (f32)*(s16 *)(e + 0x10)) / 2.0f;
+    c50.f[1] = (D_00470430 - (f32)*(s16 *)(e + 0x12)) / 2.0f;
+    c40.f[1] = (D_00470430 + (f32)*(s16 *)(e + 0x12)) / 2.0f;
+    c20.f[0] = (f32)*(s16 *)(e + 0x10) - 0.5f;
+    c20.f[1] = (f32)*(s16 *)(e + 0x12) - 0.5f;
+    amModel_SetCurrent(a0[1], 0x1000);
+    func_00136E80(0x40000C20, 0, idx, 0x44, 5);
+    func_00137560(&c50, &c30);
+    func_00137560(&c40, &c20);
+    amDraw_FlushPacket();
+}
+
+void func_0030D7D0(s32 *a0) {
+    StfVec c50;
+    StfVec c40;
+    StfVec c30;
+    StfVec c20;
+    u8 *p;
+    u8 *e;
+    u8 *tb;
+    s32 idx;
+
+    c50 = D_00459160;
+    c40 = D_00459170;
+    c30 = D_00459180;
+    c20 = D_00459190;
+    p = (u8 *)a0[1];
+    idx = (s16)(*(s32 *)(p + 0x10) - 1);
+    tb = (u8 *)(*(s32 *)(p + 0x14) + (s32)p);
+    e = p + *(s32 *)(tb + ((idx - *(s32 *)(p + 0x18)) << 2));
+    c50.f[0] = (D_0047042C - (f32)*(s16 *)(e + 0x10)) / 2.0f;
+    c40.f[0] = (D_0047042C + (f32)*(s16 *)(e + 0x10)) / 2.0f;
+    c50.f[1] = (D_00470430 - (f32)*(s16 *)(e + 0x12)) / 2.0f;
+    c40.f[1] = (D_00470430 + (f32)*(s16 *)(e + 0x12)) / 2.0f;
+    c20.f[0] = (f32)*(s16 *)(e + 0x10) - 0.5f;
+    c20.f[1] = (f32)*(s16 *)(e + 0x12) - 0.5f;
+    amModel_SetCurrent(a0[1], 0x1000);
+    func_00136E80(0x40000C20, 0, idx, 0x44, 5);
+    func_00137560(&c50, &c30);
+    func_00137560(&c40, &c20);
+    amDraw_FlushPacket();
+}
+
+void func_0030D970(char *a0) {
+    StfVec c50;
+    StfVec c40;
+    StfVec c30;
+    StfVec c20;
+    u8 *p;
+    u8 *e;
+    u8 *tb;
+    s32 sum;
+
+    c50 = D_00459100;
+    c40 = D_00459110;
+    c30 = D_00459120;
+    c20 = D_00459130;
+    amModel_SetCurrent(*(s32 *)(a0 + 4), 0x3000);
+    sum = *(s16 *)(a0 + 0xA) + *(s16 *)(a0 + 0xC);
+    p = (u8 *)*(s32 *)(a0 + 4);
+    tb = (u8 *)(*(s32 *)(p + 0x14) + (s32)p);
+    e = p + *(s32 *)(tb + ((sum - *(s32 *)(p + 0x18)) << 2));
+    c50.f[0] = *(f32 *)(a0 + 0x18) - (f32)*(s16 *)(e + 0x10) / 2.0f;
+    c40.f[0] = *(f32 *)(a0 + 0x18) + (f32)*(s16 *)(e + 0x10) / 2.0f;
+    c50.f[1] = *(f32 *)(a0 + 0x1C) - (f32)*(s16 *)(e + 0x12) / 2.0f;
+    c40.f[1] = *(f32 *)(a0 + 0x1C) + (f32)*(s16 *)(e + 0x12) / 2.0f;
+    c20.f[0] = (f32)*(s16 *)(e + 0x10) - 0.5f;
+    c20.f[1] = (f32)*(s16 *)(e + 0x12) - 0.5f;
+    func_00136E80(0x40000C20, 0, sum, 0x44, 5);
+    func_00137560(&c50, &c30);
+    func_00137560(&c40, &c20);
+    amDraw_FlushPacket();
+}
+
 void func_0030DB10(s32 *a0) {
     char *s0 = (char *)a0 + 0x30;
     func_0030D970(s0);
