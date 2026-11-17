@@ -52,6 +52,8 @@ extern void func_001E1460(void *, int);
 extern s32 func_001E0200(void *, s32, s32);
 extern void func_001E4DA0(void *);
 extern u8 D_004E0660[];
+extern void func_001E6F70(void *);
+extern void func_001E2180(void *, s32);
 extern void func_0029D8B0(int, int);
 extern void func_001D8FE0(void *, int);
 extern f32 D_004B421C[];
@@ -534,6 +536,19 @@ int func_001CE1F0(void *unused, Arg *a) {
     *(f32 *)(t + 0x17C0) = *(f32 *)(t + 0x17C4);
     return 1;
 }
+// func_001CE220: differs: 20 of 30 instructions, the table lookup and the branch are scheduled differently
+#if 0
+int func_001CE220(void *unused, Arg *a) {
+    int *p = a->p;
+    char *e = (char *)D_00470570->tbl[p[2]] + p[1] * 0x680 + 0x650;
+    if (p[1] != 0) {
+        func_001E6F70(e);
+    } else {
+        func_001E2180(unused, p[0]);
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE220);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE2A0);
 // func_001CE340: differs: the register of the first pointer and the sltu / xori flag
