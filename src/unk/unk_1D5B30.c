@@ -290,7 +290,7 @@ extern void memset(void *, s32, s32);
 extern s8 D_00469468[];
 extern f32 D_004E0614[];
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
-extern void func_001D6CD0(void *);
+extern void func_001D6CD0(Fighter *);
 extern char D_004695B8[];
 extern s32 D_004693C0[];
 extern void func_002356E0(void);
@@ -453,29 +453,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6640);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6770);
 #if 0
 void func_001D6B90(Fighter *c) {
+    Fighter *p = c;
     f32 *q;
     s32 st[4];
     s32 v;
     f32 f;
 
-    q = (f32 *)((char *)c + 0x30);
-    v = D_00469478[c->f3C];
-    *(f32 *)&st[0] = 0.85f * (1.0f - c->f34 / c->f38);
+    q = (f32 *)((char *)p + 0x30);
+    v = D_00469478[p->f3C];
+    *(f32 *)&st[0] = 0.85f * (1.0f - p->f34 / p->f38);
     st[1] = 0x3000;
     st[2] = v;
     st[3] = v;
-    func_001E11E0(c->f30, st);
+    func_001E11E0(p->f30, st);
     if (gBattle->f88EC == 0) {
         f = q[1] + gBattle->f88F0;
         q[1] = f;
         if (f < q[2]) {
             return;
         }
-        amTask_Kill(c);
+        amTask_Kill(p);
     }
 }
 #endif
-// differs: 22 of 53 instructions differ with the row pointer (the first attempt was 0xC8 against 0xE0 bytes); the original keeps the object in s1 across the call
+// differs: 22 of 53: the original copies the parameter into $s1 before the first load and computes $s0 = c+0x30 after the call (moving q to after the call gives 0xC8 against 0xE0); the stores into st match
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6B90);
 void PlyScr_TaskInput(Fighter *c) {
     s32 *p;
@@ -485,6 +486,48 @@ void PlyScr_TaskInput(Fighter *c) {
         ((void (*)(void *))D_004693A0[p[1]])(p);
     }
 }
+#if 0
+void func_001D6CD0(Fighter *c) {
+    char *a1;
+    char *b;
+    f32 xa;
+    f32 xb;
+    char *q;
+
+    if (gBattle->f88EC != 0) {
+        return;
+    }
+    a1 = (char *)c->f30;
+    if (*(s16 *)(a1 + 0xCAC) != 4) {
+        func_001F9BB0(*(s32 *)(a1 + 0x1350), 9);
+        return;
+    }
+    __asm__ volatile("lqc2 $vf1, 0(%1)\n\tsqc2 $vf1, 0(%0)" : : "r"(a1 + 0xC0), "r"(a1 + 0x40) : "memory");
+    if (*(s16 *)(a1 + 0x181C)) {
+        *(f32 *)(a1 + 0xC4) = *(f32 *)(a1 + 0x1818);
+    }
+    b = *(char **)(a1 + 0xBB4);
+    xa = *(f32 *)(a1 + 0xC4);
+    xb = *(f32 *)(b + 0xC);
+    if ((xa - xb) < (5.0f + *(f32 *)(a1 + 0x1844))) {
+        *(f32 *)(a1 + 0xC4) = *(f32 *)(a1 + 0x1844);
+    } else {
+        func_001F9BB0(*(s32 *)(a1 + 0x1350), 9);
+    }
+    if (gBattle->f88EC != 0) {
+        return;
+    }
+    a1 = (char *)c->f30;
+    c->f34 = c->f34 + (gBattle->f88F0 * *(f32 *)(a1 + 0xC9C));
+    if (c->f34 < c->f38) {
+        return;
+    }
+    q = (char *)c + 0x30;
+    *(f32 *)(q + 4) = c->f34 - c->f38;
+    func_001E9B00(*(void **)(q + 0xC), *(s32 *)(q + 0x10), 0, 0, 0.0f, 1.0f);
+}
+#endif
+// differs: 14 of 82: the VU0 16-byte copy (inline lqc2/sqc2, operand order matches) and the branch layouts match; the tail keeps c+0x30 in a register in the original (the store and the arguments go through it) while this compiles them through c; the float subtraction register order also differs
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6CD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6E20);
 void PlyVib_TaskKill(Fighter *c) {
@@ -1489,46 +1532,50 @@ void *func_001DA430(Fighter *c) {
     e->f19F = c->f1350;
     return (char *)e + 0x150;
 }
-#if 0
 void func_001DA4C0(void) {
-    Game *g;
-    s32 j;
+    char *p2;
+    Game *g = gBattle;
     s32 i;
-    char *base;
-    char *v;
+    char *a1p;
+    s32 k;
+    char *v3;
 
-    g = gBattle;
     amTask_KillGroup(0x20, 0x40000020, 1);
-    for (j = 0; j < g->f88D8; j++) {
-        base = (char *)g + j * 0x2020;
-        v = base + 0x830;
-        for (i = 0; i < 16; i += 8) {
-            *(s16 *)(v + 0x198) = 0;
-            *(s32 *)(v + 0x190) = 0;
-            *(s16 *)(v + 0x1E8) = 0;
-            *(s32 *)(v + 0x1E0) = 0;
-            *(s16 *)(v + 0x238) = 0;
-            *(s32 *)(v + 0x230) = 0;
-            *(s16 *)(v + 0x288) = 0;
-            *(s32 *)(v + 0x280) = 0;
-            *(s16 *)(v + 0x2D8) = 0;
-            *(s32 *)(v + 0x2D0) = 0;
-            *(s16 *)(v + 0x328) = 0;
-            *(s32 *)(v + 0x320) = 0;
-            *(s16 *)(v + 0x378) = 0;
-            *(s32 *)(v + 0x370) = 0;
-            *(s16 *)(v + 0x3C8) = 0;
-            *(s32 *)(v + 0x3C0) = 0;
-            v += 0x280;
-        }
-        *(s32 *)(base + 0x830 + 0x1AE0) = 0;
-        memset(base + 0x830 + 0x1AF0, 0, 0x200);
+    if (0 < g->f88D8) {
+        i = 0;
+        p2 = (char *)g;
+        do {
+            a1p = p2 + 0x830;
+            k = 0;
+            v3 = a1p;
+            do {
+                *(s16 *)(v3 + 0x198) = 0;
+                *(s32 *)(v3 + 0x190) = 0;
+                *(s16 *)(v3 + 0x1E8) = 0;
+                *(s32 *)(v3 + 0x1E0) = 0;
+                *(s16 *)(v3 + 0x238) = 0;
+                *(s32 *)(v3 + 0x230) = 0;
+                *(s16 *)(v3 + 0x288) = 0;
+                *(s32 *)(v3 + 0x280) = 0;
+                *(s16 *)(v3 + 0x2D8) = 0;
+                *(s32 *)(v3 + 0x2D0) = 0;
+                *(s16 *)(v3 + 0x328) = 0;
+                *(s32 *)(v3 + 0x320) = 0;
+                *(s16 *)(v3 + 0x378) = 0;
+                *(s32 *)(v3 + 0x370) = 0;
+                *(s16 *)(v3 + 0x3C8) = 0;
+                *(s32 *)(v3 + 0x3C0) = 0;
+                k += 8;
+                v3 += 0x280;
+            } while (k < 16);
+            *(s32 *)(a1p + 0x1AE0) = 0;
+            memset(a1p + 0x1AF0, 0, 0x200);
+            i++;
+            p2 += 0x2020;
+        } while (i < g->f88D8);
     }
     func_001EA300();
 }
-#endif
-// differs: 0xF0 against 0x100 bytes: the original keeps the block base in a1 and the loop index in a0 (several local orders tried, the closest 2 of 62 differed only in the order of the clears)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA4C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA5C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA930);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DB320);
@@ -2878,7 +2925,7 @@ void PlySe_Start(Fighter *c) {
     s32 *t;
 
     if (c->f1AB0 == 0) {
-        t = amTask_Create(func_001D6CD0, 0, 0x5380, 0x20, 0x40000040, D_004695B8);
+        t = amTask_Create((void (*)(void *))func_001D6CD0, 0, 0x5380, 0x20, 0x40000040, D_004695B8);
         if (t != 0) {
             c->f1AB0 = (s32)t;
             t[0xC] = (s32)c;
@@ -4272,14 +4319,14 @@ s32 func_001E8E70(Fighter *c) {
             return 1;
         }
     } else if (gBattle->f7E2 == 3) {
-        if (gBattle->f9977 != 3) {
+        if (gBattle->f8977 != 3) {
             return 0;
         }
     }
-    func_00235480(c);
+    return func_00235480(c);
 }
 #endif
-// differs: the case order of the two tests differs; the C is 0x98 against 0xB0 bytes
+// differs: 0x98 against 0xB0 bytes: the original tail-calls func_00235480 and returns its value; the branch chain on f7E2 (4, then 3 with the battle byte 0x8977 at f8977) is laid out with a shared call block; the field is gBattle->f8977 (the earlier note said f9977)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8E70);
 #if 0
 s32 func_001E8F20(Fighter *c) {
@@ -4290,7 +4337,7 @@ s32 func_001E8F20(Fighter *c) {
         return 0;
     }
     if (gBattle->f7E2 == 3) {
-        if (gBattle->f9977 != 3) {
+        if (gBattle->f8977 != 3) {
             return 0;
         }
     }
