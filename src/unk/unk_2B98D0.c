@@ -20,7 +20,6 @@ extern V16 D_00455E00;
 extern V16 D_00455DC0;
 extern void func_0028EE90();
 extern void func_002BBCB0(void);
-extern void func_002BC920(void);
 extern void StrBg_SetPos(void *, f32, f32);
 
 /* The work of this file: two handles (0xA8, 0x1C0) and the state the functions reset. */
@@ -41,7 +40,8 @@ typedef struct W98D {
     char pad1D8[0x274 - 0x1D8];
     s32 f274;
     s32 f278;
-    char pad27C[0x404 - 0x27C];
+    s32 f27C;
+    char pad280[0x404 - 0x280];
     s32 f404;
     char pad408[0x40C - 0x408];
     s32 f40C;
@@ -59,6 +59,11 @@ extern u8 D_00492FCE[];
 extern void Help_Open(s64, s32);
 extern void StrStatus_Dispatch(s32 *);
 extern void func_002BCAE0(void);
+extern void func_002BC7E0(void);
+extern V16 D_00455DD0;
+extern f32 D_004E0614[];
+extern void SoundRpc_SetVolume(f32, s32, s32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 
 /* A 24-byte constant (one quadword and one doubleword). */
 typedef struct T24 {
@@ -68,7 +73,39 @@ typedef struct T24 {
 extern V16 D_00455DA0;
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002B98D0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002B9C10);
+extern void amCdFs_Close(void *, s32);
+extern void amCdFs_ReleaseCache(void *handle);
+
+void func_002B9C10(void) {
+    s32 i;
+    s32 off;
+    s32 o;
+    s32 j;
+
+    for (i = 0, off = 0; i < 0x45; i++, off += 4) {
+        if (*(void **)((char *)gStrStatus + off + 0x38) != NULL) {
+            amTask_Kill(*(void **)((char *)gStrStatus + off + 0x38));
+            *(void **)((char *)gStrStatus + off + 0x38) = NULL;
+        }
+    }
+    for (j = 0, o = 0; j < 7; j++, o += 4) {
+        if (*(void **)((char *)gStrStatus + o) != NULL) {
+            amCdFs_Close(*(void **)((char *)gStrStatus + o), 0);
+            *(void **)((char *)gStrStatus + o) = NULL;
+        }
+        if (*(void **)((char *)gStrStatus + o + 0x1C) != NULL) {
+            amCdFs_ReleaseCache(*(void **)((char *)gStrStatus + o + 0x1C));
+            *(void **)((char *)gStrStatus + o + 0x1C) = NULL;
+        }
+    }
+    for (off = 0, i = 0; off < 0x3C; off++, i += 4) {
+        if (*(void **)((char *)gStrStatus + i + 0x168) != NULL) {
+            func_0022D0E0(*(void **)((char *)gStrStatus + i + 0x168), 1);
+            *(void **)((char *)gStrStatus + i + 0x168) = NULL;
+        }
+    }
+    gStrStatus->f27C = 3;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002B9D30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BA2A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BA610);
@@ -128,7 +165,26 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BC090);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BC120);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BC250);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BC7E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BC920);
+void func_002BC920(Ac98D *s) {
+    V16 tmp = D_00455DD0;
+    W98D *w;
+    s32 idx;
+    u16 flags;
+
+    idx = D_004B4B63[0];
+    flags = *(u16 *)(D_00492FCE + idx * 184);
+    if (flags & 1) {
+        Help_Open(0x0020000000000000LL, (u8)(1 << idx));
+    } else if (flags & 0x5000) {
+        SoundRpc_SetVolume(D_004E0614[0], 0, 0);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 3, 0);
+        }
+        w = gStrStatus;
+        func_0028EE90((char *)w + 0x38, (char *)w + 0x14C, (char *)w + 0x158, (char *)w + 0x168, &tmp, w->f274, w->f278, 0x600000);
+        s->f1C = (func_002BC7E0 == NULL) ? NULL : (void *)func_002BC7E0;
+    }
+}
 void func_002BCA30(Ac98D *s) {
     V16 tmp = D_00455DC0;
     W98D *w;
