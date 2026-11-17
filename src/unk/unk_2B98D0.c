@@ -33,7 +33,9 @@ typedef struct W98D {
     char padB4[0xBC - 0xB4];
     void *fBC;
     void *fC0;
-    char padC4[0x1BC - 0xC4];
+    char padC4[0x158 - 0xC4];
+    s32 f158;
+    char pad15C[0x1BC - 0x15C];
     void *f1BC;
     void *f1C0;
     char pad1C4[0x1CC - 0x1C4];
@@ -62,8 +64,17 @@ extern u8 D_00492FCE[];
 extern void Help_Open(s64, s32);
 extern void StrStatus_Dispatch(s32 *);
 extern void func_002BCAE0(void);
-extern void func_002BAFA0(void *);
 extern void func_002BC7E0(void);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00228430(s32);
+extern void func_00227A30(u8 *);
+extern void func_0022C060(f32, s32);
+extern void func_00228410(void);
+extern void func_0022C560(s32);
 extern void func_002BC090(void);
 extern V16 D_00456000;
 extern char D_0046EE00[];
@@ -120,6 +131,47 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002B9D30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BA2A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BA610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BAC80);
+/* differs: 2 of 85 real (the float operand registers f0/f1 of the sum and the addu operand order; 9 of 85 incl. the gp relocations) */
+#if 0
+void func_002BAFA0(void) {
+    f32 pos[4];
+    f32 *pp;
+    s32 s4;
+    s32 i;
+    s32 k;
+    s32 off1;
+    s32 off2;
+    s32 vo;
+    s32 a0v;
+
+    a0v = gStrStatus->f158;
+    D_00470704 = a0v;
+    D_0047070C = 0x600000;
+    D_00470708 = 0;
+    amModel_SetCurrent(a0v, 0x600000);
+    D_00470238 = 0;
+    s4 = (s32)gStrStatus->f1BC;
+    func_0022C060(1.0f, s4);
+    pos[2] = 0.0f;
+    pos[3] = 1.0f;
+    for (i = 0, off1 = 0, vo = 0, pp = &pos[1]; i < 7; i++, off1 += 4, vo += 16) {
+        for (k = *(s32 *)((char *)gStrStatus + off1 + 0x2B8), off2 = k * 4; k < *(s32 *)((char *)gStrStatus + off1 + 0x29C); k++, off2 += 4) {
+            char *pa = *(char **)((char *)gStrStatus + 0x14C);
+            char *pb = *(char **)(pa + 0x1C);
+            char *pc = *(char **)(pb + off2 + 0xB0);
+            char *pd = *(char **)(pc + 4);
+            f32 *pe = *(f32 **)(pd + 0x1C);
+            pos[0] = pe[0];
+            *pp = *(f32 *)((char *)gStrStatus + vo + 0x394) + pe[1];
+            func_00228430(0);
+            func_00227A30((u8 *)pos);
+            func_0022C060(0.0f, s4);
+            func_0022C560(s4);
+            func_00228410();
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BAFA0);
 void func_002BB100(void) {
     V16 tmp = D_00455EC0;
