@@ -96,7 +96,79 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4AC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4BF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4D60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5040);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5170);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern u8 D_0046F4B8[];
+extern s32 func_0022D670(s32, f32);
+extern void func_0022D0E0(s32, s32);
+extern s32 func_0022D860(s32, f32);
+extern void amModel_SetCurrent(s32, s32);
+extern f32 gFrameDelta;
+extern void func_002E5C20();
+extern void func_002E5260(u8 *);
+void func_002E5170(u8 *a0) {
+    s32 f4;
+
+    f4 = *(s32 *)(a0 + 4);
+    D_00470704 = f4;
+    D_0047070C = 0x7000;
+    D_00470708 = 0;
+    amModel_SetCurrent(f4, 0x7000);
+    D_00470238 = 0;
+    *(s32 *)(a0 + 0x10) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0xC), 0.0f);
+    *(s32 *)(a0 + 0x14) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x10), 0.0f);
+    *(s32 *)(a0 + 0x18) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x8), 0.0f);
+    *(s32 *)(a0 + 0x1C) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x18), 0.0f);
+    *(s32 *)(a0 + 0x20) = func_0022D670(((s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C)))[D_0046F4B8[*(s16 *)(a0 + 0xF0)]], 0.0f);
+    *(s32 *)(a0 + 0x24) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x24), 0.0f);
+    func_002E5260(a0);
+}
+/* differs: compiled 0x144 against 0x150: the original keeps one more value live across the calls (it saves s7 as well:
+   step), ours keeps seven saved registers; the walking pointer variant (e260_c) gave 0x13C. */
+#if 0
+void func_002E5260(u8 *a0) {
+    u8 *base;
+    s32 step;
+    s32 i;
+    s32 n;
+    s32 idx;
+    s32 off;
+    u8 *q;
+    s32 v;
+
+    base = a0;
+    step = 0x10000 / a0[0xF3];
+    for (i = 0; i < 13; i++) {
+        q = base + 0x30 + i * 12;
+        if (*(s32 *)q != 0) {
+            func_0022D0E0(*(s32 *)q, 0);
+            *(s32 *)q = 0;
+        }
+    }
+    if (a0[0xF3] > 0) {
+        n = 0;
+        idx = 0;
+        off = 0;
+        q = base;
+        while (n < a0[0xF3]) {
+            v = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)base + 0x1C) + 0x130), 0.0f);
+            *(s32 *)(q + 0x30) = v;
+            *(s32 *)(q + 0x34) = off;
+            *(s16 *)(q + 0x38) = *(s16 *)(base + 0xD6 + n * 2);
+            if (*(s16 *)(q + 0x38) == *(s16 *)(base + 0xF0)) {
+                idx = (s16)n;
+            }
+            n++;
+            q += 12;
+            off += step;
+        }
+    }
+    a0[0xF2] = (u8)idx;
+    *(s32 *)(base + 0xF8) = *(u16 *)(base + (s16)idx * 12 + 0x34);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5260);
 extern void func_002E5260(u8 *);
 
@@ -187,5 +259,34 @@ void func_002E57A0(Outer57 *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5840);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5980);
+/* differs: 0xFC against 0x110 bytes: the only mismatch is the tail: the original stores func_002E5C20 through a register (lui/addiu, bnez over a zero, then sw at 0x1C); the one-line store here is a plain sw of the constant. Tried: ?: with NULL (35 of 67 differ). */
+#if 0
+void func_002E5B10(u8 *a0) {
+    u8 *s0;
+    f32 f;
+
+    s0 = *(u8 **)(a0 + 0x30);
+    *(s32 *)(s0 + 0xF8) = *(s32 *)(s0 + 0xF8) + *(s32 *)(s0 + 0x100);
+    func_002E4D60((Sub57 *)s0);
+    f = *(f32 *)(s0 + 0x108) - gFrameDelta;
+    *(f32 *)(s0 + 0x108) = f;
+    if (f <= 0.0f) {
+        *(s16 *)(*(u8 **)(s0 + 0x114) + 0x34) = *(s16 *)(s0 + 0xF0);
+        *(u8 *)(s0 + 0xCE) = 0;
+        D_00470704 = *(s32 *)(s0 + 4);
+        D_0047070C = 0x7000;
+        D_00470708 = 0;
+        amModel_SetCurrent(*(s32 *)(s0 + 4), 0x7000);
+        D_00470238 = 0;
+        if (*(s32 *)(s0 + 0x20) != 0) {
+            func_0022D0E0(*(s32 *)(s0 + 0x20), 0);
+        }
+        *(s32 *)(s0 + 0x20) = func_0022D670(((s32 *)(*(u8 **)(*(u8 **)s0 + 0x1C)))[D_0046F4B8[*(s16 *)(s0 + 0xF0)]], 0.0f);
+        *(u8 *)(s0 + 0xF4) = 2;
+        *(s32 *)(s0 + 0xF8) = *(s32 *)(s0 + 0xFC);
+        *(void **)(a0 + 0x1C) = (void *)func_002E5C20;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5B10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5C20);
