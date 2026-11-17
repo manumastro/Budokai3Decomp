@@ -4235,10 +4235,12 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C55D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C5870);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C5D50);
 #if 0
+// differs: 3 of 48 differ: only the constant 1 is kept in v1 where the original uses a1 (li a1,1 then the sh/sw pair); a local constant and a statement reorder did not change it
 void func_001C5F20(void) {
     BattleSlots *bw = (BattleSlots *)gBattle;
     Fighter *f;
     s32 i;
+    s32 one;
 
     f = (Fighter *)((u8 *)bw + 0x830);
     for (i = 0; i < bw->numFighters; i++) {
@@ -4249,16 +4251,16 @@ void func_001C5F20(void) {
         ((void (*)(Fighter *))D_00468460[0])(f);
         func_002CBFF0(1, f);
         FIGHTER_FIELD(f, s8, 0xCBD) = 0;
-        FIGHTER_FIELD(f, s16, 0xCB4) = 1;
+        one = 1;
+        FIGHTER_FIELD(f, s16, 0xCB4) = one;
         FIGHTER_FIELD(f, s32, 0xCA4) = 0x3F800000;
         FIGHTER_FIELD(f, s32, 0xCA8) = 0;
-        FIGHTER_FIELD(f, s32, 0x18D8) = 1;
+        FIGHTER_FIELD(f, s32, 0x18D8) = one;
         func_001D9CA0(f);
         f = (Fighter *)((u8 *)f + 0x2020);
     }
 }
 #endif
-// differs: the constant 1 is kept in another register (v1 for a1 in the original): the store order matches, the register does not
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C5F20);
 #if 0
 // differs: the battle pointer and the fighter pointers are kept in saved registers (frame 0x70 against 0x50, 83 of 85 differ) even with struct access
