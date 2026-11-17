@@ -6,6 +6,56 @@ extern void amSofdec_Stop(s32);
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6BE0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6DC0);
+#if 0
+// differs: 14 of 80 (copy temporaries: the original loads the first D_ copy into a3, ours into t0; permutations of the copies and declarations give 14 at best)
+typedef struct {
+    u32 w[4];
+} __attribute__((aligned(16))) Lm16B;
+extern Lm16B D_00456F40;
+extern Lm16B D_00456F50;
+extern Lm16B D_00456F60;
+extern void func_0013B0B0(s32);
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00136E80(s32, void *, s32, s32, s32);
+extern void func_00137560(void *, void *);
+extern void amDraw_FlushPacket(void);
+extern void func_0013B110(s32);
+
+void func_002E6FA0(f32 f, void *a0) {
+    u8 *s0;
+    u8 *s2;
+    u8 *t1;
+    Lm16B c60;
+    Lm16B c50;
+    Lm16B c40;
+
+    s0 = (u8 *)a0;
+    c60 = D_00456F40;
+    c50 = D_00456F50;
+    c40 = D_00456F60;
+    *(f32 *)&c40.w[3] = f;
+    func_0013B0B0(0x3F0800);
+    amModel_SetCurrent(*(s32 *)s0, 0x1000);
+    t1 = *(u8 **)s0;
+    {
+        u8 *p = (u8 *)(*(s32 *)(t1 + 0x14) + (s32)t1);
+        s2 = t1 + *(s32 *)(p + ((2 - *(s32 *)(t1 + 0x18)) << 2));
+    }
+    func_00136E80(0x40000E24, &c40, 2, 0x44, 5);
+    c60.w[0] = 0;
+    c60.w[1] = 0;
+    c50.w[0] = 0;
+    c50.w[1] = 0;
+    func_00137560(&c60, &c50);
+    c60.w[0] = 0x44160000;
+    c60.w[1] = 0x43E10000;
+    *(f32 *)&c50.w[0] = (f32)*(s16 *)(s2 + 0x10);
+    *(f32 *)&c50.w[1] = (f32)*(s16 *)(s2 + 0x12);
+    func_00137560(&c60, &c50);
+    amDraw_FlushPacket();
+    func_0013B110(1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6FA0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E70E0);
 #if 0
