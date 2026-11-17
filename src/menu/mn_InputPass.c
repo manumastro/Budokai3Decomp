@@ -1,5 +1,16 @@
 #include "common.h"
 #include "menu/menu.h"
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void func_002F2D50();
+extern void func_002F0BC0();
+extern void func_0022CF70();
+extern void func_00133B50(s32, s32);
+extern void func_00145CC0(s32, s32);
+extern void func_0022C700(void);
+extern f32 D_004703BC;
 extern void Help_Exit();
 extern void amCdFs_Close(void *, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
@@ -96,7 +107,51 @@ void func_002F0B00(u8 *task) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0BC0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0D70);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0FD0);
+void func_002F0FD0(u8 *task) {
+    u8 *s0;
+    u8 *s1;
+    s32 s2;
+    s32 a0;
+    f32 f1;
+
+    s0 = *(u8 **)(task + 0x30);
+    f1 = *(f32 *)(s0 + 0x118);
+    if (f1 > 0.0f) {
+        *(f32 *)(s0 + 0x118) = f1 - D_004703BC;
+        s1 = (u8 *)gInputName;
+        func_0022C700();
+        func_00133B50(0, 0);
+        a0 = *(s32 *)(s1 + 0x10);
+        D_00470704 = a0;
+        D_0047070C = 0x5000;
+        D_00470708 = 0;
+        func_00145CC0(a0, 0x5000);
+        D_00470238 = 0;
+        func_002F0BC0(s0);
+        if (*(u8 *)(s0 + 0x170) < 5) {
+            s2 = 0;
+            s1 = s0;
+            do {
+                if (*(u16 *)(s0 + 0x128) != 0xFFFF) {
+                    func_0022CF70(*(void **)(s1 + 0x4));
+                }
+                s2++;
+                s0 += 2;
+                s1 += 4;
+            } while (s2 < 0x24);
+        }
+        func_0022C700();
+        func_00133B50(0, 0);
+    } else {
+        *(f32 *)(s0 + 0x118) = 0.0f;
+        if (*(u8 *)(s0 + 0x172) != 0) {
+            *(u8 *)(s0 + 0x170) = 6;
+        } else {
+            *(u8 *)(s0 + 0x170) = 7;
+        }
+        *(s32 *)(task + 0x1C) = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F10F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1300);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1500);
@@ -328,7 +383,51 @@ void func_002F2C90(u8 *task) {
     *(f32 *)(s0 + 0x5C) = 1.0f;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2D50);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2F00);
+void func_002F2F00(u8 *task) {
+    u8 *s0;
+    u8 *s1;
+    s32 s2;
+    s32 a0;
+    f32 f1;
+
+    s0 = *(u8 **)(task + 0x30);
+    f1 = *(f32 *)(s0 + 0x40);
+    if (f1 > 0.0f) {
+        *(f32 *)(s0 + 0x40) = f1 - D_004703BC;
+        s1 = (u8 *)gInputName;
+        func_0022C700();
+        func_00133B50(0, 0);
+        a0 = *(s32 *)(s1 + 0x10);
+        D_00470704 = a0;
+        D_0047070C = 0x5000;
+        D_00470708 = 0;
+        func_00145CC0(a0, 0x5000);
+        D_00470238 = 0;
+        func_002F2D50(s0);
+        if (*(u8 *)(s0 + 0x60) < 5) {
+            s2 = 0;
+            s1 = s0;
+            do {
+                if (*(s16 *)(s0 + 0x50) != 0xFFFF) {
+                    func_0022CF70(*(void **)(s1 + 0x4));
+                }
+                s2++;
+                s0 += 2;
+                s1 += 4;
+            } while (s2 < 8);
+        }
+        func_0022C700();
+        func_00133B50(0, 0);
+    } else {
+        *(f32 *)(s0 + 0x40) = 0.0f;
+        if (*(u8 *)(s0 + 0x61) != 0) {
+            *(u8 *)(s0 + 0x60) = 6;
+        } else {
+            *(u8 *)(s0 + 0x60) = 7;
+        }
+        *(s32 *)(task + 0x1C) = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3020);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3210);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3C60);
