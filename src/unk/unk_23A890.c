@@ -443,8 +443,16 @@ void func_00241EB0(s32 i, s32 mode) {
     u8 *e = D_0046FE44 + i * 0x80;
 
     switch (mode) {
-    case 0:
+    case 3:
+        *(s32 *)(e + 0x2C) |= 1;
+        *(s32 *)(e + 0x2C) |= 8;
+        break;
+    case 2:
+        *(s32 *)(e + 0x2C) &= ~1;
+        *(s32 *)(e + 0x2C) |= 8;
+        break;
     case 1:
+    case 0:
         if (*(s8 *)(q + 0xCBD) != 0) {
             *(s32 *)(e + 0x2C) |= 1;
         } else {
@@ -452,17 +460,9 @@ void func_00241EB0(s32 i, s32 mode) {
         }
         *(s32 *)(e + 0x2C) &= ~8;
         break;
-    case 2:
-        *(s32 *)(e + 0x2C) &= ~1;
-        *(s32 *)(e + 0x2C) |= 8;
-        break;
-    case 3:
-        *(s32 *)(e + 0x2C) |= 1;
-        *(s32 *)(e + 0x2C) |= 8;
-        break;
     }
 }
-// differs: the mode chain is laid out in another order (the mode 3 test first, the mode 0/1 block placed last)
+// differs: the mode chain is laid out in another order (the mode 3 test first, the mode 0/1 block placed last), and the field addresses are formed in another order: 24 bytes longer in the original
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241EB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241FA0);
