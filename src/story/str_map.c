@@ -17,7 +17,7 @@ extern void amAdx_Stop(s32);
 extern void func_00125740(char *, char *, s32);
 extern char D_004E6560[];
 extern char D_004B4C00[];
-extern void func_0029CA40(void);
+extern void func_0029CA40(s32 *);
 extern void *gStrTitle;
 
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_00299CA0);
@@ -352,6 +352,60 @@ void func_0029C9B0(s32 *a0) {
         }
     }
 }
+#if 0
+// func_0029CA40: 0x1AC vs 0x1E0 bytes: the frame is 0x50 in the original (ours 0x60 with the tmp copy); the loop keeps gStrTitle reloaded per step and the counter/offset registers differ; the arguments and the task pair match in order
+extern StrMapCopy16 D_00454250 __attribute__((aligned(16)));
+extern void func_0028EB30(void);
+extern void func_0028EAE0(void);
+extern char D_0046E9F8[];
+extern char D_0046EA08[];
+extern f32 D_004E0610;
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_PlayAfs(s32, s32, s32);
+extern void Fade_Request(s32, s32, s32);
+extern void amCdFs_Close(s32, s32);
+void func_0029CA40(s32 *a0) {
+    StrMapCopy16 tmp;
+    s32 *g;
+    s32 off = 0;
+    s32 i = 0;
+    do {
+        char *e = (char *)gStrTitle + off;
+        ((s32 *)e)[2] = ((s32 *)*(s32 *)e)[0x40 / 4];
+        ((s32 *)*(s32 *)e)[0x40 / 4] = 0;
+        amCdFs_Close(*(s32 *)e, 0);
+        *(s32 *)e = 0;
+        amFile_Load(((s32 *)*(s32 *)(e + 8))[0x50 / 4]);
+        i++;
+        off += 4;
+    } while (i < 2);
+    g = gStrTitle;
+    g[0x64 / 4] = ((s32 *)g[0x8 / 4])[0x50 / 4];
+    g = gStrTitle;
+    g[0x68 / 4] = ((s32 *)g[0xC / 4])[0x50 / 4];
+    g = gStrTitle;
+    g[0xAC / 4] = 4;
+    g[0xB0 / 4] = 0;
+    g[0xC0 / 4] = 0x3F000000;
+    g[0xC4 / 4] = 0x3F000000;
+    g[0xC8 / 4] = 0x3F000000;
+    g[0xCC / 4] = 0x3F800000;
+    tmp = D_00454250;
+    g = gStrTitle;
+    func_0028EE90((s32)((char *)g + 0x10), (s32)((char *)g + 0x64), (s32)((char *)g + 0x68), (s32)((char *)g + 0x6C), (s32)&tmp, 0x8000, 0x10000, 0x200000);
+    g = gStrTitle;
+    g[0x14 / 4] = (s32)amTask_Create((void (*)(Task *))func_0028EB30, NULL, 0x8001, 2, 0x10000, D_0046E9F8);
+    g = gStrTitle;
+    g[0x38 / 4] = (s32)amTask_Create((void (*)(Task *))func_0028EAE0, NULL, 0x800A, 2, 0x10000, D_0046EA08);
+    amAdx_SetVolume(0, D_004E0610);
+    amAdx_PlayAfs(0, 0x2106F, 0);
+    Fade_Request(-1, 0, 0);
+    {
+        void *f = func_0029C9B0;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029CA40);
 void StrTitle_TaskMain(Task *a0) {
     char *t = (char *)gStrTitle;
