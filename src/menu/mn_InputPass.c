@@ -1,5 +1,11 @@
 #include "common.h"
 #include "menu/menu.h"
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void Help_Load();
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern char D_0046F748[];
+extern char D_0046F738[];
+extern void func_002F2350();
 extern void *gInputName;
 extern void *func_0022DA90(s32, f32);
 extern void memset(void *, s32, s32);
@@ -83,10 +89,99 @@ void InputPass_ClearName(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2500);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2600);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F26E0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F27B0);
+void *func_002F26E0(void) {
+    u8 *s0;
+    u8 *s1;
+    s32 a0;
+    u16 k;
+    void *v;
+    void *w;
+
+    s0 = (u8 *)gInputName;
+    v = amTask_Create(func_002F2350, 0, 0x4000, 8, 2, D_0046F738);
+    *(void **)(s0 + 0x18) = v;
+    s0 = (u8 *)v;
+    w = amHeap_Alloc(0x174, 0, D_0046F748, 0xB1);
+    s1 = (u8 *)w;
+    *(void **)(s0 + 0x30) = w;
+    memset(s1, 0, 0x174);
+    *(f32 *)(s1 + 0x11C) = 240.0f;
+    *(f32 *)(s1 + 0x120) = 80.0f;
+    a0 = 0;
+    k = 0xFFFF;
+    do {
+        *(u16 *)(s1 + 0x128) = k;
+        *(u16 *)(s1 + 0x12A) = k;
+        a0 += 6;
+        *(u16 *)(s1 + 0x12C) = k;
+        *(u16 *)(s1 + 0x12E) = k;
+        *(u16 *)(s1 + 0x130) = k;
+        *(u16 *)(s1 + 0x132) = k;
+        s1 += 0xC;
+    } while (a0 < 0x24);
+    return s0;
+}
+void func_002F27B0(void) {
+    u8 *s0;
+    void *v;
+
+    if (gInputName != 0) {
+        *(s16 *)((u8 *)gInputName + 0x1C) = *(s16 *)((u8 *)gInputName + 0x1C) + 1;
+    } else {
+        v = amHeap_Alloc(0x20, 0, D_0046F748, 0x83);
+        gInputName = v;
+        s0 = (u8 *)v;
+        *(s32 *)s0 = amCdFs_ReadFileId(0x10824, 0, 0);
+        *(s32 *)(s0 + 0x4) = amCdFs_ReadFileId(0x10825, 0, 0);
+        *(s32 *)(s0 + 0x8) = amCdFs_ReadFileId(0x107FD, 0, 0);
+        *(s32 *)(s0 + 0xC) = 0;
+        *(s32 *)(s0 + 0x10) = 0;
+        *(s32 *)(s0 + 0x14) = 0;
+        *(s32 *)(s0 + 0x18) = 0;
+        *(s16 *)(s0 + 0x1C) = 1;
+        Help_Load();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2870);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2A10);
+void func_002F2A10(u32 *task) {
+    u8 *s3;
+    s32 s2;
+    u8 *s1;
+    u32 *s0;
+    void *v;
+    s2 = 0;
+    s3 = (u8 *)gInputName;
+    s0 = task;
+    do {
+        v = func_0022DA90(0, 0.0f);
+        s0[1] = (u32)v;
+        s1 = (u8 *)v;
+        memset(s1, 0, 0x60);
+        *(s32 *)(s1 + 0x4) = 3;
+        s2++;
+        *(s32 *)(s1 + 0x10) = *(s32 *)(s3 + 0x10);
+        *(s32 *)(s1 + 0x14) = 0x5000;
+        *(s16 *)(s1 + 0x18) = 5;
+        *(s16 *)(s1 + 0x1A) = 0;
+        *(s32 *)(s1 + 0x20) = 0;
+        *(s32 *)(s1 + 0x24) = 0;
+        *(s32 *)(s1 + 0x28) = 0;
+        *(f32 *)(s1 + 0x2C) = 1.0f;
+        *(s32 *)(s1 + 0x34) = 0;
+        *(s32 *)(s1 + 0x3C) = 0;
+        *(s32 *)(s1 + 0x30) = 0;
+        *(s32 *)(s1 + 0x38) = 0;
+        *(s32 *)(s1 + 0x44) = 0;
+        *(s32 *)(s1 + 0x40) = 0;
+        *(s32 *)(s1 + 0x48) = 0;
+        *(s32 *)(s1 + 0x4C) = 0;
+        *(f32 *)(s1 + 0x50) = 1.0f;
+        *(f32 *)(s1 + 0x54) = 1.0f;
+        *(f32 *)(s1 + 0x58) = 1.0f;
+        *(f32 *)(s1 + 0x5C) = 1.0f;
+        s0++;
+    } while (s2 < 8);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2AF0);
 void func_002F2C90(u8 *task) {
     u8 *s1;
