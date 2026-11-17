@@ -1406,6 +1406,40 @@ void func_002538E0(s32 *a0, u8 *a1) {
     }
     func_00253320((s32 *)buf, a1, dx, dy);
 }
+// GIVEN UP: differs: size 0x140 vs 0x150 (4 instructions short): the range test order (the original tests the sign first and jumps to a shared b to the epilogue), and the zero float is hoisted to the entry; 4 forms
+#if 0
+void func_00253A50(s32 *a0, u8 *a1) {
+    u8 buf[0x60] __attribute__((aligned(16)));
+    u8 *s0;
+    s8 idx = *(s8 *)(a1 + 0x38);
+    f32 dx;
+    f32 dy;
+
+    if (0x1C > idx && 0 <= idx) {
+        s0 = D_00452740 + (idx << 4);
+        memset(buf, 0, 0x60);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x20), "r"(a1));
+        func_00125740(buf + 0x40, s0, 16);
+        *(f32 *)(buf + 0x44) = *(f32 *)(buf + 0x44) + 0.5f;
+        *(f32 *)(buf + 0x48) = *(f32 *)(buf + 0x48) - 0.5f;
+        *(f32 *)(buf + 0x4C) = *(f32 *)(buf + 0x4C) - 0.5f;
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x50), "r"(a1 + 0x10));
+        *(f32 *)(buf + 0) = 0.0f;
+        *(s32 *)(buf + 4) = ((*(u32 *)(a1 + 0x30) & 0x30000) >> 15) | 1;
+        *(s32 *)(buf + 0x10) = ((s32 *)*(s32 *)((u8 *)a0 + 0xC))[1];
+        *(s32 *)(buf + 0x14) = *(s32 *)((u8 *)a0 + 4);
+        *(s16 *)(buf + 0x18) = 0;
+        *(s16 *)(buf + 0x1A) = 0;
+        {
+            f32 d0 = *(f32 *)(s0 + 8) - *(f32 *)(s0 + 0);
+            f32 d1 = *(f32 *)(s0 + 0xC) - *(f32 *)(s0 + 4);
+            __asm__ volatile ("abs.s %0, %1" : "=f"(dx) : "f"(d0));
+            __asm__ volatile ("abs.s %0, %1" : "=f"(dy) : "f"(d1));
+        }
+        func_00253320((s32 *)buf, a1, dx, dy);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253A50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253BA0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253E60);
