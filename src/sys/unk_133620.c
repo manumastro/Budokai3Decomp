@@ -53,7 +53,31 @@ extern Vec4 D_0045F4E0;
 extern View D_0047CA40;
 
 INCLUDE_ASM("asm/nonmatchings/sys/unk_133620", func_00133620);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_133620", func_00133720);
+asm void func_00133720(void) {
+    lqc2 $vf1, 0x0($a0)
+    lqc2 $vf2, 0x0($a1)
+    lqc2 $vf3, 0x0($a2)
+    vsub.xyz $vf1, $vf0, $vf1
+    vmulx.xyzw $vf4, $vf2, $vf1x
+    vmuly.xyzw $vf5, $vf2, $vf1y
+    vmulz.xyzw $vf6, $vf2, $vf1z
+    lui $at, 0x46
+    lw $a0, -0xAE8($at)
+    lui $at, 0x46
+    lw $a1, -0xAE4($at)
+    lw $t7, -0x7A88($gp)
+    sqc2 $vf4, 0x0($a0)
+    sqc2 $vf5, 0x10($a0)
+    bnez $t7, L1
+    sqc2 $vf6, 0x20($a0)
+    sqc2 $vf4, 0x0($a1)
+    sqc2 $vf5, 0x10($a1)
+    sqc2 $vf6, 0x20($a1)
+    sqc2 $vf3, 0x30($a1)
+L1:
+    jr $ra
+    sqc2 $vf3, 0x30($a0)
+}
 void func_00133780(s32 mode, u32 a1) {
     u64 *p;
     if (mode != 2) {
