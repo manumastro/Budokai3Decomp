@@ -106,7 +106,12 @@ typedef struct Fighter {
     s16 f1966[0x40];
     u8 f19E6;
     u8 f19E7;
-    char pad19E8[0x58];
+    char pad19E8[0x4A];
+    s16 f1A32;
+    char pad1A34[0x6];
+    s16 f1A3A;
+    s16 f1A3C;
+    char pad1A3E[0x2];
     f32 f1A40;
     char pad1A44[0x4];
     s32 f1A48;
@@ -3412,7 +3417,34 @@ void func_001E39C0(Fighter *c) {
     c->f1354->f2012 = 0;
     Fighter_SetFlags(c, 0x4000);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E39F0);
+void func_001E39F0(Fighter *c) {
+    s32 v;
+    c->f1A3C = -1;
+    c->f1A3A = -1;
+    v = c->fB70;
+    asm { addi v, v, -0xD2 }
+    switch (v) {
+    case 0: case 1: case 2:
+        c->f1A3A = 0xE;
+        break;
+    case 3: case 4: case 5:
+        c->f1A3A = 0xF;
+        break;
+    case 6: case 7: case 8:
+        c->f1A3A = 0xC;
+        break;
+    case 9: case 10: case 11:
+        c->f1A3A = 0xD;
+        break;
+    }
+    if (c->f1A3A >= 0) {
+        if (c->f1354->f1A32 < -1) {
+            c->f1A3C = 6;
+        } else {
+            c->f1A3C = 7;
+        }
+    }
+}
 #if 0
 void func_001E3AA0(Fighter *c) {
     u32 m;
@@ -4049,6 +4081,39 @@ void func_001E6CE0(Fighter *c) {
 #endif
 // differs: size 0x198 vs 0x1B0, same gap as its sibling 1E66E0: the clamp-to-1 arm jumps to the nop before c.le.s (the 15.0f reload is skipped), the original compares with f0 = 1.0 on that path
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6CE0);
+#if 0
+/* func_001E6E90: parked, not compiled (0 of ~20 checks used). Jump table jtbl_00469620 (6 entries).
+ * Obstacle: unk_1D5B30.o has a single contiguous .rodata, so the table would land at 0x369630,
+ * but the original is at 0x369620. The 0x20 bytes before it (jtbl_00469600 and the "[LIT] MAIN"
+ * string data) belong to an INCLUDE_ASM function and cannot be emitted from C. Would also need
+ * Fighter fields f52C, f5F0 and func_002376B0 returning s32.
+void func_001E6E90(char *c, s32 sel) {
+    char buf[0x20];
+    s32 s0;
+    if (sel == -1) {
+        sel = func_002376B0(*(s32 *)(c + 0x52C));
+    }
+    switch (sel) {
+    case 0:
+        s0 = 0;
+        break;
+    case 1:
+    case 5:
+        s0 = (*(s32 *)(c + 0x548) ? 3 : 1) + *(s32 *)(*(char **)(c + 0x568) + 0x1350);
+        break;
+    case 2:
+    case 3:
+    case 4:
+        s0 = (*(s32 *)(c + 0x548) ? 3 : 1) + *(s32 *)(*(char **)(c + 0x568) + 0x1350);
+        *(s32 *)buf = sel;
+        *(char **)(buf + 16) = (char *)gBattle + 0x264;
+        func_001E57C0(0, s0, buf, 3);
+        break;
+    }
+    *(s32 *)(c + 0x5F0) = 0x100 << s0;
+}
+*/
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6E90);
 #if 0
 extern char D_00469640[];
