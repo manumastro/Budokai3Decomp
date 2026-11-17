@@ -2844,6 +2844,49 @@ void PlySe_Start(Fighter *c) {
         }
     }
 }
+extern void func_001E74F0();
+extern void func_001E8640(Fighter *c, s32 mask);
+
+#if 0
+void func_001E3310(Fighter *c) {
+    f32 f;
+    f32 f1;
+    f32 f2;
+    f32 f3;
+    char *g;
+
+    g = (char *)gBattle;
+    func_001E74F0((char *)c + 0x650);
+    func_001E74F0((char *)c + 0xCD0);
+    f3 = *(f32 *)((char *)c + 0xC9C);
+    f2 = *(f32 *)(g + 0x88F0);
+    f1 = *(f32 *)((char *)c + 0x1808);
+    if (!(f1 <= 0.0f)) {
+        f = f1 - f3 * f2;
+        *(f32 *)((char *)c + 0x1808) = f;
+    }
+    if (*(f32 *)((char *)c + 0x1808) < 0.0f) {
+        *(f32 *)((char *)c + 0x1808) = 0.0f;
+    }
+    if (c->f1FF8 == -1) {
+        *(f32 *)((char *)c + 0x189C) = *(f32 *)((char *)c + 0x189C) + *(f32 *)(g + 0x88F0);
+    } else {
+        *(s32 *)((char *)c + 0x189C) = 0;
+    }
+    func_001E8640((Fighter *)((char *)c + 0x650), -1);
+    __asm__ volatile ("lqc2 $vf1, 0(%1)
+	sqc2 $vf1, 0(%0)" : : "r"((char *)c + 0x80), "r"((char *)c + 0x650) : "memory");
+    *(f32 *)((char *)c + 0x84) = *(f32 *)((char *)c + 0x84) + *(f32 *)*(char **)((char *)c + 0xB94);
+    __asm__ volatile ("lqc2 $vf1, 0(%1)
+	sqc2 $vf1, 0(%0)" : : "r"((char *)c + 0x60), "r"((char *)c + 0x650) : "memory");
+    if (!c->f1FF9) {
+        *(f32 *)((char *)c + 0x64) = *(f32 *)((char *)c + 0x44);
+    } else {
+        *(f32 *)((char *)c + 0x64) = *(f32 *)((char *)c + 0x44);
+    }
+}
+#endif
+// differs: 12 of 71 differ: gBattle loaded first (done), the sub-object call and the copies match; the float loads and the mul/sub register assignment of the 0x1808 timer (c9c, 88f0) differ; declaration orders of the float locals tried (24)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3310);
 void Fighter_ResetMotion(Fighter *c) {
     func_001E7BE0((char *)c + 0x650);
@@ -3176,28 +3219,51 @@ void func_001E4F40(Fighter *c) {
 }
 extern void func_001E8640();
 
-#if 0
 void func_001E4FA0(Fighter *c, s32 a1) {
     f32 f;
+    f32 g;
 
     func_001E8640((char *)c + 0x650);
     if (a1 & 1) {
     __asm__ volatile ("lqc2 $vf1, 0(%1)\n\tsqc2 $vf1, 0(%0)" : : "r"((char *)c + 0x80), "r"((char *)c + 0x650) : "memory");
-        f = *(f32 *)*(char **)((char *)c + 0xB94) + *(f32 *)((char *)c + 0x84);
+        g = *(f32 *)*(char **)((char *)c + 0xB94);
+        f = *(f32 *)((char *)c + 0x84) + g;
         *(f32 *)((char *)c + 0x84) = f;
     __asm__ volatile ("lqc2 $vf1, 0(%1)\n\tsqc2 $vf1, 0(%0)" : : "r"((char *)c + 0x60), "r"((char *)c + 0x650) : "memory");
-        if (c->f1FF9) {
+        if (!c->f1FF9) {
             *(f32 *)((char *)c + 0x64) = *(f32 *)((char *)c + 0x44);
         } else {
             *(f32 *)((char *)c + 0x64) = *(f32 *)((char *)c + 0x44);
         }
     }
 }
-#endif
-// differs: 2 of 37 differ: the add.s operand order (f84 loaded first into f0 in the original) and the jal reloc; the flag test is if (c->f1FF9) with the bodies identical; the copy is an inline lqc2/sqc2 pair
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E4FA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5040);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5230);
+extern void func_0013B620(void *);
+extern char D_003F0800[];
+
+void func_001E5230(Fighter *c, char *a1) {
+    char *s0;
+
+    s0 = a1;
+    if (s0 == 0) {
+        s0 = (char *)c;
+    }
+    func_0013B160(D_003F0800);
+    __asm__ volatile ("lqc2 $vf1, 0(%0)
+	vmulax.xyzw ACC, $vf28, $vf1x
+	vmadday.xyzw ACC, $vf29, $vf1y
+	vmaddaz.xyzw ACC, $vf30, $vf1z
+	vmaddw.xyzw $vf31, $vf31, $vf0w" : : "r"((char *)c + 0x40) : "memory");
+    func_0013B620(*(void **)((char *)c + 0x17A4));
+    __asm__ volatile ("sqc2 $vf28, 0(%0)
+	sqc2 $vf29, 0x10(%0)
+	sqc2 $vf30, 0x20(%0)
+	sqc2 $vf31, 0x30(%0)" : : "r"(s0) : "memory");
+    __asm__ volatile ("vmove.xyzw $vf28, $vf24
+	vmove.xyzw $vf29, $vf25
+	vmove.xyzw $vf30, $vf26
+	vmove.xyzw $vf31, $vf27" : : : "memory");
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E52B0);
 #if 0
 void func_001E53B0(Fighter *c, s32 idx) {
@@ -3347,7 +3413,37 @@ void func_001E5970(void) {
     __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(src), "r"((char *)buf + 0x10) : "memory");
     ((void (*)(s32, void *))jtbl_00469600[0])(k, buf);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E59F0);
+extern s32 CharLight_Create(void);
+extern void func_00237760(s32, s32);
+extern void *BtbBg_GetStageModelF10(void);
+extern void func_001E55C0(void *);
+extern void memset(void *, s32, s32);
+extern void *jtbl_00469600[];
+
+void func_001E59F0(void) {
+    s32 buf[12];
+    s32 out[4];
+    s32 *base;
+    s32 i;
+    s32 n;
+    s32 k;
+    void *src;
+
+    base = (s32 *)((char *)gBattle + 0x268);
+    n = *(s32 *)((char *)gBattle + 0x88D8) * 2 + 1;
+    for (i = 0; i < n; i++) {
+        base[i * 2] = CharLight_Create();
+        base[i * 2 + 1] = *(s32 *)base[i * 2];
+        func_00237760(base[i * 2], i);
+    }
+    k = -1;
+    memset(buf, 0, 0x30);
+    buf[0] = 0;
+    src = BtbBg_GetStageModelF10();
+    __asm__ volatile ("lqc2 $vf1, 0(%0)
+	sqc2 $vf1, 0(%1)" : : "r"(src), "r"((char *)buf + 0x10) : "memory");
+    ((void (*)(s32, void *))jtbl_00469600[0])(k, buf);
+}
 s32 func_001E5AC0(Fighter *c) {
     return 0;
 }
@@ -3785,7 +3881,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8290);
 void func_001E8630(Fighter *c) {
     func_00125740((char *)c + 0x160, c, 0x160);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8640);
+void func_001E8640(Fighter *c, s32 mask) {
+    char *obj;
+    char *s2;
+    char *s1;
+    s32 i;
+    char *p;
+
+    obj = *(char **)((char *)c + 0x568);
+    s2 = *(char **)((char *)c + 0x538);
+    s1 = *(char **)((char *)c + 0x53C);
+    func_0013B160(0);
+    i = 0;
+    while (mask != 0 && i < 0x16) {
+        if (mask & 1) {
+            p = *(char **)(s2 + 0x408) + *(s16 *)(s1 + i * 2) * 64;
+            __asm__ volatile ("lqc2 $vf28, 0(%0)
+	lqc2 $vf29, 0x10(%0)
+	lqc2 $vf30, 0x20(%0)
+	lqc2 $vf31, 0x30(%0)" : : "r"(p) : "memory");
+            func_0013BA20(*(void **)(obj + 0x17A4));
+            __asm__ volatile ("sqc2 $vf31, 0(%0)" : : "r"((char *)c + i * 16) : "memory");
+            __asm__ volatile ("lqc2 $vf1, 0(%0)
+	lqc2 $vf2, 0(%1)
+	vadd.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, 0(%0)" : : "r"((char *)c + i * 16), "r"(obj + 0x40) : "memory");
+        }
+        i++;
+        mask >>= 1;
+    }
+    __asm__ volatile ("vmove.xyzw $vf28, $vf24
+	vmove.xyzw $vf29, $vf25
+	vmove.xyzw $vf30, $vf26
+	vmove.xyzw $vf31, $vf27" : : : "memory");
+}
 s32 func_001E8740(Fighter *c) {
     Game *g;
     s32 arr[7];
