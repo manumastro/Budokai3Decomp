@@ -28,8 +28,59 @@ extern void func_00145B40(s32);
 extern void amPkt_Reset(void);
 extern void func_00133780(s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/sys/unk_12EF80", func_0012EF80);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_12EF80", func_0012EFF0);
+asm void func_0012EF80(void) {
+    srl        $a3, $a2, 2
+    b          L0012EFB4
+    andi      $a2, $a2, 0x3
+L0012EF8C:
+    lq         $t0, 0x0($a1)
+    lq         $t1, 0x10($a1)
+    lq         $t2, 0x20($a1)
+    lq         $t3, 0x30($a1)
+    sq         $t0, 0x0($a0)
+    sq         $t1, 0x10($a0)
+    sq         $t2, 0x20($a0)
+    sq         $t3, 0x30($a0)
+    addiu      $a0, $a0, 0x40
+    addiu      $a1, $a1, 0x40
+L0012EFB4:
+    bgtzl      $a3, L0012EF8C
+    addi      $a3, $a3, -0x1
+    blez       $a2, L0012EFDC
+    lq        $t0, 0x0($a1)
+L0012EFC4:
+    addi       $a2, $a2, -0x1
+    sq         $t0, 0x0($a0)
+    addiu      $a0, $a0, 0x10
+    lq         $t0, 0x10($a1)
+    bgtz       $a2, L0012EFC4
+    addiu     $a1, $a1, 0x10
+L0012EFDC:
+    add        $v0, $zero, $a0
+    jr         $ra
+    nop
+}
+asm void func_0012EFF0(void) {
+    b          L0012F020
+    nop
+L0012EFF8:
+    addi       $a2, $a2, -0x1
+    lq         $t0, -0x40($a1)
+    lq         $t1, -0x30($a1)
+    lq         $t2, -0x20($a1)
+    lq         $t3, -0x10($a1)
+    sq         $t0, 0x0($a0)
+    sq         $t1, 0x10($a0)
+    sq         $t2, 0x20($a0)
+    sq         $t3, 0x30($a0)
+    addiu      $a0, $a0, 0x40
+L0012F020:
+    bgtz       $a2, L0012EFF8
+    addiu     $a1, $a1, 0x40
+    add        $v0, $zero, $a0
+    jr         $ra
+    nop
+}
 Q *amDma_CopyViaSpr(Q *dst, Q *src, s32 n) {
     s32 c;
 

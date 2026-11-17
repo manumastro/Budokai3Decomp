@@ -52,7 +52,75 @@ extern u8 D_0045ABC0[];
 extern Vec4 D_0045F4E0;
 extern View D_0047CA40;
 
-INCLUDE_ASM("asm/nonmatchings/sys/unk_133620", func_00133620);
+asm void func_00133620(void) {
+    lui        $at, 0x46
+    lw         $v0, -2816($at)
+    lui        $at, 0x46
+    lw         $t6, -2804($at)
+    addiu      $at, $zero, 0x2
+    sllv       $at, $a0, $at
+    addu       $v0, $v0, $at
+    beqz       $a2, L00133670
+    addu      $t6, $t6, $at
+    lwc1       $f0, 0x0($a2)
+    lwc1       $f1, 0x4($a2)
+    lwc1       $f2, 0x8($a2)
+    lw         $t0, 0xC($a2)
+    neg.s      $f0, $f0
+    neg.s      $f1, $f1
+    neg.s      $f2, $f2
+    swc1       $f0, 0x0($v0)
+    swc1       $f1, 0x10($v0)
+    swc1       $f2, 0x20($v0)
+    sw         $t0, 0x30($v0)
+L00133670:
+    lui        $at, 0x46
+    lw         $v1, -2812($at)
+    lui        $at, 0x46
+    lw         $t7, -2800($at)
+    addiu      $at, $zero, 0x4
+    sllv       $at, $a0, $at
+    addu       $v1, $v1, $at
+    beqz       $a3, L0013369C
+    addu      $t7, $t7, $at
+    lq         $t0, 0x0($a3)
+    sq         $t0, 0x0($v1)
+L0013369C:
+    lui        $at, 0x46
+    lw         $t1, -2808($at)
+    addu       $t1, $t1, $a0
+    bltz       $a1, L001336B8
+    lb        $at, 0x0($t1)
+    add        $at, $zero, $a1
+    sb         $at, 0x0($t1)
+L001336B8:
+    lw         $t5, -31368($gp)
+    beqz       $at, L001336F4
+    addi      $t4, $zero, 0x1
+    lw         $t0, 0x0($v0)
+    lw         $t1, 0x10($v0)
+    lw         $t2, 0x20($v0)
+    lw         $t3, 0x30($v0)
+    bne        $t5, $t4, L00133710
+    lq        $t4, 0x0($v1)
+    sw         $t0, 0x0($t6)
+    sw         $t1, 0x10($t6)
+    sw         $t2, 0x20($t6)
+    sw         $t3, 0x30($t6)
+    jr         $ra
+    sq        $t4, 0x0($t7)
+L001336F4:
+    bne        $t5, $t4, L00133710
+    vmulx.xyzw $vf1, $vf1, $vf0x
+    sw         $zero, 0x0($t6)
+    sw         $zero, 0x10($t6)
+    sw         $zero, 0x20($t6)
+    sw         $zero, 0x30($t6)
+    sqc2       $vf1, 0x0($t7)
+L00133710:
+    jr         $ra
+    nop
+}
 asm void func_00133720(void) {
     lqc2 $vf1, 0x0($a0)
     lqc2 $vf2, 0x0($a1)

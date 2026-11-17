@@ -1,4 +1,5 @@
 #include "common.h"
+extern void func_001315AC(void);
 
 /* The screen set-up: interlace, frame and Z formats, sizes, frame and Z base pointers. */
 typedef struct ScreenCfg {
@@ -442,7 +443,101 @@ void amDraw3d_ScreenShot(void) {
     amHeap_Free(buf);
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/amDraw3d", func_00131560);
+asm void func_00131560(s32 a0, s32 a1) {
+L00131560:
+    lw         $t0, -32696($gp)
+    add        $a0, $a0, $t0
+    j func_001315AC
+    lhu       $t4, 0x0($a0)
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amDraw3d", func_00131570);
-INCLUDE_ASM("asm/nonmatchings/sys/amDraw3d", func_001315C0);
-INCLUDE_ASM("asm/nonmatchings/sys/amDraw3d", func_00131620);
+asm void func_001315C0(s32 a0, s32 a1) {
+L001315C0:
+    lw         $t0, -32696($gp)
+    add        $a0, $a0, $t0
+    lbu        $t4, 0x0($a0)
+    lbu        $t5, 0x1($a0)
+    j L00131604
+    lbu       $t6, 0x2($a0)
+L001315D8:
+    add        $at, $t4, $t5
+    lbu        $t4, 0x3($a0)
+    add        $at, $at, $t5
+    lbu        $t5, 0x4($a0)
+    add        $at, $at, $t6
+    lbu        $t6, 0x5($a0)
+    srl        $at, $at, 2
+    sb         $at, 0x2000($a0)
+    sb         $at, 0x2001($a0)
+    sb         $at, 0x2002($a0)
+    addi       $a0, $a0, 0x3
+L00131604:
+    bnez       $a1, L001315D8
+    addi      $a1, $a1, -0x3
+    jr         $ra
+    nop
+    nop
+    nop
+    nop
+}
+asm void func_00131620(s32 a0, s32 a1) {
+L00131620:
+    lw         $t0, -32696($gp)
+    lw         $a3, -32692($gp)
+    srl        $a1, $a1, 4
+    add        $a0, $a0, $t0
+    addiu      $v1, $zero, 0x80
+    lbu        $t4, 0x0($a0)
+    lbu        $t5, 0x1($a0)
+    j L001316F0
+    lbu       $t6, 0x2($a0)
+L00131644:
+    add        $at, $t4, $t5
+    lbu        $t4, 0x4($a0)
+    add        $at, $at, $t5
+    lbu        $t5, 0x5($a0)
+    add        $at, $at, $t6
+    lbu        $t6, 0x6($a0)
+    srl        $t1, $at, 2
+    sb         $t1, 0x2000($a0)
+    add        $at, $t4, $t5
+    sb         $t1, 0x2001($a0)
+    add        $at, $at, $t5
+    sb         $t1, 0x2002($a0)
+    add        $at, $at, $t6
+    lbu        $t4, 0x8($a0)
+    srl        $t1, $at, 2
+    lbu        $t5, 0x9($a0)
+    addi       $a2, $a0, 0x10
+    lbu        $t6, 0xA($a0)
+    and        $a2, $a2, $a3
+    sb         $t1, 0x2004($a0)
+    sb         $t1, 0x2005($a0)
+    add        $at, $t4, $t5
+    sb         $t1, 0x2006($a0)
+    add        $at, $at, $t5
+    lbu        $t4, 0xC($a0)
+    add        $at, $at, $t6
+    lbu        $t5, 0xD($a0)
+    srl        $t1, $at, 2
+    lbu        $t6, 0xE($a0)
+    sb         $t1, 0x2008($a0)
+    sb         $t1, 0x2009($a0)
+    add        $at, $t4, $t5
+    sb         $t1, 0x200A($a0)
+    add        $at, $at, $t5
+    lbu        $t4, 0x0($a2)
+    add        $at, $at, $t6
+    lbu        $t5, 0x1($a2)
+    srl        $t1, $at, 2
+    lbu        $t6, 0x2($a2)
+    sb         $t1, 0x200C($a0)
+    sb         $t1, 0x200D($a0)
+    sb         $t1, 0x200E($a0)
+    add        $a0, $zero, $a2
+L001316F0:
+    bnez       $a1, L00131644
+    addi      $a1, $a1, -0x1
+    jr         $ra
+    nop
+}
