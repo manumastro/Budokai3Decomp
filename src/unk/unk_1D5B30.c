@@ -644,7 +644,7 @@ void func_001D7A70(Fighter *c) {
     *(s8 *)((char *)c + 0x1D0B) = *(s16 *)(D_00447450 + x * 96 + y * 8);
 }
 #endif
-// differs: the two loads of each pair land in the other registers (a3 and t0 swapped, eight times); the table math is right
+// differs: 36 of 84 instructions; x and y land in a3/t0 where the original uses t0/a2 (register choice, not the table math). Tried: x/y declaration order, s32/u32/s16/u16 locals, index as y*8 + (D + x*96) (same 36 either way)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7A70);
 s32 func_001D7BC0(Fighter *c) {
     if (c->f1FF8 == -1) {
