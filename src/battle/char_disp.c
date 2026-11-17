@@ -153,6 +153,64 @@ void func_0029F070(u8 *a0, f32 dt) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F180);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00228430(s32);
+extern void func_00227A30(u8 *);
+extern void func_0022C060(f32, s32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+// GIVEN UP (round 5 chr2): 4 of 70 differ, all in block 1 (the first s1->4 test). The original keeps the bltz delay slot a nop and the
+// argument 0 of func_00228430 in the jal delay slot; ours moves the argument into the bltz slot. Tried: switch on the mode (cases ascending, 62 differ),
+// if chain with empty bodies (this one, 4 differ), nested else (4 differ), a1c loaded before a18 (kept).
+#if 0
+void func_0029F350(u8 *s1, u8 *s0) {
+    s32 s2;
+    s32 a18;
+    s32 a1c;
+    s32 mode;
+
+    mode = *(s32 *)(s1 + 0x18);
+    if (mode == 2) {
+    } else if (mode == 1) {
+    } else if (mode == 0) {
+        return;
+    }
+    if (*(s32 *)(s1 + 4) >= 0) {
+        func_00228430(0);
+        func_00227A30(s0);
+        s2 = *(s32 *)(s0 + 0x20);
+        a1c = *(s32 *)(s0 + 0x1C);
+        a18 = *(s32 *)(s0 + 0x18);
+        D_00470704 = a18;
+        D_0047070C = a1c;
+        D_00470708 = s2;
+        amModel_SetCurrent(a18, a1c);
+        D_00470238 = s2;
+        func_0022C060(1.0f, *(s32 *)(s0 + 0x10));
+        func_00228410();
+        func_0022CD00(*(s32 *)(s0 + 0x10));
+    }
+    if (*(s32 *)s1 >= 0) {
+        func_00228430(0);
+        func_00227A30(s0);
+        s2 = *(s32 *)(s0 + 0x20);
+        a1c = *(s32 *)(s0 + 0x1C);
+        a18 = *(s32 *)(s0 + 0x18);
+        D_00470704 = a18;
+        D_0047070C = a1c;
+        D_00470708 = s2;
+        amModel_SetCurrent(a18, a1c);
+        D_00470238 = s2;
+        func_0022C060(1.0f, *(s32 *)(s1 + 0x1C));
+        func_00228410();
+        func_0022CD00(*(s32 *)(s1 + 0x1C));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F350);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F470);
 // round 5 chr2: three layouts of the state chain (if/else-if in order 0,1,2; switch in order; switch 2,1,0) all compile to 0xEC against 0x100; the original starts with li v1,2 and tests 2,1,0 with beq on the constants in v1.
