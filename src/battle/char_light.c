@@ -73,13 +73,16 @@ s32 func_00235A90(u8 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235A90);
 // GIVEN UP: the 1 / 100 divisions and the compare's operands come out in other registers (lh and the remainder swapped)
+// // differs: 16 of 40 (round 4 chr): register choice for the constant 1 (v0 in the original) and the 0xCCCCCCCD divide constants (a1/a0); the store of 1 is scheduled after the mfhi in the original.
 #if 0
-s32 func_00235B60(u8 *a0) {
-    u8 *s = D_0058BBB0 + *(s32 *)(a0 + 0x1350) * 0xC0;
-    u32 r = func_0012EAE0(0x20);
-
-    *(s8 *)(s + 0x35) = 1;
-    return (u32)((r / 10) % 100) < (u32)*(s16 *)(s + 0x22);
+s32 func_00235B60(void *a0) {
+    u8 *s0;
+    u32 r;
+    s32 k = *(s32 *)((u8 *)a0 + 0x1350);
+    s0 = (u8 *)D_0058BBB0 + k * 0xC0;
+    r = func_0012EAE0(0x20);
+    *(s8 *)(s0 + 0x35) = 1;
+    return ((r / 10) % 100) < (u32)*(s16 *)(s0 + 0x22);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235B60);
@@ -100,14 +103,16 @@ void func_00236020(u8 *p) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236020);
 // GIVEN UP: the original keeps a frame for the two calls (a tail call here)
+// // differs: 11 of 40 (round 4 chr): the original branches to the else arm 4 bytes before ours (no alignment nop before the second call), with the epilogue load in the b delay slot; if/else, ?: and returns in both arms tried.
 #if 0
-void func_00236090(s32 *p) {
-    s8 v = *(s8 *)(D_0058BBB0 + *(s32 *)((u8 *)p + 0x1350) * 0xC0 + 0x42);
-
-    if (v < 0) {
-        func_00231E70(p);
+void func_00236090(void *o) {
+    s32 a1 = *(s32 *)((char *)o + 0x1350);
+    if (*(s8 *)(D_0058BBB0 + a1 * 0xC0 + 0x42) <= -1) {
+        func_00231E70(o);
+        return;
     } else {
-        func_002316D0(p);
+        func_002316D0(o);
+        return;
     }
 }
 #endif
@@ -367,26 +372,30 @@ void func_002376F0(s32 *p, s32 *q) {
     D_0046A760[q[0]]();
 }
 // GIVEN UP: the join labels and the flag stores are laid out differently (tried nested forms)
+// // differs: 24 of 25 (round 4 chr): the original stores the zero in the bltz delay slot (before the k range test on both paths); the store placement and the join layout differ.
 #if 0
-void func_00237760(s32 *p, s32 a1) {
-    u16 flags;
-
-    if (p == 0) {
+void func_00237760(void *o, s32 k) {
+    u16 f;
+    char *q;
+    if (o == 0) {
         return;
     }
-    p[2] = 0;
-    if (a1 < 0) {
+    if (k < 0) {
+        *(s32 *)((char *)o + 8) = 0;
         return;
     }
-    if (a1 >= 6) {
+    *(s32 *)((char *)o + 8) = 0;
+    if (!(k < 6)) {
         return;
     }
-    p[2] = 0x100 << a1;
-    flags = *(u16 *)&p[2];
-    if (flags & 0x30) {
-        *(u16 *)((u8 *)p[0] + 0x32) &= 0xFFCF;
+    *(s32 *)((char *)o + 8) = 0x100 << k;
+    f = *(u16 *)((char *)o + 8);
+    q = (char *)o;
+    if (f & 0x30) {
+        q = *(char **)o;
+        *(u16 *)(q + 0x32) = *(u16 *)(q + 0x32) & 0xFFCF;
     }
-    *(u16 *)((u8 *)p[0] + 0x32) |= flags;
+    *(u16 *)(q + 0x32) = *(u16 *)(q + 0x32) | f;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237760);

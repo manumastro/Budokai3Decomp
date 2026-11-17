@@ -246,6 +246,57 @@ int func_001CC270(void *unused, Arg *a) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC300);
+// // differs: 17 of 60 (round 4 chr): the original reloads gBattle into v1 after the jal and keeps the counter pointer in a0; ours uses a0 for gBattle (register choice only).
+#if 0
+extern void amTask_Kill(void *);
+extern void func_002194C0(void *, s32, s32, s32);
+extern void Character_PauseVoice(s32 *);
+extern void func_001CB020(void *);
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern char D_004692B0[];
+int func_001CC4B0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x;
+    s32 y;
+    s32 w;
+    s32 s0;
+    s32 s1;
+    char *tb;
+    char *c;
+    char *t;
+    char *g;
+    s32 *q;
+    x = p[0];
+    y = p[1];
+    w = p[2];
+    if (w < 0) {
+        s0 = -w;
+        s1 = 2;
+    } else {
+        tb = (char *)gBattle->tbl[w];
+        s1 = *(s32 *)(tb + 0x1350) + 3;
+        s0 = *(s32 *)(tb + 0xB9C);
+    }
+    c = *(char **)unused;
+    t = amTask_Create((void (*)(void *))func_001CB020, 0, *(s32 *)(c + 0x10), *(s32 *)(c + 0x14), *(s32 *)(c + 0x18), D_004692B0);
+    *(s32 *)(t + 0x30) = 0;
+    *(f32 *)(t + 0x34) = (f32)x;
+    *(void **)(t + 0x38) = (void *)Character_PauseVoice;
+    *(char **)(t + 0x3C) = (char *)gBattle + (s1 << 5) + 0x5C4;
+    func_002194C0(*(void **)(t + 0x3C), s0, y, -1);
+    q = (s32 *)(t + 0x30);
+    g = (char *)gBattle;
+    if (*(s32 *)(g + 0x88EC) == 0) {
+        q[0] += 1;
+        if ((f32)q[0] * *(f32 *)(g + 0x88F0) >= *(f32 *)(q + 1)) {
+            ((void (*)(void *))*(void **)(q + 2))(t);
+            amTask_Kill(t);
+        }
+    }
+    *(s32 *)a = s1;
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC4B0);
 extern void func_001CB020(void *);
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
@@ -387,6 +438,32 @@ int func_001CC9A0(void *unused, Arg *a) {
     func_001E57C0(0, 0, buf);
     return 1;
 }
+// // differs: 52 of 90 (round 4 chr): the signed s/2 and s%2 for a negative count use bgez/andi/addiu -2 in the original; ours lays the %2 out differently.
+#if 0
+int func_001CCA90(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 p0 = p[0];
+    s32 p1 = p[1];
+    s32 p2 = p[2];
+    s32 p3 = p[3];
+    char *g = (char *)gBattle;
+    s32 buf[12];
+    s32 *q;
+    memset(buf, 0, 0x30);
+    buf[0] = 1;
+    q = &buf[4];
+    if (p3 >= 0) {
+        char *e = (char *)((void **)(g + 0x8934))[p3 % 2] + (p3 / 2) * 0x680 + p2 * 16 + 0x650;
+        q[0] = (s32)e;
+    }
+    if (p1 >= 0) {
+        char *e = (char *)((void **)(g + 0x8934))[p1 % 2] + (p1 / 2) * 0x680 + p0 * 16 + 0x650;
+        q[1] = (s32)e;
+    }
+    func_001E57C0(0, 0, buf);
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCA90);
 // differs: 28 of 33 at best. The original frame is 0x50 with the buffer at sp+0x20 and no saved s0 across memset; ours is 0x60 and keeps the buffer address in s0 (memset + func_001E57C0 call order matches).
 #if 0
@@ -1189,6 +1266,42 @@ int func_001CFAB0(void *unused, Arg *a) {
 int func_001CFAC0(void *unused, Arg *a) {
     return 1;
 }
+// // differs: 47 of 80 (round 4 chr): the original keeps the -1 store in v1 and reloads 0x28(a1) at the loop end; ours uses a2 and hoists the loop registers (t2/t4 order).
+#if 0
+void func_001CFAD0(void *o, Arg *a) {
+    s32 off;
+    s32 i;
+    *(s32 *)((char *)o + 0x248) = -1;
+    i = 0;
+    off = 0;
+    if (0 < *(s32 *)((char *)a + 0x28)) {
+        do {
+            char *pe = *(char **)((char *)a + 0x2C) + off;
+            if (*(u16 *)pe == 1) {
+                s32 cnt = *(s16 *)(pe + 2);
+                if (cnt > 0) {
+                    char *arr = *(char **)(pe + 4);
+                    s32 j = 0;
+                    char *t1 = arr;
+                    do {
+                        if ((*(u16 *)(t1 + 8) & 0x10F) == 1) {
+                            *(s32 *)((char *)o + 0x248) = *(u16 *)(arr + j * 16);
+                            break;
+                        }
+                        j++;
+                        t1 += 16;
+                    } while (j < cnt);
+                }
+                if (*(s32 *)((char *)o + 0x248) >= 0) {
+                    break;
+                }
+            }
+            i++;
+            off += 8;
+        } while (i < *(s32 *)((char *)a + 0x28));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFAD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFB80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFE50);
