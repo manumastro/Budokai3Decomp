@@ -356,6 +356,53 @@ void func_00298CC0(s32 id, s32 a, s32 b, Vec4f *v, f32 f) {
     func_002904C0(s);
 }
 #endif
+/* differs: the search loops return to one join with a "bnez" on the found pointer, the original exits the loop with a "b" to it (20 of 55) */
+#if 0
+void func_00298CC0(s32 a0, s32 a1, s32 a2, f32 f12, f32 *a3) {
+    u8 *t0;
+    u8 *t1;
+    s32 i;
+
+    t0 = (u8 *)D_005AA604[0];
+    t1 = t0 + 0x80;
+    for (i = 0; i < 0x40; i++) {
+        if (*(s32 *)t1 == a0) {
+            break;
+        }
+        t1 += 0x40;
+    }
+    if (i == 0x40) {
+        t1 = NULL;
+    }
+    if (t1 == NULL) {
+        i = 0;
+        t1 = t0 + 0x80;
+        for (; i < 0x40; i++) {
+            if (*(s32 *)t1 == -1) {
+                break;
+            }
+            t1 += 0x40;
+        }
+        if (i == 0x40) {
+            t1 = NULL;
+        }
+    }
+    *(s32 *)t1 = a0;
+    *(s32 *)(t1 + 4) = a1;
+    *(s32 *)(t1 + 8) = a2;
+    *(f32 *)(t1 + 0xC) = f12;
+    *(f32 *)(t1 + 0x10) = a3[0];
+    *(f32 *)(t1 + 0x14) = a3[1];
+    *(f32 *)(t1 + 0x18) = a3[2];
+    *(f32 *)(t1 + 0x1C) = a3[3];
+    *(s32 *)(t1 + 0x20) = -1;
+    *(s32 *)(t1 + 0x2C) = -1;
+    *(s32 *)(t1 + 0x30) = -1;
+    *(s32 *)(t1 + 0x34) = -1;
+    *(s32 *)(t1 + 0x38) = 100;
+    func_002904C0((Slot *)t1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_00298CC0);
 void func_00298DA0(void) {
     s32 i;
