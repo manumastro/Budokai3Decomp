@@ -476,6 +476,9 @@ void SkillKill_Kind10(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BBA0);
+// GIVEN UP (round 5): 17 of 89, the same shape as func_0024B6A0 below: the original keeps the object in s1 (move s1,a0)
+// and the data pointer in s0; mwcc copies the parameter into s0 whatever the declaration order, a separate object local
+// first, or the parameter used directly (4 forms tried). The VU0 blocks match.
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BE30);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BFA0);
 void SkillKill_Kind09(s32 *p) {
