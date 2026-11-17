@@ -467,14 +467,94 @@ void func_0020DE30(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020DE40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E070);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E120);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E210);
+void func_0013B160(void *p);
+void func_0020D5C0(void *a, s32 b, void *c, u8 *d);
+
+void func_0020E210(s32 i, u8 *src) {
+    u8 *s1;
+    Copy16A tmp;
+
+    s1 = D_00568C90 + i * 0x2140;
+    func_0013B160(s1 + 0x40);
+    __asm__ volatile (
+        "sqc2 $vf31, 0(%0)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(&tmp) : "memory");
+    func_0020D5C0(s1 + 0x40, 0, &tmp, src);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E290);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E390);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E530);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E620);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E730);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E7D0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E870);
+void func_0013B160(void *p);
+void func_0013B960(u8 *p);
+
+void func_0013B160(void *p);
+void func_0013B960(u8 *p);
+
+void func_0020E730(s32 i, u8 *x, s32 j) {
+    u8 *s2;
+
+    s2 = D_00568C90 + i * 0x2140;
+    func_0013B160(*(void **)(x + 0x568));
+    func_0013B960(*(u8 **)(*(u8 **)(x + 0x538) + 0x408) + j * 64);
+    __asm__ volatile (
+        "addiu $v1, %0, 0x40\n"
+        "sqc2 $vf28, 0($v1)\n"
+        "sqc2 $vf29, 0x10($v1)\n"
+        "sqc2 $vf30, 0x20($v1)\n"
+        "sqc2 $vf31, 0x30($v1)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(s2) : "memory");
+}
+void func_0020E7D0(s32 i, u8 *x, s32 j) {
+    u8 *s2;
+
+    s2 = D_00568C90 + i * 0x2140;
+    func_0013B160(x);
+    func_0013B960(*(u8 **)(*(u8 **)(x + 0xB88) + 0x408) + j * 64);
+    __asm__ volatile (
+        "addiu $v1, %0, 0x40\n"
+        "sqc2 $vf28, 0($v1)\n"
+        "sqc2 $vf29, 0x10($v1)\n"
+        "sqc2 $vf30, 0x20($v1)\n"
+        "sqc2 $vf31, 0x30($v1)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(s2) : "memory");
+}
+void func_0013B160(void *p);
+
+void func_0020E870(s32 i, u8 *src, s32 j) {
+    u8 *s1;
+
+    s1 = D_00568C90 + i * 0x2140;
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "sqc2 $vf1, 0(%1)\n"
+        : : "r"(src + j * 16), "r"(s1) : "memory");
+    func_0013B160(s1 + 0x40);
+    __asm__ volatile (
+        "lqc2 $vf31, 0(%0)\n"
+        "addiu $v1, %0, 0x40\n"
+        "sqc2 $vf28, 0($v1)\n"
+        "sqc2 $vf29, 0x10($v1)\n"
+        "sqc2 $vf30, 0x20($v1)\n"
+        "sqc2 $vf31, 0x30($v1)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(s1) : "memory");
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E8F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EA70);
 void func_0013B160(void *p);
