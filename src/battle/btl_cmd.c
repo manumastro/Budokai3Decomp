@@ -284,9 +284,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A51E0);
 extern void func_0013C1E0(void *, f32, f32);
 extern void amMotion_Update(void *, s32);
 
-// GIVEN UP: 8 of 77 instructions differ: the original computes the table index (the high half minus one) before the
-// low half of the value, and the register choice follows (4 orders tried)
-#if 0
+// Matched: the table lookup is written with the index cast to a pointer first so the addu operands come out in the original order
 void func_001A5350(u8 *a0, f32 f12) {
     s32 a1;
     s32 v1;
@@ -322,14 +320,13 @@ void func_001A5350(u8 *a0, f32 f12) {
         }
         *(s32 *)a2 = a3;
         hi = (a3 >> 16) - 1;
-        pt = *(u8 **)(s0 + 0x46C + (hi << 2));
-        *(f32 *)(s0 + 0x424) = (f32)(*(s32 *)(*(u8 **)(pt + 0x14) + ((a3 & 0xFFFF) << 4) + 8) - 1);
+        pt = *(u8 **)(((u8 *)(hi << 2)) + (s32)s0 + 0x46C);
+        pt = *(u8 **)(pt + 0x14);
+        *(f32 *)(s0 + 0x424) = (f32)(*(s32 *)(((u8 *)((a3 & 0xFFFF) << 4)) + (s32)pt + 8) - 1);
         amMotion_Update(s0, 0);
     }
     func_0013C1E0(s0, 0.0f, f20);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5350);
 s32 func_001A5490(MotFile *f, s32 track, f32 t) {
     MotTrack *tr = &f->tracks[track];
     s32 i;
@@ -403,8 +400,7 @@ void BtlSlots_Set(BtlSlots *s, s32 i, s32 v) {
     s->slot[i] = v;
 }
 
-// GIVEN UP: x / 6 and the stores match; the 0x5C store is moved into the delay slot of the `a1 != 0` test (the original keeps it before the branch)
-#if 0
+extern void memset(void *, s32, s32);
 void func_001A5640(u8 *a0, u8 *a1, s32 a2) {
     s32 x;
     s32 *t;
@@ -418,19 +414,15 @@ void func_001A5640(u8 *a0, u8 *a1, s32 a2) {
     *(s8 *)(a0 + 0x4F) = -1;
     *(s32 *)(a0 + 0x58) = -1;
     *(s32 *)(a0 + 0x5C) = 0xBF800000;
+    *(u8 **)a0 = a1;
     if (a1 != NULL) {
-        x = -1;
-        *(u8 **)a0 = a1;
+        u8 *p;
         *(s32 *)(a0 + 4) = a2;
-        t = *(s32 **)(*(u8 **)a0 + a2 * 4 + 0x46C);
-        if (t != NULL) {
-            x = t[4];
-        }
-        *(s32 *)(a0 + 8) = x / 6;
+        p = *(u8 **)a0 + 0x46C;
+        t = *(s32 **)(p + a2 * 4);
+        *(s32 *)(a0 + 8) = (t != NULL ? t[4] : -1) / 6;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5640);
 void func_001A5700(MotFile2 *f) {
     s32 i;
     if (f->count > 0 && f->tracks != 0) {
@@ -704,7 +696,6 @@ void func_001A8630(void) {
 }
 extern void func_00131B90(void *);
 extern void amCamera_Init(void *);
-extern void memset(void *, s32, s32);
 extern void func_001A80E0(void);
 extern u8 D_00468190[];
 void func_001A8640(void) {
