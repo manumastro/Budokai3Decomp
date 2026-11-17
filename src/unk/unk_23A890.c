@@ -1,5 +1,15 @@
 #include "common.h"
 
+extern s32 D_0058BF30[];
+extern u8 D_0046AC18[];
+extern u8 D_0046AC28[];
+s32 func_0021C360(s32);
+void func_00127488(void *, void *, s32);
+void func_0023A000(void *, s32);
+void func_0023A3B0(void);
+void func_00239F60(void);
+void func_00239E80(void);
+
 typedef struct Arr6 {
     s32 v[6];
 } Arr6;
@@ -61,7 +71,7 @@ extern u8 D_0058CAB0[];
 extern u8 D_0058CF30[];
 extern u8 D_0046AD80[];
 extern u8 D_0046AD88[];
-void amTask_Create(void (*)(void), s32, s32, s32, s32, u8 *);
+s32 amTask_Create(void (*)(void), void (*)(void), s32, s32, s32, void *);
 void func_002454B0(void);
 void func_002453D0(void);
 void func_00248CC0(void);
@@ -114,7 +124,6 @@ extern u8 D_0046ACE0[];
 extern u8 D_0046ACF0[];
 extern u8 *D_0051CD00[];
 void amTask_KillGroup(s32, s32, s32);
-void amTask_Create(void (*)(void), s32, s32, s32, s32, u8 *);
 void func_00209450(s32, s32);
 void func_0021B080(void);
 void func_00243020(void);
@@ -182,7 +191,29 @@ void func_00244CC0(s32, s32);
 void func_00244D80(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023A890);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023AA50);
+void func_0023AA50(s32 id, s32 y) {
+    u8 loc[0x10];
+    s32 k;
+    u8 *s2;
+    u8 *s0;
+
+    k = func_0021C360(id);
+    s2 = (u8 *)&D_0058BF30[k];
+    if (*(s32 *)s2 == 0) {
+        func_00127488(loc, D_0046AC18, k);
+        *(s32 *)s2 = amTask_Create(func_0023A3B0, func_00239F60, 0x5410, 0x1000, 0x2000000, loc);
+        s2 = (u8 *)*(s32 *)s2 + 0x30;
+        memset(s2, 0, 0x28);
+        *(s32 *)(s2 + 4) = k;
+        *(s32 *)(s2 + 8) = y;
+        func_0023A000(s2, 0);
+        func_00127488(loc, D_0046AC28, k);
+        *(s32 *)(s2 + 0x20) = amTask_Create(func_00239E80, 0, 0x3A10, 0x1000, 0x2000000, loc);
+        s0 = (u8 *)*(s32 *)(s2 + 0x20) + 0x30;
+        memset(s0, 0, 4);
+        *(s32 *)s0 = (s32)s2;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023AB60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023AEE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B080);
