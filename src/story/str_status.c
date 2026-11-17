@@ -1,9 +1,13 @@
 #include "common.h"
+#include "menu/mn_TourMode.h"
+#include "story/str_status.h"
 
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD140);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD3A0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD400);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD500);
+void StrStatus_ClearWork(void) {
+    D_00470910 = NULL;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD510);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD660);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD6B0);
@@ -44,8 +48,12 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C02C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0470);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0490);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C04A0);
+void func_002C0490(void *p, s16 v) {
+    ((s32 *)p)[0xF] = v;
+}
+void *func_002C04A0(void) {
+    return NULL;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C04B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0510);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0630);
@@ -57,7 +65,11 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1320);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C15E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1720);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1860);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C19F0);
+extern void func_0022C700(Task *);
+
+void func_002C19F0(Task *task) {
+    func_0022C700(task);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1A00);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1AA0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1BC0);
@@ -76,5 +88,9 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C32C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3A10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3B40);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3D20);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3E30);
+extern TourModeGlobal *gTourMode;
+
+void StrStatus_ClearTourMode(void) {
+    gTourMode = NULL;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3E40);

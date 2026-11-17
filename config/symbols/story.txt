@@ -55,3 +55,9 @@ StrSelect_Exit = 0x002EC620; // type:func
 StrSelect_Start = 0x002EC710; // type:func
 StrSelect_Load = 0x002EC7D0; // type:func
 gStrSelect = 0x0047095C; // size:0x4
+
+// str_status.c: the story status work block (D_00470910, kept under its address name, used by unk_307270 too).
+// StrStatus_ClearWork forgets the block (its memory is freed elsewhere); StrStatus_ClearTourMode forgets the
+// tournament mode's block (gTourMode).
+StrStatus_ClearWork = 0x002BD500; // type:func guess
+StrStatus_ClearTourMode = 0x002C3E30; // type:func guess
