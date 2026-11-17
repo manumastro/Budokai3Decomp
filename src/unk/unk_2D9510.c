@@ -129,7 +129,43 @@ void func_002D9930(void) {
         s->f354 = func_002D96D0;
     }
 }
+extern void func_00228430(s32);
+extern void func_00227A30(u8 *);
+extern void func_0022C060(f32, s32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+extern void amModel_SetCurrent(s32, s32);
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D99A0);
+#if 0
+// differs: the asm has two dead blocks after unconditional b (a jal func_00227A30 and an lqc2 from address 0 with r(0)); goto and if(1) else both drop them. The twins 2D9C20, 2D9F80, 2DA310 have the same shape
+void func_002D99A0(void) {
+    u8 *s1 = (u8 *)gOptionWork;
+    u8 *s0 = *(u8 **)(s1 + 0x268);
+    func_00228430(0);
+    func_00228430(0);
+    if (1) {
+    } else {
+        func_00227A30(s0);
+    }
+    D_00470704 = *(s32 *)(s1 + 0xC);
+    D_00470708 = 0;
+    D_0047070C = 0;
+    amModel_SetCurrent(D_00470704, 0);
+    D_00470238 = 0;
+    func_0022C060(1.0f, (s32)s0);
+    func_00228410();
+    goto L9A28;
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(0), "r"(*(u8 **)(s0 + 0x30) + 0x50) : "memory");
+L9A28:
+    func_0022CD00((s32)s0);
+    func_00228410();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9A50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9C20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9CD0);
