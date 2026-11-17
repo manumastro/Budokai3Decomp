@@ -17,14 +17,18 @@ typedef struct Ev2AE {
 extern s32 D_004708FC;
 extern void A2d_SetMode(s32);
 extern void func_00228430(s32);
-extern void func_002AF420(Ac2AE *);
+extern s32 func_002AF420();
+extern void A2d_FlushList();
 extern s32 func_002AEFD0(Ac2AE *);
 extern u8 D_005BCD20[];
 extern u8 D_005BC9E0[];
 extern u8 D_005BC180[];
+extern u8 D_005BC440[];
+extern void amNode_Free(void *);
+extern void func_0022D0E0(s32, s32);
 extern void amCdFs_ReleaseCache(void *);
 extern void amHeap_Free(void *);
-extern void func_002AE810(void *);
+extern void func_002AE810(u8 *);
 extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
@@ -32,12 +36,51 @@ extern s32 D_00470238;
 extern void func_00228410();
 extern void amModel_SetCurrent(s32);
 extern s32 func_002AF0A0(Ac2AE *, Ev2AE *);
+extern s32 func_002AF220(Ac2AE *, Ev2AE *);
 extern void func_00227A30(u8 *);
 extern void func_0022C060(f32, s32);
 extern void func_0022CD00(s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AE760);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AE810);
+void func_002AE810(u8 *a0) {
+    s32 j;
+    s32 i;
+    void *q;
+
+    if (*(u8 **)(a0 + 0xC) != NULL) {
+        for (j = 0; j < *(s32 *)(*(u8 **)(a0 + 0xC) + 0x10); j++) {
+            func_0022D0E0((*(s32 **)(a0 + 0x20))[j], 1);
+        }
+        for (i = 0; i < *(s32 *)(*(u8 **)(a0 + 0xC) + 0x18); i++) {
+            func_0022D0E0((*(s32 **)(a0 + 0x24))[i], 1);
+        }
+        q = *(void **)(a0 + 0x4);
+        if (q != NULL) {
+            amCdFs_ReleaseCache(q);
+            *(s32 *)(a0 + 0x4) = 0;
+        }
+        q = *(void **)(a0 + 0x20);
+        if (q != NULL) {
+            amHeap_Free(q);
+            *(s32 *)(a0 + 0x20) = 0;
+        }
+        q = *(void **)(a0 + 0x24);
+        if (q != NULL) {
+            amHeap_Free(q);
+            *(s32 *)(a0 + 0x24) = 0;
+        }
+        memset(*(void **)(a0 + 0xC), 0, 0x30);
+    }
+    q = *(void **)(a0 + 0x8);
+    if (q != NULL) {
+        q = *(void **)a0;
+        if (q != NULL) {
+            amCdFs_ReleaseCache(q);
+            *(s32 *)a0 = 0;
+        }
+        memset(*(void **)(a0 + 0x8), 0, 0x20);
+    }
+}
 s32 func_002AE970(s32 **a0, u8 *a1) {
     s32 idx;
     s32 k;
@@ -80,7 +123,41 @@ s32 func_002AEA40(s32 **a0, u8 *a1) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AEB60);
+s32 func_002AEB60(s32 **a0, u8 *a1) {
+    s32 idx;
+    s32 k;
+    s32 off;
+    u8 *p;
+    void *q;
+
+    idx = **(s32 **)(a1 + 0x2C);
+    if (idx != -1) {
+        p = (u8 *)(((idx + 1) * 48) + (D_005BC440 + **a0 * 144));
+        q = *(void **)p;
+        if (q != NULL) {
+            amCdFs_ReleaseCache(q);
+        }
+        q = *(void **)(p + 8);
+        if (q != NULL) {
+            amNode_Free(q);
+        }
+        memset(p, 0, 48);
+    } else {
+        for (k = 0, off = 0; k < 3; k++, off += 48) {
+            p = (u8 *)(off + (D_005BC440 + **a0 * 144));
+            q = *(void **)p;
+            if (q != NULL) {
+                amCdFs_ReleaseCache(q);
+            }
+            q = *(void **)(p + 8);
+            if (q != NULL) {
+                amNode_Free(q);
+            }
+            memset(p, 0, 48);
+        }
+    }
+    return 1;
+}
 s32 func_002AECA0(s32 **a0, u8 *a1) {
     s32 idx;
     s32 k;
@@ -291,11 +368,91 @@ s32 func_002AF220(Ac2AE *o, Ev2AE *e) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF220);
+/* differs: 20 of 57 instructions: same family as func_002AF220 (the original loads t0[4], t0[0] into $f1, **a0, then
+   t0[1] and t0[2]; the compiler orders the loads by the expression tree; the statement orders tried put 16-24 differing) */
+#if 0
+s32 func_002AF330(Ac2AE *o, Ev2AE *e) {
+    f32 *p;
+    f32 v[4];
+    u8 *s1;
+    s32 idx;
+
+    p = e->f2C;
+    s1 = D_005BCD20 + (**(s32 **)o) * 160 + ((s32 *)p)[4] * 40;
+    idx = ((s32 *)p)[3];
+    o->f30 = p[2];
+    v[0] = p[1];
+    ((s32 *)v)[2] = 0;
+    v[1] = p[0];
+    v[3] = 1.0f;
+    func_00228430(0);
+    func_00227A30((u8 *)v);
+    func_0022C060(1.0f, (*(s32 **)(s1 + 0x20))[idx]);
+    func_00228410();
+    func_0022CD00((*(s32 **)(s1 + 0x20))[idx]);
+    o->f10 = (void *)func_002AF220;
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF330);
+/* differs: 114 of 138 instructions (the first load of the list and the second A2d/amModel block are in another order; the -1 branch and the 16-byte zero loop are unverified); draft below */
+#if 0
+s32 func_002AF420(Ac2AE *o, Ev2AE *e) {
+    f32 *p;
+    f32 lf;
+    u8 *s2;
+    s32 idx;
+    s32 k;
+    u8 buf[16];
+    f32 d;
+
+    p = e->f2C;
+    lf = p[0];
+    idx = ((s32 *)p)[2];
+    s2 = D_005BCD20 + (**(s32 **)o) * 160 + ((s32 *)p)[3] * 40;
+    A2d_SetMode(D_004708FC);
+    D_00470704 = ((s32 *)s2)[2];
+    D_0047070C = ((s32 *)s2)[5];
+    amModel_SetCurrent(((s32 *)s2)[2]);
+    D_00470708 = ((s32 *)s2)[4];
+    func_00228430(0);
+    D_00470238 = ((s32 *)s2)[4];
+    if (idx == -1) {
+        for (k = 0; k < *(s32 *)(*(u8 **)(s2 + 0xC) + 0x18); k++) {
+            func_00228430(0);
+            func_0022C060(1.0f, (*(s32 **)(s2 + 0x24))[k]);
+            func_00228410();
+            func_0022CD00((*(s32 **)(s2 + 0x24))[k]);
+        }
+    } else {
+        func_00228430(0);
+        for (k = 0; k < 16; k++) {
+            buf[k] = 0;
+        }
+        *(f32 *)(buf + 8) = lf;
+        func_00227A30(buf);
+        func_0022C060(1.0f, (*(s32 **)(s2 + 0x24))[idx]);
+        func_00228410();
+        func_0022CD00((*(s32 **)(s2 + 0x24))[idx]);
+    }
+    func_00228410();
+    A2d_FlushList();
+    d = o->f30;
+    if (d <= -2.0f) {
+        return 3;
+    }
+    if (d <= 0.0f) {
+        o->f10 = NULL;
+        return 1;
+    }
+    o->f30 = d - 1.0f;
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF420);
 void func_002AF630(Ac2AE *o, Ev2AE *e) {
     o->f30 = e->f2C[1];
     o->f10 = (void *)func_002AF420;
-    func_002AF420(o);
+    func_002AF420(o, e);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF650);
