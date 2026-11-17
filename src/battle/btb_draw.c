@@ -2616,6 +2616,103 @@ extern u64 D_00511440[];
 void func_001F0510(s32 a0) {
     D_00511440[0] |= 1 << a0;
 }
+typedef struct Copy16B {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Copy16B;
+extern s32 D_004E6560[];
+extern s32 D_004B4C00[];
+extern Copy16B D_004E65E0[];
+extern Copy16B D_004B4C80[];
+extern u64 D_00511440[];
+extern s32 D_00511448[];
+extern s32 D_0051144C[];
+extern s8 D_00511450[];
+extern u64 D_004DFAE0[];
+extern s32 D_004DFAE8[];
+extern s32 D_004DFAEC[];
+extern s8 D_004DFAF0[];
+extern s8 D_00511451[];
+extern s8 D_004DFAF1[];
+extern s8 D_00511479[];
+extern s8 D_004DFB19[];
+extern s8 D_004B4B65[];
+
+// differs: copy loops: loops 1, 2 and the scalar copies match; loops 3 and 4 get other registers (original src a3 dst a2 count a1, then a1/a0/a2); 56 of 76 differ with declaration variants
+#if 0
+void func_001F0530(void) {
+    s32 *s;
+    s32 *d;
+    s32 n;
+    Copy16B *s2;
+    Copy16B *d2;
+    u64 q;
+    s32 w;
+    s32 x;
+    s8 y;
+    s8 *c3;
+    s8 *e3;
+    s32 n3;
+    s8 *c4;
+    s8 *e4;
+    s32 n4;
+
+    s = D_004E6560;
+    d = D_004B4C00;
+    n = 0x10;
+    do {
+        d[0] = s[0];
+        d[1] = s[1];
+        s += 2;
+        d += 2;
+        n--;
+    } while (n > 0);
+
+    s2 = D_004E65E0;
+    d2 = D_004B4C80;
+    n = 0x1573;
+    do {
+        d2[0] = s2[0];
+        d2[1] = s2[1];
+        s2 += 2;
+        d2 += 2;
+        n--;
+    } while (n > 0);
+
+    q = D_00511440[0];
+    w = D_00511448[0];
+    x = D_0051144C[0];
+    y = D_00511450[0];
+    D_004DFAE0[0] = q;
+    D_004DFAE8[0] = w;
+    D_004DFAEC[0] = x;
+    D_004DFAF0[0] = y;
+
+    c3 = D_00511451;
+    e3 = D_004DFAF1;
+    n3 = 0x14;
+    do {
+        e3[0] = c3[0];
+        e3[1] = c3[1];
+        c3 += 2;
+        e3 += 2;
+        n3--;
+    } while (n3 > 0);
+
+    c4 = D_00511479;
+    e4 = D_004DFB19;
+    n4 = 0x130;
+    do {
+        e4[0] = c4[0];
+        e4[1] = c4[1];
+        c4 += 2;
+        e4 += 2;
+        n4--;
+    } while (n4 > 0);
+
+    D_004B4B65[0] = 1;
+}
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0530);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0660);
 extern s8 D_004B4BB0[];
@@ -3224,7 +3321,24 @@ void func_001F5F50(BtbObj *o) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5FD0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6140);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F62A0);
+extern void memset(void *, s32, s32);
+extern char D_00511770[];
+extern BtbObj *D_0051C770[];
+extern char D_0051CB70[];
+extern char D_0051CC20[];
+extern s32 D_0047062C;
+extern char *D_0051CB94[];
+extern char *D_0051CC48[];
+
+void func_001F62A0(void) {
+    D_0047062C = 0;
+    memset(D_00511770, 0, 0xB000);
+    memset(D_0051C770, 0, 0x400);
+    memset(D_0051CB70, 0, 0xB0);
+    memset(D_0051CC20, 0, 0xB0);
+    D_0051CB94[0] = D_0051CC20;
+    D_0051CC48[0] = D_0051CB70;
+}
 extern char *D_0051CB94[];
 extern char D_0051CC20[];
 
@@ -3257,10 +3371,68 @@ void func_001F63D0(void) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6450);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F64E0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6570);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F65F0);
+extern void func_00133780(s32, s32);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+void func_001F6450(void) {
+    char *s0;
+
+    func_00133780(2, 1);
+    s0 = D_0051CB94[0];
+    for (; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc4 *)(s0 + 0x14) != NULL && (*(s32 *)(s0 + 0x20) & 0x800) != 0) {
+            (*(ObjFunc4 *)(s0 + 0x14))(s0);
+        }
+    }
+    func_00133780(2, 0);
+}
+extern void func_00133780(s32, s32);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+void func_001F64E0(void) {
+    char *s0;
+
+    func_00133780(2, 1);
+    s0 = D_0051CB94[0];
+    for (; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc4 *)(s0 + 0x14) != NULL && (*(s32 *)(s0 + 0x20) & 0x8000) != 0) {
+            (*(ObjFunc4 *)(s0 + 0x14))(s0);
+        }
+    }
+    func_00133780(2, 0);
+}
+extern void func_00133780(s32, s32);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+void func_001F6570(void) {
+    char *s0;
+
+    s0 = D_0051CB94[0];
+    func_00133780(2, 0);
+    for (; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc *)(s0 + 0x18) != NULL && (*(s32 *)(s0 + 0x20) & 0x2800) == 0x2800) {
+            (*(ObjFunc *)(s0 + 0x18))(s0);
+        }
+    }
+}
+extern void func_00133780(s32, s32);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+void func_001F65F0(void) {
+    char *s0;
+
+    s0 = D_0051CB94[0];
+    func_00133780(2, 0);
+    for (; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc4 *)(s0 + 0x14) != NULL && (*(s32 *)(s0 + 0x20) & 0x880F) == 0) {
+            (*(ObjFunc4 *)(s0 + 0x14))(s0);
+        }
+    }
+}
 extern s32 D_00470570;
 
 void func_001F6670(void) {
@@ -3268,7 +3440,24 @@ void func_001F6670(void) {
     *(s8 *)(p - 0x768B) = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6690);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6CD0);
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void func_001F6690(void *);
+extern char D_00469888[];
+extern s32 D_00470570;
+
+void func_001F6CD0(s32 a0, s32 a1, s32 a2, f32 f12, f32 f13) {
+    char *t;
+
+    t = amTask_Create(func_001F6690, (void *)func_001F6670, 0x31FF, a2, a1, D_00469888);
+    *(s32 *)(t + 0x30) = *(s32 *)(D_00470570 + 0x238);
+    *(s32 *)(t + 0x34) = a0;
+    *(s32 *)(t + 0x38) = 0;
+    *(s32 *)(t + 0x3C) = 0;
+    *(f32 *)(t + 0x40) = f12;
+    *(f32 *)(t + 0x44) = f13;
+    *(s32 *)(t + 0x48) = 0;
+    *(s32 *)(t + 0x4C) = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6D60);
 void func_001F6E50(void) {
 }
