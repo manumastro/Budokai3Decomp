@@ -281,6 +281,65 @@ s32 func_00290AE0(s32 a0, s32 a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290AE0);
+extern void func_0028F930(void);
+extern void func_0028F720(void);
+extern void func_0028F090(void);
+extern char D_00453770[];
+extern void func_00133CE0(s32);
+extern void func_00133D10(s32);
+extern void func_00133D50(f32, f32);
+extern void func_00133D20(f32, f32);
+
+extern void func_0028F930(void);
+extern void func_0028F720(void);
+extern void func_0028F090(void);
+extern char D_00453770[];
+extern void func_00133CE0(s32);
+extern void func_00133D10(s32);
+extern void func_00133D50(f32, f32);
+extern void func_00133D20(f32, f32);
+
+#if 0
+// func_00290BB0: the state test: the original jumps to the common tail with a b after the beqz (out-of-line block); ours branches straight to the tail (bnez) and the offsets differ by two instructions; 3 forms tried
+void func_00290BB0(void) {
+    s32 *g;
+    s32 *s0;
+    s32 k;
+    s32 *e;
+    s32 x;
+    g = (s32 *)D_004708A4;
+    x = g[0x1AB0 / 4];
+    if (x == 2) {
+        goto c20;
+    }
+    if (x == 1) {
+        goto c10;
+    }
+    if (x == 0) {
+        goto be8;
+    }
+    goto c20;
+be8:
+    k = *(s8 *)((char *)g + 0x1AB5);
+    e = (s32 *)((s32 *)D_004708A4)[k];
+    if (*(s16 *)((char *)e + 4) != 3) {
+        return;
+    }
+    func_0028F930();
+c10:
+    ((s32 *)D_004708A4)[0x1AB0 / 4] = 2;
+c20:
+    g = (s32 *)D_004708A4;
+    k = *(s8 *)((char *)g + 0x1AB4);
+    s0 = (s32 *)(D_00453770 + k * 20);
+    func_00133CE0(1);
+    func_00133D10(s0[0]);
+    func_00133D50((f32)s0[1], (f32)s0[2]);
+    func_00133D20(*(f32 *)&s0[3], *(f32 *)&s0[4]);
+    func_0028F720();
+    func_0028F090();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290BB0);
 s32 func_00290C90(void) {
     s32 *g = (s32 *)D_004708A4;
