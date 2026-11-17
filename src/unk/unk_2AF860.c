@@ -27,18 +27,17 @@ void func_002AF860(u8 *a, u8 *b) {
     *(void **)(a + 0x10) = func_002AF650;
     func_002AF650(a, b);
 }
-#if 0
 s32 func_002AF880(s32 **a, u8 *b) {
     u8 *p = *(u8 **)(b + 0x2C);
-    u8 *e = D_005BCD20 + **a * 40 + *(s32 *)(p + 0xC) * 160;
-    *(s32 *)(e + 0x18) = *(s32 *)(p + 8);
-    *(s32 *)(e + 0x10) = *(s32 *)(p + 4);
-    *(s32 *)(e + 0x14) = *(s32 *)(p + 0);
+    u8 *e = D_005BCD20 + **a * 160 + *(s32 *)(p + 0xC) * 40;
+    s32 v8 = *(s32 *)(p + 8);
+    s32 v4 = *(s32 *)(p + 4);
+    s32 v0 = *(s32 *)(p + 0);
+    *(s32 *)(e + 0x18) = v8;
+    *(s32 *)(e + 0x10) = v4;
+    *(s32 *)(e + 0x14) = v0;
     return 1;
 }
-// differs: the table stores come in the order 0x18, 0x10, 0x14 with the loads of the fields between them; this build hoists all the field loads above the stores
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002AF880);
 #if 0
 s32 func_002AF8E0(u8 *a, u8 *b) {
     s32 r = 3;
@@ -246,25 +245,22 @@ s32 func_002B0130(u8 *a, u8 *b) {
     return 3;
 }
 s32 func_002B0190(u8 *a, u8 *b) {
-    s32 r = 3;
     u8 *pa = *(u8 **)a;
     u8 *f = *(u8 **)(a + 0x1C);
     u8 *q = *(u8 **)(b + 0x2C);
-    switch (*(s16 *)(f + 4)) {
-    case 3:
-        *(s32 *)(a + 0x10) = 0;
-        func_002A9C00(*(s32 *)pa, *(s32 *)b, *(s32 *)q, *(void **)(f + 0x40), *(s32 *)(*(u8 **)(f + 0x40) + 0x50));
-        *(void **)(f + 0x40) = NULL;
-        amCdFs_Close(f, 0);
-        if (*(void **)(a + 0x18) != NULL) {
-            amCdFs_Close(*(void **)(a + 0x18), 0);
-        }
-        *(s32 *)(a + 0x18) = 0;
-        *(s32 *)(a + 0x1C) = 0;
-        r = 1;
-        break;
+    if (*(s16 *)(f + 4) != 3) {
+        return 3;
     }
-    return r;
+    *(s32 *)(a + 0x10) = 0;
+    func_002A9C00(*(s32 *)pa, *(s32 *)b, *(s32 *)q, *(void **)(f + 0x40), *(s32 *)(*(u8 **)(f + 0x40) + 0x50));
+    *(void **)(f + 0x40) = NULL;
+    amCdFs_Close(f, 0);
+    if (*(void **)(a + 0x18) != NULL) {
+        amCdFs_Close(*(void **)(a + 0x18), 0);
+    }
+    *(s32 *)(a + 0x18) = 0;
+    *(s32 *)(a + 0x1C) = 0;
+    return 1;
 }
 s32 func_002B0230(u8 *a, u8 *b) {
     *(s32 *)b = *(s32 *)(*(u8 **)(b + 0x2C) + 8);
@@ -453,6 +449,48 @@ s32 func_002B0CA0(u8 *s, s32 n) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0CA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0E00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1160);
+#if 0
+s32 func_002B1590(u8 *s) {
+    s32 *arr = (s32 *)(s + 0xB8);
+    s32 a2 = arr[0];
+    s32 a3 = *(s32 *)(s + 0x20);
+    s32 t0 = 0;
+    s32 t4 = 0;
+    s32 t2;
+    s32 j;
+    if (a2 == 0) {
+        return 0;
+    }
+    if (a2 > 0) {
+        do {
+            t0 += *(u8 *)(D_004E0660 + arr[t4 + 1] * 40 + 8) & 7;
+            if (t0 == a3) {
+                break;
+            }
+            t4++;
+        } while (t4 < a2);
+    }
+    if (t0 >= 7) {
+        return 0;
+    }
+    if (t4 < a2 - 1) {
+        t2 = 0;
+        if (a2 > 0) {
+            for (j = 0; j < a2; j++) {
+                if (t4 + 1 < j) {
+                    break;
+                }
+                t2 += *(u8 *)(D_004E0660 + arr[j + 1] * 40 + 8) & 7;
+            }
+        }
+        *(s32 *)(s + 0x20) = t2;
+        return 1;
+    }
+    *(s32 *)(s + 0x20) = t0 + 1;
+    return 1;
+}
+// differs: 0x118 against 0x120 bytes (2 instructions short): the first loop (the byte count of the entries until the total reaches the stored value) and the second loop (the byte sum over the first entries) are right; the loop shapes (pointer walk, do-while, a guard) tried: 0x108 to 0x118.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1590);
 #if 0
 s32 func_002B16B0(u8 *a) {
@@ -571,6 +609,43 @@ s32 func_002B1C60(u8 *s) {
 // differs: 8 of 65 instructions differ: the original keeps the halfword field pointer (s1+0x1A) in $a1 from the first compare (delay slot of its beqz); with a pointer declared early or used only in the H<9 arm the compiler folds it into lh 0x1A(s1). Tried 3 variants.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1C60);
+#if 0
+void func_002B1D70(u8 *s) {
+    s32 idx = *(s32 *)(s + 0x24);
+    u64 mask = (u64)1 << *(s32 *)(s + 0x1C);
+    u8 *p = s + idx * 28 + 0x48;
+    s16 *t3 = (s16 *)(p + 8);
+    u8 *a3 = D_004E0688;
+    u8 *bp = *(u8 **)(gSklEdit + 0x44) + 1;
+    s32 a1 = 0;
+    s32 v1 = 0;
+    s32 j;
+    for (j = 1; j < 0x253; j++) {
+        if ((*(u64 *)a3 & mask) != 0 && (a3[0xA] & 3) == idx && (a3[8] & 7) != 0 && *bp != 0) {
+            if (a1 >= *(s32 *)p) {
+                if (v1 < 9) {
+                    *t3 = (s16)j;
+                }
+                t3++;
+                v1++;
+            } else {
+                a1++;
+            }
+        }
+        a3 += 0x28;
+        bp++;
+    }
+    *(s16 *)(p + 0x1A) = (s16)(*(s32 *)p + v1);
+    if (v1 < 9) {
+        do {
+            *t3 = -1;
+            t3++;
+            v1++;
+        } while (v1 < 9);
+    }
+}
+// differs: 0x110 against 0x120 bytes (4 instructions short): the same skill-table loop as func_002B1B10; the counters sit in the other registers (the original reuses a1 for the store count and adds j+1 in the store arm). Declaration orders and the signed byte test tried.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1D70);
 extern u8 *D_004706CC;
 void func_002B1E90(u8 *d, u8 *b, s32 idx, s32 flags) {

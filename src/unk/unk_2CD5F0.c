@@ -746,6 +746,36 @@ void func_002CF6E0(s32 i, s32 kind) {
         break;
     }
 }
+extern u8 D_00456A30[];
+extern void func_001E9B00(s32, s32, s32, s32, f32, f32);
+typedef struct {
+    s32 w[4];
+} __attribute__((aligned(16))) Q16;
+typedef struct {
+    Q16 q[2];
+    s32 tail[2];
+} Tab40;
+#if 0
+void func_002CF750(s32 a0p, s32 idx, s32 a2p) {
+    Tab40 T;
+    s32 L[6];
+    s32 fn;
+    s32 r;
+    T = *(Tab40 *)D_00456A30;
+    L[0] = a0p;
+    L[1] = a2p;
+    fn = ((s32 *)&T)[idx];
+    if (fn != 0) {
+        r = ((s32 (*)(s32 *))fn)(L);
+        if (r != 0) {
+            func_001E9B00(0, L[2], L[4], *(s32 *)(D_005C2074 + a0p * 40), *(f32 *)&L[3], *(f32 *)&L[5]);
+        }
+    } else {
+        func_001E9B00(0, idx, 0, 0, 0.0f, 1.0f);
+    }
+}
+// differs: 10 of 50 instructions differ: the table copy is lq, lq, ld in the original (a 40-byte table) and lq, lq, lq here whatever the struct shape (12 words aligned 16, 3 quadword members, 2 quadwords plus 2 words); the rest (jalr, the 40-byte index into D_005C2074, the 1.0/0.0 call) matches.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF750);
 #if 0
 void func_002CF820(void) {
