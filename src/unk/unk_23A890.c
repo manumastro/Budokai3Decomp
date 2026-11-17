@@ -1,5 +1,21 @@
 #include "common.h"
 
+extern s32 D_0051CD0C[];
+extern s32 D_0051CD20[];
+s32 func_001A50F0(s32, s32);
+void func_001F7DB0(void);
+void func_001F7BF0(void);
+void func_001F7820(void);
+void func_001F7690(void);
+void func_001F6E50(void);
+void func_001F6D60(void);
+void func_001F5EF0(s32, s32);
+void func_001F5B70(s32);
+void func_001F7470(s32);
+void amCdFs_ReleaseCache(s32);
+void amCdFs_Close(s32, s32);
+void amHeap_Free(void *);
+
 extern u8 *D_0046FE44;
 extern u8 D_004505F0[];
 extern u8 D_00450470[];
@@ -225,6 +241,25 @@ u8 *func_00240F40(s32 i, s32 kind) {
     return r;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00240FF0);
+#if 0
+s32 func_00241010(s32 i) {
+    u8 *base = D_00470570 + i * 0x2020;
+    u8 *q = base + 0x830;
+    s32 t = *(s32 *)(base + 0x252C);
+    s32 r = 0;
+    u8 *o;
+
+    if ((u32)(t - 0x28) < 2 || t == 0x12 || t == 5 || (u32)(t - 0x14) < 2 || t == 0x23 ||
+        (u32)(*(s32 *)(q + 0xB9C) - 0x46) < 2 || *(s32 *)(q + 0xB9C) == 0x5C) {
+        o = D_0046FE4C + i * 0x480;
+        if (*(s32 *)(o + 0x24) != -1 && *(s32 *)(o + 0x24) != *(s32 *)(o + 0x48)) {
+            r = 1;
+        }
+    }
+    return r == 0;
+}
+// differs: the early-exit chain is laid out differently (sltiu into at, and the loads reordered)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241010);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002410D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241280);
@@ -234,10 +269,63 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241710);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241AC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241C10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241D60);
+#if 0
+void func_00241EB0(s32 i, s32 mode) {
+    u8 *q = D_00470570 + i * 0x2020 + 0x830;
+    u8 *e = D_0046FE44 + i * 0x80;
+
+    switch (mode) {
+    case 0:
+    case 1:
+        if (*(s8 *)(q + 0xCBD) != 0) {
+            *(s32 *)(e + 0x2C) |= 1;
+        } else {
+            *(s32 *)(e + 0x2C) &= ~1;
+        }
+        *(s32 *)(e + 0x2C) &= ~8;
+        break;
+    case 2:
+        *(s32 *)(e + 0x2C) &= ~1;
+        *(s32 *)(e + 0x2C) |= 8;
+        break;
+    case 3:
+        *(s32 *)(e + 0x2C) |= 1;
+        *(s32 *)(e + 0x2C) |= 8;
+        break;
+    }
+}
+// differs: the mode chain is laid out in another order (the mode 3 test first, the mode 0/1 block placed last)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241EB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241FA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002420F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242290);
+#if 0
+void func_00242490(s32 i) {
+    s32 k;
+    s32 *e;
+
+    e = (s32 *)(D_0046FE48 + i * 0x1A4);
+    if (e[1] != 0) {
+        amCdFs_ReleaseCache(e[0]);
+        e[0] = 0;
+        e[1] = 0;
+    } else {
+        if (e[0] != 0) {
+            amCdFs_Close(e[0], 0);
+            e[0] = 0;
+        }
+    }
+    for (k = 0; k < 0x30; k++) {
+        if (*(s32 *)((u8 *)e + 0xD4) != 0) {
+            amHeap_Free(*(void **)((u8 *)e + 0xD4));
+        }
+        *(s32 *)((u8 *)e + 0xD4) = 0;
+        e++;
+    }
+}
+// differs: the loop pointer and the counter take the other saved registers (the frame is 0x40 here, 0x30 in the original)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242490);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242540);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242870);
@@ -520,6 +608,29 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247FF0);
 void func_00248350(s32 x) {
     D_00470734 = x;
 }
+#if 0
+void func_00248360(void) {
+    s32 s0;
+
+    func_001F7DB0();
+    func_001F7BF0();
+    func_001F7820();
+    func_001F7690();
+    func_001F6E50();
+    func_001F6D60();
+    s0 = D_0051CD0C[0];
+    if (D_0051CD20[0] != 0) {
+        return;
+    }
+    func_001F5EF0(3, 1);
+    s0 = func_001A50F0(s0, 0x27F);
+    *(s32 *)(*(s32 *)(s0 + 0x10)) = s0;
+    *(s16 *)(*(s32 *)(s0 + 0x10) + 0xE) = 1;
+    func_001F5B70(s0);
+    func_001F7470(0);
+}
+// differs: the early return is laid out as a branch to the end (beqz then b), and the call result is kept in s0 across the store
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248360);
 #if 0
 void func_00248410(void) {

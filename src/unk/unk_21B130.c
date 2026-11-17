@@ -5,6 +5,7 @@ extern s32 D_00470680;
 extern s32 D_00470684;
 extern s32 D_00470688;
 extern s32 D_00470698;
+extern s32 D_004706A0;
 extern s32 D_0046A470[];
 extern void memset(void *, s32, s32);
 extern void func_00133780(s32, s32);
@@ -23,8 +24,71 @@ extern s32 D_00470684;
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B1E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
+#if 0
+s32 func_0021B540(void) {
+    s32 r = 0;
+    s32 *p = &D_00470698;
+    s32 *tbl = D_0046A470;
+    s32 f;
+
+    f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
+    if (f != 0) {
+        *p = f;
+        r = f;
+    }
+    f = amCdFs_ReadFileId(0x10001, 0, 0);
+    if (f != 0) {
+        D_004706A0 = f;
+        r = f;
+    }
+    return r;
+}
+// differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B540);
+#if 0
+s32 func_0021B5D0(void) {
+    s32 r = 0;
+    s32 *p = &D_00470698;
+    s32 *tbl = D_0046A470;
+    s32 f;
+
+    f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
+    if (f != 0) {
+        *p = f;
+        r = f;
+    }
+    f = amCdFs_ReadFileId(0x10003, 0, 0);
+    if (f != 0) {
+        D_004706A0 = f;
+        r = f;
+    }
+    return r;
+}
+// differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B5D0);
+#if 0
+s32 func_0021B660(void) {
+    s32 r = 0;
+    s32 *p = &D_00470698;
+    s32 *tbl = D_0046A470;
+    s32 f;
+
+    f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
+    if (f != 0) {
+        *p = f;
+        r = f;
+    }
+    f = amCdFs_ReadFileId(0x10002, 0, 0);
+    if (f != 0) {
+        D_004706A0 = f;
+        r = f;
+    }
+    return r;
+}
+// differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B660);
 #if 0
 s32 func_0021B6F0(void) {
