@@ -12,6 +12,10 @@ extern void (*D_0046A780[])(s32 *);
 extern void amNode_Free(void *);
 extern void amHeap_Free(void *);
 extern void func_002361F0(void);
+extern void func_0022C560(s32);
+extern void memset(void *, s32, s32);
+extern void func_00253FC0(s32, s32 *);
+extern s32 D_0046FDFC;
 
 // GIVEN UP: the frame is right; the original is 16 bytes longer: its labels after the return-0 branch are padded differently
 #if 0
@@ -306,9 +310,59 @@ void func_002378A0(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002378F0);
+// func_00237AE0: differs: 1 of 49 instructions (the index add operand order)
+#if 0
+void func_00237AE0(u8 *a0) {
+    s32 s1;
+    s32 buf[16];
+    s1 = D_0046FDFC;
+    func_0022C560(*(s32 *)(a0 + 0x10));
+    if (*(f32 *)a0 < 8.0f) {
+        return;
+    }
+    s1 = *(s32 *)(s1 + *(s32 *)(a0 + 0x20) * 4 + 0xEC0);
+    memset(buf, 0, 0x40);
+    *(f32 *)&buf[4] = 1.0f;
+    *(f32 *)&buf[5] = 1.0f;
+    *(f32 *)&buf[6] = 1.0f;
+    *(f32 *)&buf[7] = 1.0f;
+    buf[0] = 0x440D0000;
+    buf[1] = 0x43B98000;
+    buf[12] = buf[12] | 0x30001;
+    *(s16 *)&buf[13] = *(s32 *)(a0 + 0x24);
+    func_00253FC0(s1, buf);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237AE0);
+
+
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237BB0);
+// func_00237E00: differs: 11 of 47 instructions (register choice, the order of the constant stores, the index add)
+#if 0
+void func_00237E00(u8 *a0) {
+    s32 s1;
+    s32 buf[16];
+    s1 = D_0046FDFC;
+    func_0022C560(*(s32 *)(a0 + 0x10));
+    if (*(f32 *)a0 < 8.0f) {
+        return;
+    }
+    s1 = *(s32 *)(s1 + *(s32 *)(a0 + 0x20) * 4 + 0xEC0);
+    memset(buf, 0, 0x40);
+    buf[12] = buf[12] | 0x20000;
+    *(f32 *)&buf[0] = 36.0f;
+    buf[1] = 0x43B98000;
+    *(f32 *)&buf[4] = 1.0f;
+    *(f32 *)&buf[5] = 1.0f;
+    *(f32 *)&buf[6] = 1.0f;
+    *(f32 *)&buf[7] = 1.0f;
+    *(s16 *)&buf[13] = *(s32 *)(a0 + 0x24);
+    func_00253FC0(s1, buf);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237E00);
+
+
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237EC0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002380F0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238200);

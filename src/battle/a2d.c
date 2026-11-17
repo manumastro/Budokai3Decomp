@@ -19,6 +19,7 @@ extern s32 D_00470714;
 extern f32 D_00470710;
 extern s8 D_004703F4;
 extern void func_0022C560(s32);
+typedef struct QuadW { s32 v[4]; } QuadW;
 extern void func_0022C9A0(s32);
 extern void func_002269B0(s32 *);
 extern void func_00226540(s32 *);
@@ -426,6 +427,31 @@ void func_00228410(void) {
     D_004706D4 -= 1;
     D_004706CC -= 0x50;
 }
+// func_00228430: differs: the branch on the first argument and the register of the copy source
+#if 0
+void func_00228430(u8 *a0, s32 a1, u8 *a2) {
+    if (a0 == 0) {
+        a0 = D_004706CC;
+        a2 = D_004706CC;
+        D_004706CC = a2 + 0x50;
+    }
+    *(f32 *)(a2 + 0x50) = *(f32 *)(a0 + 0x0);
+    *(f32 *)(a2 + 0x54) = *(f32 *)(a0 + 0x4);
+    *(f32 *)(a2 + 0x58) = *(f32 *)(a0 + 0x8);
+    *(f32 *)(a2 + 0x5C) = *(f32 *)(a0 + 0xC);
+    *(QuadW *)(a2 + 0x60) = *(QuadW *)(a0 + 0x10);
+    *(QuadW *)(a2 + 0x70) = *(QuadW *)(a0 + 0x20);
+    *(f32 *)(a2 + 0x80) = *(f32 *)(a0 + 0x30);
+    *(f32 *)(a2 + 0x84) = *(f32 *)(a0 + 0x34);
+    *(f32 *)(a2 + 0x88) = *(f32 *)(a0 + 0x38);
+    *(f32 *)(a2 + 0x8C) = *(f32 *)(a0 + 0x3C);
+    *(f32 *)(a2 + 0x90) = *(f32 *)(a0 + 0x40);
+    *(f32 *)(a2 + 0x94) = *(f32 *)(a0 + 0x44);
+    *(f32 *)(a2 + 0x98) = *(f32 *)(a0 + 0x48);
+    *(f32 *)(a2 + 0x9C) = *(f32 *)(a0 + 0x4C);
+    D_004706D4 = D_004706D4 + 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00228430);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002284D0);
 void func_002285A0(s32 *p, f32 t) {
