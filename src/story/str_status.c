@@ -894,7 +894,7 @@ extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern void func_002C0750(s32 *);
 extern void func_002C1320(s32 *);
-extern void func_002C2FF0(void);
+extern void func_002C2FF0(s32 *);
 extern void func_002C0860(s32 *);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
@@ -903,7 +903,7 @@ extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern void func_002C0750(s32 *);
 extern void func_002C1320(s32 *);
-extern void func_002C2FF0(void);
+extern void func_002C2FF0(s32 *);
 extern void func_002C0860(s32 *);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
@@ -912,7 +912,7 @@ extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern void func_002C0750(s32 *);
 extern void func_002C1320(s32 *);
-extern void func_002C2FF0(void);
+extern void func_002C2FF0(s32 *);
 extern void func_002C0860(s32 *);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
@@ -921,7 +921,7 @@ extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern void func_002C0750(s32 *);
 extern void func_002C1320(s32 *);
-extern void func_002C2FF0(void);
+extern void func_002C2FF0(s32 *);
 extern void func_002C0860(s32 *);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
@@ -1152,9 +1152,59 @@ void func_002C28A0(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C29A0);
+extern s32 amAdx_PlayAfs(s32, s32, s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
+extern void func_002C0490(void *, s16);
+extern void func_002C29A0(void);
+extern f32 D_004E0618[];
+extern f32 gFrameDelta;
+
+#if 0
+// func_002C2FF0: the pointer and the 6 of the flag take a0 and v1 the other way round (as func_002C2470); 4 tail orders tried
+void func_002C2FF0(s32 *a0) {
+    s32 *s2 = (s32 *)a0[0x30 / 4];
+    s32 *s1;
+    void *f;
+    f32 t;
+    s32 v;
+    v = s2[0x4 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x2000);
+    D_00470238 = 0;
+    v = s2[0x4 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x2000);
+    D_00470238 = 0;
+    s1 = (s32 *)s2[0x8 / 4];
+    if (s1 != 0) {
+        func_0022C060((s32)s1, 1.0f);
+        func_0022CD00((s32)s1);
+    }
+    func_002C0860(s2);
+    func_0022C700();
+    func_00133B50(0, 0);
+    t = *(f32 *)&s2[0xC4 / 4] - gFrameDelta;
+    *(f32 *)&s2[0xC4 / 4] = t;
+    if (t <= 0.0f) {
+        v = amAdx_PlayAfs(1, 0x2119D, 0);
+        s2[0xC8 / 4] = v;
+        amAdx_SetVolume(s2[0xC8 / 4], D_004E0618[0]);
+        amAdx_Pause(s2[0xC8 / 4], 0);
+        func_002C0490((void *)s2[0x9C / 4], 4);
+        f = (void *)func_002C29A0;
+        *(u8 *)((char *)s2 + 0xAF) = 6;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2FF0);
 extern void func_002C15E0(s32 *);
-extern void func_002C2FF0(void);
+extern void func_002C2FF0(s32 *);
 extern f32 gFrameDelta;
 
 void func_002C3120(s32 *a0) {

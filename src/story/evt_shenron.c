@@ -32,6 +32,39 @@ void func_00306210(void) {
     }
 }
 
+extern void func_00133B50(s32, s32);
+extern void func_003053D0(s32 *, s32, s32, s32);
+extern void func_00305680(void);
+extern f32 D_004E0614[];
+extern void func_00143F20(f32, s32);
+extern void func_00143D60(s32, s32, s32, s32);
+extern void amTask_Kill(void *);
+extern s8 D_004B4B63[];
+extern char D_00492FCE[];
+
+#if 0
+// func_003062B0: the four float constants of the stack block are stored in another order (the register of each constant swapped); 3 store orders tried; the calls and the flag test match
+void func_003062B0(s32 *a0) {
+    s32 *s1 = a0;
+    u16 s0;
+    s32 blk[4];
+    s0 = *(u16 *)(D_00492FCE + (s32)D_004B4B63[0] * 184);
+    func_00133B50(0, 0x2710);
+    blk[1] = 0x43B40000;
+    blk[0] = 0x43A00000;
+    blk[3] = 0x3F800000;
+    blk[2] = 0x41200000;
+    func_003053D0(blk, ((s32 *)D_0047097C)[0xF4 / 4], 0, 0x600000);
+    func_00305680();
+    if ((s0 & 0x4000) != 0) {
+        func_00143F20(D_004E0614[0], 0);
+        if (!(D_004E0614[0] < 0.0f)) {
+            func_00143D60(0, 0, 3, 0);
+        }
+        amTask_Kill((void *)s1);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003062B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003063B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306500);
@@ -66,7 +99,37 @@ void func_00306620(s32 *a0) {
     a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     func_00264140(-1, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003066F0);
+extern void func_00131F00(s32 *, f32, f32);
+extern void func_00132DF0(s32);
+extern void func_002641D0(s32, s32);
+extern void Scr_KillTasks(s32);
+extern s32 func_00283BF0(void);
+extern void func_00283C20(void);
+
+extern void func_00131D00(s32 *, s32, f32, f32);
+extern void func_00131F00(s32 *, f32, f32);
+extern void func_00132DF0(s32);
+extern void func_002641D0(s32, s32);
+extern void Scr_KillTasks(s32);
+extern s32 func_00283BF0(void);
+extern void func_00283C20(void);
+
+void func_003066F0(s32 *a0) {
+    s32 *s0 = (s32 *)D_0047097C;
+    s32 blk[24];
+    void *f;
+    func_00131D00(blk, 0, 0.0f, 0.0f);
+    func_00131F00(blk, 0.0f, 0.0f);
+    func_00132DF0(0);
+    if (func_00283BF0() >= 8) {
+        func_00283C20();
+        func_002641D0(9, 0);
+        Scr_KillTasks(s0[0x4 / 4]);
+        f = (void *)func_00306620;
+        s0[0x8 / 4] = 0;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003067A0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003068E0);
 #if 0
@@ -111,7 +174,50 @@ void func_00306AD0(void) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306AD0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306BF0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306D60);
-INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306F70);
+extern void func_001EF100(void);
+extern void func_00306060(void);
+extern s32 Scr_Alloc(s32, s32, s32);
+extern void func_00131B90(s32 *);
+extern void func_00131F00(s32 *, f32, f32);
+extern void func_00132DF0(s32);
+extern void Scr_SetData(s32, s32);
+extern void Scr_SetCallback44(s32, s32);
+extern void Scr_SetStartCallback(s32, s32);
+extern void Scr_SetEndCallback(s32, s32);
+extern void Scr_SetTaskStartCallback(s32, s32);
+extern void Scr_SetTaskEndCallback(s32, s32);
+extern void func_00305E90(void);
+extern void func_00305C20(void);
+extern void func_00305B60(void);
+extern char D_00454680[];
+extern void func_00306D60(s32 *);
+
+void func_00306F70(s32 *a0) {
+    s32 *s1;
+    s32 blk[24];
+    void *f;
+    if (((s16 *)(((s32 *)((s32 *)D_0047097C)[0xD0 / 4])))[2] == 3) {
+        func_001EF100();
+        func_00306060();
+        s1 = (s32 *)D_0047097C;
+        s1[0x4 / 4] = Scr_Alloc(0x3000, 1, 1);
+        func_00131B90(blk);
+        func_00131F00(blk, 0.0f, 0.0f);
+        func_00132DF0(0);
+        if (s1[0x4 / 4] != -1) {
+            Scr_SetData(s1[0x4 / 4], s1[0xD4 / 4]);
+            Scr_SetCallback44(s1[0x4 / 4], (s32)D_00454680);
+            Scr_SetStartCallback(s1[0x4 / 4], (s32)func_00305C20);
+            Scr_SetEndCallback(s1[0x4 / 4], (s32)func_00305B60);
+            Scr_SetTaskStartCallback(s1[0x4 / 4], 0);
+            Scr_SetTaskEndCallback(s1[0x4 / 4], 0);
+        }
+        func_00305E90();
+        func_00264140(-1, 0);
+        f = (void *)func_00306D60;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
 void Shenron_Clear(void) {
     D_0047097C = 0;
     D_00470980 = 0;
@@ -150,8 +256,8 @@ void func_003070A0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003070A0);
 
-extern void Scene_SetReady(void);
-extern void func_00306F70(void);
+extern void func_001F07D0(void);
+extern void func_00306F70(s32 *);
 extern s32 amTask_Create(void *, s32, s32, s32, s32, void *);
 extern char D_0046F9E8[];
 
