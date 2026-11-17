@@ -247,6 +247,53 @@ void func_00309050(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309050);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_003090F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309250);
+#if 0
+// differs: the zeroing loop: two nops before the bnez in the original (mine has them after), the reload is via a pointer addiu v1,sp,76 in the original
+extern void amModel_SetCurrent(s32, s32);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void func_00309250(void);
+extern f32 gFrameDelta;
+
+void func_003095A0(u8 *a0) {
+    s32 s2;
+    u8 *s1;
+    u8 *s0;
+    u8 *p;
+    u32 n;
+    s32 x;
+    f32 f;
+
+    s0 = *(u8 **)(a0 + 0x30);
+    n = 4;
+    p = (u8 *)&x;
+    if (p != 0) {
+        do {
+            *p++ = 0;
+            n--;
+        } while (n != 0);
+    }
+    s1 = a0;
+    x = *(s32 *)(s0 + 0x14);
+    D_00470704 = *(s32 *)(s0 + 4);
+    D_0047070C = 0x2000;
+    amModel_SetCurrent(D_00470704, 0x2000);
+    D_00470708 = 0;
+    D_00470238 = 0;
+    s2 = *(s32 *)&x;
+    if (s2 != 0) {
+        func_0022C060(s2, 1.0f);
+        func_0022CD00(s2);
+    }
+    f = *(f32 *)(s0 + 0x18) - gFrameDelta;
+    *(f32 *)(s0 + 0x18) = f;
+    if (f <= 0.0f) {
+        *(void **)(s1 + 0x1C) = ((void *)func_00309250 == 0) ? 0 : (void *)func_00309250;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_003095A0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309680);
 extern u8 *D_0047098C;

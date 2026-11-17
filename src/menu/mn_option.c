@@ -303,7 +303,46 @@ void func_002DFE20(u8 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DFEC0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0050);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0170);
+extern void *gOptionState;
+extern void func_002D2AD0(f32, f32 *, f32 *);
+extern void amTask_Kill(void *);
+extern void func_002E0050(s32);
+extern void func_002E0B70(void);
+
+void func_002E0170(u8 *a0) {
+    f32 b[4];
+    f32 a[4];
+    u8 *s1;
+    u8 *s0;
+    f32 f;
+
+    s1 = a0;
+    s0 = (u8 *)gOptionState;
+    b[2] = 1.0f;
+    b[3] = 1.0f;
+    a[2] = 1.0f;
+    a[3] = 1.0f;
+    b[1] = 40.0f;
+    b[0] = 0.0f;
+    a[0] = 540.0f;
+    a[1] = 128.0f;
+    func_002D2AD0(*(f32 *)(s0 + 0xC), b, a);
+    f = *(f32 *)(s0 + 0xC) - 0.05f;
+    *(f32 *)(s0 + 0xC) = f;
+    if (f < 0.0f) {
+        *(f32 *)(s0 + 0xC) = 0.0f;
+        if (*(s8 *)(s0 + 0x14) == 0) {
+            amTask_Kill(*(void **)(s0 + 0x18));
+            *(void **)(s0 + 0x18) = 0;
+            *(s32 *)(s0 + 0x8) = 4;
+        } else {
+            func_002E0050(0);
+            *(s8 *)(s0 + 0x14) = 1;
+            *(s32 *)(s0 + 0x10) = 0;
+            *(void **)(s1 + 0x1C) = ((void *)func_002E0B70 == 0) ? 0 : (void *)func_002E0B70;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0260);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E06A0);
 #if 0
