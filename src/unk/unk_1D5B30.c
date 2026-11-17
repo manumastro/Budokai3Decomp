@@ -2896,20 +2896,22 @@ void func_001E3930(Fighter *c) {
 }
 #if 0
 void func_001E3950(Fighter *c) {
-    f32 t;
+    f32 f;
+    f32 f2;
 
+    f2 = gBattle->f88F0;
     if (c->f2011 != 0) {
-        t = (f32)c->f185C;
-        c->f185C = (s32)(t - gBattle->f88F0);
-        if ((f32)c->f185C <= 0.0f) {
+        f = *(f32 *)((char *)c + 0x185C) - f2;
+        *(f32 *)((char *)c + 0x185C) = f;
+        if (f <= 0.0f) {
             c->f2011 = 0;
-            c->f185C = 0;
+            *(f32 *)((char *)c + 0x185C) = 0.0f;
             Fighter_ClearFlags(c, 0x4000);
         }
     }
 }
 #endif
-// differs: the float timer's int store and reload come out in another order (28 of 31 differ)
+// differs: 23 instructions against 15 differ: the original loads gBattle into a1 in the delay slot of the beqz (before the test) and the field pair in f2/f1 in that order; the C sinks the global load into the block
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3950);
 void func_001E39B0(Fighter *c) {
     c->f2011 = 0;
