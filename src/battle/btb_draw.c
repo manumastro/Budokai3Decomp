@@ -3622,8 +3622,41 @@ void func_001F1380(BtbObj *o) {
     }
 }
 #endif
-// differs: func_001F1380: 1 of 65 instructions: the table loop's break jumps straight to the join (b 0x1F1470); the original jumps to the loop-exit trampoline (b 0x1F1450). A while loop gives the same; a for with i = 0x100 instead of break gives 0xFC bytes (0x110 needed).
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1380);
+extern void amHeap_Free(void *);
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+extern f32 D_0051CD24[];
+extern void amMotion_Apply(char *, f32, f32);
+
+void func_001F1380(BtbObj *o) {
+    char *s = (char *)o + 0x30;
+    s32 i;
+    f32 f1;
+
+    if (!(D_0051CD24[0] < 0.0f)) {
+        f1 = *(f32 *)(s + 0x38) + D_0051CD24[0];
+        *(f32 *)(s + 0x38) = f1;
+        if (!(f1 < *(f32 *)(s + 0x34))) {
+            if (f1 > (f32)*(s32 *)(s + 0x30)) {
+                amHeap_Free(*(void **)(s + 0x14));
+                amHeap_Free(*(void **)(s + 0xC));
+                for (i = 0; i < 0x100; i++) {
+                    if (D_0051C770[i] == o) {
+                        o->prev->next = o->next;
+                        o->next->prev = o->prev;
+                        D_0051C770[i] = NULL;
+                        D_0047062C--;
+                        break;
+                    }
+                }
+                return;
+            } else {
+                *(f32 *)(*(char **)(s + 0x14) + 0x424) = f1;
+                amMotion_Apply(*(char **)(s + 0x14), 0.0f, 1.0f);
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1490);
 
 extern void amHeap_Free(void *);
