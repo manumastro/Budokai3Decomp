@@ -5086,6 +5086,64 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9440);
 void func_001C95F0(Fighter *f, s32 i) {
     func_0029D270(*(void **)((u8 *)f + 0x4C), ((s16 *)f)[i]);
 }
+extern void amMotion_BuildMatrices(void *o);
+extern void func_001D43F0(void *s);
+extern s32 func_0029D540(void);
+extern void func_001339B0(s32 a);
+extern void func_00133920(s32 a, s32 b, s32 c, s32 d, s32 e);
+extern s32 func_0029D4C0(void);
+extern void func_00145CC0(s32 a, s32 b);
+extern void func_00133980(f32 a, f32 b, f32 c, f32 d);
+extern s32 func_0029D8D0(void);
+extern void func_0029D4B0(s32 a);
+extern s32 func_0029D4A0(void);
+#if 0
+// differs: 34 of 138 differ: the frame is 0x30 against 0x40 (the object pointer goes to s1 with the result of the second 0x29D4C0 in s2; the original keeps the object in s0 and the result in s1); 0x4C address CSE
+void func_001C9610(void *p, s32 flag) {
+    s32 s1;
+    if (p != 0 && FT_FIELD(p, s32, 0x4C) != 0) {
+        if (flag != 0) {
+            amMotion_BuildMatrices(FT_FIELD(p, void *, 0x4C));
+        }
+        if (p != 0) {
+            func_001D43F0(FT_FIELD(p, void *, 0x58));
+            func_0013E2A0(FT_FIELD(p, s32, 0x4C));
+        }
+        if (p != 0) {
+            func_001339B0(func_0029D540());
+            func_00133920(0x13C00720, 0, 0, 0x10400200, 0);
+            func_00145CC0(FT_FIELD(p, s32, 0x5C), FT_FIELD(p, s32, 0x60));
+            func_0013E170(FT_FIELD(p, s32, 0x4C));
+            func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
+            func_00133920(0, 0x13C00720, 0, 0, 0);
+        }
+        if (p != 0) {
+            s1 = func_0029D4C0();
+            func_00133920(0x20000000, 0, 0, 0x20000000, 0);
+            amGs_SetReg64(1, s1);
+            func_00145CC0(FT_FIELD(p, s32, 0x5C), FT_FIELD(p, s32, 0x60));
+            func_0013E170(FT_FIELD(p, s32, 0x4C));
+            func_00133920(0, 0x20000000, 0, 0, 0);
+            amGs_SetReg64(1, 0x44);
+        }
+        if (p != 0) {
+            if (func_0029D8D0() & 2) {
+                if (func_0029D4C0() != 0x44) {
+                    s1 = func_0029D4C0();
+                    func_0029D4B0(0x44);
+                    func_001339B0(func_0029D4A0());
+                    func_00133920(0x10000F20, 0, 0, 0x10000A00, 0);
+                    func_00145CC0(FT_FIELD(p, s32, 0x5C), FT_FIELD(p, s32, 0x60));
+                    func_0013E170(FT_FIELD(p, s32, 0x4C));
+                    func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
+                    func_00133920(0, 0x10000F20, 0, 0, 0);
+                    func_0029D4B0(s1);
+                }
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9610);
 /* A node of a linked list of loaded files (fields inferred from func_001C9840; offsets as the code uses them). */
 typedef struct CdNode {
