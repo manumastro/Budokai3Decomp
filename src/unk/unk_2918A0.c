@@ -176,6 +176,32 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002929A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00292A40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00292FF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00293250);
+#if 0
+// differs: compiled 0xE0 bytes, original 0x100; the if on func_002B4C80 == 9 is laid out as bne with the body inline (original: beq to an out-of-line body, then b to the end)
+extern s32 func_002B4C80(s32);
+extern void func_002B4CC0(s32, s32 *);
+extern void SklEdit_Close(void);
+void func_002934F0(Work2918A0 *s) {
+    s32 tmp[8];
+    s32 i;
+
+    func_00291BF0();
+    if (func_002B4C80(0) == 9) {
+        func_002B4CC0(0, tmp);
+        SklEdit_Close();
+        for (i = 0; i < tmp[0]; i++) {
+            ((s16 *)((char *)D_005AA604[0] + 0x11F0))[i] = (s16)tmp[i + 1];
+        }
+        if (i < 7) {
+            do {
+                ((s16 *)((char *)D_005AA604[0] + 0x11F0))[i] = -1;
+                i++;
+            } while (i < 7);
+        }
+        s->f1C = (func_00294A10 == 0) ? 0 : func_00294A10;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002934F0);
 void func_002935F0(void) {
     func_00291BF0();
