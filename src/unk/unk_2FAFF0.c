@@ -383,6 +383,110 @@ s32 func_002FCF60(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCF60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD090);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD560);
+#if 0
+// differs: 122 of 138 instructions (register choice and the placement of the return-5 exit; 4 layouts tried)
+extern s8 D_005D0080[];
+extern s8 D_005D0081[];
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+
+s32 func_002FD7E0(s32 a0) {
+    s32 ret;
+    s32 t5, t4, t3, t2, t6, t8, a2, a3, v0, m;
+    u8 *t1;
+    u8 *a1;
+    u8 *gt;
+
+    if (a0 != 0) {
+        D_005D0081[0] = -1;
+        D_005D0080[0] = -1;
+    }
+    t2 = D_005CA030[0];
+    if (!(0 < t2)) {
+        goto five;
+    }
+    {
+        t6 = 0;
+        t5 = D_005D0082[0];
+        gt = (u8 *)gTourMap;
+        t8 = 1;
+        t3 = t8 << t5;
+        t4 = D_004B4B58[0];
+        a3 = 2;
+        do {
+            if (0 < t3) {
+                t1 = gt;
+                for (a2 = 0; a2 < t3; a2++, t1 += 0x14) {
+                    if (*(s16 *)(t1 + 0x2F6) != t6) {
+                        continue;
+                    }
+                    a1 = t1 + 0x2EC;
+                    v0 = a1[4];
+                    if (v0 != t8 && v0 != a3) {
+                        continue;
+                    }
+                    v0 = a1[7];
+                    if (v0 == t5) {
+                        goto five;
+                    }
+                    if (v0 != t4) {
+                        continue;
+                    }
+                    a3 = (a2 >> v0) & 1;
+                    if (a3 != 0) {
+                        m = t8 << v0;
+                        a3 = (a2 - m) >> v0;
+                        t3 = a3 << v0;
+                        a3 = t3 + m;
+                        if (t3 < a3) {
+                            t1 = gt + t3 * 20;
+                            for (t2 = t3; t2 < t3 + (t8 << v0); t2++, t1 += 0x14) {
+                                if (t1[0x2F3] == v0 && a0 != 0) {
+                                    D_005D0080[0] = t2;
+                                    D_005D0081[0] = a2;
+                                }
+                                v0 = a1[7];
+                            }
+                        }
+                    } else {
+                        m = t8 << v0;
+                        a3 = (a2 + m) >> v0;
+                        t3 = a3 << v0;
+                        a3 = t3 + m;
+                        if (t3 < a3) {
+                            t2 = t3;
+                            t1 = gt + t3 * 20;
+                            for (; t2 < t3 + (t8 << v0); t2++, t1 += 0x14) {
+                                if (t1[0x2F3] == v0 && a0 != 0) {
+                                    D_005D0080[0] = a2;
+                                    D_005D0081[0] = t2;
+                                }
+                                v0 = a1[7];
+                            }
+                        }
+                    }
+                    goto tail;
+                }
+            }
+            t6++;
+        } while (t6 < t2);
+    }
+    goto five;
+tail:
+    ret = 3;
+    if (a0 != 0) {
+        if (D_005D0080[0] == -1 && D_005D0081[0] == -1) {
+            *(s32 *)(gt + 0x70) = (s32)a1;
+            ret = 4;
+        }
+    }
+    goto out;
+five:
+    ret = 5;
+out:
+    return ret;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD7E0);
 extern u32 func_0012EAE0(s32);
 extern s16 D_0046B5B0[];
