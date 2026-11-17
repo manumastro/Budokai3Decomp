@@ -1,0 +1,24 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030D630);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030D7D0);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030D970);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030DB10);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030DBB0);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030DC00);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030DC70);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E170);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E220);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E290);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E330);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E3F0);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E4D0);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E5B0);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E630);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E690);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E890);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EAE0);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EDA0);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EFF0);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030F0D0);
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030F0E0);

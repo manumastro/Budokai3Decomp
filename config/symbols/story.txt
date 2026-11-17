@@ -1,1 +1,57 @@
 // Names for the story files (docs/decomp_guide.md, "Symbol files").
+
+// opening.c / str_title.c: the work area of each, allocated and cleared (the rest of each file is elsewhere).
+Opening_Init = 0x002E2210; // type:func guess
+gOpening = 0x0047093C; // size:0x4
+StrTitle_Load = 0x0029CDF0; // type:func
+gStrTitle = 0x004708BC; // size:0x4
+
+// zny_main.c: the zeni (money) counter drawn in story mode and in the ess shop; task "$ ZENIE $", file "zny_main.c".
+// One 0xAC-byte work area (ZenieWork) with a reference count: Create/Release are called by ess_shop, evt_scrp and
+// unk_2FAFF0; the value counts from cur toward target by step (max 990000) with a tick sound every 10 frames.
+// States: 2 -> 3 (opening motion) -> 4 (shown), 5 counting, 6 -> 7 (closing motion) -> 1 (hidden).
+Zenie_TaskMain = 0x00283ED0; // type:func
+Zenie_TaskLoad = 0x00283F30; // type:func
+Zenie_SetStep = 0x00284040; // type:func
+Zenie_SetF18 = 0x00284050; // type:func guess
+Zenie_SetValue = 0x00284060; // type:func
+Zenie_SetTarget = 0x00284080; // type:func
+Zenie_Close = 0x00284090; // type:func guess
+Zenie_Open = 0x002840B0; // type:func guess
+Zenie_IsAtLimit = 0x002840D0; // type:func
+Zenie_GetChange = 0x00284100; // type:func
+Zenie_GetState = 0x00284120; // type:func
+Zenie_Draw = 0x00284130; // type:func
+Zenie_Update = 0x00284380; // type:func
+Zenie_Init = 0x00284880; // type:func
+Zenie_Release = 0x00284890; // type:func
+Zenie_Create = 0x00284960; // type:func
+gZenie = 0x00470824; // size:0x4
+gZenieRefs = 0x00470828; // size:0x4
+// the motion ids per counter type (index = ZenieWork.type), pairs for the two models' motions
+gZenieAnimStartA = 0x0046B7B8; // size:0x10 guess
+gZenieAnimStartB = 0x0046B7C8; // size:0x10 guess
+gZenieAnimShownA = 0x0046B7D8; // size:0x10 guess
+gZenieAnimShownB = 0x0046B7E8; // size:0x10 guess
+gZenieAnimCloseA = 0x0046B7F8; // size:0x10 guess
+gZenieAnimCloseB = 0x0046B808; // size:0x10 guess
+
+
+// str_select.c: the story mode's character select ("# STR SELECT #" task, files 0x10819 model / 0x1081A texture).
+// Load allocates the global block and starts the two reads; Start creates the task that waits for them; TaskLoad
+// takes the files over and opens the selector (func_0027E2D0) with a 60-frame fade; TaskOpen waits it out; TaskMain
+// reads the pad (SELECT opens the help, 0x40000) and the selected character's stats; Exit frees everything.
+StrSelect_DrawRadar = 0x002EB890; // type:func
+StrSelect_InitObjects = 0x002EBAC0; // type:func
+StrSelect_Draw = 0x002EBBD0; // type:func
+StrSelect_FreeObjects = 0x002EBEA0; // type:func
+StrSelect_TaskDrawEnd = 0x002EBF90; // type:func
+StrSelect_TaskClose = 0x002EBFA0; // type:func
+StrSelect_TaskMain = 0x002EBFB0; // type:func
+StrSelect_TaskOpen = 0x002EC270; // type:func
+StrSelect_TaskLoad = 0x002EC3B0; // type:func
+StrSelect_Clear = 0x002EC610; // type:func guess
+StrSelect_Exit = 0x002EC620; // type:func
+StrSelect_Start = 0x002EC710; // type:func
+StrSelect_Load = 0x002EC7D0; // type:func
+gStrSelect = 0x0047095C; // size:0x4

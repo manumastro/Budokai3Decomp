@@ -1,0 +1,20 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026D9C0);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026DAF0);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026DC80);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026DE30);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E000);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E2F0);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E330);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E3B0);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E4A0);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E640);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E780);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E950);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026EC70);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026ED60);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026EF00);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026F070);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026F080);
+INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026F0E0);

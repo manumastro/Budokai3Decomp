@@ -1,0 +1,21 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308A90);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308AE0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308AF0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308BD0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308C40);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308D50);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308DA0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308E40);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308EB0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309000);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309050);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_003090F0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309250);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_003095A0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309680);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309AF0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309B20);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309CD0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309D60);
