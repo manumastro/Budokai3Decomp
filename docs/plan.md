@@ -194,21 +194,25 @@ function tried tells them apart); two near misses kept in the probes (`sceGsSync
 time-out paths; `mwSfdPause`, 4 of 71, a register pair). How the libraries run: `scripts/eegcc/eegcc.py` (the Linux
 builds in Docker, SN's Windows builds in wibo; README, "Building").
 
-## Reuse from the Tenkaichi 3 / Tenkaichi 4 Vita ports
+## The PC port
 
-The engine is Dimps', not Spike's, so none of the game code carries over. What carries over is the layer under it
-(**inferred**, from what each piece of our ports does):
+The port follows z3xox/Tenkaichi3Decomp's layout (checked there, read-only: `port/` holds the port's own code,
+`src/` and `include/` the decompilation's; game code changes only inside `#ifdef PORT`, so the PS2 build stays
+byte-identical):
 
-| Piece | In our ports | For Budokai 3 |
-|---|---|---|
-| Display-list reader (GIF / VIF packets on its own core) | `port/src/gs/gs_core.c` | The same hardware interface; reusable |
-| VU1 interpreter that runs the game's own microprograms | `port/src/gs/gs_vu1.c` | Reusable; must cover Budokai 3's programs (88 distinct uploads, cel-shading and outlines) |
-| vitaGL drawing and render thread | `port/vita/vita_vgl.c` | Reusable |
-| Disc image / file layer (AFS, ISO) | `vita_iso.c`, `plat_file.c` | Reusable, AFS names differ |
-| ADX streams | `port/src/gs/snd_adx.c` | Same CRI ADX family (Budokai 3 has ADXT 9.19, Tenkaichi 3 9.71): reusable; Dimps' AMSOUND sound effects are new work |
-| Sofdec movies | the ports' movie path | Same MWSFD / SFD family |
-| Pad, memory card, the test tools (`vita_agent_run.py`, `perfsum.py`, A/B runs) | `port/vita/` | Reusable |
-| Rules and layout: game code changed only under `PORT` / `PORT_VITA`, settings in a text file, the docs | both ports | Same |
+- **The matching build first** (this repository): the decompiled C, linked into the executable that matches the
+  original. Nothing here depends on a host.
+- **The port** in `port/`: a host program built from the same C, with the PC's own layer under it:
+  - the game's display lists are drawn by a renderer on the host (the list reader and the VU1 microprogram
+    interpreter, which the game's own VU1 programs need, are the two parts that must be written);
+  - sound, files and the disc image (an AFS and ADX reader; the game's data is read from the player's own disc,
+    never shipped);
+  - input and the window, through SDL3 (as in the Tenkaichi 3 port's macOS build).
+- **Game data never in the repository**: the port reads it from the player's disc image, as the decompilation does.
+- **Every change to the game's C under `#ifdef PORT`**, so the matching build is unaffected.
+
+The steps are the libraries replaced by the port's own layer (Sony's graphics and file calls, CRI's sound and
+movie calls, the pad and memory card), then the renderer, then a first playable fight.
 
 ## Effort
 
@@ -218,7 +222,7 @@ The engine is Dimps', not Spike's, so none of the game code carries over. What c
 - Size against Tenkaichi 3: its executable has about 8,750 functions and 1.83 MB of code, 81 % game; Budokai 3's
   game part is about two thirds of Tenkaichi 3's.
 - Estimate (**inferred**): with the agent-driven method of Tenkaichi3Decomp, 3 to 5 months to matching
-  Metrowerks code, then 2 to 3 months to a PC host build and a first Vita build that reaches a fight. The
+  Metrowerks code, then 2 to 3 months to a PC host build that reaches a fight. The
   Metrowerks toolchain is less trodden than ee-gcc (mwccgap for partial files; its scheduler's ties), which is the
   main risk to the estimate; the second is the VU1 microcode volume for the renderer.
 
@@ -237,5 +241,5 @@ The engine is Dimps', not Spike's, so none of the game code carries over. What c
 4. **The game by subsystem**: battle and characters, then the menus, the story mode, the skill screens.
 5. **Data**: name the `.data` tables, split the VU1 microprograms into listings (Tenkaichi3Decomp's
    `scripts/vuasm.py` assembles them back), and list each one's job.
-6. **Port**: a host build of the decompiled C with our `gs_core` / `gs_vu1` (`port/`, as in Tenkaichi3Decomp), then
-   the Vita port.
+6. **Port**: a host build of the decompiled C in `port/` (SDL3), with the renderer, sound and files of the PC layer
+   described in "The PC port", then a first fight.

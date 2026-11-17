@@ -1,8 +1,8 @@
-# Budokai3Decomp-Vita
+# Budokai3Decomp
 
-A matching decompilation of **Dragon Ball Z: Budokai 3** (PlayStation 2, USA release, SLUS-20998), the base for a
-later native PS Vita port. The goal is C source that compiles to the same bytes as the game's executable, so that
-the game's own code can then be built for other machines.
+A matching decompilation of **Dragon Ball Z: Budokai 3** (PlayStation 2, USA release, SLUS-20998). The goal is C
+source that compiles to the same bytes as the game's executable; a native PC port, built on that source, comes
+after it, as in [z3xox/Tenkaichi3Decomp](https://github.com/z3xox/Tenkaichi3Decomp).
 
 This repository contains **no game data**: no executable, no disassembly of it, no assets. You need your own disc
 image of the USA release. The build reads the executable from it, and everything taken from the disc stays in
@@ -67,8 +67,7 @@ wibo.
 ## Credits
 
 - Layout and conventions after z3xox's [Tenkaichi3Decomp](https://github.com/z3xox/Tenkaichi3Decomp), the matching
-  decompilation of Budokai Tenkaichi 3, and its PS Vita port
-  ([arielxflores/Tenkaichi3Decomp-Vita](https://github.com/arielxflores/Tenkaichi3Decomp-Vita)).
+  decompilation of Budokai Tenkaichi 3 and its PC port.
 - [splat](https://github.com/ethteck/splat) and [spimdisasm](https://github.com/Decompollaborate/spimdisasm),
   [binutils-mips-ps2-decompals](https://github.com/decompals/binutils-mips-ps2-decompals),
   [wibo](https://github.com/decompals/wibo), [mwccgap](https://github.com/mkst/mwccgap), and
