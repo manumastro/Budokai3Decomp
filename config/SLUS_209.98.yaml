@@ -1,0 +1,59 @@
+name: Dragon Ball Z - Budokai 3 (USA) (SLUS-20998)
+# sha1 of the flat image: the ELF's one PT_LOAD segment (file offset 0x80, 0x370200 bytes), as configure.py cuts it.
+sha1: 609fa60be86d0b2a2b73ecea158710524cea8bbd
+options:
+  basename: SLUS_209.98
+  target_path: disc/SLUS_209.98.rom
+  elf_path: build/SLUS_209.98.elf
+  base_path: ..
+  platform: ps2
+  compiler: MWCCPS2
+
+  # From .reginfo, and set by the startup code at 0x1001AC.
+  gp_value: 0x00477CF0
+
+  ld_script_path: build/SLUS_209.98.ld
+  ld_dependencies: False
+  ld_wildcard_sections: True
+  ld_bss_contains_common: True
+
+  create_asm_dependencies: False
+  find_file_boundaries: False
+  o_as_suffix: True
+
+  symbol_addrs_path:
+    - config/symbol_addrs.txt
+  undefined_funcs_auto_path: build/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/undefined_syms_auto.txt
+
+  string_encoding: ASCII
+  data_string_encoding: ASCII
+  rodata_string_guesser_level: 2
+  data_string_guesser_level: 2
+
+  asm_inc_header: |
+    .set noat      /* allow manual use of $at */
+    .set noreorder /* don't insert nops after branches */
+  generated_macro_inc_content: |
+    # VU0 macro-mode registers are written without the dollar sign by the disassembler.
+    .set ACC, $ACC
+    .set Q, $Q
+
+  section_order: [".text", ".vutext", ".data", ".rodata", ".lit4", ".sdata", ".sbss", ".bss"]
+
+segments:
+  - name: cod
+    type: code
+    start: 0x000000
+    vram: 0x00100000
+    # .sbss + .bss: 0x470200 to 0x5D0100 (the startup code clears exactly that range).
+    bss_size: 0x15FF00
+    align: 128
+    subsegments:
+      # .text: the EE code, 0x100000 to 0x310908, padded to 0x310980.
+      - [0x000000, asm, cod/000000]
+      # Everything after the code is kept as raw bytes for now: the VU1 microprograms (DMA/VIF packets,
+      # 0x310980 to about 0x33E000), then .data, .rodata and .sdata.
+      - [0x210980, bin, cod/210980]
+      - { type: bss, vram: 0x00470200 }
+  - [0x370200]
