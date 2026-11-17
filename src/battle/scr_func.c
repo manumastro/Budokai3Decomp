@@ -2,6 +2,14 @@
 
 #include "battle/script.h"
 
+extern u8 D_005BC9E0[];
+extern s32 amAdx_IsPlaying(s32);
+extern void amAdx_Pause(s32, s32);
+
+extern u8 D_005BC560[];
+extern u8 D_005BCD20[];
+extern void amCdFs_ReleaseCache(s32);
+
 typedef struct ScrLightSub {
     /* 0x0000 */ u8 unk0000[0x2094];
     /* 0x2094 */ f32 unk2094;
@@ -86,15 +94,51 @@ s32 func_002A9760(ScriptThread *t, ScriptCtx *ctx) {
     ctx->ret = D_004708F0[0];
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9780);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9810);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A98A0);
+void func_002A9780(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0) {
+    s32 *s3 = (s32 *)(D_005BC560 + a0 * 576 + a1 * 36) + 6;
+
+    if (s3[0] != 0) {
+        amCdFs_ReleaseCache(s3[0]);
+    }
+    s3[0] = a2;
+    s3[1] = a3;
+    s3[2] = t0;
+}
+void func_002A9810(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0) {
+    s32 *s3 = (s32 *)(D_005BC560 + a0 * 576 + a1 * 36) + 3;
+
+    if (s3[0] != 0) {
+        amCdFs_ReleaseCache(s3[0]);
+    }
+    s3[0] = a2;
+    s3[1] = a3;
+    s3[2] = t0;
+}
+void func_002A98A0(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0) {
+    s32 *s3 = (s32 *)(D_005BC560 + a0 * 576 + (a1 + 15) * 36);
+
+    if (s3[0] != 0) {
+        amCdFs_ReleaseCache(s3[0]);
+    }
+    s3[0] = a2;
+    s3[1] = a3;
+    s3[2] = t0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9930);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9AE0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9C00);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9D30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9EA0);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA050);
+void func_002AA050(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 *s2 = (s32 *)(D_005BCD20 + a0 * 160 + a1 * 40);
+
+    if (s2[0] != 0) {
+        amCdFs_ReleaseCache(s2[0]);
+        s2[0] = 0;
+    }
+    s2[0] = a2;
+    s2[2] = a3;
+}
 void func_002AA0D0(void) {
     func_002A9930();
 }
@@ -176,7 +220,17 @@ INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAF30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB020);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB1D0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB2E0);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB3E0);
+s32 func_002AB3E0(s32 *a0, s32 *a1) {
+    s32 *t0 = (s32 *)a1[11];
+    s32 a3 = ((s32 *)a0[0])[0];
+    u8 *e = D_005BC9E0 + a3 * 416 + t0[4] * 208;
+
+    *(f32 *)(e + 0x90) = *(f32 *)&t0[3];
+    *(f32 *)(e + 0x94) = *(f32 *)&t0[2];
+    *(f32 *)(e + 0x98) = *(f32 *)&t0[1];
+    *(f32 *)(e + 0x9C) = *(f32 *)&t0[0];
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB450);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB4F0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB690);
@@ -199,6 +253,22 @@ s32 func_002ABA40(ScriptThread *t, ScriptCtx *ctx) {
     amAdx_Stop(ctx->args[0]);
     return 1;
 }
+// GIVEN UP: the branch layout of the return values differs (tried two forms)
+#if 0
+s32 func_002ABA70(s32 *a0, s32 *a1) {
+    s32 *s0 = (s32 *)a1[11];
+    s32 r = 3;
+
+    if (((s32 *)a0[0])[3] != 3) {
+        if (amAdx_IsPlaying(s0[0])) {
+            amAdx_Pause(s0[0], 0);
+            a0[4] = 0;
+            r = 1;
+        }
+    }
+    return r;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABA70);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABAF0);
 s32 func_002ABB80(ScriptThread *t, ScriptCtx *ctx) {
