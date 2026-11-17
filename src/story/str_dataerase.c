@@ -62,7 +62,7 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
 extern f32 gFrameDelta;
-extern void func_0022C700();
+extern void A2d_FlushList();
 extern void func_00133B50(s32, s32);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
@@ -118,7 +118,7 @@ void func_0030F420(s32 *a0) {
         D_00470704 = s2[0xC / 4];
         D_0047070C = 0x6000;
         D_00470708 = 0;
-        func_00145CC0(s2[0xC / 4], 0x6000);
+        amModel_SetCurrent(s2[0xC / 4], 0x6000);
         D_00470238 = 0;
         if (s0[0] != 0) {
             func_0022D0E0(s0[0], 1);
@@ -127,13 +127,13 @@ void func_0030F420(s32 *a0) {
         f = (void *)func_0030F350;
         s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
-    func_0022C700();
+    A2d_FlushList();
     s1 = (s32 *)D_0047099C;
     func_00133B50(0, 0);
     D_00470704 = s1[0xC / 4];
     D_0047070C = 0x6000;
     D_00470708 = 0;
-    func_00145CC0(s1[0xC / 4], 0x6000);
+    amModel_SetCurrent(s1[0xC / 4], 0x6000);
     D_00470238 = 0;
     if (s0[0] != 0) {
         func_0022C060(s0[0], 1.0f);

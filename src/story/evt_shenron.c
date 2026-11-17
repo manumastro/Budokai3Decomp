@@ -111,7 +111,7 @@ void func_003070A0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003070A0);
 
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void func_00306F70(void);
 extern s32 amTask_Create(void *, s32, s32, s32, s32, void *);
 extern char D_0046F9E8[];

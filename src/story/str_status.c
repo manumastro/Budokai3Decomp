@@ -682,13 +682,13 @@ void func_002C2470(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s1[1];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s0 = (s32 *)s1[2];
     if (s0 != 0) {
@@ -696,7 +696,7 @@ void func_002C2470(s32 *a0) {
         func_0022CD00((s32)s0);
     }
     func_002C0860(s1);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     *(f32 *)((char *)s1 + 0xC4) = *(f32 *)((char *)s1 + 0xC4) - gFrameDelta;
     if (*(f32 *)((char *)s1 + 0xC4) <= 0.0f) {
@@ -722,13 +722,13 @@ void func_002C27B0(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s0[1];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s2 = (s32 *)s0[2];
     if (s2 != 0) {
@@ -736,7 +736,7 @@ void func_002C27B0(s32 *a0) {
         func_0022CD00((s32)s2);
     }
     func_002C0860(s0);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     func_003105B0();
     f = (void *)func_002C2560;
