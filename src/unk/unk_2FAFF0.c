@@ -1,13 +1,102 @@
 #include "common.h"
 
+/* A task's work: its function (f1C), a position (f3C), a speed (f40) and the entity it moves (f48). */
+typedef struct Ent2FAFF0 {
+    char pad0[0x4];
+    s8 f4;
+    char pad5[0x7];
+    f32 fC;
+    f32 f10;
+} Ent2FAFF0;
+
+/* The part of a task at 0x30 that the task functions use. */
+typedef struct Sub2FAFF0 {
+    char pad0[0xC];
+    f32 fC;
+    char pad10[0x8];
+    Ent2FAFF0 *f18;
+} Sub2FAFF0;
+
+typedef struct Task2FAFF0 {
+    char pad0[0x1C];
+    void (*f1C)(struct Task2FAFF0 *);
+    char pad20[0x10];
+    s32 f30;
+    s32 f34;
+    f32 f38;
+    f32 f3C;
+    f32 f40;
+    s32 f44;
+    Ent2FAFF0 *f48;
+} Task2FAFF0;
+
+/* An animation's state, at 0x30 of the work of D_00470974->f40. */
+typedef struct Anim2FAFF0 {
+    s32 f0;
+    f32 f4;
+    s32 f8;
+} Anim2FAFF0;
+
+typedef struct SaveWork2FAFF0 {
+    char pad0[0x40];
+    char *f40;
+    char pad44[0x250];
+    s32 f294;
+} SaveWork2FAFF0;
+
+extern SaveWork2FAFF0 *D_00470974;
+extern f32 D_004703BC;
+extern s32 Save_GetState(void);
+extern s32 Zenie_GetState(void);
+extern void Zenie_Update(void);
+extern void func_00208F70(s32);
+extern void func_002FBAE0(struct Task2FAFF0 *);
+extern void func_002FBE20(struct Task2FAFF0 *);
+extern void Save_Exit(void);
+extern void func_001F0810(s32, s32);
+
+extern void amTask_Kill(void *);
+void func_00300610(Task2FAFF0 *t);
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FAFF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FB170);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FB4C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBA80);
+void func_002FBA80(Task2FAFF0 *t) {
+    D_00470974->f294 = D_00470974->f294 + 1;
+    if (Save_GetState() > 2) {
+        Save_Exit();
+        func_001F0810(-1, 0);
+        t->f1C = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBAE0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBD90);
+void func_002FBD90(Task2FAFF0 *t) {
+    SaveWork2FAFF0 *w = D_00470974;
+    Anim2FAFF0 *a;
+
+    a = (Anim2FAFF0 *)(w->f40 + 0x30);
+    w->f294 = w->f294 + 1;
+    Zenie_Update();
+    func_00208F70(a->f8);
+    if (Zenie_GetState() == 4) {
+        a->f0 = a->f0 + 1;
+        t->f1C = (func_002FBAE0 == 0) ? 0 : func_002FBAE0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBE20);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBF40);
+void func_002FBF40(Task2FAFF0 *t) {
+    SaveWork2FAFF0 *w = D_00470974;
+    Anim2FAFF0 *a;
+
+    a = (Anim2FAFF0 *)(w->f40 + 0x30);
+    w->f294 = w->f294 + 1;
+    Zenie_Update();
+    func_00208F70(a->f8);
+    if (Zenie_GetState() == 4) {
+        a->f0 = a->f0 + 1;
+        t->f1C = (func_002FBE20 == 0) ? 0 : func_002FBE20;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBFD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC510);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC660);
@@ -32,14 +121,61 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FFD20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300330);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300400);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003004B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300550);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003005C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300610);
+void func_00300550(Task2FAFF0 *t) {
+    Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
+    f32 v;
+    f32 k;
+
+    t->f48->fC = t->f48->fC + t->f40;
+    v = t->f38;
+    k = (f32)t->f44;
+    if (t->f48->fC * k > v * k) {
+        t->f48->fC = v;
+        s->f18->f4 = 1;
+        amTask_Kill(t);
+    }
+}
+void func_003005C0(Task2FAFF0 *t) {
+    Ent2FAFF0 *e = t->f48;
+    Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
+
+    if (e->f4 == 1) {
+        s->fC = e->f10 - 50.0f;
+        s->f18->f4 = 2;
+        t->f1C = (func_00300610 == 0) ? 0 : func_00300610;
+    }
+}
+void func_00300610(Task2FAFF0 *t) {
+    Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
+
+    t->f48->f10 = t->f48->f10 + t->f40;
+    if (t->f48->f10 < t->f3C) {
+        t->f48->f10 = t->f3C;
+        s->f18->f4 = 1;
+        amTask_Kill(t);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300670);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300760);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300800);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003009E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300B60);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300CA0);
+void func_00300CA0(Task2FAFF0 *t) {
+    Anim2FAFF0 *a;
+    s32 *c = &t->f30;
+    f32 f1;
+    f32 f0;
+
+    a = (Anim2FAFF0 *)(D_00470974->f40 + 0x30);
+    f1 = (f32)t->f30 * D_004703BC;
+    f0 = (f32)t->f34;
+    if (f1 > f0) {
+        a->f4 = 1.0f;
+        amTask_Kill(t);
+    } else {
+        a->f4 = f1 / f0;
+    }
+    *c = *c + 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300D20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300F70);
