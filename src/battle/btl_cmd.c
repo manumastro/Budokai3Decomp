@@ -281,6 +281,54 @@ s32 func_001A51E0(MotTrack *a0, s32 a1, f32 t) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A51E0);
+extern void func_0013C1E0(void *, f32, f32);
+extern void amMotion_Update(void *, s32);
+
+// GIVEN UP: 8 of 77 instructions differ: the original computes the table index (the high half minus one) before the
+// low half of the value, and the register choice follows (4 orders tried)
+#if 0
+void func_001A5350(u8 *a0, f32 f12) {
+    s32 a1;
+    s32 v1;
+    u8 *s0;
+    s32 a3;
+    u8 *a2;
+    u8 *pt;
+    s32 hi;
+    s32 i;
+    s32 off;
+    f32 f20;
+
+    f20 = f12;
+    a1 = *(s8 *)(a0 + 0x4F);
+    s0 = *(u8 **)a0;
+    v1 = *(s8 *)(a0 + 0x4D);
+    if (a1 != *(s8 *)(a0 + 0x4E) || v1 != *(s8 *)(a0 + 0x4C)) {
+        a3 = ((*(s32 *)(a0 + 4) + 1) << 16) | (a1 + v1 * 6);
+        a2 = s0 + 0x41C;
+        if (*(s32 *)(s0 + 0x41C) != a3) {
+            if (0 < *(s32 *)(s0 + 0x418)) {
+                i = 0;
+                off = 0;
+                do {
+                    *(s32 *)(*(u8 **)(a2 + 0x10) + off + 0x30) = -1;
+                    *(s32 *)(*(u8 **)(a2 + 0x10) + off + 0x34) = -1;
+                    *(s32 *)(*(u8 **)(a2 + 0x10) + off + 0x38) = -1;
+                    i++;
+                    off += 0x40;
+                } while (i < *(s32 *)(s0 + 0x418));
+            }
+            *(s32 *)(a2 + 0xC) = 0xBF800000;
+        }
+        *(s32 *)a2 = a3;
+        hi = (a3 >> 16) - 1;
+        pt = *(u8 **)(s0 + 0x46C + (hi << 2));
+        *(f32 *)(s0 + 0x424) = (f32)(*(s32 *)(*(u8 **)(pt + 0x14) + ((a3 & 0xFFFF) << 4) + 8) - 1);
+        amMotion_Update(s0, 0);
+    }
+    func_0013C1E0(s0, 0.0f, f20);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5350);
 s32 func_001A5490(MotFile *f, s32 track, f32 t) {
     MotTrack *tr = &f->tracks[track];
@@ -796,5 +844,50 @@ s32 func_001AA9D0(s32 a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA9D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAA60);
+// GIVEN UP: 0x160 against 0x14C: the loop variable of the third loop is kept as s16 (extended before the shift) and its call passes it without the extension (5 forms tried)
+#if 0
+s32 func_001AAEA0(BtlRank *a0, s32 a1) {
+    s32 s3;
+    s32 s2;
+    s16 s1;
+    s32 s0;
+
+    s3 = 0;
+    s2 = 0;
+    s1 = 0;
+    s0 = a1;
+    func_001AA860(a0);
+    func_001AA450(a0);
+    s0 = (s16)s0;
+    if ((s0 & 0xF) != 0) {
+        s3 = 1;
+        do {
+            if (func_001A9460(a0, s3, 0) != 0) {
+                break;
+            }
+            s3 = (s16)(s3 << 1);
+        } while (s3 <= 8);
+    }
+    if ((s0 & 0xF0) != 0) {
+        s2 = 0x10;
+        do {
+            if (func_001A9230(a0, s2) != 0) {
+                break;
+            }
+            s2 = (s16)(s2 << 1);
+        } while (s2 <= 0x80);
+    }
+    if ((s0 & 0x300) != 0) {
+        s1 = 0x100;
+        do {
+            if (func_001A90E0(a0, s1) != 0) {
+                break;
+            }
+            s1 = (s16)(s1 << 1);
+        } while (s1 <= 0x200);
+    }
+    return (s16)(s0 & (s1 | s2 | s3));
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAEA0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AB000);

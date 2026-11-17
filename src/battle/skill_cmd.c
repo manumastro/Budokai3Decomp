@@ -1297,6 +1297,76 @@ void func_00254650(s32 *a0) {
         amDraw_SetPacketMode(0);
     }
 }
+// GIVEN UP: 16 bytes short (0x1C0 against 0x1D0): the tail after the battle-state read is laid out differently (5 forms tried)
+#if 0
+extern void func_0022C430(s32, f32);
+extern s32 D_0058D4F4[];
+
+void func_002547A0(u8 *a0) {
+    u8 *s2;
+    s32 *s1;
+    u8 *s0;
+    s32 j;
+    s32 i;
+    s32 *s4;
+    s32 *s3;
+    s32 v;
+    s32 a1;
+    s32 t;
+    s32 a0v;
+    u8 *q;
+
+    s0 = *(u8 **)(a0 + 0x30);
+    s1 = (s32 *)(a0 + 0x30);
+    s2 = D_0046FDFC;
+    if (func_0021C2A0((s32)0x80000000) != 0) {
+        t = *(s32 *)(s2 + 0xE60);
+        D_00470704 = t;
+        D_0047070C = 0x4000000;
+        D_00470708 = 0;
+        func_00145CC0(t, 0x4000000);
+        D_00470238 = 0;
+        amDraw_SetPacketMode(1);
+        func_0022C560(s1[1]);
+        amDraw_KickPending();
+        for (j = 0, s4 = s1; j < 2; j++, s4 += 2) {
+            for (i = 0, s3 = s4; i < 2; i++, s3 += 1) {
+                if (s3[8] != 0) {
+                    func_0022C560(s3[8]);
+                }
+            }
+        }
+        amDraw_SetPacketMode(0);
+        v = D_0058D4F4[0];
+        if (v == 0) {
+            a1 = -2;
+        } else {
+            q = (u8 *)v + 0x30;
+            if (*(s32 *)(v + 0x34) == 1) {
+                a1 = -1;
+            } else {
+                a1 = 1;
+                if (*(u16 *)(q + 0x1E) != 0) {
+                    if (*(u16 *)(q + 0x1C) == *(u16 *)(q + 0x1E)) {
+                        a1 = 0;
+                    } else if (*(u16 *)(q + 0x1C) == 0) {
+                        a1 = 0;
+                    }
+                }
+            }
+        }
+        if (a1 == 1) {
+            t = func_0021C360(*(s16 *)(s0 + 0x20));
+            a0v = ((t & 1) != 0) ? 0xB2 : 0xB1;
+        } else {
+            t = func_0021C360(*(s16 *)(s0 + 0x22));
+            a0v = ((t & 1) != 0) ? 0xB4 : 0xB3;
+        }
+        func_0022C430(((s32 *)*(u8 **)(*(u8 **)(s2 + 0xE68) + 0x1C))[a0v], *(f32 *)(s0 + 8));
+        func_0022C560(s1[12]);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002547A0);
 void func_00254970(s32 *a0) {
     u8 *s0;
@@ -1378,10 +1448,11 @@ void func_00254B50(s32 *a0) {
     s32 i;
     s32 j;
 
-    v = (s32 *)a0[12];
     s2 = a0 + 12;
+    v = (s32 *)s2[0];
     if (v != 0) {
         s1 = v + 12;
+        j = 0;
         if (s1[1] != 0) {
             func_0022D0E0(s1[1], 1);
         }
