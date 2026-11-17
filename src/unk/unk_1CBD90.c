@@ -31,6 +31,11 @@ extern void func_001E18B0(void *, int);
 extern void func_001E1A40(void *, int);
 extern void func_001E1BD0(void *, int, int);
 extern void func_001E3550(void *);
+extern void func_001E4FA0(void *, int);
+extern void func_001E4820(void *, f32, int);
+extern void func_001C8A50(void *, int, int);
+extern void func_001C89A0(void *, int);
+extern s32 amMotion_FindBone(s32, s32);
 extern s32 D_004B4230[];
 extern f32 D_004B4234[];
 extern f32 D_004B4220[];
@@ -85,6 +90,17 @@ int func_001CBE80(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBE80);
+// func_001CBEE0: differs: the load order of the parameters (p[0] before the table walk)
+#if 0
+int func_001CBEE0(void *unused, Arg *a) {
+    int *p = a->p;
+    Side *s = (Side *)((char *)D_00470570->tbl[p[3]] + p[2] * 0x680);
+    if (p[1] >= 0) {
+        *(s32 *)((char *)s->blk[0] + p[1] * 8 + 8) = p[0];
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBEE0);
 int func_001CBF50(void *unused, Arg *a) {
     int x = a->p[0];
@@ -231,7 +247,13 @@ int func_001CD2C0(void *unused, Arg *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD300);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD340);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD530);
+int func_001CD530(void *unused, Arg *a) {
+    int *p = a->p;
+    char *e = (char *)D_00470570->tbl[p[2]] + p[1] * 0x680;
+    int *blk = *(int **)(e + 0xB88);
+    *(s32 *)a = amMotion_FindBone(blk[1], *(int *)((char *)a + 0x20) + p[0]);
+    return 1;
+}
 int func_001CD5B0(void *unused, Arg *a) {
     int *p = a->p;
     char *t = D_00470570->tbl[p[1]];
@@ -447,6 +469,20 @@ int func_001CE560(void *unused, Arg *a) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE560);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE5B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE610);
+// func_001CE740: differs: the same float constant register as func_001CEE80
+#if 0
+int func_001CE740(void *unused, Arg *a) {
+    int *p = a->p;
+    f32 *f = (f32 *)p;
+    char *t = D_00470570->tbl[p[3]];
+    *(s8 *)(t + 0x1A5E) = p[2];
+    *(s8 *)(t + 0x1A64) = p[2] != -1;
+    *(s16 *)(t + 0x1A66) = p[1];
+    *(f32 *)(t + 0x1A68) = *(f32 *)((char *)D_00470570 + 0x88F0);
+    *(s32 *)(t + 0x1A60) = (s32)(65536.0f * (f[0] / 360.0f));
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE740);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE7C0);
 int func_001CE820(void *unused, Arg *a) {
@@ -477,10 +513,55 @@ int func_001CE890(void *unused, Arg *a) {
     D_004B422C[0] = 1.0f;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE8F0);
+int func_001CE8F0(void *unused, Arg *a) {
+    int *p = a->p;
+    f32 *f = (f32 *)p;
+    s32 v6 = p[6];
+    f32 x0 = f[0];
+    f32 x1 = f[1];
+    f32 x2 = f[2];
+    f32 x3 = f[3];
+    f32 x4 = f[4];
+    f32 x5 = f[5];
+    D_004B4230[0] = v6;
+    D_004B4234[0] = x2;
+    D_004B4220[0] = x5;
+    D_004B4224[0] = x4;
+    D_004B4228[0] = x3;
+    D_004B422C[0] = 1.0f;
+    D_004B4238[0] = x1;
+    D_004B423C[0] = x0;
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE960);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CED20);
+// func_001CEDE0: differs: the same as func_001CEE80 (float constant register)
+#if 0
+int func_001CEDE0(void *unused, Arg *a) {
+    f32 *f = (f32 *)a->p;
+    char *t = D_00470570->tbl[a->p[3]];
+    *(f32 *)(t + 0x1828) = f[2];
+    *(s32 *)(t + 0x1838) = (s32)(65536.0f * (f[0] / 360.0f));
+    *(s32 *)(t + 0x1834) = (s32)(65536.0f * (f[1] / 360.0f));
+    *(s8 *)(t + 0x183C) = 5;
+    func_001C75D0(t, 20);
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEDE0);
+// func_001CEE80: differs: float constant 360.0f kept in another register; the original loads it first
+#if 0
+int func_001CEE80(void *unused, Arg *a) {
+    f32 *f = (f32 *)a->p;
+    char *t = D_00470570->tbl[a->p[3]];
+    *(f32 *)(t + 0x1828) = f[1];
+    *(s32 *)(t + 0x1834) = (s32)(65536.0f * (f[0] / 360.0f));
+    *(s32 *)(t + 0x1838) = 0;
+    *(s8 *)(t + 0x183C) = a->p[2];
+    func_001C75D0(t, 20);
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEE80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEF00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEF60);
@@ -488,7 +569,13 @@ int func_001CEFF0(void *unused, Arg *a) {
     func_001C75D0(D_00470570->tbl[a->p[0]], 0);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF030);
+int func_001CF030(void *unused, Arg *a) {
+    char *t = D_00470570->tbl[a->p[0]];
+    func_001E4FA0(t, 2);
+    func_001E4FA0(*(void **)(t + 0x1354), 2);
+    func_001E4820(t, 1.0f, 0);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF0A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF100);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF2C0);
@@ -514,6 +601,19 @@ int func_001CF570(void *unused, Arg *a) {
     func_001C7D90(D_00470570->tbl[side], id, D_00470570->tbl[1 - side]);
     return 1;
 }
+// func_001CF600: size: the original also loads p[0] and p[1], which the source does not use
+#if 0
+int func_001CF600(void *unused, Arg *a) {
+    int *p = a->p;
+    char *t = D_00470570->tbl[p[3]];
+    int s0 = p[2];
+    char *q = *(char **)(t + 0x1CF8);
+    short v = *(short *)(q + s0 * 20 + 0xD6);
+    func_001C8A50(t, s0, v);
+    func_001C89A0(t, s0);
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF600);
 int func_001CF690(void *unused, Arg *a) {
     int *p = a->p;
