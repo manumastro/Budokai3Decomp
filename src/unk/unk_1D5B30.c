@@ -1546,7 +1546,7 @@ void func_001DD680(Fighter *c) {
     buf[0] = ((Fighter *)c->f1354)->f1350;
     buf[1] = c->f1350;
     buf[2] = s;
-    func_00226030(7, buf);
+    A2d_CallHandler(7, buf);
     f3 = (f32)*(s32 *)((char *)c + 0x17AC);
     f1 = 360.0f * (f3 / 65536.0f);
     if (!(f1 > 90.0f && f1 < 270.0f)) {
