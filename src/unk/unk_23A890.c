@@ -931,60 +931,43 @@ void func_00241AC0(s32 i) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241AC0);
 extern s32 D_00452100[];
 #if 0
-// differs: the copy of the fourth call result into v1 (the loop pointer) is scheduled late here; the original copies it right after the calls (the stores use v0)
-void func_00241C10(s32 i) {
-    u8 *o = D_0046FE44 + i * 0x80;
-    u8 *p0 = func_00240F40(i, 0);
-    u8 *p1 = func_00240F40(i, 1);
-    u8 *p2 = func_00240F40(i, 2);
-    u8 *p3 = func_00240F40(i, 3);
-    u8 *q3 = p3;
-    s32 t8 = *(s32 *)(gBattle + i * 0x2020 + 0x1B84) + 0xCD0;
-    s32 k;
-    s32 *tb;
-    u8 *q2;
-    u8 *q1;
-    u8 *q0;
+void func_00241C10(s32 a) {
+    u8 *s3 = D_0046FE44 + a * 0x80;
+    u8 *r0 = func_00240F40(a, 0);
+    u8 *r1 = func_00240F40(a, 1);
+    u8 *r2 = func_00240F40(a, 2);
+    u8 *r3 = func_00240F40(a, 3);
+    s32 k = (a << 8) + a;
+    s32 t0 = *(s32 *)(gBattle + k * 0x20 + 0x1B84) + 0xCD0;
+    s32 i;
+    s32 e1;
+    s32 e2;
 
-    *(s32 *)(o + 0x20) = t8;
-    *(s32 *)(p3 + 0x6C) = t8;
-    *(s32 *)(p2 + 0x6C) = t8;
-    *(s32 *)(p1 + 0x6C) = t8;
-    *(s32 *)(p0 + 0x6C) = t8;
-    *(s32 *)(p3 + 0x70) = 5;
-    *(s32 *)(p2 + 0x70) = 5;
-    *(s32 *)(p1 + 0x70) = 5;
-    *(s32 *)(p0 + 0x70) = 5;
-    if (0 < *(s32 *)(p0 + 0x70)) {
-        k = 0;
-        tb = D_00452100;
-        q3 = p3;
-        q2 = p2;
-        q1 = p1;
-        q0 = p0;
-        do {
-            s32 v;
-            s32 w;
-
-            v = t8 + (tb[0] << 4);
-            k++;
-            *(s32 *)(q3 + 0x74) = v;
-            *(s32 *)(q2 + 0x74) = v;
-            *(s32 *)(q1 + 0x74) = v;
-            *(s32 *)(q0 + 0x74) = v;
-            w = t8 + (tb[1] << 4);
-            tb += 2;
-            *(s32 *)(q3 + 0x94) = w;
-            *(s32 *)(q2 + 0x94) = w;
-            q3 += 4;
-            *(s32 *)(q1 + 0x94) = w;
-            q2 += 4;
-            *(s32 *)(q0 + 0x94) = w;
-            q1 += 4;
-            q0 += 4;
-        } while (k < *(s32 *)(p0 + 0x70));
+    *(s32 *)(s3 + 0x20) = t0;
+    *(s32 *)(r3 + 0x6C) = t0;
+    *(s32 *)(r2 + 0x6C) = t0;
+    *(s32 *)(r1 + 0x6C) = t0;
+    *(s32 *)(r0 + 0x6C) = t0;
+    *(s32 *)(r3 + 0x70) = k;
+    *(s32 *)(r2 + 0x70) = k;
+    *(s32 *)(r1 + 0x70) = k;
+    *(s32 *)(r0 + 0x70) = k;
+    if (*(s32 *)(r0 + 0x70) > 0) {
+        for (i = 0; i < *(s32 *)(r0 + 0x70); i++) {
+            e1 = t0 + D_00452100[2 * i] * 16;
+            e2 = t0 + D_00452100[2 * i + 1] * 16;
+            *(s32 *)(r3 + 0x74 + 4 * i) = e1;
+            *(s32 *)(r2 + 0x74 + 4 * i) = e1;
+            *(s32 *)(r1 + 0x74 + 4 * i) = e1;
+            *(s32 *)(r0 + 0x74 + 4 * i) = e1;
+            *(s32 *)(r3 + 0x94 + 4 * i) = e2;
+            *(s32 *)(r2 + 0x94 + 4 * i) = e2;
+            *(s32 *)(r1 + 0x94 + 4 * i) = e2;
+            *(s32 *)(r0 + 0x94 + 4 * i) = e2;
+        }
     }
 }
+// differs: 328 bytes (round 5, u23c): 38 of 82 instructions differ. The four func_00240F40 calls (a, 0..3) and the stores to the four returned blocks (+0x6C, +0x70, +0x74, +0x94) match in order; the loop over D_00452100 (pairs, 16-byte scale) does not: the original walks the four pointers with one shared index (v1, s0, s1, a1 each += 4) and the table pointer a2 += 8, which the indexed form does not produce. Try pointer walks for the four blocks and the table.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241C10);
 #if 0
