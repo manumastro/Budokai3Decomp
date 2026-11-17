@@ -1,5 +1,15 @@
 #include "common.h"
 #include "menu/menu.h"
+extern void func_002EE1C0();
+extern void func_002ECFD0();
+extern s32 Save_GetState();
+extern void Save_Exit();
+extern void func_002EF7C0();
+extern void func_00143F20(s32, s32, f32);
+extern void func_00143D60();
+extern void func_002EE360();
+extern void func_002EF390();
+extern f32 D_004E0614[];
 extern u8 D_004B4B40[];
 extern s16 D_005C9F04[];
 
@@ -214,7 +224,17 @@ void func_002EF4C0(u8 *a0) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF4C0);
+void func_002EF4C0(u8 *task) {
+    u8 *obj;
+
+    obj = *(u8 **)(task + 0x30);
+    func_002EE1C0(obj);
+    func_002ECFD0(obj, 1);
+    if (Save_GetState() > 2) {
+        Save_Exit();
+        *(void **)(task + 0x1C) = ((void *)func_002EF7C0 == 0) ? 0 : (void *)func_002EF7C0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF540);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF680);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF7C0);
@@ -257,7 +277,20 @@ void ArenaList_ClearGlobal(void) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002F03E0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002F04D0);
+void func_002F04D0(u8 *task) {
+    u8 *obj;
+
+    obj = *(u8 **)(task + 0x30);
+    func_00143F20(0, 0, D_004E0614[0]);
+    if (D_004E0614[0] > 0.0f) {
+        func_00143D60(0, 0, 0x16, 0);
+    }
+    func_002EE360(obj);
+    *(u32 *)(obj + 0x1C) = 0x42700000;
+    *(s16 *)(obj + 0x0) = 5;
+    *(s16 *)(obj + 0x4) = 5;
+    *(void **)(task + 0x1C) = ((void *)func_002EF390 == 0) ? 0 : (void *)func_002EF390;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002F0570);
 extern char D_0046F728[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);

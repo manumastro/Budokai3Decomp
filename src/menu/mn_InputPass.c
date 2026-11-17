@@ -15,7 +15,47 @@ extern void memset(void *, s32, s32);
 extern void amHeap_Free(void *);
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F06D0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0870);
+void func_002F0870(u32 *task) {
+    u8 *s3;
+    s32 s2;
+    u8 *s1;
+    u32 *s0;
+    void *v;
+    s2 = 0;
+    s3 = (u8 *)gInputName;
+    s0 = task;
+    do {
+        v = func_0022DA90(0, 0.0f);
+        s0[1] = (u32)v;
+        s1 = (u8 *)v;
+        memset(s1, 0, 0x60);
+        *(s32 *)(s1 + 0x4) = 3;
+        s2++;
+        *(s32 *)(s1 + 0x10) = *(s32 *)(s3 + 0x10);
+        *(s32 *)(s1 + 0x14) = 0x5000;
+        *(s16 *)(s1 + 0x18) = 5;
+        *(s16 *)(s1 + 0x1A) = 0;
+        *(s32 *)(s1 + 0x8) = 1;
+        *(s32 *)(s1 + 0xC) = 3;
+        *(s32 *)(s1 + 0x20) = 0;
+        *(s32 *)(s1 + 0x24) = 0;
+        *(s32 *)(s1 + 0x28) = 0;
+        *(f32 *)(s1 + 0x2C) = 1.0f;
+        *(s32 *)(s1 + 0x34) = 0;
+        *(s32 *)(s1 + 0x3C) = 0;
+        *(s32 *)(s1 + 0x30) = 0;
+        *(s32 *)(s1 + 0x38) = 0;
+        *(s32 *)(s1 + 0x44) = 0;
+        *(s32 *)(s1 + 0x40) = 0;
+        *(s32 *)(s1 + 0x48) = 0;
+        *(s32 *)(s1 + 0x4C) = 0;
+        *(f32 *)(s1 + 0x50) = 1.0f;
+        *(f32 *)(s1 + 0x54) = 1.0f;
+        *(f32 *)(s1 + 0x58) = 1.0f;
+        *(f32 *)(s1 + 0x5C) = 1.0f;
+        s0++;
+    } while (s2 < 0x24);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0960);
 void func_002F0B00(u8 *task) {
     u8 *s1;
@@ -88,7 +128,42 @@ void InputPass_ClearName(void) {
     gInputName = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2500);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2600);
+void func_002F2600(u8 *task) {
+    u8 *s3;
+    u8 *s2;
+    s32 s1;
+    u32 *s0;
+
+    s3 = (u8 *)gInputName;
+    if (task != 0) {
+        s2 = *(u8 **)(task + 0x30);
+        if (*(void **)(s2 + 0x94) != 0) {
+            func_0022D4B0(*(void **)(s2 + 0x94), 1);
+        }
+        if (*(void **)s2 != 0) {
+            func_0022D0E0(*(void **)s2, 1);
+            *(void **)s2 = 0;
+        }
+        if (*(void **)(s2 + 0x98) != 0) {
+            func_0022D0E0(*(void **)(s2 + 0x98), 1);
+            *(void **)(s2 + 0x98) = 0;
+        }
+        if (*(void **)(s2 + 0x9C) != 0) {
+            func_0022D0E0(*(void **)(s2 + 0x9C), 1);
+            *(void **)(s2 + 0x9C) = 0;
+        }
+        s1 = 0;
+        s0 = (u32 *)s2;
+        do {
+            func_0022D4B0((void *)s0[1], 1);
+            s1++;
+            s0++;
+        } while (s1 < 0x24);
+        amHeap_Free(s2);
+        amTask_Kill((void *)task);
+        *(s32 *)(s3 + 0x18) = 0;
+    }
+}
 void *func_002F26E0(void) {
     u8 *s0;
     u8 *s1;
