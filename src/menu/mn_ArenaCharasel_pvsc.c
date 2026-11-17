@@ -162,7 +162,7 @@ void func_00308070(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00308070);
 extern s8 func_0027DAB0(void *);
 extern void func_0027E120(void *);
-extern s32 ArenaList_Create(s32);
+extern s32 ArenaList_Create(s16);
 extern void func_00307F10();
 extern s16 D_005C4132[];
 extern s16 D_005C412E[];

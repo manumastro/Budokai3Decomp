@@ -52,7 +52,7 @@ extern Obj *D_004705DC;
 extern Obj *D_004B42C0[];
 extern Obj D_004B4B00[];
 
-extern void amCdFs_SetHeap(s32);
+extern void amCdFs_SetHeap(u8);
 extern s32 *func_001FA360(s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern s32 *func_001C7D70(s32);

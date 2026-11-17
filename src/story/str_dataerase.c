@@ -601,7 +601,7 @@ extern s8 D_004B4B59;
 extern char D_005C4150[];
 extern s32 func_00283BF0(void);
 extern void SklSheet_Free(void);
-extern void SklSheet_SetIndex(s32);
+extern void SklSheet_SetIndex(s16);
 extern void Scene_Request(s32, s32);
 extern void Save_Request(s32, s32, s32);
 extern s32 Save_GetState(void);

@@ -5,7 +5,7 @@ extern u8 D_005BCD20[];
 extern void func_002A9930(s32, s32, void *, s32);
 extern void amCdFs_Close(void *, s32);
 extern s32 amCdFs_ReadFile(s32, s32, s32);
-extern void amCdFs_SetHeap(s32);
+extern void amCdFs_SetHeap(u8);
 extern void func_002AFCE0(void);
 extern void func_002AFE00(void);
 extern s32 func_002B0000(u8 *, s32 *);

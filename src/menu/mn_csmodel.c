@@ -372,7 +372,7 @@ void CsModel_Start2(Task *t) {
 extern f32 gFrameDelta;
 extern u8 D_004B4B41[];
 extern u8 D_004B4B59[];
-extern void VsCharasel_Start(s32, s32);
+extern void VsCharasel_Start(s8, s8);
 extern void PracMode_Exit();
 
 #if 0

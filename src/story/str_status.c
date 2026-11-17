@@ -16,7 +16,7 @@ extern void func_0022CD00(s32);
 extern void func_002C0860(s32 *);
 extern void func_002BDF50(void *, void *);
 extern void Obj_ResetF38(s32);
-extern void func_00215230(s32, s32);
+extern void func_00215230(s16, s16);
 extern void func_00214FD0(void);
 extern void amTask_KillGroup(s32, s32, s32);
 extern void *gWave;
