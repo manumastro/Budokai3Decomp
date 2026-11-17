@@ -112,7 +112,7 @@ void func_00281C60(Wrap280 *w) {
     f32 d;
 
     func_002811D0(o);
-    d = o->fC - D_004703BC;
+    d = o->fC - gFrameDelta;
     o->fC = d;
     if (d <= 0.0f) {
         o->f2 = 5;
@@ -124,7 +124,7 @@ void func_00281CC0(Wrap280 *w) {
     f32 d;
 
     func_002811D0(o);
-    d = o->fC - D_004703BC;
+    d = o->fC - gFrameDelta;
     o->fC = d;
     if (d <= 0.0f) {
         o->f2 = 5;

@@ -64,14 +64,14 @@ typedef struct SklTop {
 } SklTop;
 
 extern s32 func_0022BC30(s32, f32);
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 
 void func_002B2DA0(SklAct *s) {
     SklRecW *r = (SklRecW *)&gSklEdit[s->f30];
     s32 *p = (s32 *)&((SklRec *)r)->f48;
     s32 res;
 
-    res = func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f150], (f32)r->f158 * D_004703BC);
+    res = func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f150], (f32)r->f158 * gFrameDelta);
     if (res == 0xFF) {
         p[3] = 5;
         s->f1C = (func_002B3D90 == NULL) ? 0 : (s32)func_002B3D90;
@@ -85,7 +85,7 @@ void func_002B3BA0(SklAct *s) {
     s32 *p = (s32 *)&((SklRec *)r)->f48;
     s32 res;
 
-    res = func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f150], (f32)r->f158 * D_004703BC);
+    res = func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f150], (f32)r->f158 * gFrameDelta);
     if (res == 0xFF) {
         p[3] = 6;
         s->f1C = (func_002B2E40 == NULL) ? 0 : (s32)func_002B2E40;
