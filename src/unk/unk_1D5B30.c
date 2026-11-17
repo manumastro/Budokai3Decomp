@@ -318,6 +318,7 @@ extern s32 func_001DFE60(Fighter *c, s32 a, f32 v);
 extern s32 func_001DFA90(Fighter *c, s32 idx);
 extern s32 func_002350A0(Fighter *c);
 extern s32 D_00469478[];
+extern s32 D_004693C0[];
 extern void func_001E11E0(s32 a, void *b);
 extern s32 func_001DFC80(Fighter *c, s32 a, f32 v);
 extern void func_001D7CC0(Fighter *c, s32 a);
@@ -2958,6 +2959,80 @@ void func_001E2CC0(Fighter *c) {
 #endif
 // differs: the calls and the stores match; the original keeps c in s0 with a 0x50 frame (s0/s1 only, the two struct arguments at 0x40 and 0x48) and the early-return layout differs
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2CC0);
+#if 0
+void func_001E2DE0(Fighter *c) {
+    s32 *p;
+    s32 x;
+    s32 idx;
+    s32 i;
+    s32 cnt;
+    s32 k;
+    s32 n;
+    u8 *r;
+    char *t0;
+    f32 f1;
+    f32 f20;
+    f32 f21;
+    f32 f3;
+
+    if (*(f32 *)((char *)c + 0x1A40) <= 0.0f) {
+        return;
+    }
+    x = *(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x16);
+    if (x < 0) {
+        x = *(s32 *)((char *)c + 0xBA4);
+    }
+    k = *(s32 *)((char *)c + 0x1CFC);
+    idx = 0;
+    for (p = D_004693C0; *p != -1; p += 3) {
+        if (k == p[0] && !(x < p[1])) {
+            idx = p[2];
+            break;
+        }
+    }
+    if (idx == 1) {
+        return;
+    }
+    t0 = *(char **)((char *)c + 0xBB0);
+    f20 = gBattle->f88F0 * *(f32 *)((char *)c + 0x1A44);
+    f21 = (f32)*(s16 *)(t0 + 0xC) / 100.0f;
+    if (*(s16 *)t0 != 0) {
+        if (func_001DF8F0(0, 0x1B) > 0) {
+            f21 = f21 * 2.0f;
+        }
+    }
+    if (*(s8 *)((char *)c + 0x2010) != 0) {
+        f3 = 100.0f;
+        cnt = *(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x34);
+        if (cnt > 0) {
+            f1 = f3;
+            t0 = *(char **)((char *)c + 0x1CF4);
+            for (i = 0; i < cnt; i++) {
+                n = ((s16 *)(t0 + 0x36))[i];
+                r = D_004E0660 + n * 40;
+                if (r[0x15] == 0x17) {
+                    f3 = f3 - ((f32)*(s16 *)(r + 0x16) * (f1 + *(f32 *)((char *)c + 0x1FB8))) / f1;
+                }
+            }
+        }
+        f1 = 2.0f * f3 / 100.0f;
+        if (f1 <= 0.0f) {
+            f1 = 0.0f;
+        }
+        f21 = f21 * f1;
+    }
+    f1 = *(f32 *)((char *)c + 0x1A40) - f20 * f21;
+    if (f1 <= 0.0f) {
+        *(f32 *)((char *)c + 0x1A40) = f1;
+        *(f32 *)((char *)c + 0x17D0) = 0.0f;
+        *(s8 *)((char *)c + 0x200F) = 1;
+        if (*(s8 *)((char *)c + 0x2010) != 0) {
+            func_001D7CC0(c, 1);
+        }
+    }
+}
+#endif
+// differs: 148 of 150: the original moves c into $s0 after the first float test (the test reads 0x1A40 through $a0) and keeps no address across the call to func_001DF8F0; this C keeps c in $s2 and the c+0x1A40 address in $s0 (common subexpression across the call), so the frame is 0x50 against 0x30
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2DE0);
 void func_001E3010(Fighter *c) {
     s32 buf[10];
