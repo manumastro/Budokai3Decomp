@@ -84,16 +84,17 @@ typedef struct Tri {
 
 extern Tri D_0047CA40;
 
-/* differs: the size (0xC8 against 0xD0): the original branches to the join with `b` after each test (bc1t to the
- * continuation), and its return-0 block sits after the join; the nested-if form is not that layout yet. */
+/* differs: the size (0xC8 against 0xD0): the original has a `b` after the first test (its failures join at a `b`), and
+ * the f3 / f4 registers come out swapped with this declaration order. */
 #if 0
 s32 func_00132D20(Tri *t, f32 *v, f32 x) {
     f32 f5, f3, f4, f2, f1, f0;
-    s32 ret = 1;
+    s32 ret;
 
     f5 = v[0];
     f3 = v[1];
     f4 = v[2];
+    ret = 1;
     if (t == 0) t = &D_0047CA40;
     f5 = f5 * t->f30;
     f3 = f3 * t->f34;
@@ -113,7 +114,9 @@ s32 func_00132D20(Tri *t, f32 *v, f32 x) {
             f4 = f4 - f0;
             f0 = f2 - f3;
             f4 = f4 / f0;
-            if (__s_abs(f4) <= f1) return 0;
+            if (__s_abs(f4) <= f1) {
+                return 0;
+            }
         }
     }
     return ret;
