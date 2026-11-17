@@ -961,7 +961,7 @@ void func_001D92B0(Fighter *c) {
         }
     }
     if (func_001D9480((void *)c->f1354) == 0) {
-        func_00226030(0xE, buf);
+        A2d_CallHandler(0xE, buf);
     }
 }
 #endif
@@ -1544,7 +1544,7 @@ void func_001DD880(Fighter *c) {
     }
     buf[0] = ((Fighter *)c->f1354)->f1350;
     buf[1] = *(s32 *)((char *)c + 0x1A24) + *(s32 *)((char *)c + 0x1A28);
-    func_00226030(6, buf);
+    A2d_CallHandler(6, buf);
 }
 #endif
 // differs: size 0x174 vs 0x1B0: the original has no saved registers (one call at the end, frame 0x20) and loads gBattle once before the selection branch; the helper for the (f2015 ? f1358->f1350 : f1350) index in six expansions keeps four registers saved here
