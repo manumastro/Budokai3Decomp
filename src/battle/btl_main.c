@@ -3150,7 +3150,7 @@ extern void func_001B0810(void);
 
 s32 func_001C3D10(Fighter *f) {
     s32 buf[6];
-    u8 *gb = (u8 *)D_00470570;
+    u8 *gb = (u8 *)gBattle;
 
     if (f->unk1AC4 > 0) {
         if (FT_FIELD(gb, s16, 0x8944) == 0) {
@@ -3519,7 +3519,7 @@ void func_001C8340(Fighter *f) {
                 func_001E7070((u8 *)f + 0xCD0, -1);
                 func_001E8290((void *)((s32)f + 0xCD0));
             }
-            func_001CA8A0((void *)s0[0x1DB8 / 4]);
+            Character_Release((void *)s0[0x1DB8 / 4]);
             s0[0x1DB8 / 4] = 0;
         }
         func_001C82C0(f, i);
@@ -3714,7 +3714,7 @@ extern void func_001DA4C0(void);
 extern void amTask_KillGroup(s32, s32, s32);
 
 void func_001C8EE0(void) {
-    BattleSlots *bw = (BattleSlots *)D_00470570;
+    BattleSlots *bw = (BattleSlots *)gBattle;
     Fighter *f0 = (Fighter *)((u8 *)bw + 0x830);
     s32 i = 0;
     Fighter *f;
