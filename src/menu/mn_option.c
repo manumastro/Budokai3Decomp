@@ -1,5 +1,10 @@
 #include "common.h"
 
+extern u8 D_004E05DC[];
+extern s16 D_004E05E0[];
+extern u8 D_0051168A[];
+extern u8 D_004E6560[];
+
 extern s8 D_004703F4;
 extern u8 *D_00470934;
 extern void func_002DDF00();
@@ -22,6 +27,52 @@ void func_002DE250(void) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DE2C0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DE460);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DE5A0);
+#if 0
+// differs: the table address is kept in v1 by the original, mine folds the array address into each load (lui at, offset)
+void func_002DE910(void) {
+    u8 *v1;
+    u8 *a2;
+    u8 *t1;
+    u8 *t0;
+    u8 *a3;
+    s32 t2;
+
+    v1 = D_004E05DC;
+    a2 = (u8 *)D_00470934;
+    *(s16 *)(a2 + 0x41A) = *(s16 *)(v1 + 0);
+    *(s16 *)(a2 + 0x41C) = *(s16 *)(v1 + 4);
+    *(s16 *)(a2 + 0x41E) = *(s16 *)(v1 + 2);
+    t1 = v1;
+    t0 = a2;
+    a3 = a2;
+    t2 = 0;
+    do {
+        t2++;
+        *(s32 *)(t0 + 0x420) = *(s8 *)(t1 + 6);
+        *(s32 *)(t0 + 0x468) = *(s8 *)(t1 + 7);
+        t0 += 4;
+        *(s32 *)(a3 + 0x428) = *(s8 *)(t1 + 8);
+        *(s32 *)(a3 + 0x42C) = *(s8 *)(t1 + 9);
+        *(s32 *)(a3 + 0x430) = *(s8 *)(t1 + 0xA);
+        *(s32 *)(a3 + 0x434) = *(s8 *)(t1 + 0xB);
+        *(s32 *)(a3 + 0x438) = *(s8 *)(t1 + 0xC);
+        *(s32 *)(a3 + 0x43C) = *(s8 *)(t1 + 0xD);
+        *(s32 *)(a3 + 0x440) = *(s8 *)(t1 + 0xE);
+        *(s32 *)(a3 + 0x444) = *(s8 *)(t1 + 0xF);
+        t1 += 10;
+        a3 += 0x20;
+    } while (t2 < 2);
+    *(s16 *)(a2 + 0x470) = *(s16 *)(v1 + 0x2C);
+    *(s16 *)(a2 + 0x472) = *(s16 *)(v1 + 0x1E);
+    *(s16 *)(a2 + 0x474) = *(s16 *)(v1 + 0x20);
+    *(s16 *)(a2 + 0x476) = *(s32 *)(v1 + 0x24);
+    *(s16 *)(a2 + 0x478) = *(s32 *)(v1 + 0x28);
+    *(s32 *)(a2 + 0x47C) = *(s16 *)(v1 + 0x1C);
+    *(s32 *)(a2 + 0x480) = *(s32 *)(v1 + 0x30);
+    *(f32 *)(a2 + 0x484) = *(f32 *)(v1 + 0x34);
+    *(f32 *)(a2 + 0x488) = *(f32 *)(v1 + 0x38);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DE910);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEA00);
 /* Empty callback: nothing to do. */
@@ -35,6 +86,46 @@ void func_002DEFE0(void) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEFF0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF100);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF3D0);
+#if 0
+// differs: the four-way test on the table value is laid out differently (the original keeps the value in a0 and compares with li v1 constants, 8 bytes more code)
+void func_002DF4E0(void) {
+    u8 *a2;
+    s32 a0;
+    s32 t;
+    u8 *a1;
+
+    a2 = (u8 *)D_00470934;
+    a1 = D_004E05DC;
+    t = D_004E05E0[0];
+    if (t == 0x3C) {
+        *(s16 *)(a2 + 0x3E8) = 0;
+    } else if (t == 0x5A) {
+        *(s16 *)(a2 + 0x3E8) = 1;
+    } else if (t == 0x78) {
+        *(s16 *)(a2 + 0x3E8) = 2;
+    } else if (t == 0xB4) {
+        *(s16 *)(a2 + 0x3E8) = 3;
+    } else {
+        *(s16 *)(a2 + 0x3E8) = 4;
+    }
+    *(s32 *)(a2 + 0x3D0) = (s32)a1;
+    *(s32 *)(a2 + 0x3D4) = (s32)(a2 + 0x3E8);
+    *(s32 *)(a2 + 0x3D8) = (s32)a1 + 2;
+    a0 = 5;
+    if (D_0051168A[0] > 0) {
+        a0 = 6;
+        if (D_004E6560[0x2B12B] > 0) {
+            a0 = 7;
+            if (D_004E6560[0x2B12C] > 0) {
+                a0 = 8;
+            }
+        }
+    }
+    *(s32 *)(a2 + 0x3DC) = a0;
+    *(s32 *)(a2 + 0x3E0) = 5;
+    *(s32 *)(a2 + 0x3E4) = 5;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF4E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF5D0);
 extern void func_0022DB30(s32);
