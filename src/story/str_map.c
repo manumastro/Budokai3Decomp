@@ -195,6 +195,45 @@ void func_0029CC20(Task *a0) {
 void func_0029CCB0(void) {
     gStrTitle = NULL;
 }
+extern void amTask_KillGroup(s32, s32, s32);
+extern void amCdFs_Close(s32, s32);
+extern void amCdFs_ReleaseCache(s32);
+extern void amSofdec_Destroy(s32);
+extern void amHeap_Free(void *);
+#if 0
+// func_0029CCC0: the two loops and the Sofdec / heap tail match in shape; the loop counters swap saved registers (ours s0 and s1 the other way round) and one global reload differs; two orders tried
+void func_0029CCC0(void) {
+    s32 i;
+    s32 off;
+    amTask_KillGroup(2, 0x10000, 0);
+    i = 0;
+    off = 0;
+    do {
+        if (*(s32 *)((char *)gStrTitle + off) != 0) {
+            amCdFs_Close(*(s32 *)((char *)gStrTitle + off), 0);
+        }
+        if (*(s32 *)((char *)gStrTitle + off + 8) != 0) {
+            amCdFs_ReleaseCache(*(s32 *)((char *)gStrTitle + off + 8));
+        }
+        i++;
+        off += 4;
+    } while (i < 2);
+    i = 0;
+    off = 0;
+    do {
+        if (*(s32 *)((char *)gStrTitle + off + 0x6C) != 0) {
+            func_0022D0E0(*(s32 *)((char *)gStrTitle + off + 0x6C), 1);
+        }
+        i++;
+        off += 4;
+    } while (i < 0x10);
+    if (*(s32 *)((char *)gStrTitle + 0xD0) >= 0) {
+        amSofdec_Destroy(*(s32 *)((char *)gStrTitle + 0xD0));
+    }
+    amHeap_Free(gStrTitle);
+    gStrTitle = 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029CCC0);
 extern void func_0029CC20(Task *);
 extern char D_0046EA28[];
