@@ -1012,16 +1012,12 @@ int Scr_CmdFighterSlotSetVec(void *unused, Arg *a) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE4E0);
-// differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?: and if forms tried did not give movz.
-// differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?:, if and flag-local forms tried did not give movz.
+/* r6 best attempt diff 12 */
+/* Ours emits sltu for the flag; the original sets a1 = 1 and then movz a1,zero,v0. Forms tried: ?:, if, !!, f!=0, p[0]?f:0. */
 #if 0
 int func_001CE560(void *unused, Arg *a) {
     int *p = a->p;
-    s32 f = 1;
-    if (p[0] == 0) {
-        f = 0;
-    }
-    func_001D7CC0(gBattle->tbl[p[1]], f);
+    func_001D7CC0(gBattle->tbl[p[1]], p[0] == 0 ? 0 : 1);
     return 1;
 }
 #endif
