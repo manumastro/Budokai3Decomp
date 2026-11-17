@@ -2,7 +2,7 @@
 
 /* A task's work: its function (f1C), a position (f3C), a speed (f40) and the entity it moves (f48). */
 typedef struct Ent2FAFF0 {
-    char pad0[0x4];
+    s32 f0;
     s8 f4;
     char pad5[0x7];
     f32 fC;
@@ -37,14 +37,47 @@ typedef struct Anim2FAFF0 {
     s32 f8;
 } Anim2FAFF0;
 
+typedef struct Sys2FAFF0 {
+    char pad0[0x18];
+    s32 f18;
+    char pad1C[0x50];
+    s32 f6C;
+    char pad70[0x14];
+    s32 f84;
+    char pad88[0x21C];
+    s32 f2A4;
+    s32 f2A8;
+    char pad2AC[0x64];
+    s32 f310;
+    s32 f314;
+    s32 f318;
+} Sys2FAFF0;
+
+typedef struct SysB2FAFF0 {
+    char pad0[0x1C];
+    Sys2FAFF0 *f1C;
+} SysB2FAFF0;
+
+/* A counter at 0x10C of the save work: the value (f8) is at 0x114. */
+typedef struct Cnt2FAFF0 {
+    char pad0[0x8];
+    s32 f8;
+    char padC[0x4];
+} Cnt2FAFF0;
+
 typedef struct SaveWork2FAFF0 {
-    char pad0[0x40];
+    char pad0[0x30];
+    SysB2FAFF0 *f30;
+    char pad34[0xC];
     char *f40;
-    char pad44[0x250];
+    char pad44[0xC8];
+    Cnt2FAFF0 f10C;
+    char pad11C[0x178];
     s32 f294;
 } SaveWork2FAFF0;
 
 extern SaveWork2FAFF0 *D_00470974;
+extern s32 func_0022BC30(s32, f32);
 extern f32 D_004703BC;
 extern s32 Save_GetState(void);
 extern s32 Zenie_GetState(void);
@@ -56,6 +89,7 @@ extern void Save_Exit(void);
 extern void func_001F0810(s32, s32);
 
 extern void amTask_Kill(void *);
+void func_00300550(struct Task2FAFF0 *);
 void func_00300610(Task2FAFF0 *t);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FAFF0);
@@ -118,8 +152,52 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FED60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FEED0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FF610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FFD20);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300330);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300400);
+void func_00300330(Task2FAFF0 *t) {
+    SysB2FAFF0 *b = D_00470974->f30;
+    s32 r = -1;
+    Cnt2FAFF0 *c = &D_00470974->f10C;
+
+    r = r & func_0022BC30(b->f1C->f6C, (f32)c->f8 * D_004703BC);
+    r = r & func_0022BC30(b->f1C->f18, (f32)c->f8 * D_004703BC);
+    r = r & func_0022BC30(b->f1C->f84, (f32)c->f8 * D_004703BC);
+    if (r == 0xFF) {
+        amTask_Kill(t);
+    }
+    c->f8 = c->f8 + 1;
+}
+void func_00300400(Task2FAFF0 *t) {
+    Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
+    Ent2FAFF0 *e = t->f48;
+    s32 r = -1;
+
+    r = r & func_0022BC30(D_00470974->f30->f1C->f2A8, 0.5f * ((f32)e->f0 * D_004703BC));
+    if (r == 0xFF) {
+        s->f18->f4 = 4;
+        s->f18->f0 = 0;
+        amTask_Kill(t);
+    }
+    s->f18->f0 = s->f18->f0 + 1;
+}
+#if 0
+// differs: the object pointer a0+0x30 is computed before the first field load in the original; mwcc computes it at its first use
+void func_003004B0(Task2FAFF0 *t) {
+    Ent2FAFF0 *e = t->f48;
+    Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
+
+    e->f10 = e->f10 - t->f40;
+    e = t->f48;
+    if (e->f10 < t->f3C) {
+        e->f10 = t->f3C;
+        t->f40 = 5.0f * D_004703BC;
+        t->f44 = 1;
+        if (e->fC > s->f18->fC) {
+            t->f44 = -t->f44;
+            t->f40 = -t->f40;
+        }
+        t->f1C = (func_00300550 == 0) ? 0 : func_00300550;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003004B0);
 void func_00300550(Task2FAFF0 *t) {
     Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
@@ -155,8 +233,35 @@ void func_00300610(Task2FAFF0 *t) {
         amTask_Kill(t);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300670);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300760);
+void func_00300670(Task2FAFF0 *t) {
+    Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
+    s32 r = -1;
+    SysB2FAFF0 *b = D_00470974->f30;
+    Ent2FAFF0 *e = t->f48;
+
+    r = r & func_0022BC30(b->f1C->f310, (f32)e->f0 * D_004703BC);
+    r = r & func_0022BC30(b->f1C->f314, (f32)s->f18->f0 * D_004703BC);
+    r = r & func_0022BC30(b->f1C->f318, (f32)s->f18->f0 * D_004703BC);
+    if (r == 0xFF) {
+        s->f18->f4 = 1;
+        s->f18->f0 = 0;
+        amTask_Kill(t);
+    }
+    s->f18->f0 = s->f18->f0 + 1;
+}
+void func_00300760(Task2FAFF0 *t) {
+    Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
+    Ent2FAFF0 *e = t->f48;
+    s32 r = -1;
+
+    r = r & func_0022BC30(D_00470974->f30->f1C->f2A4, (f32)e->f0 * D_004703BC);
+    if (r == 0xFF) {
+        s->f18->f4 = 1;
+        s->f18->f0 = 0;
+        amTask_Kill(t);
+    }
+    s->f18->f0 = s->f18->f0 + 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300800);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003009E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300B60);

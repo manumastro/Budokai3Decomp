@@ -48,7 +48,9 @@ typedef struct Obj2D2530 {
     Model2D2530 *f2A0;
     char pad2A4[0x24];
     Model2D2530 *f2C8;
-    char pad2CC[0x14];
+    char pad2CC[0xC];
+    Model2D2530 *f2D8;
+    Model2D2530 *f2DC;
     Model2D2530 *f2E0;
     char pad2E4[0x30];
     Model2D2530 *f314;
@@ -62,7 +64,7 @@ typedef struct Obj2D2530 {
     char pad364[0x4];
     s32 f368;
     void (*f36C)(void);
-    char pad370[0x4];
+    s32 f370;
     void (*f374)(void);
     char pad378[0x4];
     s32 f37C;
@@ -75,6 +77,8 @@ typedef struct Obj2D2530 {
     char pad3A8[0x8];
     Vec4 f3B0;
     Vec4 f3C0;
+    char pad3D0[0x40];
+    s32 f410;
 } Obj2D2530;
 
 extern Obj2D2530 *D_00470934;
@@ -89,10 +93,20 @@ extern s32 D_00470238;
 void func_002D8890(void);
 void func_002D4A70(Vec4 *, Vec4 *);
 void func_002DD180(void);
+void func_002D47E0(Vec4 *, Vec4 *);
 void func_002D7310(void);
 void func_002DF930(void);
 extern char D_004E05DC[];
 extern char D_00456C80[];
+
+/* The table of the draw (D_004E05DC): an index at 0x1C, two values at 0x24 and 0x28. */
+typedef struct Tbl2D2530 {
+    char pad0[0x1C];
+    s16 f1C;
+    char pad1E[0x6];
+    s32 f24;
+    s32 f28;
+} Tbl2D2530;
 extern f32 D_004E0618[];
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Pause(s32, s32);
@@ -236,8 +250,39 @@ void func_002D4530(Vec4 *p, Vec4 *q) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D4600);
+#if 0
+// differs: four values live across the draws (p0, p1, the object, the model): the original keeps four saved registers, this compiles with three
+void func_002D47E0(Vec4 *p0, Vec4 *p1) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m = s->f2D8;
+
+    DrawModel(s, m, 0, p0);
+    m = D_00470934->f2DC;
+    DrawModel(D_00470934, m, 0, p1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D47E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D4930);
+void func_002D4930(void) {
+    Vec4 a;
+    Vec4 b;
+    Vec4 c;
+    Obj2D2530 *o = D_00470934;
+
+    VecCopy(&a, &o->f3B0);
+    VecCopy(&b, &o->f3C0);
+    func_002D4530(&c, &a);
+    b.w = a.w;
+    c.x = 0.0f;
+    c.w = 1.0f;
+    c.y = 0.0f;
+    c.z = 0.0f;
+    DrawModel(D_00470934, o->f2C8, &c, &a);
+    if (o->f410 == 0) {
+        func_002D47E0(&a, &b);
+    } else {
+        func_002D47E0(&b, &a);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D4A70);
 void func_002D4BC0(void) {
     Vec4 a;
@@ -263,6 +308,41 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D4CF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5090);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5570);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5720);
+#if 0
+// differs: the step factor (1.2f when D_004703F4 == 3) is laid out with a branch the source form did not reproduce; the rest of the draw matches up to there
+void func_002D58B0(void) {
+    Vec4 b;
+    Vec4 a;
+    Tbl2D2530 *e = (Tbl2D2530 *)D_004E05DC;
+    Obj2D2530 *o = D_00470934;
+    Obj2D2530 *s;
+    Model2D2530 *m;
+    f32 k = 1.0f;
+
+    a.x = (f32)e->f24;
+    a.y = (f32)e->f28;
+    a.z = 0.0f;
+    a.w = 1.0f;
+    k = (D_004703F4 == 3) ? 1.2f : 1.0f;
+    o->f398 = o->f398 + k;
+    b.x = 1.0f;
+    b.y = 1.0f;
+    b.z = 1.0f;
+    b.w = 1.0f;
+    if (o->f398 >= 30.0f) {
+        b.w = 0.0f;
+        o->f370 = 0;
+    } else {
+        b.w = 1.0f - o->f398 / 30.0f;
+    }
+    s = D_00470934;
+    m = *(Model2D2530 **)((char *)o + 0x28C + e->f1C * 4);
+    DrawModel(s, m, 0, &b);
+    s = D_00470934;
+    m = *(Model2D2530 **)((char *)o + 0x294 + e->f1C * 4);
+    DrawModel(s, m, &a, &b);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D58B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5AE0);
 void func_002D5D70(void) {
@@ -321,6 +401,15 @@ void func_002D6F40(void) {
     f->f1C = (func_002DF930 == 0) ? 0 : func_002DF930;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7050);
+#if 0
+// differs: the second model is loaded into the register of the first object pointer: mwcc swaps two saved registers
+void func_002D71D0(void) {
+    Obj2D2530 *o = D_00470934;
+
+    DrawModel(D_00470934, o->fBC, 0, 0);
+    DrawModel(D_00470934, o->fC0, 0, 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D71D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7310);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7450);
