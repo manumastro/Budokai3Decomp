@@ -28,7 +28,7 @@ extern s32 D_004702A8;
 extern Node *D_004702AC;
 extern Node *D_004702B0;
 extern s32 D_004702B4;
-extern void func_001258F8(void *, s32, s32);
+extern void memset(void *, s32, s32);
 
 void func_00137EE0(void) {
     s16 *h;
@@ -115,7 +115,7 @@ Node *func_00139950(void) {
     Node *n;
     n = D_0047D4E0[D_004702A8];
     D_004702A8++;
-    func_001258F8(n, 0, 0x50);
+    memset(n, 0, 0x50);
     n->fC = 1.0f;
     n->f1C = 1.0f;
     n->next = 0;

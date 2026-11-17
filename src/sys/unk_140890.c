@@ -32,12 +32,12 @@ extern volatile u32 *D_003F08D0[];
 extern volatile u32 *D_003F0900[];
 extern char D_0045F550[];
 extern void *func_00124940(s32, s32);
-extern void func_00114320(void);
-extern void func_00114370(void);
+extern void DI(void);
+extern void EI(void);
 extern s32 AddDmacHandler2(s32, s32 (*)(s32, s32, void *), s32, s32);
 extern s32 AddDmacHandler(s32, s32 (*)(s32), s32);
 extern s32 func_0010AE78(s32);
-extern void func_0010CF48(char *, s32, s32, s32);
+extern void scePrintf(char *, s32, s32, s32);
 extern s32 func_00141230(s32);
 void func_00140A10(s32 ch, s32 mask);
 void func_00140A50(void);
@@ -86,7 +86,7 @@ void func_00140A50(void) {
     s32 ch;
     s32 j;
 
-    func_00114320();
+    DI();
     for (bit = 1, ch = 0; ch < 16; ch++, bit <<= 1) {
         q = D_0047E080;
         found = 0;
@@ -101,21 +101,21 @@ void func_00140A50(void) {
             func_0010AE78(ch);
         }
     }
-    func_00114370();
+    EI();
 }
 
 void func_00140B50(s32 ch) {
     DmaQueue *q = &D_0047E080[ch];
-    func_00114320();
+    DI();
     if (q->count) {
-        func_0010CF48(D_0045F550, ch, q->count, q->total);
+        scePrintf(D_0045F550, ch, q->count, q->total);
     }
     q->unk2 = 0;
     q->count = 0;
     q->head = 0;
     q->tail = 0;
     q->total = 0;
-    func_00114370();
+    EI();
 }
 
 void func_00140BF0(s32 ch) {
@@ -139,9 +139,9 @@ void func_00140CC0(s32 qwc, s32 sadr, s32 tadr, s32 wait) {
 s32 func_00140D30(s32 ch, s32 id, s32 tte, s32 mode, s32 madr, s32 qwc, s32 tadr, s32 sadr) {
     DmaQueue *q = &D_0047E080[ch];
     DmaReq *e;
-    func_00114320();
+    DI();
     if (q->count >= D_0047030C) {
-        func_00114370();
+        EI();
         return -1;
     }
     e = &D_00470310[ch][q->tail];
@@ -159,7 +159,7 @@ s32 func_00140D30(s32 ch, s32 id, s32 tte, s32 mode, s32 madr, s32 qwc, s32 tadr
             D_0047E040[id] = ch;
         }
     }
-    func_00114370();
+    EI();
     return 0;
 }
 
@@ -169,7 +169,7 @@ s32 func_00140D30(s32 ch, s32 id, s32 tte, s32 mode, s32 madr, s32 qwc, s32 tadr
             D_0047E040[id] = ch;
         }
     }
-    func_00114370();
+    EI();
     return 0;
 }
 #endif

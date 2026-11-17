@@ -18,7 +18,7 @@ extern f32 func_00146E90(f32 *);
 extern f32 func_00146E30(f32 *, f32 *);
 extern f32 func_0011F680(f32, f32);
 extern u32 func_0012EAE0(s32);
-extern void func_00126B70(s32);
+extern void srand(s32);
 extern void func_001E2510(Fighter *);
 extern void func_00243DE0(s32, void *);
 extern s32 func_001DF420(Fighter *, s32, s32);
@@ -64,7 +64,7 @@ typedef struct CharPair {
 extern CharPair D_00469290[];
 extern char D_004692C0[];
 extern void *func_00144FC0(void (*update)(Task *), void (*kill)(Task *), s32 prio, s32, s32, char *name);
-extern void func_001258F8(void *, s32, s32);
+extern void memset(void *, s32, s32);
 extern void func_001A3610(s32);
 extern void func_001E11E0(s32, void *);
 extern void func_0021A030(void *, s32, s32, f32);
@@ -260,7 +260,7 @@ s32 func_001CB250(void *self, ScriptCtx *ctx) {
     return 1;
 }
 s32 func_001CB2B0(void *self, ScriptCtx *ctx) {
-    func_00126B70(ctx->args[90]);
+    srand(ctx->args[90]);
     return 1;
 }
 #if 0
@@ -421,7 +421,7 @@ s32 func_001CBAE0(ScriptOwner *self, ScriptCtx *ctx) {
         *slot = t;
     }
     w = (CharFlash *)t->work;
-    func_001258F8(w, 0, sizeof(CharFlash));
+    memset(w, 0, sizeof(CharFlash));
     w->side = side;
     w->unk04 = f->unk13A4;
     w->time = 0.0f;
@@ -453,7 +453,7 @@ s32 func_001CBC20(ScriptOwner *self, ScriptCtx *ctx) {
         *slot = t;
     }
     w = (CharFlash *)t->work;
-    func_001258F8(w, 0, sizeof(CharFlash));
+    memset(w, 0, sizeof(CharFlash));
     w->side = side;
     w->unk04 = f->unk13A4;
     w->time = 0.0f;

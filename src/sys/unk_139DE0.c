@@ -28,7 +28,7 @@ extern void (*D_004702DC)(void);
 extern void func_00128040(char *, char *, s32);
 extern s32 D_004702C0, D_004702C4, D_004702C8, D_004702CC, D_004702D0, D_004702D4, D_004702D8;
 extern s32 func_00124B70(s32);
-extern void func_001258F8(void *, s32, s32);
+extern void memset(void *, s32, s32);
 extern void func_00139E60(s32, Part *, void *);
 extern void func_0013A1E0(s32, Part *, void *);
 void func_0013AA10(void);
@@ -158,11 +158,11 @@ void func_0013A960(s32 size) {
     D_004702D8 = 0;
 }
 void func_0013AA10(void) {
-    func_001258F8(D_004702B8, 0, 0x20);
+    memset(D_004702B8, 0, 0x20);
     D_004702B8->size = D_004702D0;
     D_004702B8->p18 = D_004702BC;
     D_004702B8->magic = 0xD2ACD2AC;
-    func_001258F8(D_004702BC, 0, 0x20);
+    memset(D_004702BC, 0, 0x20);
     D_004702BC->size = 0xD2ACD2AC;
     D_004702BC->prev = D_004702B8;
     D_004702C0 = 0;
@@ -199,7 +199,7 @@ void *func_0013AAB0(s32 size, s32 mode, char *name, s32 tag) {
     b->p18->pad4 = tag;
     b->magic = 0xD2ACD2AC;
     b->p18->size = 0xD2ACD2AC;
-    func_001258F8((char *)b + 4, 0, 0x10);
+    memset((char *)b + 4, 0, 0x10);
     func_00128040((char *)b + 4, name, 0xF);
     if (mode == 1) b->p18->flags |= 1;
     return b + 1;

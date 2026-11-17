@@ -12,7 +12,7 @@ typedef struct MotSet {
     s16 map[16][256];
 } MotSet;
 
-extern void func_001258F8(void *, s32, s32);
+extern void memset(void *, s32, s32);
 extern s32 func_0013CAE0(char *, char *);
 extern s32 func_0013C860(Key *, f32);
 
@@ -86,7 +86,7 @@ void func_00142590(void);
 
 
 void func_00141280(MotSet *s, Skel **skel) {
-    func_001258F8(s, 0, sizeof(MotSet));
+    memset(s, 0, sizeof(MotSet));
     s->u.skel = skel;
 }
 
@@ -155,7 +155,7 @@ void func_00142490(void) {
     SfdFx fx;
     s32 i;
 
-    func_001258F8(&fx, 0, sizeof(SfdFx));
+    memset(&fx, 0, sizeof(SfdFx));
     if (D_004703F4 != 3) {
         fx.fps = 59.94f;
     } else {
@@ -236,7 +236,7 @@ s32 func_001427D0(MovieParam *p) {
     if (D_0047031C <= 0) return -1;
     id = D_00470318[--D_0047031C];
     m = &D_0047E0A0[id];
-    func_001258F8(&c, 0, sizeof(SfdCprm));
+    memset(&c, 0, sizeof(SfdCprm));
     c.unk20 = p->unk0;
     c.unk0 = p->unk4;
     c.unk4 = p->unk8;

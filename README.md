@@ -30,6 +30,7 @@ macOS (Apple Silicon, with Rosetta for wibo) or Linux x86-64 (not tried yet), wi
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 python3 scripts/get_tools.py             # binutils, wibo, the Metrowerks compiler, mwccgap into tools/
+python3 scripts/get_tools.py --eegcc     # also Sony's ee-gcc builds, for the libraries (needs Docker)
 mkdir -p iso && cp <your disc image> iso/   # or: configure.py --iso <your disc image>
 .venv/bin/python configure.py            # extracts SLUS_209.98, checks it, splits it, writes build.ninja
 .venv/bin/ninja                          # build/SLUS_209.98: rebuilt and compared with the original
@@ -37,7 +38,10 @@ mkdir -p iso && cp <your disc image> iso/   # or: configure.py --iso <your disc 
 
 `ninja` ends with `CHECK build/SLUS_209.98.ok` when both the flat image and the whole ELF match the original.
 The Metrowerks compiler is a Windows program; [wibo](https://github.com/decompals/wibo) runs it (on Apple Silicon
-under Rosetta).
+under Rosetta). The libraries (Sony's and CRI's) were built with Sony's ee-gcc: its Linux builds are
+32-bit i386 programs, which `scripts/eegcc/eegcc.py` runs in a small Docker container (`scripts/eegcc/Dockerfile`,
+built for linux/amd64 on first use; Rosetta or QEMU on Apple Silicon), and its Windows builds (SN Systems' 2.95) in
+wibo.
 
 ## Layout
 
@@ -54,6 +58,8 @@ under Rosetta).
 | `scripts/asm2c.py` | Turns one assembly file of the split into a C file of `INCLUDE_ASM` functions |
 | `scripts/progress.py` | Counts the functions in C per part (`--write` updates docs/progress.md) |
 | `scripts/mwmatch.py` | Compiles C with each Metrowerks build and flag set and compares functions with the original |
+| `scripts/gccdiff.py` | fdiff.py for the libraries' C files (ee-gcc, per configure.py's `GCC_GROUPS`) |
+| `scripts/gccmatch.py` | The same for Sony's ee-gcc builds (the libraries); `scripts/eegcc/` runs them (Docker, wibo) |
 | `scripts/names_from_strings.py` | Names library functions after the error strings they print |
 | `config/symbols/` | Library names: syscall stubs by number, Sony / CRI functions from their strings |
 | `docs/plan.md` | What the executable contains, the compiler, the figures, the plan |

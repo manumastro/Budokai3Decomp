@@ -8,7 +8,7 @@ extern s32 D_0047075C;
 extern s32 D_004B41F0[7];
 extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
 extern void func_0013AC90(void *);
-extern void func_001258F8(void *, s32, s32);
+extern void memset(void *, s32, s32);
 extern s32 func_0013DF20(void *, ...);
 extern s32 func_0013BC70(void *, s32);
 extern CharFile *func_0025C670(s32, s32, s32);
@@ -67,7 +67,7 @@ CharBody *func_001C9AF0(s32 chara, s32 costume, s32 color, s32 key) {
     size0 = (func_0013DF20(&q1) + 15) & ~15;
     size = ((func_0013BC70(&q0, 2) + 15) & ~15) + (size0 + 0x90);
     b = func_0013AAB0(size, 1, D_00469040, 175);
-    func_001258F8(b, 0, size);
+    memset(b, 0, size);
     b->unk48 = (u8 *)b + 0x90;
     b->model = (Model *)((u8 *)b + size0 + 0x90);
     b->entry = e;
@@ -235,7 +235,7 @@ CharFace *func_001CA180(s32 chara, s32 costume, s32 color, s32 key) {
     size0 = (func_0013DF20(&q1) + 15) & ~15;
     size = ((func_0013BC70(&q0, 0) + 15) & ~15) + (size0 + 0xB0);
     f = func_001CA3F0(2, size);
-    func_001258F8(f, 0, size);
+    memset(f, 0, size);
     f->unk18 = (s32)((u8 *)f + 0xB0);
     f->model = (Model *)((u8 *)f + size0 + 0xB0);
     f->entry = e;

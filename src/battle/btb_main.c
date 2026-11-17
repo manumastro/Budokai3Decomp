@@ -64,7 +64,7 @@ static void func_001F8740(StageGroupSrc *src, StageGroup *grp) {
 }
 extern char D_004698D8[];
 extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
-extern void func_001258F8(void *, s32, s32);
+extern void memset(void *, s32, s32);
 void func_001F8420(void *src, StageObj *obj);
 
 void func_001F89D0(s32 index, StageGroupSrc *src, StageGroup *group) {
@@ -74,7 +74,7 @@ void func_001F89D0(s32 index, StageGroupSrc *src, StageGroup *group) {
     group->src = src;
     group->count = src->count;
     group->objs = func_0013AAB0(src->count * sizeof(StageObj), 0, D_004698D8, 0x624);
-    func_001258F8(group->objs, 0, src->count * sizeof(StageObj));
+    memset(group->objs, 0, src->count * sizeof(StageObj));
     for (i = 0; i < src->count; i++) {
         func_001F8420(src->objs[i], &group->objs[i]);
     }
@@ -91,7 +91,7 @@ StageGroup *func_001F8AA0(StageHeader *hdr) {
         return NULL;
     }
     groups = func_0013AAB0(hdr->ngroups * sizeof(StageGroup), 0, D_004698D8, 0x5F2);
-    func_001258F8(groups, 0, hdr->ngroups * sizeof(StageGroup));
+    memset(groups, 0, hdr->ngroups * sizeof(StageGroup));
     g = groups;
     for (i = 0; i < hdr->ngroups; i++, g++) {
         func_001F89D0(i, hdr->groups[i], g);
@@ -148,7 +148,7 @@ void func_001F8DE0(StageWork *w) {
     if (hdr->nobjs > 0) {
         w->nobjs = hdr->nobjs;
         w->objs = func_0013AAB0(hdr->nobjs * sizeof(StageObj), 0, D_004698D8, 0x59A);
-        func_001258F8(w->objs, 0, hdr->nobjs * sizeof(StageObj));
+        memset(w->objs, 0, hdr->nobjs * sizeof(StageObj));
         for (i = 0; i < hdr->nobjs; i++) {
             func_001F8420(hdr->objs[i], &w->objs[i]);
         }
@@ -519,14 +519,14 @@ void func_001FA250(void) {
 }
 void func_001FA320(void) {
     func_001F8ED0(&D_0051CCE0);
-    func_001258F8(&D_0051CCE0, 0, 0x40);
+    memset(&D_0051CCE0, 0, 0x40);
 }
 extern s32 D_00470630;
 
 /* compiles 8 bytes short */
 #if 0
 void func_001FA360(s32 stage) {
-    func_001258F8(&D_00470630, 0, 4);
+    memset(&D_00470630, 0, 4);
     D_00470630 = D_0044AE50[stage].unk14;
 }
 #endif

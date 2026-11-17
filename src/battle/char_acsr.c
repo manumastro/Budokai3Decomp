@@ -53,7 +53,7 @@ typedef struct SizeQuery2 {
 extern char D_00469338[];
 extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
 extern void func_0013AC90(void *);
-extern void func_001258F8(void *, s32, s32);
+extern void memset(void *, s32, s32);
 extern s32 func_0013DF20(void *);
 extern AcsrFile *func_0025C670(s32, s32, s32);
 extern void func_0025C800(void *, s32);
@@ -180,7 +180,7 @@ Acsr *func_001D0FC0(AcsrData *data) {
     q.count = 0x10;
     size = ((func_0013DF20(&q) + 15) & ~15) + 0x30;
     a = func_0013AAB0(size, 1, D_00469338, 113);
-    func_001258F8(a, 0, size);
+    memset(a, 0, size);
     a->model = (s32)((u8 *)a + 0x30);
     a->data = data;
     a->loading = 0;
