@@ -1469,15 +1469,12 @@ void func_001D0860(char *o, char *a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0860);
 extern void *D_004692E0[];
-/* r6 best attempt diff 12 */
-// differs: 12 instructions (8 checks used; permuter not run, diff > 10). Loop with n in a3; the register allocation does not match the original.
-#if 0
 void func_001D0990(void *o, void *s, s32 key, f32 val) {
+    s32 i = 0;
+    char *e;
+    char *base;
     s32 n = *(s32 *)((char *)s + 0x28);
     if (0 < n) {
-        char *base;
-        char *e;
-        s32 i = 0;
         s = *(char **)((char *)s + 0x2C);
         base = s;
         e = s;
@@ -1491,6 +1488,4 @@ void func_001D0990(void *o, void *s, s32 key, f32 val) {
         } while (i < n);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0990);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0A20);
