@@ -408,7 +408,57 @@ void func_0030FF30(s32 *a0) {
         }
     }
 }
+#if 0
+// func_00310080: 2 instructions short (0x148 vs 0x150): the original loads the volume constant D_004E0614 into f12 early (lui at before the byte store) and reloads its address for the compare; ours shares one lui. The model-set block and the task-field order match
+extern void func_0022E0B0(s32);
+extern void amFile_Load(s32);
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
+extern f32 D_004E0614;
+extern void func_0030FF30(s32 *);
+void func_00310080(Task *t) {
+    s32 *s2 = (s32 *)t;
+    s32 *s1 = *(s32 **)((char *)t + 0x30);
+    s32 *s0 = (s32 *)D_0047099C;
+    if (s0[0xC / 4] == 0) {
+        if (*(s16 *)((char *)(s32 *)s0[0x4 / 4] + 4) != 3) {
+            return;
+        }
+        s0[0x8 / 4] = *(s32 *)((char *)(s32 *)s0[0] + 0x54);
+        *(s32 *)((char *)(s32 *)s0[0] + 0x54) = 0;
+        amCdFs_Close(s0[0], 0);
+        s0[0] = 0;
+        s0[0xC / 4] = *(s32 *)((char *)(s32 *)s0[0x4 / 4] + 0x54);
+        *(s32 *)((char *)(s32 *)s0[0x4 / 4] + 0x54) = 0;
+        amCdFs_Close(s0[0x4 / 4], 0);
+        s0[0x4 / 4] = 0;
+        func_0022E0B0(s0[0x8 / 4]);
+        amFile_Load(s0[0xC / 4]);
+    }
+    s0 = (s32 *)D_0047099C;
+    {
+        s32 v = s0[0xC / 4];
+        D_00470704 = v;
+        D_0047070C = 0x6000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, 0x6000);
+    }
+    D_00470238 = 0;
+    s1[0] = func_0022D860(*(s32 *)(*(s32 *)(s0[0x8 / 4] + 0x14)), 0.0f);
+    *((s8 *)s1 + 0xE) = 2;
+    s1[0x10 / 4] = 0x41F00000;
+    SoundRpc_SetVolume(0, 0, D_004E0614);
+    if (!(D_004E0614 <= 0.0f)) {
+        SoundRpc_Send3(0, 0, 0x15, 0);
+    }
+    {
+        void *f = func_0030FF30;
+        s2[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310080);
+
 u8 func_003101D0(char *p) {
     return ((u8 *)(*(char **)(p + 0x30)))[0xE];
 }
