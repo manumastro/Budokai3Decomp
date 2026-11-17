@@ -273,7 +273,9 @@ segments:
       # .rodata, 0x45CB80 to 0x46FD00: strings and constants in link order. Its last 0x80 bytes hold a static
       # initializer (code, 0x46FC80) and a pointer to it (0x46FCC0), as Metrowerks emits for a global whose
       # initial value is computed.
-      - [0x35CB80, rodata, rodata/rodata]
+      - [0x35CB80, rodata, rodata/rodata_a]
+      - [0x36F590, .rodata, unk/unk_2E8540]
+      - [0x36F5AC, rodata, rodata/rodata_b]
       # .sdata, 0x46FD00 ($gp - 0x7FF0) to 0x470200.
       - [0x36FD00, sdata, sdata/sdata]
       - { type: bss, vram: 0x00470200 }

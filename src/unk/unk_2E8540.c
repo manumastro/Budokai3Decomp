@@ -332,7 +332,25 @@ void func_002E8DB0(u8 *s5) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8DB0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8F00);
+extern void func_002E8DB0(void *);
+void func_002E8F00(void *a0, s16 a1, s16 a2) {
+    switch (a1) {
+    case 0: case 1: case 2: case 3: case 4: case 5:
+        break;
+    case 6:
+        switch (a2) {
+        case 1:
+        case 2:
+            func_002E8DB0(a0);
+            break;
+        case 0:
+            break;
+        case 3:
+            break;
+        }
+        break;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8F90);
 
 void func_002E92E0(void) {
