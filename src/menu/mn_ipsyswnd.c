@@ -167,6 +167,52 @@ void func_002F4D50(u8 *a0) {
     } while (cnt < 0x24);
 }
 #endif
+#if 0
+// differs: 16 of 59: the register roles and the loop match; the original stores the call's return register into the cursor before the memset (mine copies it first, the store lands in the memset delay slot)
+extern void *func_0022DA90(s32, f32);
+
+void func_002F4D50(u8 *a0) {
+    void *tmp;
+    u8 *glob;
+    s32 cnt;
+    u8 *rec;
+    u8 *cur;
+    cnt = 0;
+    glob = (u8 *)gOutputPass;
+    cur = a0;
+    do {
+        tmp = func_0022DA90(0, 0.0f);
+        rec = (u8 *)tmp;
+        *(void **)(cur + 4) = tmp;
+        memset(rec, 0, 0x60);
+        *(s32 *)(rec + 4) = 3;
+        cnt++;
+        *(s32 *)(rec + 0x8) = 1;
+        *(s32 *)(rec + 0xC) = 3;
+        *(s32 *)(rec + 0x10) = *(s32 *)(glob + 0xC);
+        *(s32 *)(rec + 0x14) = 0x6000;
+        *(s16 *)(rec + 0x18) = 2;
+        *(s16 *)(rec + 0x1A) = 0;
+        *(s32 *)(rec + 0x20) = 0;
+        *(s32 *)(rec + 0x24) = 0;
+        *(s32 *)(rec + 0x28) = 0;
+        *(f32 *)(rec + 0x2C) = 1.0f;
+        *(s32 *)(rec + 0x34) = 0;
+        *(s32 *)(rec + 0x3C) = 0;
+        *(s32 *)(rec + 0x30) = 0;
+        *(s32 *)(rec + 0x38) = 0;
+        *(s32 *)(rec + 0x44) = 0;
+        *(s32 *)(rec + 0x40) = 0;
+        *(s32 *)(rec + 0x48) = 0;
+        *(s32 *)(rec + 0x4C) = 0;
+        *(f32 *)(rec + 0x50) = 1.0f;
+        *(f32 *)(rec + 0x54) = 1.0f;
+        *(f32 *)(rec + 0x58) = 1.0f;
+        *(f32 *)(rec + 0x5C) = 1.0f;
+        cur += 4;
+    } while (cnt < 0x24);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4D50);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4E40);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4F70);
