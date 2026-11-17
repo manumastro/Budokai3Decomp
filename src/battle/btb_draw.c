@@ -6171,6 +6171,64 @@ void func_001F7C80(s32 a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7C80);
+#if 0
+void func_001F7DB0(void) {
+    char *v;
+    s32 n;
+    char *s1;
+    s32 off;
+    s32 flags;
+    char *d;
+    char *p;
+    s32 i;
+    s32 cnt;
+    char *x1;
+    char *x2;
+    char *x3;
+    char *sp;
+    char *r;
+
+    v = D_0051CD14[0] + D_0051CD20[0] * 36;
+    n = 0;
+    if (0 < *(s32 *)(*(char **)(v + 4) + 0x80)) {
+        off = 0;
+        do {
+            s1 = *(char **)(D_0051CD14[0] + D_0051CD20[0] * 36 + 0xC) + off;
+            sp = *(char **)(s1 + 4);
+            for (i = 0; i < *(s32 *)(sp + 4); i++) {
+                *(s32 *)(sp + 8 + i * 8) = 0;
+            }
+            r = func_001F5FD0(0x80000000, D_004698D0, (s32)s1, (void *)func_001F3A60, (void *)func_001F3C10);
+            *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x11;
+            *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x10;
+            flags = 0;
+            x1 = *(char **)(s1 + 4);
+            x2 = *(char **)x1;
+            x3 = *(char **)(x2 + 0x1C);
+            d = *(char **)x3;
+            if (d != NULL) {
+                cnt = *(s32 *)(d + 0x10);
+                if (0 < cnt) {
+                    p = *(char **)(d + 0x1C);
+                    i = 0;
+                    do {
+                        if (*(s8 *)p == 0x58) {
+                            flags |= 0x200;
+                        }
+                        p += 0x20;
+                        i++;
+                    } while (i < cnt);
+                }
+            }
+            *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & ~flags;
+            *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | flags;
+            n++;
+            off += 0x20;
+        } while (n < *(s32 *)(*(char **)(v + 4) + 0x80));
+    }
+}
+#endif
+// differs: func_001F7DB0 (404 bytes): the layout matches (saved registers, memset loop, call, flags test); the flags loop has its counter, count and pointer in a2/a3/t0 where the original has count=a2, i=t0, p=a3 (a 3-cycle on the temporaries); declaration orders (40 best of 105, relocations included) and a do-while form tried.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7DB0);
 typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
