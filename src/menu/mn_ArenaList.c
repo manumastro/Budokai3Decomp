@@ -1,5 +1,25 @@
 #include "common.h"
 #include "menu/menu.h"
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void func_00145CC0(s32, s32);
+extern void *func_0022D860(void *, f32);
+extern void *func_0022D670(void *, f32);
+extern void func_002EE5C0();
+extern void func_002F2500();
+extern void Help_Exit();
+extern void func_002EE1C0();
+extern void func_002ECFD0();
+extern s32 Save_GetState();
+extern void Save_Exit();
+extern void func_002EF7C0();
+extern void func_00143F20(s32, s32, f32);
+extern void func_00143D60();
+extern void func_002EE360();
+extern void func_002EF390();
+extern f32 D_004E0614[];
 extern u8 D_004B4B40[];
 extern s16 D_005C9F04[];
 
@@ -40,7 +60,23 @@ void func_002EE100(u8 *s2) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EE1C0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EE360);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EE4D0);
+void func_002EE4D0(u8 *s0) {
+    s32 a0;
+
+    a0 = *(s32 *)(s0 + 0x240);
+    D_00470704 = a0;
+    D_0047070C = 0x4000;
+    D_00470708 = 0;
+    func_00145CC0(a0, 0x4000);
+    D_00470238 = 0;
+    *(void **)(s0 + 0x5C) = func_0022D860(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x14) + 0x4), 0.0f);
+    *(void **)(s0 + 0x60) = func_0022D860(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x14) + 0x10), 0.0f);
+    *(void **)(s0 + 0x64) = func_0022D670(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x1C) + 0x24), 0.0f);
+    *(void **)(s0 + 0x68) = func_0022D670(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x1C) + 0x28), 0.0f);
+    *(void **)(s0 + 0x6C) = func_0022D670(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x1C) + 0x34), 0.0f);
+    *(void **)(s0 + 0x70) = func_0022D670(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x1C) + 0x38), 0.0f);
+    *(void **)(s0 + 0x74) = func_0022D860(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x14) + 0x0), 0.0f);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EE5C0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EE7A0);
 void func_002EE9F0(u8 *a0) {
@@ -214,7 +250,17 @@ void func_002EF4C0(u8 *a0) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF4C0);
+void func_002EF4C0(u8 *task) {
+    u8 *obj;
+
+    obj = *(u8 **)(task + 0x30);
+    func_002EE1C0(obj);
+    func_002ECFD0(obj, 1);
+    if (Save_GetState() > 2) {
+        Save_Exit();
+        *(void **)(task + 0x1C) = ((void *)func_002EF7C0 == 0) ? 0 : (void *)func_002EF7C0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF540);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF680);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF7C0);
@@ -256,8 +302,52 @@ void ArenaList_ClearGlobal(void) {
     InputPass_ClearName();
 }
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002F03E0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002F04D0);
+void func_002F03E0(void) {
+    u8 *s1;
+    u8 *s0;
+
+    s0 = (u8 *)D_00470968;
+    s1 = *(u8 **)(*(u8 **)(s0 + 0xC) + 0x30);
+    func_002EE5C0(s1);
+    if (*(void **)(s1 + 0x23C) != 0) {
+        amHeap_Free(*(void **)(s1 + 0x23C));
+    }
+    if (*(void **)(s1 + 0x240) != 0) {
+        amHeap_Free(*(void **)(s1 + 0x240));
+    }
+    if (*(void **)(s1 + 0x244) != 0) {
+        amHeap_Free(*(void **)(s1 + 0x244));
+    }
+    amHeap_Free(s1);
+    amTask_Kill(*(void **)(s0 + 0xC));
+    if (*(void **)s0 != 0) {
+        amCdFs_Close(*(void **)s0, 0);
+    }
+    if (*(void **)(s0 + 0x4) != 0) {
+        amCdFs_Close(*(void **)(s0 + 0x4), 0);
+    }
+    if (*(void **)(s0 + 0x8) != 0) {
+        amCdFs_Close(*(void **)(s0 + 0x8), 0);
+    }
+    amHeap_Free(s0);
+    D_00470968 = 0;
+    Help_Exit();
+    func_002F2500();
+}
+void func_002F04D0(u8 *task) {
+    u8 *obj;
+
+    obj = *(u8 **)(task + 0x30);
+    func_00143F20(0, 0, D_004E0614[0]);
+    if (D_004E0614[0] > 0.0f) {
+        func_00143D60(0, 0, 0x16, 0);
+    }
+    func_002EE360(obj);
+    *(u32 *)(obj + 0x1C) = 0x42700000;
+    *(s16 *)(obj + 0x0) = 5;
+    *(s16 *)(obj + 0x4) = 5;
+    *(void **)(task + 0x1C) = ((void *)func_002EF390 == 0) ? 0 : (void *)func_002EF390;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002F0570);
 extern char D_0046F728[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);

@@ -1,4 +1,5 @@
 #include "common.h"
+extern u8 *gOutputPass;
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4330);
 extern void func_002F4330();
@@ -92,7 +93,15 @@ s16 func_002F5480(void) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F5480);
+s32 func_002F5480(void) {
+    u8 *v;
+
+    v = *(u8 **)((u8 *)gOutputPass + 0x10);
+    if (v == 0) {
+        return 0;
+    }
+    return *(s16 *)(*(u8 **)(v + 0x30) + 0xC0);
+}
 extern u8 *gOutputPass;
 
 void OutputPass_Clear(void) {

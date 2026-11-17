@@ -1,5 +1,28 @@
 #include "common.h"
 #include "menu/menu.h"
+extern s16 func_002F4A80();
+extern void func_002F4A90();
+extern void func_002F1770();
+extern s32 func_002F4B20();
+extern void func_002F1300();
+extern void func_002F0BC0();
+extern void func_0022CF70();
+extern u8 *D_00470910;
+extern s8 D_004B4B63[];
+extern u16 D_00492FCE[];
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void func_002F2D50();
+extern void func_002F0BC0();
+extern void func_0022CF70();
+extern void func_00133B50(s32, s32);
+extern void func_00145CC0(s32, s32);
+extern void func_0022C700(void);
+extern f32 D_004703BC;
+extern void Help_Exit();
+extern void amCdFs_Close(void *, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void Help_Load();
 extern void *amHeap_Alloc(s32, s32, char *, s32);
@@ -15,7 +38,47 @@ extern void memset(void *, s32, s32);
 extern void amHeap_Free(void *);
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F06D0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0870);
+void func_002F0870(u32 *task) {
+    u8 *s3;
+    s32 s2;
+    u8 *s1;
+    u32 *s0;
+    void *v;
+    s2 = 0;
+    s3 = (u8 *)gInputName;
+    s0 = task;
+    do {
+        v = func_0022DA90(0, 0.0f);
+        s0[1] = (u32)v;
+        s1 = (u8 *)v;
+        memset(s1, 0, 0x60);
+        *(s32 *)(s1 + 0x4) = 3;
+        s2++;
+        *(s32 *)(s1 + 0x10) = *(s32 *)(s3 + 0x10);
+        *(s32 *)(s1 + 0x14) = 0x5000;
+        *(s16 *)(s1 + 0x18) = 5;
+        *(s16 *)(s1 + 0x1A) = 0;
+        *(s32 *)(s1 + 0x8) = 1;
+        *(s32 *)(s1 + 0xC) = 3;
+        *(s32 *)(s1 + 0x20) = 0;
+        *(s32 *)(s1 + 0x24) = 0;
+        *(s32 *)(s1 + 0x28) = 0;
+        *(f32 *)(s1 + 0x2C) = 1.0f;
+        *(s32 *)(s1 + 0x34) = 0;
+        *(s32 *)(s1 + 0x3C) = 0;
+        *(s32 *)(s1 + 0x30) = 0;
+        *(s32 *)(s1 + 0x38) = 0;
+        *(s32 *)(s1 + 0x44) = 0;
+        *(s32 *)(s1 + 0x40) = 0;
+        *(s32 *)(s1 + 0x48) = 0;
+        *(s32 *)(s1 + 0x4C) = 0;
+        *(f32 *)(s1 + 0x50) = 1.0f;
+        *(f32 *)(s1 + 0x54) = 1.0f;
+        *(f32 *)(s1 + 0x58) = 1.0f;
+        *(f32 *)(s1 + 0x5C) = 1.0f;
+        s0++;
+    } while (s2 < 0x24);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0960);
 void func_002F0B00(u8 *task) {
     u8 *s1;
@@ -54,10 +117,151 @@ void func_002F0B00(u8 *task) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0BC0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0D70);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0FD0);
+void func_002F0FD0(u8 *task) {
+    u8 *s0;
+    u8 *s1;
+    s32 s2;
+    s32 a0;
+    f32 f1;
+
+    s0 = *(u8 **)(task + 0x30);
+    f1 = *(f32 *)(s0 + 0x118);
+    if (f1 > 0.0f) {
+        *(f32 *)(s0 + 0x118) = f1 - D_004703BC;
+        s1 = (u8 *)gInputName;
+        func_0022C700();
+        func_00133B50(0, 0);
+        a0 = *(s32 *)(s1 + 0x10);
+        D_00470704 = a0;
+        D_0047070C = 0x5000;
+        D_00470708 = 0;
+        func_00145CC0(a0, 0x5000);
+        D_00470238 = 0;
+        func_002F0BC0(s0);
+        if (*(u8 *)(s0 + 0x170) < 5) {
+            s2 = 0;
+            s1 = s0;
+            do {
+                if (*(u16 *)(s0 + 0x128) != 0xFFFF) {
+                    func_0022CF70(*(void **)(s1 + 0x4));
+                }
+                s2++;
+                s0 += 2;
+                s1 += 4;
+            } while (s2 < 0x24);
+        }
+        func_0022C700();
+        func_00133B50(0, 0);
+    } else {
+        *(f32 *)(s0 + 0x118) = 0.0f;
+        if (*(u8 *)(s0 + 0x172) != 0) {
+            *(u8 *)(s0 + 0x170) = 6;
+        } else {
+            *(u8 *)(s0 + 0x170) = 7;
+        }
+        *(s32 *)(task + 0x1C) = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F10F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1300);
+#if 0
+// differs: 8 bytes short (0x148 vs 0x150): the original branch layout of the final if differs
+void func_002F1500(u8 *task) {
+    u8 *s0;
+    u8 *s1;
+    u8 *s3;
+    u8 *s4;
+    s32 s2;
+    s32 a0;
+    s32 a1;
+    void *v;
+
+    s3 = *(u8 **)(task + 0x30);
+    s0 = (u8 *)gInputName;
+    s4 = task;
+    func_0022C700();
+    func_00133B50(0, 0);
+    a0 = *(s32 *)(s0 + 0x10);
+    D_00470704 = a0;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    func_00145CC0(a0, 0x5000);
+    func_002F0BC0(s3);
+    D_00470238 = 0;
+    if (*(u8 *)(s3 + 0x170) < 5) {
+        s2 = 0;
+        s1 = s3;
+        s0 = s3;
+        do {
+            if (*(u16 *)(s1 + 0x128) != 0xFFFF) {
+                func_0022CF70(*(void **)(s0 + 0x4));
+            }
+            s2++;
+            s1 += 2;
+            s0 += 4;
+        } while (s2 < 0x24);
+    }
+    func_0022C700();
+    func_00133B50(0, 0);
+    a0 = *(s32 *)((u8 *)D_00470910 + 0x27C);
+    if (a0 == 2) {
+        a1 = D_004B4B63[0];
+        if (*(u16 *)((u8 *)D_00492FCE + a1 * 184) & 0x4000) {
+            *(s32 *)(s3 + 0x110) = func_002F4B20(4);
+            v = ((void *)func_002F1300 == 0) ? 0 : (void *)func_002F1300;
+            *(void **)(s4 + 0x1C) = v;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1500);
+#if 0
+// differs: register roles differ (obj/counter/walk swapped; no declaration order matches), 14 of 70 instr
+void func_002F1650(u8 *task) {
+    u8 *s0;
+    u8 *s1;
+    u8 *s3;
+    u8 *s4;
+    s32 s2;
+    s32 a0;
+    void *v;
+
+    s3 = *(u8 **)(task + 0x30);
+    s0 = (u8 *)gInputName;
+    s4 = task;
+    func_0022C700();
+    func_00133B50(0, 0);
+    a0 = *(s32 *)(s0 + 0x10);
+    D_00470704 = a0;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    func_00145CC0(a0, 0x5000);
+    func_002F0BC0(s3);
+    D_00470238 = 0;
+    if (*(u8 *)(s3 + 0x170) < 5) {
+        s2 = 0;
+        s1 = s3;
+        s0 = s3;
+        do {
+            if (*(u16 *)(s1 + 0x128) != 0xFFFF) {
+                func_0022CF70(*(void **)(s0 + 0x4));
+            }
+            s2++;
+            s1 += 2;
+            s0 += 4;
+        } while (s2 < 0x24);
+    }
+    func_0022C700();
+    func_00133B50(0, 0);
+    a0 = (s16)func_002F4A80(*(s32 *)(s3 + 0x110));
+    if (a0 == 4) {
+        func_002F4A90(*(s32 *)(s3 + 0x110));
+        *(s32 *)(s3 + 0x110) = 0;
+        v = ((void *)func_002F1770 == 0) ? 0 : (void *)func_002F1770;
+        *(void **)(s4 + 0x1C) = v;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1650);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1770);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F21B0);
@@ -87,8 +291,77 @@ extern void *gInputName;
 void InputPass_ClearName(void) {
     gInputName = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2500);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2600);
+void func_002F2500(void) {
+    u8 *s0;
+
+    s0 = (u8 *)gInputName;
+    if (s0 != 0) {
+        *(s16 *)(s0 + 0x1C) = *(s16 *)(s0 + 0x1C) - 1;
+        if (*(s16 *)(s0 + 0x1C) == 0) {
+            if (*(void **)(s0 + 0x18) != 0) {
+                amHeap_Free(*(void **)(*(u8 **)(s0 + 0x18) + 0x30));
+                amTask_Kill(*(void **)(s0 + 0x18));
+            }
+            if (*(void **)s0 != 0) {
+                amCdFs_Close(*(void **)s0, 0);
+            }
+            if (*(void **)(s0 + 0x4) != 0) {
+                amCdFs_Close(*(void **)(s0 + 0x4), 0);
+            }
+            if (*(void **)(s0 + 0x8) != 0) {
+                amCdFs_Close(*(void **)(s0 + 0x8), 0);
+            }
+            if (*(void **)(s0 + 0xC) != 0) {
+                amHeap_Free(*(void **)(s0 + 0xC));
+            }
+            if (*(void **)(s0 + 0x10) != 0) {
+                amHeap_Free(*(void **)(s0 + 0x10));
+            }
+            if (*(void **)(s0 + 0x14) != 0) {
+                amHeap_Free(*(void **)(s0 + 0x14));
+            }
+            amHeap_Free(s0);
+            gInputName = 0;
+            Help_Exit();
+        }
+    }
+}
+void func_002F2600(u8 *task) {
+    u8 *s3;
+    u8 *s2;
+    s32 s1;
+    u32 *s0;
+
+    s3 = (u8 *)gInputName;
+    if (task != 0) {
+        s2 = *(u8 **)(task + 0x30);
+        if (*(void **)(s2 + 0x94) != 0) {
+            func_0022D4B0(*(void **)(s2 + 0x94), 1);
+        }
+        if (*(void **)s2 != 0) {
+            func_0022D0E0(*(void **)s2, 1);
+            *(void **)s2 = 0;
+        }
+        if (*(void **)(s2 + 0x98) != 0) {
+            func_0022D0E0(*(void **)(s2 + 0x98), 1);
+            *(void **)(s2 + 0x98) = 0;
+        }
+        if (*(void **)(s2 + 0x9C) != 0) {
+            func_0022D0E0(*(void **)(s2 + 0x9C), 1);
+            *(void **)(s2 + 0x9C) = 0;
+        }
+        s1 = 0;
+        s0 = (u32 *)s2;
+        do {
+            func_0022D4B0((void *)s0[1], 1);
+            s1++;
+            s0++;
+        } while (s1 < 0x24);
+        amHeap_Free(s2);
+        amTask_Kill((void *)task);
+        *(s32 *)(s3 + 0x18) = 0;
+    }
+}
 void *func_002F26E0(void) {
     u8 *s0;
     u8 *s1;
@@ -217,7 +490,51 @@ void func_002F2C90(u8 *task) {
     *(f32 *)(s0 + 0x5C) = 1.0f;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2D50);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2F00);
+void func_002F2F00(u8 *task) {
+    u8 *s0;
+    u8 *s1;
+    s32 s2;
+    s32 a0;
+    f32 f1;
+
+    s0 = *(u8 **)(task + 0x30);
+    f1 = *(f32 *)(s0 + 0x40);
+    if (f1 > 0.0f) {
+        *(f32 *)(s0 + 0x40) = f1 - D_004703BC;
+        s1 = (u8 *)gInputName;
+        func_0022C700();
+        func_00133B50(0, 0);
+        a0 = *(s32 *)(s1 + 0x10);
+        D_00470704 = a0;
+        D_0047070C = 0x5000;
+        D_00470708 = 0;
+        func_00145CC0(a0, 0x5000);
+        D_00470238 = 0;
+        func_002F2D50(s0);
+        if (*(u8 *)(s0 + 0x60) < 5) {
+            s2 = 0;
+            s1 = s0;
+            do {
+                if (*(s16 *)(s0 + 0x50) != 0xFFFF) {
+                    func_0022CF70(*(void **)(s1 + 0x4));
+                }
+                s2++;
+                s0 += 2;
+                s1 += 4;
+            } while (s2 < 8);
+        }
+        func_0022C700();
+        func_00133B50(0, 0);
+    } else {
+        *(f32 *)(s0 + 0x40) = 0.0f;
+        if (*(u8 *)(s0 + 0x61) != 0) {
+            *(u8 *)(s0 + 0x60) = 6;
+        } else {
+            *(u8 *)(s0 + 0x60) = 7;
+        }
+        *(s32 *)(task + 0x1C) = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3020);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3210);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3C60);
@@ -239,4 +556,40 @@ u8 InputPass_GetPhase(Task *t) {
     }
     return k;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3FA0);
+void func_002F3FA0(u8 *task) {
+    u8 *s3;
+    u8 *s2;
+    s32 s1;
+    u32 *s0;
+
+    s3 = (u8 *)gInputName;
+    if (task != 0) {
+        s2 = *(u8 **)(task + 0x30);
+        if (*(void **)(s2 + 0x24) != 0) {
+            func_0022D4B0(*(void **)(s2 + 0x24), 1);
+        }
+        if (*(void **)s2 != 0) {
+            func_0022D0E0(*(void **)s2, 1);
+            *(void **)s2 = 0;
+        }
+        if (*(void **)(s2 + 0x28) != 0) {
+            func_0022D0E0(*(void **)(s2 + 0x28), 1);
+            *(void **)(s2 + 0x28) = 0;
+        }
+        if (*(void **)(s2 + 0x2C) != 0) {
+            func_0022D0E0(*(void **)(s2 + 0x2C), 1);
+            *(void **)(s2 + 0x2C) = 0;
+        }
+        s1 = 0;
+        s0 = (u32 *)s2;
+        do {
+            func_0022D4B0((void *)s0[1], 1);
+            s1++;
+            s0++;
+        } while (s1 < 8);
+        amHeap_Free(s2);
+        amTask_Kill((void *)task);
+        *(s32 *)(s3 + 0x18) = 0;
+        Help_Exit();
+    }
+}
