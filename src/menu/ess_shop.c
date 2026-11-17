@@ -437,6 +437,50 @@ void EssShop_Exit(void) {
     gEssShop = 0;
     Zenie_Release();
 }
+#if 0
+// differs: differs in the init order: the mult and the two table addresses are computed in another order and the tail (Zenie block) is scheduled differently (size differs)
+extern s32 gEssShop;
+extern char D_0046B520[];
+extern s32 D_0058F680[];
+extern s32 D_0058F718[];
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void Zenie_Create(s32, s32, s32, s32);
+extern void func_002737C0();
+extern void Zenie_SetValue(s32, s32);
+
+void func_00276B50(s32 a0) {
+    s32 t;
+    s32 t3;
+    s32 v;
+    if (gEssShop != 0) {
+        amHeap_Free((void *)gEssShop);
+    }
+    gEssShop = (s32)amHeap_Alloc(0x3E0, 0, D_0046B520, 0x168);
+    memset((void *)gEssShop, 0, 0x3E0);
+    *(s32 *)((u8 *)gEssShop + 0x50) = a0;
+    t = amCdFs_ReadFileId(0x107F7, 0, 1);
+    *(s32 *)((u8 *)gEssShop + 0x0) = t;
+    t = amCdFs_ReadFileId(0x107F8, 0, 1);
+    *(s32 *)((u8 *)gEssShop + 0x4) = t;
+    t = amCdFs_ReadFileId(0x10AB1, 0, 1);
+    *(s32 *)((u8 *)gEssShop + 0x8) = t;
+    t = amCdFs_ReadFileId(0x10850, 0, 1);
+    *(s32 *)((u8 *)gEssShop + 0xC) = t;
+    t3 = a0 * 0xD680;
+    v = *(s32 *)((u8 *)D_0058F718 + t3);
+    *(s32 *)((u8 *)gEssShop + 0x54) = (s32)((u8 *)D_0058F680 + t3 + 0xD41D);
+    *(s32 *)((u8 *)gEssShop + 0x70) = v;
+    Zenie_Create(0x3210, 1, 0x114012A0, 0);
+    func_002737C0();
+    Zenie_SetValue(*(s32 *)((u8 *)gEssShop + 0x70), *(s32 *)((u8 *)gEssShop + 0x70));
+    *(s32 *)((u8 *)gEssShop + 0x1CC) = 0;
+    *(s32 *)((u8 *)gEssShop + 0x22C) = 0x16;
+    *(s32 *)((u8 *)gEssShop + 0x1FC) = 0x13;
+    *(s32 *)((u8 *)gEssShop + 0x3AC) = 0;
+    *(s32 *)((u8 *)gEssShop + 0x268) = 1;
+    *(s32 *)((u8 *)gEssShop + 0x298) = 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276B50);
 #if 0
 // differs: one instruction: the store address of the search is built as s1 + k*4 in the original (addu v0,v0,s1), mine as addu v0,s1,v0
