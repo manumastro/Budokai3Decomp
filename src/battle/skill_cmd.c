@@ -1659,21 +1659,19 @@ void func_00254B50(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254B50);
-// GIVEN UP: the same shape as func_00257FB0 (the two saved pointers swap registers)
-#if 0
 void func_00254CD0(u8 *a0) {
     u8 *t;
-    s32 *s1;
-    u8 *s2;
     u8 *sys;
+    u8 *s2;
+    s32 *s1;
     s32 v;
     s32 x;
 
     v = *(s32 *)(a0 + 0x30);
-    sys = gBtlSys;
     t = a0;
-    s1 = (s32 *)(v + 0x30);
+    sys = gBtlSys;
     s2 = a0 + 0x30;
+    s1 = (s32 *)(v + 0x30);
     if (gBattle != 0) {
         v = *(s32 *)((u8 *)gBattle + 0x88EC);
     } else {
@@ -1695,8 +1693,6 @@ void func_00254CD0(u8 *a0) {
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254CD0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254DB0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00255610);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002559B0);
@@ -2138,21 +2134,19 @@ void func_00257E30(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00257E30);
-// GIVEN UP: the same code, but the two pointers (a0 + 0x30 and the field + 0x30) take the other two saved registers
-#if 0
 void func_00257FB0(u8 *a0) {
     u8 *t;
-    s32 *s1;
-    u8 *s2;
     u8 *sys;
+    u8 *s2;
+    s32 *s1;
     s32 v;
     s32 x;
 
     v = *(s32 *)(a0 + 0x30);
-    sys = gBtlSys;
     t = a0;
-    s1 = (s32 *)(v + 0x30);
+    sys = gBtlSys;
     s2 = a0 + 0x30;
+    s1 = (s32 *)(v + 0x30);
     if (gBattle != 0) {
         v = *(s32 *)((u8 *)gBattle + 0x88EC);
     } else {
@@ -2174,8 +2168,6 @@ void func_00257FB0(u8 *a0) {
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00257FB0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00258090);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00258310);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002587F0);
@@ -2411,7 +2403,62 @@ void func_002599C0(s32 *a0) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002599C0);
+extern void func_0022BFF0(s32, f32);
+
+void func_002599C0(u8 *a0) {
+    u8 *s0;
+    u8 *s2;
+    u8 *s1;
+    u8 *sys;
+    s32 v;
+    s32 e;
+
+    s0 = a0 + 0x30;
+    sys = gBtlSys;
+    if (gBattle != NULL) {
+        v = *(s32 *)((u8 *)gBattle + 0x88EC);
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        e = *(s32 *)(sys + 0xE84);
+        D_00470704 = e;
+        D_0047070C = 0x4010000;
+        D_00470708 = 0;
+        func_00145CC0(e, 0x4010000);
+        D_00470238 = 0;
+        switch (*(s32 *)(s0 + 0x4)) {
+        case 1:
+            func_0022BFF0(*(s32 *)(s0 + 0x18), *(f32 *)(s0 + 0xC));
+            break;
+        case 0:
+            if (*(f32 *)(s0 + 0x8) < 11.0f) {
+                func_0022BFF0(*(s32 *)(s0 + 0x18), 1.0f);
+            }
+            *(f32 *)(s0 + 0x8) = *(f32 *)(s0 + 0x8) + D_00470710;
+            break;
+        case 2:
+            if (*(f32 *)(s0 + 0x8) < 11.0f) {
+                func_0022BFF0(*(s32 *)(s0 + 0x18), 1.0f);
+            } else {
+                s1 = (u8 *)D_0058D4D0 + (*(s32 *)(s0 + 0x14) << 2);
+                if (*(s32 *)s1 != 0) {
+                    s2 = *(u8 **)s1 + 0x30;
+                    if (*(s32 *)(*(u8 **)s1 + 0x48) != 0) {
+                        func_0022D0B0(*(s32 *)(*(u8 **)s1 + 0x48), 1);
+                    }
+                    if (*(s32 *)s2 != 0) {
+                        amTask_Kill(*(s32 *)s2);
+                    }
+                    amTask_Kill(*(s32 *)s1);
+                    *(s32 *)s1 = 0;
+                }
+            }
+            *(f32 *)(s0 + 0x8) = *(f32 *)(s0 + 0x8) + D_00470710;
+            break;
+        }
+    }
+}
 extern void func_0022D0E0(s32, s32);
 void CutIn_TaskKill(s32 *a0) {
     s32 *s;
