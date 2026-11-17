@@ -131,6 +131,65 @@ s32 func_002A1B30(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1B30);
+extern void func_00283C20(void);
+extern void func_00283D00(s32, s32, s32, s32);
+extern void SklSheet_SetIndex(s32);
+extern void Save_Load(s32, s32);
+extern void func_002A7F70(Task *);
+extern char D_0046EA78[];
+extern s32 func_00283BF0(void);
+
+#if 0
+// func_002A1C20: the state switch (halfword 5,1,4,2,0 as a beq chain with the out-of-line blocks) and the second function-table call layout; with goto labels and if/else forms 57-81 lines differ (the summary shows the count); 4 forms tried
+void func_002A1C20(void) {
+    s32 *s0 = (s32 *)gEvtWork;
+    s32 s1;
+    u16 v16;
+    if (s0[0xFC / 4] >= s0[0xF8 / 4]) {
+        if (func_00283BF0() >= 8) {
+            func_00283C20();
+            amTask_Kill((void *)s0[0x8 / 4]);
+            s0[0x8 / 4] = 0;
+            s0 = (s32 *)gEvtWork;
+            s0[0x14 / 4] = 0x40000002;
+            v16 = (u16)s0[0x14 / 4];
+            if (v16 == 5) {
+                goto cd0;
+            }
+            if (v16 == 1) {
+                goto cd0;
+            }
+            if (v16 == 4) {
+                goto cc0;
+            }
+            if (v16 == 2) {
+                goto cc0;
+            }
+            if (v16 == 0) {
+                goto cc0;
+            }
+            goto d28;
+cc0:
+            Save_Load(0x3000, 0);
+cd0:
+            s0[0x6C / 4] = amCdFs_ReadFileId(0x107D5, 0, 0);
+            s0[0x70 / 4] = amCdFs_ReadFileId(0x107D6, 0, 0);
+            s0[0x8 / 4] = (s32)amTask_Create(func_002A7F70, NULL, 0xB000, 0x4000, 0, D_0046EA78);
+d28:
+            s0[0x98 / 4] = 0;
+            return;
+        }
+    }
+    if (func_00283BF0() >= 8) {
+        s0 = (s32 *)gEvtWork;
+        s1 = s0[0x100 / 4 + s0[0xFC / 4]];
+        func_00283C20();
+        func_00283D00(0x9500, s1, 1, 0x11403000);
+        SklSheet_SetIndex(s0[0x110 / 4 + s0[0xFC / 4]]);
+        s0[0xFC / 4] = s0[0xFC / 4] + 1;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1C20);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1DB0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1F30);
