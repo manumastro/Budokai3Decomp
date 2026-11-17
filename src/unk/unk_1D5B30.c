@@ -2045,32 +2045,20 @@ void func_001DF830(Fighter *c, s32 a1) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DF8F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFA90);
-/* r6 best attempt diff 13 */
-#if 0
 void func_001DFBF0(Fighter *c) {
-    f32 var_f1;
-    s32 var_v1;
+    f32 f1;
 
-    var_f1 = c->f17E4;
-    if (var_f1 > 1000.0f) {
-        var_f1 = 1000.0f;
-    } else if (var_f1 < 0.0f) {
-        var_f1 = 0.0f;
-    }
-    c->f17E4 = var_f1;
-    if (var_f1 <= 300.0f) {
+    f1 = c->f17E4;
+    f1 = (f1 > 1000.0f) ? 1000.0f : ((f1 < 0.0f) ? 0.0f : f1);
+    c->f17E4 = f1;
+    if (f1 <= 300.0f) {
         c->f17EC = 0;
-        return;
+    } else if (f1 <= 600.0f) {
+        c->f17EC = 1;
+    } else {
+        c->f17EC = 2;
     }
-    var_v1 = 1;
-    if (var_f1 > 600.0f) {
-        var_v1 = 2;
-    }
-    c->f17EC = var_v1;
 }
-#endif
-// differs: 13 of 36 (1000 clamp: the bc1t delay slot and the mtc1 $zero land one instruction early; the 600 block uses $v1 with bc1f and a b)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFBF0);
 #if 0
 s32 func_001DFC80(Fighter *c, s32 a1, f32 f12) {
     f32 f1;
@@ -4584,6 +4572,7 @@ s32 func_001E8B90(Fighter *c) {
     return 0;
 }
 #endif
+// r7 tried (no match): bool/ternary/result-var forms (0x54-0x6C), optimization_level 0/1/2/3 (O1 gives 0x70 closest; O0 38 instrs): original has slti-at/beqz-at, b+nop+nop pads before 16-aligned labels and a shared a1/v1 constant, no form found
 // differs: 0x64 bytes against 0x80: the original keeps the not-3 branch as an unconditional b to the call block placed after the check, and the zero return as a shared epilogue jump; the 0x8977 test is lui/addu/lb
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8B90);
 /* r6 best attempt diff n/a (size 0x64 vs 0x80) */
