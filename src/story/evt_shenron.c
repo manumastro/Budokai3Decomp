@@ -74,7 +74,7 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003068E0);
 extern f32 func_002B06A0(void);
 extern void func_00305590(void);
 extern s32 amAdx_IsStopped(s32);
-extern void func_00144650(s32);
+extern void SoundRpc_SendWord(s32);
 extern void amAdx_Stop(s32);
 extern void func_003068E0(void);
 extern void func_003062B0(void);
@@ -101,7 +101,7 @@ void func_00306AD0(void) {
         }
     }
     *(s16 *)((char *)D_00492FCE + (s32)D_004B4B63[0] * 184) = 0;
-    func_00144650(0);
+    SoundRpc_SendWord(0);
     amAdx_Stop(1);
     f = (void *)func_003068E0;
     ((s32 *)((s32 *)D_0047097C)[0])[0x1C / 4] = (s32)((f == 0) ? 0 : f);

@@ -349,7 +349,7 @@ void func_002BED90(s32 a0) {
     s32 *a1;
     s32 v;
     if (D_0047011C[0x1A4 / 4] != 0) {
-        func_00209530(D_0047011C[0x1A4 / 4]);
+        Obj_ResetF38(D_0047011C[0x1A4 / 4]);
         D_0047011C[0x1A4 / 4] = 0;
     }
     a0p = (s32 *)D_005BD1A0;
@@ -759,7 +759,7 @@ void func_002C1720(s32 *a0) {
     D_00470704 = s0[1];
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(s0[1], 0x2000);
+    amModel_SetCurrent(s0[1], 0x2000);
     D_00470238 = 0;
     if (s0[0x24 / 4] != 0) {
         func_0022D0E0(s0[0x24 / 4], 1);
@@ -890,13 +890,13 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C32C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3A10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3B40);
 extern void func_0022E0B0(s32);
-extern void func_00264260(s32, s32, s32);
+extern void Fade_Request(s32, s32, s32);
 extern void func_002C1860(s32 *);
 extern void func_002C3B40(void);
 extern s32 func_0022D670(s32, f32);
 
 extern void func_0022E0B0(s32);
-extern void func_00264260(s32, s32, s32);
+extern void Fade_Request(s32, s32, s32);
 extern void func_002C1860(s32 *);
 extern void func_002C3B40(void);
 extern s32 func_0022D670(s32, f32);
@@ -917,12 +917,12 @@ void func_002C3D20(s32 *a0) {
         amCdFs_Close(s0[1], 0);
         func_0022E0B0(s1[0]);
         amFile_Load(s1[1]);
-        func_00264260(-1, 0, 0);
+        Fade_Request(-1, 0, 0);
         v = s1[1];
         D_00470704 = v;
         D_0047070C = 0x2000;
         D_00470708 = 0;
-        func_00145CC0(v, 0x2000);
+        amModel_SetCurrent(v, 0x2000);
         D_00470238 = 0;
         s1[2] = func_0022D670(((s32 *)((s32 *)s1[0])[0x1C / 4])[0], 0.0f);
         func_002C1860(s1);

@@ -320,7 +320,7 @@ void func_003107D0(void) {
 }
 #if 0
 // func_003107E0: 1 of 69 instructions differ with the table as u8 (the build fails: a byte of the table or the copy is wrong); the call sequence and the branches match
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void func_00310640(Task *);
 extern void func_00283D00(s32, s32, s32, s32);
 extern void func_0026DAF0(void *, s32);
@@ -336,7 +336,7 @@ void func_003107E0(s32 a0) {
     s32 s0;
     s32 s1;
     s32 v;
-    func_001F07D0();
+    Scene_SetReady();
     t = amTask_Create(func_00310640, NULL, 0x2000, 8, 2, D_0046FC70);
     *(s16 *)((char *)t + 0x30) = (s16)a0;
     *(s16 *)((char *)t + 0x32) = 0;
