@@ -761,18 +761,20 @@ int func_001CE8F0(void *unused, Arg *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE960);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CED20);
+// differs: 30 of 38: the original converts with cvt.w.s (rounding), where the (s32) cast gives trunc.w.s; the FPU constant registers differ too (same as func_001CEE80). Local constants tried.
+#if 0
 int func_001CEDE0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
     char *t = D_00470570->tbl[a->p[3]];
-    f32 k = 65536.0f;
-    f32 d = 360.0f;
     *(f32 *)(t + 0x1828) = f[2];
-    *(s32 *)(t + 0x1838) = (s32)(k * (f[0] / d));
-    *(s32 *)(t + 0x1834) = (s32)(k * (f[1] / d));
+    *(s32 *)(t + 0x1838) = (s32)(65536.0f * (f[0] / 360.0f));
+    *(s32 *)(t + 0x1834) = (s32)(65536.0f * (f[1] / 360.0f));
     *(s8 *)(t + 0x183C) = 5;
     func_001C75D0(t, 20);
     return 1;
 }
+#endif
+INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEDE0);
 // differs: 23 of 32 at best: the 360.0f constant is loaded into f1 in the original and the division uses f3 as dividend; ours loads it into f2. Local k=360.0f and x=f0/360 forms tried.
 #if 0
 int func_001CEE80(void *unused, Arg *a) {
