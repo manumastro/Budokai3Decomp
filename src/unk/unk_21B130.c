@@ -225,7 +225,6 @@ void func_0021B420(void) {
 // differs: 22 of 72 (round 5). The (s32) cast is NOT the problem: the original's word 0x46000024 is what the cast emits too (the disassemblers only name it differently). Tried live: the two early exits as one `||` test (shares the return), D_0047068C loaded before the cast, the px = sys+0x640 pointer, and the call func_0022C7D0(D_0047068C, (f32)n, 1) (signature (s32, f32, s32), the file's first declaration must match). Left: the last call func_0022ACF0 gets a nop before the epilogue and the early exits jump past ld ra/lq s1, the original's exits go to the epilogue directly.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
-// differs: the table address is folded into the loads (lui at + lw 4(at)) where the original keeps it in v0 (lui v0 / addiu v0, then lw 4(v0)); 13 of 36 differ
 s32 func_0021B540(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
@@ -262,7 +261,6 @@ s32 func_0021B5D0(void) {
     }
     return r;
 }
-// differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
 s32 func_0021B660(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
@@ -281,7 +279,6 @@ s32 func_0021B660(void) {
     }
     return r;
 }
-// differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
 s32 func_0021B6F0(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
