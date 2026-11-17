@@ -2833,7 +2833,6 @@ void func_001BAE10(Fighter *f) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BAE10);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BAFF0);
 void func_001BB2C0(Fighter *f) {
     func_001E4E20(f, 0);
