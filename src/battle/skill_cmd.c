@@ -88,7 +88,84 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002499A0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249B00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249D50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249F50);
+/* An object of the battle's skill code: the fighter it belongs to, a flags word (0x4000 set once it
+ * is lowered, 0x8000 once its value ran out), a float value and two sub-objects. */
+typedef struct SkillObj {
+    /* 0x00 */ f32 unk00;
+    /* 0x04 */ s16 unk04;
+    /* 0x08 */ Fighter *unk08;
+    /* 0x0C */ u8 unk0C[0x54 - 0x0C];
+    /* 0x54 */ void *unk54;
+    /* 0x58 */ void *unk58;
+    /* 0x5C */ f32 unk5C;
+} SkillObj;
+
+extern void func_00208F70(void *);
+extern void func_00209390(void *);
+extern void func_00249D50(SkillObj *, s32);
+extern s8 D_004703F4;
+
+static inline f32 SkillObj_Scale(void) {
+    if (D_00470570 != NULL) {
+        return D_00470570->unk88F0;
+    }
+    return (D_004703F4 != 3) ? 1.0f : 1.2f;
+}
+
+#if 0
+/* differs: the table offset is computed in $v1 (the original keeps it in $a0), and the call's
+ * `move a0, s1` fills the delay slot of the first bc1t in the original. */
+s32 func_0024A0B0(SkillObj *ob) {
+    s32 side = ob->unk08->unk1350;
+    f32 t;
+    s32 off;
+
+    if (ob->unk04 & 0x8000) {
+        return 1;
+    }
+    if (!(ob->unk04 & 0x4000) && (ob->unk00 <= 12.0f || (ob->unk04 & 0x2000))) {
+        func_001D9280((s32)ob->unk08);
+        if (ob->unk54 != NULL) {
+            func_00209390(ob->unk54);
+        }
+        if (ob->unk58 != NULL) {
+            func_00209390(ob->unk58);
+        }
+        ob->unk00 = 12.0f;
+        ob->unk04 |= 0x4000;
+    }
+    t = ob->unk00 - SkillObj_Scale();
+    ob->unk00 = t;
+    if (t < 0.0f) {
+        ob->unk00 = 0.0f;
+        ob->unk04 |= 0x8000;
+    }
+    ob->unk5C = ob->unk5C + SkillObj_Scale();
+    off = side << 4;
+    if (*(s32 *)(off + (u8 *)D_0046FE54 + 0x38) == 0 && ob->unk5C > 5.0f) {
+        func_00249D50(ob, 1);
+    } else if (*(s32 *)(off + (u8 *)D_0046FE54 + 0x3C) == 0 && ob->unk5C > 10.0f) {
+        func_00249D50(ob, 2);
+    } else if (*(s32 *)(off + (u8 *)D_0046FE54 + 0x40) == 0 && ob->unk5C > 15.0f) {
+        func_00249D50(ob, 3);
+    }
+    if (ob->unk54 != NULL) {
+        func_00208F70(ob->unk54);
+        if (*(s32 *)((u8 *)ob->unk54 + 0x38) < 0) {
+            ob->unk54 = NULL;
+        }
+    }
+    if (ob->unk58 != NULL) {
+        func_00208F70(ob->unk58);
+        if (*(s32 *)((u8 *)ob->unk58 + 0x38) < 0) {
+            ob->unk58 = NULL;
+        }
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A0B0);
+
 void func_0024A350(s32 *a0) {
     s32 s0;
     s32 i;
@@ -594,16 +671,13 @@ s32 func_00252CE0(s32 a0, s32 a1) {
 }
 extern void func_001F9B60(s32, s32, s32);
 // GIVEN UP: the global is loaded and the element address computed in other registers (3 declaration orders and 2 expression forms tried)
-#if 0
 s32 func_00252D00(s32 a0, s32 *a1) {
-    s32 *t = (s32 *)D_00470570;
     s32 *q = (s32 *)a1[11];
+    Fighter *f = D_00470570->fighter[q[2]];
 
-    func_001F9B60(q[2], q[0], *(s32 *)((u8 *)(t + q[2]) + 0x8934) + (q[1] << 4) + 0x650);
+    func_001F9B60(q[2], q[0], (s32)((u8 *)f + (q[1] << 4) + 0x650));
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252D00);
 extern s32 amMotion_FindBone(s32, s32);
 extern void func_001F3FE0(s32, s32, s32, s32, f32);
 s32 func_00252D50(s32 a0, s32 *a1) {
@@ -620,13 +694,32 @@ s32 func_00252D50(s32 a0, s32 *a1) {
     return 1;
 }
 // GIVEN UP: the argument -1 is set before a0 is copied in the original (tried two forms)
-#if 0
 s32 func_00252DF0(s32 a0, s32 a1) {
-    func_001F9BB0(-1, a0);
+    func_001F9BB0(-1, -1);
+    return 1;
+}
+typedef struct SkillVec {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) SkillVec;
+
+extern void func_001F9CD0(s32, s32, s32, s32, s32);
+
+// GIVEN UP: the VU0 subtraction is right, but the original computes the two element addresses again for each
+// use (no common subexpression) and loads the call's fields in another order (2 forms tried)
+#if 0
+s32 func_00252E20(s32 a0, s32 *a1) {
+    s32 *q = (s32 *)a1[11];
+    s32 idx = q[2];
+    SkillVec tmp;
+    u8 *f = (u8 *)D_00470570->fighter[idx];
+    u8 *e = f + (q[1] << 4);
+
+    __asm__ volatile ("lqc2 $vf1, 0x650(%0) ; lqc2 $vf2, 0x7B0(%0) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%1)"
+        : : "r"(e), "r"(&tmp));
+    func_001F9CD0(idx, q[0], (s32)(e + 0x650), (s32)&tmp, 0);
     return 1;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252DF0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252E20);
 s32 func_00252EA0(s32 a0, s32 a1) {
     func_001F7010(a0, a1);
@@ -862,22 +955,16 @@ void func_00253490(s32 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253490);
 // GIVEN UP: the absolute value is compiled to abs.s in C, the original branches on the sign (tried two forms)
-#if 0
 f32 func_00253570(s32 a0) {
     f32 r = 0.0f;
 
     if (a0 >= 0 && a0 < 0x1B) {
         f32 *e = (f32 *)(D_00452740 + a0 * 16);
 
-        r = e[2] - e[0];
-        if (r < 0.0f) {
-            r = -r;
-        }
+        r = __s_abs(e[2] - e[0]);
     }
     return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253570);
 void func_002535B0(s32 a0, void *a1) {
     func_00125740(a1, D_00452900 + a0 * 16, 16);
 }
@@ -1021,34 +1108,24 @@ void func_00254100(u8 *a0) {
     SkillFile_Release(*(u8 **)(a0 + 0x8));
     amHeap_Free(a0);
 }
-// GIVEN UP: the loop's registers and the branch layout differ (count, index and pointer in other registers; 3 orders and a do-while tried)
+// GIVEN UP: the loop is rotated in the original (test at the bottom, the store on the fall-through) with n, base and p in $a2, $a1, $a3 (4 forms tried)
 #if 0
 extern void func_00253490(s32 *);
 void func_002541D0(s32 *a0) {
-    s32 *s0 = a0;
-    s32 *v;
-    s32 n;
     s32 i;
-    s32 *base;
-    s32 *p;
+    s32 *o;
+    s32 *e;
 
-    func_00253490((s32 *)s0[3]);
-    func_00253490((s32 *)s0[2]);
-    v = (s32 *)((s32 *)s0[2])[2];
-    if (v != 0) {
-        n = v[1];
-        if (0 < n) {
-            base = (s32 *)v[2];
-            p = base;
-            i = 0;
-            do {
-                if (p[0] == -1) {
-                    s0[4] = (s32)((u8 *)base + (i << 4));
-                    return;
-                }
-                i++;
-                p += 4;
-            } while (i < n);
+    func_00253490((s32 *)a0[3]);
+    func_00253490((s32 *)a0[2]);
+    o = (s32 *)((s32 *)a0[2])[2];
+    if (o != 0 && o[1] > 0) {
+        e = (s32 *)o[2];
+        for (i = 0; i < o[1]; i++, e += 4) {
+            if (e[0] == -1) {
+                a0[4] = (s32)((u8 *)o[2] + (i << 4));
+                break;
+            }
         }
     }
 }
@@ -1481,7 +1558,32 @@ void func_00256EB0(u8 *a0) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00256EB0);
+void func_00256EB0(u8 *a0) {
+    s32 *p;
+    s32 i;
+    u8 *s0 = D_0046FDFC;
+    s32 v;
+
+    p = (s32 *)(a0 + 0x30);
+    if (func_0021C2A0((s32)0x80000000) == 0 || *(s8 *)((u8 *)D_00470570 + 0x8975) != 0) {
+        return;
+    }
+    v = *(s32 *)(s0 + 0xE60);
+    D_00470704 = v;
+    D_0047070C = 0x4000000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x4000000);
+    D_00470238 = 0;
+    func_0022C560(p[1]);
+    for (i = 0; i < 2; i++, p++) {
+        if (p[3] != 0) {
+            func_0022C560(p[3]);
+        }
+        if (p[9] != 0) {
+            func_0022C560(p[9]);
+        }
+    }
+}
 // GIVEN UP: the entry pointer and the field address take other saved registers (3 forms and declaration orders tried)
 #if 0
 extern s32 D_0058D4F0[];
@@ -2114,37 +2216,33 @@ s32 func_00259EB0(s32 a0, f32 f12) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259EB0);
-// GIVEN UP: the loop counter and the pointers take other saved registers than in the original (4 orders tried)
-#if 0
 extern u8 D_0058D4E0[];
 extern s32 D_0047074C;
 extern s32 D_00470748;
 extern void func_0022CFC0(s32, s32, s32, s32);
-extern void func_0022D0E0(s32, s32);
+
 void func_00259FE0(void) {
     s32 i;
-    s32 j;
-    s32 *p;
-    s32 *s1;
-    s32 v;
+    s32 *q;
+    s32 *slot;
+    s32 *t = (s32 *)D_0058D4E0;
 
-    p = (s32 *)D_0058D4E0;
-    for (i = 0; i < 6; i++, p++) {
-        if (p[0] != 0) {
-            amTask_Kill(p[0]);
-            p[0] = 0;
+    for (i = 0; i < 6; i++) {
+        if (t[i] != 0) {
+            amTask_Kill(t[i]);
+            t[i] = 0;
         }
     }
-    s1 = D_0058D4D0;
-    for (j = 0; j < 4; j++, s1++) {
-        v = s1[0];
-        if (v != 0) {
-            if (((s32 *)v)[12] != 0) {
-                amTask_Kill(((s32 *)v)[12]);
-                ((s32 *)v)[12] = 0;
+    for (i = 0; i < 4; i++) {
+        q = (s32 *)D_0058D4D0[i];
+        if (q != 0) {
+            slot = &q[12];
+            if (*slot != 0) {
+                amTask_Kill(*slot);
+                *slot = 0;
             }
-            amTask_Kill(v);
-            s1[0] = 0;
+            amTask_Kill(D_0058D4D0[i]);
+            D_0058D4D0[i] = 0;
         }
     }
     func_0022CFC0(0x1000, 0x2000008, 0, 1);
@@ -2157,8 +2255,6 @@ void func_00259FE0(void) {
         D_0047074C = 0;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259FE0);
 extern u8 D_0058D4E0[];
 extern s32 D_00470748;
 void func_0025A0E0(void) {
