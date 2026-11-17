@@ -213,17 +213,18 @@ void func_002927E0(Work2918A0 *w) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002927E0);
 #if 0
-// differs: the store of the decremented value is a delay-slot store before the test in the original; it is not reproduced
+// differs: 24 of 55; the original keeps w in s0 and computes w+0x30 after the f40 store (s is a second saved register here); the earlier draft wrongly zeroed f40 on the f < 0 path
 void func_002928C0(Work2918A0 *w) {
     Sub2918A0 *s;
     f32 f;
 
-    w->f40 = f = w->f40 - gFrameDelta;
+    f = w->f40 - gFrameDelta;
+    w->f40 = f;
+    s = (Sub2918A0 *)((char *)w + 0x30);
     if (f < 0.0f) {
-        w->f40 = 0.0f;
+        s->f10 = 0.0f;
         w->f1C = (func_00292780 == 0) ? 0 : (void (*)(void))func_00292780;
     }
-    s = (Sub2918A0 *)((char *)w + 0x30);
     if (s->f10 <= 0.0f) {
         s->fC = 0.75f;
     } else {
