@@ -3195,7 +3195,32 @@ void func_001E4FA0(Fighter *c, s32 a1) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5040);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5230);
+extern void func_0013B620(void *);
+extern char D_003F0800[];
+
+void func_001E5230(Fighter *c, char *a1) {
+    char *s0;
+
+    s0 = a1;
+    if (s0 == 0) {
+        s0 = (char *)c;
+    }
+    func_0013B160(D_003F0800);
+    __asm__ volatile ("lqc2 $vf1, 0(%0)
+	vmulax.xyzw ACC, $vf28, $vf1x
+	vmadday.xyzw ACC, $vf29, $vf1y
+	vmaddaz.xyzw ACC, $vf30, $vf1z
+	vmaddw.xyzw $vf31, $vf31, $vf0w" : : "r"((char *)c + 0x40) : "memory");
+    func_0013B620(*(void **)((char *)c + 0x17A4));
+    __asm__ volatile ("sqc2 $vf28, 0(%0)
+	sqc2 $vf29, 0x10(%0)
+	sqc2 $vf30, 0x20(%0)
+	sqc2 $vf31, 0x30(%0)" : : "r"(s0) : "memory");
+    __asm__ volatile ("vmove.xyzw $vf28, $vf24
+	vmove.xyzw $vf29, $vf25
+	vmove.xyzw $vf30, $vf26
+	vmove.xyzw $vf31, $vf27" : : : "memory");
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E52B0);
 #if 0
 void func_001E53B0(Fighter *c, s32 idx) {
