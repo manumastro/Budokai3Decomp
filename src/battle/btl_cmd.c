@@ -122,7 +122,7 @@ extern f32 D_004957C0[16];
 extern f32 D_00495800[16][4];
 extern f32 D_00495900[16][4];
 extern void func_00125740(void *, void *, s32);
-extern s32 func_001A51E0(MotTrack *, s32);
+extern s32 func_001A51E0(MotTrack *, s32, f32);
 extern void amTask_KillGroup(s32, s32, s32);
 extern void *amTask_Create(void (*update)(void *), void *, s32, s32, s32, char *);
 extern char D_004681D0[];
@@ -231,6 +231,54 @@ void func_001A5160(MotFile *f) {
         e++;
     }
 }
+// GIVEN UP: the search is laid out with a shared exit and different registers for the index and the keys (4 declaration orders tried); func_001A5490 now passes its float to it
+#if 0
+s32 func_001A51E0(MotTrack *a0, s32 a1, f32 t) {
+    MotKey *k;
+    s32 half;
+    s32 i;
+
+    if (t < 1.0f) {
+        return 0;
+    }
+    if (a1 == -1) {
+        k = a0->keys;
+        i = a0->numKeys >> 1;
+        half = (a0->numKeys + 1) >> 1;
+        while (half >= 2) {
+            if ((f32)k[i].time <= t) {
+                i += half >> 1;
+            } else {
+                i -= half >> 1;
+            }
+            half = (half + 1) >> 1;
+        }
+        if (!((f32)k[i].time <= t)) {
+            i -= 1;
+        }
+        return i;
+    }
+    k = a0->keys;
+    i = a1;
+    for (;;) {
+        if ((f32)k[i].time <= t) {
+            if ((f32)k[i + 1].time <= t) {
+                i += 1;
+            } else {
+                return i;
+            }
+        } else {
+            i -= 1;
+        }
+        if (i <= 0) {
+            return 0;
+        }
+        if (i >= a0->numKeys - 1) {
+            return a0->numKeys - 1;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A51E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5350);
 s32 func_001A5490(MotFile *f, s32 track, f32 t) {
@@ -239,7 +287,7 @@ s32 func_001A5490(MotFile *f, s32 track, f32 t) {
     if ((f32)(tr->keys[tr->numKeys - 1].time - 1) <= t) {
         i = tr->numKeys - 1;
     } else {
-        i = func_001A51E0(tr, -1);
+        i = func_001A51E0(tr, -1, t);
     }
     return tr->keys[i].value;
 }
@@ -311,6 +359,56 @@ void func_001A83D0(void) {
     amTask_KillGroup(0x20, 0x20000010, 1);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A83F0);
+// GIVEN UP: the parameter and the two saved pointers take other registers, and the branch order differs (4 forms tried)
+#if 0
+void func_001A84B0(u8 *a0) {
+    u8 *s1 = a0;
+    u8 *s0 = (u8 *)D_00470570;
+    u8 *s2 = s0 + 0xA0;
+    s32 *v;
+
+    if (*(s32 *)(s1 + 0x20) == 0) {
+        *(f32 *)(s2 + 0x130) = 1.0f;
+        if ((*(s32 *)(s1 + 0x30) & 1) != 0) {
+            *(s32 *)(s2 + 0x138) = 0;
+            *(s32 *)(s2 + 0x140) = 0;
+        } else {
+            if (*(u8 **)(s0 + 0x260) != s2 + 0xF0) {
+                func_00125740(s2 + 0xF0, s2 + 0xB0, 0x40);
+                *(f32 *)(s2 + 0x138) = 1.0f;
+            }
+            *(f32 *)(s2 + 0x140) = 1.0f;
+        }
+        *(u8 **)(s0 + 0x260) = s2 + 0xF0;
+    } else if (*(s32 *)(s1 + 0x20) == 1) {
+        if (*(s32 *)(s1 + 0x24) != 7) {
+            if ((*(s32 *)(s1 + 0x30) & 2) != 0) {
+                if (*(u8 **)(s0 + 0x260) != s2 + 0xB0) {
+                    func_00125740(s2 + 0xB0, s2 + 0xF0, 0x40);
+                }
+                *(f32 *)(s2 + 0x13C) = 1.0f;
+            } else {
+                *(s32 *)(s2 + 0x13C) = 0;
+            }
+            *(f32 *)(s2 + 0x130) = 1.0f;
+        } else {
+            s32 *pp = *(s32 **)(s1 + 0x34);
+            s32 *qq = *(s32 **)((u8 *)pp + 0x14);
+            f32 fl;
+
+            *(f32 *)(s2 + 0x13C) = *(f32 *)(s1 + 0x3C);
+            *(f32 *)(s2 + 0x130) = *(f32 *)(s1 + 0x44);
+            fl = (f32)*(s32 *)((u8 *)qq + (*(s32 *)(s1 + 0x38) << 4) + 8);
+            *(f32 *)(s1 + 0x40) = fl - 1.0f;
+        }
+        *(u8 **)(s0 + 0x260) = s2 + 0xB0;
+    }
+    v = *(s32 **)(s0 + 0x260);
+    v[12] = 0;
+    v[14] = v[14] | 1;
+    func_00125740(s2 + 0x160, s1, 0x50);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A84B0);
 void func_001A8630(void) {
 }
@@ -421,6 +519,50 @@ s32 func_001A90E0(BtlRank *a0, s16 a1) {
     }
     return r;
 }
+// GIVEN UP: a switch lays out its cases in another order than the original's compare chain (4 forms tried)
+#if 0
+s32 func_001A9230(u8 *a0, s32 a1) {
+    s16 k = (s16)a1;
+    s16 p;
+    s16 q;
+
+    switch (k) {
+    case 0xC0:
+        p = *(s16 *)(a0 + 0x430);
+        q = *(s16 *)(a0 + 0x432);
+        break;
+    case 0x60:
+        p = *(s16 *)(a0 + 0x430);
+        q = *(s16 *)(a0 + 0x42E);
+        break;
+    case 0x90:
+        p = *(s16 *)(a0 + 0x42C);
+        q = *(s16 *)(a0 + 0x432);
+        break;
+    case 0x30:
+        p = *(s16 *)(a0 + 0x42C);
+        q = *(s16 *)(a0 + 0x42E);
+        break;
+    case 0x80:
+        return *(s16 *)(a0 + 0x430) == 1;
+    case 0x40:
+        return *(s16 *)(a0 + 0x432) == 1;
+    case 0x20:
+        return *(s16 *)(a0 + 0x42E) == 1;
+    case 0x10:
+        return *(s16 *)(a0 + 0x42C) == 1;
+    default:
+        return 0;
+    }
+    if (p == 1 && q > 0 && q < 5) {
+        return 1;
+    }
+    if (q == 1 && p > 0 && p < 5) {
+        return 1;
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9230);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9460);
 // GIVEN UP: the switch and its blocks match in order, but the registers of the op and the entry differ and the returns are laid out differently
