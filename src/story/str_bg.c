@@ -200,6 +200,43 @@ void func_00290390(s32 a0, s32 a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290390);
+#if 0
+// func_00290410: the unlink of the id-matched entry; the unlink part matches, the search loop does not: the original keeps the id in a2 and the counter in a0 (bne over a b to the found block); the goto and else forms give beq; 4 forms tried
+void memset(void *, s32, s32);
+void func_00290410(s32 *a0) {
+    char *p;
+    s32 i;
+    s32 id;
+    if (D_004708A4 == 0) {
+        return;
+    }
+    id = a0[0];
+    if (id == -1) {
+        return;
+    }
+    p = (char *)D_004708A4 + 0x430;
+    i = 0;
+    do {
+        if (*(s32 *)(p + 8) != id) {
+            i++;
+            p += 0x50;
+        } else {
+            goto found;
+        }
+    } while (i < 0x48);
+    p = 0;
+found:
+    if (p == 0) {
+        return;
+    }
+    *(s32 *)((char *)*(s32 *)(p + 4) + 0) = *(s32 *)p;
+    if (*(s32 *)p != 0) {
+        *(s32 *)(*(s32 *)p + 4) = *(s32 *)(p + 4);
+    }
+    memset(p, 0, 0x50);
+    *(s32 *)(p + 8) = -1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290410);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_002904C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290780);
