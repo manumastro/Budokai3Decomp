@@ -2107,7 +2107,71 @@ void func_002A7160(s32 a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7240);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7400);
+extern void func_00133B50(s32, s32);
+extern void A2d_SetMode(s32);
+extern void A2d_FlushList(void);
+extern void func_00228430(s32);
+extern void func_0022C060(s32, f32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+extern void amModel_SetCurrent(s32, s32);
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern s32 D_004700A0;
+extern s8 D_004708D4;
+extern void func_002A7240(void);
+void func_002A7400(struct Task *a0) {
+    s32 *s0 = gEvtWork;
+    s32 s2;
+    s32 t0;
+    s32 x;
+    s32 x2;
+    u16 *row;
+    char *base;
+    void *fn;
+    func_00133B50(0, 0);
+    A2d_SetMode(D_004E05F8[0]);
+    t0 = s0[0x78 / 4];
+    D_00470704 = t0;
+    D_0047070C = 0x890100;
+    D_00470708 = 0;
+    amModel_SetCurrent(t0, 0x890100);
+    D_00470238 = 0;
+    s2 = s0[0x80 / 4];
+    func_00228430(0);
+    func_00228430(0);
+    func_0022C060(s2, 1.0f);
+    func_00228410();
+    func_0022CD00(s2);
+    func_00228410();
+    func_002A6FD0();
+    A2d_FlushList();
+    x = D_004B4B63[0];
+    row = (u16 *)(D_00492FCE + x * 0xB8);
+    if (*row & 0x4000) {
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 3, 0);
+        }
+        if (s0[0x7C / 4] == 0) {
+            if (D_004708D4 == 1) {
+                x2 = D_00511450[0];
+                base = (char *)D_004E6560 + x2 * 4624;
+                D_004700A0 = *(s32 *)(base + 0x1254);
+                *(s32 *)(base + 0x1254) = -1;
+            }
+            D_004708D4 = 0;
+            if (s0[0x14 / 4] == 0x40000005) {
+                Fade_SetRequest(10, 0, 0);
+            }
+        }
+        s0[0x98 / 4] = 0;
+        fn = (void *)func_002A7240;
+        *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+    }
+}
 #if 0
 // func_002A75C0: 60 of 71 differ on registers: the original keeps the Task in s1, gEvtWork in s0 and the value in s2; ours puts the Task in s2 and gEvtWork in s1 (declaration orders tried, none changed it); the float field is reloaded after the call as the original does
 extern void func_00133B50(s32, s32);
