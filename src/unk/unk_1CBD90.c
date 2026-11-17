@@ -280,7 +280,30 @@ int func_001CC610(void *unused, Arg *a) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC710);
+extern void func_001CB020(void *);
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void func_001CAFE0(void *);
+extern char D_004692B0[];
+int func_001CC710(void *unused, Arg *a) {
+    int *p = a->p;
+    char *c = *(char **)unused;
+    s32 w;
+    char *u;
+    s32 x;
+    s32 y;
+    char *t;
+    x = p[0];
+    y = p[1];
+    w = p[2];
+    u = (char *)gBattle->tbl[w];
+    t = amTask_Create((void (*)(void *))func_001CB020, 0, *(s32 *)(c + 0x10), *(s32 *)(c + 0x14), *(s32 *)(c + 0x18), D_004692B0);
+    *(s32 *)(t + 0x30) = 0;
+    *(f32 *)(t + 0x34) = (f32)x;
+    *(void **)(t + 0x38) = (void *)func_001CAFE0;
+    *(s32 *)(t + 0x3C) = *(s32 *)(u + 0x1350) + 2;
+    *(s32 *)(t + 0x40) = y;
+    return 1;
+}
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void func_001CB020(void *);
 extern void func_001CAFE0(void *);
