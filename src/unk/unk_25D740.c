@@ -456,6 +456,34 @@ s32 Scr_CmdObjVecCall4(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020E620(id, &v, n);
     return 1;
 }
+/* differs: 16 of 76: the timer part matches; the dispatch keeps p->f18 in $a3 and the base in $a1 (the original: $a2 and $a0). */
+#if 0
+extern void func_0020E730(s32, void *, s32);
+
+void func_0025DCA0(void *task) {
+    Obj30 *p = (Obj30 *)((u8 *)task + 0x30);
+    f32 d;
+    s32 busy = gBattle != NULL ? gBattle->f88EC : 0;
+    s32 base;
+
+    if (busy != 0) {
+        return;
+    }
+    if (p->f8 != -1.0f) {
+        d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+        p->f4 = p->f4 + d;
+        if (!(p->f4 < p->f8)) {
+            amTask_Kill(task);
+        }
+    }
+    base = (s32)gBattle->f8934[p->f10];
+    if (p->f18 == 1) {
+        func_0020E730(p->f0, (u8 *)base + ((((p->f18 * 3) << 2) + p->f18)) * 128 + 0x650, p->f14);
+    } else {
+        func_0020E7D0(p->f0, (void *)base, p->f14);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DCA0);
 extern void func_0025DCA0();
 extern void func_0025DF20();
@@ -492,6 +520,35 @@ s32 Scr_CmdCall20E7D0(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020E7D0(a[2].i, gBattle->f8934[a[1].i], a[0].i);
     return 1;
 }
+/* differs: 1 of 76: the last addu of the index (f18 * 0x680 + ...) has its operands in the other order (addu v0,a3,v0; the original v0,v0,a3). */
+#if 0
+extern void func_0020E870(s32, void *, s32);
+extern void func_0020E8F0(s32, void *, s32);
+
+void func_0025DF20(void *task) {
+    Obj30 *p = (Obj30 *)((u8 *)task + 0x30);
+    f32 d;
+    s32 busy = gBattle != NULL ? gBattle->f88EC : 0;
+    s32 base;
+
+    if (busy != 0) {
+        return;
+    }
+    if (p->f8 != -1.0f) {
+        d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+        p->f4 = p->f4 + d;
+        if (!(p->f4 < p->f8)) {
+            amTask_Kill(task);
+        }
+    }
+    base = (s32)gBattle->f8934[p->f10];
+    if (p->f18 == 1) {
+        func_0020E870(p->f0, (u8 *)base + (((p->f18 + ((p->f18 * 3) << 2)))) * 128 + 0x650, p->f14);
+    } else {
+        func_0020E8F0(p->f0, (void *)base, p->f14);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DF20);
 s32 func_0025E050(void *o, ScrCmd *cmd) {
     extern void *amTask_Create();
@@ -919,8 +976,44 @@ s32 func_0025F4B0(Obj4B0 *o) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F580);
-s32 Scr_CmdSetFlag916Mode(ScrCtx *ctx, ScrCmd *cmd) {
+typedef struct Obj25F {
+    char pad0[0x10];
+    s32 f10;
+    char pad14[0x16];
+    s8 f2A;
+    char pad2B;
+    f32 f2C;
+    f32 f30;
+} Obj25F;
+
+extern void func_0020EFB0(s32);
+
+s32 func_0025F580(void *o, ScrCmd *cmd) {
+    Obj25F *p = (Obj25F *)o;
+    ScrArg *a = cmd->args;
+    s32 n = a[0].i;
+    s32 busy;
+    f32 d;
+
+    p->f2A = (s8)a[1].i;
+    p->f2C = -((gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f));
+    p->f30 = (f32)n;
+    p->f10 = (s32)func_0025F4B0;
+    busy = gBattle != NULL ? gBattle->f88EC : 0;
+    if (busy == 0) {
+        if (p->f30 != -1.0f) {
+            d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+            p->f2C = p->f2C + d;
+            if (!(p->f2C < p->f30)) {
+                p->f10 = 0;
+                return 1;
+            }
+        }
+        func_0020EFB0(p->f2A);
+    }
+    return 3;
+}
+s32 func_0025F6C0(ScrCtx *ctx, ScrCmd *cmd) {
     if (cmd->args[0].i != 0) {
         D_0046FE4C->f91A = 1;
     } else {
