@@ -45,6 +45,7 @@ extern s32 D_00457410[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern s32 func_0022D670(s32, f32);
 extern u8 D_00457440[];
+extern void (*D_004573F0[])(void);
 
 void func_002EA0B0(void) {
     func_002E0D40();
@@ -133,6 +134,36 @@ void func_002EA460(void) {
     *(void **)(p + 0x24) = func_002EA430;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EA4A0);
+#if 0
+void func_002EA6C0(void) {
+    u8 *p = D_00470958;
+    s32 v = *(s32 *)(p + 0x54);
+    u8 *q;
+    s32 r;
+    D_00470704 = v;
+    D_0047070C = 0x5000000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x5000000);
+    D_00470238 = 0;
+    func_0022C060(*(s32 *)(p + 4), 1.0f);
+    r = func_0022BF80(*(s32 *)(p + 4));
+    if (r == 0xFF) {
+        *(s32 *)(p + 0xC) = -1;
+        q = *(u8 **)(p + 0x18);
+        if (q != NULL && (*(s8 *)q & 1)) {
+            u8 *a1 = *(u8 **)(p + 0x58);
+            s32 idx = *(s32 *)(p + 0x48) - *(s32 *)(a1 + 0x18);
+            *(u8 **)(p + 0x4C) = a1 + *(s32 *)(*(u8 **)(a1 + 0x14) + idx * 4);
+            if (*(s8 *)(*(u8 **)(p + 0x18) + 2) == 2) {
+                D_004573F0[0]();
+            } else {
+                D_004573F4[0]();
+            }
+        }
+    }
+}
+// differs: the prologue and the branch layout differ (0xE0 bytes against 0xF0): the original keeps the object pointer in s0 with the calls in the order of 2EAA80, and tests the r == 0xFF result with a branch to the end; the if-block and the jalr to D_004573F0 / D_004573F4 are otherwise the same
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EA6C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EA7B0);
 void func_002EA8F0(void) {
