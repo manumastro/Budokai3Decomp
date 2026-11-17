@@ -4429,7 +4429,30 @@ void func_001F7010(void) {
         n = n->next;
     } while (n != end);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7120);
+typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16;
+extern BtbVec16 D_0044B510;
+extern char D_004698A8[];
+extern void func_001F2350();
+extern void func_001F24B0();
+extern void func_00209A90(void *, void *);
+extern void *amObject_Create(void *, s32);
+void func_001F7120(s32 p) {
+    BtbVec16 tmp;
+    char *r;
+    s32 *s0;
+    s32 s2;
+
+    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)func_001F24B0);
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x401;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x400;
+    s0 = (s32 *)(r + 0x30);
+    s2 = (s32)D_0051CD0C[0];
+    s0[1] = (s32)func_001A50F0((void *)s2, 0x7D);
+    s0[0] = (s32)amObject_Create(func_001A50F0((void *)s2, 0x7C), 0);
+    s0[2] = (s32)func_00209540(func_001A50F0((void *)s2, p + 0x6E), 0x2000001, 0);
+    tmp = D_0044B510;
+    func_00209A90((void *)s0[2], &tmp);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7210);
 extern void func_001F7210(char *);
 extern char *D_0051CD1C[];
