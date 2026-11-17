@@ -3774,7 +3774,7 @@ extern s32 D_0047062C;
 extern char *D_0051CB94[];
 extern char *D_0051CC48[];
 
-void func_001F62A0(void) {
+void BtbBg_ResetLists(void) {
     D_0047062C = 0;
     memset(D_00511770, 0, 0xB000);
     memset(D_0051C770, 0, 0x400);
@@ -3788,7 +3788,7 @@ extern char D_0051CC20[];
 
 typedef void (*ObjFunc)(char *);
 
-void func_001F6330(void) {
+void BtbBg_RunObjMain(void) {
     char *s0;
 
     for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
@@ -3797,9 +3797,9 @@ void func_001F6330(void) {
         }
     }
 }
-void func_001F63B0(void) {
+void BtbBg_DrawAfterStub(void) {
 }
-void func_001F63C0(void) {
+void BtbBg_DrawScrEffectStub(void) {
 }
 extern char D_0051CC20[];
 extern char *D_0051CB94[];
@@ -3819,7 +3819,7 @@ extern void func_00133780(s32, s32);
 extern char *D_0051CB94[];
 extern char D_0051CC20[];
 
-void func_001F6450(void) {
+void BtbBg_DrawTrsObjs(void) {
     char *s0;
 
     func_00133780(2, 1);
@@ -3835,7 +3835,7 @@ extern void func_00133780(s32, s32);
 extern char *D_0051CB94[];
 extern char D_0051CC20[];
 
-void func_001F64E0(void) {
+void BtbBg_DrawPostObjs(void) {
     char *s0;
 
     func_00133780(2, 1);
@@ -3851,7 +3851,7 @@ extern void func_00133780(s32, s32);
 extern char *D_0051CB94[];
 extern char D_0051CC20[];
 
-void func_001F6570(void) {
+void BtbBg_DrawObjs(void) {
     char *s0;
 
     s0 = D_0051CB94[0];
@@ -3866,7 +3866,7 @@ extern void func_00133780(s32, s32);
 extern char *D_0051CB94[];
 extern char D_0051CC20[];
 
-void func_001F65F0(void) {
+void BtbBg_DrawPlainObjs(void) {
     char *s0;
 
     s0 = D_0051CB94[0];
@@ -3879,7 +3879,7 @@ void func_001F65F0(void) {
 }
 extern s32 gBattle;
 
-void func_001F6670(void) {
+void BtbBg_CrossFadeKill(void) {
     char *p = (char *)gBattle + 0x10000;
     *(s8 *)(p - 0x768B) = 0;
 }
@@ -3888,10 +3888,10 @@ extern void func_001F6690(void *);
 extern char D_00469888[];
 extern s32 gBattle;
 
-void func_001F6CD0(s32 a0, s32 a1, s32 a2, f32 f12, f32 f13) {
+void BtbBg_StartCrossFade(s32 a0, s32 a1, s32 a2, f32 f12, f32 f13) {
     char *t;
 
-    t = amTask_Create(func_001F6690, (void *)func_001F6670, 0x31FF, a2, a1, D_00469888);
+    t = amTask_Create(func_001F6690, (void *)BtbBg_CrossFadeKill, 0x31FF, a2, a1, D_00469888);
     *(s32 *)(t + 0x30) = *(s32 *)(gBattle + 0x238);
     *(s32 *)(t + 0x34) = a0;
     *(s32 *)(t + 0x38) = 0;
@@ -3985,7 +3985,7 @@ extern s32 D_0047062C;
 extern char D_0051CB70[];
 extern char D_0051CC20[];
 extern void amHeap_Free(void *);
-extern void func_00209530(s32);
+extern void Obj_ResetF38(s32);
 
 void func_001F7010(void) {
     BtbObj *n;
@@ -4007,7 +4007,7 @@ void func_001F7010(void) {
                 amHeap_Free(p);
             }
             if (*(s32 *)(sub + 8) != 0) {
-                func_00209530(*(s32 *)(sub + 8));
+                Obj_ResetF38(*(s32 *)(sub + 8));
             }
             for (i = 0; i < 0x100; i++) {
                 if (D_0051C770[i] == n) {
