@@ -579,54 +579,16 @@ void func_00276B50(s32 a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276B50);
 #if 0
-// differs: one instruction: the store address of the search is built as s1 + k*4 in the original (addu v0,v0,s1), mine as addu v0,s1,v0
+// differs: 1 of 54 instructions: the second loop matches (index j, pointer-free store at s1 + j*4 + 4); the remaining difference is the operand order of the addu at 0x276D78 (addu v0,s1,v0 here, the original has addu v0,v0,s1). Store-expression variants (s1 + 4 + j*4, (j << 2), ((s32 *)s1)[j + 1]) did not change it. Other flagged lines are unresolved-symbol placeholders
 void func_00276CE0(u8 *a0, s32 a1) {
-    u8 *s1;
-    s32 s0;
-    s32 i;
-    u8 *p;
-    s32 k;
-    u8 *e;
-    s32 v;
-
-    s1 = a0;
-    s0 = a1;
-    for (i = 0; i < 7; i++) {
-        v = ((s32 *)s1)[i + 1];
-        if (v <= 0) {
-            break;
-        }
-        e = D_004E0660 + v * 40;
-        if (*(u16 *)(e + 0x10) == s0 || *(u16 *)(e + 0x12) == s0) {
-            func_00276CE0(s1, v);
-            i = 0;
-        }
-    }
-    k = 0;
-    p = s1;
-    do {
-        if (*(s32 *)(p + 4) == s0) {
-            ((s32 *)s1)[k + 1] = -1;
-            break;
-        }
-        k++;
-        p += 4;
-    } while (k < 7);
-    func_0026E000(s1, 0xF0);
-}
-#endif
-#if 0
-// differs: 8 of 54: the recursion, the early break on a non-positive entry and the tail store of -1 match; the loop counter and the scan pointer of the second loop keep swapped registers whatever the declaration order
-extern u8 D_004E0660[];
-extern void func_0026E000();
-
-void func_00276CE0(u8 *a0, s32 a1) {
-    u8 *s1;
-    s32 s0;
+    s32 *q;
+    s32 j;
     s32 i;
     s32 e;
     u8 *p;
-    s32 j;
+    u8 *s1;
+    s32 s0;
+
     s1 = a0;
     s0 = a1;
     i = 0;
@@ -643,14 +605,14 @@ void func_00276CE0(u8 *a0, s32 a1) {
         i++;
     } while (i < 7);
     j = 0;
-    p = s1;
+    q = (s32 *)s1;
     do {
-        if (*(s32 *)(p + 4) == s0) {
+        if (q[1] == s0) {
             *(s32 *)(s1 + j * 4 + 4) = -1;
             break;
         }
         j++;
-        p += 4;
+        q++;
     } while (j < 7);
     func_0026E000(s1, 0xF0);
 }
