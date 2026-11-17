@@ -332,7 +332,7 @@ extern u32 func_0012EAE0(s32 a);
 extern char D_00447450[];
 extern s32 func_001DF8F0(s32 a, s32 b);
 extern void Sp_CallHandler(s32 a, void *b);
-extern void func_001E7070(char *p, s32 a);
+extern void func_001E7070();
 extern s32 func_00233B20(Fighter *c, void *a, s32 v);
 extern s32 func_00233850(Fighter *c, void *a);
 extern void func_001F9BB0(s32 a, s32 b);
@@ -2377,32 +2377,34 @@ s32 func_001E1850(Fighter *c, s32 a1) {
     return 0;
 }
 #if 0
-void func_001E18B0(Fighter *c, s32 idx) {
-    s32 a[4];
-    s32 b[8];
+void func_001E18B0(Fighter *c, s32 a1) {
+    s32 st[4];
+    char sb[0x30];
     f32 f;
     s32 v;
+    char *base;
 
-    if (*(s32 *)((char *)c + 0x1DB8 + idx * 4) == 0) {
+    if (((s32 *)((char *)c + 0x1DB8))[a1] == 0) {
         return;
     }
-    func_001E7070((char *)c + 0x650, idx);
-    a[0] = c->f1350;
-    a[1] = idx;
-    v = *(s16 *)*(char **)((char *)c + 0xBB0);
-    if (v != 0 && func_001DF8F0(0, 0x1B) > 0) {
+    func_001E7070((char *)c + 0x650);
+    st[0] = c->f1350;
+    st[1] = a1;
+    if (*(s16 *)(*(char **)((char *)c + 0xBB0)) != 0 && func_001DF8F0(0, 0x1B) > 0) {
         f = 0.0f;
     } else {
-        f = (f32)(1000 * *(s8 *)((char *)c->f1CF8 + c->fBA4 * 20 + 0xDD));
+        v = c->fBA4;
+        base = *(char **)((char *)c + 0x1CF8);
+        f = (f32)(*(s8 *)(base + v * 20 + 0xDD) * 1000);
     }
-    a[2] = (s32)f;
-    A2d_CallHandler(8, a);
-    b[4] = c->f1350;
-    *(s16 *)((char *)b + 0x18) = c->fBA4;
-    Sp_CallHandler(1, b);
+    st[2] = (s32)f;
+    A2d_CallHandler(8, st);
+    *(s32 *)(sb + 0x10) = c->f1350;
+    *(s16 *)(sb + 0x18) = (s16)c->fBA4;
+    Sp_CallHandler(1, sb);
 }
 #endif
-// differs: frame 0x60 against 0x70 and the table address adds its offset in another order (11 of 61 differ with the block sizes tried)
+// differs: 6 of 61 by fdiff (two are jal relocation placeholders); the table lookup puts the counter in $a0 and the base in $v0 here, the original the other way round (two declaration orders tried). Frame and call order match. func_001E7070 is now unprototyped (called with one argument here).
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E18B0);
 s32 func_001E19B0(Fighter *c) {
     s32 a;
