@@ -5691,7 +5691,50 @@ void BtbObj_RemoveFromList(BtbObj *o) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5FD0);
+extern s32 func_00127BA0(char *);
+extern void func_00128040(BtbObj *, char *, s32);
+extern char D_00511770[];
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+void *func_001F5FD0(u32 p0, char *p1, s32 p2, void *p3, void *p4) {
+    s32 i;
+    BtbObj *o;
+    BtbObj *a;
+    s32 r;
+
+    i = D_0047062C;
+    if (D_0051C770[i] != NULL) {
+        do {
+            i++;
+            if (i >= 0x100) {
+                i = 0;
+            }
+        } while (D_0051C770[i] != NULL);
+    }
+    o = (BtbObj *)(D_00511770 + i * 0xB0);
+    D_0051C770[i] = o;
+    memset(o, 0, 0xB0);
+    a = (BtbObj *)D_0051CB94[0];
+    while (a != (BtbObj *)D_0051CC20) {
+        if (p0 < *(u32 *)((char *)a + 0x1C)) {
+            break;
+        }
+        a = a->next;
+    }
+    D_0047062C++;
+    a->prev->next = o;
+    o->prev = a->prev;
+    o->next = a;
+    a->prev = o;
+    r = func_00127BA0(p1);
+    func_00128040(o, p1, r);
+    o->f10 = p2;
+    *(void **)((char *)o + 0x14) = p3;
+    *(void **)((char *)o + 0x18) = p4;
+    *(u32 *)((char *)o + 0x1C) = p0;
+    return o;
+}
 extern void amHeap_Free(void *);
 extern char *D_0051CB94[];
 extern char D_0051CC20[];
