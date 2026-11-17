@@ -915,10 +915,10 @@ void func_002C2470(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2470);
 
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2560);
-#if 0
-// func_002C27B0: the calls and globals match; the tail (func pointer, byte at 0xAC and float at 0xC4) takes the other registers (v1 vs a2) in ours, 12 of 57 instructions differ; 7 variants tried
 extern void func_002C2560(void);
 
+#if 0
+// func_002C27B0: the tail (pointer, byte, float) and the sub-object: the original has a 0x40 frame (s0-s2), ours 0x50 (an extra saved register); 8 variants tried
 void func_002C27B0(s32 *a0) {
     s32 *s0 = (s32 *)a0[0x30 / 4];
     s32 *s2;
@@ -945,7 +945,6 @@ void func_002C27B0(s32 *a0) {
     func_0022C700();
     func_00133B50(0, 0);
     func_003105B0();
-    f = (void *)func_002C2560;
     *(u8 *)((char *)s0 + 0xAC) = *(u8 *)((char *)s0 + 0xAC) + 1;
     *(s32 *)((char *)s0 + 0xC4) = 0x41F00000;
     *(u8 *)((char *)s0 + 0xAF) = 9;
@@ -953,6 +952,7 @@ void func_002C27B0(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C27B0);
+
 
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C28A0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C29A0);
