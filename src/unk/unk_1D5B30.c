@@ -261,7 +261,7 @@ extern f32 func_00200270(void *p, f32 a, f32 b);
 extern void func_002376B0(s32 a);
 extern void func_002181A0(void *a, Fighter *b);
 extern void func_001A3610(s32);
-extern void func_001E6F70(void *, ...);
+extern void func_001E6F70();
 extern void func_00233E50(void *);
 extern void func_00236110(void);
 extern void func_002361D0(void);
@@ -3653,6 +3653,43 @@ void func_001E6CE0(Fighter *c) {
 // differs: size 0x198 vs 0x1B0, same gap as its sibling 1E66E0: the clamp-to-1 arm jumps to the nop before c.le.s (the 15.0f reload is skipped), the original compares with f0 = 1.0 on that path
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6CE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6E90);
+#if 0
+extern char D_00469640[];
+extern void func_001E6890();
+extern void func_001E6CE0();
+extern void func_001E66E0();
+void func_001E6F70(Fighter *c, s32 a1) {
+    char *t;
+    char *base;
+    s32 idx;
+    void *fp;
+    char *a0p;
+
+    *(s32 *)((char *)c + 0x558) = a1;
+    t = (char *)amTask_Create(0, 0, 0x5380, 0x20, 0x40000010, D_00469640);
+    *(void **)(t + 0x30) = c;
+    *(s32 *)(t + 0x34) = 0;
+    *(s32 *)(t + 0x38) = 0;
+    *(s32 *)(t + 0x3C) = a1;
+    *(s32 *)(t + 0x40) = a1 - *(s32 *)((char *)c + 0x554);
+    a0p = t + 0x30;
+    if (*(s32 *)(t + 0x40) > 0) {
+        idx = *(s32 *)(a0p + 0xC);
+        base = *(char **)(*(char **)((char *)c + 0x568) + 0x1CF8);
+        if ((*(s8 *)(base + idx * 20 + 0xDB) & 1) != 0) {
+            fp = (void *)func_001E6890;
+            *(void **)(t + 0x1C) = (fp == 0) ? 0 : fp;
+        } else {
+            fp = (void *)func_001E6CE0;
+            *(void **)(t + 0x1C) = (fp == 0) ? 0 : fp;
+        }
+    } else {
+        fp = (void *)func_001E66E0;
+        *(void **)(t + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
+#endif
+// differs: 6 of 63 by fdiff: five are relocation placeholders (D_00469640, amTask_Create, the three function addresses); the real one is the register order of the index and the table base in the entry lookup (index in $a0 in the original, $a1 here; declaration orders tried). The extern of func_001E6F70 is now unprototyped (called with one and two arguments).
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6F70);
 void func_001E7070(char *c, s32 a1) {
     char *q;
