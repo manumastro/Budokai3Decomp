@@ -307,6 +307,43 @@ void func_002CB4F0(void) {
         t->chr->f1CF4->f14 = t->f30;
     }
 }
+/* differs: 11 of 62: the original tests r == 2 first, then r == 1 with its block placed after an unconditional `b` to
+   the return; ours keeps the block in front (the nested if and the switch forms both differ more). */
+#if 0
+extern void func_002E9BE0(s32);
+extern void func_00218CD0(s32, s32);
+extern s32 (*D_004564E0[])(void);
+
+void func_002CB550(void) {
+    TutWork *t;
+    TutWork *w;
+    s32 r;
+
+    t = gTutWork;
+    if (*(s16 *)(gBattle + 0x8944) != 0) {
+        func_002E9BE0(0);
+    } else {
+        func_002E9BE0(1);
+    }
+    r = D_004564E0[t->fC]();
+    if (r != 2) {
+        if (r == 1) {
+            A2d_CallHandler(0x23, NULL);
+            func_00218CD0(0xB, 0);
+        } else {
+            return;
+        }
+    }
+    w = gTutWork;
+    if (w == NULL) {
+        return;
+    }
+    w->f8 = 2;
+    w->f1C = -*(f32 *)(gBattle + 0x88F0);
+    *(s32 *)&w->f18 = 0;
+    D_004564A0[w->f8]();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB550);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB650);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBD40);
@@ -380,7 +417,30 @@ void func_002CC4E0(void) {
         gTutWork = NULL;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC520);
+void func_002CC520(void) {
+    extern void *amTask_Create();
+    extern char D_0046EFC8[];
+    extern char D_0046EFD8[];
+    TutWork *w;
+
+    if (gTutWork != NULL) {
+        amTask_KillGroup(0x20, 0x400000, 0);
+    }
+    if (gTutWork == NULL) {
+        return;
+    }
+    memset(&gTutWork->f20, 0, 0x10);
+    amTask_Create(func_002CBF60, 0, 0x4200, 0x20, 0x400002, D_0046EFC8);
+    amTask_Create(func_002CBF50, 0, 0x3B00, 0x20, 0x400008, D_0046EFD8);
+    w = gTutWork;
+    if (w == NULL) {
+        return;
+    }
+    w->f8 = 0;
+    w->f1C = -*(f32 *)(gBattle + 0x88F0);
+    *(s32 *)&w->f18 = 0;
+    D_004564A0[w->f8]();
+}
 void func_002CC610(void) {
     if (gTutWork != NULL) {
         amTask_KillGroup(0x20, 0x400000, 0);
