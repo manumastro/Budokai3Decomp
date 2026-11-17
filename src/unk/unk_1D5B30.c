@@ -908,6 +908,64 @@ void func_001D9280(Fighter *c) {
 void func_001D9290(Fighter *c) {
     *(f32 *)&c->f1860 = (f32)(s32)c->fC58;
 }
+extern s32 func_001D9480(void *);
+#if 0
+extern s32 func_001D9480(void *);
+void func_001D92B0(Fighter *c) {
+    char *s1;
+    s16 w;
+    s32 buf[2];
+    s32 s2;
+    s32 v;
+    s32 v3;
+
+    buf[0] = ((Fighter *)c->f1354)->f1350;
+    s1 = (char *)gBattle;
+    buf[1] = 0;
+    s2 = 0x18;
+    if (c->f1350 == *(s32 *)(s1 + 0x8900)) {
+        w = *(s16 *)(s1 + 0x7FA);
+        if (w == 8 || w == 7 || w == 6 || w == 5) {
+            func_001D80A0(c, w);
+        }
+    }
+    if (((Fighter *)c->f1354)->f1350 != *(s32 *)(s1 + 0x8900)) {
+        if (*(s16 *)((char *)c + 0x1A58) != 0) {
+            s2 = 0x19;
+            buf[1] = 2;
+        }
+        if (*(s32 *)(s1 + 0x8934) == (s32)c) {
+            if (*(s16 *)(s1 + 0x894C) != 0) {
+                s2 = 0x1A;
+                buf[1] = 3;
+            }
+            if (*(s8 *)(s1 + 0x8AB8) != 0) {
+                s2 = 0x1B;
+                buf[1] = 3;
+            }
+        }
+        v = *(s8 *)(s1 + 0x8AB1);
+        if (v < 0) {
+            v = -v;
+        }
+        if (c->f1350 == v - 1) {
+            buf[1] = 1;
+        }
+        if (c->f2015 != 0) {
+            v3 = ((Fighter *)c->f1358)->f1350;
+        } else {
+            v3 = c->f1350;
+        }
+        if (s2 >= 0 && s2 < 0x23) {
+            *(s16 *)(s1 + 0x897E + v3 * 72 + s2 * 2) = 1;
+        }
+    }
+    if (func_001D9480((void *)c->f1354) == 0) {
+        func_00226030(0xE, buf);
+    }
+}
+#endif
+// differs: size 0x1AC vs 0x1D0 (9 instructions short): the original keeps the 16-bit value in v1 and uses the beq chain 8,7,6,5 with li per case; the (v-6)<3 form and an s16 local tried; declaration orders (24) do not change the size
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D92B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9480);
 #if 0
@@ -1463,6 +1521,33 @@ void func_001DCC80(Fighter *c) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DCC90);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DD680);
+
+
+#if 0
+static inline s32 SelIdx1D880(Fighter *c) {
+    return c->f2015 ? ((Fighter *)c->f1358)->f1350 : c->f1350;
+}
+
+void func_001DD880(Fighter *c) {
+    s32 buf[2];
+    s32 a5;
+    s32 a3;
+
+    *(s32 *)((char *)c + 0x1A28) = *(s32 *)((char *)c + 0x1A28) + 1;
+    *(s16 *)((char *)gBattle + SelIdx1D880(c) * 72 + 0x8980) += 1;
+    a5 = *(s16 *)((char *)gBattle + SelIdx1D880(c) * 72 + 0x8980);
+    a5 = *(s16 *)((char *)gBattle + SelIdx1D880(c) * 72 + 0x897E) + a5;
+    *(s16 *)((char *)gBattle + SelIdx1D880(c) * 72 + 0x8982) = a5;
+    a3 = *(s16 *)((char *)gBattle + SelIdx1D880(c) * 72 + 0x8982);
+    if (*(s16 *)((char *)gBattle + SelIdx1D880(c) * 72 + 0x8984) < a3) {
+        *(s16 *)((char *)gBattle + SelIdx1D880(c) * 72 + 0x8984) = a3;
+    }
+    buf[0] = ((Fighter *)c->f1354)->f1350;
+    buf[1] = *(s32 *)((char *)c + 0x1A24) + *(s32 *)((char *)c + 0x1A28);
+    func_00226030(6, buf);
+}
+#endif
+// differs: size 0x174 vs 0x1B0: the original has no saved registers (one call at the end, frame 0x20) and loads gBattle once before the selection branch; the helper for the (f2015 ? f1358->f1350 : f1350) index in six expansions keeps four registers saved here
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DD880);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DDA30);
 s32 func_001DDD30(Fighter *c) {
@@ -2949,6 +3034,64 @@ void func_001E66E0(Fighter *c) {
 // differs: size 0x198 vs 0x1B0 (6 instructions short): the clamp join keeps the 15.0f constant in a different place (lui/mtc1 at the join, original), the kill arm sits out of line in the original; clamp and kill arm shapes tried (4 combinations)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E66E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6890);
+typedef struct P66 {
+    s32 f0;
+    f32 f4;
+    s32 f8;
+    s32 fC;
+} P66;
+
+extern void func_001C8480(s32, s32);
+#if 0
+void func_001E6CE0(Fighter *c) {
+    P66 *s1;
+    s32 s0;
+    f32 f20;
+    struct {
+        f32 a;
+        s32 b;
+        s32 cc;
+        s32 d;
+    } buf;
+    Fighter *a1;
+
+    a1 = (Fighter *)c->f30;
+    s0 = a1->f568;
+    s1 = (P66 *)((char *)c + 0x30);
+    if (gBattle->f88EC == 0) {
+        s1->f4 = s1->f4 + gBattle->f88F0 * *(f32 *)((char *)a1 + 0x64C);
+    }
+    if (s1->f8 == 0) {
+        f20 = s1->f4 / 5.0f;
+    } else {
+        f20 = (15.0f - s1->f4) / 15.0f;
+    }
+    if (f20 > 1.0f) {
+        f20 = 1.0f;
+    } else if (f20 < 0.0f) {
+        f20 = 0.0f;
+    }
+    if (s1->f4 > 15.0f) {
+        if (s1->f8 == 1) {
+            amTask_Kill(c);
+            return;
+        }
+        if (s1->f8 == 0) {
+            func_001C8480(s0, s1->fC);
+            func_001E2190((Fighter *)s0, s1->fC);
+            func_001E9B00((void *)1, 0x14, 0, 0, 0.0f, 1.0f);
+            s1->f4 = 0.0f;
+            s1->f8 = 1;
+        }
+    }
+    buf.a = f20;
+    buf.b = 0x1000;
+    buf.cc = 0xFFFFFF;
+    buf.d = 0xFFFFFF;
+    func_001E11E0(s0, &buf);
+}
+#endif
+// differs: size 0x198 vs 0x1B0, same gap as its sibling 1E66E0: the clamp-to-1 arm jumps to the nop before c.le.s (the 15.0f reload is skipped), the original compares with f0 = 1.0 on that path
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6CE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6E90);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6F70);
@@ -3150,6 +3293,68 @@ void func_001E73E0(Fighter *c, s32 a1, s32 a2) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E73E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E74F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E7BE0);
+extern void func_001E80B0(Fighter *c);
+extern void func_001D0A20();
+#if 0
+void func_001E7F00(void *p) {
+    Fighter *c;
+    char *s0;
+    s32 v;
+    s32 a3;
+
+    c = (Fighter *)p;
+    s0 = (char *)c + 0x2D0;
+    func_001E80B0(c);
+    *(s32 *)((char *)c + 0x608) = 0;
+    *(s32 *)((char *)c + 0x650) = 0;
+    *(s32 *)((char *)c + 0x628) = 0;
+    *(s32 *)((char *)c + 0x630) = 0;
+    *(s32 *)((char *)c + 0x63C) = 0;
+    *(s16 *)(s0 + 0x1C4) = 0;
+    *(s32 *)(s0 + 0x1BC) = 0xBF800000;
+    *(void **)(s0 + 0x180 + 0) = s0;
+    *(void **)(s0 + 0x180 + 4) = s0 + 0x30;
+    *(void **)(s0 + 0x180 + 8) = s0 + 0x60;
+    *(void **)(s0 + 0x180 + 12) = s0 + 0x90;
+    *(void **)(s0 + 0x180 + 16) = s0 + 0xC0;
+    *(void **)(s0 + 0x180 + 20) = s0 + 0xF0;
+    *(void **)(s0 + 0x180 + 24) = s0 + 0x120;
+    *(void **)(s0 + 0x180 + 28) = s0 + 0x150;
+    *(s32 *)(s0 + 0x1B4) = 0x3F800000;
+    *(s32 *)(s0 + 0x1B8) = 0;
+    *(s8 *)(s0 + 0x1AE) = 0;
+    *(s8 *)(s0 + 0x1AF) = 0;
+    *(s8 *)(s0 + 0x1B0) = 0;
+    *(s8 *)(s0 + 0x1A8) = 0;
+    *(s32 *)(s0 + 0x1A0) = 0;
+    *(s8 *)(s0 + 0x1A9) = 0;
+    *(s8 *)(s0 + 0x1AA) = 0;
+    *(s8 *)(s0 + 0x1AB) = 0;
+    *(s8 *)(s0 + 0x1AC) = 0;
+    *(s8 *)(s0 + 0x1AD) = 0;
+    *(s32 *)(s0 + 0x244) = 0;
+    func_001D0A20(s0, *(s32 *)((char *)c + 0x524));
+    *(s32 *)(s0 + 0x1BC) = 0xBF800000;
+    if (*(f32 *)(s0 + 0x1B4) > 1.0f) {
+        *(f32 *)((char *)c + 0x608) = *(f32 *)(s0 + 0x1B4);
+        *(f32 *)((char *)c + 0x628) = *(f32 *)(s0 + 0x1B4);
+        *(f32 *)((char *)c + 0x630) = *(f32 *)(s0 + 0x1B4);
+        *(f32 *)((char *)c + 0x63C) = *(f32 *)(s0 + 0x1B4);
+        ((void (*)(void *, s32, f32))func_001D0A20)(s0, *(s32 *)((char *)c + 0x524), *(f32 *)((char *)c + 0x608));
+        *(f32 *)(s0 + 0x1BC) = *(f32 *)((char *)c + 0x608) - 1.0f;
+    }
+    a3 = *(s32 *)(*(char **)((char *)c + 0x524) + 4);
+    v = *(s32 *)(*(s32 *)(*(char **)((char *)*(s32 *)((char *)c + 0x538) + (((*(s32 *)((char *)c + 0x604) >> 16) - 1) * 4) + 0x46C) + 0x14) + (*(s32 *)((char *)c + 0x604) & 0xFFFF) * 16 + 8);
+    if (a3 > 0 && a3 < v) {
+        v = a3;
+    }
+    *(s32 *)((char *)c + 0x60C) = v;
+    *(f32 *)((char *)c + 0x610) = (f32)v - *(f32 *)((char *)c + 0x608);
+    *(s32 *)((char *)c + 0x614) = 0;
+    *(s32 *)((char *)c + 0x618) = 0;
+}
+#endif
+// differs: 122 of 122 differ: frame 0x30 (s0,s1 only) in the original against 0x80 here: the address temporaries (c+0x2D0, c+0x524 loads, the table walk) are CSE'd into six saved registers; the table of eight pointers written as direct stores
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E7F00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E80B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8290);
