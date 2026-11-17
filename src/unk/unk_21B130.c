@@ -84,9 +84,10 @@ extern s32 D_00470684;
 #if 0
 void func_0021B130(void) {
     s32 m = D_00470684 & D_00470680;
-    FPair p;
-    FPair *q = &p;
+    volatile f32 pv[2];
     s32 ok;
+    f32 vb;
+    f32 va;
     if ((m & 0x80000000) && (m & 2) == 2) {
         ok = 1;
     } else {
@@ -94,16 +95,18 @@ void func_0021B130(void) {
     }
     if (ok) {
         if (D_0047068C != 0) {
-                q->b = D_00470690;
-                q->a = D_00470694;
-                func_0022DB20(q->b, q->a);
-                func_0021BEA0((u8 *)D_0047068C, 0x18);
-                func_0022C560(D_0047068C);
-                func_0022DB20(0.0f, 0.0f);
+            vb = D_00470690;
+            va = D_00470694;
+            pv[0] = va;
+            pv[1] = vb;
+            func_0022DB20(pv[1], pv[0]);
+            func_0021BEA0((u8 *)D_0047068C, 0x18);
+            func_0022C560(D_0047068C);
+            func_0022DB20(0.0f, 0.0f);
         }
     }
 }
-// differs: round 6 (u23e): 7 of 41 differ: the if/else flag gives the boolean form, FPair *q = &p gives the stack copy, but the stack address is kept in a2 (addiu a2,sp,24) and the two global loads are not hoisted above the first store
+// differs: round 6 (u23e): 5 of 41 differ: a volatile f32 pv[2] gives the stack copy and the boolean form; left: pv[1] is addressed through addiu v0,sp,28 (the original stores direct to 28(sp)) and the two global loads are not both first
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
 void func_0021B1E0(void) {
