@@ -19,7 +19,7 @@ extern void *gStrTitle;
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_00299CA0);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A090);
 #if 0
-// func_0029A1C0: the switch's empty cases are laid out with a branch to the end in another order; the original's case 2 jumps straight to the end; two forms tried
+// func_0029A1C0: the switch chain and the condition match now (q != 0 && q->4 == 3); the original lays out an empty case block for case 1 and case 3 before the end, ours merges the empty cases; four orders tried
 void func_0029A1C0(void) {
     s32 *s = D_004708B4;
     s32 m = *((s8 *)s + 0x1BD);
@@ -27,7 +27,7 @@ void func_0029A1C0(void) {
     case 0:
         {
             s32 *q = (s32 *)s[0xC / 4];
-            if (q == 0 || *(s16 *)((char *)q + 4) == 3) {
+            if (q != 0 && *(s16 *)((char *)q + 4) == 3) {
                 func_00299390();
                 *((s8 *)D_004708B4 + 0x1BD) = 2;
             }

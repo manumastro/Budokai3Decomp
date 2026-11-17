@@ -96,13 +96,17 @@ void *func_002A2340(void) {
     return NULL;
 }
 #if 0
-// func_002A2350: the 64-bit local and the loads are scheduled in another order (the args load and the table address come first in the original); three variants tried
+// func_002A2350: the 64-bit local is copied through a pointer and the table index load comes after the args load in the original; ours keeps the index load early; five forms tried
 s32 func_002A2350(void *a0, char *a1) {
-    u64 bits = D_004700D8;
-    u32 *w = (u32 *)&bits;
-    s32 *args = *(s32 **)(a1 + 0x2C);
-    s32 idx = D_004B4B63[0];
-    u16 row = *(u16 *)(D_00492FCE + idx * 0xB8);
+    u64 bits;
+    u64 *pb = &bits;
+    u32 *w;
+    s32 *args;
+    u16 row;
+    *pb = D_004700D8;
+    w = (u32 *)pb;
+    args = *(s32 **)(a1 + 0x2C);
+    row = *(u16 *)(D_00492FCE + D_004B4B63[0] * 0xB8);
     if ((row & w[args[0]]) != 0) {
         *(s32 *)a1 = 1;
     } else {
@@ -765,13 +769,15 @@ extern void func_002A11C0(s32, s32, s32);
 
 
 #if 0
-// func_002A4A30: the loop counter and the count are kept in the other saved registers; the call result is held in another register
+// func_002A4A30: the counter and the row share registers differently (original: idx in s2, counter in s1 set in the beqz delay slot); the scheduler moves the counter store after the row; four orders tried
 s32 func_002A4A30(s32 *a0) {
+    s32 i;
     s32 idx = **(s32 **)a0;
-    s32 i = 0;
     s32 n = func_002A1390(a0);
     if (0 < n) {
-        char *row = D_005AB610 + idx * 240;
+        char *row;
+        i = 0;
+        row = D_005AB610 + idx * 240;
         do {
             func_002A11C0(i, *(s32 *)(row + 4), 0x800000 + ((i + 1) << 8));
             i++;
