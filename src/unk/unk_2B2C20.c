@@ -321,17 +321,10 @@ void SklEdit_TaskLoad(void *a) {
         }
     }
 }
-/* differs: 1 instruction of 6: the final addu is `v1 + v0` here, the original is `v0 + v1` (operand order);
-   the load of gSklEdit first matches with s32 p = (s32)gSklEdit. Variants tried (7): char *p, s32 p with
-   a0 & -2 on either side, a separate q for the mask, and an offset-first sum (size mismatch). */
-#if 0
 u16 func_002B4AD0(s32 a0) {
-    s32 p;
-    p = (s32)gSklEdit;
-    return *(u16 *)(p + (a0 & -2) + 0x34);
+    u8 *p = (u8 *)gSklEdit + 0x34;
+    return *(u16 *)(p + (a0 & -2));
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4AD0);
 
 /* differs: 37 of 81: the loop (count in a3, sum in t1, pointer in t2 in the original) and the float copy order
    (the original loads f4..f10 into f3..f0 before the stores); declaration orders of the locals tried (24). */
