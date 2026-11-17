@@ -340,6 +340,61 @@ s32 func_001A5490(MotFile *f, s32 track, f32 t) {
     }
     return tr->keys[i].value;
 }
+#if 0
+/* differs: 3 of 65 real instructions (the jal is relocated). The table pointer and the index temporary
+ * swap $v1/$a0 at the first lookup (the original loads the table into $a0 first), and the else block's
+ * byte load is scheduled above the `addiu` (the original keeps the order). Tried: table local, clamp as
+ * ?:, if/else with the entry pointer, integer and pointer address forms. */
+void func_001A5510(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    f32 f;
+    s32 w;
+    s32 r;
+    s32 v;
+    s32 a1;
+    s32 a6;
+    s32 a4;
+    s32 idx;
+    s32 p;
+    u8 *ent;
+    s32 tb;
+
+    f = *(f32 *)(a0 + 0x5C);
+    w = *(s32 *)(a0 + 0x58);
+    if (f != *(f32 *)(a0 + 0x54)) {
+        s1 = a0;
+        *(f32 *)(s1 + 0x54) = f;
+        idx = ((w >> 16) - 1) << 2;
+        p = *(s32 *)((idx + (s32)s1) + 0xC);
+        s0 = *(u8 **)(p + 0x18) + ((w & 0xFFFF) << 4);
+        a1 = *(s32 *)(s0 + 0x4);
+        tb = *(s32 *)(s0 + 0xC);
+        if ((f32)(*(s16 *)(tb + (a1 << 2) - 4) - 1) <= f) {
+            r = a1 - 1;
+        } else {
+            r = func_001A51E0((MotTrack *)s0, *(s32 *)(s1 + 0x50), f);
+        }
+        v = *(s32 *)(s1 + 0x50);
+        if (r != v) {
+            *(s32 *)(s1 + 0x50) = r;
+            ent = (u8 *)(*(s32 *)(s0 + 0xC) + (r << 2));
+            a6 = *(s8 *)(ent + 3);
+            a1 = *(s32 *)(s1 + 0x8);
+            if (a6 < a1) {
+                a4 = *(s8 *)(ent + 2);
+            } else {
+                a4 = *(s8 *)(ent + 2);
+                a6 = a1 - 1;
+            }
+            *(s8 *)(s1 + 0x4C) = *(s8 *)(s1 + 0x4D);
+            *(s8 *)(s1 + 0x4E) = *(s8 *)(s1 + 0x4F);
+            *(s8 *)(s1 + 0x4D) = a6;
+            *(s8 *)(s1 + 0x4F) = a4;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5510);
 void BtlSlots_Clear(BtlSlots *s, s32 i) {
     s->slot[i] = 0;
@@ -485,7 +540,63 @@ s32 func_001A8920(void) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8930);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8BD0);
+extern s32 func_001A8930(s32, void *, s32);
+extern s32 func_001A8E60(s32, void *);
+
+void func_001A8BD0(u8 *a0) {
+    u8 *s6;
+    s32 s5;
+    s32 s4;
+    s32 s3;
+    s32 s2;
+    s32 s1;
+    s32 s7;
+    s32 r;
+    s32 a6;
+    s32 p;
+    f32 f;
+
+    a6 = *(s8 *)(a0 + 0x6);
+    s6 = (u8 *)gBattle + ((a6 * 257) << 5) + 0x830;
+    s5 = 0;
+    s7 = 0;
+    if (0 < *(s16 *)a0) {
+        s3 = 0;
+        s2 = 0;
+        s1 = 0;
+        do {
+            *(s16 *)(*(s32 *)(a0 + 0x10) + s3) = -1;
+            r = func_001A8930(*(s32 *)(*(s32 *)(a0 + 0x8) + s2), s6, 0);
+            *(s16 *)(*(s32 *)(a0 + 0x14) + s3) = (s16)r;
+            if (func_001A8E60(*(s32 *)(*(s32 *)(a0 + 0x8) + s2), s6) != 0) {
+                s4 = 0;
+                if (*(u8 *)(a0 + 0x7) == 0) {
+                    if (func_001A8D90((void *)*(s32 *)(*(s32 *)(a0 + 0x8) + s2), s6) != 0) {
+                        s4 = 1;
+                    }
+                } else {
+                    f = *(f32 *)(s6 + 0xC58);
+                    p = *(s32 *)(*(s32 *)(a0 + 0x8) + s2);
+                    if (f <= (f32)*(s16 *)(p + 0x6)) {
+                        if (!(f < (f32)*(s16 *)(p + 0x4))) {
+                            s4 = 1;
+                        }
+                    }
+                }
+                if (s4 != 0) {
+                    *(s32 *)(*(s32 *)(a0 + 0xC) + s1) = *(s32 *)(*(s32 *)(a0 + 0x8) + s2);
+                    s1 += 4;
+                    *(s16 *)(*(s32 *)(a0 + 0x10) + s3) = (s16)s5;
+                    s5++;
+                }
+            }
+            s7++;
+            s3 += 2;
+            s2 += 4;
+        } while (s7 < *(s16 *)a0);
+    }
+    *(s16 *)(a0 + 0x2) = (s16)s5;
+}
 s32 func_001A8D90(void *a0, void *a1) {
     u16 x = *(u16 *)((u8 *)a0 + 0xC);
     u16 y = *(u16 *)((u8 *)a1 + 0xCB2);
@@ -632,8 +743,8 @@ s32 func_001A9230(u8 *a0, s32 a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9230);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9460);
-// GIVEN UP: the switch and its blocks match in order, but the registers of the op and the entry differ and the returns are laid out differently
 #if 0
+/* differs: 49 of 69 instructions (the switch form of an earlier round: the op and entry registers differ). */
 s32 func_001A99C0(BtlCmdObj *a0, BtlCmdPair *a1, s32 a2) {
     s32 r = 0;
     BtlCmdPair *e;
@@ -665,6 +776,49 @@ s32 func_001A99C0(BtlCmdObj *a0, BtlCmdPair *a1, s32 a2) {
         break;
     }
     return func_001A9460(a0, a1->b, r);
+}
+#endif
+#if 0
+/* differs: 8 of 67 instructions; the switch value and the entry pointer take $a3 and $a2 the other way round
+ * (the original keeps the entry in $a2 and the case value in $a2 too, then the constant 1 in $a3). The
+ * `> 12` tests give the original's slti $at form. Tried: switch value in a local, declaration orders. */
+s32 func_001A99C0(u8 *a0, s16 *a1, s32 a2) {
+    s32 k;
+    s32 v;
+    u8 *e;
+
+    v = 0;
+    if (a2 != 0) {
+        e = (u8 *)((*(s32 *)(a0 + 0x58) << 2) + (s32)a0);
+        if (*(s16 *)(e + 0x66) == 1) {
+            v = 1;
+        }
+    }
+    k = a1[0];
+    switch (k) {
+    case 1:
+        e = (u8 *)((*(s32 *)(a0 + 0x58) << 2) + (s32)a0);
+        if (*(s16 *)(e + 0x64) != 1) {
+            return 0;
+        }
+        if (D_0047056C != 0 && *(s16 *)(e + 0x66) > 12) {
+            return 0;
+        }
+        break;
+    case 2:
+        e = (u8 *)((*(s32 *)(a0 + 0x58) << 2) + (s32)a0);
+        if (*(s16 *)(e + 0x64) != -1) {
+            return 0;
+        }
+        if (D_0047056C != 0 && *(s16 *)(e + 0x66) > 12) {
+            return 0;
+        }
+        break;
+    default:
+        v = 0;
+        break;
+    }
+    return func_001A9460(a0, a1[1], v);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A99C0);

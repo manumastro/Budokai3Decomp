@@ -283,7 +283,39 @@ void func_0024A8A0(s32 *p) {
         p[16] = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A8F0);
+extern void func_0020D400(s32, s32, s32);
+extern void func_002499A0(s32 *, s32, s32, s32, f32);
+extern s32 func_00209540(s32, s32, s32);
+extern void func_00209B50(s32, s32, s32);
+extern void func_001D9C40(s32, s32, s32);
+
+void func_0024A8F0(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    s32 v;
+    s32 src;
+    s32 *tp;
+    s32 tmp[4];
+
+    s3 = a0;
+    s1 = *(u8 **)(a0 + 0x8);
+    s0 = *(s32 *)(s1 + 0x1350);
+    s2 = *(u8 **)(a0 + 0xC);
+    *(s32 *)(a0 + 0x40) = *(s32 *)((u8 *)D_0046FE54 + 0x10);
+    func_0020D400((s32)(a0 + 0x10), (s32)s1, 1);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(a0 + 0x10));
+    tp = tmp;
+    src = (s32)(a0 + 0x10);
+    func_002499A0(tp, src, (s32)s1, (s32)s2, 30.0f);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(tmp));
+    *(f32 *)(s3 + 0x4C) = *(f32 *)(s2 + 0xCC);
+    *(f32 *)(s3 + 0x50) = 0.0f;
+    v = func_0020B020(s0, *(s16 *)(s2 + 0x58), *(s16 *)(s2 + 0x5E));
+    *(s32 *)(s3 + 0x44) = func_00209540(v, (s0 != 0) ? 0x4000020 : 0x4000010, 0);
+    func_00209B50(*(s32 *)(s3 + 0x44), (s32)(s3 + 0x20), 0);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024AA00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024ACE0);
 void func_0024B260(s32 *p) {
@@ -568,7 +600,37 @@ void func_0024FAD0(s32 *p) {
         p[16] = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FB20);
+
+void func_0024FB20(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    s32 v;
+    s32 src;
+    s32 *tp;
+    s32 tmp[4];
+
+    s3 = a0;
+    s1 = *(u8 **)(a0 + 0x8);
+    s0 = *(s32 *)(s1 + 0x1350);
+    s2 = *(u8 **)(a0 + 0xC);
+    *(s32 *)(a0 + 0x40) = *(s32 *)((u8 *)D_0046FE54 + 0x10);
+    func_0020D400((s32)(a0 + 0x10), (s32)s1, 1);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(a0 + 0x10));
+    tp = tmp;
+    src = (s32)(a0 + 0x10);
+    func_002499A0(tp, src, (s32)s1, (s32)s2, 30.0f);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(tmp));
+    *(f32 *)(s3 + 0x4C) = *(f32 *)(s2 + 0xCC);
+    *(f32 *)(s3 + 0x50) = 0.0f;
+    v = func_0020B020(s0, *(s16 *)(s2 + 0x58), *(s16 *)(s2 + 0x5E));
+    *(s32 *)(s3 + 0x44) = func_00209540(v, (s0 != 0) ? 0x4000020 : 0x4000010, 0);
+    func_00209B50(*(s32 *)(s3 + 0x44), (s32)(s3 + 0x20), 0);
+    if (*(s32 *)(s1 + 0xB9C) == 0x2A) {
+        func_001D9C40((s32)s1, s0 + 2, 0x2E);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FC50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FEA0);
 void func_00250460(s32 *p) {
@@ -1356,6 +1418,43 @@ void func_002543B0(u8 *a0) {
             func_0022C7D0(v, (f32)s2, 0);
         }
     }
+}
+#endif
+#if 0
+/* differs: 12 of 58 (declaration orders searched): the argument and the loop pointer share a saved register
+ * in our build (the original keeps the argument in $s4 for its second 0x20 read, and the loop in $s0). */
+void func_002543B0(u8 *a0) {
+    u8 *s4;
+    u8 *s3;
+    u8 *s0;
+    s32 s1;
+    s32 s2;
+    s32 v;
+    s32 a1;
+    s32 *r;
+
+    s4 = a0;
+    s1 = 0;
+    s0 = s4;
+    s3 = *(u8 **)s4 + 0x30;
+    do {
+        s2 = func_0021C460(*(s16 *)(s0 + 0x20));
+        if (s2 == -1) {
+            s2 = 2;
+        }
+        v = func_0021C360(*(s16 *)(s4 + 0x20));
+        if ((v & 1) != 0) {
+            a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA2;
+        } else {
+            a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA1;
+        }
+        r = func_00259CC0(*(s32 **)(s3 + 0x4), a1);
+        if (r != NULL) {
+            func_0022C7D0((s32)r, (f32)s2, 0);
+        }
+        s1++;
+        s0 += 2;
+    } while (s1 < 2);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002543B0);
@@ -2572,29 +2671,77 @@ s32 func_00259D90(s32 a0, s32 a1) {
     return 1;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259D90);
-// GIVEN UP: the parameter and the global pointer take the other two saved registers, and the code is 12 bytes shorter (4 declaration orders tried)
+typedef struct BtlTmp12 {
+    u64 a;
+    f32 b;
+} BtlTmp12;
+
 #if 0
+/* differs: 0x10C bytes against 0x120. The original addresses the 12-byte local through $a1 (sd a0, 0(a1)) and
+ * copies the second argument into $s2 before the table load; ours addresses it through $sp and moves the
+ * copy late. Tried: argument copies into locals (this version). */
+s32 func_00259D90(s32 a0, s32 a1) {
+    BtlTmp12 tmp;
+    u8 *sys;
+    u8 *s0;
+    s32 e;
+    s32 v;
+    s32 s2;
+    s32 s3;
+
+    s3 = a0;
+    s2 = a1;
+    tmp.a = *(u64 *)D_004529B8;
+    tmp.b = *(f32 *)(D_004529B8 + 8);
+    sys = gBtlSys;
+    e = D_0058D4D0[s3];
+    if (e == 0) {
+        return 0;
+    }
+    s0 = (u8 *)e + 0x30;
+    if (*(s32 *)((u8 *)e + 0x34) == s2) {
+        return 1;
+    }
+    func_0022D0B0(*(s32 *)(s0 + 0x18), 1);
+    D_00470704 = *(s32 *)(sys + 0xE84);
+    D_0047070C = 0x4010000;
+    D_00470708 = 0;
+    func_00145CC0(D_00470704, 0x4010000);
+    D_00470238 = 0;
+    v = *(s32 *)(*(s32 *)(sys + 0xE88) + 0x14);
+    v = *(s32 *)((u8 *)v + (((s3 & 1) + ((s32 *)&tmp)[s2]) << 2));
+    *(s32 *)(s0 + 0x18) = func_0022D570(v, 0x1000, 0x2000008, 0x3A30);
+    *(s32 *)(s0 + 0x4) = s2;
+    *(s32 *)(s0 + 0x8) = 0;
+    return 1;
+}
+#endif
+INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259D90);
 extern s32 amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern u8 D_0046AE80[];
 extern u8 D_0046AE90[];
-extern void func_002599C0(void *);
+#if 0
+/* differs: 0x124 bytes against 0x130 whatever the order of the five locals (searched): a structural
+ * 12-byte gap, probably one instruction of the table or the memset block. The argument copy and gBtlSys
+ * swap $s1/$s2 as well. */
 s32 func_00259EB0(s32 a0, f32 f12) {
-    s32 *s0;
+    s32 k;
     u8 *s1;
+    s32 *s0;
     s32 v;
     s32 w;
 
-    s0 = &D_0058D4D0[a0];
+    k = a0;
+    s0 = &D_0058D4D0[k];
     if (*s0 != 0) {
         return 0;
     }
     s1 = gBtlSys;
-    v = amTask_Create(func_002599C0, 0, 0x5410, 0x1000, 0x2000000, (char *)D_0046AE80);
+    v = amTask_Create((void (*)(void *))func_002599C0, 0, 0x5410, 0x1000, 0x2000000, (char *)D_0046AE80);
     *s0 = v;
     s0 = (s32 *)(v + 0x30);
     memset(s0, 0, 0x1C);
-    s0[5] = a0;
+    s0[5] = k;
     {
         s32 x = *(s32 *)(s1 + 0xE84);
 
@@ -2604,7 +2751,7 @@ s32 func_00259EB0(s32 a0, f32 f12) {
         amModel_SetCurrent(x, 0x4010000);
         D_00470238 = 0;
     }
-    s0[6] = func_0022D570(*(s32 *)((u8 *)((s32 *)(*(s32 *)(s1 + 0xE88)))[5] + ((a0 & 1) << 2)), 0x1000, 0x2000008, 0x3A30);
+    s0[6] = func_0022D570(*(s32 *)((u8 *)((s32 *)(*(s32 *)(s1 + 0xE88)))[5] + ((k & 1) << 2)), 0x1000, 0x2000008, 0x3A30);
     w = amTask_Create((void (*)(void *))LeverDraw_TaskMain, 0, 0x3A30, 0x1000, 0x2000008, (char *)D_0046AE90);
     ((f32 *)s0)[3] = f12;
     s0[0] = w;
