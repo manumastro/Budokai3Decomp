@@ -117,7 +117,7 @@ typedef struct Obj2D2530 {
     s16 *f3D0;
     s16 *f3D4;
     s16 *f3D8;
-    char pad3DC[0x10];
+    s32 f3DC[4];
     s32 *f3EC;
     char pad3F0[0x8];
     s32 f3F8;
@@ -553,22 +553,20 @@ void func_002D5720(void) {
     m = s->f2A8;
     DrawModel(gOptionWork, m, &v, 0);
 }
-#if 0
-// differs: the step factor (1.2f when D_004703F4 == 3) is laid out with a branch the source form did not reproduce; the rest of the draw matches up to there
 void func_002D58B0(void) {
     Vec4 b;
     Vec4 a;
     Tbl2D2530 *e = (Tbl2D2530 *)D_004E05DC;
     Obj2D2530 *o = gOptionWork;
-    Obj2D2530 *s;
     Model2D2530 *m;
+    Obj2D2530 *s;
     f32 k = 1.0f;
 
     a.x = (f32)e->f24;
     a.y = (f32)e->f28;
     a.z = 0.0f;
     a.w = 1.0f;
-    k = (D_004703F4 == 3) ? 1.2f : 1.0f;
+    k = (D_004703F4 != 3) ? 1.0f : 1.2f;
     o->f398 = o->f398 + k;
     b.x = 1.0f;
     b.y = 1.0f;
@@ -581,14 +579,12 @@ void func_002D58B0(void) {
         b.w = 1.0f - o->f398 / 30.0f;
     }
     s = gOptionWork;
-    m = *(Model2D2530 **)((char *)o + 0x28C + e->f1C * 4);
+    m = ((Model2D2530 **)((char *)o + 0x28C))[e->f1C];
     DrawModel(s, m, 0, &b);
     s = gOptionWork;
-    m = *(Model2D2530 **)((char *)o + 0x294 + e->f1C * 4);
+    m = ((Model2D2530 **)((char *)o + 0x294))[e->f1C];
     DrawModel(s, m, &a, &b);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D58B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5AE0);
 void func_002D5D70(void) {
     Obj2D2530 *o = gOptionWork;
@@ -719,6 +715,37 @@ void func_002D6F40(void) {
     f = s->f320;
     f->f1C = (func_002DF930 == 0) ? 0 : func_002DF930;
 }
+#if 0
+/* differs: 42 of 94; the copy and the stores match, but the constants 1.0f and 193.0f take the other registers */
+typedef struct Copy16_2D2530 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Copy16_2D2530;
+extern s32 D_00456BE0[];
+void func_002D7050(void) {
+    Vec4 v[2];
+    s32 arr[6];
+    Obj2D2530 *s = gOptionWork;
+    Model2D2530 *m;
+    f32 t;
+    s32 i;
+
+    *(Copy16_2D2530 *)arr = *(Copy16_2D2530 *)D_00456BE0;
+    *(s64 *)((u8 *)arr + 16) = *(s64 *)((u8 *)D_00456BE0 + 16);
+    v[0].x = (f32)arr[s->f37C];
+    t = (f32)arr[s->f37C + 3];
+    v[1].x = 193.0f;
+    v[0].z = 0.0f;
+    v[0].w = 1.0f;
+    v[0].y = t;
+    v[1].w = 1.0f;
+    v[1].z = 0.0f;
+    v[1].y = (f32)arr[s->f37C + 3];
+    for (i = 0; i < 2; i++) {
+        m = (&s->f26C)[i];
+        DrawModel(gOptionWork, m, &v[i], 0);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7050);
 void func_002D71D0(void) {
     Obj2D2530 *s = gOptionWork;
@@ -781,6 +808,39 @@ void func_002D7BF0(void) {
         func_002D7AA0(&s->f3C0, &s->f3C0);
     }
 }
+#if 0
+/* differs: 3 of 125; the 12-byte table copy is ordered ld/sd before lwc1 (original: lwc1 first) */
+typedef struct Vec3_2D2530 {
+    f32 x, y, z;
+} Vec3_2D2530;
+extern f32 D_00456BC8[];
+void func_002D7DC0(void) {
+    f32 w[3];
+    Vec4 v;
+    Obj2D2530 *s = gOptionWork;
+    s32 idx;
+    f32 t;
+    Vec3_2D2530 *src;
+    Vec3_2D2530 *dst;
+
+    src = (Vec3_2D2530 *)D_00456BC8;
+    dst = (Vec3_2D2530 *)w;
+    *(s64 *)dst = *(s64 *)src;
+    dst->z = src->z;
+    idx = s->f37C;
+    if (idx != 3) {
+        asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
+        v.y = 40.0f * idx;
+        if (*(&s->f3D0)[idx] != s->f3DC[idx] - 1) {
+            DrawModel(gOptionWork, (Model2D2530 *)s->f98, &v, 0);
+        }
+        v.x = w[idx];
+        if (*(&s->f3D0)[idx] != 0) {
+            DrawModel(gOptionWork, (Model2D2530 *)s->f94, &v, 0);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7DC0);
 void func_002D7FC0(void) {
     Vec4 v;
