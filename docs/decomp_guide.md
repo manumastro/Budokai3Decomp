@@ -62,6 +62,15 @@ Until a function is named in a symbol file, keep its `func_XXXXXXXX` name in C (
   after the `if` is not duplicated by the compiler.
 - A function that returns `s16` is sign-extended by the caller (`dsll32` / `dsra32`) when its result is assigned
   to a wider variable; one that returns `int` is not. The extension's place tells which prototype the callee has.
+- A conditional expression (`x = c ? a : x;`) joins without the alignment `nop` that an `if` statement's join gets
+  (func_001C9EF0).
+- Register numbers follow the variables, not their declaration order: a loop that reuses the counter of an earlier
+  loop gets other registers than one with a counter of its own, and a list walk with its own iterator (not the
+  variable later assigned the new object) changes the `$s` registers of the whole function. A redundant
+  `if (p != 0)` inside a function, with its own loop registers, is an inlined `static inline` function: write it
+  as one (func_001D4210).
+- An early `return` and `if (...) {} else {...}` place the blocks differently; when the original jumps over a
+  `b` to the end, try `if (a == 0 || b != 0) return;` (func_001CA000).
 - A small `switch` (two or three cases, no jump table) compiles to a chain of `beq`; the case blocks are laid out
   in the source order of the `case` labels (func_001CB4A0).
 - Tail calls (`j func` with the stack restored in the delay slot) appear in the code linked before CRI; 3.0b52 at

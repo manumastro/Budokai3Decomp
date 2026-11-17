@@ -1,6 +1,7 @@
 #include "common.h"
 
 #include "battle/battle.h"
+#include "battle/character.h"
 
 typedef struct SecpArg {
     /* 0x00 */ Fighter *fighter;
@@ -16,28 +17,6 @@ extern s16 func_001E89F0(Fighter *);
 extern s16 func_001E8A30(Fighter *);
 extern s16 func_001E8AF0(Fighter *);
 extern s32 func_001E8740(Fighter *);
-
-typedef struct SecpData {
-    /* 0x00 */ s8 numParts;
-    /* 0x01 */ s8 numAcsr;
-    /* 0x02 */ s8 numMant;
-    /* 0x04 */ s32 parts[8];
-    /* 0x24 */ s32 acsr[2];
-    /* 0x2C */ s32 mant[1];
-} SecpData;
-
-typedef struct Secp {
-    /* 0x00 */ void *parts[8];
-    /* 0x20 */ s32 *acsr[2];
-    /* 0x28 */ void *mant[1];
-    /* 0x2C */ s8 numParts;
-    /* 0x2D */ s8 numAcsr;
-    /* 0x2E */ s8 numMant;
-    /* 0x2F */ u8 unk2F[0x38 - 0x2F];
-    /* 0x38 */ SecpData *data;
-    /* 0x3C */ s32 unk3C;
-    /* 0x40 */ u8 unk40;
-} Secp;
 
 extern char D_00469390[];
 extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
