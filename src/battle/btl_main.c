@@ -116,6 +116,11 @@ extern void func_001E4820(f32, void *, s32);
 extern void func_001E3460(void *);
 extern void func_001DD680(void *);
 extern void func_001D9900(void *, s32, s32);
+extern void amHeap_Free(void *);
+extern void (*D_00468530[])(void *);
+extern void (*D_004685E4[])(void *);
+extern void func_001D8320(void *);
+extern void func_001D4620(void *);
 
 void func_001ABCC0(Fighter *f) {
     FT_FIELD(f, f32, 0x420) = 1000.0f;
@@ -2595,7 +2600,30 @@ void func_001C6350(void) {
 // differs: the compiler keeps the table base in s0 and the fighter pointer in s2; the original keeps the base in s1, the fighter in s0 and the index in s2
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C6350);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C63F0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C6780);
+void func_001C6780(void) {
+    BattleSlots *bw = (BattleSlots *)D_00470570;
+    Fighter *f;
+    s32 i;
+    u8 *s0;
+
+    if (bw->unk88EC != 0) {
+        return;
+    }
+    if (0 < bw->numFighters) {
+        i = 0;
+        s0 = (u8 *)bw;
+        do {
+            f = *(Fighter **)(s0 + 0x88DC);
+            func_001D8320(f);
+            D_00468530[FT_FIELD(f, s16, 0xCAC)](f);
+            if (FT_FIELD(f, s8, 0x133C) == 0) {
+                D_004685E4[0](f);
+            }
+            i++;
+            s0 += 4;
+        } while (i < bw->numFighters);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C6860);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C7130);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C73B0);
@@ -2608,28 +2636,25 @@ void func_001C7590(Fighter *f, s32 bits) {
 void func_001C75B0(Fighter *f, s32 bits) {
     *(u16 *)((u8 *)f + 0xCB2) |= (u16)(bits & 0xFF00);
 }
-#if 0
 void func_001C75D0(Fighter *f, s32 mode) {
-    if (mode == 1 || mode == 0) {
-        FIGHTER_FIELD(f, s16, 0xCB4) = 0;
-    } else {
-        if (mode == 0x14) {
-            func_001C0130(f, 0);
-            return;
-        }
+    switch (mode) {
+    case 0x14:
+        func_001C0130(f, 0);
+        return;
+    case 0:
+    case 1:
+        FT_FIELD(f, s16, 0xCB4) = 0;
+        break;
     }
-    FIGHTER_FIELD(f, s8, 0x2004) = 1;
-    FIGHTER_FIELD(f, s8, 0x1FFB) = 1;
+    FT_FIELD(f, s8, 0x2004) = 1;
+    FT_FIELD(f, s8, 0x1FFB) = 1;
     if (mode != 0xF) {
-        FIGHTER_FIELD(f, s16, 0xCB6) = 0;
+        FT_FIELD(f, s16, 0xCB6) = 0;
     }
-    FIGHTER_FIELD(f, s8, 0x2006) = 0;
+    FT_FIELD(f, s8, 0x2006) = 0;
     ((void (*)(Fighter *))D_00468460[mode])(f);
     func_002CBFF0(1, f);
 }
-#endif
-// differs: the then-block for mode 1 or 0 is placed last by the compiler; the original puts it before the mode 0x14 check, with its join branch in the delay slot
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C75D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C7670);
 s32 func_001C7D30(s32 i) {
     return *(s32 *)((u8 *)D_00470570 + i * 0x2020 + 0x2710);
@@ -3001,42 +3026,55 @@ void func_001C95F0(Fighter *f, s32 i) {
     func_0029D270(*(void **)((u8 *)f + 0x4C), ((s16 *)f)[i]);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9610);
-#if 0
-// differs: the link fields are read through their address (CSE); the original reads them in place (4 instructions differ at the same size)
-extern void func_001D4620(void *);
-extern void amCdFs_ReleaseCache(void *handle);
-extern void amCdFs_Close(void *handle, s32 mode);
-extern void amHeap_Free(void *);
-void func_001C9840(void *p) {
-    if (p != 0) {
-        s32 n = FT_FIELD(p, s32, 0x7C) - 1;
-        FT_FIELD(p, s32, 0x7C) = n;
-        if (n <= 0) {
-            func_001D4620(FT_FIELD(p, void *, 0x58));
-            if (FT_FIELD(p, void *, 0x64) != 0) {
-                amCdFs_ReleaseCache(FT_FIELD(p, void *, 0x6C));
-            } else if (FT_FIELD(p, void *, 0x6C) != 0) {
-                amCdFs_Close(FT_FIELD(p, void *, 0x6C), 0);
-            }
-            {
-                void *pv = FT_FIELD(p, void *, 0x80);
-                void *nx = FT_FIELD(p, void *, 0x84);
-                if (pv != 0) {
-                    FT_FIELD(pv, void *, 0x84) = nx;
-                }
-                if (nx != 0) {
-                    FT_FIELD(nx, void *, 0x80) = pv;
-                }
-            }
-            if (p == FT_FIELD(FT_FIELD(p, void *, 0x54), void *, 0x8)) {
-                FT_FIELD(FT_FIELD(p, void *, 0x54), void *, 0x8) = FT_FIELD(p, void *, 0x84);
-            }
-            amHeap_Free(p);
-        }
+/* A node of a linked list of loaded files (fields inferred from func_001C9840; offsets as the code uses them). */
+typedef struct CdNode {
+    u8 unk00[0x08];
+    struct CdNode *unk08;
+    u8 unk0C[0x54 - 0x0C];
+    struct CdNode *unk54;
+    void *unk58;
+    u8 unk5C[0x64 - 0x5C];
+    s32 unk64;
+    u8 unk68[0x6C - 0x68];
+    void *unk6C;
+    u8 unk70[0x7C - 0x70];
+    s32 unk7C;
+    struct CdNode *unk80;
+    struct CdNode *unk84;
+} CdNode;
+
+void func_001C9840(CdNode *p) {
+    s32 v;
+    CdNode *q;
+    CdNode **link;
+
+    if (p == 0) {
+        return;
     }
+    v = p->unk7C - 1;
+    p->unk7C = v;
+    if (v > 0) {
+        return;
+    }
+    func_001D4620(p->unk58);
+    if (p->unk64 != 0) {
+        amCdFs_ReleaseCache(p->unk6C);
+    } else if (p->unk6C != 0) {
+        amCdFs_Close(p->unk6C, 0);
+    }
+    if (p->unk80 != 0) {
+        p->unk80->unk84 = p->unk84;
+    }
+    if (p->unk84 != 0) {
+        p->unk84->unk80 = p->unk80;
+    }
+    q = p->unk54;
+    link = &q->unk08;
+    if (p == *link) {
+        *link = p->unk84;
+    }
+    amHeap_Free(p);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9840);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9910);
 s32 func_001C9A70(void *p) {
     void *q;
