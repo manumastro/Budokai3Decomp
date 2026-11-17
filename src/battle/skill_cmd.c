@@ -564,6 +564,41 @@ void SkillKill_Kind05(s32 *p) {
         p[20] = 0;
     }
 }
+#if 0
+// differs: 23 of 85 at the start (s1/s2 order fixed by declaration order), then 33 of 87: the original computes
+// &a0->0x30 into a0 and loads the 0.5 scale (lwc1 f0) before move a1,a0 and the jal; a local pointer moves it to s1.
+extern s8 D_004703F4;
+void func_0024E7B0(s32 a0) {
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    s32 v;
+    f32 f1;
+
+    s1 = *(u8 **)(a0 + 0x8);
+    s0 = *(s32 *)(s1 + 0x1350);
+    s2 = *(u8 **)(a0 + 0xC);
+    *(s32 *)(a0 + 0x50) = *(s32 *)((u8 *)D_0046FE54 + 0x10);
+    func_0020D400(a0 + 0x10, (s32)s1, *(s32 *)(s2 + 0x2C));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(a0 + 0x10));
+    func_002499A0((s32 *)(a0 + 0x30), a0 + 0x10, (s32)s1, (s32)s2, 30.0f);
+    *(f32 *)(a0 + 0x34) = *(f32 *)(a0 + 0x34) + 0.5f;
+    func_00146F30((s32 *)(a0 + 0x30));
+    if (gBattle != 0) {
+        f1 = *(f32 *)((u8 *)gBattle + 0x88F0);
+    } else {
+        if (D_004703F4 != 3) {
+            f1 = 1.0f;
+        } else {
+            f1 = 1.2f;
+        }
+    }
+    func_00146F10((s32 *)(a0 + 0x30), (s32 *)(a0 + 0x30), *(f32 *)(s2 + 0x28) * f1);
+    v = func_0020B020(s0, *(s16 *)(s2 + 0x58), *(s16 *)(s2 + 0x5E));
+    *(s32 *)(a0 + 0x54) = func_00209540(v, (s0 != 0) ? 0x4000020 : 0x4000010, 0);
+    func_00209B50(*(s32 *)(a0 + 0x54), a0 + 0x20, 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E7B0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E910);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024ECE0);
