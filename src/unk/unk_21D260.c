@@ -47,7 +47,73 @@ typedef struct Task2_21D260 {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021D260);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021D6C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021DCF0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021E250);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00228430(s32);
+extern void func_00228410(void);
+extern void func_0022C430(f32, s32);
+extern void func_0022B900(s32, f32, void *);
+extern void func_0022C6B0(void *);
+void func_0021E250(char *p) {
+    char *sys;
+    s32 s1;
+    s32 s0;
+    f32 f20;
+    f32 buf[24];
+    char *w;
+    s32 e;
+
+    sys = (char *)gBtlSys;
+    s0 = *(s32 *)(p + 0x14) + *(s16 *)(p + 0xA);
+    s1 = *(s32 *)(p + 0x18);
+    if (s0 >= s1) {
+        s0 -= s1;
+    }
+    if (s1 > 0) {
+        s1--;
+    }
+    e = *(s32 *)(sys + 0xED8);
+    D_00470704 = e;
+    D_0047070C = 0x4040000;
+    D_00470708 = 0;
+    amModel_SetCurrent(e, 0x4040000);
+    D_00470238 = 0;
+    func_00228430(0);
+    w = *(char **)(*(char **)(sys + 0xEDC) + 0x1C);
+    func_0022C430(0.0f, *(s32 *)(w + 0x74));
+    func_00228410();
+    func_00228430(0);
+    if ((*(s16 *)(p + 0x10) & 1) != 0) {
+        w = *(char **)(*(char **)(sys + 0xEDC) + 0x1C);
+        func_0022C430(*(f32 *)(p + 0x24), *(s32 *)(w + 0x7C));
+    } else {
+        w = *(char **)(*(char **)(sys + 0xEDC) + 0x1C);
+        func_0022C430(0.0f, *(s32 *)(w + 0x78));
+    }
+    func_00228410();
+    func_00228430(0);
+    if ((*(s16 *)(p + 0x10) & 2) != 0) {
+        w = *(char **)(*(char **)(sys + 0xEDC) + 0x1C);
+        func_0022C430(*(f32 *)(p + 0x24), *(s32 *)(w + 0x84));
+    } else {
+        w = *(char **)(*(char **)(sys + 0xEDC) + 0x1C);
+        func_0022C430(0.0f, *(s32 *)(w + 0x80));
+    }
+    func_00228410();
+    if (s1 == 0) {
+        f20 = 0.0f;
+    } else {
+        f20 = (30.0f * (f32)s0) / (f32)s1;
+    }
+    func_00228430(0);
+    w = *(char **)(*(char **)(sys + 0xEDC) + 0x1C);
+    func_0022B900(*(s32 *)(w + 0x70), f20, buf);
+    func_00228410();
+    func_0022C6B0(buf);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021E420);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021E740);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021F0E0);
