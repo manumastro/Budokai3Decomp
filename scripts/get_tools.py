@@ -31,11 +31,15 @@ COMPILERS_URL = "https://github.com/decompme/compilers/releases/download/compile
 MWCCGAP_REPO = "https://github.com/mkst/mwccgap.git"
 MWCCGAP_COMMIT = "147598b36b198f267e80adbe04dd5804d070dbb3"
 
-# The compiler of the game (docs/plan.md, "Compiler"; a candidate until a function matches).
-GAME_COMPILERS = ["3.0.1b44-030325"]
+# Builds that are only in decomp.me's combined archive, under this folder name.
+COMBINED_URL = "https://github.com/decompme/compilers/releases/download/compilers/ps2_compilers.tar.xz"
+COMBINED = {"3.0b22-020926"}
+
+# The compiler of the game (docs/plan.md, "Compiler"): the 3.0bXX builds tie on every function matched so far.
+GAME_COMPILERS = ["3.0b52-030722"]
 ALL_COMPILERS = [
     "2.3.3-000906", "2.4-001213", "3.0-011126", "3.0.1-020123", "3.0.3-020716",
-    "3.0b38-030307", "3.0b50-030527", "3.0b52-030722",
+    "3.0b22-020926", "3.0b38-030307", "3.0b50-030527", "3.0b52-030722",
     "3.0.1b44-030325", "3.0.1b51-030512", "3.0.1b74-030811", "3.0.1b75-030916", "3.0.1b87-031208",
     "3.0.1b95-040309", "3.0.1b103-040528", "3.0.1b119-040914", "3.0.1b145-050209",
 ]
@@ -92,8 +96,15 @@ def get_compiler(version):
     if (dest / "mwccps2.exe").exists():
         return
     dest.mkdir(parents=True, exist_ok=True)
-    with tarfile.open(fileobj=io.BytesIO(fetch(COMPILERS_URL.format(version)))) as t:
-        t.extractall(dest, filter="data")
+    if version in COMBINED:
+        prefix = f"mwcps2-{version}/"
+        with tarfile.open(fileobj=io.BytesIO(fetch(COMBINED_URL))) as t:
+            for m in t.getmembers():
+                if m.isfile() and m.name.startswith(prefix):
+                    (dest / m.name[len(prefix):]).write_bytes(t.extractfile(m).read())
+    else:
+        with tarfile.open(fileobj=io.BytesIO(fetch(COMPILERS_URL.format(version)))) as t:
+            t.extractall(dest, filter="data")
     for p in dest.iterdir():
         make_executable(p)
 

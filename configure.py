@@ -32,9 +32,9 @@ BINUTILS = "tools/binutils/mips-ps2-decompals-"
 AS_FLAGS = "-EL -march=r5900 -mabi=eabi -G0 -no-pad-sections -Iinclude"
 
 # The game's own code: Metrowerks CodeWarrior for PS2 (see docs/plan.md, "Compiler"). Used once a C file is linked.
-MWCC_VERSION = "3.0.1b44-030325"
+MWCC_VERSION = "3.0b52-030722"
 MWCC = f"tools/mwcps2/{MWCC_VERSION}/mwccps2.exe"
-MWCC_FLAGS = "-O2,p -sdatathreshold 8 -char unsigned -Iinclude -Isrc"
+MWCC_FLAGS = "-O4,p -sdatathreshold 8 -Iinclude -Isrc"
 WIBO = "tools/wibo"
 
 
