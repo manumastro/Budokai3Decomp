@@ -100,8 +100,6 @@ void func_0021B130(void) {
 // differs: the two float arguments are copied through the stack (lwc1 to 24 and 28 of a 0x30 frame) in the original, the same copy as func_0023FBB0 in unk_23A890; the local forms tried do not give that copy; round 5: `volatile FPair p` does not compile (mwcc aborts on the volatile struct)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
-#if 0
-// differs: float state machine: the stores to 0xDF8 and the branch layout of the mode switch differ (the return of the first test is a b to the epilogue; 2 instructions short); FP register choice differs; 1 attempt
 void func_0021B1E0(void) {
     u8 *sys = gBtlSys;
     f32 f1;
@@ -119,63 +117,73 @@ void func_0021B1E0(void) {
     if (f1 < *(f32 *)(sys + 0xE04)) {
         return;
     }
-    f3 = f1 - *(f32 *)(sys + 0xE04);
+    f2 = f1 - *(f32 *)(sys + 0xE04);
     mode = *(s32 *)(sys + 0xDFC);
+    f3 = *(f32 *)(sys + 0xE0C);
     f1 = *(f32 *)(sys + 0xE10);
-    f2 = *(f32 *)(sys + 0xE0C);
-    if (mode == 3) {
-        f2 = f2 / 2.0f;
-        f1 = f1 / 2.0f;
-        if (f3 < f2) {
+    switch (mode) {
+    case 0:
+        if (!(f2 < f1)) {
             f2 = f2 - f1;
-            if (!(f3 < f1)) {
-                f3 = f3 - f1;
-                *(s32 *)(sys + 0xDF8) = 1;
-                f2 = f2 - f1;
-            }
-        } else {
-            f3 = f3 - f2;
-            if (!(f3 < f2)) {
-                *(s32 *)(sys + 0xDF8) = 3;
-            }
+            *(s32 *)(sys + 0xDF8) = 1;
+            f3 = f3 - f1;
         }
-    } else if (mode == 2) {
-        f2 = f2 / 2.0f;
-        f1 = f1 / 2.0f;
-        if (f3 < f2) {
-            f2 = f2 - f1;
-            if (!(f3 < f2)) {
-                *(s32 *)(sys + 0xDF8) = 3;
-            }
-        } else {
-            f3 = f3 - f2;
-            if (!(f3 < f1)) {
-                f3 = f3 - f1;
-                *(s32 *)(sys + 0xDF8) = 1;
-                f2 = f2 - f1;
-            }
-        }
-    } else if (mode == 1) {
-        f2 = f2 - f1;
-        if (!(f3 < f2)) {
+        break;
+    case 1:
+        f3 = f3 - f1;
+        if (!(f2 < f3)) {
             *(s32 *)(sys + 0xDF8) = 3;
         }
-    } else if (mode == 0) {
-        if (!(f3 < f1)) {
+        break;
+    case 2:
+        f3 = f3 / 2.0f;
+        f1 = f1 / 2.0f;
+        if (!(f2 < f3)) {
+            f2 = f2 - f3;
+            if (!(f2 < f1)) {
+                f2 = f2 - f1;
+                *(s32 *)(sys + 0xDF8) = 1;
+                f3 = f3 - f1;
+            }
+        } else {
             f3 = f3 - f1;
-            *(s32 *)(sys + 0xDF8) = 1;
-            f2 = f2 - f1;
+            if (!(f2 < f3)) {
+                *(s32 *)(sys + 0xDF8) = 3;
+            }
         }
+        break;
+    case 3:
+        f3 = f3 / 2.0f;
+        f1 = f1 / 2.0f;
+        if (!(f2 < f3)) {
+            f2 = f2 - f3;
+            if (!(f2 < f3)) {
+                *(s32 *)(sys + 0xDF8) = 3;
+            }
+        } else {
+            f3 = f3 - f1;
+            if (!(f2 < f1)) {
+                f2 = f2 - f1;
+                *(s32 *)(sys + 0xDF8) = 1;
+                f3 = f3 - f1;
+            }
+        }
+        break;
     }
     st = *(s32 *)(sys + 0xDF8);
-    if (st == 3) {
+    switch (st) {
+    case 1:
+        f1 = 1.0f - f2 / f3;
+        break;
+    case 2:
+        f1 = f2 / f3;
+        break;
+    case 3:
         f1 = 1.0f;
-    } else if (st == 2) {
-        f1 = f3 / f2;
-    } else if (st == 1) {
-        f1 = 1.0f - f3 / f2;
-    } else {
+        break;
+    default:
         f1 = 0.0f;
+        break;
     }
     if (f1 < 0.0f) {
         f1 = 0.0f;
@@ -185,8 +193,6 @@ void func_0021B1E0(void) {
     }
     *(f32 *)(sys + 0xE2C) = f1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B1E0);
 #if 0
 void func_0021B420(void) {
     u8 *sys = gBtlSys;
