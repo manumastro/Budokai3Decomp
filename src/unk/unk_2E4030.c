@@ -220,7 +220,6 @@ void Sofdec_TaskMain(Ac2E4 *s) {
     s->f30 = amSofdec_Create(&in);
     s->f1C = (func_002E54A0 == NULL) ? NULL : (void *)func_002E54A0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5690);
 typedef struct Sub57 {
     char pad0[0xC];
     s32 f0C;
@@ -241,6 +240,56 @@ void ArenaStageSel_Exit(Outer57 *);
 void Scene_Request(s32, s32);
 void func_001F07E0(s32, s32);
 
+typedef struct Dat2E5 {
+    char pad0[0x28];
+    void *f28;
+    f32 f2C;
+    char pad30[0xA0];
+    u16 fD0;
+    char padD2[0x3A];
+    f32 f10C;
+} Dat2E5;
+
+typedef struct Own2E5 {
+    char pad0[0x30];
+    Dat2E5 *f30;
+} Own2E5;
+
+extern f32 gFrameDelta;
+extern s16 D_005C9F04[];
+extern s16 D_005C4138[];
+extern void amAdx_Stop(s32);
+extern void func_0022D4B0(s32, s32);
+extern void func_0022CF70(s32);
+extern void func_002D1CC0(void);
+extern void ArenaCharasel_Load(void);
+extern void func_0028DF20(void);
+
+void func_002E5690(Own2E5 *a0) {
+    Dat2E5 *s0 = a0->f30;
+
+    s0->f10C = s0->f10C - gFrameDelta;
+    if (s0->f10C >= 0.0f) {
+        s0->f2C = 1.0f - s0->f10C / 60.0f;
+        func_002E4D60((Sub57 *)s0);
+        *(f32 *)((u8 *)s0->f28 + 0x5C) = s0->f2C;
+        func_0022CF70((s32)s0->f28);
+    } else {
+        amAdx_Stop(1);
+        if (s0->f28 != NULL) {
+            func_0022D4B0((s32)s0->f28, 0);
+            s0->f28 = NULL;
+        }
+        D_005C9F04[0] = -1;
+        if (s0->fD0 & 0x80) {
+            func_0028DF20();
+        }
+        D_005C4138[0] = 1;
+        ArenaStageSel_Exit((Outer57 *)a0);
+        ArenaCharasel_Load();
+        func_002D1CC0();
+    }
+}
 void func_002E57A0(Outer57 *a) {
     Sub57 *s;
 
