@@ -1184,6 +1184,28 @@ int func_001CEE80(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEE80);
+#if 0
+/* r6 best attempt diff 18 */
+extern void func_001C75D0(void *, s32);
+
+int func_001CEE80(void *unused, Arg *a) {
+    int *p = a->p;
+    f32 x = *(f32 *)&p[0];
+    f32 y = *(f32 *)&p[1];
+    f32 d = 360.0f;
+    f32 k = 65536.0f;
+    s32 c = p[2];
+    s32 idx = p[3];
+    char *t = (char *)gBattle->tbl[idx];
+    s32 v = (s32)((x / d) * k);
+    *(f32 *)(t + 0x1828) = y;
+    *(s32 *)(t + 0x1838) = 0;
+    *(s32 *)(t + 0x1834) = v;
+    *(s8 *)(t + 0x183C) = (s8)c;
+    func_001C75D0(t, 20);
+    return 1;
+}
+#endif
 int Scr_CmdFighterSetVecPair(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
