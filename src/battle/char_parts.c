@@ -148,8 +148,6 @@ void CharParts_Release(Secp *s) {
         amHeap_Free(s);
     }
 }
-#if 0
-/* Does not match yet: 2 of 79 instructions differ. */
 void func_001D4710(Secp *s, s32 a, SecpOwner *owner) {
     s32 i;
     if (s != 0) {
@@ -160,7 +158,7 @@ void func_001D4710(Secp *s, s32 a, SecpOwner *owner) {
             func_001D3FF0(s->parts[i], a);
         }
         for (i = 0; i < s->numAcsr; i++) {
-            CharAcsr_Init(s->acsr[i], a, (SecpSlot *)(s->owner->data->slot[0].unk00 + i * 0x20));
+            CharAcsr_Init(s->acsr[i], a, (SecpSlot *)((s32)s->owner->data->slot + i * 0x20));
         }
         for (i = 0; i < s->numMant; i++) {
             func_001D2750(s->mant[i], a, owner);
@@ -169,8 +167,6 @@ void func_001D4710(Secp *s, s32 a, SecpOwner *owner) {
         s->unk3C = 0;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_parts", func_001D4710);
 s32 func_001D4850(Secp *s) {
     s32 i;
     if (s == 0) {
