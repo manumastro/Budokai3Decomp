@@ -33,7 +33,11 @@ typedef struct W98D {
     char padB4[0xBC - 0xB4];
     void *fBC;
     void *fC0;
-    char padC4[0x158 - 0xC4];
+    char padC4[0xC8 - 0xC4];
+    void *fC8;
+    char padCC[0x148 - 0xCC];
+    void *f148;
+    char pad14C[0x158 - 0x14C];
     s32 f158;
     char pad15C[0x1BC - 0x15C];
     void *f1BC;
@@ -42,7 +46,9 @@ typedef struct W98D {
     void *f1CC;
     char pad1D0[0x1D4 - 0x1D0];
     void *f1D4;
-    char pad1D8[0x274 - 0x1D8];
+    void *f1D8;
+    void *f1DC;
+    char pad1E0[0x274 - 0x1E0];
     s32 f274;
     s32 f278;
     s32 f27C;
@@ -188,7 +194,43 @@ void func_002BB5F0(Ac98D *s) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB650);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB890);
+extern V16 D_00455E50;
+extern s32 D_005116E8[];
+extern s32 D_0051144C[];
+void func_002BB890(Ac98D *s) {
+    V16 tmp;
+    W98D *w;
+    s32 idx;
+    u16 flags;
+
+    if (func_0022BF80(gStrStatus->f1D8) == 0xFF) {
+        idx = D_004B4B63[0];
+        flags = *(u16 *)(D_00492FCE + idx * 184);
+        if (flags & 1) {
+            Help_Open(0x0020000000000000LL, (u8)(1 << idx));
+        } else if (flags & 0x5000) {
+            SoundRpc_SetVolume(D_004E0614[0], 0, 0);
+            if (D_004E0614[0] > 0.0f) {
+                SoundRpc_Send3(0, 0, 5, 0);
+            }
+            D_0051144C[0] |= 1 << D_005116E8[0];
+            tmp = D_00455E50;
+            w = gStrStatus;
+            func_0028EE90((char *)w + 0x38, (char *)w + 0x14C, (char *)w + 0x158, (char *)w + 0x168, &tmp, w->f274, w->f278, 0x600000);
+            if (gStrStatus->f1DC != NULL) {
+                func_0022D0E0(gStrStatus->f1DC, 1);
+                gStrStatus->f1DC = NULL;
+            }
+            if (gStrStatus->fC8 != NULL) {
+                amTask_Kill(gStrStatus->fC8);
+                gStrStatus->fC8 = NULL;
+            }
+            amTask_Kill(gStrStatus->f148);
+            gStrStatus->f148 = NULL;
+            s->f1C = (func_002BB650 == NULL) ? NULL : (void *)func_002BB650;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BBA30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BBCB0);
 void func_002BC000(Ac98D *s) {
