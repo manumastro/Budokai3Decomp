@@ -1553,35 +1553,30 @@ void func_00244150(void) {
         func_00242290();
     }
 }
+extern u8 *D_0046FE48;
 #if 0
-void func_00244190(u8 *o) {
-    s32 k;
-    u8 *s1;
-    s32 off;
-    s32 v;
+extern u8 *D_0046FE48;
+void func_00244190(u8 *p) {
+    s32 i = 0;
+    s32 off = 0;
+    s32 id;
 
     *(s32 *)(D_0046FE48 + 0x3C8) = amCdFs_ReadFileId(0xC, 0, 1);
-    v = *(volatile s32 *)(D_0046FE48 + 0x3C8);
     *(s16 *)(D_0046FE44 + 0x102) = 2;
-    if (0 < *(s16 *)(D_0046FE44 + 0x102)) {
-        off = 0;
-        k = 0;
+    if (*(s16 *)(D_0046FE44 + 0x102) > 0) {
         do {
-            s1 = D_0046FE48 + off;
-            if (D_00452130[*(s16 *)(o + 0x20)] != -1) {
-                *(s32 *)s1 = amCdFs_ReadFileId(D_00452130[*(s16 *)(o + 0x20)], 0, 1);
-                v = *(s32 *)s1;
-            } else {
-                v = 0;
+            id = *(s16 *)(p + 0x20);
+            if (D_00452130[id] != -1) {
+                *(s32 *)(D_0046FE48 + off) = amCdFs_ReadFileId(D_00452130[id], 0, 1);
             }
-            k++;
-            o += 0x50;
+            i++;
+            p += 0x50;
             off += 0x1A4;
-        } while (k < *(s16 *)(D_0046FE44 + 0x102));
+        } while (i < *(s16 *)(D_0046FE44 + 0x102));
     }
     *(s16 *)(D_0046FE44 + 0x100) = 0;
 }
-// differs: the read-back of the stored value is kept with a volatile read (a copy of the original's reloads); the registers of the loop counter and the offset are swapped and the table lookup is scheduled differently
+// differs: 240 bytes (round 5, u23c): 36 bytes short (0xCC against 0xF0). The original reads back the field it has just stored (lw D_0046FE48 / lw 0x3C8, value unused) and reloads D_0046FE44 before the loop test; the do-while and the table loop match in shape. Not reproduced: the read-back and the second load of the table count.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244190);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244280);
@@ -2102,41 +2097,33 @@ void func_002472F0(void) {
 }
 #if 0
 void func_00247410(void) {
-    s32 k;
-    s32 off;
-    u8 *s0;
+    s32 i;
+    s32 off = 0;
+    u8 *e = D_0058CAA0;
     u8 *s2;
-    u8 *bw;
 
-    k = 0;
-    off = 0;
-    s0 = D_0058CAA0;
-    do {
-        s2 = s0 + 0x10;
-        if (*(s16 *)(s0 + 0x3E) == 0) {
-            bw = gBattle + off + 0x830;
-            func_00244CC0(*(s32 *)(bw + 0x1350), 1);
+    for (i = 0; i < 2; i++, off += 0x2020, e += 0x480) {
+        s2 = e + 0x10;
+        if (*(s16 *)(e + 0x3E) == 0) {
+            func_00244CC0(*(s32 *)(gBattle + off + 0x1B80), 1);
         }
         if (*(s32 *)(s2 + 0x30) != 0) {
             Obj_ResetF38(*(s32 *)(s2 + 0x30));
             *(s32 *)(s2 + 0x30) = 0;
         }
-        k++;
-        off += 0x2020;
-        s0 += 0x480;
-    } while (k < 2);
+    }
     amTask_KillGroup(0x400, 0x800002, 0);
     if (*(s16 *)(D_0046FE4C + 0x916) != 0) {
         func_0020DE30();
         *(s16 *)(D_0046FE4C + 0x916) = 0;
     }
     *(s16 *)(D_0046FE4C + 0x914) = 0;
-    func_00248C80(0);
+    func_00248C80();
     func_00252B20();
     Wave_Create();
     func_002CA490();
 }
-// differs: the loop over the two blocks: the original is 4 bytes longer, with the block pointer kept as its own value (not folded into the 0x1350 load); no declaration order tried gives its registers
+// differs: 240 bytes (round 5, u23c): the loop matches in shape; the call func_00248C80 has no argument setup in the original (a0 is left by the call before), but the file declares it as func_00248C80(s32), so a no-argument call does not compile. Needs the callee's real signature or a K&R declaration (the other uses of func_00248C80 in the file pass an argument).
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247410);
 void func_00247500(void) {
