@@ -55,7 +55,7 @@ extern void func_0022ACF0(s32);
 extern s32 func_0020B020(s32, s32, s32);
 extern s32 func_0020AD30(s32, s32, s32);
 extern s32 func_0020AE80(s32, s16, s16);
-extern void func_00208D60(void);
+extern void func_00208D60();
 extern void func_00209D20(s32);
 extern void func_00208D70(s32);
 extern void func_00209C50(void);
@@ -338,6 +338,49 @@ void SkillKill_Kind11(void) {
 }
 void func_0024B690(void) {
 }
+// GIVEN UP: 17 of 89 differ: the original keeps the object in s1 (move s1,a0) and the data pointer in s0; mwcc swaps them whatever the declaration order (5 forms), and the stack-array VU0 copies are in the other order
+#if 0
+void func_0024B6A0(u8 *ob) {
+    s32 side;
+    s32 r;
+    u8 *s0;
+    u8 *s1 = ob;
+    s32 t;
+    s32 k;
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    s0 = *(u8 **)(s1 + 0xC);
+    side = *(s32 *)(*(u8 **)(s1 + 0x8) + 0x1350);
+    r = func_0020B020(side, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22));
+    amModel_SetCurrent(r, func_0020AD30(side, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22)));
+    k = *(s16 *)(s0 + 0x60);
+    if (k != 0) {
+        t = func_0020AE80(side, *(s16 *)(s0 + 0x5A), k);
+        if (t != 0) {
+            func_00208D60(t);
+        }
+    }
+    func_0013B0B0(0);
+    __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)"
+        : : "r"((u8 *)gBattle + 0x60));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%1)"
+        : : "r"(*(u8 **)((u8 *)gBattle + 0x264)), "r"(tmp), "r"(ob + 0x20));
+    func_00209D70(tmp);
+    if (*(s32 *)(ob + 0x44) != 0) {
+        func_0013B060(0);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w"
+            : : "r"(ob + 0x20));
+        func_00208D70(*(s32 *)(ob + 0x44));
+    }
+    if (*(s32 *)(ob + 0x48) != 0) {
+        func_0013B060(0);
+        func_00209B50(*(s32 *)(ob + 0x48), (s32)(ob + 0x20), 0);
+        func_00208D70(*(s32 *)(ob + 0x48));
+    }
+    func_0013B110(1);
+    func_00209C50();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024B6A0);
 #if 0
 /* differs: 0x284 bytes against 0x2A0. The original keeps the table offset (side << 4) in $a0 across the whole
@@ -450,7 +493,34 @@ void SkillKill_Kind09(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C2C0);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C4E0);
+void func_0024C4E0(u8 *ob) {
+    u8 *s3 = *(u8 **)(ob + 0xC);
+    s32 side = *(s32 *)(*(u8 **)(ob + 0x8) + 0x1350);
+    s32 r;
+    s32 t;
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    r = func_0020B020(side, *(s16 *)(s3 + 0x20), *(s16 *)(s3 + 0x22));
+    amModel_SetCurrent(r, func_0020AD30(side, *(s16 *)(s3 + 0x20), *(s16 *)(s3 + 0x22)));
+    t = func_0020AE80(side, *(s16 *)(s3 + 0x5A), *(s16 *)(s3 + 0x60));
+    if (t != 0) {
+        func_00208D60(t);
+    }
+    if (*(s32 *)(ob + 0x44) != 0) {
+        func_0013B0B0(0);
+        __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)"
+            : : "r"((u8 *)gBattle + 0x60));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%1)"
+            : : "r"(*(u8 **)((u8 *)gBattle + 0x264)), "r"(tmp), "r"(ob + 0x10));
+        func_00209D70(tmp);
+        func_0013B060(0);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w"
+            : : "r"(ob + 0x10));
+        func_00208D70(*(s32 *)(ob + 0x44));
+        func_0013B110(1);
+        func_00209C50();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C610);
 void SkillKill_Kind08(s32 *p) {
     if (p[17] != 0) {
@@ -542,6 +612,7 @@ void func_0024E440(s32 *a0) {
     s16 *s2 = (s16 *)(v1 + 0x22);
     s32 s3 = ((Fighter *)a0[2])->unk1350;
     s32 r1;
+    u32 mask;
     s32 r2;
 
     r1 = func_0020B020(s3, *(s16 *)(v1 + 0x20), *(s16 *)(v1 + 0x22));
@@ -1527,6 +1598,49 @@ void func_00253A50(s32 *a0, u8 *a1) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253A50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253BA0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253E60);
+// GIVEN UP: 12 of 80 differ: the register of the mask constant (lui a3 vs v0) and the order of the res[0] and o+0x30 loads; the struct copies, the memset and the float constants match (declaration orders tried, 4 forms)
+#if 0
+extern s32 func_00253690(u8 *, s32, u8 *);
+f32 func_00253FC0(u8 *a0, u8 *o) {
+    s32 res[4] __attribute__((aligned(16)));
+    u8 buf[0x60] __attribute__((aligned(16)));
+    u8 *t;
+    s32 a3;
+    s32 base;
+    u8 *q;
+    f32 fx;
+    f32 fy;
+    s32 r0;
+    s32 r1;
+    u32 mask;
+
+    if (func_00253690(a0, *(s16 *)(o + 0x34), (u8 *)res) == 0) {
+        return *(f32 *)o;
+    }
+    t = (u8 *)res[0];
+    a3 = *(s16 *)((u8 *)res + 8);
+    base = *(s32 *)(t + 0x14) + (s32)t;
+    q = t + *(s32 *)(base + ((a3 - *(s32 *)(t + 0x18)) << 2));
+    fx = (f32)*(s16 *)(q + 0x10);
+    fy = (f32)*(s16 *)(q + 0x12);
+    memset(buf, 0, 0x60);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x20), "r"(o));
+    *(f32 *)(buf + 0x44) = 0.5f;
+    *(f32 *)(buf + 0x48) = fx - 0.5f;
+    *(f32 *)(buf + 0x4C) = fy - 0.5f;
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x50), "r"(o + 0x10));
+    *(f32 *)buf = 0.0f;
+    r0 = res[0];
+    mask = (u32)*(s32 *)(o + 0x30) & 0x30000;
+    *(s32 *)(buf + 0x10) = r0;
+    r1 = res[1];
+    *(s16 *)(buf + 0x18) = *(s16 *)((u8 *)res + 8);
+    *(s32 *)(buf + 0x14) = r1;
+    *(s32 *)(buf + 4) = (mask >> 15) | 1;
+    *(s16 *)(buf + 0x1A) = 0;
+    return func_00253320((s32 *)buf, o, fx, fy);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253FC0);
 
 

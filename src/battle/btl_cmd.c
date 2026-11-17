@@ -1229,7 +1229,7 @@ s32 func_001AA9D0(s32 a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA9D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAA60);
-// GIVEN UP: 0x160 against 0x14C: the loop variable of the third loop is kept as s16 (extended before the shift) and its call passes it without the extension (5 forms tried)
+// GIVEN UP: 0x14C against 0x160 (fdiff): the original sign-extends s1, s2 and s3 at the return and s1 again before its shift in the third loop; s16 locals for all three break the loops (90 of 94); s1-only s16 gives the loop extension but not the return (2 forms)
 #if 0
 s32 func_001AAEA0(BtlRank *a0, s32 a1) {
     s32 s3;
