@@ -1,10 +1,26 @@
 #include "common.h"
 
 extern s32 D_004708A4;
+extern void func_0028F930(void);
 extern void func_0028F830(void);
 extern void func_00133B50(void *, s32);
 
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E5D0);
+void func_0028E5D0(s32 *p) {
+    s32 *w = &p[0xC];
+    s32 n;
+    if (p[0xD] != 0) {
+        ((void (*)(void *))p[0xD])(p);
+    }
+    n = w[0] - 1;
+    w[0] = n;
+    if (n <= 0) {
+        s32 v = w[2];
+        if (v == 0) {
+            v = 0;
+        }
+        p[0x1C / 4] = v;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E640);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E790);
 extern s32 amGs_SetReg32(s32, s32);
@@ -31,7 +47,8 @@ void func_0028EB20(void) {
 }
 void func_0028EB30(void) {
 }
-extern void func_0028E5D0(void);
+
+void func_0028E5D0(s32 *p);
 
 void func_0028EB40(s32 *p, s32 a1, s32 a2, s32 a3) {
     s32 *w = &p[0x30 / 4];
@@ -94,10 +111,40 @@ INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290410);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_002904C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290780);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_002908D0);
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290A70);
+void func_00290A70(s32 *a0) {
+    s32 i = 0;
+    s32 *a2 = (s32 *)((char *)D_004708A4 + 0x430);
+    do {
+        a2[0x0C / 4] = a0[0];
+        a2[0x5C / 4] = a0[1];
+        a2[0xAC / 4] = a0[2];
+        a2[0xFC / 4] = a0[3];
+        a2[0x14C / 4] = a0[4];
+        a2[0x19C / 4] = a0[5];
+        a2[0x1EC / 4] = a0[6];
+        a2[0x23C / 4] = a0[7];
+        a0 += 8;
+        a2 += 0x280 / 4;
+        i += 8;
+    } while (i < 0x48);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290AE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290BB0);
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290C90);
+s32 func_00290C90(void) {
+    s32 *g = (s32 *)D_004708A4;
+    s8 k;
+    s32 *e;
+    if (g[0x1AB0 / 4] == 0) {
+        k = *((s8 *)g + 0x1AB5);
+        e = (s32 *)g[k];
+        if (*(s16 *)((char *)e + 4) != 3) {
+            return 1;
+        }
+        func_0028F930();
+        ((s32 *)D_004708A4)[0x1AB0 / 4] = 2;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290D00);
 void func_00291380(void) {
     func_0028F830();
