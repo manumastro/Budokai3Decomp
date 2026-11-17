@@ -354,18 +354,17 @@ void func_00294960(Work2918A0 *w) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00294A10);
-#if 0
-// differs: the 16-byte copy is lq at the first argument setup and sq in the delay slot of the call; the inline lq/sq pair lands in one place
+typedef struct Copy16B_2918A0 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Copy16B_2918A0;
 void func_00295260(Work2918A0 *w) {
-    Q2918A0 c;
+    Copy16B_2918A0 c;
 
     func_00291BF0();
     if (func_0022BF80(D_005AA5E4[0]) == 0xFF) {
-        asm volatile("lq $v0, 0(%1)\n\tsq $v0, 0(%0)" : : "r"(&c), "r"(D_00453DC0) : "$2", "memory");
+        c = *(Copy16B_2918A0 *)D_00453DC0;
         func_0028EE90(D_005AA5A0, D_005AA5CC, D_005AA5D8, D_005AA5E4, &c, 0x9200, 0x20000, 0x300000);
         w->f1C = (func_00294A10 == 0) ? 0 : func_00294A10;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00295260);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00295300);

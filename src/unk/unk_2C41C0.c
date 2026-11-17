@@ -430,8 +430,126 @@ void func_002C6BF0(EffReq2C41C0 *s) {
     }
     s->f50 = D_004563E0[e->f40];
 }
+extern struct EffFile *func_0020B020(s32, s32, s32);
+#if 0
+// differs: 95 of 110 (first draft from the asm: the spawn values and the VU0 difference are right in shape, the register allocation and the order of the calls are not)
+typedef struct Copy16D_2C41C0 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Copy16D_2C41C0;
+typedef struct Vec4D_2C41C0 {
+    f32 x, y, z, w;
+} Vec4D_2C41C0;
+extern char D_00456400[];
+extern char D_00456410[];
+extern char *func_00215320(s32, s32);
+extern void func_00212480(void);
+extern void func_00212650(void);
+extern s32 func_00209540(s32, s32, s32);
+extern void func_0020D500(void *, void *, s32, s32);
+extern void func_00141C30(void *, void *, void *);
+extern void func_00209950(s32, void *, s32);
+extern s32 func_0020AD30(s32, s32, s32);
+extern void func_00146F30(void *);
+void func_002C6D40(s32 a0, s32 a1, s32 a2) {
+    Vec4D_2C41C0 vA;
+    Vec4D_2C41C0 vB;
+    Vec4D_2C41C0 vC;
+    Vec4D_2C41C0 vD;
+    char *s1;
+    char *s0;
+    s32 s2;
+
+    s2 = *(s32 *)(a0 + 0x1350);
+    s1 = func_00215320(s2, 2);
+    if (s1 != 0) {
+        *(void (**)(void))(s1 + 0x8) = func_00212480;
+        *(void (**)(void))(s1 + 0xC) = func_00212650;
+        s0 = s1 + 0x20;
+        memset(s0, 0, 0x50);
+        if (func_0020B020(s2, 1, a2) != 0) {
+            *(s32 *)(s1 + 0x10) = func_00209540((s32)func_0020B020(s2, 1, a2), (s2 != 0) ? 0x4000008 : 0x4000004, 0);
+        }
+        if (*(s32 *)(s1 + 0x10) != 0) {
+            func_0020D500(&vA, D_00456400, a0, 15);
+            func_0020D500(&vB, D_00456410, a0, 15);
+            *(Copy16D_2C41C0 *)s0 = *(Copy16D_2C41C0 *)&vA;
+            asm volatile("lqc2 $vf1, 0(%0)
+	lqc2 $vf2, 0(%1)
+	vsub.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, 0(%1)" : : "r"(&vB), "r"(&vA) : "memory");
+            func_00146F30(&vA);
+            vD.x = 0.0f;
+            vD.y = 1.0f;
+            vD.z = 0.0f;
+            vD.w = 1.0f;
+            func_00141C30(&vC, &vD, &vA);
+            func_00209950(*(s32 *)(s1 + 0x10), &vC, 0);
+            *(s32 *)(s0 + 0x20) = (s32)func_0020B020(s2, 1, a1);
+            *(s32 *)(s0 + 0x28) = func_0020AD30(s2, 1, a1);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6D40);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6EF0);
+typedef struct Sub2C6EF0 {
+    char pad0[0x54];
+    f32 f54;
+    f32 f58;
+} Sub2C6EF0;
+typedef struct Obj2C6EF0 {
+    Sub2C6EF0 *f0;
+    char pad4[0x28];
+    f32 f2C;
+    char pad30[0x10];
+    s32 f40;
+    s32 f44;
+} Obj2C6EF0;
+typedef struct I4_2C6EF0 {
+    s32 a, b, c, d;
+} I4_2C6EF0;
+typedef struct V4_2C6EF0 {
+    f32 x, y, z, w;
+} V4_2C6EF0;
+extern void func_00135D40(void *, void *, void *);
+extern void amDraw_ClosePacket(s32);
+void func_002C6EF0(char *a0, Obj2C6EF0 *a1, V4_2C6EF0 *a2) {
+    I4_2C6EF0 v60;
+    I4_2C6EF0 v50;
+    V4_2C6EF0 v40;
+    void *p60;
+    f32 t;
+    f32 s;
+    s32 d;
+    char *r;
+    Sub2C6EF0 *q;
+
+    r = a0;
+    q = a1->f0;
+    p60 = &v60;
+    v40.x = a2->x;
+    v40.y = a2->y;
+    v40.z = a2->z;
+    t = (f32)a1->f44 / (f32)a1->f40;
+    s = a1->f2C * (q->f58 + t * (q->f54 - q->f58));
+    a2->w = s;
+    v40.w = s;
+    v50.a = 0x3F800000;
+    v50.b = 0;
+    v50.c = 0x3F800000;
+    v50.d = 0x3F800000;
+    ((I4_2C6EF0 *)p60)->a = 0x3F800000;
+    v60.b = 0x3F800000;
+    v60.c = 0x3F800000;
+    v60.d = 0x3F800000;
+    func_00135D40(r, &v40, &v50);
+    func_00135D40(r + 0x10, &v40, p60);
+    d = a1->f40 - a1->f44;
+    if (d == 0x19 || d == 0x32 || d == 0x4B) {
+        amDraw_ClosePacket(1);
+        func_00135D40(r, &v40, &v50);
+        func_00135D40(r + 0x10, &v40, p60);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C7010);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C72E0);
 void func_002C7C50(TaskEff2C41C0 *t) {
@@ -649,13 +767,13 @@ extern EffFile *func_0020B020(s32, s32, s32);
 extern s32 func_00127E88(void *, char *, s32);
 extern void func_002C9EF0(EffEnt *, EffReq *);
 
-/* Differs only at the call to func_002C9EF0: the original does not set a0 there (func_002C5EB0 leaves a0
-   alone; maybe the compiler knew that from the same file). */
+/* differs: 43 of 64; the original keeps five saved registers here (the pointer to the request, the file, the entry, the count and the index); this shape gives other registers */
 #if 0
 void func_002CA2F0(EffReq *r) {
     EffFile *f;
-    EffEnt *e;
+    EffEnt *e = 0;
     s32 n = 0;
+    s32 st = 0;
     s32 i;
 
     if (r->f2C & 0x2000) {
@@ -667,12 +785,17 @@ void func_002CA2F0(EffReq *r) {
         e = (EffEnt *)((char *)f + f->fC);
         n = f->f8;
     }
-    for (i = 0; i < n; i++) {
-        e = &e[i];
-        func_002C5EB0(e, r);
-        if (e->f30 > 0.0f) {
-            func_002C9EF0(e, r);
-        }
+    if (n > 0) {
+        i = 0;
+        do {
+            e = (EffEnt *)((char *)e + st);
+            func_002C5EB0((Dst2C41C0 *)e, (Src2C41C0 *)r);
+            if (e->f30 > 0.0f) {
+                func_002C9EF0(e, r);
+            }
+            i++;
+            st += 0xB0;
+        } while (i < n);
     }
 }
 #endif

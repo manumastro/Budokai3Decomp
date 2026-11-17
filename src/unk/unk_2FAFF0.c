@@ -246,16 +246,61 @@ void func_002FC510(Task2FAFF0 *t) {
         amAdx_PlayAfs(0, 0x211B1, 0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC660);
+extern s32 func_0029E7F0(u8 *);
+extern void func_0029E610(s32);
+extern void func_0029E120(s32, s32, s32, f32, f32);
+extern void func_0029DD30(s32, f32);
+extern s32 func_00209540(s32, s32, s32);
+extern void func_00209A90(s32, s32 *);
+extern s32 D_00458C60[];
+extern void func_002FACA0();
+void func_002FC660(Task2FAFF0 *t) {
+    s32 i;
+    s32 e;
+    Anim2FAFF0 *a;
+
+    for (i = 0; i < 9; i++) {
+        e = ((s32 *)gTourMap)[i];
+        if (e != 0 && *(s16 *)(e + 4) != 3) {
+            return;
+        }
+    }
+    if (Zenie_GetState() != 1) {
+        return;
+    }
+    if (*(s32 *)((char *)gTourMap + 0x74) != 0) {
+        if (func_0029E7F0((u8 *)*(s32 *)((char *)gTourMap + 0x74)) == 0) {
+            return;
+        }
+        func_0029E610(*(s32 *)((char *)gTourMap + 0x74));
+        func_0029E120(*(s32 *)((char *)gTourMap + 0x74),
+                      *(s32 *)(*(s32 *)*(s32 *)((char *)gTourMap + 0x74) + 0xC), 1, 1.0f, 0.0f);
+        func_0029DD30(*(s32 *)((char *)gTourMap + 0x74), 1.0f);
+    }
+    *(s32 *)((char *)gTourMap + 0x34) = *(s32 *)(*(s32 *)((char *)gTourMap + 0x8) + 0x54);
+    amFile_Load(*(s32 *)((char *)gTourMap + 0x34));
+    *(s32 *)((char *)gTourMap + 0x28) = *(s32 *)(*(s32 *)((char *)gTourMap + 0xC) + 0x54);
+    amFile_Load(*(s32 *)((char *)gTourMap + 0x28));
+    *(s32 *)((char *)gTourMap + 0x2C) = *(s32 *)(*(s32 *)((char *)gTourMap + 0x10) + 0x54);
+    amFile_Load(*(s32 *)((char *)gTourMap + 0x2C));
+    *(s32 *)((char *)gTourMap + 0x38) = *(s32 *)(*(s32 *)((char *)gTourMap + 0x14) + 0x54);
+    amFile_Load(*(s32 *)((char *)gTourMap + 0x38));
+    a = (Anim2FAFF0 *)(gTourMap->f40 + 0x30);
+    a->f8 = func_00209540(*(s32 *)((char *)gTourMap + 0x38), 0, 0);
+    func_00209A90(a->f8, D_00458C60);
+    t->f1C = (func_002FC510 == 0) ? 0 : func_002FC510;
+    func_002FACA0();
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC800);
-#if 0
-// differs: the 32-byte table copy to the stack is lq/sq in the original; mwcc copies a struct with lwc1/swc1
+typedef struct Tbl32_2FAFF0 {
+    s32 a[8];
+} __attribute__((aligned(16))) Tbl32_2FAFF0;
 void func_002FC9F0(void) {
     PairTbl2FAFF0 p;
     Slot2FAFF0 *sl;
     s32 i = 0;
 
-    p = *(PairTbl2FAFF0 *)&D_00458C20;
+    *(Tbl32_2FAFF0 *)&p = *(Tbl32_2FAFF0 *)&D_00458C20;
     sl = (Slot2FAFF0 *)((char *)gTourMap + 0x19C);
     do {
         if (sl->f0 == p.v[i].a) {
@@ -281,8 +326,6 @@ void func_002FC9F0(void) {
         sl++;
     } while (i < 4);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC9F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCAF0);
 #if 0
 // differs: 52 of 76 (same size); the loops are laid out differently and the registers differ; 30 declaration orders tried
@@ -494,7 +537,7 @@ void func_00300760(Task2FAFF0 *t) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300800);
 #if 0
-// differs: not compiling yet: the flag table copy (lq/sq) is in inline asm; the position update and the loop are not compared against the original
+// differs: 0x178 bytes against 0x180 with an aligned copy for the flag table; the original has no saved registers (the loop counter lives in t7) and ends with a call to func_002FC9F0 (adding that call made it worse)
 void func_003009E0(void) {
     Vec4_2FAFF0 v;
     s32 i;
