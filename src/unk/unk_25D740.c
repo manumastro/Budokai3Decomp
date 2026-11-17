@@ -156,6 +156,20 @@ typedef struct TimedEE10 {
 } TimedEE10;
 extern void amTask_Kill(ScrTask *);
 
+/* A script object of this family: a pointer at 0x0 to a record with a counter at 0xC, a task function at 0x10, a byte at 0x28. */
+typedef struct CountRec25 {
+    char pad0[0xC];
+    s32 fC;
+} CountRec25;
+
+typedef struct ObjF28 {
+    CountRec25 *f0;
+    char pad4[0xC];
+    void *f10;
+    char pad14[0x14];
+    s8 f28;
+} ObjF28;
+
 /* A timed script object: a task function at 0x10, two bytes at 0x2A / 0x2B. */
 typedef struct TimedF0C0 {
     char pad0[0x10];
@@ -1058,6 +1072,33 @@ s32 func_00260210(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020A4D0(ctx->f28);
     return 3;
 }
+/* differs: the record call goes into the branch delay slot in the original (10 of 42) */
+#if 0
+s32 func_00260270(ObjF28 *o, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 s2 = a[1].i;
+    s32 s1 = a[0].i;
+    f32 f;
+    ScrObj *p;
+    s32 k;
+    s32 r;
+
+    p = func_0020A720(s2);
+    o->f28 = s2;
+    o->f10 = (void *)func_00260210;
+    f = (f32)s1;
+    *(f32 *)((char *)p + 0xE0) = f;
+    *(f32 *)((char *)p + 0xE4) = f;
+    k = o->f0->fC;
+    r = func_0020A5F0(o->f28);
+    if (k != 3 && r != 0) {
+        o->f10 = NULL;
+        return 1;
+    }
+    func_0020A4D0(o->f28);
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260270);
 
 s32 func_00260320(ScrCtx *ctx, ScrCmd *cmd) {
