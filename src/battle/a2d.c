@@ -1,5 +1,35 @@
 #include "common.h"
 
+extern void func_00125740(void *, void *, s32);
+
+extern s32 *D_0058BB64[];
+extern s32 D_0058BB70[];
+extern void func_0022C060(s32);
+extern void func_0022BC30(s32, f32);
+
+extern s32 D_004706D8;
+extern s32 *D_004706D0;
+extern s32 D_004706D4;
+extern u8 *D_004706CC;
+extern s32 D_004706BC;
+extern u8 *D_004706C0;
+extern f32 D_00470718;
+extern f32 D_0047071C;
+extern s32 D_00470714;
+extern f32 D_00470710;
+extern s8 D_004703F4;
+extern void func_0022C560(s32);
+extern void func_0022C9A0(s32);
+extern void func_002269B0(s32 *);
+extern void func_00226540(s32 *);
+extern void func_002285E0(s32, f32);
+extern void func_00228FA0(s32, f32);
+extern void func_00229480(s32, f32);
+extern void func_0022A0A0(s32, f32);
+extern void func_0022A880(s32, f32);
+extern void func_002271D0(s32 *);
+extern void func_0022D0B0(s32 *, s32);
+
 extern u8 *func_0021C430(s32);
 extern s32 *func_0023A890(s32, s32);
 extern void func_00224F90(void);
@@ -30,6 +60,8 @@ s32 func_00225380(void) {
     return *(s16 *)(sys + 0xE44);
 }
 
+// GIVEN UP: the original keeps p in s1 and the result in s0 across its calls; no source form tried matched the registers.
+INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002253B0);
 void func_00225440(void) {
     func_0023A4B0();
 }
@@ -292,6 +324,8 @@ void func_00225E80(s32 *p) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00225E80);
+// GIVEN UP: the value compared and stored is loaded again after the call (tried a local for it)
+#if 0
 void func_00225F30(s32 *p) {
     s32 *a = func_0021C620(p[0]);
 
@@ -302,6 +336,8 @@ void func_00225F30(s32 *p) {
         *(s16 *)((u8 *)a + 0x50) = p[1];
     }
 }
+#endif
+INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00225F30);
 void func_00225FA0(void) {
 }
 void func_00225FB0(void) {
@@ -337,55 +373,261 @@ INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002270B0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002271D0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227240);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002273B0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227810);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227830);
+void func_00227810(void) {
+    D_004706D8 -= 1;
+    D_004706D0 -= 1;
+}
+void func_00227830(s32 a0, s32 a1) {
+    s32 *st = D_004706D0;
+
+    D_004706D0 = st + 1;
+    st[1] &= ~a0;
+    st[1] |= a0;
+    st[1] &= ~a1;
+    D_004706D8 += 1;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227880);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227A30);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227B20);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00228240);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00228410);
+void func_00228410(void) {
+    D_004706D4 -= 1;
+    D_004706CC -= 0x50;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00228430);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002284D0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002285A0);
+void func_002285A0(s32 *p, f32 t) {
+    s32 *n = p;
+    s32 *c = (s32 *)p[6];
+
+    while (c != 0) {
+        f32 f = (f32)n[7];
+
+        if (!(f <= t)) {
+            break;
+        }
+        n = c;
+        c = (s32 *)n[6];
+        t -= f;
+    }
+    func_002285E0(n[3], t);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002285E0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00228AC0);
+void func_00228AC0(s32 *p, f32 t) {
+    s32 *n = p;
+    s32 *c = (s32 *)p[6];
+
+    while (c != 0) {
+        f32 f = (f32)n[7];
+
+        if (!(f <= t)) {
+            break;
+        }
+        n = c;
+        c = (s32 *)n[6];
+        t -= f;
+    }
+    func_00228FA0(n[2], t);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00228B00);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00228FA0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00229440);
+void func_00229440(s32 *p, f32 t) {
+    s32 *n = p;
+    s32 *c = (s32 *)p[6];
+
+    while (c != 0) {
+        f32 f = (f32)n[7];
+
+        if (!(f <= t)) {
+            break;
+        }
+        n = c;
+        c = (s32 *)n[6];
+        t -= f;
+    }
+    func_00229480(n[2], t);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00229480);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00229800);
+void func_00229800(s32 *p, f32 t) {
+    s32 *n = p;
+    s32 *c = (s32 *)p[6];
+
+    while (c != 0) {
+        f32 f = (f32)n[7];
+
+        if (!(f <= t)) {
+            break;
+        }
+        n = c;
+        c = (s32 *)n[6];
+        t -= f;
+    }
+    func_0022A0A0(n[1], t);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00229840);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022A0A0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022A840);
+void func_0022A840(s32 *p, f32 t) {
+    s32 *n = p;
+    s32 *c = (s32 *)p[6];
+
+    while (c != 0) {
+        f32 f = (f32)n[7];
+
+        if (!(f <= t)) {
+            break;
+        }
+        n = c;
+        c = (s32 *)n[6];
+        t -= f;
+    }
+    func_0022A880(n[1], t);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022A880);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022ACF0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022B900);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022BC30);
+// GIVEN UP: a dead store of -1 in the second branch and a frame the C did not reproduce
+#if 0
+void func_0022BF80(s32 *p) {
+    if (p[3] & 1) {
+        func_0022BC30(p[0], *(f32 *)((u8 *)p + 0x10));
+    } else if (p[3] & 2) {
+        func_0022BC30(((s32 *)p[0])[4], *(f32 *)((u8 *)p + 0x10));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022BF80);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022BFF0);
+void func_0022BFF0(s32 *p) {
+    s32 *a;
+
+    func_0022C060(p[6]);
+    a = (s32 *)p[6];
+    if (a[2] == 0xFF) {
+        p[3] |= 0x100;
+    } else if (p[3] & a[2]) {
+        p[3] |= 0x100;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C060);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C1D0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C430);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C550);
+void func_0022C550(s32 *p) {
+    func_0022C560(p[6]);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C560);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C6B0);
+void func_0022C6B0(s32 *p) {
+    if (p[1] & 1) {
+        if (*(s16 *)((u8 *)p + 0x18) >= 0) {
+            func_002269B0(p);
+        } else {
+            func_00226540(p);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C700);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C7D0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C9A0);
+// GIVEN UP: the loop's count test and register use differ (tried two loop forms)
+#if 0
+void func_0022CC80(s32 key) {
+    s32 count = D_004706BC;
+    s32 i = 0;
+    s32 *arr = (s32 *)D_004706C0;
+
+    if (count > 0) {
+        do {
+            if (arr[0] == key) {
+                func_00125740((u8 *)D_004706C0 + i * 8, (u8 *)D_004706C0 + (i + 1) * 8, (count - i) * 8);
+                D_004706BC -= 1;
+                return;
+            }
+            i += 1;
+            arr += 2;
+        } while (i < count);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CC80);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CD00);
+// GIVEN UP: global loads and the float multiply are scheduled differently (tried three orders of the index and the multiply)
+#if 0
+void func_0022CF70(s32 *p) {
+    *(s32 *)(D_004706C0 + D_004706BC * 8) = (s32)p;
+    *(f32 *)(D_004706C0 + D_004706BC * 8 + 4) = 100.0f * *(f32 *)((u8 *)p + 0x28);
+    D_004706BC += 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CF70);
+// GIVEN UP: the two mode loops are laid out in another order (tried both orders)
+#if 0
+void func_0022CFC0(s32 a0, s32 a1, s32 mode, s32 flag) {
+    s32 *n = (s32 *)D_0058BB64[0];
+
+    if (mode == 0) {
+        while (n != D_0058BB70) {
+            if (n[1] & a0) {
+                if (n[2] & a1) {
+                    func_0022D0B0(n, flag);
+                }
+            }
+            n = (s32 *)n[5];
+        }
+    } else if (mode == 1) {
+        while (n != D_0058BB70) {
+            if (n[1] & a0) {
+                if ((n[2] & a1) == n[2]) {
+                    func_0022D0B0(n, flag);
+                }
+            }
+            n = (s32 *)n[5];
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CFC0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D0B0);
+void func_0022D0B0(s32 *p, s32 flag) {
+    p[3] |= 0x100;
+    if (flag != 0) {
+        func_0022C9A0(p[6]);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D0E0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D4B0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D570);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D670);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D860);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DA90);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DB20);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DB30);
+void func_0022DB20(f32 a, f32 b) {
+    D_00470718 = a;
+    D_0047071C = b;
+}
+void func_0022DB30(s32 a) {
+    D_00470714 = a;
+}
+// GIVEN UP: the float compare and the store order differ (tried two forms)
+#if 0
+void func_0022DB40(f32 x) {
+    if (x == 0.0f) {
+        if (D_004703F4 == 3) {
+            D_00470710 = 1.2f;
+        } else {
+            D_00470710 = 1.0f;
+        }
+    } else {
+        D_00470710 = x;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DB40);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DB90);
+void func_0022DB90(void) {
+    s32 *n = D_0058BB64[0];
+
+    while (n != D_0058BB70) {
+        if (n[3] & 0x100) {
+            func_002271D0(n);
+        }
+        n = (s32 *)n[5];
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DC00);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DF10);
