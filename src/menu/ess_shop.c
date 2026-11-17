@@ -1,5 +1,68 @@
 #include "common.h"
 
+extern s32 D_00470808;
+extern void func_00274120(void);
+extern s32 func_00283BF0(void);
+extern void func_00283C20(void);
+extern void func_002759F0(void);
+
+#if 0
+// differs: the original is 8 bytes longer (its loop and the clamp are laid out differently; the register choice also differs)
+s32 func_00272D30(void) {
+    u8 *d;
+    s32 t0;
+    s32 v1;
+    s32 i;
+    s32 a1;
+    u8 *p;
+    s32 *q;
+    s32 v;
+    s32 w;
+    s32 a0;
+
+    d = (u8 *)D_00470808;
+    t0 = 0;
+    v1 = *(s32 *)(d + 0x60);
+    if (v1 == 0) {
+        t0 = *(s32 *)(d + 0x6C);
+    } else if (0 < *(s32 *)(d + 0x6C)) {
+        a1 = v1 - 1;
+        i = 0;
+        p = d;
+        q = (s32 *)(d + 0x6C);
+        do {
+            if (*(s16 *)(p + 0x80) == a1) {
+                t0++;
+            }
+            i++;
+            p += 0x14;
+        } while (i < *q);
+    }
+    if (t0 == 0) {
+        return 0;
+    }
+    {
+        v1 = (t0 < 4) ? t0 - 1 : 3;
+        v = *(s32 *)(d + 0x68) + 1;
+        *(s32 *)(d + 0x68) = v;
+        if (v1 < v) {
+            *(s32 *)((u8 *)D_00470808 + 0x68) = v1;
+            if (t0 < 5) {
+                return 0;
+            }
+            a0 = t0 - 4;
+            w = *(s32 *)((u8 *)D_00470808 + 0x64) + 1;
+            *(s32 *)((u8 *)D_00470808 + 0x64) = w;
+            if (a0 < w) {
+                *(s32 *)((u8 *)D_00470808 + 0x64) = a0;
+                return 0;
+            }
+            return 1;
+        }
+        return 1;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00272D30);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00272E20);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002730B0);
@@ -11,7 +74,23 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273AF0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273E20);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274120);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274A00);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274B40);
+void func_00274B40(u8 *a0) {
+    u8 *s0;
+
+    s0 = a0;
+    *(s32 *)((u8 *)D_00470808 + 0x1D4) += 1;
+    *(s32 *)((u8 *)D_00470808 + 0x204) += 1;
+    *(s32 *)((u8 *)D_00470808 + 0x234) += 1;
+    *(s32 *)((u8 *)D_00470808 + 0x264) += 1;
+    *(s32 *)((u8 *)D_00470808 + 0x294) += 1;
+    *(s32 *)((u8 *)D_00470808 + 0x2C4) += 1;
+    *(s32 *)((u8 *)D_00470808 + 0x3B4) += 1;
+    func_00274120();
+    if (func_00283BF0() == 8) {
+        *(void **)(s0 + 0x1C) = ((void *)func_002759F0 == 0) ? 0 : (void *)func_002759F0;
+        func_00283C20();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274C10);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274E70);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00275050);
