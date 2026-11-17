@@ -710,7 +710,29 @@ s32 func_0025F0C0(TimedF0C0 *o, ScrCmd *cmd) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F160);
+typedef struct Obj4B0 {
+    char pad0[0x10];
+    void *f10;
+    char pad14[0x16];
+    s8 f2A;
+    char pad2B;
+    f32 f2C;
+    f32 f30;
+} Obj4B0;
+
+s32 func_0025F160(Obj4B0 *o) {
+    if (Scr_IsPaused() == 0) {
+        if (o->f30 != -1.0f) {
+            o->f2C = o->f2C + Scr_GetSpeed();
+            if (o->f2C >= o->f30) {
+                o->f10 = NULL;
+                return 1;
+            }
+        }
+        func_0020EF80(o->f2A, 1);
+    }
+    return 3;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F230);
 
 s32 func_0025F3A0(ScrCtx *ctx, ScrCmd *cmd) {
@@ -747,7 +769,21 @@ s32 func_0025F410(TimedF0C0 *o, ScrCmd *cmd) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F4B0);
+extern void func_0020EFB0(s32);
+
+s32 func_0025F4B0(Obj4B0 *o) {
+    if (Scr_IsPaused() == 0) {
+        if (o->f30 != -1.0f) {
+            o->f2C = o->f2C + Scr_GetSpeed();
+            if (o->f2C >= o->f30) {
+                o->f10 = NULL;
+                return 1;
+            }
+        }
+        func_0020EFB0(o->f2A);
+    }
+    return 3;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F580);
 s32 func_0025F6C0(ScrCtx *ctx, ScrCmd *cmd) {
     if (cmd->args[0].i != 0) {
