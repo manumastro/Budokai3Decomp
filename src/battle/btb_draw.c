@@ -25,15 +25,50 @@ struct BtbObj {
 
 typedef struct BtbSub {
     char pad0[0x8];
-    BtbObj *r;
-    char pad1[0x1C];
-    BtbObj *q;
-    char pad2[0x0C];
-    BtbObj *p;
+    BtbObj *f38;
+    void *f3C;
+    BtbObj *f40;
+    char pad1[0x14];
+    BtbObj *f58;
+    char pad2[0xC];
+    BtbObj *f68;
 } BtbSub;
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EAC20);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EAD10);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+extern void func_001EAC20(Task *);
+extern void func_002D1CC0(void);
+extern s8 D_004B4BB0[];
+
+void func_001EAD10(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001EAC20);
+            switch (D_00470600) {
+            case 24:
+                D_004B4BB0[0] = 1;
+                func_002D1CC0();
+                break;
+            case 5:
+                func_001EA740(5);
+                break;
+            }
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -67,16 +102,186 @@ void func_001EADD0(Task *t) {
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EAE70);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EAF90);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB070);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001EAF90(Task *);
+extern void func_002D1D40(void);
+extern void func_00310900(void);
+
+void func_001EB070(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001EAF90);
+            switch (D_00470600) {
+            case 24:
+                func_002D1D40();
+                break;
+            case 27:
+                func_00310900();
+                break;
+            case 5:
+                break;
+            }
+        }
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB130);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB250);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB330);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001EB250(Task *);
+extern void func_002D1D40(void);
+extern void func_003074C0(void);
+
+void func_001EB330(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001EB250);
+            switch (D_00470600) {
+            case 24:
+                func_002D1D40();
+                break;
+            case 26:
+                func_003074C0();
+                break;
+            case 5:
+                break;
+            }
+        }
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB3F0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB4E0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB5B0);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001EB4E0(Task *);
+extern void ArenaMode_Load(void);
+extern char D_005C9D80[];
+extern void func_001B10D0(char *, s32);
+
+void func_001EB5B0(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001EB4E0);
+            switch (D_00470600) {
+            case 23:
+                ArenaMode_Load();
+                break;
+            case 25:
+                func_001B10D0(D_005C9D80, 0);
+                break;
+            }
+        }
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB670);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB760);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB830);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+extern void func_001EB670(Task *);
+extern void func_002D1CC0(void);
+extern s8 D_004B4BB0[];
+extern s8 D_004B4B62[];
+extern s8 D_004B4BE9[];
+extern void MainMenu_Start(s32, s32);
+
+void func_001EB760(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001EB670);
+            switch (D_00470600) {
+            case 24:
+                D_004B4BB0[0] = 1;
+                func_002D1CC0();
+                break;
+            case 5:
+                D_004B4BB0[0] = 0;
+                MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
+                break;
+            }
+        }
+    }
+}
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001EB760(Task *);
+extern void func_002D1D40(void);
+extern void MainMenu_Load(void);
+
+void func_001EB830(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001EB760);
+            switch (D_00470600) {
+            case 0x18:
+                func_002D1D40();
+                break;
+            case 5:
+                MainMenu_Load();
+                break;
+            }
+        }
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB8E0);
 
 extern s8 D_004B4BB1[];
@@ -144,6 +349,45 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBAF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBB90);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBC20);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBCA0);
+// differs: reads D_00470608 with lh here and with lw in func_001ECAB0 (same symbol, two widths; one C file cannot declare both)
+
+#if 0
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+extern void func_001EBCA0(Task *);
+extern void PracMode_Start(s32, s32);
+extern s8 D_004B4BB0[];
+extern s16 D_00470608;
+
+void func_001EBD90(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001EBCA0);
+            switch (D_00470600) {
+            case 19:
+                D_004B4BB0[0] = 1;
+                PracMode_Start(D_00470608, 0);
+                break;
+            case 5:
+                break;
+            }
+        }
+    }
+}
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBD90);
 
 extern s8 D_004B4BB1[];
@@ -177,6 +421,45 @@ void func_001EBE50(Task *t) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBEF0);
+// differs: same D_00470608 lh/lw conflict as func_001EBD90
+
+#if 0
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+extern void func_001EBEF0(Task *);
+extern void PracMode_Start(s32, s32);
+extern s8 D_004B4BB0[];
+extern s16 D_00470608;
+
+void func_001EBFE0(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001EBEF0);
+            switch (D_00470600) {
+            case 19:
+                D_004B4BB0[0] = 1;
+                PracMode_Start(D_00470608, 0);
+                break;
+            case 5:
+                break;
+            }
+        }
+    }
+}
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBFE0);
 
 extern s8 D_004B4BB1[];
@@ -216,17 +499,264 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC430);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC520);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC5E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC680);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC770);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC840);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+extern void func_001EC680(Task *);
+extern void func_001B1090(void);
+extern s8 D_004B4BB0[];
+extern s8 D_004B4B62[];
+extern s8 D_004B4BE9[];
+extern void MainMenu_Start(s32, s32);
+
+void func_001EC770(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001EC680);
+            switch (D_00470600) {
+            case 18:
+                D_004B4BB0[0] = 1;
+                func_001B1090();
+                break;
+            case 5:
+                D_004B4BB0[0] = 0;
+                MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
+                break;
+            }
+        }
+    }
+}
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001EC770(Task *);
+extern void func_001B13F0(s32);
+extern void MainMenu_Load(void);
+
+void func_001EC840(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001EC770);
+            switch (D_00470600) {
+            case 0x12:
+                func_001B13F0(3);
+                break;
+            case 5:
+                MainMenu_Load();
+                break;
+            }
+        }
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC8F0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC9E0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ECAB0);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+extern void func_001EC8F0(Task *);
+extern void func_00304F50(void);
+extern s8 D_004B4BB0[];
+extern s8 D_004B4B62[];
+extern s8 D_004B4BE9[];
+extern void MainMenu_Start(s32, s32);
+
+void func_001EC9E0(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001EC8F0);
+            switch (D_00470600) {
+            case 5:
+                D_004B4BB0[0] = 0;
+                MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
+                break;
+            case 17:
+                D_004B4BB0[0] = 1;
+                func_00304F50();
+                break;
+            }
+        }
+    }
+}
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001EC9E0(Task *);
+extern void func_00304FB0(s32);
+extern void MainMenu_Load(void);
+extern s32 D_00470608;
+
+void func_001ECAB0(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001EC9E0);
+            switch (D_00470600) {
+            case 5:
+                MainMenu_Load();
+                break;
+            case 0x11:
+                func_00304FB0(D_00470608);
+                break;
+            }
+        }
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ECB60);
+// differs: same D_00470608 lh/lw conflict as func_001EBD90
+
+#if 0
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+extern void func_001ECB60(Task *);
+extern void func_00269820(s32, s32);
+extern s8 D_004B4BB0[];
+extern s16 D_00470608;
+
+void func_001ECC50(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001ECB60);
+            switch (D_00470600) {
+            case 14:
+                D_004B4BB0[0] = 1;
+                func_00269820(D_00470608, 0);
+                break;
+            case 5:
+                break;
+            }
+        }
+    }
+}
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ECC50);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ECD10);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ECDB0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ECEA0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ECF70);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+extern void func_001ECDB0(Task *);
+extern void func_001B1090(void);
+extern s8 D_004B4BB0[];
+extern s8 D_004B4B62[];
+extern s8 D_004B4BE9[];
+extern void MainMenu_Start(s32, s32);
+
+void func_001ECEA0(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001ECDB0);
+            switch (D_00470600) {
+            case 5:
+                D_004B4BB0[0] = 0;
+                MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
+                break;
+            case 15:
+                D_004B4BB0[0] = 1;
+                func_001B1090();
+                break;
+            }
+        }
+    }
+}
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001ECEA0(Task *);
+extern void func_001B13F0(s32);
+extern void MainMenu_Load(void);
+
+void func_001ECF70(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001ECEA0);
+            switch (D_00470600) {
+            case 5:
+                MainMenu_Load();
+                break;
+            case 0xF:
+                func_001B13F0(0);
+                break;
+            }
+        }
+    }
+}
+
 // differs: the two stores to D_00470600 and D_00470604 come in the other order (the compiler puts the -1 store before the table pointer store)
 
 #if 0
@@ -388,8 +918,75 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EDAC0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EDC00);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EDD00);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EDDE0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EDED0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EDF90);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+extern void func_001EDDE0(Task *);
+extern void func_0029CDB0(void);
+extern void func_00298FC0(void);
+extern s8 D_004B4BB0[];
+
+void func_001EDED0(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001EDDE0);
+            switch (D_00470600) {
+            case 6:
+                D_004B4BB0[0] = 1;
+                func_0029CDB0();
+                break;
+            case 8:
+                D_004B4BB0[0] = 1;
+                func_00298FC0();
+                break;
+            }
+        }
+    }
+}
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001EDED0(Task *);
+extern void StrTitle_Load(void);
+extern void func_00299000(void);
+
+void func_001EDF90(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001EDED0);
+            switch (D_00470600) {
+            case 6:
+                StrTitle_Load();
+                break;
+            case 8:
+                func_00299000();
+                break;
+            }
+        }
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE040);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE150);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE250);
@@ -397,8 +994,75 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE320);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE530);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE6D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE820);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE920);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE9E0);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+extern void func_001EE820(Task *);
+extern void func_002E21C0(void);
+extern void func_001B1090(void);
+extern s8 D_004B4BB0[];
+
+void func_001EE920(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001EE820);
+            switch (D_00470600) {
+            case 2:
+                D_004B4BB0[0] = 0;
+                func_002E21C0();
+                break;
+            case 3:
+                D_004B4BB0[0] = 0;
+                func_001B1090();
+                break;
+            }
+        }
+    }
+}
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001EE920(Task *);
+extern void Opening_Init(void);
+extern void func_001EA480(void);
+
+void func_001EE9E0(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001EE920);
+            switch (D_00470600) {
+            case 2:
+                Opening_Init();
+                break;
+            case 3:
+                func_001EA480();
+                break;
+            }
+        }
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEA90);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEAF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEC70);
@@ -415,7 +1079,38 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF100);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF1E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF510);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF730);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF880);
+typedef struct BtbEntry {
+    char pad0[0x8];
+    s32 f08;
+    char pad0C[0x34];
+    u8 f40;
+    u8 f41;
+    u8 f42;
+    u8 f43;
+    u8 f44;
+    u8 f45;
+    s16 f46;
+    s32 f48;
+    s32 f4C;
+    s32 f50;
+} BtbEntry;
+
+extern u32 func_0012EAE0(s32);
+
+void func_001EF880(BtbEntry *e, u8 *src) {
+    e->f08 = func_0012EAE0(src[3] & 0x1F);
+    e->f40 = src[7];
+    e->f41 = src[6];
+    e->f42 = src[5];
+    e->f43 = src[3];
+    e->f44 = src[2];
+    e->f45 = src[1];
+    e->f46 = func_0012EAE0(src[1] & 0x1F);
+    e->f48 = func_0012EAE0(src[2] & 0x1F);
+    e->f4C = func_0012EAE0(src[5] & 0x1F);
+    e->f50++;
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF930);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EFDB0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0280);
@@ -438,7 +1133,32 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0E20);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1190);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1380);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1490);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1600);
+
+extern void amHeap_Free(void *);
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+extern void func_00208F70(BtbObj *);
+
+void func_001F1600(BtbObj *o) {
+    BtbSub *s;
+    s32 i;
+
+    s = (BtbSub *)((char *)o + 0x30);
+    func_00208F70(s->f40);
+    if (s->f40->f38 < 0) {
+        for (i = 0; i < 0x100; i++) {
+            if (D_0051C770[i] == o) {
+                o->prev->next = o->next;
+                o->next->prev = o->prev;
+                D_0051C770[i] = NULL;
+                D_0047062C--;
+                break;
+            }
+        }
+        amHeap_Free(s->f3C);
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F16B0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1770);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1890);
@@ -452,8 +1172,8 @@ void func_001F1A00(BtbObj *o) {
     s32 i;
 
     s = (BtbSub *)((char *)o + 0x30);
-    func_00208F70(s->p);
-    if (s->p->f38 < 0) {
+    func_00208F70(s->f68);
+    if (s->f68->f38 < 0) {
         for (i = 0; i < 0x100; i++) {
             if (D_0051C770[i] == o) {
                 o->prev->next = o->next;
@@ -467,7 +1187,32 @@ void func_001F1A00(BtbObj *o) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1AB0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1C30);
+
+extern void amHeap_Free(void *);
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+extern void func_00208F70(BtbObj *);
+
+void func_001F1C30(BtbObj *o) {
+    BtbSub *s;
+    s32 i;
+
+    s = (BtbSub *)((char *)o + 0x30);
+    func_00208F70(s->f40);
+    if (s->f40->f38 < 0) {
+        for (i = 0; i < 0x100; i++) {
+            if (D_0051C770[i] == o) {
+                o->prev->next = o->next;
+                o->next->prev = o->prev;
+                D_0051C770[i] = NULL;
+                D_0047062C--;
+                break;
+            }
+        }
+        amHeap_Free(s->f3C);
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1CE0);
 
 extern BtbObj *D_0051C770[];
@@ -479,8 +1224,8 @@ void func_001F1EA0(BtbObj *o) {
     s32 i;
 
     s = (BtbSub *)((char *)o + 0x30);
-    func_00208F70(s->q);
-    if (s->q->f38 < 0) {
+    func_00208F70(s->f58);
+    if (s->f58->f38 < 0) {
         for (i = 0; i < 0x100; i++) {
             if (D_0051C770[i] == o) {
                 o->prev->next = o->next;
@@ -504,8 +1249,8 @@ void func_001F20A0(BtbObj *o) {
     s32 i;
 
     s = (BtbSub *)((char *)o + 0x30);
-    func_00208F70(s->q);
-    if (s->q->f38 < 0) {
+    func_00208F70(s->f58);
+    if (s->f58->f38 < 0) {
         for (i = 0; i < 0x100; i++) {
             if (D_0051C770[i] == o) {
                 o->prev->next = o->next;
@@ -529,8 +1274,8 @@ void func_001F22A0(BtbObj *o) {
     s32 i;
 
     s = (BtbSub *)((char *)o + 0x30);
-    func_00208F70(s->r);
-    if (s->r->f38 < 0) {
+    func_00208F70(s->f38);
+    if (s->f38->f38 < 0) {
         for (i = 0; i < 0x100; i++) {
             if (D_0051C770[i] == o) {
                 o->prev->next = o->next;
@@ -544,7 +1289,33 @@ void func_001F22A0(BtbObj *o) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2350);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F24B0);
+
+extern f32 D_0051CD24[];
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+extern void func_00208F70(BtbObj *);
+
+void func_001F24B0(BtbObj *o) {
+    BtbSub *s;
+    s32 i;
+
+    s = (BtbSub *)((char *)o + 0x30);
+    if (D_0051CD24[0] > 0.0f) {
+        func_00208F70(s->f38);
+        if (s->f38->f38 < 0) {
+            for (i = 0; i < 0x100; i++) {
+                if (D_0051C770[i] == o) {
+                    o->prev->next = o->next;
+                    o->next->prev = o->prev;
+                    D_0051C770[i] = NULL;
+                    D_0047062C--;
+                    break;
+                }
+            }
+        }
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2570);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2760);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2A90);
