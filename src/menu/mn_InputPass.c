@@ -647,9 +647,70 @@ void func_002F2F00(u8 *task) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3020);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3210);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3C60);
+extern void func_002F3210(Task *);
+extern void *func_0022D670(f32, void *);
+
+void func_002F3C60(Task *a0) {
+    u8 *s4;
+    u8 *s3;
+    s32 s2;
+    u16 *s1;
+    u8 *s0;
+    s32 v;
+    f32 f1;
+
+    s4 = (u8 *)a0;
+    s3 = *(u8 **)((u8 *)a0 + 0x30);
+    s0 = (u8 *)gInputName;
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    v = *(s32 *)(s0 + 0x10);
+    D_00470704 = v;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x5000);
+    D_00470238 = 0;
+    D_00470238 = 0;
+    func_002F2D50(s3);
+    if (*(u8 *)(s3 + 0x60) < 5) {
+        s2 = 0;
+        s1 = (u16 *)s3;
+        s0 = s3;
+        do {
+            if (*(s16 *)((u8 *)s1 + 0x50) != 0xFFFF) {
+                func_0022CF70(*(s32 *)(s0 + 0x4));
+            }
+            s2++;
+            s1 = s1 + 1;
+            s0 = s0 + 4;
+        } while (s2 < 0x8);
+    }
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    f1 = *(f32 *)(s3 + 0x40) - gFrameDelta;
+    *(f32 *)(s3 + 0x40) = f1;
+    if (f1 <= 0.0f) {
+        s0 = (u8 *)gInputName;
+        v = *(s32 *)(s0 + 0x10);
+        D_00470704 = v;
+        D_0047070C = 0x5000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, 0x5000);
+        D_00470238 = 0;
+        if (*(void **)(s3 + 0x28) != 0) {
+            func_0022D0E0(*(void **)(s3 + 0x28), 1);
+        }
+        *(void **)(s3 + 0x28) = func_0022D670(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x1C) + 0x108));
+        if (*(void **)(s3 + 0x2C) != 0) {
+            func_0022D0E0(*(void **)(s3 + 0x2C), 1);
+        }
+        *(void **)(s3 + 0x2C) = func_0022D670(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x1C) + 0x10));
+        *(u8 *)(s3 + 0x60) = 2;
+        *(void **)(s4 + 0x1C) = ((void *)func_002F3210 == 0) ? 0 : (void *)func_002F3210;
+    }
+}
 extern void func_0022E0B0(s32);
-extern void func_002F3C60(void);
+extern void func_002F3C60(Task *);
 extern void *amFile_Load(s32);
 extern void *func_0022D860(f32, void *);
 
