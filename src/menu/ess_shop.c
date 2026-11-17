@@ -176,6 +176,50 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002737C0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273AF0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273E20);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274120);
+#if 0
+// differs: 36 of 85: the counter preamble and the flag test match; the store order of the gEssShop fields and the argument registers of func_0026D570 differ, and the function-pointer tail is laid out differently
+extern s32 gEssShop;
+extern u16 D_00492FCE[];
+extern u16 D_00493086[];
+extern void func_00274120();
+extern void amAdx_Pause(s32, s32);
+extern void Zenie_Close(s32);
+extern void func_0026D570();
+extern void func_00276470();
+
+void func_00274A00(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    void *fp;
+    s1 = a0;
+    s0 = a0 + 0x30;
+    *(s32 *)((u8 *)gEssShop + 0x1D4) = *(s32 *)((u8 *)gEssShop + 0x1D4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x204) = *(s32 *)((u8 *)gEssShop + 0x204) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x234) = *(s32 *)((u8 *)gEssShop + 0x234) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x264) = *(s32 *)((u8 *)gEssShop + 0x264) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x294) = *(s32 *)((u8 *)gEssShop + 0x294) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x2C4) = *(s32 *)((u8 *)gEssShop + 0x2C4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x3B4) = *(s32 *)((u8 *)gEssShop + 0x3B4) + 1;
+    func_00274120();
+    if ((D_00492FCE[0] | D_00493086[0]) != 0) {
+        amAdx_Pause(1, 1);
+        Zenie_Close(0);
+        *(s32 *)s0 = 0x3C;
+        *(s32 *)((u8 *)gEssShop + 0x1CC) = 1;
+        *(s32 *)((u8 *)gEssShop + 0x1D4) = 0;
+        *(s32 *)((u8 *)gEssShop + 0x22C) = 0x17;
+        *(s32 *)((u8 *)gEssShop + 0x234) = 0;
+        *(s32 *)((u8 *)gEssShop + 0x1FC) = 0x14;
+        *(s32 *)((u8 *)gEssShop + 0x204) = 0;
+        *(s32 *)((u8 *)gEssShop + 0x20C) = -1;
+        *(s32 *)((u8 *)gEssShop + 0x3AC) = 1;
+        *(s32 *)((u8 *)gEssShop + 0x3B4) = 0;
+        func_0026D570(0, gEssShop);
+        fp = (void *)func_00276470;
+        *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274A00);
 void func_00274B40(u8 *a0) {
     u8 *s0;
