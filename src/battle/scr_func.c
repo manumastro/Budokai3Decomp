@@ -344,8 +344,65 @@ INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAC30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAD80);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAF30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB020);
+// func_002AB1D0: differs: one store (offset 0x84) takes its value in another FPU register than the source has
+#if 0
+s32 func_002AB1D0(s32 *a0, s32 *a1) {
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    f32 *f = (f32 *)p;
+    f32 x2 = f[2];
+    f32 x1 = f[1];
+    f32 x0 = f[0];
+    s32 i = *(s32 *)a0[0];
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + p[3] * 208;
+
+    *(f32 *)(e + 0x80) = x2;
+    *(f32 *)(e + 0x84) = x0;
+    if (*(s32 *)(e + 0x14) & 1) {
+        f32 h = 0.5f * *(f32 *)(e + 0x50);
+        *(f32 *)(e + 0x60) = *(f32 *)(e + 0x80) - h;
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x80) + h;
+    } else {
+        *(f32 *)(e + 0x60) = x2;
+        *(f32 *)(e + 0x70) = x2 + *(f32 *)(e + 0x50);
+    }
+    if (*(s32 *)(e + 0x14) & 2) {
+        f32 h = 0.5f * *(f32 *)(e + 0x54);
+        *(f32 *)(e + 0x64) = *(f32 *)(e + 0x84) - h;
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x84) + h;
+    } else {
+        *(f32 *)(e + 0x64) = x1;
+        *(f32 *)(e + 0x74) = x1 + *(f32 *)(e + 0x54);
+    }
+    *(f32 *)(e + 0x68) = x0;
+    *(f32 *)(e + 0x78) = x0;
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB1D0);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB2E0);
+s32 func_002AB2E0(s32 *a0, s32 *a1) {
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    f32 *f = (f32 *)p;
+    s32 i = *(s32 *)a0[0];
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + p[2] * 208;
+
+    *(f32 *)(e + 0x50) = f[1];
+    *(f32 *)(e + 0x54) = f[0];
+    if (*(s32 *)(e + 0x14) & 1) {
+        f32 h = 0.5f * *(f32 *)(e + 0x50);
+        *(f32 *)(e + 0x60) = *(f32 *)(e + 0x80) - h;
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x80) + h;
+    } else {
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x60) + *(f32 *)(e + 0x50);
+    }
+    if (*(s32 *)(e + 0x14) & 2) {
+        f32 h = 0.5f * *(f32 *)(e + 0x54);
+        *(f32 *)(e + 0x64) = *(f32 *)(e + 0x84) - h;
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x84) + h;
+    } else {
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x64) + *(f32 *)(e + 0x54);
+    }
+    return 1;
+}
 s32 func_002AB3E0(s32 *a0, s32 *a1) {
     s32 *t0 = (s32 *)a1[11];
     s32 a3 = ((s32 *)a0[0])[0];
