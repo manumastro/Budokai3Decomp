@@ -141,7 +141,23 @@ s32 func_002A2490(void *p) {
     return 3;
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A24B0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2670);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern s32 D_005AB8A0[];
+extern s32 D_005AB8A4[];
+extern s32 D_005AB8A8[];
+extern s32 D_005AB8AC[];
+extern s32 D_005AB8B0[];
+extern void func_002A24B0(s32 *, s32);
+
+void func_002A2670(s32 *a0, s32 a1) {
+    D_005AB8A0[0] = amCdFs_ReadFileId(0x609, 0, 1);
+    D_005AB8A4[0] = amCdFs_ReadFileId(0x60A, 0, 1);
+    D_005AB8A8[0] = amCdFs_ReadFileId(0x608, 0, 1);
+    D_005AB8AC[0] = amCdFs_ReadFileId(0x606, 0, 1);
+    D_005AB8B0[0] = amCdFs_ReadFileId(0x607, 0, 1);
+    a0[0x10 / 4] = (s32)func_002A24B0;
+    func_002A24B0(a0, a1);
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2730);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2890);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2AA0);
@@ -952,7 +968,29 @@ s32 func_002A53A0(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5420);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5580);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A56A0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5790);
+extern void SklEdit_Open(s32, char *, s32, s32, s32);
+extern void func_002B5030(s32, s32, s32);
+extern void func_002B4E40(s32, void *, void *, s32);
+extern void func_002A0D50(s32);
+extern void func_002A56A0(void);
+extern char D_00511479[];
+
+void func_002A5790(s32 *a0) {
+    s32 *g = gEvtWork;
+    void *f;
+    if (func_002A1020(g[0xA0 / 4]) == 0) {
+        SklEdit_Open(0x5000, D_00511479, 0, 0x601000, 0);
+        func_002B5030(0, D_004B4B63[0], D_00511450[0]);
+        if (*(s8 *)((char *)g + 0xC4) == 1) {
+            func_002B4E40(0, (char *)g + 0xA4, (char *)g + 0xA8, 0);
+        } else {
+            func_002B4E40(0, (char *)g + 0xA4, 0, 0);
+        }
+        func_002A0D50(0);
+        f = func_002A56A0;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5870);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5B00);
 void func_002A5D70(void) {
