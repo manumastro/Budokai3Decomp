@@ -97,7 +97,7 @@ void func_0021B130(void) {
         }
     }
 }
-// differs: the two float arguments are copied through the stack (lwc1 to 24 and 28 of a 0x30 frame) in the original, the same copy as func_0023FBB0 in unk_23A890; the local forms tried do not give that copy
+// differs: the two float arguments are copied through the stack (lwc1 to 24 and 28 of a 0x30 frame) in the original, the same copy as func_0023FBB0 in unk_23A890; the local forms tried do not give that copy; round 5: `volatile FPair p` does not compile (mwcc aborts on the volatile struct)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
 #if 0
@@ -263,11 +263,10 @@ s32 func_0021B5D0(void) {
     return r;
 }
 // differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
-#if 0
 s32 func_0021B660(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
-    s32 *tbl = D_0046A470;
+    s32 *tbl = (s32 *)(void *)D_0046A470;
     s32 f;
 
     f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
@@ -277,14 +276,12 @@ s32 func_0021B660(void) {
     }
     f = amCdFs_ReadFileId(0x10002, 0, 0);
     if (f != 0) {
-        D_004706A0 = f;
+        D_004706A0[0] = f;
         r = f;
     }
     return r;
 }
 // differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B660);
 s32 func_0021B6F0(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
