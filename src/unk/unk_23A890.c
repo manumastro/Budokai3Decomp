@@ -1,5 +1,9 @@
 #include "common.h"
 
+s32 func_002096D0(s32, s32, s32);
+void func_00243600(s32);
+void func_00241D60(s32);
+
 extern s32 D_0058BF30[];
 extern u8 D_0046AC18[];
 extern u8 D_0046AC28[];
@@ -505,7 +509,30 @@ void func_00241500(s32 x, s32 y) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241600);
+void func_00241600(s32 x) {
+    u8 *s0 = D_0046FE44 + x * 0x80;
+    s32 a;
+    s32 b;
+    s32 c;
+
+    a = (s32)func_00240F40(x, 0);
+    b = (s32)func_00240F40(x, 1);
+    c = (s32)func_00240F40(x, 2);
+    if (*(s32 *)(s0 + 0x40) != 0) {
+        func_00209530(*(s32 *)(s0 + 0x40));
+    }
+    if (*(s32 *)(s0 + 0x44) != 0) {
+        func_00209530(*(s32 *)(s0 + 0x44));
+    }
+    if (*(s32 *)(s0 + 0x48) != 0) {
+        func_00209530(*(s32 *)(s0 + 0x48));
+    }
+    func_00243600(x);
+    func_00241D60(x);
+    *(s32 *)(s0 + 0x40) = func_002096D0(a, 0x400008, 0);
+    *(s32 *)(s0 + 0x44) = func_002096D0(b, 0x400008, 0);
+    *(s32 *)(s0 + 0x48) = func_002096D0(c, 0x400008, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241710);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241AC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241C10);
