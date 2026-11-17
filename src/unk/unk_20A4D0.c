@@ -1132,12 +1132,38 @@ void func_002163D0(u8 *a) {
         }
     }
 }
-// differs: the stores of the two function addresses and of 0x442F0000 are scheduled in another order in this build (size 0xEC against 0x100)
+// differs: the stores of the two function addresses and of 0x442F0000 are scheduled in another order in this build; the second table lookup and its sll are also placed later (size 0xEC against 0x100)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002163D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002164D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216640);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216770);
+void func_00216770(u8 *a) {
+    u8 *p;
+    u8 *q;
+    s32 idx;
+    s32 e;
+    s16 idx2;
+
+    p = func_00215320(-1, 0x10);
+    idx = *(s16 *)(a + 0x20);
+    if (p != 0) {
+        void *fa = (void *)func_00212480;
+        void *fb = (void *)func_00212650;
+        q = p + 0x20;
+        *(void **)(p + 0x8) = fa;
+        *(void **)(p + 0xC) = fb;
+        memset(q, 0, 0x50);
+        e = *(s32 *)(D_0046FDD0 + idx * 4);
+        if (e != 0) {
+            *(s32 *)(p + 0x10) = func_00209540(e, 0x4000002, 0);
+        }
+        if (*(s32 *)(p + 0x10) != 0) {
+            __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(*(u8 **)a), "r"(q));
+            *(s32 *)(q + 0x20) = *(s32 *)(D_0046FDD0 + *(s16 *)(a + 0x22) * 4);
+            *(s32 *)(q + 0x28) = (*(s16 *)(a + 0x22) << 5) + 0x03001000;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216880);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216A60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216D20);
