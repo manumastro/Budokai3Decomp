@@ -181,7 +181,17 @@ typedef struct TimedF0C0 {
 extern char D_0046B080[];
 extern char D_0046B060[];
 extern char D_0046B120[];
-extern void func_0025E5A0(void);
+typedef struct Obj30 {
+    s32 f0;
+    f32 f4;
+    f32 f8;
+    f32 fC;
+    s32 f10;
+    s32 f14;
+    s32 f18;
+} Obj30;
+
+extern void func_0025E5A0(void *);
 /* The part of a task at 0x30 that these functions fill: a word, then two floats. */
 typedef struct ScrPos30 {
     s32 f0;
@@ -256,7 +266,7 @@ extern void func_0020F870(s32);
 extern ScrObj *func_0020A720(s32);
 extern s32 func_0020A5F0(s32);
 extern void func_0020A4D0(s32);
-extern void func_0020A780(s32);
+extern s32 func_0020A780(s32);
 extern void func_0020A740(s32);
 extern void func_0020A7F0(s32);
 extern void func_00209A90(s32, ScrVec *);
@@ -602,7 +612,23 @@ s32 func_0025E550(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025E5A0);
+extern void func_0020A740(s32);
+
+void func_0025E5A0(void *task) {
+    Obj30 *p = (Obj30 *)((u8 *)task + 0x30);
+    f32 d;
+    s32 busy = gBattle != NULL ? gBattle->f88EC : 0;
+
+    if (busy == 0 && p->f8 != -1.0f) {
+        d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+        p->f4 = p->f4 + d;
+        if (func_0020A780(p->f0) != 0 || !(p->f4 < p->f8)) {
+            func_0020A7F0(p->f0);
+            amTask_Kill(task);
+        }
+    }
+    func_0020A740(p->f0);
+}
 s32 Bscr_CmdEffectLinePrio(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 s1 = a[2].i;
@@ -696,16 +722,6 @@ s32 func_0025EB10(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-typedef struct Obj30 {
-    s32 f0;
-    f32 f4;
-    f32 f8;
-    f32 fC;
-    s32 f10;
-    s32 f14;
-    s32 f18;
-} Obj30;
-
 extern void func_00246800(s32, f32, f32);
 
 void func_0025EB60(void *task) {
