@@ -21,7 +21,7 @@ extern void Zenie_Close(s32);
 extern s32 func_002A1020(s32);
 
 #if 0
-// func_002A1640: the global pointer is kept in a saved register and the store follows the kill; not matched
+// func_002A1640: the original loads the global into a saved register in the delay slot of amTask_Kill (lw s0); ours loads it into v0 after the call; four forms tried
 void func_002A1640(void *a0) {
     void *p = a0;
     Zenie_Update(p);
@@ -96,13 +96,17 @@ void *func_002A2340(void) {
     return NULL;
 }
 #if 0
-// func_002A2350: the 64-bit local and the loads are scheduled in another order (the args load and the table address come first in the original); three variants tried
+// func_002A2350: the 64-bit local is copied through a pointer and the table index load comes after the args load in the original; ours keeps the index load early; five forms tried
 s32 func_002A2350(void *a0, char *a1) {
-    u64 bits = D_004700D8;
-    u32 *w = (u32 *)&bits;
-    s32 *args = *(s32 **)(a1 + 0x2C);
-    s32 idx = D_004B4B63[0];
-    u16 row = *(u16 *)(D_00492FCE + idx * 0xB8);
+    u64 bits;
+    u64 *pb = &bits;
+    u32 *w;
+    s32 *args;
+    u16 row;
+    *pb = D_004700D8;
+    w = (u32 *)pb;
+    args = *(s32 **)(a1 + 0x2C);
+    row = *(u16 *)(D_00492FCE + D_004B4B63[0] * 0xB8);
     if ((row & w[args[0]]) != 0) {
         *(s32 *)a1 = 1;
     } else {
@@ -349,7 +353,7 @@ s32 func_002A39C0(s32 *a0, char *a1) {
 extern s32 *gEvtWork;
 
 #if 0
-// func_002A3A10: the flag test gives movz for both constants, the original branches (b to the end); six variants tried
+// func_002A3A10: the flag test gives movz for both constants (also with an early return), the original branches (b to the end); seven variants tried
 s32 func_002A3A10(void) {
     s32 *g = gEvtWork;
     s32 r;
@@ -402,36 +406,31 @@ s32 func_002A3E10(s32 *a0, char *a1) {
 }
 extern s32 func_002A3E10(s32 *, char *);
 
-#if 0
-// func_002A3E60: the call's result and the store of the function address are scheduled differently (the args load comes after the store)
 s32 func_002A3E60(s32 *a0, char *a1) {
-    s32 *args = *(s32 **)(a1 + 0x2C);
-    s32 *p = a0;
-    p[0x10 / 4] = (s32)func_002A3E10;
-    if (func_002A1020(args[0]) == 0) {
-        p[0x10 / 4] = 0;
+    a0[0x10 / 4] = (s32)func_002A3E10;
+    if (func_002A1020((*(s32 **)(a1 + 0x2C))[0]) == 0) {
+        a0[0x10 / 4] = 0;
         return 1;
     }
     return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3E60);
 
-#if 0
-// func_002A3EC0: the int arguments are loaded after the vector's stores in the original, ours loads them first (scheduling); not matched
 s32 func_002A3EC0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
-    v[0] = fa[2];
-    v[1] = fa[1];
-    v[2] = fa[0];
+    s32 a0v = args[4];
+    f32 t0 = fa[1];
+    s32 a1v = args[3];
+    f32 t1 = fa[0];
+    f32 t2 = fa[2];
+    v[0] = t2;
+    v[1] = t0;
+    v[2] = t1;
     v[3] = 1.0f;
-    func_002A0700(args[4], args[3], v);
+    func_002A0700(a0v, a1v, v);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3EC0);
 
 extern char D_005AB610[];
 extern void func_002A0750(s32, s32, s32, s32);
@@ -450,21 +449,22 @@ s32 func_002A3F70(void *a0, char *a1) {
     func_002A07D0(args[2], args[1], *(f32 *)args);
     return 1;
 }
-#if 0
-// func_002A3FA0: the int arguments are loaded after the vector's stores in the original, ours loads them first (scheduling); not matched
 s32 func_002A3FA0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
-    v[0] = fa[2];
-    v[1] = fa[1];
-    v[2] = fa[0];
+    s32 a0v = args[4];
+    f32 t0 = fa[1];
+    s32 a1v = args[3];
+    f32 t1 = fa[0];
+    f32 t2 = fa[2];
+    v[0] = t2;
+    v[1] = t0;
+    v[2] = t1;
     v[3] = 1.0f;
-    func_002A07A0(args[4], args[3], v);
+    func_002A07A0(a0v, a1v, v);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3FA0);
 
 extern s32 func_002A1360(s32);
 extern s32 func_002A1340();
@@ -550,21 +550,22 @@ s32 func_002A4410(s32 *a0, char *a1) {
 }
 extern void func_002A09F0(s32, s32, f32 *);
 
-#if 0
-// func_002A4470: the int arguments are loaded after the vector's stores in the original, ours loads them first (scheduling); not matched
 s32 func_002A4470(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
-    v[0] = fa[2];
-    v[1] = fa[1];
-    v[2] = fa[0];
+    s32 a0v = args[4];
+    f32 t0 = fa[1];
+    s32 a1v = args[3];
+    f32 t1 = fa[0];
+    f32 t2 = fa[2];
+    v[0] = t2;
+    v[1] = t0;
+    v[2] = t1;
     v[3] = 1.0f;
-    func_002A09F0(args[4], args[3], v);
+    func_002A09F0(a0v, a1v, v);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4470);
 
 extern void func_002A0A30(s32, s32, s32);
 
@@ -582,77 +583,83 @@ s32 func_002A4500(void *a0, char *a1) {
 }
 extern void func_002A0AD0(s32, s32, f32 *);
 
-#if 0
-// func_002A4530: the int arguments are loaded after the vector's stores in the original, ours loads them first (scheduling); not matched
 s32 func_002A4530(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
-    v[0] = fa[2];
-    v[1] = fa[1];
-    v[2] = fa[0];
+    s32 a0v = args[4];
+    f32 t0 = fa[1];
+    s32 a1v = args[3];
+    f32 t1 = fa[0];
+    f32 t2 = fa[2];
+    v[0] = t2;
+    v[1] = t0;
+    v[2] = t1;
     v[3] = 1.0f;
-    func_002A0AD0(args[4], args[3], v);
+    func_002A0AD0(a0v, a1v, v);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4530);
 
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4580);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4620);
 extern void func_002A0BC0(s32, s32, s32, f32 *);
 
-#if 0
-// func_002A46C0: the int arguments are loaded after the vector's stores in the original, ours loads them first (scheduling); not matched
 s32 func_002A46C0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
-    v[0] = fa[1];
-    v[1] = fa[0];
+    s32 a0v = args[4];
+    f32 t0 = fa[1];
+    s32 a1v = args[3];
+    f32 t1 = fa[0];
+    s32 a2v = args[2];
+    v[0] = t0;
+    v[1] = t1;
     v[2] = 1.0f;
     v[3] = 1.0f;
-    func_002A0BC0(args[4], args[3], args[2], v);
+    func_002A0BC0(a0v, a1v, a2v, v);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A46C0);
 
 extern void func_002A0C10(s32, s32, s32, f32 *);
 
-#if 0
-// func_002A4710: the int arguments are loaded after the vector's stores in the original, ours loads them first (scheduling); not matched
 s32 func_002A4710(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
-    v[0] = fa[2];
-    v[1] = fa[1];
-    v[2] = fa[0];
+    s32 a0v = args[5];
+    f32 t0 = fa[1];
+    s32 a1v = args[4];
+    f32 t1 = fa[0];
+    s32 a2v = args[3];
+    f32 t2 = fa[2];
+    v[0] = t2;
+    v[1] = t0;
+    v[2] = t1;
     v[3] = 1.0f;
-    func_002A0C10(args[5], args[4], args[3], v);
+    func_002A0C10(a0v, a1v, a2v, v);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4710);
 
 extern void func_002A0C60(s32, s32, s32, f32 *);
 
-#if 0
-// func_002A4760: the int arguments are loaded after the vector's stores in the original, ours loads them first (scheduling); not matched
 s32 func_002A4760(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
-    v[0] = fa[2];
-    v[1] = fa[1];
-    v[2] = fa[0];
+    s32 a0v = args[5];
+    f32 t0 = fa[1];
+    s32 a1v = args[4];
+    f32 t1 = fa[0];
+    s32 a2v = args[3];
+    f32 t2 = fa[2];
+    v[0] = t2;
+    v[1] = t0;
+    v[2] = t1;
     v[3] = 1.0f;
-    func_002A0C60(args[5], args[4], args[3], v);
+    func_002A0C60(a0v, a1v, a2v, v);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4760);
 
 extern void func_002A0CB0(s32, s32, s32);
 
@@ -663,21 +670,21 @@ s32 func_002A47B0(void *a0, char *a1) {
 }
 extern void func_002A0D20(s32, s32, s32);
 
-#if 0
-// func_002A47E0: the int arguments are loaded after the vector's stores in the original, ours loads them first (scheduling); not matched
 s32 func_002A47E0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
-    v[0] = fa[1];
-    v[1] = fa[0];
+    s32 a0v = args[3];
+    f32 t0 = fa[1];
+    s32 a1v = args[2];
+    f32 t1 = fa[0];
+    v[0] = t0;
+    v[1] = t1;
     v[2] = 0.0f;
     v[3] = 1.0f;
-    func_002A0CE0(args[3], args[2], v);
+    func_002A0CE0(a0v, a1v, v);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A47E0);
 s32 func_002A4830(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     func_002A0D20(args[2], args[1], args[0]);
@@ -762,13 +769,15 @@ extern void func_002A11C0(s32, s32, s32);
 
 
 #if 0
-// func_002A4A30: the loop counter and the count are kept in the other saved registers; the call result is held in another register
+// func_002A4A30: the counter and the row share registers differently (original: idx in s2, counter in s1 set in the beqz delay slot); the scheduler moves the counter store after the row; four orders tried
 s32 func_002A4A30(s32 *a0) {
+    s32 i;
     s32 idx = **(s32 **)a0;
-    s32 i = 0;
     s32 n = func_002A1390(a0);
     if (0 < n) {
-        char *row = D_005AB610 + idx * 240;
+        char *row;
+        i = 0;
+        row = D_005AB610 + idx * 240;
         do {
             func_002A11C0(i, *(s32 *)(row + 4), 0x800000 + ((i + 1) << 8));
             i++;
@@ -785,6 +794,22 @@ extern s8 D_004B4B63[];
 extern char D_00492FCE[];
 s32 func_002A4D60(s32 *a0);
 
+#if 0
+// func_002A4CF0: the store of the function pointer comes first (as in the original); the global's test is scheduled before the index load (ours lw before lb); three forms tried
+s32 func_002A4CF0(s32 *a0) {
+    s32 idx;
+    u16 *row;
+    a0[0x10 / 4] = (s32)func_002A4D60;
+    idx = D_004B4B63[0];
+    row = (u16 *)(D_00492FCE + idx * 0xB8);
+    if ((D_004708D0[0x14 / 4] & 0x8000) != 0) {
+        if ((*row & 0x8) != 0) {
+            return 1;
+        }
+    }
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4CF0);
 s32 func_002A4D60(s32 *a0) {
     s32 idx = D_004B4B63[0];

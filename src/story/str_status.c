@@ -103,9 +103,72 @@ void StrStatus_Start(s32 a, s32 b) {
     D_00470910->f38 = amTask_Create(StrStatus_TaskMain, NULL, a, 2, b, D_0046EE10);
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD6B0);
+extern void func_0013B160(s32);
+extern void func_00142100(void *, void *);
+extern void func_00208D70(s32);
+#if 0
+// func_002BDC50: the VU0 moves are inline asm; the two globals get the other saved registers (ours: E48 in s0 loaded first, original: E44 in s1 loaded first); four orders tried
+void func_002BDC50(void) {
+    s32 *s0 = D_0046FE48;
+    s32 *s1 = D_0046FE44;
+    if (*(s16 *)((char *)s1 + 0x100) != 1) {
+        return;
+    }
+    if ((s1[0x2C / 4] & 1) != 0) {
+        return;
+    }
+    if (*(s16 *)((char *)s1 + 0x36) != 0xE) {
+        return;
+    }
+    func_0013B160(0);
+    func_00142100((char *)s1 + 0x50, (char *)s1 + 0x60);
+    D_00470238 = 0;
+    func_00145CC0(s0[0x1A0 / 4], 0x3003000);
+    if (s1[0x70 / 4] != 0) {
+        func_00208D70(s1[0x70 / 4]);
+    }
+    if (s1[0x74 / 4] != 0) {
+        func_00208D70(s1[0x74 / 4]);
+    }
+    __asm__ volatile ("vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27");
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDC50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDD10);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDE80);
+extern u8 D_003F0800[];
+extern void func_00131B90(void *);
+extern void func_00131F00(void *, f32, f32);
+extern void func_00132DF0(s32);
+extern void func_00209D20(s32);
+extern void func_00209C50(void);
+extern void func_0013B110(s32);
+void func_002BDE80(void) {
+    s32 tmp[4];
+    s32 vec[24];
+    func_0013B0B0(D_003F0800);
+    func_00131B90(vec);
+    func_00131F00(vec, 0.0f, 0.0f);
+    func_00132DF0(0);
+    tmp[0] = 0xC1000000;
+    tmp[1] = 0x3F800000;
+    tmp[2] = 0xC1C00000;
+    tmp[3] = 0x3F800000;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w" : : "r"(tmp) : "memory");
+    func_00209D20(0);
+    D_00470238 = 0;
+    {
+        s32 *g = D_0047011C;
+        if (g[0xD0 / 4] != 0) {
+            func_00145CC0(g[0xD0 / 4], g[0xD8 / 4]);
+        }
+        g = D_0047011C;
+        if (g[0x1B4 / 4] != 0) {
+            func_00208D70(g[0x1B4 / 4]);
+        }
+    }
+    func_0013B110(1);
+    func_00209C50();
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDF50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE0B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE320);
@@ -209,7 +272,12 @@ s32 func_002BECB0(s32 a0, s32 a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BECB0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BED90);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEEE0);
+void func_002BEEE0(void *a0) {
+    if (a0 != 0) {
+        u8 *p = (u8 *)D_0047011C + 0x10;
+        __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a0), "r"(p) : "memory");
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEF00);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF000);
 
@@ -297,17 +365,47 @@ void func_002BFE60(s32 a0) {
     D_0047011C[0x1C4 / 4] = 1;
     D_0047011C[0x1CC / 4] = a0;
 }
+extern s32 func_002BECB0(s32, s32);
+#if 0
+// func_002BFEE0: the switch matches (case order, beq chain, gp loads); the last 2 instructions differ: the original's `return 0` is `b` to the epilogue with the move in its delay slot, ours falls through; 6 variants tried
+s32 func_002BFEE0(s32 a0, s32 a1, s32 a2) {
+    s32 r;
+    *(s16 *)((char *)D_0046FE44 + 0x100) = 1;
+    switch (a2) {
+    default:
+        r = 0;
+        break;
+    case 1:
+        if (D_0047011C[0x1C4 / 4] != 1 || D_0047011C[0x1D0 / 4] != 2) {
+            func_002BECB0(a0, a1);
+            D_0047011C[0x2D4 / 4] = amCdFs_ReadFileId(0xE82, 0, 1);
+            r = D_0047011C[0x2D4 / 4];
+            D_0047011C[0x1C4 / 4] = 0;
+        }
+        D_0047011C[0x1D0 / 4] = 1;
+        return r;
+    case 2:
+        func_002BECB0(a0, a1);
+        D_0047011C[0x2D4 / 4] = amCdFs_ReadFileId(0xE82, 0, 1);
+        r = D_0047011C[0x2D4 / 4];
+        D_0047011C[0x1D0 / 4] = 2;
+        D_0047011C[0x1C4 / 4] = 0;
+        return r;
+    }
+    return r;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFEE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFFD0);
 extern void func_00133B50(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_002BFFD0(void *, s32);
-extern void func_002C02C0(void);
+extern void func_002C02C0(s32 *);
 
 extern void func_00133B50(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_002BFFD0(void *, s32);
-extern void func_002C02C0(void);
+extern void func_002C02C0(s32 *);
 
 void func_002C0220(s32 *a0) {
     char *s0 = (char *)a0 + 0x30;
@@ -328,24 +426,45 @@ void func_002C0220(s32 *a0) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C02C0);
-extern void func_002C02C0(void);
+void func_002C02C0(s32 *a0) {
+    char *s0 = (char *)a0;
+    s32 *q = (s32 *)(s0 + 0x30);
+    f32 *p = (f32 *)(s0 + 0x30);
+    void *f;
+    if ((*(u16 *)(s0 + 0x3A) & 1) == 0) {
+        func_00133B50(0, 0);
+    }
+    p[6] = p[6] - p[7];
+    if (p[6] < 0.0f) {
+        p[6] = 0.0f;
+    }
+    func_002BFFD0(q, 0);
+    func_002BFFD0(q, 1);
+    if (p[6] <= 0.0f) {
+        p[6] = 1.0f;
+        q[5] = q[4];
+        if (q[3] == -1) {
+            f = func_002C03B0;
+            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+            return;
+        }
+        f = func_002C0220;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+extern void func_002C02C0(s32 *);
 
-extern void func_002C02C0(void);
+extern void func_002C02C0(s32 *);
 
-#if 0
-// func_002C03B0: the store through the sub-struct pointer (a2 = a0 + 0x30) is folded into a0 + 0x40 by the compiler; the original keeps a2 in a register
 void func_002C03B0(s32 *a0) {
+    s32 *a2 = a0 + 0x30 / 4;
     s32 a1 = a0[0x3C / 4];
     if (a1 != -1) {
         void *f = func_002C02C0;
-        s32 *a2 = a0 + 0x30 / 4;
         a2[0x10 / 4] = a1;
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03B0);
 
 #if 0
 // func_002C03E0: all but the last two registers agree; the function address and the constant 2 swap registers; four variants tried
@@ -369,7 +488,11 @@ void func_002C03E0(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03E0);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0470);
+void func_002C0470(u8 *a0, void *a1) {
+    u8 *p = a0 + 0x30;
+    p += 0x20;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a1), "r"(p) : "memory");
+}
 void func_002C0490(void *p, s16 v) {
     ((s32 *)p)[0xF] = v;
 }
@@ -386,8 +509,122 @@ void StrStatus_Exit(Task *p) {
     }
     amTask_Kill(p);
 }
+#if 0
+// func_002C0510: the 16-byte copies (lq/sq) and the amTask_Create call match; the saved registers of the parameter a2 and the two pointers are permuted (ours a2 in s0, original s2); four orders tried
+typedef struct StrCopy16S {
+    s32 w[4];
+} __attribute__((aligned(16))) StrCopy16S;
+extern s32 D_00456310[4] __attribute__((aligned(16)));
+extern s32 D_00456320[4] __attribute__((aligned(16)));
+extern char D_0046EEC8[];
+void *func_002C0510(s32 a0, s32 a1, s32 a2) {
+    StrCopy16S b;
+    StrCopy16S a;
+    s32 *s0;
+    Task *s1;
+    b = *(StrCopy16S *)D_00456310;
+    a = *(StrCopy16S *)D_00456320;
+    s1 = (Task *)amTask_Create((void (*)(Task *))func_002C03B0, NULL, (s16)a1, 8, 2, D_0046EEC8);
+    s0 = (s32 *)((char *)s1 + 0x30);
+    memset(s0, 0, 0x40);
+    if (a2 == 0) {
+        *(StrCopy16S *)((char *)s0 + 0x20) = b;
+        *(f32 *)((char *)s0 + 0x2C) = 1.0f;
+        *(StrCopy16S *)((char *)s0 + 0x30) = a;
+    }
+    s0[1] = a0;
+    *(s16 *)((char *)s0 + 0x8) = 2;
+    *(f32 *)((char *)s0 + 0x18) = 1.0f;
+    *(f32 *)((char *)s0 + 0x1C) = 1.0f;
+    s0[3] = -1;
+    s0[4] = -1;
+    s0[5] = -1;
+    return s1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0510);
+#if 0
+// func_002C0630: the same shape as func_002C0510 (two 16-byte copies, amTask_Create, memset); the parameter a2 is saved into a different saved register (ours s2 at the top, original s0 after the first copy); five orders tried
+typedef struct StrCopy16S {
+    s32 w[4];
+} __attribute__((aligned(16))) StrCopy16S;
+extern s32 D_004562F0[4] __attribute__((aligned(16)));
+extern s32 D_00456300[4] __attribute__((aligned(16)));
+extern void func_002C03E0(s32 *);
+extern char D_0046EEC8[];
+void *func_002C0630(s32 a0, s32 a1, s32 a2) {
+    StrCopy16S b;
+    StrCopy16S a;
+    Task *s2;
+    s32 *s1;
+    s32 flag;
+    b = *(StrCopy16S *)D_004562F0;
+    flag = a2;
+    a = *(StrCopy16S *)D_00456300;
+    s2 = (Task *)amTask_Create((void (*)(Task *))func_002C03E0, NULL, (s16)a1, 8, 2, D_0046EEC8);
+    s1 = (s32 *)((char *)s2 + 0x30);
+    memset(s1, 0, 0x40);
+    if (flag == 0) {
+        *(StrCopy16S *)((char *)s1 + 0x20) = b;
+        *(f32 *)((char *)s1 + 0x2C) = 1.0f;
+        *(StrCopy16S *)((char *)s1 + 0x30) = a;
+    }
+    s1[0] = amCdFs_ReadFileId(a0, 0, 0);
+    *(s16 *)((char *)s1 + 0x8) = 0;
+    *(f32 *)((char *)s1 + 0x18) = 1.0f;
+    *(f32 *)((char *)s1 + 0x1C) = 1.0f;
+    s1[3] = -1;
+    s1[4] = -1;
+    s1[5] = -1;
+    return s2;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0630);
+#if 0
+// func_002C0750: the byte-clear loop is unrolled or laid out differently and the table sits at another frame offset (the original keeps a0 in s1); six forms tried
+void func_002C0750(char *a0) {
+    char *s1;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 tbl[4];
+    {
+        char *p = (char *)tbl;
+        if (p != 0) {
+            s32 n = 16;
+            do {
+                *p = 0;
+                p++;
+                n--;
+            } while (n > 0);
+        }
+    }
+    tbl[0] = (s32)(a0 + 0xC);
+    tbl[1] = (s32)(a0 + 0x10);
+    tbl[2] = (s32)(a0 + 0x2C);
+    tbl[3] = (s32)(a0 + 0x14);
+    for (i = 0; i < 4; i++) {
+        s32 *e = (s32 *)tbl[i];
+        if (*e != 0) {
+            func_0022D0E0(*e, 1);
+        }
+        *e = 0;
+    }
+    s1 = a0;
+    for (k = 0; k < 8; k++) {
+        char *s0 = s1;
+        for (j = 0; j < 3; j++) {
+            s32 *e = (s32 *)(s0 + 0x3C);
+            if (*e != 0) {
+                func_0022D0E0(*e, 1);
+            }
+            *e = 0;
+            s0 += 4;
+        }
+        s1 += 0xC;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0750);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0860);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0FC0);
