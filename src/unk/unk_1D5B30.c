@@ -325,7 +325,7 @@ void func_001D6B90(Fighter *c) {
     }
 }
 #endif
-// differs: 0xC8 against 0xE0 bytes: the original keeps the object in s1 across the call (frame 0x40); the row pointer and the struct copy are ordered differently
+// differs: 22 of 53 instructions differ with the row pointer (the first attempt was 0xC8 against 0xE0 bytes); the original keeps the object in s1 across the call
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6B90);
 void func_001D6C70(Fighter *c) {
     s32 *p;
@@ -1096,10 +1096,9 @@ void func_001E13F0(Fighter *c, s32 a1) {
         g->f8928 = a1;
     }
 }
-#if 0
 void func_001E1460(Fighter *c, s32 flag) {
-    s32 pair[2];
-    s32 buf[6];
+    s32 buf[12];
+    s32 pair[4];
 
     c->f2010 = 0;
     pair[0] = c->f1350;
@@ -1118,9 +1117,6 @@ void func_001E1460(Fighter *c, s32 flag) {
         func_00243DE0(2, buf);
     }
 }
-#endif
-// differs: frame 0x70 against 0x50: the original's two blocks sit at sp+0x30 and sp+0x40 with a larger frame (locals order and sizes tried)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1460);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1510);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1690);
 s32 func_001E1850(Fighter *c, s32 a1) {
@@ -1382,7 +1378,6 @@ void func_001E3430(Fighter *c) {
     func_001E7BE0((char *)c + 0x650);
     c->f184C = 0x3F800000;
 }
-#if 0
 void func_001E3460(Fighter *c) {
     s32 buf[10];
 
@@ -1412,9 +1407,6 @@ void func_001E3460(Fighter *c) {
         }
     }
 }
-#endif
-// differs: the body matches but the frame is 0x50 against 0x40 (the original reserves 16 more bytes of locals, not reproduced)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3460);
 #if 0
 void func_001E3550(Fighter *c) {
     if (func_001E8290((char *)c + 0x650) != 0) {
