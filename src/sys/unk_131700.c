@@ -69,6 +69,27 @@ void func_00131B90(Screen *s) {
     s->v58 = l.v58;
 }
 
+#if 0
+// differs: tail: ours puts the last swc1 in the jr delay slot (div; nop; jr; swc1), the original has div; swc1; jr; nop; return/temp variants tried, same
+void func_00131D00(Screen *s, s32 mode, f32 x, f32 y) {
+    if (mode == 0) {
+        if (D_00470404 != 0) {
+            x = x * ((f32)D_00470414 / D_0047042C);
+            y = y * ((f32)D_00470418 / D_00470430);
+        } else {
+            x = x * ((f32)D_00470414 / D_0047040C);
+            y = y * ((f32)D_00470418 / D_00470410);
+        }
+        if (D_004703DC & 2) {
+            x = x * 0.75f;
+        }
+    }
+    s->f18 = 2048.0f + x;
+    s->f1C = 2048.0f + y;
+    s->v0.x = (2047.0f - __s_abs(x)) / s->f10;
+    s->v0.y = (2047.0f - __s_abs(y)) / s->f14;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00131D00);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00131F00);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00132610);
