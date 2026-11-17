@@ -3,6 +3,10 @@ void func_0013B160(void *p);
 void func_0013B0B0(u8 *);
 void func_0013B110(s32);
 void func_0013B060(s32);
+extern s32 D_00470238;
+void func_00145CC0(s32, s32);
+void func_00208D60(s32);
+void func_00209C50(void);
 void func_00209D70(void *);
 void func_0013B960(u8 *);
 
@@ -1119,6 +1123,112 @@ void func_0020E870(s32 i, u8 *src, s32 j) {
         : : "r"(s1) : "memory");
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E8F0);
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+#if 0
+void func_0020EA70(s32 i) {
+    Copy16A t20;
+    Copy16A t30;
+    Copy16A t40;
+    u8 *s0;
+
+    s0 = D_00568C90 + i * 0x2140;
+    __asm__ volatile (
+        "lqc2 $vf1, 0x10(%0)\n"
+        "lqc2 $vf2, 0(%0)\n"
+        "vsub.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%1)\n"
+        : : "r"(*(u8 **)(gBattle + 0x264)), "r"(&t20) : "memory");
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "sqc2 $vf1, 0(%1)\n"
+        : : "r"(&t20), "r"(&t40) : "memory");
+    func_00146F30(&t40);
+    func_00146F10(&t40, &t40, *(f32 *)(s0 + 0x2138));
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vadd.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%2)\n"
+        : : "r"(*(u8 **)(gBattle + 0x264)), "r"(&t40), "r"(&t30) : "memory");
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vadd.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(&t30), "r"(s0 + 0x10) : "memory");
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "sqc2 $vf1, 0(%1)\n"
+        : : "r"(&t30), "r"(s0) : "memory");
+    func_0013B160(s0 + 0x40);
+    __asm__ volatile (
+        "lqc2 $vf31, 0(%0)\n"
+        "addiu $v1, %1, 0x40\n"
+        "sqc2 $vf28, 0($v1)\n"
+        "sqc2 $vf29, 0x10($v1)\n"
+        "sqc2 $vf30, 0x20($v1)\n"
+        "sqc2 $vf31, 0x30($v1)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(&t30), "r"(s0) : "memory");
+}
+// differs: the stack slots of the three 16-byte temporaries and the base register differ (best of 24 declaration orders: 51 instructions differ); the VU0 chain (vsub, the two func_00146F30 / func_00146F10 calls, the vadd chain, the state block) is the same
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EA70);
 void func_0013B160(void *p);
 
@@ -1155,7 +1265,50 @@ void func_0020EBF0(s32 i) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EC70);
+void func_00209D20(s32 a);
+
+void func_0020EC70(s32 i) {
+    u8 *s0;
+    Copy16A t20;
+
+    if (*(s8 *)(gBattle + 0x8975) == 1) {
+        return;
+    }
+    s0 = D_00568C90 + i * 0x2140;
+    if (*(s32 *)(s0 + 0x20E8) == 0) {
+        return;
+    }
+    if (*(s32 *)(s0 + 0x94) != 0) {
+        func_00208D60(*(s32 *)(s0 + 0x94));
+    }
+    if (*(s32 *)(s0 + 0x88) != 0) {
+        D_00470238 = 0;
+        func_00145CC0(*(s32 *)(s0 + 0x88), *(s32 *)(s0 + 0x20E4));
+    }
+    if (*(s32 *)(s0 + 0x20EC) & 0x80) {
+        func_0013B160(s0 + 0x40);
+        __asm__ volatile (
+            "sqc2 $vf31, 0(%0)\n"
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : "r"(&t20) : "memory");
+        func_0020D5C0(s0 + 0x40, 0, &t20, (u8 *)7);
+    }
+    func_0013B0B0(gBattle + 0x60);
+    func_0013B960(s0 + 0x40);
+    func_00209D20(0);
+    __asm__ volatile (
+        "lqc2 $vf28, 0(%0)\n"
+        "lqc2 $vf29, 0x10(%0)\n"
+        "lqc2 $vf30, 0x20(%0)\n"
+        "lqc2 $vf31, 0x30(%0)\n"
+        : : "r"(s0 + 0x40) : "memory");
+    func_00208D70(*(s32 *)(s0 + 0x20E8));
+    func_0013B110(1);
+    func_00209C50();
+}
 void func_0020EDA0(s32 i) {
     if (*(s8 *)(gBattle + 0x8975) != 1) {
         u8 *p = D_00568C90 + i * 0x2140;
@@ -3364,7 +3517,10 @@ void func_00218C40(u8 *s, f32 a, f32 b) {
     if (o != 0) {
         *(u8 **)(o + 0x30) = s;
     } else {
-        u8 *n = amTask_Create((void *)func_002186D0, 0, 0x4080, 0x20, 0x800002, D_0046A3B8);
+        u8 *n;
+        s32 fl;
+        fl = 0x800002;
+        n = amTask_Create((void *)func_002186D0, 0, 0x4080, 0x20, fl, D_0046A3B8);
         *(u8 **)(n + 0x30) = s;
         o = n;
     }
@@ -3374,7 +3530,7 @@ void func_00218C40(u8 *s, f32 a, f32 b) {
     *(f32 *)(o + 0x40) = b;
     *(u8 **)(s + 0x1C) = o;
 }
-// differs: 4 of 36 differ, all in the create branch: the argument registers of amTask_Create are set in another order (t1 is loaded before t0 in the original, the store to 0x30 uses the returned v0 before the move into v1)
+// differs: 4 of 36 differ, all in the create branch: the ori of the flags (t0) is laid out before the low half of the data pointer (t1); moving the flags to a local did not change it
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218C40);
 extern s32 rand(void);
