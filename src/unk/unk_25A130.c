@@ -69,6 +69,63 @@ typedef struct BtlWork {
 } BtlWork;
 
 extern BtlWork *D_00470570;
+
+typedef struct EffSrc {
+    s32 f0;
+    char pad4[4];
+    BtlPlayer *f8;
+    char padC[0x14];
+    f32 f20;
+} EffSrc;
+
+typedef struct Eff {
+    char pad0[8];
+    void *f8;
+    void *fC;
+    char pad10[8];
+    f32 f18;
+    char pad1C[4];
+    char f20[0x58];
+} Eff;
+
+typedef struct SubWork {
+    s32 f0;
+    void *f4;
+} SubWork;
+
+typedef struct ScrTask {
+    char pad0[0x30];
+    SubWork w;
+} ScrTask;
+
+typedef struct ResTbl {
+    char pad0[0x14];
+    void **f14;
+} ResTbl;
+
+typedef struct SysE60 {
+    char pad0[0xE60];
+    void *fE60;
+    char padE64[4];
+    ResTbl *fE68;
+} SysE60;
+
+extern char D_0046AF20[];
+extern void *D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern void func_00145CC0(void *, s32);
+extern ScrTask *func_00144FC0(void *, void *, s32, s32, s32, char *);
+extern void *func_0022D860(void *, f32);
+extern void func_00125740(void *, void *, s32);
+extern void func_0020D9F0(s32);
+extern Eff *func_00215320(s16, s32);
+extern void func_00211650(void);
+extern void func_00210240(void);
+extern void func_00212560(void);
+extern void func_00259BB0(void);
+extern void func_00259B70(void);
 extern void func_00226030(s32, s32 *);
 void func_0025AA20(s32);
 void func_0025A7C0(s32, s32);
@@ -148,6 +205,34 @@ s32 func_0025AD50(void *ctx, ScrCmd *cmd) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025ADE0);
+/* Same code, but the argument pointer and the object swap $v1 / $a0. */
+#if 0
+s32 func_0025AE10(void *ctx, ScrCmd *cmd) {
+    ScrObj *o;
+    ScrArg *a;
+    s32 buf[5];
+    s32 *s;
+
+    o = D_0058D4E8[0];
+    a = cmd->args;
+
+    buf[0] = a[4].i;
+    buf[1] = a[3].i;
+    buf[2] = a[2].i;
+    buf[3] = a[1].i;
+    buf[4] = a[0].i;
+    if (o != NULL) {
+        s = (s32 *)((char *)o + 0x30);
+        func_00125740(&s[5], buf, sizeof(buf));
+        s[5] &= 0xF;
+        s[6] &= 0xF;
+        s[7] &= 0xF;
+        s[8] &= 0xF;
+        s[9] &= 0xF;
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025AE10);
 s32 func_0025AEC0(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
@@ -273,7 +358,28 @@ s32 func_0025B1B0(void *ctx, s32 *out) {
     *out = D_0046FDFC->fDF0;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B1D0);
+s32 func_0025B1D0(void *ctx, ScrCmd *cmd) {
+    SysE60 *sys = (SysE60 *)D_0046FDFC;
+    ScrTask *t;
+    s32 idx = cmd->args[0].i;
+    SubWork *w;
+    void *v;
+    s32 n;
+
+    t = func_00144FC0(func_00259BB0, func_00259B70, 0x3A30, 0x1000, 0x2000000, D_0046AF20);
+    if (t == NULL) {
+        return 1;
+    }
+    D_00470704 = v = sys->fE60;
+    D_0047070C = n = 0x4000000;
+    D_00470708 = 0;
+    func_00145CC0(v, n);
+    D_00470238 = 0;
+    w = &t->w;
+    w->f0 = 0;
+    w->f4 = func_0022D860(sys->fE68->f14[idx + 0x82], 0.0f);
+    return 1;
+}
 f32 func_0025B290(void) {
     f32 r = 0.0f;
     ScrObj *o = D_0058D4D0[func_0021C360()];
@@ -295,7 +401,27 @@ s32 func_0025B2E0(f32 v) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B340);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B4D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B6D0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B790);
+void func_0025B790(EffSrc *e) {
+    s32 owner = e->f8->f1350;
+    Eff *f;
+
+    func_0020D9F0(e->f0);
+    f = func_00215320(owner, 0x80);
+    if (f == NULL) {
+        return;
+    }
+    f->f8 = func_00211650;
+    f->fC = NULL;
+    f->f18 = e->f20;
+    f = func_00215320(owner, 0x100);
+    if (f == NULL) {
+        return;
+    }
+    f->f8 = func_00210240;
+    f->fC = func_00212560;
+    f->f18 = e->f20;
+    func_00125740(f->f20, e, 0x58);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B840);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B8F0);
 void func_0025BA50(void) {

@@ -9,12 +9,20 @@ typedef struct Model {
     void **f14;
 } Model;
 
+typedef struct DispEnt {
+    void *p;
+    s32 f4;
+    s16 f8;
+} DispEnt;
+
 typedef struct Disp {
     Model *f0;
     s32 f4;
-    char pad8[0x40 - 0x8];
+    char pad8[0x14 - 0x8];
+    void *f14[11];
     void *f40;
-    char pad44[0x266 - 0x44];
+    DispEnt ent[13];
+    char padE0[0x266 - 0xE0];
     s8 f266;
     s8 f267;
     s8 f268;
@@ -76,7 +84,54 @@ void func_00285950(Disp *o, s32 n) {
     func_00137EE0();
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_284AA0", func_00285AA0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_284AA0", func_00285C10);
+void func_00285C10(Disp *o) {
+    DispEnt *e;
+    s32 i;
+
+    if (o->f14[0] != NULL) {
+        func_0022D0E0(o->f14[0], 1);
+    }
+    if (o->f14[1] != NULL) {
+        func_0022D0E0(o->f14[1], 1);
+    }
+    if (o->f14[2] != NULL) {
+        func_0022D0E0(o->f14[2], 1);
+    }
+    if (o->f14[3] != NULL) {
+        func_0022D0E0(o->f14[3], 1);
+    }
+    if (o->f14[4] != NULL) {
+        func_0022D0E0(o->f14[4], 1);
+    }
+    if (o->f14[5] != NULL) {
+        func_0022D0E0(o->f14[5], 1);
+    }
+    if (o->f14[6] != NULL) {
+        func_0022D0E0(o->f14[6], 1);
+    }
+    if (o->f14[7] != NULL) {
+        func_0022D0E0(o->f14[7], 1);
+    }
+    if (o->f14[8] != NULL) {
+        func_0022D0E0(o->f14[8], 1);
+    }
+    if (o->f14[9] != NULL) {
+        func_0022D0E0(o->f14[9], 1);
+    }
+    if (o->f14[10] != NULL) {
+        func_0022D0E0(o->f14[10], 1);
+    }
+    if (o->f40 != NULL) {
+        func_0022D0E0(o->f40, 1);
+    }
+    for (i = 0; i < 13; i++) {
+        e = &o->ent[i];
+        if (e->p != NULL) {
+            func_0022D0E0(e->p, 1);
+            e->p = NULL;
+        }
+    }
+}
 void func_00285D90(Disp *o) {
     void *e = o->f40;
     s32 v;
