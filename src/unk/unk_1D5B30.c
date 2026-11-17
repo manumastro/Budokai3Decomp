@@ -354,6 +354,7 @@ extern void func_001E2DE0(Fighter *c);
 extern void func_0021A030(void *a, s32 b, s32 c, s32 d);
 extern u8 *func_0021C660(s32 i);
 extern void func_00246E20(void *o);
+extern void func_001E73E0(void *p, s32 a, s32 b);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5B30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5C40);
@@ -1539,6 +1540,84 @@ void func_001D9D20(Fighter *c, s32 a1) {
         AdxSlot_Suspend(s0, s1, a1, -1);
     }
 }
+#if 0
+void func_001D9EB0(Fighter *c, s32 a1) {
+    Game *g;
+    s32 s0;
+    s32 r;
+    s32 *e;
+    s32 a0;
+    s32 a2;
+    u8 *ent;
+    u32 rr;
+    u32 m;
+
+    s0 = a1;
+    if (s0 >= 0x7D0) {
+        s0 -= 0x7D0;
+    } else if (s0 >= 0x3E8) {
+        goto done;
+    }
+    if (s0 == 0x190) {
+        goto done;
+    }
+    if (s0 >= 0x258) {
+        rr = func_0012EAE0(0x20) % 100 + 1;
+        if (rr >= 0x3D) {
+            goto done;
+        }
+        s0 -= 0x258;
+    } else if (s0 >= 0x12C) {
+        rr = func_0012EAE0(0x20) % 100 + 1;
+        if (rr >= 0x1F) {
+            goto done;
+        }
+        s0 -= 0x12C;
+    } else if (s0 >= 0x64) {
+        ent = (u8 *)c->f1CF8 + (s0 - 0x64) * 4 + 0x2C;
+        if ((s8)ent[3] < 100) {
+            rr = func_0012EAE0(0x20) % 100 + 1;
+            if ((u32)(s32)(s8)ent[3] < rr) {
+                goto done;
+            }
+        }
+        m = (u32)(s32)(s8)ent[2];
+        s0 = (s32)*(s16 *)ent + (s32)(func_0012EAE0(0x20) % m);
+    }
+    g = gBattle;
+    if (g->f8944 == 0) {
+        AdxSlot_Stop((u8 *)g + ((c->f1350 + 3) << 5) + 0x5C4);
+    }
+    if (c->f1A70 >= 0) {
+        func_00144430(&c->f1A70);
+        c->f1A70 = -1;
+    }
+    func_001E73C0((Fighter *)((u8 *)c + 0x650));
+    func_001E73E0((u8 *)c + 0x650, s0, 1);
+    e = D_004693C0;
+    a2 = c->fBA4;
+    r = 0;
+    if (e[0] != -1) {
+        a0 = c->f1CFC;
+        do {
+            if (a0 == e[0] && !(a2 < e[1])) {
+                r = e[2];
+                break;
+            }
+            e += 3;
+        } while (e[0] != -1);
+    }
+    if (r == 1) {
+        s0 += 0x37;
+    } else if (r == 2 && c->f1CFC != 0x4C) {
+        s0 += 0x37;
+    }
+    func_001E9B00((void *)(c->f1350 + 2), s0, 0, &c->f1A70, 0.0f, 1.0f);
+done:
+    return;
+}
+#endif
+// differs: compiled 0x290 against 0x2A0 (4 instructions short), 87 lines differ: the original copies the parameter into $s0 before the first slti (mine compares $a1 directly), has a nop after the 0x258 block's b (a join pad), and its epilogue is 8 bytes further on; the random-table walk ($s0 pointer, halfword plus divu) matches in shape
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9EB0);
 void func_001DA150(Fighter *c) {
     c->f1A70 = -1;
