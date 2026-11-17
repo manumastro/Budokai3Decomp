@@ -291,6 +291,31 @@ void func_002935F0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00293600);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00293950);
+#if 0
+// differs: compiled 0x100 bytes, original 0x110; the two case bodies are laid out inline here, the original has them out of line with b to the end (switch variants with case 0 and default tried)
+extern s32 D_005AA630[];
+extern void StrMap_Start(s32, s32, s32);
+extern void func_0029AAC0(s32, s32, s32);
+void func_00293D70(Work2918A0 *w) {
+    char *x;
+
+    x = (char *)D_005AA604[0];
+    *(s32 *)(x + 0x11D0) = *(u16 *)(x + 0x11D0);
+    D_005AA664[0] = *(u16 *)D_005AA664;
+    D_005AA664[0] = (u16)(s16)(((s32)*(s16 *)D_005AA664 * 15) >> 4);
+    func_00291BF0();
+    if (D_005AA5A4[0] == 0) {
+        if (D_005AA630[0] == 2) {
+            StrMap_Start(0x9100, 0x20000, 1);
+            func_0029AAC0(0x9110, 0x20000, -1);
+        } else if (D_005AA630[0] == 1) {
+            StrMap_Start(0x9100, 0x20000, 0);
+            func_0029AAC0(0x9110, 0x20000, -1);
+        }
+        w->f1C = (func_00295300 == 0) ? 0 : func_00295300;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00293D70);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00293E80);
 void func_002948C0(Work2918A0 *w) {
