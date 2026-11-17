@@ -293,4 +293,41 @@ void func_00306060(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00306060);
+#if 0
+// differs: 13 of 52: the byte test, the list append and the tail store match in shape; the register roles of the three tables and the copy pointer differ (the original takes the first table base into  and the list pointer into )
+extern s32 D_00458DE0[];
+extern s32 D_00458DE8[];
+extern u8 D_004E6560[];
+extern u8 D_004E0660[];
+
+void func_00306140(void) {
+    u8 *p;
+    u8 *q;
+    s32 k;
+    s32 t4;
+    s32 i;
+    s32 j;
+    s32 w;
+    p = (u8 *)D_0047097C;
+    k = 0;
+    i = 0;
+    j = 0;
+    q = p;
+    do {
+        w = *(s32 *)(p + 0xC);
+        t4 = *(s32 *)((u8 *)D_00458DE0 + w * 12 + j);
+        if (D_004E6560[t4 + 0x2AF19] < D_004E0660[t4 * 40 + 0xD]) {
+            *(s32 *)(q + 0x14) = t4;
+            k++;
+            q += 4;
+        }
+        i++;
+        j += 4;
+    } while (i < 2);
+    w = *(s32 *)(p + 0xC);
+    *(s32 *)(p + 0x14 + k * 4) = D_00458DE8[w * 3];
+    k++;
+    *(s32 *)(p + 0x10) = k;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00306140);
