@@ -1,42 +1,196 @@
 #include "common.h"
 
+extern u8 *D_00470570;
+extern s32 D_00470680;
+extern s32 D_00470684;
+extern s32 D_00470688;
+extern s32 D_00470698;
+extern s32 D_0046A470[];
+extern void memset(void *, s32, s32);
+extern void func_00133780(s32, s32);
+extern s32 amGs_SetReg32(s32, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void func_00228410(void);
+extern void func_0022C560(s32);
+extern void func_0021B130(void);
+extern void func_0023FBB0(void);
+extern void func_0021CA20(void);
+
+extern u8 *D_0046FDFC;
+extern s32 D_00470680;
+extern s32 D_00470684;
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B1E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B540);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B5D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B660);
+#if 0
+s32 func_0021B6F0(void) {
+    s32 r = 0;
+    s32 *p = &D_00470698;
+    s32 *tbl = D_0046A470;
+    s32 f;
+
+    f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
+    if (f != 0) {
+        *p = f;
+        r = f;
+    }
+    return r;
+}
+// differs: the table address is kept in v0 for its two loads (lui/addiu once), here it is folded into each load; the pointer to D_00470698 in s0 is the same
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B6F0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B760);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B7A0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B810);
+void func_0021B760(void) {
+    func_00228410();
+    func_00133780(2, 0);
+    amGs_SetReg32(2, D_00470688);
+}
+void func_0021B7A0(u8 *obj) {
+    s32 *p;
+
+    if (*(s8 *)(D_00470570 + 0x8975) != 1) {
+        p = (s32 *)(obj + 0x30);
+        if (*(s32 *)(obj + 0x30) != 0) {
+            func_0022C560(*(s32 *)(obj + 0x30));
+        }
+        if (p[1] != 0) {
+            func_0022C560(p[1]);
+        }
+    }
+}
+void func_0021B810(void) {
+    if (*(s8 *)(D_00470570 + 0x8975) != 1) {
+        if (D_00470680 & 0x80000000) {
+            func_0021B130();
+            func_0023FBB0();
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B870);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B940);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BA60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BEA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C080);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C250);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C280);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2A0);
+u8 *func_0021C250(u8 *d, u8 *s) {
+    d[0] = s[0];
+    d[1] = s[1];
+    d[2] = s[2];
+    d[3] = s[3];
+    return d;
+}
+s32 func_0021C280(s32 a) {
+    u32 v = a ^ (a & D_00470684);
+
+    return v < 1;
+}
+s32 func_0021C2A0(s32 a) {
+    s32 m = D_00470684 & D_00470680;
+
+    if (m & 0x80000000) {
+        if (a == (a & m)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2E0);
+#if 0
+s32 func_0021C360(s32 id) {
+    u8 *bw = D_00470570;
+    u8 *sys = D_0046FDFC;
+    s32 i;
+
+    if (0 < *(s32 *)(bw + 0x88D8)) {
+        for (i = 0; i < *(s32 *)(bw + 0x88D8); i++) {
+            if (*(s8 *)(sys + i + 0xCA0) == id) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+// differs: the count is read again in the loop test through a register of its own (lw from 0(a1)), and the frame is 0x10 bigger: the loop shape differs
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C360);
+#if 0
+s32 func_0021C3D0(s32 i) {
+    return *(s8 *)(D_0046FDFC + i + 0xCA0);
+}
+// differs: the sum D + i is added with the operands in the other order (addu v0, a0, v0), not reached by the variants tried
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C3D0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C3E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C400);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C430);
+u8 *func_0021C3E0(s32 i) {
+    return D_0046FDFC + 0xCB0 + i * 0x50;
+}
+u8 *func_0021C400(s32 i) {
+    return D_0046FDFC + 0x760 + i * 0x190;
+}
+u8 *func_0021C430(s32 i) {
+    return D_0046FDFC + 0x650 + i * 0x190;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C460);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C540);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C560);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C5B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C5D0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C5E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C600);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C610);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C620);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C660);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C680);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C6A0);
+void func_0021C540(f32 a, f32 b, f32 c) {
+    u8 *sys = D_0046FDFC;
+
+    *(f32 *)(sys + 0xE20) = a;
+    *(f32 *)(sys + 0xE24) = b;
+    *(f32 *)(sys + 0xE28) = c;
+}
+void func_0021C560(s32 mode, f32 a, f32 b, f32 c) {
+    u8 *sys = D_0046FDFC;
+
+    *(s32 *)(sys + 0xDFC) = mode;
+    *(s32 *)(sys + 0xE00) = 0;
+    *(f32 *)(sys + 0xE0C) = b - a;
+    *(f32 *)(sys + 0xE04) = a;
+    *(f32 *)(sys + 0xE08) = b;
+    *(f32 *)(sys + 0xE10) = c;
+    if (mode == 0 || mode == 3) {
+        *(s32 *)(sys + 0xDF8) = 3;
+    } else {
+        *(s32 *)(sys + 0xDF8) = 2;
+    }
+}
+void func_0021C5B0(s32 m) {
+    D_00470680 &= ~m;
+}
+void func_0021C5D0(s32 f) {
+    D_00470680 |= f;
+}
+void func_0021C5E0(s32 a, s32 b) {
+    D_00470680 &= a;
+    D_00470680 |= b;
+}
+u8 *func_0021C600(void) {
+    return D_0046FDFC + 0x640;
+}
+u8 *func_0021C610(void) {
+    return D_0046FDFC + 0xDF0;
+}
+u8 *func_0021C620(s32 i) {
+    u8 *sys = D_0046FDFC;
+
+    if (i == -1) {
+        return 0;
+    }
+    return sys + i * 0x190 + 0x110;
+}
+u8 *func_0021C660(s32 i) {
+    return D_0046FDFC + i * 0x190;
+}
+u8 *func_0021C680(s32 i) {
+    return D_0046FDFC + i * 0x190;
+}
+void func_0021C6A0(void) {
+    u8 *sys = D_0046FDFC;
+
+    func_0021CA20();
+    memset(sys, 0, 0xF00);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C6E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CA20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CAD0);
