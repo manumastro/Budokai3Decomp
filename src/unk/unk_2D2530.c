@@ -40,7 +40,8 @@ typedef struct Obj2D2530 {
     s32 f94;
     s32 f98;
     Model2D2530 *f9C;
-    char padA0[0x8];
+    Model2D2530 *fA0;
+    Model2D2530 *fA4;
     Model2D2530 *f0A8;
     Model2D2530 *fAC;
     Model2D2530 *fB0;
@@ -745,7 +746,14 @@ void func_002D79C0(void) {
     v.y = 40.0f * s->f37C;
     DrawModel(gOptionWork, s->f0A8, &v, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7AA0);
+void func_002D7AA0(Vec4 *a, Vec4 *b) {
+    Obj2D2530 *s = gOptionWork;
+    Model2D2530 *m;
+
+    DrawModel(s, s->fA0, 0, a);
+    m = s->fA4;
+    DrawModel(gOptionWork, m, 0, b);
+}
 void func_002DDF00(void);
 void func_002DEFE0(void);
 void func_002D7AA0(Vec4 *, Vec4 *);
