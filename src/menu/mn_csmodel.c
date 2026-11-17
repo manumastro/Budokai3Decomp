@@ -202,7 +202,53 @@ void func_002B7930(u8 *s4) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B7A60);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B7C40);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B7DC0);
+void func_002B7DC0(u8 *s0) {
+    s32 s2;
+    u8 *s1;
+
+    if (*(void **)s0 != 0) {
+        func_0022D0E0(*(void **)s0, 1);
+    }
+    s2 = 0;
+    s1 = s0;
+    do {
+        if (*(void **)(s1 + 0x4) != 0) {
+            func_0022D0E0(*(void **)(s1 + 0x4), 1);
+        }
+        s2++;
+        s1 += 4;
+    } while (s2 < 2);
+    if (*(void **)(s0 + 0xC) != 0) {
+        func_0022D0E0(*(void **)(s0 + 0xC), 1);
+    }
+    s2 = 0;
+    s1 = s0;
+    do {
+        if (*(void **)(s1 + 0x10) != 0) {
+            func_0022D0E0(*(void **)(s1 + 0x10), 1);
+        }
+        s2++;
+        s1 += 4;
+    } while (s2 < 0xC);
+    s2 = 0;
+    s1 = s0;
+    do {
+        if (*(void **)(s1 + 0x40) != 0) {
+            func_0022D0E0(*(void **)(s1 + 0x40), 1);
+        }
+        s2++;
+        s1 += 4;
+    } while (s2 < 2);
+    if (*(void **)(s0 + 0x48) != 0) {
+        func_0022D0E0(*(void **)(s0 + 0x48), 1);
+    }
+    if (*(void **)(s0 + 0x4C) != 0) {
+        func_0022D0E0(*(void **)(s0 + 0x4C), 1);
+    }
+    if (*(void **)(s0 + 0x50) != 0) {
+        func_0022D0E0(*(void **)(s0 + 0x50), 1);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B7F00);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8070);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8260);

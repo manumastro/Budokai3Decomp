@@ -67,6 +67,65 @@ s32 func_00272D30(void) {
     }
 }
 #endif
+#if 0
+// differs: size 0xE8 vs 0xF0: 2 instructions short; the original shares one epilogue for its returns (b to 272E18), single-exit form gives 0xC8
+s32 func_00272D30(void) {
+    u8 *a0;
+    u8 *p2;
+    s32 t0;
+    s32 v1;
+    s32 v0;
+    s32 a1;
+    s32 a3;
+    s32 n;
+    s32 nb;
+
+    a0 = (u8 *)D_00470808;
+    v1 = *(s32 *)(a0 + 0x60);
+    t0 = 0;
+    if (v1 == 0) {
+        t0 = *(s32 *)(a0 + 0x6C);
+    } else {
+        nb = *(s32 *)(a0 + 0x6C);
+        if (0 < nb) {
+            a1 = v1 - 1;
+            p2 = a0;
+            a3 = 0;
+            do {
+                if (*(s16 *)(p2 + 0x80) == a1) {
+                    t0++;
+                }
+                a3++;
+                p2 += 0x14;
+            } while (a3 < nb);
+        }
+    }
+    if (t0 == 0) {
+        return 0;
+    }
+    v1 = t0 - 1;
+    if (!(t0 < 4)) {
+        v1 = 3;
+    }
+    v0 = *(s32 *)(a0 + 0x68) + 1;
+    *(s32 *)(a0 + 0x68) = v0;
+    if (v1 < v0) {
+        *(s32 *)((u8 *)D_00470808 + 0x68) = v1;
+        if (t0 < 5) {
+            return 0;
+        }
+        n = t0 - 4;
+        v0 = *(s32 *)((u8 *)D_00470808 + 0x64) + 1;
+        *(s32 *)((u8 *)D_00470808 + 0x64) = v0;
+        if (n < v0) {
+            *(s32 *)((u8 *)D_00470808 + 0x64) = n;
+            return 0;
+        }
+        return 1;
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00272D30);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00272E20);
 #if 0
