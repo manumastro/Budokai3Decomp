@@ -318,6 +318,7 @@ extern s32 func_001DFE60(Fighter *c, s32 a, f32 v);
 extern s32 func_001DFA90(Fighter *c, s32 idx);
 extern s32 func_002350A0(Fighter *c);
 extern s32 D_00469478[];
+extern s32 D_004693C0[];
 extern void func_001E11E0(s32 a, void *b);
 extern s32 func_001DFC80(Fighter *c, s32 a, f32 v);
 extern void func_001D7CC0(Fighter *c, s32 a);
@@ -346,6 +347,7 @@ extern s32 func_002357C0(Fighter *c);
 extern void func_001D6170(Fighter *c);
 extern void func_001D5C40(Fighter *c);
 extern void func_001E2DE0(Fighter *c);
+extern void func_0021A030(void *a, s32 b, s32 c, s32 d);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5B30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5C40);
@@ -533,7 +535,50 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6E20);
 void PlyVib_TaskKill(Fighter *c) {
     func_001A3610(c->f30);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7290);
+typedef struct PlyVibBuf {
+    u8 a[12];
+    s16 h;
+    u8 b[2];
+} PlyVibBuf;
+
+void func_001D7290(Fighter *c) {
+    PlyVibBuf hb;
+    u32 v;
+    u32 w;
+    f32 ratio;
+    f32 a;
+    f32 b;
+    u8 *q;
+    char *s1;
+    u8 s0;
+
+    s1 = (char *)c + 0x30;
+    if (gBattle == NULL || gBattle->f88EC != 0 || !(*(f32 *)(s1 + 8) <= *(f32 *)(s1 + 0xC))) {
+        amTask_Kill(c);
+        return;
+    }
+    ratio = *(f32 *)(s1 + 8) / *(f32 *)(s1 + 0xC);
+    v = *(u8 *)(s1 + 4);
+    a = (f32)v;
+    b = 1.0f - ratio;
+    a = a * b;
+    w = *(u8 *)(s1 + 5);
+    b = (f32)w;
+    b = b * ratio;
+    a = a + b;
+    s0 = (u8)(u32)a;
+    memset(hb.a, 0, 8);
+    if (s0 >= 0x80) {
+        hb.a[0] = (u8)((s0 - 0x80) | 1);
+    }
+    q = hb.a + 1;
+    *q = s0;
+    hb.h = 0x1000;
+    hb.b[0] = hb.a[0];
+    hb.b[1] = *q;
+    func_0021A030(hb.a + 12, *(s32 *)s1, 0x20, 0x40000000);
+    *(f32 *)(s1 + 8) = *(f32 *)(s1 + 8) + gBattle->f88F0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7450);
 extern s8 D_00447440[];
 
@@ -1790,6 +1835,68 @@ void func_001DF170(Fighter *c) {
         }
     }
 }
+#if 0
+void func_001DF1F0(Fighter *c) {
+    s32 i;
+    s32 n;
+    s32 k;
+    u8 *r;
+
+    memset((char *)c + 0x1FDC, 0, 8);
+    memset((char *)c + 0x1FBD, 0, 0x1F);
+    *(s16 *)((char *)c + 0x1FEC) = 0;
+    *(f32 *)((char *)c + 0x1FB4) = 1.0f;
+    *(f32 *)((char *)c + 0x1FB8) = (f32)*(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x4C);
+    *(s8 *)((char *)c + 0x1FBC) = 0;
+    if (*(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x34) > 0) {
+        i = 0;
+        do {
+            n = ((s16 *)(*(char **)((char *)c + 0x1CF4) + 0x36))[i];
+            if (n > 0) {
+                r = D_004E0660 + n * 40;
+                k = r[0x15];
+                if (k < 0x64) {
+                    *(s8 *)((char *)c + 0x1FBD + k) = *(s8 *)((char *)c + 0x1FBD + k) + 1;
+                    if (k == 0x1E) {
+                        *(s8 *)((char *)c + 0x1FDB) = 1;
+                        *(s8 *)((char *)c + 0x1FC3) = 1;
+                        *(s8 *)((char *)c + 0x1FC8) = 1;
+                        *(s8 *)((char *)c + 0x1FC4) = 1;
+                    } else if (k == 7 || k == 0xB || k == 6) {
+                        *(s8 *)((char *)c + 0x1FBD + k) = 1;
+                    } else if (k != 0) {
+                        *(s8 *)((char *)c + 0x1FBC) = *(s8 *)((char *)c + 0x1FBC) + 1;
+                    }
+                } else {
+                    *(s16 *)((char *)c + 0x1FEC) = n;
+                    *(s8 *)((char *)c + 0x1FBC) = *(s8 *)((char *)c + 0x1FBC) + 1;
+                }
+            }
+            i++;
+        } while (i < *(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x34));
+    }
+    if (*(s8 *)((char *)c + 0x1FDB) > 0) {
+        for (i = 0; i < 8; i++) {
+            *(s8 *)((char *)c + 0x1FDC + i) = 1;
+        }
+    } else {
+        *(s8 *)((char *)c + 0x1FDC) = 1;
+        for (i = 1; i < 8; i++) {
+            if (*(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x34) > 0) {
+                k = 0;
+                do {
+                    n = ((s16 *)(*(char **)((char *)c + 0x1CF4) + 0x36))[k];
+                    if (n > 0 && n == *(s16 *)(*(char **)((char *)c + 0x1CF8) + i * 20 + 0xD4)) {
+                        *(s8 *)((char *)c + 0x1FDC + i) = 1;
+                    }
+                    k++;
+                } while (k < *(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x34));
+            }
+        }
+    }
+}
+#endif
+// differs: 146 of 151: the original keeps only the object in $s0 (frame 0x20, no other saved register); this C saves s1..s5 (frame 0x70) because the loop indices and the r/n/k temporaries cross the leading memset calls; the struct-free and pointer-temp shapes both tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DF1F0);
 s32 func_001DF420(Fighter *c, s32 idx, s32 flags) {
     u8 *e;
@@ -2852,6 +2959,80 @@ void func_001E2CC0(Fighter *c) {
 #endif
 // differs: the calls and the stores match; the original keeps c in s0 with a 0x50 frame (s0/s1 only, the two struct arguments at 0x40 and 0x48) and the early-return layout differs
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2CC0);
+#if 0
+void func_001E2DE0(Fighter *c) {
+    s32 *p;
+    s32 x;
+    s32 idx;
+    s32 i;
+    s32 cnt;
+    s32 k;
+    s32 n;
+    u8 *r;
+    char *t0;
+    f32 f1;
+    f32 f20;
+    f32 f21;
+    f32 f3;
+
+    if (*(f32 *)((char *)c + 0x1A40) <= 0.0f) {
+        return;
+    }
+    x = *(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x16);
+    if (x < 0) {
+        x = *(s32 *)((char *)c + 0xBA4);
+    }
+    k = *(s32 *)((char *)c + 0x1CFC);
+    idx = 0;
+    for (p = D_004693C0; *p != -1; p += 3) {
+        if (k == p[0] && !(x < p[1])) {
+            idx = p[2];
+            break;
+        }
+    }
+    if (idx == 1) {
+        return;
+    }
+    t0 = *(char **)((char *)c + 0xBB0);
+    f20 = gBattle->f88F0 * *(f32 *)((char *)c + 0x1A44);
+    f21 = (f32)*(s16 *)(t0 + 0xC) / 100.0f;
+    if (*(s16 *)t0 != 0) {
+        if (func_001DF8F0(0, 0x1B) > 0) {
+            f21 = f21 * 2.0f;
+        }
+    }
+    if (*(s8 *)((char *)c + 0x2010) != 0) {
+        f3 = 100.0f;
+        cnt = *(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x34);
+        if (cnt > 0) {
+            f1 = f3;
+            t0 = *(char **)((char *)c + 0x1CF4);
+            for (i = 0; i < cnt; i++) {
+                n = ((s16 *)(t0 + 0x36))[i];
+                r = D_004E0660 + n * 40;
+                if (r[0x15] == 0x17) {
+                    f3 = f3 - ((f32)*(s16 *)(r + 0x16) * (f1 + *(f32 *)((char *)c + 0x1FB8))) / f1;
+                }
+            }
+        }
+        f1 = 2.0f * f3 / 100.0f;
+        if (f1 <= 0.0f) {
+            f1 = 0.0f;
+        }
+        f21 = f21 * f1;
+    }
+    f1 = *(f32 *)((char *)c + 0x1A40) - f20 * f21;
+    if (f1 <= 0.0f) {
+        *(f32 *)((char *)c + 0x1A40) = f1;
+        *(f32 *)((char *)c + 0x17D0) = 0.0f;
+        *(s8 *)((char *)c + 0x200F) = 1;
+        if (*(s8 *)((char *)c + 0x2010) != 0) {
+            func_001D7CC0(c, 1);
+        }
+    }
+}
+#endif
+// differs: 148 of 150: the original moves c into $s0 after the first float test (the test reads 0x1A40 through $a0) and keeps no address across the call to func_001DF8F0; this C keeps c in $s2 and the c+0x1A40 address in $s0 (common subexpression across the call), so the frame is 0x50 against 0x30
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2DE0);
 void func_001E3010(Fighter *c) {
     s32 buf[10];
