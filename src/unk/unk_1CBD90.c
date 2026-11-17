@@ -1,18 +1,83 @@
 #include "common.h"
 
+typedef struct Big { char pad[0x8934]; void *tbl[2]; } Big;
+extern Big *D_00470570;
+typedef struct Arg { char pad[0x2c]; int *p; } Arg;
+typedef struct Side {
+    char pad0[0xB88];
+    int **blk;
+    short *idx;
+    char pad1[0xCC3 - 0xB90];
+    signed char m;
+    signed char n;
+    char pad2[0x1354 - 0xCC5];
+    struct Side *other;
+    char pad3[0x201E - 0x1358];
+    signed char out;
+} Side;
+extern void func_001C8480(void *, int);
+extern void func_001C7D90(void *, int, void *);
+extern int func_00218960(void *);
+extern void func_00219270(signed char);
+extern signed char func_00218B60(short, int);
+extern void func_00218C40(void *, int, int, int, float, float);
+extern void func_00219340(void *, float);
+extern void func_00219390(void *);
+extern void func_00219470(void *);
+extern void func_001D9CA0(void *, int);
+
+// func_001CBD90, func_001CBDF0, func_001CBE80, func_001CBEE0: register and scheduling differences; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBD90);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBDF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBE80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBEE0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBF50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBF90);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBFE0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC020);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC070);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC0C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC100);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC130);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC170);
+int func_001CBF50(void *unused, Arg *a) {
+    int x = a->p[0];
+    return func_00218960((char *)D_00470570 + (x << 5) + 0x5C4) ? 1 : 3;
+}
+int func_001CBF90(void *unused, Arg *a) {
+    *(int *)a = func_00218960((char *)D_00470570 + (a->p[0] << 5) + 0x5C4);
+    return 1;
+}
+int func_001CBFE0(void *unused, Arg *a) {
+    if (*(short *)((char *)D_00470570 + 0x7E6) != -1) {
+        func_00219270(-1);
+    }
+    return 1;
+}
+int func_001CC020(void *unused, Arg *a) {
+    int r;
+    if (*(short *)((char *)D_00470570 + 0x7E6) != -1) {
+        r = func_00218B60(*(short *)((char *)D_00470570 + 0x7E4), 1);
+        func_00219270(r);
+    }
+    return 1;
+}
+int func_001CC070(void *unused, Arg *a) {
+    char *q = *(char **)unused;
+    int *p = a->p;
+    func_00218C40((char *)D_00470570 + (p[2] << 5) + 0x5C4, *(int *)(q + 0x10), *(int *)(q + 0x14), *(int *)(q + 0x18), *(float *)&p[1], (float)p[0]);
+    return 1;
+}
+int func_001CC0C0(void *unused, Arg *a) {
+    int *p = a->p;
+    func_00219340((char *)D_00470570 + (p[1] << 5) + 0x5C4, *(float *)p);
+    return 1;
+}
+int func_001CC100(void *unused, Arg *a) {
+    int *p = a->p;
+    char *e = (char *)(p[0] << 5);
+    *(float *)((char *)a + 0x40) = *(float *)(e + (int)D_00470570 + 0x5C4);
+    return 1;
+}
+int func_001CC130(void *unused, Arg *a) {
+    func_00219390((char *)D_00470570 + (a->p[0] << 5) + 0x5C4);
+    return 1;
+}
+int func_001CC170(void *unused, Arg *a) {
+    func_00219470((char *)D_00470570 + (a->p[0] << 5) + 0x5C4);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC1B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC270);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC300);
@@ -20,7 +85,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC4B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC710);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC7C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC850);
+int func_001CC850(void *unused, Arg *a) {
+    func_001D9CA0(D_00470570->tbl[a->p[0]], 0);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC890);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCA90);
@@ -117,11 +185,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF2C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF4A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF4F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF530);
-typedef struct Big { char pad[0x8934]; void *tbl[2]; } Big;
-extern Big *D_00470570;
-typedef struct Arg { char pad[0x2c]; int *p; } Arg;
-extern void func_001C8480(void *, int);
-extern void func_001C7D90(void *, int, void *);
 
 int func_001CF570(void *unused, Arg *a) {
     int side = a->p[1];
