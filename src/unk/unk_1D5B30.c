@@ -3370,7 +3370,37 @@ void func_001E5970(void) {
     __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(src), "r"((char *)buf + 0x10) : "memory");
     ((void (*)(s32, void *))jtbl_00469600[0])(k, buf);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E59F0);
+extern s32 CharLight_Create(void);
+extern void func_00237760(s32, s32);
+extern void *BtbBg_GetStageModelF10(void);
+extern void func_001E55C0(void *);
+extern void memset(void *, s32, s32);
+extern void *jtbl_00469600[];
+
+void func_001E59F0(void) {
+    s32 buf[12];
+    s32 out[4];
+    s32 *base;
+    s32 i;
+    s32 n;
+    s32 k;
+    void *src;
+
+    base = (s32 *)((char *)gBattle + 0x268);
+    n = *(s32 *)((char *)gBattle + 0x88D8) * 2 + 1;
+    for (i = 0; i < n; i++) {
+        base[i * 2] = CharLight_Create();
+        base[i * 2 + 1] = *(s32 *)base[i * 2];
+        func_00237760(base[i * 2], i);
+    }
+    k = -1;
+    memset(buf, 0, 0x30);
+    buf[0] = 0;
+    src = BtbBg_GetStageModelF10();
+    __asm__ volatile ("lqc2 $vf1, 0(%0)
+	sqc2 $vf1, 0(%1)" : : "r"(src), "r"((char *)buf + 0x10) : "memory");
+    ((void (*)(s32, void *))jtbl_00469600[0])(k, buf);
+}
 s32 func_001E5AC0(Fighter *c) {
     return 0;
 }
