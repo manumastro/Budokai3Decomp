@@ -69,7 +69,7 @@ extern void func_001A3610(s32);
 extern void func_001E11E0(s32, void *);
 extern void func_0021A030(void *, s32, s32, f32);
 extern void func_00237000(s32, void *);
-extern void func_001DD680(Fighter *);
+extern void func_001DD680(Fighter *, s32);
 extern void func_001D80A0(Fighter *, s32);
 extern void func_001D9960(Fighter *, s32, s32);
 extern void CharLight_Release(s32);
@@ -366,22 +366,18 @@ s32 func_001CB7A0(void) {
     w->unk891C = 0;
     return 1;
 }
-// GIVEN UP: the code is the same size but one instruction short (0x8C against 0x90): an unused zero in a1 in the original
-#if 0
 s32 func_001CB7E0(void *self, ScriptCtx *ctx) {
     s32 *a = (s32 *)ctx->args;
-    u8 *f = *(u8 **)((u8 *)gBattle + 0x8934 + a[0] * 4);
+    u8 *f = ((u8 **)((u8 *)gBattle + 0x8934))[a[0]];
 
     *(s8 *)((u8 *)gBattle + 0x8AB1) = *(s32 *)(*(u8 **)(f + 0x1354) + 0x1350) + 1;
     *(s8 *)(f + 0x1FF8) = -1;
     *(s32 *)(*(u8 **)(f + 0x1354) + 0x1AC4) = 0;
-    func_001DD680((Fighter *)f);
+    func_001DD680((Fighter *)f, 0);
     func_001D80A0(*(Fighter **)(f + 0x1354), 9);
     func_001D9960(*(Fighter **)(f + 0x1354), 0x1C, 1);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB7E0);
 s32 func_001CB870(void) {
     func_001DA4C0();
     return 1;
