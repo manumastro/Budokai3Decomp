@@ -324,10 +324,14 @@ void SklEdit_TaskLoad(void *a) {
         }
     }
 }
-/* differs: gSklEdit is loaded after the `li -2` here; the original loads it first (register v1 / v0 swapped) */
+/* differs: 1 instruction of 6: the final addu is `v1 + v0` here, the original is `v0 + v1` (operand order);
+   the load of gSklEdit first matches with s32 p = (s32)gSklEdit. Variants tried (7): char *p, s32 p with
+   a0 & -2 on either side, a separate q for the mask, and an offset-first sum (size mismatch). */
 #if 0
 u16 func_002B4AD0(s32 a0) {
-    return *(u16 *)((char *)gSklEdit + (a0 & -2) + 0x34);
+    s32 p;
+    p = (s32)gSklEdit;
+    return *(u16 *)(p + (a0 & -2) + 0x34);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4AD0);
