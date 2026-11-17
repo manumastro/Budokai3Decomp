@@ -100,7 +100,9 @@ typedef struct Fighter {
     s16 f1AD0;
     s16 f1AD2;
     s16 f1AD4;
-    char pad1AD6[0x222];
+    char pad1AD6[0x21A];
+    s32 f1CF0;
+    s32 f1CF4;
     void *f1CF8;
     s32 f1CFC;
     char pad1D00[0x2CB];
@@ -249,6 +251,29 @@ void func_001D7280(Fighter *c) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7290);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7450);
+extern s8 D_00447440[];
+
+#if 0
+void func_001D79F0(Fighter *c) {
+    s32 i;
+    char *p;
+    s8 *q;
+
+    p = (char *)c->f1CF8 + 0xD4;
+    for (i = 0; i < 8; i++) {
+        *((char *)c + 0x1D0C + i) = *(s16 *)((char *)c->f1CF4 + 0x12);
+        q = (s8 *)((char *)c + 0x1D0C + i);
+        if (*(s8 *)(p + 6) == 8) {
+            *q = 0;
+        }
+        if (*q >= D_00447440[*(s16 *)(p + 2) * 96 + 4]) {
+            *q = 0;
+        }
+        p += 20;
+    }
+}
+#endif
+// differs: the original keeps the object pointer in a0 and the loop counter in t2 (c is copied to t1 here; 33 of 35 differ); declaration orders and a base pointer tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D79F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7A70);
 s32 func_001D7BC0(Fighter *c) {
@@ -931,7 +956,28 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2510);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2630);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E28F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2B00);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2C50);
+typedef struct PtrCount {
+    void *p;
+    s32 n;
+} PtrCount;
+
+extern void func_002470B0(s32, PtrCount);
+
+void func_001E2C50(Fighter *c) {
+    s32 *q;
+    PtrCount arg;
+
+    arg.p = c;
+    arg.n = 7;
+    func_002470B0(-1, arg);
+    c->f1860 = 0xBF800000;
+    q = (s32 *)((char *)c + 0x1AA0);
+    if (c->f1AA4 > 0) {
+        func_00144430(q);
+        q[1] = 0;
+    }
+    c->f1CF0 = -1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2CC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2DE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3010);
