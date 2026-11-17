@@ -480,7 +480,35 @@ void func_001A80E0(void) {
         *(f32 *)(s0 + 0x138) = *(f32 *)(s0 + 0x138) + *(f32 *)(s0 + 0x130) * *(f32 *)(s1 + 0x88F0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A81F0);
+extern void func_00146F10(void *, void *, f32);
+extern f32 func_00146EB0(void *);
+extern void amTask_Kill(void *);
+void func_001A81F0(void *a0) {
+    u8 *s1 = (u8 *)a0;
+    u8 *s2;
+    u8 *s0;
+    f32 f20;
+    f32 f0;
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    s0 = (u8 *)gBattle + 0xA0;
+    if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0) {
+        s2 = s1 + 0x30;
+        func_00146F10(tmp, s2, *(f32 *)(s1 + 0x54) * *(f32 *)((u8 *)gBattle + 0x88F0));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)"
+            : : "r"(s2 + 0x10), "r"(tmp));
+        func_00146F10(s2 + 0x10, s2 + 0x10, *(f32 *)(s2 + 0x20));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)"
+            : : "r"(s2), "r"(s2 + 0x10));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)"
+            : : "r"(s0 + 0x1B0), "r"(s2));
+        f20 = func_00146EB0(s2 + 0x10);
+        f0 = func_00146EB0(s2);
+        if (f20 <= 2.49999994e-05f && f0 <= 2.49999994e-05f) {
+            amTask_Kill(s1);
+        }
+    }
+}
 extern u8 D_00468190[];
 void func_001A8300(void *a0) {
     u8 *s3 = (u8 *)gBattle;
