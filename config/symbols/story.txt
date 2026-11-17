@@ -1,0 +1,1 @@
+// Names for the story files (docs/decomp_guide.md, "Symbol files").

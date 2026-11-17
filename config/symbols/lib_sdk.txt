@@ -1,0 +1,1 @@
+// Names for the lib_sdk files (docs/decomp_guide.md, "Symbol files").

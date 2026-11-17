@@ -25,6 +25,13 @@ options:
     - config/symbol_addrs.txt
     - config/symbols/lib_syscalls.txt
     - config/symbols/lib_strings.txt
+    - config/symbols/lib_sdk.txt
+    - config/symbols/lib_cri.txt
+    - config/symbols/sys.txt
+    - config/symbols/battle.txt
+    - config/symbols/menu.txt
+    - config/symbols/story.txt
+    - config/symbols/unk.txt
   undefined_funcs_auto_path: build/undefined_funcs_auto.txt
   undefined_syms_auto_path: build/undefined_syms_auto.txt
 

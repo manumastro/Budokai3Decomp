@@ -1,0 +1,1 @@
+// Names for the unk files (docs/decomp_guide.md, "Symbol files").
