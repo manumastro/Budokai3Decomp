@@ -32,6 +32,39 @@ void func_00306210(void) {
     }
 }
 
+extern void func_00133B50(s32, s32);
+extern void func_003053D0(s32 *, s32, s32, s32);
+extern void func_00305680(void);
+extern f32 D_004E0614[];
+extern void func_00143F20(f32, s32);
+extern void func_00143D60(s32, s32, s32, s32);
+extern void amTask_Kill(void *);
+extern s8 D_004B4B63[];
+extern char D_00492FCE[];
+
+#if 0
+// func_003062B0: the four float constants of the stack block are stored in another order (the register of each constant swapped); 3 store orders tried; the calls and the flag test match
+void func_003062B0(s32 *a0) {
+    s32 *s1 = a0;
+    u16 s0;
+    s32 blk[4];
+    s0 = *(u16 *)(D_00492FCE + (s32)D_004B4B63[0] * 184);
+    func_00133B50(0, 0x2710);
+    blk[1] = 0x43B40000;
+    blk[0] = 0x43A00000;
+    blk[3] = 0x3F800000;
+    blk[2] = 0x41200000;
+    func_003053D0(blk, ((s32 *)D_0047097C)[0xF4 / 4], 0, 0x600000);
+    func_00305680();
+    if ((s0 & 0x4000) != 0) {
+        func_00143F20(D_004E0614[0], 0);
+        if (!(D_004E0614[0] < 0.0f)) {
+            func_00143D60(0, 0, 3, 0);
+        }
+        amTask_Kill((void *)s1);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003062B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003063B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306500);
