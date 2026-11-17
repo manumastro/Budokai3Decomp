@@ -21,7 +21,27 @@ extern void func_0029CA40(void);
 extern void *gStrTitle;
 
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_00299CA0);
-INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A090);
+void func_0029A090(void) {
+    s32 k;
+    if (gStrMap[0x90 / 4] != 0) {
+        func_0022D0E0(gStrMap[0x90 / 4], 1);
+    }
+    gStrMap[0x90 / 4] = func_0022D670(((s32 *)((s32 *)gStrMap[0x5C / 4])[0x1C / 4])[0x54 / 4], 0.0f);
+    if (gStrMap[0x94 / 4] != 0) {
+        func_0022D0E0(gStrMap[0x94 / 4], 1);
+    }
+    gStrMap[0x94 / 4] = func_0022D670(((s32 *)((s32 *)gStrMap[0x5C / 4])[0x1C / 4])[0x58 / 4], 0.0f);
+    if (gStrMap[0x98 / 4] != 0) {
+        func_0022D0E0(gStrMap[0x98 / 4], 1);
+    }
+    gStrMap[0x98 / 4] = func_0022D670(((s32 *)((s32 *)gStrMap[0x5C / 4])[0x1C / 4])[0x9C / 4], 0.0f);
+    for (k = 0; k < 0x40; k++) {
+        if (gStrMap[0x27 + k] != 0) {
+            func_0022D0E0(gStrMap[0x27 + k], 1);
+        }
+        gStrMap[0x27 + k] = func_0022D670(((s32 *)((s32 *)gStrMap[0x5C / 4])[0x1C / 4])[0x44 / 4], 0.0f);
+    }
+}
 #if 0
 // func_0029A1C0: the switch chain and the condition match now (q != 0 && q->4 == 3); the original lays out an empty case block for case 1 and case 3 before the end, ours merges the empty cases; four orders tried
 void func_0029A1C0(void) {
