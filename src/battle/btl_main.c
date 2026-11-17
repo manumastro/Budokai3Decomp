@@ -4221,6 +4221,75 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C2B10);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C3120);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C3500);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C37F0);
+static inline s32 cvt_w_s_asm(f32 x) {
+    f32 t;
+    s32 r;
+    __asm__ volatile("cvt.w.s %0, %1" : "=f"(t) : "f"(x));
+    __asm__ volatile("mfc1 %0, %1" : "=r"(r) : "f"(t));
+    return r;
+}
+extern s32 *func_0021C660(s32 a);
+extern s32 func_001DF8F0(s32 a, s32 b);
+extern s32 D_00495B60[];
+#if 0
+// differs: 126 of 145 differ: the inline cvt.w.s helper emits the same opcode (the first cvt matches), but the original keeps the call result in v0 for the stores and loads the 0.0 constant before the field loads; sub/out declaration orders tried
+void func_001C3AF0(Fighter *f) {
+    u8 *sub;
+    u8 *o;
+    u8 *q;
+    f32 fl;
+    s32 s1;
+    s32 s0v;
+    void *ptr;
+    sub = (u8 *)f + 0x1360;
+    o = (u8 *)func_0021C660(FT_FIELD(f, s32, 0x1350));
+    FT_FIELD(o, s32, 0x4) = cvt_w_s_asm(FT_FIELD(f, f32, 0x17C4));
+    FT_FIELD(o, s32, 0x8) = cvt_w_s_asm(FT_FIELD(f, f32, 0x17C0));
+    FT_FIELD(o, s32, 0xC) = cvt_w_s_asm(FT_FIELD(f, f32, 0x17D4));
+    if (FT_FIELD(f, f32, 0x1A40) <= 0.0f) {
+        fl = FT_FIELD(f, f32, 0x17D0);
+    } else {
+        fl = FT_FIELD(f, f32, 0x17D4);
+    }
+    FT_FIELD(o, s32, 0x10) = cvt_w_s_asm(fl);
+    if (FT_FIELD(FT_FIELD(f, void *, 0xBB0), s16, 0x0) != 0 && func_001DF8F0(0, 0x1B) > 0) {
+        fl = 0.0f;
+    } else {
+        fl = (f32)(FT_FIELD(FT_FIELD(f, u8 *, 0x1CF8) + FT_FIELD(f, s32, 0xBA4) * 20, s8, 0xDD) * 1000);
+    }
+    FT_FIELD(o, s32, 0x14) = cvt_w_s_asm(fl);
+    FT_FIELD(o, s32, 0x18) = FT_FIELD(f, s32, 0x17EC);
+    FT_FIELD(o, s16, 0x3E) = FT_FIELD(sub, s16, 0x44);
+    FT_FIELD(o, s16, 0x40) = FT_FIELD(FT_FIELD(f, void *, 0x1CF4), s16, 0x1E) - FT_FIELD(f, s32, 0x1894);
+    FT_FIELD(o, s16, 0x42) = D_00495B60[FT_FIELD(f, s32, 0x1350)];
+    if (FT_FIELD(f, s32, 0x1A48) < 0) {
+        FT_FIELD(o, s32, 0xE8) = 0;
+    } else {
+        FT_FIELD(o, s32, 0xE8) = 1;
+        FT_FIELD(o, f32, 0xEC) = FT_FIELD(f, f32, 0x1A40);
+        FT_FIELD(o, s32, 0xF0) = 0x44E10000;
+    }
+    s1 = FT_FIELD(sub, s32, 0x400);
+    s0v = FT_FIELD(sub, s32, 0x3F8);
+    memset(o + 0x46, 0, 0x40);
+    memset(o + 0x86, 0, 0x40);
+    if (s1 != s0v) {
+        q = o;
+        do {
+            ptr = FT_FIELD(sub, void *, s1 * 16 + 0x204);
+            if (ptr == 0) {
+                FT_FIELD(q, s16, 0x46) = 0;
+                FT_FIELD(q, s16, 0x86) = 0;
+            } else {
+                FT_FIELD(q, s16, 0x46) = FT_FIELD(ptr, s16, 0x0);
+                FT_FIELD(q, s16, 0x86) = FT_FIELD(ptr, s16, 0x2);
+            }
+            s1 = (s1 + 1) & 0x1F;
+            q += 2;
+        } while (s1 != s0v);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C3AF0);
 extern void func_001B0B10(void);
 extern void func_001B0810(void);
