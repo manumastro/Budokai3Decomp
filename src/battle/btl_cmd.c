@@ -641,7 +641,7 @@ void func_001A84B0(u8 *a0) {
     func_00125740(s2 + 0x160, s1, 0x50);
 }
 #endif
-// GIVEN UP: differs: size 0x174 vs 0x180 (3 instructions short); the param copy is in s2 (original s1), and the if on the 7 test is laid out inline (original branches out: beq to the block); 3 forms tried
+// GIVEN UP: 12 forms tried (declaration orders, != 7 swap, param without copy, inline offsets); best 31 of 95 instructions differ: ours gBattle=s0, entry=s1, param=s2 vs original param=s1, gBattle=s0, entry=s2 (param always lands in s2), plus the 7 test laid out inline where the original branches out to the block; size 0x174 vs 0x180
 #if 0
 extern void func_00125740(void *, void *, s32);
 void func_001A84B0(u8 *a0x) {
