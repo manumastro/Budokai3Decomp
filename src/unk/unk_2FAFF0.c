@@ -217,7 +217,37 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCF60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD090);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD560);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD7E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD9F0);
+extern u32 func_0012EAE0(s32);
+extern s16 D_0046B5B0[];
+s16 func_002FD9F0(u64 mask) {
+    u64 bits = mask;
+    s32 cnt = 0;
+    s32 r;
+    s32 k;
+
+    if (mask != 0) {
+        do {
+            if (mask & 1) {
+                cnt++;
+            }
+            mask >>= 1;
+        } while (mask != 0);
+    }
+    if (cnt == 0) {
+        return 0;
+    }
+    r = (s32)(func_0012EAE0(32) % (u32)cnt);
+    k = 0;
+    if (0 <= r) {
+        do {
+            if (!(bits & ((u64)1 << k))) {
+                r++;
+            }
+            k++;
+        } while (r >= k);
+    }
+    return D_0046B5B0[r];
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FDAC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FDF70);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FE1B0);
