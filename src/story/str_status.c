@@ -271,32 +271,71 @@ void func_002BE830(char *p) {
     *(s32 *)(p + 0x24) = 0x400010;
     func_002BDF50((char *)D_0047011C + (D_0047011C[0x1A8 / 4] << 2) + 0x160, p);
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE870);
-void StrStatus_ReleaseBuffers(void) {
-    s32 i;
-    if (D_0047011C[0x2D8 / 4] != 0) {
-        amCdFs_ReleaseCache(D_0047011C[0x2D4 / 4]);
-        D_0047011C[0x2D4 / 4] = 0;
-        D_0047011C[0x2D8 / 4] = 0;
-    } else {
-        if (D_0047011C[0x2D4 / 4] != 0) {
-            amCdFs_Close(D_0047011C[0x2D4 / 4], 0);
-            D_0047011C[0x2D4 / 4] = 0;
+#if 0
+// differs: mode 0 keeps a beqz to the epilogue before the default b (0x1B0 against 0x1C0); tried if chains, switches in both orders, cases 0 and default (A-Y)
+extern s32 D_004562B4;
+extern s32 D_00456140[];
+typedef struct StrMsg {
+    char pad0[0x24];
+    s32 w24;
+    char pad28[2];
+    s16 h2A;
+    s16 h2C;
+    char pad2E[2];
+} StrMsg;
+void func_002BE870(s32 *a0) {
+    StrMsg m0;
+    StrMsg m1;
+    s32 mode;
+    s32 v;
+    s32 *s;
+    mode = a0[5];
+    s = D_0046FE44;
+    switch (mode) {
+    case 1:
+        s[0xB] |= 0x20;
+        if (*(s32 *)((u8 *)D_0047011C + 0x1B0) != 0) {
+            Obj_ResetF38(*(s32 *)((u8 *)D_0047011C + 0x1B0));
+            *(s32 *)((u8 *)D_0047011C + 0x1B0) = 0;
         }
-    }
-    for (i = 0; i < 0x20; i++) {
-        if (D_0047011C[0x254 / 4 + i] != 0) {
-            amHeap_Free((void *)D_0047011C[0x254 / 4 + i]);
+        if (*(s32 *)((u8 *)D_0047011C + 0x1B8) != 0) {
+            Obj_ResetF38(*(s32 *)((u8 *)D_0047011C + 0x1B8));
+            *(s32 *)((u8 *)D_0047011C + 0x1B8) = 0;
         }
-        D_0047011C[0x254 / 4 + i] = 0;
+        memset(&m0, 0, 0x30);
+        if (((s16 *)s)[0x36 / 2] == 7 && ((s16 *)s)[0x34 / 2] == 4) {
+            v = D_004562B4;
+        } else {
+            v = D_00456140[((s16 *)s)[0x36 / 2]];
+        }
+        m0.h2A = v;
+        m0.h2C = 12;
+        m0.w24 = 0x400020;
+        func_002BDF50((u8 *)D_0047011C + 0x1B0, &m0);
+        memset(&m1, 0, 0x30);
+        m1.h2A = 0x14;
+        m1.w24 = 0x400020;
+        func_002BDF50((u8 *)D_0047011C + 0x1B8, &m1);
+        break;
+    case 2:
+        if (s[0xB] & 0x20) {
+            if (*(s32 *)((u8 *)D_0047011C + 0x1B0) != 0) {
+                Obj_ResetF38(*(s32 *)((u8 *)D_0047011C + 0x1B0));
+                *(s32 *)((u8 *)D_0047011C + 0x1B0) = 0;
+            }
+            if (*(s32 *)((u8 *)D_0047011C + 0x1B8) != 0) {
+                Obj_ResetF38(*(s32 *)((u8 *)D_0047011C + 0x1B8));
+                *(s32 *)((u8 *)D_0047011C + 0x1B8) = 0;
+            }
+            s[0xB] &= ~0x20;
+        }
+        break;
+    case 0:
+        break;
     }
-    func_00209450(0x400008, 1);
-    func_00209450(0x400010, 1);
-    func_00209450(0x400020, 1);
-    func_00209450(0x400040, 1);
-    func_00209450(0x400080, 1);
-    memset(D_005BCF80, 0, 0x2E0);
 }
+#endif
+INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE870);
 #if 0
 // func_002BEB50: size matches (0x160) but 22 of 88 instructions differ: the original keeps the list in s4, the entry in s3, the call result in s2, the counter in s1 and the offset in s0 (the global is loaded into a0 there, v1 here); the layout of the >= 0 test is fixed; 24 orders of list/ent/res/i tried
 extern void *BtlCmd_GetMotEntry(void *, s32);
