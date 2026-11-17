@@ -66,6 +66,53 @@ void func_003062B0(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003062B0);
+extern f32 func_002B06A0(void);
+extern void amAdx_Stop(s32);
+extern void SoundRpc_SendWord(s32);
+extern void Scr_KillTasks(s32);
+extern void func_002641D0(s32, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_MarkDone(void);
+extern void func_00305130(f32 *, f32 *, s32, s32, s32);
+#if 0
+// func_003063B0: 11 of 82 differ: the constant registers and store order of the two stack vectors (the original puts 1.0 in a0, ours 400); statement order and a single 8-float array (29 differ) tried
+void func_003063B0(void) {
+    s32 *s0 = (s32 *)D_0047097C;
+    f32 t = func_002B06A0();
+    f32 va[4];
+    f32 vb[4];
+    f32 x;
+    x = *(f32 *)&s0[0x8 / 4] + t;
+    *(f32 *)&s0[0x8 / 4] = x;
+    va[3] = 1.0f;
+    vb[0] = 1.0f;
+    vb[1] = 1.0f;
+    vb[2] = 1.0f;
+    vb[3] = 1.0f;
+    {
+        s32 *g = (s32 *)D_0047097C;
+        va[0] = 320.0f;
+        va[1] = 400.0f;
+        va[2] = 0.0f;
+        if (90.0f < *(f32 *)&g[0x8 / 4]) {
+            if (*(f32 *)&g[0x8 / 4] < 220.0f) {
+                func_00305130(va, vb, g[0x15C / 4], 3, 0x800000);
+            }
+        }
+    }
+    s0 = (s32 *)D_0047097C;
+    if ((*(u16 *)((char *)D_00492FCE + (s32)D_004B4B63[0] * 184) & 0x8) != 0 || !(*(f32 *)&s0[0x8 / 4] < 960.0f)) {
+        amAdx_Stop(1);
+        SoundRpc_SendWord(0);
+        Scr_KillTasks(s0[0x4 / 4]);
+        func_002641D0(0xA, 0);
+        Scene_Request(0xC, 0);
+        Scene_MarkDone();
+        amTask_Kill((void *)s0[0]);
+        s0[0] = 0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003063B0);
 extern f32 func_002B06A0(void);
 extern void amAdx_PlayAfs(s32, s32, s32);
