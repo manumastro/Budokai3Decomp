@@ -18,6 +18,10 @@ extern s32 D_00452EE4[];
 extern s32 D_00452EEC[];
 extern s32 D_00452ED0[];
 extern void EssInfo_Exit(void);
+extern s32 Save_GetState(void);
+extern void func_001EF510(void *, s32);
+extern void amHeap_Free(void *);
+extern void func_0026B460(u8 *);
 extern void func_0026F0E0(void);
 extern void func_00272B70(void);
 extern void func_0026BD50(void);
@@ -143,7 +147,46 @@ void func_00269B90(void) {
     *(s32 *)(D_004707E0 + 0x248) += 1;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_00269CC0);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026A4F0);
+void func_0026A4F0(u8 *a0) {
+    u8 *s0;
+    u8 *d;
+    s32 v;
+    void *f;
+
+    s0 = a0;
+    func_00269B90();
+    func_00269CC0();
+    v = Save_GetState();
+    switch (v) {
+    case 4:
+        func_001EF510(*(void **)(D_004707E0 + 0x270), 0xD680);
+        break;
+    case 5:
+    case 3:
+        break;
+    default:
+        return;
+    }
+    amHeap_Free(*(void **)(D_004707E0 + 0x270));
+    *(s32 *)(D_004707E0 + 0x270) = 0;
+    d = D_004707E0;
+    *(s32 *)(d + 0x210) = 0x3C;
+    *(s32 *)(d + 0x218) = 0;
+    d = D_004707E0;
+    *(s32 *)(d + 0xF0) = 0x45;
+    *(s32 *)(d + 0xF8) = 0;
+    d = D_004707E0;
+    *(s32 *)(d + 0x240) = 1;
+    *(s32 *)(d + 0x248) = 0;
+    *(s32 *)(d + 0x250) = 0;
+    d = D_004707E0;
+    *(s32 *)(d + 0x1C0) = -1;
+    d = D_004707E0;
+    *(s32 *)(d + 0x190) = -1;
+    *(s32 *)(d + 0x188) = 0;
+    *(void **)(s0 + 0x1C) = ((void *)func_0026B460 == 0) ? 0 : (void *)func_0026B460;
+    func_0028DFC0(6, 0, *(s32 *)(D_004707E0 + 0x50), 0, 0, 0, 0, 0, 0x1F);
+}
 extern void func_00269B90(void);
 extern void func_00269CC0(void);
 
