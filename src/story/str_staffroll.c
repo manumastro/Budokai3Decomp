@@ -508,48 +508,99 @@ void func_0030E890(s32 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E890);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EAE0);
+extern void func_0030E290(s32 *);
+extern void func_0030DC00(s32 *);
+extern void amCdFs_Close(void *, s32);
+extern void func_0022E0B0(void *);
+extern void amFile_Load(void *);
+extern s32 func_002A8C50(s32);
+extern void func_002A8A60(void);
+extern void Fade_Request(s32, s32, s32);
+extern void func_0030EAE0(void);
+extern char D_0046FBC8[];
+extern char D_0046FBD8[];
+extern char D_0046FBE8[];
+extern u8 D_004590B0[];
+
+#if 0
+// differs: frame 0x80 with s0-s4 in the original, ours 0x70 with s0-s3; the table at sp+0x60 takes s3 and the loop pointer s2
+// (tried: 120 declaration orders of the five locals, the array size; the whole body is shifted by the frame)
+void func_0030EDA0(s32 *a0) {
+    u8 *s0;
+    s32 *s2;
+    s16 *ps;
+    s32 s4;
+    s32 cnt;
+    void *fn;
+    u8 tbl[0x20] __attribute__((aligned(16)));
+
+    s0 = (u8 *)a0[0xC];
+    s2 = (s32 *)D_00470998;
+    if (*(s16 *)((u8 *)s2[1] + 4) == 3) {
+        *(s32 *)s0 = *(s32 *)((u8 *)s2[0] + 0x54);
+        *(s32 *)((u8 *)s2[0] + 0x54) = 0;
+        amCdFs_Close((void *)s2[0], 0);
+        s2[0] = 0;
+        *(s32 *)(s0 + 4) = *(s32 *)((u8 *)s2[1] + 0x54);
+        *(s32 *)((u8 *)s2[1] + 0x54) = 0;
+        amCdFs_Close((void *)s2[1], 0);
+        s2[1] = 0;
+        func_0022E0B0(*(void **)s0);
+        amFile_Load(*(void **)(s0 + 4));
+        *(void **)(s0 + 8) = amTask_Create((void (*)(struct Task *))func_0030E5B0, 0, 0x2200, 8, 2, D_0046FBC8);
+        *(s32 *)(*(u8 **)(s0 + 8) + 0x30) = *(s32 *)s0;
+        *(s32 *)(*(u8 **)(s0 + 8) + 0x34) = *(s32 *)(s0 + 4);
+        *(s32 *)(*(u8 **)(s0 + 8) + 0x38) = 0;
+        *(s32 *)(*(u8 **)(s0 + 8) + 0x3C) = 0;
+        *(void **)(s0 + 0xC) = amTask_Create((void (*)(struct Task *))func_0030E290, 0, 0x2100, 8, 2, D_0046FBD8);
+        *(s32 *)(*(u8 **)(s0 + 0xC) + 0x38) = 0;
+        *(s32 *)(*(u8 **)(s0 + 0xC) + 0x30) = -1;
+        *(s32 *)(*(u8 **)(s0 + 0xC) + 0x34) = -1;
+        *(void **)(s0 + 0x10) = amTask_Create((void (*)(struct Task *))func_0030DC00, 0, 0x2300, 8, 2, D_0046FBE8);
+        *(s32 *)(*(u8 **)(s0 + 0x10) + 0x30) = *(s32 *)s0;
+        *(s32 *)(*(u8 **)(s0 + 0x10) + 0x34) = *(s32 *)(s0 + 4);
+        *(s32 *)(*(u8 **)(s0 + 0x10) + 0x44) = 0;
+        s0[0x1C] = 1;
+        *(s32 *)tbl = *(s32 *)D_004590B0;
+        *(s32 *)(tbl + 4) = *(s32 *)(D_004590B0 + 4);
+        *(s32 *)(tbl + 8) = *(s32 *)(D_004590B0 + 8);
+        *(s32 *)(tbl + 12) = *(s32 *)(D_004590B0 + 12);
+        *(f32 *)(tbl + 0x10) = *(f32 *)(D_004590B0 + 0x10);
+        *(s16 *)(tbl + 0x14) = *(s16 *)(D_004590B0 + 0x14);
+        s4 = 0;
+        ps = (s16 *)tbl;
+        do {
+            if (func_002A8C50(*ps) != 0) {
+                s0[0x1D] = 1;
+                break;
+            }
+            s4++;
+            ps++;
+        } while (s4 < 11);
+        s0[0x1E] = 1;
+        cnt = 0;
+        ps = (s16 *)tbl;
+        do {
+            if (func_002A8C50(*ps) == 0) {
+                s0[0x1E] = 0;
+                break;
+            }
+            cnt++;
+            ps++;
+        } while (cnt < 11);
+        Fade_Request(-1, 0, 0);
+        fn = (void *)func_0030EAE0;
+        *(s32 *)((u8 *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        func_002A8A60();
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EDA0);
+extern void func_0030EDA0(void);
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void memset(void *, s32, s32);
 extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
-
-extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void memset(void *, s32, s32);
-extern char D_0046FC00[];
-extern void func_0030EDA0(void);
 
 void StaffRoll_Load(s32 *a0) {
     s32 *s0 = (s32 *)((char *)a0 + 0x30);
