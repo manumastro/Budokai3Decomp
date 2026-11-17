@@ -427,6 +427,37 @@ s32 func_002A3120(void) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3190);
+extern void amCdFs_ReleaseCache(s32);
+extern void memset(void *, s32, s32);
+extern char D_005AB3C0[];
+
+#if 0
+// func_002A37E0: 1 of 76 differs: the index-path load of the key goes through the parameter register (a0), the original through the saved copy s2 (the copy is not kept); 3 forms tried
+s32 func_002A37E0(s32 *a0, char *a1) {
+    s32 *s2 = a0;
+    s32 idx = ((s32 *)*(s32 **)(a1 + 0x2C))[0];
+    s32 k;
+    char *e;
+    if (idx != -1) {
+        e = D_005AB3C0 + *(s32 *)s2[0] * 104 + idx * 52;
+        if (*(s32 *)(e + 4) != 0) {
+            amCdFs_ReleaseCache(*(s32 *)e);
+            *(s32 *)e = 0;
+        }
+        memset(e, 0, 0x34);
+    } else {
+        for (k = 0; k < 2; k++) {
+            e = D_005AB3C0 + *(s32 *)s2[0] * 104 + k * 52;
+            if (*(s32 *)(e + 4) != 0) {
+                amCdFs_ReleaseCache(*(s32 *)e);
+                *(s32 *)e = 0;
+            }
+            memset(e, 0, 0x34);
+        }
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A37E0);
 #if 0
 // func_002A3910: the argument and state loads come in another order (the scheduler hoists the state load); three variants tried
