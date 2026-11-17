@@ -11,7 +11,7 @@ extern s16 ArenaList_GetF2(void *);
 extern u8 D_00492FCE[];
 extern s16 D_005C4122[];
 extern void func_0030D300(void *);
-extern void func_00308BD0(void);
+extern void func_00308BD0();
 extern void func_00308AF0(u8 *);
 extern s8 func_0027DAA0(void *);
 extern s16 func_0027DAE0(void *);
@@ -59,7 +59,7 @@ extern s16 ArenaList_GetF0(void *);
 extern void func_00308C40();
 
 #if 0
-// differs: the original loads the word at s1+8 before the byte at s1+0xD (addu a0,a1,a0); mine loads the byte first, whatever the order of the operands
+// differs: 1 instruction: the word/byte pair loads match (lw a1 then lbu a0 with u32/u8 locals), but the addu is `a0,a1,a0` against `a0,a0,a1`; 90 declaration/statement/expression variants tried, none reach 0 (round 5 permp)
 void func_00308BD0(u8 *a0) {
     u8 *s0;
     u8 *s1;
@@ -77,7 +77,7 @@ void func_00308BD0(u8 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308BD0);
 #if 0
-// differs: 3 instructions: the original loads the table word s0[+8] before the byte s0[+0xD] in the first branch (mine the other way round)
+// differs: the indexed store is fixed (D_005C4122[idx] = 0 gives sll 1, as in the original); left: the word/byte load order in the first branch (mine byte first), 8 assignment variants tried, best 2 diffs (round 5 permp)
 void func_00308C40(u8 *a0) {
     u8 *s1;
     u8 *s0;

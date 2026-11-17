@@ -230,7 +230,7 @@ void func_002C5EB0(Dst2C41C0 *d, Src2C41C0 *s) {
     }
 }
 #if 0
-// differs: the fighter value is held in a0 instead of a1: the register choice of the local is not reproduced
+// differs: the fighter value is held in a0 instead of a1: the register choice of the local is not reproduced (all 6 declaration orders of k/sb/w give the same 4 diffs, round 5 permp)
 s32 func_002C5FC0(Task2C41C0 *t) {
     s32 k;
     Sub2C41C0 *sb = (Sub2C41C0 *)((char *)t + 0x20);
