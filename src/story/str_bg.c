@@ -112,7 +112,7 @@ void func_00290320(void) {
     D_004708A4 = 0;
 }
 #if 0
-// func_00290330: the search loop's break goes past the index test in ours, the original tests the index after the break too; three loop forms tried
+// func_00290330: the original's break is a `bne` over a `b` (an if-break), and the loop exit sets p = 0 with no test; goto and break both give beq / a test at the exit
 void func_00290330(s32 a0, s32 a1) {
     char *p;
     s32 i;
@@ -125,15 +125,15 @@ void func_00290330(s32 a0, s32 a1) {
     p = (char *)D_004708A4 + 0x430;
     i = 0;
     do {
-        if (*(s32 *)(p + 8) == a0) {
-            break;
+        if (*(s32 *)(p + 8) != a0) {
+            i++;
+            p += 0x50;
+        } else {
+            goto found;
         }
-        i++;
-        p += 0x50;
     } while (i < 0x48);
-    if (i == 0x48) {
-        p = 0;
-    }
+    p = 0;
+found:
     if (p == 0) {
         return;
     }

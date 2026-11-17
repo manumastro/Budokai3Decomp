@@ -209,7 +209,12 @@ s32 func_002BECB0(s32 a0, s32 a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BECB0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BED90);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEEE0);
+void func_002BEEE0(void *a0) {
+    if (a0 != 0) {
+        u8 *p = (u8 *)D_0047011C + 0x10;
+        __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a0), "r"(p) : "memory");
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEF00);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF000);
 
@@ -333,19 +338,15 @@ extern void func_002C02C0(void);
 
 extern void func_002C02C0(void);
 
-#if 0
-// func_002C03B0: the store through the sub-struct pointer (a2 = a0 + 0x30) is folded into a0 + 0x40 by the compiler; the original keeps a2 in a register
 void func_002C03B0(s32 *a0) {
+    s32 *a2 = a0 + 0x30 / 4;
     s32 a1 = a0[0x3C / 4];
     if (a1 != -1) {
         void *f = func_002C02C0;
-        s32 *a2 = a0 + 0x30 / 4;
         a2[0x10 / 4] = a1;
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03B0);
 
 #if 0
 // func_002C03E0: all but the last two registers agree; the function address and the constant 2 swap registers; four variants tried
@@ -369,7 +370,11 @@ void func_002C03E0(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03E0);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0470);
+void func_002C0470(u8 *a0, void *a1) {
+    u8 *p = a0 + 0x30;
+    p += 0x20;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a1), "r"(p) : "memory");
+}
 void func_002C0490(void *p, s16 v) {
     ((s32 *)p)[0xF] = v;
 }
