@@ -57,6 +57,70 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002214B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221950);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221E10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00222280);
+#if 0
+// differs: the state switch (f28 == 2 out of line, the beqz to the else block) is laid out in another order: 40 of 72 instructions differ
+typedef struct Sub4_21D260 {
+    s32 f0;
+    s32 f4;
+    char pad8[0x2];
+    s16 fA;
+    char padC[0x10];
+    f32 f1C;
+    f32 f20;
+    char pad24[0x4];
+    s32 f28;
+    f32 f2C;
+} Sub4_21D260;
+extern void func_00222BF0(void);
+extern void func_0021F3A0(void);
+void func_00222280(Task2_21D260 *o) {
+    Work21D260 *bs = gBtlSys;
+    Sub4_21D260 *s = (Sub4_21D260 *)((char *)o + 0x30);
+    f32 f;
+    s32 st;
+
+    func_00224680(s);
+    if ((bs->fE30 & 2) != 0) {
+        st = s->f28;
+        if (st != 2) {
+            if (st == 0) {
+                f = s->f2C + D_00470710;
+                s->f2C = f;
+                if (!(f < 8.0f)) {
+                    s->f28 = 1;
+                }
+            }
+        } else {
+            f = s->f2C + D_00470710;
+            s->f2C = f;
+            if (!(f < 8.0f)) {
+                gBtlSys->fE30 = gBtlSys->fE30 & -3;
+            }
+        }
+        s->f20 = s->f20 + D_00470710;
+    } else {
+        func_00224BB0(D_0058BB30);
+        func_002249B0();
+        if (D_0058BB38[0] == 0) {
+            if (D_0058BB36[0] != 0) {
+                s->f20 = s->f20 + D_00470710;
+            } else {
+                s->f20 = 0.0f;
+            }
+            return;
+        }
+    }
+    f = s->f1C + D_00470710;
+    s->f1C = f;
+    if (!(f < 8.0f)) {
+        s->f4 = 1;
+        s->f1C = 0.0f;
+        s->fA = 0;
+        o->f1C = (func_00222BF0 == 0) ? 0 : func_00222BF0;
+        ((Task2_21D260 *)s->f0)->f1C = (func_0021F3A0 == 0) ? 0 : (void (*)(void))func_0021F3A0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00222440);
 #if 0
 // differs: compiled 0x198 bytes, original 0x1A0; the state blocks (f28 == 2, == 0) and the shared tail are laid out in another order (a switch gives 37 of 104)
