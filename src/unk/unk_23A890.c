@@ -1098,6 +1098,59 @@ void func_00241FA0(s32 i, s32 k) {
         break;
     }
 }
+extern u8 D_0046AC98[];
+extern u8 D_0046ACA8[];
+void func_00242B40(void);
+void func_00242A10(void);
+#if 0
+// differs: 2 instructions short (0x198 vs 0x1A0): the first loop guard and the four accumulator moves match, but the original puts the first move (s4 = 0) in the delay slot of the guard branch and we put a nop there; a for-loop form changes the order of the tests (66 differ); round 5
+void func_002420F0(void) {
+    s32 s4;
+    u8 *s3;
+    s32 s2;
+    s32 s1;
+    s32 s0;
+    u8 *t0;
+    u8 *a1;
+    s32 a3;
+    s32 idx;
+
+    if (0 < *(s16 *)(D_0046FE44 + 0x102)) {
+        s4 = 0;
+        s2 = 0;
+        s1 = 0;
+        s0 = 0;
+        do {
+            s3 = D_0046FE44 + s2;
+            t0 = D_0046FE48 + s1;
+            a1 = gBattle + s0 + 0x830;
+            if (*(s32 *)(gBattle + s0 + 0x252C) == 0xE || *(s32 *)(gBattle + s0 + 0x252C) == 0x4A) {
+                *(s32 *)(s3 + 0x78) = *(s8 *)(a1 + 0xCC2);
+                idx = *(s32 *)(a1 + 0xBA0);
+                if (idx < 0 || idx >= 2) {
+                    idx = 0;
+                }
+                a3 = D_0058CA08[0];
+                if (idx == 0) {
+                    idx = 0xC;
+                } else {
+                    idx = 0xD;
+                }
+                *(s32 *)(t0 + 0x1A0) = a3;
+                *(s32 *)(s3 + 0x70) = func_00209540(*(s32 *)((u8 *)D_0058C6C0 + idx * 4 + 0x348), s4 == 0 ? 0x400040 : 0x400080, 0);
+            }
+            s4++;
+            s2 += 0x80;
+            s1 += 0x1A4;
+            s0 += 0x2020;
+        } while (s4 < *(s16 *)(D_0046FE44 + 0x102));
+    }
+    if (*(s32 *)(gBattle + 0x252C) == 0xE || *(s32 *)(gBattle + 0x252C) == 0x4A || *(s32 *)(gBattle + 0x404C) == 0xE || *(s32 *)(gBattle + 0x404C) == 0x4A) {
+        amTask_Create(func_00242B40, 0, 0x5800, 0x400, 0x20000, D_0046AC98);
+        amTask_Create(func_00242A10, 0, 0x3700, 0x400, 0x20000, D_0046ACA8);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002420F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242290);
 void func_00242490(s32 i) {
