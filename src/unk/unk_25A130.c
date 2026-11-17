@@ -218,9 +218,6 @@ s32 func_0025ADE0(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-/* r6 best attempt diff 9 of 43: the global is loaded into $a0 before the argument pointer, the reverse of the
-   target; the buffer copy into a local array and the placeholder branch did not change the order. */
-#if 0
 s32 func_0025AE10(void *t, ScrCmd *c)
 {
   ScrObj *o = D_0058D4E8[0];
@@ -247,8 +244,6 @@ s32 func_0025AE10(void *t, ScrCmd *c)
   }
   return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025AE10);
 
 s32 Scr_CmdPlayerCall25AA20(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
