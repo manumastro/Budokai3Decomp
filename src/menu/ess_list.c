@@ -126,5 +126,32 @@ void func_00272B70(void) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/menu/ess_list", func_00272B70);
+void func_00272B70(void) {
+    s32 s3;
+    s32 s2;
+    void **s1;
+    s32 s0;
+
+    amTask_KillGroup(0x200, 8, 0);
+    s3 = 0;
+    s1 = (void **)&D_00470800;
+    do {
+        D_004707FC = (s32)*s1;
+        if (D_004707FC != 0) {
+            s2 = 0;
+            s0 = 0;
+            do {
+                if (*(void **)((u8 *)D_004707FC + s0) != 0) {
+                    amCdFs_Close(*(void **)((u8 *)D_004707FC + s0), 0);
+                }
+                s2++;
+                s0 += 4;
+            } while (s2 < 3);
+            amHeap_Free((void *)D_004707FC);
+            *s1 = 0;
+        }
+        s3++;
+        s1++;
+    } while (s3 < 2);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_list", func_00272C30);

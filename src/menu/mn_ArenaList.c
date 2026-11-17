@@ -3,7 +3,39 @@
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EDC50);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EDE90);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EE100);
+void func_002EE100(u8 *s2) {
+    s32 s1;
+    u32 *s0;
+
+    s1 = 0;
+    s0 = (u32 *)s2;
+    do {
+        if (s0[6] != 0) {
+            func_0022D4B0((void *)s0[6], 1);
+            s0[6] = 0;
+        }
+        s1++;
+        s0++;
+    } while (s1 < 8);
+    if (*(u32 *)(s2 + 4) != 0) {
+        func_0022D0E0(*(void **)(s2 + 4), 1);
+        *(u32 *)(s2 + 4) = 0;
+    }
+    s1 = 0;
+    s0 = (u32 *)s2;
+    do {
+        if (s0[2] != 0) {
+            func_0022D0E0((void *)s0[2], 1);
+            s0[2] = 0;
+        }
+        s1++;
+        s0++;
+    } while (s1 < 3);
+    if (*(u32 *)(s2 + 0x14) != 0) {
+        func_0022D0E0(*(void **)(s2 + 0x14), 1);
+        *(u32 *)(s2 + 0x14) = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EE1C0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EE360);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EE4D0);

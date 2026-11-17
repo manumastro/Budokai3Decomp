@@ -179,6 +179,41 @@ void func_002B8C70(u8 *a0) {
     }
 }
 #endif
+#if 0
+// differs: 21 of 44 differ: the value 1/2 select is a beqz branch in mine, the original uses movn; join padding differs too
+void func_002B8C70(u8 *task) {
+    u8 *s0;
+    u8 *a0;
+    s32 v0;
+    s32 v1;
+    u8 a1;
+    f32 f1;
+
+    s0 = *(u8 **)(task + 0x30);
+    a0 = *(u8 **)((u8 *)gPracMode + 0xC);
+    D_00470704 = (s32)a0;
+    D_0047070C = 0x1000;
+    D_00470708 = 0;
+    func_00145CC0((s32)a0, 0x1000);
+    D_00470238 = 0;
+    func_002B7690(s0);
+    func_0022C700();
+    f1 = *(f32 *)(s0 + 0x68) - D_004703BC;
+    if (f1 <= 0.0f) {
+        *(f32 *)(s0 + 0x68) = f1;
+        D_004B4B41[0] = 4;
+        v1 = 1;
+        a1 = *(u8 *)(s0 + 0x63);
+        v0 = 2;
+        if (a1 != 0) {
+            v1 = v0;
+        }
+        D_004B4B59[0] = v1;
+        VsCharasel_Start(1, *(s8 *)(s0 + 0x63));
+        PracMode_Exit();
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8C70);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8D20);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B91F0);

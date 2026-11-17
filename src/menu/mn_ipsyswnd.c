@@ -99,4 +99,32 @@ void func_002F54B0(void) {
     gOutputPass = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F54C0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F55E0);
+void func_002F55E0(void) {
+    u8 *s0;
+    u8 *s3;
+    s32 s1;
+    u32 *s2;
+    u8 *v1;
+
+    s0 = gOutputPass;
+    if (s0 != 0) {
+        v1 = *(u8 **)(s0 + 0x10);
+        if (v1 != 0) {
+            s3 = *(u8 **)(v1 + 0x30);
+            if (*(void **)s3 != 0) {
+                func_0022D0E0(*(void **)s3, 1);
+                *(void **)s3 = 0;
+            }
+            s1 = 0;
+            s2 = (u32 *)s3;
+            do {
+                func_0022D4B0((void *)s2[1], 1);
+                s1++;
+                s2++;
+            } while (s1 < 0x24);
+            amHeap_Free(s3);
+            amTask_Kill(*(void **)(s0 + 0x10));
+            *(void **)(s0 + 0x10) = 0;
+        }
+    }
+}
