@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+"""Turns one assembly subsegment of the yaml into a C file whose functions are all INCLUDE_ASM.
+
+    asm2c.py battle/btl_main          (then: configure.py && ninja)
+
+The yaml line `[0xADDR, asm, battle/btl_main]` becomes `[0xADDR, c, battle/btl_main]` and src/battle/btl_main.c is
+written with one INCLUDE_ASM per function, in address order. splat then writes each function's assembly to
+asm/nonmatchings/battle/btl_main/<name>.s, which mwccgap splices into the compiled object. Decompiling a function
+means replacing its INCLUDE_ASM line with C. Run from the repository's root, after a split (configure.py).
+"""
+
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+YAML = ROOT / "config" / "SLUS_209.98.yaml"
+
+
+def main():
+    if len(sys.argv) != 2:
+        sys.exit(__doc__)
+    name = sys.argv[1]
+    asm = ROOT / "asm" / f"{name}.s"
+    src = ROOT / "src" / f"{name}.c"
+    if src.exists():
+        sys.exit(f"{src.relative_to(ROOT)} exists already")
+    text = YAML.read_text()
+    pat = re.compile(rf"^(\s+- \[0x[0-9A-Fa-f]+, )asm(, {re.escape(name)}\])", re.M)
+    if not pat.search(text):
+        sys.exit(f"no asm subsegment named {name} in the yaml")
+    funcs = re.findall(r"^glabel (\S+)", asm.read_text(), re.M)
+    lines = ['#include "common.h"', ""]
+    lines += [f'INCLUDE_ASM("asm/nonmatchings/{name}", {f});' for f in funcs]
+    src.parent.mkdir(parents=True, exist_ok=True)
+    src.write_text("\n".join(lines) + "\n")
+    YAML.write_text(pat.sub(r"\1c\2", text))
+    print(f"{src.relative_to(ROOT)}: {len(funcs)} functions as INCLUDE_ASM")
+
+
+if __name__ == "__main__":
+    main()

@@ -15,7 +15,8 @@ disc image works too.
 ## Status
 
 Early. The executable is split by [splat](https://github.com/ethteck/splat) and rebuilt from the split: the build
-gives a byte-identical ELF. No C is linked yet. The game was built with Metrowerks CodeWarrior for PS2 3.0 beta at
+gives a byte-identical ELF, with C files compiled by Metrowerks (through mwccgap) linked in. Progress:
+[docs/progress.md](docs/progress.md). The game was built with Metrowerks CodeWarrior for PS2 3.0 beta at
 `-O3,p` or `-O4,p` (three of its functions compile to the original bytes with the 3.0b builds and with no other
 version: `scripts/mwmatch.py`, `scripts/probe/`; the four 3.0b builds and the two levels tie so far). [docs/plan.md](docs/plan.md) has the analysis of the executable, the
 figures, the compiler evidence and the next steps.
@@ -48,6 +49,10 @@ under Rosetta).
 | `configure.py` | Extracts and checks the executable, runs splat, writes `build.ninja` |
 | `scripts/get_tools.py` | Downloads the tools into `tools/` |
 | `scripts/mkelf.py` | Wraps the rebuilt image in an ELF laid out like the original (mwldps2's layout) |
+| `src/`, `include/` | The decompiled C (one file per source file; functions not decompiled yet are `INCLUDE_ASM`) and headers |
+| `scripts/find_files.py` | Proposes the source-file boundaries from the order of the files' data |
+| `scripts/asm2c.py` | Turns one assembly file of the split into a C file of `INCLUDE_ASM` functions |
+| `scripts/progress.py` | Counts the functions in C per part (`--write` updates docs/progress.md) |
 | `scripts/mwmatch.py` | Compiles C with each Metrowerks build and flag set and compares functions with the original |
 | `scripts/names_from_strings.py` | Names library functions after the error strings they print |
 | `config/symbols/` | Library names: syscall stubs by number, Sony / CRI functions from their strings |
