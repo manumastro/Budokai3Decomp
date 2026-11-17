@@ -67,7 +67,7 @@ segments:
       # boundaries from the order of the files' data (scripts/find_files.py), names from the file-name strings the
       # code passes (unk_XXXXXX where none); both inferred.
       - [0x02C360, asm, sys/unk_12C360]
-      - [0x02C540, asm, sys/unk_12C540]
+      - [0x02C540, c, sys/unk_12C540]
       - [0x02DE80, asm, sys/unk_12DE80]
       - [0x02EC10, asm, sys/unk_12EC10]
       - [0x02EF80, asm, sys/unk_12EF80]

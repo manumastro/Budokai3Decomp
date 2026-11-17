@@ -35,7 +35,24 @@ AS_FLAGS = "-EL -march=r5900 -mabi=eabi -G0 -no-pad-sections -Iinclude"
 MWCC_VERSION = "3.0b52-030722"
 MWCC = f"tools/mwcps2/{MWCC_VERSION}/mwccps2.exe"
 MWCC_FLAGS = "-O4,p -sdatathreshold 8 -Iinclude -Isrc"
+# Dimps' am* library (the Metrowerks code linked before CRI, and amMc.c / amCdFs.c in the game part) was built at
+# -O1,p: the same compiler, without instruction scheduling, tail calls or common subexpressions; `,p` (speed)
+# keeps the nops that align branch targets (docs/plan.md, "Compiler").
+AM_FLAGS = "-O1,p -sdatathreshold 8 -Iinclude -Isrc"
+# Per-file flags: the first entry whose path prefix matches a C file wins; other files get MWCC_FLAGS.
+# scripts/fdiff.py reads the same table through mwcc_flags().
+FILE_FLAGS = [
+    ("src/sys/unk_1", AM_FLAGS),
+    ("src/sys/am", AM_FLAGS),
+    ("src/sys/script.c", AM_FLAGS),
+]
 WIBO = "tools/wibo"
+
+
+def mwcc_flags(src):
+    """The compiler flags of one C file (a path relative to the repository's root)."""
+    src = Path(src).as_posix()
+    return next((flags for prefix, flags in FILE_FLAGS if src.startswith(prefix)), MWCC_FLAGS)
 
 
 def run(cmd, **kwargs):
@@ -111,7 +128,7 @@ def write_ninja():
         "rule cc",
         f"  command = {py} tools/mwccgap/mwccgap.py --use-wibo --wibo-path={WIBO} --mwcc-path={MWCC} "
         f"--as-path={BINUTILS}as --as-march=r5900 --as-mabi=eabi --macro-inc-path=include/macro.inc "
-        f"$in $out {MWCC_FLAGS}",
+        f"$in $out $mwcc_flags",
         "  description = CC $in",
         "",
         "rule ld",
@@ -142,9 +159,11 @@ def write_ninja():
         out.append(f"build {obj}: bin {src}")
         objs.append(obj)
     linked = linked_c_files()
+    headers = " ".join(str(h) for h in sources("include", ".h"))
     for src in [p for p in sources("src", ".c") if p in linked]:
         obj = Path("build") / src.with_suffix(".o")
-        out.append(f"build {obj}: cc {src}")
+        out.append(f"build {obj}: cc {src} | {headers} include/macro.inc")
+        out.append(f"  mwcc_flags = {mwcc_flags(src)}")
         objs.append(obj)
     scripts = [f"build/{NAME}.ld", "build/undefined_funcs_auto.txt", "build/undefined_syms_auto.txt",
                "config/linker_script_extra.ld"]

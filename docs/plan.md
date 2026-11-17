@@ -39,7 +39,7 @@ them handwritten or data inside the code).
 | Part | Range | Size | Functions | Compiler | Contents |
 |---|---|---|---|---|---|
 | Sony SDK + C library | 0x100000-0x12C360 | 181 KB (8 %) | 858 | gcc | libgraph, libdma, libipu, libmpeg, libkernl, libcdvd, libpad, libmc, libsdr, the C library (newlib-style `vfprintf`) |
-| Metrowerks, linked before CRI | 0x12C360-0x14E5D0 | 140 KB (6 %) | 414 | Metrowerks (inferred) | Part of Dimps' `am*` layer (`amDraw3d.c`, `amMotion.c`, `amObject.c`, `amSofdec.c`), threads, `script.c`, CD init, `main` (0x14E4B0) |
+| Metrowerks, linked before CRI | 0x12C360-0x14E5D0 | 140 KB (6 %) | 414 | Metrowerks 3.0b, `-O1,p` (verified on 8 functions) | Part of Dimps' `am*` layer (`amDraw3d.c`, `amMotion.c`, `amObject.c`, `amSofdec.c`), threads, `script.c`, CD init, `main` (0x14E4B0) |
 | CRI middleware | 0x14E5D0-0x1A1E80 | 342 KB (16 %) | 2,798 | gcc | ADX (ADXF, ADXT, ADXB, ADXRNA, SJ, SVM, CVFS with DVCI/HTCI/MFCI), Sofdec (MWSFD, SFD, MPV, M2V, SFX), libmtap |
 | Metrowerks, linked after CRI | 0x1A1E80-0x310908 | 1,502 KB (69 %) | 4,229 | Metrowerks (verified on 3 functions) | The game: battle, characters, menus, story; also `amMc.c` (0x1A30B0) and `amCdFs.c` (0x25CA10), so the `am*` layer is not all in the first part |
 
@@ -89,10 +89,34 @@ Files and data (**verified** strings, **inferred** use):
 ## Compiler
 
 **Verified** for the game (the part linked after CRI): Metrowerks CodeWarrior for PlayStation 2, version 3.0 beta
-(`mwccps2` 3.0b22 to 3.0b52), at `-O3,p` or `-O4,p`. The part linked before CRI has the same style, so the same
-compiler is inferred there, but no function of it matches yet (`func_0014E580`, a counter and a tail call to
-`memset`, differs in 12 to 13 of 17 instructions with every build tried: the original reaches the counter through
-one address register and ends in a tail call, which none produced; maybe other settings for those files).
+(`mwccps2` 3.0b22 to 3.0b52), at `-O3,p` or `-O4,p`.
+
+**Verified** for Dimps' `am*` library: the same 3.0b builds at **`-O1,p`**. That covers the Metrowerks part linked
+before CRI and `amMc.c` / `amCdFs.c` in the game part, but not `main` (below). The flags are per file:
+configure.py's `FILE_FLAGS` gives these files `AM_FLAGS`, and every other C file `MWCC_FLAGS`.
+
+- **The style** (**inferred**, counted over the split): in the `am*` files, the delay slots of branches and calls
+  hold a `nop` (4,008 of them). The only filled ones are in hand-written functions (VU0 macro instructions,
+  `addi`, `lq` / `sq` frames) and in the functions listed below as belonging elsewhere. The game's files fill most
+  of theirs: `btl_main.s` has 1,934 nops and 3,578 filled slots. `-opt level=1` is the level without instruction
+  scheduling, tail calls or common subexpressions (`mwccps2 -help all`).
+- **The match** (**verified**): `scripts/probe/am_probe.c` holds eight functions of the part linked before CRI.
+  There is a 240-instruction loop nest that relocates a model file's offsets, five small call or store functions
+  and a bump allocator. `scripts/mwmatch.py` compiled them with all 18 builds at `-O1`, `-O1,p`, `-O2,p` and
+  `-O3,p`. All eight match (0 differing instructions) only with 3.0b22, 3.0b38, 3.0b50 and 3.0b52 at `-O1,p`:
+  - `-O1` without `,p` drops the nops that align loop heads to 8 bytes (207 of 234 differ);
+  - `-O2,p` shares the allocator's two loads of its global (5 of 8 differ);
+  - `-O3,p` schedules, and 3.0 / 3.0.1 / 3.0.3 / 3.0.1bXX and 2.x differ in 1 to 8 of the functions.
+
+Two other sets of code sit at the edges of the `am*` files:
+
+- **`main` (0x14E4B0)** compiles to the original (0 of 31 differing) with 3.0b52 at `-O3,p` and `-O4,p`, not
+  at `-O1,p`, so it is a file of its own built like the game, after `script.c` (**inferred**).
+- **0x14E530 and 0x14E580** come after `main`. 0x14E530 has no symbol of its own: splat folded it into `main`.
+  Both look like gcc code, not Metrowerks (**inferred**): 0x14E530 saves `$s0` with `sd` in a 16-byte frame,
+  as the CRI code after it does, and 0x14E580 ends in a tail call (`j`) to `memset`. Both use a counter at
+  0x400B58 to clear 0x300 bytes at 0x400B60 once. So the gcc library part probably starts at 0x14E530, not
+  0x14E5D0. This explains why `func_0014E580` matched with no Metrowerks build.
 
 Evidence:
 

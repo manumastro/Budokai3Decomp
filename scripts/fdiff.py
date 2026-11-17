@@ -3,7 +3,8 @@
 
     fdiff.py src/battle/btl_main.c [FUNC ...] [-v] [-q]
 
-The file is compiled on its own with the game's compiler and flags (configure.py's MWCC and MWCC_FLAGS);
+The file is compiled on its own with the compiler and the flags configure.py gives it (MWCC_VERSION, and
+mwcc_flags(): MWCC_FLAGS for the game, AM_FLAGS for the am* library);
 INCLUDE_ASM lines are empty for the compiler, so only the functions written in C are compared. A function's
 address comes from its name (func_XXXXXXXX) or from the symbol files listed in the yaml. Prints `OK` or the
 number of differing instructions (relocated fields masked: jal targets, %hi/%lo/%gp_rel immediates); -v prints
@@ -25,11 +26,12 @@ import mwmatch  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def game_compiler():
-    text = (ROOT / "configure.py").read_text()
-    version = re.search(r'^MWCC_VERSION = "([^"]+)"', text, re.M).group(1)
-    flags = re.search(r'^MWCC_FLAGS = "([^"]+)"', text, re.M).group(1)
-    return version, flags
+def game_compiler(src):
+    """The compiler version and the flags configure.py gives this C file (its FILE_FLAGS table)."""
+    sys.path.insert(0, str(ROOT))
+    import configure  # noqa: E402
+    rel = src.resolve().relative_to(ROOT)
+    return configure.MWCC_VERSION, configure.mwcc_flags(rel)
 
 
 def symbol_addresses():
@@ -69,7 +71,7 @@ def main():
     ap.add_argument("-v", action="store_true")
     ap.add_argument("-q", action="store_true")
     args = ap.parse_args()
-    version, flags = game_compiler()
+    version, flags = game_compiler(args.src)
     rom = mwmatch.ROM.read_bytes()
     syms = symbol_addresses()
     with tempfile.TemporaryDirectory() as d:
