@@ -9,12 +9,12 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00268A80);
 #if 0
 // differs: 14 of 65: the call sequence and the three pointer loops match in shape; the D_004707DC load is hoisted ahead of the s0 load and the s1 load is scheduled before the D_00470238 store (the original keeps both after)
 extern void *D_004707DC;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
 extern void func_00268170();
 extern void func_00267E00();
-extern void func_0022C700();
+extern void A2d_FlushList();
 extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
@@ -28,7 +28,7 @@ void func_00268BF0(u8 *a0) {
     s0 = *(u8 **)(a0 + 0x30);
     D_00470704 = *(s32 *)((u8 *)D_004707DC + 0xC);
     D_0047070C = 0x1000;
-    func_00145CC0(*(s32 *)((u8 *)D_004707DC + 0xC), 0x1000);
+    amModel_SetCurrent(*(s32 *)((u8 *)D_004707DC + 0xC), 0x1000);
     D_00470708 = 0;
     D_00470238 = 0;
     s1 = *(u8 **)s0;
@@ -59,7 +59,7 @@ void func_00268BF0(u8 *a0) {
         s3++;
         s0 += 4;
     } while (s3 < 2);
-    func_0022C700();
+    A2d_FlushList();
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00268BF0);

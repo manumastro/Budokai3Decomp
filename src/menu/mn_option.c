@@ -219,7 +219,7 @@ extern void func_00125740(void *, void *, s32);
 extern void func_001EF510(void *, s32);
 extern void amHeap_Free(void *);
 extern void amTask_Kill(void *);
-extern void func_001F0790();
+extern void Save_ClearBusy();
 extern void func_002DF100();
 extern void func_002DE910();
 extern void func_002DD2B0();
@@ -240,7 +240,7 @@ void func_002DF5D0(void) {
         break;
     case 3:
     case 5:
-        func_001F0790();
+        Save_ClearBusy();
         if (*(void **)(s0 + 0x324) != 0) {
             amTask_Kill(*(void **)(s0 + 0x324));
             *(s32 *)(s0 + 0x324) = 0;
