@@ -59,6 +59,54 @@ void func_0030A540(u8 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A540);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A5E0);
+#if 0
+// differs: 31 of 60 instructions: the byte-clear loop of the local (sb / addiu / addiu) is laid out with two nops before its bnez in the original, mine has none (0xE0 vs 0xF0 bytes with the other loop spellings); the same loop as func_00309050
+extern void func_00145CC0(s32, s32);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern f32 gFrameDelta;
+extern void func_0030A5E0();
+
+void func_0030A950(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    u8 *p;
+    u32 n;
+    s32 x;
+    s32 s2;
+    void *fp;
+    f32 f;
+    n = 4;
+    s0 = *(u8 **)(a0 + 0x30);
+    s1 = a0;
+    p = (u8 *)&x;
+    if (p != 0) {
+        do {
+            *p++ = 0;
+        } while (--n != 0);
+    }
+    x = *(s32 *)(s0 + 0x1C);
+    D_00470704 = *(s32 *)(s0 + 4);
+    D_0047070C = 0x2000;
+    func_00145CC0(*(s32 *)(s0 + 4), 0x2000);
+    D_00470708 = 0;
+    D_00470238 = 0;
+    s2 = x;
+    if (s2 != 0) {
+        func_0022C060((void *)s2, 1.0f);
+        func_0022CD00((void *)s2);
+    }
+    f = *(f32 *)(s0 + 0x24) - gFrameDelta;
+    if (f <= 0.0f) {
+        *(f32 *)(s0 + 0x24) = f;
+        *(f32 *)(s0 + 0x24) = 180.0f;
+        fp = (void *)func_0030A5E0;
+        *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A950);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030AA40);
 extern u8 *D_00470990;

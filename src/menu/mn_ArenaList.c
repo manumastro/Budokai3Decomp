@@ -348,7 +348,34 @@ void func_002F04D0(u8 *task) {
     *(s16 *)(obj + 0x4) = 5;
     *(void **)(task + 0x1C) = ((void *)func_002EF390 == 0) ? 0 : (void *)func_002EF390;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002F0570);
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern void Help_Load();
+extern void func_002F27B0();
+extern void func_002F0160();
+extern char D_0046F718[];
+extern char D_0046F728[];
+
+void *func_002F0570(s16 a0) {
+    u8 *s0;
+    u8 *s1;
+    void *t;
+    s0 = (u8 *)D_00470968;
+    t = amTask_Create((void *)func_002F0160, 0, 0x2800, 8, 2, D_0046F718);
+    *(void **)(s0 + 0xC) = t;
+    s0 = (u8 *)t;
+    t = amHeap_Alloc(0x248, 0, D_0046F728, 0xB0);
+    s1 = (u8 *)t;
+    *(void **)(s0 + 0x30) = t;
+    memset(s1, 0, 0x248);
+    *(s16 *)s1 = 1;
+    *(s16 *)(s1 + 2) = -1;
+    *(s16 *)(s1 + 0xA) = a0 + 0x1E;
+    *(s16 *)(s1 + 0xC) = 0;
+    *(s16 *)(s1 + 0xE) = 0;
+    Help_Load();
+    func_002F27B0();
+    return s0;
+}
 extern char D_0046F728[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 
