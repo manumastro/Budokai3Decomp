@@ -618,7 +618,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FE5A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FE7A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FEBD0);
 #if 0
-// differs: 0x158 vs 0x170 (6 instructions short): the original has two out-of-line early returns (b to the epilogue) and two extra nops after the last call; the z store to the copied vector (k.z) and the aligned(16) copy are right
+// differs: 0x158 vs 0x170 (6 instructions short): the original sends its early exits to shared out-of-line `b epilogue` blocks placed before the body; direct returns, nested else-returns (75 of 96 differ) and goto all branch straight to the epilogue. The gTourMap value is stored at k.w (0x2C), not k.z. Twin 2FEBD0 has the same exits
 extern u8 D_00458BE0[];
 extern s32 func_00136870(s32, s32, void *, s32, s32, s32, f32);
 extern void func_00137B60(void *);

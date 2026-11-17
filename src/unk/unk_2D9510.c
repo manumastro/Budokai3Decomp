@@ -220,9 +220,12 @@ L9A28:
     func_00228410();
 }
 #endif
+// differs: dead blocks after b (a jal func_00227A30 and an lqc2 from a zero pointer), the 2D99A0 family: not matched
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9A50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9C20);
+// differs: dead blocks after b (a jal func_00227A30 and an lqc2 from a zero pointer), the 2D99A0 family: not matched
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9CD0);
+// differs: dead blocks after b (a jal func_00227A30 and an lqc2 from a zero pointer), the 2D99A0 family: not matched
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9DE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9F80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002DA030);
