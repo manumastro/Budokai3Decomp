@@ -1785,7 +1785,7 @@ void SceneSw_LoadMenu7(Task *t) {
     }
 }
 
-// differs: the two stores to gSceneNext and gSceneQueued come in the other order (the compiler puts the -1 store before the table pointer store)
+// differs: 2 of 38 instructions, the store order of gSceneNext and gSceneQueued (the compiler emits the -1 store before the table store, whatever the source order)
 
 #if 0
 
