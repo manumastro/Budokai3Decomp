@@ -1,5 +1,10 @@
 #include "common.h"
 
+void func_00241600(s32);
+void func_00241C10(s32);
+
+void func_00209530(s32);
+
 extern s32 D_00452130[];
 s32 amCdFs_ReadFileId(s32, s32, s32);
 
@@ -334,6 +339,34 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243020);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243280);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002433F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243600);
+#if 0
+void func_002439E0(u8 *o) {
+    s32 i = *(s32 *)(o + 0x10);
+    u8 *base = D_00470570 + i * 0x2020;
+    u8 *q = base + 0x830;
+    u8 *e = D_0046FE44 + i * 0x80;
+    s32 p = *(s32 *)(base + 0x1B84);
+    s32 mode = *(s32 *)(o + 0x14);
+    s16 v;
+
+    if (mode == 0) {
+        *(s16 *)(e + 0x34) = *(s32 *)(q + 0xBA4);
+        *(s32 *)(e + 0x2C) &= ~0x80;
+        *(s16 *)(e + 0x36) = *(s32 *)(q + 0x1CFC);
+        func_00241600(*(s32 *)(o + 0x10));
+    } else if (mode == 1) {
+        v = *(s16 *)(o + 0x18);
+        if (v < 8) {
+            *(s16 *)(e + 0x34) = v;
+        }
+        *(s16 *)(e + 0x36) = *(s32 *)(p + 0x1CFC);
+        *(s32 *)(e + 0x2C) |= 0x80;
+        func_00241600(*(s32 *)(o + 0x10));
+        func_00241C10(*(s32 *)(o + 0x10));
+    }
+}
+// differs: the mode-1 block is placed after the mode-0 block in the original (its test is the first branch), and the temporaries take other registers
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002439E0);
 void func_00243AC0(u8 *o) {
     func_00215230(*(s16 *)(o + 0x10), 4);
@@ -344,7 +377,33 @@ void func_00243AD0(u8 *o) {
 void func_00243AE0(u8 *o) {
     func_00241500(*(s32 *)(o + 0x10), 2);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243AF0);
+void func_00243AF0(u8 *o) {
+    s32 i;
+    u8 *s0;
+
+    if (*(s32 *)(o + 0x14) != 0) {
+        i = *(s32 *)(o + 0x10);
+        s0 = D_0046FE44 + i * 0x80;
+        func_00240F40(i, 3);
+        if (*(s32 *)(s0 + 0x4C) != 0) {
+            func_00209530(*(s32 *)(s0 + 0x4C));
+            *(s32 *)(s0 + 0x4C) = 0;
+        }
+        *(s8 *)(s0 + 0x3E) = *(s8 *)(s0 + 0x39);
+        *(s8 *)(s0 + 0x3F) = *(s8 *)(s0 + 0x3B);
+        func_00241500(i, 1);
+    } else {
+        i = *(s32 *)(o + 0x10);
+        s0 = D_0046FE44 + i * 0x80;
+        func_00240F40(i, 3);
+        if (*(s32 *)(s0 + 0x4C) != 0) {
+            func_00209530(*(s32 *)(s0 + 0x4C));
+            *(s32 *)(s0 + 0x4C) = 0;
+        }
+        *(s8 *)(s0 + 0x3E) = *(s8 *)(s0 + 0x39);
+        *(s8 *)(s0 + 0x3F) = *(s8 *)(s0 + 0x3B);
+    }
+}
 void func_00243BC0(u8 *o) {
     func_00241EB0(*(s32 *)(o + 0x10), *(s32 *)(o + 0x14));
 }
