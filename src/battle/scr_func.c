@@ -117,7 +117,7 @@ void func_002A9480(s32 n) {
     D_004700AC = n + 0x0BB80000;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A94B0);
-s32 func_002A9760(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdGlobalTime(ScriptThread *t, ScriptCtx *ctx) {
     ctx->ret = D_004708F0[0];
     return 3;
 }
@@ -242,53 +242,53 @@ void func_002AA340(s32 a0, s32 a1, s32 a2, s32 a3) {
 void func_002AA3D0(void) {
     func_002A9EA0();
 }
-s32 func_002AA3E0(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdTimerClear(ScriptThread *t, ScriptCtx *ctx) {
     ScrTimerRes *r = ctx->unk38;
     r->unk68 = 0;
     r->unk6C = 0;
     return 1;
 }
-s32 func_002AA400(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_WaitGlobalTime(ScriptThread *t, ScriptCtx *ctx) {
     if (!(D_004708F0[0] <= ((f32 *)ctx->args)[0])) {
         t->wait = 0;
         return 1;
     }
     return 3;
 }
-s32 func_002AA440(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdWaitGlobalTime(ScriptThread *t, ScriptCtx *ctx) {
     if ((s32)((f32 *)ctx->args)[0] <= 0) {
         return 1;
     }
-    t->wait = func_002AA400;
+    t->wait = Scr_WaitGlobalTime;
     return 3;
 }
-s32 func_002AA480(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_WaitObjFrames(ScriptThread *t, ScriptCtx *ctx) {
     if (!(0.5f + (D_004708F0[t->obj->id] - t->time) < (f32)t->count)) {
         t->wait = 0;
         return 1;
     }
     return 3;
 }
-s32 func_002AA4E0(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdWaitObjFrames(ScriptThread *t, ScriptCtx *ctx) {
     t->count = ctx->args[0];
     t->time = D_004708F0[t->obj->id];
-    t->wait = func_002AA480;
+    t->wait = Scr_WaitObjFrames;
     return 3;
 }
-s32 func_002AA520(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdObjTime(ScriptThread *t, ScriptCtx *ctx) {
     ctx->ret = 0.5f + D_004708F0[t->obj->id];
     return 1;
 }
-s32 func_002AA560(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_ObjTimerTick(ScriptThread *t, ScriptCtx *ctx) {
     ScriptObj *o = t->obj;
     if (o->state != 3) {
         D_004708F0[o->id] += D_004708F8;
     }
     return 3;
 }
-s32 func_002AA5A0(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdObjTimerStart(ScriptThread *t, ScriptCtx *ctx) {
     ScriptObj *o;
-    t->wait = func_002AA560;
+    t->wait = Scr_ObjTimerTick;
     D_004708F0[t->obj->id] = 0.0f;
     o = t->obj;
     if (o->state != 3) {
@@ -571,9 +571,9 @@ s32 func_002ABDF0(ScriptThread *t, ScriptCtx *ctx) {
     func_00144770(a[1], ((f32 *)a)[0]);
     return 1;
 }
-s32 func_002ABE20(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_WaitSound(ScriptThread *t, ScriptCtx *ctx) {
     if (gSoundState != 0) {
-        t->wait = func_002ABE20;
+        t->wait = Scr_WaitSound;
         return 3;
     }
     t->wait = 0;
@@ -647,7 +647,7 @@ s32 func_002ABFC0(s32 *a0, s32 *a1) {
     a0[4] = 0;
     return 1;
 }
-s32 func_002AC060(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdSoundWord(ScriptThread *t, ScriptCtx *ctx) {
     SoundRpc_SendWord(ctx->args[0]);
     return 1;
 }
@@ -655,7 +655,7 @@ s32 func_002AC090(ScriptThread *t, ScriptCtx *ctx) {
     func_001445C0(ctx->args[0]);
     return 1;
 }
-s32 func_002AC0C0(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdSoundWord2(ScriptThread *t, ScriptCtx *ctx) {
     SoundRpc_SendWord2(ctx->args[0]);
     return 1;
 }
@@ -668,7 +668,7 @@ s32 func_002AC130(ScriptThread *t, ScriptCtx *ctx) {
     func_00143E70(ctx->args[0], -1, 0);
     return 1;
 }
-s32 func_002AC160(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdSoundSend3(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     SoundRpc_Send3(a[2], a[1], a[0], 0);
     return 1;
@@ -696,13 +696,13 @@ void func_002AC330(s32 *a0, s32 *a1) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC3D0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC520);
-s32 func_002AC660(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdLightF2094(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     ScrLightSub *s = D_005ABA80[t->obj->id];
     s[a[1]].unk2094 = ((f32 *)a)[0];
     return 1;
 }
-s32 func_002AC6C0(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdModelColor(ScriptThread *t, ScriptCtx *ctx) {
     f32 *a = (f32 *)ctx->args;
     ScrModel *m = D_005BC440[t->obj->id];
     m->color[0] = a[3];
@@ -754,7 +754,7 @@ s32 func_002AC790(s32 *a0, s32 *a1) {
     }
     return 1;
 }
-s32 func_002AC860(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdModelClearFlags(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     ScrModel *m = &D_005BC440[t->obj->id][a[1] + 1];
     m->flag->flags &= ~(u16)a[0];
@@ -793,7 +793,7 @@ s32 func_002AC930(s32 a0, u8 *a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC930);
-s32 func_002AC990(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdModelSpeed(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     s32 i = a[1] + 1;
     ScrModel *m = D_005BC440[t->obj->id];
@@ -802,7 +802,7 @@ s32 func_002AC990(ScriptThread *t, ScriptCtx *ctx) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC9F0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ACBF0);
-s32 func_002ACD50(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdEffectSpeed(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     ScrEffectSub *e = D_005BC180[t->obj->id];
     e[a[1]].speed = ((f32 *)a)[0] * D_004708F8;
@@ -810,14 +810,14 @@ s32 func_002ACD50(ScriptThread *t, ScriptCtx *ctx) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ACDB0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD180);
-s32 func_002AD590(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdLightSetPair(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     ScrLightSub *s = &D_005ABA80[t->obj->id][a[2]];
     s->unk2098 = a[1];
     s->unk209C = a[0];
     return 1;
 }
-s32 func_002AD5F0(ScriptThread *t, ScriptCtx *ctx) {
+s32 Scr_CmdSetStep(ScriptThread *t, ScriptCtx *ctx) {
     t->unk38 = ((f32 *)ctx->args)[0] * D_004708F8;
     return 1;
 }

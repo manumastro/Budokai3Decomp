@@ -1,7 +1,7 @@
 #include "common.h"
 
 extern s16 ArenaList_GetF0(void *);
-extern void func_0030D240(s32);
+extern void Help_TaskKill(s32);
 extern s16 func_0027D3B0(s32, s32);
 extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
 extern s16 D_005C4126[];
@@ -46,7 +46,7 @@ void func_00308AF0(u8 *a0) {
     if (ArenaList_GetF0(*(void **)(a0 + 0x34)) != 7) {
         return;
     }
-    func_0030D240(*(s32 *)(s0 + 4));
+    Help_TaskKill(*(s32 *)(s0 + 4));
     *(s32 *)(s0 + 4) = 0;
     s2 = D_005C4126[s0[0xD]];
     D_0058F66A[s0[0xD]] = s0[0xD];

@@ -250,7 +250,7 @@ extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void func_001CB020(void *);
 extern void func_001CAFE0(void *);
 extern char D_004692B0[];
-int func_001CC7C0(void *o, Arg *a) {
+int Scr_CmdPlayThread(void *o, Arg *a) {
     int *p = a->p;
     char *c = *(char **)o;
     s32 x = p[0];

@@ -351,3 +351,7 @@ Help_CopyEntries = 0x002B5460; // type:func // guess
 
 // mn_option.c: the option screen's state block (its readers are in mn_option.c; Option_Free releases it).
 gOptionState = 0x00470938; // size:0x4 // guess
+
+// unk_30CD80.c: the help task's kill: frees the help work (func_0030C0E0 on it, then amHeap_Free), kills the task
+// and calls Help_Exit.
+Help_TaskKill = 0x0030D240; // type:func // guess

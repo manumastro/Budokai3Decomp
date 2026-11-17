@@ -239,12 +239,12 @@ s32 func_001CB120(void *self, ScriptCtx *ctx) {
     ctx->fret = func_00146E90(v);
     return 1;
 }
-s32 func_001CB180(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdAngleDeg(void *self, ScriptCtx *ctx) {
     f32 *a = (f32 *)ctx->args;
     ctx->fret = 180.0f * func_0011F680(a[0], a[1]) / 3.1415927f;
     return 1;
 }
-s32 func_001CB1E0(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdRandom(void *self, ScriptCtx *ctx) {
     ctx->fret = (f32)func_0012EAE0(32) / 2147483648.0f;
     return 1;
 }
@@ -403,11 +403,11 @@ s32 func_001CB9B0(void *self, ScriptCtx *ctx) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB9B0);
-s32 func_001CB9F0(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdFighter1AD8(void *self, ScriptCtx *ctx) {
     ctx->fret = gBattle->fighter[ctx->args[0]]->unk1AD8;
     return 1;
 }
-s32 func_001CBA20(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdFighter1ACE(void *self, ScriptCtx *ctx) {
     ctx->ret = gBattle->fighter[ctx->args[0]]->unk1ACE;
     return 1;
 }

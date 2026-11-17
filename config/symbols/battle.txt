@@ -245,3 +245,62 @@ Fighter_ClearF17BC = 0x001B5DA0; // type:func // guess
 
 // btl_cmd.c: returns the entry i of the motion file f (Mot_GetEntry).
 BtlCmd_GetMotEntry = 0x001A5130; // type:func // guess
+
+// scr_func.c: the script commands that send to the sound driver (the RPCs of SoundRpc_SendWord, SoundRpc_SendWord2
+// and SoundRpc_Send3): each takes the script's arguments and returns 1.
+Scr_CmdSoundWord = 0x002AC060; // type:func // guess
+Scr_CmdSoundWord2 = 0x002AC0C0; // type:func // guess
+Scr_CmdSoundSend3 = 0x002AC160; // type:func // guess
+
+// character.c: script commands of the character code (the result goes to ctx->fret or ctx->ret). Scr_CmdRandom
+// returns a random float from func_0012EAE0 (32 bits scaled by 2^-31); Scr_CmdAngleDeg converts the result of
+// func_0011F680 of the two float arguments from radians to degrees; Scr_CmdFighter1AD8 and Scr_CmdFighter1ACE
+// return the fields +0x1AD8 and +0x1ACE of the fighter whose index is the first argument.
+Scr_CmdRandom = 0x001CB1E0; // type:func // guess
+Scr_CmdAngleDeg = 0x001CB180; // type:func // guess
+Scr_CmdFighter1AD8 = 0x001CB9F0; // type:func // guess
+Scr_CmdFighter1ACE = 0x001CBA20; // type:func // guess
+
+// scr_func.c: the script timers. Each command sets the thread's wait function (t->wait) and returns 3 while it
+// runs; a wait function returns 1 when it is done. The timers are the floats D_004708F0[id] of each script object
+// (id), and D_004708F8 is the step of a tick.
+// Scr_CmdTimerClear clears the two words at +0x68 and +0x6C of the timer block (ctx->unk38). Scr_CmdWaitGlobalTime
+// returns at once for a time <= 0, else it waits until D_004708F0[0] reaches the time (Scr_WaitGlobalTime).
+// Scr_CmdWaitObjFrames sets the frame count and starts the object's timer; Scr_WaitObjFrames waits until that many
+// frames have passed on the object's timer.
+// Scr_CmdObjTimerStart clears the object's timer and sets the tick function Scr_ObjTimerTick, which adds the step
+// to the timer while the object is not in state 3.
+Scr_CmdTimerClear = 0x002AA3E0; // type:func // guess
+Scr_CmdWaitGlobalTime = 0x002AA440; // type:func // guess
+Scr_WaitGlobalTime = 0x002AA400; // type:func // guess
+Scr_CmdWaitObjFrames = 0x002AA4E0; // type:func // guess
+Scr_WaitObjFrames = 0x002AA480; // type:func // guess
+Scr_CmdObjTimerStart = 0x002AA5A0; // type:func // guess
+Scr_ObjTimerTick = 0x002AA560; // type:func // guess
+
+// scr_func.c: script commands on the models of the script object (D_005BC440[obj id] is its model list; ctx->args
+// are the arguments). Scr_CmdModelColor stores the three colour values (args 3, 2, 1) in the model's colour;
+// Scr_CmdModelClearFlags clears the bits of argument 0 in the flags of model args[1] + 1; Scr_CmdModelSpeed sets
+// the speed of model args[1] + 1 to the float argument times D_004708F8.
+Scr_CmdModelColor = 0x002AC6C0; // type:func // guess
+Scr_CmdModelClearFlags = 0x002AC860; // type:func // guess
+Scr_CmdModelSpeed = 0x002AC990; // type:func // guess
+
+// scr_func.c: Scr_CmdLightF2094 stores its float argument in the word +0x2094 of light args[1] (the table
+// D_005ABA80 of the object's lights).
+Scr_CmdLightF2094 = 0x002AC660; // type:func // guess
+
+// scr_func.c: the wait of the sound command: while gSoundState is not 0 it keeps waiting (returns 3 with itself as
+// the wait function); when it is 0 it ends.
+Scr_WaitSound = 0x002ABE20; // type:func // guess
+
+// scr_func.c: more script commands (ctx->ret or the thread t): Scr_CmdGlobalTime returns the global timer
+// D_004708F0[0]; Scr_CmdObjTime returns the timer of the object (0.5 plus D_004708F0[obj id]); Scr_CmdSetStep sets
+// the thread's step (t->unk38) to the argument times D_004708F8; Scr_CmdEffectSpeed sets the speed of the effect
+// at index args[1] of the table D_005BC180 (object id) to the float argument times D_004708F8; Scr_CmdLightSetPair
+// stores args[1] and args[0] in the two words +0x2098 and +0x209C of light args[2] of the table D_005ABA80.
+Scr_CmdGlobalTime = 0x002A9760; // type:func // guess
+Scr_CmdObjTime = 0x002AA520; // type:func // guess
+Scr_CmdSetStep = 0x002AD5F0; // type:func // guess
+Scr_CmdEffectSpeed = 0x002ACD50; // type:func // guess
+Scr_CmdLightSetPair = 0x002AD590; // type:func // guess

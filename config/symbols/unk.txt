@@ -206,3 +206,9 @@ Sp_KillTasks = 0x00244040; // type:func // guess
 
 // unk_2C41C0.c: the effects' work array (the effect works have a stride of 0xF80, each links two sub-parts).
 gEffWork = 0x00470130; // size:0x4 // guess
+
+// unk_1CBD90.c: the script command that starts a thread task: it creates the "* PLAY THREAD *" task (its update is
+// the one of the same file) with the priority and the two sizes read from the object's block, then sets the task's
+// position from the first argument, its next function (func_001CAFE0), the flag 1 and the second argument. Returns
+// 1.
+Scr_CmdPlayThread = 0x001CC7C0; // type:func // guess

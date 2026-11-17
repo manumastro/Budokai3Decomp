@@ -244,7 +244,7 @@ void ArenaList_Exit(void) {
     gArenaRegCharList = NULL;
 }
 
-void func_0030D240(Task *t) {
+void Help_TaskKill(Task *t) {
     Work *w = t->work;
 
     func_0030C0E0(w);

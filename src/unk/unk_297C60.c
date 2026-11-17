@@ -254,7 +254,7 @@ void func_00298A50(s32 id, s32 a) {
         s->f30 = a;
     }
 }
-void func_00298AB0(s32 id, s32 a) {
+void Snd_SetSlotF2C(s32 id, s32 a) {
     Slot *s = Snd_FindSlot(id);
 
     if (s != NULL) {
@@ -345,7 +345,7 @@ void func_00298E30(Vec4f *v, s32 a) {
     w->f11C0.w = v->w;
     w->f11D0 = a;
 }
-void func_00298E60(void) {
+void StrSelect_ClearWork(void) {
     memset(D_005AA550, 0, 0xE30);
     StrMap_Clear();
     StrBg_Clear();

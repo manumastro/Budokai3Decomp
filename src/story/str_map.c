@@ -306,7 +306,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029C110);
 extern s32 func_0022BF80(s32);
 extern void Scene_FadeTo(s32, s32);
 
-void func_0029C290(s32 *s0) {
+void StrMap_FadeWhenDone(s32 *s0) {
     s32 *g = (s32 *)gStrTitle;
     if (func_0022BF80(g[0x78 / 4 + g[0xB0 / 4]]) == 0xFF) {
         Scene_FadeTo(-1, 0);
