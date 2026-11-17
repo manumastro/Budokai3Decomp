@@ -304,3 +304,11 @@ Scr_CmdObjTime = 0x002AA520; // type:func // guess
 Scr_CmdSetStep = 0x002AD5F0; // type:func // guess
 Scr_CmdEffectSpeed = 0x002ACD50; // type:func // guess
 Scr_CmdLightSetPair = 0x002AD590; // type:func // guess
+
+// btl_main.c: the battle's state after Btl_TaskStart: it waits while func_001E9ED0(f) is 0; then it runs
+// func_0022DC00 and func_001EF100 and sets the fighter's next function to func_001B0160.
+Btl_TaskLoadWait = 0x001B0380; // type:func // guess
+
+// scr_func.c: copies the 16-byte vector a0 to the record D_005AB3A0 and stores a1 in its word at +0x10. Called by
+// StrSelect_Reset.
+Scr_SetRecord = 0x002A9460; // type:func // guess

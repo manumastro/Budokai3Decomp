@@ -103,7 +103,7 @@ extern s32 D_005AA670[];
 extern void func_001F0660(void);
 extern f32 func_00146E90(Vec4f *);
 extern f32 func_0011F680(f32, f32);
-extern void func_002A9460(Vec4f *, s32);
+extern void Scr_SetRecord(Vec4f *, s32);
 
 extern void func_00143B50(s32, s32);
 extern void amSound_LoadBank(Msg3 *);
@@ -436,7 +436,7 @@ void StrSelect_Reset(s32 n) {
     f = func_0011F680(v.y, v.z);
     D_005AA670[0] = 0;
     D_005AA668[0] = -(s32)(32768.0f * f / 3.141592f);
-    func_002A9460(&D_005AA604[0]->f11C0, D_005AA604[0]->f11D0);
+    Scr_SetRecord(&D_005AA604[0]->f11C0, D_005AA604[0]->f11D0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_00299390);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_002995F0);

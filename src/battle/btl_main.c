@@ -1438,7 +1438,7 @@ void func_001B0160(void *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B0160);
-void func_001B0380(Fighter *f) {
+void Btl_TaskLoadWait(Fighter *f) {
     s32 fn;
     if (func_001E9ED0(f) != 0) {
         func_0022DC00();
@@ -1456,7 +1456,7 @@ void Btl_TaskStart(Fighter *f) {
     func_00219650(1);
     func_00219790(1);
     func_001E9EE0();
-    fn = (s32)func_001B0380;
+    fn = (s32)Btl_TaskLoadWait;
     if (fn == 0) {
         fn = 0;
     }

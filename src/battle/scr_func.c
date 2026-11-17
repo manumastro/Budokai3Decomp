@@ -105,7 +105,7 @@ void func_002A93E0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A93E0);
 extern u8 D_005AB3A0[];
-void func_002A9460(s32 *a0, s32 a1) {
+void Scr_SetRecord(s32 *a0, s32 a1) {
     s32 *d = (s32 *)D_005AB3A0;
     __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a0), "r"(d) : "memory");
     d[4] = a1;
