@@ -229,7 +229,31 @@ void func_002BE830(char *p) {
     func_002BDF50((char *)D_0047011C + (D_0047011C[0x1A8 / 4] << 2) + 0x160, p);
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE870);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEA30);
+void func_002BEA30(void) {
+    s32 i;
+    if (D_0047011C[0x2D8 / 4] != 0) {
+        amCdFs_ReleaseCache(D_0047011C[0x2D4 / 4]);
+        D_0047011C[0x2D4 / 4] = 0;
+        D_0047011C[0x2D8 / 4] = 0;
+    } else {
+        if (D_0047011C[0x2D4 / 4] != 0) {
+            amCdFs_Close(D_0047011C[0x2D4 / 4], 0);
+            D_0047011C[0x2D4 / 4] = 0;
+        }
+    }
+    for (i = 0; i < 0x20; i++) {
+        if (D_0047011C[0x254 / 4 + i] != 0) {
+            amHeap_Free((void *)D_0047011C[0x254 / 4 + i]);
+        }
+        D_0047011C[0x254 / 4 + i] = 0;
+    }
+    func_00209450(0x400008, 1);
+    func_00209450(0x400010, 1);
+    func_00209450(0x400020, 1);
+    func_00209450(0x400040, 1);
+    func_00209450(0x400080, 1);
+    memset(D_005BCF80, 0, 0x2E0);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEB50);
 extern s16 D_0046EE50[];
 extern s32 *D_0046FE48;
