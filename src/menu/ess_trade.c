@@ -1,6 +1,16 @@
 #include "common.h"
 
 extern s32 D_0047080C;
+extern void func_00277310(void);
+extern void func_002794D0(void);
+extern s32 func_002D20D0(void);
+extern s32 func_00283BF0(void);
+extern void func_002C04B0(void *);
+extern void func_002D23D0(void);
+extern void amTask_KillGroup(s32, s32, s32);
+extern void amCdFs_Close(void *, s32);
+extern void amHeap_Free(void *);
+extern void func_00283C20(void);
 
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_002778D0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00277A90);
@@ -9,12 +19,39 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_002782D0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00278490);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00278980);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00278B00);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00278CA0);
+
+void func_00278CA0(u8 *a0) {
+    u8 *s0;
+
+    s0 = a0;
+    *(s32 *)((u8 *)D_0047080C + 0xA0) += 1;
+    *(s32 *)((u8 *)D_0047080C + 0x100) += 1;
+    *(s32 *)((u8 *)D_0047080C + 0x130) += 1;
+    *(s32 *)((u8 *)D_0047080C + 0x190) += 1;
+    *(s32 *)((u8 *)D_0047080C + 0xD0) += 1;
+    func_00277310();
+    if (func_002D20D0() == 6) {
+        *(void **)(s0 + 0x1C) = ((void *)func_002794D0 == 0) ? 0 : (void *)func_002794D0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00278D40);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00278EA0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00279010);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_002793C0);
-extern void func_00277310(void);
+void func_002793C0(u8 *a0) {
+    u8 *s0;
+
+    s0 = a0;
+    *(s32 *)((u8 *)D_0047080C + 0xA0) += 1;
+    *(s32 *)((u8 *)D_0047080C + 0x100) += 1;
+    *(s32 *)((u8 *)D_0047080C + 0x130) += 1;
+    *(s32 *)((u8 *)D_0047080C + 0x190) += 1;
+    *(s32 *)((u8 *)D_0047080C + 0xD0) += 1;
+    func_00277310();
+    if (func_00283BF0() == 8) {
+        *(void **)(s0 + 0x1C) = ((void *)func_002794D0 == 0) ? 0 : (void *)func_002794D0;
+        func_00283C20();
+    }
+}
 
 /* Adds one to the five counters of the trade block D_0047080C, then runs func_00277310. */
 void Trade_CountFrame(void) {
@@ -66,7 +103,39 @@ void Trade_Start(void) {
     func_00283C10();
     func_002D2360();
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_0027A1C0);
+extern void func_002794D0(void);
+extern s32 func_002D20D0(void);
+
+void func_0027A1C0(s32 a0, s32 a1) {
+    s32 *t;
+    s32 *q;
+    s32 cnt;
+    s32 i;
+    u8 *g;
+
+    cnt = 0;
+    i = 0;
+    t = (s32 *)((u8 *)D_0047080C + (*(s32 *)((u8 *)D_0047080C + 0x50) << 5) + 0x58);
+    q = t;
+    do {
+        if (q[2] > 0) {
+            cnt++;
+        }
+        i++;
+        q++;
+    } while (i < 4);
+    if (t[1] < cnt) {
+        t[1] = cnt;
+        t[0] = cnt;
+        if (t[0] > 3) {
+            t[0] = 3;
+        }
+    }
+    t[6] = a0;
+    t[7] = a1;
+    g = *(u8 **)((u8 *)D_0047080C + 0x20);
+    *(void **)(g + 0x1C) = ((void *)func_002794D0 == 0) ? 0 : (void *)func_002794D0;
+}
 extern void *amTask_Create();
 extern void func_00279FD0();
 extern char D_0046B540[];
@@ -78,7 +147,26 @@ void func_0027A260(void) {
     memset(s0, 0, 0x1C);
     *(s32 *)s0 = 0x3C;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_0027A2D0);
+void func_0027A2D0(void) {
+    s32 s1;
+    s32 s0;
+
+    *(s32 *)(*(u8 **)((u8 *)D_0047080C + 0x24) + 0x34) = 0;
+    func_002C04B0(*(void **)((u8 *)D_0047080C + 0x24));
+    func_002D23D0();
+    amTask_KillGroup(0x200, 0x10, 0);
+    s1 = 0;
+    s0 = 0;
+    do {
+        if (*(void **)((u8 *)D_0047080C + s0) != 0) {
+            amCdFs_Close(*(void **)((u8 *)D_0047080C + s0), 0);
+        }
+        s1++;
+        s0 += 4;
+    } while (s1 < 4);
+    amHeap_Free((void *)D_0047080C);
+    D_0047080C = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_0027A370);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_0027A4C0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_0027AAE0);

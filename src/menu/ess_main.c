@@ -1,6 +1,11 @@
 #include "common.h"
 
 extern u8 *D_004707E0;
+extern f32 D_004703BC;
+extern s32 func_0022BC30(s32, f32);
+extern void func_001F0810(s32, s32);
+extern void func_0026B770(void);
+extern void func_0026B880(void);
 
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_00269A00);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_00269AC0);
@@ -51,7 +56,26 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026C9F0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026CB30);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026CC30);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026CD50);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026CF80);
+void func_0026CF80(u8 *a0) {
+    u8 *s1;
+    s32 s0;
+    u8 *s2;
+    f32 f;
+
+    s1 = a0;
+    func_0026B770();
+    func_0026B880();
+    s0 = -1;
+    f = (f32)*(s32 *)(D_004707E0 + 0xC8);
+    s2 = *(u8 **)(D_004707E0 + 0x24);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + 0x68), f * D_004703BC);
+    f = (f32)*(s32 *)(D_004707E0 + 0x98);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + 0x1C), f * D_004703BC);
+    if (s0 == 0xFF) {
+        func_001F0810(-1, 0);
+        *(s32 *)(s1 + 0x1C) = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D030);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D150);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D230);
