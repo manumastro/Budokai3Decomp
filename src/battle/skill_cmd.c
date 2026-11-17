@@ -578,39 +578,42 @@ void func_002528E0(s32 a0, s32 a1) {
         break;
     }
 }
-// GIVEN UP: the loop and its branches are laid out differently in the original (76 instructions differ)
+// GIVEN UP: the -1 test of the first store and the loop head are scheduled in other registers (3 forms tried)
 #if 0
-s32 func_002529B0(s32 a0, u8 *a1, s32 a2) {
-    s32 s;
-    s32 s1;
-    s32 s2;
-    u8 *e;
-    s32 v0;
-
-    s = *(s32 *)(a1 + 0x1350);
-    if (*(s32 *)((u8 *)D_0046FE4C + s * 0x480 + 0x24) == -1) {
-        *(s32 *)((u8 *)D_0046FE4C + s * 0x480 + 0x24) = *(s32 *)(a1 + 0xB70);
+static inline s32 SkillEntry_Match(u8 *e, s32 v) {
+    if (*(s16 *)(e + 0x16) != 0) {
+        return *(s16 *)(e + 0x16) == v;
     }
-    s2 = 0;
-    s1 = 0;
-    if (*(s32 *)((u8 *)D_0046FE54 + s * 4 + 8) > 0) {
-        do {
-            e = *(u8 **)((u8 *)D_0046FE54 + s * 4) + s1;
-            v0 = *(s16 *)(e + 0x16);
-            if (v0 != 0) {
-                if ((s16)v0 == *(s32 *)(a1 + 0xBA4)) {
-                    if (*(s16 *)(e + 0x12) == a0 && *(s16 *)(e + 0x10) != 0xB) {
-                        func_002525A0(a1, e, a2);
-                    }
-                }
-            } else if (*(s32 *)(a1 + 0xBA4) >= *(s16 *)(e + 0xDC) && *(s16 *)(e + 0xDE) >= *(s32 *)(a1 + 0xBA4)) {
-                if (*(s16 *)(e + 0x12) == a0 && *(s16 *)(e + 0x10) != 0xB) {
-                    func_002525A0(a1, e, a2);
-                }
-            }
-            s2++;
-            s1 += 0xF0;
-        } while (s2 < *(s32 *)((u8 *)D_0046FE54 + s * 4 + 8));
+    if (v < *(s16 *)(e + 0xDC)) {
+        return 0;
+    }
+    if (*(s16 *)(e + 0xDE) < v) {
+        return 0;
+    }
+    return 1;
+}
+
+s32 func_002529B0(s32 a0, u8 *a1, s32 a2) {
+    s32 side;
+    u8 *p;
+    s32 i;
+    s32 off;
+    s32 s0;
+    s32 v;
+    u8 *e;
+
+    side = *(s32 *)(a1 + 0x1350);
+    p = (u8 *)D_0046FE4C + side * 0x480;
+    if (*(s32 *)(p + 0x24) == -1) {
+        *(s32 *)(p + 0x24) = *(s32 *)(a1 + 0xB70);
+    }
+    s0 = side << 2;
+    for (i = 0, off = 0; i < *(s32 *)((u8 *)D_0046FE54 + s0 + 8); i++, off += 0xF0) {
+        e = *(u8 **)((u8 *)D_0046FE54 + s0) + off;
+        v = *(s32 *)(a1 + 0xBA4);
+        if (SkillEntry_Match(e, v) && *(s16 *)(e + 0x12) == a0 && *(s16 *)(e + 0x10) != 0xB) {
+            func_002525A0(a1, e, a2);
+        }
     }
     return 0;
 }
@@ -1584,26 +1587,21 @@ void func_00256EB0(u8 *a0) {
         }
     }
 }
-// GIVEN UP: the entry pointer and the field address take other saved registers (3 forms and declaration orders tried)
-#if 0
 extern s32 D_0058D4F0[];
 extern void func_0022D0E0(s32, s32);
 void func_00256F80(s32 *a0) {
-    s32 *v;
-    s32 *s2;
-    s32 *s0;
-    s32 i;
     s32 *s3;
+    s32 *s2;
+    s32 i;
+    s32 *s0;
 
     s3 = a0 + 12;
-    v = (s32 *)s3[0];
-    if (v[13] != 0) {
-        func_0022D0E0(v[13], 1);
+    s2 = (s32 *)s3[0] + 12;
+    if (((s32 *)s3[0])[13] != 0) {
+        func_0022D0E0(((s32 *)s3[0])[13], 1);
     }
-    s2 = v + 12;
     s2[1] = 0;
-    s0 = s2;
-    for (i = 0; i < 2; i++, s0 += 1) {
+    for (i = 0, s0 = s2; i < 2; i++, s0 += 1) {
         if (s0[3] != 0) {
             func_0022D0E0(s0[3], 1);
         }
@@ -1633,8 +1631,6 @@ void func_00256F80(s32 *a0) {
     s3[0] = 0;
     D_0058D4F0[0] = 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00256F80);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002570A0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002573F0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00257860);
