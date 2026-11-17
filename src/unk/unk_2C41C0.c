@@ -649,13 +649,13 @@ extern EffFile *func_0020B020(s32, s32, s32);
 extern s32 func_00127E88(void *, char *, s32);
 extern void func_002C9EF0(EffEnt *, EffReq *);
 
-/* Differs only at the call to func_002C9EF0: the original does not set a0 there (func_002C5EB0 leaves a0
-   alone; maybe the compiler knew that from the same file). */
+/* differs: 43 of 64; the original keeps five saved registers here (the pointer to the request, the file, the entry, the count and the index); this shape gives other registers */
 #if 0
 void func_002CA2F0(EffReq *r) {
     EffFile *f;
-    EffEnt *e;
+    EffEnt *e = 0;
     s32 n = 0;
+    s32 st = 0;
     s32 i;
 
     if (r->f2C & 0x2000) {
@@ -667,12 +667,17 @@ void func_002CA2F0(EffReq *r) {
         e = (EffEnt *)((char *)f + f->fC);
         n = f->f8;
     }
-    for (i = 0; i < n; i++) {
-        e = &e[i];
-        func_002C5EB0(e, r);
-        if (e->f30 > 0.0f) {
-            func_002C9EF0(e, r);
-        }
+    if (n > 0) {
+        i = 0;
+        do {
+            e = (EffEnt *)((char *)e + st);
+            func_002C5EB0((Dst2C41C0 *)e, (Src2C41C0 *)r);
+            if (e->f30 > 0.0f) {
+                func_002C9EF0(e, r);
+            }
+            i++;
+            st += 0xB0;
+        } while (i < n);
     }
 }
 #endif
