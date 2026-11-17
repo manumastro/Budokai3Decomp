@@ -1229,8 +1229,45 @@ s32 func_002604F0(void *o, ScrCmd *cmd) {
     func_0020AA20(arg, &b);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002605C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260690);
+extern void func_001414D0(void *, f32, f32, f32);
+extern void func_00209850(s32, void *);
+extern void func_00209950(s32, void *, s32);
+
+s32 func_002605C0(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrVec v;
+    f32 x = a[2].f;
+    f32 y = a[1].f;
+    f32 z = a[0].f;
+    s32 h = D_0058EE50[a[3].i];
+
+    if (D_0047079C != 0) {
+        return 1;
+    }
+    if (h != 0) {
+        func_001414D0(&v, 3.14159265f * (2.0f * x) / 360.0f, 3.14159265f * (2.0f * y) / 360.0f, 3.14159265f * (2.0f * z) / 360.0f);
+        func_00209850(h, &v);
+    }
+    return 1;
+}
+
+s32 func_00260690(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrVec v;
+    f32 x = a[2].f;
+    f32 y = a[1].f;
+    f32 z = a[0].f;
+    s32 h = D_0058EE50[a[3].i];
+
+    if (D_0047079C != 0) {
+        return 1;
+    }
+    if (h != 0) {
+        func_001414D0(&v, 3.14159265f * (2.0f * x) / 360.0f, 3.14159265f * (2.0f * y) / 360.0f, 3.14159265f * (2.0f * z) / 360.0f);
+        func_00209950(h, &v, 0);
+    }
+    return 1;
+}
 
 s32 Scr_CmdObjSetPos(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
