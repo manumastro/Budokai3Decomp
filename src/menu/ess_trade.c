@@ -34,8 +34,75 @@ void func_00278CA0(u8 *a0) {
         *(void **)(s0 + 0x1C) = ((void *)func_002794D0 == 0) ? 0 : (void *)func_002794D0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00278D40);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00278EA0);
+extern s32 gEssTrade;
+extern f32 gFrameDelta;
+extern s32 func_0022BC30(s32, f32);
+extern void func_00277310();
+extern void func_00277010();
+
+void func_00278D40(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    s3 = a0;
+    *(s32 *)((u8 *)gEssTrade + 0xA0) = *(s32 *)((u8 *)gEssTrade + 0xA0) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x100) = *(s32 *)((u8 *)gEssTrade + 0x100) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x130) = *(s32 *)((u8 *)gEssTrade + 0x130) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x190) = *(s32 *)((u8 *)gEssTrade + 0x190) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0xD0) = *(s32 *)((u8 *)gEssTrade + 0xD0) + 1;
+    func_00277310();
+    *(s32 *)((u8 *)gEssTrade + 0x1C0) = *(s32 *)((u8 *)gEssTrade + 0x1C0) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x220) = *(s32 *)((u8 *)gEssTrade + 0x220) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x250) = *(s32 *)((u8 *)gEssTrade + 0x250) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x1F0) = *(s32 *)((u8 *)gEssTrade + 0x1F0) + 1;
+    func_00277010();
+    s0 = -1;
+    s2 = *(u8 **)((u8 *)gEssTrade + 0x28);
+    s1 = (u8 *)gEssTrade + 0x1B8;
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + 0x54), (f32)*(s32 *)((u8 *)gEssTrade + 0x1C0) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + 0x60), (f32)*(s32 *)(s1 + 0x8) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + 0x6C), (f32)*(s32 *)(s1 + 0x8) * gFrameDelta);
+    if (s0 == 0xFF) {
+        (*(void (**)(void *))(s3 + 0x48))(s3);
+    }
+}
+extern s32 gEssTrade;
+extern f32 gFrameDelta;
+extern s32 func_0022BC30(s32, f32);
+extern void func_00277310();
+extern void func_00277010();
+extern void func_00279010();
+
+void func_00278EA0(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    void *fp;
+    s3 = a0;
+    *(s32 *)((u8 *)gEssTrade + 0xA0) = *(s32 *)((u8 *)gEssTrade + 0xA0) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x100) = *(s32 *)((u8 *)gEssTrade + 0x100) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x130) = *(s32 *)((u8 *)gEssTrade + 0x130) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x190) = *(s32 *)((u8 *)gEssTrade + 0x190) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0xD0) = *(s32 *)((u8 *)gEssTrade + 0xD0) + 1;
+    func_00277310();
+    *(s32 *)((u8 *)gEssTrade + 0x1C0) = *(s32 *)((u8 *)gEssTrade + 0x1C0) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x220) = *(s32 *)((u8 *)gEssTrade + 0x220) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x250) = *(s32 *)((u8 *)gEssTrade + 0x250) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x1F0) = *(s32 *)((u8 *)gEssTrade + 0x1F0) + 1;
+    func_00277010();
+    s0 = -1;
+    s2 = *(u8 **)((u8 *)gEssTrade + 0x28);
+    s1 = (u8 *)gEssTrade + 0x1B8;
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + 0x4C), (f32)*(s32 *)((u8 *)gEssTrade + 0x1C0) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + 0x5C), (f32)*(s32 *)(s1 + 0x8) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + 0x68), (f32)*(s32 *)(s1 + 0x8) * gFrameDelta);
+    if (s0 == 0xFF) {
+        fp = (void *)func_00279010;
+        *(void **)(s3 + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00279010);
 void func_002793C0(u8 *a0) {
     u8 *s0;
@@ -90,7 +157,47 @@ void func_00279CD0(u8 *a0) {
         *(void **)(s0 + 0x1C) = (f == 0) ? 0 : f;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00279D30);
+extern f32 gFrameDelta;
+extern s32 gEssTrade;
+extern s32 func_0022BC30(s32, f32);
+extern void func_00277310();
+extern s32 EssMain_GetFlag();
+extern void EssTrade_TaskWaitVoice();
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
+extern void amAdx_PlayAfs(s32, s32, s32);
+extern void func_0026D8A0();
+extern f32 D_004E0618[];
+
+void func_00279D30(u8 *a0) {
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    void *fp;
+    s2 = a0;
+    s1 = a0 + 0x30;
+    s0 = -1;
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(*(u8 **)((u8 *)gEssTrade + 0x28) + 0x1C) + 0x4), (f32)*(s32 *)((u8 *)gEssTrade + 0xA0) * gFrameDelta);
+    *(s32 *)((u8 *)gEssTrade + 0xA0) = *(s32 *)((u8 *)gEssTrade + 0xA0) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x100) = *(s32 *)((u8 *)gEssTrade + 0x100) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x130) = *(s32 *)((u8 *)gEssTrade + 0x130) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0x190) = *(s32 *)((u8 *)gEssTrade + 0x190) + 1;
+    *(s32 *)((u8 *)gEssTrade + 0xD0) = *(s32 *)((u8 *)gEssTrade + 0xD0) + 1;
+    func_00277310();
+    if (s0 == 0xFF) {
+        if (EssMain_GetFlag() != 0) {
+            *(s32 *)s1 = 0;
+            fp = (void *)EssTrade_TaskWaitVoice;
+            *(void **)(s2 + 0x1C) = (fp == 0) ? 0 : fp;
+            amAdx_SetVolume(1, D_004E0618[0]);
+            amAdx_Pause(1, 0);
+            amAdx_PlayAfs(1, 0x210D8, 0);
+        } else {
+            func_0026D8A0();
+            *(s32 *)(s2 + 0x1C) = 0;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00279E60);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00279FD0);
 extern s32 gEssTrade;
