@@ -4574,20 +4574,18 @@ go:
 void func_001E8B80(void *p) {
     func_00233E50(p);
 }
+/* r6 best attempt diff n/a (size 0x64 vs 0x80) */
 #if 0
 s32 func_001E8B90(Fighter *c) {
-    if (c->f1FF8 < 2) {
-        return 0;
-    }
-    if (gBattle->f7E2 == 3) {
-        if (gBattle->f8977 != 3) {
-            return 0;
+    if (c->f1FF8 >= 2) {
+        if (gBattle->f7E2 != 3 || gBattle->f8977 == 3) {
+            return func_00234C20(c);
         }
     }
-    return func_00234C20(c);
+    return 0;
 }
 #endif
-// differs: 0x64 against 0x80 bytes (the original keeps the call arm and the zero arm as separate nop-padded blocks); the field is gBattle->f8977 (0x8977), the earlier attempts read f9977
+// differs: 0x64 bytes against 0x80: the original keeps the not-3 branch as an unconditional b to the call block placed after the check, and the zero return as a shared epilogue jump; the 0x8977 test is lui/addu/lb
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8B90);
 #if 0
 s32 func_001E8C10(Fighter *c) {
