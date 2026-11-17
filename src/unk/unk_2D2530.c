@@ -553,22 +553,20 @@ void func_002D5720(void) {
     m = s->f2A8;
     DrawModel(gOptionWork, m, &v, 0);
 }
-#if 0
-// differs: the step factor (1.2f when D_004703F4 == 3) is laid out with a branch the source form did not reproduce; the rest of the draw matches up to there
 void func_002D58B0(void) {
     Vec4 b;
     Vec4 a;
     Tbl2D2530 *e = (Tbl2D2530 *)D_004E05DC;
     Obj2D2530 *o = gOptionWork;
-    Obj2D2530 *s;
     Model2D2530 *m;
+    Obj2D2530 *s;
     f32 k = 1.0f;
 
     a.x = (f32)e->f24;
     a.y = (f32)e->f28;
     a.z = 0.0f;
     a.w = 1.0f;
-    k = (D_004703F4 == 3) ? 1.2f : 1.0f;
+    k = (D_004703F4 != 3) ? 1.0f : 1.2f;
     o->f398 = o->f398 + k;
     b.x = 1.0f;
     b.y = 1.0f;
@@ -581,14 +579,12 @@ void func_002D58B0(void) {
         b.w = 1.0f - o->f398 / 30.0f;
     }
     s = gOptionWork;
-    m = *(Model2D2530 **)((char *)o + 0x28C + e->f1C * 4);
+    m = ((Model2D2530 **)((char *)o + 0x28C))[e->f1C];
     DrawModel(s, m, 0, &b);
     s = gOptionWork;
-    m = *(Model2D2530 **)((char *)o + 0x294 + e->f1C * 4);
+    m = ((Model2D2530 **)((char *)o + 0x294))[e->f1C];
     DrawModel(s, m, &a, &b);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D58B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5AE0);
 void func_002D5D70(void) {
     Obj2D2530 *o = gOptionWork;
