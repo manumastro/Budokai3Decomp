@@ -1582,7 +1582,63 @@ void func_001EE250(Task *t) {
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE320);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE530);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE6D0);
+
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001EE530(Task *);
+extern void StrTitle_Load(void);
+extern void TourMode_Load(void);
+extern void PracMode_Load(void);
+extern void func_002E18D0(void);
+extern void func_0026E4A0(void);
+extern void Title_Load(void);
+extern void func_00269980(void);
+extern void ArenaMode_Load(void);
+
+void func_001EE6D0(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001EE530);
+            switch (D_00470600) {
+            case 6:
+                StrTitle_Load();
+                break;
+            case 16:
+                TourMode_Load();
+                break;
+            case 19:
+                PracMode_Load();
+                break;
+            case 28:
+                func_002E18D0();
+                break;
+            case 22:
+                func_0026E4A0();
+                break;
+            case 4:
+                Title_Load();
+                break;
+            case 14:
+                func_00269980();
+                break;
+            case 23:
+                ArenaMode_Load();
+                break;
+            }
+        }
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE820);
 
 extern s8 D_004B4BB1[];
@@ -2027,7 +2083,9 @@ typedef struct MotSlot {
 extern void amMotion_Apply(char *, f32, f32);
 
 // differs: 12 of 49 instructions (the load order of the frame word and the object pointer, and their registers)
+
 #if 0
+
 void func_001F5BE0(MotCtl *c) {
     MotState *s;
     char *obj;
@@ -2067,6 +2125,7 @@ void func_001F5BE0(MotCtl *c) {
 
 extern f32 D_0051CD24[];
 #endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5BE0);
 
 typedef struct BtbItem {
@@ -2105,11 +2164,14 @@ void func_001F5CB0(BtbHolder *h) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5D50);
+
 extern f32 D_0051CD24[];
 extern void amMotion_Apply(char *, f32, f32);
 
 // differs: 44 of 53 instructions (the first branch's target, the loads of s->obj and the packed frame index)
+
 #if 0
+
 void func_001F5E20(MotCtl *c) {
     MotState *s;
     char *entry;
@@ -2136,6 +2198,7 @@ void func_001F5E20(MotCtl *c) {
     }
 }
 #endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5E20);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5EF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5F50);
@@ -2195,6 +2258,60 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7210);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7470);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7490);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7690);
+
+extern char *D_0051CD14[];
+extern s32 D_0051CD20[];
+extern char D_004698C0[];
+extern void *func_001F5FD0(u32, char *, s32, void *, void *);
+extern void func_001F2FD0(void);
+extern void func_001F3180(void);
+
+// differs: 29 of 65 instructions (the loop's registers and the layout of its test; the constructor call matches)
+
+#if 0
+
+void func_001F7720(s32 p0) {
+    s32 fl;
+    s32 n;
+    s32 i;
+    s32 t;
+    char *a2;
+    char *d;
+    char *x1;
+    char *x2;
+    char *x3;
+    char *ent;
+    char *s0;
+    char *r;
+
+    t = D_0051CD20[0];
+    ent = D_0051CD14[0] + t * 36;
+    s0 = *(char **)(ent + 0xC) + (p0 << 5);
+    r = func_001F5FD0(0x81000000, D_004698C0, (s32)s0, (void *)func_001F2FD0, (void *)func_001F3180);
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x41;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x40;
+    x1 = *(char **)(s0 + 4);
+    x2 = *(char **)x1;
+    x3 = *(char **)(x2 + 0x1C);
+    d = *(char **)x3;
+    fl = 0;
+    if (d != NULL) {
+        n = *(s32 *)(d + 0x10);
+        if (0 < n) {
+            a2 = *(char **)(d + 0x1C);
+            for (i = 0; i < n; i++) {
+                if (*(s8 *)a2 == 0x58) {
+                    fl |= 0x200;
+                }
+                a2 += 0x20;
+            }
+        }
+    }
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & ~fl;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | fl;
+}
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7720);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7820);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7990);
