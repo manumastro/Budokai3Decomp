@@ -2513,24 +2513,7 @@ void func_00248360(void) {
 // differs: round 6 (u23e): 0xA0 bytes, the original 0xA8 (the mwcc prologue and the six calls match). The original branches on D_0051CD20 to the block with beqz and jumps out through a b (a trampoline to the epilogue); return inside the block gives b at its end, the if/else shapes give bnez straight to the epilogue
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248360);
-#if 0
-void func_00248410(void) {
-    s32 i;
-
-    for (i = 0; i < 2; i++) {
-        u8 *v = D_00470740[i];
-
-        if (v != 0) {
-            u8 *s1 = v + 0x30;
-
-            amHeap_Free(*(void **)(v + 0x38));
-            amHeap_Free(*(void **)(s1 + 0xC));
-            D_00470740[i] = 0;
-        }
-    }
-}
-// differs: the original loads the table entry and the global base in another order, and keeps the object pointer in its own register (not folded into the offsets)
-#endif
+/* r6 best attempt diff 10 of 26: the loop, the two frees and the store match in order; the original loads the second base (node+0x30) after the first call and keeps the loop pointer in s0, the C shapes give 0x68 bytes, not 0x70 (no addiu s1 in the delay slot, no nop after the store). */
 #if 0
 void func_00248410(void) {
     s32 i;
@@ -2548,7 +2531,7 @@ void func_00248410(void) {
         p++;
     }
 }
-// differs: round 6 (u23e): 0x68 bytes, the original 0x70 (two instructions more). Same loop and calls; the original keeps p in s0 and the node+0x30 in s1, and has a nop after the store inside the if; declaration permutations all give the same size
+// differs: the original loads the table entry and the global base in another order, and keeps the object pointer in its own register (not folded into the offsets); a u32 base local and a u8 * local both fold node+0x30 into node+0x3C
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248410);
 void func_00248480(void) {

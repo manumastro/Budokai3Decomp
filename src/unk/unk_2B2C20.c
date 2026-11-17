@@ -266,9 +266,6 @@ void func_002B4680(SklAct *s) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B47D0);
-/* differs: about 14 of 40: the register roles now match; the fC update (2 -> 3, 0 -> 1) and the join branch are laid out
-   differently (the original branches with beq to the store). Two-if and else-if forms tried. */
-#if 0
 extern void func_002B47D0(void);
 extern void amFile_Load(s32);
 
@@ -281,18 +278,18 @@ void func_002B4950(void *o) {
         if (*(s16 *)((u8 *)*(void **)s0 + 4) == 3) {
             amFile_Load(*(s32 *)(*(u8 **)gSklEdit + 0x54));
             *(s32 *)(s0 + 8) = *(s32 *)((u8 *)*(void **)s0 + 0x54);
-            if (*(s32 *)(s0 + 0xC) == 2) {
-                *(s32 *)(s0 + 0xC) = 3;
-            }
-            if (*(s32 *)(s0 + 0xC) == 0) {
+            switch (*(s32 *)(s0 + 0xC)) {
+            case 0:
                 *(s32 *)(s0 + 0xC) = 1;
+                break;
+            case 2:
+                *(s32 *)(s0 + 0xC) = 3;
+                break;
             }
             *(void **)(s1 + 0x1C) = (func_002B47D0 == NULL) ? NULL : (void *)func_002B47D0;
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4950);
 typedef struct SklFile {
     char pad0[4];
     s16 f4;
@@ -324,10 +321,14 @@ void SklEdit_TaskLoad(void *a) {
         }
     }
 }
-/* differs: gSklEdit is loaded after the `li -2` here; the original loads it first (register v1 / v0 swapped) */
+/* differs: 1 instruction of 6: the final addu is `v1 + v0` here, the original is `v0 + v1` (operand order);
+   the load of gSklEdit first matches with s32 p = (s32)gSklEdit. Variants tried (7): char *p, s32 p with
+   a0 & -2 on either side, a separate q for the mask, and an offset-first sum (size mismatch). */
 #if 0
 u16 func_002B4AD0(s32 a0) {
-    return *(u16 *)((char *)gSklEdit + (a0 & -2) + 0x34);
+    s32 p;
+    p = (s32)gSklEdit;
+    return *(u16 *)(p + (a0 & -2) + 0x34);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4AD0);
