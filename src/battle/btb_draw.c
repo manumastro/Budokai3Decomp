@@ -3235,6 +3235,68 @@ void func_001F0530(void) {
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0530);
+typedef struct BtbSaveState {
+    u64 f0;
+    s32 f8;
+    s32 fC;
+    s8 f10;
+} BtbSaveState;
+
+typedef struct BtbPair8 {
+    s32 a, b;
+} BtbPair8;
+
+typedef struct BtbPair2 {
+    s8 a, b;
+} BtbPair2;
+
+typedef struct BtbBlk32 {
+    s32 a, b, c, d, e, f, g, h;
+} __attribute__((aligned(16))) BtbBlk32;
+
+/* The state block the battle hands over to the stage: 8-, 32- and 2-byte block copies, then a 17-byte struct. */
+/* differs: 203 of 204: the loops are unrolled here; the original keeps one iteration (lw/lw/sw/sw, lq/lq/sq/sq,
+   lb/lb/sb/sb) with a single `addiu $a1,-1` and `bgtz`. Tried: byte counters in the for clause (folds to one -8
+   counter), post-increment struct copies (FPU lwc1/swc1 for the 8-byte ones), member-by-member with the counter
+   in the for clause (unrolled), do/while. The 17-byte struct copy at the end is a member copy (ld/lw/lw/lb). */
+#if 0
+void func_001F0660(void) {
+    s32 n;
+    BtbPair8 *s1 = (BtbPair8 *)D_004B4C00;
+    BtbPair8 *d1 = (BtbPair8 *)D_004E6560;
+    BtbBlk32 *s2 = (BtbBlk32 *)D_004B4C80;
+    BtbBlk32 *d2 = (BtbBlk32 *)D_004E65E0;
+    BtbPair2 *s3 = (BtbPair2 *)D_004DFAF1;
+    BtbPair2 *d3 = (BtbPair2 *)D_00511451;
+    BtbPair2 *s4 = (BtbPair2 *)D_004DFB19;
+    BtbPair2 *d4 = (BtbPair2 *)D_00511479;
+
+    for (n = 16; n > 0; n--) {
+        d1->a = s1->a;
+        d1->b = s1->b;
+        s1++;
+        d1++;
+    }
+    for (n = 0x1573; n > 0; n--) {
+        *d2 = *s2;
+        s2++;
+        d2++;
+    }
+    *(BtbSaveState *)(void *)D_00511440 = *(BtbSaveState *)(void *)D_004DFAE0;
+    for (n = 0x14; n > 0; n--) {
+        d3->a = s3->a;
+        d3->b = s3->b;
+        s3++;
+        d3++;
+    }
+    for (n = 0x130; n > 0; n--) {
+        d4->a = s4->a;
+        d4->b = s4->b;
+        s4++;
+        d4++;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0660);
 extern s8 D_004B4BB0[];
 
@@ -3709,18 +3771,14 @@ void func_001F5B10(char *a, s32 v) {
         } while (i < *(s32 *)(a + 4));
     }
 }
-// differs: the original reloads h->item between its two stores (the compiler keeps it in a register); the
-// variants tried (local copy, pointer-typed first store, third store) do not reproduce the reload
-#if 0
 void func_001F5B50(BtbHolder *h) {
-    if (h->item != NULL) {
-        h->item->id = 0;
-        h->item->kind = 0;
+    BtbItem *it = h->item;
+
+    if (it != NULL) {
+        it->id = 0;
+        it->kind = 0;
     }
 }
-#endif
-
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5B50);
 void func_001F5B70(BtbHolder *h) {
     if (h->item != NULL) {
         h->item->kind = 1;

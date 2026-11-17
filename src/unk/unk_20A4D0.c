@@ -299,16 +299,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D7C0);
 #if 0
 void func_0020D9B0(void) {
     u8 *q = gWave;
-    s32 n = *(s32 *)(q + 0x78);
-    *(s32 *)(q + 0x78) = n + 1;
-    {
-        s32 *c = (s32 *)(gWave + 0x78);
-        if (*c >= 8) {
-            *c = 0;
-        }
+    s32 *p;
+
+    *(s32 *)(q + 0x78) += 1;
+    p = (s32 *)(gWave + 0x78);
+    if (*p >= 8) {
+        *p = 0;
     }
 }
-// differs: the first read of the counter is in v1 here, the original loads it into v0 and adds into v1 (both forms tried)
+// differs: 2 of 14: the counter's read goes to $v1 here, to $v0 in the original (also tried a temp and p = &gWave->f78)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D9B0);
 extern u8 D_0058A090[];
@@ -661,16 +660,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F5A0);
 #if 0
 void func_0020F690(void) {
     u8 *q = gWave;
-    s32 n = *(s32 *)(q + 0x74);
-    *(s32 *)(q + 0x74) = n + 1;
-    {
-        s32 *c = (s32 *)(gWave + 0x74);
-        if (*c >= 0x10) {
-            *c = 0;
-        }
+    s32 *p;
+
+    *(s32 *)(q + 0x74) += 1;
+    p = (s32 *)(gWave + 0x74);
+    if (*p >= 0x10) {
+        *p = 0;
     }
 }
-// differs: the same as func_0020D9B0: the first read of the counter is in v1 here, the original loads it into v0
+// differs: 2 of 14: the counter's read goes to $v1 here, to $v0 in the original (the same tie as func_0020D9B0)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F690);
 u8 *func_0020F6D0(s32 i) {

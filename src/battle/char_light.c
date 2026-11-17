@@ -342,20 +342,18 @@ void func_00237630(s32 *a0) {
         __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"((u8 *)a0[0] + 0x10), "r"(r) : "memory");
     }
 }
-// GIVEN UP: the copy registers differ: the original takes the source from a1 (advanced in place) and the destination in v1; tried local pointers and operand orders
+/* differs: compiles to 0x30 bytes against the original 0x40: the whole-struct copy collapses to one instruction pair,
+   while the original keeps `lqc2 $vf1,0($v1)` / `sqc2 $vf1,0($a0)` after materialising both addresses with addiu.
+   Tried: the same copy as an inline asm block (the asm block gives the source/destination registers the other way
+   round), local pointers, and advancing a1 in place. */
 #if 0
 void func_00237670(s32 *a0, s32 *a1) {
-    u8 *dst;
-
     a0[1] = 0;
     if (a1[8] != 0) {
         a0[3] = 1;
     } else {
         a0[3] = 0;
-        dst = (u8 *)a0[0];
-        dst += 0x10;
-        a1 = (s32 *)((u8 *)a1 + 0x10);
-        __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(dst), "r"(a1) : "memory");
+        *(CharVec16 *)((u8 *)a0[0] + 0x10) = *(CharVec16 *)((u8 *)a1 + 0x10);
     }
 }
 #endif

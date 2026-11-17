@@ -584,16 +584,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7CC0);
 f32 func_001D7DF0(void) {
     return 3000.0f;
 }
+// differs: 2 of 14 (sltiu writes $v0 here, $at in the original); also tried a switch (15 of 18), v == 0xE || v == 0xF || v == 0x11
 #if 0
 s32 func_001D7E10(Fighter *c) {
     s32 v = c->fB9C;
-    if (v - 0xE < 2 || v == 0x11) {
+    if ((u32)(v - 0xE) < 2 || v == 0x11) {
         return 1;
     }
     return 0;
 }
 #endif
-// differs: the original tests the range with sltiu into $at and lays out the returns differently; closest was 2 of 14 differing
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7E10);
 #if 0
 s32 func_001D7E50(Fighter *c, s32 a1, u16 a2) {

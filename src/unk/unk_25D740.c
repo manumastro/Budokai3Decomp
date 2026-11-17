@@ -365,7 +365,8 @@ s32 func_0025DB40(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-/* differs: the original loads a[1] into $a0 first and a[0] in the delay slot; here a[0] is loaded first (local temps do not change it) */
+/* differs: 2 of 10: the original loads args[1] into $a0 before the call and args[0] into $a1 in its delay slot;
+   here the two loads take the opposite registers (tried temps in both declaration orders and the plain call). */
 #if 0
 s32 func_0025DB70(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;

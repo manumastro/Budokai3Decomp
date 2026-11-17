@@ -635,11 +635,20 @@ void func_0022CC80(s32 key) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CC80);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CD00);
-// GIVEN UP: global loads and the float multiply are scheduled differently (tried three orders of the index and the multiply)
+typedef struct A2dEnt {
+    s32 *p;
+    f32 v;
+} A2dEnt;
+
+/* differs: 2 of 18: the order of the index scale and the mul.s, and which of the two globals the second block reads
+   first (the addressing itself is right, the two `addu` orders — base first, then index first — are reproduced).
+   Tried: one expression per store, a struct view, an index local, the constant in a local. */
 #if 0
 void func_0022CF70(s32 *p) {
-    *(s32 *)(D_004706C0 + D_004706BC * 8) = (s32)p;
-    *(f32 *)(D_004706C0 + D_004706BC * 8 + 4) = 100.0f * *(f32 *)((u8 *)p + 0x28);
+    f32 k = 100.0f;
+
+    ((A2dEnt *)D_004706C0)[D_004706BC].p = p;
+    ((A2dEnt *)D_004706C0)[D_004706BC].v = k * *(f32 *)((u8 *)p + 0x28);
     D_004706BC += 1;
 }
 #endif

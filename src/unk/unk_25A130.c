@@ -205,14 +205,16 @@ s32 func_0025AD50(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-/* differs: the global is loaded with %lo into $a0 and the value into $a1; ours takes $v1 / $a0 (6 of 12) */
+/* differs: 6 of 12: the original materialises the store base with `addiu $v1,$a0,0x30` and stores at 0x30($v1);
+   here the offset is folded into the store. Also tried the declaration order the other way round. */
 #if 0
-s32 func_0025ADE0(void *t, ScrCmd *c) {
-    s32 v = c->args->i;
-    ScrObj *g = D_0058D4E8[0];
+s32 func_0025ADE0(void *ctx, ScrCmd *cmd) {
+    s32 v = cmd->args[0].i;
+    ScrObj *o = D_0058D4E8[0];
 
-    if (g != NULL && *(s32 *)&g->f5C < 5) {
-        *(s32 *)((char *)g + 0x60) = v;
+    if (o != NULL && *(s32 *)((char *)o + 0x5C) < 5) {
+        s32 *p = (s32 *)((char *)o + 0x30);
+        p[12] = v;
     }
     return 1;
 }
@@ -294,28 +296,18 @@ s32 func_0025AF40(void *ctx, ScrCmd *cmd) {
     func_0025A3A0(a[2].i, a[1].f, a[0].f);
     return 1;
 }
-/* The loads match but the argument pointer and the object land in $v1 / $v0 instead of $v0 / $v1. */
+/* differs: 11 of 14: the argument pointer goes to $v1 and the object to $v0 here, the reverse of the original,
+   whichever of the two is declared first; the four loads and stores themselves are in the right order. */
 #if 0
 s32 func_0025AF70(void *ctx, ScrCmd *cmd) {
-    ScrObj *o;
-    ScrArg *a;
-    f32 w;
-    f32 y;
-    f32 z;
-    f32 x;
-
-    a = cmd->args;
-    o = D_0058D4F0[0];
-    w = a[0].f;
-    y = a[1].f;
-    z = a[2].f;
-    x = a[3].f;
+    ScrArg *a = cmd->args;
+    ScrObj *o = D_0058D4F0[0];
 
     if (o != NULL) {
-        o->f50 = x;
-        o->f54 = y;
-        o->f58 = z;
-        o->f5C = w;
+        o->f50 = a[3].f;
+        o->f54 = a[1].f;
+        o->f58 = a[2].f;
+        o->f5C = a[0].f;
     }
     return 1;
 }

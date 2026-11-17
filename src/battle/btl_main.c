@@ -1020,31 +1020,31 @@ void func_001AF6C0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF6C0);
+/* differs: 13 of 19: the original zeroes $v0 in the delay slot of the test and keeps the global in $s0 across the
+   call; this form schedules the two loads and the return value differently (also tried with a result local). */
 #if 0
-// differs: the original keeps the global in s0 across the call and zeroes v0 before the branch; not reproduced
-void func_001AF7A0(void *p) {
-    BattleWork *bw;
+s32 func_001AF7A0(void *p) {
     s32 id = FT_FIELD(p, s32, 0x160);
-    s32 r = 0;
-    bw = gBattle;
+    BattleWork *bw = gBattle;
+
     if (id != -1) {
-        r = amCdFs_ReadFileId(id, 0, 1);
-        BW_FIELD(bw, s32, 0x8AA4) = r;
+        BW_FIELD(bw, s32, 0x8AA4) = amCdFs_ReadFileId(id, 0, 1);
     }
+    return 0;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF7A0);
+/* differs: 0x44 bytes against 0x50: the original takes the address of D_0046FD84 into $a2 before the test and
+   reloads the global through it for the call; the direct global read here is one instruction shorter. */
 #if 0
-// differs: the original reads the global through its address (a2) and has one more instruction; not reproduced
-void func_001AF7F0(void) {
-    s32 *p = &D_0046FD84;
+s32 func_001AF7F0(void) {
     BattleWork *bw = gBattle;
     u8 *s0 = (u8 *)bw + 0x810;
-    s32 r = 0;
+
     if (D_0046FD84 != -1) {
-        r = amCdFs_ReadFileId(*p, 0, 1);
-        FT_FIELD(s0, s32, 0x1C) = r;
+        FT_FIELD(s0, s32, 0x1C) = amCdFs_ReadFileId(D_0046FD84, 0, 1);
     }
+    return 0;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF7F0);

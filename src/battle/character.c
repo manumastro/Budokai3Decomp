@@ -263,15 +263,14 @@ s32 func_001CB2B0(void *self, ScriptCtx *ctx) {
     srand(ctx->args[90]);
     return 1;
 }
-#if 0
-/* Does not match yet: 8 of 8 instructions differ. */
 s32 func_001CB2E0(void *self, ScriptCtx *ctx) {
     f32 *a = (f32 *)ctx->args;
-    ctx->fret = sqrtf(a[0]);
+    f32 v = a[0];
+
+    __asm__ volatile("sqrt.s %0, %0" : "+f"(v));
+    ctx->fret = v;
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB2E0);
 s32 func_001CB300(void *self, ScriptCtx *ctx) {
     s32 on = ctx->args[0];
     Fighter *f = gBattle->fighter[ctx->args[1]];
@@ -388,14 +387,18 @@ s32 func_001CB870(void) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB890);
-// GIVEN UP: one addu operand order differs (the global's base is the first operand in the original)
+/* differs: 8 of 13: the original's `addu $a0,$a1,$a0` takes the scaled index first and the global base second, and it
+   reads args[0] before the address is summed; here the base comes first. Tried: `gBattle + 0x8934 + i*4`, the array
+   form `((u8 **)((char *)gBattle + 0x8934))[i]`, and index/value locals (the last two put the index first but
+   schedule sltu before the addu). */
 #if 0
 s32 func_001CB9B0(void *self, ScriptCtx *ctx) {
     s32 *a = (s32 *)ctx->args;
-    u8 *bw = (u8 *)gBattle;
-    u8 *p = *(u8 **)(bw + 0x8934 + a[1] * 4);
+    s32 i = a[1];
+    s32 n = (a[0] != 0);
+    u8 *p = ((u8 **)((u8 *)gBattle + 0x8934))[i];
 
-    *(s16 *)(p + 0x1AD6) = (a[0] != 0) ? 1 : 0;
+    *(s16 *)(p + 0x1AD6) = n;
     return 1;
 }
 #endif
