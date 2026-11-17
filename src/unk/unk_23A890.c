@@ -343,7 +343,54 @@ void func_0023F370(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023F3F0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023F610);
+extern s32 D_00450070[];
+s32 BtlChara_Reset(s32, s32);
+s32 func_00253600(s32 *, s32);
+s32 func_0023F610(s32 a0) {
+    u8 *sys = gBtlSys;
+    u8 *s2 = ((u8 **)(sys + 0xEC0))[a0];
+    u8 *s1 = *(u8 **)(*(u8 **)(s2 + 8));
+    s32 s0 = 0;
+    s32 C1 = 0; s32 O1; s32 O2; s32 C2;
+    s32 r;
+    s32 *t;
+
+    if (0 < *(s8 *)(s1 + 0xD)) {
+        O1 = 0;
+        do {
+            if (BtlChara_Reset(a0, *(s16 *)(*(u8 **)(s1 + 8) + O1))) {
+                s0 += func_00253600((s32 *)s2, *(s16 *)(*(u8 **)(s1 + 8) + O1));
+            }
+            C1++;
+            O1 += 2;
+        } while (C1 < *(s8 *)(s1 + 0xD));
+    }
+    if (0 < *(s8 *)(s1 + 0xC)) {
+        C2 = 0;
+        O2 = 0;
+        do {
+            if (BtlChara_Reset(a0, *(s16 *)(*(u8 **)(s1 + 4) + O2))) {
+                r = func_00253600((s32 *)s2, *(s16 *)(*(u8 **)(s1 + 4) + O2));
+                if (r == 0) {
+                    if (D_00450070[0] != 0) {
+                        t = D_00450070;
+                        do {
+                            if (*t == *(s16 *)(*(u8 **)(s1 + 4) + O2)) {
+                                r = 1;
+                                break;
+                            }
+                            t++;
+                        } while (*t != 0);
+                    }
+                }
+                s0 += r;
+            }
+            C2++;
+            O2 += 2;
+        } while (C2 < *(s8 *)(s1 + 0xC));
+    }
+    return s0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023F7A0);
 #if 0
 void func_0023FBB0(void) {
