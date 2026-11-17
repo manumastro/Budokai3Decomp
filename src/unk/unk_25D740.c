@@ -947,7 +947,43 @@ s32 func_0025F4B0(Obj4B0 *o) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F580);
+typedef struct Obj25F {
+    char pad0[0x10];
+    s32 f10;
+    char pad14[0x16];
+    s8 f2A;
+    char pad2B;
+    f32 f2C;
+    f32 f30;
+} Obj25F;
+
+extern void func_0020EFB0(s32);
+
+s32 func_0025F580(void *o, ScrCmd *cmd) {
+    Obj25F *p = (Obj25F *)o;
+    ScrArg *a = cmd->args;
+    s32 n = a[0].i;
+    s32 busy;
+    f32 d;
+
+    p->f2A = (s8)a[1].i;
+    p->f2C = -((gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f));
+    p->f30 = (f32)n;
+    p->f10 = (s32)func_0025F4B0;
+    busy = gBattle != NULL ? gBattle->f88EC : 0;
+    if (busy == 0) {
+        if (p->f30 != -1.0f) {
+            d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+            p->f2C = p->f2C + d;
+            if (!(p->f2C < p->f30)) {
+                p->f10 = 0;
+                return 1;
+            }
+        }
+        func_0020EFB0(p->f2A);
+    }
+    return 3;
+}
 s32 func_0025F6C0(ScrCtx *ctx, ScrCmd *cmd) {
     if (cmd->args[0].i != 0) {
         D_0046FE4C->f91A = 1;
