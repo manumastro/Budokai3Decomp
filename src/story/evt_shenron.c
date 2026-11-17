@@ -66,6 +66,53 @@ void func_003062B0(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003062B0);
+extern f32 func_002B06A0(void);
+extern void amAdx_Stop(s32);
+extern void SoundRpc_SendWord(s32);
+extern void Scr_KillTasks(s32);
+extern void func_002641D0(s32, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_MarkDone(void);
+extern void func_00305130(f32 *, f32 *, s32, s32, s32);
+#if 0
+// func_003063B0: 11 of 82 differ: the constant registers and store order of the two stack vectors (the original puts 1.0 in a0, ours 400); statement order and a single 8-float array (29 differ) tried
+void func_003063B0(void) {
+    s32 *s0 = (s32 *)D_0047097C;
+    f32 t = func_002B06A0();
+    f32 va[4];
+    f32 vb[4];
+    f32 x;
+    x = *(f32 *)&s0[0x8 / 4] + t;
+    *(f32 *)&s0[0x8 / 4] = x;
+    va[3] = 1.0f;
+    vb[0] = 1.0f;
+    vb[1] = 1.0f;
+    vb[2] = 1.0f;
+    vb[3] = 1.0f;
+    {
+        s32 *g = (s32 *)D_0047097C;
+        va[0] = 320.0f;
+        va[1] = 400.0f;
+        va[2] = 0.0f;
+        if (90.0f < *(f32 *)&g[0x8 / 4]) {
+            if (*(f32 *)&g[0x8 / 4] < 220.0f) {
+                func_00305130(va, vb, g[0x15C / 4], 3, 0x800000);
+            }
+        }
+    }
+    s0 = (s32 *)D_0047097C;
+    if ((*(u16 *)((char *)D_00492FCE + (s32)D_004B4B63[0] * 184) & 0x8) != 0 || !(*(f32 *)&s0[0x8 / 4] < 960.0f)) {
+        amAdx_Stop(1);
+        SoundRpc_SendWord(0);
+        Scr_KillTasks(s0[0x4 / 4]);
+        func_002641D0(0xA, 0);
+        Scene_Request(0xC, 0);
+        Scene_MarkDone();
+        amTask_Kill((void *)s0[0]);
+        s0[0] = 0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003063B0);
 extern f32 func_002B06A0(void);
 extern void amAdx_PlayAfs(s32, s32, s32);
@@ -245,6 +292,43 @@ void func_00306AD0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306AD0);
+extern void func_00305590(void);
+extern s32 amAdx_IsStopped(s32);
+extern void func_003068E0(void);
+extern void func_003062B0(void);
+extern void func_00306AD0(void);
+extern s32 amTask_Create(void *, s32, s32, s32, s32, void *);
+extern char D_0046F9D8[];
+#if 0
+// func_00306BF0: 19 of 93 differ: the task-pointer store (the original stores f into the task before the amTask_Create argument setup; ours sinks it into the call delay slot) and the end label 2 instructions later; the sibling of 306500 (matched) otherwise
+void func_00306BF0(s32 *a0) {
+    s32 *s0 = (s32 *)D_0047097C;
+    s32 *s1 = a0;
+    f32 t = func_002B06A0();
+    *(f32 *)&s0[0x8 / 4] = *(f32 *)&s0[0x8 / 4] + t;
+    func_00305590();
+    if (!(*(f32 *)&s0[0x8 / 4] < 1400.0f)) {
+        amAdx_PlayAfs(1, 0x21051, 0);
+        {
+            void *f = func_00306AD0;
+            s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+    s0 = (s32 *)D_0047097C;
+    if ((*(u16 *)((char *)D_00492FCE + (s32)D_004B4B63[0] * 184) & 0x8) != 0 || (!(*(f32 *)&s0[0x8 / 4] < 1650.0f) && amAdx_IsStopped(1) != 0)) {
+        *(u16 *)((char *)D_00492FCE + (s32)D_004B4B63[0] * 184) = 0;
+        SoundRpc_SendWord(0);
+        amAdx_Stop(1);
+        {
+            void *f = (void *)func_003068E0;
+            s32 r = (s32)((f == 0) ? 0 : f);
+            s32 *tk = (s32 *)s0[0];
+            tk[0x1C / 4] = r;
+        }
+        amTask_Create((void *)func_003062B0, 0, 0x5000, 0x4000, 2, D_0046F9D8);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306BF0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306D60);
 extern void BtbDraw_InitState(void);
