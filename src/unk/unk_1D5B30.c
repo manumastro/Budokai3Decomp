@@ -3176,26 +3176,24 @@ void func_001E4F40(Fighter *c) {
 }
 extern void func_001E8640();
 
-#if 0
 void func_001E4FA0(Fighter *c, s32 a1) {
     f32 f;
+    f32 g;
 
     func_001E8640((char *)c + 0x650);
     if (a1 & 1) {
     __asm__ volatile ("lqc2 $vf1, 0(%1)\n\tsqc2 $vf1, 0(%0)" : : "r"((char *)c + 0x80), "r"((char *)c + 0x650) : "memory");
-        f = *(f32 *)*(char **)((char *)c + 0xB94) + *(f32 *)((char *)c + 0x84);
+        g = *(f32 *)*(char **)((char *)c + 0xB94);
+        f = *(f32 *)((char *)c + 0x84) + g;
         *(f32 *)((char *)c + 0x84) = f;
     __asm__ volatile ("lqc2 $vf1, 0(%1)\n\tsqc2 $vf1, 0(%0)" : : "r"((char *)c + 0x60), "r"((char *)c + 0x650) : "memory");
-        if (c->f1FF9) {
+        if (!c->f1FF9) {
             *(f32 *)((char *)c + 0x64) = *(f32 *)((char *)c + 0x44);
         } else {
             *(f32 *)((char *)c + 0x64) = *(f32 *)((char *)c + 0x44);
         }
     }
 }
-#endif
-// differs: 2 of 37 differ: the add.s operand order (f84 loaded first into f0 in the original) and the jal reloc; the flag test is if (c->f1FF9) with the bodies identical; the copy is an inline lqc2/sqc2 pair
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E4FA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5040);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5230);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E52B0);
