@@ -103,7 +103,7 @@ typedef struct Obj2D2530 {
     void (*f36C)(void);
     s32 f370;
     void (*f374)(void);
-    char pad378[0x4];
+    s32 f378;
     s32 f37C;
     char pad380[0x8];
     f32 f388;
@@ -914,7 +914,31 @@ void func_002D8720(void) {
     s->f88 = func_0022D670(*(s32 *)(s->f8->f1C + (*s->f3D4 + 0x5D) * 4), 0.0f);
     s->f8C = func_0022D670(*(s32 *)(s->f8->f1C + (*s->f3D8 + 0x58) * 4), 0.0f);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D8890);
+void func_002D7450(void);
+void func_002D7BF0(void);
+void func_002D5F30(void);
+void func_002D3E50(void);
+void func_002D8890(void) {
+    switch (gOptionWork->f378) {
+    case 0:
+        func_002D84C0();
+        break;
+    case 1:
+        func_002D7BF0();
+        break;
+    case 2:
+        func_002D7450();
+        break;
+    case 3:
+        func_002D5F30();
+        break;
+    case 4:
+        func_002D3E50();
+        break;
+    case 5:
+        break;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D8920);
 void func_002D8AB0(void) {
     Obj2D2530 *o = gOptionWork;
