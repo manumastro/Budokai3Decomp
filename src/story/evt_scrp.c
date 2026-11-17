@@ -896,9 +896,51 @@ s32 func_002A3A40(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3A40);
+extern void func_00137B60(s32);
+extern void func_0012F2C0(void);
+
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3B50);
+#if 0
+// differs: VU0 leaf with a 4-word frame: all but two instructions match (the frame slots of the two vector copies are right after declaring v30 first); the call func_00136E80(0x100, pv, ...) loads a1 before a0 (original: li a0 first); constant, u32 cast and pointer-alias spellings tried
+void func_002A3B50(s32 *a0) {
+    f32 v30[4] __attribute__((aligned(16)));
+    f32 v20[4] __attribute__((aligned(16)));
+    f32 pv[4] __attribute__((aligned(16)));
+    s32 i;
+    u32 b1;
+    u32 b2;
+    u32 b3;
+    s32 pa;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a0), "r"(v20) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a0), "r"(v30) : "memory");
+    __asm__ volatile (
+        "mfc1 %0, %3\n\t"
+        "mfc1 %1, %4\n\t"
+        "mfc1 %2, %5\n\t"
+        "lqc2 $vf4, 0(%6)\n\t"
+        "qmtc2.ni %0, $vf1\n\t"
+        "qmtc2.ni %1, $vf2\n\t"
+        "qmtc2.ni %2, $vf3\n\t"
+        "vaddx.x $vf4, $vf4, $vf1x\n\t"
+        "vaddx.y $vf4, $vf4, $vf2x\n\t"
+        "vaddx.z $vf4, $vf4, $vf3x\n\t"
+        "sqc2 $vf4, 0(%6)"
+        : "=&r"(b1), "=&r"(b2), "=&r"(b3) : "f"(600.0f), "f"(60.0f), "f"(0.0f), "r"(v30) : "memory");
+    for (i = 0; i < 3; i++) {
+        pv[i] = 0.0f;
+    }
+    pv[3] = 1.0f;
+    pa = (s32)pv;
+    func_00136E80(0x100, pa, 0, 0, 0);
+    func_00137B60((s32)v20);
+    func_00137B60((s32)v30);
+    amDraw_FlushPacket();
+    func_0012F2C0();
+}
+#endif
+
 extern f32 D_00470410;
-extern s32 func_002A3B50(s32 *);
+extern void func_002A3B50(s32 *);
 
 s32 func_002A3C30(void *a0, char *a1) {
     s32 loc[4];
@@ -1366,7 +1408,7 @@ s32 func_002A4860(s32 *a0) {
     return 3;
 }
 extern s32 func_002A4860(s32 *);
-extern s32 func_002A3B50(s32 *);
+extern void func_002A3B50(s32 *);
 extern f32 D_00470410;
 
 extern s32 func_002A4860(s32 *);
