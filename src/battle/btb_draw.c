@@ -4234,6 +4234,461 @@ void func_001F3EC0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3FE0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F41E0);
+// differs: func_001F4520: 15 of 85 instructions differ and 8 bytes short (0x13C against 0x144): the flags test, the calls and the struct copy are in order; the store block and the branch layout after the func_00209B50 call differ.
+#if 0
+extern f32 func_002CFDD0(s32, f32, f32);
+extern void func_002D0110(s32, f32, s32);
+extern void func_002D04A0(s32);
+
+void func_001F5CB0(BtbHolder *h) {
+    BtbItem *it;
+    f32 f;
+
+    it = h->item;
+    f = D_0051CD24[0];
+    if (f >= 0.0f) {
+        if (it->id != 0) {
+            func_002D04A0(it->kind2);
+            func_002D0110(h->item->id, h->item->val, 0);
+            func_002D04A0(0);
+        }
+        if (it->kind != 0) {
+            it->val = func_002CFDD0(it->id, it->val, f);
+        }
+    }
+}
+
+extern f32 D_0051CD24[];
+extern void amMotSet_Apply(void *, f32, s32);
+
+// differs: float motion step: the original schedules the s0 field loads and the float constant load around the amMotSet_Apply call with nops in the branch slots (the scheduling differs from the C order)
+
+
+extern f32 D_0051CD24[];
+extern void amMotion_Apply(char *, f32, f32);
+
+// differs: 44 of 53 instructions (the first branch's target, the loads of s->obj and the packed frame index)
+
+
+extern char *D_0051CD14[];
+extern char *D_0051CD1C[];
+extern s32 D_0051CD20[];
+
+// differs: size 0x4C instead of 0x60. The original keeps the a0 != 0 arm out of line (beqz, then b, then two nops
+// and the arm after the other one); the if/else and early-return shapes tried give the same 19 instructions
+
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+
+void func_001F5F50(BtbObj *o) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if (D_0051C770[i] == o) {
+            o->prev->next = o->next;
+            o->next->prev = o->prev;
+            D_0051C770[i] = NULL;
+            D_0047062C--;
+            break;
+        }
+    }
+}
+extern void amHeap_Free(void *);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+extern void amHeap_Free(void *);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+// differs: list walk with frees: the flags word goes to a0 and the mask constant to v1 where the original uses v1 for the flags and v0 for the constant (flags as a local, or != 0 forms: same)
+
+extern void memset(void *, s32, s32);
+extern char D_00511770[];
+extern BtbObj *D_0051C770[];
+extern char D_0051CB70[];
+extern char D_0051CC20[];
+extern s32 D_0047062C;
+extern char *D_0051CB94[];
+extern char *D_0051CC48[];
+
+void func_001F62A0(void) {
+    D_0047062C = 0;
+    memset(D_00511770, 0, 0xB000);
+    memset(D_0051C770, 0, 0x400);
+    memset(D_0051CB70, 0, 0xB0);
+    memset(D_0051CC20, 0, 0xB0);
+    D_0051CB94[0] = D_0051CC20;
+    D_0051CC48[0] = D_0051CB70;
+}
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+typedef void (*ObjFunc)(char *);
+
+void func_001F6330(void) {
+    char *s0;
+
+    for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc *)(s0 + 0x18) != NULL && (*(s32 *)(s0 + 0x20) & 0x2800) != 0x2800) {
+            (*(ObjFunc *)(s0 + 0x18))(s0);
+        }
+    }
+}
+void func_001F63B0(void) {
+}
+void func_001F63C0(void) {
+}
+extern char D_0051CC20[];
+extern char *D_0051CB94[];
+
+typedef void (*ObjFunc4)(char *);
+
+void func_001F63D0(void) {
+    char *s0;
+
+    for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc4 *)(s0 + 0x14) != NULL && (*(s32 *)(s0 + 0x20) & 0x200) != 0) {
+            (*(ObjFunc4 *)(s0 + 0x14))(s0);
+        }
+    }
+}
+extern void func_00133780(s32, s32);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+void func_001F6450(void) {
+    char *s0;
+
+    func_00133780(2, 1);
+    s0 = D_0051CB94[0];
+    for (; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc4 *)(s0 + 0x14) != NULL && (*(s32 *)(s0 + 0x20) & 0x800) != 0) {
+            (*(ObjFunc4 *)(s0 + 0x14))(s0);
+        }
+    }
+    func_00133780(2, 0);
+}
+extern void func_00133780(s32, s32);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+void func_001F64E0(void) {
+    char *s0;
+
+    func_00133780(2, 1);
+    s0 = D_0051CB94[0];
+    for (; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc4 *)(s0 + 0x14) != NULL && (*(s32 *)(s0 + 0x20) & 0x8000) != 0) {
+            (*(ObjFunc4 *)(s0 + 0x14))(s0);
+        }
+    }
+    func_00133780(2, 0);
+}
+extern void func_00133780(s32, s32);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+void func_001F6570(void) {
+    char *s0;
+
+    s0 = D_0051CB94[0];
+    func_00133780(2, 0);
+    for (; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc *)(s0 + 0x18) != NULL && (*(s32 *)(s0 + 0x20) & 0x2800) == 0x2800) {
+            (*(ObjFunc *)(s0 + 0x18))(s0);
+        }
+    }
+}
+extern void func_00133780(s32, s32);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+void func_001F65F0(void) {
+    char *s0;
+
+    s0 = D_0051CB94[0];
+    func_00133780(2, 0);
+    for (; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc4 *)(s0 + 0x14) != NULL && (*(s32 *)(s0 + 0x20) & 0x880F) == 0) {
+            (*(ObjFunc4 *)(s0 + 0x14))(s0);
+        }
+    }
+}
+extern s32 gBattle;
+
+void func_001F6670(void) {
+    char *p = (char *)gBattle + 0x10000;
+    *(s8 *)(p - 0x768B) = 0;
+}
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void func_001F6690(void *);
+extern char D_00469888[];
+extern s32 gBattle;
+
+void func_001F6CD0(s32 a0, s32 a1, s32 a2, f32 f12, f32 f13) {
+    char *t;
+
+    t = amTask_Create(func_001F6690, (void *)func_001F6670, 0x31FF, a2, a1, D_00469888);
+    *(s32 *)(t + 0x30) = *(s32 *)(gBattle + 0x238);
+    *(s32 *)(t + 0x34) = a0;
+    *(s32 *)(t + 0x38) = 0;
+    *(s32 *)(t + 0x3C) = 0;
+    *(f32 *)(t + 0x40) = f12;
+    *(f32 *)(t + 0x44) = f13;
+    *(s32 *)(t + 0x48) = 0;
+    *(s32 *)(t + 0x4C) = 0;
+}
+void func_001F6E50(void) {
+}
+
+extern char D_0051CB70[];
+extern char D_0051CC20[];
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+
+void func_001F6E60(s32 key) {
+    BtbObj *n;
+    BtbObj *end;
+    s32 i;
+
+    n = (BtbObj *)D_0051CB70;
+    end = (BtbObj *)D_0051CC20;
+    if (n == end) {
+        return;
+    }
+    do {
+        if (n->f10 == key) {
+            for (i = 0; i < 0x100; i++) {
+                if (D_0051C770[i] == n) {
+                    n->prev->next = n->next;
+                    n->next->prev = n->prev;
+                    D_0051C770[i] = NULL;
+                    D_0047062C--;
+                    break;
+                }
+            }
+            return;
+        }
+        n = n->next;
+    } while (n != end);
+}
+
+extern char *D_0051CD14[];
+extern char *D_0051CD1C[];
+extern s32 D_0051CD20[];
+extern char D_0051CB70[];
+extern char D_0051CC20[];
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+
+void func_001F6F10(s32 flag, s32 idx) {
+    BtbObj *n;
+    BtbObj *end;
+    char *v;
+    s32 i;
+
+    v = D_0051CD14[0] + D_0051CD20[0] * 36;
+    switch (flag) {
+    case 0:
+        idx = (s32)(D_0051CD1C[0] + (idx << 5));
+        break;
+    default:
+        idx = (s32)(*(char **)(v + 0xC) + (idx << 5));
+        break;
+    }
+    n = (BtbObj *)D_0051CB70;
+    end = (BtbObj *)D_0051CC20;
+    if (n == end) {
+        return;
+    }
+    do {
+        if (n->f10 == idx) {
+            for (i = 0; i < 0x100; i++) {
+                if (D_0051C770[i] == n) {
+                    n->prev->next = n->next;
+                    n->next->prev = n->prev;
+                    D_0051C770[i] = NULL;
+                    D_0047062C--;
+                    return;
+                }
+            }
+            return;
+        }
+        n = n->next;
+    } while (n != end);
+}
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+extern char D_0051CB70[];
+extern char D_0051CC20[];
+extern void amHeap_Free(void *);
+extern void func_00209530(s32);
+
+void func_001F7010(void) {
+    BtbObj *n;
+    BtbObj *end;
+    char *sub;
+    void *p;
+    s32 i;
+
+    n = (BtbObj *)D_0051CB70;
+    end = (BtbObj *)D_0051CC20;
+    if (n == end) {
+        return;
+    }
+    do {
+        if (*(s32 *)((char *)n + 0x20) & 0x400) {
+            sub = (char *)n + 0x30;
+            p = *(void **)sub;
+            if (p != NULL) {
+                amHeap_Free(p);
+            }
+            if (*(s32 *)(sub + 8) != 0) {
+                func_00209530(*(s32 *)(sub + 8));
+            }
+            for (i = 0; i < 0x100; i++) {
+                if (D_0051C770[i] == n) {
+                    n->prev->next = n->next;
+                    n->next->prev = n->prev;
+                    D_0051C770[i] = NULL;
+                    D_0047062C--;
+                    break;
+                }
+            }
+            return;
+        }
+        n = n->next;
+    } while (n != end);
+}
+typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16;
+extern BtbVec16 D_0044B510;
+extern char D_004698A8[];
+extern void func_001F2350();
+extern void func_001F24B0();
+extern void func_00209A90(void *, void *);
+extern void *amObject_Create(void *, s32);
+void func_001F7120(s32 p) {
+    BtbVec16 tmp;
+    char *r;
+    s32 *s0;
+    s32 s2;
+
+    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)func_001F24B0);
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x401;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x400;
+    s0 = (s32 *)(r + 0x30);
+    s2 = (s32)D_0051CD0C[0];
+    s0[1] = (s32)func_001A50F0((void *)s2, 0x7D);
+    s0[0] = (s32)amObject_Create(func_001A50F0((void *)s2, 0x7C), 0);
+    s0[2] = (s32)func_00209540(func_001A50F0((void *)s2, p + 0x6E), 0x2000001, 0);
+    tmp = D_0044B510;
+    func_00209A90((void *)s0[2], &tmp);
+}
+extern void func_001F7210(char *);
+extern char *D_0051CD1C[];
+
+void func_001F7470(s32 a0) {
+    func_001F7210(D_0051CD1C[0] + (a0 << 5));
+}
+extern void func_001F7490(s32);
+
+void func_001F7690(void) {
+    s32 s1;
+    s32 s0;
+    char *v;
+
+    v = D_0051CD14[0] + D_0051CD20[0] * 36;
+    s1 = *(s32 *)(*(char **)(v + 4) + 0x90);
+    s0 = s1 - *(s32 *)(*(char **)(v + 4) + 0x88);
+    if (s0 < s1) {
+        do {
+            func_001F7490(s0);
+            s0++;
+        } while (s0 < s1);
+    }
+}
+
+extern char *D_0051CD14[];
+extern s32 D_0051CD20[];
+extern char D_004698C0[];
+extern void *func_001F5FD0(u32, char *, s32, void *, void *);
+extern void func_001F2FD0(void);
+extern void func_001F3180(void);
+
+// differs: 29 of 65 instructions (the loop's registers and the layout of its test; the constructor call matches)
+
+
+extern char *D_0051CD14[];
+extern s32 D_0051CD20[];
+extern void func_001F7990(s32);
+
+void func_001F7BF0(void) {
+    s32 s1;
+    s32 s0;
+    char *v;
+
+    v = D_0051CD14[0] + D_0051CD20[0] * 36;
+    s1 = *(s32 *)(*(char **)(v + 4) + 0x80);
+    s0 = *(s32 *)(*(char **)(v + 4) + 0x84) + s1;
+    if (s1 < s0) {
+        do {
+            func_001F7990(s1);
+            s1++;
+        } while (s1 < s0);
+    }
+}
+typedef void (*VoidFunc)(void);
+extern VoidFunc D_0044B4C0[];
+extern s32 D_0051CCE0[];
+
+void func_001F7F50(void) {
+    VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
+
+    if (f != NULL) {
+        f();
+    }
+}
+
+typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16b;
+extern f32 func_00200270(s32, f32, f32);
+extern char D_004697A8[];
+void func_001F4520(s32 p0, char *vec, s32 p2, s32 flags) {
+    BtbVec16b tmp;
+    s32 s2;
+    char *s1;
+    char *r;
+
+    s32 k;
+    char *ptr;
+    f32 f;
+
+    s2 = (s32)D_0051CD0C[0];
+    k = 0xB;
+    if (flags & 4) {
+        k += 0x100;
+    }
+    k += D_0051CD20[0] << 7;
+    s1 = NULL;
+    ptr = func_001A50F0((char *)s2, k);
+    if (ptr != NULL) {
+        s1 = func_00209540(ptr, 0x2000001, 0);
+    }
+    if (s1 != NULL) {
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(vec), "r"(&tmp) : "memory");
+        f = func_00200270(0, *(f32 *)&tmp.b[0], *(f32 *)&tmp.b[8]);
+        *(f32 *)&tmp.b[4] = f;
+        func_00209B50(s1, (char *)&tmp, 0);
+        r = func_001F5FD0(0x85000000, D_004697A8, 0, (void *)func_001F2150, (void *)func_001F22A0);
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x801;
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x800;
+        memset(r + 0x30, 0, 0x80);
+        *(char **)(r + 0x38) = s1;
+        *(s32 *)(r + 0x34) = (s32)func_001A50F0((char *)s2, 0x280);
+        *(s32 *)(r + 0x30) = flags & 2;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4520);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4670);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F47C0);
