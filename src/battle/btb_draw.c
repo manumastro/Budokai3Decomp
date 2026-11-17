@@ -1785,7 +1785,7 @@ void SceneSw_LoadMenu7(Task *t) {
     }
 }
 
-// differs: 2 of 38 instructions, the store order of gSceneNext and gSceneQueued (the compiler emits the -1 store before the table store, whatever the source order)
+// differs: 2 of 38 instructions, the store order of gSceneNext and gSceneQueued (the compiler emits the -1 store before the table store, whatever the source order) Round 6 also tried: locals inside the block, -1 via a local, comma-assign of Ready/Done, 0xFFFFFFFF, load order swapped, TASK_SETFUNC before the stores (worse), permuter 100 s (base 20, no gain); u32/array extern forms conflict with the other extern s32 decls.
 
 #if 0
 
