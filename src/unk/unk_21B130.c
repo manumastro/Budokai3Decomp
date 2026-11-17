@@ -1,7 +1,7 @@
 #include "common.h"
 
 f32 func_0011F320(f32);
-void func_0022C7D0(f32, s32);
+void func_0022C7D0(s32, f32, s32);
 void func_0022ACF0(s32);
 
 extern s32 D_00470698;
@@ -84,20 +84,29 @@ extern s32 D_00470684;
 #if 0
 void func_0021B130(void) {
     s32 m = D_00470684 & D_00470680;
-    FPair p;
-
+    volatile f32 pv[2];
+    s32 ok;
+    f32 vb;
+    f32 va;
     if ((m & 0x80000000) && (m & 2) == 2) {
+        ok = 1;
+    } else {
+        ok = 0;
+    }
+    if (ok) {
         if (D_0047068C != 0) {
-            p.b = D_00470690;
-            p.a = D_00470694;
-            func_0022DB20(p.b, p.a);
+            vb = D_00470690;
+            va = D_00470694;
+            pv[0] = va;
+            pv[1] = vb;
+            func_0022DB20(pv[1], pv[0]);
             func_0021BEA0((u8 *)D_0047068C, 0x18);
             func_0022C560(D_0047068C);
             func_0022DB20(0.0f, 0.0f);
         }
     }
 }
-// differs: the two float arguments are copied through the stack (lwc1 to 24 and 28 of a 0x30 frame) in the original, the same copy as func_0023FBB0 in unk_23A890; the local forms tried do not give that copy; round 5: `volatile FPair p` does not compile (mwcc aborts on the volatile struct)
+// differs: round 6 (u23e): 5 of 41 differ: a volatile f32 pv[2] gives the stack copy and the boolean form; left: pv[1] is addressed through addiu v0,sp,28 (the original stores direct to 28(sp)) and the two global loads are not both first
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
 void func_0021B1E0(void) {
@@ -193,21 +202,19 @@ void func_0021B1E0(void) {
     }
     *(f32 *)(sys + 0xE2C) = f1;
 }
-#if 0
 void func_0021B420(void) {
     u8 *sys = gBtlSys;
+    f32 *px = (f32 *)(sys + 0x640);
+    s32 a;
     f32 x;
     f32 q;
     f32 r;
     s32 n;
 
-    if (*(f32 *)(sys + 0xDF4) == -2.0f) {
+    if (*(f32 *)(sys + 0xDF4) == -2.0f || *(f32 *)(sys + 0xDF4) == -1.0f) {
         return;
     }
-    if (*(f32 *)(sys + 0xDF4) == -1.0f) {
-        return;
-    }
-    x = *(f32 *)(sys + 0x640);
+    x = *px;
     if (x < 0.0f) {
         x = 0.0f;
     }
@@ -220,17 +227,15 @@ void func_0021B420(void) {
     if (*(f32 *)((u8 *)D_0047068C + 0x10) == (f32)n) {
         return;
     }
-    D_00470704 = *(s32 *)(sys + 0xE60);
+    a = *(s32 *)(sys + 0xE60);
+    D_00470704 = a;
     D_0047070C = 0x04000000;
     D_00470708 = 0;
-    amModel_SetCurrent(*(s32 *)(sys + 0xE60), 0x04000000);
+    amModel_SetCurrent(a, 0x04000000);
     D_00470238 = 0;
-    func_0022C7D0((f32)n, 1);
+    func_0022C7D0(D_0047068C, (f32)n, 1);
     func_0022ACF0(D_0047068C);
 }
-// differs: 22 of 72 (round 5). The (s32) cast is NOT the problem: the original's word 0x46000024 is what the cast emits too (the disassemblers only name it differently). Tried live: the two early exits as one `||` test (shares the return), D_0047068C loaded before the cast, the px = sys+0x640 pointer, and the call func_0022C7D0(D_0047068C, (f32)n, 1) (signature (s32, f32, s32), the file's first declaration must match). Left: the last call func_0022ACF0 gets a nop before the epilogue and the early exits jump past ld ra/lq s1, the original's exits go to the epilogue directly.
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
 s32 func_0021B540(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
@@ -361,25 +366,30 @@ void func_0021B940(void) {
 }
 #if 0
 void func_0021B9A0(void) {
-    s32 *s1;
+    u8 *bw = gBattle + 0x10000;
     u8 *sys = gBtlSys;
-    u8 *v;
-    s32 e;
+    u8 *q;
+    u8 *s1;
+    s32 a;
+    s32 t;
+    s32 u;
 
-    if (*(s32 *)(gBattle + 0x88EC) == 0) {
-        e = *(s32 *)(sys + 0xE64);
-        D_00470704 = e;
-        D_0047070C = 0x04001000;
+    if (*(s32 *)(bw - 0x7714) == 0) {
+        a = *(s32 *)(sys + 0xE64);
+        D_00470704 = a;
+        D_0047070C = 0x4001000;
         D_00470708 = 0;
-        amModel_SetCurrent(e, 0x04001000);
+        amModel_SetCurrent(a, 0x4001000);
         D_00470238 = 0;
-        v = *(u8 **)(sys + 0xEE8);
-        if (v != 0) {
-            s1 = (s32 *)(v + 0x30);
-            if (*(s32 *)(v + 0x30) != 0) {
+        q = *(u8 **)(sys + 0xEE8);
+        if (q != 0) {
+            t = *(s32 *)(q + 0x30);
+            s1 = q + 0x30;
+            if (t != 0) {
                 func_0022C060(1.0f);
             }
-            if (s1[1] != 0) {
+            u = *(s32 *)(s1 + 4);
+            if (u != 0) {
                 func_0022C060(1.0f);
             }
         }
@@ -388,7 +398,7 @@ void func_0021B9A0(void) {
         }
     }
 }
-// differs: the entry pointer is set up in a delay slot in the original, and its first field is loaded into a0 before the test (the temporaries differ in a few instructions). Round 5: sys = gBtlSys moved into the branch gives 37 of 49 (the load sits after a nop in the delay slot); with the test restructured (s1 set after the first test) the entry is kept in s1 instead of v1: 7 of 47. Still to do: keep the entry in v1 (the original sets s1 = entry + 0x30 in the delay slot of the first beqz, after the load).
+// differs: round 6 (u23e): 6 of 47 differ: the load of the pointer temp goes to v1 instead of a0 and addiu s1 is hoisted above the load (the original fills the branch delay slot with it)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BA60);
