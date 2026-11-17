@@ -113,7 +113,19 @@ s32 func_002E9900(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9900);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9970);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9B10);
+void func_002E9B10(s16 *a, s16 *b) {
+    s32 i = 0;
+    s32 r;
+
+    do {
+        r = func_002537E0(a[i], b[i]);
+        D_005C9F10[i + 4] = r;
+        if (r == -1) {
+            break;
+        }
+        i++;
+    } while (i < 16);
+}
 
 void func_002E9B90(s32 a) {
     D_005C9F18[0] = a;
