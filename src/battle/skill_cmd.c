@@ -41,6 +41,7 @@ extern s32 func_00127E88(char *, char *, s32);
 extern u8 D_004E066A[];
 extern void *D_0046FE54;
 extern u8 D_00452900[];
+extern s32 D_00452940[][10];
 extern s32 D_0051CD20[];
 extern void func_00248350(s32);
 extern void func_002CF070(s32, s32);
@@ -1560,7 +1561,62 @@ s32 func_00253690(u8 *a0, s32 a1, u8 *a2) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253690);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002537E0);
+s32 func_002537E0(s32 a0, s32 a1) {
+    switch (a0) {
+    case 0:
+        a0 = 0;
+        break;
+    case 1:
+        a0 = 1;
+        break;
+    case 2:
+        a0 = 2;
+        break;
+    default:
+        return -1;
+    }
+    switch (a1) {
+    case 0:
+        a1 = 0;
+        break;
+    case 1:
+        a1 = 1;
+        break;
+    case 2:
+        a1 = 2;
+        break;
+    case 4:
+        a1 = 3;
+        break;
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 14:
+        a1 = 4;
+        break;
+    case 3:
+        a1 = 5;
+        break;
+    case 5:
+        a1 = 6;
+        break;
+    case 6:
+        a1 = 7;
+        break;
+    case 7:
+        a1 = 8;
+        break;
+    case 15:
+        a1 = 9;
+        break;
+    case 13:
+    default:
+        return -1;
+    }
+    return D_00452940[a0][a1];
+}
 void func_002538E0(s32 *a0, u8 *a1) {
     u8 buf[0x60] __attribute__((aligned(16)));
     u8 *s0;

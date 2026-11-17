@@ -276,6 +276,8 @@ segments:
       - [0x35CB80, rodata, rodata/rodata_a]
       - [0x3695D0, .rodata, unk/unk_1D5B30]
       - [0x369600, rodata, rodata/rodata_a2]
+      - [0x36AE40, .rodata, battle/skill_cmd]
+      - [0x36AE80, rodata, rodata/rodata_a2b]
       - [0x36EB20, .rodata, unk/unk_2AF860]
       - [0x36EB40, rodata, rodata/rodata_a3]
       - [0x36F350, .rodata, unk/unk_2D2530]
