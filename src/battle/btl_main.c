@@ -1538,7 +1538,7 @@ extern void func_001E7070(void *p, s32 a);
 extern void func_001E8290(void *p);
 extern void func_001CA8A0(void *p);
 extern s32 func_001C8B50(Fighter *f, void *p);
-extern void func_001D9CA0(Fighter *f);
+extern void func_001D9CA0();
 extern void *func_001CAAB0(s32 a, s32 b, s32 c, s32 d, s32 e);
 extern s32 func_001CAA30(s32 a);
 extern void *D_00428AB0[];
@@ -2823,33 +2823,38 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8500);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8600);
 #if 0
 s32 func_001C8780(Fighter *f, s32 i) {
-    s32 a;
-    s32 v;
-    CdSlot *s;
+    s32 a0;
+    s32 r;
+    s32 *s;
 
-    if (((void **)((u8 *)f + 0x1DB8))[i] != 0) {
-        a = (func_001CAA30(2) != 0) ? 2 : 0;
+    if (*(s32 *)((u8 *)f + (i << 2) + 0x1DB8) != 0) {
+        a0 = (func_001CAA30(2) == 0) ? 0 : 2;
     } else {
-        a = 1;
+        a0 = 1;
     }
-    if (a == 0) {
+    if (a0 == 0) {
         return 0;
     }
-    s = (CdSlot *)((u8 *)f + 0x1DF8 + i * 28);
-    if (s->unk00 != 0) {
-        v = 1;
-    } else if (s->handle == 0) {
-        v = 1;
+    s = (s32 *)((u8 *)f + i * 28 + 0x1DF8);
+    if (s[0] != 0) {
+        r = 1;
+    } else if (s[5] == 0) {
+        r = 1;
+    } else if (FT_FIELD(s[5], s16, 0x4) == 3) {
+        r = 2;
     } else {
-        v = (((s16 *)s->handle)[2] == 3) ? 2 : 0;
+        r = 0;
     }
-    if (v == 0) {
+    if (r == 0) {
         return 0;
     }
-    return (v < a) ? a : v;
+    if (r < a0) {
+        return a0;
+    }
+    return r;
 }
 #endif
-// differs: the original tests the slot's handle in nested branches with the result kept in a0 (a max of two values); the compiler lays the early returns out differently
+// differs: the test on the slot is kept in a0 in the original (lw a0, bnez a0), the final max is a movz / slt pair; ours loads into v0 and the register numbers of f, i and the result differ
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8780);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8860);
 s32 func_001C89A0(Fighter *f, s32 i) {
@@ -2913,7 +2918,7 @@ void func_001C8E60(void) {
 #if 0
 // differs: same loop shape as func_001C8FE0; the registers now match, but the function is 16 bytes short (0xF0 against 0x100): the battle count is re-read through its address in each loop
 extern void func_001C8050(Fighter *f, s32 i);
-extern void func_001D9CA0(Fighter *f);
+extern void func_001D9CA0();
 extern void func_001DA4C0(void);
 extern void func_001C90D0(void);
 extern void amTask_KillGroup(s32, s32, s32);
@@ -2949,42 +2954,36 @@ void func_001C8EE0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8EE0);
-#if 0
-// differs: the walker and the counter take saved registers s2 and s0 in the original, and the compiler keeps one more pointer (frame 0x60 against 0x50, size 0xE8 against 0xF0)
-extern void func_001C8050(Fighter *f, s32 i);
-extern void func_001D9CA0(Fighter *f);
 extern void func_001DA4C0(void);
 extern void amTask_KillGroup(s32, s32, s32);
+
 void func_001C8FE0(void) {
-    Fighter *first;
-    BattleWork *bw;
-    s32 i;
-    Fighter *p;
-    bw = D_00470570;
-    first = (Fighter *)((u8 *)bw + 0x830);
-    i = 0;
-    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
-        p = first;
+    BattleSlots *bw = (BattleSlots *)D_00470570;
+    Fighter *f0 = (Fighter *)((u8 *)bw + 0x830);
+    s32 i = 0;
+    Fighter *f;
+    s32 j;
+
+    if (0 < bw->numFighters) {
+        f = f0;
         do {
-            func_001C80E0(p, -1);
-            func_001C8050(p, -1);
+            func_001C80E0(f, -1);
+            func_001C8050(f, -1);
             i++;
-            p = (Fighter *)((u8 *)p + 0x2020);
-        } while (i < BW_FIELD(bw, s32, 0x88D8));
+            f = (Fighter *)((u8 *)f + 0x2020);
+        } while (i < bw->numFighters);
     }
     func_001DA4C0();
-    i = 0;
-    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+    if (0 < bw->numFighters) {
+        j = 0;
         do {
-            func_001D9CA0(first);
-            i++;
-            first = (Fighter *)((u8 *)first + 0x2020);
-        } while (i < BW_FIELD(bw, s32, 0x88D8));
+            func_001D9CA0(f0, 1);
+            j++;
+            f0 = (Fighter *)((u8 *)f0 + 0x2020);
+        } while (j < bw->numFighters);
     }
     amTask_KillGroup(0x20, 0x40000000, 1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8FE0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C90D0);
 void func_001C9310(void) {
     Fighter *f;
