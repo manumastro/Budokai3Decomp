@@ -192,6 +192,46 @@ d28:
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1C20);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1DB0);
+extern u8 D_004E570D[];
+extern s8 D_004B4BE9[];
+
+extern u8 D_004E570D[];
+extern s8 D_004B4BE9[];
+
+extern u8 D_004E570D[];
+extern s8 D_004B4BE9[];
+
+#if 0
+// func_002A1F30: a bit-table loop (2 bits per entry over three words): the register of the constants 1 and 3 and the loop index differ (51 lines differ); 4 forms tried; the division and remainder must be signed (/ and %)
+void func_002A1F30(void) {
+    s32 t2 = 0;
+    s32 t1 = 0;
+    s32 sh;
+    s32 v;
+    s32 a1v;
+    s32 *g;
+    do {
+        sh = (t2 % 16) * 2;
+        v = ((s32 *)D_004E6560)[t2 / 16] & (3 << sh);
+        v = (s32)((u32)v >> sh);
+        if (v > 0) {
+            t1 |= 1 << t2;
+        }
+        t2++;
+    } while (t2 < 0x26);
+    if ((t1 & 0x23C9D) != 0x23C9D) {
+        return;
+    }
+    a1v = (u8)D_004E6560[0x2B11D];
+    if (a1v < (s32)D_004E570D[0]) {
+        D_004E6560[0x2B11D] = (s8)(a1v + 1);
+        g = gEvtWork;
+        *(s32 *)((char *)g + g[0xF8 / 4] * 4 + 0x100) = 0x204;
+        g[0xF8 / 4] = g[0xF8 / 4] + 1;
+        D_004B4BE9[0] = 1;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1F30);
 extern void amCdFs_ReleaseCache(s32);
 extern void memset(void *, s32, s32);
