@@ -675,6 +675,60 @@ void func_00241C10(s32 i) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241C10);
+#if 0
+// differs: four copies of the call results in saved registers (the original keeps v0 and s0 both = kind 3 and copies it into a3 after the first store); the loop registers differ
+void func_00241D60(s32 i) {
+    u8 *o = D_0046FE44 + i * 0x80;
+    u8 *s4 = gBattle + i * 0x2020 + 0x830;
+    u8 *p0 = func_00240F40(i, 0);
+    u8 *p1 = func_00240F40(i, 1);
+    u8 *p3;
+    u8 *r;
+    u8 *q3;
+    u8 *qp1;
+    u8 *qp0;
+    s32 *tb;
+    s32 k;
+    s32 v;
+
+    func_00240F40(i, 2);
+    p3 = func_00240F40(i, 3);
+    r = p3;
+    v = (s32)(s4 + 0x650);
+    *(s32 *)(o + 0x20) = v;
+    q3 = p3;
+    *(s32 *)(p3 + 0x6C) = v;
+    *(s32 *)(r + 0x6C) = v;
+    *(s32 *)(p1 + 0x6C) = v;
+    *(s32 *)(p0 + 0x6C) = v;
+    *(s32 *)(p3 + 0x70) = 5;
+    *(s32 *)(r + 0x70) = 5;
+    *(s32 *)(p1 + 0x70) = 5;
+    *(s32 *)(p0 + 0x70) = 5;
+    if (0 < *(s32 *)(p0 + 0x70)) {
+        k = 0;
+        tb = D_00452100;
+        qp1 = p1;
+        qp0 = p0;
+        do {
+            k++;
+            *(s32 *)(q3 + 0x74) = (s32)(s4 + (tb[0] << 4) + 0x650);
+            *(s32 *)(r + 0x74) = (s32)(s4 + (tb[0] << 4) + 0x650);
+            *(s32 *)(qp1 + 0x74) = (s32)(s4 + (tb[0] << 4) + 0x650);
+            *(s32 *)(qp0 + 0x74) = (s32)(s4 + (tb[0] << 4) + 0x650);
+            *(s32 *)(q3 + 0x94) = (s32)(s4 + (tb[1] << 4) + 0x650);
+            tb += 2;
+            *(s32 *)(r + 0x94) = (s32)(s4 + (tb[-1] << 4) + 0x650);
+            q3 += 4;
+            *(s32 *)(qp1 + 0x94) = (s32)(s4 + (tb[-1] << 4) + 0x650);
+            r += 4;
+            *(s32 *)(qp0 + 0x94) = (s32)(s4 + (tb[-1] << 4) + 0x650);
+            qp1 += 4;
+            qp0 += 4;
+        } while (k < *(s32 *)(p0 + 0x70));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241D60);
 #if 0
 void func_00241EB0(s32 i, s32 mode) {
@@ -704,7 +758,44 @@ void func_00241EB0(s32 i, s32 mode) {
 // differs: the mode chain is laid out in another order (the mode 3 test first, the mode 0/1 block placed last), and the field addresses are formed in another order: 24 bytes longer in the original
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241EB0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241FA0);
+void func_00241FA0(s32 i, s32 k) {
+    u8 *q = gBattle + i * 0x2020 + 0x830;
+    u8 *o = D_0046FE44 + i * 0x80;
+    s32 a;
+
+    switch (k) {
+    case 0:
+    case 1:
+        a = *(s32 *)(o + 0x2C);
+        if ((a & 2) == 0) {
+            if (*(s16 *)(q + 0xCAC) == 4) {
+                *(s32 *)(o + 0x2C) = a | 2;
+                *(s32 *)(o + 0x2C) &= -5;
+            } else {
+                *(s32 *)(o + 0x2C) = a & -3;
+                *(s32 *)(o + 0x2C) &= -5;
+            }
+        } else {
+            if (*(s16 *)(q + 0xCAC) == 4) {
+                return;
+            }
+            if (*(s16 *)(q + 0xCAC) == 0xE) {
+                func_00241500(i, 3);
+            }
+            *(s32 *)(o + 0x2C) &= -3;
+            *(s32 *)(o + 0x2C) &= -5;
+        }
+        break;
+    case 2:
+        *(s32 *)(o + 0x2C) |= 2;
+        *(s32 *)(o + 0x2C) |= 4;
+        break;
+    case 3:
+        *(s32 *)(o + 0x2C) &= -3;
+        *(s32 *)(o + 0x2C) |= 4;
+        break;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002420F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242290);
 void func_00242490(s32 i) {
@@ -1530,6 +1621,69 @@ void func_002479B0(u8 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247AB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247C80);
+#if 0
+// differs: the loop registers of the table-clear loop (the object pointer in a3, the loop in a0/a1 of the original) and the order of the first moves; 1 attempt, 88 of 94 instructions
+extern f32 D_0051CD24[];
+void func_00247E00(u8 *a0) {
+    f32 f20 = D_0051CD24[0];
+    u8 *s0 = a0 + 0x30;
+    u8 *t8;
+    u8 *a6;
+    s32 a3;
+    s32 i;
+    s32 off;
+    f32 f0;
+    f32 f1;
+
+    if (f20 < 0.0f) {
+        return;
+    }
+    if (*(s32 *)(a0 + 0x50) != D_00470734) {
+        *(s32 *)(s0 + 0x20) = D_00470734;
+        *(f32 *)(s0 + 0x10) = 0.0f;
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            ((void (*)(void))*(s32 *)(s0 + 0x24))();
+        }
+    }
+    t8 = *(u8 **)(s0 + 8);
+    a3 = *(s32 *)(s0 + 0x14);
+    if (*(s32 *)(t8 + 0x41C) != a3) {
+        a6 = t8 + 0x41C;
+        if (0 < *(s32 *)(t8 + 0x418)) {
+            i = 0;
+            off = 0;
+            do {
+                *(s32 *)(*(u8 **)(a6 + 0x10) + off + 0x30) = -1;
+                *(s32 *)(*(u8 **)(a6 + 0x10) + off + 0x34) = -1;
+                *(s32 *)(*(u8 **)(a6 + 0x10) + off + 0x38) = -1;
+                i++;
+                off += 0x40;
+            } while (i < *(s32 *)(t8 + 0x418));
+        }
+        *(f32 *)(a6 + 0xC) = -1.0f;
+    }
+    a6 = t8 + 0x41C;
+    *(s32 *)a6 = a3;
+    f0 = *(f32 *)(s0 + 0x10);
+    *(f32 *)(*(u8 **)(s0 + 8) + 0x424) = f0;
+    amMotion_Apply(*(u8 **)(s0 + 8), 0.0f, 1.0f);
+    *(f32 *)(s0 + 0x10) = *(f32 *)(s0 + 0x10) + f20;
+    a3 = *(s32 *)(s0 + 0x14);
+    f0 = *(f32 *)(s0 + 0x10);
+    t8 = *(u8 **)(s0 + 8);
+    {
+        u8 *p = *(u8 **)(*(u8 **)(t8 + (((a3 >> 16) - 1) << 2) + 0x46C) + 0x14);
+        f1 = (f32)*(s32 *)(p + ((a3 & 0xFFFF) << 4) + 8);
+    }
+    if (f0 < f1) {
+        return;
+    }
+    *(f32 *)(s0 + 0x10) = 0.0f;
+    if (*(s32 *)(s0 + 0x24) != 0) {
+        ((void (*)(u8 *))*(s32 *)(s0 + 0x24))(a0);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247E00);
 void func_00247F70(u8 *o) {
     u8 *s0 = o + 0x30;
