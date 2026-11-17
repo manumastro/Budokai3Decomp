@@ -1750,10 +1750,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFA90);
 void func_001DFBF0(Fighter *c) {
     f32 x = c->f17E4;
 
-    x = (x > 1000.0f) ? 1000.0f : x;
-    x = (x < 0.0f) ? 0.0f : x;
+    if (x > 1000.0f) {
+        x = 1000.0f;
+    } else if (x < 0.0f) {
+        x = 0.0f;
+    }
+    c->f17E4 = x;
     if (x <= 300.0f) {
-        c->f17E4 = x;
         c->f17EC = 0;
     } else if (x <= 600.0f) {
         c->f17EC = 1;
@@ -1762,7 +1765,7 @@ void func_001DFBF0(Fighter *c) {
     }
 }
 #endif
-// differs: the clamp's branch labels fall on 8-byte boundaries that the C does not reproduce (24 of 38 differ); if-form and ?:-form tried
+// differs: 7 of 36: the clamp arms (the original stores f17E4 in a delay slot on every path, which this matches; the nop between the mov.s and the 0.0f load is the remaining difference)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFBF0);
 #if 0
 s32 func_001DFC80(Fighter *c, s32 a1, f32 f12) {
