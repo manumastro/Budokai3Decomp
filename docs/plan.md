@@ -1,0 +1,158 @@
+# Budokai 3 decompilation: what the executable holds, and the plan
+
+First pass, 2026-11-17. Every fact carries a label, as in Tenkaichi3Decomp's docs:
+
+- **Verified**: checked by building or by compiling (the byte-identical build, a function compiled to the original
+  bytes, a tool's output).
+- **Inferred**: read from the disassembly or the strings, or a judgement.
+
+## The executable
+
+**Verified** (read from the ELF and checked by the rebuild, `scripts/mkelf.py`):
+
+| | |
+|---|---|
+| File | `SLUS_209.98`, 3,605,552 bytes, md5 `a0d2708790227c28cd770a05b3d8af28`, PCSX2 CRC `2A4B60EB`, dated 2004-10-01 on the disc |
+| Entry | `_start`, 0x100008 (0x100000-0x100007 are zero) |
+| `$gp` | 0x477CF0 (`.reginfo`, and set by `_start`) |
+| Loaded image | 0x100000-0x470200 (0x370200 bytes), one PT_LOAD segment at file offset 0x80 |
+| `.sbss` + `.bss` | 0x470200-0x5D0100 (0x15FF00 bytes; `_start` clears exactly that range) |
+| Sections | Stripped: the image is one unnamed PROGBITS section; `.symtab` and `.strtab` are empty; no `.mdebug`, no map |
+| `.comment` | `MW MIPS C Compiler (2.4.1.01)`, `PlayStation2`: written by Metrowerks' linker `mwldps2` (see Compiler) |
+
+Sections inside the image (**inferred** from the contents; the split rebuilds byte-identical with these boundaries):
+
+| Range | Size | What |
+|---|---|---|
+| 0x100000-0x310908 | 2,164,996 bytes | `.text`, padded to 0x310980 |
+| 0x310980-0x45CB80 | 1,360,384 bytes | `.data`: about 0x74000 bytes of VU1 microprograms (four blocks), about 0x77000 bytes of zero-filled arrays, tables |
+| 0x45CB80-0x46FD00 | 78,208 bytes | `.rodata`: strings and constants in link order; its last 0x80 bytes hold a static initializer (code at 0x46FC80) and a pointer to it |
+| 0x46FD00-0x470200 | 1,280 bytes | `.sdata` (starts at `$gp` - 0x7FF0) |
+
+## What is in the executable
+
+The code falls into four parts that differ in style (**inferred**): Metrowerks pads every function to 16 bytes, saves
+`$s` registers with `sq` and never uses branch-likely instructions; the gcc-built libraries start functions on
+8 bytes, save `$s` registers with `sd` and use `beql` / `bnel`. Function counts are splat's (8,299 in all, a few of
+them handwritten or data inside the code).
+
+| Part | Range | Size | Functions | Compiler | Contents |
+|---|---|---|---|---|---|
+| Sony SDK + C library | 0x100000-0x12C360 | 181 KB (8 %) | 858 | gcc | libgraph, libdma, libipu, libmpeg, libkernl, libcdvd, libpad, libmc, libsdr, the C library (newlib-style `vfprintf`) |
+| Engine library | 0x12C360-0x14E5D0 | 140 KB (6 %) | 414 | Metrowerks | Dimps' `am*` layer (`amDraw3d.c`, `amMotion.c`, `amObject.c`, `amSofdec.c`, `amCdFs.c`, `amMc.c`), threads, script, CD init, `main` (0x14E4B0) |
+| CRI middleware | 0x14E5D0-0x1A1E80 | 342 KB (16 %) | 2,798 | gcc | ADX (ADXF, ADXT, ADXB, ADXRNA, SJ, SVM, CVFS with DVCI/HTCI/MFCI), Sofdec (MWSFD, SFD, MPV, M2V, SFX), libmtap |
+| Game | 0x1A1E80-0x310908 | 1,502 KB (69 %) | 4,229 | Metrowerks | battle, characters, menus, story, the rest |
+
+So about 76 % of the code (1.64 MB, 4,643 functions) is Metrowerks-compiled Dimps code, and 24 % (523 KB,
+3,656 functions) is third-party libraries.
+
+Library versions (**verified**, from their version strings):
+
+- Sony EE libraries: `PsIIlibgraph 3000`, `libdma 3000`, `libipu 3000`, `libcdvd 3000`, `libsdr 3000`, `libpad 3010`,
+  `libmc 3010` (SDK 3.0.0 / 3.0.1; Tenkaichi 3 has 3000 / 3020).
+- CRI, built 2004-04-12 / 15: ADXT 9.19, ADXF 7.14, ADXPS2 2.52, ADXRT 3010, SJ 6.23, SVM 1.53, CVFS 2.35, DVCI 2.70,
+  HTCI 2.68, MFCI 1.07, LSC 2.16, PS2RNA 1.26, SRD 2.19, DTR 1.06, DTX 1.07, MWSFD 3.13, SFD 1.903, MPV 1.902,
+  M2V 1.902, SFX 2.00, SFH 1.16, CFT 1.51, SUD 0.05.
+- IOP modules on the disc (`MODULES/`): `IOPRP300.IMG`, `SIO2MAN`, `PADMAN`, `MTAPMAN`, `MCMAN`, `MCSERV`, `LIBSD`,
+  `SDRDRV`, `CRI_ADXI`, `MODHSYN`, `MODMIDI`, `MODSEIN`, `MODSESQ`, `AMSOUND` (Dimps' sound driver; the `.snd` / AIFF
+  strings in the engine library talk to it).
+
+The game's subsystems (**inferred** from the source file names its assertions print, 72 of them, and the debug
+labels):
+
+| Area | Files |
+|---|---|
+| Battle | `btl_main.c`, `btl_cmd.c`, `btb_main.c`, `btb_draw.c` (stages), `skill_cmd.c`, `a2d.c`, `scr_func.c` |
+| Characters | `character.c`, `char_body.c`, `char_parts.c`, `char_disp.c`, `char_light.c`, `char_cloth.c`, `char_mant.c`, `char_acsr.c`, `char_secp.c` |
+| Story (Dragon Universe) | `str_title.c`, `str_map.c`, `str_select.c`, `str_status.c`, `str_bg.c`, `str_staffroll.c`, `str_dataerase.c`, `zny_main.c`, `evt_scrp.c`, `evt_shenron.c`, `opening.c` |
+| Menus | `mn_title.c`, `mn_mainmenu.c`, `mn_vsmode.c`, `mn_charasel.c`, `mn_VsCharasel.c`, `mn_CharSelChip.c`, `mn_StageSel.c`, `mn_option.c`, `mn_save.c`, `mn_dataload.c`, `mn_help.c`, `mn_pracmode.c`, `mn_TourMode.c`, `mn_TourMap.c`, `mn_Arena*.c` (7 files), `mn_InputName.c`, `mn_InputPass.c`, `mn_OutputPass.c`, `mn_ipsyswnd.c`, `mn_Logomark.c`, `mn_csmodel.c`, `mn_cssubstat.c`, `mn_cssubArena.c` |
+| Skills (capsules) | `ess_main.c`, `ess_list.c`, `ess_edit.c`, `ess_info.c`, `ess_shop.c`, `ess_trade.c`, `skl_sheet.c`, `skl_edit.c` |
+| System | `cnv_sys.c`, `mc_opr.c`, `script.c` |
+
+Files and data (**verified** strings, **inferred** use):
+
+- Archives: `/USR/DATA_CMN.AFS`, `/USR/DATA_USA.AFS`, `/USR/ADX_USA.AFS`; movies `/USR/OPENING.SFD`,
+  `/USR/ENDING00.SFD`, `/USR/DBZ2OPUS.SFD`, `/USR/DBZ2OPEU.SFD` (played through `amSofdec.c` and MWSFD). A host file
+  system is also set up for development (`amCdFs.c`, "Setup host file system").
+- Memory card: `BASLUS-20998DBZ3`, and the Budokai 1 / 2 save folders (`BASLUS-20591DBZ`, `BASLUS-20779DBZ2`), which
+  the game reads for its bonuses.
+- **VU1 microprograms**: four blocks in `.data` (0x310980, 0x36F180, 0x38BD80, 0x3EA980; about 463 KB together) of DMA
+  packets with VIF `MPG` uploads: about 174 uploads, 88 different, about 32,000 instruction pairs. The last, small
+  block sits beside libgraph's data and may be Sony's. This is far more microcode than Tenkaichi 3 has: the
+  cel-shading and outlines are drawn by VU1 programs, which matters for the renderer of a port.
+- **GS paths**: the game builds its display lists for VU1 (PATH1) and GIF packets; libgraph / libdma
+  (`sceGsSyncPath`, `sceGsPutDrawEnv`) do the setup, and `amDraw3d.c` checks its packet buffer ("Packet Over").
+
+## Compiler
+
+**Verified**: Metrowerks CodeWarrior for PlayStation 2, version 3.0 beta (`mwccps2` 3.0b22 to 3.0b52), at `-O3,p` or
+`-O4,p`, for the engine library and the game.
+
+Evidence:
+
+1. The ELF's `.comment` is the linker's: compiling with `mwccps2` 3.0b52 writes `MW MIPS C Compiler (3.0.0)` into the
+   object, and linking it with the same release's `mwldps2` writes `MW MIPS C Compiler (2.4.1.01)` and
+   `PlayStation2` into the ELF, exactly the original's text. Every archived `mwldps2` (2.3.3 to 3.0.1b145) writes the
+   same, so the `.comment` proves a Metrowerks link, not the compiler version.
+2. `scripts/probe/compiler_probe.c` holds three functions of the game written as C (`func_001CF570`: scheduled loads
+   through a `$gp` pointer with a `lui $at` offset; `func_001E3D60`: int to float, a divide, float compares,
+   label-alignment nops; `func_002AA5A0`: a `$gp` float array and a function pointer store). `scripts/mwmatch.py`
+   compiled them with 18 Metrowerks builds at `-O2,p`, `-O3,p`, `-O4,p` and `-O4,s`: all three match (0 differing
+   instructions) with 3.0b22-020926, 3.0b38-030307, 3.0b50-030527 and 3.0b52-030722 at `-O3,p` and `-O4,p`, and
+   with nothing else (2.3.3 / 2.4: 7 to 30 differing; 3.0 / 3.0.1 / 3.0.3: 3 to 17; 3.0.1b44 to b145: 8 to 17;
+   `,s` breaks two of the three, 3 and 9; `-O2`: 18 to 37).
+3. The style counts over the game code agree: `sd $ra` with `sq $s*` (Metrowerks 3.x; 2.x saves `$ra` with `sq`),
+   no branch-likely instructions, nops that align branch targets to 8 bytes.
+
+Still open: the four 3.0b builds and the two levels tie on everything matched so far. The build uses 3.0b52 at
+`-O4,p` until a function tells them apart. One function tried (`func_001D5160`) does not match yet with any build or
+source form: the original tests `x >= 0` as `slti $at, $v0, 0` / `bnez $at` and keeps a copy of the function's tail
+in each branch, which no build reproduced from the forms tried; a source-form question to come back to.
+
+The two library parts are gcc output (branch-likely instructions, `sd` saves, 8-byte function starts); which ee-gcc
+(Tenkaichi 3's libraries match with ee-gcc 2.96) is not checked. A port replaces them anyway (see below).
+
+## Reuse from the Tenkaichi 3 / Tenkaichi 4 Vita ports
+
+The engine is Dimps', not Spike's, so none of the game code carries over. What carries over is the layer under it
+(**inferred**, from what each piece of our ports does):
+
+| Piece | In our ports | For Budokai 3 |
+|---|---|---|
+| Display-list reader (GIF / VIF packets on its own core) | `port/src/gs/gs_core.c` | The same hardware interface; reusable |
+| VU1 interpreter that runs the game's own microprograms | `port/src/gs/gs_vu1.c` | Reusable; must cover Budokai 3's programs (88 distinct uploads, cel-shading and outlines) |
+| vitaGL drawing and render thread | `port/vita/vita_vgl.c` | Reusable |
+| Disc image / file layer (AFS, ISO) | `vita_iso.c`, `plat_file.c` | Reusable, AFS names differ |
+| ADX streams | `port/src/gs/snd_adx.c` | Same CRI ADX family: reusable; Dimps' AMSOUND sound effects are new work |
+| Sofdec movies | the ports' movie path | Same MWSFD / SFD family |
+| Pad, memory card, the test tools (`vita_agent_run.py`, `perfsum.py`, A/B runs) | `port/vita/` | Reusable |
+| Rules and layout: game code changed only under `PORT` / `PORT_VITA`, settings in a text file, the docs | both ports | Same |
+
+## Effort
+
+- Code to decompile for a port: the engine library and the game, 4,643 functions, 1.64 MB. The libraries
+  (3,656 functions) do not need to be matched for a port: Tenkaichi 3's port replaces CRI and Sony's libraries
+  with its own layer; they can stay assembly (or be matched later with ee-gcc).
+- Size against Tenkaichi 3: its executable has about 8,750 functions and 1.83 MB of code, 81 % game; Budokai 3's
+  game part is about two thirds of Tenkaichi 3's.
+- Estimate (**inferred**): with the agent-driven method of Tenkaichi3Decomp, 3 to 5 months to a matching engine
+  library and game, then 2 to 3 months to a PC host build and a first Vita build that reaches a fight. The
+  Metrowerks toolchain is less trodden than ee-gcc (mwccgap for partial files; its scheduler's ties), which is the
+  main risk to the estimate; the second is the VU1 microcode volume for the renderer.
+
+## Next milestones
+
+1. **File boundaries and a first linked C file**: cut `game/text` and `engine/text` into one asm file per source
+   file (the 72 file names, the order of their strings in `.rodata`, the code style), put the build's C path
+   through `mwccgap` and link one decompiled file into the byte-identical build. Add objdiff and a progress
+   script.
+2. **Library names**: carry over Sony SDK and CRI names by matching functions against known ones (Tenkaichi 3 has
+   the same SDK generation and older CRI; its `config/symbols/lib.txt` names 341 library functions), and decide
+   whether the libraries are matched or kept as assembly.
+3. **Engine library first** (414 functions): it is the platform layer a port replaces or reimplements (drawing,
+   CD file system, memory card, movies, motion, objects, threads), so it is decompiled and documented first.
+4. **The game by subsystem**: battle and characters, then the menus, the story mode, the skill screens.
+5. **Data**: name the `.data` tables, split the VU1 microprograms into listings (Tenkaichi3Decomp's
+   `scripts/vuasm.py` assembles them back), and list each one's job.
+6. **Port**: a host build of the decompiled C with our `gs_core` / `gs_vu1` (`port/`, as in Tenkaichi3Decomp), then
+   the Vita port.

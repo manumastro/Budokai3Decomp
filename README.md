@@ -15,9 +15,10 @@ disc image works too.
 ## Status
 
 Early. The executable is split by [splat](https://github.com/ethteck/splat) and rebuilt from the split: the build
-gives a byte-identical ELF. No C yet. The executable was linked by Metrowerks CodeWarrior for PS2 (its `.comment`);
-the exact compiler version is being identified. [docs/plan.md](docs/plan.md) has the analysis of the executable, the
-figures and the next steps.
+gives a byte-identical ELF. No C is linked yet. The game was built with Metrowerks CodeWarrior for PS2 3.0 beta at
+`-O4,p` (three of its functions compile to the original bytes with it and with no other version:
+`scripts/mwmatch.py`, `scripts/probe/`). [docs/plan.md](docs/plan.md) has the analysis of the executable, the
+figures, the compiler evidence and the next steps.
 
 ## Building
 
@@ -47,6 +48,9 @@ under Rosetta).
 | `configure.py` | Extracts and checks the executable, runs splat, writes `build.ninja` |
 | `scripts/get_tools.py` | Downloads the tools into `tools/` |
 | `scripts/mkelf.py` | Wraps the rebuilt image in an ELF laid out like the original (mwldps2's layout) |
+| `scripts/mwmatch.py` | Compiles C with each Metrowerks build and flag set and compares functions with the original |
+| `scripts/names_from_strings.py` | Names library functions after the error strings they print |
+| `config/symbols/` | Library names: syscall stubs by number, Sony / CRI functions from their strings |
 | `docs/plan.md` | What the executable contains, the compiler, the figures, the plan |
 
 ## Credits
