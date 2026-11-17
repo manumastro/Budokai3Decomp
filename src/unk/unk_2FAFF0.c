@@ -493,7 +493,7 @@ void func_00300760(Task2FAFF0 *t) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300800);
 #if 0
-// differs: not compiling yet: the flag table copy (lq/sq) is in inline asm; the position update and the loop are not compared against the original
+// differs: 0x178 bytes against 0x180 with an aligned copy for the flag table; the original has no saved registers (the loop counter lives in t7) and ends with a call to func_002FC9F0 (adding that call made it worse)
 void func_003009E0(void) {
     Vec4_2FAFF0 v;
     s32 i;
