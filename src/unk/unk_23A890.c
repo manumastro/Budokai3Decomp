@@ -58,7 +58,7 @@ void func_00254100(s32);
 extern u8 D_0046AD90[];
 u8 *func_001F5FD0(s32, u8 *, s32, void (*)(void), void (*)(void));
 void func_002477C0(void);
-void func_00247770(void);
+void func_00247770();
 
 extern s32 D_0058CA08[];
 u8 *func_00215320(s16, s32);
@@ -699,7 +699,18 @@ void func_00243DB0(u8 *o) {
 u8 *func_00243DC0(s32 i) {
     return D_0046FE48 + i * 0x1A4;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243DE0);
+typedef struct Blk48 {
+    s32 w[12];
+} __attribute__((aligned(16))) Blk48;
+extern s32 D_0046AC70[];
+void func_00243DE0(s32 idx, Blk48 *src) {
+    Blk48 loc;
+
+    loc = *src;
+    if (idx >= 0 && idx < 9) {
+        ((void (*)(void *))D_0046AC70[idx])(&loc);
+    }
+}
 #if 0
 s32 func_00243E50(s32 i, s32 j) {
     s32 *s0 = (s32 *)(D_0046FE48 + i * 0x1A4);
@@ -1054,7 +1065,10 @@ void func_00247060(u8 *o, f32 x) {
 
     *(f32 *)(D_0046FE4C + n * 0x480 + 0x20) = x;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247080);
+void func_00247080(u8 *src) {
+    u8 *dst = D_0046FE4C;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(src), "r"(dst) : "memory");
+}
 void func_00247090(u8 *o, s32 x) {
     s32 n = *(s32 *)(o + 0x1350);
 
@@ -1245,6 +1259,8 @@ void func_00247900(void) {
         break;
     }
 }
+void amMotion_Apply(u8 *, f32, f32);
+void amMotion_Apply(u8 *, f32, f32);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002479B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247AB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247C80);
