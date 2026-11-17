@@ -98,6 +98,10 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249100);
 // sp+0x50 (func_00249100 and func_00142100); the VU0 blocks match as inline asm. Draft kept in the round 5 scratch folder.
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002499A0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249B00);
+// GIVEN UP (round 5): a draft is in the round 5 scratch folder (draft_249D50.c). It matches the calls (amTask_Create
+// with a sixth argument D_0046ADD0, memset, func_0020D400, the 16-byte copy) but is 0x1E8 bytes against 0x200: the
+// original lays the four type bodies out as 0, 2, 1, 3 behind a beq chain tested 3, 2, 1, 0 (if-chain, reversed
+// if-chain and switch tried); the float constant is 0.1f (0x3DCCCCCD), not 0.2f.
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249D50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249F50);
 /* An object of the battle's skill code: the fighter it belongs to, a flags word (0x4000 set once it
