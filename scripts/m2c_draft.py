@@ -97,6 +97,12 @@ def strip_if0(lines):
     return out
 
 
+def visible(text):
+    """The text the compiler sees: no `#if 0` blocks, no comments."""
+    text = "\n".join(strip_if0(text.splitlines()))
+    return re.sub(r"//[^\n]*|/\*.*?\*/", "", text, flags=re.S)
+
+
 def norm_decl(line):
     line = re.sub(r"/\*.*?\*/", "", line)
     line = re.sub(r"//.*", "", line)
@@ -235,6 +241,18 @@ def split_output(out, name):
     return [expand_macros(l) for l in lines[:start] if l.strip()], expand_macros("\n".join(func) + "\n")
 
 
+def wrapped(s):
+    """True when the whole string is one parenthesised group."""
+    if not (s.startswith("(") and s.endswith(")")):
+        return False
+    depth = 0
+    for k, ch in enumerate(s):
+        depth += {"(": 1, ")": -1}.get(ch, 0)
+        if depth == 0 and k < len(s) - 1:
+            return False
+    return True
+
+
 def expand_macros(text):
     """M2C_FIELD(expr, type, off) -> (*type((u8 *)(expr) + (off))), M2C_BITWISE(type, e) -> ((type)(e)), M2C_UNK -> s32:
     plain C in the project's style, no macro header needed (any other M2C_ macro stays and blocks applying)."""
@@ -251,7 +269,12 @@ def expand_macros(text):
         if len(args) != 3:
             text = text[:i] + "M2C_FIELD_BAD(" + text[i + len("M2C_FIELD("):]
             continue
-        text = text[:i] + f"(*({args[1]})((u8 *)({args[0]}) + ({args[2]})))" + text[j:]
+        a0 = args[0]
+        while wrapped(a0) and re.fullmatch(r"\([\w.]+\)", a0):
+            a0 = a0[1:-1]
+        base = a0 if re.fullmatch(r"[\w.]+", a0) or wrapped(a0) else f"({a0})"
+        expr = f"*({args[1]})((u8 *){base} + {args[2]})"
+        text = text[:i] + (f"({expr})" if text[j:j + 1] in ("[", ".", "-", "(", "+") else expr) + text[j:]
     return text.replace("M2C_FIELD_BAD(", "M2C_FIELD(")
 
 
@@ -290,7 +313,7 @@ def data_sections(obj):
 
 
 def own_prototype(ctext, name):
-    m = re.match(rf"^(.*?)\b{name}\((.*)\)\s*\{{$", ctext.splitlines()[0].rstrip())
+    m = re.match(rf"^([^\n{{}};]*?)\b{name}\(([^{{}};]*?)\)\s*\{{", ctext.lstrip())
     if not m:
         return None
     return f"extern {m.group(1).strip()} {name}({param_types(m.group(2)) or 'void'});"
@@ -330,7 +353,7 @@ def split_draft(text, name):
 DECL_SYM_RE = re.compile(r"\b(\w+)\s*(?:\[[^\]]*\])?\s*(?:\(.*)?;\s*$")
 
 
-def apply_function(path, name, add, ctext):
+def apply_function(path, name, add, ctext, filter_known=True):
     """Puts the function in place of the INCLUDE_ASM line of `name` in the C file, and removes the parked `#if 0`
     attempt and its note just above it. Returns the old text of the file (to undo with path.write_text)."""
     path = Path(path)
@@ -342,8 +365,9 @@ def apply_function(path, name, add, ctext):
     if park:
         src = head[:park.start()] + src[m.start():]
         m = asm_info(name, src)[3]
-    rest = src[:m.start()] + src[m.end():]
-    add = [a for a in add if not (DECL_SYM_RE.search(a) and known(rest, DECL_SYM_RE.search(a).group(1)))]
+    rest = visible(src[:m.start()] + src[m.end():])
+    if filter_known:
+        add = [a for a in add if not (DECL_SYM_RE.search(a) and known(rest, DECL_SYM_RE.search(a).group(1)))]
     path.write_text(splice(src, m, ctext, add, name, macros=False))
     return old
 
@@ -359,7 +383,8 @@ IMPLICIT_RE = re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+illegal
 UNDEF_RE = re.compile(r"undefined identifier '(\w+)'")
 ARITY_RE =re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+function call '(\w+)\(.*?\)' does not match\r?\n#\s+'\w+\((.*?)\)'")
 ARRAY_RE = re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+illegal (?:operands|implicit conversion)[^\n]*?'?(\w+(?: \w+)*)\[\]'")
-VOIDPLUS_RE = re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+illegal operands 'void \*' \+ 'int'")
+NONFUNC_RE = re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+call of non-function")
+VOIDPLUS_RE =re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+illegal operands 'void \*' \+ 'int'")
 
 
 def split_top(s, sep=","):
@@ -378,7 +403,7 @@ def split_top(s, sep=","):
     return out
 
 
-def repair(ctext, cerr, decls):
+def repair(ctext, cerr, decls, filetext=""):
     """Adds the casts Metrowerks asks for (`illegal implicit conversion` between an integer and a pointer, or
     between pointers) on the statement it names: the right side of an assignment, or the arguments of a call
     whose prototype is known. A cast to the type the value already has does not change the code."""
@@ -414,6 +439,23 @@ def repair(ctext, cerr, decls):
                     return mm.group(0)
                 lines[i] = re.sub(r"(\W|^)(\w+)(\W|$)", lambda mm: fix(mm), l)
                 changed = changed or lines[i] != l
+                break
+    for srcline in NONFUNC_RE.findall(cerr):
+        # a call through a global that holds a function pointer: `D_x(a)` -> `((void (*)())D_x)(a)`
+        for i, l in enumerate(lines):
+            if l.strip() == srcline.strip():
+                def fixcall(mm):
+                    sym = mm.group(1)
+                    d = decls.get(sym, "")
+                    fp = re.search(rf"\(\s*\*\s*{sym}\s*(\[[^\]]*\])?\s*\)\s*\(", filetext)
+                    if fp:
+                        return f"{sym}{'[0]' if fp.group(1) else ''}("
+                    if d and "(" not in d:
+                        return f"((void (*)()){sym}{'[0]' if '[' in d else ''})("
+                    return mm.group(0)
+                new = re.sub(r"\b([A-Za-z_]\w*)\(", fixcall, l)
+                changed = changed or new != l
+                lines[i] = new
                 break
     for srcline in VOIDPLUS_RE.findall(cerr):
         for i, l in enumerate(lines):
@@ -500,7 +542,7 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
     else:
         pre, ctext = [], c_override
     # declarations the file lacks: m2c's own for symbols the context did not have, the context's for the others
-    before = src[:m.start()] + src[m.end():]
+    before = visible(src[:m.start()] + src[m.end():])
     add = []
     for l in pre:
         s = norm_decl(l)
@@ -527,7 +569,7 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
             cerr = compile_scratch(scratch, version, flags, obj, incs)
             if not cerr:
                 break
-            new = repair(ctext, cerr, decls)
+            new = repair(ctext, cerr, decls, before)
             for sym in UNDEF_RE.findall(cerr):
                 # a symbol m2c used but nobody declared (a callee whose address is taken, a global of another type)
                 if re.match(r"(func_|D_|g[A-Z])", sym) and not known("\n".join(add), sym):
@@ -567,6 +609,9 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
             b = [mwmatch.mask(w, False) for w in full]
             sm = difflib.SequenceMatcher(None, a, b, autojunk=False)
             matched = sum(bl.size for bl in sm.get_matching_blocks())
+            if verbose:
+                pad = max(len(words), len(full))
+                mwmatch.show(words + [0] * (pad - len(words)), full + [0] * (pad - len(full)), addr)
             res.update(status="size", diff=max(len(b) - matched, 1), detail=f"compiled 0x{n * 4:X}, original 0x{size:X}")
             return res
     if verbose:
@@ -618,9 +663,13 @@ def main():
     ap.add_argument("-v", action="store_true", help="print the draft and the side-by-side diff")
     ap.add_argument("--keep", help="keep the scratch file and object in this folder")
     ap.add_argument("--variants", action="store_true", help="try m2c's option variants and keep the best")
+    ap.add_argument("--c", type=Path, help="check this C (the function, with its declarations above it) instead of m2c's draft")
     args = ap.parse_args()
-    r = draft_best(args.src, args.name) if args.variants else draft(args.src, args.name, keep=args.keep, verbose=args.v)
-    if args.v:
+    if args.c:
+        r = draft(args.src, args.name, keep=args.keep, verbose=True, c_override=args.c.read_text())
+    else:
+        r = draft_best(args.src, args.name) if args.variants else draft(args.src, args.name, keep=args.keep, verbose=args.v)
+    if args.v and not args.c:
         print(r["c"])
     print(f"RESULT {r['name']} {r['status']} {r['diff']} {r['total']} {r['detail']}")
 
