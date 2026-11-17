@@ -507,7 +507,34 @@ void func_001A8300(void *a0) {
 void func_001A83D0(void) {
     amTask_KillGroup(0x20, 0x20000010, 1);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A83F0);
+extern s32 func_001B0D10(void *);
+extern void func_001A81F0(void *);
+extern char D_004681C0[];
+void func_001A83F0(void *a0) {
+    u8 *s0 = (u8 *)a0;
+    void *t;
+    u8 *a2;
+
+    if (func_001B0D10(a0) == 4) {
+        t = amTask_Create(func_001A81F0, 0, 0x5501, 0x20, 0x20000010, D_004681C0);
+        if (t != 0) {
+            a2 = (u8 *)t + 0x30;
+            __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(a2));
+            if (s0 != 0) {
+                __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(s0), "r"(a2 + 0x10));
+                *(f32 *)(a2 + 0x20) = *(f32 *)(s0 + 0x14);
+                *(f32 *)(a2 + 0x24) = *(f32 *)(s0 + 0x10);
+            } else {
+                *(s32 *)(a2 + 0x10) = 0;
+                *(s32 *)(a2 + 0x14) = 0x3FE66666;
+                *(s32 *)(a2 + 0x18) = 0;
+                *(s32 *)(a2 + 0x1C) = 0x3F800000;
+                *(s32 *)(a2 + 0x20) = 0x3F4CCCCD;
+                *(s32 *)(a2 + 0x24) = 0x3F19999A;
+            }
+        }
+    }
+}
 // GIVEN UP: the parameter and the two saved pointers take other registers, and the branch order differs (4 forms tried)
 #if 0
 void func_001A84B0(u8 *a0) {
