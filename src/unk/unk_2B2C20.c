@@ -123,7 +123,7 @@ typedef struct SklHead {
 
 extern void amFile_Load(s32);
 
-void func_002B4A30(void *a) {
+void SklEdit_TaskLoad(void *a) {
     if (func_002D20D0(a) != 0) {
         if (((SklHead *)gSklEdit)->f4->f4 == 3) {
             ((SklHead *)gSklEdit)->f2C = 1;

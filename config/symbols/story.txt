@@ -116,3 +116,7 @@ EvtZenie_TaskMain = 0x002A1690; // type:func guess
 Evt_CmdZenieOpen = 0x002A30F0; // type:func guess
 // str_map.c: kills the map task (gStrMap+0x28) and resets the map state byte at +0x19D (2 -> 1).
 StrMap_KillTask = 0x0029AE00; // type:func guess
+
+// str_status.c: the update of the task "# COMMENT #" (str_status.c line 527): when the value at the work block
+// +0x3C is not -1 it stores it at +0x70 and sets the block's callback at +0x1C to func_002C02C0 (or 0).
+StrStatus_TaskComment = 0x002C03B0; // type:func // guess

@@ -131,13 +131,13 @@ typedef struct Slot2FAFF0 {
 
 extern PairTbl2FAFF0 D_00458C20;
 extern s32 func_002FFD20(s32);
-void func_00300550(struct Task2FAFF0 *);
-void func_00300610(Task2FAFF0 *t);
+void TourMap_TaskSlide(struct Task2FAFF0 *);
+void TourMap_TaskSlideF10(Task2FAFF0 *t);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FAFF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FB170);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FB4C0);
-void func_002FBA80(Task2FAFF0 *t) {
+void TourMap_TaskSaveWait(Task2FAFF0 *t) {
     gTourMap->f294 = gTourMap->f294 + 1;
     if (Save_GetState() > 2) {
         Save_Exit();
@@ -270,12 +270,12 @@ void func_003004B0(Task2FAFF0 *t) {
             t->f44 = -t->f44;
             t->f40 = -t->f40;
         }
-        t->f1C = (func_00300550 == 0) ? 0 : func_00300550;
+        t->f1C = (TourMap_TaskSlide == 0) ? 0 : TourMap_TaskSlide;
     }
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003004B0);
-void func_00300550(Task2FAFF0 *t) {
+void TourMap_TaskSlide(Task2FAFF0 *t) {
     Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
     f32 v;
     f32 k;
@@ -289,17 +289,17 @@ void func_00300550(Task2FAFF0 *t) {
         amTask_Kill(t);
     }
 }
-void func_003005C0(Task2FAFF0 *t) {
+void TourMap_TaskWaitEntity(Task2FAFF0 *t) {
     Ent2FAFF0 *e = t->f48;
     Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
 
     if (e->f4 == 1) {
         s->fC = e->f10 - 50.0f;
         s->f18->f4 = 2;
-        t->f1C = (func_00300610 == 0) ? 0 : func_00300610;
+        t->f1C = (TourMap_TaskSlideF10 == 0) ? 0 : TourMap_TaskSlideF10;
     }
 }
-void func_00300610(Task2FAFF0 *t) {
+void TourMap_TaskSlideF10(Task2FAFF0 *t) {
     Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
 
     t->f48->f10 = t->f48->f10 + t->f40;

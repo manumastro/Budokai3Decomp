@@ -326,3 +326,8 @@ Ess_Init = 0x0026E2F0; // type:func guess
 Option_Free = 0x002E0C40; // type:func guess
 // mn_option_2.c: allocates a 0xD680-byte buffer, copies the table D_0058F680 into it, runs it through func_001EF510 and frees it.
 Option_ProcessTable = 0x002E0DD0; // type:func guess
+
+// skl_edit.c: the task "SEDIT" (skl_edit.c line 92) has its update here, in unk_2B2C20.c: when func_002D20D0
+// succeeds and the second file of gSklEdit is in state 3, it loads the two skill files (amFile_Load into f10 and
+// f14) and kills the task.
+SklEdit_TaskLoad = 0x002B4A30; // type:func // guess

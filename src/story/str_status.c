@@ -36,7 +36,7 @@ extern void func_00244150(void);
 extern void func_002BE320(s32);
 extern void func_002BEB50(void);
 extern void func_002CA4A0(void);
-extern void func_002C03B0(s32 *);
+extern void StrStatus_TaskComment(s32 *);
 extern void func_0022C700();
 extern TourModeGlobal *gTourMode;
 extern char D_0046EE10[];
@@ -444,7 +444,7 @@ void func_002C02C0(s32 *a0) {
         p[6] = 1.0f;
         q[5] = q[4];
         if (q[3] == -1) {
-            f = func_002C03B0;
+            f = StrStatus_TaskComment;
             a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
             return;
         }
@@ -456,7 +456,7 @@ extern void func_002C02C0(s32 *);
 
 extern void func_002C02C0(s32 *);
 
-void func_002C03B0(s32 *a0) {
+void StrStatus_TaskComment(s32 *a0) {
     s32 *a2 = a0 + 0x30 / 4;
     s32 a1 = a0[0x3C / 4];
     if (a1 != -1) {
@@ -480,7 +480,7 @@ void func_002C03E0(s32 *a0) {
         s0[0] = 0;
         amFile_Load(s0[1]);
         {
-            void *f = func_002C03B0;
+            void *f = StrStatus_TaskComment;
             *(s16 *)((char *)s0 + 8) = 2;
             a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
         }
@@ -524,7 +524,7 @@ void *func_002C0510(s32 a0, s32 a1, s32 a2) {
     Task *s1;
     b = *(StrCopy16S *)D_00456310;
     a = *(StrCopy16S *)D_00456320;
-    s1 = (Task *)amTask_Create((void (*)(Task *))func_002C03B0, NULL, (s16)a1, 8, 2, D_0046EEC8);
+    s1 = (Task *)amTask_Create((void (*)(Task *))StrStatus_TaskComment, NULL, (s16)a1, 8, 2, D_0046EEC8);
     s0 = (s32 *)((char *)s1 + 0x30);
     memset(s0, 0, 0x40);
     if (a2 == 0) {

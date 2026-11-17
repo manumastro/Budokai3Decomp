@@ -1052,7 +1052,7 @@ extern s8 D_004B4B40[];
 extern s32 (*D_00468240[])(void *);
 extern void amTask_Kill(void *);
 extern char D_00468390[];
-void func_001B0440(Fighter *f);
+void Btl_TaskInit(Fighter *f);
 #if 0
 // differs: the frame: the original keeps the battle pointer in s2 across the loop (4 saved registers here, 3 there); with the global read directly the loop argument is computed each pass as in the original but the frame is 48 against 64
 void func_001AF840(void *f) {
@@ -1076,7 +1076,7 @@ void func_001AF840(void *f) {
                 } while (*pf != 0);
             }
             amTask_Kill(f);
-            amTask_Create((void (*)(void *))func_001B0440, 0, 0x4000, 0x20, (s32)0x80000000, D_00468390);
+            amTask_Create((void (*)(void *))Btl_TaskInit, 0, 0x4000, 0x20, (s32)0x80000000, D_00468390);
         }
     }
 }
@@ -1224,7 +1224,7 @@ extern u8 D_004312E0[];
 extern void func_00133780(s32, s32);
 extern void func_00139620(s32, void *, s32, s32, s32, f32);
 extern void func_0012F2C0(void);
-void func_001AFD60(void) {
+void Btl_TaskPostDraw(void) {
     if (BW_FIELD(gBattle, s8, 0x8975) != 1) {
         if (BW_FIELD(gBattle, s32, 0x88F8) == 0) {
             Copy16 tmp;
@@ -1338,7 +1338,7 @@ extern char D_004683F0[];
 extern char D_00468400[];
 extern void func_00264260(s32, void *, s32);
 extern void func_001482C0(s32);
-extern void func_001AFD60(void);
+extern void Btl_TaskPostDraw(void);
 extern void func_001AFC50(void);
 extern void func_001AFFA0(void);
 extern void func_001AFDF0(void);
@@ -1369,7 +1369,7 @@ void func_001B0160(void *a0) {
         func_00264260(10, 0, 0);
         amTask_Create((void (*)(void *))func_001AFFA0, 0, 0x4100, 0x20, (s32)0x80000002, D_004683A8);
         amTask_Create((void (*)(void *))func_001AFDF0, 0, 0x3000, 0x20, (s32)0x80000004, D_004683B8);
-        amTask_Create((void (*)(void *))func_001AFD60, 0, 0x3F00, 0x20, (s32)0x80000004, D_004683D0);
+        amTask_Create((void (*)(void *))Btl_TaskPostDraw, 0, 0x3F00, 0x20, (s32)0x80000004, D_004683D0);
         amTask_Create((void (*)(void *))func_001AFC50, 0, 0x3900, 0x20, (s32)0x80000004, D_004683E0);
         amTask_Create((void (*)(void *))func_001AF9A0, 0, 0x9F10, 0x20, (s32)0x80000002, D_004683F0);
         if (BW_FIELD(gBattle, s32, 0x88D8) >= 3) {
@@ -1406,7 +1406,7 @@ void func_001B03E0(Fighter *f) {
     }
     FT_FIELD(f, s32, 0x1C) = fn;
 }
-void func_001B0440(Fighter *f) {
+void Btl_TaskInit(Fighter *f) {
     BattleWork *bw = gBattle;
     void *v = BW_FIELD(bw, void *, 0x8970);
     s32 fn;

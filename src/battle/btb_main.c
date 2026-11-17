@@ -2,10 +2,10 @@
 #include "battle/stage.h"
 
 
-extern void func_001F63B0(void);
-extern void func_001F63C0(void);
-extern void func_001F6450(void);
-extern void func_001F65F0(void);
+extern void BtbBg_DrawAfterStub(void);
+extern void BtbBg_DrawScrEffectStub(void);
+extern void BtbBg_DrawTrsObjs(void);
+extern void BtbBg_DrawPlainObjs(void);
 extern void func_001F63D0(void);
 extern void func_0013B0B0(s32);
 extern void func_0013B110(s32);
@@ -173,20 +173,20 @@ void func_001F9270(StageWork *w) {
 }
 void BtbBg_TaskAfterDraw(void) {
     if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
-        func_001F63B0();
+        BtbBg_DrawAfterStub();
     }
 }
 void BtbBg_TaskScrEffect(void) {
     if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
         func_0013B0B0(0);
-        func_001F63C0();
+        BtbBg_DrawScrEffectStub();
         func_0013B110(1);
     }
 }
 void BtbBg_TaskTrsDraw(void) {
     if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
         func_0013B0B0(0);
-        func_001F6450();
+        BtbBg_DrawTrsObjs();
         func_0013B110(1);
     }
 }
@@ -196,7 +196,7 @@ extern void func_00133780(s32, s32);
 extern void func_00139620(s32, void *, s32, s32, s32, f32);
 extern void amDraw_FlushPacket(void);
 extern void func_00133CE0(s32);
-extern void func_001F64E0(void);
+extern void BtbBg_DrawPostObjs(void);
 
 void BtbBg_TaskPostDraw(void) {
     f32 col[4];
@@ -224,7 +224,7 @@ void BtbBg_TaskPostDraw(void) {
         func_00133CE0(0);
         func_0013B0B0(0);
         if (D_0051CCE0.flags & 1) {
-            func_001F64E0();
+            BtbBg_DrawPostObjs();
         }
         func_0013B110(1);
     }
@@ -233,12 +233,12 @@ void BtbBg_TaskDraw(void) {
     if (BW_FIELD(gBattle, s8, 0x8975) != 1) {
         func_0013B0B0(0);
         if (D_0051CCE0.flags & 1) {
-            func_001F65F0();
+            BtbBg_DrawPlainObjs();
         }
         func_0013B110(1);
     }
 }
-extern void func_001F6570(void);
+extern void BtbBg_DrawObjs(void);
 extern void func_00133B50(s32, s32);
 extern void func_00133D10(s32);
 extern void func_00133D50(f32, f32);
@@ -254,7 +254,7 @@ void func_001F9660(void) {
 
     if (BW_FIELD(gBattle, s8, 0x8975) != 1) {
         fog = &D_0044A9C0[D_0044AE50[D_0051CCE0.stage].area[D_0051CCE0.area].fog];
-        func_001F6570();
+        BtbBg_DrawObjs();
         p = col;
         if (p != NULL) {
             n = 16;
@@ -277,7 +277,7 @@ void func_001F9660(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F9660);
-extern void func_001F6330(void);
+extern void BtbBg_RunObjMain(void);
 extern void func_002CF820(void);
 
 void BtbBg_TaskMain(void) {
@@ -288,7 +288,7 @@ void BtbBg_TaskMain(void) {
         t = bw->unk8AB2 != 0 && BW_FIELD(bw, f32, 0x891C) > 0.0f;
         if (!t || bw->unk8944 != 0) {
             D_0051CCE0.unk44 = bw->unk88F0;
-            func_001F6330();
+            BtbBg_RunObjMain();
             func_002CF820();
         }
     }
@@ -454,7 +454,7 @@ extern char D_00469920[];
 extern char D_00469930[];
 extern char D_00469940[];
 extern void *amTask_Create(void (*update)(void), void (*kill)(void), s32 prio, s32, s32, char *name);
-extern void func_001F62A0(void);
+extern void BtbBg_ResetLists(void);
 extern void func_002CF8F0(void);
 extern void func_001F7FA0(void);
 
@@ -480,7 +480,7 @@ void BtbBg_Start(void) {
     if (D_0051CCE0.unkA4[6] == 0) {
         D_0051CCE0.unkA4[6] = (s32)amTask_Create(BtbBg_TaskMain, 0, 0x5700, 0x200, 0x4000002, D_00469940);
     }
-    func_001F62A0();
+    BtbBg_ResetLists();
     D_0051CCE0.area = D_0044AE50[D_0051CCE0.stage].startArea;
     D_0051CCE0.unk48 = 1;
     D_0051CCE0.flags &= ~1;

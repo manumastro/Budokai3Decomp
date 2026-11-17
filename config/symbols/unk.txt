@@ -128,3 +128,26 @@ AdxCmd_Pause = 0x001CC170; // type:func guess
 // Option_Free, then kills the boot task (D_00470950).
 Boot_LoadSave = 0x002E9D80; // type:func guess
 Boot_Exit = 0x002EA080; // type:func guess
+
+// unk_2CAED0.c: the training (tutorial) work pointer, of type TutWork (one lesson's state), used by most of the
+// lesson functions of the file.
+gTutWork = 0x0047091C; // size:0x4 // guess
+
+// unk_2D1C20.c: the message-window task pointer (SmsgTask, whose update is Smsg_TaskMain; the SmsgWork block is at
+// +0x30).
+gSmsgTask = 0x00470930; // size:0x4 // guess
+
+// unk_2FAFF0.c: the tour map's task functions (they work on gTourMap, the tour map's block, and on the task's own
+// work: f1C is the next function, f38/f3C the targets, f40 the speed, f48 the moving entity). Their names follow
+// the TourMap_* functions of mn_TourMap.c.
+// TourMap_TaskSaveWait counts gTourMap+0x294 each frame and waits until Save_GetState() is above 2; then it leaves
+// the save screen (Save_Exit, func_001F0810(-1, 0)) and clears its next function.
+// TourMap_TaskSlide adds the speed to the entity's fC each frame and, when the value passes the target (f38,
+// scaled by f44), sets it to the target, flags the entity (f4 = 1) and kills the task.
+// TourMap_TaskSlideF10 is the same for the entity's f10 with the lower limit f3C (kill when below it).
+// TourMap_TaskWaitEntity waits for the entity's flag to be 1, then starts the slide: fC = f10 - 50, the entity's
+// flag to 2, and the next function is TourMap_TaskSlideF10.
+TourMap_TaskSaveWait = 0x002FBA80; // type:func // guess
+TourMap_TaskSlide = 0x00300550; // type:func // guess
+TourMap_TaskSlideF10 = 0x00300610; // type:func // guess
+TourMap_TaskWaitEntity = 0x003005C0; // type:func // guess

@@ -812,12 +812,12 @@ s32 func_00253090(s32 a0, s32 *a1) {
     }
     return 1;
 }
-extern void func_001F6CD0(s32, s32, s32, f32, f32);
+extern void BtbBg_StartCrossFade(s32, s32, s32, f32, f32);
 s32 func_00253140(s32 *a0, s32 *a1) {
     s32 *p = (s32 *)a0[0];
     s32 *q = (s32 *)a1[11];
 
-    func_001F6CD0(q[2], p[6], p[5], (f32)q[1], (f32)q[0]);
+    BtbBg_StartCrossFade(q[2], p[6], p[5], (f32)q[1], (f32)q[0]);
     return 1;
 }
 s32 SkillCmd_BgSetF9E(s32 a0, s32 *a1) {
