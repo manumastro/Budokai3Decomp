@@ -301,6 +301,40 @@ void func_001AC240(void) {
     }
 }
 #endif
+extern u8 D_00492FC0[];
+#if 0
+// differs: 35 of 57. The count address (bw+0x88D8, li/addu form) is hoisted into a saved register across the loop; the original reads the count with lui 0x1 and a -0x7728 displacement each pass. Frame 80 matches only with the battle pointer in $s2.
+void func_001AC240(void) {
+    u8 *p;
+    s32 i;
+    BattleWork *bw;
+    u8 *e;
+    s32 a;
+    bw = gBattle;
+    i = 0;
+    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+        p = (u8 *)bw;
+        do {
+            a = *(s16 *)(p + 0x1BD4);
+            if (0 <= a) {
+                e = D_00492FC0 + a * 184;
+                *(s16 *)(e + 0xC) = 0;
+                *(s16 *)(e + 0xE) = 0;
+                *(s16 *)(e + 0x10) = 0;
+                *(s16 *)(e + 0x12) = 0;
+                *(s16 *)(e + 0x6C) = 0;
+                *(s16 *)(e + 0x6E) = 0;
+                *(s16 *)(e + 0x70) = 0;
+                *(s16 *)(e + 0x72) = 0;
+                memset(e + 0x28, 0, 0x40);
+                memset(e + 0x74, 0, 0x40);
+            }
+            i++;
+            p += 0x2020;
+        } while (i < BW_FIELD(bw, s32, 0x88D8));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC240);
 #if 0
 // differs: pointer-relocation loop: the table base is read through the address of the field (t0 = p+0x14) and the loop index keeps the other registers (52 of 54 differ)
@@ -1016,33 +1050,27 @@ void func_001AF650(void) {
         amCdFs_Close((void *)h, 0);
     }
 }
-#if 0
-// differs: the slot stores are folded into the battle base (2092(v1)) where the original stores through the slot pointer; the object and walker take other saved registers (50 of 56 differ)
-extern void amFile_Load(s32 h);
-extern s32 func_001A50F0(s32 a, s32 b);
+extern s32 func_001A50F0(s32, s32);
+extern void amFile_Load(s32);
 void func_001AF6C0(void) {
-    BattleWork *bw;
-    s32 *s0;
-    s32 *w;
-    s32 *obj;
-    s32 i;
-    bw = gBattle;
-    obj = (s32 *)BW_FIELD(bw, s32, 0x82C);
-    if (obj != 0) {
-        s0 = (s32 *)((u8 *)bw + 0x810);
-        s0[7] = FT_FIELD(obj, s32, 0x40);
-        s0[0] = FT_FIELD(FT_FIELD(obj, void *, 0x40), s32, 0x50);
+    BattleWork *bw = gBattle;
+    s32 *s0 = (s32 *)((u8 *)bw + 0x810);
+    s32 k;
+    s32 *s1 = *(s32 **)((u8 *)bw + 0x82C);
+    if (s1 != 0) {
+        s0[7] = *(s32 *)((u8 *)s1 + 0x40);
+        s0[0] = *(s32 *)(*(s32 *)((u8 *)s1 + 0x40) + 0x50);
         amFile_Load(s0[0]);
-        amCdFs_Close(obj, 0);
-        FT_FIELD(obj, s32, 0x40) = 0;
-        i = 0;
-        w = s0;
+        s1[16] = 0;
+        amCdFs_Close(s1, 0);
+        k = 0;
+        s1 = s0;
         do {
-            w[1] = func_001A50F0(s0[0], i);
-            amFile_Load(w[1]);
-            i++;
-            w++;
-        } while (i < 2);
+            s1[1] = func_001A50F0(s0[0], k);
+            amFile_Load(s1[1]);
+            k++;
+            s1++;
+        } while (k < 2);
         s0[3] = func_001A50F0(s0[0], 2);
         amFile_Load(s0[3]);
         s0[5] = func_001A50F0(s0[0], 4);
@@ -1050,10 +1078,6 @@ void func_001AF6C0(void) {
         s0[6] = func_001A50F0(s0[0], 5);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF6C0);
-/* differs: 13 of 19: the original zeroes $v0 in the delay slot of the test and keeps the global in $s0 across the
-   call; this form schedules the two loads and the return value differently (also tried with a result local). */
 s32 func_001AF7A0(void *p) {
     s32 id = FT_FIELD(p, s32, 0x160);
     BattleWork *bw = gBattle;
