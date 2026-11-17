@@ -1976,7 +1976,52 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3A60);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3C10);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3D80);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3DF0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3EC0);
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+extern char D_0051CB70[];
+extern char D_0051CC20[];
+extern void amHeap_Free(void *);
+extern void func_00209530(s32);
+
+void func_001F3EC0(void) {
+    BtbObj *n;
+    char *sub;
+    void *p;
+    s32 s;
+    s32 i;
+
+    n = (BtbObj *)D_0051CB70;
+    if (n == (BtbObj *)D_0051CC20) {
+        return;
+    }
+    do {
+        if ((*(s32 *)((char *)n + 0x20) & 0x4800) == 0x4800) {
+            sub = (char *)n + 0x30;
+            p = *(void **)((char *)n + 0x44);
+            if (p != NULL) {
+                amHeap_Free(p);
+            }
+            p = *(void **)(sub + 0xC);
+            if (p != NULL) {
+                amHeap_Free(p);
+            }
+            s = *(s32 *)(sub + 0x10);
+            if (s != 0) {
+                func_00209530(s);
+            }
+            for (i = 0; i < 0x100; i++) {
+                if (D_0051C770[i] == n) {
+                    n->prev->next = n->next;
+                    n->next->prev = n->prev;
+                    D_0051C770[i] = NULL;
+                    D_0047062C--;
+                    break;
+                }
+            }
+        }
+        n = n->next;
+    } while (n != (BtbObj *)D_0051CC20);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3FE0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F41E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4520);
