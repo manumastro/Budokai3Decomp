@@ -229,7 +229,22 @@ s32 func_002CB300(void) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB370);
+s32 func_002CB370(void) {
+    TutWork *w = gTutWork;
+    f32 *a1 = (f32 *)&w->f20;
+    char *c = (char *)w->chr;
+
+    if (*(s16 *)(c + 0xCAC) == 2) {
+        a1[0] = a1[0] + *(f32 *)(gBattle + 0x88F0);
+    }
+    if (*(s16 *)(c + 0xCAC) == 3) {
+        a1[1] = a1[1] + *(f32 *)(gBattle + 0x88F0);
+    }
+    if (a1[0] >= 60.0f && a1[1] >= 60.0f) {
+        return 1;
+    }
+    return 0;
+}
 s32 func_002CB420(void) {
     return 2;
 }

@@ -190,7 +190,43 @@ void func_00280E40(Ac280 *o, s16 a) {
     o->f3E &= ~2;
     o->f1C = (func_00280C70 == NULL) ? NULL : (void *)func_00280C70;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280E70);
+typedef struct Sub30_280 {
+    char pad0[8];
+    void *f8;
+    u8 fC;
+    char padD[1];
+    s16 fE;
+    s16 f10;
+    s32 f14;
+    s32 f18;
+    f32 f1C;
+    f32 f20;
+    s32 f24;
+} Sub30_280;
+
+extern void *amTask_Create();
+extern void *A2d_AllocObj(s32, f32);
+extern char D_0046B740[];
+
+void *func_00280E70(s16 a0, s16 a1) {
+    void *t;
+    Sub30_280 *p;
+
+    t = amTask_Create(func_00280C70, func_00280D20, 0x2900, 8, 2, D_0046B740);
+    *(s32 *)((char *)t + 0x30) = 0;
+    *(s32 *)((char *)t + 0x34) = 0;
+    p = (Sub30_280 *)((char *)t + 0x30);
+    p->f8 = A2d_AllocObj(0, 0.0f);
+    p->fC = 0;
+    p->fE = a0;
+    p->f10 = a1;
+    p->f14 = 0;
+    p->f18 = 0;
+    p->f1C = 1.0f;
+    p->f20 = 1.0f;
+    p->f24 = 0;
+    return t;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280F20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_002811D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281870);
