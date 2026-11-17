@@ -1,5 +1,11 @@
 #include "common.h"
 
+extern s32 D_00470698;
+extern s32 D_004706A0[2];
+extern void (*D_0046A450[])(void);
+void func_00125740(void *, void *, s32);
+s32 func_002408C0(void);
+
 typedef struct V16 {
     s32 a;
     s32 b;
@@ -55,7 +61,6 @@ extern s32 D_00470680;
 extern s32 D_00470684;
 extern s32 D_00470688;
 extern s32 D_00470698;
-extern s32 D_004706A0;
 extern s32 D_0046A470[];
 extern void memset(void *, s32, s32);
 extern void func_00133780(s32, s32);
@@ -502,4 +507,27 @@ void func_0021CCF0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CCF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CD80);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021D170);
+s32 func_0021D170(u8 *o) {
+    u8 *sys = D_0046FDFC;
+    u8 *s1 = sys + 0xDF0;
+    s32 r;
+    s32 t;
+
+    memset(sys, 0, 0xF00);
+    memset(&D_00470698, 0, 4);
+    memset(D_004706A0, 0, 8);
+    *(s16 *)(s1 + 0) = *(s16 *)(o + 0x152);
+    *(s16 *)(s1 + 2) = *(s16 *)(o + 0x15A);
+    *(f32 *)(D_0046FDFC + 0xDF4) = (f32)*(s32 *)(o + 0x15C);
+    func_00125740(D_0046FDFC + 0xCB0, o + 0x10, 0x140);
+    if (*(s16 *)(sys + 0xDF0) == 3) {
+        *(s16 *)(sys + 0xE52) = 0;
+    }
+    r = 0;
+    D_0046A450[*(s16 *)(s1 + 0)]();
+    t = func_002408C0();
+    if (t != 0) {
+        r = t;
+    }
+    return r;
+}
