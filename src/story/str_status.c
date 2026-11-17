@@ -135,7 +135,40 @@ void func_002BDC50(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDC50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDD10);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDE80);
+extern u8 D_003F0800[];
+extern void func_00131B90(void *);
+extern void func_00131F00(void *, f32, f32);
+extern void func_00132DF0(s32);
+extern void func_00209D20(s32);
+extern void func_00209C50(void);
+extern void func_0013B110(s32);
+void func_002BDE80(void) {
+    s32 tmp[4];
+    s32 vec[24];
+    func_0013B0B0(D_003F0800);
+    func_00131B90(vec);
+    func_00131F00(vec, 0.0f, 0.0f);
+    func_00132DF0(0);
+    tmp[0] = 0xC1000000;
+    tmp[1] = 0x3F800000;
+    tmp[2] = 0xC1C00000;
+    tmp[3] = 0x3F800000;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w" : : "r"(tmp) : "memory");
+    func_00209D20(0);
+    D_00470238 = 0;
+    {
+        s32 *g = D_0047011C;
+        if (g[0xD0 / 4] != 0) {
+            func_00145CC0(g[0xD0 / 4], g[0xD8 / 4]);
+        }
+        g = D_0047011C;
+        if (g[0x1B4 / 4] != 0) {
+            func_00208D70(g[0x1B4 / 4]);
+        }
+    }
+    func_0013B110(1);
+    func_00209C50();
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDF50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE0B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE320);
@@ -332,6 +365,36 @@ void func_002BFE60(s32 a0) {
     D_0047011C[0x1C4 / 4] = 1;
     D_0047011C[0x1CC / 4] = a0;
 }
+extern s32 func_002BECB0(s32, s32);
+#if 0
+// func_002BFEE0: the switch matches (case order, beq chain, gp loads); the last 2 instructions differ: the original's `return 0` is `b` to the epilogue with the move in its delay slot, ours falls through; 6 variants tried
+s32 func_002BFEE0(s32 a0, s32 a1, s32 a2) {
+    s32 r;
+    *(s16 *)((char *)D_0046FE44 + 0x100) = 1;
+    switch (a2) {
+    default:
+        r = 0;
+        break;
+    case 1:
+        if (D_0047011C[0x1C4 / 4] != 1 || D_0047011C[0x1D0 / 4] != 2) {
+            func_002BECB0(a0, a1);
+            D_0047011C[0x2D4 / 4] = amCdFs_ReadFileId(0xE82, 0, 1);
+            r = D_0047011C[0x2D4 / 4];
+            D_0047011C[0x1C4 / 4] = 0;
+        }
+        D_0047011C[0x1D0 / 4] = 1;
+        return r;
+    case 2:
+        func_002BECB0(a0, a1);
+        D_0047011C[0x2D4 / 4] = amCdFs_ReadFileId(0xE82, 0, 1);
+        r = D_0047011C[0x2D4 / 4];
+        D_0047011C[0x1D0 / 4] = 2;
+        D_0047011C[0x1C4 / 4] = 0;
+        return r;
+    }
+    return r;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFEE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFFD0);
 extern void func_00133B50(s32, s32);
