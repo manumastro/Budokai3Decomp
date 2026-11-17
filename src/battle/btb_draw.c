@@ -3449,6 +3449,75 @@ void func_001F0660(void) {
     }
 }
 #endif
+// differs: do-while copy loops: 49 of 74 at best (declaration orders tried); the original keeps the counter decrement before the loads and the src/dst/counter registers a3/a2/a1; the older #if 0 copy above (unrolled, 203 of 204) is kept.
+#if 0
+void func_001F0660(void) {
+    s32 *s32d;
+    s32 n;
+    s32 *s32s;
+    Copy16B *c16s;
+    Copy16B *c16d;
+    s8 *s8s;
+    s8 *s8d;
+    u64 v64;
+    s32 v32a;
+    s32 v32b;
+    s8 v8;
+
+    s32s = (s32 *)D_004B4C00;
+    s32d = (s32 *)D_004E6560;
+    n = 0x10;
+    do {
+        s32d[0] = s32s[0];
+        s32d[1] = s32s[1];
+        s32s += 2;
+        s32d += 2;
+        n--;
+    } while (n > 0);
+
+    c16s = (Copy16B *)D_004B4C80;
+    c16d = (Copy16B *)D_004E65E0;
+    n = 0x1573;
+    do {
+        c16d[0] = c16s[0];
+        c16d[1] = c16s[1];
+        c16s += 2;
+        c16d += 2;
+        n--;
+    } while (n > 0);
+
+    v64 = *(u64 *)D_004DFAE0;
+    v32a = *(s32 *)D_004DFAE8;
+    v32b = *(s32 *)D_004DFAEC;
+    v8 = D_004DFAF0[0];
+    *(u64 *)D_00511440 = v64;
+    *(s32 *)D_00511448 = v32a;
+    *(s32 *)D_0051144C = v32b;
+    D_00511450[0] = v8;
+
+    s8s = D_004DFAF1;
+    s8d = D_00511451;
+    n = 0x14;
+    do {
+        s8d[0] = s8s[0];
+        s8d[1] = s8s[1];
+        s8s += 2;
+        s8d += 2;
+        n--;
+    } while (n > 0);
+
+    s8s = D_004DFB19;
+    s8d = D_00511479;
+    n = 0x130;
+    do {
+        s8d[0] = s8s[0];
+        s8d[1] = s8s[1];
+        s8s += 2;
+        s8d += 2;
+        n--;
+    } while (n > 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0660);
 extern s8 D_004B4BB0[];
 
@@ -5919,6 +5988,54 @@ void func_001F7BF0(void) {
         } while (s1 < s0);
     }
 }
+extern char D_004698D0[];
+extern void func_001F3A60(void);
+extern void func_001F3C10(void);
+
+// differs: func_001F7C80: 28 of 77 at best (about 8 are relocations): the flags local is kept in another register (original t0, set in the delay slot of the first beqz) and the two early exits go to a different join; declaration orders tried.
+#if 0
+void func_001F7C80(s32 a0) {
+    s32 count;
+    s32 flags;
+    s32 i;
+    char *v;
+    char *s0;
+    char *sp;
+    char *x2;
+    char *x3;
+    char *x4;
+    char *p;
+    char *r;
+
+    v = D_0051CD14[0] + D_0051CD20[0] * 36;
+    s0 = *(char **)(v + 0xC) + (a0 << 5);
+    sp = *(char **)(s0 + 0x4);
+    for (i = 0; i < *(s32 *)(sp + 0x4); i++) {
+        *(s32 *)(sp + 0x8 + i * 8) = 0;
+    }
+    r = func_001F5FD0(0x80000000, D_004698D0, (s32)s0, (void *)func_001F3A60, (void *)func_001F3C10);
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x11;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x10;
+    flags = 0;
+    x2 = *(char **)(*(char **)(s0 + 0x4));
+    x3 = *(char **)(x2 + 0x1C);
+    x4 = *(char **)x3;
+    if (x4 != NULL) {
+        count = *(s32 *)(x4 + 0x10);
+        if (count > 0) {
+            p = *(char **)(x4 + 0x1C);
+            for (i = 0; i < count; i++) {
+                if (*(s8 *)p == 0x58) {
+                    flags |= 0x200;
+                }
+                p += 0x20;
+            }
+        }
+    }
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & ~flags;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | flags;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7C80);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7DB0);
 typedef void (*VoidFunc)(void);
