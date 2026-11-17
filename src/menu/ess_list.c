@@ -220,4 +220,26 @@ void func_00272B70(void) {
         s1++;
     } while (s3 < 2);
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_list", func_00272C30);
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern char D_0046B4F0[];
+extern u8 D_0058F680[];
+
+void func_00272C30(s32 idx) {
+    s32 *s1;
+    s32 r;
+    s1 = &D_00470800 + idx;
+    if (*s1 == 0) {
+        *s1 = (s32)amHeap_Alloc(0x7C0, 0, D_0046B4F0, 0xAB);
+        D_004707FC = *s1;
+        memset((void *)D_004707FC, 0, 0x7C0);
+        *(s32 *)((u8 *)D_004707FC + 0x44) = idx;
+        r = amCdFs_ReadFileId(0x107F1, 0, 1);
+        *(s32 *)((u8 *)D_004707FC) = r;
+        r = amCdFs_ReadFileId((idx + 0x7F2) | 0x10000, 0, 1);
+        *(s32 *)((u8 *)D_004707FC + 0x4) = r;
+        r = amCdFs_ReadFileId(0x10A9C, 0, 1);
+        *(s32 *)((u8 *)D_004707FC + 0x8) = r;
+        *(s32 *)((u8 *)D_004707FC + 0x54) = (s32)(D_0058F680 + idx * 0xD680 + 0xD41D);
+    }
+}
