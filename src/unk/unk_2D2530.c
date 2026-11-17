@@ -782,7 +782,19 @@ void func_002D7FC0(void) {
     v.y = 40.0f * s->f37C;
     DrawModel(D_00470934, s->f090, &v, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D80A0);
+void func_002D80A0(Vec4 *a, Vec4 *b, Vec4 *c, Vec4 *d) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
+
+    DrawModel(s, (Model2D2530 *)s->f74, 0, a);
+    DrawModel(D_00470934, (Model2D2530 *)s->f84, 0, a);
+    DrawModel(D_00470934, (Model2D2530 *)s->f78, 0, b);
+    DrawModel(D_00470934, (Model2D2530 *)s->f88, 0, b);
+    DrawModel(D_00470934, (Model2D2530 *)s->f7C, 0, c);
+    DrawModel(D_00470934, (Model2D2530 *)s->f8C, 0, c);
+    m = (Model2D2530 *)s->f80;
+    DrawModel(D_00470934, m, 0, d);
+}
 void func_002DDF00(void);
 void func_002DE250(void);
 void func_002DEFE0(void);
