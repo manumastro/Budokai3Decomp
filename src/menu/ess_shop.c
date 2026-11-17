@@ -278,7 +278,45 @@ void func_00274E70(u8 *a0) {
         *(void **)(s3 + 0x1C) = (fp == 0) ? 0 : fp;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00275050);
+extern s32 gEssShop;
+extern f32 gFrameDelta;
+extern s32 func_0022BC30(s32, f32);
+extern void func_00274120();
+extern void func_00273E20();
+extern void func_00275230();
+
+void func_00275050(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    void *fp;
+    s3 = a0;
+    *(s32 *)((u8 *)gEssShop + 0x1D4) = *(s32 *)((u8 *)gEssShop + 0x1D4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x204) = *(s32 *)((u8 *)gEssShop + 0x204) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x234) = *(s32 *)((u8 *)gEssShop + 0x234) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x264) = *(s32 *)((u8 *)gEssShop + 0x264) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x294) = *(s32 *)((u8 *)gEssShop + 0x294) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x2C4) = *(s32 *)((u8 *)gEssShop + 0x2C4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x3B4) = *(s32 *)((u8 *)gEssShop + 0x3B4) + 1;
+    func_00274120();
+    *(s32 *)((u8 *)gEssShop + 0x2F4) = *(s32 *)((u8 *)gEssShop + 0x2F4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x324) = *(s32 *)((u8 *)gEssShop + 0x324) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x354) = *(s32 *)((u8 *)gEssShop + 0x354) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x384) = *(s32 *)((u8 *)gEssShop + 0x384) + 1;
+    func_00273E20();
+    s0 = -1;
+    s2 = *(u8 **)((u8 *)gEssShop + 0x28);
+    s1 = (u8 *)gEssShop + 0x2EC;
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x2FC) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x2F4) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)(s1 + 0x14) * 4), (f32)*(s32 *)(s1 + 0x8) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x31C) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x324) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x34C) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x354) * gFrameDelta);
+    if (s0 == 0xFF) {
+        fp = (void *)func_00275230;
+        *(void **)(s3 + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00275230);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002759F0);
 extern s32 amAdx_IsStopped(s32);
