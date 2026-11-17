@@ -107,38 +107,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280F20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_002811D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281870);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281A40);
-/* differs: the join after the store: the original keeps a nop in the bc1f delay slot and an extra label */
-#if 0
 void func_00281C60(Wrap280 *w) {
     Sub2C60 *o = w->f30;
     f32 d;
 
     func_002811D0(o);
-    d = o->fC - gFrameDelta;
+    d = o->fC - D_004703BC;
+    o->fC = d;
     if (d <= 0.0f) {
-        o->fC = d;
         o->f2 = 5;
         o->f3 = 0;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281C60);
-/* differs: the same join as func_00281C60, with the value 1 in a separate register */
-#if 0
 void func_00281CC0(Wrap280 *w) {
     Sub2C60 *o = w->f30;
     f32 d;
 
     func_002811D0(o);
-    d = o->fC - gFrameDelta;
+    d = o->fC - D_004703BC;
+    o->fC = d;
     if (d <= 0.0f) {
-        o->fC = d;
         o->f2 = 5;
         o->f3 = 1;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281CC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281D20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281E40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00282620);

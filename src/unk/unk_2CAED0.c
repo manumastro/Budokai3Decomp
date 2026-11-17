@@ -97,27 +97,58 @@ extern void (*D_004564A0[])(void);
 extern void (*D_004564C0[])(void);
 extern void func_002CBFF0(s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAED0);
-/* differs: the test comes out as slti at / beqz; the original keeps slti v0 / bnez v0 with the result in v0 */
-/* differs: the test comes out as slti at / beqz; the original keeps slti v0 / bnez v0 with the result in v0 */
-#if 0
+s32 func_002CAED0(void) {
+    s32 *p = &D_0047091C->f20;
+
+    if (D_0047091C->chr->fCAC == 4) {
+        *p = (s32)((f32)*p + *(f32 *)(D_00470570 + 0x88F0));
+    }
+    if ((f32)*p >= 120.0f) {
+        return 1;
+    }
+    return 0;
+}
 s32 func_002CAF50(void) {
     TutWork *t = D_0047091C;
     s32 *p = &t->f20;
-    s32 r;
 
     if (t->f32 == 0x1A) {
         (*p)++;
     }
-    r = *p < 3;
-    if (r) {
-        return 0;
+    if (*p >= 3) {
+        return 1;
     }
-    return 1;
+    return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAF50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAFA0);
+typedef struct Cmd8 {
+    s16 v[4];
+} Cmd8;
+
+typedef struct Cmd32 {
+    Cmd8 e[4];
+} __attribute__((aligned(16))) Cmd32;
+
+extern Cmd32 D_00456640;
+extern s32 func_002CA7D0(CmdHist *h, s16 *cmd);
+
+s32 func_002CAFA0(void) {
+    Cmd32 arr = D_00456640;
+    s32 *cnt = &D_0047091C->f20;
+    CmdHist *h = &D_0047091C->chr->f1360;
+    s32 i;
+
+    if (D_0047091C->chr->fCB2 == 0x40) {
+        for (i = 0; i < 4; i++) {
+            if (func_002CA7D0(h, arr.e[i].v)) {
+                (*cnt)++;
+            }
+        }
+    }
+    if (*cnt > 0) {
+        return 1;
+    }
+    return 0;
+}
 /* differs: the same ring walk; the original has its nop-padded join and the early exit at a different place (0x80 bytes, ours 0x6C) */
 #if 0
 s32 func_002CB070(void) {
@@ -159,6 +190,29 @@ s32 func_002CB1D0(void) {
     }
     return 0;
 }
+/* differs: the original keeps the f32 pair at &t->f20 in $a1 and the chr in $a0 (the loads/stores use those bases); the
+   C above takes the pair from the TutWork base, and the return tests come out with the bc1t/bc1f order reversed */
+#if 0
+s32 func_002CB250(void) {
+    TutWork *t = D_0047091C;
+    TutChr *c = t->chr;
+    f32 *f = (f32 *)&t->f20;
+
+    if (c->fCAC == 9) {
+        f[0] = f[0] + *(f32 *)(D_00470570 + 0x88F0);
+    }
+    if (c->fCAC == 0xB) {
+        f[1] = f[1] + *(f32 *)(D_00470570 + 0x88F0);
+    }
+    if (f[0] < 30.0f) {
+        return 0;
+    }
+    if (f[1] < 30.0f) {
+        return 0;
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB250);
 s32 func_002CB300(void) {
     TutWork *t = D_0047091C;
@@ -213,11 +267,12 @@ void func_002CB4F0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB550);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB650);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBD40);
-/* differs: the original lays the fC == 0x1E call out of line (0xA0 bytes, ours 0x8C) and keeps its local at sp+0x20 */
+/* differs: the original lays the fC == 0x1E call out of line (beq to it, `b` over; 0xA0 bytes, ours 0x8C with bne inline,
+   with or without an empty else). The local buf[4] sits at sp+0x20 as in the original; the value 1 is in a0, the original's in a1 */
 #if 0
 void func_002CBEB0(void) {
     TutWork *t = D_0047091C;
-    s32 buf;
+    s32 buf[4];
 
     *(s8 *)(gBattle + 0x8AAD) = 1;
     if (t->fC == 0x1E) {
@@ -225,8 +280,8 @@ void func_002CBEB0(void) {
     }
     *(s16 *)((char *)t->chr + 0x13A4) = t->chr->f1CF4->f1A;
     func_002EB3E0(t->f4, t->fC - t->f10);
-    buf = 0;
-    func_00226030(0x27, &buf);
+    buf[0] = 0;
+    func_00226030(0x27, buf);
     func_002E9BA0(0);
 }
 #endif

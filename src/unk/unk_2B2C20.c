@@ -46,9 +46,51 @@ void func_002B2D50(SklAct *s) {
         func_00283C20();
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B2DA0);
+typedef struct SklRecW {
+    char pad0[0x150];
+    s32 f150;
+    char pad154[4];
+    s32 f158;
+} SklRecW;
+
+typedef struct SklTab {
+    char pad0[0x1C];
+    s32 *f1C;
+} SklTab;
+
+typedef struct SklTop {
+    char pad0[0x10];
+    SklTab *f10;
+} SklTop;
+
+extern s32 func_0022BC30(s32, f32);
+extern f32 D_004703BC;
+
+void func_002B2DA0(SklAct *s) {
+    SklRecW *r = (SklRecW *)&gSklEdit[s->f30];
+    s32 *p = (s32 *)&((SklRec *)r)->f48;
+    s32 res;
+
+    res = func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f150], (f32)r->f158 * D_004703BC);
+    if (res == 0xFF) {
+        p[3] = 5;
+        s->f1C = (func_002B3D90 == NULL) ? 0 : (s32)func_002B3D90;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B2E40);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B3BA0);
+extern void func_002B2E40(void);
+
+void func_002B3BA0(SklAct *s) {
+    SklRecW *r = (SklRecW *)&gSklEdit[s->f30];
+    s32 *p = (s32 *)&((SklRec *)r)->f48;
+    s32 res;
+
+    res = func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f150], (f32)r->f158 * D_004703BC);
+    if (res == 0xFF) {
+        p[3] = 6;
+        s->f1C = (func_002B2E40 == NULL) ? 0 : (s32)func_002B2E40;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B3C40);
 void func_002B3D40(SklAct *s) {
     SklRec *r;
@@ -62,14 +104,41 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B3D90);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B47D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4950);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4A30);
-/* differs: the load of gSklEdit comes first in the original, and the address is computed after it (3 of 6) */
-#if 0
-u16 func_002B4AD0(s32 a) {
-    u8 *g = (u8 *)gSklEdit;
-    s32 o = a & ~1;
+typedef struct SklFile {
+    char pad0[4];
+    s16 f4;
+    char pad6[0x54 - 6];
+    void *f54;
+} SklFile;
 
-    return *(u16 *)(g + o + 0x34);
+typedef struct SklHead {
+    SklFile *f0;
+    SklFile *f4;
+    char pad8[8];
+    void *f10;
+    void *f14;
+    char pad18[0x14];
+    s32 f2C;
+} SklHead;
+
+extern void amFile_Load(s32);
+
+void func_002B4A30(void *a) {
+    if (func_002D20D0(a) != 0) {
+        if (((SklHead *)gSklEdit)->f4->f4 == 3) {
+            ((SklHead *)gSklEdit)->f2C = 1;
+            amFile_Load((s32)((SklHead *)gSklEdit)->f0->f54);
+            ((SklHead *)gSklEdit)->f10 = ((SklHead *)gSklEdit)->f0->f54;
+            amFile_Load((s32)((SklHead *)gSklEdit)->f4->f54);
+            ((SklHead *)gSklEdit)->f14 = ((SklHead *)gSklEdit)->f4->f54;
+            amTask_Kill(a);
+        }
+    }
+}
+/* differs: gSklEdit is loaded after the `li -2` here; the original loads it first (register v1 / v0 swapped) */
+#if 0
+u16 func_002B4AD0(s32 a0) {
+    return *(u16 *)((char *)gSklEdit + (a0 & -2) + 0x34);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4AD0);
@@ -89,6 +158,31 @@ s32 func_002B4C80(s32 a) {
     return 9;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4CC0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4D90);
+extern void func_002B3C40(void);
+
+void func_002B4D90(s32 a0) {
+    void **q = (void **)((char *)gSklEdit + (a0 >> 1) * 8 + 0x18);
+    SklRec *r = &gSklEdit[a0 >> 1];
+    s32 *p = (s32 *)&r->f48;
+    s32 v = ((s32 *)r)[0x58 / 4];
+    void *t;
+
+    switch (v) {
+    case 0:
+        p[54] = 0x16;
+        p[56] = 0;
+        break;
+    case 1:
+        p[54] = 0x14;
+        p[56] = 0;
+        break;
+    case 2:
+        p[54] = 0x16;
+        p[56] = 0;
+        break;
+    }
+    t = *q;
+    *(s32 *)((char *)t + 0x1C) = (func_002B3C40 == NULL) ? 0 : (s32)func_002B3C40;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4E40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B5030);
