@@ -478,7 +478,7 @@ void func_0025DCA0(void *task) {
     }
     base = (s32)gBattle->f8934[p->f10];
     if (p->f18 == 1) {
-        func_0020E730(p->f0, (u8 *)base + ((((p->f18 << 1) + p->f18) << 2) + p->f18) * 128 + 0x650, p->f14);
+        func_0020E730(p->f0, (u8 *)base + ((((p->f18 * 3) << 2) + p->f18)) * 128 + 0x650, p->f14);
     } else {
         func_0020E7D0(p->f0, (void *)base, p->f14);
     }
@@ -520,6 +520,35 @@ s32 func_0025DED0(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020E7D0(a[2].i, gBattle->f8934[a[1].i], a[0].i);
     return 1;
 }
+/* differs: 1 of 76: the last addu of the index (f18 * 0x680 + ...) has its operands in the other order (addu v0,a3,v0; the original v0,v0,a3). */
+#if 0
+extern void func_0020E870(s32, void *, s32);
+extern void func_0020E8F0(s32, void *, s32);
+
+void func_0025DF20(void *task) {
+    Obj30 *p = (Obj30 *)((u8 *)task + 0x30);
+    f32 d;
+    s32 busy = gBattle != NULL ? gBattle->f88EC : 0;
+    s32 base;
+
+    if (busy != 0) {
+        return;
+    }
+    if (p->f8 != -1.0f) {
+        d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+        p->f4 = p->f4 + d;
+        if (!(p->f4 < p->f8)) {
+            amTask_Kill(task);
+        }
+    }
+    base = (s32)gBattle->f8934[p->f10];
+    if (p->f18 == 1) {
+        func_0020E870(p->f0, (u8 *)base + (((p->f18 + ((p->f18 * 3) << 2)))) * 128 + 0x650, p->f14);
+    } else {
+        func_0020E8F0(p->f0, (void *)base, p->f14);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DF20);
 s32 func_0025E050(void *o, ScrCmd *cmd) {
     extern void *amTask_Create();
