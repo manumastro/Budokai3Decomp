@@ -1,5 +1,35 @@
 #include "common.h"
 
+/* A task with an entity (f18, killed with its task) and an index into D_005BD260 (f3E). */
+typedef struct TaskEff2C41C0 {
+    char pad0[0x18];
+    void *f18;
+    char pad1C[0x22];
+    s16 f3E;
+} TaskEff2C41C0;
+
+extern void amTask_Kill(void *);
+
+/* A fighter-side object of the effects: its sub-object (f0) and a counter (f3A). */
+typedef struct EffSubA2C41C0 {
+    char pad0[0x84];
+    s16 f84;
+} EffSubA2C41C0;
+
+typedef struct EffSubB2C41C0 {
+    EffSubA2C41C0 *f0;
+    char pad4[0x36];
+    s16 f3A;
+} EffSubB2C41C0;
+
+typedef struct EffTask2C41C0 {
+    char pad0[0x30];
+    EffSubB2C41C0 *f30;
+} EffTask2C41C0;
+
+extern void (*D_004563D0[])(EffSubB2C41C0 *);
+extern s32 D_005BD260[];
+
 /* A fighter's input history: a ring of 32 commands. */
 typedef struct CmdHistEnt {
     s32 f0;
@@ -82,6 +112,8 @@ typedef struct TutCmd4 {
 extern TutWork *D_0047091C;
 extern char *D_00470570;
 
+extern EffWork *D_00470130;
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C41C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C4C90);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C5EB0);
@@ -91,25 +123,98 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C61A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C63C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6700);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6930);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6B60);
+void func_002C6B60(TaskEff2C41C0 *t) {
+    EffWork *w = D_00470130;
+    s16 *p = &w->f4D84;
+
+    if (w->f4D84 > 0) {
+        *p = w->f4D84 - 1;
+        if (D_00470130->f4D84 == 0) {
+            D_00470130->f4D86 &= 0x7FFF;
+        }
+        if (t->f18 != 0) {
+            amTask_Kill(t->f18);
+            t->f18 = 0;
+        }
+    }
+    D_005BD260[t->f3E] = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6BF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6D40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6EF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C7010);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C72E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C7C50);
+void func_002C7C50(TaskEff2C41C0 *t) {
+    EffWork *w = D_00470130;
+    s16 *p = &w->f4D84;
+
+    if (w->f4D84 > 0) {
+        *p = w->f4D84 - 1;
+        if (D_00470130->f4D84 == 0) {
+            D_00470130->f4D86 &= 0x7FFF;
+        }
+        if (t->f18 != 0) {
+            amTask_Kill(t->f18);
+            t->f18 = 0;
+        }
+    }
+    D_005BD260[t->f3E] = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C7CE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C7E00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8360);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8670);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C88A0);
+void func_002C88A0(TaskEff2C41C0 *t) {
+    EffWork *w = D_00470130;
+    s16 *p = &w->f4D84;
+
+    if (w->f4D84 > 0) {
+        *p = w->f4D84 - 1;
+        if (D_00470130->f4D84 == 0) {
+            D_00470130->f4D86 &= 0x7FFF;
+        }
+        if (t->f18 != 0) {
+            amTask_Kill(t->f18);
+            t->f18 = 0;
+        }
+    }
+    D_005BD260[t->f3E] = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8930);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8A80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8D30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9120);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9950);
+void func_002C9950(TaskEff2C41C0 *t) {
+    EffWork *w = D_00470130;
+    s16 *p = &w->f4D84;
+
+    if (w->f4D84 > 0) {
+        *p = w->f4D84 - 1;
+        if (D_00470130->f4D84 == 0) {
+            D_00470130->f4D86 &= 0x7FFF;
+        }
+        if (t->f18 != 0) {
+            amTask_Kill(t->f18);
+            t->f18 = 0;
+        }
+    }
+    D_005BD260[t->f3E] = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C99E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9AF0);
+#if 0
+// differs: the table call is scheduled above the f3A test (mwcc hoists the lookup)
+void func_002C9BC0(EffTask2C41C0 *t) {
+    EffSubB2C41C0 *s = t->f30;
+
+    if (s->f3A != 0) {
+        D_004563D0[s->f0->f84](s);
+    }
+    s->f3A = 0;
+    D_00470130->f4D86 &= ~0x800;
+    D_00470130->f4D86 &= ~0x400;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9BC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9C40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9EF0);
