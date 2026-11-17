@@ -247,7 +247,39 @@ int func_001CC270(void *unused, Arg *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC300);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC4B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC610);
+extern void func_001CB020(void *);
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void amTask_Kill(void *);
+extern void func_001CAFE0(void *);
+extern char D_004692B0[];
+int func_001CC610(void *unused, Arg *a) {
+    int *p = a->p;
+    char *c = *(char **)unused;
+    s32 x = p[0];
+    s32 z;
+    s32 y;
+    char *t;
+    s32 *q;
+    char *g;
+    y = p[1];
+    z = p[2];
+    t = amTask_Create((void (*)(void *))func_001CB020, 0, *(s32 *)(c + 0x10), *(s32 *)(c + 0x14), *(s32 *)(c + 0x18), D_004692B0);
+    *(s32 *)(t + 0x30) = 0;
+    *(f32 *)(t + 0x34) = (f32)x;
+    *(void **)(t + 0x38) = (void *)func_001CAFE0;
+    *(s32 *)(t + 0x3C) = z;
+    *(s32 *)(t + 0x40) = y;
+    q = (s32 *)(t + 0x30);
+    g = (char *)gBattle;
+    if (*(s32 *)(g + 0x88EC) == 0) {
+        q[0] += 1;
+        if ((f32)q[0] * *(f32 *)(g + 0x88F0) >= *(f32 *)(q + 1)) {
+            ((void (*)(void *))*(void **)(q + 2))(t);
+            amTask_Kill(t);
+        }
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC710);
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void func_001CB020(void *);
@@ -270,8 +302,68 @@ int func_001CC850(void *unused, Arg *a) {
     func_001D9CA0(gBattle->tbl[a->p[0]], 0);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC890);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC9A0);
+extern void func_001CB020(void *);
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void amTask_Kill(void *);
+extern void func_001CB010(void *);
+extern char D_004692B0[];
+int func_001CC890(void *unused, Arg *a) {
+    int *p = a->p;
+    char *c = *(char **)unused;
+    s32 x;
+    s32 y;
+    s32 w;
+    char *t;
+    s32 *q;
+    char *g;
+    x = p[0];
+    y = p[1];
+    w = p[2];
+    t = amTask_Create((void (*)(void *))func_001CB020, 0, *(s32 *)(c + 0x10), *(s32 *)(c + 0x14), *(s32 *)(c + 0x18), D_004692B0);
+    *(s32 *)(t + 0x30) = 0;
+    *(f32 *)(t + 0x34) = (f32)x;
+    *(void **)(t + 0x38) = (void *)func_001CB010;
+    *(char **)(t + 0x3C) = (char *)gBattle->tbl[w];
+    *(s32 *)(t + 0x40) = y;
+    q = (s32 *)(t + 0x30);
+    g = (char *)gBattle;
+    if (*(s32 *)(g + 0x88EC) == 0) {
+        q[0] += 1;
+        if ((f32)q[0] * *(f32 *)(g + 0x88F0) >= *(f32 *)(q + 1)) {
+            ((void (*)(void *))*(void **)(q + 2))(t);
+            amTask_Kill(t);
+        }
+    }
+    return 1;
+}
+extern s32 BtlChara_GetF2710(s32);
+int func_001CC9A0(void *unused, Arg *a) {
+    int *p = a->p;
+    f32 f = *(f32 *)p;
+    s32 s3 = p[1];
+    s32 s2 = p[2];
+    s32 s1 = p[3];
+    s32 buf[12];
+    s32 *e;
+    memset(buf, 0, 0x30);
+    buf[0] = 5;
+    e = &buf[4];
+    switch (s1) {
+    case 0:
+    case 1:
+        e[0] = BtlChara_GetF2710(*(s32 *)((char *)gBattle->tbl[s1] + 0x1350));
+        break;
+    case 2:
+        e[0] = *(s32 *)((char *)gBattle + 0x820);
+        break;
+    }
+    ((s16 *)e)[2] = (s16)s2;
+    ((s16 *)e)[3] = (s16)s3;
+    e[2] = 0;
+    *(f32 *)(e + 3) = f;
+    func_001E57C0(0, 0, buf);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCA90);
 // differs: 28 of 33 at best. The original frame is 0x50 with the buffer at sp+0x20 and no saved s0 across memset; ours is 0x60 and keeps the buffer address in s0 (memset + func_001E57C0 call order matches).
 #if 0
