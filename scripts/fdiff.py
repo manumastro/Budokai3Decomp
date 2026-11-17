@@ -45,6 +45,17 @@ def symbol_addresses():
     return out
 
 
+def data_sections(obj):
+    """The non-empty allocated sections of the object other than .text (and Metrowerks' .mwcats)."""
+    from elftools.elf.elffile import ELFFile
+    out = []
+    with open(obj, "rb") as f:
+        for s in ELFFile(f).iter_sections():
+            if s["sh_flags"] & 2 and s["sh_size"] and s.name not in (".text", ".mwcats"):
+                out.append(f"{s.name} 0x{s['sh_size']:X}")
+    return out
+
+
 def function_starts():
     """Addresses of every function still in assembly (split files and INCLUDE_ASM files)."""
     starts = set()
@@ -81,6 +92,12 @@ def main():
             print(err)
             sys.exit(1)
         fns = mwmatch.functions(obj)
+        data = data_sections(obj)
+    if data:
+        # A string literal, a float constant, a switch table or a static variable: the object would add data the
+        # original keeps in the assembly data files, and the linked image would shift (docs/decomp_guide.md).
+        print(f"{args.src}: defines data ({', '.join(data)}); use the D_XXXXXXXX symbols instead")
+        sys.exit(1)
     starts = function_starts()
     ok = bad = 0
     for name, (words, relocs) in fns.items():

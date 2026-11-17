@@ -96,17 +96,24 @@ before CRI and `amMc.c` / `amCdFs.c` in the game part, but not `main` (below). T
 configure.py's `FILE_FLAGS` gives these files `AM_FLAGS`, and every other C file `MWCC_FLAGS`.
 
 - **The style** (**inferred**, counted over the split): in the `am*` files, the delay slots of branches and calls
-  hold a `nop` (4,008 of them). The only filled ones are in hand-written functions (VU0 macro instructions,
-  `addi`, `lq` / `sq` frames) and in the functions listed below as belonging elsewhere. The game's files fill most
-  of theirs: `btl_main.s` has 1,934 nops and 3,578 filled slots. `-opt level=1` is the level without instruction
+  hold a `nop` (4,008 of them). The only filled ones are in hand-written functions (VU0 macro instructions; the
+  FPU accumulator instructions `mula.s` / `madda.s`; `addi` / `add`; branch-likely; `$at` used as a temporary; `$ra`
+  kept in a register) and in the functions listed below as belonging elsewhere. The game's files fill most of
+  theirs: `btl_main.s` has 1,934 nops and 3,578 filled slots. `-opt level=1` is the level without instruction
   scheduling, tail calls or common subexpressions (`mwccps2 -help all`).
-- **The match** (**verified**): `scripts/probe/am_probe.c` holds eight functions of the part linked before CRI.
-  There is a 240-instruction loop nest that relocates a model file's offsets, five small call or store functions
-  and a bump allocator. `scripts/mwmatch.py` compiled them with all 18 builds at `-O1`, `-O1,p`, `-O2,p` and
-  `-O3,p`. All eight match (0 differing instructions) only with 3.0b22, 3.0b38, 3.0b50 and 3.0b52 at `-O1,p`:
-  - `-O1` without `,p` drops the nops that align loop heads to 8 bytes (207 of 234 differ);
+- **The match** (**verified**): `scripts/probe/am_probe.c` holds 13 functions:
+  - eight of the part linked before CRI: a 240-instruction loop nest that relocates a model file's offsets, five
+    small call or store functions and a bump allocator;
+  - five of `amMc.c` / `amCdFs.c`: memory-card callbacks, a loop over the file table, a reference count, a queue
+    read.
+
+  `scripts/mwmatch.py` compiled the first eight with all 18 builds at `-O1`, `-O1,p`, `-O2,p` and `-O3,p`, and the
+  other five with 3.0b22, 3.0b52, 3.0.3 and 3.0.1b44 at `-O1`, `-O1,p`, `-O2,p` and `-O4,p`. All 13 match
+  (0 differing instructions) only with the 3.0b builds at `-O1,p` (3.0b22, 3.0b38, 3.0b50 and 3.0b52 for the
+  first eight):
+  - `-O1` without `,p` drops the nops that align loop heads to 8 bytes (207 of 234 differ in the big one);
   - `-O2,p` shares the allocator's two loads of its global (5 of 8 differ);
-  - `-O3,p` schedules, and 3.0 / 3.0.1 / 3.0.3 / 3.0.1bXX and 2.x differ in 1 to 8 of the functions.
+  - `-O3,p` / `-O4,p` schedule, and 3.0 / 3.0.1 / 3.0.3 / 3.0.1bXX and 2.x differ in 1 to 8 of the functions.
 
 Two other sets of code sit at the edges of the `am*` files:
 
@@ -117,6 +124,11 @@ Two other sets of code sit at the edges of the `am*` files:
   as the CRI code after it does, and 0x14E580 ends in a tail call (`j`) to `memset`. Both use a counter at
   0x400B58 to clear 0x300 bytes at 0x400B60 once. So the gcc library part probably starts at 0x14E530, not
   0x14E5D0. This explains why `func_0014E580` matched with no Metrowerks build.
+- **0x25BE40 and 0x25BE50**, the first two functions of `amCdFs.s`, belong to the game file before it:
+  `func_0025BE50` (it starts three threads) compiles to the original (0 of 35 differing) at `-O4,p` and not at
+  `-O1,p` (34 of 39). It is a scheduled function, unlike every C function of `amCdFs.c`. So `amCdFs.c` starts at
+  0x25BEE0 (**inferred** for 0x25BE40, an empty function that is the same at both levels). The yaml keeps the
+  boundary for now, and the two stay `INCLUDE_ASM`.
 
 Evidence:
 

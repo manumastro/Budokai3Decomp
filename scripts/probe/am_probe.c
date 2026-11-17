@@ -4,7 +4,11 @@
  *          func_0012F230=0x12F230 func_0012F290=0x12F290 func_00133980=0x133980 func_0014A610=0x14A610 \
  *          func_0012FBB0=0x12FBB0 func_00142560=0x142560 \
  *          --flags="-O1,p -sdatathreshold 8" --flags="-O1 -sdatathreshold 8" --flags="-O2,p -sdatathreshold 8"
- * (docs/plan.md, "Compiler"). What tells the flags apart: func_0012F230 reads its global twice (-O2 and up share
+ * The second group, below, is five functions of amMc.c and amCdFs.c (linked after CRI, among the game's files):
+ *     func_001A1F90=0x1A1F90 func_001A2150=0x1A2150 func_0025C780=0x25C780 func_0025C9D0=0x25C9D0 \
+ *     func_0025D400=0x25D400
+ * They too match only with the 3.0b builds at -O1,p (-O1 drops a loop's alignment nop, -O2,p and -O4,p share
+ * loads and schedule; 3.0.3 and 3.0.1b44 differ). (docs/plan.md, "Compiler"). What tells the flags apart: func_0012F230 reads its global twice (-O2 and up share
  * the load); func_0012C540 has loops whose targets are aligned with a nop (only `,p` does that at -O1), and the
  * others are calls left unscheduled (-O3 and up fill the delay slots and make tail calls). The names and types are
  * placeholders. */
@@ -98,3 +102,67 @@ extern void func_00142590(void);
 extern void func_00182330(void);
 void func_00142560(void) { func_00142590(); func_00182330(); }
 
+/* amMc.c and amCdFs.c */
+typedef signed char s8;
+extern s32 D_004704F8, D_004704FC, D_004704E8, D_004704EC, D_004704F0, D_004704F4;
+extern void (*D_0047055C)(s32, s32);
+extern void (*D_00470560)(void);
+extern s32 func_0011A700(s32, s32 *, s32 *);
+extern s32 func_0011AA10(s32, s32, s32, s32, s32, s32);
+extern void func_001A2A10(s32, s32);
+
+void func_001A1F90(void) {
+    s32 cmd;
+    s32 result;
+    if (D_004704F8 == 1) {
+        if (func_0011A700(1, &cmd, &result) == 1) {
+            if (D_0047055C) {
+                D_0047055C(cmd, result);
+            } else {
+                D_004704F8 = 2;
+                D_004704FC = result;
+            }
+        }
+    }
+}
+
+s32 func_001A2150(s32 port, s32 slot, s32 name, s32 table, s32 max) {
+    s32 r = func_0011AA10(port, slot, name, 0, max, table);
+    if (r == 0) {
+        D_004704E8 = port;
+        D_004704EC = slot;
+        D_004704F0 = 13;
+        D_004704F4 = 13;
+        D_004704F8 = 1;
+        D_004704FC = 0;
+        D_0047055C = func_001A2A10;
+    }
+    return r;
+}
+
+typedef struct Fs { char pad[6]; s8 used; char pad2[0x64 - 7]; } Fs;
+extern Fs *D_00470768;
+extern s32 D_00470764, D_00470770;
+extern s32 *D_0047076C;
+extern void func_0025C800(Fs *, s32);
+extern void func_0025D590(void *);
+
+void func_0025C780(s32 arg) {
+    Fs *f;
+    s32 i;
+    f = D_00470768;
+    for (i = 0; i < D_00470764; i++, f++) {
+        if (f->used) func_0025C800(f, arg);
+    }
+}
+
+typedef struct Ref { char pad[0x3C]; s32 n; } Ref;
+void func_0025C9D0(Ref *r) {
+    r->n--;
+    if (r->n <= 0) func_0025D590(r);
+}
+
+s32 func_0025D400(void) {
+    if (D_00470770 >= D_00470764) return 0;
+    return D_0047076C[D_00470770++];
+}
