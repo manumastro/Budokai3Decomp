@@ -2,6 +2,7 @@
 void func_0013B160(void *p);
 void func_0013B0B0(u8 *);
 void func_0013B110(s32);
+void func_0013B960(u8 *);
 
 extern u8 D_005687D0[];
 void func_00136870(s32, s32, s32, s32, s32, s32);
@@ -383,7 +384,33 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020CF60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D120);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D290);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D400);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D500);
+void func_0020D500(u8 *out, u8 *src, u8 *x, s32 idx) {
+    Copy16A blk[4];
+
+    func_0013B160(x);
+    func_0013B960(*(u8 **)(*(u8 **)(x + 0xB88) + 0x408) + idx * 64);
+    __asm__ volatile (
+        "sqc2 $vf28, 0(%0)\n"
+        "sqc2 $vf29, 0x10(%0)\n"
+        "sqc2 $vf30, 0x20(%0)\n"
+        "sqc2 $vf31, 0x30(%0)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(&blk[0]) : "memory");
+    func_0013B0B0(0);
+    func_0013B960((u8 *)&blk[0]);
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "vmulax.xyzw ACC, $vf28, $vf1x\n"
+        "vmadday.xyzw ACC, $vf29, $vf1y\n"
+        "vmaddaz.xyzw ACC, $vf30, $vf1z\n"
+        "vmaddw.xyzw $vf1, $vf31, $vf0w\n"
+        "sqc2 $vf1, 0(%1)\n"
+        : : "r"(src), "r"(out) : "memory");
+    func_0013B110(1);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D5C0);
 void func_0020D780(void *out) {
     Copy16A tmp;
@@ -494,6 +521,63 @@ void func_0020E070(s32 i, u8 *o) {
         func_0013B110(1);
     }
 }
+void func_00146F30(void *p);
+void func_00141C30(void *a, void *b, void *c);
+void func_00141CF0(void *a, void *b, void *c);
+
+void func_00146F30(void *p);
+void func_00141C30(void *a, void *b, void *c);
+void func_00141CF0(void *a, void *b, void *c);
+
+void func_00146F30(void *p);
+void func_00141C30(void *a, void *b, void *c);
+void func_00141CF0(void *a, void *b, void *c);
+
+void func_00146F30(void *p);
+void func_00141C30(void *a, void *b, void *c);
+void func_00141CF0(void *a, void *b, void *c);
+
+void func_00146F30(void *p);
+void func_00141C30(void *a, void *b, void *c);
+void func_00141CF0(void *a, void *b, void *c);
+
+#if 0
+void func_0020E120(s32 i, s32 j) {
+    u8 *s0;
+    u8 *pa;
+    u8 *pb;
+    Copy16A t3;
+    Copy16A t2;
+    Copy16A t1;
+    Copy16A t4;
+
+    s0 = D_00568C90 + i * 0x2140;
+    pa = *(u8 **)(gBattle + j * 4 + 0x8934);
+    pb = *(u8 **)(gBattle + (1 - j) * 4 + 0x8934);
+    t2.a = 0;
+    t2.b = 0x3F800000;
+    t2.c = 0;
+    t2.d = 0x3F800000;
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vsub.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%2)\n"
+        : : "r"(pb + 0x650), "r"(pa + 0x650), "r"(&t1) : "memory");
+    func_00146F30(&t1);
+    func_00141C30(&t3, &t2, &t1);
+    func_0013B160(s0 + 0x40);
+    __asm__ volatile (
+        "sqc2 $vf31, 0(%0)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(&t4) : "memory");
+    func_00141CF0(s0 + 0x40, &t3, &t4);
+}
+// differs: the address arithmetic and the loads of the two table pointers are scheduled in another order (about 10 instructions in temporaries); the stack slots and the calls match
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E120);
 void func_0013B160(void *p);
 void func_0020D5C0(void *a, s32 b, void *c, u8 *d);
