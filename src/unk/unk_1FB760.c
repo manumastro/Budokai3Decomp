@@ -1,5 +1,8 @@
 #include "common.h"
 
+#define VU_COPY(dst, src) __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(dst), "r"(src) : "memory")
+#define VU_LOAD_STORE(src, dst) __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(src), "r"(dst) : "memory")
+
 extern void func_00133780(s32, s32);
 extern void func_001FB500(u8 *);
 extern void func_001FB3B0(u8 *, s32);
@@ -26,6 +29,14 @@ extern s32 D_00470654;
 extern void func_00208F70(u8 *);
 extern void func_00209390(u8 *);
 extern s32 D_0051D9A0[];
+extern u8 *amPkt_Alloc(s32);
+extern u8 D_0051D9B0[];
+extern u8 D_0051D9C0[];
+extern u8 D_0051D9D0[];
+extern u8 D_0051D9E0[];
+extern u8 D_0051D9F0[];
+extern u8 D_0051DA00[];
+extern void func_00209E50(void);
 
 #if 0
 void func_001FB760(u8 *a, s32 b) {
@@ -41,7 +52,25 @@ void func_001FB760(u8 *a, s32 b) {
 // differs: the two early exits (a0 == 0 and a1 == 0) go to a shared b in the original (8 instructions more, 0x80 bytes against 0x60); the block layout did not match
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FB760);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FB7E0);
+u8 *func_001FB7E0(u8 *s1) {
+    u8 *s0;
+    if (s1 == NULL) {
+        return NULL;
+    }
+    s0 = amPkt_Alloc(0x100);
+    memset(s0, 0, 0x100);
+    __asm__ volatile ("sqc2 $vf28, 0(%0) ; sqc2 $vf29, 16(%0) ; sqc2 $vf30, 32(%0)" : : "r"(s0) : "memory");
+    __asm__ volatile ("sqc2 $vf31, 48(%0)" : : "r"(s0) : "memory");
+    if (s0 != NULL) {
+        *(s32 *)(s0 + 0xE0) = 0;
+        *(s32 *)(s0 + 0xE4) = 0;
+        *(s32 *)(s0 + 0xE8) = 0;
+        *(f32 *)(s0 + 0xEC) = 0.25f;
+    }
+    *(s32 *)(s0 + 0xF0) = *(s32 *)(s1 + 0x4C);
+    *(s32 *)(s0 + 0xF4) = *(s32 *)(s1 + 0x58);
+    return s0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FB880);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FBAA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FBDE0);
@@ -72,7 +101,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FFBA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00200270);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002009B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00201150);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002012B0);
+void func_002012B0(u8 *a) {
+    u8 *m = *(u8 **)(a + 0x8);
+    u8 *c = *(u8 **)(a + 0xC);
+    VU_LOAD_STORE(*(u8 **)(a + 0x10), c + 0x10);
+    VU_LOAD_STORE(*(u8 **)(a + 0x14), c + 0x20);
+    *(f32 *)(c + 0x50) = *(f32 *)(m + 0x44);
+    *(f32 *)(c + 0x54) = *(f32 *)(m + 0x48);
+}
 void func_002012F0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00201300);
@@ -447,9 +483,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209850);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209950);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209A90);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209B50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209C50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209CA0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209D20);
+void func_00209C50(void) {
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(D_0051D9B0), "r"(D_0051D9E0) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(D_0051D9C0), "r"(D_0051D9F0) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(D_0051D9D0), "r"(D_0051DA00) : "memory");
+}
+void func_00209CA0(u8 *a0, u8 *a1, u8 *a2) {
+    VU_COPY(D_0051D9E0, D_0051D9B0);
+    VU_COPY(D_0051D9F0, D_0051D9C0);
+    VU_COPY(D_0051DA00, D_0051D9D0);
+    VU_COPY(D_0051D9B0, a0);
+    VU_COPY(D_0051D9C0, a1);
+    VU_COPY(D_0051D9D0, a2);
+}
+void func_00209D20(void) {
+    VU_COPY(D_0051D9E0, D_0051D9B0);
+    VU_COPY(D_0051D9F0, D_0051D9C0);
+    VU_COPY(D_0051DA00, D_0051D9D0);
+    func_00209E50();
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209D70);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209E50);
 void func_00209F40(s32 v) {

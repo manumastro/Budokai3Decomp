@@ -60,6 +60,8 @@ extern u8 D_00495758[];
 extern u8 *D_0051CD00[];
 extern void func_001F5B70(u8 *);
 extern void func_002CEA60(void);
+extern s32 D_0051CCE0[];
+extern void func_00200270(f32, f32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD5F0);
 void func_002CD810(void) {
@@ -254,6 +256,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE0A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE2A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE3D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE500);
+#if 0
+void func_002CE630(f32 x, f32 y) {
+    f32 tmp[4];
+    u8 *p;
+    D_0051CCE0[0] = 0;
+    __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(tmp) : "memory");
+    p = *(u8 **)(D_00470570 + 0x264);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(p), "r"(tmp) : "memory");
+    func_00200270(x - tmp[0], y - tmp[2]);
+    D_0051CCE0[0] = 1;
+}
+// differs: the inline VU0 copy matches; only the register of the constant 1 in the last store differs (v1 against v0)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE630);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE690);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE7E0);
