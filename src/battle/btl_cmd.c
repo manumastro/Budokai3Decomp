@@ -440,7 +440,43 @@ void func_001A5700(MotFile2 *f) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5770);
+extern u8 D_003F0800[];
+extern void func_0012E100(void *, s32, s32, f32);
+extern void func_0012E000(void *, void *);
+extern void func_0013B0B0(void *);
+extern void func_0013B620(s32);
+extern void func_0013B110(s32);
+void func_001A5770(void) {
+    u8 *v1 = (u8 *)gBattle + 0xA0;
+    u8 *s1 = v1 + 0xB0;
+    u8 *s0 = v1 + 0x160;
+    f32 f1 = *(f32 *)((u8 *)gBattle + 0x1DC);
+    f32 f0 = *(f32 *)((u8 *)gBattle + 0x240);
+    f32 t;
+    f32 t2;
+    s32 iv;
+
+    if (!(f1 <= f0)) {
+        if (*(s32 *)(s0 + 0x30) & 4) {
+            *(f32 *)(v1 + 0x13C) = f1 - f0;
+        } else {
+            *(f32 *)(v1 + 0x13C) = f0;
+        }
+    }
+    func_0012E100(s1, *(s32 *)(s0 + 0x34), *(s32 *)(s0 + 0x38), *(f32 *)(v1 + 0x13C));
+    if (*(s32 *)(s0 + 0x30) & 8) {
+        func_0013B0B0(D_003F0800);
+        t = *(f32 *)(s0 + 0x4C) / 360.0f;
+        t2 = 65536.0f * t;
+        __asm__ volatile ("cvt.w.s %0, %1" : "=f"(t2) : "f"(t2));
+        __asm__ volatile ("mfc1 %0, %1" : "=r"(iv) : "f"(t2));
+        func_0013B620(iv);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddz.xyz $vf1, $vf30, $vf1z ; sqc2 $vf1, 0x0(%0)" : : "r"(s1));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddz.xyz $vf1, $vf30, $vf1z ; sqc2 $vf1, 0x0(%0)" : : "r"(s1 + 0x10), "r"(s1 + 0x10));
+        func_0013B110(1);
+    }
+    func_0012E000(s1, s0 + 0x10);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5880);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5B40);
 void func_001A5EE0(void) {
