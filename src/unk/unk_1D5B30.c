@@ -589,16 +589,15 @@ void func_001D7290(Fighter *c) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7450);
 extern s8 D_00447440[];
 
-#if 0
-void func_001D79F0(Fighter *c) {
+void func_001D79F0(u8 *arg0) {
+    u8 *p;
     s32 i;
-    char *p;
     s8 *q;
 
-    p = (char *)c->f1CF8 + 0xD4;
+    p = *(u8 **)(arg0 + 0x1CF8) + 0xD4;
     for (i = 0; i < 8; i++) {
-        *((char *)c + 0x1D0C + i) = *(s16 *)((char *)c->f1CF4 + 0x12);
-        q = (s8 *)((char *)c + 0x1D0C + i);
+        *(s8 *)(arg0 + i + 0x1D0C) = *(s16 *)(*(u8 **)(arg0 + 0x1CF4) + 0x12);
+        q = (s8 *)(arg0 + i + 0x1D0C);
         if (*(s8 *)(p + 6) == 8) {
             *q = 0;
         }
@@ -608,9 +607,7 @@ void func_001D79F0(Fighter *c) {
         p += 20;
     }
 }
-#endif
-// differs: the original keeps the object pointer in a0 and the loop counter in t2 (c is copied to t1 here; 33 of 35 differ); declaration orders and a base pointer tried
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D79F0);
+
 #if 0
 void func_001D7A70(Fighter *c) {
     char *p;
@@ -2908,22 +2905,24 @@ s32 func_001E1E80(Fighter *c) {
 #endif
 // differs: 121 of 128 differ: the original keeps the object in s3 and the index in s2 (frame 0x50); the C takes the object into s4 whatever the declaration order (best order 120 of 128 instructions); the search compare (0x1FDC flag, the 1<<fBA4 mask, the 0x1A class test) is written as in the original
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1E80);
+/* r6 best attempt diff 12 */
 #if 0
 void func_001E2070(Fighter *c) {
     s32 a;
 
     if (gBattle->f8944 != 0) {
-        return;
+        goto done;
     }
     a = func_001E1D60(c);
-    if (a == c->fBA4 || a == c->fBA8) {
-        return;
+    if (c->fBA4 == a || c->fBA8 == a) {
+        goto done;
     }
     if (c->f200F == 2) {
         c->f1A48 = -1;
         c->f200F = 0;
     }
     func_001E6F70((char *)c + 0x650);
+done: ;
 }
 #endif
 // differs: the original copies the call result into a1 before its compares (move a1, v0; the C keeps it in v0); two local orders and the reversed compare tried
