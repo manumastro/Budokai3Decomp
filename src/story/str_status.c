@@ -887,15 +887,44 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1860);
 void VsCharaselEd_TaskMain(Task *task) {
     A2d_FlushList(task);
 }
-// func_002C1A00: the loads of the work block and the order of the two calls differ; not matched yet.
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1A00);
+// func_002C1A00: the model pointer is a local in each amModel block (the original loads it into the argument register once).
+void func_002C1A00(s32 *a0) {
+    s32 *s1;
+    s32 *s0;
+
+    s1 = (s32 *)a0[0xC];
+    {
+        s32 m = s1[1];
+        D_00470704 = m;
+        D_0047070C = 0x2000;
+        D_00470708 = 0;
+        amModel_SetCurrent(m, 0x2000);
+    }
+    D_00470238 = 0;
+    {
+        s32 m = s1[1];
+        D_00470704 = m;
+        D_0047070C = 0x2000;
+        D_00470708 = 0;
+        amModel_SetCurrent(m, 0x2000);
+    }
+    D_00470238 = 0;
+    s0 = (s32 *)s1[2];
+    if (s0 != 0) {
+        func_0022C060((s32)s0, 1.0f);
+        func_0022CD00((s32)s0);
+    }
+    func_002C0860(s1);
+    A2d_FlushList();
+    func_00133B50(0, 0);
+}
 extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern char D_005C4140[];
 extern void func_00304DC0(s32, s32);
 extern void Scene_Request(s32, s32);
 extern void Scene_FadeTo(s32, s32);
-extern void func_002C1A00(Task *);
+extern void func_002C1A00(s32 *);
 
 void StrStatus_TaskRequestScene(s32 *a0) {
     s32 *s0 = (s32 *)a0[0x30 / 4];
