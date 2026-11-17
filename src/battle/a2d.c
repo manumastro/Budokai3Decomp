@@ -427,7 +427,7 @@ void func_00228410(void) {
     D_004706D4 -= 1;
     D_004706CC -= 0x50;
 }
-// func_00228430: differs: the branch on the first argument and the register of the copy source
+// differs: 48 of 50 at best: the bump block and the branch on the first argument are laid out differently (the copy source is reloaded from the bump global); the copy itself matches.
 #if 0
 void func_00228430(u8 *a0, s32 a1, u8 *a2) {
     if (a0 == 0) {

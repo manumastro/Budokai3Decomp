@@ -310,7 +310,7 @@ void func_002378A0(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002378F0);
-// func_00237AE0: differs: 1 of 49 instructions (the index add operand order)
+// differs: 1 of 49 instructions: the index add `addu v0,v0,s1` in the original, ours `addu v0,s1,v0` (reversed form did not change it). The rest, including the store order and the frame, matches.
 #if 0
 void func_00237AE0(u8 *a0) {
     s32 s1;
@@ -337,7 +337,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237AE0);
 
 
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237BB0);
-// func_00237E00: differs: 11 of 47 instructions (register choice, the order of the constant stores, the index add)
+// differs: 11 of 47 at best: the register of the first stored constant (36.0f bits via lui/ori) and the index add operand order; the frame, the early return and the call order match.
 #if 0
 void func_00237E00(u8 *a0) {
     s32 s1;

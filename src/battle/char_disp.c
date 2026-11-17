@@ -78,7 +78,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F070);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F180);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F350);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F470);
-// differs: the state chain is laid out differently (compiled 0xD4 bytes, the original 0x100)
+// differs: Compiled 0xD4 bytes against 0x100: the original tests state 2 first, then 1, then 0, and places the state 2 block at the end; ours lays out the state 0 and state 1 blocks differently. Recursion in state 0 matches.
 #if 0
 void func_0029F730(u8 *a0, f32 dt) {
     s32 st = *(s32 *)(a0 + 0x10);

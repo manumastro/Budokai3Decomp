@@ -344,7 +344,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAC30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAD80);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAF30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB020);
-// func_002AB1D0: differs: one store (offset 0x84) takes its value in another FPU register than the source has
+// differs: 1 of 66 instructions: the store at offset 0x84 uses f4 in ours and f3 (the value of p[0]) in the original; float local orders tried.
 #if 0
 s32 func_002AB1D0(s32 *a0, s32 *a1) {
     s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
