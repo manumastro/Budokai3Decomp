@@ -1,4 +1,7 @@
 #include "common.h"
+extern void func_0012E830(void);
+extern void func_0011F4C0(void);
+extern void func_0011F220(void);
 
 typedef struct MotHdr {
     char pad[0x10];
@@ -128,25 +131,585 @@ typedef struct Track8s { char pad[8]; s32 n; Key8s key[1]; } Track8s;
 
 extern void func_0013B960(void *);
 
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B160);
+asm void func_0013B160(void) {
+L0013B160:
+    vmove.xyzw $vf24, $vf28
+    vmove.xyzw $vf25, $vf29
+    bnez       $a0, L0013B178
+    vmove.xyzw $vf26, $vf30
+    jr         $ra
+    vmove.xyzw $vf27, $vf31
+L0013B178:
+    vmove.xyzw $vf27, $vf31
+    lqc2       $vf28, 0x0($a0)
+    lqc2       $vf29, 0x10($a0)
+    lqc2       $vf30, 0x20($a0)
+    jr         $ra
+    lqc2      $vf31, 0x30($a0)
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B190);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B2B0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B460);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B500);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B580);
+asm void func_0013B2B0(void) {
+L0013B2B0:
+    addi       $sp, $sp, -0x40
+    sq         $ra, 0x0($sp)
+    sq         $s0, 0x10($sp)
+    sq         $s1, 0x20($sp)
+    sq         $s2, 0x30($sp)
+    lw         $s0, 0x0($a0)
+    lw         $s1, 0x4($a0)
+    lw         $s2, 0x8($a0)
+    lui        $at, 0x3f
+    lq         $v0, 2048($at)
+    lui        $at, 0x3f
+    lq         $v1, 2064($at)
+    lui        $at, 0x48
+    sq         $v0, -8192($at)
+    lui        $at, 0x48
+    sq         $v1, -8176($at)
+    jal func_0011F4C0
+    mtc1      $s2, $f12
+    lui        $at, 0x48
+    swc1       $f0, -8188($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f0, -8176($at)
+    jal func_0011F220
+    mtc1      $s2, $f12
+    lui        $at, 0x48
+    swc1       $f0, -8192($at)
+    lui        $at, 0x48
+    swc1       $f0, -8172($at)
+    lui        $at, 0x48
+    lqc2       $vf1, -8192($at)
+    vmulax.xyzw ACC, $vf28, $vf1x
+    vmaddy.xyzw $vf1, $vf29, $vf1y
+    lui        $at, 0x48
+    lqc2       $vf3, -8176($at)
+    vmulax.xyzw ACC, $vf28, $vf3x
+    vmaddy.xyzw $vf29, $vf29, $vf3y
+    vmove.xyzw $vf28, $vf1
+    lui        $at, 0x3f
+    lq         $v0, 2048($at)
+    lui        $at, 0x3f
+    lq         $v1, 2080($at)
+    lui        $at, 0x48
+    sq         $v0, -8192($at)
+    lui        $at, 0x48
+    sq         $v1, -8160($at)
+    jal func_0011F4C0
+    mtc1      $s1, $f12
+    lui        $at, 0x48
+    swc1       $f0, -8160($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f0, -8184($at)
+    jal func_0011F220
+    mtc1      $s1, $f12
+    lui        $at, 0x48
+    swc1       $f0, -8192($at)
+    lui        $at, 0x48
+    swc1       $f0, -8152($at)
+    lui        $at, 0x48
+    lqc2       $vf1, -8192($at)
+    vmulax.xyzw ACC, $vf28, $vf1x
+    vmaddz.xyzw $vf1, $vf30, $vf1z
+    lui        $at, 0x48
+    lqc2       $vf3, -8160($at)
+    vmulax.xyzw ACC, $vf28, $vf3x
+    vmaddz.xyzw $vf30, $vf30, $vf3z
+    vmove.xyzw $vf28, $vf1
+    lui        $at, 0x3f
+    lq         $v0, 2064($at)
+    lui        $at, 0x3f
+    lq         $v1, 2080($at)
+    lui        $at, 0x48
+    sq         $v0, -8176($at)
+    lui        $at, 0x48
+    sq         $v1, -8160($at)
+    jal func_0011F4C0
+    mtc1      $s0, $f12
+    lui        $at, 0x48
+    swc1       $f0, -8168($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f0, -8156($at)
+    jal func_0011F220
+    mtc1      $s0, $f12
+    lui        $at, 0x48
+    swc1       $f0, -8172($at)
+    lui        $at, 0x48
+    swc1       $f0, -8152($at)
+    lui        $at, 0x48
+    lqc2       $vf2, -8176($at)
+    vmulay.xyzw ACC, $vf29, $vf2y
+    vmaddz.xyzw $vf2, $vf30, $vf2z
+    lui        $at, 0x48
+    lqc2       $vf3, -8160($at)
+    vmulay.xyzw ACC, $vf29, $vf3y
+    vmaddz.xyzw $vf30, $vf30, $vf3z
+    vmove.xyzw $vf29, $vf2
+    lq         $s2, 0x30($sp)
+    lq         $s1, 0x20($sp)
+    lq         $s0, 0x10($sp)
+    lq         $ra, 0x0($sp)
+    addi       $sp, $sp, 0x40
+    jr         $ra
+    nop
+}
+asm void func_0013B460(void) {
+L0013B460:
+    addi       $sp, $sp, -0x20
+    sq         $ra, 0x0($sp)
+    swc1       $f12, 0x10($sp)
+    lui        $at, 0x3f
+    lq         $v0, 2064($at)
+    lui        $at, 0x3f
+    lq         $v1, 2080($at)
+    lui        $at, 0x48
+    sq         $v0, -8176($at)
+    lui        $at, 0x48
+    sq         $v1, -8160($at)
+    jal func_0011F4C0
+    nop
+    lui        $at, 0x48
+    swc1       $f0, -8168($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f0, -8156($at)
+    jal func_0011F220
+    lwc1      $f12, 0x10($sp)
+    lui        $at, 0x48
+    swc1       $f0, -8172($at)
+    lui        $at, 0x48
+    swc1       $f0, -8152($at)
+    lui        $at, 0x48
+    lqc2       $vf2, -8176($at)
+    vmulay.xyzw ACC, $vf29, $vf2y
+    vmaddz.xyzw $vf2, $vf30, $vf2z
+    lui        $at, 0x48
+    lqc2       $vf3, -8160($at)
+    vmulay.xyzw ACC, $vf29, $vf3y
+    vmaddz.xyzw $vf30, $vf30, $vf3z
+    vmove.xyzw $vf29, $vf2
+    lq         $ra, 0x0($sp)
+    addi       $sp, $sp, 0x20
+    jr         $ra
+    nop
+}
+asm void func_0013B500(void) {
+L0013B500:
+    addu       $t3, $zero, $ra
+    lui        $at, 0x3f
+    lq         $v1, 2064($at)
+    lui        $at, 0x3f
+    lq         $a3, 2080($at)
+    jal func_0012E830
+    nop
+    lui        $at, 0x48
+    sq         $v1, -8176($at)
+    lui        $at, 0x48
+    sq         $a3, -8160($at)
+    lui        $at, 0x48
+    swc1       $f0, -8168($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f1, -8172($at)
+    lui        $at, 0x48
+    swc1       $f1, -8152($at)
+    lui        $at, 0x48
+    swc1       $f0, -8156($at)
+    lui        $at, 0x48
+    lqc2       $vf2, -8176($at)
+    lui        $at, 0x48
+    lqc2       $vf3, -8160($at)
+    vmulay.xyzw ACC, $vf29, $vf2y
+    vmaddz.xyzw $vf2, $vf30, $vf2z
+    addu       $ra, $zero, $t3
+    vmulay.xyzw ACC, $vf29, $vf3y
+    vmaddz.xyzw $vf30, $vf30, $vf3z
+    jr         $ra
+    vmove.xyzw $vf29, $vf2
+}
+asm void func_0013B580(void) {
+L0013B580:
+    addi       $sp, $sp, -0x20
+    sq         $ra, 0x0($sp)
+    swc1       $f12, 0x10($sp)
+    lui        $at, 0x3f
+    lq         $v0, 2048($at)
+    lui        $at, 0x3f
+    lq         $v1, 2080($at)
+    lui        $at, 0x48
+    sq         $v0, -8192($at)
+    lui        $at, 0x48
+    sq         $v1, -8160($at)
+    jal func_0011F4C0
+    nop
+    lui        $at, 0x48
+    swc1       $f0, -8160($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f0, -8184($at)
+    jal func_0011F220
+    lwc1      $f12, 0x10($sp)
+    lui        $at, 0x48
+    swc1       $f0, -8192($at)
+    lui        $at, 0x48
+    swc1       $f0, -8152($at)
+    lui        $at, 0x48
+    lqc2       $vf1, -8192($at)
+    vmulax.xyzw ACC, $vf28, $vf1x
+    vmaddz.xyzw $vf1, $vf30, $vf1z
+    lui        $at, 0x48
+    lqc2       $vf3, -8160($at)
+    vmulax.xyzw ACC, $vf28, $vf3x
+    vmaddz.xyzw $vf30, $vf30, $vf3z
+    vmove.xyzw $vf28, $vf1
+    lq         $ra, 0x0($sp)
+    addi       $sp, $sp, 0x20
+    jr         $ra
+    nop
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B620);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B6B0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B750);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B7D0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B850);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B8D0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B960);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B9C0);
+asm void func_0013B6B0(void) {
+L0013B6B0:
+    addi       $sp, $sp, -0x20
+    sq         $ra, 0x0($sp)
+    swc1       $f12, 0x10($sp)
+    lui        $at, 0x3f
+    lq         $v0, 2048($at)
+    lui        $at, 0x3f
+    lq         $v1, 2064($at)
+    lui        $at, 0x48
+    sq         $v0, -8192($at)
+    lui        $at, 0x48
+    sq         $v1, -8176($at)
+    jal func_0011F4C0
+    nop
+    lui        $at, 0x48
+    swc1       $f0, -8188($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f0, -8176($at)
+    jal func_0011F220
+    lwc1      $f12, 0x10($sp)
+    lui        $at, 0x48
+    swc1       $f0, -8192($at)
+    lui        $at, 0x48
+    swc1       $f0, -8172($at)
+    lui        $at, 0x48
+    lqc2       $vf1, -8192($at)
+    vmulax.xyzw ACC, $vf28, $vf1x
+    vmaddy.xyzw $vf1, $vf29, $vf1y
+    lui        $at, 0x48
+    lqc2       $vf3, -8176($at)
+    vmulax.xyzw ACC, $vf28, $vf3x
+    vmaddy.xyzw $vf29, $vf29, $vf3y
+    vmove.xyzw $vf28, $vf1
+    lq         $ra, 0x0($sp)
+    addi       $sp, $sp, 0x20
+    jr         $ra
+    nop
+}
+asm void func_0013B750(void) {
+L0013B750:
+    addu       $t3, $zero, $ra
+    lui        $at, 0x3f
+    lq         $v1, 2048($at)
+    lui        $at, 0x3f
+    lq         $a3, 2064($at)
+    jal func_0012E830
+    nop
+    lui        $at, 0x48
+    sq         $v1, -8192($at)
+    lui        $at, 0x48
+    sq         $a3, -8176($at)
+    lui        $at, 0x48
+    swc1       $f0, -8188($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f1, -8192($at)
+    lui        $at, 0x48
+    swc1       $f1, -8172($at)
+    lui        $at, 0x48
+    swc1       $f0, -8176($at)
+    lui        $at, 0x48
+    lqc2       $vf1, -8192($at)
+    lui        $at, 0x48
+    lqc2       $vf3, -8176($at)
+    vmulax.xyzw ACC, $vf28, $vf1x
+    vmaddy.xyzw $vf1, $vf29, $vf1y
+    addu       $ra, $zero, $t3
+    vmulax.xyzw ACC, $vf28, $vf3x
+    vmaddy.xyzw $vf29, $vf29, $vf3y
+    jr         $ra
+    vmove.xyzw $vf28, $vf1
+}
+asm void func_0013B7D0(void) {
+L0013B7D0:
+    addu       $t3, $zero, $ra
+    lui        $at, 0x3f
+    lq         $v1, 2064($at)
+    lui        $at, 0x3f
+    lq         $a3, 2080($at)
+    jal func_0012E830
+    nop
+    lui        $at, 0x48
+    sq         $v1, -8176($at)
+    lui        $at, 0x48
+    sq         $a3, -8160($at)
+    lui        $at, 0x48
+    swc1       $f0, -8168($at)
+    neg.s      $f0, $f0
+    addu       $ra, $zero, $t3
+    lui        $at, 0x48
+    swc1       $f1, -8172($at)
+    lui        $at, 0x48
+    swc1       $f1, -8152($at)
+    lui        $at, 0x48
+    swc1       $f0, -8156($at)
+    lui        $at, 0x3f
+    lqc2       $vf28, 2048($at)
+    lui        $at, 0x48
+    lqc2       $vf29, -8176($at)
+    lui        $at, 0x48
+    lqc2       $vf30, -8160($at)
+    lui        $at, 0x3f
+    lqc2       $vf31, 2096($at)
+    jr         $ra
+    nop
+}
+asm void func_0013B850(void) {
+L0013B850:
+    addu       $t3, $zero, $ra
+    lui        $at, 0x3f
+    lq         $v1, 2048($at)
+    lui        $at, 0x3f
+    lq         $a3, 2080($at)
+    jal func_0012E830
+    nop
+    lui        $at, 0x48
+    sq         $v1, -8192($at)
+    lui        $at, 0x48
+    sq         $a3, -8160($at)
+    lui        $at, 0x48
+    swc1       $f0, -8160($at)
+    neg.s      $f0, $f0
+    addu       $ra, $zero, $t3
+    lui        $at, 0x48
+    swc1       $f1, -8192($at)
+    lui        $at, 0x48
+    swc1       $f1, -8152($at)
+    lui        $at, 0x48
+    swc1       $f0, -8184($at)
+    lui        $at, 0x48
+    lqc2       $vf28, -8192($at)
+    lui        $at, 0x3f
+    lqc2       $vf29, 2064($at)
+    lui        $at, 0x48
+    lqc2       $vf30, -8160($at)
+    lui        $at, 0x3f
+    lqc2       $vf31, 2096($at)
+    jr         $ra
+    nop
+}
+asm void func_0013B8D0(void) {
+L0013B8D0:
+    addi       $sp, $sp, -0x20
+    sq         $ra, 0x0($sp)
+    swc1       $f12, 0x10($sp)
+    lui        $at, 0x3f
+    lq         $v0, 2048($at)
+    lui        $at, 0x3f
+    lq         $v1, 2064($at)
+    lui        $at, 0x48
+    sq         $v0, -8192($at)
+    lui        $at, 0x48
+    sq         $v1, -8176($at)
+    jal func_0011F4C0
+    nop
+    lui        $at, 0x48
+    swc1       $f0, -8188($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f0, -8176($at)
+    jal func_0011F220
+    lwc1      $f12, 0x10($sp)
+    lui        $at, 0x48
+    swc1       $f0, -8192($at)
+    lui        $at, 0x48
+    swc1       $f0, -8172($at)
+    lui        $at, 0x48
+    lqc2       $vf28, -8192($at)
+    lui        $at, 0x48
+    lqc2       $vf29, -8176($at)
+    lui        $at, 0x3f
+    lqc2       $vf30, 2080($at)
+    lui        $at, 0x3f
+    lqc2       $vf31, 2096($at)
+    lq         $ra, 0x0($sp)
+    addi       $sp, $sp, 0x20
+    jr         $ra
+    nop
+}
+asm void func_0013B960(void * a0) {
+L0013B960:
+    lqc2       $vf1, 0x0($a0)
+    lqc2       $vf2, 0x10($a0)
+    lqc2       $vf3, 0x20($a0)
+    lqc2       $vf4, 0x30($a0)
+    vmulax.xyzw ACC, $vf28, $vf1x
+    vmadday.xyzw ACC, $vf29, $vf1y
+    vmaddaz.xyzw ACC, $vf30, $vf1z
+    vmaddw.xyzw $vf5, $vf31, $vf1w
+    vmulax.xyzw ACC, $vf28, $vf2x
+    vmadday.xyzw ACC, $vf29, $vf2y
+    vmaddaz.xyzw ACC, $vf30, $vf2z
+    vmaddw.xyzw $vf6, $vf31, $vf2w
+    vmulax.xyzw ACC, $vf28, $vf3x
+    vmadday.xyzw ACC, $vf29, $vf3y
+    vmaddaz.xyzw ACC, $vf30, $vf3z
+    vmaddw.xyzw $vf7, $vf31, $vf3w
+    vmulax.xyzw ACC, $vf28, $vf4x
+    vmadday.xyzw ACC, $vf29, $vf4y
+    vmaddaz.xyzw ACC, $vf30, $vf4z
+    vmaddw.xyzw $vf31, $vf31, $vf4w
+    vmove.xyzw $vf28, $vf5
+    vmove.xyzw $vf29, $vf6
+    jr         $ra
+    vmove.xyzw $vf30, $vf7
+}
+asm void func_0013B9C0(void) {
+L0013B9C0:
+    lqc2       $vf1, 0x0($a0)
+    lqc2       $vf2, 0x10($a0)
+    lqc2       $vf3, 0x20($a0)
+    lqc2       $vf4, 0x30($a0)
+    vmulax.xyzw ACC, $vf1, $vf28x
+    vmadday.xyzw ACC, $vf2, $vf28y
+    vmaddaz.xyzw ACC, $vf3, $vf28z
+    vmaddw.xyzw $vf5, $vf4, $vf28w
+    vmulax.xyzw ACC, $vf1, $vf29x
+    vmadday.xyzw ACC, $vf2, $vf29y
+    vmaddaz.xyzw ACC, $vf3, $vf29z
+    vmaddw.xyzw $vf6, $vf4, $vf29w
+    vmulax.xyzw ACC, $vf1, $vf30x
+    vmadday.xyzw ACC, $vf2, $vf30y
+    vmaddaz.xyzw ACC, $vf3, $vf30z
+    vmaddw.xyzw $vf7, $vf4, $vf30w
+    vmulax.xyzw ACC, $vf1, $vf31x
+    vmadday.xyzw ACC, $vf2, $vf31y
+    vmaddaz.xyzw ACC, $vf3, $vf31z
+    vmaddw.xyzw $vf31, $vf4, $vf31w
+    vmove.xyzw $vf28, $vf5
+    vmove.xyzw $vf29, $vf6
+    jr         $ra
+    vmove.xyzw $vf30, $vf7
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BA20);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BAF0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BBD0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BC00);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BC30);
+asm void func_0013BAF0(void) {
+L0013BAF0:
+    addi       $sp, $sp, -0x20
+    sq         $ra, 0x0($sp)
+    swc1       $f12, 0x10($sp)
+    lui        $at, 0x3f
+    lq         $v0, 2048($at)
+    lui        $at, 0x3f
+    lq         $v1, 2064($at)
+    lui        $at, 0x48
+    sq         $v0, -8192($at)
+    lui        $at, 0x48
+    sq         $v1, -8176($at)
+    jal func_0011F4C0
+    nop
+    lui        $at, 0x48
+    swc1       $f0, -8188($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f0, -8176($at)
+    jal func_0011F220
+    lwc1      $f12, 0x10($sp)
+    lui        $at, 0x48
+    swc1       $f0, -8192($at)
+    lui        $at, 0x48
+    swc1       $f0, -8172($at)
+    lui        $at, 0x48
+    lqc2       $vf1, -8192($at)
+    lui        $at, 0x48
+    lqc2       $vf2, -8176($at)
+    lui        $at, 0x3f
+    lqc2       $vf3, 2080($at)
+    lui        $at, 0x3f
+    lqc2       $vf4, 2096($at)
+    lq         $ra, 0x0($sp)
+    addi       $sp, $sp, 0x20
+    vmulax.xyzw ACC, $vf1, $vf28x
+    vmadday.xyzw ACC, $vf2, $vf28y
+    vmaddaz.xyzw ACC, $vf3, $vf28z
+    vmaddw.xyzw $vf5, $vf4, $vf28w
+    vmulax.xyzw ACC, $vf1, $vf29x
+    vmadday.xyzw ACC, $vf2, $vf29y
+    vmaddaz.xyzw ACC, $vf3, $vf29z
+    vmaddw.xyzw $vf6, $vf4, $vf29w
+    vmulax.xyzw ACC, $vf1, $vf30x
+    vmadday.xyzw ACC, $vf2, $vf30y
+    vmaddaz.xyzw ACC, $vf3, $vf30z
+    vmaddw.xyzw $vf7, $vf4, $vf30w
+    vmulax.xyzw ACC, $vf1, $vf31x
+    vmadday.xyzw ACC, $vf2, $vf31y
+    vmaddaz.xyzw ACC, $vf3, $vf31z
+    vmaddw.xyzw $vf31, $vf4, $vf31w
+    vmove.xyzw $vf28, $vf5
+    vmove.xyzw $vf29, $vf6
+    vmove.xyzw $vf30, $vf7
+    jr         $ra
+    nop
+}
+asm void func_0013BBD0(void) {
+L0013BBD0:
+    mfc1       $t2, $f14
+    mfc1       $t1, $f13
+    mfc1       $t0, $f12
+    qmtc2.ni   $t2, $vf3
+    qmtc2.ni   $t1, $vf2
+    qmtc2.ni   $t0, $vf1
+    vaddx.x    $vf31, $vf0, $vf1x
+    vaddx.y    $vf31, $vf0, $vf2x
+    vaddx.z    $vf31, $vf0, $vf3x
+    jr         $ra
+    vaddx.w   $vf31, $vf0, $vf0x
+}
+asm void func_0013BC00(void) {
+L0013BC00:
+    mfc1       $t0, $f12
+    mfc1       $t1, $f13
+    mfc1       $t2, $f14
+    qmtc2.ni   $t0, $vf1
+    qmtc2.ni   $t1, $vf2
+    qmtc2.ni   $t2, $vf3
+    vmulax.xyzw ACC, $vf28, $vf1x
+    vmaddax.xyzw ACC, $vf29, $vf2x
+    vmaddax.xyzw ACC, $vf30, $vf3x
+    vmaddw.xyzw $vf31, $vf31, $vf0w
+    jr         $ra
+    nop
+}
+asm void func_0013BC30(void) {
+L0013BC30:
+    mfc1       $t0, $f12
+    mfc1       $t1, $f13
+    mfc1       $t2, $f14
+    qmtc2.ni   $t0, $vf1
+    qmtc2.ni   $t1, $vf2
+    qmtc2.ni   $t2, $vf3
+    vaddx.y    $vf1, $vf0, $vf2x
+    vaddx.z    $vf1, $vf0, $vf3x
+    vmulx.xyz  $vf28, $vf28, $vf1x
+    vmuly.xyz  $vf29, $vf29, $vf1y
+    vmulz.xyz  $vf30, $vf30, $vf1z
+    jr         $ra
+    nop
+}
 s32 amMotion_CalcSize(MotHdr *m, u32 flags) {
     s32 size;
     s32 n;
