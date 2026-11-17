@@ -374,6 +374,51 @@ void func_002E57A0(Outer57 *a) {
         func_001F07E0(0xA, 0);
     }
 }
+/* differs: compiled 0x134 against 0x140. The original keeps the outer pointer in s1 (a0 is moved to s1 first) and the f30 pointer in s0; ours is the other way round whatever the declaration order (tried 4 orders, with and without initialisers). The 0x20 stack copy of D_00456DB0 is lq+ld+lwc1+lh in the original (30 bytes); ours copies 2 x lq (a packed 30-byte struct and char arrays gave the same code). */
+#if 0
+typedef struct Par2E5 {
+    s16 e[12];
+    f32 f18;
+    s16 s1C;
+} Par2E5;
+
+extern Par2E5 D_00456DB0;
+extern s16 D_00453490[];
+extern s16 D_005C9ED4[];
+extern s8 D_004B4B5B[];
+extern s32 D_005C9EE0[];
+extern s32 IpSysWnd_Start();
+
+void func_002E5840(Outer57 *a0) {
+    Dat2E5 *s0;
+    f32 f;
+    Par2E5 loc;
+    s32 ret;
+
+    s0 = (Dat2E5 *)a0->f30;
+    func_002E4D60((Sub57 *)s0);
+    f = s0->f10C - gFrameDelta;
+    s0->f10C = f;
+    if (f <= 0.0f) {
+        if (D_005C9F04[0] >= 1000) {
+            loc = D_00456DB0;
+            D_005C9ED4[0] = D_00453490[loc.e[(s16)(D_005C9F04[0] - 1000)] * 2];
+            ret = IpSysWnd_Start(7, loc.s1C);
+            D_004B4B5B[0] = ret;
+            a0->f30->f0C = ret;
+            *(void **)((u8 *)a0 + 0x1C) = (func_002E57A0 == NULL) ? NULL : (void *)func_002E57A0;
+        } else {
+            D_005C9EE0[0] = -1;
+            if (a0->f30->fD0 & 0x80) {
+                func_0028DF20();
+            }
+            ArenaStageSel_Exit(a0);
+            Scene_Request(0x19, 0);
+            func_001F07E0(0xA, 0);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5840);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5980);
 /* differs: 0xFC against 0x110 bytes: the only mismatch is the tail: the original stores func_002E5C20 through a register (lui/addiu, bnez over a zero, then sw at 0x1C); the one-line store here is a plain sw of the constant. Tried: ?: with NULL (35 of 67 differ). */
