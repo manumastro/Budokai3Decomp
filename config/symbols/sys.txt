@@ -394,3 +394,38 @@ gScrMachines = 0x004704D4; // size:0x4
 // tasks multiply by (the frame time, used by the story and ess screens for their timers).
 gBtlSys = 0x0046FDFC; // size:0x4 guess
 gFrameDelta = 0x004703BC; // size:0x4 guess
+
+// unk_145B40.c: sets the current model block: D_00470390 = the block, D_00470398 = the user pointer, D_00470394 =
+// the block's end (block + its word at +0x14). Called by the draw and task code of the menus and the characters
+// (95 callers).
+amModel_SetCurrent = 0x00145CC0; // type:func // guess
+
+// unk_142AA0.c: the sound driver's RPC calls on the IOP (gSoundRpc, through the send buffer gSoundSendBuf): each
+// waits until the client is free, stores its words and calls sceSifCallRpc. SoundRpc_Send3 sends three words (RPC
+// 7) and, when given an output, stores the first word of the reply there (it returns -1 if the call fails, -2 if
+// the reply is -1); SoundRpc_SetVolume sends the channel and the volume 127 * vol (RPC 9); SoundRpc_SendWord sends
+// one word (RPC 0x14). Called by the menus and the battle's sound code.
+SoundRpc_Send3 = 0x00143D60; // type:func // guess
+SoundRpc_SetVolume = 0x00143F20; // type:func // guess
+SoundRpc_SendWord = 0x00144650; // type:func // guess
+
+// unk_142AA0.c: the sound driver's RPC 0x21 with one word (the same shape as SoundRpc_SendWord, another command).
+SoundRpc_SendWord2 = 0x00144B70; // type:func // guess
+
+// unk_133620.c: applies one clear mask, one or and one xor to each of the two flag words D_0046FD20 and D_00470250
+// (the same three steps on both). Called by Acsr_Draw and three other functions.
+DrawFlags_Apply = 0x00133920; // type:func // guess
+
+// unk_12EF80.c: resets the packet pool (amPkt_Reset) and runs func_00133780 with mode 2 (the same pass the BG
+// draws use). Called by func_002B0630.
+amDraw_ResetPackets = 0x0012F290; // type:func // guess
+
+// unk_12EF80.c: copies n quadwords from src to dst in pieces of at most 0x400: each piece goes through the
+// scratchpad (amDma_SendToSpr, then amDma_SendFromSpr). Called by amSofdec_Update.
+amDma_CopyViaSpr = 0x0012F040; // type:func // guess
+
+// unk_145B40.c: the current model block set by amModel_SetCurrent: the block, its end (the block plus the word at
+// +0x14) and the user pointer.
+gModelBlock = 0x00470390; // size:0x4 // guess
+gModelEnd = 0x00470394; // size:0x4 // guess
+gModelUser = 0x00470398; // size:0x4 // guess

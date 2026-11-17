@@ -15,7 +15,7 @@ extern void func_001F5B10(void *, s32);
 extern void func_002CDC20(void);
 extern void func_00208F70(void *);
 extern void func_001F5F50(void *);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_001F3DF0(void *);
 extern void func_001F3D80(void *);
 extern void func_00208D70(void *);
@@ -136,7 +136,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD9E0);
 void func_002CDA30(u8 *p) {
     u8 *q = p + 0x30;
     D_00470238 = 0;
-    func_00145CC0(*(s32 *)(p + 0x34), 0x2003000);
+    amModel_SetCurrent(*(s32 *)(p + 0x34), 0x2003000);
     func_001F3DF0(p);
     func_00208D70(*(void **)(q + 8));
     func_001F3D80(p);
@@ -179,7 +179,7 @@ extern u8 D_0047CA40[];
 void func_002CDB80(u8 *p) {
     u8 *q = p + 0x30;
     D_00470238 = 0;
-    func_00145CC0(*(s32 *)(p + 0x30), 0x2003000);
+    amModel_SetCurrent(*(s32 *)(p + 0x30), 0x2003000);
     func_0013B0B0(0);
     __asm__ volatile ("lqc2 $vf28, 0(%0) ; lqc2 $vf29, 16(%0) ; lqc2 $vf30, 32(%0) ; lqc2 $vf31, 48(%0)" : : "r"(gBattle + 0x60) : "memory");
     func_00131F00(D_0047CA40, 0.0f, 0.0f);
@@ -385,7 +385,7 @@ void func_002CE980(u8 *a0) {
     }
     if (s1 != 0) {
         D_00470238 = 0;
-        func_00145CC0(s1, 0x2001000);
+        amModel_SetCurrent(s1, 0x2001000);
     }
     func_001F5A70(*(s32 *)(s0 + 0x10));
     v = *(u8 **)(s0 + 0x10);

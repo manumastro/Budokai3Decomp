@@ -41,8 +41,8 @@ extern void func_00119BF0(void *);
 extern void func_001EF730(char *);
 extern void func_001EF880(char *, void *);
 extern void func_001EFDB0(char *, char *);
-extern void func_001F0790(void);
-extern void func_001F07A0(void);
+extern void Save_ClearBusy(void);
+extern void Save_SetBusy(void);
 extern void memset(void *, s32, s32);
 extern void func_0028DF20(void);
 extern s32 func_0028DFC0(s32, s32, s32, char *, s32, s32, s32, char *, s32);
@@ -61,7 +61,7 @@ void Save_TaskWrite(Task *t) {
     func_00119BF0(&D_00470840);
     func_001EF880(d->buf, &D_00470840);
     func_001EF730(d->buf);
-    func_001F0790();
+    Save_ClearBusy();
     if (func_0028DFC0(4, d->res[0], 0, d->buf, d->res[1], d->res[2], 0, D_004B4BC0, 0x1F) > 0) {
         TASK_SET_FUNC(t, Save_TaskWait);
         d->state = 2;
@@ -71,7 +71,7 @@ void Save_TaskWrite(Task *t) {
         d->state = 3;
         d->request = 0;
         TASK_SET_FUNC(t, Save_TaskIdle);
-        func_001F07A0();
+        Save_SetBusy();
     }
 }
 
@@ -84,7 +84,7 @@ void Save_TaskCreate(Task *t) {
     func_00119BF0(&D_00470840);
     func_001EF880(d->buf, &D_00470840);
     func_001EF730(d->buf);
-    func_001F0790();
+    Save_ClearBusy();
     if (func_0028DFC0(2, d->res[0], 0, d->buf, d->res[1], d->res[2], 0, D_004B4BC0, 0x1F) != 0) {
         TASK_SET_FUNC(t, Save_TaskWait);
         d->state = 2;
@@ -92,7 +92,7 @@ void Save_TaskCreate(Task *t) {
         amHeap_Free(d->buf);
         d->buf = NULL;
         d->state = 3;
-        func_001F07A0();
+        Save_SetBusy();
         d->request = 0;
         TASK_SET_FUNC(t, Save_TaskIdle);
     }
@@ -137,7 +137,7 @@ void Save_TaskSlots(Task *t) {
         break;
     }
 end:
-    func_001F07A0();
+    Save_SetBusy();
     func_0028DF20();
     d->request = 0;
     TASK_SET_FUNC(t, Save_TaskIdle);
@@ -165,7 +165,7 @@ void Save_TaskWait(Task *t) {
         d->buf = NULL;
         d->own = 0;
     }
-    func_001F07A0();
+    Save_SetBusy();
     func_0028DF20();
     d->request = 0;
     TASK_SET_FUNC(t, Save_TaskIdle);

@@ -17,20 +17,20 @@ typedef struct Cloth {
 extern void amHeap_Free(void *);
 extern void func_001D15C0(void *);
 extern void func_001D16F0(void *);
-extern void func_00145CC0(s32, void *);
+extern void amModel_SetCurrent(s32, void *);
 extern void amGs_SetReg64(s32, s32);
 extern s32 func_0029D4C0(void);
 extern void func_0029D4B0(s32);
 extern s32 func_0029D8D0(void);
 extern s32 func_0029D4A0(void);
 extern void func_001339B0(s32);
-extern void func_00133920(s32, s32, s32, s32, s32);
+extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
 extern void func_00133980(f32, f32, f32, f32);
 
 static inline void Cloth_Draw(Cloth *c) {
     if (c != 0) {
         amGs_SetReg64(1, func_0029D4C0());
-        func_00145CC0(c->draw->unk00, c->draw->unk04);
+        amModel_SetCurrent(c->draw->unk00, c->draw->unk04);
         func_001D16F0(c->grid);
         amGs_SetReg64(1, 0x44);
     }
@@ -58,10 +58,10 @@ void func_001D25B0(Cloth *c) {
             old = func_0029D4C0();
             func_0029D4B0(0x44);
             func_001339B0(func_0029D4A0());
-            func_00133920(0x10000F20, 0, 0, 0x10000A00, 0);
+            DrawFlags_Apply(0x10000F20, 0, 0, 0x10000A00, 0);
             Cloth_Draw(c);
             func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
-            func_00133920(0, 0x10000F20, 0, 0, 0);
+            DrawFlags_Apply(0, 0x10000F20, 0, 0, 0);
             func_0029D4B0(old);
         }
     }

@@ -83,9 +83,91 @@ void Option_Nop1(void) {
 void func_002DEFE0(void) {
 }
 
+#if 0
+// differs: 16 bytes short (0x100 vs 0x110): the original saves a second register (s1 for the heap block of case 4) and lays the function-pointer store of case 3/5 out with bnez/move; the switch order (3,5 before 4) matches the test order
+extern void func_002DFBC0();
+extern s32 Save_GetState();
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern void func_00125740(void *, void *, s32);
+extern void func_001EF510(void *, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_FadeTo(s32, s32);
+extern void func_002DEA00();
+extern void func_002D9DE0();
+extern char D_0046F3C8[];
+extern s8 D_004B4B63[];
+extern s8 D_0058F680[];
+
+void func_002DEFF0(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    u8 *w;
+    s32 st;
+    void *fp;
+    s0 = a0;
+    func_002DFBC0();
+    st = Save_GetState();
+    switch (st) {
+    case 3:
+    case 5:
+        fp = (void *)func_002DEA00;
+        *(void **)(s0 + 0x1C) = (fp == 0) ? 0 : fp;
+        w = (u8 *)gOptionWork;
+        *(void **)(w + 0x34C) = (void *)func_002D9DE0;
+        *(s32 *)(w + 0x388) = 0;
+        *(s32 *)(w + 0x38C) = 0;
+        Scene_Request(5, 0);
+        Scene_FadeTo(0xA, 0);
+        break;
+    case 4:
+        s1 = (u8 *)amHeap_Alloc(0xD680, 0, D_0046F3C8, 0x733);
+        func_00125740(s1, D_0058F680 + D_004B4B63[0] * 0xD680, 0xD680);
+        func_001EF510(s1, 0xD680);
+        amHeap_Free(s1);
+        break;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEFF0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF100);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF3D0);
+extern s8 D_004B4B40[];
+extern s8 D_00456B20[];
+extern void func_00125740(void *, void *, s32);
+
+extern s8 D_004B4B40[];
+extern s8 D_00456B20[];
+extern void func_00125740(void *, void *, s32);
+
+void func_002DF3D0(void) {
+    s8 *s2;
+    s32 n;
+    s8 *s0;
+    s8 *a2;
+    s8 *a1;
+    s32 k;
+    s2 = (s8 *)gOptionWork;
+    n = 0;
+    s0 = D_004B4B40;
+    do {
+        a2 = s0 + 0x2BA86;
+        a1 = s0 + 0x2BAA2;
+        a2[0] = a1[0];
+        a2[1] = a1[1];
+        if (a2[0] == 0 || a2[0] == 1) {
+            func_00125740(a2 + 2, D_00456B20 + (a2[0] << 3), 8);
+        } else {
+            for (k = 2; k < 10; k++) {
+                a2[k] = a1[k];
+            }
+        }
+        n++;
+        s0 += 0xA;
+    } while (n < 2);
+    *(s32 *)(s2 + 0x330) = 0;
+    *(s32 *)(s2 + 0x334) = 0;
+    *(s32 *)(s2 + 0x338) = 0;
+    *(f32 *)(s2 + 0x32C) = 60.0f;
+}
 #if 0
 // differs: the four-way test on the table value is laid out differently (the original keeps the value in a0 and compares with li v1 constants, 8 bytes more code)
 void func_002DF4E0(void) {
@@ -127,9 +209,53 @@ void func_002DF4E0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF4E0);
+#if 0
+// differs: 16 bytes short (0x100 vs 0x110): the original saves a second register (s1, holding the heap block of case 4) and loads gOptionWork into s0 before Save_GetState; the same frame problem as func_002DEFF0
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern char D_0046F3C8[];
+extern s8 D_0058F680[];
+extern s8 D_004B4B63[];
+extern void func_00125740(void *, void *, s32);
+extern void func_001EF510(void *, s32);
+extern void amHeap_Free(void *);
+extern void amTask_Kill(void *);
+extern void Save_ClearBusy();
+extern void func_002DF100();
+extern void func_002DE910();
+extern void func_002DD2B0();
+extern void amDisp_SetOffset(s32, s32);
+
+void func_002DF5D0(void) {
+    u8 *s1;
+    u8 *s0;
+    s32 st;
+    s0 = (u8 *)gOptionWork;
+    st = Save_GetState();
+    switch (st) {
+    case 4:
+        s1 = (u8 *)amHeap_Alloc(0xD680, 0, D_0046F3C8, 0x733);
+        func_00125740(s1, D_0058F680 + D_004B4B63[0] * 0xD680, 0xD680);
+        func_001EF510(s1, 0xD680);
+        amHeap_Free(s1);
+        break;
+    case 3:
+    case 5:
+        Save_ClearBusy();
+        if (*(void **)(s0 + 0x324) != 0) {
+            amTask_Kill(*(void **)(s0 + 0x324));
+            *(s32 *)(s0 + 0x324) = 0;
+        }
+        func_002DF100();
+        func_002DE910();
+        amDisp_SetOffset(*(s16 *)((u8 *)D_004E05DC + 0x1E), *(s16 *)((u8 *)D_004E05DC + 0x20));
+        *(void **)(s0 + 0x344) = (void *)func_002DD2B0;
+        break;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF5D0);
-extern void func_0022DB30(s32);
-extern void func_0022C700(void);
+extern void A2d_SetMode(s32);
+extern void A2d_FlushList(void);
 
 extern u8 *gOptionWork;
 extern s16 D_004E05F8[];
@@ -138,7 +264,7 @@ void func_002DF6E0(void) {
     u8 *s0;
     void (*f)(void);
     s0 = (u8 *)gOptionWork;
-    func_0022DB30(D_004E05F8[0]);
+    A2d_SetMode(D_004E05F8[0]);
     f = *(void (**)(void))(s0 + 0x344);
     if (f != 0) {
         f();
@@ -147,7 +273,7 @@ void func_002DF6E0(void) {
     if (f != 0) {
         f();
     }
-    func_0022C700();
+    A2d_FlushList();
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF740);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF930);
@@ -180,30 +306,102 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0050);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0170);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0260);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E06A0);
+#if 0
+// differs: 21 of 57: the frame and the float table match; the lui temporaries of 40.0, 540.0, 256.0 and 1.0 land in the other registers ( first here,  in the original, 1.0 kept in ), the same as func_002E0B70; the tail (fp store, amTask_Kill, the 100/1 bytes) matches
+extern void func_002D2AD0(void *, void *, f32);
+extern void func_002E06A0();
+
+void func_002E0800(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    f32 b[4];
+    f32 a[4];
+    f32 f;
+    void *fp;
+    s1 = a0;
+    s0 = gOptionWork;
+    b[1] = 40.0f;
+    b[0] = 0.0f;
+    a[0] = 540.0f;
+    a[1] = 256.0f;
+    b[2] = 1.0f;
+    b[3] = 1.0f;
+    a[2] = 1.0f;
+    a[3] = 1.0f;
+    func_002D2AD0(b, a, *(f32 *)(s0 + 0xC));
+    f = *(f32 *)(s0 + 0xC) - 0.05f;
+    *(f32 *)(s0 + 0xC) = f;
+    if (f < 0.0f) {
+        *(f32 *)(s0 + 0xC) = 0.0f;
+        if (*(s8 *)(s0 + 0x14) == 0) {
+            *(s8 *)(s0 + 0x14) = 1;
+            *(s8 *)(s0 + 0x15) = 100;
+            fp = (void *)func_002E06A0;
+            *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        } else {
+            amTask_Kill(*(void **)(s0 + 0x18));
+            *(void **)(s0 + 0x18) = 0;
+            *(s32 *)(s0 + 0x8) = 4;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0800);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E08F0);
+#if 0
+// differs: 13 of 45: the constants 40.0f/540.0f/256.0f/1.0f are loaded into the other temporaries ( first here,  first in the original), the store order and the frame already match
+extern void func_002D2AD0(void *, void *, f32);
+extern void func_002E08F0();
+
+void func_002E0B70(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    f32 b[4];
+    f32 a[4];
+    f32 t;
+    void *fp;
+    s1 = a0;
+    s0 = gOptionWork;
+    b[1] = 40.0f;
+    b[0] = 0.0f;
+    a[0] = 540.0f;
+    a[1] = 256.0f;
+    b[2] = 1.0f;
+    b[3] = 1.0f;
+    a[2] = 1.0f;
+    a[3] = 1.0f;
+    func_002D2AD0(b, a, *(f32 *)(s0 + 0xC));
+    t = 0.05f + *(f32 *)(s0 + 0xC);
+    *(f32 *)(s0 + 0xC) = t;
+    if (t > 1.0f) {
+        *(f32 *)(s0 + 0xC) = 1.0f;
+        fp = (void *)func_002E08F0;
+        *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0B70);
-extern void *D_00470938;
+extern void *gOptionState;
 
 typedef struct OptionState {
     char pad0[8];
     s32 f8;
 } OptionState;
 
-/* Clears the option screen's state word D_00470938. */
+/* Clears the option screen's state word gOptionState. */
 void Option_ClearState(void) {
-    D_00470938 = 0;
+    gOptionState = 0;
 }
-/* Frees the option state block D_00470938 (if any) and clears the pointer. */
+/* Frees the option state block gOptionState (if any) and clears the pointer. */
 void Option_Free(void) {
-    if (D_00470938 != 0) {
-        amHeap_Free(D_00470938);
-        D_00470938 = 0;
+    if (gOptionState != 0) {
+        amHeap_Free(gOptionState);
+        gOptionState = 0;
     }
 }
 /* The field at 0x8 of the option state, or 0 when there is no state. */
 s32 func_002E0C70(void) {
-    return D_00470938 == 0 ? 0 : ((OptionState *)D_00470938)->f8;
+    return gOptionState == 0 ? 0 : ((OptionState *)gOptionState)->f8;
 }
 extern void amCdFs_Close(void *, s32);
 extern void *amTask_Create();
@@ -212,7 +410,7 @@ extern void func_002E0B70();
 
 void ChangeProgress_Start(void) {
     u8 *s0;
-    s0 = (u8 *)D_00470938;
+    s0 = (u8 *)gOptionState;
     *(s32 *)(s0 + 0x4) = *(s32 *)(*(u8 **)s0 + 0x54);
     *(s32 *)(*(u8 **)s0 + 0x54) = 0;
     amCdFs_Close(*(void **)s0, 0);
@@ -228,7 +426,7 @@ void ChangeProgress_Start(void) {
 // differs: the original hoists li 3 before the two loads and compares with beq, mine folds the compare to xori/sltiu (tried if/else and r=0/r=1)
 s32 func_002E0D10(void) {
     s32 r;
-    if (*(s16 *)(*(u8 **)D_00470938 + 4) != 3) {
+    if (*(s16 *)(*(u8 **)gOptionState + 4) != 3) {
         r = 0;
     } else {
         r = 1;
@@ -245,13 +443,13 @@ extern void memset(void *, s32, s32);
 void func_002E0D40(void) {
     u8 *s0;
     void *p;
-    if (D_00470938 != 0) {
-        amHeap_Free(D_00470938);
-        D_00470938 = 0;
+    if (gOptionState != 0) {
+        amHeap_Free(gOptionState);
+        gOptionState = 0;
     }
-    D_00470938 = amHeap_Alloc(0x1C, 0, D_0046F3C8, 0x74A);
-    memset(D_00470938, 0, 0x1C);
-    s0 = D_00470938;
+    gOptionState = amHeap_Alloc(0x1C, 0, D_0046F3C8, 0x74A);
+    memset(gOptionState, 0, 0x1C);
+    s0 = gOptionState;
     *(s32 *)s0 = amCdFs_ReadFileId(0x10803, 0, 0);
-    *(s32 *)((u8 *)D_00470938 + 0x8) = 1;
+    *(s32 *)((u8 *)gOptionState + 0x8) = 1;
 }

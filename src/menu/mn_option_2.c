@@ -62,8 +62,8 @@ extern u16 D_00492FCE[];
 extern u16 D_00493086[];
 extern void func_00125740(void *, void *, s32);
 extern void func_001EF510(void *, s32);
-extern void func_001F07D0(void);
-extern void func_001F0810(s32, s32);
+extern void Scene_SetReady(void);
+extern void Scene_FadeTo(s32, s32);
 extern s32 amSofdec_GetStat(s32);
 extern void func_002DFEC0(Task *);
 extern void func_002DE250();
@@ -86,7 +86,7 @@ void Option_Start(void) {
     w->f320 = amTask_Create(func_002DFEC0, 0, 0x5000, 0x4000, 2, D_0046F398);
     w->f414 = 0;
     w->f344 = func_002DE250;
-    func_001F07D0();
+    Scene_SetReady();
 }
 extern void memset(void *, s32, s32);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
@@ -150,14 +150,14 @@ extern void amDisp_SetOffset(s32, s32);
 /* The original keeps the address of D_004E05DC in $v0 and reads both fields from it (the same sequence is inlined
    in func_002E1A40); this folds the address into each lh (pointer local, inline getter, volatile, a definition in
    the file: no change). */
-void func_002E1BB0(void) {
+void MainMenu_SetOffset(void) {
     OptionConfig *c = D_004E05DC;
 
     amDisp_SetOffset(c->f1E, c->f20);
 }
 #endif
 
-void func_002E1BB0(void) {
+void MainMenu_SetOffset(void) {
     u8 *p = (u8 *)D_004E05DC;
     amDisp_SetOffset(*(s16 *)(p + 0x1E), *(s16 *)(p + 0x20));
 }
@@ -233,7 +233,7 @@ void Opening_TaskWaitMovie(Task *t) {
         }
     case 0:
     default:
-        func_001F0810(-1, 0);
+        Scene_FadeTo(-1, 0);
         TASK_SET_FUNC(t, func_002E1DF0);
     }
     func_002E1DF0(t);
@@ -266,8 +266,8 @@ extern f32 D_004E0610[];
 extern MovieSlot gSofdecMovie[];
 extern void func_00264140(s32, s32);
 extern s32 amSofdec_Create(MovieParam *);
-extern void func_001F0830(s32, s32);
-extern void func_001F0820(void);
+extern void Scene_Request(s32, s32);
+extern void Scene_MarkDone(void);
 extern f32 func_0011F698(f32);
 extern void amSofdec_StartFname(s32, char *, s32);
 
@@ -285,8 +285,8 @@ void Opening_TaskMain(Task *t) {
     }
     func_00264140(-1, 0);
     if ((n = amSofdec_Create(&prm)) < 0) {
-        func_001F0830(4, 0);
-        func_001F0820();
+        Scene_Request(4, 0);
+        Scene_MarkDone();
         return;
     }
     if (D_004E0610[0] <= 0.0001f) {
@@ -298,7 +298,7 @@ void Opening_TaskMain(Task *t) {
     amSofdec_StartFname(n, D_0046F3F0, 1);
     gOpening->fC = n;
     TASK_SET_FUNC(t, Opening_TaskWaitMovie);
-    func_001F0830(4, 0);
+    Scene_Request(4, 0);
 }
 void Opening_Clear(void) {
     gOpening = NULL;
@@ -306,7 +306,7 @@ void Opening_Clear(void) {
 void Opening_TaskMain(Task *t);
 
 void Opening_Start(void) {
-    func_001F07D0();
+    Scene_SetReady();
     amTask_Create(Opening_TaskMain, 0, 0x8000, 2, 0x10000, D_0046F408);
     gOpening->f4 = 1;
 }

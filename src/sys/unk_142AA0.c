@@ -65,7 +65,7 @@ extern void mwPlyRelCurFrm(MwPly *);
 extern void mwPlyStartAfs(MwPly *, s32, s32);
 extern s32 mwPlyCalcWorkCprmSfd(SfdCprm *);
 extern MwPly *func_00180290(SfdCprm *);
-extern void func_0012F040(void *, void *, s32);
+extern void amDma_CopyViaSpr(void *, void *, s32);
 extern void func_00127A88(char *, char *);
 
 /* The sound driver on the IOP (AMSOUND), called through SIF RPC. */
@@ -281,7 +281,7 @@ s32 amSound_LoadBank2(SndParam *p) {
 }
 
 
-s32 func_00143D60(s32 a, s32 b, s32 c, s32 *out) {
+s32 SoundRpc_Send3(s32 a, s32 b, s32 c, s32 *out) {
     s32 *buf;
     while (func_0010E3A8(&gSoundRpc) != 0) {}
     buf = gSoundSendBuf;
@@ -308,7 +308,7 @@ s32 func_00143E70(s32 a, s32 b, s32 c) {
 }
 
 
-s32 func_00143F20(s32 a, s32 b, float vol) {
+s32 SoundRpc_SetVolume(s32 a, s32 b, float vol) {
     unsigned short v;
     s32 *buf;
     while (func_0010E3A8(&gSoundRpc) != 0) {}
@@ -413,7 +413,7 @@ s32 func_001445C0(s32 x) {
 }
 
 
-s32 func_00144650(s32 x) {
+s32 SoundRpc_SendWord(s32 x) {
     while (func_0010E3A8(&gSoundRpc) != 0) {}
     func_00125740(gSoundSendBuf, &x, 4);
     return -(sceSifCallRpc(&gSoundRpc, 0x14, 3, gSoundSendBuf, 4, 0, 0, 0, 0) < 0);
@@ -478,7 +478,7 @@ s32 func_00144A40(s32 a, s32 b, float vol) {
 }
 
 
-s32 func_00144B70(s32 x) {
+s32 SoundRpc_SendWord2(s32 x) {
     while (func_0010E3A8(&gSoundRpc) != 0) {}
     func_00125740(gSoundSendBuf, &x, 4);
     return -(sceSifCallRpc(&gSoundRpc, 0x21, 3, gSoundSendBuf, 4, 0, 0, 0, 0) < 0);

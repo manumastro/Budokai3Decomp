@@ -80,7 +80,7 @@ extern void mwPlyRelCurFrm(MwPly *);
 extern void mwPlyStartAfs(MwPly *, s32, s32);
 extern s32 mwPlyCalcWorkCprmSfd(SfdCprm *);
 extern MwPly *func_00180290(SfdCprm *);
-extern void func_0012F040(void *, void *, s32);
+extern void amDma_CopyViaSpr(void *, void *, s32);
 void amSofdec_DestroyAll(void);
 
 
@@ -208,7 +208,7 @@ void amSofdec_Update(void) {
             if (m->buf) {
                 mwPlyGetCurFrm(m->ply, &m->frm);
                 if (m->frm.buf) {
-                    func_0012F040(m->buf, m->frm.buf, (m->width * m->height * 4) >> 4);
+                    amDma_CopyViaSpr(m->buf, m->frm.buf, (m->width * m->height * 4) >> 4);
                     mwPlyRelCurFrm(m->ply);
                     m->flags |= 2;
                 }

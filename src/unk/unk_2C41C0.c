@@ -10,7 +10,7 @@ typedef struct TaskEff2C41C0 {
 
 extern void amTask_Kill(void *);
 
-/* One effect's work (stride 0xF80 in D_00470130): links to two sub-parts (f34, f38). */
+/* One effect's work (stride 0xF80 in gEffWork): links to two sub-parts (f34, f38). */
 typedef struct EffPart2C41C0 {
     char pad0[0x30];
     f32 f30;
@@ -194,10 +194,10 @@ typedef struct TutCmd4 {
     s16 v[4];
 } TutCmd4;
 
-extern TutWork *D_0047091C;
+extern TutWork *gTutWork;
 extern char *gBattle;
 
-extern EffWork *D_00470130;
+extern EffWork *gEffWork;
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C41C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C4C90);
@@ -237,22 +237,22 @@ s32 func_002C5FC0(Task2C41C0 *t) {
     EffWork *w;
 
     k = ((t->f58 & 0x80) != 0) ? 0 : sb->f14->f1350;
-    w = D_00470130;
+    w = gEffWork;
     if (w->f4D86 & 0x8000) {
         func_002152E0();
         return 1;
     }
     if (k == 0 && (w->f4D86 & 0x2000)) {
         func_002152E0();
-        w = D_00470130;
+        w = gEffWork;
         if (w->f4D84 == 0) {
             w->f4D86 &= ~0x2000;
         }
         return 1;
     }
-    if (k == 1 && (D_00470130->f4D86 & 0x1000)) {
+    if (k == 1 && (gEffWork->f4D86 & 0x1000)) {
         func_002152E0();
-        w = D_00470130;
+        w = gEffWork;
         if (w->f4D84 == 0) {
             w->f4D86 &= ~0x1000;
         }
@@ -313,13 +313,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C63C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6700);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6930);
 void func_002C6B60(TaskEff2C41C0 *t) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
     s16 *p = &w->f4D84;
 
     if (w->f4D84 > 0) {
         *p = w->f4D84 - 1;
-        if (D_00470130->f4D84 == 0) {
-            D_00470130->f4D86 &= 0x7FFF;
+        if (gEffWork->f4D84 == 0) {
+            gEffWork->f4D86 &= 0x7FFF;
         }
         if (t->f18 != 0) {
             amTask_Kill(t->f18);
@@ -335,7 +335,7 @@ void func_002C6BF0(EffReq2C41C0 *s) {
     EffPart2C41C0 *s3;
     f32 k;
 
-    p = (EffPart2C41C0 *)((char *)D_00470130 + 0xF80 * s->f3E);
+    p = (EffPart2C41C0 *)((char *)gEffWork + 0xF80 * s->f3E);
     e = s->f0;
     s4 = (EffPart2C41C0 *)((char *)p + 0xF40);
     s3 = (EffPart2C41C0 *)((char *)p + 0xF00);
@@ -369,13 +369,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6EF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C7010);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C72E0);
 void func_002C7C50(TaskEff2C41C0 *t) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
     s16 *p = &w->f4D84;
 
     if (w->f4D84 > 0) {
         *p = w->f4D84 - 1;
-        if (D_00470130->f4D84 == 0) {
-            D_00470130->f4D86 &= 0x7FFF;
+        if (gEffWork->f4D84 == 0) {
+            gEffWork->f4D86 &= 0x7FFF;
         }
         if (t->f18 != 0) {
             amTask_Kill(t->f18);
@@ -390,7 +390,7 @@ void func_002C7CE0(EffReq2C41C0 *s) {
     EffPart2C41C0 *s4;
     EffPart2C41C0 *s3;
 
-    p = (EffPart2C41C0 *)((char *)D_00470130 + 0xF80 * s->f3E);
+    p = (EffPart2C41C0 *)((char *)gEffWork + 0xF80 * s->f3E);
     e = s->f0;
     s4 = (EffPart2C41C0 *)((char *)p + 0xF40);
     s3 = (EffPart2C41C0 *)((char *)p + 0xF00);
@@ -415,13 +415,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C7E00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8360);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8670);
 void func_002C88A0(TaskEff2C41C0 *t) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
     s16 *p = &w->f4D84;
 
     if (w->f4D84 > 0) {
         *p = w->f4D84 - 1;
-        if (D_00470130->f4D84 == 0) {
-            D_00470130->f4D86 &= 0x7FFF;
+        if (gEffWork->f4D84 == 0) {
+            gEffWork->f4D86 &= 0x7FFF;
         }
         if (t->f18 != 0) {
             amTask_Kill(t->f18);
@@ -437,7 +437,7 @@ void func_002C8930(EffReq2C41C0 *s) {
     EffPart2C41C0 *s3;
     f32 k;
 
-    p = (EffPart2C41C0 *)((char *)D_00470130 + 0xF80 * s->f3E);
+    p = (EffPart2C41C0 *)((char *)gEffWork + 0xF80 * s->f3E);
     e = s->f0;
     s4 = (EffPart2C41C0 *)((char *)p + 0xF40);
     s3 = (EffPart2C41C0 *)((char *)p + 0xF00);
@@ -470,13 +470,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8A80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8D30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9120);
 void func_002C9950(TaskEff2C41C0 *t) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
     s16 *p = &w->f4D84;
 
     if (w->f4D84 > 0) {
         *p = w->f4D84 - 1;
-        if (D_00470130->f4D84 == 0) {
-            D_00470130->f4D86 &= 0x7FFF;
+        if (gEffWork->f4D84 == 0) {
+            gEffWork->f4D86 &= 0x7FFF;
         }
         if (t->f18 != 0) {
             amTask_Kill(t->f18);
@@ -491,7 +491,7 @@ void func_002C99E0(EffReq2C41C0 *s) {
     EffPart2C41C0 *s4;
     EffPart2C41C0 *s3;
 
-    p = (EffPart2C41C0 *)((char *)D_00470130 + 0xF80 * s->f3E);
+    p = (EffPart2C41C0 *)((char *)gEffWork + 0xF80 * s->f3E);
     e = s->f0;
     s4 = (EffPart2C41C0 *)((char *)p + 0xF40);
     s3 = (EffPart2C41C0 *)((char *)p + 0xF00);
@@ -512,26 +512,24 @@ void func_002C99E0(EffReq2C41C0 *s) {
     s->f50 = D_004563E0[e->f40];
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9AF0);
-#if 0
-// differs: the table call is scheduled above the f3A test (mwcc hoists the lookup)
 void func_002C9BC0(EffTask2C41C0 *t) {
     EffSubB2C41C0 *s = t->f30;
+    void (*fn)(EffSubB2C41C0 *);
 
+    fn = D_004563D0[s->f0->f84];
     if (s->f3A != 0) {
-        D_004563D0[s->f0->f84](s);
+        fn(s);
     }
     s->f3A = 0;
-    D_00470130->f4D86 &= ~0x800;
-    D_00470130->f4D86 &= ~0x400;
+    gEffWork->f4D86 &= ~0x800;
+    gEffWork->f4D86 &= ~0x400;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9BC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9C40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9EF0);
-extern EffWork *D_00470130;
+extern EffWork *gEffWork;
 
 void func_002CA230(s32 x) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
 
     if (w->f4D84 > 0) {
         if (x == 0) {
@@ -545,7 +543,7 @@ void func_002CA230(s32 x) {
 }
 
 void func_002CA290(s32 x) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
 
     if (w->f4D84 > 0) {
         if (x == 0) {
@@ -622,7 +620,7 @@ extern s32 D_005BD264[];
 extern s32 D_005BD260[];
 
 void func_002CA3F0(void) {
-    memset(D_00470130, 0, sizeof(EffWork));
+    memset(gEffWork, 0, sizeof(EffWork));
     D_005BD270[0] = 0;
     D_005BD26C[0] = 0;
     D_005BD268[0] = 0;
@@ -631,7 +629,7 @@ void func_002CA3F0(void) {
 }
 
 void func_002CA440(void) {
-    memset(D_00470130, 0, sizeof(EffWork));
+    memset(gEffWork, 0, sizeof(EffWork));
     D_005BD270[0] = 0;
     D_005BD26C[0] = 0;
     D_005BD268[0] = 0;
@@ -643,7 +641,7 @@ void func_002CA490(void) {
 }
 
 void func_002CA4A0(void) {
-    memset(D_00470130, 0, sizeof(EffWork));
+    memset(gEffWork, 0, sizeof(EffWork));
     D_005BD270[0] = 0;
     D_005BD26C[0] = 0;
     D_005BD268[0] = 0;
@@ -652,7 +650,7 @@ void func_002CA4A0(void) {
 }
 
 s32 func_002CA4F0(TutEvent *e) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     TutChr *o;
     s32 r = -2;
     s32 i;
@@ -682,7 +680,7 @@ s32 func_002CA4F0(TutEvent *e) {
 }
 
 s32 func_002CA5D0(TutChr *c) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 r = 0;
 
     switch (t->f20) {
@@ -714,7 +712,7 @@ s32 func_002CA5D0(TutChr *c) {
 }
 
 s32 func_002CA690(TutEvent *e) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 r = -2;
     s32 i;
     s16 *p;
@@ -738,7 +736,7 @@ s32 func_002CA690(TutEvent *e) {
 }
 
 s32 func_002CA730(TutEvent *e) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 r = -2;
     s32 i;
     s16 *p;
@@ -791,15 +789,15 @@ s32 func_002CA7D0(CmdHist *h, s16 *cmd) {
 }
 
 s32 func_002CA8A0(void) {
-    return D_0047091C->chr->fCAE == 0x31 ? 2 : 0;
+    return gTutWork->chr->fCAE == 0x31 ? 2 : 0;
 }
 
 s32 func_002CA8D0(void) {
-    return D_0047091C->chr->fCAE == 0x30;
+    return gTutWork->chr->fCAE == 0x30;
 }
 
 s32 func_002CA8F0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
 
     if (t->f3C) {
@@ -812,7 +810,7 @@ s32 func_002CA8F0(void) {
 }
 
 s32 func_002CA950(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
 
@@ -829,7 +827,7 @@ s32 func_002CA950(void) {
 }
 
 s32 func_002CA9C0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
 
@@ -846,23 +844,23 @@ s32 func_002CA9C0(void) {
 }
 
 s32 func_002CAA30(void) {
-    return D_0047091C->chr->fCAE == 0x1B;
+    return gTutWork->chr->fCAE == 0x1B;
 }
 
 s32 func_002CAA50(void) {
-    return D_0047091C->f39 != 0;
+    return gTutWork->f39 != 0;
 }
 
 s32 func_002CAA60(void) {
-    return D_0047091C->f38 != 0;
+    return gTutWork->f38 != 0;
 }
 
 s32 func_002CAA70(void) {
-    return D_0047091C->f37 != 0;
+    return gTutWork->f37 != 0;
 }
 
 s32 func_002CAA80(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
 
     if (t->f36) {
@@ -875,7 +873,7 @@ s32 func_002CAA80(void) {
 }
 
 s32 func_002CAAE0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
 
@@ -888,31 +886,31 @@ s32 func_002CAAE0(void) {
 extern s32 func_001D99C0(TutChr *, s32);
 
 s32 func_002CAB30(void) {
-    return func_001D99C0(D_0047091C->chr->f1354, 9) >= 1;
+    return func_001D99C0(gTutWork->chr->f1354, 9) >= 1;
 }
 
 s32 func_002CAB60(void) {
-    return func_001D99C0(D_0047091C->chr->f1354, 9) > 0 ? 2 : 0;
+    return func_001D99C0(gTutWork->chr->f1354, 9) > 0 ? 2 : 0;
 }
 
 s32 func_002CABA0(void) {
-    return func_001D99C0(D_0047091C->chr, 8) >= 4;
+    return func_001D99C0(gTutWork->chr, 8) >= 4;
 }
 
 s32 func_002CABD0(void) {
-    return func_001D99C0(D_0047091C->chr->f1354, 8) >= 4 ? 2 : 0;
+    return func_001D99C0(gTutWork->chr->f1354, 8) >= 4 ? 2 : 0;
 }
 
 s32 func_002CAC10(void) {
-    return func_001D99C0(D_0047091C->chr, 0x12) > 0;
+    return func_001D99C0(gTutWork->chr, 0x12) > 0;
 }
 
 s32 func_002CAC40(void) {
-    return func_001D99C0(D_0047091C->chr->f1354, 0x12) > 0 ? 2 : 0;
+    return func_001D99C0(gTutWork->chr->f1354, 0x12) > 0 ? 2 : 0;
 }
 
 s32 func_002CAC80(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     TutChr *c = t->chr;
 
     if (c->fCAE == 0x32) {
@@ -923,14 +921,14 @@ s32 func_002CAC80(void) {
 }
 
 s32 func_002CACC0(void) {
-    return D_0047091C->chr->fCAE == 0x1D;
+    return gTutWork->chr->fCAE == 0x1D;
 }
 
 extern TutCmd D_00456660;
 
 s32 func_002CACE0(void) {
     TutCmd cmd = D_00456660;
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
     CmdHist *h = &c->f1360;
@@ -945,7 +943,7 @@ extern TutCmd4 D_00470140;
 
 s32 func_002CAD70(void) {
     TutCmd4 cmd = D_00470140;
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
     CmdHist *h = &c->f1360;
@@ -957,7 +955,7 @@ s32 func_002CAD70(void) {
 }
 
 s32 func_002CADF0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
 
     if (t->f32 == 0x1F || t->f32 == 0x20) {
@@ -973,7 +971,7 @@ extern TutCmd4 D_00470138;
 
 s32 func_002CAE50(void) {
     TutCmd4 cmd = D_00470138;
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
     CmdHist *h = &c->f1360;

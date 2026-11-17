@@ -26,21 +26,21 @@ INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E640);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E790);
 extern s32 amGs_SetReg32(s32, s32);
 extern void func_00133780(s32, s32);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 
-void func_0028EA80(void) {
+void StrBg_FlushDraw(void) {
     s32 s0 = amGs_SetReg32(0, 0x3040A);
     func_00133780(2, 1);
-    func_0022C700();
+    A2d_FlushList();
     func_00133780(2, 0);
     amGs_SetReg32(0, s0);
 }
 extern void func_00133780(s32, s32);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 
 void func_0028EAE0(void) {
     func_00133780(2, 1);
-    func_0022C700();
+    A2d_FlushList();
     func_00133780(2, 0);
 }
 void func_0028EB20(void) {
@@ -357,7 +357,7 @@ s32 func_00290C90(void) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290D00);
-void func_00291380(void) {
+void StrBg_Stop(void) {
     func_0028F830();
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00291390);

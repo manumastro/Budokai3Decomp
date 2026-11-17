@@ -128,3 +128,87 @@ AdxCmd_Pause = 0x001CC170; // type:func guess
 // Option_Free, then kills the boot task (D_00470950).
 Boot_LoadSave = 0x002E9D80; // type:func guess
 Boot_Exit = 0x002EA080; // type:func guess
+
+// unk_2CAED0.c: the training (tutorial) work pointer, of type TutWork (one lesson's state), used by most of the
+// lesson functions of the file.
+gTutWork = 0x0047091C; // size:0x4 // guess
+
+// unk_2D1C20.c: the message-window task pointer (SmsgTask, whose update is Smsg_TaskMain; the SmsgWork block is at
+// +0x30).
+gSmsgTask = 0x00470930; // size:0x4 // guess
+
+// unk_2FAFF0.c: the tour map's task functions (they work on gTourMap, the tour map's block, and on the task's own
+// work: f1C is the next function, f38/f3C the targets, f40 the speed, f48 the moving entity). Their names follow
+// the TourMap_* functions of mn_TourMap.c.
+// TourMap_TaskSaveWait counts gTourMap+0x294 each frame and waits until Save_GetState() is above 2; then it leaves
+// the save screen (Save_Exit, func_001F0810(-1, 0)) and clears its next function.
+// TourMap_TaskSlide adds the speed to the entity's fC each frame and, when the value passes the target (f38,
+// scaled by f44), sets it to the target, flags the entity (f4 = 1) and kills the task.
+// TourMap_TaskSlideF10 is the same for the entity's f10 with the lower limit f3C (kill when below it).
+// TourMap_TaskWaitEntity waits for the entity's flag to be 1, then starts the slide: fC = f10 - 50, the entity's
+// flag to 2, and the next function is TourMap_TaskSlideF10.
+TourMap_TaskSaveWait = 0x002FBA80; // type:func // guess
+TourMap_TaskSlide = 0x00300550; // type:func // guess
+TourMap_TaskSlideF10 = 0x00300610; // type:func // guess
+TourMap_TaskWaitEntity = 0x003005C0; // type:func // guess
+
+// unk_260CB0.c: the fade request (next to Fade_TaskEmpty, the "# FADE #" task): mode 11 picks a random transition
+// from 1 to 8, any other mode other than -1 is stored in D_004707A4; the done callback goes to D_004707B4 and the
+// update callback, when given, to D_004707B8.
+Fade_Request = 0x00264260; // type:func // guess
+
+// unk_20A4D0.c: returns 1 while any of the counters D_0046FDD0+0x1A0, +0x1A4, +0x1A8 or gWave+0x8C is set, else 0.
+// Called by Hm_TaskMain (the "HM MAIN" task).
+Hm_IsBusy = 0x00216030; // type:func // guess
+
+// unk_21AB30.c: clears the light work block (D_0046FDF8, LightWork) and sets the default values of its first
+// lights (10.0, 7.0, 2.0, 0.7, 0.0). Called by Ar_Start.
+Ar_InitLights = 0x0021B080; // type:func // guess
+
+// unk_260CB0.c: the fade's globals (see Fade_Request): gFadeMode is the transition, gFadeDone the callback when it
+// ends (void (*)(void)), gFadeCb the update callback (void (*)(f32)).
+gFadeMode = 0x004707A4; // size:0x4 // guess
+gFadeDone = 0x004707B4; // size:0x4 // guess
+gFadeCb = 0x004707B8; // size:0x4 // guess
+
+// unk_1FB760.c: sets the word at +0x38 of an object to -1 (idle). Called by 38 functions, among them TourMap_Exit
+// and the battle's fighter code.
+Obj_ResetF38 = 0x00209530; // type:func // guess
+
+// unk_21B130.c: tests a button mask: when bit 0x80000000 of D_00470680 & D_00470684 is set, returns 1 if all the
+// bits of a are set in it, else 0. Called by the cut-in and lever tasks.
+Input_IsHeld = 0x0021C2A0; // type:func // guess
+
+// unk_260CB0.c: the same body as Fade_Request (it stores the mode in gFadeMode, the done callback in gFadeDone and
+// the update callback when given), at another address; the callers are Scene_FadeTo, GameOver_TaskMain,
+// Boot_LoadSave. Fade_Start (below) is a different function.
+Fade_SetRequest = 0x00264300; // type:func // guess
+
+// unk_1D5B30.c: resets a fighter's motion: func_001E7BE0 on the block at +0x650 and the float at +0x184C set to
+// 1.0. Called by 22 functions of the battle code.
+Fighter_ResetMotion = 0x001E3430; // type:func // guess
+
+// unk_23A890.c: copies its 48-byte request and calls the handler D_0046AC70[idx] with it, for idx 0 to 8 (other
+// values do nothing). Called by 10 functions (func_001CB380, func_001E1460 and others).
+Sp_CallHandler = 0x00243DE0; // type:func // guess
+
+// unk_260CB0.c: draws the fade overlay: a copy of the colour D_00452E00 with its alpha set to a, drawn with
+// func_00139620 after a GS register is set (amGs_SetReg32).
+Fade_DrawOverlay = 0x00262180; // type:func // guess
+
+// unk_21A4C0.c: releases an effect (Effect21A): clears its object at +0x40 (through Obj_ResetF38) and kills its
+// task at +0x44.
+Effect21A_Release = 0x0021A7D0; // type:func // guess
+
+// unk_23A890.c: kills the SP group (amTask_KillGroup 0x400, 0x20000) and resets five flag masks of the group with
+// func_00209450; then clears the halfword at D_0046FE48+0x3D0.
+Sp_KillTasks = 0x00244040; // type:func // guess
+
+// unk_2C41C0.c: the effects' work array (the effect works have a stride of 0xF80, each links two sub-parts).
+gEffWork = 0x00470130; // size:0x4 // guess
+
+// unk_1CBD90.c: the script command that starts a thread task: it creates the "* PLAY THREAD *" task (its update is
+// the one of the same file) with the priority and the two sizes read from the object's block, then sets the task's
+// position from the first argument, its next function (func_001CAFE0), the flag 1 and the second argument. Returns
+// 1.
+Scr_CmdPlayThread = 0x001CC7C0; // type:func // guess

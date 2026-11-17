@@ -44,7 +44,7 @@ extern Vec4 D_00458070;
 extern Vec4 D_00458080;
 extern Vec4 D_00458090;
 extern Vec4 D_004580A0;
-extern void func_00145CC0(void *, s32);
+extern void amModel_SetCurrent(void *, s32);
 extern s32 func_001484A0(s32);
 extern void func_00136E80(s32, f32 *, s32, s32, s32);
 extern void func_00137560(Vec4 *, Vec4 *);
@@ -97,7 +97,7 @@ void InputName_DrawSprite(s32 a0, s32 arg1) {
     color[1] = 1.0f;
     color[2] = 1.0f;
     color[3] = 1.0f;
-    func_00145CC0(gInputName->bank, 0x5800);
+    amModel_SetCurrent(gInputName->bank, 0x5800);
     old = func_001484A0(0);
     func_00136E80(0x40000924, color, id, 0x44, 5);
     func_00137560(&a, &c);

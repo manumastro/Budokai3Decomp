@@ -28,7 +28,7 @@ extern s32 amGs_SetReg32(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_00139620(s32, FadeColor *, s32, s32, s32, f32);
 
-void func_00262180(f32 a) {
+void Fade_DrawOverlay(f32 a) {
     FadeColor c = D_00452E00;
     s32 old;
 
@@ -102,23 +102,23 @@ void func_00263CF0(void);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_260CB0", func_00263CF0);
 
 extern FadeTask *D_004707A0;
-extern s32 D_004707A4;
+extern s32 gFadeMode;
 extern f32 D_004707A8;
 extern f32 D_004707AC;
 extern s32 D_004707B0;
-extern void (*D_004707B4)(void);
-extern void (*D_004707B8)(f32);
+extern void (*gFadeDone)(void);
+extern void (*gFadeCb)(f32);
 extern s32 gCdReqHead;
 extern f32 gFrameDelta;
 extern void (*D_00452AF0[])(f32);
 
 static inline void FadeUpdate(void) {
-    if (D_004707A4 == 0) {
-        if (D_004707B8 != NULL) {
-            D_004707B8(D_004707A8);
+    if (gFadeMode == 0) {
+        if (gFadeCb != NULL) {
+            gFadeCb(D_004707A8);
         }
     } else {
-        D_00452AF0[D_004707A4](D_004707A8);
+        D_00452AF0[gFadeMode](D_004707A8);
     }
     if (D_004707A8 == 1.0f) {
         if (gCdReqHead != 0) {
@@ -145,10 +145,10 @@ void func_00263E90(FadeTask *t) {
     if (D_004707A8 <= 0.0f) {
         D_004707A8 = 0.0f;
         SET_FUNC(t, Fade_TaskEmpty);
-        if (D_004707B4 != NULL) {
-            D_004707B4();
+        if (gFadeDone != NULL) {
+            gFadeDone();
         }
-        D_004707B4 = NULL;
+        gFadeDone = NULL;
     }
     FadeUpdate();
 }
@@ -161,18 +161,18 @@ void func_00263FB0(FadeTask *t) {
 
     D_004707A8 = prev + D_004707AC;
     if (!(D_004707A8 < 1.0f)) {
-        if (prev < 1.0f && D_004707A4 != 0) {
+        if (prev < 1.0f && gFadeMode != 0) {
             amAdx_Stop(-1);
         }
         D_004707A8 = 1.0f;
         SET_FUNC(t, func_00263DC0);
-        if (D_004707B4 != NULL) {
-            D_004707B4();
+        if (gFadeDone != NULL) {
+            gFadeDone();
         }
-        D_004707B4 = NULL;
+        gFadeDone = NULL;
     }
     FadeUpdate();
-    if (D_004707A4 != 0) {
+    if (gFadeMode != 0) {
         func_00144770(0, 1.0f - D_004707A8);
     }
 }
@@ -187,15 +187,15 @@ void func_00264140(s32 mode, void (*cb)(f32)) {
         mode = (rand() & 7) + 1;
     }
     if (mode != -1) {
-        D_004707A4 = mode;
+        gFadeMode = mode;
     }
-    D_004707B4 = NULL;
+    gFadeDone = NULL;
     if (cb != NULL) {
-        D_004707B8 = cb;
+        gFadeCb = cb;
     }
     D_004707A8 = 0.0f;
     SET_FUNC(D_004707A0, func_00263E90);
-    if (D_004707A4 != 0) {
+    if (gFadeMode != 0) {
         func_00144770(0, 1.0f);
     }
 }
@@ -205,46 +205,46 @@ void func_002641D0(s32 mode, void (*cb)(f32)) {
         mode = (rand() & 7) + 1;
     }
     if (mode != -1) {
-        D_004707A4 = mode;
+        gFadeMode = mode;
     }
-    D_004707B4 = NULL;
+    gFadeDone = NULL;
     if (cb != NULL) {
-        D_004707B8 = cb;
+        gFadeCb = cb;
     }
     D_004707A8 = 1.0f;
     SET_FUNC(D_004707A0, func_00263FB0);
-    if (D_004707A4 != 0) {
+    if (gFadeMode != 0) {
         func_00144770(0, 0.0f);
     }
 }
 
-void func_00264260(s32 mode, void (*done)(void), void (*cb)(f32)) {
+void Fade_Request(s32 mode, void (*done)(void), void (*cb)(f32)) {
     if (mode == 11) {
         mode = (rand() & 7) + 1;
     }
     if (mode != -1) {
-        D_004707A4 = mode;
+        gFadeMode = mode;
     }
-    D_004707B4 = done;
+    gFadeDone = done;
     if (cb != NULL) {
-        D_004707B8 = cb;
+        gFadeCb = cb;
     }
     SET_FUNC(D_004707A0, func_00263E90);
-    if (D_004707A4 != 0) {
+    if (gFadeMode != 0) {
         func_00144770(0, 1.0f);
     }
 }
 
-void func_00264300(s32 mode, void (*done)(void), void (*cb)(f32)) {
+void Fade_SetRequest(s32 mode, void (*done)(void), void (*cb)(f32)) {
     if (mode == 11) {
         mode = (rand() & 7) + 1;
     }
     if (mode != -1) {
-        D_004707A4 = mode;
+        gFadeMode = mode;
     }
-    D_004707B4 = done;
+    gFadeDone = done;
     if (cb != NULL) {
-        D_004707B8 = cb;
+        gFadeCb = cb;
     }
     SET_FUNC(D_004707A0, func_00263FB0);
 }
@@ -254,10 +254,10 @@ void func_00264380(f32 speed) {
 }
 
 void func_00264390(void) {
-    D_004707A4 = 10;
+    gFadeMode = 10;
     D_004707A8 = 0.0f;
-    D_004707B4 = NULL;
-    D_004707B8 = NULL;
+    gFadeDone = NULL;
+    gFadeCb = NULL;
     D_004707B0 = 0;
     D_004707AC = 0.01f * gFrameDelta;
     if (D_004707A0 != NULL) {
@@ -270,10 +270,10 @@ extern char D_0046B380[];
 extern FadeTask *amTask_Create(void *, s32, s32, s32, s32, char *);
 
 void Fade_Start(void) {
-    D_004707A4 = 10;
+    gFadeMode = 10;
     D_004707A8 = 0.0f;
-    D_004707B4 = NULL;
-    D_004707B8 = NULL;
+    gFadeDone = NULL;
+    gFadeCb = NULL;
     D_004707B0 = 0;
     D_004707AC = 0.01f * gFrameDelta;
     D_004707A0 = amTask_Create(Fade_TaskEmpty, 0, 0xFF00, 0, 1, D_0046B370);

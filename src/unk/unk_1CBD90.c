@@ -1,5 +1,23 @@
 #include "common.h"
 
+/*
+ * Recipes (round 4, unblock, script-command family).
+ *
+ * 1. Float to int. There is NO cvt.w.s / trunc.w.s problem. The original's word 0x46000024 is what `(s32)f` emits when
+ *    the value is in $f0 (checked on func_001CE740 and func_001CE7C0 against the ROM bytes). The two disassemblers
+ *    only disagree on the name of funct 0x24: splat says cvt.w.s, the decompals objdump says trunc.w.s. Do not
+ *    try inline asm or helper casts for it; when a float-to-int function differs, look at the registers and the
+ *    load order. The `(s32)` cast of a value in another FPU register (e.g. $f12) gives 0x46006024: that is a
+ *    register difference, not a conversion difference.
+ * 2. A struct field the original reads early (before a store) into a spare register: declare it as a local at the
+ *    top of the function (`s32 q1 = p[1];`, `s32 q2 = p[2];`) and store the local (func_001CE7C0, func_001CE740).
+ * 3. Local declaration order decides the registers; a permutation search over the declaration block (scratch tool
+ *    compiling every order in one translation unit, comparing with the ROM) matched func_001CEDE0 (22 of 30 orders).
+ * 4. `A + B` operand order is canonical in mwcc: `t + idx * 16` and `idx * 16 + t` (and `(idx << 4)`, a local k) gave
+ *    the same `addu`. The 1-instruction differences of func_001CDDE0, func_001CDE40, func_001CDEA0 and func_001CDF10
+ *    are the register that holds the table base and the index product; declaration orders (idx, t, k) did not flip it.
+ */
+
 typedef struct Big { char pad[0x8934]; void *tbl[2]; } Big;
 extern Big *gBattle;
 typedef struct Arg { char pad[0x2c]; int *p; } Arg;
@@ -235,7 +253,7 @@ extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void func_001CB020(void *);
 extern void func_001CAFE0(void *);
 extern char D_004692B0[];
-int func_001CC7C0(void *o, Arg *a) {
+int Scr_CmdPlayThread(void *o, Arg *a) {
     int *p = a->p;
     char *c = *(char **)o;
     s32 x = p[0];
@@ -727,35 +745,31 @@ int func_001CE5B0(void *unused, Arg *a) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE610);
-// differs: 27 of 33. The constants 360.0f and 65536.0f take other FPU registers (same as func_001CEE80), and the int field stores are in another order.
-#if 0
 int func_001CE740(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
+    s32 q1 = p[1];
+    s32 q2 = p[2];
     char *t = gBattle->tbl[p[3]];
+    f32 x0 = f[0];
     *(s8 *)(t + 0x1A5E) = p[2];
-    *(s8 *)(t + 0x1A64) = p[2] != -1;
-    *(s16 *)(t + 0x1A66) = p[1];
+    *(s8 *)(t + 0x1A64) = q2 != -1;
+    *(s16 *)(t + 0x1A66) = q1;
     *(f32 *)(t + 0x1A68) = *(f32 *)((char *)gBattle + 0x88F0);
-    *(s32 *)(t + 0x1A60) = (s32)(65536.0f * (f[0] / 360.0f));
+    *(s32 *)(t + 0x1A60) = (s32)(65536.0f * (x0 / 360.0f));
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE740);
-// differs: 9 of 24 at best: the 360.0f / 65536.0f FPU register allocation as in func_001CEE80; the split-expression variant was worse (11 of 24).
-#if 0
 int func_001CE7C0(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
     f32 x0 = f[0];
     char *t = gBattle->tbl[p[3]];
+    s32 q1 = p[1];
     *(s8 *)(t + 0x1A5E) = p[2];
-    *(s8 *)(t + 0x1A5F) = p[1];
+    *(s8 *)(t + 0x1A5F) = q1;
     *(s32 *)(t + 0x1A60) = (s32)(65536.0f * (x0 / 360.0f));
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE7C0);
 int func_001CE820(void *unused, Arg *a) {
     *(f32 *)((char *)gBattle->tbl[a->p[1]] + 0x182C) = *(f32 *)a->p;
     return 1;
@@ -806,20 +820,19 @@ int func_001CE8F0(void *unused, Arg *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE960);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CED20);
-// differs: 30 of 38: the original converts with cvt.w.s (rounding), where the (s32) cast gives trunc.w.s; the FPU constant registers differ too (same as func_001CEE80). Local constants tried.
-#if 0
 int func_001CEDE0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
     char *t = gBattle->tbl[a->p[3]];
-    *(f32 *)(t + 0x1828) = f[2];
-    *(s32 *)(t + 0x1838) = (s32)(65536.0f * (f[0] / 360.0f));
-    *(s32 *)(t + 0x1834) = (s32)(65536.0f * (f[1] / 360.0f));
+    f32 x0 = f[0];
+    f32 x1 = f[1];
+    f32 x2 = f[2];
+    *(f32 *)(t + 0x1828) = x2;
+    *(s32 *)(t + 0x1838) = (s32)(65536.0f * (x0 / 360.0f));
+    *(s32 *)(t + 0x1834) = (s32)(65536.0f * (x1 / 360.0f));
     *(s8 *)(t + 0x183C) = 5;
     func_001C75D0(t, 20);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEDE0);
 // differs: 23 of 32 at best: the 360.0f constant is loaded into f1 in the original and the division uses f3 as dividend; ours loads it into f2. Local k=360.0f and x=f0/360 forms tried.
 #if 0
 int func_001CEE80(void *unused, Arg *a) {

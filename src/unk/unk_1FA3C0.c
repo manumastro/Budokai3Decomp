@@ -202,7 +202,7 @@ extern void *D_0047CAC0[];
 extern char D_003F0800[];
 extern char D_00495A00[];
 extern s32 amGs_SetReg32(s32, s32);
-extern void func_00133920(s32, s32, s32, s32, s32);
+extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
 extern void amGs_SetReg64b(s32, s32);
 extern void func_001339B0(void *);
 extern void func_0013B0B0(void *);
@@ -219,7 +219,7 @@ void func_001FB3B0(DrawCam *c, void (*draw)(void)) {
         return;
     }
     saved = amGs_SetReg32(0, 0x5C00D);
-    func_00133920(0x1BC00F00, 0, 0, 0x18C00A00, 0);
+    DrawFlags_Apply(0x1BC00F00, 0, 0, 0x18C00A00, 0);
     amGs_SetReg64b(0, 5);
     func_001339B0(c->fE0);
     D_00470644 = c->f40;
@@ -230,7 +230,7 @@ void func_001FB3B0(DrawCam *c, void (*draw)(void)) {
     draw();
     func_0013B110(1);
     amGs_SetReg32(0, saved);
-    func_00133920(0, 0x1BC00F00, 0, 0, 0);
+    DrawFlags_Apply(0, 0x1BC00F00, 0, 0, 0);
     func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
     D_0047CAC0[0] = NULL;
 }

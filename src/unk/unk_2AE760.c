@@ -15,7 +15,7 @@ typedef struct Ev2AE {
 } Ev2AE;
 
 extern s32 D_004708FC;
-extern void func_0022DB30(s32);
+extern void A2d_SetMode(s32);
 extern void func_00228430(s32);
 extern void func_002AF420(Ac2AE *);
 extern s32 func_002AEFD0(Ac2AE *);
@@ -33,7 +33,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AEEF0);
 s32 func_002AEFD0(Ac2AE *o) {
     f32 d;
 
-    func_0022DB30(D_004708FC);
+    A2d_SetMode(D_004708FC);
     func_00228430(0);
     d = o->f30 - 1.0f;
     if (d <= 0.0f) {
@@ -47,7 +47,7 @@ s32 func_002AEFD0(Ac2AE *o) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AEFD0);
 s32 func_002AF040(Ac2AE *o, Ev2AE *e) {
     o->f30 = 1.0f + e->f2C[0];
-    func_0022DB30(D_004708FC);
+    A2d_SetMode(D_004708FC);
     func_00228430(0);
     o->f10 = (void *)func_002AEFD0;
     return 3;

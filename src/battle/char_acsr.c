@@ -58,7 +58,7 @@ extern s32 amObject_GetSize(void *);
 extern AcsrFile *amCdFs_ReadFileId(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void amCdFs_ReleaseCache(void *);
-extern void func_00145CC0(s32, void *);
+extern void amModel_SetCurrent(s32, void *);
 extern void func_0013B0B0(void *);
 extern void func_0013B110(s32);
 extern void func_0013B960(Mtx *);
@@ -69,7 +69,7 @@ extern s32 amObject_Create(s32, s32);
 extern s32 amMotion_FindBone(s32, AcsrData *);
 
 static inline void Acsr_Draw(Acsr *a) {
-    func_00145CC0(a->unk18, a->unk1C);
+    amModel_SetCurrent(a->unk18, a->unk1C);
     func_0013B0B0(0);
     if (a->owner != 0) {
         func_0013B960(&a->owner->matrices[a->joint]);
@@ -82,7 +82,7 @@ extern s32 func_0029D8D0(void);
 extern Vec4 *func_0029D4A0(void);
 extern void func_00133D90(f32);
 extern void func_00133D80(u32);
-extern void func_00133920(s32, s32, s32, s32, s32);
+extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
 
 typedef struct ClothPt {
     Vec4 v[8];
@@ -108,7 +108,7 @@ extern void func_00134690(s32, s32, s32, s32, s64, s32);
 extern void func_00136310(ClothPt *, ClothPt *);
 extern void func_00135C60(ClothPt *, Vec4 *, Vec4 *);
 
-void func_001D0B90(Acsr *a) {
+void Acsr_DrawIfAny(Acsr *a) {
     if (a != 0) {
         Acsr_Draw(a);
     }
@@ -122,9 +122,9 @@ void func_001D0C00(Acsr *a) {
         c = func_0029D4A0();
         func_00133D90(c->w);
         func_00133D80(((u32)(255.0f * c->z) << 16) | ((u32)(255.0f * c->y) << 8) | (u32)(255.0f * c->x));
-        func_00133920(0x8000, 0, 0, 0x8000, 0);
+        DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
         Acsr_Draw(a);
-        func_00133920(0, 0x8000, 0, 0, 0);
+        DrawFlags_Apply(0, 0x8000, 0, 0, 0);
         func_00133D90(0.0f);
     }
 }

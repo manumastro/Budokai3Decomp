@@ -63,15 +63,15 @@ extern s32 D_0047070C;
 extern f32 D_004E0610[];
 extern f32 D_004E0618[];
 extern s16 D_004E05F8[];
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
 extern void func_002D0530(ArenaModeWork *);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 extern void func_00229800(s32, void *, s32, f32);
-extern void func_002C0470(void *, void *);
+extern void Obj_CopyVec4F50(void *, void *);
 extern u32 func_0012EAE0(s32);
-extern void func_002C0490(void *, s32);
+extern void Obj_SetF3C(void *, s32);
 extern s32 amAdx_PlayAfs(s32, s32, s32);
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Pause(s32, s32);
@@ -79,18 +79,18 @@ extern s32 func_0022D670(s32, f32);
 extern s32 func_0022D860(s32, f32);
 extern void func_002D12B0(Task *);
 extern void amAdx_Stop(s32);
-extern void func_00264260(s32, s32, s32);
+extern void Fade_Request(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
 extern void amFile_Load(void *);
-extern void func_0022DB30(s32);
+extern void A2d_SetMode(s32);
 extern void func_002D1C20(void);
 extern void func_0022D0E0(s32, s32);
 extern void StrStatus_Exit(void *);
 extern void Help_Exit(void);
 extern void memset(void *, s32, s32);
 extern void *func_002C0630(s32, s32, s32);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void func_002E8720(void);
 extern void Help_Load(void);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
@@ -110,7 +110,7 @@ void ArenaMode_TaskOpen(Task *t) {
     D_00470704 = v = (s32)w->tex;
     D_0047070C = c = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, c);
+    amModel_SetCurrent(v, c);
     D_00470238 = 0;
     {
         s32 p[6] = {0};
@@ -124,7 +124,7 @@ void ArenaMode_TaskOpen(Task *t) {
         D_00470704 = v = (s32)w->tex;
         D_0047070C = c = 0x1000;
         D_00470708 = 0;
-        func_00145CC0(v, c);
+        amModel_SetCurrent(v, c);
         D_00470238 = 0;
         for (i = 0; i < 6; i++) {
             m = p[i];
@@ -137,15 +137,15 @@ void ArenaMode_TaskOpen(Task *t) {
     if (w->state >= 3) {
         func_002D0530(w);
     }
-    func_0022C700();
+    A2d_FlushList();
     f = w->timer - gFrameDelta;
     w->timer = f;
     if (f <= 0.0f) {
         func_00229800(w->res->f1C[19], pos, -1, 0.0f);
-        func_002C0470(w->f30, pos);
+        Obj_CopyVec4F50(w->f30, pos);
         r = func_0012EAE0(0x20) % 3;
         w->f39 = r;
-        func_002C0490(w->f30, w->f39);
+        Obj_SetF3C(w->f30, w->f39);
         se = D_00456AF0;
         w->se = amAdx_PlayAfs(1, se.id[r] | 0x20000, 0);
         amAdx_SetVolume(w->se, D_004E0618[0]);
@@ -155,7 +155,7 @@ void ArenaMode_TaskOpen(Task *t) {
         D_00470704 = v = (s32)w->tex;
         D_0047070C = c = 0x1000;
         D_00470708 = 0;
-        func_00145CC0(v, c);
+        amModel_SetCurrent(v, c);
         D_00470238 = 0;
         for (j = 0; j < 3; j++) {
             w->f18[j] = func_0022D670(((s32 *)((u8 *)w->res->f1C + (j + 30) * 4))[0], 0.0f);
@@ -184,7 +184,7 @@ void ArenaMode_TaskLoad(Task *t) {
         return;
     }
     if (g->file[1]->state == 3) {
-        func_00264260(-1, 0, 0);
+        Fade_Request(-1, 0, 0);
         amAdx_SetVolume(0, D_004E0610[0]);
         amAdx_PlayAfs(0, 0x210A8, 0);
         amAdx_Pause(0, 0);
@@ -197,14 +197,14 @@ void ArenaMode_TaskLoad(Task *t) {
         func_0022E0B0(w->res);
         amFile_Load(w->tex);
         if (D_004E05F8[0] != 0) {
-            func_0022DB30(1);
+            A2d_SetMode(1);
         } else {
-            func_0022DB30(0);
+            A2d_SetMode(0);
         }
         D_00470704 = v = (s32)w->tex;
         D_0047070C = c = 0x1000;
         D_00470708 = 0;
-        func_00145CC0(v, c);
+        amModel_SetCurrent(v, c);
         D_00470238 = 0;
         w->f8 = func_0022D860(w->res->f14[0], 0.0f);
         w->fC = func_0022D670(w->res->f1C[11], 0.0f);
@@ -279,7 +279,7 @@ void ArenaMode_Start(s32 a0) {
     w->f35 = a0;
     w->state = 0;
     w->se = -1;
-    func_001F07D0();
+    Scene_SetReady();
     func_002E8720();
     Help_Load();
 }

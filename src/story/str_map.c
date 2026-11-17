@@ -7,12 +7,12 @@ typedef struct StrMapCopy16 {
 
 extern s32 *gStrMap;
 extern void func_00299390(void);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D670(s32, f32);
 extern void func_0028EC50(s32, s32, s32, s32, s32, s32);
-extern void func_00144B70(s32);
-extern void func_00144650(s32);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
 extern void amAdx_Stop(s32);
 extern void func_00125740(char *, char *, s32);
 extern char D_004E6560[];
@@ -128,7 +128,7 @@ void func_0029A9F0(void) {
 }
 #if 0
 // func_0029AAC0: the two for loops take the compare in at (slti at) in the original, v0 here; for, do-while, reversed and != tests tried; the rest matches
-extern void func_0028EA80(Task *);
+extern void StrBg_FlushDraw(Task *);
 extern void func_0029A1C0(Task *);
 extern char D_0046BB80[];
 extern char D_0046BB90[];
@@ -156,9 +156,9 @@ void func_0029AAC0(s32 a0, s32 a1, s32 a2) {
     }
     r = (s32)amTask_Create(func_0029A1C0, NULL, a0, 2, a1, D_0046BB80);
     gStrMap[0x2C / 4] = r;
-    r = (s32)amTask_Create(func_0028EA80, NULL, a0 + 5, 2, a1, D_0046BB90);
+    r = (s32)amTask_Create(StrBg_FlushDraw, NULL, a0 + 5, 2, a1, D_0046BB90);
     gStrMap[0x34 / 4] = r;
-    r = (s32)amTask_Create(func_0028EA80, NULL, a0 + 0xD, 2, a1, D_0046BBA0);
+    r = (s32)amTask_Create(StrBg_FlushDraw, NULL, a0 + 0xD, 2, a1, D_0046BBA0);
     gStrMap[0x54 / 4] = r;
 }
 #endif
@@ -304,12 +304,12 @@ INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B550);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029BA80);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029C110);
 extern s32 func_0022BF80(s32);
-extern void func_001F0810(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 
-void func_0029C290(s32 *s0) {
+void StrMap_FadeWhenDone(s32 *s0) {
     s32 *g = (s32 *)gStrTitle;
     if (func_0022BF80(g[0x78 / 4 + g[0xB0 / 4]]) == 0xFF) {
-        func_001F0810(-1, 0);
+        Scene_FadeTo(-1, 0);
         s0[0x1C / 4] = 0;
     }
 }
@@ -357,9 +357,9 @@ void StrTitle_TaskMain(Task *a0) {
     char *t = (char *)gStrTitle;
     s32 *u = *(s32 **)(t + 4);
     if (*(s16 *)((char *)u + 4) == 3) {
-        func_001F07D0();
-        func_00144B70(-1);
-        func_00144650(0);
+        Scene_SetReady();
+        SoundRpc_SendWord2(-1);
+        SoundRpc_SendWord(0);
         amAdx_Stop(-1);
         func_00125740(D_004E6560, D_004B4C00, 0x2B180);
         {

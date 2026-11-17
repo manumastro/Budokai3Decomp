@@ -9,12 +9,12 @@ extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
 extern void func_002C0860(s32 *);
 extern void func_002BDF50(void *, void *);
-extern void func_00209530(s32);
+extern void Obj_ResetF38(s32);
 extern void func_00215230(s32, s32);
 extern void func_00214FD0(void);
 extern void amTask_KillGroup(s32, s32, s32);
@@ -36,8 +36,8 @@ extern void func_00244150(void);
 extern void func_002BE320(s32);
 extern void func_002BEB50(void);
 extern void func_002CA4A0(void);
-extern void func_002C03B0(s32 *);
-extern void func_0022C700();
+extern void StrStatus_TaskComment(s32 *);
+extern void A2d_FlushList();
 extern TourModeGlobal *gTourMode;
 extern char D_0046EE10[];
 extern void (*D_0046EE30[])(void *);
@@ -165,7 +165,7 @@ void func_002BDC50(void) {
     func_0013B160(0);
     func_00142100((char *)s1 + 0x50, (char *)s1 + 0x60);
     D_00470238 = 0;
-    func_00145CC0(s0[0x1A0 / 4], 0x3003000);
+    amModel_SetCurrent(s0[0x1A0 / 4], 0x3003000);
     if (s1[0x70 / 4] != 0) {
         func_00208D70(s1[0x70 / 4]);
     }
@@ -201,7 +201,7 @@ void func_002BDE80(void) {
     {
         s32 *g = D_0047011C;
         if (g[0xD0 / 4] != 0) {
-            func_00145CC0(g[0xD0 / 4], g[0xD8 / 4]);
+            amModel_SetCurrent(g[0xD0 / 4], g[0xD8 / 4]);
         }
         g = D_0047011C;
         if (g[0x1B4 / 4] != 0) {
@@ -233,7 +233,7 @@ void func_002BE710(s32 *a0) {
     switch (m) {
     case 0:
         if (D_0047011C[0x1B4 / 4] != 0) {
-            func_00209530(D_0047011C[0x1B4 / 4]);
+            Obj_ResetF38(D_0047011C[0x1B4 / 4]);
             D_0047011C[0x1B4 / 4] = 0;
         }
         *(s16 *)((char *)a0 + 0x2A) = 0xE;
@@ -243,7 +243,7 @@ void func_002BE710(s32 *a0) {
         break;
     case 1:
         if (D_0047011C[0x1B4 / 4] != 0) {
-            func_00209530(D_0047011C[0x1B4 / 4]);
+            Obj_ResetF38(D_0047011C[0x1B4 / 4]);
             D_0047011C[0x1B4 / 4] = 0;
         }
         break;
@@ -349,7 +349,7 @@ void func_002BED90(s32 a0) {
     s32 *a1;
     s32 v;
     if (D_0047011C[0x1A4 / 4] != 0) {
-        func_00209530(D_0047011C[0x1A4 / 4]);
+        Obj_ResetF38(D_0047011C[0x1A4 / 4]);
         D_0047011C[0x1A4 / 4] = 0;
     }
     a0p = (s32 *)D_005BD1A0;
@@ -404,7 +404,7 @@ void func_002BF310(void) {
     s32 off = 0;
     for (i = 0; i < 8; i++) {
         if (*(s32 *)((char *)D_0047011C + off + 0x160) != 0) {
-            func_00209530(*(s32 *)((char *)D_0047011C + off + 0x160));
+            Obj_ResetF38(*(s32 *)((char *)D_0047011C + off + 0x160));
             *(s32 *)((char *)D_0047011C + off + 0x160) = 0;
         }
         *(s32 *)((char *)D_0047011C + off + 0x180) = -1;
@@ -434,7 +434,7 @@ void func_002BFC50(void) {
     memset(gWave, 0, 0xA0);
     D_0047011C[0x1BC / 4] &= -3;
     if (D_0047011C[0x1A4 / 4] != 0) {
-        func_00209530(D_0047011C[0x1A4 / 4]);
+        Obj_ResetF38(D_0047011C[0x1A4 / 4]);
         D_0047011C[0x1A4 / 4] = 0;
     }
     func_00209450(0x400010, 1);
@@ -460,7 +460,7 @@ void func_002BFD90(void) {
     memset(gWave, 0, 0xA0);
     D_0047011C[0x1BC / 4] &= -3;
     if (D_0047011C[0x1A4 / 4] != 0) {
-        func_00209530(D_0047011C[0x1A4 / 4]);
+        Obj_ResetF38(D_0047011C[0x1A4 / 4]);
         D_0047011C[0x1A4 / 4] = 0;
     }
     func_00209450(0x400010, 1);
@@ -562,7 +562,7 @@ void func_002C02C0(s32 *a0) {
         p[6] = 1.0f;
         q[5] = q[4];
         if (q[3] == -1) {
-            f = func_002C03B0;
+            f = StrStatus_TaskComment;
             a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
             return;
         }
@@ -574,7 +574,7 @@ extern void func_002C02C0(s32 *);
 
 extern void func_002C02C0(s32 *);
 
-void func_002C03B0(s32 *a0) {
+void StrStatus_TaskComment(s32 *a0) {
     s32 *a2 = a0 + 0x30 / 4;
     s32 a1 = a0[0x3C / 4];
     if (a1 != -1) {
@@ -598,7 +598,7 @@ void func_002C03E0(s32 *a0) {
         s0[0] = 0;
         amFile_Load(s0[1]);
         {
-            void *f = func_002C03B0;
+            void *f = StrStatus_TaskComment;
             *(s16 *)((char *)s0 + 8) = 2;
             a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
         }
@@ -606,12 +606,12 @@ void func_002C03E0(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03E0);
-void func_002C0470(u8 *a0, void *a1) {
+void Obj_CopyVec4F50(u8 *a0, void *a1) {
     u8 *p = a0 + 0x30;
     p += 0x20;
     __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a1), "r"(p) : "memory");
 }
-void func_002C0490(void *p, s16 v) {
+void Obj_SetF3C(void *p, s16 v) {
     ((s32 *)p)[0xF] = v;
 }
 void *func_002C04A0(void) {
@@ -642,7 +642,7 @@ void *func_002C0510(s32 a0, s32 a1, s32 a2) {
     Task *s1;
     b = *(StrCopy16S *)D_00456310;
     a = *(StrCopy16S *)D_00456320;
-    s1 = (Task *)amTask_Create((void (*)(Task *))func_002C03B0, NULL, (s16)a1, 8, 2, D_0046EEC8);
+    s1 = (Task *)amTask_Create((void (*)(Task *))StrStatus_TaskComment, NULL, (s16)a1, 8, 2, D_0046EEC8);
     s0 = (s32 *)((char *)s1 + 0x30);
     memset(s0, 0, 0x40);
     if (a2 == 0) {
@@ -799,7 +799,7 @@ void func_002C1720(s32 *a0) {
     D_00470704 = s0[1];
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(s0[1], 0x2000);
+    amModel_SetCurrent(s0[1], 0x2000);
     D_00470238 = 0;
     if (s0[0x24 / 4] != 0) {
         func_0022D0E0(s0[0x24 / 4], 1);
@@ -831,7 +831,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1720);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1860);
 
 void VsCharaselEd_TaskMain(Task *task) {
-    func_0022C700(task);
+    A2d_FlushList(task);
 }
 // func_002C1A00: the loads of the work block and the order of the two calls differ; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1A00);
@@ -839,8 +839,8 @@ extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern char D_005C4140[];
 extern void func_00304DC0(s32, s32);
-extern void func_001F0830(s32, s32);
-extern void func_001F0810(s32, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 extern void func_002C1A00(Task *);
 
 void func_002C1AA0(s32 *a0) {
@@ -853,13 +853,13 @@ void func_002C1AA0(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s0[0x4 / 4];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s2 = (s32 *)s0[0x8 / 4];
     if (s2 != 0) {
@@ -867,7 +867,7 @@ void func_002C1AA0(s32 *a0) {
         func_0022CD00((s32)s2);
     }
     func_002C0860(s0);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     r = func_0027DAB0(s0[0xA0 / 4]);
     if ((s8)r >= 7) {
@@ -875,8 +875,8 @@ void func_002C1AA0(s32 *a0) {
         s0[0xA0 / 4] = 0;
         D_005C4140[0] = *(u8 *)((char *)s0 + 0xAC);
         func_00304DC0((s32)D_005C4140, *(u8 *)((char *)s0 + 0xAB));
-        func_001F0830(0x11, 0xFF);
-        func_001F0810(0xA, 0);
+        Scene_Request(0x11, 0xFF);
+        Scene_FadeTo(0xA, 0);
         f = (void *)func_002C1A00;
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
@@ -899,13 +899,13 @@ void func_002C1BC0(s32 *a0) {
     D_00470704 = s0v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(s0v, 0x2000);
+    amModel_SetCurrent(s0v, 0x2000);
     D_00470238 = 0;
     s0v = s0[0x4 / 4];
     D_00470704 = s0v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(s0v, 0x2000);
+    amModel_SetCurrent(s0v, 0x2000);
     D_00470238 = 0;
     s2 = s0[0x8 / 4];
     if (s2 != 0) {
@@ -913,7 +913,7 @@ void func_002C1BC0(s32 *a0) {
         func_0022CD00((s32)s2);
     }
     func_002C0860(s0);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     r = func_0027DAB0(s0[0xA0 / 4]);
     if ((s8)r >= 7) {
@@ -976,13 +976,13 @@ void func_002C1CF0(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s0[0x4 / 4];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s2 = s0[0x8 / 4];
     if (s2 != 0) {
@@ -990,7 +990,7 @@ void func_002C1CF0(s32 *a0) {
         func_0022CD00(s2);
     }
     func_002C0860(s0);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     r = func_0027DAB0(s0[0xA0 / 4]);
     if ((s8)r >= 7) {
@@ -1027,13 +1027,13 @@ void func_002C1E10(s32 *a0) {
     D_00470704 = s0v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(s0v, 0x2000);
+    amModel_SetCurrent(s0v, 0x2000);
     D_00470238 = 0;
     s0v = s0[0x4 / 4];
     D_00470704 = s0v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(s0v, 0x2000);
+    amModel_SetCurrent(s0v, 0x2000);
     D_00470238 = 0;
     s2 = s0[0x8 / 4];
     if (s2 != 0) {
@@ -1041,7 +1041,7 @@ void func_002C1E10(s32 *a0) {
         func_0022CD00((s32)s2);
     }
     func_002C0860(s0);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     r = func_0027DAB0(s0[0xA0 / 4]);
     if ((s8)r >= 7) {
@@ -1081,13 +1081,13 @@ void func_002C2470(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s1[1];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s0 = (s32 *)s1[2];
     if (s0 != 0) {
@@ -1095,7 +1095,7 @@ void func_002C2470(s32 *a0) {
         func_0022CD00((s32)s0);
     }
     func_002C0860(s1);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     *(f32 *)((char *)s1 + 0xC4) = *(f32 *)((char *)s1 + 0xC4) - gFrameDelta;
     if (*(f32 *)((char *)s1 + 0xC4) <= 0.0f) {
@@ -1121,13 +1121,13 @@ void func_002C27B0(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s0[1];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s2 = (s32 *)s0[2];
     if (s2 != 0) {
@@ -1135,9 +1135,9 @@ void func_002C27B0(s32 *a0) {
         func_0022CD00((s32)s2);
     }
     func_002C0860(s0);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
-    func_003105B0();
+    SeReady_Start();
     *(u8 *)((char *)s0 + 0xAC) = *(u8 *)((char *)s0 + 0xAC) + 1;
     *(s32 *)((char *)s0 + 0xC4) = 0x41F00000;
     *(u8 *)((char *)s0 + 0xAF) = 9;
@@ -1165,13 +1165,13 @@ void func_002C28A0(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s2[0x4 / 4];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s1 = (s32 *)s2[0x8 / 4];
     if (s1 != 0) {
@@ -1179,7 +1179,7 @@ void func_002C28A0(s32 *a0) {
         func_0022CD00((s32)s1);
     }
     func_002C0860(s2);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     t = *(f32 *)&s2[0xC4 / 4] - gFrameDelta;
     *(f32 *)&s2[0xC4 / 4] = t;
@@ -1195,7 +1195,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C29A0);
 extern s32 amAdx_PlayAfs(s32, s32, s32);
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Pause(s32, s32);
-extern void func_002C0490(void *, s16);
+extern void Obj_SetF3C(void *, s16);
 extern void func_002C29A0(void);
 extern f32 D_004E0618[];
 extern f32 gFrameDelta;
@@ -1212,13 +1212,13 @@ void func_002C2FF0(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s2[0x4 / 4];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s1 = (s32 *)s2[0x8 / 4];
     if (s1 != 0) {
@@ -1226,7 +1226,7 @@ void func_002C2FF0(s32 *a0) {
         func_0022CD00((s32)s1);
     }
     func_002C0860(s2);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     t = *(f32 *)&s2[0xC4 / 4] - gFrameDelta;
     *(f32 *)&s2[0xC4 / 4] = t;
@@ -1235,7 +1235,7 @@ void func_002C2FF0(s32 *a0) {
         s2[0xC8 / 4] = v;
         amAdx_SetVolume(s2[0xC8 / 4], D_004E0618[0]);
         amAdx_Pause(s2[0xC8 / 4], 0);
-        func_002C0490((void *)s2[0x9C / 4], 4);
+        Obj_SetF3C((void *)s2[0x9C / 4], 4);
         f = (void *)func_002C29A0;
         *(u8 *)((char *)s2 + 0xAF) = 6;
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
@@ -1257,13 +1257,13 @@ void func_002C3120(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s2[0x4 / 4];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s1 = (s32 *)s2[0x8 / 4];
     if (s1 != 0) {
@@ -1271,7 +1271,7 @@ void func_002C3120(s32 *a0) {
         func_0022CD00((s32)s1);
     }
     func_002C0860(s2);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     t = *(f32 *)&s2[0xC4 / 4] - gFrameDelta;
     *(f32 *)&s2[0xC4 / 4] = t;
@@ -1289,13 +1289,13 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C32C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3A10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3B40);
 extern void func_0022E0B0(s32);
-extern void func_00264260(s32, s32, s32);
+extern void Fade_Request(s32, s32, s32);
 extern void func_002C1860(s32 *);
 extern void func_002C3B40(void);
 extern s32 func_0022D670(s32, f32);
 
 extern void func_0022E0B0(s32);
-extern void func_00264260(s32, s32, s32);
+extern void Fade_Request(s32, s32, s32);
 extern void func_002C1860(s32 *);
 extern void func_002C3B40(void);
 extern s32 func_0022D670(s32, f32);
@@ -1316,12 +1316,12 @@ void func_002C3D20(s32 *a0) {
         amCdFs_Close(s0[1], 0);
         func_0022E0B0(s1[0]);
         amFile_Load(s1[1]);
-        func_00264260(-1, 0, 0);
+        Fade_Request(-1, 0, 0);
         v = s1[1];
         D_00470704 = v;
         D_0047070C = 0x2000;
         D_00470708 = 0;
-        func_00145CC0(v, 0x2000);
+        amModel_SetCurrent(v, 0x2000);
         D_00470238 = 0;
         s1[2] = func_0022D670(((s32 *)((s32 *)s1[0])[0x1C / 4])[0], 0.0f);
         func_002C1860(s1);

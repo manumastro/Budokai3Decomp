@@ -64,9 +64,9 @@ extern char D_0046B828[];
 
 extern void amFile_Load(void *);
 extern void func_00133780(s32, s32);
-extern void func_00143D60(s32, s32, s32, s32);
-extern void func_00143F20(s32, s32, f32);
-extern void func_00145CC0(s32, s32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_00227A30(s32);
 extern void func_00228410(void);
 extern void func_00228430(s32);
@@ -76,7 +76,7 @@ extern void func_0022C1D0(s32, s32, f32);
 extern void func_0022C430(s32, f32);
 extern void func_0022C6B0(s32);
 extern void func_0022D4B0(s32, s32);
-extern s32 func_0022DA90(s32, f32);
+extern s32 A2d_AllocObj(s32, f32);
 extern void memset(void *, s32, s32);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
@@ -182,13 +182,13 @@ void Zenie_Draw(void) {
         D_00470704 = p0;
         D_0047070C = p1;
         D_00470708 = 0;
-        func_00145CC0(p0, p1);
+        amModel_SetCurrent(p0, p1);
         D_00470238 = 0;
         func_00133780(0, 1);
         m = gZenie->model[0];
         func_00228430(0);
         func_002284D0(0);
-        obj = func_0022DA90(m->f1C[gZenie->anim[0].id], gZenie->anim[0].frame * gFrameDelta);
+        obj = A2d_AllocObj(m->f1C[gZenie->anim[0].id], gZenie->anim[0].frame * gFrameDelta);
         func_00227A30(obj + 0x20);
         func_00228430(0);
         func_002284D0(0);
@@ -270,14 +270,14 @@ void Zenie_Update(void) {
                 if (gZenie->cur <= gZenie->target) {
                     gZenie->cur = gZenie->target;
                     gZenie->state = 4;
-                    func_00143F20(0, 0, D_004E0614[0]);
+                    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
                     if (!(D_004E0614[0] <= 0.0f)) {
-                        func_00143D60(0, 0, 0xF, 0);
+                        SoundRpc_Send3(0, 0, 0xF, 0);
                     }
                 } else if (gZenie->timer++ % 10 == 0) {
-                    func_00143F20(0, 0, D_004E0614[0]);
+                    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
                     if (!(D_004E0614[0] <= 0.0f)) {
-                        func_00143D60(0, 0, 0xE, 0);
+                        SoundRpc_Send3(0, 0, 0xE, 0);
                     }
                     gZenie->timer = 1;
                 }
@@ -286,14 +286,14 @@ void Zenie_Update(void) {
                 if (gZenie->cur >= gZenie->target) {
                     gZenie->cur = gZenie->target;
                     gZenie->state = 4;
-                    func_00143F20(0, 0, D_004E0614[0]);
+                    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
                     if (!(D_004E0614[0] <= 0.0f)) {
-                        func_00143D60(0, 0, 0xF, 0);
+                        SoundRpc_Send3(0, 0, 0xF, 0);
                     }
                 } else if (gZenie->timer++ % 10 == 0) {
-                    func_00143F20(0, 0, D_004E0614[0]);
+                    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
                     if (!(D_004E0614[0] <= 0.0f)) {
-                        func_00143D60(0, 0, 0xE, 0);
+                        SoundRpc_Send3(0, 0, 0xE, 0);
                     }
                     gZenie->timer = 1;
                 }
@@ -303,18 +303,18 @@ void Zenie_Update(void) {
             gZenie->cur = 0;
             gZenie->target = 0;
             gZenie->state = 4;
-            func_00143F20(0, 0, D_004E0614[0]);
+            SoundRpc_SetVolume(0, 0, D_004E0614[0]);
             if (!(D_004E0614[0] <= 0.0f)) {
-                func_00143D60(0, 0, 0xF, 0);
+                SoundRpc_Send3(0, 0, 0xF, 0);
             }
         }
         if (gZenie->cur > 990000) {
             gZenie->cur = 990000;
             gZenie->target = 990000;
             gZenie->state = 4;
-            func_00143F20(0, 0, D_004E0614[0]);
+            SoundRpc_SetVolume(0, 0, D_004E0614[0]);
             if (!(D_004E0614[0] <= 0.0f)) {
-                func_00143D60(0, 0, 0xF, 0);
+                SoundRpc_Send3(0, 0, 0xF, 0);
             }
         }
     }

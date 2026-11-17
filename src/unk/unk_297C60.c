@@ -85,7 +85,7 @@ extern void *D_005AA568[];
 extern void *D_005AA56C[];
 extern void *D_005AA570[];
 extern void func_0029D6C0(Vec4i *);
-extern s32 func_002A8CA0(s32);
+extern s32 Flight_MapIndex(s32);
 extern void *func_001CAAB0(s32, s32, s32, s32, s32);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void func_002BFEE0(s32, s32, s32);
@@ -103,18 +103,18 @@ extern s32 D_005AA670[];
 extern void func_001F0660(void);
 extern f32 func_00146E90(Vec4f *);
 extern f32 func_0011F680(f32, f32);
-extern void func_002A9460(Vec4f *, s32);
+extern void Scr_SetRecord(Vec4f *, s32);
 
 extern void func_00143B50(s32, s32);
 extern void amSound_LoadBank(Msg3 *);
 extern void func_002980F0(Proc *);
 extern void func_002984A0(void);
-extern void func_001F07D0(void);
-extern void func_00144B70(s32);
-extern void func_00144650(s32);
+extern void Scene_SetReady(void);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
 extern void amAdx_Stop(s32);
 extern void func_0028EB40(Proc *, s32, void (*)(void), s32);
-extern void func_001F0830();
+extern void Scene_Request();
 extern s32 func_002908D0(s32);
 extern s32 func_00290AE0(s32);
 extern void func_00290410(Slot *);
@@ -131,7 +131,7 @@ extern void func_0022D0E0(void *, s32);
 extern void Character_Release(void *);
 extern void func_002BFD90(void);
 extern void func_0029A8F0(void);
-extern void func_00291380(void);
+extern void StrBg_Stop(void);
 extern void Help_Exit(void);
 extern void Flight_TaskMain(Proc *);
 extern void *amTask_Create(void (*)(Proc *), s32, s32, s32, s32, char *);
@@ -170,9 +170,9 @@ void func_00298420(Proc *o) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_002984A0);
 void Flight_TaskMain(Proc *o) {
     if (D_005AA574[0]->f4 == 3) {
-        func_001F07D0();
-        func_00144B70(-1);
-        func_00144650(0);
+        Scene_SetReady();
+        SoundRpc_SendWord2(-1);
+        SoundRpc_SendWord(0);
         amAdx_Stop(-1);
         func_0028EB40(o, 10, func_002984A0, 0);
     }
@@ -180,19 +180,19 @@ void Flight_TaskMain(Proc *o) {
 void func_002987E0(s32 n) {
     switch (n) {
     case 0:
-        func_001F0830(9);
+        Scene_Request(9);
         D_005AA640[0] = 9;
         break;
     case 1:
-        func_001F0830(0xB);
+        Scene_Request(0xB);
         D_005AA640[0] = 0xB;
         break;
     case 2:
-        func_001F0830(0xC);
+        Scene_Request(0xC);
         D_005AA640[0] = 0xC;
         break;
     case 3:
-        func_001F0830(6);
+        Scene_Request(6);
         D_005AA640[0] = 6;
         break;
     }
@@ -254,7 +254,7 @@ void func_00298A50(s32 id, s32 a) {
         s->f30 = a;
     }
 }
-void func_00298AB0(s32 id, s32 a) {
+void Snd_SetSlotF2C(s32 id, s32 a) {
     Slot *s = Snd_FindSlot(id);
 
     if (s != NULL) {
@@ -345,7 +345,7 @@ void func_00298E30(Vec4f *v, s32 a) {
     w->f11C0.w = v->w;
     w->f11D0 = a;
 }
-void func_00298E60(void) {
+void StrSelect_ClearWork(void) {
     memset(D_005AA550, 0, 0xE30);
     StrMap_Clear();
     StrBg_Clear();
@@ -375,7 +375,7 @@ void Flight_Exit(void) {
     memset(D_005AA550, 0, (u8 *)D_005AA604 - (u8 *)D_005AA550);
     D_005AA608[0] = NULL;
     func_0029A8F0();
-    func_00291380();
+    StrBg_Stop();
     Help_Exit();
 }
 void Flight_Start(void) {
@@ -392,7 +392,7 @@ void Flight_Load(void) {
     if (D_005AA608[0] != NULL) {
         Character_Release(D_005AA608[0]);
     }
-    D_005AA608[0] = func_001CAAB0(func_002A8CA0(w->f11E1), w->f11E2, w->f11E3, 3, 1);
+    D_005AA608[0] = func_001CAAB0(Flight_MapIndex(w->f11E1), w->f11E2, w->f11E3, 3, 1);
     D_005AA568[0] = amCdFs_ReadFileId(D_00453C80[w->f11E1], 0, 1);
     func_002BFEE0(w->f11E1, w->f11E2, 1);
     Help_Load();
@@ -412,7 +412,7 @@ void Flight_Load(void) {
     D_005AA570[0] = amCdFs_ReadFileId(0x107E0, 0, 1);
     D_005AA574[0] = amCdFs_ReadFileId(0x107E2, 0, 1);
 }
-void func_00299240(s32 n) {
+void StrSelect_Reset(s32 n) {
     Vec4f v;
     f32 f;
 
@@ -436,7 +436,7 @@ void func_00299240(s32 n) {
     f = func_0011F680(v.y, v.z);
     D_005AA670[0] = 0;
     D_005AA668[0] = -(s32)(32768.0f * f / 3.141592f);
-    func_002A9460(&D_005AA604[0]->f11C0, D_005AA604[0]->f11D0);
+    Scr_SetRecord(&D_005AA604[0]->f11C0, D_005AA604[0]->f11D0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_00299390);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_002995F0);

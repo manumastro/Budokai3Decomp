@@ -14,14 +14,14 @@ struct Task {
 extern char D_004696A8[];
 extern u16 D_00492FCE[];
 extern u16 D_00493086[];
-extern s32 D_00470600;
-extern s32 D_00470604;
-extern s32 D_00470608;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
+extern s32 gSceneArg;
 
 extern u32 func_00127BA0(char *);
 extern void amDbg_Printf(u32, s32, char *);
-extern void func_001F0820(void);
-extern void func_00264300(s32, void (*)(void), s32);
+extern void Scene_MarkDone(void);
+extern void Fade_SetRequest(s32, void (*)(void), s32);
 
 void GameOver_TaskDraw(Task *t) {
     amDbg_Printf((0x40 - func_00127BA0(D_004696A8)) >> 1, 10, D_004696A8);
@@ -30,13 +30,13 @@ void GameOver_TaskDraw(Task *t) {
 void GameOver_TaskMain(Task *t) {
     amDbg_Printf((0x40 - func_00127BA0(D_004696A8)) >> 1, 10, D_004696A8);
     if ((D_00492FCE[0] | D_00493086[0]) & 0x4000) {
-        if (D_00470600 == -1) {
-            D_00470600 = 6;
+        if (gSceneNext == -1) {
+            gSceneNext = 6;
         } else {
-            D_00470604 = 6;
+            gSceneQueued = 6;
         }
-        D_00470608 = 0;
-        func_00264300(-1, func_001F0820, 0);
+        gSceneArg = 0;
+        Fade_SetRequest(-1, Scene_MarkDone, 0);
         TASK_SETFUNC(t, GameOver_TaskDraw);
         return;
     }

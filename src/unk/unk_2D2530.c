@@ -40,7 +40,8 @@ typedef struct Obj2D2530 {
     s32 f94;
     s32 f98;
     Model2D2530 *f9C;
-    char padA0[0x8];
+    Model2D2530 *fA0;
+    Model2D2530 *fA4;
     Model2D2530 *f0A8;
     Model2D2530 *fAC;
     Model2D2530 *fB0;
@@ -116,7 +117,7 @@ typedef struct Obj2D2530 {
     s16 *f3D0;
     s16 *f3D4;
     s16 *f3D8;
-    char pad3DC[0x10];
+    s32 f3DC[4];
     s32 *f3EC;
     char pad3F0[0x8];
     s32 f3F8;
@@ -173,7 +174,7 @@ extern s32 D_00470160;
 void func_00228430(s32);
 void func_00228410(void);
 void func_00227A30(Vec4 *);
-void func_00145CC0(s32, s32);
+void amModel_SetCurrent(s32, s32);
 void func_0022C060(Model2D2530 *, f32);
 void func_0022CD00(Model2D2530 *);
 
@@ -193,7 +194,7 @@ static inline void DrawModel(Obj2D2530 *s, Model2D2530 *m, Vec4 *eye, Vec4 *pos)
     D_00470704 = v = s->fC;
     D_00470708 = 0;
     D_0047070C = 0;
-    func_00145CC0(v, 0);
+    amModel_SetCurrent(v, 0);
     D_00470238 = 0;
     func_0022C060(m, 1.0f);
     func_00228410();
@@ -209,8 +210,8 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D27E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D2AD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D2E50);
 extern f32 D_004E0614[];
-void func_00143F20(s32, s32, f32);
-void func_00143D60(s32, s32, s32, s32);
+void SoundRpc_SetVolume(s32, s32, f32);
+void SoundRpc_Send3(s32, s32, s32, s32);
 
 /* A cursor in [0, count-1] moved by the flags: 0x80 decrements, 0x20 increments; past an end it clamps (idx 0)
    or wraps (idx 1), and the callees run when the value changed. */
@@ -231,9 +232,9 @@ void func_002D3050(s32 flags, s8 *cur, s32 count, s32 idx) {
         }
     }
     if (old != *cur) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 2, 0);
+            SoundRpc_Send3(0, 0, 2, 0);
         }
     }
 }
@@ -254,9 +255,9 @@ void func_002D3170(s32 flags, s16 *cur, s32 count, s32 idx) {
         }
     }
     if (old != *cur) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 2, 0);
+            SoundRpc_Send3(0, 0, 2, 0);
         }
     }
 }
@@ -277,9 +278,9 @@ void func_002D3290(s32 flags, s32 *cur, s32 count, s32 idx) {
         }
     }
     if (old != *cur) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 2, 0);
+            SoundRpc_Send3(0, 0, 2, 0);
         }
     }
 }
@@ -301,9 +302,9 @@ void func_002D33B0(s32 flags, s32 *cur, s32 min, s32 count, s32 idx) {
         }
     }
     if (old != *cur) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 2, 0);
+            SoundRpc_Send3(0, 0, 2, 0);
         }
     }
 }
@@ -552,22 +553,20 @@ void func_002D5720(void) {
     m = s->f2A8;
     DrawModel(gOptionWork, m, &v, 0);
 }
-#if 0
-// differs: the step factor (1.2f when D_004703F4 == 3) is laid out with a branch the source form did not reproduce; the rest of the draw matches up to there
 void func_002D58B0(void) {
     Vec4 b;
     Vec4 a;
     Tbl2D2530 *e = (Tbl2D2530 *)D_004E05DC;
     Obj2D2530 *o = gOptionWork;
-    Obj2D2530 *s;
     Model2D2530 *m;
+    Obj2D2530 *s;
     f32 k = 1.0f;
 
     a.x = (f32)e->f24;
     a.y = (f32)e->f28;
     a.z = 0.0f;
     a.w = 1.0f;
-    k = (D_004703F4 == 3) ? 1.2f : 1.0f;
+    k = (D_004703F4 != 3) ? 1.0f : 1.2f;
     o->f398 = o->f398 + k;
     b.x = 1.0f;
     b.y = 1.0f;
@@ -580,14 +579,12 @@ void func_002D58B0(void) {
         b.w = 1.0f - o->f398 / 30.0f;
     }
     s = gOptionWork;
-    m = *(Model2D2530 **)((char *)o + 0x28C + e->f1C * 4);
+    m = ((Model2D2530 **)((char *)o + 0x28C))[e->f1C];
     DrawModel(s, m, 0, &b);
     s = gOptionWork;
-    m = *(Model2D2530 **)((char *)o + 0x294 + e->f1C * 4);
+    m = ((Model2D2530 **)((char *)o + 0x294))[e->f1C];
     DrawModel(s, m, &a, &b);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D58B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5AE0);
 void func_002D5D70(void) {
     Obj2D2530 *o = gOptionWork;
@@ -718,6 +715,37 @@ void func_002D6F40(void) {
     f = s->f320;
     f->f1C = (func_002DF930 == 0) ? 0 : func_002DF930;
 }
+#if 0
+/* differs: 42 of 94; the copy and the stores match, but the constants 1.0f and 193.0f take the other registers */
+typedef struct Copy16_2D2530 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Copy16_2D2530;
+extern s32 D_00456BE0[];
+void func_002D7050(void) {
+    Vec4 v[2];
+    s32 arr[6];
+    Obj2D2530 *s = gOptionWork;
+    Model2D2530 *m;
+    f32 t;
+    s32 i;
+
+    *(Copy16_2D2530 *)arr = *(Copy16_2D2530 *)D_00456BE0;
+    *(s64 *)((u8 *)arr + 16) = *(s64 *)((u8 *)D_00456BE0 + 16);
+    v[0].x = (f32)arr[s->f37C];
+    t = (f32)arr[s->f37C + 3];
+    v[1].x = 193.0f;
+    v[0].z = 0.0f;
+    v[0].w = 1.0f;
+    v[0].y = t;
+    v[1].w = 1.0f;
+    v[1].z = 0.0f;
+    v[1].y = (f32)arr[s->f37C + 3];
+    for (i = 0; i < 2; i++) {
+        m = (&s->f26C)[i];
+        DrawModel(gOptionWork, m, &v[i], 0);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7050);
 void func_002D71D0(void) {
     Obj2D2530 *s = gOptionWork;
@@ -745,7 +773,14 @@ void func_002D79C0(void) {
     v.y = 40.0f * s->f37C;
     DrawModel(gOptionWork, s->f0A8, &v, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7AA0);
+void func_002D7AA0(Vec4 *a, Vec4 *b) {
+    Obj2D2530 *s = gOptionWork;
+    Model2D2530 *m;
+
+    DrawModel(s, s->fA0, 0, a);
+    m = s->fA4;
+    DrawModel(gOptionWork, m, 0, b);
+}
 void func_002DDF00(void);
 void func_002DEFE0(void);
 void func_002D7AA0(Vec4 *, Vec4 *);
@@ -773,6 +808,39 @@ void func_002D7BF0(void) {
         func_002D7AA0(&s->f3C0, &s->f3C0);
     }
 }
+#if 0
+/* differs: 3 of 125; the 12-byte table copy is ordered ld/sd before lwc1 (original: lwc1 first) */
+typedef struct Vec3_2D2530 {
+    f32 x, y, z;
+} Vec3_2D2530;
+extern f32 D_00456BC8[];
+void func_002D7DC0(void) {
+    f32 w[3];
+    Vec4 v;
+    Obj2D2530 *s = gOptionWork;
+    s32 idx;
+    f32 t;
+    Vec3_2D2530 *src;
+    Vec3_2D2530 *dst;
+
+    src = (Vec3_2D2530 *)D_00456BC8;
+    dst = (Vec3_2D2530 *)w;
+    *(s64 *)dst = *(s64 *)src;
+    dst->z = src->z;
+    idx = s->f37C;
+    if (idx != 3) {
+        asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
+        v.y = 40.0f * idx;
+        if (*(&s->f3D0)[idx] != s->f3DC[idx] - 1) {
+            DrawModel(gOptionWork, (Model2D2530 *)s->f98, &v, 0);
+        }
+        v.x = w[idx];
+        if (*(&s->f3D0)[idx] != 0) {
+            DrawModel(gOptionWork, (Model2D2530 *)s->f94, &v, 0);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7DC0);
 void func_002D7FC0(void) {
     Vec4 v;

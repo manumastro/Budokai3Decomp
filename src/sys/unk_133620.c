@@ -81,7 +81,7 @@ void func_00133780(s32 mode, u32 a1) {
 }
 
 
-void func_00133920(u32 mask, u32 or1, u32 xor1, u32 or2, u32 xor2) {
+void DrawFlags_Apply(u32 mask, u32 or1, u32 xor1, u32 or2, u32 xor2) {
     D_0046FD20 &= ~mask;
     D_0046FD20 |= or1;
     D_0046FD20 ^= xor1;

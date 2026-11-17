@@ -71,7 +71,7 @@ u32 func_002A8C50(s32 n) {
 
     return (D_004E6560[n / 16] & (3 << s)) >> s;
 }
-s32 func_002A8CA0(s32 n) {
+s32 Flight_MapIndex(s32 n) {
     if (n < 22) {
         return n;
     }

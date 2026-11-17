@@ -3,12 +3,12 @@
 extern s32 gTourMap;
 extern void *amFile_Load();
 extern void amAdx_Stop(s32);
-extern void func_001F07D0(void);
-extern void func_00144B70(s32);
-extern void func_00144650(s32);
+extern void Scene_SetReady(void);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
 extern void func_00304970(void);
 extern void Zenie_Release(void);
-extern void func_00209530(void *);
+extern void Obj_ResetF38(void *);
 extern void amCdFs_Close(void *, s32);
 extern void amTask_KillGroup(s32, s32, s32);
 extern void func_0029E450(void *);
@@ -37,9 +37,9 @@ void TourMap_TaskMain(u8 *a0) {
     amFile_Load(*(void **)((u8 *)gTourMap + 0x30));
     *(s32 *)((u8 *)gTourMap + 0x24) = *(s32 *)(*(u8 **)((u8 *)gTourMap + 4) + 0x54);
     amFile_Load(*(void **)((u8 *)gTourMap + 0x24));
-    func_001F07D0();
-    func_00144B70(-1);
-    func_00144650(0);
+    Scene_SetReady();
+    SoundRpc_SendWord2(-1);
+    SoundRpc_SendWord(0);
     amAdx_Stop(-1);
     *(s32 *)(s0 + 0x30) = 0;
     *(void **)(s0 + 0x1C) = ((void *)func_00304970 == 0) ? 0 : (void *)func_00304970;
@@ -77,7 +77,7 @@ void TourMap_Exit(void) {
 
     Zenie_Release();
     if (*(s32 *)(*(u8 **)((u8 *)gTourMap + 0x40) + 0x38) != 0) {
-        func_00209530(*(void **)(*(u8 **)((u8 *)gTourMap + 0x40) + 0x38));
+        Obj_ResetF38(*(void **)(*(u8 **)((u8 *)gTourMap + 0x40) + 0x38));
     }
     s1 = 0;
     s0 = 0;
@@ -176,9 +176,9 @@ extern u8 D_004E05DC[];
 extern void func_00144A40(s32, f32, s32);
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Stop(s32);
-extern void func_001F07D0(void);
-extern void func_00144B70(s32);
-extern void func_00144650(s32);
+extern void Scene_SetReady(void);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
 extern void func_00304970(void);
 
 extern void func_002A9080(void *);
@@ -293,4 +293,41 @@ void func_00306060(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00306060);
+#if 0
+// differs: 13 of 52: the byte test, the list append and the tail store match in shape; the register roles of the three tables and the copy pointer differ (the original takes the first table base into  and the list pointer into )
+extern s32 D_00458DE0[];
+extern s32 D_00458DE8[];
+extern u8 D_004E6560[];
+extern u8 D_004E0660[];
+
+void func_00306140(void) {
+    u8 *p;
+    u8 *q;
+    s32 k;
+    s32 t4;
+    s32 i;
+    s32 j;
+    s32 w;
+    p = (u8 *)D_0047097C;
+    k = 0;
+    i = 0;
+    j = 0;
+    q = p;
+    do {
+        w = *(s32 *)(p + 0xC);
+        t4 = *(s32 *)((u8 *)D_00458DE0 + w * 12 + j);
+        if (D_004E6560[t4 + 0x2AF19] < D_004E0660[t4 * 40 + 0xD]) {
+            *(s32 *)(q + 0x14) = t4;
+            k++;
+            q += 4;
+        }
+        i++;
+        j += 4;
+    } while (i < 2);
+    w = *(s32 *)(p + 0xC);
+    *(s32 *)(p + 0x14 + k * 4) = D_00458DE8[w * 3];
+    k++;
+    *(s32 *)(p + 0x10) = k;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00306140);

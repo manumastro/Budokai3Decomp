@@ -4,7 +4,7 @@ extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void *func_0022D860(void *, f32);
 extern void *func_0022D670(void *, f32);
 extern void func_002EE5C0();
@@ -15,8 +15,8 @@ extern void func_002ECFD0();
 extern s32 Save_GetState();
 extern void Save_Exit();
 extern void func_002EF7C0();
-extern void func_00143F20(s32, s32, f32);
-extern void func_00143D60();
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3();
 extern void func_002EE360();
 extern void func_002EF390();
 extern f32 D_004E0614[];
@@ -67,7 +67,7 @@ void func_002EE4D0(u8 *s0) {
     D_00470704 = a0;
     D_0047070C = 0x4000;
     D_00470708 = 0;
-    func_00145CC0(a0, 0x4000);
+    amModel_SetCurrent(a0, 0x4000);
     D_00470238 = 0;
     *(void **)(s0 + 0x5C) = func_0022D860(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x14) + 0x4), 0.0f);
     *(void **)(s0 + 0x60) = func_0022D860(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x14) + 0x10), 0.0f);
@@ -261,7 +261,92 @@ void func_002EF4C0(u8 *task) {
         *(void **)(task + 0x1C) = ((void *)func_002EF7C0 == 0) ? 0 : (void *)func_002EF7C0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF540);
+extern u8 D_004B4B40[];
+extern void func_002EE1C0();
+extern void func_002ECFD0();
+extern void func_002F4A90();
+extern s16 func_002EE7A0();
+extern void func_002EE9F0();
+extern void func_002EDC50();
+extern void Save_Load();
+extern void Save_Request();
+
+void func_002EF540(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    s32 s2;
+    void *fp;
+    s16 a2v;
+    s1 = a0;
+    s0 = *(u8 **)(a0 + 0x30);
+    s2 = 0;
+    func_002EE1C0(s0);
+    func_002ECFD0(s0, 1);
+    if ((s16)func_002F4A80(*(void **)(s0 + 0x58)) == 4) {
+        if ((s16)func_002F4A70(*(void **)(s0 + 0x58)) == 0) {
+            s2 = 1;
+        }
+        func_002F4A90(*(void **)(s0 + 0x58));
+        *(void **)(s0 + 0x58) = 0;
+        if (s2 != 0) {
+            a2v = *(s16 *)(s0 + 0x14);
+            *(u8 *)((u8 *)D_004B4B40 + a2v * 40 + 0x30000 - 0x4A2A) = 0;
+            func_002EE7A0(s0, 0, a2v);
+            func_002EE9F0(s0);
+            func_002EDC50(s0);
+            *(s16 *)(s0 + 0x18) = 4;
+            Save_Load(0x3000, 0);
+            Save_Request(6, -1, 0);
+            fp = (void *)func_002EF4C0;
+            *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        } else {
+            fp = (void *)func_002EF7C0;
+            *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        }
+    }
+}
+#if 0
+// differs: 20 bytes short (0x12C vs 0x140): the frame and the switch layout match; in the kind 6 arm the original's call and store order around InputPass_CopyName / func_002F2600 / func_002EE7A0 differs (one extra instruction before the r test)
+void func_002EF680(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    u8 buf[0x30];
+    s32 kind;
+    s16 r;
+    void *fp;
+    s1 = a0;
+    s0 = *(u8 **)(a0 + 0x30);
+    func_002EE1C0(s0);
+    func_002ECFD0(s0, 1);
+    switch ((s16)InputPass_GetKind(*(s32 *)(s0 + 0x54))) {
+    case 6:
+        InputPass_CopyName(*(s32 *)(s0 + 0x54), buf);
+        func_002F2600(*(s32 *)(s0 + 0x54));
+        r = (s16)func_002EE7A0(s0, buf);
+        *(s32 *)(s0 + 0x54) = 0;
+        if (r < 0) {
+            *(f32 *)(s0 + 0x1C) = 300.0f;
+            fp = (void *)func_002EF440;
+            *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        } else {
+            func_002EE9F0(s0);
+            func_002EDC50(s0);
+            *(s16 *)(s0 + 0x18) = 4;
+            Save_Load(0x3000, 0);
+            Save_Request(6, -1, 0);
+            fp = (void *)func_002EF4C0;
+            *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        }
+        break;
+    case 7:
+        func_002F2600(*(s32 *)(s0 + 0x54));
+        *(s32 *)(s0 + 0x54) = 0;
+        fp = (void *)func_002EF7C0;
+        *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        break;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF680);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF7C0);
 extern f32 gFrameDelta;
@@ -338,9 +423,9 @@ void func_002F04D0(u8 *task) {
     u8 *obj;
 
     obj = *(u8 **)(task + 0x30);
-    func_00143F20(0, 0, D_004E0614[0]);
+    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
     if (D_004E0614[0] > 0.0f) {
-        func_00143D60(0, 0, 0x16, 0);
+        SoundRpc_Send3(0, 0, 0x16, 0);
     }
     func_002EE360(obj);
     *(u32 *)(obj + 0x1C) = 0x42700000;
@@ -348,7 +433,34 @@ void func_002F04D0(u8 *task) {
     *(s16 *)(obj + 0x4) = 5;
     *(void **)(task + 0x1C) = ((void *)func_002EF390 == 0) ? 0 : (void *)func_002EF390;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002F0570);
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern void Help_Load();
+extern void func_002F27B0();
+extern void func_002F0160();
+extern char D_0046F718[];
+extern char D_0046F728[];
+
+void *func_002F0570(s16 a0) {
+    u8 *s0;
+    u8 *s1;
+    void *t;
+    s0 = (u8 *)D_00470968;
+    t = amTask_Create((void *)func_002F0160, 0, 0x2800, 8, 2, D_0046F718);
+    *(void **)(s0 + 0xC) = t;
+    s0 = (u8 *)t;
+    t = amHeap_Alloc(0x248, 0, D_0046F728, 0xB0);
+    s1 = (u8 *)t;
+    *(void **)(s0 + 0x30) = t;
+    memset(s1, 0, 0x248);
+    *(s16 *)s1 = 1;
+    *(s16 *)(s1 + 2) = -1;
+    *(s16 *)(s1 + 0xA) = a0 + 0x1E;
+    *(s16 *)(s1 + 0xC) = 0;
+    *(s16 *)(s1 + 0xE) = 0;
+    Help_Load();
+    func_002F27B0();
+    return s0;
+}
 extern char D_0046F728[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 
