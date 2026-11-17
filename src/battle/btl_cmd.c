@@ -200,18 +200,19 @@ void func_001A48C0(void) {
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A4920);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A4AF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A4CF0);
-#if 0
-/* Does not match yet: 3 of 16 instructions differ. */
-s32 func_001A50F0(MotFile *f, s32 i) {
+s32 func_001A50F0(u8 *f, s32 i) {
     s32 r = 0;
-    MotEntry *e = Mot_GetEntry(f, i);
-    if (e != 0) {
-        r = e->data;
+    u8 *e = NULL;
+
+    if (i >= 0 && i < *(s32 *)(f + 0x10)) {
+        e = *(u8 **)(f + 0x14);
+        e += (i << 4);
+    }
+    if (e != NULL) {
+        r = *(s32 *)e;
     }
     return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A50F0);
 MotEntry *func_001A5130(MotFile *f, s32 i) {
     return Mot_GetEntry(f, i);
 }
@@ -299,30 +300,30 @@ void func_001A5630(BtlSlots *s, s32 i, s32 v) {
     s->slot[i] = v;
 }
 
-// GIVEN UP: the index and the base pointer take the other two registers (sll into a0, lw into v1 in the original)
+// GIVEN UP: x / 6 and the stores match; the 0x5C store is moved into the delay slot of the `a1 != 0` test (the original keeps it before the branch)
 #if 0
-void func_001A5640(BtlSlotRec *s, s32 a1, s32 a2) {
-    s32 *e;
-    s32 v;
-    s32 off;
+void func_001A5640(u8 *a0, u8 *a1, s32 a2) {
+    s32 x;
+    s32 *t;
 
-    memset(s, 0, 0x60);
-    v = -1;
-    s->unk4E = v;
-    s->unk4C = v;
-    s->unk50 = v;
-    s->unk54 = -1.0f;
-    s->unk4D = v;
-    s->unk4F = v;
-    s->unk58 = v;
-    s->unk5C = -1.0f;
-    s->unk00 = a1;
-    if (a1 != 0) {
-        s->unk04 = a2;
-        off = a2 * 4;
-        e = *(s32 **)((u8 *)s->unk00 + 0x46C + off);
-        v = (e != 0) ? e[4] : v;
-        s->unk08 = v / 6;
+    memset(a0, 0, 0x60);
+    *(s8 *)(a0 + 0x4E) = -1;
+    *(s8 *)(a0 + 0x4C) = -1;
+    *(s32 *)(a0 + 0x50) = -1;
+    *(s32 *)(a0 + 0x54) = 0xBF800000;
+    *(s8 *)(a0 + 0x4D) = -1;
+    *(s8 *)(a0 + 0x4F) = -1;
+    *(s32 *)(a0 + 0x58) = -1;
+    *(s32 *)(a0 + 0x5C) = 0xBF800000;
+    if (a1 != NULL) {
+        x = -1;
+        *(u8 **)a0 = a1;
+        *(s32 *)(a0 + 4) = a2;
+        t = *(s32 **)(*(u8 **)a0 + a2 * 4 + 0x46C);
+        if (t != NULL) {
+            x = t[4];
+        }
+        *(s32 *)(a0 + 8) = x / 6;
     }
 }
 #endif
@@ -673,6 +674,44 @@ void func_001AA860(BtlRank *a0) {
         }
     }
 }
+extern u8 D_00427440[];
+
+typedef struct BtlCopy16 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) BtlCopy16;
+
+typedef struct BtlCopy18 {
+    BtlCopy16 a;
+    s16 b;
+} __attribute__((aligned(16))) BtlCopy18;
+
+// GIVEN UP: the 18-byte copy is lq + lh from one base register and sq + sh (the copy is 32 bytes in C: lq + lq);
+// the struct and pointer forms of the copy did not give the original's order (4 forms tried)
+#if 0
+s32 func_001AA9D0(s32 a0) {
+    BtlCopy18 buf;
+    u16 *p;
+    s32 mask;
+    s32 n;
+    u8 *src;
+
+    src = D_00427440;
+    buf.a = *(BtlCopy16 *)src;
+    buf.b = *(s16 *)(src + 0x10);
+    n = 0;
+    if (*(u16 *)&buf != 0) {
+        mask = *(u16 *)(D_00492FC0 + a0 * 184 + 0xE) | *(u16 *)(D_00492FC0 + a0 * 184 + 0x6E);
+        p = (u16 *)&buf;
+        do {
+            if ((*p & mask) != 0) {
+                n++;
+            }
+            p++;
+        } while (*p != 0);
+    }
+    return n;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA9D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAA60);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAEA0);
