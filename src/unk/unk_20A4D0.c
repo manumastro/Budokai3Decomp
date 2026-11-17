@@ -4,7 +4,7 @@ void func_0013B0B0(u8 *);
 void func_0013B110(s32);
 void func_0013B060(s32);
 extern s32 D_00470238;
-void func_00145CC0(s32, s32);
+void amModel_SetCurrent(s32, s32);
 void func_00208D60(s32);
 void func_00209C50(void);
 void func_00209D70(void *);
@@ -1283,7 +1283,7 @@ void func_0020EC70(s32 i) {
     }
     if (*(s32 *)(s0 + 0x88) != 0) {
         D_00470238 = 0;
-        func_00145CC0(*(s32 *)(s0 + 0x88), *(s32 *)(s0 + 0x20E4));
+        amModel_SetCurrent(*(s32 *)(s0 + 0x88), *(s32 *)(s0 + 0x20E4));
     }
     if (*(s32 *)(s0 + 0x20EC) & 0x80) {
         func_0013B160(s0 + 0x40);
@@ -2321,7 +2321,7 @@ void func_00212050(u8 *p) {
         s0 = p + 0x20;
         D_00470238 = 0;
         if (*(s32 *)(s0 + 0x0) != 0) {
-            func_00145CC0(*(s32 *)(s0 + 0x0), *(s32 *)(s0 + 0x8));
+            amModel_SetCurrent(*(s32 *)(s0 + 0x0), *(s32 *)(s0 + 0x8));
         }
         if (*(s32 *)(s0 + 0x4) != 0) {
             func_00208D60(*(s32 *)(s0 + 0x4));
@@ -2357,7 +2357,7 @@ void func_00212160(u8 *a) {
         s0 = p + 0x20;
         D_00470238 = 0;
         if (*(s32 *)(s0 + 0x0) != 0) {
-            func_00145CC0(*(s32 *)(s0 + 0x0), *(s32 *)(s0 + 0x8));
+            amModel_SetCurrent(*(s32 *)(s0 + 0x0), *(s32 *)(s0 + 0x8));
         }
         if (*(s32 *)(s0 + 0x4) != 0) {
             func_00208D60(*(s32 *)(s0 + 0x4));
