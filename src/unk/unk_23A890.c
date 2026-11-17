@@ -294,32 +294,38 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D360);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D970);
 #if 0
-void func_0023DB40(s32 x) {
+void func_0023DB40(s32 a0) {
+    s32 k = a0;
     u8 *sys = gBtlSys;
-    s32 idx = x;
-    s32 a = func_0021C3D0(idx);
-    u8 *q = func_0021C660(a);
-    u8 *p = func_0021C430(a);
-    u8 *t = D_0058BF70 + idx * 100 + 0x210;
+    s32 r1;
+    u8 *p2;
+    u8 *p3;
+    s32 s0;
     s32 v;
+    u8 *s2;
 
-    if (*(s16 *)(p + 0x42) != *(s16 *)(q + 0x42)) {
-        v = *(s16 *)(q + 0x42);
-        if (v >= 1000) {
-            v = 999;
+    r1 = func_0021C3D0(a0);
+    p2 = func_0021C660(r1);
+    p3 = func_0021C430(r1);
+    s0 = *(s16 *)(p2 + 0x42);
+    v = *(s16 *)(p3 + 0x42);
+    s2 = D_0058BF70 + k * 0x64 + 0x210;
+    if (v != s0) {
+        if (s0 >= 0x3E8) {
+            s0 = 0x3E7;
         }
         D_00470704 = *(s32 *)(sys + 0xE84);
-        D_0047070C = 0x04010000;
+        D_0047070C = 0x4010000;
         D_00470708 = 0;
-        amModel_SetCurrent(*(s32 *)(sys + 0xE84), 0x04010000);
+        amModel_SetCurrent(*(s32 *)(sys + 0xE84), 0x4010000);
         D_00470238 = 0;
-        if (*(s32 *)(t + 0xC) != 0) {
-            func_0022C7D0((f32)v, 1);
-            func_0022ACF0(*(s32 *)(t + 0xC));
+        if (*(s32 *)(s2 + 0xC) != 0) {
+            func_0022C7D0((f32)s0, 1);
+            func_0022ACF0(*(s32 *)(s2 + 0xC));
         }
     }
 }
-// differs: the saved registers of the system pointer and of the table entry are swapped (the entry pointer is s2 in the original); the rest of the body matches
+// differs: 208 bytes (round 5, u23c): the calls, the lh compares, the D_0047070x stores and the amModel call all match in order; the saved registers do not: the original holds gBtlSys in s1 and the argument in s2 (frame 0x40), ours gives sys s2 and the argument s3 (frame 0x50). Tried: the argument copied to a local first, and the pointer local declared last (same), the sys/argument declaration orders (same).
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023DB40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023DC10);
@@ -1036,34 +1042,31 @@ void func_00241D60(s32 i) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241D60);
-#if 0
-void func_00241EB0(s32 i, s32 mode) {
-    u8 *q = gBattle + i * 0x2020 + 0x830;
-    u8 *e = D_0046FE44 + i * 0x80;
+void func_00241EB0(s32 a0, s32 a1) {
+    u8 *q = gBattle + a0 * 0x2020 + 0x830;
+    u8 *o = D_0046FE44 + a0 * 0x80;
 
-    switch (mode) {
-    case 3:
-        *(s32 *)(e + 0x2C) |= 1;
-        *(s32 *)(e + 0x2C) |= 8;
+    switch (a1) {
+    case 0:
+    case 1:
+        if (*(s8 *)(q + 0xCBD) != 0) {
+            *(s32 *)(o + 0x2C) |= 1;
+            *(s32 *)(o + 0x2C) &= ~8;
+        } else {
+            *(s32 *)(o + 0x2C) &= ~1;
+            *(s32 *)(o + 0x2C) &= ~8;
+        }
         break;
     case 2:
-        *(s32 *)(e + 0x2C) &= ~1;
-        *(s32 *)(e + 0x2C) |= 8;
+        *(s32 *)(o + 0x2C) &= ~1;
+        *(s32 *)(o + 0x2C) |= 8;
         break;
-    case 1:
-    case 0:
-        if (*(s8 *)(q + 0xCBD) != 0) {
-            *(s32 *)(e + 0x2C) |= 1;
-        } else {
-            *(s32 *)(e + 0x2C) &= ~1;
-        }
-        *(s32 *)(e + 0x2C) &= ~8;
+    case 3:
+        *(s32 *)(o + 0x2C) |= 1;
+        *(s32 *)(o + 0x2C) |= 8;
         break;
     }
 }
-// differs: the mode chain is laid out in another order (the mode 3 test first, the mode 0/1 block placed last), and the field addresses are formed in another order: 24 bytes longer in the original
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241EB0);
 void func_00241FA0(s32 i, s32 k) {
     u8 *q = gBattle + i * 0x2020 + 0x830;
     u8 *o = D_0046FE44 + i * 0x80;
@@ -1323,32 +1326,32 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243280);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002433F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243600);
 #if 0
-void func_002439E0(u8 *o) {
-    s32 i = *(s32 *)(o + 0x10);
-    u8 *base = gBattle + i * 0x2020;
+void func_002439E0(u8 *p) {
+    s32 idx = *(s32 *)(p + 0x10);
+    u8 *base = gBattle + idx * 0x2020;
     u8 *q = base + 0x830;
-    u8 *e = D_0046FE44 + i * 0x80;
-    s32 p = *(s32 *)(base + 0x1B84);
-    s32 mode = *(s32 *)(o + 0x14);
-    s16 v;
+    u8 *r = *(u8 **)(base + 0x1B84);
+    u8 *o = D_0046FE44 + idx * 0x80;
+    s32 m = *(s32 *)(p + 0x14);
 
-    if (mode == 0) {
-        *(s16 *)(e + 0x34) = *(s32 *)(q + 0xBA4);
-        *(s32 *)(e + 0x2C) &= ~0x80;
-        *(s16 *)(e + 0x36) = *(s32 *)(q + 0x1CFC);
-        func_00241600(*(s32 *)(o + 0x10));
-    } else if (mode == 1) {
-        v = *(s16 *)(o + 0x18);
+    if (m == 1) {
+        s32 v = *(s16 *)(p + 0x18);
         if (v < 8) {
-            *(s16 *)(e + 0x34) = v;
+            *(s16 *)(o + 0x34) = v;
         }
-        *(s16 *)(e + 0x36) = *(s32 *)(p + 0x1CFC);
-        *(s32 *)(e + 0x2C) |= 0x80;
-        func_00241600(*(s32 *)(o + 0x10));
-        func_00241C10(*(s32 *)(o + 0x10));
+        *(s16 *)(o + 0x36) = *(s32 *)(r + 0x1CFC);
+        *(s32 *)(o + 0x2C) |= 0x80;
+    } else if (m == 0) {
+        *(s16 *)(o + 0x34) = *(s32 *)(q + 0xBA4);
+        *(s32 *)(o + 0x2C) &= ~0x80;
+        *(s16 *)(o + 0x36) = *(s32 *)(q + 0x1CFC);
+        func_00241600(*(s32 *)(p + 0x10));
+        return;
     }
+    func_00241600(*(s32 *)(p + 0x10));
+    func_00241C10(*(s32 *)(p + 0x10));
 }
-// differs: the mode-1 block is placed after the mode-0 block in the original (its test is the first branch), and the temporaries take other registers
+// differs: 216 bytes (round 5, u23c): the logic matches (the switch-like m==1 / m==0 pair, the (s16) stores, the two tail calls); the temporaries differ (the original loads idx into t1 and the struct pointer m in a0, the table pointer in a3 before the branch), so the branch layout and the register choice differ. One attempt only.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002439E0);
 void func_00243AC0(u8 *o) {
@@ -2237,24 +2240,24 @@ void func_002477C0(u8 *o) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002477C0);
 #if 0
 void func_00247820(void) {
-    s32 s1 = 0;
-    u8 *r;
     s32 s2 = D_0051CD0C[0];
-    s32 a = func_001A50F0(s2, 0x208);
+    s32 s1 = 0;
+    s32 r = func_001A50F0(s2, 0x208);
+    u8 *s0;
 
-    if (a != 0) {
-        s1 = func_00209540(a, 0x2000004, 0);
+    if (r != 0) {
+        s1 = func_00209540(r, 0x2000004, 0);
     }
     if (s1 != 0) {
-        r = func_001F5FD0(0x85000000, D_0046AD90, 0, func_002477C0, func_00247770);
-        *(s32 *)(r + 0x20) &= ~0x800;
-        *(s32 *)(r + 0x20) |= 0x800;
-        memset(r + 0x30, 0, 0x80);
-        *(s32 *)(r + 0x38) = s1;
-        *(s32 *)(r + 0x34) = func_001A50F0(s2, 0x280);
+        s0 = (u8 *)func_001F5FD0(0x85000000, D_0046AD90, 0, func_002477C0, func_00247770);
+        *(s32 *)(s0 + 0x20) &= ~0x800;
+        *(s32 *)(s0 + 0x20) |= 0x800;
+        memset(s0 + 0x30, 0, 0x80);
+        *(s32 *)(s0 + 0x38) = s1;
+        *(s32 *)(s0 + 0x34) = func_001A50F0(s2, 0x280);
     }
 }
-// differs: the saved registers of the three locals (the table value, the counter and the new block) do not match the original under any declaration order tried
+// differs: 216 bytes (round 5, u23c): the calls and the field stores match, the saved registers do not: the original keeps the D_0051CD0C value in s2, the zero/result in s1 and the pointer in s0 (frame 0x40); three declaration orders tried (the zero first, the pointer initialised to 0), all differ in the same registers.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247820);
 void func_00247900(void) {
