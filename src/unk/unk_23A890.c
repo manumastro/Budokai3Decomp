@@ -732,20 +732,16 @@ void func_00243BC0(u8 *o) {
     func_00241EB0(*(s32 *)(o + 0x10), *(s32 *)(o + 0x14));
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243BD0);
-#if 0
 void func_00243D80(u8 *o) {
-    s16 v = *(s16 *)(o + 0x18);
     s32 idx = *(s32 *)(o + 0x10);
     u8 *p = D_0046FE44 + (idx << 7);
+    s16 v = *(s16 *)(o + 0x18);
 
     if (v < 8) {
         *(s16 *)(p + 0x34) = v;
     }
     func_00241600(*(s32 *)(o + 0x10));
 }
-// differs: the loads come in another order (lw of the index, lh of the value, then the table base); the register roles are swapped
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243D80);
 void func_00243DB0(u8 *o) {
     func_00241FA0(*(s32 *)(o + 0x10), *(s32 *)(o + 0x14));
 }
