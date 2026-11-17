@@ -569,6 +569,7 @@ void func_0024E440(s32 *a0) {
     s16 *s2 = (s16 *)(v1 + 0x22);
     s32 s3 = ((Fighter *)a0[2])->unk1350;
     s32 r1;
+    u32 mask;
     s32 r2;
 
     r1 = func_0020B020(s3, *(s16 *)(v1 + 0x20), *(s16 *)(v1 + 0x22));
@@ -1554,6 +1555,49 @@ void func_00253A50(s32 *a0, u8 *a1) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253A50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253BA0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253E60);
+// GIVEN UP: 12 of 80 differ: the register of the mask constant (lui a3 vs v0) and the order of the res[0] and o+0x30 loads; the struct copies, the memset and the float constants match (declaration orders tried, 4 forms)
+#if 0
+extern s32 func_00253690(u8 *, s32, u8 *);
+f32 func_00253FC0(u8 *a0, u8 *o) {
+    s32 res[4] __attribute__((aligned(16)));
+    u8 buf[0x60] __attribute__((aligned(16)));
+    u8 *t;
+    s32 a3;
+    s32 base;
+    u8 *q;
+    f32 fx;
+    f32 fy;
+    s32 r0;
+    s32 r1;
+    u32 mask;
+
+    if (func_00253690(a0, *(s16 *)(o + 0x34), (u8 *)res) == 0) {
+        return *(f32 *)o;
+    }
+    t = (u8 *)res[0];
+    a3 = *(s16 *)((u8 *)res + 8);
+    base = *(s32 *)(t + 0x14) + (s32)t;
+    q = t + *(s32 *)(base + ((a3 - *(s32 *)(t + 0x18)) << 2));
+    fx = (f32)*(s16 *)(q + 0x10);
+    fy = (f32)*(s16 *)(q + 0x12);
+    memset(buf, 0, 0x60);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x20), "r"(o));
+    *(f32 *)(buf + 0x44) = 0.5f;
+    *(f32 *)(buf + 0x48) = fx - 0.5f;
+    *(f32 *)(buf + 0x4C) = fy - 0.5f;
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x50), "r"(o + 0x10));
+    *(f32 *)buf = 0.0f;
+    r0 = res[0];
+    mask = (u32)*(s32 *)(o + 0x30) & 0x30000;
+    *(s32 *)(buf + 0x10) = r0;
+    r1 = res[1];
+    *(s16 *)(buf + 0x18) = *(s16 *)((u8 *)res + 8);
+    *(s32 *)(buf + 0x14) = r1;
+    *(s32 *)(buf + 4) = (mask >> 15) | 1;
+    *(s16 *)(buf + 0x1A) = 0;
+    return func_00253320((s32 *)buf, o, fx, fy);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253FC0);
 
 
