@@ -1,4 +1,17 @@
 #include "common.h"
+extern void func_003077E0();
+extern void func_002F03E0();
+extern f32 D_004703BC;
+extern u8 *D_00470988;
+extern s16 ArenaList_GetFirst();
+extern s32 func_0027E2D0();
+extern u8 D_004B4B63[];
+extern u8 D_005C4126[];
+extern u8 D_004B4B56[];
+extern void ArenaStageSel_Start();
+extern void func_002D1C50();
+extern void func_002F03E0();
+extern void func_003083E0();
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_003077E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307AF0);
@@ -16,7 +29,65 @@ void func_00307CF0(u8 *a0) {
 }
 void func_00307D40(void) {
 }
+#if 0
+// differs: 23 of 61 instr differ: the obj/global register roles and the float tail still differ
+void func_00307D50(u8 *task) {
+    u8 *s1;
+    u8 *s0;
+    f32 f1;
+    f32 f2;
+
+    s0 = *(u8 **)(task + 0x30);
+    f2 = *(f32 *)(s0 + 0x44);
+    s1 = D_00470988;
+    if (f2 < 1.0f) {
+        *(f32 *)(s0 + 0x44) = f2 + 0.05f * D_004703BC;
+    }
+    f1 = *(f32 *)(s0 + 0x44);
+    if (f1 > 1.0f) {
+        *(f32 *)(s0 + 0x44) = 1.0f;
+    }
+    f1 = *(f32 *)(s0 + 0x44);
+    if (f1 < 1.0f) {
+        func_003077E0(s0);
+        *(void **)(*(u8 **)(s1 + 0x10) + 0x30) = 0;
+        *(s32 *)(*(u8 **)(s1 + 0x10) + 0x34) = 0;
+        *(s32 *)(*(u8 **)(s1 + 0x10) + 0x38) = 0;
+        *(f32 *)(*(u8 **)(s1 + 0x10) + 0x3C) = *(f32 *)(s0 + 0x44);
+    } else {
+        ArenaStageSel_Start(D_004B4B56[0]);
+        func_002D1C50();
+        func_002F03E0();
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307D50);
+#if 0
+// differs: compiled 0xC4 vs 0xD0: 3 instructions short (the movz select / order of the func_0027E2D0 arguments)
+void func_00307E40(u8 *task) {
+    u8 *s0;
+    s32 v0;
+    s32 v1;
+    s32 t0;
+
+    s0 = *(u8 **)(task + 0x30);
+    func_003077E0(s0);
+    v0 = (s16)ArenaList_GetFirst(*(void **)(s0 + 0x10));
+    if (v0 >= 6) {
+        func_002F03E0();
+        *(s32 *)(s0 + 0x10) = 0;
+        v1 = 4;
+        if (D_004B4B63[0] == 0) {
+            v1 = 2;
+        }
+        t0 = D_005C4126[0];
+        v0 = func_0027E2D0(5, (u8)(v1 & 0xFF), 1, -1, t0, 0, 0, 3);
+        *(s32 *)(s0 + 0x8) = v0;
+        *(u32 *)(s0 + 0x40) = 0x42200000;
+        *(void **)(task + 0x1C) = ((void *)func_003083E0 == 0) ? 0 : (void *)func_003083E0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307E40);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307F10);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00308070);
