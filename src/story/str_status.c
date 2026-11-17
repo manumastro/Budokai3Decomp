@@ -3,11 +3,34 @@
 #include "menu/mn_TourMode.h"
 #include "story/str_status.h"
 
+extern s32 *D_0046FE44;
+extern s32 *D_0047011C;
+extern void func_002BDF50(void *, void *);
+extern void func_00209530(s32);
+extern void func_00215230(s32, s32);
+extern void func_00214FD0(void);
+extern void amTask_KillGroup(s32, s32, s32);
+extern void *D_0046FDCC;
+extern char D_005BCF80[];
+extern void memset(void *, s32, s32);
+extern void func_00243ED0(void);
+extern void func_002CA3F0(void);
+extern void func_00209450(s32, s32);
+extern void func_00243F20(void);
+extern void func_002CA440(void);
+extern void func_002BEA30(void);
+extern void func_00215900(void);
+extern void func_00244150(void);
+extern void func_002BE320(s32);
+extern void func_002BEB50(void);
+extern void func_002CA4A0(void);
+extern void func_002C03B0(s32 *);
+extern void func_0022C700(Task *);
+extern TourModeGlobal *gTourMode;
 extern char D_0046EE10[];
 extern void (*D_0046EE30[])(void *);
 extern void func_0028EB40(Task *, s32, void (*)(Task *), s32);
 extern void func_002BD140(Task *);
-extern s32 *D_0047011C;
 extern void amCdFs_Close(s32, s32);
 extern void amFile_Load(s32);
 
@@ -74,7 +97,6 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDE80);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDF50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE0B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE320);
-extern s32 *D_0046FE44;
 
 // func_002BE4E0: the layout of the two branches differs (the clear block comes last in the original); not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE4E0);
@@ -83,8 +105,6 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE710);
 
 // func_002BE7C0 (sets or clears bit 0 of a word of D_0047011C by a flag): the if/else layout differs; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE7C0);
-extern s32 *D_0047011C;
-extern void func_002BDF50(void *, void *);
 
 void func_002BE830(char *p) {
     *(s16 *)(p + 0x2A) = 6;
@@ -100,7 +120,6 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BED90);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEEE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEF00);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF000);
-extern void func_00209530(s32);
 
 void func_002BF310(void) {
     s32 i;
@@ -129,13 +148,20 @@ void func_002BFC00(s32 *p) {
         D_0046EE30[p[4]](p);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFC50);
-extern void *D_0046FDCC;
-extern char D_005BCF80[];
-extern void memset(void *, s32, s32);
-extern void func_00243ED0(void);
-extern void func_002CA3F0(void);
-extern void func_00209450(s32, s32);
+
+void func_002BFC50(void) {
+    func_00215230(-1, -1);
+    func_00214FD0();
+    amTask_KillGroup(0x400, 0x20000, 0);
+    memset(D_0046FDCC, 0, 0xA0);
+    D_0047011C[0x1BC / 4] &= -3;
+    if (D_0047011C[0x1A4 / 4] != 0) {
+        func_00209530(D_0047011C[0x1A4 / 4]);
+        D_0047011C[0x1A4 / 4] = 0;
+    }
+    func_00209450(0x400010, 1);
+    func_00209450(0x400020, 1);
+}
 
 void func_002BFCF0(void) {
     memset(D_0046FDCC, 0, 0xA0);
@@ -148,12 +174,24 @@ void func_002BFCF0(void) {
     func_00209450(0x400080, 1);
     memset(D_005BCF80, 0, 0x2E0);
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFD90);
-extern void func_00215900(void);
-extern void func_00244150(void);
-extern void func_002BE320(s32);
-extern void func_002BEB50(void);
-extern void func_002CA4A0(void);
+
+void func_002BFD90(void) {
+    func_00215230(-1, -1);
+    func_00214FD0();
+    amTask_KillGroup(0x400, 0x20000, 0);
+    memset(D_0046FDCC, 0, 0xA0);
+    D_0047011C[0x1BC / 4] &= -3;
+    if (D_0047011C[0x1A4 / 4] != 0) {
+        func_00209530(D_0047011C[0x1A4 / 4]);
+        D_0047011C[0x1A4 / 4] = 0;
+    }
+    func_00209450(0x400010, 1);
+    func_00209450(0x400020, 1);
+    func_00209450(0x400008, 1);
+    func_00243F20();
+    func_002CA440();
+    func_002BEA30();
+}
 
 void func_002BFE60(s32 a0) {
     if (a0 == 0 || D_0047011C[0x1C4 / 4] != 0) {
@@ -173,7 +211,6 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0220);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C02C0);
 // func_002C03B0: the function address test (?:) gets its branch in the other order; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03B0);
-extern void func_002C03B0(s32 *);
 
 // func_002C03E0 (reads a file of an entry and loads it again): the function address goes to another register; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03E0);
@@ -204,7 +241,6 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1320);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C15E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1720);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1860);
-extern void func_0022C700(Task *);
 
 void func_002C19F0(Task *task) {
     func_0022C700(task);
@@ -227,7 +263,6 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C32C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3A10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3B40);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3D20);
-extern TourModeGlobal *gTourMode;
 
 void StrStatus_ClearTourMode(void) {
     gTourMode = NULL;
