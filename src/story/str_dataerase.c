@@ -99,10 +99,77 @@ void func_0030F350(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F420);
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F560);
+extern void func_0030F420(void);
+void func_0030F560(s32 *a0) {
+    s32 *s1;
+    s32 *s0;
+    s1 = (s32 *)a0[0x30 / 4];
+    s0 = (s32 *)D_0047099C;
+    func_0022C700(a0);
+    func_00133B50(0, 0);
+    {
+        s32 v = s0[0xC / 4];
+        D_00470704 = v;
+        D_0047070C = 0x6000;
+        D_00470708 = 0;
+        func_00145CC0(v, 0x6000);
+    }
+    D_00470238 = 0;
+    if (s1[0] != 0) {
+        func_0022C060(s1[0], 1.0f);
+        func_0022CD00(s1[0]);
+    }
+    if (s1[1] != 0) {
+        func_0022C060(s1[1], 1.0f);
+        func_0022CD00(s1[1]);
+    }
+    {
+        f32 t = *(f32 *)&s1[0x10 / 4] - D_004703BC;
+        *(f32 *)&s1[0x10 / 4] = t;
+        if (t <= 0.0f) {
+            void *f = func_0030F420;
+            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F650);
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F790);
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F8D0);
+extern void func_0030F270(char *);
+extern void func_0030F790(void);
+void func_0030F8D0(s32 *a0) {
+    s32 *s1;
+    s32 *s0;
+    s1 = (s32 *)a0[0x30 / 4];
+    s0 = (s32 *)D_0047099C;
+    func_0022C700(a0);
+    func_00133B50(0, 0);
+    {
+        s32 v = s0[0xC / 4];
+        D_00470704 = v;
+        D_0047070C = 0x6000;
+        D_00470708 = 0;
+        func_00145CC0(v, 0x6000);
+    }
+    D_00470238 = 0;
+    if (s1[0] != 0) {
+        func_0022C060(s1[0], 1.0f);
+        func_0022CD00(s1[0]);
+    }
+    if (s1[1] != 0) {
+        func_0022C060(s1[1], 1.0f);
+        func_0022CD00(s1[1]);
+    }
+    {
+        f32 t = *(f32 *)&s1[0x10 / 4] - D_004703BC;
+        *(f32 *)&s1[0x10 / 4] = t;
+        if (t <= 0.0f) {
+            void *f;
+            func_0030F270((char *)s1);
+            f = func_0030F790;
+            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F9C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030FB00);
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030FF30);
