@@ -529,7 +529,7 @@ int func_001CCA90(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCA90);
-// differs: 28 of 33 at best. The original frame is 0x50 with the buffer at sp+0x20 and no saved s0 across memset; ours is 0x60 and keeps the buffer address in s0 (memset + func_001E57C0 call order matches).
+/* r6 best attempt diff 1 */
 #if 0
 int func_001CCBF0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
@@ -537,13 +537,14 @@ int func_001CCBF0(void *unused, Arg *a) {
     f32 x1 = f[1];
     f32 x2 = f[2];
     s32 buf[12];
-    f32 *fb = (f32 *)buf;
+    f32 *fb;
     memset(buf, 0, 0x30);
     buf[0] = 0;
-    fb[4] = x2;
-    fb[5] = x1;
-    fb[6] = x0;
-    fb[7] = 1.0f;
+    fb = (f32 *)&buf[4];
+    fb[0] = x2;
+    fb[1] = x1;
+    fb[2] = x0;
+    buf[7] = 0x3F800000;
     func_001E57C0(0, 0, buf);
     return 1;
 }
