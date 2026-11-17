@@ -134,8 +134,67 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1B30);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1C20);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1DB0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1F30);
+extern void amCdFs_ReleaseCache(s32);
+extern void memset(void *, s32, s32);
+extern char D_005AB3C0[];
+extern s32 D_005AB490[];
+extern s32 D_005AB494[];
+extern s32 D_005AB498[];
+extern s32 D_005AB49C[];
+extern s16 D_005AB5E6[];
+extern s16 D_005AB4B8[];
+extern s16 D_005AB4BE[];
+extern s16 D_005AB508[];
+extern s16 D_005AB50E[];
+extern s16 D_005AB558[];
+extern s16 D_005AB5A8[];
+extern s16 D_005AB55E[];
+extern s16 D_005AB5AE[];
+
+#if 0
+// func_002A2020: the constant stores (1.0f in v0, 1 in v1, 8 in a0, -1) take other registers than in the original; 23 of 112 differ; 2 forms tried
+s32 func_002A2020(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 *s0;
+    if (a1 < 0 || a1 >= 2) {
+        a1 = 0;
+    }
+    s0 = (s32 *)(D_005AB3C0 + a0 * 104 + a1 * 52);
+    if (s0[0] != 0) {
+        amCdFs_ReleaseCache(s0[0]);
+        s0[0] = 0;
+    }
+    s0[0] = a2;
+    s0[1] = a3;
+    s0[2] = (s32)((char *)s0[1] + *(s8 *)((char *)s0[1] + 4));
+    s0[3] = (s32)((char *)s0[1] + *(s8 *)((char *)s0[1] + 8));
+    s0[4] = *(s32 *)s0[2];
+    s0[5] = s0[3];
+    s0[6] = s0[3] + 0x98;
+    s0[7] = s0[3] + 0x130;
+    s0[8] = s0[3] + 0x1C8;
+    s0[9] = s0[3] + 0x260;
+    s0[10] = s0[3] + 0x2F8;
+    s0[11] = s0[3] + 0x390;
+    s0[12] = s0[3] + 0x428;
+    D_005AB49C[0] = 0x3F800000;
+    D_005AB490[0] = 0;
+    D_005AB494[0] = 0;
+    D_005AB498[0] = 0;
+    memset(D_005AB490, 0, 0x180);
+    D_005AB5E6[0] = -1;
+    D_005AB4B8[0] = 8;
+    D_005AB4BE[0] = 1;
+    D_005AB508[0] = 8;
+    D_005AB50E[0] = 1;
+    D_005AB558[0] = 8;
+    D_005AB5A8[0] = 8;
+    D_005AB55E[0] = 1;
+    D_005AB5AE[0] = 1;
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2020);
-extern void func_002A2020();
+extern s32 func_002A2020();
 
 void func_002A21E0(void) {
     func_002A2020();
