@@ -497,7 +497,40 @@ void func_002A2670(s32 *a0, s32 a1) {
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2730);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2890);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2AA0);
+extern void amCamera_Init(void *);
+extern void func_00131B90(s32 *);
+extern void func_00131D00(s32 *, s32, f32, f32);
+extern s32 D_005AB800[];
+extern s32 D_005AB804[];
+extern s32 D_005AB808[];
+extern s32 D_005AB80C[];
+extern s32 D_005AB838[];
+extern f32 D_005AB8C8[];
+extern s32 D_005AB8CC[];
+extern s32 D_005AB840[];
+extern f32 D_00455924[];
+extern void func_002A2890(s32 *, s32 *);
+void func_002A2AA0(s32 *a0, s32 *a1) {
+    f32 f22;
+    f32 f21;
+    f32 f20;
+    s32 idx = D_00511450[0];
+    f22 = *(f32 *)&((s32 *)a1[0x2C / 4])[1];
+    f21 = *(f32 *)&((s32 *)a1[0x2C / 4])[0];
+    f20 = *(f32 *)((char *)D_00455924 + idx * 28);
+    amCamera_Init(D_005AB800);
+    D_005AB800[0] = 0;
+    D_005AB80C[0] = 0x3F800000;
+    D_005AB804[0] = 0;
+    D_005AB808[0] = 0;
+    D_005AB838[0] = D_005AB838[0] | 1;
+    func_00131B90(D_005AB840);
+    func_00131D00(D_005AB840, 0, f22, f20);
+    *(f32 *)&D_005AB8C8[0] = f21;
+    D_005AB8CC[0] = 0;
+    a0[0x10 / 4] = (s32)func_002A2890;
+    func_002A2890(a0, a1);
+}
 extern s32 func_0029E7F0(s32);
 extern void func_0029E610(s32);
 extern void func_0029E120(s32, s32, s32, f32, f32);
