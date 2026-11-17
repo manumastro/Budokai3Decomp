@@ -45,8 +45,6 @@ extern s32 func_00209540(s32, s32, s32);
 extern u8 D_0046F218[];
 extern void memset(void *, s32, s32);
 extern u8 D_0046F230[];
-extern void func_002CDD50(void);
-extern void func_002CDD00(void);
 extern void func_001F6F10(s32, s32);
 extern void func_001F5B50(u8 *, s32);
 extern void func_001F6E60(void *);
@@ -62,6 +60,10 @@ extern void func_001F5B70(u8 *);
 extern void func_002CEA60(void);
 extern s32 D_0051CCE0[];
 extern void func_00200270(f32, f32);
+extern void func_002CDD50(void);
+extern void func_002CDD00(void);
+extern void func_002CDA30(void);
+extern void func_002CD9E0(void);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD5F0);
 void func_002CD810(void) {
@@ -121,12 +123,13 @@ void func_002CD960(void) {
 }
 #if 0
 void func_002CD9E0(u8 *p) {
+    u8 *q = p + 0x30;
     func_00208F70(*(void **)(p + 0x38));
-    if (*(s32 *)(*(u8 **)(p + 0x38) + 0x38) < 0) {
+    if (*(s32 *)(*(u8 **)(q + 8) + 0x38) < 0) {
         func_001F5F50(p);
     }
 }
-// differs: the original keeps the pointer in s1 and the field address p+0x30 in s0 across the calls; here the address is folded into p+0x38
+// differs: the original keeps p in s1 and q = p+0x30 in s0 across the first call (frame 0x30, sq s1 and s0); the compiler folds q+8 into p+0x38 and keeps only p (frame 0x20). Tried: q before/after the call, a Sub30 struct view
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD9E0);
 #if 0
@@ -143,9 +146,9 @@ void func_002CDA30(u8 *p) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDA30);
 #if 0
 void func_002CDA90(void) {
-    u8 *s0;
     s32 s1 = 0;
     s32 s2 = D_0051CD0C[0];
+    u8 *s0;
     s32 a0 = func_001A50F0(s2, 0xFF);
     if (a0 != 0) {
         s1 = func_00209540(a0, 0x2000004, 0);
@@ -161,14 +164,65 @@ void func_002CDA90(void) {
         }
     }
 }
-// differs: the driver value and the allocation result take the other two saved registers (s0 against s2 here), and the frame is 0xD0 against 0xE0
+// differs: the driver value lands in s0 and the node in s1 (the original: driver s2, result s1, node s0); the declaration orders tried did not change the allocation
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDA90);
 void func_002CDB70(u8 *p) {
     func_00208F70(*(void **)(p + 0x34));
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDB80);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDC20);
+extern void func_0013B0B0(void *);
+extern void func_00131F00(u8 *, f32, f32);
+extern void func_00132DF0(s32);
+extern void func_0013B110(s32);
+extern void func_00133780(s32, s32);
+extern u8 D_0047CA40[];
+void func_002CDB80(u8 *p) {
+    u8 *q = p + 0x30;
+    D_00470238 = 0;
+    func_00145CC0(*(s32 *)(p + 0x30), 0x2003000);
+    func_0013B0B0(0);
+    __asm__ volatile ("lqc2 $vf28, 0(%0) ; lqc2 $vf29, 16(%0) ; lqc2 $vf30, 32(%0) ; lqc2 $vf31, 48(%0)" : : "r"(D_00470570 + 0x60) : "memory");
+    func_00131F00(D_0047CA40, 0.0f, 0.0f);
+    func_00132DF0(0);
+    func_0013B110(1);
+    func_00133780(2, 1);
+    func_00208D70(*(void **)(q + 4));
+    func_00133780(2, 0);
+}
+extern u8 D_0046F228[];
+extern u8 D_004566D0[];
+extern u8 D_00456680[];
+extern u8 D_00459390[];
+extern u8 *D_004566A4[];
+extern u8 *D_00456730[];
+extern u8 *D_00456734[];
+extern s32 func_002096D0(u8 *, s32, s32);
+extern void func_002CDA90(void);
+void func_002CDC20(void) {
+    u8 *q;
+    s32 s1 = func_001A50F0(D_0051CD0C[0], 0x280);
+    u8 *p = func_001F5FD0(0x85000000, D_0046F228, 0, func_002CDB80, func_002CDB70);
+    *(s32 *)(p + 0x20) &= ~0x800;
+    *(s32 *)(p + 0x20) |= 0x800;
+    q = p + 0x30;
+    memset(q, 0, 0x80);
+    *(s32 *)q = s1;
+    D_004566A4[0] = D_004566D0;
+    D_00456730[0] = D_0047CA40;
+    D_00456734[0] = D_00459390;
+    *(s32 *)(q + 4) = func_002096D0(D_00456680, 0x2000004, 0);
+    func_002CDA90();
+}
+#if 0
+void func_002CDD00(u8 *p) {
+    u8 *q = p + 0x30;
+    func_00208F70(*(void **)(p + 0x38));
+    if (*(s32 *)(*(u8 **)(q + 8) + 0x38) < 0) {
+        func_001F5F50(p);
+    }
+}
+// differs: same as func_002CD9E0 (the q = p+0x30 register is folded away)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDD00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDD50);
 #if 0
@@ -259,15 +313,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE500);
 #if 0
 void func_002CE630(f32 x, f32 y) {
     f32 tmp[4];
-    u8 *p;
     D_0051CCE0[0] = 0;
     __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(tmp) : "memory");
-    p = *(u8 **)(D_00470570 + 0x264);
-    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(p), "r"(tmp) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(*(u8 **)(D_00470570 + 0x264)), "r"(tmp) : "memory");
     func_00200270(x - tmp[0], y - tmp[2]);
     D_0051CCE0[0] = 1;
 }
-// differs: the inline VU0 copy matches; only the register of the constant 1 in the last store differs (v1 against v0)
+// differs: the VU0 copy matches; the constant 1 of the last store is in v1 in the original, v0 here (tried inline operands)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE630);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE690);
