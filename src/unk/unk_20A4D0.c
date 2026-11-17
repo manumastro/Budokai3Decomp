@@ -57,7 +57,7 @@ void func_00208F70(void *);
 void func_00216D20(void);
 void func_0020CB90(void *);
 u8 *func_00215320(s32, s32);
-void func_00211D80(void);
+void func_00211D80(u8 *a);
 void func_002186D0(u8 *p);
 extern u8 D_0046A3B8[];
 void amTask_Kill(s32);
@@ -382,7 +382,20 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D290);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D400);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D500);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D5C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D780);
+void func_0020D780(void *out) {
+    Copy16A tmp;
+    u8 *p;
+
+    p = *(u8 **)(gBattle + 0x264);
+    __asm__ volatile (
+        "addiu $v1, %0, 0x10\n"
+        "lqc2 $vf1, 0($v1)\n"
+        "lqc2 $vf2, 0(%0)\n"
+        "vsub.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%1)\n"
+        : : "r"(p), "r"(&tmp) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(&tmp), "r"(out) : "memory");
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D7C0);
 #if 0
 void func_0020D9B0(void) {
@@ -464,7 +477,32 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E7D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E870);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E8F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EA70);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EB70);
+void func_0013B160(void *p);
+
+void func_0013B160(void *p);
+
+void func_0013B160(void *p);
+
+void func_0013B160(void *p);
+
+void func_0020EB70(s32 i, u8 *src) {
+    u8 *s1;
+
+    s1 = D_00568C90 + i * 0x2140;
+    func_0013B160(s1 + 0x40);
+    __asm__ volatile (
+        "lqc2 $vf31, 0(%0)\n"
+        "addiu $v1, %1, 0x40\n"
+        "sqc2 $vf28, 0($v1)\n"
+        "sqc2 $vf29, 0x10($v1)\n"
+        "sqc2 $vf30, 0x20($v1)\n"
+        "sqc2 $vf31, 0x30($v1)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(src), "r"(s1) : "memory");
+}
 void func_0020EBF0(s32 i) {
     if (*(s8 *)(gBattle + 0x8975) != 1) {
         u8 *p = D_00568C90 + i * 0x2140;
@@ -903,6 +941,386 @@ void func_00211AF0(u8 *s1) {
 // differs: 17 of 54 differ: the registers of the index (lh), the flag (lw) and the address chain are assigned in another order than the original (lh first into a2, the address built after the flag test in a0/a1)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211AF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211BD0);
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+void func_00248640(s32 a, void *b, s32 c);
+
+#if 0
+void func_00211D80(u8 *a) {
+    u8 *s;
+    u8 *sl1;
+    s32 a6;
+    s32 v;
+    s32 n;
+    s32 a2;
+    f32 f1;
+    f32 f0;
+
+    a6 = *(s16 *)(a + 0x1C);
+    s = a + 0x20;
+    sl1 = gBattle + (((a6 << 8) + a6) << 5) + 0x830;
+    if (gBattle != 0) {
+        v = *(s32 *)(gBattle + 0x88EC);
+    } else {
+        v = 0;
+    }
+    if (v != 0) {
+        return;
+    }
+    v = 0;
+    if (gBattle != 0) {
+        if (*(s8 *)(gBattle + 0x8AB2) != 0) {
+            if (*(f32 *)(gBattle + 0x891C) > 0.0f) {
+                v = 1;
+            }
+        }
+    }
+    if (v != 0) {
+        if (gBattle == 0) {
+            v = -1;
+        } else {
+            if (*(s8 *)(gBattle + 0x8AB2) == 0) {
+                v = -1;
+            } else {
+                if (*(f32 *)(gBattle + 0x891C) <= 0.0f) {
+                    v = -1;
+                } else {
+                    v = *(s8 *)(gBattle + 0x8AB3);
+                }
+            }
+        }
+        if (a6 == v) {
+            return;
+        }
+    }
+    a2 = *(s32 *)(s + 0x14);
+    v = *(s32 *)(s + 0x18);
+    if (v < a2) {
+        if (gBattle == 0) {
+            if (D_004703F4 == 3) {
+                f1 = 1.2f;
+            } else {
+                f1 = 1.0f;
+            }
+        } else {
+            f1 = *(f32 *)(gBattle + 0x88F0);
+        }
+        f0 = (f32)*(s32 *)(s + 0x18) + f1;
+        *(s32 *)(s + 0x18) = (s32)f0;
+    } else {
+        n = *(s16 *)(a + 0x1E);
+        if (n == 0x400 || n == 2) {
+            func_00248640(*(s16 *)(s + 0x24), sl1, *(s32 *)(s + 0x20));
+        }
+        *(s32 *)(s + 0x18) = 0;
+    }
+}
+// differs: about 87 instructions differ: the locals get other registers (the loaded level value a6 sits in t0 where the original keeps it in a2), the branch layout of the nested gBattle tests differs, and the float to int store uses trunc.w.s where the original uses cvt.w.s
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211D80);
 extern V4Q D_0044B920;
 extern s32 D_00470238;
