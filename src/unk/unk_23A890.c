@@ -2513,27 +2513,24 @@ void func_00248360(void) {
 // differs: round 6 (u23e): 0xA0 bytes, the original 0xA8 (the mwcc prologue and the six calls match). The original branches on D_0051CD20 to the block with beqz and jumps out through a b (a trampoline to the epilogue); return inside the block gives b at its end, the if/else shapes give bnez straight to the epilogue
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248360);
-/* r6 best attempt diff 10 of 26: the loop, the two frees and the store match in order; the original loads the second base (node+0x30) after the first call and keeps the loop pointer in s0, the C shapes give 0x68 bytes, not 0x70 (no addiu s1 in the delay slot, no nop after the store). */
-#if 0
+typedef struct { s32 pad[2]; void *a; void *b; } B3N;
+typedef struct { u8 pad[0x30]; B3N sub; } B3O;
 void func_00248410(void) {
     s32 i;
-    u8 **p;
-    u8 *s1;
+    B3N *s1;
+    B3O **p;
 
-    p = D_00470740;
+    p = (B3O **)D_00470740;
     for (i = 0; i < 2; i++) {
         if (*p != 0) {
-            s1 = *p + 0x30;
-            amHeap_Free(*(void **)(*p + 0x38));
-            amHeap_Free(*(void **)(s1 + 0xC));
+            s1 = &(*p)->sub;
+            amHeap_Free(s1->a);
+            amHeap_Free(s1->b);
             *p = 0;
         }
         p++;
     }
 }
-// differs: the original loads the table entry and the global base in another order, and keeps the object pointer in its own register (not folded into the offsets); a u32 base local and a u8 * local both fold node+0x30 into node+0x3C
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248410);
 void func_00248480(void) {
     s32 v;
     s32 r;
