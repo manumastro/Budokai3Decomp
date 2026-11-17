@@ -545,6 +545,8 @@ void func_00241600(s32 x) {
     *(s32 *)(s0 + 0x48) = func_002096D0(c, 0x400008, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241710);
+void func_00243280(s32);
+extern s8 D_004703F4;
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241AC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241C10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241D60);
@@ -711,19 +713,18 @@ void func_00243DE0(s32 idx, Blk48 *src) {
         ((void (*)(void *))D_0046AC70[idx])(&loc);
     }
 }
-#if 0
-s32 func_00243E50(s32 i, s32 j) {
-    s32 *s0 = (s32 *)(D_0046FE48 + i * 0x1A4);
+extern s32 D_00452130[];
+s32 amCdFs_ReadFileId(s32, s32, s32);
+s32 func_00243E50(s32 i, s32 k) {
+    u8 *p = D_0046FE48 + i * 0x1A4;
+    s32 id = D_00452130[k];
 
-    if (D_00452130[j] != -1) {
-        *s0 = amCdFs_ReadFileId(D_00452130[j], 0, 1);
-        return *s0;
+    if (id != -1) {
+        *(s32 *)p = amCdFs_ReadFileId(id, 0, 1);
+        return *(s32 *)p;
     }
     return 0;
 }
-// differs: the original loads the table entry and the global base in another order, and keeps the object pointer in its own register (not folded into the offsets)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243E50);
 void func_00243ED0(void) {
     func_0021B070();
     memset(D_0058C6C0, 0, 0x3D4);
