@@ -965,6 +965,66 @@ void func_002C1CF0(s32 *a0) {
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
+extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_002C2470(Task *);
+
+extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_002C2470(Task *);
+
+#if 0
+// func_002C1E10: the saved registers: ours keeps the parameter and the sub-object in s2/s1 and needs an extra s3 (frame 0x50 against 0x40); the tail (table byte, call with 8 arguments, float and pointer) matches in shape; 2 forms tried
+void func_002C1E10(s32 *a0) {
+    s32 *s0 = (s32 *)a0[0x30 / 4];
+    s32 r;
+    void *f;
+    s32 bt;
+    s32 bb;
+    s32 nv;
+    s32 s0v;
+    s32 *q;
+    s32 s2;
+    s0v = s0[0x4 / 4];
+    D_00470704 = s0v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(s0v, 0x2000);
+    D_00470238 = 0;
+    s0v = s0[0x4 / 4];
+    D_00470704 = s0v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(s0v, 0x2000);
+    D_00470238 = 0;
+    s2 = s0[0x8 / 4];
+    if (s2 != 0) {
+        func_0022C060((s32)s2, 1.0f);
+        func_0022CD00((s32)s2);
+    }
+    func_002C0860(s0);
+    func_0022C700();
+    func_00133B50(0, 0);
+    r = func_0027DAB0(s0[0xA0 / 4]);
+    if ((s8)r >= 7) {
+        func_0027E120(s0[0xA0 / 4]);
+        s0[0xA0 / 4] = 0;
+        *(u8 *)((char *)s0 + 0xB2) = (u8)(*(u8 *)((char *)s0 + 0xB2) - 1);
+        bb = *(u8 *)((char *)s0 + 0xB2);
+        q = (s32 *)((char *)s0 + bb * 12 + 0x44);
+        if (q[0] != 0) {
+            func_0022D0E0(q[0], 1);
+            q[0] = 0;
+        }
+        bb = *(u8 *)((char *)s0 + 0xB2);
+        bt = *(u8 *)(2 * bb + (char *)s0 + 0xB4);
+        nv = (bb + 1) & 0xFF;
+        s0[0xA0 / 4] = func_0027E2D0(3, 6, nv, (s8)bb, bt, 0, 0, 3);
+        *(u8 *)((char *)s0 + 0xAF) = 0xB;
+        *(s32 *)((char *)s0 + 0xC4) = 0x42700000;
+        f = (void *)func_002C2470;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1E10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1F90);
 #if 0
