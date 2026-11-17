@@ -1,4 +1,7 @@
 #include "common.h"
+void func_0013B160(void *p);
+void func_0013B0B0(u8 *);
+void func_0013B110(s32);
 
 extern u8 D_005687D0[];
 void func_00136870(s32, s32, s32, s32, s32, s32);
@@ -465,7 +468,32 @@ void func_0020DE30(void) {
     amVram_Set(0, D_0046FD5C, 0x800);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020DE40);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E070);
+extern void amMotion_BuildMatrices(void *m);
+
+void func_0020E070(s32 i, u8 *o) {
+    u8 *s1;
+    u8 *m;
+
+    s1 = D_00568C90 + i * 0x2140;
+    if (*(u8 **)(s1 + 0x9C) != 0) {
+        func_0013B0B0(0);
+        amMotion_BuildMatrices(*(u8 **)(s1 + 0x9C));
+        m = *(u8 **)(s1 + 0x9C);
+        func_0013B160(*(u8 **)(m + 0x408) + *(s32 *)(m + 0x40C) * 64);
+        __asm__ volatile (
+            "sqc2 $vf31, 0(%0)\n"
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%0)\n"
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : "r"(o), "r"(s1) : "memory");
+        func_0013B110(1);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E120);
 void func_0013B160(void *p);
 void func_0020D5C0(void *a, s32 b, void *c, u8 *d);
@@ -964,7 +992,35 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F970);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00210240);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00210C20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002114A0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002115A0);
+extern void func_00146ED0(void *a, void *b, f32 s);
+
+void func_002115A0(u8 *a) {
+    u8 *x;
+    u8 *s1;
+    Copy16A tmp;
+
+    x = a + 0x20;
+    func_00146ED0(&tmp, x + 0x10, *(f32 *)(x + 0x30));
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vadd.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(x), "r"(&tmp) : "memory");
+    s1 = D_00568C90 + *(s16 *)(x + 0x46) * 0x2140 + 0x40;
+    func_0013B160(s1);
+    __asm__ volatile (
+        "lqc2 $vf31, 0(%0)\n"
+        "sqc2 $vf28, 0(%1)\n"
+        "sqc2 $vf29, 0x10(%1)\n"
+        "sqc2 $vf30, 0x20(%1)\n"
+        "sqc2 $vf31, 0x30(%1)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(x), "r"(s1) : "memory");
+}
 extern u8 *gWave;
 void func_0020D7C0(void);
 
