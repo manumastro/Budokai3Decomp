@@ -2,6 +2,8 @@
 #include "menu/menu.h"
 
 extern s32 D_0047099C;
+extern char D_0046FC30[];
+extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern s32 D_004701D8;
 
 extern void func_0030EFF0(Task *);
@@ -15,7 +17,46 @@ void func_0030F220(void) {
 }
 void func_0030F260(void) {
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F270);
+extern char D_004B4B40[];
+extern void func_002A8A20(void *);
+
+void func_0030F270(char *a0) {
+    s16 idx = *(s16 *)(a0 + 0xC);
+    char *b = *(char **)(a0 + 0x8);
+    char *p1 = b + idx * 12;
+    char *p2 = b + idx * 14;
+    char *v0;
+    char *s0;
+    p1[0x258] = 0;
+    p1[0x259] = 0;
+    p1[0x25A] = 0;
+    p1[0x25B] = 0;
+    p1[0x25C] = 0;
+    p1[0x25D] = 0;
+    p1[0x25E] = 0;
+    p1[0x25F] = 0;
+    *(s32 *)(p1 + 0x260) = 0;
+    *(s16 *)(p2 + 0x44) = 0;
+    *(s16 *)(p2 + 0x46) = 0;
+    *(s16 *)(p2 + 0x48) = 0;
+    *(s16 *)(p2 + 0x4A) = 0;
+    *(s16 *)(p2 + 0x4C) = 0;
+    *(s16 *)(p2 + 0x4E) = 0;
+    *(s16 *)(p2 + 0x50) = 0;
+    idx = *(s16 *)(a0 + 0xC);
+    v0 = D_004B4B40 + idx * 4624;
+    v0[0x1327] = 0;
+    v0[0x1328] = 0;
+    v0[0x1329] = 0;
+    v0[0x132A] = 0;
+    v0[0x132B] = 0;
+    v0[0x132C] = 0;
+    v0[0x132D] = 0;
+    v0[0x132E] = 0;
+    s0 = v0 + 0x140;
+    func_002A8A20(s0 + 0x11F0);
+    *(s32 *)(s0 + 0x1200) = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F350);
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F420);
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F560);
@@ -32,7 +73,29 @@ u8 func_003101D0(char *p) {
 void func_003101E0(void) {
     D_0047099C = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_003101F0);
+extern void amHeap_Free(void *);
+
+void func_003101F0(void) {
+    s8 *s0 = (s8 *)D_0047099C;
+    s0[0x10] = s0[0x10] - 1;
+    if (s0 != 0) {
+        return;
+    }
+    if (*(s32 *)s0 != 0) {
+        amCdFs_Close(*(s32 *)s0, 0);
+    }
+    if (*(s32 *)(s0 + 4) != 0) {
+        amCdFs_Close(*(s32 *)(s0 + 4), 0);
+    }
+    if (*(s32 *)(s0 + 0xC) != 0) {
+        amHeap_Free(*(void **)(s0 + 0xC));
+    }
+    if (*(s32 *)(s0 + 8) != 0) {
+        amHeap_Free(*(void **)(s0 + 8));
+    }
+    amHeap_Free(s0);
+    D_0047099C = 0;
+}
 extern void func_0022D0E0(s32, s32);
 
 void func_00310290(Task *t) {
@@ -46,7 +109,46 @@ void func_00310290(Task *t) {
     amHeap_Free(s0);
     amTask_Kill(t);
 }
+extern char D_0046FC20[];
+extern void memset(void *, s32, s32);
+extern void func_00310080(Task *);
+
+extern char D_0046FC20[];
+extern void memset(void *, s32, s32);
+
+#if 0
+// func_00310300: the original stores the heap pointer twice (once before the memset call, once in its delay slot); three orders tried
+Task *func_00310300(s32 a0, s32 a1) {
+    char *s0;
+    Task *s1 = amTask_Create(func_00310080, NULL, 0x2B00, 8, 2, D_0046FC20);
+    s0 = (char *)amHeap_Alloc(0x14, 0, D_0046FC30, 0x8A);
+    memset(s0, 0, 0x14);
+    *(s32 *)((char *)s1 + 0x30) = (s32)s0;
+    *(s32 *)(s0 + 0x8) = a0;
+    *(s16 *)(s0 + 0xC) = a1;
+    s0[0xE] = 1;
+    s0[0xF] = 1;
+    return s1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310300);
+#if 0
+// func_003103B0: the global store is placed by the scheduler between the two reads in the original; three placements tried
+void func_003103B0(void) {
+    s32 *s0;
+    if (D_0047099C != 0) {
+        *((s8 *)D_0047099C + 0x10) = *((s8 *)D_0047099C + 0x10) + 1;
+    } else {
+        s0 = (s32 *)amHeap_Alloc(0x14, 0, D_0046FC30, 0x63);
+        s0[0] = amCdFs_ReadFileId(0x107D8, 0, 0);
+        s0[1] = amCdFs_ReadFileId(0x107D9, 0, 0);
+        D_0047099C = (s32)s0;
+        s0[2] = 0;
+        s0[3] = 0;
+        *((s8 *)s0 + 0x10) = 1;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_003103B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310450);
 s32 func_003105A0(void) {

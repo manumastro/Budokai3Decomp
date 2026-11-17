@@ -21,6 +21,10 @@ extern void amTask_KillGroup(s32, s32, s32);
 extern void *D_0046FDCC;
 extern char D_005BCF80[];
 extern void memset(void *, s32, s32);
+extern s16 D_0046EE50[];
+extern s32 *D_0046FE48;
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern s32 func_00243E50(s32, s32);
 extern void func_00243ED0(void);
 extern void func_002CA3F0(void);
 extern void func_00209450(s32, s32);
@@ -106,13 +110,54 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDF50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE0B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE320);
 
-// func_002BE4E0: the layout of the two branches differs (the clear block comes last in the original); not matched yet.
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE4E0);
+void func_002BE4E0(s32 *a0) {
+    s32 m = a0[0x14 / 4];
+    s32 *g = D_0046FE44;
+    switch (m) {
+    case 0:
+        g[0x2C / 4] = g[0x2C / 4] | 2;
+        break;
+    case 1:
+        g[0x2C / 4] = g[0x2C / 4] & -3;
+        break;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE530);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE710);
+void func_002BE710(s32 *a0) {
+    s32 m = a0[0x14 / 4];
+    switch (m) {
+    case 0:
+        if (D_0047011C[0x1B4 / 4] != 0) {
+            func_00209530(D_0047011C[0x1B4 / 4]);
+            D_0047011C[0x1B4 / 4] = 0;
+        }
+        *(s16 *)((char *)a0 + 0x2A) = 0xE;
+        *(s16 *)((char *)a0 + 0x2C) = 0;
+        a0[0x24 / 4] = 0x400010;
+        func_002BDF50((void *)((char *)D_0047011C + 0x1B4), a0);
+        break;
+    case 1:
+        if (D_0047011C[0x1B4 / 4] != 0) {
+            func_00209530(D_0047011C[0x1B4 / 4]);
+            D_0047011C[0x1B4 / 4] = 0;
+        }
+        break;
+    }
+}
 
-// func_002BE7C0 (sets or clears bit 0 of a word of D_0047011C by a flag): the if/else layout differs; not matched yet.
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE7C0);
+void func_002BE7C0(s32 *a0) {
+    s32 m = a0[0x14 / 4];
+    switch (m) {
+    case 0:
+        D_0047011C[0x1BC / 4] = D_0047011C[0x1BC / 4] | 1;
+        D_0047011C[0x1C0 / 4] = 0;
+        break;
+    case 1:
+        D_0047011C[0x1BC / 4] = D_0047011C[0x1BC / 4] & -2;
+        D_0047011C[0x1C0 / 4] = 0;
+        break;
+    }
+}
 
 void func_002BE830(char *p) {
     *(s16 *)(p + 0x2A) = 6;
@@ -123,6 +168,45 @@ void func_002BE830(char *p) {
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE870);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEA30);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEB50);
+extern s16 D_0046EE50[];
+extern s32 *D_0046FE48;
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern s32 func_00243E50(s32, s32);
+
+extern s16 D_0046EE50[];
+extern s32 *D_0046FE48;
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern s32 func_00243E50(s32, s32);
+
+#if 0
+// func_002BECB0: the layout of the table test (the then-block after a branch to the join) differs; three forms tried
+s32 func_002BECB0(s32 a0, s32 a1) {
+    s32 s1 = D_0046EE50[a0];
+    s32 s0 = a1;
+    s32 *s2;
+    s32 r;
+    if (s1 != 7) {
+        ;
+    } else {
+        if (a1 == 3) {
+            s0 = 4;
+        }
+    }
+    *(s32 *)((char *)D_0046FE48 + 0x3C8) = amCdFs_ReadFileId(0xC, 0, 1);
+    *(s16 *)((char *)D_0046FE44 + 0x102) = 1;
+    r = func_00243E50(0, s1);
+    s2 = D_0046FE44;
+    memset(s2, 0, 0x80);
+    s2[0] = 0;
+    *(f32 *)&s2[1] = 1.0f;
+    s2[2] = 0;
+    *(f32 *)&s2[3] = 1.0f;
+    *(s8 *)((char *)s2 + 0x38) = 0;
+    *(s16 *)((char *)s2 + 0x34) = (s16)s0;
+    *(s16 *)((char *)s2 + 0x36) = (s16)s1;
+    return r;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BECB0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BED90);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEEE0);
@@ -215,12 +299,75 @@ void func_002BFE60(s32 a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFEE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFFD0);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0220);
+extern void func_00133B50(s32, s32);
+extern void func_00133780(s32, s32);
+extern void func_002BFFD0(void *, s32);
+extern void func_002C02C0(void);
+
+extern void func_00133B50(s32, s32);
+extern void func_00133780(s32, s32);
+extern void func_002BFFD0(void *, s32);
+extern void func_002C02C0(void);
+
+void func_002C0220(s32 *a0) {
+    char *s0 = (char *)a0 + 0x30;
+    if ((*(u16 *)((char *)a0 + 0x3A) & 1) == 0) {
+        func_00133B50(0, 0);
+    }
+    if ((*(u16 *)(s0 + 0xA) & 2) != 0) {
+        func_00133780(0, 1);
+    }
+    func_002BFFD0(s0, 0);
+    func_00133780(0, 0);
+    {
+        s32 *p = (s32 *)s0;
+        if (p[0x10 / 4] != p[0xC / 4]) {
+            void *f = func_002C02C0;
+            p[0x10 / 4] = p[0xC / 4];
+            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C02C0);
-// func_002C03B0: the function address test (?:) gets its branch in the other order; not matched yet.
+extern void func_002C02C0(void);
+
+extern void func_002C02C0(void);
+
+#if 0
+// func_002C03B0: the store through the sub-struct pointer (a2 = a0 + 0x30) is folded into a0 + 0x40 by the compiler; the original keeps a2 in a register
+void func_002C03B0(s32 *a0) {
+    s32 a1 = a0[0x3C / 4];
+    if (a1 != -1) {
+        void *f = func_002C02C0;
+        s32 *a2 = a0 + 0x30 / 4;
+        a2[0x10 / 4] = a1;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03B0);
 
-// func_002C03E0 (reads a file of an entry and loads it again): the function address goes to another register; not matched yet.
+#if 0
+// func_002C03E0: all but the last two registers agree; the function address and the constant 2 swap registers; four variants tried
+void func_002C03E0(s32 *a0) {
+    s32 *s0 = a0 + 0x30 / 4;
+    s32 *p;
+    *(s16 *)((char *)a0 + 0x38) = 1;
+    p = (s32 *)a0[0x30 / 4];
+    if (*(s16 *)((char *)p + 4) == 3) {
+        s0[1] = p[0x54 / 4];
+        ((s32 *)s0[0])[0x54 / 4] = 0;
+        amCdFs_Close(s0[0], 0);
+        s0[0] = 0;
+        amFile_Load(s0[1]);
+        {
+            void *f = func_002C03B0;
+            *(s16 *)((char *)s0 + 8) = 2;
+            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0470);
 void func_002C0490(void *p, s16 v) {

@@ -1,6 +1,7 @@
 #include "common.h"
 
 extern s32 D_004708A4;
+extern s32 func_00127940(s32, s32);
 extern void func_0028F930(void);
 extern void func_0028F830(void);
 extern void func_00133B50(void *, s32);
@@ -72,7 +73,13 @@ void func_0028EB90(void *p, f32 x, f32 y) {
     *(f32 *)((char *)p + 0x4C) = y;
     *(f32 *)(*(char **)(*(char **)((char *)p + 0x3C)) + 0x10) = x;
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EBB0);
+void func_0028EBB0(char *a0, s32 a1, s32 *a2, s32 a3) {
+    s32 *e = (s32 *)(a2[0x1C / 4] + a3 * 4);
+    s32 *ent = (s32 *)e[0];
+    s32 w = *(s32 *)(*(s32 *)((char *)ent + 4) + 0x1C);
+    *(u16 *)(a0 + 0x30) = (*(u16 *)(a0 + 0x30) & -2) | a1;
+    *(s32 *)(a0 + 0x44) = w;
+}
 void func_0028EBF0(void *p, s32 a1, s32 a2) {
     *(u16 *)((char *)p + 0x30) = (*(u16 *)((char *)p + 0x30) & -2) | a1;
     *(s32 *)((char *)p + 0x44) = a2;
@@ -104,8 +111,68 @@ INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F930);
 void func_00290320(void) {
     D_004708A4 = 0;
 }
-// func_00290330 (finds the entry of a table by its id and sets one field): the loop keeps the index and the pointer in the other registers; not matched yet.
+#if 0
+// func_00290330: the search loop's break goes past the index test in ours, the original tests the index after the break too; three loop forms tried
+void func_00290330(s32 a0, s32 a1) {
+    char *p;
+    s32 i;
+    if (D_004708A4 == 0) {
+        return;
+    }
+    if (a0 == -1) {
+        return;
+    }
+    p = (char *)D_004708A4 + 0x430;
+    i = 0;
+    do {
+        if (*(s32 *)(p + 8) == a0) {
+            break;
+        }
+        i++;
+        p += 0x50;
+    } while (i < 0x48);
+    if (i == 0x48) {
+        p = 0;
+    }
+    if (p == 0) {
+        return;
+    }
+    *(s32 *)(p + 0xC) = a1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290330);
+#if 0
+// func_00290390: same search loop as func_00290330, and the two early returns are laid out in another order; not matched
+void func_00290390(s32 a0, s32 a1) {
+    char *p;
+    s32 i;
+    if (D_004708A4 == 0) {
+        return;
+    }
+    if (a0 == -1) {
+        return;
+    }
+    if (a1 == -1) {
+        return;
+    }
+    p = (char *)D_004708A4 + 0x430;
+    i = 0;
+    do {
+        if (*(s32 *)(p + 8) == a0) {
+            break;
+        }
+        i++;
+        p += 0x50;
+    } while (i < 0x48);
+    if (i == 0x48) {
+        p = 0;
+    }
+    if (p == 0) {
+        return;
+    }
+    *(s32 *)(p + 0x8) = a1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290390);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290410);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_002904C0);
@@ -128,6 +195,28 @@ void func_00290A70(s32 *a0) {
         i += 8;
     } while (i < 0x48);
 }
+#if 0
+// func_00290AE0: the found exit skips the index test in ours (the original runs it after the search); two loop forms tried
+s32 func_00290AE0(s32 a0, s32 a1) {
+    s32 s1 = 0;
+    char *s0 = (char *)D_004708A4 + 0x430;
+    do {
+        if (*(s32 *)(s0 + 0x40) != 0 && func_00127940(*(s32 *)(s0 + 0x40), a0) == 0) {
+            break;
+        }
+        s0 += 0x50;
+        s1++;
+    } while (s1 < 0x48);
+    if (s1 == 0x48) {
+        s0 = 0;
+    }
+    if (s0 == 0) {
+        return -1;
+    }
+    *(s32 *)(s0 + 0xC) = a1;
+    return (s32)((u32)(s0 - ((char *)D_004708A4 + 0x430)) / 80);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290AE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290BB0);
 s32 func_00290C90(void) {
