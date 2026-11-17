@@ -16,6 +16,9 @@ options:
   ld_dependencies: False
   ld_wildcard_sections: True
   ld_bss_contains_common: True
+  # No SUBALIGN in the linker script: the gcc libraries start objects on 8-byte boundaries, which SUBALIGN(16)
+  # would push to 16. Every object keeps its own section alignment instead.
+  emit_subalign: False
 
   create_asm_dependencies: False
   find_file_boundaries: False

@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Downloads the build tools into tools/ (git-ignored). Run it once, from the repository's root:
 
-    python3 scripts/get_tools.py [--all-compilers]
+    python3 scripts/get_tools.py [--all-compilers] [--eegcc]
 
 - binutils-mips-ps2-decompals (assembler, linker, objcopy), with the mips-linux-gnu-* aliases splat calls;
 - wibo, which runs the Windows-only Metrowerks compiler on Linux and macOS;
 - Metrowerks CodeWarrior for PS2 (mwccps2.exe / mwldps2.exe) from decomp.me's compiler archive: the version the game
   was built with (see docs/plan.md, "Compiler"), or every archived version with --all-compilers (for comparisons);
-- mwccgap (lets a C file pull in assembly for the functions not decompiled yet).
+- mwccgap (lets a C file pull in assembly for the functions not decompiled yet);
+- with --eegcc: Sony's ee-gcc builds from the same archive into tools/eegcc/<version>/, for the libraries (Sony's
+  and CRI's, built with gcc; scripts/eegcc/eegcc.py runs them: the Linux builds in Docker, the Windows ones in wibo).
 """
 
 import io
@@ -43,6 +45,25 @@ ALL_COMPILERS = [
     "3.0.1b44-030325", "3.0.1b51-030512", "3.0.1b74-030811", "3.0.1b75-030916", "3.0.1b87-031208",
     "3.0.1b95-040309", "3.0.1b103-040528", "3.0.1b119-040914", "3.0.1b145-050209",
 ]
+
+
+# ee-gcc builds: version -> archive name. "2.95.2-274" and "2.95.3-107" are only in the combined archive, under
+# ee-gcc<version>/. The 3.2 beta of 2003-02-10 is left out: a Cygwin program, which wibo cannot run.
+EEGCC_URL = "https://github.com/decompme/compilers/releases/download/compilers/{}"
+EEGCC = {
+    "2.9-990721": "ee-gcc2.9-990721.tar.xz",
+    "2.9-991111": "ee-gcc2.9-991111.tar.xz",
+    "2.9-991111-01": "ee-gcc2.9-991111-01.tar.xz",
+    "2.9-991111a": "ee-gcc2.9-991111a.tar.xz",
+    "2.95.2-273a": "ee-gcc2.95.2-273a.tar.gz",
+    "2.95.2-274": None,
+    "2.95.3-107": None,
+    "2.95.3-114": "ee-gcc2.95.3-114.tar.gz",
+    "2.95.3-136": "ee-gcc2.95.3-136.tar.gz",
+    "2.96": "ee-gcc2.96.tar.xz",
+    "3.2-030926": "ee-gcc3.2-030926.tar.gz",
+    "3.2-040921": "ee-gcc3.2-040921.tar.xz",
+}
 
 
 # tarfile's extraction filter, where this Python has it (3.12, and the 3.8-3.11 security releases).
@@ -113,6 +134,29 @@ def get_compiler(version):
         make_executable(p)
 
 
+def get_eegcc(version, combined):
+    dest = TOOLS / "eegcc" / version
+    if dest.exists():
+        return
+    tmp = dest.with_name(dest.name + ".part")
+    shutil.rmtree(tmp, ignore_errors=True)
+    tmp.mkdir(parents=True)
+    if EEGCC[version] is None:
+        prefix = f"ee-gcc{version}/"
+        with tarfile.open(fileobj=io.BytesIO(combined())) as t:
+            members = [m for m in t.getmembers() if m.name.startswith(prefix) and m.name != prefix]
+            for m in members:
+                m.name = m.name[len(prefix):]
+            t.extractall(tmp, members=members, **SAFE)
+    else:
+        with tarfile.open(fileobj=io.BytesIO(fetch(EEGCC_URL.format(EEGCC[version])))) as t:
+            t.extractall(tmp, **SAFE)
+    for p in tmp.rglob("*"):
+        if p.is_file():
+            make_executable(p)
+    tmp.rename(dest)
+
+
 def get_mwccgap():
     dest = TOOLS / "mwccgap"
     if not dest.exists():
@@ -128,6 +172,15 @@ def main():
     for v in ALL_COMPILERS if "--all-compilers" in sys.argv else GAME_COMPILERS:
         get_compiler(v)
     get_mwccgap()
+    if "--eegcc" in sys.argv:
+        cache = []
+
+        def combined():
+            if not cache:
+                cache.append(fetch(COMBINED_URL))
+            return cache[0]
+        for v in EEGCC:
+            get_eegcc(v, combined)
     print("tools ready in", TOOLS.relative_to(ROOT))
 
 
