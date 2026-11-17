@@ -337,6 +337,58 @@ s32 func_002BECB0(s32 a0, s32 a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BECB0);
+#if 0
+// func_002BED90: the case tests: the original tests 0x12, 0x11, 0xF, 0x10 in that order with out-of-line blocks; ours (if chain or switch) reorders them; the rest matches
+extern s32 D_005BD1A0;
+extern s32 func_00209540(s32, s32, s32);
+
+void func_002BED90(s32 a0) {
+    s32 *s0 = (s32 *)D_0046FE44;
+    s32 *a0p;
+    s32 *a2;
+    s32 *a1;
+    s32 v;
+    if (D_0047011C[0x1A4 / 4] != 0) {
+        func_00209530(D_0047011C[0x1A4 / 4]);
+        D_0047011C[0x1A4 / 4] = 0;
+    }
+    a0p = (s32 *)D_005BD1A0;
+    a2 = (s32 *)((s32 *)((char *)a0p + a0p[0xC / 4]))[0x24 / 4];
+    a1 = (s32 *)a2[0x28 / 4];
+    v = *(s16 *)((char *)s0 + 0x34) * 2 + 0x1A;
+    a2[0xA4 / 4] = v;
+    v = *(s16 *)((char *)s0 + 0x34) * 2 + 0x1A;
+    a1[0xA4 / 4] = v;
+    switch (a0) {
+    case 0x12:
+        a2[0x5C / 4] = 0x41A00000;
+        a2[0xA0 / 4] = 0;
+        a1[0x5C / 4] = 0x41400000;
+        a1[0xA0 / 4] = 2;
+        break;
+    case 0x11:
+        a2[0x5C / 4] = 0x41B00000;
+        a2[0xA0 / 4] = 0;
+        a1[0x5C / 4] = 0x41800000;
+        a1[0xA0 / 4] = 1;
+        break;
+    case 0xF:
+    case 0x10:
+        a2[0x5C / 4] = 0x41700000;
+        a2[0xA0 / 4] = 0;
+        a1[0x5C / 4] = 0x40E00000;
+        a1[0xA0 / 4] = 1;
+        break;
+    default:
+        a2[0x5C / 4] = 0;
+        a2[0xA0 / 4] = 0;
+        a1[0x5C / 4] = 0;
+        a1[0xA0 / 4] = 1;
+        break;
+    }
+    D_0047011C[0x1A4 / 4] = func_00209540((s32)a0p, 0x400020, 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BED90);
 void func_002BEEE0(void *a0) {
     if (a0 != 0) {
