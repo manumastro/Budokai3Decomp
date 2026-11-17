@@ -416,7 +416,40 @@ void func_002BF310(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF3B0);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF520);
+extern s32 D_0046FD18;
+extern void func_00133780(s32, s32);
+extern void func_0013B110(s32);
+extern void func_002BDE80(void);
+extern void func_00209E50(s32);
+extern void func_00208D70(s32);
+extern s32 amGs_SetReg32(s32, s32);
+
+void func_002BF520(void) {
+    s32 s0;
+    if (*(s16 *)((u8 *)D_0046FE44 + 0x100) != 1) {
+        return;
+    }
+    s0 = D_0046FD18;
+    func_00133780(2, 1);
+    if (D_0047011C[0x1BC / 4] & 1) {
+        func_002BDE80();
+    } else if (D_0047011C[0x1BC / 4] & 2) {
+        D_00470238 = 0;
+        if (D_0047011C[0xD0 / 4] != 0) {
+            amModel_SetCurrent(D_0047011C[0xD0 / 4], D_0047011C[0xD8 / 4]);
+        }
+        func_0013B0B0(0);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w"
+            : : "r"((u8 *)D_0047011C + 0x20));
+        func_00209E50(0);
+        if (D_0047011C[0x1B8 / 4] != 0) {
+            func_00208D70(D_0047011C[0x1B8 / 4]);
+        }
+        func_0013B110(1);
+    }
+    func_00133780(2, 0);
+    amGs_SetReg32(0, s0);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF610);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF850);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF970);
