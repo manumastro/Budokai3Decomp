@@ -1709,7 +1709,32 @@ void func_001DA4C0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA5C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA930);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DB320);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DB660);
+extern void func_0013B160(void *);
+extern void func_0013B960(void *);
+extern void func_0013BC00(f32, f32, f32);
+
+void func_001DB660(u8 *s2) {
+    u8 *s0;
+    u8 *s1;
+    s1 = *(u8 **)(s2 + 0xAC0);
+    if (s1 != 0) {
+        func_0013B160(0);
+        do {
+            s0 = *(u8 **)(s1 + 0x20) + 4;
+            __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(s1), "r"(s1 + 0x10) : "memory");
+            __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)" : : "r"(s2) : "memory");
+            func_0013B960(*(u8 **)(*(u8 **)(s2 + 0xB88) + 0x408) + ((s32)*(s16 *)(*(u8 **)(s2 + 0xB8C) + (*(u16 *)(s0 + 6) << 1)) << 6));
+            func_0013BC00(0.1f * (f32)*(s8 *)(s0 + 0x9), 0.1f * (f32)*(s8 *)(s0 + 0xA), 0.1f * (f32)*(s8 *)(s0 + 0xB));
+            __asm__ volatile ("sqc2 $vf31, 0x0(%0)" : : "r"(s1) : "memory");
+            if (*(s32 *)(s1 + 0x24) & 1) {
+                __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(s1), "r"(s1 + 0x10) : "memory");
+                *(s32 *)(s1 + 0x24) = *(s32 *)(s1 + 0x24) & -2;
+            }
+            s1 = *(u8 **)(s1 + 0x2C);
+        } while (s1 != 0);
+        __asm__ volatile ("vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27");
+    }
+}
 void func_001DB790(Fighter *c) {
     char *p;
 

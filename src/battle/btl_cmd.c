@@ -861,6 +861,89 @@ s32 func_001A8D90(void *a0, void *a1) {
     }
     return (lo2 & lo) != 0;
 }
+extern s32 func_001DDD30(Fighter *);
+extern s32 func_001DDD40(Fighter *);
+extern s32 func_001E19B0(Fighter *);
+extern s32 func_001E1B40(Fighter *);
+extern s32 func_001E1CE0(Fighter *);
+extern s32 func_001E1E80(Fighter *);
+extern s32 func_001DF420();
+extern s32 func_001DFE60(Fighter *, s32, f32);
+
+// GIVEN UP: 0x270 vs 0x280 (16 bytes short). Early returns, the s4 load and the mode test match; the case bodies of the switch (1,2,4,400 in source order) are laid out differently: the 0x400 body is placed after the 0x4 body in the original and the join differs (3 layouts tried)
+#if 0
+s32 func_001A8E60(s32 a0, void *a1) {
+    u8 *o = (u8 *)a0;
+    u8 *c = (u8 *)a1;
+    s32 flags = *(s32 *)(o + 0x8);
+    s32 s0 = 1;
+
+    if ((flags & 0x10) != 0) {
+        s32 s4 = *(s16 *)(o + 0x14);
+        if (s4 != func_001DDD40((Fighter *)c)) {
+            return 0;
+        }
+    }
+    if ((flags & 0x40) != 0) {
+        if (func_001E1CE0((Fighter *)c) == 0) {
+            return 0;
+        }
+    }
+    if ((flags & 0x80) != 0) {
+        if (func_001E1B40((Fighter *)c) == 0) {
+            return 0;
+        }
+    }
+    if ((flags & 0x100) != 0) {
+        if (func_001E19B0((Fighter *)c) == 0) {
+            return 0;
+        }
+    }
+    if ((flags & 0x70000000) != 0 && *(s8 *)(c + 0x2015) != 0) {
+        return 0;
+    }
+    if ((flags & 0x8) != 0) {
+        if (gBattle != NULL && (*(s32 *)((u8 *)gBattle + 0x8AA8) & 0x200) != 0) {
+            return 0;
+        }
+    }
+    if ((flags & 0x800) != 0) {
+        if ((*(s32 *)(c + 0x1360 + (*(s32 *)(c + 0x175C) << 4) + 0x1F8) & 0x4) == 0) {
+            return 0;
+        }
+    }
+    if ((flags & 0x1000) != 0) {
+        s32 r = func_001DDD30((Fighter *)c);
+        if ((*(s16 *)(o + 0x14) & ((1 << r) & 0xFF)) == 0) {
+            return 0;
+        }
+    }
+    switch (flags & 0x407) {
+    case 0x1:
+        s0 = func_001DFE60((Fighter *)c, 2, (f32)*(s16 *)(o + 0x12));
+        break;
+    case 0x2:
+        s0 = func_001DF420((Fighter *)c, *(s16 *)(o + 0x10));
+        break;
+    case 0x4:
+        s0 = func_001E1E80((Fighter *)c);
+        break;
+    case 0x400: {
+        s32 v = 0;
+        if (gBattle != NULL) {
+            v = *(s32 *)((u8 *)gBattle + 0x8AA8) & 0x80;
+        }
+        if (v == 0) {
+            s0 = (*(s8 *)(c + 0x2010) == 0);
+        } else {
+            s0 = 0;
+        }
+        break;
+    }
+    }
+    return s0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8E60);
 s32 func_001A90E0(BtlRank *a0, s16 a1) {
     s32 r = 0;

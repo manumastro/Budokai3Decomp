@@ -20,14 +20,21 @@ extern void func_00228430(s32);
 extern void func_002AF420(Ac2AE *);
 extern s32 func_002AEFD0(Ac2AE *);
 extern u8 D_005BCD20[];
+extern u8 D_005BC9E0[];
+extern u8 D_005BC180[];
+extern void amCdFs_ReleaseCache(void *);
+extern void amHeap_Free(void *);
 extern void func_002AE810(void *);
 extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
-extern void func_00228410(u8 *, u8 *);
+extern void func_00228410();
 extern void amModel_SetCurrent(s32);
 extern s32 func_002AF0A0(Ac2AE *, Ev2AE *);
+extern void func_00227A30(u8 *);
+extern void func_0022C060(f32, s32);
+extern void func_0022CD00(s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AE760);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AE810);
@@ -46,10 +53,103 @@ s32 func_002AE970(s32 **a0, u8 *a1) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AEA40);
+s32 func_002AEA40(s32 **a0, u8 *a1) {
+    s32 idx;
+    s32 k;
+    s32 off;
+    u8 *p;
+    void *q;
+
+    idx = **(s32 **)(a1 + 0x2C);
+    if (idx != -1) {
+        p = (u8 *)((idx * 208) + (D_005BC9E0 + **a0 * 416));
+        q = *(void **)p;
+        if (q != NULL) {
+            amCdFs_ReleaseCache(q);
+        }
+        memset(p, 0, 208);
+    } else {
+        for (k = 0, off = 0; k < 2; k++, off += 208) {
+            p = (u8 *)(off + (D_005BC9E0 + **a0 * 416));
+            q = *(void **)p;
+            if (q != NULL) {
+                amCdFs_ReleaseCache(q);
+            }
+            memset(p, 0, 208);
+        }
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AEB60);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AECA0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AEDC0);
+s32 func_002AECA0(s32 **a0, u8 *a1) {
+    s32 idx;
+    s32 k;
+    s32 off;
+    u8 *p;
+    void *q;
+
+    idx = **(s32 **)(a1 + 0x2C);
+    if (idx != -1) {
+        p = (u8 *)((idx * 176) + (D_005BC180 + **a0 * 352));
+        q = *(void **)p;
+        if (q != NULL) {
+            amCdFs_ReleaseCache(q);
+        }
+        memset(p, 0, 176);
+    } else {
+        for (k = 0, off = 0; k < 2; k++, off += 176) {
+            p = (u8 *)(off + (D_005BC180 + **a0 * 352));
+            q = *(void **)p;
+            if (q != NULL) {
+                amCdFs_ReleaseCache(q);
+            }
+            memset(p, 0, 176);
+        }
+    }
+    return 1;
+}
+void func_002AEDC0(u8 *a0) {
+    s32 i;
+    void *q;
+
+    q = *(void **)a0;
+    if (q != NULL) {
+        amCdFs_ReleaseCache(q);
+    }
+    q = *(void **)(a0 + 4);
+    if (q != NULL) {
+        amCdFs_ReleaseCache(q);
+    }
+    q = *(void **)(a0 + 8);
+    if (q != NULL) {
+        amCdFs_ReleaseCache(q);
+    }
+    for (i = 0; i < 2; i++) {
+        q = *(void **)(a0 + 0xC + i * 4);
+        if (q != NULL) {
+            amCdFs_ReleaseCache(q);
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        q = *(void **)(a0 + 0x14 + i * 4);
+        if (q != NULL) {
+            amCdFs_ReleaseCache(q);
+        }
+    }
+    q = *(void **)(a0 + 0x38);
+    if (q != NULL) {
+        amHeap_Free(q);
+    }
+    q = *(void **)(a0 + 0x3C);
+    if (q != NULL) {
+        amHeap_Free(q);
+    }
+    q = *(void **)(a0 + 0x2084);
+    if (q != NULL) {
+        amHeap_Free(q);
+    }
+    memset(a0, 0, 0x20E0);
+}
 extern u8 D_005ABA80[];
 extern void func_002AEDC0(u8 *);
 
@@ -158,6 +258,38 @@ s32 func_002AF170(u8 *a0, u8 *a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF170);
+/* differs: 16 of 66 instructions (the calls and the vec are right; the original loads t0[4], then t0[0] into $f1, then
+   **a0, then t0[1] into $f0, while the compiler orders the loads by the expression tree: 720 orders of the setup
+   statements and float locals tried, best 16) */
+#if 0
+s32 func_002AF220(Ac2AE *o, Ev2AE *e) {
+    f32 *p;
+    f32 v[4];
+    u8 *s1;
+    s32 idx;
+    f32 d;
+
+    p = e->f2C;
+    s1 = D_005BCD20 + (**(s32 **)o) * 160 + ((s32 *)p)[4] * 40;
+    idx = ((s32 *)p)[3];
+    v[0] = p[1];
+    ((s32 *)v)[2] = 0;
+    v[1] = p[0];
+    v[3] = 1.0f;
+    func_00228430(0);
+    func_00227A30((u8 *)v);
+    func_0022C060(1.0f, (*(s32 **)(s1 + 0x20))[idx]);
+    func_00228410();
+    func_0022CD00((*(s32 **)(s1 + 0x20))[idx]);
+    d = o->f30 - 1.0f;
+    o->f30 = d;
+    if (d <= 0.0f) {
+        o->f10 = NULL;
+        return 1;
+    }
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF220);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF330);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF420);

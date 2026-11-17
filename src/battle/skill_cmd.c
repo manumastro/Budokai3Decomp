@@ -1068,17 +1068,21 @@ extern void func_001F9CD0(s32, s32, s32, s32, s32);
 
 // GIVEN UP: the VU0 subtraction is right, but the original computes the two element addresses again for each
 // use (no common subexpression) and loads the call's fields in another order (2 forms tried)
+// GIVEN UP (round 5, skill): 12 of 31 instructions differ. The VU0 part and the call match; the registers do not:
+// the original keeps &tmp in $a3 from the first instruction and the fighter pointer in $a2, mwcc gives $a2 to &tmp
+// (6 forms tried: operand order, declaration order, fighter pointer as a local or inline in the operands).
 #if 0
 s32 func_00252E20(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
     s32 idx = q[2];
-    SkillVec tmp;
+    s32 q0 = q[0];
+    s32 q1 = q[1];
     u8 *f = (u8 *)gBattle->fighter[idx];
-    u8 *e = f + (q[1] << 4);
+    SkillVec tmp;
 
-    __asm__ volatile ("lqc2 $vf1, 0x650(%0) ; lqc2 $vf2, 0x7B0(%0) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%1)"
-        : : "r"(e), "r"(&tmp));
-    func_001F9CD0(idx, q[0], (s32)(e + 0x650), (s32)&tmp, 0);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)"
+        : : "r"(&tmp), "r"(f + (q1 << 4) + 0x650), "r"(f + (q1 << 4) + 0x7B0));
+    func_001F9CD0(idx, q0, (s32)(f + (q1 << 4) + 0x650), (s32)&tmp, 0);
     return 1;
 }
 #endif
@@ -1799,21 +1803,22 @@ void func_002543B0(u8 *a0) {
 #endif
 // differs: 1 of 58 (round 5): the loop pointer is copied from a0 (`move s0,a0`), the original copies it from the
 // saved s4 (`move s0,s4`); `s0 = s4 + 0` and the statement order tried. Declaration order s4,s3,s2,s1,s0 matches the rest.
+// GIVEN UP: 1 of 58 (round 5, skill): the loop pointer is copied from a0 (move s0,a0); the original copies it from the saved s4 (move s0,s4). s0 = (u8 *)s4 and s0 = s4 + 0 do not keep s4 (copy-propagated to a0); a search of the declaration orders (stopped part-way, no match)
 #if 0
 void func_002543B0(u8 *a0) {
     u8 *s4;
-    u8 *s3;
     s32 s2;
     s32 s1;
-    u8 *s0;
-    s32 v;
-    s32 a1;
     s32 *r;
+    s32 a1;
+    s32 v;
+    u8 *s3;
+    u8 *s0;
 
     s4 = a0;
     s1 = 0;
+    s0 = (u8 *)s4;
     s3 = *(u8 **)s4 + 0x30;
-    s0 = s4 + 0;
     do {
         s2 = func_0021C460(*(s16 *)(s0 + 0x20));
         if (s2 == -1) {

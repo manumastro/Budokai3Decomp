@@ -353,14 +353,14 @@ s32 func_002B0330(u8 *a, u8 *b) {
     return 3;
 }
 extern u8 D_005ABA80[];
-#if 0
 s32 func_002B0390(u8 *s, s32 *a1) {
-    u8 *s1 = *(u8 **)(s + 0x1C);
     s32 a2;
+    u8 *s1;
     u8 *s0;
     s32 s4;
     u8 *s3;
     a2 = *(s32 *)s;
+    s1 = *(u8 **)(s + 0x1C);
     if (*(s16 *)(s1 + 4) != 3) {
         return 3;
     }
@@ -383,9 +383,6 @@ s32 func_002B0390(u8 *s, s32 *a1) {
     *(s32 *)(s + 0x1C) = 0;
     return 1;
 }
-// differs: 11 of 64 instructions differ: the original loads *s into a2 at the top (lw a2,0(a0) before the lh test) and keeps the pointer in a2; the compiler keeps it in a0 (loaded in the delay slot of the beq) and reloads with lw a2,0(a0). Tried the declaration order (all 120 permutations give a size mismatch in the first version; the pointer-load placements gave 11 of 64).
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0390);
 s32 func_002B0490(u8 *a, u8 *b) {
     *(s32 *)b = *(s32 *)(*(u8 **)(b + 0x2C) + 4);
     *(s32 *)(a + 0x18) = 0;
