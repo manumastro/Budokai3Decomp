@@ -732,7 +732,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7CC0);
 f32 func_001D7DF0(void) {
     return 3000.0f;
 }
-// differs: 2 of 14 (sltiu writes $v0 here, $at in the original); also tried a switch (15 of 18), v == 0xE || v == 0xF || v == 0x11
 s32 func_001D7E10(u8 *arg0)
 {
   int new_var2;
@@ -1040,26 +1039,21 @@ void func_001D90D0(Fighter *c) {
 #endif
 // differs: the float state update and the calls match in order; the frame is 0x70 against 0x60 (the two local structs and the counter take other slots) and the object and the constant registers differ
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D90D0);
-#if 0
 s32 func_001D9220(Fighter *c) {
     s32 v;
 
-    if (gBattle != NULL) {
-        v = gBattle->f8AA8 & 2;
-    } else {
-        v = 0;
-    }
+    v = (gBattle != NULL) ? (gBattle->f8AA8 & 2) : 0;
     if (v != 0) {
         return 0;
     }
     if (c->f1FCB <= 0) {
-        return !c->f2010;
+        goto block_8;
     }
     return 0;
+block_8:
+    return !c->f2010;
 }
-#endif
-// differs: the 0x8 bytes difference is a label padded at a different place (the alignment nop after an if join); four forms tried
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9220);
+
 void func_001D9280(Fighter *c) {
     c->f1860 = 0xBF800000;
 }

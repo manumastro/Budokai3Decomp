@@ -190,29 +190,29 @@ void func_0030DC00(s32 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030DC00);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030DC70);
-#if 0
-// func_0030E170: the two-value test branches to the end in ours; the original branches to a stub that jumps to the end; four forms tried
-void func_0030E170(s32 *a0) {
-    s32 *s0 = a0 + 0x30 / 4;
-    s32 v;
-    func_0030DC70(s0);
-    *(f32 *)&s0[0x8 / 4] = *(f32 *)&s0[0x8 / 4] + gFrameDelta;
-    v = amSofdec_GetStat(s0[0]);
-    if (v == 2) {
+void func_0030E170(s32 *arg0) {
+    s32 temp_v0;
+    s32 temp_a0;
+    s32 *temp_s0;
+
+    temp_s0 = (s32 *)((u8 *)arg0 + 0x30);
+    func_0030DC70(temp_s0);
+    *(f32 *)((u8 *)temp_s0 + 8) = *(f32 *)((u8 *)temp_s0 + 8) + gFrameDelta;
+    temp_v0 = amSofdec_GetStat(*temp_s0);
+    switch (temp_v0) {
+    case 1:
+    case 2:
         return;
     }
-    if (v == 1) {
-        return;
+    temp_a0 = *temp_s0;
+    if (temp_a0 >= 0) {
+        amSofdec_Stop(temp_a0);
+        amSofdec_Destroy(*temp_s0);
+        *temp_s0 = -1;
     }
-    if (s0[0] >= 0) {
-        amSofdec_Stop(s0[0]);
-        amSofdec_Destroy(s0[0]);
-        s0[0] = -1;
-    }
-    a0[0x1C / 4] = 0;
+    *(s32 *)((u8 *)arg0 + 0x1C) = 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E170);
+
 void StaffRoll_TaskEnding(s32 *a0) {
     s32 *a1 = a0 + 0x30 / 4;
     f32 v = *(f32 *)&a0[0x38 / 4] + gFrameDelta;

@@ -58,7 +58,6 @@ void func_00308AF0(u8 *a0) {
 extern s16 ArenaList_GetF0(void *);
 extern void func_00308C40();
 
-// differs: 1 instruction: the word/byte pair loads match (lw a1 then lbu a0 with u32/u8 locals), but the addu is `a0,a1,a0` against `a0,a0,a1`; 90 declaration/statement/expression variants tried, none reach 0 (round 5 permp)
 void func_00308BD0(u8 *a0)
 {
   u8 *s0;

@@ -775,32 +775,32 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D320);
 extern u8 D_0058F680[];
 extern u8 D_004E0660[];
 
-#if 0
-// differs: the logic matches; the registers differ: the original keeps the struct pointer in a3, the loop index in a0 (the parameter's register) and the counts in a1/a2
-s32 func_0026D480(s32 p) {
-    s32 i;
-    s32 n1;
-    s32 n2;
-    u8 *a3;
-    u8 *v3;
-    a3 = D_004E0660;
-    n2 = 0;
-    n1 = 0;
-    v3 = D_0058F680 + p * 0xD680 + 0xD41D;
-    for (i = 0; i < 2; i++) {
-        if (a3[0xD] > 0) {
-            n1++;
-            if (v3[0] != 0) {
-                n2++;
+s32 func_0026D480(s32 arg0) {
+    u8 *var_a3;
+    s32 var_a2;
+    s32 var_a1;
+    s32 var_a0;
+    u8 *var_v1;
+
+    var_v1 = D_0058F680 + (arg0 * 0xD680) + 0xD41D;
+    var_a3 = (u8 *)D_004E0660;
+    var_a2 = 0;
+    var_a1 = 0;
+    var_a0 = 0;
+    do {
+        if ((s32) *(u8 *)(var_a3 + 0xD) > 0) {
+            var_a1 += 1;
+            if (*var_v1 != 0) {
+                var_a2 += 1;
             }
         }
-        a3 += 0x28;
-        v3++;
-    }
-    return (100 * n2) / n1;
+        var_a0 += 1;
+        var_a3 += 0x28;
+        var_v1 += 1;
+    } while (var_a0 < 0x253);
+    return (s32) (var_a2 * 0x64) / var_a1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D480);
+
 /* The byte at 0x5D of the block that gEssMain points to: bit 0 as a flag. */
 u8 EssMain_GetFlag(void) {
     return gEssMain[0x5D] & 1;
