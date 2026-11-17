@@ -27,7 +27,7 @@ extern u8 D_0044B7F0[];
 extern u8 D_0044B860[];
 extern u8 *D_00568440[];
 extern u8 D_00568480[];
-extern void func_00142080(u8 *, u8 *, s32);
+extern void func_00142080(u8 *, u8 *, u8 *);
 extern u8 *D_0051FA40[];
 extern s32 D_00470654;
 extern void func_00208F70(u8 *);
@@ -648,6 +648,55 @@ void func_00209530(u8 *a) {
     *(s32 *)(a + 0x38) = -1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209540);
+extern s32 D_00470650;
+extern u8 *func_00208A40(u8 **);
+extern u8 *func_00208BD0(u8 **);
+#if 0
+u8 *func_002096D0(u8 *a0, s32 a1, s32 a2) {
+    u8 *s3 = a0;
+    s32 s2 = a1;
+    s32 s1 = a2;
+    u8 *s0;
+    u8 *loc[8];
+    f32 vec[4];
+    s0 = D_0051FA40[D_00470650];
+    D_00470650 = D_00470650 + 1;
+    if (D_00470650 >= 0x80) {
+        D_00470650 = 0;
+    }
+    memset(s0, 0, 0x40);
+    *(s32 *)(s0 + 0x8) = s2;
+    *(s32 *)(s0 + 0xC) = s1;
+    __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(s0 + 0x10) : "memory");
+    __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(s0 + 0x20) : "memory");
+    a0 = D_00568440[0];
+    while (a0 != D_00568480 && !(s1 < *(s32 *)(a0 + 0xC))) {
+        a0 = *(u8 **)a0;
+    }
+    *(u8 **)(*(u8 **)(a0 + 0x4)) = s0;
+    *(u8 **)(s0 + 0x4) = *(u8 **)(a0 + 0x4);
+    *(u8 **)(a0 + 0x4) = s0;
+    *(u8 **)s0 = a0;
+    __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(vec) : "memory");
+    loc[0] = s0;
+    loc[2] = s3;
+    loc[4] = (u8 *)vec;
+    loc[5] = (u8 *)vec;
+    loc[6] = (u8 *)vec;
+    loc[7] = (u8 *)vec;
+    if ((*(s32 *)(s3 + 0x4) & 0xFFFF0000) != 0x20000) {
+        if ((*(s32 *)(s3 + 0x4) & 0xFFFF0000) == 0x10000) {
+            a0 = func_00208BD0(loc);
+            *(s32 *)(a0 + 0x8) |= 0x2000;
+        }
+    } else {
+        a0 = func_00208A40(loc);
+        *(s32 *)(a0 + 0x8) |= 0x2000;
+    }
+    return s0;
+}
+// differs: the dispatch on the high half of the node (0x20000 / 0x10000) is laid out with the 0x10000 case inline in the original; the layouts tried (else-if, nested != forms) are one or two instructions off in the branch order
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002096D0);
 #if 0
 void func_00209850(u8 *a0, s32 a1) {
@@ -684,7 +733,43 @@ void func_00209850(u8 *a0, s32 a1) {
 // differs: the list end pointer is computed into a temporary here (s0 + 0x44 in v1) where the original advances s0 in place; the loop tail matches otherwise
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209850);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209950);
+void func_00209950(u8 *a0, u8 *a1, s32 a2) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    u8 *s0;
+    u8 *t;
+    VU_COPY(a0 + 0x20, a1);
+    s3 = *(u8 **)(a0 + 0x30);
+    while (s3 != NULL) {
+        s2 = *(u8 **)(s3 + 0x8);
+        if (*(s32 *)(s2 + 0x8) & 0x2000) {
+            t = *(u8 **)(s2 + 0x14);
+            if ((*(s32 *)(t + 0x8) & 0x8000000) == 0) {
+                if (*(u8 **)(s2 + 0x20) != NULL) {
+                    if (a2 != 0) {
+                        func_00142080(*(u8 **)(s2 + 0x20) + 0x30, t + 0x40, a1);
+                    } else {
+                        VU_COPY(*(u8 **)(s2 + 0x20) + 0x30, a1);
+                    }
+                }
+                if (*(s32 *)(s2 + 0x4C) != 0) {
+                    s1 = *(u8 **)(s2 + 0x3C);
+                    s0 = s2 + 0x44;
+                    while (s1 != s0) {
+                        if (a2 != 0) {
+                            func_00142080(s1 + 0x30, *(u8 **)(s2 + 0x14) + 0x40, a1);
+                        } else {
+                            VU_COPY(s1 + 0x30, a1);
+                        }
+                        s1 = *(u8 **)s1;
+                    }
+                }
+            }
+        }
+        s3 = *(u8 **)s3;
+    }
+}
 void func_00209A90(u8 *a0, u8 *a1) {
     u8 *t0;
     u8 *a3;
