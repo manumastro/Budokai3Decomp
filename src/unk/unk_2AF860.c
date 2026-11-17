@@ -457,6 +457,48 @@ s32 func_002B0CA0(u8 *s, s32 n) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0CA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0E00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1160);
+#if 0
+s32 func_002B1590(u8 *s) {
+    s32 *arr = (s32 *)(s + 0xB8);
+    s32 a2 = arr[0];
+    s32 a3 = *(s32 *)(s + 0x20);
+    s32 t0 = 0;
+    s32 t4 = 0;
+    s32 t2;
+    s32 j;
+    if (a2 == 0) {
+        return 0;
+    }
+    if (a2 > 0) {
+        do {
+            t0 += *(u8 *)(D_004E0660 + arr[t4 + 1] * 40 + 8) & 7;
+            if (t0 == a3) {
+                break;
+            }
+            t4++;
+        } while (t4 < a2);
+    }
+    if (t0 >= 7) {
+        return 0;
+    }
+    if (t4 < a2 - 1) {
+        t2 = 0;
+        if (a2 > 0) {
+            for (j = 0; j < a2; j++) {
+                if (t4 + 1 < j) {
+                    break;
+                }
+                t2 += *(u8 *)(D_004E0660 + arr[j + 1] * 40 + 8) & 7;
+            }
+        }
+        *(s32 *)(s + 0x20) = t2;
+        return 1;
+    }
+    *(s32 *)(s + 0x20) = t0 + 1;
+    return 1;
+}
+// differs: 0x118 against 0x120 bytes (2 instructions short): the first loop (the byte count of the entries until the total reaches the stored value) and the second loop (the byte sum over the first entries) are right; the loop shapes (pointer walk, do-while, a guard) tried: 0x108 to 0x118.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1590);
 #if 0
 s32 func_002B16B0(u8 *a) {
