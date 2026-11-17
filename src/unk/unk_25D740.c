@@ -188,7 +188,7 @@ typedef struct ScrPos30 {
     f32 f4;
     f32 f8;
 } ScrPos30;
-extern void func_0025D740(void);
+extern void func_0025D740(void *);
 extern ScrTask *amTask_Create(void *, s32, s32, s32, s32, char *);
 void Bscr_GetRenderTexture(ScrTask *);
 extern void func_0020E070(s32, ScrVec *);
@@ -273,7 +273,25 @@ extern void func_0020F370(s32, f32, f32, f32, f32);
 extern char D_0046B140[];
 extern char D_0046B160[];
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025D740);
+typedef struct Tk30 {
+    s32 f0;
+    f32 f4;
+    f32 f8;
+} Tk30;
+
+void func_0025D740(void *o) {
+    Tk30 *s0 = (Tk30 *)((char *)o + 0x30);
+
+    if (Scr_IsPaused() == 0) {
+        if (s0->f8 != -1.0f) {
+            s0->f4 = s0->f4 + Scr_GetSpeed();
+            if (s0->f4 >= s0->f8) {
+                amTask_Kill(o);
+            }
+        }
+    }
+    func_0020DAE0(s0->f0);
+}
 s32 Bscr_CmdDrawPhotoPrio(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 s1 = a[2].i;
@@ -1210,7 +1228,34 @@ s32 func_002607F0(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260870);
+extern s32 D_00470238;
+extern void func_00209D20(s32);
+extern void amModel_SetCurrent();
+extern void func_00208D60(s32);
+extern void func_00208D70(s32);
+extern void func_00209C50(void);
+
+s32 func_00260870(void *o, ScrCmd *cmd) {
+    s32 idx = cmd->args[0].i;
+    s32 s1 = D_0058EE50[idx];
+
+    if (D_0047079C != 0) {
+        return 1;
+    }
+    if (s1 != 0) {
+        func_00209D20(0);
+        D_00470238 = 0;
+        if (D_0058EE90[idx] != 0) {
+            amModel_SetCurrent(D_0058EE90[idx], D_0058EF10[idx]);
+        }
+        if (D_0058EED0[idx] != 0) {
+            func_00208D60(D_0058EED0[idx]);
+        }
+        func_00208D70(s1);
+        func_00209C50();
+    }
+    return 1;
+}
 
 s32 Scr_CmdSoundStop(ScrCtx *ctx, ScrCmd *cmd) {
     ScrSound *h;
