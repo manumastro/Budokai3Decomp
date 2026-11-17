@@ -326,6 +326,55 @@ s32 func_002A2490(void *p) {
     *(void **)((char *)p + 0x10) = func_002A2480;
     return 3;
 }
+extern void func_002AA3D0(s32, s32, s32);
+extern void func_002AA340(s32, s32, s32);
+extern void ScrCamSlot_Load(s32, s32, s32);
+extern void func_002AA0D0(s32, s32, s32);
+extern void func_002AA050(s32, s32, s32);
+extern s32 D_005AB8A0[];
+extern s32 D_005AB8A4[];
+extern s32 D_005AB8A8[];
+extern s32 D_005AB8AC[];
+extern s32 D_005AB8B0[];
+
+#if 0
+// func_002A24B0: the type chain (five halfword tests against 3): the original is beq to the next test and b to the end (return 3 out of line), ours branches the other way; the calls and stores match; 2 forms tried
+s32 func_002A24B0(s32 *a0, s32 a1) {
+    s32 *s4 = (s32 *)D_005AB8A0[0];
+    s32 *s3 = (s32 *)D_005AB8A4[0];
+    s32 *s2 = (s32 *)D_005AB8A8[0];
+    s32 *s1 = (s32 *)D_005AB8AC[0];
+    s32 *s0 = (s32 *)D_005AB8B0[0];
+    if (((s16 *)s4)[2] == 3) {
+        if (((s16 *)s3)[2] == 3) {
+            if (((s16 *)s2)[2] == 3) {
+                if (((s16 *)s1)[2] == 3) {
+                    if (((s16 *)s0)[2] == 3) {
+                        func_002AA3D0(*(s32 *)a0[0], 0, ((s32 *)s4[0x40 / 4])[0x50 / 4]);
+                        func_002AA340(*(s32 *)a0[0], 0, ((s32 *)s3[0x40 / 4])[0x50 / 4]);
+                        ScrCamSlot_Load(*(s32 *)a0[0], 0, ((s32 *)s2[0x40 / 4])[0x50 / 4]);
+                        func_002AA0D0(*(s32 *)a0[0], 0, ((s32 *)s1[0x40 / 4])[0x50 / 4]);
+                        func_002AA050(*(s32 *)a0[0], 0, ((s32 *)s0[0x40 / 4])[0x50 / 4]);
+                        s4[0x40 / 4] = 0;
+                        s3[0x40 / 4] = 0;
+                        s2[0x40 / 4] = 0;
+                        s1[0x40 / 4] = 0;
+                        s0[0x40 / 4] = 0;
+                        amCdFs_Close((s32)s4, 0);
+                        amCdFs_Close((s32)s3, 0);
+                        amCdFs_Close((s32)s2, 0);
+                        amCdFs_Close((s32)s1, 0);
+                        amCdFs_Close((s32)s0, 0);
+                        a0[4] = 0;
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A24B0);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern s32 D_005AB8A0[];
@@ -333,7 +382,7 @@ extern s32 D_005AB8A4[];
 extern s32 D_005AB8A8[];
 extern s32 D_005AB8AC[];
 extern s32 D_005AB8B0[];
-extern void func_002A24B0(s32 *, s32);
+extern s32 func_002A24B0(s32 *, s32);
 
 void func_002A2670(s32 *a0, s32 a1) {
     D_005AB8A0[0] = amCdFs_ReadFileId(0x609, 0, 1);
