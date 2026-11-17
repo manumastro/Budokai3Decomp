@@ -39,7 +39,7 @@ void func_00244CC0(s32, s32);
 void Obj_ResetF38(s32);
 void amTask_KillGroup(s32, s32, s32);
 void func_0020DE30(void);
-void func_00248C80(s32);
+void func_00248C80(void);
 void func_00252B20(void);
 void Wave_Create(void);
 void func_002CA490(void);
