@@ -588,7 +588,57 @@ void func_002F2F00(u8 *task) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3020);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3210);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3C60);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3E00);
+extern void func_0022E0B0(s32);
+extern void func_002F3C60(void);
+extern void *amFile_Load(s32);
+extern void *func_0022D860(f32, void *);
+
+void func_002F3E00(Task *a0) {
+    u8 *s2;
+    u8 *s1;
+    u8 *s0;
+    s32 v;
+
+    s2 = (u8 *)a0;
+    s0 = (u8 *)gInputName;
+    s1 = *(u8 **)((u8 *)a0 + 0x30);
+    if (*(s32 *)(s0 + 0x14) == 0) {
+        if (*(s16 *)(*(u8 **)(s0 + 0x8) + 0x4) != 3) {
+            return;
+        }
+        {
+            *(s32 *)(s0 + 0xC) = *(s32 *)(*(u8 **)s0 + 0x54);
+            *(s32 *)(*(u8 **)s0 + 0x54) = 0;
+            amCdFs_Close(*(void **)s0, 0);
+            *(s32 *)s0 = 0;
+            *(s32 *)(s0 + 0x10) = *(s32 *)(*(u8 **)(s0 + 0x4) + 0x54);
+            *(s32 *)(*(u8 **)(s0 + 0x4) + 0x54) = 0;
+            amCdFs_Close(*(void **)(s0 + 0x4), 0);
+            *(s32 *)(s0 + 0x4) = 0;
+            *(s32 *)(s0 + 0x14) = *(s32 *)(*(u8 **)(s0 + 0x8) + 0x54);
+            *(s32 *)(*(u8 **)(s0 + 0x8) + 0x54) = 0;
+            amCdFs_Close(*(void **)(s0 + 0x8), 0);
+            *(s32 *)(s0 + 0x8) = 0;
+            func_0022E0B0(*(s32 *)(s0 + 0xC));
+            amFile_Load(*(s32 *)(s0 + 0x10));
+            amFile_Load(*(s32 *)(s0 + 0x14));
+        }
+    }
+    s0 = (u8 *)gInputName;
+    v = *(s32 *)(s0 + 0x10);
+    D_00470704 = v;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x5000);
+    D_00470238 = 0;
+    *(void **)s1 = func_0022D860(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x14) + 0x8));
+    *(u8 *)(s1 + 0x60) = 1;
+    *(f32 *)(s1 + 0x40) = 30.0f;
+    *(s16 *)(s1 + 0x4C) = 0x21;
+    func_002F2C90(s1);
+    func_002F2A10((u32 *)s1);
+    *(void **)(s2 + 0x1C) = ((void *)func_002F3C60 == 0) ? 0 : (void *)func_002F3C60;
+}
 /* Copies 0x10 bytes of the task's work area (from 0x50) to dst, when there is a task. */
 void InputPass_CopyBuf(Task *t, void *dst) {
     if (t != 0) {
