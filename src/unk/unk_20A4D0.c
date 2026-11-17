@@ -4135,7 +4135,7 @@ void func_00217D10(u8 *p) {
         func_00215230(-1, 0x10);
     }
 }
-s32 func_00217D70(void) {
+s32 Scr_CmdCallTable469CB0(void) {
     Blk44 a;
     Blk44 b;
     memset(&a, 0, 0x2C);

@@ -4,13 +4,13 @@
  * Recipes (round 4, unblock, script-command family).
  *
  * 1. Float to int. There is NO cvt.w.s / trunc.w.s problem. The original's word 0x46000024 is what `(s32)f` emits when
- *    the value is in $f0 (checked on func_001CE740 and func_001CE7C0 against the ROM bytes). The two disassemblers
+ *    the value is in $f0 (checked on Scr_CmdFighterSet1A5EF and Scr_CmdFighterSet1A5E against the ROM bytes). The two disassemblers
  *    only disagree on the name of funct 0x24: splat says cvt.w.s, the decompals objdump says trunc.w.s. Do not
  *    try inline asm or helper casts for it; when a float-to-int function differs, look at the registers and the
  *    load order. The `(s32)` cast of a value in another FPU register (e.g. $f12) gives 0x46006024: that is a
  *    register difference, not a conversion difference.
  * 2. A struct field the original reads early (before a store) into a spare register: declare it as a local at the
- *    top of the function (`s32 q1 = p[1];`, `s32 q2 = p[2];`) and store the local (func_001CE7C0, func_001CE740).
+ *    top of the function (`s32 q1 = p[1];`, `s32 q2 = p[2];`) and store the local (Scr_CmdFighterSet1A5E, Scr_CmdFighterSet1A5EF).
  * 3. Local declaration order decides the registers; a permutation search over the declaration block (scratch tool
  *    compiling every order in one translation unit, comparing with the ROM) matched Scr_CmdFighterSetVec1828 (22 of 30 orders).
  * 4. `A + B` operand order is canonical in mwcc: `t + idx * 16` and `idx * 16 + t` (and `(idx << 4)`, a local k) gave
@@ -228,7 +228,7 @@ int func_001CC1B0(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC1B0);
-int func_001CC270(void *unused, Arg *a) {
+int Scr_CmdFighterCountSet(void *unused, Arg *a) {
     int *p = a->p;
     s32 x0 = p[0];
     s32 s1;
@@ -364,7 +364,7 @@ extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void amTask_Kill(void *);
 extern void func_001CAFE0(void *);
 extern char D_004692B0[];
-int func_001CC610(void *unused, Arg *a) {
+int Scr_CmdSlotBufCopy3(void *unused, Arg *a) {
     int *p = a->p;
     char *c = *(char **)unused;
     s32 x = p[0];
@@ -396,7 +396,7 @@ extern void func_001CB020(void *);
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void func_001CAFE0(void *);
 extern char D_004692B0[];
-int func_001CC710(void *unused, Arg *a) {
+int Scr_CmdSlotBufCopy2(void *unused, Arg *a) {
     int *p = a->p;
     char *c = *(char **)unused;
     s32 w;
@@ -442,7 +442,7 @@ extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void amTask_Kill(void *);
 extern void func_001CB010(void *);
 extern char D_004692B0[];
-int func_001CC890(void *unused, Arg *a) {
+int Scr_CmdSlotBufCopy(void *unused, Arg *a) {
     int *p = a->p;
     char *c = *(char **)unused;
     s32 x;
@@ -472,7 +472,7 @@ int func_001CC890(void *unused, Arg *a) {
     return 1;
 }
 extern s32 BtlChara_GetF2710(s32);
-int func_001CC9A0(void *unused, Arg *a) {
+int Scr_CmdFloatBuf12(void *unused, Arg *a) {
     int *p = a->p;
     f32 f = *(f32 *)p;
     s32 s3 = p[1];
@@ -589,7 +589,7 @@ int Scr_CmdCallA8770(void *unused, Arg *a) {
     func_001A8770(3, 0);
     return 1;
 }
-int func_001CCF60(void *unused, Arg *a) {
+int Scr_CmdFloatBuf6(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
     f32 buf[6];
     f32 x0 = f[0];
@@ -622,7 +622,7 @@ int Scr_CmdSetF210To21C(void *unused, Arg *a) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD050);
-int func_001CD270(void *unused, Arg *a) {
+int Scr_CmdCallBuf20(void *unused, Arg *a) {
     s32 v = *(s32 *)*(s32 **)((char *)a + 0x2C);
     s32 buf[20];
     memset(buf, 0, 0x50);
@@ -880,7 +880,7 @@ int Scr_CmdFighterFloatDFC80(void *unused, Arg *a) {
     func_001DFC80(gBattle->tbl[p[2]], p[1], (f32)p[0]);
     return 1;
 }
-int func_001CE080(void *unused, Arg *a) {
+int Scr_CmdFighterCheckSlot(void *unused, Arg *a) {
     int *p = a->p;
     s32 x0 = p[0];
     void *t = gBattle->tbl[p[2]];
@@ -892,7 +892,7 @@ int func_001CE080(void *unused, Arg *a) {
     return 1;
 }
 extern s32 func_001DF8F0(s32 a, s32 b);
-int func_001CE110(void *unused, Arg *a) {
+int Scr_CmdGetFighterAnimF(void *unused, Arg *a) {
     char *t = gBattle->tbl[a->p[0]];
     s32 v = *(s32 *)(*(char **)(t + 0x1CF4) + 0x2C);
     f32 r;
@@ -930,7 +930,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE220);
 extern void func_001E2190(void *, s32);
 extern void func_001E7070(void *, s32);
 extern void func_001E8290(void *);
-int func_001CE2A0(void *unused, Arg *a) {
+int Scr_CmdFighterSlotSetPair(void *unused, Arg *a) {
     int *p = a->p;
     s32 x = p[0];
     s32 j = p[1];
@@ -963,7 +963,7 @@ int Scr_CmdFighterSetF1A08(void *unused, Arg *a) {
     *(f32 *)((char *)gBattle->tbl[a->p[1]] + 0x1A08) = *(f32 *)a->p;
     return 1;
 }
-int func_001CE430(void *unused, Arg *a) {
+int Scr_CmdFighterSetVec4(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
     char *t = gBattle->tbl[a->p[5]];
     f32 v0 = f[0];
@@ -978,7 +978,7 @@ int func_001CE430(void *unused, Arg *a) {
     *(f32 *)(t + 0x1A04) = v0;
     return 1;
 }
-int func_001CE480(void *unused, Arg *a) {
+int Scr_CmdFighterSlotSetVec(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
     f32 x0 = f[0];
@@ -1013,7 +1013,7 @@ extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void amTask_Kill(void *);
 extern void func_001CAFB0(void *);
 extern char D_004692B0[];
-int func_001CE610(void *unused, Arg *a) {
+int Scr_CmdFighterSlotSet(void *unused, Arg *a) {
     int *p = a->p;
     char *c = *(char **)unused;
     s32 x = p[0];
@@ -1038,7 +1038,7 @@ int func_001CE610(void *unused, Arg *a) {
     }
     return 1;
 }
-int func_001CE740(void *unused, Arg *a) {
+int Scr_CmdFighterSet1A5EF(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
     s32 q1 = p[1];
@@ -1052,7 +1052,7 @@ int func_001CE740(void *unused, Arg *a) {
     *(s32 *)(t + 0x1A60) = (s32)(65536.0f * (x0 / 360.0f));
     return 1;
 }
-int func_001CE7C0(void *unused, Arg *a) {
+int Scr_CmdFighterSet1A5E(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
     f32 x0 = f[0];
@@ -1091,7 +1091,7 @@ int Scr_CmdSetVec4B4230(void *unused, Arg *a) {
     D_004B422C[0] = 1.0f;
     return 1;
 }
-int func_001CE8F0(void *unused, Arg *a) {
+int Scr_CmdFighterSetVec5(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
     s32 v6 = p[6];
@@ -1140,7 +1140,7 @@ int func_001CEE80(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEE80);
-int func_001CEF00(void *unused, Arg *a) {
+int Scr_CmdFighterSetVecPair(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
     f32 x0 = f[0];

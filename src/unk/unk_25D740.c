@@ -306,7 +306,7 @@ s32 Bscr_CmdDrawPhotoPrio(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025D8D0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdEffectSpawn(ScrCtx *ctx, ScrCmd *cmd) {
     ScrEffect e;
     s32 id = cmd->args[6].i;
 
@@ -395,7 +395,7 @@ s32 func_0025DB70(ScrCtx *ctx, ScrCmd *cmd) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DB70);
 
-s32 func_0025DBA0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjVecCall4C(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrVec v;
     s32 id = a[4].i;
@@ -413,7 +413,7 @@ s32 func_0025DBA0(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025DC00(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjVecCall4B(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrVec v;
     s32 id = a[4].i;
@@ -430,7 +430,7 @@ s32 func_0025DC00(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025DC50(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjVecCall4(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrVec v;
     s32 id = a[4].i;
@@ -496,7 +496,7 @@ s32 Bscr_CmdSetObjCamPos(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025E350(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjVec3Call(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrVec v;
     s32 id = a[3].i;
@@ -539,7 +539,7 @@ s32 func_0025E530(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020EBF0(ctx->f28);
     return 0;
 }
-s32 func_0025E550(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCtxWaitF14C(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 v = a[1].i;
 
@@ -593,7 +593,7 @@ s32 func_0025E8F0(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020EC70(ctx->f28);
     return 0;
 }
-s32 func_0025E910(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCtxWaitF14B(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 v = a[1].i;
 
@@ -633,7 +633,7 @@ s32 func_0025EAF0(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020EDA0(ctx->f28);
     return 0;
 }
-s32 func_0025EB10(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCtxWaitF14(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 v = a[1].i;
 
@@ -653,7 +653,7 @@ s32 Scr_CmdObjCall245A80(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025ED90(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjVecCall(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrVec v;
     s32 id = a[5].i;
@@ -706,7 +706,7 @@ s32 func_0025F050(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 3;
 }
-s32 func_0025F0C0(TimedF0C0 *o, ScrCmd *cmd) {
+s32 Scr_CmdTimedSet0C0B(TimedF0C0 *o, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 x = a[1].i;
     s32 y = a[0].i;
@@ -765,7 +765,7 @@ s32 func_0025F3A0(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 3;
 }
-s32 func_0025F410(TimedF0C0 *o, ScrCmd *cmd) {
+s32 Scr_CmdTimedSet0C0(TimedF0C0 *o, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 x = a[1].i;
     s32 y = a[0].i;
@@ -942,7 +942,7 @@ s32 func_0025FA60(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 3;
 }
-s32 func_0025FAC0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjWaitCheck(ScrCtx *ctx, ScrCmd *cmd) {
     ctx->f28 = cmd->args[0].i;
     ctx->f10 = func_0025FA60;
     if (func_00245C50(gBattle->f8934[ctx->f28])) {
@@ -980,7 +980,7 @@ s32 Scr_CmdObjCall245D30(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025FC90(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjBigCall2(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrBig s;
     void *obj = gBattle->f8934[a[2].i];
@@ -996,7 +996,7 @@ s32 func_0025FC90(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025FCF0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjBigCall(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrBig s;
     void *obj = gBattle->f8934[a[2].i];
@@ -1012,7 +1012,7 @@ s32 func_0025FCF0(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FD50);
-s32 func_0025FF00(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdPlyPartSet(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 s1 = a[1].i;
     s32 s0 = a[0].i;
@@ -1025,7 +1025,7 @@ s32 func_0025FF00(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025FFA0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjSetCall(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrChara *o = gBattle->f8934[a[2].i];
     s32 b = a[1].i;
@@ -1088,7 +1088,7 @@ s32 func_002600B0(ScrCtx *ctx, ScrCmd *cmd) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002600B0);
 
-s32 func_00260160(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjSetF8F18(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     f32 f = a[0].f;
     ScrObj *o = func_0020A720(a[1].i);
@@ -1097,7 +1097,7 @@ s32 func_00260160(ScrCtx *ctx, ScrCmd *cmd) {
     o->f18 = f;
     return 1;
 }
-s32 func_002601A0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjFloat4(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     f32 e;
     f32 b;
@@ -1163,7 +1163,7 @@ s32 func_00260320(ScrCtx *ctx, ScrCmd *cmd) {
     return 0;
 }
 
-s32 func_00260370(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCtxWaitF14D(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     if (a[0].i != 0) {

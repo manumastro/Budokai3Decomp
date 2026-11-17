@@ -1023,7 +1023,7 @@ s32 func_00252CE0(s32 a0, s32 a1) {
 }
 extern void func_001F9B60(s32, s32, s32);
 // GIVEN UP: the global is loaded and the element address computed in other registers (3 declaration orders and 2 expression forms tried)
-s32 func_00252D00(s32 a0, s32 *a1) {
+s32 Scr_CmdFighterCall1F9B60(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
     Fighter *f = gBattle->fighter[q[2]];
 
@@ -1032,7 +1032,7 @@ s32 func_00252D00(s32 a0, s32 *a1) {
 }
 extern s32 amMotion_FindBone(s32, s32);
 extern void func_001F3FE0(s32, s32, s32, s32, f32);
-s32 func_00252D50(s32 a0, s32 *a1) {
+s32 Scr_CmdMotionBoneCall1F3FE0(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
     s32 x = a1[8] + q[3];
     f32 f = ((f32 *)q)[1];
@@ -1046,7 +1046,7 @@ s32 func_00252D50(s32 a0, s32 *a1) {
     return 1;
 }
 // GIVEN UP: the argument -1 is set before a0 is copied in the original (tried two forms)
-s32 func_00252DF0(s32 a0, s32 a1) {
+s32 Scr_CmdCall1F9BB0(s32 a0, s32 a1) {
     func_001F9BB0(-1, -1);
     return 1;
 }
@@ -1073,15 +1073,15 @@ s32 func_00252E20(s32 a0, s32 *a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252E20);
-s32 func_00252EA0(s32 a0, s32 a1) {
+s32 Scr_CmdObjFreeFlag400(s32 a0, s32 a1) {
     BtbObj_FreeFlag400(a0, a1);
     return 1;
 }
-s32 func_00252EC0(s32 a0, s32 *a1) {
+s32 Scr_CmdBtbBgCreatePlanet(s32 a0, s32 *a1) {
     BtbBg_CreatePlanet(((s32 *)a1[11])[0]);
     return 1;
 }
-s32 func_00252EF0(s32 a0, s32 *a1) {
+s32 Scr_CmdObjCall1F5B10(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
     s32 s = q[0];
     s32 *r = func_001F5EF0(q[2], q[1]);
@@ -1108,7 +1108,7 @@ s32 func_00252F30(s32 a0, s32 *a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252F30);
 extern void BtbObj_ApplyMotSet(s32 *);
-s32 func_00252FA0(s32 a0, s32 *a1) {
+s32 Scr_CmdObjSetApplyMotSet(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
     f32 f = ((f32 *)q)[0];
     s32 s = q[1];
@@ -1120,7 +1120,7 @@ s32 func_00252FA0(s32 a0, s32 *a1) {
     return 1;
 }
 extern void func_001F5BE0(s32 *);
-s32 func_00253000(s32 a0, s32 *a1) {
+s32 Scr_CmdObjSetFloatCall1F5BE0(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
     f32 f = ((f32 *)q)[0];
     s32 s = q[1];
@@ -1131,14 +1131,14 @@ s32 func_00253000(s32 a0, s32 *a1) {
     func_001F5BE0(r);
     return 1;
 }
-s32 func_00253060(s32 a0, s32 *a1) {
+s32 Scr_CmdObjRemoveByIdx(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
 
     BtbObj_RemoveByIdx(q[1], q[0]);
     return 1;
 }
 
-s32 func_00253090(s32 a0, s32 *a1) {
+s32 Scr_CmdSwitchCall1F7470(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
     s32 x = q[0];
 
@@ -1162,7 +1162,7 @@ s32 func_00253090(s32 a0, s32 *a1) {
     return 1;
 }
 extern void BtbBg_StartCrossFade(s32, s32, s32, f32, f32);
-s32 func_00253140(s32 *a0, s32 *a1) {
+s32 Scr_CmdBtbBgCrossFade(s32 *a0, s32 *a1) {
     s32 *p = (s32 *)a0[0];
     s32 *q = (s32 *)a1[11];
 
@@ -1174,7 +1174,7 @@ s32 SkillCmd_BgSetF9E(s32 a0, s32 *a1) {
     return 1;
 }
 extern s32 D_0051CD00[];
-s32 func_002531B0(s32 a0, s32 *a1) {
+s32 Scr_CmdGetBtbBgIdle(s32 a0, s32 *a1) {
     s32 r = 0;
 
     if (*(s32 *)((u8 *)D_0051CD00[0] + 4) == 2) {
@@ -1188,7 +1188,7 @@ s32 func_002531B0(s32 a0, s32 *a1) {
     *a1 = r;
     return 1;
 }
-s32 func_00253210(s32 a0, s32 *a1) {
+s32 Scr_CmdGetBtbBgFlip(s32 a0, s32 *a1) {
     *a1 = D_0051CD20[0];
     return 1;
 }
@@ -1212,7 +1212,7 @@ extern void BtbBg_RunFunc(void);
 extern void func_001F6140(void);
 extern void amVram_Apply(s32);
 extern void func_001F7FA0(void);
-s32 func_002532B0(s32 a0, s32 *a1) {
+s32 Scr_CmdBtbBgFlip(s32 a0, s32 *a1) {
     if (*(s32 *)((u8 *)D_0051CD00[0] + 4) > 1) {
         BtbBg_RunFunc();
         func_001F6140();
