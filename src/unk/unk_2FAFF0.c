@@ -617,7 +617,57 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FE1B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FE5A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FE7A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FEBD0);
+#if 0
+// differs: 0x158 vs 0x170 (6 instructions short): the original has two out-of-line early returns (b to the epilogue) and two extra nops after the last call; the z store to the copied vector (k.z) and the aligned(16) copy are right
+extern u8 D_00458BE0[];
+extern s32 func_00136870(s32, s32, void *, s32, s32, s32, f32);
+extern void func_00137B60(void *);
+extern void amDraw_FlushPacket(void);
+
+typedef struct Vq2FED60 {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} __attribute__((aligned(16))) Vq2FED60;
+
+void func_002FED60(f32 a, f32 b, f32 c) {
+    Vq2FED60 p;
+    Vq2FED60 k;
+    f32 t;
+
+    if (a >= -5.0f) {
+        if (a <= 805.0f) {
+            if (b > c) {
+                t = c;
+                c = b;
+                b = t;
+            }
+            if (c >= -5.0f) {
+                if (b <= 605.0f) {
+                    __asm__ volatile("sqc2 $vf0, 0x0(%0)" : : "r"(&p) : "memory");
+                    p.x = a - 2.5f;
+                    p.y = b;
+                    k = *(Vq2FED60 *)D_00458BE0;
+                    k.z = *(f32 *)((u8 *)gTourMap->f40 + 0x34);
+                    func_00136870(1, 0x910, &k, -1, 0x44, 0, a);
+                    func_00137B60(&p);
+                    p.x = p.x + 5.0f;
+                    func_00137B60(&p);
+                    p.y = c;
+                    p.x = p.x - 5.0f;
+                    func_00137B60(&p);
+                    p.x = p.x + 5.0f;
+                    func_00137B60(&p);
+                    amDraw_FlushPacket();
+                }
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FED60);
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FEED0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FF610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FFD20);
