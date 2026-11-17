@@ -1,7 +1,7 @@
 #include "common.h"
 
 f32 func_0011F320(f32);
-void func_0022C7D0(f32, s32);
+void func_0022C7D0(s32, f32, s32);
 void func_0022ACF0(s32);
 
 extern s32 D_00470698;
@@ -199,21 +199,19 @@ void func_0021B1E0(void) {
     }
     *(f32 *)(sys + 0xE2C) = f1;
 }
-#if 0
 void func_0021B420(void) {
     u8 *sys = gBtlSys;
+    f32 *px = (f32 *)(sys + 0x640);
+    s32 a;
     f32 x;
     f32 q;
     f32 r;
     s32 n;
 
-    if (*(f32 *)(sys + 0xDF4) == -2.0f) {
+    if (*(f32 *)(sys + 0xDF4) == -2.0f || *(f32 *)(sys + 0xDF4) == -1.0f) {
         return;
     }
-    if (*(f32 *)(sys + 0xDF4) == -1.0f) {
-        return;
-    }
-    x = *(f32 *)(sys + 0x640);
+    x = *px;
     if (x < 0.0f) {
         x = 0.0f;
     }
@@ -226,17 +224,15 @@ void func_0021B420(void) {
     if (*(f32 *)((u8 *)D_0047068C + 0x10) == (f32)n) {
         return;
     }
-    D_00470704 = *(s32 *)(sys + 0xE60);
+    a = *(s32 *)(sys + 0xE60);
+    D_00470704 = a;
     D_0047070C = 0x04000000;
     D_00470708 = 0;
-    amModel_SetCurrent(*(s32 *)(sys + 0xE60), 0x04000000);
+    amModel_SetCurrent(a, 0x04000000);
     D_00470238 = 0;
-    func_0022C7D0((f32)n, 1);
+    func_0022C7D0(D_0047068C, (f32)n, 1);
     func_0022ACF0(D_0047068C);
 }
-// differs: 22 of 72 (round 5). The (s32) cast is NOT the problem: the original's word 0x46000024 is what the cast emits too (the disassemblers only name it differently). Tried live: the two early exits as one `||` test (shares the return), D_0047068C loaded before the cast, the px = sys+0x640 pointer, and the call func_0022C7D0(D_0047068C, (f32)n, 1) (signature (s32, f32, s32), the file's first declaration must match). Left: the last call func_0022ACF0 gets a nop before the epilogue and the early exits jump past ld ra/lq s1, the original's exits go to the epilogue directly.
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
 s32 func_0021B540(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
