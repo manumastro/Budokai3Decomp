@@ -520,46 +520,64 @@ s32 func_001A90E0(BtlRank *a0, s16 a1) {
     }
     return r;
 }
-// GIVEN UP: a switch lays out its cases in another order than the original's compare chain (4 forms tried)
+// GIVEN UP: the switch chain and the case blocks are in the original order, but the pair block loads the
+// first field into another register ($v1 for $a1) and the rest is 0x18 bytes longer (4 forms tried)
 #if 0
+static inline s32 BtlCmd_PairAt(u8 *a0, s32 op, s32 oq) {
+    s16 p = *(s16 *)(a0 + op);
+    if (p == 1 && *(s16 *)(a0 + oq) > 0 && *(s16 *)(a0 + oq) < 5) {
+        return 1;
+    }
+    if (*(s16 *)(a0 + oq) == 1 && p > 0 && p < 5) {
+        return 1;
+    }
+    return 0;
+}
+
 s32 func_001A9230(u8 *a0, s32 a1) {
     s16 k = (s16)a1;
-    s16 p;
-    s16 q;
 
     switch (k) {
-    case 0xC0:
-        p = *(s16 *)(a0 + 0x430);
-        q = *(s16 *)(a0 + 0x432);
+    case 0x10:
+        if (*(s16 *)(a0 + 0x42C) == 1) {
+            return 1;
+        }
         break;
-    case 0x60:
-        p = *(s16 *)(a0 + 0x430);
-        q = *(s16 *)(a0 + 0x42E);
+    case 0x20:
+        if (*(s16 *)(a0 + 0x42E) == 1) {
+            return 1;
+        }
         break;
-    case 0x90:
-        p = *(s16 *)(a0 + 0x42C);
-        q = *(s16 *)(a0 + 0x432);
-        break;
-    case 0x30:
-        p = *(s16 *)(a0 + 0x42C);
-        q = *(s16 *)(a0 + 0x42E);
+    case 0x40:
+        if (*(s16 *)(a0 + 0x432) == 1) {
+            return 1;
+        }
         break;
     case 0x80:
-        return *(s16 *)(a0 + 0x430) == 1;
-    case 0x40:
-        return *(s16 *)(a0 + 0x432) == 1;
-    case 0x20:
-        return *(s16 *)(a0 + 0x42E) == 1;
-    case 0x10:
-        return *(s16 *)(a0 + 0x42C) == 1;
-    default:
-        return 0;
-    }
-    if (p == 1 && q > 0 && q < 5) {
-        return 1;
-    }
-    if (q == 1 && p > 0 && p < 5) {
-        return 1;
+        if (*(s16 *)(a0 + 0x430) == 1) {
+            return 1;
+        }
+        break;
+    case 0x30:
+        if (BtlCmd_PairAt(a0, 0x42C, 0x42E)) {
+            return 1;
+        }
+        break;
+    case 0x90:
+        if (BtlCmd_PairAt(a0, 0x42C, 0x432)) {
+            return 1;
+        }
+        break;
+    case 0x60:
+        if (BtlCmd_PairAt(a0, 0x430, 0x42E)) {
+            return 1;
+        }
+        break;
+    case 0xC0:
+        if (BtlCmd_PairAt(a0, 0x430, 0x432)) {
+            return 1;
+        }
+        break;
     }
     return 0;
 }
@@ -639,6 +657,70 @@ void func_001AA450(BtlRank *a0) {
         }
     }
 }
+extern u8 D_00492FF0[];
+
+// GIVEN UP: the max/min folds are right, but the original keeps the entry address and the flag address in other
+// registers, loads the index in each step and is 18 instructions longer (0x2A0 against 0x258; 4 forms tried)
+#if 0
+static inline void BtlCmd_Fold(s32 *cur, s32 v) {
+    if (v > 0) {
+        if (*cur > 0) {
+            if (*cur < v) {
+                *cur = v;
+            }
+        } else {
+            *cur = v;
+        }
+    } else {
+        if (v < *cur) {
+            *cur = v;
+        }
+    }
+}
+
+void func_001AA5C0(u8 *a0) {
+    s32 idx;
+    s32 t0;
+    s32 a3;
+    s32 v;
+    s32 flags;
+    u8 *ent;
+
+    idx = *(s16 *)(a0 + 0x44);
+    if (idx >= 0) {
+        *(s32 *)(a0 + 0x48) = 0x80000000;
+        *(s32 *)(a0 + 0x4C) = 0x80000000;
+        *(s32 *)(a0 + 0x50) = 0x80000000;
+        *(s32 *)(a0 + 0x54) = 0x80000000;
+        for (t0 = 0; t0 < 2; t0++) {
+            for (a3 = 0; a3 < 8; a3++) {
+                flags = *(s8 *)((u8 *)D_00470570 + idx * 8 + 0x88B0 + a3);
+                ent = D_00492FC0 + *(s16 *)(a0 + 0x44) * 184;
+                if (t0 == 0) {
+                    v = *(s32 *)(ent + a3 * 4 + 0x48);
+                } else {
+                    v = *(s32 *)(ent + a3 * 4 + 0x94);
+                }
+                if ((flags & 1) != 0) {
+                    BtlCmd_Fold((s32 *)(a0 + 0x48), v);
+                }
+                if ((flags & 2) != 0) {
+                    BtlCmd_Fold((s32 *)(a0 + 0x4C), v);
+                }
+                if ((flags & 4) != 0) {
+                    BtlCmd_Fold((s32 *)(a0 + 0x50), v);
+                }
+                if ((flags & 8) != 0) {
+                    BtlCmd_Fold((s32 *)(a0 + 0x54), v);
+                }
+            }
+        }
+        ent = D_00492FF0 + idx * 184;
+        v = *(s32 *)ent;
+        BtlCmd_Fold((s32 *)(a0 + 0x50), v);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA5C0);
 void func_001AA860(BtlRank *a0) {
     s32 x;

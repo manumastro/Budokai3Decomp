@@ -1134,7 +1134,37 @@ void func_002541D0(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002541D0);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254260);
+extern char D_0046AE28[];
+extern s32 D_00452680[];
+extern s32 D_00452684[];
+
+void *func_00254260(s32 a0) {
+    s32 *s1;
+    s32 *s3;
+    s32 *s0;
+
+    s1 = (s32 *)amHeap_Alloc(0x14, 0, D_0046AE28, 0xCC);
+    memset(s1, 0, 0x14);
+    s3 = (s32 *)amHeap_Alloc(0x18, 0, D_0046AE28, 0x3F8);
+    memset(s3, 0, 0x18);
+    s0 = (s32 *)D_00452680[0];
+    if (s0[0] != -1) {
+        s3[4] = amCdFs_ReadFileId(s0[0] | 0x10000, 0, 1);
+    }
+    s3[0] = (s32)s0;
+    s1[3] = (s32)s3;
+    s0 = (s32 *)amHeap_Alloc(0x18, 0, D_0046AE28, 0x3F8);
+    memset(s0, 0, 0x18);
+    s3 = (s32 *)D_00452684[a0];
+    if (s3[0] != -1) {
+        s0[4] = amCdFs_ReadFileId(s3[0] | 0x10000, 0, 1);
+    }
+    s0[0] = (s32)s3;
+    s1[2] = (s32)s0;
+    s1[1] = 0x10840000;
+    s1[0] = (a0 << 8) + 0x10840100;
+    return s1;
+}
 // GIVEN UP: the loop counter and the pointer take the other saved registers (tried the declaration orders)
 #if 0
 void func_002543B0(u8 *a0) {
