@@ -5,6 +5,14 @@
 
 extern s32 *D_0046FE44;
 extern s32 *D_0047011C;
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern void func_00145CC0(s32, s32);
+extern void func_0022C060(s32, f32);
+extern void func_0022CD00(s32);
+extern void func_002C0860(s32 *);
 extern void func_002BDF50(void *, void *);
 extern void func_00209530(s32);
 extern void func_00215230(s32, s32);
@@ -25,7 +33,7 @@ extern void func_002BE320(s32);
 extern void func_002BEB50(void);
 extern void func_002CA4A0(void);
 extern void func_002C03B0(s32 *);
-extern void func_0022C700(Task *);
+extern void func_0022C700();
 extern TourModeGlobal *gTourMode;
 extern char D_0046EE10[];
 extern void (*D_0046EE30[])(void *);
@@ -245,6 +253,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1860);
 void func_002C19F0(Task *task) {
     func_0022C700(task);
 }
+// func_002C1A00: the loads of the work block and the order of the two calls differ; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1A00);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1AA0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1BC0);
@@ -258,6 +267,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C28A0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C29A0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2FF0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3120);
+// func_002C3220: the same shape as func_002C1A00; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3220);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C32C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3A10);
