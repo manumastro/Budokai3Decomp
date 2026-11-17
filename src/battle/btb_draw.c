@@ -34,6 +34,21 @@ typedef struct BtbSub {
     BtbObj *f68;
 } BtbSub;
 
+typedef struct BtbItem BtbItem;
+struct BtbItem {
+    s32 id;
+    f32 val;
+    s32 pad8;
+    s16 kind;
+    s16 kind2;
+};
+
+typedef struct BtbHolder BtbHolder;
+struct BtbHolder {
+    char pad0[0x10];
+    BtbItem *item;
+};
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EAC20);
 
 extern s8 D_004B4BB1[];
@@ -1606,7 +1621,13 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEEF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEF90);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF010);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF090);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF0D0);
+extern void func_0020A150(void);
+extern void func_0022DB90(s32);
+
+void func_001EF0D0(void) {
+    func_0020A150();
+    func_0022DB90(0);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF100);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF1E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF510);
@@ -1646,19 +1667,75 @@ void func_001EF880(BtbEntry *e, u8 *src) {
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF930);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EFDB0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0280);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F04C0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F04E0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0510);
+extern u64 D_00511440[];
+
+u64 func_001F04C0(s32 a0) {
+    return D_00511440[0] & (1 << a0);
+}
+extern u64 D_00511440[];
+
+void func_001F04E0(s32 a0) {
+    D_00511440[0] &= ~(s64)(1 << a0);
+}
+extern u64 D_00511440[];
+
+void func_001F0510(s32 a0) {
+    D_00511440[0] |= 1 << a0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0530);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0660);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0790);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F07A0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F07B0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F07D0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F07E0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0810);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0820);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0830);
+extern s8 D_004B4BB0[];
+
+void func_001F0790(void) {
+    D_004B4BB0[0] = 0;
+}
+extern s8 D_004B4BB0[];
+
+void func_001F07A0(void) {
+    D_004B4BB0[0] = 1;
+}
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+
+void func_001F07B0(s32 a0) {
+    D_004B4BB2[0] = a0;
+    D_004B4BB1[0] = 1;
+}
+extern s32 D_004705F8;
+
+void func_001F07D0(void) {
+    D_004705F8 = 1;
+}
+extern s32 D_004705FC;
+extern void func_002641D0(void);
+
+void func_001F07E0(void) {
+    func_002641D0();
+    D_004705FC = 1;
+}
+extern void func_00264300();
+extern void func_001F0820(void);
+
+void func_001F0810(s32 a0, s32 a1) {
+    func_00264300(a0, func_001F0820, a1);
+}
+extern s32 D_004705FC;
+
+void func_001F0820(void) {
+    D_004705FC = 1;
+}
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern s32 D_00470608;
+
+void func_001F0830(s32 a0, s32 a1) {
+    if (D_00470600 == -1) {
+        D_00470600 = a0;
+    } else {
+        D_00470604 = a0;
+    }
+    D_00470608 = a1;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0860);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0A50);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0E20);
@@ -1982,11 +2059,57 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5540);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5660);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5830);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5950);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5A70);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5AB0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5B10);
+extern void func_002D04A0(s32);
+extern void func_002CFDE0(s32);
+
+void func_001F5A70(BtbHolder *h) {
+    if (h->item->id != 0) {
+        func_002D04A0(h->item->kind2);
+        func_002CFDE0(0);
+        func_002D04A0(0);
+    }
+}
+extern void func_002D04A0(s32);
+extern void func_002D0110(s32, f32, s32);
+
+void func_001F5AB0(BtbHolder *h) {
+    if (h->item->id != 0) {
+        func_002D04A0(h->item->kind2);
+        func_002D0110(h->item->id, h->item->val, 0);
+        func_002D04A0(0);
+    }
+}
+void func_001F5B10(char *a, s32 v) {
+    s32 i;
+    char *p;
+
+    if (0 < *(s32 *)(a + 4)) {
+        i = 0;
+        p = a;
+        do {
+            *(s32 *)(p + 8) = v;
+            p += 8;
+            i++;
+        } while (i < *(s32 *)(a + 4));
+    }
+}
+// differs: the original reloads h->item between its two stores (the compiler keeps it in a register); the
+// variants tried (local copy, pointer-typed first store, third store) do not reproduce the reload
+#if 0
+void func_001F5B50(BtbHolder *h) {
+    if (h->item != NULL) {
+        h->item->id = 0;
+        h->item->kind = 0;
+    }
+}
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5B50);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5B70);
+void func_001F5B70(BtbHolder *h) {
+    if (h->item != NULL) {
+        h->item->kind = 1;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5B90);
 typedef struct MotState {
     char *obj;
@@ -2059,18 +2182,6 @@ extern f32 D_0051CD24[];
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5BE0);
 
-typedef struct BtbItem {
-    s32 id;
-    f32 val;
-    s32 pad8;
-    s16 kind;
-    s16 kind2;
-} BtbItem;
-
-typedef struct BtbHolder {
-    char pad0[0x10];
-    BtbItem *item;
-} BtbHolder;
 
 extern f32 func_002CFDD0(s32, f32, f32);
 extern void func_002D0110(s32, f32, s32);
@@ -2137,8 +2248,10 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5FD0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6140);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F62A0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6330);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F63B0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F63C0);
+void func_001F63B0(void) {
+}
+void func_001F63C0(void) {
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F63D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6450);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F64E0);
@@ -2148,7 +2261,8 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6670);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6690);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6CD0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6D60);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6E50);
+void func_001F6E50(void) {
+}
 
 extern char D_0051CB70[];
 extern char D_0051CC20[];
