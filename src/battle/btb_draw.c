@@ -1,5 +1,27 @@
 #include "common.h"
 
+/*
+ * Recipes (round 4, unblock), what matched here and why:
+ *
+ * 1. A switch that the original compiles as a beq chain (no jump table): write the cases in the REVERSE of the
+ *    compare order (the chain tests the last case first). Case bodies follow the case order. func_001EE530 (8 cases),
+ *    func_001EAD10 and func_001EADD0 use the same shape. A switch with a jump table (`jr` into jtbl_...) stays asm
+ *    (func_001EF1E0).
+ * 2. A global read as a 16-bit or float word through a %lo offset (lhu, lwc1 with lui) is declared as an array
+ *    (`extern u16 X[];`, `extern f32 X[];`), not a scalar (the scalar gives $gp). A global the file already types
+ *    differently is read as `*(s16 *)&X` / `*(s8 *)&X`.
+ * 3. A value stored and then tested: keep the result in a local (`n = X[0] - 1; X[0] = n; if (n == 0)`) and test
+ *    the local; re-reading the global after the store adds a lui and a load (func_001EEAF0).
+ * 4. A run of calls with constant arguments and a few global stores (func_001EF100) matches as written, in order.
+ * 5. A 16-byte struct copy through lq/sq: `typedef struct { u8 b[16]; } __attribute__((aligned(16))) T;` and a plain
+ *    struct assignment (func_001F7120, as char_light.c).
+ * 6. Give-ups measured in round 4 (not solved): func_001ED020 (2 diffs: the scheduler, not the source order, puts
+ *    the `D_00470600 = a0` store in the bnez delay slot; 120 store orders, a comma form and volatile stores all gave 2);
+ *    func_001EF090 (the original keeps the unused `v` in $v1: the void form drops it); func_001F5EF0 (9 of 24:
+ *    the non-zero arm is reached by a `b` from the beqz, shapes tried give 9 to 10); func_001F7820 (layout of the
+ *    flag loop, 0x16C against 0x164 bytes).
+ */
+
 /* The game sets a task's function through a NULL test of the function's address. */
 #define TASK_SETFUNC(t, f) ((t)->func = ((f) == NULL) ? NULL : (f))
 

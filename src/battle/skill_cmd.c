@@ -1,6 +1,15 @@
 #include "common.h"
 #include "battle/battle.h"
 
+/*
+ * Recipe (round 4, unblock): operand order of a sum. When a give-up says the sum is added in the other order (a
+ * base plus an index, a pointer plus an offset), write the attempt, then try both operands of every `A + B` in
+ * the statements (atoms: identifiers, casts like (s32)p, parenthesised groups, a[i], p->f, x * n, x << n), all
+ * combinations, in one translation unit with the game's flags (-O4,p -sdatathreshold 8 -str readonly), and compare
+ * each function with the ROM. func_00252C20 matched with the first sum swapped: `(pp[2] << 2) + (s32)pp + 0x20`.
+ * A sum that still differs by one instruction after the swap needs something else (a declaration order, a local).
+ */
+
 
 
 typedef struct SkillBuf {
