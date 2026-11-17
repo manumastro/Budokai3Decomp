@@ -589,16 +589,15 @@ void func_001D7290(Fighter *c) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7450);
 extern s8 D_00447440[];
 
-#if 0
-void func_001D79F0(Fighter *c) {
+void func_001D79F0(u8 *arg0) {
+    u8 *p;
     s32 i;
-    char *p;
     s8 *q;
 
-    p = (char *)c->f1CF8 + 0xD4;
+    p = *(u8 **)(arg0 + 0x1CF8) + 0xD4;
     for (i = 0; i < 8; i++) {
-        *((char *)c + 0x1D0C + i) = *(s16 *)((char *)c->f1CF4 + 0x12);
-        q = (s8 *)((char *)c + 0x1D0C + i);
+        *(s8 *)(arg0 + i + 0x1D0C) = *(s16 *)(*(u8 **)(arg0 + 0x1CF4) + 0x12);
+        q = (s8 *)(arg0 + i + 0x1D0C);
         if (*(s8 *)(p + 6) == 8) {
             *q = 0;
         }
@@ -608,9 +607,7 @@ void func_001D79F0(Fighter *c) {
         p += 20;
     }
 }
-#endif
-// differs: the original keeps the object pointer in a0 and the loop counter in t2 (c is copied to t1 here; 33 of 35 differ); declaration orders and a base pointer tried
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D79F0);
+
 #if 0
 void func_001D7A70(Fighter *c) {
     char *p;
