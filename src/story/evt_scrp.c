@@ -2212,7 +2212,55 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7820);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7940);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7B50);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7CB0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7F70);
+extern f32 func_002B06A0(void);
+extern void func_0022E0B0(s32);
+extern s32 func_0022D670(s32, f32);
+extern void func_0022C7D0(s32, f32, s32);
+extern void func_002A7CB0(void);
+void func_002A7F70(struct Task *a0) {
+    s32 *s0;
+    s32 *p;
+    s32 *tt;
+    void *fn;
+    f32 t;
+    s32 v;
+    s0 = gEvtWork;
+    if (*(f32 *)&s0[0x98 / 4] == 0.0f) {
+        t = func_002B06A0();
+        *(f32 *)&s0[0x98 / 4] = *(f32 *)&s0[0x98 / 4] + t;
+    } else {
+        p = (s32 *)s0[0x6C / 4];
+        if (*(s16 *)((char *)p + 4) == 3) {
+            if (*(s16 *)((char *)((s32 *)s0[0x70 / 4]) + 4) == 3) {
+                s0[0x74 / 4] = p[0x54 / 4];
+                s0[0x78 / 4] = ((s32 *)s0[0x70 / 4])[0x54 / 4];
+                func_0022E0B0(s0[0x74 / 4]);
+                ((s32 *)s0[0x6C / 4])[0x54 / 4] = 0;
+                ((s32 *)s0[0x70 / 4])[0x54 / 4] = 0;
+                amCdFs_Close(s0[0x6C / 4], 0);
+                amCdFs_Close(s0[0x70 / 4], 0);
+                s0[0x6C / 4] = 0;
+                s0[0x70 / 4] = 0;
+                v = s0[0x78 / 4];
+                D_00470704 = v;
+                D_0047070C = 0x870000;
+                D_00470708 = 0;
+                amModel_SetCurrent(v, 0x870000);
+                D_00470238 = 0;
+                tt = (s32 *)((s32 *)s0[0x74 / 4])[0x1C / 4];
+                s0[0x88 / 4] = func_0022D670(tt[0x30 / 4], 0.0f);
+                tt = (s32 *)((s32 *)s0[0x74 / 4])[0x1C / 4];
+                s0[0x8C / 4] = func_0022D670(tt[0x34 / 4], 0.0f);
+                s0[0x7C / 4] = 0;
+                s0[0x98 / 4] = 0;
+                func_0022C7D0(s0[0x88 / 4], 0.0f, 1);
+                func_0022C7D0(s0[0x8C / 4], 0.0f, 1);
+                fn = (void *)func_002A7CB0;
+                *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+            }
+        }
+    }
+}
 extern void amHeap_Free(void *);
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void memset(void *, s32, s32);
