@@ -1546,31 +1546,31 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DB7C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DBB30);
 #if 0
 s32 func_001DBFC0(Fighter *c) {
-    f32 x;
-    s32 r;
+    f32 f1;
+    s32 v;
 
-    if (c->f2003 <= 0) {
+    if (*(s8 *)((char *)c + 0x2003) <= 0) {
         return 0;
     }
-    if (c->f2004 == 0) {
+    if (*(s8 *)((char *)c + 0x2004) == 0) {
         return 0;
     }
-    x = 360.0f * ((f32)c->f1354->f17AC / 65536.0f);
-    if (x <= 90.0f || x >= 270.0f) {
-        r = 0;
+    f1 = 360.0f * ((f32)c->f1354->f17AC / 65536.0f);
+    if (f1 > 90.0f && f1 < 270.0f) {
+        v = 1;
     } else {
-        r = 1;
+        v = 0;
     }
-    if (r != 0) {
+    if (v != 0) {
         return 1;
     }
-    if (c->fAC9 > 0) {
-        return 0;
+    if (*(s8 *)((char *)c + 0xAC9) <= 0) {
+        return 1;
     }
-    return 1;
+    return 0;
 }
 #endif
-// differs: 0xB8 against 0xC0 bytes: the original ends with explicit returns that the compiler merges into one boolean; the early return blocks sit at other addresses
+// differs: the angle test (360 * value/65536 between 90 and 270) matches; the tail is 0xB8 against 0xC0 bytes (the original pads with two nops after the b and the li join)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DBFC0);
 #if 0
 s32 func_001DC080(Fighter *c) {
