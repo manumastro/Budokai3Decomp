@@ -3,12 +3,12 @@
 extern s32 gTourMap;
 extern void *amFile_Load();
 extern void amAdx_Stop(s32);
-extern void func_001F07D0(void);
-extern void func_00144B70(s32);
-extern void func_00144650(s32);
+extern void Scene_SetReady(void);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
 extern void func_00304970(void);
 extern void Zenie_Release(void);
-extern void func_00209530(void *);
+extern void Obj_ResetF38(void *);
 extern void amCdFs_Close(void *, s32);
 extern void amTask_KillGroup(s32, s32, s32);
 extern void func_0029E450(void *);
@@ -37,9 +37,9 @@ void TourMap_TaskMain(u8 *a0) {
     amFile_Load(*(void **)((u8 *)gTourMap + 0x30));
     *(s32 *)((u8 *)gTourMap + 0x24) = *(s32 *)(*(u8 **)((u8 *)gTourMap + 4) + 0x54);
     amFile_Load(*(void **)((u8 *)gTourMap + 0x24));
-    func_001F07D0();
-    func_00144B70(-1);
-    func_00144650(0);
+    Scene_SetReady();
+    SoundRpc_SendWord2(-1);
+    SoundRpc_SendWord(0);
     amAdx_Stop(-1);
     *(s32 *)(s0 + 0x30) = 0;
     *(void **)(s0 + 0x1C) = ((void *)func_00304970 == 0) ? 0 : (void *)func_00304970;
@@ -77,7 +77,7 @@ void TourMap_Exit(void) {
 
     Zenie_Release();
     if (*(s32 *)(*(u8 **)((u8 *)gTourMap + 0x40) + 0x38) != 0) {
-        func_00209530(*(void **)(*(u8 **)((u8 *)gTourMap + 0x40) + 0x38));
+        Obj_ResetF38(*(void **)(*(u8 **)((u8 *)gTourMap + 0x40) + 0x38));
     }
     s1 = 0;
     s0 = 0;
@@ -176,9 +176,9 @@ extern u8 D_004E05DC[];
 extern void func_00144A40(s32, f32, s32);
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Stop(s32);
-extern void func_001F07D0(void);
-extern void func_00144B70(s32);
-extern void func_00144650(s32);
+extern void Scene_SetReady(void);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
 extern void func_00304970(void);
 
 extern void func_002A9080(void *);

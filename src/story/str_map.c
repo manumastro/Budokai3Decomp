@@ -7,12 +7,12 @@ typedef struct StrMapCopy16 {
 
 extern s32 *gStrMap;
 extern void func_00299390(void);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D670(s32, f32);
 extern void func_0028EC50(s32, s32, s32, s32, s32, s32);
-extern void func_00144B70(s32);
-extern void func_00144650(s32);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
 extern void amAdx_Stop(s32);
 extern void func_00125740(char *, char *, s32);
 extern char D_004E6560[];
@@ -247,12 +247,12 @@ INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B550);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029BA80);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029C110);
 extern s32 func_0022BF80(s32);
-extern void func_001F0810(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 
 void func_0029C290(s32 *s0) {
     s32 *g = (s32 *)gStrTitle;
     if (func_0022BF80(g[0x78 / 4 + g[0xB0 / 4]]) == 0xFF) {
-        func_001F0810(-1, 0);
+        Scene_FadeTo(-1, 0);
         s0[0x1C / 4] = 0;
     }
 }
@@ -300,9 +300,9 @@ void StrTitle_TaskMain(Task *a0) {
     char *t = (char *)gStrTitle;
     s32 *u = *(s32 **)(t + 4);
     if (*(s16 *)((char *)u + 4) == 3) {
-        func_001F07D0();
-        func_00144B70(-1);
-        func_00144650(0);
+        Scene_SetReady();
+        SoundRpc_SendWord2(-1);
+        SoundRpc_SendWord(0);
         amAdx_Stop(-1);
         func_00125740(D_004E6560, D_004B4C00, 0x2B180);
         {

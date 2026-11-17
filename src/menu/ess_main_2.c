@@ -23,17 +23,17 @@ void Ess_Init(void) {
 extern void *amTask_Create();
 extern void Ess_TaskMain();
 extern char D_0046B470[];
-extern void func_001F07D0();
-extern void func_00144B70();
-extern void func_00144650();
+extern void Scene_SetReady();
+extern void SoundRpc_SendWord2();
+extern void SoundRpc_SendWord();
 extern void amAdx_Stop();
 
 void Ess_Start(void) {
     *(void **)(gEssMain + 0x18) = amTask_Create(Ess_TaskMain, 0, 0x3100, 0x200, 1, D_0046B470);
     memset(*(u8 **)(gEssMain + 0x18) + 0x30, 0, 0x1C);
-    func_001F07D0();
-    func_00144B70(-1);
-    func_00144650(0);
+    Scene_SetReady();
+    SoundRpc_SendWord2(-1);
+    SoundRpc_SendWord(0);
     amAdx_Stop(-1);
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E3B0);

@@ -375,7 +375,7 @@ void func_00226000(void) {
 void func_00226010(s32 *p) {
     func_00225020(p[0], p[1], p[2]);
 }
-void func_00226030(s32 idx, s32 arg) {
+void A2d_CallHandler(s32 idx, s32 arg) {
     void (*fn)(s32) = D_0046A600[idx];
 
     if (fn != 0) {
@@ -406,7 +406,7 @@ void func_002271D0(s32 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227240);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002273B0);
-void func_00227810(void) {
+void Title_StepCounters(void) {
     D_004706D8 -= 1;
     D_004706D0 -= 1;
 }
@@ -584,7 +584,7 @@ void func_0022C6B0(s32 *p) {
 }
 extern void func_00227010(s32 *, s32 *);
 extern void amDraw_SetPacketMode(s32);
-void func_0022C700(void) {
+void A2d_FlushList(void) {
     s32 i;
     s32 off;
 
@@ -739,7 +739,7 @@ void func_0022DB20(f32 a, f32 b) {
     D_00470718 = a;
     D_0047071C = b;
 }
-void func_0022DB30(s32 a) {
+void A2d_SetMode(s32 a) {
     D_00470714 = a;
 }
 void func_0022DB40(f32 x) {

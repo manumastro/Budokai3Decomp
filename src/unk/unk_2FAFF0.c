@@ -89,7 +89,7 @@ extern void func_00208F70(s32);
 extern void func_002FBAE0(struct Task2FAFF0 *);
 extern void func_002FBE20(struct Task2FAFF0 *);
 extern void Save_Exit(void);
-extern void func_001F0810(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 
 extern void amTask_Kill(void *);
 typedef struct Vec4_2FAFF0 {
@@ -141,7 +141,7 @@ void TourMap_TaskSaveWait(Task2FAFF0 *t) {
     gTourMap->f294 = gTourMap->f294 + 1;
     if (Save_GetState() > 2) {
         Save_Exit();
-        func_001F0810(-1, 0);
+        Scene_FadeTo(-1, 0);
         t->f1C = 0;
     }
 }

@@ -78,14 +78,14 @@ void Shenron_Clear(void) {
     D_00470980 = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003070A0);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void func_00306F70(void);
 extern s32 amTask_Create(void *, s32, s32, s32, s32, void *);
 extern char D_0046F9E8[];
 
 void Shenron_Start(void) {
     s32 *s0;
-    func_001F07D0();
+    Scene_SetReady();
     s0 = (s32 *)D_0047097C;
     *s0 = amTask_Create((void *)func_00306F70, 0, 0x3100, 0x4000, 2, D_0046F9E8);
 }

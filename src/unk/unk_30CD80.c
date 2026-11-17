@@ -79,7 +79,7 @@ extern void func_0030C6F0(Work *);
 extern void func_0030C280(Work *);
 extern void func_0030BD30(Work *);
 extern void func_0030C0E0(Work *);
-extern void func_00145CC0(void *, s32);
+extern void amModel_SetCurrent(void *, s32);
 extern void func_0022D0E0(void *, s32);
 extern void *func_0022D860(void *, f32);
 extern void func_0030C8F0(Task *);
@@ -88,8 +88,8 @@ extern void func_0030C870(Task *);
 extern void amCdFs_Close(Obj *, s32);
 extern void func_0022E0B0(void *);
 extern void amFile_Load(void *);
-extern void func_00143F20(s32, s32, f32);
-extern void func_00143D60(s32, s32, s32, s32);
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 extern void amHeap_Free(void *);
 extern void amTask_Kill(Task *);
 extern void Help_Exit(void);
@@ -131,7 +131,7 @@ void func_0030CD80(Task *t) {
             D_00470704 = v = gArenaRegCharList->fC;
             D_0047070C = k = 0x4000;
             D_00470708 = 0;
-            func_00145CC0(v, k);
+            amModel_SetCurrent(v, k);
             D_00470238 = 0;
             if (w->f64 != NULL) {
                 func_0022D0E0(w->f64, 1);
@@ -178,15 +178,15 @@ void ArenaList_TaskMain(Task *t) {
         func_0022E0B0(g->f8);
         amFile_Load(g->fC);
     }
-    func_00143F20(0, 0, D_004E0614[0]);
+    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
     if (!(D_004E0614[0] <= 0.0f)) {
-        func_00143D60(0, 0, 0x15, 0);
+        SoundRpc_Send3(0, 0, 0x15, 0);
     }
     g = gArenaRegCharList;
     D_00470704 = v = g->fC;
     D_0047070C = n = 0x4000;
     D_00470708 = 0;
-    func_00145CC0(v, n);
+    amModel_SetCurrent(v, n);
     D_00470238 = 0;
     tbl = D_004701C0;
     w->f5C = func_0022D860(g->f8->f14[tbl.v[0][w->fB]], 0.0f);
@@ -271,15 +271,15 @@ void func_0030D300(Task *t) {
     s32 n;
     STbl tbl;
 
-    func_00143F20(0, 0, D_004E0614[0]);
+    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
     if (!(D_004E0614[0] <= 0.0f)) {
-        func_00143D60(0, 0, 0x16, 0);
+        SoundRpc_Send3(0, 0, 0x16, 0);
     }
     g = gArenaRegCharList;
     D_00470704 = v = g->fC;
     D_0047070C = n = 0x4000;
     D_00470708 = 0;
-    func_00145CC0(v, n);
+    amModel_SetCurrent(v, n);
     D_00470238 = 0;
     tbl = D_004701C8;
     if (w->f5C != NULL) {

@@ -6,8 +6,8 @@ extern void amSofdec_StartFname(s32, char *, s32);
 extern void func_0030DB10(s32 *);
 extern void func_0030E170(s32 *);
 extern s32 func_002A8F90(void);
-extern void func_001F0830(s32, s32);
-extern void func_001F0810(s32, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 extern void func_0030D970(char *);
 extern s32 D_00470704;
 extern s32 D_00470708;
@@ -20,7 +20,7 @@ extern void func_0030DC70(s32 *);
 extern s32 amSofdec_GetStat(s32);
 extern void amSofdec_Stop(s32);
 extern void amSofdec_Destroy(s32);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C060(s32, f32);
 extern void func_0022C560(s32);
 extern void func_0022D0E0(s32, s32);
@@ -151,7 +151,7 @@ void func_0030E330(s32 *a0) {
     D_00470704 = a0[0x34 / 4];
     D_0047070C = 0x3000;
     D_00470708 = 0;
-    func_00145CC0(a0[0x34 / 4], 0x3000);
+    amModel_SetCurrent(a0[0x34 / 4], 0x3000);
     D_00470238 = 0;
     if (v != 0) {
         func_0022C060(v, 1.0f);
@@ -178,7 +178,7 @@ void func_0030E5B0(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x3000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x3000);
+    amModel_SetCurrent(v, 0x3000);
     D_00470238 = 0;
     p[2] = func_0022D860(*(s32 *)(*(s32 *)((char *)p[0] + 0x14)), 0.0f);
     p[3] = 0;
@@ -191,8 +191,8 @@ void func_0030E630(s32 *a0) {
     char *p = (char *)a0[0x30 / 4];
     if (func_002A8F90() == 0) {
         p[0x1C] = 10;
-        func_001F0830(6, 0);
-        func_001F0810(-1, 0);
+        Scene_Request(6, 0);
+        Scene_FadeTo(-1, 0);
         a0[0x1C / 4] = 0;
     }
 }

@@ -16,14 +16,14 @@ extern void func_003083E0();
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_003077E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307AF0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307C00);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 extern void func_00133B50(s32, s32);
 extern void func_00139620(s32, f32, void *, s32, s32, s32);
 
 void func_00307CF0(u8 *a0) {
     u8 *s0;
     s0 = a0;
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     func_00139620(0x900, 0.0f, s0 + 0x30, -1, 0x44, 0);
 }
@@ -212,7 +212,7 @@ extern char D_0046FA50[];
 extern char D_0046FA70[];
 extern void *amTask_Create();
 extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern void func_001F07D0();
+extern void Scene_SetReady();
 extern void func_00308500();
 
 #if 0
@@ -227,7 +227,7 @@ void func_00308980(void) {
     s0 = t + 0x30;
     *(void **)s0 = m = amHeap_Alloc(140, 0, D_0046FA70, 153);
     memset(m, 0, 140);
-    func_001F07D0();
+    Scene_SetReady();
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00308980);

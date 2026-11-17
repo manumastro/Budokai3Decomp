@@ -48,11 +48,11 @@ extern ResultState *D_00470910;
 extern s32 D_00470964;
 extern void *D_00470960;
 extern ResultWork *D_005AA604[];
-extern void func_001F0830(s32, s32);
+extern void Scene_Request(s32, s32);
 extern void func_002BD400(ResultArg *);
 extern void func_002BD510(void);
 extern void StrStatus_Dispatch(ResultMsg *);
-extern void func_001F0820(void);
+extern void Scene_MarkDone(void);
 void func_002EC850(ResultTask *t);
 
 /* Differs only in register choice: the original keeps the source pointer in v1 and the work in a0. */
@@ -70,7 +70,7 @@ void func_002EC850(ResultTask *t) {
         break;
     case 2:
         if (D_00470964 == 0) {
-            func_001F0830(8, 0);
+            Scene_Request(8, 0);
             D_00470964 = 1;
         }
         break;
@@ -86,7 +86,7 @@ void func_002EC850(ResultTask *t) {
         msg.f14 = 1;
         msg.f10 = 2;
         StrStatus_Dispatch(&msg);
-        func_001F0820();
+        Scene_MarkDone();
         t->f1C = NULL;
         break;
     }
@@ -175,16 +175,16 @@ void func_002ECAC0(void) {
 }
 
 extern char D_0046F6B8[];
-extern void func_001F07D0(void);
-extern void func_00144B70(s32);
-extern void func_00144650(s32);
+extern void Scene_SetReady(void);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
 extern void amAdx_Stop(s32);
 extern void *amTask_Create(void (*)(ResultTask *), s32, s32, s32, s32, char *);
 
 void func_002ECB10(void) {
-    func_001F07D0();
-    func_00144B70(-1);
-    func_00144650(0);
+    Scene_SetReady();
+    SoundRpc_SendWord2(-1);
+    SoundRpc_SendWord(0);
     amAdx_Stop(-1);
     D_00470960 = amTask_Create(func_002EC850, 0, 0xA000, 2, 0x80000, D_0046F6B8);
     func_0028EB40(D_00470960, 1, func_002EC9B0, 0);

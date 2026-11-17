@@ -17,12 +17,12 @@ typedef struct Effect21A {
     void *f44;
 } Effect21A;
 
-extern void func_00209530(void *);
+extern void Obj_ResetF38(void *);
 extern void amTask_Kill(void *);
 
 void func_0021A7D0(Effect21A *e) {
     if (e->f40 != NULL) {
-        func_00209530(e->f40);
+        Obj_ResetF38(e->f40);
         e->f40 = NULL;
     }
     if (e->f44 != NULL) {

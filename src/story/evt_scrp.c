@@ -85,11 +85,11 @@ void func_002A22C0(void) {
         func_0029A9F0();
     }
 }
-extern void func_00264300(s32, void *, s32);
+extern void Fade_SetRequest(s32, void *, s32);
 extern void func_002A22C0(void);
 
 void *func_002A2310(void) {
-    func_00264300(10, func_002A22C0, 0);
+    Fade_SetRequest(10, func_002A22C0, 0);
     return NULL;
 }
 void *func_002A2340(void) {
@@ -117,7 +117,7 @@ s32 func_002A2350(void *a0, char *a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2350);
 extern void func_002987E0(s32, s32);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 
 s32 func_002A23D0(void) {
     s8 *e = (s8 *)(D_004E77C4 + D_00511450[0] * 4624);
@@ -126,7 +126,7 @@ s32 func_002A23D0(void) {
     } else {
         func_002987E0(2, 0);
     }
-    func_001F07D0();
+    Scene_SetReady();
     e = (s8 *)(D_004E77C4 + D_00511450[0] * 4624);
     *e = 0;
     return 1;
@@ -340,14 +340,14 @@ s32 Evt_CmdZenieOpen(void) {
     return 1;
 }
 extern void func_002987E0(s32, s32);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void func_00298E10(s32);
 extern void func_00298E00(s32);
 extern s32 D_004700A4;
 
 s32 func_002A3120(void) {
     func_002987E0(0, 0);
-    func_001F07D0();
+    Scene_SetReady();
     if (D_004700A0 != -1) {
         func_00298E10(D_004700A0);
         D_004700A0 = -1;
@@ -996,7 +996,7 @@ s32 func_002A4F70(s32 *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     s32 *s1 = gEvtWork;
     f32 f20 = *(f32 *)args;
-    func_00264300(10, func_002A4F00, 0);
+    Fade_SetRequest(10, func_002A4F00, 0);
     s1[0x144 / 4] = 0;
     func_00264380(100.0f * (0.01f * gFrameDelta) / f20);
     a0[0x10 / 4] = (s32)func_002A4F10;
@@ -1013,13 +1013,13 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A51E0);
 extern f32 D_004708DC;
 extern void amDraw3d_ScreenShot(void);
 extern f32 func_002B06A0(void);
-s32 func_002A5330(s32 *);
+s32 Evt_ScreenShotStep(s32 *);
 
-s32 func_002A52B0(s32 *a0, char *a1) {
+s32 Evt_CmdScreenShotTimed(s32 *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 v;
     D_004708DC = *(f32 *)args;
-    a0[0x10 / 4] = (s32)func_002A5330;
+    a0[0x10 / 4] = (s32)Evt_ScreenShotStep;
     amDraw3d_ScreenShot();
     v = D_004708DC + (f32)D_004700B0 * func_002B06A0();
     D_004708DC = v;
@@ -1030,7 +1030,7 @@ s32 func_002A52B0(s32 *a0, char *a1) {
     }
     return 3;
 }
-s32 func_002A5330(s32 *a0) {
+s32 Evt_ScreenShotStep(s32 *a0) {
     f32 v;
     amDraw3d_ScreenShot();
     v = D_004708DC + (f32)D_004700B0 * func_002B06A0();
@@ -1042,11 +1042,11 @@ s32 func_002A5330(s32 *a0) {
     }
     return 3;
 }
-s32 func_002A53A0(s32 *a0) {
+s32 Evt_CmdScreenShot(s32 *a0) {
     f32 v;
     D_004708DC = 1.0f;
     D_004700B0 = 0;
-    a0[0x10 / 4] = (s32)func_002A5330;
+    a0[0x10 / 4] = (s32)Evt_ScreenShotStep;
     amDraw3d_ScreenShot();
     v = D_004708DC + (f32)D_004700B0 * func_002B06A0();
     D_004708DC = v;
@@ -1133,7 +1133,7 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5D80);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5F50);
 extern void amCdFs_ReleaseCache(s32);
 
-void func_002A6090(s32 a0, s32 a1, s32 a2, s32 a3) {
+void EvtCache_SetRow0(s32 a0, s32 a1, s32 a2, s32 a3) {
     s32 *row = (s32 *)(D_005AB610 + a0 * 240 + a1 * 24);
     if (row[0] != 0) {
         amCdFs_ReleaseCache(row[0]);
@@ -1143,7 +1143,7 @@ void func_002A6090(s32 a0, s32 a1, s32 a2, s32 a3) {
     row[1] = a3;
 }
 
-void func_002A6110(s32 a0, s32 a1, s32 a2, s32 a3) {
+void EvtCache_SetRow8(s32 a0, s32 a1, s32 a2, s32 a3) {
     char *row = D_005AB610 + a0 * 240 + a1 * 24;
     if (*(s32 *)(row + 0x8) != 0) {
         amCdFs_ReleaseCache(*(s32 *)(row + 0x8));
@@ -1153,7 +1153,7 @@ void func_002A6110(s32 a0, s32 a1, s32 a2, s32 a3) {
     *(s32 *)(row + 0x10) = a3;
 }
 
-void func_002A6190(s32 a0, s32 a1, s32 a2, s32 a3) {
+void EvtCache_SetRowC(s32 a0, s32 a1, s32 a2, s32 a3) {
     char *row = D_005AB610 + a0 * 240 + a1 * 24;
     if (*(s32 *)(row + 0xC) != 0) {
         amCdFs_ReleaseCache(*(s32 *)(row + 0xC));

@@ -9,12 +9,12 @@ extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
 extern void func_002C0860(s32 *);
 extern void func_002BDF50(void *, void *);
-extern void func_00209530(s32);
+extern void Obj_ResetF38(s32);
 extern void func_00215230(s32, s32);
 extern void func_00214FD0(void);
 extern void amTask_KillGroup(s32, s32, s32);
@@ -37,7 +37,7 @@ extern void func_002BE320(s32);
 extern void func_002BEB50(void);
 extern void func_002CA4A0(void);
 extern void StrStatus_TaskComment(s32 *);
-extern void func_0022C700();
+extern void A2d_FlushList();
 extern TourModeGlobal *gTourMode;
 extern char D_0046EE10[];
 extern void (*D_0046EE30[])(void *);
@@ -123,7 +123,7 @@ void func_002BDC50(void) {
     func_0013B160(0);
     func_00142100((char *)s1 + 0x50, (char *)s1 + 0x60);
     D_00470238 = 0;
-    func_00145CC0(s0[0x1A0 / 4], 0x3003000);
+    amModel_SetCurrent(s0[0x1A0 / 4], 0x3003000);
     if (s1[0x70 / 4] != 0) {
         func_00208D70(s1[0x70 / 4]);
     }
@@ -159,7 +159,7 @@ void func_002BDE80(void) {
     {
         s32 *g = D_0047011C;
         if (g[0xD0 / 4] != 0) {
-            func_00145CC0(g[0xD0 / 4], g[0xD8 / 4]);
+            amModel_SetCurrent(g[0xD0 / 4], g[0xD8 / 4]);
         }
         g = D_0047011C;
         if (g[0x1B4 / 4] != 0) {
@@ -191,7 +191,7 @@ void func_002BE710(s32 *a0) {
     switch (m) {
     case 0:
         if (D_0047011C[0x1B4 / 4] != 0) {
-            func_00209530(D_0047011C[0x1B4 / 4]);
+            Obj_ResetF38(D_0047011C[0x1B4 / 4]);
             D_0047011C[0x1B4 / 4] = 0;
         }
         *(s16 *)((char *)a0 + 0x2A) = 0xE;
@@ -201,7 +201,7 @@ void func_002BE710(s32 *a0) {
         break;
     case 1:
         if (D_0047011C[0x1B4 / 4] != 0) {
-            func_00209530(D_0047011C[0x1B4 / 4]);
+            Obj_ResetF38(D_0047011C[0x1B4 / 4]);
             D_0047011C[0x1B4 / 4] = 0;
         }
         break;
@@ -286,7 +286,7 @@ void func_002BF310(void) {
     s32 off = 0;
     for (i = 0; i < 8; i++) {
         if (*(s32 *)((char *)D_0047011C + off + 0x160) != 0) {
-            func_00209530(*(s32 *)((char *)D_0047011C + off + 0x160));
+            Obj_ResetF38(*(s32 *)((char *)D_0047011C + off + 0x160));
             *(s32 *)((char *)D_0047011C + off + 0x160) = 0;
         }
         *(s32 *)((char *)D_0047011C + off + 0x180) = -1;
@@ -316,7 +316,7 @@ void func_002BFC50(void) {
     memset(gWave, 0, 0xA0);
     D_0047011C[0x1BC / 4] &= -3;
     if (D_0047011C[0x1A4 / 4] != 0) {
-        func_00209530(D_0047011C[0x1A4 / 4]);
+        Obj_ResetF38(D_0047011C[0x1A4 / 4]);
         D_0047011C[0x1A4 / 4] = 0;
     }
     func_00209450(0x400010, 1);
@@ -342,7 +342,7 @@ void func_002BFD90(void) {
     memset(gWave, 0, 0xA0);
     D_0047011C[0x1BC / 4] &= -3;
     if (D_0047011C[0x1A4 / 4] != 0) {
-        func_00209530(D_0047011C[0x1A4 / 4]);
+        Obj_ResetF38(D_0047011C[0x1A4 / 4]);
         D_0047011C[0x1A4 / 4] = 0;
     }
     func_00209450(0x400010, 1);
@@ -635,7 +635,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1720);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1860);
 
 void VsCharaselEd_TaskMain(Task *task) {
-    func_0022C700(task);
+    A2d_FlushList(task);
 }
 // func_002C1A00: the loads of the work block and the order of the two calls differ; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1A00);

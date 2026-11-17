@@ -49,21 +49,21 @@ extern s32 func_002E0C70(void);
 extern void func_002E0D40(void);
 extern s32 func_002E0D10(void);
 extern void ChangeProgress_Start(void);
-extern void func_001F0820(void);
+extern void Scene_MarkDone(void);
 extern s32 Save_GetState(void);
 extern void func_00264140(s32, s32);
-extern void func_001F0830(s32, s32);
+extern void Scene_Request(s32, s32);
 extern void Save_Load(s32, s32);
 extern void Save_Request(s32, s32, s32);
-extern void func_00264300(s32, void (*)(void), s32);
+extern void Fade_SetRequest(s32, void (*)(void), s32);
 extern void amSound_LoadStream(ObjArg5 *);
 extern void amSound_LoadBank(s32 *);
 extern void func_00143B50(s32, s32);
 extern void amCdFs_Close(Obj *, s32);
 extern Task *amTask_Create(void (*)(void), s32, s32, s32, s32, char *);
-extern void func_001F07D0(void);
-extern void func_00144B70(s32);
-extern void func_00144650(s32);
+extern void Scene_SetReady(void);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
 extern void amAdx_Stop(s32);
 extern void Save_Exit(void);
 extern void Option_Free(void);
@@ -87,7 +87,7 @@ void func_002E9BF0(void) {
     default:
         return;
     case 4:
-        func_001F0820();
+        Scene_MarkDone();
         D_00470950->func = NULL;
         break;
     }
@@ -108,7 +108,7 @@ void func_002E9CA0(void) {
         Task *t = D_00470950;
         TASK_SETFUNC(t, func_002E9BF0);
     } else {
-        func_001F0820();
+        Scene_MarkDone();
         D_00470950->func = NULL;
     }
 }
@@ -118,7 +118,7 @@ void func_002E9D20(void) {
 
     TASK_SETFUNC(t, func_002E9CA0);
     func_00264140(-1, 0);
-    func_001F0830(1, 0);
+    Scene_Request(1, 0);
 }
 
 void func_002E9D70(void) {
@@ -131,7 +131,7 @@ void Boot_LoadSave(void) {
         Task *t = D_00470950;
         TASK_SETFUNC(t, func_002E9D70);
     }
-    func_00264300(-1, func_002E9D20, 0);
+    Fade_SetRequest(-1, func_002E9D20, 0);
 }
 
 void Boot_Load(void) {
@@ -199,9 +199,9 @@ void Boot_TaskMain(void) {
 
 void Boot_Start(void) {
     D_00470950 = amTask_Create(Boot_TaskMain, 0, 0x1000, 0x200, 1, D_0046F5F0);
-    func_001F07D0();
-    func_00144B70(-1);
-    func_00144650(0);
+    Scene_SetReady();
+    SoundRpc_SendWord2(-1);
+    SoundRpc_SendWord(0);
     amAdx_Stop(-1);
     func_00264140(-1, 0);
 }

@@ -91,7 +91,7 @@ extern void func_002EB560(void *);
 extern void func_001C8020(s32, void *);
 extern void func_001E1510(void *);
 extern void func_002EB3E0(s32, s32);
-extern void func_00226030(s32, void *);
+extern void A2d_CallHandler(s32, void *);
 extern void func_002E9BA0(s32);
 extern void (*D_004564A0[])(void);
 extern void (*D_004564C0[])(void);
@@ -281,7 +281,7 @@ void func_002CBEB0(void) {
     *(s16 *)((char *)t->chr + 0x13A4) = t->chr->f1CF4->f1A;
     func_002EB3E0(t->f4, t->fC - t->f10);
     buf[0] = 0;
-    func_00226030(0x27, buf);
+    A2d_CallHandler(0x27, buf);
     func_002E9BA0(0);
 }
 #endif

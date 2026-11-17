@@ -17,7 +17,7 @@ typedef struct Cloth {
 extern void amHeap_Free(void *);
 extern void func_001D15C0(void *);
 extern void func_001D16F0(void *);
-extern void func_00145CC0(s32, void *);
+extern void amModel_SetCurrent(s32, void *);
 extern void amGs_SetReg64(s32, s32);
 extern s32 func_0029D4C0(void);
 extern void func_0029D4B0(s32);
@@ -30,7 +30,7 @@ extern void func_00133980(f32, f32, f32, f32);
 static inline void Cloth_Draw(Cloth *c) {
     if (c != 0) {
         amGs_SetReg64(1, func_0029D4C0());
-        func_00145CC0(c->draw->unk00, c->draw->unk04);
+        amModel_SetCurrent(c->draw->unk00, c->draw->unk04);
         func_001D16F0(c->grid);
         amGs_SetReg64(1, 0x44);
     }

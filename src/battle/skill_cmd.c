@@ -10,7 +10,7 @@ typedef struct SkillBuf {
     /* 0x62 */ s16 unk62;
 } SkillBuf;
 
-extern void func_00209530(s32);
+extern void Obj_ResetF38(s32);
 extern void amTask_Kill(s32);
 extern s32 func_0021C460(s32);
 extern s32 func_0021C360(s32);
@@ -71,8 +71,8 @@ extern void func_001F7490(s32);
 extern void func_001F7720(s32);
 extern void func_001F7990(s32);
 extern void func_001F7C80(s32);
-extern s32 func_0021C2A0(s32);
-extern void func_00145CC0(s32, s32);
+extern s32 Input_IsHeld(s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void amDraw_SetPacketMode(s32);
 extern void amDraw_KickPending(void);
 extern void func_0022C560(s32);
@@ -173,11 +173,11 @@ void func_0024A350(s32 *a0) {
 
     s0 = ((Fighter *)a0[2])->unk1350;
     if (a0[21] != 0) {
-        func_00209530(a0[21]);
+        Obj_ResetF38(a0[21]);
         a0[21] = 0;
     }
     if (a0[22] != 0) {
-        func_00209530(a0[22]);
+        Obj_ResetF38(a0[22]);
         a0[22] = 0;
     }
     s0 = s0 << 4;
@@ -204,7 +204,7 @@ void func_0024A680(s32 *a0) {
 
     s0 = func_0020B020(s1, *(s16 *)(s2 + 0x20), *(s16 *)(s2 + 0x22));
     v = func_0020AD30(s1, *(s16 *)(s2 + 0x20), *(s16 *)(s2 + 0x22));
-    func_00145CC0(s0, v);
+    amModel_SetCurrent(s0, v);
     t = *(s16 *)(s2 + 0x60);
     if (t != 0) {
         a0 = (s32 *)func_0020AE80(s1, *(s16 *)(s2 + 0x5A), (s16)t);
@@ -266,7 +266,7 @@ s32 func_0024A760(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A760);
 void func_0024A8A0(s32 *p) {
     if (p[17] != 0) {
-        func_00209530(p[17]);
+        Obj_ResetF38(p[17]);
         p[17] = 0;
     }
     if (p[16] != 0) {
@@ -279,7 +279,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024AA00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024ACE0);
 void func_0024B260(s32 *p) {
     if (p[21] != 0) {
-        func_00209530(p[21]);
+        Obj_ResetF38(p[21]);
         p[21] = 0;
     }
     if (p[20] != 0) {
@@ -306,11 +306,11 @@ void func_0024BAB0(s32 *a0) {
 
     s0 = ((Fighter *)a0[2])->unk1350;
     if (a0[17] != 0) {
-        func_00209530(a0[17]);
+        Obj_ResetF38(a0[17]);
         a0[17] = 0;
     }
     if (a0[18] != 0) {
-        func_00209530(a0[18]);
+        Obj_ResetF38(a0[18]);
         a0[18] = 0;
     }
     s0 = s0 << 4;
@@ -331,11 +331,11 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BE30);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BFA0);
 void func_0024C250(s32 *p) {
     if (p[18] != 0) {
-        func_00209530(p[18]);
+        Obj_ResetF38(p[18]);
         p[18] = 0;
     }
     if (p[19] != 0) {
-        func_00209530(p[19]);
+        Obj_ResetF38(p[19]);
         p[19] = 0;
     }
     if (p[16] != 0) {
@@ -348,7 +348,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C4E0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C610);
 void func_0024C900(s32 *p) {
     if (p[17] != 0) {
-        func_00209530(p[17]);
+        Obj_ResetF38(p[17]);
         p[17] = 0;
     }
     if (p[16] != 0) {
@@ -362,11 +362,11 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CC60);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CDD0);
 void func_0024CFF0(s32 *p) {
     if (p[21] != 0) {
-        func_00209530(p[21]);
+        Obj_ResetF38(p[21]);
         p[21] = 0;
     }
     if (p[22] != 0) {
-        func_00209530(p[22]);
+        Obj_ResetF38(p[22]);
         p[22] = 0;
     }
     if (p[20] != 0) {
@@ -380,16 +380,16 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024DB10);
 void func_0024E0F0(s32 *p) {
     func_001D9280(p[2]);
     if (p[22] != 0) {
-        func_00209530(p[22]);
+        Obj_ResetF38(p[22]);
         p[22] = 0;
     }
     if (p[23] != 0) {
-        func_00209530(p[23]);
+        Obj_ResetF38(p[23]);
         p[23] = 0;
     }
     if (((SkillBuf *)D_0046FE54)->unk5C != 0) {
         if (((SkillBuf *)D_0046FE54)->unk62 == ((Fighter *)p[2])->unk1350) {
-            func_00209530(((SkillBuf *)D_0046FE54)->unk5C);
+            Obj_ResetF38(((SkillBuf *)D_0046FE54)->unk5C);
             ((SkillBuf *)D_0046FE54)->unk5C = 0;
         }
     }
@@ -409,7 +409,7 @@ void func_0024E440(s32 *a0) {
 
     r1 = func_0020B020(s3, *(s16 *)(v1 + 0x20), *(s16 *)(v1 + 0x22));
     r2 = func_0020AD30(s3, *s1, *s2);
-    func_00145CC0(r1, r2);
+    amModel_SetCurrent(r1, r2);
     if (a0[21] != 0) {
         func_00209D20(0);
         func_00208D70(a0[21]);
@@ -419,7 +419,7 @@ void func_0024E440(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E4D0);
 void func_0024E760(s32 *p) {
     if (p[21] != 0) {
-        func_00209530(p[21]);
+        Obj_ResetF38(p[21]);
         p[21] = 0;
     }
     if (p[20] != 0) {
@@ -432,7 +432,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E910);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024ECE0);
 void func_0024EF50(s32 *p) {
     if (p[17] != 0) {
-        func_00209530(p[17]);
+        Obj_ResetF38(p[17]);
         p[17] = 0;
     }
     if (p[16] != 0) {
@@ -453,7 +453,7 @@ void func_0024F150(s32 *a0) {
 
     s2 = func_0020B020(s3, *(s16 *)(s4 + 0x20), *(s16 *)(s4 + 0x22));
     r2 = func_0020AD30(s3, *(s16 *)(s4 + 0x20), *(s16 *)(s4 + 0x22));
-    func_00145CC0(s2, r2);
+    amModel_SetCurrent(s2, r2);
     t = *(s16 *)(s4 + 0x60);
     if (t != 0) {
         a0 = (s32 *)func_0020AE80(s3, *(s16 *)(s4 + 0x5A), (s16)t);
@@ -473,7 +473,7 @@ void func_0024F150(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F260);
 void func_0024F4D0(s32 *p) {
     if (p[21] != 0) {
-        func_00209530(p[21]);
+        Obj_ResetF38(p[21]);
         p[21] = 0;
     }
     if (p[20] != 0) {
@@ -486,7 +486,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F6B0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F7F0);
 void func_0024FAD0(s32 *p) {
     if (p[17] != 0) {
-        func_00209530(p[17]);
+        Obj_ResetF38(p[17]);
         p[17] = 0;
     }
     if (p[16] != 0) {
@@ -499,16 +499,16 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FC50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FEA0);
 void func_00250460(s32 *p) {
     if (p[17] != 0) {
-        func_00209530(p[17]);
+        Obj_ResetF38(p[17]);
         p[17] = 0;
     }
     if (p[18] != 0) {
-        func_00209530(p[18]);
+        Obj_ResetF38(p[18]);
         p[18] = 0;
     }
     if (((SkillBuf *)D_0046FE54)->unk5C != 0) {
         if (((SkillBuf *)D_0046FE54)->unk62 == ((Fighter *)p[2])->unk1350) {
-            func_00209530(((SkillBuf *)D_0046FE54)->unk5C);
+            Obj_ResetF38(((SkillBuf *)D_0046FE54)->unk5C);
             ((SkillBuf *)D_0046FE54)->unk5C = 0;
         }
     }
@@ -523,16 +523,16 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00250DC0);
 void func_00251400(s32 *p) {
     func_001D9280(p[2]);
     if (p[18] != 0) {
-        func_00209530(p[18]);
+        Obj_ResetF38(p[18]);
         p[18] = 0;
     }
     if (p[19] != 0) {
-        func_00209530(p[19]);
+        Obj_ResetF38(p[19]);
         p[19] = 0;
     }
     if (((SkillBuf *)D_0046FE54)->unk5C != 0) {
         if (((SkillBuf *)D_0046FE54)->unk62 == ((Fighter *)p[2])->unk1350) {
-            func_00209530(((SkillBuf *)D_0046FE54)->unk5C);
+            Obj_ResetF38(((SkillBuf *)D_0046FE54)->unk5C);
             ((SkillBuf *)D_0046FE54)->unk5C = 0;
         }
     }
@@ -1243,13 +1243,13 @@ void func_002545E0(s32 *a0) {
     u8 *s1 = gBtlSys;
     u8 *s0 = (u8 *)a0 + 0x30;
 
-    if (func_0021C2A0(0x80000000) != 0) {
+    if (Input_IsHeld(0x80000000) != 0) {
         s32 x = *(s32 *)(s1 + 0xE60);
 
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         func_0022C560(*(s32 *)(s0 + 4));
     }
@@ -1262,13 +1262,13 @@ void func_00254650(s32 *a0) {
     s32 *s2;
     s32 *p;
 
-    if (func_0021C2A0(0x80000000) != 0) {
+    if (Input_IsHeld(0x80000000) != 0) {
         s32 x = *(s32 *)(s1 + 0xE60);
 
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         amDraw_SetPacketMode(1);
         func_0022C560(s0[1]);
@@ -1319,12 +1319,12 @@ void func_002547A0(u8 *a0) {
     s0 = *(u8 **)(a0 + 0x30);
     s1 = (s32 *)(a0 + 0x30);
     s2 = gBtlSys;
-    if (func_0021C2A0((s32)0x80000000) != 0) {
+    if (Input_IsHeld((s32)0x80000000) != 0) {
         t = *(s32 *)(s2 + 0xE60);
         D_00470704 = t;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(t, 0x4000000);
+        amModel_SetCurrent(t, 0x4000000);
         D_00470238 = 0;
         amDraw_SetPacketMode(1);
         func_0022C560(s1[1]);
@@ -1377,13 +1377,13 @@ void func_00254970(s32 *a0) {
 
     s3 = a0 + 12;
     s0 = gBtlSys;
-    if (func_0021C2A0(0x80000000) != 0) {
+    if (Input_IsHeld(0x80000000) != 0) {
         s32 x = *(s32 *)(s0 + 0xE60);
 
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         amDraw_SetPacketMode(1);
         func_0022C560(s3[1]);
@@ -1418,13 +1418,13 @@ void func_00254AC0(s32 *a0) {
     u8 *s1 = gBtlSys;
     u8 *s0 = (u8 *)a0 + 0x30;
 
-    if (func_0021C2A0(0x80000000) != 0) {
+    if (Input_IsHeld(0x80000000) != 0) {
         s32 x = *(s32 *)(s1 + 0xE60);
 
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         func_0022C560(*(s32 *)(s0 + 4));
         if (*(s32 *)(s0 + 0x30) != 0) {
@@ -1522,7 +1522,7 @@ void func_00254CD0(u8 *a0) {
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         func_0022C7D0(s1[1], *(f32 *)(s2 + 8), 1);
         func_002543B0(s2);
@@ -1552,7 +1552,7 @@ void func_00256BF0(s32 *a0) {
     s32 *s2;
     s32 j;
 
-    if (func_0021C2A0(0x80000000) == 0 || *(s8 *)((u8 *)gBattle + 0x8975) != 0) {
+    if (Input_IsHeld(0x80000000) == 0 || *(s8 *)((u8 *)gBattle + 0x8975) != 0) {
         return;
     }
     {
@@ -1561,7 +1561,7 @@ void func_00256BF0(s32 *a0) {
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
     }
     func_0022C560(s1[1]);
@@ -1599,7 +1599,7 @@ void func_00256D50(s32 *a0) {
     u8 *q;
     s32 s5;
 
-    if (func_0021C2A0(0x80000000) == 0 || *(s8 *)((u8 *)gBattle + 0x8975) != 0) {
+    if (Input_IsHeld(0x80000000) == 0 || *(s8 *)((u8 *)gBattle + 0x8975) != 0) {
         return;
     }
     {
@@ -1609,7 +1609,7 @@ void func_00256D50(s32 *a0) {
             D_00470704 = x;
             D_0047070C = 0x4000000;
             D_00470708 = 0;
-            func_00145CC0(x, 0x4000000);
+            amModel_SetCurrent(x, 0x4000000);
             D_00470238 = 0;
             func_0022C560(s4[1]);
             func_0022C560(s4[2]);
@@ -1641,12 +1641,12 @@ void func_00256EB0(u8 *a0) {
     s32 i;
     s32 x;
 
-    if (func_0021C2A0(0x80000000) != 0 && *(s8 *)((u8 *)gBattle + 0x9975) == 0) {
+    if (Input_IsHeld(0x80000000) != 0 && *(s8 *)((u8 *)gBattle + 0x9975) == 0) {
     x = *(s32 *)(sys + 0xE60);
     D_00470704 = x;
     D_0047070C = 0x4000000;
     D_00470708 = 0;
-    func_00145CC0(x, 0x4000000);
+    amModel_SetCurrent(x, 0x4000000);
     D_00470238 = 0;
     func_0022C560(s[1]);
     for (i = 0; i < 2; i++) {
@@ -1669,14 +1669,14 @@ void func_00256EB0(u8 *a0) {
     s32 v;
 
     p = (s32 *)(a0 + 0x30);
-    if (func_0021C2A0((s32)0x80000000) == 0 || *(s8 *)((u8 *)gBattle + 0x8975) != 0) {
+    if (Input_IsHeld((s32)0x80000000) == 0 || *(s8 *)((u8 *)gBattle + 0x8975) != 0) {
         return;
     }
     v = *(s32 *)(s0 + 0xE60);
     D_00470704 = v;
     D_0047070C = 0x4000000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x4000000);
+    amModel_SetCurrent(v, 0x4000000);
     D_00470238 = 0;
     func_0022C560(p[1]);
     for (i = 0; i < 2; i++, p++) {
@@ -1739,13 +1739,13 @@ void func_00257BC0(s32 *a0) {
     u8 *s1 = gBtlSys;
     u8 *s0 = (u8 *)a0 + 0x30;
 
-    if (func_0021C2A0(0x80000000) != 0) {
+    if (Input_IsHeld(0x80000000) != 0) {
         s32 x = *(s32 *)(s1 + 0xE60);
 
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         func_0022C560(*(s32 *)(s0 + 4));
     }
@@ -1757,12 +1757,12 @@ void func_00257C30(u8 *a0) {
     s32 *s = (s32 *)(a0 + 0x30);
     s32 x;
 
-    if (func_0021C2A0(0x80000000)) {
+    if (Input_IsHeld(0x80000000)) {
         x = *(s32 *)(sys + 0xE60);
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         amDraw_SetPacketMode(1);
         func_0022C560(s[1]);
@@ -1780,12 +1780,12 @@ void func_00257CE0(u8 *a0) {
     s32 *s = (s32 *)(a0 + 0x30);
     s32 x;
 
-    if (func_0021C2A0(0x80000000)) {
+    if (Input_IsHeld(0x80000000)) {
         x = *(s32 *)(sys + 0xE60);
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         amDraw_SetPacketMode(1);
         func_0022C560(s[1]);
@@ -1804,13 +1804,13 @@ void func_00257DA0(s32 *a0) {
     u8 *s1 = gBtlSys;
     u8 *s0 = (u8 *)a0 + 0x30;
 
-    if (func_0021C2A0(0x80000000) != 0) {
+    if (Input_IsHeld(0x80000000) != 0) {
         s32 x = *(s32 *)(s1 + 0xE60);
 
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         func_0022C560(*(s32 *)(s0 + 4));
         if (*(s32 *)(s0 + 0x30) != 0) {
@@ -1907,7 +1907,7 @@ void func_00257FB0(u8 *a0) {
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         func_0022C7D0(s1[1], *(f32 *)(s2 + 8), 1);
         func_002543B0(s2);
@@ -1929,7 +1929,7 @@ void func_00258AC0(s32 *a0) {
     s32 *s2;
 
     func_0021C460(s0[13]);
-    if (func_0021C2A0(0x80000000) == 0 ||
+    if (Input_IsHeld(0x80000000) == 0 ||
         ((gBattle != 0) ? *(s8 *)((u8 *)gBattle + 0x8975) : 0) == 1) {
         return;
     }
@@ -2065,7 +2065,7 @@ void func_00258E80(u8 *a0) {
         D_00470704 = x;
         D_0047070C = 0x4000000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4000000);
+        amModel_SetCurrent(x, 0x4000000);
         D_00470238 = 0;
         func_00228430(0);
         func_0022C060(s3[1], 1.0f);
@@ -2085,7 +2085,7 @@ void LeverDraw_TaskMain(s32 *a0) {
     u8 *s1 = gBtlSys;
     u8 *s0 = (u8 *)((s32 *)a0)[12];
 
-    if (func_0021C2A0(0x80000000) == 0 || func_0021C2A0(1) == 0 || *(s16 *)((u8 *)gBattle + 0x8944) != 0) {
+    if (Input_IsHeld(0x80000000) == 0 || Input_IsHeld(1) == 0 || *(s16 *)((u8 *)gBattle + 0x8944) != 0) {
         return;
     }
     {
@@ -2094,7 +2094,7 @@ void LeverDraw_TaskMain(s32 *a0) {
         D_00470704 = x;
         D_0047070C = 0x4010000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4010000);
+        amModel_SetCurrent(x, 0x4010000);
         D_00470238 = 0;
         func_0022C550(*(s32 *)(s0 + 0x18));
     }
@@ -2126,7 +2126,7 @@ void func_002599C0(s32 *a0) {
         D_00470704 = x;
         D_0047070C = 0x4010000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4010000);
+        amModel_SetCurrent(x, 0x4010000);
         D_00470238 = 0;
     }
     mode = s0[1];
@@ -2178,7 +2178,7 @@ void CutIn_TaskMain(s32 *a0) {
 
     s0 = (u8 *)a0 + 0x30;
     s1 = (u8 *)gBtlSys;
-    if (func_0021C2A0(0x80000000) != 0) {
+    if (Input_IsHeld(0x80000000) != 0) {
         a = 0;
         if (gBattle != 0) {
             a = *(s8 *)((u8 *)gBattle + 0x8975);
@@ -2200,7 +2200,7 @@ void CutIn_TaskMain(s32 *a0) {
             D_00470704 = x;
             D_0047070C = 0x4000000;
             D_00470708 = 0;
-            func_00145CC0(x, 0x4000000);
+            amModel_SetCurrent(x, 0x4000000);
             D_00470238 = 0;
         }
         func_0022C060(*(s32 *)(s0 + 4), 1.0f);
@@ -2263,7 +2263,7 @@ s32 func_00259D90(s32 a0, s32 a1) {
     D_00470704 = v;
     D_0047070C = 0x4010000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x4010000);
+    amModel_SetCurrent(v, 0x4010000);
     D_00470238 = 0;
     v = ((s32 *)&k)[a1];
     *(s32 *)(s0 + 0x18) = func_0022D570(*(s32 *)(((s32 *)(*(s32 *)(sys + 0xE88)))[5] + (((a0 & 1) + v) << 2)), 0x1000, 0x2000008, 0x3A30);
@@ -2301,7 +2301,7 @@ s32 func_00259EB0(s32 a0, f32 f12) {
         D_00470704 = x;
         D_0047070C = 0x4010000;
         D_00470708 = 0;
-        func_00145CC0(x, 0x4010000);
+        amModel_SetCurrent(x, 0x4010000);
         D_00470238 = 0;
     }
     s0[6] = func_0022D570(*(s32 *)((u8 *)((s32 *)(*(s32 *)(s1 + 0xE88)))[5] + ((a0 & 1) << 2)), 0x1000, 0x2000008, 0x3A30);

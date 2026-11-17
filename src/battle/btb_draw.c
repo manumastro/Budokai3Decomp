@@ -62,10 +62,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EE6D0(Task *);
 extern void func_001EB5B0(Task *);
@@ -83,14 +83,14 @@ void func_001EAC20(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x18:
                 TASK_SETFUNC(t, func_001EB5B0);
@@ -107,8 +107,8 @@ void func_001EAC20(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EAC20(Task *);
 extern void func_002D1CC0(void);
@@ -124,9 +124,9 @@ void func_001EAD10(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EAC20);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 24:
                 D_004B4BB0[0] = 1;
                 func_002D1CC0();
@@ -141,7 +141,7 @@ void func_001EAD10(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EAD10(Task *);
 extern void func_002D1D40(void);
@@ -156,9 +156,9 @@ void func_001EADD0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EAD10);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 0x18:
                 func_002D1D40();
                 break;
@@ -173,10 +173,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EB5B0(Task *);
 extern void func_001EADD0(Task *);
@@ -194,14 +194,14 @@ void func_001EAE70(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x18:
                 TASK_SETFUNC(t, func_001EB5B0);
@@ -221,14 +221,14 @@ void func_001EAE70(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EAE70(Task *);
 extern void func_002D1CC0(void);
 extern void func_003107E0(s32);
 extern s8 D_004B4BB0[];
-extern s32 D_00470608;
+extern s32 gSceneArg;
 
 void func_001EAF90(Task *t) {
     s32 v;
@@ -240,16 +240,16 @@ void func_001EAF90(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EAE70);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 24:
                 D_004B4BB0[0] = 1;
                 func_002D1CC0();
                 break;
             case 27:
                 D_004B4BB0[0] = 1;
-                func_003107E0(*(s16 *)&D_00470608);
+                func_003107E0(*(s16 *)&gSceneArg);
                 break;
             case 5:
                 func_001EA740(5);
@@ -261,7 +261,7 @@ void func_001EAF90(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EAF90(Task *);
 extern void func_002D1D40(void);
@@ -277,9 +277,9 @@ void func_001EB070(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EAF90);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 24:
                 func_002D1D40();
                 break;
@@ -297,10 +297,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EB5B0(Task *);
 extern void func_001EB070(Task *);
@@ -318,14 +318,14 @@ void func_001EB130(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x18:
                 TASK_SETFUNC(t, func_001EB5B0);
@@ -345,8 +345,8 @@ void func_001EB130(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EB130(Task *);
 extern void func_002D1CC0(void);
@@ -363,9 +363,9 @@ void func_001EB250(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EB130);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 24:
                 D_004B4BB0[0] = 1;
                 func_002D1CC0();
@@ -384,7 +384,7 @@ void func_001EB250(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EB250(Task *);
 extern void func_002D1D40(void);
@@ -400,9 +400,9 @@ void func_001EB330(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EB250);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 24:
                 func_002D1D40();
                 break;
@@ -421,10 +421,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EB830(Task *);
 extern void func_001EB330(Task *);
@@ -441,14 +441,14 @@ void func_001EB3F0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x17:
                 TASK_SETFUNC(t, func_001EB830);
@@ -464,14 +464,14 @@ void func_001EB3F0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EB3F0(Task *);
 extern void ArenaMode_Start(s32);
 extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
-extern s32 D_00470608;
+extern s32 gSceneArg;
 
 void func_001EB4E0(Task *t) {
     s32 v;
@@ -483,12 +483,12 @@ void func_001EB4E0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EB3F0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 23:
                 D_004B4BB0[0] = 1;
-                ArenaMode_Start(*(s8 *)&D_00470608);
+                ArenaMode_Start(*(s8 *)&gSceneArg);
                 break;
             case 25:
                 D_004B4BB0[0] = 1;
@@ -501,7 +501,7 @@ void func_001EB4E0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EB4E0(Task *);
 extern void ArenaMode_Load(void);
@@ -518,9 +518,9 @@ void func_001EB5B0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EB4E0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 23:
                 ArenaMode_Load();
                 break;
@@ -536,10 +536,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EB5B0(Task *);
 extern void func_001EE6D0(Task *);
@@ -556,14 +556,14 @@ void func_001EB670(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x18:
                 TASK_SETFUNC(t, func_001EB5B0);
@@ -580,8 +580,8 @@ void func_001EB670(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EB670(Task *);
 extern void func_002D1CC0(void);
@@ -600,9 +600,9 @@ void func_001EB760(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EB670);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 24:
                 D_004B4BB0[0] = 1;
                 func_002D1CC0();
@@ -618,7 +618,7 @@ void func_001EB760(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EB760(Task *);
 extern void func_002D1D40(void);
@@ -634,9 +634,9 @@ void func_001EB830(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EB760);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 0x18:
                 func_002D1D40();
                 break;
@@ -652,10 +652,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EE6D0(Task *);
 
@@ -671,14 +671,14 @@ void func_001EB8E0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 5:
                 D_004B4B41[0] = 0;
@@ -695,8 +695,8 @@ extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
-extern s32 D_004705FC;
-extern s32 D_00470600;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EB8E0(Task *);
 extern void MainMenu_Start(s32, s32);
@@ -711,9 +711,9 @@ void func_001EB9A0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EB8E0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 5:
                 D_004B4BB0[0] = 0;
                 MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
@@ -725,7 +725,7 @@ void func_001EB9A0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EB9A0(Task *);
 extern void MainMenu_Load(void);
@@ -740,9 +740,9 @@ void func_001EBA50(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EB9A0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 5:
                 MainMenu_Load();
                 break;
@@ -754,10 +754,10 @@ void func_001EBA50(Task *t) {
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B41[];
 extern s8 D_004B4B40[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EE6D0(Task *);
 extern void func_002E0E50(void);
@@ -774,15 +774,15 @@ void func_001EBAF0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
             D_004B4B41[0] = 0;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             TASK_SETFUNC(t, func_001EE6D0);
             func_002E0E50();
         }
@@ -793,7 +793,7 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
-extern s32 D_004705FC;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EBAF0(Task *);
 extern void MainMenu_Start(s32, s32);
@@ -808,7 +808,7 @@ void func_001EBB90(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EBAF0);
             D_004B4BB0[0] = 0;
             MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
@@ -817,7 +817,7 @@ void func_001EBB90(Task *t) {
 }
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EBB90(Task *);
 extern void MainMenu_Load(void);
@@ -832,7 +832,7 @@ void func_001EBC20(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EBB90);
             MainMenu_Load();
         }
@@ -842,10 +842,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EC340(Task *);
 extern void func_001EE6D0(Task *);
@@ -863,14 +863,14 @@ void func_001EBCA0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x13:
                 TASK_SETFUNC(t, func_001EC340);
@@ -888,9 +888,9 @@ void func_001EBCA0(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470608;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneArg;
 extern void func_001EA740(s32);
 extern void func_001EBCA0(Task *);
 extern void PracMode_Start(s32, s32);
@@ -905,12 +905,12 @@ void func_001EBD90(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EBCA0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 0x13:
                 D_004B4BB0[0] = 1;
-                PracMode_Start(*(s16 *)&D_00470608, 0);
+                PracMode_Start(*(s16 *)&gSceneArg, 0);
                 break;
             case 5:
                 func_001EA740(5);
@@ -922,7 +922,7 @@ void func_001EBD90(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EBD90(Task *);
 extern void PracMode_Load(void);
@@ -937,9 +937,9 @@ void func_001EBE50(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EBD90);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 0x13:
                 PracMode_Load();
                 break;
@@ -954,10 +954,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EC340(Task *);
 extern void func_001EE6D0(Task *);
@@ -974,14 +974,14 @@ void func_001EBEF0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x13:
                 TASK_SETFUNC(t, func_001EC340);
@@ -999,9 +999,9 @@ void func_001EBEF0(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470608;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneArg;
 extern void func_001EA740(s32);
 extern void func_001EBEF0(Task *);
 extern void PracMode_Start(s32, s32);
@@ -1016,12 +1016,12 @@ void func_001EBFE0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EBEF0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 0x13:
                 D_004B4BB0[0] = 1;
-                PracMode_Start(*(s16 *)&D_00470608, 0);
+                PracMode_Start(*(s16 *)&gSceneArg, 0);
                 break;
             case 5:
                 func_001EA740(5);
@@ -1033,7 +1033,7 @@ void func_001EBFE0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EBFE0(Task *);
 extern void PracMode_Load(void);
@@ -1048,9 +1048,9 @@ void func_001EC0A0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EBFE0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 0x13:
                 PracMode_Load();
                 break;
@@ -1065,10 +1065,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EE6D0(Task *);
 extern void func_001EC0A0(Task *);
@@ -1086,14 +1086,14 @@ void func_001EC140(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 5:
                 D_004B4B41[0] = 0;
@@ -1113,8 +1113,8 @@ void func_001EC140(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EC140(Task *);
 extern void BtlIntWait_Start(void);
@@ -1133,9 +1133,9 @@ void func_001EC250(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EC140);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 5:
                 D_004B4BB0[0] = 0;
                 MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
@@ -1155,7 +1155,7 @@ void func_001EC250(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EC250(Task *);
 extern void MainMenu_Load(void);
@@ -1173,9 +1173,9 @@ void func_001EC340(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EC250);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 5:
                 MainMenu_Load();
                 break;
@@ -1196,10 +1196,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EC840(Task *);
 extern void func_001EE6D0(Task *);
@@ -1216,14 +1216,14 @@ void func_001EC430(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x11:
                 TASK_SETFUNC(t, func_001EC840);
@@ -1240,8 +1240,8 @@ void func_001EC430(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EC430(Task *);
 extern void TourMap_Start(void);
@@ -1257,9 +1257,9 @@ void func_001EC520(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EC430);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 17:
                 D_004B4BB0[0] = 1;
                 TourMap_Start();
@@ -1274,11 +1274,11 @@ void func_001EC520(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EC520(Task *);
 extern void func_00304FB0(s32);
-extern s32 D_00470608;
+extern s32 gSceneArg;
 
 void func_001EC5E0(Task *t) {
     s32 v;
@@ -1290,11 +1290,11 @@ void func_001EC5E0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EC520);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 17:
-                func_00304FB0(D_00470608);
+                func_00304FB0(gSceneArg);
                 break;
             case 5:
                 break;
@@ -1307,10 +1307,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EC5E0(Task *);
 extern void func_001EE6D0(Task *);
@@ -1327,14 +1327,14 @@ void func_001EC680(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x12:
                 TASK_SETFUNC(t, func_001EC5E0);
@@ -1351,8 +1351,8 @@ void func_001EC680(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EC680(Task *);
 extern void BtlIntWait_Start(void);
@@ -1371,9 +1371,9 @@ void func_001EC770(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EC680);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 18:
                 D_004B4BB0[0] = 1;
                 BtlIntWait_Start();
@@ -1389,7 +1389,7 @@ void func_001EC770(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EC770(Task *);
 extern void func_001B13F0(s32);
@@ -1405,9 +1405,9 @@ void func_001EC840(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EC770);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 0x12:
                 func_001B13F0(3);
                 break;
@@ -1423,10 +1423,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EC840(Task *);
 extern void func_001EE6D0(Task *);
@@ -1443,14 +1443,14 @@ void func_001EC8F0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 5:
                 D_004B4B41[0] = 0;
@@ -1467,8 +1467,8 @@ void func_001EC8F0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EC8F0(Task *);
 extern void TourMap_Start(void);
@@ -1487,9 +1487,9 @@ void func_001EC9E0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EC8F0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 5:
                 D_004B4BB0[0] = 0;
                 MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
@@ -1505,12 +1505,12 @@ void func_001EC9E0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EC9E0(Task *);
 extern void func_00304FB0(s32);
 extern void MainMenu_Load(void);
-extern s32 D_00470608;
+extern s32 gSceneArg;
 
 void func_001ECAB0(Task *t) {
     s32 v;
@@ -1522,14 +1522,14 @@ void func_001ECAB0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EC9E0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 5:
                 MainMenu_Load();
                 break;
             case 0x11:
-                func_00304FB0(D_00470608);
+                func_00304FB0(gSceneArg);
                 break;
             }
         }
@@ -1540,10 +1540,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001ECF70(Task *);
 extern void func_001EE6D0(Task *);
@@ -1560,14 +1560,14 @@ void func_001ECB60(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0xE:
                 TASK_SETFUNC(t, func_001ECF70);
@@ -1585,9 +1585,9 @@ void func_001ECB60(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470608;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneArg;
 extern void func_001EA740(s32);
 extern void func_001ECB60(Task *);
 extern void func_00269820(s32, s32);
@@ -1602,12 +1602,12 @@ void func_001ECC50(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001ECB60);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 0xE:
                 D_004B4BB0[0] = 1;
-                func_00269820(*(s16 *)&D_00470608, 0);
+                func_00269820(*(s16 *)&gSceneArg, 0);
                 break;
             case 5:
                 func_001EA740(5);
@@ -1619,7 +1619,7 @@ void func_001ECC50(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001ECC50(Task *);
 extern void VsMode_Load(void);
@@ -1634,9 +1634,9 @@ void func_001ECD10(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001ECC50);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 14:
                 VsMode_Load();
                 break;
@@ -1651,10 +1651,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001ECD10(Task *);
 extern void func_001EE6D0(Task *);
@@ -1671,14 +1671,14 @@ void func_001ECDB0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 5:
                 D_004B4B41[0] = 0;
@@ -1695,8 +1695,8 @@ void func_001ECDB0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001ECDB0(Task *);
 extern void BtlIntWait_Start(void);
@@ -1715,9 +1715,9 @@ void func_001ECEA0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001ECDB0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 5:
                 D_004B4BB0[0] = 0;
                 MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
@@ -1733,7 +1733,7 @@ void func_001ECEA0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001ECEA0(Task *);
 extern void func_001B13F0(s32);
@@ -1749,9 +1749,9 @@ void func_001ECF70(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001ECEA0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 5:
                 MainMenu_Load();
                 break;
@@ -1763,17 +1763,17 @@ void func_001ECF70(Task *t) {
     }
 }
 
-// differs: the two stores to D_00470600 and D_00470604 come in the other order (the compiler puts the -1 store before the table pointer store)
+// differs: the two stores to gSceneNext and gSceneQueued come in the other order (the compiler puts the -1 store before the table pointer store)
 
 #if 0
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EE250(Task *);
 extern void func_0030F0E0(s32, s32);
@@ -1790,14 +1790,14 @@ void func_001ED020(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             TASK_SETFUNC(t, func_001EE250);
             func_0030F0E0(a0, a1);
         }
@@ -1809,7 +1809,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ED020);
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
-extern s32 D_004705FC;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001ED020(Task *);
 extern void StrTitle_Start(void);
@@ -1824,7 +1824,7 @@ void func_001ED0C0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001ED020);
             D_004B4BB0[0] = 1;
             StrTitle_Start();
@@ -1833,7 +1833,7 @@ void func_001ED0C0(Task *t) {
 }
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001ED0C0(Task *);
 extern void StrTitle_Load(void);
@@ -1848,7 +1848,7 @@ void func_001ED150(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001ED0C0);
             StrTitle_Load();
         }
@@ -1861,10 +1861,10 @@ void func_001ED150(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001ED150(Task *);
 extern void func_003070A0(s32, s32);
@@ -1881,14 +1881,14 @@ void func_001ED1D0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             TASK_SETFUNC(t, func_001ED150);
             func_003070A0(a0, a1);
         }
@@ -1899,10 +1899,10 @@ void func_001ED1D0(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001ED150(Task *);
 extern void func_003070A0(void);
@@ -1919,14 +1919,14 @@ void func_001ED1D0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             TASK_SETFUNC(t, func_001ED150);
             func_003070A0();
         }
@@ -1935,7 +1935,7 @@ void func_001ED1D0(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
-extern s32 D_004705FC;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001ED1D0(Task *);
 extern void StaffRoll_Start(void);
@@ -1950,7 +1950,7 @@ void func_001ED270(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001ED1D0);
             D_004B4BB0[0] = 1;
             StaffRoll_Start();
@@ -1959,7 +1959,7 @@ void func_001ED270(Task *t) {
 }
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001ED270(Task *);
 extern void func_0030F260(void);
@@ -1974,7 +1974,7 @@ void func_001ED300(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001ED270);
             func_0030F260();
         }
@@ -1983,10 +1983,10 @@ void func_001ED300(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EE250(Task *);
 extern void amTask_Kill(s32);
@@ -2005,14 +2005,14 @@ void func_001ED380(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             TASK_SETFUNC(t, func_001EE250);
             if (D_0047061C != 0) {
                 amTask_Kill(D_0047061C);
@@ -2024,7 +2024,7 @@ void func_001ED380(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
-extern s32 D_004705FC;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001ED380(Task *);
 extern void StrTitle_Start(void);
@@ -2039,7 +2039,7 @@ void func_001ED430(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001ED380);
             D_004B4BB0[0] = 1;
             StrTitle_Start();
@@ -2048,7 +2048,7 @@ void func_001ED430(Task *t) {
 }
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001ED430(Task *);
 extern void StrTitle_Load(void);
@@ -2063,7 +2063,7 @@ void func_001ED4C0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001ED430);
             StrTitle_Load();
         }
@@ -2074,10 +2074,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EDD00(Task *);
 
@@ -2093,14 +2093,14 @@ void func_001ED540(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x8:
                 TASK_SETFUNC(t, func_001EDD00);
@@ -2114,8 +2114,8 @@ void func_001ED540(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
-extern s32 D_004705FC;
-extern s32 D_00470600;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001ED540(Task *);
 extern void Flight_Start(void);
@@ -2130,9 +2130,9 @@ void func_001ED600(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001ED540);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 8:
                 D_004B4BB0[0] = 1;
                 Flight_Start();
@@ -2144,7 +2144,7 @@ void func_001ED600(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001ED600(Task *);
 extern void Flight_Load(void);
@@ -2159,9 +2159,9 @@ void func_001ED6A0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001ED600);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 8:
                 Flight_Load();
                 break;
@@ -2175,10 +2175,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EE250(Task *);
 extern void func_001EDD00(Task *);
@@ -2197,14 +2197,14 @@ void func_001ED740(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x6:
                 TASK_SETFUNC(t, func_001EE250);
@@ -2227,7 +2227,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ED880);
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001ED880(Task *);
 extern void StrTitle_Load(void);
@@ -2244,9 +2244,9 @@ void func_001ED9E0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001ED880);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 6:
                 StrTitle_Load();
                 break;
@@ -2268,10 +2268,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EE250(Task *);
 extern void func_001ED9E0(Task *);
@@ -2290,14 +2290,14 @@ void func_001EDAC0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x6:
                 TASK_SETFUNC(t, func_001EE250);
@@ -2319,8 +2319,8 @@ void func_001EDAC0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EDAC0(Task *);
 extern void StrTitle_Start(void);
@@ -2342,9 +2342,9 @@ void func_001EDC00(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EDAC0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 6:
                 D_004B4BB0[0] = 1;
                 StrTitle_Start();
@@ -2368,7 +2368,7 @@ void func_001EDC00(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EDC00(Task *);
 extern void StrTitle_Load(void);
@@ -2385,9 +2385,9 @@ void func_001EDD00(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EDC00);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 6:
                 StrTitle_Load();
                 break;
@@ -2409,10 +2409,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EE250(Task *);
 extern void func_001EDD00(Task *);
@@ -2429,14 +2429,14 @@ void func_001EDDE0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x6:
                 TASK_SETFUNC(t, func_001EE250);
@@ -2452,8 +2452,8 @@ void func_001EDDE0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EDDE0(Task *);
 extern void StrTitle_Start(void);
@@ -2470,9 +2470,9 @@ void func_001EDED0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EDDE0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 6:
                 D_004B4BB0[0] = 1;
                 StrTitle_Start();
@@ -2488,7 +2488,7 @@ void func_001EDED0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EDED0(Task *);
 extern void StrTitle_Load(void);
@@ -2504,9 +2504,9 @@ void func_001EDF90(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EDED0);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 6:
                 StrTitle_Load();
                 break;
@@ -2523,10 +2523,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EE6D0(Task *);
 extern void func_001EDF90(Task *);
@@ -2544,14 +2544,14 @@ void func_001EE040(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 5:
                 D_004B4B41[0] = 0;
@@ -2571,13 +2571,13 @@ void func_001EE040(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EE040(Task *);
 extern void StrSelect_Start(s32);
 extern void Flight_Start(void);
-extern s32 D_00470608;
+extern s32 gSceneArg;
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
@@ -2593,16 +2593,16 @@ void func_001EE150(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EE040);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 5:
                 D_004B4BB0[0] = 0;
                 MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
                 break;
             case 7:
                 D_004B4BB0[0] = 1;
-                StrSelect_Start(D_00470608);
+                StrSelect_Start(gSceneArg);
                 break;
             case 8:
                 D_004B4BB0[0] = 1;
@@ -2615,8 +2615,8 @@ void func_001EE150(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EE150(Task *);
 extern void MainMenu_Load(void);
@@ -2633,9 +2633,9 @@ void func_001EE250(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EE150);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 5:
                 MainMenu_Load();
                 break;
@@ -2670,9 +2670,9 @@ void func_001EE530(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EE320);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 6:
                 D_004B4BB0[0] = 1;
                 StrTitle_Start();
@@ -2682,7 +2682,7 @@ void func_001EE530(Task *t) {
                 TourMode_Start();
                 break;
             case 0x13:
-                { D_004B4BB0[0] = 1; PracMode_Start(*(s16 *)&D_00470608, 0); }
+                { D_004B4BB0[0] = 1; PracMode_Start(*(s16 *)&gSceneArg, 0); }
                 break;
             case 0x1C:
                 D_004B4BB0[0] = 0;
@@ -2693,14 +2693,14 @@ void func_001EE530(Task *t) {
                 Ess_Start();
                 break;
             case 4:
-                { D_004B4BB0[0] = 0; Title_Start(*(s16 *)&D_00470608); }
+                { D_004B4BB0[0] = 0; Title_Start(*(s16 *)&gSceneArg); }
                 break;
             case 0xE:
-                { D_004B4BB0[0] = 1; func_00269820(*(s16 *)&D_00470608, 0); }
+                { D_004B4BB0[0] = 1; func_00269820(*(s16 *)&gSceneArg, 0); }
                 break;
             case 0x17:
                 D_004B4BB0[0] = 1;
-                ArenaMode_Start(*(s8 *)&D_00470608);
+                ArenaMode_Start(*(s8 *)&gSceneArg);
                 break;
             }
         }
@@ -2709,7 +2709,7 @@ void func_001EE530(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EE530(Task *);
 extern void StrTitle_Load(void);
@@ -2731,9 +2731,9 @@ void func_001EE6D0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EE530);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 6:
                 StrTitle_Load();
                 break;
@@ -2769,10 +2769,10 @@ extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
 extern s32 D_004B4B68[];
 extern s8 D_004B4B41[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EECD0(Task *);
 extern void func_001EEAF0(Task *);
@@ -2789,14 +2789,14 @@ void func_001EE820(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 2:
                 D_004B4B68[0] = 0x2BC;
@@ -2814,8 +2814,8 @@ void func_001EE820(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
+extern s32 gSceneNext;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EE820(Task *);
 extern void Opening_Start(void);
@@ -2832,9 +2832,9 @@ void func_001EE920(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EE820);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 2:
                 D_004B4BB0[0] = 0;
                 Opening_Start();
@@ -2850,7 +2850,7 @@ void func_001EE920(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EE920(Task *);
 extern void Opening_Init(void);
@@ -2866,9 +2866,9 @@ void func_001EE9E0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EE920);
-            switch (D_00470600) {
+            switch (gSceneNext) {
             case 2:
                 Opening_Init();
                 break;
@@ -2882,10 +2882,10 @@ void func_001EE9E0(Task *t) {
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_004705FC;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_00264300();
-extern void func_001F0820();
+extern void Fade_SetRequest();
+extern void Scene_MarkDone();
 
 void func_001EEA90(Task *t) {
     s32 v;
@@ -2897,13 +2897,13 @@ void func_001EEA90(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             func_001EA740(4);
         }
     }
 }
-extern void func_00143F20(f32, s32, s32);
-extern void func_00143D60(s32, s32, s32, s32);
+extern void SoundRpc_SetVolume(f32, s32, s32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 extern u16 D_00492FCE[];
 extern u16 D_00493086[];
 extern f32 D_004E0614[];
@@ -2919,27 +2919,27 @@ void func_001EEAF0(Task *t) {
     }
     if (v == 0) {
         if ((D_00492FCE[0] | D_00493086[0]) & 8) {
-            func_00143F20(D_004E0614[0], 0, 0);
+            SoundRpc_SetVolume(D_004E0614[0], 0, 0);
             if (D_004E0614[0] > 0.0f) {
-                func_00143D60(0, 0, 0, 0);
+                SoundRpc_Send3(0, 0, 0, 0);
             }
             TASK_SETFUNC(t, func_001EEA90);
-            func_00264300(-1, func_001F0820, 0);
+            Fade_SetRequest(-1, Scene_MarkDone, 0);
         } else {
             n = D_004B4B68[0] - 1; D_004B4B68[0] = n;
             if (n == 0) {
                 TASK_SETFUNC(t, func_001EEA90);
-                func_00264300(-1, func_001F0820, 0);
-            } else if (D_00470600 != -1) {
+                Fade_SetRequest(-1, Scene_MarkDone, 0);
+            } else if (gSceneNext != -1) {
                 TASK_SETFUNC(t, func_001EEA90);
-                func_00264300(-1, func_001F0820, 0);
+                Fade_SetRequest(-1, Scene_MarkDone, 0);
             }
         }
     }
 }
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_004705FC;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 
 void func_001EEC70(Task *t) {
@@ -2952,14 +2952,14 @@ void func_001EEC70(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             func_001EA740(4);
         }
     }
 }
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EEC70(Task *);
 
@@ -2973,7 +2973,7 @@ void func_001EECD0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EEC70);
         }
     }
@@ -2981,10 +2981,10 @@ void func_001EECD0(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EECD0(Task *);
 extern void Logomark_Free(void);
@@ -3001,14 +3001,14 @@ void func_001EED50(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             TASK_SETFUNC(t, func_001EECD0);
             Logomark_Free();
         }
@@ -3017,7 +3017,7 @@ void func_001EED50(Task *t) {
 extern s8 D_004B4BB0[];
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_004705FC;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EED50(Task *);
 extern void Opening_Start(void);
@@ -3032,7 +3032,7 @@ void func_001EEDF0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EED50);
             D_004B4BB0[0] = 0;
             Opening_Start();
@@ -3041,7 +3041,7 @@ void func_001EEDF0(Task *t) {
 }
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EEDF0(Task *);
 extern void Opening_Init(void);
@@ -3056,7 +3056,7 @@ void func_001EEE70(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EEDF0);
             Opening_Init();
         }
@@ -3065,10 +3065,10 @@ void func_001EEE70(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
-extern s32 D_004705F8;
-extern s32 D_004705FC;
-extern s32 D_00470600;
-extern s32 D_00470604;
+extern s32 gSceneReady;
+extern s32 gSceneDone;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void func_001EEE70(Task *);
 extern void Boot_Exit(void);
@@ -3085,14 +3085,14 @@ void func_001EEEF0(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705F8 != 0) {
-            a1 = D_00470600;
-            a0 = D_00470604;
-            D_004705F8 = 0;
-            D_004705FC = 0;
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
             D_004B4B40[0] = a1;
-            D_00470600 = a0;
-            D_00470604 = -1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
             TASK_SETFUNC(t, func_001EEE70);
             Boot_Exit();
         }
@@ -3101,7 +3101,7 @@ void func_001EEEF0(Task *t) {
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
-extern s32 D_004705FC;
+extern s32 gSceneDone;
 extern void func_001EA740(s32);
 extern void func_001EEEF0(Task *);
 extern void Logomark_Start(void);
@@ -3116,7 +3116,7 @@ void func_001EEF90(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_004705FC != 0) {
+        if (gSceneDone != 0) {
             TASK_SETFUNC(t, func_001EEEF0);
             D_004B4BB0[0] = 0;
             Logomark_Start();
@@ -3125,7 +3125,7 @@ void func_001EEF90(Task *t) {
 }
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
-extern s32 D_00470600;
+extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void func_001EEF90(Task *);
 extern void Logomark_Load(void);
@@ -3140,7 +3140,7 @@ void func_001EF010(Task *t) {
         v = 0;
     }
     if (v == 0) {
-        if (D_00470600 != -1) {
+        if (gSceneNext != -1) {
             TASK_SETFUNC(t, func_001EEF90);
             Logomark_Load();
         }
@@ -3214,7 +3214,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EFDB0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0280);
 extern u64 D_00511440[];
 
-u64 func_001F04C0(s32 a0) {
+u64 StrSelect_TestFlag(s32 a0) {
     return D_00511440[0] & (1 << a0);
 }
 extern u64 D_00511440[];
@@ -3390,12 +3390,12 @@ void func_001F0660(void) {
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0660);
 extern s8 D_004B4BB0[];
 
-void func_001F0790(void) {
+void Save_ClearBusy(void) {
     D_004B4BB0[0] = 0;
 }
 extern s8 D_004B4BB0[];
 
-void func_001F07A0(void) {
+void Save_SetBusy(void) {
     D_004B4BB0[0] = 1;
 }
 extern s8 D_004B4BB1[];
@@ -3405,40 +3405,40 @@ void func_001F07B0(s32 a0) {
     D_004B4BB2[0] = a0;
     D_004B4BB1[0] = 1;
 }
-extern s32 D_004705F8;
+extern s32 gSceneReady;
 
-void func_001F07D0(void) {
-    D_004705F8 = 1;
+void Scene_SetReady(void) {
+    gSceneReady = 1;
 }
-extern s32 D_004705FC;
+extern s32 gSceneDone;
 extern void func_002641D0(void);
 
 void func_001F07E0(void) {
     func_002641D0();
-    D_004705FC = 1;
+    gSceneDone = 1;
 }
-extern void func_00264300();
-extern void func_001F0820(void);
+extern void Fade_SetRequest();
+extern void Scene_MarkDone(void);
 
-void func_001F0810(s32 a0, s32 a1) {
-    func_00264300(a0, func_001F0820, a1);
+void Scene_FadeTo(s32 a0, s32 a1) {
+    Fade_SetRequest(a0, Scene_MarkDone, a1);
 }
-extern s32 D_004705FC;
+extern s32 gSceneDone;
 
-void func_001F0820(void) {
-    D_004705FC = 1;
+void Scene_MarkDone(void) {
+    gSceneDone = 1;
 }
-extern s32 D_00470600;
-extern s32 D_00470604;
-extern s32 D_00470608;
+extern s32 gSceneNext;
+extern s32 gSceneQueued;
+extern s32 gSceneArg;
 
-void func_001F0830(s32 a0, s32 a1) {
-    if (D_00470600 == -1) {
-        D_00470600 = a0;
+void Scene_Request(s32 a0, s32 a1) {
+    if (gSceneNext == -1) {
+        gSceneNext = a0;
     } else {
-        D_00470604 = a0;
+        gSceneQueued = a0;
     }
-    D_00470608 = a1;
+    gSceneArg = a1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0860);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0A50);
@@ -3665,7 +3665,7 @@ extern s32 D_0047062C;
 extern char D_0051CB70[];
 extern char D_0051CC20[];
 extern void amHeap_Free(void *);
-extern void func_00209530(s32);
+extern void Obj_ResetF38(s32);
 
 void func_001F3EC0(void) {
     BtbObj *n;
@@ -3691,7 +3691,7 @@ void func_001F3EC0(void) {
             }
             s = *(s32 *)(sub + 0x10);
             if (s != 0) {
-                func_00209530(s);
+                Obj_ResetF38(s);
             }
             for (i = 0; i < 0x100; i++) {
                 if (D_0051C770[i] == n) {
@@ -4351,7 +4351,7 @@ extern s32 D_0047062C;
 extern char D_0051CB70[];
 extern char D_0051CC20[];
 extern void amHeap_Free(void *);
-extern void func_00209530(s32);
+extern void Obj_ResetF38(s32);
 
 void func_001F7010(void) {
     BtbObj *n;
@@ -4373,7 +4373,7 @@ void func_001F7010(void) {
                 amHeap_Free(p);
             }
             if (*(s32 *)(sub + 8) != 0) {
-                func_00209530(*(s32 *)(sub + 8));
+                Obj_ResetF38(*(s32 *)(sub + 8));
             }
             for (i = 0; i < 0x100; i++) {
                 if (D_0051C770[i] == n) {

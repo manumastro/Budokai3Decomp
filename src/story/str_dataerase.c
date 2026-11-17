@@ -8,12 +8,12 @@ extern s32 D_004701D8;
 
 extern void func_0030EFF0(Task *);
 extern char D_0046FC10[];
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 
 void StaffRoll_Start(void) {
     Task *t = amTask_Create(func_0030EFF0, NULL, 0x3000, 8, 2, D_0046FC10);
     *(s16 *)((char *)t + 0x34) = 0;
-    func_001F07D0();
+    Scene_SetReady();
 }
 void func_0030F260(void) {
 }
@@ -62,24 +62,24 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
 extern f32 gFrameDelta;
-extern void func_0022C700(s32 *);
+extern void A2d_FlushList(s32 *);
 extern void func_00133B50(s32, s32);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 void func_0030F350(s32 *a0) {
     s32 *s1;
     s32 *s0;
     s1 = (s32 *)a0[0x30 / 4];
     s0 = (s32 *)D_0047099C;
-    func_0022C700(a0);
+    A2d_FlushList(a0);
     func_00133B50(0, 0);
     {
         s32 v = s0[0xC / 4];
         D_00470704 = v;
         D_0047070C = 0x6000;
         D_00470708 = 0;
-        func_00145CC0(v, 0x6000);
+        amModel_SetCurrent(v, 0x6000);
     }
     D_00470238 = 0;
     if (s1[0] != 0) {
@@ -105,14 +105,14 @@ void func_0030F560(s32 *a0) {
     s32 *s0;
     s1 = (s32 *)a0[0x30 / 4];
     s0 = (s32 *)D_0047099C;
-    func_0022C700(a0);
+    A2d_FlushList(a0);
     func_00133B50(0, 0);
     {
         s32 v = s0[0xC / 4];
         D_00470704 = v;
         D_0047070C = 0x6000;
         D_00470708 = 0;
-        func_00145CC0(v, 0x6000);
+        amModel_SetCurrent(v, 0x6000);
     }
     D_00470238 = 0;
     if (s1[0] != 0) {
@@ -141,14 +141,14 @@ void func_0030F8D0(s32 *a0) {
     s32 *s0;
     s1 = (s32 *)a0[0x30 / 4];
     s0 = (s32 *)D_0047099C;
-    func_0022C700(a0);
+    A2d_FlushList(a0);
     func_00133B50(0, 0);
     {
         s32 v = s0[0xC / 4];
         D_00470704 = v;
         D_0047070C = 0x6000;
         D_00470708 = 0;
-        func_00145CC0(v, 0x6000);
+        amModel_SetCurrent(v, 0x6000);
     }
     D_00470238 = 0;
     if (s1[0] != 0) {

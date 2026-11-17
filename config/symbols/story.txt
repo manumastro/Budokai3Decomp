@@ -120,3 +120,32 @@ StrMap_KillTask = 0x0029AE00; // type:func guess
 // str_status.c: the update of the task "# COMMENT #" (str_status.c line 527): when the value at the work block
 // +0x3C is not -1 it stores it at +0x70 and sets the block's callback at +0x1C to func_002C02C0 (or 0).
 StrStatus_TaskComment = 0x002C03B0; // type:func // guess
+
+// evt_scrp.c: the event script's screen-shot wipe. The two commands set the state (+0x40) to the step function and
+// take the picture (amDraw3d_ScreenShot); the timer D_004708DC runs with D_004700B0 times the frame time
+// (func_002B06A0); a command returns 3 while the timer runs and 1 when it has run out. Evt_CmdScreenShotTimed
+// takes the time from its argument; Evt_CmdScreenShot starts at 1.0.
+// Evt_ScreenShotStep is the per-frame step: it takes the picture again, advances the timer, and clears the state
+// when it ends.
+Evt_CmdScreenShotTimed = 0x002A52B0; // type:func // guess
+Evt_CmdScreenShot = 0x002A53A0; // type:func // guess
+Evt_ScreenShotStep = 0x002A5330; // type:func // guess
+
+// evt_scrp.c: three setters of one slot of the table D_005AB610 (rows of 240 bytes, entries of 24 bytes: row = a0
+// * 240 + a1 * 24). Each releases the cache entry it holds (amCdFs_ReleaseCache) and stores the new one with its
+// value: the slot at +0 (value +4), at +8 (value +0x10) and at +0xC (value +0x14).
+EvtCache_SetRow0 = 0x002A6090; // type:func // guess
+EvtCache_SetRow8 = 0x002A6110; // type:func // guess
+EvtCache_SetRowC = 0x002A6190; // type:func // guess
+
+// unk_2A8970.c: remaps an index: below 22 it is kept, 22 to 25 gives n + 5, from 26 on n + 6 (so the results 22 to
+// 26 are never produced). Called by Flight_Load.
+Flight_MapIndex = 0x002A8CA0; // type:func // guess
+
+// unk_297C60.c: resets the story selection for stage n: clears the block D_005AA550 (0xE30 bytes), the map and
+// background (StrMap_Clear, StrBg_Clear), calls func_002BFCF0 and func_001F0660, then stores n in D_00511450[0].
+// Called by StrSelect_TaskMain.
+StrSelect_Reset = 0x00299240; // type:func // guess
+
+// str_bg.c: calls func_0028F830 (the background's stop); called when the flight ends (Flight_Exit).
+StrBg_Stop = 0x00291380; // type:func // guess

@@ -11,7 +11,7 @@ extern void func_0013B0B0(s32);
 extern void func_0013B110(s32);
 extern void func_00125740(void *, s32, s32);
 extern void *func_001A50F0(void *, s32);
-void func_001F9E40(void);
+void BtbBg_KillTasks(void);
 void func_001F9270(StageWork *w);
 void func_001F8DE0(StageWork *w);
 void func_001F8ED0(StageWork *w);
@@ -404,14 +404,14 @@ void func_001F9DF0(void) {
 void func_001F9E00(void) {
 }
 void BtbBg_Restart(void) {
-    func_001F9E40();
+    BtbBg_KillTasks();
     BtbBg_Start();
 }
 extern void amTask_Kill(s32);
 extern void func_001F7F50(void);
 extern void func_001F6140(void);
 
-void func_001F9E40(void) {
+void BtbBg_KillTasks(void) {
     s32 i;
 
     if (D_0051CCE0.unkA4[0] != 0) {

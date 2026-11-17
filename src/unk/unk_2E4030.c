@@ -64,7 +64,7 @@ extern f32 D_00470430;
 extern f32 D_0047042C;
 extern void *func_0022DA90(f32, s32);
 
-void func_002E4030(Ctx2E4 *c) {
+void ArenaStageSel_CreateObj(Ctx2E4 *c) {
     Obj2E4 *o;
 
     o = func_0022DA90(0.0f, 0);
@@ -99,10 +99,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5040);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5170);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5260);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E53B0);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 
 void ArenaStage_TaskEnd(void) {
-    func_0022C700();
+    A2d_FlushList();
 }
 void ArenaStage_TaskStart(void) {
 }
@@ -140,7 +140,7 @@ s16 func_002F4A80(s32);
 void func_002F4A90(s32);
 void func_0028DF20(void);
 void ArenaStageSel_Exit(Outer57 *);
-void func_001F0830(s32, s32);
+void Scene_Request(s32, s32);
 void func_001F07E0(s32, s32);
 
 void func_002E57A0(Outer57 *a) {
@@ -155,7 +155,7 @@ void func_002E57A0(Outer57 *a) {
             func_0028DF20();
         }
         ArenaStageSel_Exit(a);
-        func_001F0830(0x19, 0);
+        Scene_Request(0x19, 0);
         func_001F07E0(0xA, 0);
     }
 }

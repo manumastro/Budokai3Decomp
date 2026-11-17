@@ -128,8 +128,8 @@ void func_002DF4E0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF4E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF5D0);
-extern void func_0022DB30(s32);
-extern void func_0022C700(void);
+extern void A2d_SetMode(s32);
+extern void A2d_FlushList(void);
 
 extern u8 *gOptionWork;
 extern s16 D_004E05F8[];
@@ -138,7 +138,7 @@ void func_002DF6E0(void) {
     u8 *s0;
     void (*f)(void);
     s0 = (u8 *)gOptionWork;
-    func_0022DB30(D_004E05F8[0]);
+    A2d_SetMode(D_004E05F8[0]);
     f = *(void (**)(void))(s0 + 0x344);
     if (f != 0) {
         f();
@@ -147,7 +147,7 @@ void func_002DF6E0(void) {
     if (f != 0) {
         f();
     }
-    func_0022C700();
+    A2d_FlushList();
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF740);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF930);

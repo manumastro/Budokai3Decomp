@@ -37,7 +37,7 @@ extern char D_00452EB0[];
 extern void func_00272A20(s32, s32, s32);
 extern f32 gFrameDelta;
 extern s32 func_0022BC30(s32, f32);
-extern void func_001F0810(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 extern void func_0026B770(void);
 extern void func_0026B880(void);
 extern void EssEdit_Start(void);
@@ -53,7 +53,7 @@ extern void amTask_Kill(void *);
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Pause(s32, s32);
 extern void amAdx_PlayAfs(s32, s32, s32);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_00133B50(s32, s32);
 extern void func_00228430(s32);
@@ -74,7 +74,7 @@ void EssBg_TaskDraw(void) {
     D_00470704 = v;
     D_0047070C = 0x11401000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x11401000);
+    amModel_SetCurrent(v, 0x11401000);
     D_00470238 = 0;
     func_00133780(0, 1);
     s0 = *(u8 **)(gEssMain + 0x24);
@@ -639,7 +639,7 @@ void func_0026CF80(u8 *a0) {
     f = (f32)*(s32 *)(gEssMain + 0x98);
     s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + 0x1C), f * gFrameDelta);
     if (s0 == 0xFF) {
-        func_001F0810(-1, 0);
+        Scene_FadeTo(-1, 0);
         *(s32 *)(s1 + 0x1C) = 0;
     }
 }

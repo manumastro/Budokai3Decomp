@@ -71,12 +71,12 @@ extern s32 amAdx_PlayFile(s32, s32, s32);
 extern s32 amAdx_IsStopped(s32);
 extern void func_00144A40(s32, s32, f32);
 extern void func_00144770(s32, f32);
-extern void func_00144650(s32);
+extern void SoundRpc_SendWord(s32);
 extern void func_001445C0(s32);
-extern void func_00144B70(s32);
+extern void SoundRpc_SendWord2(s32);
 extern void func_00144050(s32, s32, s32, s32, f32, f32, f32);
 extern void func_00143E70(s32, s32, s32);
-extern void func_00143D60(s32, s32, s32, s32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 s32 func_002AB690(ScriptThread *t, ScriptCtx *ctx);
 
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9080);
@@ -648,7 +648,7 @@ s32 func_002ABFC0(s32 *a0, s32 *a1) {
     return 1;
 }
 s32 func_002AC060(ScriptThread *t, ScriptCtx *ctx) {
-    func_00144650(ctx->args[0]);
+    SoundRpc_SendWord(ctx->args[0]);
     return 1;
 }
 s32 func_002AC090(ScriptThread *t, ScriptCtx *ctx) {
@@ -656,7 +656,7 @@ s32 func_002AC090(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 s32 func_002AC0C0(ScriptThread *t, ScriptCtx *ctx) {
-    func_00144B70(ctx->args[0]);
+    SoundRpc_SendWord2(ctx->args[0]);
     return 1;
 }
 s32 func_002AC0F0(ScriptThread *t, ScriptCtx *ctx) {
@@ -670,7 +670,7 @@ s32 func_002AC130(ScriptThread *t, ScriptCtx *ctx) {
 }
 s32 func_002AC160(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
-    func_00143D60(a[2], a[1], a[0], 0);
+    SoundRpc_Send3(a[2], a[1], a[0], 0);
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC190);

@@ -29,7 +29,7 @@ extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
-void func_00145CC0(s32, s32);
+void amModel_SetCurrent(s32, s32);
 void func_0022C060(f32);
 void func_0021B1E0(void);
 
@@ -130,7 +130,7 @@ void func_0021B420(void) {
     D_00470704 = *(s32 *)(sys + 0xE60);
     D_0047070C = 0x04000000;
     D_00470708 = 0;
-    func_00145CC0(*(s32 *)(sys + 0xE60), 0x04000000);
+    amModel_SetCurrent(*(s32 *)(sys + 0xE60), 0x04000000);
     D_00470238 = 0;
     func_0022C7D0((f32)n, 1);
     func_0022ACF0(D_0047068C);
@@ -293,7 +293,7 @@ void func_0021B9A0(void) {
         D_00470704 = e;
         D_0047070C = 0x04001000;
         D_00470708 = 0;
-        func_00145CC0(e, 0x04001000);
+        amModel_SetCurrent(e, 0x04001000);
         D_00470238 = 0;
         v = *(u8 **)(sys + 0xEE8);
         if (v != 0) {
@@ -328,7 +328,7 @@ s32 func_0021C280(s32 a) {
 
     return v < 1;
 }
-s32 func_0021C2A0(s32 a) {
+s32 Input_IsHeld(s32 a) {
     s32 m = D_00470684 & D_00470680;
 
     if (m & 0x80000000) {

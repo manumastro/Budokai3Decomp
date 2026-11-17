@@ -56,10 +56,10 @@ extern char D_0046B4B0[];
 
 extern void amFile_Load(void *);
 extern void func_00133780(s32, s32);
-extern void func_00143D60(s32, s32, s32, s32);
-extern void func_00143F20(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
+extern void SoundRpc_SetVolume(s32, s32, f32);
 extern void amTask_KillGroup(s32, s32, s32);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_00227B20(s32 *, s32, s32, s32, f32);
 extern void func_00228410(void);
 extern void func_00228430(s32);
@@ -86,7 +86,7 @@ void EssInfo_Draw(void) {
     D_00470704 = p0;
     D_0047070C = 0x11401500;
     D_00470708 = 0;
-    func_00145CC0(p0, 0x11401500);
+    amModel_SetCurrent(p0, 0x11401500);
     D_00470238 = 0;
     func_00133780(0, 1);
     m = gEssInfo->model[0];
@@ -171,9 +171,9 @@ void EssInfo_TaskMain(Task *t) {
     EssInfo_Draw();
     pad = D_00492FCE[0] | D_00493086[0];
     if ((pad & 0x1000) || (pad & 0x4000)) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (!(D_004E0614[0] <= 0.0f)) {
-            func_00143D60(0, 0, 5, 0);
+            SoundRpc_Send3(0, 0, 5, 0);
         }
         a = &gEssInfo->anim[0];
         a->id = 1;
@@ -205,9 +205,9 @@ void EssInfo_TaskMain(Task *t) {
         return;
     }
     if (pad & 1) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (!(D_004E0614[0] <= 0.0f)) {
-            func_00143D60(0, 0, 3, 0);
+            SoundRpc_Send3(0, 0, 3, 0);
         }
         Help_Open(0x0010000000040000, 3);
         pad = 0;
@@ -241,9 +241,9 @@ void EssInfo_TaskMain(Task *t) {
         a = &gEssInfo->anim[6];
         a->id = 18;
         a->frame = 0;
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (!(D_004E0614[0] <= 0.0f)) {
-            func_00143D60(0, 0, 2, 0);
+            SoundRpc_Send3(0, 0, 2, 0);
         }
         TASK_SET_FUNC(t, EssInfo_TaskTurn);
         break;
@@ -274,9 +274,9 @@ void EssInfo_TaskMain(Task *t) {
         a = &gEssInfo->anim[6];
         a->id = 18;
         a->frame = 0;
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (!(D_004E0614[0] <= 0.0f)) {
-            func_00143D60(0, 0, 2, 0);
+            SoundRpc_Send3(0, 0, 2, 0);
         }
         TASK_SET_FUNC(t, EssInfo_TaskTurn);
         break;

@@ -22,14 +22,14 @@ extern s16 D_005C412A[];
 extern void func_00308E40(u8 *);
 extern void func_00308DA0(u8 *);
 
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 extern void func_00133B50(s32, s32);
 extern void func_00139620(s32, f32, void *, s32, s32, s32);
 
 void func_00308A90(u8 *a0) {
     u8 *s0;
     s0 = a0;
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     func_00139620(0x900, 0.0f, s0 + 0x30, -1, 0x44, 0);
 }
@@ -209,7 +209,7 @@ void func_00309000(u8 *a0) {
 }
 #if 0
 // differs: 19 of 38: the head (lw a0 / beqz / li v0,4) matches; the original's loop head sits unpadded at 0x30906C and its branch has two nops before it, mine pads the head to 8 and branches with a delay nop; the if-join is 2 instructions earlier in mine
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
@@ -234,7 +234,7 @@ void func_00309050(u8 *a0) {
     a0 = *(u8 **)(a0 + 4);
     D_00470704 = (s32)a0;
     D_0047070C = 0x2000;
-    func_00145CC0((s32)a0, 0x2000);
+    amModel_SetCurrent((s32)a0, 0x2000);
     D_00470708 = 0;
     D_00470238 = 0;
     s0 = x;
@@ -261,7 +261,7 @@ extern char D_0046FAC0[];
 extern char D_0046FAE0[];
 extern void *amTask_Create();
 extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern void func_001F07D0();
+extern void Scene_SetReady();
 extern void func_00309680();
 
 #if 0
@@ -276,7 +276,7 @@ void func_00309CD0(void) {
     s0 = t + 0x30;
     *(void **)s0 = m = amHeap_Alloc(32, 0, D_0046FAE0, 156);
     memset(m, 0, 32);
-    func_001F07D0();
+    Scene_SetReady();
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309CD0);

@@ -34,7 +34,7 @@ extern s32 D_005AA5F8[];
 extern void func_00293E80(void);
 extern s32 D_005AA640[];
 extern s32 func_002A8F90(void);
-extern void func_001F0810(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 extern void func_00264140(s32, s32);
 extern void func_002935F0(void);
 extern void func_00295300(void);
@@ -130,7 +130,7 @@ void func_002929A0(Work2918A0 *w) {
     func_00291BF0();
     if (func_002A8F90() == 0) {
         if (D_005AA640[0] == 6) {
-            func_001F0810(0xA, 0);
+            Scene_FadeTo(0xA, 0);
             w->f1C = (func_002935F0 == 0) ? 0 : func_002935F0;
         } else {
             func_00264140(-1, 0);

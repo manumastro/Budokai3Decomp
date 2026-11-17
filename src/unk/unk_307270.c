@@ -64,10 +64,10 @@ typedef struct ResultTask {
 
 extern ResultState *D_00470910;
 extern void func_002BD400(void *);
-extern void func_001F0830(s32, s16);
+extern void Scene_Request(s32, s16);
 extern void func_002BD510(void);
 extern void func_002BFD90(void);
-extern void func_001F0820(void);
+extern void Scene_MarkDone(void);
 
 void Result_TaskMain(ResultTask *t) {
     ResultArg arg;
@@ -79,10 +79,10 @@ void Result_TaskMain(ResultTask *t) {
         break;
     case 3:
         func_002BD400(&arg);
-        func_001F0830(0x1B, func_00307270(&arg));
+        Scene_Request(0x1B, func_00307270(&arg));
         func_002BD510();
         func_002BFD90();
-        func_001F0820();
+        Scene_MarkDone();
         t->f1C = 0;
         break;
     }
@@ -103,12 +103,12 @@ void func_00307430(void) {
     func_002BFD90();
 }
 extern char D_0046F9F8[];
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void *amTask_Create(void (*)(ResultTask *), s32, s32, s32, s32, char *);
 extern void StrStatus_Start(s32, s32);
 
 void Result_Start(void) {
-    func_001F07D0();
+    Scene_SetReady();
     D_00470984 = amTask_Create(Result_TaskMain, 0, 0xA000, 2, 0x80000, D_0046F9F8);
     StrStatus_Start(0xB000, 0x80000);
 }

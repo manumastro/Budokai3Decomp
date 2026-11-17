@@ -1,20 +1,20 @@
 #include "common.h"
 
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 extern void func_00133B50(s32, s32);
 extern void func_00139620(s32, f32, void *, s32, s32, s32);
 extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C060(void *, f32);
 extern void func_0022CD00(void *);
 
 void func_00309DE0(u8 *a0) {
     u8 *s0;
     s0 = a0;
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     func_00139620(0x900, 0.0f, s0 + 0x30, -1, 0x44, 0);
 }
@@ -48,7 +48,7 @@ void func_0030A540(u8 *a0) {
     D_00470704 = v = *(s32 *)(s + 0x4);
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s0 = (void *)buf;
     if (s0 != 0) {
@@ -61,7 +61,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A540);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A5E0);
 #if 0
 // differs: 31 of 60 instructions: the byte-clear loop of the local (sb / addiu / addiu) is laid out with two nops before its bnez in the original, mine has none (0xE0 vs 0xF0 bytes with the other loop spellings); the same loop as func_00309050
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
@@ -90,7 +90,7 @@ void func_0030A950(u8 *a0) {
     x = *(s32 *)(s0 + 0x1C);
     D_00470704 = *(s32 *)(s0 + 4);
     D_0047070C = 0x2000;
-    func_00145CC0(*(s32 *)(s0 + 4), 0x2000);
+    amModel_SetCurrent(*(s32 *)(s0 + 4), 0x2000);
     D_00470708 = 0;
     D_00470238 = 0;
     s2 = x;
@@ -121,7 +121,7 @@ extern char D_0046FB40[];
 extern char D_0046FB60[];
 extern void *amTask_Create();
 extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern void func_001F07D0();
+extern void Scene_SetReady();
 extern void func_0030AA40();
 
 #if 0
@@ -136,7 +136,7 @@ void func_0030B020(void) {
     s0 = t + 0x30;
     *(void **)s0 = m = amHeap_Alloc(40, 0, D_0046FB60, 149);
     memset(m, 0, 40);
-    func_001F07D0();
+    Scene_SetReady();
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030B020);

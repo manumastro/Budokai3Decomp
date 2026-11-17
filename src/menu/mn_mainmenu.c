@@ -51,8 +51,8 @@ extern s32 D_00470238;
 extern void *D_0047CAA0[];
 extern s32 D_00495718[];
 extern s32 D_00495758[];
-extern void func_0022DB30(s32);
-extern void func_00145CC0(s32, s32);
+extern void A2d_SetMode(s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void *amObject_Create(void *, s32);
 extern void func_001A4CF0();
 extern void func_001EF100(void);
@@ -64,14 +64,14 @@ void MainMenu_InitWork(MainMenuWork *a) {
     s32 i;
 
     if (D_004E05F8[0] != 0) {
-        func_0022DB30(1);
+        A2d_SetMode(1);
     } else {
-        func_0022DB30(0);
+        A2d_SetMode(0);
     }
     D_00470704 = v = (s32)a->res[1];
     D_0047070C = w = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, w);
+    amModel_SetCurrent(v, w);
     D_00470238 = 0;
     a->f10 = 0;
     for (i = 0; i < 12; i++) {
@@ -142,7 +142,7 @@ void MainMenu_TaskOpen(Task *t) {
     }
 }
 
-extern void func_00264260(s32, s32, s32);
+extern void Fade_Request(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
 extern void amFile_Load(void *);
@@ -164,7 +164,7 @@ void MainMenu_TaskLoad(Task *t) {
         return;
     }
     if (g->file[3]->state == 3) {
-        func_00264260(-1, 0, 0);
+        Fade_Request(-1, 0, 0);
         amAdx_SetVolume(0, D_004E0610[0]);
         amAdx_PlayAfs(0, 0x210A3, 0);
         amAdx_Pause(0, 0);
@@ -220,8 +220,8 @@ void MainMenu_Exit(void) {
 }
 
 extern void *func_002C0630(s32, s32, s32, s32);
-extern void func_001F07D0(void);
-extern void func_002E1BB0(void);
+extern void Scene_SetReady(void);
+extern void MainMenu_SetOffset(void);
 
 void MainMenu_Start(s32 cursor, s32 a1) {
     MainMenu *g = gMainMenu;
@@ -249,8 +249,8 @@ void MainMenu_Start(s32 cursor, s32 a1) {
     w->f99 = c = w->f98 != 0 ? 0x32 : 0x52;
     w->f9C = 0;
     w->f90 = func_002C0630(0x107FF, 0x2000, 0, c);
-    func_001F07D0();
-    func_002E1BB0();
+    Scene_SetReady();
+    MainMenu_SetOffset();
 }
 
 extern MainMenuFile *amCdFs_ReadFileId(s32, s32, s32);

@@ -107,7 +107,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280F20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_002811D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281870);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281A40);
-void func_00281C60(Wrap280 *w) {
+void CsSubStat_CloseStep(Wrap280 *w) {
     Sub2C60 *o = w->f30;
     f32 d;
 

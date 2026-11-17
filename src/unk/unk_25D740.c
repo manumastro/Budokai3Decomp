@@ -70,7 +70,7 @@ extern s32 D_0058EE90[];
 extern s32 D_0058EED0[];
 extern s32 D_0058EF10[];
 extern void memset(void *, s32, s32);
-extern void func_00209530(s32);
+extern void Obj_ResetF38(s32);
 extern s32 D_0047079C;
 
 typedef struct ScrProg {
@@ -1189,7 +1189,7 @@ s32 func_00260940(ScrCtx *ctx, ScrCmd *cmd) {
     if (h != NULL) {
         func_00208F70(h);
         if (h->f38 < 0) {
-            func_00209530((s32)h);
+            Obj_ResetF38((s32)h);
             *p = 0;
         }
     }
@@ -1200,7 +1200,7 @@ s32 func_002609D0(ScrCtx *ctx, ScrCmd *cmd) {
     s32 *p = &D_0058EE50[cmd->args[0].i];
 
     if (*p != 0) {
-        func_00209530(*p);
+        Obj_ResetF38(*p);
         *p = 0;
     }
     return 1;
@@ -1213,7 +1213,7 @@ s32 func_00260A30(ScrCtx *ctx, ScrCmd *cmd) {
     s32 *p = &D_0058EE50[a[2].i];
 
     if (*p != 0) {
-        func_00209530(*p);
+        Obj_ResetF38(*p);
         *p = 0;
     }
     *p = func_002096D0(c, 0x10001, b);
@@ -1253,7 +1253,7 @@ void func_00260BD0(s32 a, s32 i, s32 b) {
     s32 *p = &D_0058EE50[i];
 
     if (*p != 0) {
-        func_00209530(*p);
+        Obj_ResetF38(*p);
         *p = 0;
     }
     *p = func_00209540(a, 0x10001, b);

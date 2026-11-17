@@ -173,7 +173,7 @@ extern s32 D_00470160;
 void func_00228430(s32);
 void func_00228410(void);
 void func_00227A30(Vec4 *);
-void func_00145CC0(s32, s32);
+void amModel_SetCurrent(s32, s32);
 void func_0022C060(Model2D2530 *, f32);
 void func_0022CD00(Model2D2530 *);
 
@@ -193,7 +193,7 @@ static inline void DrawModel(Obj2D2530 *s, Model2D2530 *m, Vec4 *eye, Vec4 *pos)
     D_00470704 = v = s->fC;
     D_00470708 = 0;
     D_0047070C = 0;
-    func_00145CC0(v, 0);
+    amModel_SetCurrent(v, 0);
     D_00470238 = 0;
     func_0022C060(m, 1.0f);
     func_00228410();
@@ -209,8 +209,8 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D27E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D2AD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D2E50);
 extern f32 D_004E0614[];
-void func_00143F20(s32, s32, f32);
-void func_00143D60(s32, s32, s32, s32);
+void SoundRpc_SetVolume(s32, s32, f32);
+void SoundRpc_Send3(s32, s32, s32, s32);
 
 /* A cursor in [0, count-1] moved by the flags: 0x80 decrements, 0x20 increments; past an end it clamps (idx 0)
    or wraps (idx 1), and the callees run when the value changed. */
@@ -231,9 +231,9 @@ void func_002D3050(s32 flags, s8 *cur, s32 count, s32 idx) {
         }
     }
     if (old != *cur) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 2, 0);
+            SoundRpc_Send3(0, 0, 2, 0);
         }
     }
 }
@@ -254,9 +254,9 @@ void func_002D3170(s32 flags, s16 *cur, s32 count, s32 idx) {
         }
     }
     if (old != *cur) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 2, 0);
+            SoundRpc_Send3(0, 0, 2, 0);
         }
     }
 }
@@ -277,9 +277,9 @@ void func_002D3290(s32 flags, s32 *cur, s32 count, s32 idx) {
         }
     }
     if (old != *cur) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 2, 0);
+            SoundRpc_Send3(0, 0, 2, 0);
         }
     }
 }
@@ -301,9 +301,9 @@ void func_002D33B0(s32 flags, s32 *cur, s32 min, s32 count, s32 idx) {
         }
     }
     if (old != *cur) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 2, 0);
+            SoundRpc_Send3(0, 0, 2, 0);
         }
     }
 }

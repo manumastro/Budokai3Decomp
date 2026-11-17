@@ -106,7 +106,7 @@ extern s32 D_0047070C;
 extern f32 D_004E0618[];
 extern void func_002E4D60(ArenaStageSelWork *);
 extern s32 amAdx_GetStat(s32);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D670(s32, f32);
 extern s32 func_0022D860(s32, f32);
@@ -140,7 +140,7 @@ extern void Help_Exit(void);
 extern void func_002F2500(void);
 extern void memset(void *, s32, s32);
 extern void Sofdec_TaskMain(Task *);
-extern void func_002E4030(ArenaStageSelWork *);
+extern void ArenaStageSel_CreateObj(ArenaStageSelWork *);
 extern void func_002E53B0(ArenaStageSelWork *, s32);
 extern void *func_002C0630(s32, s32, s32);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
@@ -169,7 +169,7 @@ void ArenaStageSel_TaskWaitVoice(Task *t) {
         D_00470704 = v = (s32)w->tex;
         D_0047070C = n = 0x7000;
         D_00470708 = 0;
-        func_00145CC0(v, n);
+        amModel_SetCurrent(v, n);
         D_00470238 = 0;
         if (w->f14 != 0) {
             func_0022D0E0(w->f14, 0);
@@ -180,7 +180,7 @@ void ArenaStageSel_TaskWaitVoice(Task *t) {
         D_00470704 = v = (s32)w->tex;
         D_0047070C = n = 0x7000;
         D_00470708 = 0;
-        func_00145CC0(v, n);
+        amModel_SetCurrent(v, n);
         D_00470238 = 0;
         if (w->f20 != 0) {
             func_0022D0E0(w->f20, 0);
@@ -366,7 +366,7 @@ void ArenaStageSel_Start(s32 stage) {
     d = (ArenaStageSelSubData *)&w->sub->data;
     d->f4 = -1;
     d->f6 = -1;
-    func_002E4030(w);
+    ArenaStageSel_CreateObj(w);
     w->f28->f5C = w->f2C;
     func_0022CF70(w->f28);
     switch (D_004B4B59[0]) {

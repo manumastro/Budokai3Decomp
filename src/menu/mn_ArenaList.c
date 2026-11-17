@@ -4,7 +4,7 @@ extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void *func_0022D860(void *, f32);
 extern void *func_0022D670(void *, f32);
 extern void func_002EE5C0();
@@ -15,8 +15,8 @@ extern void func_002ECFD0();
 extern s32 Save_GetState();
 extern void Save_Exit();
 extern void func_002EF7C0();
-extern void func_00143F20(s32, s32, f32);
-extern void func_00143D60();
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3();
 extern void func_002EE360();
 extern void func_002EF390();
 extern f32 D_004E0614[];
@@ -67,7 +67,7 @@ void func_002EE4D0(u8 *s0) {
     D_00470704 = a0;
     D_0047070C = 0x4000;
     D_00470708 = 0;
-    func_00145CC0(a0, 0x4000);
+    amModel_SetCurrent(a0, 0x4000);
     D_00470238 = 0;
     *(void **)(s0 + 0x5C) = func_0022D860(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x14) + 0x4), 0.0f);
     *(void **)(s0 + 0x60) = func_0022D860(*(void **)(*(u8 **)(*(u8 **)(s0 + 0x23C) + 0x14) + 0x10), 0.0f);
@@ -338,9 +338,9 @@ void func_002F04D0(u8 *task) {
     u8 *obj;
 
     obj = *(u8 **)(task + 0x30);
-    func_00143F20(0, 0, D_004E0614[0]);
+    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
     if (D_004E0614[0] > 0.0f) {
-        func_00143D60(0, 0, 0x16, 0);
+        SoundRpc_Send3(0, 0, 0x16, 0);
     }
     func_002EE360(obj);
     *(u32 *)(obj + 0x1C) = 0x42700000;

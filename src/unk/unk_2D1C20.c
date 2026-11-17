@@ -101,8 +101,8 @@ extern u16 D_00493086[];
 extern f32 D_004E0614[];
 extern void func_002D20E0(void);
 extern s32 func_0022BC30(s32, f32);
-extern void func_00143F20(s32, s32, f32);
-extern void func_00143D60(s32, s32, s32, s32);
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 void func_002D1F20(SmsgTask *t);
 
 void func_002D1DB0(SmsgTask *t) {
@@ -133,9 +133,9 @@ void func_002D1DB0(SmsgTask *t) {
             break;
         }
     } else if ((D_00492FCE[0] | D_00493086[0]) & 0x5000) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 0x16, 0);
+            SoundRpc_Send3(0, 0, 0x16, 0);
         }
         w->state = 5;
         w->f20 = 0;
@@ -146,9 +146,9 @@ void func_002D1F20(SmsgTask *t) {
     SmsgWork *w = &t->w;
 
     if (t->w.state == 3) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 0x15, 0);
+            SoundRpc_Send3(0, 0, 0x15, 0);
         }
         w->f20 = 0;
         SET_FUNC(t, func_002D1DB0);

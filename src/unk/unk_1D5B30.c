@@ -280,8 +280,8 @@ extern s32 func_00235B60(void *);
 extern s32 func_00235BE0(void *);
 extern s32 func_00144430(void *);
 extern void func_00143E70(s32, s32, s32);
-extern void func_00144650(s32);
-extern void func_00144B70(s32);
+extern void SoundRpc_SendWord(s32);
+extern void SoundRpc_SendWord2(s32);
 extern void *D_004693A0[];
 extern void func_001E7BE0(void *);
 extern void AdxSlot_Stop(void *);
@@ -308,11 +308,11 @@ extern void func_001E2290(Fighter *c);
 extern s32 func_001E1D60(Fighter *c);
 extern s32 func_00233D50(Fighter *c, void *p);
 extern s32 func_00235A90(Fighter *c);
-extern void func_00226030(s32, void *);
+extern void A2d_CallHandler(s32, void *);
 extern void func_00243DE0(s32, void *);
 extern void func_001E5040(Fighter *c);
 extern void func_001C75D0(Fighter *c, s32 a);
-extern void func_001ABCE0(void *c);
+extern void Fighter_ClearPlyScr(void *c);
 extern u8 D_004E0660[];
 extern s32 func_001DFE60(Fighter *c, s32 a, f32 v);
 extern s32 func_001DFA90(Fighter *c, s32 idx);
@@ -575,7 +575,7 @@ void func_001D7CC0(Fighter *c, s32 a) {
     }
     if (s0 != -1) {
         buf[0] = c->f1350;
-        func_00226030(s0, buf);
+        A2d_CallHandler(s0, buf);
     }
 }
 #endif
@@ -742,7 +742,7 @@ void PlyScr_Start(Fighter *c, s32 a1, s32 a2) {
         c->f1AC8 = NULL;
     }
     c->f1AD0 = 0;
-    func_001ABCE0((char *)c + 0x1360);
+    Fighter_ClearPlyScr((char *)c + 0x1360);
     c->f1ACE = 0;
     c->f1AD8 = 0;
     c->f1ADC = 0;
@@ -1486,7 +1486,7 @@ void func_001DF830(Fighter *c, s32 a1) {
     }
     pair[0] = c->f1350;
     pair[1] = a1;
-    func_00226030(0x31, pair);
+    A2d_CallHandler(0x31, pair);
     func_001D80A0(c, 2);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DF8F0);
@@ -1620,7 +1620,7 @@ void func_001E1460(Fighter *c, s32 flag) {
     c->f2010 = 0;
     pair[0] = c->f1350;
     pair[1] = c->f2010;
-    func_00226030(0x35, pair);
+    A2d_CallHandler(0x35, pair);
     c->f17E0 = 0xBF800000;
     if (flag != 0) {
         if (c->f1AB4 != 0) {
@@ -1929,7 +1929,7 @@ void func_001E1510(Fighter *c, s32 a1) {
         c->f2010 = 1;
         b30[0] = c->f1350;
         b30[1] = c->f2010;
-        func_00226030(0x35, b30);
+        A2d_CallHandler(0x35, b30);
         *(f32 *)((char *)c + 0x17E0) = (c->f1A40 > 0.0f) ? *(f32 *)((char *)c + 0x17D4) : *(f32 *)((char *)c + 0x17D0);
         if (c->f1AB4 == 0) {
             c->f1AB4 = (s32)amTask_Create(func_001D7450, 0, 0x5390, 0x20, 0x40002000, D_004695A0);
@@ -2052,7 +2052,7 @@ void func_001E18B0(Fighter *c, s32 idx) {
         f = (f32)(1000 * *(s8 *)((char *)c->f1CF8 + c->fBA4 * 20 + 0xDD));
     }
     a[2] = (s32)f;
-    func_00226030(8, a);
+    A2d_CallHandler(8, a);
     b[4] = c->f1350;
     *(s16 *)((char *)b + 0x18) = c->fBA4;
     func_00243DE0(1, b);
@@ -2105,7 +2105,7 @@ void func_001E1A40(Fighter *c, s32 idx) {
             f = (f32)(((s8 *)((char *)bp + 0xDD))[k * 20] * 1000);
         }
         arr[2] = (s32)f;
-        func_00226030(8, arr);
+        A2d_CallHandler(8, arr);
         *(s32 *)(buf + 0x10) = c->f1350;
         *(s16 *)(buf + 0x18) = (s16)c->fBA4;
         func_00243DE0(1, buf);
@@ -2159,7 +2159,7 @@ void func_001E1BD0(Fighter *c, s32 a1, s32 idx) {
             f = (f32)(((s8 *)((char *)bp + 0xDD))[k * 20] * 1000);
         }
         arr[2] = (s32)f;
-        func_00226030(8, arr);
+        A2d_CallHandler(8, arr);
         *(s32 *)(buf + 0x10) = c->f1350;
         *(s16 *)(buf + 0x18) = (s16)c->fBA4;
         func_00243DE0(1, buf);
@@ -2261,7 +2261,7 @@ void func_001E20F0(Fighter *c) {
     q = (s16 *)(p + 0xD4);
     pair[0] = c->f1350;
     pair[1] = *q;
-    func_00226030(0x31, pair);
+    A2d_CallHandler(0x31, pair);
     c->f1A58 = *q;
     func_001D80A0(c, 2);
     func_001E6F70((char *)c + 0x650, n);
@@ -2288,7 +2288,7 @@ void func_001E2190(Fighter *c, s32 idx) {
             f = (f32)(((s8 *)((char *)bp + 0xDD))[k * 20] * 1000);
         }
         arr[2] = (s32)f;
-        func_00226030(8, arr);
+        A2d_CallHandler(8, arr);
         *(s32 *)(buf + 0x10) = c->f1350;
         *(s16 *)(buf + 0x18) = (s16)c->fBA4;
         func_00243DE0(1, buf);
@@ -2321,7 +2321,7 @@ void func_001E2510(Fighter *c) {
             f = (f32)(((s8 *)((char *)bp + 0xDD))[k * 20] * 1000);
         }
         arr[2] = (s32)f;
-        func_00226030(8, arr);
+        A2d_CallHandler(8, arr);
         *(s32 *)(buf + 0x10) = c->f1350;
         *(s16 *)(buf + 0x18) = (s16)c->fBA4;
         func_00243DE0(1, buf);
@@ -2329,7 +2329,7 @@ void func_001E2510(Fighter *c) {
     func_00246DA0(c);
     pr[0] = c->f1350;
     pr[1] = 0;
-    func_00226030(0x33, pr);
+    A2d_CallHandler(0x33, pr);
 }
 #endif
 // differs: 5 to 7 of 72: the element read and the calls match; the frame is 0x70 in the original with the pair at 0x60 and the array at 0x50, and the local layout here differs by 8 bytes
@@ -2476,7 +2476,7 @@ void PlySe_Start(Fighter *c) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3310);
-void func_001E3430(Fighter *c) {
+void Fighter_ResetMotion(Fighter *c) {
     func_001E7BE0((char *)c + 0x650);
     c->f184C = 0x3F800000;
 }
@@ -3483,8 +3483,8 @@ void func_001E9D10(void) {
     for (i = 0; i < 7; i++) {
         func_00143E70(i, -1, 1);
     }
-    func_00144650(-1);
-    func_00144B70(-1);
+    SoundRpc_SendWord(-1);
+    SoundRpc_SendWord2(-1);
 }
 void func_001E9D60(void) {
     D_004705D4 = 0;

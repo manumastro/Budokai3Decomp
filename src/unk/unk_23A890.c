@@ -9,7 +9,7 @@ void func_002CA440(void);
 
 extern u8 *D_0058D3CC;
 extern u8 *D_0046FE4C;
-void func_00209530(s32);
+void Obj_ResetF38(s32);
 
 s32 func_002096D0(s32, s32, s32);
 void func_00243600(s32);
@@ -29,14 +29,14 @@ typedef struct Arr6 {
     s32 v[6];
 } Arr6;
 extern Arr6 D_004500E0;
-s32 func_0021C2A0(s32);
+s32 Input_IsHeld(s32);
 u8 *func_0021C400(s32);
 void amDraw_SetPacketMode(s32);
 void func_0022C6B0(s32);
 
 extern u8 D_0058CAA0[];
 void func_00244CC0(s32, s32);
-void func_00209530(s32);
+void Obj_ResetF38(s32);
 void amTask_KillGroup(s32, s32, s32);
 void func_0020DE30(void);
 void func_00248C80(s32);
@@ -107,7 +107,7 @@ void func_00214F80(s32, void *);
 void func_00241600(s32);
 void func_00241C10(s32);
 
-void func_00209530(s32);
+void Obj_ResetF38(s32);
 
 extern s32 D_00452130[];
 s32 amCdFs_ReadFileId(s32, s32, s32);
@@ -140,13 +140,13 @@ extern u8 D_0046ACF0[];
 extern u8 *D_0051CD00[];
 void amTask_KillGroup(s32, s32, s32);
 void func_00209450(s32, s32);
-void func_0021B080(void);
+void Ar_InitLights(void);
 void func_00243020(void);
 void func_00242E10(void);
 void func_00242290(void);
 void func_002420F0(void);
 void func_002529B0(s32, u8 *, s32);
-void func_00145CC0(s32, s32);
+void amModel_SetCurrent(s32, s32);
 void func_002D04A0(s32);
 void func_002CFDE0(s32);
 void func_0013E170(s32);
@@ -189,7 +189,7 @@ void func_00208F70(s32);
 void func_001F5F50(u8 *);
 void func_00248910(s32, u8 *);
 void func_001D9C40(u8 *, s32, s32);
-void func_00145CC0(s32, s32);
+void amModel_SetCurrent(s32, s32);
 void func_001F3DF0(u8 *);
 void func_00208D70(s32);
 void func_001F3D80(u8 *);
@@ -271,7 +271,7 @@ void func_0023B6B0(s32 x) {
 
     p = (u8 *)func_0021C400(func_0021C3D0(x));
     buf = D_004500E0;
-    if (func_0021C2A0(0x80000000)) {
+    if (Input_IsHeld(0x80000000)) {
         if (*(s16 *)(sys + 0xE52) == 0 || *(s16 *)(sys + 0xE52) == 1) {
             s2 = D_0058BF70 + x * 0x70 + 0x3A0;
             amDraw_SetPacketMode(0);
@@ -311,7 +311,7 @@ void func_0023DB40(s32 x) {
         D_00470704 = *(s32 *)(sys + 0xE84);
         D_0047070C = 0x04010000;
         D_00470708 = 0;
-        func_00145CC0(*(s32 *)(sys + 0xE84), 0x04010000);
+        amModel_SetCurrent(*(s32 *)(sys + 0xE84), 0x04010000);
         D_00470238 = 0;
         if (*(s32 *)(t + 0xC) != 0) {
             func_0022C7D0((f32)v, 1);
@@ -558,13 +558,13 @@ void func_00241600(s32 x) {
     b = (s32)func_00240F40(x, 1);
     c = (s32)func_00240F40(x, 2);
     if (*(s32 *)(s0 + 0x40) != 0) {
-        func_00209530(*(s32 *)(s0 + 0x40));
+        Obj_ResetF38(*(s32 *)(s0 + 0x40));
     }
     if (*(s32 *)(s0 + 0x44) != 0) {
-        func_00209530(*(s32 *)(s0 + 0x44));
+        Obj_ResetF38(*(s32 *)(s0 + 0x44));
     }
     if (*(s32 *)(s0 + 0x48) != 0) {
-        func_00209530(*(s32 *)(s0 + 0x48));
+        Obj_ResetF38(*(s32 *)(s0 + 0x48));
     }
     func_00243600(x);
     func_00241D60(x);
@@ -840,7 +840,7 @@ void func_00242A10(void) {
             func_0013B160(0);
             func_00142100(s2 + 0x50, s2 + 0x60);
             D_00470238 = 0;
-            func_00145CC0(*(s32 *)(s1 + 0x1A0), 0x3003000);
+            amModel_SetCurrent(*(s32 *)(s1 + 0x1A0), 0x3003000);
             if (*(s32 *)(s2 + 0x70) != 0) {
                 func_00208D70(*(s32 *)(s2 + 0x70));
                 __asm__ volatile ("sll $zero, $zero, 0");
@@ -959,7 +959,7 @@ void func_00243AF0(u8 *o) {
         s0 = D_0046FE44 + i * 0x80;
         func_00240F40(i, 3);
         if (*(s32 *)(s0 + 0x4C) != 0) {
-            func_00209530(*(s32 *)(s0 + 0x4C));
+            Obj_ResetF38(*(s32 *)(s0 + 0x4C));
             *(s32 *)(s0 + 0x4C) = 0;
         }
         *(s8 *)(s0 + 0x3E) = *(s8 *)(s0 + 0x39);
@@ -970,7 +970,7 @@ void func_00243AF0(u8 *o) {
         s0 = D_0046FE44 + i * 0x80;
         func_00240F40(i, 3);
         if (*(s32 *)(s0 + 0x4C) != 0) {
-            func_00209530(*(s32 *)(s0 + 0x4C));
+            Obj_ResetF38(*(s32 *)(s0 + 0x4C));
             *(s32 *)(s0 + 0x4C) = 0;
         }
         *(s8 *)(s0 + 0x3E) = *(s8 *)(s0 + 0x39);
@@ -1088,7 +1088,7 @@ void func_00244040(void) {
     *(s16 *)(D_0046FE48 + 0x3D0) = 0;
 }
 void Ar_Start(void) {
-    func_0021B080();
+    Ar_InitLights();
     amTask_Create(func_00243020, 0, 0x5800, 0x400, 0x20000, D_0046ACE0);
     amTask_Create(func_00242E10, 0, 0x3700, 0x400, 0x20000, D_0046ACF0);
     if (*(s16 *)(D_0046FE48 + 0x3D0) == 0) {
@@ -1145,7 +1145,7 @@ void func_00244410(u8 *o, s32 kind) {
     u8 *r = *(u8 **)(q + 0x28);
 
     if (*(s32 *)(sys + 0x40) != 0) {
-        func_00209530(*(s32 *)(sys + 0x40));
+        Obj_ResetF38(*(s32 *)(sys + 0x40));
         *(s32 *)(sys + 0x40) = 0;
     }
     *(s32 *)(q + 0xA4) = *(s32 *)(o + 0xBA4) * 2 + 0x1A;
@@ -1450,7 +1450,7 @@ void func_00247410(void) {
             func_00244CC0(*(s32 *)(bw + 0x1350), 1);
         }
         if (*(s32 *)(s2 + 0x30) != 0) {
-            func_00209530(*(s32 *)(s2 + 0x30));
+            Obj_ResetF38(*(s32 *)(s2 + 0x30));
             *(s32 *)(s2 + 0x30) = 0;
         }
         k++;
@@ -1521,7 +1521,7 @@ void func_002477C0(u8 *o) {
     u8 *s0 = o + 0x30;
 
     D_00470238 = 0;
-    func_00145CC0(*(s32 *)(o + 0x34), 0x2003000);
+    amModel_SetCurrent(*(s32 *)(o + 0x34), 0x2003000);
     func_001F3DF0(o);
     func_00208D70(*(s32 *)(s0 + 8));
     func_001F3D80(o);
@@ -1691,7 +1691,7 @@ void func_00247F70(u8 *o) {
 
     if (v != 0) {
         D_00470238 = 0;
-        func_00145CC0(v, 0x2001000);
+        amModel_SetCurrent(v, 0x2001000);
     }
     func_002D04A0(*(s32 *)(s0 + 0x1C));
     func_002CFDE0(0);

@@ -86,15 +86,15 @@ extern f32 D_004E0614[];
 extern void amCdFs_Close(Model *, s32);
 extern void func_0022E0B0(void *);
 extern void amFile_Load(void *);
-extern void func_00143F20(s32, s32, f32);
-extern void func_00143D60(s32, s32, s32, s32);
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 extern void func_0022D0E0(void *, s32);
 extern void *func_0022D670(void *, f32);
 extern void func_002E2290(Work *);
 extern void func_002E2850(Task *);
 extern s32 func_002B4C80(s32);
 extern void func_002B4CC0(s32, s32 *);
-extern void func_00145CC0(void *, s32);
+extern void amModel_SetCurrent(void *, s32);
 extern void *func_0022D860(void *, f32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E2290", func_002E2290);
@@ -168,7 +168,7 @@ void func_002E2E50(Task *t) {
         D_00470704 = v = g->fC;
         D_0047070C = n = 0x6000;
         D_00470708 = 0;
-        func_00145CC0(v, n);
+        amModel_SetCurrent(v, n);
         D_00470238 = 0;
         tbl = D_0047018C;
         w->f1C = func_0022D860(g->f8->f14[tbl.v[w->f2]], 0.0f);
@@ -199,15 +199,15 @@ void CsSubarn_TaskMain(Task *t) {
         func_0022E0B0(g->f8);
         amFile_Load(g->fC);
     }
-    func_00143F20(0, 0, D_004E0614[0]);
+    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
     if (!(D_004E0614[0] <= 0.0f)) {
-        func_00143D60(0, 0, 0x15, 0);
+        SoundRpc_Send3(0, 0, 0x15, 0);
     }
     g = gCsSubArena;
     D_00470704 = v = g->fC;
     D_0047070C = n = 0x6000;
     D_00470708 = 0;
-    func_00145CC0(v, n);
+    amModel_SetCurrent(v, n);
     D_00470238 = 0;
     tbl = D_00456D88;
     i = w->f2;
@@ -238,7 +238,7 @@ void func_002E3110(Task *t) {
     D_00470704 = v = g->fC;
     D_0047070C = n = 0x6000;
     D_00470708 = 0;
-    func_00145CC0(v, n);
+    amModel_SetCurrent(v, n);
     D_00470238 = 0;
     tbl = D_00470190;
     idx = w->f2;
