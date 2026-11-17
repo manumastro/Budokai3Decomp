@@ -462,44 +462,6 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBAF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBB90);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBC20);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBCA0);
-// differs: reads D_00470608 with lh here and with lw in func_001ECAB0 (same symbol, two widths; one C file cannot declare both)
-
-#if 0
-
-extern s8 D_004B4BB1[];
-extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
-extern void func_001EA740(s32);
-extern void func_001EBCA0(Task *);
-extern void PracMode_Start(s32, s32);
-extern s8 D_004B4BB0[];
-extern s16 D_00470608;
-
-void func_001EBD90(Task *t) {
-    s32 v;
-
-    if (D_004B4BB1[0] != 0) {
-        func_001EA740(D_004B4BB2[0]);
-        v = 1;
-    } else {
-        v = 0;
-    }
-    if (v == 0) {
-        if (D_004705FC != 0) {
-            TASK_SETFUNC(t, func_001EBCA0);
-            switch (D_00470600) {
-            case 19:
-                D_004B4BB0[0] = 1;
-                PracMode_Start(D_00470608, 0);
-                break;
-            case 5:
-                break;
-            }
-        }
-    }
-}
-#endif
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -567,44 +529,6 @@ void func_001EBE50(Task *t) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBEF0);
-// differs: same D_00470608 lh/lw conflict as func_001EBD90
-
-#if 0
-
-extern s8 D_004B4BB1[];
-extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
-extern void func_001EA740(s32);
-extern void func_001EBEF0(Task *);
-extern void PracMode_Start(s32, s32);
-extern s8 D_004B4BB0[];
-extern s16 D_00470608;
-
-void func_001EBFE0(Task *t) {
-    s32 v;
-
-    if (D_004B4BB1[0] != 0) {
-        func_001EA740(D_004B4BB2[0]);
-        v = 1;
-    } else {
-        v = 0;
-    }
-    if (v == 0) {
-        if (D_004705FC != 0) {
-            TASK_SETFUNC(t, func_001EBEF0);
-            switch (D_00470600) {
-            case 19:
-                D_004B4BB0[0] = 1;
-                PracMode_Start(D_00470608, 0);
-                break;
-            case 5:
-                break;
-            }
-        }
-    }
-}
-#endif
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -967,44 +891,6 @@ void func_001ECAB0(Task *t) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ECB60);
-// differs: same D_00470608 lh/lw conflict as func_001EBD90
-
-#if 0
-
-extern s8 D_004B4BB1[];
-extern s8 D_004B4BB2[];
-extern s32 D_00470600;
-extern s32 D_004705FC;
-extern void func_001EA740(s32);
-extern void func_001ECB60(Task *);
-extern void func_00269820(s32, s32);
-extern s8 D_004B4BB0[];
-extern s16 D_00470608;
-
-void func_001ECC50(Task *t) {
-    s32 v;
-
-    if (D_004B4BB1[0] != 0) {
-        func_001EA740(D_004B4BB2[0]);
-        v = 1;
-    } else {
-        v = 0;
-    }
-    if (v == 0) {
-        if (D_004705FC != 0) {
-            TASK_SETFUNC(t, func_001ECB60);
-            switch (D_00470600) {
-            case 14:
-                D_004B4BB0[0] = 1;
-                func_00269820(D_00470608, 0);
-                break;
-            case 5:
-                break;
-            }
-        }
-    }
-}
-#endif
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -1976,7 +1862,52 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3A60);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3C10);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3D80);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3DF0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3EC0);
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+extern char D_0051CB70[];
+extern char D_0051CC20[];
+extern void amHeap_Free(void *);
+extern void func_00209530(s32);
+
+void func_001F3EC0(void) {
+    BtbObj *n;
+    char *sub;
+    void *p;
+    s32 s;
+    s32 i;
+
+    n = (BtbObj *)D_0051CB70;
+    if (n == (BtbObj *)D_0051CC20) {
+        return;
+    }
+    do {
+        if ((*(s32 *)((char *)n + 0x20) & 0x4800) == 0x4800) {
+            sub = (char *)n + 0x30;
+            p = *(void **)((char *)n + 0x44);
+            if (p != NULL) {
+                amHeap_Free(p);
+            }
+            p = *(void **)(sub + 0xC);
+            if (p != NULL) {
+                amHeap_Free(p);
+            }
+            s = *(s32 *)(sub + 0x10);
+            if (s != 0) {
+                func_00209530(s);
+            }
+            for (i = 0; i < 0x100; i++) {
+                if (D_0051C770[i] == n) {
+                    n->prev->next = n->next;
+                    n->next->prev = n->prev;
+                    D_0051C770[i] = NULL;
+                    D_0047062C--;
+                    break;
+                }
+            }
+        }
+        n = n->next;
+    } while (n != (BtbObj *)D_0051CC20);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3FE0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F41E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4520);
