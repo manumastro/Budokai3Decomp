@@ -262,6 +262,51 @@ s32 func_002C5FC0(Task2C41C0 *t) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C5FC0);
+#if 0
+// differs: 11 of 57 instructions, all in the tail (the product order and the fused madd of the accumulator); the search loop and the call match
+typedef struct Bin2C41C0 {
+    f32 a[20];
+    s32 f50;
+} Bin2C41C0;
+extern void func_002C61A0(void *);
+
+f32 func_002C60B0(Bin2C41C0 *s, f32 t) {
+    s32 a1;
+    s32 a0;
+    s32 v1;
+    f32 *p;
+    f32 f4;
+    f32 f1;
+    f32 f2;
+    f32 f0;
+
+    if ((s->f50 & 0x100) == 0) {
+        func_002C61A0(s);
+    }
+    a1 = 0;
+    a0 = 3;
+    do {
+        v1 = (a1 + a0) / 2;
+        if (s->a[v1] < t) {
+            a1 = v1 + 1;
+        } else {
+            a0 = v1;
+        }
+    } while (a1 < a0);
+    if (a1 > 0) {
+        a1--;
+    }
+    p = &s->a[a1];
+    f4 = t - p[0];
+    f1 = p[12] * f4;
+    f2 = p[8] * f4;
+    f0 = p[16] * f4;
+    f1 = f4 * f1;
+    f2 = p[4] + f2;
+    f0 = f4 * f0;
+    return (f2 + f1) + f0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C60B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C61A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C63C0);
