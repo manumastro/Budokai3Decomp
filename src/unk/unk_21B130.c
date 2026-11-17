@@ -85,19 +85,25 @@ extern s32 D_00470684;
 void func_0021B130(void) {
     s32 m = D_00470684 & D_00470680;
     FPair p;
-
+    FPair *q = &p;
+    s32 ok;
     if ((m & 0x80000000) && (m & 2) == 2) {
+        ok = 1;
+    } else {
+        ok = 0;
+    }
+    if (ok) {
         if (D_0047068C != 0) {
-            p.b = D_00470690;
-            p.a = D_00470694;
-            func_0022DB20(p.b, p.a);
-            func_0021BEA0((u8 *)D_0047068C, 0x18);
-            func_0022C560(D_0047068C);
-            func_0022DB20(0.0f, 0.0f);
+                q->b = D_00470690;
+                q->a = D_00470694;
+                func_0022DB20(q->b, q->a);
+                func_0021BEA0((u8 *)D_0047068C, 0x18);
+                func_0022C560(D_0047068C);
+                func_0022DB20(0.0f, 0.0f);
         }
     }
 }
-// differs: the two float arguments are copied through the stack (lwc1 to 24 and 28 of a 0x30 frame) in the original, the same copy as func_0023FBB0 in unk_23A890; the local forms tried do not give that copy; round 5: `volatile FPair p` does not compile (mwcc aborts on the volatile struct)
+// differs: round 6 (u23e): 7 of 41 differ: the if/else flag gives the boolean form, FPair *q = &p gives the stack copy, but the stack address is kept in a2 (addiu a2,sp,24) and the two global loads are not hoisted above the first store
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
 void func_0021B1E0(void) {
@@ -361,25 +367,30 @@ void func_0021B940(void) {
 }
 #if 0
 void func_0021B9A0(void) {
-    s32 *s1;
+    u8 *bw = gBattle + 0x10000;
     u8 *sys = gBtlSys;
-    u8 *v;
-    s32 e;
+    u8 *q;
+    u8 *s1;
+    s32 a;
+    s32 t;
+    s32 u;
 
-    if (*(s32 *)(gBattle + 0x88EC) == 0) {
-        e = *(s32 *)(sys + 0xE64);
-        D_00470704 = e;
-        D_0047070C = 0x04001000;
+    if (*(s32 *)(bw - 0x7714) == 0) {
+        a = *(s32 *)(sys + 0xE64);
+        D_00470704 = a;
+        D_0047070C = 0x4001000;
         D_00470708 = 0;
-        amModel_SetCurrent(e, 0x04001000);
+        amModel_SetCurrent(a, 0x4001000);
         D_00470238 = 0;
-        v = *(u8 **)(sys + 0xEE8);
-        if (v != 0) {
-            s1 = (s32 *)(v + 0x30);
-            if (*(s32 *)(v + 0x30) != 0) {
+        q = *(u8 **)(sys + 0xEE8);
+        if (q != 0) {
+            t = *(s32 *)(q + 0x30);
+            s1 = q + 0x30;
+            if (t != 0) {
                 func_0022C060(1.0f);
             }
-            if (s1[1] != 0) {
+            u = *(s32 *)(s1 + 4);
+            if (u != 0) {
                 func_0022C060(1.0f);
             }
         }
@@ -388,7 +399,7 @@ void func_0021B9A0(void) {
         }
     }
 }
-// differs: the entry pointer is set up in a delay slot in the original, and its first field is loaded into a0 before the test (the temporaries differ in a few instructions). Round 5: sys = gBtlSys moved into the branch gives 37 of 49 (the load sits after a nop in the delay slot); with the test restructured (s1 set after the first test) the entry is kept in s1 instead of v1: 7 of 47. Still to do: keep the entry in v1 (the original sets s1 = entry + 0x30 in the delay slot of the first beqz, after the load).
+// differs: round 6 (u23e): 6 of 47 differ: the load of the pointer temp goes to v1 instead of a0 and addiu s1 is hoisted above the load (the original fills the branch delay slot with it)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BA60);
