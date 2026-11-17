@@ -3785,7 +3785,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8290);
 void func_001E8630(Fighter *c) {
     func_00125740((char *)c + 0x160, c, 0x160);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8640);
+void func_001E8640(Fighter *c, s32 mask) {
+    char *obj;
+    char *s2;
+    char *s1;
+    s32 i;
+    char *p;
+
+    obj = *(char **)((char *)c + 0x568);
+    s2 = *(char **)((char *)c + 0x538);
+    s1 = *(char **)((char *)c + 0x53C);
+    func_0013B160(0);
+    i = 0;
+    while (mask != 0 && i < 0x16) {
+        if (mask & 1) {
+            p = *(char **)(s2 + 0x408) + *(s16 *)(s1 + i * 2) * 64;
+            __asm__ volatile ("lqc2 $vf28, 0(%0)
+	lqc2 $vf29, 0x10(%0)
+	lqc2 $vf30, 0x20(%0)
+	lqc2 $vf31, 0x30(%0)" : : "r"(p) : "memory");
+            func_0013BA20(*(void **)(obj + 0x17A4));
+            __asm__ volatile ("sqc2 $vf31, 0(%0)" : : "r"((char *)c + i * 16) : "memory");
+            __asm__ volatile ("lqc2 $vf1, 0(%0)
+	lqc2 $vf2, 0(%1)
+	vadd.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, 0(%0)" : : "r"((char *)c + i * 16), "r"(obj + 0x40) : "memory");
+        }
+        i++;
+        mask >>= 1;
+    }
+    __asm__ volatile ("vmove.xyzw $vf28, $vf24
+	vmove.xyzw $vf29, $vf25
+	vmove.xyzw $vf30, $vf26
+	vmove.xyzw $vf31, $vf27" : : : "memory");
+}
 s32 func_001E8740(Fighter *c) {
     Game *g;
     s32 arr[7];
