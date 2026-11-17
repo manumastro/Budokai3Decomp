@@ -134,9 +134,55 @@ void func_0029D260(void *a, s32 b) {
     func_0029D270(a, b, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_29CE90", func_0029D270);
+/* the pref reads a register never set in the original; the offset is computed before the pointer reload */
+extern u8 D_003F0800[];
+extern void func_0013B0B0(void *);
+extern void func_0013B110(s32);
+extern void func_0029CE90(void *, u8 *);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_29CE90", func_0029D310);
+#pragma inline_depth(0)
+void func_0029D270(void *a, s32 b, void *c) {
+    u8 *t;
+    s32 off;
+    void *p;
+    void *obj = a;
+    u8 *base;
+    off = (b * 5) << 4;
+    a = *(void **)((u8 *)a + 4);
+    base = *(u8 **)((u8 *)a + 0x14);
+    t = base + off;
+    if (c != 0) {
+        func_0013B0B0(D_003F0800);
+    }
+    __asm__ volatile("pref 0x00, 0x0(%0)" : : "r"(p));
+    func_0029CE90(obj, t);
+    if (c != 0) {
+        __asm__ volatile("sqc2 $vf28, 0x0(%0)\n\tsqc2 $vf29, 0x10(%0)\n\tsqc2 $vf30, 0x20(%0)\n\tsqc2 $vf31, 0x30(%0)" : : "r"(c));
+        func_0013B110(1);
+    }
+}
+#pragma inline_depth(8)
+
+/* func_0029D080 is called, not inlined (inline_depth 0); the pref reads a register never set in the original */
+extern u8 D_003F0800[];
+extern void func_0013B0B0(void *);
+extern void func_0013B110(s32);
+
+#pragma inline_depth(0)
+void func_0029D310(LightNode *a0, Vec4 *a1) {
+    void *p;
+
+    if (a1 != 0) {
+        func_0013B0B0(D_003F0800);
+    }
+    __asm__ volatile("pref 0x00, 0x0(%0)" : : "r"(p));
+    func_0029D080(a0);
+    if (a1 != 0) {
+        __asm__ volatile("sqc2 $vf28, 0x0(%0)\n\tsqc2 $vf29, 0x10(%0)\n\tsqc2 $vf30, 0x20(%0)\n\tsqc2 $vf31, 0x30(%0)" : : "r"(a1));
+        func_0013B110(1);
+    }
+}
+#pragma inline_depth(8)
 
 static inline void SetLightB(Vec4 *v) {
     if (v != 0) {

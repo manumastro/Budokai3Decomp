@@ -15,18 +15,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_231E70", func_00233850);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_231E70", func_00233B20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_231E70", func_00233D50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_231E70", func_00233E50);
-/* differs: the original has three separate exits to one "return 1" and a "b" for the non-0x20 path (0x70 bytes, ours 0x54) */
-#if 0
 s32 func_00234C20(Fighter231 *o) {
     s32 r = 0;
 
-    if (o->fB9C == 0x29 || (o->fB9C == 0x20 && func_001EA230() == NULL)) {
+    switch (o->fB9C) {
+    case 0x20:
+        if (func_001EA230() == NULL) {
+            r = 1;
+        }
+        break;
+    case 0x29:
         r = 1;
+        break;
     }
     return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_231E70", func_00234C20);
 /* differs: size 0xA8 vs 0xC0. The original sign-extends the halfword with dsll32/dsra32 (a 24-bit sign extension), and
    the threshold and the result flag take the other saved registers ($s0 threshold, $s1 flag): the declaration order
    sampling (40 orders) found no order that fixes it, since the sampler's counts were not real for this function. */
