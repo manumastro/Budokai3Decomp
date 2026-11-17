@@ -1634,7 +1634,332 @@ void func_001E1460(Fighter *c, s32 flag) {
         func_00243DE0(2, buf);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1510);
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+
+void func_001E1510(Fighter *c, s32 a1) {
+    s32 b40[12];
+    s32 b30[4];
+    s32 v;
+    char *t;
+    Game *g;
+
+    if (c->f2010 == 0) {
+        c->f2010 = 1;
+        b30[0] = c->f1350;
+        b30[1] = c->f2010;
+        func_00226030(0x35, b30);
+        *(f32 *)((char *)c + 0x17E0) = (c->f1A40 > 0.0f) ? *(f32 *)((char *)c + 0x17D4) : *(f32 *)((char *)c + 0x17D0);
+        if (c->f1AB4 == 0) {
+            c->f1AB4 = (s32)amTask_Create(func_001D7450, 0, 0x5390, 0x20, 0x40002000, D_004695A0);
+            t = (char *)c->f1AB4;
+            *(void **)(t + 0x30) = c;
+            *(s32 *)(t + 0x34) = a1 != 0;
+            *(s32 *)(t + 0x38) = 0;
+            *(u32 *)(t + 0x44) = 0x3F23D70A;
+            *(u8 *)(t + 0x3C) = 200;
+            t[0x3D] = 50;
+            t[0x3E] = 20;
+            *(u8 *)(t + 0x40) = 200;
+            t[0x41] = 100;
+            t[0x42] = 100;
+        }
+        if (a1 == 0) {
+            b40[4] = c->f1350;
+            b40[5] = 1;
+            func_00243DE0(2, b40);
+        }
+        g = gBattle;
+        if (c->f2015 != 0) {
+            v = c->f1358->f1350;
+        } else {
+            v = c->f1350;
+        }
+        *(s16 *)((char *)g + v * 72 + 0x89A6) += 1;
+        func_002CBFF0(6, c);
+    }
+}
 #if 0
 s32 func_001E1690(Fighter *c) {
     s8 slot[3];
@@ -1866,6 +2191,40 @@ found:
     }
     return 1;
 }
+#if 0
+s32 func_001E1D60(Fighter *c) {
+    s32 n;
+    s32 off;
+    s8 t;
+
+    n = c->fBA4;
+    if (n <= 0) {
+        return n;
+    }
+    if (c->f200F == 2) {
+        n = c->f1A48;
+    } else if (c->f1FF8 != -1 && func_001DFE60(c, 2, 1000.0f) != 0) {
+        return c->fBA4;
+    }
+    off = n * 20;
+    for (; n > 0; n--, off -= 20) {
+        if (*(s8 *)((char *)c + n + 0x1FDC) != 0) {
+            t = *(s8 *)((char *)c->f1CF8 + off + 0xDA);
+            if (t == 7 || (u32)(t - 3) < 3) {
+                break;
+            }
+        }
+    }
+    if (n < *(s16 *)((char *)c->f1CF4 + 0x16)) {
+        n = *(s16 *)((char *)c->f1CF4 + 0x16);
+    }
+    if (!(n < c->fBA4)) {
+        n = c->fBA4;
+    }
+    return n;
+}
+#endif
+// differs: 43 of 69 differ: the original tests the loop at the bottom with the setup block (sll 20*n, li 7) placed after the clamp, and the 'return fBA4' exits go to a separate epilogue; for/while variants and a goto done exit tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1D60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1E80);
 #if 0
@@ -3054,6 +3413,68 @@ void func_001E9960(void) {
 void func_001E9970(void) {
     func_00236640();
 }
+#if 0
+extern s32 gSoundState;
+extern void amCdFs_ReleaseCache(void *);
+extern void func_00143B50(s32, s32);
+extern void amSound_LoadStream(void *);
+extern void amSound_LoadBank(void *);
+
+typedef struct SndSeq {
+    s32 state;
+    s32 idx;
+    s32 cnt;
+} SndSeq;
+
+void func_001E9980(Fighter *c) {
+    char *s2;
+    SndSeq *q;
+    s32 i;
+
+    s2 = (char *)gBattle + 0x290;
+    q = (SndSeq *)((char *)c + 0x30);
+    if (gSoundState == 0) {
+        if (q->idx >= q->cnt) {
+            if (0 < q->cnt) {
+                i = 0;
+                do {
+                    if (*(s32 *)(s2 + 0x30) != 0) {
+                        amCdFs_ReleaseCache(*(void **)(s2 + 0x30));
+                        *(s32 *)(s2 + 0x30) = 0;
+                    }
+                    func_00143B50(*(s32 *)(s2 + 0x20) + 9, *(s32 *)s2);
+                    s2 += 0xCC;
+                    i++;
+                } while (i < q->cnt);
+            }
+            amTask_Kill(c);
+            D_004705D4 = 0;
+        } else {
+            switch (q->state) {
+            case 0:
+                if (*(s32 *)(s2 + q->idx * 204 + 0x30) == 0) {
+                    q->idx = q->idx + 1;
+                } else {
+                    q->state = 1;
+                    amSound_LoadStream(s2 + q->idx * 204);
+                    q->state = 2;
+                }
+                break;
+            case 1:
+                amSound_LoadStream(s2 + q->idx * 204);
+                q->state = 2;
+                break;
+            case 2:
+                amSound_LoadBank(s2 + q->idx * 204 + 0x20);
+                q->state = 0;
+                q->idx = q->idx + 1;
+                break;
+            }
+        }
+    }
+}
+#endif
+// differs: 47 of 103 differ: the state chain is right (beq 2, beq 1, beqz 0) but the original lays the state-2 block (bank load) out at the very end and the state-0 block before the state-1 one; switch, goto-label and if-chain shapes tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E9980);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E9B00);
 void func_001E9D10(void) {
