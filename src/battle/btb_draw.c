@@ -49,6 +49,15 @@ struct BtbHolder {
     BtbItem *item;
 };
 
+extern void func_001B0EC0(void);
+extern void func_002C3E40(void);
+extern void func_0026E3B0(void);
+extern void func_00304E70(void);
+extern void func_00269730(void);
+extern void func_00307430(void);
+extern void PracMode_Exit(void);
+extern void ArenaMode_Exit(void);
+
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
@@ -160,7 +169,55 @@ void func_001EADD0(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EAE70);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EB5B0(Task *);
+extern void func_001EADD0(Task *);
+extern void func_001EE6D0(Task *);
+
+void func_001EAE70(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x18:
+                TASK_SETFUNC(t, func_001EB5B0);
+                break;
+            case 0x1B:
+                TASK_SETFUNC(t, func_001EADD0);
+                break;
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            }
+            func_00307430();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -236,7 +293,55 @@ void func_001EB070(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB130);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EB5B0(Task *);
+extern void func_001EB070(Task *);
+extern void func_001EE6D0(Task *);
+
+void func_001EB130(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x18:
+                TASK_SETFUNC(t, func_001EB5B0);
+                break;
+            case 0x1A:
+                TASK_SETFUNC(t, func_001EB070);
+                break;
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            }
+            func_001B0EC0();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -383,7 +488,51 @@ void func_001EB5B0(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB670);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EB5B0(Task *);
+extern void func_001EE6D0(Task *);
+
+void func_001EB670(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x18:
+                TASK_SETFUNC(t, func_001EB5B0);
+                break;
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            }
+            ArenaMode_Exit();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -455,7 +604,47 @@ void func_001EB830(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB8E0);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EE6D0(Task *);
+
+void func_001EB8E0(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            }
+            func_0026E3B0();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -518,7 +707,43 @@ void func_001EBA50(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBAF0);
+extern s8 D_004B4BB0[];
+extern s8 D_004B4B41[];
+extern s8 D_004B4B40[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EE6D0(Task *);
+extern void func_002E0E50(void);
+
+void func_001EBAF0(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004B4B41[0] = 0;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            TASK_SETFUNC(t, func_001EE6D0);
+            func_002E0E50();
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBB90);
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -543,7 +768,52 @@ void func_001EBC20(Task *t) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBCA0);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EC340(Task *);
+extern void func_001EE6D0(Task *);
+extern void func_001B0EC0(void);
+
+void func_001EBCA0(Task *t) {
+    s32 v;
+    s32 a1;
+    s32 a0;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x13:
+                TASK_SETFUNC(t, func_001EC340);
+                break;
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            }
+            func_001B0EC0();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -610,7 +880,51 @@ void func_001EBE50(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EBEF0);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EC340(Task *);
+extern void func_001EE6D0(Task *);
+
+void func_001EBEF0(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x13:
+                TASK_SETFUNC(t, func_001EC340);
+                break;
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            }
+            func_001B0EC0();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -677,7 +991,55 @@ void func_001EC0A0(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC140);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EE6D0(Task *);
+extern void func_001EC0A0(Task *);
+extern void func_001EBE50(Task *);
+
+void func_001EC140(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            case 0x14:
+                TASK_SETFUNC(t, func_001EC0A0);
+                break;
+            case 0x15:
+                TASK_SETFUNC(t, func_001EBE50);
+                break;
+            }
+            PracMode_Exit();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -760,7 +1122,51 @@ void func_001EC340(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC430);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EC840(Task *);
+extern void func_001EE6D0(Task *);
+
+void func_001EC430(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x11:
+                TASK_SETFUNC(t, func_001EC840);
+                break;
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            }
+            func_001B0EC0();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -827,7 +1233,51 @@ void func_001EC5E0(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC680);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EC5E0(Task *);
+extern void func_001EE6D0(Task *);
+
+void func_001EC680(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x12:
+                TASK_SETFUNC(t, func_001EC5E0);
+                break;
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            }
+            func_00304E70();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -899,7 +1349,51 @@ void func_001EC840(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EC8F0);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EC840(Task *);
+extern void func_001EE6D0(Task *);
+
+void func_001EC8F0(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            case 0x11:
+                TASK_SETFUNC(t, func_001EC840);
+                break;
+            }
+            func_002C3E40();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -972,7 +1466,51 @@ void func_001ECAB0(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ECB60);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001ECF70(Task *);
+extern void func_001EE6D0(Task *);
+
+void func_001ECB60(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0xE:
+                TASK_SETFUNC(t, func_001ECF70);
+                break;
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            }
+            func_001B0EC0();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -1039,7 +1577,51 @@ void func_001ECD10(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ECDB0);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001ECD10(Task *);
+extern void func_001EE6D0(Task *);
+
+void func_001ECDB0(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            case 0xF:
+                TASK_SETFUNC(t, func_001ECD10);
+                break;
+            }
+            func_00269730();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
