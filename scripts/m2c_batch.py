@@ -87,25 +87,8 @@ def apply_matches(rows):
     for r in sorted(rows, key=lambda r: (r["file"], r["name"])):
         if r["status"] != "match" or "M2C_" in r["c"] or r.get("relaxed"):
             continue  # a draft that needs the macro header or relaxed pointer checks is not plain project C
-        path = ROOT / r["file"]
-        src = path.read_text()
-        info = m2c_draft.asm_info(r["name"], src)
-        if not info:
-            continue
-        m = info[3]
-        # the draft text holds the declarations it needs, then the function (the line with its name)
-        lines = r["c"].splitlines(True)
-        k = next(i for i, l in enumerate(lines) if re.match(rf"^\S.*\b{re.escape(r['name'])}\(", l) and not l.rstrip().endswith(";"))
-        add = [l.rstrip("\n") for l in lines[:k]]
-        ctext = "".join(lines[k:])
-        # the parked `#if 0` attempt (and its note) just above the INCLUDE_ASM line goes away with the match
-        head = src[:m.start()]
-        park = re.search(r"#if 0\n(?:(?!#if 0).)*?#endif\n(?://[^\n]*\n)*\Z", head, re.S)
-        if park:
-            src = head[:park.start()] + src[m.start():]
-            m = m2c_draft.asm_info(r["name"], src)[3]
-        new = m2c_draft.splice(src, m, ctext, add, r["name"], macros=False)
-        path.write_text(new)
+        add, ctext = m2c_draft.split_draft(r["c"], r["name"])
+        m2c_draft.apply_function(ROOT / r["file"], r["name"], add, ctext)
         changed.add(r["file"])
     return sorted(changed)
 

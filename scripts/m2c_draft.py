@@ -320,6 +320,34 @@ def splice(src, m, ctext, add, name, macros=True):
     return head + "".join(a + "\n" for a in add) + ctext + tail
 
 
+def split_draft(text, name):
+    """(declaration lines, function text) of a draft as draft()['c'] returns it."""
+    lines = text.splitlines(True)
+    k = next(i for i, l in enumerate(lines) if re.match(rf"^\S.*\b{re.escape(name)}\(", l) and not l.rstrip().endswith(";"))
+    return [l.rstrip("\n") for l in lines[:k]], "".join(lines[k:])
+
+
+DECL_SYM_RE = re.compile(r"\b(\w+)\s*(?:\[[^\]]*\])?\s*(?:\(.*)?;\s*$")
+
+
+def apply_function(path, name, add, ctext):
+    """Puts the function in place of the INCLUDE_ASM line of `name` in the C file, and removes the parked `#if 0`
+    attempt and its note just above it. Returns the old text of the file (to undo with path.write_text)."""
+    path = Path(path)
+    src = path.read_text()
+    old = src
+    m = asm_info(name, src)[3]
+    head = src[:m.start()]
+    park = re.search(r"#if 0\n(?:(?!#if 0).)*?#endif\n(?://[^\n]*\n)*\Z", head, re.S)
+    if park:
+        src = head[:park.start()] + src[m.start():]
+        m = asm_info(name, src)[3]
+    rest = src[:m.start()] + src[m.end():]
+    add = [a for a in add if not (DECL_SYM_RE.search(a) and known(rest, DECL_SYM_RE.search(a).group(1)))]
+    path.write_text(splice(src, m, ctext, add, name, macros=False))
+    return old
+
+
 C_TYPES = {"unsigned char *": "u8 *", "signed char *": "s8 *", "char *": "char *", "int": "s32", "unsigned int": "u32",
            "short": "s16", "unsigned short": "u16", "int *": "s32 *", "unsigned int *": "u32 *", "short *": "s16 *",
            "unsigned short *": "u16 *", "void *": "void *", "float": "f32", "long": "s64", "unsigned long": "u64",
