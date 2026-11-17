@@ -1662,29 +1662,33 @@ void func_00254100(u8 *a0) {
     SkillFile_Release(*(u8 **)(a0 + 0x8));
     amHeap_Free(a0);
 }
-// GIVEN UP: the loop is rotated in the original (test at the bottom, the store on the fall-through) with n, base and p in $a2, $a1, $a3 (4 forms tried)
-#if 0
-extern void func_00253490(s32 *);
 void func_002541D0(s32 *a0) {
     s32 i;
     s32 *o;
     s32 *e;
+    s32 *b;
+    s32 n;
 
-    func_00253490((s32 *)a0[3]);
-    func_00253490((s32 *)a0[2]);
+    func_00253490((u8 *)a0[3]);
+    func_00253490((u8 *)a0[2]);
     o = (s32 *)((s32 *)a0[2])[2];
-    if (o != 0 && o[1] > 0) {
-        e = (s32 *)o[2];
-        for (i = 0; i < o[1]; i++, e += 4) {
-            if (e[0] == -1) {
-                a0[4] = (s32)((u8 *)o[2] + (i << 4));
-                break;
-            }
+    if (o != 0) {
+        n = o[1];
+        i = 0;
+        if (0 < n) {
+            b = (s32 *)o[2];
+            e = b;
+            do {
+                if (e[0] == -1) {
+                    a0[4] = (s32)((u8 *)b + (i << 4));
+                    break;
+                }
+                i++;
+                e += 4;
+            } while (i < n);
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002541D0);
 extern char D_0046AE28[];
 extern s32 D_00452680[];
 extern s32 D_00452684[];
@@ -1770,6 +1774,42 @@ void func_002543B0(u8 *a0) {
         }
         v = func_0021C360(*(s16 *)(s4 + 0x20));
         if ((v & 1) != 0) {
+            a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA2;
+        } else {
+            a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA1;
+        }
+        r = func_00259CC0(*(s32 **)(s3 + 0x4), a1);
+        if (r != NULL) {
+            func_0022C7D0((s32)r, (f32)s2, 0);
+        }
+        s1++;
+        s0 += 2;
+    } while (s1 < 2);
+}
+#endif
+// differs: 1 of 58 (round 5): the loop pointer is copied from a0 (`move s0,a0`), the original copies it from the
+// saved s4 (`move s0,s4`); `s0 = s4 + 0` and the statement order tried. Declaration order s4,s3,s2,s1,s0 matches the rest.
+#if 0
+void func_002543B0(u8 *a0) {
+    u8 *s4;
+    u8 *s3;
+    s32 s2;
+    s32 s1;
+    u8 *s0;
+    s32 v;
+    s32 a1;
+    s32 *r;
+
+    s4 = a0;
+    s1 = 0;
+    s3 = *(u8 **)s4 + 0x30;
+    s0 = s4 + 0;
+    do {
+        s2 = func_0021C460(*(s16 *)(s0 + 0x20));
+        if (s2 == -1) {
+            s2 = 2;
+        }
+        if ((func_0021C360(*(s16 *)(s4 + 0x20)) & 1) != 0) {
             a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA2;
         } else {
             a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA1;
