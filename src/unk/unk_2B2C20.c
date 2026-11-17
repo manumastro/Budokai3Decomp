@@ -157,6 +157,33 @@ s32 func_002B4C80(s32 a) {
     }
     return 9;
 }
+/* differs: 13 of 51 (the `if (0 < n)` join goes one instruction further in ours; the index, pointer and inner counter take other registers, 3 declaration orders tried) */
+#if 0
+void func_002B4CC0(s32 a0, void *dst) {
+    s32 tmp[8];
+    s32 j;
+    s32 *a1;
+    u8 *s0;
+    s32 i;
+    s32 k;
+
+    k = a0 >> 1;
+    s0 = (u8 *)gSklEdit + k * 456 + 0x48;
+    func_00125740(tmp, s0 + 0xB8, 0x20);
+    if (0 < tmp[0]) {
+        a1 = tmp;
+        for (i = 0; i < tmp[0]; i++) {
+            for (j = 0; j < 7; j++) {
+                if (*(s32 *)(s0 + 0x2C + j * 4) == a1[1]) {
+                    a1[1] += 0x1000;
+                }
+            }
+            a1++;
+        }
+    }
+    func_00125740(dst, tmp, 0x20);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4CC0);
 extern void func_002B3C40(void);
 
