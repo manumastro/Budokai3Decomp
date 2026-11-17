@@ -579,13 +579,13 @@ extern void func_001B0D60(void);
 void func_001ADB80(void) {
     BattleWork *bw;
     s32 v;
-    BW_FIELD(D_00470570, f32, 0x8910) = BW_FIELD(D_00470570, f32, 0x890C);
-    BW_FIELD(D_00470570, f32, 0x890C) = BW_FIELD(D_00470570, f32, 0x88F0) + BW_FIELD(D_00470570, f32, 0x890C);
-    if (BW_FIELD(D_00470570, f32, 0x890C) > 1e8f) {
-        BW_FIELD(D_00470570, f32, 0x8910) = 0.0f;
-        BW_FIELD(D_00470570, f32, 0x890C) = BW_FIELD(D_00470570, f32, 0x88F0);
+    BW_FIELD(gBattle, f32, 0x8910) = BW_FIELD(gBattle, f32, 0x890C);
+    BW_FIELD(gBattle, f32, 0x890C) = BW_FIELD(gBattle, f32, 0x88F0) + BW_FIELD(gBattle, f32, 0x890C);
+    if (BW_FIELD(gBattle, f32, 0x890C) > 1e8f) {
+        BW_FIELD(gBattle, f32, 0x8910) = 0.0f;
+        BW_FIELD(gBattle, f32, 0x890C) = BW_FIELD(gBattle, f32, 0x88F0);
     }
-    bw = D_00470570;
+    bw = gBattle;
     if (BW_FIELD(bw, f32, 0x890C) < 180.0f) {
         return;
     }
@@ -706,7 +706,7 @@ void func_001AE720(void) {
     BattleWork *bw;
     AE720Loc loc;
     s32 i;
-    bw = D_00470570;
+    bw = gBattle;
     if (BW_FIELD(bw, f32, 0x890C) > 0.0f) {
         loc.flags = 0;
         if (0 < ((BattleView2 *)bw)->count) {
@@ -719,11 +719,11 @@ void func_001AE720(void) {
         }
         func_001C8020(0, &loc);
     }
-    BW_FIELD(D_00470570, f32, 0x8910) = BW_FIELD(D_00470570, f32, 0x890C);
-    BW_FIELD(D_00470570, f32, 0x890C) = BW_FIELD(D_00470570, f32, 0x88F0) + BW_FIELD(D_00470570, f32, 0x890C);
-    if (BW_FIELD(D_00470570, f32, 0x890C) > 1e8f) {
-        BW_FIELD(D_00470570, f32, 0x8910) = 0.0f;
-        BW_FIELD(D_00470570, f32, 0x890C) = BW_FIELD(D_00470570, f32, 0x88F0);
+    BW_FIELD(gBattle, f32, 0x8910) = BW_FIELD(gBattle, f32, 0x890C);
+    BW_FIELD(gBattle, f32, 0x890C) = BW_FIELD(gBattle, f32, 0x88F0) + BW_FIELD(gBattle, f32, 0x890C);
+    if (BW_FIELD(gBattle, f32, 0x890C) > 1e8f) {
+        BW_FIELD(gBattle, f32, 0x8910) = 0.0f;
+        BW_FIELD(gBattle, f32, 0x890C) = BW_FIELD(gBattle, f32, 0x88F0);
     }
     if (BW_FIELD(bw, f32, 0x890C) >= 120.0f) {
         D_004682F0[0]();
@@ -1080,7 +1080,7 @@ extern void func_00209E50(void *);
 void func_001AFDF0(void) {
     BattleWork *bw;
     f32 x;
-    bw = D_00470570;
+    bw = gBattle;
     func_0013AFA0(0);
     func_001A87A0();
     amVram_Apply(0);
@@ -1125,7 +1125,7 @@ void func_001AFFA0(void) {
     s32 n;
     f32 m;
     u8 *fp;
-    bw = D_00470570;
+    bw = gBattle;
     if (BW_FIELD(bw, s32, 0x88EC) == 0) {
         BW_FIELD(bw, f32, 0x8914) = BW_FIELD(bw, f32, 0x8914) + BW_FIELD(bw, f32, 0x88F0);
         if (BW_FIELD(bw, s8, 0x8AB2) == 0) {
