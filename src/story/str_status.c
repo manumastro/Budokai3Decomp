@@ -585,7 +585,7 @@ void StrStatus_TaskComment(s32 *a0) {
 }
 
 #if 0
-// func_002C03E0: all but the last two registers agree; the function address and the constant 2 swap registers; four variants tried
+// func_002C03E0: 7 of 35 instructions differ: the function address and the constant 2 swap registers (lui/li); six variants tried
 void func_002C03E0(s32 *a0) {
     s32 *s0 = a0 + 0x30 / 4;
     s32 *p;
@@ -597,9 +597,9 @@ void func_002C03E0(s32 *a0) {
         amCdFs_Close(s0[0], 0);
         s0[0] = 0;
         amFile_Load(s0[1]);
+        *(s16 *)((char *)s0 + 8) = 2;
         {
             void *f = StrStatus_TaskComment;
-            *(s16 *)((char *)s0 + 8) = 2;
             a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
         }
     }
