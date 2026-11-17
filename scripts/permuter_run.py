@@ -139,7 +139,7 @@ def main():
     if args.from_csv:
         # m2c drafts that compile but differ by a few instructions: the permuter starts from the draft
         for row in csv.DictReader(open(args.from_csv)):
-            cf = Path(args.drafts) / f"{row[function]}.{row[status]}.c"
+            cf = Path(args.drafts) / f"{row['function']}.{row['status']}.c"
             if row["status"] in ("diff", "size") and 0 < int(row["diff"]) <= args.max_diff and cf.exists():
                 jobs.append((row["function"], row["file"], str(cf)))
     if args.max:

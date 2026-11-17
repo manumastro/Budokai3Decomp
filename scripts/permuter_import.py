@@ -116,17 +116,21 @@ def main():
         if not found:
             raise SystemExit(f"no asm for {args.name}")
         asm = found[0]
-    # the attempt
+    # the attempt: the parked `#if 0` block switched on (so the file's macros and typedefs apply to it), or the given
+    # C put where the INCLUDE_ASM line is; every other function of the file is dropped below
+    inc = re.search(rf'^INCLUDE_ASM\(\s*"[^"]+"\s*,\s*{re.escape(args.name)}\s*\);', src, re.M)
     if args.c:
-        attempt = args.c.read_text()
-        scratch_src = src
+        if not inc:
+            raise SystemExit("no INCLUDE_ASM line for the function")
+        scratch_src = src[:inc.start()] + args.c.read_text() + "\n" + src[inc.end():]
     elif args.if0:
-        attempt = find_if0(src, args.name)
-        if not attempt:
+        before = src[:inc.start()].rstrip("\n") if inc else ""
+        end = before.rfind("#endif")
+        start = before.rfind("#if 0", 0, end)
+        if not inc or end < 0 or start < 0 or before[end:].strip() != "#endif":
             raise SystemExit("no #if 0 block above the INCLUDE_ASM line")
-        scratch_src = src
+        scratch_src = src[:start] + "#if 1" + src[start + len("#if 0"):]
     else:
-        attempt = None
         scratch_src = src
     # context: the file with every function definition and INCLUDE_ASM dropped
     tmp = out / "_ctx.c"
@@ -141,15 +145,6 @@ def main():
                 mine = c
             continue
         keep.append(c)
-    if attempt is not None:
-        tmp.write_text('#include "common.h"\n' + attempt)
-        attempt_pp = "\n".join(c for c in chunks(preprocess(tmp)))
-        tmp.unlink()
-        att_chunks = chunks(attempt_pp)
-        fn = [c for c in att_chunks if is_function_def(c)]
-        decl = [c for c in att_chunks if not is_function_def(c) and c not in keep]
-        mine = "\n".join(fn)
-        keep += decl
     if not mine:
         raise SystemExit("no C function found for the attempt")
     # a prototype of the function itself in the context is harmless; drop duplicates of identical lines
