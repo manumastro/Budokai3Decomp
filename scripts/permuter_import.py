@@ -139,12 +139,20 @@ def main():
     tmp.unlink()
     pieces = chunks(ctx)
     keep, mine = [], None
+    protos = []
     for c in pieces:
         if is_function_def(c):
             if function_name(c) == args.name:
                 mine = c
+            else:
+                # the other functions of the file stay callable: a prototype from their header (when nothing declares them)
+                protos.append((function_name(c), c.split("{")[0].strip() + ";"))
             continue
         keep.append(c)
+    for fname, proto in protos:
+        if fname and fname != args.name and not any(re.search(r"\b%s\s*\(" % re.escape(fname), k) for k in keep) \
+                and "asm" not in proto.split("(")[0].split():
+            keep.append(proto)
     if not mine:
         raise SystemExit("no C function found for the attempt")
     # a prototype of the function itself in the context is harmless; drop duplicates of identical lines
