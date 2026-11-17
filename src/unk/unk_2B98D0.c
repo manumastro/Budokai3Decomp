@@ -6,9 +6,10 @@ typedef struct Ac98D {
     void *f1C;
 } Ac98D;
 
+void func_002BB650(Ac98D *s);
+
 extern s16 func_002F5480(void);
 extern void func_002F55E0(void);
-extern void func_002BB650(void);
 
 /* A 16-byte vector (one quadword). */
 typedef struct V16 {
@@ -311,7 +312,83 @@ void func_002BB5F0(Ac98D *s) {
         s->f1C = (func_002BB650 == NULL) ? NULL : (void *)func_002BB650;
     }
 }
+extern void OutputPass_Start(void *src, u16 prio);
+extern void Fade_SetRequest(s32, void *, s32);
+extern s8 D_004B4B41[];
+extern s8 D_004B4B63[];
+
+#if 0
+void func_002BB650(Ac98D *s) {
+    u8 blk[0x28];
+    s32 flags;
+    s32 idx;
+    void *fp;
+
+    if (D_004B4B41[0] == 6) {
+        if (*(s32 *)((u8 *)gStrStatus + 0x280) == 0) {
+            goto store;
+        }
+    }
+    idx = D_004B4B63[0];
+    flags = *(u16 *)(D_00492FCE + idx * 184);
+    if (flags & 1) {
+        s64 bits = 0x200LL;
+        if (*(s32 *)((u8 *)gStrStatus + 0x280) != 0) {
+            bits |= 0x0020000000000000LL;
+        } else {
+            bits |= 0x0010000000000000LL;
+        }
+        Help_Open(bits, (u8)(1 << idx));
+        goto store;
+    }
+    if (flags & 0x5000) {
+        SoundRpc_SetVolume(D_004E0614[0], 0, 0);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 5, 0);
+        }
+        Fade_SetRequest(0xA, func_002B9C10, 0);
+        s->f1C = 0;
+        goto store;
+    }
+    if (!(flags & 8)) {
+        if (*(s32 *)((u8 *)gStrStatus + 0x400) <= 0) {
+            goto store;
+        }
+    }
+    *(s32 *)((u8 *)gStrStatus + 0x400) = 0;
+    SoundRpc_SetVolume(D_004E0614[0], 0, 0);
+    if (D_004E0614[0] > 0.0f) {
+        SoundRpc_Send3(0, 0, 0, 0);
+    }
+    blk[1] = (u8)*(s32 *)((u8 *)gStrStatus + 0x288);
+    blk[2] = (u8)*(s32 *)((u8 *)gStrStatus + 0x298);
+    blk[3] = (u8)*(s32 *)((u8 *)gStrStatus + 0x29C);
+    blk[4] = (u8)*(s32 *)((u8 *)gStrStatus + 0x2A0);
+    blk[5] = (u8)*(s32 *)((u8 *)gStrStatus + 0x2A4);
+    blk[6] = (u8)*(s32 *)((u8 *)gStrStatus + 0x2A8);
+    blk[7] = (u8)*(s32 *)((u8 *)gStrStatus + 0x2AC);
+    blk[8] = (u8)*(s32 *)((u8 *)gStrStatus + 0x2B0);
+    blk[9] = (u8)*(s32 *)((u8 *)gStrStatus + 0x2B4);
+    *(u16 *)&blk[0xA] = (u16)*(s32 *)((u8 *)gStrStatus + 0x2DC);
+    *(u16 *)&blk[0xC] = (u16)*(s32 *)((u8 *)gStrStatus + 0x2E0);
+    *(u16 *)&blk[0xE] = (u16)*(s32 *)((u8 *)gStrStatus + 0x2E4);
+    *(u16 *)&blk[0x10] = (u16)*(s32 *)((u8 *)gStrStatus + 0x2E8);
+    *(u16 *)&blk[0x12] = (u16)*(s32 *)((u8 *)gStrStatus + 0x2EC);
+    *(u16 *)&blk[0x14] = (u16)*(s32 *)((u8 *)gStrStatus + 0x2F0);
+    *(u16 *)&blk[0x16] = (u16)*(s32 *)((u8 *)gStrStatus + 0x2F4);
+    OutputPass_Start(blk, 0xC000);
+store:
+    fp = (void *)func_002BB5F0;
+    if (fp == 0) {
+        fp = 0;
+    }
+    s->f1C = fp;
+}
+#endif
+// differs: 11 of 145 instructions (relocations aside): the final `s->f1C = fp` keeps
+// `move $v1,$zero` in the fallthrough of the bnez in the original; five spellings of the null test tried.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB650);
+
 extern V16 D_00455E50;
 extern s32 D_005116E8[];
 extern s32 D_0051144C[];
