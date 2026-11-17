@@ -501,6 +501,67 @@ void SeReady_Start(void) {
     *(s16 *)((char *)s0 + 0xC) = 0;
     D_004701D8 = 0;
 }
+extern s16 D_0046FC50[];
+extern s8 D_004DFB19[];
+extern s8 D_004B4B41;
+extern s8 D_004B4B59;
+extern char D_005C4150[];
+extern s32 func_00283BF0(void);
+extern void func_00283C20(void);
+extern void SklSheet_SetIndex(s32);
+extern void Scene_Request(s32, s32);
+extern void Save_Request(s32, s32, s32);
+extern s32 Save_GetState(void);
+extern void Save_Exit(void);
+extern void func_002E8F90(void *, s32, s32, s32);
+extern void Scene_MarkDone(void);
+#if 0
+// func_00310640: the beq chain 4,3,2,1 then `beqz st` is matched by goto labels, but the original's `beqz st,c0; b end` (bodies after the chain) comes out as `bnez st,end` with the body inline; a switch orders the chain 0..4 instead; 0x16C vs 0x180 bytes
+void func_00310640(Task *t) {
+    char *a0 = (char *)t;
+    s16 *s0 = (s16 *)(a0 + 0x30);
+    s16 st = *(s16 *)(a0 + 0x32);
+    if (st == 4) goto c4;
+    if (st == 3) goto c3;
+    if (st == 2) goto c2;
+    if (st == 1) goto c1;
+    if (st == 0) goto c0;
+    goto end;
+c0:
+    if (s0[0] < 0) {
+        s0[1] = 2;
+    } else {
+        u8 v = (u8)D_004DFB19[D_0046FC50[s0[0]]];
+        SklSheet_SetIndex(v == 0);
+        s0[1] = s0[1] + 1;
+    }
+    goto end;
+c1:
+    if (func_00283BF0() == 8) {
+        func_00283C20();
+        s0[1] = s0[1] + 1;
+    }
+    goto end;
+c2:
+    Scene_Request(0x18, 0);
+    Save_Request(6, -1, 0);
+    s0[1] = s0[1] + 1;
+    goto end;
+c3:
+    if (Save_GetState() < 3) {
+        goto end;
+    }
+    Save_Exit();
+    s0[1] = s0[1] + 1;
+    goto end;
+c4:
+    func_002E8F90(D_005C4150, D_004B4B41, D_004B4B59, 0);
+    Scene_MarkDone();
+    amTask_Kill(t);
+end:
+    return;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310640);
 void func_003107C0(void) {
 }

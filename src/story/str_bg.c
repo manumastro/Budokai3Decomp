@@ -22,6 +22,71 @@ void func_0028E5D0(s32 *p) {
         p[0x1C / 4] = v;
     }
 }
+#if 0
+// func_0028E640: 10 of 83 instructions differ: the tail pointer is in a2 here and a1 in the original, and the object address is folded into 0(a1) on the second load; 5 forms of the reload tried
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_0022C060(s32, f32);
+extern s32 func_0022BF80(s32);
+extern void func_0022D0E0(s32, s32);
+extern s32 func_0022D860(s32, f32);
+extern s32 func_0022D670(s32, f32);
+void func_0028E640(s32 *a0) {
+    char *s1 = (char *)a0 + 0x30;
+    s32 s0;
+    s32 *p0 = (s32 *)a0[0x3C / 4];
+    s0 = p0[0];
+    {
+        s32 w = a0[0x38 / 4];
+        s32 v = a0[0x34 / 4];
+        D_00470704 = v;
+        D_0047070C = w;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, w);
+    }
+    D_00470238 = 0;
+    for (;;) {
+        func_0022C060(s0, 1.0f);
+        if (func_0022BF80(s0) != 0xFF) {
+            break;
+        }
+        if (*(s16 *)(s1 + 2) == -1) {
+            break;
+        }
+        func_0022D0E0(s0, 1);
+        {
+            s16 idx = *(s16 *)(s1 + 2);
+            if (idx & 0x8000) {
+                s32 k = idx & 0x7FFF;
+                s32 *t = *(s32 **)(s1 + 0x18);
+                s0 = func_0022D860(((s32 *)t[0x14 / 4])[k], 0.0f);
+            } else {
+                s32 *t = *(s32 **)(s1 + 0x18);
+                s0 = func_0022D670(((s32 *)t[0x1C / 4])[idx], 0.0f);
+            }
+        }
+        *(s32 *)*(s32 **)(s1 + 0xC) = s0;
+        *(s16 *)(s1 + 2) = -1;
+    }
+    {
+        s32 *p = *(s32 **)(s1 + 0x10);
+        if (p != 0) {
+            char *obj = *(char **)((char *)s0 + 0x30);
+            *(s16 *)(obj + 0x18) = (s16)p[0];
+            if (!(*(u16 *)s1 & 2)) {
+                obj = *(char **)((char *)s0 + 0x30);
+                *(f32 *)(obj + 0x40) = *(f32 *)((char *)p + 0x10);
+                *(f32 *)(obj + 0x44) = *(f32 *)((char *)p + 0x14);
+                *(f32 *)(obj + 0x48) = *(f32 *)((char *)p + 0x18);
+                *(f32 *)(obj + 0x4C) = *(f32 *)((char *)p + 0x1C);
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E640);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E790);
 extern s32 amGs_SetReg32(s32, s32);
