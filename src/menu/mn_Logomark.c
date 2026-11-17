@@ -446,7 +446,7 @@ extern void amAdx_Stop(s32);
 extern void func_00264140(s32, s32);
 extern void Logomark_Begin();
 
-void func_002E8340(Task *a0) {
+void Logomark_TaskSwitch(Task *a0) {
     u8 *o;
     u8 *p;
     u8 *c;
@@ -501,16 +501,16 @@ void Logomark_Free(void) {
     amHeap_Free(g);
     D_0047094C = 0;
 }
-extern void func_002E8340(Task *);
+extern void Logomark_TaskSwitch(Task *);
 extern char D_0046F570[];
 extern void func_001484A0(s32);
 extern void Scene_SetReady(void);
 extern void memset(void *, s32, s32);
 
-/* Creates the logo mark's task (func_002E8340) and clears its 0x14-byte work area. */
+/* Creates the logo mark's task (Logomark_TaskSwitch) and clears its 0x14-byte work area. */
 void Logomark_Start(void) {
     LogomarkGlobal *g = (LogomarkGlobal *)D_0047094C;
-    Task *t = amTask_Create(func_002E8340, 0, 0x1001, 8, 2, D_0046F570);
+    Task *t = amTask_Create(Logomark_TaskSwitch, 0, 0x1001, 8, 2, D_0046F570);
     g->task = t;
     memset(&t->data, 0, 0x14);
     func_001484A0(0);

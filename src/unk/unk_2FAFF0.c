@@ -71,9 +71,12 @@ typedef struct SaveWork2FAFF0 {
     char pad34[0xC];
     char *f40;
     struct Pos3_2FAFF0 *f44;
-    char pad48[0x8];
+    char pad48[0x4];
+    s32 f4C;
     f32 f50;
-    char pad54[0xB8];
+    char pad54[0x4];
+    s32 f58;
+    char pad5C[0xB0];
     Cnt2FAFF0 f10C;
     char pad11C[0x178];
     s32 f294;
@@ -159,6 +162,35 @@ void func_002FBD90(Task2FAFF0 *t) {
         t->f1C = (func_002FBAE0 == 0) ? 0 : func_002FBAE0;
     }
 }
+#if 0
+// differs: compiled 0x114 bytes, original 0x120; the original keeps the task in s2 and t+0x30 in s1, the compiler folds t+0x30 into t (a struct view or a char pointer did not change it)
+extern u16 D_00492FCE[];
+extern u16 D_00493086[];
+extern s32 D_004DFAE8[];
+extern void Zenie_SetTarget(s32);
+extern void Zenie_SetStep(s32);
+void func_002FBE20(Task2FAFF0 *t) {
+    SaveWork2FAFF0 *w;
+    Anim2FAFF0 *a;
+
+    *(s32 *)&t->f38 = *(s32 *)&t->f38 + 1;
+    w = gTourMap;
+    w->f294 = w->f294 + 1;
+    a = (Anim2FAFF0 *)(gTourMap->f40 + 0x30);
+    Zenie_Update();
+    func_00208F70(a->f8);
+    if (((D_00492FCE[0] | D_00493086[0]) & 0x4008) == 0) {
+        if ((f32)*(s32 *)&t->f38 * gFrameDelta <= 120.0f) {
+            return;
+        }
+    }
+    a->f0 = a->f0 + 1;
+    *(s32 *)&t->f38 = 0;
+    Zenie_SetTarget(D_004DFAE8[0] + gTourMap->f58);
+    Zenie_SetStep(gTourMap->f58 / 100);
+    t->f1C = (func_002FBD90 == 0) ? 0 : func_002FBD90;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBE20);
 void func_002FBF40(Task2FAFF0 *t) {
     SaveWork2FAFF0 *w = gTourMap;
@@ -174,7 +206,46 @@ void func_002FBF40(Task2FAFF0 *t) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBFD0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC510);
+extern void Zenie_SetValue(s32, s32);
+extern s32 D_004DFAE8[];
+extern void Zenie_Open(s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
+extern void amAdx_PlayAfs(s32, s32, s32);
+extern u8 D_004E0618[];
+extern void func_002FB170(Task2FAFF0 *);
+extern void func_002FB4C0(Task2FAFF0 *);
+extern void func_002FBFD0(Task2FAFF0 *);
+void func_002FC510(Task2FAFF0 *t) {
+    Task2FAFF0 *q = (Task2FAFF0 *)gTourMap->f40;
+    s32 *p;
+
+    q->f30 = q->f30 + 1;
+    p = &q->f30;
+    if ((f32)q->f30 * gFrameDelta <= 120.0f) {
+        return;
+    }
+    Zenie_SetValue(D_004DFAE8[0], D_004DFAE8[0]);
+    Zenie_Open(0);
+    *p = 0;
+    t->f1C = (func_002FBFD0 == 0) ? 0 : func_002FBFD0;
+    if (gTourMap->f4C != 0) {
+        q = (Task2FAFF0 *)gTourMap->f40;
+        q->f1C = (func_002FB4C0 == 0) ? 0 : func_002FB4C0;
+    } else {
+        q = (Task2FAFF0 *)gTourMap->f40;
+        q->f1C = (func_002FB170 == 0) ? 0 : func_002FB170;
+    }
+    if (gTourMap->f4C == 2) {
+        amAdx_SetVolume(0, *(f32 *)D_004E0618);
+        amAdx_Pause(0, 0);
+        amAdx_PlayAfs(0, 0x211B2, 0);
+    } else {
+        amAdx_SetVolume(0, *(f32 *)D_004E0618);
+        amAdx_Pause(0, 0);
+        amAdx_PlayAfs(0, 0x211B1, 0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC660);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC800);
 #if 0
@@ -213,11 +284,94 @@ void func_002FC9F0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC9F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCAF0);
+#if 0
+// differs: 52 of 76 (same size); the loops are laid out differently and the registers differ; 30 declaration orders tried
+extern s8 D_005D0080;
+extern s8 D_005D0081;
+extern s8 D_005D0082;
+s32 func_002FCF60(void) {
+    s32 n = D_005D0082;
+    s32 t3 = 1 << n;
+    s32 t2 = 1;
+    s32 t0 = 0;
+    s32 i;
+    char *p;
+    char *t1 = 0;
+
+    if (t3 > 0) {
+        p = (char *)gTourMap;
+        for (i = 0; i < t3; i++, p += 0x14) {
+            if (*(s16 *)(p + 0x2F6) >= 0) {
+                if (*(s8 *)(p + 0x2F0) == 1 || *(s8 *)(p + 0x2F0) == 2) {
+                    t2 = 0;
+                    break;
+                }
+            }
+        }
+    }
+    if (t3 > 0) {
+        p = (char *)gTourMap;
+        for (i = 0; i < t3; i++, p += 0x14) {
+            if (*(s16 *)(p + 0x2F6) >= 0) {
+                if (t0 < *(s8 *)(p + 0x2F3)) {
+                    t0 = *(s8 *)(p + 0x2F3);
+                    t1 = p + 0x2EC;
+                }
+            }
+        }
+    }
+    if (t2 != 0) {
+        if (t0 == n - 1) {
+            *(char **)((char *)gTourMap + 0x70) = t1;
+            return 1;
+        }
+        return 0;
+    }
+    if (t0 == n) {
+        *(char **)((char *)gTourMap + 0x70) = t1;
+        return 2;
+    }
+    if (D_005D0080 == -1 && D_005D0081 == -1) {
+        return 4;
+    }
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCF60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD090);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD560);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD7E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD9F0);
+extern u32 func_0012EAE0(s32);
+extern s16 D_0046B5B0[];
+s16 func_002FD9F0(u64 mask) {
+    u64 bits = mask;
+    s32 cnt = 0;
+    s32 r;
+    s32 k;
+
+    if (mask != 0) {
+        do {
+            if (mask & 1) {
+                cnt++;
+            }
+            mask >>= 1;
+        } while (mask != 0);
+    }
+    if (cnt == 0) {
+        return 0;
+    }
+    r = (s32)(func_0012EAE0(32) % (u32)cnt);
+    k = 0;
+    if (0 <= r) {
+        do {
+            if (!(bits & ((u64)1 << k))) {
+                r++;
+            }
+            k++;
+        } while (r >= k);
+    }
+    return D_0046B5B0[r];
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FDAC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FDF70);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FE1B0);
@@ -375,6 +529,51 @@ void func_003009E0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003009E0);
+#if 0
+// differs: 41 of 84 (VU0 operands and the stack slots: the original takes the local vectors in other registers; 6 declaration orders and 6 operand orders tried)
+typedef struct Q16_2FAFF0 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Q16_2FAFF0;
+extern s32 D_00458B80[];
+extern s32 D_00458B90[];
+extern f32 func_00146E90(Vec4_2FAFF0 *);
+extern void func_00146ED0(Vec4_2FAFF0 *, Vec4_2FAFF0 *);
+#define F32AT(b, o) (*(f32 *)((char *)(b) + (o)))
+void func_00300B60(Task2FAFF0 *t) {
+    Vec4_2FAFF0 vA;
+    Vec4_2FAFF0 vB;
+    Vec4_2FAFF0 vC;
+    char *s0;
+    s32 i;
+
+    s0 = (char *)t + 0x30;
+    *(Q16_2FAFF0 *)&vA = *(Q16_2FAFF0 *)D_00458B80;
+    vA.x = F32AT(s0, 0);
+    vA.y = F32AT(s0, 4);
+    vA.z = F32AT(s0, 8);
+    *(Q16_2FAFF0 *)&vB = *(Q16_2FAFF0 *)D_00458B90;
+    vB.x = F32AT(s0, 0xC);
+    vB.y = F32AT(s0, 0x10);
+    vB.z = F32AT(s0, 0x14);
+    asm volatile("lqc2 $vf1, 0(%0)
+	lqc2 $vf2, 0(%1)
+	vsub.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, 0(%2)" : : "r"(&vB), "r"(&vA), "r"(&vC) : "memory");
+    if (func_00146E90(&vC) <= gTourMap->f50 * F32AT(s0, 0x18)) {
+        F32AT(s0, 0) = F32AT(s0, 0xC);
+        F32AT(s0, 4) = F32AT(s0, 0x10);
+        F32AT(s0, 8) = F32AT(s0, 0x14);
+    } else {
+        func_00146ED0(&vC, &vC);
+        F32AT(gTourMap->f44, 0x30) = F32AT(gTourMap->f44, 0x30) + vC.x;
+        F32AT(gTourMap->f44, 0x34) = F32AT(gTourMap->f44, 0x34) + vC.y;
+        F32AT(gTourMap->f44, 0x38) = F32AT(gTourMap->f44, 0x38) + vC.z;
+        for (i = 0; i < 4; i++) {
+            func_002FFD20(i);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300B60);
 void func_00300CA0(Task2FAFF0 *t) {
     Anim2FAFF0 *a;

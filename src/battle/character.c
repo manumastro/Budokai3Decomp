@@ -22,7 +22,7 @@ extern void srand(s32);
 extern void func_001E2510(Fighter *);
 extern void Sp_CallHandler(s32, void *);
 extern s32 func_001DF420(Fighter *, s32, s32);
-extern void func_001B05E0(s32, f32, f32);
+extern void Btl_UpdateLimitXY(s32, f32, f32);
 extern void func_001DA4C0(void);
 extern void func_001D8A50(Fighter *);
 extern void PlyScr_Start(Fighter *, s32, s32);
@@ -345,12 +345,12 @@ s32 func_001CB660(void *self, ScriptCtx *ctx) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB660);
 s32 func_001CB710(void) {
-    func_001B05E0(1, 0.0f, 0.0f);
+    Btl_UpdateLimitXY(1, 0.0f, 0.0f);
     return 1;
 }
 s32 func_001CB740(void *self, ScriptCtx *ctx) {
     f32 *a = (f32 *)ctx->args;
-    func_001B05E0(1, a[1], a[0]);
+    Btl_UpdateLimitXY(1, a[1], a[0]);
     return 1;
 }
 s32 func_001CB770(void) {

@@ -311,7 +311,7 @@ void OutputPass_Clear(void) {
 extern void func_0022D0E0(void *, s32);
 extern void func_0022D4B0(void *, s32);
 
-void func_002F54C0(void) {
+void OutputPass_Release(void) {
     u8 *s0;
         u8 *base;
     s32 cnt;

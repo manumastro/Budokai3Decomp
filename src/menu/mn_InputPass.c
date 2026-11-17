@@ -401,7 +401,7 @@ extern void *gInputName;
 void InputPass_ClearName(void) {
     gInputName = 0;
 }
-void func_002F2500(void) {
+void InputPass_Release(void) {
     u8 *s0;
 
     s0 = (u8 *)gInputName;
@@ -472,7 +472,7 @@ void func_002F2600(u8 *task) {
         *(s32 *)(s3 + 0x18) = 0;
     }
 }
-void *func_002F26E0(void) {
+void *InputPass_Create(void) {
     u8 *s0;
     u8 *s1;
     s32 a0;
@@ -504,7 +504,7 @@ void *func_002F26E0(void) {
     } while (a0 < 0x24);
     return s0;
 }
-void func_002F27B0(void) {
+void InputPass_Acquire(void) {
     u8 *s0;
     void *v;
 
@@ -812,7 +812,7 @@ u8 InputPass_GetPhase(Task *t) {
     }
     return k;
 }
-void func_002F3FA0(u8 *task) {
+void InputPass_TaskFree(u8 *task) {
     u8 *s3;
     u8 *s2;
     s32 s1;

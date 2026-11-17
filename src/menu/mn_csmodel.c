@@ -97,7 +97,7 @@ void CsModel_Shift(Task *t, s16 a, s16 b) {
     w->fB6 = b;
     TASK_SET_FUNC(t, CsModel_CallIfSet);
 }
-void *func_002B7270(s16 a0, s16 a1, s16 a2) {
+void *CsModel_Create(s16 a0, s16 a1, s16 a2) {
     u8 *s0;
     u8 *v;
 

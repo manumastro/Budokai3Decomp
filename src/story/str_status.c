@@ -99,12 +99,12 @@ void StrStatus_ClearWork(void) {
 extern void Character_Release(s32);
 extern void func_0029E450(s32);
 extern void Help_Exit(void);
-extern void func_002F54C0(void);
+extern void OutputPass_Release(void);
 
 extern void Character_Release(s32);
 extern void func_0029E450(s32);
 extern void Help_Exit(void);
-extern void func_002F54C0(void);
+extern void OutputPass_Release(void);
 
 void func_002BD510(void) {
     s32 i;
@@ -134,7 +134,7 @@ void func_002BD510(void) {
             func_0029E450(((s32 *)D_00470910)[0x97]);
         }
         Help_Exit();
-        func_002F54C0();
+        OutputPass_Release();
         amHeap_Free((void *)D_00470910);
         D_00470910 = 0;
     }
@@ -748,6 +748,46 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0860);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0FC0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1160);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1320);
+extern s32 func_0022D670(s32, f32);
+
+extern s32 func_0022D670(s32, f32);
+
+extern s32 func_0022D670(s32, f32);
+
+#if 0
+// func_002C15E0: the body matches the call sequence, but ours keeps two saved registers (frame 0x30, s0 and s1) where the original keeps one (frame 0x20); 3 forms tried (table local, parameter copy, direct parameter)
+void func_002C15E0(s32 *a0) {
+    D_00470704 = a0[1];
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    amModel_SetCurrent(a0[1], 0x2000);
+    D_00470238 = 0;
+    if (a0[0x34 / 4] != 0) {
+        func_0022D0E0(a0[0x34 / 4], 1);
+    }
+    if (*(u8 *)((char *)a0 + 0xAC) > 0) {
+        a0[0x34 / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0x68 / 4], 0.0f);
+    } else {
+        a0[0x34 / 4] = 0;
+    }
+    if (a0[0x38 / 4] != 0) {
+        func_0022D0E0(a0[0x38 / 4], 1);
+    }
+    if (*(u8 *)((char *)a0 + 0xAC) < 7) {
+        a0[0x38 / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0x6C / 4], 0.0f);
+    } else {
+        a0[0x38 / 4] = 0;
+    }
+    if (a0[0x24 / 4] != 0) {
+        func_0022D0E0(a0[0x24 / 4], 1);
+    }
+    a0[0x24 / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[*(u8 *)((char *)a0 + 0xAC) + 0x12], 0.0f);
+    if (a0[0x28 / 4] != 0) {
+        func_0022D0E0(a0[0x28 / 4], 1);
+    }
+    a0[0x28 / 4] = func_0022D670(((s32 *)((s32 *)a0[0])[0x1C / 4])[0xB8 / 4], 0.0f);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C15E0);
 extern s32 func_0022D670(s32, f32);
 

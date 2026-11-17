@@ -312,3 +312,166 @@ Btl_TaskLoadWait = 0x001B0380; // type:func // guess
 // scr_func.c: copies the 16-byte vector a0 to the record D_005AB3A0 and stores a1 in its word at +0x10. Called by
 // StrSelect_Reset.
 Scr_SetRecord = 0x002A9460; // type:func // guess
+
+// btb_draw.c: the scene switcher's task states. Each scene is a cycle of three states: Commit (waits for
+// gSceneReady, takes gSceneNext as the current scene D_004B4B40, calls the old scene's Exit and sets the Load
+// state), Load (waits while gSceneNext is not -1 and calls the new scene's Load) and Done (waits for gSceneDone,
+// calls the scene's Start and sets the Commit state). The suffix names the scene the calls of the state belong to;
+// the numbers are the chains of the same scene. Guesses from the calls.
+SceneSw_CommitTop = 0x001EAC20; // type:func // guess
+SceneSw_DoneTop = 0x001EAD10; // type:func // guess
+SceneSw_LoadTop = 0x001EADD0; // type:func // guess
+SceneSw_CommitTop2 = 0x001EAE70; // type:func // guess
+SceneSw_DoneTop2 = 0x001EAF90; // type:func // guess
+SceneSw_LoadTop2 = 0x001EB070; // type:func // guess
+SceneSw_CommitTop3 = 0x001EB130; // type:func // guess
+SceneSw_DoneResult = 0x001EB250; // type:func // guess
+SceneSw_LoadResult = 0x001EB330; // type:func // guess
+SceneSw_CommitMenu = 0x001EB3F0; // type:func // guess
+SceneSw_DoneArena = 0x001EB4E0; // type:func // guess
+SceneSw_LoadArena = 0x001EB5B0; // type:func // guess
+SceneSw_CommitArena = 0x001EB670; // type:func // guess
+SceneSw_DoneMenu = 0x001EB760; // type:func // guess
+SceneSw_LoadMenu = 0x001EB830; // type:func // guess
+SceneSw_CommitMenu2 = 0x001EB8E0; // type:func // guess
+SceneSw_DoneMenu2 = 0x001EB9A0; // type:func // guess
+SceneSw_LoadMenu2 = 0x001EBA50; // type:func // guess
+SceneSw_CommitMenu3 = 0x001EBAF0; // type:func // guess
+SceneSw_DoneMenu3 = 0x001EBB90; // type:func // guess
+SceneSw_LoadMenu3 = 0x001EBC20; // type:func // guess
+SceneSw_CommitPrac = 0x001EBCA0; // type:func // guess
+SceneSw_DonePrac = 0x001EBD90; // type:func // guess
+SceneSw_LoadPrac = 0x001EBE50; // type:func // guess
+SceneSw_CommitPrac2 = 0x001EBEF0; // type:func // guess
+SceneSw_DonePrac2 = 0x001EBFE0; // type:func // guess
+SceneSw_LoadPrac2 = 0x001EC0A0; // type:func // guess
+SceneSw_CommitPracExit = 0x001EC140; // type:func // guess
+SceneSw_DoneMenu4 = 0x001EC250; // type:func // guess
+SceneSw_LoadMenu4 = 0x001EC340; // type:func // guess
+SceneSw_CommitTour = 0x001EC430; // type:func // guess
+SceneSw_DoneTour = 0x001EC520; // type:func // guess
+SceneSw_LoadTour = 0x001EC5E0; // type:func // guess
+SceneSw_CommitTourExit = 0x001EC680; // type:func // guess
+SceneSw_DoneMenu5 = 0x001EC770; // type:func // guess
+SceneSw_LoadMenu5 = 0x001EC840; // type:func // guess
+SceneSw_CommitMenu6 = 0x001EC8F0; // type:func // guess
+SceneSw_DoneMenu6 = 0x001EC9E0; // type:func // guess
+SceneSw_LoadMenu6 = 0x001ECAB0; // type:func // guess
+SceneSw_CommitVs = 0x001ECB60; // type:func // guess
+SceneSw_DoneVs = 0x001ECC50; // type:func // guess
+SceneSw_LoadVs = 0x001ECD10; // type:func // guess
+SceneSw_CommitVs2 = 0x001ECDB0; // type:func // guess
+SceneSw_DoneMenu7 = 0x001ECEA0; // type:func // guess
+SceneSw_LoadMenu7 = 0x001ECF70; // type:func // guess
+SceneSw_DoneStrTitle = 0x001ED0C0; // type:func // guess
+SceneSw_LoadStrTitle = 0x001ED150; // type:func // guess
+SceneSw_CommitStrTitle = 0x001ED1D0; // type:func // guess
+SceneSw_DoneStaff = 0x001ED270; // type:func // guess
+SceneSw_LoadStaff = 0x001ED300; // type:func // guess
+SceneSw_CommitKill = 0x001ED380; // type:func // guess
+SceneSw_DoneStrTitle2 = 0x001ED430; // type:func // guess
+SceneSw_LoadStrTitle2 = 0x001ED4C0; // type:func // guess
+SceneSw_CommitFlight = 0x001ED540; // type:func // guess
+SceneSw_DoneFlight = 0x001ED600; // type:func // guess
+SceneSw_LoadFlight = 0x001ED6A0; // type:func // guess
+SceneSw_CommitStrTitle3 = 0x001ED740; // type:func // guess
+SceneSw_LoadStrTitle3 = 0x001ED9E0; // type:func // guess
+SceneSw_CommitFlightExit = 0x001EDAC0; // type:func // guess
+SceneSw_DoneStrTitle3 = 0x001EDC00; // type:func // guess
+SceneSw_LoadStrTitle4 = 0x001EDD00; // type:func // guess
+SceneSw_CommitStrSelect = 0x001EDDE0; // type:func // guess
+SceneSw_DoneStrSelect = 0x001EDED0; // type:func // guess
+SceneSw_LoadStrSelect = 0x001EDF90; // type:func // guess
+SceneSw_CommitMenu8 = 0x001EE040; // type:func // guess
+SceneSw_DoneMenu8 = 0x001EE150; // type:func // guess
+SceneSw_LoadMenu8 = 0x001EE250; // type:func // guess
+SceneSw_DoneAll = 0x001EE530; // type:func // guess
+SceneSw_LoadAll = 0x001EE6D0; // type:func // guess
+SceneSw_CommitTitle = 0x001EE820; // type:func // guess
+SceneSw_DoneTitle = 0x001EE920; // type:func // guess
+SceneSw_LoadTitle = 0x001EE9E0; // type:func // guess
+SceneSw_CommitLogomark = 0x001EED50; // type:func // guess
+SceneSw_DoneOpening = 0x001EEDF0; // type:func // guess
+SceneSw_LoadOpening = 0x001EEE70; // type:func // guess
+SceneSw_CommitBoot = 0x001EEEF0; // type:func // guess
+SceneSw_DoneLogomark = 0x001EEF90; // type:func // guess
+SceneSw_LoadLogomark = 0x001EF010; // type:func // guess
+
+// btb_draw.c: the draw state reset that the battle and the menu start with (GS registers, VRAM, matrix stack,
+// scissor, several func_0013xxxx calls) and the decode of a save record into a colour entry (the 5-bit colours of
+// bytes 1..3 and 5..7). Guesses from the calls.
+BtbDraw_InitState = 0x001EF100; // type:func // guess
+BtbEntry_DecodeColors = 0x001EF880; // type:func // guess
+
+// btb_draw.c: the battle object list (D_0051CB70 .. D_0051CC20, the table D_0051C770 of 256 entries). Each
+// function removes an object from the list and table, or frees its sub-blocks; the names say which kind of
+// removal. Guesses.
+BtbObj_FreeFlagged = 0x001F3EC0; // type:func // guess
+BtbObj_FreeFlag400 = 0x001F7010; // type:func // guess
+BtbObj_RemoveFromList = 0x001F5F50; // type:func // guess
+BtbObj_RemoveByKey = 0x001F6E60; // type:func // guess
+BtbObj_RemoveByIdx = 0x001F6F10; // type:func // guess
+BtbObj_ReleaseSub68 = 0x001F1A00; // type:func // guess
+BtbObj_ReleaseSub38 = 0x001F22A0; // type:func // guess
+BtbObj_ReleaseSub38Timed = 0x001F24B0; // type:func // guess
+BtbObj_CheckDrawFlags = 0x001F3D80; // type:func // guess
+BtbObj_ApplyMotSet = 0x001F5B90; // type:func // guess
+
+// btb_draw.c: the BG objects. BtbBg_CreatePlanet creates the object named "Planet" (D_004698A8) with the model and
+// the callbacks func_001F2350 and func_001F24B0. BtbBg_RunFunc calls the function of the current background block
+// from the table D_0044B4C0 (index D_0051CCE0). BtbBg_RunPostObjs calls the callback at +0x14 of each object of
+// the list D_0051CB94 whose flags have 0x200.
+BtbBg_CreatePlanet = 0x001F7120; // type:func
+BtbBg_RunFunc = 0x001F7F50; // type:func // guess
+BtbBg_RunPostObjs = 0x001F63D0; // type:func // guess
+
+// btl_main.c: the battle's exit. Btl_FadeOutToExit sets the battle phase (BW 0x88F8) to 8 and starts a fade whose
+// end runs Btl_OnExitFadeDone: that clears the scene (Btl_ClearScene, which the scene switcher's Commit states
+// call), runs func_001EF1E0 and marks the scene done. Btl_ResetScene restores the battle's defaults and restarts
+// the camera, the background and the other systems. Guesses from the calls.
+Btl_FadeOutToExit = 0x001AD070; // type:func // guess
+Btl_OnExitFadeDone = 0x001B04A0; // type:func // guess
+Btl_ClearScene = 0x001B0EC0; // type:func // guess
+Btl_ResetScene = 0x001B0D60; // type:func // guess
+
+// btl_main.c: the battle's phase 1 start (BW 0x88F8 = 1, clears the timer words 0x890C and 0x8910) and the two
+// callbacks it installs in the table passed to func_00237000: Btl_RestartCb (clears the restart request at 0x8948
+// and 0x8944, restarts the background, calls D_004682E8) and Btl_ClearTimerCb (clears the word at 0x8914).
+// Btl_StepTimer advances the battle timer at 0x890C by the step at 0x88F0 and wraps it past 1e8. Btl_UpdateLimitXY
+// keeps the larger of the two limits at 0x8920 and 0x8924. Guesses.
+Btl_StartPhase1 = 0x001AEEB0; // type:func // guess
+Btl_RestartCb = 0x001B0660; // type:func // guess
+Btl_ClearTimerCb = 0x001B06D0; // type:func // guess
+Btl_StepTimer = 0x001AEF70; // type:func // guess
+Btl_UpdateLimitXY = 0x001B05E0; // type:func // guess
+
+// btl_main.c: the battle's file records. Btl_ReadCurFile reads the file with id a0 (amCdFs_ReadFileId) and keeps
+// it in BW 0x8AA4. Btl_PopFileList unlinks the record at BW 0x8AA4 (its link is at +0x40) and closes it;
+// Btl_LoadFileSet loads the files of the record (amFile_Load on the entries at +0x50); Btl_ReadFighterFile reads
+// the file D_0046FD84 into the fighter's word +0x1C. Guesses.
+Btl_ReadCurFile = 0x001AF7A0; // type:func // guess
+Btl_PopFileList = 0x001AF650; // type:func // guess
+Btl_LoadFileSet = 0x001AF6C0; // type:func // guess
+Btl_ReadFighterFile = 0x001AF7F0; // type:func // guess
+
+// skill_cmd.c: the per-kind kill of a skill's work block p. The jump table jtbl_004501D0 (15 entries) is read by
+// the switch in func_00252410 (INCLUDE_ASM) with the halfword at +0x10 of the object at +0xC of its argument
+// +0x20; entry k is SkillKill_Kindk. Each one releases the task (amTask_Kill) and the object (Obj_ResetF38) in the
+// work slots it names: kinds 2, 4, 8 and 13 slots +0x40 (task) and +0x44 (object); kinds 3, 5 and 12 slots +0x50
+// and +0x54; kind 0 and 6 call func_001D9280 first; kind 11 is empty; kinds 10 and 14 take the work from the
+// Fighter's pointer. Names by kind because the bodies are the same for several kinds. Guesses.
+SkillKill_Kind00 = 0x00251400; // type:func // guess
+SkillKill_Kind01 = 0x00250460; // type:func // guess
+SkillKill_Kind02 = 0x0024FAD0; // type:func // guess
+SkillKill_Kind03 = 0x0024F4D0; // type:func // guess
+SkillKill_Kind04 = 0x0024EF50; // type:func // guess
+SkillKill_Kind05 = 0x0024E760; // type:func // guess
+SkillKill_Kind06 = 0x0024E0F0; // type:func // guess
+SkillKill_Kind07 = 0x0024CFF0; // type:func // guess
+SkillKill_Kind08 = 0x0024C900; // type:func // guess
+SkillKill_Kind09 = 0x0024C250; // type:func // guess
+SkillKill_Kind10 = 0x0024BAB0; // type:func // guess
+SkillKill_Kind11 = 0x0024B680; // type:func // guess
+SkillKill_Kind12 = 0x0024B260; // type:func // guess
+SkillKill_Kind13 = 0x0024A8A0; // type:func // guess
+SkillKill_Kind14 = 0x0024A350; // type:func // guess

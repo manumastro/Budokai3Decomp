@@ -14,10 +14,10 @@ extern void func_001F6D60(void);
 extern void func_001F5B10(void *, s32);
 extern void func_002CDC20(void);
 extern void func_00208F70(void *);
-extern void func_001F5F50(void *);
+extern void BtbObj_RemoveFromList(void *);
 extern void amModel_SetCurrent(s32, s32);
 extern void func_001F3DF0(void *);
-extern void func_001F3D80(void *);
+extern void BtbObj_CheckDrawFlags(void *);
 extern void func_00208D70(void *);
 extern s32 D_00470238;
 extern void func_001F5D50(void *);
@@ -45,9 +45,9 @@ extern s32 func_00209540(s32, s32, s32);
 extern u8 D_0046F218[];
 extern void memset(void *, s32, s32);
 extern u8 D_0046F230[];
-extern void func_001F6F10(s32, s32);
+extern void BtbObj_RemoveByIdx(s32, s32);
 extern void func_001F5B50(u8 *, s32);
-extern void func_001F6E60(void *);
+extern void BtbObj_RemoveByKey(void *);
 extern void func_00125740(void *, void *, s32);
 extern void func_001F5A70(s32);
 extern void func_0013E2A0(s32);
@@ -126,7 +126,7 @@ void func_002CD9E0(u8 *p) {
     u8 *q = p + 0x30;
     func_00208F70(*(void **)(p + 0x38));
     if (*(s32 *)(*(u8 **)(q + 8) + 0x38) < 0) {
-        func_001F5F50(p);
+        BtbObj_RemoveFromList(p);
     }
 }
 // differs: the original keeps p in s1 and q = p+0x30 in s0 across the first call (frame 0x30, sq s1 and s0); the compiler folds q+8 into p+0x38 and keeps only p (frame 0x20). Tried: q before/after the call, a Sub30 struct view
@@ -139,7 +139,7 @@ void func_002CDA30(u8 *p) {
     amModel_SetCurrent(*(s32 *)(p + 0x34), 0x2003000);
     func_001F3DF0(p);
     func_00208D70(*(void **)(q + 8));
-    func_001F3D80(p);
+    BtbObj_CheckDrawFlags(p);
 }
 // differs: the original saves two registers (p and p+0x30) and computes the field address after the first call; the frame is 0x30 here 0x20
 #endif
@@ -218,17 +218,28 @@ void func_002CDD00(u8 *p) {
     u8 *q = p + 0x30;
     func_00208F70(*(void **)(p + 0x38));
     if (*(s32 *)(*(u8 **)(q + 8) + 0x38) < 0) {
-        func_001F5F50(p);
+        BtbObj_RemoveFromList(p);
     }
 }
 // differs: same as func_002CD9E0 (the q = p+0x30 register is folded away)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDD00);
+#if 0
+void func_002CDD50(u8 *p) {
+    u8 *q = p + 0x30;
+    D_00470238 = 0;
+    amModel_SetCurrent(*(s32 *)(p + 0x34), 0x2003000);
+    func_001F3DF0(p);
+    func_00208D70(*(void **)(q + 8));
+    BtbObj_CheckDrawFlags(p);
+}
+// differs: the original keeps p in s1 and q = p+0x30 in s0 across the first call (frame 0x30, sq s1 and s0, q computed in the delay slot of the first jal); the compiler folds q+8 into p+0x38 and keeps only p (frame 0x20). Tried: asm "+r" barrier on q, q = p; q += 0x30
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDD50);
 #if 0
 void func_002CDDB0(void) {
-    s32 s1 = 0;
     s32 s2 = D_0051CD0C[0];
+    s32 s1 = 0;
     u8 *s0;
     s32 a0 = func_001A50F0(s2, 0x212);
     if (a0 != 0) {
@@ -244,7 +255,7 @@ void func_002CDDB0(void) {
         }
     }
 }
-// differs: the same allocation pattern as func_002CDA90: the driver value, the result and the node take other saved registers, and the frame is 0xD0 against 0xE0
+// differs: the same allocation pattern as func_002CDA90: the driver value, the result and the node take other saved registers, and the frame is 0xD0 against 0xE0; the declaration orders (6 of them) give the same 0xD0 size, the driver lands in s0 and the node in s1 (original: driver s2, result s1, node s0)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDDB0);
 void func_002CDE90(void) {
@@ -257,7 +268,7 @@ void func_002CDE90(void) {
     switch (D_0051CD20[0]) {
     case 0:
         func_001F7470(0);
-        func_001F6F10(4, 2);
+        BtbObj_RemoveByIdx(4, 2);
         v = (u8 *)func_001F5EF0(3, 1);
         *(s16 *)(*(u8 **)(v + 0x10) + 0xE) = 1;
         func_001F5B50(v, 1);
@@ -299,7 +310,7 @@ void func_002CDFE0(void) {
         v = (u8 *)func_001F5EF0(3, 3);
         func_001F5B10(*(u8 **)(v + 4), 0);
         v = (u8 *)func_001F5EF0(4, 4);
-        func_001F6E60(v);
+        BtbObj_RemoveByKey(v);
         break;
     case 1:
         func_001F7470(2);
@@ -359,6 +370,51 @@ void func_002CE2A0(u8 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE2A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE3D0);
+extern void func_001F5CB0(u8 *);
+#if 0
+void func_002CE500(u8 *p) {
+    u8 *e = *(u8 **)(p + 0x30);
+    s32 first;
+    u32 mask;
+    s32 bit;
+    f32 *arr;
+    if (e != 0) {
+        first = *(s32 *)e;
+        mask = 0;
+        arr = (f32 *)(p + 0x30);
+        do {
+            bit = *(s32 *)(e + 4);
+            if (((mask >> bit) & 1) == 0) {
+                f32 *q = arr + (bit - 6);
+                q[4] = q[4] + *(f32 *)(e + 8) * *(f32 *)D_0051CD24;
+                if (q[4] > 1.0f) {
+                    *(s32 *)&q[4] = 0;
+                } else if (q[4] < 0.0f) {
+                    q[4] = 1.0f;
+                }
+                q[8] = q[8] + *(f32 *)(e + 12) * *(f32 *)D_0051CD24;
+                if (q[8] > 1.0f) {
+                    *(s32 *)&q[8] = 0;
+                } else if (q[8] < 0.0f) {
+                    q[8] = 1.0f;
+                }
+                mask = mask | (1 << bit);
+                if (mask == 0x3C00) {
+                    break;
+                }
+            }
+            e += 0x10;
+        } while (*(s32 *)e == first);
+    }
+    {
+        u8 *o = *(u8 **)(p + 0x10);
+        if (*(s32 *)(o + 0x10) != 0) {
+            func_001F5CB0(o);
+        }
+    }
+}
+// differs: 276 bytes against 304 (the original is 7 instructions longer): it reloads D_0051CD24 for each product and keeps 0.0 in $f3 and 1.0 in $f4; the clamp shape and the srlv bit test (u32 mask) match
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE500);
 #if 0
 void func_002CE630(f32 x, f32 y) {
@@ -397,7 +453,7 @@ void func_002CE980(u8 *a0) {
     } else {
         func_0013E0A0(*(s32 *)(*(u8 **)(s0 + 0x10) + 4));
     }
-    func_001F3D80(s0);
+    BtbObj_CheckDrawFlags(s0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CEA60);
 void func_002CEC50(void) {
@@ -414,7 +470,7 @@ void func_002CEC50(void) {
     switch (D_0051CD20[0]) {
     case 0:
         v = (u8 *)func_001F5EF0(4, 3);
-        func_001F6E60(v);
+        BtbObj_RemoveByKey(v);
         v = (u8 *)func_001F5EF0(3, 2);
         func_001F5B10(*(u8 **)(v + 4), 0);
         v = (u8 *)func_001F5EF0(1, 0);
@@ -460,7 +516,7 @@ void func_002CF0E0(void) {
     case 0:
         v = (u8 *)func_001F5EF0(3, 1);
         func_001F5B10(*(u8 **)(v + 4), 0);
-        func_001F6F10(4, 3);
+        BtbObj_RemoveByIdx(4, 3);
         func_001F7470(2);
         break;
     case 1:
@@ -491,7 +547,27 @@ s32 func_002CF180(u8 *s0) {
 }
 // differs: the counter test and the return value are laid out differently (the original tests the counter with beqz and returns 0 in the delay slot of a b): 0xE8 against 0x100 bytes
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF180);
+s32 func_002CF180(u8 *p) {
+    s32 k = *(s32 *)p;
+    s32 *e = (s32 *)(D_005C206C + k * 40);
+    f32 f;
+    if (e[0] != 0) {
+        return 0;
+    }
+    e[0] = e[0] + 1;
+    k = *(s32 *)p;
+    *(s32 *)(D_005C2074 + k * 40) = (s32)(D_005C2060 + k * 40 + 0x18);
+    ((s32 *)p)[2] = 9;
+    ((s32 *)p)[3] = 0;
+    ((s32 *)p)[4] = 0;
+    f = func_00146E30(*(s32 *)(gBattle + 0x264), ((s32 *)p)[1]);
+    f = D_00470154 / f;
+    f = (f > 1.0f) ? 1.0f : f;
+    ((f32 *)p)[5] = f;
+    k = *(s32 *)p;
+    *(f32 *)(D_005C2070 + k * 40) = f;
+    return 1;
+}
 s32 func_002CF280(void) {
     return 0;
 }
@@ -525,7 +601,71 @@ s32 func_002CF2B0(u8 *s0) {
 s32 func_002CF3A0(void) {
     return 0;
 }
+extern u8 D_005C2064[];
+extern u32 func_0012EAE0(s32);
+#if 0
+s32 func_002CF3B0(u8 *p) {
+    s32 k = *(s32 *)p;
+    s32 *e = (s32 *)(D_005C2064 + k * 40);
+    u32 r;
+    f32 f;
+    f32 g;
+    f32 f2;
+    if (e[0] != 0) {
+        return 0;
+    }
+    e[0] = e[0] + 1;
+    r = func_0012EAE0(0x20) % 10 + 1;
+    f = (f32)r / 20.0f;
+    f2 = f / 0.1f;
+    k = *(s32 *)p;
+    *(s32 *)(D_005C2074 + k * 40) = 0;
+    ((s32 *)p)[2] = 1;
+    ((s32 *)p)[3] = 0;
+    ((s32 *)p)[4] = 0;
+    g = func_00146E30(*(s32 *)(gBattle + 0x264), ((s32 *)p)[1]);
+    f2 = f2 + g;
+    g = D_00470154 / g;
+    if (g > 1.0f) {
+        g = 1.0f;
+    }
+    ((f32 *)p)[5] = f2 * g;
+    return 1;
+}
+// differs: same shape as func_002CF180 (table of 0x28 entries, a random value divided by 20 and a 0.1f division); the 0.1f constant is loaded before the k reload in the original and the division sits in the delay slot of the call: 39 of 87 differ with the division placed after the first stores (62 with it before).
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF3B0);
+#if 0
+s32 func_002CF500(u8 *p) {
+    s32 k = *(s32 *)p;
+    s32 *e = (s32 *)(D_005C2060 + k * 40);
+    u32 r;
+    f32 f;
+    f32 g;
+    f32 f2;
+    if (e[0] != 0) {
+        return 0;
+    }
+    e[0] = e[0] + 1;
+    r = func_0012EAE0(0x20) % 10 + 1;
+    f = (f32)r / 20.0f;
+    f2 = f / 0.1f;
+    k = *(s32 *)p;
+    *(s32 *)(D_005C2074 + k * 40) = 0;
+    ((s32 *)p)[2] = D_0051CD20[0] << 4;
+    ((s32 *)p)[3] = 0;
+    ((s32 *)p)[4] = 0;
+    g = func_00146E30(*(s32 *)(gBattle + 0x264), ((s32 *)p)[1]);
+    f2 = f2 + g;
+    g = D_00470154 / g;
+    if (g > 1.0f) {
+        g = 1.0f;
+    }
+    ((f32 *)p)[5] = f2 * g;
+    return 1;
+}
+// differs: same shape as func_002CF180 (table of 0x28 entries, a random value divided by 20 and a 0.1f division); the 0.1f constant is loaded before the k reload in the original and the division sits in the delay slot of the call: 39 of 87 differ with the division placed after the first stores (62 with it before).
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF500);
 void func_002CF650(s32 flag) {
     s32 i;
@@ -587,4 +727,35 @@ void func_002CF820(void) {
 }
 // differs: the counter updates match; the build is one nop short (0xC0 bytes against 0xC4): the original pads the join after the third counter
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF820);
+void func_002CF820(void) {
+    s32 i = 0;
+    s32 *p;
+    if (0 < *(s32 *)(gBattle + 0x88D8)) {
+        p = (s32 *)D_005C2060;
+        do {
+            if (p[0] != 0) {
+                s32 v = p[0] + 1;
+                p[0] = v;
+                if (D_00470148 < v) {
+                    p[0] = 0;
+                }
+            }
+            if (p[1] != 0) {
+                s32 v = p[1] + 1;
+                p[1] = v;
+                if (D_0047014C < v) {
+                    p[1] = 0;
+                }
+            }
+            if (p[2] != 0) {
+                s32 v = p[2] + 1;
+                p[2] = v;
+                if (D_00470150 < v) {
+                    p[2] = 0;
+                }
+            }
+            i++;
+            p += 10;
+        } while (i < *(s32 *)(gBattle + 0x88D8));
+    }
+}

@@ -80,7 +80,7 @@ extern void amCdFs_Close(void *, s32);
 extern void Help_Exit();
 extern void func_0028DF20();
 
-void func_00269730(void) {
+void VsMode_Exit(void) {
     u8 *s1;
     u8 *s0;
     s0 = (u8 *)D_004707DC;
