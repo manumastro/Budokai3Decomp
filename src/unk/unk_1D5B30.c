@@ -288,10 +288,15 @@ extern char D_004694D0[];
 extern char D_004694E0[];
 extern void func_001D7290(Fighter *c);
 extern u32 func_0012EAE0(s32 a);
+extern char D_00447450[];
+extern s32 func_001DF8F0(s32 a, s32 b);
+extern void func_00243DE0(s32 a, void *b);
+extern void func_001E7070(void *p, s32 a);
 extern s32 func_00233B20(Fighter *c, void *a, s32 v);
 extern s32 func_00233850(Fighter *c, void *a);
 extern void func_001F9BB0(s32 a, s32 b);
 extern void func_001E7F00(void *p);
+extern void func_001EA300(void);
 extern void func_002376F0(s32, void *);
 extern s32 func_002CC120(Fighter *c);
 extern s32 func_00236020(Fighter *c);
@@ -372,6 +377,40 @@ void func_001D79F0(Fighter *c) {
 #endif
 // differs: the original keeps the object pointer in a0 and the loop counter in t2 (c is copied to t1 here; 33 of 35 differ); declaration orders and a base pointer tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D79F0);
+#if 0
+void func_001D7A70(Fighter *c) {
+    char *p;
+    s32 x;
+    s32 y;
+
+    p = (char *)c->f1CF8;
+    x = *(s16 *)(p + 0xD6);
+    y = *(s16 *)(p + 0xD8);
+    *(s8 *)((char *)c + 0x1D04) = *(s16 *)(D_00447450 + x * 96 + y * 8);
+    x = *(s16 *)(p + 0xEA);
+    y = *(s16 *)(p + 0xEC);
+    *(s8 *)((char *)c + 0x1D05) = *(s16 *)(D_00447450 + x * 96 + y * 8);
+    x = *(s16 *)(p + 0xFE);
+    y = *(s16 *)(p + 0x100);
+    *(s8 *)((char *)c + 0x1D06) = *(s16 *)(D_00447450 + x * 96 + y * 8);
+    x = *(s16 *)(p + 0x112);
+    y = *(s16 *)(p + 0x114);
+    *(s8 *)((char *)c + 0x1D07) = *(s16 *)(D_00447450 + x * 96 + y * 8);
+    x = *(s16 *)(p + 0x126);
+    y = *(s16 *)(p + 0x128);
+    *(s8 *)((char *)c + 0x1D08) = *(s16 *)(D_00447450 + x * 96 + y * 8);
+    x = *(s16 *)(p + 0x13A);
+    y = *(s16 *)(p + 0x13C);
+    *(s8 *)((char *)c + 0x1D09) = *(s16 *)(D_00447450 + x * 96 + y * 8);
+    x = *(s16 *)(p + 0x14E);
+    y = *(s16 *)(p + 0x150);
+    *(s8 *)((char *)c + 0x1D0A) = *(s16 *)(D_00447450 + x * 96 + y * 8);
+    x = *(s16 *)(p + 0x162);
+    y = *(s16 *)(p + 0x164);
+    *(s8 *)((char *)c + 0x1D0B) = *(s16 *)(D_00447450 + x * 96 + y * 8);
+}
+#endif
+// differs: the two loads of each pair land in the other registers (a3 and t0 swapped, eight times); the table math is right
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7A70);
 s32 func_001D7BC0(Fighter *c) {
     if (c->f1FF8 == -1) {
@@ -930,6 +969,45 @@ void *func_001DA430(Fighter *c) {
     e->f19F = c->f1350;
     return (char *)e + 0x150;
 }
+#if 0
+void func_001DA4C0(void) {
+    Game *g;
+    s32 j;
+    s32 i;
+    char *base;
+    char *v;
+
+    g = D_00470570;
+    amTask_KillGroup(0x20, 0x40000020, 1);
+    for (j = 0; j < g->f88D8; j++) {
+        base = (char *)g + j * 0x2020;
+        v = base + 0x830;
+        for (i = 0; i < 16; i += 8) {
+            *(s16 *)(v + 0x198) = 0;
+            *(s32 *)(v + 0x190) = 0;
+            *(s16 *)(v + 0x1E8) = 0;
+            *(s32 *)(v + 0x1E0) = 0;
+            *(s16 *)(v + 0x238) = 0;
+            *(s32 *)(v + 0x230) = 0;
+            *(s16 *)(v + 0x288) = 0;
+            *(s32 *)(v + 0x280) = 0;
+            *(s16 *)(v + 0x2D8) = 0;
+            *(s32 *)(v + 0x2D0) = 0;
+            *(s16 *)(v + 0x328) = 0;
+            *(s32 *)(v + 0x320) = 0;
+            *(s16 *)(v + 0x378) = 0;
+            *(s32 *)(v + 0x370) = 0;
+            *(s16 *)(v + 0x3C8) = 0;
+            *(s32 *)(v + 0x3C0) = 0;
+            v += 0x280;
+        }
+        *(s32 *)(base + 0x830 + 0x1AE0) = 0;
+        memset(base + 0x830 + 0x1AF0, 0, 0x200);
+    }
+    func_001EA300();
+}
+#endif
+// differs: 0xF0 against 0x100 bytes: the original keeps the block base in a1 and the loop index in a0 (several local orders tried, the closest 2 of 62 differed only in the order of the clears)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA4C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA5C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA930);
@@ -1231,6 +1309,33 @@ s32 func_001E1850(Fighter *c, s32 a1) {
     }
     return 0;
 }
+#if 0
+void func_001E18B0(Fighter *c, s32 idx) {
+    s32 a[4];
+    s32 b[8];
+    f32 f;
+    s32 v;
+
+    if (*(s32 *)((char *)c + 0x1DB8 + idx * 4) == 0) {
+        return;
+    }
+    func_001E7070((char *)c + 0x650, idx);
+    a[0] = c->f1350;
+    a[1] = idx;
+    v = *(s16 *)*(char **)((char *)c + 0xBB0);
+    if (v != 0 && func_001DF8F0(0, 0x1B) > 0) {
+        f = 0.0f;
+    } else {
+        f = (f32)(1000 * *(s8 *)((char *)c->f1CF8 + c->fBA4 * 20 + 0xDD));
+    }
+    a[2] = (s32)f;
+    func_00226030(8, a);
+    b[4] = c->f1350;
+    *(s16 *)((char *)b + 0x18) = c->fBA4;
+    func_00243DE0(1, b);
+}
+#endif
+// differs: frame 0x60 against 0x70 and the table address adds its offset in another order (11 of 61 differ with the block sizes tried)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E18B0);
 s32 func_001E19B0(Fighter *c) {
     s32 a;
