@@ -3238,6 +3238,58 @@ void BtbDraw_InitState(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF1E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF510);
+extern void func_00125740(char *, u8 *, s32);
+extern u8 D_004696F0[];
+extern u32 func_0012EAE0(s32);
+extern void memset(void *, s32, s32);
+
+#if 0
+void func_001EF730(char *o) {
+    u32 r;
+    s32 n;
+    u8 *q;
+    s32 i;
+    u8 *src;
+    s32 s5;
+    s32 v;
+    u8 *dst;
+    s32 h;
+    s32 s4;
+
+    func_00125740(o, D_004696F0, 8);
+    *(s32 *)(o + 0xC) = (s32)func_0012EAE0(0x20) + 1;
+    memset(o + 0x10, 0, 0x20);
+    src = (u8 *)(o + 0x30);
+    i = 0;
+    n = 0xD650;
+    while (n--) {
+        dst = (u8 *)(o + i);
+        v = *src;
+        i = (i + 1) & 0xF;
+        dst[0x20] = (u8)(dst[0x20] + v);
+        src++;
+    }
+    func_0012EAE0(0x20);
+    q = (u8 *)(o + 0x20);
+    h = 0;
+    i = 0;
+    n = 0xD660;
+    while (n--) {
+        s5 = q[0];
+        s4 = h & 0xFF;
+        r = func_0012EAE0((s4 & 0xF) + 8);
+        dst = (u8 *)(o + i);
+        h = s5 & 0xFF;
+        v = h - s4 + (r & 0xFF);
+        i++;
+        q[0] = (u8)v;
+        dst[0x10] = (u8)(dst[0x10] + (v & 0xFF));
+        q++;
+        i &= 0xF;
+    }
+}
+#endif
+// func_001EF730: 21 of 81 instructions differ (size right). Loops are the while (n--) form (the original tests a counter in a beqz and decrements it in the delay slot); the saved registers differ: the original gives o=s3, the hash local s4=s4, q=s2, i=s0, n=s1; random declaration orders (10! sampled, 90 tries) gave 21 at best, a copy of the parameter into a local gave 29. Not solved.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF730);
 typedef struct BtbEntry {
     char pad0[0x8];
@@ -5296,43 +5348,44 @@ extern void func_001F2150(void);
 extern void BtbObj_ReleaseSub38(BtbObj *);
 
 void func_001F5950(s32 p0, char *p1, s32 p2, s32 flags) {
-    char *s0;
-    s32 s3;
-    char *s1;
-    char *ptr;
-    char *r;
     s32 s2;
+    char *s1;
+    s32 s3;
+    char *s0;
+    char *ptr;
+    char *q;
     s32 a1;
 
+    s2 = (s32)D_0051CD0C[0];
     s0 = p1;
     s3 = flags;
     a1 = 0;
     if (flags & 4) {
         a1 += 0x100;
     }
-    s2 = (s32)D_0051CD0C[0];
     a1 += D_0051CD20[0] << 7;
-    ptr = func_001A50F0((char *)s2, a1);
     s1 = NULL;
+    ptr = func_001A50F0((char *)s2, a1);
     if (ptr != NULL) {
         s1 = func_00209540(ptr, 0x2000001, 0);
     }
     if (s1 != NULL) {
         func_00209B50(s1, s0, 0);
-        r = (char *)func_001F5FD0(0x85000000, D_00469868, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
-        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x801;
-        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x800;
-        memset(r + 0x30, 0, 0x80);
-        *(char **)(r + 0x38) = s1;
-        *(s32 *)(r + 0x34) = (s32)func_001A50F0((char *)s2, 0x280);
-        *(s32 *)(r + 0x30) = s3 & 2;
+        s0 = (char *)func_001F5FD0(0x85000000, D_00469868, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) & -0x801;
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) | 0x800;
+        memset(s0 + 0x30, 0, 0x80);
+        *(volatile s32 *)(s0 + 0x38) = (s32)s1;
+        q = func_001A50F0((char *)s2, 0x280);
+        s0 += 0x30;
+        *(char **)(s0 + 4) = q;
+        *(s32 *)s0 = s3 & 2;
     }
 }
 #endif
-// differs: func_001F5950: 0x114 against 0x120 bytes (3 instructions short). The original tests flags&4 first, keeps the
-// parameter in $s0 (`move s0,a1` before the table lookup) and the 0x20000001 result in $s2. Declaration orders of
-// s0/s1/s2/s3 (24 tried, auto), flags-first: none matched.
-
+// differs: func_001F5950: 8 of 71 instructions differ (size right): the store of r+0x38 (s1) stays in the
+// jal delay slot (the original keeps the addiu s0,s0,48 there, with the store before the second call);
+// plain, s32 and volatile stores tried; register order of table base (s2), parameter (s0), result (s1) matched.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5950);
 extern void func_002D04A0(s32);
 extern void func_002CFDE0(s32);
