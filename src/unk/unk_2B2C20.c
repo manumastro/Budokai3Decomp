@@ -7,7 +7,11 @@ typedef struct SklRec {
     s32 f4C;
     s32 f50;
     s32 f54;
-    char pad58[0x1C8 - 0x58];
+    char pad58[0x120 - 0x58];
+    s32 f120;
+    char pad124[4];
+    s32 f128;
+    char pad12C[0x1C8 - 0x12C];
 } SklRec;
 
 extern SklRec *gSklEdit;
@@ -26,7 +30,48 @@ extern s32 func_00283BF0(void *);
 extern void SklSheet_Free(void);
 extern void func_002B3D90(void);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B2C20);
+/* The skill-edit record from its f48 word on (offsets are from the f48 pointer, as the original code reads them). */
+typedef struct SklEdTail {
+    char pad0[0xE0];
+    s32 fE0;
+    char padE4[0x110 - 0xE4];
+    s32 f110;
+    char pad114[0x140 - 0x114];
+    s32 f140;
+    char pad144[0x170 - 0x144];
+    s32 f170;
+    char pad174[0x1A0 - 0x174];
+    s32 f1A0;
+} SklEdTail;
+
+extern void func_00133780(s32, s32);
+extern s32 amGs_SetReg32(s32, s32);
+extern void func_00228430(s32);
+extern void func_002284D0(s32);
+extern void func_002B2400(void *);
+extern void func_002B1FF0(void *);
+extern void func_00228410(void);
+
+void func_002B2C20(SklAct *s) {
+    s32 s1;
+    SklEdTail *p;
+
+    func_00133780(0, 1);
+    s1 = amGs_SetReg32(0, 0x30000);
+    p = (SklEdTail *)&gSklEdit[s->f30].f48;
+    func_00228430(0);
+    func_002284D0(0);
+    func_002B2400(p);
+    p->fE0 += 1;
+    p->f140 += 1;
+    func_002B1FF0(p);
+    p->f110 += 1;
+    p->f170 += 1;
+    p->f1A0 += 1;
+    func_00228410();
+    amGs_SetReg32(0, s1);
+    func_00133780(0, 0);
+}
 void func_002B2D00(SklAct *s) {
     s32 *p;
 
@@ -91,7 +136,43 @@ void func_002B3BA0(SklAct *s) {
         s->f1C = (func_002B2E40 == NULL) ? 0 : (s32)func_002B2E40;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B3C40);
+/* The record view from its f48 pointer: f54 and f5C of the record. */
+typedef struct SklP48 {
+    char pad0[0xC];
+    s32 fC;
+    char pad10[4];
+    s32 f14;
+} SklP48;
+
+extern void amTask_Kill(void *);
+void func_002B3D40(SklAct *s);
+
+void func_002B3C40(SklAct *s) {
+    SklRec *r;
+    s32 *f30;
+    SklP48 *p;
+    s32 *q;
+    s32 i;
+
+    f30 = &s->f30;
+    r = &gSklEdit[s->f30];
+    p = (SklP48 *)&r->f48;
+    if (func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f120], (f32)r->f128 * gFrameDelta) == 0xFF) {
+        p->fC = 9;
+        if (p->f14 != 0) {
+            s->f1C = (func_002B3D40 == NULL) ? 0 : (s32)func_002B3D40;
+        } else {
+            q = (s32 *)((u8 *)gSklEdit + *f30 * 8 + 0x18);
+            i = 0;
+            do {
+                amTask_Kill((void *)*q);
+                *q = 0;
+                i++;
+                q++;
+            } while (i < 2);
+        }
+    }
+}
 void func_002B3D40(SklAct *s) {
     SklRec *r;
 
@@ -211,7 +292,7 @@ void func_002B4CC0(s32 a0, void *dst) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4CC0);
-extern void func_002B3C40(void);
+/* func_002B3C40 is defined above. */
 
 void func_002B4D90(s32 a0) {
     void **q = (void **)((char *)gSklEdit + (a0 >> 1) * 8 + 0x18);
