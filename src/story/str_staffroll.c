@@ -362,7 +362,150 @@ void func_0030E630(s32 *a0) {
         a0[0x1C / 4] = 0;
     }
 }
+extern void Ball_Start(void);
+extern void func_00137C10(void *, void *);
+extern s8 D_004B4B63[];
+extern u8 D_00492FCE[];
+extern StfVec D_00459140;
+extern StfVec D_00459150;
+
+#if 0
+// differs: about 41 of 128 instructions: the table copies and the zero-loop pointer/counter take other registers
+// (tried: switch with the cases in reverse, bgtz loop, 120 declaration orders, copy order, loop set-up first)
+void func_0030E690(s32 *a0) {
+    u8 *s1;
+    s16 flag;
+    StfVec c60;
+    StfVec c50;
+    StfVec c40;
+    u8 *q;
+    s32 n;
+    void *fn;
+    u8 st;
+
+    s1 = (u8 *)a0[0xC];
+    flag = 0;
+    st = s1[0x1C];
+    switch (st) {
+    case 6:
+        *(f32 *)(s1 + 0x18) = *(f32 *)(s1 + 0x18) - 0.01f * gFrameDelta;
+        if (*(f32 *)(s1 + 0x18) <= 0.0f) {
+            *(f32 *)(s1 + 0x18) = 0.0f;
+            s1[0x1C] = 7;
+        }
+        break;
+    case 7:
+        *(f32 *)(s1 + 0x18) = 0.0f;
+        if (*(u16 *)(D_00492FCE + D_004B4B63[0] * 184) & 8) {
+            s1[0x1C] = 8;
+        }
+        break;
+    case 8:
+        *(f32 *)(s1 + 0x18) = *(f32 *)(s1 + 0x18) + 0.01f * gFrameDelta;
+        if (*(f32 *)(s1 + 0x18) >= 1.0f) {
+            *(f32 *)(s1 + 0x18) = 1.0f;
+            flag = 1;
+        }
+        break;
+    }
+    func_0030D630((s32 *)s1);
+    q = (u8 *)&c40;
+    n = 0x10;
+    c60 = D_00459140;
+    c50 = D_00459150;
+    c50.f[0] = D_0047042C;
+    c50.f[1] = D_00470430;
+    if (q != 0) {
+        do {
+            *q = 0;
+            q++;
+            n--;
+        } while (n != 0);
+    }
+    c40.f[3] = *(f32 *)(s1 + 0x18);
+    func_00136E80(0x900, &c40, -1, 0x44, 5);
+    func_00137C10(&c60, &c50);
+    amDraw_FlushPacket();
+    if (flag != 0) {
+        s1[0x1C] = 9;
+        Ball_Start();
+    }
+    fn = (void *)func_0030E630;
+    *(s32 *)((u8 *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E690);
+#if 0
+// differs: same copy and zero-loop tail as func_0030E690 (the register set of the table copies differs)
+void func_0030E890(s32 *a0) {
+    u8 *s1;
+    s16 flag;
+    StfVec c60;
+    StfVec c50;
+    StfVec c40;
+    u8 *q;
+    s32 n;
+    void *fn;
+    u8 st;
+
+    s1 = (u8 *)a0[0xC];
+    flag = 0;
+    st = s1[0x1C];
+    switch (st) {
+    case 3:
+        *(f32 *)(s1 + 0x18) = *(f32 *)(s1 + 0x18) - 0.01f * gFrameDelta;
+        if (*(f32 *)(s1 + 0x18) <= 0.0f) {
+            *(f32 *)(s1 + 0x18) = 0.0f;
+            s1[0x1C] = 4;
+        }
+        break;
+    case 4:
+        *(f32 *)(s1 + 0x18) = 0.0f;
+        *(f32 *)(s1 + 0x14) = *(f32 *)(s1 + 0x14) - gFrameDelta;
+        if ((*(u16 *)(D_00492FCE + D_004B4B63[0] * 184) & 8) != 0 || *(f32 *)(s1 + 0x14) <= 0.0f) {
+            s1[0x1C] = 5;
+        }
+        break;
+    case 5:
+        *(f32 *)(s1 + 0x18) = *(f32 *)(s1 + 0x18) + 0.01f * gFrameDelta;
+        if (*(f32 *)(s1 + 0x18) >= 1.0f) {
+            *(f32 *)(s1 + 0x18) = 1.0f;
+            flag = 1;
+        }
+        break;
+    }
+    func_0030D7D0((s32 *)s1);
+    c60 = D_00459140;
+    c50 = D_00459150;
+    c50.f[0] = D_0047042C;
+    c50.f[1] = D_00470430;
+    q = (u8 *)&c40;
+    n = 0x10;
+    if (q != 0) {
+        do {
+            *q = 0;
+            q++;
+            n--;
+        } while (n != 0);
+    }
+    c40.f[3] = *(f32 *)(s1 + 0x18);
+    func_00136E80(0x900, &c40, -1, 0x44, 5);
+    func_00137C10(&c60, &c50);
+    amDraw_FlushPacket();
+    if (flag != 0) {
+        if (s1[0x1E] != 0) {
+            s1[0x1C] = 6;
+            fn = (void *)func_0030E690;
+            *(s32 *)((u8 *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        } else {
+            s1[0x1C] = 9;
+            Ball_Start();
+            fn = (void *)func_0030E630;
+            *(s32 *)((u8 *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E890);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EAE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EDA0);
