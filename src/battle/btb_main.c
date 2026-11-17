@@ -523,7 +523,7 @@ void func_001FA320(void) {
 }
 extern s32 D_00470630;
 
-/* compiles 8 bytes short */
+// GIVEN UP: the memset call and the table load match; the original takes the address of D_00470630 once more (an addiu gp that is unused) and is 8 bytes longer (0x60 against 0x58)
 #if 0
 void func_001FA360(s32 stage) {
     memset(&D_00470630, 0, 4);

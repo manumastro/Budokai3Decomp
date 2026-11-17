@@ -82,7 +82,12 @@ s32 func_002AB690(ScriptThread *t, ScriptCtx *ctx);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9080);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A92B0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A93E0);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9460);
+extern u8 D_005AB3A0[];
+void func_002A9460(s32 *a0, s32 a1) {
+    s32 *d = (s32 *)D_005AB3A0;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a0), "r"(d) : "memory");
+    d[4] = a1;
+}
 void func_002A9480(s32 n) {
     if (n < 0 || n > 29) {
         n = 0;
@@ -684,8 +689,27 @@ s32 func_002AC6C0(ScriptThread *t, ScriptCtx *ctx) {
     m->color[3] = a[0];
     return 1;
 }
+extern f32 D_00459390[];
+extern f32 D_004593A0[];
+extern f32 D_004593B0[];
+// GIVEN UP: the loads and the copies match; the model pointer is kept in a0 instead of v1, and the D_ loads are placed in another order (7 of 32 differ)
+#if 0
+s32 func_002AC710(s32 *a0, s32 *a1) {
+    s32 *o = (s32 *)*a0;
+    ScrModel *m = D_005BC440[o[0]];
+    f32 v[4];
+
+    v[0] = D_00459390[2];
+    v[1] = D_004593A0[2];
+    v[2] = D_004593B0[2];
+    *(s32 *)&v[3] = 0;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(v), "r"((u8 *)m->flag + 0x10) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"((u8 *)m->flag + 0x20), "r"(m->color) : "memory");
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC710);
-extern void func_002AC710(s32 *, s32 *);
+extern s32 func_002AC710(s32 *, s32 *);
 s32 func_002AC790(s32 *a0, s32 *a1) {
     s32 *e = (s32 *)((u8 *)D_005BC440 + *(s32 *)a0[0] * 144);
     s32 flag = *(s32 *)*(s32 **)((u8 *)a1 + 0x2C);
@@ -714,21 +738,38 @@ s32 func_002AC860(ScriptThread *t, ScriptCtx *ctx) {
     m->flag->flags &= ~(u16)a[0];
     return 1;
 }
-// GIVEN UP: the table index and the flag are right; the registers of the entry pointer and the flag reload differ
-#if 0
+extern u8 D_0047CAD0[];
 s32 func_002AC8C0(s32 *a0, u8 *a1) {
     u8 *p = *(u8 **)(a1 + 0x2C);
     u16 f = *(u16 *)p;
-    ScrModel *m = &D_005BC440[*(s32 *)(*a0)][*(s32 *)(p + 4) + 1];
+    ScrModel *m = D_005BC440[*(s32 *)(*a0)];
+    ScrModel *e = &m[*(s32 *)(p + 4) + 1];
+    ScrFlag *fl = e->flag;
 
     if (f & 0x30) {
-        *(u16 *)((u8 *)m->flag + 0x32) &= 0xFFCF;
+        fl->flags &= 0xFFCF;
     }
-    *(u16 *)((u8 *)m->flag + 0x32) |= f;
+    fl->flags |= f;
+    return 1;
+}
+// GIVEN UP: the VU0 copy and the constant store match; the three loads are placed in the wrong order and get other FPU registers (7 of 21 differ)
+#if 0
+s32 func_002AC930(s32 a0, u8 *a1) {
+    f32 *p = *(f32 **)(a1 + 0x2C);
+    f32 v[4];
+    f32 z = p[2];
+    f32 y = p[1];
+    f32 x = p[0];
+
+    v[0] = z;
+    v[1] = y;
+    v[2] = x;
+    v[3] = 1.0f;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(v), "r"(D_0047CAD0) : "memory");
+    *(f32 *)(D_0047CAD0 + 0xC) = 0.0f;
     return 1;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC8C0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC930);
 s32 func_002AC990(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
