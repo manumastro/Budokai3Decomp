@@ -503,24 +503,26 @@ void func_00300B60(Task2FAFF0 *t) {
     Vec4_2FAFF0 vA;
     Vec4_2FAFF0 vB;
     Vec4_2FAFF0 vC;
+    char *s0;
     s32 i;
 
+    s0 = (char *)t + 0x30;
     *(Q16_2FAFF0 *)&vA = *(Q16_2FAFF0 *)D_00458B80;
-    vA.x = F32AT(t, 0x30);
-    vA.y = F32AT(t, 0x34);
-    vA.z = F32AT(t, 0x38);
+    vA.x = F32AT(s0, 0);
+    vA.y = F32AT(s0, 4);
+    vA.z = F32AT(s0, 8);
     *(Q16_2FAFF0 *)&vB = *(Q16_2FAFF0 *)D_00458B90;
-    vB.x = F32AT(t, 0x3C);
-    vB.y = F32AT(t, 0x40);
-    vB.z = F32AT(t, 0x44);
+    vB.x = F32AT(s0, 0xC);
+    vB.y = F32AT(s0, 0x10);
+    vB.z = F32AT(s0, 0x14);
     asm volatile("lqc2 $vf1, 0(%0)
 	lqc2 $vf2, 0(%1)
 	vsub.xyz $vf1, $vf1, $vf2
 	sqc2 $vf1, 0(%2)" : : "r"(&vB), "r"(&vA), "r"(&vC) : "memory");
-    if (func_00146E90(&vC) <= gTourMap->f50 * F32AT(t, 0x48)) {
-        F32AT(t, 0x30) = F32AT(t, 0x3C);
-        F32AT(t, 0x34) = F32AT(t, 0x40);
-        F32AT(t, 0x38) = F32AT(t, 0x44);
+    if (func_00146E90(&vC) <= gTourMap->f50 * F32AT(s0, 0x18)) {
+        F32AT(s0, 0) = F32AT(s0, 0xC);
+        F32AT(s0, 4) = F32AT(s0, 0x10);
+        F32AT(s0, 8) = F32AT(s0, 0x14);
     } else {
         func_00146ED0(&vC, &vC);
         F32AT(gTourMap->f44, 0x30) = F32AT(gTourMap->f44, 0x30) + vC.x;
