@@ -145,13 +145,73 @@ void func_002AA0D0(void) {
 void func_002AA0E0(void) {
     func_002A9AE0();
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA0F0);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA1B0);
+extern void amFile_Load(s32);
+extern void amNode_Free(void *);
+extern void *amNode_Alloc(void);
+void func_002AA0F0(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 *e = (s32 *)((u8 *)D_005BC440 + a0 * 144 + (a1 + 1) * 48);
+
+    if (e[0] != 0) {
+        amCdFs_ReleaseCache(e[0]);
+    }
+    if (e[2] != 0) {
+        amNode_Free((void *)e[2]);
+    }
+    e[0] = a2;
+    e[1] = a3;
+    amFile_Load(e[1]);
+    e[2] = (s32)amNode_Alloc();
+    e[3] = 0;
+    e[4] = 0;
+    *(f32 *)&e[5] = D_004708F8;
+    e[6] = 0;
+}
+extern void amFile_Load(s32);
+extern void amCamera_Init(void *);
+void func_002AA1B0(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 *e = (s32 *)((u8 *)D_005BC180 + a0 * 352 + a1 * 176);
+
+    if (e[0] != 0) {
+        amCdFs_ReleaseCache(e[0]);
+    }
+    e[0] = a2;
+    e[1] = a3;
+    amFile_Load(e[1]);
+    amCamera_Init(e + 8);
+    e[2] = 0;
+    e[3] = 0;
+    *(f32 *)&e[4] = D_004708F8;
+    e[5] = 0;
+}
+// GIVEN UP: the arithmetic and the calls match; the original keeps the slot offset and recomputes the entry after the release call (0xD0 against 0xC4 bytes)
+#if 0
+void func_002AA260(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    u8 *s1 = (u8 *)D_005ABA80 + ((a0 * 33 * 8) - a0) * 128 + ((a1 * 33 * 8) - a1) * 32;
+    s32 *s5 = (s32 *)(s1 + a2 * 4 + 0x14);
+
+    if (*s5 != 0) {
+        amCdFs_ReleaseCache(*s5);
+    }
+    *s5 = a3;
+    amFile_Load(a4);
+    *(s32 *)(s1 + a2 * 4 + 0x30) = a4;
+    amMotSet_Bind(s1 + 0x40, a2, a4);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA260);
 void func_002AA330(void) {
     func_002A9C00();
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA340);
+void func_002AA340(s32 a0, s32 a1, s32 a2, s32 a3) {
+    u8 *e0 = (u8 *)D_005ABA80 + ((a0 * 33 * 8) - a0) * 128;
+    u8 *e = e0 + ((a1 * 33 * 8) - a1) * 32;
+
+    if (*(s32 *)(e + 8) != 0) {
+        amCdFs_ReleaseCache(*(s32 *)(e + 8));
+    }
+    *(s32 *)(e + 8) = a2;
+    *(s32 *)(e + 0x24) = a3;
+}
 void func_002AA3D0(void) {
     func_002A9EA0();
 }
@@ -209,10 +269,76 @@ s32 func_002AA5A0(ScriptThread *t, ScriptCtx *ctx) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA600);
+s32 func_002AA600(s32 *a0, s32 *a1) {
+    s32 i = *(s32 *)a0[0];
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + p[1] * 208;
+    u8 *tbl = *(u8 **)(e + 4);
+    u8 *base = tbl + *(s32 *)(tbl + 0x14);
+    u8 *rec = tbl + *(s32 *)(base + *(s32 *)(e + 8) * 4);
+
+    if (p[0] == 0) {
+        *(f32 *)((u8 *)a1 + 0x40) = (f32)*(s16 *)(rec + 0x10);
+    } else {
+        *(f32 *)((u8 *)a1 + 0x40) = (f32)*(s16 *)(rec + 0x12);
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA6B0);
+// GIVEN UP: the same tail-call shape as func_002AAB40 and 16 bytes short (0xD0 against 0xE0): the extra instructions are not placed
+#if 0
+s32 func_002AA8A0(s32 *a0, s32 *a1) {
+    u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
+    s32 i = *(s32 *)a0[0];
+    s32 j = *(s32 *)(p + 0xC);
+    u8 *e = (u8 *)((s32)(j * 208) + ((s32)D_005BC9E0 + i * 416));
+    u8 *sub = *(u8 **)((u8 *)a1 + 0x38);
+    s32 *q = (s32 *)(sub + 0x68);
+    s32 k;
+
+    *(f32 *)(e + 0x24) = *(f32 *)(p + 8);
+    *(f32 *)(e + 0x28) = *(f32 *)(p + 4);
+    *(f32 *)(e + 0x2C) = *(f32 *)(p + 0);
+    k = (s32)*(f32 *)(e + 0x24);
+    if (*(s32 *)(sub + 0x6C) != 0) {
+        q[0] += k;
+    } else {
+        q[0] = k + (s32)D_004708F0[i];
+    }
+    q[1] = 1;
+    a0[4] = (s32)func_002AA6B0;
+    return func_002AA6B0(a0, a1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA8A0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA980);
+// GIVEN UP: a tail call and the stores match; the original is 16 bytes longer (0xF0 against 0xE0): the order of the index sums differs
+#if 0
+s32 func_002AAB40(s32 *a0, s32 *a1) {
+    u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
+    s32 i = *(s32 *)a0[0];
+    s32 j = *(s32 *)(p + 0x10);
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + j * 208;
+    u8 *sub = *(u8 **)((u8 *)a1 + 0x38);
+    s32 *q = (s32 *)(sub + 0x68);
+    s32 k;
+
+    *(f32 *)(e + 0x20) = *(f32 *)(p + 0xC);
+    *(f32 *)(e + 0xB0) = *(f32 *)(p + 8);
+    *(f32 *)(e + 0xB4) = *(f32 *)(p + 4);
+    *(f32 *)(e + 0xB8) = *(f32 *)(p + 0);
+    *(s32 *)(e + 0xBC) = 0x3F800000;
+    k = (s32)*(f32 *)(e + 0x20);
+    if (*(s32 *)(sub + 0x6C) != 0) {
+        q[0] += k;
+    } else {
+        q[0] = k + (s32)D_004708F0[i];
+    }
+    q[1] = 1;
+    a0[4] = (s32)func_002AA980;
+    return func_002AA980(a0, a1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAB40);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAC30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAD80);
@@ -231,7 +357,20 @@ s32 func_002AB3E0(s32 *a0, s32 *a1) {
     *(f32 *)(e + 0x9C) = *(f32 *)&t0[0];
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB450);
+s32 func_002AB450(s32 *a0, s32 *a1) {
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    s32 i = *(s32 *)a0[0];
+    s32 j = p[6];
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + j * 208;
+
+    *(s32 *)(e + 8) = p[5];
+    *(s32 *)(e + 0xC) = p[4];
+    *(f32 *)(e + 0x30) = (f32)p[3];
+    *(f32 *)(e + 0x34) = (f32)p[2];
+    *(f32 *)(e + 0x40) = (f32)p[1] - 0.5f;
+    *(f32 *)(e + 0x44) = (f32)p[0];
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB4F0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB690);
 s32 func_002AB9C0(ScriptThread *t, ScriptCtx *ctx) {
@@ -270,6 +409,23 @@ s32 func_002ABA70(s32 *a0, s32 *a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABA70);
+// GIVEN UP: the callback store and the return value are right; the frame keeps one register more than the original and the join differs
+#if 0
+s32 func_002ABAF0(s32 *a0, s32 *a1) {
+    s32 *s0 = (s32 *)a1[11];
+    s32 v = 3;
+
+    a0[4] = (s32)func_002ABA70;
+    if (((s32 *)a0[0])[3] != 3) {
+        if (amAdx_IsPlaying(s0[0])) {
+            amAdx_Pause(s0[0], 0);
+            a0[4] = 0;
+            v = 1;
+        }
+    }
+    return v;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABAF0);
 s32 func_002ABB80(ScriptThread *t, ScriptCtx *ctx) {
     amAdx_Pause(ctx->args[0], 0);
@@ -339,9 +495,74 @@ s32 func_002ABE20(ScriptThread *t, ScriptCtx *ctx) {
     t->wait = 0;
     return 1;
 }
+// GIVEN UP: the loads and the calls match; the frame is 0x10 bytes short (0xC0 against 0xD0): the order of the index sums and the locals differ
+#if 0
+s32 func_002ABE50(s32 *a0, s32 *a1) {
+    s32 j = *(s32 *)*(s32 **)((u8 *)a1 + 0x2C);
+    s32 i = *(s32 *)*a0;
+    s32 *e = (s32 *)((u8 *)D_005BC560 + i * 576 + j * 36);
+    s32 loc[5];
+    s32 r;
+
+    if (e[4] != 0 && e[7] != 0) {
+        loc[0] = j;
+        loc[1] = e[5];
+        loc[2] = e[8];
+        loc[3] = e[4];
+        loc[4] = e[7];
+        r = amSound_LoadStream(loc, e + 3);
+        if (r != 0) {
+            a0[4] = (s32)func_002ABE50;
+            return 3;
+        }
+    }
+    a0[4] = 0;
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABE50);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABF20);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABFC0);
+extern s32 amSound_LoadBank2(void *, void *);
+extern s32 func_002ABF20(s32 *, s32 *);
+s32 func_002ABF20(s32 *a0, s32 *a1) {
+    s32 loc[3];
+    s32 *e;
+    s32 i = *(s32 *)a0[0];
+    s32 j = *(s32 *)*(s32 **)((u8 *)a1 + 0x2C);
+    s32 r;
+
+    e = (s32 *)((u8 *)D_005BC560 + i * 576 + (j + 15) * 36);
+    loc[0] = j;
+    loc[1] = e[2];
+    loc[2] = e[1];
+    r = amSound_LoadBank2(loc, D_005BC560);
+    if (r != 0) {
+        a0[4] = (s32)func_002ABF20;
+        return 3;
+    }
+    a0[4] = 0;
+    return 1;
+}
+extern s32 amSound_LoadBank(void *, s32);
+extern s32 func_002ABFC0(s32 *, s32 *);
+s32 func_002ABFC0(s32 *a0, s32 *a1) {
+    s32 loc[3];
+    s32 *e;
+    s32 j = *(s32 *)*(s32 **)((u8 *)a1 + 0x2C);
+    s32 i = *(s32 *)a0[0];
+    s32 r;
+
+    e = (s32 *)((u8 *)D_005BC560 + i * 576 + j * 36);
+    loc[0] = j;
+    loc[1] = e[2];
+    loc[2] = e[1];
+    r = amSound_LoadBank(loc, i * 576);
+    if (r != 0) {
+        a0[4] = (s32)func_002ABFC0;
+        return 3;
+    }
+    a0[4] = 0;
+    return 1;
+}
 s32 func_002AC060(ScriptThread *t, ScriptCtx *ctx) {
     func_00144650(ctx->args[0]);
     return 1;
@@ -369,7 +590,26 @@ s32 func_002AC160(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC190);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC330);
+extern void func_002AC190(s32 *, s32 *);
+void func_002AC330(s32 *a0, s32 *a1) {
+    s32 *a3 = *(s32 **)((u8 *)a1 + 0x2C);
+    s32 *a2 = (s32 *)(*(u8 **)((u8 *)a1 + 0x38) + 0x70);
+
+    if (a3[2] != 0) {
+        a0[15] = a3[2];
+        a2[0] = 0;
+        a2[1] = 0;
+        *(f32 *)&a2[2] = *(f32 *)&a3[1];
+        *(f32 *)&a2[3] = *(f32 *)&a3[0];
+        a0[4] = (s32)func_002AC190;
+        func_002AC190(a0, a1);
+    } else {
+        if (a0[4] == (s32)func_002AC190) {
+            a0[4] = 0;
+        }
+    }
+    func_002AC190(a0, a1);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC3D0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC520);
 s32 func_002AC660(ScriptThread *t, ScriptCtx *ctx) {
@@ -388,13 +628,49 @@ s32 func_002AC6C0(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC710);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC790);
+extern void func_002AC710(s32 *, s32 *);
+s32 func_002AC790(s32 *a0, s32 *a1) {
+    s32 *e = (s32 *)((u8 *)D_005BC440 + *(s32 *)a0[0] * 144);
+    s32 flag = *(s32 *)*(s32 **)((u8 *)a1 + 0x2C);
+
+    if (flag == 0) {
+        if (a0[5] == (s32)func_002AC710) {
+            a0[5] = 0;
+        }
+        if (e[2] != 0) {
+            amNode_Free((void *)e[2]);
+            e[2] = 0;
+        }
+    } else {
+        a0[5] = (s32)func_002AC710;
+        if (e[2] == 0) {
+            e[2] = (s32)amNode_Alloc();
+        }
+        *(s16 *)((u8 *)e[2] + 0x30) = 0;
+        *(u16 *)((u8 *)e[2] + 0x32) |= 3;
+    }
+    return 1;
+}
 s32 func_002AC860(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     ScrModel *m = &D_005BC440[t->obj->id][a[1] + 1];
     m->flag->flags &= ~(u16)a[0];
     return 1;
 }
+// GIVEN UP: the table index and the flag are right; the registers of the entry pointer and the flag reload differ
+#if 0
+s32 func_002AC8C0(s32 *a0, u8 *a1) {
+    u8 *p = *(u8 **)(a1 + 0x2C);
+    u16 f = *(u16 *)p;
+    ScrModel *m = &D_005BC440[*(s32 *)(*a0)][*(s32 *)(p + 4) + 1];
+
+    if (f & 0x30) {
+        *(u16 *)((u8 *)m->flag + 0x32) &= 0xFFCF;
+    }
+    *(u16 *)((u8 *)m->flag + 0x32) |= f;
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC8C0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC930);
 s32 func_002AC990(ScriptThread *t, ScriptCtx *ctx) {
@@ -426,6 +702,31 @@ s32 func_002AD5F0(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD610);
+// GIVEN UP: the same shape as func_002AA8A0 (a tail call) but the order of the stores and the loads differs (45 of 52 instructions)
+#if 0
+s32 func_002AD800(s32 *a0, s32 *a1) {
+    u8 *obj = (u8 *)a0;
+    u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
+    u8 *sub = *(u8 **)((u8 *)a1 + 0x38);
+    s32 *q = (s32 *)(sub + 0x68);
+    s32 v;
+
+    *(u8 *)(obj + 0x2A) = (u8)*(s32 *)(p + 0x10);
+    *(s32 *)(obj + 0x34) = *(s32 *)(p + 8) | ((*(s32 *)(p + 0xC) + 1) << 16);
+    *(f32 *)(obj + 0x2C) = *(f32 *)(p + 4) - *(f32 *)(obj + 0x38);
+    *(f32 *)(obj + 0x30) = 1.0f + *(f32 *)(p + 0);
+    *(u8 *)(obj + 0x2B) = 1;
+    v = (s32)(*(f32 *)(obj + 0x30) - *(f32 *)(obj + 0x2C));
+    if (*(s32 *)(sub + 0x6C) != 0) {
+        q[0] += v;
+    } else {
+        q[0] = v + (s32)D_004708F0[*(s32 *)*a0];
+    }
+    q[1] = 1;
+    a0[4] = (s32)func_002AD610;
+    return func_002AD610(a0, a1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD800);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD8D0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ADA70);

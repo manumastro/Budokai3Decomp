@@ -13,11 +13,48 @@ extern void amNode_Free(void *);
 extern void amHeap_Free(void *);
 extern void func_002361F0(void);
 
+// GIVEN UP: the frame is right; the original is 16 bytes longer: its labels after the return-0 branch are padded differently
+#if 0
+s32 func_002359F0(u8 *a0) {
+    u8 *s = D_0058BBB0 + *(s32 *)(a0 + 0x1350) * 0xC0;
+
+    if (*(s8 *)(s + 0x42) == -1) {
+        return func_0022F520();
+    }
+    if (func_002CC450() & 0x80) {
+        return 0;
+    }
+    return *(f32 *)(s + 0x48) <= 0.0f;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002359F0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235A90);
+// GIVEN UP: the 1 / 100 divisions and the compare's operands come out in other registers (lh and the remainder swapped)
+#if 0
+s32 func_00235B60(u8 *a0) {
+    u8 *s = D_0058BBB0 + *(s32 *)(a0 + 0x1350) * 0xC0;
+    u32 r = func_0012EAE0(0x20);
+
+    *(s8 *)(s + 0x35) = 1;
+    return (u32)((r / 10) % 100) < (u32)*(s16 *)(s + 0x22);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235B60);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235BE0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235D90);
+// GIVEN UP: the branches are laid out with a b to the end (one instruction more than ours, 0x6C against 0x70); the arms swapped and early returns tried
+#if 0
+void func_00236020(u8 *p) {
+    s32 x = *(s32 *)((u8 *)D_00470570 + *(s8 *)(p + 6) * 0x2020 + 0x1B80);
+    s8 v = *(s8 *)(D_0058BBB0 + x * 0xC0 + 0x42);
+
+    if (v < 0) {
+        func_002300E0();
+    } else {
+        func_0022F900();
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236020);
 // GIVEN UP: the original keeps a frame for the two calls (a tail call here)
 #if 0
@@ -35,6 +72,32 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236090);
 void func_002360F0(void) {
     memset(D_0058BBB0, 0, 0x300);
 }
+// GIVEN UP: the loop's guard is a blez in the original (the compare with 0 comes out differently); a for loop and a != guard tried
+#if 0
+void func_00236110(void) {
+    s32 i = 0;
+    u8 *s;
+
+    if (*(s32 *)((u8 *)D_00470570 + 0x88D8) > 0) {
+        s = D_0058BBB0;
+        do {
+            if (*(s32 *)(s + 4) != 0) {
+                amCdFs_ReleaseCache(*(void **)s);
+                *(s32 *)s = 0;
+                *(s32 *)(s + 4) = 0;
+            } else {
+                if (*(void **)s != 0) {
+                    amCdFs_Close(*(void **)s, 0);
+                }
+                *(s32 *)s = 0;
+            }
+            i++;
+            s += 0xC0;
+        } while (i < *(s32 *)((u8 *)D_00470570 + 0x88D8));
+    }
+    memset(D_0058BBB0, 0, 0x300);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236110);
 void func_002361D0(void) {
     func_002361F0();
@@ -43,7 +106,44 @@ void func_002361E0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002361F0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236500);
+// GIVEN UP: the loop is right; the original's prologue has a 'move v0, zero' before the saves and a 16-byte longer frame (a return value kept in v0)
+#if 0
+void func_00236640(u8 *p) {
+    s32 i = 0;
+
+    if (*(s16 *)(p + 0x150) > 0) {
+        u8 *src = p;
+        u8 *dst = D_0058BBB0;
+        do {
+            *(s32 *)dst = amCdFs_ReadFileId(0x1B9, 0, 1);
+            i++;
+            *(s8 *)(dst + 0x14) = *(s16 *)(src + 0x20);
+            src += 0x50;
+            dst += 0xC0;
+        } while (i < *(s16 *)(p + 0x150));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236640);
+// GIVEN UP: the calls and the stores match; the frame is 0x10 bytes bigger (0x70 against 0x60) with the locals in any layout tried
+#if 0
+void func_002366E0(void) {
+    s32 a[4];
+    s32 w1;
+    s32 pad[7];
+    s32 b[4];
+    s32 w2;
+
+    func_001F9BB0(-1, -1);
+    func_00215230(-1, -1);
+    func_00214FD0();
+    w2 = -1;
+    func_00218440(0x10, b);
+    w1 = -1;
+    func_00243DE0(7, a);
+    func_001DA4C0();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002366E0);
 // GIVEN UP: the local buffer lands 8 bytes higher in the frame
 #if 0
@@ -59,7 +159,20 @@ void func_00236750(s32 *p) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236750);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002367B0);
+extern void *D_00470570;
+extern void (*D_0046A750[])(s32 *);
+extern void func_001B0B10(void);
+extern void func_001B0810(void);
+extern void func_002CBFF0(s32, s32);
+void func_002367B0(s32 *p) {
+    p[2] = *(s32 *)((u8 *)D_00470570 + 0x828);
+    p[3] = 0;
+    p[4] = (s32)func_001B0B10;
+    p[5] = (s32)func_001B0810;
+    D_0046A750[0](p);
+    *(u8 *)((u8 *)D_00470570 + 0x8AB8) = 1;
+    func_002CBFF0(8, p[0]);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236830);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002369E0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236AF0);
@@ -118,7 +231,20 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237670);
 s32 func_002376B0(s32 *p) {
     return (p != 0) ? *(s16 *)(D_00447454 + p[3] * 0x60 + p[4] * 8) : 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002376F0);
+extern void (*D_0046A760[])(void);
+void func_002376F0(s32 *p, s32 *q) {
+    if (p == 0 || q == 0) {
+        return;
+    }
+    if (q[0] < 0) {
+        return;
+    }
+    if (q[0] >= 6) {
+        return;
+    }
+    p[10] = 0;
+    D_0046A760[q[0]]();
+}
 // GIVEN UP: the join labels and the flag stores are laid out differently (tried nested forms)
 #if 0
 void func_00237760(s32 *p, s32 a1) {
@@ -143,7 +269,20 @@ void func_00237760(s32 *p, s32 a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237760);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002377C0);
+extern void *amHeap_Alloc(s32, s32, u8 *, s32);
+extern void *amNode_Alloc(void);
+extern u8 D_0046A798[];
+s32 *func_002377C0(void) {
+    s32 *s = amHeap_Alloc(0x38, 1, D_0046A798, 0x108);
+
+    memset(s, 0, 0x38);
+    s[7] = 0x3F800000;
+    s[0] = (s32)amNode_Alloc();
+    *(u16 *)((u8 *)s[0] + 0x30) = 0;
+    *(u16 *)((u8 *)s[0] + 0x32) |= 3;
+    s[1] = -1;
+    return s;
+}
 // GIVEN UP: the frame and the join label differ (tried a combined condition)
 #if 0
 void func_00237840(s32 *p) {
@@ -173,7 +312,25 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237E00);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237EC0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002380F0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238200);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238340);
+extern void amTask_Kill(void *);
+extern void func_0022D0E0(s32, s32);
+extern void func_0023A5F0(s32);
+extern u8 D_0046A98A[];
+void func_00238340(u8 *a0) {
+    u8 *s = a0 + 0x30;
+
+    if (*(void **)(a0 + 0x44) != 0) {
+        amTask_Kill(*(void **)(a0 + 0x44));
+        *(s32 *)(s + 0x14) = 0;
+    }
+    if (*(s32 *)(s + 0x10) != 0) {
+        func_0022D0E0(*(s32 *)(s + 0x10), 1);
+        *(s32 *)(s + 0x10) = 0;
+    }
+    if (*(s16 *)(D_0046A98A + *(s32 *)(s + 0xC) * 12) != -1) {
+        func_0023A5F0(*(s16 *)(D_0046A98A + *(s32 *)(s + 0xC) * 12));
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002383D0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238610);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238790);
@@ -181,20 +338,157 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238C50);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239110);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239200);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002392F0);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002393E0);
+extern s32 D_0058BF40[];
+extern void amTask_Kill(void *);
+extern void func_0022D4B0(s32, s32);
+void func_002393E0(u8 *a0) {
+    u8 *s = a0 + 0x30;
+    s32 i;
+
+    D_0058BF40[*(s32 *)(a0 + 0x34)] = 0;
+    if (*(void **)(a0 + 0x4C) != 0) {
+        amTask_Kill(*(void **)(a0 + 0x4C));
+    }
+    if (*(s32 *)(s + 0x18) != 0) {
+        func_0022D4B0(*(s32 *)(s + 0x18), 1);
+        *(s32 *)(s + 0x18) = 0;
+    }
+    for (i = 0; i < 3; i++) {
+        if (*(s32 *)(s + 0xC) != 0) {
+            func_0022D4B0(*(s32 *)(s + 0xC), 1);
+        }
+        *(s32 *)(s + 0xC) = 0;
+        s += 4;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239480);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239720);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239920);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239CC0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239DA0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239E80);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239F60);
+extern s32 D_0058BF30[];
+extern void amTask_Kill(void *);
+extern void func_0022D4B0(s32, s32);
+void func_00239F60(u8 *a0) {
+    u8 *s = a0 + 0x30;
+    s32 i;
+
+    D_0058BF30[*(s32 *)(a0 + 0x34)] = 0;
+    if (*(void **)(a0 + 0x50) != 0) {
+        amTask_Kill(*(void **)(a0 + 0x50));
+    }
+    if (*(s32 *)(s + 0x1C) != 0) {
+        func_0022D4B0(*(s32 *)(s + 0x1C), 1);
+        *(s32 *)(s + 0x1C) = 0;
+    }
+    for (i = 0; i < 4; i++) {
+        if (*(s32 *)(s + 0xC) != 0) {
+            func_0022D4B0(*(s32 *)(s + 0xC), 1);
+        }
+        *(s32 *)(s + 0xC) = 0;
+        s += 4;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A000);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A150);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A240);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A3B0);
+extern u8 D_0058BF1C[];
+extern u8 D_0058BF24[];
+extern s32 D_00470730;
+extern void func_0022C7D0(s32, s32, f32);
+// GIVEN UP: the frame is 0x10 bytes short (0x40 against 0x30): the original keeps the sub-object pointer in a saved register across the call
+#if 0
+void func_0023A4B0(void) {
+    u8 *s1 = *(u8 **)D_0058BF1C;
+    u8 *s0 = *(u8 **)D_0058BF24;
+    s32 *s2;
+
+    if (s1 != 0) {
+        *(s32 *)(s1 + 0x30) = 0x41000000;
+        s2 = (s32 *)(s1 + 0x30);
+        func_0022C7D0(*(s32 *)(s1 + 0x40), 1, 8.0f);
+        s2[2] = 1;
+    }
+    if (s0 != 0) {
+        *(s32 *)(s0 + 0x30) = 0x41000000;
+        s2 = (s32 *)(s0 + 0x30);
+        func_0022C7D0(*(s32 *)(s0 + 0x40), 1, 8.0f);
+        s2[2] = 1;
+    }
+    if (s1 == 0 && s0 == 0) {
+        D_00470730 = 1;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A4B0);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A560);
+extern u8 *D_0058BEB0[];
+extern void func_00125740(void *, s32, s32);
+extern void func_0022C7D0(s32, s32, f32);
+extern s32 func_002535D0(s32);
+void func_0023A560(s32 a0, s32 a1) {
+    u8 *s0 = D_0058BEB0[a0] + 0x30;
+
+    func_00125740(s0 + 0x20, a1, 0x10);
+    if (a0 >= 0x1A && a0 < 0x1E) {
+        *(s32 *)s0 = 0;
+        func_0022C7D0(*(s32 *)(s0 + 0x10), 1, 0.0f);
+        *(s32 *)(s0 + 0x28) = (s8)func_002535D0(*(s32 *)(s0 + 0x24));
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A5F0);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A7A0);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A840);
+extern s32 D_0047072C;
+extern u8 D_0058BF24[];
+void func_0023A7A0(void) {
+    s32 i;
+    u8 **s0;
+    s32 n;
+    s32 *p;
+
+    if (D_0047072C != 0) {
+        s0 = D_0058BEB0;
+        i = 0;
+        do {
+            if (*s0 != 0) {
+                amTask_Kill(*s0);
+                *s0 = 0;
+            }
+            i++;
+            s0++;
+        } while (i < 0x1E);
+    }
+    D_0047072C = 1;
+    n = 0x1D;
+    p = (s32 *)D_0058BF24;
+    do {
+        p[0] = 0;
+        p[-1] = 0;
+        n -= 6;
+        p[-2] = 0;
+        p[-3] = 0;
+        p[-4] = 0;
+        p[-5] = 0;
+        p -= 6;
+    } while (n >= 0);
+}
+extern s32 D_0047072C;
+extern u8 D_0058BF24[];
+void func_0023A840(void) {
+    s32 n;
+    s32 *p;
+
+    D_0047072C = 1;
+    n = 0x1D;
+    p = (s32 *)D_0058BF24;
+    do {
+        p[0] = 0;
+        p[-1] = 0;
+        n -= 6;
+        p[-2] = 0;
+        p[-3] = 0;
+        p[-4] = 0;
+        p[-5] = 0;
+        p -= 6;
+    } while (n >= 0);
+}

@@ -61,6 +61,22 @@ s32 func_00225380(void) {
 }
 
 // GIVEN UP: the original keeps p in s1 and the result in s0 across its calls; no source form tried matched the registers.
+// GIVEN UP: the code is right; the original keeps the result of the second call in a saved register (a 16-byte-larger frame) and the parameter in s1
+#if 0
+void func_002253B0(s32 *a0) {
+    s32 *s;
+
+    func_0021C620(a0[0]);
+    s = func_0021C660(a0[0]);
+    if (a0[1] != 0) {
+        s[8] = s[4];
+        s[13] = 0;
+        s[0] |= 0x100000;
+    } else {
+        s[0] &= 0xFFEFFFFF;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002253B0);
 void func_00225440(void) {
     func_0023A4B0();
@@ -370,7 +386,23 @@ INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00226540);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002269B0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227010);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002270B0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002271D0);
+extern s32 *D_004706F4;
+extern s32 D_004706FC;
+extern s32 D_00470700;
+extern void func_0022D0E0(s32, s32);
+void func_002271D0(s32 *a0) {
+    s32 n;
+
+    func_0022D0E0(a0[6], 1);
+    *(s32 *)(a0[4] + 0x14) = a0[5];
+    *(s32 *)(a0[5] + 0x10) = a0[4];
+    D_004706F4[D_004706FC] = (s32)a0;
+    n = D_004706FC + 1;
+    D_004706FC = n;
+    if (n == D_00470700) {
+        D_004706FC = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227240);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002273B0);
 void func_00227810(void) {
@@ -592,11 +624,54 @@ void func_0022D0B0(s32 *p, s32 flag) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D0E0);
+// GIVEN UP: the list push and the removal loop are right; 32 of 45 instructions differ on the registers and the order of the loads
+#if 0
+void func_0022D4B0(s32 a0, s32 a1) {
+    s32 i;
+    s32 n;
+    s32 *tbl = (s32 *)D_004706C0;
+
+    D_004706AC[D_004706B4] = a0;
+    D_004706B4 = D_004706B4 + 1;
+    if (D_004706B4 == D_004706B8) {
+        D_004706B4 = 0;
+    }
+    if (a1 != 0) {
+        n = D_004706BC;
+        if (n > 0) {
+            for (i = 0; i < n; i++) {
+                if (tbl[i * 2] == a0) {
+                    func_00125740(&tbl[i * 2], &tbl[(i + 1) * 2], (n - i) * 8);
+                    D_004706BC = D_004706BC - 1;
+                    break;
+                }
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D4B0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D570);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D670);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D860);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DA90);
+extern s32 *D_004706AC;
+extern s32 D_004706B0;
+extern s32 D_004706B8;
+extern void func_0022B900(s32 *, s32 *, f32);
+s32 *func_0022DA90(s32 *a0, f32 a1) {
+    s32 *s1;
+
+    s1 = ((s32 **)D_004706AC)[D_004706B0];
+    D_004706B0 = D_004706B0 + 1;
+    if (D_004706B0 == D_004706B8) {
+        D_004706B0 = 0;
+    }
+    memset(s1, 0, 0x60);
+    if (a0 != 0) {
+        func_0022B900(a0, s1, a1);
+    }
+    return s1;
+}
 void func_0022DB20(f32 a, f32 b) {
     D_00470718 = a;
     D_0047071C = b;

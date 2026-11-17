@@ -367,16 +367,35 @@ s32 func_001CB7A0(void) {
     w->unk891C = 0;
     return 1;
 }
+// GIVEN UP: the code is the same size but one instruction short (0x8C against 0x90): an unused zero in a1 in the original
+#if 0
+s32 func_001CB7E0(void *self, ScriptCtx *ctx) {
+    s32 *a = (s32 *)ctx->args;
+    u8 *f = *(u8 **)((u8 *)D_00470570 + 0x8934 + a[0] * 4);
+
+    *(s8 *)((u8 *)D_00470570 + 0x8AB1) = *(s32 *)(*(u8 **)(f + 0x1354) + 0x1350) + 1;
+    *(s8 *)(f + 0x1FF8) = -1;
+    *(s32 *)(*(u8 **)(f + 0x1354) + 0x1AC4) = 0;
+    func_001DD680((Fighter *)f);
+    func_001D80A0(*(Fighter **)(f + 0x1354), 9);
+    func_001D9960(*(Fighter **)(f + 0x1354), 0x1C, 1);
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB7E0);
 s32 func_001CB870(void) {
     func_001DA4C0();
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB890);
+// GIVEN UP: one addu operand order differs (the global's base is the first operand in the original)
 #if 0
-/* Does not match yet: 10 of 13 instructions differ. */
 s32 func_001CB9B0(void *self, ScriptCtx *ctx) {
-    D_00470570->fighter[ctx->args[1]]->unk1AD6 = ctx->args[0] ? 1 : 0;
+    s32 *a = (s32 *)ctx->args;
+    u8 *bw = (u8 *)D_00470570;
+    u8 *p = *(u8 **)(bw + 0x8934 + a[1] * 4);
+
+    *(s16 *)(p + 0x1AD6) = (a[0] != 0) ? 1 : 0;
     return 1;
 }
 #endif
