@@ -3008,6 +3008,46 @@ s32 func_001C8780(Fighter *f, s32 i) {
 #endif
 // differs: the test on the slot is kept in a0 in the original (lw a0, bnez a0), the final max is a movz / slt pair; ours loads into v0 and the register numbers of f, i and the result differ
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8780);
+#if 0
+s32 func_001C8860(Fighter *f, s32 i) {
+    s32 k = i << 2;
+    s32 *slot = (s32 *)((u8 *)f + k + 0x1DB8);
+    s32 s2 = 0;
+    s32 r = 0;
+    s32 *e;
+    void *p;
+
+    if (*slot == 0) {
+        p = func_001CAAB0(FT_FIELD((u8 *)FT_FIELD(f, void *, 0x1CF8) + i * 20, s16, 0xD6),
+                          FT_FIELD((u8 *)FT_FIELD(f, void *, 0x1CF8) + i * 20, s16, 0xD8),
+                          FT_FIELD(f, s8, 0x1D0C + i), FT_FIELD(f, s32, 0x1350), 0);
+        if (p == 0) {
+            s2 = 0;
+        } else {
+            FT_FIELD(f, s32, 0x1EF8) = FT_FIELD(p, s32, 0x20);
+            *slot = (s32)p;
+            s2 = FT_FIELD(f, s32, 0x1EF8);
+        }
+    }
+    e = (s32 *)((u8 *)f + i * 28 + 0x1DF8);
+    if (e[6] != 0) {
+        r = 0;
+    } else if (e[0] != 0 || e[5] != 0) {
+        r = 0;
+    } else {
+        if (((s32 *)FT_FIELD(f, void *, 0x1CF8))[i] != -1) {
+            r = amCdFs_ReadFileId(((s32 *)FT_FIELD(f, void *, 0x1CF8))[i], 0, 1);
+            e[5] = r;
+            FT_FIELD(f, s32, 0x1EF8) = r;
+        }
+    }
+    if (r != 0) {
+        return r;
+    }
+    return s2;
+}
+#endif
+// differs: 82 of 83 differ: frame 0x60 against 0x50 and the registers of f, i and the slot pointer are permuted (the original keeps the slot pointer in s0 and the index in s3)
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8860);
 s32 func_001C89A0(Fighter *f, s32 i) {
     u8 *base = (u8 *)f + i * 28;
@@ -3067,45 +3107,38 @@ void func_001C8E60(void) {
         f = (Fighter *)((u8 *)f + 0x2020);
     }
 }
-#if 0
-// differs: same loop shape as func_001C8FE0; the registers now match, but the function is 16 bytes short (0xF0 against 0x100): the battle count is re-read through its address in each loop
-extern void func_001C8050(Fighter *f, s32 i);
-extern void func_001D9CA0();
-extern void func_001DA4C0(void);
 extern void func_001C90D0(void);
+extern void func_001DA4C0(void);
 extern void amTask_KillGroup(s32, s32, s32);
+
 void func_001C8EE0(void) {
-    Fighter *first;
-    BattleWork *bw;
-    Fighter *p;
-    s32 i;
+    BattleSlots *bw = (BattleSlots *)D_00470570;
+    Fighter *f0 = (Fighter *)((u8 *)bw + 0x830);
+    s32 i = 0;
+    Fighter *f;
     s32 j;
-    bw = D_00470570;
-    first = (Fighter *)((u8 *)bw + 0x830);
-    i = 0;
-    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
-        p = first;
+
+    if (0 < bw->numFighters) {
+        f = f0;
         do {
-            func_001C80E0(p, -1);
-            func_001C8050(p, -1);
+            func_001C80E0(f, -1);
+            func_001C8050(f, -1);
             i++;
-            p = (Fighter *)((u8 *)p + 0x2020);
-        } while (i < BW_FIELD(bw, s32, 0x88D8));
+            f = (Fighter *)((u8 *)f + 0x2020);
+        } while (i < bw->numFighters);
     }
     func_001DA4C0();
-    j = 0;
-    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+    if (0 < bw->numFighters) {
+        j = 0;
         do {
-            func_001D9CA0(first);
+            func_001D9CA0(f0, 1);
             j++;
-            first = (Fighter *)((u8 *)first + 0x2020);
-        } while (j < BW_FIELD(bw, s32, 0x88D8));
+            f0 = (Fighter *)((u8 *)f0 + 0x2020);
+        } while (j < bw->numFighters);
     }
     amTask_KillGroup(0x20, 0x40000000, 1);
     func_001C90D0();
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8EE0);
 extern void func_001DA4C0(void);
 extern void amTask_KillGroup(s32, s32, s32);
 
