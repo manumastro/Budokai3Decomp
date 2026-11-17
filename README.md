@@ -23,7 +23,8 @@ figures, the compiler evidence and the next steps.
 
 ## Building
 
-macOS (Apple Silicon, with Rosetta for wibo) or Linux x86-64 (not tried yet), with Python 3.9 or newer, and
+macOS (Apple Silicon, with Rosetta for wibo) or Linux x86-64 (also Ubuntu 24.04 under WSL2 on Windows: keep the
+checkout on the Linux filesystem, not `/mnt/c`, where the 32-bit ee-gcc fails), with Python 3.9 or newer, and
 `bsdtar` (macOS has it; on Linux the `libarchive-tools` package) or `7z` to read the disc image.
 
 ```sh

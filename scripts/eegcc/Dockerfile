@@ -4,7 +4,7 @@
 #
 #     docker build --platform linux/amd64 -t budokai3-eegcc scripts/eegcc
 #
-# On Apple Silicon this runs under Rosetta or QEMU (colima's amd64 emulation).
+# On Apple Silicon this runs under Docker's amd64 emulation (Rosetta or QEMU).
 FROM debian:bookworm-slim
 RUN dpkg --add-architecture i386 \
  && apt-get update \
