@@ -18,7 +18,47 @@ s32 func_0029E7F0(u8 *a0) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E870);
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
+extern void memset(void *, s32, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern char D_0046EA48[];
+u8 *func_0029E870(s32 a0, s32 a1, s32 a2, s32 a3) {
+    u8 *s0;
+    s32 v;
+
+    s0 = amHeap_Alloc(0x2C0, 0, D_0046EA48, 0xAC);
+    memset(s0, 0, 0x2C0);
+    s0[0x2B8] = 0;
+    s0[0x2B9] = 0;
+    if (a0 != 0) {
+        *(s32 *)s0 = a0;
+        *(s32 *)(s0 + 0x2A0) = *(s32 *)(a0 + 0x20);
+    } else {
+        v = amCdFs_ReadFileId(0xEFA, 0, 1);
+        *(s32 *)(s0 + 0x2B0) = v;
+        *(s32 *)(s0 + 0x2A0) = v;
+        v = amCdFs_ReadFileId(0xEFB, 0, 1);
+        *(s32 *)(s0 + 0x2B4) = v;
+        *(s32 *)(s0 + 0x2A0) = v;
+        a1 = 0xEF9;
+    }
+    if (a1 != -1) {
+        v = amCdFs_ReadFileId(a1, 0, 1);
+        *(s32 *)(s0 + 0x294) = v;
+        *(s32 *)(s0 + 0x2A0) = v;
+    }
+    if (a2 != -1) {
+        v = amCdFs_ReadFileId(a2, 0, 1);
+        *(s32 *)(s0 + 0x298) = v;
+        *(s32 *)(s0 + 0x2A0) = v;
+    }
+    if (a3 != -1) {
+        v = amCdFs_ReadFileId(a3, 0, 1);
+        *(s32 *)(s0 + 0x29C) = v;
+        *(s32 *)(s0 + 0x2A0) = v;
+    }
+    return s0;
+}
 extern s32 func_001CAAB0(s32, s32, s32, s32, s32);
 extern u8 *func_0029E870(s32, s32, s32, s32);
 void func_0029E9B0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
@@ -113,6 +153,64 @@ void func_0029F070(u8 *a0, f32 dt) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F180);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00228430(s32);
+extern void func_00227A30(u8 *);
+extern void func_0022C060(f32, s32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+// GIVEN UP (round 5 chr2): 4 of 70 differ, all in block 1 (the first s1->4 test). The original keeps the bltz delay slot a nop and the
+// argument 0 of func_00228430 in the jal delay slot; ours moves the argument into the bltz slot. Tried: switch on the mode (cases ascending, 62 differ),
+// if chain with empty bodies (this one, 4 differ), nested else (4 differ), a1c loaded before a18 (kept).
+#if 0
+void func_0029F350(u8 *s1, u8 *s0) {
+    s32 s2;
+    s32 a18;
+    s32 a1c;
+    s32 mode;
+
+    mode = *(s32 *)(s1 + 0x18);
+    if (mode == 2) {
+    } else if (mode == 1) {
+    } else if (mode == 0) {
+        return;
+    }
+    if (*(s32 *)(s1 + 4) >= 0) {
+        func_00228430(0);
+        func_00227A30(s0);
+        s2 = *(s32 *)(s0 + 0x20);
+        a1c = *(s32 *)(s0 + 0x1C);
+        a18 = *(s32 *)(s0 + 0x18);
+        D_00470704 = a18;
+        D_0047070C = a1c;
+        D_00470708 = s2;
+        amModel_SetCurrent(a18, a1c);
+        D_00470238 = s2;
+        func_0022C060(1.0f, *(s32 *)(s0 + 0x10));
+        func_00228410();
+        func_0022CD00(*(s32 *)(s0 + 0x10));
+    }
+    if (*(s32 *)s1 >= 0) {
+        func_00228430(0);
+        func_00227A30(s0);
+        s2 = *(s32 *)(s0 + 0x20);
+        a1c = *(s32 *)(s0 + 0x1C);
+        a18 = *(s32 *)(s0 + 0x18);
+        D_00470704 = a18;
+        D_0047070C = a1c;
+        D_00470708 = s2;
+        amModel_SetCurrent(a18, a1c);
+        D_00470238 = s2;
+        func_0022C060(1.0f, *(s32 *)(s1 + 0x1C));
+        func_00228410();
+        func_0022CD00(*(s32 *)(s1 + 0x1C));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F350);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F470);
 // round 5 chr2: three layouts of the state chain (if/else-if in order 0,1,2; switch in order; switch 2,1,0) all compile to 0xEC against 0x100; the original starts with li v1,2 and tests 2,1,0 with beq on the constants in v1.
