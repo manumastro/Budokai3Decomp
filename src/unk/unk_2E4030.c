@@ -97,6 +97,52 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4BF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4D60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5040);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5170);
+extern s32 func_0022D670(s32, f32);
+extern void func_0022D0E0(s32, s32);
+/* differs: compiled 0x144 against 0x150: the original keeps one more value live across the calls (it saves s7 as well:
+   step), ours keeps seven saved registers; the walking pointer variant (e260_c) gave 0x13C. */
+#if 0
+void func_002E5260(u8 *a0) {
+    u8 *base;
+    s32 step;
+    s32 i;
+    s32 n;
+    s32 idx;
+    s32 off;
+    u8 *q;
+    s32 v;
+
+    base = a0;
+    step = 0x10000 / a0[0xF3];
+    for (i = 0; i < 13; i++) {
+        q = base + 0x30 + i * 12;
+        if (*(s32 *)q != 0) {
+            func_0022D0E0(*(s32 *)q, 0);
+            *(s32 *)q = 0;
+        }
+    }
+    if (a0[0xF3] > 0) {
+        n = 0;
+        idx = 0;
+        off = 0;
+        q = base;
+        while (n < a0[0xF3]) {
+            v = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)base + 0x1C) + 0x130), 0.0f);
+            *(s32 *)(q + 0x30) = v;
+            *(s32 *)(q + 0x34) = off;
+            *(s16 *)(q + 0x38) = *(s16 *)(base + 0xD6 + n * 2);
+            if (*(s16 *)(q + 0x38) == *(s16 *)(base + 0xF0)) {
+                idx = (s16)n;
+            }
+            n++;
+            q += 12;
+            off += step;
+        }
+    }
+    a0[0xF2] = (u8)idx;
+    *(s32 *)(base + 0xF8) = *(u16 *)(base + (s16)idx * 12 + 0x34);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5260);
 extern void func_002E5260(u8 *);
 
