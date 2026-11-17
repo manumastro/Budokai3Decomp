@@ -2210,7 +2210,53 @@ L900:
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7820);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7940);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7B50);
+extern s32 D_004700A0;
+extern s8 D_004708D4;
+extern void func_002A7940(void);
+void func_002A7B50(struct Task *a0) {
+    s32 *s0 = gEvtWork;
+    s32 s2;
+    s32 t;
+    s32 v;
+    void *fn;
+    s8 x;
+    char *base;
+    f32 f;
+    func_00133B50(0, 0);
+    A2d_SetMode(D_004E05F8[0]);
+    v = s0[0x78 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x890000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x890000);
+    D_00470238 = 0;
+    s2 = s0[0x80 / 4];
+    func_00228430(0);
+    func_00228430(0);
+    func_0022C060(s2, 1.0f);
+    func_00228410();
+    func_0022CD00(s2);
+    func_00228410();
+    A2d_FlushList();
+    f = func_002B06A0();
+    *(f32 *)&s0[0x98 / 4] = *(f32 *)&s0[0x98 / 4] + f;
+    func_0022BC30(((s32 *)((s32 *)s0[0x74 / 4])[0x1C / 4])[s0[0x90 / 4]], *(f32 *)&s0[0x98 / 4]);
+    f = *(f32 *)&s0[0x98 / 4];
+    if (!(f < 30.0f)) {
+        s0[0x98 / 4] = 0;
+        fn = (void *)func_002A7940;
+        *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        t = D_004700A0;
+        if (t != -1) {
+            x = D_00511450[0];
+            base = (char *)D_004E6560 + x * 4624;
+            *(s32 *)(base + 0x1254) = t;
+            *(s32 *)(base + 0x1258) = D_004700A0;
+            D_004700A0 = -1;
+            D_004708D4 = 1;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7CB0);
 extern f32 func_002B06A0(void);
 extern void func_0022E0B0(s32);
