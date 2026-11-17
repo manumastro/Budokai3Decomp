@@ -168,33 +168,36 @@ void func_001ABD80(Fighter *f) {
     FT_FIELD(f, s32, 0x41C) = 0;
 }
 #if 0
-// differs: the constants are loaded into registers at the top (4, 0x7530, 5) where the original keeps them; register assignment not reproduced
+// differs: 23 of 62. The original keeps 0x7530 in $a1 and 5 in $a0 (both loaded at the top); plain constants and named locals both give 0x7530 in $a0 and 5 loaded late into $v1. Register order not reproduced.
 void func_001ABE10(void) {
+    s32 k4 = 4;
+    s32 k7 = 0x7530;
+    s32 k5 = 5;
     D_00495A40[0] = 0;
     D_00495A48[0] = 0;
-    D_00495A42[0] = 4;
-    D_00495A44[0] = 0x7530;
+    D_00495A42[0] = k4;
+    D_00495A44[0] = k7;
     D_00495A90[0] = 1;
-    D_00495A46[0] = 0x7530;
+    D_00495A46[0] = k7;
     D_00495AD4[0] = 2;
     D_00495A4C[0] = 0;
     D_00495A4E[0] = 0;
-    D_00495A92[0] = 5;
-    D_00495A94[0] = 0x7530;
-    D_00495A96[0] = 0x7530;
+    D_00495A92[0] = k5;
+    D_00495A94[0] = k7;
+    D_00495A96[0] = k7;
     D_00495A98[0] = 0;
     D_00495A9C[0] = 0;
     D_00495A9E[0] = 0;
-    D_00495AD6[0] = 5;
-    D_00495B1A[0] = 5;
-    D_00495AD8[0] = 0x7530;
-    D_00495ADA[0] = 0x7530;
+    D_00495AD6[0] = k5;
+    D_00495B1A[0] = k5;
+    D_00495AD8[0] = k7;
+    D_00495ADA[0] = k7;
     D_00495ADC[0] = 0;
     D_00495AE0[0] = 0;
     D_00495AE2[0] = 0;
     D_00495B18[0] = 0;
-    D_00495B1C[0] = 0x7530;
-    D_00495B1E[0] = 0x7530;
+    D_00495B1C[0] = k7;
+    D_00495B1E[0] = k7;
     D_00495B20[0] = 0;
     D_00495B24[0] = 0;
     D_00495B26[0] = 0;
@@ -298,6 +301,40 @@ void func_001AC240(void) {
     }
 }
 #endif
+extern u8 D_00492FC0[];
+#if 0
+// differs: 35 of 57. The count address (bw+0x88D8, li/addu form) is hoisted into a saved register across the loop; the original reads the count with lui 0x1 and a -0x7728 displacement each pass. Frame 80 matches only with the battle pointer in $s2.
+void func_001AC240(void) {
+    u8 *p;
+    s32 i;
+    BattleWork *bw;
+    u8 *e;
+    s32 a;
+    bw = gBattle;
+    i = 0;
+    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+        p = (u8 *)bw;
+        do {
+            a = *(s16 *)(p + 0x1BD4);
+            if (0 <= a) {
+                e = D_00492FC0 + a * 184;
+                *(s16 *)(e + 0xC) = 0;
+                *(s16 *)(e + 0xE) = 0;
+                *(s16 *)(e + 0x10) = 0;
+                *(s16 *)(e + 0x12) = 0;
+                *(s16 *)(e + 0x6C) = 0;
+                *(s16 *)(e + 0x6E) = 0;
+                *(s16 *)(e + 0x70) = 0;
+                *(s16 *)(e + 0x72) = 0;
+                memset(e + 0x28, 0, 0x40);
+                memset(e + 0x74, 0, 0x40);
+            }
+            i++;
+            p += 0x2020;
+        } while (i < BW_FIELD(bw, s32, 0x88D8));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC240);
 #if 0
 // differs: pointer-relocation loop: the table base is read through the address of the field (t0 = p+0x14) and the loop index keeps the other registers (52 of 54 differ)
@@ -359,6 +396,37 @@ void func_001AC400(void *vp) {
             FT_FIELD(t, s32, 0x40 + j * 4) += (s32)p;
         }
         t = t + 0x40 + cnt * 4;
+    }
+}
+#endif
+#if 0
+// differs: 0x80 against 0x90 bytes: the inner loop and the count reload match; the pointer update is folded as (q + (cnt-1)*4) + 0x44 where the original computes q + 0x44 first, and the i++ is hoisted above it
+void func_001AC400(void *pv) {
+    u8 *p = (u8 *)pv;
+    u8 *q;
+    s32 i;
+    s32 j;
+    s32 *r;
+    s32 cnt;
+    *(s32 *)(p + 8) += (s32)p;
+    q = *(u8 **)(p + 8);
+    if (0 < *(s32 *)(p + 4)) {
+        i = 0;
+        do {
+            cnt = *(s16 *)(q + 0xE);
+            if (0 < cnt) {
+                j = 0;
+                r = (s32 *)q;
+                do {
+                    r[16] += (s32)p;
+                    r++;
+                    j++;
+                } while (j < (cnt = *(s16 *)(q + 0xE)));
+            }
+            r = (s32 *)(q + 0x44);
+            q = (u8 *)r + (cnt - 1) * 4;
+            i++;
+        } while (i < *(s32 *)(p + 4));
     }
 }
 #endif
@@ -480,25 +548,29 @@ void func_001AC7C0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC7C0);
-#if 0
-// differs: size 0xE8 against 0xF0 and the loop's registers differ (first-fighter pointer kept in another saved register)
 extern s32 func_002CC4A0(void);
 extern void func_001D9480(void *);
+typedef struct BattleCountView {
+    u8 unk0000[0x88D8];
+    s32 count;
+} BattleCountView;
+#if 0
+// differs: 0xE8 against 0xF0 (the frame 96 against 80: the count address bw+0x88D8 is hoisted into a fifth saved register, the original recomputes lui/addu for each count read; a struct view for the count changes nothing)
 s32 func_001AC990(void) {
-    u8 *first;
     BattleWork *bw;
+    u8 *first;
     u8 *p;
     s32 i;
     bw = gBattle;
     first = (u8 *)bw + 0x830;
-    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+    if (0 < ((BattleCountView *)bw)->count) {
         i = 0;
         p = first;
         do {
             func_001D9480(p);
             i++;
             p += 0x2020;
-        } while (i < BW_FIELD(bw, s32, 0x88D8));
+        } while (i < ((BattleCountView *)bw)->count);
     }
     if (func_002CC4A0() == 4) {
         BW_FIELD(bw, s32, 0x88FC) = 5;
@@ -845,16 +917,14 @@ void func_001AE720(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE720);
-#if 0
-// differs: the local buffer and the flag sit at other stack offsets (flag at 0x30 and buffer at 0x40 in the original; 7 of 59 instructions differ; the local order is not the cause)
 extern void func_001A8770(s32, void *);
-extern void func_001C8020(s32, s32);
-extern void A2d_CallHandler(s32, s32 *);
 extern void func_00219270(s32);
 extern s32 func_00218CD0(s32, s32);
+#if 0
+// differs: 7 of 59. The frame is 0x90 as in the original, but the layout is buf at 0x30 and flag at 0x8C whichever of the two is declared first; the original has flag at 0x30 and buf at 0x40.
 void func_001AE890(void) {
-    u8 buf[0x50];
     s32 flag;
+    u8 buf[0x50];
     BattleWork *bw;
     s32 old;
     bw = gBattle;
@@ -929,15 +999,16 @@ void func_001AEF70(void) {
     }
 }
 #if 0
-// differs: stack layout and loop body differ: 0x98 bytes against 0xF0, the table and the bit mask sit at other offsets
+// differs: 0xF0 against 0x98 bytes (ours is 0x40 framed: the mask and arr land outside the frame); with a pad local the table stores are hoisted above the loop, the original stores them after it
 extern void func_00219270(s32);
 extern void func_00237000(s32, void *);
 extern s32 func_001B07C0(void);
 extern s32 func_001B0700(void);
 void func_001AF010(void) {
     BattleWork *bw;
-    s32 mask;
     s16 arr[4];
+    s32 mask;
+    s32 pad[2];
     void *tb[6];
     s32 i;
     bw = gBattle;
@@ -977,33 +1048,27 @@ void func_001AF650(void) {
         amCdFs_Close((void *)h, 0);
     }
 }
-#if 0
-// differs: the slot stores are folded into the battle base (2092(v1)) where the original stores through the slot pointer; the object and walker take other saved registers (50 of 56 differ)
-extern void amFile_Load(s32 h);
-extern s32 func_001A50F0(s32 a, s32 b);
+extern s32 func_001A50F0(s32, s32);
+extern void amFile_Load(s32);
 void func_001AF6C0(void) {
-    BattleWork *bw;
-    s32 *s0;
-    s32 *w;
-    s32 *obj;
-    s32 i;
-    bw = gBattle;
-    obj = (s32 *)BW_FIELD(bw, s32, 0x82C);
-    if (obj != 0) {
-        s0 = (s32 *)((u8 *)bw + 0x810);
-        s0[7] = FT_FIELD(obj, s32, 0x40);
-        s0[0] = FT_FIELD(FT_FIELD(obj, void *, 0x40), s32, 0x50);
+    BattleWork *bw = gBattle;
+    s32 *s0 = (s32 *)((u8 *)bw + 0x810);
+    s32 k;
+    s32 *s1 = *(s32 **)((u8 *)bw + 0x82C);
+    if (s1 != 0) {
+        s0[7] = *(s32 *)((u8 *)s1 + 0x40);
+        s0[0] = *(s32 *)(*(s32 *)((u8 *)s1 + 0x40) + 0x50);
         amFile_Load(s0[0]);
-        amCdFs_Close(obj, 0);
-        FT_FIELD(obj, s32, 0x40) = 0;
-        i = 0;
-        w = s0;
+        s1[16] = 0;
+        amCdFs_Close(s1, 0);
+        k = 0;
+        s1 = s0;
         do {
-            w[1] = func_001A50F0(s0[0], i);
-            amFile_Load(w[1]);
-            i++;
-            w++;
-        } while (i < 2);
+            s1[1] = func_001A50F0(s0[0], k);
+            amFile_Load(s1[1]);
+            k++;
+            s1++;
+        } while (k < 2);
         s0[3] = func_001A50F0(s0[0], 2);
         amFile_Load(s0[3]);
         s0[5] = func_001A50F0(s0[0], 4);
@@ -1011,59 +1076,54 @@ void func_001AF6C0(void) {
         s0[6] = func_001A50F0(s0[0], 5);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF6C0);
-/* differs: 13 of 19: the original zeroes $v0 in the delay slot of the test and keeps the global in $s0 across the
-   call; this form schedules the two loads and the return value differently (also tried with a result local). */
-#if 0
 s32 func_001AF7A0(void *p) {
     s32 id = FT_FIELD(p, s32, 0x160);
     BattleWork *bw = gBattle;
-
+    s32 r = 0;
     if (id != -1) {
-        BW_FIELD(bw, s32, 0x8AA4) = amCdFs_ReadFileId(id, 0, 1);
+        r = amCdFs_ReadFileId(id, 0, 1);
+        BW_FIELD(bw, s32, 0x8AA4) = r;
     }
-    return 0;
+    return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF7A0);
 /* differs: 0x44 bytes against 0x50: the original takes the address of D_0046FD84 into $a2 before the test and
    reloads the global through it for the call; the direct global read here is one instruction shorter. */
-#if 0
 s32 func_001AF7F0(void) {
+    s32 *pp = &D_0046FD84;
     BattleWork *bw = gBattle;
     u8 *s0 = (u8 *)bw + 0x810;
-
+    s32 r = 0;
     if (D_0046FD84 != -1) {
-        FT_FIELD(s0, s32, 0x1C) = amCdFs_ReadFileId(D_0046FD84, 0, 1);
+        r = amCdFs_ReadFileId(*pp, 0, 1);
+        FT_FIELD(s0, s32, 0x1C) = r;
     }
-    return 0;
+    return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF7F0);
 extern s8 D_004B4B40[];
 extern s32 (*D_00468240[])(void *);
 extern void amTask_Kill(void *);
 extern char D_00468390[];
 void Btl_TaskInit(Fighter *f);
 #if 0
-// differs: the frame: the original keeps the battle pointer in s2 across the loop (4 saved registers here, 3 there); with the global read directly the loop argument is computed each pass as in the original but the frame is 48 against 64
+// differs: 0x124 against 0x140. The original tests the seven values one by one with beq (0x19, 0x15, 0x14, 0x12, 0xF, 9, 3); both the global and a byte local get a sltiu range check for 0x14/0x15, and the frame is 80 against 64 (an extra saved register).
 void func_001AF840(void *f) {
-    s32 *q;
+    s32 *q = (s32 *)((u8 *)f + 0x30);
+    BattleWork *bw;
     s32 (**pf)(void *);
     s32 r;
-    if (D_004B4B40[0] == 0x3 || D_004B4B40[0] == 0x9 || D_004B4B40[0] == 0xF || D_004B4B40[0] == 0x12 ||
-        D_004B4B40[0] == 0x14 || D_004B4B40[0] == 0x15 || D_004B4B40[0] == 0x19) {
-        q = (s32 *)((u8 *)f + 0x30);
+    s8 mode = D_004B4B40[0];
+    if (mode == 0x19 || mode == 0x15 || mode == 0x14 || mode == 0x12 ||
+        mode == 0xF || mode == 0x9 || mode == 0x3) {
         *q = *q - 1;
         if (*q < 0) {
             func_001CA460(2, 0);
+            bw = gBattle;
             pf = D_00468240;
             if (*pf != 0) {
                 do {
-                    r = (*pf)((u8 *)gBattle + 0x690);
+                    r = (*pf)((u8 *)bw + 0x690);
                     if (r != 0) {
-                        BW_FIELD(gBattle, s32, 0x8970) = r;
+                        BW_FIELD(bw, s32, 0x8970) = r;
                     }
                     pf++;
                 } while (*pf != 0);
@@ -1277,8 +1337,9 @@ extern f32 D_0051D9A8[];
 extern f32 D_0051D9AC[];
 extern void func_0022DB40(f32);
 extern void func_001E9930(void);
-#if 0
 // differs: frame 48 against 32: the count and the loop index take saved registers (s1), the original keeps only the battle pointer; the first add has its operands in the other order
+#if 0
+// differs: 0x194 against 0x1C0 bytes (frame 48 against 32: the count and the loop index take saved registers, the original keeps only the battle pointer)
 void func_001AFFA0(void) {
     BattleWork *bw;
     s32 i;
@@ -1420,7 +1481,7 @@ void func_001B04A0(void) {
     Scene_MarkDone();
 }
 #if 0
-// differs: 8 of 50 instructions: the compiler copies the parameter into s0 before the two p[0] / p[2] loads, the original loads them from a0 first
+// differs: 8 of 50. With p[0] and p[2] loaded before the call the stage, the loads and the copy of p into $s0 come in another order (the original loads stage, p[0], p[2], then copies p; the copy and the zero argument are placed earlier here).
 extern char D_00430FC0[];
 extern s32 D_0051CD20[];
 extern f32 func_00200270(s32, f32, f32);
@@ -1430,8 +1491,14 @@ typedef struct F2Pair {
 f32 func_001B04D0(f32 *p) {
     F2Pair *e;
     f32 t;
-    e = (F2Pair *)(D_00430FC0 + D_0051CCE0.stage * 16) + D_0051CD20[0];
-    t = p[1] - func_00200270(0, p[0], p[2]);
+    s32 st;
+    f32 p0;
+    f32 p2;
+    p0 = p[0];
+    st = D_0051CCE0.stage;
+    p2 = p[2];
+    e = (F2Pair *)(D_00430FC0 + st * 16) + D_0051CD20[0];
+    t = p[1] - func_00200270(0, p0, p2);
     if (t < 0.0f) {
         t = 0.0f;
     }
@@ -2071,10 +2138,11 @@ void func_001B4C10(Fighter *f) {
     FT_FIELD(f, f32, 0x17BC) = 0.5f;
 }
 #if 0
-// differs: 2 of 88: the range test (v - 7 < 2) puts the sltiu result in v1 where the original uses at; the rest matches
+// differs: 2 of 88 (the rest matches, relocations masked): the `(u32)(v - 7) < 2` test compares in place in $v1 (sltiu v1,v1,2) where the original writes $at; plain range tests and a separate difference local give 37 of 90 or the same 2
 void func_001B4C60(Fighter *f) {
     s32 v;
-    Fighter_ResetMotion(f, 0);
+    u32 uw;
+    func_001E3430(f, 0);
     if (FT_FIELD(f, f32, 0xCB8) > 5.0f) {
         FT_FIELD(f, s16, 0xCB2) = 1;
         if (FT_FIELD(f, s8, 0x2010) != 0) {
@@ -2098,7 +2166,8 @@ void func_001B4C60(Fighter *f) {
         } else {
             v = func_001E94C0(f);
         }
-        if ((u32)v - 7u < 2u || v == 5 || v == 6) {
+        uw = (u32)(v - 7);
+        if (uw < 2u || v == 5 || v == 6) {
             FT_FIELD(f, s16, 0xCB4) = 0;
             FT_FIELD(f, s8, 0x2004) = 1;
             FT_FIELD(f, s8, 0x1FFB) = 1;
