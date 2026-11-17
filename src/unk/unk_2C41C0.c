@@ -491,7 +491,65 @@ void func_002C6D40(s32 a0, s32 a1, s32 a2) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6D40);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6EF0);
+typedef struct Sub2C6EF0 {
+    char pad0[0x54];
+    f32 f54;
+    f32 f58;
+} Sub2C6EF0;
+typedef struct Obj2C6EF0 {
+    Sub2C6EF0 *f0;
+    char pad4[0x28];
+    f32 f2C;
+    char pad30[0x10];
+    s32 f40;
+    s32 f44;
+} Obj2C6EF0;
+typedef struct I4_2C6EF0 {
+    s32 a, b, c, d;
+} I4_2C6EF0;
+typedef struct V4_2C6EF0 {
+    f32 x, y, z, w;
+} V4_2C6EF0;
+extern void func_00135D40(void *, void *, void *);
+extern void amDraw_ClosePacket(s32);
+void func_002C6EF0(char *a0, Obj2C6EF0 *a1, V4_2C6EF0 *a2) {
+    I4_2C6EF0 v60;
+    I4_2C6EF0 v50;
+    V4_2C6EF0 v40;
+    void *p60;
+    f32 t;
+    f32 s;
+    s32 d;
+    char *r;
+    Sub2C6EF0 *q;
+
+    r = a0;
+    q = a1->f0;
+    p60 = &v60;
+    v40.x = a2->x;
+    v40.y = a2->y;
+    v40.z = a2->z;
+    t = (f32)a1->f44 / (f32)a1->f40;
+    s = a1->f2C * (q->f58 + t * (q->f54 - q->f58));
+    a2->w = s;
+    v40.w = s;
+    v50.a = 0x3F800000;
+    v50.b = 0;
+    v50.c = 0x3F800000;
+    v50.d = 0x3F800000;
+    ((I4_2C6EF0 *)p60)->a = 0x3F800000;
+    v60.b = 0x3F800000;
+    v60.c = 0x3F800000;
+    v60.d = 0x3F800000;
+    func_00135D40(r, &v40, &v50);
+    func_00135D40(r + 0x10, &v40, p60);
+    d = a1->f40 - a1->f44;
+    if (d == 0x19 || d == 0x32 || d == 0x4B) {
+        amDraw_ClosePacket(1);
+        func_00135D40(r, &v40, &v50);
+        func_00135D40(r + 0x10, &v40, p60);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C7010);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C72E0);
 void func_002C7C50(TaskEff2C41C0 *t) {
