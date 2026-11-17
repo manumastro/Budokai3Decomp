@@ -1,5 +1,9 @@
 #include "common.h"
 
+f32 func_0011F320(f32);
+void func_0022C7D0(f32, s32);
+void func_0022ACF0(s32);
+
 extern s32 D_00470698;
 extern s32 D_004706A0[2];
 extern void (*D_0046A450[])(void);
@@ -96,6 +100,43 @@ void func_0021B130(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B1E0);
+#if 0
+void func_0021B420(void) {
+    u8 *sys = D_0046FDFC;
+    f32 x;
+    f32 q;
+    f32 r;
+    s32 n;
+
+    if (*(f32 *)(sys + 0xDF4) == -2.0f) {
+        return;
+    }
+    if (*(f32 *)(sys + 0xDF4) == -1.0f) {
+        return;
+    }
+    x = *(f32 *)(sys + 0x640);
+    if (x < 0.0f) {
+        x = 0.0f;
+    }
+    q = x / 60.0f;
+    r = func_0011F320(q);
+    if (r < q) {
+        r = r + 1.0f;
+    }
+    n = (s32)r;
+    if (*(f32 *)((u8 *)D_0047068C + 0x10) == (f32)n) {
+        return;
+    }
+    D_00470704 = *(s32 *)(sys + 0xE60);
+    D_0047070C = 0x04000000;
+    D_00470708 = 0;
+    func_00145CC0(*(s32 *)(sys + 0xE60), 0x04000000);
+    D_00470238 = 0;
+    func_0022C7D0((f32)n, 1);
+    func_0022ACF0(D_0047068C);
+}
+// differs: the float-to-int step is cvt.w.s (rounding) in the original, where this (int) cast gives trunc.w.s; the float block around it is otherwise close
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
 #if 0
 s32 func_0021B540(void) {
