@@ -1089,7 +1089,7 @@ void func_0020D9B0(void) {
         *p = 0;
     }
 }
-// differs: 2 of 14: the counter read goes to v1 here, to v0 in the original (tried: a local temp, the += form, a single expression, two declaration orders, reading through gWave again for the compare)
+// differs: 2 of 14: the counter read goes to v1 here, to v0 in the original. Tried (2 of 14 unless noted): a local temp, the += form, a single expression, two declaration orders, reading through gWave again for the compare, postfix ++, a gWave[30] index, an unsigned temp, a one-variable add, a - -1 form, a local pointer read first (4 of 14 with > 7; size 0x30 vs 0x40 with ++ in the compare)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D9B0);
 extern u8 D_0058A090[];
@@ -2088,7 +2088,7 @@ void func_0020F690(void) {
         *p = 0;
     }
 }
-// differs: 2 of 14: the counter's read goes to $v1 here, to $v0 in the original (the same tie as func_0020D9B0)
+// differs: 2 of 14: same v0/v1 tie as func_0020D9B0 (the first lw goes to v0, the +1 result to v1). Tried: a local q with reread gWave (2 of 14), a value temp (2 of 14), if(!(x<16)) (2 of 14), > 0xF (4 of 14)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F690);
 u8 *func_0020F6D0(s32 i) {
