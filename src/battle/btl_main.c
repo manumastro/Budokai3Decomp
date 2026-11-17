@@ -4324,6 +4324,49 @@ s32 func_001C3D10(Fighter *f) {
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C3E10);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C4000);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C4250);
+extern void *func_001EA230(void *f);
+extern void func_00146E60(void *a, void *b);
+extern void func_001C4250(void *f, void *s, s32 idx);
+#if 0
+// differs: 93 of 95 differ: the frame is 144 against 96 (seven saved registers against five: the battle pointer, the walk pointer, the counter and the offset each get their own register); the callee calls are in the right order
+void func_001C4710(Fighter *f) {
+    void *s3;
+    s32 cnt;
+    s32 off;
+    u8 *s0p;
+    f32 a;
+    BattleWork *bw;
+    bw = gBattle;
+    s3 = func_001EA230(f);
+    if (BW_FIELD(bw, s32, 0x88F8) == 4 || BW_FIELD(bw, s32, 0x88F8) == 5) {
+        if (BW_FIELD(bw, s8, 0x8AAE) != 0 && BW_FIELD(bw, s8, 0x8AAF) != 0) {
+            while (s3 != 0) {
+                if ((FT_FIELD(s3, s32, 0x38) & 2) == 0 && FT_FIELD(s3, s8, 0x35) != FT_FIELD(f, s32, 0x1350) &&
+                    FT_FIELD(s3, s32, 0x28) != 0) {
+                    cnt = 0;
+                    off = 0;
+                    s0p = (u8 *)f;
+                    do {
+                        if (!(*(f32 *)((u8 *)FT_FIELD(f, void *, 0xBB4) + off + 0x18) <= 0.0f)) {
+                            func_00146E60(s0p + 0x650, s3);
+                        }
+                        a = FT_FIELD(s3, f32, 0x20) + *(f32 *)((u8 *)FT_FIELD(f, void *, 0xBB4) + off + 0x18);
+                        a = a * a;
+                        if (0.0f <= a) {
+                            func_001C4250(f, s3, cnt);
+                            return;
+                        }
+                        cnt++;
+                        off += 4;
+                        s0p += 0x10;
+                    } while (cnt < 0x16);
+                }
+                s3 = FT_FIELD(s3, void *, 0x3C);
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C4710);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C4870);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C4C10);
