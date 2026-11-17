@@ -47,15 +47,120 @@ u8 *func_001461D0(Ring *r, s32 key) {
 INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146260);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146680);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146C20);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146E30);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146E60);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146E90);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146EB0);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146ED0);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146F10);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146F30);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146F60);
-INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146F90);
+asm void func_00146E30(void) {
+L00146E30:
+    lqc2       $vf1, 0x0($a0)
+    lqc2       $vf2, 0x0($a1)
+    vsub.xyz   $vf1, $vf1, $vf2
+    vmul.xyz   $vf1, $vf1, $vf1
+    vaddy.x    $vf1, $vf1, $vf1y
+    vaddz.x    $vf1, $vf1, $vf1z
+    qmfc2.ni   $at, $vf1
+    mtc1       $at, $f0
+    jr         $ra
+    sqrt.s $f0, $f0
+}
+asm void func_00146E60(void) {
+L00146E60:
+    lqc2       $vf1, 0x0($a0)
+    lqc2       $vf2, 0x0($a1)
+    vsub.xyz   $vf1, $vf1, $vf2
+    vmul.xyz   $vf1, $vf1, $vf1
+    vaddy.x    $vf1, $vf1, $vf1y
+    vaddz.x    $vf1, $vf1, $vf1z
+    qmfc2.ni   $at, $vf1
+    jr         $ra
+    mtc1      $at, $f0
+}
+asm void func_00146E90(void) {
+L00146E90:
+    lqc2       $vf1, 0x0($a0)
+    vmul.xyz   $vf1, $vf1, $vf1
+    vaddy.x    $vf1, $vf1, $vf1y
+    vaddz.x    $vf1, $vf1, $vf1z
+    qmfc2.ni   $at, $vf1
+    mtc1       $at, $f0
+    jr         $ra
+    sqrt.s $f0, $f0
+}
+asm void func_00146EB0(void) {
+L00146EB0:
+    lqc2       $vf1, 0x0($a0)
+    vmul.xyz   $vf1, $vf1, $vf1
+    vaddy.x    $vf1, $vf1, $vf1y
+    vaddz.x    $vf1, $vf1, $vf1z
+    qmfc2.ni   $at, $vf1
+    jr         $ra
+    mtc1      $at, $f0
+}
+asm void func_00146ED0(void) {
+L00146ED0:
+    lqc2       $vf1, 0x0($a1)
+    mfc1       $at, $f12
+    qmtc2.ni   $at, $vf3
+    vmul.xyz   $vf2, $vf1, $vf1
+    vaddy.x    $vf2, $vf2, $vf2y
+    vaddz.x    $vf2, $vf2, $vf2z
+    qmfc2.ni   $at, $vf2
+    mtc1       $at, $f0
+    vrsqrt     Q, $vf0w, $vf2x
+    vwaitq
+    vmulx.xyz  $vf1, $vf1, $vf3x
+    vmulq.xyz  $vf1, $vf1, Q
+    sqc2       $vf1, 0x0($a0)
+    jr         $ra
+    sqrt.s $f0, $f0
+}
+asm void func_00146F10(void) {
+L00146F10:
+    lqc2       $vf1, 0x0($a1)
+    mfc1       $at, $f12
+    qmtc2.ni   $at, $vf2
+    vmulx.xyz  $vf1, $vf1, $vf2x
+    jr         $ra
+    sqc2      $vf1, 0x0($a0)
+}
+asm void func_00146F30(void) {
+L00146F30:
+    lqc2       $vf1, 0x0($a0)
+    vmul.xyz   $vf2, $vf1, $vf1
+    vaddy.x    $vf2, $vf2, $vf2y
+    vaddz.x    $vf2, $vf2, $vf2z
+    qmfc2.ni   $at, $vf2
+    mtc1       $at, $f0
+    vrsqrt     Q, $vf0w, $vf2x
+    vwaitq
+    vmulq.xyz  $vf1, $vf1, Q
+    sqc2       $vf1, 0x0($a0)
+    jr         $ra
+    sqrt.s $f0, $f0
+}
+asm void func_00146F60(void) {
+L00146F60:
+    lqc2       $vf1, 0x0($a1)
+    vmul.xyz   $vf2, $vf1, $vf1
+    vaddy.x    $vf2, $vf2, $vf2y
+    vaddz.x    $vf2, $vf2, $vf2z
+    qmfc2.ni   $at, $vf2
+    mtc1       $at, $f0
+    vrsqrt     Q, $vf0w, $vf2x
+    vwaitq
+    vmulq.xyz  $vf1, $vf1, Q
+    sqc2       $vf1, 0x0($a0)
+    jr         $ra
+    sqrt.s $f0, $f0
+}
+asm void func_00146F90(void) {
+L00146F90:
+    lqc2       $vf1, 0x0($a0)
+    lqc2       $vf2, 0x0($a1)
+    vmul.xyz   $vf1, $vf1, $vf2
+    vaddy.x    $vf1, $vf1, $vf1y
+    vaddz.x    $vf1, $vf1, $vf1z
+    qmfc2.ni   $at, $vf1
+    jr         $ra
+    mtc1      $at, $f0
+}
 extern s8 D_004703E8;
 extern s8 D_004703EC;
 extern s32 D_004703C8;

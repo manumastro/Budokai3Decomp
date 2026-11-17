@@ -215,7 +215,26 @@ L001414D0:
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001415F0);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001416A0);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141920);
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141C30);
+asm void func_00141C30(void) {
+L00141C30:
+    lqc2       $vf1, 0x0($a1)
+    lqc2       $vf2, 0x0($a2)
+    vadd.xyz   $vf2, $vf2, $vf1
+    vmul.xyzw  $vf3, $vf2, $vf2
+    vaddy.x    $vf3, $vf3, $vf3y
+    vaddz.x    $vf3, $vf3, $vf3z
+    vrsqrt     Q, $vf0w, $vf3x
+    vwaitq
+    vmulq.xyz  $vf2, $vf2, Q
+    vopmula.xyz ACC, $vf1, $vf2
+    vopmsub.xyz $vf3, $vf2, $vf1
+    vmul.xyz   $vf2, $vf1, $vf2
+    vaddy.x    $vf2, $vf2, $vf2y
+    vaddz.x    $vf2, $vf2, $vf2z
+    vmulx.w    $vf3, $vf0, $vf2x
+    jr         $ra
+    sqc2      $vf3, 0x0($a0)
+}
 asm void func_00141C80(void) {
 L00141C80:
     lui        $v0, 16128
@@ -249,7 +268,38 @@ L00141C80:
 }
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141CF0);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141E70);
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142080);
+asm void func_00142080(void) {
+L00142080:
+    lwc1       $f0, 0x0($a1)
+    lwc1       $f1, 0x4($a1)
+    lwc1       $f2, 0x8($a1)
+    lwc1       $f3, 0xC($a1)
+    lwc1       $f4, 0x0($a2)
+    lwc1       $f5, 0x4($a2)
+    lwc1       $f6, 0x8($a2)
+    lwc1       $f7, 0xC($a2)
+    mula.s     $f3, $f4
+    msuba.s    $f2, $f5
+    madda.s    $f1, $f6
+    madd.s     $f8, $f0, $f7
+    mula.s     $f3, $f5
+    madda.s    $f2, $f4
+    madda.s    $f1, $f7
+    msub.s     $f9, $f0, $f6
+    swc1       $f8, 0x0($a0)
+    mula.s     $f3, $f6
+    madda.s    $f2, $f7
+    msuba.s    $f1, $f4
+    madd.s     $f10, $f0, $f5
+    swc1       $f9, 0x4($a0)
+    mula.s     $f3, $f7
+    msuba.s    $f2, $f6
+    msuba.s    $f1, $f5
+    msub.s     $f11, $f0, $f4
+    swc1       $f10, 0x8($a0)
+    jr         $ra
+    swc1      $f11, 0xC($a0)
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142100);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142120);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142280);
