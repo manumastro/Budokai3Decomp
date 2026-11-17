@@ -27,7 +27,8 @@ typedef struct Fighter {
     s8 fACD;
     char padACE[0xA2];
     s32 fB70;
-    char padB74[0x14];
+    void * fB74;
+    char padB78[0x10];
     void *fB88;
     void *fB8C;
     char padB90[0xC];
@@ -283,6 +284,8 @@ extern void func_001D7CC0(Fighter *c, s32 a);
 extern char D_004694D0[];
 extern s32 func_00233B20(Fighter *c, void *a, s32 v);
 extern s32 func_00233850(Fighter *c, void *a);
+extern void func_001F9BB0(s32 a, s32 b);
+extern void func_001E7F00(void *p);
 extern void func_002376F0(s32, void *);
 extern s32 func_002CC120(Fighter *c);
 extern s32 func_00236020(Fighter *c);
@@ -1291,7 +1294,36 @@ void func_001E2C50(Fighter *c) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2CC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2DE0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3010);
+void func_001E3010(Fighter *c) {
+    s32 buf[10];
+    char *p;
+    char *e;
+    s32 i;
+    s32 n;
+
+    if (c->f1848 < 0.0f) {
+        return;
+    }
+    if (c->f1848 > 0.0f) {
+        buf[4] = c->f1350;
+        buf[5] = c->f200D;
+        buf[3] = 3;
+        p = (char *)c->fB74;
+        n = *(s32 *)(p + 0x28);
+        e = *(char **)(p + 0x2C);
+        for (i = 0; i < n; i++) {
+            if (*(u16 *)e != 1) {
+                e += 8;
+            }
+        }
+        buf[7] = *(u16 *)(*(char **)(e + 4) + (*(s16 *)(e + 2) - 1) * 16);
+        func_00218440(9, buf);
+        func_001E9B00((void *)1, 0x21, 0, NULL, 0.0f, 1.0f);
+    }
+    c->f2001 = 1;
+    c->f184C = 0x3F800000;
+    c->f1848 = -1.0f;
+}
 void func_001E3100(Fighter *c) {
     s32 buf[12];
 
@@ -1350,6 +1382,38 @@ void func_001E3430(Fighter *c) {
     func_001E7BE0((char *)c + 0x650);
     c->f184C = 0x3F800000;
 }
+#if 0
+void func_001E3460(Fighter *c) {
+    s32 buf[10];
+
+    func_001E7F00((char *)c + 0x650);
+    c->f2001 = 0;
+    if (c->f1848 < 0.0f) {
+        c->f2002 = 0;
+    } else {
+        c->f1848 = -1.0f;
+        buf[4] = c->f1350;
+        buf[5] = c->f200D;
+        buf[3] = 2;
+        func_00218440(9, buf);
+        func_00144430((char *)c + 0x1A80);
+    }
+    if (c->fCAC != 4) {
+        if (c->f1AB0 != 0) {
+            amTask_Kill(c->f1AB0);
+            c->f1AB0 = 0;
+            func_001F9BB0(c->f1350, 9);
+        }
+    }
+    if (c->fCAC != 6 && c->fCAC != 0xB) {
+        if (c->f1A94 > 0) {
+            func_00144430((char *)c + 0x1A90);
+            c->f1A94 = 0;
+        }
+    }
+}
+#endif
+// differs: the body matches but the frame is 0x50 against 0x40 (the original reserves 16 more bytes of locals, not reproduced)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3460);
 #if 0
 void func_001E3550(Fighter *c) {
