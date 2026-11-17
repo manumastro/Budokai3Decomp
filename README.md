@@ -58,6 +58,7 @@ wibo.
 | `scripts/asm2c.py` | Turns one assembly file of the split into a C file of `INCLUDE_ASM` functions |
 | `scripts/progress.py` | Counts the functions in C per part (`--write` updates docs/progress.md) |
 | `scripts/mwmatch.py` | Compiles C with each Metrowerks build and flag set and compares functions with the original |
+| `scripts/gccmatch.py` | The same for Sony's ee-gcc builds (the libraries); `scripts/eegcc/` runs them (Docker, wibo) |
 | `scripts/names_from_strings.py` | Names library functions after the error strings they print |
 | `config/symbols/` | Library names: syscall stubs by number, Sony / CRI functions from their strings |
 | `docs/plan.md` | What the executable contains, the compiler, the figures, the plan |

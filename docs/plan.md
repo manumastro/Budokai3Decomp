@@ -121,8 +121,43 @@ Still open:
   files built with other settings; two of the matched probes (0x1CF570, 0x1E3D60) lie in the same range. Not
   settled: the flags may turn out to be per file.
 
-The two library parts are gcc output (branch-likely instructions, `sd` saves, 8-byte function starts); which ee-gcc
-(Tenkaichi 3's libraries match with ee-gcc 2.96) is not checked. A port replaces them anyway (see below).
+### The libraries' compilers
+
+The two library parts are gcc output (branch-likely instructions, `sd` saves, 8-byte function starts), and two
+different ee-gcc builds made them (2026-11-17; `scripts/gccmatch.py` over the C in `scripts/probe/gcc_*.c`, every
+runnable build of decomp.me's archive at `-O1`, `-O2`, `-O3`, `-Os`, and `-O2 -fno-strict-aliasing`, all `-G0`):
+
+| Library group | Range | Compiler and flags | Matched (0 differing instructions) |
+|---|---|---|---|
+| Sony's EE libraries (libgraph ... libmc, libsdr; crt0 before them is hand-written) | 0x100218-0x11B4E8 | ee-gcc 2.9-ee-991111 family, `-O2 -G0` | `sceGsPutDrawEnv` (58 instructions, a wait loop and two store paths) |
+| libmtap (Sony's, linked after CRI) | 0x1A19D0-0x1A1E80 | the same | `sceMtapPortOpen` (27), `func_001A19F8` (23): 9-argument RPC calls |
+| The C library (newlib); libm and libgcc by their save slots | 0x11B4E8-0x12C360 | ee-gcc 2.96-ee-001003-1, `-O2 -G0` | `rand` (25, a `__muldi3` call), `srand`, `_read_r` (24) |
+| CRI ADX (ADXF, ADXT, ...) | 0x14E5D0-0x17F1D0 (about) | ee-gcc 2.96, `-O2 -G0` | `ADXF_Seek` (69), `adxf_ChkPrmPt` (18), `ADXT_GetSfreq` (19) |
+| CRI Sofdec (MWSFD, SFD, ...) | 0x17F1D0 (about)-0x1A19D0 | ee-gcc 2.96, `-O2 -G0` | `mwPlyGetSyncMode` (39, a switch as a compare tree) |
+
+What tells them apart (**verified** unless marked):
+
+- `-G0` everywhere: neither part has a single `%gp_rel` access (newlib's `_impure_ptr` and `errno` would be one
+  at `-G8`).
+- The register save slots split the parts cleanly (**inferred** for the functions not compiled): the 2.9-ee builds
+  save `$s` / `$ra` 16 bytes apart, 2.96 8 bytes apart. 0x100250-0x11B3D8 and 0x1A19F8-0x1A1E18 are all 16 (one
+  exception, 0x106AA8 in libmpeg, not looked at), 0x11B4E8-0x12C250 and 0x14E5D0-0x1A18C8 all 8.
+- Sony's libraries: `sceGsPutDrawEnv` matches with all four 2.9-ee builds (990721, 991111, 991111-01, 991111a) and
+  with SN Systems' 2.95.3-136 at `-O2` / `-O3`; 2.96 gives 47 of 61 differing (a delay slot and a register pair),
+  3.2 55 of 57. The libmtap pair rules out SN's 2.95.3-136 (4 and 13 differing) and every 2.95 build. The four
+  2.9-ee builds produce the same code on everything tried (their output differs only in label numbers): a true
+  tie. The build uses 2.9-ee-991111-01, the version the SDK's own libraries are usually tagged with (**inferred**).
+- The C library: `rand` matches only with 2.96 at `-O2` / `-O3` / `-Os`, and `-fno-strict-aliasing` breaks it
+  (28 of 29), so newlib was built without that flag; `srand` excludes `-Os`. `_read_r` needs `long ret` (newlib's
+  `_ssize_t`; `long` is 64 bits here).
+- CRI: 2.96 at `-O2` / `-O3` and nothing else matches the five functions; `-Os` breaks `ADXF_Seek`. At `-O3`, 2.96
+  inlines `adxf_ChkPrmPt` into a later caller of the same file, where the original keeps the `jal`: ADXF was built
+  at `-O2`. `-fno-strict-aliasing` changes nothing in the CRI functions tried.
+
+Still open: `-O2` against `-O3` for the Sony libraries, the C library and Sofdec (the build uses `-O2`: no
+function tried tells them apart); two near misses kept in the probes (`sceGsSyncPath`, 45 of 197, the order of its
+time-out paths; `mwSfdPause`, 4 of 71, a register pair). How the libraries run: `scripts/eegcc/eegcc.py` (the Linux
+builds in Docker, SN's Windows builds in wibo; README, "Building").
 
 ## Reuse from the Tenkaichi 3 / Tenkaichi 4 Vita ports
 
