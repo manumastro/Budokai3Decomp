@@ -866,7 +866,30 @@ s32 func_0025EE10(TimedEE10 *o) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EE10);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EEE0);
+extern s32 func_0025EE10(TimedEE10 *o);
+s32 func_0025EEE0(TimedEE10 *o, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 v1 = a[1].i;
+    s32 v0 = a[0].i;
+
+    o->f2A = a[2].i;
+    o->f2C = -Scr_GetSpeed();
+    o->f30 = (f32)v0;
+    o->f10 = (s32)func_0025EE10;
+    func_0020F290(o->f2A, v1);
+    func_0020F1D0(o->f2A, 0.0f);
+    if (Scr_IsPaused() == 0) {
+        if (o->f30 != -1.0f) {
+            o->f2C = o->f2C + Scr_GetSpeed();
+            if (o->f2C >= o->f30) {
+                o->f10 = 0;
+                return 1;
+            }
+        }
+        func_0020EE10(o->f2A, 1);
+    }
+    return 3;
+}
 
 s32 func_0025F050(ScrCtx *ctx, ScrCmd *cmd) {
     if (func_0020EE10(ctx->f2A, 1)) {
@@ -925,7 +948,31 @@ s32 func_0025F160(Obj4B0 *o) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F230);
+extern void func_0020F300(s32, s32);
+extern void func_0020F200(s32, f32);
+s32 func_0025F230(Obj4B0 *o, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 v1 = a[1].i;
+    s32 v0 = a[0].i;
+
+    o->f2A = a[2].i;
+    o->f2C = -Scr_GetSpeed();
+    o->f30 = (f32)v0;
+    o->f10 = (void *)func_0025F160;
+    func_0020F300(o->f2A, v1);
+    func_0020F200(o->f2A, 0.0f);
+    if (Scr_IsPaused() == 0) {
+        if (o->f30 != -1.0f) {
+            o->f2C = o->f2C + Scr_GetSpeed();
+            if (o->f2C >= o->f30) {
+                o->f10 = NULL;
+                return 1;
+            }
+        }
+        func_0020EF80(o->f2A, 1);
+    }
+    return 3;
+}
 
 s32 func_0025F3A0(ScrCtx *ctx, ScrCmd *cmd) {
     if (func_0020EF80(ctx->f2A, 1)) {
@@ -1221,6 +1268,79 @@ s32 Scr_CmdObjBigCall(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020F5A0(&s);
     return 1;
 }
+typedef struct ScrOb98 {
+    char pad0[0x98];
+    s32 f98;
+    char pad9C[0x20E8 - 0x9C];
+    s32 f20E8;
+} ScrOb98;
+
+/* differs: 31 of 108: the switch body matches (ascending case order, out-of-line bodies); the locals get the
+   wrong saved registers (kind in $s1, a[1] in $s2; the original $s2 and $s1) for every declaration order, and the
+   store p->f98 takes base $v0 (the original: base $s0 after a copy in the delay slot). Tried: r = p = ..., s16 kind. */
+#if 0
+s32 func_0025FD50(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrChara *c = (ScrChara *)gBattle->f8934[a[3].i];
+    s32 s1 = a[1].i;
+    s32 kind = a[2].i;
+    s32 s0 = a[0].i;
+    ScrOb98 *p;
+    s32 r;
+    s32 flags;
+
+    func_0020F6D0(a[4].i);
+    p = (ScrOb98 *)(r = func_0020B020(c->f1350, s1, s0));
+    p->f98 = r;
+    if (p->f98 != 0) {
+        flags = c->f1350;
+        switch ((s16)kind) {
+        case 0x1:
+            if (flags != 0) {
+                flags = 0x4000020;
+            } else {
+                flags = 0x4000010;
+            }
+            break;
+        case 0x2:
+            if (flags != 0) {
+                flags = 0x4000008;
+            } else {
+                flags = 0x4000004;
+            }
+            break;
+        case 0x4:
+            if (flags != 0) {
+                flags = 0x400020;
+            } else {
+                flags = 0x400010;
+            }
+            break;
+        case 0x8:
+            flags = 0x400008;
+            break;
+        case 0x10:
+            flags = 0x4000002;
+            break;
+        case 0x400:
+            flags = 0x4000040;
+            break;
+        case 0x800:
+            if (flags != 0) {
+                flags = 0x4000100;
+            } else {
+                flags = 0x4000080;
+            }
+            break;
+        default:
+            flags = 0;
+            break;
+        }
+        p->f20E8 = func_00209540(p->f98, flags, 0);
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FD50);
 s32 Scr_CmdPlyPartSet(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
