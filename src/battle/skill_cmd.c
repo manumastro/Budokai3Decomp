@@ -274,7 +274,39 @@ void func_0024A8A0(s32 *p) {
         p[16] = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A8F0);
+extern void func_0020D400(s32, s32, s32);
+extern void func_002499A0(s32 *, s32, s32, s32, f32);
+extern s32 func_00209540(s32, s32, s32);
+extern void func_00209B50(s32, s32, s32);
+extern void func_001D9C40(s32, s32, s32);
+
+void func_0024A8F0(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    s32 v;
+    s32 src;
+    s32 *tp;
+    s32 tmp[4];
+
+    s3 = a0;
+    s1 = *(u8 **)(a0 + 0x8);
+    s0 = *(s32 *)(s1 + 0x1350);
+    s2 = *(u8 **)(a0 + 0xC);
+    *(s32 *)(a0 + 0x40) = *(s32 *)((u8 *)D_0046FE54 + 0x10);
+    func_0020D400((s32)(a0 + 0x10), (s32)s1, 1);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(a0 + 0x10));
+    tp = tmp;
+    src = (s32)(a0 + 0x10);
+    func_002499A0(tp, src, (s32)s1, (s32)s2, 30.0f);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(tmp));
+    *(f32 *)(s3 + 0x4C) = *(f32 *)(s2 + 0xCC);
+    *(f32 *)(s3 + 0x50) = 0.0f;
+    v = func_0020B020(s0, *(s16 *)(s2 + 0x58), *(s16 *)(s2 + 0x5E));
+    *(s32 *)(s3 + 0x44) = func_00209540(v, (s0 != 0) ? 0x4000020 : 0x4000010, 0);
+    func_00209B50(*(s32 *)(s3 + 0x44), (s32)(s3 + 0x20), 0);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024AA00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024ACE0);
 void func_0024B260(s32 *p) {
@@ -559,7 +591,37 @@ void func_0024FAD0(s32 *p) {
         p[16] = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FB20);
+
+void func_0024FB20(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    s32 v;
+    s32 src;
+    s32 *tp;
+    s32 tmp[4];
+
+    s3 = a0;
+    s1 = *(u8 **)(a0 + 0x8);
+    s0 = *(s32 *)(s1 + 0x1350);
+    s2 = *(u8 **)(a0 + 0xC);
+    *(s32 *)(a0 + 0x40) = *(s32 *)((u8 *)D_0046FE54 + 0x10);
+    func_0020D400((s32)(a0 + 0x10), (s32)s1, 1);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(a0 + 0x10));
+    tp = tmp;
+    src = (s32)(a0 + 0x10);
+    func_002499A0(tp, src, (s32)s1, (s32)s2, 30.0f);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(tmp));
+    *(f32 *)(s3 + 0x4C) = *(f32 *)(s2 + 0xCC);
+    *(f32 *)(s3 + 0x50) = 0.0f;
+    v = func_0020B020(s0, *(s16 *)(s2 + 0x58), *(s16 *)(s2 + 0x5E));
+    *(s32 *)(s3 + 0x44) = func_00209540(v, (s0 != 0) ? 0x4000020 : 0x4000010, 0);
+    func_00209B50(*(s32 *)(s3 + 0x44), (s32)(s3 + 0x20), 0);
+    if (*(s32 *)(s1 + 0xB9C) == 0x2A) {
+        func_001D9C40((s32)s1, s0 + 2, 0x2E);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FC50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FEA0);
 void func_00250460(s32 *p) {
