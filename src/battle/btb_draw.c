@@ -16,7 +16,7 @@
  * 5. A 16-byte struct copy through lq/sq: `typedef struct { u8 b[16]; } __attribute__((aligned(16))) T;` and a plain
  *    struct assignment (func_001F7120, as char_light.c).
  * 6. Give-ups measured in round 4 (not solved): func_001ED020 (2 diffs: the scheduler, not the source order, puts
- *    the `D_00470600 = a0` store in the bnez delay slot; 120 store orders, a comma form and volatile stores all gave 2);
+ *    the `gSceneNext = a0` store in the bnez delay slot; 120 store orders, a comma form and volatile stores all gave 2);
  *    func_001EF090 (the original keeps the unused `v` in $v1: the void form drops it); func_001F5EF0 (9 of 24:
  *    the non-zero arm is reached by a `b` from the beqz, shapes tried give 9 to 10); func_001F7820 (layout of the
  *    flag loop, 0x16C against 0x164 bytes).
