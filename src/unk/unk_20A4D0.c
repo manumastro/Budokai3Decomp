@@ -4011,6 +4011,62 @@ void func_002178C0(u8 *s) {
 // differs: the loads of the three words and the base pointer q take other registers (q in t0 where the original keeps it in a3), the VU0 lerp (qmtc2.ni, vaddax, vmaddx) and the jump-table call match
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002178C0);
+#if 0
+void func_002179E0(u8 *s) {
+    f32 kf;
+    s32 tmp;
+    s32 idx;
+    s32 a2;
+    s32 a1;
+    u8 *q;
+    u8 *p1;
+    u8 *p2;
+    Copy16A t40;
+    Copy16A t30;
+    Copy16A t20;
+
+    idx = *(s32 *)(s + 0x10);
+    a2 = *(s32 *)(s + 0x14);
+    a1 = *(s32 *)(s + 0x18);
+    q = gBattle + (idx * 257 << 5) + 0x830;
+    if (a1 != -1) {
+        p1 = q + (a2 << 4) + 0x7B0;
+        p2 = *(u8 **)(q + 0x1354) + (a1 << 4) + 0x7B0;
+        kf = 0.2f;
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%2)\n\t"
+            "lqc2 $vf2, 0(%3)\n\t"
+            "mfc1 %0, %4\n\t"
+            "nop\n\t"
+            "qmtc2.ni %0, $vf3\n\t"
+            "vsub.xyz $vf2, $vf2, $vf1\n\t"
+            "vaddax.xyz ACC, $vf1, $vf0x\n\t"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n\t"
+            "sqc2 $vf1, 0(%1)\n\t"
+            : "=r"(tmp) : "r"(&t40), "r"(p1), "r"(p2), "f"(kf) : "memory");
+    } else {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n\t"
+            "sqc2 $vf1, 0(%1)\n\t"
+            : : "r"(q + (a2 << 4) + 0x7B0), "r"(&t40) : "memory");
+    }
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n\t"
+        "lqc2 $vf2, 0(%2)\n\t"
+        "vsub.xyz $vf1, $vf1, $vf2\n\t"
+        "sqc2 $vf1, 0(%1)\n\t"
+        : : "r"(*(u8 **)(q + 0x1354) + 0x7B0), "r"(&t30), "r"(q + 0x7B0) : "memory");
+    func_00146F30(&t30);
+    func_0020D780(&t20);
+    *(void **)(s + 0x4) = &t20;
+    *(void **)(s + 0x0) = &t40;
+    *(s16 *)(s + 0x20) = 9;
+    *(s16 *)(s + 0x22) = 0;
+    *(s16 *)(s + 0x24) = 0;
+    jtbl_00469CC4[0](s);
+}
+// differs: 4 of 70 instructions: the first asm block takes the registers of p1 and &t40 swapped (a1/a2 here, the reverse in the original); every operand order tried (6) either swaps those or moves the index register (a2/a3); the float constant route (lui/ori, mtc1 f0, mfc1, nop, qmtc2) and the tail match
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002179E0);
 void func_00217B00(u8 *s) {
     *(s16 *)(s + 0x20) = 8;
