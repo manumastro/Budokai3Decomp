@@ -1,6 +1,14 @@
 #include "common.h"
 
 extern u8 *D_004707E0;
+extern void EssMain_TickA(void);
+extern void func_0026CD50(void);
+extern void EssMain_TickC(void);
+extern u32 func_0012EAE0(s32);
+extern void func_0027A260(void);
+extern s32 D_004707F0;
+extern char D_00452EB0[];
+extern void func_00272A20(s32, s32, s32);
 extern f32 D_004703BC;
 extern s32 func_0022BC30(s32, f32);
 extern void func_001F0810(s32, s32);
@@ -99,7 +107,29 @@ void EssMain_TickB(void) {
     func_00269CC0();
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026A680);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026ADC0);
+void func_0026ADC0(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    f32 f;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    *(s32 *)(D_004707E0 + 0x40) = 0;
+    *(s32 *)(D_004707E0 + 0x44) = 0;
+    *(s32 *)(D_004707E0 + 0x48) = 0;
+    f = 0.5f - 0.5f * ((60.0f - (f32)*(s32 *)(a0 + 0x30) * D_004703BC) / 60.0f);
+    *(f32 *)(D_004707E0 + 0x4C) = f;
+    func_00269B90();
+    func_00269CC0();
+    *(s32 *)s0 += 1;
+    f = (f32)*(s32 *)s0 * D_004703BC;
+    if (f < 60.0f) {
+        return;
+    }
+    *(f32 *)(D_004707E0 + 0x4C) = 0.5f;
+    func_00272A20(0, 0, 0);
+    *(void **)(s1 + 0x1C) = ((void *)EssMain_TickA == 0) ? 0 : (void *)EssMain_TickA;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026AEB0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026B010);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026B100);
@@ -124,7 +154,36 @@ void func_0026B250(u8 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026B310);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026B460);
+void func_0026B460(u8 *a0) {
+    u8 *s1;
+    s32 s0;
+    u8 *s2;
+    f32 f;
+    u8 *d;
+
+    s2 = a0;
+    func_00269B90();
+    func_00269CC0();
+    s0 = -1;
+    f = (f32)*(s32 *)(D_004707E0 + 0xF8);
+    s1 = *(u8 **)(D_004707E0 + 0x24);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s1 + 0x1C) + *(s32 *)(D_004707E0 + 0xF0) * 4), f * D_004703BC);
+    f = (f32)*(s32 *)(D_004707E0 + 0x218);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s1 + 0x1C) + *(s32 *)(D_004707E0 + 0x210) * 4), f * D_004703BC);
+    if (s0 == 0xFF) {
+        d = D_004707E0;
+        *(s32 *)(d + 0xC0) = 0xB;
+        *(s32 *)(d + 0xC8) = 0;
+        d = D_004707E0;
+        *(s32 *)(d + 0x1E0) = 0x12;
+        *(s32 *)(d + 0x1E8) = 0;
+        d = D_004707E0;
+        *(s32 *)(d + 0xF0) = 0x2F;
+        *(s32 *)(d + 0x100) = 0;
+        *(s32 *)(d + 0xF8) = 0;
+        *(void **)(s2 + 0x1C) = ((void *)func_0026CD50 == 0) ? 0 : (void *)func_0026CD50;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026B560);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026B770);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026B880);
@@ -145,7 +204,33 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026BD50);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026C7C0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026C910);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026C9F0);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026CB30);
+void func_0026CB30(u8 *a0) {
+    u8 *s2;
+    u8 *s1;
+    u8 *s0;
+    u32 ret;
+    s32 r;
+    f32 f;
+
+    s2 = a0;
+    s1 = s2 + 0x30;
+    func_0026B770();
+    func_0026B880();
+    f = (f32)*(s32 *)(D_004707E0 + 0x128);
+    s0 = D_004707E0 + 0x120;
+    r = func_0022BC30(*(s32 *)(*(u8 **)(*(u8 **)(D_004707E0 + 0x24) + 0x1C) + *(s32 *)(D_004707E0 + 0x120) * 4), f * D_004703BC);
+    if (r == 0xFF) {
+        D_004707F0 = (s32)D_00452EB0;
+        ret = func_0012EAE0(0x20);
+        *(u8 *)(D_004707E0 + 0x5D) = (ret % 3 == 0);
+        *(s32 *)s0 = (*(u8 *)(D_004707E0 + 0x5D) & 1) ? 0x10 : 0x14;
+        *(s32 *)(s0 + 8) = 0;
+        *(s32 *)(s0 + 0x10) = 1;
+        *(s32 *)s1 = 0;
+        func_0027A260();
+        *(void **)(s2 + 0x1C) = ((void *)EssMain_TickC == 0) ? 0 : (void *)EssMain_TickC;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026CC30);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026CD50);
 void func_0026CF80(u8 *a0) {
