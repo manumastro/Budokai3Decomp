@@ -338,51 +338,52 @@ void func_001AC240(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC240);
-#if 0
-// differs: pointer-relocation loop: the table base is read through the address of the field (t0 = p+0x14) and the loop index keeps the other registers (52 of 54 differ)
-void func_001AC330(void *p) {
+void func_001AC330(void *p0) {
+    s32 v;
+    s32 off;
+    u8 *f;
+    u8 *t2;
     s32 i;
+    s32 a2;
     s32 k;
-    u8 *e;
     s32 j;
-    s32 m;
-    s32 *t;
-    s32 *u;
-    FT_FIELD(p, s32, 0x14) = FT_FIELD(p, s32, 0x14) + (s32)p;
-    if (FT_FIELD(p, s32, 0x10) > 0) {
+    u8 *g;
+    u8 *p = p0;
+    *(s32 *)(p + 0x14) += (s32)p;
+    if (0 < *(s32 *)(p + 0x10)) {
         i = 0;
         k = 0;
         do {
-            t = (s32 *)(FT_FIELD(p, u8 *, 0x14) + k);
-            if (*t != 0) {
-                e = (u8 *)p + *t;
-                *t = (s32)e;
-                if (FT_FIELD(e, s32, 0x2C) != 0) {
-                    FT_FIELD(e, s32, 0x2C) = FT_FIELD(e, s32, 0x2C) + (s32)p;
-                    if (FT_FIELD(e, s32, 0x28) > 0) {
+            off = *(s32 *)(*(u8 **)(p + 0x14) + k);
+            if (off != 0) {
+                t2 = p + off;
+                *(u8 **)(*(u8 **)(p + 0x14) + k) = t2;
+                v = *(s32 *)(t2 + 0x2C);
+                if (v != 0) {
+                    *(s32 *)(t2 + 0x2C) = v + (s32)p;
+                    if (0 < *(s32 *)(t2 + 0x28)) {
+                        a2 = 0;
                         j = 0;
-                        m = 0;
                         do {
-                            u = (s32 *)(FT_FIELD(e, u8 *, 0x2C) + m);
-                            if (u[1] != 0) {
-                                u[1] = u[1] + (s32)p;
+                            f = *(u8 **)(t2 + 0x2C) + j;
+                            g = f + 4;
+                            if (*(s32 *)(f + 4) != 0) {
+                                *(s32 *)g = (s32)p + *(s32 *)(f + 4);
                             }
-                            j++;
-                            m += 8;
-                        } while (j < FT_FIELD(e, s32, 0x28));
+                            a2++;
+                            j += 8;
+                        } while (a2 < *(s32 *)(t2 + 0x28));
                     }
                 }
             }
             i++;
             k += 4;
-        } while (i < FT_FIELD(p, s32, 0x10));
+        } while (i < *(s32 *)(p + 0x10));
     }
-    if (FT_FIELD(p, s32, 0x1C) != 0) {
-        FT_FIELD(p, s32, 0x1C) = FT_FIELD(p, s32, 0x1C) + (s32)p;
+    if (*(s32 *)(p + 0x1C) != 0) {
+        *(s32 *)(p + 0x1C) = *(s32 *)(p + 0x1C) + (s32)p;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC330);
 #if 0
 // differs: a leaf loop over a table of entries; Metrowerks keeps a frame here (sq s0-s2), the original none
 void func_001AC400(void *vp) {
