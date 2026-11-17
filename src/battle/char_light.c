@@ -123,6 +123,7 @@ void func_00236020(u8 *p) {
     }
 }
 #endif
+// round 5 chr2: 8 of 29 with the <= -1 test and two tail calls (f(a0) / g(a0)): the original puts the epilogue ld ra in the b delay slot of the then arm and repeats the epilogue in the else arm; same family as 236090.
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236020);
 // GIVEN UP: the original keeps a frame for the two calls (a tail call here)
 // // differs: 11 of 40 (round 4 chr): the original branches to the else arm 4 bytes before ours (no alignment nop before the second call), with the epilogue load in the b delay slot; if/else, ?: and returns in both arms tried.

@@ -35,7 +35,7 @@ void func_0029E9B0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EA20);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EC40);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EDC0);
-// GIVEN UP: the loops over the three arrays are right in outline; the register use and the order of the loads differ (65 of 68 instructions in the first try)
+// GIVEN UP (round 5 chr2): best 63 of 68 (declare n1 before k, and the test 0 < n1). Still differs: the original loads k (a3) before the first slt $at, ours puts that load in the beqz delay slot; the return 0 / return 1 epilogue is laid out differently (the original falls into jr ra after daddu v0,zero,zero).
 #if 0
 s32 func_0029EF70(void) {
     u8 *s = D_004708CC;
@@ -78,6 +78,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F070);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F180);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F350);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F470);
+// round 5 chr2: three layouts of the state chain (if/else-if in order 0,1,2; switch in order; switch 2,1,0) all compile to 0xEC against 0x100; the original starts with li v1,2 and tests 2,1,0 with beq on the constants in v1.
 // differs: Compiled 0xD4 bytes against 0x100: the original tests state 2 first, then 1, then 0, and places the state 2 block at the end; ours lays out the state 0 and state 1 blocks differently. Recursion in state 0 matches.
 #if 0
 void func_0029F730(u8 *a0, f32 dt) {
