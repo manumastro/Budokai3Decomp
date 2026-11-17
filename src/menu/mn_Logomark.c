@@ -8,6 +8,56 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6BE0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6DC0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6FA0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E70E0);
+#if 0
+// differs: vector copies: the original loads D_00456EE0 into a3 and orders the 16-byte copies differently; the float param is stored in the delay slot of the first call (f12 kept), frame 0x70 vs 0x80 here; 64 of 81 differ
+typedef struct {
+    u32 w[4];
+} __attribute__((aligned(16))) Lm16;
+extern Lm16 D_00456EE0;
+extern Lm16 D_00456EF0;
+extern Lm16 D_00456F00;
+extern void func_0013B0B0(s32);
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00136E80(s32, void *, s32, s32, s32);
+extern void func_00137560(void *, void *);
+extern void amDraw_FlushPacket(void);
+extern void func_0013B110(s32);
+
+void func_002E72C0(f32 f, void *a0) {
+    u8 *s2;
+    u32 *s1;
+    u8 *s0;
+    Lm16 c60;
+    Lm16 c50;
+    Lm16 c40;
+    u8 *t1;
+
+    s0 = (u8 *)a0;
+    c60 = D_00456EE0;
+    c50 = D_00456EF0;
+    c40 = D_00456F00;
+    *(f32 *)&c40.w[3] = f;
+    func_0013B0B0(0x3F0800);
+    amModel_SetCurrent(*(s32 *)s0, 0x1000);
+    t1 = *(u8 **)s0;
+    func_00136E80(0x40000E24, &c40, 1, 0x44, 5);
+    s2 = t1 + *(s32 *)(t1 + *(s32 *)(t1 + 0x14) + ((1 - *(s32 *)(t1 + 0x18)) << 2));
+    c60.w[0] = 0;
+    s1 = &c60.w[1];
+    *s1 = 0;
+    s0 = (u8 *)&c50.w[1];
+    c50.w[0] = 0;
+    *(u32 *)s0 = 0;
+    func_00137560(&c60, &c50);
+    c60.w[0] = 0x44160000;
+    *s1 = 0x43E10000;
+    *(f32 *)&c50.w[0] = (f32)*(s16 *)(s2 + 0x10);
+    *(f32 *)s0 = (f32)*(s16 *)(s2 + 0x12);
+    func_00137560(&c60, &c50);
+    amDraw_FlushPacket();
+    func_0013B110(1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E72C0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E7400);
 extern void Scene_Request(s32, s32);

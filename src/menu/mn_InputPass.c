@@ -264,8 +264,118 @@ void func_002F1650(u8 *task) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1650);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1770);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F21B0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2350);
+extern void *func_0022D670(f32, void *);
+
+void func_002F21B0(Task *a0) {
+    u8 *s4;
+    u8 *s3;
+    s32 s2;
+    u16 *s1;
+    u8 *s0;
+    s32 v;
+    f32 f1;
+
+    s4 = (u8 *)a0;
+    s3 = *(u8 **)((u8 *)a0 + 0x30);
+    s0 = (u8 *)gInputName;
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    v = *(s32 *)(s0 + 0x10);
+    D_00470704 = v;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x5000);
+    D_00470238 = 0;
+    D_00470238 = 0;
+    func_002F0BC0(s3);
+    if (*(u8 *)(s3 + 0x170) < 5) {
+        s2 = 0;
+        s1 = (u16 *)s3;
+        s0 = s3;
+        do {
+            if (*(u16 *)((u8 *)s1 + 0x128) != 0xFFFF) {
+                func_0022CF70(*(s32 *)(s0 + 0x4));
+            }
+            s2++;
+            s1 = s1 + 1;
+            s0 = s0 + 4;
+        } while (s2 < 0x24);
+    }
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    f1 = *(f32 *)(s3 + 0x118) - gFrameDelta;
+    *(f32 *)(s3 + 0x118) = f1;
+    if (f1 <= 0.0f) {
+        s0 = (u8 *)gInputName;
+        v = *(s32 *)(s0 + 0x10);
+        D_00470704 = v;
+        D_0047070C = 0x5000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, 0x5000);
+        D_00470238 = 0;
+        if (*(void **)(s3 + 0x98) != 0) {
+            func_0022D0E0(*(void **)(s3 + 0x98), 1);
+        }
+        *(void **)(s3 + 0x98) = func_0022D670(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x1C) + 0x108));
+        if (*(void **)(s3 + 0x9C) != 0) {
+            func_0022D0E0(*(void **)(s3 + 0x9C), 1);
+        }
+        *(void **)(s3 + 0x9C) = func_0022D670(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x1C) + 0x10));
+        *(u8 *)(s3 + 0x170) = 2;
+        *(void **)(s4 + 0x1C) = ((void *)func_002F1770 == 0) ? 0 : (void *)func_002F1770;
+    }
+}
+extern void func_0022E0B0(s32);
+extern void func_002F21B0(Task *);
+extern void *amFile_Load(s32);
+extern void *func_0022D860(f32, void *);
+
+void func_002F2350(Task *a0) {
+    u8 *s2;
+    u8 *s1;
+    u8 *s0;
+    s32 v;
+
+    s2 = (u8 *)a0;
+    s0 = (u8 *)gInputName;
+    s1 = *(u8 **)((u8 *)a0 + 0x30);
+    if (*(s32 *)(s0 + 0x14) == 0) {
+        if (*(s16 *)(*(u8 **)(s0 + 0x8) + 0x4) != 3) {
+            return;
+        }
+        {
+            *(s32 *)(s0 + 0xC) = *(s32 *)(*(u8 **)s0 + 0x54);
+            *(s32 *)(*(u8 **)s0 + 0x54) = 0;
+            amCdFs_Close(*(void **)s0, 0);
+            *(s32 *)s0 = 0;
+            *(s32 *)(s0 + 0x10) = *(s32 *)(*(u8 **)(s0 + 0x4) + 0x54);
+            *(s32 *)(*(u8 **)(s0 + 0x4) + 0x54) = 0;
+            amCdFs_Close(*(void **)(s0 + 0x4), 0);
+            *(s32 *)(s0 + 0x4) = 0;
+            *(s32 *)(s0 + 0x14) = *(s32 *)(*(u8 **)(s0 + 0x8) + 0x54);
+            *(s32 *)(*(u8 **)(s0 + 0x8) + 0x54) = 0;
+            amCdFs_Close(*(void **)(s0 + 0x8), 0);
+            *(s32 *)(s0 + 0x8) = 0;
+            func_0022E0B0(*(s32 *)(s0 + 0xC));
+            amFile_Load(*(s32 *)(s0 + 0x10));
+            amFile_Load(*(s32 *)(s0 + 0x14));
+        }
+    }
+    s0 = (u8 *)gInputName;
+    v = *(s32 *)(s0 + 0x10);
+    D_00470704 = v;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x5000);
+    D_00470238 = 0;
+    *(void **)s1 = func_0022D860(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x14)));
+    *(u8 *)(s1 + 0x170) = 1;
+    *(f32 *)(s1 + 0x118) = 30.0f;
+    *(s16 *)(s1 + 0x124) = 0x21;
+    func_002F0B00(s1);
+    func_002F0870((u32 *)s1);
+    *(void **)(s2 + 0x1C) = ((void *)func_002F21B0 == 0) ? 0 : (void *)func_002F21B0;
+}
 extern void func_00125740(void *, void *, s32);
 
 /* Copies 0x28 bytes of the task's work area (from 0xB4) to dst, when there is a task. */
@@ -538,7 +648,57 @@ void func_002F2F00(u8 *task) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3020);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3210);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3C60);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3E00);
+extern void func_0022E0B0(s32);
+extern void func_002F3C60(void);
+extern void *amFile_Load(s32);
+extern void *func_0022D860(f32, void *);
+
+void func_002F3E00(Task *a0) {
+    u8 *s2;
+    u8 *s1;
+    u8 *s0;
+    s32 v;
+
+    s2 = (u8 *)a0;
+    s0 = (u8 *)gInputName;
+    s1 = *(u8 **)((u8 *)a0 + 0x30);
+    if (*(s32 *)(s0 + 0x14) == 0) {
+        if (*(s16 *)(*(u8 **)(s0 + 0x8) + 0x4) != 3) {
+            return;
+        }
+        {
+            *(s32 *)(s0 + 0xC) = *(s32 *)(*(u8 **)s0 + 0x54);
+            *(s32 *)(*(u8 **)s0 + 0x54) = 0;
+            amCdFs_Close(*(void **)s0, 0);
+            *(s32 *)s0 = 0;
+            *(s32 *)(s0 + 0x10) = *(s32 *)(*(u8 **)(s0 + 0x4) + 0x54);
+            *(s32 *)(*(u8 **)(s0 + 0x4) + 0x54) = 0;
+            amCdFs_Close(*(void **)(s0 + 0x4), 0);
+            *(s32 *)(s0 + 0x4) = 0;
+            *(s32 *)(s0 + 0x14) = *(s32 *)(*(u8 **)(s0 + 0x8) + 0x54);
+            *(s32 *)(*(u8 **)(s0 + 0x8) + 0x54) = 0;
+            amCdFs_Close(*(void **)(s0 + 0x8), 0);
+            *(s32 *)(s0 + 0x8) = 0;
+            func_0022E0B0(*(s32 *)(s0 + 0xC));
+            amFile_Load(*(s32 *)(s0 + 0x10));
+            amFile_Load(*(s32 *)(s0 + 0x14));
+        }
+    }
+    s0 = (u8 *)gInputName;
+    v = *(s32 *)(s0 + 0x10);
+    D_00470704 = v;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x5000);
+    D_00470238 = 0;
+    *(void **)s1 = func_0022D860(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x14) + 0x8));
+    *(u8 *)(s1 + 0x60) = 1;
+    *(f32 *)(s1 + 0x40) = 30.0f;
+    *(s16 *)(s1 + 0x4C) = 0x21;
+    func_002F2C90(s1);
+    func_002F2A10((u32 *)s1);
+    *(void **)(s2 + 0x1C) = ((void *)func_002F3C60 == 0) ? 0 : (void *)func_002F3C60;
+}
 /* Copies 0x10 bytes of the task's work area (from 0x50) to dst, when there is a task. */
 void InputPass_CopyBuf(Task *t, void *dst) {
     if (t != 0) {

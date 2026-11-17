@@ -241,7 +241,53 @@ void ArenaCharaselPvsc_Clear(void) {
     func_0027E040();
     ArenaList_ClearGlobal();
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00308860);
+extern void func_0027E120(void *);
+extern void func_0027E070(void);
+extern void func_00307C00(void *);
+extern void amCdFs_Close(void *, s32);
+extern void amHeap_Free(void *);
+extern void amTask_Kill(void *);
+
+void func_00308860(void) {
+    u8 *s2;
+    u8 *s1;
+    u8 *s0;
+    u8 *v0;
+
+    s0 = (u8 *)D_00470988;
+    if (s0 != 0) {
+        v0 = *(u8 **)(s0 + 0xC);
+        s1 = *(u8 **)(v0 + 0x30);
+        s2 = v0 + 0x30;
+        if (*(s32 *)(s1 + 0x8) != 0) {
+            func_0027E120(*(void **)(s1 + 0x8));
+        }
+        func_0027E070();
+        amHeap_Free(s1);
+        func_00307C00(s2);
+        if (*(void **)s0 != 0) {
+            amCdFs_Close(*(void **)s0, 0);
+        }
+        if (*(void **)(s0 + 0x4) != 0) {
+            amCdFs_Close(*(void **)(s0 + 0x4), 0);
+        }
+        if (*(void **)s1 != 0) {
+            amHeap_Free(*(void **)s1);
+        }
+        if (*(void **)(s1 + 0x4) != 0) {
+            amHeap_Free(*(void **)(s1 + 0x4));
+        }
+        if (*(void **)(s0 + 0x8) != 0) {
+            amTask_Kill(*(void **)(s0 + 0x8));
+        }
+        if (*(void **)(s0 + 0x10) != 0) {
+            amTask_Kill(*(void **)(s0 + 0x10));
+        }
+        amTask_Kill(*(void **)(s0 + 0xC));
+        amHeap_Free(s0);
+        D_00470988 = 0;
+    }
+}
 extern char D_0046FA50[];
 extern char D_0046FA70[];
 extern void *amTask_Create();
