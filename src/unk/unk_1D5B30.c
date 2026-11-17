@@ -453,29 +453,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6640);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6770);
 #if 0
 void func_001D6B90(Fighter *c) {
+    Fighter *p = c;
     f32 *q;
     s32 st[4];
     s32 v;
     f32 f;
 
-    q = (f32 *)((char *)c + 0x30);
-    v = D_00469478[c->f3C];
-    *(f32 *)&st[0] = 0.85f * (1.0f - c->f34 / c->f38);
+    q = (f32 *)((char *)p + 0x30);
+    v = D_00469478[p->f3C];
+    *(f32 *)&st[0] = 0.85f * (1.0f - p->f34 / p->f38);
     st[1] = 0x3000;
     st[2] = v;
     st[3] = v;
-    func_001E11E0(c->f30, st);
+    func_001E11E0(p->f30, st);
     if (gBattle->f88EC == 0) {
         f = q[1] + gBattle->f88F0;
         q[1] = f;
         if (f < q[2]) {
             return;
         }
-        amTask_Kill(c);
+        amTask_Kill(p);
     }
 }
 #endif
-// differs: 22 of 53 instructions differ with the row pointer (the first attempt was 0xC8 against 0xE0 bytes); the original keeps the object in s1 across the call
+// differs: 22 of 53: the original copies the parameter into $s1 before the first load and computes $s0 = c+0x30 after the call (moving q to after the call gives 0xC8 against 0xE0); the stores into st match
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6B90);
 void PlyScr_TaskInput(Fighter *c) {
     s32 *p;
