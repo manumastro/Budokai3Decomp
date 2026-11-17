@@ -1,5 +1,7 @@
 #include "common.h"
 
+void func_0021B070(void);
+
 void func_00248C70(void);
 void func_00252B10(void);
 void func_0025BE30(void);
@@ -716,7 +718,42 @@ void func_00243ED0(void) {
     memset(D_0058C6C0, 0, 0x3D4);
     memset(D_0058C5B0, 0, 0x110);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243F20);
+void func_00243F20(void) {
+    s32 i;
+    s32 off;
+    s32 n;
+
+    if (*(s32 *)(D_0046FE48 + 0x3CC) != 0) {
+        amCdFs_ReleaseCache(*(s32 *)(D_0046FE48 + 0x3C8));
+        *(s32 *)(D_0046FE48 + 0x3C8) = 0;
+        *(s32 *)(D_0046FE48 + 0x3CC) = 0;
+    } else {
+        if (*(s32 *)(D_0046FE48 + 0x3C8) != 0) {
+            amCdFs_Close(*(s32 *)(D_0046FE48 + 0x3C8), 0);
+            *(s32 *)(D_0046FE48 + 0x3C8) = 0;
+        }
+    }
+    i = 0;
+    off = 0;
+    for (; i < 16; i++) {
+        if (*(s32 *)(D_0046FE48 + off + 0x388) != 0) {
+            amHeap_Free(*(void **)(D_0046FE48 + off + 0x388));
+        }
+        *(s32 *)(D_0046FE48 + off + 0x388) = 0;
+        off += 4;
+    }
+    off = 0;
+    n = *(s16 *)(D_0046FE44 + 0x102);
+    if (0 < n) {
+        do {
+            func_00242490(off);
+            off++;
+        } while (off < *(s16 *)(D_0046FE44 + 0x102));
+    }
+    func_0021B070();
+    memset(D_0058C6C0, 0, 0x3D4);
+    memset(D_0058C5B0, 0, 0x110);
+}
 void func_00244040(void) {
     amTask_KillGroup(0x400, 0x20000, 0);
     func_00209450(0x400008, 1);
