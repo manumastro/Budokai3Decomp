@@ -6,6 +6,9 @@ typedef struct Work2918A0 {
     void (*f1C)(void);
     char pad20[0x10];
     s32 f30;
+    char pad34[0x8];
+    f32 f3C;
+    f32 f40;
 } Work2918A0;
 
 extern Work2918A0 *D_005AA5A0[];
@@ -14,6 +17,37 @@ extern void func_00293250(void);
 extern void func_002BD660(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_00139620(s32, void *, s32, s32, s32, f32);
+extern s32 D_005AA5E4[];
+extern s32 D_005AA5CC[];
+extern s32 D_005AA5D8[];
+extern char D_00453DC0[];
+typedef struct Q2918A0 {
+    s32 v[4];
+} Q2918A0;
+extern s32 func_0022BF80(s32);
+extern void func_0028EE90(void *, void *, void *, void *, void *, s32, s32, s32);
+extern void func_00294A10(void);
+extern s32 D_005AA604[];
+extern s32 D_005AA664[];
+extern s32 D_005AB340[];
+extern s32 D_005AA5F8[];
+extern void func_00293E80(void);
+extern s32 D_005AA640[];
+extern s32 func_002A8F90(void);
+extern void func_001F0810(s32, s32);
+extern void func_00264140(s32, s32);
+extern void func_002935F0(void);
+extern void func_00295300(void);
+extern f32 D_004703BC;
+extern s32 D_005AA5A4[];
+typedef struct Sub2918A0 {
+    char pad0[0xC];
+    f32 fC;
+    char padC[0x4];
+    f32 f10;
+} Sub2918A0;
+extern s32 D_005AA550[];
+extern void func_0022D0E0(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002918A0);
 void func_00291970(void) {
@@ -35,8 +69,76 @@ void func_00292780(Work2918A0 *o) {
     func_00139620(0x900, (char *)o + 0x30, -1, 0x44, 0, 0.0f);
     func_00133780(0, 0);
 }
+#if 0
+// differs: the parameter is kept in a saved register and the sub-object address is recomputed for the last call; mwcc reuses the first
+void func_002927E0(Work2918A0 *w) {
+    Sub2918A0 *s = (Sub2918A0 *)((char *)w + 0x30);
+    f32 f;
+
+    f = w->f40 - D_004703BC;
+    w->f40 = f;
+    if (f < 0.0f) {
+        s->f10 = 0.0f;
+        amTask_Kill(w);
+        D_005AA5A4[0] = 0;
+    }
+    if (s->f10 <= 0.0f) {
+        s->fC = 0.75f;
+    } else {
+        f = s->fC - (0.75f * D_004703BC) / s->f10;
+        s->fC = f;
+        if (f < 0.0f) {
+            s->fC = 0.0f;
+        }
+    }
+    func_00133780(0, 1);
+    func_00139620(0x900, (char *)w + 0x30, -1, 0x44, 0, 0.0f);
+    func_00133780(0, 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002927E0);
+#if 0
+// differs: the store of the decremented value is a delay-slot store before the test in the original; it is not reproduced
+void func_002928C0(Work2918A0 *w) {
+    Sub2918A0 *s;
+    f32 f;
+
+    w->f40 = f = w->f40 - D_004703BC;
+    if (f < 0.0f) {
+        w->f40 = 0.0f;
+        w->f1C = (func_00292780 == 0) ? 0 : (void (*)(void))func_00292780;
+    }
+    s = (Sub2918A0 *)((char *)w + 0x30);
+    if (s->f10 <= 0.0f) {
+        s->fC = 0.75f;
+    } else {
+        f = s->fC + (0.75f * D_004703BC) / s->f10;
+        s->fC = f;
+        if (f > 0.75f) {
+            s->fC = 0.75f;
+        }
+    }
+    func_00133780(0, 1);
+    func_00139620(0x900, (char *)w + 0x30, -1, 0x44, 0, 0.0f);
+    func_00133780(0, 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002928C0);
+#if 0
+// differs: the state test is laid out with an empty branch and aligned targets in the original: the if/else order does not reproduce it
+void func_002929A0(Work2918A0 *w) {
+    func_00291BF0();
+    if (func_002A8F90() == 0) {
+        if (D_005AA640[0] == 6) {
+            func_001F0810(0xA, 0);
+            w->f1C = (func_002935F0 == 0) ? 0 : func_002935F0;
+        } else {
+            func_00264140(-1, 0);
+            w->f1C = (func_00295300 == 0) ? 0 : func_00295300;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002929A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00292A40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00292FF0);
@@ -49,8 +151,55 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00293600);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00293950);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00293D70);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00293E80);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002948C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00294960);
+void func_002948C0(Work2918A0 *w) {
+    char *x;
+    s32 r;
+
+    x = (char *)D_005AA604[0];
+    *(s32 *)(x + 0x11D0) = *(u16 *)(x + 0x11D0);
+    D_005AA664[0] = *(u16 *)D_005AA664;
+    D_005AA664[0] = (u16)(s16)(((s32)*(s16 *)D_005AA664 * 15) >> 4);
+    func_00291BF0();
+    r = func_0022BF80(D_005AA5F8[0]);
+    if (r == 0xFF) {
+        D_005AB340[0] = 0;
+        w->f1C = (func_00293E80 == 0) ? 0 : func_00293E80;
+    }
+}
+void func_00294960(Work2918A0 *w) {
+    s32 i;
+    char *p;
+
+    func_00291BF0();
+    if (func_0022BF80(D_005AA5E4[0]) == 0xFF) {
+        p = (char *)D_005AA550;
+        for (i = 0; i < 5; i++) {
+            if (*(s32 *)(p + 0x94) != 0) {
+                func_0022D0E0(*(s32 *)(p + 0x94), 1);
+                *(s32 *)(p + 0x94) = 0;
+            }
+            if (*(s32 *)(p + 0x5C) != 0) {
+                amTask_Kill(*(s32 *)(p + 0x5C));
+                *(s32 *)(p + 0x5C) = 0;
+            }
+            p += 4;
+        }
+        w->f1C = (func_00295300 == 0) ? 0 : func_00295300;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00294A10);
+#if 0
+// differs: the 16-byte copy is lq at the first argument setup and sq in the delay slot of the call; the inline lq/sq pair lands in one place
+void func_00295260(Work2918A0 *w) {
+    Q2918A0 c;
+
+    func_00291BF0();
+    if (func_0022BF80(D_005AA5E4[0]) == 0xFF) {
+        asm volatile("lq $v0, 0(%1)\n\tsq $v0, 0(%0)" : : "r"(&c), "r"(D_00453DC0) : "$2", "memory");
+        func_0028EE90(D_005AA5A0, D_005AA5CC, D_005AA5D8, D_005AA5E4, &c, 0x9200, 0x20000, 0x300000);
+        w->f1C = (func_00294A10 == 0) ? 0 : func_00294A10;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00295260);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00295300);

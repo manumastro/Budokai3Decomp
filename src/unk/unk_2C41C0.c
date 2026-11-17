@@ -10,6 +10,63 @@ typedef struct TaskEff2C41C0 {
 
 extern void amTask_Kill(void *);
 
+/* One effect's work (stride 0xF80 in D_00470130): links to two sub-parts (f34, f38). */
+typedef struct EffPart2C41C0 {
+    char pad0[0x30];
+    f32 f30;
+    struct EffPart2C41C0 *f34;
+    struct EffPart2C41C0 *f38;
+    s32 f3C;
+    s32 f40;
+} EffPart2C41C0;
+
+/* The request of an effect: its entity (f0), a Vec4 pointer (fC), a float (f24), 64-bit entries (f30, f50). */
+typedef struct EffEnt2C41C0 {
+    char pad0[0x40];
+    s32 f40;
+    char pad44[0x34];
+    s32 f78;
+} EffEnt2C41C0;
+
+typedef struct EffReq2C41C0 {
+    EffEnt2C41C0 *f0;
+    char pad4[0x8];
+    char *fC;
+    char pad10[0x14];
+    f32 f24;
+    char pad28[0x8];
+    s64 f30;
+    char pad38[0x6];
+    s16 f3E;
+    s32 f40;
+    char pad44[0xC];
+    s64 f50;
+    char pad58[0x4];
+    s16 f5C;
+} EffReq2C41C0;
+
+extern void memset(void *, s32, s32);
+extern s64 D_004563E0[];
+
+/* A task of the training effects: its fighter (f34) and a flag word (f58). */
+typedef struct Sub2C41C0 {
+    char pad0[0x14];
+    struct TutChr *f14;
+} Sub2C41C0;
+
+typedef struct Task2C41C0 {
+    char pad0[0x34];
+    struct TutChr *f34;
+    char pad38[0x20];
+    s16 f58;
+} Task2C41C0;
+
+extern void func_002152E0(void);
+
+static inline void VecCopy(void *d, void *s) {
+    asm volatile("lqc2 $vf1, 0(%1)\n\tsqc2 $vf1, 0(%0)" : : "r"(d), "r"(s));
+}
+
 /* A fighter-side object of the effects: its sub-object (f0) and a counter (f3A). */
 typedef struct EffSubA2C41C0 {
     char pad0[0x84];
@@ -117,6 +174,38 @@ extern EffWork *D_00470130;
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C41C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C4C90);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C5EB0);
+#if 0
+// differs: the fighter value is held in a0 instead of a1: the register choice of the local is not reproduced
+s32 func_002C5FC0(Task2C41C0 *t) {
+    s32 k;
+    Sub2C41C0 *sb = (Sub2C41C0 *)((char *)t + 0x20);
+    EffWork *w;
+
+    k = ((t->f58 & 0x80) != 0) ? 0 : sb->f14->f1350;
+    w = D_00470130;
+    if (w->f4D86 & 0x8000) {
+        func_002152E0();
+        return 1;
+    }
+    if (k == 0 && (w->f4D86 & 0x2000)) {
+        func_002152E0();
+        w = D_00470130;
+        if (w->f4D84 == 0) {
+            w->f4D86 &= ~0x2000;
+        }
+        return 1;
+    }
+    if (k == 1 && (D_00470130->f4D86 & 0x1000)) {
+        func_002152E0();
+        w = D_00470130;
+        if (w->f4D84 == 0) {
+            w->f4D86 &= ~0x1000;
+        }
+        return 1;
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C5FC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C60B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C61A0);
@@ -200,7 +289,32 @@ void func_002C9950(TaskEff2C41C0 *t) {
     }
     D_005BD260[t->f3E] = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C99E0);
+void func_002C99E0(EffReq2C41C0 *s) {
+    EffPart2C41C0 *p;
+    EffEnt2C41C0 *e;
+    EffPart2C41C0 *s4;
+    EffPart2C41C0 *s3;
+
+    p = (EffPart2C41C0 *)((char *)D_00470130 + 0xF80 * s->f3E);
+    e = s->f0;
+    s4 = (EffPart2C41C0 *)((char *)p + 0xF40);
+    s3 = (EffPart2C41C0 *)((char *)p + 0xF00);
+    memset(p, 0, 0xF80);
+    p->f34 = s4;
+    s4->f38 = p;
+    p->f38 = s3;
+    s3->f34 = p;
+    VecCopy(p, s->fC);
+    p->f30 = s->f24;
+    p->f3C = 0;
+    s->f5C = 1;
+    s->f40 = s->f40 + 1;
+    s->f30 = D_004563E0[e->f78];
+    if (e->f40 > 4) {
+        e->f40 = 4;
+    }
+    s->f50 = D_004563E0[e->f40];
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9AF0);
 #if 0
 // differs: the table call is scheduled above the f3A test (mwcc hoists the lookup)

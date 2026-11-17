@@ -89,6 +89,26 @@ extern void Save_Exit(void);
 extern void func_001F0810(s32, s32);
 
 extern void amTask_Kill(void *);
+
+/* A pair of values (a table of D_00458C20, copied to the stack) and a slot of the work (stride 0x30). */
+typedef struct Pair2FAFF0 {
+    s32 a;
+    s32 b;
+} Pair2FAFF0;
+
+typedef struct PairTbl2FAFF0 {
+    Pair2FAFF0 v[4];
+} PairTbl2FAFF0;
+
+typedef struct Slot2FAFF0 {
+    s32 f0;
+    char pad4[0x4];
+    s32 f8;
+    char padC[0x24];
+} Slot2FAFF0;
+
+extern PairTbl2FAFF0 D_00458C20;
+extern s32 func_002FFD20(s32);
 void func_00300550(struct Task2FAFF0 *);
 void func_00300610(Task2FAFF0 *t);
 
@@ -135,6 +155,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBFD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC510);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC660);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC800);
+#if 0
+// differs: the 32-byte table copy to the stack is lq/sq in the original; mwcc copies a struct with lwc1/swc1
+void func_002FC9F0(void) {
+    PairTbl2FAFF0 p;
+    Slot2FAFF0 *sl;
+    s32 i = 0;
+
+    p = *(PairTbl2FAFF0 *)&D_00458C20;
+    sl = (Slot2FAFF0 *)((char *)D_00470974 + 0x19C);
+    do {
+        if (sl->f0 == p.v[i].a) {
+            if (func_002FFD20(i) != 0) {
+                sl->f0 = p.v[i].b;
+                if (sl->f8 < 11) {
+                    sl->f8 = 10 - sl->f8;
+                } else {
+                    sl->f8 = 0;
+                }
+            }
+        } else {
+            if (func_002FFD20(i) == 0) {
+                sl->f0 = p.v[i].a;
+                if (sl->f8 < 11) {
+                    sl->f8 = 10 - sl->f8;
+                } else {
+                    sl->f8 = 0;
+                }
+            }
+        }
+        i++;
+        sl++;
+    } while (i < 4);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC9F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCAF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCF60);
