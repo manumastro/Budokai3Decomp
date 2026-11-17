@@ -186,25 +186,24 @@ void func_00292780(Work2918A0 *o) {
     func_00133780(0, 0);
 }
 #if 0
-// differs: the parameter is kept in a saved register and the sub-object address is recomputed for the last call; mwcc reuses the first
+// differs: compiled 0xD8 bytes, original 0xE0; the original computes w+0x30 into a saved register at the top and keeps w in another one for the last call (a local s gives 0xD4)
 void func_002927E0(Work2918A0 *w) {
-    Sub2918A0 *s = (Sub2918A0 *)((char *)w + 0x30);
     f32 f;
 
     f = w->f40 - gFrameDelta;
     w->f40 = f;
     if (f < 0.0f) {
-        s->f10 = 0.0f;
+        ((Sub2918A0 *)((char *)w + 0x30))->f10 = 0.0f;
         amTask_Kill(w);
         D_005AA5A4[0] = 0;
     }
-    if (s->f10 <= 0.0f) {
-        s->fC = 0.75f;
+    if (((Sub2918A0 *)((char *)w + 0x30))->f10 <= 0.0f) {
+        ((Sub2918A0 *)((char *)w + 0x30))->fC = 0.0f;
     } else {
-        f = s->fC - (0.75f * gFrameDelta) / s->f10;
-        s->fC = f;
+        f = ((Sub2918A0 *)((char *)w + 0x30))->fC - (0.75f * gFrameDelta) / ((Sub2918A0 *)((char *)w + 0x30))->f10;
+        ((Sub2918A0 *)((char *)w + 0x30))->fC = f;
         if (f < 0.0f) {
-            s->fC = 0.0f;
+            ((Sub2918A0 *)((char *)w + 0x30))->fC = 0.0f;
         }
     }
     func_00133780(0, 1);
