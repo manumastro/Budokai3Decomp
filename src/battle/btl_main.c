@@ -1480,7 +1480,7 @@ void func_001B04A0(void) {
     func_001F0820();
 }
 #if 0
-// differs: 8 of 50 instructions: the compiler copies the parameter into s0 before the two p[0] / p[2] loads, the original loads them from a0 first
+// differs: 8 of 50. With p[0] and p[2] loaded before the call the stage, the loads and the copy of p into $s0 come in another order (the original loads stage, p[0], p[2], then copies p; the copy and the zero argument are placed earlier here).
 extern char D_00430FC0[];
 extern s32 D_0051CD20[];
 extern f32 func_00200270(s32, f32, f32);
@@ -1490,8 +1490,14 @@ typedef struct F2Pair {
 f32 func_001B04D0(f32 *p) {
     F2Pair *e;
     f32 t;
-    e = (F2Pair *)(D_00430FC0 + D_0051CCE0.stage * 16) + D_0051CD20[0];
-    t = p[1] - func_00200270(0, p[0], p[2]);
+    s32 st;
+    f32 p0;
+    f32 p2;
+    p0 = p[0];
+    st = D_0051CCE0.stage;
+    p2 = p[2];
+    e = (F2Pair *)(D_00430FC0 + st * 16) + D_0051CD20[0];
+    t = p[1] - func_00200270(0, p0, p2);
     if (t < 0.0f) {
         t = 0.0f;
     }
