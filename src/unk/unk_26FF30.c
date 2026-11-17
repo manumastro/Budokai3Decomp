@@ -30,6 +30,55 @@ extern f32 gFrameDelta;
 extern f32 D_0047001C;
 extern void func_00271580(void);
 
+/* 240 bytes: control flow and values match (search from f50-1 down, sentinel index 0x2F = f5DC[0x2F]); only the
+   register assignment differs (the original keeps the base in $a1, the index in $a3, the array in $a2). Tried 24
+   declaration orders of g/pf50/a2/a3 and the raw-offset macro form. */
+#if 0
+typedef struct Fz {
+    char pad0[0x48];
+    s32 f48;
+    s32 f4C;
+    s32 f50;
+    char pad54[0x4];
+    s32 f58;
+    char pad5C[0x580];
+    s32 f5DC[0x30];
+} Fz;
+
+s32 func_0026FF30(void) {
+    Fz *g = (Fz *)D_004707FC;
+    s32 *a2 = g->f5DC;
+    s32 t1 = 0x2F;
+    s32 a3 = g->f50;
+    s32 t2 = a2[0x2F];
+    s32 a0;
+
+    if (a2[a3] < g->f4C + g->f48) {
+        t2 = a2[a3];
+        t1 = a3;
+    } else {
+        for (a0 = a3 - 1; a0 >= 0; a0--) {
+            if (a2[a0] >= 0) {
+                t2 = a2[a0];
+                t1 = a0;
+                break;
+            }
+        }
+    }
+    if (t2 < 0) {
+        return 0;
+    }
+    g->f50 = t1;
+    if (g->f58 < t2 + 9) {
+        g->f4C = g->f58 - 9;
+        g->f48 = t2 - g->f4C;
+    } else {
+        g->f4C = t2;
+        g->f48 = 0;
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_0026FF30);
 typedef struct G270 {
     char pad0[0x48];

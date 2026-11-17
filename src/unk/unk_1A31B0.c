@@ -181,20 +181,25 @@ void func_001A3E60(PadWork *p) {
     p->fB4 = fB4;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1A31B0", func_001A3EF0);
-/* Stick dead zone. 3 of 54 instructions differ: the original sign-extends |x| into another register before
-   subtracting. */
+/* Stick dead zone. Same size, 1 instruction differs: the original sign-extends the |x| value into $v1 before the
+   subtraction (here it lands in $v0). Tried: s8/s32 temporaries, declaration orders, inline casts. */
 #if 0
-s8 func_001A4460(s8 x, s32 dz) {
-    s8 a;
-    s8 r;
+s32 func_001A4460(s32 a0, s32 a1) {
+    s32 x = ((s8)a0 >= 0) ? (s8)a0 : -(s8)a0;
+    s32 u = (s8)x;
+    s32 t;
+    f32 fr;
+    s32 r;
+    s32 q;
 
-    a = x >= 0 ? x : -x;
-    r = a - dz;
-    if (r < 0) {
-        r = 0;
+    t = (s8)(u - a1);
+    if (t < 0) {
+        t = 0;
     }
-    r = r * (128.0f / (128.0f - dz));
-    return x >= 0 ? r : -r;
+    fr = 128.0f / (128.0f - (f32)a1);
+    r = (s32)((f32)t * fr);
+    q = (s8)r;
+    return (s8)(((s8)a0 >= 0) ? (s8)q : -(s8)q);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1A31B0", func_001A4460);

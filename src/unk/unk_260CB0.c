@@ -38,21 +38,22 @@ void Fade_DrawOverlay(f32 a) {
     amGs_SetReg32(0, old);
 }
 
-/* Not matching yet: the original's zero-fill loop is laid out differently. */
+/* Not matching yet: 1 of 38 instructions differs, the beqz target of the zero-fill loop is one instruction too far
+   (the loop body and the call are right). Tried: while/for/do-while forms, store before/after the if, counter and
+   pointer declaration order. */
 #if 0
 void func_002621F0(f32 a) {
     FadeColor c;
     s32 old;
-    s32 n = sizeof(c);
     u8 *p = (u8 *)&c;
+    s32 n = 0x10;
 
     if (p != NULL) {
-        while (n != 0) {
+        do {
             *p++ = 0;
-            n--;
-        }
+        } while (--n);
+        c.a = a;
     }
-    c.a = a;
     old = amGs_SetReg32(0, 0x30000);
     func_00133780(0, 1);
     func_00139620(0x900, &c, -1, 0x44, 0, 0.0f);
