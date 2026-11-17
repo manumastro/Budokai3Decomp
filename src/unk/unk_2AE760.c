@@ -395,43 +395,59 @@ s32 func_002AF330(Ac2AE *o, Ev2AE *e) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF330);
-/* differs: 114 of 138 instructions (the first load of the list and the second A2d/amModel block are in another order; the -1 branch and the 16-byte zero loop are unverified); draft below */
+/* differs: 31 of 132 instructions (same residual as func_002AF650: the zeroing loop of the original has a `beqz` guard on the
+   buffer pointer with `li v0,16` in the delay slot, and the list element of the 1.0f calls is in $v1 there, $v0 here) */
 #if 0
 s32 func_002AF420(Ac2AE *o, Ev2AE *e) {
-    f32 *p;
+    s32 x1;
+    s32 s1;
+    s32 idx;
     f32 lf;
     u8 *s2;
-    s32 idx;
+    s32 x0;
+    f32 *p;
     s32 k;
     u8 buf[16];
+    s32 e0;
     f32 d;
 
     p = e->f2C;
+    s2 = D_005BCD20 + (**(s32 **)o) * 160 + ((s32 *)p)[3] * 40;
     lf = p[0];
     idx = ((s32 *)p)[2];
-    s2 = D_005BCD20 + (**(s32 **)o) * 160 + ((s32 *)p)[3] * 40;
     A2d_SetMode(D_004708FC);
-    D_00470704 = ((s32 *)s2)[2];
-    D_0047070C = ((s32 *)s2)[5];
-    amModel_SetCurrent(((s32 *)s2)[2]);
-    D_00470708 = ((s32 *)s2)[4];
+    s1 = ((s32 *)s2)[4];
+    x1 = ((s32 *)s2)[5];
+    x0 = ((s32 *)s2)[2];
+    D_00470704 = x0;
+    D_0047070C = x1;
+    D_00470708 = s1;
+    amModel_SetCurrent(x0);
+    D_00470238 = s1;
     func_00228430(0);
-    D_00470238 = ((s32 *)s2)[4];
     if (idx == -1) {
         for (k = 0; k < *(s32 *)(*(u8 **)(s2 + 0xC) + 0x18); k++) {
             func_00228430(0);
-            func_0022C060(1.0f, (*(s32 **)(s2 + 0x24))[k]);
+            e0 = (*(s32 **)(s2 + 0x24))[k];
+            func_0022C060(1.0f, e0);
             func_00228410();
             func_0022CD00((*(s32 **)(s2 + 0x24))[k]);
         }
     } else {
         func_00228430(0);
-        for (k = 0; k < 16; k++) {
-            buf[k] = 0;
+        {
+            u8 *q;
+            s32 n;
+            q = buf;
+            n = 16;
+            do {
+                *q++ = 0;
+            } while (--n);
         }
         *(f32 *)(buf + 8) = lf;
         func_00227A30(buf);
-        func_0022C060(1.0f, (*(s32 **)(s2 + 0x24))[idx]);
+        e0 = (*(s32 **)(s2 + 0x24))[idx];
+        func_0022C060(1.0f, e0);
         func_00228410();
         func_0022CD00((*(s32 **)(s2 + 0x24))[idx]);
     }
@@ -455,4 +471,76 @@ void func_002AF630(Ac2AE *o, Ev2AE *e) {
     o->f10 = (void *)func_002AF420;
     func_002AF420(o, e);
 }
+/* differs: 31 of 132 instructions (the twin of func_002AF420 with offsets 0x20 and count 0x10; the parameter loads, the
+   stores and the -1 loop match). The 16-byte zeroing loop: the original guards it with `beqz` on the buffer pointer and
+   `li v0,16` in the delay slot; the do-while without guard matches the loop body but not the guard, and with the guard
+   the compiler adds two nops; the list element of the 1.0f calls is in $v1 in the original and $v0 here. */
+#if 0
+s32 func_002AF650(Ac2AE *o, Ev2AE *e) {
+    s32 x1;
+    s32 s1;
+    s32 idx;
+    f32 lf;
+    u8 *s2;
+    s32 x0;
+    f32 *p;
+    s32 k;
+    u8 buf[16];
+    s32 e0;
+    f32 d;
+
+    p = e->f2C;
+    s2 = D_005BCD20 + (**(s32 **)o) * 160 + ((s32 *)p)[3] * 40;
+    lf = p[0];
+    idx = ((s32 *)p)[2];
+    A2d_SetMode(D_004708FC);
+    s1 = ((s32 *)s2)[4];
+    x1 = ((s32 *)s2)[5];
+    x0 = ((s32 *)s2)[2];
+    D_00470704 = x0;
+    D_0047070C = x1;
+    D_00470708 = s1;
+    amModel_SetCurrent(x0);
+    D_00470238 = s1;
+    func_00228430(0);
+    if (idx == -1) {
+        for (k = 0; k < *(s32 *)(*(u8 **)(s2 + 0xC) + 0x10); k++) {
+            func_00228430(0);
+            e0 = (*(s32 **)(s2 + 0x20))[k];
+            func_0022C060(1.0f, e0);
+            func_00228410();
+            func_0022CD00((*(s32 **)(s2 + 0x20))[k]);
+        }
+    } else {
+        func_00228430(0);
+        {
+            u8 *q;
+            s32 n;
+            q = buf;
+            n = 16;
+            do {
+                *q++ = 0;
+            } while (--n);
+        }
+        *(f32 *)(buf + 8) = lf;
+        func_00227A30(buf);
+        e0 = (*(s32 **)(s2 + 0x20))[idx];
+        func_0022C060(1.0f, e0);
+        func_00228410();
+        func_0022CD00((*(s32 **)(s2 + 0x20))[idx]);
+    }
+    func_00228410();
+    A2d_FlushList();
+    d = o->f30;
+    if (d <= -2.0f) {
+        return 3;
+    }
+    if (d <= 0.0f) {
+        o->f10 = NULL;
+        return 1;
+    }
+    o->f30 = d - 1.0f;
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AF650);
