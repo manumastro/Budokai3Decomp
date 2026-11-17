@@ -2263,7 +2263,7 @@ void func_001ED9E0(Task *t) {
     }
 }
 
-extern void func_00298EA0(void);
+extern void Flight_Exit(void);
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
@@ -2312,7 +2312,7 @@ void func_001EDAC0(Task *t) {
                 TASK_SETFUNC(t, func_001ED150);
                 break;
             }
-            func_00298EA0();
+            Flight_Exit();
         }
     }
 }
@@ -2981,7 +2981,7 @@ extern s32 D_00470600;
 extern s32 D_00470604;
 extern void func_001EA740(s32);
 extern void func_001EEE70(Task *);
-extern void func_002EA080(void);
+extern void Boot_Exit(void);
 
 void func_001EEEF0(Task *t) {
     s32 v;
@@ -3004,7 +3004,7 @@ void func_001EEEF0(Task *t) {
             D_00470600 = a0;
             D_00470604 = -1;
             TASK_SETFUNC(t, func_001EEE70);
-            func_002EA080();
+            Boot_Exit();
         }
     }
 }
@@ -3490,7 +3490,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F38F0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3A60);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3C10);
 extern void func_00133920(s32, s32, s32, s32, s32);
-extern s32 D_00470570;
+extern s32 gBattle;
 extern s32 D_0047064C;
 
 void func_001F3D80(char *o) {
@@ -3500,7 +3500,7 @@ void func_001F3D80(char *o) {
     f = *(s32 *)(o + 0x20);
     if ((f & 0x800) != 0 || (f & 0x8000) != 0) {
         D_0047064C = 0;
-        p = (char *)D_00470570;
+        p = (char *)gBattle;
         p += 0x10000;
         if (*(f32 *)(p - 0x76D4) > 0.0f) {
             func_00133920(0, 0x8000, 0, 0, 0);
@@ -4093,7 +4093,7 @@ void func_001F65F0(void) {
         }
     }
 }
-extern s32 D_00470570;
+extern s32 gBattle;
 
 void func_001F6670(void) {
     char *p = (char *)gBattle + 0x10000;
@@ -4103,13 +4103,13 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6690);
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void func_001F6690(void *);
 extern char D_00469888[];
-extern s32 D_00470570;
+extern s32 gBattle;
 
 void func_001F6CD0(s32 a0, s32 a1, s32 a2, f32 f12, f32 f13) {
     char *t;
 
     t = amTask_Create(func_001F6690, (void *)func_001F6670, 0x31FF, a2, a1, D_00469888);
-    *(s32 *)(t + 0x30) = *(s32 *)(D_00470570 + 0x238);
+    *(s32 *)(t + 0x30) = *(s32 *)(gBattle + 0x238);
     *(s32 *)(t + 0x34) = a0;
     *(s32 *)(t + 0x38) = 0;
     *(s32 *)(t + 0x3C) = 0;
