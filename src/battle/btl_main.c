@@ -4007,65 +4007,70 @@ typedef struct TblPair {
 } TblPair;
 
 #if 0
+// differs: single exit tried (do/while with break): the first test is laid out as beq + far b and the registers of last/t differ; the early-return form keeps the note
 s32 func_001C26A0(void *p) {
     TblPair *t = (TblPair *)((u8 *)p + 0x64);
+    s32 res = 0;
     s32 last;
     s32 idx;
     s32 idx2;
     s32 sum;
     s32 b;
 
-    last = FIGHTER_FIELD(p, s32, 0x58);
-    if (t[last].a != 1) {
-        return 0;
-    }
-    sum = t[last].b;
-    if (sum < 14) {
-        return 0;
-    }
-    if (sum < 0) {
-        sum = -sum;
-    }
-    idx = (last - 1) & 0x1F;
-    if (t[idx].a != 0) {
-        return 0;
-    }
-    b = t[idx].b;
-    if (b < 0) {
-        b = -b;
-    }
-    if (b >= 9) {
-        return 0;
-    }
-    b = t[idx].b;
-    if (b < 0) {
-        b = -b;
-    }
-    sum += b;
-    idx2 = (idx - 1) & 0x1F;
-    if (t[idx2].a != 1) {
-        return 0;
-    }
-    b = t[idx2].b;
-    if (b < 0) {
-        b = -b;
-    }
-    if (b >= 9) {
-        return 0;
-    }
-    b = t[idx2].b;
-    if (b < 0) {
-        b = -b;
-    }
-    sum += b;
-    if (FIGHTER_FIELD(p, s32, 0x410) < sum) {
-        return 0;
-    }
-    return 1;
+    do {
+        last = FIGHTER_FIELD(p, s32, 0x58);
+        if (t[last].a != 1) {
+            break;
+        }
+        sum = t[last].b;
+        if (sum < 14) {
+            break;
+        }
+        if (sum < 0) {
+            sum = -sum;
+        }
+        idx = (last - 1) & 0x1F;
+        if (t[idx].a != 0) {
+            break;
+        }
+        b = t[idx].b;
+        if (b < 0) {
+            b = -b;
+        }
+        if (b >= 9) {
+            break;
+        }
+        b = t[idx].b;
+        if (b < 0) {
+            b = -b;
+        }
+        sum += b;
+        idx2 = (idx - 1) & 0x1F;
+        if (t[idx2].a != 1) {
+            break;
+        }
+        b = t[idx2].b;
+        if (b < 0) {
+            b = -b;
+        }
+        if (b >= 9) {
+            break;
+        }
+        b = t[idx2].b;
+        if (b < 0) {
+            b = -b;
+        }
+        sum += b;
+        if (FIGHTER_FIELD(p, s32, 0x410) < sum) {
+            break;
+        }
+        res = 1;
+    } while (0);
+    return res;
 }
 #endif
-// differs: the early returns jump past the final jump (the original's epilogue is two instructions later); the ternary form of the absolute values did not change it
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C26A0);
+// differs: the early returns jump past the final jump (the original's epilogue is two instructions later); the ternary form of the absolute values did not change it
 
 s32 func_001C27E0(void *p) {
     TblPair *t = (TblPair *)((u8 *)p + 0x64);
