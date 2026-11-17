@@ -16,6 +16,41 @@ typedef struct SklRec {
 
 extern SklRec *gSklEdit;
 
+/* A source block: a word, then seven floats. */
+typedef struct SklSrc {
+    s32 w0;
+    f32 f4;
+    f32 f8;
+    f32 fC;
+    f32 f10;
+    f32 f14;
+    f32 f18;
+    f32 f1C;
+} SklSrc;
+
+/* The body of a skill-edit record from its f48 pointer (offsets as the original reads them). */
+typedef struct SklBody {
+    char pad0[0xC];
+    s32 fC;
+    char pad10[4];
+    s32 f14;
+    char pad18[4];
+    s32 f1C;
+    s32 f20;
+    char pad24[0xB8 - 0x24];
+    s32 fB8;
+    f32 fBC;
+    f32 fC0;
+    f32 fC4;
+    f32 fC8;
+    f32 fCC;
+    f32 fD0;
+    f32 fD4;
+} SklBody;
+
+extern s16 D_0046B560[];
+extern u8 D_004E0660[];
+
 /* A skill-edit actor, as far as these functions read it. */
 typedef struct SklAct {
     char pad0[0x1C];
@@ -182,6 +217,53 @@ void func_002B3D40(SklAct *s) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B3D90);
+/* differs: 3 of 83 (the zeroing of the sum and the pointer setup are scheduled after the cnt > 0 test;
+   the original keeps them before it: the same loop as func_002B4AF0 below, with the top check; declaration order
+   (q, t1, i, cnt) and `0 < cnt` and `q[1] * 5` found by search). */
+#if 0
+void func_002B4680(SklAct *s) {
+    SklRec *r;
+    SklBody *p;
+    s32 *q;
+    s32 t1;
+    s32 i;
+    s32 cnt;
+
+    r = &gSklEdit[s->f30];
+    p = (SklBody *)&r->f48;
+    if (func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f120], (f32)r->f128 * gFrameDelta) == 0xFF) {
+        cnt = p->fB8;
+        q = (s32 *)&p->fB8;
+        t1 = 0;
+        if (0 < cnt) {
+            i = 0;
+            for (;;) {
+                if (i >= 8) {
+                    break;
+                }
+                t1 += D_004E0660[(q[1] * 5) * 8 + 8] & 7;
+                q++;
+                i++;
+                if (i >= cnt) {
+                    break;
+                }
+            }
+        }
+        if (t1 < 7) {
+            p->f20 = t1 + 1;
+        } else {
+            p->f20 = 7;
+        }
+        if (p->f14 != 0) {
+            p->fC = 4;
+            s->f1C = (func_002B3D40 == NULL) ? 0 : (s32)func_002B3D40;
+        } else {
+            p->fC = 5;
+            s->f1C = (func_002B3D90 == NULL) ? 0 : (s32)func_002B3D90;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B47D0);
 /* differs: about 14 of 40: the register roles now match; the fC update (2 -> 3, 0 -> 1) and the join branch are laid out
@@ -249,6 +331,71 @@ u16 func_002B4AD0(s32 a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4AD0);
+
+/* differs: 37 of 81: the loop (count in a3, sum in t1, pointer in t2 in the original) and the float copy order
+   (the original loads f4..f10 into f3..f0 before the stores); declaration orders of the locals tried (24). */
+#if 0
+void func_002B4AF0(s32 a0, s32 a1, SklSrc *src) {
+    SklRec *r;
+    SklBody *b;
+    s32 *q;
+    s32 cnt;
+    s32 t1;
+    s32 i;
+
+    a1 = D_0046B560[a1];
+    if (a1 < 0) {
+        return;
+    }
+    r = gSklEdit + (a0 >> 1);
+    b = (SklBody *)&r->f48;
+    if (b->f1C == a1) {
+        return;
+    }
+    b->f1C = a1;
+    memset((char *)b + 0x48, 0, 0x70);
+    b->fB8 = src->w0;
+    {
+        f32 x0 = src->f4;
+        f32 x1 = src->f8;
+        f32 x2 = src->fC;
+        f32 x3 = src->f10;
+
+        b->fBC = x0;
+        b->fC0 = x1;
+        b->fC4 = x2;
+        b->fC8 = x3;
+    }
+    {
+        f32 y0 = src->f14;
+        f32 y1 = src->f18;
+        f32 y2 = src->f1C;
+
+        b->fCC = y0;
+        b->fD0 = y1;
+        b->fD4 = y2;
+    }
+    t1 = 0;
+    cnt = b->fB8;
+    if (cnt > 0) {
+        q = (s32 *)&b->fB8;
+        i = 0;
+        while (i < 8) {
+            t1 += D_004E0660[((q[1] << 2) + q[1]) * 8 + 8] & 7;
+            q++;
+            i++;
+            if (!(i < cnt)) {
+                break;
+            }
+        }
+    }
+    if (t1 < 7) {
+        b->f20 = t1 + 1;
+    } else {
+        b->f20 = 7;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4AF0);
 void func_002B4C40(s32 a) {
     SklRec *r = gSklEdit + (a >> 1);
