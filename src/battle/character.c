@@ -340,7 +340,7 @@ s32 func_001CB660(void *self, ScriptCtx *ctx) {
     }
     return 1;
 }
-s32 func_001CB710(void) {
+s32 Scr_CmdResetLimitXY(void) {
     Btl_UpdateLimitXY(1, 0.0f, 0.0f);
     return 1;
 }
@@ -374,7 +374,7 @@ s32 func_001CB7E0(void *self, ScriptCtx *ctx) {
     func_001D9960(*(Fighter **)(f + 0x1354), 0x1C, 1);
     return 1;
 }
-s32 func_001CB870(void) {
+s32 Scr_CmdCall1DA4C0(void) {
     func_001DA4C0();
     return 1;
 }
