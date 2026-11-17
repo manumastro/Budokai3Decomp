@@ -81,6 +81,13 @@ def main():
             sys.exit(1)
         fns = mwmatch.functions(obj)
     starts = function_starts()
+    # Functions already in C have no assembly left: add the file's own C functions as starts too.
+    for name in fns:
+        m = re.fullmatch(r"func_([0-9A-F]{8})", name)
+        a = int(m.group(1), 16) if m else syms.get(name)
+        if a is not None:
+            starts.append(a)
+    starts.sort()
     ok = bad = 0
     for name, (words, relocs) in fns.items():
         if args.funcs and name not in args.funcs:
