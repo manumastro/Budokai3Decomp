@@ -725,7 +725,7 @@ void *func_001D89E0(Fighter *c, s32 a1) {
     return NULL;
 }
 #endif
-// differs: same size, but the original keeps the element pointer in v0 and the counter in t1 (28 of 32 differ); three local orders and a result variable tried
+// differs: same size, but the original keeps the element pointer in v0 and the counter in t1 (28 of 32 differ); three local orders, a result variable and while/for shapes tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D89E0);
 void func_001D8A50(Fighter *c) {
     if (c->f1AC8 != NULL) {
@@ -3131,7 +3131,27 @@ void func_001E5500(s32 idx, void *arg) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5500);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E55C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E57C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E57F0);
+extern void *jtbl_00469600[];
+extern char D_00469608[];
+extern void *BtbBg_GetStageModelF10(void);
+extern void func_001E55C0(void *);
+void func_001E57F0(s32 a) {
+    s32 buf[12];
+    void *src;
+    s32 k;
+
+    if (a != 0) {
+        k = 0;
+    } else {
+        k = -1;
+    }
+    memset(buf, 0, 0x30);
+    buf[0] = 0;
+    src = BtbBg_GetStageModelF10();
+    __asm__ volatile ("lqc2 $vf1, 0(%0)
+	sqc2 $vf1, 0(%1)" : : "r"(src), "r"((char *)buf + 0x10) : "memory");
+    ((void (*)(s32, void *))jtbl_00469600[0])(k, buf);
+}
 void func_001E5860(Fighter *c) {
 }
 void func_001E5870(void) {
@@ -3145,11 +3165,43 @@ void func_001E5870(void) {
         s++;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E58D0);
+extern void *jtbl_00469600[];
+extern char D_00469608[];
+extern void *BtbBg_GetStageModelF10(void);
+extern void func_001E55C0(void *);
+
+void func_001E58D0(void) {
+    s32 buf[12];
+    void *src;
+    s32 k;
+
+    amTask_KillGroup(0x20, 0x10000000, 1);
+    amTask_Create((void (*)(void *))func_001E55C0, 0, 0x5600, 0x20, 0x10000002, D_00469608);
+    k = 0;
+    memset(buf, 0, 0x30);
+    buf[0] = 0;
+    src = BtbBg_GetStageModelF10();
+    __asm__ volatile ("lqc2 $vf1, 0(%0)
+	sqc2 $vf1, 0(%1)" : : "r"(src), "r"((char *)buf + 0x10) : "memory");
+    ((void (*)(s32, void *))jtbl_00469600[0])(k, buf);
+}
 void func_001E5960(void) {
     amTask_KillGroup(0x20, 0x10000000, 1);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5970);
+void func_001E5970(void) {
+    s32 buf[12];
+    void *src;
+    s32 k;
+
+    amTask_Create((void (*)(void *))func_001E55C0, 0, 0x5600, 0x20, 0x10000002, D_00469608);
+    k = 0;
+    memset(buf, 0, 0x30);
+    buf[0] = 0;
+    src = BtbBg_GetStageModelF10();
+    __asm__ volatile ("lqc2 $vf1, 0(%0)
+	sqc2 $vf1, 0(%1)" : : "r"(src), "r"((char *)buf + 0x10) : "memory");
+    ((void (*)(s32, void *))jtbl_00469600[0])(k, buf);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E59F0);
 s32 func_001E5AC0(Fighter *c) {
     return 0;
