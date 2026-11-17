@@ -742,7 +742,7 @@ void func_001AA5C0(u8 *a0) {
         *(s32 *)(a0 + 0x54) = 0x80000000;
         for (t0 = 0; t0 < 2; t0++) {
             for (a3 = 0; a3 < 8; a3++) {
-                flags = *(s8 *)((u8 *)D_00470570 + idx * 8 + 0x88B0 + a3);
+                flags = *(s8 *)((u8 *)gBattle + idx * 8 + 0x88B0 + a3);
                 ent = D_00492FC0 + *(s16 *)(a0 + 0x44) * 184;
                 if (t0 == 0) {
                     v = *(s32 *)(ent + a3 * 4 + 0x48);
