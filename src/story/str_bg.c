@@ -8,7 +8,14 @@ INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E5D0);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E640);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E790);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EA80);
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EAE0);
+extern void func_00133780(s32, s32);
+extern void func_0022C700(void);
+
+void func_0028EAE0(void) {
+    func_00133780(2, 1);
+    func_0022C700();
+    func_00133780(2, 0);
+}
 void func_0028EB20(void) {
     func_00133B50(NULL, 0);
 }
@@ -23,9 +30,22 @@ void func_0028EB90(void *p, f32 x, f32 y) {
     *(f32 *)(*(char **)(*(char **)((char *)p + 0x3C)) + 0x10) = x;
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EBB0);
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EBF0);
+void func_0028EBF0(void *p, s32 a1, s32 a2) {
+    *(u16 *)((char *)p + 0x30) = (*(u16 *)((char *)p + 0x30) & -2) | a1;
+    *(s32 *)((char *)p + 0x44) = a2;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EC10);
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EC50);
+void func_0028EC50(void *p, s32 a1, s32 a2, s32 a3, s32 t0, s32 t1) {
+    *(u16 *)((char *)p + 0x30) = t0;
+    *(s32 *)((char *)p + 0x34) = a2;
+    *(s32 *)((char *)p + 0x38) = a3;
+    *(s16 *)((char *)p + 0x32) = -1;
+    *(s32 *)((char *)p + 0x3C) = a1;
+    *(s32 *)((char *)p + 0x40) = 0;
+    *(s32 *)((char *)p + 0x44) = t1;
+    *(s32 *)((char *)p + 0x4C) = 0x3F800000;
+    *(s32 *)((char *)p + 0x50) = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EC80);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EE90);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F090);

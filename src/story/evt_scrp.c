@@ -20,7 +20,13 @@ void func_002A21E0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A21F0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A22C0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2310);
+extern void func_00264300(s32, void *, s32);
+extern void func_002A22C0(void);
+
+void *func_002A2310(void) {
+    func_00264300(10, func_002A22C0, 0);
+    return NULL;
+}
 void *func_002A2340(void) {
     return NULL;
 }
@@ -50,7 +56,12 @@ s32 func_002A2FD0(void *a0, char *a1) {
     D_004700A0 = *(s32 *)(*(char **)(a1 + 0x2C));
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2FF0);
+extern s32 func_002A1310(void *);
+
+s32 func_002A2FF0(void *a0, s32 *a1) {
+    *a1 = func_002A1310(a0);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3020);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3080);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A30F0);
@@ -59,17 +70,34 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3190);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A37E0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3910);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A39C0);
+extern s32 *D_004708D0;
+
+// func_002A3A10 (returns 1 or 3 by a flag of D_004708D0): the original branches, 3.0b52 makes movz from ?: and if/else alike; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3A10);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3A40);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3B50);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3C30);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3CD0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3DE0);
+extern void func_002A3CD0(void);
+
+s32 func_002A3DE0(s32 *p) {
+    p[0x2C / 4] = 0;
+    p[0x30 / 4] = 0x42080000;
+    p[0x38 / 4] = 0x3FE1E1E2;
+    p[0x10 / 4] = (s32)func_002A3CD0;
+    return 3;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3E10);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3E60);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3EC0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3F10);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3F70);
+extern void func_002A07D0(s32, s32, f32);
+
+s32 func_002A3F70(void *a0, char *a1) {
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    func_002A07D0(args[2], args[1], *(f32 *)args);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3FA0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3FF0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A40A0);
@@ -87,9 +115,21 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4620);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A46C0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4710);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4760);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A47B0);
+extern void func_002A0CB0(s32, s32, s32);
+
+s32 func_002A47B0(void *a0, char *a1) {
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    func_002A0CB0(args[2], args[1], args[0]);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A47E0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4830);
+extern void func_002A0D20(s32, s32, s32);
+
+s32 func_002A4830(void *a0, char *a1) {
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    func_002A0D20(args[2], args[1], args[0]);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4860);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A48A0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A48F0);
@@ -103,7 +143,13 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4D60);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4DC0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4E20);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4E90);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4EC0);
+extern void func_002A1430(s32, s32, s32, s32);
+
+s32 func_002A4EC0(void *a0, char *a1) {
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    func_002A1430(args[3], args[2], args[1], args[0]);
+    return 1;
+}
 s32 func_002A4EF0(void) {
     return 1;
 }
