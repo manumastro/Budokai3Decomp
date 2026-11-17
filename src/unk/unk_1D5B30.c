@@ -297,8 +297,8 @@ extern void func_002356E0(void);
 extern s32 func_002CC450(Fighter *);
 extern void func_00235480(Fighter *);
 void func_001E73C0(Fighter *c);
-extern void func_00234C20(void);
-extern void func_00234C90(void);
+extern s32 func_00234C20(void *);
+extern s32 func_00234C90(void *);
 extern s32 func_00234D50(Fighter *c);
 extern s32 func_00234EA0(Fighter *c);
 extern s32 func_001E8290(void *);
@@ -319,7 +319,7 @@ extern s32 func_001DFA90(Fighter *c, s32 idx);
 extern s32 func_002350A0(Fighter *c);
 extern s32 D_00469478[];
 extern void func_001E11E0(s32 a, void *b);
-extern void func_001DFC80(Fighter *c, s32 a, f32 v);
+extern s32 func_001DFC80(Fighter *c, s32 a, f32 v);
 extern void func_001D7CC0(Fighter *c, s32 a);
 typedef struct Obj186C {
     char pad0[0x186C];
@@ -1520,6 +1520,47 @@ void func_001DCC80(Fighter *c) {
     c->f18C0 = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DCC90);
+static inline s32 SelIdx1DD680(Fighter *c) {
+    return c->f2015 ? ((Fighter *)c->f1358)->f1350 : c->f1350;
+}
+#if 0
+void func_001DD680(Fighter *c) {
+    s32 buf[3];
+    s32 s;
+    f32 f1;
+    f32 f3;
+
+    s = *(s32 *)((char *)c + 0x1A28) + *(s32 *)((char *)c + 0x1A24);
+    if (s > 0) {
+        if (*(s16 *)((char *)gBattle + SelIdx1DD680(c) * 72 + 0x8988) < *(s32 *)((char *)c + 0x1A2C)) {
+            *(s16 *)((char *)gBattle + SelIdx1DD680(c) * 72 + 0x8988) = *(s32 *)((char *)c + 0x1A2C);
+        }
+        *(s16 *)((char *)gBattle + SelIdx1DD680(c) * 72 + 0x8980) = 0;
+        *(s16 *)((char *)gBattle + SelIdx1DD680(c) * 72 + 0x897E) = 0;
+        *(s16 *)((char *)gBattle + SelIdx1DD680(c) * 72 + 0x8982) = 0;
+        *(s32 *)((char *)c + 0x1A28) = 0;
+        *(s32 *)((char *)c + 0x1A24) = 0;
+        *(s32 *)((char *)c + 0x1A2C) = 0;
+        *(f32 *)((char *)c + 0x1808) = 60.0f;
+    }
+    buf[0] = ((Fighter *)c->f1354)->f1350;
+    buf[1] = c->f1350;
+    buf[2] = s;
+    func_00226030(7, buf);
+    f3 = (f32)*(s32 *)((char *)c + 0x17AC);
+    f1 = 360.0f * (f3 / 65536.0f);
+    if (!(f1 > 90.0f && f1 < 270.0f)) {
+        *(s8 *)((char *)c + 0x1964) = 0;
+        *(s8 *)((char *)c + 0x1965) = 0;
+    }
+    if (c->f1FF8 != -1) {
+        if (*(s8 *)((char *)c + 0x2009) != 0) {
+            *(f32 *)((char *)c + 0x17C0) = *(f32 *)((char *)c + 0x17C4);
+        }
+    }
+}
+#endif
+// differs: 132 of 138 differ: the six slot expansions (sel by f2015) and the float check are right in outline; the original keeps the 0x1A24/0x1A28 sum in v0 across the block and calls 1E-series helper with the 3-word buffer; not matched after 2 attempts
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DD680);
 
 
@@ -1637,6 +1678,52 @@ void func_001DFBF0(Fighter *c) {
 #endif
 // differs: the clamp's branch labels fall on 8-byte boundaries that the C does not reproduce (24 of 38 differ); if-form and ?:-form tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFBF0);
+#if 0
+s32 func_001DFC80(Fighter *c, s32 a1, f32 f12) {
+    f32 f1;
+
+    if (f12 < 0.0f) {
+        if (c->f1FF8 == -1) {
+            return 0;
+        }
+        f1 = c->f17E4 + f12;
+        if (f1 > 1000.0f) {
+            f1 = 1000.0f;
+        } else if (f1 < 0.0f) {
+            f1 = 0.0f;
+        }
+    } else {
+        f1 = c->f17E4 + f12;
+        if (f1 > 1000.0f) {
+            f1 = 1000.0f;
+        } else if (f1 < 0.0f) {
+            f1 = 0.0f;
+        }
+    }
+    c->f17E4 = f1;
+    if (f1 <= 300.0f) {
+        c->f17EC = 0;
+    } else if (f1 <= 600.0f) {
+        c->f17EC = 1;
+    } else {
+        c->f17EC = 2;
+    }
+    if (a1 & 1) {
+        if (c->f2010 == 0 && c->f2013 == 0 && c->f17E4 > 800.0f) {
+            if (c->f1A40 > 0.0f) {
+                f1 = c->f17D4;
+            } else {
+                f1 = c->f17D0;
+            }
+            if (f1 < 1000.0f) {
+                func_001D7CC0(c, 1);
+            }
+        }
+    }
+    return 0;
+}
+#endif
+// differs: size 0x17C vs 0x1E0 (25 instructions short): the original keeps the two sign arms apart (the clamp is written out twice with the sum in f3, the zero in f2 and the 1000.0f in f0) and stores the unclamped sum first; the first shape tried matched only the outline
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFC80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFE60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E0200);
@@ -2354,6 +2441,74 @@ s32 func_001E1D60(Fighter *c) {
 #endif
 // differs: 43 of 69 differ: the original tests the loop at the bottom with the setup block (sll 20*n, li 7) placed after the clamp, and the 'return fBA4' exits go to a separate epilogue; for/while variants and a goto done exit tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1D60);
+#if 0
+s32 func_001E1E80(Fighter *c) {
+    char *e;
+    char *s1;
+    s32 a1;
+    s32 s2;
+    s32 v;
+    s32 t;
+
+    a1 = c->fBA4;
+    e = (char *)c->f1CF8 + a1 * 20;
+    s2 = a1 + 1;
+    if (*(s8 *)(e + 0xDA) == 6) {
+        return 0;
+    }
+    if (s2 >= 8) {
+        return 0;
+    }
+    if (*(s8 *)(e + 0xEE) == 0) {
+        return 0;
+    }
+    if (*(s8 *)(e + 0xEE) == 8) {
+        return 0;
+    }
+    for (;;) {
+        s1 = (char *)c->f1CF8 + s2 * 20 + 0xD4;
+        if (*(s8 *)((char *)c + s2 + 0x1FDC) == 0) {
+            s2--;
+            break;
+        }
+        t = *(s16 *)s1;
+        if ((D_004E0660[t * 40 + 0xE] & ((1 << c->fBA4) & 0xFF)) == 0) {
+            s2--;
+            break;
+        }
+        if (func_001DFE60(c, 2, (f32)(D_004E0660[t * 40 + 0xF] * 100)) == 0) {
+            s2--;
+            break;
+        }
+        if (*(s8 *)(s1 + 6) == 6) {
+            break;
+        }
+        if (*(s8 *)(s1 + 0x1A) == 0) {
+            break;
+        }
+        v = *(s8 *)(s1 + 0x1A) - 7;
+        if ((u32)v < 2) {
+            break;
+        }
+        if (s2 == 7) {
+            break;
+        }
+        s2++;
+        if (!(s2 < 8)) {
+            break;
+        }
+    }
+    v = *(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x18);
+    if (v < s2) {
+        s2 = v;
+    }
+    if (!(c->fBA4 < s2)) {
+        s2 = 0;
+    }
+    return s2;
+}
+#endif
+// differs: 121 of 128 differ: the original keeps the object in s3 and the index in s2 (frame 0x50); the C takes the object into s4 whatever the declaration order (best order 120 of 128 instructions); the search compare (0x1FDC flag, the 1<<fBA4 mask, the 0x1A class test) is written as in the original
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1E80);
 #if 0
 void func_001E2070(Fighter *c) {
@@ -3393,14 +3548,15 @@ go:
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8830);
 #if 0
 s32 func_001E89B0(Fighter *c) {
-    s32 r = 0;
-    if (gBattle->f8944 != 0 && c->f1AD0 == 0) {
-        r = 0;
+    if (*(volatile s16 *)((char *)gBattle + 0x8944) != 0) {
+        if (*(volatile s16 *)((char *)c + 0x1AD0) != 0) {
+            return 0;
+        }
     }
-    return r;
+    return 0;
 }
 #endif
-// differs: the original always returns 0 after two dead loads; the compiler drops them
+// differs: 0x38 vs 0x40 bytes (the original keeps two separate zero-return arms and a shared jr); volatile loads needed so the dead reads stay; four shapes tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E89B0);
 #if 0
 s32 func_001E89F0(Fighter *c) {
@@ -3474,14 +3630,15 @@ s32 func_001E8B90(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (gBattle->f7E2 != 3 || gBattle->f9977 == 3) {
-        func_00234C20();
-    } else {
-        return 0;
+    if (gBattle->f7E2 == 3) {
+        if (gBattle->f8977 != 3) {
+            return 0;
+        }
     }
+    return func_00234C20(c);
 }
 #endif
-// differs: the global field test is laid out as branches the C does not reproduce (0x6C-0x64 bytes against 0x80); five shapes tried
+// differs: 0x64 against 0x80 bytes (the original keeps the call arm and the zero arm as separate nop-padded blocks); the field is gBattle->f8977 (0x8977), the earlier attempts read f9977
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8B90);
 #if 0
 s32 func_001E8C10(Fighter *c) {
@@ -3489,14 +3646,14 @@ s32 func_001E8C10(Fighter *c) {
         return 0;
     }
     if (gBattle->f7E2 == 3) {
-        if (gBattle->f9977 != 3) {
+        if (gBattle->f8977 != 3) {
             return 0;
         }
     }
-    func_00234C90();
+    return func_00234C90(c);
 }
 #endif
-// differs: same shape as func_001E8B90 (size 0x64 against 0x80)
+// differs: same shape as func_001E8B90 (0x64 against 0x80 bytes); the field is gBattle->f8977
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8C10);
 #if 0
 s32 func_001E8C90(Fighter *c) {
