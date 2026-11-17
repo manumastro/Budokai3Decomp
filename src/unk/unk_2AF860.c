@@ -8,7 +8,7 @@ extern s32 amCdFs_ReadFile(s32, s32, s32);
 extern void amCdFs_SetHeap(s32);
 extern void func_002AFCE0(void);
 extern void func_002AFE00(void);
-extern void func_002B0000(void);
+extern s32 func_002B0000(u8 *, s32 *);
 extern void func_002A9C00(s32, s32, s32, void *, s32);
 extern void func_002A9D30(s32, s32, void *, s32);
 extern s32 func_002B0390(u8 *, s32 *);
@@ -195,6 +195,48 @@ s32 func_002AFFA0(u8 *a, u8 *b) {
     *(void **)(a + 0x10) = func_002AFE00;
     return 3;
 }
+extern u8 D_005BC180[];
+extern s32 amFile_Load(u8 *);
+extern void amCamera_Init(void *);
+#if 0
+s32 func_002B0000(u8 *s, s32 *a1) {
+    u8 *s1 = *(u8 **)(s + 0x1C);
+    s32 a2;
+    u8 *s0;
+    u8 *s3;
+    s32 s4;
+    a2 = *(s32 *)s;
+    if (*(s16 *)(s1 + 4) != 3) {
+        return 3;
+    }
+    *(s32 *)(s + 0x10) = 0;
+    a2 = *(s32 *)a2;
+    s0 = *(u8 **)(s1 + 0x40);
+    s3 = D_005BC180 + a2 * 352 + *a1 * 176;
+    s4 = *(s32 *)(s0 + 0x50);
+    if (*(s32 *)s3 != 0) {
+        amCdFs_ReleaseCache(*(s32 *)s3);
+    }
+    *(u8 **)s3 = s0;
+    *(s32 *)(s3 + 4) = s4;
+    amFile_Load(*(u8 **)(s3 + 4));
+    amCamera_Init(s3 + 0x20);
+    *(s32 *)(s3 + 8) = 0;
+    *(s32 *)(s3 + 0xC) = 0;
+    *(f32 *)(s3 + 0x10) = D_004708F8;
+    *(s32 *)(s3 + 0x14) = 0;
+    *(s32 *)(s1 + 0x40) = 0;
+    amCdFs_Close(s1, 0);
+    if (*(s32 *)(s + 0x18) != 0) {
+        amCdFs_Close(*(void **)(s + 0x18), 0);
+    }
+    *(s32 *)(s + 0x18) = 0;
+    *(s32 *)(s + 0x1C) = 0;
+    amCdFs_SetHeap(0);
+    return 1;
+}
+// differs: 22 of 74 instructions differ: the same pattern as func_002B0390 (copy of the object pointer to s2 placed early here; the original copies it in the beq delay slot and loads *s into a2 first). Two placements of the pointer load tried.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0000);
 s32 func_002B0130(u8 *a, u8 *b) {
     *(s32 *)b = *(s32 *)(*(u8 **)(b + 0x2C) + 4);
@@ -362,6 +404,52 @@ f32 func_002B06A0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B06B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0A40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0BF0);
+extern u8 *gSklEdit;
+#if 0
+s32 func_002B0CA0(u8 *s, s32 n) {
+    s32 *A = (s32 *)(s + 0xB8);
+    s32 s0 = A[n + 1];
+    s32 *s4 = &A[n + 1];
+    s32 i;
+    s32 j;
+    s32 ok = 0;
+    s32 v;
+    s32 a;
+    for (i = 0; i < 7; i++) {
+        v = *(s32 *)(s + 0x2C + i * 4);
+        if (v <= 0) {
+            ok = 1;
+            break;
+        }
+        if (v == s0) {
+            ok = 0;
+            break;
+        }
+    }
+    if (!ok) {
+        *(s32 *)(gSklEdit + 0x30) = 4;
+        return 0;
+    }
+    for (j = 0; j < 7; j++) {
+        if (j == n) {
+            continue;
+        }
+        a = A[j + 1];
+        if (a > 0) {
+            u8 *e = D_004E0660 + a * 40;
+            if (*(u16 *)(e + 0x10) == s0 || *(u16 *)(e + 0x12) == s0) {
+                if (func_002B0CA0(s, j) == 0) {
+                    return 0;
+                }
+            }
+        }
+    }
+    *s4 = -1;
+    A[0] = A[0] - 1;
+    return 1;
+}
+// differs: 82 of 90 instructions differ: a recursive table walk; the original keeps the loop with the counter in a0 and a pointer in v1 (lw v0,44(v1)), with the flags in a0/v0; the compiler reorders the first loop and the early exits. Not retried.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0CA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0E00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1160);
@@ -404,6 +492,55 @@ s32 func_002B16B0(u8 *a) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B16B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1780);
+extern u8 *gSklEdit;
+extern u8 D_004E0688[];
+#if 0
+void func_002B1B10(u8 *s, s32 a1) {
+    u8 *e = D_004E0688;
+    s32 res = 0;
+    s32 count = 0;
+    s32 a3;
+    s32 idx;
+    u64 mask;
+    u8 *p1;
+    u8 *bp;
+    if (a1 > 0) {
+        *(s32 *)(s + 0x24) = (D_004E0660 + 0xA)[a1 * 40] & 3;
+    }
+    bp = *(u8 **)(gSklEdit + 0x44) + 1;
+    idx = *(s32 *)(s + 0x24);
+    mask = (u64)1 << *(s32 *)(s + 0x1C);
+    p1 = s + idx * 28 + 0x48;
+    a3 = 1;
+    do {
+        if (a3 == a1) {
+            res = count;
+        }
+        if ((*(u64 *)e & mask) != 0 && (e[0xA] & 3) == idx && (e[8] & 7) != 0 && *bp > 0) {
+            count++;
+        }
+        a3++;
+        e += 0x28;
+        bp++;
+    } while (a3 < 0x253);
+    *(s16 *)(p1 + 0x1A) = count;
+    if (count < 9) {
+        *(s32 *)p1 = 0;
+        *(s32 *)(p1 + 4) = res;
+    } else {
+        if (res - *(s32 *)p1 < 9) {
+            *(s32 *)(p1 + 4) = res - *(s32 *)p1;
+        } else if (res + 9 < count) {
+            *(s32 *)p1 = res;
+            *(s32 *)(p1 + 4) = 0;
+        } else {
+            *(s32 *)p1 = count - 9;
+            *(s32 *)(p1 + 4) = *(s32 *)p1 - res;
+        }
+    }
+}
+// differs: size 0x140 against 0x150 (4 instructions short): the original starts with the skill-table pointer (lui t2 D_004E0688) before the a1 test and reads the byte table through a pointer that starts at gSklEdit+0x45; the if-store block is laid out differently. Tried the table offset folded into the base, the pointer loop and two declaration orders.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1B10);
 extern void func_002B1D70(u8 *);
 extern void func_002B1B10(u8 *, s32);
@@ -435,5 +572,39 @@ s32 func_002B1C60(u8 *s) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1C60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1D70);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1E90);
+extern u8 *D_004706CC;
+void func_002B1E90(u8 *d, u8 *b, s32 idx, s32 flags) {
+    s32 off;
+    u8 *e;
+    f32 X;
+    f32 Y;
+    off = *(s32 *)((*(s32 *)(b + 0x14) + (s32)b) + (idx - *(s32 *)(b + 0x18)) * 4);
+    e = b + off;
+    X = (f32)*(s16 *)(e + 0x10);
+    Y = (f32)*(s16 *)(e + 0x12);
+    if (flags & 1) {
+        *(s32 *)(d + 0x34) = 0;
+        *(f32 *)(d + 0x3C) = Y * *(f32 *)(D_004706CC + 0x3C);
+    } else if (flags & 2) {
+        *(f32 *)(d + 0x34) = -Y * *(f32 *)(D_004706CC + 0x3C);
+        *(s32 *)(d + 0x3C) = 0;
+    } else {
+        *(f32 *)(d + 0x34) = (-Y / 2.0f) * *(f32 *)(D_004706CC + 0x3C);
+        *(f32 *)(d + 0x3C) = (Y / 2.0f) * *(f32 *)(D_004706CC + 0x3C);
+    }
+    if (flags & 8) {
+        *(s32 *)(d + 0x30) = 0;
+        *(f32 *)(d + 0x38) = X * *(f32 *)(D_004706CC + 0x38);
+    } else if (flags & 0x10) {
+        *(f32 *)(d + 0x30) = -X * *(f32 *)(D_004706CC + 0x38);
+        *(s32 *)(d + 0x38) = 0;
+    } else {
+        *(f32 *)(d + 0x30) = (-X / 2.0f) * *(f32 *)(D_004706CC + 0x38);
+        *(f32 *)(d + 0x38) = (X / 2.0f) * *(f32 *)(D_004706CC + 0x38);
+    }
+    *(s32 *)(d + 0x40) = 0;
+    *(s32 *)(d + 0x44) = 0;
+    *(f32 *)(d + 0x48) = X;
+    *(f32 *)(d + 0x4C) = Y;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1FF0);
