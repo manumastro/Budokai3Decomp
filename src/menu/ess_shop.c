@@ -399,6 +399,46 @@ void func_00276CE0(u8 *a0, s32 a1) {
     func_0026E000(s1, 0xF0);
 }
 #endif
+#if 0
+// differs: 8 of 54: the recursion, the early break on a non-positive entry and the tail store of -1 match; the loop counter and the scan pointer of the second loop keep swapped registers whatever the declaration order
+extern u8 D_004E0660[];
+extern void func_0026E000();
+
+void func_00276CE0(u8 *a0, s32 a1) {
+    u8 *s1;
+    s32 s0;
+    s32 i;
+    s32 e;
+    u8 *p;
+    s32 j;
+    s1 = a0;
+    s0 = a1;
+    i = 0;
+    do {
+        e = *(s32 *)(s1 + i * 4 + 4);
+        if (e <= 0) {
+            break;
+        }
+        p = D_004E0660 + e * 40;
+        if (*(u16 *)(p + 0x10) == s0 || *(u16 *)(p + 0x12) == s0) {
+            func_00276CE0(s1, e);
+            i = 0;
+        }
+        i++;
+    } while (i < 7);
+    j = 0;
+    p = s1;
+    do {
+        if (*(s32 *)(p + 4) == s0) {
+            *(s32 *)(s1 + j * 4 + 4) = -1;
+            break;
+        }
+        j++;
+        p += 4;
+    } while (j < 7);
+    func_0026E000(s1, 0xF0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276CE0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276DC0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00277010);
