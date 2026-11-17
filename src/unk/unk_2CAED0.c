@@ -174,7 +174,35 @@ s32 func_002CB070(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB070);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB0F0);
+s32 func_002CB0F0(void) {
+    TutWork *t = gTutWork;
+    s32 *p = &t->f20;
+    TutChr *c = t->chr;
+    CmdHist *h = &c->f1360;
+    u8 *a;
+
+    if (c->fCB2 == 1) {
+        if (h->rd != h->wr) {
+            a = (u8 *)&h->ent[h->wr] - 4;
+            if (h->ent[h->wr].f8[1] == 1) {
+                if (p[0] < *(s32 *)(a + 8)) {
+                    p[0] = *(s32 *)(a + 8);
+                    p[1]++;
+                }
+            }
+            if (((s16 *)*(s32 *)(a + 0xC))[1] == 2) {
+                if (p[2] < *(s32 *)(a + 8)) {
+                    p[2] = *(s32 *)(a + 8);
+                    p[3]++;
+                }
+            }
+        }
+    }
+    if (p[1] > 0 && p[3] > 0) {
+        return 1;
+    }
+    return 0;
+}
 s32 func_002CB1D0(void) {
     TutWork *t = gTutWork;
     s32 *p = &t->f20;
