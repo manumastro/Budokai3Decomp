@@ -1119,17 +1119,56 @@ void func_002545E0(s32 *a0) {
         func_0022C560(*(s32 *)(s0 + 4));
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254650);
+void func_00254650(s32 *a0) {
+    u8 *s1 = D_0046FDFC;
+    s32 *s0 = a0 + 12;
+    s32 i;
+    s32 j;
+    s32 *s2;
+    s32 *p;
+
+    if (func_0021C2A0(0x80000000) != 0) {
+        s32 x = *(s32 *)(s1 + 0xE60);
+
+        D_00470704 = x;
+        D_0047070C = 0x4000000;
+        D_00470708 = 0;
+        func_00145CC0(x, 0x4000000);
+        D_00470238 = 0;
+        amDraw_SetPacketMode(1);
+        func_0022C560(s0[1]);
+        amDraw_KickPending();
+        if (s0[6] != 0) {
+            func_0022C560(s0[6]);
+        }
+        if (s0[7] != 0) {
+            func_0022C560(s0[7]);
+        }
+        amDraw_KickPending();
+        for (i = 0, s2 = s0; i < 2; i++, s2 += 2) {
+            for (j = 0, p = s2; j < 2; j++, p += 1) {
+                if (p[8] != 0) {
+                    func_0022C560(p[8]);
+                }
+            }
+        }
+        amDraw_KickPending();
+        if (s0[12] != 0) {
+            func_0022C560(s0[12]);
+        }
+        if (s0[13] != 0) {
+            func_0022C560(s0[13]);
+        }
+        amDraw_SetPacketMode(0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002547A0);
-// GIVEN UP: the nested loops take the other two counters and pointers (24 declaration orders tried)
-#if 0
 void func_00254970(s32 *a0) {
     u8 *s0;
     s32 *s3;
-    s32 *s;
-    s32 *t;
     s32 k;
     s32 j;
+    s32 *t;
 
     s3 = a0 + 12;
     s0 = D_0046FDFC;
@@ -1160,10 +1199,8 @@ void func_00254970(s32 *a0) {
             func_0022C560(s3[3]);
         }
         amDraw_KickPending();
-        s = s3;
-        for (k = 0; k < 2; k++, s += 2) {
-            t = s;
-            for (j = 0; j < 2; j++, t += 1) {
+        for (k = 0; k < 2; k++, s3 += 2) {
+            for (j = 0, t = s3; j < 2; j++, t += 1) {
                 if (t[8] != 0) {
                     func_0022C560(t[8]);
                 }
@@ -1172,8 +1209,6 @@ void func_00254970(s32 *a0) {
         amDraw_SetPacketMode(0);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254970);
 void func_00254AC0(s32 *a0) {
     u8 *s1 = D_0046FDFC;
     u8 *s0 = (u8 *)a0 + 0x30;
