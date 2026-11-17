@@ -122,6 +122,17 @@ void func_00236090(void *o) {
     }
 }
 #endif
+#if 0
+// differs: 8 of 23: the lb test is right (slti+beqz with <= -1); the original puts the epilogue ld ra in the b delay slot of the then-arm and has no alignment nop before the else arm (if/else, return forms tried)
+void func_00236090(s32 *a0) {
+    s32 idx = *(s32 *)((char *)a0 + 0x1350);
+    if (*(s8 *)((char *)D_0058BBB0 + idx * 192 + 0x42) <= -1) {
+        func_00231E70(a0);
+    } else {
+        func_002316D0(a0);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236090);
 void func_002360F0(void) {
     memset(D_0058BBB0, 0, 0x300);
@@ -413,7 +424,25 @@ void func_00237760(void *o, s32 k) {
     *(u16 *)(q + 0x32) = *(u16 *)(q + 0x32) | f;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237760);
+void func_00237760(u8 *a0, s32 a1) {
+    if (a0 == 0) {
+        return;
+    }
+    *(s32 *)(a0 + 8) = 0;
+    if (a1 < 0) {
+        return;
+    }
+    if (a1 >= 6) {
+        return;
+    }
+    *(s32 *)(a0 + 8) = 0x100 << a1;
+    a1 = *(u16 *)(a0 + 8);
+    a0 = *(u8 **)a0;
+    if (a1 & 0x30) {
+        *(u16 *)(a0 + 0x32) = *(u16 *)(a0 + 0x32) & 0xFFCF;
+    }
+    *(u16 *)(a0 + 0x32) = *(u16 *)(a0 + 0x32) | a1;
+}
 extern void *amHeap_Alloc(s32, s32, u8 *, s32);
 extern void *amNode_Alloc(void);
 extern u8 D_0046A798[];
