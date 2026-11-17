@@ -603,7 +603,7 @@ s32 func_001D7E50(Fighter *c, s32 a1, u16 a2) {
     s32 flag;
     s16 cac;
 
-    g = D_00470570;
+    g = gBattle;
     v = (g != NULL) ? (g->f8AA8 & 0x8) : 0;
     if (v != 0) {
         return 0;
@@ -853,7 +853,7 @@ void func_001D90D0(Fighter *c) {
     x = 1.0f - d;
     x = x - *(f32 *)((char *)c + 0x1890);
     d = 0.05f * x;
-    d = *(f32 *)((char *)D_00470570 + 0x88F0) * d;
+    d = *(f32 *)((char *)gBattle + 0x88F0) * d;
     x = *(f32 *)((char *)c + 0x1890) + d;
     *(f32 *)((char *)c + 0x1890) = x;
     if (x > 1.0f) {
@@ -1005,7 +1005,7 @@ void func_001D98A0(Fighter *c, s32 a1, s32 a2) {
 #endif
 // differs: the table address adds its offset in another order (1 of 22 instructions differ)
 void func_001D98A0(Fighter *c, s32 a1, s32 a2) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     s32 p;
     s16 *q;
 
@@ -1035,7 +1035,7 @@ void func_001D9900(Fighter *c, s32 a1, s32 a2) {
 #endif
 // differs: the 0x897E table offset is kept in a register in the original (0x54 against 0x60 bytes)
 void func_001D9900(Fighter *c, s32 a1, s32 a2) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     s32 idx;
     s16 *q;
 
@@ -1076,7 +1076,7 @@ s16 func_001D99C0(Fighter *c, s32 a1) {
 #endif
 // differs: the table read's offset is added in another order (1 of 17 instructions differ)
 s16 func_001D99C0(Fighter *c, s32 a1) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     s32 p;
 
     if (c->f2015 != 0) {
@@ -2303,7 +2303,7 @@ void func_001E4E20(Fighter *c, s32 a1) {
         x = 1.0f - d;
         x = x - *(f32 *)((char *)c + 0x1890);
         d = 0.05f * x;
-        d = *(f32 *)((char *)D_00470570 + 0x88F0) * d;
+        d = *(f32 *)((char *)gBattle + 0x88F0) * d;
         x = *(f32 *)((char *)c + 0x1890) + d;
         *(f32 *)((char *)c + 0x1890) = x;
         if (x > 1.0f) {
@@ -2466,7 +2466,7 @@ void func_001E5AD0(Fighter *c) {
     *(s8 *)((char *)c + 0x47C) = 0;
     *(s8 *)((char *)c + 0x47D) = 0;
     *(s32 *)((char *)c + 0x514) = 0;
-    *(s32 *)((char *)c + 0x474) = *(s32 *)((char *)D_00470570 + 0x824);
+    *(s32 *)((char *)c + 0x474) = *(s32 *)((char *)gBattle + 0x824);
     *(s32 *)((char *)c + 0x490) = 0;
     func_001C9EF0(c->f540, 0);
     *(s32 *)((char *)c + 0x640) = -1;
@@ -2517,7 +2517,7 @@ void func_001E7070(char *c, s32 a1) {
     *(s32 *)(c + 0x55C) = *(s32 *)((char *)D_00447440 + *(s16 *)(t4 + 2) * 96);
     *(s32 *)(c + 0x2C0) = (a1 != 0) ? ((s32 *)(q + 0x1DFC))[a1 * 7] : 0;
     *(s32 *)(c + 0x2C4) = *(s32 *)(q + 0x1DFC);
-    *(s32 *)(c + 0x2C8) = *(s32 *)((char *)D_00470570 + 0x824);
+    *(s32 *)(c + 0x2C8) = *(s32 *)((char *)gBattle + 0x824);
 }
 #if 0
 void func_001E7180(Fighter *c) {
@@ -2900,14 +2900,14 @@ s32 func_001E9050(Fighter *c) {
         return 0;
     }
     s0 = 0;
-    g = D_00470570;
+    g = gBattle;
     if (func_001E3D60(c->f17AC, 200.0f) != 0) {
         return 0;
     }
     switch (g->f7E2) {
     case 3:
-        if (*(s8 *)((char *)D_00470570 + 0x8977) != 3) {
-            v = *(s8 *)((char *)D_00470570 + 0x8979);
+        if (*(s8 *)((char *)gBattle + 0x8977) != 3) {
+            v = *(s8 *)((char *)gBattle + 0x8979);
             switch (v) {
             case 0:
                 break;
@@ -2977,7 +2977,7 @@ s32 func_001E92D0(Fighter *c) {
     if (*(s8 *)((char *)c + 0x1FF8) < 2) {
         return 0;
     }
-    g = D_00470570;
+    g = gBattle;
     if (g != NULL && (g->f8AA8 & 0x1000)) {
         return 0;
     }
@@ -2999,7 +2999,7 @@ s32 func_001E92D0(Fighter *c) {
     }
     v = func_00235D90(c);
     if (v == 0x24 || v == 0x25) {
-        g = D_00470570;
+        g = gBattle;
         if (g != NULL && (g->f8AA8 & 0x2000)) {
             return 0x23;
         }
