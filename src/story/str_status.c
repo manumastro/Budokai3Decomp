@@ -7,6 +7,7 @@ extern char D_0046EE10[];
 extern void (*D_0046EE30[])(void *);
 extern void func_0028EB40(Task *, s32, void (*)(Task *), s32);
 extern void func_002BD140(Task *);
+extern s32 *D_0047011C;
 extern void amCdFs_Close(s32, s32);
 extern void amFile_Load(s32);
 
@@ -79,7 +80,6 @@ extern s32 *D_0046FE44;
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE4E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE530);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE710);
-extern s32 *D_0047011C;
 
 // func_002BE7C0 (sets or clears bit 0 of a word of D_0047011C by a flag): the if/else layout differs; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE7C0);
@@ -100,7 +100,24 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BED90);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEEE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEF00);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF000);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF310);
+extern void func_00209530(s32);
+
+void func_002BF310(void) {
+    s32 i;
+    s32 off = 0;
+    for (i = 0; i < 8; i++) {
+        if (*(s32 *)((char *)D_0047011C + off + 0x160) != 0) {
+            func_00209530(*(s32 *)((char *)D_0047011C + off + 0x160));
+            *(s32 *)((char *)D_0047011C + off + 0x160) = 0;
+        }
+        *(s32 *)((char *)D_0047011C + off + 0x180) = -1;
+        off += 4;
+    }
+    if (D_0047011C[0x1AC / 4] != 0) {
+        amTask_Kill((Task *)D_0047011C[0x1AC / 4]);
+        D_0047011C[0x1AC / 4] = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF3B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF520);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF610);
@@ -113,9 +130,43 @@ void func_002BFC00(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFC50);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFCF0);
+extern void *D_0046FDCC;
+extern char D_005BCF80[];
+extern void memset(void *, s32, s32);
+extern void func_00243ED0(void);
+extern void func_002CA3F0(void);
+extern void func_00209450(s32, s32);
+
+void func_002BFCF0(void) {
+    memset(D_0046FDCC, 0, 0xA0);
+    func_00243ED0();
+    func_002CA3F0();
+    func_00209450(0x400008, 1);
+    func_00209450(0x400010, 1);
+    func_00209450(0x400020, 1);
+    func_00209450(0x400040, 1);
+    func_00209450(0x400080, 1);
+    memset(D_005BCF80, 0, 0x2E0);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFD90);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFE60);
+extern void func_00215900(void);
+extern void func_00244150(void);
+extern void func_002BE320(s32);
+extern void func_002BEB50(void);
+extern void func_002CA4A0(void);
+
+void func_002BFE60(s32 a0) {
+    if (a0 == 0 || D_0047011C[0x1C4 / 4] != 0) {
+        return;
+    }
+    func_00215900();
+    func_00244150();
+    func_002BE320(a0);
+    func_002BEB50();
+    func_002CA4A0();
+    D_0047011C[0x1C4 / 4] = 1;
+    D_0047011C[0x1CC / 4] = a0;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFEE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFFD0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0220);
