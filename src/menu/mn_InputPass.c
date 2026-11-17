@@ -3,7 +3,7 @@
 extern s16 func_002F4A80();
 extern void func_002F4A90();
 extern void func_002F1770();
-extern s32 func_002F4B20();
+extern s32 IpSysWnd_Start();
 extern void func_002F1300();
 extern void func_002F0BC0();
 extern void func_0022CF70();
@@ -20,7 +20,7 @@ extern void func_0022CF70();
 extern void func_00133B50(s32, s32);
 extern void func_00145CC0(s32, s32);
 extern void func_0022C700(void);
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern void Help_Exit();
 extern void amCdFs_Close(void *, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
@@ -127,7 +127,7 @@ void func_002F0FD0(u8 *task) {
     s0 = *(u8 **)(task + 0x30);
     f1 = *(f32 *)(s0 + 0x118);
     if (f1 > 0.0f) {
-        *(f32 *)(s0 + 0x118) = f1 - D_004703BC;
+        *(f32 *)(s0 + 0x118) = f1 - gFrameDelta;
         s1 = (u8 *)gInputName;
         func_0022C700();
         func_00133B50(0, 0);
@@ -207,7 +207,7 @@ void func_002F1500(u8 *task) {
     if (a0 == 2) {
         a1 = D_004B4B63[0];
         if (*(u16 *)((u8 *)D_00492FCE + a1 * 184) & 0x4000) {
-            *(s32 *)(s3 + 0x110) = func_002F4B20(4);
+            *(s32 *)(s3 + 0x110) = IpSysWnd_Start(4);
             v = ((void *)func_002F1300 == 0) ? 0 : (void *)func_002F1300;
             *(void **)(s4 + 0x1C) = v;
         }
@@ -500,7 +500,7 @@ void func_002F2F00(u8 *task) {
     s0 = *(u8 **)(task + 0x30);
     f1 = *(f32 *)(s0 + 0x40);
     if (f1 > 0.0f) {
-        *(f32 *)(s0 + 0x40) = f1 - D_004703BC;
+        *(f32 *)(s0 + 0x40) = f1 - gFrameDelta;
         s1 = (u8 *)gInputName;
         func_0022C700();
         func_00133B50(0, 0);

@@ -1,7 +1,7 @@
 #include "common.h"
 extern void func_003077E0();
 extern void func_002F03E0();
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern u8 *D_00470988;
 extern s16 ArenaList_GetFirst();
 extern s32 func_0027E2D0();
@@ -41,7 +41,7 @@ void func_00307D50(u8 *task) {
     f2 = *(f32 *)(s0 + 0x44);
     s1 = D_00470988;
     if (f2 < 1.0f) {
-        *(f32 *)(s0 + 0x44) = f2 + 0.05f * D_004703BC;
+        *(f32 *)(s0 + 0x44) = f2 + 0.05f * gFrameDelta;
     }
     f1 = *(f32 *)(s0 + 0x44);
     if (f1 > 1.0f) {
