@@ -4587,6 +4587,7 @@ s32 func_001E8B90(Fighter *c) {
 #endif
 // differs: 0x64 bytes against 0x80: the original keeps the not-3 branch as an unconditional b to the call block placed after the check, and the zero return as a shared epilogue jump; the 0x8977 test is lui/addu/lb
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8B90);
+/* r6 best attempt diff n/a (size 0x64 vs 0x80) */
 #if 0
 s32 func_001E8C10(Fighter *c) {
     if (c->f1FF8 < 2) {
