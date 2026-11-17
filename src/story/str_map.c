@@ -122,7 +122,32 @@ void func_0029AC30(void) {
         func_0028EC50(s0, (s32)((char *)gStrMap + 0x68), gStrMap[0x60 / 4], 0x500000, 0, 0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029ACE0);
+extern void func_0029A4F0(Task *);
+extern char D_0046BBB0[];
+
+void func_0029ACE0(s32 a0, s32 a1, s32 a2) {
+    s32 s0;
+    *(s8 *)((char *)gStrMap + 0x1B0) = (s8)a2;
+    gStrMap[0x1B4 / 4] = a0;
+    gStrMap[0x1B8 / 4] = a1;
+    *(s8 *)((char *)gStrMap + 0x1B2) = 0;
+    if (*(s8 *)((char *)gStrMap + 0x1B1) == 1) {
+        *(s8 *)((char *)gStrMap + 0x1B1) = 2;
+    }
+    if (gStrMap[0x24 / 4] != 0) {
+        amTask_Kill((Task *)gStrMap[0x24 / 4]);
+    }
+    gStrMap[0x24 / 4] = (s32)amTask_Create(func_0029A4F0, NULL, a0, 2, a1, D_0046BBB0);
+    if (*(s8 *)((char *)gStrMap + 0x1B1) == 2) {
+        s0 = gStrMap[0x24 / 4];
+        if (gStrMap[0x68 / 4] != 0) {
+            func_0022D0E0(gStrMap[0x68 / 4], 1);
+        }
+        gStrMap[0x68 / 4] = func_0022D670(*(s32 *)(*(s32 *)(gStrMap[0x58 / 4] + 0x1C)), 0.0f);
+        func_0028EC50(s0, (s32)((char *)gStrMap + 0x68), gStrMap[0x60 / 4], 0x500000, 0, 0);
+    }
+}
+
 extern void amTask_Kill(Task *);
 
 void StrMap_KillTask(void) {
@@ -179,7 +204,43 @@ s32 func_0029AEF0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029AEF0);
-INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B000);
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern void amHeap_Free(void *);
+extern void memset(void *, s32, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern char D_0046BBC0[];
+
+void func_0029B000(s32 a0) {
+    s32 v;
+    s32 *m;
+    if (gStrMap != 0) {
+        amHeap_Free(gStrMap);
+    }
+    gStrMap = (s32 *)amHeap_Alloc(0x1C8, 0, D_0046BBC0, 0x5A);
+    memset(gStrMap, 0, 0x1C8);
+    *(s8 *)((char *)gStrMap + 0x19C) = (s8)a0;
+    *(s8 *)((char *)gStrMap + 0x1B1) = 0;
+    *(s8 *)((char *)gStrMap + 0x19D) = 0;
+    if (a0 == 0) {
+        v = amCdFs_ReadFileId(0x107DC, 0, 1);
+        m = gStrMap;
+        m[0] = v;
+        v = amCdFs_ReadFileId(0x107DD, 0, 1);
+        gStrMap[1] = v;
+    } else {
+        v = amCdFs_ReadFileId(0x107DE, 0, 1);
+        m = gStrMap;
+        m[0] = v;
+        v = amCdFs_ReadFileId(0x107DF, 0, 1);
+        gStrMap[1] = v;
+    }
+    v = amCdFs_ReadFileId(0x107E3, 0, 1);
+    m = gStrMap;
+    m[2] = v;
+    v = amCdFs_ReadFileId(0x107E4, 0, 1);
+    gStrMap[3] = v;
+}
+
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B130);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B290);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B550);
