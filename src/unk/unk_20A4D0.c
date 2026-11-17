@@ -649,7 +649,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211980);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211AF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211BD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211D80);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211F80);
+extern V4Q D_0044B920;
+extern s32 D_00470238;
+void func_00145CC0(s32, s32);
+void func_00208D60(s32);
+void func_00209CA0(void *, void *, void *);
+void func_0013B110(s32);
+void func_00209C50(void);
+
+void func_00211F80(u8 *a0) {
+    V4Q v;
+    V4Q out;
+    u8 *s0 = a0 + 0x20;
+    v = D_0044B920;
+    if (*(s32 *)(a0 + 0x10) != 0) {
+        D_00470238 = 0;
+        if (*(s32 *)(s0 + 0x20) != 0) {
+            func_00145CC0(*(s32 *)(s0 + 0x20), *(s32 *)(s0 + 0x28));
+        }
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            func_00208D60(*(s32 *)(s0 + 0x24));
+        }
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%1)\n"
+            "lqc2 $vf2, 0(%2)\n"
+            "vopmula.xyz ACC, $vf1, $vf2\n"
+            "vopmsub.xyz $vf1, $vf2, $vf1\n"
+            "sqc2 $vf1, 0(%0)\n"
+            : : "r"(&out), "r"(&v), "r"(s0 + 0x10));
+        func_00209CA0(s0, &v, &out);
+        func_00208D70(*(s32 *)(a0 + 0x10));
+        func_0013B110(1);
+        func_00209C50();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212050);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212160);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002122A0);
