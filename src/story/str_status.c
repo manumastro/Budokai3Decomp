@@ -1758,4 +1758,82 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3D20);
 void StrStatus_ClearTourMode(void) {
     gTourMode = NULL;
 }
+extern void func_0027E120(s32);
+extern void func_0027E070(void);
+extern void func_0028DF20(void);
+#if 0
+// differs: the zero loop of the 12-slot table (0x30 bytes, 6 steps of 8 bytes, bgtz on v0): a byte loop and a
+// 4x unrolled form both compile differently (the unrolled one is fully unrolled by mwcc); the rest matches in shape
+void func_002C3E40(void) {
+    TourModeGlobal *g;
+    s32 *s3;
+    s32 *e[12];
+    u8 *p;
+    s32 n;
+    s32 i;
+    g = gTourMode;
+    if (g->task != 0) {
+        s3 = (s32 *)((s32 *)g->task)[0xC];
+        if (s3[2] != 0) {
+            func_0022D0E0(s3[2], 1);
+            s3[2] = 0;
+        }
+        p = (u8 *)e;
+        for (n = 0x30; n > 0; n -= 8) {
+            p[0] = 0;
+            p[1] = 0;
+            p += 2;
+            p[0] = 0;
+            p[1] = 0;
+            p += 2;
+            p[0] = 0;
+            p[1] = 0;
+            p += 2;
+            p[0] = 0;
+            p[1] = 0;
+            p += 2;
+        }
+        e[0] = &s3[3];
+        e[1] = &s3[4];
+        e[2] = &s3[5];
+        e[3] = &s3[6];
+        e[4] = &s3[7];
+        e[5] = &s3[8];
+        e[6] = &s3[9];
+        e[7] = &s3[10];
+        e[8] = &s3[11];
+        e[9] = &s3[13];
+        e[10] = &s3[14];
+        e[11] = &s3[12];
+        for (i = 0; i < 12; i++) {
+            if (*e[i] != 0) {
+                func_0022D0E0(*e[i], 1);
+            }
+            *e[i] = 0;
+        }
+        func_002C0750(s3);
+        StrStatus_Exit((Task *)s3[0x9C / 4]);
+        if (s3[0xA0 / 4] != 0) {
+            func_0027E120(s3[0xA0 / 4]);
+            func_0027E070();
+        }
+        if (s3[0xA4 / 4] != 0) {
+            amTask_Kill((Task *)s3[0xA4 / 4]);
+        }
+        amHeap_Free(s3);
+        amTask_Kill(g->task);
+        if (s3[0] != 0) {
+            amHeap_Free((void *)s3[0]);
+        }
+        if (s3[1] != 0) {
+            amHeap_Free((void *)s3[1]);
+        }
+    }
+    amHeap_Free(g);
+    Help_Exit();
+    gTourMode = 0;
+    func_0028DF20();
+    func_0027E070();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3E40);
