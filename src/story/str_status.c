@@ -797,7 +797,81 @@ void VsCharaselEd_TaskMain(Task *task) {
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1A00);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1AA0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1BC0);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1CF0);
+extern s32 func_0027DAB0(s32);
+extern void func_0027E120(s32);
+extern void func_002C0750(s32 *);
+extern void func_002C1320(s32 *);
+extern void func_002C2FF0(void);
+extern void func_002C0860(s32 *);
+extern void func_0022C060(s32, f32);
+extern void func_0022CD00(s32);
+
+extern s32 func_0027DAB0(s32);
+extern void func_0027E120(s32);
+extern void func_002C0750(s32 *);
+extern void func_002C1320(s32 *);
+extern void func_002C2FF0(void);
+extern void func_002C0860(s32 *);
+extern void func_0022C060(s32, f32);
+extern void func_0022CD00(s32);
+
+extern s32 func_0027DAB0(s32);
+extern void func_0027E120(s32);
+extern void func_002C0750(s32 *);
+extern void func_002C1320(s32 *);
+extern void func_002C2FF0(void);
+extern void func_002C0860(s32 *);
+extern void func_0022C060(s32, f32);
+extern void func_0022CD00(s32);
+
+extern s32 func_0027DAB0(s32);
+extern void func_0027E120(s32);
+extern void func_002C0750(s32 *);
+extern void func_002C1320(s32 *);
+extern void func_002C2FF0(void);
+extern void func_002C0860(s32 *);
+extern void func_0022C060(s32, f32);
+extern void func_0022CD00(s32);
+
+void func_002C1CF0(s32 *a0) {
+    s32 *s0 = (s32 *)a0[0x30 / 4];
+    s32 s2;
+    s32 v;
+    s32 r;
+    void *f;
+    v = s0[0x4 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x2000);
+    D_00470238 = 0;
+    v = s0[0x4 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x2000);
+    D_00470238 = 0;
+    s2 = s0[0x8 / 4];
+    if (s2 != 0) {
+        func_0022C060(s2, 1.0f);
+        func_0022CD00(s2);
+    }
+    func_002C0860(s0);
+    func_0022C700();
+    func_00133B50(0, 0);
+    r = func_0027DAB0(s0[0xA0 / 4]);
+    if ((s8)r >= 7) {
+        func_0027E120(s0[0xA0 / 4]);
+        s0[0xA0 / 4] = 0;
+        *(u8 *)((char *)s0 + 0xAC) = *(u8 *)((char *)s0 + 0xAC) - 1;
+        *(s32 *)((char *)s0 + 0xC4) = 0x41F00000;
+        *(u8 *)((char *)s0 + 0xAF) = 5;
+        func_002C0750(s0);
+        func_002C1320(s0);
+        f = (void *)func_002C2FF0;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1E10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1F90);
 #if 0
