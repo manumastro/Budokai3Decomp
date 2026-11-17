@@ -31,7 +31,23 @@ void func_0028EB20(void) {
 }
 void func_0028EB30(void) {
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EB40);
+extern void func_0028E5D0(void);
+
+void func_0028EB40(s32 *p, s32 a1, s32 a2, s32 a3) {
+    s32 *w = &p[0x30 / 4];
+    s32 v;
+    w[0] = a1;
+    w[1] = a3;
+    if (a2 == 0) {
+        a2 = p[0x1C / 4];
+    }
+    w[2] = a2;
+    v = (s32)func_0028E5D0;
+    if (v == 0) {
+        v = 0;
+    }
+    p[0x1C / 4] = v;
+}
 void func_0028EB80(void *p, s32 v) {
     ((s32 *)p)[0x14] = v;
 }
@@ -44,7 +60,13 @@ void func_0028EBF0(void *p, s32 a1, s32 a2) {
     *(u16 *)((char *)p + 0x30) = (*(u16 *)((char *)p + 0x30) & -2) | a1;
     *(s32 *)((char *)p + 0x44) = a2;
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EC10);
+void func_0028EC10(char *a0, char *a1, s32 a2, s32 a3) {
+    s32 *arr = *(s32 **)(a1 + 0x1C);
+    s32 *P = (s32 *)arr[a2];
+    s32 *Q = (s32 *)P[2];
+    *(s32 *)(a0 + 0x40) = Q[5];
+    *(u16 *)(a0 + 0x30) = (*(u16 *)(a0 + 0x30) & -3) | (a3 & 2);
+}
 void func_0028EC50(void *p, s32 a1, s32 a2, s32 a3, s32 t0, s32 t1) {
     *(u16 *)((char *)p + 0x30) = t0;
     *(s32 *)((char *)p + 0x34) = a2;
@@ -65,6 +87,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F930);
 void func_00290320(void) {
     D_004708A4 = 0;
 }
+// func_00290330 (finds the entry of a table by its id and sets one field): the loop keeps the index and the pointer in the other registers; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290330);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290390);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290410);
