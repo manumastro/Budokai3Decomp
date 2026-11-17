@@ -211,16 +211,15 @@ void func_002988D0(s32 a, s32 b) {
         D_005AA604[0]->f1080[r] = b;
     }
 }
+/* differs: the original keeps the byte address in a register (addiu a2, a1, 0x11E0) and is 8 bytes longer (10 of 31 with the plain form) */
 #if 0
-/* the original reloads D_005AA604 after the stores, this keeps it in a register */
 void func_00298910(s32 n) {
-    SndWork *w = D_005AA604[0];
     Slot *s;
     s32 i;
 
-    if (n != w->f11E0) {
+    if (n != D_005AA604[0]->f11E0) {
         D_005AA644[0] |= 1;
-        w->f11E0 = n;
+        D_005AA604[0]->f11E0 = n;
         s = D_005AA604[0]->slot;
         for (i = 0; i < 64; i++, s++) {
             func_00290410(s);
