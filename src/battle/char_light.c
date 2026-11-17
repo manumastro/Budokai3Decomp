@@ -169,29 +169,22 @@ void func_00236640(u8 *p) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236640);
 // GIVEN UP: the calls and the stores match; the frame is 0x10 bytes bigger (0x70 against 0x60) with the locals in any layout tried
-#if 0
 void func_002366E0(void) {
-    s32 a[4];
-    s32 w1;
-    s32 pad[7];
-    s32 b[4];
-    s32 w2;
+    s32 b[9];
+    s32 a[9];
 
     func_001F9BB0(-1, -1);
     func_00215230(-1, -1);
     func_00214FD0();
-    w2 = -1;
+    b[4] = -1;
     func_00218440(0x10, b);
-    w1 = -1;
+    a[4] = -1;
     Sp_CallHandler(7, a);
     func_001DA4C0();
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002366E0);
 // GIVEN UP: the local buffer lands 8 bytes higher in the frame
-#if 0
 void func_00236750(s32 *p) {
-    s32 buf[2];
+    s32 buf[4];
 
     if (p != 0) {
         func_001D9760(p[0], p[1]);
@@ -200,8 +193,6 @@ void func_00236750(s32 *p) {
         A2d_CallHandler(0x12, buf);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236750);
 extern void *gBattle;
 extern void (*D_0046A750[])(s32 *);
 extern void func_001B0B10(void);
@@ -510,7 +501,52 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002383D0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238610);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238790);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238C50);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239110);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern s32 gBtlSys;
+extern s32 Input_IsHeld(s32);
+extern void amDraw_SetPacketMode(s32);
+extern void amModel_SetCurrent(s32, s32);
+extern void func_0022C6B0(s32 *);
+void func_00239110(char *self) {
+    char *sys = (char *)gBtlSys;
+    char **s0;
+    s32 i;
+    s32 off;
+    s32 e;
+    s32 v;
+    s0 = (char **)(self + 0x30);
+    if (*(s8 *)((char *)gBattle + 0x8975) != 1) {
+        if (Input_IsHeld(4) != 0) {
+            if (*(s32 *)(*s0 + 8) >= 2) {
+                amDraw_SetPacketMode(1);
+                e = *(s32 *)(sys + 0xE84);
+                D_00470704 = e;
+                D_0047070C = 0x4010000;
+                D_00470708 = 0;
+                amModel_SetCurrent(e, 0x4010000);
+                D_00470238 = 0;
+                i = 0;
+                off = 0;
+                do {
+                    v = *(s32 *)(*s0 + off + 0xC);
+                    if (v != 0) {
+                        func_0022C6B0((s32 *)v);
+                    }
+                    i++;
+                    off += 4;
+                } while (i < 3);
+                v = *(s32 *)(*s0 + 0x18);
+                if (v != 0) {
+                    func_0022C6B0((s32 *)v);
+                }
+                amDraw_SetPacketMode(0);
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239200);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002392F0);
 extern s32 D_0058BF40[];
