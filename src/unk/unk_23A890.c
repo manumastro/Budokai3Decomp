@@ -655,6 +655,57 @@ s32 func_002408C0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002408C0);
+void func_002433F0(void);
+void func_002BF3B0(void);
+void func_00208F70(s32);
+extern u8 D_004502F0[];
+extern u8 D_00450470[];
+extern u8 D_00450AF0[];
+#if 0
+// differs: 8 bytes short: the flag dispatch lays the 2433F0 block before the 2BF3B0 block in the original (if/else and switch tried); the float stores and multiplies match
+void func_00240A90(s32 i) {
+    u8 *s2 = D_0046FE44 + i * 0x80;
+    u8 *t1 = D_004502F0 + i * 0xC0;
+    u8 *t0 = D_00450470 + i * 0xC0;
+    u8 *a6;
+    u8 *v3;
+    u8 *s1;
+    u8 *s0;
+    s32 n;
+
+    n = *(s8 *)(s2 + 0x3B);
+    if (n == -1) {
+        return;
+    }
+    a6 = D_00450AF0 + (n << 4);
+    v3 = D_00450AF0 + (*(s8 *)(s2 + 0x3C) << 4);
+    s1 = *(u8 **)(t1 + 0x24);
+    s0 = *(u8 **)(t0 + 0x24);
+    *(f32 *)(s1 + 0x8C) = *(f32 *)a6;
+    *(f32 *)(s1 + 0x9C) = *(f32 *)(a6 + 4);
+    *(f32 *)(s1 + 0xAC) = *(f32 *)(a6 + 8);
+    *(f32 *)(s1 + 0xBC) = *(f32 *)(a6 + 0xC);
+    *(f32 *)(s0 + 0x8C) = *(f32 *)v3;
+    *(f32 *)(s0 + 0x9C) = *(f32 *)(v3 + 4);
+    *(f32 *)(s0 + 0xAC) = *(f32 *)(v3 + 8);
+    *(f32 *)(s0 + 0xBC) = *(f32 *)(v3 + 0xC);
+    if (*(s16 *)(D_0046FE44 + 0x100) == 1) {
+        func_002BF3B0();
+    } else if (*(s16 *)(D_0046FE44 + 0x100) == 0) {
+        func_002433F0();
+    }
+    *(f32 *)(s1 + 0x8C) = *(f32 *)(s1 + 0x8C) * *(f32 *)(s2 + 0x28);
+    *(f32 *)(s1 + 0x9C) = *(f32 *)(s1 + 0x9C) * *(f32 *)(s2 + 0x28);
+    *(f32 *)(s1 + 0xAC) = *(f32 *)(s1 + 0xAC) * *(f32 *)(s2 + 0x28);
+    *(f32 *)(s1 + 0xBC) = *(f32 *)(s1 + 0xBC) * *(f32 *)(s2 + 0x28);
+    *(f32 *)(s0 + 0x8C) = *(f32 *)(s0 + 0x8C) * *(f32 *)(s2 + 0x28);
+    *(f32 *)(s0 + 0x9C) = *(f32 *)(s0 + 0x9C) * *(f32 *)(s2 + 0x28);
+    *(f32 *)(s0 + 0xAC) = *(f32 *)(s0 + 0xAC) * *(f32 *)(s2 + 0x28);
+    *(f32 *)(s0 + 0xBC) = *(f32 *)(s0 + 0xBC) * *(f32 *)(s2 + 0x28);
+    func_00208F70(*(s32 *)(s2 + 0x40));
+    func_00208F70(*(s32 *)(s2 + 0x44));
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00240A90);
 void func_00240C30(s32 i) {
     u8 *p;

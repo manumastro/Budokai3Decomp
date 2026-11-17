@@ -586,30 +586,27 @@ s32 func_0021C2E0(s32 id) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2E0);
 #if 0
+// differs: the count is kept as a pointer (gBattle + 0x88D8) in the original, reloaded in the loop test; 0x58 bytes against 0x70: the sys/cnt pointer forms and the do-while were tried
 s32 func_0021C360(s32 id) {
-    u8 *bw = gBattle;
     u8 *sys = gBtlSys;
-    s32 i;
+    u8 *cp = gBattle + 0x88D8;
+    s32 i = 0;
 
-    if (0 < *(s32 *)(bw + 0x88D8)) {
-        for (i = 0; i < *(s32 *)(bw + 0x88D8); i++) {
+    if (0 < *(s32 *)cp) {
+        do {
             if (*(s8 *)(sys + i + 0xCA0) == id) {
                 return i;
             }
-        }
+            i++;
+        } while (i < *(s32 *)cp);
     }
     return -1;
 }
-// differs: the count is read again in the loop test through a register of its own (lw from 0(a1)), and the frame is 0x10 bigger: the loop shape differs
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C360);
-#if 0
 s32 func_0021C3D0(s32 i) {
-    return *(s8 *)((s32)gBtlSys + i + 0xCA0);
+    return ((s8 *)(gBtlSys + 0xCA0))[i];
 }
-// differs: the sum D + i is emitted as addu v0, v0, a0 (loaded base first); the i-first forms were not reached
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C3D0);
 u8 *func_0021C3E0(s32 i) {
     return gBtlSys + 0xCB0 + i * 0x50;
 }
