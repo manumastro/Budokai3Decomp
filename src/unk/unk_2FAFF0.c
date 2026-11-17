@@ -382,7 +382,483 @@ s32 func_002FCF60(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCF60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD090);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD560);
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+extern s8 D_005D0082[];
+extern s8 D_004B4B58[];
+extern u32 func_0012EAE0(s32);
+
+void func_002FD560(void) {
+    s8 *s0;
+    s32 s4, s3, s2, s1, a0, a1, a2, v1;
+    s8 *e;
+    u8 *gt;
+
+    if (0 < (1 << D_005D0082[0])) {
+        s1 = 0;
+        s2 = 0;
+        do {
+            gt = (u8 *)gTourMap;
+            e = (s8 *)(gt + s2);
+            s0 = (s8 *)((u8 *)e + 0x2EC);
+            if (*(s16 *)(e + 0x2F6) != -1) {
+                goto nxt;
+            }
+            a0 = s0[4];
+            if (a0 != 1) {
+                goto nxt;
+            }
+            a0 = s0[7];
+            if (a0 != D_004B4B58[0]) {
+                goto nxt;
+            }
+            if (((s1 >> a0) & 1) == 0) {
+                goto bclear;
+            }
+            a2 = 1 << a0;
+            a1 = (s1 - a2) >> a0;
+            s4 = a1 << a0;
+            a2 = s4 + a2;
+            if (s4 < a2) {
+                s3 = s4;
+                e = (s8 *)(gt + s4 * 20);
+                for (; s3 < a2; s3++, e += 0x14) {
+                    if (e[0x2F3] == a0) {
+                        if (!(func_0012EAE0(0x20) & 1)) {
+                            v1 = s3 * 20;
+                            e = (s8 *)((u8 *)gTourMap + v1);
+                            e[0x2F3]++;
+                            s0[4] = 5;
+                        } else {
+                            *((u8 *)gTourMap + s3 * 20 + 0x2F0) = 5;
+                            s0[7]++;
+                        }
+                        goto chk;
+                    }
+                }
+            }
+            goto chk;
+        bclear:
+            a2 = 1 << a0;
+            a1 = (s1 + a2) >> a0;
+            s4 = a1 << a0;
+            a2 = s4 + a2;
+            if (s4 < a2) {
+                s3 = s4;
+                e = (s8 *)(gt + s4 * 20);
+                for (; s3 < a2; s3++, e += 0x14) {
+                    if (e[0x2F3] == a0) {
+                        if (!(func_0012EAE0(0x20) & 1)) {
+                            v1 = s3 * 20;
+                            e = (s8 *)((u8 *)gTourMap + v1);
+                            e[0x2F3]++;
+                            s0[4] = 5;
+                        } else {
+                            *((u8 *)gTourMap + s3 * 20 + 0x2F0) = 5;
+                            s0[7]++;
+                        }
+                        goto chk;
+                    }
+                }
+            }
+        chk:
+            a0 = s0[7];
+            if (s3 == s4 + (1 << a0)) {
+                s0[7] = a0 + 1;
+            }
+        nxt:
+            s1++;
+            s2 += 0x14;
+        } while (s1 < (1 << D_005D0082[0]));
+    }
+}
+
 #if 0
 // differs: 122 of 138 instructions (register choice and the placement of the return-5 exit; 4 layouts tried)
 extern s8 D_005D0080[];
