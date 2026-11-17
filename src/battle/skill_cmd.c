@@ -144,6 +144,51 @@ void func_0024A680(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A680);
+// GIVEN UP: the sub-object pointer is kept in the other saved register, and the original loads a0[2] without using it (4 forms tried)
+#if 0
+extern s8 D_004703F4;
+extern void func_001E2630(void);
+extern void func_00208F70(s32);
+s32 func_0024A760(s32 *a0) {
+    f32 f2;
+    f32 f1;
+    u8 *a1 = (u8 *)a0[3];
+
+    if (D_00470570 != 0) {
+        f2 = *(f32 *)((u8 *)D_00470570 + 0x88F0);
+    } else if (D_004703F4 == 3) {
+        f2 = 0.6f;
+    } else {
+        f2 = 1.0f;
+    }
+    f1 = *(f32 *)(a1 + 0xD0);
+    f1 = f1 * f2;
+    *(f32 *)((u8 *)a0 + 0x4C) = *(f32 *)((u8 *)a0 + 0x4C) + f1;
+    if (D_00470570 != 0) {
+        f2 = *(f32 *)((u8 *)D_00470570 + 0x88F0);
+    } else if (D_004703F4 == 3) {
+        f2 = 0.6f;
+    } else {
+        f2 = 1.0f;
+    }
+    f1 = *(f32 *)((u8 *)a0 + 0x50) + f2;
+    *(f32 *)((u8 *)a0 + 0x50) = f1;
+    if (f1 > 32.0f) {
+        if ((*(s16 *)((u8 *)a0 + 4) & 0x800) != 0) {
+            func_001E2630();
+            *(s16 *)((u8 *)a0 + 4) = *(s16 *)((u8 *)a0 + 4) & -0x801;
+        }
+    }
+    if (a0[17] != 0) {
+        func_00208F70(a0[17]);
+        if (((s32 *)a0[17])[14] < 0) {
+            a0[17] = 0;
+            return 1;
+        }
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A760);
 void func_0024A8A0(s32 *p) {
     if (p[17] != 0) {
@@ -1197,7 +1242,51 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002560A0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00256360);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002569E0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00256BF0);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00256D50);
+extern s32 amGs_SetReg32(s32, s32);
+extern void func_002569E0(s32 *);
+void func_00256D50(s32 *a0) {
+    s32 *s4 = a0 + 12;
+    s32 *s3 = (s32 *)a0[12];
+    u8 *g = (u8 *)D_0046FDFC;
+    s32 i;
+    s32 *s1;
+    u8 *q;
+    s32 s5;
+
+    if (func_0021C2A0(0x80000000) == 0 || *(s8 *)((u8 *)D_00470570 + 0x8975) != 0) {
+        return;
+    }
+    {
+        {
+            s32 x = *(s32 *)(g + 0xE60);
+
+            D_00470704 = x;
+            D_0047070C = 0x4000000;
+            D_00470708 = 0;
+            func_00145CC0(x, 0x4000000);
+            D_00470238 = 0;
+            func_0022C560(s4[1]);
+            func_0022C560(s4[2]);
+            for (i = 0, s1 = s4, q = (u8 *)s3; i < 2; i++, s1 += 1, q += 2) {
+                func_0022C560(s1[3]);
+                if (s1[5] != 0) {
+                    func_0022C560(s1[5]);
+                }
+                s5 = amGs_SetReg32(2, 0x335AB);
+                if (*(s16 *)(q + 0x30) != 0) {
+                    func_0022C560(s1[7]);
+                }
+                amGs_SetReg32(2, s5);
+            }
+            func_002569E0(s3);
+            for (i = 0; i < 2; i++, s4 += 1) {
+                if (s4[11] != 0) {
+                    func_0022C560(s4[11]);
+                }
+            }
+        }
+    }
+}
 // GIVEN UP: the original has a shared "b" to the exit for both failed tests (5 instructions short here)
 #if 0
 void func_00256EB0(u8 *a0) {
@@ -1411,7 +1500,48 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00258090);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00258310);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002587F0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00258AC0);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00258C20);
+extern s32 D_0058D4E8[];
+extern void func_0022D0E0(s32, s32);
+void func_00258C20(s32 *a0) {
+    s32 *s3 = a0 + 12;
+    s32 *s2 = (s32 *)a0[12] + 12;
+    s32 i;
+    s32 *s0;
+
+    if (s2 != 0) {
+        if (s2[1] != 0) {
+            func_0022D0E0(s2[1], 1);
+        }
+        s2[1] = 0;
+        if (s2[2] != 0) {
+            func_0022D0E0(s2[2], 1);
+        }
+        s2[2] = 0;
+        if (s2[3] != 0) {
+            func_0022D0E0(s2[3], 1);
+        }
+        s2[3] = 0;
+        if (s2[9] != 0) {
+            func_0022D0E0(s2[9], 1);
+        }
+        s2[9] = 0;
+        for (i = 0, s0 = s2; i < 5; i++, s0 += 1) {
+            if (s0[4] != 0) {
+                func_0022D0E0(s0[4], 1);
+            }
+            s0[4] = 0;
+        }
+        if (s2[10] != 0) {
+            func_0022D0E0(s2[10], 1);
+        }
+        s2[10] = 0;
+    }
+    if (s3[0] != 0) {
+        amTask_Kill(s3[0]);
+    }
+    s3[0] = 0;
+    D_0058D4E8[0] = 0;
+}
 void func_00258D40(s32 *a0, s32 a1) {
     s32 *s2;
     s32 i;
