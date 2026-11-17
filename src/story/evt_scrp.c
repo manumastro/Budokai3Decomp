@@ -2003,7 +2003,74 @@ void func_002A6E40(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6E40);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6FD0);
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00228430(s32);
+extern void func_0022C060(s32, f32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+extern f32 D_004E0614[];
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
+void func_002A6FD0(void) {
+    s32 *s0;
+    s32 a14;
+    s32 c7c;
+    s32 t0;
+    s32 v;
+    s32 a1;
+    s32 t;
+    s32 x;
+    u16 *row;
+    x = D_004B4B63[0];
+    row = (u16 *)(D_00492FCE + x * 0xB8);
+    s0 = gEvtWork;
+    if (*row & 0x50) {
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 2, 0);
+        }
+        s0[0x7C / 4] = s0[0x7C / 4] + 1;
+        s0[0x7C / 4] = s0[0x7C / 4] & 1;
+    }
+    a14 = s0[0x14 / 4];
+    c7c = s0[0x7C / 4];
+    v = a14 + (s32)0xC0000000;
+    if (c7c == 0) {
+        t0 = s0[0x78 / 4];
+        a1 = (v << 9) + 0x890000;
+        D_00470704 = t0;
+        D_0047070C = a1;
+        D_00470708 = 0;
+        amModel_SetCurrent(t0, a1);
+        D_00470238 = 0;
+        t = s0[0x88 / 4];
+        func_00228430(0);
+        func_00228430(0);
+        func_0022C060(t, 1.0f);
+        func_00228410();
+        func_0022CD00(t);
+        func_00228410();
+    } else {
+        t0 = s0[0x78 / 4];
+        a1 = (v << 9) + 0x890000;
+        D_00470704 = t0;
+        D_0047070C = a1;
+        D_00470708 = 0;
+        amModel_SetCurrent(t0, a1);
+        D_00470238 = 0;
+        t = s0[0x8C / 4];
+        func_00228430(0);
+        func_00228430(0);
+        func_0022C060(t, 1.0f);
+        func_00228410();
+        func_0022CD00(t);
+        func_00228410();
+    }
+}
 extern f32 func_002B06A0(void);
 extern void func_0029AAC0(s32, s32, s32);
 extern s32 *gStrMap;
@@ -2345,5 +2412,54 @@ void EvtScrp_Init(void) {
     g[0x64 / 4] = 0;
     g[0x68 / 4] = 0;
 }
+extern u8 D_004700B4[];
+extern u8 D_004700B8[];
+#if 0
+// func_002A81B0: 0x160 vs 0x180 bytes. The original tests the high halfword against 0x6A/0x68/0x66/0x64 with beq chains to one switch block, then compares the low halfword in the order 0x22, 0x11, 7, 0xD, 0xC ... 0 (beq chains); a switch sorts the cases and merges the shared table bodies (ascending chain); an if/else chain gets range tests (sltiu). Tried: if/else chain (0x138), switch (0x160).
+void func_002A81B0(s32 a0) {
+    s8 x = D_00511450[0];
+    s32 key = (u32)(a0 & 0xFFFF0000) >> 16;
+    s32 low = a0 & 0xFFFF;
+    char *v;
+    s32 idx;
+    v = (char *)D_004E6560 + x * 4624 + 0x80;
+    if (key == 0x6A || key == 0x68 || key == 0x66 || key == 0x64) {
+        switch (low) {
+        case 0x22:
+            *(s32 *)(v + 0x11DC) = 5;
+            break;
+        case 0x11:
+            *(s32 *)(v + 0x11DC) = 4;
+            break;
+        case 7:
+            idx = key - 0x64;
+            if (idx < 0) {
+                idx += 1;
+            }
+            idx >>= 1;
+            *(s32 *)(v + 0x11DC) = D_004700B8[idx];
+            break;
+        case 0xD:
+        case 0xC:
+        case 0xB:
+        case 0xA:
+        case 4:
+        case 3:
+        case 2:
+        case 0:
+            idx = key - 0x64;
+            if (idx < 0) {
+                idx += 1;
+            }
+            idx >>= 1;
+            *(s32 *)(v + 0x11DC) = D_004700B4[idx];
+            break;
+        default:
+            *(s32 *)(v + 0x11DC) = 0;
+            break;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A81B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A8330);
