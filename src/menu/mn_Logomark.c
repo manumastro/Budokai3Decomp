@@ -456,8 +456,6 @@ void func_002E8190(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8190);
-#if 0
-// differs: the parameter block is filled in another order (the value 1 is loaded before the frame is set up and stored later), so the scheduling and registers differ
 void func_002E8270(u8 *a0) {
     u8 *s1;
     u8 *s0;
@@ -465,11 +463,11 @@ void func_002E8270(u8 *a0) {
 
     s1 = a0;
     *(s32 *)(blk + 4) = 1;
+    s0 = s1 + 0x30;
     *(s32 *)(blk + 8) = 0xA00000;
     *(s32 *)(blk + 0xC) = 0x280;
     *(s32 *)(blk + 0x10) = 0x200;
     *(s32 *)blk = 0;
-    s0 = s1 + 0x30;
     *(s16 *)(blk + 0x20) = 0;
     *(s32 *)(blk + 0x14) = 3;
     *(s32 *)(blk + 0x18) = -1;
@@ -480,8 +478,6 @@ void func_002E8270(u8 *a0) {
     amSofdec_StartAfs(*(void **)(s0 + 0xC), 0xF4E, 1);
     *(void **)(s1 + 0x1C) = ((void *)func_002E8190 == 0) ? 0 : (void *)func_002E8190;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8270);
 
 /* Sets the task's function to func_002E8270 (the logo mark's main step). */
 void Logomark_Begin(Task *t) {
