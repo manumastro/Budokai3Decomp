@@ -222,7 +222,7 @@ void func_0021B420(void) {
     func_0022C7D0((f32)n, 1);
     func_0022ACF0(D_0047068C);
 }
-// differs: the float-to-int step is cvt.w.s (rounding) in the original, where this (int) cast gives trunc.w.s; the float block around it is otherwise close
+// differs: 22 of 72 (round 5). The (s32) cast is NOT the problem: the original's word 0x46000024 is what the cast emits too (the disassemblers only name it differently). Tried live: the two early exits as one `||` test (shares the return), D_0047068C loaded before the cast, the px = sys+0x640 pointer, and the call func_0022C7D0(D_0047068C, (f32)n, 1) (signature (s32, f32, s32), the file's first declaration must match). Left: the last call func_0022ACF0 gets a nop before the epilogue and the early exits jump past ld ra/lq s1, the original's exits go to the epilogue directly.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
 #if 0
@@ -397,7 +397,7 @@ void func_0021B9A0(void) {
         }
     }
 }
-// differs: the entry pointer is set up in a delay slot in the original, and its first field is loaded into a0 before the test (the temporaries differ in a few instructions)
+// differs: the entry pointer is set up in a delay slot in the original, and its first field is loaded into a0 before the test (the temporaries differ in a few instructions). Round 5: sys = gBtlSys moved into the branch gives 37 of 49 (the load sits after a nop in the delay slot); with the test restructured (s1 set after the first test) the entry is kept in s1 instead of v1: 7 of 47. Still to do: keep the entry in v1 (the original sets s1 = entry + 0x30 in the delay slot of the first beqz, after the load).
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BA60);
@@ -586,7 +586,7 @@ s32 func_0021C2E0(s32 id) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2E0);
 #if 0
-// differs: the count is kept as a pointer (gBattle + 0x88D8) in the original, reloaded in the loop test; 0x58 bytes against 0x70: the sys/cnt pointer forms and the do-while were tried
+// differs: the count is kept as a pointer (gBattle + 0x88D8) in the original, reloaded in the loop test; 0x58 bytes against 0x70: the sys/cnt pointer forms and the do-while were tried. Round 5: the test `0 < *(s32*)(gBattle + 0x88D8)` first with cp formed in the body gives 0x60 bytes (the original reads the count through lui 0x1 + offset -0x7728 and forms cp (li at 0x88D8 / addu a1) in the if body before the loop: the two instructions are missing here); the array form and gBattle + 0x10000 - 0x7728 fold to the same code; cp computed before the test gives 0x60 too; cp first 0x58.
 s32 func_0021C360(s32 id) {
     u8 *sys = gBtlSys;
     u8 *cp = gBattle + 0x88D8;
@@ -616,7 +616,6 @@ u8 *func_0021C400(s32 i) {
 u8 *func_0021C430(s32 i) {
     return gBtlSys + 0x650 + i * 0x190;
 }
-#if 0
 s32 func_0021C460(s32 id) {
     u8 *sys = gBtlSys;
     u8 *cur = sys + id * 0x190;
@@ -638,24 +637,15 @@ s32 func_0021C460(s32 id) {
         }
     } else {
         v = *(s16 *)(oth + 0x3E);
-        if (v != -1) {
-            if (!(v & 1)) {
-                if (c < v) {
-                    return 0;
-                }
-                return 1;
-            }
+        if (v == -1 || (v & 1)) {
+            return 0;
         }
-        return 0;
     }
     if (c < v) {
         return 0;
     }
     return 1;
 }
-// differs: the last test and its join (the compare of the two counters is shared by the two parities in the original; here the code is 4 instructions shorter)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C460);
 void func_0021C540(f32 a, f32 b, f32 c) {
     u8 *sys = gBtlSys;
 

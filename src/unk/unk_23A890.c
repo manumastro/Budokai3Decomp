@@ -1332,6 +1332,60 @@ void func_00243AF0(u8 *o) {
 void func_00243BC0(u8 *o) {
     func_00241EB0(*(s32 *)(o + 0x10), *(s32 *)(o + 0x14));
 }
+#if 0
+// differs: 104 of 107 (round 5, first pass): the frame is 0x120 against the original 0x110 and ours saves s0..s3 (the original s0..s2): the struct offsets (pa = sp+0x40 0xB0 bytes, pb = sp+0xF0 0x20 bytes, the sh/sw stores) are as the original, the register and frame layout is not
+void func_0025BD40(void *);
+void func_00243BD0(u8 *o) {
+    u8 pb[0x20];
+    u8 pa[0xB0];
+    u8 *s0;
+    u8 *s1;
+    s32 t;
+
+    t = *(s32 *)(o + 0x10);
+    s0 = D_0046FE44 + t * 0x80;
+    s1 = gBattle + t * 0x2020 + 0x830;
+    memset(pb, 0, 0x20);
+    if (*(s32 *)(o + 0x14) == 2) {
+        if (*(s32 *)(s0 + 0x2C) & 0x10) {
+            func_00241500(t, 4);
+            *(s16 *)(pb + 0x14) = 4;
+            *(s32 *)(pb + 0x10) = (s32)s1;
+            *(s16 *)(pb + 0x16) = 5;
+            func_0025BD40(pb);
+            *(s32 *)(s0 + 0x2C) = *(s32 *)(s0 + 0x2C) & ~0x10;
+            func_00241600(t);
+        }
+    } else if (*(s32 *)(o + 0x14) == 1) {
+        *(s32 *)(s0 + 0x2C) = *(s32 *)(s0 + 0x2C) | 0x10;
+        *(s16 *)(pb + 0x14) = 4;
+        *(s32 *)(pb + 0x10) = (s32)s1;
+        *(s16 *)(pb + 0x16) = 5;
+        func_0025BD40(pb);
+    } else if (*(s32 *)(o + 0x14) == 0) {
+        memset(pa, 0, 0xB0);
+        *(s16 *)(pa + 0x50) = 2;
+        *(s16 *)(pa + 0x52) = 0;
+        *(s16 *)(pa + 0x54) = 1;
+        *(s16 *)(pa + 0x56) = 4;
+        *(s16 *)(pa + 0xA2) = 7;
+        *(s16 *)(pa + 0xA4) = 9;
+        *(s16 *)(pa + 0x94) = 4;
+        *(s16 *)(pa + 0x96) = 4;
+        *(s16 *)(pa + 0x98) = 4;
+        *(s16 *)(pa + 0x58) = 0;
+        *(s16 *)(pa + 0xA0) = 0;
+        *(s32 *)(pa + 0x6C) = (s32)s1;
+        *(s32 *)(pa + 0x78) = 0;
+        func_00214DD0(pa, 0);
+        func_00214F80(*(s16 *)(pa + 0x52), pa);
+        *(s16 *)(pb + 0x14) = 4;
+        *(s32 *)(pb + 0x10) = (s32)s1;
+        *(s16 *)(pb + 0x16) = 6;
+        func_0025BD40(pb);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243BD0);
 void func_00243D80(u8 *o) {
     s32 idx = *(s32 *)(o + 0x10);
@@ -1577,7 +1631,7 @@ void func_00244CC0(s32 i, s32 j) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244CC0);
 #if 0
-// differs: one instruction: the slot address is built as addu with the base in the first operand (the original has the scaled index first); the rest matches
+// differs: 1 of 95 (244DC0 `addu v1,v1,a0` in the original, ours `addu v1,a0,v1`: the entry q = base + a1*0x220 with the base first). Round 5: tried q as ((Ent220*)base + a1), &((Ent220*)base)[a1], integer casts, and one expression D + a0*0x480 + a1*0x220: all base first. The slot stores as ((s32*)(s3+0x20))[s1] change the prologue (91 of 98): keep the s0 form.
 extern u8 D_0046AD08[];
 s32 BtlCmd_GetMotEntry(s32, s32);
 s32 func_00127E88(void *, void *, s32);
@@ -1633,7 +1687,58 @@ void func_00244D80(s32 a0, s32 a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244D80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244F00);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00245240);
+extern u8 D_0046AD08[];
+s32 BtlCmd_GetMotEntry(s32, s32);
+s32 func_00127E88(void *, void *, s32);
+void func_0020A100(void *);
+s32 amObject_Create(s32, s32);
+void amFile_Load(s32);
+
+void func_00245240(void) {
+    u8 *s0;
+    s32 s4;
+    u8 *s3;
+    u8 *s2;
+    s32 s1;
+    s32 off;
+    s32 i;
+
+    s0 = *(u8 **)(D_0046FE4C + 0x99C);
+    if (s0 != 0) {
+        *(s32 *)(D_0046FE4C + 0x99C) = *(s32 *)(s0 + 0x40);
+        *(s32 *)(D_0046FE4C + 0x9A0) = *(s32 *)(*(u8 **)(s0 + 0x40) + 0x50);
+        amFile_Load(*(s32 *)(D_0046FE4C + 0x9A0));
+        *(s32 *)(s0 + 0x40) = 0;
+        amCdFs_Close((s32)s0, 0);
+        s3 = *(u8 **)(D_0046FE4C + 0x9A0);
+        if (0 < *(s32 *)(s3 + 0x10)) {
+            s4 = 0;
+            off = 0;
+            do {
+                s2 = (u8 *)BtlCmd_GetMotEntry((s32)s3, s4);
+                s1 = func_001A50F0((s32)s3, s4);
+                if (*(s32 *)(s2 + 8) >= 0) {
+                    amFile_Load(s1);
+                } else {
+                    if (func_00127E88((void *)s1, (void *)D_0046AD08, 4) == 0) {
+                        func_0020A100((void *)s1);
+                    }
+                }
+                *(s32 *)(D_0046FE4C + off + 0x91C) = s1;
+                if (*(s32 *)(s2 + 8) == 1) {
+                    *(s32 *)(D_0046FE4C + off + 0x95C) =
+                        amObject_Create(*(s32 *)(D_0046FE4C + off + 0x91C), 0);
+                }
+                s4++;
+                off += 4;
+            } while (s4 < *(s32 *)(s3 + 0x10));
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        func_00244F00(i, 0);
+        func_00244F00(i, 1);
+    }
+}
 #if 0
 void func_002453D0(void) {
     u8 *bw;
@@ -1926,7 +2031,41 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247500);
 void func_002475D0(void) {
     func_00245240();
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002475E0);
+s32 func_002475E0(u8 *a0) {
+    s32 i;
+    u8 *s2;
+    u8 *s1;
+    u8 *s0;
+    volatile s32 r __attribute__((aligned(16)));
+    s32 fp;
+    s32 *slot;
+
+    *(s32 *)(D_0046FE4C + 0x99C) = amCdFs_ReadFileId(0x1F7, 0, 1);
+    for (i = 0; i < 2; i++) {
+        s2 = gBattle + i * 0x2020 + 0x830;
+        s1 = D_0058CAA0 + i * 0x480 + 0x10;
+        fp = *(s16 *)(a0 + i * 0x50 + 0x20);
+        s0 = D_0046FE4C + i * 0x480 + 0x50;
+        slot = &D_00451970[fp];
+        if (*slot != -1) {
+            *(s32 *)s0 = amCdFs_ReadFileId(*slot, 0, 1);
+            *(s32 *)(s0 + 0x14) = 0;
+            r = *(s32 *)s0;
+        } else {
+            r = 0;
+        }
+        *(s16 *)(s1 + 0x2E) = 0;
+        if (*(s32 *)(s2 + 0x1CFC) == 0x23 && (s16)fp != 0x23) {
+            s0 = D_0046FE4C + *(s32 *)(s2 + 0x1350) * 0x480 + 0x270;
+            if (*slot != -1) {
+                *(s32 *)s0 = amCdFs_ReadFileId(*slot, 0, 1);
+                *(s32 *)(s0 + 0x14) = 0;
+            }
+            *(s16 *)(s1 + 0x2E) = 1;
+        }
+    }
+    return r;
+}
 #if 0
 void func_00247770(u8 *o) {
     s32 *p = (s32 *)(o + 0x30);
