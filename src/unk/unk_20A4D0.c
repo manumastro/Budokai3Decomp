@@ -49,6 +49,7 @@ void Adx_TaskStopCheck(void);
 void memset(void *, s32, s32);
 s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void (*jtbl_00469CC4[])(void *);
+extern u8 D_0044BA90[];
 extern void amAdx_Pause(s32, s32);
 void func_0020D780(void *);
 void func_002194C0(u8 *);
@@ -962,16 +963,15 @@ void func_0020D780(void *out) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D7C0);
 #if 0
 void func_0020D9B0(void) {
-    u8 *q = gWave;
     s32 *p;
 
-    *(s32 *)(q + 0x78) += 1;
+    *(s32 *)(gWave + 0x78) = *(s32 *)(gWave + 0x78) + 1;
     p = (s32 *)(gWave + 0x78);
-    if (*p >= 8) {
+    if (*(s32 *)(gWave + 0x78) >= 8) {
         *p = 0;
     }
 }
-// differs: 2 of 14: the counter's read goes to $v1 here, to $v0 in the original (also tried a temp and p = &gWave->f78)
+// differs: 2 of 14: the counter read goes to v1 here, to v0 in the original (tried: a local temp, the += form, a single expression, two declaration orders, reading through gWave again for the compare)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D9B0);
 extern u8 D_0058A090[];
@@ -1341,6 +1341,88 @@ void func_0020E870(s32 i, u8 *src, s32 j) {
         "vmove.xyzw $vf31, $vf27\n"
         : : "r"(s1) : "memory");
 }
+#if 0
+void func_0020E8F0(s32 i, u8 *x, s32 mode) {
+    u8 *s0;
+    Copy16A t20;
+    u8 *a;
+    u8 *b;
+    s32 h;
+
+    s0 = D_00568C90 + i * 0x2140;
+    if (mode == 0x19) {
+        h = 0x3F000000;
+        a = x + 0x720;
+        b = x + 0x710;
+        __asm__ volatile (
+            "mtc1 %2, $f0\n"
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "mfc1 %2, $f0\n"
+            "nop\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : "+r"(h) : "r"(a), "r"(b), "r"(&t20) : "memory");
+    } else if (mode == 0x17) {
+        h = 0x3F000000;
+        a = x + 0x740;
+        b = x + 0x730;
+        __asm__ volatile (
+            "mtc1 %2, $f0\n"
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "mfc1 %2, $f0\n"
+            "nop\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : "+r"(h) : "r"(a), "r"(b), "r"(&t20) : "memory");
+    } else if (mode == 0x18) {
+        h = 0x3F000000;
+        a = x + 0x6E0;
+        b = x + 0x6D0;
+        __asm__ volatile (
+            "mtc1 %2, $f0\n"
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "mfc1 %2, $f0\n"
+            "nop\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : "+r"(h) : "r"(a), "r"(b), "r"(&t20) : "memory");
+    } else {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "sqc2 $vf1, 0(%1)\n"
+            : : "r"(x + 0x650 + mode * 16), "r"(&t20) : "memory");
+    }
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "sqc2 $vf1, 0(%1)\n"
+        : : "r"(&t20), "r"(s0) : "memory");
+    func_0013B160(s0 + 0x40);
+    __asm__ volatile (
+        "lqc2 $vf31, 0(%0)\n"
+        "sqc2 $vf28, 0(%1)\n"
+        "sqc2 $vf29, 0x10(%1)\n"
+        "sqc2 $vf30, 0x20(%1)\n"
+        "sqc2 $vf31, 0x30(%1)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(&t20), "r"(s0 + 0x40) : "memory");
+}
+// differs: the mode tests are laid out as an if chain (blocks inline) where the original has beq chains 0x19, 0x17, 0x18 with the case blocks out of line (a switch gives the 0x18 test first); the lerp constant is in a0 instead of v1. Same family as 20D120 and 20E620
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E8F0);
 void func_00146F10(void *a, void *b, f32 s);
 
@@ -3429,7 +3511,113 @@ void func_00216F50(u8 *in) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216F50);
 void func_00217060(void) {
 }
+#if 0
+void func_00217070(u8 *p) {
+    u8 *s0;
+    s32 a2;
+    s32 k;
+    Copy16A t30;
+
+    a2 = *(s32 *)(p + 0x10);
+    k = a2 * 257;
+    s0 = gBattle + (k << 5) + 0x830;
+    if (*(s32 *)(p + 0xC) == 1) {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "vsub.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%2)\n"
+            : : "r"(s0 + 0x650), "r"(D_0044BA90), "r"(&t30) : "memory");
+        func_00146F30(&t30);
+        *(u8 **)(p + 4) = (u8 *)&t30;
+    } else if (*(s32 *)(p + 0xC) == 0) {
+        func_00215230(-1, 0x400);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "sqc2 $vf1, 0(%1)\n"
+            : : "r"(s0 + 0x650), "r"(D_0044BA90) : "memory");
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "vsub.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%2)\n"
+            : : "r"(*(u8 **)(s0 + 0x1354) + 0x650), "r"(D_0044BA90), "r"(&t30) : "memory");
+        func_00146F30(&t30);
+        *(u8 **)(p + 4) = (u8 *)&t30;
+    }
+    *(s16 *)(p + 0x20) = 0x14;
+    *(s16 *)(p + 0x22) = 0;
+    *(s16 *)(p + 0x24) = 0;
+    *(u8 **)(p) = s0 + 0x650;
+    jtbl_00469CC4[0](p);
+    *(u8 **)(p) = s0 + 0x6F0;
+    jtbl_00469CC4[0](p);
+    *(u8 **)(p) = s0 + 0x700;
+    jtbl_00469CC4[0](p);
+    *(u8 **)(p) = s0 + 0x6B0;
+    jtbl_00469CC4[0](p);
+    *(u8 **)(p) = s0 + 0x6C0;
+    jtbl_00469CC4[0](p);
+    *(u8 **)(p) = s0 + 0x680;
+    jtbl_00469CC4[0](p);
+}
+// differs: same family as 217200 (sizes 0x17C vs 0x190): the v==1 block is inline here (the original tests v==1 with beq to an out-of-line block, then beqz to the v==0 block and a b to the tail); the nested if form gives the beq but not the beqz/b pair
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217070);
+#if 0
+void func_00217200(u8 *p) {
+    u8 *s0;
+    s32 a2;
+    s32 k;
+    Copy16A t30;
+
+    a2 = *(s32 *)(p + 0x10);
+    k = a2 * 257;
+    s0 = gBattle + (k << 5) + 0x830;
+    if (*(s32 *)(p + 0xC) != 1) {
+        if (*(s32 *)(p + 0xC) != 0) {
+        } else {
+            func_002CA290(-1);
+            func_00216150(*(s32 *)(p + 0x10));
+            __asm__ volatile (
+                "lqc2 $vf1, 0(%0)\n"
+                "sqc2 $vf1, 0(%1)\n"
+                : : "r"(s0 + 0x650), "r"(D_0044BA90) : "memory");
+            __asm__ volatile (
+                "lqc2 $vf1, 0(%0)\n"
+                "sqc2 $vf1, 0(%1)\n"
+                : : "r"(*(u8 **)(s0 + 0x1354) + 0xD0), "r"(&t30) : "memory");
+            func_00146F30(&t30);
+            *(u8 **)(p + 4) = (u8 *)&t30;
+        }
+    } else {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "vsub.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%2)\n"
+            : : "r"(s0 + 0x650), "r"(D_0044BA90), "r"(&t30) : "memory");
+        func_00146F30(&t30);
+        *(u8 **)(p + 4) = (u8 *)&t30;
+    }
+    *(s16 *)(p + 0x20) = 0x14;
+    *(s16 *)(p + 0x22) = 0;
+    *(s16 *)(p + 0x24) = 0;
+    *(u8 **)(p) = s0 + 0x650;
+    jtbl_00469CC4[0](p);
+    *(u8 **)(p) = s0 + 0x6F0;
+    jtbl_00469CC4[0](p);
+    *(u8 **)(p) = s0 + 0x700;
+    jtbl_00469CC4[0](p);
+    *(u8 **)(p) = s0 + 0x6B0;
+    jtbl_00469CC4[0](p);
+    *(u8 **)(p) = s0 + 0x6C0;
+    jtbl_00469CC4[0](p);
+    *(u8 **)(p) = s0 + 0x680;
+    jtbl_00469CC4[0](p);
+}
+// differs: about 13 of 100 differ: the v==1 block sits out of line with a beq (matched), but the v==0 test is laid out as bnez to the tail with the v==0 block inline; the original has beqz to an out-of-line v==0 block followed by a b to the tail (an empty then-part or a nested else does not give it)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217200);
 #if 0
 void func_00217390(u8 *s) {
