@@ -1030,12 +1030,22 @@ void func_001D9900(Fighter *c, s32 a1, s32 a2) {
     } else {
         idx = c->f1350;
     }
-    q = (s16 *)((char *)g + idx * 72 + a1 * 2 + 0x897E);
-    *q = *q + (s16)a2;
+    ((s16 *)((char *)g + idx * 72 + 0x897E))[a1] += (s16)a2;
 }
 #endif
 // differs: the 0x897E table offset is kept in a register in the original (0x54 against 0x60 bytes)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9900);
+void func_001D9900(Fighter *c, s32 a1, s32 a2) {
+    Game *g = D_00470570;
+    s32 idx;
+    s16 *q;
+
+    if (c->f2015 != 0) {
+        idx = c->f1358->f1350;
+    } else {
+        idx = c->f1350;
+    }
+    ((s16 *)((char *)g + idx * 72 + 0x897E))[a1] += (s16)a2;
+}
 void func_001D9960(Fighter *c, s32 idx, s16 val) {
     Game *g = D_00470570;
     s32 row;
