@@ -439,7 +439,16 @@ void func_00237670(s32 *a0, s32 *a1) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237670);
+void func_00237670(s32 *a0, s32 *a1) {
+    a0[1] = 0;
+    if (a1[8] != 0) {
+        a0[3] = 1;
+    } else {
+        a0[3] = 0;
+        a0 = (s32 *)a0[0];
+        __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"((u8 *)a0 + 0x10), "r"((u8 *)a1 + 0x10) : "memory");
+    }
+}
 s32 func_002376B0(s32 *p) {
     return (p != 0) ? *(s16 *)(D_00447454 + p[3] * 0x60 + p[4] * 8) : 0;
 }
