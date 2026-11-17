@@ -582,7 +582,35 @@ void func_0022C6B0(s32 *p) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C700);
+extern void func_00227010(s32 *, s32 *);
+extern void amDraw_SetPacketMode(s32);
+void func_0022C700(void) {
+    s32 i;
+    s32 off;
+
+    if (D_004706BC > 1) {
+        func_00227010((s32 *)D_004706C0, (s32 *)(D_004706C0 + (D_004706BC - 1) * 8));
+    }
+    amDraw_SetPacketMode(1);
+    if (0 < D_004706BC) {
+        i = 0;
+        off = 0;
+        do {
+            s32 *e = *(s32 **)(D_004706C0 + off);
+            if (e[1] & 1) {
+                if (*(s16 *)((u8 *)e + 0x18) >= 0) {
+                    func_002269B0(e);
+                } else {
+                    func_00226540(e);
+                }
+            }
+            i += 1;
+            off += 8;
+        } while (i < D_004706BC);
+    }
+    amDraw_SetPacketMode(0);
+    D_004706BC = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C7D0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C9A0);
 // GIVEN UP: the loop's count test and register use differ (tried two loop forms)

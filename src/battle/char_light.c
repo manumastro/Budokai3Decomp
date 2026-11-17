@@ -37,6 +37,40 @@ s32 func_002359F0(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002359F0);
+// GIVEN UP: the entry index is loaded into a2 and the entry pointer into a1 in the original (here a1 and a0); the function is 0xD0 bytes against our 0xC4: the final 0x2F/0x53 test is laid out differently (3 instructions). Tried: declaration orders, inline index
+#if 0
+extern s32 func_0022F660(void);
+s32 func_00235A90(u8 *a0) {
+    u8 *e;
+    s32 idx;
+    f32 f;
+    f32 nf;
+    s8 c;
+
+    idx = *(s32 *)(a0 + 0x1350);
+    e = D_0058BBB0 + ((idx * 3) << 6);
+    if (*(s8 *)(e + 0x42) == -1) {
+        return func_0022F660();
+    }
+    f = *(f32 *)(e + 0x48);
+    if (f > 0.0f) {
+        nf = f - *(f32 *)((u8 *)D_00470570 + 0x88F0);
+        *(f32 *)(e + 0x48) = nf;
+        if (nf > 0.0f) {
+            return 1;
+        }
+        *(f32 *)(e + 0x48) = 0.0f;
+    }
+    c = *(s8 *)*(u8 **)(e + 0x44);
+    if (c == 0x2F) {
+        return 1;
+    }
+    if (c == 0x53) {
+        return 1;
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235A90);
 // GIVEN UP: the 1 / 100 divisions and the compare's operands come out in other registers (lh and the remainder swapped)
 #if 0
@@ -404,8 +438,6 @@ void func_002378A0(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002378F0);
-// differs: 1 of 49 instructions: the index add `addu v0,v0,s1` in the original, ours `addu v0,s1,v0` (reversed form did not change it). The rest, including the store order and the frame, matches.
-#if 0
 void func_00237AE0(u8 *a0) {
     s32 s1;
     s32 buf[16];
@@ -414,7 +446,10 @@ void func_00237AE0(u8 *a0) {
     if (*(f32 *)a0 < 8.0f) {
         return;
     }
-    s1 = *(s32 *)(s1 + *(s32 *)(a0 + 0x20) * 4 + 0xEC0);
+    {
+        s32 off = *(s32 *)(a0 + 0x20) * 4;
+        s1 = *(s32 *)(off + s1 + 0xEC0);
+    }
     memset(buf, 0, 0x40);
     *(f32 *)&buf[4] = 1.0f;
     *(f32 *)&buf[5] = 1.0f;
@@ -426,8 +461,6 @@ void func_00237AE0(u8 *a0) {
     *(s16 *)&buf[13] = *(s32 *)(a0 + 0x24);
     func_00253FC0(s1, buf);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237AE0);
 
 
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237BB0);
@@ -512,7 +545,99 @@ void func_002393E0(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239480);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239720);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239920);
+// GIVEN UP: the battle-global load and the s0 pointer come out in other registers (a0 and a1 against s0 and a1); 46 of 56 differ with the plain form; tried a reordered pointer setup (43 of 56)
+#if 0
+extern s32 func_0021C2A0(s32);
+extern void amDraw_SetPacketMode(s32);
+extern void func_00145CC0(s32, s32);
+extern void func_0022C6B0(s32 *);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+void func_00239CC0(u8 *a0) {
+    s32 sys;
+    s32 t;
+    s32 i;
+    s32 off;
+    s32 a;
+    u8 **pp;
+
+    if (*(s8 *)((u8 *)D_00470570 + 0x8975) == 1) {
+        return;
+    }
+    pp = (u8 **)(a0 + 0x30);
+    sys = D_0046FDFC;
+    if (func_0021C2A0(8) == 0) {
+        return;
+    }
+    amDraw_SetPacketMode(1);
+    t = *(s32 *)(sys + 0xE84);
+    D_00470704 = t;
+    D_0047070C = 0x4010000;
+    D_00470708 = 0;
+    func_00145CC0(t, 0x4010000);
+    D_00470238 = 0;
+    a = *(s32 *)(*pp + 0x1C);
+    if (a != 0) {
+        func_0022C6B0((s32 *)a);
+    }
+    for (i = 0, off = 0; i < 4; i++, off += 4) {
+        a = *(s32 *)(*pp + off + 0xC);
+        if (a != 0) {
+            func_0022C6B0((s32 *)a);
+        }
+    }
+    amDraw_SetPacketMode(0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239CC0);
+// GIVEN UP: same register shape as 239CC0 (the SetPacketMode(1) after the 145CC0 call); 46 of 56 differ, tried reordering
+#if 0
+extern s32 func_0021C2A0(s32);
+extern void amDraw_SetPacketMode(s32);
+extern void func_00145CC0(s32, s32);
+extern void func_0022C6B0(s32 *);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+void func_00239DA0(u8 *a0) {
+    s32 sys;
+    s32 t;
+    s32 i;
+    s32 off;
+    s32 a;
+    u8 **pp;
+
+    if (*(s8 *)((u8 *)D_00470570 + 0x8975) == 1) {
+        return;
+    }
+    pp = (u8 **)(a0 + 0x30);
+    sys = D_0046FDFC;
+    if (func_0021C2A0(8) == 0) {
+        return;
+    }
+    t = *(s32 *)(sys + 0xE84);
+    D_00470704 = t;
+    D_0047070C = 0x4010000;
+    D_00470708 = 0;
+    func_00145CC0(t, 0x4010000);
+    amDraw_SetPacketMode(1);
+    D_00470238 = 0;
+    a = *(s32 *)(*pp + 0x1C);
+    if (a != 0) {
+        func_0022C6B0((s32 *)a);
+    }
+    for (i = 0, off = 0; i < 4; i++, off += 4) {
+        a = *(s32 *)(*pp + off + 0xC);
+        if (a != 0) {
+            func_0022C6B0((s32 *)a);
+        }
+    }
+    amDraw_SetPacketMode(0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239DA0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239E80);
 extern s32 D_0058BF30[];
