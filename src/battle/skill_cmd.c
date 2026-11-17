@@ -93,6 +93,9 @@ extern s32 D_00470238;
 
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00248E00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249100);
+// GIVEN UP (round 5): 66 of 86 with the best declaration order. Shape: out in s2, base in s1, side in s0 (the side field
+// is read after the func_0012EAE0 call, `r0 % 0x15` by divu); two 16-byte temporaries at sp+0x40 (vec, lqc2 + vsub) and
+// sp+0x50 (func_00249100 and func_00142100); the VU0 blocks match as inline asm. Draft kept in the round 5 scratch folder.
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002499A0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249B00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249D50);
