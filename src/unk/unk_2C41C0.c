@@ -311,6 +311,65 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C60B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C61A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C63C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6700);
+#if 0
+// differs: compiled 0x200 bytes, original 0x230; the pool pointers take the other saved registers and the d load is scheduled late (106 instructions differ; 120 declaration orders tried). Sibling func_002C8670 has the same body.
+#define W32_2C41C0(p, o) (*(s32 *)((char *)(p) + (o)))
+#define P_2C41C0(p, o) (*(char **)((char *)(p) + (o)))
+#define F32_2C41C0(p, o) (*(f32 *)((char *)(p) + (o)))
+#define H16_2C41C0(p, o) (*(s16 *)((char *)(p) + (o)))
+s32 func_002C6930(char *e) {
+    char *d = P_2C41C0(e, 0);
+    char *base = (char *)gEffWork + H16_2C41C0(e, 0x3E) * 3968;
+    char *s3 = base + (H16_2C41C0(e, 0x5C) << 6);
+    char *s1 = base + 0xF00;
+    char *s2 = base + 0xF40;
+    char *prev;
+    f32 k;
+
+    if (H16_2C41C0(e, 0x38) & 0x8000) {
+        return 1;
+    }
+    if (P_2C41C0(s3, 0x34) != 0 && P_2C41C0(s1, 0x34) == s3) {
+        P_2C41C0(P_2C41C0(s3, 0x34), 0x38) = s1;
+        P_2C41C0(s1, 0x34) = P_2C41C0(s3, 0x34);
+    }
+    memset(s3, 0, 0x40);
+    P_2C41C0(s3, 0x34) = s2;
+    P_2C41C0(s3, 0x38) = P_2C41C0(s2, 0x38);
+    P_2C41C0(s2, 0x38) = s3;
+    prev = P_2C41C0(s3, 0x38);
+    P_2C41C0(prev, 0x34) = s3;
+    asm volatile("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(P_2C41C0(e, 0xC)), "r"(s3) : "memory");
+    asm volatile("lqc2 $vf1, 0(%0)\n\tlqc2 $vf2, 0(%1)\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, 0(%2)" : : "r"(s3), "r"(prev), "r"(s3 + 0x20) : "memory");
+    if (gBattle != 0) {
+        k = F32_2C41C0(gBattle, 0x88F0);
+    } else if (D_004703F4 == 3) {
+        k = 1.2f;
+    } else {
+        k = 1.0f;
+    }
+    F32_2C41C0(s3, 0x30) = (f32)W32_2C41C0(d, 0x5C) * k;
+    H16_2C41C0(e, 0x5C) = H16_2C41C0(e, 0x5C) + 1;
+    W32_2C41C0(e, 0x40) = W32_2C41C0(e, 0x40) + 1;
+    if (!(W32_2C41C0(e, 0x40) < W32_2C41C0(d, 0x5C))) {
+        W32_2C41C0(e, 0x40) = W32_2C41C0(d, 0x5C);
+        H16_2C41C0(e, 0x5C) = (s16)W32_2C41C0(P_2C41C0(s1, 0x34), 0x3C);
+    }
+    if (gBattle != 0) {
+        k = F32_2C41C0(gBattle, 0x88F0);
+    } else if (D_004703F4 == 3) {
+        k = 1.2f;
+    } else {
+        k = 1.0f;
+    }
+    F32_2C41C0(e, 0x20) = F32_2C41C0(e, 0x20) - k;
+    if (F32_2C41C0(e, 0x20) < 0.0f) {
+        F32_2C41C0(e, 0x20) = 0.0f;
+        H16_2C41C0(e, 0x38) = H16_2C41C0(e, 0x38) | 0x8000;
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6930);
 void func_002C6B60(TaskEff2C41C0 *t) {
     EffWork *w = gEffWork;

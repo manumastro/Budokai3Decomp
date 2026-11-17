@@ -489,6 +489,51 @@ void func_003009E0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003009E0);
+#if 0
+// differs: 41 of 84 (VU0 operands and the stack slots: the original takes the local vectors in other registers; 6 declaration orders and 6 operand orders tried)
+typedef struct Q16_2FAFF0 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Q16_2FAFF0;
+extern s32 D_00458B80[];
+extern s32 D_00458B90[];
+extern f32 func_00146E90(Vec4_2FAFF0 *);
+extern void func_00146ED0(Vec4_2FAFF0 *, Vec4_2FAFF0 *);
+#define F32AT(b, o) (*(f32 *)((char *)(b) + (o)))
+void func_00300B60(Task2FAFF0 *t) {
+    Vec4_2FAFF0 vA;
+    Vec4_2FAFF0 vB;
+    Vec4_2FAFF0 vC;
+    char *s0;
+    s32 i;
+
+    s0 = (char *)t + 0x30;
+    *(Q16_2FAFF0 *)&vA = *(Q16_2FAFF0 *)D_00458B80;
+    vA.x = F32AT(s0, 0);
+    vA.y = F32AT(s0, 4);
+    vA.z = F32AT(s0, 8);
+    *(Q16_2FAFF0 *)&vB = *(Q16_2FAFF0 *)D_00458B90;
+    vB.x = F32AT(s0, 0xC);
+    vB.y = F32AT(s0, 0x10);
+    vB.z = F32AT(s0, 0x14);
+    asm volatile("lqc2 $vf1, 0(%0)
+	lqc2 $vf2, 0(%1)
+	vsub.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, 0(%2)" : : "r"(&vB), "r"(&vA), "r"(&vC) : "memory");
+    if (func_00146E90(&vC) <= gTourMap->f50 * F32AT(s0, 0x18)) {
+        F32AT(s0, 0) = F32AT(s0, 0xC);
+        F32AT(s0, 4) = F32AT(s0, 0x10);
+        F32AT(s0, 8) = F32AT(s0, 0x14);
+    } else {
+        func_00146ED0(&vC, &vC);
+        F32AT(gTourMap->f44, 0x30) = F32AT(gTourMap->f44, 0x30) + vC.x;
+        F32AT(gTourMap->f44, 0x34) = F32AT(gTourMap->f44, 0x34) + vC.y;
+        F32AT(gTourMap->f44, 0x38) = F32AT(gTourMap->f44, 0x38) + vC.z;
+        for (i = 0; i < 4; i++) {
+            func_002FFD20(i);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_00300B60);
 void func_00300CA0(Task2FAFF0 *t) {
     Anim2FAFF0 *a;
