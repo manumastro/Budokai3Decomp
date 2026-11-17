@@ -1,4 +1,7 @@
 #include "common.h"
+extern void func_00142120(void);
+extern void func_0011F4C0(void);
+extern void func_0011F220(void);
 
 /* Motion binding (0x141280-0x1414C0): a set of up to 16 motions mapped onto a skeleton by bone name. */
 typedef struct Skel { char pad[0x10]; s32 n; char pad2[0x24 - 0x14]; char *bones; } Skel;
@@ -135,21 +138,243 @@ void amMotSet_Apply(MotSet *s, s32 packed, f32 t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001414D0);
+asm void func_001414D0(void) {
+L001414D0:
+    lui        $v0, 16128
+    mtc1       $v0, $f1
+    addi       $sp, $sp, -0xA0
+    sq         $ra, 0x0($sp)
+    sq         $a0, 0x10($sp)
+    sq         $s0, 0x20($sp)
+    sq         $s1, 0x30($sp)
+    sq         $s2, 0x40($sp)
+    sq         $s3, 0x50($sp)
+    sq         $s4, 0x60($sp)
+    sq         $s5, 0x70($sp)
+    sq         $s6, 0x80($sp)
+    sq         $s7, 0x90($sp)
+    mul.s      $f12, $f12, $f1
+    mul.s      $f13, $f13, $f1
+    mul.s      $f14, $f14, $f1
+    mfc1       $s5, $f12
+    mfc1       $s6, $f13
+    jal func_0011F4C0
+    mfc1      $s7, $f14
+    mfc1       $s0, $f0
+    jal func_0011F4C0
+    mtc1      $s6, $f12
+    mfc1       $s2, $f0
+    jal func_0011F4C0
+    mtc1      $s7, $f12
+    mfc1       $s4, $f0
+    jal func_0011F220
+    mtc1      $s5, $f12
+    mfc1       $s1, $f0
+    jal func_0011F220
+    mtc1      $s6, $f12
+    mfc1       $s3, $f0
+    jal func_0011F220
+    mtc1      $s7, $f12
+    mov.s      $f5, $f0
+    mtc1       $s0, $f0
+    mtc1       $s1, $f1
+    mtc1       $s2, $f2
+    mtc1       $s3, $f3
+    mtc1       $s4, $f4
+    lq         $a0, 0x10($sp)
+    mul.s      $f6, $f3, $f5
+    mul.s      $f7, $f2, $f4
+    mula.s     $f0, $f6
+    msub.s     $f8, $f1, $f7
+    swc1       $f8, 0x0($a0)
+    mul.s      $f8, $f1, $f2
+    mula.s     $f8, $f5
+    mul.s      $f8, $f0, $f3
+    madd.s     $f8, $f8, $f4
+    swc1       $f8, 0x4($a0)
+    mul.s      $f8, $f1, $f3
+    mula.s     $f8, $f4
+    mul.s      $f8, $f0, $f2
+    msub.s     $f8, $f8, $f5
+    swc1       $f8, 0x8($a0)
+    mula.s     $f1, $f6
+    madd.s     $f8, $f0, $f7
+    swc1       $f8, 0xC($a0)
+    lq         $ra, 0x0($sp)
+    lq         $s0, 0x20($sp)
+    lq         $s1, 0x30($sp)
+    lq         $s2, 0x40($sp)
+    lq         $s3, 0x50($sp)
+    lq         $s4, 0x60($sp)
+    lq         $s5, 0x70($sp)
+    lq         $s6, 0x80($sp)
+    lq         $s7, 0x90($sp)
+    jr         $ra
+    addi      $sp, $sp, 0xA0
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001415F0);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001416A0);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141920);
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141C30);
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141C80);
+asm void func_00141C30(void) {
+L00141C30:
+    lqc2       $vf1, 0x0($a1)
+    lqc2       $vf2, 0x0($a2)
+    vadd.xyz   $vf2, $vf2, $vf1
+    vmul.xyzw  $vf3, $vf2, $vf2
+    vaddy.x    $vf3, $vf3, $vf3y
+    vaddz.x    $vf3, $vf3, $vf3z
+    vrsqrt     Q, $vf0w, $vf3x
+    vwaitq
+    vmulq.xyz  $vf2, $vf2, Q
+    vopmula.xyz ACC, $vf1, $vf2
+    vopmsub.xyz $vf3, $vf2, $vf1
+    vmul.xyz   $vf2, $vf1, $vf2
+    vaddy.x    $vf2, $vf2, $vf2y
+    vaddz.x    $vf2, $vf2, $vf2z
+    vmulx.w    $vf3, $vf0, $vf2x
+    jr         $ra
+    sqc2      $vf3, 0x0($a0)
+}
+asm void func_00141C80(void) {
+L00141C80:
+    lui        $v0, 16128
+    mtc1       $v0, $f0
+    addi       $sp, $sp, -0x40
+    mul.s      $f12, $f12, $f0
+    sq         $ra, 0x0($sp)
+    sq         $a0, 0x10($sp)
+    sq         $a1, 0x20($sp)
+    jal func_0011F4C0
+    swc1      $f12, 0x30($sp)
+    swc1       $f0, 0x34($sp)
+    jal func_0011F220
+    lwc1      $f12, 0x30($sp)
+    lq         $a1, 0x20($sp)
+    lq         $a0, 0x10($sp)
+    lwc1       $f1, 0x34($sp)
+    lwc1       $f4, 0x0($a1)
+    lwc1       $f5, 0x4($a1)
+    lwc1       $f6, 0x8($a1)
+    mul.s      $f4, $f4, $f1
+    mul.s      $f5, $f5, $f1
+    mul.s      $f6, $f6, $f1
+    lq         $ra, 0x0($sp)
+    swc1       $f4, 0x0($a0)
+    swc1       $f5, 0x4($a0)
+    swc1       $f6, 0x8($a0)
+    swc1       $f0, 0xC($a0)
+    jr         $ra
+    addi      $sp, $sp, 0x40
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141CF0);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141E70);
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142080);
+asm void func_00142080(void) {
+L00142080:
+    lwc1       $f0, 0x0($a1)
+    lwc1       $f1, 0x4($a1)
+    lwc1       $f2, 0x8($a1)
+    lwc1       $f3, 0xC($a1)
+    lwc1       $f4, 0x0($a2)
+    lwc1       $f5, 0x4($a2)
+    lwc1       $f6, 0x8($a2)
+    lwc1       $f7, 0xC($a2)
+    mula.s     $f3, $f4
+    msuba.s    $f2, $f5
+    madda.s    $f1, $f6
+    madd.s     $f8, $f0, $f7
+    mula.s     $f3, $f5
+    madda.s    $f2, $f4
+    madda.s    $f1, $f7
+    msub.s     $f9, $f0, $f6
+    swc1       $f8, 0x0($a0)
+    mula.s     $f3, $f6
+    madda.s    $f2, $f7
+    msuba.s    $f1, $f4
+    madd.s     $f10, $f0, $f5
+    swc1       $f9, 0x4($a0)
+    mula.s     $f3, $f7
+    msuba.s    $f2, $f6
+    msuba.s    $f1, $f5
+    msub.s     $f11, $f0, $f4
+    swc1       $f10, 0x8($a0)
+    jr         $ra
+    swc1      $f11, 0xC($a0)
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142100);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142120);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142280);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142370);
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142390);
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001423F0);
+asm void func_00142390(void) {
+L00142390:
+    mula.s     $f0, $f0
+    madda.s    $f1, $f1
+    madda.s    $f2, $f2
+    mtc1       $zero, $f5
+    madd.s     $f4, $f3, $f3
+    lui        $v0, 16256
+    mtc1       $v0, $f6
+    c.lt.s     $f5, $f4
+    bc1f       L001423BC
+    nop
+    rsqrt.s    $f6, $f6, $f4
+L001423BC:
+    beqz       $a0, L001423D4
+    mfc1      $v0, $f6
+    qmtc2.ni   $v0, $vf2
+    vmulx.xyzw $vf1, $vf1, $vf2x
+    jr         $ra
+    sqc2      $vf1, 0x0($a0)
+L001423D4:
+    mul.s      $f0, $f0, $f6
+    mul.s      $f1, $f1, $f6
+    mul.s      $f2, $f2, $f6
+    mul.s      $f3, $f3, $f6
+    j func_00142120
+    add       $a1, $zero, $zero
+}
+asm void func_001423F0(void) {
+L001423F0:
+    lwc1       $f0, 0x0($a1)
+    lwc1       $f1, 0x4($a1)
+    lwc1       $f2, 0x8($a1)
+    lwc1       $f3, 0xC($a1)
+    lwc1       $f4, 0x0($a2)
+    lwc1       $f5, 0x4($a2)
+    lwc1       $f6, 0x8($a2)
+    lwc1       $f7, 0xC($a2)
+    mtc1       $zero, $f8
+    lui        $v0, 16256
+    mtc1       $v0, $f9
+    mula.s     $f0, $f4
+    madda.s    $f1, $f5
+    madda.s    $f2, $f6
+    madd.s     $f10, $f3, $f7
+    c.lt.s     $f10, $f8
+    bc1f       L00142448
+    sub.s     $f13, $f9, $f12
+    neg.s      $f4, $f4
+    neg.s      $f5, $f5
+    neg.s      $f6, $f6
+    neg.s      $f7, $f7
+L00142448:
+    mula.s     $f13, $f0
+    madd.s     $f0, $f12, $f4
+    mula.s     $f13, $f1
+    madd.s     $f1, $f12, $f5
+    mula.s     $f13, $f2
+    madd.s     $f2, $f12, $f6
+    mula.s     $f13, $f3
+    beqz       $a0, L00142480
+    madd.s    $f3, $f12, $f7
+    swc1       $f0, 0x0($a0)
+    swc1       $f1, 0x4($a0)
+    swc1       $f2, 0x8($a0)
+    jr         $ra
+    swc1      $f3, 0xC($a0)
+L00142480:
+    j func_00142390
+    add       $a0, $zero, $zero
+}
 
 void amSofdec_Init(void) {
     SfdFx fx;

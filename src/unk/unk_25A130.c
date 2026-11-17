@@ -138,7 +138,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A3A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A580);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A7C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025AA20);
-s32 func_0025ABC0(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdA2dCall31(void *ctx, ScrCmd *cmd) {
     s32 buf[2] __attribute__((aligned(16)));
 
     buf[0] = gBattle->players[0]->f1350;
@@ -148,19 +148,19 @@ s32 func_0025ABC0(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-s32 func_0025AC20(void) {
+s32 Scr_CmdNop_156(void) {
     return 1;
 }
-s32 func_0025AC30(void) {
+s32 Scr_CmdNop_155(void) {
     return 1;
 }
-s32 func_0025AC40(void) {
+s32 Scr_CmdNop_154(void) {
     return 1;
 }
-s32 func_0025AC50(void) {
+s32 Scr_CmdNop_153(void) {
     return 1;
 }
-s32 func_0025AC60(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdSwitchCall21C5B0(void *ctx, ScrCmd *cmd) {
     if (cmd->args[0].i == 0) {
         func_0021C5B0(3);
     } else {
@@ -168,19 +168,19 @@ s32 func_0025AC60(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-s32 func_0025ACA0(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall21C540(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0021C540(a[2].f, a[1].f, a[0].f);
     return 1;
 }
-s32 func_0025ACD0(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall21C560(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0021C560(a[3].i, a[2].i, a[1].i, a[0].i);
     return 1;
 }
-s32 func_0025AD10(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjSetF4CIfZero2(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrObj *o = D_0058D4EC[0];
     s32 v = a[0].i;
@@ -191,7 +191,7 @@ s32 func_0025AD10(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-s32 func_0025AD50(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdPlayersCall25A7C0(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 x = a[0].i;
     s32 y = a[1].i;
@@ -274,7 +274,7 @@ s32 func_0025AE10(void *t, ScrCmd *c) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025AE10);
-s32 func_0025AEC0(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdPlayerCall25AA20(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 x;
     s32 y;
@@ -290,7 +290,7 @@ s32 func_0025AEC0(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-s32 func_0025AF40(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall25A3A0(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0025A3A0(a[2].i, a[1].f, a[0].f);
@@ -313,7 +313,7 @@ s32 func_0025AF70(void *ctx, ScrCmd *cmd) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025AF70);
-s32 func_0025AFB0(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdPlayersCall25A580(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 x = a[0].i;
     s32 y = a[1].i;
@@ -327,7 +327,7 @@ s32 func_0025AFB0(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-s32 func_0025B040(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjSetF4CIfZero(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrObj *o = D_0058D4F4[0];
     s32 v = a[0].i;
@@ -338,7 +338,7 @@ s32 func_0025B040(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-s32 func_0025B080(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjSetF3C(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrObj *o = D_0058D4F4[0];
     s32 v = a[0].i;
@@ -348,7 +348,7 @@ s32 func_0025B080(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-s32 func_0025B0B0(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjSetF40F44(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrObj *o = D_0058D4F4[0];
     s32 v0 = a[0].i;
@@ -361,7 +361,7 @@ s32 func_0025B0B0(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-s32 func_0025B100(void) {
+s32 Scr_CmdObjSetF64(void) {
     ScrObj *o = D_0058D4F4[0];
 
     if (o != NULL) {
@@ -369,7 +369,7 @@ s32 func_0025B100(void) {
     }
     return 1;
 }
-s32 func_0025B120(void *ctx, ScrCmd *cmd) {
+s32 Scr_CmdPlayersCall25A130(void *ctx, ScrCmd *cmd) {
     s32 v;
     ScrObj *o;
 
@@ -384,7 +384,7 @@ s32 func_0025B120(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-s32 func_0025B1B0(void *ctx, s32 *out) {
+s32 Scr_CmdGetBtlSysFDF0(void *ctx, s32 *out) {
     *out = gBtlSys->fDF0;
     return 1;
 }

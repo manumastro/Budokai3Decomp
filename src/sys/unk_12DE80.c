@@ -220,7 +220,27 @@ s32 amRand_SetSeed(s32 seed) {
     return old;
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/unk_12DE80", func_0012EAE0);
+asm void func_0012EAE0(void) {
+L0012EAE0:
+    lw         $v0, -32744($gp)
+    j L0012EB04
+    addi      $a0, $a0, -0x1
+L0012EAEC:
+    srl        $v1, $v0, 31
+    andi       $at, $at, 0x1
+    sll        $v0, $v0, 1
+    xor        $v1, $v1, $at
+    addi       $a0, $a0, -0x1
+    or         $v0, $v0, $v1
+L0012EB04:
+    bgez       $a0, L0012EAEC
+    srl       $at, $v0, 4
+    sw         $v0, -32744($gp)
+    addiu      $v0, $v0, -0x1
+    jr         $ra
+    nop
+    nop
+}
 void func_0012EB20(void) {
     sceGsSyncPath(0, 0);
     *(volatile u32 *)0x1000A010 = 0;

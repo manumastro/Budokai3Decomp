@@ -302,6 +302,49 @@ INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B130);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B290);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B550);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029BA80);
+#if 0
+// func_0029C110: 90 of 102 differ: the 16-byte copy of D_00454190 into the local is scheduled differently (the original loads all four pieces first from a v1 base, ours re-addresses each piece with lui/addiu); two copy forms tried
+extern StrMapCopy16 D_00454190[] __attribute__((aligned(16)));
+extern s16 D_00453F10[];
+extern s8 D_004DFB19[];
+extern char D_0046EA18[];
+extern void func_0029B130(void);
+extern void func_0029BA80(void);
+extern void StrBg_SetPos(void *, f32, f32);
+extern void StrBg_SetValue(void *, s32);
+extern void func_0028EE90(s32, s32, s32, s32, void *, s32, s32, s32);
+void func_0029C110(s32 *a0) {
+    StrMapCopy16 tmp[4];
+    if (func_0022BF80(*(s32 *)((char *)gStrTitle + 0x90)) == 0xFF) {
+        StrMapCopy16 c0 = D_00454190[0];
+        StrMapCopy16 c1 = D_00454190[1];
+        StrMapCopy16 c2 = D_00454190[2];
+        u64 c3 = *(u64 *)((char *)D_00454190 + 0x30);
+        tmp[0] = c0;
+        tmp[1] = c1;
+        tmp[2] = c2;
+        *(u64 *)((char *)tmp + 0x30) = c3;
+        if (D_00453F10[0] == -1 || D_004DFB19[D_00453F10[0]] != 0) {
+            *(s32 *)((char *)gStrTitle + 0x60) = (s32)amTask_Create((TaskFunc)func_0029B130, NULL, 0x8014, 2, 0x10000, D_0046EA18);
+        } else {
+            *(s16 *)((char *)tmp + 0x24) = 0x2A;
+        }
+        func_0028EE90((s32)((char *)gStrTitle + 0x10), (s32)((char *)gStrTitle + 0x64), (s32)((char *)gStrTitle + 0x68), (s32)((char *)gStrTitle + 0x6C), tmp, 0x8000, 0x10000, 0x200000);
+        StrBg_SetPos(*(void **)((char *)gStrTitle + 0x58), 0.0f, 0.0f);
+        if (D_00453F10[0] == -1 || D_004DFB19[D_00453F10[0]] == 0) {
+            StrBg_SetValue(*(void **)((char *)gStrTitle + 0x58), (s32)((char *)gStrTitle + 0xC0));
+        } else {
+            StrBg_SetValue(*(void **)((char *)gStrTitle + 0x58), 0);
+        }
+        *(s32 *)((char *)gStrTitle + 0xB4) = 0;
+        *(s32 *)((char *)gStrTitle + 0xB8) = 0;
+        {
+            void *f = func_0029BA80;
+            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029C110);
 extern s32 func_0022BF80(s32);
 extern void Scene_FadeTo(s32, s32);

@@ -37,6 +37,10 @@ extern void *amTask_Create(void (*)(void), s32, s32, s32, s32, char *);
 extern void func_002A92B0(s32);
 extern void func_002A11E0(void);
 extern void memset(void *, s32, s32);
+extern u8 D_005AB490[];
+extern s16 D_005AB5F8[];
+extern void func_001B10D0(void *, s32);
+extern void BtlIntWait_Start(void);
 
 void func_002A8970(void) {
 }
@@ -81,7 +85,31 @@ s32 Flight_MapIndex(s32 n) {
     return n + 6;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2A8970", func_002A8CE0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2A8970", func_002A8E40);
+void func_002A8E40(void) {
+    u8 *o;
+    f32 c;
+    s16 st;
+
+    o = D_005AB490;
+    st = D_005AB5F8[0];
+    switch (st) {
+    case 1:
+        *(s32 *)(o + 0x34) = *(s32 *)(o + 0x34) / 2;
+        *(s32 *)(o + 0x84) = *(s32 *)(o + 0x84) / 2;
+        break;
+    case 4:
+        *(s32 *)(o + 0x3C) = 0;
+        *(s32 *)(o + 0x8C) = 0;
+        break;
+    }
+    c = 15.0f;
+    if (*(f32 *)(o + 0x60) < c) {
+        *(f32 *)(o + 0x60) = c;
+        *(f32 *)(o + 0x10) = -c;
+    }
+    func_001B10D0(o, 0);
+    BtlIntWait_Start();
+}
 void Ball_Start(void) {
     EvtWork *w = gEvtWork;
 

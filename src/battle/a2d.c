@@ -358,6 +358,21 @@ void func_00225F30(s32 *a) {
     }
 }
 #endif
+#if 0
+// differs: 0x60 vs 0x70: the original keeps the object pointer in s1 across both calls (frame 0x30); ours keeps the loaded value of a0[1] in a saved register instead (3 forms tried in round 5)
+void func_00225F30(s32 *a0) {
+    s32 *v;
+    s32 *s0;
+
+    v = (s32 *)BtlSys_GetSlot(a0[0]);
+    v[0] = v[0] | 1;
+    v[5] = a0[1];
+    s0 = func_0023A890(a0[0], a0[1]);
+    if (*(s16 *)((u8 *)s0 + 0x50) < a0[1]) {
+        *(s16 *)((u8 *)s0 + 0x50) = a0[1];
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00225F30);
 void func_00225FA0(void) {
 }
@@ -548,7 +563,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022A880);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022ACF0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022B900);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022BC30);
-// GIVEN UP: a dead store of -1 in the second branch and a frame the C did not reproduce
+// GIVEN UP: a dead store of -1 in the second branch and a frame the C did not reproduce; round 5 (chr2): 5 more forms, all 0x5C bytes vs 0x70: the original has a nop after the b and a nop at the join
 // // differs: 18 of 22 (round 4 chr): the original copies the object pointer to a1 only after the first test (delay slot of beqz); ours copies it at entry.
 #if 0
 void func_0022BF80(char *a) {
@@ -636,6 +651,26 @@ void func_0022CC80(s32 key) {
             i += 1;
             arr += 2;
         } while (i < count);
+    }
+}
+#endif
+#if 0
+// differs: 28 of 33 (6 declaration orders tried): the original keeps the count in a1 and the cursor in a2 and reloads D_004706BC for the decrement; the loop exit and the memmove call (func_00125740, size (n-i)*8) match
+void func_0022CC80(s32 a0) {
+    s32 i = 0;
+    u8 *p;
+    s32 n;
+    n = D_004706BC;
+    if (0 < n) {
+        p = D_004706C0;
+        for (i = 0; i < n; i++) {
+            if (*(s32 *)p == a0) {
+                func_00125740((u8 *)D_004706C0 + i * 8, (u8 *)D_004706C0 + (i + 1) * 8, (n - i) * 8);
+                D_004706BC = D_004706BC - 1;
+                break;
+            }
+            p += 8;
+        }
     }
 }
 #endif

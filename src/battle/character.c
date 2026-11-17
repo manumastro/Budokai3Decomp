@@ -69,7 +69,7 @@ extern void func_001A3610(s32);
 extern void func_001E11E0(s32, void *);
 extern void func_0021A030(void *, s32, s32, f32);
 extern void func_00237000(s32, void *);
-extern void func_001DD680(Fighter *);
+extern void func_001DD680(Fighter *, s32);
 extern void func_001D80A0(Fighter *, s32);
 extern void func_001D9960(Fighter *, s32, s32);
 extern void CharLight_Release(s32);
@@ -190,7 +190,7 @@ void func_001CB010(s32 *a) {
     func_001D9EB0(s->obj, s->id);
 }
 #if 0
-/* Does not match yet: 10 of 32 instructions differ. */
+/* Does not match yet: 10 of 32 instructions differ (round 5 chr2: 3 declaration orders of bw and w tried; the original keeps gBattle in a1 and w in a2, ours swaps them). */
 void func_001CB020(Task *task) {
     CharTimer *w;
     BattleWork *bw = gBattle;
@@ -205,7 +205,7 @@ void func_001CB020(Task *task) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB020);
-s32 func_001CB0A0(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdVecPairCall146E30(void *self, ScriptCtx *ctx) {
     f32 v1[4];
     f32 v0[4];
     f32 *a = (f32 *)ctx->args;
@@ -226,7 +226,7 @@ s32 func_001CB0A0(void *self, ScriptCtx *ctx) {
     ctx->fret = func_00146E30(v1, v0);
     return 1;
 }
-s32 func_001CB120(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdVecCall146E90(void *self, ScriptCtx *ctx) {
     f32 v[4];
     f32 *a = (f32 *)ctx->args;
     f32 x = a[0];
@@ -248,7 +248,7 @@ s32 Scr_CmdRandom(void *self, ScriptCtx *ctx) {
     ctx->fret = (f32)func_0012EAE0(32) / 2147483648.0f;
     return 1;
 }
-s32 func_001CB250(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdRandomBelow(void *self, ScriptCtx *ctx) {
     s32 n = ctx->args[0];
     s32 r;
     if (n > 0) {
@@ -259,11 +259,11 @@ s32 func_001CB250(void *self, ScriptCtx *ctx) {
     ctx->ret = r;
     return 1;
 }
-s32 func_001CB2B0(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdSeedRand(void *self, ScriptCtx *ctx) {
     srand(ctx->args[90]);
     return 1;
 }
-s32 func_001CB2E0(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdSqrt(void *self, ScriptCtx *ctx) {
     f32 *a = (f32 *)ctx->args;
     f32 v = a[0];
 
@@ -271,14 +271,14 @@ s32 func_001CB2E0(void *self, ScriptCtx *ctx) {
     ctx->fret = v;
     return 1;
 }
-s32 func_001CB300(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdSetFighter8952(void *self, ScriptCtx *ctx) {
     s32 on = ctx->args[0];
     Fighter *f = gBattle->fighter[ctx->args[1]];
     func_001E2510(f);
     gBattle->unk8952 = on ? f->unk1350 + 1 : 0;
     return 1;
 }
-s32 func_001CB380(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdSpCall8(void *self, ScriptCtx *ctx) {
     BtlMsg msg;
     s32 *a = ctx->args;
     s32 x = a[0];
@@ -289,7 +289,7 @@ s32 func_001CB380(void *self, ScriptCtx *ctx) {
     Sp_CallHandler(8, &msg);
     return 1;
 }
-s32 func_001CB3E0(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdSpCall0(void *self, ScriptCtx *ctx) {
     BtlMsg msg;
     s32 *a = ctx->args;
     s32 y = a[0];
@@ -298,7 +298,7 @@ s32 func_001CB3E0(void *self, ScriptCtx *ctx) {
     Sp_CallHandler(0, &msg);
     return 1;
 }
-s32 func_001CB440(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdSpCall3(void *self, ScriptCtx *ctx) {
     BtlMsg msg;
     s32 *a = ctx->args;
     s32 y = a[0];
@@ -318,71 +318,63 @@ s32 func_001CB4A0(ScriptCtx *ctx) {
     }
     return 6;
 }
-s32 func_001CB510(ScriptCtx *ctx) {
+s32 Scr_CmdSetWaitCb1CB4A0(ScriptCtx *ctx) {
     ctx->wait = func_001CB4A0;
     return 3;
 }
-s32 func_001CB530(void) {
+s32 Scr_CmdSetGlobalFlag470578(void) {
     D_00470578 = 1;
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB540);
-#if 0
-/* Does not match yet: 35 of 46 instructions differ. */
 s32 func_001CB660(void *self, ScriptCtx *ctx) {
-    CharPair *p = D_00469290;
     Fighter *f = gBattle->fighter[0];
+    CharPair *p = (CharPair *)D_00469290;
     ctx->ret = -1;
     while (p->chara != -1) {
         if (f->unk1CFC == p->chara && func_001DF420(f, p->value, 2)) {
             ctx->ret = p->value;
-            return 1;
+            break;
         }
         p++;
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB660);
-s32 func_001CB710(void) {
+s32 Scr_CmdResetLimitXY(void) {
     Btl_UpdateLimitXY(1, 0.0f, 0.0f);
     return 1;
 }
-s32 func_001CB740(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdUpdateLimitXY(void *self, ScriptCtx *ctx) {
     f32 *a = (f32 *)ctx->args;
     Btl_UpdateLimitXY(1, a[1], a[0]);
     return 1;
 }
-s32 func_001CB770(void) {
+s32 Scr_CmdResetBattle8AB2(void) {
     BattleWork *w = gBattle;
     w->unk8AB2 = 0;
     w->unk8AB3 = -1;
     return 1;
 }
-s32 func_001CB7A0(void) {
+s32 Scr_CmdSetBattle8AB2(void) {
     BattleWork *w = gBattle;
     w->unk8AB2 = 1;
     w->unk8AB3 = -1;
     w->unk891C = 0;
     return 1;
 }
-// GIVEN UP: the code is the same size but one instruction short (0x8C against 0x90): an unused zero in a1 in the original
-#if 0
 s32 func_001CB7E0(void *self, ScriptCtx *ctx) {
     s32 *a = (s32 *)ctx->args;
-    u8 *f = *(u8 **)((u8 *)gBattle + 0x8934 + a[0] * 4);
+    u8 *f = ((u8 **)((u8 *)gBattle + 0x8934))[a[0]];
 
     *(s8 *)((u8 *)gBattle + 0x8AB1) = *(s32 *)(*(u8 **)(f + 0x1354) + 0x1350) + 1;
     *(s8 *)(f + 0x1FF8) = -1;
     *(s32 *)(*(u8 **)(f + 0x1354) + 0x1AC4) = 0;
-    func_001DD680((Fighter *)f);
+    func_001DD680((Fighter *)f, 0);
     func_001D80A0(*(Fighter **)(f + 0x1354), 9);
     func_001D9960(*(Fighter **)(f + 0x1354), 0x1C, 1);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB7E0);
-s32 func_001CB870(void) {
+s32 Scr_CmdCall1DA4C0(void) {
     func_001DA4C0();
     return 1;
 }
@@ -390,7 +382,8 @@ INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB890);
 /* differs: 8 of 13: the original's `addu $a0,$a1,$a0` takes the scaled index first and the global base second, and it
    reads args[0] before the address is summed; here the base comes first. Tried: `gBattle + 0x8934 + i*4`, the array
    form `((u8 **)((char *)gBattle + 0x8934))[i]`, and index/value locals (the last two put the index first but
-   schedule sltu before the addu). */
+   schedule sltu before the addu). Round 5: also the store as (s16)(a[0] != 0), !!a[0], and p declared before the store;
+   all 8 of 13: the original loads args[1] first and computes args[0] != 0 only at the store. */
 #if 0
 s32 func_001CB9B0(void *self, ScriptCtx *ctx) {
     s32 *a = (s32 *)ctx->args;
@@ -411,7 +404,7 @@ s32 Scr_CmdFighter1ACE(void *self, ScriptCtx *ctx) {
     ctx->ret = gBattle->fighter[ctx->args[0]]->unk1ACE;
     return 1;
 }
-s32 func_001CBA50(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdFighterCall1D8A50(void *self, ScriptCtx *ctx) {
     func_001D8A50(gBattle->fighter[ctx->args[0]]);
     return 1;
 }
@@ -484,7 +477,7 @@ s32 ScrVib_CmdFlash(ScriptOwner *self, ScriptCtx *ctx) {
     w->to = a1;
     return 1;
 }
-s32 func_001CBD40(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdKillTaskSlot(void *self, ScriptCtx *ctx) {
     void *p = D_00470580[ctx->args[0]];
     if (p == 0) {
         return 1;

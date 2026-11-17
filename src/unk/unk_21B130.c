@@ -97,11 +97,9 @@ void func_0021B130(void) {
         }
     }
 }
-// differs: the two float arguments are copied through the stack (lwc1 to 24 and 28 of a 0x30 frame) in the original, the same copy as func_0023FBB0 in unk_23A890; the local forms tried do not give that copy
+// differs: the two float arguments are copied through the stack (lwc1 to 24 and 28 of a 0x30 frame) in the original, the same copy as func_0023FBB0 in unk_23A890; the local forms tried do not give that copy; round 5: `volatile FPair p` does not compile (mwcc aborts on the volatile struct)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
-#if 0
-// differs: float state machine: the stores to 0xDF8 and the branch layout of the mode switch differ (the return of the first test is a b to the epilogue; 2 instructions short); FP register choice differs; 1 attempt
 void func_0021B1E0(void) {
     u8 *sys = gBtlSys;
     f32 f1;
@@ -119,63 +117,73 @@ void func_0021B1E0(void) {
     if (f1 < *(f32 *)(sys + 0xE04)) {
         return;
     }
-    f3 = f1 - *(f32 *)(sys + 0xE04);
+    f2 = f1 - *(f32 *)(sys + 0xE04);
     mode = *(s32 *)(sys + 0xDFC);
+    f3 = *(f32 *)(sys + 0xE0C);
     f1 = *(f32 *)(sys + 0xE10);
-    f2 = *(f32 *)(sys + 0xE0C);
-    if (mode == 3) {
-        f2 = f2 / 2.0f;
-        f1 = f1 / 2.0f;
-        if (f3 < f2) {
+    switch (mode) {
+    case 0:
+        if (!(f2 < f1)) {
             f2 = f2 - f1;
-            if (!(f3 < f1)) {
-                f3 = f3 - f1;
-                *(s32 *)(sys + 0xDF8) = 1;
-                f2 = f2 - f1;
-            }
-        } else {
-            f3 = f3 - f2;
-            if (!(f3 < f2)) {
-                *(s32 *)(sys + 0xDF8) = 3;
-            }
+            *(s32 *)(sys + 0xDF8) = 1;
+            f3 = f3 - f1;
         }
-    } else if (mode == 2) {
-        f2 = f2 / 2.0f;
-        f1 = f1 / 2.0f;
-        if (f3 < f2) {
-            f2 = f2 - f1;
-            if (!(f3 < f2)) {
-                *(s32 *)(sys + 0xDF8) = 3;
-            }
-        } else {
-            f3 = f3 - f2;
-            if (!(f3 < f1)) {
-                f3 = f3 - f1;
-                *(s32 *)(sys + 0xDF8) = 1;
-                f2 = f2 - f1;
-            }
-        }
-    } else if (mode == 1) {
-        f2 = f2 - f1;
-        if (!(f3 < f2)) {
+        break;
+    case 1:
+        f3 = f3 - f1;
+        if (!(f2 < f3)) {
             *(s32 *)(sys + 0xDF8) = 3;
         }
-    } else if (mode == 0) {
-        if (!(f3 < f1)) {
+        break;
+    case 2:
+        f3 = f3 / 2.0f;
+        f1 = f1 / 2.0f;
+        if (!(f2 < f3)) {
+            f2 = f2 - f3;
+            if (!(f2 < f1)) {
+                f2 = f2 - f1;
+                *(s32 *)(sys + 0xDF8) = 1;
+                f3 = f3 - f1;
+            }
+        } else {
             f3 = f3 - f1;
-            *(s32 *)(sys + 0xDF8) = 1;
-            f2 = f2 - f1;
+            if (!(f2 < f3)) {
+                *(s32 *)(sys + 0xDF8) = 3;
+            }
         }
+        break;
+    case 3:
+        f3 = f3 / 2.0f;
+        f1 = f1 / 2.0f;
+        if (!(f2 < f3)) {
+            f2 = f2 - f3;
+            if (!(f2 < f3)) {
+                *(s32 *)(sys + 0xDF8) = 3;
+            }
+        } else {
+            f3 = f3 - f1;
+            if (!(f2 < f1)) {
+                f2 = f2 - f1;
+                *(s32 *)(sys + 0xDF8) = 1;
+                f3 = f3 - f1;
+            }
+        }
+        break;
     }
     st = *(s32 *)(sys + 0xDF8);
-    if (st == 3) {
+    switch (st) {
+    case 1:
+        f1 = 1.0f - f2 / f3;
+        break;
+    case 2:
+        f1 = f2 / f3;
+        break;
+    case 3:
         f1 = 1.0f;
-    } else if (st == 2) {
-        f1 = f3 / f2;
-    } else if (st == 1) {
-        f1 = 1.0f - f3 / f2;
-    } else {
+        break;
+    default:
         f1 = 0.0f;
+        break;
     }
     if (f1 < 0.0f) {
         f1 = 0.0f;
@@ -185,8 +193,6 @@ void func_0021B1E0(void) {
     }
     *(f32 *)(sys + 0xE2C) = f1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B1E0);
 #if 0
 void func_0021B420(void) {
     u8 *sys = gBtlSys;
@@ -225,12 +231,10 @@ void func_0021B420(void) {
 // differs: 22 of 72 (round 5). The (s32) cast is NOT the problem: the original's word 0x46000024 is what the cast emits too (the disassemblers only name it differently). Tried live: the two early exits as one `||` test (shares the return), D_0047068C loaded before the cast, the px = sys+0x640 pointer, and the call func_0022C7D0(D_0047068C, (f32)n, 1) (signature (s32, f32, s32), the file's first declaration must match). Left: the last call func_0022ACF0 gets a nop before the epilogue and the early exits jump past ld ra/lq s1, the original's exits go to the epilogue directly.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
-#if 0
-// differs: the table address is folded into the loads (lui at + lw 4(at)) where the original keeps it in v0 (lui v0 / addiu v0, then lw 4(v0)); 13 of 36 differ
 s32 func_0021B540(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
-    s32 *tbl = D_0046A470;
+    s32 *tbl = (s32 *)(void *)D_0046A470;
     s32 f;
 
     f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
@@ -245,13 +249,10 @@ s32 func_0021B540(void) {
     }
     return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B540);
-#if 0
 s32 func_0021B5D0(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
-    s32 *tbl = D_0046A470;
+    s32 *tbl = (s32 *)(void *)D_0046A470;
     s32 f;
 
     f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
@@ -261,19 +262,15 @@ s32 func_0021B5D0(void) {
     }
     f = amCdFs_ReadFileId(0x10003, 0, 0);
     if (f != 0) {
-        D_004706A0 = f;
+        D_004706A0[0] = f;
         r = f;
     }
     return r;
 }
-// differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B5D0);
-#if 0
 s32 func_0021B660(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
-    s32 *tbl = D_0046A470;
+    s32 *tbl = (s32 *)(void *)D_0046A470;
     s32 f;
 
     f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
@@ -283,19 +280,15 @@ s32 func_0021B660(void) {
     }
     f = amCdFs_ReadFileId(0x10002, 0, 0);
     if (f != 0) {
-        D_004706A0 = f;
+        D_004706A0[0] = f;
         r = f;
     }
     return r;
 }
-// differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B660);
-#if 0
 s32 func_0021B6F0(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
-    s32 *tbl = D_0046A470;
+    s32 *tbl = (s32 *)(void *)D_0046A470;
     s32 f;
 
     f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
@@ -306,8 +299,6 @@ s32 func_0021B6F0(void) {
     return r;
 }
 // differs: the table address is kept in v0 for its two loads (lui/addiu once), here it is folded into each load; the pointer to D_00470698 in s0 is the same
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B6F0);
 void func_0021B760(void) {
     func_00228410();
     func_00133780(2, 0);
@@ -471,13 +462,12 @@ void func_0021BEA0(u8 *a0, s32 a1) {
 }
 u8 *func_0021C250(u8 *, u8 *);
 #if 0
-// differs: int of the rest: 6 instructions short (the copy of the child block is hoisted differently) and the saved registers of the arguments are swapped; 5 declaration orders and a guard variant tried; size 0x1B8 vs 0x1D0
+// differs: 11 of 116 (round 5). Recursive tree walk: the copies and the flag tests match; left: the sibling walk at the end (a2&1 block) takes the saved registers the other way round (original: the sibling goes into s2, the node pointer register reused after its last read). Reusing the parameter (a0 = sibling) changes the flag registers and the prologue (26 to 30 differ); declaration permutations tried, none better
 void func_0021C080(u8 *a0, u8 *a1, s32 a2) {
     u8 *dst;
-    u8 *s3;
-    u8 *s2;
     u8 *s6;
-
+    u8 *s2;
+    u8 *s3;
     dst = *(u8 **)(a0 + 0x30);
     *(f32 *)(dst + 0x50) = *(f32 *)a1;
     *(f32 *)(dst + 0x54) = *(f32 *)(a1 + 4);
@@ -485,11 +475,11 @@ void func_0021C080(u8 *a0, u8 *a1, s32 a2) {
     if ((a2 & 4) != 0) {
         *(f32 *)(dst + 0x5C) = *(f32 *)(a1 + 0xC);
     }
-    *(u8 *)(a0 + 0x1C) = *(u8 *)(a1 + 0x10);
-    *(u8 *)(a0 + 0x1D) = *(u8 *)(a1 + 0x11);
-    *(u8 *)(a0 + 0x1E) = *(u8 *)(a1 + 0x12);
-    *(u8 *)(a0 + 0x1F) = *(u8 *)(a1 + 0x13);
-    *(s32 *)(a0 + 8) = *(s32 *)(a1 + 0x14);
+    *(u8 *)(dst + 0x1C) = *(u8 *)(a1 + 0x10);
+    *(u8 *)(dst + 0x1D) = *(u8 *)(a1 + 0x11);
+    *(u8 *)(dst + 0x1E) = *(u8 *)(a1 + 0x12);
+    *(u8 *)(dst + 0x1F) = *(u8 *)(a1 + 0x13);
+    *(s32 *)(dst + 8) = *(s32 *)(a1 + 0x14);
     if ((a2 & 2) != 0) {
         s3 = *(u8 **)(a0 + 0x28);
         if (s3 != 0) {
@@ -502,8 +492,10 @@ void func_0021C080(u8 *a0, u8 *a1, s32 a2) {
             }
             func_0021C250(s6 + 0x1C, a1 + 0x10);
             *(s32 *)(s6 + 8) = *(s32 *)(a1 + 0x14);
-            if (*(u8 **)(s3 + 0x28) != 0) {
-                func_0021C080(*(u8 **)(s3 + 0x28), a1, a2);
+            if ((a2 & 2) != 0) {
+                if (*(u8 **)(s3 + 0x28) != 0) {
+                    func_0021C080(*(u8 **)(s3 + 0x28), a1, a2);
+                }
             }
             if ((a2 & 1) != 0) {
                 if (*(u8 **)(s3 + 0x2C) != 0) {
@@ -529,8 +521,10 @@ void func_0021C080(u8 *a0, u8 *a1, s32 a2) {
                     func_0021C080(*(u8 **)(s2 + 0x28), a1, a2);
                 }
             }
-            if (*(u8 **)(s2 + 0x2C) != 0) {
-                func_0021C080(*(u8 **)(s2 + 0x2C), a1, a2);
+            if ((a2 & 1) != 0) {
+                if (*(u8 **)(s2 + 0x2C) != 0) {
+                    func_0021C080(*(u8 **)(s2 + 0x2C), a1, a2);
+                }
             }
         }
     }
@@ -559,7 +553,12 @@ s32 Input_IsHeld(s32 a) {
     }
     return 0;
 }
+typedef struct BtlCnt {
+    u8 pad[0x88D8];
+    s32 n;
+} BtlCnt;
 #if 0
+// differs: 0x80 bytes, as the original; the count test matches with a BtlCnt view (lui 1 + offset -0x7728, as the original); the original preloads v0 = -1 before the id test and returns through one shared epilogue (b to the final jr); ours has two jr ra. Tried: a single result variable with break (0x70 bytes).
 s32 func_0021C2E0(s32 id) {
     u8 *p;
     s32 *n;
@@ -568,7 +567,7 @@ s32 func_0021C2E0(s32 id) {
     if (id == -1) {
         return -1;
     }
-    if (0 < *(s32 *)(gBattle + 0x88D8)) {
+    if (0 < ((BtlCnt *)gBattle)->n) {
         i = 0;
         p = gBtlSys;
         n = (s32 *)(gBattle + 0x88D8);
@@ -582,11 +581,11 @@ s32 func_0021C2E0(s32 id) {
     }
     return -1;
 }
-// differs: the base pointer is loaded and folded in another order (lui and the offset split, a1 kept for the base)
+// (see the note above the function: the test is the BtlCnt view now)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2E0);
 #if 0
-// differs: the count is kept as a pointer (gBattle + 0x88D8) in the original, reloaded in the loop test; 0x58 bytes against 0x70: the sys/cnt pointer forms and the do-while were tried. Round 5: the test `0 < *(s32*)(gBattle + 0x88D8)` first with cp formed in the body gives 0x60 bytes (the original reads the count through lui 0x1 + offset -0x7728 and forms cp (li at 0x88D8 / addu a1) in the if body before the loop: the two instructions are missing here); the array form and gBattle + 0x10000 - 0x7728 fold to the same code; cp computed before the test gives 0x60 too; cp first 0x58.
+// differs: the count is kept as a pointer (gBattle + 0x88D8) in the original, reloaded in the loop test; round 5: the test `*(gBattle + 0x10000 - 0x7728)` (4 spellings) folds to 0x88D8 and the cp is hoisted above it (19 of 28 differ); the BtlCnt view (see 21C2E0) gives the split; 0x58 bytes against 0x70: the sys/cnt pointer forms and the do-while were tried. Round 5: the test `0 < *(s32*)(gBattle + 0x88D8)` first with cp formed in the body gives 0x60 bytes (the original reads the count through lui 0x1 + offset -0x7728 and forms cp (li at 0x88D8 / addu a1) in the if body before the loop: the two instructions are missing here); the array form and gBattle + 0x10000 - 0x7728 fold to the same code; cp computed before the test gives 0x60 too; cp first 0x58.
 s32 func_0021C360(s32 id) {
     u8 *sys = gBtlSys;
     u8 *cp = gBattle + 0x88D8;
@@ -736,13 +735,11 @@ extern u8 D_0046A508[];
 extern u8 D_0046A518[];
 extern u8 D_0046A528[];
 s32 amTask_Create(void (*)(void), void (*)(void), s32, s32, s32, void *);
-s32 func_0022D860(f32, s32);
+s32 func_0022D860(s32, f32);
 void func_0021B9A0(void);
 void func_0021BA60(void);
 void func_002E97E0(void);
 void amModel_SetCurrent(s32, s32);
-#if 0
-// differs: the second 22D860/228410 pair reuses the a0 left by the first call (no reload in the original); the C keeps the value in a saved register (one more save); the rest matches apart from relocations
 void func_0021CAD0(void) {
     u8 *s0 = gBtlSys;
     u8 *s2 = s0 + 0xDF0;
@@ -750,7 +747,7 @@ void func_0021CAD0(void) {
     s32 e;
 
     if (*(s32 *)(s0 + 0xEE0) == 0) {
-        if (*(s16 *)s2 == 6) {
+        if (*(s16 *)(s0 + 0xDF0) == 6) {
             *(s32 *)(s0 + 0xEE0) = amTask_Create(func_0021B9A0, func_0021B940, 0x5400, 0x1000, 0x2000002, D_0046A4E8);
         } else {
             *(s32 *)(s0 + 0xEE0) = amTask_Create(func_0021BA60, 0, 0x5400, 0x1000, 0x2000002, D_0046A4F8);
@@ -760,7 +757,7 @@ void func_0021CAD0(void) {
         *(s32 *)(s0 + 0xEE4) = amTask_Create(func_0021B870, 0, 0x3A00, 0x1000, 0x2000008, D_0046A508);
     }
     if (*(s32 *)(s0 + 0xEE8) == 0) {
-        if (*(s16 *)s2 == 6) {
+        if (*(s16 *)(s0 + 0xDF0) == 6) {
             *(s32 *)(s0 + 0xEE8) = amTask_Create((void (*)(void))func_0021B7A0, 0, 0x3A80, 0x1000, 0x2000008, D_0046A518);
             e = *(s32 *)(s0 + 0xE64);
             v = *(s32 *)(s0 + 0xEE8) + 0x30;
@@ -771,10 +768,9 @@ void func_0021CAD0(void) {
             D_00470238 = 0;
             func_00228430(0);
             func_002284D0(0);
-            *(s32 *)v = func_0022D860(0.0f, *(s32 *)(*(s32 *)(*(s32 *)(s0 + 0xE6C) + 0x14)));
-            e = *(s32 *)(*(s32 *)(*(s32 *)(s0 + 0xE6C) + 0x14) + 4);
-            *(s32 *)(v + 4) = func_0022D860(0.0f, e);
-            func_00228410(e);
+            *(s32 *)v = func_0022D860(*(s32 *)(*(s32 *)(*(s32 *)(s0 + 0xE6C) + 0x14)), 0.0f);
+            *(s32 *)(v + 4) = func_0022D860(*(s32 *)(*(s32 *)(*(s32 *)(s0 + 0xE6C) + 0x14) + 4), 0.0f);
+            func_00228410();
         } else {
             *(s32 *)(s0 + 0xEE8) = amTask_Create(func_0021B810, 0, 0x3A80, 0x1000, 0x2000008, D_0046A518);
         }
@@ -786,12 +782,9 @@ void func_0021CAD0(void) {
         func_002E97E0();
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CAD0);
-#if 0
 void func_0021CCF0(void) {
     u8 *sys = gBtlSys;
-    s32 *tbl = D_0046A470;
+    s32 *tbl = (s32 *)(void *)D_0046A470;
 
     if (*(s32 *)tbl[2] != 0) {
         amHeap_Free(*(void **)tbl[2]);
@@ -810,8 +803,6 @@ void func_0021CCF0(void) {
     func_002400E0();
 }
 // differs: the table address is kept in s0 for its two loads, and the first load is folded into lui/lw in the original (the pointer is set up after it)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CCF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CD80);
 s32 func_0021D170(u8 *o) {
     u8 *sys = gBtlSys;

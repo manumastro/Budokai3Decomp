@@ -223,3 +223,37 @@ StrStatus_TaskRequestScene = 0x002C1AA0; // type:func // guess
 // unk_2918A0.c: StrStatus_OpenScene starts the status screen (StrStatus_Start with 0xB000 and 0x80000) and sets
 // the work block D_005AA5A0 next function. Guess.
 StrStatus_OpenScene = 0x00291970; // type:func // guess
+
+// script command tables 0x1B and 0x1C: the evt_scrp.c handlers (the event scripts, see battle.txt for the table
+// layout). Names by group number; guesses.
+gScrCmdTable_1B = 0x0044A0A0; // size:0x40 // guess
+gScrCmdTable_1C = 0x0044A0E0; // size:0x40 // guess
+
+// evt_scrp.c, script command groups 0x1B-0x1C (gScrCmdTable_1B, _1C): the event-script handlers (Evt_Cmd...): wait
+// commands, vector and index calls into the event functions, and task starters. Where the callee has no name yet,
+// the callee's address is in the name. The callee names are for the next round. Guesses.
+Evt_CmdWaitRowFlag8 = 0x002A4DC0; // type:func // guess
+Evt_CmdSetIndexWrap = 0x002A4E20; // type:func // guess
+Evt_CmdCall2A0D20 = 0x002A4830; // type:func // guess
+Evt_CmdVecCall2A0CE0 = 0x002A47E0; // type:func // guess
+Evt_CmdCall2A0CB0 = 0x002A47B0; // type:func // guess
+Evt_CmdVecCall2A0C60 = 0x002A4760; // type:func // guess
+Evt_CmdVecCall2A0C10 = 0x002A4710; // type:func // guess
+Evt_CmdVecCall2A0BC0 = 0x002A46C0; // type:func // guess
+Evt_CmdVecCall2A0AD0 = 0x002A4530; // type:func // guess
+Evt_CmdGetCall2A1050 = 0x002A4940; // type:func // guess
+Evt_CmdGetCall2A1050Flag = 0x002A48F0; // type:func // guess
+Evt_CmdStartWait3CD0 = 0x002A3DE0; // type:func // guess
+Evt_CmdCall2A0A60 = 0x002A4500; // type:func // guess
+Evt_CmdVecCall2A09F0 = 0x002A4470; // type:func // guess
+Evt_CmdStartTask2A4320 = 0x002A4410; // type:func // guess
+Evt_CmdStartTask2A41D0 = 0x002A42C0; // type:func // guess
+Evt_CmdAdjustCall2A0830 = 0x002A3FF0; // type:func // guess
+Evt_CmdVecCall2A0700 = 0x002A3EC0; // type:func // guess
+Evt_CmdVecCall2A07A0 = 0x002A3FA0; // type:func // guess
+Evt_CmdRowCall2A0750 = 0x002A3F10; // type:func // guess
+Evt_CmdRowCall2A0750Pair = 0x002A40A0; // type:func // guess
+Evt_CmdCall2A07D0 = 0x002A3F70; // type:func // guess
+Evt_CmdCall2A0A30 = 0x002A44C0; // type:func // guess
+Evt_CmdWaitCall2A1020 = 0x002A3E60; // type:func // guess
+Evt_CmdCall2A1420 = 0x002A4E90; // type:func // guess
