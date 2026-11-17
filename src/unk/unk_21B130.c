@@ -225,12 +225,11 @@ void func_0021B420(void) {
 // differs: 22 of 72 (round 5). The (s32) cast is NOT the problem: the original's word 0x46000024 is what the cast emits too (the disassemblers only name it differently). Tried live: the two early exits as one `||` test (shares the return), D_0047068C loaded before the cast, the px = sys+0x640 pointer, and the call func_0022C7D0(D_0047068C, (f32)n, 1) (signature (s32, f32, s32), the file's first declaration must match). Left: the last call func_0022ACF0 gets a nop before the epilogue and the early exits jump past ld ra/lq s1, the original's exits go to the epilogue directly.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
-#if 0
 // differs: the table address is folded into the loads (lui at + lw 4(at)) where the original keeps it in v0 (lui v0 / addiu v0, then lw 4(v0)); 13 of 36 differ
 s32 func_0021B540(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
-    s32 *tbl = D_0046A470;
+    s32 *tbl = (s32 *)(void *)D_0046A470;
     s32 f;
 
     f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
@@ -245,13 +244,10 @@ s32 func_0021B540(void) {
     }
     return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B540);
-#if 0
 s32 func_0021B5D0(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
-    s32 *tbl = D_0046A470;
+    s32 *tbl = (s32 *)(void *)D_0046A470;
     s32 f;
 
     f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
@@ -261,14 +257,12 @@ s32 func_0021B5D0(void) {
     }
     f = amCdFs_ReadFileId(0x10003, 0, 0);
     if (f != 0) {
-        D_004706A0 = f;
+        D_004706A0[0] = f;
         r = f;
     }
     return r;
 }
 // differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B5D0);
 #if 0
 s32 func_0021B660(void) {
     s32 r = 0;
@@ -291,11 +285,10 @@ s32 func_0021B660(void) {
 // differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B660);
-#if 0
 s32 func_0021B6F0(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
-    s32 *tbl = D_0046A470;
+    s32 *tbl = (s32 *)(void *)D_0046A470;
     s32 f;
 
     f = amCdFs_ReadFileId((tbl[1] << 16) | tbl[0], 0, 0);
@@ -306,8 +299,6 @@ s32 func_0021B6F0(void) {
     return r;
 }
 // differs: the table address is kept in v0 for its two loads (lui/addiu once), here it is folded into each load; the pointer to D_00470698 in s0 is the same
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B6F0);
 void func_0021B760(void) {
     func_00228410();
     func_00133780(2, 0);
@@ -559,7 +550,12 @@ s32 Input_IsHeld(s32 a) {
     }
     return 0;
 }
+typedef struct BtlCnt {
+    u8 pad[0x88D8];
+    s32 n;
+} BtlCnt;
 #if 0
+// differs: 0x80 bytes, as the original; the count test matches with a BtlCnt view (lui 1 + offset -0x7728, as the original); the original preloads v0 = -1 before the id test and returns through one shared epilogue (b to the final jr); ours has two jr ra. Tried: a single result variable with break (0x70 bytes).
 s32 func_0021C2E0(s32 id) {
     u8 *p;
     s32 *n;
@@ -568,7 +564,7 @@ s32 func_0021C2E0(s32 id) {
     if (id == -1) {
         return -1;
     }
-    if (0 < *(s32 *)(gBattle + 0x88D8)) {
+    if (0 < ((BtlCnt *)gBattle)->n) {
         i = 0;
         p = gBtlSys;
         n = (s32 *)(gBattle + 0x88D8);
@@ -582,11 +578,11 @@ s32 func_0021C2E0(s32 id) {
     }
     return -1;
 }
-// differs: the base pointer is loaded and folded in another order (lui and the offset split, a1 kept for the base)
+// (see the note above the function: the test is the BtlCnt view now)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2E0);
 #if 0
-// differs: the count is kept as a pointer (gBattle + 0x88D8) in the original, reloaded in the loop test; 0x58 bytes against 0x70: the sys/cnt pointer forms and the do-while were tried. Round 5: the test `0 < *(s32*)(gBattle + 0x88D8)` first with cp formed in the body gives 0x60 bytes (the original reads the count through lui 0x1 + offset -0x7728 and forms cp (li at 0x88D8 / addu a1) in the if body before the loop: the two instructions are missing here); the array form and gBattle + 0x10000 - 0x7728 fold to the same code; cp computed before the test gives 0x60 too; cp first 0x58.
+// differs: the count is kept as a pointer (gBattle + 0x88D8) in the original, reloaded in the loop test; round 5: the test `*(gBattle + 0x10000 - 0x7728)` (4 spellings) folds to 0x88D8 and the cp is hoisted above it (19 of 28 differ); the BtlCnt view (see 21C2E0) gives the split; 0x58 bytes against 0x70: the sys/cnt pointer forms and the do-while were tried. Round 5: the test `0 < *(s32*)(gBattle + 0x88D8)` first with cp formed in the body gives 0x60 bytes (the original reads the count through lui 0x1 + offset -0x7728 and forms cp (li at 0x88D8 / addu a1) in the if body before the loop: the two instructions are missing here); the array form and gBattle + 0x10000 - 0x7728 fold to the same code; cp computed before the test gives 0x60 too; cp first 0x58.
 s32 func_0021C360(s32 id) {
     u8 *sys = gBtlSys;
     u8 *cp = gBattle + 0x88D8;
@@ -788,10 +784,9 @@ void func_0021CAD0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CAD0);
-#if 0
 void func_0021CCF0(void) {
     u8 *sys = gBtlSys;
-    s32 *tbl = D_0046A470;
+    s32 *tbl = (s32 *)(void *)D_0046A470;
 
     if (*(s32 *)tbl[2] != 0) {
         amHeap_Free(*(void **)tbl[2]);
@@ -810,8 +805,6 @@ void func_0021CCF0(void) {
     func_002400E0();
 }
 // differs: the table address is kept in s0 for its two loads, and the first load is folded into lui/lw in the original (the pointer is set up after it)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CCF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CD80);
 s32 func_0021D170(u8 *o) {
     u8 *sys = gBtlSys;
