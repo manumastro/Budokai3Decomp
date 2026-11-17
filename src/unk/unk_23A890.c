@@ -1,5 +1,9 @@
 #include "common.h"
 
+extern u8 *D_0046FDCC;
+void func_00215500(s32);
+void func_00244280(void);
+
 extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
@@ -656,6 +660,33 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244CC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244D80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244F00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00245240);
+#if 0
+void func_002453D0(void) {
+    u8 *bw;
+
+    if (*(s8 *)(D_00470570 + 0x8975) != 1) {
+        if (*(s32 *)(D_0046FDCC + 0x7C) != 0) {
+            func_00215500(2);
+        }
+        if (*(s32 *)(D_0046FDCC + 0x98) != 0) {
+            func_00215500(0x400);
+        }
+        if (*(s32 *)(D_0046FDCC + 0x9C) != 0) {
+            bw = D_00470570;
+            if (bw != 0 && *(s16 *)(bw + 0x8944) != 0) {
+                if (*(s16 *)(D_0046FE4C + 0x91A) != 0) {
+                    func_00215500(0x800);
+                }
+            } else {
+                *(s16 *)(D_0046FE4C + 0x91A) = 0;
+                func_00215500(0x800);
+            }
+        }
+        func_00244280();
+    }
+}
+// differs: the value read at 0x8944 is merged with a zero in the original, with no sign extension; the merge here extends it, and the combined test is shorter by 4 instructions
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002453D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002454B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00245A80);
