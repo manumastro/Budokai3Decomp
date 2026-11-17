@@ -248,7 +248,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309050);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_003090F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309250);
 #if 0
-// differs: the zeroing loop: two nops before the bnez in the original (mine has them after), the reload is via a pointer addiu v1,sp,76 in the original
+// differs: 13 of 56 (round 4, menu3): with a prototype for func_0022C060(s32, f32) the zeroing loop and the calls match; left: the original has one nop after the bnez (mine two), its skip branch lands on the sw of x, and the gp stores are ordered differently
 extern void amModel_SetCurrent(s32, s32);
 extern s32 D_00470704;
 extern s32 D_0047070C;

@@ -525,6 +525,41 @@ void InputPass_Acquire(void) {
         Help_Load();
     }
 }
+#if 0
+// differs: 41 of 122 instructions differ: the original puts the float tail out of line after the epilogue (beq to 2F29F8 is the early return); mine keeps the tail inline (beq to 2F2A40)
+extern void func_00229800(s32, void *, s32, f32);
+
+void func_002F2870(u8 *a0, s16 idx) {
+    u8 *s2;
+    u32 s1;
+    u32 s0;
+    f32 loc[8];
+    u16 t1;
+    s32 k;
+    u8 *base;
+
+    t1 = *(u16 *)((u8 *)(idx * 2) + (u32)a0 + 0x50);
+    if (t1 == 0xFFFF) {
+        return;
+    }
+        s2 = *(u8 **)((u8 *)(idx * 4) + (u32)a0 + 4);
+        k = (s16)(idx + 0x33);
+        base = *(u8 **)(*(u8 **)((u8 *)gInputName + 0xC) + 0x1C);
+        s1 = (u32)(t1 % 10) & 0xFFFF;
+        s0 = (u32)(t1 / 10) & 0xFFFF;
+        func_00229800(*(s32 *)(base + k * 4), loc, -1, 0.0f);
+        *(f32 *)(s2 + 0x20) = loc[0];
+        *(f32 *)(s2 + 0x24) = loc[1];
+        *(f32 *)(s2 + 0x34) = -20.0f;
+        *(f32 *)(s2 + 0x3C) = 20.0f;
+        *(f32 *)(s2 + 0x30) = -20.0f;
+        *(f32 *)(s2 + 0x38) = 20.0f;
+        *(f32 *)(s2 + 0x44) = 40.0f * (f32)s0;
+        *(f32 *)(s2 + 0x40) = 40.0f * (f32)s1;
+        *(f32 *)(s2 + 0x48) = 40.0f * (f32)(s1 + 1);
+        *(f32 *)(s2 + 0x4C) = 40.0f * (f32)(s0 + 1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2870);
 void func_002F2A10(u32 *task) {
     u8 *s3;
@@ -647,9 +682,70 @@ void func_002F2F00(u8 *task) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3020);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3210);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3C60);
+extern void func_002F3210(Task *);
+extern void *func_0022D670(f32, void *);
+
+void func_002F3C60(Task *a0) {
+    u8 *s4;
+    u8 *s3;
+    s32 s2;
+    u16 *s1;
+    u8 *s0;
+    s32 v;
+    f32 f1;
+
+    s4 = (u8 *)a0;
+    s3 = *(u8 **)((u8 *)a0 + 0x30);
+    s0 = (u8 *)gInputName;
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    v = *(s32 *)(s0 + 0x10);
+    D_00470704 = v;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x5000);
+    D_00470238 = 0;
+    D_00470238 = 0;
+    func_002F2D50(s3);
+    if (*(u8 *)(s3 + 0x60) < 5) {
+        s2 = 0;
+        s1 = (u16 *)s3;
+        s0 = s3;
+        do {
+            if (*(s16 *)((u8 *)s1 + 0x50) != 0xFFFF) {
+                func_0022CF70(*(s32 *)(s0 + 0x4));
+            }
+            s2++;
+            s1 = s1 + 1;
+            s0 = s0 + 4;
+        } while (s2 < 0x8);
+    }
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    f1 = *(f32 *)(s3 + 0x40) - gFrameDelta;
+    *(f32 *)(s3 + 0x40) = f1;
+    if (f1 <= 0.0f) {
+        s0 = (u8 *)gInputName;
+        v = *(s32 *)(s0 + 0x10);
+        D_00470704 = v;
+        D_0047070C = 0x5000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, 0x5000);
+        D_00470238 = 0;
+        if (*(void **)(s3 + 0x28) != 0) {
+            func_0022D0E0(*(void **)(s3 + 0x28), 1);
+        }
+        *(void **)(s3 + 0x28) = func_0022D670(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x1C) + 0x108));
+        if (*(void **)(s3 + 0x2C) != 0) {
+            func_0022D0E0(*(void **)(s3 + 0x2C), 1);
+        }
+        *(void **)(s3 + 0x2C) = func_0022D670(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x1C) + 0x10));
+        *(u8 *)(s3 + 0x60) = 2;
+        *(void **)(s4 + 0x1C) = ((void *)func_002F3210 == 0) ? 0 : (void *)func_002F3210;
+    }
+}
 extern void func_0022E0B0(s32);
-extern void func_002F3C60(void);
+extern void func_002F3C60(Task *);
 extern void *amFile_Load(s32);
 extern void *func_0022D860(f32, void *);
 

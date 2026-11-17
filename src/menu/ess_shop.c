@@ -274,6 +274,48 @@ void func_00274A00(u8 *a0) {
     }
 }
 #endif
+#if 0
+// differs: 33 of 83 instructions differ (relocation lines masked): the first seven field increments and the call match; the second block reloads gEssShop once per group in the original (a2/a1 reused), and the callback select lands at another offset
+extern u16 D_00492FCE[];
+extern u16 D_00493086[];
+extern void func_00274120(void);
+extern void amAdx_Pause(s32, s32);
+extern void Zenie_Close(s32);
+extern void func_0026D570(s32);
+extern void func_00276470(u8 *);
+
+void func_00274A00(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    *(s32 *)(gEssShop + 0x1D4) = *(s32 *)(gEssShop + 0x1D4) + 1;
+    *(s32 *)(gEssShop + 0x204) = *(s32 *)(gEssShop + 0x204) + 1;
+    *(s32 *)(gEssShop + 0x234) = *(s32 *)(gEssShop + 0x234) + 1;
+    *(s32 *)(gEssShop + 0x264) = *(s32 *)(gEssShop + 0x264) + 1;
+    *(s32 *)(gEssShop + 0x294) = *(s32 *)(gEssShop + 0x294) + 1;
+    *(s32 *)(gEssShop + 0x2C4) = *(s32 *)(gEssShop + 0x2C4) + 1;
+    *(s32 *)(gEssShop + 0x3B4) = *(s32 *)(gEssShop + 0x3B4) + 1;
+    func_00274120();
+    if ((D_00492FCE[0] | D_00493086[0]) != 0) {
+        amAdx_Pause(1, 1);
+        Zenie_Close(0);
+        *(s32 *)s0 = 0x3C;
+        *(s32 *)(gEssShop + 0x1CC) = 1;
+        *(s32 *)(gEssShop + 0x1D4) = 0;
+        *(s32 *)(gEssShop + 0x22C) = 0x17;
+        *(s32 *)(gEssShop + 0x234) = 0;
+        *(s32 *)(gEssShop + 0x1FC) = 0x14;
+        *(s32 *)(gEssShop + 0x204) = 0;
+        *(s32 *)(gEssShop + 0x20C) = -1;
+        *(s32 *)(gEssShop + 0x3AC) = 1;
+        *(s32 *)(gEssShop + 0x3B4) = 0;
+        func_0026D570(0);
+        *(void **)(s1 + 0x1C) = ((void *)func_00276470 == 0) ? 0 : (void *)func_00276470;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274A00);
 void func_00274B40(u8 *a0) {
     u8 *s0;
