@@ -147,6 +147,7 @@ int func_001CBDF0(void *unused, Arg *a) {
     }
     return 1;
 }
+/* r6 best attempt diff 17 */
 // differs: 17 of 21. The original loads the Side fields (idx, blk) in another order: p[3] table entry first, then p[1] for idx, then p[0] last; ours reorders the blk and idx loads.
 #if 0
 int func_001CBE80(void *unused, Arg *a) {
