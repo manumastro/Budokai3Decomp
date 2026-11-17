@@ -2650,28 +2650,31 @@ s32 func_00259D90(s32 a0, s32 a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259D90);
-// GIVEN UP: the parameter and the global pointer take the other two saved registers, and the code is 12 bytes shorter (4 declaration orders tried)
-#if 0
 extern s32 amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern u8 D_0046AE80[];
 extern u8 D_0046AE90[];
-extern void func_002599C0(void *);
+#if 0
+/* differs: 0x124 bytes against 0x130 whatever the order of the five locals (searched): a structural
+ * 12-byte gap, probably one instruction of the table or the memset block. The argument copy and gBtlSys
+ * swap $s1/$s2 as well. */
 s32 func_00259EB0(s32 a0, f32 f12) {
-    s32 *s0;
+    s32 k;
     u8 *s1;
+    s32 *s0;
     s32 v;
     s32 w;
 
-    s0 = &D_0058D4D0[a0];
+    k = a0;
+    s0 = &D_0058D4D0[k];
     if (*s0 != 0) {
         return 0;
     }
     s1 = gBtlSys;
-    v = amTask_Create(func_002599C0, 0, 0x5410, 0x1000, 0x2000000, (char *)D_0046AE80);
+    v = amTask_Create((void (*)(void *))func_002599C0, 0, 0x5410, 0x1000, 0x2000000, (char *)D_0046AE80);
     *s0 = v;
     s0 = (s32 *)(v + 0x30);
     memset(s0, 0, 0x1C);
-    s0[5] = a0;
+    s0[5] = k;
     {
         s32 x = *(s32 *)(s1 + 0xE84);
 
@@ -2681,7 +2684,7 @@ s32 func_00259EB0(s32 a0, f32 f12) {
         func_00145CC0(x, 0x4010000);
         D_00470238 = 0;
     }
-    s0[6] = func_0022D570(*(s32 *)((u8 *)((s32 *)(*(s32 *)(s1 + 0xE88)))[5] + ((a0 & 1) << 2)), 0x1000, 0x2000008, 0x3A30);
+    s0[6] = func_0022D570(*(s32 *)((u8 *)((s32 *)(*(s32 *)(s1 + 0xE88)))[5] + ((k & 1) << 2)), 0x1000, 0x2000008, 0x3A30);
     w = amTask_Create((void (*)(void *))LeverDraw_TaskMain, 0, 0x3A30, 0x1000, 0x2000008, (char *)D_0046AE90);
     ((f32 *)s0)[3] = f12;
     s0[0] = w;
