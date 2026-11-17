@@ -226,6 +226,7 @@ void func_0021B420(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
 #if 0
+// differs: the table address is folded into the loads (lui at + lw 4(at)) where the original keeps it in v0 (lui v0 / addiu v0, then lw 4(v0)); 13 of 36 differ
 s32 func_0021B540(void) {
     s32 r = 0;
     s32 *p = &D_00470698;
@@ -239,12 +240,11 @@ s32 func_0021B540(void) {
     }
     f = amCdFs_ReadFileId(0x10001, 0, 0);
     if (f != 0) {
-        D_004706A0 = f;
+        D_004706A0[0] = f;
         r = f;
     }
     return r;
 }
-// differs: same table-load shape as func_0021B6F0 (the table address folded into each load, the register roles of the two locals swapped)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B540);
 #if 0
