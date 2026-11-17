@@ -1002,6 +1002,82 @@ void func_0020D780(void *out) {
         : : "r"(p), "r"(&tmp) : "memory");
     __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(&tmp), "r"(out) : "memory");
 }
+#if 0
+typedef struct V4A {
+    f32 x;
+    f32 y;
+    f32 z;
+    s32 w;
+} __attribute__((aligned(16))) V4A;
+typedef struct Cfg20 {
+    V4A v;
+    f32 e;
+} Cfg20;
+extern u8 D_0044BA20[];
+extern s32 D_0046FD5C;
+s32 amDraw3d_SetTexFrame(s32, s32, s32, void *);
+void amDraw3d_Flip(void *, s32);
+void amDraw_SetScissor(void *, s32);
+void func_00133780(s32, s32);
+s32 amGs_SetReg32(s32, s32);
+s32 amDma_Request(s32, s32, s32, s32, s32, s32, s32, s32);
+void func_00136E80(s32, u8 *, s32, s32, s32);
+void func_00137560(void *, void *);
+void func_00131B90(void *);
+void func_00131F00(void *, f32, f32);
+void func_00132DF0(s32);
+void func_0020D7C0(void) {
+    u64 q;
+    u8 c80[96];
+    Cfg20 c70;
+    f32 v50[4];
+    f32 v40[4];
+    Cfg20 *src;
+    s32 s0;
+    s32 s2;
+    s32 val;
+
+    src = (Cfg20 *)D_0044BA20;
+    c70.v = src->v;
+    c70.e = src->e;
+    val = (s32)(*(u32 *)&D_0046FD5C >> 5);
+    c70.v.w = val;
+    *(s32 *)&c70.e = val;
+    s0 = amDraw3d_SetTexFrame(0, 1, 0, 0);
+    amDraw3d_Flip(&c70, 0);
+    func_00131B90(c80);
+    func_00131F00(c80, 0.0f, 0.0f);
+    amDraw_SetScissor(0, 0);
+    func_00133780(0, 1);
+    s2 = amGs_SetReg32(0, 0x30002);
+    amDma_Request(0, 1, 1, 0, 0, (u32)s0 & 0x0FFFFFFF, 6, 0);
+    func_00136E80(0x40000424, 0, -1, 0x44, 5);
+    v50[0] = 0.0f;
+    v50[1] = 0.0f;
+    v50[2] = 1.0f;
+    v50[3] = 1.0f;
+    v40[0] = 0.0f;
+    v40[1] = 0.0f;
+    v40[2] = 1.0f;
+    v40[3] = 1.0f;
+    func_00137560(v50, v40);
+    v50[0] = 256.0f;
+    v50[1] = 256.0f;
+    v40[0] = 512.0f;
+    v40[1] = 448.0f;
+    func_00137560(v50, v40);
+    amDraw_FlushPacket();
+    q = 0x0000008000000080ULL;
+    *(s32 *)(gWave + 0x70) = amDraw3d_SetTexFrame(0, 1, 0, &q);
+    amGs_SetReg32(0, s2);
+    func_00133780(0, 0);
+    amDraw3d_Flip(0, 0);
+    func_00131F00(gBattle, 0.0f, 0.0f);
+    func_00132DF0((s32)(gBattle + 0x60));
+    amDraw_SetScissor(0, 0);
+}
+// differs: 116 of 122 instructions: the copy of the 20-byte struct from D_0044BA20 (lq/lwc1/sq/swc1 through one base) is scheduled with the call argument setup around it (the original has lq, lwc1, then the arg moves; ours hoists the moves above the copy or the lui into t1 instead of a0); tried: 20-byte struct (4 lwc1), whole-struct copy, local pointer, value local for the w store, 24 orders of the four register locals (perm.py): none better
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D7C0);
 #if 0
 void func_0020D9B0(void) {
@@ -1069,6 +1145,85 @@ void amVram_Set(s32, s32, s32);
 void func_0020DE30(void) {
     amVram_Set(0, D_0046FD5C, 0x800);
 }
+#if 0
+typedef struct V4A {
+    f32 x;
+    f32 y;
+    f32 z;
+    s32 w;
+} __attribute__((aligned(16))) V4A;
+typedef struct Cfg20 {
+    V4A v;
+    f32 e;
+} Cfg20;
+extern u8 D_0044BA00[];
+s32 amDraw3d_SetTexFrame(s32, s32, s32, void *);
+void amDraw3d_Flip(void *, s32);
+void amDraw_SetScissor(void *, s32);
+void func_00133780(s32, s32);
+s32 amGs_SetReg32(s32, s32);
+s32 amDma_Request(s32, s32, s32, s32, s32, s32, s32, s32);
+void func_00136E80(s32, u8 *, s32, s32, s32);
+void func_00137560(void *, void *);
+void func_0012EF80(u8 *, s32, s32);
+void func_00131B90(void *);
+void func_00131F00(void *, f32, f32);
+void func_00132DF0(s32);
+void func_0020DE40(s32 i) {
+    u64 q;
+    u8 c90[0x60];
+    Cfg20 c70;
+    f32 v60[4];
+    f32 v50[4];
+    u8 *g;
+    u8 *p;
+    Cfg20 *src;
+    s32 s1;
+    s32 s2;
+
+    g = gWave;
+    src = (Cfg20 *)D_0044BA00;
+    c70.v = src->v;
+    c70.e = src->e;
+    c70.v.w = (s32)((*(u32 *)&D_0046FD5C >> 5) + 0x20);
+    s1 = amDraw3d_SetTexFrame(0, 1, 0, 0);
+    amVram_Set(0, D_0046FD5C, 0x400);
+    amDraw3d_Flip(&c70, 0);
+    func_00131B90(c90);
+    func_00131F00(c90, 0.0f, 0.0f);
+    amDraw_SetScissor(0, 0);
+    func_00133780(0, 1);
+    s2 = amGs_SetReg32(0, 0x30002);
+    amDma_Request(0, 1, 1, 0, 0, (u32)s1 & 0x0FFFFFFF, 6, 0);
+    p = D_00568C90 + i * 0x2140;
+    func_00136E80(0x40000124, p + 0x30, -1, 0x44, 5);
+    v60[0] = 0.0f;
+    v60[1] = 0.0f;
+    v60[2] = 0.0f;
+    v60[3] = 1.0f;
+    v50[0] = 0.0f;
+    v50[1] = 0.0f;
+    v50[2] = 1.0f;
+    v50[3] = 1.0f;
+    func_00137560(v60, v50);
+    v60[0] = 256.0f;
+    v60[1] = 256.0f;
+    v50[0] = 512.0f;
+    v50[1] = 448.0f;
+    func_00137560(v60, v50);
+    amDraw_FlushPacket();
+    q = 0x0000008000000080ULL;
+    s1 = amDraw3d_SetTexFrame(0, 1, 0, &q);
+    func_0012EF80(g, s1, 6);
+    func_00133780(0, 0);
+    amGs_SetReg32(0, s2);
+    amDraw3d_Flip(0, 0);
+    func_00131F00(gBattle, 0.0f, 0.0f);
+    func_00132DF0((s32)(gBattle + 0x60));
+    amDraw_SetScissor(0, 0);
+}
+// differs: 16 of 139 instructions: the struct copy from D_0044BA00 (lq + lwc1 through one base register, the e load scheduled late) and the order of the arg setup before the copy; tried: 20-byte struct (4 lwc1), whole-struct copy (lq lq), local u8 pointer, inline cast; frame 0x100 and the second call match
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020DE40);
 extern void amMotion_BuildMatrices(void *m);
 
@@ -3481,7 +3636,6 @@ s32 func_00216080(s32 idx) {
     }
     return r;
 }
-#if 0
 void func_00216150(s32 idx) {
     s32 i;
     s32 off;
@@ -3499,20 +3653,17 @@ void func_00216150(s32 idx) {
         }
     } else {
         off = idx * 4;
-        if (*(s32 *)(off + D_0046FDD0 + 0x188) != 0) {
-            amTask_Kill(*(s32 *)(off + D_0046FDD0 + 0x188));
-            *(s32 *)(off + D_0046FDD0 + 0x188) = 0;
+        if (*(s32 *)((s32)off + (s32)D_0046FDD0 + 0x188) != 0) {
+            amTask_Kill(*(s32 *)((s32)off + (s32)D_0046FDD0 + 0x188));
+            *(s32 *)((s32)off + (s32)D_0046FDD0 + 0x188) = 0;
         }
-        if (*(s32 *)(off + D_0046FDD0 + 0x1A0) != 0) {
-            Obj_ResetF38(*(s32 *)(off + D_0046FDD0 + 0x1A0));
-            *(s32 *)(off + D_0046FDD0 + 0x1A0) = 0;
+        if (*(s32 *)((s32)off + (s32)D_0046FDD0 + 0x1A0) != 0) {
+            Obj_ResetF38(*(s32 *)((s32)off + (s32)D_0046FDD0 + 0x1A0));
+            *(s32 *)((s32)off + (s32)D_0046FDD0 + 0x1A0) = 0;
         }
-        *(s32 *)(off + D_0046FDD0 + 0x190) = 0;
+        *(s32 *)((s32)off + (s32)D_0046FDD0 + 0x190) = 0;
     }
 }
-// differs: 5 of 69 differ, all in the single-entry branch (idx != -1): the original adds the table base to the offset as addu v1, s0, v1 (offset first), and this build keeps the base first whatever the order of the operands in the source
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216150);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216270);
 u8 *func_00215320(s32, s32);
 s32 func_00209540(s32, s32, s32);
@@ -4015,6 +4166,62 @@ void func_002178C0(u8 *s) {
 // differs: the loads of the three words and the base pointer q take other registers (q in t0 where the original keeps it in a3), the VU0 lerp (qmtc2.ni, vaddax, vmaddx) and the jump-table call match
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002178C0);
+#if 0
+void func_002179E0(u8 *s) {
+    f32 kf;
+    s32 tmp;
+    s32 idx;
+    s32 a2;
+    s32 a1;
+    u8 *q;
+    u8 *p1;
+    u8 *p2;
+    Copy16A t40;
+    Copy16A t30;
+    Copy16A t20;
+
+    idx = *(s32 *)(s + 0x10);
+    a2 = *(s32 *)(s + 0x14);
+    a1 = *(s32 *)(s + 0x18);
+    q = gBattle + (idx * 257 << 5) + 0x830;
+    if (a1 != -1) {
+        p1 = q + (a2 << 4) + 0x7B0;
+        p2 = *(u8 **)(q + 0x1354) + (a1 << 4) + 0x7B0;
+        kf = 0.2f;
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%2)\n\t"
+            "lqc2 $vf2, 0(%3)\n\t"
+            "mfc1 %0, %4\n\t"
+            "nop\n\t"
+            "qmtc2.ni %0, $vf3\n\t"
+            "vsub.xyz $vf2, $vf2, $vf1\n\t"
+            "vaddax.xyz ACC, $vf1, $vf0x\n\t"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n\t"
+            "sqc2 $vf1, 0(%1)\n\t"
+            : "=r"(tmp) : "r"(&t40), "r"(p1), "r"(p2), "f"(kf) : "memory");
+    } else {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n\t"
+            "sqc2 $vf1, 0(%1)\n\t"
+            : : "r"(q + (a2 << 4) + 0x7B0), "r"(&t40) : "memory");
+    }
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n\t"
+        "lqc2 $vf2, 0(%2)\n\t"
+        "vsub.xyz $vf1, $vf1, $vf2\n\t"
+        "sqc2 $vf1, 0(%1)\n\t"
+        : : "r"(*(u8 **)(q + 0x1354) + 0x7B0), "r"(&t30), "r"(q + 0x7B0) : "memory");
+    func_00146F30(&t30);
+    func_0020D780(&t20);
+    *(void **)(s + 0x4) = &t20;
+    *(void **)(s + 0x0) = &t40;
+    *(s16 *)(s + 0x20) = 9;
+    *(s16 *)(s + 0x22) = 0;
+    *(s16 *)(s + 0x24) = 0;
+    jtbl_00469CC4[0](s);
+}
+// differs: 4 of 70 instructions: the first asm block takes the registers of p1 and &t40 swapped (a1/a2 here, the reverse in the original); every operand order tried (6) either swaps those or moves the index register (a2/a3); the float constant route (lui/ori, mtc1 f0, mfc1, nop, qmtc2) and the tail match
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002179E0);
 void func_00217B00(u8 *s) {
     *(s16 *)(s + 0x20) = 8;
@@ -4083,7 +4290,7 @@ void func_00217D10(u8 *p) {
         func_00215230(-1, 0x10);
     }
 }
-s32 func_00217D70(void) {
+s32 Scr_CmdCallTable469CB0(void) {
     Blk44 a;
     Blk44 b;
     memset(&a, 0, 0x2C);

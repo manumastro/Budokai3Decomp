@@ -28,6 +28,53 @@ extern void func_0022C7D0(s32, s32, f32);
 extern s32 D_005C9F14[];
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8540);
+typedef struct Quad87 {
+    s32 v[4];
+} __attribute__((aligned(16))) Quad87;
+
+typedef struct Entry87 {
+    Quad87 a;
+    Quad87 b;
+} Entry87;
+
+typedef struct Blk87 {
+    char pad0[0x152];
+    s16 f152;
+    char pad154[0x15C - 0x154];
+    s32 f15C;
+    s32 f160;
+} Blk87;
+
+extern Entry87 D_00457120[];
+extern u8 D_005C9D80[];
+extern s16 D_004E05E0[];
+extern void func_00125740(void *, void *, s32);
+
+/* differs: 10 of 38 (the 32-byte copy loop: the original keeps the counter in $a0 and the source in $a2; the body after it matches) */
+#if 0
+void func_002E8720(void) {
+    Entry87 tmp[12];
+    Entry87 *s = D_00457120;
+    s32 n = 12;
+    Entry87 *d = tmp;
+    s32 x;
+    Blk87 *b;
+
+    do {
+        d->a = s->a;
+        n--;
+        d->b = s->b;
+        s++;
+        d++;
+    } while (n > 0);
+    b = (Blk87 *)D_005C9D80;
+    func_00125740(b, tmp, 0x180);
+    b->f152 = 5;
+    x = D_004E05E0[0];
+    b->f15C = (x > 0) ? ((x << 4) - x) << 2 : -1;
+    b->f160 = -1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8720);
 typedef struct Rec12 {
     s8 b[8];
@@ -92,13 +139,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E97E0);
 void func_002E98E0(void) {
     memset(D_005C9F10, 0, 0x6C);
 }
-/* differs: the original loads the index global first (the table base after it) and tests a < fC with bc1f keeping the 1 in v0; the ?: and if forms both come out with xori / a1 */
+/* differs: 1 of 26: r = 1 then r = 0 on a < fC gives the right result, but the join after the `move` is a bare branch
+   target to the jr; the original's bc1f lands on a nop before the jr. The else form and the direct returns give xori. */
 #if 0
 s32 func_002E9900(void) {
     Cur99 *p = (Cur99 *)D_005C9F6C[0];
     Ent99 *e;
     s32 *row;
     s32 idx;
+    s32 r;
     f32 a;
 
     if (p == NULL) {
@@ -108,10 +157,11 @@ s32 func_002E9900(void) {
     a = p->f10;
     row = &D_004573C0[idx];
     e = (Ent99 *)(*row + D_005C9F64[0] * 16);
+    r = 1;
     if (a < e->fC) {
-        return 0;
+        r = 0;
     }
-    return 1;
+    return r;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9900);

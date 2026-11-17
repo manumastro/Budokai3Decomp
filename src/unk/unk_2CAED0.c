@@ -174,7 +174,35 @@ s32 func_002CB070(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB070);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB0F0);
+s32 func_002CB0F0(void) {
+    TutWork *t = gTutWork;
+    s32 *p = &t->f20;
+    TutChr *c = t->chr;
+    CmdHist *h = &c->f1360;
+    u8 *a;
+
+    if (c->fCB2 == 1) {
+        if (h->rd != h->wr) {
+            a = (u8 *)&h->ent[h->wr] - 4;
+            if (h->ent[h->wr].f8[1] == 1) {
+                if (p[0] < *(s32 *)(a + 8)) {
+                    p[0] = *(s32 *)(a + 8);
+                    p[1]++;
+                }
+            }
+            if (((s16 *)*(s32 *)(a + 0xC))[1] == 2) {
+                if (p[2] < *(s32 *)(a + 8)) {
+                    p[2] = *(s32 *)(a + 8);
+                    p[3]++;
+                }
+            }
+        }
+    }
+    if (p[1] > 0 && p[3] > 0) {
+        return 1;
+    }
+    return 0;
+}
 s32 func_002CB1D0(void) {
     TutWork *t = gTutWork;
     s32 *p = &t->f20;
@@ -229,7 +257,22 @@ s32 func_002CB300(void) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB370);
+s32 func_002CB370(void) {
+    TutWork *w = gTutWork;
+    f32 *a1 = (f32 *)&w->f20;
+    char *c = (char *)w->chr;
+
+    if (*(s16 *)(c + 0xCAC) == 2) {
+        a1[0] = a1[0] + *(f32 *)(gBattle + 0x88F0);
+    }
+    if (*(s16 *)(c + 0xCAC) == 3) {
+        a1[1] = a1[1] + *(f32 *)(gBattle + 0x88F0);
+    }
+    if (a1[0] >= 60.0f && a1[1] >= 60.0f) {
+        return 1;
+    }
+    return 0;
+}
 s32 func_002CB420(void) {
     return 2;
 }
@@ -264,6 +307,43 @@ void func_002CB4F0(void) {
         t->chr->f1CF4->f14 = t->f30;
     }
 }
+/* differs: 11 of 62: the original tests r == 2 first, then r == 1 with its block placed after an unconditional `b` to
+   the return; ours keeps the block in front (the nested if and the switch forms both differ more). */
+#if 0
+extern void func_002E9BE0(s32);
+extern void func_00218CD0(s32, s32);
+extern s32 (*D_004564E0[])(void);
+
+void func_002CB550(void) {
+    TutWork *t;
+    TutWork *w;
+    s32 r;
+
+    t = gTutWork;
+    if (*(s16 *)(gBattle + 0x8944) != 0) {
+        func_002E9BE0(0);
+    } else {
+        func_002E9BE0(1);
+    }
+    r = D_004564E0[t->fC]();
+    if (r != 2) {
+        if (r == 1) {
+            A2d_CallHandler(0x23, NULL);
+            func_00218CD0(0xB, 0);
+        } else {
+            return;
+        }
+    }
+    w = gTutWork;
+    if (w == NULL) {
+        return;
+    }
+    w->f8 = 2;
+    w->f1C = -*(f32 *)(gBattle + 0x88F0);
+    *(s32 *)&w->f18 = 0;
+    D_004564A0[w->f8]();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB550);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB650);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBD40);
@@ -337,13 +417,56 @@ void func_002CC4E0(void) {
         gTutWork = NULL;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC520);
+void func_002CC520(void) {
+    extern void *amTask_Create();
+    extern char D_0046EFC8[];
+    extern char D_0046EFD8[];
+    TutWork *w;
+
+    if (gTutWork != NULL) {
+        amTask_KillGroup(0x20, 0x400000, 0);
+    }
+    if (gTutWork == NULL) {
+        return;
+    }
+    memset(&gTutWork->f20, 0, 0x10);
+    amTask_Create(func_002CBF60, 0, 0x4200, 0x20, 0x400002, D_0046EFC8);
+    amTask_Create(func_002CBF50, 0, 0x3B00, 0x20, 0x400008, D_0046EFD8);
+    w = gTutWork;
+    if (w == NULL) {
+        return;
+    }
+    w->f8 = 0;
+    w->f1C = -*(f32 *)(gBattle + 0x88F0);
+    *(s32 *)&w->f18 = 0;
+    D_004564A0[w->f8]();
+}
 void func_002CC610(void) {
     if (gTutWork != NULL) {
         amTask_KillGroup(0x20, 0x400000, 0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC640);
+void func_002CC640(void) {
+    extern void *amTask_Create();
+    extern char D_0046EFC8[];
+    extern char D_0046EFD8[];
+    TutWork *w;
+
+    if (gTutWork == NULL) {
+        return;
+    }
+    memset(&gTutWork->f20, 0, 0x10);
+    amTask_Create(func_002CBF60, 0, 0x4200, 0x20, 0x400002, D_0046EFC8);
+    amTask_Create(func_002CBF50, 0, 0x3B00, 0x20, 0x400008, D_0046EFD8);
+    w = gTutWork;
+    if (w == NULL) {
+        return;
+    }
+    w->f8 = 0;
+    w->f1C = -*(f32 *)(gBattle + 0x88F0);
+    *(s32 *)&w->f18 = 0;
+    D_004564A0[w->f8]();
+}
 void func_002CC710(void) {
     TutWork *t = gTutWork;
     u8 *g = gBattle;
@@ -355,4 +478,38 @@ void func_002CC710(void) {
         func_002EB560(t);
     }
 }
+/* differs: 1 of 55: the original puts `move $v0, $zero` in the delay slot of the first bne (a zero kept in v0 before the
+   branch); ours has a nop there. An s32 return changes the whole register allocation (43 differ). */
+#if 0
+typedef struct Tut152 {
+    char pad0[0x152];
+    s16 f152;
+} Tut152;
+
+extern u8 D_005C2010[];
+extern s32 D_00456570[];
+extern s32 D_00456574[];
+extern void func_002EB7B0();
+
+void func_002CC760(Tut152 *a) {
+    TutWork *t;
+
+    if (a->f152 == 4) {
+        t = (TutWork *)D_005C2010;
+        gTutWork = t;
+        memset(*(TutWork * volatile *)&gTutWork, 0, 0x40);
+        t->f4 = *(s8 *)(gBattle + 0x8AB6);
+        t->f10 = D_00456570[t->f4];
+        t->fC = t->f10;
+        if (t->fC == 1) {
+            *(s32 *)&t->f14 = t->fC;
+        } else {
+            *(s32 *)&t->f14 = D_00456574[t->f4];
+        }
+        func_002EB7B0(a);
+    } else {
+        gTutWork = NULL;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC760);

@@ -533,7 +533,50 @@ void DataErase_Acquire(void) {
         *((s8 *)s0 + 0x10) = 1;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310450);
+extern s32 gSoundState;
+extern void amSound_LoadBank();
+extern void amSound_LoadStream();
+extern void func_00143B50(s32, s32);
+void func_00310450(Task *a0) {
+    s32 *s0 = (s32 *)((char *)a0 + 0x30);
+    s32 st[5];
+    s32 bnk[4];
+    switch (*(s16 *)((char *)a0 + 0x3C)) {
+    case 0:
+        if (*(s16 *)(s0[2] + 4) == 3) {
+            st[0] = 1;
+            st[2] = *(s32 *)(s0[0] + 0x48);
+            st[4] = *(s32 *)(s0[0] + 0x54);
+            st[1] = *(s32 *)(s0[1] + 0x48);
+            st[3] = *(s32 *)(s0[1] + 0x54);
+            amSound_LoadStream(st);
+            *(s16 *)((char *)s0 + 0xC) += 1;
+        }
+        break;
+    case 1:
+        if (gSoundState == 0) {
+            bnk[0] = 1;
+            bnk[1] = *(s32 *)(s0[2] + 0x48);
+            bnk[2] = *(s32 *)(s0[2] + 0x54);
+            amSound_LoadBank(bnk);
+            *(s16 *)((char *)s0 + 0xC) += 1;
+        }
+        break;
+    case 2:
+        if (gSoundState == 0) {
+            func_00143B50(10, 1);
+            amCdFs_Close((void *)s0[0], 0);
+            amCdFs_Close((void *)s0[1], 0);
+            amCdFs_Close((void *)s0[2], 0);
+            *(s16 *)((char *)s0 + 0xC) += 1;
+        }
+        break;
+    case 3:
+        D_004701D8 = 1;
+        amTask_Kill(a0);
+        break;
+    }
+}
 s32 DataErase_IsReady(void) {
     return D_004701D8;
 }

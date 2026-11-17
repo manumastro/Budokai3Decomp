@@ -106,7 +106,14 @@ void func_0029D080(LightNode *n);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_29CE90", func_0029CE90);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_29CE90", func_0029D060);
+asm void func_0029D060(void *a) {
+    lqc2 $vf1, 0x0(a0)
+    vmulax.xyzw ACC, $vf28, $vf1x
+    vmadday.xyzw ACC, $vf29, $vf1y
+    vmaddaz.xyzw ACC, $vf30, $vf1z
+    jr $ra
+    vmaddw.xyzw $vf31, $vf31, $vf0w
+}
 
 void func_0029D080(LightNode *n) {
     if (n->f40 != NULL) {
