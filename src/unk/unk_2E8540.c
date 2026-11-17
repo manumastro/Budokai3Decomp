@@ -104,6 +104,42 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8830);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8980);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8B40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8C80);
+/* differs: size 0x13C of 0x150 (the last compare is a beq to the body with a `b` to the end in the original; the loop
+   registers are permuted) */
+#if 0
+extern u8 D_004B4B40[];
+void func_002E8DB0(u8 *s5) {
+    u8 *s4 = D_004B4B40;
+    u8 *s0;
+    u8 *s1;
+    u8 *s3;
+    s32 s2;
+
+    if (*(s16 *)s5 != 0) {
+        if (*(s64 *)(s5 + 0x10) == *(s64 *)(s4 + 0x80)) {
+            if (*(s64 *)(s5 + 0x18) == *(s64 *)(s4 + 0x88)) {
+                if (*(s64 *)(s5 + 0x20) == *(s64 *)(s4 + 0x90)) {
+                    if (*(s64 *)(s5 + 0x28) == *(s64 *)(s4 + 0x98)) {
+                        if (*(s32 *)(s5 + 0x30) == *(s32 *)(s4 + 0xA0)) {
+                            *(s16 *)(s5 + 0x42) = 0;
+                            for (s2 = 0, s0 = s5, s1 = s4; s2 < 0x26; s2++, s0 += 0xE, s1 += 0x1210) {
+                                func_00125740(s1 + 0x1330, s0 + 0x44, 14);
+                            }
+                            for (s2 = 0, s0 = s5, s1 = s4; s2 < 0x26; s2++, s0 += 0xC, s1 += 0x1210) {
+                                s3 = s1 + 0x140;
+                                *(s8 *)(s1 + 0x1327) = *(s8 *)(s0 + 0x258);
+                                func_00125740(s3 + 0x11E8, s0 + 0x259, 7);
+                                *(s32 *)(s3 + 0x1200) = *(s32 *)(s0 + 0x260);
+                            }
+                            func_00125740(s4 + 0x2AFD9, s5 + 0x446, 0x260);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8DB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8F00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8F90);
