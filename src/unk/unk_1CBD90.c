@@ -199,35 +199,40 @@ int AdxCmd_Pause(void *unused, Arg *a) {
     AdxSlot_Pause((char *)gBattle + (a->p[0] << 5) + 0x5C4);
     return 1;
 }
-// differs: size 0xB0 against 0xC0. The original keeps the Arg in s0 and loads p[1] before the table pointer; the 2 default and the loop's best index sit in s0/s1 in another order. One form tried.
-#if 0
 int func_001CC1B0(void *unused, Arg *a) {
     int *p = a->p;
-    s32 x0 = p[0];
     s32 n = p[1];
+    s32 x0 = p[0];
     char *g = (char *)gBattle;
-    s32 best = 2;
-    f32 m;
+    s32 best;
     s32 i;
-    if (n == -2) {
-        n = 0x6B;
-    } else if (n == -1) {
+    f32 m;
+    char *q;
+    switch (n) {
+    case -1:
         n = 0x6A;
+        break;
+    case -2:
+        n = 0x6B;
+        break;
     }
+    best = 2;
     m = *(f32 *)(g + 0x61C);
-    for (i = 3; i < 5; i++) {
-        f32 f = *(f32 *)(g + 0x5DC + i * 0x20);
-        if (!(m <= f)) {
-            m = f;
+    i = 3;
+    q = g + 0x60;
+    do {
+        f32 t = *(f32 *)(q + 0x5DC);
+        if (!(m <= t)) {
+            m = t;
             best = i;
         }
-    }
+        i++;
+        q += 0x20;
+    } while (i < 5);
     func_002194C0(g + (best << 5) + 0x5C4, n, x0, -1);
     *(s32 *)a = best;
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC1B0);
 int Scr_CmdFighterCountSet(void *unused, Arg *a) {
     int *p = a->p;
     s32 x0 = p[0];
@@ -992,7 +997,24 @@ int Scr_CmdFighterSlotSetVec(void *unused, Arg *a) {
     *(f32 *)(t + e + 0xCA8) = x0;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE4E0);
+extern void func_001E5040(void *);
+
+int func_001CE4E0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 v = p[0];
+    char *b = (char *)gBattle->tbl[p[1]];
+    if (*(s8 *)(b + 0x1FF9) == v) {
+        return 1;
+    }
+    *(s8 *)(b + 0x1FF9) = (s8)v;
+    if (v == 0) {
+        *(s32 *)(b + 0x1864) = 9;
+    } else {
+        *(s32 *)(b + 0x1864) = 3;
+    }
+    func_001E5040(b);
+    return 1;
+}
 // differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?: and if forms tried did not give movz.
 // differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?:, if and flag-local forms tried did not give movz.
 #if 0
@@ -1115,7 +1137,26 @@ int Scr_CmdFighterSetVec5(void *unused, Arg *a) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE960);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CED20);
+extern void func_001C75D0(void *, s32);
+
+int func_001CED20(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 s = p[0];
+    s32 m = p[1];
+    s32 idx = p[2];
+    char *b = (char *)gBattle->tbl[idx];
+    if (*(s16 *)(b + 0xCAC) != 0x12) {
+        *(s16 *)(b + 0xCB4) = (s16)m;
+        if (*(s8 *)(b + 0x1FF9) != 0 && *(s8 *)(b + 0x1FF8) <= -1) {
+            func_001C75D0(b, 0x10);
+        } else {
+            __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(b + 0xD0));
+            func_001C75D0(b, 0x12);
+        }
+    }
+    *(f32 *)(b + 0x18A4) = (f32)(s * 3);
+    return 1;
+}
 int Scr_CmdFighterSetVec1828(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
     char *t = gBattle->tbl[a->p[3]];
