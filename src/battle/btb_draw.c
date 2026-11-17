@@ -4430,6 +4430,57 @@ void func_001F2A90(char *a0) {
 // differs: func_001F2A90 (540 bytes): the same draw shape as func_001F2570 (matches). The only misses: the table walk through gBtbBg+0x34 (base in v1 and entry in v0 in the original; ours base v0, entry v1, addu operands swapped: base-first and index-first forms and a separate pointer tried) and the register of the entry in the second chain. 5 real differences.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2A90);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2CB0);
+#if 0
+void func_001F2FD0(char *a0) {
+    char *s0;
+    char *bg;
+    char *v;
+    s32 idx;
+    s32 w;
+    s32 fl;
+    s32 fl2;
+
+    s0 = a0;
+    bg = (char *)gBtbBg;
+    v = *(char *volatile *)(bg + 0x34);
+    idx = D_0051CD20[0];
+    v = (char *)((s32 *)v)[idx * 9 + 1];
+    w = *(s32 *)(v + 0xA4);
+    if (w != 0) {
+        D_00470238 = 1;
+        amModel_SetCurrent(w, 0x2002000);
+    }
+    v = *(char **)(s0 + 0x10);
+    v = *(char **)(v + 0x10);
+    if (*(s32 *)v != 0) {
+        func_002D04A0(*(s16 *)(v + 0xE));
+        func_002CFDE0(0);
+        func_002D04A0(0);
+    }
+    fl = *(s32 *)(s0 + 0x20);
+    if ((fl & 0x800) || (fl & 0x8000)) {
+        if (*(s32 *)(s0 + 0x30) != 0) {
+            __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(BtbBg_GetStageModel()), "r"(D_0051CCD0) : "memory");
+            D_0051CCD0[3] = 1.0f;
+            D_0047064C = (s32)D_0051CCD0;
+        }
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            func_00133D80(*(s32 *)((char *)gBattle + 0x8928));
+            func_00133D90(*(f32 *)((char *)gBattle + 0x892C));
+            DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
+        }
+    }
+    func_0013E0A0(*(s32 *)(*(char **)(s0 + 0x10) + 4));
+    fl2 = *(s32 *)(s0 + 0x20);
+    if ((fl2 & 0x800) || (fl2 & 0x8000)) {
+        D_0047064C = 0;
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            DrawFlags_Apply(0, 0x8000, 0, 0, 0);
+        }
+    }
+}
+#endif
+// differs: func_001F2FD0 (424 bytes): same shape and prefix as func_001F3740 (the table base load and the index load come in the other order in ours; a volatile base read did not change it). 6 instructions differ.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2FD0);
 // differs: func_001F3180: 8 of 89 instructions differ (size 0x164 right): the operand order of both sums and the andi/sll/lwc1 schedule, the register of the object pointer (v1 here, a0 in the original). Tried 24 declaration orders, the shift as its own statement.
 #if 0
@@ -4810,7 +4861,7 @@ extern char *D_0051CD14[];
 extern s32 D_0051CD20[];
 extern char D_004698C0[];
 extern void *func_001F5FD0(u32, char *, s32, void *, void *);
-extern void func_001F2FD0(void);
+extern void func_001F2FD0(char *);
 extern void func_001F3180(char *);
 
 // differs: 29 of 65 instructions (the loop's registers and the layout of its test; the constructor call matches)
@@ -5489,7 +5540,7 @@ extern char *D_0051CD14[];
 extern s32 D_0051CD20[];
 extern char D_004698C0[];
 extern void *func_001F5FD0(u32, char *, s32, void *, void *);
-extern void func_001F2FD0(void);
+extern void func_001F2FD0(char *);
 extern void func_001F3180(void);
 
 // differs: 29 of 65 instructions (the loop's registers and the layout of its test; the constructor call matches)
@@ -6541,7 +6592,7 @@ extern char *D_0051CD14[];
 extern s32 D_0051CD20[];
 extern char D_004698C0[];
 extern void *func_001F5FD0(u32, char *, s32, void *, void *);
-extern void func_001F2FD0(void);
+extern void func_001F2FD0(char *);
 extern void func_001F3180(void);
 
 // differs: 29 of 65 instructions (the loop's registers and the layout of its test; the constructor call matches)
