@@ -28,7 +28,60 @@ extern s32 D_005C9F1C[];
 extern void func_0022C7D0(s32, s32, f32);
 extern s32 D_005C9F14[];
 
+extern s16 D_0046B560[];
+extern u16 D_004570F0[];
+extern u16 D_00456FD0[];
+extern u16 D_00457030[];
+extern u16 D_00457060[];
+extern u16 D_00457090[];
+extern u16 D_00457000[];
+extern u16 D_004570C0[];
+
+#if 0
+void func_002E8540(u8 *a0, s32 a1, s32 a2) {
+    u8 *v;
+
+    v = (u8 *)D_005C4140 + (u8)a1 * 80 + 0x5C50;
+    if (a1 != 0) {
+        *(f32 *)v = 15.0f;
+    } else {
+        *(f32 *)v = -15.0f;
+    }
+    *(s32 *)(v + 0x4) = 0;
+    *(s32 *)(v + 0x8) = 0;
+    *(s32 *)(v + 0xC) = 0x3F800000;
+    *(s16 *)(v + 0x10) = D_0046B560[*(s8 *)(a0 + 0xB60)];
+    *(s16 *)(v + 0x12) = *(s8 *)(a0 + 0xB61);
+    *(s16 *)(v + 0x14) = 0;
+    *(s16 *)(v + 0x16) = 0;
+    *(s16 *)(v + 0x18) = 8;
+    *(s16 *)(v + 0x1A) = a2;
+    *(s16 *)(v + 0x1C) = D_004570F0[*(s8 *)(a0 + 0xB6B)];
+    *(s16 *)(v + 0x1E) = 1;
+    *(s16 *)(v + 0x20) = 0;
+    *(s32 *)(v + 0x24) = D_00456FD0[*(s8 *)(a0 + 0xB65)] + 0xBB8;
+    *(s32 *)(v + 0x28) = D_00456FD0[*(s8 *)(a0 + 0xB65)] + 0xBB8;
+    *(s32 *)(v + 0x2C) = -1;
+    *(s32 *)(v + 0x30) = 0x1B58;
+    *(s16 *)(v + 0x34) = *(s16 *)(a0 + 0xB70);
+    *(s16 *)(v + 0x36) = *(s16 *)(a0 + 0xB72);
+    *(s16 *)(v + 0x38) = *(s16 *)(a0 + 0xB74);
+    *(s16 *)(v + 0x3A) = *(s16 *)(a0 + 0xB76);
+    *(s16 *)(v + 0x3C) = *(s16 *)(a0 + 0xB78);
+    *(s16 *)(v + 0x3E) = *(s16 *)(a0 + 0xB7A);
+    *(s16 *)(v + 0x40) = *(s16 *)(a0 + 0xB7C);
+    *(s16 *)(v + 0x42) = *(s16 *)(a0 + 0xB7E);
+    *(s16 *)(v + 0x44) = D_00457030[*(s8 *)(a0 + 0xB67)];
+    *(s16 *)(v + 0x46) = D_00457060[*(s8 *)(a0 + 0xB68)];
+    *(s16 *)(v + 0x48) = D_00457090[*(s8 *)(a0 + 0xB69)];
+    *(s16 *)(v + 0x4A) = D_00457000[*(s8 *)(a0 + 0xB66)];
+    *(s16 *)(v + 0x4C) = D_004570C0[*(s8 *)(a0 + 0xB6A)];
+}
+#endif
+// differs: the +-15.0f stores: the original loads the bit pattern with lui, moves it with mtc1 and
+// stores with swc1 (C constants are stored as integers: 0x1D0 vs 0x1E0 bytes).
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8540);
+
 typedef struct Quad87 {
     s32 v[4];
 } __attribute__((aligned(16))) Quad87;
