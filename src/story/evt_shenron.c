@@ -36,8 +36,8 @@ extern void func_00133B50(s32, s32);
 extern void func_003053D0(s32 *, s32, s32, s32);
 extern void func_00305680(void);
 extern f32 D_004E0614[];
-extern void func_00143F20(f32, s32);
-extern void func_00143D60(s32, s32, s32, s32);
+extern void SoundRpc_SetVolume(f32, s32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 extern void amTask_Kill(void *);
 extern s8 D_004B4B63[];
 extern char D_00492FCE[];
@@ -57,9 +57,9 @@ void func_003062B0(s32 *a0) {
     func_003053D0(blk, ((s32 *)D_0047097C)[0xF4 / 4], 0, 0x600000);
     func_00305680();
     if ((s0 & 0x4000) != 0) {
-        func_00143F20(D_004E0614[0], 0);
+        SoundRpc_SetVolume(D_004E0614[0], 0);
         if (!(D_004E0614[0] < 0.0f)) {
-            func_00143D60(0, 0, 3, 0);
+            SoundRpc_Send3(0, 0, 3, 0);
         }
         amTask_Kill((void *)s1);
     }
@@ -256,7 +256,7 @@ void func_003070A0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003070A0);
 
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void func_00306F70(s32 *);
 extern s32 amTask_Create(void *, s32, s32, s32, s32, void *);
 extern char D_0046F9E8[];
