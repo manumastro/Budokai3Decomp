@@ -1165,7 +1165,57 @@ void func_002C1720(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1720);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1860);
+void func_002C1860(u8 *arg0)
+{
+  u8 temp_a0_2;
+  u8 *temp_a0;
+  u8 *new_var;
+  temp_a0 = *((u8 **) (((u8 *) arg0) + 4));
+  D_00470704 = (s32) temp_a0;
+  D_0047070C = 0x2000;
+  D_00470708 = 0;
+  amModel_SetCurrent((s32) temp_a0, 0x2000);
+  D_00470238 = 0;
+  *((s32 *) (((u8 *) arg0) + 0xC)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (((u8 *) arg0) + 0)))) + 0x1C)))) + 8)), 0);
+  *((s32 *) (((u8 *) arg0) + 0x10)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (((u8 *) arg0) + 0)))) + 0x1C)))) + 0x10)), 0);
+  *((s32 *) (((u8 *) arg0) + 0x14)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (((u8 *) arg0) + 0)))) + 0x1C)))) + 0x18)), 0);
+  *((s32 *) (((u8 *) arg0) + 0x18)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (((u8 *) arg0) + 0)))) + 0x1C)))) + 0x20)), 0);
+  *((s32 *) (((u8 *) arg0) + 0x1C)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (((u8 *) arg0) + 0)))) + 0x1C)))) + 0x30)), 0);
+  *((s32 *) (((u8 *) arg0) + 0x20)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (((u8 *) arg0) + 0)))) + 0x1C)))) + 0xC8)), 0);
+  *((s32 *) (((u8 *) arg0) + 0x24)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (((u8 *) arg0) + 0)))) + 0x1C)))) + 0xA8)), 0);
+  *((s32 *) (((u8 *) arg0) + 0x28)) = 0;
+  new_var = (u8 *) arg0;
+  *((s32 *) (new_var + 0x2C)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (new_var + 0)))) + 0x1C)))) + 0x28)), 0);
+  *((s32 *) (new_var + 0x30)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (new_var + 0)))) + 0x1C)))) + 0x90)), 0);
+  if ((*((u8 *) (new_var + 0xAB))) == 0)
+  {
+    goto block_2;
+  }
+  *((s32 *) (((u8 *) arg0) + 0x34)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (((u8 *) arg0) + 0)))) + 0x1C)))) + 0x68)), 0);
+  goto block_3;
+  block_2:
+  *((s32 *) (new_var + 0x34)) = 0;
+
+  block_3:
+  temp_a0_2 = *((u8 *) (new_var + 0xAB));
+
+  if (((s32) temp_a0_2) < ((s32) (*((u8 *) (((u8 *) arg0) + 0xAD)))))
+  {
+    goto block_6;
+  }
+  if (((s32) temp_a0_2) >= 2)
+  {
+    goto block_8;
+  }
+  block_6:
+  *((s32 *) (new_var + 0x38)) = func_0022D670(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) (*((u8 **) (new_var + 0)))) + 0x1C)))) + 0x6C)), 0);
+
+  return;
+  block_8:
+  *((s32 *) (((u8 *) arg0) + 0x38)) = 0;
+
+  return;
+}
 
 void VsCharaselEd_TaskMain(Task *task) {
     A2d_FlushList(task);
@@ -1717,13 +1767,11 @@ void func_002C3A10(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3B40);
 extern void func_0022E0B0(s32);
 extern void Fade_Request(s32, s32, s32);
-extern void func_002C1860(s32 *);
 extern void func_002C3B40(void);
 extern s32 func_0022D670(s32, f32);
 
 extern void func_0022E0B0(s32);
 extern void Fade_Request(s32, s32, s32);
-extern void func_002C1860(s32 *);
 extern void func_002C3B40(void);
 extern s32 func_0022D670(s32, f32);
 
@@ -1752,7 +1800,7 @@ void func_002C3D20(s32 *a0)
     amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s1[2] = func_0022D670(((s32 *) ((s32 *) s1[0])[0x1C / 4])[0], 0.0f);
-    func_002C1860(s1);
+    func_002C1860((u8 *)s1);
     *((s32 *) (((char *) s1) + 0xC4)) = 0x41F00000;
     f = (void *) func_002C3B40;
     a0[0x1C / 4] = (s32) ((f == 0) ? (0) : ((void *) func_002C3B40));
