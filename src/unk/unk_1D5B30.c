@@ -297,8 +297,8 @@ extern void func_002356E0(void);
 extern s32 func_002CC450(Fighter *);
 extern void func_00235480(Fighter *);
 void func_001E73C0(Fighter *c);
-extern void func_00234C20(void);
-extern void func_00234C90(void);
+extern s32 func_00234C20(void *);
+extern s32 func_00234C90(void *);
 extern s32 func_00234D50(Fighter *c);
 extern s32 func_00234EA0(Fighter *c);
 extern s32 func_001E8290(void *);
@@ -3548,14 +3548,15 @@ go:
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8830);
 #if 0
 s32 func_001E89B0(Fighter *c) {
-    s32 r = 0;
-    if (gBattle->f8944 != 0 && c->f1AD0 == 0) {
-        r = 0;
+    if (*(volatile s16 *)((char *)gBattle + 0x8944) != 0) {
+        if (*(volatile s16 *)((char *)c + 0x1AD0) != 0) {
+            return 0;
+        }
     }
-    return r;
+    return 0;
 }
 #endif
-// differs: the original always returns 0 after two dead loads; the compiler drops them
+// differs: 0x38 vs 0x40 bytes (the original keeps two separate zero-return arms and a shared jr); volatile loads needed so the dead reads stay; four shapes tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E89B0);
 #if 0
 s32 func_001E89F0(Fighter *c) {
@@ -3629,14 +3630,15 @@ s32 func_001E8B90(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (gBattle->f7E2 != 3 || gBattle->f9977 == 3) {
-        func_00234C20();
-    } else {
-        return 0;
+    if (gBattle->f7E2 == 3) {
+        if (gBattle->f8977 != 3) {
+            return 0;
+        }
     }
+    return func_00234C20(c);
 }
 #endif
-// differs: the global field test is laid out as branches the C does not reproduce (0x6C-0x64 bytes against 0x80); five shapes tried
+// differs: 0x64 against 0x80 bytes (the original keeps the call arm and the zero arm as separate nop-padded blocks); the field is gBattle->f8977 (0x8977), the earlier attempts read f9977
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8B90);
 #if 0
 s32 func_001E8C10(Fighter *c) {
@@ -3644,14 +3646,14 @@ s32 func_001E8C10(Fighter *c) {
         return 0;
     }
     if (gBattle->f7E2 == 3) {
-        if (gBattle->f9977 != 3) {
+        if (gBattle->f8977 != 3) {
             return 0;
         }
     }
-    func_00234C90();
+    return func_00234C90(c);
 }
 #endif
-// differs: same shape as func_001E8B90 (size 0x64 against 0x80)
+// differs: same shape as func_001E8B90 (0x64 against 0x80 bytes); the field is gBattle->f8977
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8C10);
 #if 0
 s32 func_001E8C90(Fighter *c) {
