@@ -3,7 +3,6 @@
 extern u8 *D_004707E0;
 extern void EssMain_TickA(void);
 extern void func_0026CD50(void);
-extern void func_0026C7C0(void);
 extern void EssMain_TickB(void);
 extern void func_0026B560(void);
 extern s32 amAdx_GetStat(s32);
@@ -16,7 +15,11 @@ extern s32 D_00452ECC[];
 extern void func_0027A2D0(void);
 extern void func_0028DFC0(s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern s32 D_00452EE4[];
+extern s32 D_00452EEC[];
+extern s32 D_00452ED0[];
+extern void EssInfo_Exit(void);
 extern void func_0026F0E0(void);
+extern void func_00272B70(void);
 extern void func_0026BD50(void);
 extern void func_00276A40(s32);
 extern void func_0026BD10(void);
@@ -108,7 +111,37 @@ void func_00269AC0(u8 *a0) {
     amAdx_PlayAfs(1, s1 | 0x20000, 0);
     amTask_Kill(s0);
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_00269B90);
+void func_00269B90(void) {
+    u8 *s0;
+    u8 *p;
+    u8 *d;
+
+    *(s32 *)(D_004707E0 + 0x68) += 1;
+    *(s32 *)(D_004707E0 + 0x98) += 1;
+    *(s32 *)(D_004707E0 + 0xC8) += 1;
+    p = D_004707E0 + 0x120;
+    if (*(s32 *)(D_004707E0 + 0x130) == 0) {
+        *(s32 *)(p + 8) += 1;
+        *(s32 *)(D_004707E0 + 0x158) += 1;
+        d = D_004707E0;
+        *(s32 *)(d + 0x188) += 1;
+        s0 = d + 0x180;
+        if (*(s32 *)(d + 0x190) >= 0) {
+            if (*(s32 *)(s0 + 8) >= *(s32 *)(*(u8 **)(*(u8 **)(D_004707E0 + 0x2C) + 0x18) + (*(s32 *)(d + 0x190) << 4))) {
+                *(s32 *)(s0 + 0x10) = -1;
+            }
+        }
+    }
+    *(s32 *)(D_004707E0 + 0x1B8) += 1;
+    *(s32 *)(D_004707E0 + 0x1E8) += 1;
+    d = D_004707E0;
+    *(s32 *)(d + 0x218) += 1;
+    *(s32 *)(d + 0x22C) += 1;
+    *(s32 *)(d + 0x230) += 1;
+    *(s32 *)(d + 0x234) += 1;
+    *(s32 *)(D_004707E0 + 0xF8) += 1;
+    *(s32 *)(D_004707E0 + 0x248) += 1;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_00269CC0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026A4F0);
 extern void func_00269B90(void);
@@ -148,7 +181,47 @@ void func_0026ADC0(u8 *a0) {
     func_00272A20(0, 0, 0);
     *(void **)(s1 + 0x1C) = ((void *)EssMain_TickA == 0) ? 0 : (void *)EssMain_TickA;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026AEB0);
+void func_0026AEB0(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    s32 s2;
+    f32 f;
+    u8 *d;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    *(s32 *)(D_004707E0 + 0x40) = 0;
+    *(s32 *)(D_004707E0 + 0x44) = 0;
+    *(s32 *)(D_004707E0 + 0x48) = 0;
+    f = 0.5f * ((60.0f - (f32)*(s32 *)(a0 + 0x30) * D_004703BC) / 60.0f);
+    *(f32 *)(D_004707E0 + 0x4C) = f;
+    func_00269B90();
+    func_00269CC0();
+    *(s32 *)s0 += 1;
+    f = (f32)*(s32 *)s0 * D_004703BC;
+    if (f < 60.0f) {
+        return;
+    }
+    d = D_004707E0;
+    *(s32 *)(d + 0x4C) = 0;
+    d = D_004707E0;
+    *(s32 *)(d + 0x15C) = 0;
+    *(s32 *)(d + 0x158) = 0;
+    d = D_004707E0;
+    *(s32 *)(d + 0x1C0) = 11;
+    d = D_004707E0;
+    *(s32 *)(d + 0x190) = 11;
+    *(s32 *)(d + 0x188) = 0;
+    s2 = D_00452EEC[0];
+    amAdx_SetVolume(1, D_004E0618[0]);
+    amAdx_Pause(1, 0);
+    amAdx_PlayAfs(1, s2 | 0x20000, 0);
+    *(s32 *)s0 = 0;
+    *(s32 *)(s0 + 8) = *(s32 *)(D_004707E0 + 0x54);
+    *(s32 *)(s0 + 0xC) = 3;
+    func_00272B70();
+    *(void **)(s1 + 0x1C) = ((void *)func_0026A680 == 0) ? 0 : (void *)func_0026A680;
+}
 void func_0026B010(u8 *a0) {
     u8 *s1;
     u8 *s0;
@@ -345,7 +418,45 @@ void EssMain_TickC(void) {
     func_0026B880();
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026BD50);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026C7C0);
+void func_0026C7C0(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    s32 s2;
+    f32 f;
+    u8 *d;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    *(s32 *)(D_004707E0 + 0x40) = 0;
+    *(s32 *)(D_004707E0 + 0x44) = 0;
+    *(s32 *)(D_004707E0 + 0x48) = 0;
+    f = 0.5f * ((60.0f - (f32)*(s32 *)(a0 + 0x30) * D_004703BC) / 60.0f);
+    *(f32 *)(D_004707E0 + 0x4C) = f;
+    func_0026B880();
+    *(s32 *)s0 += 1;
+    f = (f32)*(s32 *)s0 * D_004703BC;
+    if (f < 60.0f) {
+        return;
+    }
+    d = D_004707E0;
+    *(s32 *)(d + 0x15C) = 0;
+    d = D_004707E0;
+    *(s32 *)(d + 0x1C0) = 4;
+    d = D_004707E0;
+    *(s32 *)(d + 0x190) = 4;
+    *(s32 *)(d + 0x188) = 0;
+    s2 = D_00452ED0[0];
+    amAdx_SetVolume(1, D_004E0618[0]);
+    amAdx_Pause(1, 0);
+    amAdx_PlayAfs(1, s2 | 0x20000, 0);
+    d = D_004707E0;
+    *(s32 *)(d + 0x4C) = 0;
+    *(s32 *)s0 = 0;
+    *(s32 *)(s0 + 8) = *(s32 *)(D_004707E0 + 0x50);
+    *(s32 *)(s0 + 0xC) = 4;
+    EssInfo_Exit();
+    *(void **)(s1 + 0x1C) = ((void *)func_0026BD50 == 0) ? 0 : (void *)func_0026BD50;
+}
 void func_0026C910(u8 *a0) {
     u8 *s0;
     u8 *s1;
