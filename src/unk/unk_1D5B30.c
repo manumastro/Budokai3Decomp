@@ -994,12 +994,12 @@ s32 func_001D9480(Fighter *c) {
     *(s8 *)((char *)c + 0x2010) = 0;
     buf30[0] = c->f1350;
     buf30[1] = *(s8 *)((char *)c + 0x2010);
-    func_00226030(0x35, buf30);
+    A2d_CallHandler(0x35, buf30);
     *(s32 *)((char *)c + 0x17E0) = 0xBF800000;
     if (gBattle->f8944 == 0) {
         buf50[0] = c->f1350;
         buf50[1] = 2;
-        func_00243DE0(2, junk40);
+        Sp_CallHandler(2, junk40);
     }
     *(s32 *)((char *)c + 0x1898) = 0;
     if (*(s8 *)((char *)gBattle + 0x8AB1) != 0) {
