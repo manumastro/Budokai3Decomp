@@ -56,43 +56,53 @@ extern void Scene_MarkDone(void);
 void func_002EC850(ResultTask *t);
 
 /* Differs only in register choice: the original keeps the source pointer in v1 and the work in a0. */
-#if 0
-void func_002EC850(ResultTask *t) {
-    ResultArg arg;
-    ResultMsg msg;
-    ResultWork *w;
-    s32 i;
-
-    switch (gStrStatus->f27C) {
+void func_002EC850(ResultTask *t)
+{
+  ResultArg arg;
+  ResultMsg msg;
+  ResultWork *w;
+  s32 i;
+  switch (gStrStatus->f27C)
+  {
     case 0:
+
     case 1:
-        D_00470964 = 0;
-        break;
+      D_00470964 = 0;
+      break;
+
     case 2:
-        if (D_00470964 == 0) {
-            Scene_Request(8, 0);
-            D_00470964 = 1;
-        }
-        break;
-    case 3:
-        func_002BD400(&arg);
-        w = D_005AA604[0];
-        w->f0 = arg.e.f0;
-        for (i = 0; i < 7; i++) {
-            w->b[i] = arg.e.b[i];
-        }
-        w->w = arg.e.w;
-        StrStatus_Free();
-        msg.f14 = 1;
-        msg.f10 = 2;
-        StrStatus_Dispatch(&msg);
-        Scene_MarkDone();
-        t->f1C = NULL;
-        break;
+      if (D_00470964 == 0)
+    {
+      Scene_Request(8, 0);
+      D_00470964 = 1;
     }
+      break;
+
+    case 3:
+      func_002BD400(&arg);
+      w = D_005AA604[0];
+      if ((D_00470964 && D_00470964) && D_00470964)
+    {
+    }
+      w->f0 = arg.e.f0;
+      for (i = 0; i < 7; i++)
+    {
+      w->b[i] = arg.e.b[i];
+    }
+
+      w->w = arg.e.w;
+      StrStatus_Free();
+      msg.f14 = 1;
+      msg.f10 = 2;
+      StrStatus_Dispatch(&msg);
+      Scene_MarkDone();
+      t->f1C = (void *) 0;
+      break;
+
+  }
+
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2EC850", func_002EC850);
+
 
 extern void StrStatus_Start(s32, s32);
 

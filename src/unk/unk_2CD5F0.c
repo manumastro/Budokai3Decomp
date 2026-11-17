@@ -60,8 +60,8 @@ extern void func_001F5B70(u8 *);
 extern void func_002CEA60(void);
 extern s32 gBtbBg[];
 extern void func_00200270(f32, f32);
-extern void func_002CDD50(void);
-extern void func_002CDD00(void);
+extern void func_002CDD50(u8 *);
+extern void func_002CDD00(u8 *);
 extern void func_002CDA30(u8 *);
 extern void func_002CD9E0(u8 *);
 
@@ -220,29 +220,32 @@ void func_002CDC20(void) {
     *(s32 *)(q + 4) = func_002096D0(D_00456680, 0x2000004, 0);
     func_002CDA90();
 }
-#if 0
-void func_002CDD00(u8 *p) {
-    u8 *q = p + 0x30;
-    func_00208F70(*(void **)(p + 0x38));
-    if (*(s32 *)(*(u8 **)(q + 8) + 0x38) < 0) {
-        BtbObj_RemoveFromList(p);
-    }
+void func_002CDD00(u8 *p)
+{
+  u8 *new_var;
+  u8 *q = p + 0x30;
+  func_00208F70(*((void **) (p + 0x38)));
+  new_var = q + 8;
+  q = *((u8 **) new_var);
+  if ((*((s32 *) (q + 0x38))) < 0)
+  {
+    BtbObj_RemoveFromList(p);
+  }
 }
-// differs: same as func_002CD9E0 (the q = p+0x30 register is folded away)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDD00);
-#if 0
-void func_002CDD50(u8 *p) {
-    u8 *q = p + 0x30;
-    D_00470238 = 0;
-    amModel_SetCurrent(*(s32 *)(p + 0x34), 0x2003000);
-    func_001F3DF0(p);
-    func_00208D70(*(void **)(q + 8));
-    BtbObj_CheckDrawFlags(p);
+
+void func_002CDD50(u8 *p)
+{
+  u8 *q = p + 0x30;
+  D_00470238 = 0;
+  if (q && q)
+  {
+  }
+  amModel_SetCurrent(*((s32 *) (p + 0x34)), 0x2003000);
+  func_001F3DF0(p);
+  func_00208D70(*((void **) (q + 8)));
+  BtbObj_CheckDrawFlags(p);
 }
-// differs: the original keeps p in s1 and q = p+0x30 in s0 across the first call (frame 0x30, sq s1 and s0, q computed in the delay slot of the first jal); the compiler folds q+8 into p+0x38 and keeps only p (frame 0x20). Tried: asm "+r" barrier on q, q = p; q += 0x30
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDD50);
+
 #if 0
 void func_002CDDB0(void) {
     s32 s2 = D_0051CD0C[0];

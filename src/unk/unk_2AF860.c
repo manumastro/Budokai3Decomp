@@ -79,46 +79,49 @@ s32 func_002AF8E0(u8 *a, u8 *b) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002AF8E0);
 extern s32 func_002AF8E0(u8 *, u8 *);
-#if 0
-s32 func_002AF9E0(u8 *s3, u8 *s0) {
-    u8 *s2;
-    s32 s1;
-    u8 *q;
-    u8 *s4;
-    s32 a1;
-    s32 a0;
-    *(s32 *)s0 = *(s32 *)(*(u8 **)(s0 + 0x2C) + 4);
-    *(s32 *)(s3 + 0x18) = 0;
-    *(s32 *)(s3 + 0x1C) = amCdFs_ReadFile(*(s32 *)(s0 + 0x20) + *(s32 *)(*(u8 **)(s0 + 0x2C)), 0, 1);
-    *(void **)(s3 + 0x10) = (void *)func_002AF8E0;
-    a0 = *(s32 *)(*(u8 **)(s0 + 0x2C) + 4);
-    s2 = *(u8 **)(s3 + 0x1C);
-    if (*(s16 *)(s2 + 4) != 3) {
-        return 3;
-    }
-    *(s32 *)(s3 + 0x10) = 0;
-    a1 = **(s32 **)s3;
-    q = *(u8 **)(s2 + 0x40);
-    s4 = D_005BCD20 + a1 * 160 + a0 * 40;
-    s1 = *(s32 *)(q + 0x50);
-    if (*(s32 *)s4 != 0) {
-        amCdFs_ReleaseCache(*(s32 *)s4);
-        *(s32 *)s4 = 0;
-    }
-    *(u8 **)s4 = q;
-    *(s32 *)(s4 + 8) = s1;
-    *(s32 *)(s2 + 0x40) = 0;
-    amCdFs_Close(s2, 0);
-    if (*(s32 *)(s3 + 0x18) != 0) {
-        amCdFs_Close(*(void **)(s3 + 0x18), 0);
-    }
-    *(s32 *)(s3 + 0x18) = 0;
-    *(s32 *)(s3 + 0x1C) = 0;
-    return 1;
+s32 func_002AF9E0(u8 *s3, u8 *s0)
+{
+  s32 *new_var;
+  u8 *s2;
+  s32 s1;
+  u8 *q;
+  u8 *s4;
+  s32 a1;
+  s32 a0;
+  *((s32 *) s0) = *((s32 *) ((*((u8 **) (s0 + 0x2C))) + 4));
+  *((s32 *) (s3 + 0x18)) = 0;
+  *((s32 *) (s3 + 0x1C)) = amCdFs_ReadFile((*((s32 *) (s0 + 0x20))) + (*((s32 *) (*((u8 **) (s0 + 0x2C))))), 0, 1);
+  *((void **) (s3 + 0x10)) = (void *) func_002AF8E0;
+  new_var = *((s32 **) s3);
+  a0 = *((s32 *) ((*((u8 **) (s0 + 0x2C))) + 4));
+  s2 = *((u8 **) (s3 + 0x1C));
+  if ((*((s16 *) (s2 + 4))) != 3)
+  {
+    return 3;
+  }
+  *((s32 *) (s3 + 0x10)) = 0;
+  a1 = *new_var;
+  q = *((u8 **) (s2 + 0x40));
+  s4 = (D_005BCD20 + (a1 * 160)) + (a0 * 40);
+  s1 = *((s32 *) (q + 0x50));
+  if ((*((s32 *) s4)) != 0)
+  {
+    amCdFs_ReleaseCache(*((s32 *) s4));
+    *((s32 *) s4) = 0;
+  }
+  *((u8 **) s4) = q;
+  *((s32 *) (s4 + 8)) = s1;
+  *((s32 *) (s2 + 0x40)) = 0;
+  amCdFs_Close(s2, 0);
+  if ((*((s32 *) (s3 + 0x18))) != 0)
+  {
+    amCdFs_Close(*((void **) (s3 + 0x18)), 0);
+  }
+  *((s32 *) (s3 + 0x18)) = 0;
+  *((s32 *) (s3 + 0x1C)) = 0;
+  return 1;
 }
-// differs: 17 of 78 instructions differ: same shape as func_002B0390 (load/unload pair): the register of the table index and of the file-size field (a1 in the original, a0 here) and the order of the loads in the beq delay slot differ; declaration orders tried (two swaps).
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002AF9E0);
+
 s32 func_002AFB20(u8 *a, u8 *b) {
     s32 r = 3;
     u8 *f = *(u8 **)(a + 0x1C);
