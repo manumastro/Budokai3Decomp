@@ -872,7 +872,7 @@ s32 func_00252EF0(s32 a0, s32 *a1) {
     func_001F5B10(r[1], s);
     return 1;
 }
-// GIVEN UP: the call result is kept in another saved register and stored from the result register (3 forms tried)
+// GIVEN UP: the call result is kept in another saved register and stored from the result register; the scheduler puts the f32 load first (or in the delay slot), the original loads q[1] before the first call and the float in its delay slot (6 forms tried)
 #if 0
 extern s32 D_0051CD0C[];
 extern void func_001F5B70(s32 *);
@@ -1006,60 +1006,63 @@ s32 func_002532B0(s32 a0, s32 *a1) {
     }
     return 1;
 }
-// GIVEN UP: the branch layout of the flag tests differs (first try only)
-#if 0
-extern void func_0022C6B0(void);
-f32 func_00253320(s32 *a0, s32 *a1, f32 x, f32 y) {
-    s32 fl;
-    f32 f20;
+extern void func_0022C6B0(s32 *);
+f32 func_00253320(s32 *a0, u8 *a1, f32 x, f32 y) {
+    u32 fl = *(u32 *)(a1 + 0x30);
+    f32 r;
 
     a0[2] = 1;
-    fl = a1[12];
-    if ((fl & 0x20) != 0) {
-        x = x * ((f32 *)a1)[10];
+    if (fl & 0x20) {
+        x = x * *(f32 *)(a1 + 0x28);
     }
-    if ((fl & 0x40) != 0) {
-        y = y * ((f32 *)a1)[11];
+    if (fl & 0x40) {
+        y = y * *(f32 *)(a1 + 0x2C);
     }
-    if ((fl & 3) == 2) {
+    switch (fl & 3) {
+    case 0:
+        *(s32 *)((u8 *)a0 + 0x30) = 0;
+        *(f32 *)((u8 *)a0 + 0x38) = x;
+        r = x;
+        if (fl & 0x10) {
+            r = r + *(f32 *)(a1 + 0x20);
+        }
+        break;
+    case 1:
+        r = -x;
+        *(f32 *)((u8 *)a0 + 0x30) = r;
+        *(s32 *)((u8 *)a0 + 0x38) = 0;
+        if (fl & 0x10) {
+            r = r - *(f32 *)(a1 + 0x20);
+        }
+        break;
+    case 2:
         x = x * 0.5f;
-        ((f32 *)a0)[12] = -x;
-        f20 = x;
-        ((f32 *)a0)[14] = x;
-        if ((fl & 0x10) != 0) {
-            f20 = f20 + ((f32 *)a1)[8];
+        *(f32 *)((u8 *)a0 + 0x30) = -x;
+        r = x;
+        *(f32 *)((u8 *)a0 + 0x38) = x;
+        if (fl & 0x10) {
+            r = r + *(f32 *)(a1 + 0x20);
         }
-    } else if ((fl & 3) == 1) {
-        f20 = -x;
-        ((f32 *)a0)[12] = f20;
-        a0[14] = 0;
-        if ((fl & 0x10) != 0) {
-            f20 = f20 - ((f32 *)a1)[8];
-        }
-    } else if ((fl & 3) == 0) {
-        a0[12] = 0;
-        ((f32 *)a0)[14] = x;
-        f20 = x;
-        if ((fl & 0x10) != 0) {
-            f20 = f20 + ((f32 *)a1)[8];
-        }
+        break;
     }
-    if ((fl & 0xC) == 8) {
+    switch (fl & 0xC) {
+    case 0:
+        *(s32 *)((u8 *)a0 + 0x34) = 0;
+        *(f32 *)((u8 *)a0 + 0x3C) = y;
+        break;
+    case 4:
+        *(f32 *)((u8 *)a0 + 0x34) = -y;
+        *(s32 *)((u8 *)a0 + 0x3C) = 0;
+        break;
+    case 8:
         y = y * 0.5f;
-        ((f32 *)a0)[13] = -y;
-        ((f32 *)a0)[15] = y;
-    } else if ((fl & 0xC) == 4) {
-        ((f32 *)a0)[13] = -y;
-        a0[15] = 0;
-    } else if ((fl & 0xC) == 0) {
-        a0[13] = 0;
-        ((f32 *)a0)[15] = y;
+        *(f32 *)((u8 *)a0 + 0x34) = -y;
+        *(f32 *)((u8 *)a0 + 0x3C) = y;
+        break;
     }
-    func_0022C6B0();
-    return f20;
+    func_0022C6B0(a0);
+    return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253320);
 // GIVEN UP: the original keeps the argument in s0 and the field pointer in s1; here one more register is used
 #if 0
 void func_00253490(s32 *a0) {
@@ -1135,43 +1138,42 @@ void func_002535B0(s32 a0, void *a1) {
 s8 func_002535D0(s32 a0) {
     return ((u8 *)D_004E066A)[a0 * 40] & 3;
 }
-// GIVEN UP: the parameter is reloaded into other registers and the count is kept differently (3 forms tried)
+// GIVEN UP: differs: 6 of 36 instructions: the byte count m takes a3 (the original a0) and the second loop counter a0 (original a3); the first loop with its own counter matches. Tried: 0 < m, separate counters, s8 m, declaration orders (8 forms)
 #if 0
 s32 func_00253600(s32 *a0, s32 a1) {
-    s32 *q;
-    s32 v = 0;
-    s32 cnt;
+    s32 *c;
+    s32 *p;
     s32 i;
-    s32 *t;
     s32 n;
-    s32 *o;
-    s16 *l;
-    s32 j;
+    s32 r = 0;
 
     a0 = (s32 *)a0[2];
-    q = (s32 *)a0[2];
-    cnt = q[1];
-    if (cnt > 0) {
-        t = (s32 *)q[2];
-        for (i = 0; i < cnt; i++, t += 4) {
-            if (t[0] == a1) {
-                v++;
-            }
+    c = (s32 *)a0[2];
+    n = c[1];
+    p = (s32 *)c[2];
+    for (i = 0; i < n; i++) {
+        if (p[0] == a1) {
+            r++;
         }
+        p += 4;
     }
-    if (v == 0) {
-        o = (s32 *)a0[0];
-        n = *(s8 *)((u8 *)o + 0xD);
-        if (n > 0) {
-            l = (s16 *)o[2];
-            for (j = 0; j < n; j++, l++) {
+    if (r == 0) {
+        s32 *o = (s32 *)a0[0];
+        s32 m = *(s8 *)((u8 *)o + 0xD);
+        s16 *l = (s16 *)o[2];
+
+        if (0 < m) {
+            i = 0;
+            do {
                 if (a1 == l[0]) {
                     return 1;
                 }
-            }
+                l++;
+                i++;
+            } while (i < m);
         }
     }
-    return v;
+    return r;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253600);
