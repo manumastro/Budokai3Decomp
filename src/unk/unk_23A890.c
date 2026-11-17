@@ -303,33 +303,28 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241EB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241FA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002420F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242290);
-#if 0
 void func_00242490(s32 i) {
+    u8 *e = D_0046FE48 + i * 0x1A4;
     s32 k;
-    s32 *e;
 
-    e = (s32 *)(D_0046FE48 + i * 0x1A4);
-    if (e[1] != 0) {
-        amCdFs_ReleaseCache(e[0]);
-        e[0] = 0;
-        e[1] = 0;
+    if (*(s32 *)(e + 4) != 0) {
+        amCdFs_ReleaseCache(*(s32 *)e);
+        *(s32 *)e = 0;
+        *(s32 *)(e + 4) = 0;
     } else {
-        if (e[0] != 0) {
-            amCdFs_Close(e[0], 0);
-            e[0] = 0;
+        if (*(s32 *)e != 0) {
+            amCdFs_Close(*(s32 *)e, 0);
+            *(s32 *)e = 0;
         }
     }
     for (k = 0; k < 0x30; k++) {
-        if (*(s32 *)((u8 *)e + 0xD4) != 0) {
-            amHeap_Free(*(void **)((u8 *)e + 0xD4));
+        if (*(s32 *)(e + 0xD4) != 0) {
+            amHeap_Free(*(void **)(e + 0xD4));
         }
-        *(s32 *)((u8 *)e + 0xD4) = 0;
-        e++;
+        *(s32 *)(e + 0xD4) = 0;
+        e += 4;
     }
 }
-// differs: the loop pointer and the counter take the other saved registers (the frame is 0x40 here, 0x30 in the original)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242490);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242540);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242870);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242A10);
@@ -454,6 +449,31 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244410);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244580);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244660);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244A60);
+#if 0
+void func_00244CC0(s32 i, s32 j) {
+    u8 *e = D_0046FE4C + i * 0x480 + j * 0x220 + 0x50;
+    s32 k;
+
+    if (*(s32 *)(e + 4) != 0) {
+        amCdFs_ReleaseCache(*(s32 *)e);
+        *(s32 *)e = 0;
+        *(s32 *)(e + 4) = 0;
+    } else {
+        if (*(s32 *)e != 0) {
+            amCdFs_Close(*(s32 *)e, 0);
+            *(s32 *)e = 0;
+        }
+    }
+    for (k = 0; k < 0x40; k++) {
+        if (*(s32 *)(e + 0x120) != 0) {
+            amHeap_Free(*(void **)(e + 0x120));
+        }
+        *(s32 *)(e + 0x120) = 0;
+        e += 4;
+    }
+}
+// differs: the address sum is formed as (base + j) + i in the original (the operands of the last add swapped here)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244CC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244D80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244F00);
