@@ -20,7 +20,7 @@ extern f32 func_0011F680(f32, f32);
 extern u32 func_0012EAE0(s32);
 extern void srand(s32);
 extern void func_001E2510(Fighter *);
-extern void func_00243DE0(s32, void *);
+extern void Sp_CallHandler(s32, void *);
 extern s32 func_001DF420(Fighter *, s32, s32);
 extern void func_001B05E0(s32, f32, f32);
 extern void func_001DA4C0(void);
@@ -178,7 +178,7 @@ void func_001CAFB0(s32 *a) {
     CharAnim *s = (CharAnim *)&a[15];
     func_001E73E0(s->obj, s->id, 0);
 }
-void func_001CAFD0(s32 *a) {
+void Character_PauseVoice(s32 *a) {
     AdxSlot_Pause((void *)a[15]);
 }
 void func_001CAFE0(s32 *a) {
@@ -286,7 +286,7 @@ s32 func_001CB380(void *self, ScriptCtx *ctx) {
     msg.side = gBattle->fighter[a[2]]->unk1350;
     msg.val2 = x;
     msg.val = y;
-    func_00243DE0(8, &msg);
+    Sp_CallHandler(8, &msg);
     return 1;
 }
 s32 func_001CB3E0(void *self, ScriptCtx *ctx) {
@@ -295,7 +295,7 @@ s32 func_001CB3E0(void *self, ScriptCtx *ctx) {
     s32 y = a[0];
     msg.side = gBattle->fighter[a[1]]->unk1350;
     msg.val = y;
-    func_00243DE0(0, &msg);
+    Sp_CallHandler(0, &msg);
     return 1;
 }
 s32 func_001CB440(void *self, ScriptCtx *ctx) {
@@ -304,7 +304,7 @@ s32 func_001CB440(void *self, ScriptCtx *ctx) {
     s32 y = a[0];
     msg.side = gBattle->fighter[a[1]]->unk1350;
     msg.val = y;
-    func_00243DE0(3, &msg);
+    Sp_CallHandler(3, &msg);
     return 1;
 }
 s32 func_001CB4A0(ScriptCtx *ctx) {
@@ -415,7 +415,7 @@ s32 func_001CBA50(void *self, ScriptCtx *ctx) {
     func_001D8A50(gBattle->fighter[ctx->args[0]]);
     return 1;
 }
-s32 func_001CBA90(void *self, ScriptCtx *ctx) {
+s32 Character_CmdPlyScr(void *self, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     PlyScr_Start(gBattle->fighter[a[2]], a[1], a[0]);
     return 1;

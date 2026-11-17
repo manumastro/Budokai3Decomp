@@ -7,7 +7,7 @@ extern void ArenaCharaselCvsc_Clear(void);
 extern void func_00308860(void);
 extern void func_00309B20(void);
 extern void func_0030AE90(void);
-extern void func_003105B0(void);
+extern void SeReady_Start(void);
 extern void func_00308980(void);
 extern void func_00309CD0(void);
 extern void func_0030B020(void);
@@ -36,7 +36,7 @@ void func_002D1C50(void) {
 }
 
 void func_002D1CC0(void) {
-    func_003105B0();
+    SeReady_Start();
     switch (D_005C4120[0]) {
     case 0:
         func_00308980();

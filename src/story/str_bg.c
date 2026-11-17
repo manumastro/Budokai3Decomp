@@ -28,7 +28,7 @@ extern s32 amGs_SetReg32(s32, s32);
 extern void func_00133780(s32, s32);
 extern void A2d_FlushList(void);
 
-void func_0028EA80(void) {
+void StrBg_FlushDraw(void) {
     s32 s0 = amGs_SetReg32(0, 0x3040A);
     func_00133780(2, 1);
     A2d_FlushList();

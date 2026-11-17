@@ -21,7 +21,7 @@ extern void func_002B7800();
 extern void func_002B7930();
 extern void func_002B89E0();
 extern void func_002B91F0();
-extern void func_002C0490();
+extern void Obj_SetF3C();
 extern void amCamera_Init(void *);
 extern char D_0046ED20[];
 extern char D_0046ED30[];
@@ -274,7 +274,7 @@ void func_002B8410(u8 *task) {
         *(u8 *)(s0 + 0x5F) = 2;
         *(u32 *)(s0 + 0x68) = 0x41700000;
         func_002B7800(s0);
-        func_002C0490(*(void **)(s0 + 0x54), (s16)(*(u8 *)(s0 + 0x5E) + 1));
+        Obj_SetF3C(*(void **)(s0 + 0x54), (s16)(*(u8 *)(s0 + 0x5E) + 1));
         *(void **)(task + 0x1C) = ((void *)func_002B91F0 == 0) ? 0 : (void *)func_002B91F0;
     }
 }
@@ -456,7 +456,7 @@ void func_002B91F0(u8 *task) {
     if (f1 <= 0.0f) {
         *(u8 *)(s1 + 0x5D) = 2;
         *(u8 *)(s1 + 0x61) = 3;
-        func_002C0490(*(void **)(s1 + 0x54), 0);
+        Obj_SetF3C(*(void **)(s1 + 0x54), 0);
         *(s32 *)(s1 + 0x58) = amAdx_PlayAfs(1, 0x21114, 0);
         amAdx_SetVolume(*(void **)(s1 + 0x58), D_004E0618[0]);
         amAdx_Pause(*(void **)(s1 + 0x58), 0);
@@ -485,7 +485,7 @@ void func_002B92E0(u8 *task) {
     if (f1 <= 0.0f) {
         *(u8 *)(s1 + 0x5D) = 2;
         *(u8 *)(s1 + 0x61) = 3;
-        func_002C0490(*(void **)(s1 + 0x54), 0);
+        Obj_SetF3C(*(void **)(s1 + 0x54), 0);
         *(s32 *)(s1 + 0x58) = amAdx_PlayAfs(1, 0x21114, 0);
         amAdx_SetVolume(*(void **)(s1 + 0x58), D_004E0618[0]);
         amAdx_Pause(*(void **)(s1 + 0x58), 0);

@@ -12,7 +12,7 @@ extern void func_001D2340(void *);
 extern void func_001D2710(void *);
 extern void func_0029D800(f32);
 extern f32 func_0029D850(void);
-extern void func_001D0B90(s32 *);
+extern void Acsr_DrawIfAny(s32 *);
 extern void func_001D2580(void *);
 extern void func_001D0C00(s32 *);
 extern void func_001D25B0(void *);
@@ -115,7 +115,7 @@ void func_001D44C0(Secp *s) {
     s32 i;
     if (s != 0) {
         for (i = 0; i < s->numAcsr; i++) {
-            func_001D0B90(s->acsr[i]);
+            Acsr_DrawIfAny(s->acsr[i]);
         }
         for (i = 0; i < s->numMant; i++) {
             func_001D2580(s->mant[i]);

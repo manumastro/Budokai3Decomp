@@ -14,7 +14,7 @@ extern void func_002A9D30(s32, s32, void *, s32);
 extern void func_002B0390(void);
 extern void func_002A9EA0(s32, s32, void *, s32);
 extern void func_0012F2C0(void);
-extern void func_0012F290(void);
+extern void amDraw_ResetPackets(void);
 extern f32 D_004708F8;
 extern u8 D_004E0660[];
 extern u8 D_004E0668[];
@@ -266,7 +266,7 @@ s32 func_002B0610(u8 *a) {
     return 1;
 }
 s32 func_002B0630(void) {
-    func_0012F290();
+    amDraw_ResetPackets();
     return 1;
 }
 s32 func_002B0650(u8 *a) {

@@ -97,8 +97,8 @@ void func_00265B40(u8 *task) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265B40);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265BF0);
 extern void func_00229800(void *, void *, s32, f32);
-extern void func_002C0470(s32, void *);
-extern void func_002C0490(s32, s32);
+extern void Obj_CopyVec4F50(s32, void *);
+extern void Obj_SetF3C(s32, s32);
 extern s32 amAdx_PlayAfs(s32, s32, s32);
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Pause(s32, s32);
@@ -121,8 +121,8 @@ void func_00266070(u8 *a0) {
         v = *(u8 **)s1;
         v = *(u8 **)(v + 0x1C);
         func_00229800(*(void **)(v + 0x1B4), loc, -1, 0.0f);
-        func_002C0470(*(s32 *)(s1 + 0x4C), loc);
-        func_002C0490(*(s32 *)(s1 + 0x4C), 0);
+        Obj_CopyVec4F50(*(s32 *)(s1 + 0x4C), loc);
+        Obj_SetF3C(*(s32 *)(s1 + 0x4C), 0);
         *(s32 *)(s1 + 0x50) = amAdx_PlayAfs(1, 0x210E9, 0);
         amAdx_SetVolume(*(s32 *)(s1 + 0x50), D_004E0618[0]);
         amAdx_Pause(*(s32 *)(s1 + 0x50), 0);

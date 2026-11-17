@@ -10,7 +10,7 @@ typedef struct TaskEff2C41C0 {
 
 extern void amTask_Kill(void *);
 
-/* One effect's work (stride 0xF80 in D_00470130): links to two sub-parts (f34, f38). */
+/* One effect's work (stride 0xF80 in gEffWork): links to two sub-parts (f34, f38). */
 typedef struct EffPart2C41C0 {
     char pad0[0x30];
     f32 f30;
@@ -197,7 +197,7 @@ typedef struct TutCmd4 {
 extern TutWork *gTutWork;
 extern char *gBattle;
 
-extern EffWork *D_00470130;
+extern EffWork *gEffWork;
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C41C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C4C90);
@@ -237,22 +237,22 @@ s32 func_002C5FC0(Task2C41C0 *t) {
     EffWork *w;
 
     k = ((t->f58 & 0x80) != 0) ? 0 : sb->f14->f1350;
-    w = D_00470130;
+    w = gEffWork;
     if (w->f4D86 & 0x8000) {
         func_002152E0();
         return 1;
     }
     if (k == 0 && (w->f4D86 & 0x2000)) {
         func_002152E0();
-        w = D_00470130;
+        w = gEffWork;
         if (w->f4D84 == 0) {
             w->f4D86 &= ~0x2000;
         }
         return 1;
     }
-    if (k == 1 && (D_00470130->f4D86 & 0x1000)) {
+    if (k == 1 && (gEffWork->f4D86 & 0x1000)) {
         func_002152E0();
-        w = D_00470130;
+        w = gEffWork;
         if (w->f4D84 == 0) {
             w->f4D86 &= ~0x1000;
         }
@@ -313,13 +313,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C63C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6700);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6930);
 void func_002C6B60(TaskEff2C41C0 *t) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
     s16 *p = &w->f4D84;
 
     if (w->f4D84 > 0) {
         *p = w->f4D84 - 1;
-        if (D_00470130->f4D84 == 0) {
-            D_00470130->f4D86 &= 0x7FFF;
+        if (gEffWork->f4D84 == 0) {
+            gEffWork->f4D86 &= 0x7FFF;
         }
         if (t->f18 != 0) {
             amTask_Kill(t->f18);
@@ -335,7 +335,7 @@ void func_002C6BF0(EffReq2C41C0 *s) {
     EffPart2C41C0 *s3;
     f32 k;
 
-    p = (EffPart2C41C0 *)((char *)D_00470130 + 0xF80 * s->f3E);
+    p = (EffPart2C41C0 *)((char *)gEffWork + 0xF80 * s->f3E);
     e = s->f0;
     s4 = (EffPart2C41C0 *)((char *)p + 0xF40);
     s3 = (EffPart2C41C0 *)((char *)p + 0xF00);
@@ -369,13 +369,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6EF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C7010);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C72E0);
 void func_002C7C50(TaskEff2C41C0 *t) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
     s16 *p = &w->f4D84;
 
     if (w->f4D84 > 0) {
         *p = w->f4D84 - 1;
-        if (D_00470130->f4D84 == 0) {
-            D_00470130->f4D86 &= 0x7FFF;
+        if (gEffWork->f4D84 == 0) {
+            gEffWork->f4D86 &= 0x7FFF;
         }
         if (t->f18 != 0) {
             amTask_Kill(t->f18);
@@ -390,7 +390,7 @@ void func_002C7CE0(EffReq2C41C0 *s) {
     EffPart2C41C0 *s4;
     EffPart2C41C0 *s3;
 
-    p = (EffPart2C41C0 *)((char *)D_00470130 + 0xF80 * s->f3E);
+    p = (EffPart2C41C0 *)((char *)gEffWork + 0xF80 * s->f3E);
     e = s->f0;
     s4 = (EffPart2C41C0 *)((char *)p + 0xF40);
     s3 = (EffPart2C41C0 *)((char *)p + 0xF00);
@@ -415,13 +415,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C7E00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8360);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8670);
 void func_002C88A0(TaskEff2C41C0 *t) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
     s16 *p = &w->f4D84;
 
     if (w->f4D84 > 0) {
         *p = w->f4D84 - 1;
-        if (D_00470130->f4D84 == 0) {
-            D_00470130->f4D86 &= 0x7FFF;
+        if (gEffWork->f4D84 == 0) {
+            gEffWork->f4D86 &= 0x7FFF;
         }
         if (t->f18 != 0) {
             amTask_Kill(t->f18);
@@ -437,7 +437,7 @@ void func_002C8930(EffReq2C41C0 *s) {
     EffPart2C41C0 *s3;
     f32 k;
 
-    p = (EffPart2C41C0 *)((char *)D_00470130 + 0xF80 * s->f3E);
+    p = (EffPart2C41C0 *)((char *)gEffWork + 0xF80 * s->f3E);
     e = s->f0;
     s4 = (EffPart2C41C0 *)((char *)p + 0xF40);
     s3 = (EffPart2C41C0 *)((char *)p + 0xF00);
@@ -470,13 +470,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8A80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C8D30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9120);
 void func_002C9950(TaskEff2C41C0 *t) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
     s16 *p = &w->f4D84;
 
     if (w->f4D84 > 0) {
         *p = w->f4D84 - 1;
-        if (D_00470130->f4D84 == 0) {
-            D_00470130->f4D86 &= 0x7FFF;
+        if (gEffWork->f4D84 == 0) {
+            gEffWork->f4D86 &= 0x7FFF;
         }
         if (t->f18 != 0) {
             amTask_Kill(t->f18);
@@ -491,7 +491,7 @@ void func_002C99E0(EffReq2C41C0 *s) {
     EffPart2C41C0 *s4;
     EffPart2C41C0 *s3;
 
-    p = (EffPart2C41C0 *)((char *)D_00470130 + 0xF80 * s->f3E);
+    p = (EffPart2C41C0 *)((char *)gEffWork + 0xF80 * s->f3E);
     e = s->f0;
     s4 = (EffPart2C41C0 *)((char *)p + 0xF40);
     s3 = (EffPart2C41C0 *)((char *)p + 0xF00);
@@ -521,17 +521,17 @@ void func_002C9BC0(EffTask2C41C0 *t) {
         D_004563D0[s->f0->f84](s);
     }
     s->f3A = 0;
-    D_00470130->f4D86 &= ~0x800;
-    D_00470130->f4D86 &= ~0x400;
+    gEffWork->f4D86 &= ~0x800;
+    gEffWork->f4D86 &= ~0x400;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9BC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9C40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9EF0);
-extern EffWork *D_00470130;
+extern EffWork *gEffWork;
 
 void func_002CA230(s32 x) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
 
     if (w->f4D84 > 0) {
         if (x == 0) {
@@ -545,7 +545,7 @@ void func_002CA230(s32 x) {
 }
 
 void func_002CA290(s32 x) {
-    EffWork *w = D_00470130;
+    EffWork *w = gEffWork;
 
     if (w->f4D84 > 0) {
         if (x == 0) {
@@ -622,7 +622,7 @@ extern s32 D_005BD264[];
 extern s32 D_005BD260[];
 
 void func_002CA3F0(void) {
-    memset(D_00470130, 0, sizeof(EffWork));
+    memset(gEffWork, 0, sizeof(EffWork));
     D_005BD270[0] = 0;
     D_005BD26C[0] = 0;
     D_005BD268[0] = 0;
@@ -631,7 +631,7 @@ void func_002CA3F0(void) {
 }
 
 void func_002CA440(void) {
-    memset(D_00470130, 0, sizeof(EffWork));
+    memset(gEffWork, 0, sizeof(EffWork));
     D_005BD270[0] = 0;
     D_005BD26C[0] = 0;
     D_005BD268[0] = 0;
@@ -643,7 +643,7 @@ void func_002CA490(void) {
 }
 
 void func_002CA4A0(void) {
-    memset(D_00470130, 0, sizeof(EffWork));
+    memset(gEffWork, 0, sizeof(EffWork));
     D_005BD270[0] = 0;
     D_005BD26C[0] = 0;
     D_005BD268[0] = 0;

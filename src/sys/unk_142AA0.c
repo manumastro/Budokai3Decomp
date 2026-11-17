@@ -65,7 +65,7 @@ extern void mwPlyRelCurFrm(MwPly *);
 extern void mwPlyStartAfs(MwPly *, s32, s32);
 extern s32 mwPlyCalcWorkCprmSfd(SfdCprm *);
 extern MwPly *func_00180290(SfdCprm *);
-extern void func_0012F040(void *, void *, s32);
+extern void amDma_CopyViaSpr(void *, void *, s32);
 extern void func_00127A88(char *, char *);
 
 /* The sound driver on the IOP (AMSOUND), called through SIF RPC. */

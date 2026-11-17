@@ -54,20 +54,20 @@ typedef struct Ctx2E4 {
 
 extern f32 D_00470430;
 extern f32 D_0047042C;
-extern void *func_0022DA90(f32, s32);
+extern void *A2d_AllocObj(f32, s32);
 
 extern f32 D_00470430;
 extern f32 D_0047042C;
-extern void *func_0022DA90(f32, s32);
+extern void *A2d_AllocObj(f32, s32);
 
 extern f32 D_00470430;
 extern f32 D_0047042C;
-extern void *func_0022DA90(f32, s32);
+extern void *A2d_AllocObj(f32, s32);
 
 void ArenaStageSel_CreateObj(Ctx2E4 *c) {
     Obj2E4 *o;
 
-    o = func_0022DA90(0.0f, 0);
+    o = A2d_AllocObj(0.0f, 0);
     c->f28 = o;
     c = (Ctx2E4 *)o;
     memset(c, 0, 0x60);

@@ -38,7 +38,7 @@ extern void func_00225020(s32, s32, s32);
 extern void (*D_0046A600[])(s32);
 
 extern u8 *gBtlSys;
-extern s32 *func_0021C620(s32);
+extern s32 *BtlSys_GetSlot(s32);
 extern s32 *func_0021C660(s32);
 extern s32 func_0021C360();
 extern void func_0021C5B0(s32);
@@ -67,7 +67,7 @@ s32 func_00225380(void) {
 void func_002253B0(s32 *a0) {
     s32 *s;
 
-    func_0021C620(a0[0]);
+    BtlSys_GetSlot(a0[0]);
     s = func_0021C660(a0[0]);
     if (a0[1] != 0) {
         s[8] = s[4];
@@ -83,7 +83,7 @@ void func_00225440(void) {
     func_0023A4B0();
 }
 void func_00225450(s32 *p) {
-    s32 *v = func_0021C620(p[0]);
+    s32 *v = BtlSys_GetSlot(p[0]);
 
     if (p[1] == 0) {
         v[0] &= ~0x20000;
@@ -268,12 +268,12 @@ void func_00225A90(s32 *p) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00225AC0);
 void func_00225C30(s32 *p) {
-    u8 *o = (u8 *)func_0021C620(p[0]);
+    u8 *o = (u8 *)BtlSys_GetSlot(p[0]);
 
     *(s16 *)(o + 0x5C) = 0;
 }
 void func_00225C50(s32 *p) {
-    u8 *o = (u8 *)func_0021C620(p[0]);
+    u8 *o = (u8 *)BtlSys_GetSlot(p[0]);
 
     *(s16 *)(o + 0x5C) += 1;
     if (*(s16 *)(o + 0x5E) < *(s16 *)(o + 0x5C)) {
@@ -281,21 +281,21 @@ void func_00225C50(s32 *p) {
     }
 }
 void func_00225CA0(s32 *p) {
-    s32 *o = func_0021C620(p[0]);
+    s32 *o = BtlSys_GetSlot(p[0]);
 
     o[0] &= ~0x2000;
     func_00259D90(func_0021C360(p[0]), 2);
 }
 void func_00225CF0(s32 *p) {
-    s32 *o = func_0021C620(p[0]);
+    s32 *o = BtlSys_GetSlot(p[0]);
 
     o[0] |= 0x2000;
     o[0xB] = 0;
     func_00259EB0(func_0021C360(p[0]), 1.0f);
 }
 void func_00225D40(s32 *p) {
-    s32 *a = func_0021C620(p[0]);
-    s32 *b = func_0021C620(p[1]);
+    s32 *a = BtlSys_GetSlot(p[0]);
+    s32 *b = BtlSys_GetSlot(p[1]);
     u8 *o = (u8 *)a;
 
     if (b[0] & 8) {
@@ -316,7 +316,7 @@ void func_00225D40(s32 *p) {
 void func_00225E10(s32 *p) {
     s32 *s1 = func_0021C660(p[0]);
     u8 *s0 = func_0021C430(p[0]);
-    s32 *v = func_0021C620(p[0]);
+    s32 *v = BtlSys_GetSlot(p[0]);
 
     v[0] |= 0x10;
     v[4] = *(s16 *)(s0 + 2);
@@ -325,8 +325,8 @@ void func_00225E10(s32 *p) {
 // GIVEN UP: field store at 0x50 uses a separate address (addiu) where the original stores at 0x50(s0)
 #if 0
 void func_00225E80(s32 *p) {
-    s32 *a = func_0021C620(p[0]);
-    s32 *b = func_0021C620(p[1]);
+    s32 *a = BtlSys_GetSlot(p[0]);
+    s32 *b = BtlSys_GetSlot(p[1]);
 
     a[0] &= ~3;
     a[0] |= 2;
@@ -344,7 +344,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00225E80);
 // GIVEN UP: the value compared and stored is loaded again after the call (tried a local for it)
 #if 0
 void func_00225F30(s32 *p) {
-    s32 *a = func_0021C620(p[0]);
+    s32 *a = BtlSys_GetSlot(p[0]);
 
     a[0] |= 1;
     a[5] = p[1];
@@ -721,7 +721,7 @@ extern s32 *D_004706AC;
 extern s32 D_004706B0;
 extern s32 D_004706B8;
 extern void func_0022B900(s32 *, s32 *, f32);
-s32 *func_0022DA90(s32 *a0, f32 a1) {
+s32 *A2d_AllocObj(s32 *a0, f32 a1) {
     s32 *s1;
 
     s1 = ((s32 **)D_004706AC)[D_004706B0];

@@ -28,7 +28,7 @@ extern s32 amGs_SetReg32(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_00139620(s32, FadeColor *, s32, s32, s32, f32);
 
-void func_00262180(f32 a) {
+void Fade_DrawOverlay(f32 a) {
     FadeColor c = D_00452E00;
     s32 old;
 

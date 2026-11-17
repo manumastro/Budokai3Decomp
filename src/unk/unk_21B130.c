@@ -697,7 +697,7 @@ u8 *func_0021C600(void) {
 u8 *func_0021C610(void) {
     return gBtlSys + 0xDF0;
 }
-u8 *func_0021C620(s32 i) {
+u8 *BtlSys_GetSlot(s32 i) {
     u8 *sys = gBtlSys;
 
     if (i == -1) {

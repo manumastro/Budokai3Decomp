@@ -30,10 +30,10 @@ extern char D_0046F748[];
 extern char D_0046F738[];
 extern void func_002F2350();
 extern void *gInputName;
-extern void *func_0022DA90(s32, f32);
+extern void *A2d_AllocObj(s32, f32);
 extern void memset(void *, s32, s32);
 extern void amHeap_Free(void *);
-extern void *func_0022DA90(s32, f32);
+extern void *A2d_AllocObj(s32, f32);
 extern void memset(void *, s32, s32);
 extern void amHeap_Free(void *);
 
@@ -48,7 +48,7 @@ void func_002F0870(u32 *task) {
     s3 = (u8 *)gInputName;
     s0 = task;
     do {
-        v = func_0022DA90(0, 0.0f);
+        v = A2d_AllocObj(0, 0.0f);
         s0[1] = (u32)v;
         s1 = (u8 *)v;
         memset(s1, 0, 0x60);
@@ -87,7 +87,7 @@ void func_002F0B00(u8 *task) {
 
     s1 = (u8 *)gInputName;
     s0 = task;
-    v = func_0022DA90(0, 0.0f);
+    v = A2d_AllocObj(0, 0.0f);
     *(void **)(s0 + 0x94) = v;
     s0 = (u8 *)v;
     memset(s0, 0, 0x60);
@@ -426,7 +426,7 @@ void func_002F2A10(u32 *task) {
     s3 = (u8 *)gInputName;
     s0 = task;
     do {
-        v = func_0022DA90(0, 0.0f);
+        v = A2d_AllocObj(0, 0.0f);
         s0[1] = (u32)v;
         s1 = (u8 *)v;
         memset(s1, 0, 0x60);
@@ -463,7 +463,7 @@ void func_002F2C90(u8 *task) {
 
     s1 = (u8 *)gInputName;
     s0 = task;
-    v = func_0022DA90(0, 0.0f);
+    v = A2d_AllocObj(0, 0.0f);
     *(void **)(s0 + 0x24) = v;
     s0 = (u8 *)v;
     memset(s0, 0, 0x60);

@@ -329,7 +329,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023E570);
 // differs: 5 instructions short: the id and the struct pointer swap registers, and the first branch layout does not match; declaration orders searched
 extern s8 D_004703F4;
 void func_0021C680(s32);
-void func_0021C620(s32);
+void BtlSys_GetSlot(s32);
 void func_0023E7A0(s32 x) {
     s32 id;
     u8 *s0;
@@ -343,7 +343,7 @@ void func_0023E7A0(s32 x) {
     id = func_0021C3D0(x);
     func_0021C680(id);
     s1 = func_0021C660(id);
-    func_0021C620(id);
+    BtlSys_GetSlot(id);
     s0 = func_0021C400(id);
     a3 = *(s32 *)(s0 + 4);
     a0 = *(s32 *)(s1 + 8);
@@ -946,7 +946,7 @@ void func_00242870(void) {
             s4 = 0;
             off = 0;
             do {
-                s2 = (u8 *)func_001A5130((s32)s3, s4);
+                s2 = (u8 *)BtlCmd_GetMotEntry((s32)s3, s4);
                 s1 = (u8 *)func_001A50F0((s32)s3, s4);
                 if (*(s32 *)(s2 + 8) >= 0) {
                     amFile_Load((s32)s1);
@@ -1169,7 +1169,7 @@ typedef struct Blk48 {
     s32 w[12];
 } __attribute__((aligned(16))) Blk48;
 extern s32 D_0046AC70[];
-void func_00243DE0(s32 idx, Blk48 *src) {
+void Sp_CallHandler(s32 idx, Blk48 *src) {
     Blk48 loc;
 
     loc = *src;
@@ -1230,7 +1230,7 @@ void func_00243F20(void) {
     memset(D_0058C6C0, 0, 0x3D4);
     memset(D_0058C5B0, 0, 0x110);
 }
-void func_00244040(void) {
+void Sp_KillTasks(void) {
     amTask_KillGroup(0x400, 0x20000, 0);
     func_00209450(0x400008, 1);
     func_00209450(0x400010, 1);
@@ -1395,7 +1395,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244CC0);
 #if 0
 // differs: one instruction: the slot address is built as addu with the base in the first operand (the original has the scaled index first); the rest matches
 extern u8 D_0046AD08[];
-s32 func_001A5130(s32, s32);
+s32 BtlCmd_GetMotEntry(s32, s32);
 s32 func_00127E88(void *, void *, s32);
 void func_0020A100(void *);
 s32 amObject_Create(s32, s32);
@@ -1426,7 +1426,7 @@ void func_00244D80(s32 a0, s32 a1) {
             s1 = 0;
             s0 = s3;
             do {
-                s5 = (u8 *)func_001A5130((s32)s2, s1);
+                s5 = (u8 *)BtlCmd_GetMotEntry((s32)s2, s1);
                 s4 = func_001A50F0((s32)s2, s1);
                 if (*(s32 *)(s5 + 8) >= 0) {
                     amFile_Load(s4);

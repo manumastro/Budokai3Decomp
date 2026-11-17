@@ -110,12 +110,12 @@ extern void amModel_SetCurrent(s32, s32);
 extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D670(s32, f32);
 extern s32 func_0022D860(s32, f32);
-extern void func_002C0490(void *, s32);
+extern void Obj_SetF3C(void *, s32);
 extern void func_002E5C20(Task *);
 extern void func_0022CF70(ArenaStageSelObj *);
 extern void func_0022D4B0(ArenaStageSelObj *, s32);
 extern void func_00229800(s32, void *, s32, f32);
-extern void func_002C0470(void *, void *);
+extern void Obj_CopyVec4F50(void *, void *);
 extern u32 func_0012EAE0(s32);
 extern s32 amAdx_PlayAfs(s32, s32, s32);
 extern void amAdx_SetVolume(s32, f32);
@@ -175,7 +175,7 @@ void ArenaStageSel_TaskWaitVoice(Task *t) {
             func_0022D0E0(w->f14, 0);
         }
         w->f14 = func_0022D860(w->res->f14[5], 0.0f);
-        func_002C0490(w->f8, -1);
+        Obj_SetF3C(w->f8, -1);
         w->fF4 = 2;
         D_00470704 = v = (s32)w->tex;
         D_0047070C = n = 0x7000;
@@ -213,10 +213,10 @@ void ArenaStageSel_TaskOpen(Task *t) {
         w->f28 = NULL;
     }
     func_00229800(w->res->f1C[75], pos, -1, 0.0f);
-    func_002C0470(w->f8, pos);
+    Obj_CopyVec4F50(w->f8, pos);
     r = func_0012EAE0(0x20) % 3;
     w->fCC = r + 0x11;
-    func_002C0490(w->f8, w->fCC);
+    Obj_SetF3C(w->f8, w->fCC);
     se = D_00456D98;
     w->se = amAdx_PlayAfs(1, se.id[r] | 0x20000, 0);
     amAdx_SetVolume(w->se, D_004E0618[0]);

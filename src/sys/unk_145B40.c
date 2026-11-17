@@ -78,14 +78,14 @@ void func_00145B40(s32 a0) {
         }
     }
 }
-extern u8 *D_00470390;
-extern u8 *D_00470394;
-extern void *D_00470398;
+extern u8 *gModelBlock;
+extern u8 *gModelEnd;
+extern void *gModelUser;
 
 void amModel_SetCurrent(u8 *a0, void *a1) {
-    D_00470390 = a0;
-    D_00470398 = a1;
-    D_00470394 = a0 + *(s32 *)(a0 + 0x14);
+    gModelBlock = a0;
+    gModelUser = a1;
+    gModelEnd = a0 + *(s32 *)(a0 + 0x14);
 }
 
 extern s32 D_0047038C;
@@ -98,10 +98,10 @@ void func_00145CE0(s32 a0, s32 a1, u32 a2) {
     s32 v;
     a0 = a0 & D_0047038C;
     a0 = (s32)(D_0047E4C0 + (a0 << 6));
-    a1 = a1 - *(s32 *)(D_00470390 + 0x18);
-    p = D_00470390 + *(s32 *)(D_00470394 + (a1 << 2));
+    a1 = a1 - *(s32 *)(gModelBlock + 0x18);
+    p = gModelBlock + *(s32 *)(gModelEnd + (a1 << 2));
     v = *(s32 *)p;
-    a1 = v + (s32)D_00470398;
+    a1 = v + (s32)gModelUser;
     r = func_001461D0((void *)a0, a1);
     if (r != 0) {
         *(s32 *)(r + 0x1C) |= a2 & 0x3000;

@@ -187,3 +187,22 @@ Fade_SetRequest = 0x00264300; // type:func // guess
 // unk_1D5B30.c: resets a fighter's motion: func_001E7BE0 on the block at +0x650 and the float at +0x184C set to
 // 1.0. Called by 22 functions of the battle code.
 Fighter_ResetMotion = 0x001E3430; // type:func // guess
+
+// unk_23A890.c: copies its 48-byte request and calls the handler D_0046AC70[idx] with it, for idx 0 to 8 (other
+// values do nothing). Called by 10 functions (func_001CB380, func_001E1460 and others).
+Sp_CallHandler = 0x00243DE0; // type:func // guess
+
+// unk_260CB0.c: draws the fade overlay: a copy of the colour D_00452E00 with its alpha set to a, drawn with
+// func_00139620 after a GS register is set (amGs_SetReg32).
+Fade_DrawOverlay = 0x00262180; // type:func // guess
+
+// unk_21A4C0.c: releases an effect (Effect21A): clears its object at +0x40 (through Obj_ResetF38) and kills its
+// task at +0x44.
+Effect21A_Release = 0x0021A7D0; // type:func // guess
+
+// unk_23A890.c: kills the SP group (amTask_KillGroup 0x400, 0x20000) and resets five flag masks of the group with
+// func_00209450; then clears the halfword at D_0046FE48+0x3D0.
+Sp_KillTasks = 0x00244040; // type:func // guess
+
+// unk_2C41C0.c: the effects' work array (the effect works have a stride of 0xF80, each links two sub-parts).
+gEffWork = 0x00470130; // size:0x4 // guess

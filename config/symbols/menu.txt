@@ -348,3 +348,6 @@ ArenaStageSel_CreateObj = 0x002E4030; // type:func // guess
 // f50) into the table D_00492FC0, one row per entry; called by the help tasks (Help_TaskLoad, Help_TaskMain,
 // Help_TaskFadeIn, Help_TaskClose).
 Help_CopyEntries = 0x002B5460; // type:func // guess
+
+// mn_option.c: the option screen's state block (its readers are in mn_option.c; Option_Free releases it).
+gOptionState = 0x00470938; // size:0x4 // guess

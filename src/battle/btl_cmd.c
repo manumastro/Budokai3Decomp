@@ -213,7 +213,7 @@ s32 func_001A50F0(u8 *f, s32 i) {
     }
     return r;
 }
-MotEntry *func_001A5130(MotFile *f, s32 i) {
+MotEntry *BtlCmd_GetMotEntry(MotFile *f, s32 i) {
     return Mot_GetEntry(f, i);
 }
 void func_001A5160(MotFile *f) {

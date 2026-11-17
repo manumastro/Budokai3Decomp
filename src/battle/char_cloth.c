@@ -24,7 +24,7 @@ extern void func_0029D4B0(s32);
 extern s32 func_0029D8D0(void);
 extern s32 func_0029D4A0(void);
 extern void func_001339B0(s32);
-extern void func_00133920(s32, s32, s32, s32, s32);
+extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
 extern void func_00133980(f32, f32, f32, f32);
 
 static inline void Cloth_Draw(Cloth *c) {
@@ -58,10 +58,10 @@ void func_001D25B0(Cloth *c) {
             old = func_0029D4C0();
             func_0029D4B0(0x44);
             func_001339B0(func_0029D4A0());
-            func_00133920(0x10000F20, 0, 0, 0x10000A00, 0);
+            DrawFlags_Apply(0x10000F20, 0, 0, 0x10000A00, 0);
             Cloth_Draw(c);
             func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
-            func_00133920(0, 0x10000F20, 0, 0, 0);
+            DrawFlags_Apply(0, 0x10000F20, 0, 0, 0);
             func_0029D4B0(old);
         }
     }

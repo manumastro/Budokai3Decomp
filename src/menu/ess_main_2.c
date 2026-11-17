@@ -177,12 +177,12 @@ void EssEdit_Clear(void) {
 extern void *amTask_Create();
 extern void func_0026EF00();
 extern char D_0046B480[];
-extern void func_003105B0();
+extern void SeReady_Start();
 
 void EssEdit_Start(void) {
     *(void **)((u8 *)gEssEdit + 0x10) = amTask_Create(func_0026EF00, 0, 0x3000, 0x200, 2, D_0046B480);
     memset(*(u8 **)((u8 *)gEssEdit + 0x10) + 0x30, 0, 0x1C);
-    func_003105B0();
+    SeReady_Start();
 }
 extern void func_0027E120(void *);
 extern void func_0027E070(void);

@@ -76,7 +76,7 @@ extern void func_0022C1D0(s32, s32, f32);
 extern void func_0022C430(s32, f32);
 extern void func_0022C6B0(s32);
 extern void func_0022D4B0(s32, s32);
-extern s32 func_0022DA90(s32, f32);
+extern s32 A2d_AllocObj(s32, f32);
 extern void memset(void *, s32, s32);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
@@ -188,7 +188,7 @@ void Zenie_Draw(void) {
         m = gZenie->model[0];
         func_00228430(0);
         func_002284D0(0);
-        obj = func_0022DA90(m->f1C[gZenie->anim[0].id], gZenie->anim[0].frame * gFrameDelta);
+        obj = A2d_AllocObj(m->f1C[gZenie->anim[0].id], gZenie->anim[0].frame * gFrameDelta);
         func_00227A30(obj + 0x20);
         func_00228430(0);
         func_002284D0(0);

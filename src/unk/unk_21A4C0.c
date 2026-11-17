@@ -20,7 +20,7 @@ typedef struct Effect21A {
 extern void Obj_ResetF38(void *);
 extern void amTask_Kill(void *);
 
-void func_0021A7D0(Effect21A *e) {
+void Effect21A_Release(Effect21A *e) {
     if (e->f40 != NULL) {
         Obj_ResetF38(e->f40);
         e->f40 = NULL;

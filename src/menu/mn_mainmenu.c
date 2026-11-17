@@ -113,8 +113,8 @@ extern f32 gFrameDelta;
 extern f32 D_004E0610[];
 extern f32 D_004E0618[];
 extern void func_00229800(void *, void *, s32, f32);
-extern void func_002C0470(void *, void *);
-extern void func_002C0490(void *, s32);
+extern void Obj_CopyVec4F50(void *, void *);
+extern void Obj_SetF3C(void *, s32);
 extern s32 amAdx_PlayAfs(s32, s32, s32);
 extern void amAdx_Stop(s32);
 extern void amAdx_SetVolume(s32, f32);
@@ -131,8 +131,8 @@ void MainMenu_TaskOpen(Task *t) {
     w->timer = v;
     if (v <= 0.0f) {
         func_00229800(((void ***)w->res[0])[7][0x3A], sp30, -1, 0.0f);
-        func_002C0470(w->f90, sp30);
-        func_002C0490(w->f90, 0);
+        Obj_CopyVec4F50(w->f90, sp30);
+        Obj_SetF3C(w->f90, 0);
         w->fA4 = amAdx_PlayAfs(1, 0x210E1, 0);
         amAdx_SetVolume(w->fA4, D_004E0618[0]);
         amAdx_Pause(w->fA4, 0);

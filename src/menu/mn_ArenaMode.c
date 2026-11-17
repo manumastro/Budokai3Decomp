@@ -69,9 +69,9 @@ extern void func_0022CD00(s32);
 extern void func_002D0530(ArenaModeWork *);
 extern void A2d_FlushList(void);
 extern void func_00229800(s32, void *, s32, f32);
-extern void func_002C0470(void *, void *);
+extern void Obj_CopyVec4F50(void *, void *);
 extern u32 func_0012EAE0(s32);
-extern void func_002C0490(void *, s32);
+extern void Obj_SetF3C(void *, s32);
 extern s32 amAdx_PlayAfs(s32, s32, s32);
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Pause(s32, s32);
@@ -142,10 +142,10 @@ void ArenaMode_TaskOpen(Task *t) {
     w->timer = f;
     if (f <= 0.0f) {
         func_00229800(w->res->f1C[19], pos, -1, 0.0f);
-        func_002C0470(w->f30, pos);
+        Obj_CopyVec4F50(w->f30, pos);
         r = func_0012EAE0(0x20) % 3;
         w->f39 = r;
-        func_002C0490(w->f30, w->f39);
+        Obj_SetF3C(w->f30, w->f39);
         se = D_00456AF0;
         w->se = amAdx_PlayAfs(1, se.id[r] | 0x20000, 0);
         amAdx_SetVolume(w->se, D_004E0618[0]);

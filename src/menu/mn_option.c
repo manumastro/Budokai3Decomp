@@ -337,27 +337,27 @@ void func_002E0B70(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0B70);
-extern void *D_00470938;
+extern void *gOptionState;
 
 typedef struct OptionState {
     char pad0[8];
     s32 f8;
 } OptionState;
 
-/* Clears the option screen's state word D_00470938. */
+/* Clears the option screen's state word gOptionState. */
 void Option_ClearState(void) {
-    D_00470938 = 0;
+    gOptionState = 0;
 }
-/* Frees the option state block D_00470938 (if any) and clears the pointer. */
+/* Frees the option state block gOptionState (if any) and clears the pointer. */
 void Option_Free(void) {
-    if (D_00470938 != 0) {
-        amHeap_Free(D_00470938);
-        D_00470938 = 0;
+    if (gOptionState != 0) {
+        amHeap_Free(gOptionState);
+        gOptionState = 0;
     }
 }
 /* The field at 0x8 of the option state, or 0 when there is no state. */
 s32 func_002E0C70(void) {
-    return D_00470938 == 0 ? 0 : ((OptionState *)D_00470938)->f8;
+    return gOptionState == 0 ? 0 : ((OptionState *)gOptionState)->f8;
 }
 extern void amCdFs_Close(void *, s32);
 extern void *amTask_Create();
@@ -366,7 +366,7 @@ extern void func_002E0B70();
 
 void ChangeProgress_Start(void) {
     u8 *s0;
-    s0 = (u8 *)D_00470938;
+    s0 = (u8 *)gOptionState;
     *(s32 *)(s0 + 0x4) = *(s32 *)(*(u8 **)s0 + 0x54);
     *(s32 *)(*(u8 **)s0 + 0x54) = 0;
     amCdFs_Close(*(void **)s0, 0);
@@ -382,7 +382,7 @@ void ChangeProgress_Start(void) {
 // differs: the original hoists li 3 before the two loads and compares with beq, mine folds the compare to xori/sltiu (tried if/else and r=0/r=1)
 s32 func_002E0D10(void) {
     s32 r;
-    if (*(s16 *)(*(u8 **)D_00470938 + 4) != 3) {
+    if (*(s16 *)(*(u8 **)gOptionState + 4) != 3) {
         r = 0;
     } else {
         r = 1;
@@ -399,13 +399,13 @@ extern void memset(void *, s32, s32);
 void func_002E0D40(void) {
     u8 *s0;
     void *p;
-    if (D_00470938 != 0) {
-        amHeap_Free(D_00470938);
-        D_00470938 = 0;
+    if (gOptionState != 0) {
+        amHeap_Free(gOptionState);
+        gOptionState = 0;
     }
-    D_00470938 = amHeap_Alloc(0x1C, 0, D_0046F3C8, 0x74A);
-    memset(D_00470938, 0, 0x1C);
-    s0 = D_00470938;
+    gOptionState = amHeap_Alloc(0x1C, 0, D_0046F3C8, 0x74A);
+    memset(gOptionState, 0, 0x1C);
+    s0 = gOptionState;
     *(s32 *)s0 = amCdFs_ReadFileId(0x10803, 0, 0);
-    *(s32 *)((u8 *)D_00470938 + 0x8) = 1;
+    *(s32 *)((u8 *)gOptionState + 0x8) = 1;
 }

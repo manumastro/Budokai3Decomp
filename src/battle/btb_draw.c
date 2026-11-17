@@ -3703,7 +3703,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3740);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F38F0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3A60);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3C10);
-extern void func_00133920(s32, s32, s32, s32, s32);
+extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
 extern s32 gBattle;
 extern s32 D_0047064C;
 
@@ -3717,7 +3717,7 @@ void func_001F3D80(char *o) {
         p = (char *)gBattle;
         p += 0x10000;
         if (*(f32 *)(p - 0x76D4) > 0.0f) {
-            func_00133920(0, 0x8000, 0, 0, 0);
+            DrawFlags_Apply(0, 0x8000, 0, 0, 0);
         }
     }
 }

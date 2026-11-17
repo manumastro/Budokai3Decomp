@@ -2427,7 +2427,7 @@ void func_001B5B30(Fighter *f) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B5BC0);
-void func_001B5DA0(Fighter *f) {
+void Fighter_ClearF17BC(Fighter *f) {
     FT_FIELD(f, f32, 0x17BC) = 0.0f;
 }
 extern void (*D_004684E8[])(void *);
@@ -5280,7 +5280,7 @@ extern void amMotion_BuildMatrices(void *o);
 extern void func_001D43F0(void *s);
 extern s32 func_0029D540(void);
 extern void func_001339B0(s32 a);
-extern void func_00133920(s32 a, s32 b, s32 c, s32 d, s32 e);
+extern void DrawFlags_Apply(s32 a, s32 b, s32 c, s32 d, s32 e);
 extern s32 func_0029D4C0(void);
 extern void amModel_SetCurrent(s32 a, s32 b);
 extern void func_00133980(f32 a, f32 b, f32 c, f32 d);
@@ -5301,19 +5301,19 @@ void func_001C9610(void *p, s32 flag) {
         }
         if (p != 0) {
             func_001339B0(func_0029D540());
-            func_00133920(0x13C00720, 0, 0, 0x10400200, 0);
+            DrawFlags_Apply(0x13C00720, 0, 0, 0x10400200, 0);
             amModel_SetCurrent(FT_FIELD(p, s32, 0x5C), FT_FIELD(p, s32, 0x60));
             func_0013E170(FT_FIELD(p, s32, 0x4C));
             func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
-            func_00133920(0, 0x13C00720, 0, 0, 0);
+            DrawFlags_Apply(0, 0x13C00720, 0, 0, 0);
         }
         if (p != 0) {
             s1 = func_0029D4C0();
-            func_00133920(0x20000000, 0, 0, 0x20000000, 0);
+            DrawFlags_Apply(0x20000000, 0, 0, 0x20000000, 0);
             amGs_SetReg64(1, s1);
             amModel_SetCurrent(FT_FIELD(p, s32, 0x5C), FT_FIELD(p, s32, 0x60));
             func_0013E170(FT_FIELD(p, s32, 0x4C));
-            func_00133920(0, 0x20000000, 0, 0, 0);
+            DrawFlags_Apply(0, 0x20000000, 0, 0, 0);
             amGs_SetReg64(1, 0x44);
         }
         if (p != 0) {
@@ -5322,11 +5322,11 @@ void func_001C9610(void *p, s32 flag) {
                     s1 = func_0029D4C0();
                     func_0029D4B0(0x44);
                     func_001339B0(func_0029D4A0());
-                    func_00133920(0x10000F20, 0, 0, 0x10000A00, 0);
+                    DrawFlags_Apply(0x10000F20, 0, 0, 0x10000A00, 0);
                     amModel_SetCurrent(FT_FIELD(p, s32, 0x5C), FT_FIELD(p, s32, 0x60));
                     func_0013E170(FT_FIELD(p, s32, 0x4C));
                     func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
-                    func_00133920(0, 0x10000F20, 0, 0, 0);
+                    DrawFlags_Apply(0, 0x10000F20, 0, 0, 0);
                     func_0029D4B0(s1);
                 }
             }

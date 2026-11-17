@@ -149,3 +149,19 @@ StrSelect_Reset = 0x00299240; // type:func // guess
 
 // str_bg.c: calls func_0028F830 (the background's stop); called when the flight ends (Flight_Exit).
 StrBg_Stop = 0x00291380; // type:func // guess
+
+// str_status.c: stores v as a word at offset +0x3C of p. Called by the arena and main-menu tasks.
+Obj_SetF3C = 0x002C0490; // type:func // guess
+
+// str_bg.c: draws the background's 2D list: sets a GS register, opens the pass (func_00133780 mode 2), flushes the
+// list (A2d_FlushList), closes the pass and restores the register.
+StrBg_FlushDraw = 0x0028EA80; // type:func // guess
+
+// str_dataerase.c: creates the "SE READY" task (its update func_00310450) and reads the three sound files 0xF65 to
+// 0xF67 into the work block at +0x30 of the task (the three words, then clears the halfword at +0xC of it) and
+// clears D_004701D8. Called by the arena and story selection loads.
+SeReady_Start = 0x003105B0; // type:func // guess
+
+// str_status.c: copies a 16-byte vector from a1 to the object at a0 + 0x50 (lqc2/sqc2). Called by the arena and
+// main-menu tasks.
+Obj_CopyVec4F50 = 0x002C0470; // type:func // guess

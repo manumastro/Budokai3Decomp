@@ -128,7 +128,7 @@ void func_0029A9F0(void) {
 }
 #if 0
 // func_0029AAC0: the two for loops take the compare in at (slti at) in the original, v0 here; for, do-while, reversed and != tests tried; the rest matches
-extern void func_0028EA80(Task *);
+extern void StrBg_FlushDraw(Task *);
 extern void func_0029A1C0(Task *);
 extern char D_0046BB80[];
 extern char D_0046BB90[];
@@ -156,9 +156,9 @@ void func_0029AAC0(s32 a0, s32 a1, s32 a2) {
     }
     r = (s32)amTask_Create(func_0029A1C0, NULL, a0, 2, a1, D_0046BB80);
     gStrMap[0x2C / 4] = r;
-    r = (s32)amTask_Create(func_0028EA80, NULL, a0 + 5, 2, a1, D_0046BB90);
+    r = (s32)amTask_Create(StrBg_FlushDraw, NULL, a0 + 5, 2, a1, D_0046BB90);
     gStrMap[0x34 / 4] = r;
-    r = (s32)amTask_Create(func_0028EA80, NULL, a0 + 0xD, 2, a1, D_0046BBA0);
+    r = (s32)amTask_Create(StrBg_FlushDraw, NULL, a0 + 0xD, 2, a1, D_0046BBA0);
     gStrMap[0x54 / 4] = r;
 }
 #endif

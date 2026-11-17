@@ -128,7 +128,7 @@ extern void func_0027E070(void);
 extern void memset(void *, s32, s32);
 extern void Scene_SetReady(void);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
-extern void func_003105B0(void);
+extern void SeReady_Start(void);
 extern void func_0027E7E0(void);
 
 #if 0
@@ -509,6 +509,6 @@ void StrSelect_Load(void) {
     g->task = NULL;
     g->file[0] = amCdFs_ReadFileId(0x10819, 0, 0);
     g->file[1] = amCdFs_ReadFileId(0x1081A, 0, 0);
-    func_003105B0();
+    SeReady_Start();
     func_0027E7E0();
 }

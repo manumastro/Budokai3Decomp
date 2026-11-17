@@ -30,7 +30,7 @@ extern void func_00133780(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/sys/unk_12EF80", func_0012EF80);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_12EF80", func_0012EFF0);
-Q *func_0012F040(Q *dst, Q *src, s32 n) {
+Q *amDma_CopyViaSpr(Q *dst, Q *src, s32 n) {
     s32 c;
 
     while (n != 0) {
@@ -89,7 +89,7 @@ u8 *amPkt_AllocTop(s32 n) {
     return D_0047022C;
 }
 
-void func_0012F290(void) {
+void amDraw_ResetPackets(void) {
     amPkt_Reset();
     func_00133780(2, 0);
 }

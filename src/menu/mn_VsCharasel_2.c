@@ -3,7 +3,7 @@
 
 extern char D_0046B730[];
 extern void *amCdFs_ReadFileId(s32, s32, s32);
-extern void func_003105B0(void);
+extern void SeReady_Start(void);
 extern void func_0027E7E0(void);
 
 void VsCharasel_Load(void) {
@@ -18,7 +18,7 @@ void VsCharasel_Load(void) {
     g->f10 = 0;
     g->task = NULL;
     g->f18 = 0;
-    func_003105B0();
+    SeReady_Start();
     func_0027E7E0();
     func_0027E7E0();
 }

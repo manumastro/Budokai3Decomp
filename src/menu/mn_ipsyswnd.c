@@ -123,7 +123,7 @@ void *IpSysWnd_Start(s16 a0) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4BB0);
 #if 0
 // differs: 16 of 59: the register roles and the loop match; the original stores the call's return register into the cursor before the memset (mine copies it first, the store lands in the memset delay slot)
-extern void *func_0022DA90(s32, f32);
+extern void *A2d_AllocObj(s32, f32);
 
 void func_002F4D50(u8 *a0) {
     void *tmp;
@@ -135,7 +135,7 @@ void func_002F4D50(u8 *a0) {
     glob = (u8 *)gOutputPass;
     cur = a0;
     do {
-        tmp = func_0022DA90(0, 0.0f);
+        tmp = A2d_AllocObj(0, 0.0f);
         rec = (u8 *)tmp;
         *(void **)(cur + 4) = tmp;
         memset(rec, 0, 0x60);

@@ -183,7 +183,7 @@ void func_002366E0(void) {
     w2 = -1;
     func_00218440(0x10, b);
     w1 = -1;
-    func_00243DE0(7, a);
+    Sp_CallHandler(7, a);
     func_001DA4C0();
 }
 #endif

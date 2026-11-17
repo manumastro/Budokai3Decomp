@@ -304,7 +304,7 @@ extern char D_0046FC40[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern s32 D_004701D8;
 
-void func_003105B0(void) {
+void SeReady_Start(void) {
     Task *t = amTask_Create(func_00310450, NULL, 0x2000, 8, 2, D_0046FC40);
     s32 *s0 = (s32 *)((char *)t + 0x30);
     s0[0] = amCdFs_ReadFileId(0xF65, 0, 0);

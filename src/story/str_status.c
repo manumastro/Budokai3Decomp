@@ -512,12 +512,12 @@ void func_002C03E0(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03E0);
-void func_002C0470(u8 *a0, void *a1) {
+void Obj_CopyVec4F50(u8 *a0, void *a1) {
     u8 *p = a0 + 0x30;
     p += 0x20;
     __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a1), "r"(p) : "memory");
 }
-void func_002C0490(void *p, s16 v) {
+void Obj_SetF3C(void *p, s16 v) {
     ((s32 *)p)[0xF] = v;
 }
 void *func_002C04A0(void) {
@@ -738,7 +738,7 @@ void func_002C27B0(s32 *a0) {
     func_002C0860(s0);
     A2d_FlushList();
     func_00133B50(0, 0);
-    func_003105B0();
+    SeReady_Start();
     f = (void *)func_002C2560;
     *(u8 *)((char *)s0 + 0xAC) = *(u8 *)((char *)s0 + 0xAC) + 1;
     *(s32 *)((char *)s0 + 0xC4) = 0x41F00000;

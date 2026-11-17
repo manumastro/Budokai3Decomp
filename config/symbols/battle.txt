@@ -219,3 +219,29 @@ A2d_CallHandler = 0x00226030; // type:func // guess
 // (flag bit 1 of word +4) with func_002269B0 or func_00226540 (by the sign of the halfword at +0x18), then empties
 // the list (D_004706BC = 0).
 A2d_FlushList = 0x0022C700; // type:func // guess
+
+// unk_21B130.c: the slot block of gBtlSys: block i is 0x190 bytes, and the function returns its word at +0x110
+// (the address of that word); -1 gives 0. Called by 10 functions (a2d.c and others).
+BtlSys_GetSlot = 0x0021C620; // type:func // guess
+
+// a2d.c: takes the next object of a ring (the table D_004706AC, index D_004706B0, wrapping at D_004706B8), clears
+// its 0x60 bytes and, when a0 is given, initialises it with func_0022B900. Called by ArenaStageSel_CreateObj and
+// Zenie_Draw.
+A2d_AllocObj = 0x0022DA90; // type:func // guess
+
+// character.c: the voice of a character: pauses the ADX slot held at word 15 of the block (AdxSlot_Pause). Called
+// by the character code (the stop and pause commands).
+Character_PauseVoice = 0x001CAFD0; // type:func // guess
+
+// character.c: the script command that starts a player script: calls PlyScr_Start for the fighter whose index is
+// the third argument, with the first two arguments, then returns 1.
+Character_CmdPlyScr = 0x001CBA90; // type:func // guess
+
+// char_acsr.c: draws the accessory character when its pointer is not null (Acsr_Draw). Called by func_001D44C0.
+Acsr_DrawIfAny = 0x001D0B90; // type:func // guess
+
+// btl_main.c: clears the float at +0x17BC of a fighter (0.0).
+Fighter_ClearF17BC = 0x001B5DA0; // type:func // guess
+
+// btl_cmd.c: returns the entry i of the motion file f (Mot_GetEntry).
+BtlCmd_GetMotEntry = 0x001A5130; // type:func // guess

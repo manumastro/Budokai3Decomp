@@ -2024,7 +2024,7 @@ void func_0020CB90(void *);
 void func_0020F700(s32);
 void func_0020A7F0(s32);
 void func_002185E0(void);
-void func_00244040(void);
+void Sp_KillTasks(void);
 void func_00247410(void);
 
 #if 0
@@ -2057,7 +2057,7 @@ void func_00215B20(void) {
     func_0020F700(-1);
     func_0020A7F0(-1);
     func_002185E0();
-    func_00244040();
+    Sp_KillTasks();
     func_00247410();
 }
 // differs: 0xE8 against 0xF0: the 16-bit flag test is loaded with lh and zero-extended with dsll32 / dsrl32 in the original, here it is lhu or a plain lh with bnez; the second loop's label is not padded the same way
