@@ -100,45 +100,39 @@ extern u8 D_0059CA9D[];
 extern u8 D_004E0660[];
 extern u8 D_0059CA9D[];
 
-#if 0
-void func_002702A0(Ac270 *a, s32 n) {
-    Ent270 *e;
-    G270C *g;
-    s32 *tbl;
-    s32 cnt = 0;
+void func_002702A0(u8 *a0, s32 a1) {
+    u8 *a3;
+    s32 *t1;
+    s32 t0;
     s32 i;
 
-    a->f0 = n;
-    g = (G270C *)D_004707FC;
-    e = (Ent270 *)(D_004E0660 + n * 40);
-    if (g->f40 != 1) {
+    *(s32 *)a0 = a1;
+    a3 = D_004E0660 + a1 * 40;
+    if (*(s32 *)((u8 *)D_004707FC + 0x40) != 1) {
         return;
     }
-    a->f7 = 0;
-    if ((e->fB & 1) == 0) {
-        a->f7 = a->f7 | 1;
+    a0[7] = 0;
+    if ((a3[0xB] & 1) == 0) {
+        a0[7] |= 1;
         return;
     }
-    tbl = g->f64;
-    for (i = 0; i < 4; i++) {
-        if (*tbl == n) {
-            cnt++;
+    t0 = 0;
+    t1 = *(s32 **)((u8 *)D_004707FC + 0x64);
+    for (i = 0; i < 4; i++, t1++) {
+        if (a1 == *t1) {
+            t0++;
             break;
         }
-        tbl++;
     }
-    if (cnt > 0) {
-        a->f7 = a->f7 | 4;
+    if (t0 > 0) {
+        a0[7] |= 4;
         return;
     }
-    cnt = g->f44;
-    if (*(u8 *)(D_0059CA9D + (1 - cnt) * 0xD680 + n) != 0) {
-        a->f7 = a->f7 | 2;
+    t0 = *(s32 *)((u8 *)D_004707FC + 0x44);
+    if ((D_0059CA9D + (1 - t0) * 0xD680)[a1] > 0) {
+        a0[7] |= 2;
     }
 }
-// differs: the early part matches (store, index math); the e and g locals get other registers (g in t1, D and the index temp swapped) for every declaration order and stride form tried
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_002702A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_00270390);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_00270660);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_00270870);
