@@ -239,6 +239,71 @@ void func_002BB150(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB150);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB2A0);
+/* A 28-byte entry of the table D_00455920 (seven floats). */
+typedef struct Pv28 {
+    f32 f0, f4, f8, fC, f10, f14, f18;
+} Pv28;
+extern Pv28 D_00455920[];
+extern f32 gFrameDelta;
+extern f32 D_0046FD80;
+extern u8 D_003F0800[];
+extern void func_0029DD30(void *, f32);
+extern void func_002BF850(void *);
+extern void func_0029D6C0(void *);
+extern void func_0013B0B0(void *);
+extern void func_00131B90(void *);
+extern void func_00131D00(void *, f32, f32, s32);
+extern void func_00131F00(void *, f32, f32);
+extern void func_00132DF0(void *);
+extern void func_0013BBD0(f32, f32, f32);
+extern void func_00133D10(s32);
+extern void func_0029D8B0(s32, s32);
+extern void func_0029DB00(f32, void *);
+extern void func_002BF610(void);
+extern void func_0013B110(s32);
+extern void func_002BF520(void);
+
+#if 0
+void func_002BB490(void) {
+    V16 buf[6];
+    f32 vec[4];
+    Pv28 *s0;
+    s32 one;
+    f32 t18, t10, t14;
+
+    func_0029DD30(*(void **)((u8 *)gStrStatus + 0x25C), gFrameDelta);
+    func_002BF850(gStrStatus);
+    s0 = &D_00455920[*(s32 *)((u8 *)gStrStatus + 0x28C)];
+    t14 = s0->f14;
+    t18 = s0->f18;
+    t10 = s0->f10;
+    vec[0] = t10;
+    one = 0x3F800000;
+    *(s32 *)&vec[3] = one;
+    vec[1] = t14;
+    vec[2] = t18;
+    func_0029D6C0(vec);
+    D_0046FD80 = s0->fC;
+    func_0013B0B0(D_003F0800);
+    func_00131B90(&buf);
+    func_00131D00(&buf, s0->f0, s0->f4, 0);
+    func_00131F00(&buf, 0.0f, 0.0f);
+    func_00132DF0(0);
+    if (*(s32 *)((u8 *)gStrStatus + 0x28C) != 0x22 || *(s32 *)((u8 *)gStrStatus + 0x294) != 0) {
+        func_0013BBD0(0.0f, 0.0f, s0->f8);
+    } else {
+        func_0013BBD0(0.0f, 0.0f, -32.0f);
+    }
+    func_00133D10(0);
+    func_0029D8B0(-1, 4);
+    func_0029DB00(1.0f, *(void **)((u8 *)gStrStatus + 0x25C));
+    func_002BF610();
+    func_0013B110(1);
+    func_002BF520();
+}
+#endif
+// differs: 2 of ~88 instructions: the vector copy takes f1/f2 swapped (0x18 and 0x14 floats), every
+// decl/load order tried (36); the tail loads gStrStatus into $v1 here, $v0 in the original.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB490);
 void func_002BB5F0(Ac98D *s) {
     if (func_002F5480() == 4) {
