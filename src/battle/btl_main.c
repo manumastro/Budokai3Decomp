@@ -1337,8 +1337,9 @@ extern f32 D_0051D9A8[];
 extern f32 D_0051D9AC[];
 extern void func_0022DB40(f32);
 extern void func_001E9930(void);
-#if 0
 // differs: frame 48 against 32: the count and the loop index take saved registers (s1), the original keeps only the battle pointer; the first add has its operands in the other order
+#if 0
+// differs: 0x194 against 0x1C0 bytes (frame 48 against 32: the count and the loop index take saved registers, the original keeps only the battle pointer)
 void func_001AFFA0(void) {
     BattleWork *bw;
     s32 i;
