@@ -330,7 +330,40 @@ void func_002D3650(void) {
     DrawModel(D_00470934, s->f314, &v, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D3730);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D3E50);
+void func_002DDF00(void);
+void func_002DEFE0(void);
+void func_002D3650(void);
+void func_002D3730(Vec4 *, Vec4 *, Vec4 *, Vec4 *);
+void func_002D3E50(void) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
+
+    if (s->f344 == func_002DDF00 || s->f344 == 0 || s->f344 == func_002DEFE0) {
+        m = s->f2E0;
+        DrawModel(D_00470934, m, 0, &s->f3C0);
+    } else {
+        m = s->f2E0;
+        DrawModel(D_00470934, m, 0, &s->f3B0);
+    }
+    if (s->f360 == func_002D3650) {
+        switch (s->f37C) {
+        case 0:
+            func_002D3730(&s->f3B0, &s->f3C0, &s->f3C0, &s->f3C0);
+            break;
+        case 1:
+            func_002D3730(&s->f3C0, &s->f3B0, &s->f3C0, &s->f3C0);
+            break;
+        case 2:
+            func_002D3730(&s->f3C0, &s->f3C0, &s->f3B0, &s->f3C0);
+            break;
+        default:
+            func_002D3730(&s->f3C0, &s->f3C0, &s->f3C0, &s->f3B0);
+            break;
+        }
+    } else {
+        func_002D3730(&s->f3C0, &s->f3C0, &s->f3C0, &s->f3C0);
+    }
+}
 s32 func_0022D670(s32, f32);
 void func_002D40A0(void) {
     Obj2D2530 *s = D_00470934;
