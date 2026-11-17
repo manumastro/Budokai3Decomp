@@ -31,6 +31,16 @@ typedef struct ScrObj {
     f32 f18;
 } ScrObj;
 
+typedef struct ScrChara {
+    char pad0[0x1350];
+    s32 f1350;
+} ScrChara;
+
+typedef struct ScrEntry {
+    char pad0[0x94];
+    s32 f94;
+} ScrEntry;
+
 typedef struct ScrTask {
     char pad0[0x30];
     s32 f30;
@@ -60,6 +70,7 @@ extern s32 D_0058EE90[];
 extern s32 D_0058EED0[];
 extern s32 D_0058EF10[];
 extern void func_001258F8(void *, s32, s32);
+extern void func_00209530(s32);
 extern s32 D_0047079C;
 
 typedef struct ScrProg {
@@ -70,7 +81,7 @@ typedef struct ScrProg {
 typedef struct ScrCtx {
     ScrProg *f0;
     char pad4[0xC];
-    s32 f10;
+    void *f10;
     void *f14;
     char pad18[0x10];
     s8 f28;
@@ -93,9 +104,16 @@ typedef struct ScrEffect {
 } ScrEffect;
 
 typedef struct ScrWork {
-    char pad0[0x8934];
+    char pad0[0x88EC];
+    s32 f88EC;
+    char pad88F0[0x8934 - 0x88F0];
     void *f8934[1];
 } ScrWork;
+
+typedef struct ScrSound {
+    char pad0[0x38];
+    s32 f38;
+} ScrSound;
 
 extern ScrWork *D_00470570;
 extern void func_0020F040(s32, s32);
@@ -126,7 +144,25 @@ s32 func_0025D940(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025D980);
+extern void func_0020DE40(s32);
+extern void func_00145120(ScrTask *);
+
+void func_0025D980(ScrTask *task) {
+    s32 busy = D_00470570 != NULL ? D_00470570->f88EC : 0;
+
+    if (busy == 0) {
+        switch (D_0046FE4C->f916) {
+        case 0:
+            func_0020DE40(task->f30);
+            D_0046FE4C->f916 = 1;
+            break;
+        case 1:
+            func_00145120(task);
+            D_0046FE4C->f916 = 2;
+            break;
+        }
+    }
+}
 extern char D_0046B080[];
 extern ScrTask *func_00144FC0(void *, s32, s32, s32, s32, char *);
 void func_0025D980(ScrTask *);
@@ -347,7 +383,30 @@ s32 func_0025ED50(ScrCtx *ctx, ScrCmd *cmd) {
     func_00245A80(D_00470570->f8934[0], cmd->args[0].i);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025ED90);
+extern void func_002529B0(s32, void *, ScrVec *);
+extern void func_00248910(s32, void *);
+
+s32 func_0025ED90(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrVec v;
+    s32 id = a[5].i;
+    void *o = D_00470570->f8934[a[4].i];
+    s32 mode = a[3].i;
+    f32 x = a[2].f;
+    f32 y = a[1].f;
+    f32 z = a[0].f;
+
+    if (mode == 1) {
+        v.x = x;
+        v.w = 1.0f;
+        v.y = y;
+        v.z = z;
+        func_002529B0(id, o, &v);
+    } else {
+        func_00248910(id, o);
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EE10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EEE0);
 extern s32 func_0020EE10(s32, s32);
@@ -541,7 +600,15 @@ s32 func_0025FA60(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FAC0);
+s32 func_0025FAC0(ScrCtx *ctx, ScrCmd *cmd) {
+    ctx->f28 = cmd->args[0].i;
+    ctx->f10 = func_0025FA60;
+    if (func_00245C50(D_00470570->f8934[ctx->f28])) {
+        ctx->f10 = 0;
+        return 1;
+    }
+    return 3;
+}
 extern void func_00245BF0(void *);
 
 s32 func_0025FB40(ScrCtx *ctx, ScrCmd *cmd) {
@@ -610,7 +677,19 @@ s32 func_0025FCF0(ScrCtx *ctx, ScrCmd *cmd) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FD50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FF00);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FFA0);
+extern ScrEntry *func_0020F6D0(s32);
+extern s32 func_0020AE80(s32, s32, s32);
+
+s32 func_0025FFA0(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrChara *o = D_00470570->f8934[a[2].i];
+    s32 b = a[1].i;
+    s32 c = a[0].i;
+    ScrEntry *e = func_0020F6D0(a[3].i);
+
+    e->f94 = func_0020AE80(o->f1350, b, c);
+    return 1;
+}
 extern void func_00215990(s32);
 
 s32 func_00260020(ScrCtx *ctx, ScrCmd *cmd) {
@@ -715,11 +794,72 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260410);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002604F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002605C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260690);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260770);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002607F0);
+extern void func_00209A90(s32, ScrVec *);
+
+s32 func_00260770(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrVec v;
+    f32 x = a[2].f;
+    f32 y = a[1].f;
+    f32 z = a[0].f;
+    s32 h = D_0058EE50[a[3].i];
+
+    if (D_0047079C != 0) {
+        return 1;
+    }
+    if (h != 0) {
+        v.x = x;
+        v.w = 1.0f;
+        v.y = y;
+        v.z = z;
+        func_00209A90(h, &v);
+    }
+    return 1;
+}
+extern void func_00209B50(s32, ScrVec *, s32);
+
+s32 func_002607F0(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrVec v;
+    f32 x = a[2].f;
+    f32 y = a[1].f;
+    f32 z = a[0].f;
+    s32 h = D_0058EE50[a[3].i];
+
+    if (D_0047079C != 0) {
+        return 1;
+    }
+    if (h != 0) {
+        v.x = x;
+        v.y = y;
+        v.z = z;
+        v.w = 1.0f;
+        func_00209B50(h, &v, 0);
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260870);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260940);
-extern void func_00209530(s32);
+extern void func_00208F70(ScrSound *);
+
+s32 func_00260940(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrSound *h;
+    s32 *p;
+
+    p = &D_0058EE50[cmd->args[0].i];
+    h = (ScrSound *)*p;
+
+    if (D_0047079C != 0) {
+        return 1;
+    }
+    if (h != NULL) {
+        func_00208F70(h);
+        if (h->f38 < 0) {
+            func_00209530((s32)h);
+            *p = 0;
+        }
+    }
+    return 1;
+}
 
 s32 func_002609D0(ScrCtx *ctx, ScrCmd *cmd) {
     s32 *p = &D_0058EE50[cmd->args[0].i];
@@ -730,7 +870,21 @@ s32 func_002609D0(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260A30);
+extern s32 func_002096D0(s32, s32, s32);
+
+s32 func_00260A30(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 b = a[1].i;
+    s32 c = a[0].i;
+    s32 *p = &D_0058EE50[a[2].i];
+
+    if (*p != 0) {
+        func_00209530(*p);
+        *p = 0;
+    }
+    *p = func_002096D0(c, 0x10001, b);
+    return 1;
+}
 s32 func_00260AC0(ScrCtx *ctx, ScrCmd *cmd) {
     D_0047079C = cmd->args[0].i;
     return 1;
@@ -761,7 +915,17 @@ void func_00260B80(s32 a, s32 b, s32 c, s32 i) {
         D_0058EF10[i] = c;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260BD0);
+extern s32 func_00209540(s32, s32, s32);
+
+void func_00260BD0(s32 a, s32 i, s32 b) {
+    s32 *p = &D_0058EE50[i];
+
+    if (*p != 0) {
+        func_00209530(*p);
+        *p = 0;
+    }
+    *p = func_00209540(a, 0x10001, b);
+}
 void func_00260C40(void) {
     D_0047079C = 0;
     func_001258F8(D_0058EE50, 0, 0x40);
