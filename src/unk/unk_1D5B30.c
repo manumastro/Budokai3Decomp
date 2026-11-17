@@ -42,7 +42,8 @@ typedef struct Fighter {
     s32 fC9C;
     char padCA0[0xC];
     s16 fCAC;
-    char padCAE[0x4];
+    s16 fCAE;
+    char padCB0[0x2];
     u16 fCB2;
     s16 fCB4;
     s16 fCB6;
@@ -278,11 +279,14 @@ extern void func_001ABCE0(void *c);
 extern u8 D_004E0660[];
 extern s32 func_001DFE60(Fighter *c, s32 a, f32 v);
 extern s32 func_001DFA90(Fighter *c, s32 idx);
+extern s32 func_002350A0(Fighter *c);
 extern s32 D_00469478[];
 extern void func_001E11E0(s32 a, void *b);
 extern void func_001DFC80(Fighter *c, s32 a, f32 v);
 extern void func_001D7CC0(Fighter *c, s32 a);
 extern char D_004694D0[];
+extern char D_004694E0[];
+extern void func_001D7290(Fighter *c);
 extern s32 func_00233B20(Fighter *c, void *a, s32 v);
 extern s32 func_00233850(Fighter *c, void *a);
 extern void func_001F9BB0(s32 a, s32 b);
@@ -541,7 +545,33 @@ void func_001D8B50(Fighter *c) {
     c->f183F = -1;
     c->f1840 = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D8BD0);
+void func_001D8BD0(Fighter *c, s32 a1, s32 a2, f32 f) {
+    s32 t;
+    char *p;
+
+    if (c->f13A4 > -1) {
+        switch (c->f1350) {
+        case 0:
+            t = 0x40000180;
+            break;
+        case 1:
+            t = 0x40000280;
+            break;
+        case 2:
+            t = 0x40000480;
+            break;
+        case 3:
+            t = 0x40000880;
+            break;
+        }
+        p = amTask_Create((void (*)(void *))func_001D7290, (void *)func_001D7280, 0x5380, 0x20, t, D_004694E0);
+        *(s32 *)(p + 0x30) = c->f13A4;
+        *(s32 *)(p + 0x38) = 0;
+        *(f32 *)(p + 0x3C) = f;
+        *(s8 *)(p + 0x34) = a1;
+        *(s8 *)(p + 0x35) = a2;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D8CD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D8FE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D90D0);
@@ -1833,6 +1863,37 @@ s32 func_001E8D10(Fighter *c) {
 #endif
 // differs: same shape as func_001E8C90 (0x64 bytes against 0x80)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8D10);
+#if 0
+s32 func_001E8D90(Fighter *c) {
+    Game *g;
+    s32 v;
+
+    if (c->f1FF8 < 2) {
+        return 0;
+    }
+    g = D_00470570;
+    switch (g->f7E2) {
+    case 4:
+        v = func_002CC450(c);
+        if (v & 0x40000) {
+            return 1;
+        }
+        if (v & 0x80000) {
+            if (c->f1354->fCAE == 0x27) {
+                return 1;
+            }
+        }
+        return 0;
+    case 3:
+        if (g->f8977 != 3) {
+            return 0;
+        }
+        break;
+    }
+    return func_002350A0(c);
+}
+#endif
+// differs: the state is read into a1 where the original uses a0, so the compares and the case order differ (both case orders tried)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8D90);
 #if 0
 s32 func_001E8E70(Fighter *c) {
