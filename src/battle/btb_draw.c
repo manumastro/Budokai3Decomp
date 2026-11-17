@@ -4966,7 +4966,54 @@ void func_001F3740(char *a0) {
 // differs: func_001F3740 (424 bytes): the draw shape of func_001F2570 without its prefix; the only misses are the load order of the table base (gBtbBg+0x34 in v1 first in the original) and the index D_0051CD20 (a0), which the compiler swaps (tried: index first, base in a local, split statements). 6 instructions differ, the rest matches.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3740);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F38F0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3A60);
+void func_001F3A60(char *a0) {
+    char *s0;
+    char *bg;
+    char *v;
+    s32 idx;
+    s32 w;
+    s32 fl;
+    s32 fl2;
+
+    s0 = a0;
+    bg = (char *)gBtbBg;
+    idx = D_0051CD20[0];
+    v = *(char **)(bg + 0x34);
+    v = (char *)((s32 *)v)[idx * 9 + 1];
+    w = *(s32 *)(v + 0xA4);
+    if (w != 0) {
+        D_00470238 = 1;
+        amModel_SetCurrent(w, 0x2002000);
+    }
+    v = *(char **)(s0 + 0x10);
+    v = *(char **)(v + 0x10);
+    if (*(s32 *)v != 0) {
+        func_002D04A0(*(s16 *)(v + 0xE));
+        func_002CFDE0(0);
+        func_002D04A0(0);
+    }
+    fl = *(s32 *)(s0 + 0x20);
+    if ((fl & 0x800) || (fl & 0x8000)) {
+        if (*(s32 *)(s0 + 0x30) != 0) {
+            __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(BtbBg_GetStageModel()), "r"(D_0051CCD0) : "memory");
+            D_0051CCD0[3] = 1.0f;
+            D_0047064C = (s32)D_0051CCD0;
+        }
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            func_00133D80(*(s32 *)((char *)gBattle + 0x8928));
+            func_00133D90(*(f32 *)((char *)gBattle + 0x892C));
+            DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
+        }
+    }
+    func_0013E0A0(*(s32 *)(*(char **)(s0 + 0x10) + 4));
+    fl2 = *(s32 *)(s0 + 0x20);
+    if ((fl2 & 0x800) || (fl2 & 0x8000)) {
+        D_0047064C = 0;
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            DrawFlags_Apply(0, 0x8000, 0, 0, 0);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3C10);
 extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
 extern s32 gBattle;
@@ -6562,7 +6609,8 @@ void func_001F7BF0(void) {
     }
 }
 extern char D_004698D0[];
-extern void func_001F3A60(void);
+#if 0
+extern void func_001F3A60(char *);
 extern void func_001F3C10(void);
 
 // differs: func_001F7C80: 28 of 77 at best (about 8 are relocations): the flags local is kept in another register (original t0, set in the delay slot of the first beqz) and the two early exits go to a different join; declaration orders tried.
@@ -6608,6 +6656,9 @@ void func_001F7C80(s32 a0) {
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & ~flags;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | flags;
 }
+#endif
+// differs: func_001F3A60 (424 bytes): same as func_001F3740 (the draw shape with the table walk): the index D_0051CD20 is loaded before the table base in ours (original: base gBtbBg+0x34 first, index second); s0 copy first, bg and index locals tried. 6 instructions differ.
+INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3A60);
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7C80);
 #if 0
