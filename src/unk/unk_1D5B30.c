@@ -1265,30 +1265,27 @@ s16 func_001D99C0(Fighter *c, s32 a1) {
     }
     return ((s16 *)((char *)g + p * 72 + 0x897E))[a1];
 }
-#if 0
 void func_001D9A10(Fighter *c) {
-    s16 *q;
-    s32 p;
+    Game *g = gBattle;
+    s32 v;
+    char *s1;
 
-    if (c->f2015 != 0) {
-        p = c->f1358->f1350;
+    if (*(s8 *)((char *)c + 0x2015) != 0) {
+        v = ((Fighter *)c->f1358)->f1350;
     } else {
-        p = c->f1350;
+        v = c->f1350;
     }
-    q = (s16 *)((char *)gBattle + 0x897E + p * 72);
-    memset(q, 0, 0x48);
-    q[0x17] = 1;
-    q[0x1D] = 1;
-    q[0x1E] = 1;
-    q[0x1F] = 1;
-    q[0x20] = 1;
-    if (c->f1FEC != 0) {
-        q[0x21] = 1;
+    s1 = (char *)g + v * 72 + 0x897E;
+    memset(s1, 0, 0x48);
+    *(s16 *)(s1 + 0x2E) = 1;
+    *(s16 *)(s1 + 0x3A) = 1;
+    *(s16 *)(s1 + 0x3C) = 1;
+    *(s16 *)(s1 + 0x3E) = 1;
+    *(s16 *)(s1 + 0x40) = 1;
+    if (*(s16 *)((char *)c + 0x1FEC) != 0) {
+        *(s16 *)(s1 + 0x42) = 1;
     }
 }
-#endif
-// differs: the global's load and the saved context pointer come out in other registers (13 of 37 differ)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9A10);
 void func_001D9AB0(Fighter *c, s32 a1) {
     s32 k;
     s32 t;
