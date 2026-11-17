@@ -917,16 +917,14 @@ void func_001AE720(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE720);
-#if 0
-// differs: the local buffer and the flag sit at other stack offsets (flag at 0x30 and buffer at 0x40 in the original; 7 of 59 instructions differ; the local order is not the cause)
 extern void func_001A8770(s32, void *);
-extern void func_001C8020(s32, s32);
-extern void func_00226030(s32, s32 *);
 extern void func_00219270(s32);
 extern s32 func_00218CD0(s32, s32);
+#if 0
+// differs: 7 of 59. The frame is 0x90 as in the original, but the layout is buf at 0x30 and flag at 0x8C whichever of the two is declared first; the original has flag at 0x30 and buf at 0x40.
 void func_001AE890(void) {
-    u8 buf[0x50];
     s32 flag;
+    u8 buf[0x50];
     BattleWork *bw;
     s32 old;
     bw = gBattle;
