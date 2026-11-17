@@ -190,7 +190,7 @@ void func_001CB010(s32 *a) {
     func_001D9EB0(s->obj, s->id);
 }
 #if 0
-/* Does not match yet: 10 of 32 instructions differ. */
+/* Does not match yet: 10 of 32 instructions differ (round 5 chr2: 3 declaration orders of bw and w tried; the original keeps gBattle in a1 and w in a2, ours swaps them). */
 void func_001CB020(Task *task) {
     CharTimer *w;
     BattleWork *bw = gBattle;
