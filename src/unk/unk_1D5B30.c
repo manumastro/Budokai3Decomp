@@ -2844,6 +2844,49 @@ void PlySe_Start(Fighter *c) {
         }
     }
 }
+extern void func_001E74F0();
+extern void func_001E8640(Fighter *c, s32 mask);
+
+#if 0
+void func_001E3310(Fighter *c) {
+    f32 f;
+    f32 f1;
+    f32 f2;
+    f32 f3;
+    char *g;
+
+    g = (char *)gBattle;
+    func_001E74F0((char *)c + 0x650);
+    func_001E74F0((char *)c + 0xCD0);
+    f3 = *(f32 *)((char *)c + 0xC9C);
+    f2 = *(f32 *)(g + 0x88F0);
+    f1 = *(f32 *)((char *)c + 0x1808);
+    if (!(f1 <= 0.0f)) {
+        f = f1 - f3 * f2;
+        *(f32 *)((char *)c + 0x1808) = f;
+    }
+    if (*(f32 *)((char *)c + 0x1808) < 0.0f) {
+        *(f32 *)((char *)c + 0x1808) = 0.0f;
+    }
+    if (c->f1FF8 == -1) {
+        *(f32 *)((char *)c + 0x189C) = *(f32 *)((char *)c + 0x189C) + *(f32 *)(g + 0x88F0);
+    } else {
+        *(s32 *)((char *)c + 0x189C) = 0;
+    }
+    func_001E8640((Fighter *)((char *)c + 0x650), -1);
+    __asm__ volatile ("lqc2 $vf1, 0(%1)
+	sqc2 $vf1, 0(%0)" : : "r"((char *)c + 0x80), "r"((char *)c + 0x650) : "memory");
+    *(f32 *)((char *)c + 0x84) = *(f32 *)((char *)c + 0x84) + *(f32 *)*(char **)((char *)c + 0xB94);
+    __asm__ volatile ("lqc2 $vf1, 0(%1)
+	sqc2 $vf1, 0(%0)" : : "r"((char *)c + 0x60), "r"((char *)c + 0x650) : "memory");
+    if (!c->f1FF9) {
+        *(f32 *)((char *)c + 0x64) = *(f32 *)((char *)c + 0x44);
+    } else {
+        *(f32 *)((char *)c + 0x64) = *(f32 *)((char *)c + 0x44);
+    }
+}
+#endif
+// differs: 12 of 71 differ: gBattle loaded first (done), the sub-object call and the copies match; the float loads and the mul/sub register assignment of the 0x1808 timer (c9c, 88f0) differ; declaration orders of the float locals tried (24)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3310);
 void func_001E3430(Fighter *c) {
     func_001E7BE0((char *)c + 0x650);
