@@ -56,6 +56,12 @@ Until a function is named in a symbol file, keep its `func_XXXXXXXX` name in C (
 - It pads branch targets to 8 bytes with a `nop` and every function to 16 bytes.
 - `if (x >= 0)` on a value it can test with a branch on zero gives `bltz`; the original sometimes has
   `slti $at, x, 0` / `bnez $at` instead (95 of 99 such sites are in 0x1A2000-0x1E0000), source form unknown yet.
+- Labels made by an expression (`?:`) are never padded; labels made by a statement (`if`) are. The task-function
+  store (`bnez v1, L` / `move v1, zero` / `L: sw v1, 0x1C(sX)`, about 665 sites, `L` often not 8-aligned) is the
+  expression `t->func = (f == NULL) ? NULL : f;`; the statement `if (f == NULL) f = NULL; t->func = f;` gives the
+  same instructions but pads `L` with a `nop` when it falls on 4 mod 8.
+- `x = flag == 0 ? A : B` gave the original `li s0, A` / `li v0, B` / `movn s0, v0, flag`; `flag ? B : A` and
+  `!flag ? A : B` gave `movz` with the constants swapped.
 - Tail calls (`j func` with the stack restored in the delay slot) appear in the code linked before CRI; 3.0b52 at
   `-O4,p` did not produce one for `func_0014E580`: open question.
 
