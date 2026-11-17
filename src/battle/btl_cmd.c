@@ -543,10 +543,6 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8930);
 extern s32 func_001A8930(s32, void *, s32);
 extern s32 func_001A8E60(s32, void *);
 
-#if 0
-/* differs: 1 real instruction of 110 (the address add: the original is a6 + (a6 << 8) with a6 in $a2, ours
- * (a6 << 8) + a6 with a6 in $a1; the other differing lines are relocations). Tried: the same sum split into
- * locals (4 differ), a6 and the temporary declared in either order. */
 void func_001A8BD0(u8 *a0) {
     u8 *s6;
     s32 s5;
@@ -561,7 +557,7 @@ void func_001A8BD0(u8 *a0) {
     f32 f;
 
     a6 = *(s8 *)(a0 + 0x6);
-    s6 = (u8 *)gBattle + (((a6 << 8) + a6) << 5) + 0x830;
+    s6 = (u8 *)gBattle + ((a6 * 257) << 5) + 0x830;
     s5 = 0;
     s7 = 0;
     if (0 < *(s16 *)a0) {
@@ -601,8 +597,6 @@ void func_001A8BD0(u8 *a0) {
     }
     *(s16 *)(a0 + 0x2) = (s16)s5;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8BD0);
 s32 func_001A8D90(void *a0, void *a1) {
     u16 x = *(u16 *)((u8 *)a0 + 0xC);
     u16 y = *(u16 *)((u8 *)a1 + 0xCB2);
