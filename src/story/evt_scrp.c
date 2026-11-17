@@ -1385,6 +1385,82 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5870);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5B00);
 void func_002A5D70(void) {
 }
+#if 0
+// func_002A5D80: long state task: the branch layout of the nested Zenie test differs (118 of 126 with the flag form, 100 of 120 with the and-or form); 2 forms tried
+extern s32 Zenie_GetState(void);
+extern void func_00264260(s32, s32, s32);
+extern void func_00298910(void);
+extern void func_00298990(s32, s32, s32);
+extern void func_00298E30(s32, s32);
+extern void func_002988D0(s32, s32);
+extern void func_00144370(s32, s32, s32, s32);
+extern void func_00144B70(s32);
+extern void Scr_Start(s32, s32);
+extern s8 D_004708E0[];
+extern s8 D_005ABA60[];
+extern char D_005AB8D0[];
+extern s32 D_005AA550[];
+extern void func_002A5D70(void);
+
+void func_002A5D80(s32 *a0) {
+    s32 *s0 = (s32 *)gEvtWork;
+    s32 s2;
+    s32 s3;
+    s32 *s1;
+    s8 *p2;
+    char *p1;
+    s32 skip = 0;
+    if ((s0[0xC / 4] & 1) != 0 && (s0[0xC / 4] & 2) != 0) {
+        if (s0[0x40 / 4] != 0) {
+            if (s0[0x68 / 4] == 0) {
+                skip = 1;
+            } else if (Zenie_GetState() <= 0) {
+                skip = 1;
+            }
+        }
+        if (skip == 0) {
+            func_00264260(-1, 0, 0);
+            if (s0[0x130 / 4] != -1) {
+                func_00298910();
+                func_00298E10(D_004700A0);
+                D_004700A0 = -1;
+            }
+            if (s0[0x138 / 4] < 4) {
+                func_00298990(s0[0x134 / 4], s0[0x138 / 4], s0[0x13C / 4]);
+            } else {
+                func_00298990(s0[0x134 / 4], 3, s0[0x13C / 4]);
+            }
+            if (s0[0x140 / 4] != -1) {
+                func_00298E30((s32)((char *)s0 + 0xE0), s0[0xF0 / 4]);
+                s0[0x140 / 4] = -1;
+            }
+            if (D_004708E0[0] > 0) {
+                s3 = 0;
+                p2 = D_005ABA60;
+                p1 = D_005AB8D0;
+                do {
+                    func_002988D0((s32)p1, *p2);
+                    s3++;
+                    p2++;
+                    p1 += 0x10;
+                } while (s3 < D_004708E0[0]);
+            }
+            D_004708E0[0] = 0;
+            s1 = D_005AA550;
+            s2 = 0;
+            do {
+                func_00144370(1, s2 + 0x11122233, 0, s1[0xE10 / 4]);
+                s2++;
+                s1++;
+            } while (s2 < 8);
+            func_00144B70(-1);
+            Scr_Start(s0[0], 0);
+            a0[0x1C / 4] = (s32)((func_002A5D70 == 0) ? 0 : (void *)func_002A5D70);
+            s0[0xC / 4] = 0;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5D80);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5F50);
 extern void amCdFs_ReleaseCache(s32);
