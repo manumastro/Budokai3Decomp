@@ -93,8 +93,15 @@ extern s32 D_00470238;
 
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00248E00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249100);
+// GIVEN UP (round 5): 66 of 86 with the best declaration order. Shape: out in s2, base in s1, side in s0 (the side field
+// is read after the func_0012EAE0 call, `r0 % 0x15` by divu); two 16-byte temporaries at sp+0x40 (vec, lqc2 + vsub) and
+// sp+0x50 (func_00249100 and func_00142100); the VU0 blocks match as inline asm. Draft kept in the round 5 scratch folder.
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002499A0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249B00);
+// GIVEN UP (round 5): a draft is in the round 5 scratch folder (draft_249D50.c). It matches the calls (amTask_Create
+// with a sixth argument D_0046ADD0, memset, func_0020D400, the 16-byte copy) but is 0x1E8 bytes against 0x200: the
+// original lays the four type bodies out as 0, 2, 1, 3 behind a beq chain tested 3, 2, 1, 0 (if-chain, reversed
+// if-chain and switch tried); the float constant is 0.1f (0x3DCCCCCD), not 0.2f.
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249D50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249F50);
 /* An object of the battle's skill code: the fighter it belongs to, a flags word (0x4000 set once it
@@ -476,6 +483,9 @@ void SkillKill_Kind10(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BBA0);
+// GIVEN UP (round 5): 17 of 89, the same shape as func_0024B6A0 below: the original keeps the object in s1 (move s1,a0)
+// and the data pointer in s0; mwcc copies the parameter into s0 whatever the declaration order, a separate object local
+// first, or the parameter used directly (4 forms tried). The VU0 blocks match.
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BE30);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BFA0);
 void SkillKill_Kind09(s32 *p) {
