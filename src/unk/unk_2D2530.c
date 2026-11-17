@@ -14,8 +14,14 @@ typedef struct Fn2D2530 {
     void (*f1C)(void);
 } Fn2D2530;
 
+typedef struct Res2D2530 {
+    char pad0[0x1C];
+    char *f1C;
+} Res2D2530;
+
 typedef struct Obj2D2530 {
-    char pad0[0xC];
+    char pad0[0x8];
+    Res2D2530 *f8;
     s32 fC;
     char pad10[0x3C];
     Model2D2530 *f4C;
@@ -23,9 +29,16 @@ typedef struct Obj2D2530 {
     char pad54[0x18];
     Model2D2530 *f6C;
     Model2D2530 *f70;
-    char pad74[0x1C];
+    s32 f74;
+    s32 f78;
+    s32 f7C;
+    s32 f80;
+    s32 f84;
+    s32 f88;
+    s32 f8C;
     Model2D2530 *f090;
-    char pad94[0x8];
+    s32 f94;
+    s32 f98;
     Model2D2530 *f9C;
     char padA0[0x8];
     Model2D2530 *f0A8;
@@ -46,7 +59,9 @@ typedef struct Obj2D2530 {
     char pad28C[0x10];
     Model2D2530 *f29C;
     Model2D2530 *f2A0;
-    char pad2A4[0x24];
+    Model2D2530 *f2A4;
+    Model2D2530 *f2A8;
+    char pad2AC[0x1C];
     Model2D2530 *f2C8;
     char pad2CC[0x4];
     Model2D2530 *f2D0;
@@ -56,7 +71,8 @@ typedef struct Obj2D2530 {
     Model2D2530 *f2E0;
     char pad2E4[0x30];
     Model2D2530 *f314;
-    char pad318[0x8];
+    Model2D2530 *f318;
+    Model2D2530 *f31C;
     Fn2D2530 *f320;
     char pad324[0x20];
     void (*f344)(void);
@@ -79,8 +95,17 @@ typedef struct Obj2D2530 {
     char pad3A8[0x8];
     Vec4 f3B0;
     Vec4 f3C0;
-    char pad3D0[0x40];
+    s16 *f3D0;
+    s16 *f3D4;
+    s16 *f3D8;
+    char pad3DC[0x10];
+    s32 *f3EC;
+    char pad3F0[0x8];
+    s32 f3F8;
+    char pad3FC[0x14];
     s32 f410;
+    char pad414[0x4];
+    s16 f418;
 } Obj2D2530;
 
 extern Obj2D2530 *D_00470934;
@@ -264,7 +289,20 @@ void func_002D33B0(s32 flags, s32 *cur, s32 min, s32 count, s32 idx) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D34E0);
+void func_002D34E0(void) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
+
+    if (s->f37C == 0) {
+        if (*s->f3EC != s->f3F8 - 1) {
+            DrawModel(D_00470934, s->f31C, 0, 0);
+        }
+        if (*s->f3EC != 0) {
+            m = s->f318;
+            DrawModel(D_00470934, m, 0, 0);
+        }
+    }
+}
 void func_002D3650(void) {
     Vec4 v;
     Obj2D2530 *s = D_00470934;
@@ -407,7 +445,17 @@ void func_002D4BC0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D4CF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5090);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5570);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5720);
+void func_002D5720(void) {
+    Obj2D2530 *s = D_00470934;
+    Vec4 v;
+    Model2D2530 *m;
+
+    DrawModel(s, s->f2A4, 0, 0);
+    asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
+    v.y = 185.0f - 1.77f * (f32)(128 - s->f418);
+    m = s->f2A8;
+    DrawModel(D_00470934, m, &v, 0);
+}
 #if 0
 // differs: the step factor (1.2f when D_004703F4 == 3) is laid out with a branch the source form did not reproduce; the rest of the draw matches up to there
 void func_002D58B0(void) {
@@ -540,7 +588,22 @@ void func_002D7FC0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D80A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D84C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D8720);
+s32 func_0022D670(s32, f32);
+void func_002D8720(void) {
+    Obj2D2530 *s = D_00470934;
+
+    s->f70 = (Model2D2530 *)func_0022D670(*(s32 *)(s->f8->f1C + 0xD8), 0.0f);
+    s->f090 = (Model2D2530 *)func_0022D670(*(s32 *)(s->f8->f1C + 0x324), 0.0f);
+    s->f94 = func_0022D670(*(s32 *)(s->f8->f1C + 0x11C), 0.0f);
+    s->f98 = func_0022D670(*(s32 *)(s->f8->f1C + 0x120), 0.0f);
+    s->f74 = func_0022D670(*(s32 *)(s->f8->f1C + 0xFC), 0.0f);
+    s->f78 = func_0022D670(*(s32 *)(s->f8->f1C + 0x100), 0.0f);
+    s->f7C = func_0022D670(*(s32 *)(s->f8->f1C + 0x104), 0.0f);
+    s->f80 = func_0022D670(*(s32 *)(s->f8->f1C + 0x108), 0.0f);
+    s->f84 = func_0022D670(*(s32 *)(s->f8->f1C + (*s->f3D0 + 0x50) * 4), 0.0f);
+    s->f88 = func_0022D670(*(s32 *)(s->f8->f1C + (*s->f3D4 + 0x5D) * 4), 0.0f);
+    s->f8C = func_0022D670(*(s32 *)(s->f8->f1C + (*s->f3D8 + 0x58) * 4), 0.0f);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D8890);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D8920);
 void func_002D8AB0(void) {
