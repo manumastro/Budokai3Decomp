@@ -11,7 +11,7 @@ extern void func_002AFE00(void);
 extern void func_002B0000(void);
 extern void func_002A9C00(s32, s32, s32, void *, s32);
 extern void func_002A9D30(s32, s32, void *, s32);
-extern void func_002B0390(void);
+extern s32 func_002B0390(u8 *, s32 *);
 extern void func_002A9EA0(s32, s32, void *, s32);
 extern void func_0012F2C0(void);
 extern void amDraw_ResetPackets(void);
@@ -79,6 +79,46 @@ s32 func_002AF8E0(u8 *a, u8 *b) {
 // differs: the register roles of the object, the field pointer and the table entry differ (the original keeps the object in s3); the layout is otherwise the one of func_002AFB20
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002AF8E0);
+extern s32 func_002AF8E0(u8 *, u8 *);
+#if 0
+s32 func_002AF9E0(u8 *s3, u8 *s0) {
+    u8 *s2;
+    s32 s1;
+    u8 *q;
+    u8 *s4;
+    s32 a1;
+    s32 a0;
+    *(s32 *)s0 = *(s32 *)(*(u8 **)(s0 + 0x2C) + 4);
+    *(s32 *)(s3 + 0x18) = 0;
+    *(s32 *)(s3 + 0x1C) = amCdFs_ReadFile(*(s32 *)(s0 + 0x20) + *(s32 *)(*(u8 **)(s0 + 0x2C)), 0, 1);
+    *(void **)(s3 + 0x10) = (void *)func_002AF8E0;
+    a0 = *(s32 *)(*(u8 **)(s0 + 0x2C) + 4);
+    s2 = *(u8 **)(s3 + 0x1C);
+    if (*(s16 *)(s2 + 4) != 3) {
+        return 3;
+    }
+    *(s32 *)(s3 + 0x10) = 0;
+    a1 = **(s32 **)s3;
+    q = *(u8 **)(s2 + 0x40);
+    s4 = D_005BCD20 + a1 * 160 + a0 * 40;
+    s1 = *(s32 *)(q + 0x50);
+    if (*(s32 *)s4 != 0) {
+        amCdFs_ReleaseCache(*(s32 *)s4);
+        *(s32 *)s4 = 0;
+    }
+    *(u8 **)s4 = q;
+    *(s32 *)(s4 + 8) = s1;
+    *(s32 *)(s2 + 0x40) = 0;
+    amCdFs_Close(s2, 0);
+    if (*(s32 *)(s3 + 0x18) != 0) {
+        amCdFs_Close(*(void **)(s3 + 0x18), 0);
+    }
+    *(s32 *)(s3 + 0x18) = 0;
+    *(s32 *)(s3 + 0x1C) = 0;
+    return 1;
+}
+// differs: 17 of 78 instructions differ: same shape as func_002B0390 (load/unload pair): the register of the table index and of the file-size field (a1 in the original, a0 here) and the order of the loads in the beq delay slot differ; declaration orders tried (two swaps).
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002AF9E0);
 s32 func_002AFB20(u8 *a, u8 *b) {
     s32 r = 3;
@@ -218,6 +258,39 @@ s32 func_002B0330(u8 *a, u8 *b) {
     *(void **)(a + 0x10) = func_002B0290;
     return 3;
 }
+extern u8 D_005ABA80[];
+#if 0
+s32 func_002B0390(u8 *s, s32 *a1) {
+    u8 *s1 = *(u8 **)(s + 0x1C);
+    s32 a2;
+    u8 *s0;
+    s32 s4;
+    u8 *s3;
+    a2 = *(s32 *)s;
+    if (*(s16 *)(s1 + 4) != 3) {
+        return 3;
+    }
+    *(s32 *)(s + 0x10) = 0;
+    a2 = *(s32 *)a2;
+    s0 = *(u8 **)(s1 + 0x40);
+    s3 = D_005ABA80 + a2 * 33664 + *a1 * 8416;
+    s4 = *(s32 *)(s0 + 0x50);
+    if (*(s32 *)(s3 + 8) != 0) {
+        amCdFs_ReleaseCache(*(s32 *)(s3 + 8));
+    }
+    *(u8 **)(s3 + 8) = s0;
+    *(s32 *)(s3 + 0x24) = s4;
+    *(s32 *)(s1 + 0x40) = 0;
+    amCdFs_Close(s1, 0);
+    if (*(s32 *)(s + 0x18) != 0) {
+        amCdFs_Close(*(void **)(s + 0x18), 0);
+    }
+    *(s32 *)(s + 0x18) = 0;
+    *(s32 *)(s + 0x1C) = 0;
+    return 1;
+}
+// differs: 11 of 64 instructions differ: the original loads *s into a2 at the top (lw a2,0(a0) before the lh test) and keeps the pointer in a2; the compiler keeps it in a0 (loaded in the delay slot of the beq) and reloads with lw a2,0(a0). Tried the declaration order (all 120 permutations give a size mismatch in the first version; the pointer-load placements gave 11 of 64).
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0390);
 s32 func_002B0490(u8 *a, u8 *b) {
     *(s32 *)b = *(s32 *)(*(u8 **)(b + 0x2C) + 4);
@@ -332,6 +405,34 @@ s32 func_002B16B0(u8 *a) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B16B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1780);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1B10);
+extern void func_002B1D70(u8 *);
+extern void func_002B1B10(u8 *, s32);
+#if 0
+s32 func_002B1C60(u8 *s) {
+    s32 *q = (s32 *)(s + (*(s32 *)(s + 0x24)) * 28 + 0x48);
+    s16 *hp = (s16 *)((u8 *)q + 0x1A);
+    s32 s0 = q[1] + q[0];
+    s32 H = *hp;
+    if (s0 + 9 < H) {
+        if (s0 + 0x12 < H) {
+            q[0] = q[0] + 9;
+        } else {
+            q[0] = H - 9;
+            q[1] = 9 - (q[0] - s0);
+        }
+    } else if (*hp < 9) {
+        q[0] = 0;
+        q[1] = hp[0] - 1;
+    } else {
+        q[0] = H - 9;
+        q[1] = 8;
+    }
+    func_002B1D70(s);
+    func_002B1B10(s, *(s16 *)((u8 *)q + q[1] * 2 + 8));
+    return s0 != q[0] + q[1];
+}
+// differs: 8 of 65 instructions differ: the original keeps the halfword field pointer (s1+0x1A) in $a1 from the first compare (delay slot of its beqz); with a pointer declared early or used only in the H<9 arm the compiler folds it into lh 0x1A(s1). Tried 3 variants.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1C60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1D70);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1E90);
