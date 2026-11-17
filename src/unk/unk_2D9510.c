@@ -98,7 +98,61 @@ void func_002D96D0(void) {
         s->f354 = func_002D96B0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9770);
+extern void func_00228430(s32);
+extern void func_00227A30(u8 *);
+extern void func_0022C060(f32, s32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+extern void amModel_SetCurrent(s32, s32);
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+
+void func_002D9770(s32 a0, f32 a1) {
+    u8 *w = (u8 *)gOptionWork;
+    s32 i;
+    u8 *s1;
+    u8 *s0;
+    f32 v[4];
+
+    for (i = 0; i < 6; i++) {
+        if (i != *(s32 *)(w + 0x378)) {
+            v[0] = 0.5f;
+            v[1] = 0.5f;
+            v[2] = 0.5f;
+            v[3] = 1.0f;
+        } else {
+            v[0] = 1.0f;
+            v[1] = 1.0f;
+            v[2] = 1.0f;
+            v[3] = 1.0f;
+        }
+        v[3] = a1;
+        s1 = ((u8 **)(w + 0x18))[i];
+        s0 = (u8 *)gOptionWork;
+        func_00228430(0);
+        func_00228430(0);
+        if (a0 != 0) {
+            func_00227A30((u8 *)a0);
+        }
+        {
+            s32 val = *(s32 *)(s0 + 0xC);
+            D_00470704 = val;
+            D_00470708 = 0;
+            D_0047070C = 0;
+            amModel_SetCurrent(val, 0);
+        }
+        D_00470238 = 0;
+        func_0022C060(1.0f, (s32)s1);
+        func_00228410();
+        if (v != 0) {
+            __asm__ volatile("lqc2 $vf1, 0x0(%0)\n\tsqc2 $vf1, 0x0(%1)" : : "r"(v), "r"(*(u8 **)(s1 + 0x30) + 0x50) : "memory");
+        }
+        func_0022CD00((s32)s1);
+        func_00228410();
+    }
+}
 void func_002D98C0(void) {
     Scene2D8 *s = gOptionWork;
     f32 a;
@@ -166,9 +220,12 @@ L9A28:
     func_00228410();
 }
 #endif
+// differs: dead blocks after b (a jal func_00227A30 and an lqc2 from a zero pointer), the 2D99A0 family: not matched
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9A50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9C20);
+// differs: dead blocks after b (a jal func_00227A30 and an lqc2 from a zero pointer), the 2D99A0 family: not matched
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9CD0);
+// differs: dead blocks after b (a jal func_00227A30 and an lqc2 from a zero pointer), the 2D99A0 family: not matched
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9DE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9F80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002DA030);

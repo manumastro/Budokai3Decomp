@@ -39,7 +39,7 @@ void func_00244CC0(s32, s32);
 void Obj_ResetF38(s32);
 void amTask_KillGroup(s32, s32, s32);
 void func_0020DE30(void);
-void func_00248C80(s32);
+void func_00248C80(void);
 void func_00252B20(void);
 void Wave_Create(void);
 void func_002CA490(void);
@@ -79,7 +79,7 @@ extern u8 *gBtlSys;
 s32 func_0021C3D0(s32);
 u8 *func_0021C660(s32);
 u8 *func_0021C430(s32);
-void func_0022C7D0(f32, s32);
+void func_0022C7D0(s32, f32, s32);
 void func_0022ACF0(s32);
 
 extern u8 D_0058CAB0[];
@@ -293,9 +293,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023CE80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D360);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D970);
-#if 0
 void func_0023DB40(s32 a0) {
-    s32 k = a0;
     u8 *sys = gBtlSys;
     s32 r1;
     u8 *p2;
@@ -303,31 +301,30 @@ void func_0023DB40(s32 a0) {
     s32 s0;
     s32 v;
     u8 *s2;
+    s32 a;
 
     r1 = func_0021C3D0(a0);
     p2 = func_0021C660(r1);
     p3 = func_0021C430(r1);
     s0 = *(s16 *)(p2 + 0x42);
     v = *(s16 *)(p3 + 0x42);
-    s2 = D_0058BF70 + k * 0x64 + 0x210;
+    s2 = D_0058BF70 + a0 * 0x64 + 0x210;
     if (v != s0) {
-        if (s0 >= 0x3E8) {
+        if (s0 > 0x3E7) {
             s0 = 0x3E7;
         }
-        D_00470704 = *(s32 *)(sys + 0xE84);
+        a = *(s32 *)(sys + 0xE84);
+        D_00470704 = a;
         D_0047070C = 0x4010000;
         D_00470708 = 0;
-        amModel_SetCurrent(*(s32 *)(sys + 0xE84), 0x4010000);
+        amModel_SetCurrent(a, 0x4010000);
         D_00470238 = 0;
         if (*(s32 *)(s2 + 0xC) != 0) {
-            func_0022C7D0((f32)s0, 1);
+            func_0022C7D0(*(s32 *)(s2 + 0xC), (f32)s0, 1);
             func_0022ACF0(*(s32 *)(s2 + 0xC));
         }
     }
 }
-// differs: 208 bytes (round 5, u23c): the calls, the lh compares, the D_0047070x stores and the amModel call all match in order; the saved registers do not: the original holds gBtlSys in s1 and the argument in s2 (frame 0x40), ours gives sys s2 and the argument s3 (frame 0x50). Tried: the argument copied to a local first, and the pointer local declared last (same), the sys/argument declaration orders (same).
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023DB40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023DC10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023E260);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023E570);
@@ -1304,32 +1301,32 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243280);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002433F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243600);
 #if 0
-void func_002439E0(u8 *p) {
-    s32 idx = *(s32 *)(p + 0x10);
-    u8 *base = gBattle + idx * 0x2020;
-    u8 *q = base + 0x830;
-    u8 *r = *(u8 **)(base + 0x1B84);
-    u8 *o = D_0046FE44 + idx * 0x80;
-    s32 m = *(s32 *)(p + 0x14);
+void func_002439E0(u8 *o) {
+    s32 id = *(s32 *)(o + 0x10);
+    u8 *base = gBattle + id * 0x2020;
+    u8 *a2 = base + 0x830;
+    u8 *a1 = *(u8 **)(base + 0x1B84);
+    u8 *a3 = D_0046FE44 + id * 0x80;
+    s32 k = *(s32 *)(o + 0x14);
+    s32 hv;
 
-    if (m == 1) {
-        s32 v = *(s16 *)(p + 0x18);
-        if (v < 8) {
-            *(s16 *)(o + 0x34) = v;
+    if (k == 1) {
+        hv = *(s16 *)(o + 0x18);
+        if (hv < 8) {
+            *(s16 *)(a3 + 0x34) = hv;
         }
-        *(s16 *)(o + 0x36) = *(s32 *)(r + 0x1CFC);
-        *(s32 *)(o + 0x2C) |= 0x80;
-    } else if (m == 0) {
-        *(s16 *)(o + 0x34) = *(s32 *)(q + 0xBA4);
-        *(s32 *)(o + 0x2C) &= ~0x80;
-        *(s16 *)(o + 0x36) = *(s32 *)(q + 0x1CFC);
-        func_00241600(*(s32 *)(p + 0x10));
-        return;
+        *(s16 *)(a3 + 0x36) = *(s32 *)(a1 + 0x1CFC);
+        *(s32 *)(a3 + 0x2C) |= 0x80;
+        func_00241600(*(s32 *)(o + 0x10));
+        func_00241C10(*(s32 *)(o + 0x10));
+    } else if (k == 0) {
+        *(s16 *)(a3 + 0x34) = *(s32 *)(a2 + 0xBA4);
+        *(s32 *)(a3 + 0x2C) &= ~0x80;
+        *(s16 *)(a3 + 0x36) = *(s32 *)(a2 + 0x1CFC);
+        func_00241600(*(s32 *)(o + 0x10));
     }
-    func_00241600(*(s32 *)(p + 0x10));
-    func_00241C10(*(s32 *)(p + 0x10));
 }
-// differs: 216 bytes (round 5, u23c): the logic matches (the switch-like m==1 / m==0 pair, the (s16) stores, the two tail calls); the temporaries differ (the original loads idx into t1 and the struct pointer m in a0, the table pointer in a3 before the branch), so the branch layout and the register choice differ. One attempt only.
+// differs: round 6 (u23e): 0xD0 bytes against 0xE0 (4 instructions short). The original has a nop after the store inside the k==1 branch (the 8 test falls through to a 16-byte aligned join) and lays the k==0 block between the tests (a switch with either case order gives 20 to 44 of 54 differing)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002439E0);
 void func_00243AC0(u8 *o) {
@@ -1533,28 +1530,32 @@ void func_00244150(void) {
 }
 extern u8 *D_0046FE48;
 #if 0
-extern u8 *D_0046FE48;
-void func_00244190(u8 *p) {
-    s32 i = 0;
-    s32 off = 0;
-    s32 id;
+void func_00244190(u8 *a0) {
+    u8 *t = a0;
+    s32 i;
+    u8 *p;
+    s32 off;
+    s32 v;
 
     *(s32 *)(D_0046FE48 + 0x3C8) = amCdFs_ReadFileId(0xC, 0, 1);
     *(s16 *)(D_0046FE44 + 0x102) = 2;
     if (*(s16 *)(D_0046FE44 + 0x102) > 0) {
+        i = 0;
+        off = 0;
         do {
-            id = *(s16 *)(p + 0x20);
-            if (D_00452130[id] != -1) {
-                *(s32 *)(D_0046FE48 + off) = amCdFs_ReadFileId(D_00452130[id], 0, 1);
+            p = D_0046FE48 + off;
+            v = D_00452130[*(s16 *)(t + 0x20)];
+            if (v != -1) {
+                *(s32 *)p = amCdFs_ReadFileId(v, 0, 1);
             }
             i++;
-            p += 0x50;
+            t += 0x50;
             off += 0x1A4;
         } while (i < *(s16 *)(D_0046FE44 + 0x102));
     }
     *(s16 *)(D_0046FE44 + 0x100) = 0;
 }
-// differs: 240 bytes (round 5, u23c): 36 bytes short (0xCC against 0xF0). The original reads back the field it has just stored (lw D_0046FE48 / lw 0x3C8, value unused) and reloads D_0046FE44 before the loop test; the do-while and the table loop match in shape. Not reproduced: the read-back and the second load of the table count.
+// differs: round 6 (u23e): 0xD0 bytes against 0xF0. Frame, saved registers and the table loop match; the original keeps a dead reload after the table call (sw then lw v0 and move v0,zero joined at the loop end: an assignment-value form gives the same size), so 8 instructions are missing
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244190);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244280);
@@ -2071,21 +2072,24 @@ void func_002472F0(void) {
 }
 #if 0
 void func_00247410(void) {
-    s32 i;
+    s32 i = 0;
     s32 off = 0;
     u8 *e = D_0058CAA0;
-    u8 *s2;
+    u8 *f;
 
-    for (i = 0; i < 2; i++, off += 0x2020, e += 0x480) {
-        s2 = e + 0x10;
+    do {
+        f = e + 0x10;
         if (*(s16 *)(e + 0x3E) == 0) {
-            func_00244CC0(*(s32 *)(gBattle + off + 0x1B80), 1);
+            func_00244CC0(*(s32 *)(gBattle + off + 0x830 + 0x1350), 1);
         }
-        if (*(s32 *)(s2 + 0x30) != 0) {
-            Obj_ResetF38(*(s32 *)(s2 + 0x30));
-            *(s32 *)(s2 + 0x30) = 0;
+        if (*(s32 *)(f + 0x30) != 0) {
+            Obj_ResetF38(*(s32 *)(f + 0x30));
+            *(s32 *)(f + 0x30) = 0;
         }
-    }
+        i++;
+        off += 0x2020;
+        e += 0x480;
+    } while (i < 2);
     amTask_KillGroup(0x400, 0x800002, 0);
     if (*(s16 *)(D_0046FE4C + 0x916) != 0) {
         func_0020DE30();
@@ -2097,7 +2101,7 @@ void func_00247410(void) {
     Wave_Create();
     func_002CA490();
 }
-// differs: 240 bytes (round 5, u23c): the loop matches in shape; the call func_00248C80 has no argument setup in the original (a0 is left by the call before), but the file declares it as func_00248C80(s32), so a no-argument call does not compile. Needs the callee's real signature or a K&R declaration (the other uses of func_00248C80 in the file pass an argument).
+// differs: round 6 (u23e): 0xE8 bytes against 0xF0 (two instructions short). Loop, calls and tail match; the original keeps the table pointer e in s0 and f = e+0x10 in s2 (not s1/s0 as here, no declaration order changes it); one reload of gBattle or D_0046FE4C differs in the if block. Prototype of func_00248C80 is now (void) (line 42), as its definition
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247410);
 void func_00247500(void) {
@@ -2201,24 +2205,26 @@ void func_002477C0(u8 *o) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002477C0);
 #if 0
 void func_00247820(void) {
-    s32 s2 = D_0051CD0C[0];
-    s32 s1 = 0;
-    s32 r = func_001A50F0(s2, 0x208);
-    u8 *s0;
-
+    s32 r;
+    u8 *p;
+    s32 z;
+    s32 d;
+    z = 0;
+    d = D_0051CD0C[0];
+    r = func_001A50F0(d, 0x208);
     if (r != 0) {
-        s1 = func_00209540(r, 0x2000004, 0);
+        z = func_00209540(r, 0x2000004, 0);
     }
-    if (s1 != 0) {
-        s0 = (u8 *)func_001F5FD0(0x85000000, D_0046AD90, 0, func_002477C0, func_00247770);
-        *(s32 *)(s0 + 0x20) &= ~0x800;
-        *(s32 *)(s0 + 0x20) |= 0x800;
-        memset(s0 + 0x30, 0, 0x80);
-        *(s32 *)(s0 + 0x38) = s1;
-        *(s32 *)(s0 + 0x34) = func_001A50F0(s2, 0x280);
+    if (z != 0) {
+        p = (u8 *)func_001F5FD0(0x85000000, D_0046AD90, 0, (void *)func_002477C0, (void *)func_00247770);
+        *(s32 *)(p + 0x20) &= ~0x800;
+        *(s32 *)(p + 0x20) |= 0x800;
+        memset(p + 0x30, 0, 0x80);
+        *(s32 *)(p + 0x38) = z;
+        *(s32 *)(p + 0x34) = func_001A50F0(d, 0x280);
     }
 }
-// differs: 216 bytes (round 5, u23c): the calls and the field stores match, the saved registers do not: the original keeps the D_0051CD0C value in s2, the zero/result in s1 and the pointer in s0 (frame 0x40); three declaration orders tried (the zero first, the pointer initialised to 0), all differ in the same registers.
+// differs: round 6 (u23e): 10 of 54 differ (the calls and stores match). The original keeps D_0051CD0C in s2, the zero/result in s1 and the pointer in s0; declaration orders give 10 or 14 differing (no order gives the register set)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247820);
 void func_00247900(void) {

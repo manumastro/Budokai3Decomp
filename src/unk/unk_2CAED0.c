@@ -173,7 +173,33 @@ s32 func_002CB070(void) {
     return n >= 4;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB070);
+s32 func_002CB070(void) {
+    u8 *t0;
+    s32 a3;
+    s32 a2;
+    s32 a1;
+    s32 n;
+    s16 *e;
+
+    t0 = (u8 *)gTutWork->chr + 0x1360;
+    n = 0;
+    a3 = *(s32 *)(t0 + 0x400);
+    a1 = *(s32 *)(t0 + 0x3F8);
+    a2 = *(s32 *)(t0 + 0x3FC);
+    if (a3 != a1) {
+        do {
+            e = *(s16 **)(t0 + (a3 << 4) + 0x204);
+            if (e != NULL && e[1] != 8) {
+                n++;
+            }
+            if (a3 == a2) {
+                break;
+            }
+            a3 = (a3 + 1) & 0x1F;
+        } while (a3 != a1);
+    }
+    return n >= 4;
+}
 s32 func_002CB0F0(void) {
     TutWork *t = gTutWork;
     s32 *p = &t->f20;
