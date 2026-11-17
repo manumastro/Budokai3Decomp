@@ -244,6 +244,59 @@ void func_002FC9F0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC9F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCAF0);
+#if 0
+// differs: 52 of 76 (same size); the loops are laid out differently and the registers differ; 30 declaration orders tried
+extern s8 D_005D0080;
+extern s8 D_005D0081;
+extern s8 D_005D0082;
+s32 func_002FCF60(void) {
+    s32 n = D_005D0082;
+    s32 t3 = 1 << n;
+    s32 t2 = 1;
+    s32 t0 = 0;
+    s32 i;
+    char *p;
+    char *t1 = 0;
+
+    if (t3 > 0) {
+        p = (char *)gTourMap;
+        for (i = 0; i < t3; i++, p += 0x14) {
+            if (*(s16 *)(p + 0x2F6) >= 0) {
+                if (*(s8 *)(p + 0x2F0) == 1 || *(s8 *)(p + 0x2F0) == 2) {
+                    t2 = 0;
+                    break;
+                }
+            }
+        }
+    }
+    if (t3 > 0) {
+        p = (char *)gTourMap;
+        for (i = 0; i < t3; i++, p += 0x14) {
+            if (*(s16 *)(p + 0x2F6) >= 0) {
+                if (t0 < *(s8 *)(p + 0x2F3)) {
+                    t0 = *(s8 *)(p + 0x2F3);
+                    t1 = p + 0x2EC;
+                }
+            }
+        }
+    }
+    if (t2 != 0) {
+        if (t0 == n - 1) {
+            *(char **)((char *)gTourMap + 0x70) = t1;
+            return 1;
+        }
+        return 0;
+    }
+    if (t0 == n) {
+        *(char **)((char *)gTourMap + 0x70) = t1;
+        return 2;
+    }
+    if (D_005D0080 == -1 && D_005D0081 == -1) {
+        return 4;
+    }
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCF60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD090);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FD560);
