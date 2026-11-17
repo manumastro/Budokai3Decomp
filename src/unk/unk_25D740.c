@@ -1013,7 +1013,7 @@ s32 func_0025F580(void *o, ScrCmd *cmd) {
     }
     return 3;
 }
-s32 func_0025F6C0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdSetFlag916Mode(ScrCtx *ctx, ScrCmd *cmd) {
     if (cmd->args[0].i != 0) {
         D_0046FE4C->f91A = 1;
     } else {
