@@ -126,6 +126,59 @@ void func_002BB100(void) {
 
     func_00139620(0x900, &tmp, -1, 0x44, 0, 600.0f);
 }
+#if 0
+// differs: 27 of 82 instructions: the original reads gStrStatus->0x288 for the index base and again for the call argument before the 0x158 table load; the load order did not follow the source orders tried (5); the lqc2/sqc2 copy and the two func_00137560 calls are right
+extern void func_00136E80(s32, void *, s32, s32, s32);
+extern void func_00137560(void *, void *);
+extern void amDraw_FlushPacket(void);
+
+/* A 16-byte vector of floats (one quadword). */
+typedef struct F16_2BB150 {
+    f32 v[4];
+} __attribute__((aligned(16))) F16_2BB150;
+
+void func_002BB150(void) {
+    F16_2BB150 p;
+    F16_2BB150 q;
+    u8 *a;
+    u8 *t2;
+    u8 *tb;
+    u8 *e;
+    s32 idx;
+    f32 x;
+    f32 y;
+
+
+    a = *(u8 **)((u8 *)gStrStatus + 0x14C);
+    a = *(u8 **)(a + 0x1C);
+    a = *(u8 **)(a + 0x1A8);
+    a = *(u8 **)(a + 4);
+    a = *(u8 **)(a + 0x1C);
+    __asm__ volatile("lqc2 $vf1, 0x0(%1)\n\tsqc2 $vf1, 0x0(%0)" : : "r"(&p), "r"(a) : "memory");
+    idx = *(s32 *)((u8 *)gStrStatus + 0x288) + 0x1B;
+    t2 = *(u8 **)((u8 *)gStrStatus + 0x158);
+    idx = idx - *(s32 *)(t2 + 0x18);
+    tb = t2 + *(s32 *)(t2 + 0x14);
+    e = t2 + *(s32 *)(tb + idx * 4);
+    x = (f32)*(s16 *)(e + 0x10);
+    y = (f32)*(s16 *)(e + 0x12);
+    func_00136E80(0x40000C24, 0, *(s32 *)((u8 *)gStrStatus + 0x288) + 0x1B, 0x44, 5);
+    q.v[2] = 1.0f;
+    q.v[3] = 1.0f;
+    q.v[0] = 0.0f;
+    q.v[1] = 0.0f;
+    p.v[1] = p.v[1] - 0.5f * y;
+    p.v[0] = p.v[0] - x;
+    p.v[2] = p.v[2] - 10.0f;
+    func_00137560(&p, &q);
+    q.v[0] = x;
+    q.v[1] = y;
+    p.v[0] = p.v[0] + x;
+    p.v[1] = p.v[1] + y;
+    func_00137560(&p, &q);
+    amDraw_FlushPacket();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB150);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB2A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB490);

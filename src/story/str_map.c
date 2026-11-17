@@ -298,6 +298,60 @@ void StrMap_Load(s32 a0) {
     gStrMap[3] = v;
 }
 
+#if 0
+// differs: 17 of 86 at the start (fixed: the table/index order, the addu operand order); after the call the original stores the 0.5 and 1.0 vector lanes in another order (3 tried): the lqc2/sqc2 copy and the two func_00137560 calls are right. Twin of 2BB150 (gStrTitle)
+extern void func_00136E80(s32, void *, s32, s32, s32);
+extern void func_00137560(void *, void *);
+extern void amDraw_FlushPacket(void);
+extern u8 D_00453F12[];
+
+/* A 16-byte vector of floats (one quadword). */
+typedef struct F16_29B130 {
+    f32 v[4];
+} __attribute__((aligned(16))) F16_29B130;
+
+void func_0029B130(void) {
+    F16_29B130 p;
+    F16_29B130 q;
+    u8 *a;
+    u8 *t1;
+    u8 *tb;
+    u8 *e;
+    s32 idx;
+    s32 n;
+    f32 x;
+    f32 y;
+
+    a = *(u8 **)((u8 *)gStrTitle + 0x64);
+    a = *(u8 **)(a + 0x1C);
+    a = *(u8 **)(a + 0xB0);
+    a = *(u8 **)(a + 4);
+    a = *(u8 **)(a + 0x1C);
+    __asm__ volatile("lqc2 $vf1, 0x0(%1)\n\tsqc2 $vf1, 0x0(%0)" : : "r"(&p), "r"(a) : "memory");
+    n = *(s16 *)(D_00453F12 + (*(s32 *)((u8 *)gStrTitle + 0xB4) << 3));
+    t1 = *(u8 **)((u8 *)gStrTitle + 0x68);
+    tb = (u8 *)(*(s32 *)(t1 + 0x14) + (s32)t1);
+    idx = n - *(s32 *)(t1 + 0x18);
+    e = t1 + *(s32 *)(tb + idx * 4);
+    x = (f32)*(s16 *)(e + 0x10);
+    y = (f32)*(s16 *)(e + 0x12);
+    func_00136E80(0x40000C24, 0, n, 0x44, 5);
+    q.v[0] = 0.0f;
+    q.v[1] = 0.0f;
+    p.v[2] = p.v[2] - 10.0f;
+    q.v[2] = 1.0f;
+    q.v[3] = 1.0f;
+    p.v[0] = p.v[0] - 0.5f * x;
+    p.v[1] = p.v[1] - 0.5f * y;
+    func_00137560(&p, &q);
+    q.v[0] = x;
+    q.v[1] = y;
+    p.v[0] = p.v[0] + x;
+    p.v[1] = p.v[1] + y;
+    func_00137560(&p, &q);
+    amDraw_FlushPacket();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B130);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B290);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029B550);
