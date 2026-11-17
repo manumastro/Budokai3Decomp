@@ -17,19 +17,28 @@ typedef struct V16 {
 
 extern V16 D_00455EC0;
 extern V16 D_00455E00;
+extern V16 D_00455DC0;
 extern void func_0028EE90();
 extern void func_002BBCB0(void);
+extern void func_002BC920(void);
+extern void StrBg_SetPos(void *, f32, f32);
 
 /* The work of this file: two handles (0xA8, 0x1C0) and the state the functions reset. */
 typedef struct W98D {
     char pad0[0xA8];
     void *fA8;
-    char padAC[0x1C0 - 0xAC];
+    char padAC[0xBC - 0xAC];
+    void *fBC;
+    char padC0[0x1C0 - 0xC0];
     void *f1C0;
-    char pad1C4[0x274 - 0x1C4];
+    char pad1C4[0x1CC - 0x1C4];
+    void *f1CC;
+    char pad1D0[0x274 - 0x1D0];
     s32 f274;
     s32 f278;
-    char pad27C[0x40C - 0x27C];
+    char pad27C[0x404 - 0x27C];
+    s32 f404;
+    char pad408[0x40C - 0x408];
     s32 f40C;
 } W98D;
 
@@ -102,7 +111,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BC120);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BC250);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BC7E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BC920);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BCA30);
+void func_002BCA30(Ac98D *s) {
+    V16 tmp = D_00455DC0;
+    W98D *w;
+
+    if (func_0022BF80(gStrStatus->f1CC) == 0xFF) {
+        w = gStrStatus;
+        func_0028EE90((char *)w + 0x38, (char *)w + 0x14C, (char *)w + 0x158, (char *)w + 0x168, &tmp, w->f274, w->f278, 0x600000);
+        StrBg_SetPos(gStrStatus->fBC, (f32)gStrStatus->f404, 0.0f);
+        s->f1C = (func_002BC920 == NULL) ? NULL : (void *)func_002BC920;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BCAE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BCBE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BCCD0);

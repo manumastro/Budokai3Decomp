@@ -47,6 +47,53 @@ extern void func_0022D4B0(s32, s32);
 void func_002807E0(void);
 void func_00280C70(void);
 
+/* differs: the C matches the body (only the gp-relative load of gFrameDelta is a relocation line), but the link then moves
+   the gp offset of a data load in mn_VsCharasel.c (VsCharasel_Start: ninja red). Not understood yet; try a different
+   gFrameDelta access (e.g. through a local copy) before dropping the idea. */
+#if 0
+typedef struct F280 {
+    char pad0[8];
+    void *f8;
+    char pad0C[0x10];
+    f32 f1C;
+    f32 f20;
+    f32 f24;
+} F280;
+
+typedef struct T280 {
+    char pad0[0x50];
+    f32 f50;
+    f32 f54;
+    f32 f58;
+} T280;
+
+extern f32 gFrameDelta;
+extern void func_0022CF70(void *);
+
+void func_00280730(F280 *o) {
+    T280 *t;
+
+    t = o->f8;
+    if (o->f24 != 0.0f) {
+        o->f1C = o->f1C + o->f24 * gFrameDelta;
+        if (o->f24 > 0.0f) {
+            if (o->f1C > o->f20) {
+                o->f1C = o->f20;
+                o->f24 = 0.0f;
+            }
+        } else {
+            if (o->f1C < o->f20) {
+                o->f1C = o->f20;
+                o->f24 = 0.0f;
+            }
+        }
+    }
+    t->f50 = o->f1C;
+    t->f54 = o->f1C;
+    t->f58 = o->f1C;
+    func_0022CF70(o->f8);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280730);
 void func_002807D0(void) {
 }
