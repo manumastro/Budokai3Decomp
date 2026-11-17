@@ -1559,8 +1559,44 @@ s32 func_002A5010(void *a0, char *a1) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5030);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A51E0);
+extern void func_002A21F0(f32 *, f32);
+extern void func_002A5030(s32 *, s32 *);
 extern f32 D_004708DC;
+#if 0
+// func_002A51E0: 30 of 51 differ. The guarded do/while byte loop (u32 counter, `if (p != 0)`) matches the loop shape; the loads of args[4] and args[3] go to $f2/$f0 here (the original: $f0 and $f2), so the stores are reordered around the `mtc1 zero`. Tried: volatile pointer (unrolled), declaration orders (6), `>=` sign test, args read at the stores (40 differ).
+void func_002A51E0(s32 *a0, s32 *a1) {
+    f32 *args = *(f32 **)((char *)a1 + 0x2C);
+    f32 f4 = args[6];
+    f32 f3 = args[5];
+    f32 f0 = args[4];
+    f32 f2 = args[3];
+    f32 f1 = args[2];
+    f32 f12 = args[0];
+    f32 vec[4];
+    u8 *p = (u8 *)vec;
+    u32 n = 0x10;
+    if (p != 0) {
+        do {
+            *p = 0;
+            p++;
+            n--;
+        } while (n != 0);
+    }
+    vec[0] = f0;
+    *(s32 *)&vec[3] = 0;
+    vec[1] = f2;
+    vec[2] = f1;
+    D_004708DC = f4;
+    if (f3 >= 0.0f) {
+        D_004708DC = D_004708DC + f3;
+    }
+    D_004700B0 = 1;
+    func_002A21F0(vec, f12);
+    a0[0x10 / 4] = (s32)func_002A5030;
+    func_002A5030(a0, a1);
+}
+#endif
+INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A51E0);
 extern void amDraw3d_ScreenShot(void);
 extern f32 func_002B06A0(void);
 s32 Evt_ScreenShotStep(s32 *);
@@ -1967,7 +2003,74 @@ void func_002A6E40(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6E40);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6FD0);
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00228430(s32);
+extern void func_0022C060(s32, f32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+extern f32 D_004E0614[];
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
+void func_002A6FD0(void) {
+    s32 *s0;
+    s32 a14;
+    s32 c7c;
+    s32 t0;
+    s32 v;
+    s32 a1;
+    s32 t;
+    s32 x;
+    u16 *row;
+    x = D_004B4B63[0];
+    row = (u16 *)(D_00492FCE + x * 0xB8);
+    s0 = gEvtWork;
+    if (*row & 0x50) {
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 2, 0);
+        }
+        s0[0x7C / 4] = s0[0x7C / 4] + 1;
+        s0[0x7C / 4] = s0[0x7C / 4] & 1;
+    }
+    a14 = s0[0x14 / 4];
+    c7c = s0[0x7C / 4];
+    v = a14 + (s32)0xC0000000;
+    if (c7c == 0) {
+        t0 = s0[0x78 / 4];
+        a1 = (v << 9) + 0x890000;
+        D_00470704 = t0;
+        D_0047070C = a1;
+        D_00470708 = 0;
+        amModel_SetCurrent(t0, a1);
+        D_00470238 = 0;
+        t = s0[0x88 / 4];
+        func_00228430(0);
+        func_00228430(0);
+        func_0022C060(t, 1.0f);
+        func_00228410();
+        func_0022CD00(t);
+        func_00228410();
+    } else {
+        t0 = s0[0x78 / 4];
+        a1 = (v << 9) + 0x890000;
+        D_00470704 = t0;
+        D_0047070C = a1;
+        D_00470708 = 0;
+        amModel_SetCurrent(t0, a1);
+        D_00470238 = 0;
+        t = s0[0x8C / 4];
+        func_00228430(0);
+        func_00228430(0);
+        func_0022C060(t, 1.0f);
+        func_00228410();
+        func_0022CD00(t);
+        func_00228410();
+    }
+}
 extern f32 func_002B06A0(void);
 extern void func_0029AAC0(s32, s32, s32);
 extern s32 *gStrMap;
@@ -2004,7 +2107,71 @@ void func_002A7160(s32 a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7240);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7400);
+extern void func_00133B50(s32, s32);
+extern void A2d_SetMode(s32);
+extern void A2d_FlushList(void);
+extern void func_00228430(s32);
+extern void func_0022C060(s32, f32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+extern void amModel_SetCurrent(s32, s32);
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern s32 D_004700A0;
+extern s8 D_004708D4;
+extern void func_002A7240(void);
+void func_002A7400(struct Task *a0) {
+    s32 *s0 = gEvtWork;
+    s32 s2;
+    s32 t0;
+    s32 x;
+    s32 x2;
+    u16 *row;
+    char *base;
+    void *fn;
+    func_00133B50(0, 0);
+    A2d_SetMode(D_004E05F8[0]);
+    t0 = s0[0x78 / 4];
+    D_00470704 = t0;
+    D_0047070C = 0x890100;
+    D_00470708 = 0;
+    amModel_SetCurrent(t0, 0x890100);
+    D_00470238 = 0;
+    s2 = s0[0x80 / 4];
+    func_00228430(0);
+    func_00228430(0);
+    func_0022C060(s2, 1.0f);
+    func_00228410();
+    func_0022CD00(s2);
+    func_00228410();
+    func_002A6FD0();
+    A2d_FlushList();
+    x = D_004B4B63[0];
+    row = (u16 *)(D_00492FCE + x * 0xB8);
+    if (*row & 0x4000) {
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 3, 0);
+        }
+        if (s0[0x7C / 4] == 0) {
+            if (D_004708D4 == 1) {
+                x2 = D_00511450[0];
+                base = (char *)D_004E6560 + x2 * 4624;
+                D_004700A0 = *(s32 *)(base + 0x1254);
+                *(s32 *)(base + 0x1254) = -1;
+            }
+            D_004708D4 = 0;
+            if (s0[0x14 / 4] == 0x40000005) {
+                Fade_SetRequest(10, 0, 0);
+            }
+        }
+        s0[0x98 / 4] = 0;
+        fn = (void *)func_002A7240;
+        *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+    }
+}
 #if 0
 // func_002A75C0: 60 of 71 differ on registers: the original keeps the Task in s1, gEvtWork in s0 and the value in s2; ours puts the Task in s2 and gEvtWork in s1 (declaration orders tried, none changed it); the float field is reloaded after the call as the original does
 extern void func_00133B50(s32, s32);
@@ -2055,7 +2222,67 @@ void func_002A75C0(Task *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A75C0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A76E0);
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern s16 D_004E05F8[];
+extern void func_00133B50(s32, s32);
+extern void A2d_SetMode(s32);
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00228430(s32);
+extern void func_0022C060(s32, f32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+extern void A2d_FlushList(void);
+extern f32 func_002B06A0(void);
+extern s32 func_0022BC30(s32, f32);
+extern void Save_Exit(void);
+extern void func_002A5B00();
+extern void func_0029A9F0();
+void func_002A76E0(void) {
+    s32 *s0 = gEvtWork;
+    s32 s1;
+    s32 *pp;
+    s32 *tbl;
+    s32 v;
+    f32 t;
+    f32 f;
+    func_00133B50(0, 0);
+    A2d_SetMode(D_004E05F8[0]);
+    v = s0[0x78 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x890000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x890000);
+    D_00470238 = 0;
+    s1 = s0[0x84 / 4];
+    func_00228430(0);
+    func_00228430(0);
+    func_0022C060(s1, 1.0f);
+    func_00228410();
+    func_0022CD00(s1);
+    func_00228410();
+    A2d_FlushList();
+    t = func_002B06A0();
+    *(f32 *)&s0[0x98 / 4] = *(f32 *)&s0[0x98 / 4] + t;
+    pp = (s32 *)s0[0x74 / 4];
+    tbl = *(s32 **)((char *)pp + 0x1C);
+    func_0022BC30(tbl[s0[0x94 / 4]], *(f32 *)&s0[0x98 / 4]);
+    f = *(f32 *)&s0[0x98 / 4];
+    if (!(f < 30.0f)) {
+        Save_Exit();
+        s0[0x7C / 4] = 0;
+        s0[0x98 / 4] = 0;
+        s0 = gEvtWork;
+        if (s0[0x8 / 4] != 0) {
+            func_002A5B00();
+        }
+        if (s0[0x124 / 4] >= 0) {
+            func_0029A9F0();
+        }
+    }
+}
 extern void func_00133B50(s32, s32);
 extern void A2d_SetMode(s32);
 extern s16 D_004E05F8[];
@@ -2114,9 +2341,172 @@ L900:
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7820);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7940);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7B50);
+extern s32 D_004700A0;
+extern s8 D_004708D4;
+extern void func_002A7940(void);
+void func_002A7B50(struct Task *a0) {
+    s32 *s0 = gEvtWork;
+    s32 s2;
+    s32 t;
+    s32 v;
+    void *fn;
+    s8 x;
+    char *base;
+    f32 f;
+    func_00133B50(0, 0);
+    A2d_SetMode(D_004E05F8[0]);
+    v = s0[0x78 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x890000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x890000);
+    D_00470238 = 0;
+    s2 = s0[0x80 / 4];
+    func_00228430(0);
+    func_00228430(0);
+    func_0022C060(s2, 1.0f);
+    func_00228410();
+    func_0022CD00(s2);
+    func_00228410();
+    A2d_FlushList();
+    f = func_002B06A0();
+    *(f32 *)&s0[0x98 / 4] = *(f32 *)&s0[0x98 / 4] + f;
+    func_0022BC30(((s32 *)((s32 *)s0[0x74 / 4])[0x1C / 4])[s0[0x90 / 4]], *(f32 *)&s0[0x98 / 4]);
+    f = *(f32 *)&s0[0x98 / 4];
+    if (!(f < 30.0f)) {
+        s0[0x98 / 4] = 0;
+        fn = (void *)func_002A7940;
+        *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        t = D_004700A0;
+        if (t != -1) {
+            x = D_00511450[0];
+            base = (char *)D_004E6560 + x * 4624;
+            *(s32 *)(base + 0x1254) = t;
+            *(s32 *)(base + 0x1258) = D_004700A0;
+            D_004700A0 = -1;
+            D_004708D4 = 1;
+        }
+    }
+}
+extern s32 func_0022D860(s32, f32);
+extern char D_0046EAA8[];
+extern s32 D_004700A8;
+extern void func_002A75C0(struct Task *);
+#if 0
+// func_002A7CB0: 161 of 178 differ. The block order is wrong: the original tests 2 first (beq chain), lays out the 4/0 block first, then 5/1, then 2; ours puts the 2 block first (bne to the else chain). Reordering the source is not tried yet; the 2 block keeps the same instructions.
+void func_002A7CB0(struct Task *a0) {
+    s32 *s0 = gEvtWork;
+    s32 s1 = *(u16 *)((char *)s0 + 0x14);
+    s32 *tbl;
+    void *fn;
+    if (s0[0xC / 4] & 1) {
+        func_00264140(-1, 0);
+        s0[0x98 / 4] = 0;
+        D_00470704 = s0[0x78 / 4];
+        D_0047070C = 0x870000;
+        D_00470708 = 0;
+        amModel_SetCurrent(s0[0x78 / 4], 0x870000);
+        D_00470238 = 0;
+        if (s1 == 2) {
+            s0[0x90 / 4] = 0;
+            s0[0x94 / 4] = 1;
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x80 / 4] = func_0022D860(tbl[s0[0x90 / 4]], 0.0f);
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x84 / 4] = func_0022D860(tbl[s0[0x94 / 4]], 0.0f);
+            D_004700A8 = -1;
+            fn = (void *)func_002A7B50;
+            *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        } else if (s1 == 5 || s1 == 1) {
+            s0[0x90 / 4] = 6;
+            s0[0x94 / 4] = 7;
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x80 / 4] = func_0022D860(tbl[s0[0x90 / 4]], 0.0f);
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x84 / 4] = func_0022D860(tbl[s0[0x94 / 4]], 0.0f);
+            s0 = gEvtWork;
+            if (s0 != 0) {
+                s0[0xC / 4] = s0[0xC / 4] | 1;
+                if (s0[0x124 / 4] >= 0) {
+                    s0[0x128 / 4] = (s32)amTask_Create((TaskFunc)func_002A7160, NULL, 0x8000, 0x4000, 0, D_0046EAA8);
+                    s0[0x12C / 4] = 0;
+                }
+            }
+            fn = (void *)func_002A75C0;
+            *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+            D_004700A8 = -1;
+        } else if (s1 == 4 || s1 == 0) {
+            s0[0x90 / 4] = 4;
+            s0[0x94 / 4] = 5;
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x80 / 4] = func_0022D860(tbl[s0[0x90 / 4]], 0.0f);
+            tbl = (s32 *)((s32 *)s0[0x74 / 4])[0x14 / 4];
+            s0[0x84 / 4] = func_0022D860(tbl[s0[0x94 / 4]], 0.0f);
+            s0 = gEvtWork;
+            if (s0 != 0) {
+                s0[0xC / 4] = s0[0xC / 4] | 1;
+                if (s0[0x124 / 4] >= 0) {
+                    s0[0x128 / 4] = (s32)amTask_Create((TaskFunc)func_002A7160, NULL, 0x8000, 0x4000, 0, D_0046EAA8);
+                    s0[0x12C / 4] = 0;
+                }
+            }
+            D_004700A8 = s1 + 0x40000001;
+            fn = (void *)func_002A7B50;
+            *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7CB0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7F70);
+extern f32 func_002B06A0(void);
+extern void func_0022E0B0(s32);
+extern s32 func_0022D670(s32, f32);
+extern void func_0022C7D0(s32, f32, s32);
+extern void func_002A7CB0(struct Task *);
+void func_002A7F70(struct Task *a0) {
+    s32 *s0;
+    s32 *p;
+    s32 *tt;
+    void *fn;
+    f32 t;
+    s32 v;
+    s0 = gEvtWork;
+    if (*(f32 *)&s0[0x98 / 4] == 0.0f) {
+        t = func_002B06A0();
+        *(f32 *)&s0[0x98 / 4] = *(f32 *)&s0[0x98 / 4] + t;
+    } else {
+        p = (s32 *)s0[0x6C / 4];
+        if (*(s16 *)((char *)p + 4) == 3) {
+            if (*(s16 *)((char *)((s32 *)s0[0x70 / 4]) + 4) == 3) {
+                s0[0x74 / 4] = p[0x54 / 4];
+                s0[0x78 / 4] = ((s32 *)s0[0x70 / 4])[0x54 / 4];
+                func_0022E0B0(s0[0x74 / 4]);
+                ((s32 *)s0[0x6C / 4])[0x54 / 4] = 0;
+                ((s32 *)s0[0x70 / 4])[0x54 / 4] = 0;
+                amCdFs_Close(s0[0x6C / 4], 0);
+                amCdFs_Close(s0[0x70 / 4], 0);
+                s0[0x6C / 4] = 0;
+                s0[0x70 / 4] = 0;
+                v = s0[0x78 / 4];
+                D_00470704 = v;
+                D_0047070C = 0x870000;
+                D_00470708 = 0;
+                amModel_SetCurrent(v, 0x870000);
+                D_00470238 = 0;
+                tt = (s32 *)((s32 *)s0[0x74 / 4])[0x1C / 4];
+                s0[0x88 / 4] = func_0022D670(tt[0x30 / 4], 0.0f);
+                tt = (s32 *)((s32 *)s0[0x74 / 4])[0x1C / 4];
+                s0[0x8C / 4] = func_0022D670(tt[0x34 / 4], 0.0f);
+                s0[0x7C / 4] = 0;
+                s0[0x98 / 4] = 0;
+                func_0022C7D0(s0[0x88 / 4], 0.0f, 1);
+                func_0022C7D0(s0[0x8C / 4], 0.0f, 1);
+                fn = (void *)func_002A7CB0;
+                *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
+            }
+        }
+    }
+}
 extern void amHeap_Free(void *);
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void memset(void *, s32, s32);
@@ -2155,5 +2545,54 @@ void EvtScrp_Init(void) {
     g[0x64 / 4] = 0;
     g[0x68 / 4] = 0;
 }
+extern u8 D_004700B4[];
+extern u8 D_004700B8[];
+#if 0
+// func_002A81B0: 0x160 vs 0x180 bytes. The original tests the high halfword against 0x6A/0x68/0x66/0x64 with beq chains to one switch block, then compares the low halfword in the order 0x22, 0x11, 7, 0xD, 0xC ... 0 (beq chains); a switch sorts the cases and merges the shared table bodies (ascending chain); an if/else chain gets range tests (sltiu). Tried: if/else chain (0x138), switch (0x160).
+void func_002A81B0(s32 a0) {
+    s8 x = D_00511450[0];
+    s32 key = (u32)(a0 & 0xFFFF0000) >> 16;
+    s32 low = a0 & 0xFFFF;
+    char *v;
+    s32 idx;
+    v = (char *)D_004E6560 + x * 4624 + 0x80;
+    if (key == 0x6A || key == 0x68 || key == 0x66 || key == 0x64) {
+        switch (low) {
+        case 0x22:
+            *(s32 *)(v + 0x11DC) = 5;
+            break;
+        case 0x11:
+            *(s32 *)(v + 0x11DC) = 4;
+            break;
+        case 7:
+            idx = key - 0x64;
+            if (idx < 0) {
+                idx += 1;
+            }
+            idx >>= 1;
+            *(s32 *)(v + 0x11DC) = D_004700B8[idx];
+            break;
+        case 0xD:
+        case 0xC:
+        case 0xB:
+        case 0xA:
+        case 4:
+        case 3:
+        case 2:
+        case 0:
+            idx = key - 0x64;
+            if (idx < 0) {
+                idx += 1;
+            }
+            idx >>= 1;
+            *(s32 *)(v + 0x11DC) = D_004700B4[idx];
+            break;
+        default:
+            *(s32 *)(v + 0x11DC) = 0;
+            break;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A81B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A8330);

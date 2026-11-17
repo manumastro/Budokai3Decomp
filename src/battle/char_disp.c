@@ -73,6 +73,47 @@ void func_0029E9B0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EA20);
+extern void amHeap_Free(void *);
+extern void amAdx_Stop(s32);
+extern s32 func_002A8F70();
+// GIVEN UP (round 5 chr2): the frame is 0x80 against 0x70 (an extra saved register for the byte offset, off), and the stop test
+// keeps s4 in another register. Tried: the plain j loop (about 10 differ: s4 copied to s0, the outer test branches elsewhere).
+#if 0
+extern u8 *D_004708CC;
+void func_0029EC40(void) {
+    u8 *s4;
+    s32 i;
+    s32 j;
+    s32 s5;
+    s32 off;
+
+    s4 = D_004708CC;
+    if (*(s32 *)(s4 + 0x54) != 0) {
+        for (i = 0; i < *(s32 *)(s4 + 8); i++) {
+            off = 0;
+            for (j = 0; j < *(s32 *)s4; j++) {
+                s5 = *(s32 *)(*(s32 *)(s4 + 0x48 + off) + i * 0x20);
+                if (func_002A8F70() != 1 || s5 >= 2) {
+                    amAdx_Stop(*(s32 *)(*(s32 *)(s4 + 0x48 + off) + i * 0x20));
+                }
+                off += 4;
+            }
+        }
+        amHeap_Free(*(void **)(s4 + 0x54));
+        *(s32 *)(s4 + 0x54) = 0;
+    }
+    if (*(s32 *)(s4 + 0x48) != 0) {
+        for (j = 0; j < *(s32 *)s4; j++) {
+            if (*(s32 *)(s4 + 0x48 + j * 4) != 0) {
+                amHeap_Free(*(void **)(s4 + 0x48 + j * 4));
+                *(s32 *)(s4 + 0x48 + j * 4) = 0;
+            }
+        }
+        amHeap_Free(*(void **)(s4 + 0x48));
+        *(s32 *)(s4 + 0x48) = 0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EC40);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EDC0);
 // GIVEN UP (round 5 chr2): best 63 of 68 (declare n1 before k, and the test 0 < n1). Still differs: the original loads k (a3) before the first slt $at, ours puts that load in the beqz delay slot; the return 0 / return 1 epilogue is laid out differently (the original falls into jr ra after daddu v0,zero,zero).

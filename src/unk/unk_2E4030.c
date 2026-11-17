@@ -98,7 +98,33 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4D60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5040);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5170);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5260);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E53B0);
+extern void func_002E5260(u8 *);
+
+void func_002E53B0(u8 *a0, s16 a1) {
+    u8 *obj;
+    s32 n;
+    s32 i;
+    u8 *p;
+    obj = a0;
+    *(s16 *)(obj + 0xD2) = a1;
+    n = 0;
+    *(s16 *)(obj + 0xD4) = a1;
+    memset(obj + 0xD6, -1, 0x1A);
+    i = 0;
+    p = obj;
+    for (; i < 0xD; i++) {
+        if (*(u16 *)(obj + 0xD2) & (1 << i)) {
+            *(s16 *)(p + 0xD6) = i;
+            n++;
+            p += 2;
+        }
+    }
+    obj[0xF3] = n;
+    *(s32 *)(obj + 0x104) = 0x10000 / (obj[0xF3] * 12);
+    if (obj[0xF4] == 2) {
+        func_002E5260(obj);
+    }
+}
 extern void A2d_FlushList(void);
 
 void ArenaStage_TaskEnd(void) {

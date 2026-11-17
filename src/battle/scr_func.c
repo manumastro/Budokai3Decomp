@@ -103,6 +103,28 @@ void func_002A93E0(void) {
     D_00511768[0] = 0;
 }
 #endif
+// GIVEN UP (round 5 chr2): about 20 differ: the original keeps the table base in a2 and the source in a0 and computes the index into v1;
+// ours swaps them (src in a2). Tried: operand order of the copy, split offsets 0x80 + 0x11C0.
+#if 0
+void func_002A93E0(void) {
+    u8 *src;
+    u8 *p;
+    u8 *q;
+    s32 idx;
+    s32 a1;
+
+    src = D_005AB3A0;
+    a1 = *(s32 *)(src + 0x10);
+    idx = *(s8 *)(D_004E6560 + 0x2EEF0);
+    p = D_004E6560 + idx * 4624;
+    q = p + 0x80;
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(src), "r"(q + 0x11C0));
+    *(s32 *)(q + 0x11D0) = a1;
+    func_00298E10(-1);
+    func_00298E00(-1);
+    D_00511768[0] = 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A93E0);
 extern u8 D_005AB3A0[];
 void Scr_SetRecord(s32 *a0, s32 a1) {
@@ -340,6 +362,7 @@ s32 func_002AA8A0(s32 *a0, s32 *a1) {
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA8A0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA980);
 // GIVEN UP: a tail call and the stores match; the original is 16 bytes longer (0xF0 against 0xE0): the order of the index sums differs
+// differs: round 5 chr2: 2AAB40 live is 16 bytes short (0xE0 against 0xF0): the else arm reads gScrTimers through gp after a second *a0 load, and the float stores are scheduled differently.
 #if 0
 s32 func_002AAB40(s32 *a0, s32 *a1) {
     u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
@@ -581,24 +604,25 @@ s32 Scr_WaitSound(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 // GIVEN UP: the loads and the calls match; the frame is 0x10 bytes short (0xC0 against 0xD0): the order of the index sums and the locals differ
-// // differs: 33 of 60 (round 4 chr): the loads of the object (*a0) and the parameter array (a1[11]) are ordered and registered differently; the frame matches the original 0x40 only after a rewrite of the locals.
+// // differs: 11 of 50 (round 5 chr2): the frame, the branches and the tail match; the original loads *(a1+0x2C) before *a0 and copies a0 to s0 before that load, ours does the reverse (declaration orders, double dereference and a pointer copy tried); the index is i*576 + j*36 with the same operands.
 #if 0
 s32 func_002ABE50(s32 *a0, s32 *a1) {
-    s32 *pp = *(s32 **)((u8 *)a1 + 0x2C);
-    s32 j = pp[0];
-    s32 *qq = (s32 *)a0[0];
-    s32 i = qq[0];
+    s32 *p = a0;
+    s32 j = **(s32 **)((u8 *)a1 + 0x2C);
+    s32 i = **(s32 **)p;
     s32 *e = (s32 *)((u8 *)D_005BC560 + i * 576 + j * 36);
+    s32 *x = e + 3;
+    s32 *v = e + 6;
     s32 loc[5];
     s32 r;
 
-    if (e[4] != 0 && e[7] != 0) {
+    if (e[4] != 0 && v[1] != 0) {
         loc[0] = j;
-        loc[1] = e[5];
-        loc[2] = e[8];
-        loc[3] = e[4];
-        loc[4] = e[7];
-        r = amSound_LoadStream(loc, e + 3);
+        loc[1] = x[2];
+        loc[2] = v[2];
+        loc[3] = x[1];
+        loc[4] = v[1];
+        r = amSound_LoadStream(loc, x);
         if (r != 0) {
             a0[4] = (s32)func_002ABE50;
             return 3;

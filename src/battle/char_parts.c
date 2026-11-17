@@ -33,6 +33,67 @@ void CharParts_ReleaseWork(void *p) {
         amHeap_Free(p);
     }
 }
+extern s32 amMotion_FindBone(void *, void *);
+// GIVEN UP (round 5 chr2): the logic matches; the registers are one step off (the original keeps the part in s4, the arg in s3, the bone in s2
+// and needs six saved registers; ours uses five). Tried: declaration orders (both directions), pointer loop variables s1/s5.
+#if 0
+void func_001D3FF0(void *p, s32 a) {
+    u8 *s4;
+    u8 *s3;
+    u8 *s2;
+    u8 *e;
+    u8 *q;
+    u8 *prev;
+    u8 *s1;
+    u8 *s5;
+    s32 cnt;
+    s32 v;
+    s32 i;
+
+    s4 = (u8 *)p;
+    s3 = (u8 *)a;
+    if (s4 == 0 || s3 == 0) {
+        return;
+    }
+    s2 = *(u8 **)(s4 + 0xC);
+    v = amMotion_FindBone(*(void **)(s3 + 4), s2);
+    if (v < 0) {
+        return;
+    }
+    e = *(u8 **)(*(u8 **)(s3 + 4) + 0x14) + v * 80;
+    cnt = *(s16 *)(s2 + 0x1C);
+    if (cnt == 0) {
+        q = e;
+        do {
+            q = *(u8 **)(q + 0x38);
+            cnt++;
+        } while (q != 0);
+    }
+    *(s32 *)(s4 + 8) = cnt;
+    *(u8 **)s4 = s3;
+    *(u8 **)(s4 + 0xC) = s2;
+    q = *(u8 **)(s4 + 4);
+    prev = 0;
+    for (i = 0; i < cnt && e != 0; i++) {
+        *(u8 **)(q + 0x128) = e;
+        *(u8 **)(q + 0x120) = prev;
+        if (prev != 0) {
+            *(u8 **)(prev + 0x124) = q;
+        }
+        e = *(u8 **)(e + 0x38);
+        prev = q;
+        q += 0x130;
+    }
+    s1 = s2 + 0x70;
+    s5 = s4;
+    for (i = 0; i < *(s16 *)(s2 + 0x1E); i++) {
+        *(s16 *)(s5 + 0x90) = amMotion_FindBone(*(void **)(s3 + 4), s1);
+        s1 += 0x20;
+        s5 += 2;
+    }
+    func_001D3E10(s4);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_parts", func_001D3FF0);
 s32 func_001D4160(void *p) {
     return 1;
