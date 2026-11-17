@@ -21,6 +21,8 @@ extern void func_0022C560(s32);
 extern void memset(void *, s32, s32);
 extern void func_00253FC0(s32, s32 *);
 extern s32 gBtlSys;
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern u32 func_0012EAE0(s32);
 
 // GIVEN UP: the frame is right; the original is 16 bytes longer: its labels after the return-0 branch are padded differently
 // // differs: 12 of 40 (round 4 chr): the return-1 arm lacks the alignment nop the original has before the join (the join sits 8 bytes later); the return-0 and return-1 arms and the register use match.
@@ -89,6 +91,17 @@ s32 func_00235B60(void *a0) {
     r = func_0012EAE0(0x20);
     *(s8 *)(s0 + 0x35) = 1;
     return ((r / 10) % 100) < (u32)*(s16 *)(s0 + 0x22);
+}
+#endif
+#if 0
+// differs: 13 of 30: call, table store and the magic divide match; the original keeps 1 in v0 and 0xCCCCCCCD in a1 (ours: a0 and v1), and loads lim into v1 after the multu (6 forms tried)
+s32 func_00235B60(s32 *a0) {
+    s32 idx = *(s32 *)((char *)a0 + 0x1350);
+    u8 *s0 = (u8 *)D_0058BBB0 + idx * 192;
+    u32 r = func_0012EAE0(0x20);
+
+    s0[0x35] = 1;
+    return (u32)((r / 10) % 100) < (u32)*(s16 *)(s0 + 0x22);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235B60);
@@ -196,6 +209,27 @@ s32 func_00236640(char *a0) {
         } while (i < *(s16 *)(p + 0x150));
     }
     return r;
+}
+#endif
+#if 0
+// differs: 15 of 37: the loop and the table/object cursors are right; the original keeps the 0x150 count reload, a dead v0=0 at entry and a different saved-register set (tried 24 declaration orders, best 15 of 37)
+void func_00236640(u8 *a0) {
+    u8 *tbl;
+    u8 *cur;
+    u8 *obj;
+    s32 i;
+    obj = a0;
+    i = 0;
+    if (0 < *(s16 *)(obj + 0x150)) {
+        tbl = D_0058BBB0;
+        cur = obj;
+        for (i = 0; i < *(s16 *)(obj + 0x150); i++) {
+            *(s32 *)tbl = amCdFs_ReadFileId(0x1B9, 0, 1);
+            tbl[0x14] = *(s16 *)(cur + 0x20);
+            cur += 0x50;
+            tbl += 0xC0;
+        }
+    }
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236640);
