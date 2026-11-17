@@ -369,7 +369,49 @@ void func_002CE2A0(u8 *a0) {
 // differs: a clamp loop over a table of f32 pairs; the constants (k in f3 and 1.0 in f0) and the address registers come out in another order; the clamps are written out in full (not matched)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE2A0);
+extern void func_001F5AB0(s32);
+extern s32 func_001B0D10(void);
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE3D0);
+#if 0
+// differs: all but one instruction match (the sum of the gBtbBg field and 36*D_0051CD20 is emitted as addu v0,v1,v0 instead of addu v0,v0,v1; every operand order and the pointer form tried)
+void func_002CE3D0(u8 *s0) {
+    u8 *s1;
+    f32 tmp[4] __attribute__((aligned(16)));
+    u8 *e;
+    u8 *g;
+    s32 t;
+    u8 *d;
+    s32 m;
+    s1 = s0 + 0x30;
+    if (*(s32 *)(s0 + 0x30) != 0) {
+        func_00125740(D_00495718, s1 + 0x10, 0x10);
+        func_00125740(D_00495758, s1 + 0x20, 0x10);
+    }
+    func_001F5AB0(*(s32 *)(s0 + 0x10));
+    g = (u8 *)gBtbBg;
+    d = *(u8 **)(g + 0x34);
+    t = D_0051CD20[0];
+    e = (u8 *)((s32 *)d + t * 9);
+    m = *(s32 *)(*(u8 **)(e + 4) + 0xA4);
+    if (m != 0) {
+        D_00470238 = 1;
+        amModel_SetCurrent(m, 0x2002000);
+    }
+    if (func_001B0D10() == 1) {
+        __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(tmp));
+    } else {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(*(u8 **)(gBattle + 0x264)), "r"(tmp) : "memory");
+        tmp[1] = 0.0f;
+    }
+    func_001F3DF0(s0);
+    func_0013B0B0(0);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w" : : "r"(tmp));
+    func_0013E0A0(*(s32 *)(*(u8 **)(s0 + 0x10) + 0x4));
+    func_0013B110(1);
+    BtbObj_CheckDrawFlags(s0);
+}
+#endif
 extern void func_001F5CB0(u8 *);
 #if 0
 void func_002CE500(u8 *p) {
@@ -434,7 +476,7 @@ extern char D_0046F248[];
 extern char *D_0051CD14[];
 extern void func_002CE0A0(void);
 extern void func_002CE2A0(u8 *);
-extern void func_002CE3D0(void);
+extern void func_002CE3D0(u8 *);
 extern void func_002CE500(void);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE690);
