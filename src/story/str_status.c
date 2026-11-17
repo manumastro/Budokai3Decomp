@@ -795,7 +795,52 @@ void VsCharaselEd_TaskMain(Task *task) {
 }
 // func_002C1A00: the loads of the work block and the order of the two calls differ; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1A00);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1AA0);
+extern s32 func_0027DAB0(s32);
+extern void func_0027E120(s32);
+extern char D_005C4140[];
+extern void func_00304DC0(s32, s32);
+extern void func_001F0830(s32, s32);
+extern void func_001F0810(s32, s32);
+extern void func_002C1A00(Task *);
+
+void func_002C1AA0(s32 *a0) {
+    s32 *s0 = (s32 *)a0[0x30 / 4];
+    s32 *s2;
+    s32 r;
+    void *f;
+    s32 v;
+    v = s0[0x4 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x2000);
+    D_00470238 = 0;
+    v = s0[0x4 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x2000);
+    D_00470238 = 0;
+    s2 = (s32 *)s0[0x8 / 4];
+    if (s2 != 0) {
+        func_0022C060((s32)s2, 1.0f);
+        func_0022CD00((s32)s2);
+    }
+    func_002C0860(s0);
+    func_0022C700();
+    func_00133B50(0, 0);
+    r = func_0027DAB0(s0[0xA0 / 4]);
+    if ((s8)r >= 7) {
+        func_0027E120(s0[0xA0 / 4]);
+        s0[0xA0 / 4] = 0;
+        D_005C4140[0] = *(u8 *)((char *)s0 + 0xAC);
+        func_00304DC0((s32)D_005C4140, *(u8 *)((char *)s0 + 0xAB));
+        func_001F0830(0x11, 0xFF);
+        func_001F0810(0xA, 0);
+        f = (void *)func_002C1A00;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1BC0);
 extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
