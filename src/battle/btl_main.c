@@ -550,7 +550,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001ADEE0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE5C0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE720);
 #if 0
-// differs: the local buffer and the flag sit at other stack offsets (flag at 0x30 and buffer at 0x40 in the original; 7 of 59 instructions differ)
+// differs: the local buffer and the flag sit at other stack offsets (flag at 0x30 and buffer at 0x40 in the original; 7 of 59 instructions differ; the local order is not the cause)
 extern void func_001A8770(s32, void *);
 extern void func_001C8020(s32, s32);
 extern void func_00226030(s32, s32 *);
@@ -2753,6 +2753,41 @@ void func_001C8480(Fighter *f, s32 i) {
         func_001C7D90(f, i, 0);
     }
 }
+#if 0
+// differs: the slot's neighbours and the counter take saved registers the original does not keep (59 of 67 differ)
+void func_001C8500(Fighter *f, s32 i) {
+    CdSlot *s0;
+    void *s1;
+    s32 k;
+    CdSlot *s2;
+    s0 = (CdSlot *)((u8 *)f + 0x1DF8 + i * 28);
+    if (s0->unk18 == 0) {
+        s1 = s0->handle;
+        if (s1 != 0) {
+            s0->handle = FT_FIELD(s1, void *, 0x40);
+            s0->unk00 = FT_FIELD(FT_FIELD(s1, void *, 0x40), s32, 0x50);
+            amFile_Load(s0->unk00);
+            s0->unk04 = func_001A50F0(s0->unk00, 0);
+            if (s0->unk04 != 0) {
+                amFile_Load(s0->unk04);
+            }
+            k = 0;
+            s2 = s0;
+            do {
+                FT_FIELD(s2, s32, 0x8) = func_001A50F0(s0->unk00, k + 1);
+                if (FT_FIELD(s2, s32, 0x8) != 0) {
+                    amFile_Load(FT_FIELD(s2, s32, 0x8));
+                }
+                k++;
+                s2 = (CdSlot *)((u8 *)s2 + 4);
+            } while (k < 3);
+            amCdFs_Close(s1, 0);
+            FT_FIELD(s1, s32, 0x40) = 0;
+            s0->unk18 = 1;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8500);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8600);
 #if 0
