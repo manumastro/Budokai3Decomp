@@ -796,7 +796,30 @@ s32 func_002AC930(s32 a0, u8 *a1) {
     return 1;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC930);
+typedef struct Vec16 {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} Vec16 __attribute__((aligned(16)));
+s32 func_002AC930(s32 a0, u8 *a1) {
+    Vec16 t;
+    f32 f0;
+    f32 f1;
+    f32 f2;
+
+    a1 = *(u8 **)(a1 + 0x2C);
+    f2 = *(f32 *)(a1 + 0);
+    f1 = *(f32 *)(a1 + 4);
+    f0 = *(f32 *)(a1 + 8);
+    t.x = f0;
+    t.y = f1;
+    t.z = f2;
+    *(s32 *)&t.w = 0x3F800000;
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(D_0047CAD0), "r"(&t));
+    *(f32 *)(D_0047CAD0 + 0xC) = 0.0f;
+    return 1;
+}
 s32 Scr_CmdModelSpeed(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     s32 i = a[1] + 1;
