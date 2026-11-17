@@ -276,7 +276,8 @@ extern void func_001E5040(Fighter *c);
 extern void func_001C75D0(Fighter *c, s32 a);
 extern void func_001ABCE0(void *c);
 extern u8 D_004E0660[];
-extern void func_001DFE60(Fighter *c, s32 a, f32 v);
+extern s32 func_001DFE60(Fighter *c, s32 a, f32 v);
+extern s32 func_001DFA90(Fighter *c, s32 idx);
 extern s32 D_00469478[];
 extern void func_001E11E0(s32 a, void *b);
 extern void func_001DFC80(Fighter *c, s32 a, f32 v);
@@ -410,7 +411,33 @@ s32 func_001D7E10(Fighter *c) {
 // differs: the original tests the range with sltiu into $at and lays out the returns differently; closest was 2 of 14 differing
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7E10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7E50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7FB0);
+s32 func_001D7FB0(Fighter *c, s32 a1, s32 a2, u16 a3) {
+    s32 v;
+
+    v = (D_00470570 != NULL) ? (D_00470570->f8AA8 & 4) : 0;
+    if (v != 0) {
+        return 0;
+    }
+    if (c->f1FF8 != 2) {
+        return 0;
+    }
+    if (c->fCAC == 0x12) {
+        return 0;
+    }
+    if (c->f2013 != 0) {
+        return 0;
+    }
+    if (a3 & 0x40) {
+        return 0;
+    }
+    if (a2 != 0 && a2 != 5) {
+        return 0;
+    }
+    if (func_001DFE60(c, 10, 300.0f) != 0) {
+        return 1;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D80A0);
 void func_001D8320(Fighter *c) {
     if (D_00470570->f8944 != 0) {
@@ -988,7 +1015,21 @@ void func_001DF170(Fighter *c) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DF1F0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DF420);
+s32 func_001DF420(Fighter *c, s32 idx, s32 flags) {
+    u8 *e;
+
+    e = (u8 *)D_004E0660 + idx * 40;
+    if (func_001DFA90(c, idx) <= 0) {
+        return 0;
+    }
+    if ((e[0xB] & 2) == 0) {
+        flags |= 3;
+    }
+    if (func_001DFE60(c, flags, (f32)(e[0xF] * 100)) == 0) {
+        return 0;
+    }
+    return (e[0xE] & ((1 << c->fBA4) & 0xFF)) != 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DF500);
 void func_001DF830(Fighter *c, s32 a1) {
     s32 k;
