@@ -79,6 +79,11 @@ Until a function is named in a symbol file, keep its `func_XXXXXXXX` name in C (
   `lui` / `ld` (an `s64` in `.data`, e.g. `D_003F01C8`), declare it as an array of unknown size.
 - Count the argument registers at each call: some library calls take five or six (`$t0`, `$t1`), and a missing
   argument changes the scheduling around the call.
+- A field offset kept in the load / store (`swc1 $f0, 0x10($v1)` after `addiu $a1, %lo(D_x)`) rather than folded
+  into `%lo(D_x + 0x10)` means the source took the address of an element first (`S *p = &D_x[i][j]; p->f = v;`, or
+  a row pointer `S *row = D_x[i]; row[j].f = v;`); indexing all the way in one expression folds the offset. The
+  same holds for an index `j + 1` that the original adds before multiplying (func_002AC990, func_002ACD50).
+- `x & ~(u16)a` loads `a` with `lhu` (func_002AC860).
 - A small `switch` (two or three cases, no jump table) compiles to a chain of `beq`; the case blocks are laid out
   in the source order of the `case` labels (func_001CB4A0).
 - Tail calls (`j func` with the stack restored in the delay slot) appear in the code linked before CRI; 3.0b52 at

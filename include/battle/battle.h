@@ -9,9 +9,13 @@ typedef struct ScriptCtx {
     /* 0x00 */ s32 ret;                              /* integer result */
     /* 0x04 */ s32 unk04[3];
     /* 0x10 */ s32 (*wait)(struct ScriptCtx *ctx);   /* called each frame while the command waits */
-    /* 0x14 */ s32 unk14[6];
+    /* 0x14 */ s32 unk14[3];
+    /* 0x20 */ s32 base;                             /* added to file numbers (guess) */
+    /* 0x24 */ s32 unk24[2];
     /* 0x2C */ s32 *args;                            /* the command's arguments (ints or floats) */
-    /* 0x30 */ s32 unk30[4];
+    /* 0x30 */ s32 unk30[2];
+    /* 0x38 */ void *unk38;
+    /* 0x3C */ s32 unk3C;
     /* 0x40 */ f32 fret;                             /* float result */
 } ScriptCtx;
 
