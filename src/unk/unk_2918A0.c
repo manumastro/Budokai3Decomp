@@ -133,6 +133,47 @@ void func_002919B0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002919B0);
+#if 0
+// differs: 5 of 71; the 24-byte copy takes the base in v1 here, v0 in the original (5 declaration orders tried)
+typedef struct Copy16_2918A0 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Copy16_2918A0;
+extern s32 D_00453E80[];
+extern char D_0046BAF8[];
+extern void func_002928C0(void);
+extern s32 amTask_Create(void *, void *, s32, s32, s32, void *);
+void func_00291AD0(void) {
+    s32 blk[6];
+    f32 *p;
+    Copy16_2918A0 *d;
+    char *src;
+
+    d = (Copy16_2918A0 *)blk;
+    src = (char *)D_00453E80;
+    *d = *(Copy16_2918A0 *)src;
+    *(s64 *)((char *)d + 16) = *(s64 *)(src + 16);
+    if (*(s8 *)((char *)D_005AA604[0] + 0x11E6) != 0) {
+        *(s16 *)((char *)blk + 4) = -0x7FFF;
+        *(s8 *)((char *)blk + 8) = -1;
+    }
+    func_0028EE90(D_005AA5A0, D_005AA5CC, D_005AA5D8, D_005AA5E4, blk, 0x9200, 0x20000, 0x300000);
+    func_002BF310();
+    D_005AA5A4[0] = amTask_Create(func_002928C0, 0, 0x9001, 2, 0x20000, D_0046BAF8);
+    ((Work2918A0 *)D_005AA5A4[0])->f40 = 16.0f;
+    p = (f32 *)((char *)D_005AA5A4[0] + 0x30);
+    if (*(s8 *)((char *)D_005AA604[0] + 0x11E6) != 0) {
+        p[0] = 0.0f;
+        p[1] = 0.1f;
+        p[2] = 0.0f;
+        p[3] = 0.0f;
+    } else {
+        p[0] = 0.0f;
+        p[1] = 0.15f;
+        p[2] = 0.3f;
+        p[3] = 0.0f;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00291AD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00291BF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00291E30);
