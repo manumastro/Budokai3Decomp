@@ -16,14 +16,14 @@ disc image works too.
 
 Early. The executable is split by [splat](https://github.com/ethteck/splat) and rebuilt from the split: the build
 gives a byte-identical ELF. No C is linked yet. The game was built with Metrowerks CodeWarrior for PS2 3.0 beta at
-`-O4,p` (three of its functions compile to the original bytes with it and with no other version:
-`scripts/mwmatch.py`, `scripts/probe/`). [docs/plan.md](docs/plan.md) has the analysis of the executable, the
+`-O3,p` or `-O4,p` (three of its functions compile to the original bytes with the 3.0b builds and with no other
+version: `scripts/mwmatch.py`, `scripts/probe/`; the four 3.0b builds and the two levels tie so far). [docs/plan.md](docs/plan.md) has the analysis of the executable, the
 figures, the compiler evidence and the next steps.
 
 ## Building
 
-macOS (Apple Silicon) or Linux x86-64, with Python 3.9 or newer, and `bsdtar` (macOS has it; on Linux the
-`libarchive-tools` package) or `7z` to read the disc image.
+macOS (Apple Silicon, with Rosetta for wibo) or Linux x86-64 (not tried yet), with Python 3.9 or newer, and
+`bsdtar` (macOS has it; on Linux the `libarchive-tools` package) or `7z` to read the disc image.
 
 ```sh
 python3 -m venv .venv

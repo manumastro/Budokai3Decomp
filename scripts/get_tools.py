@@ -45,6 +45,10 @@ ALL_COMPILERS = [
 ]
 
 
+# tarfile's extraction filter, where this Python has it (3.12, and the 3.8-3.11 security releases).
+SAFE = {"filter": "data"} if hasattr(tarfile, "data_filter") else {}
+
+
 def host():
     system, machine = platform.system(), platform.machine().lower()
     if system == "Darwin":
@@ -71,7 +75,7 @@ def get_binutils(flavor):
         return
     dest.mkdir(parents=True, exist_ok=True)
     with tarfile.open(fileobj=io.BytesIO(fetch(BINUTILS_URL.format(flavor)))) as t:
-        t.extractall(dest, filter="data")
+        t.extractall(dest, **SAFE)
     for p in dest.iterdir():
         make_executable(p)
     # splat runs mips-linux-gnu-* tools by name.
@@ -104,7 +108,7 @@ def get_compiler(version):
                     (dest / m.name[len(prefix):]).write_bytes(t.extractfile(m).read())
     else:
         with tarfile.open(fileobj=io.BytesIO(fetch(COMPILERS_URL.format(version)))) as t:
-            t.extractall(dest, filter="data")
+            t.extractall(dest, **SAFE)
     for p in dest.iterdir():
         make_executable(p)
 

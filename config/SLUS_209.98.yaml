@@ -56,9 +56,9 @@ segments:
       # (docs/plan.md, "What is in the executable"): Metrowerks pads every function to 16 bytes and saves $s
       # registers with sq; Sony's and CRI's libraries (gcc) start functions on 8 bytes and save them with sd.
       - [0x000000, asm, sdk/text]       # Sony SDK libraries and the C library (gcc)
-      - [0x02C360, asm, engine/text]    # Dimps' engine library (am*.c sources) and main (Metrowerks)
+      - [0x02C360, asm, mw_a/text]      # Metrowerks code linked before CRI: amDraw3d.c, amMotion.c, ..., main
       - [0x04E5D0, asm, cri/text]       # CRI ADX / Sofdec middleware, libmtap (gcc)
-      - [0x0A1E80, asm, game/text]      # the game (Metrowerks)
+      - [0x0A1E80, asm, mw_b/text]      # Metrowerks code linked after CRI: the game (and amMc.c, amCdFs.c)
       # .data, 0x310980 to 0x45CB80. The VU1 microprograms (DMA packets with VIF MPG) are kept as raw bytes.
       - [0x210980, bin, data/vu1_a]
       - [0x23E180, data, data/data_a]
