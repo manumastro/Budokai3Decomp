@@ -564,6 +564,41 @@ void SkillKill_Kind05(s32 *p) {
         p[20] = 0;
     }
 }
+#if 0
+// differs: 23 of 85 at the start (s1/s2 order fixed by declaration order), then 33 of 87: the original computes
+// &a0->0x30 into a0 and loads the 0.5 scale (lwc1 f0) before move a1,a0 and the jal; a local pointer moves it to s1.
+extern s8 D_004703F4;
+void func_0024E7B0(s32 a0) {
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    s32 v;
+    f32 f1;
+
+    s1 = *(u8 **)(a0 + 0x8);
+    s0 = *(s32 *)(s1 + 0x1350);
+    s2 = *(u8 **)(a0 + 0xC);
+    *(s32 *)(a0 + 0x50) = *(s32 *)((u8 *)D_0046FE54 + 0x10);
+    func_0020D400(a0 + 0x10, (s32)s1, *(s32 *)(s2 + 0x2C));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(a0 + 0x10));
+    func_002499A0((s32 *)(a0 + 0x30), a0 + 0x10, (s32)s1, (s32)s2, 30.0f);
+    *(f32 *)(a0 + 0x34) = *(f32 *)(a0 + 0x34) + 0.5f;
+    func_00146F30((s32 *)(a0 + 0x30));
+    if (gBattle != 0) {
+        f1 = *(f32 *)((u8 *)gBattle + 0x88F0);
+    } else {
+        if (D_004703F4 != 3) {
+            f1 = 1.0f;
+        } else {
+            f1 = 1.2f;
+        }
+    }
+    func_00146F10((s32 *)(a0 + 0x30), (s32 *)(a0 + 0x30), *(f32 *)(s2 + 0x28) * f1);
+    v = func_0020B020(s0, *(s16 *)(s2 + 0x58), *(s16 *)(s2 + 0x5E));
+    *(s32 *)(a0 + 0x54) = func_00209540(v, (s0 != 0) ? 0x4000020 : 0x4000010, 0);
+    func_00209B50(*(s32 *)(a0 + 0x54), a0 + 0x20, 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E7B0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E910);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024ECE0);
@@ -756,6 +791,55 @@ void func_002523B0(s32 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252410);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002525A0);
+#if 0
+// differs: 27 of 88. Prologue, memset, the two 16-byte copies and the table walk match; the entry pointer
+// lives in $a1 here and in $a2 in the original (declaration order, operand order and a table pointer local tried).
+extern void func_00251DA0(s32 *);
+extern void func_00251C20(s32 *);
+void func_00252780(s32 a0, u8 *a1) {
+    u8 buf[0x40] __attribute__((aligned(16)));
+    u8 t50[0x10] __attribute__((aligned(16)));
+    s32 s1;
+    s32 s0;
+    s32 e;
+    s32 *tb;
+    s32 cur;
+
+    s1 = *(s32 *)(*(u8 **)(a1 + 0x1354) + 0x1350);
+    memset(buf, 0, 0x40);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x20), "r"(a1 + 0x130));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(t50), "r"(a1 + 0xD0));
+    func_00146F30((s32 *)t50);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x30), "r"(t50));
+    *(s32 *)(buf + 0x8) = *(s32 *)(a1 + 0x1354);
+    for (s0 = 0; s0 < *(s32 *)((u8 *)D_0046FE54 + (s1 << 2) + 8); s0++) {
+        tb = (s32 *)((u8 *)D_0046FE54 + (s1 << 2));
+        e = *tb + (((s0 << 4) - s0) << 4);
+        if (*(s16 *)(e + 0x16) != 0) {
+            if (*(s16 *)(e + 0x16) != *(s32 *)(*(u8 **)(a1 + 0x1354) + 0xBA4)) {
+                continue;
+            }
+        } else {
+            cur = *(s32 *)(*(u8 **)(a1 + 0x1354) + 0xBA4);
+            if (cur < *(s16 *)(e + 0xDC)) {
+                continue;
+            }
+            if (*(s16 *)(e + 0xDE) < cur) {
+                continue;
+            }
+        }
+        if (*(s16 *)(e + 0x12) != a0) {
+            continue;
+        }
+        if (*(s16 *)(e + 0x10) != 0xB) {
+            continue;
+        }
+        *(s32 *)(buf + 0xC) = e;
+        func_00251DA0((s32 *)buf);
+        func_00251C20((s32 *)buf);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252780);
 void func_002528E0(s32 a0, s32 a1) {
     switch (a1) {
@@ -1885,6 +1969,42 @@ void func_00254B50(s32 *a0) {
     D_0058D4F4[0] = 0;
 }
 #endif
+// GIVEN UP: differs: size 0x16C vs 0x180 (4 instructions short): the global store after the if is laid out at the end (the original jumps to it from the false test), the release macro matches; 6 forms
+#if 0
+extern void func_0022D0E0(s32, s32);
+extern s32 D_0058D4F4[];
+#define SK_REL(p, off) do { if (*(s32 *)((p) + (off))) { func_0022D0E0(*(s32 *)((p) + (off)), 1); } *(s32 *)((p) + (off)) = 0; } while (0)
+void func_00254B50(s32 *a0) {
+    s32 *s2 = a0 + 12;
+    u8 *s4;
+    u8 *s1;
+    u8 *b;
+    s32 j;
+    s32 k;
+    s32 q;
+    q = *(s32 *)((u8 *)a0 + 0x30);
+    if (q != 0) {
+        s4 = (u8 *)q + 0x30;
+        SK_REL(s4, 0x4);
+        SK_REL(s4, 0x8);
+        SK_REL(s4, 0x14);
+        SK_REL(s4, 0x10);
+        SK_REL(s4, 0xC);
+        s1 = s4;
+        for (j = 0; j < 2; j++) {
+            b = s4 + 8 * j;
+            SK_REL(s1 + 4 * j, 0x30);
+            SK_REL(s1 + 4 * j, 0x18);
+            for (k = 0; k < 2; k++) {
+                SK_REL(b + 4 * k, 0x20);
+            }
+        }
+        amTask_Kill(*s2);
+        *s2 = 0;
+    }
+    D_0058D4F4[0] = 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254B50);
 void func_00254CD0(u8 *a0) {
     u8 *t;
@@ -2301,61 +2421,38 @@ void func_00257DA0(s32 *a0) {
         }
     }
 }
-// GIVEN UP: the field pointer is computed before the register save in the original (scheduling; 4 forms tried)
+// GIVEN UP: differs: size 0x16C vs 0x180 (4 instructions short), the same release shape as func_00254B50 (identical asm but for the global D_0058D4EC): the global store after the if is laid out at the end; 6 forms
 #if 0
-extern s32 D_0058D4EC[];
 extern void func_0022D0E0(s32, s32);
+extern s32 D_0058D4EC[];
+#define SK_REL(p, off) do { if (*(s32 *)((p) + (off))) { func_0022D0E0(*(s32 *)((p) + (off)), 1); } *(s32 *)((p) + (off)) = 0; } while (0)
 void func_00257E30(s32 *a0) {
-    s32 *s2;
-    s32 *s1;
-    s32 *s4;
-    s32 *s3;
-    s32 *v;
-    s32 i;
+    s32 *s2 = a0 + 12;
+    u8 *s4;
+    u8 *s1;
+    u8 *b;
     s32 j;
-
-    v = (s32 *)a0[12];
-    s2 = a0 + 12;
-    if (v != 0) {
-        s1 = v + 12;
-        if (s1[1] != 0) {
-            func_0022D0E0(s1[1], 1);
-        }
-        s1[1] = 0;
-        if (s1[2] != 0) {
-            func_0022D0E0(s1[2], 1);
-        }
-        s1[2] = 0;
-        if (s1[5] != 0) {
-            func_0022D0E0(s1[5], 1);
-        }
-        s1[5] = 0;
-        if (s1[4] != 0) {
-            func_0022D0E0(s1[4], 1);
-        }
-        s1[4] = 0;
-        if (s1[3] != 0) {
-            func_0022D0E0(s1[3], 1);
-        }
-        s1[3] = 0;
-        for (j = 0, s4 = s1; j < 2; j++, s1 += 1, s4 += 2) {
-            if (s1[12] != 0) {
-                func_0022D0E0(s1[12], 1);
-            }
-            s1[12] = 0;
-            if (s1[6] != 0) {
-                func_0022D0E0(s1[6], 1);
-            }
-            s1[6] = 0;
-            for (i = 0, s3 = s4; i < 2; i++, s3 += 1) {
-                if (s3[8] != 0) {
-                    func_0022D0E0(s3[8], 1);
-                }
-                s3[8] = 0;
+    s32 k;
+    s32 q;
+    q = *(s32 *)((u8 *)a0 + 0x30);
+    if (q != 0) {
+        s4 = (u8 *)q + 0x30;
+        SK_REL(s4, 0x4);
+        SK_REL(s4, 0x8);
+        SK_REL(s4, 0x14);
+        SK_REL(s4, 0x10);
+        SK_REL(s4, 0xC);
+        s1 = s4;
+        for (j = 0; j < 2; j++) {
+            b = s4 + 8 * j;
+            SK_REL(s1 + 4 * j, 0x30);
+            SK_REL(s1 + 4 * j, 0x18);
+            for (k = 0; k < 2; k++) {
+                SK_REL(b + 4 * k, 0x20);
             }
         }
-        amTask_Kill(s2[0]);
-        s2[0] = 0;
+        amTask_Kill(*s2);
+        *s2 = 0;
     }
     D_0058D4EC[0] = 0;
 }
