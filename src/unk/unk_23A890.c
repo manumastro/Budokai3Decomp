@@ -325,6 +325,60 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023DB40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023DC10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023E260);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023E570);
+#if 0
+// differs: 5 instructions short: the id and the struct pointer swap registers, and the first branch layout does not match; declaration orders searched
+extern s8 D_004703F4;
+void func_0021C680(s32);
+void func_0021C620(s32);
+void func_0023E7A0(s32 x) {
+    s32 id;
+    u8 *s0;
+    u8 *s1;
+    s32 a3;
+    s32 a0;
+    s32 a4;
+    s32 a5;
+    s32 t;
+
+    id = func_0021C3D0(x);
+    func_0021C680(id);
+    s1 = func_0021C660(id);
+    func_0021C620(id);
+    s0 = func_0021C400(id);
+    a3 = *(s32 *)(s0 + 4);
+    a0 = *(s32 *)(s1 + 8);
+    if (a3 < a0) {
+        a5 = (D_004703F4 == 3) ? 0x19 : 0x1E;
+        a4 = (a0 - a3) / a5;
+        if (a4 < ((D_004703F4 == 3) ? 0xC : 0xA)) {
+            *(s32 *)(s0 + 4) = a3 + ((D_004703F4 == 3) ? 0xC : 0xA);
+        } else {
+            *(s32 *)(s0 + 4) = a3 + a4;
+        }
+        if (a0 < *(s32 *)(s0 + 4)) {
+            *(s32 *)(s0 + 4) = a0;
+        }
+    } else {
+        *(s32 *)(s0 + 4) = a0;
+    }
+    if (*(s32 *)s0 & 8) {
+        if (*(s32 *)(s0 + 8) > 0) {
+            a5 = (D_004703F4 == 3) ? 0x19 : 0x1E;
+            a0 = *(s32 *)(s0 + 0xC) / a5;
+            t = (D_004703F4 == 3) ? 0xC : 0xA;
+            if (a0 < t) {
+                a0 = (D_004703F4 == 3) ? 0xC : 0xA;
+                *(s32 *)(s0 + 8) -= a0;
+            } else {
+                *(s32 *)(s0 + 8) -= a0;
+            }
+        } else {
+            *(s32 *)s0 = *(s32 *)s0 ^ 8;
+            *(s32 *)(s0 + 0xC) = 0;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023E7A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023E950);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023ED30);
