@@ -96,7 +96,49 @@ void func_002BD400(StrStatusCopy *out) {
 void StrStatus_ClearWork(void) {
     D_00470910 = NULL;
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD510);
+extern void Character_Release(s32);
+extern void func_0029E450(s32);
+extern void Help_Exit(void);
+extern void func_002F54C0(void);
+
+extern void Character_Release(s32);
+extern void func_0029E450(s32);
+extern void Help_Exit(void);
+extern void func_002F54C0(void);
+
+void func_002BD510(void) {
+    s32 i;
+    if (D_00470910 != 0) {
+        for (i = 0; i < 0x45; i++) {
+            if (((s32 *)D_00470910)[0xE + i] != 0) {
+                amTask_Kill((Task *)((s32 *)D_00470910)[0xE + i]);
+            }
+        }
+        for (i = 0; i < 7; i++) {
+            if (((s32 *)D_00470910)[i] != 0) {
+                amCdFs_Close(((s32 *)D_00470910)[i], 0);
+            }
+            if (((s32 *)D_00470910)[7 + i] != 0) {
+                amCdFs_ReleaseCache(((s32 *)D_00470910)[7 + i]);
+            }
+        }
+        for (i = 0; i < 0x3C; i++) {
+            if (((s32 *)D_00470910)[0x5A + i] != 0) {
+                func_0022D0E0(((s32 *)D_00470910)[0x5A + i], 1);
+            }
+        }
+        if (((s32 *)D_00470910)[0x96] != 0) {
+            Character_Release(((s32 *)D_00470910)[0x96]);
+        }
+        if (((s32 *)D_00470910)[0x97] != 0) {
+            func_0029E450(((s32 *)D_00470910)[0x97]);
+        }
+        Help_Exit();
+        func_002F54C0();
+        amHeap_Free((void *)D_00470910);
+        D_00470910 = 0;
+    }
+}
 void StrStatus_Start(s32 a, s32 b) {
     D_00470910->f274 = a;
     D_00470910->f278 = b;
@@ -295,6 +337,58 @@ s32 func_002BECB0(s32 a0, s32 a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BECB0);
+#if 0
+// func_002BED90: the case tests: the original tests 0x12, 0x11, 0xF, 0x10 in that order with out-of-line blocks; ours (if chain or switch) reorders them; the rest matches
+extern s32 D_005BD1A0;
+extern s32 func_00209540(s32, s32, s32);
+
+void func_002BED90(s32 a0) {
+    s32 *s0 = (s32 *)D_0046FE44;
+    s32 *a0p;
+    s32 *a2;
+    s32 *a1;
+    s32 v;
+    if (D_0047011C[0x1A4 / 4] != 0) {
+        func_00209530(D_0047011C[0x1A4 / 4]);
+        D_0047011C[0x1A4 / 4] = 0;
+    }
+    a0p = (s32 *)D_005BD1A0;
+    a2 = (s32 *)((s32 *)((char *)a0p + a0p[0xC / 4]))[0x24 / 4];
+    a1 = (s32 *)a2[0x28 / 4];
+    v = *(s16 *)((char *)s0 + 0x34) * 2 + 0x1A;
+    a2[0xA4 / 4] = v;
+    v = *(s16 *)((char *)s0 + 0x34) * 2 + 0x1A;
+    a1[0xA4 / 4] = v;
+    switch (a0) {
+    case 0x12:
+        a2[0x5C / 4] = 0x41A00000;
+        a2[0xA0 / 4] = 0;
+        a1[0x5C / 4] = 0x41400000;
+        a1[0xA0 / 4] = 2;
+        break;
+    case 0x11:
+        a2[0x5C / 4] = 0x41B00000;
+        a2[0xA0 / 4] = 0;
+        a1[0x5C / 4] = 0x41800000;
+        a1[0xA0 / 4] = 1;
+        break;
+    case 0xF:
+    case 0x10:
+        a2[0x5C / 4] = 0x41700000;
+        a2[0xA0 / 4] = 0;
+        a1[0x5C / 4] = 0x40E00000;
+        a1[0xA0 / 4] = 1;
+        break;
+    default:
+        a2[0x5C / 4] = 0;
+        a2[0xA0 / 4] = 0;
+        a1[0x5C / 4] = 0;
+        a1[0xA0 / 4] = 1;
+        break;
+    }
+    D_0047011C[0x1A4 / 4] = func_00209540((s32)a0p, 0x400020, 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BED90);
 void func_002BEEE0(void *a0) {
     if (a0 != 0) {
@@ -655,6 +749,44 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0FC0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1160);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1320);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C15E0);
+extern s32 func_0022D670(s32, f32);
+
+#if 0
+// func_002C1720: the parameter is copied to a saved register first in the original (move s0,a0); ours uses a0 directly, 74 of 80 differ; 1 form tried
+void func_002C1720(s32 *a0) {
+    u8 *b = (u8 *)a0;
+    s32 *s0 = a0;
+    D_00470704 = s0[1];
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(s0[1], 0x2000);
+    D_00470238 = 0;
+    if (s0[0x24 / 4] != 0) {
+        func_0022D0E0(s0[0x24 / 4], 1);
+    }
+    s0[0x24 / 4] = func_0022D670(((s32 *)((s32 *)s0[0])[0x1C / 4])[b[0xAB] + 0x2A], 0.0f);
+    if (s0[0x28 / 4] != 0) {
+        func_0022D0E0(s0[0x28 / 4], 1);
+        s0[0x28 / 4] = 0;
+    }
+    if (s0[0x34 / 4] != 0) {
+        func_0022D0E0(s0[0x34 / 4], 1);
+    }
+    if (b[0xAB] != 0) {
+        s0[0x34 / 4] = func_0022D670(((s32 *)((s32 *)s0[0])[0x1C / 4])[0x68 / 4], 0.0f);
+    } else {
+        s0[0x34 / 4] = 0;
+    }
+    if (s0[0x38 / 4] != 0) {
+        func_0022D0E0(s0[0x38 / 4], 1);
+    }
+    if (b[0xAB] < b[0xAD] || b[0xAB] < 2) {
+        s0[0x38 / 4] = func_0022D670(((s32 *)((s32 *)s0[0])[0x1C / 4])[0x6C / 4], 0.0f);
+    } else {
+        s0[0x38 / 4] = 0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1720);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1860);
 
@@ -757,6 +889,49 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3220);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C32C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3A10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3B40);
+extern void func_0022E0B0(s32);
+extern void func_00264260(s32, s32, s32);
+extern void func_002C1860(s32 *);
+extern void func_002C3B40(void);
+extern s32 func_0022D670(s32, f32);
+
+extern void func_0022E0B0(s32);
+extern void func_00264260(s32, s32, s32);
+extern void func_002C1860(s32 *);
+extern void func_002C3B40(void);
+extern s32 func_0022D670(s32, f32);
+
+#if 0
+// func_002C3D20: 7 of 66 differ: the function pointer and the 0x41F00000 store take v1/a0 the other way round (same as func_002C2470); 3 tail orders tried
+void func_002C3D20(s32 *a0) {
+    s32 *s1 = (s32 *)a0[0x30 / 4];
+    s32 *s0 = (s32 *)gTourMode;
+    void *f;
+    s32 v;
+    if (*(s16 *)((char *)((s32 *)s0[1]) + 4) == 3) {
+        s1[0] = ((s32 *)s0[0])[0x54 / 4];
+        ((s32 *)s0[0])[0x54 / 4] = 0;
+        amCdFs_Close(s0[0], 0);
+        s1[1] = ((s32 *)s0[1])[0x54 / 4];
+        ((s32 *)s0[1])[0x54 / 4] = 0;
+        amCdFs_Close(s0[1], 0);
+        func_0022E0B0(s1[0]);
+        amFile_Load(s1[1]);
+        func_00264260(-1, 0, 0);
+        v = s1[1];
+        D_00470704 = v;
+        D_0047070C = 0x2000;
+        D_00470708 = 0;
+        func_00145CC0(v, 0x2000);
+        D_00470238 = 0;
+        s1[2] = func_0022D670(((s32 *)((s32 *)s1[0])[0x1C / 4])[0], 0.0f);
+        func_002C1860(s1);
+        *(s32 *)((char *)s1 + 0xC4) = 0x41F00000;
+        f = (void *)func_002C3B40;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3D20);
 
 void StrStatus_ClearTourMode(void) {

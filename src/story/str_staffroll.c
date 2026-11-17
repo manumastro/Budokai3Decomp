@@ -1,4 +1,5 @@
 #include "common.h"
+#include "menu/menu.h"
 
 extern f32 gFrameDelta;
 extern char D_0046FBB0[];
@@ -322,4 +323,51 @@ void func_0030EFF0(s32 *a0) {
 void StaffRoll_Clear(void) {
     D_00470998 = 0;
 }
+#if 0
+// func_0030F0E0: the middle and inner pointers take the other saved registers (s3/s1 against s0/s2 in the original); 5 orders tried
+void func_0030F0E0(void) {
+    s32 *s0 = (s32 *)D_00470998;
+    s32 *s3;
+    s32 *s1;
+    s32 *s2;
+    if (s0 != 0) {
+        s3 = (s32 *)((s32 *)s0[0x8 / 4])[0x30 / 4];
+        s1 = (s32 *)s3[0x8 / 4];
+        if (s1 != 0) {
+            if (s1[0x38 / 4] != 0) {
+                func_0022D0E0(s1[0x38 / 4], 1);
+            }
+            amTask_Kill((Task *)s1);
+        }
+        s1 = (s32 *)s3[0xC / 4];
+        if (s1 != 0) {
+            s2 = s1 + 0x30 / 4;
+            if (s1[0x30 / 4] >= 0) {
+                amSofdec_Stop(s1[0x30 / 4]);
+                amSofdec_Destroy(s2[0]);
+            }
+            amTask_Kill((Task *)s1);
+        }
+        if (s3[0x10 / 4] != 0) {
+            amTask_Kill((Task *)s3[0x10 / 4]);
+        }
+        if (s3[0x4 / 4] != 0) {
+            amHeap_Free((void *)s3[0x4 / 4]);
+        }
+        if (s3[0x0 / 4] != 0) {
+            amHeap_Free((void *)s3[0x0 / 4]);
+        }
+        amHeap_Free((void *)s3);
+        amTask_Kill((Task *)s0[0x8 / 4]);
+        if (s0[0x0 / 4] != 0) {
+            amCdFs_Close(s0[0x0 / 4], 0);
+        }
+        if (s0[0x4 / 4] != 0) {
+            amCdFs_Close(s0[0x4 / 4], 0);
+        }
+        amHeap_Free((void *)s0);
+        D_00470998 = 0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030F0E0);

@@ -102,6 +102,34 @@ void func_002A1980(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A19B0);
+extern u32 func_0012EAE0(s32);
+extern s8 D_004E6560[];
+
+#if 0
+// func_002A1B30: the free-slot pick: the loop index and count take the other saved registers, the frame is 0x60 in the original (ours 0x50); 4 forms tried
+s32 func_002A1B30(void) {
+    s32 list[8];
+    s32 cnt = 0;
+    s32 k;
+    s32 base;
+    s32 mask;
+    s32 idx;
+    s32 bit;
+    s8 *tb = D_004E6560;
+    base = (s32)D_00511450[0] * 4624;
+    mask = ((s8 *)D_004E77C4)[base] & 0x7F;
+    for (k = 0; k < 7; k++) {
+        if ((mask & (1 << k)) == 0) {
+            list[cnt] = k;
+            cnt++;
+        }
+    }
+    idx = (s32)(func_0012EAE0(3) % (u32)cnt);
+    bit = (s8)(1 << list[idx]);
+    tb[base + 0x1264] = (s8)(tb[base + 0x1264] | bit);
+    return list[idx];
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1B30);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1C20);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1DB0);

@@ -318,6 +318,43 @@ void func_003107C0(void) {
 }
 void func_003107D0(void) {
 }
+#if 0
+// func_003107E0: 1 of 69 instructions differ with the table as u8 (the build fails: a byte of the table or the copy is wrong); the call sequence and the branches match
+extern void func_001F07D0(void);
+extern void func_00310640(Task *);
+extern void func_00283D00(s32, s32, s32, s32);
+extern void func_0026DAF0(void *, s32);
+extern void Save_Load(s32, s32);
+extern void func_00264140(s32, s32);
+extern s16 D_0046FC50[];
+extern char D_0046FC70[];
+extern s8 D_004DFB19[];
+extern s8 D_005C4596[];
+
+void func_003107E0(s32 a0) {
+    Task *t;
+    s32 s0;
+    s32 s1;
+    s32 v;
+    func_001F07D0();
+    t = amTask_Create(func_00310640, NULL, 0x2000, 8, 2, D_0046FC70);
+    *(s16 *)((char *)t + 0x30) = (s16)a0;
+    *(s16 *)((char *)t + 0x32) = 0;
+    if ((s16)a0 >= 0) {
+        s0 = D_0046FC50[a0];
+        s1 = (u8)D_004E066D[s0 * 40];
+        func_00283D00(0x3000, s0, 1, 0x11403000);
+        func_0026DAF0(D_004B4B40, s0);
+        v = (u8)D_004DFB19[s0];
+        if (v < s1) {
+            D_004DFB19[s0] = (s8)(v + 1);
+        }
+        D_005C4596[s0] = D_004DFB19[s0];
+    }
+    Save_Load(0x3000, 0);
+    func_00264140(-1, 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_003107E0);
 void func_00310900(void) {
 }
