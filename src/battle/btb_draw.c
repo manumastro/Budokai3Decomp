@@ -4966,6 +4966,7 @@ void func_001F3740(char *a0) {
 // differs: func_001F3740 (424 bytes): the draw shape of func_001F2570 without its prefix; the only misses are the load order of the table base (gBtbBg+0x34 in v1 first in the original) and the index D_0051CD20 (a0), which the compiler swaps (tried: index first, base in a local, split statements). 6 instructions differ, the rest matches.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3740);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F38F0);
+#if 0
 void func_001F3A60(char *a0) {
     char *s0;
     char *bg;
@@ -5014,6 +5015,9 @@ void func_001F3A60(char *a0) {
         }
     }
 }
+#endif
+// differs: func_001F3A60 (424 bytes): same shape as func_001F3740 (the table base is loaded after the index in ours; the original loads the base first). s0 copy, bg and index locals tried. 6 instructions differ.
+INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3A60);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3C10);
 extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
 extern s32 gBattle;
@@ -6609,8 +6613,7 @@ void func_001F7BF0(void) {
     }
 }
 extern char D_004698D0[];
-#if 0
-extern void func_001F3A60(char *);
+extern void func_001F3A60(void);
 extern void func_001F3C10(void);
 
 // differs: func_001F7C80: 28 of 77 at best (about 8 are relocations): the flags local is kept in another register (original t0, set in the delay slot of the first beqz) and the two early exits go to a different join; declaration orders tried.
@@ -6656,9 +6659,6 @@ void func_001F7C80(s32 a0) {
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & ~flags;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | flags;
 }
-#endif
-// differs: func_001F3A60 (424 bytes): same as func_001F3740 (the draw shape with the table walk): the index D_0051CD20 is loaded before the table base in ours (original: base gBtbBg+0x34 first, index second); s0 copy first, bg and index locals tried. 6 instructions differ.
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3A60);
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7C80);
 #if 0
