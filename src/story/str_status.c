@@ -1429,8 +1429,36 @@ void func_002C3120(s32 *a0) {
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
-// func_002C3220: the same shape as func_002C1A00; not matched yet.
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3220);
+void func_002C3220(s32 *a0) {
+    s32 *s1;
+    s32 *s0;
+
+    s1 = (s32 *)a0[0xC];
+    {
+        s32 m = s1[1];
+        D_00470704 = m;
+        D_0047070C = 0x2000;
+        D_00470708 = 0;
+        amModel_SetCurrent(m, 0x2000);
+    }
+    D_00470238 = 0;
+    {
+        s32 m = s1[1];
+        D_00470704 = m;
+        D_0047070C = 0x2000;
+        D_00470708 = 0;
+        amModel_SetCurrent(m, 0x2000);
+    }
+    D_00470238 = 0;
+    s0 = (s32 *)s1[2];
+    if (s0 != 0) {
+        func_0022C060((s32)s0, 1.0f);
+        func_0022CD00((s32)s0);
+    }
+    func_002C0860(s1);
+    A2d_FlushList();
+    func_00133B50(0, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C32C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3A10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3B40);
