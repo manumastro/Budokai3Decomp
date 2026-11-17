@@ -210,75 +210,47 @@ INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F930);
 void StrBg_Clear(void) {
     D_004708A4 = 0;
 }
-#if 0
-// func_00290330: the original's break is a `bne` over a `b` (an if-break), and the loop exit sets p = 0 with no test; goto and break both give beq / a test at the exit
+static inline char *StrBg_Find(s32 id) {
+    char *p = (char *)D_004708A4 + 0x430;
+    s32 i;
+    for (i = 0; i < 0x48; i++, p += 0x50) {
+        if (*(s32 *)(p + 8) == id) {
+            return p;
+        }
+    }
+    return 0;
+}
 void func_00290330(s32 a0, s32 a1) {
     char *p;
-    s32 i;
     if (D_004708A4 == 0) {
         return;
     }
     if (a0 == -1) {
         return;
     }
-    p = (char *)D_004708A4 + 0x430;
-    i = 0;
-    do {
-        if (*(s32 *)(p + 8) != a0) {
-            i++;
-            p += 0x50;
-        } else {
-            goto found;
-        }
-    } while (i < 0x48);
-    p = 0;
-found:
+    p = StrBg_Find(a0);
     if (p == 0) {
         return;
     }
     *(s32 *)(p + 0xC) = a1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290330);
-#if 0
-// func_00290390: same search loop as func_00290330, and the two early returns are laid out in another order; not matched
 void func_00290390(s32 a0, s32 a1) {
     char *p;
-    s32 i;
     if (D_004708A4 == 0) {
         return;
     }
-    if (a0 == -1) {
+    if (a0 == -1 || a1 == -1) {
         return;
     }
-    if (a1 == -1) {
-        return;
-    }
-    p = (char *)D_004708A4 + 0x430;
-    i = 0;
-    do {
-        if (*(s32 *)(p + 8) == a0) {
-            break;
-        }
-        i++;
-        p += 0x50;
-    } while (i < 0x48);
-    if (i == 0x48) {
-        p = 0;
-    }
+    p = StrBg_Find(a0);
     if (p == 0) {
         return;
     }
     *(s32 *)(p + 0x8) = a1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290390);
-#if 0
-// func_00290410: the unlink of the id-matched entry; the unlink part matches, the search loop does not: the original keeps the id in a2 and the counter in a0 (bne over a b to the found block); the goto and else forms give beq; 4 forms tried
 void memset(void *, s32, s32);
 void func_00290410(s32 *a0) {
     char *p;
-    s32 i;
     s32 id;
     if (D_004708A4 == 0) {
         return;
@@ -287,18 +259,7 @@ void func_00290410(s32 *a0) {
     if (id == -1) {
         return;
     }
-    p = (char *)D_004708A4 + 0x430;
-    i = 0;
-    do {
-        if (*(s32 *)(p + 8) != id) {
-            i++;
-            p += 0x50;
-        } else {
-            goto found;
-        }
-    } while (i < 0x48);
-    p = 0;
-found:
+    p = StrBg_Find(id);
     if (p == 0) {
         return;
     }
@@ -309,8 +270,6 @@ found:
     memset(p, 0, 0x50);
     *(s32 *)(p + 8) = -1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290410);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_002904C0);
 void func_00290780(s32 *a0) {
     char *o = (char *)D_004708A4;
@@ -457,29 +416,24 @@ void func_00290A70(s32 *a0) {
         i += 8;
     } while (i < 0x48);
 }
-#if 0
-// func_00290AE0: the found exit skips the index test in ours (the original runs it after the search); two loop forms tried
-s32 func_00290AE0(s32 a0, s32 a1) {
-    s32 s1 = 0;
-    char *s0 = (char *)D_004708A4 + 0x430;
-    do {
-        if (*(s32 *)(s0 + 0x40) != 0 && func_00127940(*(s32 *)(s0 + 0x40), a0) == 0) {
-            break;
+static inline char *StrBg_FindName(s32 a0) {
+    char *p = (char *)D_004708A4 + 0x430;
+    s32 i;
+    for (i = 0; i < 0x48; i++, p += 0x50) {
+        if (*(s32 *)(p + 0x40) != 0 && func_00127940(*(s32 *)(p + 0x40), a0) == 0) {
+            return p;
         }
-        s0 += 0x50;
-        s1++;
-    } while (s1 < 0x48);
-    if (s1 == 0x48) {
-        s0 = 0;
     }
+    return 0;
+}
+s32 func_00290AE0(s32 a0, s32 a1) {
+    char *s0 = StrBg_FindName(a0);
     if (s0 == 0) {
         return -1;
     }
     *(s32 *)(s0 + 0xC) = a1;
     return (s32)((u32)(s0 - ((char *)D_004708A4 + 0x430)) / 80);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290AE0);
 extern void func_0028F930(void);
 extern void func_0028F720(void);
 extern void func_0028F090(void);
