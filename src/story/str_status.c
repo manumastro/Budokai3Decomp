@@ -509,8 +509,122 @@ void func_002C04B0(Task *p) {
     }
     amTask_Kill(p);
 }
+#if 0
+// func_002C0510: the 16-byte copies (lq/sq) and the amTask_Create call match; the saved registers of the parameter a2 and the two pointers are permuted (ours a2 in s0, original s2); four orders tried
+typedef struct StrCopy16S {
+    s32 w[4];
+} __attribute__((aligned(16))) StrCopy16S;
+extern s32 D_00456310[4] __attribute__((aligned(16)));
+extern s32 D_00456320[4] __attribute__((aligned(16)));
+extern char D_0046EEC8[];
+void *func_002C0510(s32 a0, s32 a1, s32 a2) {
+    StrCopy16S b;
+    StrCopy16S a;
+    s32 *s0;
+    Task *s1;
+    b = *(StrCopy16S *)D_00456310;
+    a = *(StrCopy16S *)D_00456320;
+    s1 = (Task *)amTask_Create((void (*)(Task *))func_002C03B0, NULL, (s16)a1, 8, 2, D_0046EEC8);
+    s0 = (s32 *)((char *)s1 + 0x30);
+    memset(s0, 0, 0x40);
+    if (a2 == 0) {
+        *(StrCopy16S *)((char *)s0 + 0x20) = b;
+        *(f32 *)((char *)s0 + 0x2C) = 1.0f;
+        *(StrCopy16S *)((char *)s0 + 0x30) = a;
+    }
+    s0[1] = a0;
+    *(s16 *)((char *)s0 + 0x8) = 2;
+    *(f32 *)((char *)s0 + 0x18) = 1.0f;
+    *(f32 *)((char *)s0 + 0x1C) = 1.0f;
+    s0[3] = -1;
+    s0[4] = -1;
+    s0[5] = -1;
+    return s1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0510);
+#if 0
+// func_002C0630: the same shape as func_002C0510 (two 16-byte copies, amTask_Create, memset); the parameter a2 is saved into a different saved register (ours s2 at the top, original s0 after the first copy); five orders tried
+typedef struct StrCopy16S {
+    s32 w[4];
+} __attribute__((aligned(16))) StrCopy16S;
+extern s32 D_004562F0[4] __attribute__((aligned(16)));
+extern s32 D_00456300[4] __attribute__((aligned(16)));
+extern void func_002C03E0(s32 *);
+extern char D_0046EEC8[];
+void *func_002C0630(s32 a0, s32 a1, s32 a2) {
+    StrCopy16S b;
+    StrCopy16S a;
+    Task *s2;
+    s32 *s1;
+    s32 flag;
+    b = *(StrCopy16S *)D_004562F0;
+    flag = a2;
+    a = *(StrCopy16S *)D_00456300;
+    s2 = (Task *)amTask_Create((void (*)(Task *))func_002C03E0, NULL, (s16)a1, 8, 2, D_0046EEC8);
+    s1 = (s32 *)((char *)s2 + 0x30);
+    memset(s1, 0, 0x40);
+    if (flag == 0) {
+        *(StrCopy16S *)((char *)s1 + 0x20) = b;
+        *(f32 *)((char *)s1 + 0x2C) = 1.0f;
+        *(StrCopy16S *)((char *)s1 + 0x30) = a;
+    }
+    s1[0] = amCdFs_ReadFileId(a0, 0, 0);
+    *(s16 *)((char *)s1 + 0x8) = 0;
+    *(f32 *)((char *)s1 + 0x18) = 1.0f;
+    *(f32 *)((char *)s1 + 0x1C) = 1.0f;
+    s1[3] = -1;
+    s1[4] = -1;
+    s1[5] = -1;
+    return s2;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0630);
+#if 0
+// func_002C0750: the byte-clear loop is unrolled or laid out differently and the table sits at another frame offset (the original keeps a0 in s1); six forms tried
+void func_002C0750(char *a0) {
+    char *s1;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 tbl[4];
+    {
+        char *p = (char *)tbl;
+        if (p != 0) {
+            s32 n = 16;
+            do {
+                *p = 0;
+                p++;
+                n--;
+            } while (n > 0);
+        }
+    }
+    tbl[0] = (s32)(a0 + 0xC);
+    tbl[1] = (s32)(a0 + 0x10);
+    tbl[2] = (s32)(a0 + 0x2C);
+    tbl[3] = (s32)(a0 + 0x14);
+    for (i = 0; i < 4; i++) {
+        s32 *e = (s32 *)tbl[i];
+        if (*e != 0) {
+            func_0022D0E0(*e, 1);
+        }
+        *e = 0;
+    }
+    s1 = a0;
+    for (k = 0; k < 8; k++) {
+        char *s0 = s1;
+        for (j = 0; j < 3; j++) {
+            s32 *e = (s32 *)(s0 + 0x3C);
+            if (*e != 0) {
+                func_0022D0E0(*e, 1);
+            }
+            *e = 0;
+            s0 += 4;
+        }
+        s1 += 0xC;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0750);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0860);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0FC0);
