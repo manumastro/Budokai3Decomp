@@ -586,7 +586,7 @@ s32 func_0021C2E0(s32 id) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2E0);
 #if 0
-// differs: the count is kept as a pointer (gBattle + 0x88D8) in the original, reloaded in the loop test; 0x58 bytes against 0x70: the sys/cnt pointer forms and the do-while were tried
+// differs: the count is kept as a pointer (gBattle + 0x88D8) in the original, reloaded in the loop test; 0x58 bytes against 0x70: the sys/cnt pointer forms and the do-while were tried. Round 5: the test `0 < *(s32*)(gBattle + 0x88D8)` first with cp formed in the body gives 0x60 bytes (the original reads the count through lui 0x1 + offset -0x7728 and forms cp (li at 0x88D8 / addu a1) in the if body before the loop: the two instructions are missing here); the array form and gBattle + 0x10000 - 0x7728 fold to the same code; cp computed before the test gives 0x60 too; cp first 0x58.
 s32 func_0021C360(s32 id) {
     u8 *sys = gBtlSys;
     u8 *cp = gBattle + 0x88D8;
