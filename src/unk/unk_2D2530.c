@@ -422,7 +422,7 @@ void func_002D4530(Vec4 *p, Vec4 *q) {
         q->w = 1.0f - o->f398 / 15.0f;
     }
 }
-void func_002D4600(Vec4 *a, Vec4 *b, Vec4 *c) {
+void func_002D4600(Vec4 *a, Vec4 *b, Vec4 *c, Vec4 *d) {
     Obj2D2530 *s = D_00470934;
     Model2D2530 *m;
 
@@ -582,7 +582,36 @@ void func_002D5E50(void) {
         o->f374();
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5F30);
+void func_002DDF00(void);
+void func_002DEFE0(void);
+void func_002D4260(void);
+void func_002D5F30(void) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
+
+    if (s->f344 == func_002DDF00 || s->f344 == 0 || s->f344 == func_002DEFE0) {
+        m = s->f274;
+        DrawModel(D_00470934, m, 0, &s->f3C0);
+    } else {
+        m = s->f274;
+        DrawModel(D_00470934, m, 0, &s->f3B0);
+    }
+    if (s->f360 == func_002D4260) {
+        switch (s->f37C) {
+        case 0:
+            func_002D4600(&s->f3B0, &s->f3B0, &s->f3C0, &s->f3C0);
+            break;
+        case 1:
+            func_002D4600(&s->f3B0, &s->f3C0, &s->f3B0, &s->f3C0);
+            break;
+        default:
+            func_002D4600(&s->f3B0, &s->f3C0, &s->f3C0, &s->f3B0);
+            break;
+        }
+    } else {
+        func_002D4600(&s->f3C0, &s->f3C0, &s->f3C0, &s->f3C0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6160);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6400);
 void func_002D66B0(Vec4 *a, Vec4 *b, Vec4 *c) {
@@ -684,7 +713,41 @@ void func_002D7FC0(void) {
     DrawModel(D_00470934, s->f090, &v, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D80A0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D84C0);
+void func_002DDF00(void);
+void func_002DE250(void);
+void func_002DEFE0(void);
+void func_002D7FC0(void);
+void func_002D80A0(Vec4 *, Vec4 *, Vec4 *, Vec4 *);
+void func_002D84C0(void) {
+    Obj2D2530 *s = D_00470934;
+    Model2D2530 *m;
+
+    if (s->f344 == func_002DDF00 || s->f344 == 0 || s->f344 == func_002DE250 || s->f344 == func_002DEFE0) {
+        m = s->f70;
+        DrawModel(D_00470934, m, 0, &s->f3C0);
+    } else {
+        m = s->f70;
+        DrawModel(D_00470934, m, 0, &s->f3B0);
+    }
+    if (s->f360 == func_002D7FC0) {
+        switch (s->f37C) {
+        case 0:
+            func_002D80A0(&s->f3B0, &s->f3C0, &s->f3C0, &s->f3C0);
+            break;
+        case 1:
+            func_002D80A0(&s->f3C0, &s->f3B0, &s->f3C0, &s->f3C0);
+            break;
+        case 2:
+            func_002D80A0(&s->f3C0, &s->f3C0, &s->f3B0, &s->f3C0);
+            break;
+        default:
+            func_002D80A0(&s->f3C0, &s->f3C0, &s->f3C0, &s->f3B0);
+            break;
+        }
+    } else {
+        func_002D80A0(&s->f3C0, &s->f3C0, &s->f3C0, &s->f3C0);
+    }
+}
 s32 func_0022D670(s32, f32);
 void func_002D8720(void) {
     Obj2D2530 *s = D_00470934;
