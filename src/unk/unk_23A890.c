@@ -816,27 +816,22 @@ u8 *func_00240F40(s32 i, s32 kind) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00240FF0);
 #if 0
-s32 func_00241010(s32 i) {
-    u8 *base = gBattle + i * 0x2020;
-    u8 *q = base + 0x830;
-    s32 t = *(s32 *)(base + 0x252C);
-    s32 r = 0;
-    u8 *o;
-    u8 *p;
-    s32 v;
+s32 func_00241010(s32 a0) {
+    u8 *b = gBattle + a0 * 0x2020;
+    s32 v = *(s32 *)(b + 0x252C);
+    s32 w;
+    s32 *t;
 
-    if ((u32)(t - 0x28) < 2 || t == 0x12 || t == 5 || (u32)(t - 0x14) < 2 || t == 0x23 ||
-        (u32)(*(s32 *)(q + 0xB9C) - 0x46) < 2 || *(s32 *)(q + 0xB9C) == 0x5C) {
-        o = D_0046FE4C + i * 0x480;
-        p = o + 0x10;
-        v = *(s32 *)(o + 0x24);
-        if (v != -1 && v != *(s32 *)(p + 0x38)) {
-            r = 1;
+    if (!((u32)(v - 0x28) < 2 || v == 0x12 || v == 5 || (u32)(v - 0x14) < 2 || v == 0x23)) {
+        w = *(s32 *)(b + 0x830 + 0xB9C);
+        if ((u32)(w - 0x46) >= 2 && w != 0x5C) {
+            return 1;
         }
     }
-    return r == 0;
+    t = (s32 *)(D_0046FE4C + a0 * 1152);
+    return (t[9] == -1 || t[9] == t[18]);
 }
-// differs: 188 bytes (round 5, u23c): the branch layout matches up to the join (the body at 0x241088 with its two pad nops); the t/r register choice differs (original: t in v1, r in a1, q in a2), and the return is sltu/xori (r != 0) ^ 1 while ours is sltiu. Tried: t2 hoisted to the top (0xB4 bytes), return (r != 0) ^ 1, r declared first.
+// differs: round 6 (u23e): 0xB8 bytes against 0xC0 (two instructions short). The original keeps the base pointer base+0x830 in a2 for the 0xB9C load and ends with sltu v0,zero,a1 / xori (a1 flag, one exit); the returns form and a2 form both give other layouts (34 to 38 of 48 differ)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241010);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002410D0);
@@ -2462,9 +2457,8 @@ void func_00248360(void) {
 }
 #endif
 #if 0
-// differs: 0x98 vs 0xB0 (6 instructions short): the six func_001F7xxx/func_001F6xxx calls and the D_0051CD20 test match; the object setup through func_001A50F0 and the store through the returned pointer are not reproduced yet
 void func_00248360(void) {
-    u8 *s0;
+    s32 s0;
 
     func_001F7DB0();
     func_001F7BF0();
@@ -2472,16 +2466,18 @@ void func_00248360(void) {
     func_001F7690();
     func_001F6E50();
     func_001F6D60();
-    s0 = (u8 *)D_0051CD0C[0];
+    s0 = D_0051CD0C[0];
     if (D_0051CD20[0] == 0) {
         func_001F5EF0(3, 1);
-        s0 = (u8 *)func_001A50F0((s32)s0, 0x27F);
-        *(u8 **)(*(u8 **)(s0 + 0x10)) = s0;
-        *(s16 *)(*(u8 **)(s0 + 0x10) + 0xE) = 1;
-        func_001F5B70((s32)s0);
+        s0 = func_001A50F0(s0, 0x27F);
+        *(s32 *)(*(s32 *)(s0 + 0x10)) = s0;
+        *(s16 *)(*(s32 *)(s0 + 0x10) + 0xE) = 1;
+        func_001F5B70(s0);
         func_001F7470(0);
+        return;
     }
 }
+// differs: round 6 (u23e): 0xA0 bytes, the original 0xA8 (the mwcc prologue and the six calls match). The original branches on D_0051CD20 to the block with beqz and jumps out through a b (a trampoline to the epilogue); return inside the block gives b at its end, the if/else shapes give bnez straight to the epilogue
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248360);
 #if 0
@@ -2503,23 +2499,23 @@ void func_00248410(void) {
 // differs: the original loads the table entry and the global base in another order, and keeps the object pointer in its own register (not folded into the offsets)
 #endif
 #if 0
-// differs: 0x68 vs 0x70 (2 instructions short): the loop over the two pointers in D_00470740 and the two amHeap_Free calls match their calls; the register of the array pointer and the loop shape differ; four declaration orders tried, none better
 void func_00248410(void) {
-    s32 s2 = 0;
-    u8 **s0 = D_00470740;
-    u8 *v;
+    s32 i;
+    u8 **p;
+    u8 *s1;
 
-    do {
-        v = *s0;
-        if (v != 0) {
-            amHeap_Free(*(void **)(v + 0x38));
-            amHeap_Free(*(void **)(v + 0x30 + 0xC));
-            *s0 = 0;
+    p = D_00470740;
+    for (i = 0; i < 2; i++) {
+        if (*p != 0) {
+            s1 = *p + 0x30;
+            amHeap_Free(*(void **)(*p + 0x38));
+            amHeap_Free(*(void **)(s1 + 0xC));
+            *p = 0;
         }
-        s2++;
-        s0++;
-    } while (s2 < 2);
+        p++;
+    }
 }
+// differs: round 6 (u23e): 0x68 bytes, the original 0x70 (two instructions more). Same loop and calls; the original keeps p in s0 and the node+0x30 in s1, and has a nop after the store inside the if; declaration permutations all give the same size
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248410);
 void func_00248480(void) {
