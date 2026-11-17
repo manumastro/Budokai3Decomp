@@ -38,7 +38,31 @@ void func_00272380(u8 *a0) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_list", func_00272440);
+extern void func_00271AF0();
+
+void func_00272440(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    u8 *v;
+    f32 f;
+    void *fp;
+    s3 = a0;
+    s2 = s3 + 0x30;
+    s0 = -1;
+    v = (u8 *)D_004707FC;
+    s1 = *(u8 **)(v + 0x20);
+    f = (f32)*(s32 *)(v + 0x7C);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s1 + 0x1C) + *(s32 *)(v + 0x74) * 4), f * gFrameDelta);
+    v = (u8 *)D_004707FC;
+    f = (f32)*(s32 *)(v + 0x10C);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s1 + 0x1C) + *(s32 *)(v + 0x104) * 4), f * gFrameDelta);
+    if (s0 == 0xFF) {
+        *(s32 *)s2 = 0x3C;
+        *(void **)(s3 + 0x1C) = ((void *)func_00271AF0 == 0) ? 0 : (void *)func_00271AF0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_list", func_00272510);
 extern s32 D_00470804;
 extern s32 D_00470800;

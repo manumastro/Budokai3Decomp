@@ -91,27 +91,28 @@ void func_00307E40(u8 *task) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307E40);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307F10);
 #if 0
-// differs: 19 of ?: the compiled frame is 0x40, the original 0x50 (an extra 16-byte local the asm never shows); loc sits at sp+0x38 in mine, sp+0x30 in the original; a dead lui 0x4270 remains in the original
+// differs: frame and store order now match (loc[8], store before the if); the two saved registers are the wrong way round (mine: move s1,a0 / lw s0,0x30(a0), original: lw s1 / move s0), and the code is 12 bytes short (a dead lui 0x4270 in the original)
 extern s16 D_005C4136[];
 extern void func_00307F10();
 extern s32 func_002F0570(s32);
 extern void func_00229800();
 extern s32 func_00307AF0();
+extern void func_00229800();
+extern s32 func_00307AF0();
 
 void func_00308070(u8 *a0) {
-    u8 *s0;
     u8 *s1;
+    u8 *s0;
     u8 *v;
+    f32 loc[8];
     f32 f;
     void *fp;
-    f32 loc[2];
-    f32 t[4];
     s1 = *(u8 **)(a0 + 0x30);
     s0 = a0;
     func_003077E0(s1);
     f = *(f32 *)(s1 + 0x40) - gFrameDelta;
+    *(f32 *)(s1 + 0x40) = f;
     if (f <= 0.0f) {
-        *(f32 *)(s1 + 0x40) = f;
         *(s32 *)(s1 + 0x10) = func_002F0570(D_005C4136[0]);
         v = *(u8 **)s1;
         v = *(u8 **)(v + 0x1C);
