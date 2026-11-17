@@ -839,7 +839,7 @@ s32 ScrOp_RetToIfNot(ScrMachine **sys, ScrCtx *ctx, u8 **pc) {
     return 1;
 }
 
-s32 ScrOp_Sleep(s32 unused, ScrCtx *ctx, u8 **pc) {
+s32 ScrOp_CmdCall(s32 unused, ScrCtx *ctx, u8 **pc) {
     return (Scr_ReadInt(ctx, pc) << 8) + 7;
 }
 

@@ -19,11 +19,34 @@ extern f32 gFrameDelta;
 extern void func_0030BFC0(Part30C *);
 extern void func_0030B2E0(Part30C *);
 extern void func_0030C860(void);
+extern void func_0022D4B0(s32, s32);
+extern void func_0022D0E0(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030B130);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030B2E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030BD30);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030BF10);
+void func_0030BF10(s32 *p) {
+    s32 i;
+    s32 *q;
+
+    q = p;
+    for (i = 0; i < 8; i++, q++) {
+        if (q[5] != 0) {
+            func_0022D4B0(q[5], 1);
+            q[5] = 0;
+        }
+    }
+    if (p[1] != 0) {
+        func_0022D0E0(p[1], 1);
+        p[1] = 0;
+    }
+    for (i = 0; i < 3; i++, p++) {
+        if (p[2] != 0) {
+            func_0022D0E0(p[2], 1);
+            p[2] = 0;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030BFC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030C0E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030C280);

@@ -942,7 +942,7 @@ s32 func_002A3CD0(s32 *a0, char *a1) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3CD0);
 extern s32 func_002A3CD0(s32 *, char *);
 
-s32 func_002A3DE0(s32 *p) {
+s32 Evt_CmdStartWait3CD0(s32 *p) {
     p[0x2C / 4] = 0;
     p[0x30 / 4] = 0x42080000;
     p[0x38 / 4] = 0x3FE1E1E2;
@@ -959,7 +959,7 @@ s32 func_002A3E10(s32 *a0, char *a1) {
 }
 extern s32 func_002A3E10(s32 *, char *);
 
-s32 func_002A3E60(s32 *a0, char *a1) {
+s32 Evt_CmdWaitCall2A1020(s32 *a0, char *a1) {
     a0[0x10 / 4] = (s32)func_002A3E10;
     if (func_002A1020((*(s32 **)(a1 + 0x2C))[0]) == 0) {
         a0[0x10 / 4] = 0;
@@ -968,7 +968,7 @@ s32 func_002A3E60(s32 *a0, char *a1) {
     return 3;
 }
 
-s32 func_002A3EC0(void *a0, char *a1) {
+s32 Evt_CmdVecCall2A0700(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
@@ -988,7 +988,7 @@ s32 func_002A3EC0(void *a0, char *a1) {
 extern char D_005AB610[];
 extern void func_002A0750(s32, s32, s32, s32);
 
-s32 func_002A3F10(void *a0, char *a1) {
+s32 Evt_CmdRowCall2A0750(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     s32 t0 = **(s32 **)a0;
     char *row = D_005AB610 + t0 * 240 + args[2] * 24;
@@ -997,12 +997,12 @@ s32 func_002A3F10(void *a0, char *a1) {
 }
 extern void func_002A07D0(s32, s32, f32);
 
-s32 func_002A3F70(void *a0, char *a1) {
+s32 Evt_CmdCall2A07D0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     func_002A07D0(args[2], args[1], *(f32 *)args);
     return 1;
 }
-s32 func_002A3FA0(void *a0, char *a1) {
+s32 Evt_CmdVecCall2A07A0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
@@ -1027,7 +1027,7 @@ extern s32 func_002A1360(s32);
 extern s32 func_002A1340();
 extern void func_002A0830(s32, s32, s32, s32);
 
-s32 func_002A3FF0(void *a0, char *a1) {
+s32 Evt_CmdAdjustCall2A0830(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     s32 s3 = args[3];
     s32 s2 = args[2];
@@ -1047,7 +1047,7 @@ s32 func_002A3FF0(void *a0, char *a1) {
 }
 extern void func_002A09A0(s32, s32);
 
-s32 func_002A40A0(s32 *a0, char *a1) {
+s32 Evt_CmdRowCall2A0750Pair(s32 *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     s32 s0 = args[0];
     char *row = D_005AB610 + (**(s32 **)a0) * 240 + s0 * 24;
@@ -1112,7 +1112,7 @@ s32 func_002A41D0(s32 *a0, char *a1) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A41D0);
 extern s32 func_002A41D0(s32 *, char *);
 
-s32 func_002A42C0(s32 *a0, char *a1) {
+s32 Evt_CmdStartTask2A41D0(s32 *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     *(s32 *)a1 = args[1];
     a0[0x18 / 4] = 0;
@@ -1158,7 +1158,7 @@ s32 func_002A4320(s32 *a0, char *a1) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4320);
 extern s32 func_002A4320(s32 *, char *);
 
-s32 func_002A4410(s32 *a0, char *a1) {
+s32 Evt_CmdStartTask2A4320(s32 *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     *(s32 *)a1 = args[1];
     a0[0x18 / 4] = 0;
@@ -1168,7 +1168,7 @@ s32 func_002A4410(s32 *a0, char *a1) {
 }
 extern void func_002A09F0(s32, s32, f32 *);
 
-s32 func_002A4470(void *a0, char *a1) {
+s32 Evt_CmdVecCall2A09F0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
@@ -1187,21 +1187,21 @@ s32 func_002A4470(void *a0, char *a1) {
 
 extern void func_002A0A30(s32, s32, s32);
 
-s32 func_002A44C0(void *a0, char *a1) {
+s32 Evt_CmdCall2A0A30(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     func_002A0A30(args[2], args[1], (s32)(f32)args[0]);
     return 1;
 }
 extern void func_002A0A60(s32, s32);
 
-s32 func_002A4500(void *a0, char *a1) {
+s32 Evt_CmdCall2A0A60(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     func_002A0A60(args[1], args[0]);
     return 1;
 }
 extern void func_002A0AD0(s32, s32, f32 *);
 
-s32 func_002A4530(void *a0, char *a1) {
+s32 Evt_CmdVecCall2A0AD0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
@@ -1222,7 +1222,7 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4580);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4620);
 extern void func_002A0BC0(s32, s32, s32, f32 *);
 
-s32 func_002A46C0(void *a0, char *a1) {
+s32 Evt_CmdVecCall2A0BC0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
@@ -1241,7 +1241,7 @@ s32 func_002A46C0(void *a0, char *a1) {
 
 extern void func_002A0C10(s32, s32, s32, f32 *);
 
-s32 func_002A4710(void *a0, char *a1) {
+s32 Evt_CmdVecCall2A0C10(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
@@ -1261,7 +1261,7 @@ s32 func_002A4710(void *a0, char *a1) {
 
 extern void func_002A0C60(s32, s32, s32, f32 *);
 
-s32 func_002A4760(void *a0, char *a1) {
+s32 Evt_CmdVecCall2A0C60(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
@@ -1281,14 +1281,14 @@ s32 func_002A4760(void *a0, char *a1) {
 
 extern void func_002A0CB0(s32, s32, s32);
 
-s32 func_002A47B0(void *a0, char *a1) {
+s32 Evt_CmdCall2A0CB0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     func_002A0CB0(args[2], args[1], args[0]);
     return 1;
 }
 extern void func_002A0D20(s32, s32, s32);
 
-s32 func_002A47E0(void *a0, char *a1) {
+s32 Evt_CmdVecCall2A0CE0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
     f32 v[4];
@@ -1303,7 +1303,7 @@ s32 func_002A47E0(void *a0, char *a1) {
     func_002A0CE0(a0v, a1v, v);
     return 1;
 }
-s32 func_002A4830(void *a0, char *a1) {
+s32 Evt_CmdCall2A0D20(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     func_002A0D20(args[2], args[1], args[0]);
     return 1;
@@ -1344,14 +1344,14 @@ s32 func_002A48A0(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A48A0);
 extern f32 func_002A1050(s32, s32, s32);
 
-s32 func_002A48F0(void *a0, s32 *a1) {
+s32 Evt_CmdGetCall2A1050Flag(void *a0, s32 *a1) {
     s32 *args = *(s32 **)((char *)a1 + 0x2C);
     *a1 = (s32)func_002A1050(args[1], args[0], 1);
     return 1;
 }
 extern f32 func_002A1050(s32, s32, s32);
 
-s32 func_002A4940(void *a0, s32 *a1) {
+s32 Evt_CmdGetCall2A1050(void *a0, s32 *a1) {
     s32 *args = *(s32 **)((char *)a1 + 0x2C);
     *a1 = (s32)func_002A1050(args[1], args[0], 0);
     return 1;
@@ -1478,7 +1478,7 @@ s32 func_002A4D60(s32 *a0) {
     }
     return 3;
 }
-s32 func_002A4DC0(s32 *a0) {
+s32 Evt_CmdWaitRowFlag8(s32 *a0) {
     s32 idx = D_004B4B63[0];
     u16 *row = (u16 *)(D_00492FCE + idx * 0xB8);
     a0[0x10 / 4] = (s32)func_002A4D60;
@@ -1494,7 +1494,7 @@ extern void func_002A13C0(s32);
 
 
 
-s32 func_002A4E20(void *a0, char *a1) {
+s32 Evt_CmdSetIndexWrap(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     s32 s0 = args[0];
     s32 v = func_002A13A0();
@@ -1511,7 +1511,7 @@ s32 func_002A4E20(void *a0, char *a1) {
 }
 extern void func_002A1420(s32);
 
-s32 func_002A4E90(void *a0, char *a1) {
+s32 Evt_CmdCall2A1420(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     func_002A1420(args[0]);
     return 1;

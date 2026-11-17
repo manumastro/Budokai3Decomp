@@ -285,16 +285,40 @@ void func_00298B10(s32 id, s32 a, s32 b, s32 c) {
         s->f28 = c;
     }
 }
+/* differs: 28 of 49 instructions. Two inline searches (the original keeps the table base in $a3, the pointer in $a2,
+   the counter in $a1, and zeroes the pointer on the natural loop exit with no `i == 64` compare); the branch shape of
+   the found path (bne + out-of-line b) and the register picks did not follow from any declaration or case order. */
 #if 0
-/* the two inline searches get other registers (i, the slot and the work pointer) */
-void func_00298B70(s32 id, s32 nid) {
+void func_00298B70(s32 a0, s32 a1) {
+    SndWork *base;
     Slot *s;
+    s32 i;
 
-    if (Snd_FindSlot(nid) == NULL) {
-        s = Snd_FindSlot(id);
-        if (s != NULL) {
-            func_00290390(id, nid);
-            s->id = nid;
+    base = D_005AA604[0];
+    s = (Slot *)((u8 *)base + 0x80);
+    for (i = 0; i < 0x40; i++, s++) {
+        if (s->id != a1) {
+            continue;
+        }
+        break;
+    }
+    if (i == 0x40) {
+        s = 0;
+    }
+    if (s == 0) {
+        s = (Slot *)((u8 *)base + 0x80);
+        for (i = 0; i < 0x40; i++, s++) {
+            if (s->id != a0) {
+                continue;
+            }
+            break;
+        }
+        if (i == 0x40) {
+            s = 0;
+        }
+        if (s != 0) {
+            func_00290390(a0, a1);
+            s->id = a1;
         }
     }
 }
