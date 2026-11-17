@@ -301,7 +301,42 @@ s32 amMotion_MatchName(char *a, char *b) {
     if (i == j) return 1;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013CC40);
+void func_0013CC40(MotInst *o, MotSlot *s) {
+    Vec4 tmp __attribute__((aligned(16)));
+    MotW *w;
+    f32 f;
+    s32 k;
+    s32 h;
+    char *p;
+
+    if (s->f8 == s->fC) return;
+    k = (u16)s->id;
+    h = s->id >> 16;
+    h = h - 1;
+    D_004702EC = (MotSeq *)((char *)o->anim[h]->p14 + k * 16);
+    if ((f32)D_004702EC->n8 - 1.0f <= s->f8) {
+        func_0013CE50(o, s);
+    } else {
+        func_0013D360(o, s);
+    }
+    s->fC = s->f8;
+    if (D_00470308) return;
+    if (!D_004702E8) return;
+    if (o->x4AC < 0) return;
+    if (o->x410 < 0) return;
+    if (D_004702EC->n4 < 0) return;
+    w = (MotW *)((char *)D_004702E8[o->x4AC] + D_004702EC->n4 * 8);
+    if (o->x414 & 8) {
+        tmp = D_003F0840;
+        func_00142280(&tmp, &tmp, (char *)s->p10 + (o->x410 << 6), 0);
+        f = 1.0f - ((1.0f - w->f4) * __s_abs(tmp.y));
+        p = (char *)s->p10;
+        *(f32 *)((o->x410 << 6) + (s32)p + 0x14) *= f;
+    } else if (o->x414 & 4) {
+        p = (char *)s->p10;
+        *(f32 *)((o->x410 << 6) + (s32)p + 0x14) *= w->f4;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013CE50);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013D360);
 typedef struct McRig {

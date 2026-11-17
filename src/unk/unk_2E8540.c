@@ -28,6 +28,53 @@ extern void func_0022C7D0(s32, s32, f32);
 extern s32 D_005C9F14[];
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8540);
+typedef struct Quad87 {
+    s32 v[4];
+} __attribute__((aligned(16))) Quad87;
+
+typedef struct Entry87 {
+    Quad87 a;
+    Quad87 b;
+} Entry87;
+
+typedef struct Blk87 {
+    char pad0[0x152];
+    s16 f152;
+    char pad154[0x15C - 0x154];
+    s32 f15C;
+    s32 f160;
+} Blk87;
+
+extern Entry87 D_00457120[];
+extern u8 D_005C9D80[];
+extern s16 D_004E05E0[];
+extern void func_00125740(void *, void *, s32);
+
+/* differs: 10 of 38 (the 32-byte copy loop: the original keeps the counter in $a0 and the source in $a2; the body after it matches) */
+#if 0
+void func_002E8720(void) {
+    Entry87 tmp[12];
+    Entry87 *s = D_00457120;
+    s32 n = 12;
+    Entry87 *d = tmp;
+    s32 x;
+    Blk87 *b;
+
+    do {
+        d->a = s->a;
+        n--;
+        d->b = s->b;
+        s++;
+        d++;
+    } while (n > 0);
+    b = (Blk87 *)D_005C9D80;
+    func_00125740(b, tmp, 0x180);
+    b->f152 = 5;
+    x = D_004E05E0[0];
+    b->f15C = (x > 0) ? ((x << 4) - x) << 2 : -1;
+    b->f160 = -1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8720);
 typedef struct Rec12 {
     s8 b[8];

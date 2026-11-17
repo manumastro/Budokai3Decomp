@@ -223,3 +223,8 @@ StrStatus_TaskRequestScene = 0x002C1AA0; // type:func // guess
 // unk_2918A0.c: StrStatus_OpenScene starts the status screen (StrStatus_Start with 0xB000 and 0x80000) and sets
 // the work block D_005AA5A0 next function. Guess.
 StrStatus_OpenScene = 0x00291970; // type:func // guess
+
+// script command tables 0x1B and 0x1C: the evt_scrp.c handlers (the event scripts, see battle.txt for the table
+// layout). Names by group number; guesses.
+gScrCmdTable_1B = 0x0044A0A0; // size:0x40 // guess
+gScrCmdTable_1C = 0x0044A0E0; // size:0x40 // guess

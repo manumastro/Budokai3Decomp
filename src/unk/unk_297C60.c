@@ -228,7 +228,22 @@ void func_00298910(s32 n) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_00298910);
+void func_00298910(s32 a0) {
+    u8 *b = (u8 *)D_005AA604[0];
+
+    if (a0 != *(s8 *)(b + 0x11E0)) {
+        u8 *e;
+        s32 i = 0;
+        D_005AA644[0] |= 1;
+        *(s8 *)(b + 0x11E0) = a0;
+        e = ((u8 * volatile *)D_005AA604)[0] + 0x80;
+        for (; i < 0x40; i++) {
+            func_00290410((Slot *)e);
+            *(s32 *)e = -1;
+            e += 0x40;
+        }
+    }
+}
 void func_00298990(s32 a, s32 b, s32 c) {
     SndWork *w = D_005AA604[0];
 

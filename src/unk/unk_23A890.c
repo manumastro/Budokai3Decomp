@@ -501,6 +501,7 @@ void func_002400E0(void) {
     }
 }
 // differs: the three locals (the table pointer, the sys pointer and the counter) do not take the registers of the original under any declaration order tried
+// round 5: the count as a BtlCnt view (struct field at 0x88D8, the lui 1 / -0x7728 split of the original) and the table address through (u8 *)(void *)D_0058BF50 (kept in a register) fix two of the three differences; the best of the six declaration orders is 13 of 46 differing
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002400E0);
 void func_0022D4B0(s32, s32);
