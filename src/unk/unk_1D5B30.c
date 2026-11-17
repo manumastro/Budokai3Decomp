@@ -4319,14 +4319,14 @@ s32 func_001E8E70(Fighter *c) {
             return 1;
         }
     } else if (gBattle->f7E2 == 3) {
-        if (gBattle->f9977 != 3) {
+        if (gBattle->f8977 != 3) {
             return 0;
         }
     }
-    func_00235480(c);
+    return func_00235480(c);
 }
 #endif
-// differs: the case order of the two tests differs; the C is 0x98 against 0xB0 bytes
+// differs: 0x98 against 0xB0 bytes: the original tail-calls func_00235480 and returns its value; the branch chain on f7E2 (4, then 3 with the battle byte 0x8977 at f8977) is laid out with a shared call block; the field is gBattle->f8977 (the earlier note said f9977)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8E70);
 #if 0
 s32 func_001E8F20(Fighter *c) {
