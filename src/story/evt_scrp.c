@@ -117,6 +117,9 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A41D0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A42C0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4320);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4410);
+extern void func_002A09F0(s32, s32, f32 *);
+
+// func_002A4470: the loads and the vector copy are scheduled in another order; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4470);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A44C0);
 extern void func_002A0A60(s32, s32);
@@ -126,11 +129,23 @@ s32 func_002A4500(void *a0, char *a1) {
     func_002A0A60(args[1], args[0]);
     return 1;
 }
+extern void func_002A0AD0(s32, s32, f32 *);
+
+// func_002A4530: the loads and the vector copy are scheduled in another order; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4530);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4580);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4620);
+extern void func_002A0BC0(s32, s32, s32, f32 *);
+
+// func_002A46C0: the loads and the vector copy are scheduled in another order; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A46C0);
+extern void func_002A0C10(s32, s32, f32 *);
+
+// func_002A4710: the loads and the vector copy are scheduled in another order; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4710);
+extern void func_002A0C60(s32, s32, f32 *);
+
+// func_002A4760: the loads and the vector copy are scheduled in another order; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4760);
 extern void func_002A0CB0(s32, s32, s32);
 
@@ -150,7 +165,13 @@ s32 func_002A4830(void *a0, char *a1) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4860);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A48A0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A48F0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4940);
+extern f32 func_002A1050(s32, s32, s32);
+
+s32 func_002A4940(void *a0, s32 *a1) {
+    s32 *args = *(s32 **)((char *)a1 + 0x2C);
+    *a1 = (s32)func_002A1050(args[1], args[0], 0);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4990);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4A30);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4AD0);
