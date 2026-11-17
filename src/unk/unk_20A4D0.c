@@ -3481,7 +3481,6 @@ s32 func_00216080(s32 idx) {
     }
     return r;
 }
-#if 0
 void func_00216150(s32 idx) {
     s32 i;
     s32 off;
@@ -3499,20 +3498,17 @@ void func_00216150(s32 idx) {
         }
     } else {
         off = idx * 4;
-        if (*(s32 *)(off + D_0046FDD0 + 0x188) != 0) {
-            amTask_Kill(*(s32 *)(off + D_0046FDD0 + 0x188));
-            *(s32 *)(off + D_0046FDD0 + 0x188) = 0;
+        if (*(s32 *)((s32)off + (s32)D_0046FDD0 + 0x188) != 0) {
+            amTask_Kill(*(s32 *)((s32)off + (s32)D_0046FDD0 + 0x188));
+            *(s32 *)((s32)off + (s32)D_0046FDD0 + 0x188) = 0;
         }
-        if (*(s32 *)(off + D_0046FDD0 + 0x1A0) != 0) {
-            Obj_ResetF38(*(s32 *)(off + D_0046FDD0 + 0x1A0));
-            *(s32 *)(off + D_0046FDD0 + 0x1A0) = 0;
+        if (*(s32 *)((s32)off + (s32)D_0046FDD0 + 0x1A0) != 0) {
+            Obj_ResetF38(*(s32 *)((s32)off + (s32)D_0046FDD0 + 0x1A0));
+            *(s32 *)((s32)off + (s32)D_0046FDD0 + 0x1A0) = 0;
         }
-        *(s32 *)(off + D_0046FDD0 + 0x190) = 0;
+        *(s32 *)((s32)off + (s32)D_0046FDD0 + 0x190) = 0;
     }
 }
-// differs: 5 of 69 differ, all in the single-entry branch (idx != -1): the original adds the table base to the offset as addu v1, s0, v1 (offset first), and this build keeps the base first whatever the order of the operands in the source
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216150);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216270);
 u8 *func_00215320(s32, s32);
 s32 func_00209540(s32, s32, s32);
