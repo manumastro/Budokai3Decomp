@@ -80,7 +80,7 @@ extern f32 D_004B423C[];
 extern f32 D_004B4238[];
 
 // func_001CBD90, func_001CBDF0, func_001CBE80, func_001CBEE0: register and scheduling differences; not matched yet.
-// func_001CBD90: differs: the sltu / xori for the flag, and the register of the first pointer
+// differs: 17 of 22 instructions at best. The Arg pointer stays in v1 in the original (ours takes a0); the flag -(p[0]==0) is sltu+xori in the original, sltiu in ours.
 #if 0
 int func_001CBD90(void *unused, Arg *a) {
     int *p = a->p;
@@ -93,7 +93,7 @@ int func_001CBD90(void *unused, Arg *a) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBD90);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBDF0);
-// func_001CBE80: differs: register and load order of the table walk
+// differs: 17 of 21. The original loads the Side fields (idx, blk) in another order: p[3] table entry first, then p[1] for idx, then p[0] last; ours reorders the blk and idx loads.
 #if 0
 int func_001CBE80(void *unused, Arg *a) {
     int *p = a->p;
@@ -104,7 +104,7 @@ int func_001CBE80(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBE80);
-// func_001CBEE0: differs: the load order of the parameters (p[0] before the table walk)
+// differs: 20 of 26 (21 with locals). The original loads p[0] into a3 before the table walk and keeps p in v0; ours loads p[1] first.
 #if 0
 int func_001CBEE0(void *unused, Arg *a) {
     int *p = a->p;
@@ -177,7 +177,7 @@ int func_001CC850(void *unused, Arg *a) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC890);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCA90);
-// func_001CCBF0: differs: the frame is 0x50 bytes in the original, the buffer is kept in another register
+// differs: 28 of 33 at best. The original frame is 0x50 with the buffer at sp+0x20 and no saved s0 across memset; ours is 0x60 and keeps the buffer address in s0 (memset + func_001E57C0 call order matches).
 #if 0
 int func_001CCBF0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
@@ -446,7 +446,7 @@ int func_001CDDC0(void *unused, Arg *a) {
     *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)D_00470570 + 0x8960);
     return 1;
 }
-// func_001CDDE0: differs: the add of the table offset is in the other operand order (one instruction)
+// differs: 1 of 22 at best: the add of idx*16 and the table pointer is `addu v0,v0,v1` in the original, ours `addu v0,v1,v0`. Operand order, (idx*16 + t), and an explicit shift local tried; base form 5 of 22.
 #if 0
 int func_001CDDE0(void *unused, Arg *a) {
     int *p = a->p;
@@ -461,7 +461,7 @@ int func_001CDDE0(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDDE0);
-// func_001CDE40: differs: the add of the table offset is in the other operand order (one instruction)
+// differs: 1 of 22 at best: the same add-order difference as func_001CDDE0 (base 5 of 22).
 #if 0
 int func_001CDE40(void *unused, Arg *a) {
     int *p = a->p;
@@ -475,7 +475,7 @@ int func_001CDE40(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDE40);
-// func_001CDEA0: differs: the add of the table offset is in the other operand order (one instruction)
+// differs: 1 of 22 at best: the same add-order difference as func_001CDDE0 (base 5 of 22).
 #if 0
 int func_001CDEA0(void *unused, Arg *a) {
     int *p = a->p;
@@ -492,7 +492,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDEA0);
 int func_001CDF00(void *unused, Arg *a) {
     return 1;
 }
-// func_001CDF10: differs: one instruction (the order of the table index and the address add)
+// differs: 1 of 28 at best: the add of the table index and the address (the original loads p[0] and the table entry before the sh); the u8 table load order differs by one instruction.
 #if 0
 int func_001CDF10(void *unused, Arg *a) {
     int *p = a->p;
@@ -520,7 +520,7 @@ int func_001CDFD0(void *unused, Arg *a) {
     *(s32 *)a = func_001E0200(t, -p[0], 0);
     return 1;
 }
-// func_001CE030: differs: register order of the arguments and the loads through p[0]
+// differs: 14 of 19. The original keeps the Arg in a1 and loads p[0] (the float pointer) before p[2]; ours keeps p in a0. Declaration order of the argument locals tried.
 #if 0
 int func_001CE030(void *unused, Arg *a) {
     int *p = a->p;
@@ -536,7 +536,7 @@ int func_001CE1F0(void *unused, Arg *a) {
     *(f32 *)(t + 0x17C0) = *(f32 *)(t + 0x17C4);
     return 1;
 }
-// func_001CE220: differs: 20 of 30 instructions, the table lookup and the branch are scheduled differently
+// differs: 20 of 30. The original loads p[2] first, forms the table entry before the branch, and places the two calls with the delay slots of the branch; ours computes e after p[1].
 #if 0
 int func_001CE220(void *unused, Arg *a) {
     int *p = a->p;
@@ -551,7 +551,7 @@ int func_001CE220(void *unused, Arg *a) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE220);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE2A0);
-// func_001CE340: differs: the register of the first pointer and the sltu / xori flag
+// differs: 18 of 21. The Arg pointer is in v1 in the original (a1 ours); p[0]==0 is sltu+xori in the original, sltiu in ours. Explicit table local and flag local tried.
 #if 0
 int func_001CE340(void *unused, Arg *a) {
     int *p = a->p;
@@ -560,7 +560,7 @@ int func_001CE340(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE340);
-// func_001CE3A0: differs: the same as func_001CE340
+// differs: 18 of 21: the same as func_001CE340 (register of the Arg pointer and the sltu+xori flag).
 #if 0
 int func_001CE3A0(void *unused, Arg *a) {
     int *p = a->p;
@@ -600,7 +600,7 @@ int func_001CE480(void *unused, Arg *a) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE4E0);
-// func_001CE560: differs: the original is li 1 / movz for the flag argument, not sltu
+// differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?: and if forms tried did not give movz.
 #if 0
 int func_001CE560(void *unused, Arg *a) {
     int *p = a->p;
@@ -615,7 +615,7 @@ int func_001CE5B0(void *unused, Arg *a) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE610);
-// func_001CE740: differs: the same float constant register as func_001CEE80
+// differs: 27 of 33. The constants 360.0f and 65536.0f take other FPU registers (same as func_001CEE80), and the int field stores are in another order.
 #if 0
 int func_001CE740(void *unused, Arg *a) {
     int *p = a->p;
@@ -630,7 +630,7 @@ int func_001CE740(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE740);
-// func_001CE7C0: differs: the constant 360.0f and the division take other FPU registers
+// differs: 9 of 24 at best: the 360.0f / 65536.0f FPU register allocation as in func_001CEE80; the split-expression variant was worse (11 of 24).
 #if 0
 int func_001CE7C0(void *unused, Arg *a) {
     int *p = a->p;
@@ -694,7 +694,7 @@ int func_001CE8F0(void *unused, Arg *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE960);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CED20);
-// func_001CEDE0: differs: the same as func_001CEE80 (float constant register)
+// differs: 30 of 38: the same FPU constant register allocation as func_001CEE80, plus the five int field stores in another order.
 #if 0
 int func_001CEDE0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
@@ -708,7 +708,7 @@ int func_001CEDE0(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEDE0);
-// func_001CEE80: differs: float constant 360.0f kept in another register; the original loads it first
+// differs: 23 of 32 at best: the 360.0f constant is loaded into f1 in the original and the division uses f3 as dividend; ours loads it into f2. Local k=360.0f and x=f0/360 forms tried.
 #if 0
 int func_001CEE80(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
@@ -773,7 +773,7 @@ int func_001CF570(void *unused, Arg *a) {
     func_001C7D90(D_00470570->tbl[side], id, D_00470570->tbl[1 - side]);
     return 1;
 }
-// func_001CF600: size: the original also loads p[0] and p[1], which the source does not use
+// differs: Size 0x7C against 0x90. The original also loads p[0] and p[1] into a3/t0 (not used by the visible calls); the source use of those two values is unknown.
 #if 0
 int func_001CF600(void *unused, Arg *a) {
     int *p = a->p;
@@ -877,7 +877,7 @@ int func_001CFA00(void *o, Arg *a) {
     }
     return r;
 }
-// func_001CFA60: differs: the original loads D_00470570 and a->p before the stores, in another order
+// differs: 7 of 13 at best: the original loads a->p, then the function address, then D_00470570, and stores 0x24 before the float; ours emits the function address store first or loads the global late.
 #if 0
 int func_001CFA60(void *o, Arg *a) {
     *(void **)((char *)o + 0x10) = func_001CFA00;
