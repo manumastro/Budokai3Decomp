@@ -327,23 +327,19 @@ s32 func_001CB530(void) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB540);
-#if 0
-/* Does not match yet: 35 of 46 instructions differ. */
 s32 func_001CB660(void *self, ScriptCtx *ctx) {
-    CharPair *p = D_00469290;
     Fighter *f = gBattle->fighter[0];
+    CharPair *p = (CharPair *)D_00469290;
     ctx->ret = -1;
     while (p->chara != -1) {
         if (f->unk1CFC == p->chara && func_001DF420(f, p->value, 2)) {
             ctx->ret = p->value;
-            return 1;
+            break;
         }
         p++;
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB660);
 s32 func_001CB710(void) {
     Btl_UpdateLimitXY(1, 0.0f, 0.0f);
     return 1;
@@ -386,7 +382,8 @@ INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB890);
 /* differs: 8 of 13: the original's `addu $a0,$a1,$a0` takes the scaled index first and the global base second, and it
    reads args[0] before the address is summed; here the base comes first. Tried: `gBattle + 0x8934 + i*4`, the array
    form `((u8 **)((char *)gBattle + 0x8934))[i]`, and index/value locals (the last two put the index first but
-   schedule sltu before the addu). */
+   schedule sltu before the addu). Round 5: also the store as (s16)(a[0] != 0), !!a[0], and p declared before the store;
+   all 8 of 13: the original loads args[1] first and computes args[0] != 0 only at the store. */
 #if 0
 s32 func_001CB9B0(void *self, ScriptCtx *ctx) {
     s32 *a = (s32 *)ctx->args;
