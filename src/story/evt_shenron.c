@@ -99,7 +99,37 @@ void func_00306620(s32 *a0) {
     a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     func_00264140(-1, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003066F0);
+extern void func_00131F00(s32 *, f32, f32);
+extern void func_00132DF0(s32);
+extern void func_002641D0(s32, s32);
+extern void Scr_KillTasks(s32);
+extern s32 func_00283BF0(void);
+extern void func_00283C20(void);
+
+extern void func_00131D00(s32 *, s32, f32, f32);
+extern void func_00131F00(s32 *, f32, f32);
+extern void func_00132DF0(s32);
+extern void func_002641D0(s32, s32);
+extern void Scr_KillTasks(s32);
+extern s32 func_00283BF0(void);
+extern void func_00283C20(void);
+
+void func_003066F0(s32 *a0) {
+    s32 *s0 = (s32 *)D_0047097C;
+    s32 blk[24];
+    void *f;
+    func_00131D00(blk, 0, 0.0f, 0.0f);
+    func_00131F00(blk, 0.0f, 0.0f);
+    func_00132DF0(0);
+    if (func_00283BF0() >= 8) {
+        func_00283C20();
+        func_002641D0(9, 0);
+        Scr_KillTasks(s0[0x4 / 4]);
+        f = (void *)func_00306620;
+        s0[0x8 / 4] = 0;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003067A0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003068E0);
 #if 0
