@@ -169,6 +169,60 @@ void func_002730B0(u8 *a0, s32 a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002730B0);
+#if 0
+// differs: register roles of the 64-bit mask loop differ (best of 300 declaration orders: 38 of 70 instructions); the pointer is in a2 here, v1 in the original
+extern u8 D_0058F710[];
+extern s16 D_004530D0[];
+
+s32 func_00273210(void) {
+    s32 t2;
+    u8 *t0;
+    u8 *ent;
+    s32 a2;
+    s32 t4;
+    s32 a1;
+    s32 a0;
+    s32 v0;
+    u64 t5;
+    u8 *v1;
+
+    t0 = *(u8 **)(gEssShop + 0x54);
+    t5 = *(u64 *)(D_0058F710 + *(s32 *)(gEssShop + 0x50) * 0xD680);
+    a2 = -1;
+    a1 = 10;
+    a0 = 0;
+    v0 = -1;
+    v1 = (u8 *)D_004530D0;
+    do {
+        if (t0[*(s16 *)(v1 + 2)] == 0) {
+            break;
+        }
+        t4 = *(s16 *)v1;
+        ent = D_004E0660 + t4 * 40;
+        if (*(u64 *)ent != 0 && (t5 & *(u64 *)ent) == 0) {
+            break;
+        }
+        t2 = t0[t4];
+        if (t2 == 0) {
+            v0 = D_004530D0[a0 * 2];
+            break;
+        }
+        if (t2 < ent[0xD] && t2 < a1) {
+            a2 = (s16)t4;
+            a1 = t2;
+        }
+        a0++;
+        v1 += 4;
+    } while (a0 < 0x4F);
+    if (v0 > 0) {
+        return v0;
+    }
+    if (a2 > 0) {
+        return a2;
+    }
+    return -1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273210);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273330);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002735D0);
@@ -176,6 +230,50 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002737C0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273AF0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273E20);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274120);
+#if 0
+// differs: 36 of 85: the counter preamble and the flag test match; the store order of the gEssShop fields and the argument registers of func_0026D570 differ, and the function-pointer tail is laid out differently
+extern s32 gEssShop;
+extern u16 D_00492FCE[];
+extern u16 D_00493086[];
+extern void func_00274120();
+extern void amAdx_Pause(s32, s32);
+extern void Zenie_Close(s32);
+extern void func_0026D570();
+extern void func_00276470();
+
+void func_00274A00(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    void *fp;
+    s1 = a0;
+    s0 = a0 + 0x30;
+    *(s32 *)((u8 *)gEssShop + 0x1D4) = *(s32 *)((u8 *)gEssShop + 0x1D4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x204) = *(s32 *)((u8 *)gEssShop + 0x204) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x234) = *(s32 *)((u8 *)gEssShop + 0x234) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x264) = *(s32 *)((u8 *)gEssShop + 0x264) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x294) = *(s32 *)((u8 *)gEssShop + 0x294) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x2C4) = *(s32 *)((u8 *)gEssShop + 0x2C4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x3B4) = *(s32 *)((u8 *)gEssShop + 0x3B4) + 1;
+    func_00274120();
+    if ((D_00492FCE[0] | D_00493086[0]) != 0) {
+        amAdx_Pause(1, 1);
+        Zenie_Close(0);
+        *(s32 *)s0 = 0x3C;
+        *(s32 *)((u8 *)gEssShop + 0x1CC) = 1;
+        *(s32 *)((u8 *)gEssShop + 0x1D4) = 0;
+        *(s32 *)((u8 *)gEssShop + 0x22C) = 0x17;
+        *(s32 *)((u8 *)gEssShop + 0x234) = 0;
+        *(s32 *)((u8 *)gEssShop + 0x1FC) = 0x14;
+        *(s32 *)((u8 *)gEssShop + 0x204) = 0;
+        *(s32 *)((u8 *)gEssShop + 0x20C) = -1;
+        *(s32 *)((u8 *)gEssShop + 0x3AC) = 1;
+        *(s32 *)((u8 *)gEssShop + 0x3B4) = 0;
+        func_0026D570(0, gEssShop);
+        fp = (void *)func_00276470;
+        *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274A00);
 void func_00274B40(u8 *a0) {
     u8 *s0;
@@ -195,8 +293,84 @@ void func_00274B40(u8 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274C10);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274E70);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00275050);
+extern s32 gEssShop;
+extern f32 gFrameDelta;
+extern s32 func_0022BC30(s32, f32);
+extern void func_00274120();
+extern void func_00273E20();
+extern void func_002759F0();
+
+void func_00274E70(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    void *fp;
+    s3 = a0;
+    *(s32 *)((u8 *)gEssShop + 0x1D4) = *(s32 *)((u8 *)gEssShop + 0x1D4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x204) = *(s32 *)((u8 *)gEssShop + 0x204) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x234) = *(s32 *)((u8 *)gEssShop + 0x234) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x264) = *(s32 *)((u8 *)gEssShop + 0x264) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x294) = *(s32 *)((u8 *)gEssShop + 0x294) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x2C4) = *(s32 *)((u8 *)gEssShop + 0x2C4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x3B4) = *(s32 *)((u8 *)gEssShop + 0x3B4) + 1;
+    func_00274120();
+    *(s32 *)((u8 *)gEssShop + 0x2F4) = *(s32 *)((u8 *)gEssShop + 0x2F4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x324) = *(s32 *)((u8 *)gEssShop + 0x324) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x354) = *(s32 *)((u8 *)gEssShop + 0x354) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x384) = *(s32 *)((u8 *)gEssShop + 0x384) + 1;
+    func_00273E20();
+    s0 = -1;
+    s2 = *(u8 **)((u8 *)gEssShop + 0x28);
+    s1 = (u8 *)gEssShop + 0x2EC;
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x2FC) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x2F4) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)(s1 + 0x14) * 4), (f32)*(s32 *)(s1 + 0x8) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x31C) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x324) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x34C) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x354) * gFrameDelta);
+    if (s0 == 0xFF) {
+        fp = (void *)func_002759F0;
+        *(void **)(s3 + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
+extern s32 gEssShop;
+extern f32 gFrameDelta;
+extern s32 func_0022BC30(s32, f32);
+extern void func_00274120();
+extern void func_00273E20();
+extern void func_00275230();
+
+void func_00275050(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    void *fp;
+    s3 = a0;
+    *(s32 *)((u8 *)gEssShop + 0x1D4) = *(s32 *)((u8 *)gEssShop + 0x1D4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x204) = *(s32 *)((u8 *)gEssShop + 0x204) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x234) = *(s32 *)((u8 *)gEssShop + 0x234) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x264) = *(s32 *)((u8 *)gEssShop + 0x264) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x294) = *(s32 *)((u8 *)gEssShop + 0x294) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x2C4) = *(s32 *)((u8 *)gEssShop + 0x2C4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x3B4) = *(s32 *)((u8 *)gEssShop + 0x3B4) + 1;
+    func_00274120();
+    *(s32 *)((u8 *)gEssShop + 0x2F4) = *(s32 *)((u8 *)gEssShop + 0x2F4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x324) = *(s32 *)((u8 *)gEssShop + 0x324) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x354) = *(s32 *)((u8 *)gEssShop + 0x354) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x384) = *(s32 *)((u8 *)gEssShop + 0x384) + 1;
+    func_00273E20();
+    s0 = -1;
+    s2 = *(u8 **)((u8 *)gEssShop + 0x28);
+    s1 = (u8 *)gEssShop + 0x2EC;
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x2FC) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x2F4) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)(s1 + 0x14) * 4), (f32)*(s32 *)(s1 + 0x8) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x31C) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x324) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s2 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x34C) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x354) * gFrameDelta);
+    if (s0 == 0xFF) {
+        fp = (void *)func_00275230;
+        *(void **)(s3 + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00275230);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002759F0);
 extern s32 amAdx_IsStopped(s32);
@@ -228,7 +402,51 @@ void func_00276400(u8 *a0) {
         *(void **)(s0 + 0x1C) = (f == 0) ? 0 : f;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276470);
+extern s32 gEssShop;
+extern f32 gFrameDelta;
+extern f32 D_004E0618[];
+extern s32 func_0022BC30(s32, f32);
+extern void func_00274120();
+extern s32 EssMain_GetFlag();
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
+extern void amAdx_PlayAfs(s32, s32, s32);
+extern void EssShop_TaskWaitVoice();
+
+void func_00276470(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    void *fp;
+    s3 = a0;
+    s2 = a0 + 0x30;
+    *(s32 *)((u8 *)gEssShop + 0x1D4) = *(s32 *)((u8 *)gEssShop + 0x1D4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x204) = *(s32 *)((u8 *)gEssShop + 0x204) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x234) = *(s32 *)((u8 *)gEssShop + 0x234) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x264) = *(s32 *)((u8 *)gEssShop + 0x264) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x294) = *(s32 *)((u8 *)gEssShop + 0x294) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x2C4) = *(s32 *)((u8 *)gEssShop + 0x2C4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x3B4) = *(s32 *)((u8 *)gEssShop + 0x3B4) + 1;
+    func_00274120();
+    s0 = -1;
+    s1 = *(u8 **)((u8 *)gEssShop + 0x28);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s1 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x1CC) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x1D4) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s1 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x22C) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x234) * gFrameDelta);
+    if (s0 == 0xFF) {
+        if (EssMain_GetFlag() != 0) {
+            *(s32 *)s2 = 0;
+            fp = (void *)EssShop_TaskWaitVoice;
+            *(void **)(s3 + 0x1C) = (fp == 0) ? 0 : fp;
+            amAdx_SetVolume(1, D_004E0618[0]);
+            amAdx_Pause(1, 0);
+            amAdx_PlayAfs(1, 0x210D8, 0);
+        } else {
+            func_0026D6A0();
+            *(s32 *)(s3 + 0x1C) = 0;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276610);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276840);
 extern s32 gEssShop;
@@ -273,6 +491,50 @@ void EssShop_Exit(void) {
     gEssShop = 0;
     Zenie_Release();
 }
+#if 0
+// differs: differs in the init order: the mult and the two table addresses are computed in another order and the tail (Zenie block) is scheduled differently (size differs)
+extern s32 gEssShop;
+extern char D_0046B520[];
+extern s32 D_0058F680[];
+extern s32 D_0058F718[];
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void Zenie_Create(s32, s32, s32, s32);
+extern void func_002737C0();
+extern void Zenie_SetValue(s32, s32);
+
+void func_00276B50(s32 a0) {
+    s32 t;
+    s32 t3;
+    s32 v;
+    if (gEssShop != 0) {
+        amHeap_Free((void *)gEssShop);
+    }
+    gEssShop = (s32)amHeap_Alloc(0x3E0, 0, D_0046B520, 0x168);
+    memset((void *)gEssShop, 0, 0x3E0);
+    *(s32 *)((u8 *)gEssShop + 0x50) = a0;
+    t = amCdFs_ReadFileId(0x107F7, 0, 1);
+    *(s32 *)((u8 *)gEssShop + 0x0) = t;
+    t = amCdFs_ReadFileId(0x107F8, 0, 1);
+    *(s32 *)((u8 *)gEssShop + 0x4) = t;
+    t = amCdFs_ReadFileId(0x10AB1, 0, 1);
+    *(s32 *)((u8 *)gEssShop + 0x8) = t;
+    t = amCdFs_ReadFileId(0x10850, 0, 1);
+    *(s32 *)((u8 *)gEssShop + 0xC) = t;
+    t3 = a0 * 0xD680;
+    v = *(s32 *)((u8 *)D_0058F718 + t3);
+    *(s32 *)((u8 *)gEssShop + 0x54) = (s32)((u8 *)D_0058F680 + t3 + 0xD41D);
+    *(s32 *)((u8 *)gEssShop + 0x70) = v;
+    Zenie_Create(0x3210, 1, 0x114012A0, 0);
+    func_002737C0();
+    Zenie_SetValue(*(s32 *)((u8 *)gEssShop + 0x70), *(s32 *)((u8 *)gEssShop + 0x70));
+    *(s32 *)((u8 *)gEssShop + 0x1CC) = 0;
+    *(s32 *)((u8 *)gEssShop + 0x22C) = 0x16;
+    *(s32 *)((u8 *)gEssShop + 0x1FC) = 0x13;
+    *(s32 *)((u8 *)gEssShop + 0x3AC) = 0;
+    *(s32 *)((u8 *)gEssShop + 0x268) = 1;
+    *(s32 *)((u8 *)gEssShop + 0x298) = 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276B50);
 #if 0
 // differs: one instruction: the store address of the search is built as s1 + k*4 in the original (addu v0,v0,s1), mine as addu v0,s1,v0
@@ -308,6 +570,46 @@ void func_00276CE0(u8 *a0, s32 a1) {
         k++;
         p += 4;
     } while (k < 7);
+    func_0026E000(s1, 0xF0);
+}
+#endif
+#if 0
+// differs: 8 of 54: the recursion, the early break on a non-positive entry and the tail store of -1 match; the loop counter and the scan pointer of the second loop keep swapped registers whatever the declaration order
+extern u8 D_004E0660[];
+extern void func_0026E000();
+
+void func_00276CE0(u8 *a0, s32 a1) {
+    u8 *s1;
+    s32 s0;
+    s32 i;
+    s32 e;
+    u8 *p;
+    s32 j;
+    s1 = a0;
+    s0 = a1;
+    i = 0;
+    do {
+        e = *(s32 *)(s1 + i * 4 + 4);
+        if (e <= 0) {
+            break;
+        }
+        p = D_004E0660 + e * 40;
+        if (*(u16 *)(p + 0x10) == s0 || *(u16 *)(p + 0x12) == s0) {
+            func_00276CE0(s1, e);
+            i = 0;
+        }
+        i++;
+    } while (i < 7);
+    j = 0;
+    p = s1;
+    do {
+        if (*(s32 *)(p + 4) == s0) {
+            *(s32 *)(s1 + j * 4 + 4) = -1;
+            break;
+        }
+        j++;
+        p += 4;
+    } while (j < 7);
     func_0026E000(s1, 0xF0);
 }
 #endif

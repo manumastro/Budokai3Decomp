@@ -179,10 +179,101 @@ void func_0030F560(s32 *a0) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F650);
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F790);
+extern s32 func_0022D860(s32, f32);
+extern void func_0022D0E0(s32, s32);
+void func_0030F650(s32 *a0) {
+    s32 *s1 = a0;
+    s32 *s0 = (s32 *)a0[0x30 / 4];
+    s32 *s2;
+    f32 t = *(f32 *)&s0[0x10 / 4] - gFrameDelta;
+    *(f32 *)&s0[0x10 / 4] = t;
+    if (t <= 0.0f) {
+        s0[0x10 / 4] = 0x41F00000;
+        s2 = (s32 *)D_0047099C;
+        {
+            s32 v = s2[0xC / 4];
+            D_00470704 = v;
+            D_0047070C = 0x6000;
+            D_00470708 = 0;
+            amModel_SetCurrent(v, 0x6000);
+        }
+        D_00470238 = 0;
+        if (s0[0] != 0) {
+            func_0022D0E0(s0[0], 1);
+        }
+        s0[0] = func_0022D860(((s32 *)((s32 *)s2[0x8 / 4])[0x14 / 4])[0x10 / 4], 0.0f);
+        {
+            void *f = func_0030F560;
+            s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+    s1 = (s32 *)D_0047099C;
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    {
+        s32 v = s1[0xC / 4];
+        D_00470704 = v;
+        D_0047070C = 0x6000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, 0x6000);
+    }
+    D_00470238 = 0;
+    if (s0[0] != 0) {
+        func_0022C060(s0[0], 1.0f);
+        func_0022CD00(s0[0]);
+    }
+    if (s0[1] != 0) {
+        func_0022C060(s0[1], 1.0f);
+        func_0022CD00(s0[1]);
+    }
+}
+void func_0030F790(s32 *a0) {
+    s32 *s1 = a0;
+    s32 *s0 = (s32 *)a0[0x30 / 4];
+    s32 *s2;
+    f32 t = *(f32 *)&s0[0x10 / 4] - gFrameDelta;
+    *(f32 *)&s0[0x10 / 4] = t;
+    if (t <= 0.0f) {
+        s0[0x10 / 4] = 0x41A00000;
+        s2 = (s32 *)D_0047099C;
+        {
+            s32 v = s2[0xC / 4];
+            D_00470704 = v;
+            D_0047070C = 0x6000;
+            D_00470708 = 0;
+            amModel_SetCurrent(v, 0x6000);
+        }
+        D_00470238 = 0;
+        if (s0[0] != 0) {
+            func_0022D0E0(s0[0], 1);
+        }
+        s0[0] = func_0022D860(((s32 *)((s32 *)s2[0x8 / 4])[0x14 / 4])[0xC / 4], 0.0f);
+        {
+            void *f = func_0030F650;
+            s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+    s1 = (s32 *)D_0047099C;
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    {
+        s32 v = s1[0xC / 4];
+        D_00470704 = v;
+        D_0047070C = 0x6000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, 0x6000);
+    }
+    D_00470238 = 0;
+    if (s0[0] != 0) {
+        func_0022C060(s0[0], 1.0f);
+        func_0022CD00(s0[0]);
+    }
+    if (s0[1] != 0) {
+        func_0022C060(s0[1], 1.0f);
+        func_0022CD00(s0[1]);
+    }
+}
 extern void func_0030F270(char *);
-extern void func_0030F790(void);
 void func_0030F8D0(s32 *a0) {
     s32 *s1;
     s32 *s0;
@@ -217,9 +308,106 @@ void func_0030F8D0(s32 *a0) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F9C0);
+void func_0030F9C0(s32 *a0) {
+    s32 *s1 = a0;
+    s32 *s0 = (s32 *)a0[0x30 / 4];
+    s32 *s2;
+    f32 t = *(f32 *)&s0[0x10 / 4] - gFrameDelta;
+    *(f32 *)&s0[0x10 / 4] = t;
+    if (t <= 0.0f) {
+        s0[0x10 / 4] = 0x41F00000;
+        s2 = (s32 *)D_0047099C;
+        {
+            s32 v = s2[0xC / 4];
+            D_00470704 = v;
+            D_0047070C = 0x6000;
+            D_00470708 = 0;
+            amModel_SetCurrent(v, 0x6000);
+        }
+        D_00470238 = 0;
+        if (s0[0] != 0) {
+            func_0022D0E0(s0[0], 1);
+        }
+        s0[0] = func_0022D860(((s32 *)((s32 *)s2[0x8 / 4])[0x14 / 4])[0x8 / 4], 0.0f);
+        {
+            void *f = func_0030F8D0;
+            s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+    s1 = (s32 *)D_0047099C;
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    {
+        s32 v = s1[0xC / 4];
+        D_00470704 = v;
+        D_0047070C = 0x6000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, 0x6000);
+    }
+    D_00470238 = 0;
+    if (s0[0] != 0) {
+        func_0022C060(s0[0], 1.0f);
+        func_0022CD00(s0[0]);
+    }
+    if (s0[1] != 0) {
+        func_0022C060(s0[1], 1.0f);
+        func_0022CD00(s0[1]);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030FB00);
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030FF30);
+extern s32 func_0022D670(s32, f32);
+extern void func_0030FB00(void);
+void func_0030FF30(s32 *a0) {
+    s32 *s1 = a0;
+    s32 *s0 = (s32 *)a0[0x30 / 4];
+    s32 *s2 = (s32 *)D_0047099C;
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    {
+        s32 v = s2[0xC / 4];
+        D_00470704 = v;
+        D_0047070C = 0x6000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, 0x6000);
+    }
+    D_00470238 = 0;
+    if (s0[0] != 0) {
+        func_0022C060(s0[0], 1.0f);
+        func_0022CD00(s0[0]);
+    }
+    if (s0[1] != 0) {
+        func_0022C060(s0[1], 1.0f);
+        func_0022CD00(s0[1]);
+    }
+    {
+        f32 t = *(f32 *)&s0[0x10 / 4] - gFrameDelta;
+        *(f32 *)&s0[0x10 / 4] = t;
+        if (t <= 0.0f) {
+            void *f;
+            s2 = (s32 *)D_0047099C;
+            {
+                s32 v = s2[0xC / 4];
+                D_00470704 = v;
+                D_0047070C = 0x6000;
+                D_00470708 = 0;
+                amModel_SetCurrent(v, 0x6000);
+            }
+            D_00470238 = 0;
+            if (s0[1] != 0) {
+                func_0022D0E0(s0[1], 1);
+            }
+            {
+                s32 *base = (s32 *)((s32 *)s2[0x8 / 4])[0x1C / 4];
+                s32 idx = ((u8 *)s0)[0xF];
+                idx += 0xE;
+                s0[1] = func_0022D670(base[idx], 0.0f);
+            }
+            *((s8 *)s0 + 0xE) = 3;
+            f = func_0030FB00;
+            s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310080);
 u8 func_003101D0(char *p) {
     return ((u8 *)(*(char **)(p + 0x30)))[0xE];
@@ -313,6 +501,67 @@ void SeReady_Start(void) {
     *(s16 *)((char *)s0 + 0xC) = 0;
     D_004701D8 = 0;
 }
+extern s16 D_0046FC50[];
+extern s8 D_004DFB19[];
+extern s8 D_004B4B41;
+extern s8 D_004B4B59;
+extern char D_005C4150[];
+extern s32 func_00283BF0(void);
+extern void func_00283C20(void);
+extern void SklSheet_SetIndex(s32);
+extern void Scene_Request(s32, s32);
+extern void Save_Request(s32, s32, s32);
+extern s32 Save_GetState(void);
+extern void Save_Exit(void);
+extern void func_002E8F90(void *, s32, s32, s32);
+extern void Scene_MarkDone(void);
+#if 0
+// func_00310640: the beq chain 4,3,2,1 then `beqz st` is matched by goto labels, but the original's `beqz st,c0; b end` (bodies after the chain) comes out as `bnez st,end` with the body inline; a switch orders the chain 0..4 instead; 0x16C vs 0x180 bytes
+void func_00310640(Task *t) {
+    char *a0 = (char *)t;
+    s16 *s0 = (s16 *)(a0 + 0x30);
+    s16 st = *(s16 *)(a0 + 0x32);
+    if (st == 4) goto c4;
+    if (st == 3) goto c3;
+    if (st == 2) goto c2;
+    if (st == 1) goto c1;
+    if (st == 0) goto c0;
+    goto end;
+c0:
+    if (s0[0] < 0) {
+        s0[1] = 2;
+    } else {
+        u8 v = (u8)D_004DFB19[D_0046FC50[s0[0]]];
+        SklSheet_SetIndex(v == 0);
+        s0[1] = s0[1] + 1;
+    }
+    goto end;
+c1:
+    if (func_00283BF0() == 8) {
+        func_00283C20();
+        s0[1] = s0[1] + 1;
+    }
+    goto end;
+c2:
+    Scene_Request(0x18, 0);
+    Save_Request(6, -1, 0);
+    s0[1] = s0[1] + 1;
+    goto end;
+c3:
+    if (Save_GetState() < 3) {
+        goto end;
+    }
+    Save_Exit();
+    s0[1] = s0[1] + 1;
+    goto end;
+c4:
+    func_002E8F90(D_005C4150, D_004B4B41, D_004B4B59, 0);
+    Scene_MarkDone();
+    amTask_Kill(t);
+end:
+    return;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310640);
 void func_003107C0(void) {
 }

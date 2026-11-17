@@ -429,3 +429,7 @@ amDma_CopyViaSpr = 0x0012F040; // type:func // guess
 gModelBlock = 0x00470390; // size:0x4 // guess
 gModelEnd = 0x00470394; // size:0x4 // guess
 gModelUser = 0x00470398; // size:0x4 // guess
+
+// amCdFs.c: Wave_Create creates the wave tasks "WAVE MAIN" (Wave_TaskMain) and "WAVE DRAW" (Wave_TaskDraw, with
+// Wave_TaskAfterDraw). Guess from the task names.
+Wave_Create = 0x0025BE40; // type:func // guess

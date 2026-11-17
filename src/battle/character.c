@@ -22,7 +22,7 @@ extern void srand(s32);
 extern void func_001E2510(Fighter *);
 extern void Sp_CallHandler(s32, void *);
 extern s32 func_001DF420(Fighter *, s32, s32);
-extern void func_001B05E0(s32, f32, f32);
+extern void Btl_UpdateLimitXY(s32, f32, f32);
 extern void func_001DA4C0(void);
 extern void func_001D8A50(Fighter *);
 extern void PlyScr_Start(Fighter *, s32, s32);
@@ -239,12 +239,12 @@ s32 func_001CB120(void *self, ScriptCtx *ctx) {
     ctx->fret = func_00146E90(v);
     return 1;
 }
-s32 func_001CB180(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdAngleDeg(void *self, ScriptCtx *ctx) {
     f32 *a = (f32 *)ctx->args;
     ctx->fret = 180.0f * func_0011F680(a[0], a[1]) / 3.1415927f;
     return 1;
 }
-s32 func_001CB1E0(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdRandom(void *self, ScriptCtx *ctx) {
     ctx->fret = (f32)func_0012EAE0(32) / 2147483648.0f;
     return 1;
 }
@@ -345,12 +345,12 @@ s32 func_001CB660(void *self, ScriptCtx *ctx) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB660);
 s32 func_001CB710(void) {
-    func_001B05E0(1, 0.0f, 0.0f);
+    Btl_UpdateLimitXY(1, 0.0f, 0.0f);
     return 1;
 }
 s32 func_001CB740(void *self, ScriptCtx *ctx) {
     f32 *a = (f32 *)ctx->args;
-    func_001B05E0(1, a[1], a[0]);
+    Btl_UpdateLimitXY(1, a[1], a[0]);
     return 1;
 }
 s32 func_001CB770(void) {
@@ -403,11 +403,11 @@ s32 func_001CB9B0(void *self, ScriptCtx *ctx) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB9B0);
-s32 func_001CB9F0(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdFighter1AD8(void *self, ScriptCtx *ctx) {
     ctx->fret = gBattle->fighter[ctx->args[0]]->unk1AD8;
     return 1;
 }
-s32 func_001CBA20(void *self, ScriptCtx *ctx) {
+s32 Scr_CmdFighter1ACE(void *self, ScriptCtx *ctx) {
     ctx->ret = gBattle->fighter[ctx->args[0]]->unk1ACE;
     return 1;
 }

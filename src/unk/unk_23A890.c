@@ -41,13 +41,13 @@ void amTask_KillGroup(s32, s32, s32);
 void func_0020DE30(void);
 void func_00248C80(s32);
 void func_00252B20(void);
-void func_0025BE40(void);
+void Wave_Create(void);
 void func_002CA490(void);
 
 void func_001F7210(s32);
 void func_00247820(void);
 
-void func_001F6E60(s32);
+void BtbObj_RemoveByKey(s32);
 void func_001F5B10(s32, s32);
 void func_00247FF0(void);
 void func_002CDC20(void);
@@ -186,13 +186,13 @@ void func_00244F00(s32, s32);
 void func_00248D70(s32, s32);
 void func_00252C20(s32, s32);
 void func_00208F70(s32);
-void func_001F5F50(u8 *);
+void BtbObj_RemoveFromList(u8 *);
 void func_00248910(s32, u8 *);
 void func_001D9C40(u8 *, s32, s32);
 void amModel_SetCurrent(s32, s32);
 void func_001F3DF0(u8 *);
 void func_00208D70(s32);
-void func_001F3D80(u8 *);
+void BtbObj_CheckDrawFlags(u8 *);
 void func_00241600(s32);
 
 extern s32 D_00470734;
@@ -1333,32 +1333,16 @@ void func_00243BC0(u8 *o) {
     func_00241EB0(*(s32 *)(o + 0x10), *(s32 *)(o + 0x14));
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243BD0);
-#if 0
 void func_00243D80(u8 *o) {
-    s16 v = *(s16 *)(o + 0x18);
     s32 idx = *(s32 *)(o + 0x10);
     u8 *p = D_0046FE44 + (idx << 7);
+    s16 v = *(s16 *)(o + 0x18);
 
     if (v < 8) {
         *(s16 *)(p + 0x34) = v;
     }
     func_00241600(*(s32 *)(o + 0x10));
 }
-// differs: the loads come in another order (lw of the index, lh of the value, then the table base); the register roles are swapped
-#endif
-#if 0
-// differs: load order (original lw a1,16(a0) first, then lh, then the gp load of D_0046FE44 after it); 5 orderings tried
-void func_00243D80(u8 *a0) {
-    s32 n = *(s32 *)(a0 + 0x10);
-    s16 v = *(s16 *)(a0 + 0x18);
-
-    if (v < 8) {
-        *(s16 *)(D_0046FE44 + (n << 7) + 0x34) = v;
-    }
-    func_00241600(*(s32 *)(a0 + 0x10));
-}
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243D80);
 void func_00243DB0(u8 *o) {
     func_00241FA0(*(s32 *)(o + 0x10), *(s32 *)(o + 0x14));
 }
@@ -1906,7 +1890,7 @@ void func_00247410(void) {
     *(s16 *)(D_0046FE4C + 0x914) = 0;
     func_00248C80(0);
     func_00252B20();
-    func_0025BE40();
+    Wave_Create();
     func_002CA490();
 }
 // differs: the loop over the two blocks: the original is 4 bytes longer, with the block pointer kept as its own value (not folded into the 0x1350 load); no declaration order tried gives its registers
@@ -1949,7 +1933,7 @@ void func_00247770(u8 *o) {
 
     func_00208F70(*(s32 *)(o + 0x38));
     if (*(s32 *)(*(s32 *)(p + 2) + 0x38) < 0) {
-        func_001F5F50(o);
+        BtbObj_RemoveFromList(o);
     }
 }
 // differs: the original keeps the object in s1 and o+0x30 in s0 (a 0x30 frame, three saves); here the object stays in s0 and the second load is folded
@@ -1965,7 +1949,7 @@ void func_002477C0(u8 *o) {
     amModel_SetCurrent(*(s32 *)(o + 0x34), 0x2003000);
     func_001F3DF0(o);
     func_00208D70(*(s32 *)(s0 + 8));
-    func_001F3D80(o);
+    BtbObj_CheckDrawFlags(o);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002477C0);
@@ -2139,7 +2123,7 @@ void func_00247F70(u8 *o) {
     func_002D04A0(0);
     func_001F3DF0(o);
     func_0013E170(*(s32 *)(s0 + 8));
-    func_001F3D80(o);
+    BtbObj_CheckDrawFlags(o);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247FF0);
 void func_00248350(s32 x) {
@@ -2203,7 +2187,7 @@ void func_00248480(void) {
     case 0:
         D_00470734 = 0;
         r = func_001F5EF0(4, 3);
-        func_001F6E60(r);
+        BtbObj_RemoveByKey(r);
         r = func_001F5EF0(1, 0);
         func_001F5B10(*(s32 *)(r + 4), 0);
         r = func_001F5EF0(3, 2);

@@ -6,7 +6,7 @@ extern void BtbBg_DrawAfterStub(void);
 extern void BtbBg_DrawScrEffectStub(void);
 extern void BtbBg_DrawTrsObjs(void);
 extern void BtbBg_DrawPlainObjs(void);
-extern void func_001F63D0(void);
+extern void BtbBg_RunPostObjs(void);
 extern void func_0013B0B0(s32);
 extern void func_0013B110(s32);
 extern void func_00125740(void *, s32, s32);
@@ -367,7 +367,7 @@ void func_001F9B60(s32 a0, s32 a1) {
 extern void func_00209280(s32, s32);
 extern void func_00209450(s32, s32);
 extern void func_002CF6E0(s32, s32);
-extern void func_001F3EC0(void);
+extern void BtbObj_FreeFlagged(void);
 
 void func_001F9BB0(s32 side, s32 cmd) {
     s32 i;
@@ -387,19 +387,19 @@ void func_001F9BB0(s32 side, s32 cmd) {
         }
         break;
     case 13:
-        func_001F3EC0();
+        BtbObj_FreeFlagged();
         break;
     default:
         func_00209450(0x2000001, 1);
         func_00209450(0x2000002, 1);
         func_00209450(0x2000008, 1);
-        func_001F3EC0();
+        BtbObj_FreeFlagged();
         break;
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F9CD0);
 void func_001F9DF0(void) {
-    func_001F63D0();
+    BtbBg_RunPostObjs();
 }
 void func_001F9E00(void) {
 }
@@ -408,7 +408,7 @@ void BtbBg_Restart(void) {
     BtbBg_Start();
 }
 extern void amTask_Kill(s32);
-extern void func_001F7F50(void);
+extern void BtbBg_RunFunc(void);
 extern void func_001F6140(void);
 
 void BtbBg_KillTasks(void) {
@@ -442,7 +442,7 @@ void BtbBg_KillTasks(void) {
         amTask_Kill(D_0051CCE0.unkA4[6]);
         D_0051CCE0.unkA4[6] = 0;
     }
-    func_001F7F50();
+    BtbBg_RunFunc();
     func_001F6140();
     func_00209450(0x2000000, 1);
 }

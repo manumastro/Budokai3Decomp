@@ -351,3 +351,42 @@ Help_CopyEntries = 0x002B5460; // type:func // guess
 
 // mn_option.c: the option screen's state block (its readers are in mn_option.c; Option_Free releases it).
 gOptionState = 0x00470938; // size:0x4 // guess
+
+// unk_30CD80.c: the help task's kill: frees the help work (func_0030C0E0 on it, then amHeap_Free), kills the task
+// and calls Help_Exit.
+Help_TaskKill = 0x0030D240; // type:func // guess
+
+// mn_ArenaList.c and mn_InputPass.c: ArenaList_Create creates the task "# ARENA LIST #" and its state (0x248
+// bytes, Help_Load, the password input's acquire); ArenaList_Free frees that state and its files and kills the
+// task. The password screen "# PASSWORD #" has its own create (InputPass_Create, 0x174 bytes), a shared resource
+// count at +0x1C that InputPass_Acquire raises (it reads the three files when the count is 0) and
+// InputPass_Release lowers (it frees the resources at 0 and calls Help_Exit); InputPass_TaskFree frees the state
+// of the task and kills it. Guesses from the calls and the task names.
+ArenaList_Create = 0x002F0570; // type:func // guess
+ArenaList_Free = 0x002F03E0; // type:func // guess
+InputPass_Create = 0x002F26E0; // type:func // guess
+InputPass_Acquire = 0x002F27B0; // type:func // guess
+InputPass_Release = 0x002F2500; // type:func // guess
+InputPass_TaskFree = 0x002F3FA0; // type:func // guess
+
+// mn_ipsyswnd.c: OutputPass_Release frees the output pass gOutputPass: its state, its task (kill) and its three
+// files (amCdFs_Close). Guess.
+OutputPass_Release = 0x002F54C0; // type:func // guess
+
+// mn_csmodel.c: CsModel_Create creates the task "# MODEL #" (main CsModel_CallIfSet) with its state of 0xF0 bytes
+// and initialises the camera of the model. Guess.
+CsModel_Create = 0x002B7270; // type:func // guess
+
+// mn_Logomark.c: the Logomark state that ends the movie: it closes the file record, loads the next file, stops the
+// sound and the Adx voice, and sets the task's next function to Logomark_Begin. Guess.
+Logomark_TaskSwitch = 0x002E8340; // type:func // guess
+
+// mn_vsmode.c: VsMode_Exit frees the state and kills its task, closes its files and calls StrStatus_Exit
+// (VsMode_Load is its load). Guess.
+VsMode_Exit = 0x00269730; // type:func // guess
+
+// ess_main.c: two states of the ESS main task. Ess_TaskBgStart waits 30 frames, then starts the Adx voice 0 and
+// creates the task "ESS BG DRAW" (EssBg_TaskDraw) and sets Ess_TaskMsgStart, which creates the message task "ESS
+// MSG SET" (EssMsg_TaskSet) and starts the voice 1. Guesses.
+Ess_TaskBgStart = 0x0026D150; // type:func // guess
+Ess_TaskMsgStart = 0x0026D030; // type:func // guess

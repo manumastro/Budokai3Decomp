@@ -55,7 +55,7 @@ extern void A2d_SetMode(s32);
 extern void amModel_SetCurrent(s32, s32);
 extern void *amObject_Create(void *, s32);
 extern void func_001A4CF0();
-extern void func_001EF100(void);
+extern void BtbDraw_InitState(void);
 extern u8 D_004B4B62[];
 
 void MainMenu_InitWork(MainMenuWork *a) {
@@ -99,7 +99,7 @@ void MainMenu_InitWork(MainMenuWork *a) {
     D_0047CAA0[0] = func_001A4CF0;
     D_00495718[0] = 0;
     D_00495758[0] = 0;
-    func_001EF100();
+    BtbDraw_InitState();
 }
 void MainMenu_TaskDecide(Task *t) {
     func_00267090(t->data.work);

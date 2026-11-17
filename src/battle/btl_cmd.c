@@ -340,6 +340,61 @@ s32 func_001A5490(MotFile *f, s32 track, f32 t) {
     }
     return tr->keys[i].value;
 }
+#if 0
+/* differs: 3 of 65 real instructions (the jal is relocated). The table pointer and the index temporary
+ * swap $v1/$a0 at the first lookup (the original loads the table into $a0 first), and the else block's
+ * byte load is scheduled above the `addiu` (the original keeps the order). Tried: table local, clamp as
+ * ?:, if/else with the entry pointer, integer and pointer address forms. */
+void func_001A5510(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    f32 f;
+    s32 w;
+    s32 r;
+    s32 v;
+    s32 a1;
+    s32 a6;
+    s32 a4;
+    s32 idx;
+    s32 p;
+    u8 *ent;
+    s32 tb;
+
+    f = *(f32 *)(a0 + 0x5C);
+    w = *(s32 *)(a0 + 0x58);
+    if (f != *(f32 *)(a0 + 0x54)) {
+        s1 = a0;
+        *(f32 *)(s1 + 0x54) = f;
+        idx = ((w >> 16) - 1) << 2;
+        p = *(s32 *)((idx + (s32)s1) + 0xC);
+        s0 = *(u8 **)(p + 0x18) + ((w & 0xFFFF) << 4);
+        a1 = *(s32 *)(s0 + 0x4);
+        tb = *(s32 *)(s0 + 0xC);
+        if ((f32)(*(s16 *)(tb + (a1 << 2) - 4) - 1) <= f) {
+            r = a1 - 1;
+        } else {
+            r = func_001A51E0((MotTrack *)s0, *(s32 *)(s1 + 0x50), f);
+        }
+        v = *(s32 *)(s1 + 0x50);
+        if (r != v) {
+            *(s32 *)(s1 + 0x50) = r;
+            ent = (u8 *)(*(s32 *)(s0 + 0xC) + (r << 2));
+            a6 = *(s8 *)(ent + 3);
+            a1 = *(s32 *)(s1 + 0x8);
+            if (a6 < a1) {
+                a4 = *(s8 *)(ent + 2);
+            } else {
+                a4 = *(s8 *)(ent + 2);
+                a6 = a1 - 1;
+            }
+            *(s8 *)(s1 + 0x4C) = *(s8 *)(s1 + 0x4D);
+            *(s8 *)(s1 + 0x4E) = *(s8 *)(s1 + 0x4F);
+            *(s8 *)(s1 + 0x4D) = a6;
+            *(s8 *)(s1 + 0x4F) = a4;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5510);
 void BtlSlots_Clear(BtlSlots *s, s32 i) {
     s->slot[i] = 0;
@@ -385,7 +440,43 @@ void func_001A5700(MotFile2 *f) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5770);
+extern u8 D_003F0800[];
+extern void func_0012E100(void *, s32, s32, f32);
+extern void func_0012E000(void *, void *);
+extern void func_0013B0B0(void *);
+extern void func_0013B620(s32);
+extern void func_0013B110(s32);
+void func_001A5770(void) {
+    u8 *v1 = (u8 *)gBattle + 0xA0;
+    u8 *s1 = v1 + 0xB0;
+    u8 *s0 = v1 + 0x160;
+    f32 f1 = *(f32 *)((u8 *)gBattle + 0x1DC);
+    f32 f0 = *(f32 *)((u8 *)gBattle + 0x240);
+    f32 t;
+    f32 t2;
+    s32 iv;
+
+    if (!(f1 <= f0)) {
+        if (*(s32 *)(s0 + 0x30) & 4) {
+            *(f32 *)(v1 + 0x13C) = f1 - f0;
+        } else {
+            *(f32 *)(v1 + 0x13C) = f0;
+        }
+    }
+    func_0012E100(s1, *(s32 *)(s0 + 0x34), *(s32 *)(s0 + 0x38), *(f32 *)(v1 + 0x13C));
+    if (*(s32 *)(s0 + 0x30) & 8) {
+        func_0013B0B0(D_003F0800);
+        t = *(f32 *)(s0 + 0x4C) / 360.0f;
+        t2 = 65536.0f * t;
+        __asm__ volatile ("cvt.w.s %0, %1" : "=f"(t2) : "f"(t2));
+        __asm__ volatile ("mfc1 %0, %1" : "=r"(iv) : "f"(t2));
+        func_0013B620(iv);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddz.xyz $vf1, $vf30, $vf1z ; sqc2 $vf1, 0x0(%0)" : : "r"(s1));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddz.xyz $vf1, $vf30, $vf1z ; sqc2 $vf1, 0x0(%0)" : : "r"(s1 + 0x10), "r"(s1 + 0x10));
+        func_0013B110(1);
+    }
+    func_0012E000(s1, s0 + 0x10);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5880);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5B40);
 void func_001A5EE0(void) {
@@ -401,13 +492,113 @@ void func_001A6F90(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A6FA0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A73F0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A80E0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A81F0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8300);
+extern u8 D_00468170[];
+void func_001A80E0(void) {
+    s32 i = 0;
+    u8 *s1 = (u8 *)gBattle;
+    u8 *s0 = s1 + 0xA0;
+    u8 *a1;
+    s32 idx;
+    f32 sc;
+
+    for (i = 0; i < *(s32 *)((u8 *)gBattle + 0x88D8); i++) {
+        a1 = s1 + i * 257 * 32 + 0x830;
+        if (*(s8 *)(s1 + i * 257 * 32 + 0x2835) == 0) {
+            __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(a1 + 0xA0), "r"(s0 + (i << 4)));
+            __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(a1 + 0xB0), "r"(s0 + (i << 4) + 0x40));
+        }
+    }
+    idx = *(s32 *)(s0 + 0x184);
+    if (idx >= 0 && idx < 5) {
+        ((void (*)(void))(*(s32 *)(D_00468170 + idx * 4)))();
+    }
+    if (*(s32 *)(s1 + 0x88EC) == 0) {
+        *(f32 *)(s0 + 0x138) = *(f32 *)(s0 + 0x138) + *(f32 *)(s0 + 0x130) * *(f32 *)(s1 + 0x88F0);
+    }
+}
+extern void func_00146F10(void *, void *, f32);
+extern f32 func_00146EB0(void *);
+extern void amTask_Kill(void *);
+void func_001A81F0(void *a0) {
+    u8 *s1 = (u8 *)a0;
+    u8 *s2;
+    u8 *s0;
+    f32 f20;
+    f32 f0;
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    s0 = (u8 *)gBattle + 0xA0;
+    if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0) {
+        s2 = s1 + 0x30;
+        func_00146F10(tmp, s2, *(f32 *)(s1 + 0x54) * *(f32 *)((u8 *)gBattle + 0x88F0));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)"
+            : : "r"(s2 + 0x10), "r"(tmp));
+        func_00146F10(s2 + 0x10, s2 + 0x10, *(f32 *)(s2 + 0x20));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)"
+            : : "r"(s2), "r"(s2 + 0x10));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)"
+            : : "r"(s0 + 0x1B0), "r"(s2));
+        f20 = func_00146EB0(s2 + 0x10);
+        f0 = func_00146EB0(s2);
+        if (f20 <= 2.49999994e-05f && f0 <= 2.49999994e-05f) {
+            amTask_Kill(s1);
+        }
+    }
+}
+extern u8 D_00468190[];
+void func_001A8300(void *a0) {
+    u8 *s3 = (u8 *)gBattle;
+    u8 *s2 = s3 + 0xA0;
+    u8 *s1;
+    u8 *s0;
+    s32 idx;
+
+    func_001A80E0();
+    if (*(u8 **)(s3 + 0x260) == s2 + 0xB0) {
+        s1 = (u8 *)gBattle;
+        s0 = s1 + 0xA0;
+        if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0) {
+            idx = *(s32 *)(s0 + 0x184);
+            ((void (*)(void))(*(s32 *)(D_00468190 + idx * 4)))();
+            *(f32 *)(s0 + 0x13C) = *(f32 *)(s0 + 0x13C) + *(f32 *)(s0 + 0x130) * *(f32 *)(s1 + 0x88F0);
+        }
+    }
+    *(u8 **)(s3 + 0x264) = *(u8 **)(s3 + 0x260);
+    if (*(s32 *)(s3 + 0x88EC) == 0) {
+        __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(s2 + 0x1B0));
+    }
+}
 void func_001A83D0(void) {
     amTask_KillGroup(0x20, 0x20000010, 1);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A83F0);
+extern s32 func_001B0D10(void *);
+extern void func_001A81F0(void *);
+extern char D_004681C0[];
+void func_001A83F0(void *a0) {
+    u8 *s0 = (u8 *)a0;
+    void *t;
+    u8 *a2;
+
+    if (func_001B0D10(a0) == 4) {
+        t = amTask_Create(func_001A81F0, 0, 0x5501, 0x20, 0x20000010, D_004681C0);
+        if (t != 0) {
+            a2 = (u8 *)t + 0x30;
+            __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(a2));
+            if (s0 != 0) {
+                __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(s0), "r"(a2 + 0x10));
+                *(f32 *)(a2 + 0x20) = *(f32 *)(s0 + 0x14);
+                *(f32 *)(a2 + 0x24) = *(f32 *)(s0 + 0x10);
+            } else {
+                *(s32 *)(a2 + 0x10) = 0;
+                *(s32 *)(a2 + 0x14) = 0x3FE66666;
+                *(s32 *)(a2 + 0x18) = 0;
+                *(s32 *)(a2 + 0x1C) = 0x3F800000;
+                *(s32 *)(a2 + 0x20) = 0x3F4CCCCD;
+                *(s32 *)(a2 + 0x24) = 0x3F19999A;
+            }
+        }
+    }
+}
 // GIVEN UP: the parameter and the two saved pointers take other registers, and the branch order differs (4 forms tried)
 #if 0
 void func_001A84B0(u8 *a0) {
@@ -458,10 +649,105 @@ void func_001A84B0(u8 *a0) {
     func_00125740(s2 + 0x160, s1, 0x50);
 }
 #endif
+// GIVEN UP: differs: size 0x174 vs 0x180 (3 instructions short); the param copy is in s2 (original s1), and the if on the 7 test is laid out inline (original branches out: beq to the block); 3 forms tried
+#if 0
+extern void func_00125740(void *, void *, s32);
+void func_001A84B0(u8 *a0x) {
+    u8 *a0 = a0x;
+    u8 *s0 = (u8 *)gBattle;
+    u8 *s2 = s0 + 0xA0;
+    u8 *p;
+    u8 *tb;
+    s32 ix;
+
+    if (*(s32 *)(a0 + 0x20) == 0) {
+        *(s32 *)(s2 + 0x130) = 0x3F800000;
+        if (*(s32 *)(a0 + 0x30) & 1) {
+            *(s32 *)(s2 + 0x138) = 0;
+            *(s32 *)(s2 + 0x140) = 0;
+        } else {
+            if (*(u8 **)(s0 + 0x260) != s2 + 0xF0) {
+                func_00125740(s2 + 0xF0, s2 + 0xB0, 0x40);
+                *(s32 *)(s2 + 0x138) = 0x3F800000;
+            }
+            *(s32 *)(s2 + 0x140) = 0x3F800000;
+        }
+        *(u8 **)(s0 + 0x260) = s2 + 0xF0;
+    } else if (*(s32 *)(a0 + 0x20) == 1) {
+        if (*(s32 *)(a0 + 0x24) == 7) {
+            *(f32 *)(s2 + 0x13C) = *(f32 *)(a0 + 0x3C);
+            *(f32 *)(s2 + 0x130) = *(f32 *)(a0 + 0x44);
+            tb = *(u8 **)(*(u8 **)(a0 + 0x34) + 0x14);
+            ix = *(s32 *)(a0 + 0x38);
+            *(f32 *)(a0 + 0x40) = (f32)*(s32 *)(tb + (ix << 4) + 8) - 1.0f;
+        } else {
+            if (*(s32 *)(a0 + 0x30) & 2) {
+                if (*(u8 **)(s0 + 0x260) != s2 + 0xB0) {
+                    func_00125740(s2 + 0xB0, s2 + 0xF0, 0x40);
+                }
+                *(s32 *)(s2 + 0x13C) = 0x3F800000;
+            } else {
+                *(s32 *)(s2 + 0x13C) = 0;
+            }
+            *(s32 *)(s2 + 0x130) = 0x3F800000;
+        }
+        *(u8 **)(s0 + 0x260) = s2 + 0xB0;
+    }
+    p = *(u8 **)(s0 + 0x260);
+    *(s32 *)(p + 0x30) = 0;
+    *(s32 *)(p + 0x38) = *(s32 *)(p + 0x38) | 1;
+    func_00125740(s2 + 0x160, a0, 0x50);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A84B0);
 void func_001A8630(void) {
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8640);
+extern void func_00131B90(void *);
+extern void amCamera_Init(void *);
+extern void memset(void *, s32, s32);
+extern void func_001A80E0(void);
+extern u8 D_00468190[];
+void func_001A8640(void) {
+    u8 *s1 = (u8 *)gBattle;
+    u8 *s0 = s1 + 0xA0;
+    u8 *s3;
+    u8 *s2;
+    u8 *s1b;
+    u8 *s0b;
+    s32 idx;
+
+    func_00131B90(gBattle);
+    amCamera_Init(s0 + 0xF0);
+    amCamera_Init(s0 + 0xB0);
+    *(s32 *)(s0 + 0x130) = 0x3F800000;
+    *(s32 *)(s0 + 0x134) = 0;
+    *(s32 *)(s0 + 0x138) = 0;
+    *(s32 *)(s0 + 0x13C) = 0;
+    *(s32 *)(s0 + 0x140) = 0;
+    *(s32 *)(s0 + 0x14C) = 0;
+    *(u8 **)(s1 + 0x260) = s0 + 0xF0;
+    memset(s0 + 0x160, 0, 0x50);
+    *(s32 *)(s0 + 0x180) = 0;
+    *(s32 *)(s0 + 0x184) = 0;
+    *(s32 *)(s0 + 0x190) = 0;
+
+    s3 = (u8 *)gBattle;
+    s2 = s3 + 0xA0;
+    func_001A80E0();
+    if (*(u8 **)(s3 + 0x260) == s2 + 0xB0) {
+        s1b = (u8 *)gBattle;
+        s0b = s1b + 0xA0;
+        if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0) {
+            idx = *(s32 *)(s0b + 0x184);
+            ((void (*)(void))(*(s32 *)(D_00468190 + idx * 4)))();
+            *(f32 *)(s0b + 0x13C) = *(f32 *)(s0b + 0x13C) + *(f32 *)(s0b + 0x130) * *(f32 *)(s1b + 0x88F0);
+        }
+    }
+    *(u8 **)(s3 + 0x264) = *(u8 **)(s3 + 0x260);
+    if (*(s32 *)(s3 + 0x88EC) == 0) {
+        __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(s2 + 0x1B0));
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8770);
 void func_001A8830(void) {
 }
@@ -485,7 +771,63 @@ s32 func_001A8920(void) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8930);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8BD0);
+extern s32 func_001A8930(s32, void *, s32);
+extern s32 func_001A8E60(s32, void *);
+
+void func_001A8BD0(u8 *a0) {
+    u8 *s6;
+    s32 s5;
+    s32 s4;
+    s32 s3;
+    s32 s2;
+    s32 s1;
+    s32 s7;
+    s32 r;
+    s32 a6;
+    s32 p;
+    f32 f;
+
+    a6 = *(s8 *)(a0 + 0x6);
+    s6 = (u8 *)gBattle + ((a6 * 257) << 5) + 0x830;
+    s5 = 0;
+    s7 = 0;
+    if (0 < *(s16 *)a0) {
+        s3 = 0;
+        s2 = 0;
+        s1 = 0;
+        do {
+            *(s16 *)(*(s32 *)(a0 + 0x10) + s3) = -1;
+            r = func_001A8930(*(s32 *)(*(s32 *)(a0 + 0x8) + s2), s6, 0);
+            *(s16 *)(*(s32 *)(a0 + 0x14) + s3) = (s16)r;
+            if (func_001A8E60(*(s32 *)(*(s32 *)(a0 + 0x8) + s2), s6) != 0) {
+                s4 = 0;
+                if (*(u8 *)(a0 + 0x7) == 0) {
+                    if (func_001A8D90((void *)*(s32 *)(*(s32 *)(a0 + 0x8) + s2), s6) != 0) {
+                        s4 = 1;
+                    }
+                } else {
+                    f = *(f32 *)(s6 + 0xC58);
+                    p = *(s32 *)(*(s32 *)(a0 + 0x8) + s2);
+                    if (f <= (f32)*(s16 *)(p + 0x6)) {
+                        if (!(f < (f32)*(s16 *)(p + 0x4))) {
+                            s4 = 1;
+                        }
+                    }
+                }
+                if (s4 != 0) {
+                    *(s32 *)(*(s32 *)(a0 + 0xC) + s1) = *(s32 *)(*(s32 *)(a0 + 0x8) + s2);
+                    s1 += 4;
+                    *(s16 *)(*(s32 *)(a0 + 0x10) + s3) = (s16)s5;
+                    s5++;
+                }
+            }
+            s7++;
+            s3 += 2;
+            s2 += 4;
+        } while (s7 < *(s16 *)a0);
+    }
+    *(s16 *)(a0 + 0x2) = (s16)s5;
+}
 s32 func_001A8D90(void *a0, void *a1) {
     u16 x = *(u16 *)((u8 *)a0 + 0xC);
     u16 y = *(u16 *)((u8 *)a1 + 0xCB2);
@@ -632,8 +974,8 @@ s32 func_001A9230(u8 *a0, s32 a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9230);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9460);
-// GIVEN UP: the switch and its blocks match in order, but the registers of the op and the entry differ and the returns are laid out differently
 #if 0
+/* differs: 49 of 69 instructions (the switch form of an earlier round: the op and entry registers differ). */
 s32 func_001A99C0(BtlCmdObj *a0, BtlCmdPair *a1, s32 a2) {
     s32 r = 0;
     BtlCmdPair *e;
@@ -665,6 +1007,49 @@ s32 func_001A99C0(BtlCmdObj *a0, BtlCmdPair *a1, s32 a2) {
         break;
     }
     return func_001A9460(a0, a1->b, r);
+}
+#endif
+#if 0
+/* differs: 8 of 67 instructions; the switch value and the entry pointer take $a3 and $a2 the other way round
+ * (the original keeps the entry in $a2 and the case value in $a2 too, then the constant 1 in $a3). The
+ * `> 12` tests give the original's slti $at form. Tried: switch value in a local, declaration orders. */
+s32 func_001A99C0(u8 *a0, s16 *a1, s32 a2) {
+    s32 k;
+    s32 v;
+    u8 *e;
+
+    v = 0;
+    if (a2 != 0) {
+        e = (u8 *)((*(s32 *)(a0 + 0x58) << 2) + (s32)a0);
+        if (*(s16 *)(e + 0x66) == 1) {
+            v = 1;
+        }
+    }
+    k = a1[0];
+    switch (k) {
+    case 1:
+        e = (u8 *)((*(s32 *)(a0 + 0x58) << 2) + (s32)a0);
+        if (*(s16 *)(e + 0x64) != 1) {
+            return 0;
+        }
+        if (D_0047056C != 0 && *(s16 *)(e + 0x66) > 12) {
+            return 0;
+        }
+        break;
+    case 2:
+        e = (u8 *)((*(s32 *)(a0 + 0x58) << 2) + (s32)a0);
+        if (*(s16 *)(e + 0x64) != -1) {
+            return 0;
+        }
+        if (D_0047056C != 0 && *(s16 *)(e + 0x66) > 12) {
+            return 0;
+        }
+        break;
+    default:
+        v = 0;
+        break;
+    }
+    return func_001A9460(a0, a1[1], v);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A99C0);

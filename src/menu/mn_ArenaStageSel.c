@@ -137,14 +137,14 @@ extern void func_0013B110(s32);
 extern void StrStatus_Exit(void *);
 extern void amSofdec_Destroy(s32);
 extern void Help_Exit(void);
-extern void func_002F2500(void);
+extern void InputPass_Release(void);
 extern void memset(void *, s32, s32);
 extern void Sofdec_TaskMain(Task *);
 extern void ArenaStageSel_CreateObj(ArenaStageSelWork *);
 extern void func_002E53B0(ArenaStageSelWork *, s32);
 extern void *func_002C0630(s32, s32, s32);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
-extern void func_002F27B0(void);
+extern void InputPass_Acquire(void);
 extern void Help_Load(void);
 
 void ArenaStageSel_TaskWaitVoice(Task *t) {
@@ -331,7 +331,7 @@ void ArenaStageSel_Exit(void) {
     amHeap_Free(gArenaStageSel);
     gArenaStageSel = NULL;
     Help_Exit();
-    func_002F2500();
+    InputPass_Release();
 }
 
 void ArenaStageSel_Start(s32 stage) {
@@ -392,6 +392,6 @@ void ArenaStageSel_Load(void) {
     g->task = NULL;
     g->fC = NULL;
     g->f10 = NULL;
-    func_002F27B0();
+    InputPass_Acquire();
     Help_Load();
 }

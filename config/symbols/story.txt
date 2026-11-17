@@ -165,3 +165,14 @@ SeReady_Start = 0x003105B0; // type:func // guess
 // str_status.c: copies a 16-byte vector from a1 to the object at a0 + 0x50 (lqc2/sqc2). Called by the arena and
 // main-menu tasks.
 Obj_CopyVec4F50 = 0x002C0470; // type:func // guess
+
+// unk_297C60.c: sets the field at +0x2C of the sound slot with id (Snd_FindSlot), when there is one.
+Snd_SetSlotF2C = 0x00298AB0; // type:func // guess
+
+// unk_297C60.c: clears the story selection's block (D_005AA550, 0xE30 bytes), the map and the background, and
+// calls func_002BFCF0: the first part of StrSelect_Reset.
+StrSelect_ClearWork = 0x00298E60; // type:func // guess
+
+// str_map.c: when the map's function func_0022BF80 returns 0xFF it starts the fade out to scene -1 (Scene_FadeTo)
+// and clears the state at +0x1C.
+StrMap_FadeWhenDone = 0x0029C290; // type:func // guess
