@@ -54,7 +54,7 @@ s32 func_00235A90(u8 *a0) {
     }
     f = *(f32 *)(e + 0x48);
     if (f > 0.0f) {
-        nf = f - *(f32 *)((u8 *)D_00470570 + 0x88F0);
+        nf = f - *(f32 *)((u8 *)gBattle + 0x88F0);
         *(f32 *)(e + 0x48) = nf;
         if (nf > 0.0f) {
             return 1;
@@ -563,11 +563,11 @@ void func_00239CC0(u8 *a0) {
     s32 a;
     u8 **pp;
 
-    if (*(s8 *)((u8 *)D_00470570 + 0x8975) == 1) {
+    if (*(s8 *)((u8 *)gBattle + 0x8975) == 1) {
         return;
     }
     pp = (u8 **)(a0 + 0x30);
-    sys = D_0046FDFC;
+    sys = gBtlSys;
     if (func_0021C2A0(8) == 0) {
         return;
     }
@@ -610,11 +610,11 @@ void func_00239DA0(u8 *a0) {
     s32 a;
     u8 **pp;
 
-    if (*(s8 *)((u8 *)D_00470570 + 0x8975) == 1) {
+    if (*(s8 *)((u8 *)gBattle + 0x8975) == 1) {
         return;
     }
     pp = (u8 **)(a0 + 0x30);
-    sys = D_0046FDFC;
+    sys = gBtlSys;
     if (func_0021C2A0(8) == 0) {
         return;
     }
