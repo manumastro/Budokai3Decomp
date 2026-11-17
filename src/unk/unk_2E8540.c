@@ -1,0 +1,26 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8540);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8720);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E87C0);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8830);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8980);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8B40);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8C80);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8DB0);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8F00);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8F90);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E92E0);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9300);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E94C0);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E95C0);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9600);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9770);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E97E0);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E98E0);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9900);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9970);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9B10);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9B90);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9BA0);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9BE0);
