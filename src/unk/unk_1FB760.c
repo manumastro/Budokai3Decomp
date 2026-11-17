@@ -230,6 +230,38 @@ void func_00202880(u8 *a) {
     *(s32 *)(q + 0x8) = 0;
     *(s32 *)(q + 0xC) = 0;
 }
+extern u32 func_0012EAE0(s32);
+static inline f32 Jitter2(u32 x) {
+    f32 t = (f32)(s32)x;
+    return t + t;
+}
+static inline f32 Jitter(f32 f20) {
+    s32 v = (s32)(u8)func_0012EAE0(8);
+    u32 hv = (u32)v >> 1;
+    f32 f2;
+    f2 = (v >= 0) ? (f32)v : Jitter2(hv | (v & 1));
+    return f20 * ((f2 / 255.0f) - 0.5f);
+}
+#if 0
+void func_00202890(u8 *a0, u8 *p, u8 *q) {
+    f32 tmp[4];
+    f32 f20;
+    u8 *qv = q;
+    f20 = *(f32 *)(p + 0x30) * *(f32 *)D_0051D9AC;
+    __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(tmp) : "memory");
+    if (*(s32 *)(p + 8) & 4) {
+        tmp[0] = Jitter(f20);
+    }
+    if (*(s32 *)(p + 8) & 8) {
+        tmp[1] = Jitter(f20);
+    }
+    if (*(s32 *)(p + 8) & 0x10) {
+        tmp[2] = Jitter(f20);
+    }
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(qv + 0x10), "r"(tmp) : "memory");
+}
+// differs: 87 of 110 instructions differ: the random jitter helper (static inline, the value from func_0012EAE0, the conditional join) matches the shape, but the saved registers of the two pointer parameters are swapped (the original keeps the flags pointer in s0 and the vector pointer in s1); a local copy of the vector pointer did not change that. The VU0 zero store and vadd.xyz pair are in place.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00202890);
 extern u8 D_0051D9AC[];
 void func_00202A40(u8 *a0, u8 *a1, u8 *a2) {

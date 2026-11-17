@@ -429,6 +429,60 @@ void func_002CE630(f32 x, f32 y) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE630);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE690);
+#if 0
+void func_002CE7E0(u8 *s) {
+    u8 *e = *(u8 **)(s + 0x30);
+    f32 k = *(f32 *)D_0051CD24;
+    f32 *arr = (f32 *)(s + 0x30);
+    s32 first;
+    u32 mask;
+    s32 bit;
+    u8 *o;
+    if (e != 0) {
+        first = *(s32 *)e;
+        mask = 0;
+        do {
+            bit = *(s32 *)(e + 4);
+            if (((mask >> bit) & 1) == 0) {
+                f32 *q = arr + (bit - 6);
+                q[4] = q[4] + *(f32 *)(e + 8) * k;
+                if (q[4] > 1.0f) {
+                    *(s32 *)&q[4] = 0;
+                } else if (q[4] < 0.0f) {
+                    q[4] = 1.0f;
+                }
+                q[8] = q[8] + *(f32 *)(e + 12) * k;
+                if (q[8] > 1.0f) {
+                    *(s32 *)&q[8] = 0;
+                } else if (q[8] < 0.0f) {
+                    q[8] = 1.0f;
+                }
+                mask = mask | (1 << bit);
+                if (mask == 0x3C00) {
+                    break;
+                }
+            }
+            e += 0x10;
+        } while (*(s32 *)e == first);
+    }
+    o = *(u8 **)(s + 0x10);
+    if (*(s32 *)(o + 0xC) != 0) {
+        func_001F5D50(o);
+    }
+    if (*(s32 *)(o + 0x8) != 0) {
+        func_001F5E20(o);
+        amMotion_BuildMatrices(**(s32 **)(*(u8 **)(s + 0x10) + 8));
+    }
+    o = *(u8 **)(s + 0x10);
+    if (*(s32 *)(o + 0x10) != 0) {
+        if (*(f32 *)(*(u8 **)(o + 8) + 4) == 0.0f) {
+            *(f32 *)(*(u8 **)(s + 0x10) + 0x10 + 4) = 0.0f;
+        }
+        func_001F5CB0(*(u8 **)(s + 0x10));
+    }
+}
+// differs: 0x184 against 0x1A0 bytes (9 instructions short, the same clamp loop as func_002CE500): the constant 1.0 and 0.0 registers and the k product are arranged differently; the tail reloads of s->0x10 match except the first load. Four variants tried (hoisted constants, tail reuse).
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE7E0);
 void func_002CE980(u8 *a0) {
     u8 *s0 = a0;
