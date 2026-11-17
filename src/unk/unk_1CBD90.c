@@ -97,20 +97,22 @@ extern f32 D_004B4210[];
 extern f32 D_004B423C[];
 extern f32 D_004B4238[];
 
-// func_001CBD90, func_001CBDF0, func_001CBE80, func_001CBEE0: register and scheduling differences; not matched yet.
-// differs: 17 of 22 instructions at best. The Arg pointer stays in v1 in the original (ours takes a0); the flag -(p[0]==0) is sltu+xori in the original, sltiu in ours.
+// func_001CBD90, func_001CBE80, func_001CBEE0: register and scheduling differences; not matched yet.
+// func_001CBD90: best attempt, 7 of 22 instructions differ. The Arg pointer stays in v1 in the original and p[0] is loaded first; the flag is (p[0]!=0) negated then xori, not sltiu.
+/* r6 best attempt diff 7 */
 #if 0
 int func_001CBD90(void *unused, Arg *a) {
     int *p = a->p;
+    s32 f = p[0];
     Side *s = (Side *)gBattle->tbl[p[1]];
-    if (s->n > 0) {
-        *(s32 *)((char *)s->blk[0] + s->n * 8 + 8) = -(p[0] == 0);
+    s32 n = s->n;
+    if (n > 0) {
+        *(s32 *)((char *)s->blk[0] + n * 8 + 8) = -(!(f != 0));
     }
     return 1;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBD90);
-// differs: 3 forms tried (flat if, return in each branch, else-return with shared tail). The original's not-taken paths load li 1 and branch straight to the epilogue, while the taken paths branch to a shared li: ours puts the shared li before the epilogue at the wrong offset (0x80 vs 0x90 long).
 #if 0
 int func_001CBDF0(void *unused, Arg *a) {
     int *p = a->p;
@@ -1014,34 +1016,13 @@ int Scr_CmdFighterSlotSetVec(void *unused, Arg *a) {
     *(f32 *)(t + e + 0xCA8) = x0;
     return 1;
 }
-extern void func_001E5040(void *);
-
-int func_001CE4E0(void *unused, Arg *a) {
-    int *p = a->p;
-    s32 v = p[0];
-    char *b = (char *)gBattle->tbl[p[1]];
-    if (*(s8 *)(b + 0x1FF9) == v) {
-        return 1;
-    }
-    *(s8 *)(b + 0x1FF9) = (s8)v;
-    if (v == 0) {
-        *(s32 *)(b + 0x1864) = 9;
-    } else {
-        *(s32 *)(b + 0x1864) = 3;
-    }
-    func_001E5040(b);
-    return 1;
-}
-// differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?: and if forms tried did not give movz.
-// differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?:, if and flag-local forms tried did not give movz.
+INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE4E0);
+/* r6 best attempt diff 12 */
+/* Ours emits sltu for the flag; the original sets a1 = 1 and then movz a1,zero,v0. Forms tried: ?:, if, !!, f!=0, p[0]?f:0. */
 #if 0
 int func_001CE560(void *unused, Arg *a) {
     int *p = a->p;
-    s32 f = 1;
-    if (p[0] == 0) {
-        f = 0;
-    }
-    func_001D7CC0(gBattle->tbl[p[1]], f);
+    func_001D7CC0(gBattle->tbl[p[1]], p[0] == 0 ? 0 : 1);
     return 1;
 }
 #endif
