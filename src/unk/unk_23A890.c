@@ -57,7 +57,7 @@ void func_00254100(s32);
 
 extern u8 D_0046AD90[];
 u8 *func_001F5FD0(s32, u8 *, s32, void (*)(void), void (*)(void));
-void func_002477C0(void);
+void func_002477C0(u8 *o);
 void func_00247770();
 
 extern s32 D_0058CA08[];
@@ -2191,17 +2191,17 @@ void func_00247770(u8 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247770);
 #if 0
-// differs: the original keeps the object in s1 and o+0x30 in s0 (0x30 frame, three saves); the compiler folds o+0x30
-// into the offset of the object (0x38) and keeps one save: tried the parameter copy, s0 set after the store, an asm barrier
 void func_002477C0(u8 *o) {
     u8 *s0 = o + 0x30;
+    s32 sv = *(s32 *)(s0 + 8);
 
     D_00470238 = 0;
     amModel_SetCurrent(*(s32 *)(o + 0x34), 0x2003000);
     func_001F3DF0(o);
-    func_00208D70(*(s32 *)(s0 + 8));
+    func_00208D70(sv);
     BtbObj_CheckDrawFlags(o);
 }
+// differs: round 6 (u23e): 6 of 22 differ. The prototype at line 60 is now (u8 *o) (the old (void) one was the conflict). The compiler folds s0 = o+0x30 into o+0x38, so the object pointer keeps one save fewer; the local sv loads 0x38 before the first call (the original after it); the cast and late-assignment forms fold too
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002477C0);
 #if 0
