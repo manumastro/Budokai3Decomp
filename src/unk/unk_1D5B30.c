@@ -2908,22 +2908,24 @@ s32 func_001E1E80(Fighter *c) {
 #endif
 // differs: 121 of 128 differ: the original keeps the object in s3 and the index in s2 (frame 0x50); the C takes the object into s4 whatever the declaration order (best order 120 of 128 instructions); the search compare (0x1FDC flag, the 1<<fBA4 mask, the 0x1A class test) is written as in the original
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1E80);
+/* r6 best attempt diff 12 */
 #if 0
 void func_001E2070(Fighter *c) {
     s32 a;
 
     if (gBattle->f8944 != 0) {
-        return;
+        goto done;
     }
     a = func_001E1D60(c);
-    if (a == c->fBA4 || a == c->fBA8) {
-        return;
+    if (c->fBA4 == a || c->fBA8 == a) {
+        goto done;
     }
     if (c->f200F == 2) {
         c->f1A48 = -1;
         c->f200F = 0;
     }
     func_001E6F70((char *)c + 0x650);
+done: ;
 }
 #endif
 // differs: the original copies the call result into a1 before its compares (move a1, v0; the C keeps it in v0); two local orders and the reversed compare tried
