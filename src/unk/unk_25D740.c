@@ -190,6 +190,13 @@ extern void func_00245D30(void *, s32);
 extern void func_0020F4D0(ScrBig *);
 extern void func_0020F5A0(ScrBig *);
 extern ScrEntry *func_0020F6D0(s32);
+extern s32 func_0020B020(s32, s32, s32);
+extern s32 func_0020AD30(s32, s32, s32);
+
+typedef struct PlyPart {
+    char pad0[0x1350];
+    s32 f1350;
+} PlyPart;
 extern s32 func_0020AE80(s32, s32, s32);
 extern void func_00215990(s32);
 extern void func_0020F700(s32);
@@ -816,7 +823,18 @@ s32 func_0025FCF0(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FD50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FF00);
+s32 func_0025FF00(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 s1 = a[1].i;
+    s32 s0 = a[0].i;
+    PlyPart *p = (PlyPart *)D_00470570->f8934[a[2].i];
+    ScrEntry *r;
+
+    r = func_0020F6D0(a[3].i);
+    *(s32 *)((char *)r + 0x88) = func_0020B020(p->f1350, s1, s0);
+    *(s32 *)((char *)r + 0x20E4) = func_0020AD30(p->f1350, s1, s0);
+    return 1;
+}
 
 s32 func_0025FFA0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
