@@ -274,6 +274,8 @@ segments:
       # initializer (code, 0x46FC80) and a pointer to it (0x46FCC0), as Metrowerks emits for a global whose
       # initial value is computed.
       - [0x35CB80, rodata, rodata/rodata_a]
+      - [0x3695D0, .rodata, unk/unk_1D5B30]
+      - [0x369600, rodata, rodata/rodata_a2]
       - [0x36F350, .rodata, unk/unk_2D2530]
       - [0x36F368, rodata, rodata/rodata_b]
       - [0x36F590, .rodata, unk/unk_2E8540]

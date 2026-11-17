@@ -106,7 +106,12 @@ typedef struct Fighter {
     s16 f1966[0x40];
     u8 f19E6;
     u8 f19E7;
-    char pad19E8[0x58];
+    char pad19E8[0x4A];
+    s16 f1A32;
+    char pad1A34[0x6];
+    s16 f1A3A;
+    s16 f1A3C;
+    char pad1A3E[0x2];
     f32 f1A40;
     char pad1A44[0x4];
     s32 f1A48;
@@ -3425,7 +3430,34 @@ void func_001E39C0(Fighter *c) {
     c->f1354->f2012 = 0;
     Fighter_SetFlags(c, 0x4000);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E39F0);
+void func_001E39F0(Fighter *c) {
+    s32 v;
+    c->f1A3C = -1;
+    c->f1A3A = -1;
+    v = c->fB70;
+    asm { addi v, v, -0xD2 }
+    switch (v) {
+    case 0: case 1: case 2:
+        c->f1A3A = 0xE;
+        break;
+    case 3: case 4: case 5:
+        c->f1A3A = 0xF;
+        break;
+    case 6: case 7: case 8:
+        c->f1A3A = 0xC;
+        break;
+    case 9: case 10: case 11:
+        c->f1A3A = 0xD;
+        break;
+    }
+    if (c->f1A3A >= 0) {
+        if (c->f1354->f1A32 < -1) {
+            c->f1A3C = 6;
+        } else {
+            c->f1A3C = 7;
+        }
+    }
+}
 #if 0
 void func_001E3AA0(Fighter *c) {
     u32 m;
