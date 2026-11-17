@@ -1201,6 +1201,28 @@ int func_001CEE80(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEE80);
+#if 0
+/* r6 best attempt diff 18 */
+extern void func_001C75D0(void *, s32);
+
+int func_001CEE80(void *unused, Arg *a) {
+    int *p = a->p;
+    f32 x = *(f32 *)&p[0];
+    f32 y = *(f32 *)&p[1];
+    f32 d = 360.0f;
+    f32 k = 65536.0f;
+    s32 c = p[2];
+    s32 idx = p[3];
+    char *t = (char *)gBattle->tbl[idx];
+    s32 v = (s32)((x / d) * k);
+    *(f32 *)(t + 0x1828) = y;
+    *(s32 *)(t + 0x1838) = 0;
+    *(s32 *)(t + 0x1834) = v;
+    *(s8 *)(t + 0x183C) = (s8)c;
+    func_001C75D0(t, 20);
+    return 1;
+}
+#endif
 int Scr_CmdFighterSetVecPair(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
@@ -1215,7 +1237,25 @@ int Scr_CmdFighterSetVecPair(void *unused, Arg *a) {
     func_001C75D0(t, 16);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEF60);
+extern void func_00146ED0(void *, void *, f32);
+extern void func_001C75D0(void *, s32);
+
+int func_001CEF60(void *unused, Arg *a) {
+    int *p = a->p;
+    f32 x = *(f32 *)&p[0];
+    s32 n = p[1];
+    s32 i2 = p[2];
+    char *t = (char *)gBattle->tbl[i2];
+    *(s16 *)(t + 0xCB4) = (s16)n;
+    {
+        u8 *src = *(u8 **)(t + 0x1354);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(t + 0xD0), "r"(t + 0x650), "r"(src + 0x650) : "memory");
+    }
+    *(f32 *)(t + 0xD4) = 0.0f;
+    func_00146ED0(t + 0xD0, t + 0xD0, x);
+    func_001C75D0(t, 0x11);
+    return 1;
+}
 int Scr_CmdFighterClear75D0(void *unused, Arg *a) {
     func_001C75D0(gBattle->tbl[a->p[0]], 0);
     return 1;
