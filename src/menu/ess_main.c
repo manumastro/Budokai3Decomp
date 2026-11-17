@@ -3,6 +3,11 @@
 extern u8 *D_004707E0;
 extern void EssMain_TickA(void);
 extern void func_0026CD50(void);
+extern void func_0026C7C0(void);
+extern void func_0026C9F0(void);
+extern void func_0026BD10(void);
+extern s16 func_002C04A0(void *);
+extern void *amFile_Load();
 extern void EssMain_TickC(void);
 extern u32 func_0012EAE0(s32);
 extern void func_0027A260(void);
@@ -202,7 +207,29 @@ void EssMain_TickC(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026BD50);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026C7C0);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026C910);
+void func_0026C910(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    f32 f;
+
+    s1 = a0;
+    *(s32 *)(D_004707E0 + 0x40) = 0;
+    *(s32 *)(D_004707E0 + 0x44) = 0;
+    *(s32 *)(D_004707E0 + 0x48) = 0;
+    s0 = s1 + 0x30;
+    f = 0.5f - 0.5f * ((60.0f - (f32)*(s32 *)(a0 + 0x30) * D_004703BC) / 60.0f);
+    *(f32 *)(D_004707E0 + 0x4C) = f;
+    func_0026B770();
+    func_0026B880();
+    *(s32 *)s0 += 1;
+    f = (f32)*(s32 *)s0 * D_004703BC;
+    if (f < 60.0f) {
+        return;
+    }
+    *(f32 *)(D_004707E0 + 0x4C) = 0.5f;
+    *(s32 *)s0 = 0;
+    *(void **)(s1 + 0x1C) = ((void *)func_0026BD10 == 0) ? 0 : (void *)func_0026BD10;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026C9F0);
 void func_0026CB30(u8 *a0) {
     u8 *s2;
@@ -276,7 +303,33 @@ void func_0026D150(u8 *a0) {
     *(void **)(s0 + 0x1C) = ((void *)func_0026D030 == 0) ? 0 : (void *)func_0026D030;
     *(void **)((u8 *)D_004707E0 + 0x1C) = amTask_Create(func_00269A00, 0, 0x3000, 0x200, 1, D_0046B460);
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D230);
+void func_0026D230(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    s32 s1;
+    s32 s0;
+
+    s3 = a0;
+    s2 = s3 + 0x30;
+    if (*(s16 *)(*(u8 **)(D_004707E0 + 0x8) + 4) != 3) {
+        return;
+    }
+    if (func_002C04A0(*(void **)(D_004707E0 + 0x20)) == 1) {
+        return;
+    }
+    s1 = 0;
+    s0 = 0;
+    do {
+        amFile_Load(*(void **)(*(u8 **)(D_004707E0 + s0) + 0x54));
+        s1++;
+        s0 += 4;
+    } while (s1 < 3);
+    *(s32 *)(D_004707E0 + 0x24) = *(s32 *)(*(u8 **)D_004707E0 + 0x54);
+    *(s32 *)(D_004707E0 + 0x28) = *(s32 *)(*(u8 **)(D_004707E0 + 4) + 0x54);
+    *(s32 *)(D_004707E0 + 0x2C) = *(s32 *)(*(u8 **)(D_004707E0 + 8) + 0x54);
+    *(void **)(s3 + 0x1C) = ((void *)func_0026D150 == 0) ? 0 : (void *)func_0026D150;
+    *(s32 *)s2 = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D320);
 extern u8 D_0058F680[];
 extern u8 D_004E0660[];
@@ -329,6 +382,28 @@ void func_0026D530(s32 a0, s32 a1) {
     *(s32 *)(g + 0x190) = a1;
     *(s32 *)(g + 0x188) = 0;
 }
+#if 0
+// differs: the same selects (movz) and stores, but the constants 0x17, 0xC and 1 sit in other argument registers (a1, a0, v1 in the original)
+void func_0026D570(s32 a0) {
+    u8 *t;
+
+    *(s32 *)(D_004707E0 + 0x130) = 0;
+    t = D_004707E0 + 0x120;
+    if (a0 == 0) {
+        *(s32 *)t = (*(u8 *)(D_004707E0 + 0x5D) & 1) ? 0x13 : 0x17;
+        *(s32 *)(t + 8) = 0;
+        *(s32 *)(D_004707E0 + 0x150) = 0xC;
+        *(s32 *)(D_004707E0 + 0x15C) = 1;
+        *(s32 *)(D_004707E0 + 0x158) = 0;
+    } else {
+        *(s32 *)t = (*(u8 *)(D_004707E0 + 0x5D) & 1) ? 0x10 : 0x14;
+        *(s32 *)(t + 8) = 0;
+        *(s32 *)(D_004707E0 + 0x150) = (*(u8 *)(D_004707E0 + 0x5D) & 1) ? 0x12 : 0x16;
+        *(s32 *)(D_004707E0 + 0x15C) = 0;
+        *(s32 *)(D_004707E0 + 0x158) = 0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D570);
 extern s32 D_0058F5D0[];
 extern s32 D_0058F5D4[];
@@ -359,4 +434,46 @@ void func_0026D610(s32 a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D610);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D6A0);
+#if 0
+// differs: a switch on the mode: the original keeps the block pointer in a1/t3 and tests case 3 first with its constant in v1; mine lays the registers out differently
+void func_0026D8A0(void) {
+    u8 *p;
+    u8 *q;
+    s32 mode;
+
+    p = *(u8 **)(D_004707E0 + 0x18);
+    q = p + 0x30;
+    mode = *(s32 *)(D_004707E0 + 0x50);
+    switch (mode) {
+    case 0:
+    case 1:
+        *(void **)(p + 0x1C) = ((void *)func_0026CD50 == 0) ? 0 : (void *)func_0026CD50;
+        break;
+    case 2:
+        D_004707F0 = 0;
+        *(s32 *)(D_004707E0 + 0x120) = 0xA;
+        *(s32 *)(D_004707E0 + 0x128) = 0;
+        *(s32 *)(D_004707E0 + 0x150) = 0xC;
+        *(s32 *)(D_004707E0 + 0x15C) = 0;
+        *(s32 *)(D_004707E0 + 0x158) = 0;
+        *(s32 *)(D_004707E0 + 0x1B0) = 0xD;
+        *(s32 *)(D_004707E0 + 0x1B8) = 0;
+        *(s32 *)(D_004707E0 + 0x90) = 2;
+        *(s32 *)(D_004707E0 + 0x98) = 0;
+        *(s32 *)(D_004707E0 + 0xC0) = 8;
+        *(s32 *)(D_004707E0 + 0xC8) = 0;
+        *(s32 *)(D_004707E0 + 0xF0) = 0x2F;
+        *(s32 *)(D_004707E0 + 0x100) = 0;
+        *(s32 *)(D_004707E0 + 0xF8) = 0;
+        *(s32 *)(D_004707E0 + 0x1E0) = 0x12;
+        *(s32 *)(D_004707E0 + 0x1E8) = 0;
+        *(void **)(p + 0x1C) = ((void *)func_0026C9F0 == 0) ? 0 : (void *)func_0026C9F0;
+        break;
+    case 3:
+        *(void **)(p + 0x1C) = ((void *)func_0026C7C0 == 0) ? 0 : (void *)func_0026C7C0;
+        *(s32 *)q = 0;
+        break;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D8A0);
