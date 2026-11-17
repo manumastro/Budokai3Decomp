@@ -62,7 +62,7 @@ extern s32 gZenieAnimCloseB[];
 extern char D_0046B818[];
 extern char D_0046B828[];
 
-extern void func_0012C360(void *);
+extern void amFile_Load(void *);
 extern void func_00133780(s32, s32);
 extern void func_00143D60(s32, s32, s32, s32);
 extern void func_00143F20(s32, s32, f32);
@@ -78,9 +78,9 @@ extern void func_0022C6B0(s32);
 extern void func_0022D4B0(s32, s32);
 extern s32 func_0022DA90(s32, f32);
 extern void memset(void *, s32, s32);
-extern void *func_0025C670(s32, s32, s32);
-extern void func_0025C800(void *, s32);
-extern void func_0025C9D0(void *);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
+extern void amCdFs_Close(void *, s32);
+extern void amCdFs_ReleaseCache(void *);
 
 void Zenie_Draw(void);
 void Zenie_Update(void);
@@ -104,7 +104,7 @@ void Zenie_TaskLoad(Task *t) {
         }
     }
     for (j = 0; j < 2; j++) {
-        func_0012C360(gZenie->file[j]->data);
+        amFile_Load(gZenie->file[j]->data);
     }
     gZenie->model[0] = gZenie->file[0]->data;
     gZenie->model[1] = gZenie->file[1]->data;
@@ -333,31 +333,31 @@ void Zenie_Release(void) {
             gZenieRefs = 0;
             return;
         }
-        func_00145120(gZenie->task);
+        amTask_Kill(gZenie->task);
         for (i = 0; i < 2; i++) {
             if (gZenie->file[i] != NULL) {
-                func_0025C800(gZenie->file[i], 0);
+                amCdFs_Close(gZenie->file[i], 0);
             }
             if (gZenie->f28[i] != NULL) {
-                func_0025C9D0(gZenie->f28[i]);
+                amCdFs_ReleaseCache(gZenie->f28[i]);
             }
         }
-        func_0013AC90(gZenie);
+        amHeap_Free(gZenie);
         gZenie = NULL;
     }
 }
 
 void Zenie_Create(s32 prio, s32 type, s32 a2) {
     if (gZenieRefs++ <= 0) {
-        gZenie = func_0013AAB0(0xAC, 0, D_0046B818, 0x70);
+        gZenie = amHeap_Alloc(0xAC, 0, D_0046B818, 0x70);
         memset(gZenie, 0, 0xAC);
-        gZenie->file[0] = func_0025C670(0x10AC0, 0, 0);
-        gZenie->file[1] = func_0025C670(0x10AC1, 0, 0);
+        gZenie->file[0] = amCdFs_ReadFileId(0x10AC0, 0, 0);
+        gZenie->file[1] = amCdFs_ReadFileId(0x10AC1, 0, 0);
         gZenie->f0 = a2;
         gZenie->type = type;
         gZenie->anim[0].id = gZenieAnimStartA[type];
         gZenie->anim[1].id = gZenieAnimStartB[type];
-        gZenie->task = func_00144FC0(Zenie_TaskLoad, 0, prio, 0x200, 0x100000, D_0046B828);
+        gZenie->task = amTask_Create(Zenie_TaskLoad, 0, prio, 0x200, 0x100000, D_0046B828);
         memset(&gZenie->task->data, 0, 0x10);
         gZenie->flags = 3;
     }

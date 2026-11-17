@@ -29,11 +29,11 @@ extern char D_0046EAF8[];
 extern char D_0046EB00[];
 extern char D_0046EAA8[];
 
-extern void func_0012C480(char *, void (*)(void));
+extern void amFile_AddLoader(char *, void (*)(void));
 extern void func_002A5B00(void);
 extern void func_0029A9F0(void);
 extern void func_002A7160(void);
-extern void *func_00144FC0(void (*)(void), s32, s32, s32, s32, char *);
+extern void *amTask_Create(void (*)(void), s32, s32, s32, s32, char *);
 extern void func_002A92B0(s32);
 extern void func_002A11E0(void);
 extern void memset(void *, s32, s32);
@@ -43,8 +43,8 @@ void func_002A8970(void) {
 void func_002A8980(void) {
 }
 void func_002A8990(void) {
-    func_0012C480(D_0046EAF8, func_002A8980);
-    func_0012C480(D_0046EB00, func_002A8970);
+    amFile_AddLoader(D_0046EAF8, func_002A8980);
+    amFile_AddLoader(D_0046EB00, func_002A8970);
 }
 void func_002A89D0(void) {
     EvtWork *w = D_004708D0;
@@ -88,7 +88,7 @@ void func_002A8F00(void) {
     if (w != NULL) {
         w->fC |= 1;
         if (w->f124 >= 0) {
-            w->f128 = func_00144FC0(func_002A7160, 0, 0x8000, 0x4000, 0, D_0046EAA8);
+            w->f128 = amTask_Create(func_002A7160, 0, 0x8000, 0x4000, 0, D_0046EAA8);
             w->f12C = 0;
         }
     }

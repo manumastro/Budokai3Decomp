@@ -37,11 +37,11 @@ void TourMode_Start(void) {
     Task *t;
     TourModeWork *w;
 
-    g->task = t = func_00144FC0(func_002C3D20, 0, 0x1001, 8, 2, D_0046EF30);
-    t->data.work = w = func_0013AAB0(0xD0, 0, D_0046EF40, 0xD9);
+    g->task = t = amTask_Create(func_002C3D20, 0, 0x1001, 8, 2, D_0046EF30);
+    t->data.work = w = amHeap_Alloc(0xD0, 0, D_0046EF40, 0xD9);
     memset(w, 0, 0xD0);
     w->f9C = func_002C0630(0x10814, 0x2000, 0);
-    w->fA4 = func_00144FC0(func_002C19F0, 0, 0x3FFF, 8, 2, D_0046EF50);
+    w->fA4 = amTask_Create(func_002C19F0, 0, 0x3FFF, 8, 2, D_0046EF50);
     w->fAF = 0;
     w->fAD = D_004B4BE4[0];
     w->fAB = D_00470918;

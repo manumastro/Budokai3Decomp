@@ -19,7 +19,7 @@ extern s16 func_001E8AF0(Fighter *);
 extern s32 func_001E8740(Fighter *);
 
 extern char D_00469390[];
-extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
 extern void memset(void *, s32, s32);
 extern void *func_001D4170(s32);
 extern s32 *func_001D0FC0(s32);
@@ -31,7 +31,7 @@ Secp *func_001D4970(SecpData *data) {
     if (data == 0) {
         return 0;
     }
-    s = func_0013AAB0(sizeof(Secp), 1, D_00469390, 134);
+    s = amHeap_Alloc(sizeof(Secp), 1, D_00469390, 134);
     memset(s, 0, sizeof(Secp));
     s->data = data;
     s->numParts = data->numParts;

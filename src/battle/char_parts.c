@@ -3,8 +3,8 @@
 #include "battle/character.h"
 
 extern char D_00469380[];
-extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
-extern void func_0013AC90(void *);
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
+extern void amHeap_Free(void *);
 extern void memset(void *, s32, s32);
 extern void func_001D3E10(void *);
 extern void func_001D3D10(void *, s32);
@@ -30,7 +30,7 @@ void func_001D4210(Secp *s);
 INCLUDE_ASM("asm/nonmatchings/battle/char_parts", func_001D3E10);
 void func_001D3FC0(void *p) {
     if (p != 0) {
-        func_0013AC90(p);
+        amHeap_Free(p);
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_parts", func_001D3FF0);
@@ -42,7 +42,7 @@ void *func_001D4170(s32 data) {
     if (data == 0) {
         return 0;
     }
-    p = func_0013AAB0(0x13A0, 1, D_00469380, 176);
+    p = amHeap_Alloc(0x13A0, 1, D_00469380, 176);
     memset(p, 0, 0x13A0);
     p[1] = (s32)(p + 0x28);
     p[3] = data;
@@ -145,7 +145,7 @@ void func_001D4620(Secp *s) {
         for (i = 0; i < s->numParts; i++) {
             func_001D3FC0(s->parts[i]);
         }
-        func_0013AC90(s);
+        amHeap_Free(s);
     }
 }
 #if 0

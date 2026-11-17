@@ -24,21 +24,21 @@ typedef struct View {
     f32 sy;
 } View;
 
-extern u8 *func_0012F230(s32);
+extern u8 *amPkt_Alloc(s32);
 extern void func_0012EF80(void *, void *, s32);
-extern void func_00140D30(s32, s32, s32, s32, u32, s32, s32, s32);
+extern void amDma_Request(s32, s32, s32, s32, u32, s32, s32, s32);
 extern void func_001484A0(u32);
-extern void func_00137D20(s32);
+extern void amDraw_ClosePacket(s32);
 
 extern u32 D_0046FD18[2];
 extern u32 D_0046FD20;
 extern f32 D_0046FD24, D_0046FD28, D_0046FD2C, D_0046FD30;
-extern u8 *D_00470228;
+extern u8 *gPacketPtr;
 extern u32 D_00470250;
 extern s32 D_00470254;
 extern f32 D_00470258;
 extern s32 D_0047025C, D_00470260, D_00470264;
-extern s32 D_00470290, D_00470294, D_00470298, D_0047029C;
+extern s32 gPacketQwc, D_00470294, D_00470298, D_0047029C;
 extern u32 D_004703DC;
 extern s8 D_0047045C;
 extern u32 D_00470490;
@@ -57,16 +57,16 @@ INCLUDE_ASM("asm/nonmatchings/sys/unk_133620", func_00133720);
 void func_00133780(s32 mode, u32 a1) {
     u64 *p;
     if (mode != 2) {
-        p = (u64 *)func_0012F230(0x30);
+        p = (u64 *)amPkt_Alloc(0x30);
         p[0] = 0x60000002;
         p[1] = 0x13000000 | ((u64)0x50000002 << 32);
         *(u128 *)&p[2] = PCPYLD((u64)0xE, 0x8001 | ((u64)0x10000000 << 32));
         ((u32 *)p)[8] = D_00470490 | (D_0047045C << 24);
         ((u32 *)p)[9] = a1;
         p[5] = (s64)(mode + 0x4E);
-        func_00140D30(0, 1, 1, 1, (u32)p & 0x0FFFFFFF, 0, 0, 0);
+        amDma_Request(0, 1, 1, 1, (u32)p & 0x0FFFFFFF, 0, 0, 0);
     } else {
-        p = (u64 *)func_0012F230(0x40);
+        p = (u64 *)amPkt_Alloc(0x40);
         p[0] = 0x60000003;
         p[1] = 0x13000000 | ((u64)0x50000003 << 32);
         *(u128 *)&p[2] = PCPYLD((u64)0xE, 0x8002 | ((u64)0x10000000 << 32));
@@ -76,7 +76,7 @@ void func_00133780(s32 mode, u32 a1) {
         ((u32 *)p)[12] = D_00470490 | (D_0047045C << 24);
         ((u32 *)p)[13] = a1;
         p[7] = 0x4F;
-        func_00140D30(0, 1, 1, 1, (u32)p & 0x0FFFFFFF, 0, 0, 0);
+        amDma_Request(0, 1, 1, 1, (u32)p & 0x0FFFFFFF, 0, 0, 0);
     }
 }
 
@@ -101,7 +101,7 @@ u128 func_001339B0(u128 *v) {
     return *(u128 *)D_003F01E0 = *v;
 }
 
-s32 func_001339D0(s32 which, u32 val) {
+s32 amGs_SetReg32(s32 which, u32 val) {
     s32 i;
     u64 old;
 
@@ -114,7 +114,7 @@ s32 func_001339D0(s32 which, u32 val) {
     return old;
 }
 
-u64 func_00133A50(s32 which, u64 val) {
+u64 amGs_SetReg64(s32 which, u64 val) {
     u64 old;
     s32 i;
 
@@ -127,7 +127,7 @@ u64 func_00133A50(s32 which, u64 val) {
     return old;
 }
 
-u64 func_00133AD0(s32 which, u64 val) {
+u64 amGs_SetReg64b(s32 which, u64 val) {
     u64 old;
     s32 i;
 
@@ -150,7 +150,7 @@ void func_00133B50(f32 *rect, u32 a1) {
         rect = r;
         func_001484A0(save & ~6);
     }
-    p = func_0012F230(0x70);
+    p = amPkt_Alloc(0x70);
     func_0012EF80(p, D_0045ABC0, 7);
     *(s16 *)(p + 0x50) = D_00470498 + (s32)(rect[0] * D_004704A0);
     *(s16 *)(p + 0x52) = D_0047049C + (s32)(rect[1] * D_004704A4);
@@ -158,7 +158,7 @@ void func_00133B50(f32 *rect, u32 a1) {
     *(s16 *)(p + 0x62) = D_0047049C + (s32)(rect[3] * D_004704A4);
     *(u32 *)(p + 0x64) = a1;
     *(u64 *)(p + 0x68) = 5;
-    func_00140D30(0, 1, 1, 1, (u32)p & 0x0FFFFFFF, 0, 0, 0);
+    amDma_Request(0, 1, 1, 1, (u32)p & 0x0FFFFFFF, 0, 0, 0);
     func_001484A0(save);
 }
 
@@ -208,14 +208,14 @@ INCLUDE_ASM("asm/nonmatchings/sys/unk_133620", func_001351F0);
 void func_00135C60(Vec4 *a, Vec4 *b, Vec4 *c) {
     u8 *p;
 
-    if (D_0047029C == 0 && D_00470298 >= 0x40) func_00137D20(-1);
-    p = D_00470228 - 0x10;
+    if (D_0047029C == 0 && D_00470298 >= 0x40) amDraw_ClosePacket(-1);
+    p = gPacketPtr - 0x10;
     VCOPY(p, a);
     VCOPY(p + 0x10, b);
     if (c) VCOPY(p + 0x20, c);
     VCOPY(p + 0x30, &D_0045F4E0);
-    D_00470228 = p + 0x40;
-    D_00470290 += 3;
+    gPacketPtr = p + 0x40;
+    gPacketQwc += 3;
     D_00470294 += 3;
     D_00470298 += 1;
 }
@@ -223,14 +223,14 @@ void func_00135C60(Vec4 *a, Vec4 *b, Vec4 *c) {
 void func_00135D40(Vec4 *a, Vec4 *b, Vec4 *c) {
     u8 *p;
 
-    if (D_0047029C == 0 && D_00470298 >= 0x40) func_00137D20(-1);
-    p = D_00470228 - 0x10;
+    if (D_0047029C == 0 && D_00470298 >= 0x40) amDraw_ClosePacket(-1);
+    p = gPacketPtr - 0x10;
     VCOPY(p, a);
     VCOPY(p + 0x10, b);
     if (c) VCOPY(p + 0x20, c);
     VCOPY(p + 0x30, &D_0045F4E0);
-    D_00470228 = p + 0x40;
-    D_00470290 += 3;
+    gPacketPtr = p + 0x40;
+    gPacketQwc += 3;
     D_00470294 += 3;
     D_00470298 += 1;
 }
@@ -238,15 +238,15 @@ void func_00135D40(Vec4 *a, Vec4 *b, Vec4 *c) {
 void func_00135E20(Vec4 *a, Vec4 *b, Vec4 *c, Vec4 *d) {
     u8 *p;
 
-    if (D_0047029C == 0 && D_00470298 >= 0x60) func_00137D20(-1);
-    p = D_00470228 - 0x10;
+    if (D_0047029C == 0 && D_00470298 >= 0x60) amDraw_ClosePacket(-1);
+    p = gPacketPtr - 0x10;
     VCOPY(p, a);
     VCOPY(p + 0x10, b);
     VCOPY(p + 0x20, c);
     VCOPY(p + 0x30, d);
     VCOPY(p + 0x40, &D_0045F4E0);
-    D_00470228 = p + 0x50;
-    D_00470290 += 4;
+    gPacketPtr = p + 0x50;
+    gPacketQwc += 4;
     D_00470294 += 4;
     D_00470298 += 2;
 }
@@ -254,13 +254,13 @@ void func_00135E20(Vec4 *a, Vec4 *b, Vec4 *c, Vec4 *d) {
 void func_00135F10(Vec4 *a, Vec4 *b) {
     u8 *p;
 
-    if (D_0047029C == 0 && D_00470298 >= 0x40) func_00137D20(-1);
-    p = D_00470228 - 0x10;
+    if (D_0047029C == 0 && D_00470298 >= 0x40) amDraw_ClosePacket(-1);
+    p = gPacketPtr - 0x10;
     VCOPY(p, a);
     if (b) VCOPY(p + 0x10, b);
     VCOPY(p + 0x20, &D_0045F4E0);
-    D_00470228 = p + 0x30;
-    D_00470290 += 2;
+    gPacketPtr = p + 0x30;
+    gPacketQwc += 2;
     D_00470294 += 2;
     D_00470298 += 1;
 }
@@ -268,8 +268,8 @@ void func_00135F10(Vec4 *a, Vec4 *b) {
 void func_00135FD0(Vec4 *a, f32 *b, Vec4 *c, f32 *d) {
     u8 *p;
 
-    if (D_00470298 >= 0x13) func_00137D20(-1);
-    p = D_00470228 - 0x10;
+    if (D_00470298 >= 0x13) amDraw_ClosePacket(-1);
+    p = gPacketPtr - 0x10;
     VCOPY(p, a);
     ((f32 *)(p + 0x10))[0] = b[0] * D_0047CA40.sx;
     ((f32 *)(p + 0x10))[1] = b[1] * D_0047CA40.sy;
@@ -285,8 +285,8 @@ void func_00135FD0(Vec4 *a, f32 *b, Vec4 *c, f32 *d) {
     ((f32 *)(p + 0x40))[2] = 1.0f;
     ((f32 *)(p + 0x40))[3] = 0.0f;
     VCOPY(p + 0x50, &D_0045F4E0);
-    D_00470228 = p + 0x60;
-    D_00470290 += 5;
+    gPacketPtr = p + 0x60;
+    gPacketQwc += 5;
     D_00470294 += 5;
     D_00470298 += 1;
 }
@@ -294,8 +294,8 @@ void func_00135FD0(Vec4 *a, f32 *b, Vec4 *c, f32 *d) {
 void func_00136130(Vec4 *a, f32 *b, Vec4 *c) {
     u8 *p;
 
-    if (D_00470298 >= 0x20) func_00137D20(-1);
-    p = D_00470228 - 0x10;
+    if (D_00470298 >= 0x20) amDraw_ClosePacket(-1);
+    p = gPacketPtr - 0x10;
     VCOPY(p, a);
     ((f32 *)(p + 0x10))[0] = b[0] * D_0047CA40.sx;
     ((f32 *)(p + 0x10))[1] = b[1] * D_0047CA40.sy;
@@ -303,8 +303,8 @@ void func_00136130(Vec4 *a, f32 *b, Vec4 *c) {
     ((f32 *)(p + 0x10))[3] = 0.0f;
     VCOPY(p + 0x20, c);
     VCOPY(p + 0x30, &D_0045F4E0);
-    D_00470228 = p + 0x40;
-    D_00470290 += 3;
+    gPacketPtr = p + 0x40;
+    gPacketQwc += 3;
     D_00470294 += 3;
     D_00470298 += 1;
 }
@@ -312,16 +312,16 @@ void func_00136130(Vec4 *a, f32 *b, Vec4 *c) {
 void func_00136230(Vec4 *a, f32 *b) {
     u8 *p;
 
-    if (D_00470298 >= 0x20) func_00137D20(-1);
-    p = D_00470228 - 0x10;
+    if (D_00470298 >= 0x20) amDraw_ClosePacket(-1);
+    p = gPacketPtr - 0x10;
     VCOPY(p, a);
     ((f32 *)(p + 0x10))[0] = b[0] * D_0047CA40.sx;
     ((f32 *)(p + 0x10))[1] = b[1] * D_0047CA40.sy;
     ((f32 *)(p + 0x10))[2] = 0.0f;
     ((f32 *)(p + 0x10))[3] = 0.0f;
     VCOPY(p + 0x20, &D_0045F4E0);
-    D_00470228 = p + 0x30;
-    D_00470290 += 2;
+    gPacketPtr = p + 0x30;
+    gPacketQwc += 2;
     D_00470294 += 2;
     D_00470298 += 1;
 }
@@ -329,13 +329,13 @@ void func_00136230(Vec4 *a, f32 *b) {
 void func_00136310(Vec4 *a, Vec4 *b) {
     u8 *p;
 
-    if (D_0047029C == 0 && D_00470298 >= 0x60) func_00137D20(-1);
-    p = D_00470228 - 0x10;
+    if (D_0047029C == 0 && D_00470298 >= 0x60) amDraw_ClosePacket(-1);
+    p = gPacketPtr - 0x10;
     VCOPY(p, a);
     VCOPY(p + 0x10, b);
     VCOPY(p + 0x20, &D_0045F4E0);
-    D_00470228 = p + 0x30;
-    D_00470290 += 2;
+    gPacketPtr = p + 0x30;
+    gPacketQwc += 2;
     D_00470294 += 2;
     D_00470298 += 2;
 }

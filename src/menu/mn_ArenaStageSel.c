@@ -1,7 +1,7 @@
 #include "common.h"
 #include "menu/menu.h"
 
-/* A file being read (func_0025C670's handle). */
+/* A file being read (amCdFs_ReadFileId's handle). */
 typedef struct ArenaStageSelFile {
     char pad0[4];
     s16 state;          /* 0x04: 3 once read */
@@ -105,7 +105,7 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 extern f32 D_004E0618[];
 extern void func_002E4D60(ArenaStageSelWork *);
-extern s32 func_0012D9F0(s32);
+extern s32 amAdx_GetStat(s32);
 extern void func_00145CC0(s32, s32);
 extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D670(s32, f32);
@@ -117,12 +117,12 @@ extern void func_0022D4B0(ArenaStageSelObj *, s32);
 extern void func_00229800(s32, void *, s32, f32);
 extern void func_002C0470(void *, void *);
 extern u32 func_0012EAE0(s32);
-extern s32 func_0012D790(s32, s32, s32);
-extern void func_0012DB00(s32, f32);
-extern void func_0012DC30(s32, s32);
-extern void func_0025C800(void *, s32);
+extern s32 amAdx_PlayAfs(s32, s32, s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
+extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
-extern void func_0012C360(void *);
+extern void amFile_Load(void *);
 extern void func_0028DF20(void);
 extern void func_0028DFC0(s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_002E5490(Task *);
@@ -135,7 +135,7 @@ extern void func_00131F00(void *, f32, f32);
 extern void func_00132DF0(s32);
 extern void func_0013B110(s32);
 extern void func_002C04B0(void *);
-extern void func_001429B0(s32);
+extern void amSofdec_Destroy(s32);
 extern void Help_Exit(void);
 extern void func_002F2500(void);
 extern void memset(void *, s32, s32);
@@ -143,7 +143,7 @@ extern void func_002E5600(Task *);
 extern void func_002E4030(ArenaStageSelWork *);
 extern void func_002E53B0(ArenaStageSelWork *, s32);
 extern void *func_002C0630(s32, s32, s32);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void func_002F27B0(void);
 extern void Help_Load(void);
 
@@ -163,7 +163,7 @@ void ArenaStageSel_TaskWaitVoice(Task *t) {
         pad |= (u16)(D_00493086[0] | D_004930E6[0]);
     }
     func_002E4D60(w);
-    if (func_0012D9F0(w->se) == 5 || (pad & 0x50A0)) {
+    if (amAdx_GetStat(w->se) == 5 || (pad & 0x50A0)) {
         ((ArenaStageSelSubData *)&w->sub->data)->f4 = w->fF0;
         w->fCE = 0;
         D_00470704 = v = (s32)w->tex;
@@ -218,9 +218,9 @@ void ArenaStageSel_TaskOpen(Task *t) {
     w->fCC = r + 0x11;
     func_002C0490(w->f8, w->fCC);
     se = D_00456D98;
-    w->se = func_0012D790(1, se.id[r] | 0x20000, 0);
-    func_0012DB00(w->se, D_004E0618[0]);
-    func_0012DC30(w->se, 0);
+    w->se = amAdx_PlayAfs(1, se.id[r] | 0x20000, 0);
+    amAdx_SetVolume(w->se, D_004E0618[0]);
+    amAdx_Pause(w->se, 0);
     TASK_SET_FUNC(t, ArenaStageSel_TaskWaitVoice);
 }
 
@@ -236,20 +236,20 @@ void ArenaStageSel_TaskLoad(Task *t) {
     if (g->file[1]->state == 3) {
         w->res = g->file[0]->data;
         g->file[0]->data = NULL;
-        func_0025C800(g->file[0], 0);
+        amCdFs_Close(g->file[0], 0);
         g->file[0] = NULL;
         w->tex = g->file[1]->data;
         g->file[1]->data = NULL;
-        func_0025C800(g->file[1], 0);
+        amCdFs_Close(g->file[1], 0);
         g->file[1] = NULL;
         func_0022E0B0(w->res);
-        func_0012C360(w->tex);
+        amFile_Load(w->tex);
         if (w->fD0 & 0x80) {
             func_0028DF20();
             func_0028DFC0(6, 0, 0, 0, 0, 0, 0, 0, 0x1F);
         }
-        g->fC = func_00144FC0(func_002E5490, 0, 0x1001, 8, 2, D_0046F510);
-        g->f10 = func_00144FC0(func_002E5480, 0, 0x3000, 8, 2, D_0046F530);
+        g->fC = amTask_Create(func_002E5490, 0, 0x1001, 8, 2, D_0046F510);
+        g->f10 = amTask_Create(func_002E5480, 0, 0x3000, 8, 2, D_0046F530);
         func_002E5170(w);
         w->timer = 50.0f;
         w->fF0 = w->entry[w->fF2].stage;
@@ -304,31 +304,31 @@ void ArenaStageSel_Exit(void) {
             w->f28 = NULL;
         }
         if (w->res != NULL) {
-            func_0013AC90(w->res);
+            amHeap_Free(w->res);
         }
         if (w->tex != NULL) {
-            func_0013AC90(w->tex);
+            amHeap_Free(w->tex);
         }
         if (w->sub != NULL) {
             d = (ArenaStageSelSubData *)&w->sub->data;
             if (d->f0 >= 0) {
-                func_001429B0(d->f0);
+                amSofdec_Destroy(d->f0);
             }
             d->f0 = -1;
             d->f4 = -1;
             d->f6 = -1;
-            func_00145120(w->sub);
+            amTask_Kill(w->sub);
         }
-        func_0013AC90(w);
-        func_00145120(g->task);
+        amHeap_Free(w);
+        amTask_Kill(g->task);
     }
     if (g->fC != NULL) {
-        func_00145120(g->fC);
+        amTask_Kill(g->fC);
     }
     if (g->f10 != NULL) {
-        func_00145120(g->f10);
+        amTask_Kill(g->f10);
     }
-    func_0013AC90(gArenaStageSel);
+    amHeap_Free(gArenaStageSel);
     gArenaStageSel = NULL;
     Help_Exit();
     func_002F2500();
@@ -341,8 +341,8 @@ void ArenaStageSel_Start(s32 stage) {
     Task *t;
     u16 b = D_004B4B50[0];
 
-    g->task = t = func_00144FC0(ArenaStageSel_TaskLoad, 0, 0x2600, 8, 2, D_0046F540);
-    t->data.work = w = func_0013AAB0(0x118, 0, D_0046F550, 0x11E);
+    g->task = t = amTask_Create(ArenaStageSel_TaskLoad, 0, 0x2600, 8, 2, D_0046F540);
+    t->data.work = w = amHeap_Alloc(0x118, 0, D_0046F550, 0x11E);
     memset(w, 0, 0x118);
     w->fD0 = 0;
     switch (D_005C4120[0]) {
@@ -362,7 +362,7 @@ void ArenaStageSel_Start(s32 stage) {
     w->f100 = 0;
     w->fF4 = 1;
     w->f2C = 1.0f;
-    w->sub = func_00144FC0(func_002E5600, 0, 0x2680, 8, 2, D_0046F568);
+    w->sub = amTask_Create(func_002E5600, 0, 0x2680, 8, 2, D_0046F568);
     d = (ArenaStageSelSubData *)&w->sub->data;
     d->f4 = -1;
     d->f6 = -1;
@@ -386,9 +386,9 @@ void ArenaStageSel_Start(s32 stage) {
 void ArenaStageSel_Load(void) {
     ArenaStageSelGlobal *g;
 
-    gArenaStageSel = g = func_0013AAB0(0x14, 0, D_0046F550, 0xEE);
-    g->file[0] = func_0025C670(0x1081B, 0, 0);
-    g->file[1] = func_0025C670(0x1081C, 0, 0);
+    gArenaStageSel = g = amHeap_Alloc(0x14, 0, D_0046F550, 0xEE);
+    g->file[0] = amCdFs_ReadFileId(0x1081B, 0, 0);
+    g->file[1] = amCdFs_ReadFileId(0x1081C, 0, 0);
     g->task = NULL;
     g->fC = NULL;
     g->f10 = NULL;

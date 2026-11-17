@@ -42,14 +42,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2D04B0", func_002D0530);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D04B0", func_002D0830);
 
 extern f32 D_004E0610[];
-extern void func_0012DB00(s32, f32);
-extern void func_0012D790(s32, s32, s32);
-extern void func_0012DC30(s32, s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_PlayAfs(s32, s32, s32);
+extern void amAdx_Pause(s32, s32);
 
 void func_002D09B0(void) {
-    func_0012DB00(0, D_004E0610[0]);
-    func_0012D790(0, 0x210A8, 0);
-    func_0012DC30(0, 0);
+    amAdx_SetVolume(0, D_004E0610[0]);
+    amAdx_PlayAfs(0, 0x210A8, 0);
+    amAdx_Pause(0, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D04B0", func_002D0A00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D04B0", func_002D0B60);

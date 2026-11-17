@@ -19,17 +19,17 @@ extern s32 D_00470548;
 extern s32 D_00470558;
 extern s32 D_004704F0;
 extern s32 D_004704F4;
-extern s32 D_004704F8;
-extern s32 D_004704FC;
-extern void (*D_0047055C)(void);
-extern void (*D_00470560)(void);
+extern s32 gMcState;
+extern s32 gMcResult;
+extern void (*gMcDoneFn)(void);
+extern void (*gMcNextFn)(void);
 extern PadWork D_00492FC0[];
 extern s32 func_0011A220(s32);
 extern s32 func_0011A588(s32, void *, s32);
-extern void func_0013AC90(void *);
+extern void amHeap_Free(void *);
 extern void memset(void *, s32, s32);
-extern void func_001A2DC0(void);
-extern void func_001A2D40(void);
+extern void amMc_OnClose(void);
+extern void amMc_OnWrite(void);
 void func_001A32D0(void);
 
 typedef struct PadPort {
@@ -51,42 +51,42 @@ void func_001A31B0(void) {
     if (func_0011A220(D_00470554) == 0) {
         D_004704F0 = 5;
         D_004704F4 = 3;
-        D_004704F8 = 1;
-        D_004704FC = 0;
-        D_0047055C = func_001A2DC0;
+        gMcState = 1;
+        gMcResult = 0;
+        gMcDoneFn = amMc_OnClose;
     } else {
-        D_004704F8 = 3;
+        gMcState = 3;
         if (D_0047054C != NULL && D_00470548 != 0) {
-            func_0013AC90(D_0047054C);
+            amHeap_Free(D_0047054C);
         }
         D_0047054C = NULL;
     }
-    D_00470560 = NULL;
+    gMcNextFn = NULL;
 }
 void func_001A3250(void) {
     if (func_0011A588(D_00470554, D_0047054C, D_00470558) == 0) {
         D_004704F0 = 6;
         D_004704F4 = 6;
-        D_004704F8 = 1;
-        D_004704FC = 0;
-        D_0047055C = func_001A2D40;
-        D_00470560 = func_001A32D0;
+        gMcState = 1;
+        gMcResult = 0;
+        gMcDoneFn = amMc_OnWrite;
+        gMcNextFn = func_001A32D0;
     } else {
-        D_004704F8 = 3;
-        D_00470560 = NULL;
+        gMcState = 3;
+        gMcNextFn = NULL;
     }
 }
 void func_001A32D0(void) {
     if (func_0011A220(D_00470554) == 0) {
         D_004704F0 = 6;
         D_004704F4 = 3;
-        D_004704F8 = 1;
-        D_004704FC = 0;
-        D_0047055C = func_001A2DC0;
+        gMcState = 1;
+        gMcResult = 0;
+        gMcDoneFn = amMc_OnClose;
     } else {
-        D_004704F8 = 3;
+        gMcState = 3;
     }
-    D_00470560 = NULL;
+    gMcNextFn = NULL;
 }
 extern char D_00492EC0[];
 extern u8 D_00493700[][0x400];

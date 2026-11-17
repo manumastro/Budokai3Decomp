@@ -24,7 +24,7 @@ typedef struct LightModel {
     s32 f4;
 } LightModel;
 
-extern s16 func_0013C5E0(s32, s32);
+extern s16 amMotion_FindBone(s32, s32);
 
 void func_0029D270(void *a, s32 b, void *c);
 
@@ -119,7 +119,7 @@ void func_0029D1E0(s16 *out, s32 n, LightModel *m, s32 *ids) {
     s32 i;
 
     for (i = 0; i < n; i++) {
-        out[i] = func_0013C5E0(m->f4, ids[i]);
+        out[i] = amMotion_FindBone(m->f4, ids[i]);
     }
 }
 

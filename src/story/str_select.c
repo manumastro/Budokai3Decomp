@@ -5,7 +5,7 @@ typedef struct Vec4 {
     f32 x, y, z, w;
 } Vec4 __attribute__((aligned(16)));
 
-/* A data file being read (func_0025C670): state 3 once loaded, 0x54 the pointer to its contents. */
+/* A data file being read (amCdFs_ReadFileId): state 3 once loaded, 0x54 the pointer to its contents. */
 typedef struct StrSelectFile {
     char pad0[4];
     s16 state;          /* 0x04 */
@@ -95,9 +95,9 @@ extern void func_0022D0E0(s32, s32);
 extern void func_00136870(s32, s32, Vec4 *, s32, s32, s32);
 extern void func_001363D0(s32, s32, Vec4 *, s32);
 extern void func_00137B60(Vec4 *);
-extern void func_00137EE0(void);
-extern f32 func_0012E700(s32);
-extern f32 func_0012E750(s32);
+extern void amDraw_FlushPacket(void);
+extern f32 amMath_SinI(s32);
+extern f32 amMath_CosI(s32);
 extern void func_0027DAF0(s32, StrSelectInfo *);
 extern s32 func_0027DAE0(s32);
 extern s8 func_0027DAB0(s32);
@@ -109,15 +109,15 @@ extern void func_001F0810(s32, s32);
 extern void func_00299240(s32);
 extern s32 func_001F04C0(s32);
 extern void func_002A8CE0(s32, void *);
-extern void func_0012D900(s32);
+extern void amAdx_Stop(s32);
 extern s32 func_003105A0(void);
 extern void func_00264260(s32, s32, s32);
-extern void func_0012DB00(s32, f32);
-extern s32 func_0012D790(s32, s32, s32);
-extern void func_0012DC30(s32, s32);
-extern void func_0025C800(void *, s32);
+extern void amAdx_SetVolume(s32, f32);
+extern s32 amAdx_PlayAfs(s32, s32, s32);
+extern void amAdx_Pause(s32, s32);
+extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
-extern void func_0012C360(void *);
+extern void amFile_Load(void *);
 extern void func_0022DB30(s32);
 extern void func_00229800(s32, Vec4 *, s32, f32);
 extern void func_0027D820(s32);
@@ -127,7 +127,7 @@ extern void func_0027E120(s32);
 extern void func_0027E070(void);
 extern void memset(void *, s32, s32);
 extern void func_001F07D0(void);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void func_003105B0(void);
 extern void func_0027E7E0(void);
 
@@ -183,9 +183,9 @@ void StrSelect_DrawRadar(StrSelectWork *w) {
     p = q;
     for (i = 0; i < 7; i++) {
         r = w->f4C * w->f58[i] / 20.0f;
-        p->x = w->f44 + r * func_0012E750(a);
+        p->x = w->f44 + r * amMath_CosI(a);
         r = w->f4C * w->f58[i] / 20.0f;
-        p->y = w->f48 + r * func_0012E700(a);
+        p->y = w->f48 + r * amMath_SinI(a);
         p->z = 1.0f;
         p->w = 1.0f;
         func_00137B60(p);
@@ -193,14 +193,14 @@ void StrSelect_DrawRadar(StrSelectWork *w) {
         p++;
     }
     func_00137B60(pts);
-    func_00137EE0();
+    amDraw_FlushPacket();
     func_001363D0(1, 0x100, &c2, 0x44);
     for (j = 0; j < 7; j++) {
         func_00137B60(q);
         q++;
     }
     func_00137B60(pts);
-    func_00137EE0();
+    amDraw_FlushPacket();
 }
 
 void StrSelect_InitObjects(StrSelectWork *w) {
@@ -401,27 +401,27 @@ void StrSelect_TaskLoad(Task *t) {
     d = &t->data;
     if (d->wait != 0) {
         if (d->wait == 10) {
-            func_0012D900(-1);
+            amAdx_Stop(-1);
         }
         d->wait--;
         return;
     }
     if (g->file[1]->state == 3 && func_003105A0() == 1) {
         func_00264260(-1, 0, 0);
-        func_0012DB00(0, D_004E0610[0]);
-        func_0012D790(0, 0x210A9, 0);
-        func_0012DC30(0, 0);
+        amAdx_SetVolume(0, D_004E0610[0]);
+        amAdx_PlayAfs(0, 0x210A9, 0);
+        amAdx_Pause(0, 0);
         w->model = g->file[0]->data;
         g->file[0]->data = NULL;
-        func_0025C800(g->file[0], 0);
+        amCdFs_Close(g->file[0], 0);
         g->file[0] = NULL;
         w->tex = g->file[1]->data;
         g->file[1]->data = NULL;
-        func_0025C800(g->file[1], 0);
+        amCdFs_Close(g->file[1], 0);
         g->file[1] = NULL;
         func_0022E0B0(w->model);
-        func_0012C360(w->tex);
-        w->task = func_00144FC0(StrSelect_TaskDrawEnd, 0, 0x3000, 8, 2, D_0046F688);
+        amFile_Load(w->tex);
+        w->task = amTask_Create(StrSelect_TaskDrawEnd, 0, 0x3000, 8, 2, D_0046F688);
         if (D_004E05F8[0] != 0) {
             func_0022DB30(1);
         } else {
@@ -466,23 +466,23 @@ void StrSelect_Exit(void) {
     }
     StrSelect_FreeObjects(w);
     if (w->task != NULL) {
-        func_00145120(w->task);
+        amTask_Kill(w->task);
     }
     if (g->file[0] != NULL) {
-        func_0025C800(g->file[0], 0);
+        amCdFs_Close(g->file[0], 0);
     }
     if (g->file[1] != NULL) {
-        func_0025C800(g->file[1], 0);
+        amCdFs_Close(g->file[1], 0);
     }
     if (w->model != NULL) {
-        func_0013AC90(w->model);
+        amHeap_Free(w->model);
     }
     if (w->tex != NULL) {
-        func_0013AC90(w->tex);
+        amHeap_Free(w->tex);
     }
-    func_0013AC90(w);
-    func_00145120(g->task);
-    func_0013AC90(g);
+    amHeap_Free(w);
+    amTask_Kill(g->task);
+    amHeap_Free(g);
     gStrSelect = NULL;
 }
 
@@ -492,9 +492,9 @@ void StrSelect_Start(s32 mode) {
     TaskData *d;
     StrSelectWork *w;
 
-    g->task = t = func_00144FC0(StrSelect_TaskLoad, 0, 0x2000, 8, 2, D_0046F698);
+    g->task = t = amTask_Create(StrSelect_TaskLoad, 0, 0x2000, 8, 2, D_0046F698);
     d = &t->data;
-    d->work = w = func_0013AAB0(0x68, 0, D_0046F6A8, 0x97);
+    d->work = w = amHeap_Alloc(0x68, 0, D_0046F6A8, 0x97);
     d->wait = 10;
     memset(w, 0, 0x68);
     w->f51 = mode == 0;
@@ -505,10 +505,10 @@ void StrSelect_Start(s32 mode) {
 void StrSelect_Load(void) {
     StrSelectGlobal *g;
 
-    gStrSelect = g = func_0013AAB0(0xC, 0, D_0046F6A8, 0x6E);
+    gStrSelect = g = amHeap_Alloc(0xC, 0, D_0046F6A8, 0x6E);
     g->task = NULL;
-    g->file[0] = func_0025C670(0x10819, 0, 0);
-    g->file[1] = func_0025C670(0x1081A, 0, 0);
+    g->file[0] = amCdFs_ReadFileId(0x10819, 0, 0);
+    g->file[1] = amCdFs_ReadFileId(0x1081A, 0, 0);
     func_003105B0();
     func_0027E7E0();
 }

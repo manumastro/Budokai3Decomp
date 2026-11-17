@@ -38,7 +38,7 @@ extern Obj *D_004705E0;
 extern Obj *D_004705E4;
 extern Obj *D_004705E8;
 extern Obj *D_004705EC;
-extern s32 D_00470328;
+extern s32 gSoundState;
 extern s32 D_00492FC0[];
 extern s32 D_00493078[];
 extern u16 D_00492FCC[];
@@ -56,18 +56,18 @@ extern void func_001F0830(s32, s32);
 extern void Save_Load(s32, s32);
 extern void Save_Request(s32, s32, s32);
 extern void func_00264300(s32, void (*)(void), s32);
-extern void func_001439C0(ObjArg5 *);
-extern void func_00143870(s32 *);
+extern void amSound_LoadStream(ObjArg5 *);
+extern void amSound_LoadBank(s32 *);
 extern void func_00143B50(s32, s32);
-extern void func_0025C800(Obj *, s32);
-extern Task *func_00144FC0(void (*)(void), s32, s32, s32, s32, char *);
+extern void amCdFs_Close(Obj *, s32);
+extern Task *amTask_Create(void (*)(void), s32, s32, s32, s32, char *);
 extern void func_001F07D0(void);
 extern void func_00144B70(s32);
 extern void func_00144650(s32);
-extern void func_0012D900(s32);
+extern void amAdx_Stop(s32);
 extern void Save_Exit(void);
 extern void func_002E0C40(void);
-extern void func_00145120(Task *);
+extern void amTask_Kill(Task *);
 
 /* The case tests come out as 4, 2, 1, 0, 3; the original tests 2, 1, 0, 4, 3 with the same bodies. */
 #if 0
@@ -147,27 +147,27 @@ void func_002E9DE0(void) {
         a5.f10 = D_004705E4->f54;
         a5.f4 = D_004705E8->f48;
         a5.fC = D_004705E8->f54;
-        func_001439C0(&a5);
+        amSound_LoadStream(&a5);
         (*step)++;
         break;
     }
     case 1:
-        if (D_00470328 == 0) {
+        if (gSoundState == 0) {
             IVECTOR a3;
 
             a3[0] = 0;
             a3[1] = D_004705EC->f48;
             a3[2] = D_004705EC->f54;
-            func_00143870(a3);
+            amSound_LoadBank(a3);
             (*step)++;
         }
         break;
     case 2:
-        if (D_00470328 == 0) {
+        if (gSoundState == 0) {
             func_00143B50(9, 0);
-            func_0025C800(D_004705E4, 0);
-            func_0025C800(D_004705E8, 0);
-            func_0025C800(D_004705EC, 0);
+            amCdFs_Close(D_004705E4, 0);
+            amCdFs_Close(D_004705E8, 0);
+            amCdFs_Close(D_004705EC, 0);
             D_004705E4 = NULL;
             D_004705E8 = NULL;
             D_004705EC = NULL;
@@ -189,7 +189,7 @@ void func_002E9F70(void) {
     Task *t;
 
     if (D_004705E0->f4 == 3 && D_004705E4->f4 == 3 && D_004705E8->f4 == 3 && D_004705EC->f4 == 3) {
-        func_0025C800(D_004705E0, 0);
+        amCdFs_Close(D_004705E0, 0);
         D_004705E0 = NULL;
         D_00470950->step = 0;
         t = D_00470950;
@@ -198,11 +198,11 @@ void func_002E9F70(void) {
 }
 
 void func_002EA000(void) {
-    D_00470950 = func_00144FC0(func_002E9F70, 0, 0x1000, 0x200, 1, D_0046F5F0);
+    D_00470950 = amTask_Create(func_002E9F70, 0, 0x1000, 0x200, 1, D_0046F5F0);
     func_001F07D0();
     func_00144B70(-1);
     func_00144650(0);
-    func_0012D900(-1);
+    amAdx_Stop(-1);
     func_00264140(-1, 0);
 }
 
@@ -213,6 +213,6 @@ void func_002EA070(void) {
 void func_002EA080(void) {
     Save_Exit();
     func_002E0C40();
-    func_00145120(D_00470950);
+    amTask_Kill(D_00470950);
     D_00470950 = NULL;
 }

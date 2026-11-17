@@ -12,10 +12,10 @@ typedef struct RenderRect {
 
 extern RenderRect D_00456A60;
 extern u32 D_00470494;
-extern void func_001303E0(void *, s32);
-extern u64 func_001308A0(s32, s32, s32, s32);
-extern void func_00140D30(s32, s32, s32, s32, s32, u64, s32, s32);
-extern s32 func_001339D0(s32, s32);
+extern void amDraw3d_Flip(void *, s32);
+extern u64 amDraw3d_SetTexFrame(s32, s32, s32, s32);
+extern void amDma_Request(s32, s32, s32, s32, s32, u64, s32, s32);
+extern s32 amGs_SetReg32(s32, s32);
 extern void func_00133780(s32, s32);
 
 typedef struct LightEntry {
@@ -50,7 +50,7 @@ extern char D_0046F260[];
 extern void memset(void *, s32, s32);
 extern void func_00125740(void *, void *, s32);
 extern void func_00133B50(s32, s32);
-extern LightTask *func_00144FC0(void (*)(LightTask *), s32, s32, s32, s32, char *);
+extern LightTask *amTask_Create(void (*)(LightTask *), s32, s32, s32, s32, char *);
 extern void func_002CFA90(LightTask *);
 extern void func_002CFEB0(LightObj *, s32, f32, LightEntry *);
 
@@ -73,7 +73,7 @@ extern s32 D_004703DC;
 extern void func_001484A0(s32);
 extern void func_00136E80(s32, void *, s32, s64, s32);
 extern void func_00137560(Vec4 *, Vec4 *);
-extern void func_00137EE0(void);
+extern void amDraw_FlushPacket(void);
 
 void func_002CF910(void *tex, f32 w, f32 h) {
     Vec4x2 q;
@@ -113,7 +113,7 @@ void func_002CF910(void *tex, f32 w, f32 h) {
     func_00136E80(flags | 0x40000126, tex, -1, n, 0);
     func_00137560(&q.a, &t.a);
     func_00137560(&q.b, &t.b);
-    func_00137EE0();
+    amDraw_FlushPacket();
     if (saved & 7) {
         func_001484A0(saved);
     }
@@ -121,8 +121,8 @@ void func_002CF910(void *tex, f32 w, f32 h) {
 extern RenderRect D_00456A80;
 extern u32 D_0047041C;
 extern u32 D_00470420;
-extern u64 func_00130AE0(s32, s32, s32, s32);
-extern void func_00145120(void *);
+extern u64 amDraw3d_SetTexZ(s32, s32, s32, s32);
+extern void amTask_Kill(void *);
 
 void func_002CFA90(LightTask *t) {
     RenderRect r;
@@ -142,16 +142,16 @@ void func_002CFA90(LightTask *t) {
     r.fC = D_00470494 >> 13;
     r.f10 = D_00470494 >> 13;
     func_00133B50(0, 0);
-    v = func_00130AE0(0, 0, 1, 0);
-    func_001303E0(&r, 0);
-    old = func_001339D0(2, 0x30000);
+    v = amDraw3d_SetTexZ(0, 0, 1, 0);
+    amDraw3d_Flip(&r, 0);
+    old = amGs_SetReg32(2, 0x30000);
     func_00133780(2, 1);
-    func_00140D30(0, 1, 1, 0, 0, v & 0xFFFFFFF, 6, 0);
+    amDma_Request(0, 1, 1, 0, 0, v & 0xFFFFFFF, 6, 0);
     func_002CF910(NULL, D_0047041C, D_00470420);
     func_00133780(2, 0);
-    func_001339D0(2, old);
-    func_001303E0(NULL, 0);
-    func_00145120(t);
+    amGs_SetReg32(2, old);
+    amDraw3d_Flip(NULL, 0);
+    amTask_Kill(t);
 }
 void func_002CFC50(void) {
     RenderRect r = D_00456A60;
@@ -164,20 +164,20 @@ void func_002CFC50(void) {
     r.fA = D_00470430;
     r.fC = D_00470494 >> 13;
     r.f10 = D_00470494 >> 13;
-    func_001303E0(&r, 0);
-    v = func_001308A0(0, 0, 1, 0);
-    func_001303E0(0, 0);
-    func_00140D30(0, 1, 1, 0, 0, v & 0xFFFFFFF, 6, 0);
-    old = func_001339D0(2, 0x30000);
+    amDraw3d_Flip(&r, 0);
+    v = amDraw3d_SetTexFrame(0, 0, 1, 0);
+    amDraw3d_Flip(0, 0);
+    amDma_Request(0, 1, 1, 0, 0, v & 0xFFFFFFF, 6, 0);
+    old = amGs_SetReg32(2, 0x30000);
     func_00133780(2, 1);
     func_002CF910(0, 0.0f, 0.0f);
-    func_001339D0(2, old);
+    amGs_SetReg32(2, old);
 }
 void func_002CFD70(void) {
     func_00133B50(0, 0);
 }
 void func_002CFD80(s32 a) {
-    func_00144FC0(func_002CFA90, 0, 0, 0, 0, D_0046F260)->f30 = a;
+    amTask_Create(func_002CFA90, 0, 0, 0, 0, D_0046F260)->f30 = a;
 }
 f32 func_002CFDD0(f32 a, f32 b) {
     return a + b;

@@ -65,7 +65,7 @@ typedef struct ChanWork {
 extern ChanWork *D_00470570;
 extern f32 D_004E0610[];
 extern f32 D_004E0614[];
-extern void func_0012D5A0(s32, s32);
+extern void amAdx_Enable(s32, s32);
 
 void func_00219A80(void) {
     ChanWork *w = D_00470570;
@@ -97,7 +97,7 @@ void func_00219A80(void) {
             c->f1C = 0;
             break;
         }
-        func_0012D5A0(i, flag);
+        amAdx_Enable(i, flag);
     }
     w->chans[5].f8 = -1;
     w->chans[5].fC = 0;

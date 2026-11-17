@@ -155,7 +155,7 @@ void func_002D1F20(SmsgTask *t) {
     }
 }
 
-extern void func_0012C360(SmsgFrames *);
+extern void amFile_Load(SmsgFrames *);
 
 void func_002D1FC0(SmsgTask *t) {
     SmsgWork *w = &t->w;
@@ -168,7 +168,7 @@ void func_002D1FC0(SmsgTask *t) {
         }
     }
     for (j = 0; j < 3; j++) {
-        func_0012C360(w->obj[j]->f54);
+        amFile_Load(w->obj[j]->f54);
     }
     w->frames[0] = w->obj[0]->f54;
     w->frames[1] = w->obj[1]->f54;
@@ -211,8 +211,8 @@ void func_002D2370(s32 x) {
     w->f24 = x;
 }
 
-extern void func_0025C800(SmsgObj *, s32);
-extern void func_00145120(void *);
+extern void amCdFs_Close(SmsgObj *, s32);
+extern void amTask_Kill(void *);
 
 void func_002D23D0(void) {
     SmsgWork *w = &D_00470930->w;
@@ -220,17 +220,17 @@ void func_002D23D0(void) {
 
     for (i = 0; i < 3; i++) {
         if (w->obj[i] != NULL) {
-            func_0025C800(w->obj[i], 0);
+            amCdFs_Close(w->obj[i], 0);
         }
     }
-    func_00145120(D_00470930);
+    amTask_Kill(D_00470930);
     D_00470930 = NULL;
 }
 
 extern char D_0046F2B0[];
-extern SmsgTask *func_00144FC0(void (*)(SmsgTask *), s32, s32, s32, s32, char *);
+extern SmsgTask *amTask_Create(void (*)(SmsgTask *), s32, s32, s32, s32, char *);
 extern void memset(void *, s32, s32);
-extern SmsgObj *func_0025C670(s32, s32, s32);
+extern SmsgObj *amCdFs_ReadFileId(s32, s32, s32);
 
 void func_002D2440(s32 prio, s32 flag, s32 param) {
     SmsgWork *w;
@@ -239,13 +239,13 @@ void func_002D2440(s32 prio, s32 flag, s32 param) {
     if (D_00470930 != NULL) {
         return;
     }
-    D_00470930 = func_00144FC0(func_002D1FC0, 0, prio, 0x200, 0x200000, D_0046F2B0);
+    D_00470930 = amTask_Create(func_002D1FC0, 0, prio, 0x200, 0x200000, D_0046F2B0);
     w = &D_00470930->w;
     memset(w, 0, 0x28);
     id = flag == 0 ? 0x84F : 0x84D;
-    w->obj[0] = func_0025C670(0x10852, 0, 0);
-    w->obj[1] = func_0025C670(0x10853, 0, 0);
-    w->obj[2] = func_0025C670(id | 0x10000, 0, 0);
+    w->obj[0] = amCdFs_ReadFileId(0x10852, 0, 0);
+    w->obj[1] = amCdFs_ReadFileId(0x10853, 0, 0);
+    w->obj[2] = amCdFs_ReadFileId(id | 0x10000, 0, 0);
     w->state = 0;
     w->f18 = param;
 }

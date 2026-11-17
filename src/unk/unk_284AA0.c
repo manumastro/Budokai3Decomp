@@ -39,7 +39,7 @@ extern u8 D_0046B841[];
 extern void func_00145CC0(s32, s32);
 extern void func_00134690(s32, s32, Vec4f *, s32, s32, s32);
 extern void func_00135F10(Vec4f *, Vec4f *);
-extern void func_00137EE0(void);
+extern void amDraw_FlushPacket(void);
 extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
@@ -81,7 +81,7 @@ void func_00285950(Disp *o, s32 n) {
     pos.x = -250.0f;
     uv.x = 0.5859375f;
     func_00135F10(&pos, &uv);
-    func_00137EE0();
+    amDraw_FlushPacket();
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_284AA0", func_00285AA0);
 void func_00285C10(Disp *o) {

@@ -54,11 +54,11 @@ extern u16 D_00493086[];
 extern char D_0046B4A0[];
 extern char D_0046B4B0[];
 
-extern void func_0012C360(void *);
+extern void amFile_Load(void *);
 extern void func_00133780(s32, s32);
 extern void func_00143D60(s32, s32, s32, s32);
 extern void func_00143F20(s32, s32, f32);
-extern void func_00145180(s32, s32, s32);
+extern void amTask_KillGroup(s32, s32, s32);
 extern void func_00145CC0(s32, s32);
 extern void func_00227B20(s32 *, s32, s32, s32, f32);
 extern void func_00228410(void);
@@ -67,9 +67,9 @@ extern void func_002284D0(s32);
 extern s32 func_0022BC30(s32 *, f32);
 extern void func_0022C430(s32 *, f32);
 extern void memset(void *, s32, s32);
-extern void *func_0025C670(s32, s32, s32);
-extern void func_0025C800(void *, s32);
-extern void func_0025C9D0(void *);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
+extern void amCdFs_Close(void *, s32);
+extern void amCdFs_ReleaseCache(void *);
 extern void func_0026D8A0(void);
 extern void Help_Open(u64, s32);
 
@@ -307,9 +307,9 @@ void EssInfo_TaskLoad(Task *t) {
         for (i = 0; i < 2; i++) {
             gEssInfo->res[i] = gEssInfo->file[i]->data;
             gEssInfo->file[i]->data = NULL;
-            func_0025C800(gEssInfo->file[i], 0);
+            amCdFs_Close(gEssInfo->file[i], 0);
             gEssInfo->file[i] = NULL;
-            func_0012C360(gEssInfo->res[i]->model);
+            amFile_Load(gEssInfo->res[i]->model);
         }
         gEssInfo->model[0] = gEssInfo->res[0]->model;
         gEssInfo->model[1] = gEssInfo->res[1]->model;
@@ -324,7 +324,7 @@ void EssInfo_Init(void) {
 void EssInfo_Start(void) {
     s32 *d;
 
-    gEssInfo->task = func_00144FC0(EssInfo_TaskLoad, 0, 0x3200, 0x200, 0x20, D_0046B4A0);
+    gEssInfo->task = amTask_Create(EssInfo_TaskLoad, 0, 0x3200, 0x200, 0x20, D_0046B4A0);
     d = (s32 *)&gEssInfo->task->data;
     memset(d, 0, 0x1C);
     *d = 60;
@@ -333,16 +333,16 @@ void EssInfo_Start(void) {
 void EssInfo_Exit(void) {
     s32 i;
 
-    func_00145180(0x200, 0x20, 0);
+    amTask_KillGroup(0x200, 0x20, 0);
     for (i = 0; i < 2; i++) {
         if (gEssInfo->file[i] != NULL) {
-            func_0025C800(gEssInfo->file[i], 0);
+            amCdFs_Close(gEssInfo->file[i], 0);
         }
         if (gEssInfo->res[i] != NULL) {
-            func_0025C9D0(gEssInfo->res[i]);
+            amCdFs_ReleaseCache(gEssInfo->res[i]);
         }
     }
-    func_0013AC90(gEssInfo);
+    amHeap_Free(gEssInfo);
     gEssInfo = NULL;
 }
 
@@ -350,12 +350,12 @@ void EssInfo_Load(void) {
     EssInfoAnim *a;
 
     if (gEssInfo != NULL) {
-        func_0013AC90(gEssInfo);
+        amHeap_Free(gEssInfo);
     }
-    gEssInfo = func_0013AAB0(0x190, 0, D_0046B4B0, 0x37);
+    gEssInfo = amHeap_Alloc(0x190, 0, D_0046B4B0, 0x37);
     memset(gEssInfo, 0, 0x190);
-    gEssInfo->file[0] = func_0025C670(0x107EF, 0, 1);
-    gEssInfo->file[1] = func_0025C670(0x107F0, 0, 1);
+    gEssInfo->file[0] = amCdFs_ReadFileId(0x107EF, 0, 1);
+    gEssInfo->file[1] = amCdFs_ReadFileId(0x107F0, 0, 1);
     a = &gEssInfo->anim[0];
     a->id = 0;
     a = &gEssInfo->anim[1];

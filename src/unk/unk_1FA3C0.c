@@ -30,7 +30,7 @@ extern s32 D_00470638;
 extern s32 D_00470640;
 extern void memset(void *, s32, s32);
 extern s32 func_00127E88(char *, char *, s32);
-extern void func_0012C360(void *);
+extern void amFile_Load(void *);
 extern char *func_001A50F0(void *, s32);
 extern void func_002D04B0(void *);
 extern void func_001FA810(char *);
@@ -73,11 +73,11 @@ typedef struct MasHdr {
     s32 count;
     s32 entries;
 } MasHdr;
-extern void *func_0025C670(void *, s32, s32);
+extern void *amCdFs_ReadFileId(void *, s32, s32);
 
 void *func_001FA3C0(Fighter *f) {
     memset(D_0051CCE0, 0, 0xC0);
-    D_0051CCF4[0] = func_0025C670(D_0044AE60[f->f154].f0, 0, 0);
+    D_0051CCF4[0] = amCdFs_ReadFileId(D_0044AE60[f->f154].f0, 0, 0);
     D_0051CCF8[0] = D_0051CCF4[0];
     D_0051CCE0[0] = f->f154;
     return D_0051CCF8[0];
@@ -87,7 +87,7 @@ void func_001FA460(Bundle *b) {
     char *p;
     char *tag;
 
-    func_0012C360(b);
+    amFile_Load(b);
     for (i = 0; i < b->count; i++) {
         p = func_001A50F0(b, i);
         tag = p + 1;
@@ -95,17 +95,17 @@ void func_001FA460(Bundle *b) {
             continue;
         }
         if (func_00127E88(tag, D_00469948, 3) == 0) {
-            func_0012C360(p);
+            amFile_Load(p);
         } else if (func_00127E88(tag, D_00469950, 3) == 0) {
-            func_0012C360(p);
+            amFile_Load(p);
         } else if (func_00127E88(tag, D_00469958, 3) == 0) {
-            func_0012C360(p);
+            amFile_Load(p);
         } else if (func_00127E88(tag, D_00469960, 3) == 0) {
-            func_0012C360(p);
+            amFile_Load(p);
         } else if (func_00127E88(tag, D_00469968, 3) == 0) {
             func_002D04B0(p);
         } else if (func_00127E88(tag, D_00469970, 3) == 0) {
-            func_0012C360(p);
+            amFile_Load(p);
         }
     }
 }
@@ -201,13 +201,13 @@ extern void *D_00470644;
 extern void *D_0047CAC0[];
 extern char D_003F0800[];
 extern char D_00495A00[];
-extern s32 func_001339D0(s32, s32);
+extern s32 amGs_SetReg32(s32, s32);
 extern void func_00133920(s32, s32, s32, s32, s32);
-extern void func_00133AD0(s32, s32);
+extern void amGs_SetReg64b(s32, s32);
 extern void func_001339B0(void *);
 extern void func_0013B0B0(void *);
 extern void func_0013E4C0(void *, void *);
-extern void func_00140D30(s32, s32, s32, s32, s32, u64, s32, s32);
+extern void amDma_Request(s32, s32, s32, s32, s32, u64, s32, s32);
 extern void func_0013B110(s32);
 extern void func_00133980(f32, f32, f32, f32);
 s32 func_001FB260(void *);
@@ -218,18 +218,18 @@ void func_001FB3B0(DrawCam *c, void (*draw)(void)) {
     if (c == NULL || draw == NULL) {
         return;
     }
-    saved = func_001339D0(0, 0x5C00D);
+    saved = amGs_SetReg32(0, 0x5C00D);
     func_00133920(0x1BC00F00, 0, 0, 0x18C00A00, 0);
-    func_00133AD0(0, 5);
+    amGs_SetReg64b(0, 5);
     func_001339B0(c->fE0);
     D_00470644 = c->f40;
     D_0047CAC0[0] = func_001FB260;
     func_0013B0B0(D_003F0800);
     func_0013E4C0(D_00495A00, c->f40);
-    func_00140D30(0, 1, 1, 0, 0, (u64)c->fF8 & 0xFFFFFFF, 6, 0);
+    amDma_Request(0, 1, 1, 0, 0, (u64)c->fF8 & 0xFFFFFFF, 6, 0);
     draw();
     func_0013B110(1);
-    func_001339D0(0, saved);
+    amGs_SetReg32(0, saved);
     func_00133920(0, 0x1BC00F00, 0, 0, 0);
     func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
     D_0047CAC0[0] = NULL;

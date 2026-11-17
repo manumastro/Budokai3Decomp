@@ -24,7 +24,7 @@ typedef struct FadeTask {
 
 extern FadeColor D_00452E00;
 extern FadeColor D_00452B60;
-extern s32 func_001339D0(s32, s32);
+extern s32 amGs_SetReg32(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_00139620(s32, FadeColor *, s32, s32, s32, f32);
 
@@ -33,9 +33,9 @@ void func_00262180(f32 a) {
     s32 old;
 
     c.a = a;
-    old = func_001339D0(0, 0x30000);
+    old = amGs_SetReg32(0, 0x30000);
     func_00139620(0x900, &c, -1, 0x44, 0, 0.0f);
-    func_001339D0(0, old);
+    amGs_SetReg32(0, old);
 }
 
 /* Not matching yet: the original's zero-fill loop is laid out differently. */
@@ -53,10 +53,10 @@ void func_002621F0(f32 a) {
         }
     }
     c.a = a;
-    old = func_001339D0(0, 0x30000);
+    old = amGs_SetReg32(0, 0x30000);
     func_00133780(0, 1);
     func_00139620(0x900, &c, -1, 0x44, 0, 0.0f);
-    func_001339D0(0, old);
+    amGs_SetReg32(0, old);
     func_00133780(0, 0);
 }
 #endif
@@ -68,7 +68,7 @@ extern f32 D_0047042C;
 extern f32 D_00470430;
 extern void func_00136E80(s32, FadeColor *, s32, s32, s32);
 extern void func_00137B60(FadeVec *);
-extern void func_00137EE0(void);
+extern void amDraw_FlushPacket(void);
 
 /* Not matching yet: the original keeps a separate branch to the end for case 0 and for the default. */
 #if 0
@@ -91,7 +91,7 @@ void func_00263CF0(void) {
         v.x = D_0047042C;
         v.y = D_00470430;
         func_00137B60(&v);
-        func_00137EE0();
+        amDraw_FlushPacket();
         break;
     default:
         break;
@@ -108,7 +108,7 @@ extern f32 D_004707AC;
 extern s32 D_004707B0;
 extern void (*D_004707B4)(void);
 extern void (*D_004707B8)(f32);
-extern s32 D_00470774;
+extern s32 gCdReqHead;
 extern f32 D_004703BC;
 extern void (*D_00452AF0[])(f32);
 
@@ -121,7 +121,7 @@ static inline void FadeUpdate(void) {
         D_00452AF0[D_004707A4](D_004707A8);
     }
     if (D_004707A8 == 1.0f) {
-        if (D_00470774 != 0) {
+        if (gCdReqHead != 0) {
             D_004707B0++;
             if (D_004707B0 >= 20) {
                 func_00262290(D_004707B0 - 20);
@@ -153,7 +153,7 @@ void func_00263E90(FadeTask *t) {
     FadeUpdate();
 }
 
-extern void func_0012D900(s32);
+extern void amAdx_Stop(s32);
 extern void func_00144770(s32, f32);
 
 void func_00263FB0(FadeTask *t) {
@@ -162,7 +162,7 @@ void func_00263FB0(FadeTask *t) {
     D_004707A8 = prev + D_004707AC;
     if (!(D_004707A8 < 1.0f)) {
         if (prev < 1.0f && D_004707A4 != 0) {
-            func_0012D900(-1);
+            amAdx_Stop(-1);
         }
         D_004707A8 = 1.0f;
         SET_FUNC(t, func_00263DC0);
@@ -267,7 +267,7 @@ void func_00264390(void) {
 
 extern char D_0046B370[];
 extern char D_0046B380[];
-extern FadeTask *func_00144FC0(void *, s32, s32, s32, s32, char *);
+extern FadeTask *amTask_Create(void *, s32, s32, s32, s32, char *);
 
 void func_002643F0(void) {
     D_004707A4 = 10;
@@ -276,6 +276,6 @@ void func_002643F0(void) {
     D_004707B8 = NULL;
     D_004707B0 = 0;
     D_004707AC = 0.01f * D_004703BC;
-    D_004707A0 = func_00144FC0(func_00264130, 0, 0xFF00, 0, 1, D_0046B370);
-    func_00144FC0(func_00263CF0, 0, 0xFF10, 0, 1, D_0046B380);
+    D_004707A0 = amTask_Create(func_00264130, 0, 0xFF00, 0, 1, D_0046B370);
+    amTask_Create(func_00263CF0, 0, 0xFF10, 0, 1, D_0046B380);
 }

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "menu/menu.h"
 
-/* A data file read with func_0025C670; 0x54 is the pointer to its contents once loaded. */
+/* A data file read with amCdFs_ReadFileId; 0x54 is the pointer to its contents once loaded. */
 typedef struct HelpFile {
     char pad0[4];
     s16 state;          /* 0x04: 3 once loaded */
@@ -62,12 +62,12 @@ extern s32 func_0022BF80(s32);
 extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D860(s32, f32);
 extern void func_0022E0B0(void *);
-extern void func_0012C360(void *);
+extern void amFile_Load(void *);
 extern void func_00145CC0(s32, s32);
 extern void func_00143F20(s32, s32, f32);
 extern void func_00143D60(s32, s32, s32, s32);
-extern void *func_0025C670(s32, s32, s32);
-extern void func_0025C800(void *, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
+extern void amCdFs_Close(void *, s32);
 
 void Help_TaskClose(Task *t) {
     Help *g;
@@ -93,9 +93,9 @@ void Help_TaskClose(Task *t) {
         if (w->f14 != 0) {
             func_0022D0E0(w->f14, 1);
         }
-        func_0013AC90(w);
-        func_00145120(g->ctrl);
-        func_00145120(g->draw);
+        amHeap_Free(w);
+        amTask_Kill(g->ctrl);
+        amTask_Kill(g->draw);
         g->ctrl = NULL;
         g->draw = NULL;
     }
@@ -195,14 +195,14 @@ void Help_TaskLoad(Task *t) {
         }
         g->f14 = g->file0->data;
         g->file0->data = NULL;
-        func_0025C800(g->file0, 0);
+        amCdFs_Close(g->file0, 0);
         g->file0 = NULL;
         g->f18 = g->file1->data;
         g->file1->data = NULL;
-        func_0025C800(g->file1, 0);
+        amCdFs_Close(g->file1, 0);
         g->file1 = NULL;
         func_0022E0B0(g->f14);
-        func_0012C360(g->f18);
+        amFile_Load(g->f18);
     }
     D_00470704 = v = (s32)g->f18;
     D_0047070C = c = 0xFF00;
@@ -230,25 +230,25 @@ void Help_Exit(void) {
         return;
     }
     if (g->file0 != NULL) {
-        func_0025C800(g->file0, 0);
+        amCdFs_Close(g->file0, 0);
     }
     if (g->file1 != NULL) {
-        func_0025C800(g->file1, 0);
+        amCdFs_Close(g->file1, 0);
     }
     if (g->f14 != NULL) {
-        func_0013AC90(g->f14);
+        amHeap_Free(g->f14);
     }
     if (g->f18 != NULL) {
-        func_0013AC90(g->f18);
+        amHeap_Free(g->f18);
     }
     if (g->ctrl != NULL) {
-        func_00145120(g->ctrl);
+        amTask_Kill(g->ctrl);
     }
     if (g->draw != NULL) {
-        func_0013AC90(g->draw->data.work);
-        func_00145120(g->draw);
+        amHeap_Free(g->draw->data.work);
+        amTask_Kill(g->draw);
     }
-    func_0013AC90(g);
+    amHeap_Free(g);
     gHelp = NULL;
 }
 
@@ -264,10 +264,10 @@ void Help_Open(s64 mode, s32 kind) {
         if (!(D_004E0614[0] <= 0.0f)) {
             func_00143D60(0, 0, 0x15, 0);
         }
-        g->ctrl = func_00144FC0((TaskFunc)Help_TaskCtrl, 0, 0x1000, 8, 2, D_0046EBF8);
+        g->ctrl = amTask_Create((TaskFunc)Help_TaskCtrl, 0, 0x1000, 8, 2, D_0046EBF8);
         func_002B5500();
-        g->draw = t = func_00144FC0(Help_TaskLoad, 0, 0xEFFF, 8, 2, D_0046EC08);
-        t->data.work = w = func_0013AAB0(0x18, 0, D_0046EC18, 0xD9);
+        g->draw = t = amTask_Create(Help_TaskLoad, 0, 0xEFFF, 8, 2, D_0046EC08);
+        t->data.work = w = amHeap_Alloc(0x18, 0, D_0046EC18, 0xD9);
     } else {
         t = g->draw;
         w = t->data.work;
@@ -292,12 +292,12 @@ void Help_Load(void) {
         gHelp->refs++;
         return;
     }
-    gHelp = g = func_0013AAB0(0x60, 0, D_0046EC18, 0xA4);
+    gHelp = g = amHeap_Alloc(0x60, 0, D_0046EC18, 0xA4);
     g->ctrl = NULL;
     g->draw = NULL;
     g->refs = 0;
-    g->file0 = func_0025C670(0x10828, 0, 0);
-    g->file1 = func_0025C670(0x10829, 0, 0);
+    g->file0 = amCdFs_ReadFileId(0x10828, 0, 0);
+    g->file1 = amCdFs_ReadFileId(0x10829, 0, 0);
     g->f14 = NULL;
     g->f18 = NULL;
 }

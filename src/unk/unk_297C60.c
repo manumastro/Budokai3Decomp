@@ -63,7 +63,7 @@ typedef struct Proc {
     void (*f1C)(struct Proc *);
 } Proc;
 
-extern s32 D_00470328;
+extern s32 gSoundState;
 extern void *D_005AA550[];
 extern Ctl *D_005AA574[];
 extern Ctl *D_005AA59C[];
@@ -87,7 +87,7 @@ extern void *D_005AA570[];
 extern void func_0029D6C0(Vec4i *);
 extern s32 func_002A8CA0(s32);
 extern void *func_001CAAB0(s32, s32, s32, s32, s32);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void func_002BFEE0(s32, s32, s32);
 extern void Help_Load(void);
 extern void func_0029B000(s32);
@@ -106,13 +106,13 @@ extern f32 func_0011F680(f32, f32);
 extern void func_002A9460(Vec4f *, s32);
 
 extern void func_00143B50(s32, s32);
-extern void func_00143870(Msg3 *);
+extern void amSound_LoadBank(Msg3 *);
 extern void func_002980F0(Proc *);
 extern void func_002984A0(void);
 extern void func_001F07D0(void);
 extern void func_00144B70(s32);
 extern void func_00144650(s32);
-extern void func_0012D900(s32);
+extern void amAdx_Stop(s32);
 extern void func_0028EB40(Proc *, s32, void (*)(void), s32);
 extern void func_001F0830();
 extern s32 func_002908D0(s32);
@@ -124,9 +124,9 @@ extern void memset(void *, s32, s32);
 extern void func_0029A8E0(void);
 extern void func_00290320(void);
 extern void func_002BFCF0(void);
-extern void func_00145180(s32, s32, s32);
-extern void func_0025C800(void *, s32);
-extern void func_0025C9D0(void *);
+extern void amTask_KillGroup(s32, s32, s32);
+extern void amCdFs_Close(void *, s32);
+extern void amCdFs_ReleaseCache(void *);
 extern void func_0022D0E0(void *, s32);
 extern void func_001CA8A0(void *);
 extern void func_002BFD90(void);
@@ -134,7 +134,7 @@ extern void func_0029A8F0(void);
 extern void func_00291380(void);
 extern void Help_Exit(void);
 extern void func_00298770(Proc *);
-extern void *func_00144FC0(void (*)(Proc *), s32, s32, s32, s32, char *);
+extern void *amTask_Create(void (*)(Proc *), s32, s32, s32, s32, char *);
 
 static inline Slot *Snd_FindSlot(s32 id) {
     Slot *s = D_005AA604[0]->slot;
@@ -154,12 +154,12 @@ void func_00298420(Proc *o) {
     Msg3 m;
     void (*fp)(Proc *);
 
-    if (D_00470328 == 0) {
+    if (gSoundState == 0) {
         func_00143B50(10, 1);
         m.a = 1;
         m.b = D_005AA59C[0]->f44;
         m.c = D_005AA59C[0]->f50;
-        func_00143870(&m);
+        amSound_LoadBank(&m);
         fp = func_002980F0;
         if (fp == NULL) {
             fp = NULL;
@@ -173,7 +173,7 @@ void func_00298770(Proc *o) {
         func_001F07D0();
         func_00144B70(-1);
         func_00144650(0);
-        func_0012D900(-1);
+        amAdx_Stop(-1);
         func_0028EB40(o, 10, func_002984A0, 0);
     }
 }
@@ -355,13 +355,13 @@ void func_00298E60(void) {
 void func_00298EA0(void) {
     s32 i;
 
-    func_00145180(2, 0x20000, 0);
+    amTask_KillGroup(2, 0x20000, 0);
     for (i = 0; i < 10; i++) {
         if (D_005AA550[i] != NULL) {
-            func_0025C800(D_005AA550[i], 0);
+            amCdFs_Close(D_005AA550[i], 0);
         }
         if (D_005AA550[i + 10] != NULL) {
-            func_0025C9D0(D_005AA550[i + 10]);
+            amCdFs_ReleaseCache(D_005AA550[i + 10]);
         }
     }
     for (i = 0; i < 7; i++) {
@@ -380,7 +380,7 @@ void func_00298EA0(void) {
     Help_Exit();
 }
 void func_00298FC0(void) {
-    D_005AA5A0[0] = func_00144FC0(func_00298770, 0, 0x9000, 2, 0x20000, D_0046BB70);
+    D_005AA5A0[0] = amTask_Create(func_00298770, 0, 0x9000, 2, 0x20000, D_0046BB70);
 }
 void func_00299000(void) {
     Vec4i v;
@@ -394,24 +394,24 @@ void func_00299000(void) {
         func_001CA8A0(D_005AA608[0]);
     }
     D_005AA608[0] = func_001CAAB0(func_002A8CA0(w->f11E1), w->f11E2, w->f11E3, 3, 1);
-    D_005AA568[0] = func_0025C670(D_00453C80[w->f11E1], 0, 1);
+    D_005AA568[0] = amCdFs_ReadFileId(D_00453C80[w->f11E1], 0, 1);
     func_002BFEE0(w->f11E1, w->f11E2, 1);
     Help_Load();
-    D_005AA550[0] = func_0025C670(0x107E3, 0, 1);
-    D_005AA554[0] = func_0025C670(0x107E4, 0, 1);
+    D_005AA550[0] = amCdFs_ReadFileId(0x107E3, 0, 1);
+    D_005AA554[0] = amCdFs_ReadFileId(0x107E4, 0, 1);
     k = D_005AA604[0]->f11E3;
     if (D_005AA604[0]->f11E2 >= 3) {
         k = 4;
     }
-    D_005AA560[0] = func_0025C670(0xEDE, 0, 1);
-    D_005AA564[0] = func_0025C670(D_00453980[D_005AA604[0]->f11E1][k], 0, 1);
-    D_005AA558[0] = func_0025C670(D_005AA604[0]->f11E6 * 2 + 0xEE0, 0, 1);
-    D_005AA55C[0] = func_0025C670(D_005AA604[0]->f11E6 * 2 + 0xEE1, 0, 1);
+    D_005AA560[0] = amCdFs_ReadFileId(0xEDE, 0, 1);
+    D_005AA564[0] = amCdFs_ReadFileId(D_00453980[D_005AA604[0]->f11E1][k], 0, 1);
+    D_005AA558[0] = amCdFs_ReadFileId(D_005AA604[0]->f11E6 * 2 + 0xEE0, 0, 1);
+    D_005AA55C[0] = amCdFs_ReadFileId(D_005AA604[0]->f11E6 * 2 + 0xEE1, 0, 1);
     func_0029B000(D_005AA604[0]->f11E0);
     func_00291390(D_005AA604[0]->f11E0);
-    D_005AA56C[0] = func_0025C670(0x107E1, 0, 1);
-    D_005AA570[0] = func_0025C670(0x107E0, 0, 1);
-    D_005AA574[0] = func_0025C670(0x107E2, 0, 1);
+    D_005AA56C[0] = amCdFs_ReadFileId(0x107E1, 0, 1);
+    D_005AA570[0] = amCdFs_ReadFileId(0x107E0, 0, 1);
+    D_005AA574[0] = amCdFs_ReadFileId(0x107E2, 0, 1);
 }
 void func_00299240(s32 n) {
     Vec4f v;

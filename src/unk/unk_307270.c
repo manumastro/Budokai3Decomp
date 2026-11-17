@@ -92,11 +92,11 @@ extern void *D_00470984;
 void func_00307420(void) {
     D_00470984 = NULL;
 }
-extern void func_00145120(void *);
+extern void amTask_Kill(void *);
 
 void func_00307430(void) {
     if (D_00470984 != NULL) {
-        func_00145120(D_00470984);
+        amTask_Kill(D_00470984);
         D_00470984 = NULL;
     }
     func_002BD510();
@@ -104,11 +104,11 @@ void func_00307430(void) {
 }
 extern char D_0046F9F8[];
 extern void func_001F07D0(void);
-extern void *func_00144FC0(void (*)(ResultTask *), s32, s32, s32, s32, char *);
+extern void *amTask_Create(void (*)(ResultTask *), s32, s32, s32, s32, char *);
 extern void func_002BD660(s32, s32);
 
 void func_00307470(void) {
     func_001F07D0();
-    D_00470984 = func_00144FC0(func_00307380, 0, 0xA000, 2, 0x80000, D_0046F9F8);
+    D_00470984 = amTask_Create(func_00307380, 0, 0xA000, 2, 0x80000, D_0046F9F8);
     func_002BD660(0xB000, 0x80000);
 }

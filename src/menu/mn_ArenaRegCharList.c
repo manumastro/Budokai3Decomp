@@ -33,15 +33,15 @@ extern char D_0046FB78[];
 extern char D_0046FB90[];
 extern void func_0030CF60(Task *);
 extern void memset(void *, s32, s32);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void Help_Load(void);
 
 Task *ArenaRegCharList_Start(s8 a, s8 b, s8 c) {
     ArenaRegCharListWork *w;
     Task *t;
 
-    t = func_00144FC0(func_0030CF60, 0, 0x2800, 8, 2, D_0046FB78);
-    t->data.work = w = func_0013AAB0(0x6B8, 0, D_0046FB90, 0x9B);
+    t = amTask_Create(func_0030CF60, 0, 0x2800, 8, 2, D_0046FB78);
+    t->data.work = w = amHeap_Alloc(0x6B8, 0, D_0046FB90, 0x9B);
     memset(w, 0, 0x6B8);
     w->f0 = 1;
     w->f2 = -1;
@@ -65,9 +65,9 @@ void ArenaRegCharList_Load(void) {
         gArenaRegCharList->count++;
         return;
     }
-    gArenaRegCharList = g = func_0013AAB0(0x14, 0, D_0046FB90, 0x72);
-    g->file[0] = func_0025C670(0x10815, 0, 0);
-    g->file[1] = func_0025C670(0x10816, 0, 0);
+    gArenaRegCharList = g = amHeap_Alloc(0x14, 0, D_0046FB90, 0x72);
+    g->file[0] = amCdFs_ReadFileId(0x10815, 0, 0);
+    g->file[1] = amCdFs_ReadFileId(0x10816, 0, 0);
     g->f8 = 0;
     g->fC = 0;
     g->count = 1;

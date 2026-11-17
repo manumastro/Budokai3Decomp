@@ -29,7 +29,7 @@ extern void Help_Exit(void);
 extern void memset(void *, s32, s32);
 extern void *func_002C0630(s32, s32, s32);
 extern void func_001F07D0(void);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void Help_Load(void);
 
 void PracMode_Exit(void) {
@@ -41,16 +41,16 @@ void PracMode_Exit(void) {
         if (g->task != NULL) {
             func_002B7DC0(w);
             func_002C04B0(w->f54);
-            func_0013AC90(w);
-            func_00145120(g->task);
+            amHeap_Free(w);
+            amTask_Kill(g->task);
             if (g->f8 != NULL) {
-                func_0013AC90(g->f8);
+                amHeap_Free(g->f8);
             }
             if (g->fC != NULL) {
-                func_0013AC90(g->fC);
+                amHeap_Free(g->fC);
             }
         }
-        func_0013AC90(g);
+        amHeap_Free(g);
         gPracMode = NULL;
         Help_Exit();
     }
@@ -61,8 +61,8 @@ void PracMode_Start(s32 a0, s32 a1) {
     Task *t;
     PracModeWork *w;
 
-    g->task = t = func_00144FC0(func_002B93D0, 0, 0x1001, 8, 2, D_0046ED70);
-    t->data.work = w = func_0013AAB0(0x6C, 0, D_0046ED80, 0xDA);
+    g->task = t = amTask_Create(func_002B93D0, 0, 0x1001, 8, 2, D_0046ED70);
+    t->data.work = w = amHeap_Alloc(0x6C, 0, D_0046ED80, 0xDA);
     memset(w, 0, 0x6C);
     w->f54 = func_002C0630(0x10805, 0x2000, 0);
     w->f64 = a0;
@@ -74,9 +74,9 @@ void PracMode_Start(s32 a0, s32 a1) {
 void PracMode_Load(void) {
     PracModeGlobal *g;
 
-    gPracMode = g = func_0013AAB0(0x14, 0, D_0046ED80, 0xB0);
-    g->file[0] = func_0025C670(0x1082C, 0, 0);
-    g->file[1] = func_0025C670(0x1082D, 0, 0);
+    gPracMode = g = amHeap_Alloc(0x14, 0, D_0046ED80, 0xB0);
+    g->file[0] = amCdFs_ReadFileId(0x1082C, 0, 0);
+    g->file[1] = amCdFs_ReadFileId(0x1082D, 0, 0);
     g->f8 = NULL;
     g->fC = NULL;
     g->task = NULL;

@@ -64,17 +64,17 @@ extern void func_00125740(void *, void *, s32);
 extern void func_001EF510(void *, s32);
 extern void func_001F07D0(void);
 extern void func_001F0810(s32, s32);
-extern s32 func_00142D00(s32);
+extern s32 amSofdec_GetStat(s32);
 extern void func_002DFEC0(Task *);
 extern void func_002DE250();
 
 void func_002E0DD0(void) {
     void *p;
 
-    p = func_0013AAB0(0xD680, 0, D_0046F3C8, 0x733);
+    p = amHeap_Alloc(0xD680, 0, D_0046F3C8, 0x733);
     func_00125740(p, &D_0058F680[D_004B4B63[0]], 0xD680);
     func_001EF510(p, 0xD680);
-    func_0013AC90(p);
+    amHeap_Free(p);
 }
 void func_002E0E40(void) {
     D_00470934 = NULL;
@@ -83,13 +83,13 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E0E50);
 void func_002E1870(void) {
     OptionWork *w = D_00470934;
 
-    w->f320 = func_00144FC0(func_002DFEC0, 0, 0x5000, 0x4000, 2, D_0046F398);
+    w->f320 = amTask_Create(func_002DFEC0, 0, 0x5000, 0x4000, 2, D_0046F398);
     w->f414 = 0;
     w->f344 = func_002DE250;
     func_001F07D0();
 }
 extern void memset(void *, s32, s32);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void *func_002C0630(s32, s32, s32);
 extern void Help_Load(void);
 extern void Save_Load(s32, s32);
@@ -109,11 +109,11 @@ void func_002E18D0(void) {
     s32 *p404;
     s32 *p408;
 
-    D_00470934 = func_0013AAB0(0x490, 0, D_0046F3C8, 0x5F3);
+    D_00470934 = amHeap_Alloc(0x490, 0, D_0046F3C8, 0x5F3);
     memset(D_00470934, 0, 0x490);
     w = D_00470934;
-    w->file[0] = func_0025C670(0x10842, 0, 0);
-    w->file[1] = func_0025C670(0x10843, 0, 0);
+    w->file[0] = amCdFs_ReadFileId(0x10842, 0, 0);
+    w->file[1] = amCdFs_ReadFileId(0x10843, 0, 0);
     w->f33C = func_002C0630(0x10804, 0x5010, 0);
     w->f340 = func_002C0630(0x10801, 0x5020, 0);
     w->f8 = 0;
@@ -144,7 +144,7 @@ void func_002E18D0(void) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E18D0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E1A40);
 
-extern void func_0012E930(s32, s32);
+extern void amDisp_SetOffset(s32, s32);
 
 #if 0
 /* The original keeps the address of D_004E05DC in $v0 and reads both fields from it (the same sequence is inlined
@@ -153,15 +153,15 @@ extern void func_0012E930(s32, s32);
 void func_002E1BB0(void) {
     OptionConfig *c = D_004E05DC;
 
-    func_0012E930(c->f1E, c->f20);
+    amDisp_SetOffset(c->f1E, c->f20);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E1BB0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E1BD0);
-extern s32 func_00142E80(s32);
-extern void *func_0012F230(s32);
-extern void func_00140D30(s32, s32, s32, s32, s32, s32, s32, s32);
-extern void func_001459B0(s32);
+extern s32 amSofdec_Draw(s32);
+extern void *amPkt_Alloc(s32);
+extern void amDma_Request(s32, s32, s32, s32, s32, s32, s32, s32);
+extern void amVram_Apply(s32);
 
 #if 0
 /* The switch matches; the packet stores are scheduled differently (the original computes the DMA address
@@ -170,7 +170,7 @@ void func_002E1DF0(Task *t) {
     s32 *n;
     u32 *p;
 
-    switch (func_00142E80(gOpening->fC)) {
+    switch (amSofdec_Draw(gOpening->fC)) {
     case -1:
     case 0:
         return;
@@ -189,7 +189,7 @@ void func_002E1DF0(Task *t) {
         }
         break;
     }
-    p = func_0012F230(0xA0);
+    p = amPkt_Alloc(0xA0);
     p[0] = 0x70000009;
     p[1] = 0;
     p[4] = 0x8001;
@@ -211,8 +211,8 @@ void func_002E1DF0(Task *t) {
     *(u64 *)&p[34] = 3;
     *(u64 *)&p[36] = 0x8E009000;
     *(u64 *)&p[38] = 5;
-    func_00140D30(0, 2, 1, 1, (s32)p & 0x0FFFFFFF, 0, 0, 0);
-    func_001459B0(2);
+    amDma_Request(0, 2, 1, 1, (s32)p & 0x0FFFFFFF, 0, 0, 0);
+    amVram_Apply(2);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E1DF0);
@@ -220,7 +220,7 @@ void func_002E1DF0(Task *t);
 
 void func_002E1F90(Task *t) {
 
-    switch (func_00142D00(gOpening->fC)) {
+    switch (amSofdec_GetStat(gOpening->fC)) {
     case 1:
         return;
     case 2:
@@ -259,13 +259,13 @@ extern MovieParam D_00456D60;
 extern s32 D_0046FD5C;
 extern char D_0046F3F0[];
 extern f32 D_004E0610[];
-extern MovieSlot D_0047E0A0[];
+extern MovieSlot gSofdecMovie[];
 extern void func_00264140(s32, s32);
-extern s32 func_001427D0(MovieParam *);
+extern s32 amSofdec_Create(MovieParam *);
 extern void func_001F0830(s32, s32);
 extern void func_001F0820(void);
 extern f32 func_0011F698(f32);
-extern void func_00142AA0(s32, char *, s32);
+extern void amSofdec_StartFname(s32, char *, s32);
 
 void func_002E2040(Task *t) {
     MovieParam prm = D_00456D60;
@@ -280,7 +280,7 @@ void func_002E2040(Task *t) {
         return;
     }
     func_00264140(-1, 0);
-    if ((n = func_001427D0(&prm)) < 0) {
+    if ((n = amSofdec_Create(&prm)) < 0) {
         func_001F0830(4, 0);
         func_001F0820();
         return;
@@ -290,8 +290,8 @@ void func_002E2040(Task *t) {
     } else {
         vol = 200.0f * func_0011F698(D_004E0610[0]);
     }
-    D_0047E0A0[n].obj->vt->f2C(D_0047E0A0[n].obj, vol);
-    func_00142AA0(n, D_0046F3F0, 1);
+    gSofdecMovie[n].obj->vt->f2C(gSofdecMovie[n].obj, vol);
+    amSofdec_StartFname(n, D_0046F3F0, 1);
     gOpening->fC = n;
     TASK_SET_FUNC(t, func_002E1F90);
     func_001F0830(4, 0);
@@ -303,6 +303,6 @@ void func_002E2040(Task *t);
 
 void func_002E21C0(void) {
     func_001F07D0();
-    func_00144FC0(func_002E2040, 0, 0x8000, 2, 0x10000, D_0046F408);
+    amTask_Create(func_002E2040, 0, 0x8000, 2, 0x10000, D_0046F408);
     gOpening->f4 = 1;
 }

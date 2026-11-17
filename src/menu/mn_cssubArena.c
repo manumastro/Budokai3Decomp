@@ -24,14 +24,14 @@ typedef struct CsSubArenaWork {
 extern CsSubArenaGlobal *gCsSubArena;
 extern char D_0046F450[];
 extern char D_0046F460[];
-extern void func_0025C800(void *, s32);
+extern void amCdFs_Close(void *, s32);
 extern void Help_Exit(void);
 extern void func_0022D0E0(void *, s32);
 extern void SklEdit_Close(void);
 extern void SklEdit_Open(s32, char *, s32, s32, s32);
 extern void func_002E2F30(Task *);
 extern void memset(void *, s32, s32);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void Help_Load(void);
 
 s32 CsSubArena_GetResult(Task *t) {
@@ -49,18 +49,18 @@ void CsSubArena_Unload(void) {
         g->users--;
         if (g->users <= 0) {
             if (g->file[0] != NULL) {
-                func_0025C800(g->file[0], 0);
+                amCdFs_Close(g->file[0], 0);
             }
             if (g->file[1] != NULL) {
-                func_0025C800(g->file[1], 0);
+                amCdFs_Close(g->file[1], 0);
             }
             if (g->fC != NULL) {
-                func_0013AC90(g->fC);
+                amHeap_Free(g->fC);
             }
             if (g->f8 != NULL) {
-                func_0013AC90(g->f8);
+                amHeap_Free(g->f8);
             }
-            func_0013AC90(g);
+            amHeap_Free(g);
             gCsSubArena = NULL;
             Help_Exit();
         }
@@ -81,8 +81,8 @@ void CsSubArena_Close(Task *t) {
             func_0022D0E0(p[i], 1);
         }
     }
-    func_0013AC90(w);
-    func_00145120(t);
+    amHeap_Free(w);
+    amTask_Kill(t);
     SklEdit_Close();
 }
 
@@ -90,8 +90,8 @@ Task *CsSubArena_Open(CsSubParent *parent, s32 a1) {
     CsSubArenaWork *w;
     Task *t;
 
-    t = func_00144FC0(func_002E2F30, 0, 0x2B00, 8, 2, D_0046F450);
-    t->data.work = w = func_0013AAB0(0x20, 0, D_0046F460, 0x89);
+    t = amTask_Create(func_002E2F30, 0, 0x2B00, 8, 2, D_0046F450);
+    t->data.work = w = amHeap_Alloc(0x20, 0, D_0046F460, 0x89);
     memset(w, 0, 0x20);
     w->f0 = a1;
     w->f2 = (parent->f6 & 1) ? CSSUB_ON : CSSUB_OFF;
@@ -112,9 +112,9 @@ void CsSubArena_Load(void) {
         gCsSubArena->users++;
         return;
     }
-    gCsSubArena = g = func_0013AAB0(0x14, 0, D_0046F460, 0x5F);
-    g->file[0] = func_0025C670(0x10822, 0, 0);
-    g->file[1] = func_0025C670(0x10823, 0, 0);
+    gCsSubArena = g = amHeap_Alloc(0x14, 0, D_0046F460, 0x5F);
+    g->file[0] = amCdFs_ReadFileId(0x10822, 0, 0);
+    g->file[1] = amCdFs_ReadFileId(0x10823, 0, 0);
     g->f8 = NULL;
     g->fC = NULL;
     g->users = 1;

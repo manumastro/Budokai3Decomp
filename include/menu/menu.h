@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-/* A task of the game's scheduler, as the menus see it (created by func_00144FC0, which copies the name into
+/* A task of the game's scheduler, as the menus see it (created by amTask_Create, which copies the name into
    name[] with strncpy(.., 15), sets prio, the two callbacks and links the task into the list sorted by prio). The
    menus keep their work area in data.work and count frames down in data.wait. */
 typedef struct TaskData {
@@ -31,11 +31,11 @@ typedef void (*TaskFunc)(Task *);
 #define TASK_SET_FUNC(t, f) ((t)->func = ((f) == NULL) ? NULL : (f))
 
 /* The scheduler (sys area; not named yet). */
-extern Task *func_00144FC0(TaskFunc func, TaskFunc func2, s32 prio, s32 f10, s32 f14, char *name);
-extern void func_00145120(Task *task);
+extern Task *amTask_Create(TaskFunc func, TaskFunc func2, s32 prio, s32 f10, s32 f14, char *name);
+extern void amTask_Kill(Task *task);
 
 /* The heap: alloc(size, flags, source file, line) and free. */
-extern void *func_0013AAB0(s32 size, s32 flags, char *file, s32 line);
-extern void func_0013AC90(void *p);
+extern void *amHeap_Alloc(s32 size, s32 flags, char *file, s32 line);
+extern void amHeap_Free(void *p);
 
 #endif

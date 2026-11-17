@@ -6,23 +6,23 @@ extern char D_00469040[];
 extern u8 D_00449BA0[];
 extern s32 D_0047075C;
 extern s32 D_004B41F0[7];
-extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
-extern void func_0013AC90(void *);
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
+extern void amHeap_Free(void *);
 extern void memset(void *, s32, s32);
-extern s32 func_0013DF20(void *, ...);
-extern s32 func_0013BC70(void *, s32);
-extern CharFile *func_0025C670(s32, s32, s32);
-extern void func_0025C800(void *, s32);
-extern void func_0025C400(s32);
+extern s32 amObject_GetSize(void *, ...);
+extern s32 amMotion_CalcSize(void *, s32);
+extern CharFile *amCdFs_ReadFileId(s32, s32, s32);
+extern void amCdFs_Close(void *, s32);
+extern void amCdFs_SetHeap(s32);
 extern Secp *func_001D4970(s32);
 extern void func_0029D1E0(void *, s32, void *, void *);
 extern void *func_001CA3F0(s32, s32);
 CharFile *func_001CA370(s32 heap, s32 a, s32 b, s32 c);
-extern void func_0012C360(s32);
+extern void amFile_Load(s32);
 extern s32 func_001A50F0(s32, s32);
-extern s32 func_0013DF40(s32, s32);
-extern Model *func_0013BCF0(s32, s32, Model *);
-extern void func_0013C070(Model *, s32, s32);
+extern s32 amObject_Create(s32, s32);
+extern Model *amMotion_CreateFromObj(s32, s32, Model *);
+extern void amMotion_BindAnim(Model *, s32, s32);
 extern void func_001A5640(void *, Model *, s32);
 
 typedef struct SizeQuery {
@@ -64,9 +64,9 @@ CharBody *func_001C9AF0(s32 chara, s32 costume, s32 color, s32 key) {
     }
     q1.count = 0x80;
     q0.count = 0x80;
-    size0 = (func_0013DF20(&q1) + 15) & ~15;
-    size = ((func_0013BC70(&q0, 2) + 15) & ~15) + (size0 + 0x90);
-    b = func_0013AAB0(size, 1, D_00469040, 175);
+    size0 = (amObject_GetSize(&q1) + 15) & ~15;
+    size = ((amMotion_CalcSize(&q0, 2) + 15) & ~15) + (size0 + 0x90);
+    b = amHeap_Alloc(size, 1, D_00469040, 175);
     memset(b, 0, size);
     b->unk48 = (u8 *)b + 0x90;
     b->model = (Model *)((u8 *)b + size0 + 0x90);
@@ -83,7 +83,7 @@ CharBody *func_001C9AF0(s32 chara, s32 costume, s32 color, s32 key) {
     }
     e->list = b;
     if (e->file != -1) {
-        b->unk70 = b->unk6C = (s32)func_0025C670(e->file, 0, 1);
+        b->unk70 = b->unk6C = (s32)amCdFs_ReadFileId(e->file, 0, 1);
     }
     b->secp = func_001D4970(e->secp);
     if (b->secp != 0 && b->secp->unk3C != 0) {
@@ -158,9 +158,9 @@ void func_001C9F30(CharFace *f) {
     if (f != 0) {
         if (--f->refs <= 0) {
             if (f->unk84 != 0) {
-                func_0013AC90((void *)f->unk84);
+                amHeap_Free((void *)f->unk84);
             } else if (f->file != 0) {
-                func_0025C800(f->file, 0);
+                amCdFs_Close(f->file, 0);
             }
             if (f->prev != 0) {
                 f->prev->next = f->next;
@@ -171,7 +171,7 @@ void func_001C9F30(CharFace *f) {
             if (f == f->entry->list) {
                 f->entry->list = f->next;
             }
-            func_0013AC90(f);
+            amHeap_Free(f);
         }
     }
 }
@@ -184,20 +184,20 @@ void func_001CA000(CharFace *f) {
     if (file != 0) {
         f->file = 0;
         f->unk84 = file->data;
-        func_0012C360(f->unk84);
+        amFile_Load(f->unk84);
         file->data = 0;
-        func_0025C800(file, 0);
+        amCdFs_Close(file, 0);
         f->unk88 = func_001A50F0(f->unk84, 0);
-        func_0012C360(f->unk88);
+        amFile_Load(f->unk88);
         f->unk8C = func_001A50F0(f->unk84, 1);
-        func_0012C360(f->unk8C);
+        amFile_Load(f->unk8C);
     }
     if (f->unk88 != 0) {
-        f->unk18 = func_0013DF40(f->unk88, f->unk18);
-        f->model = func_0013BCF0(f->unk18, 0, f->model);
+        f->unk18 = amObject_Create(f->unk88, f->unk18);
+        f->model = amMotion_CreateFromObj(f->unk18, 0, f->model);
         func_0029D1E0(f, 9, f->model, D_00449BA0);
         if (f->unk8C != 0) {
-            func_0013C070(f->model, 0, f->unk8C);
+            amMotion_BindAnim(f->model, 0, f->unk8C);
         }
         func_001A5640(f->unk20, f->model, 0);
     }
@@ -232,8 +232,8 @@ CharFace *func_001CA180(s32 chara, s32 costume, s32 color, s32 key) {
     }
     q1.count = 0x10;
     q0.count = 0x10;
-    size0 = (func_0013DF20(&q1) + 15) & ~15;
-    size = ((func_0013BC70(&q0, 0) + 15) & ~15) + (size0 + 0xB0);
+    size0 = (amObject_GetSize(&q1) + 15) & ~15;
+    size = ((amMotion_CalcSize(&q0, 0) + 15) & ~15) + (size0 + 0xB0);
     f = func_001CA3F0(2, size);
     memset(f, 0, size);
     f->unk18 = (s32)((u8 *)f + 0xB0);
@@ -260,8 +260,8 @@ CharFile *func_001CA370(s32 heap, s32 a, s32 b, s32 c) {
     CharFile *r;
     s32 old;
     old = D_0047075C;
-    func_0025C400(D_004B41F0[heap]);
-    r = func_0025C670(a, b, c);
-    func_0025C400(old);
+    amCdFs_SetHeap(D_004B41F0[heap]);
+    r = amCdFs_ReadFileId(a, b, c);
+    amCdFs_SetHeap(old);
     return r;
 }

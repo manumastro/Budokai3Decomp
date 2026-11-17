@@ -48,15 +48,15 @@ extern void func_00145CC0(void *, s32);
 extern s32 func_001484A0(s32);
 extern void func_00136E80(s32, f32 *, s32, s32, s32);
 extern void func_00137560(Vec4 *, Vec4 *);
-extern void func_00137EE0(void);
+extern void amDraw_FlushPacket(void);
 
 Task *InputName_Start(void) {
     InputNameGlobal *g = gInputName;
     InputNameWork *w;
     Task *t;
 
-    g->task = t = func_00144FC0(func_002F3E00, 0, 0x6000, 8, 2, D_0046F758);
-    t->data.work = w = func_0013AAB0(0x64, 0, D_0046F768, 0x6C);
+    g->task = t = amTask_Create(func_002F3E00, 0, 0x6000, 8, 2, D_0046F758);
+    t->data.work = w = amHeap_Alloc(0x64, 0, D_0046F768, 0x6C);
     memset(w, 0, 0x64);
     w->f44 = 240.0f;
     w->f48 = 80.0f;
@@ -102,6 +102,6 @@ void InputName_DrawSprite(s32 a0, s32 arg1) {
     func_00136E80(0x40000924, color, id, 0x44, 5);
     func_00137560(&a, &c);
     func_00137560(&b, &d);
-    func_00137EE0();
+    amDraw_FlushPacket();
     func_001484A0(old);
 }

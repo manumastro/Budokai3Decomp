@@ -117,7 +117,7 @@ typedef struct CharBody {
     /* 0x84 */ struct CharBody *next;
 } CharBody;
 
-/* A file being read (func_0025C670 starts the read; inferred). */
+/* A file being read (amCdFs_ReadFileId starts the read; inferred). */
 typedef struct CharFile {
     /* 0x00 */ s32 unk00;
     /* 0x04 */ s16 state;                    /* 3: done (guess) */

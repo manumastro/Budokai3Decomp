@@ -2,7 +2,7 @@
 #include "menu/menu.h"
 #include "menu/mn_cssubstat.h"
 
-/* A file being read (func_0025C670's handle). */
+/* A file being read (amCdFs_ReadFileId's handle). */
 typedef struct CsSubStatFile {
     char pad0[4];
     s16 state;          /* 0x04: 3 once read */
@@ -38,9 +38,9 @@ extern CsSubStatGlobal *gCsSubStat;
 extern f32 D_004E0614[];
 extern char D_0046B770[];
 extern char D_0046B780[];
-extern void func_0025C800(void *, s32);
+extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(s32);
-extern void func_0012C360(s32);
+extern void amFile_Load(s32);
 extern void func_00143F20(s32, s32, f32);
 extern void func_00143D60(s32, s32, s32, s32);
 extern void func_00281A40(CsSubStatWork *);
@@ -52,7 +52,7 @@ extern void func_0022D0E0(void *, s32);
 extern void SklEdit_Close(void);
 extern void SklEdit_Open(s32, char *, s32, s32, s32);
 extern void memset(void *, s32, s32);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void Help_Load(void);
 
 void CsSubStat_TaskLoad(Task *t) {
@@ -65,14 +65,14 @@ void CsSubStat_TaskLoad(Task *t) {
         }
         g->f8 = g->file[0]->data;
         g->file[0]->data = 0;
-        func_0025C800(g->file[0], 0);
+        amCdFs_Close(g->file[0], 0);
         g->file[0] = NULL;
         g->fC = g->file[1]->data;
         g->file[1]->data = 0;
-        func_0025C800(g->file[1], 0);
+        amCdFs_Close(g->file[1], 0);
         g->file[1] = NULL;
         func_0022E0B0(g->f8);
-        func_0012C360(g->fC);
+        amFile_Load(g->fC);
     }
     func_00143F20(0, 0, D_004E0614[0]);
     if (!(D_004E0614[0] <= 0.0f)) {
@@ -121,18 +121,18 @@ void CsSubStat_Unload(void) {
     g->users--;
     if (g->users == 0) {
         if (g->file[0] != NULL) {
-            func_0025C800(g->file[0], 0);
+            amCdFs_Close(g->file[0], 0);
         }
         if (g->file[1] != NULL) {
-            func_0025C800(g->file[1], 0);
+            amCdFs_Close(g->file[1], 0);
         }
         if (g->fC != 0) {
-            func_0013AC90((void *)g->fC);
+            amHeap_Free((void *)g->fC);
         }
         if (g->f8 != 0) {
-            func_0013AC90((void *)g->f8);
+            amHeap_Free((void *)g->f8);
         }
-        func_0013AC90(g);
+        amHeap_Free(g);
         gCsSubStat = NULL;
         Help_Exit();
     }
@@ -165,8 +165,8 @@ void CsSubStat_Close(Task *t) {
             func_0022D0E0(w->f40[j], 1);
         }
     }
-    func_0013AC90(w);
-    func_00145120(t);
+    amHeap_Free(w);
+    amTask_Kill(t);
     SklEdit_Close();
 }
 
@@ -174,8 +174,8 @@ Task *CsSubStat_Open(CsSubParent *parent, s32 a1, s32 a2) {
     CsSubStatWork *w;
     Task *t;
 
-    t = func_00144FC0(CsSubStat_TaskLoad, 0, 0x2B00, 8, 2, D_0046B770);
-    t->data.work = w = func_0013AAB0(0x5C, 0, D_0046B780, 0x95);
+    t = amTask_Create(CsSubStat_TaskLoad, 0, 0x2B00, 8, 2, D_0046B770);
+    t->data.work = w = amHeap_Alloc(0x5C, 0, D_0046B780, 0x95);
     memset(w, 0, 0x5C);
     w->f0 = a1;
     w->f1 = a2;
@@ -199,9 +199,9 @@ void CsSubStat_Load(void) {
         gCsSubStat->users++;
         return;
     }
-    gCsSubStat = g = func_0013AAB0(0x14, 0, D_0046B780, 0x67);
-    g->file[0] = func_0025C670(0x10822, 0, 0);
-    g->file[1] = func_0025C670(0x10823, 0, 0);
+    gCsSubStat = g = amHeap_Alloc(0x14, 0, D_0046B780, 0x67);
+    g->file[0] = amCdFs_ReadFileId(0x10822, 0, 0);
+    g->file[1] = amCdFs_ReadFileId(0x10823, 0, 0);
     g->f8 = 0;
     g->fC = 0;
     g->users = 1;

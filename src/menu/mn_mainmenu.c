@@ -1,7 +1,7 @@
 #include "common.h"
 #include "menu/menu.h"
 
-/* A data file of the main menu, loaded at start (func_0025C670); 0x54 is the pointer to its contents. */
+/* A data file of the main menu, loaded at start (amCdFs_ReadFileId); 0x54 is the pointer to its contents. */
 typedef struct MainMenuFile {
     char pad0[4];
     s16 state;          /* 0x04: 3 once loaded */
@@ -53,7 +53,7 @@ extern s32 D_00495718[];
 extern s32 D_00495758[];
 extern void func_0022DB30(s32);
 extern void func_00145CC0(s32, s32);
-extern void *func_0013DF40(void *, s32);
+extern void *amObject_Create(void *, s32);
 extern void func_001A4CF0();
 extern void func_001EF100(void);
 extern u8 D_004B4B62[];
@@ -95,7 +95,7 @@ void MainMenu_InitWork(MainMenuWork *a) {
     a->f44[15] = 0;
     a->f44[16] = 0;
     a->f44[17] = 0;
-    a->f8C = func_0013DF40(a->res[2], 0);
+    a->f8C = amObject_Create(a->res[2], 0);
     D_0047CAA0[0] = func_001A4CF0;
     D_00495718[0] = 0;
     D_00495758[0] = 0;
@@ -115,10 +115,10 @@ extern f32 D_004E0618[];
 extern void func_00229800(void *, void *, s32, f32);
 extern void func_002C0470(void *, void *);
 extern void func_002C0490(void *, s32);
-extern s32 func_0012D790(s32, s32, s32);
-extern void func_0012D900(s32);
-extern void func_0012DB00(s32, f32);
-extern void func_0012DC30(s32, s32);
+extern s32 amAdx_PlayAfs(s32, s32, s32);
+extern void amAdx_Stop(s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
 void MainMenu_TaskMain(Task *t);
 
 void MainMenu_TaskOpen(Task *t) {
@@ -133,9 +133,9 @@ void MainMenu_TaskOpen(Task *t) {
         func_00229800(((void ***)w->res[0])[7][0x3A], sp30, -1, 0.0f);
         func_002C0470(w->f90, sp30);
         func_002C0490(w->f90, 0);
-        w->fA4 = func_0012D790(1, 0x210E1, 0);
-        func_0012DB00(w->fA4, D_004E0618[0]);
-        func_0012DC30(w->fA4, 0);
+        w->fA4 = amAdx_PlayAfs(1, 0x210E1, 0);
+        amAdx_SetVolume(w->fA4, D_004E0618[0]);
+        amAdx_Pause(w->fA4, 0);
         w->fA8 = 0;
         w->state = 3;
         TASK_SET_FUNC(t, MainMenu_TaskMain);
@@ -143,9 +143,9 @@ void MainMenu_TaskOpen(Task *t) {
 }
 
 extern void func_00264260(s32, s32, s32);
-extern void func_0025C800(void *, s32);
+extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
-extern void func_0012C360(void *);
+extern void amFile_Load(void *);
 extern void MainMenu_InitWork(MainMenuWork *);
 
 void MainMenu_TaskLoad(Task *t) {
@@ -158,36 +158,36 @@ void MainMenu_TaskLoad(Task *t) {
     d = &t->data;
     if (d->wait != 0) {
         if (d->wait == 9) {
-            func_0012D900(-1);
+            amAdx_Stop(-1);
         }
         d->wait--;
         return;
     }
     if (g->file[3]->state == 3) {
         func_00264260(-1, 0, 0);
-        func_0012DB00(0, D_004E0610[0]);
-        func_0012D790(0, 0x210A3, 0);
-        func_0012DC30(0, 0);
+        amAdx_SetVolume(0, D_004E0610[0]);
+        amAdx_PlayAfs(0, 0x210A3, 0);
+        amAdx_Pause(0, 0);
         w->res[0] = g->file[0]->data;
         g->file[0]->data = NULL;
-        func_0025C800(g->file[0], 0);
+        amCdFs_Close(g->file[0], 0);
         g->file[0] = NULL;
         w->res[1] = g->file[1]->data;
         g->file[1]->data = NULL;
-        func_0025C800(g->file[1], 0);
+        amCdFs_Close(g->file[1], 0);
         g->file[1] = NULL;
         w->res[2] = g->file[2]->data;
         g->file[2]->data = NULL;
-        func_0025C800(g->file[2], 0);
+        amCdFs_Close(g->file[2], 0);
         g->file[2] = NULL;
         w->res[3] = g->file[3]->data;
         g->file[3]->data = NULL;
-        func_0025C800(g->file[3], 0);
+        amCdFs_Close(g->file[3], 0);
         g->file[3] = NULL;
         func_0022E0B0(w->res[0]);
-        func_0012C360(w->res[1]);
-        func_0012C360(w->res[2]);
-        func_0012C360(w->res[3]);
+        amFile_Load(w->res[1]);
+        amFile_Load(w->res[2]);
+        amFile_Load(w->res[3]);
         MainMenu_InitWork(w);
         func_00266CD0(w);
         w->state = 2;
@@ -207,14 +207,14 @@ void MainMenu_Exit(void) {
     if (g->task != NULL) {
         func_00266EC0(w);
         func_002C04B0(w->f90);
-        func_0013AC90(w->res[0]);
-        func_0013AC90(w->res[1]);
-        func_0013AC90(w->res[2]);
-        func_0013AC90(w->res[3]);
-        func_0013AC90(w);
-        func_00145120(g->task);
+        amHeap_Free(w->res[0]);
+        amHeap_Free(w->res[1]);
+        amHeap_Free(w->res[2]);
+        amHeap_Free(w->res[3]);
+        amHeap_Free(w);
+        amTask_Kill(g->task);
     }
-    func_0013AC90(g);
+    amHeap_Free(g);
     gMainMenu = NULL;
     Help_Exit();
 }
@@ -230,10 +230,10 @@ void MainMenu_Start(s32 cursor, s32 a1) {
     TaskData *d;
     s32 c;
 
-    g->task = t = func_00144FC0(MainMenu_TaskLoad, 0, 0x1001, 8, 2, D_0046B400);
+    g->task = t = amTask_Create(MainMenu_TaskLoad, 0, 0x1001, 8, 2, D_0046B400);
     d = &t->data;
     d->wait = 10;
-    d->work = w = func_0013AAB0(0xAC, 0, D_0046B410, 0xDE);
+    d->work = w = amHeap_Alloc(0xAC, 0, D_0046B410, 0xDE);
     w->res[0] = NULL;
     w->res[1] = NULL;
     w->res[2] = NULL;
@@ -253,17 +253,17 @@ void MainMenu_Start(s32 cursor, s32 a1) {
     func_002E1BB0();
 }
 
-extern MainMenuFile *func_0025C670(s32, s32, s32);
+extern MainMenuFile *amCdFs_ReadFileId(s32, s32, s32);
 extern void Help_Load(void);
 
 void MainMenu_Load(void) {
     MainMenu *g;
 
-    gMainMenu = g = func_0013AAB0(0x14, 0, D_0046B410, 0xAF);
+    gMainMenu = g = amHeap_Alloc(0x14, 0, D_0046B410, 0xAF);
     g->task = NULL;
-    g->file[0] = func_0025C670(0x10826, 0, 0);
-    g->file[1] = func_0025C670(0x10827, 0, 0);
-    g->file[2] = func_0025C670(0xF50, 0, 0);
-    g->file[3] = func_0025C670(0xF51, 0, 0);
+    g->file[0] = amCdFs_ReadFileId(0x10826, 0, 0);
+    g->file[1] = amCdFs_ReadFileId(0x10827, 0, 0);
+    g->file[2] = amCdFs_ReadFileId(0xF50, 0, 0);
+    g->file[3] = amCdFs_ReadFileId(0xF51, 0, 0);
     Help_Load();
 }

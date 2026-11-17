@@ -1,7 +1,7 @@
 #include "common.h"
 #include "menu/menu.h"
 
-/* A file being read (func_0025C670's handle). */
+/* A file being read (amCdFs_ReadFileId's handle). */
 typedef struct ArenaModeFile {
     char pad0[4];
     s16 state;          /* 0x04: 3 once read */
@@ -72,17 +72,17 @@ extern void func_00229800(s32, void *, s32, f32);
 extern void func_002C0470(void *, void *);
 extern u32 func_0012EAE0(s32);
 extern void func_002C0490(void *, s32);
-extern s32 func_0012D790(s32, s32, s32);
-extern void func_0012DB00(s32, f32);
-extern void func_0012DC30(s32, s32);
+extern s32 amAdx_PlayAfs(s32, s32, s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
 extern s32 func_0022D670(s32, f32);
 extern s32 func_0022D860(s32, f32);
 extern void func_002D12B0(Task *);
-extern void func_0012D900(s32);
+extern void amAdx_Stop(s32);
 extern void func_00264260(s32, s32, s32);
-extern void func_0025C800(void *, s32);
+extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
-extern void func_0012C360(void *);
+extern void amFile_Load(void *);
 extern void func_0022DB30(s32);
 extern void func_002D1C20(void);
 extern void func_0022D0E0(s32, s32);
@@ -93,7 +93,7 @@ extern void *func_002C0630(s32, s32, s32);
 extern void func_001F07D0(void);
 extern void func_002E8720(void);
 extern void Help_Load(void);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 
 void ArenaMode_TaskOpen(Task *t) {
     ArenaModeSe se;
@@ -147,9 +147,9 @@ void ArenaMode_TaskOpen(Task *t) {
         w->f39 = r;
         func_002C0490(w->f30, w->f39);
         se = D_00456AF0;
-        w->se = func_0012D790(1, se.id[r] | 0x20000, 0);
-        func_0012DB00(w->se, D_004E0618[0]);
-        func_0012DC30(w->se, 0);
+        w->se = amAdx_PlayAfs(1, se.id[r] | 0x20000, 0);
+        amAdx_SetVolume(w->se, D_004E0618[0]);
+        amAdx_Pause(w->se, 0);
         w->timer = 10.0f;
         w->state = 3;
         D_00470704 = v = (s32)w->tex;
@@ -178,24 +178,24 @@ void ArenaMode_TaskLoad(Task *t) {
     d = &t->data;
     if (d->wait != 0) {
         if (d->wait == 10) {
-            func_0012D900(-1);
+            amAdx_Stop(-1);
         }
         d->wait--;
         return;
     }
     if (g->file[1]->state == 3) {
         func_00264260(-1, 0, 0);
-        func_0012DB00(0, D_004E0610[0]);
-        func_0012D790(0, 0x210A8, 0);
-        func_0012DC30(0, 0);
+        amAdx_SetVolume(0, D_004E0610[0]);
+        amAdx_PlayAfs(0, 0x210A8, 0);
+        amAdx_Pause(0, 0);
         w->res = g->file[0]->data;
         g->file[0]->data = NULL;
-        func_0025C800(g->file[0], 0);
+        amCdFs_Close(g->file[0], 0);
         w->tex = g->file[1]->data;
         g->file[1]->data = NULL;
-        func_0025C800(g->file[1], 0);
+        amCdFs_Close(g->file[1], 0);
         func_0022E0B0(w->res);
-        func_0012C360(w->tex);
+        amFile_Load(w->tex);
         if (D_004E05F8[0] != 0) {
             func_0022DB30(1);
         } else {
@@ -229,7 +229,7 @@ void ArenaMode_Exit(void) {
     s32 i;
 
     if (w->se >= 0) {
-        func_0012D900(w->se);
+        amAdx_Stop(w->se);
     }
     if (g->task != NULL) {
         s32 p[10] = {0};
@@ -251,15 +251,15 @@ void ArenaMode_Exit(void) {
         }
         func_002C04B0(w->f30);
         if (w->res != NULL) {
-            func_0013AC90(w->res);
+            amHeap_Free(w->res);
         }
         if (w->tex != NULL) {
-            func_0013AC90(w->tex);
+            amHeap_Free(w->tex);
         }
-        func_0013AC90(w);
-        func_00145120(g->task);
+        amHeap_Free(w);
+        amTask_Kill(g->task);
     }
-    func_0013AC90(g);
+    amHeap_Free(g);
     gArenaMode = NULL;
     Help_Exit();
 }
@@ -270,10 +270,10 @@ void ArenaMode_Start(s32 a0) {
     TaskData *d;
     Task *t;
 
-    g->task = t = func_00144FC0(ArenaMode_TaskLoad, 0, 0x1001, 8, 2, D_0046F290);
+    g->task = t = amTask_Create(ArenaMode_TaskLoad, 0, 0x1001, 8, 2, D_0046F290);
     d = &t->data;
     d->wait = 10;
-    d->work = w = func_0013AAB0(0x48, 0, D_0046F2A0, 0x9B);
+    d->work = w = amHeap_Alloc(0x48, 0, D_0046F2A0, 0x9B);
     memset(w, 0, 0x48);
     w->f30 = func_002C0630(0x107FC, 0x2000, 0);
     w->f35 = a0;
@@ -287,8 +287,8 @@ void ArenaMode_Start(s32 a0) {
 void ArenaMode_Load(void) {
     ArenaModeGlobal *g;
 
-    gArenaMode = g = func_0013AAB0(0xC, 0, D_0046F2A0, 0x75);
-    g->file[0] = func_0025C670(0x10817, 0, 0);
-    g->file[1] = func_0025C670(0x10818, 0, 0);
+    gArenaMode = g = amHeap_Alloc(0xC, 0, D_0046F2A0, 0x75);
+    g->file[0] = amCdFs_ReadFileId(0x10817, 0, 0);
+    g->file[1] = amCdFs_ReadFileId(0x10818, 0, 0);
     g->task = NULL;
 }

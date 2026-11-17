@@ -83,9 +83,9 @@ extern Pair16 D_0047018C;
 extern Pair16 D_00470190;
 extern Tbl3 D_00456D88;
 extern f32 D_004E0614[];
-extern void func_0025C800(Model *, s32);
+extern void amCdFs_Close(Model *, s32);
 extern void func_0022E0B0(void *);
-extern void func_0012C360(void *);
+extern void amFile_Load(void *);
 extern void func_00143F20(s32, s32, f32);
 extern void func_00143D60(s32, s32, s32, s32);
 extern void func_0022D0E0(void *, s32);
@@ -190,14 +190,14 @@ void func_002E2F30(Task *t) {
         }
         g->f8 = g->f0->f54;
         g->f0->f54 = NULL;
-        func_0025C800(g->f0, 0);
+        amCdFs_Close(g->f0, 0);
         g->f0 = NULL;
         g->fC = g->f4->f54;
         g->f4->f54 = NULL;
-        func_0025C800(g->f4, 0);
+        amCdFs_Close(g->f4, 0);
         g->f4 = NULL;
         func_0022E0B0(g->f8);
-        func_0012C360(g->fC);
+        amFile_Load(g->fC);
     }
     func_00143F20(0, 0, D_004E0614[0]);
     if (!(D_004E0614[0] <= 0.0f)) {

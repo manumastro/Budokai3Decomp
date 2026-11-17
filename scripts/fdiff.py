@@ -58,8 +58,17 @@ def data_sections(obj):
 
 
 def function_starts():
-    """Addresses of every function still in assembly (split files and INCLUDE_ASM files)."""
+    """Addresses of every function: those still in assembly (split files and INCLUDE_ASM files), those named in
+    the symbol files, and the func_XXXXXXXX names used in C (splat writes no assembly for a function in C)."""
     starts = set()
+    yaml = (ROOT / "config" / "SLUS_209.98.yaml").read_text()
+    for path in re.findall(r"^\s+- (config/\S+\.txt)$", yaml, re.M):
+        for line in (ROOT / path).read_text().splitlines():
+            m = re.match(r"\w+ = 0x([0-9A-Fa-f]+);.*type:func", line)
+            if m:
+                starts.add(int(m.group(1), 16))
+    for path in (ROOT / "src").rglob("*.c"):
+        starts.update(int(a, 16) for a in re.findall(r"\bfunc_([0-9A-F]{8})\b", path.read_text()))
     for path in (ROOT / "asm").rglob("*.s"):
         if "data" in path.parts[len(ROOT.parts) + 1:len(ROOT.parts) + 2]:
             continue

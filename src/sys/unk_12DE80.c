@@ -17,10 +17,10 @@ typedef struct Camera {
 } Camera;
 
 extern f32 func_0011F5A8(f32);
-extern void func_0012DF60(Camera *);
+extern void amCamera_SetView(Camera *);
 extern f32 func_0011F680(f32, f32);
 extern void func_001414D0(V4 *, f32, f32, f32);
-extern void func_0012E640(Camera *);
+extern void amCamera_LookAt(Camera *);
 extern void func_00141CF0(s32, V4 *, s32);
 extern void func_0013BAF0(f32);
 extern void func_0013B0B0(s32);
@@ -47,7 +47,7 @@ extern s8 D_004703F4;
 extern s8 D_004703FC;
 extern u32 D_00470420;
 
-void func_0012DE80(Camera *c) {
+void amCamera_Init(Camera *c) {
     c->pos.v[0] = 0.0f;
     c->pos.v[1] = 0.0f;
     c->pos.v[2] = 0.0f;
@@ -65,15 +65,15 @@ void func_0012DE80(Camera *c) {
     c->up.v[3] = 0.0f;
 }
 
-void func_0012DEE0(Camera *dst, Camera *c, f32 w) {
+void amCamera_SetScreen(Camera *dst, Camera *c, f32 w) {
     dst->scr = w / (2.0f * func_0011F5A8(0.5f * c->fov));
-    func_0012DF60(c);
+    amCamera_SetView(c);
 }
 
-void func_0012DF60(Camera *c) {
+void amCamera_SetView(Camera *c) {
     V4 v;
 
-    if (c->flags & 1) func_0012E640(c);
+    if (c->flags & 1) amCamera_LookAt(c);
     asm __volatile__("lqc2 $vf1, 0(%1)\n\tvsub.xyz $vf1, $vf0, $vf1\n\tsqc2 $vf1, 0(%0)" : : "r"(&v), "r"(&c->up));
     func_00141CF0(0, &v, 0);
     func_0013BAF0(-c->roll);
@@ -88,7 +88,7 @@ void func_0012E000(V4 *a, V4 *b) {
 void func_0012E030(Camera *c, V4 *d) {
     V4 t;
 
-    if (c->flags & 1) func_0012E640(c);
+    if (c->flags & 1) amCamera_LookAt(c);
     func_0013B0B0(0);
     func_00141CF0(0, &c->up, 0);
     func_0013B6B0(-c->roll);
@@ -99,7 +99,7 @@ void func_0012E030(Camera *c, V4 *d) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/sys/unk_12DE80", func_0012E100);
-void func_0012E640(Camera *c) {
+void amCamera_LookAt(Camera *c) {
     f32 rx;
     V4 d;
     f32 s;
@@ -111,7 +111,7 @@ void func_0012E640(Camera *c) {
     c->flags &= ~1;
 }
 
-f32 func_0012E700(s32 a) {
+f32 amMath_SinI(s32 a) {
     s32 i;
     f32 *t;
     f32 r;
@@ -124,7 +124,7 @@ f32 func_0012E700(s32 a) {
     return r;
 }
 
-f32 func_0012E750(s32 a) {
+f32 amMath_CosI(s32 a) {
     s32 i;
     f32 *t;
     f32 r;
@@ -137,7 +137,7 @@ f32 func_0012E750(s32 a) {
     return r;
 }
 
-void func_0012E7A0(s32 a, f32 *s, f32 *c) {
+void amMath_SinCosI(s32 a, f32 *s, f32 *c) {
     s32 i;
     s32 j;
     f32 *t;
@@ -178,7 +178,7 @@ void func_0012E890(s32 a, f32 *s, f32 *c) {
     if ((a + 0x4000) & 0x8000) *c = -*c;
 }
 
-void func_0012E930(s32 x, s32 y) {
+void amDisp_SetOffset(s32 x, s32 y) {
     Disp *dp;
     GsDisplay d;
     s32 h;
@@ -214,7 +214,7 @@ void func_0012E930(s32 x, s32 y) {
     ((u32 *)&dp->d2)[1] = ((u32 *)&d)[1];
 }
 
-s32 func_0012EAD0(s32 seed) {
+s32 amRand_SetSeed(s32 seed) {
     s32 old = D_0046FD08;
     D_0046FD08 = seed;
     return old;
@@ -233,7 +233,7 @@ void func_0012EB20(void) {
     sceGsSyncPath(0, 0);
 }
 
-void func_0012EBA0(s32 x, s32 y, char *s) {
+void amDbg_Print(s32 x, s32 y, char *s) {
     u8 *p;
     u32 *q;
     u32 col;

@@ -26,13 +26,13 @@ extern void memset(void *, s32, s32);
 extern void func_0027E7E0(void);
 extern void SklEdit_Open(s32, char *, s32, s32, s32);
 extern void func_002B5030(s32, s32, s32);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 
 void EssEdit_Load(s32 slot) {
     if (gEssEdit != NULL) {
-        func_0013AC90(gEssEdit);
+        amHeap_Free(gEssEdit);
     }
-    gEssEdit = func_0013AAB0(0x58, 0, D_0046B490, 0x3F);
+    gEssEdit = amHeap_Alloc(0x58, 0, D_0046B490, 0x3F);
     memset(gEssEdit, 0, 0x58);
     gEssEditSlot = slot;
     func_0027E7E0();
@@ -40,7 +40,7 @@ void EssEdit_Load(s32 slot) {
     func_002B5030(0, 2, 0);
     gEssEdit->slot = slot;
     gEssEdit->f24 = D_0058F680[slot].f8A0;
-    gEssEdit->file[0] = func_0025C670(0x107ED, 0, 1);
-    gEssEdit->file[1] = func_0025C670(0x107EE, 0, 1);
+    gEssEdit->file[0] = amCdFs_ReadFileId(0x107ED, 0, 1);
+    gEssEdit->file[1] = amCdFs_ReadFileId(0x107EE, 0, 1);
     gEssEdit->f28 = 0;
 }

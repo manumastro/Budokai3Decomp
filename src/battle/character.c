@@ -26,11 +26,11 @@ extern void func_001B05E0(s32, f32, f32);
 extern void func_001DA4C0(void);
 extern void func_001D8A50(Fighter *);
 extern void func_001D8A90(Fighter *, s32, s32);
-extern void func_00145120(void *);
+extern void amTask_Kill(void *);
 
 extern s32 D_004B41F0[7];
 extern char D_00469250[];
-extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
 extern void func_00219470(void *);
 extern void func_001E73E0(void *, s32, s32);
 extern void func_001D9EB0(void *, s32);
@@ -63,7 +63,7 @@ typedef struct CharPair {
 
 extern CharPair D_00469290[];
 extern char D_004692C0[];
-extern void *func_00144FC0(void (*update)(Task *), void (*kill)(Task *), s32 prio, s32, s32, char *name);
+extern void *amTask_Create(void (*update)(Task *), void (*kill)(Task *), s32 prio, s32, s32, char *name);
 extern void memset(void *, s32, s32);
 extern void func_001A3610(s32);
 extern void func_001E11E0(s32, void *);
@@ -75,7 +75,7 @@ extern void func_001D9960(Fighter *, s32, s32);
 extern void func_002378A0(s32);
 extern void func_001C9F30(s32);
 extern void func_001C9840(s32);
-extern void func_0013AC90(void *);
+extern void amHeap_Free(void *);
 extern s32 func_001C9A70(s32);
 extern s32 func_001CA130(s32);
 void func_001CAC70(Task *task);
@@ -104,9 +104,9 @@ typedef struct CharTimer {
 
 void *func_001CA3F0(s32 i, s32 size) {
     if (D_004B41F0[i] == 0) {
-        return func_0013AAB0(size, 0, D_00469250, 440);
+        return amHeap_Alloc(size, 0, D_00469250, 440);
     }
-    return func_0013AAB0(size, 1, D_00469250, 442);
+    return amHeap_Alloc(size, 1, D_00469250, 442);
 }
 void func_001CA460(s32 i, s32 v) {
     s32 end;
@@ -127,7 +127,7 @@ void func_001CA8A0(s32 *c) {
         func_002378A0(c[7]);
         func_001C9F30(c[1]);
         func_001C9840(c[0]);
-        func_0013AC90(c);
+        amHeap_Free(c);
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CA8F0);
@@ -199,7 +199,7 @@ void func_001CB020(Task *task) {
         w->count++;
         if (!((f32)w->count * bw->unk88F0 < w->length)) {
             w->func();
-            func_00145120(task);
+            amTask_Kill(task);
         }
     }
 }
@@ -417,7 +417,7 @@ s32 func_001CBAE0(ScriptOwner *self, ScriptCtx *ctx) {
     if (*slot != 0) {
         t = *slot;
     } else {
-        t = func_00144FC0(func_001CACB0, func_001CAC70, 0x5380, self->info[5], self->info[6], D_004692C0);
+        t = amTask_Create(func_001CACB0, func_001CAC70, 0x5380, self->info[5], self->info[6], D_004692C0);
         *slot = t;
     }
     w = (CharFlash *)t->work;
@@ -449,7 +449,7 @@ s32 func_001CBC20(ScriptOwner *self, ScriptCtx *ctx) {
     if (*slot != 0) {
         t = *slot;
     } else {
-        t = func_00144FC0(func_001CACB0, func_001CAC70, 0x5380, self->info[5], self->info[6], D_004692C0);
+        t = amTask_Create(func_001CACB0, func_001CAC70, 0x5380, self->info[5], self->info[6], D_004692C0);
         *slot = t;
     }
     w = (CharFlash *)t->work;
@@ -467,6 +467,6 @@ s32 func_001CBD40(void *self, ScriptCtx *ctx) {
     if (p == 0) {
         return 1;
     }
-    func_00145120(p);
+    amTask_Kill(p);
     return 1;
 }

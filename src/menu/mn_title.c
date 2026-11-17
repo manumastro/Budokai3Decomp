@@ -1,7 +1,7 @@
 #include "common.h"
 #include "menu/menu.h"
 
-/* A data file read with func_0025C670; 0x54 is the pointer to its contents once loaded. */
+/* A data file read with amCdFs_ReadFileId; 0x54 is the pointer to its contents once loaded. */
 typedef struct TitleFile {
     char pad0[4];
     s16 state;          /* 0x04: 3 once loaded */
@@ -73,9 +73,9 @@ extern void func_00227810(void);
 extern void func_0022C700(void);
 extern void func_0022C060(TitleObj *, f32);
 extern void func_0022CD00(TitleObj *);
-extern void func_0012DB00(s32, f32);
-extern void func_0012D790(s32, s32, s32);
-extern void func_0012DC30(s32, s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_PlayAfs(s32, s32, s32);
+extern void amAdx_Pause(s32, s32);
 extern TitleObj *func_0022D670(s32, f32);
 extern TitleObj *func_0022D860(s32, f32);
 extern s32 func_0022BF80(TitleObj *);
@@ -83,20 +83,20 @@ extern void func_0022D0E0(TitleObj *, s32);
 extern void func_00143F20(s32, s32, f32);
 extern void func_00143D60(s32, s32, s32, s32);
 extern void func_002661D0(s32, TitleData *);
-extern s32 func_0012D9F0(s32);
+extern s32 amAdx_GetStat(s32);
 extern void func_001F0830(s32, s32);
 extern void func_001F0810(s32, s32);
 extern void func_00264260(s32, s32, s32);
-extern void func_0025C800(void *, s32);
+extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
-extern void func_0012C360(s32);
+extern void amFile_Load(s32);
 extern void func_00144B70(s32);
 extern void func_00144650(s32);
-extern void func_0012D900(s32);
+extern void amAdx_Stop(s32);
 extern void func_0022DB30(s32);
 extern void func_001484A0(s32, s32);
 extern void func_001F07D0(void);
-extern void *func_0025C670(s32, s32, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
 
 void Title_TaskIdle(Task *t);
 void Title_TaskWait(Task *t);
@@ -145,9 +145,9 @@ void Title_TaskMenu(Task *t) {
 
     Title_Draw(d);
     if (!(d->flags & 1)) {
-        func_0012DB00(0, D_004E0610[0]);
-        func_0012D790(0, 0x210AC, 0);
-        func_0012DC30(0, 0);
+        amAdx_SetVolume(0, D_004E0610[0]);
+        amAdx_PlayAfs(0, 0x210AC, 0);
+        amAdx_Pause(0, 0);
         d->timer = 3000.0f;
         if (d->obj1 == NULL) {
             d->obj1 = func_0022D670(d->res0->f1C[0x74 / 4], 0.0f);
@@ -210,7 +210,7 @@ void Title_TaskWait(Task *t) {
     }
     d->timer -= D_004703BC;
     d->timer -= 1.0f;
-    if (d->timer <= 0.0f || func_0012D9F0(0) == 5) {
+    if (d->timer <= 0.0f || amAdx_GetStat(0) == 5) {
         D_004B4B66[0] ^= 1;
         switch (D_004B4B66[0]) {
         case 0:
@@ -264,7 +264,7 @@ void Title_TaskLoad(Task *t) {
     d = (TitleData *)&t->data;
     if (d->wait != 0) {
         if ((d->wait & 0xFFFF) == 10) {
-            func_0012D900(-1);
+            amAdx_Stop(-1);
         }
         d->wait--;
         return;
@@ -275,15 +275,15 @@ void Title_TaskLoad(Task *t) {
     func_00264260(-1, 0, 0);
     d->res0 = g->file[0]->data;
     g->file[0]->data = NULL;
-    func_0025C800(g->file[0], 0);
+    amCdFs_Close(g->file[0], 0);
     d->res1 = (s32)g->file[1]->data;
     g->file[1]->data = NULL;
-    func_0025C800(g->file[1], 0);
+    amCdFs_Close(g->file[1], 0);
     func_0022E0B0(d->res0);
-    func_0012C360(d->res1);
+    amFile_Load(d->res1);
     func_00144B70(-1);
     func_00144650(0);
-    func_0012D900(-1);
+    amAdx_Stop(-1);
     if (D_004E05F8[0] != 0) {
         func_0022DB30(1);
     } else {
@@ -303,9 +303,9 @@ void Title_TaskLoad(Task *t) {
         TASK_SET_FUNC(t, Title_TaskMenu);
     } else {
         d->obj0 = func_0022D860(d->res0->f14[0], 0.0f);
-        func_0012DB00(0, D_004E0610[0]);
-        func_0012D790(0, 0x210AC, 0);
-        func_0012DC30(0, 0);
+        amAdx_SetVolume(0, D_004E0610[0]);
+        amAdx_PlayAfs(0, 0x210AC, 0);
+        amAdx_Pause(0, 0);
         TASK_SET_FUNC(t, Title_TaskIntro);
     }
 }
@@ -322,10 +322,10 @@ void Title_Exit(void) {
     if (g->task != NULL) {
         d = (TitleData *)&g->task->data;
         if (d->res0 != NULL) {
-            func_0013AC90(d->res0);
+            amHeap_Free(d->res0);
         }
         if (d->res1 != 0) {
-            func_0013AC90((void *)d->res1);
+            amHeap_Free((void *)d->res1);
         }
         if (d->obj0 != NULL) {
             func_0022D0E0(d->obj0, 1);
@@ -333,9 +333,9 @@ void Title_Exit(void) {
         if (d->obj1 != NULL) {
             func_0022D0E0(d->obj1, 1);
         }
-        func_00145120(g->task);
+        amTask_Kill(g->task);
     }
-    func_0013AC90(g);
+    amHeap_Free(g);
     gTitle = NULL;
 }
 
@@ -347,7 +347,7 @@ void Title_Start(s32 arg) {
 
     mode = (s16)arg;
     g = gTitle;
-    g->task = t = func_00144FC0(Title_TaskLoad, 0, 0x1001, 8, 2, D_0046B390);
+    g->task = t = amTask_Create(Title_TaskLoad, 0, 0x1001, 8, 2, D_0046B390);
     t->data.work = NULL;
     d = (TitleData *)&t->data;
     d->res1 = 0;
@@ -371,8 +371,8 @@ void Title_Start(s32 arg) {
 void Title_Load(void) {
     Title *g;
 
-    gTitle = g = func_0013AAB0(0xC, 0, D_0046B3A0, 0x68);
+    gTitle = g = amHeap_Alloc(0xC, 0, D_0046B3A0, 0x68);
     g->task = NULL;
-    g->file[0] = func_0025C670(0x10832, 0, 0);
-    g->file[1] = func_0025C670(0x10833, 0, 0);
+    g->file[0] = amCdFs_ReadFileId(0x10832, 0, 0);
+    g->file[1] = amCdFs_ReadFileId(0x10833, 0, 0);
 }

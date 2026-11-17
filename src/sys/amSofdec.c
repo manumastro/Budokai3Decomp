@@ -13,8 +13,8 @@ typedef struct MotSet {
 } MotSet;
 
 extern void memset(void *, s32, s32);
-extern s32 func_0013CAE0(char *, char *);
-extern s32 func_0013C860(Key *, f32);
+extern s32 amMotion_MatchName(char *, char *);
+extern s32 amMotion_FindKey4(Key *, f32);
 
 /* Movies (Sofdec, MWSFD): one player; the code from 0x142490 on is the only code that names amSofdec.c. */
 typedef struct MwPly MwPly;
@@ -65,33 +65,33 @@ typedef struct SfdCprm {
 
 typedef struct SfdFx { f32 fps; s32 unk4; s32 unk8; s32 unkC; char pad[0x10]; } SfdFx;
 
-extern Movie D_0047E0A0[1];
-extern s8 D_00470318[1];
-extern s32 D_0047031C;
+extern Movie gSofdecMovie[1];
+extern s8 gSofdecFree[1];
+extern s32 gSofdecFreeCount;
 extern s8 D_004703F4;
 extern s8 D_00470208;
 extern char D_0045F570[];
 extern void func_00181FD0(SfdFx *);
 extern void func_00182330(void);
-extern void func_0013AC90(void *);
-extern void *func_0013AAB0(s32, s32, char *, s32);
+extern void amHeap_Free(void *);
+extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void mwPlyGetCurFrm(MwPly *, SfdFrm *);
 extern void mwPlyRelCurFrm(MwPly *);
 extern void mwPlyStartAfs(MwPly *, s32, s32);
 extern s32 mwPlyCalcWorkCprmSfd(SfdCprm *);
 extern MwPly *func_00180290(SfdCprm *);
 extern void func_0012F040(void *, void *, s32);
-void func_00142590(void);
+void amSofdec_DestroyAll(void);
 
 
 
-void func_00141280(MotSet *s, Skel **skel) {
+void amMotSet_Init(MotSet *s, Skel **skel) {
     memset(s, 0, sizeof(MotSet));
     s->u.skel = skel;
 }
 
 
-void func_001412D0(MotSet *s, s32 idx, Mot *m) {
+void amMotSet_Bind(MotSet *s, s32 idx, Mot *m) {
     s16 *map;
     Skel *sk;
     s32 i;
@@ -104,14 +104,14 @@ void func_001412D0(MotSet *s, s32 idx, Mot *m) {
     for (i = 0; i < sk->n; i++) {
         r = 0;
         for (j = 0; j < m->n && r == 0; j++) {
-            r = func_0013CAE0(sk->bones + i * 32, m->bones + j * 32);
+            r = amMotion_MatchName(sk->bones + i * 32, m->bones + j * 32);
         }
         map[i] = r ? j - 1 : -1;
     }
 }
 
 
-void func_001413D0(MotSet *s, s32 packed, f32 t) {
+void amMotSet_Apply(MotSet *s, s32 packed, f32 t) {
     s32 k;
     s32 idx;
     s16 *map;
@@ -130,7 +130,7 @@ void func_001413D0(MotSet *s, s32 packed, f32 t) {
         b = map[i];
         if (b >= 0) {
             key = m->tracks[k].keys[b];
-            p->e[i].key = key->k[func_0013C860(key, t)].v;
+            p->e[i].key = key->k[amMotion_FindKey4(key, t)].v;
         }
     }
 }
@@ -151,7 +151,7 @@ INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142370);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142390);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001423F0);
 
-void func_00142490(void) {
+void amSofdec_Init(void) {
     SfdFx fx;
     s32 i;
 
@@ -166,44 +166,44 @@ void func_00142490(void) {
     fx.unkC = 0;
     func_00181FD0(&fx);
     for (i = 0; i < 1; i++) {
-        D_0047E0A0[i].ply = 0;
-        D_00470318[i] = i;
+        gSofdecMovie[i].ply = 0;
+        gSofdecFree[i] = i;
     }
-    D_0047031C = 1;
+    gSofdecFreeCount = 1;
 }
 
 
-void func_00142560(void) {
-    func_00142590();
+void amSofdec_Exit(void) {
+    amSofdec_DestroyAll();
     func_00182330();
 }
 
 
-void func_00142590(void) {
+void amSofdec_DestroyAll(void) {
     s32 i;
     Movie *m;
 
-    for (i = 0, m = D_0047E0A0; i < 1; i++, m++) {
+    for (i = 0, m = gSofdecMovie; i < 1; i++, m++) {
         if (m->ply) {
             m->ply->vtbl->stop(m->ply);
             m->ply->vtbl->destroy(m->ply);
-            func_0013AC90(m->work);
+            amHeap_Free(m->work);
             if (m->buf && m->own_buf) {
-                func_0013AC90(m->buf);
+                amHeap_Free(m->buf);
             }
             m->ply = 0;
         }
-        D_00470318[i] = i;
+        gSofdecFree[i] = i;
     }
-    D_0047031C = 1;
+    gSofdecFreeCount = 1;
 }
 
 
-void func_00142670(void) {
+void amSofdec_Update(void) {
     s32 i;
     Movie *m;
 
-    for (i = 0, m = D_0047E0A0; i < 1; i++, m++) {
+    for (i = 0, m = gSofdecMovie; i < 1; i++, m++) {
         if (m->ply) {
             if (m->buf) {
                 mwPlyGetCurFrm(m->ply, &m->frm);
@@ -228,14 +228,14 @@ void func_00142670(void) {
 }
 
 
-s32 func_001427D0(MovieParam *p) {
+s32 amSofdec_Create(MovieParam *p) {
     Movie *m;
     s32 id;
     SfdCprm c;
 
-    if (D_0047031C <= 0) return -1;
-    id = D_00470318[--D_0047031C];
-    m = &D_0047E0A0[id];
+    if (gSofdecFreeCount <= 0) return -1;
+    id = gSofdecFree[--gSofdecFreeCount];
+    m = &gSofdecMovie[id];
     memset(&c, 0, sizeof(SfdCprm));
     c.unk20 = p->unk0;
     c.unk0 = p->unk4;
@@ -245,18 +245,18 @@ s32 func_001427D0(MovieParam *p) {
     c.unk10 = p->unk14;
     c.unk14 = D_00470208;
     c.worksize = mwPlyCalcWorkCprmSfd(&c);
-    c.work = func_0013AAB0(c.worksize, 0, D_0045F570, 187);
+    c.work = amHeap_Alloc(c.worksize, 0, D_0045F570, 187);
     m->ply = func_00180290(&c);
     if (m->ply == 0) {
-        func_0013AC90(c.work);
-        D_00470318[D_0047031C] = id;
-        D_0047031C++;
+        amHeap_Free(c.work);
+        gSofdecFree[gSofdecFreeCount] = id;
+        gSofdecFreeCount++;
         return -2;
     }
     m->work = c.work;
     m->buf = p->buf;
     if ((s32)m->buf == -1) {
-        m->buf = func_0013AAB0(p->unkC * p->unk10 * 4, 0, D_0045F570, 200);
+        m->buf = amHeap_Alloc(p->unkC * p->unk10 * 4, 0, D_0045F570, 200);
         m->own_buf = 1;
     } else {
         m->own_buf = 0;
@@ -271,24 +271,24 @@ s32 func_001427D0(MovieParam *p) {
 }
 
 
-void func_001429B0(s32 id) {
+void amSofdec_Destroy(s32 id) {
     Movie *m;
 
     if (id == -1) {
-        func_00142590();
+        amSofdec_DestroyAll();
         return;
     }
-    m = &D_0047E0A0[id];
+    m = &gSofdecMovie[id];
     if (m->ply) {
         m->ply->vtbl->stop(m->ply);
         m->ply->vtbl->destroy(m->ply);
-        func_0013AC90(m->work);
+        amHeap_Free(m->work);
         if (m->buf && m->own_buf) {
-            func_0013AC90(m->buf);
+            amHeap_Free(m->buf);
         }
         m->ply = 0;
-        D_00470318[D_0047031C] = id;
-        D_0047031C++;
+        gSofdecFree[gSofdecFreeCount] = id;
+        gSofdecFreeCount++;
     }
 }
 

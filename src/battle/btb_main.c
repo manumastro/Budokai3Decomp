@@ -63,7 +63,7 @@ static void func_001F8740(StageGroupSrc *src, StageGroup *grp) {
     }
 }
 extern char D_004698D8[];
-extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
 extern void memset(void *, s32, s32);
 void func_001F8420(void *src, StageObj *obj);
 
@@ -73,7 +73,7 @@ void func_001F89D0(s32 index, StageGroupSrc *src, StageGroup *group) {
     group->index = index;
     group->src = src;
     group->count = src->count;
-    group->objs = func_0013AAB0(src->count * sizeof(StageObj), 0, D_004698D8, 0x624);
+    group->objs = amHeap_Alloc(src->count * sizeof(StageObj), 0, D_004698D8, 0x624);
     memset(group->objs, 0, src->count * sizeof(StageObj));
     for (i = 0; i < src->count; i++) {
         func_001F8420(src->objs[i], &group->objs[i]);
@@ -90,7 +90,7 @@ StageGroup *func_001F8AA0(StageHeader *hdr) {
     if (hdr->ngroups <= 0) {
         return NULL;
     }
-    groups = func_0013AAB0(hdr->ngroups * sizeof(StageGroup), 0, D_004698D8, 0x5F2);
+    groups = amHeap_Alloc(hdr->ngroups * sizeof(StageGroup), 0, D_004698D8, 0x5F2);
     memset(groups, 0, hdr->ngroups * sizeof(StageGroup));
     g = groups;
     for (i = 0; i < hdr->ngroups; i++, g++) {
@@ -147,7 +147,7 @@ void func_001F8DE0(StageWork *w) {
     }
     if (hdr->nobjs > 0) {
         w->nobjs = hdr->nobjs;
-        w->objs = func_0013AAB0(hdr->nobjs * sizeof(StageObj), 0, D_004698D8, 0x59A);
+        w->objs = amHeap_Alloc(hdr->nobjs * sizeof(StageObj), 0, D_004698D8, 0x59A);
         memset(w->objs, 0, hdr->nobjs * sizeof(StageObj));
         for (i = 0; i < hdr->nobjs; i++) {
             func_001F8420(hdr->objs[i], &w->objs[i]);
@@ -155,13 +155,13 @@ void func_001F8DE0(StageWork *w) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F8ED0);
-extern void func_0025C800(void *, s32);
+extern void amCdFs_Close(void *, s32);
 extern void func_001A5160(void *);
 
 void func_001F9270(StageWork *w) {
     w->data = (void *)w->unk14[0x54 / 4];
     w->unk14[0x54 / 4] = 0;
-    func_0025C800(w->unk14, 0);
+    amCdFs_Close(w->unk14, 0);
     w->unk14 = NULL;
     func_001A5160(w->data);
     w->hdr = func_001A50F0(w->data, 0);
@@ -191,10 +191,10 @@ void func_001F93C0(void) {
     }
 }
 extern void func_0012F2C0(void);
-extern s32 func_001339D0(s32, s32);
+extern s32 amGs_SetReg32(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_00139620(s32, void *, s32, s32, s32, f32);
-extern void func_00137EE0(void);
+extern void amDraw_FlushPacket(void);
 extern void func_00133CE0(s32);
 extern void func_001F64E0(void);
 
@@ -213,13 +213,13 @@ void func_001F9420(void) {
             col[1] = (u32)BW_FIELD(bw, u8, 0x8929) / 255.0f;
             col[2] = (u32)BW_FIELD(bw, u8, 0x892A) / 255.0f;
             col[3] = *alpha;
-            save = func_001339D0(0, 0);
-            func_001339D0(0, 0x33001);
+            save = amGs_SetReg32(0, 0);
+            amGs_SetReg32(0, 0x33001);
             func_00133780(0, 1);
             func_00139620(0x1900, col, -1, 0x44, 0, 0.0f);
-            func_00137EE0();
+            amDraw_FlushPacket();
             func_00133780(0, 0);
-            func_001339D0(0, save);
+            amGs_SetReg32(0, save);
         }
         func_00133CE0(0);
         func_0013B0B0(0);
@@ -265,7 +265,7 @@ void func_001F9660(void) {
         func_00133B50(0, 0);
         func_00133780(0, 1);
         func_00139620(0x102, col, -1, 0, 0, 0.0f);
-        func_00137EE0();
+        amDraw_FlushPacket();
         func_00133780(0, 0);
         if (D_0051CCE0.flags & 0x20) {
             func_00133CE0(1);
@@ -407,7 +407,7 @@ void func_001F9E10(void) {
     func_001F9E40();
     func_001F9F50();
 }
-extern void func_00145120(s32);
+extern void amTask_Kill(s32);
 extern void func_001F7F50(void);
 extern void func_001F6140(void);
 
@@ -415,31 +415,31 @@ void func_001F9E40(void) {
     s32 i;
 
     if (D_0051CCE0.unkA4[0] != 0) {
-        func_00145120(D_0051CCE0.unkA4[0]);
+        amTask_Kill(D_0051CCE0.unkA4[0]);
         D_0051CCE0.unkA4[0] = 0;
     }
     if (D_0051CCE0.unkA4[1] != 0) {
-        func_00145120(D_0051CCE0.unkA4[1]);
+        amTask_Kill(D_0051CCE0.unkA4[1]);
         D_0051CCE0.unkA4[1] = 0;
     }
     if (D_0051CCE0.unkA4[2] != 0) {
-        func_00145120(D_0051CCE0.unkA4[2]);
+        amTask_Kill(D_0051CCE0.unkA4[2]);
         D_0051CCE0.unkA4[2] = 0;
     }
     if (D_0051CCE0.unkA4[3] != 0) {
-        func_00145120(D_0051CCE0.unkA4[3]);
+        amTask_Kill(D_0051CCE0.unkA4[3]);
         D_0051CCE0.unkA4[3] = 0;
     }
     if (D_0051CCE0.unkA4[4] != 0) {
-        func_00145120(D_0051CCE0.unkA4[4]);
+        amTask_Kill(D_0051CCE0.unkA4[4]);
         D_0051CCE0.unkA4[4] = 0;
     }
     if (D_0051CCE0.unkA4[5] != 0) {
-        func_00145120(D_0051CCE0.unkA4[5]);
+        amTask_Kill(D_0051CCE0.unkA4[5]);
         D_0051CCE0.unkA4[5] = 0;
     }
     if (D_0051CCE0.unkA4[6] != 0) {
-        func_00145120(D_0051CCE0.unkA4[6]);
+        amTask_Kill(D_0051CCE0.unkA4[6]);
         D_0051CCE0.unkA4[6] = 0;
     }
     func_001F7F50();
@@ -453,32 +453,32 @@ extern char D_00469910[];
 extern char D_00469920[];
 extern char D_00469930[];
 extern char D_00469940[];
-extern void *func_00144FC0(void (*update)(void), void (*kill)(void), s32 prio, s32, s32, char *name);
+extern void *amTask_Create(void (*update)(void), void (*kill)(void), s32 prio, s32, s32, char *name);
 extern void func_001F62A0(void);
 extern void func_002CF8F0(void);
 extern void func_001F7FA0(void);
 
 void func_001F9F50(void) {
     if (D_0051CCE0.unkA4[0] == 0) {
-        D_0051CCE0.unkA4[0] = (s32)func_00144FC0(func_001F9660, 0, 0x3100, 0x200, 0x4000004, D_004698E8);
+        D_0051CCE0.unkA4[0] = (s32)amTask_Create(func_001F9660, 0, 0x3100, 0x200, 0x4000004, D_004698E8);
     }
     if (D_0051CCE0.unkA4[1] == 0) {
-        D_0051CCE0.unkA4[1] = (s32)func_00144FC0(func_001F9600, 0, 0x3200, 0x200, 0x4000004, D_004698F8);
+        D_0051CCE0.unkA4[1] = (s32)amTask_Create(func_001F9600, 0, 0x3200, 0x200, 0x4000004, D_004698F8);
     }
     if (D_0051CCE0.unkA4[3] == 0) {
-        D_0051CCE0.unkA4[3] = (s32)func_00144FC0(func_001F9420, 0, 0x3300, 0x200, 0x4000004, D_00469900);
+        D_0051CCE0.unkA4[3] = (s32)amTask_Create(func_001F9420, 0, 0x3300, 0x200, 0x4000004, D_00469900);
     }
     if (D_0051CCE0.unkA4[2] == 0) {
-        D_0051CCE0.unkA4[2] = (s32)func_00144FC0(func_001F93C0, 0, 0x3600, 0x200, 0x4000004, D_00469910);
+        D_0051CCE0.unkA4[2] = (s32)amTask_Create(func_001F93C0, 0, 0x3600, 0x200, 0x4000004, D_00469910);
     }
     if (D_0051CCE0.unkA4[4] == 0) {
-        D_0051CCE0.unkA4[4] = (s32)func_00144FC0(func_001F9360, 0, 0x3800, 0x200, 0x4000004, D_00469920);
+        D_0051CCE0.unkA4[4] = (s32)amTask_Create(func_001F9360, 0, 0x3800, 0x200, 0x4000004, D_00469920);
     }
     if (D_0051CCE0.unkA4[5] == 0) {
-        D_0051CCE0.unkA4[5] = (s32)func_00144FC0(func_001F9310, 0, 0x3800, 0x200, 0x4000004, D_00469930);
+        D_0051CCE0.unkA4[5] = (s32)amTask_Create(func_001F9310, 0, 0x3800, 0x200, 0x4000004, D_00469930);
     }
     if (D_0051CCE0.unkA4[6] == 0) {
-        D_0051CCE0.unkA4[6] = (s32)func_00144FC0(func_001F97A0, 0, 0x5700, 0x200, 0x4000002, D_00469940);
+        D_0051CCE0.unkA4[6] = (s32)amTask_Create(func_001F97A0, 0, 0x5700, 0x200, 0x4000002, D_00469940);
     }
     func_001F62A0();
     D_0051CCE0.area = D_0044AE50[D_0051CCE0.stage].startArea;

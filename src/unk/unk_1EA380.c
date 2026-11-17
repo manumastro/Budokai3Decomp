@@ -19,16 +19,16 @@ extern s32 D_00470604;
 extern s32 D_00470608;
 
 extern u32 func_00127BA0(char *);
-extern void func_0012EC10(u32, s32, char *);
+extern void amDbg_Printf(u32, s32, char *);
 extern void func_001F0820(void);
 extern void func_00264300(s32, void (*)(void), s32);
 
 void func_001EA380(Task *t) {
-    func_0012EC10((0x40 - func_00127BA0(D_004696A8)) >> 1, 10, D_004696A8);
+    amDbg_Printf((0x40 - func_00127BA0(D_004696A8)) >> 1, 10, D_004696A8);
 }
 
 void func_001EA3C0(Task *t) {
-    func_0012EC10((0x40 - func_00127BA0(D_004696A8)) >> 1, 10, D_004696A8);
+    amDbg_Printf((0x40 - func_00127BA0(D_004696A8)) >> 1, 10, D_004696A8);
     if ((D_00492FCE[0] | D_00493086[0]) & 0x4000) {
         if (D_00470600 == -1) {
             D_00470600 = 6;

@@ -51,22 +51,22 @@ typedef struct SizeQuery2 {
 } SizeQuery2;
 
 extern char D_00469338[];
-extern void *func_0013AAB0(s32 size, s32 flag, char *file, s32 line);
-extern void func_0013AC90(void *);
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
+extern void amHeap_Free(void *);
 extern void memset(void *, s32, s32);
-extern s32 func_0013DF20(void *);
-extern AcsrFile *func_0025C670(s32, s32, s32);
-extern void func_0025C800(void *, s32);
-extern void func_0025C9D0(void *);
+extern s32 amObject_GetSize(void *);
+extern AcsrFile *amCdFs_ReadFileId(s32, s32, s32);
+extern void amCdFs_Close(void *, s32);
+extern void amCdFs_ReleaseCache(void *);
 extern void func_00145CC0(s32, void *);
 extern void func_0013B0B0(void *);
 extern void func_0013B110(s32);
 extern void func_0013B960(Mtx *);
 extern void func_0013E0A0(s32);
-extern void func_0012C360(s32);
+extern void amFile_Load(s32);
 extern s32 func_001A50F0(s32, s32);
-extern s32 func_0013DF40(s32, s32);
-extern s32 func_0013C5E0(s32, AcsrData *);
+extern s32 amObject_Create(s32, s32);
+extern s32 amMotion_FindBone(s32, AcsrData *);
 
 static inline void Acsr_Draw(Acsr *a) {
     func_00145CC0(a->unk18, a->unk1C);
@@ -101,9 +101,9 @@ typedef struct AcsrCloth {
 
 extern u8 D_003F0800[];
 extern s64 D_003F01C8[];
-extern void func_00137FC0(s32);
-extern void func_00137D20(s32);
-extern void func_00137EE0(void);
+extern void amDraw_SetPacketMode(s32);
+extern void amDraw_ClosePacket(s32);
+extern void amDraw_FlushPacket(void);
 extern void func_00134690(s32, s32, s32, s32, s64, s32);
 extern void func_00136310(ClothPt *, ClothPt *);
 extern void func_00135C60(ClothPt *, Vec4 *, Vec4 *);
@@ -131,11 +131,11 @@ void func_001D0C00(Acsr *a) {
 void func_001D0E40(Acsr *a) {
     if (a != 0) {
         if (a->unk20 != 0) {
-            func_0025C9D0(a->file);
+            amCdFs_ReleaseCache(a->file);
         } else {
-            func_0025C800(a->file, 0);
+            amCdFs_Close(a->file, 0);
         }
-        func_0013AC90(a);
+        amHeap_Free(a);
     }
 }
 void func_001D0EA0(Acsr *a, AcsrOwner *owner, void *slot) {
@@ -147,20 +147,20 @@ void func_001D0EA0(Acsr *a, AcsrOwner *owner, void *slot) {
         if (f != 0) {
             a->file = f->next;
             a->unk20 = f->next->data;
-            func_0012C360(a->unk20);
+            amFile_Load(a->unk20);
             f->next = 0;
-            func_0025C800(f, 0);
+            amCdFs_Close(f, 0);
             a->unk24 = func_001A50F0(a->unk20, 0);
-            func_0012C360(a->unk24);
+            amFile_Load(a->unk24);
             a->unk18 = func_001A50F0(a->unk20, 1);
-            func_0012C360(a->unk18);
+            amFile_Load(a->unk18);
         }
         if (a->unk24 != 0) {
-            a->model = func_0013DF40(a->unk24, a->model);
+            a->model = amObject_Create(a->unk24, a->model);
         }
         a->joint = -1;
         if (a->owner != 0) {
-            a->joint = func_0013C5E0(a->owner->unk004, a->data);
+            a->joint = amMotion_FindBone(a->owner->unk004, a->data);
         }
     }
 }
@@ -178,14 +178,14 @@ Acsr *func_001D0FC0(AcsrData *data) {
         return 0;
     }
     q.count = 0x10;
-    size = ((func_0013DF20(&q) + 15) & ~15) + 0x30;
-    a = func_0013AAB0(size, 1, D_00469338, 113);
+    size = ((amObject_GetSize(&q) + 15) & ~15) + 0x30;
+    a = amHeap_Alloc(size, 1, D_00469338, 113);
     memset(a, 0, size);
     a->model = (s32)((u8 *)a + 0x30);
     a->data = data;
     a->loading = 0;
     if (data->file != -1) {
-        a->loading = a->file = func_0025C670(data->file, 0, 1);
+        a->loading = a->file = amCdFs_ReadFileId(data->file, 0, 1);
     }
     return a;
 }
@@ -204,11 +204,11 @@ void func_001D15C0(AcsrCloth *c) {
         func_0013B0B0(D_003F0800);
         w = c->w;
         h = c->h;
-        func_00137FC0(1);
+        amDraw_SetPacketMode(1);
         j = 0;
         for (i = 0; i < h - 1; i++) {
             if (i != 0) {
-                func_00137D20(-1);
+                amDraw_ClosePacket(-1);
             } else {
                 func_00134690(1, 0x800200, 0, -1, 0, 0);
             }
@@ -216,8 +216,8 @@ void func_001D15C0(AcsrCloth *c) {
                 func_00136310(&c->pts[j + c->w * i], &c->pts[j + c->w * (i + 1)]);
             }
         }
-        func_00137EE0();
-        func_00137FC0(0);
+        amDraw_FlushPacket();
+        amDraw_SetPacketMode(0);
         func_0013B110(1);
     }
 }
@@ -240,11 +240,11 @@ void func_001D16F0(AcsrCloth *c) {
         h = c->h;
         n = (c->color2 >= 0 && D_003F01C8[0] == 0x42) ? 2 : 1;
         func_0013B0B0(D_003F0800);
-        func_00137FC0(1);
+        amDraw_SetPacketMode(1);
         for (k = 0; k < n; k++) {
             for (i = 0; i < h - 1; i++) {
                 if (i != 0) {
-                    func_00137D20(-1);
+                    amDraw_ClosePacket(-1);
                 } else {
                     if (k == 0) {
                         mode = 0x425;
@@ -263,8 +263,8 @@ void func_001D16F0(AcsrCloth *c) {
                 }
             }
         }
-        func_00137EE0();
-        func_00137FC0(0);
+        amDraw_FlushPacket();
+        amDraw_SetPacketMode(0);
         func_0013B110(1);
     }
 }

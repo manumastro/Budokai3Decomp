@@ -143,9 +143,9 @@ static inline f32 Scr_GetSpeed(void) {
 extern void func_0020DDD0(s32, ScrEffect *);
 extern void func_0020DE30(void);
 extern void func_0020DE40(s32);
-extern void func_00145120(ScrTask *);
+extern void amTask_Kill(ScrTask *);
 extern char D_0046B080[];
-extern ScrTask *func_00144FC0(void *, s32, s32, s32, s32, char *);
+extern ScrTask *amTask_Create(void *, s32, s32, s32, s32, char *);
 void func_0025D980(ScrTask *);
 extern void func_0020E070(s32, ScrVec *);
 extern void func_0020E120(s32, s32);
@@ -249,7 +249,7 @@ void func_0025D980(ScrTask *task) {
             D_0046FE4C->f916 = 1;
             break;
         case 1:
-            func_00145120(task);
+            amTask_Kill(task);
             D_0046FE4C->f916 = 2;
             break;
         }
@@ -260,7 +260,7 @@ s32 func_0025DA10(ScrCtx *ctx, ScrCmd *cmd) {
     s32 v = cmd->args[0].i;
 
     if (D_0046FE4C->f916 == 0) {
-        func_00144FC0(func_0025D980, 0, 0x3900, 0x400, 0x800002, D_0046B080)->f30 = v;
+        amTask_Create(func_0025D980, 0, 0x3900, 0x400, 0x800002, D_0046B080)->f30 = v;
     }
     return 1;
 }
@@ -384,7 +384,7 @@ void func_0025E1A0(ScrFadeTask *task) {
     if (!Scr_IsPaused() && f->end != -1.0f) {
         f->cur += Scr_GetSpeed();
         if (!(f->cur < f->end)) {
-            func_00145120((ScrTask *)task);
+            amTask_Kill((ScrTask *)task);
         }
     }
     func_0020EA70(f->id);
@@ -400,7 +400,7 @@ s32 func_0025E270(ScrCtx *ctx, ScrCmd *cmd) {
     ScrFade *f;
 
     func_0020F370(id, a[5].f, a[4].f, a[3].f, a[2].f);
-    f = &((ScrFadeTask *)func_00144FC0(func_0025E1A0, 0, pri, 0x400, 0x800002, D_0046B0E0))->fade;
+    f = &((ScrFadeTask *)amTask_Create(func_0025E1A0, 0, pri, 0x400, 0x800002, D_0046B0E0))->fade;
     f->id = id;
     f->cur = -Scr_GetSpeed();
     f->end = end;
@@ -428,7 +428,7 @@ void func_0025E3A0(ScrFadeTask *task) {
     if (!Scr_IsPaused() && f->end != -1.0f) {
         f->cur += Scr_GetSpeed();
         if (!(f->cur < f->end)) {
-            func_00145120((ScrTask *)task);
+            amTask_Kill((ScrTask *)task);
         }
     }
     func_0020EBF0(f->id);
@@ -438,7 +438,7 @@ s32 func_0025E470(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 id = a[2].i;
     s32 end = a[1].i;
-    ScrFade *f = &((ScrFadeTask *)func_00144FC0(func_0025E3A0, 0, a[0].i, 0x400, 0x800002, D_0046B100))->fade;
+    ScrFade *f = &((ScrFadeTask *)amTask_Create(func_0025E3A0, 0, a[0].i, 0x400, 0x800002, D_0046B100))->fade;
 
     f->id = id;
     f->cur = -Scr_GetSpeed();
@@ -470,7 +470,7 @@ void func_0025E760(ScrFadeTask *task) {
     if (!Scr_IsPaused() && f->end != -1.0f) {
         f->cur += Scr_GetSpeed();
         if (!(f->cur < f->end)) {
-            func_00145120((ScrTask *)task);
+            amTask_Kill((ScrTask *)task);
         }
     }
     func_0020EC70(f->id);
@@ -480,7 +480,7 @@ s32 func_0025E830(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 id = a[2].i;
     s32 end = a[1].i;
-    ScrFade *f = &((ScrFadeTask *)func_00144FC0(func_0025E760, 0, a[0].i, 0x400, 0x800002, D_0046B140))->fade;
+    ScrFade *f = &((ScrFadeTask *)amTask_Create(func_0025E760, 0, a[0].i, 0x400, 0x800002, D_0046B140))->fade;
 
     f->id = id;
     f->cur = -Scr_GetSpeed();
@@ -510,7 +510,7 @@ void func_0025E960(ScrFadeTask *task) {
     if (!Scr_IsPaused() && f->end != -1.0f) {
         f->cur += Scr_GetSpeed();
         if (!(f->cur < f->end)) {
-            func_00145120((ScrTask *)task);
+            amTask_Kill((ScrTask *)task);
         }
     }
     func_0020EDA0(f->id);
@@ -520,7 +520,7 @@ s32 func_0025EA30(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 id = a[2].i;
     s32 end = a[1].i;
-    ScrFade *f = &((ScrFadeTask *)func_00144FC0(func_0025E960, 0, a[0].i, 0x400, 0x800002, D_0046B160))->fade;
+    ScrFade *f = &((ScrFadeTask *)amTask_Create(func_0025E960, 0, a[0].i, 0x400, 0x800002, D_0046B160))->fade;
 
     f->id = id;
     f->cur = -Scr_GetSpeed();

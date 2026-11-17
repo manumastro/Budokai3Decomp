@@ -18,7 +18,7 @@ typedef struct Effect21A {
 } Effect21A;
 
 extern void func_00209530(void *);
-extern void func_00145120(void *);
+extern void amTask_Kill(void *);
 
 void func_0021A7D0(Effect21A *e) {
     if (e->f40 != NULL) {
@@ -26,7 +26,7 @@ void func_0021A7D0(Effect21A *e) {
         e->f40 = NULL;
     }
     if (e->f44 != NULL) {
-        func_00145120(e->f44);
+        amTask_Kill(e->f44);
         e->f44 = NULL;
     }
 }

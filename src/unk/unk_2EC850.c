@@ -159,13 +159,13 @@ void func_002EC9B0(void) {
 void func_002EC9B0(void);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EC850", func_002EC9B0);
 
-extern void func_00145120(void *);
+extern void amTask_Kill(void *);
 
 void func_002ECAC0(void) {
     ResultMsg msg;
 
     if (D_00470960 != NULL) {
-        func_00145120(D_00470960);
+        amTask_Kill(D_00470960);
         D_00470960 = NULL;
     }
     func_002BD510();
@@ -178,14 +178,14 @@ extern char D_0046F6B8[];
 extern void func_001F07D0(void);
 extern void func_00144B70(s32);
 extern void func_00144650(s32);
-extern void func_0012D900(s32);
-extern void *func_00144FC0(void (*)(ResultTask *), s32, s32, s32, s32, char *);
+extern void amAdx_Stop(s32);
+extern void *amTask_Create(void (*)(ResultTask *), s32, s32, s32, s32, char *);
 
 void func_002ECB10(void) {
     func_001F07D0();
     func_00144B70(-1);
     func_00144650(0);
-    func_0012D900(-1);
-    D_00470960 = func_00144FC0(func_002EC850, 0, 0xA000, 2, 0x80000, D_0046F6B8);
+    amAdx_Stop(-1);
+    D_00470960 = amTask_Create(func_002EC850, 0, 0xA000, 2, 0x80000, D_0046F6B8);
     func_0028EB40(D_00470960, 1, func_002EC9B0, 0);
 }

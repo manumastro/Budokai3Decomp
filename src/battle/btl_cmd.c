@@ -71,8 +71,8 @@ extern f32 D_00495800[16][4];
 extern f32 D_00495900[16][4];
 extern void func_00125740(void *, void *, s32);
 extern s32 func_001A51E0(MotTrack *, s32);
-extern void func_00145180(s32, s32, s32);
-extern void *func_00144FC0(void (*update)(void *), void *, s32, s32, s32, char *);
+extern void amTask_KillGroup(s32, s32, s32);
+extern void *amTask_Create(void (*update)(void *), void *, s32, s32, s32, char *);
 extern char D_004681D0[];
 extern void func_001A8640(void);
 void func_001A8300(void *);
@@ -228,7 +228,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A80E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A81F0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8300);
 void func_001A83D0(void) {
-    func_00145180(0x20, 0x20000010, 1);
+    amTask_KillGroup(0x20, 0x20000010, 1);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A83F0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A84B0);
@@ -241,15 +241,15 @@ void func_001A8830(void) {
 void func_001A8840(void) {
 }
 void func_001A8850(void) {
-    func_00145180(0x20, 0x20000000, 1);
-    func_00144FC0(func_001A8300, 0, 0x5500, 0x20, 0x20000002, D_004681D0);
+    amTask_KillGroup(0x20, 0x20000000, 1);
+    amTask_Create(func_001A8300, 0, 0x5500, 0x20, 0x20000002, D_004681D0);
     func_001A8640();
 }
 void func_001A88B0(void) {
-    func_00145180(0x20, 0x20000000, 1);
+    amTask_KillGroup(0x20, 0x20000000, 1);
 }
 void func_001A88C0(void) {
-    func_00144FC0(func_001A8300, 0, 0x5500, 0x20, 0x20000002, D_004681D0);
+    amTask_Create(func_001A8300, 0, 0x5500, 0x20, 0x20000002, D_004681D0);
     func_001A8640();
 }
 void func_001A8910(void) {

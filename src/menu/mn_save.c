@@ -1,7 +1,7 @@
 #include "common.h"
 #include "menu/menu.h"
 
-/* A data file read with func_0025C670; 0x54 is the pointer to its contents once loaded. */
+/* A data file read with amCdFs_ReadFileId; 0x54 is the pointer to its contents once loaded. */
 typedef struct SaveFile {
     char pad0[4];
     s16 state;          /* 0x04: 3 once loaded */
@@ -46,8 +46,8 @@ extern void func_001F07A0(void);
 extern void memset(void *, s32, s32);
 extern void func_0028DF20(void);
 extern s32 func_0028DFC0(s32, s32, s32, char *, s32, s32, s32, char *, s32);
-extern void *func_0025C670(s32, s32, s32);
-extern void func_0025C800(void *, s32);
+extern void *amCdFs_ReadFileId(s32, s32, s32);
+extern void amCdFs_Close(void *, s32);
 
 void Save_TaskWait(Task *t);
 void Save_TaskIdle(Task *t);
@@ -55,7 +55,7 @@ void Save_TaskIdle(Task *t);
 void Save_TaskWrite(Task *t) {
     SaveData *d = (SaveData *)&t->data;
 
-    d->buf = func_0013AAB0(0xD680, 0, D_0046F470, 0x233);
+    d->buf = amHeap_Alloc(0xD680, 0, D_0046F470, 0x233);
     d->own = 1;
     func_001EFDB0(d->buf, D_004B4B40);
     func_00119BF0(&D_00470840);
@@ -66,7 +66,7 @@ void Save_TaskWrite(Task *t) {
         TASK_SET_FUNC(t, Save_TaskWait);
         d->state = 2;
     } else {
-        func_0013AC90(d->buf);
+        amHeap_Free(d->buf);
         d->buf = NULL;
         d->state = 3;
         d->request = 0;
@@ -78,7 +78,7 @@ void Save_TaskWrite(Task *t) {
 void Save_TaskCreate(Task *t) {
     SaveData *d = (SaveData *)&t->data;
 
-    d->buf = func_0013AAB0(0xD680, 0, D_0046F470, 0x1ED);
+    d->buf = amHeap_Alloc(0xD680, 0, D_0046F470, 0x1ED);
     d->own = 1;
     func_001EFDB0(d->buf, D_004B4B40);
     func_00119BF0(&D_00470840);
@@ -89,7 +89,7 @@ void Save_TaskCreate(Task *t) {
         TASK_SET_FUNC(t, Save_TaskWait);
         d->state = 2;
     } else {
-        func_0013AC90(d->buf);
+        amHeap_Free(d->buf);
         d->buf = NULL;
         d->state = 3;
         func_001F07A0();
@@ -161,7 +161,7 @@ void Save_TaskWait(Task *t) {
         break;
     }
     if (d->buf != NULL && d->own != 0) {
-        func_0013AC90(d->buf);
+        amHeap_Free(d->buf);
         d->buf = NULL;
         d->own = 0;
     }
@@ -209,10 +209,10 @@ void Save_Exit(void) {
     d = (SaveData *)&gSaveTask->data;
     for (i = 0; i < 3; i++) {
         if (d->file[i] != NULL) {
-            func_0025C800(d->file[i], 0);
+            amCdFs_Close(d->file[i], 0);
         }
     }
-    func_00145120(gSaveTask);
+    amTask_Kill(gSaveTask);
     gSaveTask = NULL;
     func_0028DF20();
 }
@@ -229,11 +229,11 @@ void Save_Request(s32 mode, s32 step, char *buf) {
 void Save_Load(s32 prio) {
     SaveData *d;
 
-    gSaveTask = func_00144FC0(Save_TaskLoad, 0, prio, 0x200, 2, D_0046F4A0);
+    gSaveTask = amTask_Create(Save_TaskLoad, 0, prio, 0x200, 2, D_0046F4A0);
     d = (SaveData *)&gSaveTask->data;
     memset(d, 0, 0x30);
-    d->file[0] = func_0025C670(0x1081F, 0, 0);
-    d->file[1] = func_0025C670(0x1081D, 0, 0);
-    d->file[2] = func_0025C670(0x1081E, 0, 0);
+    d->file[0] = amCdFs_ReadFileId(0x1081F, 0, 0);
+    d->file[1] = amCdFs_ReadFileId(0x1081D, 0, 0);
+    d->file[2] = amCdFs_ReadFileId(0x1081E, 0, 0);
     d->state = 1;
 }

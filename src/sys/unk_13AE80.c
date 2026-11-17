@@ -15,12 +15,12 @@ typedef struct Mtx {
     f32 m[4][4];
 } Mtx;
 
-extern s32 D_004702E4;
-extern Mtx *D_004702E0;
+extern s32 gMtxStackDepth;
+extern Mtx *gMtxStackPtr;
 extern Mtx D_0047D7C0[];
 extern Mtx D_0047D800[];
 
-Blk *func_0013AE80(Blk *b, s32 size, s32 top) {
+Blk *amHeap_Split(Blk *b, s32 size, s32 top) {
     s32 n;
     Blk *next;
     if (b->size <= size + 0x40) {
@@ -48,19 +48,19 @@ Blk *func_0013AE80(Blk *b, s32 size, s32 top) {
     b->p18->flags = 0;
     return b;
 }
-void func_0013AF80(void) {
-    D_004702E4 = 0;
-    D_004702E0 = D_0047D7C0;
+void amMtxStack_Init(void) {
+    gMtxStackDepth = 0;
+    gMtxStackPtr = D_0047D7C0;
 }
 INCLUDE_ASM("asm/nonmatchings/sys/unk_13AE80", func_0013AFA0);
-s32 func_0013B000(s32 n) {
-    D_004702E4 -= n;
-    if (D_004702E4 < 0) {
-        D_004702E4 = 0;
-        D_004702E0 = D_0047D800;
+s32 amMtxStack_Pop(s32 n) {
+    gMtxStackDepth -= n;
+    if (gMtxStackDepth < 0) {
+        gMtxStackDepth = 0;
+        gMtxStackPtr = D_0047D800;
         return 0;
     }
-    D_004702E0 -= n;
+    gMtxStackPtr -= n;
     return -1;
 }
 INCLUDE_ASM("asm/nonmatchings/sys/unk_13AE80", func_0013B060);

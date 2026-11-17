@@ -7,8 +7,8 @@ typedef struct Vec4 {
 } Vec4;
 
 /* The packet being built (a bump pointer) and its counters. */
-extern u8 *D_00470228;
-extern s32 D_00470290, D_00470294, D_00470298, D_0047029C;
+extern u8 *gPacketPtr;
+extern s32 gPacketQwc, D_00470294, D_00470298, D_0047029C;
 extern s32 D_00470270;
 extern u8 *D_0047027C;
 extern f32 D_003F01E0[4];
@@ -25,20 +25,20 @@ extern Vec4 D_0047CA30;
  * store the GS XYZ2 register data; the original's inline assembly, with C temporaries x, y, z. */
 
 void func_00137440(u32 a0, s32 alpha) {
-    u8 *p = D_00470228;
+    u8 *p = gPacketPtr;
     *(u32 *)p = a0;
     *(u64 *)(p + 8) = 0x3D;
     p[0x17] = 0xFF - alpha;
     *(u64 *)(p + 0x18) = 0xA;
-    D_00470228 = p + 0x20;
-    D_00470290 += 2;
+    gPacketPtr = p + 0x20;
+    gPacketQwc += 2;
     D_00470294 += 2;
     D_00470298 += 2;
 }
 
 
 void func_001374A0(Vec4 *v, f32 *uv) {
-    u8 *p = D_00470228;
+    u8 *p = gPacketPtr;
 
     ((f32 *)p)[0] = uv[0];
     ((f32 *)p)[1] = uv[1];
@@ -75,14 +75,14 @@ void func_001374A0(Vec4 *v, f32 *uv) {
             sw x, 0x10(p)
         }
     }
-    D_00470228 = p + 0x20;
-    D_00470290 += 2;
+    gPacketPtr = p + 0x20;
+    gPacketQwc += 2;
     D_00470294 += 2;
     D_00470298 += 2;
 }
 
 void func_00137560(Vec4 *v, f32 *uv) {
-    u8 *p = D_00470228;
+    u8 *p = gPacketPtr;
 
     *(s16 *)(p + 0) = (s32)(16.0f * uv[0]);
     *(s16 *)(p + 2) = (s32)(16.0f * uv[1]);
@@ -119,14 +119,14 @@ void func_00137560(Vec4 *v, f32 *uv) {
             sw x, 0x10(p)
         }
     }
-    D_00470228 = p + 0x20;
-    D_00470290 += 2;
+    gPacketPtr = p + 0x20;
+    gPacketQwc += 2;
     D_00470294 += 2;
     D_00470298 += 2;
 }
 
 void func_00137650(Vec4 *v, Vec4 *c, f32 *uv) {
-    u8 *p = D_00470228;
+    u8 *p = gPacketPtr;
 
     if (c == 0) c = (Vec4 *)D_003F01E0;
     *(s16 *)(p + 0) = (s32)(16.0f * uv[0]);
@@ -172,14 +172,14 @@ void func_00137650(Vec4 *v, Vec4 *c, f32 *uv) {
             sw x, 0(q)
         }
     }
-    D_00470228 = p + 0x30;
-    D_00470290 += 3;
+    gPacketPtr = p + 0x30;
+    gPacketQwc += 3;
     D_00470294 += 3;
     D_00470298 += 3;
 }
 
 void func_001377E0(Vec4 *v, Vec4 *c) {
-    u8 *p = D_00470228;
+    u8 *p = gPacketPtr;
 
     if (c == 0) c = (Vec4 *)D_003F01E0;
     VMUL(p, c, &D_0047CA30);
@@ -222,14 +222,14 @@ void func_001377E0(Vec4 *v, Vec4 *c) {
             sw x, 0(q)
         }
     }
-    D_00470228 = p + 0x20;
-    D_00470290 += 2;
+    gPacketPtr = p + 0x20;
+    gPacketQwc += 2;
     D_00470294 += 2;
     D_00470298 += 2;
 }
 
 void func_00137920(Vec4 *va, Vec4 *c0, Vec4 *vb, Vec4 *c1) {
-    u8 *p = D_00470228;
+    u8 *p = gPacketPtr;
 
     if (c0 == 0) c0 = (Vec4 *)D_003F01E0;
     if (c1 == 0) c1 = (Vec4 *)D_003F01E0;
@@ -313,14 +313,14 @@ void func_00137920(Vec4 *va, Vec4 *c0, Vec4 *vb, Vec4 *c1) {
             sw x, 0(q)
         }
     }
-    D_00470228 = p + 0x40;
-    D_00470290 += 4;
+    gPacketPtr = p + 0x40;
+    gPacketQwc += 4;
     D_00470294 += 4;
     D_00470298 += 4;
 }
 
 void func_00137B60(Vec4 *v) {
-    u8 *p = D_00470228;
+    u8 *p = gPacketPtr;
 
     {
         u32 x, y, z;
@@ -354,14 +354,14 @@ void func_00137B60(Vec4 *v) {
             sw x, 0(p)
         }
     }
-    D_00470228 = p + 0x10;
-    D_00470290 += 1;
+    gPacketPtr = p + 0x10;
+    gPacketQwc += 1;
     D_00470294 += 1;
     D_00470298 += 1;
 }
 
 void func_00137C10(Vec4 *va, Vec4 *vb) {
-    u8 *p = D_00470228;
+    u8 *p = gPacketPtr;
 
     {
         u32 x, y, z;
@@ -427,14 +427,14 @@ void func_00137C10(Vec4 *va, Vec4 *vb) {
             sw x, 0x10(p)
         }
     }
-    D_00470228 = p + 0x20;
-    D_00470290 += 2;
+    gPacketPtr = p + 0x20;
+    gPacketQwc += 2;
     D_00470294 += 2;
     D_00470298 += 2;
 }
 
-void func_00137D20(s32 mode) {
-    u8 *p = D_00470228;
+void amDraw_ClosePacket(s32 mode) {
+    u8 *p = gPacketPtr;
     u64 v;
     u8 *q;
     if (mode == -1) mode = D_0047029C;
@@ -459,8 +459,8 @@ void func_00137D20(s32 mode) {
         *(u64 *)p = v;
         *(u64 *)(p + 8) = 0;
         *(u128 *)(p + 0x10) = D_0047CA20;
-        D_00470228 = p + 0x20;
-        D_00470290 += 2;
+        gPacketPtr = p + 0x20;
+        gPacketQwc += 2;
         D_00470294 += 2;
         D_00470298 += 2;
         break;
@@ -477,8 +477,8 @@ void func_00137D20(s32 mode) {
         *(u32 *)(p + 0x24) = 0;
         *(u32 *)(p + 0x28) = 0;
         *(u32 *)(p + 0x2C) = 0;
-        D_00470228 = p + 0x30;
-        D_00470290 += 3;
+        gPacketPtr = p + 0x30;
+        gPacketQwc += 3;
         D_00470294 = 1;
         D_00470298 = 0;
         D_0047027C = p;

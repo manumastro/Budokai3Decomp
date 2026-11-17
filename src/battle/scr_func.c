@@ -48,7 +48,7 @@ typedef struct ScrTimerRes {
 extern s32 D_004700AC;
 extern f32 D_004708F0[2];
 extern f32 D_004708F8;
-extern s32 D_00470328;
+extern s32 gSoundState;
 extern ScrLightSub D_005ABA80[][4];
 extern ScrModel D_005BC440[][3];
 extern ScrEffectSub D_005BC180[][2];
@@ -56,11 +56,11 @@ extern void func_002A9930(void);
 extern void func_002A9AE0(void);
 extern void func_002A9C00(void);
 extern void func_002A9EA0(void);
-extern void func_0012DB00(s32, f32);
-extern void func_0012D900(s32);
-extern void func_0012DC30(s32, s32);
-extern s32 func_0012D650(s32, s32, s32);
-extern s32 func_0012DA30(s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Stop(s32);
+extern void amAdx_Pause(s32, s32);
+extern s32 amAdx_PlayFile(s32, s32, s32);
+extern s32 amAdx_IsStopped(s32);
 extern void func_00144A40(s32, s32, f32);
 extern void func_00144770(s32, f32);
 extern void func_00144650(s32);
@@ -192,23 +192,23 @@ s32 func_002AB9C0(ScriptThread *t, ScriptCtx *ctx) {
 }
 s32 func_002ABA10(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
-    func_0012DB00(a[1], ((f32 *)a)[0]);
+    amAdx_SetVolume(a[1], ((f32 *)a)[0]);
     return 1;
 }
 s32 func_002ABA40(ScriptThread *t, ScriptCtx *ctx) {
-    func_0012D900(ctx->args[0]);
+    amAdx_Stop(ctx->args[0]);
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABA70);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABAF0);
 s32 func_002ABB80(ScriptThread *t, ScriptCtx *ctx) {
-    func_0012DC30(ctx->args[0], 0);
+    amAdx_Pause(ctx->args[0], 0);
     return 1;
 }
 s32 func_002ABBB0(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
-    ctx->ret = func_0012D650(a[1], ctx->base + a[0], 0);
-    func_0012DC30(ctx->ret, 1);
+    ctx->ret = amAdx_PlayFile(a[1], ctx->base + a[0], 0);
+    amAdx_Pause(ctx->ret, 1);
     return 1;
 }
 s32 func_002ABC00(ScriptThread *t, ScriptCtx *ctx) {
@@ -216,14 +216,14 @@ s32 func_002ABC00(ScriptThread *t, ScriptCtx *ctx) {
     if (t->obj->state == 3) {
         return 3;
     }
-    if (func_0012DA30(a[0]) != 0) {
+    if (amAdx_IsStopped(a[0]) != 0) {
         return 3;
     }
     t->wait = 0;
     return 1;
 }
 s32 func_002ABC60(ScriptThread *t, ScriptCtx *ctx) {
-    if (func_0012DA30(ctx->args[0]) != 0) {
+    if (amAdx_IsStopped(ctx->args[0]) != 0) {
         return 1;
     }
     t->wait = func_002ABC00;
@@ -234,7 +234,7 @@ s32 func_002ABCB0(ScriptThread *t, ScriptCtx *ctx) {
     if (t->obj->state == 3) {
         return 3;
     }
-    if (func_0012DA30(a[0]) != 0) {
+    if (amAdx_IsStopped(a[0]) != 0) {
         return 3;
     }
     t->wait = 0;
@@ -242,13 +242,13 @@ s32 func_002ABCB0(ScriptThread *t, ScriptCtx *ctx) {
 }
 s32 func_002ABD10(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
-    ctx->ret = func_0012D650(a[1], ctx->base + a[0], 0);
+    ctx->ret = amAdx_PlayFile(a[1], ctx->base + a[0], 0);
     t->wait = func_002ABCB0;
     return 3;
 }
 s32 func_002ABD70(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
-    ctx->ret = func_0012D650(a[1], ctx->base + a[0], 0);
+    ctx->ret = amAdx_PlayFile(a[1], ctx->base + a[0], 0);
     return 1;
 }
 s32 func_002ABDC0(ScriptThread *t, ScriptCtx *ctx) {
@@ -262,7 +262,7 @@ s32 func_002ABDF0(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 s32 func_002ABE20(ScriptThread *t, ScriptCtx *ctx) {
-    if (D_00470328 != 0) {
+    if (gSoundState != 0) {
         t->wait = func_002ABE20;
         return 3;
     }

@@ -116,7 +116,7 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
 extern void func_00145CC0(void *, s32);
-extern ScrTask *func_00144FC0(void *, void *, s32, s32, s32, char *);
+extern ScrTask *amTask_Create(void *, void *, s32, s32, s32, char *);
 extern void *func_0022D860(void *, f32);
 extern void func_00125740(void *, void *, s32);
 extern void func_0020D9F0(s32);
@@ -366,7 +366,7 @@ s32 func_0025B1D0(void *ctx, ScrCmd *cmd) {
     void *v;
     s32 n;
 
-    t = func_00144FC0(func_00259BB0, func_00259B70, 0x3A30, 0x1000, 0x2000000, D_0046AF20);
+    t = amTask_Create(func_00259BB0, func_00259B70, 0x3A30, 0x1000, 0x2000000, D_0046AF20);
     if (t == NULL) {
         return 1;
     }

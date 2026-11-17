@@ -85,13 +85,13 @@ extern void *func_0022D860(void *, f32);
 extern void func_0030C8F0(Task *);
 extern void func_0030C9C0(Task *);
 extern void func_0030C870(Task *);
-extern void func_0025C800(Obj *, s32);
+extern void amCdFs_Close(Obj *, s32);
 extern void func_0022E0B0(void *);
-extern void func_0012C360(void *);
+extern void amFile_Load(void *);
 extern void func_00143F20(s32, s32, f32);
 extern void func_00143D60(s32, s32, s32, s32);
-extern void func_0013AC90(void *);
-extern void func_00145120(Task *);
+extern void amHeap_Free(void *);
+extern void amTask_Kill(Task *);
 extern void Help_Exit(void);
 
 void func_0030CD80(Task *t) {
@@ -169,14 +169,14 @@ void func_0030CF60(Task *t) {
         }
         g->f8 = g->f0->f54;
         g->f0->f54 = NULL;
-        func_0025C800(g->f0, 0);
+        amCdFs_Close(g->f0, 0);
         g->f0 = NULL;
         g->fC = g->f4->f54;
         g->f4->f54 = NULL;
-        func_0025C800(g->f4, 0);
+        amCdFs_Close(g->f4, 0);
         g->f4 = NULL;
         func_0022E0B0(g->f8);
-        func_0012C360(g->fC);
+        amFile_Load(g->fC);
     }
     func_00143F20(0, 0, D_004E0614[0]);
     if (!(D_004E0614[0] <= 0.0f)) {
@@ -229,18 +229,18 @@ void func_0030D190(void) {
         return;
     }
     if (g->f8 != NULL) {
-        func_0013AC90(g->f8);
+        amHeap_Free(g->f8);
     }
     if (g->fC != NULL) {
-        func_0013AC90(g->fC);
+        amHeap_Free(g->fC);
     }
     if (g->f0 != NULL) {
-        func_0025C800(g->f0, 0);
+        amCdFs_Close(g->f0, 0);
     }
     if (g->f4 != NULL) {
-        func_0025C800(g->f4, 0);
+        amCdFs_Close(g->f4, 0);
     }
-    func_0013AC90(g);
+    amHeap_Free(g);
     gArenaRegCharList = NULL;
 }
 
@@ -248,8 +248,8 @@ void func_0030D240(Task *t) {
     Work *w = t->work;
 
     func_0030C0E0(w);
-    func_0013AC90(w);
-    func_00145120(t);
+    amHeap_Free(w);
+    amTask_Kill(t);
     Help_Exit();
 }
 
