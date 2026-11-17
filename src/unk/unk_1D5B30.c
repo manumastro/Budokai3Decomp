@@ -908,9 +908,9 @@ void func_001D9280(Fighter *c) {
 void func_001D9290(Fighter *c) {
     *(f32 *)&c->f1860 = (f32)(s32)c->fC58;
 }
-extern s32 func_001D9480(void *);
+extern s32 func_001D9480(Fighter *);
 #if 0
-extern s32 func_001D9480(void *);
+extern s32 func_001D9480(Fighter *);
 void func_001D92B0(Fighter *c) {
     char *s1;
     s16 w;
@@ -967,6 +967,84 @@ void func_001D92B0(Fighter *c) {
 #endif
 // differs: size 0x1AC vs 0x1D0 (9 instructions short): the original keeps the 16-bit value in v1 and uses the beq chain 8,7,6,5 with li per case; the (v-6)<3 form and an s16 local tried; declaration orders (24) do not change the size
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D92B0);
+#if 0
+s32 func_001D9480(Fighter *c) {
+    s32 buf30[2];
+    s32 junk40[4];
+    s32 buf50[2];
+    s32 v;
+
+    if (c->f1FF8 == -1) {
+        *(s32 *)((char *)c + 0x1898) = -1;
+        return *(s32 *)((char *)c + 0x1898);
+    }
+    if (*(s32 *)((char *)c + 0x1898) >= 0) {
+        return *(s32 *)((char *)c + 0x1898);
+    }
+    if (gBattle->f8944 == 0) {
+        v = func_001E1D60(c);
+        if (v != c->fBA4 && v != c->fBA8) {
+            if (*(s8 *)((char *)c + 0x200F) == 2) {
+                *(s32 *)((char *)c + 0x1A48) = -1;
+                *(s8 *)((char *)c + 0x200F) = 0;
+            }
+            func_001E6F70((char *)c + 0x650, v);
+        }
+    }
+    *(s8 *)((char *)c + 0x2010) = 0;
+    buf30[0] = c->f1350;
+    buf30[1] = *(s8 *)((char *)c + 0x2010);
+    func_00226030(0x35, buf30);
+    *(s32 *)((char *)c + 0x17E0) = 0xBF800000;
+    if (gBattle->f8944 == 0) {
+        buf50[0] = c->f1350;
+        buf50[1] = 2;
+        func_00243DE0(2, junk40);
+    }
+    *(s32 *)((char *)c + 0x1898) = 0;
+    if (*(s8 *)((char *)gBattle + 0x8AB1) != 0) {
+        v = *(s8 *)((char *)gBattle + 0x8AB1);
+        if (v < 0) {
+            v = -v;
+        }
+        if (2 - v == c->f1350) {
+            *(s32 *)((char *)c + 0x1AC4) = 0;
+            return *(s32 *)((char *)c + 0x1898);
+        }
+    }
+    if (*(s8 *)((char *)c + 0x1FE4) == 0) {
+        if (*(f32 *)((char *)c + 0x17C0) > 0.0f && *(s8 *)((char *)c + 0x1FDA) > 0) {
+            *(s32 *)((char *)c + 0x1AC0) = *(s32 *)((char *)c + 0x1EE8);
+            *(s32 *)((char *)c + 0x1AC4) = 0x20;
+            *(s8 *)((char *)c + 0x1FE4) = 1;
+            *(s32 *)((char *)c + 0x1898) = 2;
+            func_001D7CC0(c, 1);
+        }
+        if (*(s8 *)((char *)c + 0x1FD9) > 0) {
+            *(s32 *)((char *)c + 0x1AC0) = *(s32 *)((char *)c + 0x1EE8);
+            *(s32 *)((char *)c + 0x1AC4) = 0x1F;
+            *(s8 *)((char *)c + 0x1FE4) = 1;
+            *(s32 *)((char *)c + 0x1898) = 2;
+        }
+    }
+    *(s32 *)((char *)c + 0x1894) = *(s32 *)((char *)c + 0x1894) + 1;
+    v = *(s16 *)((char *)c->f1CF4 + 0x1E);
+    if (v < 0 || *(s32 *)((char *)c + 0x1894) < v) {
+        *(s32 *)((char *)c + 0x1AC0) = *(s32 *)((char *)c + 0x1EE8);
+        *(s32 *)((char *)c + 0x1AC4) = 0x1E;
+        *(s32 *)((char *)c + 0x1898) = 2;
+    }
+    if (*(s32 *)((char *)c + 0x1898) == 2) {
+        if (func_001D9480((Fighter *)c->f1354) == 0) {
+            *(s32 *)((char *)c + 0x1AC0) = 0;
+            *(s32 *)((char *)c + 0x1AC4) = 0;
+            *(s32 *)((char *)c + 0x1898) = 1;
+        }
+    }
+    return *(s32 *)((char *)c + 0x1898);
+}
+#endif
+// differs: size 0x260 vs 0x270 (4 instructions short), the original keeps the object in s1 with two saved registers (frame 0x70); the C keeps it in s2 (frame 0x60); four local layouts tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9480);
 #if 0
 void func_001D96F0(void) {
@@ -3128,7 +3206,6 @@ void func_001E5C10(Fighter *c, s32 a1, s32 a2) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5C20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E62C0);
-#if 0
 typedef struct P66 {
     s32 f0;
     f32 f4;
@@ -3138,6 +3215,7 @@ typedef struct P66 {
 
 extern void func_001C8480(s32, s32);
 
+#if 0
 void func_001E66E0(Fighter *c) {
     P66 *s1;
     s32 s0;
@@ -3186,17 +3264,9 @@ void func_001E66E0(Fighter *c) {
     func_001E11E0(s0, &buf);
 }
 #endif
-// differs: size 0x198 vs 0x1B0 (6 instructions short): the clamp join keeps the 15.0f constant in a different place (lui/mtc1 at the join, original), the kill arm sits out of line in the original; clamp and kill arm shapes tried (4 combinations)
+// differs: size 0x198 vs 0x1B0 (6 instructions short), unchanged by the comparison forms (x > 15 written three ways, the clamp as if/else-if or nested) tried on the live function; the original's join reloads the 15.0f constant and the kill arm is out of line
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E66E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6890);
-typedef struct P66 {
-    s32 f0;
-    f32 f4;
-    s32 f8;
-    s32 fC;
-} P66;
-
-extern void func_001C8480(s32, s32);
 #if 0
 void func_001E6CE0(Fighter *c) {
     P66 *s1;
