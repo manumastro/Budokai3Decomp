@@ -15,7 +15,7 @@ extern char D_00492FCE[];
 extern void amCdFs_Close(s32, s32);
 extern void Scr_SetData(s32, s32);
 extern void func_002A6210(void);
-extern void Zenie_Update(void *);
+extern void Zenie_Update();
 extern void Zenie_Draw(void);
 extern void Zenie_Close(s32);
 extern s32 func_002A1020(s32);
@@ -50,6 +50,46 @@ void EvtZenie_TaskMain(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1700);
+#if 0
+// func_002A17D0: the Zenie step: the branch end and the clamp arm are laid out differently (the original ends 8 bytes later); the a1 clamp loads come in another order; 2 forms tried
+extern f32 func_002B06A0(void);
+extern void func_002A1510(s32);
+extern void func_002A1700(void);
+extern void Zenie_SetValue(s32, s32);
+extern s32 D_00511448;
+extern s8 D_004E6560[];
+
+extern f32 func_002B06A0(void);
+extern void func_002A1510(s32);
+extern void func_002A1700(void);
+extern void Zenie_SetValue(s32, s32);
+extern s32 D_00511448;
+extern s8 D_004E6560[];
+
+void func_002A17D0(s32 *a0) {
+    s32 *s0 = gEvtWork;
+    f32 t;
+    void *f;
+    s32 a1;
+    t = func_002B06A0();
+    *(f32 *)&s0[0x5C / 4] = *(f32 *)&s0[0x5C / 4] + t;
+    func_002A1510(0);
+    Zenie_Update();
+    Zenie_Draw();
+    if (func_002A1020(3) == 0) {
+        *(s32 *)&s0[0x5C / 4] = 0x41200000;
+        s0[0x60 / 4] = 0x41200000;
+        f = (void *)func_002A1700;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        a1 = D_00511448 + s0[0xF4 / 4];
+        if (a1 >= 0xF1B31) {
+            a1 = 0xF1B30;
+        }
+        Zenie_SetValue(*(s32 *)(D_004E6560 + 0x30000 - 0x5118), a1);
+        Zenie_SetStep(10);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A17D0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A18A0);
 extern void func_002A18A0(void);
