@@ -27,7 +27,7 @@ extern void Scene_MarkDone(void);
 extern void BtbBg_Restart(void);
 extern void Btl_ClearScene(void);
 extern void func_001E9D10();
-extern void func_001E9EE0(void);
+extern void BtlSound_StartTrans(void);
 extern s32 func_001E9ED0(void *);
 extern void BtbDraw_InitState(void);
 extern void func_0022DC00(void);
@@ -1734,7 +1734,7 @@ void Btl_TaskStart(Fighter *f) {
     func_001E9D10(f);
     func_00219650(1);
     func_00219790(1);
-    func_001E9EE0();
+    BtlSound_StartTrans();
     fn = (s32)Btl_TaskLoadWait;
     if (fn == 0) {
         fn = 0;
@@ -1922,7 +1922,7 @@ extern void func_001AF100(s32);
 extern void func_001AC240(void);
 extern void func_001C8EE0(void);
 extern void BtlCam_Restart(void);
-extern void func_001E58D0(void);
+extern void Lit_Start(void);
 extern void func_0021C6E0(void);
 extern void func_00215C10(void);
 extern void func_001E9D80(void);
@@ -1940,7 +1940,7 @@ void Btl_ResetScene(void) {
     func_001AC240();
     func_001C8EE0();
     BtlCam_Restart();
-    func_001E58D0();
+    Lit_Start();
     BtbBg_Restart();
     func_0021C6E0();
     func_00215C10();

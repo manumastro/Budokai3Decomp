@@ -212,3 +212,14 @@ Shenron_SetupBgScript = 0x00306F70; // type:func // guess
 // evt_scrp.c: EvtScrp_Init frees and allocates the event work gEvtWork (0x150 bytes) and fills it from the table
 // entry of D_00511450[0]. Guess.
 EvtScrp_Init = 0x002A80D0; // type:func // guess
+
+// str_status.c: StrStatus_ReleaseBuffers releases the file caches and the blocks of the status work D_0047011C
+// (the 0x20 blocks at 0x254, the cache at 0x2D4), clears the flags of the sound channels (func_00209450) and the
+// block D_005BCF80. StrStatus_TaskRequestScene requests scene 0x11 and fades to 0xA after the status check
+// (func_0027DAB0); the next function is func_002C1A00. Guesses.
+StrStatus_ReleaseBuffers = 0x002BEA30; // type:func // guess
+StrStatus_TaskRequestScene = 0x002C1AA0; // type:func // guess
+
+// unk_2918A0.c: StrStatus_OpenScene starts the status screen (StrStatus_Start with 0xB000 and 0x80000) and sets
+// the work block D_005AA5A0 next function. Guess.
+StrStatus_OpenScene = 0x00291970; // type:func // guess

@@ -89,7 +89,7 @@ extern void func_002EB280(void);
 extern void func_002EB290(void);
 extern void func_002EB560(void *);
 extern void func_001C8020(s32, void *);
-extern void func_001E1510(void *);
+extern void Fighter_CreateHyperCtrl(void *);
 extern void func_002EB3E0(s32, s32);
 extern void A2d_CallHandler(s32, void *);
 extern void func_002E9BA0(s32);
@@ -276,7 +276,7 @@ void func_002CBEB0(void) {
 
     *(s8 *)(gBattle + 0x8AAD) = 1;
     if (t->fC == 0x1E) {
-        func_001E1510(t->chr);
+        Fighter_CreateHyperCtrl(t->chr);
     }
     *(s16 *)((char *)t->chr + 0x13A4) = t->chr->f1CF4->f1A;
     func_002EB3E0(t->f4, t->fC - t->f10);

@@ -265,7 +265,7 @@ void func_0026AEB0(u8 *a0) {
     func_00272B70();
     *(void **)(s1 + 0x1C) = ((void *)func_0026A680 == 0) ? 0 : (void *)func_0026A680;
 }
-void func_0026B010(u8 *a0) {
+void Ess_TaskShopStart(u8 *a0) {
     u8 *s1;
     u8 *s0;
     u32 ret;
@@ -290,7 +290,7 @@ void func_0026B010(u8 *a0) {
         *(void **)(s1 + 0x1C) = ((void *)EssMain_TickB == 0) ? 0 : (void *)EssMain_TickB;
     }
 }
-void func_0026B100(u8 *a0) {
+void Ess_TaskShopEnd(u8 *a0) {
     u8 *s3;
     u8 *s2;
     u8 *s1;
@@ -328,7 +328,7 @@ void func_0026B100(u8 *a0) {
         *(void **)(s3 + 0x1C) = ((void *)func_0026A680 == 0) ? 0 : (void *)func_0026A680;
     }
 }
-void func_0026B250(u8 *a0) {
+void Ess_TaskEditStart(u8 *a0) {
     u8 *s1;
     s32 s0;
     u8 *s2;
@@ -348,7 +348,7 @@ void func_0026B250(u8 *a0) {
         *(s32 *)(s2 + 0x1C) = 0;
     }
 }
-void func_0026B310(u8 *a0) {
+void Ess_TaskEditEnd(u8 *a0) {
     u8 *s3;
     u8 *s2;
     u8 *s1;
@@ -461,7 +461,7 @@ void EssMain_TickC(void) {
     func_0026B880();
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026BD50);
-void func_0026C7C0(u8 *a0) {
+void Ess_TaskInfoEnd(u8 *a0) {
     u8 *s1;
     u8 *s0;
     s32 s2;
@@ -523,7 +523,7 @@ void func_0026C910(u8 *a0) {
     *(s32 *)s0 = 0;
     *(void **)(s1 + 0x1C) = ((void *)func_0026BD10 == 0) ? 0 : (void *)func_0026BD10;
 }
-void func_0026C9F0(u8 *a0) {
+void Ess_TaskTradeEnd(u8 *a0) {
     u8 *s1;
     u8 *s0;
     s32 s2;
@@ -555,7 +555,7 @@ void func_0026C9F0(u8 *a0) {
         *(void **)(s1 + 0x1C) = ((void *)func_0026BD50 == 0) ? 0 : (void *)func_0026BD50;
     }
 }
-void func_0026CB30(u8 *a0) {
+void Ess_TaskTradeStart(u8 *a0) {
     u8 *s2;
     u8 *s1;
     u8 *s0;
@@ -908,10 +908,10 @@ void func_0026D8A0(void) {
         *(s32 *)(gEssMain + 0xF8) = 0;
         *(s32 *)(gEssMain + 0x1E0) = 0x12;
         *(s32 *)(gEssMain + 0x1E8) = 0;
-        *(void **)(p + 0x1C) = ((void *)func_0026C9F0 == 0) ? 0 : (void *)func_0026C9F0;
+        *(void **)(p + 0x1C) = ((void *)Ess_TaskTradeEnd == 0) ? 0 : (void *)Ess_TaskTradeEnd;
         break;
     case 3:
-        *(void **)(p + 0x1C) = ((void *)func_0026C7C0 == 0) ? 0 : (void *)func_0026C7C0;
+        *(void **)(p + 0x1C) = ((void *)Ess_TaskInfoEnd == 0) ? 0 : (void *)Ess_TaskInfoEnd;
         *(s32 *)q = 0;
         break;
     }

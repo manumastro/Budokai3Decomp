@@ -212,3 +212,8 @@ gEffWork = 0x00470130; // size:0x4 // guess
 // position from the first argument, its next function (func_001CAFE0), the flag 1 and the second argument. Returns
 // 1.
 Scr_CmdPlayThread = 0x001CC7C0; // type:func // guess
+
+// unk_2EC850.c: Result_Open turns the scene to the result: it sets the scene ready, stops the sounds and the Adx
+// voice, and creates the task "# RESULT #" (func_002EC850) with its callback func_002EC9B0. Guess from the task
+// name.
+Result_Open = 0x002ECB10; // type:func // guess

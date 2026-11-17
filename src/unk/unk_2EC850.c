@@ -181,7 +181,7 @@ extern void SoundRpc_SendWord(s32);
 extern void amAdx_Stop(s32);
 extern void *amTask_Create(void (*)(ResultTask *), s32, s32, s32, s32, char *);
 
-void func_002ECB10(void) {
+void Result_Open(void) {
     Scene_SetReady();
     SoundRpc_SendWord2(-1);
     SoundRpc_SendWord(0);

@@ -30,7 +30,7 @@ extern void func_002CA3F0(void);
 extern void func_00209450(s32, s32);
 extern void func_00243F20(void);
 extern void func_002CA440(void);
-extern void func_002BEA30(void);
+extern void StrStatus_ReleaseBuffers(void);
 extern void func_00215900(void);
 extern void func_00244150(void);
 extern void func_002BE320(s32);
@@ -271,7 +271,7 @@ void func_002BE830(char *p) {
     func_002BDF50((char *)D_0047011C + (D_0047011C[0x1A8 / 4] << 2) + 0x160, p);
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE870);
-void func_002BEA30(void) {
+void StrStatus_ReleaseBuffers(void) {
     s32 i;
     if (D_0047011C[0x2D8 / 4] != 0) {
         amCdFs_ReleaseCache(D_0047011C[0x2D4 / 4]);
@@ -468,7 +468,7 @@ void func_002BFD90(void) {
     func_00209450(0x400008, 1);
     func_00243F20();
     func_002CA440();
-    func_002BEA30();
+    StrStatus_ReleaseBuffers();
 }
 
 void func_002BFE60(s32 a0) {
@@ -843,7 +843,7 @@ extern void Scene_Request(s32, s32);
 extern void Scene_FadeTo(s32, s32);
 extern void func_002C1A00(Task *);
 
-void func_002C1AA0(s32 *a0) {
+void StrStatus_TaskRequestScene(s32 *a0) {
     s32 *s0 = (s32 *)a0[0x30 / 4];
     s32 *s2;
     s32 r;

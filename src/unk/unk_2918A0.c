@@ -83,7 +83,7 @@ void func_002918A0(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002918A0);
-void func_00291970(void) {
+void StrStatus_OpenScene(void) {
     Work2918A0 *w;
 
     StrStatus_Start(0xB000, 0x80000);

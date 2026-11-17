@@ -859,7 +859,7 @@ void PlyVib_Start(Fighter *c, s32 a1, s32 a2, f32 f) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D8CD0);
 extern char D_004694F0[];
 extern void func_001D6B90(Fighter *c);
-void func_001D8FE0(Fighter *c, s32 a1) {
+void Fighter_CreateHitEffect(Fighter *c, s32 a1) {
     s32 t;
     char *p;
 
@@ -2262,7 +2262,7 @@ extern char D_004695A0[];
 extern void func_001D7450(void *);
 extern void func_002CBFF0(s32, void *);
 
-void func_001E1510(Fighter *c, s32 a1) {
+void Fighter_CreateHyperCtrl(Fighter *c, s32 a1) {
     s32 b40[12];
     s32 b30[4];
     s32 v;
@@ -3424,7 +3424,7 @@ extern char D_00469608[];
 extern void *BtbBg_GetStageModelF10(void);
 extern void func_001E55C0(void *);
 
-void func_001E58D0(void) {
+void Lit_Start(void) {
     s32 buf[12];
     void *src;
     s32 k;
@@ -3441,7 +3441,7 @@ void func_001E58D0(void) {
 void func_001E5960(void) {
     amTask_KillGroup(0x20, 0x10000000, 1);
 }
-void func_001E5970(void) {
+void Lit_Create(void) {
     s32 buf[12];
     void *src;
     s32 k;
@@ -4622,7 +4622,7 @@ extern void amFile_Load(s32 h);
 extern s32 *BtlCmd_GetMotEntry(s32 f, s32 i);
 extern void amCdFs_Close(void *, s32);
 extern char D_00469690[];
-void func_001E9EE0(void) {
+void BtlSound_StartTrans(void) {
     s32 buf[16];
     char *s2;
     char *s1;

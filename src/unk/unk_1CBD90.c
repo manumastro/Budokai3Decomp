@@ -72,7 +72,7 @@ extern u8 D_004E0660[];
 extern void func_001E6F70(void *);
 extern void func_001E2180(void *, s32);
 extern void func_0029D8B0(int, int);
-extern void func_001D8FE0(void *, int);
+extern void Fighter_CreateHitEffect(void *, int);
 extern f32 D_004B421C[];
 extern s32 gBtbBg[];
 extern s32 D_0051CD20[];
@@ -633,7 +633,7 @@ int func_001CD270(void *unused, Arg *a) {
     return 1;
 }
 int func_001CD2C0(void *unused, Arg *a) {
-    func_001D8FE0(gBattle->tbl[a->p[0]], 0);
+    Fighter_CreateHitEffect(gBattle->tbl[a->p[0]], 0);
     return 1;
 }
 int Scr_CmdGetStageByte(void *unused, Arg *a) {

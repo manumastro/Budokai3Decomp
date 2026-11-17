@@ -170,7 +170,7 @@ extern s16 D_005C4134[];
 extern s16 D_005C4130[];
 extern s16 D_005C4136[];
 
-void func_00308130(u8 *a0) {
+void ArenaCharasel_TaskOpenList(u8 *a0) {
     u8 *s0;
     u8 *s1;
     s8 r;

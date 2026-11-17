@@ -302,7 +302,7 @@ extern f32 gFrameDelta;
 extern void Scene_Request(s32, s32);
 extern void Scene_FadeTo(s32, s32);
 
-void func_002B8540(u8 *a0) {
+void CsModel_TaskEnd(u8 *a0) {
     u8 *s0;
     s32 v;
     s0 = *(u8 **)(a0 + 0x30);

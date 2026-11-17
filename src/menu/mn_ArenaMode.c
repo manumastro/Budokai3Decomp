@@ -84,7 +84,7 @@ extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
 extern void amFile_Load(void *);
 extern void A2d_SetMode(s32);
-extern void func_002D1C20(void);
+extern void ArenaCharasel_Clear(void);
 extern void func_0022D0E0(s32, s32);
 extern void StrStatus_Exit(void *);
 extern void Help_Exit(void);
@@ -220,7 +220,7 @@ void ArenaMode_TaskLoad(Task *t) {
 
 void ArenaMode_Clear(void) {
     gArenaMode = NULL;
-    func_002D1C20();
+    ArenaCharasel_Clear();
 }
 
 void ArenaMode_Exit(void) {

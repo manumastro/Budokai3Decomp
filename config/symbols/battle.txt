@@ -566,3 +566,16 @@ Scr_CmdGetVecZ = 0x0025DA80; // type:func // guess
 // D_00452684[a0] (0x14 and 0x18 bytes) and reads their files with amCdFs_ReadFileId; SkillFile_Release (named
 // already) frees them. Guess.
 SkillFile_Load = 0x00254260; // type:func // guess
+
+// unk_1D5B30.c: the task starters of the battle effects, named by the task name each one creates.
+// Fighter_CreateHitEffect (task "[PLY] HIT EFCT", kills the group of the old effect); Fighter_CreateHyperCtrl
+// (task "[PLY] HYPER CTRL" with its state, the A2d and Sp call handlers, the counter at +0x89A6 of the battle);
+// Lit_Start (kills the group and creates the task "[LIT] MAIN" with the stage model's vector, then calls
+// jtbl_00469600[0]); Lit_Create (the same without the kill); BtlSound_StartTrans (the sound transfer "[BTL] SOUND
+// TRANS" that reads the motion entries of the next file and creates the task func_001E9980). Guesses from the task
+// names.
+Fighter_CreateHitEffect = 0x001D8FE0; // type:func // guess
+Fighter_CreateHyperCtrl = 0x001E1510; // type:func // guess
+Lit_Start = 0x001E58D0; // type:func // guess
+Lit_Create = 0x001E5970; // type:func // guess
+BtlSound_StartTrans = 0x001E9EE0; // type:func // guess

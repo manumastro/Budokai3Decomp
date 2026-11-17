@@ -400,3 +400,31 @@ Option_Load = 0x002E0D40; // type:func // guess
 SklSheet_Free = 0x00283C20; // type:func // guess
 EssList_Load = 0x00272C30; // type:func // guess
 DataLoad_TaskWait = 0x00266070; // type:func // guess
+
+// ess_main.c: the end states of the ESS main task, one per sub-screen: each calls the sub-screen Exit
+// (EssShop_Exit, EssEdit_Exit, EssInfo_Exit, EssTrade_Exit), sets the main state (gEssMain+0x1C0 = 10, 9, 4, 3),
+// plays its voice and sets the next function. Guesses from the Exit calls.
+Ess_TaskShopEnd = 0x0026B100; // type:func // guess
+Ess_TaskEditEnd = 0x0026B310; // type:func // guess
+Ess_TaskInfoEnd = 0x0026C7C0; // type:func // guess
+Ess_TaskTradeEnd = 0x0026C9F0; // type:func // guess
+
+// mn_csmodel.c: CsModel_TaskEnd: after its timer it requests scene 0x15 and starts the fade to scene 0xA
+// (Scene_Request, Scene_FadeTo), then sets the next function CsModel_Start. Guess.
+CsModel_TaskEnd = 0x002B8540; // type:func // guess
+
+// ess_main.c: the start states of the ESS main task, one per sub-screen: each calls the sub-screen Start
+// (EssShop_Start, EssEdit_Start, EssTrade_Start) and sets the main state and the tick function (EssMain_TickB,
+// EssMain_TickC). Guesses; the end states are Ess_Task*End.
+Ess_TaskShopStart = 0x0026B010; // type:func // guess
+Ess_TaskEditStart = 0x0026B250; // type:func // guess
+Ess_TaskTradeStart = 0x0026CB30; // type:func // guess
+
+// mn_ArenaCharasel_pvsc.c: ArenaCharasel_TaskOpenList frees the Arena character select state and creates the Arena
+// list (ArenaList_Create) with the character D_005C4136, then sets the next function. Guess.
+ArenaCharasel_TaskOpenList = 0x00308130; // type:func // guess
+
+// unk_2D1C20.c: the Arena character select data: ArenaCharasel_Load loads the three data blocks
+// (ArenaCharaselPvsc, Pvsp, Cvsc) and ArenaCharasel_Clear clears them. Guesses from the calls.
+ArenaCharasel_Clear = 0x002D1C20; // type:func // guess
+ArenaCharasel_Load = 0x002D1D40; // type:func // guess

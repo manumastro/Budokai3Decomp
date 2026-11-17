@@ -166,7 +166,7 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void SceneSw_DoneTop(Task *);
-extern void func_002D1D40(void);
+extern void ArenaCharasel_Load(void);
 
 void SceneSw_LoadTop(Task *t) {
     s32 v;
@@ -182,7 +182,7 @@ void SceneSw_LoadTop(Task *t) {
             TASK_SETFUNC(t, SceneSw_DoneTop);
             switch (gSceneNext) {
             case 0x18:
-                func_002D1D40();
+                ArenaCharasel_Load();
                 break;
             case 5:
                 break;
@@ -286,7 +286,7 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void SceneSw_DoneTop2(Task *);
-extern void func_002D1D40(void);
+extern void ArenaCharasel_Load(void);
 extern void func_00310900(void);
 
 void SceneSw_LoadTop2(Task *t) {
@@ -303,7 +303,7 @@ void SceneSw_LoadTop2(Task *t) {
             TASK_SETFUNC(t, SceneSw_DoneTop2);
             switch (gSceneNext) {
             case 24:
-                func_002D1D40();
+                ArenaCharasel_Load();
                 break;
             case 27:
                 func_00310900();
@@ -409,7 +409,7 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void SceneSw_DoneResult(Task *);
-extern void func_002D1D40(void);
+extern void ArenaCharasel_Load(void);
 extern void func_003074C0(void);
 
 void SceneSw_LoadResult(Task *t) {
@@ -426,7 +426,7 @@ void SceneSw_LoadResult(Task *t) {
             TASK_SETFUNC(t, SceneSw_DoneResult);
             switch (gSceneNext) {
             case 24:
-                func_002D1D40();
+                ArenaCharasel_Load();
                 break;
             case 26:
                 func_003074C0();
@@ -643,7 +643,7 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
 extern void SceneSw_DoneMenu(Task *);
-extern void func_002D1D40(void);
+extern void ArenaCharasel_Load(void);
 extern void MainMenu_Load(void);
 
 void SceneSw_LoadMenu(Task *t) {
@@ -660,7 +660,7 @@ void SceneSw_LoadMenu(Task *t) {
             TASK_SETFUNC(t, SceneSw_DoneMenu);
             switch (gSceneNext) {
             case 0x18:
-                func_002D1D40();
+                ArenaCharasel_Load();
                 break;
             case 5:
                 MainMenu_Load();

@@ -15,7 +15,7 @@ extern void ArenaCharaselPvsc_Load(void);
 extern void ArenaCharaselPvsp_Load(void);
 extern void ArenaCharaselCvsc_Load(void);
 
-void func_002D1C20(void) {
+void ArenaCharasel_Clear(void) {
     ArenaCharaselPvsc_Clear();
     ArenaCharaselPvsp_Clear();
     ArenaCharaselCvsc_Clear();
@@ -50,7 +50,7 @@ void func_002D1CC0(void) {
     }
 }
 
-void func_002D1D40(void) {
+void ArenaCharasel_Load(void) {
     switch (D_005C4120[0]) {
     case 0:
         ArenaCharaselPvsc_Load();
