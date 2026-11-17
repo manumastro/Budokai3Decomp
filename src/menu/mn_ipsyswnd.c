@@ -245,7 +245,51 @@ extern u8 *gOutputPass;
 void OutputPass_Clear(void) {
     gOutputPass = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F54C0);
+extern void func_0022D0E0(void *, s32);
+extern void func_0022D4B0(void *, s32);
+
+void func_002F54C0(void) {
+    u8 *s0;
+        u8 *base;
+    s32 cnt;
+    u8 *lp;
+    s0 = gOutputPass;
+    if (s0 == 0) {
+        return;
+    }
+    if (s0 != 0 && *(void **)(s0 + 0x10) != 0) {
+        base = *(u8 **)(*(u8 **)(s0 + 0x10) + 0x30);
+        if (*(void **)base != 0) {
+            func_0022D0E0(*(void **)base, 1);
+            *(s32 *)base = 0;
+        }
+        cnt = 0;
+        lp = base;
+        do {
+            func_0022D4B0(*(void **)(lp + 0x4), 1);
+            cnt++;
+            lp += 4;
+        } while (cnt < 0x24);
+        amHeap_Free(base);
+        amTask_Kill(*(void **)(s0 + 0x10));
+        *(s32 *)(s0 + 0x10) = 0;
+    }
+    if (*(void **)s0 != 0) {
+        amCdFs_Close(*(void **)s0, 0);
+    }
+    if (*(void **)(s0 + 0x4) != 0) {
+        amCdFs_Close(*(void **)(s0 + 0x4), 0);
+    }
+    if (*(void **)(s0 + 0x8) != 0) {
+        amHeap_Free(*(void **)(s0 + 0x8));
+    }
+    if (*(void **)(s0 + 0xC) != 0) {
+        amHeap_Free(*(void **)(s0 + 0xC));
+    }
+    amHeap_Free(s0);
+    gOutputPass = 0;
+    Help_Exit();
+}
 void func_002F55E0(void) {
     u8 *s0;
     u8 *s3;
