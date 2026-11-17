@@ -1,0 +1,281 @@
+#include "common.h"
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/unk_260CB0", func_00260CB0);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_260CB0", func_00261790);
+typedef struct FadeColor {
+    f32 r, g, b, a;
+} __attribute__((aligned(16))) FadeColor;
+
+typedef struct FadeVec {
+    f32 x, y, z, w;
+} FadeVec;
+
+typedef struct FadeTask {
+    char pad0[0x1C];
+    void *func;
+} FadeTask;
+
+#define SET_FUNC(t, f) \
+    do { \
+        FadeTask *t_ = (t); \
+        t_->func = ((f) == NULL) ? NULL : (f); \
+    } while (0)
+
+extern FadeColor D_00452E00;
+extern FadeColor D_00452B60;
+extern s32 func_001339D0(s32, s32);
+extern void func_00133780(s32, s32);
+extern void func_00139620(s32, FadeColor *, s32, s32, s32, f32);
+
+void func_00262180(f32 a) {
+    FadeColor c = D_00452E00;
+    s32 old;
+
+    c.a = a;
+    old = func_001339D0(0, 0x30000);
+    func_00139620(0x900, &c, -1, 0x44, 0, 0.0f);
+    func_001339D0(0, old);
+}
+
+/* Not matching yet: the original's zero-fill loop is laid out differently. */
+#if 0
+void func_002621F0(f32 a) {
+    FadeColor c;
+    s32 old;
+    s32 n = sizeof(c);
+    u8 *p = (u8 *)&c;
+
+    if (p != NULL) {
+        while (n != 0) {
+            *p++ = 0;
+            n--;
+        }
+    }
+    c.a = a;
+    old = func_001339D0(0, 0x30000);
+    func_00133780(0, 1);
+    func_00139620(0x900, &c, -1, 0x44, 0, 0.0f);
+    func_001339D0(0, old);
+    func_00133780(0, 0);
+}
+#endif
+INCLUDE_ASM("asm/nonmatchings/unk/unk_260CB0", func_002621F0);
+void func_00262290(s32);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_260CB0", func_00262290);
+extern s32 D_00470758;
+extern f32 D_0047042C;
+extern f32 D_00470430;
+extern void func_00136E80(s32, FadeColor *, s32, s32, s32);
+extern void func_00137B60(FadeVec *);
+extern void func_00137EE0(void);
+
+/* Not matching yet: the original keeps a separate branch to the end for case 0 and for the default. */
+#if 0
+void func_00263CF0(void) {
+    FadeVec v;
+    FadeColor c = D_00452B60;
+
+    switch (D_00470758) {
+    case 0:
+        break;
+    case 1:
+    case 2:
+    case 3:
+        func_00136E80(0x900, &c, -1, 0x44, 0);
+        v.x = 0.0f;
+        v.y = 0.0f;
+        v.w = 1.0f;
+        v.z = 0.0f;
+        func_00137B60(&v);
+        v.x = D_0047042C;
+        v.y = D_00470430;
+        func_00137B60(&v);
+        func_00137EE0();
+        break;
+    default:
+        break;
+    }
+}
+#endif
+void func_00263CF0(void);
+INCLUDE_ASM("asm/nonmatchings/unk/unk_260CB0", func_00263CF0);
+
+extern FadeTask *D_004707A0;
+extern s32 D_004707A4;
+extern f32 D_004707A8;
+extern f32 D_004707AC;
+extern s32 D_004707B0;
+extern void (*D_004707B4)(void);
+extern void (*D_004707B8)(f32);
+extern s32 D_00470774;
+extern f32 D_004703BC;
+extern void (*D_00452AF0[])(f32);
+
+static inline void FadeUpdate(void) {
+    if (D_004707A4 == 0) {
+        if (D_004707B8 != NULL) {
+            D_004707B8(D_004707A8);
+        }
+    } else {
+        D_00452AF0[D_004707A4](D_004707A8);
+    }
+    if (D_004707A8 == 1.0f) {
+        if (D_00470774 != 0) {
+            D_004707B0++;
+            if (D_004707B0 >= 20) {
+                func_00262290(D_004707B0 - 20);
+            }
+        } else {
+            D_004707B0 = 0;
+        }
+    } else {
+        D_004707B0 = 0;
+    }
+}
+
+void func_00263DC0(void) {
+    FadeUpdate();
+}
+
+void func_00264130(void);
+
+void func_00263E90(FadeTask *t) {
+    D_004707A8 -= D_004707AC;
+    if (D_004707A8 <= 0.0f) {
+        D_004707A8 = 0.0f;
+        SET_FUNC(t, func_00264130);
+        if (D_004707B4 != NULL) {
+            D_004707B4();
+        }
+        D_004707B4 = NULL;
+    }
+    FadeUpdate();
+}
+
+extern void func_0012D900(s32);
+extern void func_00144770(s32, f32);
+
+void func_00263FB0(FadeTask *t) {
+    f32 prev = D_004707A8;
+
+    D_004707A8 = prev + D_004707AC;
+    if (!(D_004707A8 < 1.0f)) {
+        if (prev < 1.0f && D_004707A4 != 0) {
+            func_0012D900(-1);
+        }
+        D_004707A8 = 1.0f;
+        SET_FUNC(t, func_00263DC0);
+        if (D_004707B4 != NULL) {
+            D_004707B4();
+        }
+        D_004707B4 = NULL;
+    }
+    FadeUpdate();
+    if (D_004707A4 != 0) {
+        func_00144770(0, 1.0f - D_004707A8);
+    }
+}
+
+void func_00264130(void) {
+}
+
+extern s32 rand(void);
+
+void func_00264140(s32 mode, void (*cb)(f32)) {
+    if (mode == 11) {
+        mode = (rand() & 7) + 1;
+    }
+    if (mode != -1) {
+        D_004707A4 = mode;
+    }
+    D_004707B4 = NULL;
+    if (cb != NULL) {
+        D_004707B8 = cb;
+    }
+    D_004707A8 = 0.0f;
+    SET_FUNC(D_004707A0, func_00263E90);
+    if (D_004707A4 != 0) {
+        func_00144770(0, 1.0f);
+    }
+}
+
+void func_002641D0(s32 mode, void (*cb)(f32)) {
+    if (mode == 11) {
+        mode = (rand() & 7) + 1;
+    }
+    if (mode != -1) {
+        D_004707A4 = mode;
+    }
+    D_004707B4 = NULL;
+    if (cb != NULL) {
+        D_004707B8 = cb;
+    }
+    D_004707A8 = 1.0f;
+    SET_FUNC(D_004707A0, func_00263FB0);
+    if (D_004707A4 != 0) {
+        func_00144770(0, 0.0f);
+    }
+}
+
+void func_00264260(s32 mode, void (*done)(void), void (*cb)(f32)) {
+    if (mode == 11) {
+        mode = (rand() & 7) + 1;
+    }
+    if (mode != -1) {
+        D_004707A4 = mode;
+    }
+    D_004707B4 = done;
+    if (cb != NULL) {
+        D_004707B8 = cb;
+    }
+    SET_FUNC(D_004707A0, func_00263E90);
+    if (D_004707A4 != 0) {
+        func_00144770(0, 1.0f);
+    }
+}
+
+void func_00264300(s32 mode, void (*done)(void), void (*cb)(f32)) {
+    if (mode == 11) {
+        mode = (rand() & 7) + 1;
+    }
+    if (mode != -1) {
+        D_004707A4 = mode;
+    }
+    D_004707B4 = done;
+    if (cb != NULL) {
+        D_004707B8 = cb;
+    }
+    SET_FUNC(D_004707A0, func_00263FB0);
+}
+
+void func_00264380(f32 speed) {
+    D_004707AC = speed;
+}
+
+void func_00264390(void) {
+    D_004707A4 = 10;
+    D_004707A8 = 0.0f;
+    D_004707B4 = NULL;
+    D_004707B8 = NULL;
+    D_004707B0 = 0;
+    D_004707AC = 0.01f * D_004703BC;
+    if (D_004707A0 != NULL) {
+        SET_FUNC(D_004707A0, func_00264130);
+    }
+}
+
+extern char D_0046B370[];
+extern char D_0046B380[];
+extern FadeTask *func_00144FC0(void *, s32, s32, s32, s32, char *);
+
+void func_002643F0(void) {
+    D_004707A4 = 10;
+    D_004707A8 = 0.0f;
+    D_004707B4 = NULL;
+    D_004707B8 = NULL;
+    D_004707B0 = 0;
+    D_004707AC = 0.01f * D_004703BC;
+    D_004707A0 = func_00144FC0(func_00264130, 0, 0xFF00, 0, 1, D_0046B370);
+    func_00144FC0(func_00263CF0, 0, 0xFF10, 0, 1, D_0046B380);
+}

@@ -29,7 +29,9 @@ def main():
     pat = re.compile(rf"^(\s+- \[0x[0-9A-Fa-f]+, )asm(, {re.escape(name)}\])", re.M)
     if not pat.search(text):
         sys.exit(f"no asm subsegment named {name} in the yaml")
-    funcs = re.findall(r"^glabel (\S+)", asm.read_text(), re.M)
+    # A function referred to only from a table that the split took for a jump table starts with a `jlabel` (at the
+    # start of the line, unlike the jump-table labels inside functions).
+    funcs = re.findall(r"^[gj]label (\S+)", asm.read_text(), re.M)
     lines = ['#include "common.h"', ""]
     lines += [f'INCLUDE_ASM("asm/nonmatchings/{name}", {f});' for f in funcs]
     src.parent.mkdir(parents=True, exist_ok=True)

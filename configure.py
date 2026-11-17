@@ -123,6 +123,32 @@ def extract(iso):
 def split():
     env = dict(os.environ, PATH=f"{ROOT / 'tools' / 'bin'}{os.pathsep}{os.environ['PATH']}")
     run([sys.executable, "-m", "splat", "split", YAML], env=env, stdout=subprocess.DEVNULL)
+    local_branch_targets()
+
+
+def local_branch_targets():
+    """Gives each jump-table label a function also branches to a local twin, and points the branches at the twin.
+
+    A jump-table label (`jlabel`) is global, because the table in .rodata refers to it from another object. A branch
+    to a global symbol leaves an R_MIPS_PC16 relocation in the object, and mwccgap keeps such a symbol in the
+    assembler's section index instead of the function's .text section, so the link fails ("relocation truncated to
+    fit"). A branch to a local label is resolved by the assembler: same bytes, no relocation.
+    """
+    for path in (ROOT / "asm" / "nonmatchings").rglob("*.s"):
+        text = path.read_text()
+        labels = re.findall(r"^\s*jlabel (\.L\w+)$", text, re.M)
+        if not labels:
+            continue
+        new = text
+        for label in labels:
+            branch = re.compile(rf"^(\s*/\*.*\*/\s+b\w*\s+(?:\S+,\s*)*){re.escape(label)}$", re.M)
+            if not branch.search(new):
+                continue
+            twin = label.replace(".L", ".Lb_", 1)
+            new = branch.sub(rf"\g<1>{twin}", new)
+            new = re.sub(rf"^(\s*jlabel {re.escape(label)})$", rf"\1\n{twin}:", new, flags=re.M)
+        if new != text:
+            path.write_text(new)
 
 
 def sources(top, suffix):
