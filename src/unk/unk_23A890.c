@@ -1,5 +1,49 @@
 #include "common.h"
 
+void func_0021B070(void);
+
+void func_00248C70(void);
+void func_00252B10(void);
+void func_0025BE30(void);
+void func_002CA440(void);
+
+extern u8 *D_0058D3CC;
+extern u8 *D_0046FE4C;
+void func_00209530(s32);
+
+s32 func_002096D0(s32, s32, s32);
+void func_00243600(s32);
+void func_00241D60(s32);
+
+extern s32 D_0058BF30[];
+extern u8 D_0046AC18[];
+extern u8 D_0046AC28[];
+s32 func_0021C360(s32);
+void func_00127488(void *, void *, s32);
+void func_0023A000(void *, s32);
+void func_0023A3B0(void);
+void func_00239F60(void);
+void func_00239E80(void);
+
+typedef struct Arr6 {
+    s32 v[6];
+} Arr6;
+extern Arr6 D_004500E0;
+s32 func_0021C2A0(s32);
+u8 *func_0021C400(s32);
+void amDraw_SetPacketMode(s32);
+void func_0022C6B0(s32);
+
+extern u8 D_0058CAA0[];
+void func_00244CC0(s32, s32);
+void func_00209530(s32);
+void amTask_KillGroup(s32, s32, s32);
+void func_0020DE30(void);
+void func_00248C80(s32);
+void func_00252B20(void);
+void func_0025BE40(void);
+void func_002CA490(void);
+
 void func_001F7210(s32);
 void func_00247820(void);
 
@@ -42,7 +86,7 @@ extern u8 D_0058CAB0[];
 extern u8 D_0058CF30[];
 extern u8 D_0046AD80[];
 extern u8 D_0046AD88[];
-void amTask_Create(void (*)(void), s32, s32, s32, s32, u8 *);
+s32 amTask_Create(void (*)(void), void (*)(void), s32, s32, s32, void *);
 void func_002454B0(void);
 void func_002453D0(void);
 void func_00248CC0(void);
@@ -95,7 +139,6 @@ extern u8 D_0046ACE0[];
 extern u8 D_0046ACF0[];
 extern u8 *D_0051CD00[];
 void amTask_KillGroup(s32, s32, s32);
-void amTask_Create(void (*)(void), s32, s32, s32, s32, u8 *);
 void func_00209450(s32, s32);
 void func_0021B080(void);
 void func_00243020(void);
@@ -163,13 +206,58 @@ void func_00244CC0(s32, s32);
 void func_00244D80(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023A890);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023AA50);
+void func_0023AA50(s32 id, s32 y) {
+    u8 loc[0x10];
+    s32 k;
+    u8 *s2;
+    u8 *s0;
+
+    k = func_0021C360(id);
+    s2 = (u8 *)&D_0058BF30[k];
+    if (*(s32 *)s2 == 0) {
+        func_00127488(loc, D_0046AC18, k);
+        *(s32 *)s2 = amTask_Create(func_0023A3B0, func_00239F60, 0x5410, 0x1000, 0x2000000, loc);
+        s2 = (u8 *)*(s32 *)s2 + 0x30;
+        memset(s2, 0, 0x28);
+        *(s32 *)(s2 + 4) = k;
+        *(s32 *)(s2 + 8) = y;
+        func_0023A000(s2, 0);
+        func_00127488(loc, D_0046AC28, k);
+        *(s32 *)(s2 + 0x20) = amTask_Create(func_00239E80, 0, 0x3A10, 0x1000, 0x2000000, loc);
+        s0 = (u8 *)*(s32 *)(s2 + 0x20) + 0x30;
+        memset(s0, 0, 4);
+        *(s32 *)s0 = (s32)s2;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023AB60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023AEE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B080);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B3C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B4C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B6B0);
+void func_0023B6B0(s32 x) {
+    u8 *sys = D_0046FDFC;
+    u8 *p;
+    Arr6 buf;
+    s32 k;
+    u8 *s2;
+
+    p = (u8 *)func_0021C400(func_0021C3D0(x));
+    buf = D_004500E0;
+    if (func_0021C2A0(0x80000000)) {
+        if (*(s16 *)(sys + 0xE52) == 0 || *(s16 *)(sys + 0xE52) == 1) {
+            s2 = D_0058BF70 + x * 0x70 + 0x3A0;
+            amDraw_SetPacketMode(0);
+            for (k = 0; k < 8; k++) {
+                func_0022C560(*(s32 *)(s2 + 0x30 + k * 4));
+            }
+            for (k = 0; k < 6; k++) {
+                if ((*(u16 *)(p + 0x4C) & buf.v[k]) != 0) {
+                    func_0022C6B0(*(s32 *)(s2 + 0x50 + k * 4));
+                }
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B7D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023BBE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023C690);
@@ -432,7 +520,30 @@ void func_00241500(s32 x, s32 y) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241600);
+void func_00241600(s32 x) {
+    u8 *s0 = D_0046FE44 + x * 0x80;
+    s32 a;
+    s32 b;
+    s32 c;
+
+    a = (s32)func_00240F40(x, 0);
+    b = (s32)func_00240F40(x, 1);
+    c = (s32)func_00240F40(x, 2);
+    if (*(s32 *)(s0 + 0x40) != 0) {
+        func_00209530(*(s32 *)(s0 + 0x40));
+    }
+    if (*(s32 *)(s0 + 0x44) != 0) {
+        func_00209530(*(s32 *)(s0 + 0x44));
+    }
+    if (*(s32 *)(s0 + 0x48) != 0) {
+        func_00209530(*(s32 *)(s0 + 0x48));
+    }
+    func_00243600(x);
+    func_00241D60(x);
+    *(s32 *)(s0 + 0x40) = func_002096D0(a, 0x400008, 0);
+    *(s32 *)(s0 + 0x44) = func_002096D0(b, 0x400008, 0);
+    *(s32 *)(s0 + 0x48) = func_002096D0(c, 0x400008, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241710);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241AC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241C10);
@@ -443,8 +554,16 @@ void func_00241EB0(s32 i, s32 mode) {
     u8 *e = D_0046FE44 + i * 0x80;
 
     switch (mode) {
-    case 0:
+    case 3:
+        *(s32 *)(e + 0x2C) |= 1;
+        *(s32 *)(e + 0x2C) |= 8;
+        break;
+    case 2:
+        *(s32 *)(e + 0x2C) &= ~1;
+        *(s32 *)(e + 0x2C) |= 8;
+        break;
     case 1:
+    case 0:
         if (*(s8 *)(q + 0xCBD) != 0) {
             *(s32 *)(e + 0x2C) |= 1;
         } else {
@@ -452,17 +571,9 @@ void func_00241EB0(s32 i, s32 mode) {
         }
         *(s32 *)(e + 0x2C) &= ~8;
         break;
-    case 2:
-        *(s32 *)(e + 0x2C) &= ~1;
-        *(s32 *)(e + 0x2C) |= 8;
-        break;
-    case 3:
-        *(s32 *)(e + 0x2C) |= 1;
-        *(s32 *)(e + 0x2C) |= 8;
-        break;
     }
 }
-// differs: the mode chain is laid out in another order (the mode 3 test first, the mode 0/1 block placed last)
+// differs: the mode chain is laid out in another order (the mode 3 test first, the mode 0/1 block placed last), and the field addresses are formed in another order: 24 bytes longer in the original
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241EB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241FA0);
@@ -607,7 +718,42 @@ void func_00243ED0(void) {
     memset(D_0058C6C0, 0, 0x3D4);
     memset(D_0058C5B0, 0, 0x110);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243F20);
+void func_00243F20(void) {
+    s32 i;
+    s32 off;
+    s32 n;
+
+    if (*(s32 *)(D_0046FE48 + 0x3CC) != 0) {
+        amCdFs_ReleaseCache(*(s32 *)(D_0046FE48 + 0x3C8));
+        *(s32 *)(D_0046FE48 + 0x3C8) = 0;
+        *(s32 *)(D_0046FE48 + 0x3CC) = 0;
+    } else {
+        if (*(s32 *)(D_0046FE48 + 0x3C8) != 0) {
+            amCdFs_Close(*(s32 *)(D_0046FE48 + 0x3C8), 0);
+            *(s32 *)(D_0046FE48 + 0x3C8) = 0;
+        }
+    }
+    i = 0;
+    off = 0;
+    for (; i < 16; i++) {
+        if (*(s32 *)(D_0046FE48 + off + 0x388) != 0) {
+            amHeap_Free(*(void **)(D_0046FE48 + off + 0x388));
+        }
+        *(s32 *)(D_0046FE48 + off + 0x388) = 0;
+        off += 4;
+    }
+    off = 0;
+    n = *(s16 *)(D_0046FE44 + 0x102);
+    if (0 < n) {
+        do {
+            func_00242490(off);
+            off++;
+        } while (off < *(s16 *)(D_0046FE44 + 0x102));
+    }
+    func_0021B070();
+    memset(D_0058C6C0, 0, 0x3D4);
+    memset(D_0058C5B0, 0, 0x110);
+}
 void func_00244040(void) {
     amTask_KillGroup(0x400, 0x20000, 0);
     func_00209450(0x400008, 1);
@@ -664,6 +810,53 @@ void func_00244190(u8 *o) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244190);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244280);
+#if 0
+void func_00244410(u8 *o, s32 kind) {
+    s32 x = *(s32 *)(o + 0x1350);
+    u8 *sys = D_0046FE4C + x * 0x480;
+    u8 *s0 = sys + 0x10;
+    u8 *base = D_0058D3CC;
+    u8 *p = base + *(s32 *)(base + 0xC);
+    u8 *q = *(u8 **)(p + 0x24);
+    u8 *r = *(u8 **)(q + 0x28);
+
+    if (*(s32 *)(sys + 0x40) != 0) {
+        func_00209530(*(s32 *)(sys + 0x40));
+        *(s32 *)(sys + 0x40) = 0;
+    }
+    *(s32 *)(q + 0xA4) = *(s32 *)(o + 0xBA4) * 2 + 0x1A;
+    *(s32 *)(r + 0xA4) = *(s32 *)(o + 0xBA4) * 2 + 0x1A;
+    switch (kind) {
+    case 0x24:
+        *(s32 *)(q + 0x5C) = 0x41A00000;
+        *(s32 *)(q + 0xA0) = 0;
+        *(s32 *)(r + 0x5C) = 0x41400000;
+        *(s32 *)(r + 0xA0) = 2;
+        break;
+    case 0x23:
+        *(s32 *)(q + 0x5C) = 0x41B00000;
+        *(s32 *)(q + 0xA0) = 0;
+        *(s32 *)(r + 0x5C) = 0x41800000;
+        *(s32 *)(r + 0xA0) = 1;
+        break;
+    case 0x21:
+    case 0x22:
+        *(s32 *)(q + 0x5C) = 0x41700000;
+        *(s32 *)(q + 0xA0) = 0;
+        *(s32 *)(r + 0x5C) = 0x40E00000;
+        *(s32 *)(r + 0xA0) = 1;
+        break;
+    default:
+        *(s32 *)(q + 0x5C) = 0;
+        *(s32 *)(q + 0xA0) = 0;
+        *(s32 *)(r + 0x5C) = 0;
+        *(s32 *)(r + 0xA0) = 1;
+        break;
+    }
+    *(s32 *)(s0 + 0x30) = func_00209540((s32)base, (x != 0) ? 0x4000020 : 0x4000010, 0);
+}
+// differs: the original keeps the entry pointer, the table pointers and the object in fewer saved registers (frame 0x50 here, 0x90 in the C form tried); the register roles do not match
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244410);
 #if 0
 void func_00244580(s32 x, s32 y, s32 z) {
@@ -879,7 +1072,77 @@ void func_00247280(void) {
     func_0025BE20();
     func_002CA3F0();
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002472F0);
+void func_002472F0(void) {
+    s32 i;
+    s32 off;
+
+    if (*(s32 *)(D_0046FE4C + 0x9A0) != 0) {
+        amCdFs_ReleaseCache(*(s32 *)(D_0046FE4C + 0x99C));
+        *(s32 *)(D_0046FE4C + 0x99C) = 0;
+        *(s32 *)(D_0046FE4C + 0x9A0) = 0;
+    } else {
+        if (*(s32 *)(D_0046FE4C + 0x99C) != 0) {
+            amCdFs_Close(*(s32 *)(D_0046FE4C + 0x99C), 0);
+            *(s32 *)(D_0046FE4C + 0x99C) = 0;
+        }
+    }
+    i = 0;
+    off = 0;
+    for (; i < 16; i++) {
+        if (*(s32 *)(D_0046FE4C + off + 0x95C) != 0) {
+            amHeap_Free(*(void **)(D_0046FE4C + off + 0x95C));
+        }
+        *(s32 *)(D_0046FE4C + off + 0x95C) = 0;
+        off += 4;
+    }
+    for (i = 0; i < 2; i++) {
+        func_00244CC0(i, 0);
+        func_00244CC0(i, 1);
+    }
+    memset(D_0058CAA0, 0, 0x9B0);
+    func_00248C70();
+    func_00252B10();
+    func_0025BE30();
+    func_002CA440();
+}
+#if 0
+void func_00247410(void) {
+    s32 k;
+    s32 off;
+    u8 *s0;
+    u8 *s2;
+    u8 *bw;
+
+    k = 0;
+    off = 0;
+    s0 = D_0058CAA0;
+    do {
+        s2 = s0 + 0x10;
+        if (*(s16 *)(s0 + 0x3E) == 0) {
+            bw = D_00470570 + off + 0x830;
+            func_00244CC0(*(s32 *)(bw + 0x1350), 1);
+        }
+        if (*(s32 *)(s2 + 0x30) != 0) {
+            func_00209530(*(s32 *)(s2 + 0x30));
+            *(s32 *)(s2 + 0x30) = 0;
+        }
+        k++;
+        off += 0x2020;
+        s0 += 0x480;
+    } while (k < 2);
+    amTask_KillGroup(0x400, 0x800002, 0);
+    if (*(s16 *)(D_0046FE4C + 0x916) != 0) {
+        func_0020DE30();
+        *(s16 *)(D_0046FE4C + 0x916) = 0;
+    }
+    *(s16 *)(D_0046FE4C + 0x914) = 0;
+    func_00248C80(0);
+    func_00252B20();
+    func_0025BE40();
+    func_002CA490();
+}
+// differs: the loop over the two blocks: the original is 4 bytes longer, with the block pointer kept as its own value (not folded into the 0x1350 load); no declaration order tried gives its registers
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247410);
 #if 0
 void func_00247500(void) {
