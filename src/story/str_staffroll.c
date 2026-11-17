@@ -58,13 +58,13 @@ void func_0030DBB0(s32 *a0) {
     }
 }
 #if 0
-// func_0030DC00: the constants and the short store of 3 are hoisted above the loads by the original's scheduling; not matched
+// func_0030DC00: the original takes the pointer in t1, the short 3 in t0 and the float bits in a1 (temps in other registers); the early-constant forms gave the same code; four forms tried
 void func_0030DC00(s32 *a0) {
     s32 *t1 = (s32 *)a0[0x34 / 4];
     s16 n;
-    *(s16 *)((char *)a0 + 0x3A) = 3;
     n = (s16)(*(s32 *)((char *)t1 + 0x10) - 5);
     *(s16 *)((char *)a0 + 0x38) = n;
+    *(s16 *)((char *)a0 + 0x3A) = 3;
     *(s16 *)((char *)a0 + 0x3C) = 0;
     *(f32 *)&a0[0x48 / 4] = 300.0f;
     *(f32 *)&a0[0x4C / 4] = 342.0f;

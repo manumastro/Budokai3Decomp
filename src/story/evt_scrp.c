@@ -21,7 +21,7 @@ extern void Zenie_Close(s32);
 extern s32 func_002A1020(s32);
 
 #if 0
-// func_002A1640: the global pointer is kept in a saved register and the store follows the kill; not matched
+// func_002A1640: the original loads the global into a saved register in the delay slot of amTask_Kill (lw s0); ours loads it into v0 after the call; four forms tried
 void func_002A1640(void *a0) {
     void *p = a0;
     Zenie_Update(p);
@@ -349,7 +349,7 @@ s32 func_002A39C0(s32 *a0, char *a1) {
 extern s32 *D_004708D0;
 
 #if 0
-// func_002A3A10: the flag test gives movz for both constants, the original branches (b to the end); six variants tried
+// func_002A3A10: the flag test gives movz for both constants (also with an early return), the original branches (b to the end); seven variants tried
 s32 func_002A3A10(void) {
     s32 *g = D_004708D0;
     s32 r;
@@ -402,20 +402,14 @@ s32 func_002A3E10(s32 *a0, char *a1) {
 }
 extern s32 func_002A3E10(s32 *, char *);
 
-#if 0
-// func_002A3E60: the call's result and the store of the function address are scheduled differently (the args load comes after the store)
 s32 func_002A3E60(s32 *a0, char *a1) {
-    s32 *args = *(s32 **)(a1 + 0x2C);
-    s32 *p = a0;
-    p[0x10 / 4] = (s32)func_002A3E10;
-    if (func_002A1020(args[0]) == 0) {
-        p[0x10 / 4] = 0;
+    a0[0x10 / 4] = (s32)func_002A3E10;
+    if (func_002A1020((*(s32 **)(a1 + 0x2C))[0]) == 0) {
+        a0[0x10 / 4] = 0;
         return 1;
     }
     return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3E60);
 
 s32 func_002A3EC0(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
@@ -794,6 +788,22 @@ extern s8 D_004B4B63[];
 extern char D_00492FCE[];
 s32 func_002A4D60(s32 *a0);
 
+#if 0
+// func_002A4CF0: the store of the function pointer comes first (as in the original); the global's test is scheduled before the index load (ours lw before lb); three forms tried
+s32 func_002A4CF0(s32 *a0) {
+    s32 idx;
+    u16 *row;
+    a0[0x10 / 4] = (s32)func_002A4D60;
+    idx = D_004B4B63[0];
+    row = (u16 *)(D_00492FCE + idx * 0xB8);
+    if ((D_004708D0[0x14 / 4] & 0x8000) != 0) {
+        if ((*row & 0x8) != 0) {
+            return 1;
+        }
+    }
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4CF0);
 s32 func_002A4D60(s32 *a0) {
     s32 idx = D_004B4B63[0];
