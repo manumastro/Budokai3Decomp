@@ -78,6 +78,70 @@ s32 func_00270020(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_00270020);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_002700E0);
+typedef struct Ac270 {
+    s32 f0;
+    char pad4[3];
+    u8 f7;
+} Ac270;
+
+typedef struct Ent270 {
+    char pad0[0xB];
+    u8 fB;
+    char pad0C[0x1C];
+} Ent270;
+
+typedef struct G270C {
+    char pad0[0x40];
+    s32 f40;
+    s32 f44;
+    char pad48[0x1C];
+    s32 *f64;
+} G270C;
+
+extern u8 D_004E0660[];
+extern u8 D_0059CA9D[];
+
+extern u8 D_004E0660[];
+extern u8 D_0059CA9D[];
+
+#if 0
+void func_002702A0(Ac270 *a, s32 n) {
+    Ent270 *e;
+    G270C *g;
+    s32 *tbl;
+    s32 cnt = 0;
+    s32 i;
+
+    a->f0 = n;
+    g = (G270C *)D_004707FC;
+    e = (Ent270 *)(D_004E0660 + n * 40);
+    if (g->f40 != 1) {
+        return;
+    }
+    a->f7 = 0;
+    if ((e->fB & 1) == 0) {
+        a->f7 = a->f7 | 1;
+        return;
+    }
+    tbl = g->f64;
+    for (i = 0; i < 4; i++) {
+        if (*tbl == n) {
+            cnt++;
+            break;
+        }
+        tbl++;
+    }
+    if (cnt > 0) {
+        a->f7 = a->f7 | 4;
+        return;
+    }
+    cnt = g->f44;
+    if (*(u8 *)(D_0059CA9D + (1 - cnt) * 0xD680 + n) != 0) {
+        a->f7 = a->f7 | 2;
+    }
+}
+// differs: the early part matches (store, index math); the e and g locals get other registers (g in t1, D and the index temp swapped) for every declaration order and stride form tried
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_002702A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_00270390);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_26FF30", func_00270660);
