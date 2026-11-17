@@ -1,5 +1,10 @@
 #include "common.h"
 
+extern void func_00146F30(void *);
+typedef struct CharVec16 {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) CharVec16;
+
 extern void func_00231E70(s32 *);
 extern void func_002316D0(s32 *);
 extern void func_001D9760(s32, s32);
@@ -214,23 +219,112 @@ void func_002373E0(s32 *p, s32 *q) {
     p[1] = 4;
     p[6] = q[4];
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237400);
+extern u8 *func_0029D7F0(void);
+extern u8 *func_0029D7E0(void);
+void func_00237400(s32 *a0) {
+    CharVec16 tmp;
+    u8 *r;
+    u8 *r2;
+    u8 *dst;
+
+    if (a0[6] != 0) {
+        r = *(u8 **)a0[6];
+    } else {
+        r = 0;
+    }
+    if (r == 0) {
+        r = func_0029D7F0();
+    }
+    if (r != 0) {
+        __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%1)" : : "r"(r), "r"(&tmp), "r"(r + 0x10) : "memory");
+        func_00146F30(&tmp);
+    } else {
+        r2 = func_0029D7E0();
+        __asm__ volatile ("lqc2 $vf1, 0(%0) ; vsub.xyz $vf1, $vf0, $vf1 ; sqc2 $vf1, 0(%1)" : : "r"(r2), "r"(&tmp) : "memory");
+    }
+    dst = (u8 *)a0[0];
+    dst += 0x10;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(&tmp), "r"(dst) : "memory");
+}
 void func_002374B0(s32 *p, s32 *q) {
     p[1] = 3;
     p[6] = q[4];
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002374D0);
+extern u8 *func_0029D7F0(void);
+extern u8 *func_0029D7E0(void);
+void func_002374D0(s32 *a0) {
+    CharVec16 tmp;
+    u8 *r;
+    u8 *r2;
+    u8 *dst;
+
+    if (a0[6] != 0) {
+        r = *(u8 **)a0[6];
+    } else {
+        r = 0;
+    }
+    if (r == 0) {
+        r = func_0029D7F0();
+    }
+    if (r != 0) {
+        __asm__ volatile ("lqc2 $vf1, 0(%2) ; lqc2 $vf2, 0(%0) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%1)" : : "r"(r), "r"(&tmp), "r"(r + 0x10) : "memory");
+        func_00146F30(&tmp);
+    } else {
+        r2 = func_0029D7E0();
+        __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(r2), "r"(&tmp) : "memory");
+    }
+    dst = (u8 *)a0[0];
+    dst += 0x10;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(&tmp), "r"(dst) : "memory");
+}
 void func_00237580(s32 *p, s32 *q) {
     p[1] = 2;
     p[6] = q[4];
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002375A0);
+extern void func_00146F30(void *);
+void func_002375A0(s32 *a0) {
+    CharVec16 tmp;
+    u8 *dst;
+
+    if (a0[4] != 0) {
+        if (a0[5] != 0) {
+            __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%2)" : : "r"((u8 *)a0[5]), "r"((u8 *)a0[4]), "r"(&tmp) : "memory");
+            func_00146F30(&tmp);
+            dst = (u8 *)a0[0];
+            dst += 0x10;
+            __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(&tmp), "r"(dst) : "memory");
+        }
+    }
+}
 void func_00237610(s32 *p, s32 *q) {
     p[1] = 1;
     p[4] = q[4];
     p[5] = q[5];
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237630);
+extern u8 *func_0029D730(s32 *);
+void func_00237630(s32 *a0) {
+    if (a0[3] != 0) {
+        u8 *r = func_0029D730(a0);
+        __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"((u8 *)a0[0] + 0x10), "r"(r) : "memory");
+    }
+}
+// GIVEN UP: the copy registers differ: the original takes the source from a1 (advanced in place) and the destination in v1; tried local pointers and operand orders
+#if 0
+void func_00237670(s32 *a0, s32 *a1) {
+    u8 *dst;
+
+    a0[1] = 0;
+    if (a1[8] != 0) {
+        a0[3] = 1;
+    } else {
+        a0[3] = 0;
+        dst = (u8 *)a0[0];
+        dst += 0x10;
+        a1 = (s32 *)((u8 *)a1 + 0x10);
+        __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(dst), "r"(a1) : "memory");
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237670);
 s32 func_002376B0(s32 *p) {
     return (p != 0) ? *(s16 *)(D_00447454 + p[3] * 0x60 + p[4] * 8) : 0;

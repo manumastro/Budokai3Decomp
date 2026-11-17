@@ -705,21 +705,17 @@ void func_0022DB20(f32 a, f32 b) {
 void func_0022DB30(s32 a) {
     D_00470714 = a;
 }
-// GIVEN UP: the float compare and the store order differ (tried two forms)
-#if 0
 void func_0022DB40(f32 x) {
-    if (x == 0.0f) {
-        if (D_004703F4 == 3) {
-            D_00470710 = 1.2f;
-        } else {
-            D_00470710 = 1.0f;
-        }
-    } else {
+    if (x) {
         D_00470710 = x;
+        return;
+    }
+    if (D_004703F4 == 3) {
+        D_00470710 = 1.2f;
+    } else {
+        D_00470710 = 1.0f;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DB40);
 void func_0022DB90(void) {
     s32 *n = D_0058BB64[0];
 
