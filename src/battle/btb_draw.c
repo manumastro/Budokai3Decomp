@@ -416,7 +416,51 @@ void func_001EB330(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EB3F0);
+extern void func_002D1C50(void);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EB830(Task *);
+extern void func_001EB330(Task *);
+
+void func_001EB3F0(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x17:
+                TASK_SETFUNC(t, func_001EB830);
+                break;
+            case 0x19:
+                TASK_SETFUNC(t, func_001EB330);
+                break;
+            }
+            func_002D1C50();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -1936,7 +1980,47 @@ void func_001ED300(Task *t) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ED380);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EE250(Task *);
+extern void amTask_Kill(s32);
+extern s32 D_0047061C;
+
+
+void func_001ED380(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            TASK_SETFUNC(t, func_001EE250);
+            if (D_0047061C != 0) {
+                amTask_Kill(D_0047061C);
+            }
+            D_0047061C = 0;
+        }
+    }
+}
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
@@ -1985,7 +2069,47 @@ void func_001ED4C0(Task *t) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ED540);
+extern void func_002ECAC0(void);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EDD00(Task *);
+
+void func_001ED540(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x8:
+                TASK_SETFUNC(t, func_001EDD00);
+                break;
+            }
+            func_002ECAC0();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -2046,7 +2170,59 @@ void func_001ED6A0(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ED740);
+extern void func_001B0EC0(void);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EE250(Task *);
+extern void func_001EDD00(Task *);
+extern void func_001ED4C0(Task *);
+extern void func_001ED6A0(Task *);
+
+void func_001ED740(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x6:
+                TASK_SETFUNC(t, func_001EE250);
+                break;
+            case 0x8:
+                TASK_SETFUNC(t, func_001EDD00);
+                break;
+            case 0xD:
+                TASK_SETFUNC(t, func_001ED4C0);
+                break;
+            case 0xA:
+                TASK_SETFUNC(t, func_001ED6A0);
+                break;
+            }
+            func_001B0EC0();
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ED880);
 
 extern s8 D_004B4BB1[];
@@ -2087,7 +2263,59 @@ void func_001ED9E0(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EDAC0);
+extern void func_00298EA0(void);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EE250(Task *);
+extern void func_001ED9E0(Task *);
+extern void func_001ED300(Task *);
+extern void func_001ED150(Task *);
+
+void func_001EDAC0(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x6:
+                TASK_SETFUNC(t, func_001EE250);
+                break;
+            case 0x9:
+                TASK_SETFUNC(t, func_001ED9E0);
+                break;
+            case 0xB:
+                TASK_SETFUNC(t, func_001ED300);
+                break;
+            case 0xC:
+                TASK_SETFUNC(t, func_001ED150);
+                break;
+            }
+            func_00298EA0();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -2176,7 +2404,51 @@ void func_001EDD00(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EDDE0);
+extern void StrSelect_Exit(void);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EE250(Task *);
+extern void func_001EDD00(Task *);
+
+void func_001EDDE0(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 0x6:
+                TASK_SETFUNC(t, func_001EE250);
+                break;
+            case 0x8:
+                TASK_SETFUNC(t, func_001EDD00);
+                break;
+            }
+            StrSelect_Exit();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -2246,7 +2518,56 @@ void func_001EDF90(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE040);
+extern void func_0029CCC0(void);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EE6D0(Task *);
+extern void func_001EDF90(Task *);
+extern void func_001EDD00(Task *);
+
+void func_001EE040(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 5:
+                D_004B4B41[0] = 0;
+                TASK_SETFUNC(t, func_001EE6D0);
+                break;
+            case 0x7:
+                TASK_SETFUNC(t, func_001EDF90);
+                break;
+            case 0x8:
+                TASK_SETFUNC(t, func_001EDD00);
+                break;
+            }
+            func_0029CCC0();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -2388,7 +2709,54 @@ void func_001EE6D0(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE820);
+extern void Title_Exit(void);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s8 D_004B4B40[];
+extern s32 D_004B4B68[];
+extern s8 D_004B4B41[];
+extern s32 D_004705F8;
+extern s32 D_004705FC;
+extern s32 D_00470600;
+extern s32 D_00470604;
+extern void func_001EA740(s32);
+extern void func_001EECD0(Task *);
+extern void func_001EEAF0(Task *);
+
+void func_001EE820(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705F8 != 0) {
+            a1 = D_00470600;
+            a0 = D_00470604;
+            D_004705F8 = 0;
+            D_004705FC = 0;
+            D_004B4B40[0] = a1;
+            D_00470600 = a0;
+            D_00470604 = -1;
+            switch (D_004B4B40[0]) {
+            case 2:
+                D_004B4B68[0] = 0x2BC;
+                TASK_SETFUNC(t, func_001EECD0);
+                break;
+            case 3:
+                D_004B4B68[0] = 0x76C;
+                TASK_SETFUNC(t, func_001EEAF0);
+                break;
+            }
+            Title_Exit();
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
