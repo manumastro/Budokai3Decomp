@@ -7,6 +7,8 @@ extern char D_0046EE10[];
 extern void (*D_0046EE30[])(void *);
 extern void func_0028EB40(Task *, s32, void (*)(Task *), s32);
 extern void func_002BD140(Task *);
+extern void amCdFs_Close(s32, s32);
+extern void amFile_Load(s32);
 
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD140);
 void func_002BD3A0(Task *t) {
@@ -77,6 +79,9 @@ extern s32 *D_0046FE44;
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE4E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE530);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE710);
+extern s32 *D_0047011C;
+
+// func_002BE7C0 (sets or clears bit 0 of a word of D_0047011C by a flag): the if/else layout differs; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE7C0);
 extern s32 *D_0047011C;
 extern void func_002BDF50(void *, void *);
@@ -117,6 +122,9 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0220);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C02C0);
 // func_002C03B0: the function address test (?:) gets its branch in the other order; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03B0);
+extern void func_002C03B0(s32 *);
+
+// func_002C03E0 (reads a file of an entry and loads it again): the function address goes to another register; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C03E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0470);
 void func_002C0490(void *p, s16 v) {
@@ -125,7 +133,16 @@ void func_002C0490(void *p, s16 v) {
 void *func_002C04A0(void) {
     return NULL;
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C04B0);
+void func_002C04B0(Task *p) {
+    s32 *s0 = (s32 *)((char *)p + 0x30);
+    if (s0[0] != 0) {
+        amCdFs_Close(s0[0], 0);
+    }
+    if (s0[1] != 0) {
+        amHeap_Free((void *)s0[1]);
+    }
+    amTask_Kill(p);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0510);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0630);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0750);
