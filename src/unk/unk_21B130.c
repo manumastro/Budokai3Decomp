@@ -382,13 +382,9 @@ s32 func_0021C360(s32 id) {
 // differs: the count is read again in the loop test through a register of its own (lw from 0(a1)), and the frame is 0x10 bigger: the loop shape differs
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C360);
-#if 0
 s32 func_0021C3D0(s32 i) {
-    return *(s8 *)((s32)gBtlSys + i + 0xCA0);
+    return *(s8 *)(i + (s32)gBtlSys + 0xCA0);
 }
-// differs: the sum D + i is emitted as addu v0, v0, a0 (loaded base first); the i-first forms were not reached
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C3D0);
 u8 *func_0021C3E0(s32 i) {
     return gBtlSys + 0xCB0 + i * 0x50;
 }
