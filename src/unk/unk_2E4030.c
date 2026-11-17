@@ -95,7 +95,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E46A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4AC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4BF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4D60);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5040);
 extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
@@ -108,6 +107,36 @@ extern void amModel_SetCurrent(s32, s32);
 extern f32 gFrameDelta;
 extern void func_002E5C20();
 extern void func_002E5260(u8 *);
+void func_002E5040(u8 *a0) {
+    s32 f4;
+
+    f4 = *(s32 *)(a0 + 4);
+    D_00470704 = f4;
+    D_0047070C = 0x7000;
+    D_00470708 = 0;
+    amModel_SetCurrent(f4, 0x7000);
+    D_00470238 = 0;
+    if (*(s32 *)(a0 + 0x10) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x10), 0);
+    }
+    *(s32 *)(a0 + 0x10) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x0), 0.0f);
+    if (*(s32 *)(a0 + 0x18) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x18), 0);
+    }
+    *(s32 *)(a0 + 0x18) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x4), 0.0f);
+    if (*(s32 *)(a0 + 0x14) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x14), 0);
+    }
+    *(s32 *)(a0 + 0x14) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x14), 0.0f);
+    if (*(s32 *)(a0 + 0x1C) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x1C), 0);
+    }
+    *(s32 *)(a0 + 0x1C) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x20), 0.0f);
+    if (*(s32 *)(a0 + 0x24) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x24), 0);
+    }
+    *(s32 *)(a0 + 0x24) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x28), 0.0f);
+}
 void func_002E5170(u8 *a0) {
     s32 f4;
 
