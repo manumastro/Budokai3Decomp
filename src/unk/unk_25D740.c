@@ -646,7 +646,28 @@ s32 func_0025EB10(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EB60);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EC60);
+extern void func_0025EB60();
+extern void func_00246AB0(s32, void *);
+extern s8 D_004703F4;
+
+s32 func_0025EC60(void *o, ScrCmd *cmd) {
+    extern void *amTask_Create();
+    extern char D_0046B178[];
+    ScrArg *a = cmd->args;
+    s32 s2 = a[2].i;
+    s32 s1 = a[1].i;
+    s32 s0 = *(s32 *)((u8 *)gBattle + 0x8934);
+    u8 *p;
+    f32 f;
+
+    p = (u8 *)amTask_Create(func_0025EB60, 0, a[0].i, 0x400, 0x800002, D_0046B178) + 0x30;
+    f = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+    *(f32 *)(p + 4) = -f;
+    *(f32 *)(p + 8) = (f32)s2;
+    *(f32 *)(p + 0xC) = (f32)s1;
+    func_00246AB0(s0, p);
+    return 1;
+}
 
 s32 func_0025ED50(ScrCtx *ctx, ScrCmd *cmd) {
     func_00245A80(gBattle->f8934[0], cmd->args[0].i);
