@@ -71,6 +71,14 @@ Until a function is named in a symbol file, keep its `func_XXXXXXXX` name in C (
   as one (func_001D4210).
 - An early `return` and `if (...) {} else {...}` place the blocks differently; when the original jumps over a
   `b` to the end, try `if (a == 0 || b != 0) return;` (func_001CA000).
+- `a = b = f();` stores `b` first, then `a` (func_001D0FC0).
+- A function emitted on its own and also expanded inline elsewhere in its file (the same instructions appear in
+  another function's body) was a `static inline` helper called by both; `inline` on the emitted function itself
+  makes Metrowerks drop it (func_001D0B90, func_001D0C00).
+- An `extern` of 8 bytes or less is assumed to be in `.sdata` (`$gp`); when the original reaches it with
+  `lui` / `ld` (an `s64` in `.data`, e.g. `D_003F01C8`), declare it as an array of unknown size.
+- Count the argument registers at each call: some library calls take five or six (`$t0`, `$t1`), and a missing
+  argument changes the scheduling around the call.
 - A small `switch` (two or three cases, no jump table) compiles to a chain of `beq`; the case blocks are laid out
   in the source order of the `case` labels (func_001CB4A0).
 - Tail calls (`j func` with the stack restored in the delay slot) appear in the code linked before CRI; 3.0b52 at

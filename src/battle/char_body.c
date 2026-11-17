@@ -83,7 +83,7 @@ CharBody *func_001C9AF0(s32 chara, s32 costume, s32 color, s32 key) {
     }
     e->list = b;
     if (e->file != -1) {
-        b->unk6C = b->unk70 = (s32)func_0025C670(e->file, 0, 1);
+        b->unk70 = b->unk6C = (s32)func_0025C670(e->file, 0, 1);
     }
     b->secp = func_001D4970(e->secp);
     if (b->secp != 0 && b->secp->unk3C != 0) {
@@ -250,7 +250,7 @@ CharFace *func_001CA180(s32 chara, s32 costume, s32 color, s32 key) {
     }
     e->list = f;
     if (e->file != -1) {
-        f->file = f->unk94 = func_001CA370(2, e->file, 0, 0);
+        f->unk94 = f->file = func_001CA370(2, e->file, 0, 0);
     }
     return f;
 }
