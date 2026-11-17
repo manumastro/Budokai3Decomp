@@ -214,8 +214,6 @@ void func_002F4D50(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4D50);
-#if 0
-// differs: 7 of 76 differ: the second amModel_SetCurrent call gets the store of D_0047070C in its delay slot (the original moves the D_00470708 store there and keeps 0x6000 before the call)
 extern u8 *gOutputPass;
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
@@ -244,15 +242,15 @@ void func_002F4E40(u8 *a0) {
     v = *(s32 *)(s0 + 0xC);
     D_00470704 = v;
     D_0047070C = 0x6000;
-    amModel_SetCurrent(v, 0x6000);
     D_00470708 = 0;
+    amModel_SetCurrent(v, 0x6000);
     s0 = gOutputPass;
     D_00470238 = 0;
     v = *(s32 *)(s0 + 0xC);
     D_00470704 = v;
     D_0047070C = 0x6000;
-    amModel_SetCurrent(v, 0x6000);
     D_00470708 = 0;
+    amModel_SetCurrent(v, 0x6000);
     D_00470238 = 0;
     s0 = *(u8 **)s3;
     if (s0 != 0) {
@@ -280,8 +278,6 @@ void func_002F4E40(u8 *a0) {
         *(s32 *)(s4 + 0x1C) = 0;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4E40);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4F70);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F5120);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F5260);
