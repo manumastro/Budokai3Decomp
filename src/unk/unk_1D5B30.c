@@ -2963,6 +2963,39 @@ void func_001E3AA0(Fighter *c) {
 #endif
 // differs: 75 of 76: the original keeps the object in s0 and uses only two saved registers (frame 0x30); the C saves it in s2 and an address in s0 (frame 0x40), the field struct view did not help
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3AA0);
+extern void func_00146ED0(void *, void *, f32);
+
+#if 0
+void func_001E3BB0(Fighter *c) {
+    s32 buf[4];
+    s32 p0;
+
+    if (c->f1FF9) {
+        __asm__ volatile ("lqc2 $vf1, 0(%0)
+	lqc2 $vf2, 0(%1)
+	vsub.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, 0(%2)" : : "r"((char *)c->f1354 + 0x40), "r"((char *)c + 0x40), "r"(buf) : "memory");
+        buf[1] = 0;
+        func_00146ED0(buf, buf, 13.0f);
+        __asm__ volatile ("lqc2 $vf1, 0(%0)
+	lqc2 $vf2, 0(%1)
+	vsub.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, 0(%1)" : : "r"((char *)c->f1354 + 0x40), "r"(buf) : "memory");
+        p0 = 0x3DCCCCCD;
+        __asm__ volatile ("mtc1 %0, $f0
+	mfc1 %0, $f0
+	qmtc2.ni %0, $vf3" : "+r"(p0) : : "$f0", "memory");
+        __asm__ volatile ("lqc2 $vf1, 0(%0)
+	lqc2 $vf2, 0(%1)
+	vsub.xyz $vf2, $vf2, $vf1
+	vaddax.xyz ACC, $vf1, $vf0x
+	vmaddx.xyz $vf1, $vf2, $vf3x
+	sqc2 $vf1, 0(%0)" : : "r"((char *)c + 0x40), "r"(buf) : "memory");
+        *(s8 *)((char *)gBattle + 0x8AB0) = 0;
+    }
+}
+#endif
+// differs: 41 of 50 differ: the buffer copy order, the zero float store (swc1 f0 after the mtc1 zero) and the mtc1/mfc1 round trip of the 0.1f constant before qmtc2.ni were not reproduced
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3BB0);
 #if 0
 void func_001E3C70(Fighter *c, Copy16b *a1) {
