@@ -129,7 +129,7 @@ segments:
       - [0x087D90, asm, cri/sfd]               # SFD core (few strings)
       - [0x09EDD0, asm, cri/sfx]               # sfxcnv_*, SFX_*, SFXZ_*
       # libmtap: Sony's multitap library (ee-gcc 2.9-ee, like the SDK above), linked after CRI.
-      - [0x0A19D0, asm, sdk/libmtap]
+      - [0x0A19D0, c, sdk/libmtap]
       # Metrowerks code linked after CRI: the game, and amMc.c / amCdFs.c. Files as above.
       - [0x0A1E80, asm, sys/amMc]
       - [0x0A31B0, asm, unk/unk_1A31B0]

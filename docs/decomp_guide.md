@@ -63,3 +63,18 @@ Until a function is named in a symbol file, keep its `func_XXXXXXXX` name in C (
 - In a shared checkout, the only tool to run is `scripts/fdiff.py` (safe in parallel). Do not run configure.py,
   splat or ninja there: they rewrite asm/ and build/, which the others read.
 - Edit only the files you were given and your area's symbol file. Report what matched, what did not and why.
+
+## The libraries (ee-gcc)
+
+C files under `src/sdk/` and `src/cri/` are compiled with Sony's ee-gcc, not Metrowerks: configure.py's
+`GCC_GROUPS` gives the build and flags per path (2.9-ee-991111-01 for Sony's libraries, 2.96 for newlib, libm,
+libgcc and CRI; all `-O2 -G0`; docs/plan.md, "The libraries' compilers"). `scripts/eegcc/eegcc.py` runs the compiler
+(the Linux builds in a Docker container, SN's Windows builds in wibo), gas assembles its output with
+`include/gcc_prelude.inc`, and INCLUDE_ASM pulls the assembly in with `.include` (include/include_asm.h).
+
+- `python3 scripts/gccdiff.py src/sdk/<file>.c [name ...] [-v]` is fdiff.py for these files. Like fdiff, it masks
+  relocated fields, so a call to the wrong function still prints OK: check the callees, and let ninja's CHECK decide.
+- The asm objects of the split are only 4-aligned: when the next object starts on 16 bytes (Metrowerks), the C
+  file of the last library object keeps the padding itself (`__asm__(".section .text\n\t.balign 16\n")`).
+- Data rules as above (no data defined in C). The R5900 short-loop nops in the original are the toolchain's: write
+  the loop plainly.

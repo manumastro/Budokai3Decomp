@@ -37,6 +37,37 @@ MWCC = f"tools/mwcps2/{MWCC_VERSION}/mwccps2.exe"
 MWCC_FLAGS = "-O4,p -sdatathreshold 8 -Iinclude -Isrc"
 WIBO = "tools/wibo"
 
+# The libraries: Sony's ee-gcc builds (docs/plan.md, "The libraries' compilers"), per path under src/. Keys are a
+# folder (with its slash) or a file stem (matching STEM.c, STEM/... and STEM_*.c); the first match wins. ee-gcc writes
+# assembly (scripts/eegcc/eegcc.py runs it: Docker or wibo), the modern gas assembles it with include/gcc_prelude.inc
+# (Sony's assembler's quirks) as o64, and scripts/set_eabi64.py sets the ABI tag the link expects.
+GCC_GROUPS = [
+    ("src/sdk/libm", "2.96", "-O2 -G0"),          # newlib's libm, libgcc and libc: ee-gcc 2.96
+    ("src/sdk/libgcc", "2.96", "-O2 -G0"),
+    ("src/sdk/libc", "2.96", "-O2 -G0"),
+    ("src/sdk/", "2.9-991111-01", "-O2 -G0"),     # Sony's libraries (libmtap too): the 2.9-ee builds tie
+    ("src/cri/", "2.96", "-O2 -G0"),              # CRI ADX and Sofdec
+]
+GCC_AS_FLAGS = "-EL -march=r5900 -mabi=o64 -no-pad-sections -mno-pdr -G0 -Iinclude"
+
+
+def gcc_group(src):
+    """(version, flags) of the ee-gcc build for a C file, or None for Metrowerks (the game)."""
+    path = str(src)
+    for key, version, flags in GCC_GROUPS:
+        if key.endswith("/"):
+            if path.startswith(key):
+                return version, flags
+        elif path == key + ".c" or path.startswith(key + "/") or path.startswith(key + "_"):
+            return version, flags
+    return None
+
+
+def include_asm_files(src):
+    """The assembly files a C file pulls in with INCLUDE_ASM (implicit inputs of its object)."""
+    text = (ROOT / src).read_text()
+    return [f"{folder}/{name}.s" for folder, name in re.findall(r'INCLUDE_ASM\(\s*"([^"]+)"\s*,\s*(\w+)\s*\)', text)]
+
 
 def run(cmd, **kwargs):
     print("$", " ".join(shlex.quote(str(c)) for c in cmd))
@@ -114,6 +145,12 @@ def write_ninja():
         f"$in $out {MWCC_FLAGS}",
         "  description = CC $in",
         "",
+        # C through ee-gcc (the libraries): compile to assembly, assemble with gas and the prelude, retag the ABI.
+        "rule gcc",
+        f"  command = {py} scripts/eegcc/eegcc.py $gcc_version $gcc_flags -Iinclude -Isrc -S $in -o $out.s && "
+        f"$as {GCC_AS_FLAGS} include/gcc_prelude.inc $out.s -o $out && {py} scripts/set_eabi64.py $out",
+        "  description = GCC $in",
+        "",
         "rule ld",
         "  command = $ld -EL $scripts -Map $out.map -o $out",
         "  description = LD $out",
@@ -142,9 +179,17 @@ def write_ninja():
         out.append(f"build {obj}: bin {src}")
         objs.append(obj)
     linked = linked_c_files()
+    headers = " ".join(str(p.relative_to(ROOT)) for p in sorted((ROOT / "include").rglob("*.h")))
     for src in [p for p in sources("src", ".c") if p in linked]:
         obj = Path("build") / src.with_suffix(".o")
-        out.append(f"build {obj}: cc {src}")
+        deps = " ".join([headers, *include_asm_files(src)])
+        group = gcc_group(src)
+        if group is None:
+            out.append(f"build {obj}: cc {src} | {deps}")
+        else:
+            out.append(f"build {obj}: gcc {src} | {deps} include/gcc_prelude.inc include/macro.inc")
+            out.append(f"  gcc_version = {group[0]}")
+            out.append(f"  gcc_flags = {group[1]}")
         objs.append(obj)
     scripts = [f"build/{NAME}.ld", "build/undefined_funcs_auto.txt", "build/undefined_syms_auto.txt",
                "config/linker_script_extra.ld"]
