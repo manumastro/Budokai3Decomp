@@ -2142,7 +2142,7 @@ void func_001B4C10(Fighter *f) {
 void func_001B4C60(Fighter *f) {
     s32 v;
     u32 uw;
-    func_001E3430(f, 0);
+    Fighter_ResetMotion(f, 0);
     if (FT_FIELD(f, f32, 0xCB8) > 5.0f) {
         FT_FIELD(f, s16, 0xCB2) = 1;
         if (FT_FIELD(f, s8, 0x2010) != 0) {
