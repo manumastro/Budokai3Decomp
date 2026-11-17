@@ -2,6 +2,12 @@
 void func_0013B160(void *p);
 void func_0013B0B0(u8 *);
 void func_0013B110(s32);
+void func_0013B060(s32);
+extern s32 D_00470238;
+void func_00145CC0(s32, s32);
+void func_00208D60(s32);
+void func_00209C50(void);
+void func_00209D70(void *);
 void func_0013B960(u8 *);
 
 extern u8 D_005687D0[];
@@ -125,6 +131,315 @@ extern void (*D_00469CCC[])(void *);
 extern s8 D_004703F4;
 void amMotSet_Apply(void *, s32, f32);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020A4D0);
+
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+extern u8 D_0051D9A8[];
+
+#if 0
+s32 func_0020A5F0(s32 idx) {
+    u8 *p;
+    f32 f0;
+    f32 f1;
+    f32 f2;
+    f32 f3;
+    s32 bits;
+
+    p = D_005687D0 + idx * 0xF0;
+    f3 = *(f32 *)(p + 0xE4);
+    if (f3 < 0.0f) {
+        return 1;
+    }
+    f2 = *(f32 *)(p + 0xE0);
+    f2 = f3 / f2;
+    f0 = f3 - *(f32 *)D_0051D9A8;
+    f1 = 1.0f - f2;
+    *(f32 *)(p + 0xE4) = f0;
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%1)\n"
+        "lqc2 $vf2, 0(%2)\n"
+        "mfc1 %0, %4\n"
+        "qmtc2.ni %0, $vf3\n"
+        "vsub.xyzw $vf2, $vf2, $vf1\n"
+        "vaddax.xyzw ACC, $vf1, $vf0x\n"
+        "vmaddx.xyzw $vf2, $vf2, $vf3x\n"
+        "sqc2 $vf2, 0(%3)\n"
+        : "=r"(bits) : "r"(p + 0x60), "r"(p + 0xA0), "r"(p + 0x20), "f"(f1) : "memory");
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%1)\n"
+        "lqc2 $vf2, 0(%2)\n"
+        "mfc1 %0, %4\n"
+        "qmtc2.ni %0, $vf3\n"
+        "vsub.xyzw $vf2, $vf2, $vf1\n"
+        "vaddax.xyzw ACC, $vf1, $vf0x\n"
+        "vmaddx.xyzw $vf2, $vf2, $vf3x\n"
+        "sqc2 $vf2, 0(%3)\n"
+        : "=r"(bits) : "r"(p + 0x70), "r"(p + 0xB0), "r"(p + 0x30), "f"(f1) : "memory");
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%1)\n"
+        "lqc2 $vf2, 0(%2)\n"
+        "mfc1 %0, %4\n"
+        "qmtc2.ni %0, $vf3\n"
+        "vsub.xyzw $vf2, $vf2, $vf1\n"
+        "vaddax.xyzw ACC, $vf1, $vf0x\n"
+        "vmaddx.xyzw $vf2, $vf2, $vf3x\n"
+        "sqc2 $vf2, 0(%3)\n"
+        : "=r"(bits) : "r"(p + 0x80), "r"(p + 0xC0), "r"(p + 0x40), "f"(f1) : "memory");
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%1)\n"
+        "lqc2 $vf2, 0(%2)\n"
+        "mfc1 %0, %4\n"
+        "qmtc2.ni %0, $vf3\n"
+        "vsub.xyzw $vf2, $vf2, $vf1\n"
+        "vaddax.xyzw ACC, $vf1, $vf0x\n"
+        "vmaddx.xyzw $vf2, $vf2, $vf3x\n"
+        "sqc2 $vf2, 0(%3)\n"
+        : "=r"(bits) : "r"(p + 0x90), "r"(p + 0xD0), "r"(p + 0x50), "f"(f1) : "memory");
+    return 0;
+}
+// differs: float registers swapped (the f2 and f3 of the divide and the 0x1.0 constant in f1 against f0), about 40 instructions differ after the permutation search
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020A5F0);
 extern u8 D_005687D0[];
 
@@ -808,6 +1123,112 @@ void func_0020E870(s32 i, u8 *src, s32 j) {
         : : "r"(s1) : "memory");
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E8F0);
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+void func_00146F10(void *a, void *b, f32 s);
+
+#if 0
+void func_0020EA70(s32 i) {
+    Copy16A t20;
+    Copy16A t30;
+    Copy16A t40;
+    u8 *s0;
+
+    s0 = D_00568C90 + i * 0x2140;
+    __asm__ volatile (
+        "lqc2 $vf1, 0x10(%0)\n"
+        "lqc2 $vf2, 0(%0)\n"
+        "vsub.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%1)\n"
+        : : "r"(*(u8 **)(gBattle + 0x264)), "r"(&t20) : "memory");
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "sqc2 $vf1, 0(%1)\n"
+        : : "r"(&t20), "r"(&t40) : "memory");
+    func_00146F30(&t40);
+    func_00146F10(&t40, &t40, *(f32 *)(s0 + 0x2138));
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vadd.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%2)\n"
+        : : "r"(*(u8 **)(gBattle + 0x264)), "r"(&t40), "r"(&t30) : "memory");
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vadd.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(&t30), "r"(s0 + 0x10) : "memory");
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "sqc2 $vf1, 0(%1)\n"
+        : : "r"(&t30), "r"(s0) : "memory");
+    func_0013B160(s0 + 0x40);
+    __asm__ volatile (
+        "lqc2 $vf31, 0(%0)\n"
+        "addiu $v1, %1, 0x40\n"
+        "sqc2 $vf28, 0($v1)\n"
+        "sqc2 $vf29, 0x10($v1)\n"
+        "sqc2 $vf30, 0x20($v1)\n"
+        "sqc2 $vf31, 0x30($v1)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(&t30), "r"(s0) : "memory");
+}
+// differs: the stack slots of the three 16-byte temporaries and the base register differ (best of 24 declaration orders: 51 instructions differ); the VU0 chain (vsub, the two func_00146F30 / func_00146F10 calls, the vadd chain, the state block) is the same
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EA70);
 void func_0013B160(void *p);
 
@@ -844,7 +1265,50 @@ void func_0020EBF0(s32 i) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EC70);
+void func_00209D20(s32 a);
+
+void func_0020EC70(s32 i) {
+    u8 *s0;
+    Copy16A t20;
+
+    if (*(s8 *)(gBattle + 0x8975) == 1) {
+        return;
+    }
+    s0 = D_00568C90 + i * 0x2140;
+    if (*(s32 *)(s0 + 0x20E8) == 0) {
+        return;
+    }
+    if (*(s32 *)(s0 + 0x94) != 0) {
+        func_00208D60(*(s32 *)(s0 + 0x94));
+    }
+    if (*(s32 *)(s0 + 0x88) != 0) {
+        D_00470238 = 0;
+        func_00145CC0(*(s32 *)(s0 + 0x88), *(s32 *)(s0 + 0x20E4));
+    }
+    if (*(s32 *)(s0 + 0x20EC) & 0x80) {
+        func_0013B160(s0 + 0x40);
+        __asm__ volatile (
+            "sqc2 $vf31, 0(%0)\n"
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : "r"(&t20) : "memory");
+        func_0020D5C0(s0 + 0x40, 0, &t20, (u8 *)7);
+    }
+    func_0013B0B0(gBattle + 0x60);
+    func_0013B960(s0 + 0x40);
+    func_00209D20(0);
+    __asm__ volatile (
+        "lqc2 $vf28, 0(%0)\n"
+        "lqc2 $vf29, 0x10(%0)\n"
+        "lqc2 $vf30, 0x20(%0)\n"
+        "lqc2 $vf31, 0x30(%0)\n"
+        : : "r"(s0 + 0x40) : "memory");
+    func_00208D70(*(s32 *)(s0 + 0x20E8));
+    func_0013B110(1);
+    func_00209C50();
+}
 void func_0020EDA0(s32 i) {
     if (*(s8 *)(gBattle + 0x8975) != 1) {
         u8 *p = D_00568C90 + i * 0x2140;
@@ -1215,6 +1679,51 @@ void func_0020F870(s32 idx) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F970);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00210240);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00210C20);
+void func_0020D290(u8 *o, u8 *a1, s32 a2, f32 f);
+
+void func_0020D290(u8 *o, u8 *a1, s32 a2, f32 f);
+
+void func_0020D290(u8 *o, u8 *a1, s32 a2, f32 f);
+
+void func_0020D290(u8 *o, u8 *a1, s32 a2, f32 f);
+
+void func_0020D290(u8 *o, u8 *a1, s32 a2, f32 f);
+
+void func_0020D290(u8 *o, u8 *a1, s32 a2, f32 f);
+
+void func_0020D290(u8 *o, u8 *a1, s32 a2, f32 f);
+
+#if 0
+void func_002114A0(u8 *a) {
+    u8 *sa;
+    u8 *sd;
+    u8 *q;
+    u8 *s1;
+
+    q = gBattle + (((*(s16 *)(a + 0x1C) << 8) + *(s16 *)(a + 0x1C)) << 5) + 0x830;
+    sa = a + 0x20;
+    sd = D_00568C90 + *(s16 *)(a + 0x66) * 0x2140;
+    if (*(s32 *)(a + 0x4C) & 0x40) {
+        func_0020D290(sd, *(u8 **)(q + 0x1354), *(s32 *)(sa + 0x3C), *(f32 *)(sd + 0x18));
+    } else {
+        func_0020D290(sd, q, *(s32 *)(sa + 0x3C), *(f32 *)(sd + 0x18));
+    }
+    s1 = D_00568C90 + *(s16 *)(sa + 0x46) * 0x2140 + 0x40;
+    func_0013B160(s1);
+    __asm__ volatile (
+        "lqc2 $vf31, 0(%0)\n"
+        "sqc2 $vf28, 0(%1)\n"
+        "sqc2 $vf29, 0x10(%1)\n"
+        "sqc2 $vf30, 0x20(%1)\n"
+        "sqc2 $vf31, 0x30(%1)\n"
+        "vmove.xyzw $vf28, $vf24\n"
+        "vmove.xyzw $vf29, $vf25\n"
+        "vmove.xyzw $vf30, $vf26\n"
+        "vmove.xyzw $vf31, $vf27\n"
+        : : "r"(sd), "r"(s1) : "memory");
+}
+// differs: one instruction differs: the index product (x << 8) + x is emitted as addu a0,a3,a0 where the original has addu a0,a0,a3 (operand order; the flipped expression and a local for the index give the same order); everything else matches
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002114A0);
 extern void func_00146ED0(void *a, void *b, f32 s);
 
@@ -1716,7 +2225,181 @@ void func_00211F80(u8 *a0) {
         func_00209C50();
     }
 }
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+extern u8 D_0044B910[];
+void func_00142100(void *a, void *b);
+
+#if 0
+void func_00212050(u8 *p) {
+    u8 *s0;
+    Copy16A t50;
+    Copy16A t40;
+    Copy16A t30;
+
+    t40 = *(Copy16A *)D_0044B910;
+    if (*(s32 *)(p + 0x10) != 0) {
+        s0 = p + 0x20;
+        D_00470238 = 0;
+        if (*(s32 *)(s0 + 0x0) != 0) {
+            func_00145CC0(*(s32 *)(s0 + 0x0), *(s32 *)(s0 + 0x8));
+        }
+        if (*(s32 *)(s0 + 0x4) != 0) {
+            func_00208D60(*(s32 *)(s0 + 0x4));
+        }
+        if ((gBattle != 0 ? *(s32 *)(gBattle + 0x88EC) : 0) == 0) {
+            func_00146ED0(&t50, s0 + 0x10, *(f32 *)(s0 + 0x10));
+            __asm__ volatile (
+                "lqc2 $vf1, 0(%0)\n"
+                "lqc2 $vf2, 0(%1)\n"
+                "vadd.xyz $vf1, $vf1, $vf2\n"
+                "sqc2 $vf1, 0(%0)\n"
+                : : "r"(s0), "r"(&t50) : "memory");
+        }
+        func_0013B0B0(0);
+        func_00141C30(&t30, &t40, s0 + 0x10);
+        func_00142100(&t30, s0);
+        func_00208D70(*(s32 *)(p + 0x10));
+        func_0013B110(1);
+    }
+}
+// differs: about 56 instructions differ: the parameter is kept in s1 and the base s0 = p + 0x20 in the second saved register, and the 16-byte stack slots are laid out in another order (the search over the declarations found nothing better)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212050);
+#if 0
+void func_00212160(u8 *a) {
+    u8 *p;
+    u8 *s0;
+    Copy16A t30;
+    Copy16A t40;
+
+    p = a;
+    if (*(s32 *)(p + 0x10) != 0) {
+        s0 = p + 0x20;
+        D_00470238 = 0;
+        if (*(s32 *)(s0 + 0x0) != 0) {
+            func_00145CC0(*(s32 *)(s0 + 0x0), *(s32 *)(s0 + 0x8));
+        }
+        if (*(s32 *)(s0 + 0x4) != 0) {
+            func_00208D60(*(s32 *)(s0 + 0x4));
+        }
+        func_0013B0B0(0);
+        __asm__ volatile (
+            "lqc2 $vf28, 0(%0)\n"
+            "lqc2 $vf29, 0x10(%0)\n"
+            "lqc2 $vf30, 0x20(%0)\n"
+            "lqc2 $vf31, 0x30(%0)\n"
+            : : "r"(gBattle + 0x60) : "memory");
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "vsub.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%2)\n"
+            : : "r"(*(u8 **)(gBattle + 0x264)), "r"(s0), "r"(&t30) : "memory");
+        func_00209D70(&t30);
+        if ((gBattle != 0 ? *(s32 *)(gBattle + 0x88EC) : 0) == 0) {
+            func_00146ED0(&t40, s0 + 0x10, *(f32 *)(s0 + 0x10));
+            __asm__ volatile (
+                "lqc2 $vf1, 0(%0)\n"
+                "lqc2 $vf2, 0(%1)\n"
+                "vadd.xyz $vf1, $vf1, $vf2\n"
+                "sqc2 $vf1, 0(%0)\n"
+                : : "r"(s0), "r"(&t40) : "memory");
+        }
+        func_0013B060(0);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "vmulax.xyzw ACC, $vf28, $vf1x\n"
+            "vmadday.xyzw ACC, $vf29, $vf1y\n"
+            "vmaddaz.xyzw ACC, $vf30, $vf1z\n"
+            "vmaddw.xyzw $vf31, $vf31, $vf0w\n"
+            : : "r"(s0) : "memory");
+        func_00208D70(*(s32 *)(p + 0x10));
+        func_0013B110(1);
+        func_00209C50();
+    }
+}
+// differs: 16 of 77 instructions differ: the original copies the parameter to s1 at entry (before the first test), this build copies it after the test; the VU0 part and the calls match
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212160);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002122A0);
 void func_0013B060(s32);
@@ -2210,8 +2893,91 @@ void func_002163D0(u8 *a) {
 // differs: the stores of the two function addresses and of 0x442F0000 are scheduled in another order in this build; the second table lookup and its sll are also placed later (size 0xEC against 0x100)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002163D0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002164D0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216640);
+void func_00212050();
+
+void func_00212050();
+
+void func_00212050();
+
+void func_002164D0(u8 *a) {
+    u8 *p;
+    u8 *q;
+    s32 idx;
+    s32 e;
+    f32 f20;
+    f32 g;
+
+    p = func_00215320(-1, 0x10);
+    f20 = *(f32 *)(a + 0x28);
+    idx = *(s16 *)(a + 0x20);
+    if (p != 0) {
+        void *fa = (void *)func_00212050;
+        void *fb = (void *)func_00212650;
+        q = p + 0x20;
+        *(void **)(p + 0x8) = fa;
+        *(void **)(p + 0xC) = fb;
+        memset(q, 0, 0x50);
+        e = *(s32 *)(D_0046FDD0 + idx * 4);
+        if (e != 0) {
+            *(s32 *)(p + 0x10) = func_00209540(e, 0x4000002, 0);
+        }
+        if (*(s32 *)(p + 0x10) != 0) {
+            __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(*(u8 **)a), "r"(q));
+            __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(*(u8 **)(a + 0x4)), "r"(q + 0x10));
+            func_00146F30(q + 0x10);
+            if (gBattle != 0) {
+                g = *(f32 *)(gBattle + 0x88F0);
+            } else {
+                if (D_004703F4 != 3) {
+                    g = 1.0f;
+                } else {
+                    g = 1.2f;
+                }
+            }
+            *(f32 *)(q + 0x30) = f20 * g;
+            *(s32 *)(q + 0x20) = *(s32 *)(D_0046FDD0 + *(s16 *)(a + 0x22) * 4);
+            *(s32 *)(q + 0x28) = (*(s16 *)(a + 0x22) << 5) + 0x03001000;
+        }
+    }
+}
+extern u8 D_0044BAA0[];
+void func_00209950(s32 a, void *b, s32 c);
+
+extern u8 D_0044BAA0[];
+void func_00209950(s32 a, void *b, s32 c);
+
+void func_00216640(u8 *a) {
+    u8 *p;
+    s32 idx;
+    u8 *q;
+    s32 e;
+    Copy16A t60;
+    Copy16A t50;
+
+    p = func_00215320(-1, 0x10);
+    idx = *(s16 *)(a + 0x20);
+    t60 = *(Copy16A *)D_0044BAA0;
+    if (p != 0) {
+        void *fa = (void *)func_00212480;
+        void *fb = (void *)func_00212650;
+        q = p + 0x20;
+        *(void **)(p + 0x8) = fa;
+        *(void **)(p + 0xC) = fb;
+        memset(q, 0, 0x50);
+        e = *(s32 *)(D_0046FDD0 + idx * 4);
+        if (e != 0) {
+            *(s32 *)(p + 0x10) = func_00209540(e, 0x4000002, 0);
+        }
+        if (*(s32 *)(p + 0x10) != 0) {
+            __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(*(u8 **)a), "r"(q));
+            func_00146F30(*(void **)(a + 0x4));
+            func_00141C30(&t50, &t60, *(void **)(a + 0x4));
+            func_00209950(*(s32 *)(p + 0x10), &t50, 0);
+            *(s32 *)(q + 0x20) = *(s32 *)(D_0046FDD0 + *(s16 *)(a + 0x22) * 4);
+            *(s32 *)(q + 0x28) = (*(s16 *)(a + 0x22) << 5) + 0x03001000;
+        }
+    }
+}
 void func_00216770(u8 *a) {
     u8 *p;
     u8 *q;
@@ -2751,7 +3517,10 @@ void func_00218C40(u8 *s, f32 a, f32 b) {
     if (o != 0) {
         *(u8 **)(o + 0x30) = s;
     } else {
-        u8 *n = amTask_Create((void *)func_002186D0, 0, 0x4080, 0x20, 0x800002, D_0046A3B8);
+        u8 *n;
+        s32 fl;
+        fl = 0x800002;
+        n = amTask_Create((void *)func_002186D0, 0, 0x4080, 0x20, fl, D_0046A3B8);
         *(u8 **)(n + 0x30) = s;
         o = n;
     }
@@ -2761,7 +3530,7 @@ void func_00218C40(u8 *s, f32 a, f32 b) {
     *(f32 *)(o + 0x40) = b;
     *(u8 **)(s + 0x1C) = o;
 }
-// differs: 4 of 36 differ, all in the create branch: the argument registers of amTask_Create are set in another order (t1 is loaded before t0 in the original, the store to 0x30 uses the returned v0 before the move into v1)
+// differs: 4 of 36 differ, all in the create branch: the ori of the flags (t0) is laid out before the low half of the data pointer (t1); moving the flags to a local did not change it
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218C40);
 extern s32 rand(void);
