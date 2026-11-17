@@ -3038,7 +3038,37 @@ s32 func_001E3D60(s32 a, f32 r) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3DD0);
+extern void func_0013B160(void *);
+
+void func_001E3DD0(Fighter *c) {
+    s32 out[4];
+    s32 buf[4];
+
+    __asm__ volatile ("lqc2 $vf1, 0(%1)
+	sqc2 $vf1, 0(%0)" : : "r"(buf), "r"((char *)c + 0x650) : "memory");
+    if (c->f1FF9) {
+        ((f32 *)buf)[1] = *(f32 *)((char *)c + 0x64);
+    } else {
+        ((f32 *)buf)[1] = *(f32 *)((char *)c + 0x44);
+    }
+    func_0013B160((char *)gBattle + 0x60);
+    __asm__ volatile ("lqc2 $vf1, 0(%1)
+	vmulax.xyzw ACC, $vf28, $vf1x
+	vmadday.xyzw ACC, $vf29, $vf1y
+	vmaddaz.xyzw ACC, $vf30, $vf1z
+	vmaddw.xyzw $vf1, $vf31, $vf0w
+	sqc2 $vf1, 0(%0)" : : "r"(out), "r"(buf) : "memory");
+    __asm__ volatile ("vmove.xyzw $vf28, $vf24
+	vmove.xyzw $vf29, $vf25
+	vmove.xyzw $vf30, $vf26
+	vmove.xyzw $vf31, $vf27" : : : "memory");
+    *(f32 *)((char *)c + 0x1390) = ((f32 *)out)[0];
+    *(f32 *)((char *)c + 0x1394) = ((f32 *)out)[1];
+    if (((f32 *)out)[2] < 0.0f) {
+        *(f32 *)((char *)c + 0x1390) = *(f32 *)((char *)c + 0x1390) / -((f32 *)out)[2];
+        *(f32 *)((char *)c + 0x1394) = *(f32 *)((char *)c + 0x1394) / ((f32 *)out)[2];
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3EB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E4440);
 void func_001E4800(Fighter *c) {
