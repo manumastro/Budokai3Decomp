@@ -387,7 +387,39 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8270);
 void Logomark_Begin(Task *t) {
     TASK_SET_FUNC(t, func_002E8270);
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8340);
+extern void *D_0047094C;
+extern void amCdFs_Close(void *, s32);
+extern void amFile_Load(s32);
+extern void func_00144B70(s32);
+extern void func_00144650(s32);
+extern void amAdx_Stop(s32);
+extern void func_00264140(s32, s32);
+extern void Logomark_Begin();
+
+void func_002E8340(Task *a0) {
+    u8 *o;
+    u8 *p;
+    u8 *c;
+    u8 *a1;
+    void *f;
+    c = D_0047094C;
+    o = (u8 *)a0;
+    a1 = *(u8 **)c;
+    p = o + 0x30;
+    if (*(s16 *)(a1 + 4) == 3) {
+        *(s32 *)p = *(s32 *)(a1 + 0x54);
+        *(s32 *)(*(u8 **)c + 0x54) = 0;
+        amCdFs_Close(*(void **)c, 0);
+        *(s32 *)c = 0;
+        amFile_Load(*(s32 *)p);
+        func_00144B70(-1);
+        func_00144650(0);
+        amAdx_Stop(-1);
+        func_00264140(-1, 0);
+        f = (void *)Logomark_Begin;
+        *(void **)(o + 0x1C) = (f == 0) ? 0 : f;
+    }
+}
 extern void *D_0047094C;
 
 /* Clears the logo mark's flag D_0047094C. */

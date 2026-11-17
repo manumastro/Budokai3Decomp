@@ -90,8 +90,73 @@ void func_00307E40(u8 *task) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307E40);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307F10);
+#if 0
+// differs: 19 of ?: the compiled frame is 0x40, the original 0x50 (an extra 16-byte local the asm never shows); loc sits at sp+0x38 in mine, sp+0x30 in the original; a dead lui 0x4270 remains in the original
+extern s16 D_005C4136[];
+extern void func_00307F10();
+extern s32 func_002F0570(s32);
+extern void func_00229800();
+extern s32 func_00307AF0();
+
+void func_00308070(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    u8 *v;
+    f32 f;
+    void *fp;
+    f32 loc[2];
+    f32 t[4];
+    s1 = *(u8 **)(a0 + 0x30);
+    s0 = a0;
+    func_003077E0(s1);
+    f = *(f32 *)(s1 + 0x40) - gFrameDelta;
+    if (f <= 0.0f) {
+        *(f32 *)(s1 + 0x40) = f;
+        *(s32 *)(s1 + 0x10) = func_002F0570(D_005C4136[0]);
+        v = *(u8 **)s1;
+        v = *(u8 **)(v + 0x1C);
+        func_00229800(*(void **)(v + 0x24), loc, -1, 0.0f);
+        *(f32 *)(s1 + 0x34) = loc[0];
+        *(f32 *)(s1 + 0x38) = loc[1];
+        *(s32 *)(s1 + 0x3C) = func_00307AF0(s1);
+        fp = (void *)func_00307F10;
+        *(void **)(s0 + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00308070);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00308130);
+extern s8 func_0027DAB0(void *);
+extern void func_0027E120(void *);
+extern s32 func_002F0570(s32);
+extern void func_00307F10();
+extern s16 D_005C4132[];
+extern s16 D_005C412E[];
+extern s16 D_005C4134[];
+extern s16 D_005C4130[];
+extern s16 D_005C4136[];
+
+void func_00308130(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    s8 r;
+    void *f;
+    s1 = a0;
+    s0 = *(u8 **)(a0 + 0x30);
+    func_003077E0(s0);
+    r = func_0027DAB0(*(void **)(s0 + 8));
+    if (r >= 7) {
+        func_0027E120(*(void **)(s0 + 8));
+        *(s32 *)(s0 + 8) = 0;
+        D_005C4132[0] = 0;
+        D_005C412E[0] = 0;
+        D_005C4134[0] = 0;
+        D_005C4130[0] = 0;
+        D_005C4136[0] = s0[0x1D];
+        *(s32 *)(s0 + 0x10) = func_002F0570(s0[0x1D]);
+        f = (void *)func_00307F10;
+        *(void **)(s1 + 0x1C) = (f == 0) ? 0 : f;
+    }
+}
 extern void func_003077E0();
 
 void func_003081E0(u8 *a0) {
@@ -111,8 +176,6 @@ void func_003083E0(u8 *a0) {
     }
 }
 extern f32 gFrameDelta;
-extern void func_00229800();
-extern void func_00307AF0();
 
 #if 0
 // differs: the frame is 0x50 in mine and 0x40 in the original, and the float compare uses f12 for zero; the call structure matches
