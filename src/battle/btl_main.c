@@ -3006,7 +3006,7 @@ void func_001C95F0(Fighter *f, s32 i) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9610);
 #if 0
-// differs: the in-place field version has the right size and 4 instructions differ (the compiler reuses the 0x80 address for the reads); the temporaries version is 8 bytes short
+// differs: the link fields are read through their address (CSE); the original reads them in place (4 instructions differ at the same size)
 extern void func_001D4620(void *);
 extern void amCdFs_ReleaseCache(void *handle);
 extern void amCdFs_Close(void *handle, s32 mode);
