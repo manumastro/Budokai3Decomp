@@ -414,16 +414,12 @@ s32 *CharLight_Create(void) {
     return s;
 }
 // GIVEN UP: the frame and the join label differ (tried a combined condition)
-#if 0
-void func_00237840(s32 *p) {
-    if (p != 0) {
-        if (p[1] != -1) {
-            D_0046A780[p[1]](p);
-        }
+void func_00237840(void *o) {
+    if (o == 0 || ((s32 *)o)[1] == -1) {
+        return;
     }
+    D_0046A780[((s32 *)o)[1]](o);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237840);
 void CharLight_Release(s32 *p) {
     if (p != 0) {
         s32 v = p[0];
