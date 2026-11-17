@@ -1079,19 +1079,15 @@ void func_0020D7C0(void) {
 // differs: 116 of 122 instructions: the copy of the 20-byte struct from D_0044BA20 (lq/lwc1/sq/swc1 through one base) is scheduled with the call argument setup around it (the original has lq, lwc1, then the arg moves; ours hoists the moves above the copy or the lui into t1 instead of a0); tried: 20-byte struct (4 lwc1), whole-struct copy, local pointer, value local for the w store, 24 orders of the four register locals (perm.py): none better
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D7C0);
-#if 0
-void func_0020D9B0(void) {
-    s32 *p;
+s32 func_0020D9B0(void) {
+    s32 old;
 
-    *(s32 *)(gWave + 0x78) = *(s32 *)(gWave + 0x78) + 1;
-    p = (s32 *)(gWave + 0x78);
+    old = (*(s32 *)(gWave + 0x78))++;
     if (*(s32 *)(gWave + 0x78) >= 8) {
-        *p = 0;
+        *(s32 *)(gWave + 0x78) = 0;
     }
+    return old;
 }
-// differs: 2 of 14: the counter read goes to v1 here, to v0 in the original. Tried (2 of 14 unless noted): a local temp, the += form, a single expression, two declaration orders, reading through gWave again for the compare, postfix ++, a gWave[30] index, an unsigned temp, a one-variable add, a - -1 form, a local pointer read first (4 of 14 with > 7; size 0x30 vs 0x40 with ++ in the compare)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D9B0);
 extern u8 D_0058A090[];
 
 u8 *func_0020D9F0(s32 i) {
@@ -2077,20 +2073,15 @@ void func_0020F5A0(u8 *a) {
 // differs: 1 of 59 differ at the end: the low half of the index value is computed before the table index in this build, the original does the table index first (the same as func_0020F4D0)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F5A0);
-#if 0
-void func_0020F690(void) {
-    u8 *q = gWave;
-    s32 *p;
+s32 func_0020F690(void) {
+    s32 old;
 
-    *(s32 *)(q + 0x74) += 1;
-    p = (s32 *)(gWave + 0x74);
-    if (*p >= 0x10) {
-        *p = 0;
+    old = (*(s32 *)(gWave + 0x74))++;
+    if (*(s32 *)(gWave + 0x74) >= 0x10) {
+        *(s32 *)(gWave + 0x74) = 0;
     }
+    return old;
 }
-// differs: 2 of 14: same v0/v1 tie as func_0020D9B0 (the first lw goes to v0, the +1 result to v1). Tried: a local q with reread gWave (2 of 14), a value temp (2 of 14), if(!(x<16)) (2 of 14), > 0xF (4 of 14)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F690);
 u8 *func_0020F6D0(s32 i) {
     return D_00568C90 + i * 0x2140;
 }
