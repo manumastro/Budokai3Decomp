@@ -1885,6 +1885,42 @@ void func_00254B50(s32 *a0) {
     D_0058D4F4[0] = 0;
 }
 #endif
+// GIVEN UP: differs: size 0x16C vs 0x180 (4 instructions short): the global store after the if is laid out at the end (the original jumps to it from the false test), the release macro matches; 6 forms
+#if 0
+extern void func_0022D0E0(s32, s32);
+extern s32 D_0058D4F4[];
+#define SK_REL(p, off) do { if (*(s32 *)((p) + (off))) { func_0022D0E0(*(s32 *)((p) + (off)), 1); } *(s32 *)((p) + (off)) = 0; } while (0)
+void func_00254B50(s32 *a0) {
+    s32 *s2 = a0 + 12;
+    u8 *s4;
+    u8 *s1;
+    u8 *b;
+    s32 j;
+    s32 k;
+    s32 q;
+    q = *(s32 *)((u8 *)a0 + 0x30);
+    if (q != 0) {
+        s4 = (u8 *)q + 0x30;
+        SK_REL(s4, 0x4);
+        SK_REL(s4, 0x8);
+        SK_REL(s4, 0x14);
+        SK_REL(s4, 0x10);
+        SK_REL(s4, 0xC);
+        s1 = s4;
+        for (j = 0; j < 2; j++) {
+            b = s4 + 8 * j;
+            SK_REL(s1 + 4 * j, 0x30);
+            SK_REL(s1 + 4 * j, 0x18);
+            for (k = 0; k < 2; k++) {
+                SK_REL(b + 4 * k, 0x20);
+            }
+        }
+        amTask_Kill(*s2);
+        *s2 = 0;
+    }
+    D_0058D4F4[0] = 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254B50);
 void func_00254CD0(u8 *a0) {
     u8 *t;
