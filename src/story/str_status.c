@@ -99,12 +99,12 @@ void StrStatus_ClearWork(void) {
 extern void Character_Release(s32);
 extern void func_0029E450(s32);
 extern void Help_Exit(void);
-extern void func_002F54C0(void);
+extern void OutputPass_Release(void);
 
 extern void Character_Release(s32);
 extern void func_0029E450(s32);
 extern void Help_Exit(void);
-extern void func_002F54C0(void);
+extern void OutputPass_Release(void);
 
 void func_002BD510(void) {
     s32 i;
@@ -134,7 +134,7 @@ void func_002BD510(void) {
             func_0029E450(((s32 *)D_00470910)[0x97]);
         }
         Help_Exit();
-        func_002F54C0();
+        OutputPass_Release();
         amHeap_Free((void *)D_00470910);
         D_00470910 = 0;
     }

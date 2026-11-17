@@ -25,11 +25,11 @@ extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void func_001EF1E0(s32);
 extern void Scene_MarkDone(void);
 extern void BtbBg_Restart(void);
-extern void func_001B0EC0(void);
+extern void Btl_ClearScene(void);
 extern void func_001E9D10();
 extern void func_001E9EE0(void);
 extern s32 func_001E9ED0(void *);
-extern void func_001EF100(void);
+extern void BtbDraw_InitState(void);
 extern void func_0022DC00(void);
 extern void (*D_004684A8[])(void *);
 extern void func_002CBFF0(s32, void *);
@@ -45,7 +45,7 @@ extern void func_00219870(void);
 extern void func_001E9910(void);
 extern void func_002CC4C0(void);
 extern char D_00495B70[];
-extern void func_001B05E0(s32, f32, f32);
+extern void Btl_UpdateLimitXY(s32, f32, f32);
 extern char D_005116E0[];
 extern void func_001CA460(s32, s32);
 extern void func_001AC490(void *);
@@ -63,7 +63,7 @@ void func_001AC400(void *);
 void func_001AF840(void *);
 void func_001B0160(void *);
 void Btl_TaskStart(Fighter *f);
-void func_001B04A0(void);
+void Btl_OnExitFadeDone(void);
 extern void (*D_00468460[])(void *);
 extern s32 func_001C2B10(void *);
 extern s32 func_001E94C0(void *);
@@ -83,8 +83,8 @@ extern void (*D_004682EC[])(void);
 extern void func_002A89D0(void);
 extern s32 BtbBg_GetF30(s32);
 extern void func_00237000(s32, void *);
-extern s32 func_001B06D0(void);
-extern s32 func_001B0660(void);
+extern s32 Btl_ClearTimerCb(void);
+extern s32 Btl_RestartCb(void);
 extern s16 D_00495A40[];
 extern s16 D_00495A42[];
 extern s16 D_00495A44[];
@@ -843,19 +843,19 @@ void func_001ACFD0(void) {
         BW_FIELD(gBattle, f32, 0x890C) = BW_FIELD(gBattle, f32, 0x88F0);
     }
 }
-void func_001AD070(void) {
+void Btl_FadeOutToExit(void) {
     BattleWork *bw = gBattle;
     BW_FIELD(bw, s32, 0x88F8) = 8;
     BW_FIELD(bw, s32, 0x890C) = 0;
     BW_FIELD(bw, s32, 0x8910) = 0;
     func_001CA460(-1, 1);
     func_001AC490(D_005116E0);
-    Fade_SetRequest(-1, func_001B04A0, 0);
+    Fade_SetRequest(-1, Btl_OnExitFadeDone, 0);
 }
 #if 0
 // differs: 2 of 75 after the case order was matched: the remaining differences are the call and pointer relocations, and the image check fails at byte 709021
 extern s32 func_00225380(void);
-extern void func_001B0D60(void);
+extern void Btl_ResetScene(void);
 extern void (*D_00468300[])(void);
 void func_001AD0E0(void) {
     s32 v;
@@ -870,7 +870,7 @@ void func_001AD0E0(void) {
     case 4:
     case 1:
     case 0:
-        func_001B0D60();
+        Btl_ResetScene();
         break;
     case 3:
         D_00468300[0]();
@@ -913,7 +913,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AD2E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AD570);
 extern void (*D_004682F8[])(void);
 extern void (*D_00468300[])(void);
-extern void func_001B0D60(void);
+extern void Btl_ResetScene(void);
 #if 0
 // differs: 72 of 133: the battle pointer is taken into a2 (the original) where this puts it in a0, the dispatch on the state at 0x7E2 is laid out in another order (the case blocks follow the tests in the original)
 void func_001ADB80(void) {
@@ -966,7 +966,7 @@ void func_001ADB80(void) {
         break;
     case 6:
     case 3:
-        func_001B0D60();
+        Btl_ResetScene();
         break;
     default:
         D_004682F8[0]();
@@ -1212,7 +1212,7 @@ void func_001AEDB0(void) {
         }
     }
 }
-void func_001AEEB0(void) {
+void Btl_StartPhase1(void) {
     BattleWork *bw = gBattle;
     s32 tbl[6];
     BW_FIELD(bw, s32, 0x88F8) = 1;
@@ -1224,15 +1224,15 @@ void func_001AEEB0(void) {
     tbl[1] = (s32)((u8 *)bw + 0x2850);
     tbl[2] = BtbBg_GetF30(1);
     tbl[3] = 8;
-    tbl[4] = (s32)func_001B06D0;
-    tbl[5] = (s32)func_001B0660;
+    tbl[4] = (s32)Btl_ClearTimerCb;
+    tbl[5] = (s32)Btl_RestartCb;
     func_00237000(4, tbl);
     if (BW_FIELD(bw, s16, 0x8948) < 0) {
         BW_FIELD(bw, s16, 0x8944) = 0;
         D_004682E8[0]();
     }
 }
-void func_001AEF70(void) {
+void Btl_StepTimer(void) {
     BW_FIELD(gBattle, f32, 0x8910) = BW_FIELD(gBattle, f32, 0x890C);
     BW_FIELD(gBattle, f32, 0x890C) = BW_FIELD(gBattle, f32, 0x88F0) + BW_FIELD(gBattle, f32, 0x890C);
     if (BW_FIELD(gBattle, f32, 0x890C) > 1e8f) {
@@ -1317,7 +1317,7 @@ void func_001AF010(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF010);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF100);
-void func_001AF650(void) {
+void Btl_PopFileList(void) {
     u8 *g;
     s32 h;
     g = (u8 *)gBattle;
@@ -1331,7 +1331,7 @@ void func_001AF650(void) {
 }
 extern s32 func_001A50F0(s32, s32);
 extern void amFile_Load(s32);
-void func_001AF6C0(void) {
+void Btl_LoadFileSet(void) {
     BattleWork *bw = gBattle;
     s32 *s0 = (s32 *)((u8 *)bw + 0x810);
     s32 k;
@@ -1357,7 +1357,7 @@ void func_001AF6C0(void) {
         s0[6] = func_001A50F0(s0[0], 5);
     }
 }
-s32 func_001AF7A0(void *p) {
+s32 Btl_ReadCurFile(void *p) {
     s32 id = FT_FIELD(p, s32, 0x160);
     BattleWork *bw = gBattle;
     s32 r = 0;
@@ -1369,7 +1369,7 @@ s32 func_001AF7A0(void *p) {
 }
 /* differs: 0x44 bytes against 0x50: the original takes the address of D_0046FD84 into $a2 before the test and
    reloads the global through it for the call; the direct global read here is one instruction shorter. */
-s32 func_001AF7F0(void) {
+s32 Btl_ReadFighterFile(void) {
     s32 *pp = &D_0046FD84;
     BattleWork *bw = gBattle;
     u8 *s0 = (u8 *)bw + 0x810;
@@ -1721,7 +1721,7 @@ void Btl_TaskLoadWait(Fighter *f) {
     s32 fn;
     if (func_001E9ED0(f) != 0) {
         func_0022DC00();
-        func_001EF100();
+        BtbDraw_InitState();
         fn = (s32)func_001B0160;
         if (fn == 0) {
             fn = 0;
@@ -1756,8 +1756,8 @@ void Btl_TaskInit(Fighter *f) {
     }
     FT_FIELD(f, s32, 0x1C) = fn;
 }
-void func_001B04A0(void) {
-    func_001B0EC0();
+void Btl_OnExitFadeDone(void) {
+    Btl_ClearScene();
     func_001EF1E0(D_00470574);
     Scene_MarkDone();
 }
@@ -1794,7 +1794,7 @@ void Btl_AddFileLoaders(void) {
     amFile_AddLoader(D_00468420, func_001AC400);
     amFile_AddLoader(D_00468428, func_001AC330);
 }
-void func_001B05E0(s32 a0, f32 x, f32 y) {
+void Btl_UpdateLimitXY(s32 a0, f32 x, f32 y) {
     BattleWork *bw = gBattle;
     if (a0 == 0) {
         x = (BW_FIELD(bw, f32, 0x8920) > x) ? BW_FIELD(bw, f32, 0x8920) : x;
@@ -1803,7 +1803,7 @@ void func_001B05E0(s32 a0, f32 x, f32 y) {
     BW_FIELD(bw, f32, 0x8920) = x;
     BW_FIELD(bw, f32, 0x8924) = y;
 }
-s32 func_001B0660(void) {
+s32 Btl_RestartCb(void) {
     BattleWork *bw = gBattle;
     if (bw == 0) {
         return 0;
@@ -1814,7 +1814,7 @@ s32 func_001B0660(void) {
     D_004682E8[0]();
     return 0;
 }
-s32 func_001B06D0(void) {
+s32 Btl_ClearTimerCb(void) {
     if (gBattle == 0) {
         return 0;
     }
@@ -1929,7 +1929,7 @@ extern void func_001E9D80(void);
 extern void func_00219880(void);
 extern void func_001E9930(void);
 extern void func_002CC520(void);
-void func_001B0D60(void) {
+void Btl_ResetScene(void) {
     BattleWork *bw;
     func_00237000(3, 0);
     func_00237000(4, 0);
@@ -1983,7 +1983,7 @@ extern void func_00215AE0(void);
 extern void func_001E9920(void);
 extern void func_002CC4E0(void);
 extern void amCdFs_ReleaseCache(void *handle);
-void func_001B0EC0(void) {
+void Btl_ClearScene(void) {
     s32 *q;
     u8 *g;
     if (gBattle != 0) {

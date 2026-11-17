@@ -137,7 +137,7 @@ extern CdReq *amCdFs_LoadDir(s32, char *, s32);
 
 extern void func_00157FF0(void);
 
-void func_0025BE40(void) {}
+void Wave_Create(void) {}
 extern void Wave_TaskMain(void);
 extern void Wave_TaskDraw(void);
 extern void Wave_TaskAfterDraw(void);

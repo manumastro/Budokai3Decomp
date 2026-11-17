@@ -12,9 +12,9 @@
  *    differently is read as `*(s16 *)&X` / `*(s8 *)&X`.
  * 3. A value stored and then tested: keep the result in a local (`n = X[0] - 1; X[0] = n; if (n == 0)`) and test
  *    the local; re-reading the global after the store adds a lui and a load (func_001EEAF0).
- * 4. A run of calls with constant arguments and a few global stores (func_001EF100) matches as written, in order.
+ * 4. A run of calls with constant arguments and a few global stores (BtbDraw_InitState) matches as written, in order.
  * 5. A 16-byte struct copy through lq/sq: `typedef struct { u8 b[16]; } __attribute__((aligned(16))) T;` and a plain
- *    struct assignment (func_001F7120, as char_light.c).
+ *    struct assignment (BtbBg_CreatePlanet, as char_light.c).
  * 6. Give-ups measured in round 4 (not solved): func_001ED020 (2 diffs: the scheduler, not the source order, puts
  *    the `gSceneNext = a0` store in the bnez delay slot; 120 store orders, a comma form and volatile stores all gave 2);
  *    func_001EF090 (the original keeps the unused `v` in $v1: the void form drops it); func_001F5EF0 (9 of 24:
@@ -71,11 +71,11 @@ struct BtbHolder {
     BtbItem *item;
 };
 
-extern void func_001B0EC0(void);
+extern void Btl_ClearScene(void);
 extern void func_002C3E40(void);
 extern void func_0026E3B0(void);
 extern void TourMap_Exit(void);
-extern void func_00269730(void);
+extern void VsMode_Exit(void);
 extern void func_00307430(void);
 extern void PracMode_Exit(void);
 extern void ArenaMode_Exit(void);
@@ -360,7 +360,7 @@ void SceneSw_CommitTop3(Task *t) {
                 TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -871,7 +871,7 @@ extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void SceneSw_LoadMenu4(Task *);
 extern void SceneSw_LoadAll(Task *);
-extern void func_001B0EC0(void);
+extern void Btl_ClearScene(void);
 
 void SceneSw_CommitPrac(Task *t) {
     s32 v;
@@ -902,7 +902,7 @@ void SceneSw_CommitPrac(Task *t) {
                 TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -1013,7 +1013,7 @@ void SceneSw_CommitPrac2(Task *t) {
                 TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -1255,7 +1255,7 @@ void SceneSw_CommitTour(Task *t) {
                 TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -1599,7 +1599,7 @@ void SceneSw_CommitVs(Task *t) {
                 TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -1710,7 +1710,7 @@ void SceneSw_CommitVs2(Task *t) {
                 TASK_SETFUNC(t, SceneSw_LoadVs);
                 break;
             }
-            func_00269730();
+            VsMode_Exit();
         }
     }
 }
@@ -2192,7 +2192,7 @@ void SceneSw_LoadFlight(Task *t) {
     }
 }
 
-extern void func_001B0EC0(void);
+extern void Btl_ClearScene(void);
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
@@ -2241,7 +2241,7 @@ void SceneSw_CommitStrTitle3(Task *t) {
                 TASK_SETFUNC(t, SceneSw_LoadFlight);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -3214,7 +3214,7 @@ extern u8 D_003F0800[];
 extern s32 D_00470250;
 extern s32 D_0046FD20;
 extern s32 D_00470238;
-void func_001EF100(void) {
+void BtbDraw_InitState(void) {
     u8 buf[0x60];
 
     amGs_SetReg32(2, 0x5040A);
@@ -3257,7 +3257,7 @@ typedef struct BtbEntry {
 
 extern u32 func_0012EAE0(s32);
 
-void func_001EF880(BtbEntry *e, u8 *src) {
+void BtbEntry_DecodeColors(BtbEntry *e, u8 *src) {
     e->f08 = func_0012EAE0(src[3] & 0x1F);
     e->f40 = src[7];
     e->f41 = src[6];
@@ -3542,7 +3542,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F1A00(BtbObj *o) {
+void BtbObj_ReleaseSub68(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3644,7 +3644,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F22A0(BtbObj *o) {
+void BtbObj_ReleaseSub38(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3670,7 +3670,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F24B0(BtbObj *o) {
+void BtbObj_ReleaseSub38Timed(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3742,7 +3742,7 @@ extern s32 D_0051CD20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F5F50(BtbObj *o) {
+void BtbObj_RemoveFromList(BtbObj *o) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
@@ -3806,7 +3806,7 @@ extern char *D_0051CB94[];
 
 typedef void (*ObjFunc4)(char *);
 
-void func_001F63D0(void) {
+void BtbBg_RunPostObjs(void) {
     char *s0;
 
     for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
@@ -3909,7 +3909,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6E60(s32 key) {
+void BtbObj_RemoveByKey(s32 key) {
     BtbObj *n;
     BtbObj *end;
     s32 i;
@@ -3944,7 +3944,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6F10(s32 flag, s32 idx) {
+void BtbObj_RemoveByIdx(s32 flag, s32 idx) {
     BtbObj *n;
     BtbObj *end;
     char *v;
@@ -3987,7 +3987,7 @@ extern char D_0051CC20[];
 extern void amHeap_Free(void *);
 extern void Obj_ResetF38(s32);
 
-void func_001F7010(void) {
+void BtbObj_FreeFlag400(void) {
     BtbObj *n;
     BtbObj *end;
     char *sub;
@@ -4027,16 +4027,16 @@ typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16;
 extern BtbVec16 D_0044B510;
 extern char D_004698A8[];
 extern void func_001F2350();
-extern void func_001F24B0();
+extern void BtbObj_ReleaseSub38Timed();
 extern void func_00209A90(void *, void *);
 extern void *amObject_Create(void *, s32);
-void func_001F7120(s32 p) {
+void BtbBg_CreatePlanet(s32 p) {
     BtbVec16 tmp;
     char *r;
     s32 *s0;
     s32 s2;
 
-    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)func_001F24B0);
+    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)BtbObj_ReleaseSub38Timed);
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x401;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x400;
     s0 = (s32 *)(r + 0x30);
@@ -4104,7 +4104,7 @@ typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
 extern s32 D_0051CCE0[];
 
-void func_001F7F50(void) {
+void BtbBg_RunFunc(void) {
     VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
 
     if (f != NULL) {
@@ -4171,7 +4171,7 @@ extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
 extern s32 gBattle;
 extern s32 D_0047064C;
 
-void func_001F3D80(char *o) {
+void BtbObj_CheckDrawFlags(char *o) {
     s32 f;
     char *p;
 
@@ -4193,7 +4193,7 @@ extern char D_0051CC20[];
 extern void amHeap_Free(void *);
 extern void Obj_ResetF38(s32);
 
-void func_001F3EC0(void) {
+void BtbObj_FreeFlagged(void) {
     BtbObj *n;
     char *sub;
     void *p;
@@ -4280,7 +4280,7 @@ extern s32 D_0051CD20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F5F50(BtbObj *o) {
+void BtbObj_RemoveFromList(BtbObj *o) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
@@ -4344,7 +4344,7 @@ extern char *D_0051CB94[];
 
 typedef void (*ObjFunc4)(char *);
 
-void func_001F63D0(void) {
+void BtbBg_RunPostObjs(void) {
     char *s0;
 
     for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
@@ -4447,7 +4447,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6E60(s32 key) {
+void BtbObj_RemoveByKey(s32 key) {
     BtbObj *n;
     BtbObj *end;
     s32 i;
@@ -4482,7 +4482,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6F10(s32 flag, s32 idx) {
+void BtbObj_RemoveByIdx(s32 flag, s32 idx) {
     BtbObj *n;
     BtbObj *end;
     char *v;
@@ -4525,7 +4525,7 @@ extern char D_0051CC20[];
 extern void amHeap_Free(void *);
 extern void Obj_ResetF38(s32);
 
-void func_001F7010(void) {
+void BtbObj_FreeFlag400(void) {
     BtbObj *n;
     BtbObj *end;
     char *sub;
@@ -4565,16 +4565,16 @@ typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16;
 extern BtbVec16 D_0044B510;
 extern char D_004698A8[];
 extern void func_001F2350();
-extern void func_001F24B0();
+extern void BtbObj_ReleaseSub38Timed();
 extern void func_00209A90(void *, void *);
 extern void *amObject_Create(void *, s32);
-void func_001F7120(s32 p) {
+void BtbBg_CreatePlanet(s32 p) {
     BtbVec16 tmp;
     char *r;
     s32 *s0;
     s32 s2;
 
-    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)func_001F24B0);
+    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)BtbObj_ReleaseSub38Timed);
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x401;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x400;
     s0 = (s32 *)(r + 0x30);
@@ -4642,7 +4642,7 @@ typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
 extern s32 D_0051CCE0[];
 
-void func_001F7F50(void) {
+void BtbBg_RunFunc(void) {
     VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
 
     if (f != NULL) {
@@ -4679,7 +4679,7 @@ void func_001F4520(s32 p0, char *vec, s32 p2, s32 flags) {
         f = func_00200270(0, *(f32 *)&tmp.b[0], *(f32 *)&tmp.b[8]);
         *(f32 *)&tmp.b[4] = f;
         func_00209B50(s1, (char *)&tmp, 0);
-        r = func_001F5FD0(0x85000000, D_004697A8, 0, (void *)func_001F2150, (void *)func_001F22A0);
+        r = func_001F5FD0(0x85000000, D_004697A8, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
         *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x801;
         *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x800;
         memset(r + 0x30, 0, 0x80);
@@ -4745,7 +4745,7 @@ void func_001F5540(s32 p0, s32 p1, s32 p2, s32 flags) {
     }
     if (s1 != NULL) {
         func_00209B50(s1, p1, 0);
-        r = func_001F5FD0(0x85000000, D_00469848, 0, (void *)func_001F2150, (void *)func_001F22A0);
+        r = func_001F5FD0(0x85000000, D_00469848, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
         r->f20 = r->f20 & -0x801;
         r->f20 = r->f20 | 0x800;
         memset((char *)r + 0x30, 0, 0x80);
@@ -4793,7 +4793,7 @@ void func_001F5830(s32 a0, char *s0, s32 a2, s32 flags) {
     }
     if (s1 != 0) {
         func_00209B50((char *)s1, s0, 0);
-        p = func_001F5FD0(0x85000000, D_00469858, 0, (void *)func_001F2150, (void *)func_001F22A0);
+        p = func_001F5FD0(0x85000000, D_00469858, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
         *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) & ~0x800;
         *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) | 0x800;
         memset(p + 0x30, 0, 0x80);
@@ -4857,7 +4857,7 @@ void func_001F5B70(BtbHolder *h) {
 }
 extern void amMotSet_Apply(void *, f32, s32);
 
-void func_001F5B90(char *c) {
+void BtbObj_ApplyMotSet(char *c) {
     char *s = *(char **)(c + 0xC);
 
     if (s != NULL) {
@@ -5051,7 +5051,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5EF0);
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F5F50(BtbObj *o) {
+void BtbObj_RemoveFromList(BtbObj *o) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
@@ -5151,7 +5151,7 @@ extern char *D_0051CB94[];
 
 typedef void (*ObjFunc4)(char *);
 
-void func_001F63D0(void) {
+void BtbBg_RunPostObjs(void) {
     char *s0;
 
     for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
@@ -5256,7 +5256,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6E60(s32 key) {
+void BtbObj_RemoveByKey(s32 key) {
     BtbObj *n;
     BtbObj *end;
     s32 i;
@@ -5291,7 +5291,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6F10(s32 flag, s32 idx) {
+void BtbObj_RemoveByIdx(s32 flag, s32 idx) {
     BtbObj *n;
     BtbObj *end;
     char *v;
@@ -5334,7 +5334,7 @@ extern char D_0051CC20[];
 extern void amHeap_Free(void *);
 extern void Obj_ResetF38(s32);
 
-void func_001F7010(void) {
+void BtbObj_FreeFlag400(void) {
     BtbObj *n;
     BtbObj *end;
     char *sub;
@@ -5374,16 +5374,16 @@ typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16;
 extern BtbVec16 D_0044B510;
 extern char D_004698A8[];
 extern void func_001F2350();
-extern void func_001F24B0();
+extern void BtbObj_ReleaseSub38Timed();
 extern void func_00209A90(void *, void *);
 extern void *amObject_Create(void *, s32);
-void func_001F7120(s32 p) {
+void BtbBg_CreatePlanet(s32 p) {
     BtbVec16 tmp;
     char *r;
     s32 *s0;
     s32 s2;
 
-    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)func_001F24B0);
+    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)BtbObj_ReleaseSub38Timed);
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x401;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x400;
     s0 = (s32 *)(r + 0x30);
@@ -5501,7 +5501,7 @@ typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
 extern s32 D_0051CCE0[];
 
-void func_001F7F50(void) {
+void BtbBg_RunFunc(void) {
     VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
 
     if (f != NULL) {

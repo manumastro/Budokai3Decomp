@@ -247,7 +247,7 @@ void func_00306AD0(void) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306AD0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306BF0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306D60);
-extern void func_001EF100(void);
+extern void BtbDraw_InitState(void);
 extern void func_00306060(void);
 extern s32 Scr_Alloc(s32, s32, s32);
 extern void func_00131B90(s32 *);
@@ -270,7 +270,7 @@ void func_00306F70(s32 *a0) {
     s32 blk[24];
     void *f;
     if (((s16 *)(((s32 *)((s32 *)D_0047097C)[0xD0 / 4])))[2] == 3) {
-        func_001EF100();
+        BtbDraw_InitState();
         func_00306060();
         s1 = (s32 *)D_0047097C;
         s1[0x4 / 4] = Scr_Alloc(0x3000, 1, 1);

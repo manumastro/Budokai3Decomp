@@ -14,10 +14,10 @@ extern void func_001F6D60(void);
 extern void func_001F5B10(void *, s32);
 extern void func_002CDC20(void);
 extern void func_00208F70(void *);
-extern void func_001F5F50(void *);
+extern void BtbObj_RemoveFromList(void *);
 extern void amModel_SetCurrent(s32, s32);
 extern void func_001F3DF0(void *);
-extern void func_001F3D80(void *);
+extern void BtbObj_CheckDrawFlags(void *);
 extern void func_00208D70(void *);
 extern s32 D_00470238;
 extern void func_001F5D50(void *);
@@ -45,9 +45,9 @@ extern s32 func_00209540(s32, s32, s32);
 extern u8 D_0046F218[];
 extern void memset(void *, s32, s32);
 extern u8 D_0046F230[];
-extern void func_001F6F10(s32, s32);
+extern void BtbObj_RemoveByIdx(s32, s32);
 extern void func_001F5B50(u8 *, s32);
-extern void func_001F6E60(void *);
+extern void BtbObj_RemoveByKey(void *);
 extern void func_00125740(void *, void *, s32);
 extern void func_001F5A70(s32);
 extern void func_0013E2A0(s32);
@@ -126,7 +126,7 @@ void func_002CD9E0(u8 *p) {
     u8 *q = p + 0x30;
     func_00208F70(*(void **)(p + 0x38));
     if (*(s32 *)(*(u8 **)(q + 8) + 0x38) < 0) {
-        func_001F5F50(p);
+        BtbObj_RemoveFromList(p);
     }
 }
 // differs: the original keeps p in s1 and q = p+0x30 in s0 across the first call (frame 0x30, sq s1 and s0); the compiler folds q+8 into p+0x38 and keeps only p (frame 0x20). Tried: q before/after the call, a Sub30 struct view
@@ -139,7 +139,7 @@ void func_002CDA30(u8 *p) {
     amModel_SetCurrent(*(s32 *)(p + 0x34), 0x2003000);
     func_001F3DF0(p);
     func_00208D70(*(void **)(q + 8));
-    func_001F3D80(p);
+    BtbObj_CheckDrawFlags(p);
 }
 // differs: the original saves two registers (p and p+0x30) and computes the field address after the first call; the frame is 0x30 here 0x20
 #endif
@@ -218,7 +218,7 @@ void func_002CDD00(u8 *p) {
     u8 *q = p + 0x30;
     func_00208F70(*(void **)(p + 0x38));
     if (*(s32 *)(*(u8 **)(q + 8) + 0x38) < 0) {
-        func_001F5F50(p);
+        BtbObj_RemoveFromList(p);
     }
 }
 // differs: same as func_002CD9E0 (the q = p+0x30 register is folded away)
@@ -257,7 +257,7 @@ void func_002CDE90(void) {
     switch (D_0051CD20[0]) {
     case 0:
         func_001F7470(0);
-        func_001F6F10(4, 2);
+        BtbObj_RemoveByIdx(4, 2);
         v = (u8 *)func_001F5EF0(3, 1);
         *(s16 *)(*(u8 **)(v + 0x10) + 0xE) = 1;
         func_001F5B50(v, 1);
@@ -299,7 +299,7 @@ void func_002CDFE0(void) {
         v = (u8 *)func_001F5EF0(3, 3);
         func_001F5B10(*(u8 **)(v + 4), 0);
         v = (u8 *)func_001F5EF0(4, 4);
-        func_001F6E60(v);
+        BtbObj_RemoveByKey(v);
         break;
     case 1:
         func_001F7470(2);
@@ -397,7 +397,7 @@ void func_002CE980(u8 *a0) {
     } else {
         func_0013E0A0(*(s32 *)(*(u8 **)(s0 + 0x10) + 4));
     }
-    func_001F3D80(s0);
+    BtbObj_CheckDrawFlags(s0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CEA60);
 void func_002CEC50(void) {
@@ -414,7 +414,7 @@ void func_002CEC50(void) {
     switch (D_0051CD20[0]) {
     case 0:
         v = (u8 *)func_001F5EF0(4, 3);
-        func_001F6E60(v);
+        BtbObj_RemoveByKey(v);
         v = (u8 *)func_001F5EF0(3, 2);
         func_001F5B10(*(u8 **)(v + 4), 0);
         v = (u8 *)func_001F5EF0(1, 0);
@@ -460,7 +460,7 @@ void func_002CF0E0(void) {
     case 0:
         v = (u8 *)func_001F5EF0(3, 1);
         func_001F5B10(*(u8 **)(v + 4), 0);
-        func_001F6F10(4, 3);
+        BtbObj_RemoveByIdx(4, 3);
         func_001F7470(2);
         break;
     case 1:

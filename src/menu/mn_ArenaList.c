@@ -8,7 +8,7 @@ extern void amModel_SetCurrent(s32, s32);
 extern void *func_0022D860(void *, f32);
 extern void *func_0022D670(void *, f32);
 extern void func_002EE5C0();
-extern void func_002F2500();
+extern void InputPass_Release();
 extern void Help_Exit();
 extern void func_002EE1C0();
 extern void func_002ECFD0();
@@ -387,7 +387,7 @@ void ArenaList_ClearGlobal(void) {
     InputPass_ClearName();
 }
 
-void func_002F03E0(void) {
+void ArenaList_Free(void) {
     u8 *s1;
     u8 *s0;
 
@@ -417,7 +417,7 @@ void func_002F03E0(void) {
     amHeap_Free(s0);
     D_00470968 = 0;
     Help_Exit();
-    func_002F2500();
+    InputPass_Release();
 }
 void func_002F04D0(u8 *task) {
     u8 *obj;
@@ -435,12 +435,12 @@ void func_002F04D0(u8 *task) {
 }
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void Help_Load();
-extern void func_002F27B0();
+extern void InputPass_Acquire();
 extern void func_002F0160();
 extern char D_0046F718[];
 extern char D_0046F728[];
 
-void *func_002F0570(s16 a0) {
+void *ArenaList_Create(s16 a0) {
     u8 *s0;
     u8 *s1;
     void *t;
@@ -458,7 +458,7 @@ void *func_002F0570(s16 a0) {
     *(s16 *)(s1 + 0xC) = 0;
     *(s16 *)(s1 + 0xE) = 0;
     Help_Load();
-    func_002F27B0();
+    InputPass_Acquire();
     return s0;
 }
 extern char D_0046F728[];

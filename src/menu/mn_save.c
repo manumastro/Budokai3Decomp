@@ -39,7 +39,7 @@ extern char D_0059CD30[];
 
 extern void func_00119BF0(void *);
 extern void func_001EF730(char *);
-extern void func_001EF880(char *, void *);
+extern void BtbEntry_DecodeColors(char *, void *);
 extern void func_001EFDB0(char *, char *);
 extern void Save_ClearBusy(void);
 extern void Save_SetBusy(void);
@@ -59,7 +59,7 @@ void Save_TaskWrite(Task *t) {
     d->own = 1;
     func_001EFDB0(d->buf, D_004B4B40);
     func_00119BF0(&D_00470840);
-    func_001EF880(d->buf, &D_00470840);
+    BtbEntry_DecodeColors(d->buf, &D_00470840);
     func_001EF730(d->buf);
     Save_ClearBusy();
     if (func_0028DFC0(4, d->res[0], 0, d->buf, d->res[1], d->res[2], 0, D_004B4BC0, 0x1F) > 0) {
@@ -82,7 +82,7 @@ void Save_TaskCreate(Task *t) {
     d->own = 1;
     func_001EFDB0(d->buf, D_004B4B40);
     func_00119BF0(&D_00470840);
-    func_001EF880(d->buf, &D_00470840);
+    BtbEntry_DecodeColors(d->buf, &D_00470840);
     func_001EF730(d->buf);
     Save_ClearBusy();
     if (func_0028DFC0(2, d->res[0], 0, d->buf, d->res[1], d->res[2], 0, D_004B4BC0, 0x1F) != 0) {

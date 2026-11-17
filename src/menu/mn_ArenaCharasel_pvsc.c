@@ -1,6 +1,6 @@
 #include "common.h"
 extern void func_003077E0();
-extern void func_002F03E0();
+extern void ArenaList_Free();
 extern f32 gFrameDelta;
 extern u8 *D_00470988;
 extern s16 ArenaList_GetFirst();
@@ -10,7 +10,7 @@ extern u8 D_005C4126[];
 extern u8 D_004B4B56[];
 extern void ArenaStageSel_Start();
 extern void func_002D1C50();
-extern void func_002F03E0();
+extern void ArenaList_Free();
 extern void func_003083E0();
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_003077E0);
@@ -91,7 +91,7 @@ void func_00307D50(u8 *task) {
     } else {
         ArenaStageSel_Start(D_004B4B56[0]);
         func_002D1C50();
-        func_002F03E0();
+        ArenaList_Free();
     }
 }
 #endif
@@ -108,7 +108,7 @@ void func_00307E40(u8 *task) {
     func_003077E0(s0);
     v0 = (s16)ArenaList_GetFirst(*(void **)(s0 + 0x10));
     if (v0 >= 6) {
-        func_002F03E0();
+        ArenaList_Free();
         *(s32 *)(s0 + 0x10) = 0;
         v1 = 4;
         if (D_004B4B63[0] == 0) {
@@ -128,7 +128,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307F10);
 // differs: frame and store order now match (loc[8], store before the if); the two saved registers are the wrong way round (mine: move s1,a0 / lw s0,0x30(a0), original: lw s1 / move s0), and the code is 12 bytes short (a dead lui 0x4270 in the original)
 extern s16 D_005C4136[];
 extern void func_00307F10();
-extern s32 func_002F0570(s32);
+extern s32 ArenaList_Create(s32);
 extern void func_00229800();
 extern s32 func_00307AF0();
 extern void func_00229800();
@@ -147,7 +147,7 @@ void func_00308070(u8 *a0) {
     f = *(f32 *)(s1 + 0x40) - gFrameDelta;
     *(f32 *)(s1 + 0x40) = f;
     if (f <= 0.0f) {
-        *(s32 *)(s1 + 0x10) = func_002F0570(D_005C4136[0]);
+        *(s32 *)(s1 + 0x10) = ArenaList_Create(D_005C4136[0]);
         v = *(u8 **)s1;
         v = *(u8 **)(v + 0x1C);
         func_00229800(*(void **)(v + 0x24), loc, -1, 0.0f);
@@ -162,7 +162,7 @@ void func_00308070(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00308070);
 extern s8 func_0027DAB0(void *);
 extern void func_0027E120(void *);
-extern s32 func_002F0570(s32);
+extern s32 ArenaList_Create(s32);
 extern void func_00307F10();
 extern s16 D_005C4132[];
 extern s16 D_005C412E[];
@@ -187,7 +187,7 @@ void func_00308130(u8 *a0) {
         D_005C4134[0] = 0;
         D_005C4130[0] = 0;
         D_005C4136[0] = s0[0x1D];
-        *(s32 *)(s0 + 0x10) = func_002F0570(s0[0x1D]);
+        *(s32 *)(s0 + 0x10) = ArenaList_Create(s0[0x1D]);
         f = (void *)func_00307F10;
         *(void **)(s1 + 0x1C) = (f == 0) ? 0 : f;
     }
