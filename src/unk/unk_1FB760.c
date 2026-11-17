@@ -897,35 +897,38 @@ void func_00209D70(u8 *a0) {
 }
 extern void func_0013B160(void *);
 extern void func_0013B190(s32);
-#if 0
-void func_00209E50(u8 *a0) {
-    f32 buf[16];
-    if (a0 != NULL) {
-        __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 16(%0) ; lqc2 $vf3, 32(%0) ; lqc2 $vf4, 48(%0) ; sqc2 $vf1, 0(%1) ; sqc2 $vf2, 16(%1) ; sqc2 $vf3, 32(%1) ; sqc2 $vf4, 48(%1)" : : "r"(a0), "r"(buf) : "memory");
-    } else {
-        __asm__ volatile ("sqc2 $vf28, 0(%0) ; sqc2 $vf29, 16(%0) ; sqc2 $vf30, 32(%0) ; sqc2 $vf31, 48(%0)" : : "r"(buf) : "memory");
-    }
-    *(s32 *)(D_0051D9C0 + 0xC) = 0x3F800000;
-    *(s32 *)(D_0051D9D0 + 0xC) = 0x3F800000;
-    {
-        f32 t1 = buf[1];
-        f32 t5 = buf[5];
-        f32 t9 = buf[9];
-        f32 t0 = buf[0];
-        *(f32 *)(D_0051D9C0 + 0x0) = t1;
-        *(f32 *)(D_0051D9C0 + 0x4) = t5;
-        *(f32 *)(D_0051D9C0 + 0x8) = t9;
-        *(f32 *)(D_0051D9D0 + 0x0) = t0;
-    }
-    *(f32 *)(D_0051D9D0 + 0x4) = buf[4];
-    *(f32 *)(D_0051D9D0 + 0x8) = buf[8];
-    func_0013B160(buf);
-    func_0013B190(0);
-    __asm__ volatile ("sqc2 $vf31, 0(%0) ; vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27" : : "r"(D_0051D9B0) : "memory");
+void func_00209E50(u8 *a0)
+{
+  f32 new_var;
+  f32 buf[16];
+  if (a0 != ((void *) 0))
+  {
+    asm volatile("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 16(%0) ; lqc2 $vf3, 32(%0) ; lqc2 $vf4, 48(%0) ; sqc2 $vf1, 0(%1) ; sqc2 $vf2, 16(%1) ; sqc2 $vf3, 32(%1) ; sqc2 $vf4, 48(%1)" : : "r"(a0), "r"(buf) : "memory");
+  }
+  else
+  {
+    asm volatile("sqc2 $vf28, 0(%0) ; sqc2 $vf29, 16(%0) ; sqc2 $vf30, 32(%0) ; sqc2 $vf31, 48(%0)" : : "r"(buf) : "memory");
+  }
+  new_var = buf[1];
+  *((s32 *) (D_0051D9C0 + 0xC)) = 0x3F800000;
+  *((s32 *) (D_0051D9D0 + 0xC)) = 0x3F800000;
+  {
+    f32 t1 = new_var;
+    f32 t5 = buf[5];
+    f32 t9 = buf[9];
+    f32 t0 = buf[0];
+    *((f32 *) (D_0051D9C0 + 0x0)) = t1;
+    *((f32 *) (D_0051D9C0 + 0x4)) = t5;
+    *((f32 *) (D_0051D9C0 + 0x8)) = t9;
+    *((f32 *) (D_0051D9D0 + 0x0)) = t0;
+  }
+  *((f32 *) (D_0051D9D0 + 0x4)) = buf[4];
+  *((f32 *) (D_0051D9D0 + 0x8)) = buf[8];
+  func_0013B160(buf);
+  func_0013B190(0);
+  asm volatile("sqc2 $vf31, 0(%0) ; vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27" : : "r"(D_0051D9B0) : "memory");
 }
-// differs: the float loads of the copied vector use f5/f4 where the original uses f1/f0 (tried locals for the values)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209E50);
+
 void func_00209F40(s32 v) {
     D_00526440[D_0047066C] = v;
     D_0047066C += 1;

@@ -1157,25 +1157,27 @@ extern void func_002A09C0(s32);
 
 
 
-#if 0
 // func_002A4130: the counter is set in the delay slot of the first call in the original; ours sets it before the call
-s32 func_002A4130(s32 *a0) {
-    s32 n = func_002A1380();
-    s32 i = 0;
-    s32 off = 0;
-    if (0 < n) {
-        do {
-            char *row = D_005AB610 + (**(s32 **)a0) * 240 + off;
-            func_002A09C0(*(s32 *)(row + 0x10));
-            off += 24;
-            i++;
-            n = func_002A1380();
-        } while (i < n);
+s32 func_002A4130(s32 *a0)
+{
+  s32 i = 0;
+  s32 n = func_002A1380();
+  s32 off = 0;
+  if (0 < n)
+  {
+    do
+    {
+      char *row = (D_005AB610 + ((*(*((s32 **) a0))) * 240)) + off;
+      func_002A09C0(*((s32 *) (row + 0x10)));
+      off += 24;
+      i++;
+      n = func_002A1380();
     }
-    return 1;
+    while (i < n);
+  }
+  return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4130);
+
 #if 0
 // func_002A41D0: the original moves a0 to s3 first and loads the slot into a1 before the test; reordering the locals swaps the saved registers s0/s1; 4 variants tried
 s32 func_002A41D0(s32 *a0, char *a1) {
@@ -1594,23 +1596,25 @@ extern s8 D_004B4B63[];
 extern char D_00492FCE[];
 s32 func_002A4D60(s32 *a0);
 
-#if 0
 // func_002A4CF0: the store of the function pointer comes first (as in the original); the global's test is scheduled before the index load (ours lw before lb); three forms tried
-s32 func_002A4CF0(s32 *a0) {
-    s32 idx;
-    u16 *row;
-    a0[0x10 / 4] = (s32)func_002A4D60;
-    idx = D_004B4B63[0];
-    row = (u16 *)(D_00492FCE + idx * 0xB8);
-    if ((gEvtWork[0x14 / 4] & 0x8000) != 0) {
-        if ((*row & 0x8) != 0) {
-            return 1;
-        }
+s32 func_002A4CF0(s32 *a0)
+{
+  s32 idx;
+  u16 *row;
+  a0[0x10 / 4] = (s32) func_002A4D60;
+  idx = D_004B4B63[0];
+  row = (u16 *) (D_00492FCE + (idx * 0xB8));
+  idx = *row;
+  if ((gEvtWork[0x14 / 4] & 0x8000) != 0)
+  {
+    if ((idx & 0x8) != 0)
+    {
+      return 1;
     }
-    return 3;
+  }
+  return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4CF0);
+
 s32 func_002A4D60(s32 *a0) {
     s32 idx = D_004B4B63[0];
     u16 *row = (u16 *)(D_00492FCE + idx * 0xB8);

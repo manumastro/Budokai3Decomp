@@ -90,7 +90,6 @@ void StrStatus_OpenScene(void) {
     w = D_005AA5A0[0];
     w->f1C = (func_00293250 == 0) ? 0 : func_00293250;
 }
-#if 0
 // differs: 10 of 70 with the volatile reload (size 0x120 matches); the 16.0f constant and the D_005AA5A4 pointer take the other registers
 extern void amTask_Kill(s32);
 extern void func_002BF310(void);
@@ -100,39 +99,48 @@ void func_002927E0(Work2918A0 *w);
 extern s32 D_005AA5BC[];
 extern s32 D_005AA5FC[];
 extern s32 D_005AA5F4[];
-void func_002919B0(void) {
-    if (D_005AA5F8[0] != 0) {
-        func_0022D0E0(D_005AA5F8[0], 1);
-        D_005AA5F8[0] = 0;
+void func_002919B0(void)
+{
+  unsigned int new_var;
+  if (D_005AA5F8[0] != 0)
+  {
+    func_0022D0E0(D_005AA5F8[0], 1);
+    D_005AA5F8[0] = 0;
+  }
+  if (D_005AA5C0[0] != 0)
+  {
+    amTask_Kill(D_005AA5C0[0]);
+    D_005AA5C0[0] = 0;
+  }
+  if (D_005AA5F4[0] != 0)
+  {
+    func_0022D0E0(D_005AA5F4[0], 1);
+    D_005AA5F4[0] = 0;
+  }
+  if (D_005AA5BC[0] != 0)
+  {
+    amTask_Kill(D_005AA5BC[0]);
+    D_005AA5BC[0] = 0;
+  }
+  if ((*((s8 *) (((char *) D_005AA604[0]) + 0x11E6))) == 0)
+  {
+    if (D_005AA5FC[0] != 0)
+    {
+      func_0022D0E0(D_005AA5FC[0], 1);
+      D_005AA5FC[0] = 0;
     }
-    if (D_005AA5C0[0] != 0) {
-        amTask_Kill(D_005AA5C0[0]);
-        D_005AA5C0[0] = 0;
+    if (D_005AA5C4[0] != 0)
+    {
+      amTask_Kill(D_005AA5C4[0]);
+      D_005AA5C4[0] = 0;
     }
-    if (D_005AA5F4[0] != 0) {
-        func_0022D0E0(D_005AA5F4[0], 1);
-        D_005AA5F4[0] = 0;
-    }
-    if (D_005AA5BC[0] != 0) {
-        amTask_Kill(D_005AA5BC[0]);
-        D_005AA5BC[0] = 0;
-    }
-    if (*(s8 *)((char *)D_005AA604[0] + 0x11E6) == 0) {
-        if (D_005AA5FC[0] != 0) {
-            func_0022D0E0(D_005AA5FC[0], 1);
-            D_005AA5FC[0] = 0;
-        }
-        if (D_005AA5C4[0] != 0) {
-            amTask_Kill(D_005AA5C4[0]);
-            D_005AA5C4[0] = 0;
-        }
-    }
-    func_002BF310();
-    ((Work2918A0 *)D_005AA5A4[0])->f40 = 16.0f;
-    ((Work2918A0 *)(*(volatile s32 *)D_005AA5A4))->f1C = (func_002927E0 == 0) ? 0 : (void (*)(void))func_002927E0;
+  }
+  func_002BF310();
+  ((Work2918A0 *) D_005AA5A4[0])->f40 = 16.0f;
+  new_var = *((volatile s32 *) D_005AA5A4);
+  ((Work2918A0 *) new_var)->f1C = (func_002927E0 == 0) ? (0) : ((void (*)(void)) func_002927E0);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002919B0);
+
 #if 0
 // differs: 5 of 71; the 24-byte copy takes the base in v1 here, v0 in the original (5 declaration orders tried)
 typedef struct Copy16_2918A0 {

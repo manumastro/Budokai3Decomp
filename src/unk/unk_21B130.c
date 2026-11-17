@@ -567,33 +567,36 @@ typedef struct BtlCnt {
     u8 pad[0x88D8];
     s32 n;
 } BtlCnt;
-#if 0
 // differs: 0x80 bytes, as the original; the count test matches with a BtlCnt view (lui 1 + offset -0x7728, as the original); the original preloads v0 = -1 before the id test and returns through one shared epilogue (b to the final jr); ours has two jr ra. Tried: a single result variable with break (0x70 bytes).
-s32 func_0021C2E0(s32 id) {
-    u8 *p;
-    s32 *n;
-    s32 i;
-
-    if (id == -1) {
-        return -1;
-    }
-    if (0 < ((BtlCnt *)gBattle)->n) {
-        i = 0;
-        p = gBtlSys;
-        n = (s32 *)(gBattle + 0x88D8);
-        do {
-            if (id == *(s16 *)(p + 0x3E)) {
-                return i;
-            }
-            p += 0x190;
-            i++;
-        } while (i < *n);
-    }
+s32 func_0021C2E0(s32 id)
+{
+  u8 *p;
+  s32 *n;
+  s32 i;
+  if (id == (-1))
+  {
     return -1;
+  }
+  i = 0;
+  if (i < ((BtlCnt *) gBattle)->n)
+  {
+    i = i;
+    p = gBtlSys;
+    n = (s32 *) (gBattle + 0x88D8);
+    do
+    {
+      if (id == (*((s16 *) (p + 0x3E))))
+      {
+        return i;
+      }
+      p += 0x190;
+      i++;
+    }
+    while (i < (*n));
+  }
+  return -1;
 }
-// (see the note above the function: the test is the BtlCnt view now)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2E0);
+
 s32 func_0021C360(s32 id) {
     s32 i;
     u8 *sys;

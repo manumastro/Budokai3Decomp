@@ -193,36 +193,44 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_acsr", func_001D1090);
 INCLUDE_ASM("asm/nonmatchings/battle/char_acsr", func_001D12A0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_acsr", func_001D13A0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_acsr", func_001D14A0);
-#if 0
 /* Does not match yet: 11 of 74 instructions differ. */
-void func_001D15C0(AcsrCloth *c) {
-    s32 w;
-    s32 h;
-    s32 i;
-    s32 j;
-    if (c != 0) {
-        func_0013B0B0(D_003F0800);
-        w = c->w;
-        h = c->h;
-        amDraw_SetPacketMode(1);
-        j = 0;
-        for (i = 0; i < h - 1; i++) {
-            if (i != 0) {
-                amDraw_ClosePacket(-1);
-            } else {
-                func_00134690(1, 0x800200, 0, -1, 0, 0);
-            }
-            for (j = 0; j < w; j++) {
-                func_00136310(&c->pts[j + c->w * i], &c->pts[j + c->w * (i + 1)]);
-            }
-        }
-        amDraw_FlushPacket();
-        amDraw_SetPacketMode(0);
-        func_0013B110(1);
+void func_001D15C0(AcsrCloth *c)
+{
+  s32 w;
+  s32 h;
+  unsigned char new_var;
+  s32 j;
+  s32 i;
+  if (c != 0)
+  {
+    func_0013B0B0(D_003F0800);
+    w = c->w;
+    h = c->h;
+    amDraw_SetPacketMode(1);
+    j = 0;
+    for (i = (new_var = 0); i < (h - 1); i++)
+    {
+      if (i != 0)
+      {
+        amDraw_ClosePacket(-1);
+      }
+      else
+      {
+        func_00134690(1, 0x800200, 0, -1, 0, new_var);
+      }
+      for (j = new_var; j < w; j++)
+      {
+        func_00136310(&c->pts[j + (c->w * i)], &c->pts[j + (c->w * (i + 1))]);
+      }
+
     }
+
+    amDraw_FlushPacket();
+    amDraw_SetPacketMode(0);
+    func_0013B110(1);
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_acsr", func_001D15C0);
+
 #if 0
 /* Does not match yet: 9 of 114 instructions differ. */
 void func_001D16F0(AcsrCloth *c) {

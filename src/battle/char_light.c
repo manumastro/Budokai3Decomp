@@ -96,18 +96,19 @@ s32 func_00235B60(void *a0) {
     return ((r / 10) % 100) < (u32)*(s16 *)(s0 + 0x22);
 }
 #endif
-#if 0
 // differs: 13 of 30: call, table store and the magic divide match; the original keeps 1 in v0 and 0xCCCCCCCD in a1 (ours: a0 and v1), and loads lim into v1 after the multu (6 forms tried)
-s32 func_00235B60(s32 *a0) {
-    s32 idx = *(s32 *)((char *)a0 + 0x1350);
-    u8 *s0 = (u8 *)D_0058BBB0 + idx * 192;
-    u32 r = func_0012EAE0(0x20);
-
-    s0[0x35] = 1;
-    return (u32)((r / 10) % 100) < (u32)*(s16 *)(s0 + 0x22);
+s32 func_00235B60(s32 *a0)
+{
+  s32 idx = *((s32 *) (((char *) a0) + 0x1350));
+  int new_var;
+  u8 *s0 = ((u8 *) D_0058BBB0) + (idx * 192);
+  u32 r = func_0012EAE0(0x20);
+  new_var = (r / 10) % 100;
+  r = *((s16 *) (s0 + 0x22));
+  s0[0x35] = 1;
+  return ((u32) new_var) < ((u32) r);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235B60);
+
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235BE0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235D90);
 s32 func_0022F900(u8 *, s32, s8);

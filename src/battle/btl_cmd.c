@@ -1092,50 +1092,65 @@ s32 func_001A99C0(BtlCmdObj *a0, BtlCmdPair *a1, s32 a2) {
     return func_001A9460(a0, a1->b, r);
 }
 #endif
-#if 0
 /* differs: 8 of 67 instructions; the switch value and the entry pointer take $a3 and $a2 the other way round
  * (the original keeps the entry in $a2 and the case value in $a2 too, then the constant 1 in $a3). The
  * `> 12` tests give the original's slti $at form. Tried: switch value in a local, declaration orders. */
-s32 func_001A99C0(u8 *a0, s16 *a1, s32 a2) {
-    s32 k;
-    s32 v;
-    u8 *e;
-
-    v = 0;
-    if (a2 != 0) {
-        e = (u8 *)((*(s32 *)(a0 + 0x58) << 2) + (s32)a0);
-        if (*(s16 *)(e + 0x66) == 1) {
-            v = 1;
-        }
+s32 func_001A99C0(u8 *a0, s16 *a1, s32 a2)
+{
+  s32 v;
+  u8 *e;
+  v = 0;
+  if (a2 != 0)
+  {
+    e = (u8 *) (((*((s32 *) (a0 + 0x58))) << 2) + ((s32) a0));
+    if ((*((s16 *) (e + 0x66))) == 1)
+    {
+      v = 1;
     }
-    k = a1[0];
-    switch (k) {
+  }
+  if (v)
+  {
+    a2 = a1[0];
+  }
+  else
+  {
+    a2 = a1[0];
+  }
+  switch (a2)
+  {
     case 1:
-        e = (u8 *)((*(s32 *)(a0 + 0x58) << 2) + (s32)a0);
-        if (*(s16 *)(e + 0x64) != 1) {
-            return 0;
-        }
-        if (D_0047056C != 0 && *(s16 *)(e + 0x66) > 12) {
-            return 0;
-        }
-        break;
-    case 2:
-        e = (u8 *)((*(s32 *)(a0 + 0x58) << 2) + (s32)a0);
-        if (*(s16 *)(e + 0x64) != -1) {
-            return 0;
-        }
-        if (D_0047056C != 0 && *(s16 *)(e + 0x66) > 12) {
-            return 0;
-        }
-        break;
-    default:
-        v = 0;
-        break;
+      e = (u8 *) (((*((s32 *) (a0 + 0x58))) << 2) + ((s32) a0));
+      if ((*((s16 *) (e + 0x64))) != 1)
+    {
+      return 0;
     }
-    return func_001A9460(a0, a1[1], v);
+      if ((D_0047056C != 0) && ((*((s16 *) (e + 0x66))) > 12))
+    {
+      return 0;
+    }
+      break;
+
+    case 2:
+      e = (u8 *) (((*((s32 *) (a0 + 0x58))) << 2) + ((s32) a0));
+      if ((*((s16 *) (e + 0x64))) != (-1))
+    {
+      return 0;
+    }
+      if ((D_0047056C != 0) && ((*((s16 *) (e + 0x66))) > 12))
+    {
+      return 0;
+    }
+      break;
+
+    default:
+      v = 0;
+      break;
+
+  }
+
+  return func_001A9460(a0, a1[1], v);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A99C0);
+
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9AD0);
 void func_001AA450(BtlRank *a0) {
     s32 p;

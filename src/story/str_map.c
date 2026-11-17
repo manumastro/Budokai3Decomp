@@ -233,34 +233,37 @@ extern void amFile_Load(s32);
 
 extern void amFile_Load(s32);
 
-#if 0
 // func_0029AEF0: the if-nest with the return 0 at the end matches apart from the loop test: the original computes it in $at (slti $at), ours in v0; for, while, do-while, continue and reversed tests tried
 extern void amFile_Load(s32);
-
-s32 func_0029AEF0(void) {
-    s32 i;
-    if (gStrMap[3] != 0) {
-        if (*(s16 *)((char *)gStrMap[3] + 4) != 3) {
-            return 1;
-        }
-        for (i = 0; i < 4; i++) {
-            if (gStrMap[i] != 0) {
-                gStrMap[4 + i] = *(s32 *)(gStrMap[i] + 0x40);
-                *(s32 *)(gStrMap[i] + 0x40) = 0;
-                amCdFs_Close(gStrMap[i], 0);
-                gStrMap[i] = 0;
-                amFile_Load(*(s32 *)(gStrMap[4 + i] + 0x50));
-            }
-        }
-        gStrMap[0x58 / 4] = *(s32 *)(gStrMap[4] + 0x50);
-        gStrMap[0x60 / 4] = *(s32 *)(gStrMap[5] + 0x50);
-        gStrMap[0x5C / 4] = *(s32 *)(gStrMap[6] + 0x50);
-        gStrMap[0x64 / 4] = *(s32 *)(gStrMap[7] + 0x50);
+s32 func_0029AEF0(void)
+{
+  s32 i;
+  if (gStrMap[3] != 0)
+  {
+    if ((*((s16 *) (((char *) gStrMap[3]) + 4))) != 3)
+    {
+      return 1;
     }
-    return 0;
+    for (i = 0; i <= (4 - 1); i++)
+    {
+      if (gStrMap[i] != 0)
+      {
+        gStrMap[4 + i] = *((s32 *) (gStrMap[i] + 0x40));
+        *((s32 *) (gStrMap[i] + 0x40)) = 0;
+        amCdFs_Close(gStrMap[i], 0);
+        gStrMap[i] = 0;
+        amFile_Load(*((s32 *) (gStrMap[4 + i] + 0x50)));
+      }
+    }
+
+    gStrMap[0x58 / 4] = *((s32 *) (gStrMap[4] + 0x50));
+    gStrMap[0x60 / 4] = *((s32 *) (gStrMap[5] + 0x50));
+    gStrMap[0x5C / 4] = *((s32 *) (gStrMap[6] + 0x50));
+    gStrMap[0x64 / 4] = *((s32 *) (gStrMap[7] + 0x50));
+  }
+  return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029AEF0);
+
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void amHeap_Free(void *);
 extern void memset(void *, s32, s32);
@@ -527,41 +530,51 @@ extern void amCdFs_Close(s32, s32);
 extern void amCdFs_ReleaseCache(s32);
 extern void amSofdec_Destroy(s32);
 extern void amHeap_Free(void *);
-#if 0
 // func_0029CCC0: the two loops and the Sofdec / heap tail match in shape; the loop counters swap saved registers (ours s0 and s1 the other way round) and one global reload differs; two orders tried
-void func_0029CCC0(void) {
-    s32 i;
-    s32 off;
-    amTask_KillGroup(2, 0x10000, 0);
-    i = 0;
-    off = 0;
-    do {
-        if (*(s32 *)((char *)gStrTitle + off) != 0) {
-            amCdFs_Close(*(s32 *)((char *)gStrTitle + off), 0);
-        }
-        if (*(s32 *)((char *)gStrTitle + off + 8) != 0) {
-            amCdFs_ReleaseCache(*(s32 *)((char *)gStrTitle + off + 8));
-        }
-        i++;
-        off += 4;
-    } while (i < 2);
-    i = 0;
-    off = 0;
-    do {
-        if (*(s32 *)((char *)gStrTitle + off + 0x6C) != 0) {
-            func_0022D0E0(*(s32 *)((char *)gStrTitle + off + 0x6C), 1);
-        }
-        i++;
-        off += 4;
-    } while (i < 0x10);
-    if (*(s32 *)((char *)gStrTitle + 0xD0) >= 0) {
-        amSofdec_Destroy(*(s32 *)((char *)gStrTitle + 0xD0));
+void func_0029CCC0(void)
+{
+  s32 i;
+  s32 off;
+  amTask_KillGroup(2, 0x10000, 0);
+  if (!off)
+  {
+  }
+  i = 0;
+  off = 0;
+  do
+  {
+    if ((*((s32 *) (((char *) gStrTitle) + off))) != 0)
+    {
+      amCdFs_Close(*((s32 *) (((char *) gStrTitle) + off)), 0);
     }
-    amHeap_Free(gStrTitle);
-    gStrTitle = 0;
+    if ((*((s32 *) ((((char *) gStrTitle) + off) + 8))) != 0)
+    {
+      amCdFs_ReleaseCache(*((s32 *) ((((char *) gStrTitle) + off) + 8)));
+    }
+    i++;
+    off += 4;
+  }
+  while (i < 2);
+  i = 0;
+  off = 0;
+  do
+  {
+    if ((*((s32 *) ((((char *) gStrTitle) + off) + 0x6C))) != 0)
+    {
+      func_0022D0E0(*((s32 *) ((((char *) gStrTitle) + off) + 0x6C)), 1);
+    }
+    i++;
+    off += 4;
+  }
+  while (i < 0x10);
+  if ((*((s32 *) (((char *) gStrTitle) + 0xD0))) >= 0)
+  {
+    amSofdec_Destroy(*((s32 *) (((char *) gStrTitle) + 0xD0)));
+  }
+  amHeap_Free(gStrTitle);
+  gStrTitle = 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029CCC0);
+
 extern void StrTitle_TaskMain(Task *);
 extern char D_0046EA28[];
 

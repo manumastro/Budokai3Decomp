@@ -307,58 +307,61 @@ int func_001CC300(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC300);
-// // differs: 17 of 60 (round 4 chr): the original reloads gBattle into v1 after the jal and keeps the counter pointer in a0; ours uses a0 for gBattle (register choice only).
-#if 0
 extern void amTask_Kill(void *);
 extern void func_002194C0(void *, s32, s32, s32);
 extern void Character_PauseVoice(s32 *);
 extern void func_001CB020(void *);
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern char D_004692B0[];
-int func_001CC4B0(void *unused, Arg *a) {
-    int *p = a->p;
-    s32 x;
-    s32 y;
-    s32 w;
-    s32 s0;
-    s32 s1;
-    char *tb;
-    char *c;
-    char *t;
-    char *g;
-    s32 *q;
-    x = p[0];
-    y = p[1];
-    w = p[2];
-    if (w < 0) {
-        s0 = -w;
-        s1 = 2;
-    } else {
-        tb = (char *)gBattle->tbl[w];
-        s1 = *(s32 *)(tb + 0x1350) + 3;
-        s0 = *(s32 *)(tb + 0xB9C);
+int func_001CC4B0(void *unused, Arg *a)
+{
+  int *p = a->p;
+  s32 x;
+  s32 y;
+  s32 w;
+  s32 s0;
+  s32 s1;
+  char *tb;
+  s32 *q;
+  char *c;
+  char *t;
+  char *g;
+  x = p[0];
+  y = p[1];
+  w = p[2];
+  if (w < 0)
+  {
+    s0 = -w;
+    s1 = 2;
+  }
+  else
+  {
+    tb = (char *) gBattle->tbl[w];
+    s1 = (*((s32 *) (tb + 0x1350))) + 3;
+    s0 = *((s32 *) (tb + 0xB9C));
+  }
+  c = *((char **) unused);
+  t = amTask_Create((void (*)(void *)) func_001CB020, 0, *((s32 *) (c + 0x10)), *((s32 *) (c + 0x14)), *((s32 *) (c + 0x18)), D_004692B0);
+  *((s32 *) (t + 0x30)) = 0;
+  *((f32 *) (t + 0x34)) = (f32) x;
+  *((void **) (t + 0x38)) = (void *) Character_PauseVoice;
+  *((char **) (t + 0x3C)) = (((char *) gBattle) + (s1 << 5)) + 0x5C4;
+  func_002194C0(*((void **) (t + 0x3C)), s0, y, -1);
+  q = (s32 *) (t + 0x30);
+  g = (char *) gBattle;
+  if ((*((s32 *) (g + 0x88EC))) == 0)
+  {
+    q[0] += 1;
+    if ((((f32) q[0]) * (*((f32 *) (g + 0x88F0)))) >= (*((f32 *) (q + 1))))
+    {
+      ((void (*)(void *)) (*((void **) (q + 2))))(t);
+      amTask_Kill(t);
     }
-    c = *(char **)unused;
-    t = amTask_Create((void (*)(void *))func_001CB020, 0, *(s32 *)(c + 0x10), *(s32 *)(c + 0x14), *(s32 *)(c + 0x18), D_004692B0);
-    *(s32 *)(t + 0x30) = 0;
-    *(f32 *)(t + 0x34) = (f32)x;
-    *(void **)(t + 0x38) = (void *)Character_PauseVoice;
-    *(char **)(t + 0x3C) = (char *)gBattle + (s1 << 5) + 0x5C4;
-    func_002194C0(*(void **)(t + 0x3C), s0, y, -1);
-    q = (s32 *)(t + 0x30);
-    g = (char *)gBattle;
-    if (*(s32 *)(g + 0x88EC) == 0) {
-        q[0] += 1;
-        if ((f32)q[0] * *(f32 *)(g + 0x88F0) >= *(f32 *)(q + 1)) {
-            ((void (*)(void *))*(void **)(q + 2))(t);
-            amTask_Kill(t);
-        }
-    }
-    *(s32 *)a = s1;
-    return 1;
+  }
+  *((s32 *) a) = s1;
+  return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC4B0);
+
 extern void func_001CB020(void *);
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void amTask_Kill(void *);

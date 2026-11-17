@@ -22,7 +22,6 @@ void func_0028E5D0(s32 *p) {
         p[0x1C / 4] = v;
     }
 }
-#if 0
 // func_0028E640: 10 of 83 instructions differ: the tail pointer is in a2 here and a1 in the original, and the object address is folded into 0(a1) on the second load; 5 forms of the reload tried
 extern s32 D_00470704;
 extern s32 D_00470708;
@@ -34,60 +33,69 @@ extern s32 func_0022BF80(s32);
 extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D860(s32, f32);
 extern s32 func_0022D670(s32, f32);
-void func_0028E640(s32 *a0) {
-    char *s1 = (char *)a0 + 0x30;
-    s32 s0;
-    s32 *p0 = (s32 *)a0[0x3C / 4];
-    s0 = p0[0];
+void func_0028E640(s32 *a0)
+{
+  char *s1 = ((char *) a0) + 0x30;
+  s32 s0;
+  s32 *p0 = (s32 *) a0[0x3C / 4];
+  s0 = p0[0];
+  {
+    s32 w = a0[0x38 / 4];
+    s32 v = a0[0x34 / 4];
+    D_00470704 = v;
+    D_0047070C = w;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, w);
+  }
+  D_00470238 = 0;
+  for (;;)
+  {
+    func_0022C060(s0, 1.0f);
+    if (func_0022BF80(s0) != 0xFF)
     {
-        s32 w = a0[0x38 / 4];
-        s32 v = a0[0x34 / 4];
-        D_00470704 = v;
-        D_0047070C = w;
-        D_00470708 = 0;
-        amModel_SetCurrent(v, w);
+      break;
     }
-    D_00470238 = 0;
-    for (;;) {
-        func_0022C060(s0, 1.0f);
-        if (func_0022BF80(s0) != 0xFF) {
-            break;
-        }
-        if (*(s16 *)(s1 + 2) == -1) {
-            break;
-        }
-        func_0022D0E0(s0, 1);
-        {
-            s16 idx = *(s16 *)(s1 + 2);
-            if (idx & 0x8000) {
-                s32 k = idx & 0x7FFF;
-                s32 *t = *(s32 **)(s1 + 0x18);
-                s0 = func_0022D860(((s32 *)t[0x14 / 4])[k], 0.0f);
-            } else {
-                s32 *t = *(s32 **)(s1 + 0x18);
-                s0 = func_0022D670(((s32 *)t[0x1C / 4])[idx], 0.0f);
-            }
-        }
-        *(s32 *)*(s32 **)(s1 + 0xC) = s0;
-        *(s16 *)(s1 + 2) = -1;
-    }
+    if ((*((s16 *) (s1 + 2))) == (-1))
     {
-        s32 *p = *(s32 **)(s1 + 0x10);
-        if (p != 0) {
-            char *obj = *(char **)((char *)s0 + 0x30);
-            *(s16 *)(obj + 0x18) = (s16)p[0];
-            if (!(*(u16 *)s1 & 2)) {
-                obj = *(char **)((char *)s0 + 0x30);
-                *(f32 *)(obj + 0x40) = *(f32 *)((char *)p + 0x10);
-                *(f32 *)(obj + 0x44) = *(f32 *)((char *)p + 0x14);
-                *(f32 *)(obj + 0x48) = *(f32 *)((char *)p + 0x18);
-                *(f32 *)(obj + 0x4C) = *(f32 *)((char *)p + 0x1C);
-            }
-        }
+      break;
     }
+    func_0022D0E0(s0, 1);
+    {
+      s16 idx = *((s16 *) (s1 + 2));
+      if (idx & 0x8000)
+      {
+        s32 k = idx & 0x7FFF;
+        s32 *t = *((s32 **) (s1 + 0x18));
+        s0 = func_0022D860(((s32 *) t[0x14 / 4])[k], 0.0f);
+      }
+      else
+      {
+        s32 *t = *((s32 **) (s1 + 0x18));
+        s0 = func_0022D670(((s32 *) t[0x1C / 4])[idx], 0.0f);
+      }
+    }
+    *((s32 *) (*((s32 **) (s1 + 0xC)))) = s0;
+    *((s16 *) (s1 + 2)) = -1;
+  }
+
+  {
+    s32 *p = *((s32 **) (s1 + 0x10));
+    if (p != 0)
+    {
+      char *obj = *((char **) (((char *) (s0 & 0xFFFFFFFFu)) + 0x30));
+      *((s16 *) (obj + 0x18)) = (s16) p[0];
+      if (!((*((u16 *) s1)) & 2))
+      {
+        obj = *((char **) (((char *) s0) + 0x30));
+        *((f32 *) (obj + 0x40)) = *((f32 *) (((char *) p) + 0x10));
+        *((f32 *) (obj + 0x44)) = *((f32 *) (((char *) p) + 0x14));
+        *((f32 *) (obj + 0x48)) = *((f32 *) (((char *) p) + 0x18));
+        *((f32 *) (obj + 0x4C)) = *((f32 *) (((char *) p) + 0x1C));
+      }
+    }
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E640);
+
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E790);
 extern s32 amGs_SetReg32(s32, s32);
 extern void func_00133780(s32, s32);
@@ -490,48 +498,57 @@ extern void func_00133D10(s32);
 extern void func_00133D50(f32, f32);
 extern void func_00133D20(f32, f32);
 
-#if 0
 // func_00290BB0: the state test: the original jumps to the common tail with a b after the beqz (out-of-line block); ours branches straight to the tail (bnez) and the offsets differ by two instructions; 3 forms tried
-void func_00290BB0(void) {
-    s32 *g;
-    s32 *s0;
-    s32 k;
-    s32 *e;
-    s32 x;
-    g = (s32 *)D_004708A4;
-    x = g[0x1AB0 / 4];
-    if (x == 2) {
-        goto c20;
-    }
-    if (x == 1) {
-        goto c10;
-    }
-    if (x == 0) {
-        goto be8;
-    }
+void func_00290BB0(void)
+{
+  s32 *g;
+  s32 *s0;
+  s32 k;
+  s32 *e;
+  s32 x;
+  g = (s32 *) D_004708A4;
+  x = g[0x1AB0 / 4];
+  if (x == 2)
+  {
     goto c20;
-be8:
-    k = *(s8 *)((char *)g + 0x1AB5);
-    e = (s32 *)((s32 *)D_004708A4)[k];
-    if (*(s16 *)((char *)e + 4) != 3) {
-        return;
-    }
-    func_0028F930();
-c10:
-    ((s32 *)D_004708A4)[0x1AB0 / 4] = 2;
-c20:
-    g = (s32 *)D_004708A4;
-    k = *(s8 *)((char *)g + 0x1AB4);
-    s0 = (s32 *)(D_00453770 + k * 20);
-    func_00133CE0(1);
-    func_00133D10(s0[0]);
-    func_00133D50((f32)s0[1], (f32)s0[2]);
-    func_00133D20(*(f32 *)&s0[3], *(f32 *)&s0[4]);
-    func_0028F720();
-    func_0028F090();
+  }
+  if (x == 1)
+  {
+    goto c10;
+  }
+  if (x == 0)
+  {
+    goto be8;
+  }
+  if (x && x)
+  {
+  }
+  goto c20;
+  be8:
+  k = *((s8 *) (((char *) g) + 0x1AB5));
+
+  e = (s32 *) ((s32 *) D_004708A4)[k];
+  if ((*((s16 *) (((char *) e) + 4))) != 3)
+  {
+    return;
+  }
+  func_0028F930();
+  c10:
+  ((s32 *) D_004708A4)[0x1AB0 / 4] = 2;
+
+  c20:
+  g = (s32 *) D_004708A4;
+
+  k = *((s8 *) (((char *) g) + 0x1AB4));
+  s0 = (s32 *) (D_00453770 + (k * 20));
+  func_00133CE0(1);
+  func_00133D10(s0[0]);
+  func_00133D50((f32) s0[1], (f32) s0[2]);
+  func_00133D20(*((f32 *) (&s0[3])), *((f32 *) (&s0[4])));
+  func_0028F720();
+  func_0028F090();
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290BB0);
+
 s32 func_00290C90(void) {
     s32 *g = (s32 *)D_004708A4;
     s8 k;

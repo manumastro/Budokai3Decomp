@@ -322,25 +322,29 @@ void func_00225E10(s32 *p) {
     v[4] = *(s16 *)(s0 + 2);
     *(s16 *)((u8 *)s1 + 2) = p[1];
 }
-// GIVEN UP: field store at 0x50 uses a separate address (addiu) where the original stores at 0x50(s0)
-#if 0
-void func_00225E80(s32 *p) {
-    s32 *a = BtlSys_GetSlot(p[0]);
-    s32 *b = BtlSys_GetSlot(p[1]);
-
-    a[0] &= ~3;
-    a[0] |= 2;
-    a[5] = p[2];
-    if (*(s16 *)((u8 *)a + 0x50) < p[2]) {
-        *(s16 *)((u8 *)a + 0x50) = p[2];
-    }
-    if (b[0] & 0xC) {
-        b[0] &= ~0xC;
-        b[0] |= 8;
-    }
+void func_00225E80(s32 *p)
+{
+  u8 *new_var2;
+  s32 *a = BtlSys_GetSlot(p[0]);
+  u8 *new_var;
+  s32 *b = BtlSys_GetSlot(p[1]);
+  a[0] &= ~3;
+  a[0] |= 2;
+  new_var2 = (u8 *) a;
+  new_var2 = new_var2 + 0x50;
+  a[5] = p[2];
+  new_var = new_var2;
+  if ((*((s16 *) new_var2)) < p[2])
+  {
+    *((s16 *) new_var) = p[2];
+  }
+  if (b[0] & 0xC)
+  {
+    b[0] &= ~0xC;
+    b[0] |= 8;
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00225E80);
+
 // GIVEN UP: the value compared and stored is loaded again after the call (tried a local for it)
 // // differs: 24 of 30 (round 4 chr): the original saves s1 for the object pointer (frame 0x30); ours keeps only s0 (frame 0x20), so the object pointer is not kept across the second call.
 #if 0
@@ -682,16 +686,17 @@ typedef struct A2dEnt {
 /* differs: 2 of 18: the order of the index scale and the mul.s, and which of the two globals the second block reads
    first (the addressing itself is right, the two `addu` orders — base first, then index first — are reproduced).
    Tried: one expression per store, a struct view, an index local, the constant in a local. */
-#if 0
-void func_0022CF70(s32 *p) {
-    f32 k = 100.0f;
-
-    ((A2dEnt *)D_004706C0)[D_004706BC].p = p;
-    ((A2dEnt *)D_004706C0)[D_004706BC].v = k * *(f32 *)((u8 *)p + 0x28);
-    D_004706BC += 1;
+void func_0022CF70(s32 *p)
+{
+  f32 k = 100.0f;
+  A2dEnt *new_var;
+  ((A2dEnt *) D_004706C0)[D_004706BC].p = p;
+  new_var = (A2dEnt *) D_004706C0;
+  (new_var + D_004706BC)->v = k * (*((f32 *) (((u8 *) p) + 0x28)));
+  D_004706C0 = D_004706C0;
+  D_004706BC += 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CF70);
+
 // GIVEN UP: the two mode loops are laid out in another order (tried both orders)
 #if 0
 void func_0022CFC0(s32 a0, s32 a1, s32 mode, s32 flag) {

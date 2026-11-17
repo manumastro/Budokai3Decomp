@@ -183,26 +183,30 @@ void func_001A3E60(PadWork *p) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1A31B0", func_001A3EF0);
 /* Stick dead zone. Same size, 1 instruction differs: the original sign-extends the |x| value into $v1 before the
    subtraction (here it lands in $v0). Tried: s8/s32 temporaries, declaration orders, inline casts. */
-#if 0
-s32 func_001A4460(s32 a0, s32 a1) {
-    s32 x = ((s8)a0 >= 0) ? (s8)a0 : -(s8)a0;
-    s32 u = (s8)x;
-    s32 t;
-    f32 fr;
-    s32 r;
-    s32 q;
-
-    t = (s8)(u - a1);
-    if (t < 0) {
-        t = 0;
-    }
-    fr = 128.0f / (128.0f - (f32)a1);
-    r = (s32)((f32)t * fr);
-    q = (s8)r;
-    return (s8)(((s8)a0 >= 0) ? (s8)q : -(s8)q);
+s32 func_001A4460(s32 a0, s32 a1)
+{
+  s32 x = (((s8) a0) >= 0) ? ((s8) a0) : (-((s8) a0));
+  s32 u = (s8) x;
+  s32 t;
+  f32 fr;
+  s32 r;
+  s8 new_var2;
+  int new_var;
+  s32 q;
+  new_var2 = u;
+  new_var = new_var2 - a1;
+  new_var2 = (s8) new_var;
+  t = new_var2;
+  if (t < 0)
+  {
+    t = 0;
+  }
+  fr = 128.0f / (128.0f - ((f32) a1));
+  r = (s32) (((f32) t) * fr);
+  q = (s8) r;
+  return (s8) ((((s8) a0) >= 0) ? ((s8) q) : (-((s8) q)));
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1A31B0", func_001A4460);
+
 extern void sceMtapInit(void);
 
 void func_001A4540(s32 a) {

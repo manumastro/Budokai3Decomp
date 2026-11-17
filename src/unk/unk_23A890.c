@@ -2195,18 +2195,27 @@ void func_00247770(u8 *o) {
 }
 // differs: the original keeps the object in s1 and o+0x30 in s0 (a 0x30 frame, three saves); here the object stays in s0 and the second load is folded
 #endif
-#if 0
 // differs: 0x40 vs 0x50 (4 instructions short): the original keeps the node pointer and s0 = node + 0x30 in saved registers across the call; with a node variable the compiler folds s0 into the node (one saved register fewer)
-void func_00247770(u8 *a0) {
-    u8 *s0 = a0 + 0x30;
-
-    func_00208F70(*(s32 *)(a0 + 0x38));
-    if (*(s32 *)(*(u8 **)(s0 + 8) + 0x38) < 0) {
-        BtbObj_RemoveFromList(a0);
-    }
+void func_00247770(u8 *a0)
+{
+  u8 *s0 = a0 + 0x30;
+  if (a0)
+  {
+    func_00208F70(*((s32 *) (a0 + 0x38)));
+  }
+  else
+  {
+    func_00208F70(*((s32 *) (a0 + 0x38)));
+  }
+  if ((*((s32 *) ((*((u8 **) (s0 + 8))) + 0x38))) < 0)
+  {
+    BtbObj_RemoveFromList(a0);
+  }
+  if ((a0 && a0) && a0)
+  {
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247770);
+
 #if 0
 void func_002477C0(u8 *o) {
     u8 *s0 = o + 0x30;

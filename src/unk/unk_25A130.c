@@ -249,31 +249,33 @@ s32 func_0025AE10(void *ctx, ScrCmd *cmd) {
 }
 #endif
 /* differs: the global is loaded into $a0 before the argument pointer (9 of 43) */
-#if 0
-s32 func_0025AE10(void *t, ScrCmd *c) {
-    ScrObj *o = D_0058D4E8[0];
-    ScrArg *a = c->args;
-    s32 tmp[5];
-    s32 *p;
-
-    tmp[0] = a[4].i;
-    tmp[1] = a[3].i;
-    tmp[2] = a[2].i;
-    tmp[3] = a[1].i;
-    tmp[4] = a[0].i;
-    if (o != NULL) {
-        p = (s32 *)((char *)o + 0x30);
-        func_00125740(&p[5], tmp, 0x14);
-        p[5] &= 0xF;
-        p[6] &= 0xF;
-        p[7] &= 0xF;
-        p[8] &= 0xF;
-        p[9] &= 0xF;
-    }
-    return 1;
+s32 func_0025AE10(void *t, ScrCmd *c)
+{
+  ScrObj *o = D_0058D4E8[0];
+  ScrArg *a = c->args;
+  s32 tmp[5];
+  s32 *p;
+  tmp[0] = a[4].i;
+  if ((!a[3].i) && (!a[3].i))
+  {
+  }
+  tmp[1] = a[3].i;
+  tmp[2] = a[2].i;
+  tmp[3] = a[1].i;
+  tmp[4] = a[0].i;
+  if (o != ((void *) 0))
+  {
+    p = (s32 *) (((char *) o) + 0x30);
+    func_00125740(&p[5], tmp, 0x14);
+    p[5] &= 0xF;
+    p[6] &= 0xF;
+    p[7] &= 0xF;
+    p[8] &= 0xF;
+    p[9] &= 0xF;
+  }
+  return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025AE10);
+
 s32 Scr_CmdPlayerCall25AA20(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 x;

@@ -1761,7 +1761,6 @@ void Btl_OnExitFadeDone(void) {
     func_001EF1E0(D_00470574);
     Scene_MarkDone();
 }
-#if 0
 // differs: 8 of 50. With p[0] and p[2] loaded before the call the stage, the loads and the copy of p into $s0 come in another order (the original loads stage, p[0], p[2], then copies p; the copy and the zero argument are placed earlier here).
 extern char D_00430FC0[];
 extern s32 D_0051CD20[];
@@ -1769,27 +1768,32 @@ extern f32 func_00200270(s32, f32, f32);
 typedef struct F2Pair {
     f32 a, b;
 } F2Pair;
-f32 func_001B04D0(f32 *p) {
-    F2Pair *e;
-    f32 t;
-    s32 st;
-    f32 p0;
-    f32 p2;
-    p0 = p[0];
-    st = gBtbBg.stage;
-    p2 = p[2];
-    e = (F2Pair *)(D_00430FC0 + st * 16) + D_0051CD20[0];
-    t = p[1] - func_00200270(0, p0, p2);
-    if (t < 0.0f) {
-        t = 0.0f;
-    }
-    if (t > 125.0f) {
-        t = 125.0f;
-    }
-    return e->a + ((125.0f - t) / 125.0f) * (e->b - e->a);
+f32 func_001B04D0(f32 *p)
+{
+  F2Pair *e;
+  f32 t;
+  s32 st;
+  f32 p0;
+  f32 p2;
+  p0 = p[0];
+  st = gBtbBg.stage;
+  p2 = p[2];
+  if ((p0 && p0) && p0)
+  {
+  }
+  e = ((F2Pair *) (D_00430FC0 + (st * 16))) + D_0051CD20[0];
+  t = p[1] - func_00200270(0, p0, p2);
+  if (t < 0.0f)
+  {
+    t = 0.0f;
+  }
+  if (t > 125.0f)
+  {
+    t = 125.0f;
+  }
+  return e->a + (((125.0f - t) / 125.0f) * (e->b - e->a));
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B04D0);
+
 void Btl_AddFileLoaders(void) {
     amFile_AddLoader(D_00468420, func_001AC400);
     amFile_AddLoader(D_00468428, func_001AC330);
@@ -2149,46 +2153,57 @@ void Fighter_ResetSpeed1B2160(Fighter *f) {
     }
     FT_FIELD(f, f32, 0x17BC) = 0.0f;
 }
-#if 0
 // differs: the 0x1864 flag word: the original stores it directly, ours computes its address in the branch delay slot (CSE) before the store
-void func_001B21B0(Fighter *f) {
-    s32 r;
-    void *p;
-    Fighter_ResetMotion(f, 0);
-    if (FT_FIELD(f, s32, 0xC64) != 0) {
-        FT_FIELD(f, s32, 0x1864) = 1;
-        if (FT_FIELD(f, s8, 0x1FF9) != 0) {
-            p = FT_FIELD(f, void *, 0xBB4);
-            if (FT_FIELD(f, f32, 0x44) - FT_FIELD(p, f32, 0xC) - FT_FIELD(f, f32, 0x1844) <= 0.0f) {
-                FT_FIELD(f, s8, 0x1FF9) = 0;
-                FT_FIELD(f, s32, 0x1864) = FT_FIELD(f, s32, 0x1864) | 8;
-                FT_FIELD(f, f32, 0xCA4) = 0.0f;
-                FT_FIELD(f, f32, 0xCA8) = 0.1f;
-            }
-        }
-        if (FT_FIELD(f, s16, 0x13A4) > -1) {
-            r = func_001C2B10(f);
-        } else {
-            r = func_001E94C0(f);
-        }
-        func_001E5040(f);
-        if (r == 0) {
-            FT_FIELD(f, s16, 0xCB4) = 1;
-        } else {
-            FT_FIELD(f, s16, 0xCB4) = 0;
-        }
-        FT_FIELD(f, s8, 0x2004) = 1;
-        FT_FIELD(f, s8, 0x1FFB) = 1;
-        if (r != 0xF) {
-            FT_FIELD(f, s16, 0xCB6) = 0;
-        }
-        FT_FIELD(f, s8, 0x2006) = 0;
-        D_00468460[r](f);
-        func_002CBFF0(1, f);
+void func_001B21B0(Fighter *f)
+{
+  s32 r;
+  u8 *new_var;
+  void *p;
+  Fighter_ResetMotion(f, 0);
+  new_var = (u8 *) f;
+  if ((*((s32 *) (new_var + 0xC64))) != 0)
+  {
+    *((s32 *) (new_var + 0x1864)) = 1;
+    if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+    {
+      p = *((void **) (new_var + 0xBB4));
+      if ((((*((f32 *) (new_var + 0x44))) - (*((f32 *) (((u8 *) p) + 0xC)))) - (*((f32 *) (new_var + 0x1844)))) <= 0.0f)
+      {
+        *((s8 *) (new_var + 0x1FF9)) = 0;
+        *((s32 *) (new_var + 0x1864)) = (*((s32 *) (new_var + 0x1864))) | 8;
+        *((f32 *) (new_var + 0xCA4)) = 0.0f;
+        *((f32 *) (new_var + 0xCA8)) = 0.1f;
+      }
     }
+    if ((*((s16 *) (new_var + 0x13A4))) > (-1))
+    {
+      r = func_001C2B10(f);
+    }
+    else
+    {
+      r = func_001E94C0(f);
+    }
+    func_001E5040(f);
+    if (r == 0)
+    {
+      *((s16 *) (new_var + 0xCB4)) = 1;
+    }
+    else
+    {
+      *((s16 *) (new_var + 0xCB4)) = 0;
+    }
+    *((s8 *) (new_var + 0x2004)) = 1;
+    *((s8 *) (new_var + 0x1FFB)) = 1;
+    if (r != 0xF)
+    {
+      *((s16 *) (new_var + 0xCB6)) = 0;
+    }
+    *((s8 *) (new_var + 0x2006)) = 0;
+    D_00468460[r](f);
+    func_002CBFF0(1, f);
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B21B0);
+
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B22F0);
 void Fighter_ResetSpeed1B2490(Fighter *f) {
     func_001E4E20(f, 0);
@@ -2333,30 +2348,34 @@ void func_001B3190(Fighter *f) {
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B3190);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B3320);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B34B0);
-#if 0
 // differs: the constant 1 is loaded once where the original loads it again before the 0x2004 stores; also the 0x1864 store and reload get a hoisted `addiu` (the address of f+0x1864 is shared, a struct view makes no difference; same as 1B3190)
-void func_001B3660(Fighter *f) {
-    void *p;
-    Fighter_ResetMotion(f, 0);
-    if (FT_FIELD(f, f32, 0x18A8) <= 0.0f) {
-        ((FighterMain2 *)f)->unk1864 = 1;
-        if (((FighterMain2 *)f)->unk1FF9 != 0) {
-            p = FT_FIELD(f, void *, 0xBB4);
-            if (FT_FIELD(f, f32, 0x44) - FT_FIELD(p, f32, 0xC) - FT_FIELD(f, f32, 0x1844) <= 0.0f) {
-                ((FighterMain2 *)f)->unk1FF9 = 0;
-                ((FighterMain2 *)f)->unk1864 |= 8;
-            }
-        }
-        FT_FIELD(f, s8, 0x2004) = 1;
-        FT_FIELD(f, s8, 0x1FFB) = 1;
-        FT_FIELD(f, s16, 0xCB6) = 0;
-        FT_FIELD(f, s8, 0x2006) = 0;
-        D_00468510[0](f);
-        func_002CBFF0(1, f);
+void func_001B3660(Fighter *f)
+{
+  void *p;
+  FighterMain2 *new_var;
+  Fighter_ResetMotion(f, 0);
+  if ((*((f32 *) (((u8 *) f) + 0x18A8))) <= 0.0f)
+  {
+    ((FighterMain2 *) f)->unk1864 = 1;
+    if (((FighterMain2 *) f)->unk1FF9 != 0)
+    {
+      p = *((void **) (((u8 *) f) + 0xBB4));
+      new_var = (FighterMain2 *) f;
+      if ((((*((f32 *) (((u8 *) f) + 0x44))) - (*((f32 *) (((u8 *) p) + 0xC)))) - (*((f32 *) (((u8 *) f) + 0x1844)))) <= 0.0f)
+      {
+        new_var->unk1FF9 = 0;
+        new_var->unk1864 |= 8;
+      }
     }
+    *((s8 *) (((u8 *) f) + 0x2004)) = 1;
+    *((s8 *) (((u8 *) f) + 0x1FFB)) = 1;
+    *((s16 *) (((u8 *) f) + 0xCB6)) = 0;
+    *((s8 *) (((u8 *) f) + 0x2006)) = 0;
+    D_00468510[0](f);
+    func_002CBFF0(1, f);
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B3660);
+
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B3720);
 void Fighter_ResetSpeed1B3960(Fighter *f) {
     func_001E4E20(f, 0);
@@ -2789,55 +2808,71 @@ void Fighter_ResetSpeed1B6470(Fighter *f) {
     }
     FT_FIELD(f, f32, 0x17BC) = 0.0f;
 }
-#if 0
 // differs: 23 of 101: the 0x1864 flag word is stored and read back in the same block, so its address is computed once into a0 / v1 (CSE); the original addresses each store with the offset (same as func_001B24E0)
-void func_001B64C0(Fighter *f) {
-    s32 v;
-    if (FT_FIELD(f, f32, 0xC60) <= 10.0f) {
-        FT_FIELD(f, s16, 0xCB2) = 1;
-        if (FT_FIELD(f, s8, 0x2010) != 0) {
-            ((FighterCB2 *)f)->unkCB2 |= 0x8000;
-        }
-        if (FT_FIELD(f, s8, 0x2011) != 0) {
-            ((FighterCB2 *)f)->unkCB2 |= 0x4000;
-        }
-    } else {
-        func_001ABD30((Fighter *)((u8 *)f + 0x1360));
+void func_001B64C0(Fighter *f)
+{
+  FighterMain2 *new_var;
+  s32 v;
+  if ((*((f32 *) (((u8 *) f) + 0xC60))) <= 10.0f)
+  {
+    *((s16 *) (((u8 *) f) + 0xCB2)) = 1;
+    if ((*((s8 *) (((u8 *) f) + 0x2010))) != 0)
+    {
+      ((FighterCB2 *) f)->unkCB2 |= 0x8000;
     }
-    Fighter_ResetMotion(f, 0);
-    if (FT_FIELD(f, s32, 0xC64) != 0) {
-        ((FighterMain2 *)f)->unk1864 = 1;
-        if (((FighterMain2 *)f)->unk1FF9 != 0) {
-            if (FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC) - FT_FIELD(f, f32, 0x1844) <= 0.0f) {
-                ((FighterMain2 *)f)->unk1FF9 = 0;
-                ((FighterMain2 *)f)->unk1864 |= 8;
-                FT_FIELD(f, f32, 0xCA4) = 0.0f;
-                FT_FIELD(f, s32, 0xCA8) = 0x3DCCCCCD;
-            }
-        }
-        if (FT_FIELD(f, s16, 0x13A4) > -1) {
-            v = func_001C2B10(f);
-        } else {
-            v = func_001E94C0(f);
-        }
-        func_001E5040(f);
-        if (v == 0) {
-            FT_FIELD(f, s16, 0xCB4) = 1;
-        } else {
-            FT_FIELD(f, s16, 0xCB4) = 0;
-        }
-        FT_FIELD(f, s8, 0x2004) = 1;
-        FT_FIELD(f, s8, 0x1FFB) = 1;
-        if (v != 0xF) {
-            FT_FIELD(f, s16, 0xCB6) = 0;
-        }
-        FT_FIELD(f, s8, 0x2006) = 0;
-        D_00468460[v](f);
-        func_002CBFF0(1, f);
+    if ((*((s8 *) (((u8 *) f) + 0x2011))) != 0)
+    {
+      ((FighterCB2 *) f)->unkCB2 |= 0x4000;
     }
+  }
+  else
+  {
+    func_001ABD30((Fighter *) (((u8 *) f) + 0x1360));
+  }
+  Fighter_ResetMotion(f, 0);
+  if ((*((s32 *) (((u8 *) f) + 0xC64))) != 0)
+  {
+    ((FighterMain2 *) f)->unk1864 = 1;
+    new_var = (FighterMain2 *) f;
+    if (new_var->unk1FF9 != 0)
+    {
+      if ((((*((f32 *) (((u8 *) f) + 0x44))) - (*((f32 *) (((u8 *) (*((void **) (((u8 *) f) + 0xBB4)))) + 0xC)))) - (*((f32 *) (((u8 *) f) + 0x1844)))) <= 0.0f)
+      {
+        new_var->unk1FF9 = 0;
+        new_var->unk1864 |= 8;
+        *((f32 *) (((u8 *) f) + 0xCA4)) = 0.0f;
+        *((s32 *) (((u8 *) f) + 0xCA8)) = 0x3DCCCCCD;
+      }
+    }
+    if ((*((s16 *) (((u8 *) f) + 0x13A4))) > (-1))
+    {
+      v = func_001C2B10(f);
+    }
+    else
+    {
+      v = func_001E94C0(f);
+    }
+    func_001E5040(f);
+    if (v == 0)
+    {
+      *((s16 *) (((u8 *) f) + 0xCB4)) = 1;
+    }
+    else
+    {
+      *((s16 *) (((u8 *) f) + 0xCB4)) = 0;
+    }
+    *((s8 *) (((u8 *) f) + 0x2004)) = 1;
+    *((s8 *) (((u8 *) f) + 0x1FFB)) = 1;
+    if (v != 0xF)
+    {
+      *((s16 *) (((u8 *) f) + 0xCB6)) = 0;
+    }
+    *((s8 *) (((u8 *) f) + 0x2006)) = 0;
+    D_00468460[v](f);
+    func_002CBFF0(1, f);
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B64C0);
+
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B6660);
 void func_001B6800(Fighter *f) {
     FT_FIELD(f, f32, 0x17BC) = 0.4f;
@@ -6388,54 +6423,63 @@ extern void func_00133980(f32 a, f32 b, f32 c, f32 d);
 extern s32 func_0029D8D0(void);
 extern void func_0029D4B0(s32 a);
 extern s32 func_0029D4A0(void);
-#if 0
 // differs: 34 of 138 differ: the frame is 0x30 against 0x40 (the object pointer goes to s1 with the result of the second 0x29D4C0 in s2; the original keeps the object in s0 and the result in s1); 0x4C address CSE
-void func_001C9610(void *p, s32 flag) {
-    s32 s1;
-    if (p != 0 && FT_FIELD(p, s32, 0x4C) != 0) {
-        if (flag != 0) {
-            amMotion_BuildMatrices(FT_FIELD(p, void *, 0x4C));
-        }
-        if (p != 0) {
-            func_001D43F0(FT_FIELD(p, void *, 0x58));
-            func_0013E2A0(FT_FIELD(p, s32, 0x4C));
-        }
-        if (p != 0) {
-            func_001339B0(func_0029D540());
-            DrawFlags_Apply(0x13C00720, 0, 0, 0x10400200, 0);
-            amModel_SetCurrent(FT_FIELD(p, s32, 0x5C), FT_FIELD(p, s32, 0x60));
-            func_0013E170(FT_FIELD(p, s32, 0x4C));
-            func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
-            DrawFlags_Apply(0, 0x13C00720, 0, 0, 0);
-        }
-        if (p != 0) {
-            s1 = func_0029D4C0();
-            DrawFlags_Apply(0x20000000, 0, 0, 0x20000000, 0);
-            amGs_SetReg64(1, s1);
-            amModel_SetCurrent(FT_FIELD(p, s32, 0x5C), FT_FIELD(p, s32, 0x60));
-            func_0013E170(FT_FIELD(p, s32, 0x4C));
-            DrawFlags_Apply(0, 0x20000000, 0, 0, 0);
-            amGs_SetReg64(1, 0x44);
-        }
-        if (p != 0) {
-            if (func_0029D8D0() & 2) {
-                if (func_0029D4C0() != 0x44) {
-                    s1 = func_0029D4C0();
-                    func_0029D4B0(0x44);
-                    func_001339B0(func_0029D4A0());
-                    DrawFlags_Apply(0x10000F20, 0, 0, 0x10000A00, 0);
-                    amModel_SetCurrent(FT_FIELD(p, s32, 0x5C), FT_FIELD(p, s32, 0x60));
-                    func_0013E170(FT_FIELD(p, s32, 0x4C));
-                    func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
-                    DrawFlags_Apply(0, 0x10000F20, 0, 0, 0);
-                    func_0029D4B0(s1);
-                }
-            }
-        }
+void func_001C9610(void *p, s32 flag)
+{
+  u8 *new_var;
+  s32 s1;
+  new_var = (u8 *) p;
+  if ((p != 0) && ((*((s32 *) (new_var + 0x4C))) != 0))
+  {
+    if (flag != 0)
+    {
+      amMotion_BuildMatrices(*((void **) (((u8 *) p) + 0x4C)));
     }
+    if (p != 0)
+    {
+      func_001D43F0(*((void **) (((u8 *) p) + 0x58)));
+      func_0013E2A0(*((s32 *) (((u8 *) p) + 0x4C)));
+    }
+    if (p != 0)
+    {
+      func_001339B0(func_0029D540());
+      DrawFlags_Apply(0x13C00720, 0, 0, 0x10400200, 0);
+      amModel_SetCurrent(*((s32 *) (((u8 *) p) + 0x5C)), *((s32 *) (((u8 *) p) + 0x60)));
+      func_0013E170(*((s32 *) (((u8 *) p) + 0x4C)));
+      func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
+      DrawFlags_Apply(0, 0x13C00720, 0, 0, 0);
+    }
+    if (p != 0)
+    {
+      s1 = func_0029D4C0();
+      DrawFlags_Apply(0x20000000, 0, 0, 0x20000000, 0);
+      amGs_SetReg64(1, s1);
+      amModel_SetCurrent(*((s32 *) (((u8 *) p) + 0x5C)), *((s32 *) (((u8 *) p) + 0x60)));
+      func_0013E170(*((s32 *) (((u8 *) p) + 0x4C)));
+      DrawFlags_Apply(0, 0x20000000, 0, 0, 0);
+      amGs_SetReg64(1, 0x44);
+    }
+    if (p != 0)
+    {
+      if (func_0029D8D0() & 2)
+      {
+        if (func_0029D4C0() != 0x44)
+        {
+          s1 = func_0029D4C0();
+          func_0029D4B0(0x44);
+          func_001339B0(func_0029D4A0());
+          DrawFlags_Apply(0x10000F20, 0, 0, 0x10000A00, 0);
+          amModel_SetCurrent(*((s32 *) (((u8 *) p) + 0x5C)), *((s32 *) (((u8 *) p) + 0x60)));
+          func_0013E170(*((s32 *) (((u8 *) p) + 0x4C)));
+          func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
+          DrawFlags_Apply(0, 0x10000F20, 0, 0, 0);
+          func_0029D4B0(s1);
+        }
+      }
+    }
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9610);
+
 /* A node of a linked list of loaded files (fields inferred from func_001C9840; offsets as the code uses them). */
 typedef struct CdNode {
     u8 unk00[0x08];
