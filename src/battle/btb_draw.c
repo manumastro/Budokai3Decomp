@@ -3902,7 +3902,43 @@ void BtbObj_ReleaseSub68(BtbObj *o) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1AB0);
+void func_001F1AB0(char *a0) {
+    char *s1;
+    char *s0;
+    s32 fl;
+    s32 fl2;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    D_00470238 = 0;
+    amModel_SetCurrent(*(s32 *)(s1 + 0x38), 0x2003000);
+    fl = *(s32 *)(s1 + 0x20);
+    if ((fl & 0x800) || (fl & 0x8000)) {
+        if (*(s32 *)(s1 + 0x30) != 0) {
+            __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(BtbBg_GetStageModel()), "r"(D_0051CCD0) : "memory");
+            D_0051CCD0[3] = 1.0f;
+            D_0047064C = (s32)D_0051CCD0;
+        }
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            func_00133D80(*(s32 *)((char *)gBattle + 0x8928));
+            func_00133D90(*(f32 *)((char *)gBattle + 0x892C));
+            DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
+        }
+    }
+    func_0013B0B0(0);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w"
+        : : "r"(*(void **)(s0 + 4)));
+    func_00208D60(*(s32 *)(s0 + 0xC));
+    func_00208D70(*(s32 *)(s0 + 0x10));
+    func_0013B110(1);
+    fl2 = *(s32 *)(s1 + 0x20);
+    if ((fl2 & 0x800) || (fl2 & 0x8000)) {
+        D_0047064C = 0;
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            DrawFlags_Apply(0, 0x8000, 0, 0, 0);
+        }
+    }
+}
 
 extern void amHeap_Free(void *);
 extern BtbObj *D_0051C770[];
@@ -3929,7 +3965,51 @@ void BtbObj_ReleaseF40Copy(BtbObj *o) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1CE0);
+extern void func_0013B500(s32);
+extern void func_0013B6B0(f32);
+
+void func_001F1CE0(char *a0) {
+    char *s1;
+    char *s0;
+    s32 fl;
+    s32 fl2;
+    s32 gs;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    D_00470238 = 0;
+    amModel_SetCurrent(*(s32 *)(s1 + 0x54), 0x2003000);
+    fl = *(s32 *)(s1 + 0x20);
+    if ((fl & 0x800) || (fl & 0x8000)) {
+        if (*(s32 *)(s1 + 0x30) != 0) {
+            __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(BtbBg_GetStageModel()), "r"(D_0051CCD0) : "memory");
+            D_0051CCD0[3] = 1.0f;
+            D_0047064C = (s32)D_0051CCD0;
+        }
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            func_00133D80(*(s32 *)((char *)gBattle + 0x8928));
+            func_00133D90(*(f32 *)((char *)gBattle + 0x892C));
+            DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
+        }
+    }
+    func_0013B0B0(0);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w"
+        : : "r"(s0 + 0x10));
+    func_0013B500(0x4000);
+    func_0013B6B0(*(f32 *)(s0 + 0x20));
+    gs = amGs_SetReg32(0, 0);
+    amGs_SetReg32(0, (gs & -0x3010) | 0x3001);
+    func_00208D70(*(s32 *)(s0 + 0x28));
+    amGs_SetReg32(0, gs);
+    func_0013B110(1);
+    fl2 = *(s32 *)(s1 + 0x20);
+    if ((fl2 & 0x800) || (fl2 & 0x8000)) {
+        D_0047064C = 0;
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            DrawFlags_Apply(0, 0x8000, 0, 0, 0);
+        }
+    }
+}
 
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
