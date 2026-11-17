@@ -4501,18 +4501,19 @@ go:
     return func_00233850(c, arr);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8830);
-#if 0
-s32 func_001E89B0(Fighter *c) {
-    if (*(volatile s16 *)((char *)gBattle + 0x8944) != 0) {
-        if (*(volatile s16 *)((char *)c + 0x1AD0) != 0) {
-            return 0;
-        }
+s32 func_001E89B0(u8 *arg0) {
+    if ((*(s16 *)((u8 *)(gBattle) + (0x8944))) == 0) {
+        goto block_3;
     }
+    if ((*(s16 *)((u8 *)(arg0) + (0x1AD0))) != 0) {
+        goto block_4;
+    }
+block_3:
+    return 0;
+block_4:
     return 0;
 }
-#endif
-// differs: 0x38 vs 0x40 bytes (the original keeps two separate zero-return arms and a shared jr); volatile loads needed so the dead reads stay; four shapes tried
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E89B0);
+
 #if 0
 s32 func_001E89F0(Fighter *c) {
     if (*(volatile s16 *)&gBattle->f8944 != 0) {

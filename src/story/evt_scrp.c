@@ -889,20 +889,15 @@ s32 func_002A39C0(s32 *a0, char *a1) {
 }
 extern s32 *gEvtWork;
 
-#if 0
-// func_002A3A10: the flag test gives movz for both constants (also with an early return), the original branches (b to the end); seven variants tried
 s32 func_002A3A10(void) {
-    s32 *g = gEvtWork;
-    s32 r;
-    if (g[0xC / 4] & 0x2) {
-        r = 1;
-    } else {
-        r = 3;
+    if (!((*(s32 *)((u8 *)(gEvtWork) + (0xC))) & 2)) {
+        goto block_3;
     }
-    return r;
+    return 1;
+block_3:
+    return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3A10);
+
 #if 0
 // func_002A3A40: the parameter and the global take the other saved registers in ours (s1/s2 swapped against the original); 3 orders tried
 extern s32 func_002A8330(s32);
@@ -910,7 +905,6 @@ extern void func_00298B70(s32, s32);
 extern void EvtScrp_Init(void);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void func_002A6E40(Task *);
-extern s32 func_002A3A10(void);
 extern s32 D_004700AC;
 extern char D_0046EA68[];
 
