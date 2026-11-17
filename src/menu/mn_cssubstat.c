@@ -41,12 +41,12 @@ extern char D_0046B780[];
 extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(s32);
 extern void amFile_Load(s32);
-extern void func_00143F20(s32, s32, f32);
-extern void func_00143D60(s32, s32, s32, s32);
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 extern void func_00281A40(CsSubStatWork *);
 extern void func_00282620(Task *);
 extern void func_00281870(CsSubStatWork *);
-extern void func_00281C60(Task *);
+extern void CsSubStat_CloseStep(Task *);
 extern void Help_Exit(void);
 extern void func_0022D0E0(void *, s32);
 extern void SklEdit_Close(void);
@@ -74,9 +74,9 @@ void CsSubStat_TaskLoad(Task *t) {
         func_0022E0B0(g->f8);
         amFile_Load(g->fC);
     }
-    func_00143F20(0, 0, D_004E0614[0]);
+    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
     if (!(D_004E0614[0] <= 0.0f)) {
-        func_00143D60(0, 0, 0x15, 0);
+        SoundRpc_Send3(0, 0, 0x15, 0);
     }
     func_00281A40(w);
     w->state = 1;
@@ -100,7 +100,7 @@ void CsSubStat_RequestClose(Task *t) {
         w->fC = 30.0f;
         w->state = 4;
         w->f8 = 4;
-        TASK_SET_FUNC(t, func_00281C60);
+        TASK_SET_FUNC(t, CsSubStat_CloseStep);
 }
 
 s32 CsSubStat_GetSlot(Task *t) {

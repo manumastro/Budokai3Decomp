@@ -8,12 +8,12 @@ extern s32 D_004701D8;
 
 extern void func_0030EFF0(Task *);
 extern char D_0046FC10[];
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 
 void StaffRoll_Start(void) {
     Task *t = amTask_Create(func_0030EFF0, NULL, 0x3000, 8, 2, D_0046FC10);
     *(s16 *)((char *)t + 0x34) = 0;
-    func_001F07D0();
+    Scene_SetReady();
 }
 void func_0030F260(void) {
 }
@@ -62,24 +62,24 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
 extern f32 gFrameDelta;
-extern void func_0022C700(s32 *);
+extern void A2d_FlushList();
 extern void func_00133B50(s32, s32);
 extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 void func_0030F350(s32 *a0) {
     s32 *s1;
     s32 *s0;
     s1 = (s32 *)a0[0x30 / 4];
     s0 = (s32 *)D_0047099C;
-    func_0022C700(a0);
+    A2d_FlushList(a0);
     func_00133B50(0, 0);
     {
         s32 v = s0[0xC / 4];
         D_00470704 = v;
         D_0047070C = 0x6000;
         D_00470708 = 0;
-        func_00145CC0(v, 0x6000);
+        amModel_SetCurrent(v, 0x6000);
     }
     D_00470238 = 0;
     if (s1[0] != 0) {
@@ -98,21 +98,68 @@ void func_0030F350(s32 *a0) {
         }
     }
 }
+#if 0
+// func_0030F420: the timer block: the original keeps the parameter in s1 and loads it again after the call; the order of the first loads and the a0/v0 choice differ (46 of 82 differ); 3 forms tried
+extern void func_0030F350(s32 *);
+extern void func_0022D0E0(s32, s32);
+extern s32 func_0022D860(s32, f32);
+
+void func_0030F420(s32 *a0) {
+    s32 *s0 = (s32 *)a0[0x30 / 4];
+    s32 *s1 = a0;
+    s32 *s2;
+    f32 t;
+    void *f;
+    t = *(f32 *)&s0[0x10 / 4] - gFrameDelta;
+    *(f32 *)&s0[0x10 / 4] = t;
+    if (t <= 0.0f) {
+        s0[0x10 / 4] = 0x41A00000;
+        s2 = (s32 *)D_0047099C;
+        D_00470704 = s2[0xC / 4];
+        D_0047070C = 0x6000;
+        D_00470708 = 0;
+        amModel_SetCurrent(s2[0xC / 4], 0x6000);
+        D_00470238 = 0;
+        if (s0[0] != 0) {
+            func_0022D0E0(s0[0], 1);
+        }
+        s0[0] = func_0022D860(((s32 *)((s32 *)s2[0x8 / 4])[0x14 / 4])[0x14 / 4], 0.0f);
+        f = (void *)func_0030F350;
+        s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+    A2d_FlushList();
+    s1 = (s32 *)D_0047099C;
+    func_00133B50(0, 0);
+    D_00470704 = s1[0xC / 4];
+    D_0047070C = 0x6000;
+    D_00470708 = 0;
+    amModel_SetCurrent(s1[0xC / 4], 0x6000);
+    D_00470238 = 0;
+    if (s0[0] != 0) {
+        func_0022C060(s0[0], 1.0f);
+        func_0022CD00(s0[0]);
+    }
+    if (s0[1] != 0) {
+        func_0022C060(s0[1], 1.0f);
+        func_0022CD00(s0[1]);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F420);
-extern void func_0030F420(void);
+extern void func_0030F420(s32 *);
 void func_0030F560(s32 *a0) {
     s32 *s1;
     s32 *s0;
     s1 = (s32 *)a0[0x30 / 4];
     s0 = (s32 *)D_0047099C;
-    func_0022C700(a0);
+    A2d_FlushList(a0);
     func_00133B50(0, 0);
     {
         s32 v = s0[0xC / 4];
         D_00470704 = v;
         D_0047070C = 0x6000;
         D_00470708 = 0;
-        func_00145CC0(v, 0x6000);
+        amModel_SetCurrent(v, 0x6000);
     }
     D_00470238 = 0;
     if (s1[0] != 0) {
@@ -141,14 +188,14 @@ void func_0030F8D0(s32 *a0) {
     s32 *s0;
     s1 = (s32 *)a0[0x30 / 4];
     s0 = (s32 *)D_0047099C;
-    func_0022C700(a0);
+    A2d_FlushList(a0);
     func_00133B50(0, 0);
     {
         s32 v = s0[0xC / 4];
         D_00470704 = v;
         D_0047070C = 0x6000;
         D_00470708 = 0;
-        func_00145CC0(v, 0x6000);
+        amModel_SetCurrent(v, 0x6000);
     }
     D_00470238 = 0;
     if (s1[0] != 0) {

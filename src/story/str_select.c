@@ -85,12 +85,12 @@ extern Vec4 D_00457E80;
 extern Vec4 D_00457E90;
 extern Vec4 D_00457EA0;
 
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern s32 func_0022D860(s32, f32);
 extern void func_0022C060(s32, f32);
 extern void func_0022C7D0(s32, s32, f32);
 extern void func_0022CD00(s32);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 extern void func_0022D0E0(s32, s32);
 extern void func_00136870(s32, s32, Vec4 *, s32, s32, s32);
 extern void func_001363D0(s32, s32, Vec4 *, s32);
@@ -104,21 +104,21 @@ extern s8 func_0027DAB0(s32);
 extern s8 func_0027DAA0(s32);
 extern void func_0027DB20(s32);
 extern void Help_Open(s64, s64);
-extern void func_001F0830(s32, s32);
-extern void func_001F0810(s32, s32);
-extern void func_00299240(s32);
-extern s32 func_001F04C0(s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_FadeTo(s32, s32);
+extern void StrSelect_Reset(s32);
+extern s32 StrSelect_TestFlag(s32);
 extern void func_002A8CE0(s32, void *);
 extern void amAdx_Stop(s32);
 extern s32 DataErase_IsReady(void);
-extern void func_00264260(s32, s32, s32);
+extern void Fade_Request(s32, s32, s32);
 extern void amAdx_SetVolume(s32, f32);
 extern s32 amAdx_PlayAfs(s32, s32, s32);
 extern void amAdx_Pause(s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
 extern void amFile_Load(void *);
-extern void func_0022DB30(s32);
+extern void A2d_SetMode(s32);
 extern void func_00229800(s32, Vec4 *, s32, f32);
 extern void func_0027D820(s32);
 extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
@@ -126,7 +126,7 @@ extern void func_0027E040(void);
 extern void func_0027E120(s32);
 extern void func_0027E070(void);
 extern void memset(void *, s32, s32);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void func_003105B0(void);
 extern void func_0027E7E0(void);
@@ -211,7 +211,7 @@ void StrSelect_InitObjects(StrSelectWork *w) {
     D_00470704 = v = (s32)w->tex;
     D_0047070C = n = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, n);
+    amModel_SetCurrent(v, n);
     D_00470238 = 0;
     for (i = 0; i < 7; i++) {
         w->f28[i] = func_0022D860(w->model->obj[i + 7], 0.0f);
@@ -237,7 +237,7 @@ void StrSelect_Draw(StrSelectWork *w) {
     D_00470704 = v = (s32)w->tex;
     D_0047070C = n = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, n);
+    amModel_SetCurrent(v, n);
     D_00470238 = 0;
     if ((o = w->f10) != 0) {
         func_0022C060(o, 1.0f);
@@ -281,7 +281,7 @@ void StrSelect_Draw(StrSelectWork *w) {
             func_0022CD00(o);
         }
     }
-    func_0022C700();
+    A2d_FlushList();
     StrSelect_DrawRadar(w);
 }
 #endif
@@ -317,7 +317,7 @@ void StrSelect_FreeObjects(StrSelectWork *w) {
 }
 
 void StrSelect_TaskDrawEnd(Task *t) {
-    func_0022C700();
+    A2d_FlushList();
 }
 
 void StrSelect_TaskClose(Task *t) {
@@ -346,22 +346,22 @@ void StrSelect_TaskMain(Task *t) {
     StrSelect_Draw(w);
     if (func_0027DAB0(w->f8) == 4 && (D_00492FCE[D_004B4B63[0]].f0 & 0x1000)) {
         func_0027DB20(w->f8);
-        func_001F0830(6, 0);
-        func_001F0810(10, 0);
+        Scene_Request(6, 0);
+        Scene_FadeTo(10, 0);
         TASK_SET_FUNC(t, StrSelect_TaskClose);
         return;
     }
     if (func_0027DAA0(w->f8) == 1) {
         id = D_005C9F00[0];
-        func_00299240(id);
+        StrSelect_Reset(id);
         D_00511450[0] = id;
         if (w->f51 != 0) {
             func_002A8CE0(id, (char *)D_004E6560 + (s16)id * 0x1210 + 0x80);
-        } else if (func_001F04C0(id) == 0) {
+        } else if (StrSelect_TestFlag(id) == 0) {
             func_002A8CE0(id, (char *)D_004E6560 + (s16)id * 0x1210 + 0x80);
         }
-        func_001F0830(8, 0);
-        func_001F0810(-1, 0);
+        Scene_Request(8, 0);
+        Scene_FadeTo(-1, 0);
         TASK_SET_FUNC(t, StrSelect_TaskClose);
     }
 }
@@ -407,7 +407,7 @@ void StrSelect_TaskLoad(Task *t) {
         return;
     }
     if (g->file[1]->state == 3 && DataErase_IsReady() == 1) {
-        func_00264260(-1, 0, 0);
+        Fade_Request(-1, 0, 0);
         amAdx_SetVolume(0, D_004E0610[0]);
         amAdx_PlayAfs(0, 0x210A9, 0);
         amAdx_Pause(0, 0);
@@ -423,9 +423,9 @@ void StrSelect_TaskLoad(Task *t) {
         amFile_Load(w->tex);
         w->task = amTask_Create(StrSelect_TaskDrawEnd, 0, 0x3000, 8, 2, D_0046F688);
         if (D_004E05F8[0] != 0) {
-            func_0022DB30(1);
+            A2d_SetMode(1);
         } else {
-            func_0022DB30(0);
+            A2d_SetMode(0);
         }
         {
             s32 v;
@@ -433,7 +433,7 @@ void StrSelect_TaskLoad(Task *t) {
             D_00470704 = v = (s32)w->tex;
             D_0047070C = n = 0x2000;
             D_00470708 = 0;
-            func_00145CC0(v, n);
+            amModel_SetCurrent(v, n);
             D_00470238 = 0;
         }
         w->f10 = func_0022D860(w->model->obj[0], 0.0f);
@@ -499,7 +499,7 @@ void StrSelect_Start(s32 mode) {
     memset(w, 0, 0x68);
     w->f51 = mode == 0;
     w->f52 = mode == 2;
-    func_001F07D0();
+    Scene_SetReady();
 }
 
 void StrSelect_Load(void) {

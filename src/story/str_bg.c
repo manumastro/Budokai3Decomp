@@ -26,21 +26,21 @@ INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E640);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E790);
 extern s32 amGs_SetReg32(s32, s32);
 extern void func_00133780(s32, s32);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 
 void func_0028EA80(void) {
     s32 s0 = amGs_SetReg32(0, 0x3040A);
     func_00133780(2, 1);
-    func_0022C700();
+    A2d_FlushList();
     func_00133780(2, 0);
     amGs_SetReg32(0, s0);
 }
 extern void func_00133780(s32, s32);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 
 void func_0028EAE0(void) {
     func_00133780(2, 1);
-    func_0022C700();
+    A2d_FlushList();
     func_00133780(2, 0);
 }
 void func_0028EB20(void) {
@@ -106,7 +106,33 @@ INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EC80);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EE90);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F090);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F720);
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F830);
+extern void amCdFs_Close(s32, s32);
+extern void amCdFs_ReleaseCache(s32);
+extern void amHeap_Free(void *);
+
+void func_0028F830(void) {
+    s32 i;
+    for (i = 0; i < 0x3C; i++) {
+        if (((s32 *)D_004708A4)[i] != 0) {
+            amCdFs_Close(((s32 *)D_004708A4)[i], 0);
+        }
+        if (((s32 *)D_004708A4)[0x3C + i] != 0) {
+            amCdFs_ReleaseCache(((s32 *)D_004708A4)[0x3C + i]);
+        }
+    }
+    for (i = 0; i < 0x11; i++) {
+        if (((s32 *)D_004708A4)[0x8C + i] != 0) {
+            amHeap_Free((void *)((s32 *)D_004708A4)[0x8C + i]);
+        }
+    }
+    for (i = 0; i < 0xD; i++) {
+        if (((s32 *)D_004708A4)[0xC8 + i] != 0) {
+            amHeap_Free((void *)((s32 *)D_004708A4)[0xC8 + i]);
+        }
+    }
+    amHeap_Free((void *)D_004708A4);
+    D_004708A4 = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F930);
 void StrBg_Clear(void) {
     D_004708A4 = 0;
@@ -235,7 +261,7 @@ s32 func_00290C90(void) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00290D00);
-void func_00291380(void) {
+void StrBg_Stop(void) {
     func_0028F830();
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_00291390);

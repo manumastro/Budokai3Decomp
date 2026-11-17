@@ -6,8 +6,8 @@ extern void amSofdec_StartFname(s32, char *, s32);
 extern void func_0030DB10(s32 *);
 extern void func_0030E170(s32 *);
 extern s32 func_002A8F90(void);
-extern void func_001F0830(s32, s32);
-extern void func_001F0810(s32, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 extern void func_0030D970(char *);
 extern s32 D_00470704;
 extern s32 D_00470708;
@@ -20,7 +20,7 @@ extern void func_0030DC70(s32 *);
 extern s32 amSofdec_GetStat(s32);
 extern void amSofdec_Stop(s32);
 extern void amSofdec_Destroy(s32);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C060(s32, f32);
 extern void func_0022C560(s32);
 extern void func_0022D0E0(s32, s32);
@@ -151,7 +151,7 @@ void func_0030E330(s32 *a0) {
     D_00470704 = a0[0x34 / 4];
     D_0047070C = 0x3000;
     D_00470708 = 0;
-    func_00145CC0(a0[0x34 / 4], 0x3000);
+    amModel_SetCurrent(a0[0x34 / 4], 0x3000);
     D_00470238 = 0;
     if (v != 0) {
         func_0022C060(v, 1.0f);
@@ -170,15 +170,69 @@ void func_0030E330(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E330);
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E3F0);
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E4D0);
+extern void func_0030E330(void);
+
+void func_0030E3F0(s32 *a0) {
+    s32 *s0 = (s32 *)((char *)a0 + 0x30);
+    s32 s2 = a0[0x38 / 4];
+    s32 v;
+    s32 *q;
+    void *f;
+    v = a0[0x34 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x3000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x3000);
+    D_00470238 = 0;
+    if (s2 != 0) {
+        func_0022C060(s2, 1.0f);
+        func_0022C560(s2);
+    }
+    *(f32 *)&s0[0xC / 4] = *(f32 *)&s0[0xC / 4] + gFrameDelta;
+    if (*(f32 *)&s0[0xC / 4] >= 13937.0f) {
+        if (s0[0x8 / 4] != 0) {
+            func_0022D0E0(s0[0x8 / 4], 1);
+        }
+        q = (s32 *)((s32 *)s0[0])[0x14 / 4];
+        s0[0x8 / 4] = func_0022D860(q[0x8 / 4], 0.0f);
+        f = (void *)func_0030E330;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+void func_0030E4D0(s32 *a0) {
+    s32 *s0 = (s32 *)((char *)a0 + 0x30);
+    s32 s2 = a0[0x38 / 4];
+    s32 v;
+    s32 *q;
+    void *f;
+    v = a0[0x34 / 4];
+    D_00470704 = v;
+    D_0047070C = 0x3000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x3000);
+    D_00470238 = 0;
+    if (s2 != 0) {
+        func_0022C060(s2, 1.0f);
+        func_0022C560(s2);
+    }
+    *(f32 *)&s0[0xC / 4] = *(f32 *)&s0[0xC / 4] + gFrameDelta;
+    if (*(f32 *)&s0[0xC / 4] >= 77.0f) {
+        if (s0[0x8 / 4] != 0) {
+            func_0022D0E0(s0[0x8 / 4], 1);
+        }
+        q = (s32 *)((s32 *)s0[0])[0x14 / 4];
+        s0[0x8 / 4] = func_0022D860(q[0x4 / 4], 0.0f);
+        f = (void *)func_0030E3F0;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
 void func_0030E5B0(s32 *a0) {
     s32 *p = a0 + 0x30 / 4;
     s32 v = a0[0x34 / 4];
     D_00470704 = v;
     D_0047070C = 0x3000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x3000);
+    amModel_SetCurrent(v, 0x3000);
     D_00470238 = 0;
     p[2] = func_0022D860(*(s32 *)(*(s32 *)((char *)p[0] + 0x14)), 0.0f);
     p[3] = 0;
@@ -191,8 +245,8 @@ void func_0030E630(s32 *a0) {
     char *p = (char *)a0[0x30 / 4];
     if (func_002A8F90() == 0) {
         p[0x1C] = 10;
-        func_001F0830(6, 0);
-        func_001F0810(-1, 0);
+        Scene_Request(6, 0);
+        Scene_FadeTo(-1, 0);
         a0[0x1C / 4] = 0;
     }
 }
@@ -200,7 +254,71 @@ INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E690);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E890);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EAE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EDA0);
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EFF0);
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+void func_0030EFF0(s32 *a0) {
+    s32 *s0 = (s32 *)((char *)a0 + 0x30);
+    s32 *s2;
+    s32 v;
+    void *f;
+    if (*(s16 *)((char *)a0 + 0x34) == 0) {
+        v = *(s16 *)((char *)a0 + 0x34);
+        v = v + 1;
+        *(s16 *)((char *)s0 + 4) = v;
+        return;
+    }
+    s2 = (s32 *)(D_00470998 = (s32)amHeap_Alloc(0xC, 0, D_0046FC00, 0xD4));
+    s2[0] = amCdFs_ReadFileId(0x1082E, 0, 0);
+    s2[1] = amCdFs_ReadFileId(0x1082F, 0, 0);
+    s2[2] = (s32)a0;
+    {
+        void *m = amHeap_Alloc(0x20, 0, D_0046FC00, 0xE3);
+        s0[0] = (s32)m;
+        memset(m, 0, 0x20);
+    }
+    f = func_0030EDA0;
+    a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+}
 void StaffRoll_Clear(void) {
     D_00470998 = 0;
 }

@@ -64,13 +64,13 @@ extern u16 D_00492FCE[];
 extern u16 D_00493086[];
 extern s8 D_004B4B66[];
 
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_002284D0(TitleCam *);
 extern void func_00228430(TitleCam *);
 extern void func_00227830(s32, s32);
 extern void func_00228410(void);
-extern void func_00227810(void);
-extern void func_0022C700(void);
+extern void Title_StepCounters(void);
+extern void A2d_FlushList(void);
 extern void func_0022C060(TitleObj *, f32);
 extern void func_0022CD00(TitleObj *);
 extern void amAdx_SetVolume(s32, f32);
@@ -80,22 +80,22 @@ extern TitleObj *func_0022D670(s32, f32);
 extern TitleObj *func_0022D860(s32, f32);
 extern s32 func_0022BF80(TitleObj *);
 extern void func_0022D0E0(TitleObj *, s32);
-extern void func_00143F20(s32, s32, f32);
-extern void func_00143D60(s32, s32, s32, s32);
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 extern void func_002661D0(s32, TitleData *);
 extern s32 amAdx_GetStat(s32);
-extern void func_001F0830(s32, s32);
-extern void func_001F0810(s32, s32);
-extern void func_00264260(s32, s32, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_FadeTo(s32, s32);
+extern void Fade_Request(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void func_0022E0B0(void *);
 extern void amFile_Load(s32);
-extern void func_00144B70(s32);
-extern void func_00144650(s32);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
 extern void amAdx_Stop(s32);
-extern void func_0022DB30(s32);
+extern void A2d_SetMode(s32);
 extern void func_001484A0(s32, s32);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 
 void Title_TaskIdle(Task *t);
@@ -114,7 +114,7 @@ inline void Title_Draw(TitleData *d) {
     D_00470704 = v = d->res1;
     D_0047070C = c = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, c);
+    amModel_SetCurrent(v, c);
     D_00470238 = 0;
     func_002284D0(&cam);
     cam.f8 = 7000.0f;
@@ -125,7 +125,7 @@ inline void Title_Draw(TitleData *d) {
     D_00470704 = v = d->res1;
     D_0047070C = c = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, c);
+    amModel_SetCurrent(v, c);
     D_00470238 = 0;
     if (o0 != NULL) {
         func_0022C060(o0, 1.0f);
@@ -136,8 +136,8 @@ inline void Title_Draw(TitleData *d) {
         func_0022CD00(o1);
     }
     func_00228410();
-    func_00227810();
-    func_0022C700();
+    Title_StepCounters();
+    A2d_FlushList();
 }
 
 void Title_TaskMenu(Task *t) {
@@ -168,7 +168,7 @@ void Title_TaskIdle(Task *t) {
     D_00470704 = v = d->res1;
     D_0047070C = c = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, c);
+    amModel_SetCurrent(v, c);
     D_00470238 = 0;
     func_002284D0(&cam);
     cam.f8 = 7000.0f;
@@ -179,7 +179,7 @@ void Title_TaskIdle(Task *t) {
     D_00470704 = v = d->res1;
     D_0047070C = c = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, c);
+    amModel_SetCurrent(v, c);
     D_00470238 = 0;
     if (o0 != NULL) {
         func_0022C060(o0, 1.0f);
@@ -190,8 +190,8 @@ void Title_TaskIdle(Task *t) {
         func_0022CD00(o1);
     }
     func_00228410();
-    func_00227810();
-    func_0022C700();
+    Title_StepCounters();
+    A2d_FlushList();
 }
 
 void Title_TaskWait(Task *t) {
@@ -199,9 +199,9 @@ void Title_TaskWait(Task *t) {
 
     Title_Draw(d);
     if ((D_00492FCE[0] | D_00493086[0]) & 0x4008) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (!(D_004E0614[0] <= 0.0f)) {
-            func_00143D60(0, 0, 0, 0);
+            SoundRpc_Send3(0, 0, 0, 0);
         }
         func_002661D0(0, d);
         d->flags |= 1;
@@ -214,13 +214,13 @@ void Title_TaskWait(Task *t) {
         D_004B4B66[0] ^= 1;
         switch (D_004B4B66[0]) {
         case 0:
-            func_001F0830(2, 0);
+            Scene_Request(2, 0);
             break;
         case 1:
-            func_001F0830(3, 0);
+            Scene_Request(3, 0);
             break;
         }
-        func_001F0810(0xA, 0);
+        Scene_FadeTo(0xA, 0);
         TASK_SET_FUNC(t, Title_TaskIdle);
     }
 }
@@ -245,7 +245,7 @@ void Title_TaskIntro(Task *t) {
         D_00470704 = v = d->res1;
         D_0047070C = c = 0x1000;
         D_00470708 = 0;
-        func_00145CC0(v, c);
+        amModel_SetCurrent(v, c);
         D_00470238 = 0;
         if (d->obj1 == NULL) {
             d->obj1 = func_0022D670(d->res0->f1C[0x74 / 4], 0.0f);
@@ -272,7 +272,7 @@ void Title_TaskLoad(Task *t) {
     if (g->file[1]->state != 3) {
         return;
     }
-    func_00264260(-1, 0, 0);
+    Fade_Request(-1, 0, 0);
     d->res0 = g->file[0]->data;
     g->file[0]->data = NULL;
     amCdFs_Close(g->file[0], 0);
@@ -281,13 +281,13 @@ void Title_TaskLoad(Task *t) {
     amCdFs_Close(g->file[1], 0);
     func_0022E0B0(d->res0);
     amFile_Load(d->res1);
-    func_00144B70(-1);
-    func_00144650(0);
+    SoundRpc_SendWord2(-1);
+    SoundRpc_SendWord(0);
     amAdx_Stop(-1);
     if (D_004E05F8[0] != 0) {
-        func_0022DB30(1);
+        A2d_SetMode(1);
     } else {
-        func_0022DB30(0);
+        A2d_SetMode(0);
     }
     d->obj0 = NULL;
     d->obj1 = NULL;
@@ -295,7 +295,7 @@ void Title_TaskLoad(Task *t) {
     D_00470704 = v = d->res1;
     D_0047070C = c = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, c);
+    amModel_SetCurrent(v, c);
     D_00470238 = 0;
     if (d->flags & 1) {
         d->obj0 = func_0022D860(d->res0->f14[0], 500.0f);
@@ -365,7 +365,7 @@ void Title_Start(s32 arg) {
         d->flags |= 1;
         break;
     }
-    func_001F07D0();
+    Scene_SetReady();
 }
 
 void Title_Load(void) {

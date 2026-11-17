@@ -94,19 +94,19 @@ typedef struct SmsgTask {
 
 #define SET_FUNC(t, f) ((t)->func = ((f) == NULL) ? NULL : (f))
 
-extern SmsgTask *D_00470930;
+extern SmsgTask *gSmsgTask;
 extern f32 gFrameDelta;
 extern u16 D_00492FCE[];
 extern u16 D_00493086[];
 extern f32 D_004E0614[];
 extern void func_002D20E0(void);
 extern s32 func_0022BC30(s32, f32);
-extern void func_00143F20(s32, s32, f32);
-extern void func_00143D60(s32, s32, s32, s32);
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 void func_002D1F20(SmsgTask *t);
 
 void func_002D1DB0(SmsgTask *t) {
-    SmsgWork *gw = &D_00470930->w;
+    SmsgWork *gw = &gSmsgTask->w;
     SmsgWork *w;
     s32 st;
     s32 r;
@@ -133,9 +133,9 @@ void func_002D1DB0(SmsgTask *t) {
             break;
         }
     } else if ((D_00492FCE[0] | D_00493086[0]) & 0x5000) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 0x16, 0);
+            SoundRpc_Send3(0, 0, 0x16, 0);
         }
         w->state = 5;
         w->f20 = 0;
@@ -146,9 +146,9 @@ void func_002D1F20(SmsgTask *t) {
     SmsgWork *w = &t->w;
 
     if (t->w.state == 3) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (D_004E0614[0] > 0.0f) {
-            func_00143D60(0, 0, 0x15, 0);
+            SoundRpc_Send3(0, 0, 0x15, 0);
         }
         w->f20 = 0;
         SET_FUNC(t, func_002D1DB0);
@@ -185,18 +185,18 @@ void Smsg_TaskMain(SmsgTask *t) {
 }
 
 s32 func_002D20D0(void) {
-    return D_00470930->w.state;
+    return gSmsgTask->w.state;
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D1C20", func_002D20E0);
 
 void func_002D2360(void) {
-    D_00470930 = NULL;
+    gSmsgTask = NULL;
 }
 
 void func_002D2370(s32 x) {
-    SmsgWork *w = &D_00470930->w;
-    s32 st = D_00470930->w.state;
+    SmsgWork *w = &gSmsgTask->w;
+    s32 st = gSmsgTask->w.state;
 
     if (st == 0) {
         w->state = 2;
@@ -215,7 +215,7 @@ extern void amCdFs_Close(SmsgObj *, s32);
 extern void amTask_Kill(void *);
 
 void Smsg_Exit(void) {
-    SmsgWork *w = &D_00470930->w;
+    SmsgWork *w = &gSmsgTask->w;
     s32 i;
 
     for (i = 0; i < 3; i++) {
@@ -223,8 +223,8 @@ void Smsg_Exit(void) {
             amCdFs_Close(w->obj[i], 0);
         }
     }
-    amTask_Kill(D_00470930);
-    D_00470930 = NULL;
+    amTask_Kill(gSmsgTask);
+    gSmsgTask = NULL;
 }
 
 extern char D_0046F2B0[];
@@ -236,11 +236,11 @@ void Smsg_Start(s32 prio, s32 flag, s32 param) {
     SmsgWork *w;
     s32 id;
 
-    if (D_00470930 != NULL) {
+    if (gSmsgTask != NULL) {
         return;
     }
-    D_00470930 = amTask_Create(Smsg_TaskMain, 0, prio, 0x200, 0x200000, D_0046F2B0);
-    w = &D_00470930->w;
+    gSmsgTask = amTask_Create(Smsg_TaskMain, 0, prio, 0x200, 0x200000, D_0046F2B0);
+    w = &gSmsgTask->w;
     memset(w, 0, 0x28);
     id = flag == 0 ? 0x84F : 0x84D;
     w->obj[0] = amCdFs_ReadFileId(0x10852, 0, 0);

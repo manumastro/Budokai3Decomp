@@ -82,7 +82,7 @@ extern u8 *D_00470390;
 extern u8 *D_00470394;
 extern void *D_00470398;
 
-void func_00145CC0(u8 *a0, void *a1) {
+void amModel_SetCurrent(u8 *a0, void *a1) {
     D_00470390 = a0;
     D_00470398 = a1;
     D_00470394 = a0 + *(s32 *)(a0 + 0x14);

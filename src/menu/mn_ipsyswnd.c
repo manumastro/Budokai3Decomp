@@ -21,6 +21,52 @@ void func_002F4460(u8 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F44E0);
+#if 0
+// differs: 20 of 64: the branch layout of the three-way gate and the table lookup match the shape; the register roles of task/object/global stay wrong for every declaration order tried
+extern f32 gFrameDelta;
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern s32 func_0022D670(s32, f32);
+extern void *gInputName;
+extern void func_0022D0E0(void *, s32);
+extern void func_002F4330();
+extern void func_002F44E0();
+
+void func_002F4780(u8 *a0) {
+    u8 *t;
+    u8 *g;
+    u8 *o;
+    f32 f;
+    void *fp;
+    s16 k;
+    t = a0;
+    o = *(u8 **)(a0 + 0x30);
+    func_002F4330(o);
+    f = *(f32 *)(o + 0x14) - gFrameDelta;
+    *(f32 *)(o + 0x14) = f;
+    if (f <= 0.0f) {
+        *(s16 *)(o + 0xE) = 2;
+        k = *(s16 *)(o + 0xC);
+        g = (u8 *)gInputName;
+        if (k == 6 || k == 4 || k == 0) {
+            D_00470704 = *(s32 *)(g + 0x10);
+            D_0047070C = 0x5000;
+            amModel_SetCurrent(*(s32 *)(g + 0x10), 0x5000);
+            D_00470708 = 0;
+            D_00470238 = 0;
+            if (*(s32 *)(o + 0x8) != 0) {
+                func_0022D0E0(*(void **)(o + 0x8), 1);
+            }
+            *(s32 *)(o + 0x8) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)(g + 0xC) + 0x1C) + ((*(s16 *)(o + 0x10) + 0x40) << 2)), 0.0f);
+        }
+        fp = (void *)func_002F44E0;
+        *(void **)(t + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4780);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4880);
 s16 func_002F4A70(u8 *a0) {
@@ -75,6 +121,52 @@ void *IpSysWnd_Start(s16 a0) {
     return s1;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4BB0);
+#if 0
+// differs: 16 of 59: the register roles and the loop match; the original stores the call's return register into the cursor before the memset (mine copies it first, the store lands in the memset delay slot)
+extern void *func_0022DA90(s32, f32);
+
+void func_002F4D50(u8 *a0) {
+    void *tmp;
+    u8 *glob;
+    s32 cnt;
+    u8 *rec;
+    u8 *cur;
+    cnt = 0;
+    glob = (u8 *)gOutputPass;
+    cur = a0;
+    do {
+        tmp = func_0022DA90(0, 0.0f);
+        rec = (u8 *)tmp;
+        *(void **)(cur + 4) = tmp;
+        memset(rec, 0, 0x60);
+        *(s32 *)(rec + 4) = 3;
+        cnt++;
+        *(s32 *)(rec + 0x8) = 1;
+        *(s32 *)(rec + 0xC) = 3;
+        *(s32 *)(rec + 0x10) = *(s32 *)(glob + 0xC);
+        *(s32 *)(rec + 0x14) = 0x6000;
+        *(s16 *)(rec + 0x18) = 2;
+        *(s16 *)(rec + 0x1A) = 0;
+        *(s32 *)(rec + 0x20) = 0;
+        *(s32 *)(rec + 0x24) = 0;
+        *(s32 *)(rec + 0x28) = 0;
+        *(f32 *)(rec + 0x2C) = 1.0f;
+        *(s32 *)(rec + 0x34) = 0;
+        *(s32 *)(rec + 0x3C) = 0;
+        *(s32 *)(rec + 0x30) = 0;
+        *(s32 *)(rec + 0x38) = 0;
+        *(s32 *)(rec + 0x44) = 0;
+        *(s32 *)(rec + 0x40) = 0;
+        *(s32 *)(rec + 0x48) = 0;
+        *(s32 *)(rec + 0x4C) = 0;
+        *(f32 *)(rec + 0x50) = 1.0f;
+        *(f32 *)(rec + 0x54) = 1.0f;
+        *(f32 *)(rec + 0x58) = 1.0f;
+        *(f32 *)(rec + 0x5C) = 1.0f;
+        cur += 4;
+    } while (cnt < 0x24);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4D50);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4E40);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4F70);

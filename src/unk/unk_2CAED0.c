@@ -80,7 +80,7 @@ typedef struct TutWork {
     s8 f3C;
 } TutWork;
 
-extern TutWork *D_0047091C;
+extern TutWork *gTutWork;
 extern u8 *gBattle;
 extern s32 D_004565B0[];
 extern void memset(void *, s32, s32);
@@ -91,16 +91,16 @@ extern void func_002EB560(void *);
 extern void func_001C8020(s32, void *);
 extern void func_001E1510(void *);
 extern void func_002EB3E0(s32, s32);
-extern void func_00226030(s32, void *);
+extern void A2d_CallHandler(s32, void *);
 extern void func_002E9BA0(s32);
 extern void (*D_004564A0[])(void);
 extern void (*D_004564C0[])(void);
 extern void func_002CBFF0(s32, s32);
 
 s32 func_002CAED0(void) {
-    s32 *p = &D_0047091C->f20;
+    s32 *p = &gTutWork->f20;
 
-    if (D_0047091C->chr->fCAC == 4) {
+    if (gTutWork->chr->fCAC == 4) {
         *p = (s32)((f32)*p + *(f32 *)(gBattle + 0x88F0));
     }
     if ((f32)*p >= 120.0f) {
@@ -109,7 +109,7 @@ s32 func_002CAED0(void) {
     return 0;
 }
 s32 func_002CAF50(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *p = &t->f20;
 
     if (t->f32 == 0x1A) {
@@ -133,11 +133,11 @@ extern s32 func_002CA7D0(CmdHist *h, s16 *cmd);
 
 s32 func_002CAFA0(void) {
     Cmd32 arr = D_00456640;
-    s32 *cnt = &D_0047091C->f20;
-    CmdHist *h = &D_0047091C->chr->f1360;
+    s32 *cnt = &gTutWork->f20;
+    CmdHist *h = &gTutWork->chr->f1360;
     s32 i;
 
-    if (D_0047091C->chr->fCB2 == 0x40) {
+    if (gTutWork->chr->fCB2 == 0x40) {
         for (i = 0; i < 4; i++) {
             if (func_002CA7D0(h, arr.e[i].v)) {
                 (*cnt)++;
@@ -152,7 +152,7 @@ s32 func_002CAFA0(void) {
 /* differs: the same ring walk; the original has its nop-padded join and the early exit at a different place (0x80 bytes, ours 0x6C) */
 #if 0
 s32 func_002CB070(void) {
-    TutChr *c = D_0047091C->chr;
+    TutChr *c = gTutWork->chr;
     s32 n = 0;
     s32 i = c->f1360.rd;
     s32 lim = *(s32 *)((u8 *)c + 0x1758);
@@ -176,7 +176,7 @@ s32 func_002CB070(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB070);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB0F0);
 s32 func_002CB1D0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *p = &t->f20;
 
     if (t->f32 == 7) {
@@ -194,7 +194,7 @@ s32 func_002CB1D0(void) {
    C above takes the pair from the TutWork base, and the return tests come out with the bc1t/bc1f order reversed */
 #if 0
 s32 func_002CB250(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     TutChr *c = t->chr;
     f32 *f = (f32 *)&t->f20;
 
@@ -215,7 +215,7 @@ s32 func_002CB250(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB250);
 s32 func_002CB300(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *p = &t->f20;
 
     if (t->f32 == 5) {
@@ -242,7 +242,7 @@ void func_002CB450(void) {
 void func_002CB460(void) {
 }
 void func_002CB470(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
 
     if (t->f18 >= 180.0f && t != NULL) {
         t->f8 = 3;
@@ -253,7 +253,7 @@ void func_002CB470(void) {
 }
 void func_002CB4F0(void) {
     TutBuf buf;
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
 
     t->fC++;
     buf.f0 = 3;
@@ -271,7 +271,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBD40);
    with or without an empty else). The local buf[4] sits at sp+0x20 as in the original; the value 1 is in a0, the original's in a1 */
 #if 0
 void func_002CBEB0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 buf[4];
 
     *(s8 *)(gBattle + 0x8AAD) = 1;
@@ -281,7 +281,7 @@ void func_002CBEB0(void) {
     *(s16 *)((char *)t->chr + 0x13A4) = t->chr->f1CF4->f1A;
     func_002EB3E0(t->f4, t->fC - t->f10);
     buf[0] = 0;
-    func_00226030(0x27, buf);
+    A2d_CallHandler(0x27, buf);
     func_002E9BA0(0);
 }
 #endif
@@ -292,7 +292,7 @@ void func_002CBF50(void) {
     func_002EB0D0();
 }
 void func_002CBF60(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
 
     if (*(s32 *)(gBattle + 0x88EC) == 0) {
         if (t->f8 >= 0) {
@@ -307,7 +307,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBFF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC120);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC240);
 s32 func_002CC450(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 i;
 
     if (t != NULL) {
@@ -319,7 +319,7 @@ s32 func_002CC450(void) {
     return 0;
 }
 s32 func_002CC4A0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
 
     if (t != NULL) {
         return t->f8;
@@ -328,24 +328,24 @@ s32 func_002CC4A0(void) {
 }
 void func_002CC4C0(void) {
     func_002EB280();
-    D_0047091C = NULL;
+    gTutWork = NULL;
 }
 void func_002CC4E0(void) {
-    if (D_0047091C != NULL) {
+    if (gTutWork != NULL) {
         func_002EB290();
-        memset(D_0047091C, 0, 0x40);
-        D_0047091C = NULL;
+        memset(gTutWork, 0, 0x40);
+        gTutWork = NULL;
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC520);
 void func_002CC610(void) {
-    if (D_0047091C != NULL) {
+    if (gTutWork != NULL) {
         amTask_KillGroup(0x20, 0x400000, 0);
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC640);
 void func_002CC710(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     u8 *g = gBattle;
 
     if (t != NULL) {

@@ -41,7 +41,7 @@ typedef struct PadSave {
 extern PadSave *gHelp;
 extern PadState D_00492FC0[];
 
-void func_002B5460(void) {
+void Help_CopyEntries(void) {
     PadSave *s = gHelp;
     s32 i;
 

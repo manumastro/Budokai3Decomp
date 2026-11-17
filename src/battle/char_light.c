@@ -8,7 +8,7 @@ typedef struct CharVec16 {
 extern void func_00231E70(s32 *);
 extern void func_002316D0(s32 *);
 extern void func_001D9760(s32, s32);
-extern void func_00226030(s32, s32 *);
+extern void A2d_CallHandler(s32, s32 *);
 extern void amModel_SetupPart(s32, s32, s32, f32);
 
 extern u8 D_0058BBB0[];
@@ -197,7 +197,7 @@ void func_00236750(s32 *p) {
         func_001D9760(p[0], p[1]);
         buf[0] = *(s32 *)((u8 *)((s32 *)p[0]) + 0x1350);
         buf[1] = *(s32 *)((u8 *)((s32 *)p[1]) + 0x1350);
-        func_00226030(0x12, buf);
+        A2d_CallHandler(0x12, buf);
     }
 }
 #endif
@@ -545,9 +545,9 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239720);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239920);
 // GIVEN UP: the battle-global load and the s0 pointer come out in other registers (a0 and a1 against s0 and a1); 46 of 56 differ with the plain form; tried a reordered pointer setup (43 of 56)
 #if 0
-extern s32 func_0021C2A0(s32);
+extern s32 Input_IsHeld(s32);
 extern void amDraw_SetPacketMode(s32);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C6B0(s32 *);
 extern s32 D_00470704;
 extern s32 D_0047070C;
@@ -566,7 +566,7 @@ void func_00239CC0(u8 *a0) {
     }
     pp = (u8 **)(a0 + 0x30);
     sys = gBtlSys;
-    if (func_0021C2A0(8) == 0) {
+    if (Input_IsHeld(8) == 0) {
         return;
     }
     amDraw_SetPacketMode(1);
@@ -574,7 +574,7 @@ void func_00239CC0(u8 *a0) {
     D_00470704 = t;
     D_0047070C = 0x4010000;
     D_00470708 = 0;
-    func_00145CC0(t, 0x4010000);
+    amModel_SetCurrent(t, 0x4010000);
     D_00470238 = 0;
     a = *(s32 *)(*pp + 0x1C);
     if (a != 0) {
@@ -592,9 +592,9 @@ void func_00239CC0(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239CC0);
 // GIVEN UP: same register shape as 239CC0 (the SetPacketMode(1) after the 145CC0 call); 46 of 56 differ, tried reordering
 #if 0
-extern s32 func_0021C2A0(s32);
+extern s32 Input_IsHeld(s32);
 extern void amDraw_SetPacketMode(s32);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C6B0(s32 *);
 extern s32 D_00470704;
 extern s32 D_0047070C;
@@ -613,14 +613,14 @@ void func_00239DA0(u8 *a0) {
     }
     pp = (u8 **)(a0 + 0x30);
     sys = gBtlSys;
-    if (func_0021C2A0(8) == 0) {
+    if (Input_IsHeld(8) == 0) {
         return;
     }
     t = *(s32 *)(sys + 0xE84);
     D_00470704 = t;
     D_0047070C = 0x4010000;
     D_00470708 = 0;
-    func_00145CC0(t, 0x4010000);
+    amModel_SetCurrent(t, 0x4010000);
     amDraw_SetPacketMode(1);
     D_00470238 = 0;
     a = *(s32 *)(*pp + 0x1C);

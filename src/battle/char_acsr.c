@@ -58,7 +58,7 @@ extern s32 amObject_GetSize(void *);
 extern AcsrFile *amCdFs_ReadFileId(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void amCdFs_ReleaseCache(void *);
-extern void func_00145CC0(s32, void *);
+extern void amModel_SetCurrent(s32, void *);
 extern void func_0013B0B0(void *);
 extern void func_0013B110(s32);
 extern void func_0013B960(Mtx *);
@@ -69,7 +69,7 @@ extern s32 amObject_Create(s32, s32);
 extern s32 amMotion_FindBone(s32, AcsrData *);
 
 static inline void Acsr_Draw(Acsr *a) {
-    func_00145CC0(a->unk18, a->unk1C);
+    amModel_SetCurrent(a->unk18, a->unk1C);
     func_0013B0B0(0);
     if (a->owner != 0) {
         func_0013B960(&a->owner->matrices[a->joint]);

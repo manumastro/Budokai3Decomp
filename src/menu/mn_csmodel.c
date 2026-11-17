@@ -13,9 +13,9 @@ extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
 extern f32 gFrameDelta;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_002B7690(void *);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 extern s8 D_004B4BEA[];
 extern void func_002B7800();
 extern void func_002B7930();
@@ -133,7 +133,7 @@ void func_002B7800(u8 *s4) {
     D_00470704 = a0;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(a0, 0x1000);
+    amModel_SetCurrent(a0, 0x1000);
     D_00470238 = 0;
     s1 = 0;
     s0 = s4;
@@ -175,7 +175,7 @@ void func_002B7930(u8 *s4) {
     D_00470704 = a0;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(a0, 0x1000);
+    amModel_SetCurrent(a0, 0x1000);
     D_00470238 = 0;
     if (0 < s4[0x5F]) {
         s2 = 0;
@@ -262,10 +262,10 @@ void func_002B8410(u8 *task) {
     D_00470704 = (s32)a0;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0((s32)a0, 0x1000);
+    amModel_SetCurrent((s32)a0, 0x1000);
     D_00470238 = 0;
     func_002B7690(s0);
-    func_0022C700();
+    A2d_FlushList();
     f1 = *(f32 *)(s0 + 0x68) - gFrameDelta;
     *(f32 *)(s0 + 0x68) = f1;
     if (f1 <= 0.0f) {
@@ -282,9 +282,9 @@ extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_002B7690(void *);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 
 /* Starts a model effect with the practice mode's value and the fixed size 0x1000. */
 void CsModel_Start(Task *t) {
@@ -293,14 +293,14 @@ void CsModel_Start(Task *t) {
     D_00470704 = v;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x1000);
+    amModel_SetCurrent(v, 0x1000);
     D_00470238 = 0;
     func_002B7690(w);
-    func_0022C700();
+    A2d_FlushList();
 }
 extern f32 gFrameDelta;
-extern void func_001F0830(s32, s32);
-extern void func_001F0810(s32, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 
 void func_002B8540(u8 *a0) {
     u8 *s0;
@@ -310,14 +310,14 @@ void func_002B8540(u8 *a0) {
     D_00470704 = v;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x1000);
+    amModel_SetCurrent(v, 0x1000);
     D_00470238 = 0;
     func_002B7690(s0);
-    func_0022C700();
+    A2d_FlushList();
     *(f32 *)(s0 + 0x68) = *(f32 *)(s0 + 0x68) - gFrameDelta;
     if (*(f32 *)(s0 + 0x68) <= 0.0f) {
-        func_001F0830(0x15, 0);
-        func_001F0810(0xA, 0);
+        Scene_Request(0x15, 0);
+        Scene_FadeTo(0xA, 0);
         *(void **)(a0 + 0x1C) = ((void *)CsModel_Start == 0) ? 0 : (void *)CsModel_Start;
     }
 }
@@ -333,10 +333,10 @@ void func_002B8B50(u8 *task) {
     D_00470704 = (s32)a0;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0((s32)a0, 0x1000);
+    amModel_SetCurrent((s32)a0, 0x1000);
     D_00470238 = 0;
     func_002B7690(s0);
-    func_0022C700();
+    A2d_FlushList();
     f1 = *(f32 *)(s0 + 0x68) - gFrameDelta;
     *(f32 *)(s0 + 0x68) = f1;
     if (f1 <= 0.0f) {
@@ -353,9 +353,9 @@ extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_002B7690(void *);
-extern void func_0022C700(void);
+extern void A2d_FlushList(void);
 
 /* Starts a model effect with the practice mode's value and the fixed size 0x1000. */
 void CsModel_Start2(Task *t) {
@@ -364,10 +364,10 @@ void CsModel_Start2(Task *t) {
     D_00470704 = v;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x1000);
+    amModel_SetCurrent(v, 0x1000);
     D_00470238 = 0;
     func_002B7690(w);
-    func_0022C700();
+    A2d_FlushList();
 }
 extern f32 gFrameDelta;
 extern u8 D_004B4B41[];
@@ -385,10 +385,10 @@ void func_002B8C70(u8 *a0) {
     D_00470704 = v;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x1000);
+    amModel_SetCurrent(v, 0x1000);
     D_00470238 = 0;
     func_002B7690(s0);
-    func_0022C700();
+    A2d_FlushList();
     *(f32 *)(s0 + 0x68) = *(f32 *)(s0 + 0x68) - gFrameDelta;
     if (*(f32 *)(s0 + 0x68) <= 0.0f) {
         D_004B4B41[0] = 4;
@@ -413,10 +413,10 @@ void func_002B8C70(u8 *task) {
     D_00470704 = (s32)a0;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0((s32)a0, 0x1000);
+    amModel_SetCurrent((s32)a0, 0x1000);
     D_00470238 = 0;
     func_002B7690(s0);
-    func_0022C700();
+    A2d_FlushList();
     f1 = *(f32 *)(s0 + 0x68) - gFrameDelta;
     if (f1 <= 0.0f) {
         *(f32 *)(s0 + 0x68) = f1;
@@ -447,10 +447,10 @@ void func_002B91F0(u8 *task) {
     D_00470704 = (s32)a0;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0((s32)a0, 0x1000);
+    amModel_SetCurrent((s32)a0, 0x1000);
     D_00470238 = 0;
     func_002B7690(s1);
-    func_0022C700();
+    A2d_FlushList();
     f1 = *(f32 *)(s1 + 0x68) - gFrameDelta;
     *(f32 *)(s1 + 0x68) = f1;
     if (f1 <= 0.0f) {
@@ -476,10 +476,10 @@ void func_002B92E0(u8 *task) {
     D_00470704 = (s32)a0;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    func_00145CC0((s32)a0, 0x1000);
+    amModel_SetCurrent((s32)a0, 0x1000);
     D_00470238 = 0;
     func_002B7690(s1);
-    func_0022C700();
+    A2d_FlushList();
     f1 = *(f32 *)(s1 + 0x68) - gFrameDelta;
     *(f32 *)(s1 + 0x68) = f1;
     if (f1 <= 0.0f) {

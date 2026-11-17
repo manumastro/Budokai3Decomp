@@ -28,7 +28,7 @@ extern void StrStatus_Exit(void *);
 extern void Help_Exit(void);
 extern void memset(void *, s32, s32);
 extern void *func_002C0630(s32, s32, s32);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void Help_Load(void);
 
@@ -68,7 +68,7 @@ void PracMode_Start(s32 a0, s32 a1) {
     w->f64 = a0;
     w->f5E = a1;
     w->f5F = 2;
-    func_001F07D0();
+    Scene_SetReady();
 }
 
 void PracMode_Load(void) {

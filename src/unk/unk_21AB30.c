@@ -212,7 +212,7 @@ void func_0021B070(void) {
     memset(D_0046FDF8, 0, sizeof(LightWork));
 }
 
-void func_0021B080(void) {
+void Ar_InitLights(void) {
     Light *l;
 
     memset(D_0046FDF8, 0, sizeof(LightWork));

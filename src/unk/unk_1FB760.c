@@ -644,7 +644,7 @@ void func_00209450(u32 a0, s32 a1) {
         break;
     }
 }
-void func_00209530(u8 *a) {
+void Obj_ResetF38(u8 *a) {
     *(s32 *)(a + 0x38) = -1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209540);

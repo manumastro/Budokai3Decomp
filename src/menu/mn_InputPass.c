@@ -18,8 +18,8 @@ extern void func_002F2D50();
 extern void func_002F0BC0();
 extern void func_0022CF70();
 extern void func_00133B50(s32, s32);
-extern void func_00145CC0(s32, s32);
-extern void func_0022C700(void);
+extern void amModel_SetCurrent(s32, s32);
+extern void A2d_FlushList(void);
 extern f32 gFrameDelta;
 extern void Help_Exit();
 extern void amCdFs_Close(void *, s32);
@@ -129,13 +129,13 @@ void func_002F0FD0(u8 *task) {
     if (f1 > 0.0f) {
         *(f32 *)(s0 + 0x118) = f1 - gFrameDelta;
         s1 = (u8 *)gInputName;
-        func_0022C700();
+        A2d_FlushList();
         func_00133B50(0, 0);
         a0 = *(s32 *)(s1 + 0x10);
         D_00470704 = a0;
         D_0047070C = 0x5000;
         D_00470708 = 0;
-        func_00145CC0(a0, 0x5000);
+        amModel_SetCurrent(a0, 0x5000);
         D_00470238 = 0;
         func_002F0BC0(s0);
         if (*(u8 *)(s0 + 0x170) < 5) {
@@ -150,7 +150,7 @@ void func_002F0FD0(u8 *task) {
                 s1 += 4;
             } while (s2 < 0x24);
         }
-        func_0022C700();
+        A2d_FlushList();
         func_00133B50(0, 0);
     } else {
         *(f32 *)(s0 + 0x118) = 0.0f;
@@ -179,13 +179,13 @@ void func_002F1500(u8 *task) {
     s3 = *(u8 **)(task + 0x30);
     s0 = (u8 *)gInputName;
     s4 = task;
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     a0 = *(s32 *)(s0 + 0x10);
     D_00470704 = a0;
     D_0047070C = 0x5000;
     D_00470708 = 0;
-    func_00145CC0(a0, 0x5000);
+    amModel_SetCurrent(a0, 0x5000);
     func_002F0BC0(s3);
     D_00470238 = 0;
     if (*(u8 *)(s3 + 0x170) < 5) {
@@ -201,7 +201,7 @@ void func_002F1500(u8 *task) {
             s0 += 4;
         } while (s2 < 0x24);
     }
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     a0 = *(s32 *)((u8 *)D_00470910 + 0x27C);
     if (a0 == 2) {
@@ -229,13 +229,13 @@ void func_002F1650(u8 *task) {
     s3 = *(u8 **)(task + 0x30);
     s0 = (u8 *)gInputName;
     s4 = task;
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     a0 = *(s32 *)(s0 + 0x10);
     D_00470704 = a0;
     D_0047070C = 0x5000;
     D_00470708 = 0;
-    func_00145CC0(a0, 0x5000);
+    amModel_SetCurrent(a0, 0x5000);
     func_002F0BC0(s3);
     D_00470238 = 0;
     if (*(u8 *)(s3 + 0x170) < 5) {
@@ -251,7 +251,7 @@ void func_002F1650(u8 *task) {
             s0 += 4;
         } while (s2 < 0x24);
     }
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     a0 = (s16)func_002F4A80(*(s32 *)(s3 + 0x110));
     if (a0 == 4) {
@@ -502,13 +502,13 @@ void func_002F2F00(u8 *task) {
     if (f1 > 0.0f) {
         *(f32 *)(s0 + 0x40) = f1 - gFrameDelta;
         s1 = (u8 *)gInputName;
-        func_0022C700();
+        A2d_FlushList();
         func_00133B50(0, 0);
         a0 = *(s32 *)(s1 + 0x10);
         D_00470704 = a0;
         D_0047070C = 0x5000;
         D_00470708 = 0;
-        func_00145CC0(a0, 0x5000);
+        amModel_SetCurrent(a0, 0x5000);
         D_00470238 = 0;
         func_002F2D50(s0);
         if (*(u8 *)(s0 + 0x60) < 5) {
@@ -523,7 +523,7 @@ void func_002F2F00(u8 *task) {
                 s1 += 4;
             } while (s2 < 8);
         }
-        func_0022C700();
+        A2d_FlushList();
         func_00133B50(0, 0);
     } else {
         *(f32 *)(s0 + 0x40) = 0.0f;

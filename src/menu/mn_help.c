@@ -54,7 +54,7 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
 
-extern void func_002B5460(void);
+extern void Help_CopyEntries(void);
 extern void func_002B5500(void);
 extern void func_002B5620(HelpWork *);
 extern void func_002B58A0(HelpWork *);
@@ -63,9 +63,9 @@ extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D860(s32, f32);
 extern void func_0022E0B0(void *);
 extern void amFile_Load(void *);
-extern void func_00145CC0(s32, s32);
-extern void func_00143F20(s32, s32, f32);
-extern void func_00143D60(s32, s32, s32, s32);
+extern void amModel_SetCurrent(s32, s32);
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 
@@ -78,7 +78,7 @@ void Help_TaskClose(Task *t) {
     g = gHelp;
 
     func_002B58A0(w);
-    func_002B5460();
+    Help_CopyEntries();
     w->alpha = a = w->alpha - 0.2f;
     if (a < 0.0f) {
         w->alpha = 0.0f;
@@ -117,12 +117,12 @@ void Help_TaskMain(Task *t) {
     D_00470704 = v = (s32)g->f18;
     D_0047070C = c = 0xFF00;
     D_00470708 = 0;
-    func_00145CC0(v, c);
+    amModel_SetCurrent(v, c);
     D_00470238 = 0;
     if (g->f2C & 1) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (!(D_004E0614[0] <= 0.0f)) {
-            func_00143D60(0, 0, 0x16, 0);
+            SoundRpc_Send3(0, 0, 0x16, 0);
         }
         if (w->fC != 0) {
             func_0022D0E0(w->fC, 1);
@@ -147,7 +147,7 @@ void Help_TaskMain(Task *t) {
     }
     func_002B58A0(w);
     func_002B5620(w);
-    func_002B5460();
+    Help_CopyEntries();
 }
 
 void Help_TaskOpened(Task *t) {
@@ -158,7 +158,7 @@ void Help_TaskOpened(Task *t) {
     g = gHelp;
     func_002B58A0(w);
     func_002B5620(w);
-    func_002B5460();
+    Help_CopyEntries();
     g->f28 = 1;
     TASK_SET_FUNC(t, Help_TaskMain);
 }
@@ -173,7 +173,7 @@ void Help_TaskFadeIn(Task *t) {
         w->alpha = 0.8f;
     }
     func_002B58A0(w);
-    func_002B5460();
+    Help_CopyEntries();
     if (func_0022BF80(w->fC) == 0xFF) {
         w->alpha = 0.8f;
         TASK_SET_FUNC(t, Help_TaskOpened);
@@ -188,7 +188,7 @@ void Help_TaskLoad(Task *t) {
 
     w = t->data.work;
     g = gHelp;
-    func_002B5460();
+    Help_CopyEntries();
     if (g->f18 == NULL) {
         if (g->file1->state != 3) {
             return;
@@ -207,7 +207,7 @@ void Help_TaskLoad(Task *t) {
     D_00470704 = v = (s32)g->f18;
     D_0047070C = c = 0xFF00;
     D_00470708 = 0;
-    func_00145CC0(v, c);
+    amModel_SetCurrent(v, c);
     D_00470238 = 0;
     w->fC = func_0022D860(g->f14->f14[0], 0.0f);
     g->f28 = 2;
@@ -260,9 +260,9 @@ void Help_Open(s64 mode, s32 kind) {
 
     g = gHelp;
     if (g->ctrl == NULL) {
-        func_00143F20(0, 0, D_004E0614[0]);
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
         if (!(D_004E0614[0] <= 0.0f)) {
-            func_00143D60(0, 0, 0x15, 0);
+            SoundRpc_Send3(0, 0, 0x15, 0);
         }
         g->ctrl = amTask_Create((TaskFunc)Help_TaskCtrl, 0, 0x1000, 8, 2, D_0046EBF8);
         func_002B5500();

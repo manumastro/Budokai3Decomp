@@ -132,3 +132,90 @@ BtlChara_GetF2710 = 0x001C7D30; // type:func guess
 BtlChara_GetF270C = 0x001C7D50; // type:func guess
 // btl_main.c: toggles the byte at gBattle+0x8975 between 0 and 1.
 Btl_ToggleF8975 = 0x001AF980; // type:func guess
+
+// btl_main.c: the two battle tasks made in btl_main with amTask_Create under the names "[BTL] INITIALIZE" (line
+// 1079) and "[BTL] POST DRAW" (line 1372); the functions are their updates.
+// Btl_TaskInit waits until the object at gBattle+0x8970 reaches state 3, then clears that pointer, sets the
+// fighter's update to func_001B03E0 and its counter to 0. Btl_TaskPostDraw is the post-draw task of the battle: it
+// does nothing while the byte gBattle+0x8975 is 1; otherwise, when gBattle+0x88F8 is 0, it copies the 16-byte
+// block at D_004312E0 and draws it through func_00139620, then calls func_0012F2C0.
+Btl_TaskInit = 0x001B0440; // type:func // guess
+Btl_TaskPostDraw = 0x001AFD60; // type:func // guess
+
+// btb_draw.c: the helpers of the battle background tasks named in btb_main.c (BtbBg_TaskMain, _TaskDraw,
+// _TaskTrsDraw, _TaskPostDraw, _TaskAfterDraw, _TaskScrEffect). The list of background objects runs from
+// D_0051CB94[0] to D_0051CC20; each object has a callback at +0x18 (ObjFunc) or +0x14 (ObjFunc4) and a flag word
+// at +0x20. Each helper walks the list and calls the callbacks whose flag word matches the mask of its own draw
+// pass (0x2800, 0x800, 0x8000, 0x880F); the names follow the task that calls each helper.
+BtbBg_ResetLists = 0x001F62A0; // type:func // guess
+BtbBg_RunObjMain = 0x001F6330; // type:func // guess
+BtbBg_DrawAfterStub = 0x001F63B0; // type:func // guess
+BtbBg_DrawScrEffectStub = 0x001F63C0; // type:func // guess
+BtbBg_DrawTrsObjs = 0x001F6450; // type:func // guess
+BtbBg_DrawPostObjs = 0x001F64E0; // type:func // guess
+BtbBg_DrawObjs = 0x001F6570; // type:func // guess
+BtbBg_DrawPlainObjs = 0x001F65F0; // type:func // guess
+
+// btb_draw.c: the "BG CROSS FADE" task is created here (amTask_Create with the name D_00469888); its kill function
+// clears one byte of the battle block (gBattle+0x10000-0x768B). The update (func_001F6690) is not C yet.
+BtbBg_CrossFadeKill = 0x001F6670; // type:func // guess
+BtbBg_StartCrossFade = 0x001F6CD0; // type:func // guess
+
+// btb_draw.c: the scene request. The scene manager (the TASK_SETFUNC states of this file) reads the next scene id
+// in D_00470600; the first request goes there, a second one while it is taken goes to D_00470604; D_00470608 gets
+// a1.
+Scene_Request = 0x001F0830; // type:func // guess
+
+// btb_main.c: BtbBg_Restart calls this first: it kills the background tasks of D_0051CCE0.unkA4 (amTask_Kill, each
+// slot zeroed) and then runs its clean-up calls (func_001F7F50, func_001F6140, func_00209450).
+BtbBg_KillTasks = 0x001F9E40; // type:func // guess
+
+// btl_main.c: clears the script-control fields of a fighter (the halfwords at +0x42C..+0x432, the 8 bytes at
+// +0x434, and the bytes at +0x43C and +0x43D). Called by PlyScr_Start.
+Fighter_ClearPlyScr = 0x001ABCE0; // type:func // guess
+
+// btl_main.c: the battle's start state: Btl_TaskInit hands over to it. It calls func_001E9D10, func_00219650(1),
+// func_00219790(1) and func_001E9EE0, then sets the next function to func_001B0380.
+Btl_TaskStart = 0x001B03E0; // type:func // guess
+
+// btb_draw.c: the scene switch flags of the scene manager (see Scene_Request): Scene_FadeTo starts a fade to a
+// scene through func_00264300 with Scene_MarkDone as its callback (that sets D_004705FC = 1); Scene_SetReady sets
+// D_004705F8, which the manager reads to take the requested scene.
+Scene_FadeTo = 0x001F0810; // type:func // guess
+Scene_MarkDone = 0x001F0820; // type:func // guess
+Scene_SetReady = 0x001F07D0; // type:func // guess
+
+// btb_draw.c: the byte D_004B4BB0 that the save tasks use as a busy flag: Save_SetBusy stores 1, Save_ClearBusy
+// stores 0.
+Save_SetBusy = 0x001F07A0; // type:func // guess
+Save_ClearBusy = 0x001F0790; // type:func // guess
+
+// btb_draw.c: tests one bit of the 64-bit word D_00511440 (bit a0) and returns it; called by the stage selection
+// (StrSelect_TaskMain).
+StrSelect_TestFlag = 0x001F04C0; // type:func // guess
+
+// a2d.c: stores its argument in D_00470714; called by the load tasks of the title, the arena and the stage
+// selection and by the main menu's init.
+A2d_SetMode = 0x0022DB30; // type:func // guess
+
+// a2d.c: the title's counters step down by one (D_004706D8 and D_004706D0); called by Title_Draw and
+// Title_TaskIdle.
+Title_StepCounters = 0x00227810; // type:func // guess
+
+// btb_draw.c: the scene manager's globals (see Scene_Request). gSceneReady is set by Scene_SetReady and cleared
+// when the manager takes the requested scene; gSceneDone is set by Scene_MarkDone; gSceneNext is the requested
+// scene (-1: none) and gSceneQueued the one after it; gSceneArg is the argument of the request.
+gSceneReady = 0x004705F8; // size:0x4 // guess
+gSceneDone = 0x004705FC; // size:0x4 // guess
+gSceneNext = 0x00470600; // size:0x4 // guess
+gSceneQueued = 0x00470604; // size:0x4 // guess
+gSceneArg = 0x00470608; // size:0x4 // guess
+
+// a2d.c: calls the handler D_0046A600[idx] with arg (when the table entry is not null). Called by 17 functions of
+// the battle code.
+A2d_CallHandler = 0x00226030; // type:func // guess
+
+// a2d.c: draws the 2D list: sorts it when it has more than one entry (func_00227010), draws every visible entry
+// (flag bit 1 of word +4) with func_002269B0 or func_00226540 (by the sign of the halfword at +0x18), then empties
+// the list (D_004706BC = 0).
+A2d_FlushList = 0x0022C700; // type:func // guess

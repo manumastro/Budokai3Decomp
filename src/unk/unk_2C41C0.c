@@ -194,7 +194,7 @@ typedef struct TutCmd4 {
     s16 v[4];
 } TutCmd4;
 
-extern TutWork *D_0047091C;
+extern TutWork *gTutWork;
 extern char *gBattle;
 
 extern EffWork *D_00470130;
@@ -652,7 +652,7 @@ void func_002CA4A0(void) {
 }
 
 s32 func_002CA4F0(TutEvent *e) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     TutChr *o;
     s32 r = -2;
     s32 i;
@@ -682,7 +682,7 @@ s32 func_002CA4F0(TutEvent *e) {
 }
 
 s32 func_002CA5D0(TutChr *c) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 r = 0;
 
     switch (t->f20) {
@@ -714,7 +714,7 @@ s32 func_002CA5D0(TutChr *c) {
 }
 
 s32 func_002CA690(TutEvent *e) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 r = -2;
     s32 i;
     s16 *p;
@@ -738,7 +738,7 @@ s32 func_002CA690(TutEvent *e) {
 }
 
 s32 func_002CA730(TutEvent *e) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 r = -2;
     s32 i;
     s16 *p;
@@ -791,15 +791,15 @@ s32 func_002CA7D0(CmdHist *h, s16 *cmd) {
 }
 
 s32 func_002CA8A0(void) {
-    return D_0047091C->chr->fCAE == 0x31 ? 2 : 0;
+    return gTutWork->chr->fCAE == 0x31 ? 2 : 0;
 }
 
 s32 func_002CA8D0(void) {
-    return D_0047091C->chr->fCAE == 0x30;
+    return gTutWork->chr->fCAE == 0x30;
 }
 
 s32 func_002CA8F0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
 
     if (t->f3C) {
@@ -812,7 +812,7 @@ s32 func_002CA8F0(void) {
 }
 
 s32 func_002CA950(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
 
@@ -829,7 +829,7 @@ s32 func_002CA950(void) {
 }
 
 s32 func_002CA9C0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
 
@@ -846,23 +846,23 @@ s32 func_002CA9C0(void) {
 }
 
 s32 func_002CAA30(void) {
-    return D_0047091C->chr->fCAE == 0x1B;
+    return gTutWork->chr->fCAE == 0x1B;
 }
 
 s32 func_002CAA50(void) {
-    return D_0047091C->f39 != 0;
+    return gTutWork->f39 != 0;
 }
 
 s32 func_002CAA60(void) {
-    return D_0047091C->f38 != 0;
+    return gTutWork->f38 != 0;
 }
 
 s32 func_002CAA70(void) {
-    return D_0047091C->f37 != 0;
+    return gTutWork->f37 != 0;
 }
 
 s32 func_002CAA80(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
 
     if (t->f36) {
@@ -875,7 +875,7 @@ s32 func_002CAA80(void) {
 }
 
 s32 func_002CAAE0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
 
@@ -888,31 +888,31 @@ s32 func_002CAAE0(void) {
 extern s32 func_001D99C0(TutChr *, s32);
 
 s32 func_002CAB30(void) {
-    return func_001D99C0(D_0047091C->chr->f1354, 9) >= 1;
+    return func_001D99C0(gTutWork->chr->f1354, 9) >= 1;
 }
 
 s32 func_002CAB60(void) {
-    return func_001D99C0(D_0047091C->chr->f1354, 9) > 0 ? 2 : 0;
+    return func_001D99C0(gTutWork->chr->f1354, 9) > 0 ? 2 : 0;
 }
 
 s32 func_002CABA0(void) {
-    return func_001D99C0(D_0047091C->chr, 8) >= 4;
+    return func_001D99C0(gTutWork->chr, 8) >= 4;
 }
 
 s32 func_002CABD0(void) {
-    return func_001D99C0(D_0047091C->chr->f1354, 8) >= 4 ? 2 : 0;
+    return func_001D99C0(gTutWork->chr->f1354, 8) >= 4 ? 2 : 0;
 }
 
 s32 func_002CAC10(void) {
-    return func_001D99C0(D_0047091C->chr, 0x12) > 0;
+    return func_001D99C0(gTutWork->chr, 0x12) > 0;
 }
 
 s32 func_002CAC40(void) {
-    return func_001D99C0(D_0047091C->chr->f1354, 0x12) > 0 ? 2 : 0;
+    return func_001D99C0(gTutWork->chr->f1354, 0x12) > 0 ? 2 : 0;
 }
 
 s32 func_002CAC80(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     TutChr *c = t->chr;
 
     if (c->fCAE == 0x32) {
@@ -923,14 +923,14 @@ s32 func_002CAC80(void) {
 }
 
 s32 func_002CACC0(void) {
-    return D_0047091C->chr->fCAE == 0x1D;
+    return gTutWork->chr->fCAE == 0x1D;
 }
 
 extern TutCmd D_00456660;
 
 s32 func_002CACE0(void) {
     TutCmd cmd = D_00456660;
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
     CmdHist *h = &c->f1360;
@@ -945,7 +945,7 @@ extern TutCmd4 D_00470140;
 
 s32 func_002CAD70(void) {
     TutCmd4 cmd = D_00470140;
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
     CmdHist *h = &c->f1360;
@@ -957,7 +957,7 @@ s32 func_002CAD70(void) {
 }
 
 s32 func_002CADF0(void) {
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
 
     if (t->f32 == 0x1F || t->f32 == 0x20) {
@@ -973,7 +973,7 @@ extern TutCmd4 D_00470138;
 
 s32 func_002CAE50(void) {
     TutCmd4 cmd = D_00470138;
-    TutWork *t = D_0047091C;
+    TutWork *t = gTutWork;
     s32 *n = &t->f20;
     TutChr *c = t->chr;
     CmdHist *h = &c->f1360;

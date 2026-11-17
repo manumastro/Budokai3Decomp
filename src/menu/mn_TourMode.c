@@ -27,7 +27,7 @@ extern void func_002C3D20(Task *);
 extern void VsCharaselEd_TaskMain(Task *);
 extern void memset(void *, s32, s32);
 extern void *func_002C0630(s32, s32, s32);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void func_0028DF20(void);
 extern void func_0028DFC0(s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_0027E7E0(void);
@@ -47,7 +47,7 @@ void TourMode_Start(void) {
     w->fAB = D_00470918;
     w->fAC = D_00470120 - 1;
     w->fCC = 0;
-    func_001F07D0();
+    Scene_SetReady();
     func_0028DF20();
     func_0028DFC0(6, 0, 0, 0, 0, 0, 0, 0, 0x1F);
     func_0027E7E0();

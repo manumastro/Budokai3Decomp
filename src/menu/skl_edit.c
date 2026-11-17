@@ -36,7 +36,7 @@ extern void memset(void *, s32, s32);
 extern void Smsg_Start(s32, s32, s32, s32);
 extern void Help_Load(void);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
-extern void func_002B4A30(Task *);
+extern void SklEdit_TaskLoad(Task *);
 
 void SklEdit_Init(void) {
     gSklEdit = NULL;
@@ -89,6 +89,6 @@ void SklEdit_Open(s32 prio, char *name, s32 a2, s32 a3, s32 a4) {
         Help_Load();
         gSklEdit->file[0] = amCdFs_ReadFileId(0x10844, 0, 0);
         gSklEdit->file[1] = amCdFs_ReadFileId(0x10845, 0, 0);
-        amTask_Create(func_002B4A30, 0, prio, 0x200, 0x400, D_0046EB70);
+        amTask_Create(SklEdit_TaskLoad, 0, prio, 0x200, 0x400, D_0046EB70);
     }
 }

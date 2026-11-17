@@ -36,7 +36,7 @@ extern Vec4f D_00453520;
 extern Vec4f D_00453530;
 extern u8 D_0046B841[];
 
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_00134690(s32, s32, Vec4f *, s32, s32, s32);
 extern void func_00135F10(Vec4f *, Vec4f *);
 extern void amDraw_FlushPacket(void);
@@ -63,7 +63,7 @@ void func_00285950(Disp *o, s32 n) {
     Vec4f col = D_00453530;
 
     col.w = o->f284;
-    func_00145CC0(o->f4, 0x7000);
+    amModel_SetCurrent(o->f4, 0x7000);
     func_00134690(1, 0x101924, &col, D_0046B841[(s16)n * 2], 0x44, 5);
     pos.x = 250.0f;
     pos.y = 250.0f;
@@ -140,7 +140,7 @@ void func_00285D90(Disp *o) {
     D_00470704 = v = o->f4;
     D_0047070C = w = 0x7000;
     D_00470708 = 0;
-    func_00145CC0(v, w);
+    amModel_SetCurrent(v, w);
     D_00470238 = 0;
     if (e != NULL) {
         if (func_0022BF80(e) == 0xFF) {

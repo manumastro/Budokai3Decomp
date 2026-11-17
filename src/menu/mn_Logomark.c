@@ -10,12 +10,12 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6FA0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E70E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E72C0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E7400);
-extern void func_001F0830(s32, s32);
+extern void Scene_Request(s32, s32);
 extern void func_001F07E0(s32, s32);
 
 /* Stops the logo mark's two effects and clears the task's function. */
 void Logomark_Close(Task *t) {
-    func_001F0830(2, 0);
+    Scene_Request(2, 0);
     func_001F07E0(10, 0);
     t->func = 0;
 }
@@ -387,7 +387,39 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8270);
 void Logomark_Begin(Task *t) {
     TASK_SET_FUNC(t, func_002E8270);
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8340);
+extern void *D_0047094C;
+extern void amCdFs_Close(void *, s32);
+extern void amFile_Load(s32);
+extern void SoundRpc_SendWord2(s32);
+extern void SoundRpc_SendWord(s32);
+extern void amAdx_Stop(s32);
+extern void func_00264140(s32, s32);
+extern void Logomark_Begin();
+
+void func_002E8340(Task *a0) {
+    u8 *o;
+    u8 *p;
+    u8 *c;
+    u8 *a1;
+    void *f;
+    c = D_0047094C;
+    o = (u8 *)a0;
+    a1 = *(u8 **)c;
+    p = o + 0x30;
+    if (*(s16 *)(a1 + 4) == 3) {
+        *(s32 *)p = *(s32 *)(a1 + 0x54);
+        *(s32 *)(*(u8 **)c + 0x54) = 0;
+        amCdFs_Close(*(void **)c, 0);
+        *(s32 *)c = 0;
+        amFile_Load(*(s32 *)p);
+        SoundRpc_SendWord2(-1);
+        SoundRpc_SendWord(0);
+        amAdx_Stop(-1);
+        func_00264140(-1, 0);
+        f = (void *)Logomark_Begin;
+        *(void **)(o + 0x1C) = (f == 0) ? 0 : f;
+    }
+}
 extern void *D_0047094C;
 
 /* Clears the logo mark's flag D_0047094C. */
@@ -422,7 +454,7 @@ void Logomark_Free(void) {
 extern void func_002E8340(Task *);
 extern char D_0046F570[];
 extern void func_001484A0(s32);
-extern void func_001F07D0(void);
+extern void Scene_SetReady(void);
 extern void memset(void *, s32, s32);
 
 /* Creates the logo mark's task (func_002E8340) and clears its 0x14-byte work area. */
@@ -432,7 +464,7 @@ void Logomark_Start(void) {
     g->task = t;
     memset(&t->data, 0, 0x14);
     func_001484A0(0);
-    func_001F07D0();
+    Scene_SetReady();
 }
 extern char D_0046F580[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);

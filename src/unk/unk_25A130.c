@@ -116,7 +116,7 @@ extern void *D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
-extern void func_00145CC0(void *, s32);
+extern void amModel_SetCurrent(void *, s32);
 extern ScrTask *amTask_Create(void *, void *, s32, s32, s32, char *);
 extern void *func_0022D860(void *, f32);
 extern void func_00125740(void *, void *, s32);
@@ -127,7 +127,7 @@ extern void func_00210240(void);
 extern void func_00212560(void);
 extern void CutIn_TaskMain(void);
 extern void CutIn_TaskKill(void);
-extern void func_00226030(s32, s32 *);
+extern void A2d_CallHandler(s32, s32 *);
 void func_0025AA20(s32);
 void func_0025A7C0(s32, s32);
 void func_0025A580(s32, s32);
@@ -144,7 +144,7 @@ s32 func_0025ABC0(void *ctx, ScrCmd *cmd) {
     buf[0] = gBattle->players[0]->f1350;
     buf[1] = cmd->args[0].i;
     if (buf[1] > 0) {
-        func_00226030(0x31, buf);
+        A2d_CallHandler(0x31, buf);
     }
     return 1;
 }
@@ -403,7 +403,7 @@ s32 CutIn_Start(void *ctx, ScrCmd *cmd) {
     D_00470704 = v = sys->fE60;
     D_0047070C = n = 0x4000000;
     D_00470708 = 0;
-    func_00145CC0(v, n);
+    amModel_SetCurrent(v, n);
     D_00470238 = 0;
     w = &t->w;
     w->f0 = 0;

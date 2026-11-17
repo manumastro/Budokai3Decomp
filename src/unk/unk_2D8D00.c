@@ -38,7 +38,7 @@ extern s32 D_0047070C;
 extern s32 D_00470238;
 extern void func_00228430(s32);
 extern void func_00227A30(Vec4 *);
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C060(Model2D8 *, f32);
 extern void func_00228410(void);
 extern void func_0022CD00(Model2D8 *);
@@ -59,7 +59,7 @@ static inline void DrawModel(Model2D8 *m, Vec4 *eye, Vec4 *pos) {
     D_00470704 = v = s->fC;
     D_00470708 = 0;
     D_0047070C = 0;
-    func_00145CC0(v, 0);
+    amModel_SetCurrent(v, 0);
     D_00470238 = 0;
     func_0022C060(m, 1.0f);
     func_00228410();

@@ -326,3 +326,25 @@ Ess_Init = 0x0026E2F0; // type:func guess
 Option_Free = 0x002E0C40; // type:func guess
 // mn_option_2.c: allocates a 0xD680-byte buffer, copies the table D_0058F680 into it, runs it through func_001EF510 and frees it.
 Option_ProcessTable = 0x002E0DD0; // type:func guess
+
+// skl_edit.c: the task "SEDIT" (skl_edit.c line 92) has its update here, in unk_2B2C20.c: when func_002D20D0
+// succeeds and the second file of gSklEdit is in state 3, it loads the two skill files (amFile_Load into f10 and
+// f14) and kills the task.
+SklEdit_TaskLoad = 0x002B4A30; // type:func // guess
+
+// mn_option_2.c: sets the display offset from the menu's table D_004E05DC (two s16 at +0x1E and +0x20) with
+// amDisp_SetOffset; called when the main menu starts and exits.
+MainMenu_SetOffset = 0x002E1BB0; // type:func // guess
+
+// unk_280730.c: one step of the closing of the sub-status screen: updates its helper (func_002811D0), counts the
+// timer at +0xC down by the frame time, and when it has run out sets the state to 5.
+CsSubStat_CloseStep = 0x00281C60; // type:func // guess
+
+// unk_2E4030.c: creates one object of the arena stage selection: takes it from func_0022DA90, clears its 0x60
+// bytes, then sets the word at +4 to 1 and the one at +0x14 to -1. Called by ArenaStageSel_Start.
+ArenaStageSel_CreateObj = 0x002E4030; // type:func // guess
+
+// unk_2B5460.c: copies the two entries of gHelp (the help window's arrays: f3C, f30, f38, f34, f4C, f48, f40, f44,
+// f50) into the table D_00492FC0, one row per entry; called by the help tasks (Help_TaskLoad, Help_TaskMain,
+// Help_TaskFadeIn, Help_TaskClose).
+Help_CopyEntries = 0x002B5460; // type:func // guess
