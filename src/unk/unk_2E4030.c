@@ -96,9 +96,33 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4AC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4BF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4D60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5040);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5170);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern u8 D_0046F4B8[];
 extern s32 func_0022D670(s32, f32);
 extern void func_0022D0E0(s32, s32);
+extern s32 func_0022D860(s32, f32);
+extern void amModel_SetCurrent(s32, s32);
+extern void func_002E5260(u8 *);
+void func_002E5170(u8 *a0) {
+    s32 f4;
+
+    f4 = *(s32 *)(a0 + 4);
+    D_00470704 = f4;
+    D_0047070C = 0x7000;
+    D_00470708 = 0;
+    amModel_SetCurrent(f4, 0x7000);
+    D_00470238 = 0;
+    *(s32 *)(a0 + 0x10) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0xC), 0.0f);
+    *(s32 *)(a0 + 0x14) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x10), 0.0f);
+    *(s32 *)(a0 + 0x18) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x8), 0.0f);
+    *(s32 *)(a0 + 0x1C) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x18), 0.0f);
+    *(s32 *)(a0 + 0x20) = func_0022D670(((s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C)))[D_0046F4B8[*(s16 *)(a0 + 0xF0)]], 0.0f);
+    *(s32 *)(a0 + 0x24) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x24), 0.0f);
+    func_002E5260(a0);
+}
 /* differs: compiled 0x144 against 0x150: the original keeps one more value live across the calls (it saves s7 as well:
    step), ours keeps seven saved registers; the walking pointer variant (e260_c) gave 0x13C. */
 #if 0
