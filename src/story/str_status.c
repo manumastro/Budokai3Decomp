@@ -799,6 +799,49 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3220);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C32C0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3A10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3B40);
+extern void func_0022E0B0(s32);
+extern void func_00264260(s32, s32, s32);
+extern void func_002C1860(s32 *);
+extern void func_002C3B40(void);
+extern s32 func_0022D670(s32, f32);
+
+extern void func_0022E0B0(s32);
+extern void func_00264260(s32, s32, s32);
+extern void func_002C1860(s32 *);
+extern void func_002C3B40(void);
+extern s32 func_0022D670(s32, f32);
+
+#if 0
+// func_002C3D20: 7 of 66 differ: the function pointer and the 0x41F00000 store take v1/a0 the other way round (same as func_002C2470); 3 tail orders tried
+void func_002C3D20(s32 *a0) {
+    s32 *s1 = (s32 *)a0[0x30 / 4];
+    s32 *s0 = (s32 *)gTourMode;
+    void *f;
+    s32 v;
+    if (*(s16 *)((char *)((s32 *)s0[1]) + 4) == 3) {
+        s1[0] = ((s32 *)s0[0])[0x54 / 4];
+        ((s32 *)s0[0])[0x54 / 4] = 0;
+        amCdFs_Close(s0[0], 0);
+        s1[1] = ((s32 *)s0[1])[0x54 / 4];
+        ((s32 *)s0[1])[0x54 / 4] = 0;
+        amCdFs_Close(s0[1], 0);
+        func_0022E0B0(s1[0]);
+        amFile_Load(s1[1]);
+        func_00264260(-1, 0, 0);
+        v = s1[1];
+        D_00470704 = v;
+        D_0047070C = 0x2000;
+        D_00470708 = 0;
+        func_00145CC0(v, 0x2000);
+        D_00470238 = 0;
+        s1[2] = func_0022D670(((s32 *)((s32 *)s1[0])[0x1C / 4])[0], 0.0f);
+        func_002C1860(s1);
+        *(s32 *)((char *)s1 + 0xC4) = 0x41F00000;
+        f = (void *)func_002C3B40;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3D20);
 
 void StrStatus_ClearTourMode(void) {
