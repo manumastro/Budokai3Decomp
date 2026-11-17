@@ -171,9 +171,9 @@ gEssInfo = 0x004707F8; // size:0x4
 EssMain_GetFlag = 0x0026D510; // type:func guess
 EssMain_SetByte = 0x0026D520; // type:func guess
 
-// mn_option.c: empty callbacks of the option screen (the task's func2 or a menu entry with nothing to do).
+// mn_option.c: empty callbacks of the option screen. func_002DEFE0, func_002E0C40 and func_002E0C70 keep their names:
+// other files call them.
 Option_Nop1 = 0x002DEFD0; // type:func guess
-Option_Nop2 = 0x002DEFE0; // type:func guess
 // mn_option.c: clears the global D_00470938 (a menu's cursor or state).
 Option_ClearState = 0x002E0C30; // type:func guess
 
@@ -200,8 +200,6 @@ EssMain_TickC = 0x0026BD20; // type:func guess
 
 // mn_option.c: the option screen's state block D_00470938 and its readers.
 Option_ReadSound = 0x002DFDF0; // type:func guess
-Option_FreeState = 0x002E0C40; // type:func guess
-Option_GetSub = 0x002E0C70; // type:func guess
 
 // mn_csmodel.c: the character model's work area (CsModelWork): mode, scale and the eased value.
 CsModel_SetMode = 0x002B71C0; // type:func guess
@@ -237,3 +235,7 @@ ArenaList_Refresh = 0x002EF400; // type:func guess
 
 // ess_trade.c: adds one to five counters of the trade block, then runs 0x277310.
 Trade_CountFrame = 0x00279470; // type:func guess
+
+// mn_Logomark.c: Free frees the task, the file and the block D_0047094C; Start creates the logo mark's task.
+Logomark_Free = 0x002E8400; // type:func guess
+Logomark_Start = 0x002E8470; // type:func guess

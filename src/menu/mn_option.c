@@ -11,7 +11,7 @@ void Option_Nop1(void) {
 }
 
 /* Empty callback: nothing to do. */
-void Option_Nop2(void) {
+void func_002DEFE0(void) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEFF0);
@@ -49,14 +49,14 @@ void Option_ClearState(void) {
     D_00470938 = 0;
 }
 /* Frees the option state block D_00470938 (if any) and clears the pointer. */
-void Option_FreeState(void) {
+void func_002E0C40(void) {
     if (D_00470938 != 0) {
         amHeap_Free(D_00470938);
         D_00470938 = 0;
     }
 }
 /* The field at 0x8 of the option state, or 0 when there is no state. */
-s32 Option_GetSub(void) {
+s32 func_002E0C70(void) {
     return D_00470938 == 0 ? 0 : ((OptionState *)D_00470938)->f8;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0C90);
