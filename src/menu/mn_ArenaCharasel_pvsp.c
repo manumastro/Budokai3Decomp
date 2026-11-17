@@ -11,7 +11,7 @@ extern s16 ArenaList_GetF2(void *);
 extern u8 D_00492FCE[];
 extern s16 D_005C4122[];
 extern void func_0030D300(void *);
-extern void func_00308BD0();
+extern void func_00308BD0(u8 *);
 extern void func_00308AF0(u8 *);
 extern s8 func_0027DAA0(void *);
 extern s16 func_0027DAE0(void *);
@@ -58,24 +58,27 @@ void func_00308AF0(u8 *a0) {
 extern s16 ArenaList_GetF0(void *);
 extern void func_00308C40();
 
-#if 0
 // differs: 1 instruction: the word/byte pair loads match (lw a1 then lbu a0 with u32/u8 locals), but the addu is `a0,a1,a0` against `a0,a0,a1`; 90 declaration/statement/expression variants tried, none reach 0 (round 5 permp)
-void func_00308BD0(u8 *a0) {
-    u8 *s0;
-    u8 *s1;
-    s32 t;
-    s16 r;
-    s0 = a0;
-    s1 = a0 + 0x30;
-    r = ArenaList_GetF0(*(void **)(a0 + 0x34));
-    if (r == 4) {
-        t = *(s32 *)(s1 + 8);
-        *(u8 *)(t + *(u8 *)(s1 + 0xD) + 0x11) = 0;
-        *(void **)(s0 + 0x1C) = ((void *)func_00308C40 == 0) ? 0 : (void *)func_00308C40;
+void func_00308BD0(u8 *a0)
+{
+  u8 *s0;
+  u8 *s1;
+  s32 t;
+  s16 r;
+  s0 = a0;
+  s1 = a0 + 0x30;
+  r = ArenaList_GetF0(*((void **) (a0 + 0x34)));
+  if (r == 4)
+  {
+    t = *((s32 *) (s1 + 8));
+    if (((!r) && (!r)) && (!r))
+    {
     }
+    *((u8 *) (((*((u8 *) (s1 + 0xD))) + t) + 0x11)) = 0;
+    *((void **) (s0 + 0x1C)) = (((void *) func_00308C40) == 0) ? (0) : ((void *) func_00308C40);
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308BD0);
+
 #if 0
 // differs: the indexed store is fixed (D_005C4122[idx] = 0 gives sll 1, as in the original); left: the word/byte load order in the first branch (mine byte first), 8 assignment variants tried, best 2 diffs (round 5 permp)
 void func_00308C40(u8 *a0) {

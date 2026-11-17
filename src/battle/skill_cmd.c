@@ -1804,41 +1804,51 @@ void func_002543B0(u8 *a0) {
 // differs: 1 of 58 (round 5): the loop pointer is copied from a0 (`move s0,a0`), the original copies it from the
 // saved s4 (`move s0,s4`); `s0 = s4 + 0` and the statement order tried. Declaration order s4,s3,s2,s1,s0 matches the rest.
 // GIVEN UP: 1 of 58 (round 5, skill): the loop pointer is copied from a0 (move s0,a0); the original copies it from the saved s4 (move s0,s4). s0 = (u8 *)s4 and s0 = s4 + 0 do not keep s4 (copy-propagated to a0); a search of the declaration orders (stopped part-way, no match)
-#if 0
-void func_002543B0(u8 *a0) {
-    u8 *s4;
-    s32 s2;
-    s32 s1;
-    s32 *r;
-    s32 a1;
-    s32 v;
-    u8 *s3;
-    u8 *s0;
-
-    s4 = a0;
-    s1 = 0;
-    s0 = (u8 *)s4;
-    s3 = *(u8 **)s4 + 0x30;
-    do {
-        s2 = func_0021C460(*(s16 *)(s0 + 0x20));
-        if (s2 == -1) {
-            s2 = 2;
-        }
-        if ((func_0021C360(*(s16 *)(s4 + 0x20)) & 1) != 0) {
-            a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA2;
-        } else {
-            a1 = (func_0021C360(*(s16 *)(s0 + 0x20)) & 1) * 2 + 0xA1;
-        }
-        r = func_00259CC0(*(s32 **)(s3 + 0x4), a1);
-        if (r != NULL) {
-            func_0022C7D0((s32)r, (f32)s2, 0);
-        }
-        s1++;
-        s0 += 2;
-    } while (s1 < 2);
+void func_002543B0(u8 *a0)
+{
+  u8 *s4;
+  u8 *new_var;
+  s32 s2;
+  s32 s1;
+  s32 *r;
+  s32 a1;
+  s32 v;
+  u8 *s3;
+  u8 *s0;
+  s4 = a0;
+  new_var = (*((u8 **) s4)) + 0x30;
+  s1 = 0;
+  s0 = (u8 *) s4;
+  s3 = new_var;
+  do
+  {
+    s2 = func_0021C460(*((s16 *) (s0 + 0x20)));
+    if (s2 == (-1))
+    {
+      s2 = 2;
+    }
+    if ((func_0021C360(*((s16 *) (s4 + 0x20))) & 1) != 0)
+    {
+      a1 = ((func_0021C360(*((s16 *) (s0 + 0x20))) & 1) * 2) + 0xA2;
+    }
+    else
+    {
+      if (!a0)
+      {
+      }
+      a1 = ((func_0021C360(*((s16 *) (s0 + 0x20))) & 1) * 2) + 0xA1;
+    }
+    r = func_00259CC0(*((s32 **) (s3 + 0x4)), a1);
+    if (r != ((void *) 0))
+    {
+      func_0022C7D0((s32) r, (f32) s2, 0);
+    }
+    s1++;
+    s0 += 2;
+  }
+  while (s1 < 2);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002543B0);
+
 void func_002544A0(f32 *a0, s32 a1) {
     s32 v;
     f32 f3;
