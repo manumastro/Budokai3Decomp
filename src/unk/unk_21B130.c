@@ -753,7 +753,7 @@ s32 func_0022D860(f32, s32);
 void func_0021B9A0(void);
 void func_0021BA60(void);
 void func_002E97E0(void);
-void func_00145CC0(s32, s32);
+void amModel_SetCurrent(s32, s32);
 #if 0
 // differs: the second 22D860/228410 pair reuses the a0 left by the first call (no reload in the original); the C keeps the value in a saved register (one more save); the rest matches apart from relocations
 void func_0021CAD0(void) {
@@ -780,7 +780,7 @@ void func_0021CAD0(void) {
             D_00470704 = e;
             D_0047070C = 0x4001000;
             D_00470708 = 0;
-            func_00145CC0(e, 0x4001000);
+            amModel_SetCurrent(e, 0x4001000);
             D_00470238 = 0;
             func_00228430(0);
             func_002284D0(0);
