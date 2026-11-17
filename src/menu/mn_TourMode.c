@@ -1,10 +1,5 @@
 #include "common.h"
-#include "menu/menu.h"
-
-typedef struct TourModeGlobal {
-    void *file[2];
-    Task *task;
-} TourModeGlobal;
+#include "menu/mn_TourMode.h"
 
 typedef struct TourModeWork {
     char pad0[0x9C];
@@ -22,7 +17,6 @@ typedef struct TourModeWork {
     char padCD[0xD0 - 0xCD];
 } TourModeWork;
 
-extern TourModeGlobal *gTourMode;
 extern u8 D_00470918;
 extern u8 D_00470120;
 extern s8 D_004B4BE4[];

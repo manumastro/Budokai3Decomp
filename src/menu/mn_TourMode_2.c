@@ -1,12 +1,6 @@
 #include "common.h"
-#include "menu/menu.h"
+#include "menu/mn_TourMode.h"
 
-typedef struct TourModeGlobal {
-    void *file[2];
-    Task *task;
-} TourModeGlobal;
-
-extern TourModeGlobal *gTourMode;
 extern char D_0046EF40[];
 extern void *func_0025C670(s32, s32, s32);
 extern void func_002B6140(void);

@@ -1,14 +1,5 @@
 #include "common.h"
-#include "menu/menu.h"
-
-typedef struct VsCharaselGlobal {
-    void *file[2];
-    s32 f8;
-    s32 fC;
-    s32 f10;
-    Task *task;
-    s32 f18;
-} VsCharaselGlobal;
+#include "menu/mn_VsCharasel.h"
 
 typedef struct VsCharaselData {
     void *f0;
@@ -17,7 +8,6 @@ typedef struct VsCharaselData {
     void *work;
 } VsCharaselData;
 
-extern VsCharaselGlobal *gVsCharasel;
 extern s32 D_00470030;
 extern s32 D_00470034;
 extern char D_0046B720[];
