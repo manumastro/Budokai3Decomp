@@ -3960,18 +3960,27 @@ s32 func_001C2340(Fighter *f) {
     return 1;
 }
 #if 0
-// differs: size 0x1B8 against 0x1E0: the table-walk leaf: the compiler folds the 0x164 table base into the index (t0 = p+356) and loads the 0x64 table base late; 4 variants of the base and load order tried, register numbers still differ
+// differs: size 0x1A8 against 0x1E0: the table bases are computed in another order (the 0x64 base is taken first, the original loads the index and the 0x41C word before it); ternary absolute values and the index-first order were tried, as in func_001C21C0 which matched
 s32 func_001C24C0(Fighter *a0) {
-    u8 *base = (u8 *)a0 + 0x164;
-    s16 *p2 = (s16 *)(base + (FT_FIELD(a0, s32, 0x60) << 2));
-    s32 v0 = p2[0];
-    s32 a1 = FT_FIELD(a0, s32, 0x41C);
+    s32 idx;
+    s16 *p2;
+    s32 v0;
+    s32 a1;
     s32 t8;
     s16 *p3;
     s32 a3;
     s32 a5;
     s32 a6;
     s16 *p4;
+    u8 *b64;
+    u8 *b164;
+
+    idx = FT_FIELD(a0, s32, 0x60);
+    b164 = (u8 *)a0 + 0x164;
+    b64 = (u8 *)a0 + 0x64;
+    p2 = (s16 *)(b164 + (idx << 2));
+    v0 = p2[0];
+    a1 = FT_FIELD(a0, s32, 0x41C);
     if (a1 != 0) {
         if (v0 == a1) {
             return 1;
@@ -3980,7 +3989,7 @@ s32 func_001C24C0(Fighter *a0) {
         return 0;
     }
     t8 = FT_FIELD(a0, s32, 0x58);
-    p3 = (s16 *)((u8 *)a0 + 0x64 + (t8 << 2));
+    p3 = (s16 *)(b64 + (t8 << 2));
     if (p3[0] != 0) {
         if (p3[0] != -1) {
             return 0;
@@ -3998,44 +4007,30 @@ s32 func_001C24C0(Fighter *a0) {
             return 0;
         }
     }
-    if (a3 < 0) {
-        a3 = -a3;
-    }
+    a3 = (a3 < 0) ? -a3 : a3;
     t8 = (t8 - 1) & 0x1F;
-    p4 = (s16 *)((u8 *)a0 + 0x64 + (t8 << 2));
+    p4 = (s16 *)(b64 + (t8 << 2));
     if (p4[0] != 0) {
         return 0;
     }
     a6 = p4[1];
-    if (a6 < 0) {
-        a5 = -a6;
-    } else {
-        a5 = a6;
-    }
+    a5 = (a6 < 0) ? -a6 : a6;
     if (a5 >= 9) {
         return 0;
     }
-    if (a6 < 0) {
-        a6 = -a6;
-    }
+    a6 = (a6 < 0) ? -a6 : a6;
     a3 = a3 + a6;
     t8 = (t8 - 1) & 0x1F;
-    p4 = (s16 *)((u8 *)a0 + 0x64 + (t8 << 2));
+    p4 = (s16 *)(b64 + (t8 << 2));
     if (p4[0] != -1) {
         return 0;
     }
     a5 = p4[1];
-    if (a5 < 0) {
-        a6 = -a5;
-    } else {
-        a6 = a5;
-    }
+    a6 = (a5 < 0) ? -a5 : a5;
     if (a6 >= 9) {
         return 0;
     }
-    if (a5 < 0) {
-        a5 = -a5;
-    }
+    a5 = (a5 < 0) ? -a5 : a5;
     a3 = a3 + a5;
     if (FT_FIELD(a0, s32, 0x410) < a3) {
         return 0;
