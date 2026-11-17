@@ -271,6 +271,70 @@ void func_002BE830(char *p) {
     *(s32 *)(p + 0x24) = 0x400010;
     func_002BDF50((char *)D_0047011C + (D_0047011C[0x1A8 / 4] << 2) + 0x160, p);
 }
+#if 0
+// differs: mode 0 keeps a beqz to the epilogue before the default b (0x1B0 against 0x1C0); tried if chains, switches in both orders, cases 0 and default (A-Y)
+extern s32 D_004562B4;
+extern s32 D_00456140[];
+typedef struct StrMsg {
+    char pad0[0x24];
+    s32 w24;
+    char pad28[2];
+    s16 h2A;
+    s16 h2C;
+    char pad2E[2];
+} StrMsg;
+void func_002BE870(s32 *a0) {
+    StrMsg m0;
+    StrMsg m1;
+    s32 mode;
+    s32 v;
+    s32 *s;
+    mode = a0[5];
+    s = D_0046FE44;
+    switch (mode) {
+    case 1:
+        s[0xB] |= 0x20;
+        if (*(s32 *)((u8 *)D_0047011C + 0x1B0) != 0) {
+            Obj_ResetF38(*(s32 *)((u8 *)D_0047011C + 0x1B0));
+            *(s32 *)((u8 *)D_0047011C + 0x1B0) = 0;
+        }
+        if (*(s32 *)((u8 *)D_0047011C + 0x1B8) != 0) {
+            Obj_ResetF38(*(s32 *)((u8 *)D_0047011C + 0x1B8));
+            *(s32 *)((u8 *)D_0047011C + 0x1B8) = 0;
+        }
+        memset(&m0, 0, 0x30);
+        if (((s16 *)s)[0x36 / 2] == 7 && ((s16 *)s)[0x34 / 2] == 4) {
+            v = D_004562B4;
+        } else {
+            v = D_00456140[((s16 *)s)[0x36 / 2]];
+        }
+        m0.h2A = v;
+        m0.h2C = 12;
+        m0.w24 = 0x400020;
+        func_002BDF50((u8 *)D_0047011C + 0x1B0, &m0);
+        memset(&m1, 0, 0x30);
+        m1.h2A = 0x14;
+        m1.w24 = 0x400020;
+        func_002BDF50((u8 *)D_0047011C + 0x1B8, &m1);
+        break;
+    case 2:
+        if (s[0xB] & 0x20) {
+            if (*(s32 *)((u8 *)D_0047011C + 0x1B0) != 0) {
+                Obj_ResetF38(*(s32 *)((u8 *)D_0047011C + 0x1B0));
+                *(s32 *)((u8 *)D_0047011C + 0x1B0) = 0;
+            }
+            if (*(s32 *)((u8 *)D_0047011C + 0x1B8) != 0) {
+                Obj_ResetF38(*(s32 *)((u8 *)D_0047011C + 0x1B8));
+                *(s32 *)((u8 *)D_0047011C + 0x1B8) = 0;
+            }
+            s[0xB] &= ~0x20;
+        }
+        break;
+    case 0:
+        break;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE870);
 void StrStatus_ReleaseBuffers(void) {
     s32 i;
@@ -1694,4 +1758,82 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3D20);
 void StrStatus_ClearTourMode(void) {
     gTourMode = NULL;
 }
+extern void func_0027E120(s32);
+extern void func_0027E070(void);
+extern void func_0028DF20(void);
+#if 0
+// differs: the zero loop of the 12-slot table (0x30 bytes, 6 steps of 8 bytes, bgtz on v0): a byte loop and a
+// 4x unrolled form both compile differently (the unrolled one is fully unrolled by mwcc); the rest matches in shape
+void func_002C3E40(void) {
+    TourModeGlobal *g;
+    s32 *s3;
+    s32 *e[12];
+    u8 *p;
+    s32 n;
+    s32 i;
+    g = gTourMode;
+    if (g->task != 0) {
+        s3 = (s32 *)((s32 *)g->task)[0xC];
+        if (s3[2] != 0) {
+            func_0022D0E0(s3[2], 1);
+            s3[2] = 0;
+        }
+        p = (u8 *)e;
+        for (n = 0x30; n > 0; n -= 8) {
+            p[0] = 0;
+            p[1] = 0;
+            p += 2;
+            p[0] = 0;
+            p[1] = 0;
+            p += 2;
+            p[0] = 0;
+            p[1] = 0;
+            p += 2;
+            p[0] = 0;
+            p[1] = 0;
+            p += 2;
+        }
+        e[0] = &s3[3];
+        e[1] = &s3[4];
+        e[2] = &s3[5];
+        e[3] = &s3[6];
+        e[4] = &s3[7];
+        e[5] = &s3[8];
+        e[6] = &s3[9];
+        e[7] = &s3[10];
+        e[8] = &s3[11];
+        e[9] = &s3[13];
+        e[10] = &s3[14];
+        e[11] = &s3[12];
+        for (i = 0; i < 12; i++) {
+            if (*e[i] != 0) {
+                func_0022D0E0(*e[i], 1);
+            }
+            *e[i] = 0;
+        }
+        func_002C0750(s3);
+        StrStatus_Exit((Task *)s3[0x9C / 4]);
+        if (s3[0xA0 / 4] != 0) {
+            func_0027E120(s3[0xA0 / 4]);
+            func_0027E070();
+        }
+        if (s3[0xA4 / 4] != 0) {
+            amTask_Kill((Task *)s3[0xA4 / 4]);
+        }
+        amHeap_Free(s3);
+        amTask_Kill(g->task);
+        if (s3[0] != 0) {
+            amHeap_Free((void *)s3[0]);
+        }
+        if (s3[1] != 0) {
+            amHeap_Free((void *)s3[1]);
+        }
+    }
+    amHeap_Free(g);
+    Help_Exit();
+    gTourMode = 0;
+    func_0028DF20();
+    func_0027E070();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C3E40);
