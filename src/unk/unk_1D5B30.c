@@ -290,7 +290,7 @@ extern void memset(void *, s32, s32);
 extern s8 D_00469468[];
 extern f32 D_004E0614[];
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
-extern void func_001D6CD0(void *);
+extern void func_001D6CD0(Fighter *);
 extern char D_004695B8[];
 extern s32 D_004693C0[];
 extern void func_002356E0(void);
@@ -486,6 +486,48 @@ void PlyScr_TaskInput(Fighter *c) {
         ((void (*)(void *))D_004693A0[p[1]])(p);
     }
 }
+#if 0
+void func_001D6CD0(Fighter *c) {
+    char *a1;
+    char *b;
+    f32 xa;
+    f32 xb;
+    char *q;
+
+    if (gBattle->f88EC != 0) {
+        return;
+    }
+    a1 = (char *)c->f30;
+    if (*(s16 *)(a1 + 0xCAC) != 4) {
+        func_001F9BB0(*(s32 *)(a1 + 0x1350), 9);
+        return;
+    }
+    __asm__ volatile("lqc2 $vf1, 0(%1)\n\tsqc2 $vf1, 0(%0)" : : "r"(a1 + 0xC0), "r"(a1 + 0x40) : "memory");
+    if (*(s16 *)(a1 + 0x181C)) {
+        *(f32 *)(a1 + 0xC4) = *(f32 *)(a1 + 0x1818);
+    }
+    b = *(char **)(a1 + 0xBB4);
+    xa = *(f32 *)(a1 + 0xC4);
+    xb = *(f32 *)(b + 0xC);
+    if ((xa - xb) < (5.0f + *(f32 *)(a1 + 0x1844))) {
+        *(f32 *)(a1 + 0xC4) = *(f32 *)(a1 + 0x1844);
+    } else {
+        func_001F9BB0(*(s32 *)(a1 + 0x1350), 9);
+    }
+    if (gBattle->f88EC != 0) {
+        return;
+    }
+    a1 = (char *)c->f30;
+    c->f34 = c->f34 + (gBattle->f88F0 * *(f32 *)(a1 + 0xC9C));
+    if (c->f34 < c->f38) {
+        return;
+    }
+    q = (char *)c + 0x30;
+    *(f32 *)(q + 4) = c->f34 - c->f38;
+    func_001E9B00(*(void **)(q + 0xC), *(s32 *)(q + 0x10), 0, 0, 0.0f, 1.0f);
+}
+#endif
+// differs: 14 of 82: the VU0 16-byte copy (inline lqc2/sqc2, operand order matches) and the branch layouts match; the tail keeps c+0x30 in a register in the original (the store and the arguments go through it) while this compiles them through c; the float subtraction register order also differs
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6CD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6E20);
 void PlyVib_TaskKill(Fighter *c) {
@@ -2883,7 +2925,7 @@ void PlySe_Start(Fighter *c) {
     s32 *t;
 
     if (c->f1AB0 == 0) {
-        t = amTask_Create(func_001D6CD0, 0, 0x5380, 0x20, 0x40000040, D_004695B8);
+        t = amTask_Create((void (*)(void *))func_001D6CD0, 0, 0x5380, 0x20, 0x40000040, D_004695B8);
         if (t != 0) {
             c->f1AB0 = (s32)t;
             t[0xC] = (s32)c;
