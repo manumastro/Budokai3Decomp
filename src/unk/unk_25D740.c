@@ -145,6 +145,14 @@ extern void func_0020DE30(void);
 extern void func_0020DE40(s32);
 extern void amTask_Kill(ScrTask *);
 extern char D_0046B080[];
+extern char D_0046B060[];
+/* The part of a task at 0x30 that these functions fill: a word, then two floats. */
+typedef struct ScrPos30 {
+    s32 f0;
+    f32 f4;
+    f32 f8;
+} ScrPos30;
+extern void func_0025D740(void);
 extern ScrTask *amTask_Create(void *, s32, s32, s32, s32, char *);
 void func_0025D980(ScrTask *);
 extern void func_0020E070(s32, ScrVec *);
@@ -222,7 +230,19 @@ extern char D_0046B140[];
 extern char D_0046B160[];
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025D740);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025D810);
+s32 func_0025D810(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 s1 = a[2].i;
+    s32 s0 = a[1].i;
+    ScrTask *t = amTask_Create(func_0025D740, 0, a[0].i, 0x400, 0x800002, D_0046B060);
+    ScrPos30 *e;
+
+    t->f30 = s1;
+    e = (ScrPos30 *)&t->f30;
+    e->f4 = -Scr_GetSpeed();
+    e->f8 = (f32)s0;
+    return 1;
+}
 
 s32 func_0025D8D0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrEffect e;
