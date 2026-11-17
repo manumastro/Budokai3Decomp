@@ -2036,14 +2036,13 @@ void func_0020D290(u8 *o, u8 *a1, s32 a2, f32 f);
 
 void func_0020D290(u8 *o, u8 *a1, s32 a2, f32 f);
 
-#if 0
 void func_002114A0(u8 *a) {
     u8 *sa;
     u8 *sd;
     u8 *q;
     u8 *s1;
 
-    q = gBattle + (((*(s16 *)(a + 0x1C) << 8) + *(s16 *)(a + 0x1C)) << 5) + 0x830;
+    q = gBattle + ((*(s16 *)(a + 0x1C) * 257) << 5) + 0x830;
     sa = a + 0x20;
     sd = D_00568C90 + *(s16 *)(a + 0x66) * 0x2140;
     if (*(s32 *)(a + 0x4C) & 0x40) {
@@ -2065,9 +2064,6 @@ void func_002114A0(u8 *a) {
         "vmove.xyzw $vf31, $vf27\n"
         : : "r"(sd), "r"(s1) : "memory");
 }
-// differs: one instruction differs: the index product (x << 8) + x is emitted as addu a0,a3,a0 where the original has addu a0,a0,a3 (operand order; the flipped expression and a local for the index give the same order); everything else matches
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002114A0);
 extern void func_00146ED0(void *a, void *b, f32 s);
 
 void func_002115A0(u8 *a) {
