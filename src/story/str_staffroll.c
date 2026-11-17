@@ -200,7 +200,71 @@ INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E690);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E890);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EAE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EDA0);
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EFF0);
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void memset(void *, s32, s32);
+extern char D_0046FC00[];
+extern void func_0030EDA0(void);
+
+void func_0030EFF0(s32 *a0) {
+    s32 *s0 = (s32 *)((char *)a0 + 0x30);
+    s32 *s2;
+    s32 v;
+    void *f;
+    if (*(s16 *)((char *)a0 + 0x34) == 0) {
+        v = *(s16 *)((char *)a0 + 0x34);
+        v = v + 1;
+        *(s16 *)((char *)s0 + 4) = v;
+        return;
+    }
+    s2 = (s32 *)(D_00470998 = (s32)amHeap_Alloc(0xC, 0, D_0046FC00, 0xD4));
+    s2[0] = amCdFs_ReadFileId(0x1082E, 0, 0);
+    s2[1] = amCdFs_ReadFileId(0x1082F, 0, 0);
+    s2[2] = (s32)a0;
+    {
+        void *m = amHeap_Alloc(0x20, 0, D_0046FC00, 0xE3);
+        s0[0] = (s32)m;
+        memset(m, 0, 0x20);
+    }
+    f = func_0030EDA0;
+    a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+}
 void StaffRoll_Clear(void) {
     D_00470998 = 0;
 }

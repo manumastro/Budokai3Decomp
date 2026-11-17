@@ -35,7 +35,37 @@ void func_00306210(void) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003062B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003063B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306500);
-INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306620);
+extern s32 Scr_Alloc(s32, s32, s32);
+extern void Scr_SetData(s32, s32);
+extern void Scr_SetCallback44(s32, s32);
+extern void Scr_SetStartCallback(s32, s32);
+extern void Scr_SetEndCallback(s32, s32);
+extern void Scr_SetTaskStartCallback(s32, s32);
+extern void Scr_SetTaskEndCallback(s32, s32);
+extern void func_00305CB0(void);
+extern void func_00306500(void);
+extern void func_00305AD0(void);
+extern void TourMap_StopAdx(void *);
+extern void func_00264140(s32, s32);
+extern char D_00454680[];
+
+void func_00306620(s32 *a0) {
+    s32 *s0 = (s32 *)D_0047097C;
+    void *f;
+    s0[1] = Scr_Alloc(0x3000, 1, 1);
+    if (s0[1] != -1) {
+        Scr_SetData(s0[1], s0[0xD8 / 4]);
+        Scr_SetCallback44(s0[1], (s32)D_00454680);
+        Scr_SetStartCallback(s0[1], (s32)func_00305AD0);
+        Scr_SetEndCallback(s0[1], (s32)TourMap_StopAdx);
+        Scr_SetTaskStartCallback(s0[1], 0);
+        Scr_SetTaskEndCallback(s0[1], 0);
+    }
+    func_00305CB0();
+    f = func_00306500;
+    a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    func_00264140(-1, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003066F0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003067A0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003068E0);
@@ -59,4 +89,42 @@ void Shenron_Start(void) {
     s0 = (s32 *)D_0047097C;
     *s0 = amTask_Create((void *)func_00306F70, 0, 0x3100, 0x4000, 2, D_0046F9E8);
 }
+#if 0
+// func_003071C0: the copy loop: the original counts with v1 and keeps the source in a1 (lui a1 first); ours takes the other registers, unrolled or swapped; 8 variants tried
+typedef struct Copy16Sh {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Copy16Sh;
+extern void func_00306140(void);
+extern void Help_Load(void);
+extern void func_00260C40(void);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern s32 D_00458E70[];
+
+void func_003071C0(void) {
+    s32 ids[44];
+    s32 *s0;
+    s32 i;
+    s32 k;
+    Copy16Sh *dq;
+    Copy16Sh *sq;
+    func_00306210();
+    func_00306140();
+    Help_Load();
+    func_00260C40();
+    s0 = (s32 *)D_0047097C;
+    dq = (Copy16Sh *)ids;
+    sq = (Copy16Sh *)D_00458E70;
+    i = 0xB;
+    do {
+        *dq = *sq;
+        sq++;
+        dq++;
+        i--;
+    } while (i > 0);
+    for (k = 0; k < 0x2C; k++) {
+        s0[0x24 / 4] = amCdFs_ReadFileId(ids[k], 0, 1);
+        s0++;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003071C0);
