@@ -1863,7 +1863,91 @@ void func_00245D30(u8 *o, s32 idx) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00245DA0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002463B0);
+extern void memset(void *, s32, s32);
+void func_001D9C40(u8 *, s32, s32);
+void func_0020D780(void *);
+void func_002183F0(s32, void *);
+void func_00248550(u8 *, s32);
+void func_00252780(s32, u8 *);
+void func_002463B0(s32 mode, u8 **pp) {
+    u8 b70[0x2C];
+    u8 b60[0x10];
+    u8 *s3;
+    u8 *s2;
+    s32 s1;
+    u8 *s0;
+    s32 v;
+
+    s3 = pp[0];
+    s2 = *(u8 **)(s3 + 0x1354);
+    s1 = *(s32 *)(s2 + 0x1350);
+    s0 = D_0046FE4C + ((s1 * 9) << 7) + 0x10;
+    memset(b70, 0, 0x2C);
+    if (mode == 0) {
+        v = *(s32 *)(s2 + 0x1CFC);
+        switch (v) {
+        case 0xE:
+            func_001D9C40(s2, s1 + 2, 0x2B);
+            break;
+        case 0x25:
+            func_001D9C40(s2, s1 + 2, 0x30);
+            break;
+        case 8:
+            func_001D9C40(s2, s1 + 2, 0x30);
+            break;
+        case 1:
+            func_001D9C40(s2, s1 + 2, 0x33);
+            func_001D9C40(s2, 1, 2);
+            break;
+        default:
+            func_001D9C40(s2, 1, 0x3B);
+            break;
+        }
+    } else if (mode == 1) {
+        v = *(s32 *)(s2 + 0x1CFC);
+        switch (v) {
+        case 0xE:
+            if (*(s16 *)(s0 + 0x36) == 0) {
+                func_001D9C40(s2, s1 + 2, 0x2D);
+                *(s16 *)(s0 + 0x36) = 1;
+            }
+            break;
+        case 0x25:
+            func_001D9C40(s2, s1 + 2, 0x31);
+            break;
+        case 8:
+            func_001D9C40(s2, s1 + 2, 0x31);
+            break;
+        case 0x22:
+            func_001D9C40(s2, s1 + 2, 0x33);
+            func_0020D780(b60);
+            *(u8 **)(b70 + 4) = b60;
+            *(u8 **)(b70 + 0) = s3 + 0x130;
+            *(s16 *)(b70 + 0x22) = 0;
+            *(s16 *)(b70 + 0x20) = 3;
+            func_002183F0(1, b70);
+            break;
+        case 1:
+            func_001D9C40(s2, s1 + 2, 0x33);
+            func_001D9C40(s2, 1, 2);
+            break;
+        default:
+            func_001D9C40(s2, 1, 0x3B);
+            break;
+        }
+    }
+    if (mode >= 2 && mode < 4) {
+        func_00248550(s3, mode);
+    } else if (mode >= 4) {
+        if (*(s32 *)(s2 + 0x1CFC) == 1) {
+            func_001D9C40(s2, 1, 0x3B);
+            func_001D9C40(s2, s1 + 2, 0x33);
+        }
+    }
+    if (mode < 0xF) {
+        func_00252780(mode, s3);
+    }
+}
 #if 0
 // differs: one register only: the first range test (s3 < 4) goes to v0 here, v1 in the original (11 instructions differ, all of them this compare or relocations); 5 layouts of the range tests tried
 s32 func_001DFA90(void *, s32);
