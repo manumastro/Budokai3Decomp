@@ -287,6 +287,7 @@ extern void func_001E7BE0(void *);
 extern void func_00219390(void *);
 extern void func_00218440(s32, void *);
 extern void memset(void *, s32, s32);
+extern s8 D_00469468[];
 extern f32 D_004E0614[];
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void func_001D6CD0(void *);
@@ -1600,6 +1601,61 @@ void func_001E1460(Fighter *c, s32 flag) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1510);
+#if 0
+s32 func_001E1690(Fighter *c) {
+    s8 slot[3];
+    Fighter *p;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 n;
+    s32 t3;
+    s32 cnt;
+    s32 a1;
+    s32 off;
+
+    p = c->f1354;
+    memset(slot, 0, 3);
+    if (*(s32 *)((char *)p + 0x1CFC) == 0x23) {
+        n = *(s32 *)((char *)p + 0xBA4);
+        if (n > 0 && n < 4) {
+            slot[n - 1] = 1;
+        }
+    } else {
+        i = 0;
+        off = 0;
+        do {
+            t3 = *(s8 *)((char *)p + 0x1D04 + i);
+            if (t3 != -1) {
+                if (*(s16 *)(*(char **)((char *)p + 0x1CF8) + off + 0xD4) == 0 || *(s8 *)((char *)p + 0x1FDC + i) != 0) {
+                    for (k = 0; k < 3; k++) {
+                        if (slot[k] == 0) {
+                            for (j = 0; j < 4; j++) {
+                                if (t3 == D_00469468[k * 4 + j]) {
+                                    slot[k] = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            i++;
+            off += 20;
+        } while (i < 8);
+    }
+    cnt = ((u32)func_0012EAE0(0x20) / 10) % 3;
+    a1 = -1;
+    do {
+        a1 = (a1 + 1) % 3;
+        while (slot[a1] != 0) {
+            a1 = (a1 + 1) % 3;
+        }
+        cnt--;
+    } while (cnt >= 0);
+    return a1 + 1;
+}
+#endif
+// differs: 86 of 114: the random pick and the slot scan are right in shape; the original keeps the constants 1 and -1 in registers across the loops and the scan's index and offset in t2/a3 (C: materialised per use)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1690);
 s32 func_001E1850(Fighter *c, s32 a1) {
     s32 *p;
