@@ -1,5 +1,17 @@
 #include "common.h"
 
+extern u8 D_005C4140[];
+extern void memset(void *, s32, s32);
+extern void amTask_Kill(void *);
+extern s32 D_005C9F10[];
+extern s32 D_005C9F18[];
+extern s32 D_005C9F68[];
+extern s32 D_005C9F6C[];
+extern void func_0022D0E0(s32, s32);
+extern s32 D_005C9F1C[];
+extern void func_0022C7D0(s32, s32, f32);
+extern s32 D_005C9F14[];
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8540);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8720);
 typedef struct Rec12 {
@@ -33,15 +45,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8C80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8DB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8F00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8F90);
-extern u8 D_005C4140[];
-extern void memset(void *, s32, s32);
 
 void func_002E92E0(void) {
     memset(D_005C4140, 0, 0x5DD0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9300);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E94C0);
-extern void amTask_Kill(void *);
 
 void func_002E95C0(char *o) {
     void **t = (void **)(o + 0x30);
@@ -51,10 +60,19 @@ void func_002E95C0(char *o) {
     *t = NULL;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9600);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9770);
+void func_002E9770(void) {
+    if (D_005C9F10[0] != 0) {
+        amTask_Kill((void *)D_005C9F10[0]);
+    }
+    if (D_005C9F68[0] != 0) {
+        func_0022D0E0(D_005C9F68[0], 1);
+    }
+    if (D_005C9F6C[0] != 0) {
+        func_0022D0E0(D_005C9F6C[0], 1);
+    }
+    memset(D_005C9F10, 0, 0x6C);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E97E0);
-extern u8 D_005C9F10[];
-extern void memset(void *, s32, s32);
 
 void func_002E98E0(void) {
     memset(D_005C9F10, 0, 0x6C);
@@ -62,14 +80,10 @@ void func_002E98E0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9900);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9970);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9B10);
-extern s32 D_005C9F18[];
 
 void func_002E9B90(s32 a) {
     D_005C9F18[0] = a;
 }
-extern s32 D_005C9F1C[];
-extern s32 D_005C9F68[];
-extern void func_0022C7D0(s32, s32, f32);
 
 void func_002E9BA0(s32 a) {
     s32 v;
@@ -82,7 +96,6 @@ void func_002E9BA0(s32 a) {
         }
     }
 }
-extern s32 D_005C9F14[];
 
 void func_002E9BE0(s32 a) {
     D_005C9F14[0] = a;
