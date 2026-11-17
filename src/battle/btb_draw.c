@@ -3173,7 +3173,47 @@ void func_001EF0D0(void) {
     func_0020A150();
     func_0022DB90(0);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF100);
+extern s32 amGs_SetReg32(s32, s32);
+extern void amGs_SetReg64(s32, s32);
+extern void amGs_SetReg64b(s32, s32);
+extern void amVram_Apply(s32);
+extern void amMtxStack_Init(void);
+extern void amDraw_SetScissor(void *, s32);
+extern void func_00133780(s32, s32);
+extern void func_00133980(f32, f32, f32, f32);
+extern void func_00133CE0(s32);
+extern void func_0013AFA0(s32);
+extern void func_00133420(s32);
+extern void func_00131B90(void *);
+extern void func_00131F00(void *, f32, f32);
+extern void func_00132DF0(void *);
+extern void func_001482C0(s32);
+extern u8 D_003F0800[];
+extern s32 D_00470250;
+extern s32 D_0046FD20;
+extern s32 D_00470238;
+void func_001EF100(void) {
+    u8 buf[0x60];
+
+    amGs_SetReg32(2, 0x5040A);
+    func_00133780(2, 0);
+    amGs_SetReg64(2, 0x44);
+    amGs_SetReg64b(2, 5);
+    D_00470250 = 0;
+    D_0046FD20 = -1;
+    func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
+    amVram_Apply(2);
+    D_00470238 = 0;
+    func_00133CE0(0);
+    amMtxStack_Init();
+    func_0013AFA0(0);
+    func_00133420(1);
+    func_00131B90(buf);
+    func_00131F00(buf, 0.0f, 0.0f);
+    func_00132DF0(D_003F0800);
+    amDraw_SetScissor(0, 0);
+    func_001482C0(1);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF1E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF510);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF730);
