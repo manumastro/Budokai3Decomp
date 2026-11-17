@@ -81,8 +81,9 @@ typedef struct Blk40 {
 void func_00218440(s32, Blk40 *);
 extern void (*D_00469CB0[])(void *);
 void func_0020BDB0(u8 *);
-void func_0020BA60(void);
+void func_0020D5C0(void *a, s32 b, void *c, u8 *d);
 void func_0020B600(void);
+void func_0020BA60();
 void func_0020CCF0(s16, void *);
 s32 amMotion_FindBone(s32, void *);
 void func_00146ED0(void *a, void *b, f32 s);
@@ -531,7 +532,48 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020B020);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020B1C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020B360);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020B600);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020BA60);
+void DrawFlags_Apply(s32 a, s32 b, s32 c, s32 d, s32 e);
+void func_00133980(f32 a, f32 b, f32 c, f32 d);
+void func_0013BC30(f32 a, f32 b, f32 c);
+void func_0013E0A0(s32);
+extern u8 D_00495718[];
+extern u8 D_00495758[];
+void func_0020BA60(p) u8 *p; {
+    Copy16A t20;
+
+    if (*(s32 *)(p + 0x88) != 0) {
+        D_00470238 = 0;
+        amModel_SetCurrent(*(s32 *)(p + 0x88), *(s32 *)(p + 0x20E4));
+    }
+    if (*(s32 *)(p + 0x20EC) & 8) {
+        DrawFlags_Apply(0x700, 0, 0, 0x200, 0);
+        func_00133980(*(f32 *)(p + 0x30), *(f32 *)(p + 0x34), *(f32 *)(p + 0x38), *(f32 *)(p + 0x2128));
+    } else {
+        DrawFlags_Apply(0x700, 0, 0, 0x300, 0);
+        func_00133980(1.0f, 1.0f, 1.0f, *(f32 *)(p + 0x2128));
+    }
+    if (*(s32 *)(p + 0x20EC) & 0x80) {
+        func_0013B160(p + 0x40);
+        __asm__ volatile (
+            "sqc2 $vf31, 0(%0)\n"
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : "r"(&t20) : "memory");
+        func_0020D5C0(p + 0x40, 0, &t20, (u8 *)7);
+    }
+    *(f32 *)D_00495718 = *(f32 *)(p + 0x2120);
+    *(f32 *)D_00495758 = *(f32 *)(p + 0x2124);
+    func_0013B0B0((u8 *)0);
+    func_0013B960(p + 0x40);
+    func_0013BC30(*(f32 *)(p + 0x2130), *(f32 *)(p + 0x2130), *(f32 *)(p + 0x2130));
+    func_0013E0A0(*(s32 *)(p + 0x94));
+    func_0013B110(1);
+    *(s32 *)D_00495718 = 0;
+    *(s32 *)D_00495758 = 0;
+    DrawFlags_Apply(0, 0x700, 0, 0, 0);
+}
 extern void amMotion_Update(void *m, s32 x);
 
 extern void amMotion_Update(void *m, s32 x);
