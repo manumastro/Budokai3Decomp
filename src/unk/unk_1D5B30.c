@@ -261,7 +261,7 @@ extern f32 func_00200270(void *p, f32 a, f32 b);
 extern void func_002376B0(s32 a);
 extern void func_002181A0(void *a, Fighter *b);
 extern void func_001A3610(s32);
-extern void func_001E6F70(void *, ...);
+extern void func_001E6F70();
 extern void func_00233E50(void *);
 extern void func_00236110(void);
 extern void func_002361D0(void);
@@ -332,7 +332,7 @@ extern u32 func_0012EAE0(s32 a);
 extern char D_00447450[];
 extern s32 func_001DF8F0(s32 a, s32 b);
 extern void Sp_CallHandler(s32 a, void *b);
-extern void func_001E7070(char *p, s32 a);
+extern void func_001E7070();
 extern s32 func_00233B20(Fighter *c, void *a, s32 v);
 extern s32 func_00233850(Fighter *c, void *a);
 extern void func_001F9BB0(s32 a, s32 b);
@@ -1265,30 +1265,27 @@ s16 func_001D99C0(Fighter *c, s32 a1) {
     }
     return ((s16 *)((char *)g + p * 72 + 0x897E))[a1];
 }
-#if 0
 void func_001D9A10(Fighter *c) {
-    s16 *q;
-    s32 p;
+    Game *g = gBattle;
+    s32 v;
+    char *s1;
 
-    if (c->f2015 != 0) {
-        p = c->f1358->f1350;
+    if (*(s8 *)((char *)c + 0x2015) != 0) {
+        v = ((Fighter *)c->f1358)->f1350;
     } else {
-        p = c->f1350;
+        v = c->f1350;
     }
-    q = (s16 *)((char *)gBattle + 0x897E + p * 72);
-    memset(q, 0, 0x48);
-    q[0x17] = 1;
-    q[0x1D] = 1;
-    q[0x1E] = 1;
-    q[0x1F] = 1;
-    q[0x20] = 1;
-    if (c->f1FEC != 0) {
-        q[0x21] = 1;
+    s1 = (char *)g + v * 72 + 0x897E;
+    memset(s1, 0, 0x48);
+    *(s16 *)(s1 + 0x2E) = 1;
+    *(s16 *)(s1 + 0x3A) = 1;
+    *(s16 *)(s1 + 0x3C) = 1;
+    *(s16 *)(s1 + 0x3E) = 1;
+    *(s16 *)(s1 + 0x40) = 1;
+    if (*(s16 *)((char *)c + 0x1FEC) != 0) {
+        *(s16 *)(s1 + 0x42) = 1;
     }
 }
-#endif
-// differs: the global's load and the saved context pointer come out in other registers (13 of 37 differ)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9A10);
 void func_001D9AB0(Fighter *c, s32 a1) {
     s32 k;
     s32 t;
@@ -1549,31 +1546,31 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DB7C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DBB30);
 #if 0
 s32 func_001DBFC0(Fighter *c) {
-    f32 x;
-    s32 r;
+    f32 f1;
+    s32 v;
 
-    if (c->f2003 <= 0) {
+    if (*(s8 *)((char *)c + 0x2003) <= 0) {
         return 0;
     }
-    if (c->f2004 == 0) {
+    if (*(s8 *)((char *)c + 0x2004) == 0) {
         return 0;
     }
-    x = 360.0f * ((f32)c->f1354->f17AC / 65536.0f);
-    if (x <= 90.0f || x >= 270.0f) {
-        r = 0;
+    f1 = 360.0f * ((f32)c->f1354->f17AC / 65536.0f);
+    if (f1 > 90.0f && f1 < 270.0f) {
+        v = 1;
     } else {
-        r = 1;
+        v = 0;
     }
-    if (r != 0) {
+    if (v != 0) {
         return 1;
     }
-    if (c->fAC9 > 0) {
-        return 0;
+    if (*(s8 *)((char *)c + 0xAC9) <= 0) {
+        return 1;
     }
-    return 1;
+    return 0;
 }
 #endif
-// differs: 0xB8 against 0xC0 bytes: the original ends with explicit returns that the compiler merges into one boolean; the early return blocks sit at other addresses
+// differs: the angle test (360 * value/65536 between 90 and 270) matches; the tail is 0xB8 against 0xC0 bytes (the original pads with two nops after the b and the li join)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DBFC0);
 #if 0
 s32 func_001DC080(Fighter *c) {
@@ -2380,32 +2377,34 @@ s32 func_001E1850(Fighter *c, s32 a1) {
     return 0;
 }
 #if 0
-void func_001E18B0(Fighter *c, s32 idx) {
-    s32 a[4];
-    s32 b[8];
+void func_001E18B0(Fighter *c, s32 a1) {
+    s32 st[4];
+    char sb[0x30];
     f32 f;
     s32 v;
+    char *base;
 
-    if (*(s32 *)((char *)c + 0x1DB8 + idx * 4) == 0) {
+    if (((s32 *)((char *)c + 0x1DB8))[a1] == 0) {
         return;
     }
-    func_001E7070((char *)c + 0x650, idx);
-    a[0] = c->f1350;
-    a[1] = idx;
-    v = *(s16 *)*(char **)((char *)c + 0xBB0);
-    if (v != 0 && func_001DF8F0(0, 0x1B) > 0) {
+    func_001E7070((char *)c + 0x650);
+    st[0] = c->f1350;
+    st[1] = a1;
+    if (*(s16 *)(*(char **)((char *)c + 0xBB0)) != 0 && func_001DF8F0(0, 0x1B) > 0) {
         f = 0.0f;
     } else {
-        f = (f32)(1000 * *(s8 *)((char *)c->f1CF8 + c->fBA4 * 20 + 0xDD));
+        v = c->fBA4;
+        base = *(char **)((char *)c + 0x1CF8);
+        f = (f32)(*(s8 *)(base + v * 20 + 0xDD) * 1000);
     }
-    a[2] = (s32)f;
-    A2d_CallHandler(8, a);
-    b[4] = c->f1350;
-    *(s16 *)((char *)b + 0x18) = c->fBA4;
-    Sp_CallHandler(1, b);
+    st[2] = (s32)f;
+    A2d_CallHandler(8, st);
+    *(s32 *)(sb + 0x10) = c->f1350;
+    *(s16 *)(sb + 0x18) = (s16)c->fBA4;
+    Sp_CallHandler(1, sb);
 }
 #endif
-// differs: frame 0x60 against 0x70 and the table address adds its offset in another order (11 of 61 differ with the block sizes tried)
+// differs: 6 of 61 by fdiff (two are jal relocation placeholders); the table lookup puts the counter in $a0 and the base in $v0 here, the original the other way round (two declaration orders tried). Frame and call order match. func_001E7070 is now unprototyped (called with one argument here).
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E18B0);
 s32 func_001E19B0(Fighter *c) {
     s32 a;
@@ -3656,6 +3655,43 @@ void func_001E6CE0(Fighter *c) {
 // differs: size 0x198 vs 0x1B0, same gap as its sibling 1E66E0: the clamp-to-1 arm jumps to the nop before c.le.s (the 15.0f reload is skipped), the original compares with f0 = 1.0 on that path
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6CE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6E90);
+#if 0
+extern char D_00469640[];
+extern void func_001E6890();
+extern void func_001E6CE0();
+extern void func_001E66E0();
+void func_001E6F70(Fighter *c, s32 a1) {
+    char *t;
+    char *base;
+    s32 idx;
+    void *fp;
+    char *a0p;
+
+    *(s32 *)((char *)c + 0x558) = a1;
+    t = (char *)amTask_Create(0, 0, 0x5380, 0x20, 0x40000010, D_00469640);
+    *(void **)(t + 0x30) = c;
+    *(s32 *)(t + 0x34) = 0;
+    *(s32 *)(t + 0x38) = 0;
+    *(s32 *)(t + 0x3C) = a1;
+    *(s32 *)(t + 0x40) = a1 - *(s32 *)((char *)c + 0x554);
+    a0p = t + 0x30;
+    if (*(s32 *)(t + 0x40) > 0) {
+        idx = *(s32 *)(a0p + 0xC);
+        base = *(char **)(*(char **)((char *)c + 0x568) + 0x1CF8);
+        if ((*(s8 *)(base + idx * 20 + 0xDB) & 1) != 0) {
+            fp = (void *)func_001E6890;
+            *(void **)(t + 0x1C) = (fp == 0) ? 0 : fp;
+        } else {
+            fp = (void *)func_001E6CE0;
+            *(void **)(t + 0x1C) = (fp == 0) ? 0 : fp;
+        }
+    } else {
+        fp = (void *)func_001E66E0;
+        *(void **)(t + 0x1C) = (fp == 0) ? 0 : fp;
+    }
+}
+#endif
+// differs: 6 of 63 by fdiff: five are relocation placeholders (D_00469640, amTask_Create, the three function addresses); the real one is the register order of the index and the table base in the entry lookup (index in $a0 in the original, $a1 here; declaration orders tried). The extern of func_001E6F70 is now unprototyped (called with one and two arguments).
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6F70);
 void func_001E7070(char *c, s32 a1) {
     char *q;
