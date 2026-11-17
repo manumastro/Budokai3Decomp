@@ -129,7 +129,12 @@ Two other sets of code sit at the edges of the `am*` files:
   `-O1,p` (34 of 39). It is a scheduled function, unlike every C function of `amCdFs.c`. So `amCdFs.c` starts at
   0x25BEE0 (**inferred** for 0x25BE40, an empty function that is the same at both levels). The yaml keeps the
   boundary for now, and the two stay `INCLUDE_ASM`.
-- **`unk_1A31B0.s`**, the file right after `amMc.s`, is the only other file of the game part with no filled delay
+- **amSofdec.s** is three things (**inferred**): 0x141280-0x1414C0 is motion-set code (it calls `amMotion.c`),
+  0x1414D0-0x142480 is hand-written float math, and only 0x142490 on references `"amSofdec.c"`. The movie part
+  of `unk_142AA0.s` (0x142AA0-0x142E80, the same table at 0x47E0A0) belongs with it, and a sound RPC file starts
+  at 0x1432C0.
+- **`unk_1A31B0.s`**, the file right after `amMc.s`, is probably the rest of `amMc.c`: amMc registers
+  0x1A31B0 and 0x1A3250 as callbacks. It is the only other file of the game part with no filled delay
   slot (179 nops, 14 functions; counted over the split). It is probably more of the `am*` library and would then
   need `AM_FLAGS` too (**inferred**, not compiled yet).
 

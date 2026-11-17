@@ -90,6 +90,22 @@ Until a function is named in a symbol file, keep its `func_XXXXXXXX` name in C (
   example, `func_0012C540` matched only with `i, it, j, a, b, k` in that order. When only the registers differ,
   try other declaration orders.
 - **`for (p = x, i = 0; ...)`.** The order of the initialisers is the order of the two moves.
+- **Inline assembly works.** mwccps2 3.0b52 accepts gcc-style `__asm__ volatile ("..." : outputs : inputs)`
+  with VU0 mnemonics and `$vf` registers, `sync`, `ei`, `pcpyld`, `sqrt.s`, `abs.s`. Several am* functions are C
+  with VU0 asm blocks: they match this way. Separate instructions with ` ; `. An `"=r"` output used as the
+  source of `qmtc2` is refused. Metrowerks `asm { }` blocks constant-fold some moves. `__s_abs(x)` gives `abs.s`.
+- **`slt $at` / `slti $at`.** `if (x > c)` compiles to `slti $at, x, c+1`, and `if (a <= b + k)` to `slt $at`.
+  The `x >= c` form uses a `$v` register instead. `?:` also gives `$at`, and a label reached from a `?:` gets no
+  alignment nop (one from an `if` statement does).
+- **Small switches** without a jump table test their cases in the reverse of the source order. The case bodies
+  stay in source order.
+- **Calls.** Arguments are evaluated heaviest first, and an implicit conversion counts as weight (declare a
+  size `u32` where the asm loads it early). `if (p->cb) { f = p->cb; f(p); }` loads the callee before the
+  arguments, as the original does.
+- **Struct copies.** A whole-struct assignment is copied through FPU registers (`lwc1` / `swc1`). Where the
+  original has `lw` / `sw`, assign member by member.
+- **Open.** Some functions lack the FPU hazard nops that 3.0b52 puts after `div.s`
+  (`func_00131D00`, `func_00132D20`). `va_start` in `func_0012EC10` is not reproduced yet.
 - **Hand-written functions** stay `INCLUDE_ASM`. These include VU0 macro code (`vmove`, `lqc2`, `vmul`), `addi`,
   frames saved with `sq $ra`, and entry points that are not 16-byte aligned (e.g. `func_0012EAEC`,
   `func_001315D8`).
