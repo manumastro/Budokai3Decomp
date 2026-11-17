@@ -616,7 +616,52 @@ void func_001A84B0(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A84B0);
 void func_001A8630(void) {
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8640);
+extern void func_00131B90(void *);
+extern void amCamera_Init(void *);
+extern void memset(void *, s32, s32);
+extern void func_001A80E0(void);
+extern u8 D_00468190[];
+void func_001A8640(void) {
+    u8 *s1 = (u8 *)gBattle;
+    u8 *s0 = s1 + 0xA0;
+    u8 *s3;
+    u8 *s2;
+    u8 *s1b;
+    u8 *s0b;
+    s32 idx;
+
+    func_00131B90(gBattle);
+    amCamera_Init(s0 + 0xF0);
+    amCamera_Init(s0 + 0xB0);
+    *(s32 *)(s0 + 0x130) = 0x3F800000;
+    *(s32 *)(s0 + 0x134) = 0;
+    *(s32 *)(s0 + 0x138) = 0;
+    *(s32 *)(s0 + 0x13C) = 0;
+    *(s32 *)(s0 + 0x140) = 0;
+    *(s32 *)(s0 + 0x14C) = 0;
+    *(u8 **)(s1 + 0x260) = s0 + 0xF0;
+    memset(s0 + 0x160, 0, 0x50);
+    *(s32 *)(s0 + 0x180) = 0;
+    *(s32 *)(s0 + 0x184) = 0;
+    *(s32 *)(s0 + 0x190) = 0;
+
+    s3 = (u8 *)gBattle;
+    s2 = s3 + 0xA0;
+    func_001A80E0();
+    if (*(u8 **)(s3 + 0x260) == s2 + 0xB0) {
+        s1b = (u8 *)gBattle;
+        s0b = s1b + 0xA0;
+        if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0) {
+            idx = *(s32 *)(s0b + 0x184);
+            ((void (*)(void))(*(s32 *)(D_00468190 + idx * 4)))();
+            *(f32 *)(s0b + 0x13C) = *(f32 *)(s0b + 0x13C) + *(f32 *)(s0b + 0x130) * *(f32 *)(s1b + 0x88F0);
+        }
+    }
+    *(u8 **)(s3 + 0x264) = *(u8 **)(s3 + 0x260);
+    if (*(s32 *)(s3 + 0x88EC) == 0) {
+        __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(s2 + 0x1B0));
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8770);
 void func_001A8830(void) {
 }
