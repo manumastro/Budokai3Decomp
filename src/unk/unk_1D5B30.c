@@ -733,16 +733,30 @@ f32 func_001D7DF0(void) {
     return 3000.0f;
 }
 // differs: 2 of 14 (sltiu writes $v0 here, $at in the original); also tried a switch (15 of 18), v == 0xE || v == 0xF || v == 0x11
-#if 0
-s32 func_001D7E10(Fighter *c) {
-    s32 v = c->fB9C;
-    if ((u32)(v - 0xE) < 2 || v == 0x11) {
-        return 1;
-    }
-    return 0;
+s32 func_001D7E10(u8 *arg0)
+{
+  int new_var2;
+  u8 *new_var;
+  s32 temp_v1;
+  new_var = ((u8 *) arg0) + 0xB9C;
+  temp_v1 = *((s32 *) new_var);
+  new_var2 = ((u32) (temp_v1 - 0xE)) <= (2U - 1);
+  if (new_var2)
+  {
+    goto block_3;
+  }
+  if (temp_v1 != 0x11)
+  {
+    goto block_4;
+  }
+  block_3:
+  return 1;
+
+  block_4:
+  return 0;
+
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7E10);
+
 #if 0
 s32 func_001D7E50(Fighter *c, s32 a1, u16 a2) {
     Game *g;
@@ -1746,34 +1760,28 @@ void func_001DB790(Fighter *c) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DB7C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DBB30);
-#if 0
-s32 func_001DBFC0(Fighter *c) {
-    f32 f1;
-    s32 v;
+s32 func_001DBFC0(u8 *arg0) {
+    f32 temp_f1;
+    s32 var_v0;
 
-    if (*(s8 *)((char *)c + 0x2003) <= 0) {
+    if (*(s8 *)((u8 *)arg0 + 0x2003) <= 0) {
         return 0;
     }
-    if (*(s8 *)((char *)c + 0x2004) == 0) {
+    if (*(s8 *)((u8 *)arg0 + 0x2004) == 0) {
         return 0;
     }
-    f1 = 360.0f * ((f32)c->f1354->f17AC / 65536.0f);
-    if (f1 > 90.0f && f1 < 270.0f) {
-        v = 1;
+    temp_f1 = 360.0f * ((f32) *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1354)) + 0x17AC) / 65536.0f);
+    if (!(temp_f1 <= 90.0f) && (temp_f1 < 270.0f)) {
+        var_v0 = 1;
     } else {
-        v = 0;
+        var_v0 = 0;
     }
-    if (v != 0) {
-        return 1;
+    if ((var_v0 == 0) && (*(s8 *)((u8 *)arg0 + 0xAC9) > 0)) {
+        return 0;
     }
-    if (*(s8 *)((char *)c + 0xAC9) <= 0) {
-        return 1;
-    }
-    return 0;
+    return 1;
 }
-#endif
-// differs: the angle test (360 * value/65536 between 90 and 270) matches; the tail is 0xB8 against 0xC0 bytes (the original pads with two nops after the b and the li join)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DBFC0);
+
 #if 0
 s32 func_001DC080(Fighter *c) {
     Fighter *p;
@@ -4514,18 +4522,19 @@ block_4:
     return 0;
 }
 
-#if 0
-s32 func_001E89F0(Fighter *c) {
-    if (*(volatile s16 *)&gBattle->f8944 != 0) {
-        if (*(volatile s16 *)&c->f1AD0 != 0) {
-            return 0;
-        }
+s32 func_001E89F0(u8 *arg0) {
+    if (*(s16 *)((u8 *)gBattle + 0x8944) == 0) {
+        goto block_3;
     }
+    if (*(s16 *)((u8 *)arg0 + 0x1AD0) != 0) {
+        goto block_4;
+    }
+block_3:
+    return 0;
+block_4:
     return 0;
 }
-#endif
-// differs: the original branches to two shared returns (0x40 bytes against 0x38); volatile reads needed for the dead loads
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E89F0);
+
 #if 0
 s32 func_001E8A30(Fighter *c) {
     s32 buf[4];

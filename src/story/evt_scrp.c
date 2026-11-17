@@ -20,21 +20,19 @@ extern void Zenie_Draw(void);
 extern void Zenie_Close(s32);
 extern s32 func_002A1020(s32);
 
-#if 0
-// func_002A1640: the original loads the global into a saved register in the delay slot of amTask_Kill (lw s0); ours loads it into v0 after the call; four forms tried
-void func_002A1640(void *a0) {
-    void *p = a0;
-    Zenie_Update(p);
+void func_002A1640(u8 *arg0) {
+    u8 *temp_s0;
+
+    Zenie_Update();
     Zenie_Draw();
     if (func_002A1020(5) == 0) {
-        amTask_Kill(p);
-        gEvtWork[0x40 / 4] = 0;
+        temp_s0 = (u8 *)(gEvtWork);
+        amTask_Kill((void *)(arg0));
+        *(s32 *)((u8 *)temp_s0 + 0x40) = 0;
         Zenie_Close(0);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1640);
-extern void func_002A1640(void *);
+
 extern void Zenie_SetF18(s32);
 extern void Zenie_SetStep(s32);
 
@@ -826,34 +824,45 @@ extern void amCdFs_ReleaseCache(s32);
 extern void memset(void *, s32, s32);
 extern char D_005AB3C0[];
 
-#if 0
-// func_002A37E0: 1 of 76 differs: the index-path load of the key goes through the parameter register (a0), the original through the saved copy s2 (the copy is not kept); 3 forms tried
-s32 func_002A37E0(s32 *a0, char *a1) {
-    s32 *s2 = a0;
-    s32 idx = ((s32 *)*(s32 **)(a1 + 0x2C))[0];
-    s32 k;
-    char *e;
-    if (idx != -1) {
-        e = D_005AB3C0 + *(s32 *)s2[0] * 104 + idx * 52;
-        if (*(s32 *)(e + 4) != 0) {
-            amCdFs_ReleaseCache(*(s32 *)e);
-            *(s32 *)e = 0;
-        }
-        memset(e, 0, 0x34);
-    } else {
-        for (k = 0; k < 2; k++) {
-            e = D_005AB3C0 + *(s32 *)s2[0] * 104 + k * 52;
-            if (*(s32 *)(e + 4) != 0) {
-                amCdFs_ReleaseCache(*(s32 *)e);
-                *(s32 *)e = 0;
-            }
-            memset(e, 0, 0x34);
-        }
+s32 func_002A37E0(s32 **arg0, u8 *arg1)
+{
+  s32 temp_a1;
+  s32 var_s1;
+  s32 var_s0;
+  u8 *temp_s0;
+  u8 *temp_s3;
+  temp_a1 = *(*((s32 **) (((u8 *) arg1) + 0x2C)));
+  if (temp_a1 != (-1))
+  {
+    temp_s0 = (u8 *) ((temp_a1 * 0x34) + (D_005AB3C0 + ((*(*arg0)) * 0x68)));
+    if ((*((s32 *) (((u8 *) temp_s0) + 4))) != 0)
+    {
+      amCdFs_ReleaseCache((s32) ((void *) (*((u8 **) (((u8 *) temp_s0) + 0)))));
+      *((u8 **) (((u8 *) temp_s0) + 0)) = (void *) 0;
     }
-    return 1;
+    memset(temp_s0, 0, 0x34);
+  }
+  else
+  {
+    var_s1 = 0;
+    var_s0 = 0;
+    do
+    {
+      temp_s3 = (u8 *) (var_s0 + (D_005AB3C0 + ((*(*arg0)) * 0x68)));
+      if ((*((s32 *) (((u8 *) temp_s3) + 4))) != 0)
+      {
+        amCdFs_ReleaseCache((s32) ((void *) (*((u8 **) (((u8 *) temp_s3) + 0)))));
+        *((u8 **) (((u8 *) temp_s3) + 0)) = (void *) 0;
+      }
+      memset(temp_s3, 0, 0x34);
+      var_s1 += 1;
+      var_s0 += 0x34;
+    }
+    while (var_s1 < 2);
+  }
+  return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A37E0);
+
 #if 0
 // func_002A3910: the argument and state loads come in another order (the scheduler hoists the state load); three variants tried
 s32 func_002A3910(s32 *a0, char *a1) {

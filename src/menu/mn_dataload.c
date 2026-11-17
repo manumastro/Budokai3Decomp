@@ -49,7 +49,56 @@ void func_002655F0(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002655F0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265700);
+s32 func_0022D0E0(s32, s32);
+void func_00265700(u8 *arg0) {
+    s32 temp_a0;
+    s32 temp_a0_2;
+    s32 temp_a0_3;
+    s32 temp_a0_4;
+    s32 temp_a0_5;
+    s32 temp_a0_6;
+    s32 temp_a0_7;
+    s32 temp_a0_8;
+    s32 temp_a0_9;
+
+    temp_a0 = *(s32 *)((u8 *)arg0 + 8);
+    if (temp_a0 != 0) {
+        func_0022D0E0(temp_a0, 1);
+    }
+    temp_a0_2 = *(s32 *)((u8 *)arg0 + 0xC);
+    if (temp_a0_2 != 0) {
+        func_0022D0E0(temp_a0_2, 1);
+    }
+    temp_a0_3 = *(s32 *)((u8 *)arg0 + 0x10);
+    if (temp_a0_3 != 0) {
+        func_0022D0E0(temp_a0_3, 1);
+    }
+    temp_a0_4 = *(s32 *)((u8 *)arg0 + 0x14);
+    if (temp_a0_4 != 0) {
+        func_0022D0E0(temp_a0_4, 1);
+    }
+    temp_a0_5 = *(s32 *)((u8 *)arg0 + 0x18);
+    if (temp_a0_5 != 0) {
+        func_0022D0E0(temp_a0_5, 1);
+    }
+    temp_a0_6 = *(s32 *)((u8 *)arg0 + 0x1C);
+    if (temp_a0_6 != 0) {
+        func_0022D0E0(temp_a0_6, 1);
+    }
+    temp_a0_7 = *(s32 *)((u8 *)arg0 + 0x20);
+    if (temp_a0_7 != 0) {
+        func_0022D0E0(temp_a0_7, 1);
+    }
+    temp_a0_8 = *(s32 *)((u8 *)arg0 + 0x24);
+    if (temp_a0_8 != 0) {
+        func_0022D0E0(temp_a0_8, 1);
+    }
+    temp_a0_9 = *(s32 *)((u8 *)arg0 + 0x28);
+    if (temp_a0_9 != 0) {
+        func_0022D0E0(temp_a0_9, 1);
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265800);
 extern void func_001F07B0();
 
@@ -57,7 +106,6 @@ void func_002659E0(void) {
     func_001F07B0(5);
 }
 extern void func_00265800();
-extern void func_00265700();
 extern void StrStatus_Exit();
 extern void amHeap_Free(void *);
 extern void Help_Exit();
@@ -67,34 +115,34 @@ void func_002659F0(u8 *a0) {
     func_00265800(*(void **)(a0 + 0x34));
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265A00);
-#if 0
-// differs: 9 of 41 instr differ: addiu v1,s0,48 (task+0x30 pointer) is kept after the bc1t, original hoists it between the lw and the lwc1
-void func_00265B40(u8 *task) {
-    u8 *s1;
-    u8 *obj;
-    u8 **pp;
-    u8 *p;
-    f32 f1;
-
-    pp = (u8 **)(task + 0x30);
-    obj = *(u8 **)(task + 0x34);
-    f1 = *(f32 *)(obj + 0x40) - 0.05f;
-    if (f1 > 0.0f) {
-        *(f32 *)(obj + 0x40) = f1;
-        func_00265800(obj);
-    } else {
-        p = *pp;
-        *(u16 *)(p + 0x18) = *(u16 *)(p + 0x18) & 0xFFFE;
-        s1 = *(u8 **)(task + 0x34);
-        func_00265700(s1);
-        StrStatus_Exit(*(void **)(s1 + 0x4C));
-        amHeap_Free(s1);
-        Help_Exit();
-        amTask_Kill(task);
-    }
+void func_00265B40(u8 *arg0)
+{
+  f32 temp_f1;
+  u8 *temp_a0;
+  u8 *temp_s1;
+  u8 *new_var2;
+  u8 *temp_v1;
+  u8 **new_var;
+  new_var2 = (u8 *) arg0;
+  temp_a0 = *((u8 **) (new_var2 + 0x34));
+  new_var = (u8 **) (new_var2 + 0x30);
+  temp_f1 = (*((f32 *) (((u8 *) temp_a0) + 0x40))) - 0.05f;
+  *((f32 *) (((u8 *) temp_a0) + 0x40)) = temp_f1;
+  if (!(temp_f1 <= (0x34 * 0.0f)))
+  {
+    func_00265800(temp_a0);
+    return;
+  }
+  temp_v1 = *new_var;
+  *((u16 *) (((u8 *) temp_v1) + 0x18)) = (u16) ((*((u16 *) (((u8 *) temp_v1) + 0x18))) & 0xFFFE);
+  temp_s1 = *((u8 **) (new_var2 - -0x34));
+  func_00265700(temp_s1);
+  StrStatus_Exit(*((s32 *) (((u8 *) temp_s1) + 0x4C)));
+  amHeap_Free(temp_s1);
+  Help_Exit();
+  amTask_Kill(arg0);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265B40);
+
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265BF0);
 extern void func_00229800(void *, void *, s32, f32);
 extern void Obj_CopyVec4F50(s32, void *);
@@ -190,5 +238,102 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002667D0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002668F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266AC0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266CD0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266EC0);
+void func_00266EC0(u8 *arg0) {
+    s32 temp_a0;
+    s32 temp_a0_10;
+    s32 temp_a0_11;
+    s32 temp_a0_12;
+    s32 temp_a0_13;
+    s32 temp_a0_2;
+    s32 temp_a0_3;
+    s32 temp_a0_4;
+    s32 temp_a0_5;
+    s32 temp_a0_6;
+    s32 temp_a0_7;
+    s32 temp_a0_8;
+    s32 temp_a0_9;
+    s32 var_s2;
+    s32 var_s2_2;
+    s32 var_s2_3;
+    u8 *temp_a0_14;
+    u8 *var_s1;
+    u8 *var_s1_2;
+    u8 *var_s1_3;
+
+    temp_a0 = *(s32 *)((u8 *)arg0 + 0x10);
+    if (temp_a0 != 0) {
+        func_0022D0E0(temp_a0, 1);
+    }
+    var_s2 = 0;
+    var_s1 = arg0;
+    do {
+        temp_a0_2 = *(s32 *)((u8 *)var_s1 + 0x14);
+        if (temp_a0_2 != 0) {
+            func_0022D0E0(temp_a0_2, 1);
+        }
+        var_s2 += 1;
+        var_s1 += 4;
+    } while (var_s2 < 0xC);
+    temp_a0_3 = *(s32 *)((u8 *)arg0 + 0x44);
+    if (temp_a0_3 != 0) {
+        func_0022D0E0(temp_a0_3, 1);
+    }
+    temp_a0_4 = *(s32 *)((u8 *)arg0 + 0x48);
+    if (temp_a0_4 != 0) {
+        func_0022D0E0(temp_a0_4, 1);
+    }
+    temp_a0_5 = *(s32 *)((u8 *)arg0 + 0x4C);
+    if (temp_a0_5 != 0) {
+        func_0022D0E0(temp_a0_5, 1);
+    }
+    temp_a0_6 = *(s32 *)((u8 *)arg0 + 0x50);
+    if (temp_a0_6 != 0) {
+        func_0022D0E0(temp_a0_6, 1);
+    }
+    temp_a0_7 = *(s32 *)((u8 *)arg0 + 0x54);
+    if (temp_a0_7 != 0) {
+        func_0022D0E0(temp_a0_7, 1);
+    }
+    temp_a0_8 = *(s32 *)((u8 *)arg0 + 0x58);
+    if (temp_a0_8 != 0) {
+        func_0022D0E0(temp_a0_8, 1);
+    }
+    var_s2_2 = 0;
+    var_s1_2 = arg0;
+    do {
+        temp_a0_9 = *(s32 *)((u8 *)var_s1_2 + 0x5C);
+        if (temp_a0_9 != 0) {
+            func_0022D0E0(temp_a0_9, 1);
+        }
+        var_s2_2 += 1;
+        var_s1_2 += 4;
+    } while (var_s2_2 < 7);
+    temp_a0_10 = *(s32 *)((u8 *)arg0 + 0x78);
+    if (temp_a0_10 != 0) {
+        func_0022D0E0(temp_a0_10, 1);
+    }
+    temp_a0_11 = *(s32 *)((u8 *)arg0 + 0x7C);
+    if (temp_a0_11 != 0) {
+        func_0022D0E0(temp_a0_11, 1);
+    }
+    var_s2_3 = 0;
+    var_s1_3 = arg0;
+    do {
+        temp_a0_12 = *(s32 *)((u8 *)var_s1_3 + 0x80);
+        if (temp_a0_12 != 0) {
+            func_0022D0E0(temp_a0_12, 1);
+        }
+        var_s2_3 += 1;
+        var_s1_3 += 4;
+    } while (var_s2_3 < 2);
+    temp_a0_13 = *(s32 *)((u8 *)arg0 + 0x88);
+    if (temp_a0_13 != 0) {
+        func_0022D0E0(temp_a0_13, 1);
+    }
+    temp_a0_14 = *(u8 **)((u8 *)arg0 + 0x8C);
+    if (temp_a0_14 != NULL) {
+        amHeap_Free(temp_a0_14);
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00267090);
