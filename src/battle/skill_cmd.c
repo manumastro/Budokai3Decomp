@@ -1457,7 +1457,7 @@ void func_00256EB0(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00256EB0);
-// GIVEN UP: the entry pointer and the field address take other saved registers (3 forms tried)
+// GIVEN UP: the entry pointer and the field address take other saved registers (3 forms and declaration orders tried)
 #if 0
 extern s32 D_0058D4F0[];
 extern void func_0022D0E0(s32, s32);
@@ -1875,6 +1875,65 @@ void func_00259920(s32 *a0) {
         func_0022C550(*(s32 *)(s0 + 0x18));
     }
 }
+// GIVEN UP: the global pointer, the entry pointer and the field pointer take other saved registers (3 declaration orders tried; code otherwise matches)
+#if 0
+extern void func_0022BFF0(f32, s32);
+void func_002599C0(s32 *a0) {
+    s32 *s0;
+    s32 *s1;
+    s32 *s2;
+    u8 *g;
+    s32 v;
+    s32 mode;
+
+    s0 = a0 + 12;
+    g = D_0046FDFC;
+    if (D_00470570 != 0) {
+        v = *(s32 *)((u8 *)D_00470570 + 0x88EC);
+    } else {
+        v = 0;
+    }
+    if (v != 0) {
+        return;
+    }
+    {
+        s32 x = *(s32 *)(g + 0xE84);
+
+        D_00470704 = x;
+        D_0047070C = 0x4010000;
+        D_00470708 = 0;
+        func_00145CC0(x, 0x4010000);
+        D_00470238 = 0;
+    }
+    mode = s0[1];
+    if (mode == 2) {
+        if (((f32 *)s0)[2] < 11.0f) {
+            func_0022BFF0(1.0f, s0[6]);
+        } else {
+            s1 = &D_0058D4D0[s0[5]];
+            if (*s1 != 0) {
+                if (((s32 *)*s1)[18] != 0) {
+                    func_0022D0B0(((s32 *)*s1)[18], 1);
+                }
+                s2 = (s32 *)(*s1 + 0x30);
+                if (s2[0] != 0) {
+                    amTask_Kill(s2[0]);
+                }
+                amTask_Kill(*s1);
+                *s1 = 0;
+            }
+        }
+        ((f32 *)s0)[2] = ((f32 *)s0)[2] + D_00470710;
+    } else if (mode == 0) {
+        if (((f32 *)s0)[2] < 11.0f) {
+            func_0022BFF0(1.0f, s0[6]);
+        }
+        ((f32 *)s0)[2] = ((f32 *)s0)[2] + D_00470710;
+    } else if (mode == 1) {
+        func_0022BFF0(((f32 *)s0)[3], s0[6]);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002599C0);
 extern void func_0022D0E0(s32, s32);
 void func_00259B70(s32 *a0) {
@@ -2030,7 +2089,7 @@ s32 func_00259EB0(s32 a0, f32 f12) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259EB0);
-// GIVEN UP: the loop counter and the pointers take other saved registers than in the original (3 orders tried)
+// GIVEN UP: the loop counter and the pointers take other saved registers than in the original (4 orders tried)
 #if 0
 extern u8 D_0058D4E0[];
 extern s32 D_0047074C;
