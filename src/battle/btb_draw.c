@@ -3562,7 +3562,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F1600(BtbObj *o) {
+void BtbObj_ReleaseF40(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3616,7 +3616,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F1C30(BtbObj *o) {
+void BtbObj_ReleaseF40Copy(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3642,7 +3642,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F1EA0(BtbObj *o) {
+void BtbObj_ReleaseF58(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3710,7 +3710,7 @@ void func_001F1F50(char *a0) {
     }
 }
 
-void func_001F20A0(BtbObj *o) {
+void BtbObj_ReleaseF58Copy(BtbObj *o) {
     BtbSub *s;
     s32 i;
 

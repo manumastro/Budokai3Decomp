@@ -1013,11 +1013,11 @@ void func_00252C20(s32 a0, s32 a1) {
         *(u32 *)(s0 + (s32)D_0046FE54 + 8) = *(u32 *)(s1 + 8);
     }
 }
-s32 func_00252CB0(s32 a0, s32 *a1) {
+s32 Scr_CmdCall248350(s32 a0, s32 *a1) {
     func_00248350(((s32 *)a1[11])[0]);
     return 1;
 }
-s32 func_00252CE0(s32 a0, s32 a1) {
+s32 Scr_CmdCall2CF070(s32 a0, s32 a1) {
     func_002CF070(a0, a1);
     return 1;
 }
@@ -1882,7 +1882,7 @@ void func_002545E0(s32 *a0) {
         func_0022C560(*(s32 *)(s0 + 4));
     }
 }
-void func_00254650(s32 *a0) {
+void Skill_DrawHeldSet(s32 *a0) {
     u8 *s1 = gBtlSys;
     s32 *s0 = a0 + 12;
     s32 i;
@@ -1996,7 +1996,7 @@ void func_002547A0(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002547A0);
-void func_00254970(s32 *a0) {
+void Skill_DrawHeldSetB(s32 *a0) {
     u8 *s0;
     s32 *s3;
     s32 k;
@@ -2200,7 +2200,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002559B0);
 extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D860(s32, f32);
 extern void func_002559B0();
-extern void func_00254970();
+extern void Skill_DrawHeldSetB();
 
 #if 0
 /* differs: prologue, loop and the first call block match; the `== 4` block keeps its constant 1 in $v0
@@ -2248,7 +2248,7 @@ void func_00255E10(u8 *a0) {
             *(s32 *)(s3 + 0x8) = 0;
             *(s32 *)(s5 + 0x1C) = (fp1 == 0) ? 0 : fp1;
             p = *(s32 *)s3;
-            fp2 = (s32)func_00254970;
+            fp2 = (s32)Skill_DrawHeldSetB;
             *(s32 *)(p + 0x1C) = (fp2 == 0) ? 0 : fp2;
             if (*(s32 *)(s2 + 0x4)) {
                 func_0022D0E0(*(s32 *)(s2 + 0x4), 1);
@@ -2506,7 +2506,7 @@ void func_00257BC0(s32 *a0) {
 }
 
 
-void func_00257C30(u8 *a0) {
+void Skill_DrawHeldPart(u8 *a0) {
     u8 *sys = gBtlSys;
     s32 *s = (s32 *)(a0 + 0x30);
     s32 x;
@@ -2529,7 +2529,7 @@ void func_00257C30(u8 *a0) {
         func_0022C560(s[12]);
     }
 }
-void func_00257CE0(u8 *a0) {
+void Skill_DrawHeldPartB(u8 *a0) {
     u8 *sys = gBtlSys;
     s32 *s = (s32 *)(a0 + 0x30);
     s32 x;
