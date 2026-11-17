@@ -86,46 +86,19 @@ extern u8 D_005AB3A0[];
 extern s32 D_00511768[];
 extern void func_00298E10(s32);
 extern void func_00298E00(s32);
-// GIVEN UP: the vector copy, the two calls and the clear match; the compiler splits the slot offset 0x1240 as 0x80 + 0x11C0 (its slot base sits at +0x80), the original keeps the slot base in a register (about 7 of 30 differ)
-#if 0
 void func_002A93E0(void) {
     u8 *base = D_004E6560;
     s32 idx = *(s8 *)(base + 0x2AEF0);
     u8 *src = D_005AB3A0;
     s32 v = *(s32 *)(src + 0x10);
-    u8 *e = base + idx * 4624;
-    u8 *p = e + 0x1240;
+    u8 *e = base + idx * 4624 + 0x80; /* folding +0x80 into the slot base is what matches */
 
-    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(src), "r"(p) : "memory");
-    *(s32 *)(e + 0x1250) = v;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(src), "r"(e + 0x11C0) : "memory");
+    *(s32 *)(e + 0x11D0) = v;
     func_00298E10(-1);
     func_00298E00(-1);
     D_00511768[0] = 0;
 }
-#endif
-// GIVEN UP (round 5 chr2): about 20 differ: the original keeps the table base in a2 and the source in a0 and computes the index into v1;
-// ours swaps them (src in a2). Tried: operand order of the copy, split offsets 0x80 + 0x11C0.
-#if 0
-void func_002A93E0(void) {
-    u8 *src;
-    u8 *p;
-    u8 *q;
-    s32 idx;
-    s32 a1;
-
-    src = D_005AB3A0;
-    a1 = *(s32 *)(src + 0x10);
-    idx = *(s8 *)(D_004E6560 + 0x2EEF0);
-    p = D_004E6560 + idx * 4624;
-    q = p + 0x80;
-    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(src), "r"(q + 0x11C0));
-    *(s32 *)(q + 0x11D0) = a1;
-    func_00298E10(-1);
-    func_00298E00(-1);
-    D_00511768[0] = 0;
-}
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A93E0);
 extern u8 D_005AB3A0[];
 void Scr_SetRecord(s32 *a0, s32 a1) {
     s32 *d = (s32 *)D_005AB3A0;
@@ -742,7 +715,7 @@ s32 Scr_CmdModelColor(ScriptThread *t, ScriptCtx *ctx) {
 extern f32 D_00459390[];
 extern f32 D_004593A0[];
 extern f32 D_004593B0[];
-// GIVEN UP: the loads and the copies match; the model pointer is kept in a0 instead of v1, and the D_ loads are placed in another order (7 of 32 differ)
+// GIVEN UP: the loads and the copies match; the model pointer is kept in a0 instead of v1, and the D_ loads are placed in another order (7 of 32 differ). Round 7: 6 attempts in total (u8 *e = base + id*144 with a folded base, one asm per copy with swapped operands, reload of the model pointer between copies, a1 reassigned to the vec), all still 7/32: the compiler picks a0 as the entry/base register and swaps the copy-2 registers.
 #if 0
 s32 func_002AC710(s32 *a0, s32 *a1) {
     s32 *o = (s32 *)*a0;
