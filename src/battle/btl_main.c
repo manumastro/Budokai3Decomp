@@ -2931,6 +2931,7 @@ void func_001BA7B0(Fighter *f) {
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BA7F0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BAB10);
 #if 0
+// differs: 38 of 76 differ: float scheduling (the original loads the 2.5 and 5.0 constants and the field before the call-free arithmetic in a different order; the cvt.s.w and sub.s registers differ)
 void func_001BACE0(Fighter *f) {
     s32 a3 = FT_FIELD(f, s32, 0xC54);
     void *e = FT_FIELD((u8 *)FT_FIELD(f, void *, 0xB88) + ((a3 >> 16) - 1) * 4, void *, 0x46C);
@@ -2958,7 +2959,6 @@ void func_001BACE0(Fighter *f) {
     }
 }
 #endif
-// differs: 38 of 76 differ: float scheduling (the original loads the 2.5 and 5.0 constants and the field before the call-free arithmetic in a different order; the cvt.s.w and sub.s registers differ)
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BACE0);
 extern void (*D_004684A4[])(void *);
 void func_001BAE10(Fighter *f) {
@@ -3617,14 +3617,14 @@ extern s32 func_001DFE60(Fighter *c, s32 a, f32 v);
 #if 0
 // differs: size 0x200 against 0x210: the fighter goes to s2 (the original keeps it in s1, frame 0x30 against 0x40); the gBattle product and the float loads are ordered differently; 3 declaration and argument variants tried
 void func_001BE6C0(Fighter *f) {
+    s32 v = -1;
     f32 t;
     f32 sel;
-    s32 v = -1;
     Fighter_ResetMotion(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) != 0) {
         t = (FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC)) - FT_FIELD(f, f32, 0x1844);
         if (t <= 0.0f) {
-            ((FighterMain2 *)f)->unk1FF9 = 0;
+            FT_FIELD(f, s8, 0x1FF9) = 0;
             FT_FIELD(f, s32, 0xB70) = 0x10;
             func_001E3460(f);
             FT_FIELD(f, s32, 0x1864) = 8;
@@ -4409,6 +4409,107 @@ s32 func_001C2A00(Fighter *f) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C2B10);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C3120);
+extern s32 func_001AA9D0(s32);
+extern s32 func_001E9250(void *);
+extern f32 func_0025B290(s32);
+extern void func_0025B2E0(s32, f32);
+extern s32 func_001D99C0(void *, s32);
+extern void func_001D98A0(void *, s32, s32);
+extern s32 func_0012EAE0(s32);
+/* The battle work area as far as func_001C3500 reads it: numFighters (0x88D8), a float (0x88F0), the fighter table (0x8934). */
+typedef struct BattleView {
+    u8 unk0000[0x88D8];
+    s32 numFighters;
+    u8 unk88DC[0x88F0 - 0x88DC];
+    f32 f88F0;
+    u8 unk88F4[0x8934 - 0x88F4];
+    void *fighter[2];
+} BattleView;
+#if 0
+// differs: 0x2E0 against 0x2F0 bytes: the fighter pointers and the sign/offset values end in other registers (// against //), the clamp loads 1.0 before the first branch in the original, and the sum of the two loads (0x1A36) is added in the other order
+s32 func_001C3500(void) {
+    BattleView *bw = (BattleView *)gBattle;
+    s32 s3;
+    s32 i;
+    Fighter *f;
+    void *f0p;
+    void *f1p;
+    s32 d;
+    s32 e;
+    s32 sg;
+    s32 sg2;
+    s32 t;
+    f32 x;
+    u8 *pp;
+    i = 0;
+    if (0 < bw->numFighters) {
+        pp = (u8 *)bw;
+        do {
+            f = *(void **)(pp + 0x8934);
+            if (FT_FIELD(f, s16, 0x13A4) > -1) {
+                s3 = func_001AA9D0(FT_FIELD(f, s16, 0x13A4));
+            } else {
+                s3 = func_001E9250(f);
+            }
+            FT_FIELD(f, s16, 0x1A36) = (s16)s3 + FT_FIELD(f, s16, 0x1A36);
+            x = func_0025B290(FT_FIELD(f, s32, 0x1350));
+            if (s3 > 0) {
+                x = x + 0.05f * bw->f88F0 * (f32)s3;
+            } else {
+                x = x - 0.01f * bw->f88F0;
+            }
+            if (x > 2.0f) {
+                x = 2.0f;
+            } else if (x < 1.0f) {
+                x = 1.0f;
+            }
+            func_0025B2E0(((Fighter *)f)->unk1350, x);
+            func_001D9900(f, 0xE, s3);
+            func_001D98A0(f, 0xF, func_001D99C0(f, 0xE));
+            i++;
+            pp += 4;
+        } while (i < bw->numFighters);
+    }
+    d = FT_FIELD(bw->fighter[0], s16, 0x1A38) - FT_FIELD(bw->fighter[1], s16, 0x1A38);
+    if (d < 0x29) {
+        if (d < -0x28) {
+            sg = -1;
+        } else {
+            sg = 0;
+        }
+    } else {
+        sg = 1;
+    }
+    sg2 = 1;
+    e = FT_FIELD(bw->fighter[0], s16, 0x1A36) - FT_FIELD(bw->fighter[1], s16, 0x1A36);
+    if (e < 9) {
+        if (e < -8) {
+            sg2 = -1;
+        } else {
+            sg2 = 0;
+        }
+    }
+    t = sg2 + sg;
+    if (t > 0) {
+        FT_FIELD(bw->fighter[0], s16, 0x1A32) = 0;
+        FT_FIELD(bw->fighter[1], s16, 0x1A32) = -t;
+        return 0;
+    }
+    if (t < 0) {
+        FT_FIELD(bw->fighter[0], s16, 0x1A32) = t;
+        FT_FIELD(bw->fighter[1], s16, 0x1A32) = 0;
+        return 1;
+    }
+    if (func_0012EAE0(0x20) & 1) {
+        FT_FIELD(bw->fighter[0], s16, 0x1A32) = 0;
+        FT_FIELD(bw->fighter[1], s16, 0x1A32) = -1;
+    } else {
+        FT_FIELD(bw->fighter[0], s16, 0x1A32) = -1;
+        FT_FIELD(bw->fighter[1], s16, 0x1A32) = 0;
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C3500);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C37F0);
 static inline s32 cvt_w_s_asm(f32 x) {
@@ -4681,7 +4782,6 @@ void func_001C5F20(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C5F20);
-#if 0
 // differs: the battle pointer and the fighter pointers are kept in saved registers (frame 0x70 against 0x50, 83 of 85 differ) even with struct access
 typedef struct BWY {
     u8 a[0x88D8];
@@ -4691,6 +4791,7 @@ typedef struct BWY {
 } BWY;
 extern void func_001D8710(void *a);
 extern s32 func_001D89E0(void *f, s32 i);
+#if 0
 void func_001C5FE0(void *a0) {
     BWY *bx;
     s32 i;
@@ -5652,6 +5753,7 @@ extern void func_001D4710(void *, void *, void *);
 extern char D_00431454[];
 
 #if 0
+// differs: 91 of 96 differ: the frame has five saved registers against two (the addresses f+0x2, f+0x30 and f+0x5C are kept in saved registers across the calls)
 void func_001C9910(Fighter *f) {
     void *s1;
 
@@ -5690,7 +5792,6 @@ void func_001C9910(Fighter *f) {
     FT_FIELD(f, s32, 0x70) = 0;
 }
 #endif
-// differs: 91 of 96 differ: the frame has five saved registers against two (the addresses f+0x2, f+0x30 and f+0x5C are kept in saved registers across the calls)
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9910);
 s32 func_001C9A70(void *p) {
     void *q;
