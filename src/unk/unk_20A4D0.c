@@ -818,11 +818,86 @@ void func_00211AF0(u8 *s1) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211AF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211BD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211D80);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211F80);
+extern V4Q D_0044B920;
+extern s32 D_00470238;
+void func_00145CC0(s32, s32);
+void func_00208D60(s32);
+void func_00209CA0(void *, void *, void *);
+void func_0013B110(s32);
+void func_00209C50(void);
+
+void func_00211F80(u8 *a0) {
+    V4Q v;
+    V4Q out;
+    u8 *s0 = a0 + 0x20;
+    v = D_0044B920;
+    if (*(s32 *)(a0 + 0x10) != 0) {
+        D_00470238 = 0;
+        if (*(s32 *)(s0 + 0x20) != 0) {
+            func_00145CC0(*(s32 *)(s0 + 0x20), *(s32 *)(s0 + 0x28));
+        }
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            func_00208D60(*(s32 *)(s0 + 0x24));
+        }
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%1)\n"
+            "lqc2 $vf2, 0(%2)\n"
+            "vopmula.xyz ACC, $vf1, $vf2\n"
+            "vopmsub.xyz $vf1, $vf2, $vf1\n"
+            "sqc2 $vf1, 0(%0)\n"
+            : : "r"(&out), "r"(&v), "r"(s0 + 0x10));
+        func_00209CA0(s0, &v, &out);
+        func_00208D70(*(s32 *)(a0 + 0x10));
+        func_0013B110(1);
+        func_00209C50();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212050);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212160);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002122A0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212480);
+void func_0013B060(s32);
+void func_00209D70(void *);
+
+void func_00212480(u8 *a0) {
+    u8 *s0 = a0 + 0x20;
+    V4Q t;
+    u8 *p2;
+    if (*(s32 *)(a0 + 0x10) != 0) {
+        D_00470238 = 0;
+        if (*(s32 *)(s0 + 0x20) != 0) {
+            func_00145CC0(*(s32 *)(s0 + 0x20), *(s32 *)(s0 + 0x28));
+        }
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            func_00208D60(*(s32 *)(s0 + 0x24));
+        }
+        func_0013B0B0(0);
+        __asm__ volatile (
+            "lqc2 $vf28, 0x0(%0)\n"
+            "lqc2 $vf29, 0x10(%0)\n"
+            "lqc2 $vf30, 0x20(%0)\n"
+            "lqc2 $vf31, 0x30(%0)\n"
+            : : "r"((u8 *)gBattle + 0x60));
+        p2 = *(u8 **)((u8 *)gBattle + 0x264);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "vsub.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%2)\n"
+            : : "r"(p2), "r"(s0), "r"(&t));
+        func_00209D70(&t);
+        func_0013B060(0);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "vmulax.xyzw $ACC, $vf28, $vf1x\n"
+            "vmadday.xyzw $ACC, $vf29, $vf1y\n"
+            "vmaddaz.xyzw $ACC, $vf30, $vf1z\n"
+            "vmaddw.xyzw $vf31, $vf31, $vf0w\n"
+            : : "r"(s0));
+        func_00208D70(*(s32 *)(a0 + 0x10));
+        func_00209C50();
+        func_0013B110(1);
+    }
+}
 void func_0020DA10(s32);
 
 void func_00212560(s32 *a) {
@@ -901,13 +976,13 @@ void func_00214FD0(void) {
 extern u8 D_00568B90[];
 extern u8 D_00568C10[];
 
-#if 0
 void func_00215040(s16 id, s16 mask, s16 k) {
     u8 *p;
     u8 *q;
     void (*f)(void *);
 
-    for (p = *(u8 **)D_00568B90; p != D_00568C10; p = *(u8 **)p) {
+    p = *(u8 **)D_00568B90;
+    while (p != D_00568C10) {
         if (id == -1 || *(s16 *)(p + 0x1C) == id) {
             if (*(s16 *)(p + 0x1E) & mask) {
                 q = p + 0x20;
@@ -921,11 +996,9 @@ void func_00215040(s16 id, s16 mask, s16 k) {
                 }
             }
         }
+        p = *(u8 **)p;
     }
 }
-// differs: the loop pointer and the offset pointer swap registers (p in s3, q in s4 here, the original the other way round); 12 of 56 differ even with the offset computed before the key test
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215040);
 void func_00209390(s32);
 
 void func_00215120(s16 id, s16 mask, s16 k) {
@@ -1047,19 +1120,27 @@ void func_00215B20(void) {
     u8 *p;
     void (*f)(void *);
 
-    for (p = *(u8 **)D_00568B90; p != D_00568C10; p = *(u8 **)p) {
-        if ((u16)*(s16 *)(p + 0x1E) != 0) {
-            *(s32 *)(p + 0x8) = -1;
-            f = *(void (**)(void *))(p + 0xC);
-            if ((s32)f > 0) {
-                f(p);
+    p = *(u8 **)D_00568B90;
+    if (p != D_00568C10) {
+        do {
+            if (*(s16 *)(p + 0x1E) != 0) {
+                *(s32 *)(p + 0x8) = -1;
+                f = *(void (**)(void *))(p + 0xC);
+                if ((s32)f > 0) {
+                    f(p);
+                }
             }
-        }
+            p = *(u8 **)p;
+        } while (p != D_00568C10);
     }
-    for (p = *(u8 **)D_00568B90; p != D_00568C10; p = *(u8 **)p) {
-        if (*(s32 *)(p + 0x8) == -1) {
-            func_0020CB90(p);
-        }
+    p = *(u8 **)D_00568B90;
+    if (p != D_00568C10) {
+        do {
+            if (*(s32 *)(p + 0x8) == -1) {
+                func_0020CB90(p);
+            }
+            p = *(u8 **)p;
+        } while (p != D_00568C10);
     }
     func_0020F700(-1);
     func_0020A7F0(-1);
@@ -1067,7 +1148,7 @@ void func_00215B20(void) {
     func_00244040();
     func_00247410();
 }
-// differs: the 16-bit flag test is zero-extended with dsll32 / dsrl32 here, and the second loop label gets an alignment nop pair the original has (size 0xE8 against 0xF0)
+// differs: 0xE8 against 0xF0: the 16-bit flag test is loaded with lh and zero-extended with dsll32 / dsrl32 in the original, here it is lhu or a plain lh with bnez; the second loop's label is not padded the same way
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215B20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215C10);
@@ -1122,14 +1203,14 @@ s32 func_00216030(void) {
 }
 extern u8 *gBattle;
 
-#if 0
-s32 func_00216080(s32 x) {
-    u8 *p = gBattle + x * 0x2020;
+s32 func_00216080(s32 idx) {
+    u8 *p = gBattle + ((idx * 0x101) << 5);
     u8 *q = p + 0x830;
-    s32 v = *(s32 *)(p + 0x252C);
+    s32 v;
     s32 w;
     s32 r;
 
+    v = *(s32 *)(p + 0x252C);
     if (v == 0x22 || v == 0x24 || v == 0x23) {
         r = 0x1E;
     } else if (v == 0x28) {
@@ -1140,7 +1221,7 @@ s32 func_00216080(s32 x) {
         r = 0x1C;
     } else {
         w = *(s32 *)(q + 0xB9C);
-        if ((u32)w - 0x46 < 2u || w == 0x5B || w == 0x5C) {
+        if ((u32)(w - 0x46) <= 1u || w == 0x5B || w == 0x5C) {
             r = 0x20;
         } else {
             r = 0x1B;
@@ -1148,9 +1229,6 @@ s32 func_00216080(s32 x) {
     }
     return r;
 }
-// differs: 2 of 52 differ: the range test on w (w - 70 < 2) is kept in v0 where the original uses at, and the return value is joined through a common jr with a b
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216080);
 #if 0
 void func_00216150(s32 idx) {
     s32 i;
@@ -1217,12 +1295,38 @@ void func_002163D0(u8 *a) {
         }
     }
 }
-// differs: the stores of the two function addresses and of 0x442F0000 are scheduled in another order in this build (size 0xEC against 0x100)
+// differs: the stores of the two function addresses and of 0x442F0000 are scheduled in another order in this build; the second table lookup and its sll are also placed later (size 0xEC against 0x100)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002163D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002164D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216640);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216770);
+void func_00216770(u8 *a) {
+    u8 *p;
+    u8 *q;
+    s32 idx;
+    s32 e;
+    s16 idx2;
+
+    p = func_00215320(-1, 0x10);
+    idx = *(s16 *)(a + 0x20);
+    if (p != 0) {
+        void *fa = (void *)func_00212480;
+        void *fb = (void *)func_00212650;
+        q = p + 0x20;
+        *(void **)(p + 0x8) = fa;
+        *(void **)(p + 0xC) = fb;
+        memset(q, 0, 0x50);
+        e = *(s32 *)(D_0046FDD0 + idx * 4);
+        if (e != 0) {
+            *(s32 *)(p + 0x10) = func_00209540(e, 0x4000002, 0);
+        }
+        if (*(s32 *)(p + 0x10) != 0) {
+            __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(*(u8 **)a), "r"(q));
+            *(s32 *)(q + 0x20) = *(s32 *)(D_0046FDD0 + *(s16 *)(a + 0x22) * 4);
+            *(s32 *)(q + 0x28) = (*(s16 *)(a + 0x22) << 5) + 0x03001000;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216880);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216A60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216D20);
@@ -1236,7 +1340,7 @@ extern u8 *D_0046FDD0;
 extern u8 D_00469CE8[];
 void func_00216A60(void);
 u8 *amTask_Create(void *, s32, s32, s32, s32, void *);
-s16 func_00216080(s32);
+s32 func_00216080(s32);
 void func_002CA2F0(void *);
 extern void memset(void *, s32, s32);
 
@@ -1343,7 +1447,21 @@ void func_00217870(u8 *s) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002178C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002179E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217B00);
+void func_00217B00(u8 *s) {
+    *(s16 *)(s + 0x20) = 8;
+    *(s16 *)(s + 0x22) = 0;
+    *(s16 *)(s + 0x24) = 0;
+    jtbl_00469CC4[0](s);
+}
+void func_00217B20(u8 *s) {
+    V4Q v;
+    func_0020D780(&v);
+    *(void **)(s + 0x4) = &v;
+    *(s16 *)(s + 0x20) = 0x7;
+    *(s16 *)(s + 0x22) = 0;
+    *(s16 *)(s + 0x24) = 0;
+    jtbl_00469CC4[0](s);
+}
 void func_00217B70(u8 *s) {
     V4Q v;
     func_0020D780(&v);
