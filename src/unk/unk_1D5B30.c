@@ -644,7 +644,7 @@ void func_001D7A70(Fighter *c) {
     *(s8 *)((char *)c + 0x1D0B) = *(s16 *)(D_00447450 + x * 96 + y * 8);
 }
 #endif
-// differs: the two loads of each pair land in the other registers (a3 and t0 swapped, eight times); the table math is right
+// differs: 36 of 84 instructions; x and y land in a3/t0 where the original uses t0/a2 (register choice, not the table math). Tried: x/y declaration order, s32/u32/s16/u16 locals, index as y*8 + (D + x*96) (same 36 either way)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7A70);
 s32 func_001D7BC0(Fighter *c) {
     if (c->f1FF8 == -1) {
@@ -2048,26 +2048,31 @@ void func_001DF830(Fighter *c, s32 a1) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DF8F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFA90);
+/* r6 best attempt diff 13 */
 #if 0
 void func_001DFBF0(Fighter *c) {
-    f32 x = c->f17E4;
+    f32 var_f1;
+    s32 var_v1;
 
-    if (x > 1000.0f) {
-        x = 1000.0f;
-    } else if (x < 0.0f) {
-        x = 0.0f;
+    var_f1 = c->f17E4;
+    if (var_f1 > 1000.0f) {
+        var_f1 = 1000.0f;
+    } else if (var_f1 < 0.0f) {
+        var_f1 = 0.0f;
     }
-    c->f17E4 = x;
-    if (x <= 300.0f) {
+    c->f17E4 = var_f1;
+    if (var_f1 <= 300.0f) {
         c->f17EC = 0;
-    } else if (x <= 600.0f) {
-        c->f17EC = 1;
-    } else {
-        c->f17EC = 2;
+        return;
     }
+    var_v1 = 1;
+    if (var_f1 > 600.0f) {
+        var_v1 = 2;
+    }
+    c->f17EC = var_v1;
 }
 #endif
-// differs: 7 of 36: the clamp arms (the original stores f17E4 in a delay slot on every path, which this matches; the nop between the mov.s and the 0.0f load is the remaining difference)
+// differs: 13 of 36 (1000 clamp: the bc1t delay slot and the mtc1 $zero land one instruction early; the 600 block uses $v1 with bc1f and a b)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFBF0);
 #if 0
 s32 func_001DFC80(Fighter *c, s32 a1, f32 f12) {
