@@ -2977,17 +2977,13 @@ void func_001E3460(Fighter *c) {
         }
     }
 }
-#if 0
 void func_001E3550(Fighter *c) {
     if (func_001E8290((char *)c + 0x650) != 0) {
         if (gBattle->f8944 == 0) {
-            func_001C81D0(0, -1);
+            func_001C81D0((s32)c, -1);
         }
     }
 }
-#endif
-// differs: the original keeps the pointer in $s0 across the call (a frame), which the C does not reproduce
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3550);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E35A0);
 void func_001E3900(Fighter *c) {
     c->fC9C = 0x3F800000;
