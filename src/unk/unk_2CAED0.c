@@ -418,4 +418,38 @@ void func_002CC710(void) {
         func_002EB560(t);
     }
 }
+/* differs: 1 of 55: the original puts `move $v0, $zero` in the delay slot of the first bne (a zero kept in v0 before the
+   branch); ours has a nop there. An s32 return changes the whole register allocation (43 differ). */
+#if 0
+typedef struct Tut152 {
+    char pad0[0x152];
+    s16 f152;
+} Tut152;
+
+extern u8 D_005C2010[];
+extern s32 D_00456570[];
+extern s32 D_00456574[];
+extern void func_002EB7B0();
+
+void func_002CC760(Tut152 *a) {
+    TutWork *t;
+
+    if (a->f152 == 4) {
+        t = (TutWork *)D_005C2010;
+        gTutWork = t;
+        memset(*(TutWork * volatile *)&gTutWork, 0, 0x40);
+        t->f4 = *(s8 *)(gBattle + 0x8AB6);
+        t->f10 = D_00456570[t->f4];
+        t->fC = t->f10;
+        if (t->fC == 1) {
+            *(s32 *)&t->f14 = t->fC;
+        } else {
+            *(s32 *)&t->f14 = D_00456574[t->f4];
+        }
+        func_002EB7B0(a);
+    } else {
+        gTutWork = NULL;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC760);
