@@ -133,6 +133,64 @@ void func_002EA460(void) {
     func_002E9970(0, 0);
     *(void **)(p + 0x24) = func_002EA430;
 }
+#if 0
+// differs: 0x1F8 of 0x220 bytes; frame 128 vs 176, float operation order and load scheduling
+typedef struct {
+    f32 x;
+    f32 y;
+    s32 z;
+    s32 w;
+} Vec4u;
+extern void func_00136E80();
+extern void func_00137560();
+extern void amDraw_FlushPacket();
+
+void func_002EA4A0(void) {
+    u8 *g = D_00470958;
+    u8 *s4;
+    u8 *s3;
+    Vec4u p0;
+    Vec4u p1;
+    Vec4u p2;
+    Vec4u pc;
+    f32 h = 0.5f;
+
+    if (*(u8 **)(g + 4) != 0 && *(s32 *)(g + 0xC) == 1) {
+        s4 = *(u8 **)(*(u8 **)(g + 4) + 0x30);
+        amModel_SetCurrent(*(s32 *)(g + 0x58), 0x5100000);
+        s3 = *(u8 **)(g + 0x4C);
+        p0.x = *(f32 *)(s4 + 0x20) - h * (f32)*(s16 *)(s3 + 0x10);
+        p0.z = 0;
+        p0.w = 1;
+        p0.y = *(f32 *)(s4 + 0x24) - h * (f32)*(s16 *)(s3 + 0x12);
+        p1.x = *(f32 *)(s4 + 0x20) + h * (f32)*(s16 *)(s3 + 0x10);
+        p1.y = *(f32 *)(s4 + 0x24) + h * (f32)*(s16 *)(s3 + 0x12);
+        p1.z = 0;
+        p1.w = 1;
+        *(s32 *)&pc.x = 0;
+        *(s32 *)&pc.y = 0;
+        pc.z = 1;
+        pc.w = 1;
+        p2.x = (f32)*(s16 *)(s3 + 0x10) - h;
+        p2.z = 1;
+        p2.w = 1;
+        p2.y = (f32)*(s16 *)(s3 + 0x12) - h;
+        func_00136E80(0x40000C24, 0, *(s32 *)(g + 0x48), 0x44, 5);
+        func_00137560(&p0, &pc);
+        func_00137560(&p1, &p2);
+        amDraw_FlushPacket();
+        D_00470704 = *(s32 *)(g + 0x54);
+        D_0047070C = 0x5000000;
+        D_00470708 = 0;
+        amModel_SetCurrent(*(s32 *)(g + 0x54), 0x5000000);
+        D_00470238 = 0;
+        func_0022C060(*(s32 *)(g + 8), 1.0f);
+        *(f32 *)(*(u8 **)(*(u8 **)(g + 8) + 0x30) + 0x20) = *(f32 *)(*(u8 **)(*(u8 **)(g + 8) + 0x30) + 0x20) + h * (p0.x + p1.x);
+        *(f32 *)(*(u8 **)(*(u8 **)(g + 8) + 0x30) + 0x24) = *(f32 *)(*(u8 **)(*(u8 **)(g + 8) + 0x30) + 0x24) + p1.y;
+        func_0022C560(*(s32 *)(g + 8));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EA4A0);
 void func_002EA6C0(void) {
     u8 *s0 = D_00470958;
@@ -336,6 +394,61 @@ void func_002EAEB0(void) {
 // differs: a loop over a bytecode pointer; the code matches except for one alignment nop that this build does not place before the end of the if block (0xB0 bytes against 0xC0)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EAEB0);
+#if 0
+// differs: compiles to 0x14C of 0x160; the battle index/CSE order and the join nop differ
+extern void func_001C75D0(void *, s32);
+extern void func_002EAC30(void);
+typedef s32 (*S32Fn)(void);
+
+void func_002EAF70(s32 arg) {
+    s32 keep = arg;
+    u8 *p = D_00470958;
+    u8 *m;
+    s32 a2;
+    s32 v;
+    u8 *bw;
+    S32Fn fn;
+
+    if (*(s32 *)(p + 0x18) == 0) {
+        arg = 1;
+    } else {
+        fn = *(S32Fn *)(p + 0x24);
+        if (fn != 0) {
+            arg = fn();
+        } else {
+            arg = 1;
+            if (*(s32 *)(p + 0x0C) != 1) {
+                arg = 0;
+            }
+        }
+    }
+    if (arg == 0) {
+        return;
+    }
+    if (arg == 1 && keep == 0) {
+        return;
+    }
+    m = *(u8 **)(p + 0x18);
+    if ((m[0] & 2) && (s8)m[3] < 0) {
+        a2 = (s8)m[1];
+        bw = gBattle + ((a2 * 257) << 5);
+        v = *(s16 *)(*(u8 **)(p + 0x14) + a2 * 2 + 8) + 0x2D8;
+        if (*(s32 *)(bw + 0x13A0) != v) {
+            *(s16 *)(bw + 0x830 + 0xCB4) = 1;
+            *(s32 *)(bw + 0x830 + 0xB70) = v;
+            *(s16 *)(bw + 0x830 + 0xCB6) = 1;
+            func_001C75D0(bw + 0x830, 0xF);
+            *(f32 *)(bw + 0x830 + 0xCA4) = 0.1f;
+            *(f32 *)(bw + 0x830 + 0xCA8) = 0.05f;
+        }
+    }
+    *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) + 1;
+    if (*(u8 *)*(u8 **)(p + 0x18) & 1) {
+        *(s32 *)(p + 0x48) = *(s32 *)(p + 0x48) + 1;
+    }
+    func_002EAC30();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EAF70);
 void func_002EB0D0(void) {
     s32 old;

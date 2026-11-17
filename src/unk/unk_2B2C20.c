@@ -103,6 +103,32 @@ void func_002B3D40(SklAct *s) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B3D90);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B47D0);
+/* differs: about 14 of 40: the register roles now match; the fC update (2 -> 3, 0 -> 1) and the join branch are laid out
+   differently (the original branches with beq to the store). Two-if and else-if forms tried. */
+#if 0
+extern void func_002B47D0(void);
+extern void amFile_Load(s32);
+
+void func_002B4950(void *o) {
+    u8 *s1 = (u8 *)o;
+    u8 *s0;
+
+    if (*(s32 *)((u8 *)gSklEdit + 0x2C) == 1) {
+        s0 = (u8 *)gSklEdit + *(s32 *)(s1 + 0x30) * 456 + 0x48;
+        if (*(s16 *)((u8 *)*(void **)s0 + 4) == 3) {
+            amFile_Load(*(s32 *)(*(u8 **)gSklEdit + 0x54));
+            *(s32 *)(s0 + 8) = *(s32 *)((u8 *)*(void **)s0 + 0x54);
+            if (*(s32 *)(s0 + 0xC) == 2) {
+                *(s32 *)(s0 + 0xC) = 3;
+            }
+            if (*(s32 *)(s0 + 0xC) == 0) {
+                *(s32 *)(s0 + 0xC) = 1;
+            }
+            *(void **)(s1 + 0x1C) = (func_002B47D0 == NULL) ? NULL : (void *)func_002B47D0;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4950);
 typedef struct SklFile {
     char pad0[4];
