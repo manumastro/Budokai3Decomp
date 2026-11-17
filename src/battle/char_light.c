@@ -329,6 +329,31 @@ void func_00237110(s32 *p, s32 *q) {
     p[12] = *(s16 *)(qb + 0x16);
 }
 #endif
+#if 0
+// differs: 4 of 43 (6 forms of the index sum tried): the whole body matches except the register of the a0[0x20] intermediate (original loads it into v1 first); the amModel_SetupPart tail matches
+void func_00237110(u8 *a0, u8 *a1) {
+    s32 *p;
+    s32 q;
+    s32 r;
+
+    *(s32 *)(a0 + 4) = 5;
+    *(s32 *)(a0 + 0x20) = *(s32 *)(a1 + 0x10);
+    *(s32 *)(a0 + 0x24) = *(s16 *)(a1 + 0x14);
+    *(f32 *)(a0 + 0x28) = *(f32 *)(a1 + 0x18);
+    *(f32 *)(a0 + 0x34) = *(f32 *)(a1 + 0x1C);
+    *(s32 *)(a0 + 0x30) = 0;
+    q = *(s32 *)(a0 + 0x20);
+    r = *(s32 *)(a0 + 0x24);
+    p = (s32 *)(*(s32 *)(q + 0x14) + (r << 4));
+    *(s32 *)(a0 + 0x2C) = p[2];
+    if ((*(s16 *)(a1 + 0x16) & 2) != 0) {
+        if ((*(s32 *)(a0 + 0x30) & 2) == 0) {
+            amModel_SetupPart(*(s32 *)a0, *(s32 *)(a0 + 0x20), *(s32 *)(a0 + 0x24), *(f32 *)(a0 + 0x28));
+        }
+    }
+    *(s32 *)(a0 + 0x30) = *(s16 *)(a1 + 0x16);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237110);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002371C0);
 void func_002373E0(s32 *p, s32 *q) {
