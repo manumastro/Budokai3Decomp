@@ -21,6 +21,9 @@ extern void func_0022C560(s32);
 extern void memset(void *, s32, s32);
 extern void func_00253FC0(s32, s32 *);
 extern s32 gBtlSys;
+extern void *gBattle;
+extern void amCdFs_ReleaseCache(s32);
+extern void amCdFs_Close(s32, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern u32 func_0012EAE0(s32);
 
@@ -172,6 +175,29 @@ void func_00236110(void) {
             i++;
             s += 0xC0;
         } while (i < *(s32 *)((u8 *)gBattle + 0x88D8));
+    }
+    memset(D_0058BBB0, 0, 0x300);
+}
+#endif
+#if 0
+// differs: 38 of 48: the loop shape (cursor and counter registers, the lw of the 0x88D8 count, the memset tail) differs: the original keeps the counter in s1 and the cursor in s0, and reads the count from gBattle with a reload each pass (3 forms tried)
+void func_00236110(void) {
+    u8 *s0;
+    s32 i = 0;
+
+    if (0 < *(s32 *)((u8 *)gBattle + 0x88D8)) {
+        s0 = D_0058BBB0;
+        for (i = 0; i < *(s32 *)((u8 *)gBattle + 0x88D8); i++) {
+            if (*(s32 *)(s0 + 4) != 0) {
+                amCdFs_ReleaseCache(*(s32 *)s0);
+                *(s32 *)s0 = 0;
+                *(s32 *)(s0 + 4) = 0;
+            } else if (*(s32 *)s0 != 0) {
+                amCdFs_Close(*(s32 *)s0, 0);
+                *(s32 *)s0 = 0;
+            }
+            s0 += 0xC0;
+        }
     }
     memset(D_0058BBB0, 0, 0x300);
 }
