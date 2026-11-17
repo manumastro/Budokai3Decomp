@@ -268,6 +268,70 @@ s32 func_001AC110(void) {
     return 0;
 }
 #endif
+#if 0
+// differs: best of 120 declaration orders is 50 of 78 (identity 65). Hoisted count and shared pointer (bw+0x830) match the shape; remaining: bw and n swapped in registers, the counter and base swapped, and the tail of the inner test (bgez/bgtz order).
+extern u8 D_00492FC0[];
+s32 func_001AC110(void) {
+    BattleWork *bw;
+    s32 cnt;
+    s32 i;
+    s32 n1;
+    s32 n2;
+    u8 *p;
+    u8 *q;
+    s32 t1;
+    s32 t2;
+    s32 t3;
+    s32 t4;
+    s32 t5;
+    s32 base;
+    cnt = 0;
+    i = 0;
+    bw = gBattle;
+    n1 = BW_FIELD(bw, s32, 0x88D8);
+    q = (u8 *)bw + 0x830;
+    if (0 < n1) {
+        p = q;
+        do {
+            if (FT_FIELD(p, s16, 0x13A4) > -1) {
+                cnt++;
+            }
+            i++;
+            p += 0x2020;
+        } while (i < n1);
+    }
+    n2 = BW_FIELD(bw, s32, 0x88D8);
+    t3 = 0;
+    do {
+        base = (t3 & 3) * 2;
+        t2 = 0;
+        do {
+            t4 = (t2 & 1) | base;
+            t5 = -1;
+            if (0 < n2) {
+                p = q;
+                t1 = 0;
+                do {
+                    if (FT_FIELD(p, s16, 0x13A4) == t4) {
+                        t5 = t1;
+                        break;
+                    }
+                    t1++;
+                    p += 0x2020;
+                } while (t1 < n2);
+            }
+            if (t5 > -1 || cnt <= 0) {
+                if ((*(u16 *)(D_00492FC0 + t4 * 0xB8 + 0xE) & 8) != 0) {
+                    return 1;
+                }
+            }
+            t2++;
+        } while (t2 < 2);
+        t3++;
+    } while (t3 < 4);
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC110);
 #if 0
 // differs: the fighter-table walk keeps its registers differently (the gBattle pointer and the entry pointer in other saved registers: 36 of 57 instructions differ)
@@ -433,6 +497,38 @@ void func_001AC400(void *pv) {
     }
 }
 #endif
+#if 0
+// differs: size 0x80 against 0x90 with the do-while outer loop (the for-loop form has 34 instructions and an extra guard). The original has two nops after the outer bnez and a different pointer/counter assignment in the inner loop.
+void func_001AC400(void *p0) {
+    u8 *t1;
+    s32 t0;
+    s32 a1;
+    s32 a3;
+    u32 *a2;
+    u8 *q;
+    u8 *p = p0;
+    *(s32 *)(p + 0x8) += (s32)p;
+    t1 = *(u8 **)(p + 0x8);
+    if (0 < *(s32 *)(p + 0x4)) {
+        t0 = 0;
+        do {
+            a1 = *(s16 *)(t1 + 0xE);
+            if (0 < a1) {
+                a3 = 0;
+                a2 = (u32 *)t1;
+                do {
+                    *(s32 *)((u8 *)a2 + 0x40) += (s32)p;
+                    a3++;
+                    a2++;
+                } while (a3 < *(s16 *)(t1 + 0xE));
+            }
+            q = t1 + 0x44;
+            t1 = q + (a1 - 1) * 4;
+            t0++;
+        } while (t0 < *(s32 *)(p + 0x4));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC400);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC490);
 #if 0
@@ -478,6 +574,52 @@ void func_001AC670(void *a0) {
         func_002CF650(0);
     }
     BW_FIELD(bw, s8, 0x8975) = 0;
+    func_002CFD70();
+}
+#endif
+#if 0
+// differs: size 0x124 against 0x150 (previous attempt 0x134). gBattle at the top and at the end matches; the gScrMachines loop is shorter (the original reloads the global each pass).
+extern u8 *gScrMachines;
+extern void AdxSlot_SetPausedAll(s32 a);
+extern void func_0029D860(s32 a);
+extern void func_002CF650(s32 a);
+extern void func_002CFD70(void);
+extern void func_00125740(void *d, void *s, s32 n);
+extern u8 D_00492FC0[];
+void func_001AC670(void *a0) {
+    BattleWork *bw;
+    u8 *e;
+    s32 i;
+    u8 *s0;
+    s32 id;
+    bw = gBattle;
+    if (a0 != 0) {
+        if (BW_FIELD(bw, s16, 0x8944) != 0) {
+            for (i = 0; i < 2; i++) {
+                e = gScrMachines + i * 0x5C;
+                if (*(s32 *)(e + 0xC) != 0) {
+                    *(s32 *)(e + 0xC) = 2;
+                }
+            }
+        } else if (BW_FIELD(bw, s8, 0x8AB4) == 0) {
+            if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+                i = 0;
+                s0 = (u8 *)bw;
+                do {
+                    id = *(s16 *)(s0 + 0x1BD4);
+                    if (id > -1) {
+                        func_00125740(D_00492FC0 + id * 0xB8, s0 + 0x272C, 0xB8);
+                    }
+                    i++;
+                    s0 += 0x2020;
+                } while (i < BW_FIELD(bw, s32, 0x88D8));
+            }
+        }
+        AdxSlot_SetPausedAll(0);
+        func_0029D860(0);
+        func_002CF650(0);
+    }
+    BW_FIELD(gBattle, s8, 0x8975) = 0;
     func_002CFD70();
 }
 #endif
@@ -584,6 +726,33 @@ s32 func_001AC990(void) {
     return 0;
 }
 #endif
+#if 0
+// differs: size 0xE8 against 0xF0. The original keeps the battle pointer in s1 and the base in s0 (four saved registers); the count address 0x88D8 is hoisted into a saved register here (a fifth one). Reading the count through gBattle at each use is 57 of 60.
+s32 func_001AC990(void) {
+    BattleWork *bw;
+    s32 s3;
+    u8 *s0;
+    u8 *s2;
+    bw = gBattle;
+    s3 = 0;
+    s0 = (u8 *)bw + 0x830;
+    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+        s2 = s0;
+        do {
+            func_001D9480(s2);
+            s3++;
+            s2 += 0x2020;
+        } while (s3 < BW_FIELD(bw, s32, 0x88D8));
+    }
+    if (func_002CC4A0() == 4) {
+        BW_FIELD(bw, s32, 0x88FC) = 5;
+        BW_FIELD(bw, s32, 0x8900) = 0;
+        BW_FIELD(bw, s32, 0x8904) = *(s16 *)(s0 + ((BW_FIELD(bw, s32, 0x8900) * 257) << 5) + 0x13A4);
+        return 1;
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC990);
 extern void func_001D9480(void *);
 /* The battle work as a view: the fields at 0x88D8 and up read in place (no CSE of their addresses). */
@@ -627,6 +796,38 @@ s32 func_001ACA80(void) {
         bw->unk8904 = FT_FIELD(base + bw->unk8900 * 0x2020, s16, 0x13A4);
         FT_FIELD(base + (1 - bw->unk8900) * 0x2020, s32, 0x1AC4) = 0;
         bw->unk8AB1 = -bw->unk8AB1;
+        return 1;
+    }
+    return 0;
+}
+#endif
+#if 0
+// differs: size 0x120 against 0x140. The post-loop block hoists the 0x8AB1 address into a register; reading every field through gBattle makes it longer (83 against 80). Same family as 1AC990.
+extern void func_001D9480(void *);
+s32 func_001ACA80(void) {
+    BattleWork *bw;
+    s32 s3;
+    u8 *s0;
+    u8 *s2;
+    s32 a0;
+    bw = gBattle;
+    s3 = 0;
+    s0 = (u8 *)bw + 0x830;
+    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+        s2 = s0;
+        do {
+            func_001D9480(s2);
+            s3++;
+            s2 += 0x2020;
+        } while (s3 < BW_FIELD(bw, s32, 0x88D8));
+    }
+    if (0 < BW_FIELD(bw, s8, 0x8AB1)) {
+        BW_FIELD(bw, s32, 0x88FC) = 4;
+        BW_FIELD(bw, s32, 0x8900) = BW_FIELD(bw, s8, 0x8AB1) - 1;
+        BW_FIELD(bw, s32, 0x8904) = *(s16 *)(s0 + ((BW_FIELD(bw, s32, 0x8900) * 257) << 5) + 0x13A4);
+        a0 = 1 - BW_FIELD(bw, s32, 0x8900);
+        *(s32 *)(s0 + ((a0 * 257) << 5) + 0x1AC4) = 0;
+        BW_FIELD(bw, s8, 0x8AB1) = -BW_FIELD(bw, s8, 0x8AB1);
         return 1;
     }
     return 0;
@@ -919,6 +1120,44 @@ void func_001AE720(void) {
     }
 }
 #endif
+#if 0
+// differs: size 0x160 against 0x170. The mask struct layout (u32 at sp+0x20, halfwords from sp+0x28) matches; the early bc1t target is two instructions off, and the loop uses an index where the original increments a pointer.
+extern void func_001C8020(s32, void *);
+extern void (*D_004682F0)(void);
+typedef struct TimerMask {
+    u32 mask;
+    s16 pad[2];
+    s16 arr[4];
+} TimerMask;
+void func_001AE720(void) {
+    BattleWork *bw;
+    s32 j;
+    TimerMask m;
+    bw = gBattle;
+    if (BW_FIELD(bw, f32, 0x890C) > 0.0f) {
+        m.mask = 0;
+        if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+            j = 0;
+            do {
+                m.mask = m.mask | (1 << j);
+                m.arr[j] = 1;
+                j++;
+            } while (j < BW_FIELD(bw, s32, 0x88D8));
+        }
+        func_001C8020(0, &m);
+    }
+    BW_FIELD(gBattle, f32, 0x8910) = BW_FIELD(gBattle, f32, 0x890C);
+    BW_FIELD(gBattle, f32, 0x890C) = BW_FIELD(gBattle, f32, 0x890C) + BW_FIELD(gBattle, f32, 0x88F0);
+    if (!(BW_FIELD(gBattle, f32, 0x890C) > 1e8f)) {
+    } else {
+        BW_FIELD(gBattle, f32, 0x8910) = 0.0f;
+        BW_FIELD(gBattle, f32, 0x890C) = BW_FIELD(gBattle, f32, 0x88F0);
+    }
+    if (BW_FIELD(bw, f32, 0x890C) >= 120.0f) {
+        D_004682F0();
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE720);
 extern void func_001A8770(s32, void *);
 extern void func_00219270(s32);
@@ -1034,6 +1273,45 @@ void func_001AF010(void) {
     tb[4] = func_001B07C0;
     tb[5] = func_001B0700;
     func_00237000(4, tb);
+    func_00219270(*(s16 *)((u8 *)bw + 0x7E6));
+}
+#endif
+#if 0
+// differs: size 0xE4 against 0xF0. The 0x88D8 count address is hoisted into a1 here (original reloads with lui/addu per access); the six-word block at sp+0x20 and the calls match.
+extern void func_00237000(s32, void *);
+extern void func_00219270(s32);
+extern void func_001B07C0(void);
+extern void func_001B0700(void);
+typedef struct MaskArr {
+    u32 mask;
+    s16 pad[2];
+    s16 arr[4];
+} MaskArr;
+void func_001AF010(void) {
+    BattleWork *bw;
+    s32 j;
+    MaskArr m;
+    s32 st[6];
+    bw = gBattle;
+    BW_FIELD(bw, s32, 0x88F8) = 0;
+    BW_FIELD(bw, s32, 0x890C) = 0;
+    BW_FIELD(bw, s32, 0x8910) = 0;
+    m.mask = 0;
+    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+        j = 0;
+        do {
+            m.mask = m.mask | (1 << j);
+            m.arr[j] = 0;
+            j++;
+        } while (j < BW_FIELD(bw, s32, 0x88D8));
+    }
+    st[0] = (s32)((u8 *)bw + 0x830);
+    st[1] = (s32)((u8 *)bw + 0x2850);
+    st[2] = BW_FIELD(bw, s32, 0x8AA0);
+    st[3] = BW_FIELD(bw, s32, 0x7F4);
+    st[4] = (s32)func_001B07C0;
+    st[5] = (s32)func_001B0700;
+    func_00237000(4, st);
     func_00219270(*(s16 *)((u8 *)bw + 0x7E6));
 }
 #endif
@@ -1809,6 +2087,47 @@ void func_001B1900(Fighter *f) {
         FT_FIELD(f, s8, 0x2006) = 0;
         D_00468460[r](f);
         func_002CBFF0(1, f);
+    }
+}
+#endif
+#if 0
+// differs: 59 of 70. Prologue, the 0xC64/0x1FF9 tests and the call tail match up to the 0x1864 store; the compiler keeps the 0x1864 address in a register for the later store (the original reloads it), and the if/else join around the 13A4 call and the final call with the li a0 delay slot are two instructions long.
+void func_001B1900(void *a0) {
+    s32 v;
+    f32 f1;
+    f32 f2;
+    void *s0;
+    s0 = a0;
+    Fighter_ResetMotion(s0, 0);
+    if (FT_FIELD(s0, s32, 0xC64) != 0) {
+        FT_FIELD(s0, s32, 0x1864) = 1;
+        if (FT_FIELD(s0, s8, 0x1FF9) != 0) {
+            f2 = FT_FIELD(s0, f32, 0x44) - FT_FIELD(FT_FIELD(s0, void *, 0xBB4), f32, 0xC);
+            f1 = f2 - FT_FIELD(s0, f32, 0x1844);
+            if (f1 <= 0.0f) {
+                FT_FIELD(s0, s8, 0x1FF9) = 0;
+                FT_FIELD(s0, s32, 0x1864) |= 8;
+            }
+        }
+        func_001E5040(s0);
+        if (FT_FIELD(s0, s16, 0x13A4) < 0) {
+            v = func_001E94C0(s0);
+        } else {
+            v = func_001C2B10(s0);
+        }
+        if (v != 0) {
+            FT_FIELD(s0, s16, 0xCB4) = 0;
+        } else {
+            FT_FIELD(s0, s16, 0xCB4) = 1;
+        }
+        FT_FIELD(s0, s8, 0x2004) = 1;
+        FT_FIELD(s0, s8, 0x1FFB) = 1;
+        if (v != 15) {
+            FT_FIELD(s0, s16, 0xCB6) = 0;
+        }
+        FT_FIELD(s0, s8, 0x2006) = 0;
+        D_00468460[v](s0);
+        func_002CBFF0(1, s0);
     }
 }
 #endif
