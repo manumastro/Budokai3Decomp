@@ -1,4 +1,7 @@
 #include "common.h"
+
+extern void func_002E7400(u8 *, f32);
+extern void amSofdec_Stop(s32);
 #include "menu/menu.h"
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6BE0);
@@ -18,6 +21,12 @@ void Logomark_Close(Task *t) {
 }
 extern f32 D_004703BC;
 extern void func_002E6BE0(f32, void *);
+extern void func_002E8060(u8 *);
+extern void func_002E8190(u8 *);
+extern void func_002E8270(u8 *);
+extern void *amSofdec_Create(void *);
+extern void amSofdec_StartAfs(void *, s32, s32);
+extern s32 D_0046FD5C;
 extern void Logomark_Close(Task *);
 
 void func_002E7630(u8 *a0) {
@@ -300,10 +309,53 @@ void func_002E8060(u8 *a0) {
     *(s32 *)(s0 + 0x8) = 0;
     *(void **)(a0 + 0x1C) = ((void *)func_002E7F80 == 0) ? 0 : (void *)func_002E7F80;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E80F0);
+void func_002E80F0(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    f32 f;
+    f32 f1;
+
+    s0 = a0;
+    s1 = s0 + 0x30;
+    f = 1.0f;
+    if (*(s32 *)(s0 + 0x38) == 1) {
+        f = *(f32 *)(s1 + 4) / 50.0f;
+    }
+    func_002E7400(s1, f);
+    f1 = *(f32 *)(s1 + 4) - D_004703BC;
+    *(f32 *)(s1 + 4) = f1;
+    if (f1 <= 0.0f) {
+        amSofdec_Stop(*(s32 *)(s1 + 0xC));
+        *(void **)(s0 + 0x1C) = ((void *)func_002E8060 == 0) ? 0 : (void *)func_002E8060;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8190);
+#if 0
+// differs: the parameter block is filled in another order (the value 1 is loaded before the frame is set up and stored later), so the scheduling and registers differ
+void func_002E8270(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    u8 blk[0x24];
+
+    s1 = a0;
+    *(s32 *)(blk + 4) = 1;
+    *(s32 *)(blk + 8) = 0xA00000;
+    *(s32 *)(blk + 0xC) = 0x280;
+    *(s32 *)(blk + 0x10) = 0x200;
+    *(s32 *)blk = 0;
+    s0 = s1 + 0x30;
+    *(s16 *)(blk + 0x20) = 0;
+    *(s32 *)(blk + 0x14) = 3;
+    *(s32 *)(blk + 0x18) = -1;
+    *(s32 *)(blk + 0x1C) = D_0046FD5C;
+    *(void **)(s0 + 0xC) = amSofdec_Create(blk);
+    *(s32 *)(s0 + 4) = 0x43700000;
+    *(s32 *)(s0 + 0x10) = 0;
+    amSofdec_StartAfs(*(void **)(s0 + 0xC), 0xF4E, 1);
+    *(void **)(s1 + 0x1C) = ((void *)func_002E8190 == 0) ? 0 : (void *)func_002E8190;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8270);
-extern void func_002E8270(Task *);
 
 /* Sets the task's function to func_002E8270 (the logo mark's main step). */
 void Logomark_Begin(Task *t) {
