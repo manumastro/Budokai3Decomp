@@ -1,5 +1,17 @@
 #include "common.h"
 
+extern u8 D_0046AD90[];
+u8 *func_001F5FD0(s32, u8 *, s32, void (*)(void), void (*)(void));
+void func_002477C0(void);
+void func_00247770(void);
+
+extern s32 D_0058CA08[];
+u8 *func_00215320(s16, s32);
+void func_00212480(void);
+void func_00212650(void);
+s32 func_00209540(s32, s32, s32);
+void func_00209B50(s32, s32, s32);
+
 extern u8 *D_0046FDCC;
 void func_00215500(s32);
 void func_00244280(void);
@@ -365,7 +377,25 @@ s32 func_00241010(s32 i) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241010);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002410D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241280);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241500);
+void func_00241500(s32 x, s32 y) {
+    u8 *s2 = D_0046FE44 + x * 0x80;
+    u8 *s1;
+    u8 *s0;
+
+    s1 = func_00215320((s16)x, 4);
+    if (s1 != 0) {
+        *(void **)(s1 + 8) = (void *)func_00212480;
+        *(void **)(s1 + 0xC) = (void *)func_00212650;
+        s0 = s1 + 0x20;
+        memset(s0, 0, 0x50);
+        *(s32 *)(s1 + 0x10) = func_00209540(D_0058CA08[y], (x != 0) ? 0x400020 : 0x400010, 0);
+        if (*(s32 *)(s1 + 0x10) != 0) {
+            func_00209B50(*(s32 *)(s1 + 0x10), *(s32 *)(s2 + 0x20), 0);
+            *(s32 *)(s0 + 0x20) = D_0058CA08[0];
+            *(s32 *)(s0 + 0x28) = 0x3002000;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241600);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241710);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241AC0);
@@ -871,6 +901,27 @@ void func_002477C0(u8 *o) {
 // differs: same frame as func_00247770: the original keeps the object in s1 and o+0x30 in s0 (0x30 frame)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002477C0);
+#if 0
+void func_00247820(void) {
+    s32 s1 = 0;
+    u8 *r;
+    s32 s2 = D_0051CD0C[0];
+    s32 a = func_001A50F0(s2, 0x208);
+
+    if (a != 0) {
+        s1 = func_00209540(a, 0x2000004, 0);
+    }
+    if (s1 != 0) {
+        r = func_001F5FD0(0x85000000, D_0046AD90, 0, func_002477C0, func_00247770);
+        *(s32 *)(r + 0x20) &= ~0x800;
+        *(s32 *)(r + 0x20) |= 0x800;
+        memset(r + 0x30, 0, 0x80);
+        *(s32 *)(r + 0x38) = s1;
+        *(s32 *)(r + 0x34) = func_001A50F0(s2, 0x280);
+    }
+}
+// differs: the saved registers of the three locals (the table value, the counter and the new block) do not match the original under any declaration order tried
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247820);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247900);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002479B0);
