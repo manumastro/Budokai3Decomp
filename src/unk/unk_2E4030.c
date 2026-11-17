@@ -92,7 +92,46 @@ void ArenaStageSel_CreateObj(Ctx2E4 *c) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E40D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E44A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E46A0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4AC0);
+typedef struct Vec4a {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec4a;
+
+extern Vec4a D_00456E20;
+extern Vec4a D_00456E30;
+extern Vec4a D_00456E40;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00134690(s32, s32, void *, s32, s32, s32);
+extern void func_00135F10(Vec4a *, Vec4a *);
+extern void amDraw_FlushPacket(void);
+
+void func_002E4AC0(u8 *a0) {
+    Vec4a p50;
+    Vec4a q40;
+    Vec4a r30;
+
+    p50 = D_00456E20;
+    q40 = D_00456E30;
+    r30 = D_00456E40;
+    amModel_SetCurrent(*(s32 *)(a0 + 4), 0x7000);
+    func_00134690(1, 0x101924, &r30, 0x19, 0x44, 5);
+    *(s32 *)&p50.x = 0x437A0000;
+    *(s32 *)&p50.y = 0x437A0000;
+    *(s32 *)&q40.x = 0x3BC00000;
+    *(s32 *)&q40.y = 0x3BC00000;
+    func_00135F10(&p50, &q40);
+    *(s32 *)&p50.x = 0xC37A0000;
+    *(s32 *)&q40.x = 0x3F1C8000;
+    func_00135F10(&p50, &q40);
+    *(s32 *)&p50.x = 0x437A0000;
+    *(s32 *)&p50.y = 0xC37A0000;
+    *(s32 *)&q40.x = 0x3BC00000;
+    *(s32 *)&q40.y = 0x3F1C8000;
+    func_00135F10(&p50, &q40);
+    *(s32 *)&p50.x = 0xC37A0000;
+    *(s32 *)&q40.x = 0x3F1C8000;
+    func_00135F10(&p50, &q40);
+    amDraw_FlushPacket();
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4BF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4D60);
 extern s32 D_00470704;
