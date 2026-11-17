@@ -265,7 +265,7 @@ extern u8 D_004B4B40[];
 extern void func_002EE1C0();
 extern void func_002ECFD0();
 extern void func_002F4A90();
-extern void func_002EE7A0();
+extern s16 func_002EE7A0();
 extern void func_002EE9F0();
 extern void func_002EDC50();
 extern void Save_Load();
@@ -305,6 +305,48 @@ void func_002EF540(u8 *a0) {
         }
     }
 }
+#if 0
+// differs: 20 bytes short (0x12C vs 0x140): the frame and the switch layout match; in the kind 6 arm the original's call and store order around InputPass_CopyName / func_002F2600 / func_002EE7A0 differs (one extra instruction before the r test)
+void func_002EF680(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    u8 buf[0x30];
+    s32 kind;
+    s16 r;
+    void *fp;
+    s1 = a0;
+    s0 = *(u8 **)(a0 + 0x30);
+    func_002EE1C0(s0);
+    func_002ECFD0(s0, 1);
+    switch ((s16)InputPass_GetKind(*(s32 *)(s0 + 0x54))) {
+    case 6:
+        InputPass_CopyName(*(s32 *)(s0 + 0x54), buf);
+        func_002F2600(*(s32 *)(s0 + 0x54));
+        r = (s16)func_002EE7A0(s0, buf);
+        *(s32 *)(s0 + 0x54) = 0;
+        if (r < 0) {
+            *(f32 *)(s0 + 0x1C) = 300.0f;
+            fp = (void *)func_002EF440;
+            *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        } else {
+            func_002EE9F0(s0);
+            func_002EDC50(s0);
+            *(s16 *)(s0 + 0x18) = 4;
+            Save_Load(0x3000, 0);
+            Save_Request(6, -1, 0);
+            fp = (void *)func_002EF4C0;
+            *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        }
+        break;
+    case 7:
+        func_002F2600(*(s32 *)(s0 + 0x54));
+        *(s32 *)(s0 + 0x54) = 0;
+        fp = (void *)func_002EF7C0;
+        *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        break;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF680);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF7C0);
 extern f32 gFrameDelta;
