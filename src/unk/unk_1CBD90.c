@@ -1216,15 +1216,19 @@ int Scr_CmdFighterSetup8480(void *unused, Arg *a) {
     func_001C7D90(gBattle->tbl[side], id, gBattle->tbl[1 - side]);
     return 1;
 }
-// differs: Size 0x7C against 0x90. The original also loads p[0] and p[1] into a3/t0 (not used by the visible calls); the source use of those two values is unknown.
+/* r6 best attempt diff 4 */
+// differs: 4 instructions (register choice for the tbl temporaries, gBattle reloc field). The 5-argument call matches the real callee signature; permuter from base 20 reached best score 10 in 450 s, no score 0.
 #if 0
 int func_001CF600(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = gBattle->tbl[p[3]];
+    int i3 = p[3];
     int s0 = p[2];
+    int a3v = p[1];
+    int t0v = p[0];
+    char *t = gBattle->tbl[i3];
     char *q = *(char **)(t + 0x1CF8);
     short v = *(short *)(q + s0 * 20 + 0xD6);
-    func_001C8A50(t, s0, v);
+    func_001C8A50(t, s0, v, a3v, t0v);
     func_001C89A0(t, s0);
     return 1;
 }
