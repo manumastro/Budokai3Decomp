@@ -452,6 +452,60 @@ void func_002EB380(void) {
         }
     }
 }
+extern s32 D_00457E50[];
+extern void func_002E9BA0(s32);
+extern void func_002EAC30(void);
+#if 0
+void func_002EB3E0(s32 a0, s32 a1) {
+    u8 *ob = D_00470958;
+    s32 v3;
+    u8 *s1;
+    if (ob == 0) {
+        return;
+    }
+    *(s32 *)ob = a0;
+    *(s32 *)(ob + 0x14) = D_00457E50[a0] + a1 * 12;
+    *(s32 *)(ob + 0x18) = 0;
+    *(s32 *)(ob + 0x1C) = 0;
+    *(s32 *)(ob + 0x20) = 0;
+    *(s32 *)(ob + 0xC) = -1;
+    *(s32 *)(ob + 0x48) = *(s32 *)(*(u8 **)(ob + 0x14));
+    *(s32 *)(ob + 0x24) = 0;
+    s1 = gBattle + 0x830;
+    v3 = *(s16 *)(*(u8 **)(ob + 0x14) + 8) + 0x2D8;
+    if (*(s32 *)(gBattle + 0x13A0) != v3) {
+        *(s16 *)(s1 + 0xCB4) = 1;
+        *(s32 *)(s1 + 0xB70) = v3;
+        func_001C75D0(s1, 15);
+        *(s16 *)(s1 + 0xCB6) = 1;
+        *(s32 *)(s1 + 0xCA4) = 0x3F800000;
+        *(s32 *)(s1 + 0xCA8) = 0;
+    }
+    s1 = gBattle + 0x2850;
+    v3 = *(s16 *)(*(u8 **)(ob + 0x14) + 0xA) + 0x2D8;
+    if (*(s32 *)(gBattle + 0x33C0) != v3) {
+        *(s16 *)(s1 + 0xCB4) = 1;
+        *(s32 *)(s1 + 0xB70) = v3;
+        func_001C75D0(s1, 15);
+        *(s16 *)(s1 + 0xCB6) = 1;
+        *(s32 *)(s1 + 0xCA4) = 0x3F800000;
+        *(s32 *)(s1 + 0xCA8) = 0;
+    }
+    func_002E9BA0(0);
+    func_002E9B90(0);
+    func_002EAC30();
+    if (*(s32 *)(ob + 8) == 0) {
+        *(s32 *)(ob + 8) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)(ob + 0x50) + 0x1C) + 0xC0), 0.0f);
+        D_00470704 = *(s32 *)(ob + 0x54);
+        D_0047070C = 0x5000000;
+        amModel_SetCurrent(*(s32 *)(ob + 0x54), 0x5000000);
+        D_00470708 = 0;
+        D_00470238 = 0;
+        func_0022C060(*(s32 *)(ob + 8), 0.0f);
+    }
+}
+// differs: 71 of 95 instructions differ: the first half (object fields, the D_00457E50 table entry) matches but the original reads the gBattle pointer and the table entry again after the two battle blocks; the store order inside the two blocks and the register of the object pointer differ (s0 here, s1 in ours). Declaration orders tried.
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EB3E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EB560);
 s32 func_002EB7B0(void) {
