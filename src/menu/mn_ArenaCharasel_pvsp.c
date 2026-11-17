@@ -13,6 +13,14 @@ extern s16 D_005C4122[];
 extern void func_0030D300(void *);
 extern void func_00308BD0(void);
 extern void func_00308AF0(u8 *);
+extern s8 func_0027DAA0(void *);
+extern s16 func_0027DAE0(void *);
+extern s16 func_0027DAD0(void *);
+extern s8 func_0027DAB0(void *);
+extern void func_0027DB20(void *);
+extern s16 D_005C412A[];
+extern void func_00308E40(u8 *);
+extern void func_00308DA0(u8 *);
 
 extern void func_0022C700(void);
 extern void func_00133B50(s32, s32);
@@ -154,6 +162,38 @@ void func_00308E40(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308E40);
+#if 0
+// differs: same first-branch load order as func_00308C40: the original loads the word at +8 before the byte at +0xD
+void func_00308EB0(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    s32 a1;
+    s32 a2;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    if (func_0027DAA0(*(void **)(a0 + 0x30)) == 1) {
+        a1 = *(s32 *)(s0 + 8);
+        a2 = s0[0xD];
+        *(u8 *)(a1 + a2 + 0x11) = 1;
+        *(void **)(s1 + 0x1C) = ((void *)func_00308E40 == 0) ? 0 : (void *)func_00308E40;
+        return;
+    }
+    D_005C4126[s0[0xD]] = func_0027DAE0(*(void **)s0);
+    D_005C412A[s0[0xD]] = func_0027DAD0(*(void **)s0);
+    if (func_0027DAB0(*(void **)s0) == 5) {
+        return;
+    }
+    a1 = s0[0xD];
+    if ((*(u16 *)(D_00492FCE + a1 * 184) & 0x300) == 0) {
+        return;
+    }
+    s0[0xE] = 1;
+    D_005C4122[s0[0xD]] = 1;
+    func_0027DB20(*(void **)s0);
+    *(void **)(s1 + 0x1C) = ((void *)func_00308DA0 == 0) ? 0 : (void *)func_00308DA0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308EB0);
 extern s8 func_0027DAB0(void *);
 extern void func_00308EB0();
