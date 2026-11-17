@@ -1,5 +1,7 @@
 #include "common.h"
 #include "menu/menu.h"
+extern void Help_Exit();
+extern void amCdFs_Close(void *, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void Help_Load();
 extern void *amHeap_Alloc(s32, s32, char *, s32);
@@ -127,7 +129,41 @@ extern void *gInputName;
 void InputPass_ClearName(void) {
     gInputName = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2500);
+void func_002F2500(void) {
+    u8 *s0;
+
+    s0 = (u8 *)gInputName;
+    if (s0 != 0) {
+        *(s16 *)(s0 + 0x1C) = *(s16 *)(s0 + 0x1C) - 1;
+        if (*(s16 *)(s0 + 0x1C) == 0) {
+            if (*(void **)(s0 + 0x18) != 0) {
+                amHeap_Free(*(void **)(*(u8 **)(s0 + 0x18) + 0x30));
+                amTask_Kill(*(void **)(s0 + 0x18));
+            }
+            if (*(void **)s0 != 0) {
+                amCdFs_Close(*(void **)s0, 0);
+            }
+            if (*(void **)(s0 + 0x4) != 0) {
+                amCdFs_Close(*(void **)(s0 + 0x4), 0);
+            }
+            if (*(void **)(s0 + 0x8) != 0) {
+                amCdFs_Close(*(void **)(s0 + 0x8), 0);
+            }
+            if (*(void **)(s0 + 0xC) != 0) {
+                amHeap_Free(*(void **)(s0 + 0xC));
+            }
+            if (*(void **)(s0 + 0x10) != 0) {
+                amHeap_Free(*(void **)(s0 + 0x10));
+            }
+            if (*(void **)(s0 + 0x14) != 0) {
+                amHeap_Free(*(void **)(s0 + 0x14));
+            }
+            amHeap_Free(s0);
+            gInputName = 0;
+            Help_Exit();
+        }
+    }
+}
 void func_002F2600(u8 *task) {
     u8 *s3;
     u8 *s2;
@@ -314,4 +350,40 @@ u8 InputPass_GetPhase(Task *t) {
     }
     return k;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3FA0);
+void func_002F3FA0(u8 *task) {
+    u8 *s3;
+    u8 *s2;
+    s32 s1;
+    u32 *s0;
+
+    s3 = (u8 *)gInputName;
+    if (task != 0) {
+        s2 = *(u8 **)(task + 0x30);
+        if (*(void **)(s2 + 0x24) != 0) {
+            func_0022D4B0(*(void **)(s2 + 0x24), 1);
+        }
+        if (*(void **)s2 != 0) {
+            func_0022D0E0(*(void **)s2, 1);
+            *(void **)s2 = 0;
+        }
+        if (*(void **)(s2 + 0x28) != 0) {
+            func_0022D0E0(*(void **)(s2 + 0x28), 1);
+            *(void **)(s2 + 0x28) = 0;
+        }
+        if (*(void **)(s2 + 0x2C) != 0) {
+            func_0022D0E0(*(void **)(s2 + 0x2C), 1);
+            *(void **)(s2 + 0x2C) = 0;
+        }
+        s1 = 0;
+        s0 = (u32 *)s2;
+        do {
+            func_0022D4B0((void *)s0[1], 1);
+            s1++;
+            s0++;
+        } while (s1 < 8);
+        amHeap_Free(s2);
+        amTask_Kill((void *)task);
+        *(s32 *)(s3 + 0x18) = 0;
+        Help_Exit();
+    }
+}
