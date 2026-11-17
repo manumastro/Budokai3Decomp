@@ -117,9 +117,8 @@ void func_0024A350(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A440);
-// GIVEN UP: the result of func_0020AE80 is moved to a0 before its test in the original (tried three forms)
-#if 0
 void func_0024A680(s32 *a0) {
+    s32 *p0 = a0;
     u8 *s2 = (u8 *)a0[3];
     s32 s1 = ((Fighter *)a0[2])->unk1350;
     s32 s0;
@@ -131,19 +130,17 @@ void func_0024A680(s32 *a0) {
     func_00145CC0(s0, v);
     t = *(s16 *)(s2 + 0x60);
     if (t != 0) {
-        v = func_0020AE80(s1, *(s16 *)(s2 + 0x5A), t);
-        if (v != 0) {
+        a0 = (s32 *)func_0020AE80(s1, *(s16 *)(s2 + 0x5A), (s16)t);
+        if (a0 != 0) {
             func_00208D60();
         }
     }
-    if (a0[17] != 0) {
+    if (p0[17] != 0) {
         func_00209D20(0);
-        func_00208D70(a0[17]);
+        func_00208D70(p0[17]);
         func_00209C50();
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A680);
 // GIVEN UP: the sub-object pointer is kept in the other saved register, and the original loads a0[2] without using it (4 forms tried)
 #if 0
 extern s8 D_004703F4;
@@ -367,7 +364,35 @@ void func_0024EF50(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024EFA0);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F150);
+extern void func_00209950(s32, void *, s32);
+void func_0024F150(s32 *a0) {
+    s32 *s1 = a0;
+    s32 *s0 = (s32 *)a0[2];
+    u8 *s4 = (u8 *)a0[3];
+    s32 s3 = s0[0x1350 / 4];
+    s32 s2;
+    s32 r2;
+    s32 t;
+
+    s2 = func_0020B020(s3, *(s16 *)(s4 + 0x20), *(s16 *)(s4 + 0x22));
+    r2 = func_0020AD30(s3, *(s16 *)(s4 + 0x20), *(s16 *)(s4 + 0x22));
+    func_00145CC0(s2, r2);
+    t = *(s16 *)(s4 + 0x60);
+    if (t != 0) {
+        a0 = (s32 *)func_0020AE80(s3, *(s16 *)(s4 + 0x5A), (s16)t);
+        if (a0 != 0) {
+            func_00208D60();
+        }
+    }
+    if (s1[21] != 0) {
+        func_00209D20(0);
+        if (*(s32 *)((u8 *)s0 + 0x1CFC) == 0x1B || *(s32 *)((u8 *)s0 + 0xB9C) == 0x20) {
+            func_00209950(s1[21], (u8 *)s1 + 0x40, 0);
+        }
+        func_00208D70(s1[21]);
+        func_00209C50();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F260);
 void func_0024F4D0(s32 *p) {
     if (p[21] != 0) {
