@@ -1,19 +1,11 @@
 #include "common.h"
 
-#if 0
-// differs: 24 of 74: the case tests are now a beq chain, but the original tests 0x203 first and lays the bodies out in the other order (li v1 constants and the branch targets of the four cases differ); the range tests after it match
 extern s16 D_0046B1CE[];
-
 void func_0026D9C0(u8 *a0, s32 a1) {
     switch (a1) {
-    case 0x203:
-        if (*(s8 *)(a0 + 0xA0) < 3) {
-            *(s8 *)(a0 + 0xA0) = 3;
-        }
-        break;
-    case 0x202:
-        if (*(s8 *)(a0 + 0xA0) < 2) {
-            *(s8 *)(a0 + 0xA0) = 2;
+    case 0x200:
+        if (*(s8 *)(a0 + 0xA0) < 0) {
+            *(s8 *)(a0 + 0xA0) = 0;
         }
         break;
     case 0x201:
@@ -21,9 +13,14 @@ void func_0026D9C0(u8 *a0, s32 a1) {
             *(s8 *)(a0 + 0xA0) = 1;
         }
         break;
-    case 0x200:
-        if (*(s8 *)(a0 + 0xA0) < 0) {
-            *(s8 *)(a0 + 0xA0) = 0;
+    case 0x202:
+        if (*(s8 *)(a0 + 0xA0) < 2) {
+            *(s8 *)(a0 + 0xA0) = 2;
+        }
+        break;
+    case 0x203:
+        if (*(s8 *)(a0 + 0xA0) < 3) {
+            *(s8 *)(a0 + 0xA0) = 3;
         }
         break;
     default:
@@ -37,8 +34,6 @@ void func_0026D9C0(u8 *a0, s32 a1) {
         break;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026D9C0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026DAF0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026DC80);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026DE30);
