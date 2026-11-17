@@ -1,5 +1,19 @@
 #include "common.h"
 
+extern s16 func_0030D160(void *);
+extern void func_0030D240(s32);
+extern s16 func_0027D3B0(s32, s32);
+extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
+extern s16 D_005C4126[];
+extern s8 D_0058F66A[];
+extern void func_00309000(u8 *);
+extern s16 func_0030D140(void *);
+extern u8 D_00492FCE[];
+extern s16 D_005C4122[];
+extern void func_0030D300(void *);
+extern void func_00308BD0(void);
+extern void func_00308AF0(u8 *);
+
 extern void func_0022C700(void);
 extern void func_00133B50(s32, s32);
 extern void func_00139620(s32, f32, void *, s32, s32, s32);
@@ -13,7 +27,26 @@ void func_00308A90(u8 *a0) {
 }
 void func_00308AE0(void) {
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308AF0);
+void func_00308AF0(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    s32 s2;
+    s32 v;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    if (func_0030D160(*(void **)(a0 + 0x34)) != 7) {
+        return;
+    }
+    func_0030D240(*(s32 *)(s0 + 4));
+    *(s32 *)(s0 + 4) = 0;
+    s2 = D_005C4126[s0[0xD]];
+    D_0058F66A[s0[0xD]] = s0[0xD];
+    v = func_0027D3B0(s0[0xD], 0);
+    v = func_0027E2D0(5, s0[0xF], s0[0x10], -1, s2 & 0xFF, v & 0xFF, 0, 3);
+    *(s32 *)s0 = v;
+    *(void **)(s1 + 0x1C) = ((void *)func_00309000 == 0) ? 0 : (void *)func_00309000;
+}
 extern s16 func_0030D160(void *);
 extern void func_00308C40();
 
@@ -35,9 +68,38 @@ void func_00308BD0(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308BD0);
+#if 0
+// differs: 3 instructions: the original loads the table word s0[+8] before the byte s0[+0xD] in the first branch (mine the other way round)
+void func_00308C40(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    s32 a1;
+    s32 a2;
+
+    s1 = a0;
+    s0 = s1 + 0x30;
+    if (func_0030D140(*(void **)(a0 + 0x34)) == 1) {
+        a1 = *(s32 *)(s0 + 8);
+        a2 = s0[0xD];
+        *(u8 *)(a2 + a1 + 0x11) = 1;
+        *(void **)(s1 + 0x1C) = ((void *)func_00308BD0 == 0) ? 0 : (void *)func_00308BD0;
+        return;
+    }
+    if (func_0030D160(*(void **)(s0 + 4)) == 5) {
+        return;
+    }
+    a1 = s0[0xD];
+    if ((*(u16 *)(D_00492FCE + a1 * 184) & 0x300) == 0) {
+        return;
+    }
+    s0[0xE] = 0;
+    *(s16 *)(D_005C4122 + s0[0xD] * 2) = 0;
+    func_0030D300(*(void **)(s0 + 4));
+    *(void **)(s1 + 0x1C) = ((void *)func_00308AF0 == 0) ? 0 : (void *)func_00308AF0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308C40);
 extern s16 func_0030D160(void *);
-extern void func_00308C40(void);
 
 void func_00308D50(u8 *a0) {
     u8 *s0;
