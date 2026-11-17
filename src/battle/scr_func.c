@@ -581,10 +581,13 @@ s32 Scr_WaitSound(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 // GIVEN UP: the loads and the calls match; the frame is 0x10 bytes short (0xC0 against 0xD0): the order of the index sums and the locals differ
+// // differs: 33 of 60 (round 4 chr): the loads of the object (*a0) and the parameter array (a1[11]) are ordered and registered differently; the frame matches the original 0x40 only after a rewrite of the locals.
 #if 0
 s32 func_002ABE50(s32 *a0, s32 *a1) {
-    s32 j = *(s32 *)*(s32 **)((u8 *)a1 + 0x2C);
-    s32 i = *(s32 *)*a0;
+    s32 *pp = *(s32 **)((u8 *)a1 + 0x2C);
+    s32 j = pp[0];
+    s32 *qq = (s32 *)a0[0];
+    s32 i = qq[0];
     s32 *e = (s32 *)((u8 *)D_005BC560 + i * 576 + j * 36);
     s32 loc[5];
     s32 r;

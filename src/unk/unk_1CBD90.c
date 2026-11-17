@@ -245,6 +245,67 @@ int func_001CC270(void *unused, Arg *a) {
     *(s32 *)a = s1;
     return 1;
 }
+// // differs: 59 of 120 (round 4 chr): the task setup and the float minimum loop are scheduled differently (the original moves the t+0x30 pointer into s2 right after the call and loads gBattle+0x61C before the stores).
+#if 0
+extern void func_002194C0(void *, s32, s32, s32);
+extern void Character_PauseVoice(s32 *);
+extern void func_001CB020(void *);
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void amTask_Kill(void *);
+extern char D_004692B0[];
+int func_001CC300(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x;
+    s32 y;
+    s32 w;
+    s32 idx;
+    s32 k;
+    f32 best;
+    f32 f0;
+    char *c;
+    char *t;
+    s32 *q;
+    char *e;
+    x = p[0];
+    y = p[1];
+    w = p[2];
+    if (w == -2) {
+        w = 0x6B;
+    } else if (w == -1) {
+        w = 0x6A;
+    }
+    c = *(char **)unused;
+    t = amTask_Create((void (*)(void *))func_001CB020, 0, *(s32 *)(c + 0x10), *(s32 *)(c + 0x14), *(s32 *)(c + 0x18), D_004692B0);
+    *(s32 *)(t + 0x30) = 0;
+    *(f32 *)(t + 0x34) = (f32)x;
+    *(void **)(t + 0x38) = (void *)Character_PauseVoice;
+    best = *(f32 *)((char *)gBattle + 0x61C);
+    idx = 2;
+    e = (char *)gBattle + 0x60;
+    k = 3;
+    do {
+        f0 = *(f32 *)(e + 0x5DC);
+        if (best > f0) {
+            best = f0;
+            idx = k;
+        }
+        k++;
+        e += 0x20;
+    } while (k < 5);
+    *(char **)(t + 0x3C) = (char *)gBattle + (idx << 5) + 0x5C4;
+    func_002194C0(*(void **)(t + 0x3C), w, y, -1);
+    q = (s32 *)(t + 0x30);
+    if (*(s32 *)((char *)gBattle + 0x88EC) == 0) {
+        q[0] += 1;
+        if ((f32)q[0] * *(f32 *)((char *)gBattle + 0x88F0) >= *(f32 *)(q + 1)) {
+            ((void (*)(void *))*(void **)(q + 2))(t);
+            amTask_Kill(t);
+        }
+    }
+    *(s32 *)a = idx;
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC300);
 // // differs: 17 of 60 (round 4 chr): the original reloads gBattle into v1 after the jal and keeps the counter pointer in a0; ours uses a0 for gBattle (register choice only).
 #if 0
@@ -1322,6 +1383,50 @@ void *func_001D06F0(void *o, s32 mask) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D06F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0730);
+// // differs: 53 of 90 (round 4 chr): the list insert matches up to the first flag test; the count byte and the 0xA halfword store are placed differently (the original keeps the item in a2 and the head in a1), and the switch block layout is untested beyond that.
+#if 0
+void func_001D0860(char *o, char *a1) {
+    s32 n = *(s8 *)(o + 0x1A8);
+    if (n < 8) {
+        char *v;
+        u16 fl;
+        *(s8 *)(o + 0x1A8) = (s8)(n + 1);
+        v = *(char **)(o + 0x180 + n * 4);
+        if (*(u16 *)(a1 + 0xA) == 0x13) {
+            *(u16 *)(a1 + 0xA) = 3;
+        }
+        *(char **)(v + 0x20) = a1;
+        if (*(char **)(o + 0x1A0) != 0) {
+            *(char **)(*(char **)(o + 0x1A0) + 0x28) = v;
+        }
+        *(char **)(v + 0x2C) = *(char **)(o + 0x1A0);
+        *(s32 *)(v + 0x28) = 0;
+        *(char **)(o + 0x1A0) = v;
+        fl = *(u16 *)(*(char **)(v + 0x20) + 8);
+        if (fl & 0xF1) {
+            *(u16 *)(a1 + 8) = fl | 1;
+        }
+        switch (*(u16 *)(*(char **)(v + 0x20) + 8) & 0x10F) {
+        case 1:
+            *(s8 *)(o + 0x1A9) += 1;
+            break;
+        case 4:
+            *(s8 *)(o + 0x1AA) += 1;
+            break;
+        case 2:
+            *(s8 *)(o + 0x1AB) += 1;
+            break;
+        case 8:
+            *(s8 *)(o + 0x1AC) += 1;
+            break;
+        case 0x100:
+            *(s8 *)(o + 0x1AD) += 1;
+            break;
+        }
+        *(s32 *)(v + 0x24) = 1;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0860);
 extern void *D_004692E0[];
 // differs: 2 registers. The original keeps n in a3, the table base in a1 (reusing the s argument) and the counter in t1, with the entry pointer in t0; ours puts the counter in a1 and the base in a3 in every order tried (4 forms).

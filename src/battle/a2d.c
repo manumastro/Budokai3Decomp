@@ -342,15 +342,19 @@ void func_00225E80(s32 *p) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00225E80);
 // GIVEN UP: the value compared and stored is loaded again after the call (tried a local for it)
+// // differs: 24 of 30 (round 4 chr): the original saves s1 for the object pointer (frame 0x30); ours keeps only s0 (frame 0x20), so the object pointer is not kept across the second call.
 #if 0
-void func_00225F30(s32 *p) {
-    s32 *a = BtlSys_GetSlot(p[0]);
-
-    a[0] |= 1;
-    a[5] = p[1];
-    func_0023A890(p[0], p[1]);
-    if (*(s16 *)((u8 *)a + 0x50) < p[1]) {
-        *(s16 *)((u8 *)a + 0x50) = p[1];
+void func_00225F30(s32 *a) {
+    s32 *p;
+    s32 *v;
+    s32 *s0;
+    p = a;
+    v = BtlSys_GetSlot(p[0]);
+    v[0] |= 1;
+    v[5] = p[1];
+    s0 = func_0023A890(p[0], p[1]);
+    if (*(s16 *)((char *)s0 + 0x50) < p[1]) {
+        *(s16 *)((char *)s0 + 0x50) = p[1];
     }
 }
 #endif
@@ -545,12 +549,14 @@ INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022ACF0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022B900);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022BC30);
 // GIVEN UP: a dead store of -1 in the second branch and a frame the C did not reproduce
+// // differs: 18 of 22 (round 4 chr): the original copies the object pointer to a1 only after the first test (delay slot of beqz); ours copies it at entry.
 #if 0
-void func_0022BF80(s32 *p) {
-    if (p[3] & 1) {
-        func_0022BC30(p[0], *(f32 *)((u8 *)p + 0x10));
-    } else if (p[3] & 2) {
-        func_0022BC30(((s32 *)p[0])[4], *(f32 *)((u8 *)p + 0x10));
+void func_0022BF80(char *a) {
+    s32 f = *(s32 *)(a + 0xC);
+    if ((f & 1) != 0) {
+        func_0022BC30(*(s32 *)a, *(f32 *)(a + 0x10));
+    } else if ((f & 2) != 0) {
+        func_0022BC30(*(s32 *)(*(s32 *)a + 0x10), *(f32 *)(a + 0x10));
     }
 }
 #endif
