@@ -207,7 +207,34 @@ s32 func_002A2BB0(s32 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2BB0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2C70);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2E50);
+extern s32 func_00283BF0(void);
+extern void func_00283C20(void);
+extern void func_00283D00(s32, s32, s32, s32);
+extern void SklSheet_SetIndex(s32);
+extern s32 func_002A13B0(void);
+extern void func_002A13C0(s32);
+extern void func_002A0D50(s32);
+
+s32 func_002A2E50(s32 *a0) {
+    s32 *g = gEvtWork;
+    s32 s1v;
+    if (g[0xFC / 4] >= g[0xF8 / 4]) {
+        if (func_00283BF0() >= 8) {
+            func_002A0D50(1);
+            func_002A13C0(func_002A13B0() + 1);
+            a0[0x10 / 4] = 0;
+            return 1;
+        }
+    }
+    if (func_00283BF0() >= 8) {
+        s1v = g[0x100 / 4 + g[0xFC / 4]];
+        func_00283C20();
+        func_00283D00(0x9500, s1v, 1, 0x11403000);
+        SklSheet_SetIndex(g[0x110 / 4 + g[0xFC / 4]]);
+        g[0xFC / 4] = g[0xFC / 4] + 1;
+    }
+    return 3;
+}
 extern void func_00283D00(s32, s32, s32, s32);
 extern void SklSheet_SetIndex(s32);
 extern void func_002A0D50(s32);
@@ -215,7 +242,7 @@ extern void func_002A0D50(s32);
 extern void func_00283D00(s32, s32, s32, s32);
 extern void SklSheet_SetIndex(s32);
 extern void func_002A0D50(s32);
-extern void func_002A2E50(void);
+extern s32 func_002A2E50(s32 *);
 
 extern s32 func_002A13B0(void);
 extern void func_002A13C0(s32);
@@ -1057,6 +1084,43 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7940);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7B50);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7CB0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7F70);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A80D0);
+extern void amHeap_Free(void *);
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern void memset(void *, s32, s32);
+extern s8 D_00511450[];
+extern char D_0046EAE8[];
+extern s8 D_004E6560[];
+
+void func_002A80D0(void) {
+    s32 *g;
+    s8 *e;
+    if (gEvtWork != 0) {
+        amHeap_Free(gEvtWork);
+        gEvtWork = 0;
+    }
+    gEvtWork = (s32 *)amHeap_Alloc(0x150, 0, D_0046EAE8, 0xC3C);
+    memset(gEvtWork, 0, 0x150);
+    e = D_004E6560 + D_00511450[0] * 4624;
+    g = gEvtWork;
+    g[0x130 / 4] = -1;
+    g[0x134 / 4] = e[0x1261];
+    g[0x138 / 4] = e[0x1262];
+    g[0x13C / 4] = e[0x1263];
+    g[0x140 / 4] = -1;
+    g[0x124 / 4] = -1;
+    g[0xFC / 4] = 0;
+    g[0xF8 / 4] = 0;
+    g[0x100 / 4] = -1;
+    g[0x104 / 4] = -1;
+    g[0x108 / 4] = -1;
+    g[0x10C / 4] = -1;
+    g = gEvtWork;
+    g[0x4C / 4] = 0;
+    g[0x50 / 4] = 0;
+    g[0x54 / 4] = 0;
+    g[0x58 / 4] = 0;
+    g[0x64 / 4] = 0;
+    g[0x68 / 4] = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A81B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A8330);
