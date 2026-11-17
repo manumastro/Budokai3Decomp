@@ -725,6 +725,52 @@ void Ess_TaskMain(u8 *a0) {
     *(void **)(s3 + 0x1C) = ((void *)func_0026D150 == 0) ? 0 : (void *)func_0026D150;
     *(s32 *)s2 = 0;
 }
+#if 0
+// differs: 18 of 87: the field and table lookups, the flag tests and the stores match in shape; the 2.0 divisor is kept in another FPU register (f1 here, f2 in the original) and the D_004706CC reloads are placed differently
+extern u8 *D_004706CC;
+
+void func_0026D320(u8 *a0, u8 *a1, s32 a2, s32 a3) {
+    u8 *tb;
+    u8 *ent;
+    f32 x;
+    f32 y;
+    f32 t;
+    s32 off;
+    tb = a1 + *(s32 *)(a1 + 0x14);
+    off = *(s32 *)(tb + (a2 - *(s32 *)(a1 + 0x18)) * 4);
+    ent = a1 + off;
+    x = (f32)*(s16 *)(ent + 0x10);
+    y = (f32)*(s16 *)(ent + 0x12);
+    if (a3 & 1) {
+        *(s32 *)(a0 + 0x34) = 0;
+        *(f32 *)(a0 + 0x3C) = y * *(f32 *)((u8 *)D_004706CC + 0x3C);
+    } else if (a3 & 2) {
+        *(f32 *)(a0 + 0x34) = -y * *(f32 *)((u8 *)D_004706CC + 0x3C);
+        *(s32 *)(a0 + 0x3C) = 0;
+    } else {
+        t = -y / 2.0f;
+        *(f32 *)(a0 + 0x34) = t * *(f32 *)((u8 *)D_004706CC + 0x3C);
+        t = y / 2.0f;
+        *(f32 *)(a0 + 0x3C) = t * *(f32 *)((u8 *)D_004706CC + 0x3C);
+    }
+    if (a3 & 8) {
+        *(s32 *)(a0 + 0x30) = 0;
+        *(f32 *)(a0 + 0x38) = x * *(f32 *)((u8 *)D_004706CC + 0x38);
+    } else if (a3 & 0x10) {
+        *(f32 *)(a0 + 0x30) = -x * *(f32 *)((u8 *)D_004706CC + 0x38);
+        *(s32 *)(a0 + 0x38) = 0;
+    } else {
+        t = -x / 2.0f;
+        *(f32 *)(a0 + 0x30) = t * *(f32 *)((u8 *)D_004706CC + 0x38);
+        t = x / 2.0f;
+        *(f32 *)(a0 + 0x38) = t * *(f32 *)((u8 *)D_004706CC + 0x38);
+    }
+    *(s32 *)(a0 + 0x40) = 0;
+    *(s32 *)(a0 + 0x44) = 0;
+    *(f32 *)(a0 + 0x48) = x;
+    *(f32 *)(a0 + 0x4C) = y;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D320);
 extern u8 D_0058F680[];
 extern u8 D_004E0660[];

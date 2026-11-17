@@ -146,6 +146,46 @@ void func_00266150(u8 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002661D0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266390);
+#if 0
+// differs: 8 of 70: the table lookups and the loop match in shape; the 0x1000 global store sits in the call's delay slot (the original stores it before the jal), and the loop-count load is placed differently
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern s32 func_0022D670(s32, f32);
+extern s32 func_0022D860(s32, f32);
+extern void func_00145CC0(s32, s32);
+
+void func_002667D0(u8 *a0) {
+    u8 *s2;
+    s32 i;
+    u8 *s0;
+    s32 n;
+    s32 tt;
+    s2 = a0;
+    tt = *(s32 *)(s2 + 0x4);
+    D_00470704 = tt;
+    D_0047070C = 0x1000;
+    func_00145CC0(tt, 0x1000);
+    D_00470708 = 0;
+    D_00470238 = 0;
+    *(s32 *)(s2 + 0x54) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)s2 + 0x1C) + 0xF0), 0.0f);
+    *(s32 *)(s2 + 0x58) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)s2 + 0x1C) + 0x114), 0.0f);
+    n = *(u8 *)(s2 + 0x97);
+    i = 0;
+    s0 = s2;
+    if (0 < n) {
+        do {
+            *(s32 *)(s0 + 0x5C) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)s2 + 0x1C) + (*(u8 *)(s2 + 0x99) + i) * 4), 0.0f);
+            i++;
+            s0 += 4;
+        } while (i < *(u8 *)(s2 + 0x97));
+    }
+    *(s32 *)(s2 + 0x78) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)s2 + 0x14) + 0xC), 0.0f);
+    *(s32 *)(s2 + 0x7C) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)s2 + 0x1C) + 0xE4), 0.0f);
+    *(s32 *)(s2 + 0x88) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)s2 + 0x1C) + 0x140), 0.0f);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002667D0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002668F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266AC0);

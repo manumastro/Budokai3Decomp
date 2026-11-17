@@ -83,6 +83,51 @@ void Option_Nop1(void) {
 void func_002DEFE0(void) {
 }
 
+#if 0
+// differs: 16 bytes short (0x100 vs 0x110): the original saves a second register (s1 for the heap block of case 4) and lays the function-pointer store of case 3/5 out with bnez/move; the switch order (3,5 before 4) matches the test order
+extern void func_002DFBC0();
+extern s32 Save_GetState();
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern void func_00125740(void *, void *, s32);
+extern void func_001EF510(void *, s32);
+extern void func_001F0830(s32, s32);
+extern void func_001F0810(s32, s32);
+extern void func_002DEA00();
+extern void func_002D9DE0();
+extern char D_0046F3C8[];
+extern s8 D_004B4B63[];
+extern s8 D_0058F680[];
+
+void func_002DEFF0(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    u8 *w;
+    s32 st;
+    void *fp;
+    s0 = a0;
+    func_002DFBC0();
+    st = Save_GetState();
+    switch (st) {
+    case 3:
+    case 5:
+        fp = (void *)func_002DEA00;
+        *(void **)(s0 + 0x1C) = (fp == 0) ? 0 : fp;
+        w = (u8 *)gOptionWork;
+        *(void **)(w + 0x34C) = (void *)func_002D9DE0;
+        *(s32 *)(w + 0x388) = 0;
+        *(s32 *)(w + 0x38C) = 0;
+        func_001F0830(5, 0);
+        func_001F0810(0xA, 0);
+        break;
+    case 4:
+        s1 = (u8 *)amHeap_Alloc(0xD680, 0, D_0046F3C8, 0x733);
+        func_00125740(s1, D_0058F680 + D_004B4B63[0] * 0xD680, 0xD680);
+        func_001EF510(s1, 0xD680);
+        amHeap_Free(s1);
+        break;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEFF0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF100);
 extern s8 D_004B4B40[];
@@ -217,6 +262,46 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0050);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0170);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0260);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E06A0);
+#if 0
+// differs: 21 of 57: the frame and the float table match; the lui temporaries of 40.0, 540.0, 256.0 and 1.0 land in the other registers ( first here,  in the original, 1.0 kept in ), the same as func_002E0B70; the tail (fp store, amTask_Kill, the 100/1 bytes) matches
+extern void func_002D2AD0(void *, void *, f32);
+extern void func_002E06A0();
+
+void func_002E0800(u8 *a0) {
+    u8 *s0;
+    u8 *s1;
+    f32 b[4];
+    f32 a[4];
+    f32 f;
+    void *fp;
+    s1 = a0;
+    s0 = gOptionWork;
+    b[1] = 40.0f;
+    b[0] = 0.0f;
+    a[0] = 540.0f;
+    a[1] = 256.0f;
+    b[2] = 1.0f;
+    b[3] = 1.0f;
+    a[2] = 1.0f;
+    a[3] = 1.0f;
+    func_002D2AD0(b, a, *(f32 *)(s0 + 0xC));
+    f = *(f32 *)(s0 + 0xC) - 0.05f;
+    *(f32 *)(s0 + 0xC) = f;
+    if (f < 0.0f) {
+        *(f32 *)(s0 + 0xC) = 0.0f;
+        if (*(s8 *)(s0 + 0x14) == 0) {
+            *(s8 *)(s0 + 0x14) = 1;
+            *(s8 *)(s0 + 0x15) = 100;
+            fp = (void *)func_002E06A0;
+            *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        } else {
+            amTask_Kill(*(void **)(s0 + 0x18));
+            *(void **)(s0 + 0x18) = 0;
+            *(s32 *)(s0 + 0x8) = 4;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0800);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E08F0);
 #if 0

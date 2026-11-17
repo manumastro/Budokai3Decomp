@@ -15,6 +15,40 @@ extern void func_003083E0();
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_003077E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307AF0);
+#if 0
+// differs: 6 of 60: loops 1 and 3 match; in loop 2 the counter and the pointer swap registers (the original counts in s1 and walks s2 from s0), and no declaration order fixed it
+extern void func_0022D0E0(void *, s32);
+
+void func_00307C00(u8 *a0) {
+    u8 *s0;
+    u8 *q;
+    s32 i;
+    s0 = *(u8 **)a0;
+    if (*(void **)(s0 + 0x58) != 0) {
+        func_0022D0E0(*(void **)(s0 + 0x58), 1);
+    }
+    if (*(void **)(s0 + 0x5C) != 0) {
+        func_0022D0E0(*(void **)(s0 + 0x5C), 1);
+    }
+    for (i = 0; i < 2; i++) {
+        if (*(void **)(s0 + 0x60 + i * 4) != 0) {
+            func_0022D0E0(*(void **)(s0 + 0x60 + i * 4), 1);
+        }
+    }
+    q = s0;
+    for (i = 0; i < 2; i++) {
+        if (*(void **)(q + 0x68) != 0) {
+            func_0022D0E0(*(void **)(q + 0x68), 1);
+        }
+        q += 4;
+    }
+    for (i = 0; i < 7; i++) {
+        if (*(void **)(s0 + 0x70 + i * 4) != 0) {
+            func_0022D0E0(*(void **)(s0 + 0x70 + i * 4), 1);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307C00);
 extern void func_0022C700(void);
 extern void func_00133B50(s32, s32);
