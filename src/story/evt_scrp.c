@@ -1607,7 +1607,7 @@ s32 Evt_CmdScreenShot(s32 *a0) {
     }
     return 3;
 }
-extern s32 D_005AA604;
+extern s32 D_005AA604[];
 extern s32 D_00455760[];
 extern s32 D_004708D8;
 extern void func_002BD6B0(void *);
@@ -1673,6 +1673,54 @@ void func_002A5420(s32 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5420);
 
+extern char *gStrStatus;
+extern s32 D_004708E8;
+extern void func_002BD400(void *);
+extern void StrStatus_Free(void);
+extern void func_002A5870(void);
+#if 0
+// func_002A5580: 0x120 bytes in the original, ours 0x108 (frame 0x90 not reached: the block of case 3 is 16 bytes short, the state tests use li v1 in other delay slots); 6 forms of the switch tried
+void func_002A5580(void) {
+    s32 d[6];
+    s32 e[20];
+    s32 *ev;
+    switch (*(s32 *)(gStrStatus + 0x27C)) {
+    case 1:
+    case 0:
+        D_004708E8 = 0;
+        break;
+    case 2:
+        break;
+    case 3:
+        func_002BD400(e);
+        *(s8 *)((char *)D_005AA604[0] + 0x11E7) = *((s8 *)e + 4);
+        *(s8 *)((char *)D_005AA604[0] + 0x11E8) = *((s8 *)e + 5);
+        *(s8 *)((char *)D_005AA604[0] + 0x11E9) = *((s8 *)e + 6);
+        *(s8 *)((char *)D_005AA604[0] + 0x11EA) = *((s8 *)e + 7);
+        *(s8 *)((char *)D_005AA604[0] + 0x11EB) = *((s8 *)e + 8);
+        *(s8 *)((char *)D_005AA604[0] + 0x11EC) = *((s8 *)e + 9);
+        *(s8 *)((char *)D_005AA604[0] + 0x11ED) = *((s8 *)e + 10);
+        *(s8 *)((char *)D_005AA604[0] + 0x11EE) = *((s8 *)e + 11);
+        *(s32 *)((char *)D_005AA604[0] + 0x1200) = e[3];
+        StrStatus_Free();
+        d[4] = 2;
+        d[5] = 1;
+        StrStatus_Dispatch((s32 *)d);
+        ev = (s32 *)gEvtWork;
+        if (ev[2] != 0) {
+            amTask_Kill((Task *)ev[2]);
+            ev[2] = 0;
+        }
+        if (gEvtWork != 0) {
+            amHeap_Free(gEvtWork);
+            gEvtWork = 0;
+        }
+        D_004708D8 = 0;
+        func_002A5870();
+        break;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5580);
 #if 0
 // func_002A56A0: the copy loop keeps the counter in a2 and the pointer in a1 in the original; ours takes the other registers (240 vs 232 bytes, 41 instructions differ); 5 variants tried
@@ -1957,6 +2005,55 @@ void func_002A7160(s32 a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7240);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7400);
+#if 0
+// func_002A75C0: 60 of 71 differ on registers: the original keeps the Task in s1, gEvtWork in s0 and the value in s2; ours puts the Task in s2 and gEvtWork in s1 (declaration orders tried, none changed it); the float field is reloaded after the call as the original does
+extern void func_00133B50(s32, s32);
+extern void A2d_SetMode(s32);
+extern s16 D_004E05F8[];
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern void func_00228430(s32);
+extern void func_00228410(void);
+extern void func_0022C060(s32, f32);
+extern void func_0022CD00(s32);
+extern void A2d_FlushList(void);
+extern f32 func_002B06A0(void);
+extern void func_0022BC30(s32, f32);
+extern void func_002A7400(void);
+void func_002A75C0(Task *a0) {
+    s32 *s0 = gEvtWork;
+    s32 s2;
+    f32 g;
+    char *p1;
+    char *p2;
+    func_00133B50(0, 0);
+    A2d_SetMode(D_004E05F8[0]);
+    D_00470704 = s0[0x78 / 4];
+    D_0047070C = 0x890100;
+    amModel_SetCurrent(s0[0x78 / 4], 0x890100);
+    D_00470708 = 0;
+    D_00470238 = 0;
+    s2 = s0[0x80 / 4];
+    func_00228430(0);
+    func_00228430(0);
+    func_0022C060(s2, 1.0f);
+    func_00228410();
+    func_0022CD00(s2);
+    func_00228410();
+    A2d_FlushList();
+    g = func_002B06A0();
+    *(f32 *)((char *)s0 + 0x98) = *(f32 *)((char *)s0 + 0x98) + g;
+    p1 = (char *)*(s32 *)((char *)s0 + 0x74);
+    p2 = (char *)*(s32 *)(p1 + 0x1C);
+    func_0022BC30(*(s32 *)(p2 + (s0[0x90 / 4] << 2)), *(f32 *)((char *)s0 + 0x98));
+    if (!(*(f32 *)((char *)s0 + 0x98) < 30.0f)) {
+        s0[0x98 / 4] = 0;
+        TASK_SET_FUNC(a0, func_002A7400);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A75C0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A76E0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7820);
