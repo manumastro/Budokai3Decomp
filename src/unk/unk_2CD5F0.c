@@ -231,7 +231,7 @@ void func_002CDD50(u8 *p) {
     amModel_SetCurrent(*(s32 *)(p + 0x34), 0x2003000);
     func_001F3DF0(p);
     func_00208D70(*(void **)(q + 8));
-    func_001F3D80(p);
+    BtbObj_CheckDrawFlags(p);
 }
 // differs: the original keeps p in s1 and q = p+0x30 in s0 across the first call (frame 0x30, sq s1 and s0, q computed in the delay slot of the first jal); the compiler folds q+8 into p+0x38 and keeps only p (frame 0x20). Tried: asm "+r" barrier on q, q = p; q += 0x30
 #endif
