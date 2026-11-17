@@ -1788,13 +1788,13 @@ void func_0020F260(s32 i, f32 f) {
 }
 #if 0
 void func_0020F290(s32 i, s32 x) {
-    s32 t = x | 0x10000;
     u8 *p = D_00568C90 + i * 0x2140;
+    s32 t = x | 0x10000;
     *(s32 *)(p + 0x2114) = t;
     *(f32 *)(p + 0x210C) = (f32)*(s32 *)(*(u8 **)(*(u8 **)(p + ((*(s32 *)(p + 0x2114) >> 16) - 1) * 4 + 0xA4) + 0x14)
         + ((*(s32 *)(p + 0x2114) & 0xFFFF) << 4) + 8);
 }
-// differs: 15 of 25 differ: the constant 0x10000 is or-ed in before the element address in the original (lui before addu), here after; the table lookup order matches (func_0020F4D0)
+// differs: 15 of 25 differ: the or with 0x10000 sits between the i*133 add and the shift by 6 in the original (lui before the addu); here it comes after the shift (both statement orders tried)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F290);
 #if 0
@@ -2309,6 +2309,77 @@ void func_00211AF0(u8 *s1) {
 #endif
 // differs: 17 of 54 differ: the registers of the index (lh), the flag (lw) and the address chain are assigned in another order than the original (lh first into a2, the address built after the flag test in a0/a1)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211AF0);
+#if 0
+void func_00211BD0(u8 *p) {
+    u8 *q;
+    u8 *s1;
+    u8 *s0;
+    s32 a3;
+    s32 k;
+    s32 bone;
+    Copy16A t60;
+    Copy16A t40;
+    Copy16A t80[2];
+
+    q = p + 0x20;
+    a3 = *(s16 *)(p + 0x1C);
+    k = a3 * 257;
+    s1 = gBattle + (k << 5) + 0x830;
+    func_0020CCF0(*(s16 *)(p + 0x5C), &t40);
+    if (*(s16 *)(q + 0x4C) != 0) {
+        bone = amMotion_FindBone(*(s32 *)(*(s32 *)(*(s32 *)(s1 + 0x1354) + 0xB88) + 4), &t40);
+        s1 = *(u8 **)(s1 + 0x1354);
+        func_0013B160(s1);
+        func_0013B960(*(u8 **)(*(u8 **)(s1 + 0xB88) + 0x408) + bone * 64);
+        __asm__ volatile (
+            "sqc2 $vf28, 0(%0)\n"
+            "sqc2 $vf29, 0x10(%0)\n"
+            "sqc2 $vf30, 0x20(%0)\n"
+            "sqc2 $vf31, 0x30(%0)\n"
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : "r"(&t60) : "memory");
+    } else {
+        bone = amMotion_FindBone(*(s32 *)(*(s32 *)(s1 + 0xB88) + 4), &t40);
+        func_0013B160(s1);
+        func_0013B960(*(u8 **)(*(u8 **)(s1 + 0xB88) + 0x408) + bone * 64);
+        __asm__ volatile (
+            "sqc2 $vf28, 0(%0)\n"
+            "sqc2 $vf29, 0x10(%0)\n"
+            "sqc2 $vf30, 0x20(%0)\n"
+            "sqc2 $vf31, 0x30(%0)\n"
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : "r"(&t60) : "memory");
+    }
+    if (*(s32 *)(p + 0x10) != 0) {
+        D_00470238 = 0;
+        s0 = q;
+        if (*(s32 *)(s0 + 0x20) != 0) {
+            amModel_SetCurrent(*(s32 *)(s0 + 0x20), *(s32 *)(s0 + 0x28));
+        }
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            func_00208D60(*(s32 *)(s0 + 0x24));
+        }
+        func_0013B0B0(gBattle + 0x60);
+        func_0013B960((u8 *)&t60);
+        __asm__ volatile (
+            "lqc2 $vf28, 0(%0)\n"
+            "lqc2 $vf29, 0x10(%0)\n"
+            "lqc2 $vf30, 0x20(%0)\n"
+            "lqc2 $vf31, 0x30(%0)\n"
+            : : "r"(&t60) : "memory");
+        func_00208D70(*(s32 *)(p + 0x10));
+        func_0013B110(1);
+        func_00209C50();
+    }
+}
+// differs: 94 of 107 differ: the original frame is 0xA0 with the parameter in s2 and the struct base in s0 (ours: frame 0x70, the parameter kept in s3); unused extra locals are dropped by the compiler
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211BD0);
 void func_00248640(s32 a, void *b, s32 c);
 
