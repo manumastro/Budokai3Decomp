@@ -686,7 +686,50 @@ void func_00211F80(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212050);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212160);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002122A0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212480);
+void func_0013B0B0(s32);
+void func_0013B060(s32);
+void func_00209D70(void *);
+
+void func_00212480(u8 *a0) {
+    u8 *s0 = a0 + 0x20;
+    V4Q t;
+    u8 *p2;
+    if (*(s32 *)(a0 + 0x10) != 0) {
+        D_00470238 = 0;
+        if (*(s32 *)(s0 + 0x20) != 0) {
+            func_00145CC0(*(s32 *)(s0 + 0x20), *(s32 *)(s0 + 0x28));
+        }
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            func_00208D60(*(s32 *)(s0 + 0x24));
+        }
+        func_0013B0B0(0);
+        __asm__ volatile (
+            "lqc2 $vf28, 0x0(%0)\n"
+            "lqc2 $vf29, 0x10(%0)\n"
+            "lqc2 $vf30, 0x20(%0)\n"
+            "lqc2 $vf31, 0x30(%0)\n"
+            : : "r"((u8 *)D_00470570 + 0x60));
+        p2 = *(u8 **)((u8 *)D_00470570 + 0x264);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "vsub.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%2)\n"
+            : : "r"(p2), "r"(s0), "r"(&t));
+        func_00209D70(&t);
+        func_0013B060(0);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "vmulax.xyzw $ACC, $vf28, $vf1x\n"
+            "vmadday.xyzw $ACC, $vf29, $vf1y\n"
+            "vmaddaz.xyzw $ACC, $vf30, $vf1z\n"
+            "vmaddw.xyzw $vf31, $vf31, $vf0w\n"
+            : : "r"(s0));
+        func_00208D70(*(s32 *)(a0 + 0x10));
+        func_00209C50();
+        func_0013B110(1);
+    }
+}
 void func_0020DA10(s32);
 
 void func_00212560(s32 *a) {
