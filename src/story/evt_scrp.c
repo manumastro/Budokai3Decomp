@@ -2056,6 +2056,62 @@ void func_002A75C0(Task *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A75C0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A76E0);
+extern void func_00133B50(s32, s32);
+extern void A2d_SetMode(s32);
+extern s16 D_004E05F8[];
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+extern void func_00228430(s32);
+extern void func_00228410(void);
+extern void func_0022C060(s32, f32);
+extern void func_0022CD00(s32);
+extern void A2d_FlushList(void);
+extern s32 Save_GetState(void);
+extern void Option_ProcessTable(void);
+extern void func_002A76E0(void);
+#if 0
+// func_002A7820: 0x100 bytes against 0x120: the Save_GetState tests and the function-address store (lui/addiu/bnez/move) are laid out differently, the Option_ProcessTable block sits elsewhere; goto and if forms tried
+void func_002A7820(Task *a0) {
+    s32 *s0 = gEvtWork;
+    s32 s2;
+    s32 st;
+    func_00133B50(0, 0);
+    A2d_SetMode(D_004E05F8[0]);
+    st = s0[0x78 / 4];
+    D_00470704 = st;
+    D_0047070C = 0x890000;
+    amModel_SetCurrent(st, 0x890000);
+    D_00470708 = 0;
+    D_00470238 = 0;
+    s2 = s0[0x80 / 4];
+    func_00228430(0);
+    func_00228430(0);
+    func_0022C060(s2, 1.0f);
+    func_00228410();
+    func_0022CD00(s2);
+    func_00228410();
+    A2d_FlushList();
+    st = Save_GetState();
+    if (st == 3) {
+        goto L900;
+    }
+    if (st == 5) {
+        goto L900;
+    }
+    if (st != 4) {
+        return;
+    }
+    Option_ProcessTable();
+L900:
+    {
+        void *f = (void *)func_002A76E0;
+        ((s32 *)a0)[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+    s0[0x98 / 4] = 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7820);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7940);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7B50);
