@@ -2001,7 +2001,74 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5B10);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5B50);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5B70);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5B90);
+typedef struct MotState {
+    char *obj;
+    f32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    f32 f14;
+    s32 f18;
+    f32 f1C;
+} MotState;
+
+typedef struct MotCtl {
+    char pad0[8];
+    MotState *st;
+} MotCtl;
+
+typedef struct MotSlot {
+    s32 pk;
+    char pad4[8];
+    s32 fC;
+    char *p10;
+} MotSlot;
+
+extern void amMotion_Apply(char *, f32, f32);
+
+// differs: 12 of 49 instructions (the load order of the frame word and the object pointer, and their registers)
+#if 0
+void func_001F5BE0(MotCtl *c) {
+    MotState *s;
+    char *obj;
+    s32 pk;
+    MotSlot *a3;
+    s32 n;
+    s32 i;
+    s32 off;
+
+    s = c->st;
+    if (s != NULL) {
+        s->f18 = 1;
+        obj = s->obj;
+        pk = ((s->f8 + 1) << 16) | s->f10;
+        a3 = (MotSlot *)(obj + 0x41C);
+        if (a3->pk != pk) {
+            n = *(s32 *)(obj + 0x418);
+            if (0 < n) {
+                i = 0;
+                off = 0;
+                do {
+                    i++;
+                    *(s32 *)(a3->p10 + off + 0x30) = -1;
+                    *(s32 *)(a3->p10 + off + 0x34) = -1;
+                    *(s32 *)(a3->p10 + off + 0x38) = -1;
+                    off += 0x40;
+                } while (i < *(s32 *)(obj + 0x418));
+            }
+            a3->fC = 0xBF800000;
+        }
+        a3->pk = pk;
+        *(f32 *)(s->obj + 0x424) = s->f4;
+        amMotion_Apply(s->obj, 0.0f, s->f1C);
+    }
+}
+
+
+extern f32 D_0051CD24[];
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5BE0);
+
 typedef struct BtbItem {
     s32 id;
     f32 val;
@@ -2015,7 +2082,6 @@ typedef struct BtbHolder {
     BtbItem *item;
 } BtbHolder;
 
-extern f32 D_0051CD24[];
 extern f32 func_002CFDD0(s32, f32, f32);
 extern void func_002D0110(s32, f32, s32);
 extern void func_002D04A0(s32);
@@ -2039,28 +2105,11 @@ void func_001F5CB0(BtbHolder *h) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5D50);
-// differs: 44 of 53 instructions (the order of the loads of s->obj and the packed frame index, and the registers they use)
-
-#if 0
-
-typedef struct MotState {
-    char *obj;
-    f32 f4;
-    s32 f8;
-    s32 f10;
-    f32 f14;
-    s32 f18;
-    f32 f1C;
-} MotState;
-
-typedef struct MotCtl {
-    char pad0[8];
-    MotState *st;
-} MotCtl;
-
 extern f32 D_0051CD24[];
 extern void amMotion_Apply(char *, f32, f32);
 
+// differs: 44 of 53 instructions (the first branch's target, the loads of s->obj and the packed frame index)
+#if 0
 void func_001F5E20(MotCtl *c) {
     MotState *s;
     char *entry;
@@ -2087,7 +2136,6 @@ void func_001F5E20(MotCtl *c) {
     }
 }
 #endif
-
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5E20);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5EF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5F50);
