@@ -1,5 +1,133 @@
 #include "common.h"
 
+typedef struct MotHdr {
+    char pad[0x10];
+    s32 n10;
+    void *p14;
+    s32 n18;
+    void *p1C;
+} MotHdr;
+
+extern void *D_00470304;
+extern s32 D_00470308;
+extern void **D_004702F0;
+extern char *D_00470300;
+extern char D_003F0800[];
+extern void func_0013BD20(void *);
+s32 func_0013CAE0(char *, char *);
+extern void func_0013C1E0(void *, f32, f32);
+extern void func_0013B0B0(void *);
+extern void func_0013B110(s32);
+extern s32 func_00127BA0(char *);
+extern void func_0012EFF0(void *, void *, u32);
+extern void func_00125740(void *, void *, s32);
+
+
+typedef struct MotObj {
+    MotHdr *hdr;
+} MotObj;
+
+typedef struct MotSlot {
+    s32 id;
+    s32 pad4;
+    f32 f8;
+    f32 fC;
+    char *p10;
+} MotSlot;
+
+typedef struct MotInst {
+    MotHdr *hdr;
+    MotHdr *model;
+    char pad8[0x400];
+    s32 x408;
+    char pad40C[4];
+    s32 x410;
+    s32 x414;
+    s32 n418;
+    MotSlot slot0;
+    char pad430[0xC];
+    MotSlot slot1;
+    char pad450[0xC];
+    void *p45C;
+    void *p460;
+    char pad464[8];
+    MotHdr *anim[16];
+    s32 x4AC;
+    s16 map[4][256];
+} MotInst;
+
+void func_0013CC40(MotInst *, MotSlot *);
+typedef struct Bone {
+    char pad[0x10];
+    f32 pos[4];
+    char pad20[0x18];
+    struct Bone *child;
+    struct Bone *next;
+} Bone;
+extern void func_0013B060(void *);
+void func_0013DD60(Bone *);
+extern void func_00142100(void *, void *);
+
+
+
+
+
+
+
+
+typedef struct Key4 { s16 frame; s16 pad; } Key4;
+typedef struct Key8 { s32 frame; s32 pad; } Key8;
+typedef struct Key16 { s32 frame; s32 pad[3]; } Key16;
+typedef struct Track4 { char pad[8]; s32 n; Key4 key[1]; } Track4;
+typedef struct Track8 { char pad[8]; s32 n; Key8 key[1]; } Track8;
+typedef struct Track16 { char pad[8]; s32 n; Key16 key[1]; } Track16;
+
+
+
+
+
+
+
+
+typedef struct MotJoint {
+    char pad[0x14];
+    f32 f14;
+    char pad18[0x28];
+} MotJoint;
+
+typedef struct Vec4 {
+    f32 x, y, z, w;
+} Vec4;
+
+typedef struct MotSeq {
+    s32 pad0;
+    s32 n4;
+    s32 n8;
+    s32 nC;
+} MotSeq;
+
+typedef struct MotW {
+    f32 f0;
+    f32 f4;
+} MotW;
+
+extern MotSeq *D_004702EC;
+extern MotW **D_004702E8;
+extern Vec4 D_003F0840;
+extern void func_00142280(Vec4 *, Vec4 *, void *, void *);
+extern void func_0013CE50(MotInst *, MotSlot *);
+extern void func_0013D360(MotInst *, MotSlot *);
+extern f32 fabsf(f32);
+
+
+typedef struct Key8s { s16 frame; s16 pad[3]; } Key8s;
+typedef struct Track8s { char pad[8]; s32 n; Key8s key[1]; } Track8s;
+
+
+
+
+extern void func_0013B960(void *);
+
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B160);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B190);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013B2B0);
@@ -19,27 +147,276 @@ INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BAF0);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BBD0);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BC00);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BC30);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BC70);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BCF0);
+s32 func_0013BC70(MotHdr *m, u32 flags) {
+    s32 size;
+    s32 n;
+    size = 0x24B0;
+    n = m->n10;
+    size += m->n10 * 64;
+    size += n * 128 * ((flags & 2) ? 2 : 1);
+    size += n * 64 * ((flags & 1) ? 2 : 1);
+    if (flags & 4) {
+        size += m->n10 * 64;
+        size += m->n10 * 64;
+    }
+    return size;
+}
+void func_0013BCF0(MotObj *o) {
+    D_00470304 = o;
+    func_0013BD20(*(void **)o->hdr->p1C);
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013BD20);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C070);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C170);
+void func_0013C070(MotInst *o, s32 slot, MotHdr *anim) {
+    s16 *map;
+    MotHdr *model;
+    s32 i;
+    s32 found;
+    s32 j;
+
+    o->anim[slot] = anim;
+    map = o->map[slot];
+    model = o->model;
+    for (i = 0; i < model->n10; i++) {
+        found = 0;
+        for (j = 0; j < anim->n18 && !found; j++) {
+            found = func_0013CAE0((char *)model->p1C + i * 32, (char *)anim->p1C + j * 32);
+        }
+        map[i] = found ? j - 1 : -1;
+    }
+}
+void func_0013C170(MotInst *o, s32 a1) {
+    D_00470308 = a1;
+    if (o->slot0.p10) func_0013CC40(o, &o->slot0);
+    if (o->slot1.p10) func_0013CC40(o, &o->slot1);
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C1E0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C500);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C580);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C5E0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C6A0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C6E0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C720);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C860);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013C940);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013CA10);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013CAE0);
+void func_0013C500(MotInst *o, f32 a, f32 b) {
+    if (b != 0.0f) {
+        func_0013C170(o, 0);
+        func_0013C1E0(o, a, b);
+    }
+}
+void func_0013C580(MotInst *o) {
+    D_004702F0 = (void **)((char *)o + 8);
+    D_00470300 = (char *)o->x408;
+    func_0013B0B0(D_003F0800);
+    func_0013DD60((Bone *)o->model->p14);
+    func_0013B110(1);
+}
+s32 func_0013C5E0(MotHdr *m, void *node) {
+    s32 i;
+    if (!m->p1C) return -1;
+    for (i = 0; i < m->n10; i++) {
+        if (func_0013CAE0((char *)m->p1C + i * 32, node)) return i;
+    }
+    return -1;
+}
+void func_0013C6A0(MotInst *o) {
+    func_0012EFF0(o->p460, o->p45C, (u32)(o->n418 << 7) >> 6);
+}
+void func_0013C6E0(MotInst *o) {
+    func_0012EFF0(o->p45C, o->p460, (u32)(o->n418 << 7) >> 6);
+}
+void func_0013C720(MotInst *dst, MotInst *src) {
+    s32 i;
+    s32 found;
+    s32 j;
+    for (i = 0; i < src->n418; i++) {
+        found = 0;
+        for (j = 0; j < dst->n418; j++) {
+            if (*(s8 *)((char *)src->model->p1C + i * 32) == 'X') continue;
+            if (*(s8 *)((char *)dst->model->p1C + j * 32) == 'X') continue;
+            found = func_0013CAE0((char *)src->model->p1C + i * 32, (char *)dst->model->p1C + j * 32);
+            if (found > 0) break;
+        }
+        if (found > 0) {
+            func_00125740((char *)dst->p45C + j * 128, (char *)src->p45C + i * 128, 0x80);
+        }
+    }
+}
+s32 func_0013C860(Track4 *t, f32 frame) {
+    s32 i;
+    s32 step;
+    if (frame < 1.0f) return 0;
+    i = t->n >> 1;
+    step = (t->n + 1) >> 1;
+    while (step >= 2) {
+        if ((f32)t->key[i].frame <= frame) {
+            i += step >> 1;
+        } else {
+            i -= step >> 1;
+        }
+        step = (step + 1) >> 1;
+    }
+    return ((f32)t->key[i].frame <= frame) ? i : i - 1;
+}
+s32 func_0013C940(Track8 *t, f32 frame) {
+    s32 i;
+    s32 step;
+    if (frame < 1.0f) return 0;
+    i = t->n >> 1;
+    step = (t->n + 1) >> 1;
+    while (step >= 2) {
+        if ((f32)t->key[i].frame <= frame) {
+            i += step >> 1;
+        } else {
+            i -= step >> 1;
+        }
+        step = (step + 1) >> 1;
+    }
+    return ((f32)t->key[i].frame <= frame) ? i : i - 1;
+}
+s32 func_0013CA10(Track16 *t, f32 frame) {
+    s32 i;
+    s32 step;
+    if (frame < 1.0f) return 0;
+    i = t->n >> 1;
+    step = (t->n + 1) >> 1;
+    while (step >= 2) {
+        if ((f32)t->key[i].frame <= frame) {
+            i += step >> 1;
+        } else {
+            i -= step >> 1;
+        }
+        step = (step + 1) >> 1;
+    }
+    return ((f32)t->key[i].frame <= frame) ? i : i - 1;
+}
+s32 func_0013CAE0(char *a, char *b) {
+    s32 i;
+    s32 j;
+    i = func_00127BA0(a) - 1;
+    j = func_00127BA0(b) - 1;
+    while (i >= 0 && j >= 0) {
+        if (a[i] == b[j]) {
+            i--;
+            j--;
+        } else {
+            return 0;
+        }
+        if (a[i] == '_' && j < 0) return 1;
+        if (a[j] == '_' && i < 0) return 1;
+        if (a[i] == '_' && b[j] == '_') return 1;
+    }
+    if (i == j) return 1;
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013CC40);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013CE50);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013D360);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013D9B0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013DA60);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013DBF0);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013DD60);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013DE60);
+s32 func_0013DA60(Track8s *t, f32 frame, s32 i) {
+    s32 mid;
+    if (frame < 1.0f) return 0;
+    if (i == -1) {
+        mid = t->n >> 1;
+        i = (t->n + 1) >> 1;
+        while (i >= 2) {
+            if ((f32)t->key[mid].frame <= frame) {
+                mid += i >> 1;
+            } else {
+                mid -= i >> 1;
+            }
+            i = (i + 1) >> 1;
+        }
+        if (!((f32)t->key[mid].frame <= frame)) mid--;
+    } else {
+        do {
+            if ((f32)t->key[i].frame <= frame) {
+                if (!((f32)t->key[i + 1].frame <= frame)) return i;
+                i++;
+            } else {
+                i--;
+            }
+            if (i <= 0) return 0;
+        } while (i < t->n - 1);
+        mid = t->n - 1;
+    }
+    return mid;
+}
+s32 func_0013DBF0(Track16 *t, f32 frame, s32 i) {
+    s32 mid;
+    if (frame < 1.0f) return 0;
+    if (i == -1) {
+        mid = t->n >> 1;
+        i = (t->n + 1) >> 1;
+        while (i >= 2) {
+            if ((f32)t->key[mid].frame <= frame) {
+                mid += i >> 1;
+            } else {
+                mid -= i >> 1;
+            }
+            i = (i + 1) >> 1;
+        }
+        if (!((f32)t->key[mid].frame <= frame)) mid--;
+    } else {
+        do {
+            if ((f32)t->key[i].frame <= frame) {
+                if (!((f32)t->key[i + 1].frame <= frame)) return i;
+                i++;
+            } else {
+                i--;
+            }
+            if (i <= 0) return 0;
+        } while (i < t->n - 1);
+        mid = t->n - 1;
+    }
+    return mid;
+}
+void func_0013DD60(Bone *b) {
+    void *m;
+    void *pf;
+    func_0013B0B0(0);
+    while (b) {
+        m = (s32 *)*D_004702F0;
+        __asm__ volatile ("pref 0, 0(%0)" : : "r"(pf));
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "vmulax.xyzw $ACC, $vf28, $vf1x\n"
+            "vmadday.xyzw $ACC, $vf29, $vf1y\n"
+            "vmaddaz.xyzw $ACC, $vf30, $vf1z\n"
+            "vmaddw.xyzw $vf31, $vf31, $vf0w\n"
+            : : "r"(b->pos));
+        if (m) {
+            func_0013B960(m);
+        } else {
+            func_00142100(b, 0);
+        }
+        __asm__ volatile (
+            "sqc2 $vf28, 0(%0)\n"
+            "sqc2 $vf29, 0x10(%0)\n"
+            "sqc2 $vf30, 0x20(%0)\n"
+            "sqc2 $vf31, 0x30(%0)\n"
+            : : "r"(D_00470300));
+        D_004702F0++;
+        D_00470300 += 0x40;
+        if (b->child) func_0013DD60(b->child);
+        b = b->next;
+        func_0013B060(0);
+    }
+    func_0013B110(1);
+}
+void func_0013DE60(Bone *b) {
+    func_0013B0B0(0);
+    while (b) {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "vmulax.xyzw $ACC, $vf28, $vf1x\n"
+            "vmadday.xyzw $ACC, $vf29, $vf1y\n"
+            "vmaddaz.xyzw $ACC, $vf30, $vf1z\n"
+            "vmaddw.xyzw $vf31, $vf31, $vf0w\n"
+            : : "r"(b->pos));
+        func_00142100(b, 0);
+        __asm__ volatile (
+            "sqc2 $vf28, 0(%0)\n"
+            "sqc2 $vf29, 0x10(%0)\n"
+            "sqc2 $vf30, 0x20(%0)\n"
+            "sqc2 $vf31, 0x30(%0)\n"
+            : : "r"(D_00470300));
+        D_00470300 += 0x40;
+        if (b->child) func_0013DE60(b->child);
+        b = b->next;
+        func_0013B060(0);
+    }
+    func_0013B110(1);
+}
