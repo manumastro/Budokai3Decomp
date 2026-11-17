@@ -186,6 +186,62 @@ s32 func_002AFD80(u8 *a, u8 *b) {
     *(void **)(a + 0x10) = func_002AFCE0;
     return 3;
 }
+#if 0
+// differs: 0x190 against 0x1A0 bytes: q and the battle-table base swap saved registers (s1/s2) and the two lookups of the table entry sit in other order; 64 lines differ whatever the declaration order (720 orders tried, the first 8 shown)
+extern u8 D_005BC440[];
+extern f32 D_004708F8;
+extern void amNode_Free(void *);
+extern s32 amNode_Alloc();
+extern s32 amFile_Load(u8 *);
+extern void amCdFs_Close(void *, s32);
+extern void amCdFs_ReleaseCache(s32);
+
+s32 func_002AFE00(u8 *a, u8 *b) {
+    u8 *e;
+    u8 *A = a;
+    u8 *B = b;
+    u8 *q = *(u8 **)(A + 0x1C);
+    u8 *s0 = *(u8 **)A;
+    u8 *s1;
+
+    if (*(s16 *)(q + 4) != 3) {
+        return 3;
+    }
+    *(s32 *)(A + 0x10) = 0;
+    e = D_005BC440 + ((*(s32 *)s0 * 9) << 4) + (((*(s32 *)B + 1) * 3) << 4);
+    if (*(s32 *)e != 0) {
+        amCdFs_ReleaseCache(*(s32 *)e);
+    }
+    if (*(s32 *)(e + 8) != 0) {
+        amNode_Free(*(void **)(e + 8));
+    }
+    e = D_005BC440 + ((*(s32 *)s0 * 9) << 4) + (((*(s32 *)B + 1) * 3) << 4);
+    if (*(s32 *)e != 0) {
+        amCdFs_ReleaseCache(*(s32 *)e);
+    }
+    if (*(s32 *)(e + 8) != 0) {
+        amNode_Free(*(void **)(e + 8));
+    }
+    s0 = *(u8 **)(q + 0x40);
+    s1 = *(u8 **)(s0 + 0x50);
+    *(u8 **)e = s0;
+    *(u8 **)(e + 4) = s1;
+    amFile_Load(s1);
+    *(s32 *)(e + 8) = amNode_Alloc();
+    *(s32 *)(e + 0xC) = 0;
+    *(s32 *)(e + 0x10) = 0;
+    *(f32 *)(e + 0x14) = D_004708F8;
+    *(s32 *)(e + 0x18) = 0;
+    *(s32 *)(q + 0x40) = 0;
+    amCdFs_Close(q, 0);
+    if (*(s32 *)(A + 0x18) != 0) {
+        amCdFs_Close(*(void **)(A + 0x18), 0);
+    }
+    *(s32 *)(A + 0x18) = 0;
+    *(s32 *)(A + 0x1C) = 0;
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002AFE00);
 s32 func_002AFFA0(u8 *a, u8 *b) {
     *(s32 *)b = *(s32 *)(*(u8 **)(b + 0x2C) + 4);
