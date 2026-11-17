@@ -13,6 +13,9 @@
  *    top of the function (`s32 q1 = p[1];`, `s32 q2 = p[2];`) and store the local (func_001CE7C0, func_001CE740).
  * 3. Local declaration order decides the registers; a permutation search over the declaration block (scratch tool
  *    compiling every order in one translation unit, comparing with the ROM) matched func_001CEDE0 (22 of 30 orders).
+ * 4. `A + B` operand order is canonical in mwcc: `t + idx * 16` and `idx * 16 + t` (and `(idx << 4)`, a local k) gave
+ *    the same `addu`. The 1-instruction differences of func_001CDDE0, func_001CDE40, func_001CDEA0 and func_001CDF10
+ *    are the register that holds the table base and the index product; declaration orders (idx, t, k) did not flip it.
  */
 
 typedef struct Big { char pad[0x8934]; void *tbl[2]; } Big;
