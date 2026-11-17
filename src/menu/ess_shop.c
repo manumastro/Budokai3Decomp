@@ -1,6 +1,10 @@
 #include "common.h"
 
 extern s32 D_00470808;
+extern u8 D_004E0660[];
+extern void func_0026E000(u8 *, s32);
+extern s32 D_00452FA0[];
+extern u8 D_004E066A[];
 extern void func_00274120(void);
 extern s32 func_00283BF0(void);
 extern void func_00283C20(void);
@@ -65,6 +69,46 @@ s32 func_00272D30(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00272D30);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00272E20);
+#if 0
+// differs: the table and mode logic match in order, but the branch layout of the 0x242 test and the mode dispatch (beq/beqz chain) and the register of the table base differ
+void func_002730B0(u8 *a0, s32 a1) {
+    u8 *e;
+    s32 a3;
+    s32 mode;
+
+    *(s32 *)(a0 + 4) = a1;
+    e = D_004E0660 + a1 * 40;
+    if (*(s32 *)a0 != 0x242) {
+        a3 = *(u16 *)(e + 0x26);
+        if (a3 == 0) {
+            *(s32 *)(a0 + 8) = D_00452FA0[e[0xA] >> 4];
+        } else {
+            *(s32 *)(a0 + 8) = a3 * 100;
+        }
+        *(s16 *)(a0 + 0xC) = D_004E066A[a1 * 40] & 3;
+    } else {
+        *(s32 *)(a0 + 8) = 0x1388;
+        *(s16 *)(a0 + 0xC) = -1;
+    }
+    mode = ((u8 *)(*(s32 *)(D_00470808 + 0x54)))[a1];
+    if (mode == 1) {
+        if (e[0xB] & 8) {
+            *(s32 *)(a0 + 0x10) &= -3;
+            *(s32 *)(a0 + 0x10) |= 4;
+        } else {
+            *(s32 *)(a0 + 0x10) &= -7;
+        }
+    } else if (mode == 0) {
+        *(s32 *)(a0 + 0x10) &= -5;
+        *(s32 *)(a0 + 0x10) |= 2;
+    } else {
+        *(s32 *)(a0 + 0x10) &= -7;
+    }
+    if (*(s32 *)a0 == 0x242) {
+        *(s32 *)(a0 + 0x10) &= -7;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002730B0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273210);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273330);
@@ -171,6 +215,43 @@ void func_00276AB0(void) {
     Zenie_Release();
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276B50);
+#if 0
+// differs: one instruction: the store address of the search is built as s1 + k*4 in the original (addu v0,v0,s1), mine as addu v0,s1,v0
+void func_00276CE0(u8 *a0, s32 a1) {
+    u8 *s1;
+    s32 s0;
+    s32 i;
+    u8 *p;
+    s32 k;
+    u8 *e;
+    s32 v;
+
+    s1 = a0;
+    s0 = a1;
+    for (i = 0; i < 7; i++) {
+        v = ((s32 *)s1)[i + 1];
+        if (v <= 0) {
+            break;
+        }
+        e = D_004E0660 + v * 40;
+        if (*(u16 *)(e + 0x10) == s0 || *(u16 *)(e + 0x12) == s0) {
+            func_00276CE0(s1, v);
+            i = 0;
+        }
+    }
+    k = 0;
+    p = s1;
+    do {
+        if (*(s32 *)(p + 4) == s0) {
+            ((s32 *)s1)[k + 1] = -1;
+            break;
+        }
+        k++;
+        p += 4;
+    } while (k < 7);
+    func_0026E000(s1, 0xF0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276CE0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276DC0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00277010);
