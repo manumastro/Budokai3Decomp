@@ -25,6 +25,68 @@ void func_002DE250(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DE2C0);
+#if 0
+// differs: 59 of 82 before the last fixes; the original keeps v1 = &D_004E05DC (lui/addiu) for the three float stores, mine folds the address into lui at; the else branch and the bnez/b layout around the func_002DEA00 / func_002DEFF0 stores differ
+extern void Save_Request();
+extern void Scene_Request(s32, s32);
+extern void Scene_FadeTo(s32, s32);
+extern void amAdx_Stop(s32);
+extern void Obj_CopyVec4F50(s32, void *);
+extern void Obj_SetF3C(s32, s32);
+extern void func_002DEFF0();
+extern void func_002DEA00();
+extern void func_002DEFE0();
+extern void func_002D9DE0();
+extern void func_002D91C0();
+extern s32 func_002DE2C0();
+
+void func_002DE460(void) {
+    u8 *s0;
+    u8 *s1;
+    u8 *v1;
+    void *v0;
+    f32 val;
+    f32 vec[4];
+
+    s0 = gOptionWork;
+    val = (f32)*(s32 *)(s0 + 0x404) / 255.0f;
+    *(f32 *)(D_004E05DC + 0x34) = val;
+    val = (f32)*(s32 *)(s0 + 0x408) / 255.0f;
+    *(f32 *)(D_004E05DC + 0x38) = val;
+    *(f32 *)(D_004E05DC + 0x3C) = val;
+    if (func_002DE2C0()) {
+        Save_Request(6, -1, 0);
+        v0 = (void *)func_002DEFF0;
+        v1 = *(u8 **)(s0 + 0x320);
+        if (v0 == 0) {
+            v0 = 0;
+        }
+        *(void **)(v1 + 0x1C) = v0;
+    } else {
+        v0 = (void *)func_002DEA00;
+        v1 = *(u8 **)(s0 + 0x320);
+        if (v0 == 0) {
+            v0 = 0;
+        }
+        *(void **)(v1 + 0x1C) = v0;
+        *(void **)((u8 *)gOptionWork + 0x34C) = (void *)func_002D9DE0;
+        *(s32 *)((u8 *)gOptionWork + 0x388) = 0;
+        *(s32 *)((u8 *)gOptionWork + 0x38C) = 0;
+        Scene_Request(5, 0);
+        Scene_FadeTo(10, 0);
+    }
+    amAdx_Stop(1);
+    *(void **)(s0 + 0x344) = (void *)func_002DEFE0;
+    *(u32 *)&vec[0] = 0x43CF8000;
+    *(u32 *)&vec[1] = 0x43BE0000;
+    *(u32 *)&vec[2] = 0;
+    *(u32 *)&vec[3] = 0x3F800000;
+    s1 = gOptionWork;
+    Obj_CopyVec4F50(*(s32 *)(s1 + 0x33C), vec);
+    Obj_SetF3C(*(s32 *)(s1 + 0x33C), -1);
+    *(void **)(s0 + 0x35C) = (void *)func_002D91C0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DE460);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DE5A0);
 #if 0
@@ -519,7 +581,7 @@ void ChangeProgress_Start(void) {
 // the original keeps a branch (tried: ternary, if/return, if/else with a variable).
 
 #if 0
-// differs: the original hoists li 3 before the two loads and compares with beq, mine folds the compare to xori/sltiu (tried if/else and r=0/r=1)
+// differs: the original hoists li 3 before the two loads and compares with beq, mine folds the compare to xori/sltiu (tried if/else and r=0/r=1; a local k = 3 is folded too)
 s32 func_002E0D10(void) {
     s32 r;
     if (*(s16 *)(*(u8 **)gOptionState + 4) != 3) {

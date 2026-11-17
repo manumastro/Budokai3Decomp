@@ -110,6 +110,58 @@ void func_002F0870(u32 *task) {
         s0++;
     } while (s2 < 0x24);
 }
+#if 0
+// differs: 16 to 34 of 82 instructions differ in the path-A and path-B order (fdiff alignment score 18 at best); 720 register permutations of the six float locals (declaration order) searched, best 18 (reversed order f8..f3); the original loads 396.0f and 472.0f before the x conversion, the compiler does not keep that order
+void func_002F0960(u8 *a0) {
+    u8 *v1;
+    s32 t;
+    s16 x;
+    s16 q;
+    s16 r;
+    f32 f8;
+    f32 f7;
+    f32 f6;
+    f32 f5;
+    f32 f4;
+    f32 f3;
+
+    v1 = *(u8 **)(a0 + 0x94);
+    t = *(u16 *)(a0 + 0x124);
+    if (t == 0xFFFF) {
+        return;
+    }
+    if (t & 0x100) {
+        x = (s16)(t & 0xFF);
+        f4 = 5.0f + 30.0f * (f32)x;
+        f3 = 30.0f + f4;
+        f5 = 472.0f;
+        f6 = 396.0f;
+        f8 = -38.0f;
+        f7 = 38.0f;
+    } else {
+        r = (s16)(t % 13);
+        q = (s16)(t / 13);
+        f6 = 5.0f + 30.0f * (f32)r;
+        f5 = 30.0f + f6;
+        f4 = 5.0f + 30.0f * (f32)q;
+        f3 = 30.0f + f4;
+        f8 = -15.0f;
+        f7 = 15.0f;
+    }
+    *(s16 *)(v1 + 0x18) = 1;
+    *(f32 *)(v1 + 0x20) = 60.0f + (f6 + (f5 - f6) / 2.0f);
+    *(f32 *)(v1 + 0x24) = 49.0f + (f4 + (f3 - f4) / 2.0f);
+    *(u32 *)(v1 + 0x34) = 0xC1700000;
+    *(u32 *)(v1 + 0x3C) = 0x41700000;
+    *(f32 *)(v1 + 0x30) = f8;
+    *(f32 *)(v1 + 0x38) = f7;
+    *(f32 *)(v1 + 0x44) = f4;
+    *(f32 *)(v1 + 0x40) = f6;
+    *(f32 *)(v1 + 0x48) = f5;
+    *(f32 *)(v1 + 0x4C) = f3;
+    func_0022CF70(v1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0960);
 void func_002F0B00(u8 *task) {
     u8 *s1;
