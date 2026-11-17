@@ -103,6 +103,36 @@ void func_002BD660(s32 a, s32 b) {
     D_00470910->f38 = amTask_Create(func_002BD3A0, NULL, a, 2, b, D_0046EE10);
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD6B0);
+extern void func_0013B160(s32);
+extern void func_00142100(void *, void *);
+extern void func_00208D70(s32);
+#if 0
+// func_002BDC50: the VU0 moves are inline asm; the two globals get the other saved registers (ours: E48 in s0 loaded first, original: E44 in s1 loaded first); four orders tried
+void func_002BDC50(void) {
+    s32 *s0 = D_0046FE48;
+    s32 *s1 = D_0046FE44;
+    if (*(s16 *)((char *)s1 + 0x100) != 1) {
+        return;
+    }
+    if ((s1[0x2C / 4] & 1) != 0) {
+        return;
+    }
+    if (*(s16 *)((char *)s1 + 0x36) != 0xE) {
+        return;
+    }
+    func_0013B160(0);
+    func_00142100((char *)s1 + 0x50, (char *)s1 + 0x60);
+    D_00470238 = 0;
+    func_00145CC0(s0[0x1A0 / 4], 0x3003000);
+    if (s1[0x70 / 4] != 0) {
+        func_00208D70(s1[0x70 / 4]);
+    }
+    if (s1[0x74 / 4] != 0) {
+        func_00208D70(s1[0x74 / 4]);
+    }
+    __asm__ volatile ("vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27");
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDC50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDD10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDE80);
@@ -307,12 +337,12 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFFD0);
 extern void func_00133B50(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_002BFFD0(void *, s32);
-extern void func_002C02C0(void);
+extern void func_002C02C0(s32 *);
 
 extern void func_00133B50(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_002BFFD0(void *, s32);
-extern void func_002C02C0(void);
+extern void func_002C02C0(s32 *);
 
 void func_002C0220(s32 *a0) {
     char *s0 = (char *)a0 + 0x30;
@@ -333,10 +363,35 @@ void func_002C0220(s32 *a0) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C02C0);
-extern void func_002C02C0(void);
+void func_002C02C0(s32 *a0) {
+    char *s0 = (char *)a0;
+    s32 *q = (s32 *)(s0 + 0x30);
+    f32 *p = (f32 *)(s0 + 0x30);
+    void *f;
+    if ((*(u16 *)(s0 + 0x3A) & 1) == 0) {
+        func_00133B50(0, 0);
+    }
+    p[6] = p[6] - p[7];
+    if (p[6] < 0.0f) {
+        p[6] = 0.0f;
+    }
+    func_002BFFD0(q, 0);
+    func_002BFFD0(q, 1);
+    if (p[6] <= 0.0f) {
+        p[6] = 1.0f;
+        q[5] = q[4];
+        if (q[3] == -1) {
+            f = func_002C03B0;
+            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+            return;
+        }
+        f = func_002C0220;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+extern void func_002C02C0(s32 *);
 
-extern void func_002C02C0(void);
+extern void func_002C02C0(s32 *);
 
 void func_002C03B0(s32 *a0) {
     s32 *a2 = a0 + 0x30 / 4;
