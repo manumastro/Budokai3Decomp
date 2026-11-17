@@ -64,7 +64,14 @@ s32 func_002A2FF0(void *a0, s32 *a1) {
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3020);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3080);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A30F0);
+extern void Zenie_Open(s32);
+extern s32 *D_004708D0;
+
+s32 func_002A30F0(void) {
+    Zenie_Open(0);
+    D_004708D0[0x64 / 4] = 1;
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3120);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3190);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A37E0);
@@ -88,6 +95,10 @@ s32 func_002A3DE0(s32 *p) {
     return 3;
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3E10);
+extern s32 func_002A1020(s32);
+extern void func_002A3E10(void);
+
+// func_002A3E60: the test of the call result and the store of 0 are ordered differently (store in a branch delay slot); not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3E60);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3EC0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3F10);
@@ -108,7 +119,13 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4320);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4410);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4470);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A44C0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4500);
+extern void func_002A0A60(s32, s32);
+
+s32 func_002A4500(void *a0, char *a1) {
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    func_002A0A60(args[1], args[0]);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4530);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4580);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4620);
@@ -139,10 +156,20 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4A30);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4AD0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4BD0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4CF0);
+extern s8 D_004B4B63;
+extern char D_00492FCE[];
+
+// func_002A4D60: the join of the if/else returns the value in a different order; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4D60);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4DC0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4E20);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4E90);
+extern void func_002A1420(s32);
+
+s32 func_002A4E90(void *a0, char *a1) {
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    func_002A1420(args[0]);
+    return 1;
+}
 extern void func_002A1430(s32, s32, s32, s32);
 
 s32 func_002A4EC0(void *a0, char *a1) {

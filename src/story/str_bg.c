@@ -7,7 +7,17 @@ extern void func_00133B50(void *, s32);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E5D0);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E640);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028E790);
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EA80);
+extern s32 amGs_SetReg32(s32, s32);
+extern void func_00133780(s32, s32);
+extern void func_0022C700(void);
+
+void func_0028EA80(void) {
+    s32 s0 = amGs_SetReg32(0, 0x3040A);
+    func_00133780(2, 1);
+    func_0022C700();
+    func_00133780(2, 0);
+    amGs_SetReg32(0, s0);
+}
 extern void func_00133780(s32, s32);
 extern void func_0022C700(void);
 
