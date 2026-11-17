@@ -1,5 +1,20 @@
 #include "common.h"
 
+typedef struct V16 {
+    s32 a;
+    s32 b;
+    s32 c;
+    s32 d;
+} V16;
+extern V16 D_0044F710;
+extern s32 D_00470688;
+void func_0012F2C0(void);
+void func_00133780(s32, s32);
+s32 amGs_SetReg32(s32, s32);
+void func_00139620(s32, void *, s32, s32, s32, f32);
+void func_00228430(s32);
+void func_002284D0(s32);
+
 extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
@@ -186,7 +201,24 @@ void func_0021B810(void) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B870);
+void func_0021B870(void) {
+    u8 *sys = D_0046FDFC;
+    V16 t;
+
+    func_0012F2C0();
+    func_00133780(2, 1);
+    D_00470688 = amGs_SetReg32(2, 0x30000);
+    t = D_0044F710;
+    func_00139620(0x902, &t, -1, 0x48, 0, 0.0f);
+    amGs_SetReg32(2, 0x33001);
+    if (*(s32 *)(sys + 0xDF8) != 0) {
+        if (*(f32 *)(D_0046FDFC + 0xE00) >= *(f32 *)(D_0046FDFC + 0xE04)) {
+            func_00139620(0x902, D_0046FDFC + 0xE20, -1, 0x44, 0, 0.0f);
+        }
+    }
+    func_00228430(0);
+    func_002284D0(0);
+}
 void func_0021B940(void) {
     u8 *v = *(u8 **)(D_0046FDFC + 0xEE8);
     s32 *s0;
