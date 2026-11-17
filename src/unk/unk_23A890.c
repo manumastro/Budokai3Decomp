@@ -1,5 +1,15 @@
 #include "common.h"
 
+extern u8 D_0058CAA0[];
+void func_00244CC0(s32, s32);
+void func_00209530(s32);
+void amTask_KillGroup(s32, s32, s32);
+void func_0020DE30(void);
+void func_00248C80(s32);
+void func_00252B20(void);
+void func_0025BE40(void);
+void func_002CA490(void);
+
 void func_001F7210(s32);
 void func_00247820(void);
 
@@ -880,6 +890,44 @@ void func_00247280(void) {
     func_002CA3F0();
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002472F0);
+#if 0
+void func_00247410(void) {
+    s32 k;
+    s32 off;
+    u8 *s0;
+    u8 *s2;
+    u8 *bw;
+
+    k = 0;
+    off = 0;
+    s0 = D_0058CAA0;
+    do {
+        s2 = s0 + 0x10;
+        if (*(s16 *)(s0 + 0x3E) == 0) {
+            bw = D_00470570 + off + 0x830;
+            func_00244CC0(*(s32 *)(bw + 0x1350), 1);
+        }
+        if (*(s32 *)(s2 + 0x30) != 0) {
+            func_00209530(*(s32 *)(s2 + 0x30));
+            *(s32 *)(s2 + 0x30) = 0;
+        }
+        k++;
+        off += 0x2020;
+        s0 += 0x480;
+    } while (k < 2);
+    amTask_KillGroup(0x400, 0x800002, 0);
+    if (*(s16 *)(D_0046FE4C + 0x916) != 0) {
+        func_0020DE30();
+        *(s16 *)(D_0046FE4C + 0x916) = 0;
+    }
+    *(s16 *)(D_0046FE4C + 0x914) = 0;
+    func_00248C80(0);
+    func_00252B20();
+    func_0025BE40();
+    func_002CA490();
+}
+// differs: the loop over the two blocks: the original is 4 bytes longer, with the block pointer kept as its own value (not folded into the 0x1350 load); no declaration order tried gives its registers
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247410);
 #if 0
 void func_00247500(void) {
