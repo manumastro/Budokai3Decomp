@@ -61,7 +61,7 @@ void func_002477C0(u8 *o);
 void func_00247770();
 
 extern s32 D_0058CA08[];
-u8 *func_00215320(s16, s32);
+u8 *func_00215320(s32, s32);
 void func_00212480(void);
 void func_00212650(void);
 s32 func_00209540(s32, s32, s32);
@@ -157,7 +157,7 @@ extern u8 *D_0046FE48;
 extern s32 D_00452130[];
 void amHeap_Free(void *);
 void amTask_Kill(s32);
-void func_00215040(s16, s32, s32);
+void func_00215040(s16, s16, s16);
 void func_0023B6B0(s32);
 void func_0023B4C0(void);
 
