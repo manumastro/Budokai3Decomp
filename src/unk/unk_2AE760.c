@@ -19,10 +19,26 @@ extern void A2d_SetMode(s32);
 extern void func_00228430(s32);
 extern void func_002AF420(Ac2AE *);
 extern s32 func_002AEFD0(Ac2AE *);
+extern u8 D_005BCD20[];
+extern void func_002AE810(void *);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AE760);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AE810);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AE970);
+s32 func_002AE970(s32 **a0, u8 *a1) {
+    s32 idx;
+    s32 k;
+    s32 off;
+
+    idx = **(s32 **)(a1 + 0x2C);
+    if (idx != -1) {
+        func_002AE810(D_005BCD20 + (**a0) * 160 + idx * 40);
+    } else {
+        for (k = 0, off = 0; k < 4; k++, off += 40) {
+            func_002AE810(D_005BCD20 + (**a0) * 160 + off);
+        }
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AEA40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AEB60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AECA0);
