@@ -45,7 +45,9 @@ extern void amHeap_Free(void *);
 extern void func_0022D4B0(s32, s32);
 
 void func_002807E0(void);
-void func_00280C70(void);
+void func_00280C70(Ac280 *o);
+extern s32 D_004532F0[][2];
+extern void func_00280AB0(void);
 
 /* differs: the C matches the body (only the gp-relative load of gFrameDelta is a relocation line), but the link then moves
    the gp offset of a data load in mn_VsCharasel.c (VsCharasel_Start: ninja red). Not understood yet; try a different
@@ -99,9 +101,48 @@ void func_002807D0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_002807E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_002808E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280A00);
+typedef struct Sub5C280 {
+    char pad0[0x5C];
+    f32 f5C;
+} Sub5C280;
+
+extern f32 gFrameDelta;
+extern void func_00280730(void *);
+extern void func_002808E0(void);
+
+void func_00280A00(Ac280 *o) {
+    Sub5C280 *v;
+    f32 f;
+    char *p;
+
+    p = (char *)o + 0x30;
+    v = *(Sub5C280 **)((char *)o + 0x38);
+    f = o->f44 + gFrameDelta;
+    o->f44 = f;
+    if (f > 14.0f) {
+        *(f32 *)(p + 0x14) = 14.0f;
+    }
+    v->f5C = (f32)(*(f32 *)(p + 0x14)) / 14.0f;
+    func_00280730(p);
+    if (!(*(f32 *)(p + 0x14) < 14.0f)) {
+        o->f1C = (func_002808E0 == NULL) ? NULL : (void *)func_002808E0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280AB0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280C70);
+void func_00280C70(Ac280 *o) {
+    u16 s2;
+    char *p;
+
+    if (o->f40 != -1) {
+        s2 = o->f3E & 1;
+        p = (char *)o + 0x30;
+        if (*(void **)p != NULL) {
+            amCdFs_Close(*(void **)p, 0);
+        }
+        *(s32 *)p = amCdFs_ReadFileId(D_004532F0[*(s16 *)(p + 0x10)][s2], 0, 0);
+        o->f1C = (func_00280AB0 == NULL) ? NULL : (void *)func_00280AB0;
+    }
+}
 void func_00280D20(Wrap280 *w) {
     void **p = (void **)&w->f30;
 
