@@ -58,7 +58,7 @@ void func_00254100(s32);
 extern u8 D_0046AD90[];
 u8 *func_001F5FD0(s32, u8 *, s32, void (*)(void), void (*)(void));
 void func_002477C0(void);
-void func_00247770(void);
+void func_00247770();
 
 extern s32 D_0058CA08[];
 u8 *func_00215320(s16, s32);
@@ -545,6 +545,8 @@ void func_00241600(s32 x) {
     *(s32 *)(s0 + 0x48) = func_002096D0(c, 0x400008, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241710);
+void func_00243280(s32);
+extern s8 D_004703F4;
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241AC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241C10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241D60);
@@ -607,6 +609,57 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242A10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242B40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242E10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243020);
+#if 0
+void func_00243280(s32 i) {
+    u8 *b = D_0046FE44 + (i << 7);
+    f32 f2 = *(f32 *)(b + 0x24);
+    f32 f0;
+
+    if (f2 < 0.430000007f) {
+        goto low;
+    }
+    if (*(s16 *)(b + 0x34) != 0) {
+        goto half;
+    }
+    if (*(s16 *)(b + 0x36) == 0x28) {
+        goto half;
+    }
+    if (*(s16 *)(b + 0x36) < 0x40) {
+        goto clamp;
+    }
+half:
+    f0 = 0.5f + (f2 - 0.430000007f);
+    *(f32 *)(b + 0x28) = f0;
+    goto end;
+clamp:
+    if (f2 <= 0.569999993f) {
+        f0 = 4.0f * (f2 - 0.430000007f);
+    } else {
+        f0 = 0.560000002f + 1.5f * (f2 - 0.569999993f);
+    }
+    *(f32 *)(b + 0x28) = f0;
+    goto end;
+low:
+    if (*(s16 *)(b + 0x34) != 0) {
+        goto divide;
+    }
+    if (*(s16 *)(b + 0x36) == 0x28) {
+        goto divide;
+    }
+    if (*(s16 *)(b + 0x36) < 0x40) {
+        *(f32 *)(b + 0x28) = 0.0f;
+        goto end;
+    }
+divide:
+    f0 = 0.5f * (f2 / 0.430000007f);
+    *(f32 *)(b + 0x28) = f0;
+end:
+    if (*(f32 *)(b + 0x28) > 1.0f) {
+        *(f32 *)(b + 0x28) = 1.0f;
+    }
+}
+// differs: same instructions and constants (exact float literals), 0x158 bytes against 0x170: the original gives each clamp arm its own store and b to the clamp label, and the zero arm is laid out separately; 6 instructions short here
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243280);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002433F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243600);
@@ -699,20 +752,30 @@ void func_00243DB0(u8 *o) {
 u8 *func_00243DC0(s32 i) {
     return D_0046FE48 + i * 0x1A4;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243DE0);
-#if 0
-s32 func_00243E50(s32 i, s32 j) {
-    s32 *s0 = (s32 *)(D_0046FE48 + i * 0x1A4);
+typedef struct Blk48 {
+    s32 w[12];
+} __attribute__((aligned(16))) Blk48;
+extern s32 D_0046AC70[];
+void func_00243DE0(s32 idx, Blk48 *src) {
+    Blk48 loc;
 
-    if (D_00452130[j] != -1) {
-        *s0 = amCdFs_ReadFileId(D_00452130[j], 0, 1);
-        return *s0;
+    loc = *src;
+    if (idx >= 0 && idx < 9) {
+        ((void (*)(void *))D_0046AC70[idx])(&loc);
+    }
+}
+extern s32 D_00452130[];
+s32 amCdFs_ReadFileId(s32, s32, s32);
+s32 func_00243E50(s32 i, s32 k) {
+    u8 *p = D_0046FE48 + i * 0x1A4;
+    s32 id = D_00452130[k];
+
+    if (id != -1) {
+        *(s32 *)p = amCdFs_ReadFileId(id, 0, 1);
+        return *(s32 *)p;
     }
     return 0;
 }
-// differs: the original loads the table entry and the global base in another order, and keeps the object pointer in its own register (not folded into the offsets)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243E50);
 void func_00243ED0(void) {
     func_0021B070();
     memset(D_0058C6C0, 0, 0x3D4);
@@ -1054,7 +1117,10 @@ void func_00247060(u8 *o, f32 x) {
 
     *(f32 *)(D_0046FE4C + n * 0x480 + 0x20) = x;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247080);
+void func_00247080(u8 *src) {
+    u8 *dst = D_0046FE4C;
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(src), "r"(dst) : "memory");
+}
 void func_00247090(u8 *o, s32 x) {
     s32 n = *(s32 *)(o + 0x1350);
 
@@ -1245,6 +1311,8 @@ void func_00247900(void) {
         break;
     }
 }
+void amMotion_Apply(u8 *, f32, f32);
+void amMotion_Apply(u8 *, f32, f32);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002479B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247AB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247C80);
