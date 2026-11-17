@@ -3449,6 +3449,75 @@ void func_001F0660(void) {
     }
 }
 #endif
+// differs: do-while copy loops: 49 of 74 at best (declaration orders tried); the original keeps the counter decrement before the loads and the src/dst/counter registers a3/a2/a1; the older #if 0 copy above (unrolled, 203 of 204) is kept.
+#if 0
+void func_001F0660(void) {
+    s32 *s32d;
+    s32 n;
+    s32 *s32s;
+    Copy16B *c16s;
+    Copy16B *c16d;
+    s8 *s8s;
+    s8 *s8d;
+    u64 v64;
+    s32 v32a;
+    s32 v32b;
+    s8 v8;
+
+    s32s = (s32 *)D_004B4C00;
+    s32d = (s32 *)D_004E6560;
+    n = 0x10;
+    do {
+        s32d[0] = s32s[0];
+        s32d[1] = s32s[1];
+        s32s += 2;
+        s32d += 2;
+        n--;
+    } while (n > 0);
+
+    c16s = (Copy16B *)D_004B4C80;
+    c16d = (Copy16B *)D_004E65E0;
+    n = 0x1573;
+    do {
+        c16d[0] = c16s[0];
+        c16d[1] = c16s[1];
+        c16s += 2;
+        c16d += 2;
+        n--;
+    } while (n > 0);
+
+    v64 = *(u64 *)D_004DFAE0;
+    v32a = *(s32 *)D_004DFAE8;
+    v32b = *(s32 *)D_004DFAEC;
+    v8 = D_004DFAF0[0];
+    *(u64 *)D_00511440 = v64;
+    *(s32 *)D_00511448 = v32a;
+    *(s32 *)D_0051144C = v32b;
+    D_00511450[0] = v8;
+
+    s8s = D_004DFAF1;
+    s8d = D_00511451;
+    n = 0x14;
+    do {
+        s8d[0] = s8s[0];
+        s8d[1] = s8s[1];
+        s8s += 2;
+        s8d += 2;
+        n--;
+    } while (n > 0);
+
+    s8s = D_004DFB19;
+    s8d = D_00511479;
+    n = 0x130;
+    do {
+        s8d[0] = s8s[0];
+        s8d[1] = s8s[1];
+        s8s += 2;
+        s8d += 2;
+        n--;
+    } while (n > 0);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0660);
 extern s8 D_004B4BB0[];
 
@@ -3553,8 +3622,41 @@ void func_001F1380(BtbObj *o) {
     }
 }
 #endif
-// differs: func_001F1380: 1 of 65 instructions: the table loop's break jumps straight to the join (b 0x1F1470); the original jumps to the loop-exit trampoline (b 0x1F1450). A while loop gives the same; a for with i = 0x100 instead of break gives 0xFC bytes (0x110 needed).
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1380);
+extern void amHeap_Free(void *);
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+extern f32 D_0051CD24[];
+extern void amMotion_Apply(char *, f32, f32);
+
+void func_001F1380(BtbObj *o) {
+    char *s = (char *)o + 0x30;
+    s32 i;
+    f32 f1;
+
+    if (!(D_0051CD24[0] < 0.0f)) {
+        f1 = *(f32 *)(s + 0x38) + D_0051CD24[0];
+        *(f32 *)(s + 0x38) = f1;
+        if (!(f1 < *(f32 *)(s + 0x34))) {
+            if (f1 > (f32)*(s32 *)(s + 0x30)) {
+                amHeap_Free(*(void **)(s + 0x14));
+                amHeap_Free(*(void **)(s + 0xC));
+                for (i = 0; i < 0x100; i++) {
+                    if (D_0051C770[i] == o) {
+                        o->prev->next = o->next;
+                        o->next->prev = o->prev;
+                        D_0051C770[i] = NULL;
+                        D_0047062C--;
+                        break;
+                    }
+                }
+                return;
+            } else {
+                *(f32 *)(*(char **)(s + 0x14) + 0x424) = f1;
+                amMotion_Apply(*(char **)(s + 0x14), 0.0f, 1.0f);
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1490);
 
 extern void amHeap_Free(void *);
@@ -3562,7 +3664,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F1600(BtbObj *o) {
+void BtbObj_ReleaseF40(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3582,7 +3684,98 @@ void func_001F1600(BtbObj *o) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F16B0);
+typedef struct { u8 b[0x40]; } __attribute__((aligned(16))) BtbVuBuf30;
+
+extern void amModel_SetCurrent(s32, s32);
+extern void func_0013B0B0(void *);
+extern void func_0013B160(s32);
+extern void func_0013B960(void *);
+extern void func_0013B110(s32);
+extern void func_00209D20(void *);
+extern void func_00208D70(s32);
+extern s32 D_00470238;
+extern s32 gBattle;
+
+void func_001F16B0(char *a0) {
+    BtbVuBuf30 buf;
+    char *s0;
+
+    D_00470238 = 0;
+    s0 = a0 + 0x30;
+    amModel_SetCurrent(*(s32 *)(a0 + 0x34), 0x2003000);
+    if (!(*(f32 *)(s0 + 0x54) < *(f32 *)(s0 + 0x50))) {
+        func_0013B0B0(s0 + 0x10);
+        func_0013B160(gBattle != 0 ? gBattle + 0x60 : 0);
+        func_0013B960(s0 + 0x10);
+        __asm__ volatile(
+            "sqc2 $vf28, 0x0(%0)\n\t"
+            "sqc2 $vf29, 0x10(%0)\n\t"
+            "sqc2 $vf30, 0x20(%0)\n\t"
+            "sqc2 $vf31, 0x30(%0)\n\t"
+            "vmove.xyzw $vf28, $vf24\n\t"
+            "vmove.xyzw $vf29, $vf25\n\t"
+            "vmove.xyzw $vf30, $vf26\n\t"
+            "vmove.xyzw $vf31, $vf27\n\t"
+            : : "r"(&buf) : "memory");
+        func_00209D20(&buf);
+        func_00208D70(*(s32 *)(s0 + 0x8));
+        func_0013B110(1);
+    }
+}
+extern f32 D_0051CD24[];
+
+// differs: func_001F1770: 10 of 71 (5 are relocations): the 64-byte VU0 copy takes the destination in $a0 (original $a1) and the table base in $a1 (original $v1); declaration orders and operand order tried; the loop break now takes the return (the trampoline) as in the original.
+#if 0
+void func_001F1770(char *a0) {
+    char *s0;
+    char *s1;
+    char *p1;
+    char *base;
+    char *src;
+    char *q;
+    s32 i;
+    f32 f;
+    BtbObj *o;
+
+    f = *(f32 *)(a0 + 0x84) + D_0051CD24[0];
+    *(f32 *)(a0 + 0x84) = f;
+    s0 = a0 + 0x30;
+    if (!(f < *(f32 *)(a0 + 0x80))) {
+        q = *(char **)(s0 + 0x8);
+        s1 = *(char **)(a0 + 0x10);
+        if (*(s32 *)(q + 0x38) < 0) {
+            o = (BtbObj *)a0;
+            for (i = 0; i < 0x100; i++) {
+                if (D_0051C770[i] == o) {
+                    o->prev->next = o->next;
+                    o->next->prev = o->prev;
+                    D_0051C770[i] = NULL;
+                    D_0047062C--;
+                    break;
+                }
+            }
+            return;
+        } else {
+            func_00208F70(*(BtbObj **)(s0 + 0x8));
+            if (*(char **)(s1 + 0x8) != NULL) {
+                p1 = *(char **)(*(char **)(s1 + 0x8));
+                base = *(char **)(p1 + 0x408);
+                src = base + ((s32)*(s32 *)(s0 + 0xC) << 6);
+                __asm__ volatile(
+                    "lqc2 $vf1, 0(%1)\n\t"
+                    "lqc2 $vf2, 16(%1)\n\t"
+                    "lqc2 $vf3, 32(%1)\n\t"
+                    "lqc2 $vf4, 48(%1)\n\t"
+                    "sqc2 $vf1, 0(%0)\n\t"
+                    "sqc2 $vf2, 16(%0)\n\t"
+                    "sqc2 $vf3, 32(%0)\n\t"
+                    "sqc2 $vf4, 48(%0)\n\t"
+                    : : "r"(s0 + 0x10), "r"(src) : "memory");
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1770);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1890);
 
@@ -3616,7 +3809,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F1C30(BtbObj *o) {
+void BtbObj_ReleaseF40Copy(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3642,7 +3835,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F1EA0(BtbObj *o) {
+void BtbObj_ReleaseF58(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3710,7 +3903,7 @@ void func_001F1F50(char *a0) {
     }
 }
 
-void func_001F20A0(BtbObj *o) {
+void BtbObj_ReleaseF58Copy(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -4345,7 +4538,31 @@ void BtbObj_CheckDrawFlags(char *o) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3DF0);
+extern void *BtbBg_GetStageModel(void);
+extern void func_00133D80(s32);
+extern void func_00133D90(f32);
+extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
+extern f32 D_0051CCD0[];
+extern s32 D_0047064C;
+extern s32 gBattle;
+
+void func_001F3DF0(char *a0) {
+    s32 a1;
+
+    a1 = *(s32 *)(a0 + 0x20);
+    if ((a1 & 0x800) != 0 || (a1 & 0x8000) != 0) {
+        if (*(s32 *)(a0 + 0x30) != 0) {
+            __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(BtbBg_GetStageModel()), "r"(D_0051CCD0) : "memory");
+            D_0051CCD0[3] = 1.0f;
+            D_0047064C = (s32)D_0051CCD0;
+        }
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            func_00133D80(*(s32 *)((char *)gBattle + 0x8928));
+            func_00133D90(*(f32 *)((char *)gBattle + 0x892C));
+            DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
+        }
+    }
+}
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern char D_0051CB70[];
@@ -4961,7 +5178,6 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5040);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5210);
 // differs: 49 of 72 instructions (one extra callee-saved register: the flag word is kept in s4 and s3 is used too)
 
-#if 0
 
 typedef struct BtbRecA {
     char pad0[0x20];
@@ -4975,16 +5191,18 @@ typedef struct BtbRecB {
     void *f4;
 } BtbRecB;
 
-extern void *D_0051CD0C[];
+extern char *D_0051CD0C[];
 extern s32 D_0051CD20[];
 extern char D_00469848[];
-extern void *func_001A50F0(void *, s32);
-extern void *func_00209540(void *, u32, s32);
-extern void func_00209B50(void *, s32, s32);
+extern char *func_001A50F0(char *, s32);
+extern char *func_00209540(char *, s32, s32);
+extern void func_00209B50(char *, char *, s32);
 extern void *func_001F5FD0(u32, char *, s32, void *, void *);
-extern void func_001F2150(void);
+extern void func_001F2150(char *);
 extern void memset(void *, s32, s32);
 
+// differs: func_001F5540: 49 of 72 with this C: one more saved register (frame 96 against 80): the flags argument and the size local are kept in s4/s3, the original keeps flags in s3 and the size in a1 only.
+#if 0
 void func_001F5540(s32 p0, s32 p1, s32 p2, s32 flags) {
     void *s1;
     void *ptr;
@@ -5005,7 +5223,7 @@ void func_001F5540(s32 p0, s32 p1, s32 p2, s32 flags) {
         s1 = func_00209540(ptr, 0x2000001, 0);
     }
     if (s1 != NULL) {
-        func_00209B50(s1, p1, 0);
+        func_00209B50(s1, (char *)p1, 0);
         r = func_001F5FD0(0x85000000, D_00469848, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
         r->f20 = r->f20 & -0x801;
         r->f20 = r->f20 | 0x800;
@@ -5017,8 +5235,8 @@ void func_001F5540(s32 p0, s32 p1, s32 p2, s32 flags) {
     }
 }
 #endif
-
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5540);
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5660);
 extern char *func_001A50F0(char *, s32);
 extern char *func_00209540(char *, s32, s32);
@@ -5803,6 +6021,54 @@ void func_001F7BF0(void) {
         } while (s1 < s0);
     }
 }
+extern char D_004698D0[];
+extern void func_001F3A60(void);
+extern void func_001F3C10(void);
+
+// differs: func_001F7C80: 28 of 77 at best (about 8 are relocations): the flags local is kept in another register (original t0, set in the delay slot of the first beqz) and the two early exits go to a different join; declaration orders tried.
+#if 0
+void func_001F7C80(s32 a0) {
+    s32 count;
+    s32 flags;
+    s32 i;
+    char *v;
+    char *s0;
+    char *sp;
+    char *x2;
+    char *x3;
+    char *x4;
+    char *p;
+    char *r;
+
+    v = D_0051CD14[0] + D_0051CD20[0] * 36;
+    s0 = *(char **)(v + 0xC) + (a0 << 5);
+    sp = *(char **)(s0 + 0x4);
+    for (i = 0; i < *(s32 *)(sp + 0x4); i++) {
+        *(s32 *)(sp + 0x8 + i * 8) = 0;
+    }
+    r = func_001F5FD0(0x80000000, D_004698D0, (s32)s0, (void *)func_001F3A60, (void *)func_001F3C10);
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x11;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x10;
+    flags = 0;
+    x2 = *(char **)(*(char **)(s0 + 0x4));
+    x3 = *(char **)(x2 + 0x1C);
+    x4 = *(char **)x3;
+    if (x4 != NULL) {
+        count = *(s32 *)(x4 + 0x10);
+        if (count > 0) {
+            p = *(char **)(x4 + 0x1C);
+            for (i = 0; i < count; i++) {
+                if (*(s8 *)p == 0x58) {
+                    flags |= 0x200;
+                }
+                p += 0x20;
+            }
+        }
+    }
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & ~flags;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | flags;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7C80);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7DB0);
 typedef void (*VoidFunc)(void);

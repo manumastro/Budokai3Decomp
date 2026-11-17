@@ -364,7 +364,8 @@ ScrOp_RetIf = 0x0014CDB0; // type:func
 ScrOp_RetToIf = 0x0014CE60; // type:func // guess
 ScrOp_RetIfNot = 0x0014CF20; // type:func
 ScrOp_RetToIfNot = 0x0014CFD0; // type:func // guess
-ScrOp_Sleep = 0x0014D090; // type:func // guess
+// the opcode returns (n << 8) + 7: the dispatcher then calls script command n (gScrCmdGroupTable[n >> 4][n & 15]). Renamed from ScrOp_Sleep.
+ScrOp_CmdCall = 0x0014D090; // type:func // guess
 ScrOp_SetX28 = 0x0014D0C0; // type:func // guess
 ScrOp_Spawn = 0x0014D110; // type:func // guess
 ScrOp_SpawnPrio = 0x0014D1A0; // type:func // guess

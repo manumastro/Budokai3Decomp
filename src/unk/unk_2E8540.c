@@ -139,13 +139,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E97E0);
 void func_002E98E0(void) {
     memset(D_005C9F10, 0, 0x6C);
 }
-/* differs: the original loads the index global first (the table base after it) and tests a < fC with bc1f keeping the 1 in v0; the ?: and if forms both come out with xori / a1 */
+/* differs: 1 of 26: r = 1 then r = 0 on a < fC gives the right result, but the join after the `move` is a bare branch
+   target to the jr; the original's bc1f lands on a nop before the jr. The else form and the direct returns give xori. */
 #if 0
 s32 func_002E9900(void) {
     Cur99 *p = (Cur99 *)D_005C9F6C[0];
     Ent99 *e;
     s32 *row;
     s32 idx;
+    s32 r;
     f32 a;
 
     if (p == NULL) {
@@ -155,10 +157,11 @@ s32 func_002E9900(void) {
     a = p->f10;
     row = &D_004573C0[idx];
     e = (Ent99 *)(*row + D_005C9F64[0] * 16);
+    r = 1;
     if (a < e->fC) {
-        return 0;
+        r = 0;
     }
-    return 1;
+    return r;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9900);

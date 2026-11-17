@@ -813,3 +813,40 @@ Scr_CmdGetBtlSysFDF0 = 0x0025B1B0; // type:func // guess
 // unk_20A4D0.c, script command group 0x19 (gScrCmdTable_19, sub 9): a block of two copies of Blk44 and a call
 // through the function table D_00469CB0. Guess.
 Scr_CmdCallTable469CB0 = 0x00217D70; // type:func // guess
+
+// script command groups 0x13 and 0x1D. Their tables are not in the data_d sub-table layout: they sit in sdata
+// (D_0046FD90 for 0x13, D_0046FD88 for 0x1D) and are referenced from gScrCmdGroupTable. Group 0x13 handlers are in
+// skill_cmd.c (sub 0 calls func_002CF070, sub 1 calls func_00248350 with args[0]); group 0x1D is the ADX pair of
+// unk_1CBD90.c. Guesses.
+gScrCmdTable_13 = 0x0046FD90; // size:0x10 // guess
+gScrCmdTable_1D = 0x0046FD88; // size:0x8 // guess
+Scr_CmdCall2CF070 = 0x00252CE0; // type:func // guess
+Scr_CmdCall248350 = 0x00252CB0; // type:func // guess
+
+// btl_main.c, the Fighter setter family (identical bodies): each calls func_001E4E20(f, 0), copies the f32 at
+// +0x1844 into +0x44 when the byte at +0x1FF9 is 0, and sets the f32 at +0x17BC to 0.0 (1B4280 sets 1.0). The
+// meaning of the fields is not known: the names are the family's, with the address. Guesses.
+Fighter_ResetSpeed1B18B0 = 0x001B18B0; // type:func // guess
+Fighter_ResetSpeed1B1BB0 = 0x001B1BB0; // type:func // guess
+Fighter_ResetSpeed1B2160 = 0x001B2160; // type:func // guess
+Fighter_ResetSpeed1B2490 = 0x001B2490; // type:func // guess
+Fighter_ResetSpeed1B3960 = 0x001B3960; // type:func // guess
+Fighter_ResetSpeed1B5180 = 0x001B5180; // type:func // guess
+Fighter_ResetSpeed1B6470 = 0x001B6470; // type:func // guess
+Fighter_ResetSpeedOne1B4280 = 0x001B4280; // type:func // guess
+
+// btb_draw.c, identical pairs: 1F1600 and 1F1C30 release the object's sub-block at +0x30 (the object f40, and the
+// heap block f3C when f38 < 0); 1F1EA0 and 1F20A0 do the same for f58 without the heap free. The pair members are
+// identical; the callers tell them apart. Guesses.
+BtbObj_ReleaseF40 = 0x001F1600; // type:func // guess
+BtbObj_ReleaseF40Copy = 0x001F1C30; // type:func // guess
+BtbObj_ReleaseF58 = 0x001F1EA0; // type:func // guess
+BtbObj_ReleaseF58Copy = 0x001F20A0; // type:func // guess
+
+// skill_cmd.c, the drawing family with Input_IsHeld(0x80000000): while the button is held, the battle model at
+// gBtlSys+0xE60 is set current and the parts of the object at +0x30 are drawn (func_0022C560 per part,
+// amDraw_KickPending). 254650 and 254970 draw the whole set; 257C30 and 257CE0 draw part of it. Guesses.
+Skill_DrawHeldSet = 0x00254650; // type:func // guess
+Skill_DrawHeldSetB = 0x00254970; // type:func // guess
+Skill_DrawHeldPart = 0x00257C30; // type:func // guess
+Skill_DrawHeldPartB = 0x00257CE0; // type:func // guess

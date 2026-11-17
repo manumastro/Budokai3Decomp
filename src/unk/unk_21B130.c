@@ -462,13 +462,12 @@ void func_0021BEA0(u8 *a0, s32 a1) {
 }
 u8 *func_0021C250(u8 *, u8 *);
 #if 0
-// differs: int of the rest: 6 instructions short (the copy of the child block is hoisted differently) and the saved registers of the arguments are swapped; 5 declaration orders and a guard variant tried; size 0x1B8 vs 0x1D0
+// differs: 11 of 116 (round 5). Recursive tree walk: the copies and the flag tests match; left: the sibling walk at the end (a2&1 block) takes the saved registers the other way round (original: the sibling goes into s2, the node pointer register reused after its last read). Reusing the parameter (a0 = sibling) changes the flag registers and the prologue (26 to 30 differ); declaration permutations tried, none better
 void func_0021C080(u8 *a0, u8 *a1, s32 a2) {
     u8 *dst;
-    u8 *s3;
-    u8 *s2;
     u8 *s6;
-
+    u8 *s2;
+    u8 *s3;
     dst = *(u8 **)(a0 + 0x30);
     *(f32 *)(dst + 0x50) = *(f32 *)a1;
     *(f32 *)(dst + 0x54) = *(f32 *)(a1 + 4);
@@ -476,11 +475,11 @@ void func_0021C080(u8 *a0, u8 *a1, s32 a2) {
     if ((a2 & 4) != 0) {
         *(f32 *)(dst + 0x5C) = *(f32 *)(a1 + 0xC);
     }
-    *(u8 *)(a0 + 0x1C) = *(u8 *)(a1 + 0x10);
-    *(u8 *)(a0 + 0x1D) = *(u8 *)(a1 + 0x11);
-    *(u8 *)(a0 + 0x1E) = *(u8 *)(a1 + 0x12);
-    *(u8 *)(a0 + 0x1F) = *(u8 *)(a1 + 0x13);
-    *(s32 *)(a0 + 8) = *(s32 *)(a1 + 0x14);
+    *(u8 *)(dst + 0x1C) = *(u8 *)(a1 + 0x10);
+    *(u8 *)(dst + 0x1D) = *(u8 *)(a1 + 0x11);
+    *(u8 *)(dst + 0x1E) = *(u8 *)(a1 + 0x12);
+    *(u8 *)(dst + 0x1F) = *(u8 *)(a1 + 0x13);
+    *(s32 *)(dst + 8) = *(s32 *)(a1 + 0x14);
     if ((a2 & 2) != 0) {
         s3 = *(u8 **)(a0 + 0x28);
         if (s3 != 0) {
@@ -493,8 +492,10 @@ void func_0021C080(u8 *a0, u8 *a1, s32 a2) {
             }
             func_0021C250(s6 + 0x1C, a1 + 0x10);
             *(s32 *)(s6 + 8) = *(s32 *)(a1 + 0x14);
-            if (*(u8 **)(s3 + 0x28) != 0) {
-                func_0021C080(*(u8 **)(s3 + 0x28), a1, a2);
+            if ((a2 & 2) != 0) {
+                if (*(u8 **)(s3 + 0x28) != 0) {
+                    func_0021C080(*(u8 **)(s3 + 0x28), a1, a2);
+                }
             }
             if ((a2 & 1) != 0) {
                 if (*(u8 **)(s3 + 0x2C) != 0) {
@@ -520,8 +521,10 @@ void func_0021C080(u8 *a0, u8 *a1, s32 a2) {
                     func_0021C080(*(u8 **)(s2 + 0x28), a1, a2);
                 }
             }
-            if (*(u8 **)(s2 + 0x2C) != 0) {
-                func_0021C080(*(u8 **)(s2 + 0x2C), a1, a2);
+            if ((a2 & 1) != 0) {
+                if (*(u8 **)(s2 + 0x2C) != 0) {
+                    func_0021C080(*(u8 **)(s2 + 0x2C), a1, a2);
+                }
             }
         }
     }
@@ -732,13 +735,11 @@ extern u8 D_0046A508[];
 extern u8 D_0046A518[];
 extern u8 D_0046A528[];
 s32 amTask_Create(void (*)(void), void (*)(void), s32, s32, s32, void *);
-s32 func_0022D860(f32, s32);
+s32 func_0022D860(s32, f32);
 void func_0021B9A0(void);
 void func_0021BA60(void);
 void func_002E97E0(void);
 void amModel_SetCurrent(s32, s32);
-#if 0
-// differs: the second 22D860/228410 pair reuses the a0 left by the first call (no reload in the original); the C keeps the value in a saved register (one more save); the rest matches apart from relocations
 void func_0021CAD0(void) {
     u8 *s0 = gBtlSys;
     u8 *s2 = s0 + 0xDF0;
@@ -746,7 +747,7 @@ void func_0021CAD0(void) {
     s32 e;
 
     if (*(s32 *)(s0 + 0xEE0) == 0) {
-        if (*(s16 *)s2 == 6) {
+        if (*(s16 *)(s0 + 0xDF0) == 6) {
             *(s32 *)(s0 + 0xEE0) = amTask_Create(func_0021B9A0, func_0021B940, 0x5400, 0x1000, 0x2000002, D_0046A4E8);
         } else {
             *(s32 *)(s0 + 0xEE0) = amTask_Create(func_0021BA60, 0, 0x5400, 0x1000, 0x2000002, D_0046A4F8);
@@ -756,7 +757,7 @@ void func_0021CAD0(void) {
         *(s32 *)(s0 + 0xEE4) = amTask_Create(func_0021B870, 0, 0x3A00, 0x1000, 0x2000008, D_0046A508);
     }
     if (*(s32 *)(s0 + 0xEE8) == 0) {
-        if (*(s16 *)s2 == 6) {
+        if (*(s16 *)(s0 + 0xDF0) == 6) {
             *(s32 *)(s0 + 0xEE8) = amTask_Create((void (*)(void))func_0021B7A0, 0, 0x3A80, 0x1000, 0x2000008, D_0046A518);
             e = *(s32 *)(s0 + 0xE64);
             v = *(s32 *)(s0 + 0xEE8) + 0x30;
@@ -767,10 +768,9 @@ void func_0021CAD0(void) {
             D_00470238 = 0;
             func_00228430(0);
             func_002284D0(0);
-            *(s32 *)v = func_0022D860(0.0f, *(s32 *)(*(s32 *)(*(s32 *)(s0 + 0xE6C) + 0x14)));
-            e = *(s32 *)(*(s32 *)(*(s32 *)(s0 + 0xE6C) + 0x14) + 4);
-            *(s32 *)(v + 4) = func_0022D860(0.0f, e);
-            func_00228410(e);
+            *(s32 *)v = func_0022D860(*(s32 *)(*(s32 *)(*(s32 *)(s0 + 0xE6C) + 0x14)), 0.0f);
+            *(s32 *)(v + 4) = func_0022D860(*(s32 *)(*(s32 *)(*(s32 *)(s0 + 0xE6C) + 0x14) + 4), 0.0f);
+            func_00228410();
         } else {
             *(s32 *)(s0 + 0xEE8) = amTask_Create(func_0021B810, 0, 0x3A80, 0x1000, 0x2000008, D_0046A518);
         }
@@ -782,8 +782,6 @@ void func_0021CAD0(void) {
         func_002E97E0();
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CAD0);
 void func_0021CCF0(void) {
     u8 *sys = gBtlSys;
     s32 *tbl = (s32 *)(void *)D_0046A470;

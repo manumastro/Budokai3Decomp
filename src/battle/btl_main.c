@@ -2046,7 +2046,7 @@ void BtlIntWait_Start(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B10D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B13F0);
-void func_001B18B0(Fighter *f) {
+void Fighter_ResetSpeed1B18B0(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
         FT_FIELD(f, f32, 0x44) = FT_FIELD(f, f32, 0x1844);
@@ -2133,7 +2133,7 @@ void func_001B1900(void *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B1900);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B1A10);
-void func_001B1BB0(Fighter *f) {
+void Fighter_ResetSpeed1B1BB0(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
         FT_FIELD(f, f32, 0x44) = FT_FIELD(f, f32, 0x1844);
@@ -2142,7 +2142,7 @@ void func_001B1BB0(Fighter *f) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B1C00);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B1E80);
-void func_001B2160(Fighter *f) {
+void Fighter_ResetSpeed1B2160(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
         FT_FIELD(f, f32, 0x44) = FT_FIELD(f, f32, 0x1844);
@@ -2190,7 +2190,7 @@ void func_001B21B0(Fighter *f) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B21B0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B22F0);
-void func_001B2490(Fighter *f) {
+void Fighter_ResetSpeed1B2490(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
         FT_FIELD(f, f32, 0x44) = FT_FIELD(f, f32, 0x1844);
@@ -2358,7 +2358,7 @@ void func_001B3660(Fighter *f) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B3660);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B3720);
-void func_001B3960(Fighter *f) {
+void Fighter_ResetSpeed1B3960(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
         FT_FIELD(f, f32, 0x44) = FT_FIELD(f, f32, 0x1844);
@@ -2443,7 +2443,7 @@ void func_001B3EA0(Fighter *f) {
     func_002CBFF0(1, f);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B3FE0);
-void func_001B4280(Fighter *f) {
+void Fighter_ResetSpeedOne1B4280(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
         FT_FIELD(f, f32, 0x44) = FT_FIELD(f, f32, 0x1844);
@@ -2505,7 +2505,7 @@ void func_001B4C60(Fighter *f) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B4C60);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B4DC0);
-void func_001B5180(Fighter *f) {
+void Fighter_ResetSpeed1B5180(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
         FT_FIELD(f, f32, 0x44) = FT_FIELD(f, f32, 0x1844);
@@ -2782,7 +2782,7 @@ void func_001B60E0(Fighter *f) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B6130);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B62D0);
-void func_001B6470(Fighter *f) {
+void Fighter_ResetSpeed1B6470(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
         FT_FIELD(f, f32, 0x44) = FT_FIELD(f, f32, 0x1844);

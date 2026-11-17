@@ -181,7 +181,17 @@ typedef struct TimedF0C0 {
 extern char D_0046B080[];
 extern char D_0046B060[];
 extern char D_0046B120[];
-extern void func_0025E5A0(void);
+typedef struct Obj30 {
+    s32 f0;
+    f32 f4;
+    f32 f8;
+    f32 fC;
+    s32 f10;
+    s32 f14;
+    s32 f18;
+} Obj30;
+
+extern void func_0025E5A0(void *);
 /* The part of a task at 0x30 that these functions fill: a word, then two floats. */
 typedef struct ScrPos30 {
     s32 f0;
@@ -256,7 +266,7 @@ extern void func_0020F870(s32);
 extern ScrObj *func_0020A720(s32);
 extern s32 func_0020A5F0(s32);
 extern void func_0020A4D0(s32);
-extern void func_0020A780(s32);
+extern s32 func_0020A780(s32);
 extern void func_0020A740(s32);
 extern void func_0020A7F0(s32);
 extern void func_00209A90(s32, ScrVec *);
@@ -446,8 +456,63 @@ s32 Scr_CmdObjVecCall4(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020E620(id, &v, n);
     return 1;
 }
+/* differs: 16 of 76: the timer part matches; the dispatch keeps p->f18 in $a3 and the base in $a1 (the original: $a2 and $a0). */
+#if 0
+extern void func_0020E730(s32, void *, s32);
+
+void func_0025DCA0(void *task) {
+    Obj30 *p = (Obj30 *)((u8 *)task + 0x30);
+    f32 d;
+    s32 busy = gBattle != NULL ? gBattle->f88EC : 0;
+    s32 base;
+
+    if (busy != 0) {
+        return;
+    }
+    if (p->f8 != -1.0f) {
+        d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+        p->f4 = p->f4 + d;
+        if (!(p->f4 < p->f8)) {
+            amTask_Kill(task);
+        }
+    }
+    base = (s32)gBattle->f8934[p->f10];
+    if (p->f18 == 1) {
+        func_0020E730(p->f0, (u8 *)base + ((((p->f18 * 3) << 2) + p->f18)) * 128 + 0x650, p->f14);
+    } else {
+        func_0020E7D0(p->f0, (void *)base, p->f14);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DCA0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DDD0);
+extern void func_0025DCA0();
+extern void func_0025DF20();
+
+s32 func_0025DDD0(void *o, ScrCmd *cmd) {
+    extern void *amTask_Create();
+    extern char D_0046B0A0[];
+    ScrArg *a = cmd->args;
+    s32 s4 = a[5].i;
+    s32 s3 = a[4].i;
+    s32 s2 = a[3].i;
+    s32 s1 = a[2].i;
+    s32 s0 = a[0].i;
+    u8 *p;
+    f32 f;
+
+    p = (u8 *)amTask_Create(func_0025DCA0, 0, a[1].i, 0x400, 0x800002, D_0046B0A0) + 0x30;
+    *(s32 *)p = s4;
+    f = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+    *(f32 *)(p + 4) = -f;
+    *(f32 *)(p + 8) = (f32)s1;
+    *(s32 *)(p + 0x10) = s3;
+    *(s32 *)(p + 0x14) = s2;
+    if (s0 != 1) {
+        s0 = 0;
+    }
+    *(s32 *)(p + 0x18) = s0;
+    return 1;
+}
 
 s32 Scr_CmdCall20E7D0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
@@ -455,8 +520,61 @@ s32 Scr_CmdCall20E7D0(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020E7D0(a[2].i, gBattle->f8934[a[1].i], a[0].i);
     return 1;
 }
+/* differs: 1 of 76: the last addu of the index (f18 * 0x680 + ...) has its operands in the other order (addu v0,a3,v0; the original v0,v0,a3). */
+#if 0
+extern void func_0020E870(s32, void *, s32);
+extern void func_0020E8F0(s32, void *, s32);
+
+void func_0025DF20(void *task) {
+    Obj30 *p = (Obj30 *)((u8 *)task + 0x30);
+    f32 d;
+    s32 busy = gBattle != NULL ? gBattle->f88EC : 0;
+    s32 base;
+
+    if (busy != 0) {
+        return;
+    }
+    if (p->f8 != -1.0f) {
+        d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+        p->f4 = p->f4 + d;
+        if (!(p->f4 < p->f8)) {
+            amTask_Kill(task);
+        }
+    }
+    base = (s32)gBattle->f8934[p->f10];
+    if (p->f18 == 1) {
+        func_0020E870(p->f0, (u8 *)base + (((p->f18 + ((p->f18 * 3) << 2)))) * 128 + 0x650, p->f14);
+    } else {
+        func_0020E8F0(p->f0, (void *)base, p->f14);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DF20);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025E050);
+s32 func_0025E050(void *o, ScrCmd *cmd) {
+    extern void *amTask_Create();
+    extern char D_0046B0C0[];
+    ScrArg *a = cmd->args;
+    s32 s4 = a[5].i;
+    s32 s3 = a[4].i;
+    s32 s2 = a[3].i;
+    s32 s1 = a[2].i;
+    s32 s0 = a[0].i;
+    u8 *p;
+    f32 f;
+
+    p = (u8 *)amTask_Create(func_0025DF20, 0, a[1].i, 0x400, 0x800002, D_0046B0C0) + 0x30;
+    *(s32 *)p = s4;
+    f = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+    *(f32 *)(p + 4) = -f;
+    *(f32 *)(p + 8) = (f32)s1;
+    *(s32 *)(p + 0x10) = s3;
+    *(s32 *)(p + 0x14) = s2;
+    if (s0 != 1) {
+        s0 = 0;
+    }
+    *(s32 *)(p + 0x18) = s0;
+    return 1;
+}
 
 s32 Scr_CmdCall20E8F0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
@@ -551,7 +669,23 @@ s32 Scr_CmdCtxWaitF14C(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025E5A0);
+extern void func_0020A740(s32);
+
+void func_0025E5A0(void *task) {
+    Obj30 *p = (Obj30 *)((u8 *)task + 0x30);
+    f32 d;
+    s32 busy = gBattle != NULL ? gBattle->f88EC : 0;
+
+    if (busy == 0 && p->f8 != -1.0f) {
+        d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+        p->f4 = p->f4 + d;
+        if (func_0020A780(p->f0) != 0 || !(p->f4 < p->f8)) {
+            func_0020A7F0(p->f0);
+            amTask_Kill(task);
+        }
+    }
+    func_0020A740(p->f0);
+}
 s32 Bscr_CmdEffectLinePrio(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 s1 = a[2].i;
@@ -645,8 +779,48 @@ s32 Scr_CmdCtxWaitF14(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EB60);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EC60);
+extern void func_00246800(s32, f32, f32);
+
+void func_0025EB60(void *task) {
+    Obj30 *p = (Obj30 *)((u8 *)task + 0x30);
+    f32 d;
+    s32 busy = gBattle != NULL ? gBattle->f88EC : 0;
+
+    if (busy == 0) {
+        if (p->f8 != -1.0f) {
+            d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+            p->f4 = p->f4 + d;
+            if (p->f4 >= p->f8) {
+                amTask_Kill(task);
+            }
+        }
+        if (!(p->f4 < p->fC)) {
+            func_00246800(*(s32 *)((u8 *)gBattle + 0x8934), p->f4 - p->fC, p->f8 - p->fC);
+        }
+    }
+}
+extern void func_0025EB60();
+extern void func_00246AB0(s32, void *);
+extern s8 D_004703F4;
+
+s32 func_0025EC60(void *o, ScrCmd *cmd) {
+    extern void *amTask_Create();
+    extern char D_0046B178[];
+    ScrArg *a = cmd->args;
+    s32 s2 = a[2].i;
+    s32 s1 = a[1].i;
+    s32 s0 = *(s32 *)((u8 *)gBattle + 0x8934);
+    u8 *p;
+    f32 f;
+
+    p = (u8 *)amTask_Create(func_0025EB60, 0, a[0].i, 0x400, 0x800002, D_0046B178) + 0x30;
+    f = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+    *(f32 *)(p + 4) = -f;
+    *(f32 *)(p + 8) = (f32)s2;
+    *(f32 *)(p + 0xC) = (f32)s1;
+    func_00246AB0(s0, p);
+    return 1;
+}
 
 s32 Scr_CmdObjCall245A80(ScrCtx *ctx, ScrCmd *cmd) {
     func_00245A80(gBattle->f8934[0], cmd->args[0].i);
@@ -802,7 +976,43 @@ s32 func_0025F4B0(Obj4B0 *o) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F580);
+typedef struct Obj25F {
+    char pad0[0x10];
+    s32 f10;
+    char pad14[0x16];
+    s8 f2A;
+    char pad2B;
+    f32 f2C;
+    f32 f30;
+} Obj25F;
+
+extern void func_0020EFB0(s32);
+
+s32 func_0025F580(void *o, ScrCmd *cmd) {
+    Obj25F *p = (Obj25F *)o;
+    ScrArg *a = cmd->args;
+    s32 n = a[0].i;
+    s32 busy;
+    f32 d;
+
+    p->f2A = (s8)a[1].i;
+    p->f2C = -((gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f));
+    p->f30 = (f32)n;
+    p->f10 = (s32)func_0025F4B0;
+    busy = gBattle != NULL ? gBattle->f88EC : 0;
+    if (busy == 0) {
+        if (p->f30 != -1.0f) {
+            d = (gBattle != NULL) ? gBattle->f88F0 : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+            p->f2C = p->f2C + d;
+            if (!(p->f2C < p->f30)) {
+                p->f10 = 0;
+                return 1;
+            }
+        }
+        func_0020EFB0(p->f2A);
+    }
+    return 3;
+}
 s32 Scr_CmdSetFlag916Mode(ScrCtx *ctx, ScrCmd *cmd) {
     if (cmd->args[0].i != 0) {
         D_0046FE4C->f91A = 1;
@@ -1182,10 +1392,117 @@ s32 Scr_CmdCall20A7F0(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020A7F0(a[0].i);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260410);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002604F0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002605C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260690);
+typedef struct Blk2604 {
+    s32 f0;
+    s32 f4;
+    f32 f8;
+    f32 fC;
+    f32 f10;
+    f32 f14;
+    f32 f18;
+    s32 f1C;
+    f32 f20;
+    f32 f24;
+    f32 f28;
+    s32 f2C;
+    f32 f30;
+    f32 f34;
+    f32 f38;
+    f32 f3C;
+    char pad40[0x10];
+} __attribute__((aligned(16))) Blk2604;
+
+extern void func_0020AA20(s32, Blk2604 *);
+
+s32 func_00260410(void *o, ScrCmd *cmd) {
+    ScrArg blk[17];
+    ScrArg *a = cmd->args;
+    s32 k = a[14].i;
+
+    blk[4].f = a[13].f;
+    blk[0].i = 1;
+    blk[1].i = cmd->args[12].i;
+    blk[2].f = cmd->args[11].f;
+    blk[3].f = cmd->args[10].f;
+    blk[5].f = cmd->args[9].f;
+    blk[6].f = cmd->args[8].f;
+    blk[8].f = cmd->args[7].f;
+    blk[9].f = cmd->args[6].f;
+    blk[10].f = cmd->args[5].f;
+    blk[11].f = 1.0f;
+    blk[12].f = cmd->args[4].f;
+    blk[13].f = cmd->args[3].f;
+    blk[14].f = cmd->args[2].f;
+    blk[15].f = cmd->args[1].f;
+    blk[16].f = cmd->args[0].f;
+    blk[7].i = 0;
+    func_0020AA20(k, (Blk2604 *)blk);
+    return 1;
+}
+
+s32 func_002604F0(void *o, ScrCmd *cmd) {
+    Blk2604 b;
+    s32 arg;
+
+    arg = *(s32 *)((char *)cmd->args + 0x34);
+    b.f10 = *(f32 *)((char *)cmd->args + 0x30);
+    b.f0 = 0;
+    b.f4 = *(s32 *)((char *)cmd->args + 0x2C);
+    b.f8 = *(f32 *)((char *)cmd->args + 0x28);
+    b.fC = *(f32 *)((char *)cmd->args + 0x24);
+    b.f14 = *(f32 *)((char *)cmd->args + 0x20);
+    b.f18 = *(f32 *)((char *)cmd->args + 0x1C);
+    b.f20 = *(f32 *)((char *)cmd->args + 0x18);
+    b.f24 = *(f32 *)((char *)cmd->args + 0x14);
+    b.f28 = *(f32 *)((char *)cmd->args + 0x10);
+    b.f2C = 0x3F800000;
+    b.f30 = *(f32 *)((char *)cmd->args + 0xC);
+    b.f34 = *(f32 *)((char *)cmd->args + 0x8);
+    b.f38 = *(f32 *)((char *)cmd->args + 0x4);
+    b.f3C = *(f32 *)((char *)cmd->args + 0x0);
+    b.f1C = 0;
+    func_0020AA20(arg, &b);
+    return 1;
+}
+extern void func_001414D0(void *, f32, f32, f32);
+extern void func_00209850(s32, void *);
+extern void func_00209950(s32, void *, s32);
+
+s32 func_002605C0(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrVec v;
+    f32 x = a[2].f;
+    f32 y = a[1].f;
+    f32 z = a[0].f;
+    s32 h = D_0058EE50[a[3].i];
+
+    if (D_0047079C != 0) {
+        return 1;
+    }
+    if (h != 0) {
+        func_001414D0(&v, 3.14159265f * (2.0f * x) / 360.0f, 3.14159265f * (2.0f * y) / 360.0f, 3.14159265f * (2.0f * z) / 360.0f);
+        func_00209850(h, &v);
+    }
+    return 1;
+}
+
+s32 func_00260690(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrVec v;
+    f32 x = a[2].f;
+    f32 y = a[1].f;
+    f32 z = a[0].f;
+    s32 h = D_0058EE50[a[3].i];
+
+    if (D_0047079C != 0) {
+        return 1;
+    }
+    if (h != 0) {
+        func_001414D0(&v, 3.14159265f * (2.0f * x) / 360.0f, 3.14159265f * (2.0f * y) / 360.0f, 3.14159265f * (2.0f * z) / 360.0f);
+        func_00209950(h, &v, 0);
+    }
+    return 1;
+}
 
 s32 Scr_CmdObjSetPos(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
