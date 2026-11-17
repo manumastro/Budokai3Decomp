@@ -91,5 +91,35 @@ extern u8 *D_00470820;
 void SklSheet_Clear(void) {
     D_00470820 = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/skl_sheet", func_00283C20);
+extern u8 *D_00470820;
+extern void Help_Exit();
+extern void amCdFs_Close(void *, s32);
+extern void amCdFs_ReleaseCache(void *);
+extern void func_00209530(void *);
+extern void amHeap_Free(void *);
+
+void func_00283C20(void) {
+    s32 i;
+    s32 off;
+    if (D_00470820 != 0) {
+        Help_Exit();
+        amTask_Kill(*(void **)(D_00470820 + 0x28));
+        if (*(void **)(D_00470820 + 0x2C) != 0) {
+            amTask_Kill(*(void **)(D_00470820 + 0x2C));
+            if (*(void **)(D_00470820 + 0x44) != 0) {
+                func_00209530(*(void **)(D_00470820 + 0x44));
+            }
+        }
+        for (i = 0, off = 0; i < 5; i++, off += 4) {
+            if (*(void **)(D_00470820 + off) != 0) {
+                amCdFs_Close(*(void **)(D_00470820 + off), 0);
+            }
+            if (*(void **)(D_00470820 + off + 0x14) != 0) {
+                amCdFs_ReleaseCache(*(void **)(D_00470820 + off + 0x14));
+            }
+        }
+        amHeap_Free(D_00470820);
+        D_00470820 = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/skl_sheet", func_00283D00);
