@@ -229,7 +229,31 @@ void func_002BE830(char *p) {
     func_002BDF50((char *)D_0047011C + (D_0047011C[0x1A8 / 4] << 2) + 0x160, p);
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BE870);
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEA30);
+void func_002BEA30(void) {
+    s32 i;
+    if (D_0047011C[0x2D8 / 4] != 0) {
+        amCdFs_ReleaseCache(D_0047011C[0x2D4 / 4]);
+        D_0047011C[0x2D4 / 4] = 0;
+        D_0047011C[0x2D8 / 4] = 0;
+    } else {
+        if (D_0047011C[0x2D4 / 4] != 0) {
+            amCdFs_Close(D_0047011C[0x2D4 / 4], 0);
+            D_0047011C[0x2D4 / 4] = 0;
+        }
+    }
+    for (i = 0; i < 0x20; i++) {
+        if (D_0047011C[0x254 / 4 + i] != 0) {
+            amHeap_Free((void *)D_0047011C[0x254 / 4 + i]);
+        }
+        D_0047011C[0x254 / 4 + i] = 0;
+    }
+    func_00209450(0x400008, 1);
+    func_00209450(0x400010, 1);
+    func_00209450(0x400020, 1);
+    func_00209450(0x400040, 1);
+    func_00209450(0x400080, 1);
+    memset(D_005BCF80, 0, 0x2E0);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEB50);
 extern s16 D_0046EE50[];
 extern s32 *D_0046FE48;
@@ -644,9 +668,86 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1BC0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1CF0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1E10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1F90);
+#if 0
+// func_002C2470: 7 of 58 differ: the tail (the 0xB byte and the function pointer) takes a0 and v1 the other way round; pointer as void*, s32, direct store tried
+extern f32 gFrameDelta;
+extern void func_002C1F90(void);
+
+void func_002C2470(s32 *a0) {
+    s32 *s1 = (s32 *)a0[0x30 / 4];
+    s32 *s0;
+    s32 v;
+    void *f;
+    v = s1[1];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x2000);
+    D_00470238 = 0;
+    v = s1[1];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x2000);
+    D_00470238 = 0;
+    s0 = (s32 *)s1[2];
+    if (s0 != 0) {
+        func_0022C060((s32)s0, 1.0f);
+        func_0022CD00((s32)s0);
+    }
+    func_002C0860(s1);
+    func_0022C700();
+    func_00133B50(0, 0);
+    *(f32 *)((char *)s1 + 0xC4) = *(f32 *)((char *)s1 + 0xC4) - gFrameDelta;
+    if (*(f32 *)((char *)s1 + 0xC4) <= 0.0f) {
+        *(u8 *)((char *)s1 + 0xAF) = 0xB;
+        f = (void *)func_002C1F90;
+        a0[7] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2470);
+
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2560);
+#if 0
+// func_002C27B0: the calls and globals match; the tail (func pointer, byte at 0xAC and float at 0xC4) takes the other registers (v1 vs a2) in ours, 12 of 57 instructions differ; 7 variants tried
+extern void func_002C2560(void);
+
+void func_002C27B0(s32 *a0) {
+    s32 *s0 = (s32 *)a0[0x30 / 4];
+    s32 *s2;
+    void *f;
+    s32 v;
+    v = s0[1];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x2000);
+    D_00470238 = 0;
+    v = s0[1];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    func_00145CC0(v, 0x2000);
+    D_00470238 = 0;
+    s2 = (s32 *)s0[2];
+    if (s2 != 0) {
+        func_0022C060((s32)s2, 1.0f);
+        func_0022CD00((s32)s2);
+    }
+    func_002C0860(s0);
+    func_0022C700();
+    func_00133B50(0, 0);
+    func_003105B0();
+    f = (void *)func_002C2560;
+    *(u8 *)((char *)s0 + 0xAC) = *(u8 *)((char *)s0 + 0xAC) + 1;
+    *(s32 *)((char *)s0 + 0xC4) = 0x41F00000;
+    *(u8 *)((char *)s0 + 0xAF) = 9;
+    a0[7] = (s32)((f == 0) ? 0 : f);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C27B0);
+
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C28A0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C29A0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2FF0);

@@ -15,7 +15,7 @@ extern char D_00492FCE[];
 extern void amCdFs_Close(s32, s32);
 extern void Scr_SetData(s32, s32);
 extern void func_002A6210(void);
-extern void Zenie_Update(void *);
+extern void Zenie_Update();
 extern void Zenie_Draw(void);
 extern void Zenie_Close(s32);
 extern s32 func_002A1020(s32);
@@ -50,6 +50,46 @@ void EvtZenie_TaskMain(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1700);
+#if 0
+// func_002A17D0: the Zenie step: the branch end and the clamp arm are laid out differently (the original ends 8 bytes later); the a1 clamp loads come in another order; 2 forms tried
+extern f32 func_002B06A0(void);
+extern void func_002A1510(s32);
+extern void func_002A1700(void);
+extern void Zenie_SetValue(s32, s32);
+extern s32 D_00511448;
+extern s8 D_004E6560[];
+
+extern f32 func_002B06A0(void);
+extern void func_002A1510(s32);
+extern void func_002A1700(void);
+extern void Zenie_SetValue(s32, s32);
+extern s32 D_00511448;
+extern s8 D_004E6560[];
+
+void func_002A17D0(s32 *a0) {
+    s32 *s0 = gEvtWork;
+    f32 t;
+    void *f;
+    s32 a1;
+    t = func_002B06A0();
+    *(f32 *)&s0[0x5C / 4] = *(f32 *)&s0[0x5C / 4] + t;
+    func_002A1510(0);
+    Zenie_Update();
+    Zenie_Draw();
+    if (func_002A1020(3) == 0) {
+        *(s32 *)&s0[0x5C / 4] = 0x41200000;
+        s0[0x60 / 4] = 0x41200000;
+        f = (void *)func_002A1700;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        a1 = D_00511448 + s0[0xF4 / 4];
+        if (a1 >= 0xF1B31) {
+            a1 = 0xF1B30;
+        }
+        Zenie_SetValue(*(s32 *)(D_004E6560 + 0x30000 - 0x5118), a1);
+        Zenie_SetStep(10);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A17D0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A18A0);
 extern void func_002A18A0(void);
@@ -409,6 +449,45 @@ s32 func_002A3A10(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3A10);
+#if 0
+// func_002A3A40: the parameter and the global take the other saved registers in ours (s1/s2 swapped against the original); 3 orders tried
+extern s32 func_002A8330(s32);
+extern void func_00298B70(s32, s32);
+extern void func_002A80D0(void);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void func_002A6E40(Task *);
+extern s32 func_002A3A10(void);
+extern s32 D_004700AC;
+extern char D_0046EA68[];
+
+s32 func_002A3A40(s32 *a0) {
+    s32 *p = (s32 *)a0[0];
+    s32 s0 = p[0];
+    s32 s2 = D_004700AC;
+    s32 s4 = (s32)((u32)s2 >> 16) & 0xFFFF;
+    s32 s3;
+    s32 v;
+    s32 *g;
+    s3 = func_002A8330(s4);
+    if (s4 != 0xBB8) {
+        func_00298B70(s2, s2 | 0x8000);
+    }
+    func_002A80D0();
+    v = amCdFs_ReadFileId(s3, 0, 1);
+    g = gEvtWork;
+    g[0x18 / 4] = v;
+    g[0x14 / 4] = s2;
+    g[0xC / 4] = 0;
+    g[0x8 / 4] = (s32)amTask_Create(func_002A6E40, NULL, 0x2000, 0x4000, 0, D_0046EA68);
+    D_004700AC = -1;
+    g = gEvtWork;
+    g[0] = s0;
+    g[0x10 / 4] = 1;
+    g[0x3C / 4] = 0;
+    a0[0x10 / 4] = (s32)func_002A3A10;
+    return (gEvtWork[0xC / 4] & 2) ? 1 : 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3A40);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3B50);
 extern f32 D_00470410;
@@ -1181,7 +1260,41 @@ void func_002A6DB0(s32 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6E40);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6FD0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7160);
+extern f32 func_002B06A0(void);
+extern void func_0029AAC0(s32, s32, s32);
+extern s32 *gStrMap;
+
+void func_002A7160(s32 a0) {
+    s32 *s0 = gEvtWork;
+    f32 t;
+    f32 v;
+    if (s0 == 0) {
+        if (a0 != 0) {
+            amTask_Kill((void *)a0);
+        }
+        return;
+    }
+    if (func_002A1020(2) != 0) {
+        return;
+    }
+    t = func_002B06A0();
+    v = *(f32 *)&s0[0x12C / 4] + t;
+    *(f32 *)&s0[0x12C / 4] = v;
+    if (v < 10.0f) {
+        return;
+    }
+    if (gStrMap != 0) {
+        func_0029AAC0(0x3000, 0x4000, s0[0x124 / 4]);
+    } else {
+        if (a0 != 0) {
+            amTask_Kill((void *)a0);
+        }
+    }
+    if (s0[0x128 / 4] != 0) {
+        amTask_Kill((void *)s0[0x128 / 4]);
+        s0[0x128 / 4] = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7240);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7400);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A75C0);

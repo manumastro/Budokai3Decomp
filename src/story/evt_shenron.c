@@ -77,8 +77,41 @@ void Shenron_Clear(void) {
     D_0047097C = 0;
     D_00470980 = 0;
 }
+#if 0
+// func_003070A0: the byte increment at D_004E6560+0x2AF19: the original adds the 0x30000 part in a separate lui/addu for the load and again for the store, and keeps D_004E6560 in a2; ours folds or reorders; 6 variants tried
+extern s8 D_00511479[];
+extern s8 D_004E066D[];
+extern s8 D_004E6560[];
+extern void func_00305910(void);
+extern void Help_Exit(void);
+extern void amHeap_Free(void *);
+
+void func_003070A0(void) {
+    char *base = (char *)D_004E6560;
+    s32 *s0 = (s32 *)D_0047097C;
+    s32 a1 = *(s32 *)((char *)s0 + 0x14 + s0[0x20 / 4] * 4);
+    s32 b0 = (u8)D_00511479[a1];
+    s32 b1 = (u8)D_004E066D[a1 * 40];
+    if (b0 < b1) {
+        char *p = base + a1;
+        s32 v = ((u8 *)(p + 0x30000))[-0x50E7];
+        ((u8 *)(p + 0x30000))[-0x50E7] = (u8)(v + 1);
+    }
+    func_00305910();
+    if (s0[0] != 0) {
+        amTask_Kill((void *)s0[0]);
+        s0[0] = 0;
+    }
+    if (D_0047097C != 0) {
+        amHeap_Free((void *)D_0047097C);
+        D_0047097C = 0;
+    }
+    Help_Exit();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003070A0);
-extern void Scene_SetReady(void);
+
+extern void func_001F07D0(void);
 extern void func_00306F70(void);
 extern s32 amTask_Create(void *, s32, s32, s32, s32, void *);
 extern char D_0046F9E8[];
