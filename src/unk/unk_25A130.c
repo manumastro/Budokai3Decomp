@@ -205,8 +205,9 @@ s32 Scr_CmdPlayersCall25A7C0(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-/* differs: 6 of 12: the original materialises the store base with `addiu $v1,$a0,0x30` and stores at 0x30($v1);
-   here the offset is folded into the store. Also tried the declaration order the other way round. */
+/* r6 best attempt diff 6 of 12: the value load, the null check and the `addiu` into the store base all match;
+   the object and the store base land in swapped registers ($v1 holds the object here, the target keeps it in $a0).
+   Declaration order, the value loaded inside the branch and a separate store pointer did not flip it. */
 #if 0
 s32 func_0025ADE0(void *ctx, ScrCmd *cmd) {
     s32 v = cmd->args[0].i;
@@ -220,35 +221,9 @@ s32 func_0025ADE0(void *ctx, ScrCmd *cmd) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025ADE0);
-/* Same code, but the argument pointer and the object swap $v1 / $a0. */
+/* r6 best attempt diff 9 of 43: the global is loaded into $a0 before the argument pointer, the reverse of the
+   target; the buffer copy into a local array and the placeholder branch did not change the order. */
 #if 0
-s32 func_0025AE10(void *ctx, ScrCmd *cmd) {
-    ScrObj *o;
-    ScrArg *a;
-    s32 buf[5];
-    s32 *s;
-
-    o = D_0058D4E8[0];
-    a = cmd->args;
-
-    buf[0] = a[4].i;
-    buf[1] = a[3].i;
-    buf[2] = a[2].i;
-    buf[3] = a[1].i;
-    buf[4] = a[0].i;
-    if (o != NULL) {
-        s = (s32 *)((char *)o + 0x30);
-        func_00125740(&s[5], buf, sizeof(buf));
-        s[5] &= 0xF;
-        s[6] &= 0xF;
-        s[7] &= 0xF;
-        s[8] &= 0xF;
-        s[9] &= 0xF;
-    }
-    return 1;
-}
-#endif
-/* differs: the global is loaded into $a0 before the argument pointer (9 of 43) */
 s32 func_0025AE10(void *t, ScrCmd *c)
 {
   ScrObj *o = D_0058D4E8[0];
@@ -275,6 +250,8 @@ s32 func_0025AE10(void *t, ScrCmd *c)
   }
   return 1;
 }
+#endif
+INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025AE10);
 
 s32 Scr_CmdPlayerCall25AA20(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
@@ -298,17 +275,20 @@ s32 Scr_CmdCall25A3A0(void *ctx, ScrCmd *cmd) {
     func_0025A3A0(a[2].i, a[1].f, a[0].f);
     return 1;
 }
-/* differs: 11 of 14: the argument pointer goes to $v1 and the object to $v0 here, the reverse of the original,
-   whichever of the two is declared first; the four loads and stores themselves are in the right order. */
+/* r6 best attempt diff 11: the load and store order matches, but the argument pointer lands in $v1 and the
+   object in $v0, the reverse of the original; register hints and a pointer-to-pointer global did not flip it. */
 #if 0
 s32 func_0025AF70(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrObj *o = D_0058D4F0[0];
+    f32 x1 = a[1].f;
+    f32 x2 = a[2].f;
+    f32 x3 = a[3].f;
 
     if (o != NULL) {
-        o->f50 = a[3].f;
-        o->f54 = a[1].f;
-        o->f58 = a[2].f;
+        o->f50 = x3;
+        o->f54 = x1;
+        o->f58 = x2;
         o->f5C = a[0].f;
     }
     return 1;
