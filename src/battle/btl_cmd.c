@@ -55,6 +55,58 @@ typedef struct MotFile2 {
     /* 0x18 */ MotTrack *tracks;
 } MotFile2;
 
+typedef struct BtlSlotRec {
+    /* 0x00 */ s32 unk00;
+    /* 0x04 */ s32 unk04;
+    /* 0x08 */ s32 unk08;
+    /* 0x0C */ u8 unk0C[0x4C - 0x0C];
+    /* 0x4C */ s8 unk4C;
+    /* 0x4D */ s8 unk4D;
+    /* 0x4E */ s8 unk4E;
+    /* 0x4F */ s8 unk4F;
+    /* 0x50 */ s32 unk50;
+    /* 0x54 */ f32 unk54;
+    /* 0x58 */ s32 unk58;
+    /* 0x5C */ f32 unk5C;
+} BtlSlotRec;
+
+typedef struct BtlCmdPair {
+    /* 0x00 */ s16 a;
+    /* 0x02 */ s16 b;
+} BtlCmdPair;
+
+typedef struct BtlCmdObj {
+    /* 0x00 */ u8 unk00[0x58];
+    /* 0x58 */ s32 cur;
+    /* 0x5C */ u8 unk5C[0x64 - 0x5C];
+    /* 0x64 */ BtlCmdPair ent[16];
+} BtlCmdObj;
+
+extern s32 D_0047056C;
+extern s32 func_001A9460(void *, s32, s32);
+
+
+typedef struct BtlRank {
+    /* 0x00 */ u8 unk00[0x44];
+    /* 0x44 */ s16 idx;
+    /* 0x46 */ u8 unk46[0x48 - 0x46];
+    /* 0x48 */ s32 f48;
+    /* 0x4C */ s32 f4C;
+    /* 0x50 */ s32 f50;
+    /* 0x54 */ s32 f54;
+    /* 0x58 */ u8 unk58[0x42C - 0x58];
+    /* 0x42C */ s16 cnt[4];
+    /* 0x434 */ s16 hist[4];
+    /* 0x43C */ s8 hpos;
+    /* 0x43D */ s8 state;
+} BtlRank;
+
+extern u8 D_00493018[];
+extern u8 D_0049301C[];
+extern u8 D_00493020[];
+extern u8 D_00493024[];
+extern u8 D_00492FC0[];
+
 typedef struct BtlSlots {
     /* 0x00 */ u8 unk00[0xC];
     /* 0x0C */ s32 slot[1];
@@ -198,6 +250,34 @@ void func_001A5620(BtlSlots *s, s32 i) {
 void func_001A5630(BtlSlots *s, s32 i, s32 v) {
     s->slot[i] = v;
 }
+
+// GIVEN UP: the index and the base pointer take the other two registers (sll into a0, lw into v1 in the original)
+#if 0
+void func_001A5640(BtlSlotRec *s, s32 a1, s32 a2) {
+    s32 *e;
+    s32 v;
+    s32 off;
+
+    memset(s, 0, 0x60);
+    v = -1;
+    s->unk4E = v;
+    s->unk4C = v;
+    s->unk50 = v;
+    s->unk54 = -1.0f;
+    s->unk4D = v;
+    s->unk4F = v;
+    s->unk58 = v;
+    s->unk5C = -1.0f;
+    s->unk00 = a1;
+    if (a1 != 0) {
+        s->unk04 = a2;
+        off = a2 * 4;
+        e = *(s32 **)((u8 *)s->unk00 + 0x46C + off);
+        v = (e != 0) ? e[4] : v;
+        s->unk08 = v / 6;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5640);
 void func_001A5700(MotFile2 *f) {
     s32 i;
@@ -259,16 +339,198 @@ s32 func_001A8920(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8930);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8BD0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8D90);
+s32 func_001A8D90(void *a0, void *a1) {
+    u16 x = *(u16 *)((u8 *)a0 + 0xC);
+    u16 y = *(u16 *)((u8 *)a1 + 0xCB2);
+    u16 lo2 = y & 0xFF;
+    u32 lo = x & 0xFF;
+    u32 hi = x & 0xFF00;
+    u16 hi2 = y & 0xFF00;
+    s32 i;
+
+    if (*(s8 *)((u8 *)a1 + 0x1FFD) != 0) {
+        hi2 &= 0xBFFF;
+    }
+    if (hi2 & 0x4000) {
+        if (!(hi & 0x4000)) {
+            return 0;
+        }
+    } else if (hi != 0) {
+        if (hi2) {
+        } else {
+            return 0;
+        }
+        hi2 >>= 8;
+        hi >>= 8;
+        for (i = 0; i < 8; i++) {
+            if ((hi & 1) && !(hi2 & 1)) {
+                return 0;
+            }
+            hi2 >>= 1;
+            hi >>= 1;
+        }
+    }
+    return (lo2 & lo) != 0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8E60);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A90E0);
+s32 func_001A90E0(BtlRank *a0, s16 a1) {
+    s32 r = 0;
+    s32 n;
+    s16 k;
+    s16 v;
+
+    if (a0->state < 4) {
+        return 0;
+    }
+    switch (a1) {
+    case 0x100:
+        k = a0->hpos;
+        v = a0->hist[k];
+        n = 0;
+        do {
+            v = (v + 1) & 3;
+            k = (k + 1) & 3;
+            if (a0->hist[k] != v) {
+                break;
+            }
+            n++;
+        } while (n < 3);
+        if (n == 3) {
+            r = 0x200;
+        }
+        break;
+    case 0x200:
+        k = a0->hpos;
+        v = a0->hist[k];
+        n = 0;
+        do {
+            v = (v + 3) & 3;
+            k = (k + 3) & 3;
+            if (a0->hist[k] != v) {
+                break;
+            }
+            n++;
+        } while (n < 3);
+        if (n == 3) {
+            r = 0x100;
+        }
+        break;
+    }
+    if (r != 0) {
+        a0->state = 0;
+    }
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9230);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9460);
+// GIVEN UP: the switch and its blocks match in order, but the registers of the op and the entry differ and the returns are laid out differently
+#if 0
+s32 func_001A99C0(BtlCmdObj *a0, BtlCmdPair *a1, s32 a2) {
+    s32 r = 0;
+    BtlCmdPair *e;
+
+    if (a2 != 0 && a0->ent[a0->cur].b == 1) {
+        r = 1;
+    }
+    switch (a1->a) {
+    case 1:
+        e = &a0->ent[a0->cur];
+        if (e->a != 1) {
+            return 0;
+        }
+        if (D_0047056C != 0 && e->b >= 13) {
+            return 0;
+        }
+        break;
+    case 2:
+        e = &a0->ent[a0->cur];
+        if (e->a != -1) {
+            return 0;
+        }
+        if (D_0047056C != 0 && e->b >= 13) {
+            return 0;
+        }
+        break;
+    default:
+        r = 0;
+        break;
+    }
+    return func_001A9460(a0, a1->b, r);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A99C0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9AD0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA450);
+void func_001AA450(BtlRank *a0) {
+    s32 p;
+    s32 j;
+    s32 i;
+    s32 x;
+
+    for (p = 0; p < 2; p++) {
+        for (j = 0; j < 4; j++) {
+            if (p == 0) {
+                x = *(s32 *)(D_00492FC0 + a0->idx * 184 + j * 4 + 0x38);
+            } else {
+                x = *(s32 *)(D_00492FC0 + a0->idx * 184 + j * 4 + 0x84);
+            }
+            if (x <= 0) {
+                a0->cnt[j] = (x < a0->cnt[j]) ? a0->cnt[j] : x;
+            } else {
+                if (a0->cnt[j] <= 0) {
+                    a0->cnt[j] = x;
+                } else {
+                    a0->cnt[j] = (a0->cnt[j] < x) ? a0->cnt[j] : x;
+                }
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (a0->cnt[i] == 1) {
+            if (i != a0->hist[a0->hpos]) {
+                a0->hpos = (a0->hpos + 1) % 3;
+                a0->hist[a0->hpos] = i;
+                if (a0->state < 4) {
+                    a0->state++;
+                }
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA5C0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA860);
+void func_001AA860(BtlRank *a0) {
+    s32 x;
+
+    if (a0->idx >= 0) {
+        a0->f48 = 0x80000000;
+        a0->f4C = 0x80000000;
+        a0->f50 = 0x80000000;
+        a0->f54 = 0x80000000;
+        x = *(s32 *)(D_00493024 + a0->idx * 184);
+        if (x <= 0) {
+            a0->f48 = (x < a0->f48) ? a0->f48 : x;
+        } else {
+            a0->f48 = x;
+        }
+        x = *(s32 *)(D_00493018 + a0->idx * 184);
+        if (x <= 0) {
+            a0->f4C = (x < a0->f4C) ? a0->f4C : x;
+        } else {
+            a0->f4C = x;
+        }
+        x = *(s32 *)(D_00493020 + a0->idx * 184);
+        if (x <= 0) {
+            a0->f50 = (x < a0->f50) ? a0->f50 : x;
+        } else {
+            a0->f50 = x;
+        }
+        x = *(s32 *)(D_0049301C + a0->idx * 184);
+        if (x <= 0) {
+            a0->f54 = (x < a0->f54) ? a0->f54 : x;
+        } else {
+            a0->f54 = x;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA9D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAA60);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAEA0);
