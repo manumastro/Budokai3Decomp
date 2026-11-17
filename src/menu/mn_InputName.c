@@ -39,7 +39,7 @@ extern char D_0046F758[];
 extern char D_0046F768[];
 extern void func_002F3E00(Task *);
 extern void func_001258F8(void *, s32, s32);
-extern void func_002B6140(void);
+extern void Help_Load(void);
 extern Vec4 D_00458070;
 extern Vec4 D_00458080;
 extern Vec4 D_00458090;
@@ -68,7 +68,7 @@ Task *InputName_Start(void) {
     w->f50[5] = -1;
     w->f50[6] = -1;
     w->f50[7] = -1;
-    func_002B6140();
+    Help_Load();
     return t;
 }
 

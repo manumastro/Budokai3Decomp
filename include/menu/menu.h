@@ -26,6 +26,10 @@ typedef struct Task {
 
 typedef void (*TaskFunc)(Task *);
 
+/* Sets the function a task runs from the next frame on. As an expression: the label of the ?: is not padded to
+   8 bytes, while the same test written as an if statement pads it (the original never does). */
+#define TASK_SET_FUNC(t, f) ((t)->func = ((f) == NULL) ? NULL : (f))
+
 /* The scheduler (sys area; not named yet). */
 extern Task *func_00144FC0(TaskFunc func, TaskFunc func2, s32 prio, s32 f10, s32 f14, char *name);
 extern void func_00145120(Task *task);

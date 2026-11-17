@@ -34,7 +34,7 @@ extern char D_0046FB90[];
 extern void func_0030CF60(Task *);
 extern void func_001258F8(void *, s32, s32);
 extern void *func_0025C670(s32, s32, s32);
-extern void func_002B6140(void);
+extern void Help_Load(void);
 
 Task *ArenaRegCharList_Start(s8 a, s8 b, s8 c) {
     ArenaRegCharListWork *w;
@@ -54,7 +54,7 @@ Task *ArenaRegCharList_Start(s8 a, s8 b, s8 c) {
     w->f18 = 1.0f;
     w->f14 = D_005C412E[w->fB];
     w->f12 = D_005C4132[w->fB];
-    func_002B6140();
+    Help_Load();
     return t;
 }
 

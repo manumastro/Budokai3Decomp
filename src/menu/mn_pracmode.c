@@ -25,12 +25,12 @@ extern char D_0046ED80[];
 extern void func_002B93D0(Task *);
 extern void func_002B7DC0(PracModeWork *);
 extern void func_002C04B0(void *);
-extern void func_002B5EF0(void);
+extern void Help_Exit(void);
 extern void func_001258F8(void *, s32, s32);
 extern void *func_002C0630(s32, s32, s32);
 extern void func_001F07D0(void);
 extern void *func_0025C670(s32, s32, s32);
-extern void func_002B6140(void);
+extern void Help_Load(void);
 
 void PracMode_Exit(void) {
     PracModeGlobal *g = gPracMode;
@@ -52,7 +52,7 @@ void PracMode_Exit(void) {
         }
         func_0013AC90(g);
         gPracMode = NULL;
-        func_002B5EF0();
+        Help_Exit();
     }
 }
 
@@ -80,5 +80,5 @@ void PracMode_Load(void) {
     g->f8 = NULL;
     g->fC = NULL;
     g->task = NULL;
-    func_002B6140();
+    Help_Load();
 }

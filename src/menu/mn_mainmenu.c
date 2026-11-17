@@ -38,7 +38,7 @@ extern void func_00267090(MainMenuWork *);
 extern void func_00266EC0(MainMenuWork *);
 extern void func_00266CD0(MainMenuWork *);
 extern void func_002C04B0(void *);
-extern void func_002B5EF0(void);
+extern void Help_Exit(void);
 extern MainMenu *gMainMenu;
 extern char D_0046B400[];
 extern char D_0046B410[];
@@ -124,7 +124,6 @@ void MainMenu_TaskMain(Task *t);
 void MainMenu_TaskOpen(Task *t) {
     MainMenuWork *w = t->data.work;
     s32 sp30[8];
-    TaskFunc f;
     f32 v;
 
     func_00267090(w);
@@ -139,25 +138,17 @@ void MainMenu_TaskOpen(Task *t) {
         func_0012DC30(w->fA4, 0);
         w->fA8 = 0;
         w->state = 3;
-        f = MainMenu_TaskMain;
-        if (f == NULL) {
-            f = NULL;
-        }
-        t->func = f;
+        TASK_SET_FUNC(t, MainMenu_TaskMain);
     }
 }
 
-#if 0
 extern void func_00264260(s32, s32, s32);
 extern void func_0025C800(void *, s32);
 extern void func_0022E0B0(void *);
 extern void func_0012C360(void *);
 extern void MainMenu_InitWork(MainMenuWork *);
 
-/* Matches but for the registers of the last three stores: the original puts 2 and the function in $v1 and 35.0f
-   in $a0, this gives the opposite (statement order, a block for f, an inline setter: no change). */
 void MainMenu_TaskLoad(Task *t) {
-    TaskFunc f;
     MainMenu *g;
     TaskData *d;
     MainMenuWork *w;
@@ -201,15 +192,9 @@ void MainMenu_TaskLoad(Task *t) {
         func_00266CD0(w);
         w->state = 2;
         w->timer = 35.0f;
-        f = MainMenu_TaskOpen;
-        if (f == NULL) {
-            f = NULL;
-        }
-        t->func = f;
+        TASK_SET_FUNC(t, MainMenu_TaskOpen);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_mainmenu", MainMenu_TaskLoad);
 void MainMenu_TaskLoad(Task *t);
 
 void MainMenu_Clear(void) {
@@ -231,7 +216,7 @@ void MainMenu_Exit(void) {
     }
     func_0013AC90(g);
     gMainMenu = NULL;
-    func_002B5EF0();
+    Help_Exit();
 }
 
 extern void *func_002C0630(s32, s32, s32, s32);
@@ -269,7 +254,7 @@ void MainMenu_Start(s32 cursor, s32 a1) {
 }
 
 extern MainMenuFile *func_0025C670(s32, s32, s32);
-extern void func_002B6140(void);
+extern void Help_Load(void);
 
 void MainMenu_Load(void) {
     MainMenu *g;
@@ -280,5 +265,5 @@ void MainMenu_Load(void) {
     g->file[1] = func_0025C670(0x10827, 0, 0);
     g->file[2] = func_0025C670(0xF50, 0, 0);
     g->file[3] = func_0025C670(0xF51, 0, 0);
-    func_002B6140();
+    Help_Load();
 }

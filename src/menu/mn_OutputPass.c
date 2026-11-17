@@ -23,7 +23,7 @@ extern void func_002F5260(Task *);
 extern void func_001258F8(void *, s32, s32);
 extern void func_00125740(void *, void *, s32);
 extern void *func_0025C670(s32, s32, s32);
-extern void func_002B6140(void);
+extern void Help_Load(void);
 
 void OutputPass_Start(void *src, u16 prio) {
     OutputPassGlobal *g = gOutputPass;
@@ -49,5 +49,5 @@ void OutputPass_Load(void) {
     g->f8 = 0;
     g->fC = 0;
     g->task = NULL;
-    func_002B6140();
+    Help_Load();
 }

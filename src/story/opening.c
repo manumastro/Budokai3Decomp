@@ -1,15 +1,6 @@
 #include "common.h"
-#include "menu/menu.h"
+#include "story/opening.h"
 
-typedef struct OpeningWork {
-    s32 f0;
-    s32 f4;
-    s32 f8;
-    s32 fC;
-    s32 f10;
-} OpeningWork;
-
-extern OpeningWork *gOpening;
 extern char D_0046F418[];
 extern void func_001258F8(void *, s32, s32);
 

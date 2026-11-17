@@ -54,3 +54,115 @@ SklEdit_Close = 0x002B5210; // type:func
 SklEdit_Open = 0x002B5330; // type:func
 gSklEdit = 0x00470900; // size:0x4
 gSklEditUsers = 0x00470904; // size:0x4
+
+// mn_cssubArena.c: the character select's sub screen in Arena mode (task "# CSSUBARN #"); called only from
+// mn_charasel (0x27BDF0 result, 0x27E040 init, 0x27E120 unload, 0x27CB20 open, 0x27E2D0 load). Load reads files
+// 0x10822/0x10823 and counts users; Open makes the task and opens SklEdit; Close frees its models and SklEdit.
+CsSubArena_GetResult = 0x002E3230; // type:func guess
+CsSubArena_Init = 0x002E3240; // type:func
+CsSubArena_Unload = 0x002E3250; // type:func
+CsSubArena_Close = 0x002E3300; // type:func
+CsSubArena_Open = 0x002E33D0; // type:func
+CsSubArena_Load = 0x002E3500; // type:func
+gCsSubArena = 0x00470940; // size:0x4
+// mn_cssubstat.c: the character select's status sub screen (task "# CHARASEL #", source mn_cssubstat.c), same
+// shape as CsSubArena (same files 0x10822/0x10823); TaskLoad waits for the files, then fades in and sets the
+// main func; RequestClose moves states 1-3 to 4 with the closing func 0x281C60.
+CsSubStat_TaskLoad = 0x00282710; // type:func
+CsSubStat_RequestClose = 0x00282830; // type:func guess
+CsSubStat_GetSlot = 0x002828C0; // type:func guess
+CsSubStat_GetResult = 0x002828D0; // type:func guess
+CsSubStat_Init = 0x002828E0; // type:func
+CsSubStat_Unload = 0x002828F0; // type:func
+CsSubStat_Close = 0x002829A0; // type:func
+CsSubStat_Open = 0x00282AE0; // type:func
+CsSubStat_Load = 0x00282C10; // type:func
+gCsSubStat = 0x0047081C; // size:0x4
+// mn_ArenaMode.c: the Arena mode menu (task "# ARENA MODE #"), the same Load/Start/Exit/TaskLoad/TaskOpen
+// pattern as mn_mainmenu (files 0x10817/0x10818, a random voice 0x108E-0x1090 when it opens).
+ArenaMode_TaskOpen = 0x002D14C0; // type:func
+ArenaMode_TaskLoad = 0x002D1770; // type:func
+ArenaMode_Clear = 0x002D1970; // type:func guess
+ArenaMode_Exit = 0x002D1980; // type:func
+ArenaMode_Start = 0x002D1AE0; // type:func
+ArenaMode_Load = 0x002D1BB0; // type:func
+gArenaMode = 0x0047092C; // size:0x4
+// mn_ArenaStageSel.c: the Arena stage select (tasks "ARENA STAGE SEL", "ARENA STAGE START"/"END", a "SOFDEC"
+// movie sub task); called from the three mn_ArenaCharasel_* files. TaskLoad takes the files 0x1081B/0x1081C,
+// TaskOpen fades in and plays a voice, TaskWaitVoice waits for it (or a button) before the decide func 0x2E5C20.
+ArenaStageSel_TaskWaitVoice = 0x002E6280; // type:func guess
+ArenaStageSel_TaskOpen = 0x002E6420; // type:func
+ArenaStageSel_TaskLoad = 0x002E6590; // type:func
+ArenaStageSel_Exit = 0x002E6770; // type:func
+ArenaStageSel_Start = 0x002E6960; // type:func
+ArenaStageSel_Load = 0x002E6B50; // type:func
+gArenaStageSel = 0x00470948; // size:0x4
+
+// mn_help.c: the help screen ("# HELP CTRL #" / "# HELP DRAW #" tasks, "mn_help.c"). Load allocates the 0x60-byte
+// block and reads files 0x10828/0x10829 (reference counted: Load again only counts up, Exit counts down before
+// freeing); Open creates the two tasks (or restarts the draw task) and stores the mode bits; the draw task goes
+// load -> fade in (alpha += 0.1 to 0.8) -> opened -> main (scrolls by 4 on pad bits 0x10/0x40, button bit 1 closes)
+// -> close (alpha -= 0.2, frees, deletes both tasks). Callers: nearly every menu (Load/Exit pairs, Open on a help key).
+Help_TaskClose = 0x002B5A40; // type:func
+Help_TaskMain = 0x002B5B30; // type:func
+Help_TaskOpened = 0x002B5CB0; // type:func
+Help_TaskFadeIn = 0x002B5D20; // type:func
+Help_TaskLoad = 0x002B5DC0; // type:func
+Help_TaskCtrl = 0x002B5ED0; // type:func
+Help_Clear = 0x002B5EE0; // type:func
+Help_Exit = 0x002B5EF0; // type:func
+Help_Open = 0x002B5FD0; // type:func
+Help_Load = 0x002B6140; // type:func
+gHelp = 0x00470908; // size:0x4
+
+// mn_save.c: the memory card save task ("mn_save.c" D_0046F470, task name D_0046F4A0). The work lives in the task
+// itself at +0x30 (SaveData). Load creates the task and reads files 0x1081F/0x1081D/0x1081E; the first task function
+// waits for them, then the idle function (func_002E3A50, a jump table on the mode) serves requests made with
+// Save_Request(mode, step, buffer); the card operations go through func_0028DFC0 (op 2, 4, 9+i) and their result is
+// read from D_00470830 in the wait functions; GetState is polled by the menus (state 2 busy, 3/4/5 results).
+Save_TaskWrite = 0x002E35A0; // type:func guess
+Save_TaskCreate = 0x002E36B0; // type:func guess
+Save_TaskSlots = 0x002E37C0; // type:func guess
+Save_TaskWait = 0x002E3980; // type:func
+Save_TaskIdle = 0x002E3A50; // type:func
+Save_TaskLoad = 0x002E3E30; // type:func
+Save_GetState = 0x002E3ED0; // type:func
+Save_Clear = 0x002E3EE0; // type:func
+Save_Exit = 0x002E3EF0; // type:func
+Save_Request = 0x002E3F60; // type:func
+Save_Load = 0x002E3F80; // type:func
+gSaveTask = 0x00470944; // size:0x4
+
+// mn_title.c: the title screen ("# TITLE #", "mn_title.c"). Load reads files 0x10832/0x10833; Start creates the task
+// (mode 1 = coming back from the main menu); the load task waits 10 frames and the files, then plays the intro
+// (obj0 until func_0022BF80 says 0xFF; a pad bit speeds it up), shows the second object, then waits for START/X
+// (opens the main menu, func_002661D0) or for the timer / func_0012D9F0 == 5 (toggles D_004B4B66 and starts the
+// attract demo, then only draws). Every task function draws the scene first (an inline function, Title_Draw).
+Title_TaskMenu = 0x00264480; // type:func guess
+Title_TaskIdle = 0x00264610; // type:func
+Title_TaskWait = 0x00264700; // type:func
+Title_TaskShow = 0x00264960; // type:func guess
+Title_TaskIntro = 0x00264A80; // type:func
+Title_TaskLoad = 0x00264C20; // type:func
+Title_Clear = 0x00264E20; // type:func
+Title_Exit = 0x00264E30; // type:func
+Title_Start = 0x00264EE0; // type:func
+Title_Load = 0x00264FB0; // type:func
+gTitle = 0x004707D4; // size:0x4
+
+
+// ess_info.c: the ess screen's information pages (task "ESS INFO", file "ess_info.c"): 14 pages (0..13) turned with
+// up/down, triangle/cross closes (then func_0026D8A0 in ess_main), select calls func_002B5FD0. Load/Start/Exit are
+// called from ess_main (func_0026BD50, func_0026C7C0); Init from ess_main_2. Work area EssInfoWork (0x190 bytes).
+EssInfo_Draw = 0x0026F290; // type:func
+EssInfo_UpdateAnims = 0x0026F580; // type:func
+EssInfo_TaskTurn = 0x0026F670; // type:func
+EssInfo_TaskMain = 0x0026F740; // type:func
+EssInfo_TaskClose = 0x0026FB30; // type:func
+EssInfo_TaskOpen = 0x0026FBB0; // type:func
+EssInfo_TaskLoad = 0x0026FC30; // type:func
+EssInfo_Init = 0x0026FD20; // type:func
+EssInfo_Start = 0x0026FD30; // type:func
+EssInfo_Exit = 0x0026FDA0; // type:func
+EssInfo_Load = 0x0026FE40; // type:func
+gEssInfo = 0x004707F8; // size:0x4
