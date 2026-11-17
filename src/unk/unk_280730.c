@@ -1,7 +1,8 @@
 #include "common.h"
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280730);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_002807D0);
+void func_002807D0(void) {
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_002807E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_002808E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280A00);

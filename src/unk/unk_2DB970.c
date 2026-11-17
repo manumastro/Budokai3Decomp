@@ -3,7 +3,8 @@
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DB970);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DBF20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DBFE0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DCC50);
+void func_002DCC50(void) {
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DCC60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DD180);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DD2B0);

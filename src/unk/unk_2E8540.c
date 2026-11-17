@@ -2,7 +2,30 @@
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8540);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8720);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E87C0);
+typedef struct Rec12 {
+    s8 b[8];
+    s32 w;
+} Rec12;
+
+typedef struct Work87 {
+    char pad0[0x258];
+    Rec12 arr[16];
+} Work87;
+
+void func_002E87C0(Work87 *a, s16 i) {
+    Rec12 *s = &a->arr[i];
+    Rec12 *d = (Rec12 *)((u8 *)a + 0xB64);
+
+    d->b[0] = s->b[0];
+    d->b[1] = s->b[1];
+    d->b[2] = s->b[2];
+    d->b[3] = s->b[3];
+    d->b[4] = s->b[4];
+    d->b[5] = s->b[5];
+    d->b[6] = s->b[6];
+    d->b[7] = s->b[7];
+    d->w = s->w;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8830);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8980);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8B40);
@@ -10,17 +33,57 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8C80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8DB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8F00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8F90);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E92E0);
+extern u8 D_005C4140[];
+extern void memset(void *, s32, s32);
+
+void func_002E92E0(void) {
+    memset(D_005C4140, 0, 0x5DD0);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9300);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E94C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E95C0);
+extern void amTask_Kill(void *);
+
+void func_002E95C0(char *o) {
+    void **t = (void **)(o + 0x30);
+    if (*t != NULL) {
+        amTask_Kill(*t);
+    }
+    *t = NULL;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9600);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9770);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E97E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E98E0);
+extern u8 D_005C9F10[];
+extern void memset(void *, s32, s32);
+
+void func_002E98E0(void) {
+    memset(D_005C9F10, 0, 0x6C);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9900);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9970);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9B10);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9B90);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9BA0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9BE0);
+extern s32 D_005C9F18[];
+
+void func_002E9B90(s32 a) {
+    D_005C9F18[0] = a;
+}
+extern s32 D_005C9F1C[];
+extern s32 D_005C9F68[];
+extern void func_0022C7D0(s32, s32, f32);
+
+void func_002E9BA0(s32 a) {
+    s32 v;
+
+    D_005C9F1C[0] = a;
+    if (a == 0) {
+        v = D_005C9F68[0];
+        if (v != 0) {
+            func_0022C7D0(v, 1, 0.0f);
+        }
+    }
+}
+extern s32 D_005C9F14[];
+
+void func_002E9BE0(s32 a) {
+    D_005C9F14[0] = a;
+}
