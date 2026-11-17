@@ -1692,10 +1692,72 @@ s32 func_002A5010(void *a0, char *a1) {
     D_004700B0 = *(s32 *)(*(char **)(a1 + 0x2C));
     return 1;
 }
+#if 0
+// func_002A5030: 30 of 109 differ (round 5). Best C: float args declared in reverse order (args[6] first) gives the original's f20..f26 registers. Left: the zeroing loop (the original has no leading nop, a `beqz` to the stores) and the call setup (`mov.s $f12,$f20` before `addiu a0,sp,0x40` in the original); a relocation-masked gp/jal difference too. Tried: declaration order (2), loop shapes (2).
+extern f32 func_002B06A0(void);
+extern void func_002A21F0(f32 *, f32);
+extern f32 D_004708DC;
+s32 func_002A5030(s32 *a0, s32 *a1) {
+    f32 *args = *(f32 **)((char *)a1 + 0x2C);
+    f32 f26 = args[6];
+    f32 f25 = args[5];
+    f32 f24 = args[4];
+    f32 f23 = args[3];
+    f32 f22 = args[2];
+    f32 f21 = args[1];
+    f32 f20 = args[0];
+    f32 t;
+    f32 r;
+    f32 buf[4];
+    u8 *p;
+    u32 n;
+    if (f25 >= 0.0f) {
+        r = D_004708DC - (f32)D_004700B0 * func_002B06A0();
+        D_004708DC = r;
+        if (r < 0.0f) {
+            D_004708DC = 0.0f;
+            a0[0x10 / 4] = 0;
+            return 1;
+        }
+        if (r < f25) {
+            t = 1.0f;
+        } else {
+            t = 1.0f - (r - f25) / f26;
+        }
+    } else {
+        if (D_004708DC < 0.0f) {
+            D_004708DC = 0.0f;
+            t = 1.0f;
+        } else {
+            t = 1.0f - D_004708DC / f26;
+        }
+    }
+    if (t <= 0.0f) {
+        return 3;
+    }
+    f24 = f24 * t;
+    f23 = f23 * t;
+    f22 = f22 * t;
+    f21 = f21 * t;
+    p = (u8 *)buf;
+    n = 0x10;
+    if (p != 0) {
+        do {
+            *p++ = 0;
+        } while (--n != 0);
+    }
+    buf[0] = f24;
+    buf[1] = f23;
+    buf[2] = f22;
+    buf[3] = f21;
+    func_002A21F0(buf, f20);
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5030);
 extern void func_002A21F0(f32 *, f32);
-extern void func_002A5030(s32 *, s32 *);
 extern f32 D_004708DC;
+extern void func_002A5030(s32 *, s32 *);
 #if 0
 // func_002A51E0: 30 of 51 differ. The guarded do/while byte loop (u32 counter, `if (p != 0)`) matches the loop shape; the loads of args[4] and args[3] go to $f2/$f0 here (the original: $f0 and $f2), so the stores are reordered around the `mtc1 zero`. Tried: volatile pointer (unrolled), declaration orders (6), `>=` sign test, args read at the stores (40 differ).
 void func_002A51E0(s32 *a0, s32 *a1) {
