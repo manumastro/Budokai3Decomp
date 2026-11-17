@@ -37,7 +37,38 @@ extern void *A2d_AllocObj(s32, f32);
 extern void memset(void *, s32, s32);
 extern void amHeap_Free(void *);
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F06D0);
+extern void func_00229800(void *, void *, s32, f32);
+
+void func_002F06D0(u8 *a0, s32 a1) {
+    u8 *s2;
+    u32 s1;
+    u32 s0;
+    s16 idx;
+    s32 t;
+    f32 out[8];
+    void *val;
+
+    idx = (s16)a1;
+    t = *(u16 *)((u8 *)(idx * 2) + (s32)a0 + 0x128);
+    if (t == 0xFFFF) {
+        return;
+    }
+    s2 = *(u8 **)((u8 *)(idx * 4) + (s32)a0 + 4);
+    s1 = (u16)(t % 10);
+    s0 = (u16)(t / 10);
+    val = *(void **)(*(s32 *)(*(u8 **)((u8 *)gInputName + 0xC) + 0x1C) + (s16)(idx + 0xF) * 4);
+    func_00229800(val, out, -1, 0.0f);
+    *(f32 *)(s2 + 0x20) = out[0];
+    *(f32 *)(s2 + 0x24) = out[1];
+    *(u32 *)(s2 + 0x34) = 0xC1A00000;
+    *(u32 *)(s2 + 0x3C) = 0x41A00000;
+    *(u32 *)(s2 + 0x30) = 0xC1A00000;
+    *(u32 *)(s2 + 0x38) = 0x41A00000;
+    *(f32 *)(s2 + 0x44) = 40.0f * (f32)s0;
+    *(f32 *)(s2 + 0x40) = 40.0f * (f32)s1;
+    *(f32 *)(s2 + 0x48) = 40.0f * (f32)((u16)s1 + 1);
+    *(f32 *)(s2 + 0x4C) = 40.0f * (f32)((u16)s0 + 1);
+}
 void func_002F0870(u32 *task) {
     u8 *s3;
     s32 s2;
