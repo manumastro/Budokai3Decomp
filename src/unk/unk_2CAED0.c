@@ -229,7 +229,22 @@ s32 func_002CB300(void) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB370);
+s32 func_002CB370(void) {
+    TutWork *w = gTutWork;
+    f32 *a1 = (f32 *)&w->f20;
+    char *c = (char *)w->chr;
+
+    if (*(s16 *)(c + 0xCAC) == 2) {
+        a1[0] = a1[0] + *(f32 *)(gBattle + 0x88F0);
+    }
+    if (*(s16 *)(c + 0xCAC) == 3) {
+        a1[1] = a1[1] + *(f32 *)(gBattle + 0x88F0);
+    }
+    if (a1[0] >= 60.0f && a1[1] >= 60.0f) {
+        return 1;
+    }
+    return 0;
+}
 s32 func_002CB420(void) {
     return 2;
 }
@@ -343,7 +358,27 @@ void func_002CC610(void) {
         amTask_KillGroup(0x20, 0x400000, 0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC640);
+void func_002CC640(void) {
+    extern void *amTask_Create();
+    extern char D_0046EFC8[];
+    extern char D_0046EFD8[];
+    TutWork *w;
+
+    if (gTutWork == NULL) {
+        return;
+    }
+    memset(&gTutWork->f20, 0, 0x10);
+    amTask_Create(func_002CBF60, 0, 0x4200, 0x20, 0x400002, D_0046EFC8);
+    amTask_Create(func_002CBF50, 0, 0x3B00, 0x20, 0x400008, D_0046EFD8);
+    w = gTutWork;
+    if (w == NULL) {
+        return;
+    }
+    w->f8 = 0;
+    w->f1C = -*(f32 *)(gBattle + 0x88F0);
+    *(s32 *)&w->f18 = 0;
+    D_004564A0[w->f8]();
+}
 void func_002CC710(void) {
     TutWork *t = gTutWork;
     u8 *g = gBattle;
