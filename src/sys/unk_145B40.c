@@ -15,39 +15,45 @@ typedef struct VramSlot {
 extern char D_0047E4C0[];
 extern void amVram_Apply(s32);
 
-#if 0
-/* differs: 30 of 96 instructions; the registers of the counter and the flags (s0 / s2) and the test order of the
- * mode (a1) are not reproduced yet. */
+extern s32 D_004703A4;
+extern s32 D_004703A8;
+
 void func_00145B40(s32 a0) {
-    s32 flg;
-    s32 s1;
-    VramSlot *ptr;
-    s32 mode;
-    s32 a2;
-    s32 a3;
     s32 t0;
+    s32 a3;
+    s32 a2;
+    s32 mode;
+    s32 flg;
+    s32 i;
+    VramSlot *ptr;
     u8 *p;
-    u32 *pg;
+    s32 *pg;
     u32 v;
-    flg = a0 + 1;
+    s32 m2;
+    flg = a0;
+    flg += 1;
     ptr = (VramSlot *)D_0047E4C0;
-    for (s1 = 0; s1 < 2; s1++, flg = flg >> 1, ptr++) {
+    for (i = 0; i < 2; i++, flg = flg >> 1, ptr++) {
         if (flg & 1) {
             mode = ptr->mode;
             if (mode != ptr->mode2) {
-                if (s1 != 0) {
+                if (i != 0) {
                     pg = &D_004703A8;
                 } else {
                     pg = &D_004703A4;
                 }
                 v = *pg;
-                if (ptr->mode2 == 2) {
-                    v = (v << 4) >> 4;
-                } else if (ptr->mode2 == 0) {
+                m2 = ptr->mode2;
+                switch (m2) {
+                case 0:
                     v |= 0x20000000;
+                    break;
+                case 2:
+                    v &= 0x0FFFFFFF;
+                    break;
                 }
                 *pg = v;
-                amVram_Apply(s1);
+                amVram_Apply(i);
                 ptr->mode = ptr->mode2;
             } else if (mode != 0) {
                 a2 = ptr->h12;
@@ -60,20 +66,18 @@ void func_00145B40(s32 a0) {
                     if (mode == 1) {
                         *(s32 *)(p + 0x8) = 0;
                     }
-                    if (a2 == a3) {
-                        a2 = 0;
-                        p = (u8 *)ptr->w24;
-                    } else {
+                    if (a2 != a3) {
                         a2++;
                         p += 0x40;
+                    } else {
+                        a2 = 0;
+                        p = (u8 *)ptr->w24;
                     }
                 }
             }
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/sys/unk_145B40", func_00145B40);
 extern u8 *D_00470390;
 extern u8 *D_00470394;
 extern void *D_00470398;

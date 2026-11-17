@@ -1,8 +1,5 @@
 #include "common.h"
 
-#if 0
-/* differs: 12 of 36 instructions; the register of each count (a2 / a3) and the order of the loads (the original
- * loads v0 last) are not reproduced yet. */
 typedef struct Ring {
     char pad0[2];
     s16 n2;
@@ -16,35 +13,37 @@ typedef struct Ring {
 } Ring;
 
 u8 *func_001461D0(Ring *r, s32 key) {
-    s32 n = r->n2;
-    s32 a3 = r->n4;
-    s32 a2 = r->n12;
-    u8 *v0 = r->base;
+    s32 n;
+    s32 h;
+    s32 m;
+    u8 *p;
     s32 v;
+    n = r->n2;
+    m = r->n4;
+    h = r->n12;
+    p = r->base;
     if (n != 0) {
-        a3 = a3 - 1;
-        a2 = a3 & (a2 + (n + a3));
-        v0 = v0 + (a2 << 6);
+        m = m - 1;
+        h = m & (h + (n + m));
+        p = p + (h << 6);
         do {
-            v = *(s32 *)(v0 + 4);
+            v = *(s32 *)(p + 4);
             n = n - 1;
             if (v != key) {
-                v0 = v0 - 0x40;
-                a2 = a2 - 1;
-                if (a2 < 0) {
-                    a2 = a3;
-                    v0 = r->base + (a3 << 6);
+                p = p - 0x40;
+                h = h - 1;
+                if (h < 0) {
+                    h = m;
+                    p = r->base + (m << 6);
                 }
             } else {
-                r->n16 = a2;
-                return v0;
+                r->n16 = h;
+                return p;
             }
         } while (n > 0);
     }
     return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_001461D0);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146260);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146680);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_1461D0", func_00146C20);
