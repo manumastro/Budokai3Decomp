@@ -2651,7 +2651,61 @@ void func_001EE250(Task *t) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE320);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE530);
+extern void StrTitle_Start(void);
+extern void TourMode_Start(void);
+extern void PracMode_Start(s32, s32);
+extern void Option_Start(void);
+extern void Ess_Start(void);
+extern void Title_Start(s32);
+extern void ArenaMode_Start(s32);
+extern void func_00269820(s32, s32);
+extern void func_001EE320(Task *);
+void func_001EE530(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            TASK_SETFUNC(t, func_001EE320);
+            switch (D_00470600) {
+            case 6:
+                D_004B4BB0[0] = 1;
+                StrTitle_Start();
+                break;
+            case 0x10:
+                D_004B4BB0[0] = 1;
+                TourMode_Start();
+                break;
+            case 0x13:
+                { D_004B4BB0[0] = 1; PracMode_Start(*(s16 *)&D_00470608, 0); }
+                break;
+            case 0x1C:
+                D_004B4BB0[0] = 0;
+                Option_Start();
+                break;
+            case 0x16:
+                D_004B4BB0[0] = 1;
+                Ess_Start();
+                break;
+            case 4:
+                { D_004B4BB0[0] = 0; Title_Start(*(s16 *)&D_00470608); }
+                break;
+            case 0xE:
+                { D_004B4BB0[0] = 1; func_00269820(*(s16 *)&D_00470608, 0); }
+                break;
+            case 0x17:
+                D_004B4BB0[0] = 1;
+                ArenaMode_Start(*(s8 *)&D_00470608);
+                break;
+            }
+        }
+    }
+}
 
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
@@ -2830,6 +2884,8 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
+extern void func_00264300();
+extern void func_001F0820();
 
 void func_001EEA90(Task *t) {
     s32 v;
@@ -2846,7 +2902,41 @@ void func_001EEA90(Task *t) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEAF0);
+extern void func_00143F20(f32, s32, s32);
+extern void func_00143D60(s32, s32, s32, s32);
+extern u16 D_00492FCE[];
+extern u16 D_00493086[];
+extern f32 D_004E0614[];
+void func_001EEAF0(Task *t) {
+    s32 v;
+    s32 n;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if ((D_00492FCE[0] | D_00493086[0]) & 8) {
+            func_00143F20(D_004E0614[0], 0, 0);
+            if (D_004E0614[0] > 0.0f) {
+                func_00143D60(0, 0, 0, 0);
+            }
+            TASK_SETFUNC(t, func_001EEA90);
+            func_00264300(-1, func_001F0820, 0);
+        } else {
+            n = D_004B4B68[0] - 1; D_004B4B68[0] = n;
+            if (n == 0) {
+                TASK_SETFUNC(t, func_001EEA90);
+                func_00264300(-1, func_001F0820, 0);
+            } else if (D_00470600 != -1) {
+                TASK_SETFUNC(t, func_001EEA90);
+                func_00264300(-1, func_001F0820, 0);
+            }
+        }
+    }
+}
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 D_004705FC;
