@@ -74,7 +74,7 @@ extern void func_001E2180(void *, s32);
 extern void func_0029D8B0(int, int);
 extern void func_001D8FE0(void *, int);
 extern f32 D_004B421C[];
-extern s32 D_0051CCE0[];
+extern s32 gBtbBg[];
 extern s32 D_0051CD20[];
 extern char D_00469260[];
 extern void func_001E73C0(void *);
@@ -160,13 +160,13 @@ int AdxCmd_IsPlaying(void *unused, Arg *a) {
     *(int *)a = AdxSlot_IsPlaying((char *)gBattle + (a->p[0] << 5) + 0x5C4);
     return 1;
 }
-int func_001CBFE0(void *unused, Arg *a) {
+int Scr_CmdClearSlot(void *unused, Arg *a) {
     if (*(short *)((char *)gBattle + 0x7E6) != -1) {
         func_00219270(-1);
     }
     return 1;
 }
-int func_001CC020(void *unused, Arg *a) {
+int Scr_CmdReleaseSlotIdx(void *unused, Arg *a) {
     int r;
     if (*(short *)((char *)gBattle + 0x7E6) != -1) {
         r = func_00218B60(*(short *)((char *)gBattle + 0x7E4), 1);
@@ -174,7 +174,7 @@ int func_001CC020(void *unused, Arg *a) {
     }
     return 1;
 }
-int func_001CC070(void *unused, Arg *a) {
+int Scr_CmdSetSlotVec(void *unused, Arg *a) {
     char *q = *(char **)unused;
     int *p = a->p;
     func_00218C40((char *)gBattle + (p[2] << 5) + 0x5C4, *(int *)(q + 0x10), *(int *)(q + 0x14), *(int *)(q + 0x18), *(float *)&p[1], (float)p[0]);
@@ -185,7 +185,7 @@ int AdxCmd_SetVolume(void *unused, Arg *a) {
     AdxSlot_SetVolume((char *)gBattle + (p[1] << 5) + 0x5C4, *(float *)p);
     return 1;
 }
-int func_001CC100(void *unused, Arg *a) {
+int Scr_CmdGetSlotF(void *unused, Arg *a) {
     int *p = a->p;
     char *e = (char *)(p[0] << 5);
     *(float *)((char *)a + 0x40) = *(float *)(e + (int)gBattle + 0x5C4);
@@ -321,7 +321,7 @@ int Scr_CmdPlayThread(void *o, Arg *a) {
     *(s32 *)(t + 0x40) = y;
     return 1;
 }
-int func_001CC850(void *unused, Arg *a) {
+int Scr_CmdFighterReset(void *unused, Arg *a) {
     func_001D9CA0(gBattle->tbl[a->p[0]], 0);
     return 1;
 }
@@ -412,37 +412,37 @@ int func_001CCC70(void *unused, Arg *a) {
     func_001E57F0(1);
     return 1;
 }
-int func_001CCC90(void *unused, Arg *a) {
+int Scr_CmdGetCurF18(void *unused, Arg *a) {
     char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)(p + 0x18) : 0.0f;
     return 1;
 }
-int func_001CCCC0(void *unused, Arg *a) {
+int Scr_CmdGetCurF14(void *unused, Arg *a) {
     char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)(p + 0x14) : 0.0f;
     return 1;
 }
-int func_001CCCF0(void *unused, Arg *a) {
+int Scr_CmdGetCurF10(void *unused, Arg *a) {
     char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)(p + 0x10) : 0.0f;
     return 1;
 }
-int func_001CCD20(void *unused, Arg *a) {
+int Scr_CmdGetCurF08(void *unused, Arg *a) {
     char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)(p + 0x8) : 0.0f;
     return 1;
 }
-int func_001CCD50(void *unused, Arg *a) {
+int Scr_CmdGetCurF04(void *unused, Arg *a) {
     char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)(p + 0x4) : 0.0f;
     return 1;
 }
-int func_001CCD80(void *unused, Arg *a) {
+int Scr_CmdGetCurF00(void *unused, Arg *a) {
     char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)p : 0.0f;
     return 1;
 }
-int func_001CCDB0(void *unused, Arg *a) {
+int Scr_CmdSetF218(void *unused, Arg *a) {
     D_004B4218[0] = *(f32 *)a->p;
     return 1;
 }
@@ -468,15 +468,15 @@ int func_001CCF60(void *unused, Arg *a) {
     func_001A8770(2, buf);
     return 1;
 }
-int func_001CCFC0(void *unused, Arg *a) {
+int Scr_CmdSetF214(void *unused, Arg *a) {
     D_004B4214[0] = *(f32 *)a->p;
     return 1;
 }
-int func_001CCFE0(void *unused, Arg *a) {
+int Scr_CmdSetF210(void *unused, Arg *a) {
     D_004B4210[0] = *(f32 *)a->p;
     return 1;
 }
-int func_001CD000(void *unused, Arg *a) {
+int Scr_CmdSetF210To21C(void *unused, Arg *a) {
     D_004B4210[0] = ((f32 *)a->p)[3];
     D_004B4214[0] = ((f32 *)a->p)[2];
     D_004B4218[0] = ((f32 *)a->p)[1];
@@ -498,13 +498,13 @@ int func_001CD2C0(void *unused, Arg *a) {
     func_001D8FE0(gBattle->tbl[a->p[0]], 0);
     return 1;
 }
-int func_001CD300(void *unused, Arg *a) {
-    char *q = (char *)D_00469260 + (D_0051CCE0[0] << 1);
+int Scr_CmdGetStageByte(void *unused, Arg *a) {
+    char *q = (char *)D_00469260 + (gBtbBg[0] << 1);
     *(s32 *)a = *(s8 *)(D_0051CD20[0] + q);
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD340);
-int func_001CD530(void *unused, Arg *a) {
+int Scr_CmdFindBone(void *unused, Arg *a) {
     int *p = a->p;
     char *e = (char *)gBattle->tbl[p[2]] + p[1] * 0x680;
     int *blk = *(int **)(e + 0xB88);
@@ -518,7 +518,7 @@ int func_001CD5B0(void *unused, Arg *a) {
     func_001E3550(t);
     return 1;
 }
-int func_001CD610(void *unused, Arg *a) {
+int Scr_CmdFighterSetFlag2016(void *unused, Arg *a) {
     *((char *)gBattle->tbl[a->p[0]] + 0x2016) = 1;
     return 1;
 }
@@ -543,7 +543,7 @@ int func_001CD700(void *unused, Arg *a) {
     func_00237000(6, x);
     return 1;
 }
-int func_001CD750(void *unused, Arg *a) {
+int Scr_CmdFighterGetByte2013(void *unused, Arg *a) {
     char *t = gBattle->tbl[a->p[0]];
     *(s32 *)a = 0;
     if (*(s8 *)(t + 0x1FF8) > -1) {
@@ -551,14 +551,14 @@ int func_001CD750(void *unused, Arg *a) {
     }
     return 1;
 }
-int func_001CD7A0(void *unused, Arg *a) {
+int Scr_CmdFighterClear17E4(void *unused, Arg *a) {
     char *t = gBattle->tbl[a->p[0]];
     *(s32 *)(t + 0x17E4) = 0;
     func_001DFBF0(t);
     func_001D7CC0(t, 0);
     return 1;
 }
-int func_001CD800(void *unused, Arg *a) {
+int Scr_CmdFighterGetAngle17A4(void *unused, Arg *a) {
     char *t = gBattle->tbl[a->p[0]];
     *(f32 *)((char *)a + 0x40) = 360.0f * ((f32)*(s32 *)(t + 0x17A4) / 65536.0f);
     return 1;
@@ -573,7 +573,7 @@ int func_001CD8B0(void *unused, Arg *a) {
     func_001DD680(gBattle->tbl[a->p[0]], 1);
     return 1;
 }
-int func_001CD8F0(void *unused, Arg *a) {
+int Scr_CmdFighterIsNone1FF8(void *unused, Arg *a) {
     *(s32 *)a = *(s8 *)((char *)gBattle->tbl[a->p[0]] + 0x1FF8) <= -1;
     return 1;
 }
@@ -583,49 +583,49 @@ int func_001CD930(void *unused, Arg *a) {
     *(s32 *)a = func_001DFA90(gBattle->tbl[p[1]], p[0]);
     return 1;
 }
-int func_001CD980(void *unused, Arg *a) {
+int Scr_CmdFighterGetShort1CF4(void *unused, Arg *a) {
     char *q = *(char **)((char *)gBattle->tbl[a->p[0]] + 0x1CF4);
     *(s32 *)a = *(s16 *)(q + 0x12);
     return 1;
 }
-int func_001CD9C0(void *unused, Arg *a) {
+int Scr_CmdEntryGetInt0BA0(void *unused, Arg *a) {
     int *p = a->p;
     *(s32 *)a = *(s32 *)((char *)gBattle->tbl[p[1]] + p[0] * 0x680 + 0xBA0);
     return 1;
 }
-int func_001CDA10(void *unused, Arg *a) {
+int Scr_CmdEntryGetInt0BA4(void *unused, Arg *a) {
     int *p = a->p;
     *(s32 *)a = *(s32 *)((char *)gBattle->tbl[p[1]] + p[0] * 0x680 + 0xBA4);
     return 1;
 }
-int func_001CDA60(void *unused, Arg *a) {
+int Scr_CmdFighterGetInt1CFC(void *unused, Arg *a) {
     *(s32 *)a = *(s32 *)((char *)gBattle->tbl[a->p[0]] + 0x1CFC);
     return 1;
 }
-int func_001CDA90(void *unused, Arg *a) {
+int Scr_CmdEntryGetInt0B9C(void *unused, Arg *a) {
     int *p = a->p;
     *(s32 *)a = *(s32 *)((char *)gBattle->tbl[p[1]] + p[0] * 0x680 + 0xB9C);
     return 1;
 }
-int func_001CDAE0(void *unused, Arg *a) {
+int Scr_CmdFighterGetF17D4(void *unused, Arg *a) {
     *(s32 *)a = (s32)*(f32 *)((char *)gBattle->tbl[a->p[0]] + 0x17D4);
     return 1;
 }
-int func_001CDB20(void *unused, Arg *a) {
+int Scr_CmdFighterGetSelF17D(void *unused, Arg *a) {
     char *t = gBattle->tbl[*a->p];
     f32 f = (*(f32 *)(t + 0x1A40) > 0.0f) ? *(f32 *)(t + 0x17D4) : *(f32 *)(t + 0x17D0);
     *(s32 *)a = (s32)f;
     return 1;
 }
-int func_001CDB80(void *unused, Arg *a) {
+int Scr_CmdFighterGetF17C4(void *unused, Arg *a) {
     *(s32 *)a = (s32)*(f32 *)((char *)gBattle->tbl[a->p[0]] + 0x17C4);
     return 1;
 }
-int func_001CDBC0(void *unused, Arg *a) {
+int Scr_CmdFighterGetF17C0(void *unused, Arg *a) {
     *(s32 *)a = (s32)*(f32 *)((char *)gBattle->tbl[a->p[0]] + 0x17C0);
     return 1;
 }
-int func_001CDC00(void *unused, Arg *a) {
+int Scr_CmdFighterGetInt0B70(void *unused, Arg *a) {
     *(s32 *)a = *(s32 *)((char *)gBattle->tbl[a->p[1]] + 0xB70);
     return 1;
 }
@@ -636,11 +636,11 @@ int func_001CDC30(void *unused, Arg *a) {
     *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x44) - r;
     return 1;
 }
-int func_001CDCA0(void *unused, Arg *a) {
+int Scr_CmdFighterGetByte1FF9(void *unused, Arg *a) {
     *(s32 *)a = *(s8 *)((char *)gBattle->tbl[a->p[0]] + 0x1FF9);
     return 1;
 }
-int func_001CDCD0(void *unused, Arg *a) {
+int Scr_CmdEntryGetF0CB8(void *unused, Arg *a) {
     int *p = a->p;
     *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle->tbl[p[1]] + p[0] * 0x680 + 0xCB8);
     return 1;
@@ -651,15 +651,15 @@ int func_001CDD20(void *unused, Arg *a) {
     *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x124);
     return 1;
 }
-int func_001CDD80(void *unused, Arg *a) {
+int Scr_CmdGetBattleF8968(void *unused, Arg *a) {
     *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle + 0x8968);
     return 1;
 }
-int func_001CDDA0(void *unused, Arg *a) {
+int Scr_CmdGetBattleF8964(void *unused, Arg *a) {
     *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle + 0x8964);
     return 1;
 }
-int func_001CDDC0(void *unused, Arg *a) {
+int Scr_CmdGetBattleF8960(void *unused, Arg *a) {
     *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle + 0x8960);
     return 1;
 }
@@ -706,7 +706,7 @@ int func_001CDEA0(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDEA0);
-int func_001CDF00(void *unused, Arg *a) {
+int Scr_CmdNop(void *unused, Arg *a) {
     return 1;
 }
 // differs: 1 of 28 at best: the add of the table index and the address (the original loads p[0] and the table entry before the sh); the u8 table load order differs by one instruction.
@@ -770,7 +770,7 @@ int func_001CE110(void *unused, Arg *a) {
     *(f32 *)(t + 0x17D0) = r;
     return 1;
 }
-int func_001CE1F0(void *unused, Arg *a) {
+int Scr_CmdFighterCopyF17C4(void *unused, Arg *a) {
     char *t = gBattle->tbl[a->p[0]];
     *(f32 *)(t + 0x17C0) = *(f32 *)(t + 0x17C4);
     return 1;
@@ -821,7 +821,7 @@ int func_001CE3A0(void *unused, Arg *a) {
     *f = p[0] ? 0 : 1;
     return 1;
 }
-int func_001CE400(void *unused, Arg *a) {
+int Scr_CmdFighterSetF1A08(void *unused, Arg *a) {
     *(f32 *)((char *)gBattle->tbl[a->p[1]] + 0x1A08) = *(f32 *)a->p;
     return 1;
 }
@@ -925,15 +925,15 @@ int func_001CE7C0(void *unused, Arg *a) {
     *(s32 *)(t + 0x1A60) = (s32)(65536.0f * (x0 / 360.0f));
     return 1;
 }
-int func_001CE820(void *unused, Arg *a) {
+int Scr_CmdFighterSetF182C(void *unused, Arg *a) {
     *(f32 *)((char *)gBattle->tbl[a->p[1]] + 0x182C) = *(f32 *)a->p;
     return 1;
 }
-int func_001CE850(void *unused, Arg *a) {
+int Scr_CmdSetF23C(void *unused, Arg *a) {
     D_004B423C[0] = *(f32 *)a->p;
     return 1;
 }
-int func_001CE870(void *unused, Arg *a) {
+int Scr_CmdSetF238(void *unused, Arg *a) {
     D_004B4238[0] = *(f32 *)a->p;
     return 1;
 }

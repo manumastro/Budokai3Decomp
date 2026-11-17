@@ -536,7 +536,7 @@ extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void memset(void *, s32, s32);
 
-void func_002E0D40(void) {
+void Option_Load(void) {
     u8 *s0;
     void *p;
     if (gOptionState != 0) {

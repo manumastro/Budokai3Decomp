@@ -44,13 +44,13 @@ typedef struct ResultTask {
     void *f1C;
 } ResultTask;
 
-extern ResultState *D_00470910;
+extern ResultState *gStrStatus;
 extern s32 D_00470964;
 extern void *D_00470960;
 extern ResultWork *D_005AA604[];
 extern void Scene_Request(s32, s32);
 extern void func_002BD400(ResultArg *);
-extern void func_002BD510(void);
+extern void StrStatus_Free(void);
 extern void StrStatus_Dispatch(ResultMsg *);
 extern void Scene_MarkDone(void);
 void func_002EC850(ResultTask *t);
@@ -63,7 +63,7 @@ void func_002EC850(ResultTask *t) {
     ResultWork *w;
     s32 i;
 
-    switch (D_00470910->f27C) {
+    switch (gStrStatus->f27C) {
     case 0:
     case 1:
         D_00470964 = 0;
@@ -82,7 +82,7 @@ void func_002EC850(ResultTask *t) {
             w->b[i] = arg.e.b[i];
         }
         w->w = arg.e.w;
-        func_002BD510();
+        StrStatus_Free();
         msg.f14 = 1;
         msg.f10 = 2;
         StrStatus_Dispatch(&msg);
@@ -168,7 +168,7 @@ void func_002ECAC0(void) {
         amTask_Kill(D_00470960);
         D_00470960 = NULL;
     }
-    func_002BD510();
+    StrStatus_Free();
     msg.f14 = 1;
     msg.f10 = 2;
     StrStatus_Dispatch(&msg);

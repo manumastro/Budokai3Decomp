@@ -336,21 +336,21 @@ s32 Bscr_CmdGetRenderTexture(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025DA80(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdGetVecZ(ScrCtx *ctx, ScrCmd *cmd) {
     ScrVec v;
 
     func_0020E070(cmd->args[0].i, &v);
     cmd->f40 = v.z;
     return 1;
 }
-s32 func_0025DAC0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdGetVecY(ScrCtx *ctx, ScrCmd *cmd) {
     ScrVec v;
 
     func_0020E070(cmd->args[0].i, &v);
     cmd->f40 = v.y;
     return 1;
 }
-s32 func_0025DB00(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdGetVecX(ScrCtx *ctx, ScrCmd *cmd) {
     ScrVec v;
 
     func_0020E070(cmd->args[0].i, &v);
@@ -1133,7 +1133,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002604F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002605C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260690);
 
-s32 func_00260770(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjSetPos(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrVec v;
     f32 x = a[2].f;
@@ -1176,7 +1176,7 @@ s32 func_002607F0(ScrCtx *ctx, ScrCmd *cmd) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260870);
 
-s32 func_00260940(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdSoundStop(ScrCtx *ctx, ScrCmd *cmd) {
     ScrSound *h;
     s32 *p;
 
@@ -1196,7 +1196,7 @@ s32 func_00260940(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_002609D0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdSoundSlotRelease(ScrCtx *ctx, ScrCmd *cmd) {
     s32 *p = &D_0058EE50[cmd->args[0].i];
 
     if (*p != 0) {
@@ -1206,7 +1206,7 @@ s32 func_002609D0(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_00260A30(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdSoundCreate(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 b = a[1].i;
     s32 c = a[0].i;
@@ -1228,7 +1228,7 @@ s32 func_00260AE0(ScrCtx *ctx, ScrCmd *cmd) {
     func_00209450(0x10001, 1);
     return 1;
 }
-s32 func_00260B10(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdSoundReset(ScrCtx *ctx, ScrCmd *cmd) {
     D_0047079C = 0;
     memset(D_0058EE50, 0, 0x40);
     memset(D_0058EE90, 0, 0x40);
@@ -1237,7 +1237,7 @@ s32 func_00260B10(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-void func_00260B80(s32 a, s32 b, s32 c, s32 i) {
+void SoundSlot_SetParams(s32 a, s32 b, s32 c, s32 i) {
     if (a != 0) {
         D_0058EE90[i] = a;
     }
@@ -1249,7 +1249,7 @@ void func_00260B80(s32 a, s32 b, s32 c, s32 i) {
     }
 }
 
-void func_00260BD0(s32 a, s32 i, s32 b) {
+void SoundSlot_Create(s32 a, s32 i, s32 b) {
     s32 *p = &D_0058EE50[i];
 
     if (*p != 0) {
@@ -1258,7 +1258,7 @@ void func_00260BD0(s32 a, s32 i, s32 b) {
     }
     *p = func_00209540(a, 0x10001, b);
 }
-void func_00260C40(void) {
+void SoundSlot_ClearAll(void) {
     D_0047079C = 0;
     memset(D_0058EE50, 0, 0x40);
     memset(D_0058EE90, 0, 0x40);

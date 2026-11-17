@@ -1776,7 +1776,7 @@ f32 func_001B04D0(f32 *p) {
     f32 p0;
     f32 p2;
     p0 = p[0];
-    st = D_0051CCE0.stage;
+    st = gBtbBg.stage;
     p2 = p[2];
     e = (F2Pair *)(D_00430FC0 + st * 16) + D_0051CD20[0];
     t = p[1] - func_00200270(0, p0, p2);

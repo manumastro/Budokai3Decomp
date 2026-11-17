@@ -25,7 +25,7 @@ typedef struct W98D {
     void *f1C0;
 } W98D;
 
-extern W98D *D_00470910;
+extern W98D *gStrStatus;
 extern s32 func_0022BF80(void *);
 extern void func_0022D0E0(void *, s32);
 extern void amTask_Kill(void *);
@@ -64,15 +64,15 @@ void func_002BC090(Ac98D *s) {
     W98D *w;
     void *t;
 
-    if (func_0022BF80(D_00470910->f1C0) == 0xFF) {
-        if (D_00470910->f1C0 != NULL) {
-            func_0022D0E0(D_00470910->f1C0, 1);
-            D_00470910->f1C0 = NULL;
+    if (func_0022BF80(gStrStatus->f1C0) == 0xFF) {
+        if (gStrStatus->f1C0 != NULL) {
+            func_0022D0E0(gStrStatus->f1C0, 1);
+            gStrStatus->f1C0 = NULL;
         }
-        if (D_00470910->fA8 != NULL) {
-            amTask_Kill(D_00470910->fA8);
+        if (gStrStatus->fA8 != NULL) {
+            amTask_Kill(gStrStatus->fA8);
         }
-        w = D_00470910;
+        w = gStrStatus;
         t = (func_002BC250 == NULL) ? NULL : (void *)func_002BC250;
         w->fA8 = NULL;
         s->f1C = t;

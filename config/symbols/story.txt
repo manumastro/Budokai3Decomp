@@ -56,7 +56,7 @@ StrSelect_Start = 0x002EC710; // type:func
 StrSelect_Load = 0x002EC7D0; // type:func
 gStrSelect = 0x0047095C; // size:0x4
 
-// str_status.c: the story status work block (D_00470910, kept under its address name, used by unk_307270 too).
+// str_status.c: the story status work block (a pointer; named in the group below, used by unk_307270 too).
 // StrStatus_ClearWork forgets the block (its memory is freed elsewhere); StrStatus_ClearTourMode forgets the
 // tournament mode's block (gTourMode).
 StrStatus_ClearWork = 0x002BD500; // type:func guess
@@ -176,3 +176,39 @@ StrSelect_ClearWork = 0x00298E60; // type:func // guess
 // str_map.c: when the map's function func_0022BF80 returns 0xFF it starts the fade out to scene -1 (Scene_FadeTo)
 // and clears the state at +0x1C.
 StrMap_FadeWhenDone = 0x0029C290; // type:func // guess
+
+// str_status.c, mn_InputPass.c, unk_2EC850.c, unk_307270.c, unk_2B98D0.c: the story status work pointer (its
+// fields +0x4 and +0x284 are used in str_status.c). Guess.
+gStrStatus = 0x00470910; // size:0x4 // guess
+
+// str_status.c: StrStatus_Free frees the story status block (gStrStatus): the tasks of its list (kill), its files
+// (amCdFs_Close, amCdFs_ReleaseCache) and the sub-blocks, then the block itself. Guess.
+StrStatus_Free = 0x002BD510; // type:func // guess
+
+// str_map.c: the map's work block gStrMap. StrMap_Load frees and allocates it (0x1C8 bytes), then reads the map's
+// files (ids 0x107DC..0x107E4 by the stage kind a0); StrMap_Free kills the map's tasks and closes its files;
+// StrMap_StartPos creates the task "# POS #" (func_0029A4F0). Guesses.
+StrMap_Load = 0x0029B000; // type:func // guess
+StrMap_Free = 0x0029A8F0; // type:func // guess
+StrMap_StartPos = 0x0029ACE0; // type:func // guess
+
+// str_staffroll.c: StaffRoll_Load reads the two files of the staff roll (0x1082E, 0x1082F) into a block of 0xC
+// bytes, and sets up the 0x20-byte work of the roll. Guess.
+StaffRoll_Load = 0x0030EFF0; // type:func // guess
+
+// str_dataerase.c: DataErase_CreateCharaSel creates the task "# CHARASEL #" (func_00310080) with its 0x14-byte
+// state. DataErase_Acquire raises the use count at +0x10 of the block D_0047099C, or allocates it and reads the
+// files 0x107D8 and 0x107D9 when it is not there. Guesses.
+DataErase_CreateCharaSel = 0x00310300; // type:func // guess
+DataErase_Acquire = 0x003103B0; // type:func // guess
+
+// evt_shenron.c: Shenron_Create allocates the Shenron work D_0047097C (0x164 bytes) and kills its task.
+// Shenron_SetupScript creates the script object (Scr_Alloc 0x3000) with the callbacks D_00454680, func_00305AD0,
+// TourMap_StopAdx; Shenron_SetupBgScript does the same for the second scene, after BtbDraw_InitState. Guesses.
+Shenron_Create = 0x00306210; // type:func // guess
+Shenron_SetupScript = 0x00306620; // type:func // guess
+Shenron_SetupBgScript = 0x00306F70; // type:func // guess
+
+// evt_scrp.c: EvtScrp_Init frees and allocates the event work gEvtWork (0x150 bytes) and fills it from the table
+// entry of D_00511450[0]. Guess.
+EvtScrp_Init = 0x002A80D0; // type:func // guess

@@ -97,7 +97,7 @@ StageGroup *func_001F8AA0(StageHeader *hdr) {
         func_001F89D0(i, hdr->groups[i], g);
         if (g->objs->res->info->unk20 >= 2) {
             for (j = 0; j < g->objs->res->count; j++) {
-                g->objs->res->ent[j].unk00 = D_0044AE50[D_0051CCE0.stage].area[i].unk0C;
+                g->objs->res->ent[j].unk00 = D_0044AE50[gBtbBg.stage].area[i].unk0C;
             }
         }
     }
@@ -172,19 +172,19 @@ void func_001F9270(StageWork *w) {
     w->unk18 = 0;
 }
 void BtbBg_TaskAfterDraw(void) {
-    if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
+    if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (gBtbBg.flags & 1)) {
         BtbBg_DrawAfterStub();
     }
 }
 void BtbBg_TaskScrEffect(void) {
-    if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
+    if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (gBtbBg.flags & 1)) {
         func_0013B0B0(0);
         BtbBg_DrawScrEffectStub();
         func_0013B110(1);
     }
 }
 void BtbBg_TaskTrsDraw(void) {
-    if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
+    if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (gBtbBg.flags & 1)) {
         func_0013B0B0(0);
         BtbBg_DrawTrsObjs();
         func_0013B110(1);
@@ -223,7 +223,7 @@ void BtbBg_TaskPostDraw(void) {
         }
         func_00133CE0(0);
         func_0013B0B0(0);
-        if (D_0051CCE0.flags & 1) {
+        if (gBtbBg.flags & 1) {
             BtbBg_DrawPostObjs();
         }
         func_0013B110(1);
@@ -232,7 +232,7 @@ void BtbBg_TaskPostDraw(void) {
 void BtbBg_TaskDraw(void) {
     if (BW_FIELD(gBattle, s8, 0x8975) != 1) {
         func_0013B0B0(0);
-        if (D_0051CCE0.flags & 1) {
+        if (gBtbBg.flags & 1) {
             BtbBg_DrawPlainObjs();
         }
         func_0013B110(1);
@@ -253,7 +253,7 @@ void func_001F9660(void) {
     s32 n;
 
     if (BW_FIELD(gBattle, s8, 0x8975) != 1) {
-        fog = &D_0044A9C0[D_0044AE50[D_0051CCE0.stage].area[D_0051CCE0.area].fog];
+        fog = &D_0044A9C0[D_0044AE50[gBtbBg.stage].area[gBtbBg.area].fog];
         BtbBg_DrawObjs();
         p = col;
         if (p != NULL) {
@@ -267,7 +267,7 @@ void func_001F9660(void) {
         func_00139620(0x102, col, -1, 0, 0, 0.0f);
         amDraw_FlushPacket();
         func_00133780(0, 0);
-        if (D_0051CCE0.flags & 0x20) {
+        if (gBtbBg.flags & 0x20) {
             func_00133CE0(1);
             func_00133D10(fog->color);
             func_00133D50(fog->unk04, fog->unk08);
@@ -287,72 +287,72 @@ void BtbBg_TaskMain(void) {
     if (bw->unk88EC == 0) {
         t = bw->unk8AB2 != 0 && BW_FIELD(bw, f32, 0x891C) > 0.0f;
         if (!t || bw->unk8944 != 0) {
-            D_0051CCE0.unk44 = bw->unk88F0;
+            gBtbBg.unk44 = bw->unk88F0;
             BtbBg_RunObjMain();
             func_002CF820();
         }
     }
 }
 void BtbBg_SetSlot(s16 a0, s32 a1, s32 i) {
-    D_0051CCE0.unk50[i] = a0;
-    func_00125740(&D_0051CCE0.slot[i], a1, a0 * 2);
+    gBtbBg.unk50[i] = a0;
+    func_00125740(&gBtbBg.slot[i], a1, a0 * 2);
 }
 void BtbBg_ClearFlag40(void) {
-    D_0051CCE0.flags &= ~0x40;
+    gBtbBg.flags &= ~0x40;
 }
 void BtbBg_SetFlag40(void) {
-    D_0051CCE0.flags &= ~0x40;
-    D_0051CCE0.flags |= 0x40;
+    gBtbBg.flags &= ~0x40;
+    gBtbBg.flags |= 0x40;
 }
 void BtbBg_ClearFlag10(void) {
-    D_0051CCE0.flags &= ~0x10;
+    gBtbBg.flags &= ~0x10;
 }
 s32 BtbBg_GetFlag8(void) {
-    return D_0051CCE0.flags & 8;
+    return gBtbBg.flags & 8;
 }
 void BtbBg_ClearFlag8(void) {
-    D_0051CCE0.flags &= ~8;
+    gBtbBg.flags &= ~8;
 }
 void BtbBg_ClearFlag4(void) {
-    D_0051CCE0.flags &= ~4;
+    gBtbBg.flags &= ~4;
 }
 s32 BtbBg_GetFlag2(void) {
-    return D_0051CCE0.flags & 2;
+    return gBtbBg.flags & 2;
 }
 void BtbBg_ClearFlag2(void) {
-    D_0051CCE0.flags &= ~2;
+    gBtbBg.flags &= ~2;
 }
 void BtbBg_SetFlag2(void) {
-    D_0051CCE0.flags &= ~2;
-    D_0051CCE0.flags |= 2;
+    gBtbBg.flags &= ~2;
+    gBtbBg.flags |= 2;
 }
 void BtbBg_ClearFlag1(void) {
-    D_0051CCE0.flags &= ~1;
+    gBtbBg.flags &= ~1;
 }
 void BtbBg_SetFlag1(void) {
-    D_0051CCE0.flags &= ~1;
-    D_0051CCE0.flags |= 1;
+    gBtbBg.flags &= ~1;
+    gBtbBg.flags |= 1;
 }
 void BtbBg_SetF9E(s16 a0) {
-    D_0051CCE0.unk9E = a0;
+    gBtbBg.unk9E = a0;
 }
 void *BtbBg_GetF30(void) {
-    return D_0051CCE0.unk30;
+    return gBtbBg.unk30;
 }
 void *func_001F9A10(void) {
-    return func_001A50F0(D_0051CCE0.unk2C, 0x7F);
+    return func_001A50F0(gBtbBg.unk2C, 0x7F);
 }
 void *func_001F9A20(void) {
-    if (D_0051CCE0.unk9E & 1) {
-        return func_001A50F0(D_0051CCE0.unk2C, (D_0051CCE0.area << 7) + 0x7E);
+    if (gBtbBg.unk9E & 1) {
+        return func_001A50F0(gBtbBg.unk2C, (gBtbBg.area << 7) + 0x7E);
     }
-    return (void *)*((StageGroup *)((u8 *)D_0051CCE0.groups + D_0051CCE0.area * sizeof(StageGroup)))->src->unkD8;
+    return (void *)*((StageGroup *)((u8 *)gBtbBg.groups + gBtbBg.area * sizeof(StageGroup)))->src->unkD8;
 }
 StageModel *BtbBg_GetStageModel(void) {
-    return &D_0044A240[D_0044AE50[D_0051CCE0.stage].area[D_0051CCE0.area].model];
+    return &D_0044A240[D_0044AE50[gBtbBg.stage].area[gBtbBg.area].model];
 }
 void *BtbBg_GetStageModelF10(void) {
-    return D_0044A240[D_0044AE50[D_0051CCE0.stage].area[D_0051CCE0.area].model].unk10;
+    return D_0044A240[D_0044AE50[gBtbBg.stage].area[gBtbBg.area].model].unk10;
 }
 extern void func_002CF750(s32, s32);
 extern void func_001E9B00(void *, s32, s32, s32, f32, f32);
@@ -377,12 +377,12 @@ void func_001F9BB0(s32 side, s32 cmd) {
         if (side < 0) {
             func_00209280(0x2000008, 0);
             for (i = 0; i < 4; i++) {
-                D_0051CCE0.slot[i].unk0E = 0;
+                gBtbBg.slot[i].unk0E = 0;
                 func_002CF6E0(i, 9);
             }
         } else {
             func_00209280((1 << side) | 0x2000008, 1);
-            D_0051CCE0.slot[side].unk0E = 0;
+            gBtbBg.slot[side].unk0E = 0;
             func_002CF6E0(side, 9);
         }
         break;
@@ -414,33 +414,33 @@ extern void func_001F6140(void);
 void BtbBg_KillTasks(void) {
     s32 i;
 
-    if (D_0051CCE0.unkA4[0] != 0) {
-        amTask_Kill(D_0051CCE0.unkA4[0]);
-        D_0051CCE0.unkA4[0] = 0;
+    if (gBtbBg.unkA4[0] != 0) {
+        amTask_Kill(gBtbBg.unkA4[0]);
+        gBtbBg.unkA4[0] = 0;
     }
-    if (D_0051CCE0.unkA4[1] != 0) {
-        amTask_Kill(D_0051CCE0.unkA4[1]);
-        D_0051CCE0.unkA4[1] = 0;
+    if (gBtbBg.unkA4[1] != 0) {
+        amTask_Kill(gBtbBg.unkA4[1]);
+        gBtbBg.unkA4[1] = 0;
     }
-    if (D_0051CCE0.unkA4[2] != 0) {
-        amTask_Kill(D_0051CCE0.unkA4[2]);
-        D_0051CCE0.unkA4[2] = 0;
+    if (gBtbBg.unkA4[2] != 0) {
+        amTask_Kill(gBtbBg.unkA4[2]);
+        gBtbBg.unkA4[2] = 0;
     }
-    if (D_0051CCE0.unkA4[3] != 0) {
-        amTask_Kill(D_0051CCE0.unkA4[3]);
-        D_0051CCE0.unkA4[3] = 0;
+    if (gBtbBg.unkA4[3] != 0) {
+        amTask_Kill(gBtbBg.unkA4[3]);
+        gBtbBg.unkA4[3] = 0;
     }
-    if (D_0051CCE0.unkA4[4] != 0) {
-        amTask_Kill(D_0051CCE0.unkA4[4]);
-        D_0051CCE0.unkA4[4] = 0;
+    if (gBtbBg.unkA4[4] != 0) {
+        amTask_Kill(gBtbBg.unkA4[4]);
+        gBtbBg.unkA4[4] = 0;
     }
-    if (D_0051CCE0.unkA4[5] != 0) {
-        amTask_Kill(D_0051CCE0.unkA4[5]);
-        D_0051CCE0.unkA4[5] = 0;
+    if (gBtbBg.unkA4[5] != 0) {
+        amTask_Kill(gBtbBg.unkA4[5]);
+        gBtbBg.unkA4[5] = 0;
     }
-    if (D_0051CCE0.unkA4[6] != 0) {
-        amTask_Kill(D_0051CCE0.unkA4[6]);
-        D_0051CCE0.unkA4[6] = 0;
+    if (gBtbBg.unkA4[6] != 0) {
+        amTask_Kill(gBtbBg.unkA4[6]);
+        gBtbBg.unkA4[6] = 0;
     }
     BtbBg_RunFunc();
     func_001F6140();
@@ -459,67 +459,67 @@ extern void func_002CF8F0(void);
 extern void func_001F7FA0(void);
 
 void BtbBg_Start(void) {
-    if (D_0051CCE0.unkA4[0] == 0) {
-        D_0051CCE0.unkA4[0] = (s32)amTask_Create(func_001F9660, 0, 0x3100, 0x200, 0x4000004, D_004698E8);
+    if (gBtbBg.unkA4[0] == 0) {
+        gBtbBg.unkA4[0] = (s32)amTask_Create(func_001F9660, 0, 0x3100, 0x200, 0x4000004, D_004698E8);
     }
-    if (D_0051CCE0.unkA4[1] == 0) {
-        D_0051CCE0.unkA4[1] = (s32)amTask_Create(BtbBg_TaskDraw, 0, 0x3200, 0x200, 0x4000004, D_004698F8);
+    if (gBtbBg.unkA4[1] == 0) {
+        gBtbBg.unkA4[1] = (s32)amTask_Create(BtbBg_TaskDraw, 0, 0x3200, 0x200, 0x4000004, D_004698F8);
     }
-    if (D_0051CCE0.unkA4[3] == 0) {
-        D_0051CCE0.unkA4[3] = (s32)amTask_Create(BtbBg_TaskPostDraw, 0, 0x3300, 0x200, 0x4000004, D_00469900);
+    if (gBtbBg.unkA4[3] == 0) {
+        gBtbBg.unkA4[3] = (s32)amTask_Create(BtbBg_TaskPostDraw, 0, 0x3300, 0x200, 0x4000004, D_00469900);
     }
-    if (D_0051CCE0.unkA4[2] == 0) {
-        D_0051CCE0.unkA4[2] = (s32)amTask_Create(BtbBg_TaskTrsDraw, 0, 0x3600, 0x200, 0x4000004, D_00469910);
+    if (gBtbBg.unkA4[2] == 0) {
+        gBtbBg.unkA4[2] = (s32)amTask_Create(BtbBg_TaskTrsDraw, 0, 0x3600, 0x200, 0x4000004, D_00469910);
     }
-    if (D_0051CCE0.unkA4[4] == 0) {
-        D_0051CCE0.unkA4[4] = (s32)amTask_Create(BtbBg_TaskScrEffect, 0, 0x3800, 0x200, 0x4000004, D_00469920);
+    if (gBtbBg.unkA4[4] == 0) {
+        gBtbBg.unkA4[4] = (s32)amTask_Create(BtbBg_TaskScrEffect, 0, 0x3800, 0x200, 0x4000004, D_00469920);
     }
-    if (D_0051CCE0.unkA4[5] == 0) {
-        D_0051CCE0.unkA4[5] = (s32)amTask_Create(BtbBg_TaskAfterDraw, 0, 0x3800, 0x200, 0x4000004, D_00469930);
+    if (gBtbBg.unkA4[5] == 0) {
+        gBtbBg.unkA4[5] = (s32)amTask_Create(BtbBg_TaskAfterDraw, 0, 0x3800, 0x200, 0x4000004, D_00469930);
     }
-    if (D_0051CCE0.unkA4[6] == 0) {
-        D_0051CCE0.unkA4[6] = (s32)amTask_Create(BtbBg_TaskMain, 0, 0x5700, 0x200, 0x4000002, D_00469940);
+    if (gBtbBg.unkA4[6] == 0) {
+        gBtbBg.unkA4[6] = (s32)amTask_Create(BtbBg_TaskMain, 0, 0x5700, 0x200, 0x4000002, D_00469940);
     }
     BtbBg_ResetLists();
-    D_0051CCE0.area = D_0044AE50[D_0051CCE0.stage].startArea;
-    D_0051CCE0.unk48 = 1;
-    D_0051CCE0.flags &= ~1;
-    D_0051CCE0.flags |= 1;
-    D_0051CCE0.flags &= ~0x20;
-    D_0051CCE0.flags |= 0x20;
-    D_0051CCE0.flags &= ~2;
-    D_0051CCE0.flags |= 2;
-    D_0051CCE0.flags &= ~8;
-    D_0051CCE0.flags |= 8;
+    gBtbBg.area = D_0044AE50[gBtbBg.stage].startArea;
+    gBtbBg.unk48 = 1;
+    gBtbBg.flags &= ~1;
+    gBtbBg.flags |= 1;
+    gBtbBg.flags &= ~0x20;
+    gBtbBg.flags |= 0x20;
+    gBtbBg.flags &= ~2;
+    gBtbBg.flags |= 2;
+    gBtbBg.flags &= ~8;
+    gBtbBg.flags |= 8;
     func_002CF8F0();
-    D_0051CCE0.flags &= ~0x40;
-    D_0051CCE0.flags |= 0x40;
+    gBtbBg.flags &= ~0x40;
+    gBtbBg.flags |= 0x40;
     func_001F7FA0();
 }
 extern void func_001FB110(void *);
 void func_001F8C30(StageWork *w);
 
 void func_001FA250(void) {
-    func_001F9270(&D_0051CCE0);
-    if (D_0051CCE0.unk24 != NULL) {
-        func_001FB110(D_0051CCE0.unk24);
+    func_001F9270(&gBtbBg);
+    if (gBtbBg.unk24 != NULL) {
+        func_001FB110(gBtbBg.unk24);
     }
-    if (D_0051CCE0.unk28 != NULL) {
-        func_001FB110(D_0051CCE0.unk28);
+    if (gBtbBg.unk28 != NULL) {
+        func_001FB110(gBtbBg.unk28);
     }
-    if (D_0051CCE0.hdr != NULL) {
-        func_001FB110(D_0051CCE0.hdr);
+    if (gBtbBg.hdr != NULL) {
+        func_001FB110(gBtbBg.hdr);
     }
-    if (D_0051CCE0.unk2C != NULL) {
-        func_001FB110(D_0051CCE0.unk2C);
+    if (gBtbBg.unk2C != NULL) {
+        func_001FB110(gBtbBg.unk2C);
     }
-    func_001F8DE0(&D_0051CCE0);
-    func_001F8C30(&D_0051CCE0);
-    D_0051CCE0.area = D_0044AE50[D_0051CCE0.stage].startArea;
+    func_001F8DE0(&gBtbBg);
+    func_001F8C30(&gBtbBg);
+    gBtbBg.area = D_0044AE50[gBtbBg.stage].startArea;
 }
 void BtbBg_Clear(void) {
-    func_001F8ED0(&D_0051CCE0);
-    memset(&D_0051CCE0, 0, 0x40);
+    func_001F8ED0(&gBtbBg);
+    memset(&gBtbBg, 0, 0x40);
 }
 extern s32 D_00470630;
 

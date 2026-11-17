@@ -475,3 +475,94 @@ SkillKill_Kind11 = 0x0024B680; // type:func // guess
 SkillKill_Kind12 = 0x0024B260; // type:func // guess
 SkillKill_Kind13 = 0x0024A8A0; // type:func // guess
 SkillKill_Kind14 = 0x0024A350; // type:func // guess
+
+// scr_func.c: the script timers, one float per script object (index = object id; index 0 is the global time, read
+// by Scr_CmdGlobalTime). Size as declared in scr_func.c (2 floats) is a minimum. Guess.
+gScrTimers = 0x004708F0; // size:0x8 // guess
+
+// btl_main.c, btb_main.c, btb_draw.c: the battle background block (stage, flags, and the background tasks at unkA4
+// that BtbBg_Restart kills). It is used as a bigger struct than the 0x14 bytes of its declaration. Guess.
+gBtbBg = 0x0051CCE0; // size:0x14 // guess
+
+// unk_1CBD90.c: script command handlers, int f(void *unused, Arg *a) with the arguments in a->p and the result in
+// a+0x40 (floats) or a (ints). They sit in the command tables D_00449xxx (the table of tables at D_0044A120,
+// passed to Scr_SetCallback44). The battle's object at gBattle+0x260 is read by the Scr_CmdGetCur* commands (the
+// field offset is in the name). The four floats D_004B4210..D_004B421C are set by the Scr_CmdSetF2xx commands.
+// Names say what each one reads or writes; guesses.
+Scr_CmdClearSlot = 0x001CBFE0; // type:func // guess
+Scr_CmdReleaseSlotIdx = 0x001CC020; // type:func // guess
+Scr_CmdSetSlotVec = 0x001CC070; // type:func // guess
+Scr_CmdGetSlotF = 0x001CC100; // type:func // guess
+Scr_CmdFighterReset = 0x001CC850; // type:func // guess
+Scr_CmdGetCurF18 = 0x001CCC90; // type:func // guess
+Scr_CmdGetCurF14 = 0x001CCCC0; // type:func // guess
+Scr_CmdGetCurF10 = 0x001CCCF0; // type:func // guess
+Scr_CmdGetCurF08 = 0x001CCD20; // type:func // guess
+Scr_CmdGetCurF04 = 0x001CCD50; // type:func // guess
+Scr_CmdGetCurF00 = 0x001CCD80; // type:func // guess
+Scr_CmdSetF218 = 0x001CCDB0; // type:func // guess
+Scr_CmdSetF214 = 0x001CCFC0; // type:func // guess
+Scr_CmdSetF210 = 0x001CCFE0; // type:func // guess
+Scr_CmdSetF210To21C = 0x001CD000; // type:func // guess
+Scr_CmdGetStageByte = 0x001CD300; // type:func // guess
+Scr_CmdFindBone = 0x001CD530; // type:func // guess
+Scr_CmdFighterSetFlag2016 = 0x001CD610; // type:func // guess
+
+// unk_1CBD90.c: script getters of the fighter (gBattle->tbl[index], the names give the field offset and type; the
+// result goes to a, or to a+0x40 for floats). The "Entry" commands read a 0x680-byte entry of the fighter's table
+// (index p[0] * 0x680 from the fighter) at the offset in the name. Names by field, so the meaning of each field is
+// still open; guesses.
+Scr_CmdFighterGetByte2013 = 0x001CD750; // type:func // guess
+Scr_CmdFighterClear17E4 = 0x001CD7A0; // type:func // guess
+Scr_CmdFighterGetAngle17A4 = 0x001CD800; // type:func // guess
+Scr_CmdFighterIsNone1FF8 = 0x001CD8F0; // type:func // guess
+Scr_CmdFighterGetShort1CF4 = 0x001CD980; // type:func // guess
+Scr_CmdEntryGetInt0BA0 = 0x001CD9C0; // type:func // guess
+Scr_CmdEntryGetInt0BA4 = 0x001CDA10; // type:func // guess
+Scr_CmdEntryGetInt0B9C = 0x001CDA90; // type:func // guess
+Scr_CmdFighterGetInt1CFC = 0x001CDA60; // type:func // guess
+Scr_CmdFighterGetF17D4 = 0x001CDAE0; // type:func // guess
+Scr_CmdFighterGetSelF17D = 0x001CDB20; // type:func // guess
+Scr_CmdFighterGetF17C4 = 0x001CDB80; // type:func // guess
+Scr_CmdFighterGetF17C0 = 0x001CDBC0; // type:func // guess
+Scr_CmdFighterGetInt0B70 = 0x001CDC00; // type:func // guess
+Scr_CmdFighterGetByte1FF9 = 0x001CDCA0; // type:func // guess
+Scr_CmdEntryGetF0CB8 = 0x001CDCD0; // type:func // guess
+
+// unk_1CBD90.c: more script handlers. Scr_CmdGetBattleF896x reads the battle's float globals at
+// gBattle+0x8960..0x8968 into the result (a+0x40). Scr_CmdNop is the command that does nothing.
+// Scr_CmdFighterCopyF17C4 copies the fighter's float +0x17C4 into +0x17C0; Scr_CmdFighterSetF1A08 stores the float
+// argument at +0x1A08 of the fighter. Scr_CmdSetF23C and Scr_CmdSetF238 store their float argument in the battle
+// globals D_004B423C and D_004B4238. Guesses from the bodies.
+Scr_CmdGetBattleF8968 = 0x001CDD80; // type:func // guess
+Scr_CmdGetBattleF8964 = 0x001CDDA0; // type:func // guess
+Scr_CmdGetBattleF8960 = 0x001CDDC0; // type:func // guess
+Scr_CmdNop = 0x001CDF00; // type:func // guess
+Scr_CmdFighterCopyF17C4 = 0x001CE1F0; // type:func // guess
+Scr_CmdFighterSetF1A08 = 0x001CE400; // type:func // guess
+Scr_CmdFighterSetF182C = 0x001CE820; // type:func // guess
+Scr_CmdSetF23C = 0x001CE850; // type:func // guess
+Scr_CmdSetF238 = 0x001CE870; // type:func // guess
+
+// unk_25D740.c: the sound slots of the script commands. D_0058EE50 is a table of 16 object handles (0x40 bytes:
+// one per slot); D_0058EE90, D_0058EED0 and D_0058EF10 are three parallel tables filled by SoundSlot_SetParams.
+// Scr_CmdSoundCreate puts a new object into its slot (after releasing the old one), Scr_CmdSoundStop and
+// Scr_CmdSoundSlotRelease release it, Scr_CmdObjSetPos moves it. The commands return at once while the flag
+// D_0047079C is set; Scr_CmdSoundReset clears the flag and the tables. Scr_CmdGetVecX/Y/Z read one component of
+// the vector of the object (func_0020E070) into the result a+0x40. Guesses from the bodies.
+Scr_CmdSoundReset = 0x00260B10; // type:func // guess
+Scr_CmdSoundCreate = 0x00260A30; // type:func // guess
+Scr_CmdSoundStop = 0x00260940; // type:func // guess
+Scr_CmdSoundSlotRelease = 0x002609D0; // type:func // guess
+Scr_CmdObjSetPos = 0x00260770; // type:func // guess
+SoundSlot_SetParams = 0x00260B80; // type:func // guess
+SoundSlot_Create = 0x00260BD0; // type:func // guess
+SoundSlot_ClearAll = 0x00260C40; // type:func // guess
+Scr_CmdGetVecX = 0x0025DB00; // type:func // guess
+Scr_CmdGetVecY = 0x0025DAC0; // type:func // guess
+Scr_CmdGetVecZ = 0x0025DA80; // type:func // guess
+
+// skill_cmd.c: SkillFile_Load allocates the two skill file records for the table entries D_00452680[0] and
+// D_00452684[a0] (0x14 and 0x18 bytes) and reads their files with amCdFs_ReadFileId; SkillFile_Release (named
+// already) frees them. Guess.
+SkillFile_Load = 0x00254260; // type:func // guess

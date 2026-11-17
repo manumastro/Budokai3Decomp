@@ -8,7 +8,7 @@ typedef struct Ac26F {
 
 extern s32 func_002D20D0(void *);
 extern s32 func_00283BF0(void *);
-extern void func_00283C20(void);
+extern void SklSheet_Free(void);
 extern void func_00271AF0(void);
 typedef struct Ac26FB {
     char pad0[0x1C];
@@ -154,7 +154,7 @@ void func_002719D0(Ac26F *s) {
 void func_00271A20(Ac26F *s) {
     if (func_00283BF0(s) == 8) {
         s->f1C = (func_00271AF0 == NULL) ? NULL : (void *)func_00271AF0;
-        func_00283C20();
+        SklSheet_Free();
     }
 }
 void func_00271A70(Ac26F *s) {

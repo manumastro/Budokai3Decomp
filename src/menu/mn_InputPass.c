@@ -7,7 +7,7 @@ extern s32 IpSysWnd_Start();
 extern void func_002F1300();
 extern void func_002F0BC0();
 extern void func_0022CF70();
-extern u8 *D_00470910;
+extern u8 *gStrStatus;
 extern s8 D_004B4B63[];
 extern u16 D_00492FCE[];
 extern s32 D_00470704;
@@ -203,7 +203,7 @@ void func_002F1500(u8 *task) {
     }
     A2d_FlushList();
     func_00133B50(0, 0);
-    a0 = *(s32 *)((u8 *)D_00470910 + 0x27C);
+    a0 = *(s32 *)((u8 *)gStrStatus + 0x27C);
     if (a0 == 2) {
         a1 = D_004B4B63[0];
         if (*(u16 *)((u8 *)D_00492FCE + a1 * 184) & 0x4000) {

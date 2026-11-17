@@ -54,7 +54,7 @@ typedef struct ScrTimerRes {
 } ScrTimerRes;
 
 extern s32 D_004700AC;
-extern f32 D_004708F0[2];
+extern f32 gScrTimers[2];
 extern f32 D_004708F8;
 extern s32 gSoundState;
 extern ScrLightSub D_005ABA80[][4];
@@ -118,7 +118,7 @@ void func_002A9480(s32 n) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A94B0);
 s32 Scr_CmdGlobalTime(ScriptThread *t, ScriptCtx *ctx) {
-    ctx->ret = D_004708F0[0];
+    ctx->ret = gScrTimers[0];
     return 3;
 }
 void func_002A9780(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0) {
@@ -249,7 +249,7 @@ s32 Scr_CmdTimerClear(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 s32 Scr_WaitGlobalTime(ScriptThread *t, ScriptCtx *ctx) {
-    if (!(D_004708F0[0] <= ((f32 *)ctx->args)[0])) {
+    if (!(gScrTimers[0] <= ((f32 *)ctx->args)[0])) {
         t->wait = 0;
         return 1;
     }
@@ -263,7 +263,7 @@ s32 Scr_CmdWaitGlobalTime(ScriptThread *t, ScriptCtx *ctx) {
     return 3;
 }
 s32 Scr_WaitObjFrames(ScriptThread *t, ScriptCtx *ctx) {
-    if (!(0.5f + (D_004708F0[t->obj->id] - t->time) < (f32)t->count)) {
+    if (!(0.5f + (gScrTimers[t->obj->id] - t->time) < (f32)t->count)) {
         t->wait = 0;
         return 1;
     }
@@ -271,28 +271,28 @@ s32 Scr_WaitObjFrames(ScriptThread *t, ScriptCtx *ctx) {
 }
 s32 Scr_CmdWaitObjFrames(ScriptThread *t, ScriptCtx *ctx) {
     t->count = ctx->args[0];
-    t->time = D_004708F0[t->obj->id];
+    t->time = gScrTimers[t->obj->id];
     t->wait = Scr_WaitObjFrames;
     return 3;
 }
 s32 Scr_CmdObjTime(ScriptThread *t, ScriptCtx *ctx) {
-    ctx->ret = 0.5f + D_004708F0[t->obj->id];
+    ctx->ret = 0.5f + gScrTimers[t->obj->id];
     return 1;
 }
 s32 Scr_ObjTimerTick(ScriptThread *t, ScriptCtx *ctx) {
     ScriptObj *o = t->obj;
     if (o->state != 3) {
-        D_004708F0[o->id] += D_004708F8;
+        gScrTimers[o->id] += D_004708F8;
     }
     return 3;
 }
 s32 Scr_CmdObjTimerStart(ScriptThread *t, ScriptCtx *ctx) {
     ScriptObj *o;
     t->wait = Scr_ObjTimerTick;
-    D_004708F0[t->obj->id] = 0.0f;
+    gScrTimers[t->obj->id] = 0.0f;
     o = t->obj;
     if (o->state != 3) {
-        D_004708F0[o->id] += D_004708F8;
+        gScrTimers[o->id] += D_004708F8;
     }
     return 3;
 }
@@ -330,7 +330,7 @@ s32 func_002AA8A0(s32 *a0, s32 *a1) {
     if (*(s32 *)(sub + 0x6C) != 0) {
         q[0] += k;
     } else {
-        q[0] = k + (s32)D_004708F0[i];
+        q[0] = k + (s32)gScrTimers[i];
     }
     q[1] = 1;
     a0[4] = (s32)func_002AA6B0;
@@ -359,7 +359,7 @@ s32 func_002AAB40(s32 *a0, s32 *a1) {
     if (*(s32 *)(sub + 0x6C) != 0) {
         q[0] += k;
     } else {
-        q[0] = k + (s32)D_004708F0[i];
+        q[0] = k + (s32)gScrTimers[i];
     }
     q[1] = 1;
     a0[4] = (s32)func_002AA980;
@@ -840,7 +840,7 @@ s32 func_002AD800(s32 *a0, s32 *a1) {
     if (*(s32 *)(sub + 0x6C) != 0) {
         q[0] += v;
     } else {
-        q[0] = v + (s32)D_004708F0[*(s32 *)*a0];
+        q[0] = v + (s32)gScrTimers[*(s32 *)*a0];
     }
     q[1] = 1;
     a0[4] = (s32)func_002AD610;

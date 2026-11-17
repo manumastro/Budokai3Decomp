@@ -390,3 +390,13 @@ VsMode_Exit = 0x00269730; // type:func // guess
 // MSG SET" (EssMsg_TaskSet) and starts the voice 1. Guesses.
 Ess_TaskBgStart = 0x0026D150; // type:func // guess
 Ess_TaskMsgStart = 0x0026D030; // type:func // guess
+
+// mn_option.c, skl_sheet.c, ess_list.c, mn_dataload.c: Option_Load frees and allocates the option state (0x1C
+// bytes) and reads its file 0x10803. SklSheet_Free releases the skill sheet's block D_00470820 (its help, tasks
+// and five files). EssList_Load allocates the list block of an entry (0x7C0 bytes), reads its three files and
+// points to its table. DataLoad_TaskWait counts a timer down, then plays the voice 0x210E9 and sets the next state
+// (func_00265BF0). Guesses.
+Option_Load = 0x002E0D40; // type:func // guess
+SklSheet_Free = 0x00283C20; // type:func // guess
+EssList_Load = 0x00272C30; // type:func // guess
+DataLoad_TaskWait = 0x00266070; // type:func // guess

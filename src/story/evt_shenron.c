@@ -10,7 +10,7 @@ extern s8 D_00511450[];
 extern s32 func_00305830(s32);
 extern void amTask_Kill(void *);
 
-void func_00306210(void) {
+void Shenron_Create(void) {
     s32 *s0;
     s32 t;
     D_0047097C = (s32)amHeap_Alloc(0x164, 0, D_0046F9C8, 0x34B);
@@ -162,7 +162,7 @@ extern void TourMap_StopAdx(void *);
 extern void func_00264140(s32, s32);
 extern char D_00454680[];
 
-void func_00306620(s32 *a0) {
+void Shenron_SetupScript(s32 *a0) {
     s32 *s0 = (s32 *)D_0047097C;
     void *f;
     s0[1] = Scr_Alloc(0x3000, 1, 1);
@@ -184,7 +184,7 @@ extern void func_00132DF0(s32);
 extern void func_002641D0(s32, s32);
 extern void Scr_KillTasks(s32);
 extern s32 func_00283BF0(void);
-extern void func_00283C20(void);
+extern void SklSheet_Free(void);
 
 extern void func_00131D00(s32 *, s32, f32, f32);
 extern void func_00131F00(s32 *, f32, f32);
@@ -192,7 +192,7 @@ extern void func_00132DF0(s32);
 extern void func_002641D0(s32, s32);
 extern void Scr_KillTasks(s32);
 extern s32 func_00283BF0(void);
-extern void func_00283C20(void);
+extern void SklSheet_Free(void);
 
 void func_003066F0(s32 *a0) {
     s32 *s0 = (s32 *)D_0047097C;
@@ -202,10 +202,10 @@ void func_003066F0(s32 *a0) {
     func_00131F00(blk, 0.0f, 0.0f);
     func_00132DF0(0);
     if (func_00283BF0() >= 8) {
-        func_00283C20();
+        SklSheet_Free();
         func_002641D0(9, 0);
         Scr_KillTasks(s0[0x4 / 4]);
-        f = (void *)func_00306620;
+        f = (void *)Shenron_SetupScript;
         s0[0x8 / 4] = 0;
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
@@ -349,7 +349,7 @@ extern void func_00305B60(void);
 extern char D_00454680[];
 extern void func_00306D60(s32 *);
 
-void func_00306F70(s32 *a0) {
+void Shenron_SetupBgScript(s32 *a0) {
     s32 *s1;
     s32 blk[24];
     void *f;
@@ -414,7 +414,7 @@ void func_003070A0(void) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003070A0);
 
 extern void Scene_SetReady(void);
-extern void func_00306F70(s32 *);
+extern void Shenron_SetupBgScript(s32 *);
 extern s32 amTask_Create(void *, s32, s32, s32, s32, void *);
 extern char D_0046F9E8[];
 
@@ -422,7 +422,7 @@ void Shenron_Start(void) {
     s32 *s0;
     Scene_SetReady();
     s0 = (s32 *)D_0047097C;
-    *s0 = amTask_Create((void *)func_00306F70, 0, 0x3100, 0x4000, 2, D_0046F9E8);
+    *s0 = amTask_Create((void *)Shenron_SetupBgScript, 0, 0x3100, 0x4000, 2, D_0046F9E8);
 }
 #if 0
 // func_003071C0: the copy loop: the original counts with v1 and keeps the source in a1 (lui a1 first); ours takes the other registers, unrolled or swapped; 8 variants tried
@@ -431,7 +431,7 @@ typedef struct Copy16Sh {
 } __attribute__((aligned(16))) Copy16Sh;
 extern void func_00306140(void);
 extern void Help_Load(void);
-extern void func_00260C40(void);
+extern void SoundSlot_ClearAll(void);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern s32 D_00458E70[];
 
@@ -442,10 +442,10 @@ void func_003071C0(void) {
     s32 k;
     Copy16Sh *dq;
     Copy16Sh *sq;
-    func_00306210();
+    Shenron_Create();
     func_00306140();
     Help_Load();
-    func_00260C40();
+    SoundSlot_ClearAll();
     s0 = (s32 *)D_0047097C;
     dq = (Copy16Sh *)ids;
     sq = (Copy16Sh *)D_00458E70;

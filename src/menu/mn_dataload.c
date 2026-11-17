@@ -106,7 +106,7 @@ extern void func_00265BF0();
 extern f32 D_004E0618[];
 extern void func_00265800();
 
-void func_00266070(u8 *a0) {
+void DataLoad_TaskWait(u8 *a0) {
     u8 *s0;
     u8 *s1;
     u8 *v;
@@ -131,7 +131,7 @@ void func_00266070(u8 *a0) {
     }
 }
 extern f32 gFrameDelta;
-extern void func_00266070();
+extern void DataLoad_TaskWait();
 
 void func_00266150(u8 *a0) {
     u8 *s0;
@@ -141,7 +141,7 @@ void func_00266150(u8 *a0) {
     if (*(f32 *)(s0 + 0x34) <= 0.0f) {
         *(u16 *)(s0 + 0x32) = *(u16 *)(s0 + 0x32) | 0x100;
         *(s32 *)(s0 + 0x34) = 0x42340000;
-        *(void **)(a0 + 0x1C) = ((void *)func_00266070 == 0) ? 0 : (void *)func_00266070;
+        *(void **)(a0 + 0x1C) = ((void *)DataLoad_TaskWait == 0) ? 0 : (void *)DataLoad_TaskWait;
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002661D0);

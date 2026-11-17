@@ -193,7 +193,7 @@ s32 func_002A1B30(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1B30);
-extern void func_00283C20(void);
+extern void SklSheet_Free(void);
 extern void func_00283D00(s32, s32, s32, s32);
 extern void SklSheet_SetIndex(s32);
 extern void Save_Load(s32, s32);
@@ -209,7 +209,7 @@ void func_002A1C20(void) {
     u16 v16;
     if (s0[0xFC / 4] >= s0[0xF8 / 4]) {
         if (func_00283BF0() >= 8) {
-            func_00283C20();
+            SklSheet_Free();
             amTask_Kill((void *)s0[0x8 / 4]);
             s0[0x8 / 4] = 0;
             s0 = (s32 *)gEvtWork;
@@ -245,7 +245,7 @@ d28:
     if (func_00283BF0() >= 8) {
         s0 = (s32 *)gEvtWork;
         s1 = s0[0x100 / 4 + s0[0xFC / 4]];
-        func_00283C20();
+        SklSheet_Free();
         func_00283D00(0x9500, s1, 1, 0x11403000);
         SklSheet_SetIndex(s0[0x110 / 4 + s0[0xFC / 4]]);
         s0[0xFC / 4] = s0[0xFC / 4] + 1;
@@ -578,7 +578,7 @@ s32 func_002A2BB0(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2BB0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2C70);
 extern s32 func_00283BF0(void);
-extern void func_00283C20(void);
+extern void SklSheet_Free(void);
 extern void func_00283D00(s32, s32, s32, s32);
 extern void SklSheet_SetIndex(s32);
 extern s32 func_002A13B0(void);
@@ -598,7 +598,7 @@ s32 func_002A2E50(s32 *a0) {
     }
     if (func_00283BF0() >= 8) {
         s1v = g[0x100 / 4 + g[0xFC / 4]];
-        func_00283C20();
+        SklSheet_Free();
         func_00283D00(0x9500, s1v, 1, 0x11403000);
         SklSheet_SetIndex(g[0x110 / 4 + g[0xFC / 4]]);
         g[0xFC / 4] = g[0xFC / 4] + 1;
@@ -814,7 +814,7 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3A10);
 // func_002A3A40: the parameter and the global take the other saved registers in ours (s1/s2 swapped against the original); 3 orders tried
 extern s32 func_002A8330(s32);
 extern void func_00298B70(s32, s32);
-extern void func_002A80D0(void);
+extern void EvtScrp_Init(void);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void func_002A6E40(Task *);
 extern s32 func_002A3A10(void);
@@ -833,7 +833,7 @@ s32 func_002A3A40(s32 *a0) {
     if (s4 != 0xBB8) {
         func_00298B70(s2, s2 | 0x8000);
     }
-    func_002A80D0();
+    EvtScrp_Init();
     v = amCdFs_ReadFileId(s3, 0, 1);
     g = gEvtWork;
     g[0x18 / 4] = v;
@@ -1820,7 +1820,7 @@ extern s8 D_00511450[];
 extern char D_0046EAE8[];
 extern s8 D_004E6560[];
 
-void func_002A80D0(void) {
+void EvtScrp_Init(void) {
     s32 *g;
     s8 *e;
     if (gEvtWork != 0) {

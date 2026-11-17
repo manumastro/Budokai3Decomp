@@ -3,7 +3,7 @@
 
 #include "menu/menu.h"
 
-/* The story status work block (D_00470910). Only the fields the matched functions use are named so far. */
+/* The story status work block (gStrStatus). Only the fields the matched functions use are named so far. */
 typedef struct StrStatusWork {
     char pad0[0x4];
     void *f4;               /* 0x04: a record whose s16 at +4 is the state (StrStatus_TaskMain) */
@@ -21,6 +21,6 @@ typedef struct StrStatusWork {
     s32 f2DC[7];            /* 0x2DC..0x2F4 */
 } StrStatusWork;
 
-extern StrStatusWork *D_00470910;
+extern StrStatusWork *gStrStatus;
 
 #endif

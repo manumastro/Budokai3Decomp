@@ -130,7 +130,7 @@ typedef struct StageHeader {
     /* 0x2C */ StageLinkB *linkB;
 } StageHeader;
 
-/* The stage's state (.bss, D_0051CCE0). The first 0x40 bytes are the loaded stage (BtbBg_Clear clears them). */
+/* The stage's state (.bss, gBtbBg). The first 0x40 bytes are the loaded stage (BtbBg_Clear clears them). */
 typedef struct StageWork {
     /* 0x00 */ s32 stage;       /* row of D_0044AE50 */
     /* 0x04 */ s32 unk04;
@@ -160,7 +160,7 @@ typedef struct StageWork {
     /* 0xA4 */ s32 unkA4[7];
 } StageWork;
 
-extern StageWork D_0051CCE0;
+extern StageWork gBtbBg;
 extern StageInfo D_0044AE50[];
 extern StageModel D_0044A240[];
 extern StageFog D_0044A9C0[];

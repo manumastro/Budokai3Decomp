@@ -48,8 +48,8 @@ extern void amFile_Load(s32);
 
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD140);
 void StrStatus_TaskMain(Task *t) {
-    if (((s16 *)D_00470910->f4)[2] == 3) {
-        if (D_00470910->f284 != 0) {
+    if (((s16 *)gStrStatus->f4)[2] == 3) {
+        if (gStrStatus->f284 != 0) {
             func_0028EB40(t, 10, func_002BD140, 0);
         } else {
             func_002BD140(t);
@@ -71,30 +71,30 @@ typedef struct StrStatusCopy {
 } StrStatusCopy;
 
 void func_002BD400(StrStatusCopy *out) {
-    out->b00 = D_00470910->f288[0];
-    out->b01 = D_00470910->f288[1];
-    out->b02 = D_00470910->f288[2];
-    out->b03 = D_00470910->f288[3];
-    out->b04 = D_00470910->f288[4];
-    out->w0C = D_00470910->f2D4;
+    out->b00 = gStrStatus->f288[0];
+    out->b01 = gStrStatus->f288[1];
+    out->b02 = gStrStatus->f288[2];
+    out->b03 = gStrStatus->f288[3];
+    out->b04 = gStrStatus->f288[4];
+    out->w0C = gStrStatus->f2D4;
     out->w10 = 0;
-    out->b05 = D_00470910->f288[5];
-    out->b06 = D_00470910->f288[6];
-    out->b07 = D_00470910->f288[7];
-    out->b08 = D_00470910->f288[8];
-    out->b09 = D_00470910->f288[9];
-    out->b0A = D_00470910->f288[10];
-    out->b0B = D_00470910->f288[11];
-    out->w18 = D_00470910->f2DC[0];
-    out->w1C = D_00470910->f2DC[1];
-    out->w20 = D_00470910->f2DC[2];
-    out->w24 = D_00470910->f2DC[3];
-    out->w28 = D_00470910->f2DC[4];
-    out->w2C = D_00470910->f2DC[5];
-    out->w30 = D_00470910->f2DC[6];
+    out->b05 = gStrStatus->f288[5];
+    out->b06 = gStrStatus->f288[6];
+    out->b07 = gStrStatus->f288[7];
+    out->b08 = gStrStatus->f288[8];
+    out->b09 = gStrStatus->f288[9];
+    out->b0A = gStrStatus->f288[10];
+    out->b0B = gStrStatus->f288[11];
+    out->w18 = gStrStatus->f2DC[0];
+    out->w1C = gStrStatus->f2DC[1];
+    out->w20 = gStrStatus->f2DC[2];
+    out->w24 = gStrStatus->f2DC[3];
+    out->w28 = gStrStatus->f2DC[4];
+    out->w2C = gStrStatus->f2DC[5];
+    out->w30 = gStrStatus->f2DC[6];
 }
 void StrStatus_ClearWork(void) {
-    D_00470910 = NULL;
+    gStrStatus = NULL;
 }
 extern void Character_Release(s32);
 extern void func_0029E450(s32);
@@ -106,43 +106,43 @@ extern void func_0029E450(s32);
 extern void Help_Exit(void);
 extern void OutputPass_Release(void);
 
-void func_002BD510(void) {
+void StrStatus_Free(void) {
     s32 i;
-    if (D_00470910 != 0) {
+    if (gStrStatus != 0) {
         for (i = 0; i < 0x45; i++) {
-            if (((s32 *)D_00470910)[0xE + i] != 0) {
-                amTask_Kill((Task *)((s32 *)D_00470910)[0xE + i]);
+            if (((s32 *)gStrStatus)[0xE + i] != 0) {
+                amTask_Kill((Task *)((s32 *)gStrStatus)[0xE + i]);
             }
         }
         for (i = 0; i < 7; i++) {
-            if (((s32 *)D_00470910)[i] != 0) {
-                amCdFs_Close(((s32 *)D_00470910)[i], 0);
+            if (((s32 *)gStrStatus)[i] != 0) {
+                amCdFs_Close(((s32 *)gStrStatus)[i], 0);
             }
-            if (((s32 *)D_00470910)[7 + i] != 0) {
-                amCdFs_ReleaseCache(((s32 *)D_00470910)[7 + i]);
+            if (((s32 *)gStrStatus)[7 + i] != 0) {
+                amCdFs_ReleaseCache(((s32 *)gStrStatus)[7 + i]);
             }
         }
         for (i = 0; i < 0x3C; i++) {
-            if (((s32 *)D_00470910)[0x5A + i] != 0) {
-                func_0022D0E0(((s32 *)D_00470910)[0x5A + i], 1);
+            if (((s32 *)gStrStatus)[0x5A + i] != 0) {
+                func_0022D0E0(((s32 *)gStrStatus)[0x5A + i], 1);
             }
         }
-        if (((s32 *)D_00470910)[0x96] != 0) {
-            Character_Release(((s32 *)D_00470910)[0x96]);
+        if (((s32 *)gStrStatus)[0x96] != 0) {
+            Character_Release(((s32 *)gStrStatus)[0x96]);
         }
-        if (((s32 *)D_00470910)[0x97] != 0) {
-            func_0029E450(((s32 *)D_00470910)[0x97]);
+        if (((s32 *)gStrStatus)[0x97] != 0) {
+            func_0029E450(((s32 *)gStrStatus)[0x97]);
         }
         Help_Exit();
         OutputPass_Release();
-        amHeap_Free((void *)D_00470910);
-        D_00470910 = 0;
+        amHeap_Free((void *)gStrStatus);
+        gStrStatus = 0;
     }
 }
 void StrStatus_Start(s32 a, s32 b) {
-    D_00470910->f274 = a;
-    D_00470910->f278 = b;
-    D_00470910->f38 = amTask_Create(StrStatus_TaskMain, NULL, a, 2, b, D_0046EE10);
+    gStrStatus->f274 = a;
+    gStrStatus->f278 = b;
+    gStrStatus->f38 = amTask_Create(StrStatus_TaskMain, NULL, a, 2, b, D_0046EE10);
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD6B0);
 extern void func_0013B160(s32);

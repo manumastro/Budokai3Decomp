@@ -592,7 +592,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002401A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00240390);
 extern s32 D_0044FC20[];
 u8 *func_0021C3E0(s32);
-s32 func_00254260(s32);
+s32 SkillFile_Load(s32);
 s32 amCdFs_ReadFileId(s32, s32, s32);
 #if 0
 // differs: the loop structure matches (the search and the four stores) but the register allocation of the loop variables and the order of the sentinel tests differ; 8 instructions short
@@ -636,9 +636,9 @@ s32 func_002408C0(void) {
                 } while (*(s32 *)a1 != -1);
             }
             if (s1 != -1) {
-                *(s32 *)(sys + i * 4 + 0xEC0) = func_00254260(s1);
+                *(s32 *)(sys + i * 4 + 0xEC0) = SkillFile_Load(s1);
             } else {
-                *(s32 *)(sys + i * 4 + 0xEC0) = func_00254260(0);
+                *(s32 *)(sys + i * 4 + 0xEC0) = SkillFile_Load(0);
             }
             if (*(s32 *)(sys + i * 4 + 0xEC0) != 0) {
                 s6 = *(s32 *)(*(s32 *)(*(s32 *)(sys + i * 4 + 0xEC0) + 8) + 0x10);

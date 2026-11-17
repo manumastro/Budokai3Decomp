@@ -10,7 +10,7 @@ extern void Smsg_Exit(void);
 extern void amTask_KillGroup(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void amHeap_Free(void *);
-extern void func_00283C20(void);
+extern void SklSheet_Free(void);
 
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_002778D0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_trade", func_00277A90);
@@ -116,7 +116,7 @@ void func_002793C0(u8 *a0) {
     func_00277310();
     if (func_00283BF0() == 8) {
         *(void **)(s0 + 0x1C) = ((void *)func_002794D0 == 0) ? 0 : (void *)func_002794D0;
-        func_00283C20();
+        SklSheet_Free();
     }
 }
 

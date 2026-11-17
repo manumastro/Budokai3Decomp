@@ -76,7 +76,7 @@ extern void amCdFs_Close(s32, s32);
 extern void amCdFs_ReleaseCache(s32);
 extern void amHeap_Free(void *);
 
-void func_0029A8F0(void) {
+void StrMap_Free(void) {
     s32 i;
     for (i = 0; i < 0xE; i++) {
         if (gStrMap[8 + i] != 0) {
@@ -182,7 +182,7 @@ void func_0029AC30(void) {
 extern void func_0029A4F0(Task *);
 extern char D_0046BBB0[];
 
-void func_0029ACE0(s32 a0, s32 a1, s32 a2) {
+void StrMap_StartPos(s32 a0, s32 a1, s32 a2) {
     s32 s0;
     *(s8 *)((char *)gStrMap + 0x1B0) = (s8)a2;
     gStrMap[0x1B4 / 4] = a0;
@@ -267,7 +267,7 @@ extern void memset(void *, s32, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern char D_0046BBC0[];
 
-void func_0029B000(s32 a0) {
+void StrMap_Load(s32 a0) {
     s32 v;
     s32 *m;
     if (gStrMap != 0) {

@@ -58,7 +58,7 @@ extern u8 D_00495758[];
 extern u8 *D_0051CD00[];
 extern void func_001F5B70(u8 *);
 extern void func_002CEA60(void);
-extern s32 D_0051CCE0[];
+extern s32 gBtbBg[];
 extern void func_00200270(f32, f32);
 extern void func_002CDD50(void);
 extern void func_002CDD00(void);
@@ -419,11 +419,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE500);
 #if 0
 void func_002CE630(f32 x, f32 y) {
     f32 tmp[4];
-    D_0051CCE0[0] = 0;
+    gBtbBg[0] = 0;
     __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(tmp) : "memory");
     __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(*(u8 **)(gBattle + 0x264)), "r"(tmp) : "memory");
     func_00200270(x - tmp[0], y - tmp[2]);
-    D_0051CCE0[0] = 1;
+    gBtbBg[0] = 1;
 }
 // differs: the VU0 copy matches; the constant 1 of the last store is in v1 in the original, v0 here (tried inline operands)
 #endif

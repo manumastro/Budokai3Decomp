@@ -4102,10 +4102,10 @@ void func_001F7BF0(void) {
 }
 typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
-extern s32 D_0051CCE0[];
+extern s32 gBtbBg[];
 
 void BtbBg_RunFunc(void) {
-    VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
+    VoidFunc f = D_0044B4C0[gBtbBg[0]];
 
     if (f != NULL) {
         f();
@@ -4640,10 +4640,10 @@ void func_001F7BF0(void) {
 }
 typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
-extern s32 D_0051CCE0[];
+extern s32 gBtbBg[];
 
 void BtbBg_RunFunc(void) {
-    VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
+    VoidFunc f = D_0044B4C0[gBtbBg[0]];
 
     if (f != NULL) {
         f();
@@ -5499,10 +5499,10 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7C80);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7DB0);
 typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
-extern s32 D_0051CCE0[];
+extern s32 gBtbBg[];
 
 void BtbBg_RunFunc(void) {
-    VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
+    VoidFunc f = D_0044B4C0[gBtbBg[0]];
 
     if (f != NULL) {
         f();

@@ -98,7 +98,7 @@ extern void amCdFs_ReleaseCache(void *);
 extern void Obj_ResetF38(void *);
 extern void amHeap_Free(void *);
 
-void func_00283C20(void) {
+void SklSheet_Free(void) {
     s32 i;
     s32 off;
     if (D_00470820 != 0) {

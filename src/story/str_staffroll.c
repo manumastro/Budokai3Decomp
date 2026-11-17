@@ -297,7 +297,7 @@ extern void memset(void *, s32, s32);
 extern char D_0046FC00[];
 extern void func_0030EDA0(void);
 
-void func_0030EFF0(s32 *a0) {
+void StaffRoll_Load(s32 *a0) {
     s32 *s0 = (s32 *)((char *)a0 + 0x30);
     s32 *s2;
     s32 v;

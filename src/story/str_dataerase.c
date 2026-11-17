@@ -6,12 +6,12 @@ extern char D_0046FC30[];
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern s32 D_004701D8;
 
-extern void func_0030EFF0(Task *);
+extern void StaffRoll_Load(Task *);
 extern char D_0046FC10[];
 extern void Scene_SetReady(void);
 
 void StaffRoll_Start(void) {
-    Task *t = amTask_Create(func_0030EFF0, NULL, 0x3000, 8, 2, D_0046FC10);
+    Task *t = amTask_Create(StaffRoll_Load, NULL, 0x3000, 8, 2, D_0046FC10);
     *(s16 *)((char *)t + 0x34) = 0;
     Scene_SetReady();
 }
@@ -458,7 +458,7 @@ extern void func_00310080(Task *);
 extern char D_0046FC20[];
 extern void memset(void *, s32, s32);
 
-Task *func_00310300(s32 a0, s32 a1) {
+Task *DataErase_CreateCharaSel(s32 a0, s32 a1) {
     char *s1;
     Task *s0;
     s0 = amTask_Create(func_00310080, NULL, 0x2B00, 8, 2, D_0046FC20);
@@ -470,7 +470,7 @@ Task *func_00310300(s32 a0, s32 a1) {
     s1[0xF] = 1;
     return s0;
 }
-void func_003103B0(void) {
+void DataErase_Acquire(void) {
     s32 *s0;
     if (D_0047099C != 0) {
         *((s8 *)D_0047099C + 0x10) = *((s8 *)D_0047099C + 0x10) + 1;
@@ -507,7 +507,7 @@ extern s8 D_004B4B41;
 extern s8 D_004B4B59;
 extern char D_005C4150[];
 extern s32 func_00283BF0(void);
-extern void func_00283C20(void);
+extern void SklSheet_Free(void);
 extern void SklSheet_SetIndex(s32);
 extern void Scene_Request(s32, s32);
 extern void Save_Request(s32, s32, s32);
@@ -538,7 +538,7 @@ c0:
     goto end;
 c1:
     if (func_00283BF0() == 8) {
-        func_00283C20();
+        SklSheet_Free();
         s0[1] = s0[1] + 1;
     }
     goto end;

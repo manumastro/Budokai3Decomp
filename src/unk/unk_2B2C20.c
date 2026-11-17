@@ -23,7 +23,7 @@ typedef struct SklAct {
 
 extern s32 func_002D20D0(void *);
 extern s32 func_00283BF0(void *);
-extern void func_00283C20(void);
+extern void SklSheet_Free(void);
 extern void func_002B3D90(void);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B2C20);
@@ -43,7 +43,7 @@ void func_002B2D50(SklAct *s) {
         p = &s->f30;
         s->f1C = s->f34 == 0 ? 0 : s->f34;
         p[1] = 0;
-        func_00283C20();
+        SklSheet_Free();
     }
 }
 typedef struct SklRecW {

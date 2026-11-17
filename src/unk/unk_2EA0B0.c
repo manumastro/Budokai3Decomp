@@ -1,6 +1,6 @@
 #include "common.h"
 
-extern void func_002E0D40(void);
+extern void Option_Load(void);
 extern u8 *gBattle;
 extern u8 *D_00470958;
 extern u8 D_0046F678[];
@@ -48,7 +48,7 @@ extern u8 D_00457440[];
 extern void (*D_004573F0[])(void);
 
 void func_002EA0B0(void) {
-    func_002E0D40();
+    Option_Load();
 }
 s32 func_002EA0C0(void) {
     if (*(f32 *)(gBattle + 0x8930) >= 1.0f) {

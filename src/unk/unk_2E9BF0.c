@@ -46,7 +46,7 @@ extern u16 D_00493084[];
 extern char D_0046F5F0[];
 
 extern s32 func_002E0C70(void);
-extern void func_002E0D40(void);
+extern void Option_Load(void);
 extern s32 func_002E0D10(void);
 extern void ChangeProgress_Start(void);
 extern void Scene_MarkDone(void);
@@ -76,7 +76,7 @@ void func_002E9BF0(void) {
     case 3:
         return;
     case 0:
-        func_002E0D40();
+        Option_Load();
         break;
     case 1:
     case 2:

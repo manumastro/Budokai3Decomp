@@ -225,7 +225,7 @@ extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern char D_0046B4F0[];
 extern u8 D_0058F680[];
 
-void func_00272C30(s32 idx) {
+void EssList_Load(s32 idx) {
     s32 *s1;
     s32 r;
     s1 = &D_00470800 + idx;

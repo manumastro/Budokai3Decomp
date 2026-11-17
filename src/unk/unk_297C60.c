@@ -90,7 +90,7 @@ extern void *func_001CAAB0(s32, s32, s32, s32, s32);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void func_002BFEE0(s32, s32, s32);
 extern void Help_Load(void);
-extern void func_0029B000(s32);
+extern void StrMap_Load(s32);
 extern void func_00291390(s32);
 extern u8 D_004E6560[];
 extern s8 D_00511450[];
@@ -130,7 +130,7 @@ extern void amCdFs_ReleaseCache(void *);
 extern void func_0022D0E0(void *, s32);
 extern void Character_Release(void *);
 extern void func_002BFD90(void);
-extern void func_0029A8F0(void);
+extern void StrMap_Free(void);
 extern void StrBg_Stop(void);
 extern void Help_Exit(void);
 extern void Flight_TaskMain(Proc *);
@@ -374,7 +374,7 @@ void Flight_Exit(void) {
     func_002BFD90();
     memset(D_005AA550, 0, (u8 *)D_005AA604 - (u8 *)D_005AA550);
     D_005AA608[0] = NULL;
-    func_0029A8F0();
+    StrMap_Free();
     StrBg_Stop();
     Help_Exit();
 }
@@ -406,7 +406,7 @@ void Flight_Load(void) {
     D_005AA564[0] = amCdFs_ReadFileId(D_00453980[D_005AA604[0]->f11E1][k], 0, 1);
     D_005AA558[0] = amCdFs_ReadFileId(D_005AA604[0]->f11E6 * 2 + 0xEE0, 0, 1);
     D_005AA55C[0] = amCdFs_ReadFileId(D_005AA604[0]->f11E6 * 2 + 0xEE1, 0, 1);
-    func_0029B000(D_005AA604[0]->f11E0);
+    StrMap_Load(D_005AA604[0]->f11E0);
     func_00291390(D_005AA604[0]->f11E0);
     D_005AA56C[0] = amCdFs_ReadFileId(0x107E1, 0, 1);
     D_005AA570[0] = amCdFs_ReadFileId(0x107E0, 0, 1);

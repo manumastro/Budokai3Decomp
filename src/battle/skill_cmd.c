@@ -1491,7 +1491,7 @@ extern char D_0046AE28[];
 extern s32 D_00452680[];
 extern s32 D_00452684[];
 
-void *func_00254260(s32 a0) {
+void *SkillFile_Load(s32 a0) {
     s32 *s1;
     s32 *s3;
     s32 *s0;

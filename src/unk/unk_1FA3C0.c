@@ -22,7 +22,7 @@ typedef struct PackHdr {
     s32 entries;
 } PackHdr;
 
-extern s32 D_0051CCE0[];
+extern s32 gBtbBg[];
 extern void *D_0051CCF4[];
 extern void *D_0051CCF8[];
 extern ModelInfo D_0044AE60[];
@@ -76,10 +76,10 @@ typedef struct MasHdr {
 extern void *amCdFs_ReadFileId(void *, s32, s32);
 
 void *func_001FA3C0(Fighter *f) {
-    memset(D_0051CCE0, 0, 0xC0);
+    memset(gBtbBg, 0, 0xC0);
     D_0051CCF4[0] = amCdFs_ReadFileId(D_0044AE60[f->f154].f0, 0, 0);
     D_0051CCF8[0] = D_0051CCF4[0];
-    D_0051CCE0[0] = f->f154;
+    gBtbBg[0] = f->f154;
     return D_0051CCF8[0];
 }
 void func_001FA460(Bundle *b) {

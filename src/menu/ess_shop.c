@@ -7,7 +7,7 @@ extern s32 D_00452FA0[];
 extern u8 D_004E066A[];
 extern void func_00274120(void);
 extern s32 func_00283BF0(void);
-extern void func_00283C20(void);
+extern void SklSheet_Free(void);
 extern void func_002759F0(void);
 
 #if 0
@@ -289,7 +289,7 @@ void func_00274B40(u8 *a0) {
     func_00274120();
     if (func_00283BF0() == 8) {
         *(void **)(s0 + 0x1C) = ((void *)func_002759F0 == 0) ? 0 : (void *)func_002759F0;
-        func_00283C20();
+        SklSheet_Free();
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274C10);
