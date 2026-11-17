@@ -51,6 +51,10 @@ extern void func_001D7CC0(void *, int);
 extern void func_0029D8B0(int, int);
 extern void func_001D8FE0(void *, int);
 extern f32 D_004B421C[];
+extern s32 D_0051CCE0[];
+extern s32 D_0051CD20[];
+extern char D_00469260[];
+extern void func_001E73C0(void *);
 extern void func_001C75D0(void *, int);
 extern void func_001C81D0(void *, int);
 extern void func_001C8210(void *, int);
@@ -245,7 +249,11 @@ int func_001CD2C0(void *unused, Arg *a) {
     func_001D8FE0(D_00470570->tbl[a->p[0]], 0);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD300);
+int func_001CD300(void *unused, Arg *a) {
+    char *q = (char *)D_00469260 + (D_0051CCE0[0] << 1);
+    *(s32 *)a = *(s8 *)(D_0051CD20[0] + q);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD340);
 int func_001CD530(void *unused, Arg *a) {
     int *p = a->p;
@@ -339,14 +347,20 @@ int func_001CDA90(void *unused, Arg *a) {
     *(s32 *)a = *(s32 *)((char *)D_00470570->tbl[p[1]] + p[0] * 0x680 + 0xB9C);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDAE0);
+int func_001CDAE0(void *unused, Arg *a) {
+    *(s32 *)a = (s32)*(f32 *)((char *)D_00470570->tbl[a->p[0]] + 0x17D4);
+    return 1;
+}
 int func_001CDB20(void *unused, Arg *a) {
     char *t = D_00470570->tbl[*a->p];
     f32 f = (*(f32 *)(t + 0x1A40) > 0.0f) ? *(f32 *)(t + 0x17D4) : *(f32 *)(t + 0x17D0);
     *(s32 *)a = (s32)f;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDB80);
+int func_001CDB80(void *unused, Arg *a) {
+    *(s32 *)a = (s32)*(f32 *)((char *)D_00470570->tbl[a->p[0]] + 0x17C4);
+    return 1;
+}
 int func_001CDBC0(void *unused, Arg *a) {
     *(s32 *)a = (s32)*(f32 *)((char *)D_00470570->tbl[a->p[0]] + 0x17C0);
     return 1;
@@ -378,8 +392,48 @@ int func_001CDDC0(void *unused, Arg *a) {
     *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)D_00470570 + 0x8960);
     return 1;
 }
+// func_001CDDE0: differs: the add of the table offset is in the other operand order (one instruction)
+#if 0
+int func_001CDDE0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 idx = p[0];
+    char *t = D_00470570->tbl[p[1]];
+    if (idx >= 0 && idx < 0x16) {
+        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + idx * 16 + 0x658);
+    } else {
+        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x48);
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDDE0);
+// func_001CDE40: differs: the add of the table offset is in the other operand order (one instruction)
+#if 0
+int func_001CDE40(void *unused, Arg *a) {
+    int *p = a->p;
+    char *t = D_00470570->tbl[p[1]];
+    if (p[0] >= 0 && p[0] < 0x16) {
+        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + p[0] * 16 + 0x654);
+    } else {
+        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x44);
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDE40);
+// func_001CDEA0: differs: the add of the table offset is in the other operand order (one instruction)
+#if 0
+int func_001CDEA0(void *unused, Arg *a) {
+    int *p = a->p;
+    char *t = D_00470570->tbl[p[1]];
+    if (p[0] >= 0 && p[0] < 0x16) {
+        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + p[0] * 16 + 0x650);
+    } else {
+        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x40);
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDEA0);
 int func_001CDF00(void *unused, Arg *a) {
     return 1;
@@ -467,7 +521,11 @@ int func_001CE560(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE560);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE5B0);
+int func_001CE5B0(void *unused, Arg *a) {
+    int *p = a->p;
+    func_001E73C0((char *)D_00470570->tbl[p[1]] + p[0] * 0x680 + 0x650);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE610);
 // func_001CE740: differs: the same float constant register as func_001CEE80
 #if 0
@@ -563,7 +621,20 @@ int func_001CEE80(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEE80);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEF00);
+int func_001CEF00(void *unused, Arg *a) {
+    int *p = a->p;
+    f32 *f = (f32 *)p;
+    f32 x0 = f[0];
+    s32 p2 = p[2];
+    f32 x1 = f[1];
+    char *t = D_00470570->tbl[p[3]];
+    *(s16 *)(t + 0xCB4) = 0;
+    *(s16 *)(t + 0x181E) = p2;
+    *(f32 *)(t + 0x1814) = x1;
+    *(f32 *)(t + 0x1810) = x0;
+    func_001C75D0(t, 16);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEF60);
 int func_001CEFF0(void *unused, Arg *a) {
     func_001C75D0(D_00470570->tbl[a->p[0]], 0);
