@@ -1489,46 +1489,50 @@ void *func_001DA430(Fighter *c) {
     e->f19F = c->f1350;
     return (char *)e + 0x150;
 }
-#if 0
 void func_001DA4C0(void) {
-    Game *g;
-    s32 j;
+    char *p2;
+    Game *g = gBattle;
     s32 i;
-    char *base;
-    char *v;
+    char *a1p;
+    s32 k;
+    char *v3;
 
-    g = gBattle;
     amTask_KillGroup(0x20, 0x40000020, 1);
-    for (j = 0; j < g->f88D8; j++) {
-        base = (char *)g + j * 0x2020;
-        v = base + 0x830;
-        for (i = 0; i < 16; i += 8) {
-            *(s16 *)(v + 0x198) = 0;
-            *(s32 *)(v + 0x190) = 0;
-            *(s16 *)(v + 0x1E8) = 0;
-            *(s32 *)(v + 0x1E0) = 0;
-            *(s16 *)(v + 0x238) = 0;
-            *(s32 *)(v + 0x230) = 0;
-            *(s16 *)(v + 0x288) = 0;
-            *(s32 *)(v + 0x280) = 0;
-            *(s16 *)(v + 0x2D8) = 0;
-            *(s32 *)(v + 0x2D0) = 0;
-            *(s16 *)(v + 0x328) = 0;
-            *(s32 *)(v + 0x320) = 0;
-            *(s16 *)(v + 0x378) = 0;
-            *(s32 *)(v + 0x370) = 0;
-            *(s16 *)(v + 0x3C8) = 0;
-            *(s32 *)(v + 0x3C0) = 0;
-            v += 0x280;
-        }
-        *(s32 *)(base + 0x830 + 0x1AE0) = 0;
-        memset(base + 0x830 + 0x1AF0, 0, 0x200);
+    if (0 < g->f88D8) {
+        i = 0;
+        p2 = (char *)g;
+        do {
+            a1p = p2 + 0x830;
+            k = 0;
+            v3 = a1p;
+            do {
+                *(s16 *)(v3 + 0x198) = 0;
+                *(s32 *)(v3 + 0x190) = 0;
+                *(s16 *)(v3 + 0x1E8) = 0;
+                *(s32 *)(v3 + 0x1E0) = 0;
+                *(s16 *)(v3 + 0x238) = 0;
+                *(s32 *)(v3 + 0x230) = 0;
+                *(s16 *)(v3 + 0x288) = 0;
+                *(s32 *)(v3 + 0x280) = 0;
+                *(s16 *)(v3 + 0x2D8) = 0;
+                *(s32 *)(v3 + 0x2D0) = 0;
+                *(s16 *)(v3 + 0x328) = 0;
+                *(s32 *)(v3 + 0x320) = 0;
+                *(s16 *)(v3 + 0x378) = 0;
+                *(s32 *)(v3 + 0x370) = 0;
+                *(s16 *)(v3 + 0x3C8) = 0;
+                *(s32 *)(v3 + 0x3C0) = 0;
+                k += 8;
+                v3 += 0x280;
+            } while (k < 16);
+            *(s32 *)(a1p + 0x1AE0) = 0;
+            memset(a1p + 0x1AF0, 0, 0x200);
+            i++;
+            p2 += 0x2020;
+        } while (i < g->f88D8);
     }
     func_001EA300();
 }
-#endif
-// differs: 0xF0 against 0x100 bytes: the original keeps the block base in a1 and the loop index in a0 (several local orders tried, the closest 2 of 62 differed only in the order of the clears)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA4C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA5C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DA930);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DB320);
