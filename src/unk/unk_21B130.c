@@ -222,7 +222,7 @@ void func_0021B420(void) {
     func_0022C7D0((f32)n, 1);
     func_0022ACF0(D_0047068C);
 }
-// differs: the float-to-int step is cvt.w.s (rounding) in the original, where this (int) cast gives trunc.w.s; the float block around it is otherwise close
+// differs: 22 of 72 (round 5). The (s32) cast is NOT the problem: the original's word 0x46000024 is what the cast emits too (the disassemblers only name it differently). Tried live: the two early exits as one `||` test (shares the return), D_0047068C loaded before the cast, the px = sys+0x640 pointer, and the call func_0022C7D0(D_0047068C, (f32)n, 1) (signature (s32, f32, s32), the file's first declaration must match). Left: the last call func_0022ACF0 gets a nop before the epilogue and the early exits jump past ld ra/lq s1, the original's exits go to the epilogue directly.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B420);
 #if 0
@@ -397,7 +397,7 @@ void func_0021B9A0(void) {
         }
     }
 }
-// differs: the entry pointer is set up in a delay slot in the original, and its first field is loaded into a0 before the test (the temporaries differ in a few instructions)
+// differs: the entry pointer is set up in a delay slot in the original, and its first field is loaded into a0 before the test (the temporaries differ in a few instructions). Round 5: sys = gBtlSys moved into the branch gives 37 of 49 (the load sits after a nop in the delay slot); with the test restructured (s1 set after the first test) the entry is kept in s1 instead of v1: 7 of 47. Still to do: keep the entry in v1 (the original sets s1 = entry + 0x30 in the delay slot of the first beqz, after the load).
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BA60);
