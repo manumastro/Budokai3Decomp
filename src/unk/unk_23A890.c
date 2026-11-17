@@ -1,5 +1,15 @@
 #include "common.h"
 
+extern f32 D_00470690;
+extern f32 D_00470694;
+extern u8 D_0058BF70[];
+void func_0022DB20(f32, f32);
+void func_0023D680(void);
+void func_0022C560(s32);
+
+void func_00214DD0(void *, s32);
+void func_00214F80(s32, void *);
+
 void func_00241600(s32);
 void func_00241C10(s32);
 
@@ -141,6 +151,35 @@ void func_0023F370(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023F3F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023F610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023F7A0);
+#if 0
+void func_0023FBB0(void) {
+    u8 *s1;
+    s32 i;
+    f32 a = D_00470690;
+    f32 b = D_00470694;
+    f32 spill[2];
+
+    spill[0] = b;
+    spill[1] = a;
+    func_0022DB20(spill[1], spill[0]);
+    func_0023D680();
+    func_0022DB20(0.0f, 0.0f);
+    if (0 < *(s32 *)(D_00470570 + 0x88D8)) {
+        i = 0;
+        s1 = D_0058BF70;
+        do {
+            if (*(s16 *)(D_00470570 + 0x8944) == 0) {
+                if (*(s32 *)(s1 + 0x26C) != 0) {
+                    func_0022C560(*(s32 *)(s1 + 0x26C));
+                }
+            }
+            s1 += 0x64;
+            i++;
+        } while (i < *(s32 *)(D_00470570 + 0x88D8));
+    }
+}
+// differs: the two float arguments are copied through the stack (lwc1/swc1 to 56 and 60 of a 0x40 frame) in the original; no local form tried gives that copy
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023FBB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023FC80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002400E0);
@@ -505,6 +544,35 @@ void func_00244190(u8 *o) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244190);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244280);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244410);
+#if 0
+void func_00244580(s32 x, s32 y, s32 z) {
+    u8 buf[0xB0];
+    s32 c;
+
+    memset(buf, 0, 0xB0);
+    *(s16 *)(buf + 0x50) = 0x800;
+    if (z == 6) {
+        *(s16 *)(buf + 0x52) = 3;
+    } else {
+        *(s16 *)(buf + 0x52) = 2;
+    }
+    *(s16 *)(buf + 0x54) = 0xB;
+    *(s16 *)(buf + 0xA0) = 2;
+    c = 0xC6;
+    *(s16 *)(buf + 0x5C) = c;
+    *(s16 *)(buf + 0x5A) = c - z;
+    *(s16 *)(buf + 0x94) = 1;
+    *(s16 *)(buf + 0x96) = 1;
+    *(s32 *)(buf + 0x6C) = x;
+    *(s32 *)(buf + 0x78) = y;
+    *(s16 *)(buf + 0x56) = 0;
+    *(s16 *)(buf + 0x58) = 0;
+    *(s16 *)(buf + 0xA2) = z;
+    func_00214DD0(buf, 1);
+    func_00214F80(*(s16 *)(buf + 0x52), buf);
+}
+// differs: the stores into the local block come in another order (the 0xC6 value, the flags at 0x94 and the zero fields are scheduled differently)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244580);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244660);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244A60);
