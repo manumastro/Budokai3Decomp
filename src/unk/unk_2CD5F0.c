@@ -428,7 +428,42 @@ void func_002CE630(f32 x, f32 y) {
 // differs: the VU0 copy matches; the constant 1 of the last store is in v1 in the original, v0 here (tried inline operands)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE630);
+extern u8 D_0044AE50[];
+extern char D_0046F240[];
+extern char D_0046F248[];
+extern char *D_0051CD14[];
+extern void func_002CE0A0(void);
+extern void func_002CE2A0(u8 *);
+extern void func_002CE3D0(void);
+extern void func_002CE500(void);
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE690);
+#if 0
+// differs: same btb setup as 1F6D60 (two func_001F5FD0 calls, sqc2 zero); register allocation of the table pointer (s1), base (s2) and the temporaries stays 17 of 81 off: 48 declaration/statement orders tried
+void func_002CE690(void) {
+    u8 *bs;
+    u8 *tb;
+    u8 *p;
+    u8 *s0;
+    bs = D_0044AE50 + gBtbBg[0] * 92 + (D_0051CD20[0] << 5) + 0x1C;
+    tb = (u8 *)D_0051CD14[0] + D_0051CD20[0] * 36;
+    p = func_001F5FD0(0x80000000, D_0046F240, *(s32 *)(tb + 0xC), (void *)func_002CE0A0, (void *)func_002CE2A0);
+    *(s32 *)(p + 0x20) = 0;
+    s0 = p + 0x30;
+    *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) | 0x10;
+    *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) | 0x200;
+    memset(s0, 0, 0x40);
+    *(s32 *)s0 = *(s32 *)(bs + 0x14);
+    __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(s0 + 0x30));
+    p = func_001F5FD0(0x83000000, D_0046F248, *(s32 *)(tb + 0xC) + 0x20, (void *)func_002CE3D0, (void *)func_002CE500);
+    *(s32 *)(p + 0x20) = 0;
+    s0 = p + 0x30;
+    *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) | 0x40;
+    memset(s0, 0, 0x40);
+    *(s32 *)s0 = *(s32 *)(bs + 0x14) + 0x10;
+    __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(s0 + 0x30));
+}
+#endif
 #if 0
 void func_002CE7E0(u8 *s) {
     u8 *e = *(u8 **)(s + 0x30);
