@@ -22,7 +22,16 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276400);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276470);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276610);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276840);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276A10);
+extern s32 D_00470808;
+extern void Zenie_Init(void);
+extern void func_00283C10(void);
+
+/* Clears D_00470808, then sets up the Zenie display. */
+void Shop_InitZenie(void) {
+    D_00470808 = 0;
+    Zenie_Init();
+    func_00283C10();
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276A40);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276AB0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276B50);

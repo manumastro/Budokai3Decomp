@@ -166,3 +166,76 @@ EssInfo_Start = 0x0026FD30; // type:func
 EssInfo_Exit = 0x0026FDA0; // type:func
 EssInfo_Load = 0x0026FE40; // type:func
 gEssInfo = 0x004707F8; // size:0x4
+
+// ess_main.c: the Ess mode's global block (pointer D_004707E0): two one-line accessors of its bytes 0x5C / 0x5D.
+EssMain_GetFlag = 0x0026D510; // type:func guess
+EssMain_SetByte = 0x0026D520; // type:func guess
+
+// mn_option.c: empty callbacks of the option screen. func_002DEFE0, func_002E0C40 and func_002E0C70 keep their names:
+// other files call them.
+Option_Nop1 = 0x002DEFD0; // type:func guess
+// mn_option.c: clears the global D_00470938 (a menu's cursor or state).
+Option_ClearState = 0x002E0C30; // type:func guess
+
+// mn_csmodel.c: resets the practice-mode flag gPracMode and sets D_0047010C to -1.
+CsModel_ResetPrac = 0x002B96E0; // type:func guess
+
+// mn_Logomark.c: clears the global D_0047094C (the logo mark's flag).
+Logomark_ClearFlag = 0x002E83F0; // type:func guess
+
+// mn_InputPass.c: clears the input name pointer gInputName (shared with mn_InputName.c).
+InputPass_ClearName = 0x002F24F0; // type:func guess
+
+// mn_ArenaList.c: reads the list's work area (task data.work, offset 0x30 of the task): s16 at 0 and 2, and the
+// address of the entry table at 0x20.
+ArenaList_GetFirst = 0x002F03B0; // type:func guess
+ArenaList_GetCursor = 0x002F03A0; // type:func guess
+ArenaList_GetEntries = 0x002F03C0; // type:func guess
+ArenaList_ClearGlobal = 0x002F03D0; // type:func guess
+
+// ess_main.c: two more state steps of the Ess mode; TickC runs two steps (0x26B770, 0x26B880).
+EssMain_TickA = 0x0026A620; // type:func guess
+EssMain_TickB = 0x0026A650; // type:func guess
+EssMain_TickC = 0x0026BD20; // type:func guess
+
+// mn_option.c: the option screen's state block D_00470938 and its readers.
+Option_ReadSound = 0x002DFDF0; // type:func guess
+
+// mn_csmodel.c: the character model's work area (CsModelWork): mode, scale and the eased value.
+CsModel_SetMode = 0x002B71C0; // type:func guess
+CsModel_SetScale = 0x002B71E0; // type:func guess
+CsModel_Ease = 0x002B7200; // type:func guess
+
+// mn_InputPass.c: copies and reads of the input screen's task work area.
+InputPass_CopyName = 0x002F24A0; // type:func guess
+InputPass_GetKind = 0x002F24D0; // type:func guess
+InputPass_CopyBuf = 0x002F3F50; // type:func guess
+InputPass_GetPhase = 0x002F3F80; // type:func guess
+
+// ess_shop.c: clears the Zenie counter D_00470808 and starts the Zenie display.
+Shop_InitZenie = 0x00276A10; // type:func guess
+
+// ess_trade.c: clears D_0047080C and starts the trade's two steps.
+Trade_Start = 0x0027A190; // type:func guess
+
+// mn_csmodel.c: the model's work area; Start / Start2 start an effect (two copies of one body); CallIfSet runs
+// func_002B6DC0 unless the slot fB6 is -1; Shift moves the two slots along and sets CallIfSet.
+CsModel_Start = 0x002B84F0; // type:func guess
+CsModel_Start2 = 0x002B8C20; // type:func guess
+CsModel_CallIfSet = 0x002B7140; // type:func guess
+CsModel_Shift = 0x002B7230; // type:func guess
+
+// mn_Logomark.c: the logo mark's task: Load reads file 0x10ABF into its block, Begin sets its main step, Close stops.
+Logomark_Load = 0x002E84E0; // type:func guess
+Logomark_Begin = 0x002E8320; // type:func guess
+Logomark_Close = 0x002E75F0; // type:func guess
+
+// mn_ArenaList.c: runs the list's two steps on its work area.
+ArenaList_Refresh = 0x002EF400; // type:func guess
+
+// ess_trade.c: adds one to five counters of the trade block, then runs 0x277310.
+Trade_CountFrame = 0x00279470; // type:func guess
+
+// mn_Logomark.c: Free frees the task, the file and the block D_0047094C; Start creates the logo mark's task.
+Logomark_Free = 0x002E8400; // type:func guess
+Logomark_Start = 0x002E8470; // type:func guess
