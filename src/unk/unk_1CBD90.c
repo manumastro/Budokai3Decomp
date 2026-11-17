@@ -1137,7 +1137,26 @@ int Scr_CmdFighterSetVec5(void *unused, Arg *a) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE960);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CED20);
+extern void func_001C75D0(void *, s32);
+
+int func_001CED20(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 s = p[0];
+    s32 m = p[1];
+    s32 idx = p[2];
+    char *b = (char *)gBattle->tbl[idx];
+    if (*(s16 *)(b + 0xCAC) != 0x12) {
+        *(s16 *)(b + 0xCB4) = (s16)m;
+        if (*(s8 *)(b + 0x1FF9) != 0 && *(s8 *)(b + 0x1FF8) <= -1) {
+            func_001C75D0(b, 0x10);
+        } else {
+            __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(b + 0xD0));
+            func_001C75D0(b, 0x12);
+        }
+    }
+    *(f32 *)(b + 0x18A4) = (f32)(s * 3);
+    return 1;
+}
 int Scr_CmdFighterSetVec1828(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
     char *t = gBattle->tbl[a->p[3]];
