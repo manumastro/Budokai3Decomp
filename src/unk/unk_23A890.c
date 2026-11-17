@@ -868,6 +868,57 @@ void func_00242490(s32 i) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242540);
+#if 0
+// differs: the global D_0046FE48 is loaded into v1 here and a0 in the original (the base of the 0x3C8 fields); the object and the loop registers match after the declaration-order search
+extern u8 D_0046ACB8[];
+void func_00242540(s32);
+void func_00242870(void) {
+    u8 *s0;
+    s32 s4;
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 off;
+
+    s0 = *(u8 **)(D_0046FE48 + 0x3C8);
+    if (s0 != 0) {
+        *(s32 *)(D_0046FE48 + 0x3C8) = *(s32 *)(s0 + 0x40);
+        *(s32 *)(D_0046FE48 + 0x3CC) = *(s32 *)(*(u8 **)(s0 + 0x40) + 0x50);
+        amFile_Load(*(s32 *)(D_0046FE48 + 0x3CC));
+        *(s32 *)(s0 + 0x40) = 0;
+        amCdFs_Close((s32)s0, 0);
+        s3 = *(u8 **)(D_0046FE48 + 0x3CC);
+        if (0 < *(s32 *)(s3 + 0x10)) {
+            s4 = 0;
+            off = 0;
+            do {
+                s2 = (u8 *)func_001A5130((s32)s3, s4);
+                s1 = (u8 *)func_001A50F0((s32)s3, s4);
+                if (*(s32 *)(s2 + 8) >= 0) {
+                    amFile_Load((s32)s1);
+                } else {
+                    if (func_00127E88(s1, D_0046ACB8, 4) == 0) {
+                        func_0020A100(s1);
+                    }
+                }
+                *(s32 *)(D_0046FE48 + off + 0x348) = (s32)s1;
+                if (*(s32 *)(s2 + 8) == 1) {
+                    *(s32 *)(D_0046FE48 + off + 0x388) = amObject_Create(*(s32 *)(D_0046FE48 + off + 0x348), 0);
+                }
+                s4++;
+                off += 4;
+            } while (s4 < *(s32 *)(s3 + 0x10));
+        }
+    }
+    if (0 < *(s16 *)(D_0046FE44 + 0x102)) {
+        s4 = 0;
+        do {
+            func_00242540(s4);
+            s4++;
+        } while (s4 < *(s16 *)(D_0046FE44 + 0x102));
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242870);
 void func_0013B160(s32);
 void func_00142100(void *, void *);
@@ -1287,6 +1338,61 @@ void func_00244CC0(s32 i, s32 j) {
 // differs: the address sum is formed as (base + j) + i in the original (the operands of the last add swapped here)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244CC0);
+#if 0
+// differs: one instruction: the slot address is built as addu with the base in the first operand (the original has the scaled index first); the rest matches
+extern u8 D_0046AD08[];
+s32 func_001A5130(s32, s32);
+s32 func_00127E88(void *, void *, s32);
+void func_0020A100(void *);
+s32 amObject_Create(s32, s32);
+void amCdFs_Close(s32, s32);
+void amFile_Load(s32);
+void func_00244D80(s32 a0, s32 a1) {
+    u8 *base = D_0046FE4C + a0 * 0x480;
+    u8 *q = base + a1 * 0x220;
+    u8 *s0 = *(u8 **)(q + 0x50);
+    u8 *s3;
+    u8 *s2;
+    u8 *s5;
+    s32 s1;
+    s32 s4;
+
+    s3 = q + 0x50;
+    if (s0 != 0) {
+        *(s32 *)s3 = *(s32 *)(s0 + 0x40);
+        *(s32 *)(s3 + 4) = *(s32 *)(*(u8 **)(s0 + 0x40) + 0x50);
+        amFile_Load(*(s32 *)(s3 + 4));
+        *(s32 *)(s0 + 0x40) = 0;
+        amCdFs_Close((s32)s0, 0);
+        *(s32 *)(s3 + 8) = 2;
+        *(s32 *)(s3 + 0xC) = 2;
+        *(s32 *)(s3 + 0x10) = 2;
+        s2 = *(u8 **)(s3 + 4);
+        if (0 < *(s32 *)(s2 + 0x10)) {
+            s1 = 0;
+            s0 = s3;
+            do {
+                s5 = (u8 *)func_001A5130((s32)s2, s1);
+                s4 = func_001A50F0((s32)s2, s1);
+                if (*(s32 *)(s5 + 8) >= 0) {
+                    amFile_Load(s4);
+                } else {
+                    if (func_00127E88((void *)s4, (void *)D_0046AD08, 4) == 0) {
+                        func_0020A100((void *)s4);
+                    }
+                }
+                *(s32 *)(s0 + 0x20) = s4;
+                if (*(s32 *)(s5 + 8) == 1) {
+                    *(s32 *)(s0 + 0x120) = amObject_Create(*(s32 *)(s0 + 0x20), 0);
+                }
+                s1++;
+                s0 += 4;
+            } while (s1 < *(s32 *)(s2 + 0x10));
+        }
+        *(s32 *)(s3 + 0x14) = 1;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244D80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244F00);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00245240);
@@ -1361,6 +1467,40 @@ void func_00245D30(u8 *o, s32 idx) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00245DA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002463B0);
+#if 0
+// differs: one register only: the first range test (s3 < 4) goes to v0 here, v1 in the original (11 instructions differ, all of them this compare or relocations); 5 layouts of the range tests tried
+s32 func_001DFA90(void *, s32);
+void func_00245DA0(s32, u8 *);
+void func_00246680(s32 a0, u8 *a1) {
+    u8 *s1;
+    u8 *s0;
+
+    if ((a0 >= 200 && a0 < 300) || (a0 >= 400 && a0 < 500)) {
+        s1 = *(u8 **)(*(u8 **)a1 + 0x1354);
+        s0 = D_0046FE4C + (*(s32 *)(s1 + 0x1350) * 0x480) + 0x10;
+    } else {
+        s1 = *(u8 **)a1;
+        s0 = D_0046FE4C + (*(s32 *)(s1 + 0x1350) * 0x480) + 0x10;
+    }
+    if (*(s32 *)(s0 + 0x14) == -1) {
+        *(s32 *)(s0 + 0x14) = *(s32 *)(s1 + 0xB70);
+        if (!((u32)(a0 - 0x12C) >= 3 && a0 != 0x12F)) {
+            *(s32 *)(s0 + 0x38) = *(s32 *)(s1 + 0xB70);
+        }
+        *(s16 *)(s0 + 0x2A) = func_001DFA90(s1, *(s16 *)(s1 + 0x1A58)) - 1;
+        if (*(s16 *)(s0 + 0x2A) < 0) {
+            *(s16 *)(s0 + 0x2A) = 0;
+        }
+    }
+    if (a0 < 4 || a0 >= 0x15E) {
+        func_002529B0(a0, s1, 0);
+    } else if (a0 < 0x12C) {
+        func_00248910(a0, s1);
+    } else {
+        func_00245DA0(a0, a1);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00246680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00246800);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00246AB0);
