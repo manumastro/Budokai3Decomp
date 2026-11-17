@@ -958,14 +958,14 @@ s32 func_00216030(void) {
 }
 extern u8 *D_00470570;
 
-#if 0
-s32 func_00216080(s32 x) {
-    u8 *p = D_00470570 + x * 0x2020;
+s32 func_00216080(s32 idx) {
+    u8 *p = D_00470570 + ((idx * 0x101) << 5);
     u8 *q = p + 0x830;
-    s32 v = *(s32 *)(p + 0x252C);
+    s32 v;
     s32 w;
     s32 r;
 
+    v = *(s32 *)(p + 0x252C);
     if (v == 0x22 || v == 0x24 || v == 0x23) {
         r = 0x1E;
     } else if (v == 0x28) {
@@ -976,7 +976,7 @@ s32 func_00216080(s32 x) {
         r = 0x1C;
     } else {
         w = *(s32 *)(q + 0xB9C);
-        if ((u32)w - 0x46 < 2u || w == 0x5B || w == 0x5C) {
+        if ((u32)(w - 0x46) <= 1u || w == 0x5B || w == 0x5C) {
             r = 0x20;
         } else {
             r = 0x1B;
@@ -984,9 +984,6 @@ s32 func_00216080(s32 x) {
     }
     return r;
 }
-// differs: 2 of 52 differ: the range test on w (w - 70 < 2) is kept in v0 where the original uses at, and the return value is joined through a common jr with a b
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216080);
 #if 0
 void func_00216150(s32 idx) {
     s32 i;
@@ -1072,7 +1069,7 @@ extern u8 *D_0046FDD0;
 extern u8 D_00469CE8[];
 void func_00216A60(void);
 u8 *amTask_Create(void *, s32, s32, s32, s32, void *);
-s16 func_00216080(s32);
+s32 func_00216080(s32);
 void func_002CA2F0(void *);
 extern void memset(void *, s32, s32);
 
