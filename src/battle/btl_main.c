@@ -1677,7 +1677,6 @@ void func_001B9330(Fighter *f) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B93A0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9800);
-#if 0
 void func_001B9A80(Fighter *f) {
     f32 t;
 
@@ -1686,14 +1685,8 @@ void func_001B9A80(Fighter *f) {
         FIGHTER_FIELD(f, f32, 0x44) = FIGHTER_FIELD(f, f32, 0x1844);
     }
     t = FIGHTER_FIELD(f, f32, 0xCB8) * 0.01f;
-    if (t > 0.2f) {
-        t = 0.2f;
-    }
-    FIGHTER_FIELD(f, f32, 0x17BC) = t;
+    FIGHTER_FIELD(f, f32, 0x17BC) = (0.2f < t) ? 0.2f : t;
 }
-#endif
-// differs: the join after the clamp (if 0.2 < t) has no alignment nop before the store; the original has one
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9A80);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9B00);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9CA0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9E70);
@@ -1718,7 +1711,6 @@ void func_001BB2C0(Fighter *f) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BB310);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BBC60);
-#if 0
 void func_001BBF50(Fighter *f) {
     f32 t;
 
@@ -1727,14 +1719,8 @@ void func_001BBF50(Fighter *f) {
         FIGHTER_FIELD(f, f32, 0x44) = FIGHTER_FIELD(f, f32, 0x1844);
     }
     t = FIGHTER_FIELD(f, f32, 0xCB8) * 0.015f;
-    if (t > 0.2f) {
-        t = 0.2f;
-    }
-    FIGHTER_FIELD(f, f32, 0x17BC) = t;
+    FIGHTER_FIELD(f, f32, 0x17BC) = (0.2f < t) ? 0.2f : t;
 }
-#endif
-// differs: same clamp as func_001B9A80: the join after the if has no alignment nop
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BBF50);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BBFD0);
 void func_001BC110(Fighter *f) {
     FighterV *fv = (FighterV *)f;
@@ -2569,24 +2555,24 @@ void func_001C5FE0(void *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C5FE0);
-#if 0
 void func_001C6120(void *a0) {
-    u8 *src = (u8 *)a0;
-    Fighter *f;
+    Fighter *t1 = BTL_CHARA(0);
     s32 i;
+    s16 *a3;
 
-    f = (Fighter *)((u8 *)D_00470570 + 0x830);
-    for (i = 0; i < ((BattleSlots *)D_00470570)->numFighters; i++) {
-        if (*(u32 *)a0 & (1 << i)) {
-            FIGHTER_FIELD(f, s8, 0x1FF8) = *(s16 *)(src + 8);
-        }
-        src += 2;
-        f = (Fighter *)((u8 *)f + 0x2020);
+    if (0 < ((BattleSlots *)D_00470570)->numFighters) {
+        i = 0;
+        a3 = a0;
+        do {
+            if (*(s32 *)a0 & (1 << i)) {
+                FIGHTER_FIELD(t1, s8, 0x1FF8) = a3[4];
+            }
+            i++;
+            a3++;
+            t1 = (Fighter *)((u8 *)t1 + 0x2020);
+        } while (i < ((BattleSlots *)D_00470570)->numFighters);
     }
 }
-#endif
-// differs: loop register allocation: the original keeps the fighter pointer and the index in other registers and reads the count through the global each pass
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C6120);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C61A0);
 #if 0
 void func_001C6350(void) {
@@ -2656,23 +2642,34 @@ void *func_001C7D70(s32 i) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C7D90);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8020);
-#if 0
-void func_001C8050(Fighter *f, s32 i) {
-    s32 k;
+/* Fighter view for func_001C8050: the slot pointer at 0x1CF4 (a table entry with two s16 at 0x14 and 0x16). */
+typedef struct FighterSlotView {
+    u8 unk0000[0xBA4];
+    s32 unkBA4;
+    u8 unkBA8[0x1CF4 - 0xBA8];
+    void *unk1CF4;
+    u8 unk1CF8[0x1CFC - 0x1CF8];
+    s32 unk1CFC;
+} FighterSlotView;
 
-    if (FIGHTER_FIELD(f, s32, 0x1CFC) == 0x2A) {
-        return;
-    }
-    for (k = 1; k < 8; k++) {
-        if (k != FIGHTER_FIELD(f, s32, 0xBA4) && k != FIGHTER_FIELD(FIGHTER_FIELD(f, void *, 0x1CF4), s16, 0x14) &&
-            k != FIGHTER_FIELD(FIGHTER_FIELD(f, void *, 0x1CF4), s16, 0x16) && k != i) {
-            func_001C82C0(f, k);
-        }
+void func_001C8050(Fighter *f, s32 i) {
+    FighterSlotView *fv = (FighterSlotView *)f;
+    s32 k = 1;
+    void *p;
+
+    if (fv->unk1CFC != 0x2A) {
+        k = 1;
+        do {
+            if (k != fv->unkBA4) {
+                p = fv->unk1CF4;
+                if (k != FT_FIELD(p, s16, 0x14) && k != FT_FIELD(p, s16, 0x16) && k != i) {
+                    func_001C82C0(f, k);
+                }
+            }
+            k++;
+        } while (k < 8);
     }
 }
-#endif
-// differs: the compiler keeps f+0xBA4 and f+0x1CF4 in saved registers (frame 0x60, 5 saved), the original reloads them each pass (frame 0x40)
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8050);
 #if 0
 // differs: the compiler keeps the field addresses in saved registers (frame 0xB0 against 0x50); the original re-reads the fields inside the loop
 extern void func_001E7070(void *p, s32 a);
@@ -3051,19 +3048,18 @@ void func_001C9840(void *p) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9840);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9910);
-#if 0
 s32 func_001C9A70(void *p) {
-    s32 r;
+    void *q;
 
-    if (p == 0 || FIGHTER_FIELD(p, s32, 0x74) != 0) {
+    if (p == 0 || FT_FIELD(p, void *, 0x74) != 0) {
         return 1;
     }
-    if (FIGHTER_FIELD(p, void *, 0x70) != 0 && FIGHTER_FIELD(FIGHTER_FIELD(p, void *, 0x70), s16, 4) != 3) {
+    q = FT_FIELD(p, void *, 0x70);
+    if (q != 0 && FT_FIELD(q, s16, 0x4) != 3) {
         return 0;
     }
-    r = func_001D4850(FIGHTER_FIELD(p, void *, 0x58));
-    return r != 0;
+    if (func_001D4850(FT_FIELD(p, void *, 0x58)) == 0) {
+        return 0;
+    }
+    return 1;
 }
-#endif
-// differs: the last return: the original computes (func != 0) with sltu and falls into the epilogue; the compiler emits branches (size 0x64 against 0x80)
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C9A70);
