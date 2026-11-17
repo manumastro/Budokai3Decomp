@@ -360,6 +360,52 @@ extern s32 func_002A2020();
 void func_002A21E0(void) {
     func_002A2020();
 }
+#if 0
+// func_002A21F0: the signature (f32 *, f32 x) matches the caller in 2A51E0 (the float in f12); 46 of 56 differ with the stores interleaved, 49 with the loads hoisted to locals (frame 0xA0 against 0x80): the 16-byte stack vectors need the loads in the original order without locals
+extern f32 D_0047043C;
+extern f32 D_00470440;
+extern void func_00136E80(s32, s32, s32, s32, s32);
+extern void func_001377E0(s32 *, s32 *);
+extern void amDraw_FlushPacket(void);
+void func_002A21F0(f32 *a0, f32 x) {
+    s32 st[8];
+    f32 buf[8];
+    f32 q0 = a0[0];
+    f32 q1 = a0[1];
+    f32 q2 = a0[2];
+    f32 q3 = a0[3];
+    f32 c1 = D_0047043C;
+    f32 c0 = D_00470440;
+    s32 k;
+    s32 *p0;
+    s32 *p1;
+    st[0] = 0;
+    st[4] = *(s32 *)&c1;
+    st[1] = 0;
+    st[5] = *(s32 *)&c0;
+    *(f32 *)&st[2] = x;
+    *(f32 *)&st[6] = x;
+    buf[0] = q0;
+    buf[4] = q0;
+    buf[1] = q1;
+    buf[5] = q1;
+    buf[2] = q2;
+    buf[6] = q2;
+    buf[3] = q3;
+    func_00136E80(0x20001800, 0, -1, 0x44, 0);
+    buf[7] = q3;
+    k = 0;
+    p0 = st;
+    p1 = (s32 *)buf;
+    do {
+        func_001377E0(p0, p1);
+        k++;
+        p0 += 4;
+        p1 += 4;
+    } while (k < 2);
+    amDraw_FlushPacket();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A21F0);
 extern void func_002A5B00(void);
 extern void func_0029A9F0(void);
@@ -1361,6 +1407,46 @@ s32 func_002A4A30(s32 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4A30);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4AD0);
+extern void func_002A4AD0(void);
+#if 0
+// func_002A4BD0: 0x110 vs 0x120 bytes: the saved registers now match (obj s2, the 0x40 pointer s0, the value s1); the original loads a4 after the object and flag test, and keeps a nop after the release block clear (ours does not)
+s32 func_002A4BD0(s32 *a0, char *a1) {
+    s32 *s2;
+    s32 s1;
+    s32 *s4;
+    s32 *s0;
+    s32 a4;
+    *(s32 *)a1 = ((s32 *)*(s32 **)(a1 + 0x2C))[1];
+    a0[0x18 / 4] = 0;
+    func_002AFCA0(a0 + 0x1C / 4, a1);
+    a0[0x10 / 4] = (s32)func_002A4AD0;
+    s2 = (s32 *)a0[0x1C / 4];
+    a4 = ((s32 *)*(s32 **)(a1 + 0x2C))[1];
+    if (*(s16 *)((char *)s2 + 4) == 3) {
+        s32 a5;
+        a0[0x10 / 4] = 0;
+        a5 = *(s32 *)a1;
+        s0 = (s32 *)s2[0x40 / 4];
+        s1 = s0[0x50 / 4];
+        s4 = (s32 *)((char *)D_005AB610 + a5 * 240 + a4 * 24);
+        if (s4[0] != 0) {
+            amCdFs_ReleaseCache(s4[0]);
+            s4[0] = 0;
+        }
+        s4[0] = (s32)s0;
+        s4[1] = s1;
+        s2[0x40 / 4] = 0;
+        amCdFs_Close((s32)s2, 0);
+        if (a0[0x18 / 4] != 0) {
+            amCdFs_Close(a0[0x18 / 4], 0);
+        }
+        a0[0x18 / 4] = 0;
+        a0[0x1C / 4] = 0;
+        return 1;
+    }
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4BD0);
 extern s8 D_004B4B63[];
 extern char D_00492FCE[];
@@ -1521,7 +1607,72 @@ s32 Evt_CmdScreenShot(s32 *a0) {
     }
     return 3;
 }
+extern s32 D_005AA604;
+extern s32 D_00455760[];
+extern s32 D_004708D8;
+extern void func_002BD6B0(void *);
+extern void StrStatus_Start(s32, s32);
+extern void StrStatus_Dispatch(s32 *);
+extern void func_002A5580(void);
+#if 0
+// func_002A5420: frame 0x90 matches with blk[10] and the byte copies are in order, but the table pointer (t0 in the original, a2 after the index) and the register of the 0x1200 word differ (79 lines); the struct copy is a plain transcription
+void func_002A5420(s32 *a0) {
+    s32 loc[0xD];
+    s32 blk[0xA];
+    char *p = (char *)loc;
+    char *q = p + 5;
+    char *v0 = (char *)D_005AA604;
+    s32 *t0 = D_00455760;
+    s32 a2;
+    s32 a3;
+    s32 v3;
+    s32 *s0 = a0;
+    p[0] = D_00511450[0];
+    p[1] = v0[0x11E1];
+    p[2] = v0[0x11E3];
+    p[3] = v0[0x11E2];
+    p[4] = v0[0x11E7];
+    q[0] = v0[0x11E8];
+    q[1] = v0[0x11E9];
+    q[2] = v0[0x11EA];
+    q[3] = v0[0x11EB];
+    q[4] = v0[0x11EC];
+    q[5] = v0[0x11ED];
+    q[6] = v0[0x11EE];
+    loc[0x5C / 4] = *(s32 *)(v0 + 0x1200);
+    a2 = D_004708D8;
+    v3 = *(s32 *)(v0 + 0x1200);
+    a3 = v0[0x11E7];
+    t0 = (s32 *)((char *)t0 + v0[0x11E1] * 4);
+    a2 = a2 + a3;
+    a2 = a2 * 4;
+    a3 = t0[0];
+    a2 = a2 + a3;
+    a2 = *(s32 *)(a2 - 4);
+    v3 = a2 - v3;
+    loc[0x60 / 4] = v3;
+    loc[0x64 / 4] = 0;
+    loc[0x68 / 4] = *(s16 *)(v0 + 0x11F0);
+    loc[0x6C / 4] = *(s16 *)(v0 + 0x11F2);
+    loc[0x70 / 4] = *(s16 *)(v0 + 0x11F4);
+    loc[0x74 / 4] = *(s16 *)(v0 + 0x11F6);
+    loc[0x78 / 4] = *(s16 *)(v0 + 0x11F8);
+    loc[0x7C / 4] = *(s16 *)(v0 + 0x11FA);
+    loc[0x80 / 4] = *(s16 *)(v0 + 0x11FC);
+    func_002BD6B0(loc);
+    StrStatus_Start(0x3000, 0x80000);
+    blk[4] = 2;
+    StrStatus_Dispatch(blk);
+    blk[5] = 0;
+    func_00264140(-1, 0);
+    {
+        void *f = func_002A5580;
+        s0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5420);
+
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5580);
 #if 0
 // func_002A56A0: the copy loop keeps the counter in a2 and the pointer in a1 in the original; ours takes the other registers (240 vs 232 bytes, 41 instructions differ); 5 variants tried
