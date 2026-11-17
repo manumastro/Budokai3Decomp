@@ -467,7 +467,7 @@ void func_002CE630(f32 x, f32 y) {
     func_00200270(x - tmp[0], y - tmp[2]);
     gBtbBg[0] = 1;
 }
-// differs: the VU0 copy matches; the constant 1 of the last store is in v1 in the original, v0 here (tried inline operands)
+// differs: the VU0 copy matches; the constant 1 of the last store is in v1 in the original, v0 here (tried inline operands, s32 local for the 1, aligned(16) tmp, &tmp[0]: all 1 register diff, round 5 permp)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CE630);
 extern u8 D_0044AE50[];
