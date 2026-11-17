@@ -22,7 +22,8 @@ extern s32 D_0058BB38[];
 extern f32 D_00470710;
 extern void func_00224680(void *);
 extern void func_00224BB0(void *);
-extern void func_002249B0(void);
+extern s32 func_002249B0(void);
+extern char *gBattle;
 extern void func_00223660(void);
 extern void func_00224F90(void);
 
@@ -226,7 +227,74 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002238B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00223DA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00224480);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00224680);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002249B0);
+extern u8 *func_0021C3E0(s32);
+extern u8 D_00492FC0[];
+extern u8 D_00492FD2[];
+extern u8 D_0058BB34[];
+s32 func_002249B0(void) {
+    s32 ret = 0;
+    s32 f2;
+    s32 f1;
+    s32 i;
+    s32 cnt;
+    s32 a;
+    u16 v;
+    u8 *e;
+
+    if (gBtlSys->fE30 & 2) {
+        return 0;
+    }
+    a = *(s16 *)((char *)gBtlSys + 0xE40);
+    if (a != -1) {
+        v = *(u16 *)((u8 *)D_00492FD2 + a * 184);
+        if ((v & 0x502) == 0x502) {
+            if (D_0058BB38[0] == 0) {
+                ret = 1;
+            }
+            D_0058BB38[0] = D_0058BB38[0] ^ 1;
+        }
+        if ((v & 8) != 0 && D_0058BB38[0] == 0) {
+            ret = 1;
+            D_0058BB34[0] = 0;
+            D_0058BB38[0] = ret;
+        }
+    } else {
+        f2 = 0;
+        f1 = 0;
+        i = 0;
+        if (0 < *(s32 *)(gBattle + 0x88D8)) {
+            do {
+                e = func_0021C3E0(i);
+                a = *(s16 *)(e + 0x1A);
+                if (a != -1) {
+                    v = *(u16 *)(D_00492FC0 + a * 184 + 0x12);
+                } else {
+                    v = 0;
+                }
+                if ((v & 0x502) == 0x502) {
+                    f2 = 1;
+                }
+                if ((v & 8) != 0) {
+                    f1 = 1;
+                    D_0058BB34[0] = 0;
+                }
+                i++;
+                cnt = *(s32 *)(gBattle + 0x88D8);
+            } while (i < cnt);
+        }
+        if (f2 != 0) {
+            if (D_0058BB38[0] == 0) {
+                ret = 1;
+            }
+            D_0058BB38[0] = D_0058BB38[0] ^ 1;
+        } else if (f1 != 0) {
+            if (D_0058BB38[0] == 0) {
+                D_0058BB38[0] = 1;
+            }
+        }
+    }
+    return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00224BB0);
 void func_00224F90(void) {
     Work21D260 *w = gBtlSys;
