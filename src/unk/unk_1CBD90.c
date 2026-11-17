@@ -1416,17 +1416,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D01C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D02C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D03E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D05D0);
-/* r6 best attempt diff 3 */
-// differs: 3 of 16. The original tests o != 0 as a materialised flag (sltu + xori, bnez to exit) and enters the loop through a b to the test; ours tests with beqz at the loop top. Four source forms (||, flag local, for-break) tried.
-#if 0
 void *func_001D06F0(void *o, s32 mask) {
-    while (o != 0 && (*(u16 *)(*(char **)((char *)o + 0x20) + 8) & mask) == 0) {
+    while (!(o != 0) == 0 && (*(u16 *)(*(char **)((char *)o + 0x20) + 8) & mask) == 0) {
         o = *(void **)((char *)o + 0x2C);
     }
     return o;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D06F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0730);
 // // differs: 53 of 90 (round 4 chr): the list insert matches up to the first flag test; the count byte and the 0xA halfword store are placed differently (the original keeps the item in a2 and the head in a1), and the switch block layout is untested beyond that.
 #if 0
