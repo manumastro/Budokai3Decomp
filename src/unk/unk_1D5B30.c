@@ -1099,36 +1099,26 @@ s32 func_001D9480(Fighter *c) {
 #endif
 // differs: size 0x260 vs 0x270 (4 instructions short), the original keeps the object in s1 with two saved registers (frame 0x70); the C keeps it in s2 (frame 0x60); four local layouts tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9480);
-#if 0
 void func_001D96F0(void) {
     Game *g = gBattle;
+    Fighter *f;
     s32 i;
-    Fighter *t;
-    Fighter *e;
-    s16 a;
-    s16 b;
+    Fighter *o;
+    s16 t;
 
-    if (0 < g->f88D8) {
-        i = 0;
-        e = (Fighter *)((char *)g + 0x830);
-        do {
-            t = e->f1358;
-            if (t != NULL) {
-                a = e->f13A4;
-                b = t->f13A4;
-                e->f13A4 = b;
-                t->f13A4 = a;
-                e->f1358 = NULL;
-                e->f2015 = 0;
-            }
-            i++;
-            e = (Fighter *)((char *)e + 0x2020);
-        } while (i < g->f88D8);
+    f = (Fighter *)((char *)g + 0x830);
+    for (i = 0; i < g->f88D8; i++) {
+        o = f->f1358;
+        if (o != NULL) {
+            t = f->f13A4;
+            f->f13A4 = o->f13A4;
+            o->f13A4 = t;
+            f->f1358 = NULL;
+            *((char *)f + 0x2015) = 0;
+        }
+        f = (Fighter *)((char *)f + 0x2020);
     }
 }
-#endif
-// differs: the entry loop's counter and pointer come out in other registers (14 to 17 of 28 differ)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D96F0);
 void func_001D9760(Fighter *c, Fighter *o) {
     Fighter *t;
     s16 a;
