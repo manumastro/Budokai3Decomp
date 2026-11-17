@@ -219,3 +219,21 @@ Shop_InitZenie = 0x00276A10; // type:func guess
 
 // ess_trade.c: clears D_0047080C and starts the trade's two steps.
 Trade_Start = 0x0027A190; // type:func guess
+
+// mn_csmodel.c: the model's work area; Start / Start2 start an effect (two copies of one body); CallIfSet runs
+// func_002B6DC0 unless the slot fB6 is -1; Shift moves the two slots along and sets CallIfSet.
+CsModel_Start = 0x002B84F0; // type:func guess
+CsModel_Start2 = 0x002B8C20; // type:func guess
+CsModel_CallIfSet = 0x002B7140; // type:func guess
+CsModel_Shift = 0x002B7230; // type:func guess
+
+// mn_Logomark.c: the logo mark's task: Load reads file 0x10ABF into its block, Begin sets its main step, Close stops.
+Logomark_Load = 0x002E84E0; // type:func guess
+Logomark_Begin = 0x002E8320; // type:func guess
+Logomark_Close = 0x002E75F0; // type:func guess
+
+// mn_ArenaList.c: runs the list's two steps on its work area.
+ArenaList_Refresh = 0x002EF400; // type:func guess
+
+// ess_trade.c: adds one to five counters of the trade block, then runs 0x277310.
+Trade_CountFrame = 0x00279470; // type:func guess

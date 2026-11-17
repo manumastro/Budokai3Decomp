@@ -15,7 +15,15 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EEC60);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EEF00);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF1A0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF390);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF400);
+extern void func_002EE1C0(void *);
+extern void func_002ECFD0(void *, s32);
+
+/* Runs the list's two steps on its work area. */
+void ArenaList_Refresh(Task *t) {
+    void *w = t->data.work;
+    func_002EE1C0(w);
+    func_002ECFD0(w, 1);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF440);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF4C0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF540);

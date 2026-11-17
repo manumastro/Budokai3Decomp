@@ -60,5 +60,7 @@ s32 Option_GetSub(void) {
     return D_00470938 == 0 ? 0 : ((OptionState *)D_00470938)->f8;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0C90);
+// GIVEN UP: func_002E0D10 (true when the block has 3 at offset 4): the compiler folds the test into xori / sltiu,
+// the original keeps a branch (tried: ternary, if/return, if/else with a variable).
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0D10);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0D40);
