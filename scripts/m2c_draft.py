@@ -7,7 +7,7 @@ For one INCLUDE_ASM function this
   1. builds (once, cached in build/m2c/ctx.h) a context from the whole of src/: the primitive-typed `extern`
      declarations and the prototypes of the functions already written in C, so that m2c knows every callee's
      arguments and every global's type;
-  2. runs m2c (tools/m2c, target mipsee-gcc-c, --valid-syntax) on asm/nonmatchings/.../NAME.s;
+  2. runs m2c (tools/m2c, target mipsee-gcc-c, --valid-syntax; env M2C_TARGET and M2C_EXTRA override the target and add options) on asm/nonmatchings/.../NAME.s;
   3. makes the draft compilable for Metrowerks (unknown struct fields become byte-offset accesses on `u8 *`);
   4. splices it in place of the INCLUDE_ASM line in a scratch copy of the file, compiles that copy with the flags
      configure.py gives the file (the same compiler call as scripts/fdiff.py) and compares the function with the
@@ -222,8 +222,9 @@ def run_m2c(asm, name, decls, extra=()):
             jt = Path(td) / "jtbl.s"
             jt.write_text(".section .rodata\n" + "\n".join(tables[u] for u in used if u in tables) + "\n")
             files.append(str(jt))
-        cmd = [sys.executable, str(M2C), "-t", "mipsee-gcc-c", "--valid-syntax", "--no-cache",
-               "--context", str(ctx), "-f", name, *extra, *files]
+        # M2C_TARGET / M2C_EXTRA (space separated) override the target and add options to every run (for A/B tests)
+        cmd = [sys.executable, str(M2C), "-t", os.environ.get("M2C_TARGET", "mipsee-gcc-c"), "--valid-syntax", "--no-cache",
+               "--context", str(ctx), "-f", name, *extra, *os.environ.get("M2C_EXTRA", "").split(), *files]
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
     return r.returncode, r.stdout, r.stderr
 
