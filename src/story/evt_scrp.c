@@ -1437,13 +1437,13 @@ void func_002A5D70(void) {
 #if 0
 // func_002A5D80: long state task: the branch layout of the nested Zenie test differs (118 of 126 with the flag form, 100 of 120 with the and-or form); 2 forms tried
 extern s32 Zenie_GetState(void);
-extern void func_00264260(s32, s32, s32);
+extern void Fade_Request(s32, s32, s32);
 extern void func_00298910(void);
 extern void func_00298990(s32, s32, s32);
 extern void func_00298E30(s32, s32);
 extern void func_002988D0(s32, s32);
 extern void func_00144370(s32, s32, s32, s32);
-extern void func_00144B70(s32);
+extern void SoundRpc_SendWord2(s32);
 extern void Scr_Start(s32, s32);
 extern s8 D_004708E0[];
 extern s8 D_005ABA60[];
@@ -1468,7 +1468,7 @@ void func_002A5D80(s32 *a0) {
             }
         }
         if (skip == 0) {
-            func_00264260(-1, 0, 0);
+            Fade_Request(-1, 0, 0);
             if (s0[0x130 / 4] != -1) {
                 func_00298910();
                 func_00298E10(D_004700A0);
@@ -1502,7 +1502,7 @@ void func_002A5D80(s32 *a0) {
                 s2++;
                 s1++;
             } while (s2 < 8);
-            func_00144B70(-1);
+            SoundRpc_SendWord2(-1);
             Scr_Start(s0[0], 0);
             a0[0x1C / 4] = (s32)((func_002A5D70 == 0) ? 0 : (void *)func_002A5D70);
             s0[0xC / 4] = 0;

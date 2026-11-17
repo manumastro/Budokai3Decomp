@@ -799,8 +799,8 @@ extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern char D_005C4140[];
 extern void func_00304DC0(s32, s32);
-extern void func_001F0830(s32, s32);
-extern void func_001F0810(s32, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 extern void func_002C1A00(Task *);
 
 void func_002C1AA0(s32 *a0) {
@@ -813,13 +813,13 @@ void func_002C1AA0(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s0[0x4 / 4];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s2 = (s32 *)s0[0x8 / 4];
     if (s2 != 0) {
@@ -827,7 +827,7 @@ void func_002C1AA0(s32 *a0) {
         func_0022CD00((s32)s2);
     }
     func_002C0860(s0);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     r = func_0027DAB0(s0[0xA0 / 4]);
     if ((s8)r >= 7) {
@@ -835,8 +835,8 @@ void func_002C1AA0(s32 *a0) {
         s0[0xA0 / 4] = 0;
         D_005C4140[0] = *(u8 *)((char *)s0 + 0xAC);
         func_00304DC0((s32)D_005C4140, *(u8 *)((char *)s0 + 0xAB));
-        func_001F0830(0x11, 0xFF);
-        func_001F0810(0xA, 0);
+        Scene_Request(0x11, 0xFF);
+        Scene_FadeTo(0xA, 0);
         f = (void *)func_002C1A00;
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
@@ -859,13 +859,13 @@ void func_002C1BC0(s32 *a0) {
     D_00470704 = s0v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(s0v, 0x2000);
+    amModel_SetCurrent(s0v, 0x2000);
     D_00470238 = 0;
     s0v = s0[0x4 / 4];
     D_00470704 = s0v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(s0v, 0x2000);
+    amModel_SetCurrent(s0v, 0x2000);
     D_00470238 = 0;
     s2 = s0[0x8 / 4];
     if (s2 != 0) {
@@ -873,7 +873,7 @@ void func_002C1BC0(s32 *a0) {
         func_0022CD00((s32)s2);
     }
     func_002C0860(s0);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     r = func_0027DAB0(s0[0xA0 / 4]);
     if ((s8)r >= 7) {
@@ -936,13 +936,13 @@ void func_002C1CF0(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s0[0x4 / 4];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s2 = s0[0x8 / 4];
     if (s2 != 0) {
@@ -950,7 +950,7 @@ void func_002C1CF0(s32 *a0) {
         func_0022CD00(s2);
     }
     func_002C0860(s0);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     r = func_0027DAB0(s0[0xA0 / 4]);
     if ((s8)r >= 7) {
@@ -987,13 +987,13 @@ void func_002C1E10(s32 *a0) {
     D_00470704 = s0v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(s0v, 0x2000);
+    amModel_SetCurrent(s0v, 0x2000);
     D_00470238 = 0;
     s0v = s0[0x4 / 4];
     D_00470704 = s0v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(s0v, 0x2000);
+    amModel_SetCurrent(s0v, 0x2000);
     D_00470238 = 0;
     s2 = s0[0x8 / 4];
     if (s2 != 0) {
@@ -1001,7 +1001,7 @@ void func_002C1E10(s32 *a0) {
         func_0022CD00((s32)s2);
     }
     func_002C0860(s0);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     r = func_0027DAB0(s0[0xA0 / 4]);
     if ((s8)r >= 7) {
@@ -1097,7 +1097,7 @@ void func_002C27B0(s32 *a0) {
     func_002C0860(s0);
     A2d_FlushList();
     func_00133B50(0, 0);
-    func_003105B0();
+    SeReady_Start();
     *(u8 *)((char *)s0 + 0xAC) = *(u8 *)((char *)s0 + 0xAC) + 1;
     *(s32 *)((char *)s0 + 0xC4) = 0x41F00000;
     *(u8 *)((char *)s0 + 0xAF) = 9;
@@ -1125,13 +1125,13 @@ void func_002C28A0(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s2[0x4 / 4];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s1 = (s32 *)s2[0x8 / 4];
     if (s1 != 0) {
@@ -1139,7 +1139,7 @@ void func_002C28A0(s32 *a0) {
         func_0022CD00((s32)s1);
     }
     func_002C0860(s2);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     t = *(f32 *)&s2[0xC4 / 4] - gFrameDelta;
     *(f32 *)&s2[0xC4 / 4] = t;
@@ -1167,13 +1167,13 @@ void func_002C3120(s32 *a0) {
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     v = s2[0x4 / 4];
     D_00470704 = v;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    func_00145CC0(v, 0x2000);
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
     s1 = (s32 *)s2[0x8 / 4];
     if (s1 != 0) {
@@ -1181,7 +1181,7 @@ void func_002C3120(s32 *a0) {
         func_0022CD00((s32)s1);
     }
     func_002C0860(s2);
-    func_0022C700();
+    A2d_FlushList();
     func_00133B50(0, 0);
     t = *(f32 *)&s2[0xC4 / 4] - gFrameDelta;
     *(f32 *)&s2[0xC4 / 4] = t;
