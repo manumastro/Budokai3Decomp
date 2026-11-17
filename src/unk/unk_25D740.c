@@ -1182,7 +1182,6 @@ s32 func_002603E0(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020A7F0(a[0].i);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260410);
 typedef struct Blk2604 {
     s32 f0;
     s32 f4;
@@ -1204,6 +1203,32 @@ typedef struct Blk2604 {
 } __attribute__((aligned(16))) Blk2604;
 
 extern void func_0020AA20(s32, Blk2604 *);
+
+s32 func_00260410(void *o, ScrCmd *cmd) {
+    ScrArg blk[17];
+    ScrArg *a = cmd->args;
+    s32 k = a[14].i;
+
+    blk[4].f = a[13].f;
+    blk[0].i = 1;
+    blk[1].i = cmd->args[12].i;
+    blk[2].f = cmd->args[11].f;
+    blk[3].f = cmd->args[10].f;
+    blk[5].f = cmd->args[9].f;
+    blk[6].f = cmd->args[8].f;
+    blk[8].f = cmd->args[7].f;
+    blk[9].f = cmd->args[6].f;
+    blk[10].f = cmd->args[5].f;
+    blk[11].f = 1.0f;
+    blk[12].f = cmd->args[4].f;
+    blk[13].f = cmd->args[3].f;
+    blk[14].f = cmd->args[2].f;
+    blk[15].f = cmd->args[1].f;
+    blk[16].f = cmd->args[0].f;
+    blk[7].i = 0;
+    func_0020AA20(k, (Blk2604 *)blk);
+    return 1;
+}
 
 s32 func_002604F0(void *o, ScrCmd *cmd) {
     Blk2604 b;
