@@ -304,7 +304,33 @@ s32 amMotion_MatchName(char *a, char *b) {
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013CC40);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013CE50);
 INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013D360);
-INCLUDE_ASM("asm/nonmatchings/sys/amMotion", func_0013D9B0);
+typedef struct McRig {
+    char pad0[4];
+    MotHdr *m;
+} McRig;
+
+typedef struct McDst {
+    char pad0[0x10];
+    u8 *p10;
+} McDst;
+
+void func_0013D9B0(McRig *a0, McDst *a1) {
+    s32 n;
+    s32 i;
+    u8 *d;
+    n = a0->m->n10;
+    i = 0;
+    while (i < n) {
+        d = a1->p10 + i * 64;
+        __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"((u8 *)a0->m->p14 + i * 80), "r"(d));
+        __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(d + 0x10));
+        __asm__ volatile ("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"((u8 *)a0->m->p14 + i * 80 + 0x20), "r"(d + 0x20));
+        *(s32 *)(d + 0x30) = -1;
+        *(s32 *)(d + 0x34) = -1;
+        *(s32 *)(d + 0x38) = -1;
+        i++;
+    }
+}
 s32 amMotion_FindKeyHint8(Track8s *t, f32 frame, s32 i) {
     s32 mid;
     if (frame < 1.0f) return 0;

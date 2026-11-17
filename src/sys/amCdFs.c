@@ -137,7 +137,23 @@ extern CdReq *amCdFs_LoadDir(s32, char *, s32);
 
 extern void func_00157FF0(void);
 
-INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025BE40);
+void func_0025BE40(void) {}
+extern void func_0025BA90(void);
+extern void func_0025BA60(void);
+extern void func_0025BA50(void);
+extern char D_0046AF78[];
+extern char D_0046AF88[];
+extern char D_0046AF98[];
+extern void *amTask_Create(void *, void *, s32, s32, s32, char *);
+
+#if 0
+/* differs: the original computes the three lui of the arguments before the frame's sd $ra; the C saves $ra first. */
+void func_0025BE50(void) {
+    amTask_Create(func_0025BA90, 0, 0x3800, 0x400, 0x800002, D_0046AF78);
+    amTask_Create(func_0025BA60, 0, 0x3900, 0x400, 0x800002, D_0046AF88);
+    amTask_Create(func_0025BA50, 0, 0x39F0, 0x400, 0x800002, D_0046AF98);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/sys/amCdFs", func_0025BE50);
 
 void amCdFs_Init(s32 a0, s32 a1, s32 mode, s32 stream, s32 nreq, s32 ncache, s32 ndir, s32 *sizes) {

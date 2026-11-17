@@ -72,6 +72,53 @@ void func_00131B90(Screen *s) {
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00131D00);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00131F00);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00132610);
+typedef struct Tri {
+    char pad0[0x20];
+    f32 f20;
+    f32 f24;
+    char pad28[8];
+    f32 f30;
+    f32 f34;
+    f32 f38;
+} Tri;
+
+extern Tri D_0047CA40;
+
+/* differs: the size (0xC8 against 0xD0): the original branches to the join with `b` after each test (bc1t to the
+ * continuation), and its return-0 block sits after the join; the nested-if form is not that layout yet. */
+#if 0
+s32 func_00132D20(Tri *t, f32 *v, f32 x) {
+    f32 f5, f3, f4, f2, f1, f0;
+    s32 ret = 1;
+
+    f5 = v[0];
+    f3 = v[1];
+    f4 = v[2];
+    if (t == 0) t = &D_0047CA40;
+    f5 = f5 * t->f30;
+    f3 = f3 * t->f34;
+    f2 = x * t->f38;
+    f4 = f4 + f2;
+    f1 = __s_abs(f4);
+    if (__s_abs(f5) <= f1) {
+        if (__s_abs(f3) <= f1) {
+            f0 = t->f20 + f2;
+            f3 = f0 - x;
+            f0 = t->f24 + f2;
+            f2 = x + f0;
+            f0 = f2 + f3;
+            f4 = f4 * f0;
+            f0 = 2.0f * f2;
+            f0 = f0 * f3;
+            f4 = f4 - f0;
+            f0 = f2 - f3;
+            f4 = f4 / f0;
+            if (__s_abs(f4) <= f1) return 0;
+        }
+    }
+    return ret;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00132D20);
 INCLUDE_ASM("asm/nonmatchings/sys/unk_131700", func_00132DF0);
 void amDraw_SetScissor(f32 *r, s32 raw) {

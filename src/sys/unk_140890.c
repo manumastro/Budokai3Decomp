@@ -173,7 +173,29 @@ s32 amDma_Request(s32 ch, s32 id, s32 tte, s32 mode, s32 madr, s32 qwc, s32 tadr
     return 0;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/sys/unk_140890", amDma_StartNext);
+s32 amDma_StartNext(s32 q, s32 ch) {
+    DmaQueue *dq = &gDmaQueue[q];
+    DmaReq *req = gDmaQueueReqs[q] + dq->head;
+    volatile u32 *regs;
+
+    if (dq->count <= 0) return -1;
+    if (gDmaQueueBusy[q] >= 0) return -1;
+    if (req->chan != ch) return -1;
+    if (gDmaChanNextQueue[ch] != -1) return -1;
+    regs = gDmaChanRegs[ch];
+    regs[4] = req->qwc;
+    regs[8] = req->tadr;
+    regs[0xC] = req->madr;
+    regs[0x20] = req->sadr;
+    *(volatile u32 *)0x1000E010 = 1 << ch;
+    __asm__ volatile ("sync");
+    regs[0] = (regs[0] & 0xFFFF0000) | req->chcr;
+    __asm__ volatile ("sync");
+    gDmaQueueBusy[q] = 1;
+    dq->head = (dq->head + 1) & (gDmaQueueSize - 1);
+    dq->count--;
+    return ch;
+}
 
 s32 amDma_QueueHandler(s32 id, s32 ch, void *arg) {
     DmaQueue *q;
