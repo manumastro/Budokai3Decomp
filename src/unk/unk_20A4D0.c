@@ -957,19 +957,27 @@ void func_00215B20(void) {
     u8 *p;
     void (*f)(void *);
 
-    for (p = *(u8 **)D_00568B90; p != D_00568C10; p = *(u8 **)p) {
-        if ((u16)*(s16 *)(p + 0x1E) != 0) {
-            *(s32 *)(p + 0x8) = -1;
-            f = *(void (**)(void *))(p + 0xC);
-            if ((s32)f > 0) {
-                f(p);
+    p = *(u8 **)D_00568B90;
+    if (p != D_00568C10) {
+        do {
+            if (*(s16 *)(p + 0x1E) != 0) {
+                *(s32 *)(p + 0x8) = -1;
+                f = *(void (**)(void *))(p + 0xC);
+                if ((s32)f > 0) {
+                    f(p);
+                }
             }
-        }
+            p = *(u8 **)p;
+        } while (p != D_00568C10);
     }
-    for (p = *(u8 **)D_00568B90; p != D_00568C10; p = *(u8 **)p) {
-        if (*(s32 *)(p + 0x8) == -1) {
-            func_0020CB90(p);
-        }
+    p = *(u8 **)D_00568B90;
+    if (p != D_00568C10) {
+        do {
+            if (*(s32 *)(p + 0x8) == -1) {
+                func_0020CB90(p);
+            }
+            p = *(u8 **)p;
+        } while (p != D_00568C10);
     }
     func_0020F700(-1);
     func_0020A7F0(-1);
@@ -977,7 +985,7 @@ void func_00215B20(void) {
     func_00244040();
     func_00247410();
 }
-// differs: the 16-bit flag test is zero-extended with dsll32 / dsrl32 here, and the second loop label gets an alignment nop pair the original has (size 0xE8 against 0xF0)
+// differs: 0xE8 against 0xF0: the 16-bit flag test is loaded with lh and zero-extended with dsll32 / dsrl32 in the original, here it is lhu or a plain lh with bnez; the second loop's label is not padded the same way
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215B20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215C10);
