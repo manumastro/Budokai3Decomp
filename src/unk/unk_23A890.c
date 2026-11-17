@@ -609,6 +609,57 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242A10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242B40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242E10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243020);
+#if 0
+void func_00243280(s32 i) {
+    u8 *b = D_0046FE44 + (i << 7);
+    f32 f2 = *(f32 *)(b + 0x24);
+    f32 f0;
+
+    if (f2 < 0.430000007f) {
+        goto low;
+    }
+    if (*(s16 *)(b + 0x34) != 0) {
+        goto half;
+    }
+    if (*(s16 *)(b + 0x36) == 0x28) {
+        goto half;
+    }
+    if (*(s16 *)(b + 0x36) < 0x40) {
+        goto clamp;
+    }
+half:
+    f0 = 0.5f + (f2 - 0.430000007f);
+    *(f32 *)(b + 0x28) = f0;
+    goto end;
+clamp:
+    if (f2 <= 0.569999993f) {
+        f0 = 4.0f * (f2 - 0.430000007f);
+    } else {
+        f0 = 0.560000002f + 1.5f * (f2 - 0.569999993f);
+    }
+    *(f32 *)(b + 0x28) = f0;
+    goto end;
+low:
+    if (*(s16 *)(b + 0x34) != 0) {
+        goto divide;
+    }
+    if (*(s16 *)(b + 0x36) == 0x28) {
+        goto divide;
+    }
+    if (*(s16 *)(b + 0x36) < 0x40) {
+        *(f32 *)(b + 0x28) = 0.0f;
+        goto end;
+    }
+divide:
+    f0 = 0.5f * (f2 / 0.430000007f);
+    *(f32 *)(b + 0x28) = f0;
+end:
+    if (*(f32 *)(b + 0x28) > 1.0f) {
+        *(f32 *)(b + 0x28) = 1.0f;
+    }
+}
+// differs: same instructions and constants (exact float literals), 0x158 bytes against 0x170: the original gives each clamp arm its own store and b to the clamp label, and the zero arm is laid out separately; 6 instructions short here
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243280);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002433F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243600);
