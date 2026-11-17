@@ -3847,15 +3847,13 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BF730);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BFD60);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C0130);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C09A0);
-#if 0
-// differs: sibling of func_001C2340 (same table walk); the final epilogue layout differs: the original jumps every failed test to the shared jr, the compiler keeps a separate exit
 s32 func_001C21C0(Fighter *f) {
     s16 *t;
-    s32 n;
     s32 idx;
+    s32 sum;
+    s32 n;
     s32 k;
     s32 k2;
-    s32 sum;
     s32 v;
     t = (s16 *)((u8 *)f + 0x164);
     n = FT_FIELD(f, s32, 0x50);
@@ -3873,9 +3871,7 @@ s32 func_001C21C0(Fighter *f) {
     if (sum < -14) {
         return 0;
     }
-    if (sum < 0) {
-        sum = -sum;
-    }
+    sum = (sum < 0) ? -sum : sum;
     k = (idx - 1) & 0x1F;
     if (t[k * 2] != 0) {
         return 0;
@@ -3887,9 +3883,7 @@ s32 func_001C21C0(Fighter *f) {
     if (v < -9) {
         return 0;
     }
-    if (v < 0) {
-        v = -v;
-    }
+    v = (v < 0) ? -v : v;
     k2 = (k - 1) & 0x1F;
     sum += v;
     if (t[k2 * 2] != 1) {
@@ -3902,17 +3896,13 @@ s32 func_001C21C0(Fighter *f) {
     if (v < -9) {
         return 0;
     }
-    if (v < 0) {
-        v = -v;
-    }
+    v = (v < 0) ? -v : v;
     sum += v;
     if (n < sum) {
         return 0;
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C21C0);
 s32 func_001C2340(Fighter *f) {
     s16 *t;
     s32 last;
