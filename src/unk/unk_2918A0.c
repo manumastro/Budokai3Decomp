@@ -240,22 +240,21 @@ void func_002928C0(Work2918A0 *w) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002928C0);
-#if 0
-// differs: the state test is laid out with an empty branch and aligned targets in the original: the if/else order does not reproduce it
 void func_002929A0(Work2918A0 *w) {
     func_00291BF0();
     if (func_002A8F90() == 0) {
-        if (D_005AA640[0] == 6) {
+        switch (D_005AA640[0]) {
+        case 6:
             Scene_FadeTo(0xA, 0);
             w->f1C = (func_002935F0 == 0) ? 0 : func_002935F0;
-        } else {
+            break;
+        default:
             func_00264140(-1, 0);
             w->f1C = (func_00295300 == 0) ? 0 : func_00295300;
+            break;
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002929A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00292A40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00292FF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_00293250);
