@@ -38,13 +38,12 @@ static inline void Cloth_Draw(Cloth *c) {
 
 INCLUDE_ASM("asm/nonmatchings/battle/char_cloth", func_001D1B80);
 INCLUDE_ASM("asm/nonmatchings/battle/char_cloth", func_001D1ED0);
-#if 0
-/* Does not match yet: 1 of 16 instructions differ. */
 s32 func_001D2300(s32 w, s32 h, s32 n) {
-    return (n << 6) + (((w - 1) * h + (h - 1) * w + (w - 1) * (h - 1) * 2) * 0x10 + 0x80 + (w * h) * 0x80);
+    s32 a = (w - 1) * h + (h - 1) * w;
+    s32 wh = (w * h) * 0x80;
+    s32 b = (a + (w - 1) * (h - 1) * 2) * 0x10 + 0x80;
+    return (n << 6) + (b + wh);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_cloth", func_001D2300);
 INCLUDE_ASM("asm/nonmatchings/battle/char_cloth", func_001D2340);
 void func_001D2580(Cloth *c) {
     if (c != 0) {
