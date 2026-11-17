@@ -2215,6 +2215,17 @@ void func_00247770(u8 *o) {
 }
 // differs: the original keeps the object in s1 and o+0x30 in s0 (a 0x30 frame, three saves); here the object stays in s0 and the second load is folded
 #endif
+#if 0
+// differs: 0x40 vs 0x50 (4 instructions short): the original keeps the node pointer and s0 = node + 0x30 in saved registers across the call; with a node variable the compiler folds s0 into the node (one saved register fewer)
+void func_00247770(u8 *a0) {
+    u8 *s0 = a0 + 0x30;
+
+    func_00208F70(*(s32 *)(a0 + 0x38));
+    if (*(s32 *)(*(u8 **)(s0 + 8) + 0x38) < 0) {
+        BtbObj_RemoveFromList(a0);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247770);
 #if 0
 // differs: the original keeps the object in s1 and o+0x30 in s0 (0x30 frame, three saves); the compiler folds o+0x30
@@ -2429,6 +2440,28 @@ void func_00248360(void) {
     }
 }
 #endif
+#if 0
+// differs: 0x98 vs 0xB0 (6 instructions short): the six func_001F7xxx/func_001F6xxx calls and the D_0051CD20 test match; the object setup through func_001A50F0 and the store through the returned pointer are not reproduced yet
+void func_00248360(void) {
+    u8 *s0;
+
+    func_001F7DB0();
+    func_001F7BF0();
+    func_001F7820();
+    func_001F7690();
+    func_001F6E50();
+    func_001F6D60();
+    s0 = (u8 *)D_0051CD0C[0];
+    if (D_0051CD20[0] == 0) {
+        func_001F5EF0(3, 1);
+        s0 = (u8 *)func_001A50F0((s32)s0, 0x27F);
+        *(u8 **)(*(u8 **)(s0 + 0x10)) = s0;
+        *(s16 *)(*(u8 **)(s0 + 0x10) + 0xE) = 1;
+        func_001F5B70((s32)s0);
+        func_001F7470(0);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248360);
 #if 0
 void func_00248410(void) {
@@ -2447,6 +2480,25 @@ void func_00248410(void) {
     }
 }
 // differs: the original loads the table entry and the global base in another order, and keeps the object pointer in its own register (not folded into the offsets)
+#endif
+#if 0
+// differs: 0x68 vs 0x70 (2 instructions short): the loop over the two pointers in D_00470740 and the two amHeap_Free calls match their calls; the register of the array pointer and the loop shape differ; four declaration orders tried, none better
+void func_00248410(void) {
+    s32 s2 = 0;
+    u8 **s0 = D_00470740;
+    u8 *v;
+
+    do {
+        v = *s0;
+        if (v != 0) {
+            amHeap_Free(*(void **)(v + 0x38));
+            amHeap_Free(*(void **)(v + 0x30 + 0xC));
+            *s0 = 0;
+        }
+        s2++;
+        s0++;
+    } while (s2 < 2);
+}
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248410);
 void func_00248480(void) {
