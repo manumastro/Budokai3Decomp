@@ -1,5 +1,8 @@
 #include "common.h"
 
+extern s32 D_00452130[];
+s32 amCdFs_ReadFileId(s32, s32, s32);
+
 extern s32 D_0051CD0C[];
 extern s32 D_0051CD20[];
 s32 func_001A50F0(s32, s32);
@@ -415,6 +418,36 @@ void func_00244150(void) {
         func_00242290();
     }
 }
+#if 0
+void func_00244190(u8 *o) {
+    s32 k;
+    u8 *s1;
+    s32 off;
+    s32 v;
+
+    *(s32 *)(D_0046FE48 + 0x3C8) = amCdFs_ReadFileId(0xC, 0, 1);
+    v = *(volatile s32 *)(D_0046FE48 + 0x3C8);
+    *(s16 *)(D_0046FE44 + 0x102) = 2;
+    if (0 < *(s16 *)(D_0046FE44 + 0x102)) {
+        off = 0;
+        k = 0;
+        do {
+            s1 = D_0046FE48 + off;
+            if (D_00452130[*(s16 *)(o + 0x20)] != -1) {
+                *(s32 *)s1 = amCdFs_ReadFileId(D_00452130[*(s16 *)(o + 0x20)], 0, 1);
+                v = *(s32 *)s1;
+            } else {
+                v = 0;
+            }
+            k++;
+            o += 0x50;
+            off += 0x1A4;
+        } while (k < *(s16 *)(D_0046FE44 + 0x102));
+    }
+    *(s16 *)(D_0046FE44 + 0x100) = 0;
+}
+// differs: the read-back of the stored value is kept with a volatile read (a copy of the original's reloads); the registers of the loop counter and the offset are swapped and the table lookup is scheduled differently
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244190);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244280);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244410);

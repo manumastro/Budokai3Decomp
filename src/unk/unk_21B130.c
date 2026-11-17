@@ -1,5 +1,7 @@
 #include "common.h"
 
+void func_0022D0E0(s32, s32);
+
 extern u8 *D_00470570;
 extern s32 D_00470680;
 extern s32 D_00470684;
@@ -134,7 +136,22 @@ void func_0021B810(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B870);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B940);
+void func_0021B940(void) {
+    u8 *v = *(u8 **)(D_0046FDFC + 0xEE8);
+    s32 *s0;
+
+    if (v != 0) {
+        s0 = (s32 *)(v + 0x30);
+        if (*(s32 *)(v + 0x30) != 0) {
+            func_0022D0E0(*(s32 *)(v + 0x30), 1);
+        }
+        s0[0] = 0;
+        if (s0[1] != 0) {
+            func_0022D0E0(s0[1], 1);
+        }
+        s0[1] = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BA60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BEA0);
@@ -161,6 +178,31 @@ s32 func_0021C2A0(s32 a) {
     }
     return 0;
 }
+#if 0
+s32 func_0021C2E0(s32 id) {
+    u8 *p;
+    s32 *n;
+    s32 i;
+
+    if (id == -1) {
+        return -1;
+    }
+    if (0 < *(s32 *)(D_00470570 + 0x88D8)) {
+        i = 0;
+        p = D_0046FDFC;
+        n = (s32 *)(D_00470570 + 0x88D8);
+        do {
+            if (id == *(s16 *)(p + 0x3E)) {
+                return i;
+            }
+            p += 0x190;
+            i++;
+        } while (i < *n);
+    }
+    return -1;
+}
+// differs: the base pointer is loaded and folded in another order (lui and the offset split, a1 kept for the base)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2E0);
 #if 0
 s32 func_0021C360(s32 id) {
