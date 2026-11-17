@@ -80,34 +80,16 @@ INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030DC00);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030DC70);
 #if 0
 // func_0030E170: the two-value test branches to the end in ours; the original branches to a stub that jumps to the end; four forms tried
-#if 0
-// func_0030E170: the two status tests (2 and 1) return through a shared b to the end in the original; ours branches differently (beq to the else block); 4 shapes tried
 void func_0030E170(s32 *a0) {
-    s32 *s0 = (s32 *)((char *)a0 + 0x30);
+    s32 *s0 = a0 + 0x30 / 4;
     s32 v;
     func_0030DC70(s0);
-    *(f32 *)&s0[2] = *(f32 *)&s0[2] + gFrameDelta;
+    *(f32 *)&s0[0x8 / 4] = *(f32 *)&s0[0x8 / 4] + gFrameDelta;
     v = amSofdec_GetStat(s0[0]);
-    if (v == 2 || v == 1) {
-    } else {
-        if (s0[0] >= 0) {
-            amSofdec_Stop(s0[0]);
-            amSofdec_Destroy(s0[0]);
-            s0[0] = -1;
-        }
-        a0[0x1C / 4] = 0;
+    if (v == 2) {
+        return;
     }
-}
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E170);
-#endif
-void func_0030E170(s32 *a0) {
-    s32 *s0 = (s32 *)((char *)a0 + 0x30);
-    s32 v;
-    func_0030DC70(s0);
-    *(f32 *)&s0[2] = *(f32 *)&s0[2] + gFrameDelta;
-    v = amSofdec_GetStat(s0[0]);
-    if (v == 2 || v == 1) {
+    if (v == 1) {
         return;
     }
     if (s0[0] >= 0) {
@@ -117,6 +99,8 @@ void func_0030E170(s32 *a0) {
     }
     a0[0x1C / 4] = 0;
 }
+#endif
+INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E170);
 void StaffRoll_TaskEnding(s32 *a0) {
     s32 *a1 = a0 + 0x30 / 4;
     f32 v = *(f32 *)&a0[0x38 / 4] + gFrameDelta;
@@ -154,33 +138,6 @@ s32 func_0030E290(s32 *a0) {
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
     return 1;
-}
-#endif
-#if 0
-// func_0030E290: the frame is 0x60 in the original (a 16-byte block for the short at 0x50 beside the 32-byte argument block); ours gives 0x50 whatever the local (struct, array) form; the rest matches the shape
-typedef struct H16Sh {
-    s16 v[8];
-} __attribute__((aligned(16))) H16Sh;
-
-void func_0030E290(s32 *a0) {
-    s32 buf[8];
-    H16Sh h;
-    s32 *s0 = (s32 *)((char *)a0 + 0x30);
-    void *f;
-    buf[1] = 1;
-    buf[2] = 0x600000;
-    buf[3] = 0x400;
-    buf[4] = 0x200;
-    buf[5] = 3;
-    buf[6] = -1;
-    buf[7] = D_0046FD5C;
-    h.v[0] = 0;
-    buf[0] = 0;
-    s0[0] = amSofdec_Create(buf);
-    s0[2] = 0;
-    s0[3] = 0;
-    f = (void *)StaffRoll_TaskEnding;
-    a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E290);
