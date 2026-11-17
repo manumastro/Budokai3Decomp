@@ -4337,7 +4337,7 @@ s32 func_001E8F20(Fighter *c) {
         return 0;
     }
     if (gBattle->f7E2 == 3) {
-        if (gBattle->f9977 != 3) {
+        if (gBattle->f8977 != 3) {
             return 0;
         }
     }
