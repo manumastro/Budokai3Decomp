@@ -48,10 +48,25 @@ typedef struct StageSlot {
     /* 0x0E */ s16 unk0E;
 } StageSlot;
 
+/* A resource a stage object points to (StageObj.res). */
+typedef struct StageResInfo {
+    /* 0x00 */ u8 unk00[0x20];
+    /* 0x20 */ s32 unk20;
+} StageResInfo;
+
+typedef struct StageRes {
+    /* 0x00 */ StageResInfo *info;   /* the key StageLink*.key names */
+    /* 0x04 */ s32 count;
+    /* 0x08 */ struct {
+        s32 unk00;
+        s32 unk04;
+    } ent[1];
+} StageRes;
+
 /* A stage object (0x20 bytes; func_001F8420 builds one). */
 typedef struct StageObj {
     /* 0x00 */ void *src;
-    /* 0x04 */ s32 *unk04;      /* its first word is the key StageLink*.key names */
+    /* 0x04 */ StageRes *res;
     /* 0x08 */ void **unk08;
     /* 0x0C */ void **unk0C;
     /* 0x10 */ void *unk10;
@@ -70,16 +85,16 @@ typedef struct StageGroup {
 /* A reference by key from the stage file to an object (func_001F8740 resolves them). */
 typedef struct StageLinkA {
     /* 0x00 */ u8 unk00[0x10];
-    /* 0x10 */ s32 key;
-    /* 0x14 */ s32 *ref;
+    /* 0x10 */ StageResInfo *key;
+    /* 0x14 */ StageRes *ref;
     /* 0x18 */ StageObj *obj;
     /* 0x1C */ u8 unk1C[4];
 } StageLinkA;
 
 typedef struct StageLinkB {
     /* 0x00 */ u8 unk00[0x1C];
-    /* 0x1C */ s32 key;
-    /* 0x20 */ s32 *ref;
+    /* 0x1C */ StageResInfo *key;
+    /* 0x20 */ StageRes *ref;
     /* 0x24 */ StageObj *obj;
     /* 0x28 */ u8 unk28[8];
 } StageLinkB;

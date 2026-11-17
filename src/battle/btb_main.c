@@ -14,6 +14,14 @@ extern void *func_001A50F0(void *, s32);
 void func_001F9E40(void);
 void func_001F9270(StageWork *w);
 void func_001F8DE0(StageWork *w);
+void func_001F8ED0(StageWork *w);
+void func_001F9660(void);
+void func_001F9600(void);
+void func_001F9420(void);
+void func_001F93C0(void);
+void func_001F9360(void);
+void func_001F9310(void);
+void func_001F97A0(void);
 void func_001F9F50(void);
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F8420);
@@ -23,32 +31,32 @@ static void func_001F8740(StageGroupSrc *src, StageGroup *grp) {
 
     for (i = 0; i < src->nlinkA; i++) {
         for (j = 0; j < grp->count; j++) {
-            if (*grp->objs[j].unk04 == src->linkA[i].key) {
-                src->linkA[i].ref = grp->objs[j].unk04;
+            if (grp->objs[j].res->info == src->linkA[i].key) {
+                src->linkA[i].ref = grp->objs[j].res;
                 src->linkA[i].obj = &grp->objs[j];
             }
         }
     }
     for (i = 0; i < src->nlinkB; i++) {
         for (j = 0; j < grp->count; j++) {
-            if (*grp->objs[j].unk04 == src->linkB[i].key) {
-                src->linkB[i].ref = grp->objs[j].unk04;
+            if (grp->objs[j].res->info == src->linkB[i].key) {
+                src->linkB[i].ref = grp->objs[j].res;
                 src->linkB[i].obj = &grp->objs[j];
             }
         }
     }
     for (i = 0; i < src->nlinkC; i++) {
         for (j = 0; j < grp->count; j++) {
-            if (*grp->objs[j].unk04 == src->linkC[i].key) {
-                src->linkC[i].ref = grp->objs[j].unk04;
+            if (grp->objs[j].res->info == src->linkC[i].key) {
+                src->linkC[i].ref = grp->objs[j].res;
                 src->linkC[i].obj = &grp->objs[j];
             }
         }
     }
     for (i = 0; i < src->nlinkD; i++) {
         for (j = 0; j < grp->count; j++) {
-            if (*grp->objs[j].unk04 == src->linkD[i].key) {
-                src->linkD[i].ref = grp->objs[j].unk04;
+            if (grp->objs[j].res->info == src->linkD[i].key) {
+                src->linkD[i].ref = grp->objs[j].res;
                 src->linkD[i].obj = &grp->objs[j];
             }
         }
@@ -71,6 +79,31 @@ void func_001F89D0(s32 index, StageGroupSrc *src, StageGroup *group) {
         func_001F8420(src->objs[i], &group->objs[i]);
     }
 }
+/* 18 of 97 instructions differ (register choice in the inner loop) */
+#if 0
+StageGroup *func_001F8AA0(StageHeader *hdr) {
+    StageGroup *groups;
+    StageGroup *g;
+    s32 i;
+    s32 j;
+
+    if (hdr->ngroups <= 0) {
+        return NULL;
+    }
+    groups = func_0013AAB0(hdr->ngroups * sizeof(StageGroup), 0, D_004698D8, 0x5F2);
+    func_001258F8(groups, 0, hdr->ngroups * sizeof(StageGroup));
+    g = groups;
+    for (i = 0; i < hdr->ngroups; i++, g++) {
+        func_001F89D0(i, hdr->groups[i], g);
+        if (g->objs->res->info->unk20 >= 2) {
+            for (j = 0; j < g->objs->res->count; j++) {
+                g->objs->res->ent[j].unk00 = D_0044AE50[D_0051CCE0.stage].area[i].unk0C;
+            }
+        }
+    }
+    return groups;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F8AA0);
 void func_001F8C30(StageWork *w) {
     StageHeader *hdr = w->hdr;
@@ -85,8 +118,8 @@ void func_001F8C30(StageWork *w) {
     if (hdr->nlinkA > 0) {
         for (i = 0; i < hdr->nlinkA; i++) {
             for (j = 0; j < w->nobjs; j++) {
-                if (*w->objs[j].unk04 == hdr->linkA[i].key) {
-                    hdr->linkA[i].ref = w->objs[j].unk04;
+                if (w->objs[j].res->info == hdr->linkA[i].key) {
+                    hdr->linkA[i].ref = w->objs[j].res;
                     hdr->linkA[i].obj = &w->objs[j];
                 }
             }
@@ -95,8 +128,8 @@ void func_001F8C30(StageWork *w) {
     if (hdr->nlinkB > 0) {
         for (i = 0; i < hdr->nlinkB; i++) {
             for (j = 0; j < w->nobjs; j++) {
-                if (*w->objs[j].unk04 == hdr->linkB[i].key) {
-                    hdr->linkB[i].ref = w->objs[j].unk04;
+                if (w->objs[j].res->info == hdr->linkB[i].key) {
+                    hdr->linkB[i].ref = w->objs[j].res;
                     hdr->linkB[i].obj = &w->objs[j];
                 }
             }
@@ -205,6 +238,44 @@ void func_001F9600(void) {
         func_0013B110(1);
     }
 }
+extern void func_001F6570(void);
+extern void func_00133B50(s32, s32);
+extern void func_00133D10(s32);
+extern void func_00133D50(f32, f32);
+extern void func_00133D20(f32, f32);
+
+/* 51 of 84 differ: the inlined clear of the 16-byte local is not this loop */
+#if 0
+void func_001F9660(void) {
+    StageFog *fog;
+    u8 col[16];
+    u8 *p;
+    s32 n;
+
+    if (BW_FIELD(D_00470570, s8, 0x8975) != 1) {
+        fog = &D_0044A9C0[D_0044AE50[D_0051CCE0.stage].area[D_0051CCE0.area].fog];
+        func_001F6570();
+        p = col;
+        if (p != NULL) {
+            n = 16;
+            while (n-- != 0) {
+                *p++ = 0;
+            }
+        }
+        func_00133B50(0, 0);
+        func_00133780(0, 1);
+        func_00139620(0x102, col, -1, 0, 0, 0.0f);
+        func_00137EE0();
+        func_00133780(0, 0);
+        if (D_0051CCE0.flags & 0x20) {
+            func_00133CE0(1);
+            func_00133D10(fog->color);
+            func_00133D50(fog->unk04, fog->unk08);
+            func_00133D20(fog->unk0C, fog->unk10);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F9660);
 extern void func_001F6330(void);
 extern void func_002CF820(void);
@@ -375,7 +446,56 @@ void func_001F9E40(void) {
     func_001F6140();
     func_00209450(0x2000000, 1);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F9F50);
+extern char D_004698E8[];
+extern char D_004698F8[];
+extern char D_00469900[];
+extern char D_00469910[];
+extern char D_00469920[];
+extern char D_00469930[];
+extern char D_00469940[];
+extern void *func_00144FC0(void (*update)(void), void (*kill)(void), s32 prio, s32, s32, char *name);
+extern void func_001F62A0(void);
+extern void func_002CF8F0(void);
+extern void func_001F7FA0(void);
+
+void func_001F9F50(void) {
+    if (D_0051CCE0.unkA4[0] == 0) {
+        D_0051CCE0.unkA4[0] = (s32)func_00144FC0(func_001F9660, 0, 0x3100, 0x200, 0x4000004, D_004698E8);
+    }
+    if (D_0051CCE0.unkA4[1] == 0) {
+        D_0051CCE0.unkA4[1] = (s32)func_00144FC0(func_001F9600, 0, 0x3200, 0x200, 0x4000004, D_004698F8);
+    }
+    if (D_0051CCE0.unkA4[3] == 0) {
+        D_0051CCE0.unkA4[3] = (s32)func_00144FC0(func_001F9420, 0, 0x3300, 0x200, 0x4000004, D_00469900);
+    }
+    if (D_0051CCE0.unkA4[2] == 0) {
+        D_0051CCE0.unkA4[2] = (s32)func_00144FC0(func_001F93C0, 0, 0x3600, 0x200, 0x4000004, D_00469910);
+    }
+    if (D_0051CCE0.unkA4[4] == 0) {
+        D_0051CCE0.unkA4[4] = (s32)func_00144FC0(func_001F9360, 0, 0x3800, 0x200, 0x4000004, D_00469920);
+    }
+    if (D_0051CCE0.unkA4[5] == 0) {
+        D_0051CCE0.unkA4[5] = (s32)func_00144FC0(func_001F9310, 0, 0x3800, 0x200, 0x4000004, D_00469930);
+    }
+    if (D_0051CCE0.unkA4[6] == 0) {
+        D_0051CCE0.unkA4[6] = (s32)func_00144FC0(func_001F97A0, 0, 0x5700, 0x200, 0x4000002, D_00469940);
+    }
+    func_001F62A0();
+    D_0051CCE0.area = D_0044AE50[D_0051CCE0.stage].startArea;
+    D_0051CCE0.unk48 = 1;
+    D_0051CCE0.flags &= ~1;
+    D_0051CCE0.flags |= 1;
+    D_0051CCE0.flags &= ~0x20;
+    D_0051CCE0.flags |= 0x20;
+    D_0051CCE0.flags &= ~2;
+    D_0051CCE0.flags |= 2;
+    D_0051CCE0.flags &= ~8;
+    D_0051CCE0.flags |= 8;
+    func_002CF8F0();
+    D_0051CCE0.flags &= ~0x40;
+    D_0051CCE0.flags |= 0x40;
+    func_001F7FA0();
+}
 extern void func_001FB110(void *);
 void func_001F8C30(StageWork *w);
 
@@ -397,5 +517,17 @@ void func_001FA250(void) {
     func_001F8C30(&D_0051CCE0);
     D_0051CCE0.area = D_0044AE50[D_0051CCE0.stage].startArea;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001FA320);
+void func_001FA320(void) {
+    func_001F8ED0(&D_0051CCE0);
+    func_001258F8(&D_0051CCE0, 0, 0x40);
+}
+extern s32 D_00470630;
+
+/* compiles 8 bytes short */
+#if 0
+void func_001FA360(s32 stage) {
+    func_001258F8(&D_00470630, 0, 4);
+    D_00470630 = D_0044AE50[stage].unk14;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001FA360);
