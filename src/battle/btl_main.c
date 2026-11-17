@@ -739,30 +739,39 @@ void func_001AF980(void) {
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF9A0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AFAB0);
 #if 0
-// differs: a battle-pointer read is kept in a saved register (frame 0x40 with s0, s1 against 0x30 with s0); the clamp joins match but the field addresses are shared (size 0xF4 against 0x110)
+// differs: 7 of 66 instructions differ, all in the clamp: the original jumps over the second clamp's store with a b (one instruction more); the struct access to the battle fields matches the frame
 typedef struct Vec4a {
     f32 x, y, z, w;
 } __attribute__((aligned(16))) Vec4a;
+typedef struct BWZ {
+    u8 a[0x88F0];
+    f32 f88F0;
+    u8 b[0x8920 - 0x88F4];
+    f32 f8920;
+    f32 f8924;
+    u8 c[0x8975 - 0x8928];
+    s8 f8975;
+} BWZ;
 extern u8 D_004312F0[];
 extern void func_00131700(void *v);
 void func_001AFC50(void) {
-    BattleWork *bw;
+    BWZ *bz;
     Vec4a v;
     f32 x;
-    bw = D_00470570;
-    if (BW_FIELD(bw, s8, 0x8975) != 1) {
-        if (BW_FIELD(bw, f32, 0x8920) > 0.0f && BW_FIELD(bw, f32, 0x8920) <= 1.0f) {
+    bz = (BWZ *)D_00470570;
+    if (bz->f8975 != 1) {
+        if (bz->f8920 > 0.0f && bz->f8920 <= 1.0f) {
             v = *(Vec4a *)D_004312F0;
-            v.w = BW_FIELD(bw, f32, 0x8920);
+            v.w = bz->f8920;
             func_00131700(&v);
-            x = BW_FIELD(bw, f32, 0x8920) - BW_FIELD(bw, f32, 0x8924) * BW_FIELD(bw, f32, 0x88F0);
-            BW_FIELD(bw, f32, 0x8920) = x;
+            x = bz->f8920 - bz->f8924 * bz->f88F0;
+            bz->f8920 = x;
             if (x > 1.0f) {
                 x = 1.0f;
             } else if (x < 0.0f) {
                 x = 0.0f;
             }
-            BW_FIELD(bw, f32, 0x8920) = x;
+            bz->f8920 = x;
         }
     }
 }
