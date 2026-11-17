@@ -91,8 +91,49 @@ void func_002A17D0(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A17D0);
+extern f32 func_002B06A0(void);
+extern void func_002A1510(s32);
+extern void func_0029AC30(void);
+extern s32 D_00511448;
+extern void Zenie_SetValue(s32, s32);
+extern void func_002A17D0(void);
+
+extern f32 func_002B06A0(void);
+extern void func_002A1510(s32);
+extern void func_0029AC30(void);
+extern s32 D_00511448;
+extern void Zenie_SetValue(s32, s32);
+extern void func_002A17D0(void);
+
+#if 0
+// func_002A18A0: the parameter copy and gEvtWork swap saved registers (move s0,a0 in ours; s1 in the original); 2 declaration orders tried
+void func_002A18A0(s32 *a0) {
+    s32 *s1 = a0;
+    s32 *s0 = (s32 *)gEvtWork;
+    s32 blk[4];
+    f32 t;
+    void *f;
+    blk[0] = 0x3F800000;
+    blk[1] = 0x3F800000;
+    blk[2] = 0x3F800000;
+    blk[3] = 0x3F800000;
+    t = *(f32 *)&s0[0x5C / 4] / *(f32 *)&s0[0x60 / 4];
+    *(f32 *)&blk[3] = t;
+    t = func_002B06A0();
+    *(f32 *)&s0[0x5C / 4] = *(f32 *)&s0[0x5C / 4] + t;
+    func_002A1510((s32)blk);
+    if (!(*(f32 *)&s0[0x5C / 4] <= *(f32 *)&s0[0x60 / 4]) || func_002A1020(3) == 0) {
+        func_0029AC30();
+        Zenie_SetValue(D_00511448, D_00511448);
+        s0[0x5C / 4] = 0;
+        s0[0x60 / 4] = 0x42F00000;
+        f = (void *)func_002A17D0;
+        s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A18A0);
-extern void func_002A18A0(void);
+extern void func_002A18A0(s32 *);
 
 void func_002A1980(s32 *a0) {
     s32 *g = gEvtWork;
