@@ -338,6 +338,49 @@ void SkillKill_Kind11(void) {
 }
 void func_0024B690(void) {
 }
+// GIVEN UP: 17 of 89 differ: the original keeps the object in s1 (move s1,a0) and the data pointer in s0; mwcc swaps them whatever the declaration order (5 forms), and the stack-array VU0 copies are in the other order
+#if 0
+void func_0024B6A0(u8 *ob) {
+    s32 side;
+    s32 r;
+    u8 *s0;
+    u8 *s1 = ob;
+    s32 t;
+    s32 k;
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    s0 = *(u8 **)(s1 + 0xC);
+    side = *(s32 *)(*(u8 **)(s1 + 0x8) + 0x1350);
+    r = func_0020B020(side, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22));
+    amModel_SetCurrent(r, func_0020AD30(side, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22)));
+    k = *(s16 *)(s0 + 0x60);
+    if (k != 0) {
+        t = func_0020AE80(side, *(s16 *)(s0 + 0x5A), k);
+        if (t != 0) {
+            func_00208D60(t);
+        }
+    }
+    func_0013B0B0(0);
+    __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)"
+        : : "r"((u8 *)gBattle + 0x60));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%1)"
+        : : "r"(*(u8 **)((u8 *)gBattle + 0x264)), "r"(tmp), "r"(ob + 0x20));
+    func_00209D70(tmp);
+    if (*(s32 *)(ob + 0x44) != 0) {
+        func_0013B060(0);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w"
+            : : "r"(ob + 0x20));
+        func_00208D70(*(s32 *)(ob + 0x44));
+    }
+    if (*(s32 *)(ob + 0x48) != 0) {
+        func_0013B060(0);
+        func_00209B50(*(s32 *)(ob + 0x48), (s32)(ob + 0x20), 0);
+        func_00208D70(*(s32 *)(ob + 0x48));
+    }
+    func_0013B110(1);
+    func_00209C50();
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024B6A0);
 #if 0
 /* differs: 0x284 bytes against 0x2A0. The original keeps the table offset (side << 4) in $a0 across the whole
