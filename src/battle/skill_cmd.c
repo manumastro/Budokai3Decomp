@@ -1,6 +1,15 @@
 #include "common.h"
 #include "battle/battle.h"
 
+/*
+ * Recipe (round 4, unblock): operand order of a sum. When a give-up says the sum is added in the other order (a
+ * base plus an index, a pointer plus an offset), write the attempt, then try both operands of every `A + B` in
+ * the statements (atoms: identifiers, casts like (s32)p, parenthesised groups, a[i], p->f, x * n, x << n), all
+ * combinations, in one translation unit with the game's flags (-O4,p -sdatathreshold 8 -str readonly), and compare
+ * each function with the ROM. func_00252C20 matched with the first sum swapped: `(pp[2] << 2) + (s32)pp + 0x20`.
+ * A sum that still differs by one instruction after the swap needs something else (a declaration order, a local).
+ */
+
 
 
 typedef struct SkillBuf {
@@ -711,8 +720,6 @@ void func_00252B60(void) {
         }
     }
 }
-// GIVEN UP: the sum for the entry's address is added in the other operand order (3 forms tried)
-#if 0
 void func_00252C20(s32 a0, s32 a1) {
     s32 s0;
     u8 *s1;
@@ -721,14 +728,12 @@ void func_00252C20(s32 a0, s32 a1) {
     s0 = a0 << 2;
     *(s32 *)((u8 *)D_0046FE54 + s0) = 0;
     pp = (s32 *)func_00246CA0(a0, a1);
-    s1 = *(u8 **)((s32)pp + (pp[2] << 2) + 0x20);
+    s1 = *(u8 **)((pp[2] << 2) + (s32)pp + 0x20);
     if (func_00127E88((char *)s1, D_0046AE20, 4) == 0) {
         *(u32 *)((u8 *)D_0046FE54 + s0) = (u32)s1 + *(u32 *)(s1 + 0xC);
         *(u32 *)(s0 + (s32)D_0046FE54 + 8) = *(u32 *)(s1 + 8);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252C20);
 s32 func_00252CB0(s32 a0, s32 *a1) {
     func_00248350(((s32 *)a1[11])[0]);
     return 1;

@@ -1,5 +1,27 @@
 #include "common.h"
 
+/*
+ * Recipes (round 4, unblock), what matched here and why:
+ *
+ * 1. A switch that the original compiles as a beq chain (no jump table): write the cases in the REVERSE of the
+ *    compare order (the chain tests the last case first). Case bodies follow the case order. func_001EE530 (8 cases),
+ *    func_001EAD10 and func_001EADD0 use the same shape. A switch with a jump table (`jr` into jtbl_...) stays asm
+ *    (func_001EF1E0).
+ * 2. A global read as a 16-bit or float word through a %lo offset (lhu, lwc1 with lui) is declared as an array
+ *    (`extern u16 X[];`, `extern f32 X[];`), not a scalar (the scalar gives $gp). A global the file already types
+ *    differently is read as `*(s16 *)&X` / `*(s8 *)&X`.
+ * 3. A value stored and then tested: keep the result in a local (`n = X[0] - 1; X[0] = n; if (n == 0)`) and test
+ *    the local; re-reading the global after the store adds a lui and a load (func_001EEAF0).
+ * 4. A run of calls with constant arguments and a few global stores (func_001EF100) matches as written, in order.
+ * 5. A 16-byte struct copy through lq/sq: `typedef struct { u8 b[16]; } __attribute__((aligned(16))) T;` and a plain
+ *    struct assignment (func_001F7120, as char_light.c).
+ * 6. Give-ups measured in round 4 (not solved): func_001ED020 (2 diffs: the scheduler, not the source order, puts
+ *    the `D_00470600 = a0` store in the bnez delay slot; 120 store orders, a comma form and volatile stores all gave 2);
+ *    func_001EF090 (the original keeps the unused `v` in $v1: the void form drops it); func_001F5EF0 (9 of 24:
+ *    the non-zero arm is reached by a `b` from the beqz, shapes tried give 9 to 10); func_001F7820 (layout of the
+ *    flag loop, 0x16C against 0x164 bytes).
+ */
+
 /* The game sets a task's function through a NULL test of the function's address. */
 #define TASK_SETFUNC(t, f) ((t)->func = ((f) == NULL) ? NULL : (f))
 
@@ -3173,7 +3195,47 @@ void func_001EF0D0(void) {
     func_0020A150();
     func_0022DB90(0);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF100);
+extern s32 amGs_SetReg32(s32, s32);
+extern void amGs_SetReg64(s32, s32);
+extern void amGs_SetReg64b(s32, s32);
+extern void amVram_Apply(s32);
+extern void amMtxStack_Init(void);
+extern void amDraw_SetScissor(void *, s32);
+extern void func_00133780(s32, s32);
+extern void func_00133980(f32, f32, f32, f32);
+extern void func_00133CE0(s32);
+extern void func_0013AFA0(s32);
+extern void func_00133420(s32);
+extern void func_00131B90(void *);
+extern void func_00131F00(void *, f32, f32);
+extern void func_00132DF0(void *);
+extern void func_001482C0(s32);
+extern u8 D_003F0800[];
+extern s32 D_00470250;
+extern s32 D_0046FD20;
+extern s32 D_00470238;
+void func_001EF100(void) {
+    u8 buf[0x60];
+
+    amGs_SetReg32(2, 0x5040A);
+    func_00133780(2, 0);
+    amGs_SetReg64(2, 0x44);
+    amGs_SetReg64b(2, 5);
+    D_00470250 = 0;
+    D_0046FD20 = -1;
+    func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
+    amVram_Apply(2);
+    D_00470238 = 0;
+    func_00133CE0(0);
+    amMtxStack_Init();
+    func_0013AFA0(0);
+    func_00133420(1);
+    func_00131B90(buf);
+    func_00131F00(buf, 0.0f, 0.0f);
+    func_00132DF0(D_003F0800);
+    amDraw_SetScissor(0, 0);
+    func_001482C0(1);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF1E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF510);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF730);
@@ -4389,7 +4451,30 @@ void func_001F7010(void) {
         n = n->next;
     } while (n != end);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7120);
+typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16;
+extern BtbVec16 D_0044B510;
+extern char D_004698A8[];
+extern void func_001F2350();
+extern void func_001F24B0();
+extern void func_00209A90(void *, void *);
+extern void *amObject_Create(void *, s32);
+void func_001F7120(s32 p) {
+    BtbVec16 tmp;
+    char *r;
+    s32 *s0;
+    s32 s2;
+
+    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)func_001F24B0);
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x401;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x400;
+    s0 = (s32 *)(r + 0x30);
+    s2 = (s32)D_0051CD0C[0];
+    s0[1] = (s32)func_001A50F0((void *)s2, 0x7D);
+    s0[0] = (s32)amObject_Create(func_001A50F0((void *)s2, 0x7C), 0);
+    s0[2] = (s32)func_00209540(func_001A50F0((void *)s2, p + 0x6E), 0x2000001, 0);
+    tmp = D_0044B510;
+    func_00209A90((void *)s0[2], &tmp);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7210);
 extern void func_001F7210(char *);
 extern char *D_0051CD1C[];
