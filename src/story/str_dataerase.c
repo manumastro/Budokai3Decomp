@@ -116,40 +116,31 @@ extern void func_00310080(Task *);
 extern char D_0046FC20[];
 extern void memset(void *, s32, s32);
 
-#if 0
-// func_00310300: the original stores the heap pointer twice (once before the memset call, once in its delay slot); three orders tried
 Task *func_00310300(s32 a0, s32 a1) {
-    char *s0;
-    Task *s1 = amTask_Create(func_00310080, NULL, 0x2B00, 8, 2, D_0046FC20);
-    s0 = (char *)amHeap_Alloc(0x14, 0, D_0046FC30, 0x8A);
-    memset(s0, 0, 0x14);
-    *(s32 *)((char *)s1 + 0x30) = (s32)s0;
-    *(s32 *)(s0 + 0x8) = a0;
-    *(s16 *)(s0 + 0xC) = a1;
-    s0[0xE] = 1;
-    s0[0xF] = 1;
-    return s1;
+    char *s1;
+    Task *s0;
+    s0 = amTask_Create(func_00310080, NULL, 0x2B00, 8, 2, D_0046FC20);
+    *(s32 *)((char *)s0 + 0x30) = (s32)(s1 = (char *)amHeap_Alloc(0x14, 0, D_0046FC30, 0x8A));
+    memset(s1, 0, 0x14);
+    *(s32 *)(s1 + 0x8) = a0;
+    *(s16 *)(s1 + 0xC) = a1;
+    s1[0xE] = 1;
+    s1[0xF] = 1;
+    return s0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310300);
-#if 0
-// func_003103B0: the global store is placed by the scheduler between the two reads in the original; three placements tried
 void func_003103B0(void) {
     s32 *s0;
     if (D_0047099C != 0) {
         *((s8 *)D_0047099C + 0x10) = *((s8 *)D_0047099C + 0x10) + 1;
     } else {
-        s0 = (s32 *)amHeap_Alloc(0x14, 0, D_0046FC30, 0x63);
+        D_0047099C = (s32)(s0 = (s32 *)amHeap_Alloc(0x14, 0, D_0046FC30, 0x63));
         s0[0] = amCdFs_ReadFileId(0x107D8, 0, 0);
         s0[1] = amCdFs_ReadFileId(0x107D9, 0, 0);
-        D_0047099C = (s32)s0;
         s0[2] = 0;
         s0[3] = 0;
         *((s8 *)s0 + 0x10) = 1;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_003103B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310450);
 s32 func_003105A0(void) {
     return D_004701D8;
