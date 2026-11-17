@@ -645,7 +645,44 @@ void func_002D5F30(void) {
         func_002D4600(&s->f3C0, &s->f3C0, &s->f3C0, &s->f3C0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6160);
+s32 func_0022D670(s32, f32);
+s32 func_0022D860(s32, f32);
+s32 func_0022D670(s32, f32);
+s32 func_0022D860(s32, f32);
+void func_002D6160(void) {
+    Obj2D2530 *s = D_00470934;
+
+    *(s32 *)((char *)s + 0x274) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0xE4), 0.0f);
+    *(s32 *)((char *)s + 0x288) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x34C), 0.0f);
+    *(s32 *)((char *)s + 0x28C) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x454), 0.0f);
+    *(s32 *)((char *)s + 0x290) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x44C), 0.0f);
+    *(s32 *)((char *)s + 0x294) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x444), 0.0f);
+    *(s32 *)((char *)s + 0x298) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x43C), 0.0f);
+    *(s32 *)((char *)s + 0x29C) = func_0022D860(*(s32 *)(*(char **)((char *)s->f8 + 0x14) + 0x5C), 0.0f);
+    *(s32 *)((char *)s + 0x2A0) = func_0022D860(*(s32 *)(*(char **)((char *)s->f8 + 0x14) + 0x60), 0.0f);
+    *(s32 *)((char *)s + 0x2A4) = func_0022D860(*(s32 *)(*(char **)((char *)s->f8 + 0x14) + 0x48), 0.0f);
+    *(s32 *)((char *)s + 0x2A8) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x464), 0.0f);
+    *(s32 *)((char *)s + 0x2AC) = func_0022D860(*(s32 *)(*(char **)((char *)s->f8 + 0x14) + 0x50), 0.0f);
+    *(s32 *)((char *)s + 0x2B0) = func_0022D860(*(s32 *)(*(char **)((char *)s->f8 + 0x14) + 0x68), 0.0f);
+    *(s32 *)((char *)s + 0x2B4) = func_0022D860(*(s32 *)(*(char **)((char *)s->f8 + 0x14) + 0x6C), 0.0f);
+    *(s32 *)((char *)s + 0x2B8) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x510), 0.0f);
+    *(s32 *)((char *)s + 0x2BC) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x4F4), 0.0f);
+    *(s32 *)((char *)s + 0x2C0) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x508), 0.0f);
+    *(s32 *)((char *)s + 0x2C4) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x4F0), 0.0f);
+    *(s32 *)((char *)s + 0x2C8) = func_0022D860(*(s32 *)(*(char **)((char *)s->f8 + 0x14) + 0x4C), 0.0f);
+    *(s32 *)((char *)s + 0x2CC) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x4AC), 0.0f);
+    {
+        s32 i;
+
+        for (i = 0; i < 4; i++) {
+            *(s32 *)((char *)s + 0x2D0 + i * 4) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x4BC + i * 4), 0.0f);
+        }
+    }
+    *(s32 *)((char *)s + 0x278) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x1DC), 0.0f);
+    *(s32 *)((char *)s + 0x27C) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x1D0), 0.0f);
+    *(s32 *)((char *)s + 0x280) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x1D4), 0.0f);
+    *(s32 *)((char *)s + 0x284) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x1D8), 0.0f);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6400);
 void func_002D66B0(Vec4 *a, Vec4 *b, Vec4 *c) {
     Obj2D2530 *s = D_00470934;
