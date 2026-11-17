@@ -13,7 +13,8 @@ import collections
 import glob
 import re
 
-TEXT_FILES = ["asm/sdk/text.s", "asm/cri/text.s"]
+# The library parts: every assembly file of asm/sdk/ and asm/cri/ (one per library or module).
+TEXT_DIRS = ["asm/sdk", "asm/cri"]
 
 # "...(Name)" at the end, "E123 Name: ..." / "Name: ..." at the start, "Name;" (CRI's mwSfdGetTime;).
 # "Name(): ..." is left out: it often names a callee that failed ("ADXF_GetFnameRangeEx() faild.").
@@ -42,7 +43,7 @@ def main():
     text = strings()
     names = collections.defaultdict(set)      # function -> names found in its strings
     users = collections.defaultdict(set)      # name -> functions using it
-    for path in TEXT_FILES:
+    for path in sorted(f for d in TEXT_DIRS for f in glob.glob(f"{d}/*.s")):
         func = None
         for line in open(path):
             if m := re.match(r"glabel (\S+)", line):

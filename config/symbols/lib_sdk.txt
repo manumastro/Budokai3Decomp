@@ -1,1 +1,55 @@
 // Names for the lib_sdk files (docs/decomp_guide.md, "Symbol files").
+
+// libgraph: compiled to the original bytes from C (scripts/probe/gcc_sdk.c; sceGsSyncPath close). The debug printf
+// every Sony library calls with its "\r\n" messages (libkernl's kprintf object, 0x10BE70-0x10CFC8).
+scePrintf = 0x0010CF48; // type:func
+
+// libkernl, diei.c: DI loops on `di; sync.p` until Status.EIE reads clear and returns the old state; EI is `ei` and
+// returns the old state. Called in pairs around critical sections (67 / 56 callers).
+DI = 0x00114320; // type:func
+EI = 0x00114370; // type:func
+
+// libkernl, SIF RPC: the semaphore names they create ("SceSifrpcBind", "SceSifrpcCall"); sceSifInitRpc is the first
+// call of every library's init (libsdr, libmtap pass 0). sceSifCallRpc takes 9 arguments (libmtap's calls match).
+sceSifInitRpc = 0x0010D820; // type:func
+sceSifBindRpc = 0x0010DFC8; // type:func
+sceSifCallRpc = 0x0010E1A8; // type:func
+
+// libkernl, glue.c: newlib's system calls, named by the _xxx_r wrapper of libc that calls each (below). close and
+// lseek return -1; fstat sets st_mode to S_IFCHR (0x2000) and returns 0; sbrk moves the heap pointer D_003EC614.
+write = 0x0010A828; // type:func
+read = 0x0010A8A8; // type:func
+close = 0x0010A948; // type:func
+lseek = 0x0010A958; // type:func
+sbrk = 0x0010A960; // type:func
+fstat = 0x0010AA18; // type:func
+
+// libmtap (Sony's multitap library): the init binds RPC server 0x80000900, checks mtapman's version, then clears
+// and registers a 0x80-byte buffer.
+sceMtapInit = 0x001A1A58; // type:func
+
+// libgcc (ee-gcc 2.96's runtime): rand's 64-bit multiply calls it (rand compiles to the original bytes).
+__muldi3 = 0x0011F6E0; // type:func
+
+// libc (newlib). Its objects come in alphabetical order (closer, fstatr, lseekr, rand, readr, sbrkr, writer, wsetup),
+// which places each _xxx_r wrapper; each sets errno (D_005D0090) to 0, calls the glue function above and copies
+// errno into the reent structure on -1. srand, rand and _read_r compile to the original bytes
+// (scripts/probe/gcc_libc.c).
+_close_r = 0x001222D8; // type:func
+_fstat_r = 0x001241C8; // type:func
+_lseek_r = 0x00124788; // type:func
+srand = 0x00126B70; // type:func
+rand = 0x00126B88; // type:func
+_read_r = 0x00126BF0; // type:func
+_sbrk_r = 0x001273A8; // type:func
+_write_r = 0x0012C1F0; // type:func
+// __swsetup: after writer.o alphabetically, called once by _vfprintf_r.
+__swsetup = 0x0012C250; // type:func // guess
+// The R5900 assembly memset (quadword stores with pcpyh); libmtap clears its buffer with it.
+memset = 0x001258F8; // type:func
+// The function printing "bug in vfprintf: bad base"; __sprint is the helper it calls 33 times (its PRINT macro).
+_vfprintf_r = 0x00129AA0; // type:func
+__sprint = 0x00129928; // type:func // guess
+// newlib's reent pointer and errno (srand / rand and the _r wrappers use them).
+_impure_ptr = 0x003EFC48; // size:0x4
+errno = 0x005D0090; // size:0x4

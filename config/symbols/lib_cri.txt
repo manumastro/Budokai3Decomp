@@ -1,1 +1,6 @@
 // Names for the lib_cri files (docs/decomp_guide.md, "Symbol files").
+
+// ADX error reporting: called with every "E<number>..." message string; Tenkaichi 3's name for the same function.
+ADXERR_CallErrFunc1 = 0x00154120; // type:func
+// ADXT_GetSfreq returns it on the handle's SJ decoder (the same call in Tenkaichi 3's adxt_GetSfreq).
+ADXSJD_GetSfreq = 0x00159DB0; // type:func // guess

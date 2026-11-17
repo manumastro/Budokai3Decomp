@@ -65,7 +65,24 @@ segments:
       # .text, 0x100000 to 0x310908 (padded to 0x310980). The four parts are inferred from the code's style
       # (docs/plan.md, "What is in the executable"): Metrowerks pads every function to 16 bytes and saves $s
       # registers with sq; Sony's and CRI's libraries (gcc) start functions on 8 bytes and save them with sd.
-      - [0x000000, asm, sdk/text]       # Sony SDK libraries and the C library (gcc)
+      # Sony's SDK libraries and the C library (gcc; docs/plan.md, "The libraries' compilers"). One subsegment per
+      # library (inferred: version strings and their data, error strings, the call graph, the register-save style);
+      # not cut into objects yet. crt0 and the syscall stubs are hand-written assembly.
+      - [0x000000, asm, sdk/crt0]
+      - [0x000250, asm, sdk/libgraph]          # sceGsResetGraph ... (PsIIlibgraph 3000)
+      - [0x001868, asm, sdk/libdma]            # "libdma: sync timeout"
+      - [0x0020B0, asm, sdk/libmpeg]           # MPEG decoder strings; calls sceIpuInit
+      - [0x009AF8, asm, sdk/libipu]            # sceIpuInit (0x109BD8) uses libipu's data
+      - [0x009E40, asm, sdk/libkernl_syscalls] # `addiu $v1, N; syscall` stubs
+      - [0x00A6E0, asm, sdk/libkernl]          # threads, kprintf, SIF RPC, file stubs, TLB, timers
+      - [0x016550, asm, sdk/libpad]            # scePadInit: "libpad: Module version mismatch"
+      - [0x017C10, asm, sdk/libsdr]            # "sceSdRemoteInit() RPC bind error!"
+      - [0x0180F0, asm, sdk/libcdvd]           # the sceCd callback thread, N / S command semaphores
+      - [0x019CB0, asm, sdk/libmc]             # "bind error libmc"
+      # From here ee-gcc 2.96 (newlib and the compiler's runtime).
+      - [0x01B4E8, asm, sdk/libm]              # double maths (constant tables in .rodata)
+      - [0x01F620, asm, sdk/libgcc]            # __muldi3 (0x11F6E0), 64-bit division, soft double (dp-bit)
+      - [0x0221A8, asm, sdk/libc]              # newlib: _close_r, rand, vfprintf, ...
       # Metrowerks code linked before CRI (amDraw3d.c, amMotion.c, ..., main). One subsegment per source file:
       # boundaries from the order of the files' data (scripts/find_files.py), names from the file-name strings the
       # code passes (unk_XXXXXX where none); both inferred.
@@ -94,7 +111,25 @@ segments:
       - [0x0461D0, asm, sys/unk_1461D0]
       - [0x047560, asm, sys/unk_147560]
       - [0x049E50, asm, sys/script]
-      - [0x04E5D0, asm, cri/text]       # CRI ADX / Sofdec middleware, libmtap (gcc)
+      # CRI ADX and Sofdec (ee-gcc 2.96). One subsegment per module: each starts at the first function whose own
+      # error strings name that module (inferred); the functions between two such runs may belong to either.
+      - [0x04E5D0, asm, cri/adx]               # ADXB, ADXF, ADXT, ADXRNA, ADXSTMF, ... (ADXT 9.19, ADXF 7.14)
+      - [0x063EE8, asm, cri/srd]
+      - [0x065180, asm, cri/dtr]               # DTR_ExecHndl
+      - [0x065AD0, asm, cri/dtx]               # DTX_Create
+      - [0x066480, asm, cri/dvci]              # dvCi* (CD/DVD file I/O)
+      - [0x067FF8, asm, cri/htci]              # htCi* (host file I/O)
+      - [0x069878, asm, cri/lsc]               # LSC_Create
+      - [0x06A7F8, asm, cri/mfci]              # mfCi* (memory file I/O)
+      - [0x06BBE0, asm, cri/ps2rna]            # PS2RNA_*
+      - [0x06D9F8, asm, cri/sj]                # stream joints (no strings; SJX message at 0x16FAF0)
+      - [0x06FEB0, asm, cri/svm]
+      - [0x070800, asm, cri/mpv]               # no strings: CFT / M2V / MPS / MPV by their version strings' order
+      - [0x07F1D0, asm, cri/mwsfd]             # MwsfdCrePrm, mwPly*, MWSFD_*
+      - [0x087D90, asm, cri/sfd]               # SFD core (few strings)
+      - [0x09EDD0, asm, cri/sfx]               # sfxcnv_*, SFX_*, SFXZ_*
+      # libmtap: Sony's multitap library (ee-gcc 2.9-ee, like the SDK above), linked after CRI.
+      - [0x0A19D0, asm, sdk/libmtap]
       # Metrowerks code linked after CRI: the game, and amMc.c / amCdFs.c. Files as above.
       - [0x0A1E80, asm, sys/amMc]
       - [0x0A31B0, asm, unk/unk_1A31B0]
