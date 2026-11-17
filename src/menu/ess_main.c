@@ -643,7 +643,7 @@ void func_0026CF80(u8 *a0) {
         *(s32 *)(s1 + 0x1C) = 0;
     }
 }
-void func_0026D030(u8 *a0) {
+void Ess_TaskMsgStart(u8 *a0) {
     u8 *s2;
     u8 *s1;
     s32 s0;
@@ -676,7 +676,7 @@ void func_0026D030(u8 *a0) {
         *(void **)(s2 + 0x1C) = ((void *)func_0026BD50 == 0) ? 0 : (void *)func_0026BD50;
     }
 }
-void func_0026D150(u8 *a0) {
+void Ess_TaskBgStart(u8 *a0) {
     u8 *s0;
     u8 *p;
     s32 a1;
@@ -695,7 +695,7 @@ void func_0026D150(u8 *a0) {
     amAdx_Pause(0, 0);
     amAdx_PlayAfs(0, 0x210A6, 0);
     func_00264140(-1, 0);
-    *(void **)(s0 + 0x1C) = ((void *)func_0026D030 == 0) ? 0 : (void *)func_0026D030;
+    *(void **)(s0 + 0x1C) = ((void *)Ess_TaskMsgStart == 0) ? 0 : (void *)Ess_TaskMsgStart;
     *(void **)((u8 *)gEssMain + 0x1C) = amTask_Create(EssBg_TaskDraw, 0, 0x3000, 0x200, 1, D_0046B460);
 }
 void Ess_TaskMain(u8 *a0) {
@@ -722,7 +722,7 @@ void Ess_TaskMain(u8 *a0) {
     *(s32 *)(gEssMain + 0x24) = *(s32 *)(*(u8 **)gEssMain + 0x54);
     *(s32 *)(gEssMain + 0x28) = *(s32 *)(*(u8 **)(gEssMain + 4) + 0x54);
     *(s32 *)(gEssMain + 0x2C) = *(s32 *)(*(u8 **)(gEssMain + 8) + 0x54);
-    *(void **)(s3 + 0x1C) = ((void *)func_0026D150 == 0) ? 0 : (void *)func_0026D150;
+    *(void **)(s3 + 0x1C) = ((void *)Ess_TaskBgStart == 0) ? 0 : (void *)Ess_TaskBgStart;
     *(s32 *)s2 = 0;
 }
 #if 0

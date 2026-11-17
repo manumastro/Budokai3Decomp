@@ -31,7 +31,7 @@ extern s32 D_0058D4D0[];
 extern s32 func_0022D0B0(s32, s32);
 extern s32 func_0022D570(s32, s32, s32, s32);
 extern void func_00209450(s32, s32);
-extern void func_001F6F10(s32, s32);
+extern void BtbObj_RemoveByIdx(s32, s32);
 extern s32 *func_001F5EF0(s32, s32);
 extern void func_001F5B10(s32, s32);
 extern u8 D_00452740[];
@@ -67,8 +67,8 @@ extern void amCdFs_ReleaseCache(void *);
 
 extern u8 *gBtlSys;
 extern void func_001F9BB0(s32, s32);
-extern void func_001F7010(s32, s32);
-extern void func_001F7120(s32);
+extern void BtbObj_FreeFlag400(s32, s32);
+extern void BtbBg_CreatePlanet(s32);
 extern void BtbBg_SetF9E(s32);
 extern void BtbBg_ClearFlag40(s32, s32);
 extern void BtbBg_SetFlag40(s32, s32);
@@ -175,7 +175,7 @@ s32 func_0024A0B0(SkillObj *ob) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A0B0);
 
-void func_0024A350(s32 *a0) {
+void SkillKill_Kind14(s32 *a0) {
     s32 s0;
     s32 i;
     s32 o;
@@ -273,7 +273,7 @@ s32 func_0024A760(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A760);
-void func_0024A8A0(s32 *p) {
+void SkillKill_Kind13(s32 *p) {
     if (p[17] != 0) {
         Obj_ResetF38(p[17]);
         p[17] = 0;
@@ -318,7 +318,7 @@ void func_0024A8F0(u8 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024AA00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024ACE0);
-void func_0024B260(s32 *p) {
+void SkillKill_Kind12(s32 *p) {
     if (p[21] != 0) {
         Obj_ResetF38(p[21]);
         p[21] = 0;
@@ -334,7 +334,7 @@ void func_0024B660(void) {
 s32 func_0024B670(void) {
     return 0;
 }
-void func_0024B680(void) {
+void SkillKill_Kind11(void) {
 }
 void func_0024B690(void) {
 }
@@ -405,7 +405,7 @@ s32 func_0024B810(SkillObjB *ob) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024B810);
-void func_0024BAB0(s32 *a0) {
+void SkillKill_Kind10(s32 *a0) {
     s32 s0;
     s32 i;
     s32 o;
@@ -435,7 +435,7 @@ void func_0024BAB0(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BBA0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BE30);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BFA0);
-void func_0024C250(s32 *p) {
+void SkillKill_Kind09(s32 *p) {
     if (p[18] != 0) {
         Obj_ResetF38(p[18]);
         p[18] = 0;
@@ -452,7 +452,7 @@ void func_0024C250(s32 *p) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C2C0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C4E0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C610);
-void func_0024C900(s32 *p) {
+void SkillKill_Kind08(s32 *p) {
     if (p[17] != 0) {
         Obj_ResetF38(p[17]);
         p[17] = 0;
@@ -497,7 +497,7 @@ void func_0024CB00(SkillObj *ob) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CB00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CC60);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CDD0);
-void func_0024CFF0(s32 *p) {
+void SkillKill_Kind07(s32 *p) {
     if (p[21] != 0) {
         Obj_ResetF38(p[21]);
         p[21] = 0;
@@ -514,7 +514,7 @@ void func_0024CFF0(s32 *p) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024D060);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024D4C0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024DB10);
-void func_0024E0F0(s32 *p) {
+void SkillKill_Kind06(s32 *p) {
     func_001D9280(p[2]);
     if (p[22] != 0) {
         Obj_ResetF38(p[22]);
@@ -554,7 +554,7 @@ void func_0024E440(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E4D0);
-void func_0024E760(s32 *p) {
+void SkillKill_Kind05(s32 *p) {
     if (p[21] != 0) {
         Obj_ResetF38(p[21]);
         p[21] = 0;
@@ -567,7 +567,7 @@ void func_0024E760(s32 *p) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E7B0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E910);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024ECE0);
-void func_0024EF50(s32 *p) {
+void SkillKill_Kind04(s32 *p) {
     if (p[17] != 0) {
         Obj_ResetF38(p[17]);
         p[17] = 0;
@@ -608,7 +608,7 @@ void func_0024F150(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F260);
-void func_0024F4D0(s32 *p) {
+void SkillKill_Kind03(s32 *p) {
     if (p[21] != 0) {
         Obj_ResetF38(p[21]);
         p[21] = 0;
@@ -652,7 +652,7 @@ void func_0024F6B0(s32 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F6B0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F7F0);
-void func_0024FAD0(s32 *p) {
+void SkillKill_Kind02(s32 *p) {
     if (p[17] != 0) {
         Obj_ResetF38(p[17]);
         p[17] = 0;
@@ -695,7 +695,7 @@ void func_0024FB20(u8 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FC50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FEA0);
-void func_00250460(s32 *p) {
+void SkillKill_Kind01(s32 *p) {
     if (p[17] != 0) {
         Obj_ResetF38(p[17]);
         p[17] = 0;
@@ -718,7 +718,7 @@ void func_00250460(s32 *p) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00250500);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002507B0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00250DC0);
-void func_00251400(s32 *p) {
+void SkillKill_Kind00(s32 *p) {
     func_001D9280(p[2]);
     if (p[18] != 0) {
         Obj_ResetF38(p[18]);
@@ -919,11 +919,11 @@ s32 func_00252E20(s32 a0, s32 *a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252E20);
 s32 func_00252EA0(s32 a0, s32 a1) {
-    func_001F7010(a0, a1);
+    BtbObj_FreeFlag400(a0, a1);
     return 1;
 }
 s32 func_00252EC0(s32 a0, s32 *a1) {
-    func_001F7120(((s32 *)a1[11])[0]);
+    BtbBg_CreatePlanet(((s32 *)a1[11])[0]);
     return 1;
 }
 s32 func_00252EF0(s32 a0, s32 *a1) {
@@ -952,7 +952,7 @@ s32 func_00252F30(s32 a0, s32 *a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252F30);
-extern void func_001F5B90(s32 *);
+extern void BtbObj_ApplyMotSet(s32 *);
 s32 func_00252FA0(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
     f32 f = ((f32 *)q)[0];
@@ -961,7 +961,7 @@ s32 func_00252FA0(s32 a0, s32 *a1) {
 
     *(s32 *)((u8 *)r[3] + 0x10) = s;
     *(f32 *)((u8 *)r[3] + 4) = f;
-    func_001F5B90(r);
+    BtbObj_ApplyMotSet(r);
     return 1;
 }
 extern void func_001F5BE0(s32 *);
@@ -979,7 +979,7 @@ s32 func_00253000(s32 a0, s32 *a1) {
 s32 func_00253060(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
 
-    func_001F6F10(q[1], q[0]);
+    BtbObj_RemoveByIdx(q[1], q[0]);
     return 1;
 }
 
@@ -1053,13 +1053,13 @@ s32 SkillCmd_BgSetFlag1(s32 a0, s32 a1) {
     BtbBg_SetFlag1(a0, a1);
     return 1;
 }
-extern void func_001F7F50(void);
+extern void BtbBg_RunFunc(void);
 extern void func_001F6140(void);
 extern void amVram_Apply(s32);
 extern void func_001F7FA0(void);
 s32 func_002532B0(s32 a0, s32 *a1) {
     if (*(s32 *)((u8 *)D_0051CD00[0] + 4) > 1) {
-        func_001F7F50();
+        BtbBg_RunFunc();
         func_001F6140();
         func_00209450(0x2000000, 1);
         D_0051CD20[0] = D_0051CD20[0] ^ 1;

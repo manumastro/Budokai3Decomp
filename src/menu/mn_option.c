@@ -302,8 +302,104 @@ void func_002DFE20(u8 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DFEC0);
+#if 0
+// differs: switch with 2 cases: the original tests case 2 then 1 with beq and keeps the copies of the local struct in another order; 65 of 73 differ after the copy
+typedef struct {
+    u32 w[4];
+} __attribute__((aligned(16))) Opt16;
+
+typedef struct {
+    Opt16 a;
+    Opt16 b;
+    u64 c;
+    f32 d;
+} OptLoc;
+
+extern u8 D_00456B40[];
+extern f32 gFrameDelta;
+extern u8 D_0051D9A8[];
+extern u8 D_0051D9AC[];
+extern void amSofdec_Exit(void);
+extern void func_00148270(void *);
+extern void func_0022DB40(f32);
+extern void amSofdec_Init(void);
+extern void func_00101190(void *);
+extern void func_00147560(void);
+
+void func_002E0050(s32 s0) {
+    OptLoc L;
+    f32 f1;
+
+    L.a = *(Opt16 *)D_00456B40;
+    L.b = *(Opt16 *)(D_00456B40 + 0x10);
+    L.c = *(u64 *)(D_00456B40 + 0x20);
+    L.d = *(f32 *)(D_00456B40 + 0x28);
+    switch (s0) {
+    case 2:
+        *(u8 *)((u8 *)&L + 0x22) = 0;
+        *(u8 *)((u8 *)&L + 0x0) = 0x50;
+        *(u16 *)((u8 *)&L + 0x26) = 0x280;
+        break;
+    case 1:
+        *(u8 *)((u8 *)&L + 0x0) = 3;
+        *(u16 *)((u8 *)&L + 0x28) = 0x200;
+        break;
+    }
+    amSofdec_Exit();
+    func_00148270(&L);
+    f1 = gFrameDelta;
+    *(f32 *)D_0051D9A8 = f1;
+    *(f32 *)D_0051D9AC = f1 / 60.0f;
+    if (s0 == 1) {
+        func_0022DB40(1.2f);
+    } else {
+        func_0022DB40(1.0f);
+    }
+    amSofdec_Init();
+    func_00101190(func_00147560);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0050);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0170);
+extern void *gOptionState;
+extern void func_002D2AD0(f32, f32 *, f32 *);
+extern void amTask_Kill(void *);
+extern void func_002E0050(s32);
+extern void func_002E0B70(void);
+
+void func_002E0170(u8 *a0) {
+    f32 b[4];
+    f32 a[4];
+    u8 *s1;
+    u8 *s0;
+    f32 f;
+
+    s1 = a0;
+    s0 = (u8 *)gOptionState;
+    b[2] = 1.0f;
+    b[3] = 1.0f;
+    a[2] = 1.0f;
+    a[3] = 1.0f;
+    b[1] = 40.0f;
+    b[0] = 0.0f;
+    a[0] = 540.0f;
+    a[1] = 128.0f;
+    func_002D2AD0(*(f32 *)(s0 + 0xC), b, a);
+    f = *(f32 *)(s0 + 0xC) - 0.05f;
+    *(f32 *)(s0 + 0xC) = f;
+    if (f < 0.0f) {
+        *(f32 *)(s0 + 0xC) = 0.0f;
+        if (*(s8 *)(s0 + 0x14) == 0) {
+            amTask_Kill(*(void **)(s0 + 0x18));
+            *(void **)(s0 + 0x18) = 0;
+            *(s32 *)(s0 + 0x8) = 4;
+        } else {
+            func_002E0050(0);
+            *(s8 *)(s0 + 0x14) = 1;
+            *(s32 *)(s0 + 0x10) = 0;
+            *(void **)(s1 + 0x1C) = ((void *)func_002E0B70 == 0) ? 0 : (void *)func_002E0B70;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0260);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E06A0);
 #if 0

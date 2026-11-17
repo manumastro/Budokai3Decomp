@@ -49,6 +49,27 @@ void EvtZenie_TaskMain(s32 *a0) {
         Zenie_SetStep(0x98967F);
     }
 }
+#if 0
+// func_002A1700: 32 of 49 differ: the blk stores of 1.0 (the original stores 48, 52, 56, 60 in order, then the division into 60 from the jal delay slot; ours reuses an address register for 60, or stores descending with a chained assignment) and the early-exit layout of the func_002A1020 test (`bnez` to the epilogue, the task store after a nop pair)
+extern f32 func_002B06A0(void);
+extern void func_002A1510(s32);
+void func_002A1700(s32 *a0) {
+    s32 *s0 = gEvtWork;
+    f32 blk[4];
+    f32 t;
+    blk[0] = blk[1] = blk[2] = blk[3] = 1.0f;
+    blk[3] = *(f32 *)&s0[0x5C / 4] / *(f32 *)&s0[0x60 / 4];
+    t = func_002B06A0();
+    *(f32 *)&s0[0x5C / 4] = *(f32 *)&s0[0x5C / 4] - t;
+    func_002A1510((s32)blk);
+    Zenie_Update();
+    Zenie_Draw();
+    if (*(f32 *)&s0[0x5C / 4] < 0.0f || func_002A1020(4) == 0) {
+        void *f = EvtZenie_TaskMain;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1700);
 #if 0
 // func_002A17D0: the Zenie step: the branch end and the clamp arm are laid out differently (the original ends 8 bytes later); the a1 clamp loads come in another order; 2 forms tried
@@ -476,7 +497,40 @@ void func_002A2670(s32 *a0, s32 a1) {
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2730);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2890);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2AA0);
+extern void amCamera_Init(void *);
+extern void func_00131B90(s32 *);
+extern void func_00131D00(s32 *, s32, f32, f32);
+extern s32 D_005AB800[];
+extern s32 D_005AB804[];
+extern s32 D_005AB808[];
+extern s32 D_005AB80C[];
+extern s32 D_005AB838[];
+extern f32 D_005AB8C8[];
+extern s32 D_005AB8CC[];
+extern s32 D_005AB840[];
+extern f32 D_00455924[];
+extern void func_002A2890(s32 *, s32 *);
+void func_002A2AA0(s32 *a0, s32 *a1) {
+    f32 f22;
+    f32 f21;
+    f32 f20;
+    s32 idx = D_00511450[0];
+    f22 = *(f32 *)&((s32 *)a1[0x2C / 4])[1];
+    f21 = *(f32 *)&((s32 *)a1[0x2C / 4])[0];
+    f20 = *(f32 *)((char *)D_00455924 + idx * 28);
+    amCamera_Init(D_005AB800);
+    D_005AB800[0] = 0;
+    D_005AB80C[0] = 0x3F800000;
+    D_005AB804[0] = 0;
+    D_005AB808[0] = 0;
+    D_005AB838[0] = D_005AB838[0] | 1;
+    func_00131B90(D_005AB840);
+    func_00131D00(D_005AB840, 0, f22, f20);
+    *(f32 *)&D_005AB8C8[0] = f21;
+    D_005AB8CC[0] = 0;
+    a0[0x10 / 4] = (s32)func_002A2890;
+    func_002A2890(a0, a1);
+}
 extern s32 func_0029E7F0(s32);
 extern void func_0029E610(s32);
 extern void func_0029E120(s32, s32, s32, f32, f32);
@@ -815,8 +869,32 @@ s32 func_002A3C30(void *a0, char *a1) {
     func_002A3B50(loc);
     return 3;
 }
+#if 0
+// func_002A3CD0: 11 of 66 differ: the float callee order is right now; the original repeats `li v0,3` in both arms of the test (the then-arm ends in a b with the store in its delay slot), ours keeps one return; the duplicated-return forms gave 21 and 27 differ
+s32 func_002A3CD0(s32 *a0, char *a1) {
+    s32 loc[4];
+    f32 av = *(f32 *)*(s32 **)(a1 + 0x2C);
+    f32 pr = *(f32 *)&a0[0x2C / 4] * *(f32 *)&a0[0x38 / 4];
+    loc[0] = 0;
+    *(f32 *)&loc[1] = pr - 60.0f;
+    *(f32 *)&loc[2] = av;
+    *(f32 *)&loc[3] = 1.0f;
+    func_002A3B50(loc);
+    loc[0] = 0;
+    *(f32 *)&loc[1] = 2.0f + (D_00470410 - pr);
+    *(f32 *)&loc[2] = av;
+    *(f32 *)&loc[3] = 1.0f;
+    func_002A3B50(loc);
+    *(f32 *)&a0[0x2C / 4] = *(f32 *)&a0[0x2C / 4] + 1.0f;
+    if (*(f32 *)&a0[0x30 / 4] <= *(f32 *)&a0[0x2C / 4]) {
+        void *f = func_002A3C30;
+        a0[0x10 / 4] = (s32)((f == 0) ? 0 : f);
+    }
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3CD0);
-extern void func_002A3CD0(void);
+extern s32 func_002A3CD0(s32 *, char *);
 
 s32 func_002A3DE0(s32 *p) {
     p[0x2C / 4] = 0;

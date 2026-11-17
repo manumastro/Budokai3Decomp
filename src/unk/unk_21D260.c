@@ -58,6 +58,62 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221950);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221E10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00222280);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00222440);
+#if 0
+// differs: compiled 0x198 bytes, original 0x1A0; the state blocks (f28 == 2, == 0) and the shared tail are laid out in another order (a switch gives 37 of 104)
+typedef struct Sub3_21D260 {
+    s32 f0;
+    s32 f4;
+    char pad8[0x14];
+    f32 f1C;
+    f32 f20;
+    char pad24[0x4];
+    s32 f28;
+    f32 f2C;
+} Sub3_21D260;
+extern void func_00222440(void);
+void func_002228F0(Task2_21D260 *o) {
+    Work21D260 *bs = gBtlSys;
+    Sub3_21D260 *s = (Sub3_21D260 *)((char *)o + 0x30);
+    f32 f;
+
+    func_00224680(s);
+    if ((bs->fE30 & 2) != 0) {
+        if (s->f28 == 2) {
+            f = s->f2C + D_00470710;
+            s->f2C = f;
+            if (!(f < 8.0f)) {
+                gBtlSys->fE30 = gBtlSys->fE30 & -3;
+            }
+        } else if (s->f28 == 1) {
+        } else if (s->f28 == 0) {
+            f = s->f2C + D_00470710;
+            s->f2C = f;
+            if (!(f < 8.0f)) {
+                s->f28 = 1;
+            }
+        }
+        s->f20 = s->f20 + D_00470710;
+    } else {
+        func_00224BB0(D_0058BB30);
+        func_002249B0();
+        if (D_0058BB38[0] == 0) {
+            if (D_0058BB36[0] != 0) {
+                s->f20 = s->f20 + D_00470710;
+            } else {
+                s->f20 = 0.0f;
+            }
+            return;
+        }
+    }
+    f = s->f1C + D_00470710;
+    s->f1C = f;
+    if (!(f < 8.0f)) {
+        s->f4 = 4;
+        s->f1C = 0.0f;
+        o->f1C = (func_00222440 == 0) ? 0 : func_00222440;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002228F0);
 #if 0
 // differs: the step test's two branches are laid out in another order and the lb block is two instructions short

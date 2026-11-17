@@ -169,6 +169,60 @@ void func_002730B0(u8 *a0, s32 a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002730B0);
+#if 0
+// differs: register roles of the 64-bit mask loop differ (best of 300 declaration orders: 38 of 70 instructions); the pointer is in a2 here, v1 in the original
+extern u8 D_0058F710[];
+extern s16 D_004530D0[];
+
+s32 func_00273210(void) {
+    s32 t2;
+    u8 *t0;
+    u8 *ent;
+    s32 a2;
+    s32 t4;
+    s32 a1;
+    s32 a0;
+    s32 v0;
+    u64 t5;
+    u8 *v1;
+
+    t0 = *(u8 **)(gEssShop + 0x54);
+    t5 = *(u64 *)(D_0058F710 + *(s32 *)(gEssShop + 0x50) * 0xD680);
+    a2 = -1;
+    a1 = 10;
+    a0 = 0;
+    v0 = -1;
+    v1 = (u8 *)D_004530D0;
+    do {
+        if (t0[*(s16 *)(v1 + 2)] == 0) {
+            break;
+        }
+        t4 = *(s16 *)v1;
+        ent = D_004E0660 + t4 * 40;
+        if (*(u64 *)ent != 0 && (t5 & *(u64 *)ent) == 0) {
+            break;
+        }
+        t2 = t0[t4];
+        if (t2 == 0) {
+            v0 = D_004530D0[a0 * 2];
+            break;
+        }
+        if (t2 < ent[0xD] && t2 < a1) {
+            a2 = (s16)t4;
+            a1 = t2;
+        }
+        a0++;
+        v1 += 4;
+    } while (a0 < 0x4F);
+    if (v0 > 0) {
+        return v0;
+    }
+    if (a2 > 0) {
+        return a2;
+    }
+    return -1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273210);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273330);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002735D0);

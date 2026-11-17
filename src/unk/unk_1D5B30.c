@@ -350,6 +350,59 @@ extern void func_001E2DE0(Fighter *c);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5B30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5C40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6170);
+#if 0
+f32 func_001D6470(Fighter *c, f32 k) {
+    char *blk;
+    s32 i;
+    s32 n;
+    u8 *r;
+    s32 t;
+    s32 v;
+    s32 s3;
+    s32 w;
+    f32 f20;
+    f32 f21;
+    f32 f0a;
+    f32 f1;
+
+    f20 = k;
+    blk = *(char **)((char *)c + 0x1CF4);
+    i = 0;
+    if (*(s16 *)(blk + 0x34) > 0) {
+        do {
+            n = ((s16 *)(blk + 0x36))[i];
+            if (n > 0) {
+                r = D_004E0660 + n * 40;
+                t = r[0x15];
+                if (t == 0x13) {
+                    v = *(s16 *)(r + 0x16);
+                    f0a = 0.01f * ((f32)v * (100.0f + *(f32 *)((char *)c + 0x1FB8)) / 100.0f);
+                    f21 = f20 * f0a;
+                    f1 = f21 * f0a;
+                    s3 = (s32)f1;
+                    if (s3 > 0) {
+                        w = func_001DFE60(c, 0, (f32)s3);
+                        f21 = f21 * ((f32)w / (f32)s3);
+                        f20 = f20 - f21;
+                    }
+                } else if (t == 0x12) {
+                    v = *(s16 *)(r + 0x16);
+                    f1 = 0.01f * (100.0f - (f32)v * (100.0f + *(f32 *)((char *)c + 0x1FB8)) / 100.0f);
+                    if (f1 > 1.0f) {
+                        f1 = 1.0f;
+                    } else if (f1 < 0.0f) {
+                        f1 = 0.0f;
+                    }
+                    f20 = f20 * f1;
+                }
+            }
+            i++;
+        } while (i < *(s16 *)(blk + 0x34));
+    }
+    return f20;
+}
+#endif
+// differs: 111 of 118 (frame 0x80 vs 0x60, saved registers s3..s5 extra: the block pointer and the count are kept in saved registers by the C, reloaded in the original); the float arms (0.01f * (100 + fb8)) match in order
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6470);
 #if 0
 void func_001D6640(Fighter *c, s32 a1) {
@@ -1046,36 +1099,26 @@ s32 func_001D9480(Fighter *c) {
 #endif
 // differs: size 0x260 vs 0x270 (4 instructions short), the original keeps the object in s1 with two saved registers (frame 0x70); the C keeps it in s2 (frame 0x60); four local layouts tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9480);
-#if 0
 void func_001D96F0(void) {
     Game *g = gBattle;
+    Fighter *f;
     s32 i;
-    Fighter *t;
-    Fighter *e;
-    s16 a;
-    s16 b;
+    Fighter *o;
+    s16 t;
 
-    if (0 < g->f88D8) {
-        i = 0;
-        e = (Fighter *)((char *)g + 0x830);
-        do {
-            t = e->f1358;
-            if (t != NULL) {
-                a = e->f13A4;
-                b = t->f13A4;
-                e->f13A4 = b;
-                t->f13A4 = a;
-                e->f1358 = NULL;
-                e->f2015 = 0;
-            }
-            i++;
-            e = (Fighter *)((char *)e + 0x2020);
-        } while (i < g->f88D8);
+    f = (Fighter *)((char *)g + 0x830);
+    for (i = 0; i < g->f88D8; i++) {
+        o = f->f1358;
+        if (o != NULL) {
+            t = f->f13A4;
+            f->f13A4 = o->f13A4;
+            o->f13A4 = t;
+            f->f1358 = NULL;
+            *((char *)f + 0x2015) = 0;
+        }
+        f = (Fighter *)((char *)f + 0x2020);
     }
 }
-#endif
-// differs: the entry loop's counter and pointer come out in other registers (14 to 17 of 28 differ)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D96F0);
 void func_001D9760(Fighter *c, Fighter *o) {
     Fighter *t;
     s16 a;
@@ -1750,10 +1793,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFA90);
 void func_001DFBF0(Fighter *c) {
     f32 x = c->f17E4;
 
-    x = (x > 1000.0f) ? 1000.0f : x;
-    x = (x < 0.0f) ? 0.0f : x;
+    if (x > 1000.0f) {
+        x = 1000.0f;
+    } else if (x < 0.0f) {
+        x = 0.0f;
+    }
+    c->f17E4 = x;
     if (x <= 300.0f) {
-        c->f17E4 = x;
         c->f17EC = 0;
     } else if (x <= 600.0f) {
         c->f17EC = 1;
@@ -1762,7 +1808,7 @@ void func_001DFBF0(Fighter *c) {
     }
 }
 #endif
-// differs: the clamp's branch labels fall on 8-byte boundaries that the C does not reproduce (24 of 38 differ); if-form and ?:-form tried
+// differs: 7 of 36: the clamp arms (the original stores f17E4 in a delay slot on every path, which this matches; the nop between the mov.s and the 0.0f load is the remaining difference)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DFBF0);
 #if 0
 s32 func_001DFC80(Fighter *c, s32 a1, f32 f12) {
@@ -2921,17 +2967,13 @@ void func_001E3460(Fighter *c) {
         }
     }
 }
-#if 0
 void func_001E3550(Fighter *c) {
     if (func_001E8290((char *)c + 0x650) != 0) {
         if (gBattle->f8944 == 0) {
-            func_001C81D0(0, -1);
+            func_001C81D0((s32)c, -1);
         }
     }
 }
-#endif
-// differs: the original keeps the pointer in $s0 across the call (a frame), which the C does not reproduce
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3550);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E35A0);
 void func_001E3900(Fighter *c) {
     c->fC9C = 0x3F800000;
@@ -3876,6 +3918,80 @@ void func_001E7F00(void *p) {
 #endif
 // differs: 122 of 122 differ: frame 0x30 (s0,s1 only) in the original against 0x80 here: the address temporaries (c+0x2D0, c+0x524 loads, the table walk) are CSE'd into six saved registers; the table of eight pointers written as direct stores
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E7F00);
+#if 0
+#define E80_I(p, o) (*(s32 *)((char *)(p) + (o)))
+#define E80_P(p, o) (*(void **)((char *)(p) + (o)))
+#define E80_H(p, o) (*(s16 *)((char *)(p) + (o)))
+void func_001E80B0(Fighter *c) {
+    s32 k;
+    s32 t3;
+    s32 v;
+    void *a2;
+    Game *g = gBattle;
+    s32 a3;
+    void *a1;
+    void *t4;
+
+    a2 = E80_P(c, 0x568);
+    t3 = E80_I(c, 0x520);
+    v = 0;
+    a1 = NULL;
+    if (t3 < 0x10000) {
+        for (k = 0; k < 3; k++) {
+            a1 = E80_P(c, 0x2C0 + k * 4);
+            if (a1 != NULL && t3 < E80_I(a1, 0x10)) {
+                v = ((s32 *)E80_P(a1, 0x14))[t3];
+                if (v != 0) {
+                    break;
+                }
+            }
+        }
+        if (v == 0) {
+            E80_I(c, 0x520) = 0;
+            if (*(s8 *)((char *)a2 + 0x1FF9) != 0) {
+                E80_I(c, 0x520) = E80_I(c, 0x520) + 0x100;
+            }
+            a1 = E80_P(g, 0x824);
+            v = ((s32 *)E80_P(a1, 0x14))[E80_I(c, 0x520)];
+        }
+        E80_I(c, 0x604) = ((E80_H(v, 2) + 1) << 16) | (u16)E80_H(v, 0);
+        E80_I(c, 0x634) = E80_H(v, 2) + 1;
+    } else {
+        t4 = E80_P(a2, 0x1354);
+        for (k = 0; k < 3; k++) {
+            a1 = E80_P(t4, 0x910 + k * 4);
+            if (a1 != NULL && (t3 - 0x10000) < E80_I(a1, 0x10)) {
+                v = ((s32 *)E80_P(a1, 0x14))[t3 - 0x10000];
+                if (v != 0) {
+                    break;
+                }
+            }
+        }
+        if (v == 0) {
+            E80_I(c, 0x520) = 0;
+            if (*(s8 *)((char *)a2 + 0x1FF9) != 0) {
+                E80_I(c, 0x520) = E80_I(c, 0x520) + 0x100;
+            }
+            a1 = E80_P(g, 0x824);
+            v = ((s32 *)E80_P(a1, 0x14))[E80_I(c, 0x520)];
+        }
+        a3 = E80_H(v, 2);
+        if (a3 == 5) {
+            a3 = 0xA;
+        } else if (a3 == 3) {
+            a3 = 8;
+        }
+        E80_I(c, 0x604) = ((a3 + 1) << 16) | (u16)E80_H(v, 0);
+        E80_I(c, 0x634) = a3 + 1;
+    }
+    E80_P(c, 0x474) = a1;
+    E80_P(c, 0x524) = (void *)v;
+    E80_I(c, 0x624) = E80_I(v, 0x18);
+    E80_I(c, 0x62C) = E80_I(v, 0x1C);
+    E80_I(c, 0x638) = E80_I(v, 0x20);
+}
+#endif
+// differs: 119 of 123: the loop-pointer and counter registers (t3 into t6 here) cascade through the whole body; declaration orders (4 locals, 24 orders) all 119
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E80B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8290);
 void func_001E8630(Fighter *c) {
@@ -3970,34 +4086,23 @@ s32 func_001E89F0(Fighter *c) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E89F0);
 #if 0
 s32 func_001E8A30(Fighter *c) {
-    Game *g;
-    s32 k;
-    s32 m;
-    s32 arr[4];
+    s32 buf[4];
 
-    g = gBattle;
-    if (g->f8944 == 0) {
-        goto ret0;
+    if (gBattle->f8944 != 0) {
+        if (*(s16 *)((char *)c + 0x1AD0) != 0) {
+            if (gBattle->f7E2 != 3 || gBattle->f8977 == 3) {
+                buf[0] = (c->f1350 == gBattle->f894A);
+                buf[1] = *(s16 *)((char *)c + 0x1AD2);
+                buf[2] = *(s16 *)((char *)c->f1354 + 0x1ACE);
+                buf[3] = 0xF;
+                return func_00233B20(c, buf, gBattle->f894A) & 0xF;
+            }
+        }
     }
-    if (c->f1AD0 != 0) {
-        goto go;
-    }
-ret0:
     return 0;
-go:
-    if (g->f7E2 == 3 && g->f8977 != 3) {
-        return 0;
-    }
-    arr[1] = c->f1AD2;
-    arr[2] = c->f1354->f1ACE;
-    m = 0xF;
-    k = g->f894A;
-    arr[3] = m;
-    arr[0] = c->f1350 == k;
-    return func_00233B20(c, arr, k) & 0xF;
 }
 #endif
-// differs: same operands as the 180-byte neighbours: the original keeps the constant 0xF in v0 across the global load (the register of the field read differs, and the ret-0 blocks are 8 bytes shorter)
+// differs: 30 of 45: gBattle sits in a3 here and a2 in the original (the gp load register), the early-return branches are laid out differently; the field offsets (f8944, f1AD0, f7E2, f8977, f894A) and the func_00233B20 call with &buf match
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8A30);
 s32 func_001E8AF0(Fighter *c) {
     Game *g;

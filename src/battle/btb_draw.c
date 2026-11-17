@@ -4,17 +4,17 @@
  * Recipes (round 4, unblock), what matched here and why:
  *
  * 1. A switch that the original compiles as a beq chain (no jump table): write the cases in the REVERSE of the
- *    compare order (the chain tests the last case first). Case bodies follow the case order. func_001EE530 (8 cases),
- *    func_001EAD10 and func_001EADD0 use the same shape. A switch with a jump table (`jr` into jtbl_...) stays asm
+ *    compare order (the chain tests the last case first). Case bodies follow the case order. SceneSw_DoneAll (8 cases),
+ *    SceneSw_DoneTop and SceneSw_LoadTop use the same shape. A switch with a jump table (`jr` into jtbl_...) stays asm
  *    (func_001EF1E0).
  * 2. A global read as a 16-bit or float word through a %lo offset (lhu, lwc1 with lui) is declared as an array
  *    (`extern u16 X[];`, `extern f32 X[];`), not a scalar (the scalar gives $gp). A global the file already types
  *    differently is read as `*(s16 *)&X` / `*(s8 *)&X`.
  * 3. A value stored and then tested: keep the result in a local (`n = X[0] - 1; X[0] = n; if (n == 0)`) and test
  *    the local; re-reading the global after the store adds a lui and a load (func_001EEAF0).
- * 4. A run of calls with constant arguments and a few global stores (func_001EF100) matches as written, in order.
+ * 4. A run of calls with constant arguments and a few global stores (BtbDraw_InitState) matches as written, in order.
  * 5. A 16-byte struct copy through lq/sq: `typedef struct { u8 b[16]; } __attribute__((aligned(16))) T;` and a plain
- *    struct assignment (func_001F7120, as char_light.c).
+ *    struct assignment (BtbBg_CreatePlanet, as char_light.c).
  * 6. Give-ups measured in round 4 (not solved): func_001ED020 (2 diffs: the scheduler, not the source order, puts
  *    the `gSceneNext = a0` store in the bnez delay slot; 120 store orders, a comma form and volatile stores all gave 2);
  *    func_001EF090 (the original keeps the unused `v` in $v1: the void form drops it); func_001F5EF0 (9 of 24:
@@ -71,11 +71,11 @@ struct BtbHolder {
     BtbItem *item;
 };
 
-extern void func_001B0EC0(void);
+extern void Btl_ClearScene(void);
 extern void func_002C3E40(void);
 extern void func_0026E3B0(void);
 extern void TourMap_Exit(void);
-extern void func_00269730(void);
+extern void VsMode_Exit(void);
 extern void func_00307430(void);
 extern void PracMode_Exit(void);
 extern void ArenaMode_Exit(void);
@@ -89,11 +89,11 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EE6D0(Task *);
-extern void func_001EB5B0(Task *);
+extern void SceneSw_LoadAll(Task *);
+extern void SceneSw_LoadArena(Task *);
 extern void func_003107D0(void);
 
-void func_001EAC20(Task *t) {
+void SceneSw_CommitTop(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -115,11 +115,11 @@ void func_001EAC20(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x18:
-                TASK_SETFUNC(t, func_001EB5B0);
+                TASK_SETFUNC(t, SceneSw_LoadArena);
                 break;
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
             func_003107D0();
@@ -132,11 +132,11 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EAC20(Task *);
+extern void SceneSw_CommitTop(Task *);
 extern void func_002D1CC0(void);
 extern s8 D_004B4BB0[];
 
-void func_001EAD10(Task *t) {
+void SceneSw_DoneTop(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -147,7 +147,7 @@ void func_001EAD10(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EAC20);
+            TASK_SETFUNC(t, SceneSw_CommitTop);
             switch (gSceneNext) {
             case 24:
                 D_004B4BB0[0] = 1;
@@ -165,10 +165,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EAD10(Task *);
+extern void SceneSw_DoneTop(Task *);
 extern void func_002D1D40(void);
 
-void func_001EADD0(Task *t) {
+void SceneSw_LoadTop(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -179,7 +179,7 @@ void func_001EADD0(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EAD10);
+            TASK_SETFUNC(t, SceneSw_DoneTop);
             switch (gSceneNext) {
             case 0x18:
                 func_002D1D40();
@@ -200,11 +200,11 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EB5B0(Task *);
-extern void func_001EADD0(Task *);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadArena(Task *);
+extern void SceneSw_LoadTop(Task *);
+extern void SceneSw_LoadAll(Task *);
 
-void func_001EAE70(Task *t) {
+void SceneSw_CommitTop2(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -226,14 +226,14 @@ void func_001EAE70(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x18:
-                TASK_SETFUNC(t, func_001EB5B0);
+                TASK_SETFUNC(t, SceneSw_LoadArena);
                 break;
             case 0x1B:
-                TASK_SETFUNC(t, func_001EADD0);
+                TASK_SETFUNC(t, SceneSw_LoadTop);
                 break;
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
             func_00307430();
@@ -246,13 +246,13 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EAE70(Task *);
+extern void SceneSw_CommitTop2(Task *);
 extern void func_002D1CC0(void);
 extern void func_003107E0(s32);
 extern s8 D_004B4BB0[];
 extern s32 gSceneArg;
 
-void func_001EAF90(Task *t) {
+void SceneSw_DoneTop2(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -263,7 +263,7 @@ void func_001EAF90(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EAE70);
+            TASK_SETFUNC(t, SceneSw_CommitTop2);
             switch (gSceneNext) {
             case 24:
                 D_004B4BB0[0] = 1;
@@ -285,11 +285,11 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EAF90(Task *);
+extern void SceneSw_DoneTop2(Task *);
 extern void func_002D1D40(void);
 extern void func_00310900(void);
 
-void func_001EB070(Task *t) {
+void SceneSw_LoadTop2(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -300,7 +300,7 @@ void func_001EB070(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EAF90);
+            TASK_SETFUNC(t, SceneSw_DoneTop2);
             switch (gSceneNext) {
             case 24:
                 func_002D1D40();
@@ -324,11 +324,11 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EB5B0(Task *);
-extern void func_001EB070(Task *);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadArena(Task *);
+extern void SceneSw_LoadTop2(Task *);
+extern void SceneSw_LoadAll(Task *);
 
-void func_001EB130(Task *t) {
+void SceneSw_CommitTop3(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -350,17 +350,17 @@ void func_001EB130(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x18:
-                TASK_SETFUNC(t, func_001EB5B0);
+                TASK_SETFUNC(t, SceneSw_LoadArena);
                 break;
             case 0x1A:
-                TASK_SETFUNC(t, func_001EB070);
+                TASK_SETFUNC(t, SceneSw_LoadTop2);
                 break;
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -370,12 +370,12 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EB130(Task *);
+extern void SceneSw_CommitTop3(Task *);
 extern void func_002D1CC0(void);
 extern void Result_Start(void);
 extern s8 D_004B4BB0[];
 
-void func_001EB250(Task *t) {
+void SceneSw_DoneResult(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -386,7 +386,7 @@ void func_001EB250(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EB130);
+            TASK_SETFUNC(t, SceneSw_CommitTop3);
             switch (gSceneNext) {
             case 24:
                 D_004B4BB0[0] = 1;
@@ -408,11 +408,11 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EB250(Task *);
+extern void SceneSw_DoneResult(Task *);
 extern void func_002D1D40(void);
 extern void func_003074C0(void);
 
-void func_001EB330(Task *t) {
+void SceneSw_LoadResult(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -423,7 +423,7 @@ void func_001EB330(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EB250);
+            TASK_SETFUNC(t, SceneSw_DoneResult);
             switch (gSceneNext) {
             case 24:
                 func_002D1D40();
@@ -448,10 +448,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EB830(Task *);
-extern void func_001EB330(Task *);
+extern void SceneSw_LoadMenu(Task *);
+extern void SceneSw_LoadResult(Task *);
 
-void func_001EB3F0(Task *t) {
+void SceneSw_CommitMenu(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -473,10 +473,10 @@ void func_001EB3F0(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x17:
-                TASK_SETFUNC(t, func_001EB830);
+                TASK_SETFUNC(t, SceneSw_LoadMenu);
                 break;
             case 0x19:
-                TASK_SETFUNC(t, func_001EB330);
+                TASK_SETFUNC(t, SceneSw_LoadResult);
                 break;
             }
             func_002D1C50();
@@ -489,13 +489,13 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EB3F0(Task *);
+extern void SceneSw_CommitMenu(Task *);
 extern void ArenaMode_Start(s32);
 extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
 extern s32 gSceneArg;
 
-void func_001EB4E0(Task *t) {
+void SceneSw_DoneArena(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -506,7 +506,7 @@ void func_001EB4E0(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EB3F0);
+            TASK_SETFUNC(t, SceneSw_CommitMenu);
             switch (gSceneNext) {
             case 23:
                 D_004B4BB0[0] = 1;
@@ -525,12 +525,12 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EB4E0(Task *);
+extern void SceneSw_DoneArena(Task *);
 extern void ArenaMode_Load(void);
 extern char D_005C9D80[];
 extern void func_001B10D0(char *, s32);
 
-void func_001EB5B0(Task *t) {
+void SceneSw_LoadArena(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -541,7 +541,7 @@ void func_001EB5B0(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EB4E0);
+            TASK_SETFUNC(t, SceneSw_DoneArena);
             switch (gSceneNext) {
             case 23:
                 ArenaMode_Load();
@@ -563,10 +563,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EB5B0(Task *);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadArena(Task *);
+extern void SceneSw_LoadAll(Task *);
 
-void func_001EB670(Task *t) {
+void SceneSw_CommitArena(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -588,11 +588,11 @@ void func_001EB670(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x18:
-                TASK_SETFUNC(t, func_001EB5B0);
+                TASK_SETFUNC(t, SceneSw_LoadArena);
                 break;
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
             ArenaMode_Exit();
@@ -605,14 +605,14 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EB670(Task *);
+extern void SceneSw_CommitArena(Task *);
 extern void func_002D1CC0(void);
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
 extern void MainMenu_Start(s32, s32);
 
-void func_001EB760(Task *t) {
+void SceneSw_DoneMenu(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -623,7 +623,7 @@ void func_001EB760(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EB670);
+            TASK_SETFUNC(t, SceneSw_CommitArena);
             switch (gSceneNext) {
             case 24:
                 D_004B4BB0[0] = 1;
@@ -642,11 +642,11 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EB760(Task *);
+extern void SceneSw_DoneMenu(Task *);
 extern void func_002D1D40(void);
 extern void MainMenu_Load(void);
 
-void func_001EB830(Task *t) {
+void SceneSw_LoadMenu(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -657,7 +657,7 @@ void func_001EB830(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EB760);
+            TASK_SETFUNC(t, SceneSw_DoneMenu);
             switch (gSceneNext) {
             case 0x18:
                 func_002D1D40();
@@ -679,9 +679,9 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadAll(Task *);
 
-void func_001EB8E0(Task *t) {
+void SceneSw_CommitMenu2(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -704,7 +704,7 @@ void func_001EB8E0(Task *t) {
             switch (D_004B4B40[0]) {
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
             func_0026E3B0();
@@ -720,10 +720,10 @@ extern s8 D_004B4BE9[];
 extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EB8E0(Task *);
+extern void SceneSw_CommitMenu2(Task *);
 extern void MainMenu_Start(s32, s32);
 
-void func_001EB9A0(Task *t) {
+void SceneSw_DoneMenu2(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -734,7 +734,7 @@ void func_001EB9A0(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EB8E0);
+            TASK_SETFUNC(t, SceneSw_CommitMenu2);
             switch (gSceneNext) {
             case 5:
                 D_004B4BB0[0] = 0;
@@ -749,10 +749,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EB9A0(Task *);
+extern void SceneSw_DoneMenu2(Task *);
 extern void MainMenu_Load(void);
 
-void func_001EBA50(Task *t) {
+void SceneSw_LoadMenu2(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -763,7 +763,7 @@ void func_001EBA50(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EB9A0);
+            TASK_SETFUNC(t, SceneSw_DoneMenu2);
             switch (gSceneNext) {
             case 5:
                 MainMenu_Load();
@@ -781,10 +781,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadAll(Task *);
 extern void func_002E0E50(void);
 
-void func_001EBAF0(Task *t) {
+void SceneSw_CommitMenu3(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -805,7 +805,7 @@ void func_001EBAF0(Task *t) {
             D_004B4B40[0] = a1;
             gSceneNext = a0;
             gSceneQueued = -1;
-            TASK_SETFUNC(t, func_001EE6D0);
+            TASK_SETFUNC(t, SceneSw_LoadAll);
             func_002E0E50();
         }
     }
@@ -817,10 +817,10 @@ extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EBAF0(Task *);
+extern void SceneSw_CommitMenu3(Task *);
 extern void MainMenu_Start(s32, s32);
 
-void func_001EBB90(Task *t) {
+void SceneSw_DoneMenu3(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -831,7 +831,7 @@ void func_001EBB90(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EBAF0);
+            TASK_SETFUNC(t, SceneSw_CommitMenu3);
             D_004B4BB0[0] = 0;
             MainMenu_Start(D_004B4B62[0], D_004B4BE9[0]);
         }
@@ -841,10 +841,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EBB90(Task *);
+extern void SceneSw_DoneMenu3(Task *);
 extern void MainMenu_Load(void);
 
-void func_001EBC20(Task *t) {
+void SceneSw_LoadMenu3(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -855,7 +855,7 @@ void func_001EBC20(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EBB90);
+            TASK_SETFUNC(t, SceneSw_DoneMenu3);
             MainMenu_Load();
         }
     }
@@ -869,11 +869,11 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EC340(Task *);
-extern void func_001EE6D0(Task *);
-extern void func_001B0EC0(void);
+extern void SceneSw_LoadMenu4(Task *);
+extern void SceneSw_LoadAll(Task *);
+extern void Btl_ClearScene(void);
 
-void func_001EBCA0(Task *t) {
+void SceneSw_CommitPrac(Task *t) {
     s32 v;
     s32 a1;
     s32 a0;
@@ -895,14 +895,14 @@ void func_001EBCA0(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x13:
-                TASK_SETFUNC(t, func_001EC340);
+                TASK_SETFUNC(t, SceneSw_LoadMenu4);
                 break;
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -914,10 +914,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneArg;
 extern void func_001EA740(s32);
-extern void func_001EBCA0(Task *);
+extern void SceneSw_CommitPrac(Task *);
 extern void PracMode_Start(s32, s32);
 
-void func_001EBD90(Task *t) {
+void SceneSw_DonePrac(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -928,7 +928,7 @@ void func_001EBD90(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EBCA0);
+            TASK_SETFUNC(t, SceneSw_CommitPrac);
             switch (gSceneNext) {
             case 0x13:
                 D_004B4BB0[0] = 1;
@@ -946,10 +946,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EBD90(Task *);
+extern void SceneSw_DonePrac(Task *);
 extern void PracMode_Load(void);
 
-void func_001EBE50(Task *t) {
+void SceneSw_LoadPrac(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -960,7 +960,7 @@ void func_001EBE50(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EBD90);
+            TASK_SETFUNC(t, SceneSw_DonePrac);
             switch (gSceneNext) {
             case 0x13:
                 PracMode_Load();
@@ -981,10 +981,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EC340(Task *);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadMenu4(Task *);
+extern void SceneSw_LoadAll(Task *);
 
-void func_001EBEF0(Task *t) {
+void SceneSw_CommitPrac2(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -1006,14 +1006,14 @@ void func_001EBEF0(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x13:
-                TASK_SETFUNC(t, func_001EC340);
+                TASK_SETFUNC(t, SceneSw_LoadMenu4);
                 break;
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -1025,10 +1025,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneArg;
 extern void func_001EA740(s32);
-extern void func_001EBEF0(Task *);
+extern void SceneSw_CommitPrac2(Task *);
 extern void PracMode_Start(s32, s32);
 
-void func_001EBFE0(Task *t) {
+void SceneSw_DonePrac2(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1039,7 +1039,7 @@ void func_001EBFE0(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EBEF0);
+            TASK_SETFUNC(t, SceneSw_CommitPrac2);
             switch (gSceneNext) {
             case 0x13:
                 D_004B4BB0[0] = 1;
@@ -1057,10 +1057,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EBFE0(Task *);
+extern void SceneSw_DonePrac2(Task *);
 extern void PracMode_Load(void);
 
-void func_001EC0A0(Task *t) {
+void SceneSw_LoadPrac2(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1071,7 +1071,7 @@ void func_001EC0A0(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EBFE0);
+            TASK_SETFUNC(t, SceneSw_DonePrac2);
             switch (gSceneNext) {
             case 0x13:
                 PracMode_Load();
@@ -1092,11 +1092,11 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EE6D0(Task *);
-extern void func_001EC0A0(Task *);
-extern void func_001EBE50(Task *);
+extern void SceneSw_LoadAll(Task *);
+extern void SceneSw_LoadPrac2(Task *);
+extern void SceneSw_LoadPrac(Task *);
 
-void func_001EC140(Task *t) {
+void SceneSw_CommitPracExit(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -1119,13 +1119,13 @@ void func_001EC140(Task *t) {
             switch (D_004B4B40[0]) {
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             case 0x14:
-                TASK_SETFUNC(t, func_001EC0A0);
+                TASK_SETFUNC(t, SceneSw_LoadPrac2);
                 break;
             case 0x15:
-                TASK_SETFUNC(t, func_001EBE50);
+                TASK_SETFUNC(t, SceneSw_LoadPrac);
                 break;
             }
             PracMode_Exit();
@@ -1138,14 +1138,14 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EC140(Task *);
+extern void SceneSw_CommitPracExit(Task *);
 extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
 extern void MainMenu_Start(s32, s32);
 
-void func_001EC250(Task *t) {
+void SceneSw_DoneMenu4(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1156,7 +1156,7 @@ void func_001EC250(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EC140);
+            TASK_SETFUNC(t, SceneSw_CommitPracExit);
             switch (gSceneNext) {
             case 5:
                 D_004B4BB0[0] = 0;
@@ -1179,13 +1179,13 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EC250(Task *);
+extern void SceneSw_DoneMenu4(Task *);
 extern void MainMenu_Load(void);
 extern void func_001B13F0(s32);
 extern s8 D_004B4B41[];
 extern s16 D_005C9F02[];
 
-void func_001EC340(Task *t) {
+void SceneSw_LoadMenu4(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1196,7 +1196,7 @@ void func_001EC340(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EC250);
+            TASK_SETFUNC(t, SceneSw_DoneMenu4);
             switch (gSceneNext) {
             case 5:
                 MainMenu_Load();
@@ -1223,10 +1223,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EC840(Task *);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadMenu5(Task *);
+extern void SceneSw_LoadAll(Task *);
 
-void func_001EC430(Task *t) {
+void SceneSw_CommitTour(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -1248,14 +1248,14 @@ void func_001EC430(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x11:
-                TASK_SETFUNC(t, func_001EC840);
+                TASK_SETFUNC(t, SceneSw_LoadMenu5);
                 break;
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -1265,11 +1265,11 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EC430(Task *);
+extern void SceneSw_CommitTour(Task *);
 extern void TourMap_Start(void);
 extern s8 D_004B4BB0[];
 
-void func_001EC520(Task *t) {
+void SceneSw_DoneTour(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1280,7 +1280,7 @@ void func_001EC520(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EC430);
+            TASK_SETFUNC(t, SceneSw_CommitTour);
             switch (gSceneNext) {
             case 17:
                 D_004B4BB0[0] = 1;
@@ -1298,11 +1298,11 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EC520(Task *);
+extern void SceneSw_DoneTour(Task *);
 extern void func_00304FB0(s32);
 extern s32 gSceneArg;
 
-void func_001EC5E0(Task *t) {
+void SceneSw_LoadTour(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1313,7 +1313,7 @@ void func_001EC5E0(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EC520);
+            TASK_SETFUNC(t, SceneSw_DoneTour);
             switch (gSceneNext) {
             case 17:
                 func_00304FB0(gSceneArg);
@@ -1334,10 +1334,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EC5E0(Task *);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadTour(Task *);
+extern void SceneSw_LoadAll(Task *);
 
-void func_001EC680(Task *t) {
+void SceneSw_CommitTourExit(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -1359,11 +1359,11 @@ void func_001EC680(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x12:
-                TASK_SETFUNC(t, func_001EC5E0);
+                TASK_SETFUNC(t, SceneSw_LoadTour);
                 break;
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
             TourMap_Exit();
@@ -1376,14 +1376,14 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EC680(Task *);
+extern void SceneSw_CommitTourExit(Task *);
 extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
 extern void MainMenu_Start(s32, s32);
 
-void func_001EC770(Task *t) {
+void SceneSw_DoneMenu5(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1394,7 +1394,7 @@ void func_001EC770(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EC680);
+            TASK_SETFUNC(t, SceneSw_CommitTourExit);
             switch (gSceneNext) {
             case 18:
                 D_004B4BB0[0] = 1;
@@ -1413,11 +1413,11 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EC770(Task *);
+extern void SceneSw_DoneMenu5(Task *);
 extern void func_001B13F0(s32);
 extern void MainMenu_Load(void);
 
-void func_001EC840(Task *t) {
+void SceneSw_LoadMenu5(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1428,7 +1428,7 @@ void func_001EC840(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EC770);
+            TASK_SETFUNC(t, SceneSw_DoneMenu5);
             switch (gSceneNext) {
             case 0x12:
                 func_001B13F0(3);
@@ -1450,10 +1450,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EC840(Task *);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadMenu5(Task *);
+extern void SceneSw_LoadAll(Task *);
 
-void func_001EC8F0(Task *t) {
+void SceneSw_CommitMenu6(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -1476,10 +1476,10 @@ void func_001EC8F0(Task *t) {
             switch (D_004B4B40[0]) {
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             case 0x11:
-                TASK_SETFUNC(t, func_001EC840);
+                TASK_SETFUNC(t, SceneSw_LoadMenu5);
                 break;
             }
             func_002C3E40();
@@ -1492,14 +1492,14 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EC8F0(Task *);
+extern void SceneSw_CommitMenu6(Task *);
 extern void TourMap_Start(void);
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
 extern void MainMenu_Start(s32, s32);
 
-void func_001EC9E0(Task *t) {
+void SceneSw_DoneMenu6(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1510,7 +1510,7 @@ void func_001EC9E0(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EC8F0);
+            TASK_SETFUNC(t, SceneSw_CommitMenu6);
             switch (gSceneNext) {
             case 5:
                 D_004B4BB0[0] = 0;
@@ -1529,12 +1529,12 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EC9E0(Task *);
+extern void SceneSw_DoneMenu6(Task *);
 extern void func_00304FB0(s32);
 extern void MainMenu_Load(void);
 extern s32 gSceneArg;
 
-void func_001ECAB0(Task *t) {
+void SceneSw_LoadMenu6(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1545,7 +1545,7 @@ void func_001ECAB0(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EC9E0);
+            TASK_SETFUNC(t, SceneSw_DoneMenu6);
             switch (gSceneNext) {
             case 5:
                 MainMenu_Load();
@@ -1567,10 +1567,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001ECF70(Task *);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadMenu7(Task *);
+extern void SceneSw_LoadAll(Task *);
 
-void func_001ECB60(Task *t) {
+void SceneSw_CommitVs(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -1592,14 +1592,14 @@ void func_001ECB60(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0xE:
-                TASK_SETFUNC(t, func_001ECF70);
+                TASK_SETFUNC(t, SceneSw_LoadMenu7);
                 break;
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -1611,10 +1611,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneArg;
 extern void func_001EA740(s32);
-extern void func_001ECB60(Task *);
+extern void SceneSw_CommitVs(Task *);
 extern void func_00269820(s32, s32);
 
-void func_001ECC50(Task *t) {
+void SceneSw_DoneVs(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1625,7 +1625,7 @@ void func_001ECC50(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001ECB60);
+            TASK_SETFUNC(t, SceneSw_CommitVs);
             switch (gSceneNext) {
             case 0xE:
                 D_004B4BB0[0] = 1;
@@ -1643,10 +1643,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001ECC50(Task *);
+extern void SceneSw_DoneVs(Task *);
 extern void VsMode_Load(void);
 
-void func_001ECD10(Task *t) {
+void SceneSw_LoadVs(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1657,7 +1657,7 @@ void func_001ECD10(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001ECC50);
+            TASK_SETFUNC(t, SceneSw_DoneVs);
             switch (gSceneNext) {
             case 14:
                 VsMode_Load();
@@ -1678,10 +1678,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001ECD10(Task *);
-extern void func_001EE6D0(Task *);
+extern void SceneSw_LoadVs(Task *);
+extern void SceneSw_LoadAll(Task *);
 
-void func_001ECDB0(Task *t) {
+void SceneSw_CommitVs2(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -1704,13 +1704,13 @@ void func_001ECDB0(Task *t) {
             switch (D_004B4B40[0]) {
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             case 0xF:
-                TASK_SETFUNC(t, func_001ECD10);
+                TASK_SETFUNC(t, SceneSw_LoadVs);
                 break;
             }
-            func_00269730();
+            VsMode_Exit();
         }
     }
 }
@@ -1720,14 +1720,14 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001ECDB0(Task *);
+extern void SceneSw_CommitVs2(Task *);
 extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
 extern void MainMenu_Start(s32, s32);
 
-void func_001ECEA0(Task *t) {
+void SceneSw_DoneMenu7(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1738,7 +1738,7 @@ void func_001ECEA0(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001ECDB0);
+            TASK_SETFUNC(t, SceneSw_CommitVs2);
             switch (gSceneNext) {
             case 5:
                 D_004B4BB0[0] = 0;
@@ -1757,11 +1757,11 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001ECEA0(Task *);
+extern void SceneSw_DoneMenu7(Task *);
 extern void func_001B13F0(s32);
 extern void MainMenu_Load(void);
 
-void func_001ECF70(Task *t) {
+void SceneSw_LoadMenu7(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1772,7 +1772,7 @@ void func_001ECF70(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001ECEA0);
+            TASK_SETFUNC(t, SceneSw_DoneMenu7);
             switch (gSceneNext) {
             case 5:
                 MainMenu_Load();
@@ -1797,7 +1797,7 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EE250(Task *);
+extern void SceneSw_LoadMenu8(Task *);
 extern void func_0030F0E0(s32, s32);
 
 void func_001ED020(Task *t) {
@@ -1820,7 +1820,7 @@ void func_001ED020(Task *t) {
             D_004B4B40[0] = a1;
             gSceneNext = a0;
             gSceneQueued = -1;
-            TASK_SETFUNC(t, func_001EE250);
+            TASK_SETFUNC(t, SceneSw_LoadMenu8);
             func_0030F0E0(a0, a1);
         }
     }
@@ -1836,7 +1836,7 @@ extern void func_001EA740(s32);
 extern void func_001ED020(Task *);
 extern void StrTitle_Start(void);
 
-void func_001ED0C0(Task *t) {
+void SceneSw_DoneStrTitle(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1857,10 +1857,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001ED0C0(Task *);
+extern void SceneSw_DoneStrTitle(Task *);
 extern void StrTitle_Load(void);
 
-void func_001ED150(Task *t) {
+void SceneSw_LoadStrTitle(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1871,7 +1871,7 @@ void func_001ED150(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001ED0C0);
+            TASK_SETFUNC(t, SceneSw_DoneStrTitle);
             StrTitle_Load();
         }
     }
@@ -1888,10 +1888,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001ED150(Task *);
+extern void SceneSw_LoadStrTitle(Task *);
 extern void func_003070A0(s32, s32);
 
-void func_001ED1D0(Task *t) {
+void SceneSw_CommitStrTitle(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -1911,7 +1911,7 @@ void func_001ED1D0(Task *t) {
             D_004B4B40[0] = a1;
             gSceneNext = a0;
             gSceneQueued = -1;
-            TASK_SETFUNC(t, func_001ED150);
+            TASK_SETFUNC(t, SceneSw_LoadStrTitle);
             func_003070A0(a0, a1);
         }
     }
@@ -1926,10 +1926,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001ED150(Task *);
+extern void SceneSw_LoadStrTitle(Task *);
 extern void func_003070A0(void);
 
-void func_001ED1D0(Task *t) {
+void SceneSw_CommitStrTitle(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -1949,7 +1949,7 @@ void func_001ED1D0(Task *t) {
             D_004B4B40[0] = a1;
             gSceneNext = a0;
             gSceneQueued = -1;
-            TASK_SETFUNC(t, func_001ED150);
+            TASK_SETFUNC(t, SceneSw_LoadStrTitle);
             func_003070A0();
         }
     }
@@ -1959,10 +1959,10 @@ extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001ED1D0(Task *);
+extern void SceneSw_CommitStrTitle(Task *);
 extern void StaffRoll_Start(void);
 
-void func_001ED270(Task *t) {
+void SceneSw_DoneStaff(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1973,7 +1973,7 @@ void func_001ED270(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001ED1D0);
+            TASK_SETFUNC(t, SceneSw_CommitStrTitle);
             D_004B4BB0[0] = 1;
             StaffRoll_Start();
         }
@@ -1983,10 +1983,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001ED270(Task *);
+extern void SceneSw_DoneStaff(Task *);
 extern void func_0030F260(void);
 
-void func_001ED300(Task *t) {
+void SceneSw_LoadStaff(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -1997,7 +1997,7 @@ void func_001ED300(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001ED270);
+            TASK_SETFUNC(t, SceneSw_DoneStaff);
             func_0030F260();
         }
     }
@@ -2010,12 +2010,12 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EE250(Task *);
+extern void SceneSw_LoadMenu8(Task *);
 extern void amTask_Kill(s32);
 extern s32 D_0047061C;
 
 
-void func_001ED380(Task *t) {
+void SceneSw_CommitKill(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -2035,7 +2035,7 @@ void func_001ED380(Task *t) {
             D_004B4B40[0] = a1;
             gSceneNext = a0;
             gSceneQueued = -1;
-            TASK_SETFUNC(t, func_001EE250);
+            TASK_SETFUNC(t, SceneSw_LoadMenu8);
             if (D_0047061C != 0) {
                 amTask_Kill(D_0047061C);
             }
@@ -2048,10 +2048,10 @@ extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001ED380(Task *);
+extern void SceneSw_CommitKill(Task *);
 extern void StrTitle_Start(void);
 
-void func_001ED430(Task *t) {
+void SceneSw_DoneStrTitle2(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2062,7 +2062,7 @@ void func_001ED430(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001ED380);
+            TASK_SETFUNC(t, SceneSw_CommitKill);
             D_004B4BB0[0] = 1;
             StrTitle_Start();
         }
@@ -2072,10 +2072,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001ED430(Task *);
+extern void SceneSw_DoneStrTitle2(Task *);
 extern void StrTitle_Load(void);
 
-void func_001ED4C0(Task *t) {
+void SceneSw_LoadStrTitle2(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2086,7 +2086,7 @@ void func_001ED4C0(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001ED430);
+            TASK_SETFUNC(t, SceneSw_DoneStrTitle2);
             StrTitle_Load();
         }
     }
@@ -2101,9 +2101,9 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EDD00(Task *);
+extern void SceneSw_LoadStrTitle4(Task *);
 
-void func_001ED540(Task *t) {
+void SceneSw_CommitFlight(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -2125,7 +2125,7 @@ void func_001ED540(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x8:
-                TASK_SETFUNC(t, func_001EDD00);
+                TASK_SETFUNC(t, SceneSw_LoadStrTitle4);
                 break;
             }
             func_002ECAC0();
@@ -2139,10 +2139,10 @@ extern s8 D_004B4BB0[];
 extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001ED540(Task *);
+extern void SceneSw_CommitFlight(Task *);
 extern void Flight_Start(void);
 
-void func_001ED600(Task *t) {
+void SceneSw_DoneFlight(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2153,7 +2153,7 @@ void func_001ED600(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001ED540);
+            TASK_SETFUNC(t, SceneSw_CommitFlight);
             switch (gSceneNext) {
             case 8:
                 D_004B4BB0[0] = 1;
@@ -2168,10 +2168,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001ED600(Task *);
+extern void SceneSw_DoneFlight(Task *);
 extern void Flight_Load(void);
 
-void func_001ED6A0(Task *t) {
+void SceneSw_LoadFlight(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2182,7 +2182,7 @@ void func_001ED6A0(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001ED600);
+            TASK_SETFUNC(t, SceneSw_DoneFlight);
             switch (gSceneNext) {
             case 8:
                 Flight_Load();
@@ -2192,7 +2192,7 @@ void func_001ED6A0(Task *t) {
     }
 }
 
-extern void func_001B0EC0(void);
+extern void Btl_ClearScene(void);
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
@@ -2202,12 +2202,12 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EE250(Task *);
-extern void func_001EDD00(Task *);
-extern void func_001ED4C0(Task *);
-extern void func_001ED6A0(Task *);
+extern void SceneSw_LoadMenu8(Task *);
+extern void SceneSw_LoadStrTitle4(Task *);
+extern void SceneSw_LoadStrTitle2(Task *);
+extern void SceneSw_LoadFlight(Task *);
 
-void func_001ED740(Task *t) {
+void SceneSw_CommitStrTitle3(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -2229,19 +2229,19 @@ void func_001ED740(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x6:
-                TASK_SETFUNC(t, func_001EE250);
+                TASK_SETFUNC(t, SceneSw_LoadMenu8);
                 break;
             case 0x8:
-                TASK_SETFUNC(t, func_001EDD00);
+                TASK_SETFUNC(t, SceneSw_LoadStrTitle4);
                 break;
             case 0xD:
-                TASK_SETFUNC(t, func_001ED4C0);
+                TASK_SETFUNC(t, SceneSw_LoadStrTitle2);
                 break;
             case 0xA:
-                TASK_SETFUNC(t, func_001ED6A0);
+                TASK_SETFUNC(t, SceneSw_LoadFlight);
                 break;
             }
-            func_001B0EC0();
+            Btl_ClearScene();
         }
     }
 }
@@ -2256,7 +2256,7 @@ extern void StrTitle_Load(void);
 extern void Flight_Load(void);
 extern void func_002ECB90(void);
 
-void func_001ED9E0(Task *t) {
+void SceneSw_LoadStrTitle3(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2295,12 +2295,12 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EE250(Task *);
-extern void func_001ED9E0(Task *);
-extern void func_001ED300(Task *);
-extern void func_001ED150(Task *);
+extern void SceneSw_LoadMenu8(Task *);
+extern void SceneSw_LoadStrTitle3(Task *);
+extern void SceneSw_LoadStaff(Task *);
+extern void SceneSw_LoadStrTitle(Task *);
 
-void func_001EDAC0(Task *t) {
+void SceneSw_CommitFlightExit(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -2322,16 +2322,16 @@ void func_001EDAC0(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x6:
-                TASK_SETFUNC(t, func_001EE250);
+                TASK_SETFUNC(t, SceneSw_LoadMenu8);
                 break;
             case 0x9:
-                TASK_SETFUNC(t, func_001ED9E0);
+                TASK_SETFUNC(t, SceneSw_LoadStrTitle3);
                 break;
             case 0xB:
-                TASK_SETFUNC(t, func_001ED300);
+                TASK_SETFUNC(t, SceneSw_LoadStaff);
                 break;
             case 0xC:
-                TASK_SETFUNC(t, func_001ED150);
+                TASK_SETFUNC(t, SceneSw_LoadStrTitle);
                 break;
             }
             Flight_Exit();
@@ -2344,7 +2344,7 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EDAC0(Task *);
+extern void SceneSw_CommitFlightExit(Task *);
 extern void StrTitle_Start(void);
 extern void func_002A8E40(void);
 extern void Shenron_Start(void);
@@ -2354,7 +2354,7 @@ extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
 extern void MainMenu_Start(s32, s32);
 
-void func_001EDC00(Task *t) {
+void SceneSw_DoneStrTitle3(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2365,7 +2365,7 @@ void func_001EDC00(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EDAC0);
+            TASK_SETFUNC(t, SceneSw_CommitFlightExit);
             switch (gSceneNext) {
             case 6:
                 D_004B4BB0[0] = 1;
@@ -2392,12 +2392,12 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EDC00(Task *);
+extern void SceneSw_DoneStrTitle3(Task *);
 extern void StrTitle_Load(void);
 extern void func_003071C0(void);
 extern void func_0030F260(void);
 
-void func_001EDD00(Task *t) {
+void SceneSw_LoadStrTitle4(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2408,7 +2408,7 @@ void func_001EDD00(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EDC00);
+            TASK_SETFUNC(t, SceneSw_DoneStrTitle3);
             switch (gSceneNext) {
             case 6:
                 StrTitle_Load();
@@ -2436,10 +2436,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EE250(Task *);
-extern void func_001EDD00(Task *);
+extern void SceneSw_LoadMenu8(Task *);
+extern void SceneSw_LoadStrTitle4(Task *);
 
-void func_001EDDE0(Task *t) {
+void SceneSw_CommitStrSelect(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -2461,10 +2461,10 @@ void func_001EDDE0(Task *t) {
             gSceneQueued = -1;
             switch (D_004B4B40[0]) {
             case 0x6:
-                TASK_SETFUNC(t, func_001EE250);
+                TASK_SETFUNC(t, SceneSw_LoadMenu8);
                 break;
             case 0x8:
-                TASK_SETFUNC(t, func_001EDD00);
+                TASK_SETFUNC(t, SceneSw_LoadStrTitle4);
                 break;
             }
             StrSelect_Exit();
@@ -2477,12 +2477,12 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EDDE0(Task *);
+extern void SceneSw_CommitStrSelect(Task *);
 extern void StrTitle_Start(void);
 extern void Flight_Start(void);
 extern s8 D_004B4BB0[];
 
-void func_001EDED0(Task *t) {
+void SceneSw_DoneStrSelect(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2493,7 +2493,7 @@ void func_001EDED0(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EDDE0);
+            TASK_SETFUNC(t, SceneSw_CommitStrSelect);
             switch (gSceneNext) {
             case 6:
                 D_004B4BB0[0] = 1;
@@ -2512,11 +2512,11 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EDED0(Task *);
+extern void SceneSw_DoneStrSelect(Task *);
 extern void StrTitle_Load(void);
 extern void Flight_Load(void);
 
-void func_001EDF90(Task *t) {
+void SceneSw_LoadStrSelect(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2527,7 +2527,7 @@ void func_001EDF90(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EDED0);
+            TASK_SETFUNC(t, SceneSw_DoneStrSelect);
             switch (gSceneNext) {
             case 6:
                 StrTitle_Load();
@@ -2550,11 +2550,11 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EE6D0(Task *);
-extern void func_001EDF90(Task *);
-extern void func_001EDD00(Task *);
+extern void SceneSw_LoadAll(Task *);
+extern void SceneSw_LoadStrSelect(Task *);
+extern void SceneSw_LoadStrTitle4(Task *);
 
-void func_001EE040(Task *t) {
+void SceneSw_CommitMenu8(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -2577,13 +2577,13 @@ void func_001EE040(Task *t) {
             switch (D_004B4B40[0]) {
             case 5:
                 D_004B4B41[0] = 0;
-                TASK_SETFUNC(t, func_001EE6D0);
+                TASK_SETFUNC(t, SceneSw_LoadAll);
                 break;
             case 0x7:
-                TASK_SETFUNC(t, func_001EDF90);
+                TASK_SETFUNC(t, SceneSw_LoadStrSelect);
                 break;
             case 0x8:
-                TASK_SETFUNC(t, func_001EDD00);
+                TASK_SETFUNC(t, SceneSw_LoadStrTitle4);
                 break;
             }
             func_0029CCC0();
@@ -2596,7 +2596,7 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EE040(Task *);
+extern void SceneSw_CommitMenu8(Task *);
 extern void StrSelect_Start(s32);
 extern void Flight_Start(void);
 extern s32 gSceneArg;
@@ -2605,7 +2605,7 @@ extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
 extern void MainMenu_Start(s32, s32);
 
-void func_001EE150(Task *t) {
+void SceneSw_DoneMenu8(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2616,7 +2616,7 @@ void func_001EE150(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EE040);
+            TASK_SETFUNC(t, SceneSw_CommitMenu8);
             switch (gSceneNext) {
             case 5:
                 D_004B4BB0[0] = 0;
@@ -2640,12 +2640,12 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EE150(Task *);
+extern void SceneSw_DoneMenu8(Task *);
 extern void MainMenu_Load(void);
 extern void StrSelect_Load(void);
 extern void Flight_Load(void);
 
-void func_001EE250(Task *t) {
+void SceneSw_LoadMenu8(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2656,7 +2656,7 @@ void func_001EE250(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EE150);
+            TASK_SETFUNC(t, SceneSw_DoneMenu8);
             switch (gSceneNext) {
             case 5:
                 MainMenu_Load();
@@ -2682,7 +2682,7 @@ extern void Title_Start(s32);
 extern void ArenaMode_Start(s32);
 extern void func_00269820(s32, s32);
 extern void func_001EE320(Task *);
-void func_001EE530(Task *t) {
+void SceneSw_DoneAll(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2733,7 +2733,7 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EE530(Task *);
+extern void SceneSw_DoneAll(Task *);
 extern void StrTitle_Load(void);
 extern void TourMode_Load(void);
 extern void PracMode_Load(void);
@@ -2743,7 +2743,7 @@ extern void Title_Load(void);
 extern void VsMode_Load(void);
 extern void ArenaMode_Load(void);
 
-void func_001EE6D0(Task *t) {
+void SceneSw_LoadAll(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2754,7 +2754,7 @@ void func_001EE6D0(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EE530);
+            TASK_SETFUNC(t, SceneSw_DoneAll);
             switch (gSceneNext) {
             case 6:
                 StrTitle_Load();
@@ -2799,7 +2799,7 @@ extern void func_001EA740(s32);
 extern void func_001EECD0(Task *);
 extern void func_001EEAF0(Task *);
 
-void func_001EE820(Task *t) {
+void SceneSw_CommitTitle(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -2839,12 +2839,12 @@ extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EE820(Task *);
+extern void SceneSw_CommitTitle(Task *);
 extern void Opening_Start(void);
 extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
 
-void func_001EE920(Task *t) {
+void SceneSw_DoneTitle(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2855,7 +2855,7 @@ void func_001EE920(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EE820);
+            TASK_SETFUNC(t, SceneSw_CommitTitle);
             switch (gSceneNext) {
             case 2:
                 D_004B4BB0[0] = 0;
@@ -2874,11 +2874,11 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EE920(Task *);
+extern void SceneSw_DoneTitle(Task *);
 extern void Opening_Init(void);
 extern void func_001EA480(void);
 
-void func_001EE9E0(Task *t) {
+void SceneSw_LoadTitle(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -2889,7 +2889,7 @@ void func_001EE9E0(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EE920);
+            TASK_SETFUNC(t, SceneSw_DoneTitle);
             switch (gSceneNext) {
             case 2:
                 Opening_Init();
@@ -3011,7 +3011,7 @@ extern void func_001EA740(s32);
 extern void func_001EECD0(Task *);
 extern void Logomark_Free(void);
 
-void func_001EED50(Task *t) {
+void SceneSw_CommitLogomark(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -3041,10 +3041,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EED50(Task *);
+extern void SceneSw_CommitLogomark(Task *);
 extern void Opening_Start(void);
 
-void func_001EEDF0(Task *t) {
+void SceneSw_DoneOpening(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -3055,7 +3055,7 @@ void func_001EEDF0(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EED50);
+            TASK_SETFUNC(t, SceneSw_CommitLogomark);
             D_004B4BB0[0] = 0;
             Opening_Start();
         }
@@ -3065,10 +3065,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EEDF0(Task *);
+extern void SceneSw_DoneOpening(Task *);
 extern void Opening_Init(void);
 
-void func_001EEE70(Task *t) {
+void SceneSw_LoadOpening(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -3079,7 +3079,7 @@ void func_001EEE70(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EEDF0);
+            TASK_SETFUNC(t, SceneSw_DoneOpening);
             Opening_Init();
         }
     }
@@ -3092,10 +3092,10 @@ extern s32 gSceneDone;
 extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
-extern void func_001EEE70(Task *);
+extern void SceneSw_LoadOpening(Task *);
 extern void Boot_Exit(void);
 
-void func_001EEEF0(Task *t) {
+void SceneSw_CommitBoot(Task *t) {
     s32 v;
     s32 a0;
     s32 a1;
@@ -3115,7 +3115,7 @@ void func_001EEEF0(Task *t) {
             D_004B4B40[0] = a1;
             gSceneNext = a0;
             gSceneQueued = -1;
-            TASK_SETFUNC(t, func_001EEE70);
+            TASK_SETFUNC(t, SceneSw_LoadOpening);
             Boot_Exit();
         }
     }
@@ -3125,10 +3125,10 @@ extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];
 extern s32 gSceneDone;
 extern void func_001EA740(s32);
-extern void func_001EEEF0(Task *);
+extern void SceneSw_CommitBoot(Task *);
 extern void Logomark_Start(void);
 
-void func_001EEF90(Task *t) {
+void SceneSw_DoneLogomark(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -3139,7 +3139,7 @@ void func_001EEF90(Task *t) {
     }
     if (v == 0) {
         if (gSceneDone != 0) {
-            TASK_SETFUNC(t, func_001EEEF0);
+            TASK_SETFUNC(t, SceneSw_CommitBoot);
             D_004B4BB0[0] = 0;
             Logomark_Start();
         }
@@ -3149,10 +3149,10 @@ extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s32 gSceneNext;
 extern void func_001EA740(s32);
-extern void func_001EEF90(Task *);
+extern void SceneSw_DoneLogomark(Task *);
 extern void Logomark_Load(void);
 
-void func_001EF010(Task *t) {
+void SceneSw_LoadLogomark(Task *t) {
     s32 v;
 
     if (D_004B4BB1[0] != 0) {
@@ -3163,7 +3163,7 @@ void func_001EF010(Task *t) {
     }
     if (v == 0) {
         if (gSceneNext != -1) {
-            TASK_SETFUNC(t, func_001EEF90);
+            TASK_SETFUNC(t, SceneSw_DoneLogomark);
             Logomark_Load();
         }
     }
@@ -3214,7 +3214,7 @@ extern u8 D_003F0800[];
 extern s32 D_00470250;
 extern s32 D_0046FD20;
 extern s32 D_00470238;
-void func_001EF100(void) {
+void BtbDraw_InitState(void) {
     u8 buf[0x60];
 
     amGs_SetReg32(2, 0x5040A);
@@ -3257,7 +3257,7 @@ typedef struct BtbEntry {
 
 extern u32 func_0012EAE0(s32);
 
-void func_001EF880(BtbEntry *e, u8 *src) {
+void BtbEntry_DecodeColors(BtbEntry *e, u8 *src) {
     e->f08 = func_0012EAE0(src[3] & 0x1F);
     e->f40 = src[7];
     e->f41 = src[6];
@@ -3542,7 +3542,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F1A00(BtbObj *o) {
+void BtbObj_ReleaseSub68(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3644,7 +3644,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F22A0(BtbObj *o) {
+void BtbObj_ReleaseSub38(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3670,7 +3670,7 @@ extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 extern void func_00208F70(BtbObj *);
 
-void func_001F24B0(BtbObj *o) {
+void BtbObj_ReleaseSub38Timed(BtbObj *o) {
     BtbSub *s;
     s32 i;
 
@@ -3742,7 +3742,7 @@ extern s32 D_0051CD20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F5F50(BtbObj *o) {
+void BtbObj_RemoveFromList(BtbObj *o) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
@@ -3806,7 +3806,7 @@ extern char *D_0051CB94[];
 
 typedef void (*ObjFunc4)(char *);
 
-void func_001F63D0(void) {
+void BtbBg_RunPostObjs(void) {
     char *s0;
 
     for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
@@ -3909,7 +3909,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6E60(s32 key) {
+void BtbObj_RemoveByKey(s32 key) {
     BtbObj *n;
     BtbObj *end;
     s32 i;
@@ -3944,7 +3944,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6F10(s32 flag, s32 idx) {
+void BtbObj_RemoveByIdx(s32 flag, s32 idx) {
     BtbObj *n;
     BtbObj *end;
     char *v;
@@ -3987,7 +3987,7 @@ extern char D_0051CC20[];
 extern void amHeap_Free(void *);
 extern void Obj_ResetF38(s32);
 
-void func_001F7010(void) {
+void BtbObj_FreeFlag400(void) {
     BtbObj *n;
     BtbObj *end;
     char *sub;
@@ -4027,16 +4027,16 @@ typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16;
 extern BtbVec16 D_0044B510;
 extern char D_004698A8[];
 extern void func_001F2350();
-extern void func_001F24B0();
+extern void BtbObj_ReleaseSub38Timed();
 extern void func_00209A90(void *, void *);
 extern void *amObject_Create(void *, s32);
-void func_001F7120(s32 p) {
+void BtbBg_CreatePlanet(s32 p) {
     BtbVec16 tmp;
     char *r;
     s32 *s0;
     s32 s2;
 
-    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)func_001F24B0);
+    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)BtbObj_ReleaseSub38Timed);
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x401;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x400;
     s0 = (s32 *)(r + 0x30);
@@ -4104,7 +4104,7 @@ typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
 extern s32 D_0051CCE0[];
 
-void func_001F7F50(void) {
+void BtbBg_RunFunc(void) {
     VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
 
     if (f != NULL) {
@@ -4171,7 +4171,7 @@ extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
 extern s32 gBattle;
 extern s32 D_0047064C;
 
-void func_001F3D80(char *o) {
+void BtbObj_CheckDrawFlags(char *o) {
     s32 f;
     char *p;
 
@@ -4193,7 +4193,7 @@ extern char D_0051CC20[];
 extern void amHeap_Free(void *);
 extern void Obj_ResetF38(s32);
 
-void func_001F3EC0(void) {
+void BtbObj_FreeFlagged(void) {
     BtbObj *n;
     char *sub;
     void *p;
@@ -4280,7 +4280,7 @@ extern s32 D_0051CD20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F5F50(BtbObj *o) {
+void BtbObj_RemoveFromList(BtbObj *o) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
@@ -4344,7 +4344,7 @@ extern char *D_0051CB94[];
 
 typedef void (*ObjFunc4)(char *);
 
-void func_001F63D0(void) {
+void BtbBg_RunPostObjs(void) {
     char *s0;
 
     for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
@@ -4447,7 +4447,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6E60(s32 key) {
+void BtbObj_RemoveByKey(s32 key) {
     BtbObj *n;
     BtbObj *end;
     s32 i;
@@ -4482,7 +4482,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6F10(s32 flag, s32 idx) {
+void BtbObj_RemoveByIdx(s32 flag, s32 idx) {
     BtbObj *n;
     BtbObj *end;
     char *v;
@@ -4525,7 +4525,7 @@ extern char D_0051CC20[];
 extern void amHeap_Free(void *);
 extern void Obj_ResetF38(s32);
 
-void func_001F7010(void) {
+void BtbObj_FreeFlag400(void) {
     BtbObj *n;
     BtbObj *end;
     char *sub;
@@ -4565,16 +4565,16 @@ typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16;
 extern BtbVec16 D_0044B510;
 extern char D_004698A8[];
 extern void func_001F2350();
-extern void func_001F24B0();
+extern void BtbObj_ReleaseSub38Timed();
 extern void func_00209A90(void *, void *);
 extern void *amObject_Create(void *, s32);
-void func_001F7120(s32 p) {
+void BtbBg_CreatePlanet(s32 p) {
     BtbVec16 tmp;
     char *r;
     s32 *s0;
     s32 s2;
 
-    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)func_001F24B0);
+    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)BtbObj_ReleaseSub38Timed);
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x401;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x400;
     s0 = (s32 *)(r + 0x30);
@@ -4642,7 +4642,7 @@ typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
 extern s32 D_0051CCE0[];
 
-void func_001F7F50(void) {
+void BtbBg_RunFunc(void) {
     VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
 
     if (f != NULL) {
@@ -4679,7 +4679,7 @@ void func_001F4520(s32 p0, char *vec, s32 p2, s32 flags) {
         f = func_00200270(0, *(f32 *)&tmp.b[0], *(f32 *)&tmp.b[8]);
         *(f32 *)&tmp.b[4] = f;
         func_00209B50(s1, (char *)&tmp, 0);
-        r = func_001F5FD0(0x85000000, D_004697A8, 0, (void *)func_001F2150, (void *)func_001F22A0);
+        r = func_001F5FD0(0x85000000, D_004697A8, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
         *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x801;
         *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x800;
         memset(r + 0x30, 0, 0x80);
@@ -4745,7 +4745,7 @@ void func_001F5540(s32 p0, s32 p1, s32 p2, s32 flags) {
     }
     if (s1 != NULL) {
         func_00209B50(s1, p1, 0);
-        r = func_001F5FD0(0x85000000, D_00469848, 0, (void *)func_001F2150, (void *)func_001F22A0);
+        r = func_001F5FD0(0x85000000, D_00469848, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
         r->f20 = r->f20 & -0x801;
         r->f20 = r->f20 | 0x800;
         memset((char *)r + 0x30, 0, 0x80);
@@ -4793,7 +4793,7 @@ void func_001F5830(s32 a0, char *s0, s32 a2, s32 flags) {
     }
     if (s1 != 0) {
         func_00209B50((char *)s1, s0, 0);
-        p = func_001F5FD0(0x85000000, D_00469858, 0, (void *)func_001F2150, (void *)func_001F22A0);
+        p = func_001F5FD0(0x85000000, D_00469858, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
         *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) & ~0x800;
         *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) | 0x800;
         memset(p + 0x30, 0, 0x80);
@@ -4857,7 +4857,7 @@ void func_001F5B70(BtbHolder *h) {
 }
 extern void amMotSet_Apply(void *, f32, s32);
 
-void func_001F5B90(char *c) {
+void BtbObj_ApplyMotSet(char *c) {
     char *s = *(char **)(c + 0xC);
 
     if (s != NULL) {
@@ -5051,7 +5051,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5EF0);
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F5F50(BtbObj *o) {
+void BtbObj_RemoveFromList(BtbObj *o) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
@@ -5151,7 +5151,7 @@ extern char *D_0051CB94[];
 
 typedef void (*ObjFunc4)(char *);
 
-void func_001F63D0(void) {
+void BtbBg_RunPostObjs(void) {
     char *s0;
 
     for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
@@ -5256,7 +5256,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6E60(s32 key) {
+void BtbObj_RemoveByKey(s32 key) {
     BtbObj *n;
     BtbObj *end;
     s32 i;
@@ -5291,7 +5291,7 @@ extern char D_0051CC20[];
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
-void func_001F6F10(s32 flag, s32 idx) {
+void BtbObj_RemoveByIdx(s32 flag, s32 idx) {
     BtbObj *n;
     BtbObj *end;
     char *v;
@@ -5334,7 +5334,7 @@ extern char D_0051CC20[];
 extern void amHeap_Free(void *);
 extern void Obj_ResetF38(s32);
 
-void func_001F7010(void) {
+void BtbObj_FreeFlag400(void) {
     BtbObj *n;
     BtbObj *end;
     char *sub;
@@ -5374,16 +5374,16 @@ typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16;
 extern BtbVec16 D_0044B510;
 extern char D_004698A8[];
 extern void func_001F2350();
-extern void func_001F24B0();
+extern void BtbObj_ReleaseSub38Timed();
 extern void func_00209A90(void *, void *);
 extern void *amObject_Create(void *, s32);
-void func_001F7120(s32 p) {
+void BtbBg_CreatePlanet(s32 p) {
     BtbVec16 tmp;
     char *r;
     s32 *s0;
     s32 s2;
 
-    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)func_001F24B0);
+    r = func_001F5FD0(0x85000000, D_004698A8, 0, (void *)func_001F2350, (void *)BtbObj_ReleaseSub38Timed);
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x401;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x400;
     s0 = (s32 *)(r + 0x30);
@@ -5501,7 +5501,7 @@ typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
 extern s32 D_0051CCE0[];
 
-void func_001F7F50(void) {
+void BtbBg_RunFunc(void) {
     VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
 
     if (f != NULL) {
