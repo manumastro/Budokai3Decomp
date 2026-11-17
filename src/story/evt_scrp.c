@@ -1376,6 +1376,54 @@ void func_002A6DB0(s32 *a0) {
         }
     }
 }
+extern void func_002A1430(s32, s32, s32, s32);
+extern void func_002A1410(s32);
+extern s16 D_004E05F8[];
+extern void func_002A6DB0(s32 *);
+extern void func_002A6210(void);
+
+#if 0
+// func_002A6E40: the chain p = gEvtWork[6] stays in a0 in the original and the later loads go through it; ours reloads gEvtWork[6] and the branch shape differs; 1 form tried
+void func_002A6E40(s32 *a0) {
+    s32 *s0 = (s32 *)gEvtWork;
+    s32 *p = (s32 *)s0[0x18 / 4];
+    s32 off;
+    s32 *v;
+    void *f;
+    s32 a1;
+    if (((s16 *)p)[2] == 3) {
+        s0[0x18 / 4] = p[0x40 / 4];
+        s0[0x1C / 4] = ((s32 *)s0[0x18 / 4])[0x50 / 4];
+        s0[0x20 / 4] = *(s8 *)((char *)s0[0x1C / 4] + 4);
+        s0[0x24 / 4] = (s32)((char *)s0[0x1C / 4] + ((s32 *)s0[0x1C / 4])[0x8 / 4]);
+        s0[0x28 / 4] = (s32)((char *)s0[0x1C / 4] + ((s32 *)s0[0x1C / 4])[0xC / 4]);
+        off = (s0[0x14 / 4] & 0x7FFF) * 8;
+        s0[0x2C / 4] = s0[0x24 / 4] + off;
+        s0[0x30 / 4] = *(s32 *)(s0[0x24 / 4] + off + 4);
+        s0[0x34 / 4] = s0[0x28 / 4] + *(s32 *)s0[0x2C / 4];
+        p[0x40 / 4] = 0;
+        amCdFs_Close((s32)p, 0);
+        v = (s32 *)s0[0x34 / 4];
+        func_002A1430(v[0], v[1], v[2], v[3]);
+        func_002A1410(D_004E05F8[0]);
+        s0[0x34 / 4] = s0[0x34 / 4] + 0x10;
+        a1 = ((s32 *)gEvtWork)[0x10 / 4] == 1;
+        if (a1 == 0) {
+            s0[0x34 / 4] = s0[0x34 / 4] + 8;
+            if (*(s32 *)s0[0x34 / 4] != 0) {
+                s0[0x38 / 4] = amCdFs_ReadFileId(*(s32 *)s0[0x34 / 4], 0, 1);
+                f = (void *)func_002A6DB0;
+                ((s32 *)s0[0x8 / 4])[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+            }
+        } else {
+            s0[0x34 / 4] = s0[0x34 / 4] - 4;
+            f = (void *)func_002A6210;
+            *(s32 *)((char *)s0 + 0xD4) = 0;
+            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6E40);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6FD0);
 extern f32 func_002B06A0(void);
