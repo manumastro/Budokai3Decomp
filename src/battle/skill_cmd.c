@@ -791,6 +791,55 @@ void func_002523B0(s32 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252410);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002525A0);
+#if 0
+// differs: 27 of 88. Prologue, memset, the two 16-byte copies and the table walk match; the entry pointer
+// lives in $a1 here and in $a2 in the original (declaration order, operand order and a table pointer local tried).
+extern void func_00251DA0(s32 *);
+extern void func_00251C20(s32 *);
+void func_00252780(s32 a0, u8 *a1) {
+    u8 buf[0x40] __attribute__((aligned(16)));
+    u8 t50[0x10] __attribute__((aligned(16)));
+    s32 s1;
+    s32 s0;
+    s32 e;
+    s32 *tb;
+    s32 cur;
+
+    s1 = *(s32 *)(*(u8 **)(a1 + 0x1354) + 0x1350);
+    memset(buf, 0, 0x40);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x20), "r"(a1 + 0x130));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(t50), "r"(a1 + 0xD0));
+    func_00146F30((s32 *)t50);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x30), "r"(t50));
+    *(s32 *)(buf + 0x8) = *(s32 *)(a1 + 0x1354);
+    for (s0 = 0; s0 < *(s32 *)((u8 *)D_0046FE54 + (s1 << 2) + 8); s0++) {
+        tb = (s32 *)((u8 *)D_0046FE54 + (s1 << 2));
+        e = *tb + (((s0 << 4) - s0) << 4);
+        if (*(s16 *)(e + 0x16) != 0) {
+            if (*(s16 *)(e + 0x16) != *(s32 *)(*(u8 **)(a1 + 0x1354) + 0xBA4)) {
+                continue;
+            }
+        } else {
+            cur = *(s32 *)(*(u8 **)(a1 + 0x1354) + 0xBA4);
+            if (cur < *(s16 *)(e + 0xDC)) {
+                continue;
+            }
+            if (*(s16 *)(e + 0xDE) < cur) {
+                continue;
+            }
+        }
+        if (*(s16 *)(e + 0x12) != a0) {
+            continue;
+        }
+        if (*(s16 *)(e + 0x10) != 0xB) {
+            continue;
+        }
+        *(s32 *)(buf + 0xC) = e;
+        func_00251DA0((s32 *)buf);
+        func_00251C20((s32 *)buf);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252780);
 void func_002528E0(s32 a0, s32 a1) {
     switch (a1) {
