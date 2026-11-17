@@ -6,7 +6,10 @@ typedef struct Fighter {
     s8 f6;
     char pad7[0x29];
     s32 f30;
-    char pad34[0x50C];
+    f32 f34;
+    f32 f38;
+    s32 f3C;
+    char pad40[0x500];
     void * f540;
     char pad544[0x4];
     s32 f548;
@@ -51,7 +54,13 @@ typedef struct Fighter {
     s16 f13A4;
     char pad13A6[0x126];
     s32 f14CC;
-    char pad14D0[0x2D4];
+    char pad14D0[0x28C];
+    s32 f175C;
+    char pad1760[0x20];
+    f32 f1780;
+    f32 f1784;
+    f32 f1788;
+    char pad178C[0x18];
     s32 f17A4;
     s32 f17A8;
     s32 f17AC;
@@ -267,10 +276,13 @@ extern void func_001C75D0(Fighter *c, s32 a);
 extern void func_001ABCE0(void *c);
 extern u8 D_004E0660[];
 extern void func_001DFE60(Fighter *c, s32 a, f32 v);
+extern s32 D_00469478[];
+extern void func_001E11E0(s32 a, void *b);
 extern void func_001DFC80(Fighter *c, s32 a, f32 v);
 extern void func_001D7CC0(Fighter *c, s32 a);
 extern char D_004694D0[];
 extern s32 func_00233B20(Fighter *c, void *a, s32 v);
+extern s32 func_00233850(Fighter *c, void *a);
 extern void func_002376F0(s32, void *);
 extern s32 func_002CC120(Fighter *c);
 extern s32 func_00236020(Fighter *c);
@@ -286,6 +298,31 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6170);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6470);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6640);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6770);
+#if 0
+void func_001D6B90(Fighter *c) {
+    f32 *q;
+    s32 st[4];
+    s32 v;
+    f32 f;
+
+    q = (f32 *)((char *)c + 0x30);
+    v = D_00469478[c->f3C];
+    *(f32 *)&st[0] = 0.85f * (1.0f - c->f34 / c->f38);
+    st[1] = 0x3000;
+    st[2] = v;
+    st[3] = v;
+    func_001E11E0(c->f30, st);
+    if (D_00470570->f88EC == 0) {
+        f = q[1] + D_00470570->f88F0;
+        q[1] = f;
+        if (f < q[2]) {
+            return;
+        }
+        amTask_Kill(c);
+    }
+}
+#endif
+// differs: 0xC8 against 0xE0 bytes: the original keeps the object in s1 across the call (frame 0x40); the row pointer and the struct copy are ordered differently
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6B90);
 void func_001D6C70(Fighter *c) {
     s32 *p;
@@ -868,6 +905,42 @@ s32 func_001DBFC0(Fighter *c) {
 #endif
 // differs: 0xB8 against 0xC0 bytes: the original ends with explicit returns that the compiler merges into one boolean; the early return blocks sit at other addresses
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DBFC0);
+#if 0
+s32 func_001DC080(Fighter *c) {
+    Fighter *p;
+    char *e;
+    char *base;
+    s16 *q;
+    f32 f;
+    s32 i;
+
+    p = c->f1354;
+    base = (char *)p + 0x1360;
+    e = base + p->f175C * 16;
+    q = *(s16 **)(e + 0x204);
+    if (q[1] != 5) {
+        return 0;
+    }
+    switch (q[0]) {
+    case 1:
+        f = c->f1780;
+        break;
+    case 2:
+        f = c->f1784;
+        break;
+    default:
+        f = c->f1788;
+        break;
+    }
+    for (i = 0; i < 3; i++) {
+        if (f > *(f32 *)((char *)c + 0x1780 + i * 4)) {
+            return 0;
+        }
+    }
+    return f < 10.0f;
+}
+#endif
+// differs: the table base is kept in a1 and the struct pointer in v1 in the original (register order of the two reads differs)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DC080);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DC150);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DC3E0);
@@ -1491,7 +1564,34 @@ void func_001E8630(Fighter *c) {
     func_00125740((char *)c + 0x160, c, 0x160);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8640);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8740);
+s32 func_001E8740(Fighter *c) {
+    Game *g;
+    s32 arr[7];
+    s32 k;
+
+    g = D_00470570;
+    if (g->f8944 == 0) {
+        goto ret0;
+    }
+    if (c->f1AD0 != 0) {
+        goto go;
+    }
+ret0:
+    return 0;
+go:
+    if (g->f7E2 == 3 && g->f8977 != 3) {
+        return 0;
+    }
+    k = g->f894A;
+    arr[0] = c->f1350 == k;
+    arr[1] = c->f1AD2;
+    arr[2] = c->f1AD4;
+    arr[3] = (s32)*(f32 *)&c->f1AD8;
+    arr[4] = (s32)*(f32 *)&c->f1ADC;
+    arr[5] = c->f1354->f1AD4;
+    arr[6] = (s32)*(f32 *)&c->f1354->f1ADC;
+    return func_00233850(c, arr);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8830);
 #if 0
 s32 func_001E89B0(Fighter *c) {
