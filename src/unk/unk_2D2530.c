@@ -926,10 +926,21 @@ void func_002D8AB0(void) {
     }
 }
 #if 0
-// differs: the 136-byte block copy from D_00456C80 is a loop of 4 lq/sq pairs plus ld/sd in the original; mwcc emits a 32-bit or 64-bit copy loop
+// differs: 9 of 62; the 136-byte copy is the 4-pass loop with a count-down (lq/sq pairs, then ld/sd) and matches in shape, but the registers of the counter and the two pointers differ; 6 declaration orders tried
+typedef struct BlobA2D2530 {
+    Vec4 v[8];
+    s32 x;
+    s32 y;
+} __attribute__((aligned(16))) BlobA2D2530;
+typedef struct Copy16A2D2530 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Copy16A2D2530;
 void func_002D8B00(void) {
     Obj2D2530 *s = gOptionWork;
-    Blob2D2530 b;
+    BlobA2D2530 b;
+    Copy16A2D2530 *d;
+    s32 n;
+    Copy16A2D2530 *q;
     f32 f;
 
     func_002D8890();
@@ -941,7 +952,17 @@ void func_002D8B00(void) {
     s->f388 = s->f388 + f;
     if (s->f388 > 30.0f) {
         s->f388 = 0.0f;
-        b = *(Blob2D2530 *)D_00456C80;
+        d = (Copy16A2D2530 *)&b;
+        q = (Copy16A2D2530 *)D_00456C80;
+        n = 4;
+        do {
+            d[0] = q[0];
+            d[1] = q[1];
+            q += 2;
+            d += 2;
+            n--;
+        } while (n > 0);
+        *(s64 *)d = *(s64 *)q;
         amAdx_SetVolume(1, D_004E0618[0]);
         amAdx_Pause(1, 0);
         amAdx_PlayAfs(1, *(s32 *)&b | 0x20000, 0);
