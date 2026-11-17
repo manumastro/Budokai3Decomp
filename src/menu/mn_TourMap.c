@@ -171,7 +171,65 @@ s32 func_00305830(s32 a0) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305910);
+extern void amCdFs_ReleaseCache(void *);
+
+void func_00305910(void) {
+    s32 n;
+    s32 *s1;
+    u8 *s0;
+    u8 *a1;
+    s32 k;
+
+    s0 = (u8 *)D_0047097C;
+    *(s32 *)(s0 + 0xDC) = 0;
+    *(s32 *)(s0 + 0xE0) = 0;
+    *(s32 *)(s0 + 0xE4) = 0;
+    *(s32 *)(s0 + 0xE8) = 0;
+    *(s32 *)(s0 + 0xEC) = 0;
+    *(s32 *)(s0 + 0xF0) = 0;
+    *(s32 *)(s0 + 0xF8) = 0;
+    *(s32 *)(s0 + 0x108) = 0;
+    *(s32 *)(s0 + 0xFC) = 0;
+    *(s32 *)(s0 + 0x10C) = 0;
+    *(s32 *)(s0 + 0x110) = 0;
+    *(s32 *)(s0 + 0x118) = 0;
+    *(s32 *)(s0 + 0x11C) = 0;
+    amCdFs_ReleaseCache(*(void **)(s0 + 0x24));
+    amCdFs_ReleaseCache(*(void **)(s0 + 0x28));
+    *(s32 *)(s0 + 0xD4) = 0;
+    *(s32 *)(s0 + 0xD8) = 0;
+    amCdFs_ReleaseCache(*(void **)(s0 + 0x44));
+    *(s32 *)(s0 + 0xF4) = 0;
+    n = 0;
+    s1 = (s32 *)s0;
+    do {
+        amCdFs_ReleaseCache(*(void **)((u8 *)s1 + 0xA8));
+        n++;
+        *(s32 *)((u8 *)s1 + 0x150) = 0;
+        s1 = s1 + 1;
+    } while (n < 2);
+    amCdFs_ReleaseCache(*(void **)(s0 + 0xB0));
+    *(s32 *)(s0 + 0x158) = 0;
+    amCdFs_ReleaseCache(*(void **)(s0 + 0xB4));
+    *(s32 *)(s0 + 0x15C) = 0;
+    amCdFs_ReleaseCache(*(void **)(s0 + 0xB8));
+    *(s32 *)(s0 + 0x160) = 0;
+    k = 0;
+    a1 = s0;
+    do {
+        *(s32 *)(a1 + 0x24) = 0;
+        *(s32 *)(a1 + 0x28) = 0;
+        k += 7;
+        *(s32 *)(a1 + 0x2C) = 0;
+        *(s32 *)(a1 + 0x30) = 0;
+        *(s32 *)(a1 + 0x34) = 0;
+        *(s32 *)(a1 + 0x38) = 0;
+        *(s32 *)(a1 + 0x3C) = 0;
+        a1 += 0x1C;
+    } while (k < 0x25);
+    *(s32 *)((u8 *)(k << 2) + (u32)s0 + 0x24) = 0;
+    *(s32 *)((u8 *)(k << 2) + (u32)s0 + 0x28) = 0;
+}
 extern u8 D_004E05DC[];
 extern void func_00144A40(s32, f32, s32);
 extern void amAdx_SetVolume(s32, f32);
