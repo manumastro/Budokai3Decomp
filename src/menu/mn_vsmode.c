@@ -16,7 +16,42 @@ extern void *D_004707DC;
 void VsMode_Clear(void) {
     D_004707DC = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00269730);
+extern void StrStatus_Exit(void *);
+extern void func_00268A80(void *);
+extern void amHeap_Free(void *);
+extern void amTask_Kill(void *);
+extern void amCdFs_Close(void *, s32);
+extern void Help_Exit();
+extern void func_0028DF20();
+
+void func_00269730(void) {
+    u8 *s1;
+    u8 *s0;
+    s0 = (u8 *)D_004707DC;
+    if (s0 != 0) {
+        if (*(void **)(s0 + 0x10) != 0) {
+            s1 = *(u8 **)(*(u8 **)(s0 + 0x10) + 0x30);
+            StrStatus_Exit(*(void **)(s1 + 0x44));
+            func_00268A80(s1);
+            amHeap_Free(s1);
+            amTask_Kill(*(void **)(s0 + 0x10));
+        }
+        if (*(void **)(s0 + 0x8) != 0) {
+            amHeap_Free(*(void **)(s0 + 0x8));
+        } else if (*(void **)s0 != 0) {
+            amCdFs_Close(*(void **)s0, 0);
+        }
+        if (*(void **)(s0 + 0xC) != 0) {
+            amHeap_Free(*(void **)(s0 + 0xC));
+        } else if (*(void **)(s0 + 0x4) != 0) {
+            amCdFs_Close(*(void **)(s0 + 0x4), 0);
+        }
+        amHeap_Free(s0);
+        D_004707DC = 0;
+        Help_Exit();
+        func_0028DF20();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00269820);
 extern char D_0046B430[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
