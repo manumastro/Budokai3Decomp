@@ -1182,10 +1182,117 @@ s32 Scr_CmdCall20A7F0(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020A7F0(a[0].i);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260410);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002604F0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_002605C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260690);
+typedef struct Blk2604 {
+    s32 f0;
+    s32 f4;
+    f32 f8;
+    f32 fC;
+    f32 f10;
+    f32 f14;
+    f32 f18;
+    s32 f1C;
+    f32 f20;
+    f32 f24;
+    f32 f28;
+    s32 f2C;
+    f32 f30;
+    f32 f34;
+    f32 f38;
+    f32 f3C;
+    char pad40[0x10];
+} __attribute__((aligned(16))) Blk2604;
+
+extern void func_0020AA20(s32, Blk2604 *);
+
+s32 func_00260410(void *o, ScrCmd *cmd) {
+    ScrArg blk[17];
+    ScrArg *a = cmd->args;
+    s32 k = a[14].i;
+
+    blk[4].f = a[13].f;
+    blk[0].i = 1;
+    blk[1].i = cmd->args[12].i;
+    blk[2].f = cmd->args[11].f;
+    blk[3].f = cmd->args[10].f;
+    blk[5].f = cmd->args[9].f;
+    blk[6].f = cmd->args[8].f;
+    blk[8].f = cmd->args[7].f;
+    blk[9].f = cmd->args[6].f;
+    blk[10].f = cmd->args[5].f;
+    blk[11].f = 1.0f;
+    blk[12].f = cmd->args[4].f;
+    blk[13].f = cmd->args[3].f;
+    blk[14].f = cmd->args[2].f;
+    blk[15].f = cmd->args[1].f;
+    blk[16].f = cmd->args[0].f;
+    blk[7].i = 0;
+    func_0020AA20(k, (Blk2604 *)blk);
+    return 1;
+}
+
+s32 func_002604F0(void *o, ScrCmd *cmd) {
+    Blk2604 b;
+    s32 arg;
+
+    arg = *(s32 *)((char *)cmd->args + 0x34);
+    b.f10 = *(f32 *)((char *)cmd->args + 0x30);
+    b.f0 = 0;
+    b.f4 = *(s32 *)((char *)cmd->args + 0x2C);
+    b.f8 = *(f32 *)((char *)cmd->args + 0x28);
+    b.fC = *(f32 *)((char *)cmd->args + 0x24);
+    b.f14 = *(f32 *)((char *)cmd->args + 0x20);
+    b.f18 = *(f32 *)((char *)cmd->args + 0x1C);
+    b.f20 = *(f32 *)((char *)cmd->args + 0x18);
+    b.f24 = *(f32 *)((char *)cmd->args + 0x14);
+    b.f28 = *(f32 *)((char *)cmd->args + 0x10);
+    b.f2C = 0x3F800000;
+    b.f30 = *(f32 *)((char *)cmd->args + 0xC);
+    b.f34 = *(f32 *)((char *)cmd->args + 0x8);
+    b.f38 = *(f32 *)((char *)cmd->args + 0x4);
+    b.f3C = *(f32 *)((char *)cmd->args + 0x0);
+    b.f1C = 0;
+    func_0020AA20(arg, &b);
+    return 1;
+}
+extern void func_001414D0(void *, f32, f32, f32);
+extern void func_00209850(s32, void *);
+extern void func_00209950(s32, void *, s32);
+
+s32 func_002605C0(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrVec v;
+    f32 x = a[2].f;
+    f32 y = a[1].f;
+    f32 z = a[0].f;
+    s32 h = D_0058EE50[a[3].i];
+
+    if (D_0047079C != 0) {
+        return 1;
+    }
+    if (h != 0) {
+        func_001414D0(&v, 3.14159265f * (2.0f * x) / 360.0f, 3.14159265f * (2.0f * y) / 360.0f, 3.14159265f * (2.0f * z) / 360.0f);
+        func_00209850(h, &v);
+    }
+    return 1;
+}
+
+s32 func_00260690(ScrCtx *ctx, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    ScrVec v;
+    f32 x = a[2].f;
+    f32 y = a[1].f;
+    f32 z = a[0].f;
+    s32 h = D_0058EE50[a[3].i];
+
+    if (D_0047079C != 0) {
+        return 1;
+    }
+    if (h != 0) {
+        func_001414D0(&v, 3.14159265f * (2.0f * x) / 360.0f, 3.14159265f * (2.0f * y) / 360.0f, 3.14159265f * (2.0f * z) / 360.0f);
+        func_00209950(h, &v, 0);
+    }
+    return 1;
+}
 
 s32 Scr_CmdObjSetPos(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
