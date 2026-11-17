@@ -4,13 +4,14 @@
     fdiff.py src/battle/btl_main.c [FUNC ...] [-v] [-q]
 
 The file is compiled on its own with the game's compiler and flags (configure.py's MWCC and MWCC_FLAGS);
-INCLUDE_ASM lines are empty for the compiler, so only the functions written in C are compared. A function's
+INCLUDE_ASM lines are empty for the compiler, so only the functions written in C are compared. A file that
+defines data (.rodata, .sdata, .data, .bss, ...) is reported too: the full build would not match. A function's
 address comes from its name (func_XXXXXXXX) or from the symbol files listed in the yaml. Prints `OK` or the
 number of differing instructions (relocated fields masked: jal targets, %hi/%lo/%gp_rel immediates); -v prints
 each differing function side by side (original on the right). -q prints only the summary line.
 
-Safe to run in parallel (it writes only to a temporary folder). It does not check the data the C file would
-define, nor that the whole build still matches: ninja does that.
+Safe to run in parallel (it writes only to a temporary folder). It does not check that the relocated fields
+point at the right symbols, nor that the whole build still matches: ninja does that.
 """
 
 import argparse
@@ -63,6 +64,18 @@ def function_starts():
     return sorted(starts)
 
 
+def defined_data(obj):
+    """The object's non-empty sections other than code: the C file would add data to the image."""
+    from elftools.elf.elffile import ELFFile
+    out = []
+    with open(obj, "rb") as f:
+        for sec in ELFFile(f).iter_sections():
+            if sec["sh_type"] in ("SHT_PROGBITS", "SHT_NOBITS") and sec["sh_size"] \
+                    and sec.name not in (".text", ".comment"):
+                out.append((sec.name, sec["sh_size"]))
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("src", type=Path)
@@ -80,6 +93,7 @@ def main():
             print(err)
             sys.exit(1)
         fns = mwmatch.functions(obj)
+        data = defined_data(obj)
     starts = function_starts()
     # Functions already in C have no assembly left: add the file's own C functions as starts too.
     for name in fns:
@@ -121,7 +135,10 @@ def main():
             ok += 1
             if not args.q:
                 print(f"{name}: OK")
-    print(f"{args.src}: {ok} OK, {bad} differ")
+    for name, size in data:
+        print(f"{args.src}: defines data ({name}, 0x{size:X} bytes): a string or float literal, a switch table, "
+              "an initialised local array or a static; the full build will not match (docs/decomp_guide.md)")
+    print(f"{args.src}: {ok} OK, {bad} differ" + (", defines data" if data else ""))
 
 
 if __name__ == "__main__":
