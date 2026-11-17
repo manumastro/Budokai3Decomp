@@ -400,8 +400,7 @@ void BtlSlots_Set(BtlSlots *s, s32 i, s32 v) {
     s->slot[i] = v;
 }
 
-// GIVEN UP: x / 6 and the stores match; the 0x5C store is moved into the delay slot of the `a1 != 0` test (the original keeps it before the branch)
-#if 0
+extern void memset(void *, s32, s32);
 void func_001A5640(u8 *a0, u8 *a1, s32 a2) {
     s32 x;
     s32 *t;
@@ -415,19 +414,15 @@ void func_001A5640(u8 *a0, u8 *a1, s32 a2) {
     *(s8 *)(a0 + 0x4F) = -1;
     *(s32 *)(a0 + 0x58) = -1;
     *(s32 *)(a0 + 0x5C) = 0xBF800000;
+    *(u8 **)a0 = a1;
     if (a1 != NULL) {
-        x = -1;
-        *(u8 **)a0 = a1;
+        u8 *p;
         *(s32 *)(a0 + 4) = a2;
-        t = *(s32 **)(*(u8 **)a0 + a2 * 4 + 0x46C);
-        if (t != NULL) {
-            x = t[4];
-        }
-        *(s32 *)(a0 + 8) = x / 6;
+        p = *(u8 **)a0 + 0x46C;
+        t = *(s32 **)(p + a2 * 4);
+        *(s32 *)(a0 + 8) = (t != NULL ? t[4] : -1) / 6;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5640);
 void func_001A5700(MotFile2 *f) {
     s32 i;
     if (f->count > 0 && f->tracks != 0) {
@@ -701,7 +696,6 @@ void func_001A8630(void) {
 }
 extern void func_00131B90(void *);
 extern void amCamera_Init(void *);
-extern void memset(void *, s32, s32);
 extern void func_001A80E0(void);
 extern u8 D_00468190[];
 void func_001A8640(void) {
