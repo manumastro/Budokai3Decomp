@@ -192,3 +192,30 @@ ArenaList_GetFirst = 0x002F03B0; // type:func guess
 ArenaList_GetCursor = 0x002F03A0; // type:func guess
 ArenaList_GetEntries = 0x002F03C0; // type:func guess
 ArenaList_ClearGlobal = 0x002F03D0; // type:func guess
+
+// ess_main.c: two more state steps of the Ess mode; TickC runs two steps (0x26B770, 0x26B880).
+EssMain_TickA = 0x0026A620; // type:func guess
+EssMain_TickB = 0x0026A650; // type:func guess
+EssMain_TickC = 0x0026BD20; // type:func guess
+
+// mn_option.c: the option screen's state block D_00470938 and its readers.
+Option_ReadSound = 0x002DFDF0; // type:func guess
+Option_FreeState = 0x002E0C40; // type:func guess
+Option_GetSub = 0x002E0C70; // type:func guess
+
+// mn_csmodel.c: the character model's work area (CsModelWork): mode, scale and the eased value.
+CsModel_SetMode = 0x002B71C0; // type:func guess
+CsModel_SetScale = 0x002B71E0; // type:func guess
+CsModel_Ease = 0x002B7200; // type:func guess
+
+// mn_InputPass.c: copies and reads of the input screen's task work area.
+InputPass_CopyName = 0x002F24A0; // type:func guess
+InputPass_GetKind = 0x002F24D0; // type:func guess
+InputPass_CopyBuf = 0x002F3F50; // type:func guess
+InputPass_GetPhase = 0x002F3F80; // type:func guess
+
+// ess_shop.c: clears the Zenie counter D_00470808 and starts the Zenie display.
+Shop_InitZenie = 0x00276A10; // type:func guess
+
+// ess_trade.c: clears D_0047080C and starts the trade's two steps.
+Trade_Start = 0x0027A190; // type:func guess

@@ -23,7 +23,11 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF6E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF740);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF930);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DFBC0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DFDF0);
+/* Reads the sound status (channel 0), then runs func_002DFBC0. */
+void Option_ReadSound(void) {
+    amAdx_GetStat(0);
+    func_002DFBC0();
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DFE20);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DFEC0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0050);
@@ -33,14 +37,28 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E06A0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0800);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E08F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0B70);
-extern s32 D_00470938;
+extern void *D_00470938;
+
+typedef struct OptionState {
+    char pad0[8];
+    s32 f8;
+} OptionState;
 
 /* Clears the option screen's state word D_00470938. */
 void Option_ClearState(void) {
     D_00470938 = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0C40);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0C70);
+/* Frees the option state block D_00470938 (if any) and clears the pointer. */
+void Option_FreeState(void) {
+    if (D_00470938 != 0) {
+        amHeap_Free(D_00470938);
+        D_00470938 = 0;
+    }
+}
+/* The field at 0x8 of the option state, or 0 when there is no state. */
+s32 Option_GetSub(void) {
+    return D_00470938 == 0 ? 0 : ((OptionState *)D_00470938)->f8;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0C90);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0D10);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0D40);

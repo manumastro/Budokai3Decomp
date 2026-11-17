@@ -7,8 +7,19 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_00269AC0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_00269B90);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_00269CC0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026A4F0);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026A620);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026A650);
+extern void func_00269B90(void);
+extern void func_00269CC0(void);
+
+/* A state step of the Ess mode: runs the two per-frame parts. */
+void EssMain_TickA(void) {
+    func_00269B90();
+    func_00269CC0();
+}
+/* The same two parts, another state step. */
+void EssMain_TickB(void) {
+    func_00269B90();
+    func_00269CC0();
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026A680);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026ADC0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026AEB0);
@@ -21,7 +32,14 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026B560);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026B770);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026B880);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026BD10);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026BD20);
+extern void func_0026B770(void);
+extern void func_0026B880(void);
+
+/* Runs the two steps at 0x26B770 and 0x26B880 of the Ess mode. */
+void EssMain_TickC(void) {
+    func_0026B770();
+    func_0026B880();
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026BD50);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026C7C0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026C910);
