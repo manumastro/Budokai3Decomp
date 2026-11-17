@@ -1,5 +1,28 @@
 #include "common.h"
 
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern u8 *D_0046FDFC;
+s32 func_0021C3D0(s32);
+u8 *func_0021C660(s32);
+u8 *func_0021C430(s32);
+void func_0022C7D0(f32, s32);
+void func_0022ACF0(s32);
+
+extern u8 D_0058CAB0[];
+extern u8 D_0058CF30[];
+extern u8 D_0046AD80[];
+extern u8 D_0046AD88[];
+void amTask_Create(void (*)(void), s32, s32, s32, s32, u8 *);
+void func_002454B0(void);
+void func_002453D0(void);
+void func_00248CC0(void);
+void func_00252B60(void);
+void func_0025BE50(void);
+void func_002CA4A0(void);
+
 extern f32 D_00470690;
 extern f32 D_00470694;
 extern u8 D_0058BF70[];
@@ -127,6 +150,34 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023CE80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D360);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D970);
+#if 0
+void func_0023DB40(s32 x) {
+    u8 *sys = D_0046FDFC;
+    s32 idx = x;
+    s32 a = func_0021C3D0(idx);
+    u8 *q = func_0021C660(a);
+    u8 *p = func_0021C430(a);
+    u8 *t = D_0058BF70 + idx * 100 + 0x210;
+    s32 v;
+
+    if (*(s16 *)(p + 0x42) != *(s16 *)(q + 0x42)) {
+        v = *(s16 *)(q + 0x42);
+        if (v >= 1000) {
+            v = 999;
+        }
+        D_00470704 = *(s32 *)(sys + 0xE84);
+        D_0047070C = 0x04010000;
+        D_00470708 = 0;
+        func_00145CC0(*(s32 *)(sys + 0xE84), 0x04010000);
+        D_00470238 = 0;
+        if (*(s32 *)(t + 0xC) != 0) {
+            func_0022C7D0((f32)v, 1);
+            func_0022ACF0(*(s32 *)(t + 0xC));
+        }
+    }
+}
+// differs: the saved registers of the system pointer and of the table entry are swapped (the entry pointer is s2 in the original); the rest of the body matches
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023DB40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023DC10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023E260);
@@ -733,6 +784,32 @@ void func_00247280(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002472F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247410);
+#if 0
+void func_00247500(void) {
+    u8 *a = D_0058CAB0;
+    u8 *b = D_0058CF30;
+
+    *(s32 *)(a + 0x14) = -1;
+    *(s32 *)(a + 0x1C) = -1;
+    *(s32 *)(a + 0x38) = -1;
+    *(s16 *)(a + 0x2A) = 0;
+    *(s16 *)(a + 0x2C) = 0;
+    *(s16 *)(a + 0x36) = 0;
+    *(s32 *)(b + 0x14) = -1;
+    *(s32 *)(b + 0x1C) = -1;
+    *(s32 *)(b + 0x38) = -1;
+    *(s16 *)(b + 0x2A) = 0;
+    *(s16 *)(b + 0x2C) = 0;
+    *(s16 *)(b + 0x36) = 0;
+    amTask_Create(func_002454B0, 0, 0x5900, 0x400, 0x800002, D_0046AD80);
+    amTask_Create(func_002453D0, 0, 0x3710, 0x400, 0x800002, D_0046AD88);
+    func_00248CC0();
+    func_00252B60();
+    func_0025BE50();
+    func_002CA4A0();
+}
+// differs: the stores into the two task blocks use lui/at absolute addresses here; the original keeps each block's address in a register (t0, t2) and stores through it
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247500);
 void func_002475D0(void) {
     func_00245240();
