@@ -120,7 +120,35 @@ s32 func_002CAF50(void) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAFA0);
+typedef struct Cmd8 {
+    s16 v[4];
+} Cmd8;
+
+typedef struct Cmd32 {
+    Cmd8 e[4];
+} __attribute__((aligned(16))) Cmd32;
+
+extern Cmd32 D_00456640;
+extern s32 func_002CA7D0(CmdHist *h, s16 *cmd);
+
+s32 func_002CAFA0(void) {
+    Cmd32 arr = D_00456640;
+    s32 *cnt = &D_0047091C->f20;
+    CmdHist *h = &D_0047091C->chr->f1360;
+    s32 i;
+
+    if (D_0047091C->chr->fCB2 == 0x40) {
+        for (i = 0; i < 4; i++) {
+            if (func_002CA7D0(h, arr.e[i].v)) {
+                (*cnt)++;
+            }
+        }
+    }
+    if (*cnt > 0) {
+        return 1;
+    }
+    return 0;
+}
 /* differs: the same ring walk; the original has its nop-padded join and the early exit at a different place (0x80 bytes, ours 0x6C) */
 #if 0
 s32 func_002CB070(void) {
@@ -162,6 +190,29 @@ s32 func_002CB1D0(void) {
     }
     return 0;
 }
+/* differs: the original keeps the f32 pair at &t->f20 in $a1 and the chr in $a0 (the loads/stores use those bases); the
+   C above takes the pair from the TutWork base, and the return tests come out with the bc1t/bc1f order reversed */
+#if 0
+s32 func_002CB250(void) {
+    TutWork *t = D_0047091C;
+    TutChr *c = t->chr;
+    f32 *f = (f32 *)&t->f20;
+
+    if (c->fCAC == 9) {
+        f[0] = f[0] + *(f32 *)(D_00470570 + 0x88F0);
+    }
+    if (c->fCAC == 0xB) {
+        f[1] = f[1] + *(f32 *)(D_00470570 + 0x88F0);
+    }
+    if (f[0] < 30.0f) {
+        return 0;
+    }
+    if (f[1] < 30.0f) {
+        return 0;
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB250);
 s32 func_002CB300(void) {
     TutWork *t = D_0047091C;
