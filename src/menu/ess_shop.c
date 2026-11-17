@@ -228,7 +228,51 @@ void func_00276400(u8 *a0) {
         *(void **)(s0 + 0x1C) = (f == 0) ? 0 : f;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276470);
+extern s32 gEssShop;
+extern f32 gFrameDelta;
+extern f32 D_004E0618[];
+extern s32 func_0022BC30(s32, f32);
+extern void func_00274120();
+extern s32 EssMain_GetFlag();
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
+extern void amAdx_PlayAfs(s32, s32, s32);
+extern void EssShop_TaskWaitVoice();
+
+void func_00276470(u8 *a0) {
+    u8 *s3;
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    void *fp;
+    s3 = a0;
+    s2 = a0 + 0x30;
+    *(s32 *)((u8 *)gEssShop + 0x1D4) = *(s32 *)((u8 *)gEssShop + 0x1D4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x204) = *(s32 *)((u8 *)gEssShop + 0x204) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x234) = *(s32 *)((u8 *)gEssShop + 0x234) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x264) = *(s32 *)((u8 *)gEssShop + 0x264) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x294) = *(s32 *)((u8 *)gEssShop + 0x294) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x2C4) = *(s32 *)((u8 *)gEssShop + 0x2C4) + 1;
+    *(s32 *)((u8 *)gEssShop + 0x3B4) = *(s32 *)((u8 *)gEssShop + 0x3B4) + 1;
+    func_00274120();
+    s0 = -1;
+    s1 = *(u8 **)((u8 *)gEssShop + 0x28);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s1 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x1CC) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x1D4) * gFrameDelta);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(s1 + 0x1C) + *(s32 *)((u8 *)gEssShop + 0x22C) * 4), (f32)*(s32 *)((u8 *)gEssShop + 0x234) * gFrameDelta);
+    if (s0 == 0xFF) {
+        if (EssMain_GetFlag() != 0) {
+            *(s32 *)s2 = 0;
+            fp = (void *)EssShop_TaskWaitVoice;
+            *(void **)(s3 + 0x1C) = (fp == 0) ? 0 : fp;
+            amAdx_SetVolume(1, D_004E0618[0]);
+            amAdx_Pause(1, 0);
+            amAdx_PlayAfs(1, 0x210D8, 0);
+        } else {
+            func_0026D6A0();
+            *(s32 *)(s3 + 0x1C) = 0;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276610);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276840);
 extern s32 gEssShop;
