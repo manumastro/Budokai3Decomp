@@ -3668,7 +3668,86 @@ void func_00216770(u8 *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216880);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216A60);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216D20);
+void func_00215500(s32);
+void func_00216D20(void) {
+    u8 *g;
+    u8 *s1;
+    u8 *s0;
+    s32 idx;
+
+    if (*(s8 *)(gBattle + 0x8975) == 1) {
+        return;
+    }
+    g = D_0046FDD0;
+    if (*(s32 *)(g + 0x1A0) != 0 || *(s32 *)(g + 0x1A4) != 0) {
+        func_0013B160(gBattle + 0x60);
+        func_00209D70(*(u8 **)(gBattle + 0x260));
+        __asm__ volatile (
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : : "memory");
+        if (*(s32 *)(D_0046FDD0 + 0x1A0) != 0) {
+            s0 = D_0046FDD0 + 0x188;
+            s1 = gBattle + 0x830;
+            if (*(s32 *)D_0046FDD0 != 0) {
+                D_00470238 = 0;
+                amModel_SetCurrent(*(s32 *)D_0046FDD0, 0x3001000);
+            }
+            func_0013B160(0);
+            idx = *(s32 *)(s0 + 0x10);
+            __asm__ volatile (
+                "lqc2 $vf1, 0(%0)\n"
+                "vmulax.xyzw ACC, $vf28, $vf1x\n"
+                "vmadday.xyzw ACC, $vf29, $vf1y\n"
+                "vmaddaz.xyzw ACC, $vf30, $vf1z\n"
+                "vmaddw.xyzw $vf31, $vf31, $vf0w\n"
+                : : "r"(s1 + (idx << 4) + 0x650) : "memory");
+            func_00208D70(*(s32 *)(s0 + 0x18));
+            __asm__ volatile (
+                "vmove.xyzw $vf28, $vf24\n"
+                "vmove.xyzw $vf29, $vf25\n"
+                "vmove.xyzw $vf30, $vf26\n"
+                "vmove.xyzw $vf31, $vf27\n"
+                : : : "memory");
+            if (*(s32 *)(*(u8 **)(s0 + 0x18) + 0x38) < 0) {
+                *(s32 *)(s0 + 0x18) = 0;
+            }
+        }
+        if (*(s32 *)(D_0046FDD0 + 0x1A4) != 0) {
+            s0 = D_0046FDD0 + 0x188;
+            s1 = gBattle + 0x2850;
+            if (*(s32 *)D_0046FDD0 != 0) {
+                D_00470238 = 0;
+                amModel_SetCurrent(*(s32 *)D_0046FDD0, 0x3001000);
+            }
+            func_0013B160(0);
+            idx = *(s32 *)(s0 + 0x14);
+            __asm__ volatile (
+                "lqc2 $vf1, 0(%0)\n"
+                "vmulax.xyzw ACC, $vf28, $vf1x\n"
+                "vmadday.xyzw ACC, $vf29, $vf1y\n"
+                "vmaddaz.xyzw ACC, $vf30, $vf1z\n"
+                "vmaddw.xyzw $vf31, $vf31, $vf0w\n"
+                : : "r"(s1 + (idx << 4) + 0x650) : "memory");
+            func_00208D70(*(s32 *)(s0 + 0x1C));
+            __asm__ volatile (
+                "vmove.xyzw $vf28, $vf24\n"
+                "vmove.xyzw $vf29, $vf25\n"
+                "vmove.xyzw $vf30, $vf26\n"
+                "vmove.xyzw $vf31, $vf27\n"
+                : : : "memory");
+            if (*(s32 *)(*(u8 **)(s0 + 0x1C) + 0x38) < 0) {
+                *(s32 *)(s0 + 0x1C) = 0;
+            }
+        }
+        func_00209C50();
+    }
+    if (*(s32 *)(gWave + 0x8C) != 0) {
+        func_00215500(0x10);
+    }
+}
 void Hm_TaskMain(void) {
     if ((gBattle != 0 ? *(s32 *)(gBattle + 0x88EC) : 0) == 0 && Hm_IsBusy != 0) {
         func_00208E50(0x4000002, 1);
