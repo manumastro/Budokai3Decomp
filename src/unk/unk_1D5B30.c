@@ -48,7 +48,9 @@ typedef struct Fighter {
     s16 fCB4;
     s16 fCB6;
     f32 fCB8;
-    char padCBC[0x694];
+    char padCBC[0x1];
+    s8 fCBD;
+    char padCBE[0x692];
     s32 f1350;
     struct Fighter *f1354;
     struct Fighter *f1358;
@@ -108,7 +110,9 @@ typedef struct Fighter {
     f32 f1A40;
     char pad1A44[0x4];
     s32 f1A48;
-    char pad1A4C[0xC];
+    s32 f1A4C;
+    f32 f1A50;
+    f32 f1A54;
     s16 f1A58;
     char pad1A5A[0x16];
     s32 f1A70;
@@ -348,6 +352,8 @@ extern void func_001D6170(Fighter *c);
 extern void func_001D5C40(Fighter *c);
 extern void func_001E2DE0(Fighter *c);
 extern void func_0021A030(void *a, s32 b, s32 c, s32 d);
+extern u8 *func_0021C660(s32 i);
+extern void func_00246E20(void *o);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5B30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5C40);
@@ -2862,6 +2868,73 @@ void func_001E2190(Fighter *c, s32 idx) {
         Sp_CallHandler(1, buf);
     }
 }
+#if 0
+void func_001E2290(Fighter *c) {
+    Game *g;
+    u8 *o;
+    Fighter *t;
+    s32 i;
+    u8 *pp;
+    s32 a0;
+    s32 a1;
+    f32 f0;
+    f32 f2;
+
+    g = gBattle;
+    if (c->f1A4C != 0) {
+        func_001D5B30(c);
+        if (g->f8AAD == 0 && g->f88F8 == 4 && c->f1FF8 == 2 && c->f1A50 > 0.0f) {
+            f2 = g->f88F0;
+            c->f1A54 = c->f1A50;
+            f0 = c->f1A50 - f2;
+            if (f0 > 0.0f) {
+                c->f1A50 = f0;
+            } else {
+                f0 = 0.0f;
+                c->f1A50 = f0;
+            }
+            o = func_0021C660(c->f1350);
+            *(f32 *)(o + 0xF4) = c->f1A50;
+            a0 = (s32)c->f1A54;
+            a1 = (s32)c->f1A50;
+            if (a1 / 60 < a0 / 60) {
+                func_001E9B00((void *)(c->f1350 + 2), 0x34, 0, NULL, 0.0f, 1.0f);
+            }
+            if (c->f1A50 <= 0.0f) {
+                if (g->f88F8 == 4 && g->f88D8 > 0) {
+                    pp = (u8 *)g;
+                    for (i = 0; i < g->f88D8; i++) {
+                        if (*(s8 *)(pp + 0x2828) != -1) {
+                            *(s8 *)(pp + 0x2828) = 2;
+                        }
+                        pp += 0x2020;
+                    }
+                }
+                c->f183F = -1;
+                c->f1840 = 0;
+                t = c->f1354;
+                if (g->f88F8 == 4 && g->f88D8 > 0) {
+                    pp = (u8 *)g;
+                    for (i = 0; i < g->f88D8; i++) {
+                        if (*(s8 *)(pp + 0x2828) != -1) {
+                            *(s8 *)(pp + 0x2828) = 2;
+                        }
+                        pp += 0x2020;
+                    }
+                }
+                t->f183F = -1;
+                t->f1840 = 0;
+                func_00246E20(c);
+                c->f1FF8 = 0;
+                c->fC9C = 0;
+                c->f2004 = 0;
+                c->fCBD = 1;
+            }
+        }
+    }
+}
+#endif
+// differs: 40 of 159 instructions differ (about 6 of them relocations): the clamp arm keeps 0.0 in $f1 where the original moves it through $f0; the original reloads gBattle after the call in the second part (C reload makes it worse, 76); the loop pointer and the counter swap $a1/$a2 and declaration orders (48 tried) do not change it. Each store is in the original delay slot
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2290);
 #if 0
 void func_001E2510(Fighter *c) {
