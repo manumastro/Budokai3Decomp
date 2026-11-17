@@ -1,6 +1,14 @@
 #include "common.h"
+#include "menu/menu.h"
 
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1510);
+extern s32 *D_004708D0;
+extern void Zenie_Update(void *);
+extern void Zenie_Draw(void);
+extern void Zenie_Close(s32);
+extern s32 func_002A1020(s32);
+
+// func_002A1640: the pointer to the work block is reloaded after the kill and the store sits in the delay slot; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1640);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1690);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1700);
@@ -19,7 +27,18 @@ void func_002A21E0(void) {
     func_002A2020();
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A21F0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A22C0);
+extern void func_002A5B00(void);
+extern void func_0029A9F0(void);
+
+void func_002A22C0(void) {
+    s32 *s0 = D_004708D0;
+    if (s0[2] != 0) {
+        func_002A5B00();
+    }
+    if (s0[0x124 / 4] >= 0) {
+        func_0029A9F0();
+    }
+}
 extern void func_00264300(s32, void *, s32);
 extern void func_002A22C0(void);
 
@@ -164,7 +183,13 @@ s32 func_002A4830(void *a0, char *a1) {
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4860);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A48A0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A48F0);
+extern f32 func_002A1050(s32, s32, s32);
+
+s32 func_002A48F0(void *a0, s32 *a1) {
+    s32 *args = *(s32 **)((char *)a1 + 0x2C);
+    *a1 = (s32)func_002A1050(args[1], args[0], 1);
+    return 1;
+}
 extern f32 func_002A1050(s32, s32, s32);
 
 s32 func_002A4940(void *a0, s32 *a1) {
