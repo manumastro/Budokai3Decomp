@@ -997,14 +997,28 @@ void func_001D98A0(Fighter *c, s32 a1, s32 a2) {
     } else {
         p = c->f1350;
     }
-    q = (s16 *)((char *)g + 0x897E + p * 72 + a1 * 2);
+    q = ((s16 *)((char *)g + 0x897E + p * 72)) + a1;
     if (*q < a2) {
         *q = a2;
     }
 }
 #endif
 // differs: the table address adds its offset in another order (1 of 22 instructions differ)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D98A0);
+void func_001D98A0(Fighter *c, s32 a1, s32 a2) {
+    Game *g = D_00470570;
+    s32 p;
+    s16 *q;
+
+    if (c->f2015 != 0) {
+        p = c->f1358->f1350;
+    } else {
+        p = c->f1350;
+    }
+    q = ((s16 *)((char *)g + 0x897E + p * 72)) + a1;
+    if (*q < a2) {
+        *q = a2;
+    }
+}
 #if 0
 void func_001D9900(Fighter *c, s32 a1, s32 a2) {
     Game *g = D_00470570;
@@ -1047,11 +1061,21 @@ s16 func_001D99C0(Fighter *c, s32 a1) {
     } else {
         p = c->f1350;
     }
-    return *(s16 *)((char *)(g + 0) + (p * 72 + 0x897E) + a1 * 2);
+    return ((s16 *)((char *)g + p * 72 + 0x897E))[a1];
 }
 #endif
 // differs: the table read's offset is added in another order (1 of 17 instructions differ)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D99C0);
+s16 func_001D99C0(Fighter *c, s32 a1) {
+    Game *g = D_00470570;
+    s32 p;
+
+    if (c->f2015 != 0) {
+        p = c->f1358->f1350;
+    } else {
+        p = c->f1350;
+    }
+    return ((s16 *)((char *)g + p * 72 + 0x897E))[a1];
+}
 #if 0
 void func_001D9A10(Fighter *c) {
     s16 *q;
