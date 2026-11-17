@@ -73,7 +73,9 @@ typedef struct SaveWork2FAFF0 {
     struct Pos3_2FAFF0 *f44;
     char pad48[0x8];
     f32 f50;
-    char pad54[0xB8];
+    char pad54[0x4];
+    s32 f58;
+    char pad5C[0xB0];
     Cnt2FAFF0 f10C;
     char pad11C[0x178];
     s32 f294;
@@ -159,6 +161,35 @@ void func_002FBD90(Task2FAFF0 *t) {
         t->f1C = (func_002FBAE0 == 0) ? 0 : func_002FBAE0;
     }
 }
+#if 0
+// differs: compiled 0x114 bytes, original 0x120; the original keeps the task in s2 and t+0x30 in s1, the compiler folds t+0x30 into t (a struct view or a char pointer did not change it)
+extern u16 D_00492FCE[];
+extern u16 D_00493086[];
+extern s32 D_004DFAE8[];
+extern void Zenie_SetTarget(s32);
+extern void Zenie_SetStep(s32);
+void func_002FBE20(Task2FAFF0 *t) {
+    SaveWork2FAFF0 *w;
+    Anim2FAFF0 *a;
+
+    *(s32 *)&t->f38 = *(s32 *)&t->f38 + 1;
+    w = gTourMap;
+    w->f294 = w->f294 + 1;
+    a = (Anim2FAFF0 *)(gTourMap->f40 + 0x30);
+    Zenie_Update();
+    func_00208F70(a->f8);
+    if (((D_00492FCE[0] | D_00493086[0]) & 0x4008) == 0) {
+        if ((f32)*(s32 *)&t->f38 * gFrameDelta <= 120.0f) {
+            return;
+        }
+    }
+    a->f0 = a->f0 + 1;
+    *(s32 *)&t->f38 = 0;
+    Zenie_SetTarget(D_004DFAE8[0] + gTourMap->f58);
+    Zenie_SetStep(gTourMap->f58 / 100);
+    t->f1C = (func_002FBD90 == 0) ? 0 : func_002FBD90;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBE20);
 void func_002FBF40(Task2FAFF0 *t) {
     SaveWork2FAFF0 *w = gTourMap;
