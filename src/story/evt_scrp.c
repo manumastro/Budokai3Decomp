@@ -131,11 +131,129 @@ s32 func_002A1B30(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1B30);
+extern void func_00283C20(void);
+extern void func_00283D00(s32, s32, s32, s32);
+extern void SklSheet_SetIndex(s32);
+extern void Save_Load(s32, s32);
+extern void func_002A7F70(Task *);
+extern char D_0046EA78[];
+extern s32 func_00283BF0(void);
+
+#if 0
+// func_002A1C20: the state switch (halfword 5,1,4,2,0 as a beq chain with the out-of-line blocks) and the second function-table call layout; with goto labels and if/else forms 57-81 lines differ (the summary shows the count); 4 forms tried
+void func_002A1C20(void) {
+    s32 *s0 = (s32 *)gEvtWork;
+    s32 s1;
+    u16 v16;
+    if (s0[0xFC / 4] >= s0[0xF8 / 4]) {
+        if (func_00283BF0() >= 8) {
+            func_00283C20();
+            amTask_Kill((void *)s0[0x8 / 4]);
+            s0[0x8 / 4] = 0;
+            s0 = (s32 *)gEvtWork;
+            s0[0x14 / 4] = 0x40000002;
+            v16 = (u16)s0[0x14 / 4];
+            if (v16 == 5) {
+                goto cd0;
+            }
+            if (v16 == 1) {
+                goto cd0;
+            }
+            if (v16 == 4) {
+                goto cc0;
+            }
+            if (v16 == 2) {
+                goto cc0;
+            }
+            if (v16 == 0) {
+                goto cc0;
+            }
+            goto d28;
+cc0:
+            Save_Load(0x3000, 0);
+cd0:
+            s0[0x6C / 4] = amCdFs_ReadFileId(0x107D5, 0, 0);
+            s0[0x70 / 4] = amCdFs_ReadFileId(0x107D6, 0, 0);
+            s0[0x8 / 4] = (s32)amTask_Create(func_002A7F70, NULL, 0xB000, 0x4000, 0, D_0046EA78);
+d28:
+            s0[0x98 / 4] = 0;
+            return;
+        }
+    }
+    if (func_00283BF0() >= 8) {
+        s0 = (s32 *)gEvtWork;
+        s1 = s0[0x100 / 4 + s0[0xFC / 4]];
+        func_00283C20();
+        func_00283D00(0x9500, s1, 1, 0x11403000);
+        SklSheet_SetIndex(s0[0x110 / 4 + s0[0xFC / 4]]);
+        s0[0xFC / 4] = s0[0xFC / 4] + 1;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1C20);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1DB0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1F30);
+extern void amCdFs_ReleaseCache(s32);
+extern void memset(void *, s32, s32);
+extern char D_005AB3C0[];
+extern s32 D_005AB490[];
+extern s32 D_005AB494[];
+extern s32 D_005AB498[];
+extern s32 D_005AB49C[];
+extern s16 D_005AB5E6[];
+extern s16 D_005AB4B8[];
+extern s16 D_005AB4BE[];
+extern s16 D_005AB508[];
+extern s16 D_005AB50E[];
+extern s16 D_005AB558[];
+extern s16 D_005AB5A8[];
+extern s16 D_005AB55E[];
+extern s16 D_005AB5AE[];
+
+#if 0
+// func_002A2020: the constant stores (1.0f in v0, 1 in v1, 8 in a0, -1) take other registers than in the original; 23 of 112 differ; 2 forms tried
+s32 func_002A2020(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 *s0;
+    if (a1 < 0 || a1 >= 2) {
+        a1 = 0;
+    }
+    s0 = (s32 *)(D_005AB3C0 + a0 * 104 + a1 * 52);
+    if (s0[0] != 0) {
+        amCdFs_ReleaseCache(s0[0]);
+        s0[0] = 0;
+    }
+    s0[0] = a2;
+    s0[1] = a3;
+    s0[2] = (s32)((char *)s0[1] + *(s8 *)((char *)s0[1] + 4));
+    s0[3] = (s32)((char *)s0[1] + *(s8 *)((char *)s0[1] + 8));
+    s0[4] = *(s32 *)s0[2];
+    s0[5] = s0[3];
+    s0[6] = s0[3] + 0x98;
+    s0[7] = s0[3] + 0x130;
+    s0[8] = s0[3] + 0x1C8;
+    s0[9] = s0[3] + 0x260;
+    s0[10] = s0[3] + 0x2F8;
+    s0[11] = s0[3] + 0x390;
+    s0[12] = s0[3] + 0x428;
+    D_005AB49C[0] = 0x3F800000;
+    D_005AB490[0] = 0;
+    D_005AB494[0] = 0;
+    D_005AB498[0] = 0;
+    memset(D_005AB490, 0, 0x180);
+    D_005AB5E6[0] = -1;
+    D_005AB4B8[0] = 8;
+    D_005AB4BE[0] = 1;
+    D_005AB508[0] = 8;
+    D_005AB50E[0] = 1;
+    D_005AB558[0] = 8;
+    D_005AB5A8[0] = 8;
+    D_005AB55E[0] = 1;
+    D_005AB5AE[0] = 1;
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2020);
-extern void func_002A2020();
+extern s32 func_002A2020();
 
 void func_002A21E0(void) {
     func_002A2020();
@@ -208,6 +326,55 @@ s32 func_002A2490(void *p) {
     *(void **)((char *)p + 0x10) = func_002A2480;
     return 3;
 }
+extern void func_002AA3D0(s32, s32, s32);
+extern void func_002AA340(s32, s32, s32);
+extern void ScrCamSlot_Load(s32, s32, s32);
+extern void func_002AA0D0(s32, s32, s32);
+extern void func_002AA050(s32, s32, s32);
+extern s32 D_005AB8A0[];
+extern s32 D_005AB8A4[];
+extern s32 D_005AB8A8[];
+extern s32 D_005AB8AC[];
+extern s32 D_005AB8B0[];
+
+#if 0
+// func_002A24B0: the type chain (five halfword tests against 3): the original is beq to the next test and b to the end (return 3 out of line), ours branches the other way; the calls and stores match; 2 forms tried
+s32 func_002A24B0(s32 *a0, s32 a1) {
+    s32 *s4 = (s32 *)D_005AB8A0[0];
+    s32 *s3 = (s32 *)D_005AB8A4[0];
+    s32 *s2 = (s32 *)D_005AB8A8[0];
+    s32 *s1 = (s32 *)D_005AB8AC[0];
+    s32 *s0 = (s32 *)D_005AB8B0[0];
+    if (((s16 *)s4)[2] == 3) {
+        if (((s16 *)s3)[2] == 3) {
+            if (((s16 *)s2)[2] == 3) {
+                if (((s16 *)s1)[2] == 3) {
+                    if (((s16 *)s0)[2] == 3) {
+                        func_002AA3D0(*(s32 *)a0[0], 0, ((s32 *)s4[0x40 / 4])[0x50 / 4]);
+                        func_002AA340(*(s32 *)a0[0], 0, ((s32 *)s3[0x40 / 4])[0x50 / 4]);
+                        ScrCamSlot_Load(*(s32 *)a0[0], 0, ((s32 *)s2[0x40 / 4])[0x50 / 4]);
+                        func_002AA0D0(*(s32 *)a0[0], 0, ((s32 *)s1[0x40 / 4])[0x50 / 4]);
+                        func_002AA050(*(s32 *)a0[0], 0, ((s32 *)s0[0x40 / 4])[0x50 / 4]);
+                        s4[0x40 / 4] = 0;
+                        s3[0x40 / 4] = 0;
+                        s2[0x40 / 4] = 0;
+                        s1[0x40 / 4] = 0;
+                        s0[0x40 / 4] = 0;
+                        amCdFs_Close((s32)s4, 0);
+                        amCdFs_Close((s32)s3, 0);
+                        amCdFs_Close((s32)s2, 0);
+                        amCdFs_Close((s32)s1, 0);
+                        amCdFs_Close((s32)s0, 0);
+                        a0[4] = 0;
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A24B0);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern s32 D_005AB8A0[];
@@ -215,7 +382,7 @@ extern s32 D_005AB8A4[];
 extern s32 D_005AB8A8[];
 extern s32 D_005AB8AC[];
 extern s32 D_005AB8B0[];
-extern void func_002A24B0(s32 *, s32);
+extern s32 func_002A24B0(s32 *, s32);
 
 void func_002A2670(s32 *a0, s32 a1) {
     D_005AB8A0[0] = amCdFs_ReadFileId(0x609, 0, 1);
@@ -427,6 +594,37 @@ s32 func_002A3120(void) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3190);
+extern void amCdFs_ReleaseCache(s32);
+extern void memset(void *, s32, s32);
+extern char D_005AB3C0[];
+
+#if 0
+// func_002A37E0: 1 of 76 differs: the index-path load of the key goes through the parameter register (a0), the original through the saved copy s2 (the copy is not kept); 3 forms tried
+s32 func_002A37E0(s32 *a0, char *a1) {
+    s32 *s2 = a0;
+    s32 idx = ((s32 *)*(s32 **)(a1 + 0x2C))[0];
+    s32 k;
+    char *e;
+    if (idx != -1) {
+        e = D_005AB3C0 + *(s32 *)s2[0] * 104 + idx * 52;
+        if (*(s32 *)(e + 4) != 0) {
+            amCdFs_ReleaseCache(*(s32 *)e);
+            *(s32 *)e = 0;
+        }
+        memset(e, 0, 0x34);
+    } else {
+        for (k = 0; k < 2; k++) {
+            e = D_005AB3C0 + *(s32 *)s2[0] * 104 + k * 52;
+            if (*(s32 *)(e + 4) != 0) {
+                amCdFs_ReleaseCache(*(s32 *)e);
+                *(s32 *)e = 0;
+            }
+            memset(e, 0, 0x34);
+        }
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A37E0);
 #if 0
 // func_002A3910: the argument and state loads come in another order (the scheduler hoists the state load); three variants tried
@@ -1236,6 +1434,82 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5870);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5B00);
 void func_002A5D70(void) {
 }
+#if 0
+// func_002A5D80: long state task: the branch layout of the nested Zenie test differs (118 of 126 with the flag form, 100 of 120 with the and-or form); 2 forms tried
+extern s32 Zenie_GetState(void);
+extern void func_00264260(s32, s32, s32);
+extern void func_00298910(void);
+extern void func_00298990(s32, s32, s32);
+extern void func_00298E30(s32, s32);
+extern void func_002988D0(s32, s32);
+extern void func_00144370(s32, s32, s32, s32);
+extern void func_00144B70(s32);
+extern void Scr_Start(s32, s32);
+extern s8 D_004708E0[];
+extern s8 D_005ABA60[];
+extern char D_005AB8D0[];
+extern s32 D_005AA550[];
+extern void func_002A5D70(void);
+
+void func_002A5D80(s32 *a0) {
+    s32 *s0 = (s32 *)gEvtWork;
+    s32 s2;
+    s32 s3;
+    s32 *s1;
+    s8 *p2;
+    char *p1;
+    s32 skip = 0;
+    if ((s0[0xC / 4] & 1) != 0 && (s0[0xC / 4] & 2) != 0) {
+        if (s0[0x40 / 4] != 0) {
+            if (s0[0x68 / 4] == 0) {
+                skip = 1;
+            } else if (Zenie_GetState() <= 0) {
+                skip = 1;
+            }
+        }
+        if (skip == 0) {
+            func_00264260(-1, 0, 0);
+            if (s0[0x130 / 4] != -1) {
+                func_00298910();
+                func_00298E10(D_004700A0);
+                D_004700A0 = -1;
+            }
+            if (s0[0x138 / 4] < 4) {
+                func_00298990(s0[0x134 / 4], s0[0x138 / 4], s0[0x13C / 4]);
+            } else {
+                func_00298990(s0[0x134 / 4], 3, s0[0x13C / 4]);
+            }
+            if (s0[0x140 / 4] != -1) {
+                func_00298E30((s32)((char *)s0 + 0xE0), s0[0xF0 / 4]);
+                s0[0x140 / 4] = -1;
+            }
+            if (D_004708E0[0] > 0) {
+                s3 = 0;
+                p2 = D_005ABA60;
+                p1 = D_005AB8D0;
+                do {
+                    func_002988D0((s32)p1, *p2);
+                    s3++;
+                    p2++;
+                    p1 += 0x10;
+                } while (s3 < D_004708E0[0]);
+            }
+            D_004708E0[0] = 0;
+            s1 = D_005AA550;
+            s2 = 0;
+            do {
+                func_00144370(1, s2 + 0x11122233, 0, s1[0xE10 / 4]);
+                s2++;
+                s1++;
+            } while (s2 < 8);
+            func_00144B70(-1);
+            Scr_Start(s0[0], 0);
+            a0[0x1C / 4] = (s32)((func_002A5D70 == 0) ? 0 : (void *)func_002A5D70);
+            s0[0xC / 4] = 0;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5D80);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5F50);
 extern void amCdFs_ReleaseCache(s32);
@@ -1286,6 +1560,54 @@ void func_002A6DB0(s32 *a0) {
         }
     }
 }
+extern void func_002A1430(s32, s32, s32, s32);
+extern void func_002A1410(s32);
+extern s16 D_004E05F8[];
+extern void func_002A6DB0(s32 *);
+extern void func_002A6210(void);
+
+#if 0
+// func_002A6E40: the chain p = gEvtWork[6] stays in a0 in the original and the later loads go through it; ours reloads gEvtWork[6] and the branch shape differs; 1 form tried
+void func_002A6E40(s32 *a0) {
+    s32 *s0 = (s32 *)gEvtWork;
+    s32 *p = (s32 *)s0[0x18 / 4];
+    s32 off;
+    s32 *v;
+    void *f;
+    s32 a1;
+    if (((s16 *)p)[2] == 3) {
+        s0[0x18 / 4] = p[0x40 / 4];
+        s0[0x1C / 4] = ((s32 *)s0[0x18 / 4])[0x50 / 4];
+        s0[0x20 / 4] = *(s8 *)((char *)s0[0x1C / 4] + 4);
+        s0[0x24 / 4] = (s32)((char *)s0[0x1C / 4] + ((s32 *)s0[0x1C / 4])[0x8 / 4]);
+        s0[0x28 / 4] = (s32)((char *)s0[0x1C / 4] + ((s32 *)s0[0x1C / 4])[0xC / 4]);
+        off = (s0[0x14 / 4] & 0x7FFF) * 8;
+        s0[0x2C / 4] = s0[0x24 / 4] + off;
+        s0[0x30 / 4] = *(s32 *)(s0[0x24 / 4] + off + 4);
+        s0[0x34 / 4] = s0[0x28 / 4] + *(s32 *)s0[0x2C / 4];
+        p[0x40 / 4] = 0;
+        amCdFs_Close((s32)p, 0);
+        v = (s32 *)s0[0x34 / 4];
+        func_002A1430(v[0], v[1], v[2], v[3]);
+        func_002A1410(D_004E05F8[0]);
+        s0[0x34 / 4] = s0[0x34 / 4] + 0x10;
+        a1 = ((s32 *)gEvtWork)[0x10 / 4] == 1;
+        if (a1 == 0) {
+            s0[0x34 / 4] = s0[0x34 / 4] + 8;
+            if (*(s32 *)s0[0x34 / 4] != 0) {
+                s0[0x38 / 4] = amCdFs_ReadFileId(*(s32 *)s0[0x34 / 4], 0, 1);
+                f = (void *)func_002A6DB0;
+                ((s32 *)s0[0x8 / 4])[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+            }
+        } else {
+            s0[0x34 / 4] = s0[0x34 / 4] - 4;
+            f = (void *)func_002A6210;
+            *(s32 *)((char *)s0 + 0xD4) = 0;
+            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6E40);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6FD0);
 extern f32 func_002B06A0(void);
