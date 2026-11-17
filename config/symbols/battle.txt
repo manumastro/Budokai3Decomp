@@ -312,3 +312,87 @@ Btl_TaskLoadWait = 0x001B0380; // type:func // guess
 // scr_func.c: copies the 16-byte vector a0 to the record D_005AB3A0 and stores a1 in its word at +0x10. Called by
 // StrSelect_Reset.
 Scr_SetRecord = 0x002A9460; // type:func // guess
+
+// btb_draw.c: the scene switcher's task states. Each scene is a cycle of three states: Commit (waits for
+// gSceneReady, takes gSceneNext as the current scene D_004B4B40, calls the old scene's Exit and sets the Load
+// state), Load (waits while gSceneNext is not -1 and calls the new scene's Load) and Done (waits for gSceneDone,
+// calls the scene's Start and sets the Commit state). The suffix names the scene the calls of the state belong to;
+// the numbers are the chains of the same scene. Guesses from the calls.
+SceneSw_CommitTop = 0x001EAC20; // type:func // guess
+SceneSw_DoneTop = 0x001EAD10; // type:func // guess
+SceneSw_LoadTop = 0x001EADD0; // type:func // guess
+SceneSw_CommitTop2 = 0x001EAE70; // type:func // guess
+SceneSw_DoneTop2 = 0x001EAF90; // type:func // guess
+SceneSw_LoadTop2 = 0x001EB070; // type:func // guess
+SceneSw_CommitTop3 = 0x001EB130; // type:func // guess
+SceneSw_DoneResult = 0x001EB250; // type:func // guess
+SceneSw_LoadResult = 0x001EB330; // type:func // guess
+SceneSw_CommitMenu = 0x001EB3F0; // type:func // guess
+SceneSw_DoneArena = 0x001EB4E0; // type:func // guess
+SceneSw_LoadArena = 0x001EB5B0; // type:func // guess
+SceneSw_CommitArena = 0x001EB670; // type:func // guess
+SceneSw_DoneMenu = 0x001EB760; // type:func // guess
+SceneSw_LoadMenu = 0x001EB830; // type:func // guess
+SceneSw_CommitMenu2 = 0x001EB8E0; // type:func // guess
+SceneSw_DoneMenu2 = 0x001EB9A0; // type:func // guess
+SceneSw_LoadMenu2 = 0x001EBA50; // type:func // guess
+SceneSw_CommitMenu3 = 0x001EBAF0; // type:func // guess
+SceneSw_DoneMenu3 = 0x001EBB90; // type:func // guess
+SceneSw_LoadMenu3 = 0x001EBC20; // type:func // guess
+SceneSw_CommitPrac = 0x001EBCA0; // type:func // guess
+SceneSw_DonePrac = 0x001EBD90; // type:func // guess
+SceneSw_LoadPrac = 0x001EBE50; // type:func // guess
+SceneSw_CommitPrac2 = 0x001EBEF0; // type:func // guess
+SceneSw_DonePrac2 = 0x001EBFE0; // type:func // guess
+SceneSw_LoadPrac2 = 0x001EC0A0; // type:func // guess
+SceneSw_CommitPracExit = 0x001EC140; // type:func // guess
+SceneSw_DoneMenu4 = 0x001EC250; // type:func // guess
+SceneSw_LoadMenu4 = 0x001EC340; // type:func // guess
+SceneSw_CommitTour = 0x001EC430; // type:func // guess
+SceneSw_DoneTour = 0x001EC520; // type:func // guess
+SceneSw_LoadTour = 0x001EC5E0; // type:func // guess
+SceneSw_CommitTourExit = 0x001EC680; // type:func // guess
+SceneSw_DoneMenu5 = 0x001EC770; // type:func // guess
+SceneSw_LoadMenu5 = 0x001EC840; // type:func // guess
+SceneSw_CommitMenu6 = 0x001EC8F0; // type:func // guess
+SceneSw_DoneMenu6 = 0x001EC9E0; // type:func // guess
+SceneSw_LoadMenu6 = 0x001ECAB0; // type:func // guess
+SceneSw_CommitVs = 0x001ECB60; // type:func // guess
+SceneSw_DoneVs = 0x001ECC50; // type:func // guess
+SceneSw_LoadVs = 0x001ECD10; // type:func // guess
+SceneSw_CommitVs2 = 0x001ECDB0; // type:func // guess
+SceneSw_DoneMenu7 = 0x001ECEA0; // type:func // guess
+SceneSw_LoadMenu7 = 0x001ECF70; // type:func // guess
+SceneSw_DoneStrTitle = 0x001ED0C0; // type:func // guess
+SceneSw_LoadStrTitle = 0x001ED150; // type:func // guess
+SceneSw_CommitStrTitle = 0x001ED1D0; // type:func // guess
+SceneSw_DoneStaff = 0x001ED270; // type:func // guess
+SceneSw_LoadStaff = 0x001ED300; // type:func // guess
+SceneSw_CommitKill = 0x001ED380; // type:func // guess
+SceneSw_DoneStrTitle2 = 0x001ED430; // type:func // guess
+SceneSw_LoadStrTitle2 = 0x001ED4C0; // type:func // guess
+SceneSw_CommitFlight = 0x001ED540; // type:func // guess
+SceneSw_DoneFlight = 0x001ED600; // type:func // guess
+SceneSw_LoadFlight = 0x001ED6A0; // type:func // guess
+SceneSw_CommitStrTitle3 = 0x001ED740; // type:func // guess
+SceneSw_LoadStrTitle3 = 0x001ED9E0; // type:func // guess
+SceneSw_CommitFlightExit = 0x001EDAC0; // type:func // guess
+SceneSw_DoneStrTitle3 = 0x001EDC00; // type:func // guess
+SceneSw_LoadStrTitle4 = 0x001EDD00; // type:func // guess
+SceneSw_CommitStrSelect = 0x001EDDE0; // type:func // guess
+SceneSw_DoneStrSelect = 0x001EDED0; // type:func // guess
+SceneSw_LoadStrSelect = 0x001EDF90; // type:func // guess
+SceneSw_CommitMenu8 = 0x001EE040; // type:func // guess
+SceneSw_DoneMenu8 = 0x001EE150; // type:func // guess
+SceneSw_LoadMenu8 = 0x001EE250; // type:func // guess
+SceneSw_DoneAll = 0x001EE530; // type:func // guess
+SceneSw_LoadAll = 0x001EE6D0; // type:func // guess
+SceneSw_CommitTitle = 0x001EE820; // type:func // guess
+SceneSw_DoneTitle = 0x001EE920; // type:func // guess
+SceneSw_LoadTitle = 0x001EE9E0; // type:func // guess
+SceneSw_CommitLogomark = 0x001EED50; // type:func // guess
+SceneSw_DoneOpening = 0x001EEDF0; // type:func // guess
+SceneSw_LoadOpening = 0x001EEE70; // type:func // guess
+SceneSw_CommitBoot = 0x001EEEF0; // type:func // guess
+SceneSw_DoneLogomark = 0x001EEF90; // type:func // guess
+SceneSw_LoadLogomark = 0x001EF010; // type:func // guess
