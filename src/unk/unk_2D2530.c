@@ -650,7 +650,7 @@ s32 func_0022D860(s32, f32);
 s32 func_0022D670(s32, f32);
 s32 func_0022D860(s32, f32);
 void func_002D6160(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
 
     *(s32 *)((char *)s + 0x274) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0xE4), 0.0f);
     *(s32 *)((char *)s + 0x288) = func_0022D670(*(s32 *)(*(char **)((char *)s->f8 + 0x1C) + 0x34C), 0.0f);
@@ -783,17 +783,17 @@ void func_002D7FC0(void) {
     DrawModel(gOptionWork, s->f090, &v, 0);
 }
 void func_002D80A0(Vec4 *a, Vec4 *b, Vec4 *c, Vec4 *d) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     DrawModel(s, (Model2D2530 *)s->f74, 0, a);
-    DrawModel(D_00470934, (Model2D2530 *)s->f84, 0, a);
-    DrawModel(D_00470934, (Model2D2530 *)s->f78, 0, b);
-    DrawModel(D_00470934, (Model2D2530 *)s->f88, 0, b);
-    DrawModel(D_00470934, (Model2D2530 *)s->f7C, 0, c);
-    DrawModel(D_00470934, (Model2D2530 *)s->f8C, 0, c);
+    DrawModel(gOptionWork, (Model2D2530 *)s->f84, 0, a);
+    DrawModel(gOptionWork, (Model2D2530 *)s->f78, 0, b);
+    DrawModel(gOptionWork, (Model2D2530 *)s->f88, 0, b);
+    DrawModel(gOptionWork, (Model2D2530 *)s->f7C, 0, c);
+    DrawModel(gOptionWork, (Model2D2530 *)s->f8C, 0, c);
     m = (Model2D2530 *)s->f80;
-    DrawModel(D_00470934, m, 0, d);
+    DrawModel(gOptionWork, m, 0, d);
 }
 void func_002DDF00(void);
 void func_002DE250(void);
