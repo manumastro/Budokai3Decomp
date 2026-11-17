@@ -1,5 +1,24 @@
 #include "common.h"
 
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+void func_00145CC0(s32, s32);
+void func_0022C060(f32);
+void func_0021B1E0(void);
+
+extern s32 D_0047068C;
+s32 func_00225380(void);
+void func_00224F90(void);
+void func_0023A7A0(void);
+void func_0022D0E0(s32, s32);
+void func_002401A0(void);
+void func_00259FE0(void);
+void func_002CD810(void);
+void func_002E9770(void);
+void amTask_KillGroup(s32, s32, s32);
+
 extern s32 D_0047068C;
 extern f32 D_00470690;
 extern f32 D_00470694;
@@ -184,6 +203,37 @@ void func_0021B940(void) {
         s0[1] = 0;
     }
 }
+#if 0
+void func_0021B9A0(void) {
+    s32 *s1;
+    u8 *sys = D_0046FDFC;
+    u8 *v;
+    s32 e;
+
+    if (*(s32 *)(D_00470570 + 0x88EC) == 0) {
+        e = *(s32 *)(sys + 0xE64);
+        D_00470704 = e;
+        D_0047070C = 0x04001000;
+        D_00470708 = 0;
+        func_00145CC0(e, 0x04001000);
+        D_00470238 = 0;
+        v = *(u8 **)(sys + 0xEE8);
+        if (v != 0) {
+            s1 = (s32 *)(v + 0x30);
+            if (*(s32 *)(v + 0x30) != 0) {
+                func_0022C060(1.0f);
+            }
+            if (s1[1] != 0) {
+                func_0022C060(1.0f);
+            }
+        }
+        if (*(s32 *)(sys + 0xDF8) != 0) {
+            func_0021B1E0();
+        }
+    }
+}
+// differs: the entry pointer is set up in a delay slot in the original, and its first field is loaded into a0 before the test (the temporaries differ in a few instructions)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BA60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BEA0);
@@ -369,7 +419,31 @@ void func_0021C6A0(void) {
     memset(sys, 0, 0xF00);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C6E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CA20);
+void func_0021CA20(void) {
+    u8 *sys = D_0046FDFC;
+
+    *(s32 *)(sys + 0xE30) = 0;
+    *(s32 *)(sys + 0xDF8) = 0;
+    if (func_00225380() == -1) {
+        func_00224F90();
+        *(s16 *)(sys + 0xE44) = 0;
+    }
+    func_0023A7A0();
+    *(s32 *)(sys + 0xEE0) = 0;
+    *(s32 *)(sys + 0xEE4) = 0;
+    *(s32 *)(sys + 0xEE8) = 0;
+    *(s32 *)(sys + 0xEEC) = 0;
+    *(s32 *)(sys + 0xEF0) = 0;
+    if (D_0047068C != 0) {
+        func_0022D0E0(D_0047068C, 1);
+        D_0047068C = 0;
+    }
+    func_002401A0();
+    func_00259FE0();
+    func_002CD810();
+    func_002E9770();
+    amTask_KillGroup(0x1000, 0x2000000, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CAD0);
 #if 0
 void func_0021CCF0(void) {
