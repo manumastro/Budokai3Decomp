@@ -543,8 +543,6 @@ void SkillKill_Kind08(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C950);
-// GIVEN UP: differs: 4 of 86: the VU0 pair (ob+0x20 and ob+0x30 pointers) is computed in the other order and register, the rest is relocation-masked calls; tried operand order, local pointers (6 of 86), 4 forms
-#if 0
 extern s32 func_00209540(s32, s32, s32);
 extern void func_00146F30(s32 *);
 extern void func_00146F10(s32 *, s32 *, f32);
@@ -568,13 +566,11 @@ void func_0024CB00(SkillObj *ob) {
     r = func_0020B020(side, *(s16 *)(s2 + 0x30), *(s16 *)(s2 + 0x36));
     ob->unk54 = (void *)func_00209540(r, side ? 0x4000020 : 0x4000010, 0);
     __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(*(u8 **)(s1 + 0x1354) + 0x660), "r"(tmp));
-    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%0) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%2)"
-        : : "r"((u8 *)ob + 0x20), "r"(tmp), "r"((u8 *)ob + 0x30));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)"
+        : : "r"((u8 *)ob + 0x30), "r"(tmp), "r"((u8 *)ob + 0x20));
     func_00146F30((s32 *)((u8 *)ob + 0x30));
     func_00146F10((s32 *)((u8 *)ob + 0x30), (s32 *)((u8 *)ob + 0x30), *(f32 *)(s2 + 0x28) * SkillObj_Scale());
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CB00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CC60);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CDD0);
 void SkillKill_Kind07(s32 *p) {
@@ -1070,7 +1066,7 @@ extern void func_001F9CD0(s32, s32, s32, s32, s32);
 // use (no common subexpression) and loads the call's fields in another order (2 forms tried)
 // GIVEN UP (round 5, skill): 12 of 31 instructions differ. The VU0 part and the call match; the registers do not:
 // the original keeps &tmp in $a3 from the first instruction and the fighter pointer in $a2, mwcc gives $a2 to &tmp
-// (6 forms tried: operand order, declaration order, fighter pointer as a local or inline in the operands).
+// (9 forms tried: operand order incl. &tmp last, declaration order incl. &tmp first as an s32 local, fighter pointer as a local or inline in the operands).
 #if 0
 s32 func_00252E20(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
@@ -1629,7 +1625,7 @@ void func_00253A50(s32 *a0, u8 *a1) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253A50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253BA0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253E60);
-// GIVEN UP: 12 of 80 differ: the register of the mask constant (lui a3 vs v0) and the order of the res[0] and o+0x30 loads; the struct copies, the memset and the float constants match (declaration orders tried, 4 forms)
+// GIVEN UP: 12 of 80 differ: the register of the mask constant (lui a3 vs v0) and the order of the res[0] and o+0x30 loads; the struct copies, the memset and the float constants match (declaration orders, inlined or hoisted temporaries, reordered loads: 10 forms; the permuter base did not score)
 #if 0
 extern s32 func_00253690(u8 *, s32, u8 *);
 f32 func_00253FC0(u8 *a0, u8 *o) {
