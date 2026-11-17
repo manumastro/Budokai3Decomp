@@ -1704,6 +1704,35 @@ void func_001BA7B0(Fighter *f) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BA7F0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BAB10);
+#if 0
+void func_001BACE0(Fighter *f) {
+    s32 a3 = FT_FIELD(f, s32, 0xC54);
+    void *e = FT_FIELD((u8 *)FT_FIELD(f, void *, 0xB88) + ((a3 >> 16) - 1) * 4, void *, 0x46C);
+    u8 *b = FT_FIELD(e, u8 *, 0x14);
+    f32 f1;
+    f32 f2;
+
+    f2 = (2.5f - FT_FIELD(f, f32, 0xD4)) / 5.0f - 0.2f;
+    f1 = (f32)FT_FIELD(b + ((a3 & 0xFFFF) << 4), s32, 0x8);
+    FT_FIELD(f, f32, 0xC58) = f1 * f2;
+    if (FT_FIELD(f, f32, 0xC58) > f1) {
+        FT_FIELD(f, f32, 0xC58) = f1 - 1.0f;
+    }
+    if (FT_FIELD(f, f32, 0xC58) < 0.0f) {
+        FT_FIELD(f, f32, 0xC58) = 0.0f;
+    }
+    if (FT_FIELD(f, s16, 0xCB4) == 0 && FT_FIELD(f, f32, 0xCB8) <= 2.0f) {
+        if (func_001E3D60(FT_FIELD(f, s32, 0x17AC), 180.0f) == 0) {
+            FT_FIELD(f, s32, 0x17BC) = 0x3E99999A;
+        } else {
+            FT_FIELD(f, s32, 0x17BC) = 0xBE99999A;
+        }
+    } else {
+        FT_FIELD(f, s32, 0x17BC) = 0;
+    }
+}
+#endif
+// differs: 38 of 76 differ: float scheduling (the original loads the 2.5 and 5.0 constants and the field before the call-free arithmetic in a different order; the cvt.s.w and sub.s registers differ)
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BACE0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BAE10);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BAFF0);
@@ -1726,6 +1755,46 @@ void func_001BBF50(Fighter *f) {
     t = FIGHTER_FIELD(f, f32, 0xCB8) * 0.015f;
     FIGHTER_FIELD(f, f32, 0x17BC) = (0.2f < t) ? 0.2f : t;
 }
+#if 0
+void func_001BBFD0(Fighter *f) {
+    f32 a;
+    s32 v;
+
+    func_001E3430(f, 0);
+    if (FT_FIELD(f, s32, 0xC64) != 0) {
+        FT_FIELD(f, s32, 0x1864) = 1;
+        if (FT_FIELD(f, s8, 0x1FF9) != 0) {
+            a = FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC);
+            if (a - FT_FIELD(f, f32, 0x1844) <= 0.0f) {
+                ((FighterV *)f)->unk1FF9 = 0;
+                FT_FIELD(f, s32, 0x1864) = 8 | FT_FIELD(f, s32, 0x1864);
+                FT_FIELD(f, f32, 0xCA4) = 0.0f;
+                FT_FIELD(f, s32, 0xCA8) = 0x3DCCCCCD;
+            }
+        }
+        if (FT_FIELD(f, s16, 0x13A4) > -1) {
+            v = func_001C2B10(f);
+        } else {
+            v = func_001E94C0(f);
+        }
+        func_001E5040(f);
+        if (v == 0) {
+            FT_FIELD(f, s16, 0xCB4) = 1;
+        } else {
+            FT_FIELD(f, s16, 0xCB4) = 0;
+        }
+        FT_FIELD(f, s8, 0x2004) = 1;
+        FT_FIELD(f, s8, 0x1FFB) = 1;
+        if (v != 0xF) {
+            FT_FIELD(f, s16, 0xCB6) = 0;
+        }
+        FT_FIELD(f, s8, 0x2006) = 0;
+        ((void (*)(Fighter *))D_00468460[v])(f);
+        func_002CBFF0(1, f);
+    }
+}
+#endif
+// differs: 3 of 77 differ: the store to 0x1864 is done through an address register (addiu a0, s0, 0x1864; lw/sw 0(a0)) where the original uses lw/sw 0x1864(s0)
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BBFD0);
 void func_001BC110(Fighter *f) {
     FighterV *fv = (FighterV *)f;
@@ -2729,17 +2798,16 @@ void func_001C81D0(Fighter *f, s32 i) {
 }
 #if 0
 void func_001C8210(Fighter *f, s32 i) {
-    s32 *slot;
+    s32 *slot = (s32 *)((u8 *)f + 0x1DB8) + i;
 
-    slot = (s32 *)((u8 *)f + 0x1DB8) + i;
     if (*slot != 0) {
         if (FT_FIELD(f, s32, 0xB7C) == *slot) {
             func_001E7070((u8 *)f + 0x650, -1);
-            func_001E8290((u8 *)f + 0x650);
+            func_001E8290((void *)((s32)f + 0x650));
         }
         if (FT_FIELD(f, s32, 0x11FC) == *slot) {
             func_001E7070((u8 *)f + 0xCD0, -1);
-            func_001E8290((u8 *)f + 0xCD0);
+            func_001E8290((void *)((s32)f + 0xCD0));
         }
         func_001CA8A0((void *)*slot);
         *slot = 0;
@@ -2747,7 +2815,7 @@ void func_001C8210(Fighter *f, s32 i) {
     func_001C82C0(f, i);
 }
 #endif
-// differs: the slot address and the field 0x650 address are shared between the two calls (the compiler keeps f+0x650 in a saved register); the original recomputes it per call; frame 0x50 against 0x40, register order differs
+// differs: 14 of 41 differ: the two calls get f+0x650 computed separately now, but the register allocation is different (the original keeps the slot pointer in s2, f in s1, i in s0)
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8210);
 void func_001C82C0(Fighter *f, s32 i) {
     CdSlot *s = (CdSlot *)((u8 *)f + 0x1DF8 + i * 28);
