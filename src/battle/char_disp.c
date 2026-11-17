@@ -78,6 +78,42 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F070);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F180);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F350);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F470);
+// differs: the state chain is laid out differently (compiled 0xD4 bytes, the original 0x100)
+#if 0
+void func_0029F730(u8 *a0, f32 dt) {
+    s32 st = *(s32 *)(a0 + 0x10);
+    f32 c;
+    if (st != 2) {
+        if (st == 1) {
+            c = *(f32 *)(a0 + 0xC) + dt;
+            *(f32 *)(a0 + 0xC) = c;
+            if (*(f32 *)(a0 + 0x8) < 0.0f) {
+                return;
+            }
+            if (c - *(f32 *)a0 < *(f32 *)(a0 + 0x8)) {
+                return;
+            }
+            *(s32 *)(a0 + 0x10) = st + 1;
+        } else if (st == 0) {
+            c = *(f32 *)(a0 + 0xC) + dt;
+            *(f32 *)(a0 + 0xC) = c;
+            if (c < *(f32 *)a0) {
+                return;
+            }
+            *(s32 *)(a0 + 0x10) = st + 1;
+            func_0029F730(a0, dt);
+        }
+    } else {
+        c = *(f32 *)(a0 + 0xC) + dt;
+        *(f32 *)(a0 + 0xC) = c;
+        if (c - *(f32 *)a0 - *(f32 *)(a0 + 0x8) < *(f32 *)(a0 + 0x4)) {
+            return;
+        }
+        *(s32 *)(a0 + 0x10) = st + 1;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F730);
+
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F830);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029FA90);
