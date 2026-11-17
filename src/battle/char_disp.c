@@ -1,0 +1,21 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029DB00);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029DD30);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E120);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E450);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E610);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E7F0);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E870);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E9B0);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EA20);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EC40);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EDC0);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EF70);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F070);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F180);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F350);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F470);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F730);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F830);
+INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029FA90);
