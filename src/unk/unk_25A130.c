@@ -205,22 +205,19 @@ s32 Scr_CmdPlayersCall25A7C0(void *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-/* r6 best attempt diff 6 of 12: the value load, the null check and the `addiu` into the store base all match;
-   the object and the store base land in swapped registers ($v1 holds the object here, the target keeps it in $a0).
-   Declaration order, the value loaded inside the branch and a separate store pointer did not flip it. */
-#if 0
 s32 func_0025ADE0(void *ctx, ScrCmd *cmd) {
     s32 v = cmd->args[0].i;
-    ScrObj *o = D_0058D4E8[0];
+    s32 *o = (s32 *)D_0058D4E8[0];
+    s32 *p;
 
-    if (o != NULL && *(s32 *)((char *)o + 0x5C) < 5) {
-        s32 *p = (s32 *)((char *)o + 0x30);
-        p[12] = v;
+    if (o != NULL) {
+        p = o + 0xC;
+        if (o[0x17] < 5) {
+            p[12] = v;
+        }
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025ADE0);
 /* r6 best attempt diff 9 of 43: the global is loaded into $a0 before the argument pointer, the reverse of the
    target; the buffer copy into a local array and the placeholder branch did not change the order. */
 #if 0
