@@ -100,7 +100,38 @@ void func_002E87C0(Work87 *a, s16 i) {
     d->b[7] = s->b[7];
     d->w = s->w;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8830);
+void func_002E8830(u8 *s1, s32 a1, s32 a2, u8 *s0) {
+    if (*(s16 *)s1 != 0) {
+        if (*(s8 *)(s1 + 2) == (s16)a1) {
+            if (*(s8 *)(s1 + 3) == (s16)a2) {
+                if (*(s64 *)(s1 + 0x10) == *(s64 *)(s0 + 0x30)) {
+                    if (*(s64 *)(s1 + 0x18) == *(s64 *)(s0 + 0x38)) {
+                        if (*(s64 *)(s1 + 0x20) == *(s64 *)(s0 + 0x40)) {
+                            if (*(s64 *)(s1 + 0x28) == *(s64 *)(s0 + 0x48)) {
+                                if (*(s32 *)(s1 + 0x30) == *(s32 *)(s0 + 0x50)) {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    *(s16 *)s1 = 1;
+    *(s8 *)(s1 + 2) = 6;
+    *(s8 *)(s1 + 3) = (s8)a2;
+    *(Quad87 *)(s1 + 0x10) = *(Quad87 *)(s0 + 0x30);
+    *(Quad87 *)(s1 + 0x20) = *(Quad87 *)(s0 + 0x40);
+    *(s32 *)(s1 + 0x30) = *(s32 *)(s0 + 0x50);
+    *(s64 *)(s1 + 0x38) = *(s64 *)(s1 + 0x38) | *(s64 *)(s0 + 0x90);
+    *(u16 *)(s1 + 0x40) = *(u16 *)(s1 + 0x40) | *(u16 *)(s0 + 0xA4);
+    *(u16 *)(s1 + 0x42) = 0;
+    func_00125740(s1 + 0x42, s0 + 0xAB6, 0x216);
+    func_00125740(s1 + 0x258, s0 + 0x6D8, 0x1C8);
+    func_00125740(s1 + 0x446, s0 + 0xD41D, 0x260);
+    func_00125740(s1 + 0x6A6, s0 + 0x226, 0x4B0);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8980);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8B40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E8C80);
