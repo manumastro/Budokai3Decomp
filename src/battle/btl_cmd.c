@@ -122,7 +122,7 @@ extern f32 D_004957C0[16];
 extern f32 D_00495800[16][4];
 extern f32 D_00495900[16][4];
 extern void func_00125740(void *, void *, s32);
-extern s32 func_001A51E0(MotTrack *, s32);
+extern s32 func_001A51E0(MotTrack *, s32, f32);
 extern void amTask_KillGroup(s32, s32, s32);
 extern void *amTask_Create(void (*update)(void *), void *, s32, s32, s32, char *);
 extern char D_004681D0[];
@@ -231,6 +231,54 @@ void func_001A5160(MotFile *f) {
         e++;
     }
 }
+// GIVEN UP: the search is laid out with a shared exit and different registers for the index and the keys (4 declaration orders tried); func_001A5490 now passes its float to it
+#if 0
+s32 func_001A51E0(MotTrack *a0, s32 a1, f32 t) {
+    MotKey *k;
+    s32 half;
+    s32 i;
+
+    if (t < 1.0f) {
+        return 0;
+    }
+    if (a1 == -1) {
+        k = a0->keys;
+        i = a0->numKeys >> 1;
+        half = (a0->numKeys + 1) >> 1;
+        while (half >= 2) {
+            if ((f32)k[i].time <= t) {
+                i += half >> 1;
+            } else {
+                i -= half >> 1;
+            }
+            half = (half + 1) >> 1;
+        }
+        if (!((f32)k[i].time <= t)) {
+            i -= 1;
+        }
+        return i;
+    }
+    k = a0->keys;
+    i = a1;
+    for (;;) {
+        if ((f32)k[i].time <= t) {
+            if ((f32)k[i + 1].time <= t) {
+                i += 1;
+            } else {
+                return i;
+            }
+        } else {
+            i -= 1;
+        }
+        if (i <= 0) {
+            return 0;
+        }
+        if (i >= a0->numKeys - 1) {
+            return a0->numKeys - 1;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A51E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5350);
 s32 func_001A5490(MotFile *f, s32 track, f32 t) {
@@ -239,7 +287,7 @@ s32 func_001A5490(MotFile *f, s32 track, f32 t) {
     if ((f32)(tr->keys[tr->numKeys - 1].time - 1) <= t) {
         i = tr->numKeys - 1;
     } else {
-        i = func_001A51E0(tr, -1);
+        i = func_001A51E0(tr, -1, t);
     }
     return tr->keys[i].value;
 }
