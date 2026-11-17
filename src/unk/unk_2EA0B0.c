@@ -43,6 +43,8 @@ extern s32 D_00470194;
 extern s32 D_00470198;
 extern s32 D_00457410[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern s32 func_0022D670(s32, f32);
+extern u8 D_00457440[];
 
 void func_002EA0B0(void) {
     func_002E0D40();
@@ -157,6 +159,49 @@ void func_002EAA80(void) {
         D_004573F4[0]();
     }
 }
+#if 0
+void func_002EAAF0(void) {
+    u8 *s0;
+    s32 s1;
+    s32 t1;
+    s32 t2;
+    s32 a1;
+    s32 x;
+    u8 *q;
+    s0 = D_00470958;
+    *(s32 *)(s0 + 0xC) = 0;
+    s1 = *(s32 *)(s0 + 0xC);
+    s0 = D_00470958;
+    {
+        u8 *pl = *(u8 **)(s0 + 0x18);
+        t1 = *(s8 *)(pl + 1);
+        t2 = *(s8 *)(pl + 2);
+    }
+    if (*(s32 *)(s0 + 4) != 0) {
+        func_0022D0E0(*(s32 *)(s0 + 4), 1);
+        *(s32 *)(s0 + 4) = 0;
+    }
+    a1 = t2 + t1 * 8;
+    q = *(u8 **)(s0 + 0x4C);
+    x = *(s32 *)(s0 + 0x28 + t1 * 4);
+    if (0.75f * (f32)x < (f32)*(s16 *)(q + 0x10) ||
+        0.75f * (f32)*(s32 *)(s0 + 0x38 + t1 * 4) < (f32)*(s16 *)(q + 0x12)) {
+        a1 += 4;
+    }
+    {
+        u8 *c = *(u8 **)(s0 + 0x50);
+        s32 idx = (s8)D_00457440[a1] + s1;
+        *(s32 *)(s0 + 4) = func_0022D670(*(s32 *)(*(u8 **)(c + 0x1C) + idx * 4), 0.0f);
+    }
+    D_00470704 = *(s32 *)(s0 + 0x54);
+    D_0047070C = 0x5000000;
+    D_00470708 = 0;
+    func_00145CC0(*(s32 *)(s0 + 0x54), 0x5000000);
+    D_00470238 = 0;
+    func_0022C060(*(s32 *)(s0 + 4), 0.0f);
+}
+// differs: the float tests and the table lookup match in shape; the registers of the count and the two table indices differ (25 of 79 instructions)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EAAF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EAC30);
 #if 0

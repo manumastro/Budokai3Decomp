@@ -34,6 +34,10 @@ extern u8 *D_00470570;
 extern s32 D_00470148;
 extern s32 D_0047014C;
 extern s32 D_00470150;
+extern u8 D_005C2070[];
+extern f32 D_00470154;
+extern f32 func_00146E30(s32, s32);
+extern u8 D_005C2068[];
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD5F0);
 void func_002CD810(void) {
@@ -167,6 +171,29 @@ void func_002CF070(void) {
     memset(o + 0x30, 0, 0x80);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF0E0);
+#if 0
+s32 func_002CF180(u8 *s0) {
+    s32 k = *(s32 *)s0;
+    u8 *p = D_005C206C + k * 40;
+    f32 f0;
+    if (*(s32 *)p != 0) {
+        return 0;
+    }
+    *(s32 *)p += 1;
+    *(u8 **)(D_005C2074 + k * 40) = D_005C2060 + k * 40 + 0x18;
+    *(s32 *)(s0 + 8) = 9;
+    *(s32 *)(s0 + 0xC) = 0;
+    *(s32 *)(s0 + 0x10) = 0;
+    f0 = func_00146E30(*(s32 *)(D_00470570 + 0x264), *(s32 *)(s0 + 4));
+    f0 = D_00470154 / f0;
+    f0 = (f0 > 1.0f) ? 1.0f : f0;
+    *(f32 *)(s0 + 0x14) = f0;
+    k = *(s32 *)s0;
+    *(f32 *)(D_005C2070 + k * 40) = f0;
+    return 1;
+}
+// differs: the counter test and the return value are laid out differently (the original tests the counter with beqz and returns 0 in the delay slot of a b): 0xE8 against 0x100 bytes
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF180);
 s32 func_002CF280(void) {
     return 0;
@@ -177,7 +204,27 @@ s32 func_002CF290(void) {
 s32 func_002CF2A0(void) {
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF2B0);
+s32 func_002CF2B0(u8 *s0) {
+    f32 f20 = 1.0f;
+    s32 k = *(s32 *)s0;
+    u8 *p = D_005C2068 + k * 40;
+    f32 f0;
+    if (*(s32 *)p != 0) {
+        f20 = 0.3f;
+    } else {
+        *(s32 *)p += 1;
+    }
+    k = *(s32 *)s0;
+    *(s32 *)(D_005C2074 + k * 40) = 0;
+    *(s32 *)(s0 + 8) = 3;
+    *(s32 *)(s0 + 0xC) = 0;
+    *(s32 *)(s0 + 0x10) = 0;
+    f0 = func_00146E30(*(s32 *)(D_00470570 + 0x264), *(s32 *)(s0 + 4));
+    f0 = D_00470154 / f0;
+    f0 = (f0 > 1.0f) ? 1.0f : f0;
+    *(f32 *)(s0 + 0x14) = f20 * f0;
+    return 1;
+}
 s32 func_002CF3A0(void) {
     return 0;
 }
