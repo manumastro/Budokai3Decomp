@@ -5223,6 +5223,54 @@ void func_001F47C0(s32 p0, char *vec, s32 p2, s32 flags) {
 // differs: func_001F47C0: 0x13C against 0x150 bytes (same residual as func_001F4670: the original is 5 instructions longer around the memset and the second allocation; not solved).
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F47C0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4910);
+typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVecX;
+extern BtbVecX D_0044B5F0;
+extern char *D_0051CD0C[];
+extern char D_004697E8[];
+extern char *func_001A50F0(char *, s32);
+extern char *func_00209540(char *, s32, s32);
+extern void *func_001F5FD0(u32, char *, s32, void *, void *);
+extern void func_00146F60(void *, s32);
+extern void func_00141C30(void *, void *, void *);
+extern void func_00209850(void *, void *);
+extern void func_00209A90(void *, void *);
+extern void memset(void *, s32, s32);
+
+#if 0
+void func_001F4AD0(s32 p0, char *p1, s32 p2, s32 flags) {
+    BtbVecX v2;
+    BtbVecX v3;
+    BtbVecX v1;
+    char *ptr;
+    char *r;
+    char *a;
+    s32 tb;
+    char *p;
+
+    tb = (s32)D_0051CD0C[0];
+    a = NULL;
+    ptr = func_001A50F0((char *)tb, 0x202);
+    if (ptr != NULL) {
+        a = func_00209540(ptr, 0x2000001, 0);
+    }
+    if (a != NULL) {
+        r = (char *)func_001F5FD0(0x85000000, D_004697E8, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x801;
+        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x800;
+        memset(r + 0x30, 0, 0x80);
+        *(char **)(r + 0x38) = a;
+        p = r + 0x30;
+        *(char **)(p + 4) = func_001A50F0((char *)tb, 0x280);
+        *(s32 *)p = flags;
+        func_00209A90(*(void **)(p + 8), p1);
+        v1 = D_0044B5F0;
+        func_00146F60(&v2, p2);
+        func_00141C30(&v3, &v1, &v2);
+        func_00209850(*(void **)(p + 8), &v3);
+    }
+}
+#endif
+// func_001F4AD0: 74 of 83 instructions differ (best of 60 random declaration orders; the draft was 78). The call and store shape now matches the original (store r+0x38 before the second func_001A50F0 call, addiu r+0x30 in its delay slot), but the 16-byte locals (sp+0x70/0x80/0x90) are laid out differently, so most sp-relative instructions differ, and the saved registers a/r are swapped. Not solved.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4AD0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4C20);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4E70);
