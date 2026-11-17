@@ -129,6 +129,9 @@ Two other sets of code sit at the edges of the `am*` files:
   `-O1,p` (34 of 39). It is a scheduled function, unlike every C function of `amCdFs.c`. So `amCdFs.c` starts at
   0x25BEE0 (**inferred** for 0x25BE40, an empty function that is the same at both levels). The yaml keeps the
   boundary for now, and the two stay `INCLUDE_ASM`.
+- **`unk_1A31B0.s`**, the file right after `amMc.s`, is the only other file of the game part with no filled delay
+  slot (179 nops, 14 functions; counted over the split). It is probably more of the `am*` library and would then
+  need `AM_FLAGS` too (**inferred**, not compiled yet).
 
 Evidence:
 
