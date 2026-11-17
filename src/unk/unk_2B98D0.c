@@ -10,6 +10,14 @@ extern s16 func_002F5480(void);
 extern void func_002F55E0(void);
 extern void func_002BB650(void);
 
+/* A 16-byte vector (one quadword). */
+typedef struct V16 {
+    s32 v[4];
+} __attribute__((aligned(16))) V16;
+
+extern V16 D_00455EC0;
+extern void func_00139620(s32, void *, s32, s32, s32, f32);
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002B98D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002B9C10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002B9D30);
@@ -17,7 +25,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BA2A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BA610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BAC80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BAFA0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB100);
+void func_002BB100(void) {
+    V16 tmp = D_00455EC0;
+
+    func_00139620(0x900, &tmp, -1, 0x44, 0, 600.0f);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB150);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB2A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BB490);

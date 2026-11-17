@@ -88,6 +88,8 @@ extern void func_002EB290(void);
 extern void func_002EB560(void *);
 extern void func_001C8020(s32, void *);
 extern void (*D_004564A0[])(void);
+extern void (*D_004564C0[])(void);
+extern void func_002CBFF0(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAED0);
 /* differs: the test comes out as slti at / beqz; the original keeps slti v0 / bnez v0 with the result in v0 */
@@ -211,7 +213,18 @@ void func_002EB0D0(void);
 void func_002CBF50(void) {
     func_002EB0D0();
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBF60);
+void func_002CBF60(void) {
+    TutWork *t = D_0047091C;
+
+    if (*(s32 *)(D_00470570 + 0x88EC) == 0) {
+        if (t->f8 >= 0) {
+            D_004564C0[t->f8]();
+        }
+        t->f1C = t->f18;
+        t->f18 = t->f18 + *(f32 *)(D_00470570 + 0x88F0);
+        func_002CBFF0(0, 0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBFF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC120);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC240);
