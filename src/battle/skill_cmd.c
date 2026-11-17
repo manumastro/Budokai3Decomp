@@ -463,6 +463,37 @@ void func_0024C900(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C950);
+// GIVEN UP: differs: 4 of 86: the VU0 pair (ob+0x20 and ob+0x30 pointers) is computed in the other order and register, the rest is relocation-masked calls; tried operand order, local pointers (6 of 86), 4 forms
+#if 0
+extern s32 func_00209540(s32, s32, s32);
+extern void func_00146F30(s32 *);
+extern void func_00146F10(s32 *, s32 *, f32);
+void func_0024CB00(SkillObj *ob) {
+    u8 *s2 = *(u8 **)((u8 *)ob + 0xC);
+    u8 *s1 = (u8 *)ob->unk08;
+    s32 side = ((Fighter *)s1)->unk1350;
+    s32 r;
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    *(s32 *)ob = 0;
+    *(s16 *)((u8 *)ob + 4) = *(s16 *)((u8 *)ob + 4) & ~0x1000;
+    if (ob->unk54 != NULL) {
+        Obj_ResetF38((s32)ob->unk54);
+        ob->unk54 = NULL;
+    }
+    if (ob->unk58 != NULL) {
+        Obj_ResetF38((s32)ob->unk58);
+        ob->unk58 = NULL;
+    }
+    r = func_0020B020(side, *(s16 *)(s2 + 0x30), *(s16 *)(s2 + 0x36));
+    ob->unk54 = (void *)func_00209540(r, side ? 0x4000020 : 0x4000010, 0);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(*(u8 **)(s1 + 0x1354) + 0x660), "r"(tmp));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%0) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%2)"
+        : : "r"((u8 *)ob + 0x20), "r"(tmp), "r"((u8 *)ob + 0x30));
+    func_00146F30((s32 *)((u8 *)ob + 0x30));
+    func_00146F10((s32 *)((u8 *)ob + 0x30), (s32 *)((u8 *)ob + 0x30), *(f32 *)(s2 + 0x28) * SkillObj_Scale());
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CB00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CC60);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CDD0);
@@ -588,6 +619,37 @@ void func_0024F4D0(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F520);
+// GIVEN UP: differs: size 0x124 vs 0x140 (7 instructions short, in the call tail after the VU0 subtract); the param copy and the side register order differ; 4 forms of declaration order
+#if 0
+void func_0024F6B0(s32 *a0) {
+    s32 *o = a0;
+    u8 *s0 = (u8 *)a0[3];
+    s32 s3 = ((Fighter *)a0[2])->unk1350;
+    s32 s2 = func_0020B020(s3, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22));
+    s32 v = func_0020AD30(s3, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22));
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    amModel_SetCurrent(s2, v);
+    if (*(s16 *)(s0 + 0x60) != 0) {
+        if (func_0020AE80(s3, *(s16 *)(s0 + 0x5A), *(s16 *)(s0 + 0x60)) != 0) {
+            func_00208D60();
+        }
+    }
+    if (o[17] != 0) {
+        func_0013B0B0(0);
+        __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)"
+            : : "r"((u8 *)gBattle + 0x60));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%2)"
+            : : "r"(*(u8 **)((u8 *)gBattle + 0x264)), "r"((u8 *)o + 0x20), "r"(tmp));
+        func_00209D70(tmp);
+        func_0013B060(0);
+        func_00209B50(o[17], (s32)((u8 *)o + 0x20), 0);
+        func_00208D70(o[17]);
+        func_0013B110(1);
+        func_00209C50();
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F6B0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F7F0);
 void func_0024FAD0(s32 *p) {

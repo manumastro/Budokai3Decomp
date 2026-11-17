@@ -456,7 +456,30 @@ void func_001A6F90(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A6FA0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A73F0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A80E0);
+extern u8 D_00468170[];
+void func_001A80E0(void) {
+    s32 i = 0;
+    u8 *s1 = (u8 *)gBattle;
+    u8 *s0 = s1 + 0xA0;
+    u8 *a1;
+    s32 idx;
+    f32 sc;
+
+    for (i = 0; i < *(s32 *)((u8 *)gBattle + 0x88D8); i++) {
+        a1 = s1 + i * 257 * 32 + 0x830;
+        if (*(s8 *)(s1 + i * 257 * 32 + 0x2835) == 0) {
+            __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(a1 + 0xA0), "r"(s0 + (i << 4)));
+            __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(a1 + 0xB0), "r"(s0 + (i << 4) + 0x40));
+        }
+    }
+    idx = *(s32 *)(s0 + 0x184);
+    if (idx >= 0 && idx < 5) {
+        ((void (*)(void))(*(s32 *)(D_00468170 + idx * 4)))();
+    }
+    if (*(s32 *)(s1 + 0x88EC) == 0) {
+        *(f32 *)(s0 + 0x138) = *(f32 *)(s0 + 0x138) + *(f32 *)(s0 + 0x130) * *(f32 *)(s1 + 0x88F0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A81F0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A8300);
 void func_001A83D0(void) {
