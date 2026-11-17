@@ -81,7 +81,22 @@ s32 func_002A2FF0(void *a0, s32 *a1) {
     *a1 = func_002A1310(a0);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3020);
+extern void func_002A1320(s32);
+extern void func_002A12E0(s32);
+extern void func_002A1300(s32);
+extern void func_002A12F0(s32);
+
+s32 func_002A3020(void *a0, char *a1) {
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    s32 C = args[2];
+    s32 A = args[1];
+    s32 B = args[0];
+    func_002A1320(args[3]);
+    func_002A12E0(C);
+    func_002A1300(A);
+    func_002A12F0(B);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3080);
 extern void Zenie_Open(s32);
 extern s32 *D_004708D0;
@@ -228,7 +243,19 @@ s32 func_002A4EF0(void) {
 }
 // func_002A4F00 (stores 1 into D_004708D0->f144 and returns it): the constant goes to $a0, not $v0; not matched yet.
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4F00);
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4F10);
+extern void func_00264380(f32);
+extern f32 D_004703BC;
+
+s32 func_002A4F10(s32 *a0) {
+    s32 *g = D_004708D0;
+    if (g[0x144 / 4] == 1) {
+        a0[0x10 / 4] = 0;
+        g[0x144 / 4] = 0;
+        func_00264380(0.01f * D_004703BC);
+        return 1;
+    }
+    return 3;
+}
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4F70);
 extern s32 D_004700B0;
 
