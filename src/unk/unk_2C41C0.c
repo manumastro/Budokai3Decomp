@@ -512,20 +512,18 @@ void func_002C99E0(EffReq2C41C0 *s) {
     s->f50 = D_004563E0[e->f40];
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9AF0);
-#if 0
-// differs: the table call is scheduled above the f3A test (mwcc hoists the lookup)
 void func_002C9BC0(EffTask2C41C0 *t) {
     EffSubB2C41C0 *s = t->f30;
+    void (*fn)(EffSubB2C41C0 *);
 
+    fn = D_004563D0[s->f0->f84];
     if (s->f3A != 0) {
-        D_004563D0[s->f0->f84](s);
+        fn(s);
     }
     s->f3A = 0;
     gEffWork->f4D86 &= ~0x800;
     gEffWork->f4D86 &= ~0x400;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9BC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9C40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9EF0);
 extern EffWork *gEffWork;
