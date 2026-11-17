@@ -248,14 +248,15 @@ void func_002FC510(Task2FAFF0 *t) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC660);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC800);
-#if 0
-// differs: the 32-byte table copy to the stack is lq/sq in the original; mwcc copies a struct with lwc1/swc1
+typedef struct Tbl32_2FAFF0 {
+    s32 a[8];
+} __attribute__((aligned(16))) Tbl32_2FAFF0;
 void func_002FC9F0(void) {
     PairTbl2FAFF0 p;
     Slot2FAFF0 *sl;
     s32 i = 0;
 
-    p = *(PairTbl2FAFF0 *)&D_00458C20;
+    *(Tbl32_2FAFF0 *)&p = *(Tbl32_2FAFF0 *)&D_00458C20;
     sl = (Slot2FAFF0 *)((char *)gTourMap + 0x19C);
     do {
         if (sl->f0 == p.v[i].a) {
@@ -281,8 +282,6 @@ void func_002FC9F0(void) {
         sl++;
     } while (i < 4);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC9F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FCAF0);
 #if 0
 // differs: 52 of 76 (same size); the loops are laid out differently and the registers differ; 30 declaration orders tried
