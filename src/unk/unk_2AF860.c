@@ -18,7 +18,7 @@ extern void amDraw_ResetPackets(void);
 extern f32 D_004708F8;
 extern u8 D_004E0660[];
 extern u8 D_004E0668[];
-extern void func_002B0190(void);
+extern s32 func_002B0190(u8 *, u8 *);
 extern void amCdFs_ReleaseCache(s32);
 
 void func_002AF860(u8 *a, u8 *b) {
@@ -244,31 +244,24 @@ s32 func_002B0130(u8 *a, u8 *b) {
     *(void **)(a + 0x10) = func_002B0000;
     return 3;
 }
-#if 0
 s32 func_002B0190(u8 *a, u8 *b) {
-    s32 r = 3;
-    u8 *f = *(u8 **)(a + 0x1C);
     u8 *pa = *(u8 **)a;
+    u8 *f = *(u8 **)(a + 0x1C);
     u8 *q = *(u8 **)(b + 0x2C);
-    switch (*(s16 *)(f + 4)) {
-    case 3:
-        *(s32 *)(a + 0x10) = 0;
-        func_002A9C00(*(s32 *)pa, *(s32 *)b, *(s32 *)q, *(void **)(f + 0x40), *(s32 *)(*(u8 **)(f + 0x40) + 0x50));
-        *(void **)(f + 0x40) = NULL;
-        amCdFs_Close(f, 0);
-        if (*(void **)(a + 0x18) != NULL) {
-            amCdFs_Close(*(void **)(a + 0x18), 0);
-        }
-        *(s32 *)(a + 0x18) = 0;
-        *(s32 *)(a + 0x1C) = 0;
-        r = 1;
-        break;
+    if (*(s16 *)(f + 4) != 3) {
+        return 3;
     }
-    return r;
+    *(s32 *)(a + 0x10) = 0;
+    func_002A9C00(*(s32 *)pa, *(s32 *)b, *(s32 *)q, *(void **)(f + 0x40), *(s32 *)(*(u8 **)(f + 0x40) + 0x50));
+    *(void **)(f + 0x40) = NULL;
+    amCdFs_Close(f, 0);
+    if (*(void **)(a + 0x18) != NULL) {
+        amCdFs_Close(*(void **)(a + 0x18), 0);
+    }
+    *(s32 *)(a + 0x18) = 0;
+    *(s32 *)(a + 0x1C) = 0;
+    return 1;
 }
-// differs: the argument loads come in another order (the pointer is kept in a3 and read after the store to 0x10); here the loads are hoisted above the branch
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0190);
 s32 func_002B0230(u8 *a, u8 *b) {
     *(s32 *)b = *(s32 *)(*(u8 **)(b + 0x2C) + 8);
     *(s32 *)(a + 0x18) = 0;
