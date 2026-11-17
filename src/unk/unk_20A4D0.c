@@ -91,6 +91,22 @@ extern u8 D_00568C10[];
 void func_00208F70(void *);
 void func_00216D20(void);
 void func_0020CB90(void *);
+u8 *func_00215320(s32, s32);
+void func_00211D80(void);
+void func_002186D0(void);
+extern u8 D_0046A3B8[];
+typedef struct Blk44 {
+    u8 b[0x2C];
+} Blk44;
+extern void (*D_00469CB0[])(void *);
+void func_0020BDB0(u8 *);
+void func_0020BA60(void);
+void func_0020B600(void);
+extern void (*D_00469CC8[])(void *);
+void amAdx_Stop(s32);
+void amHeap_Free(void *);
+extern s32 D_00568B94[];
+extern u8 D_00568C14[];
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020A4D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020A5F0);
 extern u8 D_005687D0[];
@@ -229,14 +245,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E870);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E8F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EA70);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EB70);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EBF0);
+void func_0020EBF0(s32 i) {
+    if (*(s8 *)(D_00470570 + 0x8975) != 1) {
+        u8 *p = D_00568C90 + i * 0x2140;
+        if (*(s32 *)(p + 0x94) != 0 && *(s32 *)(p + 0x9C) != 0) {
+            func_0020BDB0(p);
+            func_0020B600();
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EC70);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EDA0);
+void func_0020EDA0(s32 i) {
+    if (*(s8 *)(D_00470570 + 0x8975) != 1) {
+        u8 *p = D_00568C90 + i * 0x2140;
+        if (*(s32 *)(p + 0x94) != 0) {
+            func_0020BDB0(p);
+            func_0020BA60();
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EE10);
 void func_0020EF80(s32 i, s32 flag) {
     func_0020BBD0(D_00568C90 + i * 0x2140, flag);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EFB0);
+void func_0020EFB0(s32 i) {
+    u8 *p = D_00568C90 + i * 0x2140;
+    if ((D_00470570 != 0 ? *(s32 *)(D_00470570 + 0x88EC) : 0) == 0) {
+        if (*(s32 *)(p + 0x20E8) != 0) {
+            func_00208F70(*(void **)(p + 0x20E8));
+            if (*(s32 *)(*(u8 **)(p + 0x20E8) + 0x38) < 0) {
+                *(s32 *)(p + 0x20E8) = 0;
+            }
+        }
+    }
+}
 void func_0020F040(s32 i, s32 flag) {
     u8 *p = D_00568C90 + i * 0x2140;
     if (flag) {
@@ -529,7 +571,19 @@ void func_0020DA10(s32);
 void func_00212560(s32 *a) {
     func_0020DA10(a[8]);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212570);
+void func_00212570(u8 *s) {
+    u8 *q = s + 0x20;
+    u8 *p = D_00568C90 + *(s16 *)(s + 0x66) * 0x2140;
+    if (*(s32 *)(s + 0x10) != 0) {
+        func_00209530(*(s32 *)(s + 0x10));
+        *(s32 *)(s + 0x10) = 0;
+    }
+    if (*(s32 *)(p + 0x9C) != 0) {
+        amHeap_Free(*(void **)(p + 0x9C));
+        *(s32 *)(p + 0x9C) = 0;
+    }
+    func_0020F870(*(s16 *)(q + 0x46));
+}
 void func_00212600(u8 *p) {
     u8 *q = p + 0x20;
     if (*(s32 *)(p + 0x10) != 0) {
@@ -544,7 +598,21 @@ void func_00212650(u8 *p) {
         *(s32 *)(p + 0x10) = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212690);
+void func_00212690(u8 *s) {
+    u8 *v = func_00215320(*(s16 *)(*(u8 **)(s + 0x6C) + 0x1350), *(s16 *)(s + 0x50));
+    if (v != 0) {
+        u8 *q = v + 0x20;
+        *(void **)(v + 0x8) = (void *)func_00211D80;
+        *(s32 *)(v + 0xC) = 0;
+        *(f32 *)(v + 0x18) = *(f32 *)(s + 0x84);
+        memset(q, 0, 0x50);
+        *(s16 *)(q + 0x48) = *(s16 *)(s + 0x5A);
+        *(s16 *)(q + 0x4A) = *(s16 *)(s + 0x5C);
+        *(s32 *)(q + 0x34) = *(s32 *)(s + 0x70);
+        *(s16 *)(q + 0x44) = *(s32 *)(s + 0x68);
+        *(s32 *)(q + 0x40) = *(s32 *)(s + 0x64);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212730);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002129B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212DA0);
@@ -655,7 +723,17 @@ void func_002152E0(u8 *p) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215320);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215500);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215900);
+void func_00215900(void) {
+    memset(D_0046FDCC, 0, 0xA0);
+    memset(D_00568B90, 0, 0x80);
+    memset(D_00568C10, 0, 0x80);
+    D_00568B94[0] = 0;
+    *(u8 **)D_00568B90 = D_00568C10;
+    *(u8 **)D_00568C14 = D_00568B90;
+    *(u8 **)D_00568C10 = 0;
+    func_0020F870(-1);
+    func_0020DA10(-1);
+}
 extern u8 D_00568C10[];
 extern u8 D_00568B90[];
 void func_0020CB90(void *);
@@ -913,7 +991,20 @@ void func_00217060(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217070);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217200);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217390);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002174C0);
+void func_002174C0(u8 *s) {
+    V4Q v;
+    func_0020D780(&v);
+    *(s16 *)(s + 0x20) = 0x15;
+    *(s16 *)(s + 0x22) = 0;
+    *(s16 *)(s + 0x24) = 0;
+    jtbl_00469CC4[0](s);
+    *(s16 *)(s + 0x20) = 5;
+    *(s32 *)(s + 0x28) = 0x3F800000;
+    D_00469CC8[0](s);
+    *(void **)(s + 0x4) = &v;
+    *(s16 *)(s + 0x20) = 0x16;
+    jtbl_00469CC4[0](s);
+}
 void func_00217550(u8 *s) {
     V4Q v;
     func_0020D780(&v);
@@ -945,7 +1036,20 @@ void func_00217B70(u8 *s) {
     *(s16 *)(s + 0x24) = 0;
     jtbl_00469CC4[0](s);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217BC0);
+void func_00217BC0(u8 *s) {
+    V4Q v;
+    func_0020D780(&v);
+    *(s16 *)(s + 0x20) = 4;
+    *(s16 *)(s + 0x22) = 0;
+    *(s16 *)(s + 0x24) = 0;
+    jtbl_00469CC4[0](s);
+    *(s16 *)(s + 0x20) = 5;
+    *(s32 *)(s + 0x28) = 0x3F800000;
+    D_00469CC8[0](s);
+    *(void **)(s + 0x4) = &v;
+    *(s16 *)(s + 0x20) = 3;
+    jtbl_00469CC4[0](s);
+}
 void func_00217C50(u8 *s) {
     V4Q v;
     func_0020D780(&v);
@@ -975,7 +1079,14 @@ void func_00217D10(u8 *p) {
         func_00215230(-1, 0x10);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217D70);
+s32 func_00217D70(void) {
+    Blk44 a;
+    Blk44 b;
+    memset(&a, 0, 0x2C);
+    b = a;
+    D_00469CB0[0](&b);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217DD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217F70);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002181A0);
@@ -1155,6 +1266,24 @@ s32 func_00218B60(s32 x, s32 flag) {
 // differs: the clamp of x leaves a b after its x < 0 arm (as func_00218990) and the flag term is in another register; 12 of 55 differ
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218B60);
+#if 0
+void func_00218C40(u8 *s, f32 a, f32 b) {
+    u8 *o = *(u8 **)(s + 0x1C);
+    if (o != 0) {
+        *(u8 **)(o + 0x30) = s;
+    } else {
+        u8 *n = amTask_Create((void *)func_002186D0, 0, 0x4080, 0x20, 0x800002, D_0046A3B8);
+        *(u8 **)(n + 0x30) = s;
+        o = n;
+    }
+    *(f32 *)(o + 0x34) = *(f32 *)s;
+    *(f32 *)(o + 0x38) = a;
+    *(s32 *)(o + 0x3C) = 0;
+    *(f32 *)(o + 0x40) = b;
+    *(u8 **)(s + 0x1C) = o;
+}
+// differs: 4 of 36 differ, all in the create branch: the argument registers of amTask_Create are set in another order (t1 is loaded before t0 in the original, the store to 0x30 uses the returned v0 before the move into v1)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218C40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218CD0);
 extern u8 *D_00470570;
@@ -1239,7 +1368,19 @@ void func_00219340(u8 *s, f32 v) {
         amAdx_SetVolume(*(s32 *)(s + 0x8), *(f32 *)s * *(f32 *)(s + 0x4));
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00219390);
+void func_00219390(u8 *s) {
+    if (*(s32 *)(s + 0x8) >= 0 && *(s32 *)(s + 0x8) < 5) {
+        amAdx_Stop(*(s32 *)(s + 0x8));
+    }
+    if (*(s32 *)(s + 0x8) != 0 && *(s32 *)(s + 0x8) != 1) {
+        *(s32 *)(s + 0x8) = -1;
+    }
+    *(s32 *)(s + 0xC) = 0;
+    *(s32 *)(s + 0x10) = 0;
+    *(s16 *)(s + 0x14) = -1;
+    *(s16 *)(s + 0x16) = -1;
+    *(s32 *)(s + 0x18) = 0xBF800000;
+}
 void func_00219410(u8 *s) {
     func_002194C0(s);
     if (*(s32 *)(s + 0xC) == 2 || *(s32 *)(s + 0xC) == 1) {
