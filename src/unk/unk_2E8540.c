@@ -112,7 +112,44 @@ void func_002E92E0(void) {
     memset(D_005C4140, 0, 0x5DD0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9300);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E94C0);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern s32 gBtlSys;
+extern void *gBattle;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_0022C430(s32, f32);
+extern void func_0022C560(s32);
+extern void func_002E9300(void);
+void func_002E94C0(void) {
+    char *sys = (char *)gBtlSys;
+
+    if (*(s8 *)((char *)gBattle + 0x8975) == 1) {
+        return;
+    }
+    if (D_005C9F14[0] != 0) {
+        if (D_005C9F18[0] != 0 || D_005C9F1C[0] != 0) {
+            s32 e = *(s32 *)(sys + 0xE64);
+
+            D_00470704 = e;
+            D_0047070C = 0x4001000;
+            D_00470708 = 0;
+            amModel_SetCurrent(e, 0x4001000);
+            D_00470238 = 0;
+            func_0022C430(*(s32 *)(*(s32 *)(*(s32 *)(sys + 0xE6C) + 0x1C)), 0.0f);
+        }
+        if (D_005C9F18[0] != 0) {
+            func_002E9300();
+        }
+        if (D_005C9F1C[0] != 0 && D_005C9F68[0] != 0) {
+            func_0022C560(D_005C9F68[0]);
+        }
+        if (D_005C9F6C[0] != 0) {
+            func_0022C560(D_005C9F6C[0]);
+        }
+    }
+}
 
 void func_002E95C0(char *o) {
     void **t = (void **)(o + 0x30);
@@ -134,7 +171,34 @@ void func_002E9770(void) {
     }
     memset(D_005C9F10, 0, 0x6C);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E97E0);
+extern s32 D_005C9F70[];
+extern s32 D_005C9F74[];
+extern s32 D_005C9F78[];
+extern char D_0046F5D0[];
+extern char D_0046F5E0[];
+extern void *amTask_Create(void *, void *, s32, s32, s32, char *);
+extern s32 func_0022D860(s32, f32);
+extern void func_002E9600(void);
+void func_002E97E0(void) {
+    char *sys = (char *)gBtlSys;
+    s32 *t;
+    s32 e;
+
+    D_005C9F10[0] = (s32)amTask_Create((void *)func_002E9600, (void *)func_002E95C0, 0x5410, 0x1000, 0x2000000, D_0046F5D0);
+    t = (s32 *)(D_005C9F10[0] + 0x30);
+    *t = (s32)amTask_Create((void *)func_002E94C0, 0, 0x3A40, 0x1000, 0x2000008, D_0046F5E0);
+    e = *(s32 *)(sys + 0xE64);
+    D_00470704 = e;
+    D_0047070C = 0x4001000;
+    D_00470708 = 0;
+    amModel_SetCurrent(e, 0x4001000);
+    D_00470238 = 0;
+    D_005C9F68[0] = func_0022D860(*(s32 *)(*(s32 *)(*(s32 *)(sys + 0xE6C) + 0x14)), 0.0f);
+    D_005C9F14[0] = 1;
+    D_005C9F74[0] = 0x43960000;
+    D_005C9F78[0] = 0x43D00000;
+    D_005C9F70[0] = 10;
+}
 
 void func_002E98E0(void) {
     memset(D_005C9F10, 0, 0x6C);
