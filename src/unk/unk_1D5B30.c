@@ -1834,6 +1834,68 @@ void func_001DF170(Fighter *c) {
         }
     }
 }
+#if 0
+void func_001DF1F0(Fighter *c) {
+    s32 i;
+    s32 n;
+    s32 k;
+    u8 *r;
+
+    memset((char *)c + 0x1FDC, 0, 8);
+    memset((char *)c + 0x1FBD, 0, 0x1F);
+    *(s16 *)((char *)c + 0x1FEC) = 0;
+    *(f32 *)((char *)c + 0x1FB4) = 1.0f;
+    *(f32 *)((char *)c + 0x1FB8) = (f32)*(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x4C);
+    *(s8 *)((char *)c + 0x1FBC) = 0;
+    if (*(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x34) > 0) {
+        i = 0;
+        do {
+            n = ((s16 *)(*(char **)((char *)c + 0x1CF4) + 0x36))[i];
+            if (n > 0) {
+                r = D_004E0660 + n * 40;
+                k = r[0x15];
+                if (k < 0x64) {
+                    *(s8 *)((char *)c + 0x1FBD + k) = *(s8 *)((char *)c + 0x1FBD + k) + 1;
+                    if (k == 0x1E) {
+                        *(s8 *)((char *)c + 0x1FDB) = 1;
+                        *(s8 *)((char *)c + 0x1FC3) = 1;
+                        *(s8 *)((char *)c + 0x1FC8) = 1;
+                        *(s8 *)((char *)c + 0x1FC4) = 1;
+                    } else if (k == 7 || k == 0xB || k == 6) {
+                        *(s8 *)((char *)c + 0x1FBD + k) = 1;
+                    } else if (k != 0) {
+                        *(s8 *)((char *)c + 0x1FBC) = *(s8 *)((char *)c + 0x1FBC) + 1;
+                    }
+                } else {
+                    *(s16 *)((char *)c + 0x1FEC) = n;
+                    *(s8 *)((char *)c + 0x1FBC) = *(s8 *)((char *)c + 0x1FBC) + 1;
+                }
+            }
+            i++;
+        } while (i < *(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x34));
+    }
+    if (*(s8 *)((char *)c + 0x1FDB) > 0) {
+        for (i = 0; i < 8; i++) {
+            *(s8 *)((char *)c + 0x1FDC + i) = 1;
+        }
+    } else {
+        *(s8 *)((char *)c + 0x1FDC) = 1;
+        for (i = 1; i < 8; i++) {
+            if (*(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x34) > 0) {
+                k = 0;
+                do {
+                    n = ((s16 *)(*(char **)((char *)c + 0x1CF4) + 0x36))[k];
+                    if (n > 0 && n == *(s16 *)(*(char **)((char *)c + 0x1CF8) + i * 20 + 0xD4)) {
+                        *(s8 *)((char *)c + 0x1FDC + i) = 1;
+                    }
+                    k++;
+                } while (k < *(s16 *)(*(char **)((char *)c + 0x1CF4) + 0x34));
+            }
+        }
+    }
+}
+#endif
+// differs: 146 of 151: the original keeps only the object in $s0 (frame 0x20, no other saved register); this C saves s1..s5 (frame 0x70) because the loop indices and the r/n/k temporaries cross the leading memset calls; the struct-free and pointer-temp shapes both tried
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DF1F0);
 s32 func_001DF420(Fighter *c, s32 idx, s32 flags) {
     u8 *e;
