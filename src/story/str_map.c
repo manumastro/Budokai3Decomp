@@ -111,7 +111,27 @@ void func_0029C290(s32 *s0) {
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029C2E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029C680);
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029C730);
-INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029C9B0);
+typedef struct StrMapCopy16 {
+    s32 w[4];
+} __attribute__((aligned(16))) StrMapCopy16;
+extern StrMapCopy16 D_00454110 __attribute__((aligned(16)));
+extern void *gStrTitle;
+extern s32 func_0022BF80(s32);
+extern void func_0028EE90(s32, s32, s32, s32, void *, s32, s32, s32);
+extern void func_0029C730(void);
+void func_0029C9B0(s32 *a0) {
+    StrMapCopy16 tmp;
+    s32 *g;
+    tmp = D_00454110;
+    if (func_0022BF80(*(s32 *)((char *)gStrTitle + 0x6C)) == 0xFF) {
+        g = gStrTitle;
+        func_0028EE90((s32)((char *)g + 0x10), (s32)((char *)g + 0x64), (s32)((char *)g + 0x68), (s32)((char *)g + 0x6C), &tmp, 0x8000, 0x10000, 0x200000);
+        {
+            void *f = func_0029C730;
+            a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029CA40);
 void func_0029CC20(Task *a0) {
     char *t = (char *)gStrTitle;
