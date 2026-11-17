@@ -4540,7 +4540,107 @@ void func_001F2A90(char *a0) {
 #endif
 // differs: func_001F2A90 (540 bytes): the same draw shape as func_001F2570 (matches). The only misses: the table walk through gBtbBg+0x34 (base in v1 and entry in v0 in the original; ours base v0, entry v1, addu operands swapped: base-first and index-first forms and a separate pointer tried) and the register of the entry in the second chain. 5 real differences.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2A90);
+#if 0
+void func_001F2CB0(char *a0) {
+    char *s1;
+    char *s0;
+    B3Ent *e;
+    s32 cnt;
+    u32 mask;
+    s32 idx;
+    f32 *base;
+    f32 *a3;
+    f32 *q;
+    f32 *pb;
+    s32 s3;
+    char *v;
+    f32 fv;
+    f32 K;
+
+    base = (f32 *)(a0 + 0x30);
+    e = *(B3Ent **)(a0 + 0x30);
+    if (e != NULL) {
+        cnt = e->tag;
+        mask = 0;
+        for (;;) {
+            idx = e->idx;
+            if (!((mask >> idx) & 1)) {
+                a3 = base + (idx - 6);
+                q = a3 + 4;
+                *q = *q + e->a * D_0051CD24[0];
+                pb = a3 + 8;
+                *pb = *pb + e->b * D_0051CD24[0];
+                if (*q > 1.0f) {
+                    *q = 0.0f;
+                } else if (*q < 0.0f) {
+                    *q = 1.0f;
+                }
+                if (*pb > 1.0f) {
+                    *pb = 0.0f;
+                } else if (*pb < 0.0f) {
+                    *pb = 1.0f;
+                }
+                mask = mask | (1 << idx);
+                if (mask == 0x3C00) {
+                    break;
+                }
+            }
+            e++;
+            if (e->tag != cnt) {
+                break;
+            }
+        }
+    }
+    K = D_0051CD24[0];
+    s1 = *(char **)(a0 + 0x10);
+    s0 = *(char **)(s1 + 0xC);
+    if (s0 != NULL && !(K < 0.0f) && *(s32 *)(s0 + 0x18) != 0) {
+        s3 = ((*(s32 *)(s0 + 8) + 1) << 16) | *(s32 *)(s0 + 0x10);
+        amMotSet_Apply(*(void **)s0, *(f32 *)(s0 + 4), s3);
+        *(f32 *)(s0 + 4) = *(f32 *)(s0 + 4) + *(f32 *)(s0 + 0x14) * K;
+        idx = (s3 >> 16) - 1;
+        v = *(char **)(*(char **)s0 + (idx << 2) + 4);
+        v = (char *)(((s3 & 0xFFFF) << 4) + *(s32 *)(v + 0x14));
+        fv = (f32)*(s32 *)(v + 8);
+        if (!(*(f32 *)(s0 + 4) < fv)) {
+            *(s32 *)(s0 + 4) = 0;
+        }
+    }
+    s0 = *(char **)(s1 + 8);
+    if (s0 != NULL) {
+        if (!(K < 0.0f) && *(s32 *)(s0 + 0x18) != 0) {
+            *(f32 *)(*(char **)s0 + 0x424) = *(f32 *)(s0 + 4);
+            amMotion_Apply(*(char **)s0, 0.0f, *(f32 *)(s0 + 0x1C));
+            *(f32 *)(s0 + 4) = *(f32 *)(s0 + 4) + *(f32 *)(s0 + 0x14) * K;
+            s3 = ((*(s32 *)(s0 + 8) + 1) << 16) | *(s32 *)(s0 + 0x10);
+            idx = (s3 >> 16) - 1;
+            v = *(char **)(*(char **)s0 + (idx << 2) + 0x46C);
+            v = (char *)(((s3 & 0xFFFF) << 4) + *(s32 *)(v + 0x14));
+            fv = (f32)*(s32 *)(v + 8);
+            if (!(*(f32 *)(s0 + 4) < fv)) {
+                *(s32 *)(s0 + 4) = 0;
+            }
+        }
+        amMotion_BuildMatrices(*(char **)(s1 + 8));
+    }
+    s1 = *(char **)(a0 + 0x10);
+    s0 = *(char **)(s1 + 0x10);
+    if (s0 != NULL && !(K < 0.0f)) {
+        if (*(char **)s0 != NULL) {
+            func_002D04A0(*(s16 *)(s0 + 0xE));
+            v = *(char **)(s1 + 0x10);
+            func_002D0110(*(s32 *)v, *(f32 *)(v + 4), 0);
+            func_002D04A0(0);
+        }
+        if (*(s16 *)(s0 + 0xC) != 0) {
+            *(f32 *)(s0 + 4) = func_002CFDD0(*(s32 *)s0, *(f32 *)(s0 + 4), K);
+        }
+    }
+}
+#endif
+// differs: func_001F2CB0 (800 bytes): same flag loop and motion blocks as func_001F2760 (its sibling); ours 0x310 vs 0x320: the tail (the second amMotSet block and the table lookup at +0x46C) differs in register use and the float clamp layout
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2CB0);
+
 #if 0
 void func_001F2FD0(char *a0) {
     char *s0;
