@@ -115,20 +115,21 @@ void func_0030E220(s32 *a0) {
     }
 }
 #if 0
-// func_0030E290: the local argument block and the stores are scheduled in another order; not matched
+// func_0030E290: the original frame is 0x60 (ours 0x50: a second local block of 16 bytes is missing) and the stores are scheduled in another order; two forms tried
 s32 func_0030E290(s32 *a0) {
     s32 arg[8];
     s16 h;
-    s32 *s0 = a0 + 0x30 / 4;
-    arg[0] = 0;
+    s32 *s0;
     arg[1] = 1;
     arg[2] = 0x600000;
+    arg[0] = 0;
+    s0 = a0 + 0x30 / 4;
     arg[3] = 0x400;
+    h = 0;
     arg[4] = 0x200;
     arg[5] = 3;
     arg[6] = -1;
     arg[7] = D_0046FD5C;
-    h = 0;
     s0[0] = amSofdec_Create(arg);
     s0[2] = 0;
     s0[3] = 0;
@@ -171,24 +172,21 @@ void func_0030E330(s32 *a0) {
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E330);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E3F0);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E4D0);
-#if 0
-// func_0030E5B0: the original reloads the global it just stored for the first argument and keeps the second in a register; not matched
 void func_0030E5B0(s32 *a0) {
     s32 *p = a0 + 0x30 / 4;
-    D_00470704 = a0[0x34 / 4];
+    s32 v = a0[0x34 / 4];
+    D_00470704 = v;
     D_0047070C = 0x3000;
     D_00470708 = 0;
-    func_00145CC0(D_00470704, 0x3000);
+    func_00145CC0(v, 0x3000);
     D_00470238 = 0;
-    p[2] = func_0022D860(*(s32 *)(*(s32 *)p[0] + 0x14), 0.0f);
+    p[2] = func_0022D860(*(s32 *)(*(s32 *)((char *)p[0] + 0x14)), 0.0f);
     p[3] = 0;
     {
         void *f = func_0030E4D0;
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E5B0);
 void func_0030E630(s32 *a0) {
     char *p = (char *)a0[0x30 / 4];
     if (func_002A8F90() == 0) {
