@@ -146,7 +146,9 @@ def main():
                 mine = c
             else:
                 # the other functions of the file stay callable: a prototype from their header (when nothing declares them)
-                protos.append((function_name(c), c.split("{")[0].strip() + ";"))
+                header = c.split("{")[0].strip()
+                knr = re.match(r"^(.*?\b\w+)\s*\([^()]*\)\s*\S", header, re.S)  # `void f(p) u8 *p;` (K&R definition)
+                protos.append((function_name(c), (knr.group(1) + "();") if knr else header + ";"))
             continue
         keep.append(c)
     for fname, proto in protos:

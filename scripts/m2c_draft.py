@@ -363,9 +363,12 @@ def apply_function(path, name, add, ctext, filter_known=True):
     head = src[:m.start()]
     park = re.search(r"#if 0\n(?:(?!#if 0).)*?#endif\n(?://[^\n]*\n)*\Z", head, re.S)
     if park:
-        src = head[:park.start()] + src[m.start():]
+        head = head[:park.start()]
+        # the failure notes written above the parked block ("// differs: ...", "// GIVEN UP ...") are stale now
+        head = re.sub(r"(?:^//[^\n]*(?:differs|GIVEN UP|tried|%s)[^\n]*\n)+\Z" % re.escape(name), "", head, flags=re.M)
+        src = head + src[m.start():]
         m = asm_info(name, src)[3]
-    rest = visible(src[:m.start()] + src[m.end():])
+    rest =visible(src[:m.start()] + src[m.end():])
     if filter_known:
         add = [a for a in add if not (DECL_SYM_RE.search(a) and known(rest, DECL_SYM_RE.search(a).group(1)))]
     path.write_text(splice(src, m, ctext, add, name, macros=False))
@@ -383,7 +386,8 @@ IMPLICIT_RE = re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+illegal
 UNDEF_RE = re.compile(r"undefined identifier '(\w+)'")
 ARITY_RE =re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+function call '(\w+)\(.*?\)' does not match\r?\n#\s+'\w+\((.*?)\)'")
 ARRAY_RE = re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+illegal (?:operands|implicit conversion)[^\n]*?'?(\w+(?: \w+)*)\[\]'")
-NONFUNC_RE = re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+call of non-function")
+PROTOMISMATCH_RE = re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+function call does not match prototype")
+NONFUNC_RE =re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+call of non-function")
 VOIDPLUS_RE =re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+illegal operands 'void \*' \+ 'int'")
 
 
@@ -414,7 +418,7 @@ def repair(ctext, cerr, decls, filetext=""):
         want_n = [p for p in split_top(proto) if p.strip()]
         want_n = [] if want_n == ["void"] else want_n
         for i, l in enumerate(lines):
-            if l.strip() == srcline.strip():
+            if srcline.strip() in l:
                 mm = re.search(rf"\b{callee}\(", l)
                 if mm:
                     depth, j = 1, mm.end()
@@ -430,7 +434,7 @@ def repair(ctext, cerr, decls, filetext=""):
     for srcline, op in ARRAY_RE.findall(cerr):
         # a global declared as an array of unknown size used as a scalar: `D_x` -> `D_x[0]`
         for i, l in enumerate(lines):
-            if l.strip() == srcline.strip():
+            if srcline.strip() in l:
                 def fix(mm):
                     sym = mm.group(2)
                     d = decls.get(sym, "")
@@ -440,10 +444,31 @@ def repair(ctext, cerr, decls, filetext=""):
                 lines[i] = re.sub(r"(\W|^)(\w+)(\W|$)", lambda mm: fix(mm), l)
                 changed = changed or lines[i] != l
                 break
+    for srcline in PROTOMISMATCH_RE.findall(cerr):
+        # a call through a function-pointer global with the wrong number of arguments: follow its declared parameters
+        for i, l in enumerate(lines):
+            if srcline.strip() not in l:
+                continue
+            for mm in re.finditer(r"\b([A-Za-z_]\w*)(?:\[0\])?\(", l):
+                fp = re.search(rf"\(\s*\*\s*{mm.group(1)}\s*(?:\[[^\]]*\])?\s*\)\s*\(([^)]*)\)", filetext)
+                if not fp:
+                    continue
+                want_n = [p for p in split_top(fp.group(1)) if p.strip() and p.strip() != "void"]
+                depth, j = 1, mm.end()
+                while j < len(l) and depth:
+                    depth += {"(": 1, ")": -1}.get(l[j], 0)
+                    j += 1
+                inner = l[mm.end():j - 1]
+                args = [a.strip() for a in split_top(inner)] if inner.strip() else []
+                args = (args + ["0"] * len(want_n))[:len(want_n)]
+                lines[i] = l[:mm.end()] + ", ".join(args) + l[j - 1:]
+                changed = True
+                break
+            break
     for srcline in NONFUNC_RE.findall(cerr):
         # a call through a global that holds a function pointer: `D_x(a)` -> `((void (*)())D_x)(a)`
         for i, l in enumerate(lines):
-            if l.strip() == srcline.strip():
+            if srcline.strip() in l:
                 def fixcall(mm):
                     sym = mm.group(1)
                     d = decls.get(sym, "")
@@ -459,7 +484,7 @@ def repair(ctext, cerr, decls, filetext=""):
                 break
     for srcline in VOIDPLUS_RE.findall(cerr):
         for i, l in enumerate(lines):
-            if l.strip() == srcline.strip():
+            if srcline.strip() in l:
                 new = re.sub(r"(?<![\w)\]])([A-Za-z_]\w*) \+ ", r"((u8 *)\1) + ", l)
                 changed = changed or new != l
                 lines[i] = new
@@ -469,7 +494,7 @@ def repair(ctext, cerr, decls, filetext=""):
         if not want:
             continue
         for i, l in enumerate(lines):
-            if l.strip() != srcline.strip():
+            if srcline.strip() not in l:
                 continue
             ind = l[:len(l) - len(l.lstrip())]
             body = l.strip()
@@ -544,6 +569,12 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
     # declarations the file lacks: m2c's own for symbols the context did not have, the context's for the others
     before = visible(src[:m.start()] + src[m.end():])
     add = []
+    # a symbol the file only declares further down (below the function) needs its declaration moved up
+    head_vis, tail_vis = visible(src[:m.start()]), visible(src[m.end():])
+    for line in re.findall(r"^extern[^\n;]*;", tail_vis, re.M):
+        names = [w for w in re.findall(r"[A-Za-z_]\w*", line) if w not in TYPE_WORDS and w != name]
+        if any(known(ctext, w) and not known(head_vis, w) for w in names) and not any(known(a, names[0]) for a in add if names):
+            add.append(line)
     for l in pre:
         s = norm_decl(l)
         sm = re.search(r"(\w+)\s*(?:\[[^\]]*\])?\s*(?:\(.*)?;\s*$", s)
@@ -621,7 +652,8 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
     elif data:
         res.update(status="data", diff=0, detail=", ".join(data))
     else:
-        res.update(status="match", diff=0)
+        res.update(status="relaxmatch" if relaxed else "match", diff=0,
+                   detail="identical code, but it only compiles with -relax_pointers: add the pointer casts" if relaxed else "")
     return res
 
 
@@ -633,7 +665,7 @@ VARIANTS = [
     ("regvars+noandor", ["--reg-vars", "s0,s1,s2,s3,s4,s5,s6,s7,fp", "--no-andor"]),
     ("gotos", ["--gotos-only"]),
 ]
-RANK = {"match": 0, "data": 1, "diff": 2, "size": 3, "cerr": 4, "m2cfail": 5, "error": 6}
+RANK = {"match": 0, "relaxmatch": 0, "data": 1, "diff": 2, "size": 3, "cerr": 4, "m2cfail": 5, "error": 6}
 
 
 def draft_best(srcpath, name, decls=None, variants=VARIANTS):

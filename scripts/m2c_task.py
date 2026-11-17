@@ -26,6 +26,11 @@ RECIPES = """- Register / operand-order differences: declare locals in another o
 - Check the PROTOTYPES of the callees first (an f32 declared s32, a missing parameter) before touching the body.
 - `#pragma inline_depth(0)` before the function keeps a call that would be inlined.
 - Do not define data in C (no string literals, no switch tables, no float constants outside the `lui/mtc1` form).
+- The checker puts your text where the INCLUDE_ASM line is, after the file's own declarations: do not redeclare what the
+  file already declares (a clashing `extern` is a compile error), but do add prototypes the file lacks. Status
+  `relaxmatch` = identical code that only compiles with pointer checks off: add the casts (e.g. `D_x` instead of `&D_x`
+  for an array, `(u8 *)` on sums) until it says `match`. Status `data`: the code matches but the object defines data
+  (a switch table): report it, do not fight it.
 - 8 attempts at most; if it still differs, put the best attempt in `#if 0 ... #endif` above the INCLUDE_ASM line with a
   one-line note of what differs, and stop."""
 
