@@ -3913,7 +3913,62 @@ s32 func_001C21C0(Fighter *f) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C21C0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C2340);
+s32 func_001C2340(Fighter *f) {
+    s16 *t;
+    s32 last;
+    s32 idx;
+    s32 idx2;
+    s32 b;
+    s32 c;
+    s32 f414;
+    t = (s16 *)((u8 *)f + 0x64);
+    if (FT_FIELD(f, s32, 0x50) <= 0) {
+        return 0;
+    }
+    last = FT_FIELD(f, s32, 0x58);
+    if (t[last * 2] != -1) {
+        return 0;
+    }
+    b = t[last * 2 + 1];
+    if (b > 0) {
+        return 0;
+    }
+    f414 = FT_FIELD(f, s32, 0x414);
+    if (b < -(f414 + 2)) {
+        return 0;
+    }
+    b = (b < 0) ? -b : b;
+    idx = (last - 1) & 0x1F;
+    if (t[idx * 2] != 0) {
+        return 0;
+    }
+    c = t[idx * 2 + 1];
+    if (c > 0) {
+        return 0;
+    }
+    if (c < -9) {
+        return 0;
+    }
+    c = (c < 0) ? -c : c;
+    b = b + c;
+    idx2 = (idx - 1) & 0x1F;
+    if (t[idx2 * 2] != -1) {
+        return 0;
+    }
+    c = t[idx2 * 2 + 1];
+    if (c > 0) {
+        return 0;
+    }
+    if (c < -9) {
+        return 0;
+    }
+    c = (c < 0) ? -c : c;
+    b = b + c;
+    if (f414 < b) {
+        return 0;
+    }
+    return 1;
+}
 #if 0
 // differs: size 0x1B8 against 0x1E0: the table-walk leaf: the compiler folds the 0x164 table base into the index (t0 = p+356) and loads the 0x64 table base late; 4 variants of the base and load order tried, register numbers still differ
 s32 func_001C24C0(Fighter *a0) {
