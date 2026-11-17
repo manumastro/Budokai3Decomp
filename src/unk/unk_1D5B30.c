@@ -287,6 +287,7 @@ extern void func_001D7CC0(Fighter *c, s32 a);
 extern char D_004694D0[];
 extern char D_004694E0[];
 extern void func_001D7290(Fighter *c);
+extern u32 func_0012EAE0(s32 a);
 extern s32 func_00233B20(Fighter *c, void *a, s32 v);
 extern s32 func_00233850(Fighter *c, void *a);
 extern void func_001F9BB0(s32 a, s32 b);
@@ -1009,6 +1010,30 @@ void func_001DCB60(Fighter *c) {
     c->f18DC = 0;
     c->f18E0 = 0;
 }
+#if 0
+void func_001DCB70(Fighter *c) {
+    f32 f;
+    u32 r;
+
+    if ((s8)c->f2000 != 0) {
+        if (c->fB88 != NULL) {
+            if (*(s16 *)((char *)c->fB8C + 0x26) >= 0) {
+                if (*(s32 *)(*(s32 *)(*(s32 *)c->fB88) + 0x20) >= 2) {
+                    f = *(f32 *)&c->f18DC + *(f32 *)&c->fC9C * D_00470570->f88F0;
+                    *(f32 *)&c->f18DC = f;
+                    if (f > 10.0f) {
+                        r = func_0012EAE0(0x20) % 300;
+                        f = (f32)r;
+                        *(f32 *)&c->f18DC = -f;
+                    }
+                    c->f18E0 = *(f32 *)&c->f18DC > 0.0f;
+                }
+            }
+        }
+    }
+}
+#endif
+// differs: 0x100 against 0x110 bytes: the guards return through a shared 'b' block, which the nested ifs do not reproduce
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DCB70);
 void func_001DCC80(Fighter *c) {
     c->f1FFF = 0;
