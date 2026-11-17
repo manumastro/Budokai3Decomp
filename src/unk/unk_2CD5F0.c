@@ -181,7 +181,7 @@ void func_002CDB80(u8 *p) {
     D_00470238 = 0;
     func_00145CC0(*(s32 *)(p + 0x30), 0x2003000);
     func_0013B0B0(0);
-    __asm__ volatile ("lqc2 $vf28, 0(%0) ; lqc2 $vf29, 16(%0) ; lqc2 $vf30, 32(%0) ; lqc2 $vf31, 48(%0)" : : "r"(D_00470570 + 0x60) : "memory");
+    __asm__ volatile ("lqc2 $vf28, 0(%0) ; lqc2 $vf29, 16(%0) ; lqc2 $vf30, 32(%0) ; lqc2 $vf31, 48(%0)" : : "r"(gBattle + 0x60) : "memory");
     func_00131F00(D_0047CA40, 0.0f, 0.0f);
     func_00132DF0(0);
     func_0013B110(1);
@@ -365,7 +365,7 @@ void func_002CE630(f32 x, f32 y) {
     f32 tmp[4];
     D_0051CCE0[0] = 0;
     __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(tmp) : "memory");
-    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(*(u8 **)(D_00470570 + 0x264)), "r"(tmp) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(*(u8 **)(gBattle + 0x264)), "r"(tmp) : "memory");
     func_00200270(x - tmp[0], y - tmp[2]);
     D_0051CCE0[0] = 1;
 }
