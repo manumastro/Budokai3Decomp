@@ -2,6 +2,52 @@
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265020);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265420);
+#if 0
+// differs: 30 of 65: the saved registers of the task and the +0xC object are the wrong way round for every declaration order tried; the floating-point timer and the branch structure match
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void func_00145CC0(s32, s32);
+extern s32 func_0022D860(s32, f32);
+extern void func_0022D0E0(s32, s32);
+extern void func_0022C060(s32, f32);
+extern void func_0022CD00(s32);
+
+void func_002655F0(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    u8 *v;
+    f32 f;
+    s0 = a0;
+    s1 = *(u8 **)(a0 + 0xC);
+    D_00470704 = *(s32 *)(a0 + 0x4);
+    D_0047070C = 0x1000;
+    func_00145CC0(*(s32 *)(a0 + 0x4), 0x1000);
+    D_00470708 = 0;
+    D_00470238 = 0;
+    if ((*(u16 *)(s0 + 0x32) & 1) == 0) {
+        if (s1 == 0) {
+            v = *(u8 **)(*(u8 **)s0 + 0x14);
+            *(s32 *)(s0 + 0xC) = func_0022D860(*(s32 *)(v + 0x10), 0.0f);
+            s1 = *(u8 **)(s0 + 0xC);
+        } else {
+            f = *(f32 *)(s0 + 0x38);
+            if (f < 0.0f) {
+                func_0022D0E0((s32)s1, 1);
+                v = *(u8 **)(*(u8 **)s0 + 0x14);
+                *(s32 *)(s0 + 0xC) = func_0022D860(*(s32 *)(v + 0x14), 0.0f);
+                *(u16 *)(s0 + 0x32) = *(u16 *)(s0 + 0x32) | 1;
+                s1 = *(u8 **)(s0 + 0xC);
+            } else {
+                *(f32 *)(s0 + 0x38) = f - 1.0f;
+            }
+        }
+    }
+    func_0022C060((s32)s1, 1.0f);
+    func_0022CD00((s32)s1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002655F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265700);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00265800);

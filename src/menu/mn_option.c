@@ -85,7 +85,44 @@ void func_002DEFE0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEFF0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF100);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF3D0);
+extern s8 D_004B4B40[];
+extern s8 D_00456B20[];
+extern void func_00125740(void *, void *, s32);
+
+extern s8 D_004B4B40[];
+extern s8 D_00456B20[];
+extern void func_00125740(void *, void *, s32);
+
+void func_002DF3D0(void) {
+    s8 *s2;
+    s32 n;
+    s8 *s0;
+    s8 *a2;
+    s8 *a1;
+    s32 k;
+    s2 = (s8 *)gOptionWork;
+    n = 0;
+    s0 = D_004B4B40;
+    do {
+        a2 = s0 + 0x2BA86;
+        a1 = s0 + 0x2BAA2;
+        a2[0] = a1[0];
+        a2[1] = a1[1];
+        if (a2[0] == 0 || a2[0] == 1) {
+            func_00125740(a2 + 2, D_00456B20 + (a2[0] << 3), 8);
+        } else {
+            for (k = 2; k < 10; k++) {
+                a2[k] = a1[k];
+            }
+        }
+        n++;
+        s0 += 0xA;
+    } while (n < 2);
+    *(s32 *)(s2 + 0x330) = 0;
+    *(s32 *)(s2 + 0x334) = 0;
+    *(s32 *)(s2 + 0x338) = 0;
+    *(f32 *)(s2 + 0x32C) = 60.0f;
+}
 #if 0
 // differs: the four-way test on the table value is laid out differently (the original keeps the value in a0 and compares with li v1 constants, 8 bytes more code)
 void func_002DF4E0(void) {
