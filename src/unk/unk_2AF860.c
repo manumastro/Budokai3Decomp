@@ -27,18 +27,17 @@ void func_002AF860(u8 *a, u8 *b) {
     *(void **)(a + 0x10) = func_002AF650;
     func_002AF650(a, b);
 }
-#if 0
 s32 func_002AF880(s32 **a, u8 *b) {
     u8 *p = *(u8 **)(b + 0x2C);
-    u8 *e = D_005BCD20 + **a * 40 + *(s32 *)(p + 0xC) * 160;
-    *(s32 *)(e + 0x18) = *(s32 *)(p + 8);
-    *(s32 *)(e + 0x10) = *(s32 *)(p + 4);
-    *(s32 *)(e + 0x14) = *(s32 *)(p + 0);
+    u8 *e = D_005BCD20 + **a * 160 + *(s32 *)(p + 0xC) * 40;
+    s32 v8 = *(s32 *)(p + 8);
+    s32 v4 = *(s32 *)(p + 4);
+    s32 v0 = *(s32 *)(p + 0);
+    *(s32 *)(e + 0x18) = v8;
+    *(s32 *)(e + 0x10) = v4;
+    *(s32 *)(e + 0x14) = v0;
     return 1;
 }
-// differs: the table stores come in the order 0x18, 0x10, 0x14 with the loads of the fields between them; this build hoists all the field loads above the stores
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002AF880);
 #if 0
 s32 func_002AF8E0(u8 *a, u8 *b) {
     s32 r = 3;
