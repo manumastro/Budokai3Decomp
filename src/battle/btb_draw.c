@@ -6415,7 +6415,31 @@ void BtbBg_StartCrossFade(s32 a0, s32 a1, s32 a2, f32 f12, f32 f13) {
     *(s32 *)(t + 0x48) = 0;
     *(s32 *)(t + 0x4C) = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6D60);
+extern u8 D_0044AE50[];
+extern u8 D_0044A880[];
+extern char D_00469898[];
+extern void func_001F0A50(void);
+extern void func_001F0E20(void);
+extern s32 gBtbBg[];
+
+void func_001F6D60(void) {
+    u8 *base;
+    u8 *s1;
+    u8 *p;
+    u8 *s0;
+    base = D_0044AE50 + gBtbBg[0] * 92;
+    s1 = base + (D_0051CD20[0] << 5) + 0x1C;
+    if (*(s32 *)(s1 + 8) >= 0) {
+        p = (u8 *)func_001F5FD0(0x86000000, D_00469898, 0, (void *)func_001F0A50, (void *)func_001F0E20);
+        *(s32 *)(p + 0x20) = 0x2800;
+        s0 = p + 0x30;
+        memset(s0, 0, 0x80);
+        *(s32 *)(s0 + 0x28) = (s32)func_001A50F0((void *)D_0051CD0C[0], 0x280);
+        *(u8 **)(s0 + 0x20) = D_0044A880 + (*(s32 *)(s1 + 8) << 4);
+        __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(s0 + 0x10));
+        *(f32 *)(s0 + 0x18) = -1.0f;
+    }
+}
 void func_001F6E50(void) {
 }
 
