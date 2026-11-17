@@ -1,6 +1,10 @@
 #include "common.h"
 
 #define VU_COPY(dst, src) __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(dst), "r"(src) : "memory")
+extern u8 D_003F0800[];
+extern u8 D_0051D9AC[];
+extern void func_00141CF0(s32, u8 *, s32);
+extern void func_0013B160(void *);
 #define VU_LOAD_STORE(src, dst) __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(src), "r"(dst) : "memory")
 
 extern void func_00133780(s32, s32);
@@ -227,11 +231,100 @@ void func_00202880(u8 *a) {
     *(s32 *)(q + 0xC) = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00202890);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00202A40);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00202B50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00202CD0);
+extern u8 D_0051D9AC[];
+void func_00202A40(u8 *a0, u8 *a1, u8 *a2) {
+    u8 *q2 = a2;
+    u8 *q1 = a1;
+    f32 k = *(f32 *)D_0051D9AC;
+    f32 t3[4];
+    f32 t2[4];
+    f32 t1[4];
+    f32 g;
+    VU_COPY(t1, q1 + 0x30);
+    if (*(s32 *)(q1 + 0x8) & 0x1) {
+        __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(t1), "r"(a0 + 0x10) : "memory");
+    }
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(t2), "r"(q2 + 0x10), "r"(t1) : "memory");
+    func_00146F30(t2);
+    g = *(f32 *)(q1 + 0x40) * k;
+    g = (f32)(k * g);
+    func_00146F10(t3, t2, 0.5f * g);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(q2 + 0x10), "r"(t3) : "memory");
+    func_00146F10(t3, t2, *(f32 *)(q1 + 0x40) * k);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(q2 + 0x20), "r"(t3) : "memory");
+}
+void func_00202B50(u8 *a0, u8 *a1, u8 *a2) {
+    f32 t60[4];
+    f32 t50[4];
+    f32 t40[4];
+    f32 t30[4];
+    u8 *q0 = a0;
+    u8 *q2 = a2;
+    VU_COPY(t60, a1 + 0x30);
+    VU_COPY(t40, a1 + 0x40);
+    if (*(s32 *)(a1 + 0x8) & 0x1) {
+        __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(t60), "r"(q0 + 0x10) : "memory");
+    }
+    if (*(s32 *)(a1 + 0x8) & 0x2) {
+        func_0013B160(D_003F0800);
+        func_00141CF0(0, q0 + 0x20, 0);
+        __asm__ volatile ("lqc2 $vf1, 0(%1) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddz.xyz $vf1, $vf30, $vf1z ; sqc2 $vf1, 0(%0) ; vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27" : : "r"(t40), "r"(t40) : "memory");
+    }
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(t50), "r"(q2 + 0x10), "r"(t60) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vopmula.xyz ACC, $vf1, $vf2 ; vopmsub.xyz $vf1, $vf2, $vf1 ; sqc2 $vf1, 0(%0)" : : "r"(t30), "r"(t40), "r"(t50) : "memory");
+    func_00146F10(t50, t30, *(f32 *)D_0051D9AC);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(q2 + 0x20), "r"(t50) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vopmula.xyz ACC, $vf1, $vf2 ; vopmsub.xyz $vf1, $vf2, $vf1 ; sqc2 $vf1, 0(%0)" : : "r"(t30), "r"(t40), "r"(t30) : "memory");
+    func_00146F10(t50, t30, *(f32 *)D_0051D9AC);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(q2 + 0x20), "r"(t50) : "memory");
+}
+extern u8 D_0051D9AC[];
+extern f32 func_00146E90(f32 *);
+extern f32 func_0011F6B0(f32, f32);
+extern void func_00146ED0(f32 *, f32 *, f32);
+void func_00202CD0(u8 *a0, u8 *a1, u8 *a2) {
+    u8 *q2 = a2;
+    u8 *q1 = a1;
+    f32 k = *(f32 *)D_0051D9AC;
+    f32 t2[4];
+    f32 t1[4];
+    f32 e;
+    f32 g;
+    VU_COPY(t1, q1 + 0x30);
+    if (*(s32 *)(q1 + 0x8) & 0x1) {
+        __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(t1), "r"(a0 + 0x10) : "memory");
+    }
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(t2), "r"(q2 + 0x10), "r"(t1) : "memory");
+    e = func_0011F6B0(func_00146E90(t2), *(f32 *)(q1 + 0x44));
+    g = *(f32 *)(q1 + 0x40) * (1.0f / e);
+    func_00146ED0(t2, t2, k * g);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(q2 + 0x10), "r"(t2) : "memory");
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00202DC0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00202E80);
+extern u8 D_003F0800[];
+extern void func_00141CF0(s32, u8 *, s32);
+extern void func_0013B160(void *);
+void func_00202E80(u8 *a0, u8 *a1, u8 *a2) {
+    f32 k = *(f32 *)D_0051D9AC;
+    f32 t2[4];
+    f32 t1[4];
+    f32 g;
+    u8 *q0 = a0;
+    u8 *q2 = a2;
+    u8 *q1 = a1;
+    VU_COPY(t1, q1 + 0x30);
+    if (*(s32 *)(q1 + 0x8) & 0x2) {
+        func_0013B160(D_003F0800);
+        func_00141CF0(0, q0 + 0x20, 0);
+        __asm__ volatile ("lqc2 $vf1, 0(%1) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddz.xyz $vf1, $vf30, $vf1z ; sqc2 $vf1, 0(%0) ; vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27" : : "r"(t1), "r"(t1) : "memory");
+    }
+    g = *(f32 *)(q1 + 0x40) * k;
+    g = (f32)(k * g);
+    func_00146F10(t2, t1, 0.5f * g);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(q2 + 0x10), "r"(t2) : "memory");
+    func_00146F10(t2, t1, *(f32 *)(q1 + 0x40) * k);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(q2 + 0x20), "r"(t2) : "memory");
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00202FA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00203250);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002034F0);
