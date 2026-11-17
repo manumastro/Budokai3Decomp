@@ -46,13 +46,14 @@ void amTask_KillGroup(s32, s32, s32);
 
 extern s32 D_0047068C;
 extern f32 D_00470690;
+extern f32 D_00470710;
 extern f32 D_00470694;
 typedef struct FPair {
     f32 a;
     f32 b;
 } FPair;
 void func_0022DB20(f32, f32);
-void func_0021BEA0(s32, s32);
+void func_0021BEA0(u8 *, s32);
 void func_0022C560(s32);
 
 extern s32 D_0046A470[];
@@ -90,7 +91,7 @@ void func_0021B130(void) {
             p.b = D_00470690;
             p.a = D_00470694;
             func_0022DB20(p.b, p.a);
-            func_0021BEA0(D_0047068C, 0x18);
+            func_0021BEA0((u8 *)D_0047068C, 0x18);
             func_0022C560(D_0047068C);
             func_0022DB20(0.0f, 0.0f);
         }
@@ -99,6 +100,92 @@ void func_0021B130(void) {
 // differs: the two float arguments are copied through the stack (lwc1 to 24 and 28 of a 0x30 frame) in the original, the same copy as func_0023FBB0 in unk_23A890; the local forms tried do not give that copy
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
+#if 0
+// differs: float state machine: the stores to 0xDF8 and the branch layout of the mode switch differ (the return of the first test is a b to the epilogue; 2 instructions short); FP register choice differs; 1 attempt
+void func_0021B1E0(void) {
+    u8 *sys = gBtlSys;
+    f32 f1;
+    f32 f2;
+    f32 f3;
+    s32 mode;
+    s32 st;
+
+    f1 = *(f32 *)(sys + 0xE00) + D_00470710;
+    *(f32 *)(sys + 0xE00) = f1;
+    if (f1 > *(f32 *)(sys + 0xE08)) {
+        *(s32 *)(sys + 0xDF8) = 0;
+        return;
+    }
+    if (f1 < *(f32 *)(sys + 0xE04)) {
+        return;
+    }
+    f3 = f1 - *(f32 *)(sys + 0xE04);
+    mode = *(s32 *)(sys + 0xDFC);
+    f1 = *(f32 *)(sys + 0xE10);
+    f2 = *(f32 *)(sys + 0xE0C);
+    if (mode == 3) {
+        f2 = f2 / 2.0f;
+        f1 = f1 / 2.0f;
+        if (f3 < f2) {
+            f2 = f2 - f1;
+            if (!(f3 < f1)) {
+                f3 = f3 - f1;
+                *(s32 *)(sys + 0xDF8) = 1;
+                f2 = f2 - f1;
+            }
+        } else {
+            f3 = f3 - f2;
+            if (!(f3 < f2)) {
+                *(s32 *)(sys + 0xDF8) = 3;
+            }
+        }
+    } else if (mode == 2) {
+        f2 = f2 / 2.0f;
+        f1 = f1 / 2.0f;
+        if (f3 < f2) {
+            f2 = f2 - f1;
+            if (!(f3 < f2)) {
+                *(s32 *)(sys + 0xDF8) = 3;
+            }
+        } else {
+            f3 = f3 - f2;
+            if (!(f3 < f1)) {
+                f3 = f3 - f1;
+                *(s32 *)(sys + 0xDF8) = 1;
+                f2 = f2 - f1;
+            }
+        }
+    } else if (mode == 1) {
+        f2 = f2 - f1;
+        if (!(f3 < f2)) {
+            *(s32 *)(sys + 0xDF8) = 3;
+        }
+    } else if (mode == 0) {
+        if (!(f3 < f1)) {
+            f3 = f3 - f1;
+            *(s32 *)(sys + 0xDF8) = 1;
+            f2 = f2 - f1;
+        }
+    }
+    st = *(s32 *)(sys + 0xDF8);
+    if (st == 3) {
+        f1 = 1.0f;
+    } else if (st == 2) {
+        f1 = f3 / f2;
+    } else if (st == 1) {
+        f1 = 1.0f - f3 / f2;
+    } else {
+        f1 = 0.0f;
+    }
+    if (f1 < 0.0f) {
+        f1 = 0.0f;
+    }
+    if (f1 > 1.0f) {
+        f1 = 1.0f;
+    }
+    *(f32 *)(sys + 0xE2C) = f1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B1E0);
 #if 0
 void func_0021B420(void) {
@@ -314,7 +401,74 @@ void func_0021B9A0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BA60);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BEA0);
+void func_0021BEA0(u8 *a0, s32 a1) {
+    u8 *s0;
+    u8 *s3;
+
+    s0 = *(u8 **)(a0 + 0x2C);
+    if (s0 != 0) {
+        s3 = *(u8 **)(s0 + 0x2C);
+        if (s3 != 0) {
+            if (*(u8 **)(s3 + 0x2C) != 0) {
+                func_0021BEA0(*(u8 **)(s3 + 0x2C), a1);
+            }
+            if (*(u8 **)(s3 + 0x28) != 0) {
+                func_0021BEA0(*(u8 **)(s3 + 0x28), a1);
+            }
+            if (*(u8 **)(s3 + 0x30) != 0) {
+                *(s32 *)(*(u8 **)(s3 + 0x30) + 4) |= a1;
+            }
+        }
+        s3 = *(u8 **)(s0 + 0x28);
+        if (s3 != 0) {
+            if (*(u8 **)(s3 + 0x2C) != 0) {
+                func_0021BEA0(*(u8 **)(s3 + 0x2C), a1);
+            }
+            if (*(u8 **)(s3 + 0x28) != 0) {
+                func_0021BEA0(*(u8 **)(s3 + 0x28), a1);
+            }
+            if (*(u8 **)(s3 + 0x30) != 0) {
+                *(s32 *)(*(u8 **)(s3 + 0x30) + 4) |= a1;
+            }
+        }
+        if (*(u8 **)(s0 + 0x30) != 0) {
+            *(s32 *)(*(u8 **)(s0 + 0x30) + 4) |= a1;
+        }
+    }
+    s0 = *(u8 **)(a0 + 0x28);
+    if (s0 != 0) {
+        s3 = *(u8 **)(s0 + 0x2C);
+        if (s3 != 0) {
+            if (*(u8 **)(s3 + 0x2C) != 0) {
+                func_0021BEA0(*(u8 **)(s3 + 0x2C), a1);
+            }
+            if (*(u8 **)(s3 + 0x28) != 0) {
+                func_0021BEA0(*(u8 **)(s3 + 0x28), a1);
+            }
+            if (*(u8 **)(s3 + 0x30) != 0) {
+                *(s32 *)(*(u8 **)(s3 + 0x30) + 4) |= a1;
+            }
+        }
+        s3 = *(u8 **)(s0 + 0x28);
+        if (s3 != 0) {
+            if (*(u8 **)(s3 + 0x2C) != 0) {
+                func_0021BEA0(*(u8 **)(s3 + 0x2C), a1);
+            }
+            if (*(u8 **)(s3 + 0x28) != 0) {
+                func_0021BEA0(*(u8 **)(s3 + 0x28), a1);
+            }
+            if (*(u8 **)(s3 + 0x30) != 0) {
+                *(s32 *)(*(u8 **)(s3 + 0x30) + 4) |= a1;
+            }
+        }
+        if (*(u8 **)(s0 + 0x30) != 0) {
+            *(s32 *)(*(u8 **)(s0 + 0x30) + 4) |= a1;
+        }
+    }
+    if (*(u8 **)(a0 + 0x30) != 0) {
+        *(s32 *)(*(u8 **)(a0 + 0x30) + 4) |= a1;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C080);
 u8 *func_0021C250(u8 *d, u8 *s) {
     d[0] = s[0];
