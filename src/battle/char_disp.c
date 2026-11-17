@@ -18,7 +18,47 @@ s32 func_0029E7F0(u8 *a0) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E870);
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
+extern void memset(void *, s32, s32);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern char D_0046EA48[];
+u8 *func_0029E870(s32 a0, s32 a1, s32 a2, s32 a3) {
+    u8 *s0;
+    s32 v;
+
+    s0 = amHeap_Alloc(0x2C0, 0, D_0046EA48, 0xAC);
+    memset(s0, 0, 0x2C0);
+    s0[0x2B8] = 0;
+    s0[0x2B9] = 0;
+    if (a0 != 0) {
+        *(s32 *)s0 = a0;
+        *(s32 *)(s0 + 0x2A0) = *(s32 *)(a0 + 0x20);
+    } else {
+        v = amCdFs_ReadFileId(0xEFA, 0, 1);
+        *(s32 *)(s0 + 0x2B0) = v;
+        *(s32 *)(s0 + 0x2A0) = v;
+        v = amCdFs_ReadFileId(0xEFB, 0, 1);
+        *(s32 *)(s0 + 0x2B4) = v;
+        *(s32 *)(s0 + 0x2A0) = v;
+        a1 = 0xEF9;
+    }
+    if (a1 != -1) {
+        v = amCdFs_ReadFileId(a1, 0, 1);
+        *(s32 *)(s0 + 0x294) = v;
+        *(s32 *)(s0 + 0x2A0) = v;
+    }
+    if (a2 != -1) {
+        v = amCdFs_ReadFileId(a2, 0, 1);
+        *(s32 *)(s0 + 0x298) = v;
+        *(s32 *)(s0 + 0x2A0) = v;
+    }
+    if (a3 != -1) {
+        v = amCdFs_ReadFileId(a3, 0, 1);
+        *(s32 *)(s0 + 0x29C) = v;
+        *(s32 *)(s0 + 0x2A0) = v;
+    }
+    return s0;
+}
 extern s32 func_001CAAB0(s32, s32, s32, s32, s32);
 extern u8 *func_0029E870(s32, s32, s32, s32);
 void func_0029E9B0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
