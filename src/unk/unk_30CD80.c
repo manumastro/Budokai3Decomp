@@ -94,8 +94,67 @@ extern void func_0013AC90(void *);
 extern void func_00145120(Task *);
 extern void func_002B5EF0(void);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_30CD80", func_0030CD80);
-void func_0030CD80(Task *t);
+void func_0030CD80(Task *t) {
+    Work *w = t->work;
+    s16 n;
+    s32 i;
+    void *v;
+    s32 k;
+
+    func_0030BFC0(w);
+    w->f1C -= D_004703BC;
+    if (w->f1C <= 0.0f) {
+        func_0030C6F0(w);
+        n = 0;
+        for (i = 0; i < 30; i++) {
+            if (w->entries[i].used) {
+                n++;
+            }
+        }
+        w->f10 = n;
+        if (w->f12 >= n) {
+            w->f12 = n - 1;
+        }
+        if (n == 0) {
+            w->f12 = 0;
+        }
+        func_0030C280(w);
+        w->f4 = 2;
+        switch (w->f2) {
+        case 1:
+            w->f2 = -1;
+            w->f0 = 5;
+            w = t->work;
+            w->f0 = 5;
+            w->f2 = 1;
+            w->f4 = 3;
+            D_00470704 = v = D_00470994->fC;
+            D_0047070C = k = 0x4000;
+            D_00470708 = 0;
+            func_00145CC0(v, k);
+            D_00470238 = 0;
+            if (w->f64 != NULL) {
+                func_0022D0E0(w->f64, 1);
+                w->f64 = NULL;
+            }
+            TASK_SETFUNC(t, func_0030C8F0);
+            break;
+        case 0:
+            w->f2 = -1;
+            w->f0 = 5;
+            if (w->f64 != NULL) {
+                func_0022D0E0(w->f64, 1);
+                w->f64 = NULL;
+            }
+            TASK_SETFUNC(t, func_0030C8F0);
+            break;
+        default:
+            w->f0 = 4;
+            TASK_SETFUNC(t, func_0030C9C0);
+            break;
+        }
+    }
+}
 
 void func_0030CF60(Task *t) {
     Global *g = D_00470994;
