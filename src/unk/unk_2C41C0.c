@@ -263,7 +263,7 @@ s32 func_002C5FC0(Task2C41C0 *t) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C5FC0);
 #if 0
-// differs: 11 of 57 instructions, all in the tail (the product order and the fused madd of the accumulator); the search loop and the call match
+// differs: 17 of 57 with the adda.s/madd.s tail in inline asm (the asm acts as a scheduling barrier, the p[] loads move); the plain tail gave 11 of 57
 typedef struct Bin2C41C0 {
     f32 a[20];
     s32 f50;
@@ -276,6 +276,7 @@ f32 func_002C60B0(Bin2C41C0 *s, f32 t) {
     s32 v1;
     f32 *p;
     f32 f4;
+    f32 f3;
     f32 f1;
     f32 f2;
     f32 f0;
@@ -298,13 +299,19 @@ f32 func_002C60B0(Bin2C41C0 *s, f32 t) {
     }
     p = &s->a[a1];
     f4 = t - p[0];
-    f1 = p[12] * f4;
-    f2 = p[8] * f4;
-    f0 = p[16] * f4;
+    f3 = p[4];
+    f1 = p[12];
+    f2 = p[8];
+    f0 = p[16];
+    f1 = f1 * f4;
+    f2 = f2 * f4;
+    f0 = f0 * f4;
     f1 = f4 * f1;
-    f2 = p[4] + f2;
+    f2 = f3 + f2;
     f0 = f4 * f0;
-    return (f2 + f1) + f0;
+    asm volatile("adda.s %1, %2
+	madd.s %0, %3, %0" : "+f"(f0) : "f"(f2), "f"(f1), "f"(f4));
+    return f0;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C60B0);

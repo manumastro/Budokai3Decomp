@@ -71,7 +71,8 @@ typedef struct SaveWork2FAFF0 {
     char pad34[0xC];
     char *f40;
     struct Pos3_2FAFF0 *f44;
-    char pad48[0x8];
+    char pad48[0x4];
+    s32 f4C;
     f32 f50;
     char pad54[0x4];
     s32 f58;
@@ -205,7 +206,46 @@ void func_002FBF40(Task2FAFF0 *t) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBFD0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC510);
+extern void Zenie_SetValue(s32, s32);
+extern s32 D_004DFAE8[];
+extern void Zenie_Open(s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
+extern void amAdx_PlayAfs(s32, s32, s32);
+extern u8 D_004E0618[];
+extern void func_002FB170(Task2FAFF0 *);
+extern void func_002FB4C0(Task2FAFF0 *);
+extern void func_002FBFD0(Task2FAFF0 *);
+void func_002FC510(Task2FAFF0 *t) {
+    Task2FAFF0 *q = (Task2FAFF0 *)gTourMap->f40;
+    s32 *p;
+
+    q->f30 = q->f30 + 1;
+    p = &q->f30;
+    if ((f32)q->f30 * gFrameDelta <= 120.0f) {
+        return;
+    }
+    Zenie_SetValue(D_004DFAE8[0], D_004DFAE8[0]);
+    Zenie_Open(0);
+    *p = 0;
+    t->f1C = (func_002FBFD0 == 0) ? 0 : func_002FBFD0;
+    if (gTourMap->f4C != 0) {
+        q = (Task2FAFF0 *)gTourMap->f40;
+        q->f1C = (func_002FB4C0 == 0) ? 0 : func_002FB4C0;
+    } else {
+        q = (Task2FAFF0 *)gTourMap->f40;
+        q->f1C = (func_002FB170 == 0) ? 0 : func_002FB170;
+    }
+    if (gTourMap->f4C == 2) {
+        amAdx_SetVolume(0, *(f32 *)D_004E0618);
+        amAdx_Pause(0, 0);
+        amAdx_PlayAfs(0, 0x211B2, 0);
+    } else {
+        amAdx_SetVolume(0, *(f32 *)D_004E0618);
+        amAdx_Pause(0, 0);
+        amAdx_PlayAfs(0, 0x211B1, 0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC660);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FC800);
 #if 0
