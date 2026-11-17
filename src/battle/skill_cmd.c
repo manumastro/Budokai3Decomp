@@ -280,7 +280,23 @@ void func_0024E0F0(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E1A0);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E440);
+void func_0024E440(s32 *a0) {
+    u8 *v1 = (u8 *)a0[3];
+    s16 *s1 = (s16 *)(v1 + 0x20);
+    s16 *s2 = (s16 *)(v1 + 0x22);
+    s32 s3 = ((Fighter *)a0[2])->unk1350;
+    s32 r1;
+    s32 r2;
+
+    r1 = func_0020B020(s3, *(s16 *)(v1 + 0x20), *(s16 *)(v1 + 0x22));
+    r2 = func_0020AD30(s3, *s1, *s2);
+    func_00145CC0(r1, r2);
+    if (a0[21] != 0) {
+        func_00209D20(0);
+        func_00208D70(a0[21]);
+        func_00209C50();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E4D0);
 void func_0024E760(s32 *p) {
     if (p[21] != 0) {
@@ -480,6 +496,23 @@ void func_00252B60(void) {
         }
     }
 }
+// GIVEN UP: the sum for the entry's address is added in the other operand order (3 forms tried)
+#if 0
+void func_00252C20(s32 a0, s32 a1) {
+    s32 s0;
+    u8 *s1;
+    s32 *pp;
+
+    s0 = a0 << 2;
+    *(s32 *)((u8 *)D_0046FE54 + s0) = 0;
+    pp = (s32 *)func_00246CA0(a0, a1);
+    s1 = *(u8 **)((s32)pp + (pp[2] << 2) + 0x20);
+    if (func_00127E88((char *)s1, D_0046AE20, 4) == 0) {
+        *(u32 *)((u8 *)D_0046FE54 + s0) = (u32)s1 + *(u32 *)(s1 + 0xC);
+        *(u32 *)(s0 + (s32)D_0046FE54 + 8) = *(u32 *)(s1 + 8);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252C20);
 s32 func_00252CB0(s32 a0, s32 *a1) {
     func_00248350(((s32 *)a1[11])[0]);
@@ -501,7 +534,21 @@ s32 func_00252D00(s32 a0, s32 *a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252D00);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252D50);
+extern s32 amMotion_FindBone(s32, s32);
+extern void func_001F3FE0(s32, s32, s32, s32, f32);
+s32 func_00252D50(s32 a0, s32 *a1) {
+    s32 *q = (s32 *)a1[11];
+    s32 x = a1[8] + q[3];
+    f32 f = ((f32 *)q)[1];
+    s32 s1 = q[0];
+    s32 s0 = q[2];
+    s32 *r = func_001F5EF0(q[5], q[4]);
+    s32 *m = (s32 *)((s32 *)r[1])[0];
+    s32 bone = amMotion_FindBone(((s32 *)m[7])[0], x);
+
+    func_001F3FE0((s32)r, bone, s0, s1, f);
+    return 1;
+}
 // GIVEN UP: the argument -1 is set before a0 is copied in the original (tried two forms)
 #if 0
 s32 func_00252DF0(s32 a0, s32 a1) {
@@ -661,6 +708,59 @@ s32 func_002532B0(s32 a0, s32 *a1) {
     }
     return 1;
 }
+// GIVEN UP: the branch layout of the flag tests differs (first try only)
+#if 0
+extern void func_0022C6B0(void);
+f32 func_00253320(s32 *a0, s32 *a1, f32 x, f32 y) {
+    s32 fl;
+    f32 f20;
+
+    a0[2] = 1;
+    fl = a1[12];
+    if ((fl & 0x20) != 0) {
+        x = x * ((f32 *)a1)[10];
+    }
+    if ((fl & 0x40) != 0) {
+        y = y * ((f32 *)a1)[11];
+    }
+    if ((fl & 3) == 2) {
+        x = x * 0.5f;
+        ((f32 *)a0)[12] = -x;
+        f20 = x;
+        ((f32 *)a0)[14] = x;
+        if ((fl & 0x10) != 0) {
+            f20 = f20 + ((f32 *)a1)[8];
+        }
+    } else if ((fl & 3) == 1) {
+        f20 = -x;
+        ((f32 *)a0)[12] = f20;
+        a0[14] = 0;
+        if ((fl & 0x10) != 0) {
+            f20 = f20 - ((f32 *)a1)[8];
+        }
+    } else if ((fl & 3) == 0) {
+        a0[12] = 0;
+        ((f32 *)a0)[14] = x;
+        f20 = x;
+        if ((fl & 0x10) != 0) {
+            f20 = f20 + ((f32 *)a1)[8];
+        }
+    }
+    if ((fl & 0xC) == 8) {
+        y = y * 0.5f;
+        ((f32 *)a0)[13] = -y;
+        ((f32 *)a0)[15] = y;
+    } else if ((fl & 0xC) == 4) {
+        ((f32 *)a0)[13] = -y;
+        a0[15] = 0;
+    } else if ((fl & 0xC) == 0) {
+        a0[13] = 0;
+        ((f32 *)a0)[15] = y;
+    }
+    func_0022C6B0();
+    return f20;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253320);
 // GIVEN UP: the original keeps the argument in s0 and the field pointer in s1; here one more register is used
 #if 0
@@ -714,6 +814,45 @@ void func_002535B0(s32 a0, void *a1) {
 s8 func_002535D0(s32 a0) {
     return ((u8 *)D_004E066A)[a0 * 40] & 3;
 }
+// GIVEN UP: the parameter is reloaded into other registers and the count is kept differently (3 forms tried)
+#if 0
+s32 func_00253600(s32 *a0, s32 a1) {
+    s32 *q;
+    s32 v = 0;
+    s32 cnt;
+    s32 i;
+    s32 *t;
+    s32 n;
+    s32 *o;
+    s16 *l;
+    s32 j;
+
+    a0 = (s32 *)a0[2];
+    q = (s32 *)a0[2];
+    cnt = q[1];
+    if (cnt > 0) {
+        t = (s32 *)q[2];
+        for (i = 0; i < cnt; i++, t += 4) {
+            if (t[0] == a1) {
+                v++;
+            }
+        }
+    }
+    if (v == 0) {
+        o = (s32 *)a0[0];
+        n = *(s8 *)((u8 *)o + 0xD);
+        if (n > 0) {
+            l = (s16 *)o[2];
+            for (j = 0; j < n; j++, l++) {
+                if (a1 == l[0]) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return v;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253600);
 // GIVEN UP: the original keeps the count field address (t2 + 0xD) in a register and reuses it; the register choice differs
 #if 0
@@ -812,6 +951,38 @@ void func_00254100(u8 *a0) {
     SkillFile_Release(*(u8 **)(a0 + 0x8));
     amHeap_Free(a0);
 }
+// GIVEN UP: the loop's registers and the branch layout differ (count, index and pointer in other registers; 3 orders and a do-while tried)
+#if 0
+extern void func_00253490(s32 *);
+void func_002541D0(s32 *a0) {
+    s32 *s0 = a0;
+    s32 *v;
+    s32 n;
+    s32 i;
+    s32 *base;
+    s32 *p;
+
+    func_00253490((s32 *)s0[3]);
+    func_00253490((s32 *)s0[2]);
+    v = (s32 *)((s32 *)s0[2])[2];
+    if (v != 0) {
+        n = v[1];
+        if (0 < n) {
+            base = (s32 *)v[2];
+            p = base;
+            i = 0;
+            do {
+                if (p[0] == -1) {
+                    s0[4] = (s32)((u8 *)base + (i << 4));
+                    return;
+                }
+                i++;
+                p += 4;
+            } while (i < n);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002541D0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254260);
 // GIVEN UP: the loop counter and the pointer take the other saved registers (tried the declaration orders)
@@ -905,6 +1076,58 @@ void func_002545E0(s32 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254650);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002547A0);
+// GIVEN UP: the nested loops take the other two counters and pointers (24 declaration orders tried)
+#if 0
+void func_00254970(s32 *a0) {
+    u8 *s0;
+    s32 *s3;
+    s32 *s;
+    s32 *t;
+    s32 k;
+    s32 j;
+
+    s3 = a0 + 12;
+    s0 = D_0046FDFC;
+    if (func_0021C2A0(0x80000000) != 0) {
+        s32 x = *(s32 *)(s0 + 0xE60);
+
+        D_00470704 = x;
+        D_0047070C = 0x4000000;
+        D_00470708 = 0;
+        func_00145CC0(x, 0x4000000);
+        D_00470238 = 0;
+        amDraw_SetPacketMode(1);
+        func_0022C560(s3[1]);
+        amDraw_KickPending();
+        func_0022C560(s3[6]);
+        func_0022C560(s3[7]);
+        amDraw_KickPending();
+        if (s3[2] != 0) {
+            func_0022C560(s3[2]);
+        }
+        if (s3[5] != 0) {
+            func_0022C560(s3[5]);
+        }
+        if (s3[4] != 0) {
+            func_0022C560(s3[4]);
+        }
+        if (s3[3] != 0) {
+            func_0022C560(s3[3]);
+        }
+        amDraw_KickPending();
+        s = s3;
+        for (k = 0; k < 2; k++, s += 2) {
+            t = s;
+            for (j = 0; j < 2; j++, t += 1) {
+                if (t[8] != 0) {
+                    func_0022C560(t[8]);
+                }
+            }
+        }
+        amDraw_SetPacketMode(0);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254970);
 void func_00254AC0(s32 *a0) {
     u8 *s1 = D_0046FDFC;
@@ -1005,6 +1228,56 @@ void func_00256EB0(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00256EB0);
+// GIVEN UP: the entry pointer and the field address take other saved registers (3 forms tried)
+#if 0
+extern s32 D_0058D4F0[];
+extern void func_0022D0E0(s32, s32);
+void func_00256F80(s32 *a0) {
+    s32 *v;
+    s32 *s2;
+    s32 *s0;
+    s32 i;
+    s32 *s3;
+
+    s3 = a0 + 12;
+    v = (s32 *)s3[0];
+    if (v[13] != 0) {
+        func_0022D0E0(v[13], 1);
+    }
+    s2 = v + 12;
+    s2[1] = 0;
+    s0 = s2;
+    for (i = 0; i < 2; i++, s0 += 1) {
+        if (s0[3] != 0) {
+            func_0022D0E0(s0[3], 1);
+        }
+        s0[3] = 0;
+        if (s0[5] != 0) {
+            func_0022D0E0(s0[5], 1);
+        }
+        s0[5] = 0;
+        if (s0[7] != 0) {
+            func_0022D0E0(s0[7], 1);
+        }
+        s0[7] = 0;
+        if (s0[9] != 0) {
+            func_0022D0E0(s0[9], 1);
+        }
+        s0[9] = 0;
+        if (s0[11] != 0) {
+            func_0022D0E0(s0[11], 1);
+        }
+        s0[11] = 0;
+    }
+    if (s2[2] != 0) {
+        func_0022D0E0(s2[2], 1);
+    }
+    s2[2] = 0;
+    amTask_Kill(s3[0]);
+    s3[0] = 0;
+    D_0058D4F0[0] = 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00256F80);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002570A0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002573F0);
@@ -1250,7 +1523,46 @@ void func_00259B70(s32 *a0) {
     }
     s[1] = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259BB0);
+extern void func_00209950(s32, void *, s32);
+void func_00259BB0(s32 *a0) {
+    u8 *s1;
+    u8 *s0;
+    s32 a;
+    s32 v;
+
+    s0 = (u8 *)a0 + 0x30;
+    s1 = (u8 *)D_0046FDFC;
+    if (func_0021C2A0(0x80000000) != 0) {
+        a = 0;
+        if (D_00470570 != 0) {
+            a = *(s8 *)((u8 *)D_00470570 + 0x8975);
+        }
+        if (a != 1 && *(s32 *)(s0 + 4) != 0) {
+            func_0022C560(*(s32 *)(s0 + 4));
+        }
+    }
+    if (D_00470570 != 0) {
+        v = *(s32 *)((u8 *)D_00470570 + 0x88EC);
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        *(f32 *)s0 = *(f32 *)s0 + D_00470710;
+        {
+            s32 x = *(s32 *)(s1 + 0xE60);
+
+            D_00470704 = x;
+            D_0047070C = 0x4000000;
+            D_00470708 = 0;
+            func_00145CC0(x, 0x4000000);
+            D_00470238 = 0;
+        }
+        func_0022C060(*(s32 *)(s0 + 4), 1.0f);
+        if (*(f32 *)s0 >= 80.0f) {
+            amTask_Kill((s32)a0);
+        }
+    }
+}
 s32 *func_00259CC0(s32 *a0, s32 a1) {
     s32 *r = 0;
     s32 *x = 0;
@@ -1316,6 +1628,50 @@ s32 func_00259D90(s32 a0, s32 a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259D90);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259EB0);
+// GIVEN UP: the loop counter and the pointers take other saved registers than in the original (3 orders tried)
+#if 0
+extern u8 D_0058D4E0[];
+extern s32 D_0047074C;
+extern s32 D_00470748;
+extern void func_0022CFC0(s32, s32, s32, s32);
+extern void func_0022D0E0(s32, s32);
+void func_00259FE0(void) {
+    s32 i;
+    s32 j;
+    s32 *p;
+    s32 *s1;
+    s32 v;
+
+    p = (s32 *)D_0058D4E0;
+    for (i = 0; i < 6; i++, p++) {
+        if (p[0] != 0) {
+            amTask_Kill(p[0]);
+            p[0] = 0;
+        }
+    }
+    s1 = D_0058D4D0;
+    for (j = 0; j < 4; j++, s1++) {
+        v = s1[0];
+        if (v != 0) {
+            if (((s32 *)v)[12] != 0) {
+                amTask_Kill(((s32 *)v)[12]);
+                ((s32 *)v)[12] = 0;
+            }
+            amTask_Kill(v);
+            s1[0] = 0;
+        }
+    }
+    func_0022CFC0(0x1000, 0x2000008, 0, 1);
+    if (D_0047074C != 0) {
+        func_0022D0E0(D_0047074C, 1);
+        D_0047074C = 0;
+    }
+    if (D_00470748 != 0) {
+        amTask_Kill(D_00470748);
+        D_0047074C = 0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259FE0);
 extern u8 D_0058D4E0[];
 extern s32 D_00470748;
