@@ -302,7 +302,7 @@ s32 func_0025D8D0(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025D940(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdFlushFlag916(ScrCtx *ctx, ScrCmd *cmd) {
     if (D_0046FE4C->f916 != 0) {
         func_0020DE30();
         D_0046FE4C->f916 = 0;
@@ -358,7 +358,7 @@ s32 Scr_CmdGetVecX(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_0025DB40(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20E120(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020E120(a[1].i, a[0].i);
@@ -431,7 +431,7 @@ s32 func_0025DC50(ScrCtx *ctx, ScrCmd *cmd) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DCA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DDD0);
 
-s32 func_0025DED0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20E7D0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020E7D0(a[2].i, gBattle->f8934[a[1].i], a[0].i);
@@ -440,7 +440,7 @@ s32 func_0025DED0(ScrCtx *ctx, ScrCmd *cmd) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DF20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025E050);
 
-s32 func_0025E150(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20E8F0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020E8F0(a[2].i, gBattle->f8934[a[1].i], a[0].i);
@@ -630,7 +630,7 @@ s32 func_0025EB10(ScrCtx *ctx, ScrCmd *cmd) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EB60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EC60);
 
-s32 func_0025ED50(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjCall245A80(ScrCtx *ctx, ScrCmd *cmd) {
     func_00245A80(gBattle->f8934[0], cmd->args[0].i);
     return 1;
 }
@@ -749,7 +749,7 @@ s32 func_0025F410(TimedF0C0 *o, ScrCmd *cmd) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F4B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F580);
-s32 func_0025F6C0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdSetFlag916Mode(ScrCtx *ctx, ScrCmd *cmd) {
     if (cmd->args[0].i != 0) {
         D_0046FE4C->f91A = 1;
     } else {
@@ -757,126 +757,126 @@ s32 func_0025F6C0(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-s32 func_0025F6F0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F040(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F040(a[1].i, a[0].i);
     return 1;
 }
 
-s32 func_0025F720(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F090(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F090(a[2].i, a[1].i, a[0].i);
     return 1;
 }
 
-s32 func_0025F750(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F0E0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F0E0(a[1].i, a[0].i);
     return 1;
 }
 
-s32 func_0025F780(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F130(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F130(a[1].i, a[0].i);
     return 1;
 }
 
-s32 func_0025F7B0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F180(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F180(a[1].i, a[0].i);
     return 1;
 }
 
-s32 func_0025F7E0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F1D0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F1D0(a[1].i, a[0].f);
     return 1;
 }
 
-s32 func_0025F810(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F200(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F200(a[1].i, a[0].f);
     return 1;
 }
 
-s32 func_0025F840(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F230(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F230(a[1].i, a[0].f);
     return 1;
 }
 
-s32 func_0025F870(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F260(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F260(a[1].i, a[0].f);
     return 1;
 }
 
-s32 func_0025F8A0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F290(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F290(a[1].i, a[0].i);
     return 1;
 }
 
-s32 func_0025F8D0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F300(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F300(a[1].i, a[0].i);
     return 1;
 }
 
-s32 func_0025F900(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F3B0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F3B0(a[1].i, a[0].f);
     return 1;
 }
 
-s32 func_0025F930(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F3E0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F3E0(a[1].i, a[0].f);
     return 1;
 }
 
-s32 func_0025F960(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F410(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F410(a[1].i, a[0].f);
     return 1;
 }
 
-s32 func_0025F990(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F440(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F440(a[1].i, a[0].f);
     return 1;
 }
 
-s32 func_0025F9C0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F470(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F470(a[3].i, a[2].f, a[1].f, a[0].f);
     return 1;
 }
 
-s32 func_0025F9F0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F4A0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F4A0(a[2].i, a[1].f, a[0].f);
     return 1;
 }
 
-s32 func_0025FA20(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjCall245BE0(ScrCtx *ctx, ScrCmd *cmd) {
     func_00245BE0(gBattle->f8934[cmd->args[0].i]);
     return 1;
 }
@@ -898,28 +898,28 @@ s32 func_0025FAC0(ScrCtx *ctx, ScrCmd *cmd) {
     return 3;
 }
 
-s32 func_0025FB40(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjCall245BF0(ScrCtx *ctx, ScrCmd *cmd) {
     func_00245BF0(gBattle->f8934[cmd->args[0].i]);
     return 1;
 }
 
-s32 func_0025FB80(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjCall245C00(ScrCtx *ctx, ScrCmd *cmd) {
     func_00245C00(gBattle->f8934[cmd->args[0].i]);
     return 1;
 }
-s32 func_0025FBC0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjGet245C50(ScrCtx *ctx, ScrCmd *cmd) {
     cmd->f0 = func_00245C50(gBattle->f8934[cmd->args[0].i]);
     return 1;
 }
 
-s32 func_0025FC10(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjCall245CC0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_00245CC0(gBattle->f8934[a[1].i], a[0].i);
     return 1;
 }
 
-s32 func_0025FC50(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdObjCall245D30(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_00245D30(gBattle->f8934[a[1].i], a[0].i);
@@ -982,21 +982,21 @@ s32 func_0025FFA0(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_00260020(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall215990(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_00215990(a[0].i);
     return 1;
 }
 
-s32 func_00260050(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F700(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F700(a[0].i);
     return 1;
 }
 
-s32 func_00260080(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20F870(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020F870(a[0].i);
@@ -1122,7 +1122,7 @@ s32 func_00260370(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-s32 func_002603E0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Scr_CmdCall20A7F0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
     func_0020A7F0(a[0].i);
