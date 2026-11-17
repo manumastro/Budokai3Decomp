@@ -106,7 +106,33 @@ INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EC80);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EE90);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F090);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F720);
-INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F830);
+extern void amCdFs_Close(s32, s32);
+extern void amCdFs_ReleaseCache(s32);
+extern void amHeap_Free(void *);
+
+void func_0028F830(void) {
+    s32 i;
+    for (i = 0; i < 0x3C; i++) {
+        if (((s32 *)D_004708A4)[i] != 0) {
+            amCdFs_Close(((s32 *)D_004708A4)[i], 0);
+        }
+        if (((s32 *)D_004708A4)[0x3C + i] != 0) {
+            amCdFs_ReleaseCache(((s32 *)D_004708A4)[0x3C + i]);
+        }
+    }
+    for (i = 0; i < 0x11; i++) {
+        if (((s32 *)D_004708A4)[0x8C + i] != 0) {
+            amHeap_Free((void *)((s32 *)D_004708A4)[0x8C + i]);
+        }
+    }
+    for (i = 0; i < 0xD; i++) {
+        if (((s32 *)D_004708A4)[0xC8 + i] != 0) {
+            amHeap_Free((void *)((s32 *)D_004708A4)[0xC8 + i]);
+        }
+    }
+    amHeap_Free((void *)D_004708A4);
+    D_004708A4 = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F930);
 void StrBg_Clear(void) {
     D_004708A4 = 0;
