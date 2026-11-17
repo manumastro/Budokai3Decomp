@@ -30,6 +30,10 @@ extern void func_001444E0(void *, f32, s32);
 extern void func_00144430(void *);
 extern u8 D_005C206C[];
 extern u8 D_005C2074[];
+extern u8 *D_00470570;
+extern s32 D_00470148;
+extern s32 D_0047014C;
+extern s32 D_00470150;
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CD5F0);
 void func_002CD810(void) {
@@ -205,4 +209,38 @@ void func_002CF6E0(s32 i, s32 kind) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF750);
+#if 0
+void func_002CF820(void) {
+    s32 i = 0;
+    u8 *p = D_005C2060;
+    if (*(s32 *)(D_00470570 + 0x88D8) > 0) {
+        do {
+            if (*(s32 *)(p) != 0) {
+                s32 t = *(s32 *)(p) + 1;
+                *(s32 *)(p) = t;
+                if (t > D_00470148) {
+                    *(s32 *)(p) = 0;
+                }
+            }
+            if (*(s32 *)(p + 4) != 0) {
+                s32 t = *(s32 *)(p + 4) + 1;
+                *(s32 *)(p + 4) = t;
+                if (t > D_0047014C) {
+                    *(s32 *)(p + 4) = 0;
+                }
+            }
+            if (*(s32 *)(p + 8) != 0) {
+                s32 t = *(s32 *)(p + 8) + 1;
+                *(s32 *)(p + 8) = t;
+                if (t > D_00470150) {
+                    *(s32 *)(p + 8) = 0;
+                }
+            }
+            i += 1;
+            p += 0x28;
+        } while (i < *(s32 *)(D_00470570 + 0x88D8));
+    }
+}
+// differs: the counter updates match; the build is one nop short (0xC0 bytes against 0xC4): the original pads the join after the third counter
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF820);

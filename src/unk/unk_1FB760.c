@@ -12,7 +12,6 @@ extern u8 *D_00470648;
 extern s32 D_0047066C;
 extern s32 D_00526440[];
 extern s32 D_00470668;
-extern void func_00209FC0(u8 *, u8 *);
 extern s32 D_00470664;
 extern u8 *D_00526040[];
 extern s32 D_00470660;
@@ -24,6 +23,9 @@ extern u8 D_00568480[];
 extern void func_00142080(u8 *, u8 *, s32);
 extern u8 *D_0051FA40[];
 extern s32 D_00470654;
+extern void func_00208F70(u8 *);
+extern void func_00209390(u8 *);
+extern s32 D_0051D9A0[];
 
 #if 0
 void func_001FB760(u8 *a, s32 b) {
@@ -261,9 +263,84 @@ void func_00208D70(u8 *a) {
         s0 = *(u8 **)s0;
     } while (s0 != NULL);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00208E50);
+void func_00208E50(u32 a0, s32 a1) {
+    u8 *n;
+    u32 hi;
+    u32 lo;
+    if (D_0051D9A0[0] == 0) {
+        return;
+    }
+    hi = a0 & 0xFFFF0000;
+    lo = a0 & 0xFFFF;
+    if (hi == 0) {
+        hi = 0xFFFF0000;
+    }
+    switch (a1) {
+    case 0:
+        n = D_00568440[0];
+        if (n == D_00568480) {
+            break;
+        }
+        do {
+            u32 f = *(u32 *)(n + 8);
+            if ((f & hi) != 0 && (f & lo) != 0) {
+                func_00208F70(n);
+            }
+            n = *(u8 **)n;
+        } while (n != D_00568480);
+        break;
+    case 1:
+        n = D_00568440[0];
+        if (n == D_00568480) {
+            break;
+        }
+        do {
+            u32 f = *(u32 *)(n + 8);
+            if ((f & hi) != 0 && (lo & f) == lo) {
+                func_00208F70(n);
+            }
+            n = *(u8 **)n;
+        } while (n != D_00568480);
+        break;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00208F70);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209280);
+void func_00209280(u32 a0, s32 a1) {
+    u8 *n;
+    u32 hi = a0 & 0xFFFF0000;
+    u32 lo = a0 & 0xFFFF;
+    if (hi == 0) {
+        hi = 0xFFFF0000;
+    }
+    switch (a1) {
+    case 0:
+        n = D_00568440[0];
+        if (n == D_00568480) {
+            break;
+        }
+        do {
+            u32 f = *(u32 *)(n + 8);
+            if ((f & hi) != 0 && (f & lo) != 0) {
+                func_00209390(n);
+            }
+            n = *(u8 **)n;
+        } while (n != D_00568480);
+        break;
+    case 1:
+        n = D_00568440[0];
+        if (n == D_00568480) {
+            break;
+        }
+        do {
+            u32 f = *(u32 *)(n + 8);
+            if ((f & hi) != 0 && (lo & f) == lo) {
+                func_00209390(n);
+            }
+            n = *(u8 **)n;
+        } while (n != D_00568480);
+        break;
+    }
+}
 void func_00209390(u8 *a) {
     u8 *t1 = *(u8 **)(a + 0x30);
     while (t1 != NULL) {
@@ -391,9 +468,48 @@ s32 func_00209F80(void) {
     }
     return r;
 }
+#if 0
+void func_00209FC0(u8 *a0, s32 a1) {
+    u8 *s0;
+    if (*(s32 *)(a0 + 0x24) != 0) {
+        *(s32 *)(a0 + 0x24) += a1;
+        s0 = *(u8 **)(a0 + 0x24);
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            *(s32 *)(s0 + 0x24) += a1;
+            func_00209FC0(*(u8 **)(s0 + 0x24), a1);
+        }
+        if (*(s32 *)(s0 + 0x28) != 0) {
+            *(s32 *)(s0 + 0x28) += a1;
+            func_00209FC0(*(u8 **)(s0 + 0x28), a1);
+        }
+        if (*(s32 *)(s0 + 0x2C) != 0) {
+            *(s32 *)(s0 + 0x2C) += a1;
+        }
+    }
+    if (*(s32 *)(a0 + 0x28) != 0) {
+        *(s32 *)(a0 + 0x28) += a1;
+        s0 = *(u8 **)(a0 + 0x28);
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            *(s32 *)(s0 + 0x24) += a1;
+            func_00209FC0(*(u8 **)(s0 + 0x24), a1);
+        }
+        if (*(s32 *)(s0 + 0x28) != 0) {
+            *(s32 *)(s0 + 0x28) += a1;
+            func_00209FC0(*(u8 **)(s0 + 0x28), a1);
+        }
+        if (*(s32 *)(s0 + 0x2C) != 0) {
+            *(s32 *)(s0 + 0x2C) += a1;
+        }
+    }
+    if (*(s32 *)(a0 + 0x2C) != 0) {
+        *(s32 *)(a0 + 0x2C) += a1;
+    }
+}
+// differs: the offset adds are the same except for the operand order of addu (the original is s1 + v1 at each of 9 sites, this build emits v1 + s1 whatever the source order)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209FC0);
 void func_0020A0F0(u8 *a) {
-    func_00209FC0(a + *(s32 *)(a + 0xC), a);
+    func_00209FC0(a + *(s32 *)(a + 0xC), (s32)a);
 }
 s32 func_0020A100(u8 *a) {
     if (a[0] == 0x21) {
