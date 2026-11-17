@@ -569,6 +569,36 @@ s32 func_002A4130(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4130);
+#if 0
+// func_002A41D0: the original moves a0 to s3 first and loads the slot into a1 before the test; reordering the locals swaps the saved registers s0/s1; 4 variants tried
+s32 func_002A41D0(s32 *a0, char *a1) {
+    s32 *s3 = a0;
+    s32 *s2 = (s32 *)a0[0x1C / 4];
+    s32 slot = ((s32 *)*(s32 **)(a1 + 0x2C))[1];
+    if (*(s16 *)((char *)s2 + 4) == 3) {
+        s32 idx = *(s32 *)s3[0];
+        s32 *s0 = (s32 *)s2[0x40 / 4];
+        s32 s1 = s0[0x50 / 4];
+        s32 *s4 = (s32 *)(D_005AB610 + idx * 240 + slot * 24);
+        if (s4[3] != 0) {
+            amCdFs_ReleaseCache(s4[3]);
+            s4[3] = 0;
+        }
+        s4[3] = (s32)s0;
+        s4[5] = s1;
+        s3[4] = 0;
+        s2[0x40 / 4] = 0;
+        amCdFs_Close((s32)s2, 0);
+        if (s3[6] != 0) {
+            amCdFs_Close(a0[6], 0);
+        }
+        s3[6] = 0;
+        s3[7] = 0;
+        return 1;
+    }
+    return 3;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A41D0);
 extern s32 func_002A41D0(s32 *, char *);
 
@@ -580,6 +610,41 @@ s32 func_002A42C0(s32 *a0, char *a1) {
     a0[0x10 / 4] = (s32)func_002A41D0;
     return func_002A41D0(a0, a1);
 }
+#if 0
+// func_002A4320: same shape as func_002A41D0 (offsets 0x8/0x10); the original returns 3 through a bne with v0 set before the branch; locals reordered; not matched
+s32 func_002A4320(s32 *a0, char *a1) {
+    s32 *s2 = (s32 *)a0[0x1C / 4];
+    s32 slot = ((s32 *)*(s32 **)(a1 + 0x2C))[1];
+    s32 *s3;
+    s32 idx;
+    s32 *s0;
+    s32 s1;
+    s32 *s4;
+    if (*(s16 *)((char *)s2 + 4) != 3) {
+        return 3;
+    }
+    s3 = a0;
+    idx = *(s32 *)s3[0];
+    s0 = (s32 *)s2[0x40 / 4];
+    s1 = s0[0x50 / 4];
+    s4 = (s32 *)(D_005AB610 + idx * 240 + slot * 24);
+    if (s4[2] != 0) {
+        amCdFs_ReleaseCache(s4[2]);
+        s4[2] = 0;
+    }
+    s4[2] = (s32)s0;
+    s4[4] = s1;
+    s3[4] = 0;
+    s2[0x40 / 4] = 0;
+    amCdFs_Close((s32)s2, 0);
+    if (s3[6] != 0) {
+        amCdFs_Close(s3[6], 0);
+    }
+    s3[6] = 0;
+    s3[7] = 0;
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4320);
 extern s32 func_002A4320(s32 *, char *);
 
@@ -994,7 +1059,49 @@ s32 func_002A53A0(s32 *a0) {
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5420);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5580);
+#if 0
+// func_002A56A0: the copy loop keeps the counter in a2 and the pointer in a1 in the original; ours takes the other registers (240 vs 232 bytes, 41 instructions differ); 5 variants tried
+extern s32 func_002B4C80(s32);
+extern void func_002B4CC0(s32, s32 *);
+extern void SklEdit_Close(void);
+extern s32 D_005AA604;
+
+void func_002A56A0(void) {
+    s32 *g = gEvtWork;
+    s32 buf[8];
+    s32 i;
+    s32 *p;
+    s16 *tab;
+    if (func_002B4C80(0) >= 9) {
+        func_002A0D50(1);
+        func_002A13C0(func_002A13B0() + 1);
+        func_002B4CC0(0, buf);
+        SklEdit_Close();
+        i = 0;
+        tab = (s16 *)((char *)D_005AA604 + 0x11F0);
+        if (buf[0] > 0) {
+            p = buf;
+            do {
+                tab[i] = (s16)p[1];
+                p++;
+                i++;
+            } while (i < buf[0]);
+        }
+        if (i < 7) {
+            s16 *q = tab + i;
+            do {
+                *q = -1;
+                q++;
+                i++;
+            } while (i < 7);
+        }
+        amTask_Kill((void *)g[0x9C / 4]);
+        g[0x9C / 4] = 0;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A56A0);
+
 extern void SklEdit_Open(s32, char *, s32, s32, s32);
 extern void func_002B5030(s32, s32, s32);
 extern void func_002B4E40(s32, void *, void *, s32);
