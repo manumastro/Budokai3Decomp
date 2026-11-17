@@ -181,7 +181,24 @@ int func_001CC170(void *unused, Arg *a) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC1B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC270);
+extern void func_002194C0(void *, s32, s32, s32);
+int func_001CC270(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x0 = p[0];
+    s32 s1;
+    s32 n;
+    if (p[1] < 0) {
+        n = -p[1];
+        s1 = 2;
+    } else {
+        char *t = D_00470570->tbl[p[1]];
+        s1 = *(s32 *)(t + 0x1350) + 3;
+        n = *(s32 *)(t + 0xB9C);
+    }
+    func_002194C0((char *)D_00470570 + (s1 << 5) + 0x5C4, n, x0, -1);
+    *(s32 *)a = s1;
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC300);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC4B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC610);
@@ -451,7 +468,13 @@ int func_001CDC00(void *unused, Arg *a) {
     *(s32 *)a = *(s32 *)((char *)D_00470570->tbl[a->p[1]] + 0xB70);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDC30);
+extern f32 func_00200270(s32, f32, f32);
+int func_001CDC30(void *unused, Arg *a) {
+    char *t = D_00470570->tbl[a->p[0]];
+    f32 r = func_00200270(0, *(f32 *)(t + 0x650), *(f32 *)(t + 0x658));
+    *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x44) - r;
+    return 1;
+}
 int func_001CDCA0(void *unused, Arg *a) {
     *(s32 *)a = *(s8 *)((char *)D_00470570->tbl[a->p[0]] + 0x1FF9);
     return 1;
@@ -738,20 +761,18 @@ int func_001CE8F0(void *unused, Arg *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE960);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CED20);
-// differs: 30 of 38: the same FPU constant register allocation as func_001CEE80, plus the five int field stores in another order.
-#if 0
 int func_001CEDE0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
     char *t = D_00470570->tbl[a->p[3]];
+    f32 k = 65536.0f;
+    f32 d = 360.0f;
     *(f32 *)(t + 0x1828) = f[2];
-    *(s32 *)(t + 0x1838) = (s32)(65536.0f * (f[0] / 360.0f));
-    *(s32 *)(t + 0x1834) = (s32)(65536.0f * (f[1] / 360.0f));
+    *(s32 *)(t + 0x1838) = (s32)(k * (f[0] / d));
+    *(s32 *)(t + 0x1834) = (s32)(k * (f[1] / d));
     *(s8 *)(t + 0x183C) = 5;
     func_001C75D0(t, 20);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEDE0);
 // differs: 23 of 32 at best: the 360.0f constant is loaded into f1 in the original and the division uses f3 as dividend; ours loads it into f2. Local k=360.0f and x=f0/360 forms tried.
 #if 0
 int func_001CEE80(void *unused, Arg *a) {
@@ -792,7 +813,14 @@ int func_001CF030(void *unused, Arg *a) {
     func_001E4820(t, 1.0f, 0);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF0A0);
+extern void func_001E5040(void *);
+int func_001CF0A0(void *unused, Arg *a) {
+    char *t = D_00470570->tbl[a->p[1]];
+    *(s32 *)(t + 0x1864) = a->p[0];
+    func_001E5040(t);
+    func_001E4FA0(t, -1);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF100);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF2C0);
 int func_001CF4A0(void *unused, Arg *a) {
