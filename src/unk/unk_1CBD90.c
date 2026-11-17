@@ -92,6 +92,24 @@ int func_001CBD90(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBD90);
+// differs: 3 forms tried (flat if, return in each branch, else-return with shared tail). The original's not-taken paths load li 1 and branch straight to the epilogue, while the taken paths branch to a shared li: ours puts the shared li before the epilogue at the wrong offset (0x80 vs 0x90 long).
+#if 0
+int func_001CBDF0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x0 = p[0];
+    Side *s = (Side *)D_00470570->tbl[p[1]];
+    if (p[1] == 0) {
+        if (s->m != 0) {
+            s->out = x0 + 1;
+        }
+    } else {
+        if (s->other->m != 0) {
+            s->out = -(x0 + 1);
+        }
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBDF0);
 // differs: 17 of 21. The original loads the Side fields (idx, blk) in another order: p[3] table entry first, then p[1] for idx, then p[0] last; ours reorders the blk and idx loads.
 #if 0
@@ -169,7 +187,23 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC300);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC4B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC710);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC7C0);
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void func_001CB020(void *);
+extern void func_001CAFE0(void *);
+extern char D_004692B0[];
+int func_001CC7C0(void *o, Arg *a) {
+    int *p = a->p;
+    char *c = *(char **)o;
+    s32 x = p[0];
+    s32 y = p[1];
+    char *t = amTask_Create((void (*)(void *))func_001CB020, 0, *(s32 *)(c + 0x10), *(s32 *)(c + 0x14), *(s32 *)(c + 0x18), D_004692B0);
+    *(s32 *)(t + 0x30) = 0;
+    *(f32 *)(t + 0x34) = (f32)x;
+    *(void **)(t + 0x38) = (void *)func_001CAFE0;
+    *(s32 *)(t + 0x3C) = 1;
+    *(s32 *)(t + 0x40) = y;
+    return 1;
+}
 int func_001CC850(void *unused, Arg *a) {
     func_001D9CA0(D_00470570->tbl[a->p[0]], 0);
     return 1;
@@ -520,16 +554,22 @@ int func_001CDFD0(void *unused, Arg *a) {
     *(s32 *)a = func_001E0200(t, -p[0], 0);
     return 1;
 }
-// differs: 14 of 19. The original keeps the Arg in a1 and loads p[0] (the float pointer) before p[2]; ours keeps p in a0. Declaration order of the argument locals tried.
-#if 0
 int func_001CE030(void *unused, Arg *a) {
     int *p = a->p;
-    func_001DFC80(D_00470570->tbl[p[2]], p[1], (f32)*(s32 *)p[0]);
+    func_001DFC80(D_00470570->tbl[p[2]], p[1], (f32)p[0]);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE030);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE080);
+int func_001CE080(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x0 = p[0];
+    void *t = D_00470570->tbl[p[2]];
+    s32 f = p[1];
+    if (*(s16 *)((char *)D_00470570 + 0x894C) != 0 || *(s8 *)((char *)D_00470570 + 0x8AB8) != 0) {
+        f |= 0x8000;
+    }
+    *(s32 *)a = func_001E0200(t, x0, f);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE110);
 int func_001CE1F0(void *unused, Arg *a) {
     char *t = D_00470570->tbl[a->p[0]];
@@ -877,16 +917,15 @@ int func_001CFA00(void *o, Arg *a) {
     }
     return r;
 }
-// differs: 7 of 13 at best: the original loads a->p, then the function address, then D_00470570, and stores 0x24 before the float; ours emits the function address store first or loads the global late.
-#if 0
 int func_001CFA60(void *o, Arg *a) {
-    *(void **)((char *)o + 0x10) = func_001CFA00;
-    *(s32 *)((char *)o + 0x24) = *a->p;
-    *(f32 *)((char *)o + 0x2C) = *(f32 *)((char *)D_00470570 + 0x8914);
+    int *p = a->p;
+    void *f = func_001CFA00;
+    char *g = (char *)D_00470570;
+    *(s32 *)((char *)o + 0x24) = p[0];
+    *(f32 *)((char *)o + 0x2C) = *(f32 *)(g + 0x8914);
+    *(void **)((char *)o + 0x10) = f;
     return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFA60);
 
 int func_001CFAA0(void *unused, Arg *a) {
     return 1;
@@ -906,6 +945,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D01C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D02C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D03E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D05D0);
+// differs: 3 of 16. The original tests o != 0 as a materialised flag (sltu + xori, bnez to exit) and enters the loop through a b to the test; ours tests with beqz at the loop top. Four source forms (||, flag local, for-break) tried.
+#if 0
+void *func_001D06F0(void *o, s32 mask) {
+    while (o != 0 && (*(u16 *)(*(char **)((char *)o + 0x20) + 8) & mask) == 0) {
+        o = *(void **)((char *)o + 0x2C);
+    }
+    return o;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D06F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0730);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0860);
