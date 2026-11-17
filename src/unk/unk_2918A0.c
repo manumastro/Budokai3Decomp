@@ -49,6 +49,39 @@ typedef struct Sub2918A0 {
 extern s32 D_005AA550[];
 extern void func_0022D0E0(s32, s32);
 
+#if 0
+// differs: the if-block layout and the -1 register (v0 here, v1 in the original); compiled size 0xD0 expected
+extern s32 D_005AA620[];
+extern s32 D_005AA63C[];
+extern s32 D_005AA66C[];
+extern s32 D_005AA638[];
+extern s32 D_005AA644[];
+extern void func_002BFC50(void);
+extern void Ball_Start(void);
+extern void func_00292A40(void);
+void func_002918A0(void) {
+    Work2918A0 *w;
+    char *q;
+
+    D_005AA620[0] = 0;
+    D_005AA664[0] = 0;
+    D_005AA66C[0] = 0;
+    D_005AA640[0] = 0;
+    D_005AA63C[0] = 0;
+    *(s32 *)((char *)D_005AA604[0] + 0x11D4) = -1;
+    *(s32 *)((char *)D_005AA604[0] + 0x11D8) = -1;
+    D_005AA644[0] = 0;
+    q = (char *)D_005AA638[0];
+    if (q != 0) {
+        *(f32 *)((char *)D_005AA604[0] + 0x11C0) = *(f32 *)(q + 0x10);
+        *(f32 *)((char *)D_005AA604[0] + 0x11C8) = *(f32 *)(q + 0x18);
+    }
+    func_002BFC50();
+    Ball_Start();
+    w = (Work2918A0 *)D_005AA5A0[0];
+    w->f1C = (func_00292A40 == 0) ? 0 : func_00292A40;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002918A0);
 void func_00291970(void) {
     Work2918A0 *w;
