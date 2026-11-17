@@ -12,41 +12,6 @@ typedef struct V4Q {
     s32 w;
 } V4Q;
 
-#if 0
-void func_0020A4D0(s32 idx) {
-    u8 *p = D_005687D0 + idx * 0xF0;
-    V4Q *q = (V4Q *)(p + 0x20);
-    V4Q d;
-    V4Q c;
-    V4Q b;
-    V4Q a;
-    V4Q *pb = &b;
-    V4Q *pc = &c;
-    V4Q *pd = &d;
-
-    a.x = *(f32 *)(p + 0x0);
-    a.y = *(f32 *)(p + 0x4);
-    a.z = *(f32 *)(p + 0x8);
-    a.w = 0x3F800000;
-    func_00136870(1, 0x812, 0, -1, 0x44, 0);
-    b.x = *(f32 *)(p + 0x10);
-    b.y = *(f32 *)(p + 0x4);
-    b.z = *(f32 *)(p + 0x8);
-    b.w = 0x3F800000;
-    c.x = *(f32 *)(p + 0x0);
-    c.y = *(f32 *)(p + 0x14);
-    c.z = *(f32 *)(p + 0x8);
-    c.w = 0x3F800000;
-    d.x = *(f32 *)(p + 0x10);
-    d.y = *(f32 *)(p + 0x14);
-    d.z = *(f32 *)(p + 0x8);
-    d.w = 0x3F800000;
-    func_00137920(&a, q, pb, q + 1);
-    func_00137920(pc, q + 2, pd, q + 3);
-    amDraw_FlushPacket();
-}
-// differs: the frame is 0x120 against 0x104 here: the original keeps four more saved registers (the vector addresses and the table base), and its four vector locals sit at other offsets
-#endif
 extern s32 D_005687C0[];
 extern s32 D_005687C4[];
 extern s32 D_005687C8[];
@@ -95,6 +60,7 @@ u8 *func_00215320(s32, s32);
 void func_00211D80(void);
 void func_002186D0(void);
 extern u8 D_0046A3B8[];
+void amTask_Kill(s32);
 typedef struct Blk44 {
     u8 b[0x2C];
 } Blk44;
@@ -107,6 +73,44 @@ void amAdx_Stop(s32);
 void amHeap_Free(void *);
 extern s32 D_00568B94[];
 extern u8 D_00568C14[];
+
+#if 0
+void func_0020A4D0(s32 idx) {
+    u8 *p = D_005687D0 + idx * 0xF0;
+    V4Q *q = (V4Q *)(p + 0x20);
+    V4Q d;
+    V4Q c;
+    V4Q b;
+    V4Q a;
+    V4Q *pb = &b;
+    V4Q *pc = &c;
+    V4Q *pd = &d;
+
+    a.x = *(f32 *)(p + 0x0);
+    a.y = *(f32 *)(p + 0x4);
+    a.z = *(f32 *)(p + 0x8);
+    a.w = 0x3F800000;
+    func_00136870(1, 0x812, 0, -1, 0x44, 0);
+    b.x = *(f32 *)(p + 0x10);
+    b.y = *(f32 *)(p + 0x4);
+    b.z = *(f32 *)(p + 0x8);
+    b.w = 0x3F800000;
+    c.x = *(f32 *)(p + 0x0);
+    c.y = *(f32 *)(p + 0x14);
+    c.z = *(f32 *)(p + 0x8);
+    c.w = 0x3F800000;
+    d.x = *(f32 *)(p + 0x10);
+    d.y = *(f32 *)(p + 0x14);
+    d.z = *(f32 *)(p + 0x8);
+    d.w = 0x3F800000;
+    func_00137920(&a, q, pb, q + 1);
+    func_00137920(pc, q + 2, pd, q + 3);
+    amDraw_FlushPacket();
+}
+// differs: the frame is 0x120 against 0x104 here: the original keeps four more saved registers (the vector addresses and the table base), and its four vector locals sit at other offsets
+#endif
+extern u8 D_0046A380[];
+void func_00209F40(s32);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020A4D0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020A5F0);
 extern u8 D_005687D0[];
@@ -153,7 +157,41 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020BBD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020BDB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020BF30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020C600);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020CB90);
+void func_0020CB90(void *pv) {
+    u8 *p = pv;
+    *(u8 **)(*(u8 **)(p + 0x4)) = *(u8 **)p;
+    *(u8 **)(*(u8 **)p + 0x4) = *(u8 **)(p + 0x4);
+    switch (*(s16 *)(p + 0x1E)) {
+    case 0x1:
+        *(s32 *)(D_0046FDCC + 0x84) -= 1;
+        break;
+    case 0x2:
+        *(s32 *)(D_0046FDCC + 0x7C) -= 1;
+        break;
+    case 0x40:
+        *(s32 *)(D_0046FDCC + 0x80) -= 1;
+        break;
+    case 0x4:
+        *(s32 *)(D_0046FDCC + 0x88) -= 1;
+        break;
+    case 0x10:
+        *(s32 *)(D_0046FDCC + 0x8C) -= 1;
+        break;
+    case 0x80:
+        *(s32 *)(D_0046FDCC + 0x90) -= 1;
+        break;
+    case 0x100:
+        *(s32 *)(D_0046FDCC + 0x94) -= 1;
+        break;
+    case 0x400:
+        *(s32 *)(D_0046FDCC + 0x98) -= 1;
+        break;
+    case 0x800:
+        *(s32 *)(D_0046FDCC + 0x9C) -= 1;
+        break;
+    }
+    func_00209F40((s32)p);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020CCF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020CF60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D120);
@@ -899,6 +937,37 @@ s32 func_00216080(s32 x) {
 // differs: 2 of 52 differ: the range test on w (w - 70 < 2) is kept in v0 where the original uses at, and the return value is joined through a common jr with a b
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216080);
+#if 0
+void func_00216150(s32 idx) {
+    s32 i;
+    s32 off;
+    if (idx == -1) {
+        for (i = 0, off = 0; i < 2; i++, off += 4) {
+            if (*(s32 *)(D_0046FDD0 + off + 0x188) != 0) {
+                amTask_Kill(*(s32 *)(D_0046FDD0 + off + 0x188));
+                *(s32 *)(D_0046FDD0 + off + 0x188) = 0;
+            }
+            if (*(s32 *)(D_0046FDD0 + off + 0x1A0) != 0) {
+                func_00209530(*(s32 *)(D_0046FDD0 + off + 0x1A0));
+                *(s32 *)(D_0046FDD0 + off + 0x1A0) = 0;
+            }
+            *(s32 *)(D_0046FDD0 + off + 0x190) = 0;
+        }
+    } else {
+        off = idx * 4;
+        if (*(s32 *)(off + D_0046FDD0 + 0x188) != 0) {
+            amTask_Kill(*(s32 *)(off + D_0046FDD0 + 0x188));
+            *(s32 *)(off + D_0046FDD0 + 0x188) = 0;
+        }
+        if (*(s32 *)(off + D_0046FDD0 + 0x1A0) != 0) {
+            func_00209530(*(s32 *)(off + D_0046FDD0 + 0x1A0));
+            *(s32 *)(off + D_0046FDD0 + 0x1A0) = 0;
+        }
+        *(s32 *)(off + D_0046FDD0 + 0x190) = 0;
+    }
+}
+// differs: 5 of 69 differ, all in the single-entry branch (idx != -1): the original adds the table base to the offset as addu v1, s0, v1 (offset first), and this build keeps the base first whatever the order of the operands in the source
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216150);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216270);
 u8 *func_00215320(s32, s32);
@@ -1231,6 +1300,42 @@ s32 func_00218990(s32 x) {
 // differs: 4 of 51 differ: the clamp of x ends with a b the original has after its x < 0 arm, and the counter's move comes before the pointer's addu; the reorderings tried moved the branches
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218990);
+#if 0
+s32 func_00218A60(s32 a0, s32 a1) {
+    u8 *s1;
+    u8 *q;
+    s32 n;
+    if (a0 > 2) {
+        a0 = 2;
+    } else {
+        if (a0 < 0) {
+            a0 = 0;
+        }
+    }
+    if (a1 > 4) {
+        a1 = 4;
+    } else {
+        if (a1 < 0) {
+            a1 = 0;
+        }
+    }
+    s1 = D_0046A380 + a0 * 10 + a1 * 2;
+    n = 0;
+    q = s1;
+    while (n < 4 && *(s8 *)q < 0) {
+        q++;
+        n++;
+    }
+    if (n > 0) {
+        if (n == 1) {
+            return *(s8 *)s1;
+        }
+        return *(s8 *)(s1 + (u32)func_0012EAE0(0x20) % (u32)n);
+    }
+    return -1;
+}
+// differs: 49 of 65 differ: the clamps are right up to the x < 0 arm, but the original leaves a b before that arm's move (a0 = 0 sits in its delay slot), which this layout does not give (the same as func_00218990); the rest (the table index, the loop, the divu) is not compared yet
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218A60);
 extern s8 D_0046A3A0[];
 s32 func_0012EAE0(s32);
