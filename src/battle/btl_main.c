@@ -2757,7 +2757,43 @@ void func_001BC220(Fighter *f) {
         FIGHTER_FIELD(f, f32, 0x44) = FIGHTER_FIELD(f, f32, 0x1844);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BC270);
+void func_001BC270(Fighter *f) {
+    s32 v;
+    f32 t;
+    func_001E3430(f, 0);
+    if (FT_FIELD(f, s16, 0x13A4) > -1) {
+        v = func_001C2B10(f);
+    } else {
+        v = func_001E94C0(f);
+    }
+    if (FT_FIELD(f, u16, 0xCB2) & 1) {
+        if (FT_FIELD(f, s32, 0xC64) != 0 || v == 1 || (FT_FIELD(f, f32, 0xCB8) < 6.0f && (v == 7 || v == 8))) {
+            FT_FIELD(f, s32, 0x1864) = 1;
+            if (FT_FIELD(f, s8, 0x1FF9) != 0) {
+                t = (FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC)) - FT_FIELD(f, f32, 0x1844);
+                if (t <= 0.0f) {
+                    ((FighterMain2 *)f)->unk1FF9 = 0;
+                    ((FighterMain2 *)f)->unk1864 = ((FighterMain2 *)f)->unk1864 | 8;
+                }
+            }
+            func_001E5040(f);
+            if (v == 0) {
+                FT_FIELD(f, s16, 0xCB4) = 1;
+            } else {
+                FT_FIELD(f, s16, 0xCB4) = 0;
+            }
+            FT_FIELD(f, s8, 0x2004) = 1;
+            FT_FIELD(f, s8, 0x1FFB) = 1;
+            if (v != 0xF) {
+                FT_FIELD(f, s16, 0xCB6) = 0;
+            }
+            FT_FIELD(f, s8, 0x2006) = 0;
+            D_00468460[v](f);
+            func_002CBFF0(1, f);
+            func_001ABD30((Fighter *)((u8 *)f + 0x1360));
+        }
+    }
+}
 void func_001BC3F0(Fighter *f) {
     FighterV *fv = (FighterV *)f;
 
@@ -2810,7 +2846,43 @@ void func_001BCC30(Fighter *f) {
         FIGHTER_FIELD(f, f32, 0x44) = FIGHTER_FIELD(f, f32, 0x1844);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BCCD0);
+void func_001BCCD0(Fighter *f) {
+    s32 v;
+    f32 t;
+    func_001E3430(f, 0);
+    if (FT_FIELD(f, s16, 0x13A4) > -1) {
+        v = func_001C2B10(f);
+    } else {
+        v = func_001E94C0(f);
+    }
+    if (FT_FIELD(f, u16, 0xCB2) & 1) {
+        if (FT_FIELD(f, s32, 0xC64) != 0 || v == 1 || (FT_FIELD(f, f32, 0xCB8) <= 6.0f && (v == 7 || v == 8))) {
+            FT_FIELD(f, s32, 0x1864) = 1;
+            if (FT_FIELD(f, s8, 0x1FF9) != 0) {
+                t = (FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC)) - FT_FIELD(f, f32, 0x1844);
+                if (t <= 0.0f) {
+                    ((FighterMain2 *)f)->unk1FF9 = 0;
+                    ((FighterMain2 *)f)->unk1864 = ((FighterMain2 *)f)->unk1864 | 8;
+                }
+            }
+            func_001E5040(f);
+            if (v == 0) {
+                FT_FIELD(f, s16, 0xCB4) = 1;
+            } else {
+                FT_FIELD(f, s16, 0xCB4) = 0;
+            }
+            FT_FIELD(f, s8, 0x2004) = 1;
+            FT_FIELD(f, s8, 0x1FFB) = 1;
+            if (v != 0xF) {
+                FT_FIELD(f, s16, 0xCB6) = 0;
+            }
+            FT_FIELD(f, s8, 0x2006) = 0;
+            D_00468460[v](f);
+            func_002CBFF0(1, f);
+            func_001ABD30((Fighter *)((u8 *)f + 0x1360));
+        }
+    }
+}
 void func_001BCE50(Fighter *f) {
     FighterV *fv = (FighterV *)f;
 
@@ -2881,7 +2953,54 @@ void func_001BD6D0(Fighter *f) {
         FIGHTER_FIELD(f, f32, 0x17BC) = t;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BD760);
+void func_001BD760(Fighter *f) {
+    s32 v;
+    f32 t;
+    if (FT_FIELD(f, f32, 0xC60) <= 10.0f) {
+        FT_FIELD(f, u16, 0xCB2) = 1;
+        if (FT_FIELD(f, s8, 0x2010) != 0) {
+            ((FighterCB2 *)f)->unkCB2 = ((FighterCB2 *)f)->unkCB2 | 0x8000;
+        }
+        if (FT_FIELD(f, s8, 0x2011) != 0) {
+            ((FighterCB2 *)f)->unkCB2 = ((FighterCB2 *)f)->unkCB2 | 0x4000;
+        }
+    } else {
+        func_001ABD30((Fighter *)((u8 *)f + 0x1360));
+    }
+    func_001E3430(f, 0);
+    if (FT_FIELD(f, s32, 0xC64) == 0) {
+        return;
+    }
+    FT_FIELD(f, s32, 0x1864) = 1;
+    if (FT_FIELD(f, s8, 0x1FF9) != 0) {
+        t = (FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC)) - FT_FIELD(f, f32, 0x1844);
+        if (t <= 0.0f) {
+            ((FighterMain2 *)f)->unk1FF9 = 0;
+            ((FighterMain2 *)f)->unk1864 = ((FighterMain2 *)f)->unk1864 | 8;
+            FT_FIELD(f, f32, 0xCA4) = 0.0f;
+            FT_FIELD(f, s32, 0xCA8) = 0x3DCCCCCD;
+        }
+    }
+    if (FT_FIELD(f, s16, 0x13A4) > -1) {
+        v = func_001C2B10(f);
+    } else {
+        v = func_001E94C0(f);
+    }
+    func_001E5040(f);
+    if (v == 0) {
+        FT_FIELD(f, s16, 0xCB4) = 1;
+    } else {
+        FT_FIELD(f, s16, 0xCB4) = 0;
+    }
+    FT_FIELD(f, s8, 0x2004) = 1;
+    FT_FIELD(f, s8, 0x1FFB) = 1;
+    if (v != 0xF) {
+        FT_FIELD(f, s16, 0xCB6) = 0;
+    }
+    FT_FIELD(f, s8, 0x2006) = 0;
+    D_00468460[v](f);
+    func_002CBFF0(1, f);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BD900);
 void func_001BDAA0(Fighter *f) {
     func_001E4E20(f, 0);
@@ -3168,7 +3287,43 @@ void func_001BF170(Fighter *f) {
         func_001ABD30((Fighter *)((u8 *)f + 0x1360));
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BF230);
+void func_001BF230(Fighter *f) {
+    s32 v;
+    f32 t;
+    func_001E3430(f, 0);
+    if (FT_FIELD(f, s8, 0x1FF9) != 0) {
+        t = (FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC)) - FT_FIELD(f, f32, 0x1844);
+        if (t <= 0.0f) {
+            ((FighterMain2 *)f)->unk1FF9 = 0;
+            FT_FIELD(f, s32, 0xB70) = 2;
+            func_001E3460(f);
+            FT_FIELD(f, s32, 0x1864) = 8;
+            func_001E5040(f);
+            FT_FIELD(f, s32, 0xCA4) = 0;
+            FT_FIELD(f, s32, 0xCA8) = 0x3CA3D70A;
+        }
+    }
+    if (FT_FIELD(f, s16, 0x13A4) > -1) {
+        v = func_001C2B10(f);
+    } else {
+        v = func_001E94C0(f);
+    }
+    if (v < 0) {
+        return;
+    }
+    if (v == FT_FIELD(f, s16, 0xCAC)) {
+        return;
+    }
+    FT_FIELD(f, s16, 0xCB4) = 0;
+    FT_FIELD(f, s8, 0x2004) = 1;
+    FT_FIELD(f, s8, 0x1FFB) = 1;
+    if (v != 0xF) {
+        FT_FIELD(f, s16, 0xCB6) = 0;
+    }
+    FT_FIELD(f, s8, 0x2006) = 0;
+    D_00468460[v](f);
+    func_002CBFF0(1, f);
+}
 void func_001BF350(Fighter *f) {
     FighterV *fv = (FighterV *)f;
 
@@ -3200,7 +3355,44 @@ void func_001BF400(Fighter *f) {
     }
     FIGHTER_FIELD(f, s32, 0x17BC) = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BF450);
+void func_001BF450(Fighter *f) {
+    s32 v;
+    f32 t;
+    FT_FIELD(f, s8, 0x2003) = 1;
+    func_001E3430(f, 0);
+    if (FT_FIELD(f, s8, 0x1FF9) != 0) {
+        t = (FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC)) - FT_FIELD(f, f32, 0x1844);
+        if (t <= 0.0f) {
+            ((FighterMain2 *)f)->unk1FF9 = 0;
+            FT_FIELD(f, s32, 0xB70) = 0;
+            func_001E3460(f);
+            FT_FIELD(f, s32, 0x1864) = 8;
+            func_001E5040(f);
+            FT_FIELD(f, s32, 0xCA4) = 0;
+            FT_FIELD(f, s32, 0xCA8) = 0x3CA3D70A;
+        }
+    }
+    if (FT_FIELD(f, s16, 0x13A4) > -1) {
+        v = func_001C2B10(f);
+    } else {
+        v = func_001E94C0(f);
+    }
+    if (v < 0) {
+        return;
+    }
+    if (v == FT_FIELD(f, s16, 0xCAC)) {
+        return;
+    }
+    FT_FIELD(f, s16, 0xCB4) = 0;
+    FT_FIELD(f, s8, 0x2004) = 1;
+    FT_FIELD(f, s8, 0x1FFB) = 1;
+    if (v != 0xF) {
+        FT_FIELD(f, s16, 0xCB6) = 0;
+    }
+    FT_FIELD(f, s8, 0x2006) = 0;
+    D_00468460[v](f);
+    func_002CBFF0(1, f);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BF570);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BF730);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BFD60);
