@@ -155,6 +155,15 @@ typedef struct TimedEE10 {
     f32 f30;
 } TimedEE10;
 extern void amTask_Kill(ScrTask *);
+
+/* A timed script object: a task function at 0x10, two bytes at 0x2A / 0x2B. */
+typedef struct TimedF0C0 {
+    char pad0[0x10];
+    void *f10;
+    char pad14[0x16];
+    s8 f2A;
+    s8 f2B;
+} TimedF0C0;
 extern char D_0046B080[];
 extern char D_0046B060[];
 extern char D_0046B120[];
@@ -665,7 +674,28 @@ s32 func_0025F050(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F0C0);
+s32 func_0025F0C0(TimedF0C0 *o, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 x = a[1].i;
+    s32 y = a[0].i;
+    s32 z = a[2].i;
+
+    o->f2A = z;
+    o->f2B = y;
+    o->f10 = (void *)func_0025F050;
+    func_0020F290(o->f2A, x);
+    func_0020F1D0(o->f2A, 0.0f);
+    if (func_0020EE10(o->f2A, 1) != 0) {
+        if (o->f2B > 0) {
+            o->f2B = o->f2B - 1;
+            if (o->f2B == 0) {
+                o->f10 = NULL;
+                return 1;
+            }
+        }
+    }
+    return 3;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F160);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F230);
 
@@ -681,7 +711,28 @@ s32 func_0025F3A0(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 3;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F410);
+s32 func_0025F410(TimedF0C0 *o, ScrCmd *cmd) {
+    ScrArg *a = cmd->args;
+    s32 x = a[1].i;
+    s32 y = a[0].i;
+    s32 z = a[2].i;
+
+    o->f2A = z;
+    o->f2B = y;
+    o->f10 = (void *)func_0025F3A0;
+    func_0020F300(o->f2A, x);
+    func_0020F200(o->f2A, 0.0f);
+    if (func_0020EF80(o->f2A, 1) != 0) {
+        if (o->f2B > 0) {
+            o->f2B = o->f2B - 1;
+            if (o->f2B == 0) {
+                o->f10 = NULL;
+                return 1;
+            }
+        }
+    }
+    return 3;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F4B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025F580);
 s32 func_0025F6C0(ScrCtx *ctx, ScrCmd *cmd) {
