@@ -414,13 +414,13 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC670);
 extern u8 *gScrMachines;
 extern u8 D_00492FC0[];
 extern void func_00125740(void *d, void *s, s32 n);
-extern void func_002195B0(s32 a);
+extern void AdxSlot_SetPausedAll(s32 a);
 extern void func_0029D860(s32 a);
 extern void func_002CF650(s32 a);
 extern void func_001A3610(s32 a);
 extern void func_001D9C00(void *a);
 extern void func_001E3200(void *a);
-extern void func_002CFD80(s32 a);
+extern void RenderTex_Start(s32 a);
 typedef struct BattleCount {
     u8 unk0000[0x88D8];
     s32 count;
@@ -433,7 +433,7 @@ void func_001AC7C0(void) {
     s32 i;
     u8 *s0;
     s32 id;
-    bw = D_00470570;
+    bw = gBattle;
     if (BW_FIELD(bw, s16, 0x8944) != 0) {
         for (i = 0; i < 2; i++) {
             if (*(s32 *)(gScrMachines + i * 0x5C + 0xC) != 0) {
@@ -441,7 +441,7 @@ void func_001AC7C0(void) {
             }
         }
     }
-    func_002195B0(1);
+    AdxSlot_SetPausedAll(1);
     if (0 < ((BattleCount *)bw)->count) {
         i = 0;
         s0 = (u8 *)bw;
@@ -457,7 +457,7 @@ void func_001AC7C0(void) {
         } while (i < ((BattleCount *)bw)->count);
     }
     if (BW_FIELD(bw, s8, 0x8AB4) == 0) {
-        bw2 = D_00470570;
+        bw2 = gBattle;
         if (0 < ((BattleCount *)bw2)->count) {
             i = 0;
             s0 = (u8 *)bw2;
@@ -475,7 +475,7 @@ void func_001AC7C0(void) {
     func_002CF650(1);
     if (BW_FIELD(bw, s8, 0x8AB4) == 0) {
         BW_FIELD(bw, s8, 0x8975) = 1;
-        func_002CFD80(0);
+        RenderTex_Start(0);
     }
 }
 #endif
@@ -776,7 +776,7 @@ void func_001AE5C0(void) {
     AE5Flags fl;
     s32 i;
     s16 *p;
-    bw = D_00470570;
+    bw = gBattle;
     BW_FIELD(bw, s32, 0x88F8) = 4;
     BW_FIELD(bw, s32, 0x890C) = 0;
     BW_FIELD(bw, s32, 0x8910) = 0;
@@ -1343,7 +1343,7 @@ extern void func_001AFC50(void);
 extern void func_001AFFA0(void);
 extern void func_001AFDF0(void);
 extern void func_001AF9A0(void);
-extern void func_001AF980(void);
+extern void Btl_ToggleF8975(void);
 #if 0
 // differs: 32 of 133: the argument is kept in s1 only after its first read (the original copies a0 to s1 before reading 0x30; scheduling of the copy differs); the else branch re-reads the battle global per call
 void func_001B0160(void *a0) {
@@ -1353,12 +1353,12 @@ void func_001B0160(void *a0) {
     s1 = (s32 *)a0;
     idx = s1[12];
     if (D_00468270[idx] != 0) {
-        D_00468270[idx](D_00470570);
+        D_00468270[idx](gBattle);
         s1[12] += 1;
     } else {
         s1[12] = 0;
-        BW_FIELD(D_00470570, s32, 0x8970) = 0;
-        BW_FIELD(D_00470570, s8, 0x8AAC) = 1;
+        BW_FIELD(gBattle, s32, 0x8970) = 0;
+        BW_FIELD(gBattle, s8, 0x8AAC) = 1;
         if (D_004682B0[0] != 0) {
             pp = D_004682B0;
             do {
@@ -1372,10 +1372,10 @@ void func_001B0160(void *a0) {
         amTask_Create((void (*)(void *))func_001AFD60, 0, 0x3F00, 0x20, (s32)0x80000004, D_004683D0);
         amTask_Create((void (*)(void *))func_001AFC50, 0, 0x3900, 0x20, (s32)0x80000004, D_004683E0);
         amTask_Create((void (*)(void *))func_001AF9A0, 0, 0x9F10, 0x20, (s32)0x80000002, D_004683F0);
-        if (BW_FIELD(D_00470570, s32, 0x88D8) >= 3) {
-            amTask_Create((void (*)(void *))func_001AF980, 0, 0x9FF0, 0x20, (s32)0x80000004, D_00468400);
+        if (BW_FIELD(gBattle, s32, 0x88D8) >= 3) {
+            amTask_Create((void (*)(void *))Btl_ToggleF8975, 0, 0x9FF0, 0x20, (s32)0x80000004, D_00468400);
         }
-        D_004682E0[BW_FIELD(D_00470570, s32, 0x88F8)]();
+        D_004682E0[BW_FIELD(gBattle, s32, 0x88F8)]();
         func_001482C0(0);
         amTask_Kill(s1);
     }
@@ -1522,7 +1522,7 @@ s32 func_001B0B10(s32 *a0) {
     BattleWork *bw;
     Fighter *fb;
     s32 i;
-    bw = D_00470570;
+    bw = gBattle;
     if (bw == 0) {
         return 0;
     }
