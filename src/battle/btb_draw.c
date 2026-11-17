@@ -1610,16 +1610,93 @@ void func_001EE9E0(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEA90);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+
+void func_001EEA90(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            func_001EA740(4);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEAF0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEC70);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EECD0);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_004705FC;
+extern void func_001EA740(s32);
+
+void func_001EEC70(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_004705FC != 0) {
+            func_001EA740(4);
+        }
+    }
+}
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern s32 D_00470600;
+extern void func_001EA740(s32);
+extern void func_001EEC70(Task *);
+
+void func_001EECD0(Task *t) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (D_00470600 != -1) {
+            TASK_SETFUNC(t, func_001EEC70);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EED50);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEDF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEE70);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEEF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EEF90);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF010);
+extern s8 D_004B4BB1[];
+extern s8 D_004B4BB2[];
+extern void func_001EA740(s32);
+
+// differs: the original keeps the flag in v1 and returns nothing (dead flag); a return of v gives v0 (4 of 15 differ)
+#if 0
+s32 func_001EF090(void) {
+    s32 v;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    return v;
+}
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF090);
 extern void func_0020A150(void);
 extern void func_0022DB90(s32);
@@ -2110,7 +2187,16 @@ void func_001F5B70(BtbHolder *h) {
         h->item->kind = 1;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5B90);
+extern void amMotSet_Apply(void *, f32, s32);
+
+void func_001F5B90(char *c) {
+    char *s = *(char **)(c + 0xC);
+
+    if (s != NULL) {
+        *(s32 *)(s + 0x18) = 1;
+        amMotSet_Apply(*(void **)s, *(f32 *)(s + 4), ((*(s32 *)(s + 8) + 1) << 16) | *(s32 *)(s + 0x10));
+    }
+}
 typedef struct MotState {
     char *obj;
     f32 f4;
@@ -2242,22 +2328,88 @@ void func_001F5E20(MotCtl *c) {
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5E20);
+extern char *D_0051CD14[];
+extern char *D_0051CD1C[];
+extern s32 D_0051CD20[];
+
+// differs: size 0x4C instead of 0x60. The original keeps the a0 != 0 arm out of line (beqz, then b, then two nops
+// and the arm after the other one); the if/else and early-return shapes tried give the same 19 instructions
+#if 0
+s32 *func_001F5EF0(s32 a0, s32 a1) {
+    char *v;
+
+    v = D_0051CD14[0] + D_0051CD20[0] * 36;
+    if (a0 == 0) {
+        v = D_0051CD1C[0] + (a1 << 5);
+    } else {
+        v = *(char **)(v + 0xC) + (a1 << 5);
+    }
+    return (s32 *)v;
+}
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5EF0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5F50);
+extern BtbObj *D_0051C770[];
+extern s32 D_0047062C;
+
+void func_001F5F50(BtbObj *o) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if (D_0051C770[i] == o) {
+            o->prev->next = o->next;
+            o->next->prev = o->prev;
+            D_0051C770[i] = NULL;
+            D_0047062C--;
+            break;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5FD0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6140);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F62A0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6330);
+extern char *D_0051CB94[];
+extern char D_0051CC20[];
+
+typedef void (*ObjFunc)(char *);
+
+void func_001F6330(void) {
+    char *s0;
+
+    for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc *)(s0 + 0x18) != NULL && (*(s32 *)(s0 + 0x20) & 0x2800) != 0x2800) {
+            (*(ObjFunc *)(s0 + 0x18))(s0);
+        }
+    }
+}
 void func_001F63B0(void) {
 }
 void func_001F63C0(void) {
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F63D0);
+extern char D_0051CC20[];
+extern char *D_0051CB94[];
+
+typedef void (*ObjFunc4)(char *);
+
+void func_001F63D0(void) {
+    char *s0;
+
+    for (s0 = D_0051CB94[0]; s0 != D_0051CC20; s0 = *(char **)(s0 + 0x24)) {
+        if (*(ObjFunc4 *)(s0 + 0x14) != NULL && (*(s32 *)(s0 + 0x20) & 0x200) != 0) {
+            (*(ObjFunc4 *)(s0 + 0x14))(s0);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6450);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F64E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6570);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F65F0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6670);
+extern s32 D_00470570;
+
+void func_001F6670(void) {
+    char *p = (char *)D_00470570 + 0x10000;
+    *(s8 *)(p - 0x768B) = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6690);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6CD0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6D60);
@@ -2385,7 +2537,12 @@ void func_001F7010(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7120);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7210);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7470);
+extern void func_001F7210(char *);
+extern char *D_0051CD1C[];
+
+void func_001F7470(s32 a0) {
+    func_001F7210(D_0051CD1C[0] + (a0 << 5));
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7490);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7690);
 
@@ -2448,5 +2605,15 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7990);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7BF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7C80);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7DB0);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7F50);
+typedef void (*VoidFunc)(void);
+extern VoidFunc D_0044B4C0[];
+extern s32 D_0051CCE0[];
+
+void func_001F7F50(void) {
+    VoidFunc f = D_0044B4C0[D_0051CCE0[0]];
+
+    if (f != NULL) {
+        f();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7FA0);
