@@ -92,7 +92,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E97E0);
 void func_002E98E0(void) {
     memset(D_005C9F10, 0, 0x6C);
 }
-/* differs: the original reads the index global into $a1 before the table base (its return-1 branch lands on the epilogue 8 bytes earlier) */
+/* differs: the original loads the index global first (the table base after it) and tests a < fC with bc1f keeping the 1 in v0; the ?: and if forms both come out with xori / a1 */
 #if 0
 s32 func_002E9900(void) {
     Cur99 *p = (Cur99 *)D_005C9F6C[0];
@@ -107,8 +107,11 @@ s32 func_002E9900(void) {
     idx = D_005C9F60[0];
     a = p->f10;
     row = &D_004573C0[idx];
-    e = (Ent99 *)*row + D_005C9F64[0];
-    return (a < e->fC) ? 0 : 1;
+    e = (Ent99 *)(*row + D_005C9F64[0] * 16);
+    if (a < e->fC) {
+        return 0;
+    }
+    return 1;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9900);

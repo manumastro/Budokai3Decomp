@@ -98,25 +98,18 @@ extern void (*D_004564C0[])(void);
 extern void func_002CBFF0(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAED0);
-/* differs: the test comes out as slti at / beqz; the original keeps slti v0 / bnez v0 with the result in v0 */
-/* differs: the test comes out as slti at / beqz; the original keeps slti v0 / bnez v0 with the result in v0 */
-#if 0
 s32 func_002CAF50(void) {
     TutWork *t = D_0047091C;
     s32 *p = &t->f20;
-    s32 r;
 
     if (t->f32 == 0x1A) {
         (*p)++;
     }
-    r = *p < 3;
-    if (r) {
-        return 0;
+    if (*p >= 3) {
+        return 1;
     }
-    return 1;
+    return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAF50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CAFA0);
 /* differs: the same ring walk; the original has its nop-padded join and the early exit at a different place (0x80 bytes, ours 0x6C) */
 #if 0

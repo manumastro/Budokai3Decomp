@@ -365,13 +365,12 @@ s32 func_0025DB40(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-/* The original loads a[1] before a[0] here (the other bindings load a[0] first); 2 of 10 differ. */
+/* differs: the original loads a[1] into $a0 first and a[0] in the delay slot; here a[0] is loaded first (local temps do not change it) */
 #if 0
 s32 func_0025DB70(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
-    s32 id = a[1].i;
 
-    func_0020E210(id, a[0].i);
+    func_0020E210(a[1].i, a[0].i);
     return 1;
 }
 #endif
