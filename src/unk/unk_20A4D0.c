@@ -3898,7 +3898,7 @@ void func_00217200(u8 *p) {
     *(u8 **)(p) = s0 + 0x680;
     jtbl_00469CC4[0](p);
 }
-// differs: about 13 of 100 differ: the v==1 block sits out of line with a beq (matched), but the v==0 test is laid out as bnez to the tail with the v==0 block inline; the original has beqz to an out-of-line v==0 block followed by a b to the tail (an empty then-part or a nested else does not give it)
+// differs: compiled size 0x174 against 0x190: the v==1 block sits out of line with a beq (matched), but the v==0 test is laid out as bnez to the tail with the v==0 block inline; the original has beqz to an out-of-line v==0 block followed by a b to the tail (an empty then-part or a nested else does not give it)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00217200);
 #if 0
