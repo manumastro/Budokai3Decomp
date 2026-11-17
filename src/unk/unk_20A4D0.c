@@ -383,6 +383,52 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020CCF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020CF60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D120);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D290);
+#if 0
+void func_0020D400(u8 *out, u8 *x, s32 k) {
+    switch (k) {
+    case 0x18:
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : : "r"(x + 0x6E0), "r"(x + 0x6D0), "r"(0x3F000000), "r"(out) : "memory");
+        break;
+    case 0x17:
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : : "r"(x + 0x740), "r"(x + 0x730), "r"(0x3F000000), "r"(out) : "memory");
+        break;
+    case 0x19:
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : : "r"(x + 0x720), "r"(x + 0x710), "r"(0x3F000000), "r"(out) : "memory");
+        break;
+    default:
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "sqc2 $vf1, 0(%1)\n"
+            : : "r"(x + k * 16 + 0x650), "r"(out) : "memory");
+        break;
+    }
+}
+// differs: the switch on 0x18, 0x17, 0x19 is laid out as a beq chain in the other order (blocks 0x18, 0x17, 0x19 then the default copy), and the 0.5f constant comes from lui and mtc1 in the original; the four blocks match
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D400);
 void func_0020D500(u8 *out, u8 *src, u8 *x, s32 idx) {
     Copy16A blk[4];
@@ -597,8 +643,102 @@ void func_0020E210(s32 i, u8 *src) {
         : : "r"(&tmp) : "memory");
     func_0020D5C0(s1 + 0x40, 0, &tmp, src);
 }
+#if 0
+void func_0020E290(s32 i, u8 *x, s32 j) {
+    u8 *s1;
+
+    if (j != 1) {
+        if (j == 0) {
+            s1 = D_00568C90 + i * 0x2140;
+            func_0013B160(s1 + 0x40);
+            __asm__ volatile (
+                "lqc2 $vf1, 0(%0)\n"
+                "vmulx.xyz $vf28, $vf28, $vf1x\n"
+                "vmuly.xyz $vf29, $vf29, $vf1y\n"
+                "vmulz.xyz $vf30, $vf30, $vf1z\n"
+                "addiu $v1, %1, 0x40\n"
+                "sqc2 $vf28, 0($v1)\n"
+                "sqc2 $vf29, 0x10($v1)\n"
+                "sqc2 $vf30, 0x20($v1)\n"
+                "sqc2 $vf31, 0x30($v1)\n"
+                "vmove.xyzw $vf28, $vf24\n"
+                "vmove.xyzw $vf29, $vf25\n"
+                "vmove.xyzw $vf30, $vf26\n"
+                "vmove.xyzw $vf31, $vf27\n"
+                : : "r"(x), "r"(s1) : "memory");
+        }
+    } else {
+        s1 = D_0058A090 + i * 3 * 64;
+        func_0013B160(s1 + 0x50);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "vmulx.xyz $vf28, $vf28, $vf1x\n"
+            "vmuly.xyz $vf29, $vf29, $vf1y\n"
+            "vmulz.xyz $vf30, $vf30, $vf1z\n"
+            "addiu $v1, %1, 0x50\n"
+            "sqc2 $vf28, 0($v1)\n"
+            "sqc2 $vf29, 0x10($v1)\n"
+            "sqc2 $vf30, 0x20($v1)\n"
+            "sqc2 $vf31, 0x30($v1)\n"
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : "r"(x), "r"(s1) : "memory");
+    }
+}
+// differs: same mode layout as func_0020E530: the j == 0 block is laid out out of line after a b, the nested form keeps it inline; the VU0 part matches
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E290);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E390);
+void func_0013B2B0(u8 *x);
+
+void func_0013B2B0(u8 *x);
+
+void func_0013B2B0(u8 *x);
+
+void func_0013B2B0(u8 *x);
+
+#if 0
+void func_0020E530(s32 i, u8 *x, s32 j) {
+    u8 *s1;
+
+    if (j != 1) {
+        if (j == 0) {
+            s1 = D_00568C90 + i * 0x2140;
+            func_0013B160(s1 + 0x40);
+            func_0013B2B0(x);
+            __asm__ volatile (
+                "addiu $v1, %0, 0x40\n"
+                "sqc2 $vf28, 0($v1)\n"
+                "sqc2 $vf29, 0x10($v1)\n"
+                "sqc2 $vf30, 0x20($v1)\n"
+                "sqc2 $vf31, 0x30($v1)\n"
+                "vmove.xyzw $vf28, $vf24\n"
+                "vmove.xyzw $vf29, $vf25\n"
+                "vmove.xyzw $vf30, $vf26\n"
+                "vmove.xyzw $vf31, $vf27\n"
+                : : "r"(s1) : "memory");
+        }
+    } else {
+        s1 = D_0058A090 + i * 3 * 64;
+        func_0013B160(s1 + 0x50);
+        func_0013B2B0(x);
+        __asm__ volatile (
+            "addiu $v1, %0, 0x50\n"
+            "sqc2 $vf28, 0($v1)\n"
+            "sqc2 $vf29, 0x10($v1)\n"
+            "sqc2 $vf30, 0x20($v1)\n"
+            "sqc2 $vf31, 0x30($v1)\n"
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : "r"(s1) : "memory");
+    }
+}
+// differs: the mode test is laid out as beq j,1 (out of line block) then beqz j with the j==0 block after the return: a nested if or a switch give other layouts; the stores and the calls match
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E530);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E620);
 void func_0013B160(void *p);
@@ -2217,6 +2357,55 @@ void func_00217870(u8 *s) {
     *(s16 *)(s + 0x24) = 0;
     jtbl_00469CC4[0](s);
 }
+#if 0
+void func_002178C0(u8 *s) {
+    u8 *q;
+    s32 a1;
+    s32 a2;
+    u8 *p1;
+    u8 *p2;
+    Copy16A t40;
+    Copy16A t30;
+    Copy16A t20;
+
+    q = gBattle + (*(s32 *)(s + 0x10) * 257 << 5) + 0x830;
+    a2 = *(s32 *)(s + 0x14);
+    a1 = *(s32 *)(s + 0x18);
+    if (a1 != -1) {
+        p1 = q + (a2 << 4) + 0x7B0;
+        p2 = *(u8 **)(q + 0x1354) + (a1 << 4) + 0x7B0;
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "qmtc2.ni %2, $vf3\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "vaddax.xyz ACC, $vf1, $vf0x\n"
+            "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+            "sqc2 $vf1, 0(%3)\n"
+            : : "r"(p2), "r"(p1), "r"(0x3E4CCCCD), "r"(&t40) : "memory");
+    } else {
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "sqc2 $vf1, 0(%1)\n"
+            : : "r"(q + (a2 << 4) + 0x7B0), "r"(&t40) : "memory");
+    }
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf2, 0(%1)\n"
+        "vsub.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%2)\n"
+        : : "r"(*(u8 **)(q + 0x1354) + 0x7B0), "r"(q + 0x7B0), "r"(&t30) : "memory");
+    func_00146F30(&t30);
+    func_0020D780(&t20);
+    *(void **)(s + 0x4) = &t20;
+    *(void **)(s + 0x0) = &t40;
+    *(s16 *)(s + 0x20) = 10;
+    *(s16 *)(s + 0x22) = 0;
+    *(s16 *)(s + 0x24) = 0;
+    jtbl_00469CC4[0](s);
+}
+// differs: the loads of the three words and the base pointer q take other registers (q in t0 where the original keeps it in a3), the VU0 lerp (qmtc2.ni, vaddax, vmaddx) and the jump-table call match
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002178C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002179E0);
 void func_00217B00(u8 *s) {
