@@ -65,6 +65,7 @@ extern void memset(void *, s32, s32);
 extern void func_001E57C0(s32, s32, void *);
 extern void func_002CBFF0(s32, void *);
 extern void func_001C75D0(void *, int);
+extern void func_002194C0(void *, s32, s32, s32);
 extern void func_001C81D0(void *, int);
 extern void func_001C8210(void *, int);
 extern void func_001C8860(void *, int);
@@ -180,8 +181,35 @@ int func_001CC170(void *unused, Arg *a) {
     func_00219470((char *)D_00470570 + (a->p[0] << 5) + 0x5C4);
     return 1;
 }
+// differs: size 0xB0 against 0xC0. The original keeps the Arg in s0 and loads p[1] before the table pointer; the 2 default and the loop's best index sit in s0/s1 in another order. One form tried.
+#if 0
+int func_001CC1B0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x0 = p[0];
+    s32 n = p[1];
+    char *g = (char *)D_00470570;
+    s32 best = 2;
+    f32 m;
+    s32 i;
+    if (n == -2) {
+        n = 0x6B;
+    } else if (n == -1) {
+        n = 0x6A;
+    }
+    m = *(f32 *)(g + 0x61C);
+    for (i = 3; i < 5; i++) {
+        f32 f = *(f32 *)(g + 0x5DC + i * 0x20);
+        if (!(m <= f)) {
+            m = f;
+            best = i;
+        }
+    }
+    func_002194C0(g + (best << 5) + 0x5C4, n, x0, -1);
+    *(s32 *)a = best;
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC1B0);
-extern void func_002194C0(void *, s32, s32, s32);
 int func_001CC270(void *unused, Arg *a) {
     int *p = a->p;
     s32 x0 = p[0];
