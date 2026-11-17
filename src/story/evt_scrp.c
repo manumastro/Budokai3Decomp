@@ -163,6 +163,53 @@ void func_002A1980(s32 *a0) {
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
+#if 0
+// func_002A19B0: the prologue, the list copies and the first float call match; the original stores the value of D_00470704 and reloads it for the amModel_SetCurrent argument (ours keeps the register), and the 0x68DB8BAD division block is laid out one way off; 3 orders of the stores tried
+extern void amModel_SetCurrent(s32, s32);
+extern s32 func_0022D860(s32, f32);
+extern void func_0022E0B0(s32);
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470238;
+void func_002A19B0(s32 *a0) {
+    s32 *s0;
+    s32 *s2;
+    s32 *s1;
+    void *f;
+    s0 = gEvtWork;
+    s2 = (s32 *)s0[0x44 / 4];
+    s1 = (s32 *)s0[0x48 / 4];
+    if (*(s16 *)((u8 *)s2 + 4) == 3 && *(s16 *)((u8 *)s1 + 4) == 3) {
+        s0[0x44 / 4] = s2[0x40 / 4];
+        s0[0x48 / 4] = s1[0x40 / 4];
+        s0[0x4C / 4] = ((s32 *)s2[0x40 / 4])[0x50 / 4];
+        s0[0x50 / 4] = ((s32 *)s1[0x40 / 4])[0x50 / 4];
+        if ((u32)s0[0x4C / 4] < (u32)((s32 *)s0[0x4C / 4])[0x14 / 4]) {
+        } else {
+            func_0022E0B0(s0[0x4C / 4]);
+        }
+        s2[0x40 / 4] = 0;
+        s1[0x40 / 4] = 0;
+        amCdFs_Close((s32)s2, 0);
+        amCdFs_Close((s32)s1, 0);
+        D_00470704 = s0[0x50 / 4];
+        D_0047070C = 0x860000;
+        D_00470708 = 0;
+        amModel_SetCurrent(D_00470704, 0x860000);
+        D_00470238 = 0;
+        s0[0x54 / 4] = func_0022D860(((s32 *)((s32 *)s0[0x4C / 4])[0x14 / 4])[0x20 / 4], (f32)s0[0xF4 / 4]);
+        if (s0[0xF4 / 4] >= 10000) {
+            s0[0x58 / 4] = func_0022D860(((s32 *)((s32 *)s0[0x4C / 4])[0x14 / 4])[0x24 / 4], (f32)(s0[0xF4 / 4] / 10000));
+        }
+        s0[0x68 / 4] = 1;
+        s0[0x5C / 4] = 0;
+        f = (void *)func_002A1980;
+        s0[0x60 / 4] = 0x41200000;
+        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A19B0);
 extern u32 func_0012EAE0(s32);
 extern s8 D_004E6560[];
