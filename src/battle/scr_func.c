@@ -81,6 +81,28 @@ s32 func_002AB690(ScriptThread *t, ScriptCtx *ctx);
 
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9080);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A92B0);
+extern u8 D_004E6560[];
+extern u8 D_005AB3A0[];
+extern s32 D_00511768[];
+extern void func_00298E10(s32);
+extern void func_00298E00(s32);
+// GIVEN UP: the vector copy, the two calls and the clear match; the compiler splits the slot offset 0x1240 as 0x80 + 0x11C0 (its slot base sits at +0x80), the original keeps the slot base in a register (about 7 of 30 differ)
+#if 0
+void func_002A93E0(void) {
+    u8 *base = D_004E6560;
+    s32 idx = *(s8 *)(base + 0x2AEF0);
+    u8 *src = D_005AB3A0;
+    s32 v = *(s32 *)(src + 0x10);
+    u8 *e = base + idx * 4624;
+    u8 *p = e + 0x1240;
+
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(src), "r"(p) : "memory");
+    *(s32 *)(e + 0x1250) = v;
+    func_00298E10(-1);
+    func_00298E00(-1);
+    D_00511768[0] = 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A93E0);
 extern u8 D_005AB3A0[];
 void func_002A9460(s32 *a0, s32 a1) {
@@ -454,7 +476,7 @@ s32 func_002ABA40(ScriptThread *t, ScriptCtx *ctx) {
     amAdx_Stop(ctx->args[0]);
     return 1;
 }
-// GIVEN UP: the branch layout of the return values differs (tried two forms)
+// GIVEN UP: the branch layout of the return values differs (tried two forms); the original has a 0x80-byte frame and a different branch order (0x6C against 0x80)
 #if 0
 s32 func_002ABA70(s32 *a0, s32 *a1) {
     s32 *s0 = (s32 *)a1[11];
