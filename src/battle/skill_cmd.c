@@ -55,7 +55,7 @@ extern void func_0022ACF0(s32);
 extern s32 func_0020B020(s32, s32, s32);
 extern s32 func_0020AD30(s32, s32, s32);
 extern s32 func_0020AE80(s32, s16, s16);
-extern void func_00208D60(void);
+extern void func_00208D60();
 extern void func_00209D20(s32);
 extern void func_00208D70(s32);
 extern void func_00209C50(void);
@@ -450,7 +450,34 @@ void SkillKill_Kind09(s32 *p) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C2C0);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C4E0);
+void func_0024C4E0(u8 *ob) {
+    u8 *s3 = *(u8 **)(ob + 0xC);
+    s32 side = *(s32 *)(*(u8 **)(ob + 0x8) + 0x1350);
+    s32 r;
+    s32 t;
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    r = func_0020B020(side, *(s16 *)(s3 + 0x20), *(s16 *)(s3 + 0x22));
+    amModel_SetCurrent(r, func_0020AD30(side, *(s16 *)(s3 + 0x20), *(s16 *)(s3 + 0x22)));
+    t = func_0020AE80(side, *(s16 *)(s3 + 0x5A), *(s16 *)(s3 + 0x60));
+    if (t != 0) {
+        func_00208D60(t);
+    }
+    if (*(s32 *)(ob + 0x44) != 0) {
+        func_0013B0B0(0);
+        __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)"
+            : : "r"((u8 *)gBattle + 0x60));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%1)"
+            : : "r"(*(u8 **)((u8 *)gBattle + 0x264)), "r"(tmp), "r"(ob + 0x10));
+        func_00209D70(tmp);
+        func_0013B060(0);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w"
+            : : "r"(ob + 0x10));
+        func_00208D70(*(s32 *)(ob + 0x44));
+        func_0013B110(1);
+        func_00209C50();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C610);
 void SkillKill_Kind08(s32 *p) {
     if (p[17] != 0) {
