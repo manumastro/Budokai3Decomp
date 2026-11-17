@@ -30,7 +30,7 @@ extern void func_001A8770(int, void *);
 extern void func_001E18B0(void *, int);
 extern void func_001E1A40(void *, int);
 extern void func_001E1BD0(void *, int, int);
-extern void func_001E3550(void *);
+extern void func_001E3550();
 extern void func_001E4FA0(void *, int);
 extern void func_001E4820(void *, f32, int);
 extern void func_001C8A50(void *, int, int);
@@ -42,7 +42,6 @@ extern f32 D_004B4220[];
 extern f32 D_004B4224[];
 extern f32 D_004B4228[];
 extern f32 D_004B422C[];
-extern void func_001CF6D0(void);
 extern void func_001DD680(void *, int);
 extern void func_00237000(int, void *);
 extern void func_001DFC80(void *, int, f32);
@@ -66,6 +65,7 @@ extern void memset(void *, s32, s32);
 extern void func_001E57C0(s32, s32, void *);
 extern void func_002CBFF0(s32, void *);
 extern void func_001C75D0(void *, int);
+extern void func_002194C0(void *, s32, s32, s32);
 extern void func_001C81D0(void *, int);
 extern void func_001C8210(void *, int);
 extern void func_001C8860(void *, int);
@@ -92,6 +92,24 @@ int func_001CBD90(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBD90);
+// differs: 3 forms tried (flat if, return in each branch, else-return with shared tail). The original's not-taken paths load li 1 and branch straight to the epilogue, while the taken paths branch to a shared li: ours puts the shared li before the epilogue at the wrong offset (0x80 vs 0x90 long).
+#if 0
+int func_001CBDF0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x0 = p[0];
+    Side *s = (Side *)D_00470570->tbl[p[1]];
+    if (p[1] == 0) {
+        if (s->m != 0) {
+            s->out = x0 + 1;
+        }
+    } else {
+        if (s->other->m != 0) {
+            s->out = -(x0 + 1);
+        }
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBDF0);
 // differs: 17 of 21. The original loads the Side fields (idx, blk) in another order: p[3] table entry first, then p[1] for idx, then p[0] last; ours reorders the blk and idx loads.
 #if 0
@@ -163,13 +181,73 @@ int AdxCmd_Pause(void *unused, Arg *a) {
     AdxSlot_Pause((char *)gBattle + (a->p[0] << 5) + 0x5C4);
     return 1;
 }
+// differs: size 0xB0 against 0xC0. The original keeps the Arg in s0 and loads p[1] before the table pointer; the 2 default and the loop's best index sit in s0/s1 in another order. One form tried.
+#if 0
+int func_001CC1B0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x0 = p[0];
+    s32 n = p[1];
+    char *g = (char *)D_00470570;
+    s32 best = 2;
+    f32 m;
+    s32 i;
+    if (n == -2) {
+        n = 0x6B;
+    } else if (n == -1) {
+        n = 0x6A;
+    }
+    m = *(f32 *)(g + 0x61C);
+    for (i = 3; i < 5; i++) {
+        f32 f = *(f32 *)(g + 0x5DC + i * 0x20);
+        if (!(m <= f)) {
+            m = f;
+            best = i;
+        }
+    }
+    func_002194C0(g + (best << 5) + 0x5C4, n, x0, -1);
+    *(s32 *)a = best;
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC1B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC270);
+int func_001CC270(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x0 = p[0];
+    s32 s1;
+    s32 n;
+    if (p[1] < 0) {
+        n = -p[1];
+        s1 = 2;
+    } else {
+        char *t = D_00470570->tbl[p[1]];
+        s1 = *(s32 *)(t + 0x1350) + 3;
+        n = *(s32 *)(t + 0xB9C);
+    }
+    func_002194C0((char *)D_00470570 + (s1 << 5) + 0x5C4, n, x0, -1);
+    *(s32 *)a = s1;
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC300);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC4B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC710);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC7C0);
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void func_001CB020(void *);
+extern void func_001CAFE0(void *);
+extern char D_004692B0[];
+int func_001CC7C0(void *o, Arg *a) {
+    int *p = a->p;
+    char *c = *(char **)o;
+    s32 x = p[0];
+    s32 y = p[1];
+    char *t = amTask_Create((void (*)(void *))func_001CB020, 0, *(s32 *)(c + 0x10), *(s32 *)(c + 0x14), *(s32 *)(c + 0x18), D_004692B0);
+    *(s32 *)(t + 0x30) = 0;
+    *(f32 *)(t + 0x34) = (f32)x;
+    *(void **)(t + 0x38) = (void *)func_001CAFE0;
+    *(s32 *)(t + 0x3C) = 1;
+    *(s32 *)(t + 0x40) = y;
+    return 1;
+}
 int func_001CC850(void *unused, Arg *a) {
     func_001D9CA0(gBattle->tbl[a->p[0]], 0);
     return 1;
@@ -418,7 +496,13 @@ int func_001CDC00(void *unused, Arg *a) {
     *(s32 *)a = *(s32 *)((char *)gBattle->tbl[a->p[1]] + 0xB70);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDC30);
+extern f32 func_00200270(s32, f32, f32);
+int func_001CDC30(void *unused, Arg *a) {
+    char *t = D_00470570->tbl[a->p[0]];
+    f32 r = func_00200270(0, *(f32 *)(t + 0x650), *(f32 *)(t + 0x658));
+    *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x44) - r;
+    return 1;
+}
 int func_001CDCA0(void *unused, Arg *a) {
     *(s32 *)a = *(s8 *)((char *)gBattle->tbl[a->p[0]] + 0x1FF9);
     return 1;
@@ -520,16 +604,22 @@ int func_001CDFD0(void *unused, Arg *a) {
     *(s32 *)a = func_001E0200(t, -p[0], 0);
     return 1;
 }
-// differs: 14 of 19. The original keeps the Arg in a1 and loads p[0] (the float pointer) before p[2]; ours keeps p in a0. Declaration order of the argument locals tried.
-#if 0
 int func_001CE030(void *unused, Arg *a) {
     int *p = a->p;
-    func_001DFC80(gBattle->tbl[p[2]], p[1], (f32)*(s32 *)p[0]);
+    func_001DFC80(D_00470570->tbl[p[2]], p[1], (f32)p[0]);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE030);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE080);
+int func_001CE080(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x0 = p[0];
+    void *t = D_00470570->tbl[p[2]];
+    s32 f = p[1];
+    if (*(s16 *)((char *)D_00470570 + 0x894C) != 0 || *(s8 *)((char *)D_00470570 + 0x8AB8) != 0) {
+        f |= 0x8000;
+    }
+    *(s32 *)a = func_001E0200(t, x0, f);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE110);
 int func_001CE1F0(void *unused, Arg *a) {
     char *t = gBattle->tbl[a->p[0]];
@@ -550,7 +640,24 @@ int func_001CE220(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE220);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE2A0);
+extern void func_001E2190(void *, s32);
+extern void func_001E7070(void *, s32);
+extern void func_001E8290(void *);
+int func_001CE2A0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x = p[0];
+    s32 j = p[1];
+    char *t = D_00470570->tbl[p[2]];
+    char *s0 = t + j * 0x680 + 0x650;
+    if (j == 0) {
+        func_001E2190(t, x);
+        func_001E3550(t);
+    } else {
+        func_001E7070(s0, x);
+        func_001E8290(s0);
+    }
+    return 1;
+}
 // differs: 18 of 21. The Arg pointer is in v1 in the original (a1 ours); p[0]==0 is sltu+xori in the original, sltiu in ours. Explicit table local and flag local tried.
 #if 0
 int func_001CE340(void *unused, Arg *a) {
@@ -560,11 +667,11 @@ int func_001CE340(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE340);
-// differs: 18 of 21: the same as func_001CE340 (register of the Arg pointer and the sltu+xori flag).
+// differs: 18 of 21: the same as func_001CE340 (register of the Arg pointer and the sltu+xori flag). Three forms tried (flag local, flag at the store, p[0] late): ours always loads p[0] first.
 #if 0
 int func_001CE3A0(void *unused, Arg *a) {
     int *p = a->p;
-    *(s8 *)((char *)gBattle->tbl[p[2]] + p[1] * 0x680 + 0xCBD) = p[0] == 0;
+    *(s8 *)((char *)D_00470570->tbl[p[2]] + p[1] * 0x680 + 0xCBD) = !(p[0] != 0);
     return 1;
 }
 #endif
@@ -601,10 +708,15 @@ int func_001CE480(void *unused, Arg *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE4E0);
 // differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?: and if forms tried did not give movz.
+// differs: Size 0x44 against 0x50. The original sets a1 = 1 and then movz a1,$zero,v0 for the flag; ours emits sltu. The ?:, if and flag-local forms tried did not give movz.
 #if 0
 int func_001CE560(void *unused, Arg *a) {
     int *p = a->p;
-    func_001D7CC0(gBattle->tbl[p[1]], p[0] != 0);
+    s32 f = 1;
+    if (p[0] == 0) {
+        f = 0;
+    }
+    func_001D7CC0(D_00470570->tbl[p[1]], f);
     return 1;
 }
 #endif
@@ -694,7 +806,7 @@ int func_001CE8F0(void *unused, Arg *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE960);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CED20);
-// differs: 30 of 38: the same FPU constant register allocation as func_001CEE80, plus the five int field stores in another order.
+// differs: 30 of 38: the original converts with cvt.w.s (rounding), where the (s32) cast gives trunc.w.s; the FPU constant registers differ too (same as func_001CEE80). Local constants tried.
 #if 0
 int func_001CEDE0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
@@ -748,7 +860,14 @@ int func_001CF030(void *unused, Arg *a) {
     func_001E4820(t, 1.0f, 0);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF0A0);
+extern void func_001E5040(void *);
+int func_001CF0A0(void *unused, Arg *a) {
+    char *t = D_00470570->tbl[a->p[1]];
+    *(s32 *)(t + 0x1864) = a->p[0];
+    func_001E5040(t);
+    func_001E4FA0(t, -1);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF100);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF2C0);
 int func_001CF4A0(void *unused, Arg *a) {
@@ -792,7 +911,13 @@ int func_001CF690(void *unused, Arg *a) {
     func_001C8860(gBattle->tbl[p[1]], p[0]);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF6D0);
+int func_001CF6D0(void *o, Arg *a) {
+    if (func_001C8780(D_00470570->tbl[*(s8 *)((char *)o + 0x28)], *(s8 *)((char *)o + 0x29))) {
+        *(void **)((char *)o + 0x10) = 0;
+        return 1;
+    }
+    return 3;
+}
 int func_001CF730(void *o, Arg *a) {
     int *p = a->p;
     s32 b = p[0];
@@ -877,16 +1002,15 @@ int func_001CFA00(void *o, Arg *a) {
     }
     return r;
 }
-// differs: 7 of 13 at best: the original loads a->p, then the function address, then gBattle, and stores 0x24 before the float; ours emits the function address store first or loads the global late.
-#if 0
 int func_001CFA60(void *o, Arg *a) {
-    *(void **)((char *)o + 0x10) = func_001CFA00;
-    *(s32 *)((char *)o + 0x24) = *a->p;
-    *(f32 *)((char *)o + 0x2C) = *(f32 *)((char *)gBattle + 0x8914);
+    int *p = a->p;
+    void *f = func_001CFA00;
+    char *g = (char *)D_00470570;
+    *(s32 *)((char *)o + 0x24) = p[0];
+    *(f32 *)((char *)o + 0x2C) = *(f32 *)(g + 0x8914);
+    *(void **)((char *)o + 0x10) = f;
     return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFA60);
 
 int func_001CFAA0(void *unused, Arg *a) {
     return 1;
@@ -906,8 +1030,37 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D01C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D02C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D03E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D05D0);
+// differs: 3 of 16. The original tests o != 0 as a materialised flag (sltu + xori, bnez to exit) and enters the loop through a b to the test; ours tests with beqz at the loop top. Four source forms (||, flag local, for-break) tried.
+#if 0
+void *func_001D06F0(void *o, s32 mask) {
+    while (o != 0 && (*(u16 *)(*(char **)((char *)o + 0x20) + 8) & mask) == 0) {
+        o = *(void **)((char *)o + 0x2C);
+    }
+    return o;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D06F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0730);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0860);
+extern void *D_004692E0[];
+// differs: 2 registers. The original keeps n in a3, the table base in a1 (reusing the s argument) and the counter in t1, with the entry pointer in t0; ours puts the counter in a1 and the base in a3 in every order tried (4 forms).
+#if 0
+void func_001D0990(void *o, void *s, s32 key, f32 val) {
+    s32 n = *(s32 *)((char *)s + 0x28);
+    if (0 < n) {
+        char *e = *(char **)((char *)s + 0x2C);
+        char *base = e;
+        s32 i = 0;
+        do {
+            if (key == *(u16 *)e) {
+                ((void (*)(void *, f32, f32))D_004692E0[key])(base + i * 8, *(f32 *)((char *)o + 0x1BC), val);
+                break;
+            }
+            i++;
+            e += 8;
+        } while (i < n);
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0990);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0A20);
