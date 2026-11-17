@@ -1,5 +1,15 @@
 #include "common.h"
 #include "menu/menu.h"
+extern s16 func_002F4A80();
+extern void func_002F4A90();
+extern void func_002F1770();
+extern s32 func_002F4B20();
+extern void func_002F1300();
+extern void func_002F0BC0();
+extern void func_0022CF70();
+extern u8 *D_00470910;
+extern s8 D_004B4B63[];
+extern u16 D_00492FCE[];
 extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
@@ -154,7 +164,104 @@ void func_002F0FD0(u8 *task) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F10F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1300);
+#if 0
+// differs: 8 bytes short (0x148 vs 0x150): the original branch layout of the final if differs
+void func_002F1500(u8 *task) {
+    u8 *s0;
+    u8 *s1;
+    u8 *s3;
+    u8 *s4;
+    s32 s2;
+    s32 a0;
+    s32 a1;
+    void *v;
+
+    s3 = *(u8 **)(task + 0x30);
+    s0 = (u8 *)gInputName;
+    s4 = task;
+    func_0022C700();
+    func_00133B50(0, 0);
+    a0 = *(s32 *)(s0 + 0x10);
+    D_00470704 = a0;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    func_00145CC0(a0, 0x5000);
+    func_002F0BC0(s3);
+    D_00470238 = 0;
+    if (*(u8 *)(s3 + 0x170) < 5) {
+        s2 = 0;
+        s1 = s3;
+        s0 = s3;
+        do {
+            if (*(u16 *)(s1 + 0x128) != 0xFFFF) {
+                func_0022CF70(*(void **)(s0 + 0x4));
+            }
+            s2++;
+            s1 += 2;
+            s0 += 4;
+        } while (s2 < 0x24);
+    }
+    func_0022C700();
+    func_00133B50(0, 0);
+    a0 = *(s32 *)((u8 *)D_00470910 + 0x27C);
+    if (a0 == 2) {
+        a1 = D_004B4B63[0];
+        if (*(u16 *)((u8 *)D_00492FCE + a1 * 184) & 0x4000) {
+            *(s32 *)(s3 + 0x110) = func_002F4B20(4);
+            v = ((void *)func_002F1300 == 0) ? 0 : (void *)func_002F1300;
+            *(void **)(s4 + 0x1C) = v;
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1500);
+#if 0
+// differs: register roles differ (obj/counter/walk swapped; no declaration order matches), 14 of 70 instr
+void func_002F1650(u8 *task) {
+    u8 *s0;
+    u8 *s1;
+    u8 *s3;
+    u8 *s4;
+    s32 s2;
+    s32 a0;
+    void *v;
+
+    s3 = *(u8 **)(task + 0x30);
+    s0 = (u8 *)gInputName;
+    s4 = task;
+    func_0022C700();
+    func_00133B50(0, 0);
+    a0 = *(s32 *)(s0 + 0x10);
+    D_00470704 = a0;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    func_00145CC0(a0, 0x5000);
+    func_002F0BC0(s3);
+    D_00470238 = 0;
+    if (*(u8 *)(s3 + 0x170) < 5) {
+        s2 = 0;
+        s1 = s3;
+        s0 = s3;
+        do {
+            if (*(u16 *)(s1 + 0x128) != 0xFFFF) {
+                func_0022CF70(*(void **)(s0 + 0x4));
+            }
+            s2++;
+            s1 += 2;
+            s0 += 4;
+        } while (s2 < 0x24);
+    }
+    func_0022C700();
+    func_00133B50(0, 0);
+    a0 = (s16)func_002F4A80(*(s32 *)(s3 + 0x110));
+    if (a0 == 4) {
+        func_002F4A90(*(s32 *)(s3 + 0x110));
+        *(s32 *)(s3 + 0x110) = 0;
+        v = ((void *)func_002F1770 == 0) ? 0 : (void *)func_002F1770;
+        *(void **)(s4 + 0x1C) = v;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1650);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1770);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F21B0);
