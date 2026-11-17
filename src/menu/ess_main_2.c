@@ -127,7 +127,7 @@ extern s32 D_00470708;
 extern s32 D_00470238;
 extern f32 gFrameDelta;
 extern void *gEssEdit;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_00228430(s32);
 extern void func_002284D0(s32);
@@ -147,7 +147,7 @@ void func_0026EC70(u8 *a0) {
     t = *(s32 *)((u8 *)gEssEdit + 0x1C);
     D_00470704 = t;
     D_0047070C = 0x11401100;
-    func_00145CC0(t, 0x11401100);
+    amModel_SetCurrent(t, 0x11401100);
     D_00470708 = 0;
     D_00470238 = 0;
     func_00133780(0, 1);

@@ -95,7 +95,7 @@ extern u8 *D_00470820;
 extern void Help_Exit();
 extern void amCdFs_Close(void *, s32);
 extern void amCdFs_ReleaseCache(void *);
-extern void func_00209530(void *);
+extern void Obj_ResetF38(void *);
 extern void amHeap_Free(void *);
 
 void func_00283C20(void) {
@@ -107,7 +107,7 @@ void func_00283C20(void) {
         if (*(void **)(D_00470820 + 0x2C) != 0) {
             amTask_Kill(*(void **)(D_00470820 + 0x2C));
             if (*(void **)(D_00470820 + 0x44) != 0) {
-                func_00209530(*(void **)(D_00470820 + 0x44));
+                Obj_ResetF38(*(void **)(D_00470820 + 0x44));
             }
         }
         for (i = 0, off = 0; i < 5; i++, off += 4) {

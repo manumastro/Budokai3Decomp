@@ -90,8 +90,8 @@ extern s32 Save_GetState();
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void func_00125740(void *, void *, s32);
 extern void func_001EF510(void *, s32);
-extern void func_001F0830(s32, s32);
-extern void func_001F0810(s32, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_FadeTo(s32, s32);
 extern void func_002DEA00();
 extern void func_002D9DE0();
 extern char D_0046F3C8[];
@@ -116,8 +116,8 @@ void func_002DEFF0(u8 *a0) {
         *(void **)(w + 0x34C) = (void *)func_002D9DE0;
         *(s32 *)(w + 0x388) = 0;
         *(s32 *)(w + 0x38C) = 0;
-        func_001F0830(5, 0);
-        func_001F0810(0xA, 0);
+        Scene_Request(5, 0);
+        Scene_FadeTo(0xA, 0);
         break;
     case 4:
         s1 = (u8 *)amHeap_Alloc(0xD680, 0, D_0046F3C8, 0x733);

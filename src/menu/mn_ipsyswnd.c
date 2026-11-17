@@ -28,7 +28,7 @@ extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
-extern void func_00145CC0(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
 extern s32 func_0022D670(s32, f32);
 extern void *gInputName;
 extern void func_0022D0E0(void *, s32);
@@ -54,7 +54,7 @@ void func_002F4780(u8 *a0) {
         if (k == 6 || k == 4 || k == 0) {
             D_00470704 = *(s32 *)(g + 0x10);
             D_0047070C = 0x5000;
-            func_00145CC0(*(s32 *)(g + 0x10), 0x5000);
+            amModel_SetCurrent(*(s32 *)(g + 0x10), 0x5000);
             D_00470708 = 0;
             D_00470238 = 0;
             if (*(s32 *)(o + 0x8) != 0) {
