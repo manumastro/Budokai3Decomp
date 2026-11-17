@@ -1301,32 +1301,32 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243280);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002433F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243600);
 #if 0
-void func_002439E0(u8 *p) {
-    s32 idx = *(s32 *)(p + 0x10);
-    u8 *base = gBattle + idx * 0x2020;
-    u8 *q = base + 0x830;
-    u8 *r = *(u8 **)(base + 0x1B84);
-    u8 *o = D_0046FE44 + idx * 0x80;
-    s32 m = *(s32 *)(p + 0x14);
+void func_002439E0(u8 *o) {
+    s32 id = *(s32 *)(o + 0x10);
+    u8 *base = gBattle + id * 0x2020;
+    u8 *a2 = base + 0x830;
+    u8 *a1 = *(u8 **)(base + 0x1B84);
+    u8 *a3 = D_0046FE44 + id * 0x80;
+    s32 k = *(s32 *)(o + 0x14);
+    s32 hv;
 
-    if (m == 1) {
-        s32 v = *(s16 *)(p + 0x18);
-        if (v < 8) {
-            *(s16 *)(o + 0x34) = v;
+    if (k == 1) {
+        hv = *(s16 *)(o + 0x18);
+        if (hv < 8) {
+            *(s16 *)(a3 + 0x34) = hv;
         }
-        *(s16 *)(o + 0x36) = *(s32 *)(r + 0x1CFC);
-        *(s32 *)(o + 0x2C) |= 0x80;
-    } else if (m == 0) {
-        *(s16 *)(o + 0x34) = *(s32 *)(q + 0xBA4);
-        *(s32 *)(o + 0x2C) &= ~0x80;
-        *(s16 *)(o + 0x36) = *(s32 *)(q + 0x1CFC);
-        func_00241600(*(s32 *)(p + 0x10));
-        return;
+        *(s16 *)(a3 + 0x36) = *(s32 *)(a1 + 0x1CFC);
+        *(s32 *)(a3 + 0x2C) |= 0x80;
+        func_00241600(*(s32 *)(o + 0x10));
+        func_00241C10(*(s32 *)(o + 0x10));
+    } else if (k == 0) {
+        *(s16 *)(a3 + 0x34) = *(s32 *)(a2 + 0xBA4);
+        *(s32 *)(a3 + 0x2C) &= ~0x80;
+        *(s16 *)(a3 + 0x36) = *(s32 *)(a2 + 0x1CFC);
+        func_00241600(*(s32 *)(o + 0x10));
     }
-    func_00241600(*(s32 *)(p + 0x10));
-    func_00241C10(*(s32 *)(p + 0x10));
 }
-// differs: 216 bytes (round 5, u23c): the logic matches (the switch-like m==1 / m==0 pair, the (s16) stores, the two tail calls); the temporaries differ (the original loads idx into t1 and the struct pointer m in a0, the table pointer in a3 before the branch), so the branch layout and the register choice differ. One attempt only.
+// differs: round 6 (u23e): 0xD0 bytes against 0xE0 (4 instructions short). The original has a nop after the store inside the k==1 branch (the 8 test falls through to a 16-byte aligned join) and lays the k==0 block between the tests (a switch with either case order gives 20 to 44 of 54 differing)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002439E0);
 void func_00243AC0(u8 *o) {
