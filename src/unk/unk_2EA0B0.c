@@ -262,6 +262,60 @@ void func_002EB0D0(void) {
         amGs_SetReg32(0, old);
     }
 }
+extern void (*D_00457400[])(void);
+extern void func_001C75D0(void *, s32);
+#if 0
+s32 func_002EB140(void) {
+    u8 *s0 = D_00470958;
+    u8 *info;
+    u8 *bt;
+    u8 *p1;
+    s32 idx;
+    s32 v0;
+    s32 v1;
+    s32 a1;
+    if (s0 == 0) {
+        return 1;
+    }
+    info = *(u8 **)(s0 + 0x18);
+    if ((*(s8 *)info & 4) != 0) {
+        if (*(s32 *)(s0 + 0xC) == -1) {
+            return 1;
+        }
+    }
+    idx = *(s32 *)(s0 + 0xC);
+    if (idx != -1) {
+        D_00457400[idx]();
+    }
+    info = *(u8 **)(s0 + 0x18);
+    if (((s8 *)info)[3] < 0) {
+        a1 = ((s8 *)info)[1];
+        bt = gBattle + ((a1 + (a1 << 8)) << 5);
+        p1 = bt + 0x830;
+        if (*(s32 *)(bt + 0x13A0) == 0x2D8) {
+            v0 = 0;
+        } else {
+            v0 = *(s32 *)(p1 + 0xC64);
+        }
+        if (v0 != 0) {
+            v0 = ((s8 *)info)[1];
+            v1 = *(s32 *)(s0 + 0x14);
+            v0 = *(s16 *)(v0 * 2 + v1 + 8);
+            v1 = v0 + 0x2D8;
+            if (*(s32 *)(bt + 0x13A0) != v1) {
+                *(s16 *)(p1 + 0xCB4) = 1;
+                *(s32 *)(p1 + 0xB70) = v1;
+                func_001C75D0(p1, 15);
+                *(s16 *)(p1 + 0xCB6) = 1;
+                *(s32 *)(p1 + 0xCA4) = 0x3DCCCCCD;
+                *(s32 *)(p1 + 0xCA8) = 0x3D4CCCCD;
+            }
+        }
+    }
+    return 0;
+}
+// differs: 22 of 79 instructions differ: the original re-reads the byte info[1] (lb 1(a2)) after the table lookup and keeps the info pointer in a2; here the compiler reuses a1 and the info pointer goes to v1. Tried the nested form, explicit returns (worse: 57 of 87).
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EB140);
 void func_002EB280(void) {
     D_00470958 = NULL;
