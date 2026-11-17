@@ -1,3 +1,6 @@
-// Startup (crt0): entry point of the ELF (e_entry). Clears .sbss/.bss, sets $gp, the stack and the heap
-// through syscalls 60 (SetupThread) and 61 (SetupHeap), calls main and then Exit.
+// Startup (crt0): entry point of the ELF (e_entry). Clears .sbss/.bss (0x470200-0x5D0100), sets $gp, the stack and
+// the heap through syscalls 60 (SetupThread) and 61 (SetupHeap), calls main(argc, argv) and passes its result on.
 _start = 0x00100008; // type:func
+// Called by _start with argc and argv (read from 0x58ED00 and 0x58ED04); calls the engine's and the game's
+// initialisation, then loops.
+main = 0x0014E4B0; // type:func

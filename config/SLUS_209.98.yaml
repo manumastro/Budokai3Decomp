@@ -23,6 +23,8 @@ options:
 
   symbol_addrs_path:
     - config/symbol_addrs.txt
+    - config/symbols/lib_syscalls.txt
+    - config/symbols/lib_strings.txt
   undefined_funcs_auto_path: build/undefined_funcs_auto.txt
   undefined_syms_auto_path: build/undefined_syms_auto.txt
 
@@ -50,10 +52,27 @@ segments:
     bss_size: 0x15FF00
     align: 128
     subsegments:
-      # .text: the EE code, 0x100000 to 0x310908, padded to 0x310980.
-      - [0x000000, asm, cod/000000]
-      # Everything after the code is kept as raw bytes for now: the VU1 microprograms (DMA/VIF packets,
-      # 0x310980 to about 0x33E000), then .data, .rodata and .sdata.
-      - [0x210980, bin, cod/210980]
+      # .text, 0x100000 to 0x310908 (padded to 0x310980). The four parts are inferred from the code's style
+      # (docs/plan.md, "What is in the executable"): Metrowerks pads every function to 16 bytes and saves $s
+      # registers with sq; Sony's and CRI's libraries (gcc) start functions on 8 bytes and save them with sd.
+      - [0x000000, asm, sdk/text]       # Sony SDK libraries and the C library (gcc)
+      - [0x02C360, asm, engine/text]    # Dimps' engine library (am*.c sources) and main (Metrowerks)
+      - [0x04E5D0, asm, cri/text]       # CRI ADX / Sofdec middleware, libmtap (gcc)
+      - [0x0A1E80, asm, game/text]      # the game (Metrowerks)
+      # .data, 0x310980 to 0x45CB80. The VU1 microprograms (DMA packets with VIF MPG) are kept as raw bytes.
+      - [0x210980, bin, data/vu1_a]
+      - [0x23E180, data, data/data_a]
+      - [0x26F180, bin, data/vu1_b]
+      - [0x285980, data, data/data_b]
+      - [0x28BD80, bin, data/vu1_c]
+      - [0x2B9D80, data, data/data_c]
+      - [0x2EA980, bin, data/vu1_d]
+      - [0x2EC580, data, data/data_d]
+      # .rodata, 0x45CB80 to 0x46FD00: strings and constants in link order. Its last 0x80 bytes hold a static
+      # initializer (code, 0x46FC80) and a pointer to it (0x46FCC0), as Metrowerks emits for a global whose
+      # initial value is computed.
+      - [0x35CB80, rodata, rodata/rodata]
+      # .sdata, 0x46FD00 ($gp - 0x7FF0) to 0x470200.
+      - [0x36FD00, sdata, sdata/sdata]
       - { type: bss, vram: 0x00470200 }
   - [0x370200]
