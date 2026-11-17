@@ -1,5 +1,8 @@
 #include "common.h"
 
+void func_001F7210(s32);
+void func_00247820(void);
+
 void func_001F6E60(s32);
 void func_001F5B10(s32, s32);
 void func_00247FF0(void);
@@ -956,7 +959,29 @@ void func_00247820(void) {
 // differs: the saved registers of the three locals (the table value, the counter and the new block) do not match the original under any declaration order tried
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247820);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247900);
+void func_00247900(void) {
+    s32 v;
+    s32 r;
+
+    func_001F7DB0();
+    func_001F7BF0();
+    func_001F7820();
+    func_001F7690();
+    func_001F6E50();
+    v = D_0051CD20[0];
+    switch (v) {
+    case 0:
+        func_001F6D60();
+        r = func_001F5EF0(0, 0);
+        func_001F5B10(*(s32 *)(r + 4), 0);
+        func_001F7210(r);
+        func_00247820();
+        break;
+    case 1:
+        func_002CDC20();
+        break;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002479B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247AB0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247C80);
@@ -1023,7 +1048,6 @@ void func_00248410(void) {
 // differs: the original loads the table entry and the global base in another order, and keeps the object pointer in its own register (not folded into the offsets)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248410);
-#if 0
 void func_00248480(void) {
     s32 v;
     s32 r;
@@ -1036,9 +1060,6 @@ void func_00248480(void) {
     func_001F6D60();
     v = D_0051CD20[0];
     switch (v) {
-    case 1:
-        func_002CDC20();
-        break;
     case 0:
         D_00470734 = 0;
         r = func_001F5EF0(4, 3);
@@ -1050,10 +1071,8 @@ void func_00248480(void) {
         D_00470734 = 0;
         func_00247FF0();
         break;
-    default:
+    case 1:
+        func_002CDC20();
         break;
     }
 }
-// differs: the two-way test on the table value is laid out in another order (the case 1 block out of line, a b to the end), so the function is 12 bytes longer here
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248480);
