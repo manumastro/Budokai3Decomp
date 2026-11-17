@@ -67,7 +67,40 @@ void func_003062B0(s32 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003062B0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003063B0);
-INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306500);
+extern f32 func_002B06A0(void);
+extern void amAdx_PlayAfs(s32, s32, s32);
+extern void amAdx_Stop(s32);
+extern void SoundRpc_SendWord(s32);
+extern void Scr_KillTasks(s32);
+extern void func_002641D0(s32, s32);
+extern void Scene_Request(s32, s32);
+extern void Scene_MarkDone(void);
+extern void func_003063B0(void);
+void func_00306500(s32 *a0) {
+    s32 *s0 = (s32 *)D_0047097C;
+    s32 *s1 = a0;
+    f32 t = func_002B06A0();
+    f32 v = *(f32 *)&s0[0x8 / 4] + t;
+    *(f32 *)&s0[0x8 / 4] = v;
+    if (!(v < 90.0f)) {
+        amAdx_PlayAfs(1, 0x21050, 0);
+        {
+            void *f = func_003063B0;
+            s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+    s0 = (s32 *)D_0047097C;
+    if ((*(u16 *)((char *)D_00492FCE + (s32)D_004B4B63[0] * 184) & 0x8) != 0 || !(*(f32 *)&s0[0x8 / 4] < 960.0f)) {
+        amAdx_Stop(1);
+        SoundRpc_SendWord(0);
+        Scr_KillTasks(s0[0x4 / 4]);
+        func_002641D0(0xA, 0);
+        Scene_Request(0xC, 0);
+        Scene_MarkDone();
+        amTask_Kill((void *)s0[0]);
+        s0[0] = 0;
+    }
+}
 extern s32 Scr_Alloc(s32, s32, s32);
 extern void Scr_SetData(s32, s32);
 extern void Scr_SetCallback44(s32, s32);
@@ -76,7 +109,7 @@ extern void Scr_SetEndCallback(s32, s32);
 extern void Scr_SetTaskStartCallback(s32, s32);
 extern void Scr_SetTaskEndCallback(s32, s32);
 extern void func_00305CB0(void);
-extern void func_00306500(void);
+extern void func_00306500(s32 *);
 extern void func_00305AD0(void);
 extern void TourMap_StopAdx(void *);
 extern void func_00264140(s32, s32);
@@ -130,6 +163,46 @@ void func_003066F0(s32 *a0) {
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
+#if 0
+// func_003067A0: 39 of 80 differ: the global goes to f2 here and f1 in the original (zero in f1 vs f2), and the call block sits two nops later (its skip branch lands 2 instructions past the original end); the `(flags & 8) || !(x < 200)` form and the early return both tried
+extern void func_00305130(f32 *, f32 *, s32, s32, s32);
+extern void SklSheet_SetIndex(s16);
+extern void func_003066F0(s32 *);
+void func_003067A0(s32 *a0) {
+    s32 *s2 = a0;
+    s32 *s1;
+    u16 s0;
+    f32 va[4];
+    f32 vb[4];
+    f32 t;
+    s0 = *(u16 *)((char *)D_00492FCE + (s32)D_004B4B63[0] * 184);
+    t = func_002B06A0();
+    s1 = (s32 *)D_0047097C;
+    *(f32 *)&s1[0x8 / 4] = *(f32 *)&s1[0x8 / 4] + t;
+    va[0] = 320.0f;
+    va[1] = 400.0f;
+    va[2] = 0.0f;
+    va[3] = 1.0f;
+    vb[0] = 1.0f;
+    vb[1] = 1.0f;
+    vb[2] = 1.0f;
+    vb[3] = 1.0f;
+    if (0.0f < *(f32 *)&((s32 *)D_0047097C)[0x8 / 4]) {
+        if (*(f32 *)&((s32 *)D_0047097C)[0x8 / 4] < 200.0f) {
+            func_00305130(va, vb, ((s32 *)D_0047097C)[0x15C / 4], 2, 0x800000);
+        }
+    }
+    if ((s0 & 0x8) != 0 || !(*(f32 *)&s1[0x8 / 4] < 200.0f)) {
+        SklSheet_SetIndex(0);
+        amAdx_Stop(1);
+        SoundRpc_SendWord(0);
+        {
+            void *f = (void *)func_003066F0;
+            s2[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003067A0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003068E0);
 #if 0
