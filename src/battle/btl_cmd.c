@@ -284,9 +284,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A51E0);
 extern void func_0013C1E0(void *, f32, f32);
 extern void amMotion_Update(void *, s32);
 
-// GIVEN UP: 8 of 77 instructions differ: the original computes the table index (the high half minus one) before the
-// low half of the value, and the register choice follows (4 orders tried)
-#if 0
+// Matched: the table lookup is written with the index cast to a pointer first so the addu operands come out in the original order
 void func_001A5350(u8 *a0, f32 f12) {
     s32 a1;
     s32 v1;
@@ -322,14 +320,13 @@ void func_001A5350(u8 *a0, f32 f12) {
         }
         *(s32 *)a2 = a3;
         hi = (a3 >> 16) - 1;
-        pt = *(u8 **)(s0 + 0x46C + (hi << 2));
-        *(f32 *)(s0 + 0x424) = (f32)(*(s32 *)(*(u8 **)(pt + 0x14) + ((a3 & 0xFFFF) << 4) + 8) - 1);
+        pt = *(u8 **)(((u8 *)(hi << 2)) + (s32)s0 + 0x46C);
+        pt = *(u8 **)(pt + 0x14);
+        *(f32 *)(s0 + 0x424) = (f32)(*(s32 *)(((u8 *)((a3 & 0xFFFF) << 4)) + (s32)pt + 8) - 1);
         amMotion_Update(s0, 0);
     }
     func_0013C1E0(s0, 0.0f, f20);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5350);
 s32 func_001A5490(MotFile *f, s32 track, f32 t) {
     MotTrack *tr = &f->tracks[track];
     s32 i;
