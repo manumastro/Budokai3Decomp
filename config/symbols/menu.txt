@@ -166,3 +166,29 @@ EssInfo_Start = 0x0026FD30; // type:func
 EssInfo_Exit = 0x0026FDA0; // type:func
 EssInfo_Load = 0x0026FE40; // type:func
 gEssInfo = 0x004707F8; // size:0x4
+
+// ess_main.c: the Ess mode's global block (pointer D_004707E0): two one-line accessors of its bytes 0x5C / 0x5D.
+EssMain_GetFlag = 0x0026D510; // type:func guess
+EssMain_SetByte = 0x0026D520; // type:func guess
+
+// mn_option.c: empty callbacks of the option screen (the task's func2 or a menu entry with nothing to do).
+Option_Nop1 = 0x002DEFD0; // type:func guess
+Option_Nop2 = 0x002DEFE0; // type:func guess
+// mn_option.c: clears the global D_00470938 (a menu's cursor or state).
+Option_ClearState = 0x002E0C30; // type:func guess
+
+// mn_csmodel.c: resets the practice-mode flag gPracMode and sets D_0047010C to -1.
+CsModel_ResetPrac = 0x002B96E0; // type:func guess
+
+// mn_Logomark.c: clears the global D_0047094C (the logo mark's flag).
+Logomark_ClearFlag = 0x002E83F0; // type:func guess
+
+// mn_InputPass.c: clears the input name pointer gInputName (shared with mn_InputName.c).
+InputPass_ClearName = 0x002F24F0; // type:func guess
+
+// mn_ArenaList.c: reads the list's work area (task data.work, offset 0x30 of the task): s16 at 0 and 2, and the
+// address of the entry table at 0x20.
+ArenaList_GetFirst = 0x002F03B0; // type:func guess
+ArenaList_GetCursor = 0x002F03A0; // type:func guess
+ArenaList_GetEntries = 0x002F03C0; // type:func guess
+ArenaList_ClearGlobal = 0x002F03D0; // type:func guess

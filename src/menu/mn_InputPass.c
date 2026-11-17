@@ -16,7 +16,12 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F21B0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2350);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F24A0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F24D0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F24F0);
+extern void *gInputName;
+
+/* Clears the input name pointer. */
+void InputPass_ClearName(void) {
+    gInputName = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2500);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2600);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F26E0);

@@ -32,4 +32,11 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8D20);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B91F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B92E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B93D0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B96E0);
+extern s32 gPracMode;
+extern s32 D_0047010C;
+
+/* Turns practice mode off and sets D_0047010C to -1. */
+void CsModel_ResetPrac(void) {
+    gPracMode = 0;
+    D_0047010C = -1;
+}

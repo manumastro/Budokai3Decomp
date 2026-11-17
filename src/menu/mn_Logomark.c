@@ -28,7 +28,12 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8190);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8270);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8320);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8340);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E83F0);
+extern s32 D_0047094C;
+
+/* Clears the logo mark's flag D_0047094C. */
+void Logomark_ClearFlag(void) {
+    D_0047094C = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8400);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8470);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E84E0);

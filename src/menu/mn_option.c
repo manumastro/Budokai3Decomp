@@ -6,8 +6,14 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DE460);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DE5A0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DE910);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEA00);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEFD0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEFE0);
+/* Empty callback: nothing to do. */
+void Option_Nop1(void) {
+}
+
+/* Empty callback: nothing to do. */
+void Option_Nop2(void) {
+}
+
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEFF0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF100);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF3D0);
@@ -27,7 +33,12 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E06A0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0800);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E08F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0B70);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0C30);
+extern s32 D_00470938;
+
+/* Clears the option screen's state word D_00470938. */
+void Option_ClearState(void) {
+    D_00470938 = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0C40);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0C70);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0C90);
