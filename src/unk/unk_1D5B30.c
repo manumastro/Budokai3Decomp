@@ -18,7 +18,9 @@ typedef struct Fighter {
     s32 f648;
     char pad64C[0x20];
     s8 f66C;
-    char pad66D[0x460];
+    char pad66D[0x45C];
+    s8 fAC9;
+    char padACA[0x3];
     s8 fACD;
     char padACE[0xA2];
     s32 fB70;
@@ -56,7 +58,10 @@ typedef struct Fighter {
     s32 f17B0;
     s32 f17B4;
     s32 f17B8;
-    char pad17BC[0x24];
+    char pad17BC[0x14];
+    f32 f17D0;
+    f32 f17D4;
+    char pad17D8[0x8];
     s32 f17E0;
     f32 f17E4;
     char pad17E8[0x4];
@@ -88,7 +93,9 @@ typedef struct Fighter {
     s16 f1966[0x40];
     u8 f19E6;
     u8 f19E7;
-    char pad19E8[0x60];
+    char pad19E8[0x58];
+    f32 f1A40;
+    char pad1A44[0x4];
     s32 f1A48;
     char pad1A4C[0xC];
     s16 f1A58;
@@ -145,7 +152,9 @@ typedef struct Fighter {
     u8 f2000;
     s8 f2001;
     s8 f2002;
-    char pad2003[0xA];
+    s8 f2003;
+    s8 f2004;
+    char pad2005[0x8];
     s8 f200D;
     char pad200E[0x1];
     s8 f200F;
@@ -257,6 +266,9 @@ extern void func_001E5040(Fighter *c);
 extern void func_001C75D0(Fighter *c, s32 a);
 extern void func_001ABCE0(void *c);
 extern u8 D_004E0660[];
+extern void func_001DFE60(Fighter *c, s32 a, f32 v);
+extern void func_001DFC80(Fighter *c, s32 a, f32 v);
+extern void func_001D7CC0(Fighter *c, s32 a);
 extern char D_004694D0[];
 extern s32 func_00233B20(Fighter *c, void *a, s32 v);
 extern void func_002376F0(s32, void *);
@@ -548,7 +560,28 @@ void func_001D9760(Fighter *c, Fighter *o) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D97D0);
+void func_001D97D0(Fighter *c) {
+    f32 f;
+
+    if (c->f2013 != 3) {
+        return;
+    }
+    if (c->f1A40 > 0.0f) {
+        f = c->f17D4;
+    } else {
+        f = c->f17D0;
+    }
+    if (f < 1000.0f) {
+        if (c->f1A40 > 0.0f) {
+            f = c->f17D4;
+        } else {
+            f = c->f17D0;
+        }
+        func_001DFE60(c, 4, -(1000.0f - f));
+    }
+    func_001DFC80(c, 0, -500.0f);
+    func_001D7CC0(c, 0);
+}
 #if 0
 void func_001D98A0(Fighter *c, s32 a1, s32 a2) {
     Game *g = D_00470570;
@@ -807,6 +840,33 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DB660);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DB790);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DB7C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DBB30);
+#if 0
+s32 func_001DBFC0(Fighter *c) {
+    f32 x;
+    s32 r;
+
+    if (c->f2003 <= 0) {
+        return 0;
+    }
+    if (c->f2004 == 0) {
+        return 0;
+    }
+    x = 360.0f * ((f32)c->f1354->f17AC / 65536.0f);
+    if (x <= 90.0f || x >= 270.0f) {
+        r = 0;
+    } else {
+        r = 1;
+    }
+    if (r != 0) {
+        return 1;
+    }
+    if (c->fAC9 > 0) {
+        return 0;
+    }
+    return 1;
+}
+#endif
+// differs: 0xB8 against 0xC0 bytes: the original ends with explicit returns that the compiler merges into one boolean; the early return blocks sit at other addresses
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DBFC0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DC080);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DC150);
