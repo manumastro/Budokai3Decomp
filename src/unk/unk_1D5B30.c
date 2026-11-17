@@ -3014,7 +3014,34 @@ void func_001E4800(Fighter *c) {
     c->f17B8 = c->f17AC;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E4820);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E4CE0);
+extern void func_00146ED0(void *, void *, f32);
+
+void func_001E4CE0(Fighter *c, void *a1, f32 f12) {
+    s32 buf[4];
+
+    if (f12 > 0.0f) {
+        if (a1 == 0) {
+            __asm__ volatile ("lqc2 $vf1, 0(%2)
+	lqc2 $vf2, 0(%1)
+	vsub.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, 0(%0)" : : "r"(buf), "r"((char *)c + 0x80), "r"((char *)c->f1354 + 0x80) : "memory");
+        } else {
+            __asm__ volatile ("lqc2 $vf1, 0(%0)
+	sqc2 $vf1, 0(%1)" : : "r"(a1), "r"(buf) : "memory");
+        }
+        buf[1] = 0;
+        func_00146ED0(buf, buf, f12);
+        __asm__ volatile ("lqc2 $vf1, 0(%0)
+	lqc2 $vf2, 0(%1)
+	vsub.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, 0(%0)" : : "r"((char *)c + 0x40), "r"(buf) : "memory");
+        __asm__ volatile ("lqc2 $vf1, 0(%0)
+	lqc2 $vf2, 0(%1)
+	vadd.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, 0(%0)" : : "r"((char *)c->f1354 + 0x40), "r"(buf) : "memory");
+        *(s8 *)((char *)gBattle + 0x8AB0) = 1;
+    }
+}
 extern void func_0013B160(void *);
 extern void func_0013BA20(void *);
 
