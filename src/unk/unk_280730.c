@@ -44,7 +44,8 @@ extern void amCdFs_Close(void *, s32);
 extern void amHeap_Free(void *);
 extern void func_0022D4B0(s32, s32);
 
-void func_002807E0(void);
+void func_002807E0(Ac280 *o);
+extern void func_00280730(void *);
 void func_00280C70(Ac280 *o);
 extern s32 D_004532F0[][2];
 extern void func_00280AB0(void);
@@ -99,7 +100,35 @@ void func_00280730(F280 *o) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280730);
 void func_002807D0(void) {
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_002807E0);
+void func_002807E0(Ac280 *o) {
+    Sub280 *q = (Sub280 *)((u8 *)o + 0x30);
+    u8 *a1;
+    f32 r;
+    f32 hi;
+    f32 lo;
+    f32 t;
+
+    a1 = *(u8 **)((u8 *)o + 0x38);
+    o->f44 = o->f44 + gFrameDelta;
+    if (!(o->f44 <= 14.0f)) {
+        q->f14 = 14.0f;
+    }
+    t = q->f14;
+    if (*(u16 *)((u8 *)q + 0xE) & 1) {
+        lo = 560.0f;
+        hi = 840.0f;
+    } else {
+        lo = 48.0f;
+        hi = -240.0f;
+    }
+    r = t / 14.0f;
+    *(f32 *)(a1 + 0x20) = lo + r * (hi - lo);
+    *(f32 *)(a1 + 0x5C) = 1.0f - r;
+    func_00280730(q);
+    if (!(q->f14 < 14.0f)) {
+        o->f1C = (func_002807D0 == NULL) ? NULL : (void *)func_002807D0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_002808E0);
 typedef struct Sub5C280 {
     char pad0[0x5C];
