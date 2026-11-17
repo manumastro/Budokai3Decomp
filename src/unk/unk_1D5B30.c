@@ -346,6 +346,7 @@ extern s32 func_002357C0(Fighter *c);
 extern void func_001D6170(Fighter *c);
 extern void func_001D5C40(Fighter *c);
 extern void func_001E2DE0(Fighter *c);
+extern void func_0021A030(void *a, s32 b, s32 c, s32 d);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5B30);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5C40);
@@ -533,7 +534,50 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6E20);
 void PlyVib_TaskKill(Fighter *c) {
     func_001A3610(c->f30);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7290);
+typedef struct PlyVibBuf {
+    u8 a[12];
+    s16 h;
+    u8 b[2];
+} PlyVibBuf;
+
+void func_001D7290(Fighter *c) {
+    PlyVibBuf hb;
+    u32 v;
+    u32 w;
+    f32 ratio;
+    f32 a;
+    f32 b;
+    u8 *q;
+    char *s1;
+    u8 s0;
+
+    s1 = (char *)c + 0x30;
+    if (gBattle == NULL || gBattle->f88EC != 0 || !(*(f32 *)(s1 + 8) <= *(f32 *)(s1 + 0xC))) {
+        amTask_Kill(c);
+        return;
+    }
+    ratio = *(f32 *)(s1 + 8) / *(f32 *)(s1 + 0xC);
+    v = *(u8 *)(s1 + 4);
+    a = (f32)v;
+    b = 1.0f - ratio;
+    a = a * b;
+    w = *(u8 *)(s1 + 5);
+    b = (f32)w;
+    b = b * ratio;
+    a = a + b;
+    s0 = (u8)(u32)a;
+    memset(hb.a, 0, 8);
+    if (s0 >= 0x80) {
+        hb.a[0] = (u8)((s0 - 0x80) | 1);
+    }
+    q = hb.a + 1;
+    *q = s0;
+    hb.h = 0x1000;
+    hb.b[0] = hb.a[0];
+    hb.b[1] = *q;
+    func_0021A030(hb.a + 12, *(s32 *)s1, 0x20, 0x40000000);
+    *(f32 *)(s1 + 8) = *(f32 *)(s1 + 8) + gBattle->f88F0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7450);
 extern s8 D_00447440[];
 
