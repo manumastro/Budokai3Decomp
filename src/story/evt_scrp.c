@@ -802,7 +802,7 @@ s32 func_002A4CF0(s32 *a0) {
     a0[0x10 / 4] = (s32)func_002A4D60;
     idx = D_004B4B63[0];
     row = (u16 *)(D_00492FCE + idx * 0xB8);
-    if ((D_004708D0[0x14 / 4] & 0x8000) != 0) {
+    if ((gEvtWork[0x14 / 4] & 0x8000) != 0) {
         if ((*row & 0x8) != 0) {
             return 1;
         }

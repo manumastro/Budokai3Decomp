@@ -5,7 +5,7 @@ typedef struct StrMapCopy16 {
     s32 w[4];
 } __attribute__((aligned(16))) StrMapCopy16;
 
-extern s32 *D_004708B4;
+extern s32 *gStrMap;
 extern void func_00299390(void);
 extern void func_001F07D0(void);
 extern void func_0022D0E0(s32, s32);
@@ -55,29 +55,29 @@ void StrMap_Clear(void) {
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029A8F0);
 extern StrMapCopy16 D_00453EA0 __attribute__((aligned(16)));
 extern void func_0028EC80(s32, s32, s32, s32, void *, s32, s32, s32);
-extern void func_0028EBF0(void *, s32, s32);
+extern void StrBg_SetFlags(void *, s32, s32);
 void func_0029A9F0(void) {
     StrMapCopy16 tmp;
     s32 i;
     s32 off;
     tmp = D_00453EA0;
-    if (*((s8 *)D_004708B4 + 0x1BD) != 0) {
-        func_0028EC80((s32)((char *)D_004708B4 + 0x20), (s32)((char *)D_004708B4 + 0x58), (s32)((char *)D_004708B4 + 0x60), (s32)((char *)D_004708B4 + 0x68), &tmp, D_004708B4[0x1C0 / 4], D_004708B4[0x1C4 / 4], 0x500000);
+    if (*((s8 *)gStrMap + 0x1BD) != 0) {
+        func_0028EC80((s32)((char *)gStrMap + 0x20), (s32)((char *)gStrMap + 0x58), (s32)((char *)gStrMap + 0x60), (s32)((char *)gStrMap + 0x68), &tmp, gStrMap[0x1C0 / 4], gStrMap[0x1C4 / 4], 0x500000);
         i = 0;
         off = 0;
         do {
-            s32 v = *(s32 *)((char *)D_004708B4 + off + 0x38);
+            s32 v = *(s32 *)((char *)gStrMap + off + 0x38);
             if (v != 0) {
-                func_0028EBF0((void *)v, 1, *(s32 *)((char *)*(s32 *)((char *)D_004708B4 + 0x6C) + 0x30) + 0x20);
+                StrBg_SetFlags((void *)v, 1, *(s32 *)((char *)*(s32 *)((char *)gStrMap + 0x6C) + 0x30) + 0x20);
             }
             i++;
             off += 4;
         } while (i < 7);
-        *((s8 *)D_004708B4 + 0x1BD) = 2;
+        *((s8 *)gStrMap + 0x1BD) = 2;
     } else {
-        *((s8 *)D_004708B4 + 0x1BD) = 3;
+        *((s8 *)gStrMap + 0x1BD) = 3;
     }
-    *((s8 *)D_004708B4 + 0x1BE) = 1;
+    *((s8 *)gStrMap + 0x1BE) = 1;
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029AAC0);
 void func_0029AC30(void) {
