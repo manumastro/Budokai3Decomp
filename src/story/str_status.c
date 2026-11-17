@@ -18,7 +18,7 @@ extern void func_00209530(s32);
 extern void func_00215230(s32, s32);
 extern void func_00214FD0(void);
 extern void amTask_KillGroup(s32, s32, s32);
-extern void *D_0046FDCC;
+extern void *gWave;
 extern char D_005BCF80[];
 extern void memset(void *, s32, s32);
 extern s16 D_0046EE50[];
@@ -47,7 +47,7 @@ extern void amCdFs_Close(s32, s32);
 extern void amFile_Load(s32);
 
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD140);
-void func_002BD3A0(Task *t) {
+void StrStatus_TaskMain(Task *t) {
     if (((s16 *)D_00470910->f4)[2] == 3) {
         if (D_00470910->f284 != 0) {
             func_0028EB40(t, 10, func_002BD140, 0);
@@ -97,10 +97,10 @@ void StrStatus_ClearWork(void) {
     D_00470910 = NULL;
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD510);
-void func_002BD660(s32 a, s32 b) {
+void StrStatus_Start(s32 a, s32 b) {
     D_00470910->f274 = a;
     D_00470910->f278 = b;
-    D_00470910->f38 = amTask_Create(func_002BD3A0, NULL, a, 2, b, D_0046EE10);
+    D_00470910->f38 = amTask_Create(StrStatus_TaskMain, NULL, a, 2, b, D_0046EE10);
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD6B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDC50);
@@ -235,7 +235,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF610);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF850);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF970);
 
-void func_002BFC00(s32 *p) {
+void StrStatus_Dispatch(s32 *p) {
     if (p[4] >= 0 && p[4] < 6) {
         D_0046EE30[p[4]](p);
     }
@@ -245,7 +245,7 @@ void func_002BFC50(void) {
     func_00215230(-1, -1);
     func_00214FD0();
     amTask_KillGroup(0x400, 0x20000, 0);
-    memset(D_0046FDCC, 0, 0xA0);
+    memset(gWave, 0, 0xA0);
     D_0047011C[0x1BC / 4] &= -3;
     if (D_0047011C[0x1A4 / 4] != 0) {
         func_00209530(D_0047011C[0x1A4 / 4]);
@@ -256,7 +256,7 @@ void func_002BFC50(void) {
 }
 
 void func_002BFCF0(void) {
-    memset(D_0046FDCC, 0, 0xA0);
+    memset(gWave, 0, 0xA0);
     func_00243ED0();
     func_002CA3F0();
     func_00209450(0x400008, 1);
@@ -271,7 +271,7 @@ void func_002BFD90(void) {
     func_00215230(-1, -1);
     func_00214FD0();
     amTask_KillGroup(0x400, 0x20000, 0);
-    memset(D_0046FDCC, 0, 0xA0);
+    memset(gWave, 0, 0xA0);
     D_0047011C[0x1BC / 4] &= -3;
     if (D_0047011C[0x1A4 / 4] != 0) {
         func_00209530(D_0047011C[0x1A4 / 4]);
@@ -376,7 +376,7 @@ void func_002C0490(void *p, s16 v) {
 void *func_002C04A0(void) {
     return NULL;
 }
-void func_002C04B0(Task *p) {
+void StrStatus_Exit(Task *p) {
     s32 *s0 = (s32 *)((char *)p + 0x30);
     if (s0[0] != 0) {
         amCdFs_Close(s0[0], 0);
@@ -397,7 +397,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C15E0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1720);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1860);
 
-void func_002C19F0(Task *task) {
+void VsCharaselEd_TaskMain(Task *task) {
     func_0022C700(task);
 }
 // func_002C1A00: the loads of the work block and the order of the two calls differ; not matched yet.

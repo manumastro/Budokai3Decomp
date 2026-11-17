@@ -61,3 +61,58 @@ gStrSelect = 0x0047095C; // size:0x4
 // tournament mode's block (gTourMode).
 StrStatus_ClearWork = 0x002BD500; // type:func guess
 StrStatus_ClearTourMode = 0x002C3E30; // type:func guess
+
+// str_map.c: task "# STR_TITLE #" (story title screen; StrTitle_Load is the same screen).
+StrTitle_TaskMain = 0x0029CC20; // type:func guess
+// str_status.c: task "# STATUS #", and task "# VS CHARASEL ED #" (its update only calls func_0022C700).
+StrStatus_TaskMain = 0x002BD3A0; // type:func guess
+VsCharaselEd_TaskMain = 0x002C19F0; // type:func guess
+
+// str_map.c: "# MAP #" starts the map task with the three parameters (stored in the map block D_004708B4); the
+// previous task is killed first. StrTitle_Start creates the "# STR_TITLE #" task.
+StrMap_Start = 0x0029AE60; // type:func guess
+StrTitle_Start = 0x0029CDB0; // type:func guess
+// str_status.c: creates the "# STATUS #" task of the story status screen.
+StrStatus_Start = 0x002BD660; // type:func guess
+// evt_shenron.c: "Shenron Main" task creator; str_dataerase.c: the "STAFFROLL MAIN" task creator (also in the file).
+Shenron_Start = 0x00307170; // type:func guess
+StaffRoll_Start = 0x0030F220; // type:func guess
+
+// str_bg.c is the story background: the setters write one field of its block (p) from the arguments.
+StrBg_SetValue = 0x0028EB80; // type:func guess
+StrBg_SetPos = 0x0028EB90; // type:func guess
+StrBg_SetFlags = 0x0028EBF0; // type:func guess
+StrBg_Clear = 0x00290320; // type:func guess
+// str_map.c: the map block D_004708B4 and the title global gStrTitle are forgotten on exit.
+StrMap_Clear = 0x0029A8E0; // type:func guess
+StrTitle_Clear = 0x0029CCB0; // type:func guess
+// str_status.c: the status screen dispatches to one of six handlers by the index at p[4] (table D_0046EE30).
+StrStatus_Dispatch = 0x002BFC00; // type:func guess
+// evt_shenron.c: the two Shenron globals forgotten.
+Shenron_Clear = 0x00307090; // type:func guess
+// str_staffroll.c and str_dataerase.c: their globals are forgotten; DataErase_IsReady returns the flag the
+// "SE READY" task sets (D_004701D8).
+StaffRoll_Clear = 0x0030F0D0; // type:func guess
+DataErase_Clear = 0x003101E0; // type:func guess
+DataErase_IsReady = 0x003105A0; // type:func guess
+
+// str_status.c: Exit frees the status work and kills its task (StrStatus_Start creates it).
+StrStatus_Exit = 0x002C04B0; // type:func guess
+// str_dataerase.c: Exit frees the erase screen's block.
+DataErase_Exit = 0x003101F0; // type:func guess
+
+// str_staffroll.c: the task that waits 77 frames, starts the ending movie ("/USR/ENDING00.SFD", amSofdec_StartFname),
+// and then switches the task to func_0030E170.
+StaffRoll_TaskEnding = 0x0030E220; // type:func guess
+
+// Story-mode blocks: the map block (StrMap_Start stores its state there) and the event work (evt_scrp.c).
+gStrMap = 0x004708B4; // size:0x4 guess
+gEvtWork = 0x004708D0; // size:0x4 guess
+
+// evt_scrp.c: the Zenie step task (Zenie_Update and Zenie_Draw every frame; when func_002A1020(4) is clear it moves on to
+// func_002A1640 and sets the step).
+EvtZenie_TaskMain = 0x002A1690; // type:func guess
+// evt_scrp.c: the event command that opens the Zenie counter (Zenie_Open(0)) and sets the event flag at gEvtWork+0x64.
+Evt_CmdZenieOpen = 0x002A30F0; // type:func guess
+// str_map.c: kills the map task (gStrMap+0x28) and resets the map state byte at +0x19D (2 -> 1).
+StrMap_KillTask = 0x0029AE00; // type:func guess

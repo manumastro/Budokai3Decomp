@@ -239,3 +239,90 @@ Trade_CountFrame = 0x00279470; // type:func guess
 // mn_Logomark.c: Free frees the task, the file and the block D_0047094C; Start creates the logo mark's task.
 Logomark_Free = 0x002E8400; // type:func guess
 Logomark_Start = 0x002E8470; // type:func guess
+
+// ess_main.c: the ESS tasks ("ESS MAIN", "ESS BG DRAW", "ESS MSG SET"): prefix Ess; ess_shop.c is the same family.
+Ess_TaskMain = 0x0026D230; // type:func guess
+EssBg_TaskDraw = 0x00269A00; // type:func guess
+EssMsg_TaskSet = 0x00269AC0; // type:func guess
+// mn_option_2.c: task "# OPENING #" (the opening screen; see opening.c in story.txt).
+Opening_TaskMain = 0x002E2040; // type:func guess
+// mn_TourMap.c: task "* TOUR MAP MAIN *".
+TourMap_TaskMain = 0x00304CF0; // type:func guess
+
+// ess_main_2.c, ess_shop.c, ess_trade.c: each mode's Start creates its task and clears the 0x1C-byte work area.
+Ess_Start = 0x0026E330; // type:func guess
+EssEdit_Start = 0x0026F080; // type:func guess
+EssShop_Start = 0x00276A40; // type:func guess
+EssTrade_Start = 0x0027A260; // type:func guess
+// mn_option.c / mn_option_2.c: the option screen's entry points (the task names are "Change Progress", "Option Main",
+// "# OPENING #").
+ChangeProgress_Start = 0x002E0C90; // type:func guess
+Option_Start = 0x002E1870; // type:func guess
+Opening_Start = 0x002E21C0; // type:func guess
+// mn_TourMap.c and mn_ipsyswnd.c: creators of the "* TOUR MAP MAIN *" and "# IP SYSWND #" tasks.
+TourMap_Start = 0x00304F50; // type:func guess
+IpSysWnd_Start = 0x002F4B20; // type:func guess
+
+// Clear functions: each zeroes the module's global pointer or counter when its screen is closed (one-line bodies;
+// the names follow the module's global). Guesses: the global's meaning is not known from this body alone.
+VsMode_Clear = 0x00269720; // type:func guess
+EssEdit_Clear = 0x0026F070; // type:func guess
+EssList_Clear = 0x00272650; // type:func guess
+SklSheet_Clear = 0x00283C10; // type:func guess
+// skl_sheet.c: sets the sheet's state (0x48 = 2) and the item index (0x60) from the argument.
+SklSheet_SetIndex = 0x00283BD0; // type:func guess
+// mn_option.c / mn_option_2.c: the option screen's block and the opening's global are forgotten.
+Option_Clear = 0x002E0E40; // type:func guess
+Opening_Clear = 0x002E21B0; // type:func guess
+// mn_ipsyswnd.c: the IP system window's entry point at exit (its block at +0x30 goes to func_002F4330).
+IpSysWnd_Exit = 0x002F4450; // type:func guess
+OutputPass_Clear = 0x002F54B0; // type:func guess
+// mn_TourMap.c: clears the tour map state and its 0x6060-byte table.
+TourMap_Clear = 0x00304E50; // type:func guess
+// mn_ArenaCharasel_*: the arena character-select screens clear their global and the shared list state.
+ArenaCharaselPvsc_Clear = 0x00308830; // type:func guess
+ArenaCharaselPvsp_Clear = 0x00309AF0; // type:func guess
+ArenaCharaselCvsc_Clear = 0x0030AE60; // type:func guess
+
+// ess_*.c: Exit frees the mode's work and ends its task (Start creates it, Load reads its files).
+Ess_Exit = 0x0026A4F0; // type:func guess
+EssEdit_Exit = 0x0026F0E0; // type:func guess
+EssShop_Exit = 0x00276AB0; // type:func guess
+EssTrade_Exit = 0x0027A2D0; // type:func guess
+// mn_ArenaCharasel_*.c: the arena character-select screens, Load reads their file and allocates the block.
+ArenaCharaselPvsc_Load = 0x00308A10; // type:func guess
+ArenaCharaselPvsp_Load = 0x00309D60; // type:func guess
+ArenaCharaselCvsc_Load = 0x0030B0B0; // type:func guess
+// mn_ArenaList.c and mn_TourMap.c: Load reads the list's file; TourMap_Exit frees the tour map and kills its tasks.
+ArenaList_Load = 0x002F0640; // type:func guess
+TourMap_Exit = 0x00304E70; // type:func guess
+// mn_vsmode.c: Load reads the mode's file and allocates its block.
+VsMode_Load = 0x00269980; // type:func guess
+
+// Pointer globals of the menu screens (the block of each screen, set by its Start and cleared by its Clear/Exit).
+gEssMain = 0x004707E0; // size:0x4 guess
+gEssShop = 0x00470808; // size:0x4 guess
+gEssTrade = 0x0047080C; // size:0x4 guess
+gOptionWork = 0x00470934; // size:0x4 guess
+gTourMap = 0x00470974; // size:0x4 guess
+
+// ess_shop.c and ess_trade.c: the task waits for voice 1 to stop (amAdx_IsStopped), then calls the next step.
+EssShop_TaskWaitVoice = 0x002763B0; // type:func guess
+EssTrade_TaskWaitVoice = 0x00279C80; // type:func guess
+// mn_TourMap.c: sets the volumes of the four tour-map voices (0..3) and stops them.
+TourMap_StopAdx = 0x00305A30; // type:func guess
+
+// mn_Logomark.c: the logo's Sofdec movie. StopMovie stops the movie when the timer runs out; EndMovie waits for it to
+// stop, destroys it and moves on (the next step is func_002E7F80).
+Logomark_StopMovie = 0x002E80F0; // type:func guess
+Logomark_EndMovie = 0x002E8060; // type:func guess
+// mn_option_2.c: the opening's task waits for its movie (the Sofdec id in gOpening+0xC is read with amSofdec_GetStat);
+// when it has ended (or on a skip), the task calls func_001F0810(-1, 0) and continues in func_002E1DF0.
+Opening_TaskWaitMovie = 0x002E1F90; // type:func guess
+
+// ess_main_2.c: the ESS screen's initialisation: clears gEssMain and starts or clears the shop, trade, info and list parts.
+Ess_Init = 0x0026E2F0; // type:func guess
+// mn_option.c: frees the option block D_00470938 (the one ChangeProgress_Start uses) and forgets it.
+Option_Free = 0x002E0C40; // type:func guess
+// mn_option_2.c: allocates a 0xD680-byte buffer, copies the table D_0058F680 into it, runs it through func_001EF510 and frees it.
+Option_ProcessTable = 0x002E0DD0; // type:func guess

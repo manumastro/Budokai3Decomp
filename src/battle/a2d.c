@@ -37,7 +37,7 @@ extern void func_00224F90(void);
 extern void func_00225020(s32, s32, s32);
 extern void (*D_0046A600[])(s32);
 
-extern u8 *D_0046FDFC;
+extern u8 *gBtlSys;
 extern s32 *func_0021C620(s32);
 extern s32 *func_0021C660(s32);
 extern s32 func_0021C360();
@@ -50,10 +50,10 @@ extern void func_0023A4B0(void);
 extern void func_0023A5F0(s32);
 extern void func_0023A560(s32, s32 *);
 extern void func_002CD5F0(s32, s32);
-extern void func_0023AA50(s32, s32);
+extern void Dmg_Start(s32, s32);
 
 s32 func_00225380(void) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
 
     if (*(s32 *)(sys + 0xE30) & 1) {
         return -1;
@@ -249,7 +249,7 @@ void func_002259C0(void) {
     func_0023A5F0(0x0);
 }
 void func_002259D0(s32 *p) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
     s32 a = func_0021C360(p[0]);
     s32 b = func_0021C360(p[1]);
 
@@ -303,7 +303,7 @@ void func_00225D40(s32 *p) {
         b[2] = 0;
         b[3] = 0;
     }
-    func_0023AA50(p[1], p[2]);
+    Dmg_Start(p[1], p[2]);
     b[0] |= 0x1004;
     b[2] += p[2];
     b[3] += p[2];
@@ -360,12 +360,12 @@ void func_00225FA0(void) {
 void func_00225FB0(void) {
 }
 void func_00225FC0(void) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
 
     *(s32 *)(sys + 0xE30) ^= 2;
 }
 void func_00225FE0(void) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
 
     *(s32 *)(sys + 0xE30) |= 2;
 }

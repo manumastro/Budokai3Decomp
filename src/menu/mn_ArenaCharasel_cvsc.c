@@ -63,7 +63,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A950);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030AA40);
 extern u8 *D_00470990;
 
-void func_0030AE60(void) {
+void ArenaCharaselCvsc_Clear(void) {
     D_00470990 = 0;
     func_0027E040();
     func_0030D180();
@@ -98,7 +98,7 @@ extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void func_0027E7E0(void);
 extern void ArenaRegCharList_Load(void);
 
-void func_0030B0B0(void) {
+void ArenaCharaselCvsc_Load(void) {
     u8 *s0;
     s0 = D_00470990 = amHeap_Alloc(0x14, 0, D_0046FB60, 0x6B);
     *(s32 *)(s0 + 0xC) = 0;

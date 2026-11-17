@@ -56,7 +56,7 @@ extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern f32 D_004E0610[];
 extern f32 D_004E0614[];
 extern s16 D_004E05F8[];
@@ -208,7 +208,7 @@ void Title_TaskWait(Task *t) {
         TASK_SET_FUNC(t, Title_TaskMenu);
         return;
     }
-    d->timer -= D_004703BC;
+    d->timer -= gFrameDelta;
     d->timer -= 1.0f;
     if (d->timer <= 0.0f || amAdx_GetStat(0) == 5) {
         D_004B4B66[0] ^= 1;

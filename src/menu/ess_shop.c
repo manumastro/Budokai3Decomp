@@ -1,6 +1,6 @@
 #include "common.h"
 
-extern s32 D_00470808;
+extern s32 gEssShop;
 extern u8 D_004E0660[];
 extern void func_0026E000(u8 *, s32);
 extern s32 D_00452FA0[];
@@ -24,7 +24,7 @@ s32 func_00272D30(void) {
     s32 w;
     s32 a0;
 
-    d = (u8 *)D_00470808;
+    d = (u8 *)gEssShop;
     t0 = 0;
     v1 = *(s32 *)(d + 0x60);
     if (v1 == 0) {
@@ -50,15 +50,15 @@ s32 func_00272D30(void) {
         v = *(s32 *)(d + 0x68) + 1;
         *(s32 *)(d + 0x68) = v;
         if (v1 < v) {
-            *(s32 *)((u8 *)D_00470808 + 0x68) = v1;
+            *(s32 *)((u8 *)gEssShop + 0x68) = v1;
             if (t0 < 5) {
                 return 0;
             }
             a0 = t0 - 4;
-            w = *(s32 *)((u8 *)D_00470808 + 0x64) + 1;
-            *(s32 *)((u8 *)D_00470808 + 0x64) = w;
+            w = *(s32 *)((u8 *)gEssShop + 0x64) + 1;
+            *(s32 *)((u8 *)gEssShop + 0x64) = w;
             if (a0 < w) {
-                *(s32 *)((u8 *)D_00470808 + 0x64) = a0;
+                *(s32 *)((u8 *)gEssShop + 0x64) = a0;
                 return 0;
             }
             return 1;
@@ -80,7 +80,7 @@ s32 func_00272D30(void) {
     s32 n;
     s32 nb;
 
-    a0 = (u8 *)D_00470808;
+    a0 = (u8 *)gEssShop;
     v1 = *(s32 *)(a0 + 0x60);
     t0 = 0;
     if (v1 == 0) {
@@ -110,15 +110,15 @@ s32 func_00272D30(void) {
     v0 = *(s32 *)(a0 + 0x68) + 1;
     *(s32 *)(a0 + 0x68) = v0;
     if (v1 < v0) {
-        *(s32 *)((u8 *)D_00470808 + 0x68) = v1;
+        *(s32 *)((u8 *)gEssShop + 0x68) = v1;
         if (t0 < 5) {
             return 0;
         }
         n = t0 - 4;
-        v0 = *(s32 *)((u8 *)D_00470808 + 0x64) + 1;
-        *(s32 *)((u8 *)D_00470808 + 0x64) = v0;
+        v0 = *(s32 *)((u8 *)gEssShop + 0x64) + 1;
+        *(s32 *)((u8 *)gEssShop + 0x64) = v0;
         if (n < v0) {
-            *(s32 *)((u8 *)D_00470808 + 0x64) = n;
+            *(s32 *)((u8 *)gEssShop + 0x64) = n;
             return 0;
         }
         return 1;
@@ -149,7 +149,7 @@ void func_002730B0(u8 *a0, s32 a1) {
         *(s32 *)(a0 + 8) = 0x1388;
         *(s16 *)(a0 + 0xC) = -1;
     }
-    mode = ((u8 *)(*(s32 *)(D_00470808 + 0x54)))[a1];
+    mode = ((u8 *)(*(s32 *)(gEssShop + 0x54)))[a1];
     if (mode == 1) {
         if (e[0xB] & 8) {
             *(s32 *)(a0 + 0x10) &= -3;
@@ -181,13 +181,13 @@ void func_00274B40(u8 *a0) {
     u8 *s0;
 
     s0 = a0;
-    *(s32 *)((u8 *)D_00470808 + 0x1D4) += 1;
-    *(s32 *)((u8 *)D_00470808 + 0x204) += 1;
-    *(s32 *)((u8 *)D_00470808 + 0x234) += 1;
-    *(s32 *)((u8 *)D_00470808 + 0x264) += 1;
-    *(s32 *)((u8 *)D_00470808 + 0x294) += 1;
-    *(s32 *)((u8 *)D_00470808 + 0x2C4) += 1;
-    *(s32 *)((u8 *)D_00470808 + 0x3B4) += 1;
+    *(s32 *)((u8 *)gEssShop + 0x1D4) += 1;
+    *(s32 *)((u8 *)gEssShop + 0x204) += 1;
+    *(s32 *)((u8 *)gEssShop + 0x234) += 1;
+    *(s32 *)((u8 *)gEssShop + 0x264) += 1;
+    *(s32 *)((u8 *)gEssShop + 0x294) += 1;
+    *(s32 *)((u8 *)gEssShop + 0x2C4) += 1;
+    *(s32 *)((u8 *)gEssShop + 0x3B4) += 1;
     func_00274120();
     if (func_00283BF0() == 8) {
         *(void **)(s0 + 0x1C) = ((void *)func_002759F0 == 0) ? 0 : (void *)func_002759F0;
@@ -202,7 +202,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002759F0);
 extern s32 amAdx_IsStopped(s32);
 extern void func_0026D6A0(void);
 
-void func_002763B0(u8 *a0) {
+void EssShop_TaskWaitVoice(u8 *a0) {
     u8 *s0;
     s0 = a0;
     *(s32 *)(a0 + 0x30) += 1;
@@ -231,46 +231,46 @@ void func_00276400(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276470);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276610);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276840);
-extern s32 D_00470808;
+extern s32 gEssShop;
 extern void Zenie_Init(void);
-extern void func_00283C10(void);
+extern void SklSheet_Clear(void);
 
-/* Clears D_00470808, then sets up the Zenie display. */
+/* Clears gEssShop, then sets up the Zenie display. */
 void Shop_InitZenie(void) {
-    D_00470808 = 0;
+    gEssShop = 0;
     Zenie_Init();
-    func_00283C10();
+    SklSheet_Clear();
 }
 extern void *amTask_Create();
 extern void func_00276840();
 extern char D_0046B530[];
 
-void func_00276A40(void) {
+void EssShop_Start(void) {
     u8 *s0;
-    *(void **)((u8 *)D_00470808 + 0x20) = amTask_Create(func_00276840, 0, 0x3000, 0x200, 4, D_0046B530);
-    s0 = *(u8 **)((u8 *)D_00470808 + 0x20) + 0x30;
+    *(void **)((u8 *)gEssShop + 0x20) = amTask_Create(func_00276840, 0, 0x3000, 0x200, 4, D_0046B530);
+    s0 = *(u8 **)((u8 *)gEssShop + 0x20) + 0x30;
     memset(s0, 0, 0x1C);
     *(s32 *)s0 = 0x3C;
 }
-extern void func_002C04B0();
+extern void StrStatus_Exit();
 extern void amTask_KillGroup(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void Zenie_Release();
 
-void func_00276AB0(void) {
+void EssShop_Exit(void) {
     s32 i;
     s32 off;
-    *(s32 *)(*(u8 **)((u8 *)D_00470808 + 0x24) + 0x34) = 0;
-    func_002C04B0(*(void **)((u8 *)D_00470808 + 0x24));
+    *(s32 *)(*(u8 **)((u8 *)gEssShop + 0x24) + 0x34) = 0;
+    StrStatus_Exit(*(void **)((u8 *)gEssShop + 0x24));
     amTask_KillGroup(0x200, 4, 0);
     for (i = 0, off = 0; i < 4; i++, off += 4) {
-        void *p = *(void **)((u8 *)D_00470808 + off);
+        void *p = *(void **)((u8 *)gEssShop + off);
         if (p != 0) {
             amCdFs_Close(p, 0);
         }
     }
-    amHeap_Free((void *)D_00470808);
-    D_00470808 = 0;
+    amHeap_Free((void *)gEssShop);
+    gEssShop = 0;
     Zenie_Release();
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276B50);

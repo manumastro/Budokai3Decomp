@@ -126,7 +126,7 @@ typedef struct Obj2D2530 {
     s16 f418;
 } Obj2D2530;
 
-extern Obj2D2530 *D_00470934;
+extern Obj2D2530 *gOptionWork;
 extern s8 D_004703F4;
 extern u16 D_00492FCC[];
 extern u16 D_00493084[];
@@ -308,26 +308,26 @@ void func_002D33B0(s32 flags, s32 *cur, s32 min, s32 count, s32 idx) {
     }
 }
 void func_002D34E0(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     if (s->f37C == 0) {
         if (*s->f3EC != s->f3F8 - 1) {
-            DrawModel(D_00470934, s->f31C, 0, 0);
+            DrawModel(gOptionWork, s->f31C, 0, 0);
         }
         if (*s->f3EC != 0) {
             m = s->f318;
-            DrawModel(D_00470934, m, 0, 0);
+            DrawModel(gOptionWork, m, 0, 0);
         }
     }
 }
 void func_002D3650(void) {
     Vec4 v;
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
 
     asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
     v.y = 45.0f * s->f37C;
-    DrawModel(D_00470934, s->f314, &v, 0);
+    DrawModel(gOptionWork, s->f314, &v, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D3730);
 void func_002DDF00(void);
@@ -335,15 +335,15 @@ void func_002DEFE0(void);
 void func_002D3650(void);
 void func_002D3730(Vec4 *, Vec4 *, Vec4 *, Vec4 *);
 void func_002D3E50(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     if (s->f344 == func_002DDF00 || s->f344 == 0 || s->f344 == func_002DEFE0) {
         m = s->f2E0;
-        DrawModel(D_00470934, m, 0, &s->f3C0);
+        DrawModel(gOptionWork, m, 0, &s->f3C0);
     } else {
         m = s->f2E0;
-        DrawModel(D_00470934, m, 0, &s->f3B0);
+        DrawModel(gOptionWork, m, 0, &s->f3B0);
     }
     if (s->f360 == func_002D3650) {
         switch (s->f37C) {
@@ -366,7 +366,7 @@ void func_002D3E50(void) {
 }
 s32 func_0022D670(s32, f32);
 void func_002D40A0(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
 
     s->f2E0 = (Model2D2530 *)func_0022D670(*(s32 *)(s->f8->f1C + 0xE8), 0.0f);
     s->f314 = (Model2D2530 *)func_0022D670(*(s32 *)(s->f8->f1C + 0x33C), 0.0f);
@@ -387,14 +387,14 @@ void func_002D40A0(void) {
 }
 void func_002D4260(void) {
     Vec4 v;
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
 
     asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
     v.y = 40.0f * s->f37C;
-    DrawModel(D_00470934, s->f288, &v, 0);
+    DrawModel(gOptionWork, s->f288, &v, 0);
 }
 void func_002D4340(void) {
-    Obj2D2530 *o = D_00470934;
+    Obj2D2530 *o = gOptionWork;
     Vec4 v;
     Vec4 p;
     f32 f;
@@ -406,7 +406,7 @@ void func_002D4340(void) {
     p.w = o->f398 / 10.0f;
     asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
     v.y = 40.0f * o->f37C;
-    DrawModel(D_00470934, o->f288, &v, &p);
+    DrawModel(gOptionWork, o->f288, &v, &p);
     if (D_004703F4 != 3) {
         f = 1.0f;
     } else {
@@ -419,7 +419,7 @@ void func_002D4340(void) {
     }
 }
 void func_002D44C0(void) {
-    Obj2D2530 *o = D_00470934;
+    Obj2D2530 *o = gOptionWork;
     f32 f;
 
     if (D_004703F4 != 3) {
@@ -434,7 +434,7 @@ void func_002D44C0(void) {
     }
 }
 void func_002D4530(Vec4 *p, Vec4 *q) {
-    Obj2D2530 *o = D_00470934;
+    Obj2D2530 *o = gOptionWork;
     f32 t;
 
     VecCopy(q, &o->f3B0);
@@ -456,27 +456,27 @@ void func_002D4530(Vec4 *p, Vec4 *q) {
     }
 }
 void func_002D4600(Vec4 *a, Vec4 *b, Vec4 *c, Vec4 *d) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     DrawModel(s, s->f278, 0, a);
-    DrawModel(D_00470934, s->f27C, 0, b);
+    DrawModel(gOptionWork, s->f27C, 0, b);
     m = s->f280;
-    DrawModel(D_00470934, m, 0, c);
+    DrawModel(gOptionWork, m, 0, c);
 }
 void func_002D47E0(Vec4 *a, Vec4 *b) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     DrawModel(s, s->f2D8, 0, a);
     m = s->f2DC;
-    DrawModel(D_00470934, m, 0, b);
+    DrawModel(gOptionWork, m, 0, b);
 }
 void func_002D4930(void) {
     Vec4 a;
     Vec4 b;
     Vec4 c;
-    Obj2D2530 *o = D_00470934;
+    Obj2D2530 *o = gOptionWork;
 
     VecCopy(&a, &o->f3B0);
     VecCopy(&b, &o->f3C0);
@@ -486,7 +486,7 @@ void func_002D4930(void) {
     c.w = 1.0f;
     c.y = 0.0f;
     c.z = 0.0f;
-    DrawModel(D_00470934, o->f2C8, &c, &a);
+    DrawModel(gOptionWork, o->f2C8, &c, &a);
     if (o->f410 == 0) {
         func_002D47E0(&a, &b);
     } else {
@@ -494,12 +494,12 @@ void func_002D4930(void) {
     }
 }
 void func_002D4A70(Vec4 *a, Vec4 *b) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     DrawModel(s, s->f2D0, 0, a);
     m = s->f2D4;
-    DrawModel(D_00470934, m, 0, b);
+    DrawModel(gOptionWork, m, 0, b);
 }
 void func_002D4BC0(void) {
     Vec4 a;
@@ -509,12 +509,12 @@ void func_002D4BC0(void) {
     char *fl;
 
     fl = D_004E05DC;
-    o = D_00470934;
+    o = gOptionWork;
     VecCopy(&a, &o->f3B0);
     VecCopy(&b, &o->f3C0);
     func_002D4530(&c, &a);
     b.w = a.w;
-    DrawModel(D_00470934, o->f2C8, &c, &a);
+    DrawModel(gOptionWork, o->f2C8, &c, &a);
     if (*(s16 *)(fl + 0x1C) == 0) {
         func_002D4A70(&a, &b);
     } else {
@@ -527,22 +527,22 @@ void func_002D4530(Vec4 *, Vec4 *);
 #if 0
 // differs: the two draws keep the object in another saved register (s1/s2 swapped; compiled size 0x1A0 with the draft, the original is 0x1B0): tried reload/cached object and declaration orders
 void func_002D5570(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Vec4 a;
     Vec4 b;
     Model2D2530 *m;
 
     func_002D4530(&a, &b);
     m = s->f2A4;
-    DrawModel(D_00470934, m, &a, &b);
+    DrawModel(gOptionWork, m, &a, &b);
     asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&a));
     a.y = 185.0f - 1.77f * (f32)(128 - s->f418);
-    DrawModel(D_00470934, s->f2A8, &a, &b);
+    DrawModel(gOptionWork, s->f2A8, &a, &b);
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5570);
 void func_002D5720(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Vec4 v;
     Model2D2530 *m;
 
@@ -550,7 +550,7 @@ void func_002D5720(void) {
     asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
     v.y = 185.0f - 1.77f * (f32)(128 - s->f418);
     m = s->f2A8;
-    DrawModel(D_00470934, m, &v, 0);
+    DrawModel(gOptionWork, m, &v, 0);
 }
 #if 0
 // differs: the step factor (1.2f when D_004703F4 == 3) is laid out with a branch the source form did not reproduce; the rest of the draw matches up to there
@@ -558,7 +558,7 @@ void func_002D58B0(void) {
     Vec4 b;
     Vec4 a;
     Tbl2D2530 *e = (Tbl2D2530 *)D_004E05DC;
-    Obj2D2530 *o = D_00470934;
+    Obj2D2530 *o = gOptionWork;
     Obj2D2530 *s;
     Model2D2530 *m;
     f32 k = 1.0f;
@@ -579,10 +579,10 @@ void func_002D58B0(void) {
     } else {
         b.w = 1.0f - o->f398 / 30.0f;
     }
-    s = D_00470934;
+    s = gOptionWork;
     m = *(Model2D2530 **)((char *)o + 0x28C + e->f1C * 4);
     DrawModel(s, m, 0, &b);
-    s = D_00470934;
+    s = gOptionWork;
     m = *(Model2D2530 **)((char *)o + 0x294 + e->f1C * 4);
     DrawModel(s, m, &a, &b);
 }
@@ -590,12 +590,12 @@ void func_002D58B0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D58B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D5AE0);
 void func_002D5D70(void) {
-    Obj2D2530 *o = D_00470934;
+    Obj2D2530 *o = gOptionWork;
     Obj2D2530 *s;
     Model2D2530 *m;
 
     func_002D58B0();
-    s = D_00470934;
+    s = gOptionWork;
     m = s->f2A0;
     DrawModel(s, m, 0, 0);
     if (o->f374 != 0) {
@@ -603,12 +603,12 @@ void func_002D5D70(void) {
     }
 }
 void func_002D5E50(void) {
-    Obj2D2530 *o = D_00470934;
+    Obj2D2530 *o = gOptionWork;
     Obj2D2530 *s;
     Model2D2530 *m;
 
     func_002D5AE0();
-    s = D_00470934;
+    s = gOptionWork;
     m = s->f29C;
     DrawModel(s, m, 0, 0);
     if (o->f374 != 0) {
@@ -619,15 +619,15 @@ void func_002DDF00(void);
 void func_002DEFE0(void);
 void func_002D4260(void);
 void func_002D5F30(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     if (s->f344 == func_002DDF00 || s->f344 == 0 || s->f344 == func_002DEFE0) {
         m = s->f274;
-        DrawModel(D_00470934, m, 0, &s->f3C0);
+        DrawModel(gOptionWork, m, 0, &s->f3C0);
     } else {
         m = s->f274;
-        DrawModel(D_00470934, m, 0, &s->f3B0);
+        DrawModel(gOptionWork, m, 0, &s->f3B0);
     }
     if (s->f360 == func_002D4260) {
         switch (s->f37C) {
@@ -648,18 +648,18 @@ void func_002D5F30(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6160);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6400);
 void func_002D66B0(Vec4 *a, Vec4 *b, Vec4 *c) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     DrawModel(s, s->f250, 0, a);
-    DrawModel(D_00470934, s->f254, 0, b);
+    DrawModel(gOptionWork, s->f254, 0, b);
     m = s->f258;
-    DrawModel(D_00470934, m, 0, c);
+    DrawModel(gOptionWork, m, 0, c);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6890);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D6B10);
 void func_002D6F40(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Fn2D2530 *f;
 
     s->f3A4 = 0.0f;
@@ -683,30 +683,30 @@ void func_002D6F40(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7050);
 void func_002D71D0(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     DrawModel(s, s->fBC, 0, 0);
     m = s->fC0;
-    DrawModel(D_00470934, m, 0, 0);
+    DrawModel(gOptionWork, m, 0, 0);
 }
 void func_002D7310(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     DrawModel(s, s->fB4, 0, 0);
     m = s->fB8;
-    DrawModel(D_00470934, m, 0, 0);
+    DrawModel(gOptionWork, m, 0, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7450);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D76E0);
 void func_002D79C0(void) {
     Vec4 v;
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
 
     asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
     v.y = 40.0f * s->f37C;
-    DrawModel(D_00470934, s->f0A8, &v, 0);
+    DrawModel(gOptionWork, s->f0A8, &v, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7AA0);
 void func_002DDF00(void);
@@ -716,15 +716,15 @@ void func_002DDF00(void);
 void func_002DEFE0(void);
 void func_002D7AA0(Vec4 *, Vec4 *);
 void func_002D7BF0(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     if (s->f344 == func_002DDF00 || s->f344 == 0 || s->f344 == func_002DEFE0) {
         m = s->f9C;
-        DrawModel(D_00470934, m, 0, &s->f3C0);
+        DrawModel(gOptionWork, m, 0, &s->f3C0);
     } else {
         m = s->f9C;
-        DrawModel(D_00470934, m, 0, &s->f3B0);
+        DrawModel(gOptionWork, m, 0, &s->f3B0);
     }
     if (s->f360 == func_002D79C0) {
         if (s->f37C == 0) {
@@ -739,11 +739,11 @@ void func_002D7BF0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7DC0);
 void func_002D7FC0(void) {
     Vec4 v;
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
 
     asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
     v.y = 40.0f * s->f37C;
-    DrawModel(D_00470934, s->f090, &v, 0);
+    DrawModel(gOptionWork, s->f090, &v, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D80A0);
 void func_002DDF00(void);
@@ -752,15 +752,15 @@ void func_002DEFE0(void);
 void func_002D7FC0(void);
 void func_002D80A0(Vec4 *, Vec4 *, Vec4 *, Vec4 *);
 void func_002D84C0(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Model2D2530 *m;
 
     if (s->f344 == func_002DDF00 || s->f344 == 0 || s->f344 == func_002DE250 || s->f344 == func_002DEFE0) {
         m = s->f70;
-        DrawModel(D_00470934, m, 0, &s->f3C0);
+        DrawModel(gOptionWork, m, 0, &s->f3C0);
     } else {
         m = s->f70;
-        DrawModel(D_00470934, m, 0, &s->f3B0);
+        DrawModel(gOptionWork, m, 0, &s->f3B0);
     }
     if (s->f360 == func_002D7FC0) {
         switch (s->f37C) {
@@ -783,7 +783,7 @@ void func_002D84C0(void) {
 }
 s32 func_0022D670(s32, f32);
 void func_002D8720(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
 
     s->f70 = (Model2D2530 *)func_0022D670(*(s32 *)(s->f8->f1C + 0xD8), 0.0f);
     s->f090 = (Model2D2530 *)func_0022D670(*(s32 *)(s->f8->f1C + 0x324), 0.0f);
@@ -800,7 +800,7 @@ void func_002D8720(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D8890);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D8920);
 void func_002D8AB0(void) {
-    Obj2D2530 *o = D_00470934;
+    Obj2D2530 *o = gOptionWork;
 
     func_002D84C0();
     func_002D2E50(0);
@@ -811,7 +811,7 @@ void func_002D8AB0(void) {
 #if 0
 // differs: the 136-byte block copy from D_00456C80 is a loop of 4 lq/sq pairs plus ld/sd in the original; mwcc emits a 32-bit or 64-bit copy loop
 void func_002D8B00(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
     Blob2D2530 b;
     f32 f;
 
@@ -835,7 +835,7 @@ void func_002D8B00(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D8B00);
 void func_002D8C00(void) {
-    Obj2D2530 *s = D_00470934;
+    Obj2D2530 *s = gOptionWork;
 
     if (D_00470160 == 1) {
         s->f3A4 = 25.0f;

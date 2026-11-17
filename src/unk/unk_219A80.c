@@ -62,13 +62,13 @@ typedef struct ChanWork {
     s32 f684;
 } ChanWork;
 
-extern ChanWork *D_00470570;
+extern ChanWork *gBattle;
 extern f32 D_004E0610[];
 extern f32 D_004E0614[];
 extern void amAdx_Enable(s32, s32);
 
 void func_00219A80(void) {
-    ChanWork *w = D_00470570;
+    ChanWork *w = gBattle;
     Chan *c = w->chans;
     s32 flag;
     s32 i;

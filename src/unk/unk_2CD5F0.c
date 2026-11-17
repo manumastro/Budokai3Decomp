@@ -31,7 +31,7 @@ extern void func_001444E0(void *, f32, s32);
 extern void func_00144430(void *);
 extern u8 D_005C206C[];
 extern u8 D_005C2074[];
-extern u8 *D_00470570;
+extern u8 *gBattle;
 extern s32 D_00470148;
 extern s32 D_0047014C;
 extern s32 D_00470150;
@@ -262,7 +262,7 @@ void func_002CE630(f32 x, f32 y) {
     u8 *p;
     D_0051CCE0[0] = 0;
     __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(tmp) : "memory");
-    p = *(u8 **)(D_00470570 + 0x264);
+    p = *(u8 **)(gBattle + 0x264);
     __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(p), "r"(tmp) : "memory");
     func_00200270(x - tmp[0], y - tmp[2]);
     D_0051CCE0[0] = 1;
@@ -379,7 +379,7 @@ s32 func_002CF180(u8 *s0) {
     *(s32 *)(s0 + 8) = 9;
     *(s32 *)(s0 + 0xC) = 0;
     *(s32 *)(s0 + 0x10) = 0;
-    f0 = func_00146E30(*(s32 *)(D_00470570 + 0x264), *(s32 *)(s0 + 4));
+    f0 = func_00146E30(*(s32 *)(gBattle + 0x264), *(s32 *)(s0 + 4));
     f0 = D_00470154 / f0;
     f0 = (f0 > 1.0f) ? 1.0f : f0;
     *(f32 *)(s0 + 0x14) = f0;
@@ -414,7 +414,7 @@ s32 func_002CF2B0(u8 *s0) {
     *(s32 *)(s0 + 8) = 3;
     *(s32 *)(s0 + 0xC) = 0;
     *(s32 *)(s0 + 0x10) = 0;
-    f0 = func_00146E30(*(s32 *)(D_00470570 + 0x264), *(s32 *)(s0 + 4));
+    f0 = func_00146E30(*(s32 *)(gBattle + 0x264), *(s32 *)(s0 + 4));
     f0 = D_00470154 / f0;
     f0 = (f0 > 1.0f) ? 1.0f : f0;
     *(f32 *)(s0 + 0x14) = f20 * f0;
@@ -455,7 +455,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF750);
 void func_002CF820(void) {
     s32 i = 0;
     u8 *p = D_005C2060;
-    if (*(s32 *)(D_00470570 + 0x88D8) > 0) {
+    if (*(s32 *)(gBattle + 0x88D8) > 0) {
         do {
             if (*(s32 *)(p) != 0) {
                 s32 t = *(s32 *)(p) + 1;
@@ -480,7 +480,7 @@ void func_002CF820(void) {
             }
             i += 1;
             p += 0x28;
-        } while (i < *(s32 *)(D_00470570 + 0x88D8));
+        } while (i < *(s32 *)(gBattle + 0x88D8));
     }
 }
 // differs: the counter updates match; the build is one nop short (0xC0 bytes against 0xC4): the original pads the join after the third counter

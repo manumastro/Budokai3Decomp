@@ -1,1 +1,130 @@
 // Names for the unk files (docs/decomp_guide.md, "Symbol files").
+
+// unk_20A4D0.c: task "HM MAIN" (HM: abbreviation not identified).
+Hm_TaskMain = 0x00216EF0; // type:func guess
+// unk_20A4D0.c: task "[ADX] STOP CHK": stops the ADX voices whose state is 3 (amAdx_IsStopped) and clears their slot.
+Adx_TaskStopCheck = 0x00218880; // type:func
+// unk_25A130.c: the wave task ("WAVE MAIN", "WAVE DRAW", "WAVE AFTERDRAW"); AfterDraw clears a flag at D_0046FDCC.
+Wave_TaskMain = 0x0025BA90; // type:func guess
+Wave_TaskDraw = 0x0025BA60; // type:func guess
+Wave_TaskAfterDraw = 0x0025BA50; // type:func guess
+// unk_25D740.c: tasks named after library functions ("bscrGetRenderTexture", "bscrDrawMotionPrio", ...): the task
+// name is the string the debug output shows; GetRenderTexture waits for the screen to be free, then kills itself.
+Bscr_GetRenderTexture = 0x0025D980; // type:func guess
+Bscr_DrawMotionPrio = 0x0025E3A0; // type:func guess
+Bscr_DrawEffectPrio = 0x0025E760; // type:func guess
+Bscr_DrawObjectPrio = 0x0025E960; // type:func guess
+// unk_260CB0.c: task "# FADE #" whose update is empty.
+Fade_TaskEmpty = 0x00264130; // type:func
+// unk_297C60.c: task "# FLIGHT #".
+Flight_TaskMain = 0x00298770; // type:func guess
+// unk_2CF8F0.c: task "RENDER TEX".
+RenderTex_TaskMain = 0x002CFA90; // type:func guess
+// unk_2D1C20.c: task "SMSG MAIN" (system message).
+Smsg_TaskMain = 0x002D1FC0; // type:func guess
+// unk_2E2290.c: task "# CSSUBARN #".
+CsSubarn_TaskMain = 0x002E2F30; // type:func guess
+// unk_2E4030.c: the arena-stage tasks: "ARENA STAGE START" has an empty update, "ARENA STAGE END" only calls
+// func_0022C700; "SOFDEC" plays a Sofdec movie.
+ArenaStage_TaskStart = 0x002E5490; // type:func
+ArenaStage_TaskEnd = 0x002E5480; // type:func guess
+Sofdec_TaskMain = 0x002E5600; // type:func guess
+// unk_2E9BF0.c: task "BOOT UP".
+Boot_TaskMain = 0x002E9F70; // type:func guess
+// unk_307270.c: task "# RESULT #".
+Result_TaskMain = 0x00307380; // type:func guess
+// unk_30CD80.c: task "# ARENA LIST #".
+ArenaList_TaskMain = 0x0030CF60; // type:func guess
+
+// unk_1D5B30.c: the player (Fighter) effect tasks. PlyScr: the "[PLY] SCR INPUT" task (its update is the input
+// dispatch through the table at D_004693A0); PlyVib: the "[PLY] VIB CTRL" task with a kill function; PlySe: the
+// "[PLY] SE PLAY" task.
+PlyScr_Start = 0x001D8A90; // type:func guess
+PlyScr_TaskInput = 0x001D6C70; // type:func guess
+PlyVib_Start = 0x001D8BD0; // type:func guess
+PlyVib_TaskKill = 0x001D7280; // type:func guess
+PlySe_Start = 0x001E3290; // type:func guess
+// unk_1EA380.c: the "GAME OVER" screen: TaskDraw only prints the text; TaskMain prints it and, on a button, starts the
+// fade out (func_00264300) and switches to TaskDraw.
+GameOver_TaskDraw = 0x001EA380; // type:func guess
+GameOver_TaskMain = 0x001EA3C0; // type:func guess
+// unk_20A4D0.c: creates the "HM MAIN" and "HM DRAW" tasks; Adx_StartStopCheck creates the ADX stop-check task.
+Hm_Start = 0x00218610; // type:func guess
+Adx_StartStopCheck = 0x00219A40; // type:func guess
+// unk_23A890.c: the damage-number task ("[FIX]DMG %dP", per player slot in D_0058BF30); Ar_Start creates the
+// "AR UPDATE" and "AR DRAW" tasks (AR: abbreviation not identified).
+Dmg_Start = 0x0023AA50; // type:func guess
+Ar_Start = 0x002440C0; // type:func guess
+// unk_25A130.c: creates the "[FIX]CUT IN" task whose update is CutIn_TaskMain.
+CutIn_Start = 0x0025B1D0; // type:func guess
+// unk_25D740.c: script commands (ScrCtx, ScrCmd) that start the "bscr..." tasks; the task name is the command name.
+Bscr_CmdDrawPhotoPrio = 0x0025D810; // type:func guess
+Bscr_CmdGetRenderTexture = 0x0025DA10; // type:func guess
+Bscr_CmdSetObjCamPos = 0x0025E270; // type:func guess
+Bscr_CmdDrawMotionPrio = 0x0025E470; // type:func guess
+Bscr_CmdEffectLinePrio = 0x0025E6A0; // type:func guess
+Bscr_CmdDrawEffectPrio = 0x0025E830; // type:func guess
+Bscr_CmdDrawObjectPrio = 0x0025EA30; // type:func guess
+// unk_260CB0.c: the fade: creates the empty "# FADE #" task and the "# DISC #" task.
+Fade_Start = 0x002643F0; // type:func guess
+// unk_297C60.c: creates the "# FLIGHT #" task.
+Flight_Start = 0x00298FC0; // type:func guess
+// unk_2CF8F0.c: creates the "RENDER TEX" task; the argument goes to the task's work (offset 0x30).
+RenderTex_Start = 0x002CFD80; // type:func guess
+// unk_2D1C20.c: creates the "SMSG MAIN" task after reading a file.
+Smsg_Start = 0x002D2440; // type:func guess
+// unk_2E9BF0.c: creates the "BOOT UP" task and stops the ADX voices.
+Boot_Start = 0x002EA000; // type:func guess
+// unk_2A8970.c: creates the "Task_ExeBall" task (ball execution) when the event work exists.
+Ball_Start = 0x002A8F00; // type:func guess
+// unk_307270.c: creates the "# RESULT #" task.
+Result_Start = 0x00307470; // type:func guess
+
+// unk_297C60.c: the "# FLIGHT #" screen: Load reads its files, Exit frees the block and kills its tasks.
+Flight_Load = 0x00299000; // type:func guess
+Flight_Exit = 0x00298EA0; // type:func guess
+// unk_20A4D0.c: Exit for the "HM" screen (Hm_Start creates its tasks).
+Hm_Exit = 0x00218510; // type:func guess
+// unk_2D1C20.c: Exit for the "SMSG MAIN" screen (closes its file and kills its task).
+Smsg_Exit = 0x002D23D0; // type:func guess
+// unk_2E9BF0.c: the "BOOT UP" screen loads its sound bank and stream.
+Boot_Load = 0x002E9DE0; // type:func guess
+// unk_30CD80.c: Exit for the "# ARENA LIST #" screen.
+ArenaList_Exit = 0x0030D190; // type:func guess
+
+// unk_30CD80.c: the arena list's task work block has two 16-bit fields (f0 and f2), read and written here.
+ArenaList_GetF0 = 0x0030D160; // type:func guess
+ArenaList_SetF0 = 0x0030D170; // type:func guess
+ArenaList_GetF2 = 0x0030D140; // type:func guess
+ArenaList_SetF2 = 0x0030D150; // type:func guess
+
+// unk_25A130.c and unk_23A890.c: kill functions of the cut-in ("[FIX]CUT IN", CutIn_TaskMain) and of the damage number
+// ("[FIX]DMG %dP", Dmg_Start) tasks: the kill runs when the task is removed.
+CutIn_TaskKill = 0x00259B70; // type:func guess
+Dmg_TaskKill = 0x00239F60; // type:func guess
+
+// unk_25A130.c: the wave block (its f70 field is cleared by the wave's AfterDraw).
+gWave = 0x0046FDCC; // size:0x4 guess
+
+// unk_20A4D0.c: the ADX voice slots (5 slots of 0x20 bytes at gBattle+0x5C4): +0x8 is the ADX voice id, +0xC the state
+// (1 and 2 playing, 3 paused), +0x4 a volume scale, +0x18 the volume (-1.0f by default). AdxSlot_* act on one slot.
+AdxSlot_IsPlaying = 0x00218960; // type:func guess
+AdxSlot_SetVolume = 0x00219340; // type:func guess
+AdxSlot_Stop = 0x00219390; // type:func guess
+AdxSlot_Suspend = 0x00219410; // type:func guess
+AdxSlot_Pause = 0x00219470; // type:func guess
+// AdxSlot_SetPausedAll moves the slots between state 1 and state 3 (paused) and pauses their voices; Adx_KillStopCheck
+// kills the stop-check task (Adx_StartStopCheck stores it in D_00470670).
+AdxSlot_SetPausedAll = 0x002195B0; // type:func guess
+Adx_KillStopCheck = 0x00219A10; // type:func guess
+// unk_1CBD90.c: the battle script commands on the ADX slots (the argument is the slot, the volume is a float).
+AdxCmd_WaitStop = 0x001CBF50; // type:func guess
+AdxCmd_IsPlaying = 0x001CBF90; // type:func guess
+AdxCmd_SetVolume = 0x001CC0C0; // type:func guess
+AdxCmd_Stop = 0x001CC130; // type:func guess
+AdxCmd_Pause = 0x001CC170; // type:func guess
+
+// unk_2E9BF0.c: the "BOOT UP" screen: LoadSave loads the save (0x1000) and requests it; Boot_Exit calls Save_Exit and
+// Option_Free, then kills the boot task (D_00470950).
+Boot_LoadSave = 0x002E9D80; // type:func guess
+Boot_Exit = 0x002EA080; // type:func guess

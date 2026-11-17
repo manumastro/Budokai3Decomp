@@ -31,7 +31,7 @@ extern s16 D_005C412E[];
 extern s16 D_005C4132[];
 extern char D_0046FB78[];
 extern char D_0046FB90[];
-extern void func_0030CF60(Task *);
+extern void ArenaList_TaskMain(Task *);
 extern void memset(void *, s32, s32);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void Help_Load(void);
@@ -40,7 +40,7 @@ Task *ArenaRegCharList_Start(s8 a, s8 b, s8 c) {
     ArenaRegCharListWork *w;
     Task *t;
 
-    t = amTask_Create(func_0030CF60, 0, 0x2800, 8, 2, D_0046FB78);
+    t = amTask_Create(ArenaList_TaskMain, 0, 0x2800, 8, 2, D_0046FB78);
     t->data.work = w = amHeap_Alloc(0x6B8, 0, D_0046FB90, 0x9B);
     memset(w, 0, 0x6B8);
     w->f0 = 1;

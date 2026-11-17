@@ -38,7 +38,7 @@ typedef struct Wrap280 {
     Sub2C60 *f30;
 } Wrap280;
 
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern void func_002811D0(void *);
 extern void amCdFs_Close(void *, s32);
 extern void amHeap_Free(void *);
@@ -114,7 +114,7 @@ void func_00281C60(Wrap280 *w) {
     f32 d;
 
     func_002811D0(o);
-    d = o->fC - D_004703BC;
+    d = o->fC - gFrameDelta;
     if (d <= 0.0f) {
         o->fC = d;
         o->f2 = 5;
@@ -130,7 +130,7 @@ void func_00281CC0(Wrap280 *w) {
     f32 d;
 
     func_002811D0(o);
-    d = o->fC - D_004703BC;
+    d = o->fC - gFrameDelta;
     if (d <= 0.0f) {
         o->fC = d;
         o->f2 = 5;

@@ -388,3 +388,9 @@ gScrArea2 = 0x004704C8; // size:0x4 // guess
 gScrArea3 = 0x004704CC; // size:0x4 // guess
 gScrContexts = 0x004704D0; // size:0x4
 gScrMachines = 0x004704D4; // size:0x4
+
+// Pointer globals used across many files (4-byte words, the address of a block or NULL); the names follow the
+// screen or system that owns the block (see the functions that read them). gFrameDelta: the float the per-frame
+// tasks multiply by (the frame time, used by the story and ess screens for their timers).
+gBtlSys = 0x0046FDFC; // size:0x4 guess
+gFrameDelta = 0x004703BC; // size:0x4 guess

@@ -14,7 +14,7 @@ typedef struct Work2918A0 {
 extern Work2918A0 *D_005AA5A0[];
 extern void func_00291BF0(void);
 extern void func_00293250(void);
-extern void func_002BD660(s32, s32);
+extern void StrStatus_Start(s32, s32);
 extern void func_00133780(s32, s32);
 extern void func_00139620(s32, void *, s32, s32, s32, f32);
 extern s32 D_005AA5E4[];
@@ -38,7 +38,7 @@ extern void func_001F0810(s32, s32);
 extern void func_00264140(s32, s32);
 extern void func_002935F0(void);
 extern void func_00295300(void);
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern s32 D_005AA5A4[];
 typedef struct Sub2918A0 {
     char pad0[0xC];
@@ -53,7 +53,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002918A0);
 void func_00291970(void) {
     Work2918A0 *w;
 
-    func_002BD660(0xB000, 0x80000);
+    StrStatus_Start(0xB000, 0x80000);
     w = D_005AA5A0[0];
     w->f1C = (func_00293250 == 0) ? 0 : func_00293250;
 }
@@ -75,7 +75,7 @@ void func_002927E0(Work2918A0 *w) {
     Sub2918A0 *s = (Sub2918A0 *)((char *)w + 0x30);
     f32 f;
 
-    f = w->f40 - D_004703BC;
+    f = w->f40 - gFrameDelta;
     w->f40 = f;
     if (f < 0.0f) {
         s->f10 = 0.0f;
@@ -85,7 +85,7 @@ void func_002927E0(Work2918A0 *w) {
     if (s->f10 <= 0.0f) {
         s->fC = 0.75f;
     } else {
-        f = s->fC - (0.75f * D_004703BC) / s->f10;
+        f = s->fC - (0.75f * gFrameDelta) / s->f10;
         s->fC = f;
         if (f < 0.0f) {
             s->fC = 0.0f;
@@ -103,7 +103,7 @@ void func_002928C0(Work2918A0 *w) {
     Sub2918A0 *s;
     f32 f;
 
-    w->f40 = f = w->f40 - D_004703BC;
+    w->f40 = f = w->f40 - gFrameDelta;
     if (f < 0.0f) {
         w->f40 = 0.0f;
         w->f1C = (func_00292780 == 0) ? 0 : (void (*)(void))func_00292780;
@@ -112,7 +112,7 @@ void func_002928C0(Work2918A0 *w) {
     if (s->f10 <= 0.0f) {
         s->fC = 0.75f;
     } else {
-        f = s->fC + (0.75f * D_004703BC) / s->f10;
+        f = s->fC + (0.75f * gFrameDelta) / s->f10;
         s->fC = f;
         if (f > 0.75f) {
             s->fC = 0.75f;

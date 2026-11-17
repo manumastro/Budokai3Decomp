@@ -25,15 +25,15 @@ extern SklEdit *gSklEdit;
 extern s32 gSklEditUsers;
 extern char D_0046EB60[];
 extern char D_0046EB70[];
-extern void func_00283C10(void);
+extern void SklSheet_Clear(void);
 extern void func_002D2360(void);
-extern void func_002D23D0(void);
+extern void Smsg_Exit(void);
 extern void Help_Exit(void);
 extern void amTask_KillGroup(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void amCdFs_ReleaseCache(void *);
 extern void memset(void *, s32, s32);
-extern void func_002D2440(s32, s32, s32, s32);
+extern void Smsg_Start(s32, s32, s32, s32);
 extern void Help_Load(void);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void func_002B4A30(Task *);
@@ -41,7 +41,7 @@ extern void func_002B4A30(Task *);
 void SklEdit_Init(void) {
     gSklEdit = NULL;
     gSklEditUsers = 0;
-    func_00283C10();
+    SklSheet_Clear();
     func_002D2360();
 }
 
@@ -51,7 +51,7 @@ void SklEdit_Close(void) {
     s32 i;
 
     if (--gSklEditUsers <= 0) {
-        func_002D23D0();
+        Smsg_Exit();
         Help_Exit();
         amTask_KillGroup(0x200, 0x400, 0);
         for (i = 0; i < 2; i++) {
@@ -85,7 +85,7 @@ void SklEdit_Open(s32 prio, char *name, s32 a2, s32 a3, s32 a4) {
         gSklEdit->f3C = a3;
         gSklEdit->f44 = name;
         gSklEdit->f40 = a4;
-        func_002D2440(prio + 0x10, 1, 0x11403000, 0);
+        Smsg_Start(prio + 0x10, 1, 0x11403000, 0);
         Help_Load();
         gSklEdit->file[0] = amCdFs_ReadFileId(0x10844, 0, 0);
         gSklEdit->file[1] = amCdFs_ReadFileId(0x10845, 0, 0);

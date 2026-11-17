@@ -23,11 +23,11 @@ extern void amDbg_Printf(u32, s32, char *);
 extern void func_001F0820(void);
 extern void func_00264300(s32, void (*)(void), s32);
 
-void func_001EA380(Task *t) {
+void GameOver_TaskDraw(Task *t) {
     amDbg_Printf((0x40 - func_00127BA0(D_004696A8)) >> 1, 10, D_004696A8);
 }
 
-void func_001EA3C0(Task *t) {
+void GameOver_TaskMain(Task *t) {
     amDbg_Printf((0x40 - func_00127BA0(D_004696A8)) >> 1, 10, D_004696A8);
     if ((D_00492FCE[0] | D_00493086[0]) & 0x4000) {
         if (D_00470600 == -1) {
@@ -37,7 +37,7 @@ void func_001EA3C0(Task *t) {
         }
         D_00470608 = 0;
         func_00264300(-1, func_001F0820, 0);
-        TASK_SETFUNC(t, func_001EA380);
+        TASK_SETFUNC(t, GameOver_TaskDraw);
         return;
     }
 }

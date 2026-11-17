@@ -16,12 +16,12 @@ typedef struct Scene2D8 {
 } Scene2D8;
 
 extern s8 D_004703F4;
-extern Scene2D8 *D_00470934;
+extern Scene2D8 *gOptionWork;
 extern void func_002D92C0(void);
 extern void func_002D96D0(void);
 
 void func_002D9510(void) {
-    Scene2D8 *s = D_00470934;
+    Scene2D8 *s = gOptionWork;
     f32 a;
 
     if (D_004703F4 != 3) {
@@ -36,7 +36,7 @@ void func_002D9510(void) {
     }
 }
 void func_002D9580(void) {
-    Scene2D8 *s = D_00470934;
+    Scene2D8 *s = gOptionWork;
     f32 a;
 
     if (D_004703F4 != 3) {
@@ -57,7 +57,7 @@ void func_002D96B0(void) {
     func_002D9770(0, 1.0f);
 }
 void func_002D96D0(void) {
-    Scene2D8 *s = D_00470934;
+    Scene2D8 *s = gOptionWork;
     f32 a;
 
     func_002D9770(0, s->f38C / 15.0f);
@@ -74,7 +74,7 @@ void func_002D96D0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2D9510", func_002D9770);
 void func_002D98C0(void) {
-    Scene2D8 *s = D_00470934;
+    Scene2D8 *s = gOptionWork;
     f32 a;
 
     if (D_004703F4 != 3) {
@@ -89,7 +89,7 @@ void func_002D98C0(void) {
     }
 }
 void func_002D9930(void) {
-    Scene2D8 *s = D_00470934;
+    Scene2D8 *s = gOptionWork;
     f32 a;
 
     if (D_004703F4 != 3) {

@@ -37,7 +37,7 @@ typedef struct MainMenuWork {
 extern void func_00267090(MainMenuWork *);
 extern void func_00266EC0(MainMenuWork *);
 extern void func_00266CD0(MainMenuWork *);
-extern void func_002C04B0(void *);
+extern void StrStatus_Exit(void *);
 extern void Help_Exit(void);
 extern MainMenu *gMainMenu;
 extern char D_0046B400[];
@@ -109,7 +109,7 @@ void MainMenu_TaskCancel(Task *t) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_mainmenu", MainMenu_TaskMain);
 
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern f32 D_004E0610[];
 extern f32 D_004E0618[];
 extern void func_00229800(void *, void *, s32, f32);
@@ -127,7 +127,7 @@ void MainMenu_TaskOpen(Task *t) {
     f32 v;
 
     func_00267090(w);
-    v = w->timer - D_004703BC;
+    v = w->timer - gFrameDelta;
     w->timer = v;
     if (v <= 0.0f) {
         func_00229800(((void ***)w->res[0])[7][0x3A], sp30, -1, 0.0f);
@@ -206,7 +206,7 @@ void MainMenu_Exit(void) {
     MainMenuWork *w = g->task->data.work;
     if (g->task != NULL) {
         func_00266EC0(w);
-        func_002C04B0(w->f90);
+        StrStatus_Exit(w->f90);
         amHeap_Free(w->res[0]);
         amHeap_Free(w->res[1]);
         amHeap_Free(w->res[2]);

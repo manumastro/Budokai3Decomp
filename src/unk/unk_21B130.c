@@ -60,7 +60,7 @@ void func_002400E0(void);
 
 void func_0022D0E0(s32, s32);
 
-extern u8 *D_00470570;
+extern u8 *gBattle;
 extern s32 D_00470680;
 extern s32 D_00470684;
 extern s32 D_00470688;
@@ -76,7 +76,7 @@ extern void func_0021B130(void);
 extern void func_0023FBB0(void);
 extern void func_0021CA20(void);
 
-extern u8 *D_0046FDFC;
+extern u8 *gBtlSys;
 extern s32 D_00470680;
 extern s32 D_00470684;
 
@@ -102,7 +102,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B130);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B1E0);
 #if 0
 void func_0021B420(void) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
     f32 x;
     f32 q;
     f32 r;
@@ -229,7 +229,7 @@ void func_0021B760(void) {
 void func_0021B7A0(u8 *obj) {
     s32 *p;
 
-    if (*(s8 *)(D_00470570 + 0x8975) != 1) {
+    if (*(s8 *)(gBattle + 0x8975) != 1) {
         p = (s32 *)(obj + 0x30);
         if (*(s32 *)(obj + 0x30) != 0) {
             func_0022C560(*(s32 *)(obj + 0x30));
@@ -240,7 +240,7 @@ void func_0021B7A0(u8 *obj) {
     }
 }
 void func_0021B810(void) {
-    if (*(s8 *)(D_00470570 + 0x8975) != 1) {
+    if (*(s8 *)(gBattle + 0x8975) != 1) {
         if (D_00470680 & 0x80000000) {
             func_0021B130();
             func_0023FBB0();
@@ -248,7 +248,7 @@ void func_0021B810(void) {
     }
 }
 void func_0021B870(void) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
     V16 t;
 
     func_0012F2C0();
@@ -258,15 +258,15 @@ void func_0021B870(void) {
     func_00139620(0x902, &t, -1, 0x48, 0, 0.0f);
     amGs_SetReg32(2, 0x33001);
     if (*(s32 *)(sys + 0xDF8) != 0) {
-        if (*(f32 *)(D_0046FDFC + 0xE00) >= *(f32 *)(D_0046FDFC + 0xE04)) {
-            func_00139620(0x902, D_0046FDFC + 0xE20, -1, 0x44, 0, 0.0f);
+        if (*(f32 *)(gBtlSys + 0xE00) >= *(f32 *)(gBtlSys + 0xE04)) {
+            func_00139620(0x902, gBtlSys + 0xE20, -1, 0x44, 0, 0.0f);
         }
     }
     func_00228430(0);
     func_002284D0(0);
 }
 void func_0021B940(void) {
-    u8 *v = *(u8 **)(D_0046FDFC + 0xEE8);
+    u8 *v = *(u8 **)(gBtlSys + 0xEE8);
     s32 *s0;
 
     if (v != 0) {
@@ -284,11 +284,11 @@ void func_0021B940(void) {
 #if 0
 void func_0021B9A0(void) {
     s32 *s1;
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
     u8 *v;
     s32 e;
 
-    if (*(s32 *)(D_00470570 + 0x88EC) == 0) {
+    if (*(s32 *)(gBattle + 0x88EC) == 0) {
         e = *(s32 *)(sys + 0xE64);
         D_00470704 = e;
         D_0047070C = 0x04001000;
@@ -347,10 +347,10 @@ s32 func_0021C2E0(s32 id) {
     if (id == -1) {
         return -1;
     }
-    if (0 < *(s32 *)(D_00470570 + 0x88D8)) {
+    if (0 < *(s32 *)(gBattle + 0x88D8)) {
         i = 0;
-        p = D_0046FDFC;
-        n = (s32 *)(D_00470570 + 0x88D8);
+        p = gBtlSys;
+        n = (s32 *)(gBattle + 0x88D8);
         do {
             if (id == *(s16 *)(p + 0x3E)) {
                 return i;
@@ -366,8 +366,8 @@ s32 func_0021C2E0(s32 id) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C2E0);
 #if 0
 s32 func_0021C360(s32 id) {
-    u8 *bw = D_00470570;
-    u8 *sys = D_0046FDFC;
+    u8 *bw = gBattle;
+    u8 *sys = gBtlSys;
     s32 i;
 
     if (0 < *(s32 *)(bw + 0x88D8)) {
@@ -384,23 +384,23 @@ s32 func_0021C360(s32 id) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C360);
 #if 0
 s32 func_0021C3D0(s32 i) {
-    return *(s8 *)(D_0046FDFC + i + 0xCA0);
+    return *(s8 *)(gBtlSys + i + 0xCA0);
 }
 // differs: the sum D + i is added with the operands in the other order (addu v0, a0, v0), not reached by the variants tried
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C3D0);
 u8 *func_0021C3E0(s32 i) {
-    return D_0046FDFC + 0xCB0 + i * 0x50;
+    return gBtlSys + 0xCB0 + i * 0x50;
 }
 u8 *func_0021C400(s32 i) {
-    return D_0046FDFC + 0x760 + i * 0x190;
+    return gBtlSys + 0x760 + i * 0x190;
 }
 u8 *func_0021C430(s32 i) {
-    return D_0046FDFC + 0x650 + i * 0x190;
+    return gBtlSys + 0x650 + i * 0x190;
 }
 #if 0
 s32 func_0021C460(s32 id) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
     u8 *cur = sys + id * 0x190;
     u8 *oth = sys + (id ^ 1) * 0x190;
     s32 c;
@@ -439,14 +439,14 @@ s32 func_0021C460(s32 id) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C460);
 void func_0021C540(f32 a, f32 b, f32 c) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
 
     *(f32 *)(sys + 0xE20) = a;
     *(f32 *)(sys + 0xE24) = b;
     *(f32 *)(sys + 0xE28) = c;
 }
 void func_0021C560(s32 mode, f32 a, f32 b, f32 c) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
 
     *(s32 *)(sys + 0xDFC) = mode;
     *(s32 *)(sys + 0xE00) = 0;
@@ -471,13 +471,13 @@ void func_0021C5E0(s32 a, s32 b) {
     D_00470680 |= b;
 }
 u8 *func_0021C600(void) {
-    return D_0046FDFC + 0x640;
+    return gBtlSys + 0x640;
 }
 u8 *func_0021C610(void) {
-    return D_0046FDFC + 0xDF0;
+    return gBtlSys + 0xDF0;
 }
 u8 *func_0021C620(s32 i) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
 
     if (i == -1) {
         return 0;
@@ -485,20 +485,20 @@ u8 *func_0021C620(s32 i) {
     return sys + i * 0x190 + 0x110;
 }
 u8 *func_0021C660(s32 i) {
-    return D_0046FDFC + i * 0x190;
+    return gBtlSys + i * 0x190;
 }
 u8 *func_0021C680(s32 i) {
-    return D_0046FDFC + i * 0x190;
+    return gBtlSys + i * 0x190;
 }
 void func_0021C6A0(void) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
 
     func_0021CA20();
     memset(sys, 0, 0xF00);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C6E0);
 void func_0021CA20(void) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
 
     *(s32 *)(sys + 0xE30) = 0;
     *(s32 *)(sys + 0xDF8) = 0;
@@ -525,7 +525,7 @@ void func_0021CA20(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CAD0);
 #if 0
 void func_0021CCF0(void) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
     s32 *tbl = D_0046A470;
 
     if (*(s32 *)tbl[2] != 0) {
@@ -549,7 +549,7 @@ void func_0021CCF0(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CCF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021CD80);
 s32 func_0021D170(u8 *o) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
     u8 *s1 = sys + 0xDF0;
     s32 r;
     s32 t;
@@ -559,8 +559,8 @@ s32 func_0021D170(u8 *o) {
     memset(D_004706A0, 0, 8);
     *(s16 *)(s1 + 0) = *(s16 *)(o + 0x152);
     *(s16 *)(s1 + 2) = *(s16 *)(o + 0x15A);
-    *(f32 *)(D_0046FDFC + 0xDF4) = (f32)*(s32 *)(o + 0x15C);
-    func_00125740(D_0046FDFC + 0xCB0, o + 0x10, 0x140);
+    *(f32 *)(gBtlSys + 0xDF4) = (f32)*(s32 *)(o + 0x15C);
+    func_00125740(gBtlSys + 0xCB0, o + 0x10, 0x140);
     if (*(s16 *)(sys + 0xDF0) == 3) {
         *(s16 *)(sys + 0xE52) = 0;
     }

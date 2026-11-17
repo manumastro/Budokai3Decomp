@@ -66,10 +66,10 @@ void func_0028EB40(s32 *p, s32 a1, s32 a2, s32 a3) {
     }
     p[0x1C / 4] = v;
 }
-void func_0028EB80(void *p, s32 v) {
+void StrBg_SetValue(void *p, s32 v) {
     ((s32 *)p)[0x14] = v;
 }
-void func_0028EB90(void *p, f32 x, f32 y) {
+void StrBg_SetPos(void *p, f32 x, f32 y) {
     *(f32 *)((char *)p + 0x4C) = y;
     *(f32 *)(*(char **)(*(char **)((char *)p + 0x3C)) + 0x10) = x;
 }
@@ -80,7 +80,7 @@ void func_0028EBB0(char *a0, s32 a1, s32 *a2, s32 a3) {
     *(u16 *)(a0 + 0x30) = (*(u16 *)(a0 + 0x30) & -2) | a1;
     *(s32 *)(a0 + 0x44) = w;
 }
-void func_0028EBF0(void *p, s32 a1, s32 a2) {
+void StrBg_SetFlags(void *p, s32 a1, s32 a2) {
     *(u16 *)((char *)p + 0x30) = (*(u16 *)((char *)p + 0x30) & -2) | a1;
     *(s32 *)((char *)p + 0x44) = a2;
 }
@@ -108,7 +108,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F090);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F720);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F830);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F930);
-void func_00290320(void) {
+void StrBg_Clear(void) {
     D_004708A4 = 0;
 }
 #if 0

@@ -47,7 +47,7 @@ extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern f32 D_004E0614[];
 extern u16 D_00492FCE[];
 extern u16 D_00493086[];
@@ -94,33 +94,33 @@ void EssInfo_Draw(void) {
     func_002284D0(0);
     a = &gEssInfo->anim[1];
     func_00228430(0);
-    func_00227B20((s32 *)m->f1C[a->id][3], 0, 0, 0, a->frame * D_004703BC);
+    func_00227B20((s32 *)m->f1C[a->id][3], 0, 0, 0, a->frame * gFrameDelta);
     func_0022C430(m->f1C[6], gEssInfo->f34);
     func_00228410();
     a = &gEssInfo->anim[2];
     if (gEssInfo->anim[2].fC == 0) {
         func_00228430(0);
-        func_00227B20((s32 *)m->f1C[a->id][3], 0, 0, 0, a->frame * D_004703BC);
+        func_00227B20((s32 *)m->f1C[a->id][3], 0, 0, 0, a->frame * gFrameDelta);
         func_0022C430(m->f1C[6], gEssInfo->f38);
         func_00228410();
     }
     func_00228430(0);
-    func_0022C430(m->f1C[gEssInfo->anim[0].id], gEssInfo->anim[0].frame * D_004703BC);
+    func_0022C430(m->f1C[gEssInfo->anim[0].id], gEssInfo->anim[0].frame * gFrameDelta);
     func_00228410();
     func_00228430(0);
-    func_0022C430(m->f1C[gEssInfo->anim[3].id], gEssInfo->anim[3].frame * D_004703BC);
+    func_0022C430(m->f1C[gEssInfo->anim[3].id], gEssInfo->anim[3].frame * gFrameDelta);
     func_00228410();
     func_00228430(0);
-    func_0022C430(m->f1C[gEssInfo->anim[4].id], gEssInfo->anim[4].frame * D_004703BC);
+    func_0022C430(m->f1C[gEssInfo->anim[4].id], gEssInfo->anim[4].frame * gFrameDelta);
     func_00228410();
     a = &gEssInfo->anim[5];
     func_00228430(0);
-    func_00227B20((s32 *)m->f1C[a->id][3], 0, 0, 0, a->frame * D_004703BC);
+    func_00227B20((s32 *)m->f1C[a->id][3], 0, 0, 0, a->frame * gFrameDelta);
     func_0022C430(m->f1C[0x10], gEssInfo->page);
     func_00228410();
     a = &gEssInfo->anim[6];
     func_00228430(0);
-    func_00227B20((s32 *)m->f1C[a->id][3], 0, 0, 0, a->frame * D_004703BC);
+    func_00227B20((s32 *)m->f1C[a->id][3], 0, 0, 0, a->frame * gFrameDelta);
     func_0022C430(m->f1C[0x14], gEssInfo->page);
     func_00228410();
     func_00228410();
@@ -135,7 +135,7 @@ void EssInfo_UpdateAnims(void) {
     a = &gEssInfo->anim[2];
     if (gEssInfo->anim[2].fC == 0) {
         a->frame++;
-        if (func_0022BC30(gEssInfo->model[0]->f1C[a->id], a->frame * D_004703BC) == 0xFF) {
+        if (func_0022BC30(gEssInfo->model[0]->f1C[a->id], a->frame * gFrameDelta) == 0xFF) {
             a->fC = -1;
             gEssInfo->f34 = gEssInfo->page;
         }
@@ -154,8 +154,8 @@ void EssInfo_TaskTurn(Task *t) {
     EssInfo_Draw();
     done = -1;
     m = gEssInfo->model[0];
-    done &= func_0022BC30(m->f1C[gEssInfo->anim[1].id], gEssInfo->anim[1].frame * D_004703BC);
-    done &= func_0022BC30(m->f1C[gEssInfo->anim[2].id], gEssInfo->anim[2].frame * D_004703BC);
+    done &= func_0022BC30(m->f1C[gEssInfo->anim[1].id], gEssInfo->anim[1].frame * gFrameDelta);
+    done &= func_0022BC30(m->f1C[gEssInfo->anim[2].id], gEssInfo->anim[2].frame * gFrameDelta);
     if (done == 0xFF) {
         TASK_SET_FUNC(t, EssInfo_TaskMain);
     }
@@ -286,7 +286,7 @@ void EssInfo_TaskMain(Task *t) {
 void EssInfo_TaskClose(Task *t) {
     EssInfo_UpdateAnims();
     EssInfo_Draw();
-    if (func_0022BC30(gEssInfo->model[0]->f1C[gEssInfo->anim[0].id], gEssInfo->anim[0].frame * D_004703BC) == 0xFF) {
+    if (func_0022BC30(gEssInfo->model[0]->f1C[gEssInfo->anim[0].id], gEssInfo->anim[0].frame * gFrameDelta) == 0xFF) {
         func_0026D8A0();
         t->func = NULL;
     }
@@ -295,7 +295,7 @@ void EssInfo_TaskClose(Task *t) {
 void EssInfo_TaskOpen(Task *t) {
     EssInfo_UpdateAnims();
     EssInfo_Draw();
-    if (func_0022BC30(gEssInfo->model[0]->f1C[gEssInfo->anim[0].id], gEssInfo->anim[0].frame * D_004703BC) == 0xFF) {
+    if (func_0022BC30(gEssInfo->model[0]->f1C[gEssInfo->anim[0].id], gEssInfo->anim[0].frame * gFrameDelta) == 0xFF) {
         TASK_SET_FUNC(t, EssInfo_TaskMain);
     }
 }

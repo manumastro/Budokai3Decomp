@@ -121,19 +121,19 @@ extern void func_00290410(Slot *);
 extern void func_00290390(s32, s32);
 extern void func_002904C0(Slot *);
 extern void memset(void *, s32, s32);
-extern void func_0029A8E0(void);
-extern void func_00290320(void);
+extern void StrMap_Clear(void);
+extern void StrBg_Clear(void);
 extern void func_002BFCF0(void);
 extern void amTask_KillGroup(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void amCdFs_ReleaseCache(void *);
 extern void func_0022D0E0(void *, s32);
-extern void func_001CA8A0(void *);
+extern void Character_Release(void *);
 extern void func_002BFD90(void);
 extern void func_0029A8F0(void);
 extern void func_00291380(void);
 extern void Help_Exit(void);
-extern void func_00298770(Proc *);
+extern void Flight_TaskMain(Proc *);
 extern void *amTask_Create(void (*)(Proc *), s32, s32, s32, s32, char *);
 
 static inline Slot *Snd_FindSlot(s32 id) {
@@ -168,7 +168,7 @@ void func_00298420(Proc *o) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_297C60", func_002984A0);
-void func_00298770(Proc *o) {
+void Flight_TaskMain(Proc *o) {
     if (D_005AA574[0]->f4 == 3) {
         func_001F07D0();
         func_00144B70(-1);
@@ -347,11 +347,11 @@ void func_00298E30(Vec4f *v, s32 a) {
 }
 void func_00298E60(void) {
     memset(D_005AA550, 0, 0xE30);
-    func_0029A8E0();
-    func_00290320();
+    StrMap_Clear();
+    StrBg_Clear();
     func_002BFCF0();
 }
-void func_00298EA0(void) {
+void Flight_Exit(void) {
     s32 i;
 
     amTask_KillGroup(2, 0x20000, 0);
@@ -369,7 +369,7 @@ void func_00298EA0(void) {
         }
     }
     if (D_005AA608[0] != NULL) {
-        func_001CA8A0(D_005AA608[0]);
+        Character_Release(D_005AA608[0]);
     }
     func_002BFD90();
     memset(D_005AA550, 0, (u8 *)D_005AA604 - (u8 *)D_005AA550);
@@ -378,10 +378,10 @@ void func_00298EA0(void) {
     func_00291380();
     Help_Exit();
 }
-void func_00298FC0(void) {
-    D_005AA5A0[0] = amTask_Create(func_00298770, 0, 0x9000, 2, 0x20000, D_0046BB70);
+void Flight_Start(void) {
+    D_005AA5A0[0] = amTask_Create(Flight_TaskMain, 0, 0x9000, 2, 0x20000, D_0046BB70);
 }
-void func_00299000(void) {
+void Flight_Load(void) {
     Vec4i v;
     SndWork *w;
     s32 k;
@@ -390,7 +390,7 @@ void func_00299000(void) {
     func_0029D6C0(&v);
     w = D_005AA604[0];
     if (D_005AA608[0] != NULL) {
-        func_001CA8A0(D_005AA608[0]);
+        Character_Release(D_005AA608[0]);
     }
     D_005AA608[0] = func_001CAAB0(func_002A8CA0(w->f11E1), w->f11E2, w->f11E3, 3, 1);
     D_005AA568[0] = amCdFs_ReadFileId(D_00453C80[w->f11E1], 0, 1);
@@ -417,8 +417,8 @@ void func_00299240(s32 n) {
     f32 f;
 
     memset(D_005AA550, 0, 0xE30);
-    func_0029A8E0();
-    func_00290320();
+    StrMap_Clear();
+    StrBg_Clear();
     func_002BFCF0();
     func_001F0660();
     D_00511450[0] = n;

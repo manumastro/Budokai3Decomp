@@ -195,7 +195,7 @@ typedef struct TutCmd4 {
 } TutCmd4;
 
 extern TutWork *D_0047091C;
-extern char *D_00470570;
+extern char *gBattle;
 
 extern EffWork *D_00470130;
 
@@ -207,12 +207,12 @@ void func_002C5EB0(Dst2C41C0 *d, Src2C41C0 *s) {
     if (s->f0 != 0) {
         d->f20 = s->f0;
     } else {
-        d->f20 = D_00470570 + 0x60;
+        d->f20 = gBattle + 0x60;
     }
     if (s->f4 != 0) {
         d->f24 = s->f4;
     } else {
-        d->f24 = *(s32 *)(D_00470570 + 0x264);
+        d->f24 = *(s32 *)(gBattle + 0x264);
     }
     if (s->f8 != 0) {
         d->f28 = s->f8;
@@ -300,8 +300,8 @@ void func_002C6BF0(EffReq2C41C0 *s) {
     p->f38 = s3;
     s3->f34 = p;
     VecCopy(p, s->fC);
-    if (D_00470570 != 0) {
-        k = *(f32 *)(D_00470570 + 0x88F0);
+    if (gBattle != 0) {
+        k = *(f32 *)(gBattle + 0x88F0);
     } else {
         if (D_004703F4 != 3) {
             k = 1.0f;
@@ -402,8 +402,8 @@ void func_002C8930(EffReq2C41C0 *s) {
     p->f38 = s3;
     s3->f34 = p;
     VecCopy(p, s->fC);
-    if (D_00470570 != 0) {
-        k = *(f32 *)(D_00470570 + 0x88F0);
+    if (gBattle != 0) {
+        k = *(f32 *)(gBattle + 0x88F0);
     } else {
         if (D_004703F4 != 3) {
             k = 1.0f;
@@ -760,7 +760,7 @@ s32 func_002CA8F0(void) {
     if (t->f3C) {
         *n = 1;
     }
-    if (*n && *(s16 *)(D_00470570 + 0x8944) == 0) {
+    if (*n && *(s16 *)(gBattle + 0x8944) == 0) {
         return 1;
     }
     return 0;
@@ -777,7 +777,7 @@ s32 func_002CA950(void) {
     if (t->f3B) {
         *n = 1;
     }
-    if (*n && *(s16 *)(D_00470570 + 0x8944) == 0) {
+    if (*n && *(s16 *)(gBattle + 0x8944) == 0) {
         return 1;
     }
     return 0;
@@ -823,7 +823,7 @@ s32 func_002CAA80(void) {
     if (t->f36) {
         *n = 1;
     }
-    if (*n && *(s16 *)(D_00470570 + 0x8944) == 0) {
+    if (*n && *(s16 *)(gBattle + 0x8944) == 0) {
         return 1;
     }
     return 0;

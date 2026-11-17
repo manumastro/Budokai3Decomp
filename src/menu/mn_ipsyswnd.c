@@ -3,20 +3,20 @@
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4330);
 extern void func_002F4330();
 
-void func_002F4450(u8 *a0) {
+void IpSysWnd_Exit(u8 *a0) {
     func_002F4330(*(void **)(a0 + 0x30));
 }
-extern f32 D_004703BC;
-extern void func_002F4450();
+extern f32 gFrameDelta;
+extern void IpSysWnd_Exit();
 
 void func_002F4460(u8 *a0) {
     u8 *s0;
     s0 = *(u8 **)(a0 + 0x30);
     func_002F4330(s0);
-    *(f32 *)(s0 + 0x14) = *(f32 *)(s0 + 0x14) - D_004703BC;
+    *(f32 *)(s0 + 0x14) = *(f32 *)(s0 + 0x14) - gFrameDelta;
     if (*(f32 *)(s0 + 0x14) <= 0.0f) {
         *(s16 *)(s0 + 0xE) = 4;
-        *(void **)(a0 + 0x1C) = ((void *)func_002F4450 == 0) ? 0 : (void *)func_002F4450;
+        *(void **)(a0 + 0x1C) = ((void *)IpSysWnd_Exit == 0) ? 0 : (void *)IpSysWnd_Exit;
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F44E0);
@@ -64,7 +64,7 @@ extern void *amTask_Create();
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void func_002F4880();
 
-void *func_002F4B20(s16 a0) {
+void *IpSysWnd_Start(s16 a0) {
     u8 *s0;
     u8 *s1;
     s1 = amTask_Create(func_002F4880, 0, 0x6000, 8, 2, D_0046F778);
@@ -95,7 +95,7 @@ s16 func_002F5480(void) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F5480);
 extern u8 *gOutputPass;
 
-void func_002F54B0(void) {
+void OutputPass_Clear(void) {
     gOutputPass = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F54C0);

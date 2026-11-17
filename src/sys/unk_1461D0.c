@@ -61,7 +61,7 @@ extern s8 D_004703E8;
 extern s8 D_004703EC;
 extern s32 D_004703C8;
 extern s32 D_004703CC;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern f32 D_004703C0;
 extern s32 D_004703F0;
 extern s32 gDmaQueueBusy[2];
@@ -94,7 +94,7 @@ void func_00146FB0(void) {
         }
         break;
     }
-    D_004703C0 = (f32)D_004703F0 * D_004703BC;
+    D_004703C0 = (f32)D_004703F0 * gFrameDelta;
     D_004703F0 = 0;
     amDma_ResetQueue(0);
     amDma_ResetQueue(1);
@@ -123,7 +123,7 @@ void func_001470D0(void) {
         break;
     }
     amSofdec_Update();
-    D_004703C0 = (f32)D_004703F0 * D_004703BC;
+    D_004703C0 = (f32)D_004703F0 * gFrameDelta;
     D_004703F0 = 0;
     amDma_ResetQueue(0);
     amDma_ResetQueue(1);

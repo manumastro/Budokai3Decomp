@@ -24,7 +24,7 @@ extern char D_0046EF30[];
 extern char D_0046EF40[];
 extern char D_0046EF50[];
 extern void func_002C3D20(Task *);
-extern void func_002C19F0(Task *);
+extern void VsCharaselEd_TaskMain(Task *);
 extern void memset(void *, s32, s32);
 extern void *func_002C0630(s32, s32, s32);
 extern void func_001F07D0(void);
@@ -41,7 +41,7 @@ void TourMode_Start(void) {
     t->data.work = w = amHeap_Alloc(0xD0, 0, D_0046EF40, 0xD9);
     memset(w, 0, 0xD0);
     w->f9C = func_002C0630(0x10814, 0x2000, 0);
-    w->fA4 = amTask_Create(func_002C19F0, 0, 0x3FFF, 8, 2, D_0046EF50);
+    w->fA4 = amTask_Create(VsCharaselEd_TaskMain, 0, 0x3FFF, 8, 2, D_0046EF50);
     w->fAF = 0;
     w->fAD = D_004B4BE4[0];
     w->fAB = D_00470918;

@@ -116,7 +116,7 @@ typedef struct ScrSound {
     s32 f38;
 } ScrSound;
 
-extern ScrWork *D_00470570;
+extern ScrWork *gBattle;
 extern void func_0020F040(s32, s32);
 
 typedef struct ScrFade {
@@ -133,11 +133,11 @@ typedef struct ScrFadeTask {
 extern s8 D_004703F4;
 
 static inline s32 Scr_IsPaused(void) {
-    return D_00470570 != NULL ? D_00470570->f88EC : 0;
+    return gBattle != NULL ? gBattle->f88EC : 0;
 }
 
 static inline f32 Scr_GetSpeed(void) {
-    return D_00470570 != NULL ? D_00470570->f88F0 : (D_004703F4 != 3 ? 1.0f : 1.2f);
+    return gBattle != NULL ? gBattle->f88F0 : (D_004703F4 != 3 ? 1.0f : 1.2f);
 }
 
 extern void func_0020DDD0(s32, ScrEffect *);
@@ -190,7 +190,7 @@ typedef struct ScrPos30 {
 } ScrPos30;
 extern void func_0025D740(void);
 extern ScrTask *amTask_Create(void *, s32, s32, s32, s32, char *);
-void func_0025D980(ScrTask *);
+void Bscr_GetRenderTexture(ScrTask *);
 extern void func_0020E070(s32, ScrVec *);
 extern void func_0020E120(s32, s32);
 extern void func_0020E210(s32, s32);
@@ -274,7 +274,7 @@ extern char D_0046B140[];
 extern char D_0046B160[];
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025D740);
-s32 func_0025D810(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Bscr_CmdDrawPhotoPrio(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 s1 = a[2].i;
     s32 s0 = a[1].i;
@@ -310,8 +310,8 @@ s32 func_0025D940(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 
-void func_0025D980(ScrTask *task) {
-    s32 busy = D_00470570 != NULL ? D_00470570->f88EC : 0;
+void Bscr_GetRenderTexture(ScrTask *task) {
+    s32 busy = gBattle != NULL ? gBattle->f88EC : 0;
 
     if (busy == 0) {
         switch (D_0046FE4C->f916) {
@@ -327,11 +327,11 @@ void func_0025D980(ScrTask *task) {
     }
 }
 
-s32 func_0025DA10(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Bscr_CmdGetRenderTexture(ScrCtx *ctx, ScrCmd *cmd) {
     s32 v = cmd->args[0].i;
 
     if (D_0046FE4C->f916 == 0) {
-        amTask_Create(func_0025D980, 0, 0x3900, 0x400, 0x800002, D_0046B080)->f30 = v;
+        amTask_Create(Bscr_GetRenderTexture, 0, 0x3900, 0x400, 0x800002, D_0046B080)->f30 = v;
     }
     return 1;
 }
@@ -434,7 +434,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DDD0);
 s32 func_0025DED0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
-    func_0020E7D0(a[2].i, D_00470570->f8934[a[1].i], a[0].i);
+    func_0020E7D0(a[2].i, gBattle->f8934[a[1].i], a[0].i);
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DF20);
@@ -443,11 +443,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025E050);
 s32 func_0025E150(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
-    func_0020E8F0(a[2].i, D_00470570->f8934[a[1].i], a[0].i);
+    func_0020E8F0(a[2].i, gBattle->f8934[a[1].i], a[0].i);
     return 1;
 }
 
-/* Same as func_0025E3A0 but the original keeps D_00470570 in a1 and the flag in v1; 8 of 52 differ. */
+/* Same as Bscr_DrawMotionPrio but the original keeps gBattle in a1 and the flag in v1; 8 of 52 differ. */
 #if 0
 void func_0025E1A0(ScrFadeTask *task) {
     ScrFade *f = &task->fade;
@@ -463,7 +463,7 @@ void func_0025E1A0(ScrFadeTask *task) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025E1A0);
 
-s32 func_0025E270(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Bscr_CmdSetObjCamPos(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 id = a[6].i;
     s32 end = a[1].i;
@@ -493,7 +493,7 @@ s32 func_0025E350(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020EB70(id, &v);
     return 1;
 }
-void func_0025E3A0(ScrFadeTask *task) {
+void Bscr_DrawMotionPrio(ScrFadeTask *task) {
     ScrFade *f = &task->fade;
 
     if (!Scr_IsPaused() && f->end != -1.0f) {
@@ -505,11 +505,11 @@ void func_0025E3A0(ScrFadeTask *task) {
     func_0020EBF0(f->id);
 }
 
-s32 func_0025E470(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Bscr_CmdDrawMotionPrio(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 id = a[2].i;
     s32 end = a[1].i;
-    ScrFade *f = &((ScrFadeTask *)amTask_Create(func_0025E3A0, 0, a[0].i, 0x400, 0x800002, D_0046B100))->fade;
+    ScrFade *f = &((ScrFadeTask *)amTask_Create(Bscr_DrawMotionPrio, 0, a[0].i, 0x400, 0x800002, D_0046B100))->fade;
 
     f->id = id;
     f->cur = -Scr_GetSpeed();
@@ -534,7 +534,7 @@ s32 func_0025E550(ScrCtx *ctx, ScrCmd *cmd) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025E5A0);
-s32 func_0025E6A0(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Bscr_CmdEffectLinePrio(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 s1 = a[2].i;
     s32 s0 = a[1].i;
@@ -547,7 +547,7 @@ s32 func_0025E6A0(ScrCtx *ctx, ScrCmd *cmd) {
     e->f8 = (f32)s0;
     return 1;
 }
-void func_0025E760(ScrFadeTask *task) {
+void Bscr_DrawEffectPrio(ScrFadeTask *task) {
     ScrFade *f = &task->fade;
 
     if (!Scr_IsPaused() && f->end != -1.0f) {
@@ -559,11 +559,11 @@ void func_0025E760(ScrFadeTask *task) {
     func_0020EC70(f->id);
 }
 
-s32 func_0025E830(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Bscr_CmdDrawEffectPrio(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 id = a[2].i;
     s32 end = a[1].i;
-    ScrFade *f = &((ScrFadeTask *)amTask_Create(func_0025E760, 0, a[0].i, 0x400, 0x800002, D_0046B140))->fade;
+    ScrFade *f = &((ScrFadeTask *)amTask_Create(Bscr_DrawEffectPrio, 0, a[0].i, 0x400, 0x800002, D_0046B140))->fade;
 
     f->id = id;
     f->cur = -Scr_GetSpeed();
@@ -587,7 +587,7 @@ s32 func_0025E910(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-void func_0025E960(ScrFadeTask *task) {
+void Bscr_DrawObjectPrio(ScrFadeTask *task) {
     ScrFade *f = &task->fade;
 
     if (!Scr_IsPaused() && f->end != -1.0f) {
@@ -599,11 +599,11 @@ void func_0025E960(ScrFadeTask *task) {
     func_0020EDA0(f->id);
 }
 
-s32 func_0025EA30(ScrCtx *ctx, ScrCmd *cmd) {
+s32 Bscr_CmdDrawObjectPrio(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 id = a[2].i;
     s32 end = a[1].i;
-    ScrFade *f = &((ScrFadeTask *)amTask_Create(func_0025E960, 0, a[0].i, 0x400, 0x800002, D_0046B160))->fade;
+    ScrFade *f = &((ScrFadeTask *)amTask_Create(Bscr_DrawObjectPrio, 0, a[0].i, 0x400, 0x800002, D_0046B160))->fade;
 
     f->id = id;
     f->cur = -Scr_GetSpeed();
@@ -631,7 +631,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EB60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EC60);
 
 s32 func_0025ED50(ScrCtx *ctx, ScrCmd *cmd) {
-    func_00245A80(D_00470570->f8934[0], cmd->args[0].i);
+    func_00245A80(gBattle->f8934[0], cmd->args[0].i);
     return 1;
 }
 
@@ -639,7 +639,7 @@ s32 func_0025ED90(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrVec v;
     s32 id = a[5].i;
-    void *o = D_00470570->f8934[a[4].i];
+    void *o = gBattle->f8934[a[4].i];
     s32 mode = a[3].i;
     f32 x = a[2].f;
     f32 y = a[1].f;
@@ -659,7 +659,7 @@ s32 func_0025ED90(ScrCtx *ctx, ScrCmd *cmd) {
 /* differs: the paused test and the out-of-line return 0 (39 of 51 with the helper form) */
 #if 0
 s32 func_0025EE10(TimedEE10 *o) {
-    if (D_00470570 != NULL && D_00470570->f88EC != 0) {
+    if (gBattle != NULL && gBattle->f88EC != 0) {
         return 0;
     }
     if (o->f30 != -1.0f) {
@@ -877,12 +877,12 @@ s32 func_0025F9F0(ScrCtx *ctx, ScrCmd *cmd) {
 }
 
 s32 func_0025FA20(ScrCtx *ctx, ScrCmd *cmd) {
-    func_00245BE0(D_00470570->f8934[cmd->args[0].i]);
+    func_00245BE0(gBattle->f8934[cmd->args[0].i]);
     return 1;
 }
 
 s32 func_0025FA60(ScrCtx *ctx, ScrCmd *cmd) {
-    if (func_00245C50(D_00470570->f8934[ctx->f28])) {
+    if (func_00245C50(gBattle->f8934[ctx->f28])) {
         ctx->f10 = 0;
         return 1;
     }
@@ -891,7 +891,7 @@ s32 func_0025FA60(ScrCtx *ctx, ScrCmd *cmd) {
 s32 func_0025FAC0(ScrCtx *ctx, ScrCmd *cmd) {
     ctx->f28 = cmd->args[0].i;
     ctx->f10 = func_0025FA60;
-    if (func_00245C50(D_00470570->f8934[ctx->f28])) {
+    if (func_00245C50(gBattle->f8934[ctx->f28])) {
         ctx->f10 = 0;
         return 1;
     }
@@ -899,37 +899,37 @@ s32 func_0025FAC0(ScrCtx *ctx, ScrCmd *cmd) {
 }
 
 s32 func_0025FB40(ScrCtx *ctx, ScrCmd *cmd) {
-    func_00245BF0(D_00470570->f8934[cmd->args[0].i]);
+    func_00245BF0(gBattle->f8934[cmd->args[0].i]);
     return 1;
 }
 
 s32 func_0025FB80(ScrCtx *ctx, ScrCmd *cmd) {
-    func_00245C00(D_00470570->f8934[cmd->args[0].i]);
+    func_00245C00(gBattle->f8934[cmd->args[0].i]);
     return 1;
 }
 s32 func_0025FBC0(ScrCtx *ctx, ScrCmd *cmd) {
-    cmd->f0 = func_00245C50(D_00470570->f8934[cmd->args[0].i]);
+    cmd->f0 = func_00245C50(gBattle->f8934[cmd->args[0].i]);
     return 1;
 }
 
 s32 func_0025FC10(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
-    func_00245CC0(D_00470570->f8934[a[1].i], a[0].i);
+    func_00245CC0(gBattle->f8934[a[1].i], a[0].i);
     return 1;
 }
 
 s32 func_0025FC50(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
 
-    func_00245D30(D_00470570->f8934[a[1].i], a[0].i);
+    func_00245D30(gBattle->f8934[a[1].i], a[0].i);
     return 1;
 }
 
 s32 func_0025FC90(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrBig s;
-    void *obj = D_00470570->f8934[a[2].i];
+    void *obj = gBattle->f8934[a[2].i];
     s32 b = a[1].i;
     s32 c = a[0].i;
     s32 d = a[3].i;
@@ -945,7 +945,7 @@ s32 func_0025FC90(ScrCtx *ctx, ScrCmd *cmd) {
 s32 func_0025FCF0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     ScrBig s;
-    void *obj = D_00470570->f8934[a[2].i];
+    void *obj = gBattle->f8934[a[2].i];
     s32 b = a[1].i;
     s32 c = a[0].i;
     s32 d = a[3].i;
@@ -962,7 +962,7 @@ s32 func_0025FF00(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 s1 = a[1].i;
     s32 s0 = a[0].i;
-    PlyPart *p = (PlyPart *)D_00470570->f8934[a[2].i];
+    PlyPart *p = (PlyPart *)gBattle->f8934[a[2].i];
     ScrEntry *r;
 
     r = func_0020F6D0(a[3].i);
@@ -973,7 +973,7 @@ s32 func_0025FF00(ScrCtx *ctx, ScrCmd *cmd) {
 
 s32 func_0025FFA0(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
-    ScrChara *o = D_00470570->f8934[a[2].i];
+    ScrChara *o = gBattle->f8934[a[2].i];
     s32 b = a[1].i;
     s32 c = a[0].i;
     ScrEntry *e = func_0020F6D0(a[3].i);

@@ -6,7 +6,7 @@ extern void func_002A07A0(s32, s32, f32 *);
 extern void func_002A0CE0(s32, s32, f32 *);
 
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1510);
-extern s32 *D_004708D0;
+extern s32 *gEvtWork;
 extern u64 D_004700D8;
 extern s8 D_004B4B63[];
 extern char D_004E77C4[];
@@ -28,7 +28,7 @@ void func_002A1640(void *a0) {
     Zenie_Draw();
     if (func_002A1020(5) == 0) {
         amTask_Kill(p);
-        D_004708D0[0x40 / 4] = 0;
+        gEvtWork[0x40 / 4] = 0;
         Zenie_Close(0);
     }
 }
@@ -38,7 +38,7 @@ extern void func_002A1640(void *);
 extern void Zenie_SetF18(s32);
 extern void Zenie_SetStep(s32);
 
-void func_002A1690(s32 *a0) {
+void EvtZenie_TaskMain(s32 *a0) {
     void *f;
     Zenie_Update(a0);
     Zenie_Draw();
@@ -55,7 +55,7 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A18A0);
 extern void func_002A18A0(void);
 
 void func_002A1980(s32 *a0) {
-    s32 *g = D_004708D0;
+    s32 *g = gEvtWork;
     if (g[0x64 / 4] == 1) {
         void *f = func_002A18A0;
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
@@ -77,7 +77,7 @@ extern void func_002A5B00(void);
 extern void func_0029A9F0(void);
 
 void func_002A22C0(void) {
-    s32 *s0 = D_004708D0;
+    s32 *s0 = gEvtWork;
     if (s0[2] != 0) {
         func_002A5B00();
     }
@@ -189,11 +189,11 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2BB0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2C70);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2E50);
 extern void func_00283D00(s32, s32, s32, s32);
-extern void func_00283BD0(s32);
+extern void SklSheet_SetIndex(s32);
 extern void func_002A0D50(s32);
 
 extern void func_00283D00(s32, s32, s32, s32);
-extern void func_00283BD0(s32);
+extern void SklSheet_SetIndex(s32);
 extern void func_002A0D50(s32);
 extern void func_002A2E50(void);
 
@@ -201,12 +201,12 @@ extern s32 func_002A13B0(void);
 extern void func_002A13C0(s32);
 
 s32 func_002A2F30(s32 *a0) {
-    s32 *s0 = (s32 *)D_004708D0;
+    s32 *s0 = (s32 *)gEvtWork;
     if (s0[0x100 / 4] > 0) {
         func_00283D00(0x9500, s0[0x100 / 4], 1, 0x11403000);
         {
             s32 k4 = s0[0xFC / 4] * 4;
-            func_00283BD0(*(s32 *)((char *)k4 + (s32)s0 + 0x110));
+            SklSheet_SetIndex(*(s32 *)((char *)k4 + (s32)s0 + 0x110));
         }
         s0[0xFC / 4] = s0[0xFC / 4] + 1;
         func_002A0D50(0);
@@ -285,11 +285,11 @@ s32 func_002A3080(s32 *a0, char *a1) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3080);
 extern void Zenie_Open(s32);
-extern s32 *D_004708D0;
+extern s32 *gEvtWork;
 
-s32 func_002A30F0(void) {
+s32 Evt_CmdZenieOpen(void) {
     Zenie_Open(0);
-    D_004708D0[0x64 / 4] = 1;
+    gEvtWork[0x64 / 4] = 1;
     return 1;
 }
 extern void func_002987E0(s32, s32);
@@ -346,12 +346,12 @@ s32 func_002A39C0(s32 *a0, char *a1) {
     a0[0x10 / 4] = (s32)func_002A3910;
     return func_002A3910(a0, a1);
 }
-extern s32 *D_004708D0;
+extern s32 *gEvtWork;
 
 #if 0
 // func_002A3A10: the flag test gives movz for both constants, the original branches (b to the end); six variants tried
 s32 func_002A3A10(void) {
-    s32 *g = D_004708D0;
+    s32 *g = gEvtWork;
     s32 r;
     if (g[0xC / 4] & 0x2) {
         r = 1;
@@ -844,28 +844,28 @@ s32 func_002A4EF0(void) {
     return 1;
 }
 void func_002A4F00(void) {
-    D_004708D0[0x144 / 4] = 1;
+    gEvtWork[0x144 / 4] = 1;
 }
 extern void func_00264380(f32);
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 
 s32 func_002A4F10(s32 *a0) {
-    s32 *g = D_004708D0;
+    s32 *g = gEvtWork;
     if (g[0x144 / 4] == 1) {
         a0[0x10 / 4] = 0;
         g[0x144 / 4] = 0;
-        func_00264380(0.01f * D_004703BC);
+        func_00264380(0.01f * gFrameDelta);
         return 1;
     }
     return 3;
 }
 s32 func_002A4F70(s32 *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
-    s32 *s1 = D_004708D0;
+    s32 *s1 = gEvtWork;
     f32 f20 = *(f32 *)args;
     func_00264300(10, func_002A4F00, 0);
     s1[0x144 / 4] = 0;
-    func_00264380(100.0f * (0.01f * D_004703BC) / f20);
+    func_00264380(100.0f * (0.01f * gFrameDelta) / f20);
     a0[0x10 / 4] = (s32)func_002A4F10;
     return 3;
 }
@@ -967,7 +967,7 @@ void func_002A6190(s32 a0, s32 a1, s32 a2, s32 a3) {
 }
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A6210);
 void func_002A6DB0(s32 *a0) {
-    s32 *s1 = D_004708D0;
+    s32 *s1 = gEvtWork;
     s32 *p = (s32 *)s1[0x38 / 4];
     if (*(s16 *)((char *)p + 4) == 3) {
         s1[0x38 / 4] = p[0x40 / 4];

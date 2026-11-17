@@ -52,7 +52,7 @@ struct BtbHolder {
 extern void func_001B0EC0(void);
 extern void func_002C3E40(void);
 extern void func_0026E3B0(void);
-extern void func_00304E70(void);
+extern void TourMap_Exit(void);
 extern void func_00269730(void);
 extern void func_00307430(void);
 extern void PracMode_Exit(void);
@@ -350,7 +350,7 @@ extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EB130(Task *);
 extern void func_002D1CC0(void);
-extern void func_00307470(void);
+extern void Result_Start(void);
 extern s8 D_004B4BB0[];
 
 void func_001EB250(Task *t) {
@@ -372,7 +372,7 @@ void func_001EB250(Task *t) {
                 break;
             case 26:
                 D_004B4BB0[0] = 1;
-                func_00307470();
+                Result_Start();
                 break;
             case 5:
                 func_001EA740(5);
@@ -425,7 +425,7 @@ extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EB3F0(Task *);
 extern void ArenaMode_Start(s32);
-extern void func_001B1090(void);
+extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
 extern s32 D_00470608;
 
@@ -448,7 +448,7 @@ void func_001EB4E0(Task *t) {
                 break;
             case 25:
                 D_004B4BB0[0] = 1;
-                func_001B1090();
+                BtlIntWait_Start();
                 break;
             }
         }
@@ -1047,7 +1047,7 @@ extern s32 D_00470600;
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EC140(Task *);
-extern void func_001B1090(void);
+extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
@@ -1072,11 +1072,11 @@ void func_001EC250(Task *t) {
                 break;
             case 20:
                 D_004B4BB0[0] = 1;
-                func_001B1090();
+                BtlIntWait_Start();
                 break;
             case 21:
                 D_004B4BB0[0] = 1;
-                func_001B1090();
+                BtlIntWait_Start();
                 break;
             }
         }
@@ -1174,7 +1174,7 @@ extern s32 D_00470600;
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EC430(Task *);
-extern void func_00304F50(void);
+extern void TourMap_Start(void);
 extern s8 D_004B4BB0[];
 
 void func_001EC520(Task *t) {
@@ -1192,7 +1192,7 @@ void func_001EC520(Task *t) {
             switch (D_00470600) {
             case 17:
                 D_004B4BB0[0] = 1;
-                func_00304F50();
+                TourMap_Start();
                 break;
             case 5:
                 func_001EA740(5);
@@ -1274,7 +1274,7 @@ void func_001EC680(Task *t) {
                 TASK_SETFUNC(t, func_001EE6D0);
                 break;
             }
-            func_00304E70();
+            TourMap_Exit();
         }
     }
 }
@@ -1285,7 +1285,7 @@ extern s32 D_00470600;
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EC680(Task *);
-extern void func_001B1090(void);
+extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
@@ -1306,7 +1306,7 @@ void func_001EC770(Task *t) {
             switch (D_00470600) {
             case 18:
                 D_004B4BB0[0] = 1;
-                func_001B1090();
+                BtlIntWait_Start();
                 break;
             case 5:
                 D_004B4BB0[0] = 0;
@@ -1401,7 +1401,7 @@ extern s32 D_00470600;
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EC8F0(Task *);
-extern void func_00304F50(void);
+extern void TourMap_Start(void);
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
@@ -1426,7 +1426,7 @@ void func_001EC9E0(Task *t) {
                 break;
             case 17:
                 D_004B4BB0[0] = 1;
-                func_00304F50();
+                TourMap_Start();
                 break;
             }
         }
@@ -1552,7 +1552,7 @@ extern s8 D_004B4BB2[];
 extern s32 D_00470600;
 extern void func_001EA740(s32);
 extern void func_001ECC50(Task *);
-extern void func_00269980(void);
+extern void VsMode_Load(void);
 
 void func_001ECD10(Task *t) {
     s32 v;
@@ -1568,7 +1568,7 @@ void func_001ECD10(Task *t) {
             TASK_SETFUNC(t, func_001ECC50);
             switch (D_00470600) {
             case 14:
-                func_00269980();
+                VsMode_Load();
                 break;
             case 5:
                 break;
@@ -1629,7 +1629,7 @@ extern s32 D_00470600;
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001ECDB0(Task *);
-extern void func_001B1090(void);
+extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
@@ -1654,7 +1654,7 @@ void func_001ECEA0(Task *t) {
                 break;
             case 15:
                 D_004B4BB0[0] = 1;
-                func_001B1090();
+                BtlIntWait_Start();
                 break;
             }
         }
@@ -1742,7 +1742,7 @@ extern s8 D_004B4BB0[];
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001ED020(Task *);
-extern void func_0029CDB0(void);
+extern void StrTitle_Start(void);
 
 void func_001ED0C0(Task *t) {
     s32 v;
@@ -1757,7 +1757,7 @@ void func_001ED0C0(Task *t) {
         if (D_004705FC != 0) {
             TASK_SETFUNC(t, func_001ED020);
             D_004B4BB0[0] = 1;
-            func_0029CDB0();
+            StrTitle_Start();
         }
     }
 }
@@ -1811,7 +1811,7 @@ extern s8 D_004B4BB0[];
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001ED1D0(Task *);
-extern void func_0030F220(void);
+extern void StaffRoll_Start(void);
 
 void func_001ED270(Task *t) {
     s32 v;
@@ -1826,7 +1826,7 @@ void func_001ED270(Task *t) {
         if (D_004705FC != 0) {
             TASK_SETFUNC(t, func_001ED1D0);
             D_004B4BB0[0] = 1;
-            func_0030F220();
+            StaffRoll_Start();
         }
     }
 }
@@ -1860,7 +1860,7 @@ extern s8 D_004B4BB0[];
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001ED380(Task *);
-extern void func_0029CDB0(void);
+extern void StrTitle_Start(void);
 
 void func_001ED430(Task *t) {
     s32 v;
@@ -1875,7 +1875,7 @@ void func_001ED430(Task *t) {
         if (D_004705FC != 0) {
             TASK_SETFUNC(t, func_001ED380);
             D_004B4BB0[0] = 1;
-            func_0029CDB0();
+            StrTitle_Start();
         }
     }
 }
@@ -1911,7 +1911,7 @@ extern s32 D_004705FC;
 extern s32 D_00470600;
 extern void func_001EA740(s32);
 extern void func_001ED540(Task *);
-extern void func_00298FC0(void);
+extern void Flight_Start(void);
 
 void func_001ED600(Task *t) {
     s32 v;
@@ -1928,7 +1928,7 @@ void func_001ED600(Task *t) {
             switch (D_00470600) {
             case 8:
                 D_004B4BB0[0] = 1;
-                func_00298FC0();
+                Flight_Start();
                 break;
             }
         }
@@ -1940,7 +1940,7 @@ extern s8 D_004B4BB2[];
 extern s32 D_00470600;
 extern void func_001EA740(s32);
 extern void func_001ED600(Task *);
-extern void func_00299000(void);
+extern void Flight_Load(void);
 
 void func_001ED6A0(Task *t) {
     s32 v;
@@ -1956,7 +1956,7 @@ void func_001ED6A0(Task *t) {
             TASK_SETFUNC(t, func_001ED600);
             switch (D_00470600) {
             case 8:
-                func_00299000();
+                Flight_Load();
                 break;
             }
         }
@@ -1972,7 +1972,7 @@ extern s32 D_00470600;
 extern void func_001EA740(s32);
 extern void func_001ED880(Task *);
 extern void StrTitle_Load(void);
-extern void func_00299000(void);
+extern void Flight_Load(void);
 extern void func_002ECB90(void);
 
 void func_001ED9E0(Task *t) {
@@ -1992,7 +1992,7 @@ void func_001ED9E0(Task *t) {
                 StrTitle_Load();
                 break;
             case 8:
-                func_00299000();
+                Flight_Load();
                 break;
             case 0xD:
                 break;
@@ -2012,10 +2012,10 @@ extern s32 D_00470600;
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EDAC0(Task *);
-extern void func_0029CDB0(void);
+extern void StrTitle_Start(void);
 extern void func_002A8E40(void);
-extern void func_00307170(void);
-extern void func_0030F220(void);
+extern void Shenron_Start(void);
+extern void StaffRoll_Start(void);
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
 extern s8 D_004B4BE9[];
@@ -2036,7 +2036,7 @@ void func_001EDC00(Task *t) {
             switch (D_00470600) {
             case 6:
                 D_004B4BB0[0] = 1;
-                func_0029CDB0();
+                StrTitle_Start();
                 break;
             case 9:
                 D_004B4BB0[0] = 1;
@@ -2044,11 +2044,11 @@ void func_001EDC00(Task *t) {
                 break;
             case 11:
                 D_004B4BB0[0] = 1;
-                func_00307170();
+                Shenron_Start();
                 break;
             case 12:
                 D_004B4BB0[0] = 1;
-                func_0030F220();
+                StaffRoll_Start();
                 break;
             }
         }
@@ -2101,8 +2101,8 @@ extern s32 D_00470600;
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EDDE0(Task *);
-extern void func_0029CDB0(void);
-extern void func_00298FC0(void);
+extern void StrTitle_Start(void);
+extern void Flight_Start(void);
 extern s8 D_004B4BB0[];
 
 void func_001EDED0(Task *t) {
@@ -2120,11 +2120,11 @@ void func_001EDED0(Task *t) {
             switch (D_00470600) {
             case 6:
                 D_004B4BB0[0] = 1;
-                func_0029CDB0();
+                StrTitle_Start();
                 break;
             case 8:
                 D_004B4BB0[0] = 1;
-                func_00298FC0();
+                Flight_Start();
                 break;
             }
         }
@@ -2137,7 +2137,7 @@ extern s32 D_00470600;
 extern void func_001EA740(s32);
 extern void func_001EDED0(Task *);
 extern void StrTitle_Load(void);
-extern void func_00299000(void);
+extern void Flight_Load(void);
 
 void func_001EDF90(Task *t) {
     s32 v;
@@ -2156,7 +2156,7 @@ void func_001EDF90(Task *t) {
                 StrTitle_Load();
                 break;
             case 8:
-                func_00299000();
+                Flight_Load();
                 break;
             }
         }
@@ -2172,7 +2172,7 @@ extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EE040(Task *);
 extern void StrSelect_Start(s32);
-extern void func_00298FC0(void);
+extern void Flight_Start(void);
 extern s32 D_00470608;
 extern s8 D_004B4BB0[];
 extern s8 D_004B4B62[];
@@ -2202,7 +2202,7 @@ void func_001EE150(Task *t) {
                 break;
             case 8:
                 D_004B4BB0[0] = 1;
-                func_00298FC0();
+                Flight_Start();
                 break;
             }
         }
@@ -2217,7 +2217,7 @@ extern void func_001EA740(s32);
 extern void func_001EE150(Task *);
 extern void MainMenu_Load(void);
 extern void StrSelect_Load(void);
-extern void func_00299000(void);
+extern void Flight_Load(void);
 
 void func_001EE250(Task *t) {
     s32 v;
@@ -2239,7 +2239,7 @@ void func_001EE250(Task *t) {
                 StrSelect_Load();
                 break;
             case 8:
-                func_00299000();
+                Flight_Load();
                 break;
             }
         }
@@ -2260,7 +2260,7 @@ extern void PracMode_Load(void);
 extern void func_002E18D0(void);
 extern void func_0026E4A0(void);
 extern void Title_Load(void);
-extern void func_00269980(void);
+extern void VsMode_Load(void);
 extern void ArenaMode_Load(void);
 
 void func_001EE6D0(Task *t) {
@@ -2295,7 +2295,7 @@ void func_001EE6D0(Task *t) {
                 Title_Load();
                 break;
             case 14:
-                func_00269980();
+                VsMode_Load();
                 break;
             case 23:
                 ArenaMode_Load();
@@ -2313,8 +2313,8 @@ extern s32 D_00470600;
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EE820(Task *);
-extern void func_002E21C0(void);
-extern void func_001B1090(void);
+extern void Opening_Start(void);
+extern void BtlIntWait_Start(void);
 extern s8 D_004B4BB0[];
 
 void func_001EE920(Task *t) {
@@ -2332,11 +2332,11 @@ void func_001EE920(Task *t) {
             switch (D_00470600) {
             case 2:
                 D_004B4BB0[0] = 0;
-                func_002E21C0();
+                Opening_Start();
                 break;
             case 3:
                 D_004B4BB0[0] = 0;
-                func_001B1090();
+                BtlIntWait_Start();
                 break;
             }
         }
@@ -2444,7 +2444,7 @@ extern s8 D_004B4BB2[];
 extern s32 D_004705FC;
 extern void func_001EA740(s32);
 extern void func_001EED50(Task *);
-extern void func_002E21C0(void);
+extern void Opening_Start(void);
 
 void func_001EEDF0(Task *t) {
     s32 v;
@@ -2459,7 +2459,7 @@ void func_001EEDF0(Task *t) {
         if (D_004705FC != 0) {
             TASK_SETFUNC(t, func_001EED50);
             D_004B4BB0[0] = 0;
-            func_002E21C0();
+            Opening_Start();
         }
     }
 }
@@ -3261,10 +3261,10 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6450);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F64E0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6570);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F65F0);
-extern s32 D_00470570;
+extern s32 gBattle;
 
 void func_001F6670(void) {
-    char *p = (char *)D_00470570 + 0x10000;
+    char *p = (char *)gBattle + 0x10000;
     *(s8 *)(p - 0x768B) = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6690);

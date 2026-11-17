@@ -72,7 +72,7 @@ typedef struct Tbl3 {
     s16 v[3][2];
 } Tbl3;
 
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern u8 D_005C4120[];
 extern Global *gCsSubArena;
 extern void *D_00470704;
@@ -103,7 +103,7 @@ void func_002E2630(Task *t) {
     Work *w = t->work;
 
     func_002E2290(w);
-    w->f8 -= D_004703BC;
+    w->f8 -= gFrameDelta;
     if (w->f8 <= 0.0f) {
         w->f1 = 0;
         t->func = NULL;
@@ -114,7 +114,7 @@ void func_002E2690(Task *t) {
     Work *w = t->work;
 
     func_002E2290(w);
-    w->f8 -= D_004703BC;
+    w->f8 -= gFrameDelta;
     if (w->f8 <= 0.0f) {
         w->f1 = 1;
         t->func = NULL;
@@ -161,7 +161,7 @@ void func_002E2E50(Task *t) {
     Pair16 tbl;
 
     func_002E2290(w);
-    w->f8 -= D_004703BC;
+    w->f8 -= gFrameDelta;
     if (w->f8 <= 0.0f) {
         w->f4 = 2;
         g = gCsSubArena;
@@ -176,7 +176,7 @@ void func_002E2E50(Task *t) {
     }
 }
 
-void func_002E2F30(Task *t) {
+void CsSubarn_TaskMain(Task *t) {
     Global *g = gCsSubArena;
     Work *w = t->work;
     void *v;

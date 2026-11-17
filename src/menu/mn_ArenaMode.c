@@ -56,7 +56,7 @@ extern ArenaModeSe D_00456AF0;
 extern char D_0046F290[];
 extern char D_0046F2A0[];
 extern s32 D_00470238;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
@@ -86,7 +86,7 @@ extern void amFile_Load(void *);
 extern void func_0022DB30(s32);
 extern void func_002D1C20(void);
 extern void func_0022D0E0(s32, s32);
-extern void func_002C04B0(void *);
+extern void StrStatus_Exit(void *);
 extern void Help_Exit(void);
 extern void memset(void *, s32, s32);
 extern void *func_002C0630(s32, s32, s32);
@@ -138,7 +138,7 @@ void ArenaMode_TaskOpen(Task *t) {
         func_002D0530(w);
     }
     func_0022C700();
-    f = w->timer - D_004703BC;
+    f = w->timer - gFrameDelta;
     w->timer = f;
     if (f <= 0.0f) {
         func_00229800(w->res->f1C[19], pos, -1, 0.0f);
@@ -249,7 +249,7 @@ void ArenaMode_Exit(void) {
                 func_0022D0E0(p[i], 1);
             }
         }
-        func_002C04B0(w->f30);
+        StrStatus_Exit(w->f30);
         if (w->res != NULL) {
             amHeap_Free(w->res);
         }

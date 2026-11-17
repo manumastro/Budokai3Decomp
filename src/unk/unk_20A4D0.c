@@ -21,7 +21,7 @@ void func_0020BBD0(u8 *, s32);
 void func_00244190(u8 *);
 void func_002475E0(u8 *);
 s32 func_00218690(void);
-extern u8 *D_0046FDCC;
+extern u8 *gWave;
 extern u8 *D_0046FDD0;
 extern s32 D_00470670;
 extern u8 D_0046A3C8[];
@@ -32,17 +32,17 @@ extern void func_00208D70(s32);
 void func_002184F0(void);
 void func_00243ED0(void);
 void func_00247280(void);
-void func_00218510(void);
+void Hm_Exit(void);
 void func_00243F20(void);
 void func_002472F0(void);
-void func_00218880(void);
+void Adx_TaskStopCheck(void);
 void memset(void *, s32, s32);
 s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void (*jtbl_00469CC4[])(void *);
 extern void amAdx_Pause(s32, s32);
 void func_0020D780(void *);
 void func_002194C0(u8 *);
-extern u8 *D_00470570;
+extern u8 *gBattle;
 void amAdx_SetVolume(s32, f32);
 s32 func_00216030(void);
 void func_00216150(s32);
@@ -168,31 +168,31 @@ void func_0020CB90(void *pv) {
     *(u8 **)(*(u8 **)p + 0x4) = *(u8 **)(p + 0x4);
     switch (*(s16 *)(p + 0x1E)) {
     case 0x1:
-        *(s32 *)(D_0046FDCC + 0x84) -= 1;
+        *(s32 *)(gWave + 0x84) -= 1;
         break;
     case 0x2:
-        *(s32 *)(D_0046FDCC + 0x7C) -= 1;
+        *(s32 *)(gWave + 0x7C) -= 1;
         break;
     case 0x40:
-        *(s32 *)(D_0046FDCC + 0x80) -= 1;
+        *(s32 *)(gWave + 0x80) -= 1;
         break;
     case 0x4:
-        *(s32 *)(D_0046FDCC + 0x88) -= 1;
+        *(s32 *)(gWave + 0x88) -= 1;
         break;
     case 0x10:
-        *(s32 *)(D_0046FDCC + 0x8C) -= 1;
+        *(s32 *)(gWave + 0x8C) -= 1;
         break;
     case 0x80:
-        *(s32 *)(D_0046FDCC + 0x90) -= 1;
+        *(s32 *)(gWave + 0x90) -= 1;
         break;
     case 0x100:
-        *(s32 *)(D_0046FDCC + 0x94) -= 1;
+        *(s32 *)(gWave + 0x94) -= 1;
         break;
     case 0x400:
-        *(s32 *)(D_0046FDCC + 0x98) -= 1;
+        *(s32 *)(gWave + 0x98) -= 1;
         break;
     case 0x800:
-        *(s32 *)(D_0046FDCC + 0x9C) -= 1;
+        *(s32 *)(gWave + 0x9C) -= 1;
         break;
     }
     func_00209F40((s32)p);
@@ -208,11 +208,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D780);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020D7C0);
 #if 0
 void func_0020D9B0(void) {
-    u8 *q = D_0046FDCC;
+    u8 *q = gWave;
     s32 n = *(s32 *)(q + 0x78);
     *(s32 *)(q + 0x78) = n + 1;
     {
-        s32 *c = (s32 *)(D_0046FDCC + 0x78);
+        s32 *c = (s32 *)(gWave + 0x78);
         if (*c >= 8) {
             *c = 0;
         }
@@ -259,7 +259,7 @@ void func_0020DA10(s32 idx) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020DAE0);
 void func_0020DDD0(s32 i, u8 *src) {
-    u8 *g = D_0046FDCC;
+    u8 *g = gWave;
     u8 *p = D_00568C90 + i * 0x2140;
     *(f32 *)(g + 0x60) = *(f32 *)(src + 0x2118);
     *(f32 *)(g + 0x64) = *(f32 *)(src + 0x211C);
@@ -289,7 +289,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E8F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EA70);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EB70);
 void func_0020EBF0(s32 i) {
-    if (*(s8 *)(D_00470570 + 0x8975) != 1) {
+    if (*(s8 *)(gBattle + 0x8975) != 1) {
         u8 *p = D_00568C90 + i * 0x2140;
         if (*(s32 *)(p + 0x94) != 0 && *(s32 *)(p + 0x9C) != 0) {
             func_0020BDB0(p);
@@ -299,7 +299,7 @@ void func_0020EBF0(s32 i) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EC70);
 void func_0020EDA0(s32 i) {
-    if (*(s8 *)(D_00470570 + 0x8975) != 1) {
+    if (*(s8 *)(gBattle + 0x8975) != 1) {
         u8 *p = D_00568C90 + i * 0x2140;
         if (*(s32 *)(p + 0x94) != 0) {
             func_0020BDB0(p);
@@ -314,8 +314,8 @@ s32 func_0020EE10(s32 i, s32 flag) {
     s32 v;
     f32 f2;
     s32 s0;
-    if (D_00470570 != 0) {
-        v = *(s32 *)(D_00470570 + 0x88EC);
+    if (gBattle != 0) {
+        v = *(s32 *)(gBattle + 0x88EC);
     } else {
         v = 0;
     }
@@ -325,8 +325,8 @@ s32 func_0020EE10(s32 i, s32 flag) {
     if ((*(s32 *)(p + 0x20EC) & 0x10) != 0) {
         *(f32 *)(p + 0x2104) = *(f32 *)(p + 0x2104) + *(f32 *)(p + 0x2110);
     } else {
-        if (D_00470570 != 0) {
-            f2 = *(f32 *)(D_00470570 + 0x88F0);
+        if (gBattle != 0) {
+            f2 = *(f32 *)(gBattle + 0x88F0);
         } else if (D_004703F4 == 3) {
             f2 = 1.2f;
         } else {
@@ -358,7 +358,7 @@ void func_0020EF80(s32 i, s32 flag) {
 }
 void func_0020EFB0(s32 i) {
     u8 *p = D_00568C90 + i * 0x2140;
-    if ((D_00470570 != 0 ? *(s32 *)(D_00470570 + 0x88EC) : 0) == 0) {
+    if ((gBattle != 0 ? *(s32 *)(gBattle + 0x88EC) : 0) == 0) {
         if (*(s32 *)(p + 0x20E8) != 0) {
             func_00208F70(*(void **)(p + 0x20E8));
             if (*(s32 *)(*(u8 **)(p + 0x20E8) + 0x38) < 0) {
@@ -570,11 +570,11 @@ void func_0020F5A0(u8 *a) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F5A0);
 #if 0
 void func_0020F690(void) {
-    u8 *q = D_0046FDCC;
+    u8 *q = gWave;
     s32 n = *(s32 *)(q + 0x74);
     *(s32 *)(q + 0x74) = n + 1;
     {
-        s32 *c = (s32 *)(D_0046FDCC + 0x74);
+        s32 *c = (s32 *)(gWave + 0x74);
         if (*c >= 0x10) {
             *c = 0;
         }
@@ -629,11 +629,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00210240);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00210C20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002114A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002115A0);
-extern u8 *D_0046FDCC;
+extern u8 *gWave;
 void func_0020D7C0(void);
 
 void func_00211650(void) {
-    if (*(s32 *)(D_0046FDCC + 0x70) == 0) {
+    if (*(s32 *)(gWave + 0x70) == 0) {
         func_0020D7C0();
     }
 }
@@ -812,7 +812,7 @@ void func_002152E0(u8 *p) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215320);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215500);
 void func_00215900(void) {
-    memset(D_0046FDCC, 0, 0xA0);
+    memset(gWave, 0, 0xA0);
     memset(D_00568B90, 0, 0x80);
     memset(D_00568C10, 0, 0x80);
     D_00568B94[0] = 0;
@@ -861,13 +861,13 @@ void func_00215AA0(void) {
     func_002184F0();
     func_00243ED0();
     func_00247280();
-    memset(D_0046FDCC, 0, 0xA0);
+    memset(gWave, 0, 0xA0);
 }
 void func_00215AE0(void) {
-    func_00218510();
+    Hm_Exit();
     func_00243F20();
     func_002472F0();
-    memset(D_0046FDCC, 0, 0xA0);
+    memset(gWave, 0, 0xA0);
 }
 extern u8 D_00568B90[];
 extern u8 D_00568C10[];
@@ -907,7 +907,7 @@ void func_00215B20(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215B20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215C10);
-extern u8 *D_0046FDCC;
+extern u8 *gWave;
 extern u8 D_00568B90[];
 extern u8 D_00568C10[];
 extern s32 D_00568B94[];
@@ -915,12 +915,12 @@ extern u8 D_00568C14[];
 extern void memset(void *, s32, s32);
 void func_0020F870(s32);
 void func_0020DA10(s32);
-void func_00218610(void);
-void func_002440C0(void);
+void Hm_Start(void);
+void Ar_Start(void);
 void func_00247500(void);
 
 void func_00215D90(void) {
-    memset(D_0046FDCC, 0, 0xA0);
+    memset(gWave, 0, 0xA0);
     memset(D_00568B90, 0, 0x80);
     memset(D_00568C10, 0, 0x80);
     D_00568B94[0] = 0;
@@ -929,8 +929,8 @@ void func_00215D90(void) {
     *(s32 *)D_00568C10 = 0;
     func_0020F870(-1);
     func_0020DA10(-1);
-    func_00218610();
-    func_002440C0();
+    Hm_Start();
+    Ar_Start();
     func_00247500();
 }
 void func_00218680();
@@ -951,16 +951,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215EB0);
 s32 func_00216030(void) {
     s32 r = 0;
     if (*(s32 *)(D_0046FDD0 + 0x1A0) != 0 || *(s32 *)(D_0046FDD0 + 0x1A4) != 0 ||
-        *(s32 *)(D_0046FDCC + 0x8C) != 0 || *(s32 *)(D_0046FDD0 + 0x1A8) != 0) {
+        *(s32 *)(gWave + 0x8C) != 0 || *(s32 *)(D_0046FDD0 + 0x1A8) != 0) {
         r = 1;
     }
     return r;
 }
-extern u8 *D_00470570;
+extern u8 *gBattle;
 
 #if 0
 s32 func_00216080(s32 x) {
-    u8 *p = D_00470570 + x * 0x2020;
+    u8 *p = gBattle + x * 0x2020;
     u8 *q = p + 0x830;
     s32 v = *(s32 *)(p + 0x252C);
     s32 w;
@@ -1062,12 +1062,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216770);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216880);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216A60);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216D20);
-void func_00216EF0(void) {
-    if ((D_00470570 != 0 ? *(s32 *)(D_00470570 + 0x88EC) : 0) == 0 && func_00216030 != 0) {
+void Hm_TaskMain(void) {
+    if ((gBattle != 0 ? *(s32 *)(gBattle + 0x88EC) : 0) == 0 && func_00216030 != 0) {
         func_00208E50(0x4000002, 1);
     }
 }
-extern u8 *D_00470570;
+extern u8 *gBattle;
 extern u8 *D_0046FDD0;
 extern u8 D_00469CE8[];
 void func_00216A60(void);
@@ -1087,7 +1087,7 @@ void func_00216F50(u8 *in) {
     s1 = amTask_Create((void *)func_00216A60, 0, 0x5A0, 0x400, 0x40002, D_00469CE8);
     if (s1 != 0) {
         memset(loc, 0, 0x30);
-        *(u8 **)(loc + 0x0) = D_00470570 + *(s32 *)(in + 0x10) * 0x2020 + 0x830;
+        *(u8 **)(loc + 0x0) = gBattle + *(s32 *)(in + 0x10) * 0x2020 + 0x830;
         *(s32 *)(loc + 0x8) = *(s32 *)(in + 0x14);
         *(s16 *)(loc + 0x18) = 7;
         *(s16 *)(loc + 0x1C) = (s16)(*(s16 *)(loc + 0x1C) | -0x80);
@@ -1271,7 +1271,7 @@ void amCdFs_ReleaseCache(void *);
 void amCdFs_Close(void *, s32);
 void amHeap_Free(void *);
 
-void func_00218510(void) {
+void Hm_Exit(void) {
     s32 i;
     s32 off;
     u8 *g = D_0046FDD0;
@@ -1301,8 +1301,8 @@ void func_002185E0(void) {
     amTask_KillGroup(0x400, 0x40000, 0);
     func_00216150(-1);
 }
-void func_00218610(void) {
-    amTask_Create((void *)func_00216EF0, 0, 0x5A00, 0x400, 0x40002, D_00469CF8);
+void Hm_Start(void) {
+    amTask_Create((void *)Hm_TaskMain, 0, 0x5A00, 0x400, 0x40002, D_00469CF8);
     amTask_Create((void *)func_00216D20, 0, 0x3780, 0x400, 0x40002, D_00469D00);
 }
 void func_00216270(s32);
@@ -1315,15 +1315,15 @@ s32 func_00218690(void) {
     return *(s32 *)(D_0046FDD0 + 0x180);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002186D0);
-extern u8 *D_00470570;
+extern u8 *gBattle;
 s32 amAdx_IsStopped(s32);
 void amAdx_Stop(s32);
 
-void func_00218880(void) {
+void Adx_TaskStopCheck(void) {
     u8 *p;
     s32 i;
 
-    p = D_00470570 + 0x5C4;
+    p = gBattle + 0x5C4;
     for (i = 0; i < 5; i++, p += 0x20) {
         if (*(s32 *)(p + 0x8) >= 0 && *(s32 *)(p + 0x8) < 5 && *(s32 *)(p + 0xC) == 3
             && amAdx_IsStopped(*(s32 *)(p + 0x8))) {
@@ -1343,7 +1343,7 @@ void func_00218880(void) {
 }
 s32 amAdx_IsPlaying(s32);
 
-s32 func_00218960(s32 *a) {
+s32 AdxSlot_IsPlaying(s32 *a) {
     s32 v = a[2];
     if (v >= 0) {
         return amAdx_IsPlaying(v);
@@ -1475,14 +1475,14 @@ void func_00218C40(u8 *s, f32 a, f32 b) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218C40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218CD0);
-extern u8 *D_00470570;
+extern u8 *gBattle;
 extern u8 D_0046A3B8[];
 void func_002186D0(void);
 u8 *amTask_Create(void *, s32, s32, s32, s32, void *);
 
 #if 0
 void func_00218E50(void) {
-    u8 *g = D_00470570;
+    u8 *g = gBattle;
     s32 idx = *(s32 *)(g + 0x684);
     u8 *slot;
     u8 *s1;
@@ -1509,7 +1509,7 @@ void func_00218E50(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218E50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218F00);
-extern u8 *D_00470570;
+extern u8 *gBattle;
 extern u8 D_0044F494[];
 u8 *amTask_Create(void *, s32, s32, s32, s32, void *);
 extern u8 D_0046A3B8[];
@@ -1525,7 +1525,7 @@ void func_00219270(s32 x) {
     u8 *obj;
 
     if (x < 0) {
-        g = D_00470570;
+        g = gBattle;
         idx = *(s32 *)(g + 0x684);
         if (idx != -1) {
             slot = g + idx * 0x20;
@@ -1551,13 +1551,13 @@ void func_00219270(s32 x) {
 // differs: the same body as func_00218E50 (its alignment and branch layout differ: the original is 12 bytes longer, with a b after the inner if's store that is not emitted here)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00219270);
-void func_00219340(u8 *s, f32 v) {
+void AdxSlot_SetVolume(u8 *s, f32 v) {
     *(f32 *)s = v;
     if (*(s32 *)(s + 0x8) >= 0 && *(s32 *)(s + 0x8) < 5) {
         amAdx_SetVolume(*(s32 *)(s + 0x8), *(f32 *)s * *(f32 *)(s + 0x4));
     }
 }
-void func_00219390(u8 *s) {
+void AdxSlot_Stop(u8 *s) {
     if (*(s32 *)(s + 0x8) >= 0 && *(s32 *)(s + 0x8) < 5) {
         amAdx_Stop(*(s32 *)(s + 0x8));
     }
@@ -1570,20 +1570,20 @@ void func_00219390(u8 *s) {
     *(s16 *)(s + 0x16) = -1;
     *(s32 *)(s + 0x18) = 0xBF800000;
 }
-void func_00219410(u8 *s) {
+void AdxSlot_Suspend(u8 *s) {
     func_002194C0(s);
     if (*(s32 *)(s + 0xC) == 2 || *(s32 *)(s + 0xC) == 1) {
         amAdx_Pause(*(s32 *)(s + 0x8), 0);
         *(s32 *)(s + 0xC) = 3;
     }
 }
-void func_00219470(u8 *s) {
+void AdxSlot_Pause(u8 *s) {
     if (*(s32 *)(s + 0xC) == 2 || *(s32 *)(s + 0xC) == 1) {
         amAdx_Pause(*(s32 *)(s + 0x8), 0);
         *(s32 *)(s + 0xC) = 3;
     }
 }
-extern u8 *D_00470570;
+extern u8 *gBattle;
 extern s32 D_0044F4E0[];
 extern s32 *D_0044F2F0[];
 s32 amAdx_PlayAfs(s32, s32, s32);
@@ -1600,7 +1600,7 @@ void func_002194C0(u8 *p, s32 x, s32 y, s32 z) {
                 *(s32 *)(p + 0x8) = amAdx_PlayAfs(z, D_0044F2F0[x][y] | 0x20000, 0);
                 amAdx_Pause(*(s32 *)(p + 0x8), 1);
                 *(s32 *)(p + 0xC) = 2;
-                *(f32 *)(p + 0x18) = *(f32 *)(D_00470570 + 0x8908);
+                *(f32 *)(p + 0x18) = *(f32 *)(gBattle + 0x8908);
             }
         }
     }
@@ -1608,11 +1608,11 @@ void func_002194C0(u8 *p, s32 x, s32 y, s32 z) {
 // differs: the early exits: the original leaves a b to the end for each range test, this build branches to the end directly; the else forms gave more differences
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002194C0);
-extern u8 *D_00470570;
+extern u8 *gBattle;
 void amAdx_Pause(s32, s32);
 
-void func_002195B0(s32 a) {
-    u8 *p = D_00470570 + 0x5C4;
+void AdxSlot_SetPausedAll(s32 a) {
+    u8 *p = gBattle + 0x5C4;
     s32 from = a ? 3 : 1;
     s32 to = a ? 1 : 3;
     s32 i;
@@ -1624,7 +1624,7 @@ void func_002195B0(s32 a) {
         }
     }
 }
-extern u8 *D_00470570;
+extern u8 *gBattle;
 void amAdx_Stop(s32);
 
 #if 0
@@ -1635,7 +1635,7 @@ void func_00219650(s32 flag) {
     u8 *g;
 
     i = flag ? 0 : two;
-    g = D_00470570;
+    g = gBattle;
     if (i < 5) {
         p = g + 0x5C4 + i * 0x20;
         do {
@@ -1671,7 +1671,7 @@ void func_00219650(s32 flag) {
 // differs: 11 of 77 differ, all scheduling: the table base is loaded after the start index in the original and the -1 constants are kept in a0; the compiler schedules them differently
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00219650);
-extern u8 *D_00470570;
+extern u8 *gBattle;
 extern f32 D_004E0610[];
 extern f32 D_004E0614[];
 extern f32 D_004E0618[];
@@ -1691,7 +1691,7 @@ void func_00219790(s32 flag) {
     f21 = D_004E0614[0];
     f20 = D_004E0618[0];
     if (i < 5) {
-        p = D_00470570 + 0x5C4 + i * 0x20;
+        p = gBattle + 0x5C4 + i * 0x20;
         do {
             i++;
             *(s32 *)p = 0x3F800000;
@@ -1718,12 +1718,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00219880);
 extern s32 D_00470670;
 void amTask_Kill(s32);
 
-void func_00219A10(void) {
+void Adx_KillStopCheck(void) {
     if (D_00470670 != 0) {
         amTask_Kill(D_00470670);
         D_00470670 = 0;
     }
 }
-void func_00219A40(void) {
-    D_00470670 = (s32)amTask_Create(func_00218880, 0, 0x9F00, 0x20, 0x800001, D_0046A3C8);
+void Adx_StartStopCheck(void) {
+    D_00470670 = (s32)amTask_Create(Adx_TaskStopCheck, 0, 0x9F00, 0x20, 0x800001, D_0046A3C8);
 }

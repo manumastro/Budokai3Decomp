@@ -45,8 +45,8 @@ extern ScrObj *D_0058D4E8[];
 extern ScrObj *D_0058D4EC[];
 extern ScrObj *D_0058D4F0[];
 extern ScrObj *D_0058D4F4[];
-extern Sys70 *D_0046FDCC;
-extern SysDF0 *D_0046FDFC;
+extern Sys70 *gWave;
+extern SysDF0 *gBtlSys;
 extern void *D_00470000;
 
 extern void memset(void *, s32, s32);
@@ -69,7 +69,7 @@ typedef struct BtlWork {
     BtlPlayer *players[2];
 } BtlWork;
 
-extern BtlWork *D_00470570;
+extern BtlWork *gBattle;
 
 typedef struct EffSrc {
     s32 f0;
@@ -125,8 +125,8 @@ extern Eff *func_00215320(s16, s32);
 extern void func_00211650(void);
 extern void func_00210240(void);
 extern void func_00212560(void);
-extern void func_00259BB0(void);
-extern void func_00259B70(void);
+extern void CutIn_TaskMain(void);
+extern void CutIn_TaskKill(void);
 extern void func_00226030(s32, s32 *);
 void func_0025AA20(s32);
 void func_0025A7C0(s32, s32);
@@ -141,7 +141,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025AA20);
 s32 func_0025ABC0(void *ctx, ScrCmd *cmd) {
     s32 buf[2] __attribute__((aligned(16)));
 
-    buf[0] = D_00470570->players[0]->f1350;
+    buf[0] = gBattle->players[0]->f1350;
     buf[1] = cmd->args[0].i;
     if (buf[1] > 0) {
         func_00226030(0x31, buf);
@@ -197,7 +197,7 @@ s32 func_0025AD50(void *ctx, ScrCmd *cmd) {
     s32 y = a[1].i;
     ScrObj *o;
 
-    func_0025A7C0(D_00470570->players[0]->f1350, D_00470570->players[1]->f1350);
+    func_0025A7C0(gBattle->players[0]->f1350, gBattle->players[1]->f1350);
     o = D_0058D4EC[0];
     if (o != NULL) {
         o->f40 = x;
@@ -280,7 +280,7 @@ s32 func_0025AEC0(void *ctx, ScrCmd *cmd) {
 
     x = a[0].i;
     y = a[1].i;
-    func_0025AA20(D_00470570->players[0]->f1350);
+    func_0025AA20(gBattle->players[0]->f1350);
     o = D_0058D4E8[0];
     if (o != NULL) {
         o->f3C = y;
@@ -327,7 +327,7 @@ s32 func_0025AFB0(void *ctx, ScrCmd *cmd) {
     s32 y = a[1].i;
     ScrObj *o;
 
-    func_0025A580(D_00470570->players[0]->f1350, D_00470570->players[1]->f1350);
+    func_0025A580(gBattle->players[0]->f1350, gBattle->players[1]->f1350);
     o = D_0058D4F0[0];
     if (o != NULL) {
         o->f40 = y;
@@ -383,7 +383,7 @@ s32 func_0025B120(void *ctx, ScrCmd *cmd) {
 
     o = D_0058D4F4[0];
     v = cmd->args[0].i;
-    func_0025A130(D_00470570->players[0]->f1350, D_00470570->players[1]->f1350);
+    func_0025A130(gBattle->players[0]->f1350, gBattle->players[1]->f1350);
     if (o != NULL) {
         o->f40 = v;
     }
@@ -393,18 +393,18 @@ s32 func_0025B120(void *ctx, ScrCmd *cmd) {
     return 1;
 }
 s32 func_0025B1B0(void *ctx, s32 *out) {
-    *out = D_0046FDFC->fDF0;
+    *out = gBtlSys->fDF0;
     return 1;
 }
-s32 func_0025B1D0(void *ctx, ScrCmd *cmd) {
-    SysE60 *sys = (SysE60 *)D_0046FDFC;
+s32 CutIn_Start(void *ctx, ScrCmd *cmd) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
     ScrTask *t;
     s32 idx = cmd->args[0].i;
     SubWork *w;
     void *v;
     s32 n;
 
-    t = amTask_Create(func_00259BB0, func_00259B70, 0x3A30, 0x1000, 0x2000000, D_0046AF20);
+    t = amTask_Create(CutIn_TaskMain, CutIn_TaskKill, 0x3A30, 0x1000, 0x2000000, D_0046AF20);
     if (t == NULL) {
         return 1;
     }
@@ -462,16 +462,16 @@ void func_0025B790(EffSrc *e) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B840);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B8F0);
-void func_0025BA50(void) {
-    D_0046FDCC->f70 = 0;
+void Wave_TaskAfterDraw(void) {
+    gWave->f70 = 0;
 }
-void func_0025BA60(void) {
-    if (D_0046FDCC->f94 != 0) {
+void Wave_TaskDraw(void) {
+    if (gWave->f94 != 0) {
         func_00215500(0x100);
     }
 }
-void func_0025BA90(void) {
-    if (D_0046FDCC->f90 != 0) {
+void Wave_TaskMain(void) {
+    if (gWave->f90 != 0) {
         func_00215500(0x80);
     }
 }

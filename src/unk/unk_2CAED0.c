@@ -81,7 +81,7 @@ typedef struct TutWork {
 } TutWork;
 
 extern TutWork *D_0047091C;
-extern u8 *D_00470570;
+extern u8 *gBattle;
 extern s32 D_004565B0[];
 extern void memset(void *, s32, s32);
 extern void amTask_KillGroup(s32, s32, s32);
@@ -192,7 +192,7 @@ void func_002CB470(void) {
 
     if (t->f18 >= 180.0f && t != NULL) {
         t->f8 = 3;
-        t->f1C = -*(f32 *)(D_00470570 + 0x88F0);
+        t->f1C = -*(f32 *)(gBattle + 0x88F0);
         t->f18 = 0.0f;
         D_004564A0[t->f8]();
     }
@@ -219,7 +219,7 @@ void func_002CBEB0(void) {
     TutWork *t = D_0047091C;
     s32 buf;
 
-    *(s8 *)(D_00470570 + 0x8AAD) = 1;
+    *(s8 *)(gBattle + 0x8AAD) = 1;
     if (t->fC == 0x1E) {
         func_001E1510(t->chr);
     }
@@ -239,12 +239,12 @@ void func_002CBF50(void) {
 void func_002CBF60(void) {
     TutWork *t = D_0047091C;
 
-    if (*(s32 *)(D_00470570 + 0x88EC) == 0) {
+    if (*(s32 *)(gBattle + 0x88EC) == 0) {
         if (t->f8 >= 0) {
             D_004564C0[t->f8]();
         }
         t->f1C = t->f18;
-        t->f18 = t->f18 + *(f32 *)(D_00470570 + 0x88F0);
+        t->f18 = t->f18 + *(f32 *)(gBattle + 0x88F0);
         func_002CBFF0(0, 0);
     }
 }
@@ -291,7 +291,7 @@ void func_002CC610(void) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC640);
 void func_002CC710(void) {
     TutWork *t = D_0047091C;
-    u8 *g = D_00470570;
+    u8 *g = gBattle;
 
     if (t != NULL) {
         t->chr = (TutChr *)(g + 0x830);

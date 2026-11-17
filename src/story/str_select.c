@@ -72,7 +72,7 @@ extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern f32 D_004E0610[];
 extern s16 D_004E05F8[];
 extern s8 D_004B4B63[];
@@ -110,7 +110,7 @@ extern void func_00299240(s32);
 extern s32 func_001F04C0(s32);
 extern void func_002A8CE0(s32, void *);
 extern void amAdx_Stop(s32);
-extern s32 func_003105A0(void);
+extern s32 DataErase_IsReady(void);
 extern void func_00264260(s32, s32, s32);
 extern void amAdx_SetVolume(s32, f32);
 extern s32 amAdx_PlayAfs(s32, s32, s32);
@@ -376,7 +376,7 @@ void StrSelect_TaskOpen(Task *t) {
     f32 v;
 
     StrSelect_Draw(w);
-    v = w->f54 - D_004703BC;
+    v = w->f54 - gFrameDelta;
     w->f54 = v;
     if (v <= 0.0f) {
         StrSelect_GetStats(w);
@@ -406,7 +406,7 @@ void StrSelect_TaskLoad(Task *t) {
         d->wait--;
         return;
     }
-    if (g->file[1]->state == 3 && func_003105A0() == 1) {
+    if (g->file[1]->state == 3 && DataErase_IsReady() == 1) {
         func_00264260(-1, 0, 0);
         amAdx_SetVolume(0, D_004E0610[0]);
         amAdx_PlayAfs(0, 0x210A9, 0);

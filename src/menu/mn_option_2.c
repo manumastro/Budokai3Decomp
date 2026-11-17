@@ -7,7 +7,7 @@ typedef struct SaveRecord {
     char data[0xD680];
 } SaveRecord;
 
-/* The options menu's work area (0x490 bytes, D_00470934). */
+/* The options menu's work area (0x490 bytes, gOptionWork). */
 typedef struct OptionWork {
     void *file[2];
     s32 f8;
@@ -39,7 +39,7 @@ typedef struct OptionWork {
     char pad41A[0x490 - 0x41A];
 } OptionWork;
 
-extern OptionWork *D_00470934;
+extern OptionWork *gOptionWork;
 
 /* The game's settings (D_004E05DC). */
 typedef struct OptionConfig {
@@ -68,7 +68,7 @@ extern s32 amSofdec_GetStat(s32);
 extern void func_002DFEC0(Task *);
 extern void func_002DE250();
 
-void func_002E0DD0(void) {
+void Option_ProcessTable(void) {
     void *p;
 
     p = amHeap_Alloc(0xD680, 0, D_0046F3C8, 0x733);
@@ -76,12 +76,12 @@ void func_002E0DD0(void) {
     func_001EF510(p, 0xD680);
     amHeap_Free(p);
 }
-void func_002E0E40(void) {
-    D_00470934 = NULL;
+void Option_Clear(void) {
+    gOptionWork = NULL;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E0E50);
-void func_002E1870(void) {
-    OptionWork *w = D_00470934;
+void Option_Start(void) {
+    OptionWork *w = gOptionWork;
 
     w->f320 = amTask_Create(func_002DFEC0, 0, 0x5000, 0x4000, 2, D_0046F398);
     w->f414 = 0;
@@ -109,9 +109,9 @@ void func_002E18D0(void) {
     s32 *p404;
     s32 *p408;
 
-    D_00470934 = amHeap_Alloc(0x490, 0, D_0046F3C8, 0x5F3);
-    memset(D_00470934, 0, 0x490);
-    w = D_00470934;
+    gOptionWork = amHeap_Alloc(0x490, 0, D_0046F3C8, 0x5F3);
+    memset(gOptionWork, 0, 0x490);
+    w = gOptionWork;
     w->file[0] = amCdFs_ReadFileId(0x10842, 0, 0);
     w->file[1] = amCdFs_ReadFileId(0x10843, 0, 0);
     w->f33C = func_002C0630(0x10804, 0x5010, 0);
@@ -123,8 +123,8 @@ void func_002E18D0(void) {
     func_002DF4E0();
     func_002DF3D0();
     c = D_004E05DC;
-    D_00470934->f418 = D_004E0608[0];
-    w2 = D_00470934;
+    gOptionWork->f418 = D_004E0608[0];
+    w2 = gOptionWork;
     p404 = &w2->f404;
     p408 = &w2->f408;
     w2->f404 = 255.0f * c->f34;
@@ -222,7 +222,7 @@ void func_002E1DF0(Task *t) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E1DF0);
 void func_002E1DF0(Task *t);
 
-void func_002E1F90(Task *t) {
+void Opening_TaskWaitMovie(Task *t) {
 
     switch (amSofdec_GetStat(gOpening->fC)) {
     case 1:
@@ -271,7 +271,7 @@ extern void func_001F0820(void);
 extern f32 func_0011F698(f32);
 extern void amSofdec_StartFname(s32, char *, s32);
 
-void func_002E2040(Task *t) {
+void Opening_TaskMain(Task *t) {
     MovieParam prm = D_00456D60;
     s32 *wait;
     s32 n;
@@ -297,16 +297,16 @@ void func_002E2040(Task *t) {
     gSofdecMovie[n].obj->vt->f2C(gSofdecMovie[n].obj, vol);
     amSofdec_StartFname(n, D_0046F3F0, 1);
     gOpening->fC = n;
-    TASK_SET_FUNC(t, func_002E1F90);
+    TASK_SET_FUNC(t, Opening_TaskWaitMovie);
     func_001F0830(4, 0);
 }
-void func_002E21B0(void) {
+void Opening_Clear(void) {
     gOpening = NULL;
 }
-void func_002E2040(Task *t);
+void Opening_TaskMain(Task *t);
 
-void func_002E21C0(void) {
+void Opening_Start(void) {
     func_001F07D0();
-    amTask_Create(func_002E2040, 0, 0x8000, 2, 0x10000, D_0046F408);
+    amTask_Create(Opening_TaskMain, 0, 0x8000, 2, 0x10000, D_0046F408);
     gOpening->f4 = 1;
 }

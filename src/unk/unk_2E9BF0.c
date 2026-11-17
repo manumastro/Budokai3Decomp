@@ -48,7 +48,7 @@ extern char D_0046F5F0[];
 extern s32 func_002E0C70(void);
 extern void func_002E0D40(void);
 extern s32 func_002E0D10(void);
-extern void func_002E0C90(void);
+extern void ChangeProgress_Start(void);
 extern void func_001F0820(void);
 extern s32 Save_GetState(void);
 extern void func_00264140(s32, s32);
@@ -66,7 +66,7 @@ extern void func_00144B70(s32);
 extern void func_00144650(s32);
 extern void amAdx_Stop(s32);
 extern void Save_Exit(void);
-extern void func_002E0C40(void);
+extern void Option_Free(void);
 extern void amTask_Kill(Task *);
 
 /* The case tests come out as 4, 2, 1, 0, 3; the original tests 2, 1, 0, 4, 3 with the same bodies. */
@@ -81,7 +81,7 @@ void func_002E9BF0(void) {
     case 1:
     case 2:
         if (func_002E0D10() == 1) {
-            func_002E0C90();
+            ChangeProgress_Start();
         }
         break;
     default:
@@ -124,7 +124,7 @@ void func_002E9D20(void) {
 void func_002E9D70(void) {
 }
 
-void func_002E9D80(void) {
+void Boot_LoadSave(void) {
     Save_Load(0x1000, 0);
     Save_Request(7, -1, 0);
     {
@@ -134,7 +134,7 @@ void func_002E9D80(void) {
     func_00264300(-1, func_002E9D20, 0);
 }
 
-void func_002E9DE0(void) {
+void Boot_Load(void) {
     s32 *step = &D_00470950->step;
     Task *t;
 
@@ -178,14 +178,14 @@ void func_002E9DE0(void) {
                     D_00470954 = 1;
                 }
                 t = D_00470950;
-                TASK_SETFUNC(t, func_002E9D80);
+                TASK_SETFUNC(t, Boot_LoadSave);
             }
         }
         break;
     }
 }
 
-void func_002E9F70(void) {
+void Boot_TaskMain(void) {
     Task *t;
 
     if (D_004705E0->f4 == 3 && D_004705E4->f4 == 3 && D_004705E8->f4 == 3 && D_004705EC->f4 == 3) {
@@ -193,12 +193,12 @@ void func_002E9F70(void) {
         D_004705E0 = NULL;
         D_00470950->step = 0;
         t = D_00470950;
-        TASK_SETFUNC(t, func_002E9DE0);
+        TASK_SETFUNC(t, Boot_Load);
     }
 }
 
-void func_002EA000(void) {
-    D_00470950 = amTask_Create(func_002E9F70, 0, 0x1000, 0x200, 1, D_0046F5F0);
+void Boot_Start(void) {
+    D_00470950 = amTask_Create(Boot_TaskMain, 0, 0x1000, 0x200, 1, D_0046F5F0);
     func_001F07D0();
     func_00144B70(-1);
     func_00144650(0);
@@ -210,9 +210,9 @@ void func_002EA070(void) {
     D_00470950 = NULL;
 }
 
-void func_002EA080(void) {
+void Boot_Exit(void) {
     Save_Exit();
-    func_002E0C40();
+    Option_Free();
     amTask_Kill(D_00470950);
     D_00470950 = NULL;
 }

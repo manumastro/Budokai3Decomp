@@ -1,6 +1,6 @@
 #include "common.h"
 
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern char D_0046FBB0[];
 extern void amSofdec_StartFname(s32, char *, s32);
 extern void func_0030DB10(s32 *);
@@ -33,7 +33,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030D970);
 void func_0030DB10(s32 *a0) {
     char *s0 = (char *)a0 + 0x30;
     func_0030D970(s0);
-    *(f32 *)(s0 + 0x14) = *(f32 *)(s0 + 0x14) + D_004703BC;
+    *(f32 *)(s0 + 0x14) = *(f32 *)(s0 + 0x14) + gFrameDelta;
     if (*(f32 *)(s0 + 0x14) < *(f32 *)(s0 + 0x10)) {
         return;
     }
@@ -46,7 +46,7 @@ void func_0030DB10(s32 *a0) {
 }
 void func_0030DBB0(s32 *a0) {
     s32 *a1 = a0 + 0x30 / 4;
-    f32 v = *(f32 *)&a0[0x44 / 4] + D_004703BC;
+    f32 v = *(f32 *)&a0[0x44 / 4] + gFrameDelta;
     *(f32 *)&a0[0x44 / 4] = v;
     if (v < 317.0f) {
         return;
@@ -84,7 +84,7 @@ void func_0030E170(s32 *a0) {
     s32 *s0 = a0 + 0x30 / 4;
     s32 v;
     func_0030DC70(s0);
-    *(f32 *)&s0[0x8 / 4] = *(f32 *)&s0[0x8 / 4] + D_004703BC;
+    *(f32 *)&s0[0x8 / 4] = *(f32 *)&s0[0x8 / 4] + gFrameDelta;
     v = amSofdec_GetStat(s0[0]);
     if (v == 2) {
         return;
@@ -101,9 +101,9 @@ void func_0030E170(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E170);
-void func_0030E220(s32 *a0) {
+void StaffRoll_TaskEnding(s32 *a0) {
     s32 *a1 = a0 + 0x30 / 4;
-    f32 v = *(f32 *)&a0[0x38 / 4] + D_004703BC;
+    f32 v = *(f32 *)&a0[0x38 / 4] + gFrameDelta;
     *(f32 *)&a0[0x38 / 4] = v;
     if (v < 77.0f) {
         return;
@@ -133,7 +133,7 @@ s32 func_0030E290(s32 *a0) {
     s0[2] = 0;
     s0[3] = 0;
     {
-        void *f = func_0030E220;
+        void *f = StaffRoll_TaskEnding;
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
     return 1;
@@ -156,7 +156,7 @@ void func_0030E330(s32 *a0) {
         func_0022C060(v, 1.0f);
         func_0022C560(v);
     }
-    f = *(f32 *)&s0[0xC / 4] + D_004703BC;
+    f = *(f32 *)&s0[0xC / 4] + gFrameDelta;
     *(f32 *)&s0[0xC / 4] = f;
     if (f < 14116.0f) {
         return;
@@ -203,7 +203,7 @@ INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E890);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EAE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EDA0);
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030EFF0);
-void func_0030F0D0(void) {
+void StaffRoll_Clear(void) {
     D_00470998 = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030F0E0);

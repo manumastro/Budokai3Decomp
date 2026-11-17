@@ -10,7 +10,7 @@ extern void func_0030EFF0(Task *);
 extern char D_0046FC10[];
 extern void func_001F07D0(void);
 
-void func_0030F220(void) {
+void StaffRoll_Start(void) {
     Task *t = amTask_Create(func_0030EFF0, NULL, 0x3000, 8, 2, D_0046FC10);
     *(s16 *)((char *)t + 0x34) = 0;
     func_001F07D0();
@@ -70,12 +70,12 @@ INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310080);
 u8 func_003101D0(char *p) {
     return ((u8 *)(*(char **)(p + 0x30)))[0xE];
 }
-void func_003101E0(void) {
+void DataErase_Clear(void) {
     D_0047099C = 0;
 }
 extern void amHeap_Free(void *);
 
-void func_003101F0(void) {
+void DataErase_Exit(void) {
     s8 *s0 = (s8 *)D_0047099C;
     s0[0x10] = s0[0x10] - 1;
     if (s0 != 0) {
@@ -151,7 +151,7 @@ void func_003103B0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_003103B0);
 INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310450);
-s32 func_003105A0(void) {
+s32 DataErase_IsReady(void) {
     return D_004701D8;
 }
 extern void func_00310450(Task *);

@@ -29,7 +29,7 @@ extern void Help_Exit(void);
 extern void func_0022D0E0(void *, s32);
 extern void SklEdit_Close(void);
 extern void SklEdit_Open(s32, char *, s32, s32, s32);
-extern void func_002E2F30(Task *);
+extern void CsSubarn_TaskMain(Task *);
 extern void memset(void *, s32, s32);
 extern void *amCdFs_ReadFileId(s32, s32, s32);
 extern void Help_Load(void);
@@ -90,7 +90,7 @@ Task *CsSubArena_Open(CsSubParent *parent, s32 a1) {
     CsSubArenaWork *w;
     Task *t;
 
-    t = amTask_Create(func_002E2F30, 0, 0x2B00, 8, 2, D_0046F450);
+    t = amTask_Create(CsSubarn_TaskMain, 0, 0x2B00, 8, 2, D_0046F450);
     t->data.work = w = amHeap_Alloc(0x20, 0, D_0046F460, 0x89);
     memset(w, 0, 0x20);
     w->f0 = a1;

@@ -37,13 +37,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5260);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E53B0);
 extern void func_0022C700(void);
 
-void func_002E5480(void) {
+void ArenaStage_TaskEnd(void) {
     func_0022C700();
 }
-void func_002E5490(void) {
+void ArenaStage_TaskStart(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E54A0);
-void func_002E5600(Ac2E4 *s) {
+void Sofdec_TaskMain(Ac2E4 *s) {
     SofInit in;
 
     in.a0 = 0;

@@ -16,19 +16,19 @@ extern void func_001D0B90(s32 *);
 extern void func_001D2580(void *);
 extern void func_001D0C00(s32 *);
 extern void func_001D25B0(void *);
-extern void func_001D2720(void *);
-extern void func_001D0E40(s32 *);
-extern void func_001D0EA0(s32 *, s32, SecpSlot *);
+extern void CharCloth_Release(void *);
+extern void CharAcsr_Release(s32 *);
+extern void CharAcsr_Init(s32 *, s32, SecpSlot *);
 extern void func_001D2750(void *, s32, SecpOwner *);
 extern s32 func_001D0F80(s32 *);
 extern s32 func_001D2B30(void *);
-void func_001D3FC0(void *p);
+void CharParts_ReleaseWork(void *p);
 void func_001D3FF0(void *p, s32 a);
 s32 func_001D4160(void *p);
 void func_001D4210(Secp *s);
 
 INCLUDE_ASM("asm/nonmatchings/battle/char_parts", func_001D3E10);
-void func_001D3FC0(void *p) {
+void CharParts_ReleaseWork(void *p) {
     if (p != 0) {
         amHeap_Free(p);
     }
@@ -37,7 +37,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_parts", func_001D3FF0);
 s32 func_001D4160(void *p) {
     return 1;
 }
-void *func_001D4170(s32 data) {
+void *CharParts_Create(s32 data) {
     s32 *p;
     if (data == 0) {
         return 0;
@@ -133,17 +133,17 @@ void func_001D4570(Secp *s) {
         }
     }
 }
-void func_001D4620(Secp *s) {
+void CharParts_Release(Secp *s) {
     s32 i;
     if (s != 0) {
         for (i = 0; i < s->numMant; i++) {
-            func_001D2720(s->mant[i]);
+            CharCloth_Release(s->mant[i]);
         }
         for (i = 0; i < s->numAcsr; i++) {
-            func_001D0E40(s->acsr[i]);
+            CharAcsr_Release(s->acsr[i]);
         }
         for (i = 0; i < s->numParts; i++) {
-            func_001D3FC0(s->parts[i]);
+            CharParts_ReleaseWork(s->parts[i]);
         }
         amHeap_Free(s);
     }
@@ -160,7 +160,7 @@ void func_001D4710(Secp *s, s32 a, SecpOwner *owner) {
             func_001D3FF0(s->parts[i], a);
         }
         for (i = 0; i < s->numAcsr; i++) {
-            func_001D0EA0(s->acsr[i], a, (SecpSlot *)(s->owner->data->slot[0].unk00 + i * 0x20));
+            CharAcsr_Init(s->acsr[i], a, (SecpSlot *)(s->owner->data->slot[0].unk00 + i * 0x20));
         }
         for (i = 0; i < s->numMant; i++) {
             func_001D2750(s->mant[i], a, owner);

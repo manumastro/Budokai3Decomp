@@ -6,7 +6,7 @@ typedef struct Scene2DB970 {
 } Scene2DB970;
 
 extern s8 D_004703F4;
-extern Scene2DB970 *D_00470934;
+extern Scene2DB970 *gOptionWork;
 extern void func_002DD8A0(void);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DB970);
@@ -21,7 +21,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DD510);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DD8A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2DB970", func_002DDAD0);
 void func_002DDC30(void) {
-    Scene2DB970 *s = D_00470934;
+    Scene2DB970 *s = gOptionWork;
     f32 a;
 
     if (D_004703F4 != 3) {

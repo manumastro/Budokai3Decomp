@@ -51,7 +51,7 @@ extern void memset(void *, s32, s32);
 extern void func_00125740(void *, void *, s32);
 extern void func_00133B50(s32, s32);
 extern LightTask *amTask_Create(void (*)(LightTask *), s32, s32, s32, s32, char *);
-extern void func_002CFA90(LightTask *);
+extern void RenderTex_TaskMain(LightTask *);
 extern void func_002CFEB0(LightObj *, s32, f32, LightEntry *);
 
 void func_002CF8F0(void) {
@@ -124,7 +124,7 @@ extern u32 D_00470420;
 extern u64 amDraw3d_SetTexZ(s32, s32, s32, s32);
 extern void amTask_Kill(void *);
 
-void func_002CFA90(LightTask *t) {
+void RenderTex_TaskMain(LightTask *t) {
     RenderRect r;
     s32 old;
     u64 v;
@@ -176,8 +176,8 @@ void func_002CFC50(void) {
 void func_002CFD70(void) {
     func_00133B50(0, 0);
 }
-void func_002CFD80(s32 a) {
-    amTask_Create(func_002CFA90, 0, 0, 0, 0, D_0046F260)->f30 = a;
+void RenderTex_Start(s32 a) {
+    amTask_Create(RenderTex_TaskMain, 0, 0, 0, 0, D_0046F260)->f30 = a;
 }
 f32 func_002CFDD0(f32 a, f32 b) {
     return a + b;

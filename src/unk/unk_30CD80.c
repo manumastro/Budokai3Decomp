@@ -60,7 +60,7 @@ typedef struct Global {
 } Global;
 
 extern Global *gArenaRegCharList;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern f32 D_004E0614[];
 extern void *D_00470704;
 extern s32 D_00470708;
@@ -102,7 +102,7 @@ void func_0030CD80(Task *t) {
     s32 k;
 
     func_0030BFC0(w);
-    w->f1C -= D_004703BC;
+    w->f1C -= gFrameDelta;
     if (w->f1C <= 0.0f) {
         func_0030C6F0(w);
         n = 0;
@@ -156,7 +156,7 @@ void func_0030CD80(Task *t) {
     }
 }
 
-void func_0030CF60(Task *t) {
+void ArenaList_TaskMain(Task *t) {
     Global *g = gArenaRegCharList;
     Work *w = t->work;
     void *v;
@@ -201,19 +201,19 @@ void func_0030CF60(Task *t) {
     TASK_SETFUNC(t, func_0030CD80);
 }
 
-s32 func_0030D140(Task *t) {
+s32 ArenaList_GetF2(Task *t) {
     return t->work->f2;
 }
 
-void func_0030D150(Task *t, s16 v) {
+void ArenaList_SetF2(Task *t, s16 v) {
     t->work->f2 = v;
 }
 
-s32 func_0030D160(Task *t) {
+s32 ArenaList_GetF0(Task *t) {
     return t->work->f0;
 }
 
-void func_0030D170(Task *t, s16 v) {
+void ArenaList_SetF0(Task *t, s16 v) {
     t->work->f0 = v;
 }
 
@@ -221,7 +221,7 @@ void func_0030D180(void) {
     gArenaRegCharList = NULL;
 }
 
-void func_0030D190(void) {
+void ArenaList_Exit(void) {
     Global *g = gArenaRegCharList;
 
     g->f10--;

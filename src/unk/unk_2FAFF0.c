@@ -30,7 +30,7 @@ typedef struct Task2FAFF0 {
     Ent2FAFF0 *f48;
 } Task2FAFF0;
 
-/* An animation's state, at 0x30 of the work of D_00470974->f40. */
+/* An animation's state, at 0x30 of the work of gTourMap->f40. */
 typedef struct Anim2FAFF0 {
     s32 f0;
     f32 f4;
@@ -79,9 +79,9 @@ typedef struct SaveWork2FAFF0 {
     s32 f294;
 } SaveWork2FAFF0;
 
-extern SaveWork2FAFF0 *D_00470974;
+extern SaveWork2FAFF0 *gTourMap;
 extern s32 func_0022BC30(s32, f32);
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern s32 Save_GetState(void);
 extern s32 Zenie_GetState(void);
 extern void Zenie_Update(void);
@@ -96,7 +96,7 @@ typedef struct Vec4_2FAFF0 {
     f32 x, y, z, w;
 } Vec4_2FAFF0;
 
-/* A position: x, y, z at 0x30, 0x34, 0x38 of the object at D_00470974->f44. */
+/* A position: x, y, z at 0x30, 0x34, 0x38 of the object at gTourMap->f44. */
 typedef struct Pos3_2FAFF0 {
     char pad0[0x30];
     f32 f30;
@@ -138,7 +138,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FAFF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FB170);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FB4C0);
 void func_002FBA80(Task2FAFF0 *t) {
-    D_00470974->f294 = D_00470974->f294 + 1;
+    gTourMap->f294 = gTourMap->f294 + 1;
     if (Save_GetState() > 2) {
         Save_Exit();
         func_001F0810(-1, 0);
@@ -147,7 +147,7 @@ void func_002FBA80(Task2FAFF0 *t) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBAE0);
 void func_002FBD90(Task2FAFF0 *t) {
-    SaveWork2FAFF0 *w = D_00470974;
+    SaveWork2FAFF0 *w = gTourMap;
     Anim2FAFF0 *a;
 
     a = (Anim2FAFF0 *)(w->f40 + 0x30);
@@ -161,7 +161,7 @@ void func_002FBD90(Task2FAFF0 *t) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBE20);
 void func_002FBF40(Task2FAFF0 *t) {
-    SaveWork2FAFF0 *w = D_00470974;
+    SaveWork2FAFF0 *w = gTourMap;
     Anim2FAFF0 *a;
 
     a = (Anim2FAFF0 *)(w->f40 + 0x30);
@@ -185,7 +185,7 @@ void func_002FC9F0(void) {
     s32 i = 0;
 
     p = *(PairTbl2FAFF0 *)&D_00458C20;
-    sl = (Slot2FAFF0 *)((char *)D_00470974 + 0x19C);
+    sl = (Slot2FAFF0 *)((char *)gTourMap + 0x19C);
     do {
         if (sl->f0 == p.v[i].a) {
             if (func_002FFD20(i) != 0) {
@@ -229,13 +229,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FEED0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FF610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FFD20);
 void func_00300330(Task2FAFF0 *t) {
-    SysB2FAFF0 *b = D_00470974->f30;
+    SysB2FAFF0 *b = gTourMap->f30;
     s32 r = -1;
-    Cnt2FAFF0 *c = &D_00470974->f10C;
+    Cnt2FAFF0 *c = &gTourMap->f10C;
 
-    r = r & func_0022BC30(b->f1C->f6C, (f32)c->f8 * D_004703BC);
-    r = r & func_0022BC30(b->f1C->f18, (f32)c->f8 * D_004703BC);
-    r = r & func_0022BC30(b->f1C->f84, (f32)c->f8 * D_004703BC);
+    r = r & func_0022BC30(b->f1C->f6C, (f32)c->f8 * gFrameDelta);
+    r = r & func_0022BC30(b->f1C->f18, (f32)c->f8 * gFrameDelta);
+    r = r & func_0022BC30(b->f1C->f84, (f32)c->f8 * gFrameDelta);
     if (r == 0xFF) {
         amTask_Kill(t);
     }
@@ -246,7 +246,7 @@ void func_00300400(Task2FAFF0 *t) {
     Ent2FAFF0 *e = t->f48;
     s32 r = -1;
 
-    r = r & func_0022BC30(D_00470974->f30->f1C->f2A8, 0.5f * ((f32)e->f0 * D_004703BC));
+    r = r & func_0022BC30(gTourMap->f30->f1C->f2A8, 0.5f * ((f32)e->f0 * gFrameDelta));
     if (r == 0xFF) {
         s->f18->f4 = 4;
         s->f18->f0 = 0;
@@ -264,7 +264,7 @@ void func_003004B0(Task2FAFF0 *t) {
     e = t->f48;
     if (e->f10 < t->f3C) {
         e->f10 = t->f3C;
-        t->f40 = 5.0f * D_004703BC;
+        t->f40 = 5.0f * gFrameDelta;
         t->f44 = 1;
         if (e->fC > s->f18->fC) {
             t->f44 = -t->f44;
@@ -312,12 +312,12 @@ void func_00300610(Task2FAFF0 *t) {
 void func_00300670(Task2FAFF0 *t) {
     Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
     s32 r = -1;
-    SysB2FAFF0 *b = D_00470974->f30;
+    SysB2FAFF0 *b = gTourMap->f30;
     Ent2FAFF0 *e = t->f48;
 
-    r = r & func_0022BC30(b->f1C->f310, (f32)e->f0 * D_004703BC);
-    r = r & func_0022BC30(b->f1C->f314, (f32)s->f18->f0 * D_004703BC);
-    r = r & func_0022BC30(b->f1C->f318, (f32)s->f18->f0 * D_004703BC);
+    r = r & func_0022BC30(b->f1C->f310, (f32)e->f0 * gFrameDelta);
+    r = r & func_0022BC30(b->f1C->f314, (f32)s->f18->f0 * gFrameDelta);
+    r = r & func_0022BC30(b->f1C->f318, (f32)s->f18->f0 * gFrameDelta);
     if (r == 0xFF) {
         s->f18->f4 = 1;
         s->f18->f0 = 0;
@@ -330,7 +330,7 @@ void func_00300760(Task2FAFF0 *t) {
     Ent2FAFF0 *e = t->f48;
     s32 r = -1;
 
-    r = r & func_0022BC30(D_00470974->f30->f1C->f2A4, (f32)e->f0 * D_004703BC);
+    r = r & func_0022BC30(gTourMap->f30->f1C->f2A4, (f32)e->f0 * gFrameDelta);
     if (r == 0xFF) {
         s->f18->f4 = 1;
         s->f18->f0 = 0;
@@ -365,10 +365,10 @@ void func_003009E0(void) {
         v.y = 1.0f;
     }
     func_00146F30(&v);
-    func_00146F10(D_00470974->f50, &v);
-    D_00470974->f44->f30 = D_00470974->f44->f30 + v.x;
-    D_00470974->f44->f34 = D_00470974->f44->f34 + v.y;
-    D_00470974->f44->f38 = D_00470974->f44->f38 + v.z;
+    func_00146F10(gTourMap->f50, &v);
+    gTourMap->f44->f30 = gTourMap->f44->f30 + v.x;
+    gTourMap->f44->f34 = gTourMap->f44->f34 + v.y;
+    gTourMap->f44->f38 = gTourMap->f44->f38 + v.z;
     for (i = 0; i < 4; i++) {
         func_002FFD20(i);
     }
@@ -382,8 +382,8 @@ void func_00300CA0(Task2FAFF0 *t) {
     f32 f1;
     f32 f0;
 
-    a = (Anim2FAFF0 *)(D_00470974->f40 + 0x30);
-    f1 = (f32)t->f30 * D_004703BC;
+    a = (Anim2FAFF0 *)(gTourMap->f40 + 0x30);
+    f1 = (f32)t->f30 * gFrameDelta;
     f0 = (f32)t->f34;
     if (f1 > f0) {
         a->f4 = 1.0f;

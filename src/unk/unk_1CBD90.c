@@ -1,7 +1,7 @@
 #include "common.h"
 
 typedef struct Big { char pad[0x8934]; void *tbl[2]; } Big;
-extern Big *D_00470570;
+extern Big *gBattle;
 typedef struct Arg { char pad[0x2c]; int *p; } Arg;
 typedef struct Side {
     char pad0[0xB88];
@@ -17,13 +17,13 @@ typedef struct Side {
 } Side;
 extern void func_001C8480(void *, int);
 extern void func_001C7D90(void *, int, void *);
-extern int func_00218960(void *);
+extern int AdxSlot_IsPlaying(void *);
 extern void func_00219270(signed char);
 extern signed char func_00218B60(short, int);
 extern void func_00218C40(void *, int, int, int, float, float);
-extern void func_00219340(void *, float);
-extern void func_00219390(void *);
-extern void func_00219470(void *);
+extern void AdxSlot_SetVolume(void *, float);
+extern void AdxSlot_Stop(void *);
+extern void AdxSlot_Pause(void *);
 extern void func_001D9CA0(void *, int);
 extern void func_001E57F0(int);
 extern void func_001A8770(int, void *);
@@ -84,7 +84,7 @@ extern f32 D_004B4238[];
 #if 0
 int func_001CBD90(void *unused, Arg *a) {
     int *p = a->p;
-    Side *s = (Side *)D_00470570->tbl[p[1]];
+    Side *s = (Side *)gBattle->tbl[p[1]];
     if (s->n > 0) {
         *(s32 *)((char *)s->blk[0] + s->n * 8 + 8) = -(p[0] == 0);
     }
@@ -97,7 +97,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBDF0);
 #if 0
 int func_001CBE80(void *unused, Arg *a) {
     int *p = a->p;
-    Side *s = (Side *)D_00470570->tbl[p[3]];
+    Side *s = (Side *)gBattle->tbl[p[3]];
     short v = s->idx[p[1]];
     ((int *)((char *)s->blk[0] + v * 8))[2] = p[0];
     return 1;
@@ -108,7 +108,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBE80);
 #if 0
 int func_001CBEE0(void *unused, Arg *a) {
     int *p = a->p;
-    Side *s = (Side *)((char *)D_00470570->tbl[p[3]] + p[2] * 0x680);
+    Side *s = (Side *)((char *)gBattle->tbl[p[3]] + p[2] * 0x680);
     if (p[1] >= 0) {
         *(s32 *)((char *)s->blk[0] + p[1] * 8 + 8) = p[0];
     }
@@ -116,24 +116,24 @@ int func_001CBEE0(void *unused, Arg *a) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBEE0);
-int func_001CBF50(void *unused, Arg *a) {
+int AdxCmd_WaitStop(void *unused, Arg *a) {
     int x = a->p[0];
-    return func_00218960((char *)D_00470570 + (x << 5) + 0x5C4) ? 1 : 3;
+    return AdxSlot_IsPlaying((char *)gBattle + (x << 5) + 0x5C4) ? 1 : 3;
 }
-int func_001CBF90(void *unused, Arg *a) {
-    *(int *)a = func_00218960((char *)D_00470570 + (a->p[0] << 5) + 0x5C4);
+int AdxCmd_IsPlaying(void *unused, Arg *a) {
+    *(int *)a = AdxSlot_IsPlaying((char *)gBattle + (a->p[0] << 5) + 0x5C4);
     return 1;
 }
 int func_001CBFE0(void *unused, Arg *a) {
-    if (*(short *)((char *)D_00470570 + 0x7E6) != -1) {
+    if (*(short *)((char *)gBattle + 0x7E6) != -1) {
         func_00219270(-1);
     }
     return 1;
 }
 int func_001CC020(void *unused, Arg *a) {
     int r;
-    if (*(short *)((char *)D_00470570 + 0x7E6) != -1) {
-        r = func_00218B60(*(short *)((char *)D_00470570 + 0x7E4), 1);
+    if (*(short *)((char *)gBattle + 0x7E6) != -1) {
+        r = func_00218B60(*(short *)((char *)gBattle + 0x7E4), 1);
         func_00219270(r);
     }
     return 1;
@@ -141,26 +141,26 @@ int func_001CC020(void *unused, Arg *a) {
 int func_001CC070(void *unused, Arg *a) {
     char *q = *(char **)unused;
     int *p = a->p;
-    func_00218C40((char *)D_00470570 + (p[2] << 5) + 0x5C4, *(int *)(q + 0x10), *(int *)(q + 0x14), *(int *)(q + 0x18), *(float *)&p[1], (float)p[0]);
+    func_00218C40((char *)gBattle + (p[2] << 5) + 0x5C4, *(int *)(q + 0x10), *(int *)(q + 0x14), *(int *)(q + 0x18), *(float *)&p[1], (float)p[0]);
     return 1;
 }
-int func_001CC0C0(void *unused, Arg *a) {
+int AdxCmd_SetVolume(void *unused, Arg *a) {
     int *p = a->p;
-    func_00219340((char *)D_00470570 + (p[1] << 5) + 0x5C4, *(float *)p);
+    AdxSlot_SetVolume((char *)gBattle + (p[1] << 5) + 0x5C4, *(float *)p);
     return 1;
 }
 int func_001CC100(void *unused, Arg *a) {
     int *p = a->p;
     char *e = (char *)(p[0] << 5);
-    *(float *)((char *)a + 0x40) = *(float *)(e + (int)D_00470570 + 0x5C4);
+    *(float *)((char *)a + 0x40) = *(float *)(e + (int)gBattle + 0x5C4);
     return 1;
 }
-int func_001CC130(void *unused, Arg *a) {
-    func_00219390((char *)D_00470570 + (a->p[0] << 5) + 0x5C4);
+int AdxCmd_Stop(void *unused, Arg *a) {
+    AdxSlot_Stop((char *)gBattle + (a->p[0] << 5) + 0x5C4);
     return 1;
 }
-int func_001CC170(void *unused, Arg *a) {
-    func_00219470((char *)D_00470570 + (a->p[0] << 5) + 0x5C4);
+int AdxCmd_Pause(void *unused, Arg *a) {
+    AdxSlot_Pause((char *)gBattle + (a->p[0] << 5) + 0x5C4);
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC1B0);
@@ -171,7 +171,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC610);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC710);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC7C0);
 int func_001CC850(void *unused, Arg *a) {
-    func_001D9CA0(D_00470570->tbl[a->p[0]], 0);
+    func_001D9CA0(gBattle->tbl[a->p[0]], 0);
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC890);
@@ -202,32 +202,32 @@ int func_001CCC70(void *unused, Arg *a) {
     return 1;
 }
 int func_001CCC90(void *unused, Arg *a) {
-    char *p = *(char **)((char *)D_00470570 + 0x260);
+    char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)(p + 0x18) : 0.0f;
     return 1;
 }
 int func_001CCCC0(void *unused, Arg *a) {
-    char *p = *(char **)((char *)D_00470570 + 0x260);
+    char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)(p + 0x14) : 0.0f;
     return 1;
 }
 int func_001CCCF0(void *unused, Arg *a) {
-    char *p = *(char **)((char *)D_00470570 + 0x260);
+    char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)(p + 0x10) : 0.0f;
     return 1;
 }
 int func_001CCD20(void *unused, Arg *a) {
-    char *p = *(char **)((char *)D_00470570 + 0x260);
+    char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)(p + 0x8) : 0.0f;
     return 1;
 }
 int func_001CCD50(void *unused, Arg *a) {
-    char *p = *(char **)((char *)D_00470570 + 0x260);
+    char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)(p + 0x4) : 0.0f;
     return 1;
 }
 int func_001CCD80(void *unused, Arg *a) {
-    char *p = *(char **)((char *)D_00470570 + 0x260);
+    char *p = *(char **)((char *)gBattle + 0x260);
     *(f32 *)((char *)a + 0x40) = p ? *(f32 *)p : 0.0f;
     return 1;
 }
@@ -284,7 +284,7 @@ int func_001CD270(void *unused, Arg *a) {
     return 1;
 }
 int func_001CD2C0(void *unused, Arg *a) {
-    func_001D8FE0(D_00470570->tbl[a->p[0]], 0);
+    func_001D8FE0(gBattle->tbl[a->p[0]], 0);
     return 1;
 }
 int func_001CD300(void *unused, Arg *a) {
@@ -295,45 +295,45 @@ int func_001CD300(void *unused, Arg *a) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD340);
 int func_001CD530(void *unused, Arg *a) {
     int *p = a->p;
-    char *e = (char *)D_00470570->tbl[p[2]] + p[1] * 0x680;
+    char *e = (char *)gBattle->tbl[p[2]] + p[1] * 0x680;
     int *blk = *(int **)(e + 0xB88);
     *(s32 *)a = amMotion_FindBone(blk[1], *(int *)((char *)a + 0x20) + p[0]);
     return 1;
 }
 int func_001CD5B0(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = D_00470570->tbl[p[1]];
+    char *t = gBattle->tbl[p[1]];
     func_001E18B0(t, p[0]);
     func_001E3550(t);
     return 1;
 }
 int func_001CD610(void *unused, Arg *a) {
-    *((char *)D_00470570->tbl[a->p[0]] + 0x2016) = 1;
+    *((char *)gBattle->tbl[a->p[0]] + 0x2016) = 1;
     return 1;
 }
 int func_001CD640(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = D_00470570->tbl[p[1]];
+    char *t = gBattle->tbl[p[1]];
     func_001E1A40(t, p[0]);
     func_001E3550(t);
     return 1;
 }
 int func_001CD6A0(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = D_00470570->tbl[p[2]];
+    char *t = gBattle->tbl[p[2]];
     func_001E1BD0(t, p[1], p[0]);
     func_001E3550(t);
     return 1;
 }
 int func_001CD700(void *unused, Arg *a) {
     void *x[2];
-    x[0] = D_00470570->tbl[0];
-    x[1] = D_00470570->tbl[1];
+    x[0] = gBattle->tbl[0];
+    x[1] = gBattle->tbl[1];
     func_00237000(6, x);
     return 1;
 }
 int func_001CD750(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[a->p[0]];
+    char *t = gBattle->tbl[a->p[0]];
     *(s32 *)a = 0;
     if (*(s8 *)(t + 0x1FF8) > -1) {
         *(s32 *)a = *(s8 *)(t + 0x2013);
@@ -341,109 +341,109 @@ int func_001CD750(void *unused, Arg *a) {
     return 1;
 }
 int func_001CD7A0(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[a->p[0]];
+    char *t = gBattle->tbl[a->p[0]];
     *(s32 *)(t + 0x17E4) = 0;
     func_001DFBF0(t);
     func_001D7CC0(t, 0);
     return 1;
 }
 int func_001CD800(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[a->p[0]];
+    char *t = gBattle->tbl[a->p[0]];
     *(f32 *)((char *)a + 0x40) = 360.0f * ((f32)*(s32 *)(t + 0x17A4) / 65536.0f);
     return 1;
 }
 int func_001CD850(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[a->p[0]];
+    char *t = gBattle->tbl[a->p[0]];
     func_001E1460(t, 1);
     func_001D7CC0(t, 0);
     return 1;
 }
 int func_001CD8B0(void *unused, Arg *a) {
-    func_001DD680(D_00470570->tbl[a->p[0]], 1);
+    func_001DD680(gBattle->tbl[a->p[0]], 1);
     return 1;
 }
 int func_001CD8F0(void *unused, Arg *a) {
-    *(s32 *)a = *(s8 *)((char *)D_00470570->tbl[a->p[0]] + 0x1FF8) <= -1;
+    *(s32 *)a = *(s8 *)((char *)gBattle->tbl[a->p[0]] + 0x1FF8) <= -1;
     return 1;
 }
 
 int func_001CD930(void *unused, Arg *a) {
     int *p = a->p;
-    *(s32 *)a = func_001DFA90(D_00470570->tbl[p[1]], p[0]);
+    *(s32 *)a = func_001DFA90(gBattle->tbl[p[1]], p[0]);
     return 1;
 }
 int func_001CD980(void *unused, Arg *a) {
-    char *q = *(char **)((char *)D_00470570->tbl[a->p[0]] + 0x1CF4);
+    char *q = *(char **)((char *)gBattle->tbl[a->p[0]] + 0x1CF4);
     *(s32 *)a = *(s16 *)(q + 0x12);
     return 1;
 }
 int func_001CD9C0(void *unused, Arg *a) {
     int *p = a->p;
-    *(s32 *)a = *(s32 *)((char *)D_00470570->tbl[p[1]] + p[0] * 0x680 + 0xBA0);
+    *(s32 *)a = *(s32 *)((char *)gBattle->tbl[p[1]] + p[0] * 0x680 + 0xBA0);
     return 1;
 }
 int func_001CDA10(void *unused, Arg *a) {
     int *p = a->p;
-    *(s32 *)a = *(s32 *)((char *)D_00470570->tbl[p[1]] + p[0] * 0x680 + 0xBA4);
+    *(s32 *)a = *(s32 *)((char *)gBattle->tbl[p[1]] + p[0] * 0x680 + 0xBA4);
     return 1;
 }
 int func_001CDA60(void *unused, Arg *a) {
-    *(s32 *)a = *(s32 *)((char *)D_00470570->tbl[a->p[0]] + 0x1CFC);
+    *(s32 *)a = *(s32 *)((char *)gBattle->tbl[a->p[0]] + 0x1CFC);
     return 1;
 }
 int func_001CDA90(void *unused, Arg *a) {
     int *p = a->p;
-    *(s32 *)a = *(s32 *)((char *)D_00470570->tbl[p[1]] + p[0] * 0x680 + 0xB9C);
+    *(s32 *)a = *(s32 *)((char *)gBattle->tbl[p[1]] + p[0] * 0x680 + 0xB9C);
     return 1;
 }
 int func_001CDAE0(void *unused, Arg *a) {
-    *(s32 *)a = (s32)*(f32 *)((char *)D_00470570->tbl[a->p[0]] + 0x17D4);
+    *(s32 *)a = (s32)*(f32 *)((char *)gBattle->tbl[a->p[0]] + 0x17D4);
     return 1;
 }
 int func_001CDB20(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[*a->p];
+    char *t = gBattle->tbl[*a->p];
     f32 f = (*(f32 *)(t + 0x1A40) > 0.0f) ? *(f32 *)(t + 0x17D4) : *(f32 *)(t + 0x17D0);
     *(s32 *)a = (s32)f;
     return 1;
 }
 int func_001CDB80(void *unused, Arg *a) {
-    *(s32 *)a = (s32)*(f32 *)((char *)D_00470570->tbl[a->p[0]] + 0x17C4);
+    *(s32 *)a = (s32)*(f32 *)((char *)gBattle->tbl[a->p[0]] + 0x17C4);
     return 1;
 }
 int func_001CDBC0(void *unused, Arg *a) {
-    *(s32 *)a = (s32)*(f32 *)((char *)D_00470570->tbl[a->p[0]] + 0x17C0);
+    *(s32 *)a = (s32)*(f32 *)((char *)gBattle->tbl[a->p[0]] + 0x17C0);
     return 1;
 }
 int func_001CDC00(void *unused, Arg *a) {
-    *(s32 *)a = *(s32 *)((char *)D_00470570->tbl[a->p[1]] + 0xB70);
+    *(s32 *)a = *(s32 *)((char *)gBattle->tbl[a->p[1]] + 0xB70);
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDC30);
 int func_001CDCA0(void *unused, Arg *a) {
-    *(s32 *)a = *(s8 *)((char *)D_00470570->tbl[a->p[0]] + 0x1FF9);
+    *(s32 *)a = *(s8 *)((char *)gBattle->tbl[a->p[0]] + 0x1FF9);
     return 1;
 }
 int func_001CDCD0(void *unused, Arg *a) {
     int *p = a->p;
-    *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)D_00470570->tbl[p[1]] + p[0] * 0x680 + 0xCB8);
+    *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle->tbl[p[1]] + p[0] * 0x680 + 0xCB8);
     return 1;
 }
 int func_001CDD20(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[a->p[0]];
+    char *t = gBattle->tbl[a->p[0]];
     func_001E4DA0(t);
     *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x124);
     return 1;
 }
 int func_001CDD80(void *unused, Arg *a) {
-    *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)D_00470570 + 0x8968);
+    *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle + 0x8968);
     return 1;
 }
 int func_001CDDA0(void *unused, Arg *a) {
-    *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)D_00470570 + 0x8964);
+    *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle + 0x8964);
     return 1;
 }
 int func_001CDDC0(void *unused, Arg *a) {
-    *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)D_00470570 + 0x8960);
+    *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle + 0x8960);
     return 1;
 }
 // differs: 1 of 22 at best: the add of idx*16 and the table pointer is `addu v0,v0,v1` in the original, ours `addu v0,v1,v0`. Operand order, (idx*16 + t), and an explicit shift local tried; base form 5 of 22.
@@ -451,7 +451,7 @@ int func_001CDDC0(void *unused, Arg *a) {
 int func_001CDDE0(void *unused, Arg *a) {
     int *p = a->p;
     s32 idx = p[0];
-    char *t = D_00470570->tbl[p[1]];
+    char *t = gBattle->tbl[p[1]];
     if (idx >= 0 && idx < 0x16) {
         *(f32 *)((char *)a + 0x40) = *(f32 *)(t + idx * 16 + 0x658);
     } else {
@@ -465,7 +465,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDDE0);
 #if 0
 int func_001CDE40(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = D_00470570->tbl[p[1]];
+    char *t = gBattle->tbl[p[1]];
     if (p[0] >= 0 && p[0] < 0x16) {
         *(f32 *)((char *)a + 0x40) = *(f32 *)(t + p[0] * 16 + 0x654);
     } else {
@@ -479,7 +479,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDE40);
 #if 0
 int func_001CDEA0(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = D_00470570->tbl[p[1]];
+    char *t = gBattle->tbl[p[1]];
     if (p[0] >= 0 && p[0] < 0x16) {
         *(f32 *)((char *)a + 0x40) = *(f32 *)(t + p[0] * 16 + 0x650);
     } else {
@@ -497,7 +497,7 @@ int func_001CDF00(void *unused, Arg *a) {
 int func_001CDF10(void *unused, Arg *a) {
     int *p = a->p;
     s32 idx = p[0];
-    char *t = D_00470570->tbl[p[1]];
+    char *t = gBattle->tbl[p[1]];
     s8 *q;
     u8 *e = D_004E0660 + 21 + idx * 40;
     *(s16 *)(t + 0x1FEA) = idx;
@@ -511,12 +511,12 @@ int func_001CDF10(void *unused, Arg *a) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDF10);
 int func_001CDF80(void *unused, Arg *a) {
     int *p = a->p;
-    func_001DFE60(D_00470570->tbl[p[1]], 0, (f32)-p[0]);
+    func_001DFE60(gBattle->tbl[p[1]], 0, (f32)-p[0]);
     return 1;
 }
 int func_001CDFD0(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = D_00470570->tbl[p[1]];
+    char *t = gBattle->tbl[p[1]];
     *(s32 *)a = func_001E0200(t, -p[0], 0);
     return 1;
 }
@@ -524,7 +524,7 @@ int func_001CDFD0(void *unused, Arg *a) {
 #if 0
 int func_001CE030(void *unused, Arg *a) {
     int *p = a->p;
-    func_001DFC80(D_00470570->tbl[p[2]], p[1], (f32)*(s32 *)p[0]);
+    func_001DFC80(gBattle->tbl[p[2]], p[1], (f32)*(s32 *)p[0]);
     return 1;
 }
 #endif
@@ -532,7 +532,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE030);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE080);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE110);
 int func_001CE1F0(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[a->p[0]];
+    char *t = gBattle->tbl[a->p[0]];
     *(f32 *)(t + 0x17C0) = *(f32 *)(t + 0x17C4);
     return 1;
 }
@@ -540,7 +540,7 @@ int func_001CE1F0(void *unused, Arg *a) {
 #if 0
 int func_001CE220(void *unused, Arg *a) {
     int *p = a->p;
-    char *e = (char *)D_00470570->tbl[p[2]] + p[1] * 0x680 + 0x650;
+    char *e = (char *)gBattle->tbl[p[2]] + p[1] * 0x680 + 0x650;
     if (p[1] != 0) {
         func_001E6F70(e);
     } else {
@@ -555,7 +555,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE2A0);
 #if 0
 int func_001CE340(void *unused, Arg *a) {
     int *p = a->p;
-    *(s8 *)((char *)D_00470570->tbl[p[2]] + p[1] * 0x680 + 0xCBE) = p[0] == 0;
+    *(s8 *)((char *)gBattle->tbl[p[2]] + p[1] * 0x680 + 0xCBE) = p[0] == 0;
     return 1;
 }
 #endif
@@ -564,18 +564,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE340);
 #if 0
 int func_001CE3A0(void *unused, Arg *a) {
     int *p = a->p;
-    *(s8 *)((char *)D_00470570->tbl[p[2]] + p[1] * 0x680 + 0xCBD) = p[0] == 0;
+    *(s8 *)((char *)gBattle->tbl[p[2]] + p[1] * 0x680 + 0xCBD) = p[0] == 0;
     return 1;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE3A0);
 int func_001CE400(void *unused, Arg *a) {
-    *(f32 *)((char *)D_00470570->tbl[a->p[1]] + 0x1A08) = *(f32 *)a->p;
+    *(f32 *)((char *)gBattle->tbl[a->p[1]] + 0x1A08) = *(f32 *)a->p;
     return 1;
 }
 int func_001CE430(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
-    char *t = D_00470570->tbl[a->p[5]];
+    char *t = gBattle->tbl[a->p[5]];
     f32 v0 = f[0];
     f32 v1 = f[1];
     f32 v2 = f[2];
@@ -593,7 +593,7 @@ int func_001CE480(void *unused, Arg *a) {
     f32 *f = (f32 *)p;
     f32 x0 = f[0];
     f32 x1 = f[1];
-    char *t = D_00470570->tbl[p[3]];
+    char *t = gBattle->tbl[p[3]];
     int e = p[2] * 0x680;
     *(f32 *)(t + e + 0xCA4) = x1;
     *(f32 *)(t + e + 0xCA8) = x0;
@@ -604,14 +604,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE4E0);
 #if 0
 int func_001CE560(void *unused, Arg *a) {
     int *p = a->p;
-    func_001D7CC0(D_00470570->tbl[p[1]], p[0] != 0);
+    func_001D7CC0(gBattle->tbl[p[1]], p[0] != 0);
     return 1;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE560);
 int func_001CE5B0(void *unused, Arg *a) {
     int *p = a->p;
-    func_001E73C0((char *)D_00470570->tbl[p[1]] + p[0] * 0x680 + 0x650);
+    func_001E73C0((char *)gBattle->tbl[p[1]] + p[0] * 0x680 + 0x650);
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE610);
@@ -620,11 +620,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE610);
 int func_001CE740(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
-    char *t = D_00470570->tbl[p[3]];
+    char *t = gBattle->tbl[p[3]];
     *(s8 *)(t + 0x1A5E) = p[2];
     *(s8 *)(t + 0x1A64) = p[2] != -1;
     *(s16 *)(t + 0x1A66) = p[1];
-    *(f32 *)(t + 0x1A68) = *(f32 *)((char *)D_00470570 + 0x88F0);
+    *(f32 *)(t + 0x1A68) = *(f32 *)((char *)gBattle + 0x88F0);
     *(s32 *)(t + 0x1A60) = (s32)(65536.0f * (f[0] / 360.0f));
     return 1;
 }
@@ -636,7 +636,7 @@ int func_001CE7C0(void *unused, Arg *a) {
     int *p = a->p;
     f32 *f = (f32 *)p;
     f32 x0 = f[0];
-    char *t = D_00470570->tbl[p[3]];
+    char *t = gBattle->tbl[p[3]];
     *(s8 *)(t + 0x1A5E) = p[2];
     *(s8 *)(t + 0x1A5F) = p[1];
     *(s32 *)(t + 0x1A60) = (s32)(65536.0f * (x0 / 360.0f));
@@ -645,7 +645,7 @@ int func_001CE7C0(void *unused, Arg *a) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE7C0);
 int func_001CE820(void *unused, Arg *a) {
-    *(f32 *)((char *)D_00470570->tbl[a->p[1]] + 0x182C) = *(f32 *)a->p;
+    *(f32 *)((char *)gBattle->tbl[a->p[1]] + 0x182C) = *(f32 *)a->p;
     return 1;
 }
 int func_001CE850(void *unused, Arg *a) {
@@ -698,7 +698,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CED20);
 #if 0
 int func_001CEDE0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
-    char *t = D_00470570->tbl[a->p[3]];
+    char *t = gBattle->tbl[a->p[3]];
     *(f32 *)(t + 0x1828) = f[2];
     *(s32 *)(t + 0x1838) = (s32)(65536.0f * (f[0] / 360.0f));
     *(s32 *)(t + 0x1834) = (s32)(65536.0f * (f[1] / 360.0f));
@@ -712,7 +712,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEDE0);
 #if 0
 int func_001CEE80(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
-    char *t = D_00470570->tbl[a->p[3]];
+    char *t = gBattle->tbl[a->p[3]];
     *(f32 *)(t + 0x1828) = f[1];
     *(s32 *)(t + 0x1834) = (s32)(65536.0f * (f[0] / 360.0f));
     *(s32 *)(t + 0x1838) = 0;
@@ -728,7 +728,7 @@ int func_001CEF00(void *unused, Arg *a) {
     f32 x0 = f[0];
     s32 p2 = p[2];
     f32 x1 = f[1];
-    char *t = D_00470570->tbl[p[3]];
+    char *t = gBattle->tbl[p[3]];
     *(s16 *)(t + 0xCB4) = 0;
     *(s16 *)(t + 0x181E) = p2;
     *(f32 *)(t + 0x1814) = x1;
@@ -738,11 +738,11 @@ int func_001CEF00(void *unused, Arg *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CEF60);
 int func_001CEFF0(void *unused, Arg *a) {
-    func_001C75D0(D_00470570->tbl[a->p[0]], 0);
+    func_001C75D0(gBattle->tbl[a->p[0]], 0);
     return 1;
 }
 int func_001CF030(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[a->p[0]];
+    char *t = gBattle->tbl[a->p[0]];
     func_001E4FA0(t, 2);
     func_001E4FA0(*(void **)(t + 0x1354), 2);
     func_001E4820(t, 1.0f, 0);
@@ -752,32 +752,32 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF0A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF100);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF2C0);
 int func_001CF4A0(void *unused, Arg *a) {
-    *(s32 *)a = func_001E1690(D_00470570->tbl[a->p[0]]);
+    *(s32 *)a = func_001E1690(gBattle->tbl[a->p[0]]);
     return 1;
 }
 int func_001CF4F0(void *unused, Arg *a) {
-    char *t = D_00470570->tbl[a->p[0]];
+    char *t = gBattle->tbl[a->p[0]];
     func_001C81D0(t, *(s32 *)(t + 0xBA8));
     return 1;
 }
 int func_001CF530(void *unused, Arg *a) {
     int *p = a->p;
-    func_001C8210(D_00470570->tbl[p[1]], p[0]);
+    func_001C8210(gBattle->tbl[p[1]], p[0]);
     return 1;
 }
 
 int func_001CF570(void *unused, Arg *a) {
     int side = a->p[1];
     int id = a->p[0];
-    func_001C8480(D_00470570->tbl[side], id);
-    func_001C7D90(D_00470570->tbl[side], id, D_00470570->tbl[1 - side]);
+    func_001C8480(gBattle->tbl[side], id);
+    func_001C7D90(gBattle->tbl[side], id, gBattle->tbl[1 - side]);
     return 1;
 }
 // differs: Size 0x7C against 0x90. The original also loads p[0] and p[1] into a3/t0 (not used by the visible calls); the source use of those two values is unknown.
 #if 0
 int func_001CF600(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = D_00470570->tbl[p[3]];
+    char *t = gBattle->tbl[p[3]];
     int s0 = p[2];
     char *q = *(char **)(t + 0x1CF8);
     short v = *(short *)(q + s0 * 20 + 0xD6);
@@ -789,7 +789,7 @@ int func_001CF600(void *unused, Arg *a) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF600);
 int func_001CF690(void *unused, Arg *a) {
     int *p = a->p;
-    func_001C8860(D_00470570->tbl[p[1]], p[0]);
+    func_001C8860(gBattle->tbl[p[1]], p[0]);
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF6D0);
@@ -803,18 +803,18 @@ int func_001CF730(void *o, Arg *a) {
 }
 int func_001CF760(void *unused, Arg *a) {
     int *p = a->p;
-    *(s32 *)a = func_001C8780(D_00470570->tbl[p[1]], p[0]);
+    *(s32 *)a = func_001C8780(gBattle->tbl[p[1]], p[0]);
     return 1;
 }
 int func_001CF7B0(void *unused, Arg *a) {
     int *p = a->p;
-    *(s16 *)((char *)D_00470570 + 0x894E) = p[0] > 0;
-    func_001D80A0(D_00470570->tbl[0], *(s16 *)((char *)D_00470570 + 0x894E) ? 3 : 4);
+    *(s16 *)((char *)gBattle + 0x894E) = p[0] > 0;
+    func_001D80A0(gBattle->tbl[0], *(s16 *)((char *)gBattle + 0x894E) ? 3 : 4);
     return 1;
 }
 int func_001CF810(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = D_00470570->tbl[p[2]];
+    char *t = gBattle->tbl[p[2]];
     s32 b = p[0];
     *(s16 *)(t + 0x1AD2) = p[1];
     *(s16 *)(t + 0x1AD4) = b;
@@ -823,9 +823,9 @@ int func_001CF810(void *unused, Arg *a) {
 
 int func_001CF850(void *unused, Arg *a) {
     int *p = a->p;
-    *(s16 *)((char *)D_00470570 + 0x894C) = p[0];
-    func_001D80A0(D_00470570->tbl[0], 2);
-    func_002CBFF0(7, D_00470570->tbl[0]);
+    *(s16 *)((char *)gBattle + 0x894C) = p[0];
+    func_001D80A0(gBattle->tbl[0], 2);
+    func_002CBFF0(7, gBattle->tbl[0]);
     return 1;
 }
 int func_001CF8B0(void *unused, Arg *a) {
@@ -837,24 +837,24 @@ int func_001CF8B0(void *unused, Arg *a) {
     return 1;
 }
 int func_001CF900(void *unused, Arg *a) {
-    *(s8 *)((char *)D_00470570 + 0x8AAE) = *a->p;
+    *(s8 *)((char *)gBattle + 0x8AAE) = *a->p;
     return 1;
 }
 int func_001CF920(void *unused, Arg *a) {
-    *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)D_00470570 + 0x88F0);
+    *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle + 0x88F0);
     return 1;
 }
 int func_001CF940(void *unused, Arg *a) {
-    *(s32 *)a = (s32)(0.5f + *(f32 *)((char *)D_00470570 + 0x8914));
+    *(s32 *)a = (s32)(0.5f + *(f32 *)((char *)gBattle + 0x8914));
     return 1;
 }
 int func_001CF970(void *unused, Arg *a) {
-    *(s32 *)((char *)D_00470570 + 0x8914) = 0;
+    *(s32 *)((char *)gBattle + 0x8914) = 0;
     return 1;
 }
 int func_001CF990(void *o, Arg *a) {
     int r;
-    if (0.5f + *(f32 *)((char *)D_00470570 + 0x8914) >= (f32)*(s32 *)((char *)o + 0x24)) {
+    if (0.5f + *(f32 *)((char *)gBattle + 0x8914) >= (f32)*(s32 *)((char *)o + 0x24)) {
         *(void **)((char *)o + 0x10) = 0;
         r = 1;
     } else {
@@ -869,7 +869,7 @@ int func_001CF9E0(void *o, Arg *a) {
 }
 int func_001CFA00(void *o, Arg *a) {
     int r;
-    if (0.5f + (*(f32 *)((char *)D_00470570 + 0x8914) - *(f32 *)((char *)o + 0x2C)) >= (f32)*(s32 *)((char *)o + 0x24)) {
+    if (0.5f + (*(f32 *)((char *)gBattle + 0x8914) - *(f32 *)((char *)o + 0x2C)) >= (f32)*(s32 *)((char *)o + 0x24)) {
         *(void **)((char *)o + 0x10) = 0;
         r = 1;
     } else {
@@ -877,12 +877,12 @@ int func_001CFA00(void *o, Arg *a) {
     }
     return r;
 }
-// differs: 7 of 13 at best: the original loads a->p, then the function address, then D_00470570, and stores 0x24 before the float; ours emits the function address store first or loads the global late.
+// differs: 7 of 13 at best: the original loads a->p, then the function address, then gBattle, and stores 0x24 before the float; ours emits the function address store first or loads the global late.
 #if 0
 int func_001CFA60(void *o, Arg *a) {
     *(void **)((char *)o + 0x10) = func_001CFA00;
     *(s32 *)((char *)o + 0x24) = *a->p;
-    *(f32 *)((char *)o + 0x2C) = *(f32 *)((char *)D_00470570 + 0x8914);
+    *(f32 *)((char *)o + 0x2C) = *(f32 *)((char *)gBattle + 0x8914);
     return 3;
 }
 #endif

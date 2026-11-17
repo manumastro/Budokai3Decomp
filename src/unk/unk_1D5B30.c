@@ -179,7 +179,7 @@ typedef struct Fighter {
 } Fighter;
 /* FIGHTER END */
 
-/* The global work block D_00470570 as this file reads it. */
+/* The global work block gBattle as this file reads it. */
 typedef struct Slot {
     s32 a;
     s32 b;
@@ -222,7 +222,7 @@ typedef struct Game {
     s8 f9977;
 } Game;
 
-extern Game *D_00470570;
+extern Game *gBattle;
 
 extern void func_001A3610(s32);
 extern void func_001E6F70(void *, ...);
@@ -234,7 +234,7 @@ extern void func_002361F0(void);
 extern void func_00236500(void);
 extern void func_00236640(void);
 extern void func_002360F0(void);
-extern void func_001C7590(void *, s32);
+extern void Fighter_ClearFlags(void *, s32);
 extern void func_00125740(void *, void *, s32);
 extern void amTask_KillGroup(s32, s32, s32);
 extern s32 D_004705D4;
@@ -248,7 +248,7 @@ extern void func_00144650(s32);
 extern void func_00144B70(s32);
 extern void *D_004693A0[];
 extern void func_001E7BE0(void *);
-extern void func_00219390(void *);
+extern void AdxSlot_Stop(void *);
 extern void func_00218440(s32, void *);
 extern void memset(void *, s32, s32);
 extern f32 D_004E0614[];
@@ -266,7 +266,7 @@ extern s32 func_00234D50(Fighter *c);
 extern s32 func_00234EA0(Fighter *c);
 extern s32 func_001E8290(void *);
 extern void func_001C81D0(s32, s32);
-extern void func_002378A0(s32);
+extern void CharLight_Release(s32);
 extern void func_001E2290(Fighter *c);
 extern s32 func_001E1D60(Fighter *c);
 extern s32 func_00233D50(Fighter *c, void *p);
@@ -326,8 +326,8 @@ void func_001D6B90(Fighter *c) {
     st[2] = v;
     st[3] = v;
     func_001E11E0(c->f30, st);
-    if (D_00470570->f88EC == 0) {
-        f = q[1] + D_00470570->f88F0;
+    if (gBattle->f88EC == 0) {
+        f = q[1] + gBattle->f88F0;
         q[1] = f;
         if (f < q[2]) {
             return;
@@ -338,17 +338,17 @@ void func_001D6B90(Fighter *c) {
 #endif
 // differs: 22 of 53 instructions differ with the row pointer (the first attempt was 0xC8 against 0xE0 bytes); the original keeps the object in s1 across the call
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6B90);
-void func_001D6C70(Fighter *c) {
+void PlyScr_TaskInput(Fighter *c) {
     s32 *p;
 
-    if (D_00470570->f88EC == 0) {
+    if (gBattle->f88EC == 0) {
         p = (s32 *)((char *)c + 0x30);
         ((void (*)(void *))D_004693A0[p[1]])(p);
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6CD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6E20);
-void func_001D7280(Fighter *c) {
+void PlyVib_TaskKill(Fighter *c) {
     func_001A3610(c->f30);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7290);
@@ -458,7 +458,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7E50);
 s32 func_001D7FB0(Fighter *c, s32 a1, s32 a2, u16 a3) {
     s32 v;
 
-    v = (D_00470570 != NULL) ? (D_00470570->f8AA8 & 4) : 0;
+    v = (gBattle != NULL) ? (gBattle->f8AA8 & 4) : 0;
     if (v != 0) {
         return 0;
     }
@@ -484,7 +484,7 @@ s32 func_001D7FB0(Fighter *c, s32 a1, s32 a2, u16 a3) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D80A0);
 void func_001D8320(Fighter *c) {
-    if (D_00470570->f8944 != 0) {
+    if (gBattle->f8944 != 0) {
         return;
     }
     if (c->f1AB8 <= 0) {
@@ -543,7 +543,7 @@ void func_001D8A50(Fighter *c) {
     }
     c->f1AD0 = 0;
 }
-void func_001D8A90(Fighter *c, s32 a1, s32 a2) {
+void PlyScr_Start(Fighter *c, s32 a1, s32 a2) {
     char *p;
 
     if (c->f1AC8 != NULL) {
@@ -557,7 +557,7 @@ void func_001D8A90(Fighter *c, s32 a1, s32 a2) {
     c->f1ADC = 0;
     c->f1AD0 = 1;
     c->f1AD6 = 0;
-    c->f1AC8 = amTask_Create((void (*)(void *))func_001D6C70, NULL, 0x5080, 0x20, 0x40001000, D_004694D0);
+    c->f1AC8 = amTask_Create((void (*)(void *))PlyScr_TaskInput, NULL, 0x5080, 0x20, 0x40001000, D_004694D0);
     p = (char *)c->f1AC8;
     *(Fighter **)(p + 0x30) = c;
     *(s32 *)(p + 0x34) = a1;
@@ -565,7 +565,7 @@ void func_001D8A90(Fighter *c, s32 a1, s32 a2) {
     *(s32 *)(p + 0x3C) = 0;
 }
 void func_001D8B50(Fighter *c) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     s32 t;
     s8 *p;
 
@@ -585,7 +585,7 @@ void func_001D8B50(Fighter *c) {
     c->f183F = -1;
     c->f1840 = 0;
 }
-void func_001D8BD0(Fighter *c, s32 a1, s32 a2, f32 f) {
+void PlyVib_Start(Fighter *c, s32 a1, s32 a2, f32 f) {
     s32 t;
     char *p;
 
@@ -604,7 +604,7 @@ void func_001D8BD0(Fighter *c, s32 a1, s32 a2, f32 f) {
             t = 0x40000880;
             break;
         }
-        p = amTask_Create((void (*)(void *))func_001D7290, (void *)func_001D7280, 0x5380, 0x20, t, D_004694E0);
+        p = amTask_Create((void (*)(void *))func_001D7290, (void *)PlyVib_TaskKill, 0x5380, 0x20, t, D_004694E0);
         *(s32 *)(p + 0x30) = c->f13A4;
         *(s32 *)(p + 0x38) = 0;
         *(f32 *)(p + 0x3C) = f;
@@ -619,8 +619,8 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D90D0);
 s32 func_001D9220(Fighter *c) {
     s32 v;
 
-    if (D_00470570 != NULL) {
-        v = D_00470570->f8AA8 & 2;
+    if (gBattle != NULL) {
+        v = gBattle->f8AA8 & 2;
     } else {
         v = 0;
     }
@@ -645,7 +645,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D92B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9480);
 #if 0
 void func_001D96F0(void) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     s32 i;
     Fighter *t;
     Fighter *e;
@@ -721,7 +721,7 @@ void func_001D97D0(Fighter *c) {
 }
 #if 0
 void func_001D98A0(Fighter *c, s32 a1, s32 a2) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     s32 p;
     s16 *q;
 
@@ -740,7 +740,7 @@ void func_001D98A0(Fighter *c, s32 a1, s32 a2) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D98A0);
 #if 0
 void func_001D9900(Fighter *c, s32 a1, s32 a2) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     s32 idx;
     s16 *q;
 
@@ -756,7 +756,7 @@ void func_001D9900(Fighter *c, s32 a1, s32 a2) {
 // differs: the 0x897E table offset is kept in a register in the original (0x54 against 0x60 bytes)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9900);
 void func_001D9960(Fighter *c, s32 idx, s16 val) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     s32 row;
     s16 *p;
 
@@ -772,7 +772,7 @@ void func_001D9960(Fighter *c, s32 idx, s16 val) {
 }
 #if 0
 s16 func_001D99C0(Fighter *c, s32 a1) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     s32 p;
 
     if (c->f2015 != 0) {
@@ -795,7 +795,7 @@ void func_001D9A10(Fighter *c) {
     } else {
         p = c->f1350;
     }
-    q = (s16 *)((char *)D_00470570 + 0x897E + p * 72);
+    q = (s16 *)((char *)gBattle + 0x897E + p * 72);
     memset(q, 0, 0x48);
     q[0x17] = 1;
     q[0x1D] = 1;
@@ -915,7 +915,7 @@ void func_001D9CA0(Fighter *c, s32 a1) {
     s32 *p;
 
     if (a1 != 0) {
-        func_00219390((char *)D_00470570 + ((c->f1350 + 3) << 5) + 0x5C4);
+        AdxSlot_Stop((char *)gBattle + ((c->f1350 + 3) << 5) + 0x5C4);
     }
     p = &c->f1A70;
     if (*p >= 0) {
@@ -977,7 +977,7 @@ void func_001DA4C0(void) {
     char *base;
     char *v;
 
-    g = D_00470570;
+    g = gBattle;
     amTask_KillGroup(0x20, 0x40000020, 1);
     for (j = 0; j < g->f88D8; j++) {
         base = (char *)g + j * 0x2020;
@@ -1097,7 +1097,7 @@ void func_001DCB70(Fighter *c) {
         if (c->fB88 != NULL) {
             if (*(s16 *)((char *)c->fB8C + 0x26) >= 0) {
                 if (*(s32 *)(*(s32 *)(*(s32 *)c->fB88) + 0x20) >= 2) {
-                    f = *(f32 *)&c->f18DC + *(f32 *)&c->fC9C * D_00470570->f88F0;
+                    f = *(f32 *)&c->f18DC + *(f32 *)&c->fC9C * gBattle->f88F0;
                     *(f32 *)&c->f18DC = f;
                     if (f > 10.0f) {
                         r = func_0012EAE0(0x20) % 300;
@@ -1137,7 +1137,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DE4B0);
 void func_001DF170(Fighter *c) {
     Game *g;
 
-    g = D_00470570;
+    g = gBattle;
     func_001E2290(c);
     if (g->f8AAD == 0) {
         if (g->f88F8 == 4) {
@@ -1230,7 +1230,7 @@ void func_001E09E0(Fighter *c) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E0A50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E11E0);
 void func_001E1300(Fighter *c) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     s32 i;
     Fighter *e;
 
@@ -1259,7 +1259,7 @@ void func_001E1300(Fighter *c) {
     }
 }
 void func_001E13F0(Fighter *c, s32 a1) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
 
     if (g->f8AB2 <= 0) {
         g->f8AAD = 1;
@@ -1285,7 +1285,7 @@ void func_001E1460(Fighter *c, s32 flag) {
             c->f1AB4 = 0;
         }
     }
-    if (D_00470570->f8944 == 0) {
+    if (gBattle->f8944 == 0) {
         buf[4] = c->f1350;
         buf[5] = 2;
         func_00243DE0(2, buf);
@@ -1423,7 +1423,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1E80);
 void func_001E2070(Fighter *c) {
     s32 a;
 
-    if (D_00470570->f8944 != 0) {
+    if (gBattle->f8944 != 0) {
         return;
     }
     a = func_001E1D60(c);
@@ -1559,7 +1559,7 @@ void func_001E3240(Fighter *c) {
         func_001E9B00((void *)1, 0x52, 0, &c->f1A90, 0.0f, 1.0f);
     }
 }
-void func_001E3290(Fighter *c) {
+void PlySe_Start(Fighter *c) {
     s32 *t;
 
     if (c->f1AB0 == 0) {
@@ -1611,7 +1611,7 @@ void func_001E3460(Fighter *c) {
 #if 0
 void func_001E3550(Fighter *c) {
     if (func_001E8290((char *)c + 0x650) != 0) {
-        if (D_00470570->f8944 == 0) {
+        if (gBattle->f8944 == 0) {
             func_001C81D0(0, -1);
         }
     }
@@ -1638,11 +1638,11 @@ void func_001E3950(Fighter *c) {
 
     if (c->f2011 != 0) {
         t = (f32)c->f185C;
-        c->f185C = (s32)(t - D_00470570->f88F0);
+        c->f185C = (s32)(t - gBattle->f88F0);
         if ((f32)c->f185C <= 0.0f) {
             c->f2011 = 0;
             c->f185C = 0;
-            func_001C7590(c, 0x4000);
+            Fighter_ClearFlags(c, 0x4000);
         }
     }
 }
@@ -1652,14 +1652,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3950);
 void func_001E39B0(Fighter *c) {
     c->f2011 = 0;
     c->f185C = 0;
-    func_001C7590(c, 0x4000);
+    Fighter_ClearFlags(c, 0x4000);
 }
 void func_001E39C0(Fighter *c) {
     c->f2011 = 1;
     c->f185C = 0x41F00000;
     c->f2012 = 0;
     c->f1354->f2012 = 0;
-    func_001C75B0(c, 0x4000);
+    Fighter_SetFlags(c, 0x4000);
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E39F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3AA0);
@@ -1702,7 +1702,7 @@ void func_001E5500(s32 idx, void *arg) {
     s32 i;
     s32 n;
 
-    g = D_00470570;
+    g = gBattle;
     base = g->f268;
     if (idx == -1) {
         i = 0;
@@ -1726,11 +1726,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E57F0);
 void func_001E5860(Fighter *c) {
 }
 void func_001E5870(void) {
-    Slot *s = &D_00470570->f268[0];
+    Slot *s = &gBattle->f268[0];
     s32 i;
 
     for (i = 0; i < 5; i++) {
-        func_002378A0(s->a);
+        CharLight_Release(s->a);
         s->a = 0;
         s->b = 0;
         s++;
@@ -1768,7 +1768,7 @@ void func_001E7180(Fighter *c) {
     f32 sum;
     f32 lim;
 
-    g = D_00470570;
+    g = gBattle;
     if (c->f66C != 0) {
         return;
     }
@@ -1826,7 +1826,7 @@ s32 func_001E8740(Fighter *c) {
     s32 arr[7];
     s32 k;
 
-    g = D_00470570;
+    g = gBattle;
     if (g->f8944 == 0) {
         goto ret0;
     }
@@ -1853,7 +1853,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8830);
 #if 0
 s32 func_001E89B0(Fighter *c) {
     s32 r = 0;
-    if (D_00470570->f8944 != 0 && c->f1AD0 == 0) {
+    if (gBattle->f8944 != 0 && c->f1AD0 == 0) {
         r = 0;
     }
     return r;
@@ -1863,7 +1863,7 @@ s32 func_001E89B0(Fighter *c) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E89B0);
 #if 0
 s32 func_001E89F0(Fighter *c) {
-    if (*(volatile s16 *)&D_00470570->f8944 != 0) {
+    if (*(volatile s16 *)&gBattle->f8944 != 0) {
         if (*(volatile s16 *)&c->f1AD0 != 0) {
             return 0;
         }
@@ -1880,7 +1880,7 @@ s32 func_001E8A30(Fighter *c) {
     s32 m;
     s32 arr[4];
 
-    g = D_00470570;
+    g = gBattle;
     if (g->f8944 == 0) {
         goto ret0;
     }
@@ -1908,7 +1908,7 @@ s32 func_001E8AF0(Fighter *c) {
     Game *g;
     s32 pair[2];
 
-    g = D_00470570;
+    g = gBattle;
     if (g->f8944 == 0) {
         goto ret0;
     }
@@ -1933,7 +1933,7 @@ s32 func_001E8B90(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (D_00470570->f7E2 != 3 || D_00470570->f9977 == 3) {
+    if (gBattle->f7E2 != 3 || gBattle->f9977 == 3) {
         func_00234C20();
     } else {
         return 0;
@@ -1947,8 +1947,8 @@ s32 func_001E8C10(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (D_00470570->f7E2 == 3) {
-        if (D_00470570->f9977 != 3) {
+    if (gBattle->f7E2 == 3) {
+        if (gBattle->f9977 != 3) {
             return 0;
         }
     }
@@ -1964,7 +1964,7 @@ s32 func_001E8C90(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    g = D_00470570;
+    g = gBattle;
     if (g->f7E2 == 3) {
         if (g->f8977 != 3) {
             return 0;
@@ -1982,7 +1982,7 @@ s32 func_001E8D10(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    g = D_00470570;
+    g = gBattle;
     if (g->f7E2 == 3) {
         if (g->f8977 != 3) {
             return 0;
@@ -2001,7 +2001,7 @@ s32 func_001E8D90(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    g = D_00470570;
+    g = gBattle;
     switch (g->f7E2) {
     case 4:
         v = func_002CC450(c);
@@ -2030,12 +2030,12 @@ s32 func_001E8E70(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (D_00470570->f7E2 == 4) {
+    if (gBattle->f7E2 == 4) {
         if (func_002CC450(c) == 0x20000) {
             return 1;
         }
-    } else if (D_00470570->f7E2 == 3) {
-        if (D_00470570->f9977 != 3) {
+    } else if (gBattle->f7E2 == 3) {
+        if (gBattle->f9977 != 3) {
             return 0;
         }
     }
@@ -2049,11 +2049,11 @@ s32 func_001E8F20(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (D_00470570->f7E2 == 4) {
+    if (gBattle->f7E2 == 4) {
         return 0;
     }
-    if (D_00470570->f7E2 == 3) {
-        if (D_00470570->f9977 != 3) {
+    if (gBattle->f7E2 == 3) {
+        if (gBattle->f9977 != 3) {
             return 0;
         }
     }
@@ -2072,7 +2072,7 @@ s32 func_001E8FC0(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0x13;
     }
-    g = D_00470570;
+    g = gBattle;
     v = (g != NULL) ? (g->f8AA8 & 0x2000) : 0;
     if (v != 0) {
         return 0x13;
@@ -2094,7 +2094,7 @@ s32 func_001E91D0(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (D_00470570->f7E2 == 4) {
+    if (gBattle->f7E2 == 4) {
         if (func_002CC450(c) & 0x100000) {
             return 0;
         }
@@ -2121,7 +2121,7 @@ s32 func_001E9400(Fighter *c) {
     Game *g;
     s32 v;
 
-    g = D_00470570;
+    g = gBattle;
     if (*(s8 *)((char *)g + 0x2020 * c->f6 + 0x2828) < 2) {
         return -1;
     }
@@ -2188,7 +2188,7 @@ typedef struct Ent1D5 {
 } Ent1D5;
 
 void func_001E9D80(void) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     Ent1D5 *q;
     Ent1D5 *e;
     s32 i;
@@ -2199,7 +2199,7 @@ void func_001E9D80(void) {
     for (i = 0; i < 4; i++) {
         q->f3C = D_004E0614[0];
         q->f40 = 0;
-        e = (Ent1D5 *)((char *)D_00470570 + off + 0x290);
+        e = (Ent1D5 *)((char *)gBattle + off + 0x290);
         memset(e->buf44, 0, 0x80);
         e->fC4 = 0;
         e->fC8 = 0;
@@ -2210,7 +2210,7 @@ void func_001E9D80(void) {
 void func_001E9E20(void) {
 }
 void func_001E9E30(void) {
-    Game *g = D_00470570;
+    Game *g = gBattle;
     Ent1D5 *q;
     Ent1D5 *e;
     s32 i;
@@ -2221,7 +2221,7 @@ void func_001E9E30(void) {
     for (i = 0; i < 4; i++) {
         q->f3C = D_004E0614[0];
         q->f40 = 0;
-        e = (Ent1D5 *)((char *)D_00470570 + off + 0x290);
+        e = (Ent1D5 *)((char *)gBattle + off + 0x290);
         memset(e->buf44, 0, 0x80);
         e->fC4 = 0;
         e->fC8 = 0;

@@ -21,11 +21,11 @@ extern s32 func_001E8740(Fighter *);
 extern char D_00469390[];
 extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
 extern void memset(void *, s32, s32);
-extern void *func_001D4170(s32);
-extern s32 *func_001D0FC0(s32);
+extern void *CharParts_Create(s32);
+extern s32 *CharAcsr_Load(s32);
 extern void *func_001D2B40(s32);
 
-Secp *func_001D4970(SecpData *data) {
+Secp *CharSecp_Create(SecpData *data) {
     Secp *s;
     s32 i;
     if (data == 0) {
@@ -40,10 +40,10 @@ Secp *func_001D4970(SecpData *data) {
     s->unk40 = 0;
     s->unk3C = 0;
     for (i = 0; i < data->numParts; i++) {
-        s->parts[i] = func_001D4170(data->parts[i]);
+        s->parts[i] = CharParts_Create(data->parts[i]);
     }
     for (i = 0; i < data->numAcsr; i++) {
-        s->acsr[i] = func_001D0FC0(data->acsr[i]);
+        s->acsr[i] = CharAcsr_Load(data->acsr[i]);
         if (s->acsr[i] != 0 && s->acsr[i][11] != 0) {
             s->unk3C = s->acsr[i][11];
         }
@@ -56,7 +56,7 @@ Secp *func_001D4970(SecpData *data) {
 INCLUDE_ASM("asm/nonmatchings/battle/char_secp", func_001D4AF0);
 s32 func_001D4FD0(SecpArg *p) {
     Fighter *f = p->fighter;
-    BattleWork *bw = D_00470570;
+    BattleWork *bw = gBattle;
     s32 r;
     f32 rate;
     s32 i;

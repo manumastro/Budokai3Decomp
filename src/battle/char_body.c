@@ -14,10 +14,10 @@ extern s32 amMotion_CalcSize(void *, s32);
 extern CharFile *amCdFs_ReadFileId(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
 extern void amCdFs_SetHeap(s32);
-extern Secp *func_001D4970(s32);
+extern Secp *CharSecp_Create(s32);
 extern void func_0029D1E0(void *, s32, void *, void *);
-extern void *func_001CA3F0(s32, s32);
-CharFile *func_001CA370(s32 heap, s32 a, s32 b, s32 c);
+extern void *Character_CreateWork(s32, s32);
+CharFile *CharBody_Load(s32 heap, s32 a, s32 b, s32 c);
 extern void amFile_Load(s32);
 extern s32 func_001A50F0(s32, s32);
 extern s32 amObject_Create(s32, s32);
@@ -85,7 +85,7 @@ CharBody *func_001C9AF0(s32 chara, s32 costume, s32 color, s32 key) {
     if (e->file != -1) {
         b->unk70 = b->unk6C = (s32)amCdFs_ReadFileId(e->file, 0, 1);
     }
-    b->secp = func_001D4970(e->secp);
+    b->secp = CharSecp_Create(e->secp);
     if (b->secp != 0 && b->secp->unk3C != 0) {
         b->unk70 = b->secp->unk3C;
     }
@@ -154,7 +154,7 @@ void func_001C9EF0(BodyAnim *b, s32 x, s32 y) {
         b->unk6F = y;
     }
 }
-void func_001C9F30(CharFace *f) {
+void CharBody_Release(CharFace *f) {
     if (f != 0) {
         if (--f->refs <= 0) {
             if (f->unk84 != 0) {
@@ -175,7 +175,7 @@ void func_001C9F30(CharFace *f) {
         }
     }
 }
-void func_001CA000(CharFace *f) {
+void CharBody_Init(CharFace *f) {
     CharFile *file;
     if (f == 0 || f->unk98 != 0) {
         return;
@@ -234,7 +234,7 @@ CharFace *func_001CA180(s32 chara, s32 costume, s32 color, s32 key) {
     q0.count = 0x10;
     size0 = (amObject_GetSize(&q1) + 15) & ~15;
     size = ((amMotion_CalcSize(&q0, 0) + 15) & ~15) + (size0 + 0xB0);
-    f = func_001CA3F0(2, size);
+    f = Character_CreateWork(2, size);
     memset(f, 0, size);
     f->unk18 = (s32)((u8 *)f + 0xB0);
     f->model = (Model *)((u8 *)f + size0 + 0xB0);
@@ -250,13 +250,13 @@ CharFace *func_001CA180(s32 chara, s32 costume, s32 color, s32 key) {
     }
     e->list = f;
     if (e->file != -1) {
-        f->unk94 = f->file = func_001CA370(2, e->file, 0, 0);
+        f->unk94 = f->file = CharBody_Load(2, e->file, 0, 0);
     }
     return f;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_body", func_001CA180);
-CharFile *func_001CA370(s32 heap, s32 a, s32 b, s32 c) {
+CharFile *CharBody_Load(s32 heap, s32 a, s32 b, s32 c) {
     CharFile *r;
     s32 old;
     old = D_0047075C;

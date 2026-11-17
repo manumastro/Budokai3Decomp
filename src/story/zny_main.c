@@ -51,7 +51,7 @@ extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern s32 D_00470238;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern f32 D_004E0614[];
 extern s32 gZenieAnimStartA[];
 extern s32 gZenieAnimStartB[];
@@ -188,16 +188,16 @@ void Zenie_Draw(void) {
         m = gZenie->model[0];
         func_00228430(0);
         func_002284D0(0);
-        obj = func_0022DA90(m->f1C[gZenie->anim[0].id], gZenie->anim[0].frame * D_004703BC);
+        obj = func_0022DA90(m->f1C[gZenie->anim[0].id], gZenie->anim[0].frame * gFrameDelta);
         func_00227A30(obj + 0x20);
         func_00228430(0);
         func_002284D0(0);
         func_0022C6B0(obj);
         a = &gZenie->anim[1];
-        func_0022C430(m->f1C[a->id], a->frame * D_004703BC);
+        func_0022C430(m->f1C[a->id], a->frame * gFrameDelta);
         func_00228410();
         if (gZenie->type == 2) {
-            func_0022C1D0(m->f14[3], 1, a->frame * D_004703BC);
+            func_0022C1D0(m->f14[3], 1, a->frame * gFrameDelta);
         }
         cur = gZenie->cur;
         lo = cur % 1000;
@@ -241,7 +241,7 @@ void Zenie_Update(void) {
         for (i = 0; i < 2; i++) {
             a = &gZenie->anim[i];
             a->frame++;
-            if (func_0022BC30(gZenie->model[0]->f1C[a->id], a->frame * D_004703BC) != 0xFF) {
+            if (func_0022BC30(gZenie->model[0]->f1C[a->id], a->frame * gFrameDelta) != 0xFF) {
                 busy = 1;
             }
         }

@@ -69,7 +69,7 @@ extern void func_002BD510(void);
 extern void func_002BFD90(void);
 extern void func_001F0820(void);
 
-void func_00307380(ResultTask *t) {
+void Result_TaskMain(ResultTask *t) {
     ResultArg arg;
 
     switch (D_00470910->f27C) {
@@ -105,10 +105,10 @@ void func_00307430(void) {
 extern char D_0046F9F8[];
 extern void func_001F07D0(void);
 extern void *amTask_Create(void (*)(ResultTask *), s32, s32, s32, s32, char *);
-extern void func_002BD660(s32, s32);
+extern void StrStatus_Start(s32, s32);
 
-void func_00307470(void) {
+void Result_Start(void) {
     func_001F07D0();
-    D_00470984 = amTask_Create(func_00307380, 0, 0xA000, 2, 0x80000, D_0046F9F8);
-    func_002BD660(0xB000, 0x80000);
+    D_00470984 = amTask_Create(Result_TaskMain, 0, 0xA000, 2, 0x80000, D_0046F9F8);
+    StrStatus_Start(0xB000, 0x80000);
 }

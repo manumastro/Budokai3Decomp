@@ -13,7 +13,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_002693E0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_002695B0);
 extern void *D_004707DC;
 
-void func_00269720(void) {
+void VsMode_Clear(void) {
     D_004707DC = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_vsmode", func_00269730);
@@ -22,7 +22,7 @@ extern char D_0046B430[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 
-void func_00269980(void) {
+void VsMode_Load(void) {
     u8 *s0;
     s0 = D_004707DC = amHeap_Alloc(0x14, 0, D_0046B430, 0x84);
     *(s32 *)(s0 + 0x10) = 0;

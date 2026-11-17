@@ -128,7 +128,7 @@ void func_001D0C00(Acsr *a) {
         func_00133D90(0.0f);
     }
 }
-void func_001D0E40(Acsr *a) {
+void CharAcsr_Release(Acsr *a) {
     if (a != 0) {
         if (a->unk20 != 0) {
             amCdFs_ReleaseCache(a->file);
@@ -138,7 +138,7 @@ void func_001D0E40(Acsr *a) {
         amHeap_Free(a);
     }
 }
-void func_001D0EA0(Acsr *a, AcsrOwner *owner, void *slot) {
+void CharAcsr_Init(Acsr *a, AcsrOwner *owner, void *slot) {
     AcsrFile *f;
     if (a != 0) {
         a->owner = owner;
@@ -170,7 +170,7 @@ s32 func_001D0F80(Acsr *a) {
     }
     return 0;
 }
-Acsr *func_001D0FC0(AcsrData *data) {
+Acsr *CharAcsr_Load(AcsrData *data) {
     Acsr *a;
     s32 size;
     SizeQuery2 q;

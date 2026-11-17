@@ -71,7 +71,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/skl_sheet", func_00283710);
 INCLUDE_ASM("asm/nonmatchings/menu/skl_sheet", func_00283A00);
 extern u8 *D_00470820;
 
-void func_00283BD0(s16 a0) {
+void SklSheet_SetIndex(s16 a0) {
     *(s32 *)(D_00470820 + 0x48) = 2;
     *(s16 *)(D_00470820 + 0x60) = a0;
 }
@@ -88,7 +88,7 @@ s32 func_00283BF0(void) {
 }
 extern u8 *D_00470820;
 
-void func_00283C10(void) {
+void SklSheet_Clear(void) {
     D_00470820 = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/menu/skl_sheet", func_00283C20);

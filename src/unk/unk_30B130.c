@@ -15,7 +15,7 @@ typedef struct Ac30C {
     Part30C *f30;
 } Ac30C;
 
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern void func_0030BFC0(Part30C *);
 extern void func_0030B2E0(Part30C *);
 extern void func_0030C860(void);
@@ -39,7 +39,7 @@ void func_0030C870(Ac30C *s) {
 
     func_0030BFC0(p);
     func_0030B2E0(p);
-    t = p->f1C - D_004703BC;
+    t = p->f1C - gFrameDelta;
     if (t <= 0.0f) {
         p->f1C = t;
         p->f0 = 7;

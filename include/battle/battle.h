@@ -65,6 +65,6 @@ typedef struct BattleWork {
     /* 0x8AB3 */ s8 unk8AB3;
 } BattleWork;
 
-extern BattleWork *D_00470570;
+extern BattleWork *gBattle;
 
 #endif

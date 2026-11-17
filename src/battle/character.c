@@ -25,13 +25,13 @@ extern s32 func_001DF420(Fighter *, s32, s32);
 extern void func_001B05E0(s32, f32, f32);
 extern void func_001DA4C0(void);
 extern void func_001D8A50(Fighter *);
-extern void func_001D8A90(Fighter *, s32, s32);
+extern void PlyScr_Start(Fighter *, s32, s32);
 extern void amTask_Kill(void *);
 
 extern s32 D_004B41F0[7];
 extern char D_00469250[];
 extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
-extern void func_00219470(void *);
+extern void AdxSlot_Pause(void *);
 extern void func_001E73E0(void *, s32, s32);
 extern void func_001D9EB0(void *, s32);
 extern void func_001E9B00(void *, s32, s32, s32, f32, f32);
@@ -72,13 +72,13 @@ extern void func_00237000(s32, void *);
 extern void func_001DD680(Fighter *);
 extern void func_001D80A0(Fighter *, s32);
 extern void func_001D9960(Fighter *, s32, s32);
-extern void func_002378A0(s32);
-extern void func_001C9F30(s32);
+extern void CharLight_Release(s32);
+extern void CharBody_Release(s32);
 extern void func_001C9840(s32);
 extern void amHeap_Free(void *);
 extern s32 func_001C9A70(s32);
 extern s32 func_001CA130(s32);
-void func_001CAC70(Task *task);
+void ScrVib_TaskKill(Task *task);
 void func_001CACB0(Task *task);
 
 typedef struct CharColor {
@@ -102,7 +102,7 @@ typedef struct CharTimer {
     void (*func)(void);
 } CharTimer;
 
-void *func_001CA3F0(s32 i, s32 size) {
+void *Character_CreateWork(s32 i, s32 size) {
     if (D_004B41F0[i] == 0) {
         return amHeap_Alloc(size, 0, D_00469250, 440);
     }
@@ -122,10 +122,10 @@ void func_001CA460(s32 i, s32 v) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CA4D0);
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CA780);
-void func_001CA8A0(s32 *c) {
+void Character_Release(s32 *c) {
     if (c != 0) {
-        func_002378A0(c[7]);
-        func_001C9F30(c[1]);
+        CharLight_Release(c[7]);
+        CharBody_Release(c[1]);
         func_001C9840(c[0]);
         amHeap_Free(c);
     }
@@ -149,7 +149,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CAAB0);
 void func_001CAC10(Task *task) {
     CharColor *w = (CharColor *)task->work;
     CharColorArg v;
-    if (D_00470570->unk88EC == 0) {
+    if (gBattle->unk88EC == 0) {
         f32 a = w->unk0C;
         s32 b = w->unk10;
         s32 c = w->unk04;
@@ -163,7 +163,7 @@ void func_001CAC10(Task *task) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CAC10);
-void func_001CAC70(Task *task) {
+void ScrVib_TaskKill(Task *task) {
     CharFlash *w = (CharFlash *)task->work;
     func_001A3610(w->unk04);
     D_00470580[w->side] = 0;
@@ -179,7 +179,7 @@ void func_001CAFB0(s32 *a) {
     func_001E73E0(s->obj, s->id, 0);
 }
 void func_001CAFD0(s32 *a) {
-    func_00219470((void *)a[15]);
+    AdxSlot_Pause((void *)a[15]);
 }
 void func_001CAFE0(s32 *a) {
     CharAnim *s = (CharAnim *)&a[15];
@@ -193,7 +193,7 @@ void func_001CB010(s32 *a) {
 /* Does not match yet: 10 of 32 instructions differ. */
 void func_001CB020(Task *task) {
     CharTimer *w;
-    BattleWork *bw = D_00470570;
+    BattleWork *bw = gBattle;
     w = (CharTimer *)task->work;
     if (bw->unk88EC == 0) {
         w->count++;
@@ -274,9 +274,9 @@ s32 func_001CB2E0(void *self, ScriptCtx *ctx) {
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB2E0);
 s32 func_001CB300(void *self, ScriptCtx *ctx) {
     s32 on = ctx->args[0];
-    Fighter *f = D_00470570->fighter[ctx->args[1]];
+    Fighter *f = gBattle->fighter[ctx->args[1]];
     func_001E2510(f);
-    D_00470570->unk8952 = on ? f->unk1350 + 1 : 0;
+    gBattle->unk8952 = on ? f->unk1350 + 1 : 0;
     return 1;
 }
 s32 func_001CB380(void *self, ScriptCtx *ctx) {
@@ -284,7 +284,7 @@ s32 func_001CB380(void *self, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     s32 x = a[0];
     s32 y = a[1];
-    msg.side = D_00470570->fighter[a[2]]->unk1350;
+    msg.side = gBattle->fighter[a[2]]->unk1350;
     msg.val2 = x;
     msg.val = y;
     func_00243DE0(8, &msg);
@@ -294,7 +294,7 @@ s32 func_001CB3E0(void *self, ScriptCtx *ctx) {
     BtlMsg msg;
     s32 *a = ctx->args;
     s32 y = a[0];
-    msg.side = D_00470570->fighter[a[1]]->unk1350;
+    msg.side = gBattle->fighter[a[1]]->unk1350;
     msg.val = y;
     func_00243DE0(0, &msg);
     return 1;
@@ -303,7 +303,7 @@ s32 func_001CB440(void *self, ScriptCtx *ctx) {
     BtlMsg msg;
     s32 *a = ctx->args;
     s32 y = a[0];
-    msg.side = D_00470570->fighter[a[1]]->unk1350;
+    msg.side = gBattle->fighter[a[1]]->unk1350;
     msg.val = y;
     func_00243DE0(3, &msg);
     return 1;
@@ -314,7 +314,7 @@ s32 func_001CB4A0(ScriptCtx *ctx) {
         return 3;
     case 1:
         ctx->wait = 0;
-        func_001DF420(D_00470570->fighter[0], D_0047057C, 0);
+        func_001DF420(gBattle->fighter[0], D_0047057C, 0);
         return 1;
     }
     return 6;
@@ -332,7 +332,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB540);
 /* Does not match yet: 35 of 46 instructions differ. */
 s32 func_001CB660(void *self, ScriptCtx *ctx) {
     CharPair *p = D_00469290;
-    Fighter *f = D_00470570->fighter[0];
+    Fighter *f = gBattle->fighter[0];
     ctx->ret = -1;
     while (p->chara != -1) {
         if (f->unk1CFC == p->chara && func_001DF420(f, p->value, 2)) {
@@ -355,13 +355,13 @@ s32 func_001CB740(void *self, ScriptCtx *ctx) {
     return 1;
 }
 s32 func_001CB770(void) {
-    BattleWork *w = D_00470570;
+    BattleWork *w = gBattle;
     w->unk8AB2 = 0;
     w->unk8AB3 = -1;
     return 1;
 }
 s32 func_001CB7A0(void) {
-    BattleWork *w = D_00470570;
+    BattleWork *w = gBattle;
     w->unk8AB2 = 1;
     w->unk8AB3 = -1;
     w->unk891C = 0;
@@ -371,9 +371,9 @@ s32 func_001CB7A0(void) {
 #if 0
 s32 func_001CB7E0(void *self, ScriptCtx *ctx) {
     s32 *a = (s32 *)ctx->args;
-    u8 *f = *(u8 **)((u8 *)D_00470570 + 0x8934 + a[0] * 4);
+    u8 *f = *(u8 **)((u8 *)gBattle + 0x8934 + a[0] * 4);
 
-    *(s8 *)((u8 *)D_00470570 + 0x8AB1) = *(s32 *)(*(u8 **)(f + 0x1354) + 0x1350) + 1;
+    *(s8 *)((u8 *)gBattle + 0x8AB1) = *(s32 *)(*(u8 **)(f + 0x1354) + 0x1350) + 1;
     *(s8 *)(f + 0x1FF8) = -1;
     *(s32 *)(*(u8 **)(f + 0x1354) + 0x1AC4) = 0;
     func_001DD680((Fighter *)f);
@@ -392,7 +392,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB890);
 #if 0
 s32 func_001CB9B0(void *self, ScriptCtx *ctx) {
     s32 *a = (s32 *)ctx->args;
-    u8 *bw = (u8 *)D_00470570;
+    u8 *bw = (u8 *)gBattle;
     u8 *p = *(u8 **)(bw + 0x8934 + a[1] * 4);
 
     *(s16 *)(p + 0x1AD6) = (a[0] != 0) ? 1 : 0;
@@ -401,23 +401,23 @@ s32 func_001CB9B0(void *self, ScriptCtx *ctx) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CB9B0);
 s32 func_001CB9F0(void *self, ScriptCtx *ctx) {
-    ctx->fret = D_00470570->fighter[ctx->args[0]]->unk1AD8;
+    ctx->fret = gBattle->fighter[ctx->args[0]]->unk1AD8;
     return 1;
 }
 s32 func_001CBA20(void *self, ScriptCtx *ctx) {
-    ctx->ret = D_00470570->fighter[ctx->args[0]]->unk1ACE;
+    ctx->ret = gBattle->fighter[ctx->args[0]]->unk1ACE;
     return 1;
 }
 s32 func_001CBA50(void *self, ScriptCtx *ctx) {
-    func_001D8A50(D_00470570->fighter[ctx->args[0]]);
+    func_001D8A50(gBattle->fighter[ctx->args[0]]);
     return 1;
 }
 s32 func_001CBA90(void *self, ScriptCtx *ctx) {
     s32 *a = ctx->args;
-    func_001D8A90(D_00470570->fighter[a[2]], a[1], a[0]);
+    PlyScr_Start(gBattle->fighter[a[2]], a[1], a[0]);
     return 1;
 }
-s32 func_001CBAE0(ScriptOwner *self, ScriptCtx *ctx) {
+s32 ScrVib_CmdCtrl(ScriptOwner *self, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     s32 a0 = a[0];
     s32 a1 = a[1];
@@ -425,7 +425,7 @@ s32 func_001CBAE0(ScriptOwner *self, ScriptCtx *ctx) {
     s32 a3 = a[3];
     s32 a4 = a[4];
     s32 side = a[5];
-    Fighter *f = D_00470570->fighter[side];
+    Fighter *f = gBattle->fighter[side];
     void **slot;
     Task *t;
     CharFlash *w;
@@ -436,7 +436,7 @@ s32 func_001CBAE0(ScriptOwner *self, ScriptCtx *ctx) {
     if (*slot != 0) {
         t = *slot;
     } else {
-        t = amTask_Create(func_001CACB0, func_001CAC70, 0x5380, self->info[5], self->info[6], D_004692C0);
+        t = amTask_Create(func_001CACB0, ScrVib_TaskKill, 0x5380, self->info[5], self->info[6], D_004692C0);
         *slot = t;
     }
     w = (CharFlash *)t->work;
@@ -451,13 +451,13 @@ s32 func_001CBAE0(ScriptOwner *self, ScriptCtx *ctx) {
     w->rand = a0;
     return 1;
 }
-s32 func_001CBC20(ScriptOwner *self, ScriptCtx *ctx) {
+s32 ScrVib_CmdFlash(ScriptOwner *self, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     s32 a0 = a[0];
     s32 a1 = a[1];
     s32 a2 = a[2];
     s32 side = a[3];
-    Fighter *f = D_00470570->fighter[side];
+    Fighter *f = gBattle->fighter[side];
     void **slot;
     Task *t;
     CharFlash *w;
@@ -468,7 +468,7 @@ s32 func_001CBC20(ScriptOwner *self, ScriptCtx *ctx) {
     if (*slot != 0) {
         t = *slot;
     } else {
-        t = amTask_Create(func_001CACB0, func_001CAC70, 0x5380, self->info[5], self->info[6], D_004692C0);
+        t = amTask_Create(func_001CACB0, ScrVib_TaskKill, 0x5380, self->info[5], self->info[6], D_004692C0);
         *slot = t;
     }
     w = (CharFlash *)t->work;

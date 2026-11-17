@@ -12,7 +12,7 @@ typedef struct Work21D260 {
     Task21D260 *fEF0;
 } Work21D260;
 
-extern Work21D260 *D_0046FDFC;
+extern Work21D260 *gBtlSys;
 extern s32 D_0058BAE0[];
 extern void amTask_Kill(s32);
 extern void func_0022D4B0(s32, s32);
@@ -62,7 +62,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002228F0);
 #if 0
 // differs: the step test's two branches are laid out in another order and the lb block is two instructions short
 void func_00222A90(Task2_21D260 *t) {
-    Work21D260 *w = D_0046FDFC;
+    Work21D260 *w = gBtlSys;
     Sub2_21D260 *s = (Sub2_21D260 *)((char *)t + 0x30);
     f32 f;
 
@@ -85,14 +85,14 @@ void func_00222A90(Task2_21D260 *t) {
                 amTask_Kill(s->f0);
                 amTask_Kill((s32)t);
                 w->fEF0 = 0;
-                D_0046FDFC->fE30 = D_0046FDFC->fE30 & -2;
+                gBtlSys->fE30 = gBtlSys->fE30 & -2;
                 func_0022D4B0(D_0058BAE0[0], 1);
                 D_0058BAE0[0] = 0;
-                if (D_0046FDFC->fEF0 != 0) {
-                    amTask_Kill(D_0046FDFC->fEF0->f30);
-                    amTask_Kill((s32)D_0046FDFC->fEF0);
-                    D_0046FDFC->fEF0->f30 = 0;
-                    D_0046FDFC->fEF0 = 0;
+                if (gBtlSys->fEF0 != 0) {
+                    amTask_Kill(gBtlSys->fEF0->f30);
+                    amTask_Kill((s32)gBtlSys->fEF0);
+                    gBtlSys->fEF0->f30 = 0;
+                    gBtlSys->fEF0 = 0;
                 }
             }
         }
@@ -109,7 +109,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00224680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002249B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00224BB0);
 void func_00224F90(void) {
-    Work21D260 *w = D_0046FDFC;
+    Work21D260 *w = gBtlSys;
     s32 *p;
 
     w->fE30 = w->fE30 & -2;

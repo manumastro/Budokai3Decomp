@@ -69,7 +69,7 @@ void func_001D25B0(Cloth *c) {
 }
 void func_001D2710(Cloth *c) {
 }
-void func_001D2720(Cloth *c) {
+void CharCloth_Release(Cloth *c) {
     if (c != 0) {
         amHeap_Free(c);
     }

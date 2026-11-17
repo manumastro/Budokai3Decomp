@@ -1,6 +1,6 @@
 #include "common.h"
 
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern s32 func_0022BC30(s32, f32);
 extern void func_0027A1C0(s32, s32);
 extern void func_00272B70(void);
@@ -23,7 +23,7 @@ void func_00272380(u8 *a0) {
     s0 = -1;
     v = (u8 *)D_004707FC;
     f = (f32)*(s32 *)(v + 0x7C);
-    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(*(u8 **)(v + 0x20) + 0x1C) + *(s32 *)(v + 0x74) * 4), f * D_004703BC);
+    s0 &= func_0022BC30(*(s32 *)(*(u8 **)(*(u8 **)(v + 0x20) + 0x1C) + *(s32 *)(v + 0x74) * 4), f * gFrameDelta);
     if (s0 == 0xFF) {
         v = (u8 *)D_004707FC;
         switch (*(s32 *)(v + 0x40)) {
@@ -43,7 +43,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_list", func_00272510);
 extern s32 D_00470804;
 extern s32 D_00470800;
 
-void func_00272650(void) {
+void EssList_Clear(void) {
     D_00470804 = 0;
     D_00470800 = 0;
 }

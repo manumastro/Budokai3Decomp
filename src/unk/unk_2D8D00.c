@@ -31,7 +31,7 @@ typedef struct Scene2D8 {
     Vec4 f3C0;
 } Scene2D8;
 
-extern Scene2D8 *D_00470934;
+extern Scene2D8 *gOptionWork;
 extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
@@ -48,7 +48,7 @@ static inline void VecCopy(void *d, void *s) {
 }
 
 static inline void DrawModel(Model2D8 *m, Vec4 *eye, Vec4 *pos) {
-    Scene2D8 *s = D_00470934;
+    Scene2D8 *s = gOptionWork;
     s32 v;
 
     func_00228430(0);
@@ -79,7 +79,7 @@ extern void func_002DE250();
 
 void func_002D8D00(void) {
     Vec4 v;
-    Scene2D8 *s = D_00470934;
+    Scene2D8 *s = gOptionWork;
     void *f;
 
     if (s->f378 == 5) {
@@ -130,7 +130,7 @@ void func_002D91C0(void) {
 
 void func_002D91D0(void) {
     Vec4 v;
-    Scene2D8 *s = D_00470934;
+    Scene2D8 *s = gOptionWork;
 
     asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
     v.y += (f32)(s->f378 * 40);
@@ -142,7 +142,7 @@ extern s8 D_004703F4;
 void func_002D92C0(void) {
     Vec4 v;
     Vec4 c;
-    Scene2D8 *s = D_00470934;
+    Scene2D8 *s = gOptionWork;
     f32 a;
 
     asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));

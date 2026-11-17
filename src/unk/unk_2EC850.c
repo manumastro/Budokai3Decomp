@@ -51,7 +51,7 @@ extern ResultWork *D_005AA604[];
 extern void func_001F0830(s32, s32);
 extern void func_002BD400(ResultArg *);
 extern void func_002BD510(void);
-extern void func_002BFC00(ResultMsg *);
+extern void StrStatus_Dispatch(ResultMsg *);
 extern void func_001F0820(void);
 void func_002EC850(ResultTask *t);
 
@@ -85,7 +85,7 @@ void func_002EC850(ResultTask *t) {
         func_002BD510();
         msg.f14 = 1;
         msg.f10 = 2;
-        func_002BFC00(&msg);
+        StrStatus_Dispatch(&msg);
         func_001F0820();
         t->f1C = NULL;
         break;
@@ -94,12 +94,12 @@ void func_002EC850(ResultTask *t) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EC850", func_002EC850);
 
-extern void func_002BD660(s32, s32);
+extern void StrStatus_Start(s32, s32);
 
 void func_002EC960(ResultTask *t) {
     void (*f)(ResultTask *);
 
-    func_002BD660(0xB000, 0x80000);
+    StrStatus_Start(0xB000, 0x80000);
     f = func_002EC850;
     if (f == NULL) {
         f = NULL;
@@ -171,7 +171,7 @@ void func_002ECAC0(void) {
     func_002BD510();
     msg.f14 = 1;
     msg.f10 = 2;
-    func_002BFC00(&msg);
+    StrStatus_Dispatch(&msg);
 }
 
 extern char D_0046F6B8[];

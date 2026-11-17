@@ -43,7 +43,7 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306AD0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306BF0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306D60);
 INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_00306F70);
-void func_00307090(void) {
+void Shenron_Clear(void) {
     D_0047097C = 0;
     D_00470980 = 0;
 }
@@ -53,7 +53,7 @@ extern void func_00306F70(void);
 extern s32 amTask_Create(void *, s32, s32, s32, s32, void *);
 extern char D_0046F9E8[];
 
-void func_00307170(void) {
+void Shenron_Start(void) {
     s32 *s0;
     func_001F07D0();
     s0 = (s32 *)D_0047097C;

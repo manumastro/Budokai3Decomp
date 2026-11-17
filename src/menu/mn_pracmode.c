@@ -24,7 +24,7 @@ extern char D_0046ED70[];
 extern char D_0046ED80[];
 extern void func_002B93D0(Task *);
 extern void func_002B7DC0(PracModeWork *);
-extern void func_002C04B0(void *);
+extern void StrStatus_Exit(void *);
 extern void Help_Exit(void);
 extern void memset(void *, s32, s32);
 extern void *func_002C0630(s32, s32, s32);
@@ -40,7 +40,7 @@ void PracMode_Exit(void) {
         w = g->task->data.work;
         if (g->task != NULL) {
             func_002B7DC0(w);
-            func_002C04B0(w->f54);
+            StrStatus_Exit(w->f54);
             amHeap_Free(w);
             amTask_Kill(g->task);
             if (g->f8 != NULL) {

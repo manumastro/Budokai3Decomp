@@ -12,7 +12,7 @@ extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern void func_00145CC0(s32, s32);
 extern void func_002B7690(void *);
 extern void func_0022C700(void);
@@ -266,7 +266,7 @@ void func_002B8410(u8 *task) {
     D_00470238 = 0;
     func_002B7690(s0);
     func_0022C700();
-    f1 = *(f32 *)(s0 + 0x68) - D_004703BC;
+    f1 = *(f32 *)(s0 + 0x68) - gFrameDelta;
     *(f32 *)(s0 + 0x68) = f1;
     if (f1 <= 0.0f) {
         *(u8 *)(s0 + 0x61) = 2;
@@ -298,7 +298,7 @@ void CsModel_Start(Task *t) {
     func_002B7690(w);
     func_0022C700();
 }
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern void func_001F0830(s32, s32);
 extern void func_001F0810(s32, s32);
 
@@ -314,7 +314,7 @@ void func_002B8540(u8 *a0) {
     D_00470238 = 0;
     func_002B7690(s0);
     func_0022C700();
-    *(f32 *)(s0 + 0x68) = *(f32 *)(s0 + 0x68) - D_004703BC;
+    *(f32 *)(s0 + 0x68) = *(f32 *)(s0 + 0x68) - gFrameDelta;
     if (*(f32 *)(s0 + 0x68) <= 0.0f) {
         func_001F0830(0x15, 0);
         func_001F0810(0xA, 0);
@@ -337,7 +337,7 @@ void func_002B8B50(u8 *task) {
     D_00470238 = 0;
     func_002B7690(s0);
     func_0022C700();
-    f1 = *(f32 *)(s0 + 0x68) - D_004703BC;
+    f1 = *(f32 *)(s0 + 0x68) - gFrameDelta;
     *(f32 *)(s0 + 0x68) = f1;
     if (f1 <= 0.0f) {
         *(u8 *)(s0 + 0x5E) = 0;
@@ -369,7 +369,7 @@ void CsModel_Start2(Task *t) {
     func_002B7690(w);
     func_0022C700();
 }
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern u8 D_004B4B41[];
 extern u8 D_004B4B59[];
 extern void VsCharasel_Start(s32, s32);
@@ -389,7 +389,7 @@ void func_002B8C70(u8 *a0) {
     D_00470238 = 0;
     func_002B7690(s0);
     func_0022C700();
-    *(f32 *)(s0 + 0x68) = *(f32 *)(s0 + 0x68) - D_004703BC;
+    *(f32 *)(s0 + 0x68) = *(f32 *)(s0 + 0x68) - gFrameDelta;
     if (*(f32 *)(s0 + 0x68) <= 0.0f) {
         D_004B4B41[0] = 4;
         D_004B4B59[0] = (*(u8 *)(s0 + 0x63) != 0) ? 2 : 1;
@@ -417,7 +417,7 @@ void func_002B8C70(u8 *task) {
     D_00470238 = 0;
     func_002B7690(s0);
     func_0022C700();
-    f1 = *(f32 *)(s0 + 0x68) - D_004703BC;
+    f1 = *(f32 *)(s0 + 0x68) - gFrameDelta;
     if (f1 <= 0.0f) {
         *(f32 *)(s0 + 0x68) = f1;
         D_004B4B41[0] = 4;
@@ -451,7 +451,7 @@ void func_002B91F0(u8 *task) {
     D_00470238 = 0;
     func_002B7690(s1);
     func_0022C700();
-    f1 = *(f32 *)(s1 + 0x68) - D_004703BC;
+    f1 = *(f32 *)(s1 + 0x68) - gFrameDelta;
     *(f32 *)(s1 + 0x68) = f1;
     if (f1 <= 0.0f) {
         *(u8 *)(s1 + 0x5D) = 2;
@@ -480,7 +480,7 @@ void func_002B92E0(u8 *task) {
     D_00470238 = 0;
     func_002B7690(s1);
     func_0022C700();
-    f1 = *(f32 *)(s1 + 0x68) - D_004703BC;
+    f1 = *(f32 *)(s1 + 0x68) - gFrameDelta;
     *(f32 *)(s1 + 0x68) = f1;
     if (f1 <= 0.0f) {
         *(u8 *)(s1 + 0x5D) = 2;

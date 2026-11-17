@@ -14,3 +14,121 @@ func_002369E0 = 0x002369E0; // type:func
 func_00236AF0 = 0x00236AF0; // type:func
 func_00236C70 = 0x00236C70; // type:func
 func_00236D60 = 0x00236D60; // type:func
+
+// btb_main.c: the battle background tasks, created by amTask_Create with the names "BG MAIN", "BG DRAW", "BG POST
+// DRAW", "BG TRS DRAW", "BG SCR EFCT", "BG AFTER DRAW" (the task name is the string in the call; the function is
+// that task's update). Prefix BtbBg = battle background.
+BtbBg_TaskMain = 0x001F97A0; // type:func guess
+BtbBg_TaskDraw = 0x001F9600; // type:func guess
+BtbBg_TaskPostDraw = 0x001F9420; // type:func guess
+BtbBg_TaskTrsDraw = 0x001F93C0; // type:func guess
+BtbBg_TaskScrEffect = 0x001F9360; // type:func guess
+BtbBg_TaskAfterDraw = 0x001F9310; // type:func guess
+// skill_cmd.c: the special-attack cut-in task ("[FIX]CUT IN"): the time (f30) runs to 80 frames, the cut-in
+// (func_0022C060) is drawn meanwhile and the task is killed.
+CutIn_TaskMain = 0x00259BB0; // type:func guess
+
+// btl_main.c: creates the "[BTL] 1INT WAIT" task (its update is not C yet); the function sets the task's counter to 5.
+BtlIntWait_Start = 0x001B1090; // type:func guess
+// skill_cmd.c: the "[FIX]LEVER DRAW" task (the power lever drawn during a special); takes the task pointer.
+LeverDraw_TaskMain = 0x00259920; // type:func guess
+// btb_main.c: creates the seven battle background tasks ("BG PRE DRAW", "BG MAIN", "BG DRAW", ...).
+BtbBg_Start = 0x001F9F50; // type:func guess
+// character.c: kill function of the "[SCR] VIB CTRL" task (the other half of the amTask_Create pair).
+ScrVib_TaskKill = 0x001CAC70; // type:func guess
+
+// char_acsr.c: the accessory character parts: Load reads the model file and allocates its object (GetSize sizes it);
+// Init creates the object and binds the bones; Release frees the cache and the heap block.
+CharAcsr_Load = 0x001D0FC0; // type:func guess
+CharAcsr_Init = 0x001D0EA0; // type:func guess
+CharAcsr_Release = 0x001D0E40; // type:func guess
+// char_body.c: the character body model: Load reads its file, Init creates the object and the animation, Release
+// frees the file cache and the block.
+CharBody_Load = 0x001CA370; // type:func guess
+CharBody_Init = 0x001CA000; // type:func guess
+CharBody_Release = 0x001C9F30; // type:func guess
+// char_cloth.c, char_light.c, char_parts.c, char_secp.c: the same pattern (allocate the work, free it).
+CharCloth_Release = 0x001D2720; // type:func guess
+CharLight_Create = 0x002377C0; // type:func guess
+CharLight_Release = 0x002378A0; // type:func guess
+CharParts_ReleaseWork = 0x001D3FC0; // type:func guess
+CharParts_Create = 0x001D4170; // type:func guess
+CharParts_Release = 0x001D4620; // type:func guess
+CharSecp_Create = 0x001D4970; // type:func guess
+// character.c: the work block of a character is allocated (CreateWork) and freed (Release).
+Character_CreateWork = 0x001CA3F0; // type:func guess
+Character_Release = 0x001CA8A0; // type:func guess
+// btl_cmd.c: one slot of the array slot[] of a BtlSlots block: clear it, or set it to a value.
+BtlSlots_Clear = 0x001A5620; // type:func guess
+BtlSlots_Set = 0x001A5630; // type:func guess
+// character.c / btl_main.c: set and clear bits 0xFF00 of the u16 at Fighter+0xCB2 (its high byte of flags).
+Fighter_ClearFlags = 0x001C7590; // type:func guess
+Fighter_SetFlags = 0x001C75B0; // type:func guess
+// btl_main.c: registers the loaders of the battle's file types (BCM and BSK).
+Btl_AddFileLoaders = 0x001B05A0; // type:func guess
+
+// btb_main.c: the battle background block (D_0051CCE0) has a flags word; these functions set, clear or read one
+// bit of it (the bit value is in the name). BtbBg_SetSlot copies a0 entries into slot[i] and records the count in unk50[i].
+// BtbBg_Clear calls func_001F8ED0 on the block, then zeroes its first 0x40 bytes.
+BtbBg_ClearFlag40 = 0x001F9880; // type:func guess
+BtbBg_SetFlag40 = 0x001F98A0; // type:func guess
+BtbBg_ClearFlag10 = 0x001F98D0; // type:func guess
+BtbBg_GetFlag8 = 0x001F98F0; // type:func guess
+BtbBg_ClearFlag8 = 0x001F9900; // type:func guess
+BtbBg_ClearFlag4 = 0x001F9920; // type:func guess
+BtbBg_GetFlag2 = 0x001F9940; // type:func guess
+BtbBg_ClearFlag2 = 0x001F9950; // type:func guess
+BtbBg_SetFlag2 = 0x001F9970; // type:func guess
+BtbBg_ClearFlag1 = 0x001F99A0; // type:func guess
+BtbBg_SetFlag1 = 0x001F99C0; // type:func guess
+BtbBg_SetSlot = 0x001F9840; // type:func guess
+BtbBg_SetF9E = 0x001F99F0; // type:func guess
+BtbBg_GetF30 = 0x001F9A00; // type:func guess
+// btb_main.c: the stage model of the current area (the stage table D_0044A240 indexed by stage and area).
+BtbBg_GetStageModel = 0x001F9AA0; // type:func guess
+BtbBg_GetStageModelF10 = 0x001F9B00; // type:func guess
+// btb_main.c: the block's clear and its restart (Restart calls func_001F9E40, then BtbBg_Start).
+BtbBg_Clear = 0x001FA320; // type:func guess
+BtbBg_Restart = 0x001F9E10; // type:func guess
+
+// btl_cmd.c: creates the camera task ("[CAM] MAIN"; its update is not C yet). BtlCam_Restart kills the camera task
+// group first and then calls func_001A8640.
+BtlCam_Start = 0x001A88C0; // type:func guess
+BtlCam_Restart = 0x001A8850; // type:func guess
+// character.c: the two script commands of the "[SCR] VIB CTRL" task: Ctrl takes six arguments and sets up the
+// vibration task of the side; Flash takes four and clears its CharFlash work block (memset) before setting it.
+ScrVib_CmdCtrl = 0x001CBAE0; // type:func guess
+ScrVib_CmdFlash = 0x001CBC20; // type:func guess
+
+// btl_main.c: the battle work pointer (fighter table at +0x830, stride 0x2020; the battle code calls it gBattle).
+gBattle = 0x00470570; // size:0x4 guess
+
+// scr_func.c: the script commands that drive an ADX voice (amAdx_*): set its volume, stop it, pause it, play a file
+// (PlayFile; PlayPaused starts it paused), and the waits for the voice to end (WaitStop, CheckStopped, WaitPlayEnd).
+ScrAdx_SetVolume = 0x002ABA10; // type:func guess
+ScrAdx_Stop = 0x002ABA40; // type:func guess
+ScrAdx_Pause = 0x002ABB80; // type:func guess
+ScrAdx_PlayPaused = 0x002ABBB0; // type:func guess
+ScrAdx_PlayFile = 0x002ABD70; // type:func guess
+ScrAdx_PlayFileWait = 0x002ABD10; // type:func guess
+ScrAdx_WaitStop = 0x002ABC00; // type:func guess
+ScrAdx_CheckStopped = 0x002ABC60; // type:func guess
+ScrAdx_WaitPlayEnd = 0x002ABCB0; // type:func guess
+
+// scr_func.c: loads one camera entry (the table D_005BC180, entries of 0xB0 bytes in two groups): releases its old
+// file, sets the file, loads it and initialises its camera (amCamera_Init) and the scale (D_004708F8).
+ScrCamSlot_Load = 0x002AA1B0; // type:func guess
+
+// skill_cmd.c: the skill script commands that call the battle background flag functions (BtbBg_*), one per command.
+SkillCmd_BgSetF9E = 0x00253180; // type:func guess
+SkillCmd_BgClearFlag40 = 0x00253230; // type:func guess
+SkillCmd_BgSetFlag40 = 0x00253250; // type:func guess
+SkillCmd_BgClearFlag1 = 0x00253270; // type:func guess
+SkillCmd_BgSetFlag1 = 0x00253290; // type:func guess
+// btl_main.c: BtlChara_Reset calls func_001DF500 on the fighter slot i (the BTL_CHARA(i) block at gBattle + 0x830,
+// stride 0x2020); the two getters read the slot's fields 0x2710 and 0x270C.
+BtlChara_Reset = 0x001C7570; // type:func guess
+BtlChara_GetF2710 = 0x001C7D30; // type:func guess
+BtlChara_GetF270C = 0x001C7D50; // type:func guess
+// btl_main.c: toggles the byte at gBattle+0x8975 between 0 and 1.
+Btl_ToggleF8975 = 0x001AF980; // type:func guess

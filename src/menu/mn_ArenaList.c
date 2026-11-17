@@ -151,7 +151,7 @@ void func_002EEB80(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EEC60);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EEF00);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF1A0);
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern void func_002EE1C0(void *);
 extern void func_002ECFD0(void *, s32);
 
@@ -160,7 +160,7 @@ void func_002EF390(u8 *a0) {
     s0 = *(u8 **)(a0 + 0x30);
     func_002EE1C0(s0);
     func_002ECFD0(s0, 1);
-    *(f32 *)(s0 + 0x1C) = *(f32 *)(s0 + 0x1C) - D_004703BC;
+    *(f32 *)(s0 + 0x1C) = *(f32 *)(s0 + 0x1C) - gFrameDelta;
     if (*(f32 *)(s0 + 0x1C) <= 0.0f) {
         *(s16 *)s0 = 6;
         *(s32 *)(a0 + 0x1C) = 0;
@@ -218,7 +218,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF4C0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF540);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF680);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002EF7C0);
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern void func_002EE1C0(void *);
 extern void func_002EF7C0(void *);
 
@@ -226,7 +226,7 @@ void func_002F00E0(u8 *a0) {
     u8 *s0;
     s0 = *(u8 **)(a0 + 0x30);
     func_002EE1C0(s0);
-    *(f32 *)(s0 + 0x1C) = *(f32 *)(s0 + 0x1C) - D_004703BC;
+    *(f32 *)(s0 + 0x1C) = *(f32 *)(s0 + 0x1C) - gFrameDelta;
     if (*(f32 *)(s0 + 0x1C) <= 0.0f) {
         *(s16 *)s0 = 3;
         *(s16 *)(s0 + 0x4) = 2;
@@ -262,7 +262,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaList", func_002F0570);
 extern char D_0046F728[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 
-void func_002F0640(void) {
+void ArenaList_Load(void) {
     u8 *s0;
     s0 = D_00470968 = amHeap_Alloc(0x10, 0, D_0046F728, 0x89);
     *(s32 *)s0 = amCdFs_ReadFileId(0x10815, 0, 0);

@@ -46,7 +46,7 @@ typedef struct MemLayout {
     s32 f;
 } MemLayout;
 
-extern void *D_00470570;
+extern void *gBattle;
 extern s32 D_004705D8;
 extern Obj *D_004705DC;
 extern Obj *D_004B42C0[];
@@ -66,7 +66,7 @@ void func_001EA070(void) {
 }
 
 s32 func_001EA080(Obj2 *o) {
-    Work *w = D_00470570;
+    Work *w = gBattle;
     Ent *e;
     s32 r;
     s32 i;
@@ -112,8 +112,8 @@ void func_001EA240(Obj *o) {
     Obj *p;
 
     if ((o->f38 & 1) && o->f35 >= 0 && o->f35 < 4) {
-        ((Work2 *)D_00470570)->chr[o->f35].fCA6 = 0;
-        func_001ABCC0(((Work2 *)D_00470570)->chr[o->f35].f0);
+        ((Work2 *)gBattle)->chr[o->f35].fCA6 = 0;
+        func_001ABCC0(((Work2 *)gBattle)->chr[o->f35].f0);
     }
     if (D_004705D8 < 32) {
         p = D_004B42C0[D_004705D8++];

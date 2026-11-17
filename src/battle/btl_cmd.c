@@ -293,10 +293,10 @@ s32 func_001A5490(MotFile *f, s32 track, f32 t) {
     return tr->keys[i].value;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5510);
-void func_001A5620(BtlSlots *s, s32 i) {
+void BtlSlots_Clear(BtlSlots *s, s32 i) {
     s->slot[i] = 0;
 }
-void func_001A5630(BtlSlots *s, s32 i, s32 v) {
+void BtlSlots_Set(BtlSlots *s, s32 i, s32 v) {
     s->slot[i] = v;
 }
 
@@ -364,7 +364,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A83F0);
 #if 0
 void func_001A84B0(u8 *a0) {
     u8 *s1 = a0;
-    u8 *s0 = (u8 *)D_00470570;
+    u8 *s0 = (u8 *)gBattle;
     u8 *s2 = s0 + 0xA0;
     s32 *v;
 
@@ -419,7 +419,7 @@ void func_001A8830(void) {
 }
 void func_001A8840(void) {
 }
-void func_001A8850(void) {
+void BtlCam_Restart(void) {
     amTask_KillGroup(0x20, 0x20000000, 1);
     amTask_Create(func_001A8300, 0, 0x5500, 0x20, 0x20000002, D_004681D0);
     func_001A8640();
@@ -427,7 +427,7 @@ void func_001A8850(void) {
 void func_001A88B0(void) {
     amTask_KillGroup(0x20, 0x20000000, 1);
 }
-void func_001A88C0(void) {
+void BtlCam_Start(void) {
     amTask_Create(func_001A8300, 0, 0x5500, 0x20, 0x20000002, D_004681D0);
     func_001A8640();
 }

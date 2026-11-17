@@ -99,7 +99,7 @@ extern s8 D_004B4B59[];
 extern s8 D_004B4B63[];
 extern u8 D_005C4120[];
 extern s32 D_00470238;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
@@ -125,8 +125,8 @@ extern void func_0022E0B0(void *);
 extern void amFile_Load(void *);
 extern void func_0028DF20(void);
 extern void func_0028DFC0(s32, s32, s32, s32, s32, s32, s32, s32, s32);
-extern void func_002E5490(Task *);
-extern void func_002E5480(Task *);
+extern void ArenaStage_TaskStart(Task *);
+extern void ArenaStage_TaskEnd(Task *);
 extern void func_002E5170(ArenaStageSelWork *);
 extern void func_0013B0B0(void *);
 extern void func_00131B90(void *);
@@ -134,12 +134,12 @@ extern void func_00131D00(void *, s32, f32, f32);
 extern void func_00131F00(void *, f32, f32);
 extern void func_00132DF0(s32);
 extern void func_0013B110(s32);
-extern void func_002C04B0(void *);
+extern void StrStatus_Exit(void *);
 extern void amSofdec_Destroy(s32);
 extern void Help_Exit(void);
 extern void func_002F2500(void);
 extern void memset(void *, s32, s32);
-extern void func_002E5600(Task *);
+extern void Sofdec_TaskMain(Task *);
 extern void func_002E4030(ArenaStageSelWork *);
 extern void func_002E53B0(ArenaStageSelWork *, s32);
 extern void *func_002C0630(s32, s32, s32);
@@ -199,7 +199,7 @@ void ArenaStageSel_TaskOpen(Task *t) {
     f32 g;
 
     func_002E4D60(w);
-    f = w->timer - D_004703BC;
+    f = w->timer - gFrameDelta;
     w->timer = f;
     if (!(f < 0.0f)) {
         g = f / 50.0f;
@@ -248,8 +248,8 @@ void ArenaStageSel_TaskLoad(Task *t) {
             func_0028DF20();
             func_0028DFC0(6, 0, 0, 0, 0, 0, 0, 0, 0x1F);
         }
-        g->fC = amTask_Create(func_002E5490, 0, 0x1001, 8, 2, D_0046F510);
-        g->f10 = amTask_Create(func_002E5480, 0, 0x3000, 8, 2, D_0046F530);
+        g->fC = amTask_Create(ArenaStage_TaskStart, 0, 0x1001, 8, 2, D_0046F510);
+        g->f10 = amTask_Create(ArenaStage_TaskEnd, 0, 0x3000, 8, 2, D_0046F530);
         func_002E5170(w);
         w->timer = 50.0f;
         w->fF0 = w->entry[w->fF2].stage;
@@ -273,7 +273,7 @@ void ArenaStageSel_Exit(void) {
 
     if (g->task != NULL) {
         w = td->work;
-        func_002C04B0(w->f8);
+        StrStatus_Exit(w->f8);
         if (w->f10 != 0) {
             func_0022D0E0(w->f10, 1);
         }
@@ -362,7 +362,7 @@ void ArenaStageSel_Start(s32 stage) {
     w->f100 = 0;
     w->fF4 = 1;
     w->f2C = 1.0f;
-    w->sub = amTask_Create(func_002E5600, 0, 0x2680, 8, 2, D_0046F568);
+    w->sub = amTask_Create(Sofdec_TaskMain, 0, 0x2680, 8, 2, D_0046F568);
     d = (ArenaStageSelSubData *)&w->sub->data;
     d->f4 = -1;
     d->f6 = -1;

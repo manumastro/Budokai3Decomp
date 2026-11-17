@@ -168,7 +168,7 @@ void func_002AA0F0(s32 a0, s32 a1, s32 a2, s32 a3) {
 }
 extern void amFile_Load(s32);
 extern void amCamera_Init(void *);
-void func_002AA1B0(s32 a0, s32 a1, s32 a2, s32 a3) {
+void ScrCamSlot_Load(s32 a0, s32 a1, s32 a2, s32 a3) {
     s32 *e = (s32 *)((u8 *)D_005BC180 + a0 * 352 + a1 * 176);
 
     if (e[0] != 0) {
@@ -440,12 +440,12 @@ s32 func_002AB9C0(ScriptThread *t, ScriptCtx *ctx) {
     }
     return 1;
 }
-s32 func_002ABA10(ScriptThread *t, ScriptCtx *ctx) {
+s32 ScrAdx_SetVolume(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     amAdx_SetVolume(a[1], ((f32 *)a)[0]);
     return 1;
 }
-s32 func_002ABA40(ScriptThread *t, ScriptCtx *ctx) {
+s32 ScrAdx_Stop(ScriptThread *t, ScriptCtx *ctx) {
     amAdx_Stop(ctx->args[0]);
     return 1;
 }
@@ -484,17 +484,17 @@ s32 func_002ABAF0(s32 *a0, s32 *a1) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABAF0);
-s32 func_002ABB80(ScriptThread *t, ScriptCtx *ctx) {
+s32 ScrAdx_Pause(ScriptThread *t, ScriptCtx *ctx) {
     amAdx_Pause(ctx->args[0], 0);
     return 1;
 }
-s32 func_002ABBB0(ScriptThread *t, ScriptCtx *ctx) {
+s32 ScrAdx_PlayPaused(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     ctx->ret = amAdx_PlayFile(a[1], ctx->base + a[0], 0);
     amAdx_Pause(ctx->ret, 1);
     return 1;
 }
-s32 func_002ABC00(ScriptThread *t, ScriptCtx *ctx) {
+s32 ScrAdx_WaitStop(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     if (t->obj->state == 3) {
         return 3;
@@ -505,14 +505,14 @@ s32 func_002ABC00(ScriptThread *t, ScriptCtx *ctx) {
     t->wait = 0;
     return 1;
 }
-s32 func_002ABC60(ScriptThread *t, ScriptCtx *ctx) {
+s32 ScrAdx_CheckStopped(ScriptThread *t, ScriptCtx *ctx) {
     if (amAdx_IsStopped(ctx->args[0]) != 0) {
         return 1;
     }
-    t->wait = func_002ABC00;
+    t->wait = ScrAdx_WaitStop;
     return 3;
 }
-s32 func_002ABCB0(ScriptThread *t, ScriptCtx *ctx) {
+s32 ScrAdx_WaitPlayEnd(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     if (t->obj->state == 3) {
         return 3;
@@ -523,13 +523,13 @@ s32 func_002ABCB0(ScriptThread *t, ScriptCtx *ctx) {
     t->wait = 0;
     return 1;
 }
-s32 func_002ABD10(ScriptThread *t, ScriptCtx *ctx) {
+s32 ScrAdx_PlayFileWait(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     ctx->ret = amAdx_PlayFile(a[1], ctx->base + a[0], 0);
-    t->wait = func_002ABCB0;
+    t->wait = ScrAdx_WaitPlayEnd;
     return 3;
 }
-s32 func_002ABD70(ScriptThread *t, ScriptCtx *ctx) {
+s32 ScrAdx_PlayFile(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
     ctx->ret = amAdx_PlayFile(a[1], ctx->base + a[0], 0);
     return 1;

@@ -6,9 +6,9 @@
 /* The story status work block (D_00470910). Only the fields the matched functions use are named so far. */
 typedef struct StrStatusWork {
     char pad0[0x4];
-    void *f4;               /* 0x04: a record whose s16 at +4 is the state (func_002BD3A0) */
+    void *f4;               /* 0x04: a record whose s16 at +4 is the state (StrStatus_TaskMain) */
     char pad8[0x38 - 0x8];
-    Task *f38;              /* 0x38: the task made by func_002BD660 */
+    Task *f38;              /* 0x38: the task made by StrStatus_Start */
     char pad3C[0x274 - 0x3C];
     s32 f274;               /* 0x274 */
     s32 f278;               /* 0x278 */

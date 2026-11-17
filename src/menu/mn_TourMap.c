@@ -1,6 +1,6 @@
 #include "common.h"
 
-extern s32 D_00470974;
+extern s32 gTourMap;
 extern void *amFile_Load();
 extern void amAdx_Stop(s32);
 extern void func_001F07D0(void);
@@ -16,12 +16,12 @@ extern void func_00305130(f32 *, f32 *, s32, s32, s32);
 extern void amHeap_Free(void *);
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00304970);
-void func_00304CF0(u8 *a0) {
+void TourMap_TaskMain(u8 *a0) {
     s32 a2;
     s32 *a1;
     u8 *s0;
 
-    a1 = (s32 *)D_00470974;
+    a1 = (s32 *)gTourMap;
     s0 = a0;
     a2 = 0;
     do {
@@ -33,10 +33,10 @@ void func_00304CF0(u8 *a0) {
         a2++;
         a1++;
     } while (a2 < 9);
-    *(s32 *)((u8 *)D_00470974 + 0x30) = *(s32 *)(*(u8 **)D_00470974 + 0x54);
-    amFile_Load(*(void **)((u8 *)D_00470974 + 0x30));
-    *(s32 *)((u8 *)D_00470974 + 0x24) = *(s32 *)(*(u8 **)((u8 *)D_00470974 + 4) + 0x54);
-    amFile_Load(*(void **)((u8 *)D_00470974 + 0x24));
+    *(s32 *)((u8 *)gTourMap + 0x30) = *(s32 *)(*(u8 **)gTourMap + 0x54);
+    amFile_Load(*(void **)((u8 *)gTourMap + 0x30));
+    *(s32 *)((u8 *)gTourMap + 0x24) = *(s32 *)(*(u8 **)((u8 *)gTourMap + 4) + 0x54);
+    amFile_Load(*(void **)((u8 *)gTourMap + 0x24));
     func_001F07D0();
     func_00144B70(-1);
     func_00144650(0);
@@ -65,25 +65,25 @@ void func_00304DC0(s32 a0, s32 a1) {
     }
 }
 extern u8 D_005CA030[];
-extern s32 D_00470974;
+extern s32 gTourMap;
 
-void func_00304E50(void) {
-    D_00470974 = 0;
+void TourMap_Clear(void) {
+    gTourMap = 0;
     memset(D_005CA030, 0, 0x6060);
 }
-void func_00304E70(void) {
+void TourMap_Exit(void) {
     s32 s1;
     s32 s0;
 
     Zenie_Release();
-    if (*(s32 *)(*(u8 **)((u8 *)D_00470974 + 0x40) + 0x38) != 0) {
-        func_00209530(*(void **)(*(u8 **)((u8 *)D_00470974 + 0x40) + 0x38));
+    if (*(s32 *)(*(u8 **)((u8 *)gTourMap + 0x40) + 0x38) != 0) {
+        func_00209530(*(void **)(*(u8 **)((u8 *)gTourMap + 0x40) + 0x38));
     }
     s1 = 0;
     s0 = 0;
     do {
-        if (*(void **)((u8 *)D_00470974 + s0) != 0) {
-            amCdFs_Close(*(void **)((u8 *)D_00470974 + s0), 0);
+        if (*(void **)((u8 *)gTourMap + s0) != 0) {
+            amCdFs_Close(*(void **)((u8 *)gTourMap + s0), 0);
         }
         s1++;
         s0 += 4;
@@ -92,23 +92,23 @@ void func_00304E70(void) {
     s1 = 0;
     s0 = 0;
     do {
-        if (*(void **)((u8 *)D_00470974 + s0 + 0x74) != 0) {
-            func_0029E450(*(void **)((u8 *)D_00470974 + s0 + 0x74));
-            *(s32 *)((u8 *)D_00470974 + s0 + 0x74) = 0;
+        if (*(void **)((u8 *)gTourMap + s0 + 0x74) != 0) {
+            func_0029E450(*(void **)((u8 *)gTourMap + s0 + 0x74));
+            *(s32 *)((u8 *)gTourMap + s0 + 0x74) = 0;
         }
         s1++;
         s0 += 4;
     } while (s1 < 2);
-    amHeap_Free((void *)D_00470974);
-    D_00470974 = 0;
+    amHeap_Free((void *)gTourMap);
+    gTourMap = 0;
 }
 extern void *amTask_Create();
-extern void func_00304CF0();
+extern void TourMap_TaskMain();
 extern char D_0046F9A0[];
 
-void func_00304F50(void) {
-    *(void **)((u8 *)D_00470974 + 0x3C) = amTask_Create(func_00304CF0, 0, 0x3000, 0x200, 0x2000, D_0046F9A0);
-    memset(*(u8 **)((u8 *)D_00470974 + 0x3C) + 0x30, 0, 0xC);
+void TourMap_Start(void) {
+    *(void **)((u8 *)gTourMap + 0x3C) = amTask_Create(TourMap_TaskMain, 0, 0x3000, 0x200, 0x2000, D_0046F9A0);
+    memset(*(u8 **)((u8 *)gTourMap + 0x3C) + 0x30, 0, 0xC);
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00304FB0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305130);
@@ -183,7 +183,7 @@ extern void func_00304970(void);
 
 extern void func_002A9080(void *);
 
-void func_00305A30(u8 *a0) {
+void TourMap_StopAdx(u8 *a0) {
     u8 *s0;
     s0 = (u8 *)&D_004E05DC[0];
     func_00144A40(-1, *(f32 *)(s0 + 0x38), 0);

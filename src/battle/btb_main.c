@@ -16,13 +16,13 @@ void func_001F9270(StageWork *w);
 void func_001F8DE0(StageWork *w);
 void func_001F8ED0(StageWork *w);
 void func_001F9660(void);
-void func_001F9600(void);
-void func_001F9420(void);
-void func_001F93C0(void);
-void func_001F9360(void);
-void func_001F9310(void);
-void func_001F97A0(void);
-void func_001F9F50(void);
+void BtbBg_TaskDraw(void);
+void BtbBg_TaskPostDraw(void);
+void BtbBg_TaskTrsDraw(void);
+void BtbBg_TaskScrEffect(void);
+void BtbBg_TaskAfterDraw(void);
+void BtbBg_TaskMain(void);
+void BtbBg_Start(void);
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F8420);
 static void func_001F8740(StageGroupSrc *src, StageGroup *grp) {
@@ -171,20 +171,20 @@ void func_001F9270(StageWork *w) {
     w->unk2C = func_001A50F0(w->data, 4);
     w->unk18 = 0;
 }
-void func_001F9310(void) {
-    if (BW_FIELD(D_00470570, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
+void BtbBg_TaskAfterDraw(void) {
+    if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
         func_001F63B0();
     }
 }
-void func_001F9360(void) {
-    if (BW_FIELD(D_00470570, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
+void BtbBg_TaskScrEffect(void) {
+    if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
         func_0013B0B0(0);
         func_001F63C0();
         func_0013B110(1);
     }
 }
-void func_001F93C0(void) {
-    if (BW_FIELD(D_00470570, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
+void BtbBg_TaskTrsDraw(void) {
+    if (BW_FIELD(gBattle, s8, 0x8975) != 1 && (D_0051CCE0.flags & 1)) {
         func_0013B0B0(0);
         func_001F6450();
         func_0013B110(1);
@@ -198,15 +198,15 @@ extern void amDraw_FlushPacket(void);
 extern void func_00133CE0(s32);
 extern void func_001F64E0(void);
 
-void func_001F9420(void) {
+void BtbBg_TaskPostDraw(void) {
     f32 col[4];
     s32 save;
     BattleWork *bw;
     f32 *alpha;
 
-    if (BW_FIELD(D_00470570, s8, 0x8975) != 1) {
+    if (BW_FIELD(gBattle, s8, 0x8975) != 1) {
         func_0012F2C0();
-        bw = D_00470570;
+        bw = gBattle;
         alpha = &BW_FIELD(bw, f32, 0x892C);
         if (*alpha > 0.0f) {
             col[0] = (u32)BW_FIELD(bw, u8, 0x8928) / 255.0f;
@@ -229,8 +229,8 @@ void func_001F9420(void) {
         func_0013B110(1);
     }
 }
-void func_001F9600(void) {
-    if (BW_FIELD(D_00470570, s8, 0x8975) != 1) {
+void BtbBg_TaskDraw(void) {
+    if (BW_FIELD(gBattle, s8, 0x8975) != 1) {
         func_0013B0B0(0);
         if (D_0051CCE0.flags & 1) {
             func_001F65F0();
@@ -252,7 +252,7 @@ void func_001F9660(void) {
     u8 *p;
     s32 n;
 
-    if (BW_FIELD(D_00470570, s8, 0x8975) != 1) {
+    if (BW_FIELD(gBattle, s8, 0x8975) != 1) {
         fog = &D_0044A9C0[D_0044AE50[D_0051CCE0.stage].area[D_0051CCE0.area].fog];
         func_001F6570();
         p = col;
@@ -280,8 +280,8 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001F9660);
 extern void func_001F6330(void);
 extern void func_002CF820(void);
 
-void func_001F97A0(void) {
-    BattleWork *bw = D_00470570;
+void BtbBg_TaskMain(void) {
+    BattleWork *bw = gBattle;
     s32 t;
 
     if (bw->unk88EC == 0) {
@@ -293,50 +293,50 @@ void func_001F97A0(void) {
         }
     }
 }
-void func_001F9840(s16 a0, s32 a1, s32 i) {
+void BtbBg_SetSlot(s16 a0, s32 a1, s32 i) {
     D_0051CCE0.unk50[i] = a0;
     func_00125740(&D_0051CCE0.slot[i], a1, a0 * 2);
 }
-void func_001F9880(void) {
+void BtbBg_ClearFlag40(void) {
     D_0051CCE0.flags &= ~0x40;
 }
-void func_001F98A0(void) {
+void BtbBg_SetFlag40(void) {
     D_0051CCE0.flags &= ~0x40;
     D_0051CCE0.flags |= 0x40;
 }
-void func_001F98D0(void) {
+void BtbBg_ClearFlag10(void) {
     D_0051CCE0.flags &= ~0x10;
 }
-s32 func_001F98F0(void) {
+s32 BtbBg_GetFlag8(void) {
     return D_0051CCE0.flags & 8;
 }
-void func_001F9900(void) {
+void BtbBg_ClearFlag8(void) {
     D_0051CCE0.flags &= ~8;
 }
-void func_001F9920(void) {
+void BtbBg_ClearFlag4(void) {
     D_0051CCE0.flags &= ~4;
 }
-s32 func_001F9940(void) {
+s32 BtbBg_GetFlag2(void) {
     return D_0051CCE0.flags & 2;
 }
-void func_001F9950(void) {
+void BtbBg_ClearFlag2(void) {
     D_0051CCE0.flags &= ~2;
 }
-void func_001F9970(void) {
+void BtbBg_SetFlag2(void) {
     D_0051CCE0.flags &= ~2;
     D_0051CCE0.flags |= 2;
 }
-void func_001F99A0(void) {
+void BtbBg_ClearFlag1(void) {
     D_0051CCE0.flags &= ~1;
 }
-void func_001F99C0(void) {
+void BtbBg_SetFlag1(void) {
     D_0051CCE0.flags &= ~1;
     D_0051CCE0.flags |= 1;
 }
-void func_001F99F0(s16 a0) {
+void BtbBg_SetF9E(s16 a0) {
     D_0051CCE0.unk9E = a0;
 }
-void *func_001F9A00(void) {
+void *BtbBg_GetF30(void) {
     return D_0051CCE0.unk30;
 }
 void *func_001F9A10(void) {
@@ -348,10 +348,10 @@ void *func_001F9A20(void) {
     }
     return (void *)*((StageGroup *)((u8 *)D_0051CCE0.groups + D_0051CCE0.area * sizeof(StageGroup)))->src->unkD8;
 }
-StageModel *func_001F9AA0(void) {
+StageModel *BtbBg_GetStageModel(void) {
     return &D_0044A240[D_0044AE50[D_0051CCE0.stage].area[D_0051CCE0.area].model];
 }
-void *func_001F9B00(void) {
+void *BtbBg_GetStageModelF10(void) {
     return D_0044A240[D_0044AE50[D_0051CCE0.stage].area[D_0051CCE0.area].model].unk10;
 }
 extern void func_002CF750(s32, s32);
@@ -403,9 +403,9 @@ void func_001F9DF0(void) {
 }
 void func_001F9E00(void) {
 }
-void func_001F9E10(void) {
+void BtbBg_Restart(void) {
     func_001F9E40();
-    func_001F9F50();
+    BtbBg_Start();
 }
 extern void amTask_Kill(s32);
 extern void func_001F7F50(void);
@@ -458,27 +458,27 @@ extern void func_001F62A0(void);
 extern void func_002CF8F0(void);
 extern void func_001F7FA0(void);
 
-void func_001F9F50(void) {
+void BtbBg_Start(void) {
     if (D_0051CCE0.unkA4[0] == 0) {
         D_0051CCE0.unkA4[0] = (s32)amTask_Create(func_001F9660, 0, 0x3100, 0x200, 0x4000004, D_004698E8);
     }
     if (D_0051CCE0.unkA4[1] == 0) {
-        D_0051CCE0.unkA4[1] = (s32)amTask_Create(func_001F9600, 0, 0x3200, 0x200, 0x4000004, D_004698F8);
+        D_0051CCE0.unkA4[1] = (s32)amTask_Create(BtbBg_TaskDraw, 0, 0x3200, 0x200, 0x4000004, D_004698F8);
     }
     if (D_0051CCE0.unkA4[3] == 0) {
-        D_0051CCE0.unkA4[3] = (s32)amTask_Create(func_001F9420, 0, 0x3300, 0x200, 0x4000004, D_00469900);
+        D_0051CCE0.unkA4[3] = (s32)amTask_Create(BtbBg_TaskPostDraw, 0, 0x3300, 0x200, 0x4000004, D_00469900);
     }
     if (D_0051CCE0.unkA4[2] == 0) {
-        D_0051CCE0.unkA4[2] = (s32)amTask_Create(func_001F93C0, 0, 0x3600, 0x200, 0x4000004, D_00469910);
+        D_0051CCE0.unkA4[2] = (s32)amTask_Create(BtbBg_TaskTrsDraw, 0, 0x3600, 0x200, 0x4000004, D_00469910);
     }
     if (D_0051CCE0.unkA4[4] == 0) {
-        D_0051CCE0.unkA4[4] = (s32)amTask_Create(func_001F9360, 0, 0x3800, 0x200, 0x4000004, D_00469920);
+        D_0051CCE0.unkA4[4] = (s32)amTask_Create(BtbBg_TaskScrEffect, 0, 0x3800, 0x200, 0x4000004, D_00469920);
     }
     if (D_0051CCE0.unkA4[5] == 0) {
-        D_0051CCE0.unkA4[5] = (s32)amTask_Create(func_001F9310, 0, 0x3800, 0x200, 0x4000004, D_00469930);
+        D_0051CCE0.unkA4[5] = (s32)amTask_Create(BtbBg_TaskAfterDraw, 0, 0x3800, 0x200, 0x4000004, D_00469930);
     }
     if (D_0051CCE0.unkA4[6] == 0) {
-        D_0051CCE0.unkA4[6] = (s32)amTask_Create(func_001F97A0, 0, 0x5700, 0x200, 0x4000002, D_00469940);
+        D_0051CCE0.unkA4[6] = (s32)amTask_Create(BtbBg_TaskMain, 0, 0x5700, 0x200, 0x4000002, D_00469940);
     }
     func_001F62A0();
     D_0051CCE0.area = D_0044AE50[D_0051CCE0.stage].startArea;
@@ -517,7 +517,7 @@ void func_001FA250(void) {
     func_001F8C30(&D_0051CCE0);
     D_0051CCE0.area = D_0044AE50[D_0051CCE0.stage].startArea;
 }
-void func_001FA320(void) {
+void BtbBg_Clear(void) {
     func_001F8ED0(&D_0051CCE0);
     memset(&D_0051CCE0, 0, 0x40);
 }

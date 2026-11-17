@@ -15,7 +15,7 @@ typedef struct Blk16 {
     char b[16];
 } Blk16;
 
-extern EvtWork *D_004708D0;
+extern EvtWork *gEvtWork;
 extern s8 D_004708D4;
 extern s32 D_004708D8;
 extern s32 D_004700A0;
@@ -47,7 +47,7 @@ void func_002A8990(void) {
     amFile_AddLoader(D_0046EB00, func_002A8970);
 }
 void func_002A89D0(void) {
-    EvtWork *w = D_004708D0;
+    EvtWork *w = gEvtWork;
 
     if (w->f8 != 0) {
         func_002A5B00();
@@ -82,8 +82,8 @@ s32 func_002A8CA0(s32 n) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2A8970", func_002A8CE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2A8970", func_002A8E40);
-void func_002A8F00(void) {
-    EvtWork *w = D_004708D0;
+void Ball_Start(void) {
+    EvtWork *w = gEvtWork;
 
     if (w != NULL) {
         w->fC |= 1;
@@ -96,13 +96,13 @@ void func_002A8F00(void) {
 s32 func_002A8F70(void) {
     s32 r = 0;
 
-    if (D_004708D0->f10 == 1) {
+    if (gEvtWork->f10 == 1) {
         r = 1;
     }
     return r;
 }
 s32 func_002A8F90(void) {
-    if (D_004708D0 != NULL && D_004708D0->f8 != 0) {
+    if (gEvtWork != NULL && gEvtWork->f8 != 0) {
         return 1;
     }
     return 0;
@@ -110,7 +110,7 @@ s32 func_002A8F90(void) {
 void func_002A8FC0(void) {
     s32 i;
 
-    D_004708D0 = NULL;
+    gEvtWork = NULL;
     for (i = 0; i < 2; i++) {
         func_002A92B0(i);
     }

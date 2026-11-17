@@ -109,7 +109,7 @@ extern s32 D_004707B0;
 extern void (*D_004707B4)(void);
 extern void (*D_004707B8)(f32);
 extern s32 gCdReqHead;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern void (*D_00452AF0[])(f32);
 
 static inline void FadeUpdate(void) {
@@ -138,13 +138,13 @@ void func_00263DC0(void) {
     FadeUpdate();
 }
 
-void func_00264130(void);
+void Fade_TaskEmpty(void);
 
 void func_00263E90(FadeTask *t) {
     D_004707A8 -= D_004707AC;
     if (D_004707A8 <= 0.0f) {
         D_004707A8 = 0.0f;
-        SET_FUNC(t, func_00264130);
+        SET_FUNC(t, Fade_TaskEmpty);
         if (D_004707B4 != NULL) {
             D_004707B4();
         }
@@ -177,7 +177,7 @@ void func_00263FB0(FadeTask *t) {
     }
 }
 
-void func_00264130(void) {
+void Fade_TaskEmpty(void) {
 }
 
 extern s32 rand(void);
@@ -259,9 +259,9 @@ void func_00264390(void) {
     D_004707B4 = NULL;
     D_004707B8 = NULL;
     D_004707B0 = 0;
-    D_004707AC = 0.01f * D_004703BC;
+    D_004707AC = 0.01f * gFrameDelta;
     if (D_004707A0 != NULL) {
-        SET_FUNC(D_004707A0, func_00264130);
+        SET_FUNC(D_004707A0, Fade_TaskEmpty);
     }
 }
 
@@ -269,13 +269,13 @@ extern char D_0046B370[];
 extern char D_0046B380[];
 extern FadeTask *amTask_Create(void *, s32, s32, s32, s32, char *);
 
-void func_002643F0(void) {
+void Fade_Start(void) {
     D_004707A4 = 10;
     D_004707A8 = 0.0f;
     D_004707B4 = NULL;
     D_004707B8 = NULL;
     D_004707B0 = 0;
-    D_004707AC = 0.01f * D_004703BC;
-    D_004707A0 = amTask_Create(func_00264130, 0, 0xFF00, 0, 1, D_0046B370);
+    D_004707AC = 0.01f * gFrameDelta;
+    D_004707A0 = amTask_Create(Fade_TaskEmpty, 0, 0xFF00, 0, 1, D_0046B370);
     amTask_Create(func_00263CF0, 0, 0xFF10, 0, 1, D_0046B380);
 }

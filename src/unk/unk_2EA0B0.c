@@ -1,7 +1,7 @@
 #include "common.h"
 
 extern void func_002E0D40(void);
-extern u8 *D_00470570;
+extern u8 *gBattle;
 extern u8 *D_00470958;
 extern u8 D_0046F678[];
 extern u8 D_0046F680[];
@@ -51,13 +51,13 @@ void func_002EA0B0(void) {
     func_002E0D40();
 }
 s32 func_002EA0C0(void) {
-    if (*(f32 *)(D_00470570 + 0x8930) >= 1.0f) {
+    if (*(f32 *)(gBattle + 0x8930) >= 1.0f) {
         return 2;
     }
     return 1;
 }
 void func_002EA0F0(void) {
-    u8 *g = D_00470570;
+    u8 *g = gBattle;
     u8 *o = D_00470958;
     g[0x8AB2] = 1;
     *(s8 *)(g + 0x8AB3) = -1;
@@ -323,7 +323,7 @@ s32 func_002EB7B0(void) {
     s32 v;
     D_00470958 = s1;
     memset(s1, 0, 0x68);
-    s2 = *(s8 *)(D_00470570 + 0x8AB6);
+    s2 = *(s8 *)(gBattle + 0x8AB6);
     if (D_00470194 != -1) {
         v = amCdFs_ReadFileId(D_00470194, 0, 1);
         *(s32 *)(s1 + 0x5C) = v;

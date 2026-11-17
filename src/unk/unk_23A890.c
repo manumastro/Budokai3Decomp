@@ -22,7 +22,7 @@ s32 func_0021C360(s32);
 void func_00127488(void *, void *, s32);
 void func_0023A000(void *, s32);
 void func_0023A3B0(void);
-void func_00239F60(void);
+void Dmg_TaskKill(void);
 void func_00239E80(void);
 
 typedef struct Arr6 {
@@ -67,7 +67,7 @@ void func_00212650(void);
 s32 func_00209540(s32, s32, s32);
 void func_00209B50(s32, s32, s32);
 
-extern u8 *D_0046FDCC;
+extern u8 *gWave;
 void func_00215500(s32);
 void func_00244280(void);
 
@@ -75,7 +75,7 @@ extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
-extern u8 *D_0046FDFC;
+extern u8 *gBtlSys;
 s32 func_0021C3D0(s32);
 u8 *func_0021C660(s32);
 u8 *func_0021C430(s32);
@@ -152,7 +152,7 @@ void func_002CFDE0(s32);
 void func_0013E170(s32);
 
 extern u8 *D_00470740[2];
-extern u8 *D_00470570;
+extern u8 *gBattle;
 extern u8 *D_0046FE48;
 extern s32 D_00452130[];
 void amHeap_Free(void *);
@@ -206,7 +206,7 @@ void func_00244CC0(s32, s32);
 void func_00244D80(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023A890);
-void func_0023AA50(s32 id, s32 y) {
+void Dmg_Start(s32 id, s32 y) {
     u8 loc[0x10];
     s32 k;
     u8 *s2;
@@ -216,7 +216,7 @@ void func_0023AA50(s32 id, s32 y) {
     s2 = (u8 *)&D_0058BF30[k];
     if (*(s32 *)s2 == 0) {
         func_00127488(loc, D_0046AC18, k);
-        *(s32 *)s2 = amTask_Create(func_0023A3B0, func_00239F60, 0x5410, 0x1000, 0x2000000, loc);
+        *(s32 *)s2 = amTask_Create(func_0023A3B0, Dmg_TaskKill, 0x5410, 0x1000, 0x2000000, loc);
         s2 = (u8 *)*(s32 *)s2 + 0x30;
         memset(s2, 0, 0x28);
         *(s32 *)(s2 + 4) = k;
@@ -235,7 +235,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B080);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B3C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023B4C0);
 void func_0023B6B0(s32 x) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
     u8 *p;
     Arr6 buf;
     s32 k;
@@ -267,7 +267,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023D970);
 #if 0
 void func_0023DB40(s32 x) {
-    u8 *sys = D_0046FDFC;
+    u8 *sys = gBtlSys;
     s32 idx = x;
     s32 a = func_0021C3D0(idx);
     u8 *q = func_0021C660(a);
@@ -304,12 +304,12 @@ void func_0023F370(void) {
     s32 i;
 
     if (func_0021C280(0x200000)) {
-        if (0 < *(s32 *)(D_00470570 + 0x88D8)) {
+        if (0 < *(s32 *)(gBattle + 0x88D8)) {
             i = 0;
             do {
                 func_0023B6B0(i);
                 i++;
-            } while (i < *(s32 *)(D_00470570 + 0x88D8));
+            } while (i < *(s32 *)(gBattle + 0x88D8));
         }
         func_0023B4C0();
     }
@@ -330,18 +330,18 @@ void func_0023FBB0(void) {
     func_0022DB20(spill[1], spill[0]);
     func_0023D680();
     func_0022DB20(0.0f, 0.0f);
-    if (0 < *(s32 *)(D_00470570 + 0x88D8)) {
+    if (0 < *(s32 *)(gBattle + 0x88D8)) {
         i = 0;
         s1 = D_0058BF70;
         do {
-            if (*(s16 *)(D_00470570 + 0x8944) == 0) {
+            if (*(s16 *)(gBattle + 0x8944) == 0) {
                 if (*(s32 *)(s1 + 0x26C) != 0) {
                     func_0022C560(*(s32 *)(s1 + 0x26C));
                 }
             }
             s1 += 0x64;
             i++;
-        } while (i < *(s32 *)(D_00470570 + 0x88D8));
+        } while (i < *(s32 *)(gBattle + 0x88D8));
     }
 }
 // differs: the two float arguments are copied through the stack (lwc1/swc1 to 56 and 60 of a 0x40 frame) in the original; no local form tried gives that copy
@@ -351,10 +351,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_0023FC80);
 #if 0
 void func_002400E0(void) {
     u8 *s2 = D_0058BF50;
-    u8 *s1 = D_0046FDFC;
+    u8 *s1 = gBtlSys;
     s32 i;
 
-    if (0 < *(s32 *)(D_00470570 + 0x88D8)) {
+    if (0 < *(s32 *)(gBattle + 0x88D8)) {
         i = 0;
         do {
             if (*(s32 *)(s2 + 0x10) != 0) {
@@ -368,7 +368,7 @@ void func_002400E0(void) {
             i++;
             s2 += 4;
             s1 += 4;
-        } while (i < *(s32 *)(D_00470570 + 0x88D8));
+        } while (i < *(s32 *)(gBattle + 0x88D8));
     }
 }
 // differs: the three locals (the table pointer, the sys pointer and the counter) do not take the registers of the original under any declaration order tried
@@ -481,7 +481,7 @@ u8 *func_00240F40(s32 i, s32 kind) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00240FF0);
 #if 0
 s32 func_00241010(s32 i) {
-    u8 *base = D_00470570 + i * 0x2020;
+    u8 *base = gBattle + i * 0x2020;
     u8 *q = base + 0x830;
     s32 t = *(s32 *)(base + 0x252C);
     s32 r = 0;
@@ -550,7 +550,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241C10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241D60);
 #if 0
 void func_00241EB0(s32 i, s32 mode) {
-    u8 *q = D_00470570 + i * 0x2020 + 0x830;
+    u8 *q = gBattle + i * 0x2020 + 0x830;
     u8 *e = D_0046FE44 + i * 0x80;
 
     switch (mode) {
@@ -613,7 +613,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243600);
 #if 0
 void func_002439E0(u8 *o) {
     s32 i = *(s32 *)(o + 0x10);
-    u8 *base = D_00470570 + i * 0x2020;
+    u8 *base = gBattle + i * 0x2020;
     u8 *q = base + 0x830;
     u8 *e = D_0046FE44 + i * 0x80;
     s32 p = *(s32 *)(base + 0x1B84);
@@ -763,7 +763,7 @@ void func_00244040(void) {
     func_00209450(0x400080, 1);
     *(s16 *)(D_0046FE48 + 0x3D0) = 0;
 }
-void func_002440C0(void) {
+void Ar_Start(void) {
     func_0021B080();
     amTask_Create(func_00243020, 0, 0x5800, 0x400, 0x20000, D_0046ACE0);
     amTask_Create(func_00242E10, 0, 0x3700, 0x400, 0x20000, D_0046ACF0);
@@ -923,15 +923,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00245240);
 void func_002453D0(void) {
     u8 *bw;
 
-    if (*(s8 *)(D_00470570 + 0x8975) != 1) {
-        if (*(s32 *)(D_0046FDCC + 0x7C) != 0) {
+    if (*(s8 *)(gBattle + 0x8975) != 1) {
+        if (*(s32 *)(gWave + 0x7C) != 0) {
             func_00215500(2);
         }
-        if (*(s32 *)(D_0046FDCC + 0x98) != 0) {
+        if (*(s32 *)(gWave + 0x98) != 0) {
             func_00215500(0x400);
         }
-        if (*(s32 *)(D_0046FDCC + 0x9C) != 0) {
-            bw = D_00470570;
+        if (*(s32 *)(gWave + 0x9C) != 0) {
+            bw = gBattle;
             if (bw != 0 && *(s16 *)(bw + 0x8944) != 0) {
                 if (*(s16 *)(D_0046FE4C + 0x91A) != 0) {
                     func_00215500(0x800);
@@ -994,7 +994,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00246680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00246800);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00246AB0);
 u8 *func_00246CA0(s32 i, s32 j) {
-    u8 *a2 = D_00470570 + i * 0x2020 + 0x830;
+    u8 *a2 = gBattle + i * 0x2020 + 0x830;
 
     if (j < 0) {
         if (*(s32 *)(a2 + 0x1CFC) == 0x23) {
@@ -1119,7 +1119,7 @@ void func_00247410(void) {
     do {
         s2 = s0 + 0x10;
         if (*(s16 *)(s0 + 0x3E) == 0) {
-            bw = D_00470570 + off + 0x830;
+            bw = gBattle + off + 0x830;
             func_00244CC0(*(s32 *)(bw + 0x1350), 1);
         }
         if (*(s32 *)(s2 + 0x30) != 0) {

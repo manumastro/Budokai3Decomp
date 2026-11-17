@@ -1,13 +1,13 @@
 #include "common.h"
 
-extern s16 func_0030D160(void *);
+extern s16 ArenaList_GetF0(void *);
 extern void func_0030D240(s32);
 extern s16 func_0027D3B0(s32, s32);
 extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
 extern s16 D_005C4126[];
 extern s8 D_0058F66A[];
 extern void func_00309000(u8 *);
-extern s16 func_0030D140(void *);
+extern s16 ArenaList_GetF2(void *);
 extern u8 D_00492FCE[];
 extern s16 D_005C4122[];
 extern void func_0030D300(void *);
@@ -43,7 +43,7 @@ void func_00308AF0(u8 *a0) {
 
     s1 = a0;
     s0 = s1 + 0x30;
-    if (func_0030D160(*(void **)(a0 + 0x34)) != 7) {
+    if (ArenaList_GetF0(*(void **)(a0 + 0x34)) != 7) {
         return;
     }
     func_0030D240(*(s32 *)(s0 + 4));
@@ -55,7 +55,7 @@ void func_00308AF0(u8 *a0) {
     *(s32 *)s0 = v;
     *(void **)(s1 + 0x1C) = ((void *)func_00309000 == 0) ? 0 : (void *)func_00309000;
 }
-extern s16 func_0030D160(void *);
+extern s16 ArenaList_GetF0(void *);
 extern void func_00308C40();
 
 #if 0
@@ -67,7 +67,7 @@ void func_00308BD0(u8 *a0) {
     s16 r;
     s0 = a0;
     s1 = a0 + 0x30;
-    r = func_0030D160(*(void **)(a0 + 0x34));
+    r = ArenaList_GetF0(*(void **)(a0 + 0x34));
     if (r == 4) {
         t = *(s32 *)(s1 + 8);
         *(u8 *)(t + *(u8 *)(s1 + 0xD) + 0x11) = 0;
@@ -86,14 +86,14 @@ void func_00308C40(u8 *a0) {
 
     s1 = a0;
     s0 = s1 + 0x30;
-    if (func_0030D140(*(void **)(a0 + 0x34)) == 1) {
+    if (ArenaList_GetF2(*(void **)(a0 + 0x34)) == 1) {
         a1 = *(s32 *)(s0 + 8);
         a2 = s0[0xD];
         *(u8 *)(a2 + a1 + 0x11) = 1;
         *(void **)(s1 + 0x1C) = ((void *)func_00308BD0 == 0) ? 0 : (void *)func_00308BD0;
         return;
     }
-    if (func_0030D160(*(void **)(s0 + 4)) == 5) {
+    if (ArenaList_GetF0(*(void **)(s0 + 4)) == 5) {
         return;
     }
     a1 = s0[0xD];
@@ -107,14 +107,14 @@ void func_00308C40(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308C40);
-extern s16 func_0030D160(void *);
+extern s16 ArenaList_GetF0(void *);
 
 void func_00308D50(u8 *a0) {
     u8 *s0;
     void *f;
     s16 r;
     s0 = a0;
-    r = func_0030D160(*(void **)(a0 + 0x34));
+    r = ArenaList_GetF0(*(void **)(a0 + 0x34));
     if (r >= 4) {
         f = (void *)func_00308C40;
         *(void **)(s0 + 0x1C) = (f == 0) ? 0 : f;
@@ -214,7 +214,7 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_003095A0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309680);
 extern u8 *D_0047098C;
 
-void func_00309AF0(void) {
+void ArenaCharaselPvsp_Clear(void) {
     D_0047098C = 0;
     func_0027E040();
     func_0030D180();
@@ -250,7 +250,7 @@ extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void func_0027E7E0(void);
 extern void ArenaRegCharList_Load(void);
 
-void func_00309D60(void) {
+void ArenaCharaselPvsp_Load(void) {
     u8 *s0;
     s0 = D_0047098C = amHeap_Alloc(0x14, 0, D_0046FAE0, 0x72);
     *(s32 *)(s0 + 0x8) = 0;

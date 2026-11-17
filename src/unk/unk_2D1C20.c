@@ -1,9 +1,9 @@
 #include "common.h"
 
 extern u8 D_005C4120[];
-extern void func_00308830(void);
-extern void func_00309AF0(void);
-extern void func_0030AE60(void);
+extern void ArenaCharaselPvsc_Clear(void);
+extern void ArenaCharaselPvsp_Clear(void);
+extern void ArenaCharaselCvsc_Clear(void);
 extern void func_00308860(void);
 extern void func_00309B20(void);
 extern void func_0030AE90(void);
@@ -11,14 +11,14 @@ extern void func_003105B0(void);
 extern void func_00308980(void);
 extern void func_00309CD0(void);
 extern void func_0030B020(void);
-extern void func_00308A10(void);
-extern void func_00309D60(void);
-extern void func_0030B0B0(void);
+extern void ArenaCharaselPvsc_Load(void);
+extern void ArenaCharaselPvsp_Load(void);
+extern void ArenaCharaselCvsc_Load(void);
 
 void func_002D1C20(void) {
-    func_00308830();
-    func_00309AF0();
-    func_0030AE60();
+    ArenaCharaselPvsc_Clear();
+    ArenaCharaselPvsp_Clear();
+    ArenaCharaselCvsc_Clear();
 }
 
 void func_002D1C50(void) {
@@ -53,13 +53,13 @@ void func_002D1CC0(void) {
 void func_002D1D40(void) {
     switch (D_005C4120[0]) {
     case 0:
-        func_00308A10();
+        ArenaCharaselPvsc_Load();
         break;
     case 1:
-        func_00309D60();
+        ArenaCharaselPvsp_Load();
         break;
     case 2:
-        func_0030B0B0();
+        ArenaCharaselCvsc_Load();
         break;
     }
 }
@@ -95,7 +95,7 @@ typedef struct SmsgTask {
 #define SET_FUNC(t, f) ((t)->func = ((f) == NULL) ? NULL : (f))
 
 extern SmsgTask *D_00470930;
-extern f32 D_004703BC;
+extern f32 gFrameDelta;
 extern u16 D_00492FCE[];
 extern u16 D_00493086[];
 extern f32 D_004E0614[];
@@ -118,7 +118,7 @@ void func_002D1DB0(SmsgTask *t) {
     st = t->w.state;
     w = &t->w;
     if (st != 4) {
-        r = func_0022BC30(w->frames[0]->f1C[st >= 5], (f32)w->f20 * D_004703BC);
+        r = func_0022BC30(w->frames[0]->f1C[st >= 5], (f32)w->f20 * gFrameDelta);
         switch (w->state) {
         case 3:
             if (r == 0xFF) {
@@ -157,7 +157,7 @@ void func_002D1F20(SmsgTask *t) {
 
 extern void amFile_Load(SmsgFrames *);
 
-void func_002D1FC0(SmsgTask *t) {
+void Smsg_TaskMain(SmsgTask *t) {
     SmsgWork *w = &t->w;
     s32 j;
     s32 i;
@@ -214,7 +214,7 @@ void func_002D2370(s32 x) {
 extern void amCdFs_Close(SmsgObj *, s32);
 extern void amTask_Kill(void *);
 
-void func_002D23D0(void) {
+void Smsg_Exit(void) {
     SmsgWork *w = &D_00470930->w;
     s32 i;
 
@@ -232,14 +232,14 @@ extern SmsgTask *amTask_Create(void (*)(SmsgTask *), s32, s32, s32, s32, char *)
 extern void memset(void *, s32, s32);
 extern SmsgObj *amCdFs_ReadFileId(s32, s32, s32);
 
-void func_002D2440(s32 prio, s32 flag, s32 param) {
+void Smsg_Start(s32 prio, s32 flag, s32 param) {
     SmsgWork *w;
     s32 id;
 
     if (D_00470930 != NULL) {
         return;
     }
-    D_00470930 = amTask_Create(func_002D1FC0, 0, prio, 0x200, 0x200000, D_0046F2B0);
+    D_00470930 = amTask_Create(Smsg_TaskMain, 0, prio, 0x200, 0x200000, D_0046F2B0);
     w = &D_00470930->w;
     memset(w, 0, 0x28);
     id = flag == 0 ? 0x84F : 0x84D;

@@ -6,13 +6,13 @@ extern u8 D_0051168A[];
 extern u8 D_004E6560[];
 
 extern s8 D_004703F4;
-extern u8 *D_00470934;
+extern u8 *gOptionWork;
 extern void func_002DDF00();
 
 void func_002DE250(void) {
     u8 *a1;
     f32 f2;
-    a1 = D_00470934;
+    a1 = gOptionWork;
     if (D_004703F4 != 3) {
         f2 = 1.0f;
     } else {
@@ -38,7 +38,7 @@ void func_002DE910(void) {
     s32 t2;
 
     v1 = D_004E05DC;
-    a2 = (u8 *)D_00470934;
+    a2 = (u8 *)gOptionWork;
     *(s16 *)(a2 + 0x41A) = *(s16 *)(v1 + 0);
     *(s16 *)(a2 + 0x41C) = *(s16 *)(v1 + 4);
     *(s16 *)(a2 + 0x41E) = *(s16 *)(v1 + 2);
@@ -94,7 +94,7 @@ void func_002DF4E0(void) {
     s32 t;
     u8 *a1;
 
-    a2 = (u8 *)D_00470934;
+    a2 = (u8 *)gOptionWork;
     a1 = D_004E05DC;
     t = D_004E05E0[0];
     if (t == 0x3C) {
@@ -131,13 +131,13 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF5D0);
 extern void func_0022DB30(s32);
 extern void func_0022C700(void);
 
-extern u8 *D_00470934;
+extern u8 *gOptionWork;
 extern s16 D_004E05F8[];
 
 void func_002DF6E0(void) {
     u8 *s0;
     void (*f)(void);
-    s0 = (u8 *)D_00470934;
+    s0 = (u8 *)gOptionWork;
     func_0022DB30(D_004E05F8[0]);
     f = *(void (**)(void))(s0 + 0x344);
     if (f != 0) {
@@ -162,7 +162,7 @@ extern s8 D_004703F4;
 void func_002DFE20(u8 *a0) {
     u8 *s0;
     f32 f2;
-    s0 = D_00470934;
+    s0 = gOptionWork;
     func_002DFBC0();
     if (D_004703F4 != 3) {
         f2 = 1.0f;
@@ -195,7 +195,7 @@ void Option_ClearState(void) {
     D_00470938 = 0;
 }
 /* Frees the option state block D_00470938 (if any) and clears the pointer. */
-void func_002E0C40(void) {
+void Option_Free(void) {
     if (D_00470938 != 0) {
         amHeap_Free(D_00470938);
         D_00470938 = 0;
@@ -210,7 +210,7 @@ extern void *amTask_Create();
 extern char D_0046F3E0[];
 extern void func_002E0B70();
 
-void func_002E0C90(void) {
+void ChangeProgress_Start(void) {
     u8 *s0;
     s0 = (u8 *)D_00470938;
     *(s32 *)(s0 + 0x4) = *(s32 *)(*(u8 **)s0 + 0x54);

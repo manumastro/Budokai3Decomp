@@ -7,7 +7,7 @@
 /* The stage (btb_main.c, btb_draw.c). Layouts inferred from the code that reads them; only the fields used so
  * far. */
 
-/* A field of the battle's work area (gBattle, D_00470570) not yet in BattleWork (battle.h): the offsets used by
+/* A field of the battle's work area (gBattle, gBattle) not yet in BattleWork (battle.h): the offsets used by
  * the stage code are listed here until the battle files settle that struct. */
 #define BW_FIELD(bw, type, off) (*(type *)((u8 *)(bw) + (off)))
 
@@ -130,7 +130,7 @@ typedef struct StageHeader {
     /* 0x2C */ StageLinkB *linkB;
 } StageHeader;
 
-/* The stage's state (.bss, D_0051CCE0). The first 0x40 bytes are the loaded stage (func_001FA320 clears them). */
+/* The stage's state (.bss, D_0051CCE0). The first 0x40 bytes are the loaded stage (BtbBg_Clear clears them). */
 typedef struct StageWork {
     /* 0x00 */ s32 stage;       /* row of D_0044AE50 */
     /* 0x04 */ s32 unk04;

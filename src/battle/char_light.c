@@ -15,7 +15,7 @@ extern void func_002361F0(void);
 extern void func_0022C560(s32);
 extern void memset(void *, s32, s32);
 extern void func_00253FC0(s32, s32 *);
-extern s32 D_0046FDFC;
+extern s32 gBtlSys;
 
 // GIVEN UP: the frame is right; the original is 16 bytes longer: its labels after the return-0 branch are padded differently
 #if 0
@@ -49,7 +49,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235D90);
 // GIVEN UP: the branches are laid out with a b to the end (one instruction more than ours, 0x6C against 0x70); the arms swapped and early returns tried
 #if 0
 void func_00236020(u8 *p) {
-    s32 x = *(s32 *)((u8 *)D_00470570 + *(s8 *)(p + 6) * 0x2020 + 0x1B80);
+    s32 x = *(s32 *)((u8 *)gBattle + *(s8 *)(p + 6) * 0x2020 + 0x1B80);
     s8 v = *(s8 *)(D_0058BBB0 + x * 0xC0 + 0x42);
 
     if (v < 0) {
@@ -82,7 +82,7 @@ void func_00236110(void) {
     s32 i = 0;
     u8 *s;
 
-    if (*(s32 *)((u8 *)D_00470570 + 0x88D8) > 0) {
+    if (*(s32 *)((u8 *)gBattle + 0x88D8) > 0) {
         s = D_0058BBB0;
         do {
             if (*(s32 *)(s + 4) != 0) {
@@ -97,7 +97,7 @@ void func_00236110(void) {
             }
             i++;
             s += 0xC0;
-        } while (i < *(s32 *)((u8 *)D_00470570 + 0x88D8));
+        } while (i < *(s32 *)((u8 *)gBattle + 0x88D8));
     }
     memset(D_0058BBB0, 0, 0x300);
 }
@@ -163,18 +163,18 @@ void func_00236750(s32 *p) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236750);
-extern void *D_00470570;
+extern void *gBattle;
 extern void (*D_0046A750[])(s32 *);
 extern void func_001B0B10(void);
 extern void func_001B0810(void);
 extern void func_002CBFF0(s32, s32);
 void func_002367B0(s32 *p) {
-    p[2] = *(s32 *)((u8 *)D_00470570 + 0x828);
+    p[2] = *(s32 *)((u8 *)gBattle + 0x828);
     p[3] = 0;
     p[4] = (s32)func_001B0B10;
     p[5] = (s32)func_001B0810;
     D_0046A750[0](p);
-    *(u8 *)((u8 *)D_00470570 + 0x8AB8) = 1;
+    *(u8 *)((u8 *)gBattle + 0x8AB8) = 1;
     func_002CBFF0(8, p[0]);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236830);
@@ -276,7 +276,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237760);
 extern void *amHeap_Alloc(s32, s32, u8 *, s32);
 extern void *amNode_Alloc(void);
 extern u8 D_0046A798[];
-s32 *func_002377C0(void) {
+s32 *CharLight_Create(void) {
     s32 *s = amHeap_Alloc(0x38, 1, D_0046A798, 0x108);
 
     memset(s, 0, 0x38);
@@ -298,7 +298,7 @@ void func_00237840(s32 *p) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237840);
-void func_002378A0(s32 *p) {
+void CharLight_Release(s32 *p) {
     if (p != 0) {
         s32 v = p[0];
 
@@ -315,7 +315,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002378F0);
 void func_00237AE0(u8 *a0) {
     s32 s1;
     s32 buf[16];
-    s1 = D_0046FDFC;
+    s1 = gBtlSys;
     func_0022C560(*(s32 *)(a0 + 0x10));
     if (*(f32 *)a0 < 8.0f) {
         return;
@@ -342,7 +342,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237BB0);
 void func_00237E00(u8 *a0) {
     s32 s1;
     s32 buf[16];
-    s1 = D_0046FDFC;
+    s1 = gBtlSys;
     func_0022C560(*(s32 *)(a0 + 0x10));
     if (*(f32 *)a0 < 8.0f) {
         return;
@@ -424,7 +424,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239E80);
 extern s32 D_0058BF30[];
 extern void amTask_Kill(void *);
 extern void func_0022D4B0(s32, s32);
-void func_00239F60(u8 *a0) {
+void Dmg_TaskKill(u8 *a0) {
     u8 *s = a0 + 0x30;
     s32 i;
 
