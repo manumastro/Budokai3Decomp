@@ -23,17 +23,23 @@ extern void func_00253FC0(s32, s32 *);
 extern s32 gBtlSys;
 
 // GIVEN UP: the frame is right; the original is 16 bytes longer: its labels after the return-0 branch are padded differently
+// // differs: 12 of 40 (round 4 chr): the return-1 arm lacks the alignment nop the original has before the join (the join sits 8 bytes later); the return-0 and return-1 arms and the register use match.
 #if 0
-s32 func_002359F0(u8 *a0) {
-    u8 *s = D_0058BBB0 + *(s32 *)(a0 + 0x1350) * 0xC0;
-
-    if (*(s8 *)(s + 0x42) == -1) {
-        return func_0022F520();
+s32 func_002359F0(char *a0) {
+    char *s0;
+    s32 r;
+    s0 = (char *)D_0058BBB0 + *(s32 *)(a0 + 0x1350) * 192;
+    if (*(s8 *)(s0 + 0x42) == -1) {
+        return func_0022F520(a0);
     }
-    if (func_002CC450() & 0x80) {
+    if (func_002CC450(a0) & 0x80) {
         return 0;
     }
-    return *(f32 *)(s + 0x48) <= 0.0f;
+    r = 0;
+    if (*(f32 *)(s0 + 0x48) <= 0.0f) {
+        r = 1;
+    }
+    return r;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002359F0);
@@ -155,21 +161,30 @@ void func_002361E0(void) {
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002361F0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236500);
 // GIVEN UP: the loop is right; the original's prologue has a 'move v0, zero' before the saves and a 16-byte longer frame (a return value kept in v0)
+// // differs: 7 of 40 (round 4 chr): the original copies the object pointer to s1 before the 0x150 count test (move in the first slot); ours copies it after the beqz, and the element pointer s2 is set from s1 later.
 #if 0
-void func_00236640(u8 *p) {
-    s32 i = 0;
-
-    if (*(s16 *)(p + 0x150) > 0) {
-        u8 *src = p;
-        u8 *dst = D_0058BBB0;
+s32 func_00236640(char *a0) {
+    s32 r;
+    char *s3;
+    char *s2;
+    char *p;
+    s32 i;
+    r = 0;
+    p = a0;
+    s2 = p;
+    if (0 < *(s16 *)(p + 0x150)) {
+        i = 0;
+        s3 = (char *)D_0058BBB0;
         do {
-            *(s32 *)dst = amCdFs_ReadFileId(0x1B9, 0, 1);
+            r = amCdFs_ReadFileId(0x1B9, 0, 1);
+            *(s32 *)s3 = r;
             i++;
-            *(s8 *)(dst + 0x14) = *(s16 *)(src + 0x20);
-            src += 0x50;
-            dst += 0xC0;
+            *(s8 *)(s3 + 0x14) = *(s16 *)(s2 + 0x20);
+            s2 += 0x50;
+            s3 += 0xC0;
         } while (i < *(s16 *)(p + 0x150));
     }
+    return r;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236640);
