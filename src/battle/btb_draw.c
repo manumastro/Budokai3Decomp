@@ -4640,31 +4640,34 @@ void func_001F2CB0(char *a0) {
 #endif
 // differs: func_001F2CB0 (800 bytes): same flag loop and motion blocks as func_001F2760 (its sibling); ours 0x310 vs 0x320: the tail (the second amMotSet block and the table lookup at +0x46C) differs in register use and the float clamp layout
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2CB0);
+typedef struct BtEnt36 { s32 f0; char *f4; char pad8[0x1C]; } BtEnt36;
 
-#if 0
 void func_001F2FD0(char *a0) {
     char *s0;
     char *bg;
     char *v;
     s32 idx;
+    BtbHolder *h;
+    s32 b;
+    s32 t;
     s32 w;
     s32 fl;
     s32 fl2;
 
     s0 = a0;
     bg = (char *)gBtbBg;
-    v = *(char *volatile *)(bg + 0x34);
+    b = *(s32 *)(bg + 0x34);
     idx = D_0051CD20[0];
-    v = (char *)((s32 *)v)[idx * 9 + 1];
+    t = idx * 36;
+    v = (char *)*(s32 *)(t + b + 4);
     w = *(s32 *)(v + 0xA4);
     if (w != 0) {
         D_00470238 = 1;
         amModel_SetCurrent(w, 0x2002000);
     }
-    v = *(char **)(s0 + 0x10);
-    v = *(char **)(v + 0x10);
-    if (*(s32 *)v != 0) {
-        func_002D04A0(*(s16 *)(v + 0xE));
+    h = *(BtbHolder **)(s0 + 0x10);
+    if (h->item->id != 0) {
+        func_002D04A0(h->item->kind2);
         func_002CFDE0(0);
         func_002D04A0(0);
     }
@@ -4690,9 +4693,6 @@ void func_001F2FD0(char *a0) {
         }
     }
 }
-#endif
-// differs: func_001F2FD0 (424 bytes): same shape and prefix as func_001F3740 (the table base load and the index load come in the other order in ours; a volatile base read did not change it). 6 instructions differ.
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2FD0);
 #if 0
 extern f32 func_002CFDD0(s32, f32, f32);
 extern void func_002D0110(s32, f32, s32);
