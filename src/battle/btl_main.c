@@ -1508,8 +1508,6 @@ void func_001AFAB0(u8 *p, s32 a) {
     }
 }
 #undef AFAB0_LEAF
-#if 0
-// differs: 7 of 66 instructions differ, all in the clamp: the original jumps over the second clamp's store with a b (one instruction more); the struct access to the battle fields matches the frame
 typedef struct Vec4a {
     f32 x, y, z, w;
 } __attribute__((aligned(16))) Vec4a;
@@ -1536,17 +1534,11 @@ void func_001AFC50(void) {
             func_00131700(&v);
             x = bz->f8920 - bz->f8924 * bz->f88F0;
             bz->f8920 = x;
-            if (x > 1.0f) {
-                x = 1.0f;
-            } else if (x < 0.0f) {
-                x = 0.0f;
-            }
+            x = (x > 1.0f) ? 1.0f : ((x < 0.0f) ? 0.0f : x);
             bz->f8920 = x;
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AFC50);
 extern u8 D_004312E0[];
 extern void func_00133780(s32, s32);
 extern void func_00139620(s32, void *, s32, s32, s32, f32);
