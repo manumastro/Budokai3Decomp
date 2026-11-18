@@ -863,30 +863,28 @@ s32 func_002A37E0(s32 **arg0, u8 *arg1)
   return 1;
 }
 
-#if 0
-// func_002A3910: the argument and state loads come in another order (the scheduler hoists the state load); three variants tried
 s32 func_002A3910(s32 *a0, char *a1) {
     s32 *s1 = a0;
-    s32 *s0 = (s32 *)a0[0x1C / 4];
     s32 *args = *(s32 **)(a1 + 0x2C);
     s32 *a2 = (s32 *)a0[0];
-    if (*(s16 *)((char *)s0 + 4) == 3) {
-        s32 *q = (s32 *)s0[0x40 / 4];
-        func_002A2020(*(s32 *)a2, (args[1] + 1) & 1, (s32)q, q[0x50 / 4]);
-        s0[0x40 / 4] = 0;
-        amCdFs_Close((s32)s0, 0);
-        if (s1[0x18 / 4] != 0) {
-            amCdFs_Close(s1[0x18 / 4], 0);
-        }
-        s1[0x18 / 4] = 0;
-        s1[0x1C / 4] = 0;
-        s1[0x10 / 4] = 0;
-        return 1;
+    s32 *s0 = (s32 *)a0[0x1C / 4];
+    s32 i = args[1];
+    s32 *q;
+    if (*(s16 *)((char *)s0 + 4) != 3) {
+        return 3;
     }
-    return 3;
+    q = (s32 *)s0[0x40 / 4];
+    func_002A2020(*(s32 *)a2, (i + 1) & 1, (s32)q, q[0x50 / 4]);
+    s0[0x40 / 4] = 0;
+    amCdFs_Close((s32)s0, 0);
+    if (s1[0x18 / 4] != 0) {
+        amCdFs_Close(s1[0x18 / 4], 0);
+    }
+    s1[0x18 / 4] = 0;
+    s1[0x1C / 4] = 0;
+    s1[0x10 / 4] = 0;
+    return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3910);
 extern void func_002AFCA0(s32 *, char *);
 extern s32 func_002A3910(s32 *, char *);
 
