@@ -1985,11 +1985,26 @@ void Skill_DrawHeldSet(s32 *a0) {
         amDraw_SetPacketMode(0);
     }
 }
-// GIVEN UP: 16 bytes short (0x1C0 against 0x1D0): the tail after the battle-state read is laid out differently (5 forms tried)
-#if 0
 extern void func_0022C430(s32, f32);
 extern s32 D_0058D4F4[];
 
+static inline s32 SkillState(s32 v) {
+    u8 *q;
+    if (v == 0) {
+        return -2;
+    }
+    q = (u8 *)v + 0x30;
+    if (*(s32 *)(v + 0x34) == 1) {
+        return -1;
+    }
+    if (*(u16 *)(q + 0x1E) == 0) {
+        return 1;
+    }
+    if (*(u16 *)(q + 0x1C) == *(u16 *)(q + 0x1E) || *(u16 *)(q + 0x1C) == 0) {
+        return 0;
+    }
+    return 1;
+}
 void func_002547A0(u8 *a0) {
     u8 *s2;
     s32 *s1;
@@ -2026,23 +2041,7 @@ void func_002547A0(u8 *a0) {
         }
         amDraw_SetPacketMode(0);
         v = D_0058D4F4[0];
-        if (v == 0) {
-            a1 = -2;
-        } else {
-            q = (u8 *)v + 0x30;
-            if (*(s32 *)(v + 0x34) == 1) {
-                a1 = -1;
-            } else {
-                a1 = 1;
-                if (*(u16 *)(q + 0x1E) != 0) {
-                    if (*(u16 *)(q + 0x1C) == *(u16 *)(q + 0x1E)) {
-                        a1 = 0;
-                    } else if (*(u16 *)(q + 0x1C) == 0) {
-                        a1 = 0;
-                    }
-                }
-            }
-        }
+        a1 = SkillState(v);
         if (a1 == 1) {
             t = func_0021C360(*(s16 *)(s0 + 0x20));
             a0v = ((t & 1) != 0) ? 0xB2 : 0xB1;
@@ -2054,8 +2053,6 @@ void func_002547A0(u8 *a0) {
         func_0022C560(s1[12]);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002547A0);
 void Skill_DrawHeldSetB(s32 *a0) {
     u8 *s0;
     s32 *s3;
