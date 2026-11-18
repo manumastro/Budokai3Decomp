@@ -771,6 +771,54 @@ void func_00238340(u8 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002383D0);
+// differs: 33 of 93 (5 forms + tsweep 160 variants, best 12 with a u8 pointer local): control flow and calls match; the original keeps the switch results in a3/a1 with the entry offset in s0 and the object pointer in s1 (ours: a0 and s0/s1 swapped), and passes a0 = a3 in the jal slot (declaration order, init order and locals as u8 tried)
+#if 0
+extern u8 D_0046A980[];
+extern u8 D_0046A984[];
+extern u8 D_0046A988[];
+extern s32 func_0022D670(s32, f32);
+extern s32 func_0022D860(s32, f32);
+s32 func_00238610(s32 idx) {
+    char *sys = (char *)gBtlSys;
+    s32 k = idx * 12;
+    s32 s1 = 0;
+    s32 a3 = 0;
+    s32 a1 = 0;
+    switch (*(s16 *)(D_0046A980 + k)) {
+    case 0:
+        s1 = *(s32 *)(sys + 0xED4);
+        break;
+    case 1:
+        s1 = *(s32 *)(sys + 0xE88);
+        break;
+    }
+    switch (*(s16 *)(D_0046A982 + k)) {
+    case 0:
+        a3 = *(s32 *)(sys + 0xED0);
+        a1 = 0x4030000;
+        break;
+    case 1:
+        a3 = *(s32 *)(sys + 0xE84);
+        a1 = 0x4010000;
+        break;
+    }
+    if (a3 == 0) {
+        return 0;
+    }
+    if (s1 != 0) {
+        D_00470704 = a3;
+        D_0047070C = a1;
+        D_00470708 = 0;
+        amModel_SetCurrent(a3, a1);
+        D_00470238 = 0;
+        if (*(s32 *)(D_0046A984 + k) == 0) {
+            return func_0022D670(((s32 *)*(s32 *)(s1 + 0x1C))[*(s16 *)(D_0046A988 + k)], 0.0f);
+        }
+        return func_0022D860(((s32 *)*(s32 *)(s1 + 0x14))[*(s16 *)(D_0046A988 + k)], 0.0f);
+    }
+    return 0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238610);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238790);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238C50);
