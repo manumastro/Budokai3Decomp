@@ -983,5 +983,18 @@ s32 func_002AD800(s32 *a0, s32 *a1) {
     return func_002AD610(a0, a1);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD8D0);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ADA70);
+#define SCH(s) (*(u8 **)(*(u8 **)(*(u8 **)(*(u8 **)((u8 *)(s) + 0x1C) + 0x14) + 4) + 8))
+s32 func_002ADA70(s32 *a0, s32 *a1) {
+    f32 *p = *(f32 **)((u8 *)a1 + 0x2C);
+    ScrLightSub *s = &D_005ABA80[*(s32 *)a0[0]][((s32 *)p)[3]];
+    f32 v[4] = {0};
+
+    v[0] = p[2];
+    v[1] = p[1];
+    v[2] = p[0];
+    *(f32 *)(SCH(s) + 0x10) += v[0];
+    *(f32 *)(SCH(s) + 0x14) += v[1];
+    *(f32 *)(SCH(s) + 0x18) += v[2];
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ADB70);
