@@ -6425,24 +6425,21 @@ void func_001F5E20(MotCtlM *c) {
 extern char *D_0051CD14[];
 extern char *D_0051CD1C[];
 extern s32 D_0051CD20[];
-
-// differs: size 0x4C instead of 0x60. The original keeps the a0 != 0 arm out of line (beqz, then b, then two nops
-// and the arm after the other one); the if/else and early-return shapes tried give the same 19 instructions
-#if 0
 s32 *func_001F5EF0(s32 a0, s32 a1) {
     char *v;
 
     v = D_0051CD14[0] + D_0051CD20[0] * 36;
-    if (a0 == 0) {
+    switch (a0) {
+    case 0:
         v = D_0051CD1C[0] + (a1 << 5);
-    } else {
+        break;
+    default:
         v = *(char **)(v + 0xC) + (a1 << 5);
+        break;
     }
     return (s32 *)v;
 }
-#endif
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5EF0);
 extern BtbObj *D_0051C770[];
 extern s32 D_0047062C;
 
