@@ -1440,14 +1440,36 @@ void PS2RNA_Start(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CED8);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CF38);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CFD0);
+extern s32 D_0041A0D0_x0016CFD0 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016CFD0 __asm__("D_0041A0D8");
+void func_0016CFD0_x0016CFD0(u8 *arg0, unsigned int arg1) __asm__("func_0016CFD0");
+void func_0016CFD0_x0016CFD0(u8 *arg0, unsigned int arg1)
+{
+  u8 *new_var;
+  s8 *new_var2;
+  if ((D_0041A0D8_x0016CFD0 != 1) || (D_0041A0D0_x0016CFD0 > 0))
+  {
+    new_var = arg0;
+    new_var2 = (s8 *) (((u8 *) new_var) + 0x30);
+    *new_var2 = arg1;
+  }
+}
 void func_0016D000(s32 arg0) {
     if ((D_0041A0D8 != 1) || (D_0041A0D0 > 0)) {
         D_0041A104 = arg0;
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D030);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D068);
+extern s32 D_0041A0D0_x0016D068 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D068 __asm__("D_0041A0D8");
+void func_0016D068_x0016D068(u8 *arg0, unsigned int arg1) __asm__("func_0016D068");
+void func_0016D068_x0016D068(u8 *arg0, unsigned int arg1)
+{
+  if ((D_0041A0D8_x0016D068 != 1) || (D_0041A0D0_x0016D068 > 0))
+  {
+    *((s8 *) (((u8 *) arg0) + 0x5F)) = arg1;
+  }
+}
 void PS2RNA_ClearBuf(void) {
     if ((D_0041A0D8 != 1) || (D_0041A0D0 > 0)) {
         scePrintf(&D_00464B68);
@@ -1920,7 +1942,19 @@ void PS2RNA_SetStartSmpl(void) {
         scePrintf(&D_00464BB8);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D4D8);
+extern s32 D_0041A0D0_x0016D4D8 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D4D8 __asm__("D_0041A0D8");
+void func_0016D4D8_x0016D4D8(u8 *arg0, unsigned int arg1) __asm__("func_0016D4D8");
+void func_0016D4D8_x0016D4D8(u8 *arg0, unsigned int arg1)
+{
+  if ((D_0041A0D8_x0016D4D8 != 1) || (D_0041A0D0_x0016D4D8 > 0))
+  {
+    if (1)
+    {
+      *((s8 *) (((u8 *) arg0) + 0x32)) = arg1;
+    }
+  }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D508);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D5E0);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D620);

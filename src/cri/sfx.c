@@ -757,7 +757,36 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1348);
 void func_001A13A8(void) {
     func_00129688();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A13C0);
+s32 func_001A1488_x001A13C0(s32) __asm__("func_001A1488");
+s32 memcmp_x001A13C0(s32, s32 *, s32) __asm__("memcmp");
+extern s32 D_00467EF8_x001A13C0 __asm__("D_00467EF8");
+extern s32 D_00467F68_x001A13C0 __asm__("D_00467F68");
+void func_001A13C0_x001A13C0(s32 arg0, s32 arg1, s32 *arg2, s32 *arg3) __asm__("func_001A13C0");
+void func_001A13C0_x001A13C0(s32 arg0, s32 arg1, s32 *arg2, s32 *arg3)
+{
+  s32 var_s1;
+  s32 var_s0;
+  var_s0 = arg0;
+  *arg3 = 0;
+  *arg2 = 0;
+  if (((var_s0 != 0) && (var_s1 = arg1 > 0)) && (arg1 > 0))
+  {
+    var_s1 = arg1;
+    do
+    {
+      if ((memcmp_x001A13C0(var_s0, &D_00467F68_x001A13C0, 1) == 0) && (memcmp_x001A13C0(var_s0, &D_00467EF8_x001A13C0, 8) == 0))
+      {
+        *arg2 = var_s0;
+        arg1++;
+        arg1--;
+        *arg3 = func_001A1488_x001A13C0(var_s0);
+      }
+      var_s1 = var_s1 - 1;
+      var_s0 += 1;
+    }
+    while (var_s1 != 0);
+  }
+}
 s32 func_001A1488_x001A1488(s32 arg0) __asm__("func_001A1488");
 s32 func_001A1488_x001A1488(s32 arg0) {
     return (arg0 == 0) ? 0 : 0x23;

@@ -93,7 +93,23 @@ s16 ADXT_GetOutBalance(u8 *arg0) {
     }
     return *(s16 *)((u8 *)arg0 + 0x46);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_SetOutVol);
+s32 ADXERR_CallErrFunc1_x0015F078(s32 *) __asm__("ADXERR_CallErrFunc1");
+s32 func_00158990_x0015F078(s32, s32) __asm__("func_00158990");
+s32 func_00159F18_x0015F078(s32) __asm__("func_00159F18");
+extern s32 D_00461B68_x0015F078 __asm__("D_00461B68");
+void ADXT_SetOutVol_x0015F078(u8 *arg0, int arg1) __asm__("ADXT_SetOutVol");
+void ADXT_SetOutVol_x0015F078(u8 *arg0, int arg1)
+{
+  s32 temp_s0;
+  if (arg0 == ((void *) 0))
+  {
+    ADXERR_CallErrFunc1_x0015F078(&D_00461B68_x0015F078);
+    return;
+  }
+  *((s16 *) (((u8 *) arg0) + 0x40)) = arg1;
+  temp_s0 = *((s32 *) (((u8 *) arg0) + 0xC));
+  func_00158990_x0015F078(temp_s0, (*((s16 *) (((u8 *) arg0) + 0x40))) + func_00159F18_x0015F078(*((s32 *) (((u8 *) arg0) + 4))));
+}
 s16 ADXT_GetOutVol(u8 *arg0) {
     if (arg0 == NULL) {
         ADXERR_CallErrFunc1(&D_00461B98);
@@ -200,7 +216,18 @@ s32 ADXT_GetLpCnt(u8 *arg0) {
     }
     return *(s32 *)((u8 *)arg0 + 0x4C);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_SetLpFlg);
+s32 ADXERR_CallErrFunc1_x0015F798(s32 *) __asm__("ADXERR_CallErrFunc1");
+extern s32 D_00461E10_x0015F798 __asm__("D_00461E10");
+void ADXT_SetLpFlg_x0015F798(u8 *arg0, unsigned int arg1) __asm__("ADXT_SetLpFlg");
+void ADXT_SetLpFlg_x0015F798(u8 *arg0, unsigned int arg1)
+{
+  if (arg0 == ((void *) 0))
+  {
+    ADXERR_CallErrFunc1_x0015F798(&D_00461E10_x0015F798);
+    return;
+  }
+  *((s8 *) (((u8 *) arg0) + 0x6C)) = arg1;
+}
 s32 ADXT_GetInputSj(u8 *arg0) {
     if (arg0 == NULL) {
         ADXERR_CallErrFunc1(&D_00461E40);
@@ -208,7 +235,18 @@ s32 ADXT_GetInputSj(u8 *arg0) {
     }
     return *(s32 *)((u8 *)arg0 + 0x14);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_SetWaitPlayStart);
+s32 ADXERR_CallErrFunc1_x0015F7F8(s32 *) __asm__("ADXERR_CallErrFunc1");
+extern s32 D_00461E70_x0015F7F8 __asm__("D_00461E70");
+void ADXT_SetWaitPlayStart_x0015F7F8(u8 *arg0, unsigned int arg1) __asm__("ADXT_SetWaitPlayStart");
+void ADXT_SetWaitPlayStart_x0015F7F8(u8 *arg0, unsigned int arg1)
+{
+  if (arg0 == ((void *) 0))
+  {
+    ADXERR_CallErrFunc1_x0015F7F8(&D_00461E70_x0015F7F8);
+    return;
+  }
+  *((s8 *) (((u8 *) arg0) + 0x70)) = arg1;
+}
 s8 ADXT_IsReadyPlayStart(u8 *arg0) {
     if (arg0 == NULL) {
         ADXERR_CallErrFunc1(&D_00461EA8);

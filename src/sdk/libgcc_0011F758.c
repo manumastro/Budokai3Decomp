@@ -10,7 +10,25 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_001210F8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121210);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121288);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_001213B0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121468);
+void func_00121468_x00121468(u32 *arg0, u8 *arg1) __asm__("func_00121468");
+void func_00121468_x00121468(u32 *arg0, u8 *arg1)
+{
+  int new_var;
+  s32 temp_v0;
+  u32 temp_v1;
+  temp_v1 = *arg0;
+  new_var = temp_v1 & 0x7FFFFF;
+  temp_v0 = (temp_v1 >> 0x17) & 0xFF;
+  *((u32 *) (((u8 *) arg1) + 4)) = (u32) (temp_v1 >> 0x1F);
+  if (temp_v0 == 0)
+  {
+    *((s32 *) (((u8 *) arg1) + 0)) = 2;
+    return;
+  }
+  *((s32 *) (((u8 *) arg1) + 8)) = (s32) (temp_v0 - 0x7F);
+  *((s32 *) (((u8 *) arg1) + 0)) = 3;
+  *((s32 *) (((u8 *) arg1) + 0xC)) = (s32) ((new_var << 7) | 0x40000000);
+}
 typedef struct {
     unsigned int class;
     int sign;
