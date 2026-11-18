@@ -5,8 +5,8 @@ typedef struct CharVec16 {
     f32 x, y, z, w;
 } __attribute__((aligned(16))) CharVec16;
 
-extern void func_00231E70(s32 *);
-extern void func_002316D0(s32 *);
+extern s32 func_00231E70(s32 *);
+extern s32 func_002316D0(s32 *);
 extern void func_001D9760(s32, s32);
 extern void A2d_CallHandler(s32, s32 *);
 extern void amModel_SetupPart(s32, s32, s32, f32);
@@ -125,32 +125,13 @@ s32 func_00236020(u8 *arg0) {
     return func_0022F900(arg0, temp_a1, temp_a2);
 }
 
-// GIVEN UP: the original keeps a frame for the two calls (a tail call here)
-// // differs: 11 of 40 (round 4 chr): the original branches to the else arm 4 bytes before ours (no alignment nop before the second call), with the epilogue load in the b delay slot; if/else, ?: and returns in both arms tried.
-#if 0
-void func_00236090(void *o) {
-    s32 a1 = *(s32 *)((char *)o + 0x1350);
-    if (*(s8 *)(D_0058BBB0 + a1 * 0xC0 + 0x42) <= -1) {
-        func_00231E70(o);
-        return;
-    } else {
-        func_002316D0(o);
-        return;
-    }
-}
-#endif
-#if 0
-// differs: 8 of 23: the lb test is right (slti+beqz with <= -1); the original puts the epilogue ld ra in the b delay slot of the then-arm and has no alignment nop before the else arm (if/else, return forms tried)
-void func_00236090(s32 *a0) {
+s32 func_00236090(s32 *a0) {
     s32 idx = *(s32 *)((char *)a0 + 0x1350);
     if (*(s8 *)((char *)D_0058BBB0 + idx * 192 + 0x42) <= -1) {
-        func_00231E70(a0);
-    } else {
-        func_002316D0(a0);
+        return func_00231E70(a0);
     }
+    return func_002316D0(a0);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236090);
 void func_002360F0(void) {
     memset(D_0058BBB0, 0, 0x300);
 }
