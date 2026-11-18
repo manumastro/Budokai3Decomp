@@ -541,7 +541,28 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198718);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001987C0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198890);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001988D0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001988F0);
+s32 func_00198938_x001988F0(s32) __asm__("func_00198938");
+void func_001988F0_x001988F0(s32 arg0, s32 arg1) __asm__("func_001988F0");
+void func_001988F0_x001988F0(s32 arg0, s32 arg1)
+{
+  s32 var_a0;
+  s32 var_s0;
+  s32 var_s1;
+  if (arg1 > 0)
+  {
+    var_s1 = arg0;
+    var_s0 = arg1;
+    do
+    {
+      var_a0 = var_s1;
+      var_s1 += 0xDC8;
+      var_s0 -= 1;
+      func_00198938_x001988F0(var_a0);
+      var_a0 = var_s1;
+    }
+    while (var_s0 != 0);
+  }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198938);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001989A8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198A60);
@@ -1436,7 +1457,20 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019BF48);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019BF68);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019BF88);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019BFA8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019BFC8);
+void func_0019BFC8_x0019BFC8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("func_0019BFC8");
+void func_0019BFC8_x0019BFC8(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
+{
+  int new_var;
+  s32 new_var2;
+  int new_var4;
+  s32 *new_var3;
+  new_var3 = &arg3;
+  new_var4 = arg1 * 0x44;
+  *((s32 *) (((u8 *) ((arg2 * 4) + (arg0 + new_var4))) + 0x1BF4)) = *new_var3;
+  new_var2 = arg3;
+  new_var = arg0 + (new_var2 * 0x74);
+  *((s32 *) (((u8 *) new_var) + 0x12CC)) = arg1;
+}
 void func_0019C008_x0019C008(s32 arg0, s32 arg1, s32 arg2) __asm__("func_0019C008");
 void func_0019C008_x0019C008(s32 arg0, s32 arg1, s32 arg2)
 {
