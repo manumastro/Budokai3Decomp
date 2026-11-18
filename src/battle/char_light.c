@@ -1104,7 +1104,77 @@ void func_002393E0(u8 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239480);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239720);
+typedef struct LSub5 { f32 t; s32 f4; s32 f8; u8 pc[0xC]; s32 *p18; u8 *p1C; } LSub5;
+extern void func_00239480(void);
+// FAKEMATCH: the `f == 0` tests on the two callback addresses are compiled-out-looking checks (a function address is never null); the if/else form reproduces the original's unaligned bnez/move join.
+void func_00239720(LObj4 *o) {
+    LSub5 *s2;
+    s32 *p;
+    char *sys;
+    s32 a1v;
+    s32 a0v;
+    s32 *q;
+    void *t;
+    s32 k;
+    u8 *l;
+    if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0) {
+        s2 = (LSub5 *)&o->sub;
+        p = func_0021C400(func_0021C3D0(*(s32 *)((u8 *)o + 0x34)));
+        func_002284D0(0);
+        if ((p[0] & 1) && (a0v = s2->f8, a1v = p[5], a1v != a0v) && a1v > 1) {
+            if (a1v >= 0x3E7) {
+                if (a0v == 0x3E7) {
+                    return;
+                }
+                s2->f8 = 0x3E7;
+            } else {
+                s2->f8 = a1v;
+                s2->t = 0.0f;
+            }
+        }
+        sys = (char *)gBtlSys;
+        a0v = *(s32 *)(sys + 0xE84);
+        D_00470704 = a0v;
+        D_0047070C = 0x4010000;
+        D_00470708 = 0;
+        amModel_SetCurrent(a0v, 0x4010000);
+        D_00470238 = 0;
+        func_00228430(0);
+        func_002284D0(0);
+        func_00238790((u8 *)s2 + 0xC, s2->f4, s2->f8, 1, s2->t);
+        if (s2->f4 & 1) {
+            func_00228410();
+        }
+        q = s2->p18;
+        if (q != 0) {
+            q[1] = q[1] ^ 1;
+            func_00228430(0);
+            k = s2->f4 * 3 + 0x3B;
+            func_0022B900(((s32 *)*(s32 *)(*(u8 **)(sys + 0xE88) + 0x1C))[k], (s32)s2->p18, s2->t);
+            func_00228410();
+        }
+        if (!(s2->f4 & 1)) {
+            func_00228410();
+        }
+        s2->t = s2->t + D_00470710;
+        if (!(p[0] & 1) && !(s2->t < 60.0f)) {
+            if (func_00239480 == 0) {
+                t = 0;
+            } else {
+                t = (void *)func_00239480;
+            }
+            o->cb = t;
+            l = s2->p1C;
+            if (func_00239110 == 0) {
+                t = 0;
+            } else {
+                t = (void *)func_00239110;
+            }
+            *(void **)(l + 0x1C) = t;
+            s2->t = 0.0f;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239920);
 void func_00239CC0(char *self) {
     char *sys = (char *)gBtlSys;
