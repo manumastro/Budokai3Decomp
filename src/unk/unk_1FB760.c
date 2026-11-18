@@ -738,41 +738,36 @@ u8 *func_002096D0(u8 *a0, s32 a1, s32 a2) {
 // differs: the dispatch on the high half of the node (0x20000 / 0x10000) is laid out with the 0x10000 case inline in the original; the layouts tried (else-if, nested != forms) are one or two instructions off in the branch order
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002096D0);
-#if 0
-void func_00209850(u8 *a0, s32 a1) {
+void func_00209850(u8 *a0, u8 *a1) {
     u8 *s1;
     u8 *s0;
     u8 *s3;
+    u8 *e;
     func_00142080(a0 + 0x20, a0 + 0x20, a1);
     s1 = *(u8 **)(a0 + 0x30);
     if (s1 != NULL) {
-    do {
-        s0 = *(u8 **)(s1 + 8);
-        if (*(u32 *)(s0 + 8) & 0x2000) {
-            if (!(*(u32 *)(*(u8 **)(s0 + 0x14) + 8) & 0x8000000)) {
-                if (*(u8 **)(s0 + 0x20) != NULL) {
-                    u8 *m = *(u8 **)(s0 + 0x20) + 0x30;
-                    func_00142080(m, m, a1);
-                }
-                if (*(s32 *)(s0 + 0x4C) != 0) {
-                    s3 = *(u8 **)(s0 + 0x3C);
-                    s0 += 0x44;
-                    if (s3 != s0) {
-                        do {
+        do {
+            s0 = *(u8 **)(s1 + 8);
+            if (*(u32 *)(s0 + 8) & 0x2000) {
+                if (!(*(u32 *)(*(u8 **)(s0 + 0x14) + 8) & 0x8000000)) {
+                    if (*(u8 **)(s0 + 0x20) != NULL) {
+                        u8 *m = *(u8 **)(s0 + 0x20) + 0x30;
+                        func_00142080(m, m, a1);
+                    }
+                    if (*(s32 *)(s0 + 0x4C) != 0) {
+                        s3 = *(u8 **)(s0 + 0x3C);
+                        e = s0 + 0x44;
+                        while (s3 != e) {
                             func_00142080(s3 + 0x30, s3 + 0x30, a1);
                             s3 = *(u8 **)s3;
-                        } while (s3 != s0);
+                        }
                     }
                 }
             }
-        }
-        s1 = *(u8 **)s1;
-    } while (s1 != NULL);
+            s1 = *(u8 **)s1;
+        } while (s1 != NULL);
     }
 }
-// differs: the list end pointer is computed into a temporary here (s0 + 0x44 in v1) where the original advances s0 in place; the loop tail matches otherwise
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209850);
 void func_00209950(u8 *a0, u8 *a1, s32 a2) {
     u8 *s3;
     u8 *s2;
