@@ -99,7 +99,41 @@ extern f32 D_004B4238[];
 
 typedef struct KKey { u16 t; char pad[1]; s8 flag; f32 val; char pad2[8]; } KKey;
 typedef struct KList { char pad[2]; s16 n; KKey *keys; } KList;
-typedef struct KDst { char pad0[0x1AE]; s8 v[3]; char padx[3]; f32 a; f32 b; char pad1[8]; s16 flags; s16 flags2; } KDst;
+typedef struct KDst {
+    char pad0[0x180];
+    void *slot[8];
+    void *head;
+    char pad1[4];
+    s8 n;
+    s8 c[5];
+    s8 v[3];
+    char padx[3];
+    f32 a;
+    f32 b;
+    f32 cur;
+    void *anim;
+    s16 flags;
+    s16 flags2;
+    s16 h1C8;
+    char pad2[0x1D8 - 0x1CA];
+    s16 h1D8;
+    char pad3[2];
+    s16 h1DC;
+    char pad4[0x1EC - 0x1DE];
+    s16 h1EC;
+    char pad5[0x1FC - 0x1EE];
+    s16 h1FC;
+    char pad6[0x20C - 0x1FE];
+    s32 w20C;
+    char pad7[0x22C - 0x210];
+    s16 h22C;
+    char pad8[0x23C - 0x22E];
+    s16 h23C;
+    char pad9[2];
+    s16 h240;
+    char padA[2];
+    s32 w244;
+} KDst;
 extern KDst *D_00470588;
 typedef struct KKey2 { u16 t; char pad[2]; u16 s4; char pad2[2]; u32 w8; char pad3[4]; } KKey2;
 typedef struct KList2 { char pad[2]; s16 n; KKey2 *keys; } KList2;
@@ -1614,4 +1648,50 @@ void func_001D0990(void *o, void *s, s32 key, f32 val) {
         } while (i < n);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0A20);
+void func_001D0A20(KDst *d, CArg *an, f32 t) {
+    s32 i;
+    d->flags2 = 0;
+    d->h1C8 = 0;
+    d->h1D8 = 0;
+    d->h1DC = 0;
+    d->h1EC = 0;
+    d->h1FC = 0;
+    d->w20C = 0;
+    d->h22C = 0;
+    d->h23C = 0;
+    d->h240 = 0;
+    if (d->anim != an) {
+        d->flags = 0;
+        d->cur = -1.0f;
+        d->a = 1.0f;
+        d->b = 0.0f;
+        d->v[0] = 0;
+        d->v[1] = 0;
+        d->v[2] = 0;
+        d->n = 0;
+        d->head = 0;
+        d->slot[0] = d;
+        d->slot[1] = (char *)d + 0x30;
+        d->slot[2] = (char *)d + 0x60;
+        d->slot[3] = (char *)d + 0x90;
+        d->slot[4] = (char *)d + 0xC0;
+        d->slot[5] = (char *)d + 0xF0;
+        d->slot[6] = (char *)d + 0x120;
+        d->slot[7] = (char *)d + 0x150;
+        d->c[0] = 0;
+        d->c[1] = 0;
+        d->c[2] = 0;
+        d->c[3] = 0;
+        d->c[4] = 0;
+        d->w244 = 0;
+        func_001CFAD0((CObj *)d, an);
+    }
+    if (d->cur != t) {
+        D_00470588 = d;
+        for (i = 0; i < an->n; i++) {
+            ((void (*)(void *, f32, f32))D_004692E0[an->ents[i].kind])(&an->ents[i], d->cur, t);
+        }
+        d->cur = t;
+        d->anim = an;
+    }
+}
