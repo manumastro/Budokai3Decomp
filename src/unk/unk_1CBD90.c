@@ -1490,8 +1490,8 @@ void *func_001D06F0(void *o, s32 mask) {
     }
     return o;
 }
-typedef struct LItem { char pad0[2]; s8 id; char pad1[5]; u16 flags; } LItem;
-typedef struct LNode { char pad[0x20]; LItem *item; char pad2[4]; struct LNode *prev; struct LNode *next; } LNode;
+typedef struct LItem { char pad0[2]; s8 id; char pad1[5]; u16 flags; u16 kind; } LItem;
+typedef struct LNode { char pad[0x20]; LItem *item; s32 live; struct LNode *prev; struct LNode *next; } LNode;
 typedef struct LObj { char pad[0x180]; LNode *slots[8]; LNode *head; char pad1[4]; s8 n; s8 c[5]; } LObj;
 /* Remove the node whose item has the given id from the active list, drop the per-kind counter and park the node in the
  * slot table. */
@@ -1524,51 +1524,36 @@ void func_001D0730(LObj *o, s32 id) {
         } while (node);
     }
 }
-// // differs: 53 of 90 (round 4 chr): the list insert matches up to the first flag test; the count byte and the 0xA halfword store are placed differently (the original keeps the item in a2 and the head in a1), and the switch block layout is untested beyond that.
-#if 0
-void func_001D0860(char *o, char *a1) {
-    s32 n = *(s8 *)(o + 0x1A8);
-    if (n < 8) {
-        char *v;
-        u16 fl;
-        *(s8 *)(o + 0x1A8) = (s8)(n + 1);
-        v = *(char **)(o + 0x180 + n * 4);
-        if (*(u16 *)(a1 + 0xA) == 0x13) {
-            *(u16 *)(a1 + 0xA) = 3;
+/* Take a node from the slot table, link it at the head of the active list and count its kind. */
+void func_001D0860(LObj *o, LItem *item) {
+    LNode *node;
+    s32 idx = o->n;
+    if (idx < 8) {
+        node = o->slots[idx];
+        o->n = idx + 1;
+        if (item->kind == 0x13) {
+            item->kind = 3;
         }
-        *(char **)(v + 0x20) = a1;
-        if (*(char **)(o + 0x1A0) != 0) {
-            *(char **)(*(char **)(o + 0x1A0) + 0x28) = v;
+        node->item = item;
+        if (o->head) {
+            o->head->prev = node;
         }
-        *(char **)(v + 0x2C) = *(char **)(o + 0x1A0);
-        *(s32 *)(v + 0x28) = 0;
-        *(char **)(o + 0x1A0) = v;
-        fl = *(u16 *)(*(char **)(v + 0x20) + 8);
-        if (fl & 0xF1) {
-            *(u16 *)(a1 + 8) = fl | 1;
+        node->next = o->head;
+        node->prev = 0;
+        o->head = node;
+        if (node->item->flags & 0xF1) {
+            node->item->flags |= 1;
         }
-        switch (*(u16 *)(*(char **)(v + 0x20) + 8) & 0x10F) {
-        case 1:
-            *(s8 *)(o + 0x1A9) += 1;
-            break;
-        case 4:
-            *(s8 *)(o + 0x1AA) += 1;
-            break;
-        case 2:
-            *(s8 *)(o + 0x1AB) += 1;
-            break;
-        case 8:
-            *(s8 *)(o + 0x1AC) += 1;
-            break;
-        case 0x100:
-            *(s8 *)(o + 0x1AD) += 1;
-            break;
+        switch (node->item->flags & 0x10F) {
+        case 1: o->c[0]++; break;
+        case 4: o->c[1]++; break;
+        case 2: o->c[2]++; break;
+        case 8: o->c[3]++; break;
+        case 0x100: o->c[4]++; break;
         }
-        *(s32 *)(v + 0x24) = 1;
+        node->live = 1;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0860);
 extern void *D_004692E0[];
 void func_001D0990(void *o, void *s, s32 key, f32 val) {
     s32 i = 0;
