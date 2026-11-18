@@ -12,7 +12,12 @@ void func_00161CF0(void) {
         D_0041158C(D_00411590);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_00161D20);
+s32 func_00161CF0_x00161D20(s32 *, s32, s32) __asm__("func_00161CF0");
+extern s32 D_00411590_x00161D20 __asm__("D_00411590");
+void func_00161D20_x00161D20(s32 arg0) __asm__("func_00161D20");
+void func_00161D20_x00161D20(s32 arg0) {
+    func_00161CF0_x00161D20(&D_00411590_x00161D20, arg0, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_00161D48);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_00161E10);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_00161F18);

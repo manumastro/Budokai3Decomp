@@ -110,7 +110,16 @@ s32 func_00156180(void) {
     func_00169D08();
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", func_001561A0);
+s32 func_00156180_x001561A0(s32) __asm__("func_00156180");
+s32 func_001561D0_x001561A0(s32) __asm__("func_001561D0");
+s32 func_001561F0_x001561A0(s32) __asm__("func_001561F0");
+s32 func_001561A0_x001561A0(void) __asm__("func_001561A0");
+s32 func_001561A0_x001561A0(void) {
+    func_001561D0_x001561A0(0);
+    func_001561F0_x001561A0(0);
+    func_00156180_x001561A0(0);
+    return 0;
+}
 s32 func_001561D0(void) {
     func_0015F5F0();
     return 0;

@@ -150,7 +150,11 @@ void func_0019F680(u8 *arg0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F6D0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F710);
+extern s32 D_00426C34_x0019F710 __asm__("D_00426C34");
+void func_0019F710_x0019F710(s32 arg0) __asm__("func_0019F710");
+void func_0019F710_x0019F710(s32 arg0) {
+    D_00426C34_x0019F710 = arg0;
+}
 s32 func_0019F720(void) {
     return D_00426C34;
 }
@@ -289,7 +293,15 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FD50);
 void func_0019FD70(void) {
     func_0019FD88();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FD88);
+s32 func_001A0888_x0019FD88(s32) __asm__("func_001A0888");
+s32 memset_x0019FD88(s32 *, s32, s32) __asm__("memset");
+extern s32 D_004270C8_x0019FD88 __asm__("D_004270C8");
+void func_0019FD88_x0019FD88(void) __asm__("func_0019FD88");
+void func_0019FD88_x0019FD88(void) {
+    memset_x0019FD88(&D_004270C8_x0019FD88, 0, 0x24C);
+    *(s32 *)((u8 *)(&D_004270C8_x0019FD88) + 8) = 8;
+    func_001A0888_x0019FD88(0);
+}
 void func_0019FDC8(void) {
 
 }
@@ -325,7 +337,11 @@ s32 func_001A0810(f32 fparg0, f32 fparg1) {
     }
     return var_v0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0840);
+void func_001A0840_x001A0840(u8 *arg0, f32 *arg1, f32 *arg2) __asm__("func_001A0840");
+void func_001A0840_x001A0840(u8 *arg0, f32 *arg1, f32 *arg2) {
+    *arg1 = *(f32 *)((u8 *)arg0 + 0x3C);
+    *arg2 = *(f32 *)((u8 *)arg0 + 0x40);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0858);
 void func_001A0888(s32 arg0) {
     D_004270CC = arg0;
@@ -364,7 +380,13 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0D38);
 s32 *func_001A0D88(void) {
     return &D_00467EC0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0D98);
+extern s32 D_00427318_x001A0D98 __asm__("D_00427318");
+void func_001A0D98_x001A0D98(void) __asm__("func_001A0D98");
+void func_001A0D98_x001A0D98(void) {
+    if (D_00427318_x001A0D98 > 0) {
+        D_00427318_x001A0D98 -= 1;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0DB8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0E48);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0F28);

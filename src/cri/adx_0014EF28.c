@@ -80,7 +80,15 @@ s32 func_00150310(s32 arg0, s32 arg1) {
     D_0040108C = arg1;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150328);
+extern s32 (*D_00401088_x00150328)(s32, s32) __asm__("D_00401088");
+extern s32 D_0040108C_x00150328 __asm__("D_0040108C");
+s32 func_00150328_x00150328(s32 arg0) __asm__("func_00150328");
+s32 func_00150328_x00150328(s32 arg0) {
+    if (D_00401088_x00150328 != NULL) {
+        D_00401088_x00150328(D_0040108C_x00150328, arg0);
+    }
+    return 0;
+}
 s32 func_00150360(void) {
     D_00401084 += 1;
     return 0;
@@ -292,8 +300,34 @@ void func_001540F8(s32 arg0, s32 arg1) {
     D_00402004 = arg1;
     func_00170620();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", ADXERR_CallErrFunc1);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154178);
+s32 func_00128040_x00154120(s32 *, s32, s32) __asm__("func_00128040");
+s32 func_00170070_x00154120(s32 *) __asm__("func_00170070");
+extern s32 (*D_00402000_x00154120)(s32, s32 *) __asm__("D_00402000");
+extern s32 D_00402004_x00154120 __asm__("D_00402004");
+extern s32 D_00402008_x00154120 __asm__("D_00402008");
+void ADXERR_CallErrFunc1_x00154120(s32 arg0) __asm__("ADXERR_CallErrFunc1");
+void ADXERR_CallErrFunc1_x00154120(s32 arg0) {
+    func_00128040_x00154120(&D_00402008_x00154120, arg0, 0xFF);
+    if (D_00402000_x00154120 != NULL) {
+        D_00402000_x00154120(D_00402004_x00154120, &D_00402008_x00154120);
+    }
+    func_00170070_x00154120(&D_00402008_x00154120);
+}
+s32 func_00127CD8_x00154178(s32 *, s32, s32) __asm__("func_00127CD8");
+s32 func_00128040_x00154178(s32 *, s32, s32) __asm__("func_00128040");
+s32 func_00170070_x00154178(s32 *) __asm__("func_00170070");
+extern s32 (*D_00402000_x00154178)(s32, s32 *) __asm__("D_00402000");
+extern s32 D_00402004_x00154178 __asm__("D_00402004");
+extern s32 D_00402008_x00154178 __asm__("D_00402008");
+void func_00154178_x00154178(s32 arg0, s32 arg1) __asm__("func_00154178");
+void func_00154178_x00154178(s32 arg0, s32 arg1) {
+    func_00128040_x00154178(&D_00402008_x00154178, arg0, 0xFF);
+    func_00127CD8_x00154178(&D_00402008_x00154178, arg1, 0xFF);
+    if (D_00402000_x00154178 != NULL) {
+        D_00402000_x00154178(D_00402004_x00154178, &D_00402008_x00154178);
+    }
+    func_00170070_x00154178(&D_00402008_x00154178);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001541E8);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001542F0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154378);

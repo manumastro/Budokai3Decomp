@@ -84,9 +84,18 @@ int open(void)
     *(int *)__errno() = 5;
     return -1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/ico_glue", close);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/ico_glue", func_0010A950);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/ico_glue", lseek);
+s32 close_x0010A948(void) __asm__("close");
+s32 close_x0010A948(void) {
+    return -1;
+}
+s32 func_0010A950_x0010A950(void) __asm__("func_0010A950");
+s32 func_0010A950_x0010A950(void) {
+    return -1;
+}
+s32 lseek_x0010A958(void) __asm__("lseek");
+s32 lseek_x0010A958(void) {
+    return -1;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/ico_glue", sbrk);
 
 

@@ -61,7 +61,11 @@ void func_00168900(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168918);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168938);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168968);
+s64 func_00168900_x00168968() __asm__("func_00168900");
+s64 func_00168968_x00168968(void) __asm__("func_00168968");
+s64 func_00168968_x00168968(void) {
+    return func_00168900_x00168968() >> 0x20;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168988);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001689B8);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168A80);

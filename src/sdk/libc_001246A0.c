@@ -20,7 +20,12 @@ s32 *func_00124730(void) {
 void func_00124740(s32 arg0, s32 arg1) {
     func_001246A0(_impure_ptr, arg0, arg1);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc_001246A0", func_00124768);
+s32 func_00124730_x00124768(s32) __asm__("func_00124730");
+extern s32 _impure_ptr_x00124768 __asm__("_impure_ptr");
+void func_00124768_x00124768(void) __asm__("func_00124768");
+void func_00124768_x00124768(void) {
+    func_00124730_x00124768(_impure_ptr_x00124768);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libc_001246A0", _lseek_r);
 INCLUDE_ASM("asm/nonmatchings/sdk/libc_001246A0", func_001247E8);
 s32 func_00124940(s32 arg0, s32 arg1) {

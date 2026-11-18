@@ -314,7 +314,13 @@ void func_001585C0(void) {
     func_001705E0(7);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_001585D8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00158600);
+extern s32 D_0047E970_x00158600 __asm__("D_0047E970");
+void func_00158600_x00158600(void) __asm__("func_00158600");
+void func_00158600_x00158600(void) {
+    if (*(s32 (**)(s32))((u8 *)(&D_0047E970_x00158600) + 0) != NULL) {
+        (*(s32 (**)(s32))((u8 *)(&D_0047E970_x00158600) + 0))(*(s32 *)((u8 *)(&D_0047E970_x00158600) + 4));
+    }
+}
 void func_00158630(void) {
     if (*(s32 (**)(s32))((u8 *)(&D_0047E978) + 0) != NULL) {
         (*(s32 (**)(s32))((u8 *)(&D_0047E978) + 0))(*(s32 *)((u8 *)(&D_0047E978) + 4));

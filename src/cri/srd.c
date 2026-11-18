@@ -125,7 +125,71 @@ s32 func_00164E90(s32 arg0) {
     return var_v0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164F18);
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164FD0);
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00165048);
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_001650B0);
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00165108);
+s32 func_00110160_x00164FD0(s32, s32, s32) __asm__("func_00110160");
+s32 func_00164E20_x00164FD0() __asm__("func_00164E20");
+s32 func_00164E58_x00164FD0() __asm__("func_00164E58");
+s32 scePrintf_x00164FD0(s32 *, s32) __asm__("scePrintf");
+extern s32 D_00463160_x00164FD0 __asm__("D_00463160");
+s32 func_00164FD0_x00164FD0(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00164FD0");
+s32 func_00164FD0_x00164FD0(s32 arg0, s32 arg1, s32 arg2) {
+    s32 temp_v0;
+
+    func_00164E20_x00164FD0();
+    temp_v0 = func_00110160_x00164FD0(arg0, arg1, arg2);
+    if (temp_v0 < 0) {
+        scePrintf_x00164FD0(&D_00463160_x00164FD0, temp_v0);
+    }
+    func_00164E58_x00164FD0();
+    return temp_v0;
+}
+s32 func_0010F5E8_x00165048(s32, s32) __asm__("func_0010F5E8");
+s32 func_00164E20_x00165048() __asm__("func_00164E20");
+s32 func_00164E58_x00165048() __asm__("func_00164E58");
+s32 scePrintf_x00165048(s32 *, s32) __asm__("scePrintf");
+extern s32 D_00463180_x00165048 __asm__("D_00463180");
+s32 func_00165048_x00165048(s32 arg0, s32 arg1) __asm__("func_00165048");
+s32 func_00165048_x00165048(s32 arg0, s32 arg1) {
+    s32 temp_v0;
+
+    func_00164E20_x00165048();
+    temp_v0 = func_0010F5E8_x00165048(arg0, arg1);
+    if (temp_v0 < 0) {
+        scePrintf_x00165048(&D_00463180_x00165048, temp_v0);
+    }
+    func_00164E58_x00165048();
+    return temp_v0;
+}
+s32 func_0010F878_x001650B0(s32) __asm__("func_0010F878");
+s32 func_00164E20_x001650B0() __asm__("func_00164E20");
+s32 func_00164E58_x001650B0() __asm__("func_00164E58");
+s32 scePrintf_x001650B0(s32 *, s32) __asm__("scePrintf");
+extern s32 D_004631A0_x001650B0 __asm__("D_004631A0");
+s32 func_001650B0_x001650B0(s32 arg0) __asm__("func_001650B0");
+s32 func_001650B0_x001650B0(s32 arg0) {
+    s32 temp_v0;
+
+    func_00164E20_x001650B0();
+    temp_v0 = func_0010F878_x001650B0(arg0);
+    if (temp_v0 < 0) {
+        scePrintf_x001650B0(&D_004631A0_x001650B0, temp_v0);
+    }
+    func_00164E58_x001650B0();
+    return temp_v0;
+}
+s32 func_0010FC30_x00165108(s32, s32, s32) __asm__("func_0010FC30");
+s32 func_00164E20_x00165108() __asm__("func_00164E20");
+s32 func_00164E58_x00165108() __asm__("func_00164E58");
+s32 scePrintf_x00165108(s32 *, s32) __asm__("scePrintf");
+extern s32 D_004631C0_x00165108 __asm__("D_004631C0");
+s32 func_00165108_x00165108(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00165108");
+s32 func_00165108_x00165108(s32 arg0, s32 arg1, s32 arg2) {
+    s32 temp_v0;
+
+    func_00164E20_x00165108();
+    temp_v0 = func_0010FC30_x00165108(arg0, arg1, arg2);
+    if (temp_v0 < 0) {
+        scePrintf_x00165108(&D_004631C0_x00165108, temp_v0);
+    }
+    func_00164E58_x00165108();
+    return temp_v0;
+}

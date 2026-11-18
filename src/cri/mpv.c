@@ -178,24 +178,126 @@ s32 func_00172A88(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172A98);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172AC8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172AF8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172B20);
+extern s32 (*D_00424BD4_x00172AF8)() __asm__("D_00424BD4");
+void func_00172AF8_x00172AF8(void) __asm__("func_00172AF8");
+void func_00172AF8_x00172AF8(void) {
+    if (D_00424BD4_x00172AF8 != NULL) {
+        D_00424BD4_x00172AF8();
+    }
+}
+extern s32 (*D_00424BD8_x00172B20)() __asm__("D_00424BD8");
+void func_00172B20_x00172B20(void) __asm__("func_00172B20");
+void func_00172B20_x00172B20(void) {
+    if (D_00424BD8_x00172B20 != NULL) {
+        D_00424BD8_x00172B20();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172B48);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172B78);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172BA0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172BC8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172BF0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172C18);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172C40);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172C68);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172C90);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172CB8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172CE0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172D08);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172D30);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172D58);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172D80);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172DA8);
+extern s32 (*D_00424BE0_x00172B78)() __asm__("D_00424BE0");
+void func_00172B78_x00172B78(void) __asm__("func_00172B78");
+void func_00172B78_x00172B78(void) {
+    if (D_00424BE0_x00172B78 != NULL) {
+        D_00424BE0_x00172B78();
+    }
+}
+extern s32 (*D_00424BE8_x00172BA0)() __asm__("D_00424BE8");
+void func_00172BA0_x00172BA0(void) __asm__("func_00172BA0");
+void func_00172BA0_x00172BA0(void) {
+    if (D_00424BE8_x00172BA0 != NULL) {
+        D_00424BE8_x00172BA0();
+    }
+}
+extern s32 (*D_00424BE4_x00172BC8)() __asm__("D_00424BE4");
+void func_00172BC8_x00172BC8(void) __asm__("func_00172BC8");
+void func_00172BC8_x00172BC8(void) {
+    if (D_00424BE4_x00172BC8 != NULL) {
+        D_00424BE4_x00172BC8();
+    }
+}
+extern s32 (*D_00424BEC_x00172BF0)() __asm__("D_00424BEC");
+void func_00172BF0_x00172BF0(void) __asm__("func_00172BF0");
+void func_00172BF0_x00172BF0(void) {
+    if (D_00424BEC_x00172BF0 != NULL) {
+        D_00424BEC_x00172BF0();
+    }
+}
+extern s32 (*D_00424BF0_x00172C18)() __asm__("D_00424BF0");
+void func_00172C18_x00172C18(void) __asm__("func_00172C18");
+void func_00172C18_x00172C18(void) {
+    if (D_00424BF0_x00172C18 != NULL) {
+        D_00424BF0_x00172C18();
+    }
+}
+extern s32 (*D_00424BF4_x00172C40)() __asm__("D_00424BF4");
+void func_00172C40_x00172C40(void) __asm__("func_00172C40");
+void func_00172C40_x00172C40(void) {
+    if (D_00424BF4_x00172C40 != NULL) {
+        D_00424BF4_x00172C40();
+    }
+}
+extern s32 (*D_00424BF8_x00172C68)() __asm__("D_00424BF8");
+void func_00172C68_x00172C68(void) __asm__("func_00172C68");
+void func_00172C68_x00172C68(void) {
+    if (D_00424BF8_x00172C68 != NULL) {
+        D_00424BF8_x00172C68();
+    }
+}
+extern s32 (*D_00424BFC_x00172C90)() __asm__("D_00424BFC");
+void func_00172C90_x00172C90(void) __asm__("func_00172C90");
+void func_00172C90_x00172C90(void) {
+    if (D_00424BFC_x00172C90 != NULL) {
+        D_00424BFC_x00172C90();
+    }
+}
+extern s32 (*D_00424C00_x00172CB8)() __asm__("D_00424C00");
+void func_00172CB8_x00172CB8(void) __asm__("func_00172CB8");
+void func_00172CB8_x00172CB8(void) {
+    if (D_00424C00_x00172CB8 != NULL) {
+        D_00424C00_x00172CB8();
+    }
+}
+extern s32 (*D_00424C04_x00172CE0)() __asm__("D_00424C04");
+void func_00172CE0_x00172CE0(void) __asm__("func_00172CE0");
+void func_00172CE0_x00172CE0(void) {
+    if (D_00424C04_x00172CE0 != NULL) {
+        D_00424C04_x00172CE0();
+    }
+}
+extern s32 (*D_00424C08_x00172D08)() __asm__("D_00424C08");
+void func_00172D08_x00172D08(void) __asm__("func_00172D08");
+void func_00172D08_x00172D08(void) {
+    if (D_00424C08_x00172D08 != NULL) {
+        D_00424C08_x00172D08();
+    }
+}
+extern s32 (*D_00424C0C_x00172D30)() __asm__("D_00424C0C");
+void func_00172D30_x00172D30(void) __asm__("func_00172D30");
+void func_00172D30_x00172D30(void) {
+    if (D_00424C0C_x00172D30 != NULL) {
+        D_00424C0C_x00172D30();
+    }
+}
+extern s32 (*D_00424C10_x00172D58)() __asm__("D_00424C10");
+void func_00172D58_x00172D58(void) __asm__("func_00172D58");
+void func_00172D58_x00172D58(void) {
+    if (D_00424C10_x00172D58 != NULL) {
+        D_00424C10_x00172D58();
+    }
+}
+extern s32 (*D_00424C14_x00172D80)() __asm__("D_00424C14");
+void func_00172D80_x00172D80(void) __asm__("func_00172D80");
+void func_00172D80_x00172D80(void) {
+    if (D_00424C14_x00172D80 != NULL) {
+        D_00424C14_x00172D80();
+    }
+}
+extern s32 (*D_00424C18_x00172DA8)() __asm__("D_00424C18");
+void func_00172DA8_x00172DA8(void) __asm__("func_00172DA8");
+void func_00172DA8_x00172DA8(void) {
+    if (D_00424C18_x00172DA8 != NULL) {
+        D_00424C18_x00172DA8();
+    }
+}
 void func_00172DD0(void) {
     func_00172DF0(&D_00424C20);
 }

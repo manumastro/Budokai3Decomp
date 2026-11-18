@@ -199,7 +199,7 @@ segments:
       - [0x065AD0, c, cri/dtx]               # DTX_Create
       - [0x066480, c, cri/dvci]              # dvCi* (CD/DVD file I/O)
       - [0x067FF8, c, cri/htci]              # htCi* (host file I/O)
-      - [0x069878, asm, cri/lsc]               # LSC_Create
+      - [0x069878, c, cri/lsc]               # LSC_Create
       - [0x06A7F8, c, cri/mfci]              # mfCi* (memory file I/O)
       - [0x06BBE0, c, cri/ps2rna]            # PS2RNA_*
       - [0x06D9F8, c, cri/sj]                # stream joints (no strings; SJX message at 0x16FAF0)
