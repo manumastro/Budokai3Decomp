@@ -28,27 +28,22 @@ extern void amCdFs_Close(s32, s32);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern u32 func_0012EAE0(s32);
 
-// GIVEN UP: the frame is right; the original is 16 bytes longer: its labels after the return-0 branch are padded differently
-// // differs: 12 of 40 (round 4 chr): the return-1 arm lacks the alignment nop the original has before the join (the join sits 8 bytes later); the return-0 and return-1 arms and the register use match.
-#if 0
+extern s32 func_0022F520(char *);
+extern s32 func_002CC450(char *);
 s32 func_002359F0(char *a0) {
-    char *s0;
-    s32 r;
-    s0 = (char *)D_0058BBB0 + *(s32 *)(a0 + 0x1350) * 192;
-    if (*(s8 *)(s0 + 0x42) == -1) {
+    CEnt *s0 = &((CEnt *)D_0058BBB0)[*(s32 *)(a0 + 0x1350)];
+    if (s0->b42 == -1) {
         return func_0022F520(a0);
     }
     if (func_002CC450(a0) & 0x80) {
         return 0;
     }
-    r = 0;
-    if (*(f32 *)(s0 + 0x48) <= 0.0f) {
-        r = 1;
+    if (s0->f48 <= 0.0f) {
+    } else {
+        return 0;
     }
-    return r;
+    return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002359F0);
 extern s32 func_0022F660(char *);
 s32 func_00235A90(char *a0) {
     CEnt *e = &((CEnt *)D_0058BBB0)[*(s32 *)(a0 + 0x1350)];
