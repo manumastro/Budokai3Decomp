@@ -7,12 +7,14 @@
  * (written by splat) after compiling; for the compiler itself the macros are empty. */
 #define INCLUDE_ASM(FOLDER, NAME)
 #define INCLUDE_RODATA(FOLDER, NAME)
+#define INCLUDE_PAD(BYTES)
 
 #elif defined(NO_INCLUDE_ASM)
 
 /* scripts/gccdiff.py compiles the C functions alone. */
 #define INCLUDE_ASM(FOLDER, NAME)
 #define INCLUDE_RODATA(FOLDER, NAME)
+#define INCLUDE_PAD(BYTES)
 
 #else
 
@@ -33,6 +35,8 @@
         "    .include \"" FOLDER "/" #NAME ".s\"\n" \
         ".section .text" \
     )
+/* The alignment bytes that end a library object (ld pads between objects only to the next one's alignment). */
+#define INCLUDE_PAD(BYTES) __asm__(".section .text\n    .space " #BYTES)
 __asm__(".include \"macro.inc\"\n");
 
 #endif

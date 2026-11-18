@@ -42,7 +42,7 @@ def main():
         sys.exit(f"{rel}: not a gcc path (configure.py GCC_GROUPS); use scripts/fdiff.py")
     version, flags = group
     objs, work = gccmatch.compile_matrix(src, [version], [flags], "gas", defines=["NO_INCLUDE_ASM"],
-                                         include_dirs=("include", "src"))
+                                         include_dirs=("include", "src", *configure.gcc_extra_includes(rel).replace("-I", "").split()))
     obj = objs[(version, flags)]
     if not isinstance(obj, Path):
         shutil.rmtree(work, ignore_errors=True)

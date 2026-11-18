@@ -30,6 +30,7 @@ options:
     - config/symbols/lib_strings.txt
     - config/symbols/lib_sdk.txt
     - config/symbols/lib_cri.txt
+    - config/symbols/lib_names.txt
     - config/symbols/sys.txt
     - config/symbols/battle.txt
     - config/symbols/menu.txt
@@ -70,19 +71,76 @@ segments:
       # not cut into objects yet. crt0 and the syscall stubs are hand-written assembly.
       - [0x000000, asm, sdk/crt0]
       - [0x000250, asm, sdk/libgraph]          # sceGsResetGraph ... (PsIIlibgraph 3000)
+      - [0x000940, c, sdk/libgraph/ico_graph005]
+      - [0x000A08, c, sdk/libgraph/ico_graph006]
+      - [0x000BF0, c, sdk/libgraph/ico_graph007]
+      - [0x000CF8, asm, sdk/libgraph_00100CF8]
       - [0x001868, asm, sdk/libdma]            # "libdma: sync timeout"
+      - [0x0019C0, c, sdk/libdma/kfiv_libdma]
+      - [0x001CD8, asm, sdk/libdma_00101CD8]
       - [0x0020B0, asm, sdk/libmpeg]           # MPEG decoder strings; calls sceIpuInit
+      - [0x007BA0, c, sdk/libmpeg/kfiv_mpeg]
+      - [0x0081F8, asm, sdk/libmpeg_001081F8]
+      - [0x0095C0, c, sdk/libmpeg/ico_init]
+      - [0x0095D0, asm, sdk/libmpeg_001095D0]
       - [0x009AF8, asm, sdk/libipu]            # sceIpuInit (0x109BD8) uses libipu's data
       - [0x009E40, asm, sdk/libkernl_syscalls] # `addiu $v1, N; syscall` stubs
       - [0x00A6E0, asm, sdk/libkernl]          # threads, kprintf, SIF RPC, file stubs, TLB, timers
-      - [0x016550, asm, sdk/libpad]            # scePadInit: "libpad: Module version mismatch"
+      - [0x00A828, c, sdk/libkernl/ico_glue]
+      - [0x00AA60, asm, sdk/libkernl_0010AA60]
+      - [0x00ABD8, c, sdk/libkernl/ico_cache]
+      - [0x00AD30, asm, sdk/libkernl_0010AD30]
+      - [0x00AF60, c, sdk/libkernl/ico_thread]
+      - [0x00B038, asm, sdk/libkernl_0010B038]
+      - [0x00B540, c, sdk/libkernl/ico_deci2]
+      - [0x00B778, c, sdk/libkernl/ico_tty]
+      - [0x00B9B8, asm, sdk/libkernl_0010B9B8]
+      - [0x00BCC0, c, sdk/libkernl/ico_kprintf]
+      - [0x00BE70, asm, sdk/libkernl_0010BE70]
+      - [0x00D048, c, sdk/libkernl/kfiv_sifcmd]
+      - [0x00D628, asm, sdk/libkernl_0010D628]
+      - [0x00D9C0, c, sdk/libkernl/kfiv_sifrpc]
+      - [0x00E8D8, asm, sdk/libkernl_0010E8D8]
+      - [0x00E9C8, c, sdk/libkernl/kfiv_filestub]
+      - [0x011C50, asm, sdk/libkernl_00111C50]
+      - [0x013AA0, c, sdk/libkernl/ico_tlbfunc]
+      - [0x013B88, asm, sdk/libkernl_00113B88]
+      - [0x016550, c, sdk/libpad/kfiv_libpad]
+      - [0x017A70, asm, sdk/libpad_00117A70]
       - [0x017C10, asm, sdk/libsdr]            # "sceSdRemoteInit() RPC bind error!"
       - [0x0180F0, asm, sdk/libcdvd]           # the sceCd callback thread, N / S command semaphores
       - [0x019CB0, asm, sdk/libmc]             # "bind error libmc"
       # From here ee-gcc 2.96 (newlib and the compiler's runtime).
       - [0x01B4E8, asm, sdk/libm]              # double maths (constant tables in .rodata)
+      - [0x01EC60, c, sdk/libm/ico_s_isinf]
+      - [0x01ECA8, c, sdk/libm/ico_s_isnan]
+      - [0x01ECE8, asm, sdk/libm_0011ECE8]
       - [0x01F620, asm, sdk/libgcc]            # __muldi3 (0x11F6E0), 64-bit division, soft double (dp-bit)
+      - [0x01F6E0, c, sdk/libgcc/ico__muldi3]
+      - [0x01F758, asm, sdk/libgcc_0011F758]
       - [0x0221A8, asm, sdk/libc]              # newlib: _close_r, rand, vfprintf, ...
+      - [0x023A00, c, sdk/libc/kfiv_findfp]
+      - [0x023B90, asm, sdk/libc_00123B90]
+      - [0x023C40, c, sdk/libc/ico_fread]
+      - [0x023D60, c, sdk/libc/kfiv_freer]
+      - [0x0241C8, asm, sdk/libc_001241C8]
+      - [0x024228, c, sdk/libc/ico_fvwrite]
+      - [0x024608, c, sdk/libc/ico_fwalk]
+      - [0x0246A0, asm, sdk/libc_001246A0]
+      - [0x024C10, c, sdk/libc/kfiv_mallocr]
+      - [0x025590, asm, sdk/libc_00125590]
+      - [0x025A88, c, sdk/libc/kfiv_mprec]
+      - [0x026AA0, c, sdk/libc/kfiv_printf]
+      - [0x026B70, asm, sdk/libc_00126B70]
+      - [0x027400, c, sdk/libc/kfiv_sprintf]
+      - [0x027518, asm, sdk/libc_00127518]
+      - [0x027520, c, sdk/libc/ico_sscanf]
+      - [0x0275C8, c, sdk/libc/kfiv_stdio]
+      - [0x027738, asm, sdk/libc_00127738]
+      - [0x028200, c, sdk/libc/ico_strstr]
+      - [0x028288, asm, sdk/libc_00128288]
+      - [0x0291F0, c, sdk/libc/kfiv_strtol]
+      - [0x029428, asm, sdk/libc_00129428]
       # Metrowerks code linked before CRI (amDraw3d.c, amMotion.c, ..., main). One subsegment per source file:
       # boundaries from the order of the files' data (scripts/find_files.py), names from the file-name strings the
       # code passes (unk_XXXXXX where none); both inferred.
@@ -114,6 +172,8 @@ segments:
       # CRI ADX and Sofdec (ee-gcc 2.96). One subsegment per module: each starts at the first function whose own
       # error strings name that module (inferred); the functions between two such runs may belong to either.
       - [0x04E5D0, asm, cri/adx]               # ADXB, ADXF, ADXT, ADXRNA, ADXSTMF, ... (ADXT 9.19, ADXF 7.14)
+      - [0x04EE38, c, cri/adx/mk_adx_bahx]
+      - [0x04EF28, asm, cri/adx_0014EF28]
       - [0x063EE8, asm, cri/srd]
       - [0x065180, asm, cri/dtr]               # DTR_ExecHndl
       - [0x065AD0, asm, cri/dtx]               # DTX_Create
@@ -127,6 +187,8 @@ segments:
       - [0x070800, asm, cri/mpv]               # no strings: CFT / M2V / MPS / MPV by their version strings' order
       - [0x07F1D0, asm, cri/mwsfd]             # MwsfdCrePrm, mwPly*, MWSFD_*
       - [0x087D90, asm, cri/sfd]               # SFD core (few strings)
+      - [0x094C78, c, cri/sfd/kfiv_bit]
+      - [0x094D48, asm, cri/sfd_00194D48]
       - [0x09EDD0, asm, cri/sfx]               # sfxcnv_*, SFX_*, SFXZ_*
       # libmtap: Sony's multitap library (ee-gcc 2.9-ee, like the SDK above), linked after CRI.
       - [0x0A19D0, c, sdk/libmtap]
