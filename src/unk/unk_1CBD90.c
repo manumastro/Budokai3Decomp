@@ -1392,43 +1392,28 @@ int Scr_CmdNop_001(void *unused, Arg *a) {
 int Scr_CmdNop_000(void *unused, Arg *a) {
     return 1;
 }
-// // differs: 47 of 80 (round 4 chr): the original keeps the -1 store in v1 and reloads 0x28(a1) at the loop end; ours uses a2 and hoists the loop registers (t2/t4 order).
-#if 0
-void func_001CFAD0(void *o, Arg *a) {
-    s32 off;
-    s32 i;
-    *(s32 *)((char *)o + 0x248) = -1;
-    i = 0;
-    off = 0;
-    if (0 < *(s32 *)((char *)a + 0x28)) {
-        do {
-            char *pe = *(char **)((char *)a + 0x2C) + off;
-            if (*(u16 *)pe == 1) {
-                s32 cnt = *(s16 *)(pe + 2);
-                if (cnt > 0) {
-                    char *arr = *(char **)(pe + 4);
-                    s32 j = 0;
-                    char *t1 = arr;
-                    do {
-                        if ((*(u16 *)(t1 + 8) & 0x10F) == 1) {
-                            *(s32 *)((char *)o + 0x248) = *(u16 *)(arr + j * 16);
-                            break;
-                        }
-                        j++;
-                        t1 += 16;
-                    } while (j < cnt);
-                }
-                if (*(s32 *)((char *)o + 0x248) >= 0) {
+typedef struct CItem { u16 id; char pad[6]; u16 flags; char pad2[6]; } CItem;
+typedef struct CEnt { u16 kind; s16 cnt; CItem *items; } CEnt;
+typedef struct CArg { char pad[0x28]; s32 n; CEnt *ents; } CArg;
+typedef struct CObj { char pad[0x248]; s32 v; } CObj;
+void func_001CFAD0(CObj *o, CArg *a) {
+    s32 i, j;
+    o->v = -1;
+    for (i = 0; i < a->n; i++) {
+        CEnt *e = &a->ents[i];
+        if (e->kind == 1) {
+            for (j = 0; j < e->cnt; j++) {
+                if ((e->items[j].flags & 0x10F) == 1) {
+                    o->v = e->items[j].id;
                     break;
                 }
             }
-            i++;
-            off += 8;
-        } while (i < *(s32 *)((char *)a + 0x28));
+            if (o->v >= 0) {
+                break;
+            }
+        }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFAD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFB80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFE50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFF90);
