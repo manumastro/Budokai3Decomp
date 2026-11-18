@@ -42,20 +42,15 @@ extern u8 D_0051D9F0[];
 extern u8 D_0051DA00[];
 extern void func_00209E50(u8 *);
 
-#if 0
 void func_001FB760(u8 *a, s32 b) {
-    if (a != NULL) {
-        if (b != 0) {
-            func_00133780(0, 1);
-            func_001FB500(a);
-            func_001FB3B0(a, b);
-        }
+    if (a == NULL || b == 0) {
+        return;
     }
+    func_00133780(0, 1);
+    func_001FB500(a);
+    func_001FB3B0(a, b);
     func_00133780(0, 0);
 }
-// differs: the two early exits (a0 == 0 and a1 == 0) go to a shared b in the original (8 instructions more, 0x80 bytes against 0x60); the block layout did not match
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FB760);
 u8 *func_001FB7E0(u8 *s1) {
     u8 *s0;
     if (s1 == NULL) {
