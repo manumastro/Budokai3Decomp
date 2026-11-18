@@ -1,6 +1,7 @@
 #include "common.h"
 
 extern void func_00146F30(void *);
+typedef struct CEnt { u8 pad[0x42]; s8 b42; u8 p2; u8 *p44; f32 f48; u8 p3[0x74]; } CEnt;
 typedef struct CharVec16 {
     f32 x, y, z, w;
 } __attribute__((aligned(16))) CharVec16;
@@ -48,41 +49,30 @@ s32 func_002359F0(char *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002359F0);
-// GIVEN UP: the entry index is loaded into a2 and the entry pointer into a1 in the original (here a1 and a0); the function is 0xD0 bytes against our 0xC4: the final 0x2F/0x53 test is laid out differently (3 instructions). Tried: declaration orders, inline index
-#if 0
-extern s32 func_0022F660(void);
-s32 func_00235A90(u8 *a0) {
-    u8 *e;
-    s32 idx;
+extern s32 func_0022F660(char *);
+s32 func_00235A90(char *a0) {
+    CEnt *e = &((CEnt *)D_0058BBB0)[*(s32 *)(a0 + 0x1350)];
     f32 f;
     f32 nf;
     s8 c;
-
-    idx = *(s32 *)(a0 + 0x1350);
-    e = D_0058BBB0 + ((idx * 3) << 6);
-    if (*(s8 *)(e + 0x42) == -1) {
-        return func_0022F660();
+    if (e->b42 == -1) {
+        return func_0022F660(a0);
     }
-    f = *(f32 *)(e + 0x48);
+    f = e->f48;
     if (f > 0.0f) {
         nf = f - *(f32 *)((u8 *)gBattle + 0x88F0);
-        *(f32 *)(e + 0x48) = nf;
+        e->f48 = nf;
         if (nf > 0.0f) {
             return 1;
         }
-        *(f32 *)(e + 0x48) = 0.0f;
+        e->f48 = 0.0f;
     }
-    c = *(s8 *)*(u8 **)(e + 0x44);
-    if (c == 0x2F) {
-        return 1;
+    c = *e->p44;
+    if (c != 0x2F && c != 0x53) {
+        return 0;
     }
-    if (c == 0x53) {
-        return 1;
-    }
-    return 0;
+    return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235A90);
 // GIVEN UP: the 1 / 100 divisions and the compare's operands come out in other registers (lh and the remainder swapped)
 // // differs: 16 of 40 (round 4 chr): register choice for the constant 1 (v0 in the original) and the 0xCCCCCCCD divide constants (a1/a0); the store of 1 is scheduled after the mfhi in the original.
 #if 0
