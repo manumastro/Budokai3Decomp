@@ -948,48 +948,44 @@ s32 func_00209F80(void) {
     }
     return r;
 }
-#if 0
-void func_00209FC0(u8 *a0, s32 a1) {
+void func_00209FC0(u8 *a0, u8 *a1) {
     u8 *s0;
     if (*(s32 *)(a0 + 0x24) != 0) {
-        *(s32 *)(a0 + 0x24) += a1;
+        *(u8 **)(a0 + 0x24) = a1 + *(s32 *)(a0 + 0x24);
         s0 = *(u8 **)(a0 + 0x24);
         if (*(s32 *)(s0 + 0x24) != 0) {
-            *(s32 *)(s0 + 0x24) += a1;
+            *(u8 **)(s0 + 0x24) = a1 + *(s32 *)(s0 + 0x24);
             func_00209FC0(*(u8 **)(s0 + 0x24), a1);
         }
         if (*(s32 *)(s0 + 0x28) != 0) {
-            *(s32 *)(s0 + 0x28) += a1;
+            *(u8 **)(s0 + 0x28) = a1 + *(s32 *)(s0 + 0x28);
             func_00209FC0(*(u8 **)(s0 + 0x28), a1);
         }
         if (*(s32 *)(s0 + 0x2C) != 0) {
-            *(s32 *)(s0 + 0x2C) += a1;
+            *(u8 **)(s0 + 0x2C) = a1 + *(s32 *)(s0 + 0x2C);
         }
     }
     if (*(s32 *)(a0 + 0x28) != 0) {
-        *(s32 *)(a0 + 0x28) += a1;
+        *(u8 **)(a0 + 0x28) = a1 + *(s32 *)(a0 + 0x28);
         s0 = *(u8 **)(a0 + 0x28);
         if (*(s32 *)(s0 + 0x24) != 0) {
-            *(s32 *)(s0 + 0x24) += a1;
+            *(u8 **)(s0 + 0x24) = a1 + *(s32 *)(s0 + 0x24);
             func_00209FC0(*(u8 **)(s0 + 0x24), a1);
         }
         if (*(s32 *)(s0 + 0x28) != 0) {
-            *(s32 *)(s0 + 0x28) += a1;
+            *(u8 **)(s0 + 0x28) = a1 + *(s32 *)(s0 + 0x28);
             func_00209FC0(*(u8 **)(s0 + 0x28), a1);
         }
         if (*(s32 *)(s0 + 0x2C) != 0) {
-            *(s32 *)(s0 + 0x2C) += a1;
+            *(u8 **)(s0 + 0x2C) = a1 + *(s32 *)(s0 + 0x2C);
         }
     }
     if (*(s32 *)(a0 + 0x2C) != 0) {
-        *(s32 *)(a0 + 0x2C) += a1;
+        *(u8 **)(a0 + 0x2C) = a1 + *(s32 *)(a0 + 0x2C);
     }
 }
-// differs: the offset adds are the same except for the operand order of addu (the original is s1 + v1 at each of 9 sites, this build emits v1 + s1 whatever the source order)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209FC0);
 void func_0020A0F0(u8 *a) {
-    func_00209FC0(a + *(s32 *)(a + 0xC), (s32)a);
+    func_00209FC0(a + *(s32 *)(a + 0xC), a);
 }
 s32 func_0020A100(u8 *a) {
     if (a[0] == 0x21) {
