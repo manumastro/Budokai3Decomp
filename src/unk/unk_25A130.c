@@ -120,7 +120,7 @@ extern void amModel_SetCurrent(void *, s32);
 extern ScrTask *amTask_Create(void *, void *, s32, s32, s32, char *);
 extern void *func_0022D860(void *, f32);
 extern void func_00125740(void *, void *, s32);
-extern void func_0020D9F0(s32);
+extern void *func_0020D9F0(s32);
 extern Eff *func_00215320(s16, s32);
 extern void func_00211650(void);
 extern void func_00210240(void);
@@ -449,7 +449,76 @@ void func_0025B840(EffSrc *e) {
     f->f18 = e->f20;
     func_00125740(f->f20, e, 0x58);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B8F0);
+extern void func_0013AFA0(void *);
+typedef struct B8F0Dst {
+    char pad0[0x10];
+    f32 f10, f14, f18;
+    s32 f1C;
+    f32 f20, f24, f28;
+    s32 f2C;
+    f32 f30, f34, f38;
+    s32 f3C;
+    f32 f40, f44, f48;
+    char pad4C[4];
+    char f50[0x40];
+    f32 f90, f94, f98;
+    char pad9C[4];
+    f32 fA0, fA4, fA8, fAC, fB0, fB4, fB8, fBC;
+} B8F0Dst;
+typedef struct B8F0Src {
+    char pad0[0x10];
+    f32 f10, f14, f18;
+    char pad1C[4];
+    f32 f20, f24, f28;
+    char pad2C[4];
+    f32 f30, f34, f38;
+    char pad3C[4];
+    f32 f40, f44, f48;
+    char pad4C[0x20];
+    f32 f6C, f70;
+    char pad74[0x14];
+    f32 f88, f8C, f90, f94, f98, f9C, fA0, fA4;
+} B8F0Src;
+typedef struct B8F0Arg {
+    s32 f0;
+    char pad4[0x14];
+    B8F0Src *f18;
+} B8F0Arg;
+void func_0025B8F0(B8F0Arg *a) {
+    B8F0Dst *d;
+    B8F0Src *s;
+
+    d = func_0020D9F0(a->f0);
+    s = a->f18;
+    memset(d, 0, 0xC0);
+    func_0013AFA0(d->f50);
+    d->f10 = s->f10;
+    d->f14 = s->f14;
+    d->f18 = s->f18;
+    d->f1C = 0x3F800000;
+    d->f30 = 3.1415927f * (2.0f * s->f20) / 360.0f;
+    d->f34 = 3.1415927f * (2.0f * s->f24) / 360.0f;
+    d->f38 = 3.1415927f * (2.0f * s->f28) / 360.0f;
+    d->f3C = 0x3F800000;
+    d->f20 = s->f30;
+    d->f24 = s->f34;
+    d->f28 = s->f38;
+    d->f2C = 0x3F800000;
+    d->f90 = s->f9C;
+    d->f94 = s->f6C;
+    d->f98 = s->f70;
+    d->fA0 = s->f88;
+    d->fA4 = s->f8C;
+    d->fA8 = s->f90;
+    d->fAC = s->f94;
+    d->fB0 = s->f98;
+    d->fB4 = s->f9C;
+    d->fB8 = s->fA0;
+    d->fBC = s->fA4;
+    d->f40 = s->f40;
+    d->f44 = s->f44;
+    d->f48 = s->f48;
+}
 void Wave_TaskAfterDraw(void) {
     gWave->f70 = 0;
 }
