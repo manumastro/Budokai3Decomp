@@ -302,9 +302,9 @@ extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern void func_001D6CD0(Fighter *);
 extern char D_004695B8[];
 extern s32 D_004693C0[];
-extern void func_002356E0(void);
-extern s32 func_002CC450(Fighter *);
-extern void func_00235480(Fighter *);
+extern s32 func_002356E0(void);
+extern s32 func_002CC450(void);
+extern s32 func_00235480(Fighter *);
 void func_001E73C0(Fighter *c);
 extern s32 func_00234C20(void *);
 extern s32 func_00234C90(void *);
@@ -325,7 +325,7 @@ extern void Fighter_ClearPlyScr(void *c);
 extern u8 D_004E0660[];
 extern s32 func_001DFE60(Fighter *c, s32 a, f32 v);
 extern s32 func_001DFA90(Fighter *c, s32 idx);
-extern s32 func_002350A0(Fighter *c);
+extern s32 func_002350A0();
 extern s32 D_00469478[];
 extern s32 D_004693C0[];
 extern void func_001E11E0(s32 a, void *b);
@@ -4676,25 +4676,22 @@ s32 func_001E8D10(Fighter *c) {
     }
     return func_00234EA0(c);
 }
-#if 0
-s32 func_001E8D90(Fighter *c) {
+s32 func_001E8D90(Fighter *c, s32 x) {
     Game *g;
     s32 v;
-    s32 st;
 
     if (c->f1FF8 < 2) {
         return 0;
     }
     g = gBattle;
-    st = g->f7E2;
-    switch (st) {
+    switch (g->f7E2) {
     case 3:
         if (g->f8977 != 3) {
             return 0;
         }
         break;
     case 4:
-        v = func_002CC450(c);
+        v = func_002CC450();
         if (v & 0x40000) {
             return 1;
         }
@@ -4705,51 +4702,47 @@ s32 func_001E8D90(Fighter *c) {
         }
         return 0;
     }
-    return func_002350A0(c);
+    return func_002350A0(c, x);
 }
-#endif
-// differs: 3 of 56 differ: switch (case 3 then case 4) matches, but the state load goes to a1 where the original uses a0 (g stays a2); tsweep of g/v/st orders and types did not move it
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8D90);
-#if 0
 s32 func_001E8E70(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (gBattle->f7E2 == 4) {
-        if (func_002CC450(c) == 0x20000) {
-            return 1;
-        }
-    } else if (gBattle->f7E2 == 3) {
+    switch (gBattle->f7E2) {
+    case 3:
         if (gBattle->f8977 != 3) {
             return 0;
         }
+        break;
+    case 4:
+        if (func_002CC450() == 0x20000) {
+            return 1;
+        }
+        break;
     }
     return func_00235480(c);
 }
-#endif
-// differs: 0x98 against 0xB0 bytes: the original tail-calls func_00235480 and returns its value; the branch chain on f7E2 (4, then 3 with the battle byte 0x8977 at f8977) is laid out with a shared call block; the field is gBattle->f8977 (the earlier note said f9977)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8E70);
-#if 0
 s32 func_001E8F20(Fighter *c) {
+    Game *g;
+
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (gBattle->f7E2 == 4) {
-        return 0;
-    }
-    if (gBattle->f7E2 == 3) {
-        if (gBattle->f8977 != 3) {
+    g = gBattle;
+    switch (g->f7E2) {
+    case 3:
+        if (g->f8977 != 3) {
             return 0;
         }
-    }
-    if (c->f2013 >= 2) {
+        break;
+    case 4:
         return 0;
     }
-    func_002356E0();
+    if (c->f2013 > 1) {
+        return 0;
+    }
+    return func_002356E0();
 }
-#endif
-// differs: the guard chain is laid out with other branch targets (0x94 against 0xA0 bytes)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8F20);
 s32 func_001E8FC0(Fighter *c) {
     Game *g;
     s32 v;
@@ -4799,7 +4792,7 @@ s32 func_001E9050(Fighter *c) {
         }
         break;
     case 4:
-        v = func_002CC450(c);
+        v = func_002CC450();
         if (v & 0x10) {
             return 1;
         }
@@ -4819,21 +4812,19 @@ s32 func_001E9190(Fighter *c) {
     }
     return func_002359F0(c);
 }
-#if 0
 s32 func_001E91D0(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (gBattle->f7E2 == 4) {
-        if (func_002CC450(c) & 0x100000) {
+    switch (gBattle->f7E2) {
+    case 4:
+        if (func_002CC450() & 0x100000) {
             return 0;
         }
+        break;
     }
     return func_00235A90(c);
 }
-#endif
-// differs: 0x78 bytes against 0x80: the original branches to the tail call with a 'b' from the not-taken path (if/else layout, as func_001E8C90)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E91D0);
 s32 func_001E9250(Fighter *c) {
     if (c->f1FF8 < 2) {
         return 0;
@@ -4868,7 +4859,7 @@ s32 func_001E92D0(Fighter *c) {
         }
         break;
     case 4:
-        v = func_002CC450(c);
+        v = func_002CC450();
         if (v & 0x10000) {
             return 0x23;
         }
