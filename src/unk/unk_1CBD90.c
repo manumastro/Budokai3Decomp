@@ -762,7 +762,77 @@ int Scr_CmdSetF210To21C(void *unused, Arg *a) {
     D_004B421C[0] = ((f32 *)a->p)[0];
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD050);
+typedef struct ABuf {
+    f32 f0;
+    f32 f1;
+    f32 f2;
+    f32 one0;
+    f32 f4;
+    f32 f5;
+    f32 f6;
+    f32 one1;
+    s32 k;
+    s32 v;
+    s32 a;
+    s32 b;
+    s32 m;
+    char pad[0xC];
+    f32 g0;
+    char pad2[4];
+    f32 g1;
+    char pad3[4];
+} ABuf;
+int func_001CD050(void *unused, Arg *a) {
+    f32 *p = (f32 *)a->p;
+    ABuf buf;
+    f32 x = p[0];
+    s32 fl = ((s32 *)p)[6];
+    s32 v = ((s32 *)p)[7];
+    f32 y = p[1];
+    f32 z = p[2];
+    f32 w = p[3];
+    f32 u = p[4];
+    f32 t = p[5];
+    char *f = (char *)gBattle->tbl[0];
+    s32 hi;
+    s32 lo;
+    memset(&buf, 0, 0x50);
+    buf.m = fl & 0xF;
+    buf.v = v;
+    buf.k = 1;
+    hi = fl & 0xF00000;
+    lo = fl & 0xF0000;
+    switch (hi) {
+    case 0: buf.a = 2; break;
+    case 0x200000: buf.a = 0; break;
+    case 0x300000: buf.a = 1; break;
+    case 0x100000: buf.a = 3; break;
+    }
+    switch (lo) {
+    case 0: buf.b = 2; break;
+    case 0x20000: buf.b = 0; break;
+    case 0x30000: buf.b = 1; break;
+    case 0x40000: buf.b = 3; break;
+    }
+    if (hi == 0x200000 || lo == 0x20000) {
+        func_001E4FA0(f, -1);
+    }
+    if (hi == 0x300000 || lo == 0x30000) {
+        func_001E4FA0(*(void **)(f + 0x1354), -1);
+    }
+    buf.one0 = 1.0f;
+    buf.f0 = z;
+    buf.one1 = 1.0f;
+    buf.f1 = y;
+    buf.f2 = x;
+    buf.f4 = t;
+    buf.g0 = D_004B4210[0];
+    buf.f5 = u;
+    buf.f6 = w;
+    buf.g1 = D_004B4214[0];
+    func_001A8770(1, &buf);
+    return 1;
+}
 int Scr_CmdCallBuf20(void *unused, Arg *a) {
     s32 v = *(s32 *)*(s32 **)((char *)a + 0x2C);
     s32 buf[20];
