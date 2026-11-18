@@ -1,7 +1,17 @@
 #include "common.h"
 
 extern void func_00146F30(void *);
+typedef struct LObjA { f32 t; u8 p[8]; s32 type; LSubA *sub; u8 q[0x14]; s32 f28; } LObjA;
+typedef struct LSubA { u8 p[8]; s32 f8; u8 q[0x24]; LV *f30; } LSubA;
+typedef struct LV { u8 p[0x40]; f32 a; u8 p2[4]; f32 b; } LV;
 typedef struct PtrCount { void *p; s32 n; } PtrCount;
+extern void amTask_Kill(void *);
+extern void amModel_SetCurrent(s32, s32);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern f32 D_00470710;
 extern void BtbBg_SetFlag1(void);
 extern void func_001A8770(s32, void *);
 extern void func_001C75D0(void *, s32);
@@ -613,9 +623,52 @@ void func_00237E00(u8 *a0) {
 
 
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237EC0);
+// differs: 5 of 68 (10 forms): all calls/stores match; the original fills the slot of the D_0047072C beqz with lw a0,0xC(s0) and builds the D_0058BEB0 index as lui/sll/addiu (ours nop slot, lui/addiu/sll, plus one nop pair); tried nested ifs, index local, pointer-add forms, tsweep
+#if 0
+extern u8 *D_0058BEB0[];
+extern s32 D_0047072C;
+extern s32 func_00228430(s32);
+extern s32 func_002284D0(s32);
+extern s32 func_0022C060(void *, f32);
+extern s32 func_002535B0(s32, void *);
+extern void func_00228410(void);
+void func_002380F0(LObjA *o) {
+    char *sys = (char *)gBtlSys;
+    s32 e;
+    f32 t;
+    u8 **p;
+    o->t = o->t + D_00470710;
+    if (o->sub != 0) {
+        e = *(s32 *)(sys + 0xE84);
+        D_00470704 = e;
+        D_0047070C = 0x4010000;
+        D_00470708 = 0;
+        amModel_SetCurrent(e, 0x4010000);
+        D_00470238 = 0;
+        func_00228430(0);
+        func_002284D0(0);
+        func_0022C060(o->sub, 1.0f);
+        func_00228410();
+        func_002535B0(o->f28, &o->sub->f30->a);
+        if (o->type == 0x1C) {
+            t = o->sub->f30->a;
+            o->sub->f30->a = o->sub->f30->b;
+            o->sub->f30->b = t;
+        }
+        if (o->sub->f8 == 0xFF) {
+            if (D_0047072C != 0) {
+                p = &D_0058BEB0[o->type];
+                if (*p != 0) {
+                    amTask_Kill(*p);
+                    *p = 0;
+                }
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002380F0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238200);
-extern void amTask_Kill(void *);
 extern void func_0022D0E0(s32, s32);
 extern void func_0023A5F0(s32);
 extern u8 D_0046A98A[];
@@ -638,14 +691,9 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002383D0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238610);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238790);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238C50);
-extern s32 D_00470704;
-extern s32 D_0047070C;
-extern s32 D_00470708;
-extern s32 D_00470238;
 extern s32 gBtlSys;
 extern s32 Input_IsHeld(s32);
 extern void amDraw_SetPacketMode(s32);
-extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C6B0(s32 *);
 void func_00239110(char *self) {
     char *sys = (char *)gBtlSys;
@@ -684,14 +732,9 @@ void func_00239110(char *self) {
         }
     }
 }
-extern s32 D_00470704;
-extern s32 D_0047070C;
-extern s32 D_00470708;
-extern s32 D_00470238;
 extern s32 gBtlSys;
 extern s32 Input_IsHeld(s32);
 extern void amDraw_SetPacketMode(s32);
-extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C6B0(s32 *);
 void func_00239200(char *self) {
     char *sys = (char *)gBtlSys;
@@ -730,14 +773,9 @@ void func_00239200(char *self) {
         }
     }
 }
-extern s32 D_00470704;
-extern s32 D_0047070C;
-extern s32 D_00470708;
-extern s32 D_00470238;
 extern s32 gBtlSys;
 extern s32 Input_IsHeld(s32);
 extern void amDraw_SetPacketMode(s32);
-extern void amModel_SetCurrent(s32, s32);
 extern void func_0022C6B0(s32 *);
 void func_002392F0(char *self) {
     char *sys = (char *)gBtlSys;
@@ -777,7 +815,6 @@ void func_002392F0(char *self) {
     }
 }
 extern s32 D_0058BF40[];
-extern void amTask_Kill(void *);
 extern void func_0022D4B0(s32, s32);
 void func_002393E0(u8 *a0) {
     u8 *s = a0 + 0x30;
@@ -911,7 +948,6 @@ void func_00239E80(char *self) {
     }
 }
 extern s32 D_0058BF30[];
-extern void amTask_Kill(void *);
 extern void func_0022D4B0(s32, s32);
 void Dmg_TaskKill(u8 *a0) {
     u8 *s = a0 + 0x30;
@@ -940,7 +976,6 @@ extern s32 func_0021C3D0(s32);
 extern s32 *func_0021C400(s32);
 extern void func_0023A000(LSub4 *, s32);
 extern void func_0023A240(void);
-extern f32 D_00470710;
 // FAKEMATCH: the `if (f == 0) t = 0` tests on the two callback addresses are compiled-out-looking checks (a function address is never null); they reproduce the original's bnez/move pair.
 void func_0023A150(LObj4 *a0) {
     LSub4 *s0;
