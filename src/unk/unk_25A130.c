@@ -55,7 +55,7 @@ extern void func_0021C540(f32, f32, f32);
 extern void func_0021C560(s32, f32, f32, f32);
 extern void func_0021C5B0(s32);
 extern void func_0021C5D0(s32);
-extern s32 func_0021C360(void);
+extern s32 func_0021C360();
 extern void func_00215500(s32);
 void func_0025A3A0(s32, f32, f32);
 
@@ -102,6 +102,8 @@ typedef struct ScrTask {
 typedef struct ResTbl {
     char pad0[0x14];
     void **f14;
+    char pad18[4];
+    void **f1C;
 } ResTbl;
 
 typedef struct SysE60 {
@@ -128,7 +130,7 @@ extern void func_00212560(void);
 extern void CutIn_TaskMain(void);
 extern void CutIn_TaskKill(void);
 extern void A2d_CallHandler(s32, s32 *);
-void func_0025AA20(s32);
+s32 func_0025AA20(s32);
 void func_0025A7C0(s32, s32);
 void func_0025A580(s32, s32);
 void func_0025A130(s32, s32);
@@ -137,7 +139,82 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A130);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A3A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A580);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A7C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025AA20);
+extern char D_0046AF00[];
+extern char D_0046AF10[];
+extern s32 D_0047035C;
+extern void func_002596A0(void);
+extern void func_00258C20(void);
+extern void func_00258AC0(void);
+extern void *func_0022D670(void *, f32);
+extern s32 func_002544A0(s32, s32);
+typedef struct AaWork2 {
+    void *f0;
+    void *f4;
+    void *f8;
+    void *fC;
+    char pad10[0x14];
+    void *f24;
+} AaWork2;
+typedef struct AaTask2 {
+    char pad0[0x30];
+    AaWork2 w;
+} AaTask2;
+typedef struct AaWork {
+    AaTask2 *f0;
+    char pad4[8];
+    f32 fC;
+    f32 f10;
+    s32 f14;
+    s32 f18;
+    s32 f1C;
+    s32 f20;
+    s32 f24;
+    char pad28[0xC];
+    s32 f34;
+} AaWork;
+typedef struct AaTask {
+    char pad0[0x30];
+    AaWork w;
+} AaTask;
+s32 func_0025AA20(s32 arg) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
+    AaWork *w;
+    AaWork2 *w2;
+    void *v;
+    s32 n;
+    ScrObj **g = (ScrObj **)D_0058D4E8;
+
+    if (g[0] != NULL) {
+        return 0;
+    }
+    g[0] = (ScrObj *)amTask_Create(func_002596A0, func_00258C20, 0x5410, 0x1000, 0x2000000, D_0046AF00);
+    w = &((AaTask *)g[0])->w;
+    memset(w, 0, D_0047035C);
+    w->fC = 30.0f;
+    w->f10 = 120.0f;
+    w->f34 = arg;
+    w->f14 = 8;
+    w->f18 = 8;
+    w->f1C = 8;
+    w->f20 = 8;
+    w->f24 = 8;
+    w->f0 = (AaTask2 *)amTask_Create(func_00258AC0, NULL, 0x3A30, 0x1000, 0x2000008, D_0046AF10);
+    w2 = &w->f0->w;
+    memset(w2, 0, D_0047035C);
+    w2->f0 = w;
+    D_00470704 = v = sys->fE60;
+    D_0047070C = n = 0x4000000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, n);
+    D_00470238 = 0;
+    w2->f4 = func_0022D860(sys->fE68->f14[2], 0.0f);
+    func_0021C360(w->f34);
+    w2->f8 = func_0022D670(sys->fE68->f1C[14], 0.0f);
+    func_002544A0(*(s32 *)((u8 *)w2->f8 + 0x30), w->f34);
+    w2->fC = func_0022D860(sys->fE68->f14[22], 0.0f);
+    w2->f24 = func_0022D860(sys->fE68->f14[8], 0.0f);
+    return 1;
+}
 s32 Scr_CmdA2dCall31(void *ctx, ScrCmd *cmd) {
     s32 buf[2] __attribute__((aligned(16)));
 
