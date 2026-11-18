@@ -1665,8 +1665,6 @@ void func_00253A50(s32 *a0, u8 *a1) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253A50);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253BA0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253E60);
-// GIVEN UP: 12 of 80 differ: the register of the mask constant (lui a3 vs v0) and the order of the res[0] and o+0x30 loads; the struct copies, the memset and the float constants match (declaration orders, inlined or hoisted temporaries, reordered loads: 10 forms; the permuter base did not score)
-#if 0
 extern s32 func_00253690(u8 *, s32, u8 *);
 f32 func_00253FC0(u8 *a0, u8 *o) {
     s32 res[4] __attribute__((aligned(16)));
@@ -1677,9 +1675,6 @@ f32 func_00253FC0(u8 *a0, u8 *o) {
     u8 *q;
     f32 fx;
     f32 fy;
-    s32 r0;
-    s32 r1;
-    u32 mask;
 
     if (func_00253690(a0, *(s16 *)(o + 0x34), (u8 *)res) == 0) {
         return *(f32 *)o;
@@ -1697,18 +1692,13 @@ f32 func_00253FC0(u8 *a0, u8 *o) {
     *(f32 *)(buf + 0x4C) = fy - 0.5f;
     __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x50), "r"(o + 0x10));
     *(f32 *)buf = 0.0f;
-    r0 = res[0];
-    mask = (u32)*(s32 *)(o + 0x30) & 0x30000;
-    *(s32 *)(buf + 0x10) = r0;
-    r1 = res[1];
+    *(s32 *)(buf + 4) = (((u32)*(s32 *)(o + 0x30) & 0x30000) >> 15) | 1;
+    *(s32 *)(buf + 0x10) = res[0];
+    *(s32 *)(buf + 0x14) = res[1];
     *(s16 *)(buf + 0x18) = *(s16 *)((u8 *)res + 8);
-    *(s32 *)(buf + 0x14) = r1;
-    *(s32 *)(buf + 4) = (mask >> 15) | 1;
     *(s16 *)(buf + 0x1A) = 0;
     return func_00253320((s32 *)buf, o, fx, fy);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253FC0);
 
 
 static inline void SkillFile_Release(u8 *h) {
