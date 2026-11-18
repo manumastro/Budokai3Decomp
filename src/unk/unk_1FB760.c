@@ -845,8 +845,57 @@ void func_00209450(u32 a0, s32 a1) {
 void Obj_ResetF38(u8 *a) {
     *(s32 *)(a + 0x38) = -1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00209540);
 extern s32 D_00470650;
+u8 *func_00209540(u8 *a, s32 k, s32 pri) {
+    u8 *s1 = D_0051FA40[D_00470650];
+    u8 *n;
+    u8 *s0;
+    u8 *fr[8];
+    f32 vec[4];
+    u32 h;
+    D_00470650 += 1;
+    if (D_00470650 >= 0x80) {
+        D_00470650 = 0;
+    }
+    memset(s1, 0, 0x40);
+    *(s32 *)(s1 + 8) = k;
+    *(s32 *)(s1 + 0xC) = pri;
+    __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(s1 + 0x10) : "memory");
+    __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(s1 + 0x20) : "memory");
+    n = D_00568440[0];
+    while (n != D_00568480 && !(pri < *(s32 *)(n + 0xC))) {
+        n = *(u8 **)n;
+    }
+    **(u8 ***)(n + 4) = s1;
+    *(u8 **)(s1 + 4) = *(u8 **)(n + 4);
+    *(u8 **)(n + 4) = s1;
+    *(u8 **)s1 = n;
+    s0 = a + *(s32 *)(a + 0xC);
+    __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(vec) : "memory");
+    while (s0 != NULL) {
+        fr[0] = s1;
+        fr[2] = s0;
+        fr[4] = (u8 *)vec;
+        fr[5] = (u8 *)vec;
+        fr[6] = (u8 *)vec;
+        fr[7] = (u8 *)vec;
+        h = *(u32 *)(s0 + 4) & 0xFFFF0000;
+        switch (h) {
+        case 0x10000: {
+            u8 *r = func_00208BD0((u8 *)fr);
+            *(u32 *)(r + 8) |= 0x2000;
+            break;
+        }
+        case 0x20000: {
+            u8 *r = func_00208A40((u8 *)fr);
+            *(u32 *)(r + 8) |= 0x2000;
+            break;
+        }
+        }
+        s0 = *(u8 **)(s0 + 0x28);
+    }
+    return s1;
+}
 extern u8 *func_00208A40(u8 *);
 extern u8 *func_00208BD0(u8 *);
 #if 0
