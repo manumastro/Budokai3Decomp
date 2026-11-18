@@ -911,6 +911,55 @@ s32 func_002AC3D0(s32 *a0, s32 *a1) {
     }
     return 3;
 }
+// differs: round 7: 16 of 80 differ (register numbers only): the original keeps the packed word in a2, the thread table pointer in v1 and the scaled indices in a3/a2; ours puts the word in v1 and the table pointer in a3. Typed table struct (tbl[k]->recs[r]) fixes the address order; tsweep over all 6 local orders/types gave 16 at best; w as a local and inline helper variants did not move it.
+#if 0
+extern s32 func_002AC3D0(s32 *, s32 *);
+typedef struct ScrRec {
+    s32 w0;
+    s32 w4;
+    s32 f8;
+    s32 wC;
+} ScrRec;
+typedef struct ScrRecTbl {
+    u8 pad[0x14];
+    ScrRec *recs;
+} ScrRecTbl;
+typedef struct ScrAnmE {
+    u8 pad[0x44];
+    ScrRecTbl *tbl[1];
+} ScrAnmE;
+static inline s32 srecw(ScrAnmE *e, u8 *o) {
+    s32 k = (*(s32 *)(o + 0x34) >> 16) - 1;
+    s32 r = *(s32 *)(o + 0x34) & 0xFFFF;
+    return e->tbl[k]->recs[r].f8;
+}
+#define SRECW(e, o) srecw(e, o)
+s32 func_002AC520(s32 *a0, s32 *a1) {
+    u8 *obj = (u8 *)a0;
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    ScrAnmE *e = (ScrAnmE *)&D_005ABA80[*(s32 *)a0[0]][p[3]];
+    u8 *sub;
+    s32 *q;
+    s32 v;
+
+    *(u8 *)(obj + 0x2A) = (u8)p[3];
+    *(s32 *)(obj + 0x34) = ((p[2] + 1) << 16) | p[1];
+    *(f32 *)(obj + 0x2C) = -*(f32 *)(obj + 0x38);
+    *(f32 *)(obj + 0x30) = (f32)SRECW(e, obj);
+    *(u8 *)(obj + 0x2B) = (u8)p[0];
+    v = SRECW(e, obj);
+    sub = *(u8 **)((u8 *)a1 + 0x38);
+    q = (s32 *)(sub + 0x68);
+    if (*(s32 *)(sub + 0x6C) == 0) {
+        q[0] = v + (s32)gScrTimers[*(s32 *)a0[0]];
+    } else {
+        q[0] += v;
+    }
+    q[1] = 1;
+    a0[4] = (s32)func_002AC3D0;
+    return func_002AC3D0(a0, a1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC520);
 s32 Scr_CmdLightF2094(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
