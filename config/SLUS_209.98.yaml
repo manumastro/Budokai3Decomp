@@ -274,8 +274,9 @@ segments:
       # initializer (code, 0x46FC80) and a pointer to it (0x46FCC0), as Metrowerks emits for a global whose
       # initial value is computed.
       - [0x35CB80, rodata, rodata/rodata_a]
+      # unk_1D5B30 owns up to 0x369640: its strings, jtbl_00469600 (a function table), "[LIT] MAIN" and the switch table of func_001E6E90, all defined in the C file
       - [0x3695D0, .rodata, unk/unk_1D5B30]
-      - [0x369600, rodata, rodata/rodata_a2]
+      - [0x369640, rodata, rodata/rodata_a2]
       - [0x36AE40, .rodata, battle/skill_cmd]
       - [0x36AE80, rodata, rodata/rodata_a2b]
       - [0x36EB20, .rodata, unk/unk_2AF860]
