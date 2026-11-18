@@ -308,32 +308,30 @@ s32 func_002AA600(s32 *a0, s32 *a1) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA6B0);
-// GIVEN UP: the same tail-call shape as func_002AAB40 and 16 bytes short (0xD0 against 0xE0): the extra instructions are not placed
-#if 0
+extern s32 func_002AA6B0(s32 *, s32 *);
 s32 func_002AA8A0(s32 *a0, s32 *a1) {
     u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
-    s32 i = *(s32 *)a0[0];
     s32 j = *(s32 *)(p + 0xC);
-    u8 *e = (u8 *)((s32)(j * 208) + ((s32)D_005BC9E0 + i * 416));
-    u8 *sub = *(u8 **)((u8 *)a1 + 0x38);
-    s32 *q = (s32 *)(sub + 0x68);
+    s32 i = *(s32 *)a0[0];
+    u8 *sub;
     s32 k;
-
+    s32 *q;
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + j * 208;
     *(f32 *)(e + 0x24) = *(f32 *)(p + 8);
     *(f32 *)(e + 0x28) = *(f32 *)(p + 4);
     *(f32 *)(e + 0x2C) = *(f32 *)(p + 0);
     k = (s32)*(f32 *)(e + 0x24);
-    if (*(s32 *)(sub + 0x6C) != 0) {
-        q[0] += k;
+    sub = *(u8 **)((u8 *)a1 + 0x38);
+    q = (s32 *)(sub + 0x68);
+    if (*(s32 *)(sub + 0x6C) == 0) {
+        q[0] = k + (s32)gScrTimers[*(s32 *)a0[0]];
     } else {
-        q[0] = k + (s32)gScrTimers[i];
+        q[0] += k;
     }
     q[1] = 1;
     a0[4] = (s32)func_002AA6B0;
     return func_002AA6B0(a0, a1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA8A0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA980);
 // GIVEN UP: a tail call and the stores match; the original is 16 bytes longer (0xF0 against 0xE0): the order of the index sums differs
 // differs: round 5 chr2: 2AAB40 live is 16 bytes short (0xE0 against 0xF0): the else arm reads gScrTimers through gp after a second *a0 load, and the float stores are scheduled differently.
