@@ -205,22 +205,23 @@ void ScrCamSlot_Load(s32 a0, s32 a1, s32 a2, s32 a3) {
     *(f32 *)&e[4] = D_004708F8;
     e[5] = 0;
 }
-// GIVEN UP: the arithmetic and the calls match; the original keeps the slot offset and recomputes the entry after the release call (0xD0 against 0xC4 bytes)
-#if 0
+typedef struct ScrAnmEnt {
+    /* 0x00 */ u8 unk00[0x14];
+    /* 0x14 */ s32 res[4];
+    /* 0x24 */ u8 unk24[0x30 - 0x24];
+    /* 0x30 */ s32 id[4];
+} ScrAnmEnt;
 void func_002AA260(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
-    u8 *s1 = (u8 *)D_005ABA80 + ((a0 * 33 * 8) - a0) * 128 + ((a1 * 33 * 8) - a1) * 32;
-    s32 *s5 = (s32 *)(s1 + a2 * 4 + 0x14);
+    ScrAnmEnt *e = (ScrAnmEnt *)((u8 *)D_005ABA80 + ((a0 * 33 * 8) - a0) * 128 + ((a1 * 33 * 8) - a1) * 32);
 
-    if (*s5 != 0) {
-        amCdFs_ReleaseCache(*s5);
+    if (e->res[a2] != 0) {
+        amCdFs_ReleaseCache(e->res[a2]);
     }
-    *s5 = a3;
+    e->res[a2] = a3;
+    e->id[a2] = a4;
     amFile_Load(a4);
-    *(s32 *)(s1 + a2 * 4 + 0x30) = a4;
-    amMotSet_Bind(s1 + 0x40, a2, a4);
+    amMotSet_Bind((u8 *)e + 0x40, a2, a4);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA260);
 void func_002AA330(void) {
     func_002A9C00();
 }
