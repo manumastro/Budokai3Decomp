@@ -33,6 +33,9 @@ typedef struct Side {
     char pad3[0x201E - 0x1358];
     signed char out;
 } Side;
+extern f32 func_00200270(f32, s32, f32);
+extern s32 BtlChara_GetF270C(s32);
+extern void *func_001F9A20(void);
 extern void func_001C8480(void *, int);
 extern void func_001C7D90(void *, int, void *);
 extern int AdxSlot_IsPlaying(void *);
@@ -655,6 +658,73 @@ int Scr_CmdSetF218(void *unused, Arg *a) {
     D_004B4218[0] = *(f32 *)a->p;
     return 1;
 }
+// differs: 8 of 88 (adiff), structure and registers match. func_00200270 takes (f32, s32, f32) (float args are set first). Left: the original has no alignment nop after the lwc1 of D_004B4218 and after the add.s (our two if-joins get one), and li a0,1 is hoisted above the sw of 1.0f. Tried: g local first/zero-init, ternary, buf.g stores, fy = fy + ...
+#if 0
+typedef struct HitBuf {
+    char pad0[0x10];
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 one;
+    s32 k0;
+    s32 k1;
+    char pad1[8];
+    s32 flags;
+    s32 v;
+    s32 w;
+    s32 zero;
+    char pad2[4];
+    f32 f20;
+    char pad3[4];
+    f32 g;
+} HitBuf;
+int func_001CCDD0(void *unused, Arg *a) {
+    Big *bt;
+    f32 *p = (f32 *)a->p;
+    HitBuf buf;
+    f32 fx = p[0];
+    s32 flags = ((s32 *)p)[4];
+    f32 fy = p[1];
+    s32 w = ((s32 *)p)[5];
+    f32 fz = p[2];
+    f32 fw = p[3];
+    s32 k = ((s32 *)p)[6];
+    f32 g;
+    bt = gBattle;
+    switch (k) {
+    case 0:
+    case 1:
+        buf.v = BtlChara_GetF270C(*(s32 *)((char *)bt->tbl[k] + 0x1350));
+        break;
+    case 3:
+        buf.v = *(s32 *)((char *)bt + 0x81C);
+        break;
+    case 2:
+        buf.v = (s32)func_001F9A20();
+        break;
+    }
+    buf.k0 = 1;
+    buf.w = w;
+    buf.k1 = 7;
+    buf.f20 = fw;
+    buf.flags = flags;
+    buf.zero = 0;
+    g = 0.0f;
+    if (flags & 8) {
+        g = D_004B4218[0];
+    }
+    buf.g = g;
+    if (!(flags & 0x1000000)) {
+        fy += func_00200270(fz, 0, fx);
+    }
+    buf.one = 1.0f;
+    buf.x = fz;
+    buf.y = fy;
+    buf.z = fx;
+    func_001A8770(1, &buf);
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCDD0);
 int Scr_CmdCallA8770(void *unused, Arg *a) {
     func_001A8770(3, 0);
@@ -838,10 +908,9 @@ int Scr_CmdFighterGetInt0B70(void *unused, Arg *a) {
     *(s32 *)a = *(s32 *)((char *)gBattle->tbl[a->p[1]] + 0xB70);
     return 1;
 }
-extern f32 func_00200270(s32, f32, f32);
 int Scr_CmdFighterDistance(void *unused, Arg *a) {
     char *t = gBattle->tbl[a->p[0]];
-    f32 r = func_00200270(0, *(f32 *)(t + 0x650), *(f32 *)(t + 0x658));
+    f32 r = func_00200270(*(f32 *)(t + 0x650), 0, *(f32 *)(t + 0x658));
     *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x44) - r;
     return 1;
 }
