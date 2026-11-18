@@ -3812,7 +3812,10 @@ void func_001E5500(s32 idx, void *arg) {
 // differs: 0x9C against 0xC0 bytes: the original joins the two branches before the loop's pointer setup (extra jumps to a shared block), not reproduced
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5500);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E55C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E57C0);
+extern void *const jtbl_00469600[];
+void func_001E57C0(s32 i, s32 a, s32 b) {
+    ((void (*)(s32, s32))jtbl_00469600[i])(a, b);
+}
 /* .rodata of this unit up to 0x369640 is defined here (see the yaml): the call table of func_001E57C0, the task name of the
  * Lit starters, then the switch table of func_001E6E90 that the compiler emits. */
 extern void func_001E5500();
