@@ -243,7 +243,38 @@ void func_002369E0(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236AF0);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236C70);
+typedef struct B3Loc { s32 v[3]; s32 flag; s32 side; s32 pad[4]; } B3Loc;
+extern void BtbBg_SetFlag1(void);
+extern void func_001A8770(s32, void *);
+extern void func_001C75D0(void *, s32);
+extern void func_001ABD30(void *);
+extern void func_001D9900(void *, s32, s32);
+void func_00236C70(s32 *a0) {
+    u8 buf[0x50];
+    B3Loc loc;
+    s32 args[4];
+    u8 *s1 = (u8 *)a0[0];
+    u8 *s0 = (u8 *)a0[1];
+    Btl_UpdateLimitXY(0, 0.55f, 0.015f);
+    BtbBg_SetFlag1();
+    *(s32 *)(s1 + 0xB70) = 0xEA;
+    *(s16 *)(s1 + 0xCB4) = 1;
+    *(s16 *)(s1 + 0xCB6) = 0;
+    func_001C75D0(s1, 0xF);
+    func_001C75D0(s0, 0x1C);
+    func_001ABD30(s1 + 0x1360);
+    func_001ABD30(s0 + 0x1360);
+    memset(buf, 0, 0x50);
+    *(s32 *)(buf + 0x20) = 0;
+    *(s32 *)(buf + 0x24) = 0;
+    func_001A8770(1, buf);
+    loc.flag = 2;
+    func_00218440(0xC, &loc);
+    args[0] = -1;
+    args[1] = 0;
+    A2d_CallHandler(0x2E, args);
+    func_001D9900(s1, 0xD, 1);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236D60);
 extern void (*jtbl_0046A740[])(void *);
 extern s32 func_0029D8A0(void);
