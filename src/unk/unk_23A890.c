@@ -811,7 +811,10 @@ u8 *func_00240F40(s32 i, s32 kind) {
     }
     return r;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00240FF0);
+extern void (*jtbl_00450160[])();
+void func_00240FF0(s32 a0, s32 a1) {
+    jtbl_00450160[a1](a0);
+}
 #if 0
 s32 func_00241010(s32 a0) {
     u8 *b = gBattle + a0 * 0x2020;
