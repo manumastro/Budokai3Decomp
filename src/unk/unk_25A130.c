@@ -57,7 +57,7 @@ extern void func_0021C5B0(s32);
 extern void func_0021C5D0(s32);
 extern s32 func_0021C360();
 extern void func_00215500(s32);
-void func_0025A3A0(s32, f32, f32);
+s32 func_0025A3A0(s32, f32, f32);
 
 typedef struct BtlPlayer {
     char pad0[0x1350];
@@ -136,6 +136,73 @@ void func_0025A580(s32, s32);
 void func_0025A130(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A130);
+extern void func_001E9B00(s32, s32, s32, s32, f32, f32);
+extern void func_0022C7D0(void *, s32, f32);
+typedef struct A3Work2 {
+    char pad0[0x2C];
+    void *f2C[2];
+} A3Work2;
+typedef struct A3Work {
+    A3Work2 *f0Task;
+    char pad4[4];
+    s32 f8;
+    char padC[0xC];
+    f32 f18[2];
+    f32 f20[2];
+    f32 f28[2];
+    s16 f30[2];
+    s16 f34[2];
+} A3Work;
+/* differs: 12 of 120, control flow and floats match (the float local holding 0.0f is assigned inside both arms of the
+   first test: FAKEMATCH-like, the original keeps it in $f20). Left: the original keeps arg*2 in s1 and forms
+   v0 = s1 + w (index first) with the count pointer in s0; ours has w + s1 and the pointer in s2 (arg*4 in s0).
+   Tried: tsweep both (1505), arg[w->f30], arg + w->f30, byte-offset forms with i2/i4 locals (worse, 27). */
+#if 0
+s32 func_0025A3A0(s32 arg, f32 x, f32 z) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
+    A3Work *w;
+    A3Work2 *w2;
+    s16 *cnt;
+    void *v;
+    s32 n;
+    f32 zero;
+
+    if (D_0058D4F0[0] == NULL) {
+        return 0;
+    }
+    w = (A3Work *)((u8 *)D_0058D4F0[0] + 0x30);
+    cnt = &w->f30[arg];
+    if (*cnt >= 3) {
+        return 0;
+    }
+    if (arg == 0) {
+        zero = 0.0f;
+        func_001E9B00(1, 0x2B, 0, 0, zero, 1.0f);
+    } else {
+        zero = 0.0f;
+        func_001E9B00(1, 0x2C, 0, 0, zero, 1.0f);
+    }
+    w->f20[arg] = x;
+    w->f28[arg] = z;
+    *cnt = *cnt + 1;
+    w->f8 |= (arg == 0) ? 1 : 2;
+    w->f18[arg] = zero;
+    if (!(x < 100.0f)) {
+        w2 = (A3Work2 *)((u8 *)w->f0Task + 0x30);
+        D_00470704 = v = sys->fE60;
+        D_0047070C = n = 0x4000000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, n);
+        D_00470238 = 0;
+        if (w2->f2C[arg] == NULL) {
+            w2->f2C[arg] = func_0022D860(((void **)sys->fE68->f14)[func_0021C360(w->f34[arg]) + 0x84], zero);
+        } else {
+            func_0022C7D0(w2->f2C[arg], 1, zero);
+        }
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A3A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A580);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A7C0);
