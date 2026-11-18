@@ -924,20 +924,19 @@ int Scr_CmdFighterCopyF17C4(void *unused, Arg *a) {
     *(f32 *)(t + 0x17C0) = *(f32 *)(t + 0x17C4);
     return 1;
 }
-// differs: 20 of 30. The original loads p[2] first, forms the table entry before the branch, and places the two calls with the delay slots of the branch; ours computes e after p[1].
-#if 0
 int func_001CE220(void *unused, Arg *a) {
     int *p = a->p;
-    char *e = (char *)gBattle->tbl[p[2]] + p[1] * 0x680 + 0x650;
-    if (p[1] != 0) {
-        func_001E6F70(e);
+    s32 x0 = p[0];
+    s32 k = p[1];
+    char *t = gBattle->tbl[p[2]];
+    char *e = t + k * 0x680 + 0x650;
+    if (k == 0) {
+        func_001E2180(t, x0);
     } else {
-        func_001E2180(unused, p[0]);
+        func_001E6F70(e);
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE220);
 extern void func_001E2190(void *, s32);
 extern void func_001E7070(void *, s32);
 extern void func_001E8290(void *);
