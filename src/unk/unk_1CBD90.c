@@ -161,6 +161,7 @@ int func_001CBD90(void *unused, Arg *a) {
     return 1;
 }
 #endif
+// r7a: 7 of 22, only the v0/v1 colouring of the temps (s in v1, flag chain in v0 in the original). Tried: all 720 orders of 6 locals (tsweep), u32 p, blk/flag/n locals, Big *b first.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBD90);
 #if 0
 int func_001CBDF0(void *unused, Arg *a) {
@@ -607,6 +608,7 @@ int func_001CCA90(void *unused, Arg *a) {
     return 1;
 }
 #endif
+// r7a: not close (40 of 85): the original computes p/2 (sra) before p%2 and keeps gBattle in s0; ours emits %2 first. Tried d/m locals, p/2*0x680, int-first sum.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCA90);
 int func_001CCBF0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
@@ -1249,6 +1251,7 @@ int func_001CE560(void *unused, Arg *a) {
     return 1;
 }
 #endif
+// r7a: 3 of 18. The original sets a1 = 1 then movz a1,zero,v0 (no sltu); ours is always sltu (ternary, if/else, !!, callee param s8/u8/s16/u16/u32, optimization_level 1-3).
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE560);
 int Scr_CmdFighterSlotCall73C0(void *unused, Arg *a) {
     int *p = a->p;
@@ -1459,6 +1462,7 @@ int Scr_CmdFighterSet1864(void *unused, Arg *a) {
     func_001E4FA0(t, -1);
     return 1;
 }
+// r7a: VU0 macro code (lqc2/vmulax/vsub/sqc2): cannot come from C. Also func_001CF2C0 and func_001CE960.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF100);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF2C0);
 int Scr_CmdGetFighterE1690(void *unused, Arg *a) {
@@ -1500,6 +1504,7 @@ int func_001CF600(void *unused, Arg *a) {
     return 1;
 }
 #endif
+// r7a: 4 of 33 (v0/v1 colouring again: sum in v1 and the second chain in v0 in the original). tsweep 403 variants, u32 fields, Big *g, char *g locals: no change.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF600);
 int Scr_CmdFighterCall8860(void *unused, Arg *a) {
     int *p = a->p;
@@ -1638,6 +1643,7 @@ void func_001CFAD0(CObj *o, CArg *a) {
         }
     }
 }
+// r7a: jump table jtbl_00469310 (10 cases on the key kind): stays INCLUDE_ASM until the rodata of this range is migrated. The body is the same key walker as func_001CFE50 with 10 cases writing short counters into the work block.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFB80);
 void func_001CFE50(KList3 *l, f32 t0, f32 t1) {
     s32 i, j;
