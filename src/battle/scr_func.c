@@ -80,7 +80,51 @@ extern void SoundRpc_Send3(s32, s32, s32, s32);
 s32 func_002AB690(ScriptThread *t, ScriptCtx *ctx);
 
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9080);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A92B0);
+extern void memset(void *, s32, s32);
+extern void func_002B0A40(s32);
+extern u8 D_005AB3C0[];
+extern u8 D_005AB610[];
+extern s32 D_005AB7F0[];
+void func_002A92B0(s32 a0) {
+    u8 *w;
+    u8 *r;
+    u8 *q;
+    u8 *p;
+    s32 i;
+
+    i = 0;
+    p = D_005AB3C0 + a0 * 104;
+    q = p;
+    for (; i < 2; i++) {
+        memset(q, 0, 0x34);
+        q += 0x34;
+    }
+    memset(p, 0, 0x68);
+    i = 0;
+    r = D_005AB610 + a0 * 240;
+    for (; i < 10; i++) {
+        memset(r, 0, 0x18);
+        r += 0x18;
+    }
+    D_005AB7F0[0] = 0;
+    w = (u8 *)D_005AB7F0;
+    *(s32 *)(w + 0xB0) = 0;
+    *(s32 *)(w + 0xB0) = 0;
+    *(s32 *)(w + 0xB4) = 0;
+    *(s32 *)(w + 0xB4) = 0;
+    *(s32 *)(w + 0xB8) = 0;
+    *(s32 *)(w + 0xB8) = 0;
+    *(s32 *)(w + 0xBC) = 0;
+    *(s32 *)(w + 0xBC) = 0;
+    *(s32 *)(w + 0xC0) = 0;
+    *(s32 *)(w + 0xC0) = 0;
+    *(s32 *)(w + 0xC4) = 0;
+    *(s32 *)(w + 0xC8) = 0;
+    *(s32 *)(w + 0xCC) = 0;
+    *(s32 *)(w + 0xD0) = 0;
+    *(s32 *)(w + 0xD4) = 0;
+    func_002B0A40(a0);
+}
 extern u8 D_004E6560[];
 extern u8 D_005AB3A0[];
 extern s32 D_00511768[];
