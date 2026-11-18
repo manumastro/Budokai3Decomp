@@ -5,6 +5,7 @@ typedef struct LV { u8 p[0x40]; f32 a; u8 p2[4]; f32 b; } LV;
 typedef struct LSubA { u8 p[8]; s32 f8; u8 q[0x24]; LV *f30; } LSubA;
 typedef struct LObjA { f32 t; u8 p[8]; s32 type; LSubA *sub; u8 q[0x14]; s32 f28; } LObjA;
 typedef struct PtrCount { void *p; s32 n; } PtrCount;
+extern s32 D_0047072C;
 extern s32 func_0021C3D0(s32);
 extern s32 *func_0021C400(s32);
 typedef struct LSub4 { f32 t; s32 f4; s32 f8; u8 pc[0x10]; s32 f1C; struct LObj4 *link; s32 f24; } LSub4;
@@ -705,7 +706,6 @@ void func_00237E00(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237EC0);
 // differs: 5 of 68 (10 forms): all calls/stores match; the original fills the slot of the D_0047072C beqz with lw a0,0xC(s0) and builds the D_0058BEB0 index as lui/sll/addiu (ours nop slot, lui/addiu/sll, plus one nop pair); tried nested ifs, index local, pointer-add forms, tsweep
 #if 0
-extern s32 D_0047072C;
 extern s32 func_00228430(s32);
 extern s32 func_002284D0(s32);
 extern s32 func_0022C060(void *, f32);
@@ -794,7 +794,7 @@ void func_00238200(u8 *a0) {
     }
 }
 extern void func_0022D0E0(s32, s32);
-extern void func_0023A5F0(s32);
+extern s32 func_0023A5F0(s32);
 extern u8 D_0046A98A[];
 void func_00238340(u8 *a0) {
     u8 *s = a0 + 0x30;
@@ -1324,8 +1324,61 @@ void func_0023A560(s32 a0, s32 a1) {
         *(s32 *)(s0 + 0x28) = (s8)func_002535D0(*(s32 *)(s0 + 0x24));
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A5F0);
-extern s32 D_0047072C;
+extern char *D_0044FBA0[];
+extern char D_0046ABE8[];
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern s32 func_00238610(s32);
+extern void func_00127488(void *, void *, s32);
+extern void func_002383D0(void *);
+// FAKEMATCH: `t = 0` in the empty branches (t is already 0 there) and `if (t == 0) { t = 0; }` reproduce the original's merged return-0 blocks and the move in the beqz slot.
+s32 func_0023A5F0(s32 idx) {
+    char buf[16];
+    u8 *t;
+    u8 **slot;
+    u8 *s0;
+    u8 *o;
+    if (D_0047072C == 0) {
+        t = 0;
+    } else if (idx < 0 || idx >= 0x1E) {
+        t = 0;
+    } else {
+        slot = &D_0058BEB0[idx];
+        if (*slot != 0) {
+            t = 0;
+        } else {
+            t = amTask_Create((void (*)(void *))func_002383D0, (void *)func_00238340, 0x5410, 0x1000, 0x2000000, D_0044FBA0[idx]);
+            if (t == 0) {
+                t = 0;
+            } else {
+                *slot = t;
+            }
+        }
+    }
+    if (t == 0) {
+        return 0;
+    }
+    s0 = t + 0x30;
+    memset(s0, 0, 0x30);
+    *(s32 *)(s0 + 0x10) = func_00238610(idx);
+    if (*(s32 *)(s0 + 0x10) != 0) {
+        *(f32 *)(s0 + 4) = *(s32 *)(*(u8 **)*(s32 *)(s0 + 0x10) + 0x1C);
+    } else {
+        *(f32 *)(s0 + 4) = 60.0f;
+    }
+    *(s32 *)(s0 + 0xC) = idx;
+    func_00127488(buf, D_0046ABE8, idx);
+    *(u8 **)(s0 + 0x14) = amTask_Create((void (*)(void *))func_00238200, 0, 0x3A10, 0x1000, 0x2000008, buf);
+    o = *(u8 **)(s0 + 0x14);
+    *(s32 *)(o + 0x30) = idx;
+    *(s32 *)(o + 0x34) = *(s32 *)(s0 + 0x10);
+    if (D_00470730 == 1) {
+        if (idx == 0x1B || idx == 0x1D) {
+            *(s32 *)(s0 + 8) = 1;
+            D_00470730 = 0;
+        }
+    }
+    return 1;
+}
 extern u8 D_0058BF24[];
 void func_0023A7A0(void) {
     s32 i;
@@ -1359,7 +1412,6 @@ void func_0023A7A0(void) {
         p -= 6;
     } while (n >= 0);
 }
-extern s32 D_0047072C;
 extern u8 D_0058BF24[];
 void func_0023A840(void) {
     s32 n;
