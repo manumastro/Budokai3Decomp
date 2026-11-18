@@ -61,7 +61,7 @@ extern ScrLightSub D_005ABA80[][4];
 extern ScrModel D_005BC440[][3];
 extern ScrEffectSub D_005BC180[][2];
 extern void func_002A9930(void);
-extern void func_002A9AE0(void);
+extern void func_002A9AE0(s32, s32, s32, s32);
 extern void func_002A9C00(void);
 extern void func_002A9EA0(void);
 extern void amAdx_SetVolume(s32, f32);
@@ -147,7 +147,42 @@ void func_002A98A0(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0) {
     s3[2] = t0;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9930);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9AE0);
+extern f32 D_0047042C;
+extern f32 D_00470430;
+void func_002A9AE0(s32 a0, s32 a1, s32 a2, s32 a3) {
+    u8 *e = (u8 *)D_005BC9E0 + a0 * 416 + a1 * 208;
+
+    if (*(s32 *)e != 0) {
+        amCdFs_ReleaseCache(*(s32 *)e);
+    }
+    *(s32 *)(e + 0x00) = a2;
+    *(s32 *)(e + 0x04) = a3;
+    *(s32 *)(e + 0x08) = -1;
+    *(s32 *)(e + 0x10) = 0x40000124;
+    *(s32 *)(e + 0x14) = 0;
+    *(s32 *)(e + 0x30) = 0;
+    *(s32 *)(e + 0x34) = 0;
+    *(f32 *)(e + 0x38) = 1.0f;
+    *(f32 *)(e + 0x40) = 1.0f;
+    *(f32 *)(e + 0x44) = 1.0f;
+    *(f32 *)(e + 0x48) = 1.0f;
+    *(f32 *)(e + 0x60) = 0.0f;
+    *(f32 *)(e + 0x64) = 0.0f;
+    *(f32 *)(e + 0x68) = 0.0f;
+    *(f32 *)(e + 0x6C) = 1.0f;
+    *(f32 *)(e + 0x70) = 0.0f;
+    *(f32 *)(e + 0x74) = 0.0f;
+    *(f32 *)(e + 0x78) = 0.0f;
+    *(f32 *)(e + 0x7C) = 1.0f;
+    *(f32 *)(e + 0x80) = D_0047042C / 2.0f;
+    *(f32 *)(e + 0x84) = D_00470430 / 2.0f;
+    *(f32 *)(e + 0x90) = 1.0f;
+    *(f32 *)(e + 0x94) = 1.0f;
+    *(f32 *)(e + 0x98) = 1.0f;
+    *(f32 *)(e + 0x9C) = 1.0f;
+    *(s64 *)(e + 0xC0) = 0x44;
+    *(s64 *)(e + 0xC8) = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9C00);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9D30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9EA0);
@@ -164,8 +199,8 @@ void func_002AA050(s32 a0, s32 a1, s32 a2, s32 a3) {
 void func_002AA0D0(void) {
     func_002A9930();
 }
-void func_002AA0E0(void) {
-    func_002A9AE0();
+void func_002AA0E0(s32 a0, s32 a1, s32 a2, s32 a3) {
+    func_002A9AE0(a0, a1, a2, a3);
 }
 extern void amFile_Load(s32);
 extern void amNode_Free(void *);
