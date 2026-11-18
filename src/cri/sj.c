@@ -48,7 +48,11 @@ void func_0016DA98(void) {
 void func_0016DAB0(void) {
     D_0041D438 -= 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016DAC8);
+extern volatile s32 D_0041D440_x0016DAC8 __asm__("D_0041D440");
+void func_0016DAC8_x0016DAC8(void) __asm__("func_0016DAC8");
+void func_0016DAC8_x0016DAC8(void) {
+    D_0041D440_x0016DAC8 = 0;
+}
 void func_0016DAD8(void) {
     func_0016FF40();
 }

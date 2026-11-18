@@ -468,7 +468,11 @@ void func_00181020_x00181020(u8 *arg0, u8 *arg1) {
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181070);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001810E8);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181268);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181300);
+s32 func_0017EE78_x00181300() __asm__("func_0017EE78");
+void func_00181300_x00181300(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00181300");
+void func_00181300_x00181300(s32 arg0, s32 arg1, s32 arg2) {
+    func_0017EE78_x00181300(arg0, arg1, arg2 * 0x3E8);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181330);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwl_convPtypeFromSFD);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001813D8);

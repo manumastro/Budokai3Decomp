@@ -346,8 +346,16 @@ s32 func_00164B18(void) {
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164B58);
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164BF8);
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164C48);
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164D18);
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164D28);
+extern volatile s32 D_004115F4_x00164D18 __asm__("D_004115F4");
+s32 func_00164D18_x00164D18(void) __asm__("func_00164D18");
+s32 func_00164D18_x00164D18(void) {
+    return D_004115F4_x00164D18;
+}
+extern volatile s32 D_004115F0_x00164D28 __asm__("D_004115F0");
+s32 func_00164D28_x00164D28(void) __asm__("func_00164D28");
+s32 func_00164D28_x00164D28(void) {
+    return D_004115F0_x00164D28;
+}
 typedef signed int Sint32_x00164D38;
 extern Sint32_x00164D38 SVM_SetCbSvr_x00164D38(Sint32_x00164D38, Sint32_x00164D38 (*)(void*), void*) __asm__("SVM_SetCbSvr");
 extern void SVM_SetCbSvrId_x00164D38(Sint32_x00164D38, Sint32_x00164D38, Sint32_x00164D38 (*)(void*), void*) __asm__("SVM_SetCbSvrId");
@@ -362,7 +370,11 @@ void func_00164D38_x00164D38(Sint32_x00164D38 arg0) {
     srd_history_pre_x00164D38 = srd_history_x00164D38;
     srd_history_x00164D38 = arg0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164D58);
+extern volatile s32 D_00411604_x00164D58 __asm__("D_00411604");
+s32 func_00164D58_x00164D58(void) __asm__("func_00164D58");
+s32 func_00164D58_x00164D58(void) {
+    return D_00411604_x00164D58;
+}
 void func_00164D68(s32 arg0) {
     D_00411608 = arg0;
     if (arg0 == 1) {

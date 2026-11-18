@@ -22,8 +22,22 @@ int func_0010CD60_x0010CD60(char **pp, int *pn, int c)
     **pp = 0;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010BE70", func_0010CDB8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010BE70", func_0010CDE0);
+s32 deci2Putchar_x0010CDB8(s32) __asm__("deci2Putchar");
+s32 func_0010CDB8_x0010CDB8(s32 arg0, s32 arg1, s32 arg2) __asm__("func_0010CDB8");
+s32 func_0010CDB8_x0010CDB8(s32 arg0, s32 arg1, s32 arg2) {
+    if (arg2 != 0) {
+        deci2Putchar_x0010CDB8(arg2);
+    }
+    return 1;
+}
+s32 serialPutchar_x0010CDE0(s32) __asm__("serialPutchar");
+s32 func_0010CDE0_x0010CDE0(s32 arg0, s32 arg1, s32 arg2) __asm__("func_0010CDE0");
+s32 func_0010CDE0_x0010CDE0(s32 arg0, s32 arg1, s32 arg2) {
+    if (arg2 != 0) {
+        serialPutchar_x0010CDE0(arg2);
+    }
+    return 1;
+}
 extern int _sceSnprintf_x0010CE08(void *cb, void *state, int a, int b, void *ap) __asm__("func_0010C048");
 typedef void *va_list_x0010CE08;
 int func_0010CE08_x0010CE08(void *cb, void *state, int *pn, int fmt, ...) __asm__("func_0010CE08");

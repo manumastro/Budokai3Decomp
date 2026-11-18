@@ -290,46 +290,150 @@ def variants(name, text):
             yield rule, src
 
 
-def one(name):
+def asm_text(name):
+    """The original's splat assembly of a function still in assembly (with its symbols)."""
     import lib_try as LT
-    drafts = list((ROOT / "drafts").glob(f"*/*/{name}.c")) + list((ROOT / "drafts").glob(f"*/{name}.c"))
-    if not drafts:
-        return name, None, "no draft"
-    text = re.sub(r"/\*.*?\*/", "", drafts[0].read_text(), flags=re.S)
-    text = re.sub(r"//[^\n]*", "", text)
-    # the draft may carry the function's real name
+    addr, _, seg, kind = LT.find_item(name)
+    p = ROOT / "asm" / "nonmatchings" / seg / f"{name}.s"
+    if kind == "c" and p.exists():
+        t = p.read_text()
+    else:
+        t = (ROOT / "asm" / f"{seg}.s").read_text()
+        i = t.index(f"glabel {name}\n")
+        k = t.find("\nglabel ", i + 1)
+        t = t[i:k if k > 0 else len(t)]
+    lines = [l for l in t.splitlines() if not l.startswith(("nonmatching", ".set", "endlabel"))]
+    return "\n".join(lines) + "\n"
+
+
+INS = re.compile(r"^\s+/\*[^*]*\*/\s+(\S+)\s*(.*)$")
+
+
+def hoist_tail_delay(text):
+    """m2c drops the delay slot of a tail `j func`: move that instruction before the jump."""
+    lines = text.splitlines()
+    out, i, changed = [], 0, False
+    while i < len(lines):
+        m = INS.match(lines[i])
+        if m and m.group(1) == "j" and not m.group(2).strip().startswith(".") and i + 1 < len(lines):
+            d = INS.match(lines[i + 1])
+            if d and d.group(1) != "nop":
+                out += [lines[i + 1], lines[i], "    /* 0 0 0 */  nop"]
+                i += 2
+                changed = True
+                continue
+        out.append(lines[i])
+        i += 1
+    return "\n".join(out) + "\n", changed
+
+
+def redrafts(name):
+    """Fresh m2c drafts of the original with the tail-call delay slots hoisted."""
+    import lib_m2c as LM
     try:
-        vs = list(variants(name, text))
-    except SystemExit as e:
-        # rename a differently named draft function to the task name
+        text, changed = hoist_tail_delay(asm_text(name))
+    except Exception:  # noqa: BLE001
+        return []
+    out = []
+    for opts in ((), ("--no-andor",)):
+        try:
+            rc, o, _ = LM.m2c_text(name, text, opts)
+        except Exception:  # noqa: BLE001
+            continue
+        if rc != 0:
+            continue
+        r = LM.make_c(name, o)
+        if r:
+            out.append(("m2c" + ("+hoist" if changed else "") + ("+" + opts[0][2:] if opts else ""),
+                        "\n".join(dict.fromkeys(r[0])) + "\n\n" + r[1]))
+    return out
+
+
+def transforms(name, src):
+    """Conditional rewrites the original's code asks for; yields (rule, src) including the plain src."""
+    src = src.replace("M2C_SYNC()", '__asm__ __volatile__("sync.l")')
+    yield "", src
+    try:
+        asm = asm_text(name)
+    except Exception:  # noqa: BLE001
+        return
+    alts = []
+    # a global reached through its full address (lui/addiu then 0(reg)): a volatile object
+    if re.search(r"addiu\s+\$\w+, \$\w+, %lo\(D_", asm):
+        v = re.sub(r"^(extern\s+)(?!volatile)([^;(]*\bD_[0-9A-F]{8}\b[^;(]*;)$", r"\1volatile \2", src, flags=re.M)
+        if v != src:
+            alts.append(("volatile", v))
+    # a last call kept as jal + jr: no sibling call in the original
+    if re.search(r"\bjal\s", asm) and not re.search(r"\bj\s+(?!\.)\w", asm):
+        k = src.rstrip().rfind("}")
+        alts.append(("nosib", src[:k] + '    __asm__ __volatile__("");\n' + src[k:]))
+    for rule, s in alts:
+        yield rule, s
+    if len(alts) == 2:
+        s = alts[0][1]
+        k = s.rstrip().rfind("}")
+        yield "volatile+nosib", s[:k] + '    __asm__ __volatile__("");\n' + s[k:]
+
+
+def candidates(name, text):
+    try:
+        yield from variants(name, text)
+    except SystemExit:
         m = re.search(r"^[^\n;{}]*\b(\w+)\s*\([^;{]*\)\s*\{", text, re.M)
         if m and m.group(1) != name:
-            text = re.sub(rf"\b{m.group(1)}\b", name, text)
             try:
-                vs = list(variants(name, text))
-            except SystemExit as e2:
-                return name, None, f"parse: {e2}"[:100]
-        else:
-            return name, None, f"parse: {e}"[:100]
+                for rule, s in variants(name, re.sub(rf"\b{m.group(1)}\b", name, text)):
+                    yield rule + "+rename", s
+            except SystemExit:
+                pass
+
+
+def one(name, budget=24):
+    import lib_try as LT
+    drafts = list((ROOT / "drafts").glob(f"*/*/{name}.c")) + list((ROOT / "drafts").glob(f"*/{name}.c"))
+    sources = []
+    if drafts:
+        text = re.sub(r"/\*.*?\*/", "", drafts[0].read_text(), flags=re.S)
+        sources.append(("draft", re.sub(r"//[^\n]*", "", text)))
+    best, n, seen = None, 0, set()
+
+    def attempts():
+        for sname, text in sources:
+            for rule, src in candidates(name, text):
+                for trule, s in transforms(name, src):
+                    yield sname, "+".join(x for x in (rule, trule) if x), s
+        for sname, text in redrafts(name):
+            for rule, src in candidates(name, text):
+                for trule, s in transforms(name, src):
+                    yield sname, "+".join(x for x in (rule, trule) if x), s
+
+    try:
+        for sname, rule, src in attempts():
+            if src in seen:
+                continue
+            seen.add(src)
+            n += 1
+            if n > budget:
+                break
+            buf = io.StringIO()
+            try:
+                with contextlib.redirect_stdout(buf):
+                    ok, _ = LT.try_snippet(name, src, quiet=True)
+            except SystemExit as e:
+                ok = False
+                buf.write(str(e))
+            out = buf.getvalue()
+            if ok:
+                return name, src, f"MATCH {sname}:{rule or 'asis'}"
+            m = re.search(r"DIFF: (\d+)", out)
+            score = int(m.group(1)) if m else 1 << 20 if "SIZE" in out else 1 << 30
+            if best is None or score < best[0]:
+                best = (score, f"{sname}:{rule or 'asis'}", out.strip().splitlines()[0][:80] if out.strip() else "?")
     except Exception as e:  # noqa: BLE001
-        return name, None, f"error: {type(e).__name__} {e}"[:100]
-    best = None
-    for rule, src in vs[:10]:
-        buf = io.StringIO()
-        try:
-            with contextlib.redirect_stdout(buf):
-                ok, _ = LT.try_snippet(name, src, quiet=True)
-        except SystemExit as e:
-            ok = False
-            buf.write(str(e))
-        out = buf.getvalue()
-        if ok:
-            return name, src, f"MATCH {rule}"
-        m = re.search(r"DIFF: (\d+)", out)
-        score = int(m.group(1)) if m else 1 << 20 if "SIZE" in out else 1 << 30
-        if best is None or score < best[0]:
-            best = (score, rule, out.strip().splitlines()[0][:80] if out.strip() else "?")
-    return name, None, f"miss best={best[1] if best else '-'} {best[2] if best else ''}"
+        return name, None, f"error: {type(e).__name__} {e}"[:120]
+    if best is None:
+        return name, None, "no candidate"
+    return name, None, f"miss best={best[1]} {best[2]}"
 
 
 def main():

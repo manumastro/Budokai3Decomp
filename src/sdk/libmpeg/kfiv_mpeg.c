@@ -241,7 +241,40 @@ s32 func_00108040_x00108040(u8 *arg0, s32 arg1) {
     return temp_v0;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00108050);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00108068);
+s32 func_00103238_x00108068(s32 *) __asm__("func_00103238");
+s32 func_00109738_x00108068(s32 *, s32 *) __asm__("func_00109738");
+extern s32 D_0045D298_x00108068 __asm__("D_0045D298");
+extern s32 D_0045D2B8_x00108068 __asm__("D_0045D2B8");
+s32 func_00108068_x00108068(s32 *arg0) __asm__("func_00108068");
+s32 func_00108068_x00108068(s32 *arg0) {
+    s32 temp_v0;
+    u8 *var_s1;
+
+    if ((*(s32 *)((u8 *)arg0 + 0x184) == 3) && (*(s32 *)((u8 *)arg0 + 0x130) != 0)) {
+        func_00109738_x00108068(arg0, &D_0045D298_x00108068);
+        *(s32 *)((u8 *)arg0 + 0x130) = 0;
+    }
+    switch (*(s32 *)((u8 *)arg0 + 0x184)) {        /* irregular */
+    case 3:
+        var_s1 = *(u8 **)((u8 *)arg0 + 0x1D0);
+        break;
+    case 1:
+        var_s1 = *(u8 **)((u8 *)arg0 + 0x1E0);
+        break;
+    case 2:
+        var_s1 = *(u8 **)((u8 *)arg0 + 0x1F0);
+        break;
+    default:
+        var_s1 = *(u8 **)((u8 *)arg0 + 0x1D0);
+        func_00109738_x00108068(arg0, &D_0045D2B8_x00108068);
+        break;
+    }
+    temp_v0 = func_00103238_x00108068(arg0);
+    if (temp_v0 != 0) {
+        *(s32 *)((u8 *)var_s1 + 0x28) = 1;
+    }
+    return temp_v0;
+}
 
 
 void _alalcInit(MpegHeap *heap, int base, int size)

@@ -800,7 +800,11 @@ void func_00156048_x00156048() {
 void func_001560E8(void) {
     func_00156048();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", func_00156100);
+extern volatile s32 D_00404BE0_x00156100 __asm__("D_00404BE0");
+s32 func_00156100_x00156100(void) __asm__("func_00156100");
+s32 func_00156100_x00156100(void) {
+    return D_00404BE0_x00156100 != 0;
+}
 void func_00156118(s32 arg0) {
     D_00404C0C = arg0;
 }

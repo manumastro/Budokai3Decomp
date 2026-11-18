@@ -583,10 +583,26 @@ void func_00178A78_x00178A78(char *h, int n, void *fn)
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178B28);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178B80);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178BA8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178BC0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178BD8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178BF0);
+s32 memcpy_x00178BA8() __asm__("memcpy");
+void func_00178BA8_x00178BA8(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00178BA8");
+void func_00178BA8_x00178BA8(s32 arg0, s32 arg1, s32 arg2) {
+    memcpy_x00178BA8(arg0, arg1, arg2);
+}
+s32 memcpy_x00178BC0() __asm__("memcpy");
+void func_00178BC0_x00178BC0(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00178BC0");
+void func_00178BC0_x00178BC0(s32 arg0, s32 arg1, s32 arg2) {
+    memcpy_x00178BC0(arg0, arg1, arg2);
+}
+s32 memcpy_x00178BD8() __asm__("memcpy");
+void func_00178BD8_x00178BD8(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00178BD8");
+void func_00178BD8_x00178BD8(s32 arg0, s32 arg1, s32 arg2) {
+    memcpy_x00178BD8(arg0, arg1, arg2);
+}
+s32 memcpy_x00178BF0() __asm__("memcpy");
+void func_00178BF0_x00178BF0(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00178BF0");
+void func_00178BF0_x00178BF0(s32 arg0, s32 arg1, s32 arg2) {
+    memcpy_x00178BF0(arg0, arg1, arg2);
+}
 void func_00178C08(void) {
     func_00178BA8();
 }

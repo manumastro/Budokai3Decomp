@@ -331,4 +331,8 @@ void func_0016BBB0_x0016BBB0(u8 *arg0) __asm__("func_0016BBB0");
 void func_0016BBB0_x0016BBB0(u8 *arg0) {
     func_0016B820_x0016BBB0(*(s32 *)((u8 *)arg0 + 0xE8));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016BBC8);
+s32 ADXERR_CallErrFunc1_x0016BBC8(s32) __asm__("ADXERR_CallErrFunc1");
+void func_0016BBC8_x0016BBC8(s32 arg0, s32 arg1) __asm__("func_0016BBC8");
+void func_0016BBC8_x0016BBC8(s32 arg0, s32 arg1) {
+    ADXERR_CallErrFunc1_x0016BBC8(arg1);
+}

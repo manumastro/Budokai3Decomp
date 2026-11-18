@@ -288,9 +288,21 @@ void func_00114AB8_x00114AB8(void)
         RFU116_SetSyscall_x00114AB8(patch->num, RFU091_x00114AB8(patch->num));
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114B90);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114C00);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114C10);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114C20);
+s32 func_00114B90_x00114C00(s32, s32) __asm__("func_00114B90");
+void func_00114C00_x00114C00(s32 arg0) __asm__("func_00114C00");
+void func_00114C00_x00114C00(s32 arg0) {
+    func_00114B90_x00114C00(0xB0001000, arg0);
+}
+s32 func_00114B90_x00114C10(s32, s32) __asm__("func_00114B90");
+void func_00114C10_x00114C10(s32 arg0) __asm__("func_00114C10");
+void func_00114C10_x00114C10(s32 arg0) {
+    func_00114B90_x00114C10(0xB0001010, arg0);
+}
+s32 func_00114B90_x00114C20(s32, s32) __asm__("func_00114B90");
+void func_00114C20_x00114C20(s32 arg0) __asm__("func_00114C20");
+void func_00114C20_x00114C20(s32 arg0) {
+    func_00114B90_x00114C20(0xB0001020, arg0);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114C30);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114D88);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114E40);
@@ -506,7 +518,16 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115FB0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001160E0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001161D0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00116278);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001162F0);
+s32 memset_x001162F0(s32 *, s32, s32) __asm__("memset");
+extern s32 D_003EDCE8_x001162F0 __asm__("D_003EDCE8");
+extern s32 D_003EDCEC_x001162F0 __asm__("D_003EDCEC");
+extern s32 D_00478708_x001162F0 __asm__("D_00478708");
+void func_001162F0_x001162F0(void) __asm__("func_001162F0");
+void func_001162F0_x001162F0(void) {
+    D_003EDCE8_x001162F0 = 0;
+    D_003EDCEC_x001162F0 = 0;
+    memset_x001162F0(&D_00478708_x001162F0, 0, 0x200);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00116318);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00116398);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00116450);

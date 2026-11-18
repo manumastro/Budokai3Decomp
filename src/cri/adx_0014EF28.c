@@ -52,7 +52,16 @@ s32 func_0014F548();                            /* extern */
 s32 func_0014F6E0();                            /* extern */
 
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014EF28);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014F2B8);
+s32 memcmp_x0014F2B8(s32 *, s32 *, s32) __asm__("memcmp");
+extern s32 D_0045FC00_x0014F2B8 __asm__("D_0045FC00");
+extern s32 D_0045FC08_x0014F2B8 __asm__("D_0045FC08");
+s32 func_0014F2B8_x0014F2B8(s32 arg0) __asm__("func_0014F2B8");
+s32 func_0014F2B8_x0014F2B8(s32 arg0) {
+    if ((memcmp_x0014F2B8(arg0, &D_0045FC00_x0014F2B8, (s32 *)4) == 0) && (memcmp_x0014F2B8(arg0 + 8, &D_0045FC08_x0014F2B8, 4) == 0)) {
+        return 1;
+    }
+    return 0;
+}
 typedef signed char Sint8_x0014F320;
 typedef signed short Sint16_x0014F320;
 typedef signed int Sint32_x0014F320;
@@ -1488,7 +1497,16 @@ void func_00152298_x00152298(ADXB_x00152298 adxb)
         adxb->stat = 3;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00152438);
+s32 memcmp_x00152438(s32 *, s32 *, s32) __asm__("memcmp");
+extern s32 D_004604C0_x00152438 __asm__("D_004604C0");
+extern s32 D_004604C8_x00152438 __asm__("D_004604C8");
+s32 func_00152438_x00152438(s32 arg0) __asm__("func_00152438");
+s32 func_00152438_x00152438(s32 arg0) {
+    if ((memcmp_x00152438(arg0, &D_004604C0_x00152438, (s32 *)4) == 0) && (memcmp_x00152438(arg0 + 8, &D_004604C8_x00152438, 4) == 0)) {
+        return 1;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001524A0);
 void func_001524F8(void) {
     D_00401FF0 = 0;

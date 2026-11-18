@@ -89,7 +89,7 @@ segments:
       - [0x00A828, c, sdk/libkernl/ico_glue]
       - [0x00AA60, c, sdk/libkernl_0010AA60]
       - [0x00ABD8, c, sdk/libkernl/ico_cache]
-      - [0x00AD30, asm, sdk/libkernl_0010AD30]
+      - [0x00AD30, c, sdk/libkernl_0010AD30]
       - [0x00AF60, c, sdk/libkernl/ico_thread]
       - [0x00B038, c, sdk/libkernl_0010B038]
       - [0x00B540, c, sdk/libkernl/ico_deci2]
