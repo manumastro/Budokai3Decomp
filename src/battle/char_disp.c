@@ -506,7 +506,88 @@ void func_0029F350(u8 *s1, u8 *s0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F350);
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F470);
+extern void amAdx_Stop(s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
+extern s32 amAdx_PlayAfs(s32, s32, s32);
+extern s32 amAdx_IsStopped(s32);
+extern s32 func_002A8F70();
+extern f32 D_004E0610[];
+extern f32 D_004E0614[];
+typedef struct ATm { f32 a; f32 b; f32 c; f32 time; s32 st; } ATm;
+void func_0029F470(u8 *s6) {
+    s32 i;
+    u8 *s4;
+    ATm *s3;
+    s32 s2;
+    s32 s1;
+    s32 k;
+
+    k = *(s32 *)(s6 + 0x30);
+    for (i = 0; i < *(s32 *)(s6 + 8); i++) {
+        s4 = ((u8 **)*(s32 *)(s6 + 0x48))[k] + i * 0x20;
+        s3 = (ATm *)(s4 + 4);
+        switch (s3->st) {
+        case 0:
+            if (*(s32 *)s4 > 0) {
+                amAdx_Stop(*(s32 *)s4);
+            }
+            s3->time = s3->time + *(f32 *)(s6 + 0x38);
+            if (s3->time < s3->a) {
+                break;
+            }
+            if (*(s32 *)s4 >= 0) {
+                if (func_002A8F70() != 1 || *(s32 *)s4 != 0) {
+                    s1 = *(s32 *)(*(s32 *)(s6 + 0x54) + i * 4);
+                    s2 = *(s32 *)s4;
+                    if (s1 > 0) {
+                        if (s2 == 0 || s2 == 1) {
+                            amAdx_SetVolume(s2, D_004E0610[0]);
+                        } else {
+                            amAdx_SetVolume(s2, D_004E0614[0]);
+                        }
+                        amAdx_Pause(s2, 0);
+                        amAdx_PlayAfs(s2, s1, 0);
+                    }
+                    *(s32 *)(s4 + 0x18) = 1;
+                }
+            }
+            s3->st++;
+            break;
+        case 1:
+            s3->time = s3->time + *(f32 *)(s6 + 0x38);
+            if (*(s32 *)s4 < 0) {
+                s3->st++;
+                break;
+            }
+            if (amAdx_IsStopped(*(s32 *)s4) != 0) {
+                *(s32 *)(s4 + 0x18) = 0;
+                s3->st++;
+                break;
+            }
+            if (s3->c < 0.0f) {
+                break;
+            }
+            if (s3->time < s3->c - s3->a) {
+                break;
+            }
+            amAdx_Stop(*(s32 *)s4);
+            *(s32 *)(s4 + 0x18) = 0;
+            s3->st++;
+            break;
+        case 2:
+            s3->time = s3->time + *(f32 *)(s6 + 0x38);
+            if (s3->time - s3->a - s3->c < s3->b) {
+                break;
+            }
+            s3->st++;
+            break;
+        default:
+            s3->st = 3;
+            break;
+        }
+    }
+}
 void func_0029F730(DispAnim *a, f32 dt) {
     f32 c;
 
