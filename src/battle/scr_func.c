@@ -362,7 +362,33 @@ s32 func_002AAB40(s32 *a0, s32 *a1) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAC30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAD80);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAF30);
+extern s32 func_002AAD80(s32 *, s32 *);
+s32 func_002AAF30(s32 *a0, s32 *a1) {
+    u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
+    s32 i = *(s32 *)a0[0];
+    s32 j = *(s32 *)(p + 0x14);
+    u8 *sub;
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + j * 208;
+    s32 k;
+    s32 *q;
+
+    *(f32 *)(e + 0x1C) = *(f32 *)(p + 0x10);
+    *(f32 *)(e + 0xA0) = *(f32 *)(p + 0xC);
+    *(f32 *)(e + 0xA4) = *(f32 *)(p + 8);
+    *(f32 *)(e + 0xA8) = *(f32 *)(p + 4);
+    *(f32 *)(e + 0xAC) = *(f32 *)(p + 0);
+    k = (s32)*(f32 *)(e + 0x1C);
+    sub = *(u8 **)((u8 *)a1 + 0x38);
+    q = (s32 *)(sub + 0x68);
+    if (*(s32 *)(sub + 0x6C) == 0) {
+        q[0] = k + (s32)gScrTimers[*(s32 *)a0[0]];
+    } else {
+        q[0] += k;
+    }
+    q[1] = 1;
+    a0[4] = (s32)func_002AAD80;
+    return func_002AAD80(a0, a1);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB020);
 s32 func_002AB1D0(s32 *a0, s32 *a1) {
     s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
