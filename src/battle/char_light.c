@@ -148,7 +148,7 @@ void func_002360F0(void) {
     memset(D_0058BBB0, 0, 0x300);
 }
 typedef struct BGlob { u8 pad[0x88D8]; s32 cnt; } BGlob;
-typedef struct CEnt2 { s32 h; s32 f; u8 pad[0xB8]; } CEnt2;
+typedef struct CEnt2 { s32 h; s32 f; u8 p8[0xE]; u8 b16; u8 pad[0xA9]; } CEnt2;
 void func_00236110(void) {
     CEnt2 *e;
     s32 i;
@@ -176,7 +176,40 @@ void func_002361D0(void) {
 void func_002361E0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002361F0);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236500);
+extern void func_0022E630(s32);
+void func_00236500(void) {
+    s32 i;
+    CEnt2 *e;
+    u8 *o;
+    u8 *f;
+    i = 0;
+    if (i < ((BGlob *)gBattle)->cnt) {
+        e = (CEnt2 *)D_0058BBB0;
+        do {
+            o = (u8 *)e->h;
+            e->h = *(s32 *)(o + 0x40);
+            e->f = *(s32 *)(*(u8 **)(o + 0x40) + 0x50);
+            func_0022E630(e->f);
+            *(s32 *)(o + 0x40) = 0;
+            amCdFs_Close((s32)o, 0);
+            switch (*(s16 *)((u8 *)gBattle + 0x7E2)) {
+            case 1:
+                f = (u8 *)e->f;
+                e->b16 = **(u8 **)(f + *(s8 *)((u8 *)gBattle + 0x8AB5) * 4 + 0x34);
+                break;
+            case 2:
+                f = (u8 *)e->f;
+                e->b16 = *(*(u8 **)(f + *(s8 *)((u8 *)gBattle + 0x8AB5) * 4 + 0x48) + *(s8 *)((u8 *)gBattle + 0x8AB6));
+                break;
+            case 6:
+                e->b16 = **(u8 **)(e->f + 0x5C);
+                break;
+            }
+            i++;
+            e++;
+        } while (i < ((BGlob *)gBattle)->cnt);
+    }
+}
 typedef struct COb { u8 pad[0x20]; s16 f20; u8 p[0x2E]; } COb;
 typedef struct CObs { COb o[4]; u8 pad[0x10]; s16 n; } CObs;
 typedef struct CHd { s32 h; u8 p[0x10]; s8 b14; u8 q[0xAB]; } CHd;
