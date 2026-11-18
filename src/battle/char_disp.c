@@ -45,6 +45,98 @@ void func_0029DB00(u8 *s1, f32 rate) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029DD30);
+// differs: 51 of 204 differ (round 7 r7c). Structure and the saved/float registers match (zero declared before one gives f20=1.0f); the init block (macro ANIM_INIT, applied before and after the memset) is the same code twice. Still differs: the constant temps (t4/t5 for 1.0f/-1.0f swapped: in the original the float constants are created after the first stores), the address temps of the second ANIM_INIT (original hoists a+0x60, +0x90, +0xC0 before +0x30 and uses v0 for it), the table lookup sequence (sra/andi/sll order and registers v0/v1 swapped).
+#if 0
+extern void memset(void *, s32, s32);
+extern void func_0029DD30(u8 *, f32);
+#define ANIM_INIT(a) \
+    do { \
+        *(s16 *)((a) + 0x1C4) = 0; \
+        *(f32 *)((a) + 0x1BC) = -1.0f; \
+        *(f32 *)((a) + 0x1B4) = 1.0f; \
+        *(s32 *)((a) + 0x1B8) = 0; \
+        *(s8 *)((a) + 0x1AE) = 0; \
+        *(s8 *)((a) + 0x1AF) = 0; \
+        *(s8 *)((a) + 0x1B0) = 0; \
+        *(s8 *)((a) + 0x1A8) = 0; \
+        *(s32 *)((a) + 0x1A0) = 0; \
+        *(u8 **)((a) + 0x180) = (a); \
+        *(u8 **)((a) + 0x184) = (a) + 0x30; \
+        *(u8 **)((a) + 0x188) = (a) + 0x60; \
+        *(u8 **)((a) + 0x18C) = (a) + 0x90; \
+        *(u8 **)((a) + 0x190) = (a) + 0xC0; \
+        *(u8 **)((a) + 0x194) = (a) + 0xF0; \
+        *(u8 **)((a) + 0x198) = (a) + 0x120; \
+        *(u8 **)((a) + 0x19C) = (a) + 0x150; \
+        *(s8 *)((a) + 0x1A9) = 0; \
+        *(s8 *)((a) + 0x1AA) = 0; \
+        *(s8 *)((a) + 0x1AB) = 0; \
+        *(s8 *)((a) + 0x1AC) = 0; \
+        *(s8 *)((a) + 0x1AD) = 0; \
+        *(s32 *)((a) + 0x244) = 0; \
+    } while (0)
+#define ANIM_LOOKUP(o, v)     (*(s32 *)((((v) & 0xFFFF) << 4) + *(s32 *)(*(s32 *)(((((v) >> 16) - 1) * 4) + *(s32 *)((o) + 0x260) + 0x46C) + 0x14) + 8))
+void func_0029E120(u8 *s4, s32 idx, s32 s3, f32 f23, f32 f22) {
+    u8 *a;
+    u8 *s1;
+    u8 *s0;
+    s32 v;
+    f32 zero;
+    f32 one;
+
+    if (s4 == 0 || *(s32 *)(s4 + 0x260) == 0) {
+        return;
+    }
+    s0 = *(u8 **)(s4 + 0x290);
+    if (s0 != 0) {
+        a = s4 + 0x10;
+        s1 = *(u8 **)(*(s32 *)(s0 + 0x14) + idx * 4);
+        one = 1.0f;
+        zero = 0.0f;
+        ANIM_INIT(a);
+        memset(a, 0, 0x250);
+        ANIM_INIT(a);
+        *(u8 **)(a + 0x1A4) = s0;
+        *(s32 *)(a + 0x1C0) = 0;
+        *(u8 **)(s4 + 0x264) = s1;
+        *(s32 *)(s4 + 0x268) = *(s16 *)s1 | 0xC0000;
+        *(s32 *)(s4 + 0x270) = 0;
+        v = *(s32 *)(s4 + 0x268);
+        *(s32 *)(s4 + 0x278) = ANIM_LOOKUP(s4, v);
+        *(s32 *)(s4 + 0x26C) = 0;
+        v = *(s32 *)(s1 + 0x1C);
+        if (v >= 0) {
+            *(s32 *)(s4 + 0x26C) = v | 0xD0000;
+            *(f32 *)(s4 + 0x274) = zero;
+            v = *(s32 *)(s4 + 0x26C);
+            *(s32 *)(s4 + 0x27C) = ANIM_LOOKUP(s4, v);
+        }
+    } else {
+        one = 1.0f;
+        zero = 0.0f;
+        *(f32 *)(s4 + 0x280) = one;
+        *(f32 *)(s4 + 0x284) = zero;
+        *(s32 *)(s4 + 0x268) = 0xC0000;
+        *(s32 *)(s4 + 0x270) = 0;
+        v = *(s32 *)(s4 + 0x268);
+        *(s32 *)(s4 + 0x278) = ANIM_LOOKUP(s4, v);
+    }
+    if (f23 > one) {
+        f23 = one;
+    } else if (f23 < zero) {
+        f23 = zero;
+    }
+    *(f32 *)(s4 + 0x280) = f23;
+    if (f22 > one) {
+        f22 = one;
+    } else if (f22 < zero) {
+        f22 = zero;
+    }
+    *(f32 *)(s4 + 0x284) = f22;
+    *(s8 *)(s4 + 0x2BA) = s3;
+    func_0029DD30(s4, zero);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E120);
 extern void amHeap_Free(void *);
 extern void amCdFs_ReleaseCache(void *);
