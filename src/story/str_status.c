@@ -149,14 +149,13 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD6B0);
 extern void func_0013B160(s32);
 extern void func_00142100(void *, void *);
 extern void func_00208D70(s32);
-#if 0
-// func_002BDC50: the VU0 moves are inline asm; the two globals get the other saved registers (ours: E48 in s0 loaded first, original: E44 in s1 loaded first); four orders tried
 void func_002BDC50(void) {
-    s32 *s0 = D_0046FE48;
     s32 *s1 = D_0046FE44;
+    s32 *s0;
     if (*(s16 *)((char *)s1 + 0x100) != 1) {
         return;
     }
+    s0 = D_0046FE48;
     if ((s1[0x2C / 4] & 1) != 0) {
         return;
     }
@@ -175,8 +174,6 @@ void func_002BDC50(void) {
     }
     __asm__ volatile ("vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27");
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDC50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDD10);
 extern u8 D_003F0800[];
 extern void func_00131B90(void *);
@@ -709,15 +706,10 @@ void func_002BFE60(s32 a0) {
     D_0047011C[0x1CC / 4] = a0;
 }
 extern s32 func_002BECB0(s32, s32);
-#if 0
-// func_002BFEE0: the switch matches (case order, beq chain, gp loads); the last 2 instructions differ: the original's `return 0` is `b` to the epilogue with the move in its delay slot, ours falls through; 6 variants tried
 s32 func_002BFEE0(s32 a0, s32 a1, s32 a2) {
     s32 r;
     *(s16 *)((char *)D_0046FE44 + 0x100) = 1;
     switch (a2) {
-    default:
-        r = 0;
-        break;
     case 1:
         if (D_0047011C[0x1C4 / 4] != 1 || D_0047011C[0x1D0 / 4] != 2) {
             func_002BECB0(a0, a1);
@@ -726,19 +718,19 @@ s32 func_002BFEE0(s32 a0, s32 a1, s32 a2) {
             D_0047011C[0x1C4 / 4] = 0;
         }
         D_0047011C[0x1D0 / 4] = 1;
-        return r;
+        break;
     case 2:
         func_002BECB0(a0, a1);
         D_0047011C[0x2D4 / 4] = amCdFs_ReadFileId(0xE82, 0, 1);
         r = D_0047011C[0x2D4 / 4];
         D_0047011C[0x1D0 / 4] = 2;
         D_0047011C[0x1C4 / 4] = 0;
-        return r;
+        break;
+    default:
+        return 0;
     }
     return r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFEE0);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BFFD0);
 extern void func_00133B50(s32, s32);
 extern void func_00133780(s32, s32);
