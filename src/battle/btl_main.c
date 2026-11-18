@@ -2474,11 +2474,8 @@ void func_001B4C10(Fighter *f) {
     }
     FT_FIELD(f, f32, 0x17BC) = 0.5f;
 }
-#if 0
-// differs: 2 of 88 (the rest matches, relocations masked): the `(u32)(v - 7) < 2` test compares in place in $v1 (sltiu v1,v1,2) where the original writes $at; plain range tests and a separate difference local give 37 of 90 or the same 2
 void func_001B4C60(Fighter *f) {
     s32 v;
-    u32 uw;
     Fighter_ResetMotion(f, 0);
     if (FT_FIELD(f, f32, 0xCB8) > 5.0f) {
         FT_FIELD(f, s16, 0xCB2) = 1;
@@ -2503,8 +2500,7 @@ void func_001B4C60(Fighter *f) {
         } else {
             v = func_001E94C0(f);
         }
-        uw = (u32)(v - 7);
-        if (uw < 2u || v == 5 || v == 6) {
+        if ((u32)(v - 7) <= 1u || v == 5 || v == 6) {
             FT_FIELD(f, s16, 0xCB4) = 0;
             FT_FIELD(f, s8, 0x2004) = 1;
             FT_FIELD(f, s8, 0x1FFB) = 1;
@@ -2517,8 +2513,6 @@ void func_001B4C60(Fighter *f) {
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B4C60);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B4DC0);
 void Fighter_ResetSpeed1B5180(Fighter *f) {
     func_001E4E20(f, 0);
