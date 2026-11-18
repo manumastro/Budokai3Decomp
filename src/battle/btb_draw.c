@@ -3445,119 +3445,16 @@ typedef struct BtbBlk32 {
     s32 a, b, c, d, e, f, g, h;
 } __attribute__((aligned(16))) BtbBlk32;
 
-/* The state block the battle hands over to the stage: 8-, 32- and 2-byte block copies, then a 17-byte struct. */
-/* differs: 203 of 204: the loops are unrolled here; the original keeps one iteration (lw/lw/sw/sw, lq/lq/sq/sq,
-   lb/lb/sb/sb) with a single `addiu $a1,-1` and `bgtz`. Tried: byte counters in the for clause (folds to one -8
-   counter), post-increment struct copies (FPU lwc1/swc1 for the 8-byte ones), member-by-member with the counter
-   in the for clause (unrolled), do/while. The 17-byte struct copy at the end is a member copy (ld/lw/lw/lb). */
-#if 0
 void func_001F0660(void) {
-    s32 n;
-    BtbPair8 *s1 = (BtbPair8 *)D_004B4C00;
-    BtbPair8 *d1 = (BtbPair8 *)D_004E6560;
-    BtbBlk32 *s2 = (BtbBlk32 *)D_004B4C80;
-    BtbBlk32 *d2 = (BtbBlk32 *)D_004E65E0;
-    BtbPair2 *s3 = (BtbPair2 *)D_004DFAF1;
-    BtbPair2 *d3 = (BtbPair2 *)D_00511451;
-    BtbPair2 *s4 = (BtbPair2 *)D_004DFB19;
-    BtbPair2 *d4 = (BtbPair2 *)D_00511479;
-
-    for (n = 16; n > 0; n--) {
-        d1->a = s1->a;
-        d1->b = s1->b;
-        s1++;
-        d1++;
-    }
-    for (n = 0x1573; n > 0; n--) {
-        *d2 = *s2;
-        s2++;
-        d2++;
-    }
-    *(BtbSaveState *)(void *)D_00511440 = *(BtbSaveState *)(void *)D_004DFAE0;
-    for (n = 0x14; n > 0; n--) {
-        d3->a = s3->a;
-        d3->b = s3->b;
-        s3++;
-        d3++;
-    }
-    for (n = 0x130; n > 0; n--) {
-        d4->a = s4->a;
-        d4->b = s4->b;
-        s4++;
-        d4++;
-    }
+    *(CpyBlk128 *)D_004E6560 = *(CpyBlk128 *)D_004B4C00;
+    *(CpyBlkBig *)D_004E65E0 = *(CpyBlkBig *)D_004B4C80;
+    D_00511440[0] = D_004DFAE0[0];
+    D_00511448[0] = D_004DFAE8[0];
+    D_0051144C[0] = D_004DFAEC[0];
+    D_00511450[0] = D_004DFAF0[0];
+    *(CpyBlk40 *)D_00511451 = *(CpyBlk40 *)D_004DFAF1;
+    *(CpyBlk608 *)D_00511479 = *(CpyBlk608 *)D_004DFB19;
 }
-#endif
-// differs: do-while copy loops: 49 of 74 at best (declaration orders tried); the original keeps the counter decrement before the loads and the src/dst/counter registers a3/a2/a1; the older #if 0 copy above (unrolled, 203 of 204) is kept.
-#if 0
-void func_001F0660(void) {
-    s32 *s32d;
-    s32 n;
-    s32 *s32s;
-    Copy16B *c16s;
-    Copy16B *c16d;
-    s8 *s8s;
-    s8 *s8d;
-    u64 v64;
-    s32 v32a;
-    s32 v32b;
-    s8 v8;
-
-    s32s = (s32 *)D_004B4C00;
-    s32d = (s32 *)D_004E6560;
-    n = 0x10;
-    do {
-        s32d[0] = s32s[0];
-        s32d[1] = s32s[1];
-        s32s += 2;
-        s32d += 2;
-        n--;
-    } while (n > 0);
-
-    c16s = (Copy16B *)D_004B4C80;
-    c16d = (Copy16B *)D_004E65E0;
-    n = 0x1573;
-    do {
-        c16d[0] = c16s[0];
-        c16d[1] = c16s[1];
-        c16s += 2;
-        c16d += 2;
-        n--;
-    } while (n > 0);
-
-    v64 = *(u64 *)D_004DFAE0;
-    v32a = *(s32 *)D_004DFAE8;
-    v32b = *(s32 *)D_004DFAEC;
-    v8 = D_004DFAF0[0];
-    *(u64 *)D_00511440 = v64;
-    *(s32 *)D_00511448 = v32a;
-    *(s32 *)D_0051144C = v32b;
-    D_00511450[0] = v8;
-
-    s8s = D_004DFAF1;
-    s8d = D_00511451;
-    n = 0x14;
-    do {
-        s8d[0] = s8s[0];
-        s8d[1] = s8s[1];
-        s8s += 2;
-        s8d += 2;
-        n--;
-    } while (n > 0);
-
-    s8s = D_004DFB19;
-    s8d = D_00511479;
-    n = 0x130;
-    do {
-        s8d[0] = s8s[0];
-        s8d[1] = s8s[1];
-        s8s += 2;
-        s8d += 2;
-        n--;
-    } while (n > 0);
-}
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0660);
 extern s8 D_004B4BB0[];
 
 void Save_ClearBusy(void) {
