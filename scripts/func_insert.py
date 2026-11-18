@@ -234,6 +234,11 @@ def apply(items, jobs=12, log=None, dry=False):
         if r is None or r[1] != it["name"]:
             continue
         byseg.setdefault((r[2], r[3]), []).append(it)
+    # an asm segment with data labels in its code (words splat could not read as instructions) cannot be turned
+    # into a C file of INCLUDE_ASM lines: asm2c.py would drop those words
+    for (seg, kind) in list(byseg):
+        if kind == "asm" and re.search(r"^dlabel ", (ROOT / "asm" / f"{seg}.s").read_text(), re.M):
+            del byseg[(seg, kind)]
     conv = [seg for (seg, kind) in byseg if kind == "asm"]
     for seg in conv:
         subprocess.run([sys.executable, "scripts/asm2c.py", seg], cwd=ROOT, check=True, capture_output=True)

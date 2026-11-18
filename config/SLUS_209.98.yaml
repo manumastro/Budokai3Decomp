@@ -78,7 +78,7 @@ segments:
       - [0x001868, c, sdk/libdma]            # "libdma: sync timeout"
       - [0x0019C0, c, sdk/libdma/kfiv_libdma]
       - [0x001CD8, c, sdk/libdma_00101CD8]
-      - [0x0020B0, c, sdk/libmpeg]           # MPEG decoder strings; calls sceIpuInit
+      - [0x0020B0, asm, sdk/libmpeg]           # MPEG decoder strings; calls sceIpuInit
       - [0x007BA0, c, sdk/libmpeg/kfiv_mpeg]
       - [0x0081F8, c, sdk/libmpeg_001081F8]
       - [0x0095C0, c, sdk/libmpeg/ico_init]
