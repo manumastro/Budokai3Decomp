@@ -6377,39 +6377,51 @@ void func_001F5D50(MotSetCtl *c) {
 
 extern f32 D_0051CD24[];
 extern void amMotion_Apply(char *, f32, f32);
+typedef struct MotObjM {
+    char pad0[0x41C];
+    MotSel sel;
+    char pad430[0x3C];
+    MotSlotH *slots[1];
+} MotObjM;
 
-// differs: 44 of 53 instructions (the first branch's target, the loads of s->obj and the packed frame index)
+typedef struct MotStM {
+    MotObjM *obj;
+    f32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    f32 f14;
+    s32 f18;
+    f32 f1C;
+} MotStM;
 
-#if 0
+typedef struct MotCtlM {
+    char pad0[8];
+    MotStM *st;
+} MotCtlM;
 
-void func_001F5E20(MotCtl *c) {
-    MotState *s;
-    char *entry;
-    char *tbl;
+void func_001F5E20(MotCtlM *c) {
+    MotStM *s;
     s32 pk;
-    s32 sub;
+    s32 idx;
     f32 f;
 
     f = D_0051CD24[0];
+    s = c->st;
     if (f >= 0.0f) {
-        s = c->st;
         if (s->f18 != 0) {
-            *(f32 *)(s->obj + 0x424) = s->f4;
-            amMotion_Apply(s->obj, 0.0f, s->f1C);
+            s->obj->sel.f8 = s->f4;
+            amMotion_Apply((char *)s->obj, 0.0f, s->f1C);
             s->f4 = s->f4 + s->f14 * f;
             pk = ((s->f8 + 1) << 16) | s->f10;
-            sub = pk & 0xFFFF;
-            entry = *(char **)(s->obj + ((pk >> 16) - 1) * 4 + 0x46C);
-            tbl = *(char **)(entry + 0x14);
-            if (!(s->f4 < (f32)*(s32 *)(tbl + (sub << 4) + 8))) {
+            idx = (pk >> 16) - 1;
+            if (!(s->f4 < (f32)s->obj->slots[idx]->frm[pk & 0xFFFF].f8)) {
                 s->f4 = 0.0f;
             }
         }
     }
 }
-#endif
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5E20);
 extern char *D_0051CD14[];
 extern char *D_0051CD1C[];
 extern s32 D_0051CD20[];
