@@ -2720,7 +2720,71 @@ void SceneSw_LoadMenu8(Task *t) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EE320);
+extern void SceneSw_LoadMenu(Task *);
+extern void SceneSw_LoadMenu2(Task *);
+extern void SceneSw_LoadMenu3(Task *);
+extern void SceneSw_LoadMenu4(Task *);
+extern void SceneSw_LoadMenu6(Task *);
+extern void SceneSw_LoadMenu7(Task *);
+extern void SceneSw_LoadMenu8(Task *);
+extern void SceneSw_LoadTitle(Task *);
+extern void MainMenu_Exit(void);
+extern s8 D_004B4B41[];
+
+void func_001EE320(Task *t) {
+    s32 v;
+    s32 a0;
+    s32 a1;
+
+    if (D_004B4BB1[0] != 0) {
+        func_001EA740(D_004B4BB2[0]);
+        v = 1;
+    } else {
+        v = 0;
+    }
+    if (v == 0) {
+        if (gSceneReady != 0) {
+            a1 = gSceneNext;
+            a0 = gSceneQueued;
+            gSceneReady = 0;
+            gSceneDone = 0;
+            D_004B4B40[0] = a1;
+            gSceneNext = a0;
+            gSceneQueued = -1;
+            switch (D_004B4B40[0]) {
+            case 6:
+                D_004B4B41[0] = 1;
+                TASK_SETFUNC(t, SceneSw_LoadMenu8);
+                break;
+            case 0x10:
+                D_004B4B41[0] = 3;
+                TASK_SETFUNC(t, SceneSw_LoadMenu6);
+                break;
+            case 0x13:
+                TASK_SETFUNC(t, SceneSw_LoadMenu4);
+                break;
+            case 0x1C:
+                TASK_SETFUNC(t, SceneSw_LoadMenu3);
+                break;
+            case 0x16:
+                TASK_SETFUNC(t, SceneSw_LoadMenu2);
+                break;
+            case 4:
+                TASK_SETFUNC(t, SceneSw_LoadTitle);
+                break;
+            case 0xE:
+                D_004B4B41[0] = 2;
+                TASK_SETFUNC(t, SceneSw_LoadMenu7);
+                break;
+            case 0x17:
+                D_004B4B41[0] = 6;
+                TASK_SETFUNC(t, SceneSw_LoadMenu);
+                break;
+            }
+            MainMenu_Exit();
+        }
+    }
+}
 extern void StrTitle_Start(void);
 extern void TourMode_Start(void);
 extern void PracMode_Start(s32, s32);
