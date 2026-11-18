@@ -149,14 +149,13 @@ INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BD6B0);
 extern void func_0013B160(s32);
 extern void func_00142100(void *, void *);
 extern void func_00208D70(s32);
-#if 0
-// func_002BDC50: the VU0 moves are inline asm; the two globals get the other saved registers (ours: E48 in s0 loaded first, original: E44 in s1 loaded first); four orders tried
 void func_002BDC50(void) {
-    s32 *s0 = D_0046FE48;
     s32 *s1 = D_0046FE44;
+    s32 *s0;
     if (*(s16 *)((char *)s1 + 0x100) != 1) {
         return;
     }
+    s0 = D_0046FE48;
     if ((s1[0x2C / 4] & 1) != 0) {
         return;
     }
@@ -175,8 +174,6 @@ void func_002BDC50(void) {
     }
     __asm__ volatile ("vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27");
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDC50);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BDD10);
 extern u8 D_003F0800[];
 extern void func_00131B90(void *);
