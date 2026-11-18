@@ -232,52 +232,51 @@ void func_001A5160(MotFile *f) {
         e++;
     }
 }
-// GIVEN UP: the search is laid out with a shared exit and different registers for the index and the keys (4 declaration orders tried); func_001A5490 now passes its float to it
+// differs: 13 of 91 (round 7: param a1 reused as the index, no k local so a0->keys is re-read/hoisted, half > 1 gives slti at). Left: the then-parts of both search ifs are if-converted away (original keeps bc1f; nop; b end; nop blocks) and the second loop lays out the a1++ block after the break block; gotos/!-forms/else-forms all normalise to the same code.
 #if 0
 s32 func_001A51E0(MotTrack *a0, s32 a1, f32 t) {
-    MotKey *k;
     s32 half;
-    s32 i;
 
     if (t < 1.0f) {
         return 0;
     }
     if (a1 == -1) {
-        k = a0->keys;
-        i = a0->numKeys >> 1;
+        a1 = a0->numKeys >> 1;
         half = (a0->numKeys + 1) >> 1;
-        while (half >= 2) {
-            if ((f32)k[i].time <= t) {
-                i += half >> 1;
+        while (half > 1) {
+            if ((f32)a0->keys[a1].time <= t) {
+                a1 += half >> 1;
             } else {
-                i -= half >> 1;
+                a1 -= half >> 1;
             }
             half = (half + 1) >> 1;
         }
-        if (!((f32)k[i].time <= t)) {
-            i -= 1;
-        }
-        return i;
-    }
-    k = a0->keys;
-    i = a1;
-    for (;;) {
-        if ((f32)k[i].time <= t) {
-            if ((f32)k[i + 1].time <= t) {
-                i += 1;
-            } else {
-                return i;
-            }
+        if ((f32)a0->keys[a1].time <= t) {
         } else {
-            i -= 1;
+            a1 -= 1;
         }
-        if (i <= 0) {
-            return 0;
-        }
-        if (i >= a0->numKeys - 1) {
-            return a0->numKeys - 1;
+    } else {
+        for (;;) {
+                if ((f32)a0->keys[a1].time <= t) {
+                if ((f32)a0->keys[a1 + 1].time <= t) {
+                    a1 += 1;
+                } else {
+                    break;
+                }
+            } else {
+                a1 -= 1;
+            }
+            if (a1 <= 0) {
+                a1 = 0;
+                break;
+            }
+            if (a1 >= a0->numKeys - 1) {
+                a1 = a0->numKeys - 1;
+                break;
+            }
         }
     }
+    return a1;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A51E0);
@@ -1278,34 +1277,22 @@ void func_001AA860(BtlRank *a0) {
         }
     }
 }
-extern u8 D_00427440[];
+typedef struct BtlU9 { u16 v[9]; } BtlU9;
+extern BtlU9 D_00427440 __attribute__((aligned(16)));
 
-typedef struct BtlCopy16 {
-    s32 a, b, c, d;
-} __attribute__((aligned(16))) BtlCopy16;
-
-typedef struct BtlCopy18 {
-    BtlCopy16 a;
-    s16 b;
-} __attribute__((aligned(16))) BtlCopy18;
-
-// GIVEN UP: the 18-byte copy is lq + lh from one base register and sq + sh (the copy is 32 bytes in C: lq + lq);
-// the struct and pointer forms of the copy did not give the original's order (4 forms tried)
-#if 0
+// The 18-byte table is copied as an aligned(16) struct of 9 halfwords (lq + lh, sq + sh); n = 0 comes before the copy
+// so that the table address lands in v1.
 s32 func_001AA9D0(s32 a0) {
-    BtlCopy18 buf;
+    BtlU9 buf __attribute__((aligned(16)));
     u16 *p;
     s32 mask;
     s32 n;
-    u8 *src;
 
-    src = D_00427440;
-    buf.a = *(BtlCopy16 *)src;
-    buf.b = *(s16 *)(src + 0x10);
     n = 0;
-    if (*(u16 *)&buf != 0) {
+    buf = D_00427440;
+    if (buf.v[0] != 0) {
         mask = *(u16 *)(D_00492FC0 + a0 * 184 + 0xE) | *(u16 *)(D_00492FC0 + a0 * 184 + 0x6E);
-        p = (u16 *)&buf;
+        p = buf.v;
         do {
             if ((*p & mask) != 0) {
                 n++;
@@ -1315,8 +1302,6 @@ s32 func_001AA9D0(s32 a0) {
     }
     return n;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA9D0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAA60);
 // GIVEN UP: 0x14C against 0x160 (fdiff): the original sign-extends s1, s2 and s3 at the return and s1 again before its shift in the third loop; s16 locals for all three break the loops (90 of 94); s1-only s16 gives the loop extension but not the return (2 forms)
 #if 0
