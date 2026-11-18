@@ -88,7 +88,7 @@ typedef struct Fighter {
     f32 f1848;
     s32 f184C;
     char pad1850[0xC];
-    s32 f185C;
+    f32 f185C;
     s32 f1860;
     s32 f1864;
     char pad1868[0x4];
@@ -3386,33 +3386,29 @@ void func_001E3930(Fighter *c) {
     c->fC9C = 0;
     c->f2012 = 1;
 }
-#if 0
 void func_001E3950(Fighter *c) {
     f32 f;
-    f32 f2;
+    Game *g;
 
-    f2 = gBattle->f88F0;
+    g = gBattle;
     if (c->f2011 != 0) {
-        f = *(f32 *)((char *)c + 0x185C) - f2;
-        *(f32 *)((char *)c + 0x185C) = f;
+        c->f185C -= g->f88F0;
+        f = c->f185C;
         if (f <= 0.0f) {
             c->f2011 = 0;
-            *(f32 *)((char *)c + 0x185C) = 0.0f;
+            c->f185C = 0.0f;
             Fighter_ClearFlags(c, 0x4000);
         }
     }
 }
-#endif
-// differs: 23 instructions against 15 differ: the original loads gBattle into a1 in the delay slot of the beqz (before the test) and the field pair in f2/f1 in that order; the C sinks the global load into the block
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3950);
 void func_001E39B0(Fighter *c) {
     c->f2011 = 0;
-    c->f185C = 0;
+    c->f185C = 0.0f;
     Fighter_ClearFlags(c, 0x4000);
 }
 void func_001E39C0(Fighter *c) {
     c->f2011 = 1;
-    c->f185C = 0x41F00000;
+    c->f185C = 30.0f;
     c->f2012 = 0;
     c->f1354->f2012 = 0;
     Fighter_SetFlags(c, 0x4000);
