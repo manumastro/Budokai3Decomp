@@ -488,7 +488,7 @@ void func_00227010(s32 *a0, s32 *a1) {
         } while (n != 0);
     }
 }
-// differs: 3 of 70 (round 7): only the first-return path (original has move v0,zero in the bc1f slot and -1 in the b slot; ours hoists li -1) and slti at vs v0 on the binary-search pretest differ; the table search itself matches
+// differs: 3 of 70 (round 7): the original sets v0=0 (move v0,zero) as the first instruction of the main block and compares the hint with it (bne a2,v0), then binary search when equal; ours compares with -1 (li v0,-1). A literal 0 gives beqz (size 0x110 vs 0x120), a local = 0 is folded the same way; also the pretest slti at vs v0. The table search itself matches.
 #if 0
 s32 func_002270B0(s32 *tbl, s32 n, s32 idx, f32 f) {
     s32 key;
