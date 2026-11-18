@@ -6321,39 +6321,59 @@ void func_001F5CB0(BtbHolder *h) {
 
 extern f32 D_0051CD24[];
 extern void amMotSet_Apply(void *, f32, s32);
+typedef struct MotFrm {
+    char pad0[8];
+    s32 f8;
+    char padC[4];
+} MotFrm;
 
-// differs: float motion step: the original schedules the s0 field loads and the float constant load around the amMotSet_Apply call with nops in the branch slots (the scheduling differs from the C order)
-#if 0
-void func_001F5D50(char *c) {
-    char *s0;
+typedef struct MotSlotH {
+    char pad0[0x14];
+    MotFrm *frm;
+} MotSlotH;
+
+typedef struct MotSetObj {
+    char pad0[4];
+    MotSlotH *slots[1];
+} MotSetObj;
+
+typedef struct MotSetSt {
+    MotSetObj *obj;
+    f32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    f32 f14;
+    s32 f18;
+    f32 f1C;
+} MotSetSt;
+
+typedef struct MotSetCtl {
+    char pad0[0xC];
+    MotSetSt *st;
+} MotSetCtl;
+
+void func_001F5D50(MotSetCtl *c) {
+    MotSetSt *s0;
     s32 s1;
     s32 idx;
-    char *base;
-    char *e;
-    f32 f0;
-    f32 f1;
+    f32 f;
 
-    s0 = *(char **)(c + 0xC);
-    if (D_0051CD24[0] >= 0.0f) {
-        if (*(s32 *)(s0 + 0x18) != 0) {
-            s1 = ((*(s32 *)(s0 + 0x8) + 1) << 16) | *(s32 *)(s0 + 0x10);
-            amMotSet_Apply(*(void **)s0, *(f32 *)(s0 + 0x4), s1);
-            *(f32 *)(s0 + 0x4) = *(f32 *)(s0 + 0x4) + *(f32 *)(s0 + 0x14) * D_0051CD24[0];
+    f = D_0051CD24[0];
+    s0 = c->st;
+    if (f >= 0.0f) {
+        if (s0->f18 != 0) {
+            s1 = ((s0->f8 + 1) << 16) | s0->f10;
+            amMotSet_Apply(s0->obj, s0->f4, s1);
+            s0->f4 = s0->f4 + s0->f14 * f;
             idx = (s1 >> 16) - 1;
-            base = *(char **)s0;
-            e = *(char **)(*(char **)(base + (idx << 2) + 4) + 0x14);
-            e = e + ((s1 & 0xFFFF) << 4);
-            f1 = (f32)*(s32 *)(e + 0x8);
-            f0 = *(f32 *)(s0 + 0x4);
-            if (f0 >= f1) {
-                *(s32 *)(s0 + 0x4) = 0;
+            if (!(s0->f4 < (f32)s0->obj->slots[idx]->frm[s1 & 0xFFFF].f8)) {
+                s0->f4 = 0.0f;
             }
         }
     }
 }
-#endif
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5D50);
 
 extern f32 D_0051CD24[];
 extern void amMotion_Apply(char *, f32, f32);
