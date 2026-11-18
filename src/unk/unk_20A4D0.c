@@ -119,38 +119,41 @@ extern u8 D_00568C14[];
 
 #if 0
 void func_0020A4D0(s32 idx) {
-    u8 *p = D_005687D0 + idx * 0xF0;
-    V4Q *q = (V4Q *)(p + 0x20);
+    u8 *p;
+    V4Q *q;
     V4Q d;
     V4Q c;
     V4Q b;
     V4Q a;
-    V4Q *pb = &b;
-    V4Q *pc = &c;
-    V4Q *pd = &d;
+    V4Q *pb = (V4Q *)&b;
+    V4Q *pd = (V4Q *)&d;
+    V4Q *pc = (V4Q *)&c;
 
+    idx *= 0xF0;
+    p = D_005687D0 + idx;
+    q = (V4Q *)(p + 0x20);
     a.x = *(f32 *)(p + 0x0);
     a.y = *(f32 *)(p + 0x4);
     a.z = *(f32 *)(p + 0x8);
     a.w = 0x3F800000;
-    func_00136870(1, 0x812, 0, -1, 0x44, 0);
-    b.x = *(f32 *)(p + 0x10);
+    pb->x = *(f32 *)(p + 0x10);
     b.y = *(f32 *)(p + 0x4);
     b.z = *(f32 *)(p + 0x8);
     b.w = 0x3F800000;
-    c.x = *(f32 *)(p + 0x0);
+    pc->x = *(f32 *)(p + 0x0);
     c.y = *(f32 *)(p + 0x14);
     c.z = *(f32 *)(p + 0x8);
     c.w = 0x3F800000;
-    d.x = *(f32 *)(p + 0x10);
+    pd->x = *(f32 *)(p + 0x10);
     d.y = *(f32 *)(p + 0x14);
     d.z = *(f32 *)(p + 0x8);
     d.w = 0x3F800000;
+    func_00136870(1, 0x812, 0, -1, 0x44, 0);
     func_00137920(&a, q, pb, q + 1);
     func_00137920(pc, q + 2, pd, q + 3);
     amDraw_FlushPacket();
 }
-// differs: the frame is 0x120 against 0x104 here: the original keeps four more saved registers (the vector addresses and the table base), and its four vector locals sit at other offsets
+// differs: 5 of 71: only the idx*0xF0 chain (the original keeps both temps of sll/subu in v0 and the product in a0; here the subu goes to a0); vector layout, saved registers and calls match
 #endif
 extern u8 D_0046A380[];
 void func_00209F40(s32);
@@ -549,7 +552,26 @@ void func_0020ABB0(void) {
     D_005687C4[0] = 0;
     D_005687C0[0] = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020ABE0);
+extern f32 func_0011F220(f32);
+extern f32 func_0011F4C0(f32);
+s32 func_0012EAE0(s32);
+void func_00146F30(void *p);
+void func_0020ABE0(V4Q *out, f32 a) {
+    f32 y = func_0011F220(a);
+    f32 r;
+    f32 t;
+    f32 ang;
+    y = y + ((1.0f - y) * (f32)((u32)func_0012EAE0(8) & 0xFF)) / 255.0f;
+    ang = 6.2831855f * ((f32)((u32)func_0012EAE0(8) & 0xFF) / 255.0f);
+    t = 1.0f - y * y;
+    /* FAKEMATCH: sqrt.s as inline asm; the compiler intrinsic (sqrtf) puts two hazard nops after it and hoists the f12 move, the original has neither */
+    __asm__ volatile ("sqrt.s %0, %1" : "=f"(r) : "f"(t));
+    out->x = r * func_0011F220(ang);
+    out->y = y;
+    out->z = r * func_0011F4C0(ang);
+    out->w = 0x3F800000;
+    func_00146F30(out);
+}
 /* Returns a base address in the 0x3000000 range chosen by sel (0..8), plus a and idx scaled; sel outside 0..8 returns whatever v0 held (no default in the original). */
 s32 func_0020AD30(s32 a, s32 sel, s32 idx) {
     s32 r;
