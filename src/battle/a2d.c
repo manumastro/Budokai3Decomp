@@ -632,47 +632,23 @@ void A2d_FlushList(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C7D0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C9A0);
-// GIVEN UP: the loop's count test and register use differ (tried two loop forms)
-#if 0
-void func_0022CC80(s32 key) {
-    s32 count = D_004706BC;
-    s32 i = 0;
-    s32 *arr = (s32 *)D_004706C0;
-
-    if (count > 0) {
-        do {
-            if (arr[0] == key) {
-                func_00125740((u8 *)D_004706C0 + i * 8, (u8 *)D_004706C0 + (i + 1) * 8, (count - i) * 8);
-                D_004706BC -= 1;
-                return;
-            }
-            i += 1;
-            arr += 2;
-        } while (i < count);
-    }
-}
-#endif
-#if 0
-// differs: 28 of 33 (6 declaration orders tried): the original keeps the count in a1 and the cursor in a2 and reloads D_004706BC for the decrement; the loop exit and the memmove call (func_00125740, size (n-i)*8) match
 void func_0022CC80(s32 a0) {
-    s32 i = 0;
     u8 *p;
-    s32 n;
-    n = D_004706BC;
+    s32 i = 0;
+    s32 n = D_004706BC;
     if (0 < n) {
         p = D_004706C0;
-        for (i = 0; i < n; i++) {
+        do {
             if (*(s32 *)p == a0) {
                 func_00125740((u8 *)D_004706C0 + i * 8, (u8 *)D_004706C0 + (i + 1) * 8, (n - i) * 8);
-                D_004706BC = D_004706BC - 1;
+                D_004706BC -= 1;
                 break;
             }
+            i += 1;
             p += 8;
-        }
+        } while (i < n);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CC80);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CD00);
 typedef struct A2dEnt {
     s32 *p;
