@@ -1458,7 +1458,20 @@ void func_001D02C0(KList *l, f32 t0, f32 t1) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D03E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D05D0);
+void func_001D05D0(KList *l, f32 t0, f32 t1) {
+    s32 i, j;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            if (l->keys[j].flag) {
+                D_00470588->flags |= 0x20;
+            } else {
+                D_00470588->flags &= ~0x20;
+            }
+        }
+    }
+}
 void *func_001D06F0(void *o, s32 mask) {
     while (!(o != 0) == 0 && (*(u16 *)(*(char **)((char *)o + 0x20) + 8) & mask) == 0) {
         o = *(void **)((char *)o + 0x2C);
