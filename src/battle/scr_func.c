@@ -367,8 +367,6 @@ INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAC30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAD80);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAF30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB020);
-// differs: 1 of 66 instructions: the store at offset 0x84 uses f4 in ours and f3 (the value of p[0]) in the original; float local orders tried.
-#if 0
 s32 func_002AB1D0(s32 *a0, s32 *a1) {
     s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
     f32 *f = (f32 *)p;
@@ -379,7 +377,7 @@ s32 func_002AB1D0(s32 *a0, s32 *a1) {
     u8 *e = (u8 *)D_005BC9E0 + i * 416 + p[3] * 208;
 
     *(f32 *)(e + 0x80) = x2;
-    *(f32 *)(e + 0x84) = x0;
+    *(f32 *)(e + 0x84) = x1;
     if (*(s32 *)(e + 0x14) & 1) {
         f32 h = 0.5f * *(f32 *)(e + 0x50);
         *(f32 *)(e + 0x60) = *(f32 *)(e + 0x80) - h;
@@ -400,8 +398,6 @@ s32 func_002AB1D0(s32 *a0, s32 *a1) {
     *(f32 *)(e + 0x78) = x0;
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB1D0);
 s32 func_002AB2E0(s32 *a0, s32 *a1) {
     s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
     f32 *f = (f32 *)p;
