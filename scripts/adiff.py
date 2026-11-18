@@ -38,7 +38,7 @@ def disasm(words, addr, relocs):
     with tempfile.TemporaryDirectory() as d:
         p = Path(d) / "f.bin"
         p.write_bytes(struct.pack(f"<{len(words)}I", *words))
-        r = subprocess.run([str(mwmatch.OBJDUMP), "-D", "-b", "binary", "-m", "mips:5900", "-EL",
+        r = subprocess.run([str(mwmatch.OBJDUMP), "-D", "-z", "-b", "binary", "-m", "mips:5900", "-EL",
                             f"--adjust-vma={addr:#x}", str(p)], capture_output=True, text=True)
     out = []
     for line in r.stdout.splitlines():
@@ -109,10 +109,8 @@ def align(words, relocs, orig, addr):
             continue
         n = max(a1 - a0, b1 - b0)
         for k in range(n):
-            i = a0 + k if a0 + k < a1 else None
-            j = b0 + k if b0 + k < b1 else None
-            i = i if i is not None and i < len(key_a) else None
-            j = j if j is not None and j < len(key_b) else None
+            i = a0 + k if a0 + k < a1 and a0 + k < len(key_a) else None
+            j = b0 + k if b0 + k < b1 and b0 + k < len(key_b) else None
             ta = key_a[i][0] if i is not None else ""
             tb = key_b[j][0] if j is not None else ""
             mark = "!"
