@@ -774,7 +774,7 @@ void func_0022BFF0(s32 *p, f32 f) {
         p[3] |= 0x100;
     }
 }
-extern void func_0022C7D0(s32 *, s32, f32);
+extern void func_0022C7D0(s32 *, f32, s32);
 extern void func_0022ACF0(s32 *, u8 *);
 void func_0022C060(s32 a0, f32 dt) {
     s32 *o = (s32 *)a0;
@@ -788,7 +788,7 @@ void func_0022C060(s32 a0, f32 dt) {
         if (t < 0.0f) {
             t = 0.0f;
         }
-        func_0022C7D0(o, 1, t);
+        func_0022C7D0(o, t, 1);
         top = D_004706CC;
         D_004706CC = top + 0x50;
         *(F4 *)(top + 0x50) = *(F4 *)(top + 0x0);
@@ -918,7 +918,27 @@ void A2d_FlushList(void) {
     amDraw_SetPacketMode(0);
     D_004706BC = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C7D0);
+/* the original expands this recursive function four levels deep into itself */
+#pragma inline_depth(4)
+inline void func_0022C7D0(s32 *o, f32 t, s32 rec) {
+    s32 *c;
+
+    do {
+        if (o[1] & 1) {
+            *(f32 *)&o[4] = t;
+            o[1] |= 2;
+        }
+        if (rec == 0) {
+            return;
+        }
+        c = (s32 *)o[11];
+        if (c != 0) {
+            func_0022C7D0(c, t, rec);
+        }
+        o = (s32 *)o[10];
+    } while (o != 0);
+}
+#pragma inline_depth(8)
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C9A0);
 void func_0022CC80(s32 a0) {
     u8 *p;
