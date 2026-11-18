@@ -85,7 +85,22 @@ loop_2:
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016A9E0);
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AA00);
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", mfCiOpen);
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AB10);
+s32 func_0016A9E0_x0016AB10(s8 *) __asm__("func_0016A9E0");
+s32 func_0016ADD8_x0016AB10() __asm__("func_0016ADD8");
+void func_0016AB10_x0016AB10(s8 *arg0) __asm__("func_0016AB10");
+void func_0016AB10_x0016AB10(s8 *arg0) {
+    if (arg0 == NULL) {
+        goto block_3;
+    }
+    func_0016ADD8_x0016AB10();
+    if (*arg0 != 1) {
+        goto block_3;
+    }
+    *arg0 = 0;
+    func_0016A9E0_x0016AB10(arg0);
+block_3:
+    return;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AB58);
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AC18);
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", mfCiReqRd);

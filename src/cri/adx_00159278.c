@@ -428,7 +428,24 @@ void func_00159CB8(void) {
 void func_00159CD0(u8 *arg0) {
     func_00150B20(*(s32 *)((u8 *)arg0 + 4));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159CE8);
+s32 func_00152508_x00159CE8() __asm__("func_00152508");
+s32 func_00152520_x00159CE8() __asm__("func_00152520");
+s32 func_00159CE8_x00159CE8(u8 *arg0, s32 arg1) __asm__("func_00159CE8");
+s32 func_00159CE8_x00159CE8(u8 *arg0, s32 arg1) {
+    func_00152508_x00159CE8();
+    if (arg1 > 0) {
+        goto block_2;
+    }
+    goto block_5;
+block_2:
+    *(s32 *)((u8 *)arg0 + 0xA0) = (s32) (*(s32 *)((u8 *)arg0 + 0xA0) + arg1);
+    goto block_6;
+block_5:
+    *(s32 *)((u8 *)arg0 + 0xA4) = (s32) (*(s32 *)((u8 *)arg0 + 0xA4) - arg1);
+block_6:
+    func_00152520_x00159CE8();
+    return arg1;
+}
 void func_00159D48_x00159D48(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_00159D48");
 void func_00159D48_x00159D48(u8 *arg0, s32 arg1, s32 arg2)
 {
@@ -858,7 +875,24 @@ Sint16_x00159F70 fn_80041460_x00159F70(ADXSJD_x00159F70 sjd, Sint32_x00159F70 ar
         return -0x80;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159FD8);
+s32 func_00150E60_x00159FD8(s32) __asm__("func_00150E60");
+s32 func_00150E80_x00159FD8(s32) __asm__("func_00150E80");
+s32 func_00159FD8_x00159FD8(u8 *arg0) __asm__("func_00159FD8");
+s32 func_00159FD8_x00159FD8(u8 *arg0) {
+    if (func_00150E60_x00159FD8(*(s32 *)((u8 *)arg0 + 4)) > 0) {
+        goto block_2;
+    }
+    goto block_8;
+block_2:
+    if ((u32) (*(u8 *)((u8 *)arg0 + 1) - 2) < 2U) {
+        goto block_5;
+    }
+    goto block_8;
+block_5:
+    return func_00150E80_x00159FD8(*(s32 *)((u8 *)arg0 + 4));
+block_8:
+    return 0;
+}
 s32 func_0015A030(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x98);
 }

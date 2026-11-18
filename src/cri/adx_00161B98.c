@@ -836,4 +836,28 @@ int func_00162950_x00162950(CvFsHn_x00162950 *hn, int nsct, void *buf)
         cvfs_error_x00162950(ext_str0_x00162950);
     return ret;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_001629B8);
+s32 func_00161D20_x001629B8(s32 *) __asm__("func_00161D20");
+extern s32 D_00462490_x001629B8 __asm__("D_00462490");
+extern s32 D_004624B0_x001629B8 __asm__("D_004624B0");
+void func_001629B8_x001629B8(u8 *arg0) __asm__("func_001629B8");
+void func_001629B8_x001629B8(u8 *arg0) {
+    s32 (*temp_v0)(s32);
+
+    if (arg0 != NULL) {
+        goto block_3;
+    }
+    func_00161D20_x001629B8(&D_00462490_x001629B8);
+    return;
+block_3:
+    temp_v0 = *(s32 (**)(s32))((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0x28);
+    if (temp_v0 != NULL) {
+        goto block_5;
+    }
+    goto block_8;
+block_5:
+    temp_v0(*(s32 *)((u8 *)arg0 + 4));
+    return;
+block_8:
+    func_00161D20_x001629B8(&D_004624B0_x001629B8);
+    return;
+}

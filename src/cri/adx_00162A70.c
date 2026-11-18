@@ -149,7 +149,31 @@ int func_00162E08_x00162E08(CvFsHn_x00162E08 *hn)
         cvfs_error_x00162E08(ext_str0_x00162E08);
     return ret;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00162E70);
+s32 func_00161D20_x00162E70(s32 *) __asm__("func_00161D20");
+extern s32 D_00462700_x00162E70 __asm__("D_00462700");
+extern s32 D_00462720_x00162E70 __asm__("D_00462720");
+void func_00162E70_x00162E70(u8 *arg0) __asm__("func_00162E70");
+void func_00162E70_x00162E70(u8 *arg0) {
+    s32 (*temp_v0)(s32);
+
+    if (arg0 != NULL) {
+        goto block_3;
+    }
+    func_00161D20_x00162E70(&D_00462700_x00162E70);
+    return;
+block_3:
+    temp_v0 = *(s32 (**)(s32))((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0x34);
+    if (temp_v0 != NULL) {
+        goto block_5;
+    }
+    goto block_8;
+block_5:
+    temp_v0(*(s32 *)((u8 *)arg0 + 4));
+    return;
+block_8:
+    func_00161D20_x00162E70(&D_00462720_x00162E70);
+    return;
+}
 typedef int (*CvFsFn_x00162EC8)();
 typedef struct {
     CvFsFn_x00162EC8 exec_server;

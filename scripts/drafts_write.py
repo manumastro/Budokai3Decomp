@@ -75,6 +75,7 @@ def main():
     ap.add_argument("--perm-csv", help="the permuter's report (name, addr, base, best, seconds, status)")
     ap.add_argument("--game", help="m2c_batch.py CSV")
     ap.add_argument("--game-drafts", help="m2c_batch.py --drafts folder")
+    ap.add_argument("--game-perm", help="permuter_run.py CSV for game drafts (best output under build/permuter/NAME)")
     ap.add_argument("--out", default="drafts")
     a = ap.parse_args()
     out = ROOT / a.out
@@ -95,6 +96,10 @@ def main():
     if a.game and Path(a.game).exists():
         for row in csv.DictReader(open(a.game)):
             game[row["function"]] = row
+    gperm = {}
+    if a.game_perm and Path(a.game_perm).exists():
+        for row in csv.DictReader(open(a.game_perm)):
+            gperm[row["function"]] = row
     index = []
     raw_drafts(rem, lib, game, a.game_drafts)
     for addr, name, seg, kind in rem:
@@ -141,6 +146,13 @@ def main():
                     cands = sorted(Path(a.game_drafts).glob(f"{name}.*.c"))
                     if cands:
                         body = cands[0].read_text()
+                gp = gperm.get(name)
+                if gp and gp.get("status") in ("improved", "zero"):
+                    outs = sorted((ROOT / "build" / "permuter" / name).glob("output-*"),
+                                  key=lambda q: int(q.name.split("-")[1]))
+                    if outs and (outs[0] / "source.c").exists():
+                        body = (outs[0] / "source.c").read_text()
+                        how += f"; then decomp-permuter: score {gp['base_score']} -> {gp['best_score']}"
         asm = f"asm/nonmatchings/{seg}/{name}.s" if kind == "c" else f"asm/{seg}.s"
         if not body.strip():
             raw = RAW.get(addr)

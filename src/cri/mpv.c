@@ -807,7 +807,27 @@ s32 func_0017B048(s32 arg0, s32 arg1) {
     return arg1;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B098);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B0D0);
+s32 func_0017B048_x0017B0D0() __asm__("func_0017B048");
+s32 func_0017B168_x0017B0D0() __asm__("func_0017B168");
+s32 func_0017B218_x0017B0D0() __asm__("func_0017B218");
+extern s32 D_00424C38_x0017B0D0 __asm__("D_00424C38");
+s32 func_0017B0D0_x0017B0D0(s32 arg0, s32 arg1, s32 arg2) __asm__("func_0017B0D0");
+s32 func_0017B0D0_x0017B0D0(s32 arg0, s32 arg1, s32 arg2) {
+    if (arg0 != 0) {
+        goto block_2;
+    }
+    func_0017B168_x0017B0D0(D_00424C38_x0017B0D0);
+    goto block_6;
+block_2:
+    if (func_0017B218_x0017B0D0() == 0) {
+        goto block_5;
+    }
+    return func_0017B048_x0017B0D0(0, 0xFF020101);
+block_5:
+    func_0017B168_x0017B0D0(arg0 + 4, arg1, arg2);
+block_6:
+    return 0;
+}
 void func_0017B168_x0017B168(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0017B168");
 void func_0017B168_x0017B168(u8 *arg0, s32 arg1, s32 arg2)
 {

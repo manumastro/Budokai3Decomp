@@ -906,9 +906,49 @@ INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetNumSkipDec);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001837A8);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001837C0);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001837D8);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlySetAudioCh);
+s32 func_00183B38_x00183850() __asm__("func_00183B38");
+s32 func_001870E8_x00183850() __asm__("func_001870E8");
+s32 func_001965C8_x00183850() __asm__("func_001965C8");
+extern s32 D_00466260_x00183850 __asm__("D_00466260");
+extern s32 D_00466290_x00183850 __asm__("D_00466290");
+void mwPlySetAudioCh_x00183850(u8 *arg0, s32 arg1) __asm__("mwPlySetAudioCh");
+void mwPlySetAudioCh_x00183850(u8 *arg0, s32 arg1) {
+    if (func_00183B38_x00183850() != 0) {
+        goto block_3;
+    }
+    func_001870E8_x00183850(&D_00466260_x00183850, arg1);
+    return;
+block_3:
+    if (func_001965C8_x00183850(*(s32 *)((u8 *)arg0 + 0x40), arg1) == 0) {
+        goto block_6;
+    }
+    func_001870E8_x00183850(&D_00466290_x00183850);
+    return;
+block_6:
+    return;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetNumAudioCh);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlySetVideoCh);
+s32 func_00183B38_x00183928() __asm__("func_00183B38");
+s32 func_001870E8_x00183928() __asm__("func_001870E8");
+s32 func_00196638_x00183928() __asm__("func_00196638");
+extern s32 D_004662E8_x00183928 __asm__("D_004662E8");
+extern s32 D_00466318_x00183928 __asm__("D_00466318");
+void mwPlySetVideoCh_x00183928(u8 *arg0, s32 arg1) __asm__("mwPlySetVideoCh");
+void mwPlySetVideoCh_x00183928(u8 *arg0, s32 arg1) {
+    if (func_00183B38_x00183928() != 0) {
+        goto block_3;
+    }
+    func_001870E8_x00183928(&D_004662E8_x00183928, arg1);
+    return;
+block_3:
+    if (func_00196638_x00183928(*(s32 *)((u8 *)arg0 + 0x40), arg1) == 0) {
+        goto block_6;
+    }
+    func_001870E8_x00183928(&D_00466318_x00183928);
+    return;
+block_6:
+    return;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetNumVideoCh);
 void func_00183A00(u8 *arg0) {
     func_00199AC8(*(s32 *)((u8 *)arg0 + 0x40));
@@ -993,7 +1033,41 @@ void func_00183C60(u8 *arg0, s32 arg1) {
     }
     func_001996F0(temp_a0, 0xF, 1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlySetSyncMode);
+s32 func_00183B38_x00183CB8() __asm__("func_00183B38");
+s32 func_001870E8_x00183CB8(s32 *) __asm__("func_001870E8");
+s32 func_001996F0_x00183CB8(s32, s32, s32) __asm__("func_001996F0");
+extern s32 D_004663D0_x00183CB8 __asm__("D_004663D0");
+void mwPlySetSyncMode_x00183CB8(u8 *arg0, s32 arg1) __asm__("mwPlySetSyncMode");
+void mwPlySetSyncMode_x00183CB8(u8 *arg0, s32 arg1) {
+    s32 temp_s1;
+
+    if (func_00183B38_x00183CB8() == 0) {
+        func_001870E8_x00183CB8(&D_004663D0_x00183CB8);
+        return;
+    }
+    temp_s1 = *(s32 *)((u8 *)arg0 + 0x40);
+    if (arg1 == 0) {
+        func_001996F0_x00183CB8(temp_s1, 0xF, 0);
+        return;
+    }
+    if (arg1 == 1) {
+        func_001996F0_x00183CB8(temp_s1, 0xF, 1);
+        return;
+    }
+    if (arg1 == 2) {
+        if (*(s32 *)((u8 *)arg0 + 0xC) == 1) {
+            func_001996F0_x00183CB8(temp_s1, 0xF, 2);
+            return;
+        }
+        func_001996F0_x00183CB8(temp_s1, 0xF, 1);
+        return;
+    }
+    if (arg1 != 3) {
+        return;
+    }
+    func_001996F0_x00183CB8(temp_s1, 0xF, 5);
+    func_001996F0_x00183CB8(temp_s1, 0x47, 1);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetSyncMode);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetNumDecPool);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetNumTotalDec);
@@ -1479,7 +1553,38 @@ s32 mwPlyGetCnvBottomUp_x00185DD8(s32 arg0) {
     }
     return func_0019FA08_x00185DD8(func_001847D0_x00185DD8(arg0));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyEntryFname);
+s32 func_001699D8_x00185E38() __asm__("func_001699D8");
+s32 func_00183B38_x00185E38() __asm__("func_00183B38");
+s32 func_001870E8_x00185E38() __asm__("func_001870E8");
+extern s32 D_00466D38_x00185E38 __asm__("D_00466D38");
+extern s32 D_00466D68_x00185E38 __asm__("D_00466D68");
+extern s32 D_00466D98_x00185E38 __asm__("D_00466D98");
+void mwPlyEntryFname_x00185E38(u8 *arg0, s32 arg1) __asm__("mwPlyEntryFname");
+void mwPlyEntryFname_x00185E38(u8 *arg0, s32 arg1) {
+    if (func_00183B38_x00185E38() != 0) {
+        goto block_3;
+    }
+    func_001870E8_x00185E38(&D_00466D38_x00185E38);
+    return;
+block_3:
+    if (arg1 == 0) {
+        goto block_5;
+    }
+    goto block_8;
+block_5:
+    func_001870E8_x00185E38(&D_00466D68_x00185E38);
+    return;
+block_8:
+    if (func_001699D8_x00185E38(*(s32 *)((u8 *)arg0 + 0x4C), arg1) >= 0) {
+        goto block_11;
+    }
+    *(s32 *)((u8 *)arg0 + 8) = 4;
+    func_001870E8_x00185E38(&D_00466D98_x00185E38, arg1);
+    return;
+block_11:
+    *(s32 *)((u8 *)arg0 + 0x78) = (s32) (*(s32 *)((u8 *)arg0 + 0x78) + 1);
+    return;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyStartSeamless);
 typedef unsigned char u8_x00185F88;
 struct MovieModule_x00185F88 {
@@ -1889,7 +1994,59 @@ void func_00187358(u8 *arg0) {
     }
     func_00187478();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00187380);
+s32 func_00186938_x00187380(void *) __asm__("func_00186938");
+s32 func_00186A10_x00187380(void *, s32) __asm__("func_00186A10");
+s32 func_001870E8_x00187380(s32 *) __asm__("func_001870E8");
+s32 func_0018B7E0_x00187380(s32) __asm__("func_0018B7E0");
+s32 func_001996B0_x00187380(s32) __asm__("func_001996B0");
+s32 mwPlySfdStart_x00187380(void *) __asm__("mwPlySfdStart");
+s32 mwSfdPause_x00187380(void *, s32) __asm__("mwSfdPause");
+extern s32 D_004670E0_x00187380 __asm__("D_004670E0");
+void func_00187380_x00187380(u8 *arg0) __asm__("func_00187380");
+void func_00187380_x00187380(u8 *arg0) {
+    s32 temp_s0;
+    s32 temp_v1;
+    u8 **temp_a0;
+    u8 *temp_s2;
+
+    temp_s2 = arg0 + 0x294;
+    temp_s0 = func_001996B0_x00187380(*(s32 *)((u8 *)arg0 + 0x40));
+    temp_v1 = func_00186938_x00187380(temp_s2);
+    if (temp_s0 == 3) {
+        goto block_2;
+    }
+    return;
+block_2:
+    if (temp_v1 == 2) {
+        goto block_5;
+    }
+    temp_a0 = *(u8 ***)((u8 *)temp_s2 + 0xC);
+    if ((*(s32 (**)(u8 **, s32))((u8 *)(*temp_a0) + 0x24))(temp_a0, 1) != 0) {
+        goto block_13;
+    }
+block_5:
+    mwPlySfdStart_x00187380(arg0);
+    if (*(s8 *)((u8 *)arg0 + 0x76) != 0) {
+        goto block_7;
+    }
+    mwSfdPause_x00187380(arg0, 0);
+block_7:
+    if (*(s8 *)((u8 *)arg0 + 0x74) != 1) {
+        goto block_10;
+    }
+    if (func_0018B7E0_x00187380(*(s32 *)((u8 *)arg0 + 0x40)) == 0) {
+        goto block_10;
+    }
+    func_001870E8_x00187380(&D_004670E0_x00187380);
+block_10:
+    if (*(s8 *)((u8 *)arg0 + 0x76) != 0) {
+        goto block_13;
+    }
+    func_00186A10_x00187380(temp_s2, 0);
+    return;
+block_13:
+    return;
+}
 s32 func_001870E8_x00187478(s32 *) __asm__("func_001870E8");
 s32 func_0018B7E0_x00187478(s32) __asm__("func_0018B7E0");
 s32 func_001996B0_x00187478(s32) __asm__("func_001996B0");
