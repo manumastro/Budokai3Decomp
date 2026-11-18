@@ -669,12 +669,11 @@ void func_0022CF70(s32 *p)
   D_004706BC += 1;
 }
 
-// GIVEN UP: the two mode loops are laid out in another order (tried both orders)
-#if 0
 void func_0022CFC0(s32 a0, s32 a1, s32 mode, s32 flag) {
-    s32 *n = (s32 *)D_0058BB64[0];
+    s32 *n = D_0058BB64[0];
 
-    if (mode == 0) {
+    switch (mode) {
+    case 0:
         while (n != D_0058BB70) {
             if (n[1] & a0) {
                 if (n[2] & a1) {
@@ -683,7 +682,8 @@ void func_0022CFC0(s32 a0, s32 a1, s32 mode, s32 flag) {
             }
             n = (s32 *)n[5];
         }
-    } else if (mode == 1) {
+        break;
+    case 1:
         while (n != D_0058BB70) {
             if (n[1] & a0) {
                 if ((n[2] & a1) == n[2]) {
@@ -692,10 +692,9 @@ void func_0022CFC0(s32 a0, s32 a1, s32 mode, s32 flag) {
             }
             n = (s32 *)n[5];
         }
+        break;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CFC0);
 void func_0022D0B0(s32 *p, s32 flag) {
     p[3] |= 0x100;
     if (flag != 0) {
