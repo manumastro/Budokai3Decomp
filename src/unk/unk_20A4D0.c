@@ -3734,6 +3734,54 @@ void func_00216150(s32 idx) {
         *(s32 *)((s32)off + (s32)D_0046FDD0 + 0x190) = 0;
     }
 }
+#if 0
+void *BtlCmd_GetMotEntry(void *, s32);
+void *func_001A50F0(void *, s32);
+s32 func_00127E88(void *, void *, s32);
+void func_0020A100(void *);
+extern u8 D_00469CD0[];
+void *amObject_Create(void *, void *);
+void amFile_Load(void *);
+void amCdFs_Close(void *, s32);
+void func_00216270(s32 unused) {
+    u8 **pf = (u8 **)(D_0046FDD0 + 0x180);
+    u8 *f = *pf;
+    u8 *h;
+    u8 *e;
+    u8 *m;
+    s32 i;
+    s32 off;
+
+    if (f != 0) {
+        *pf = *(u8 **)(f + 0x40);
+        *(u8 **)(D_0046FDD0 + 0x184) = *(u8 **)(*(u8 **)(f + 0x40) + 0x50);
+        amFile_Load(*(u8 **)(D_0046FDD0 + 0x184));
+        *(u8 **)(f + 0x40) = 0;
+        amCdFs_Close(f, 0);
+        h = *(u8 **)(D_0046FDD0 + 0x184);
+        i = 0;
+        if (0 < *(s32 *)(h + 0x10)) {
+            off = 0;
+            do {
+                e = BtlCmd_GetMotEntry(h, i);
+                m = func_001A50F0(h, i);
+                if (*(s32 *)(e + 8) >= 0) {
+                    amFile_Load(m);
+                } else if (func_00127E88(m, D_00469CD0, 4) == 0) {
+                    func_0020A100(m);
+                }
+                *(u8 **)(D_0046FDD0 + off) = m;
+                if (*(s32 *)(e + 8) == 1) {
+                    *(void **)(D_0046FDD0 + off + 0xC0) = amObject_Create(*(void **)(D_0046FDD0 + off), 0);
+                }
+                i++;
+                off += 4;
+            } while (i < *(s32 *)(h + 0x10));
+        }
+    }
+}
+// differs: mn=0, 17 of 88 differ (registers only): original keeps i in s3, entry in s2, m in s1 and loads D_0046FDD0 into a0 with pf (the &D->0x180 pointer) in v1; tsweep order sweep reaches 4 differing instructions (variant not recorded, run scripts/tsweep.py --mode order --out)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216270);
 u8 *func_00215320(s32, s32);
 s32 func_00209540(s32, s32, s32);
