@@ -51,7 +51,7 @@ extern void func_001E1BD0(void *, int, int);
 extern void func_001E3550();
 extern void func_001E4FA0(void *, int);
 extern void func_001E4820(void *, f32, int);
-extern void func_001C8A50(void *, int, int);
+extern s32 func_001C8A50(void *, int, int, int, int);
 extern void func_001C89A0(void *, int);
 extern s32 amMotion_FindBone(s32, s32);
 extern s32 D_004B4230[];
@@ -1000,7 +1000,23 @@ int Scr_CmdFighterSlotSetVec(void *unused, Arg *a) {
     *(f32 *)(t + e + 0xCA8) = x0;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE4E0);
+extern void func_001E5040(void *);
+int func_001CE4E0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x0 = p[0];
+    char *t = gBattle->tbl[p[1]];
+    if (*(s8 *)(t + 0x1FF9) == x0) {
+        return 1;
+    }
+    *(s8 *)(t + 0x1FF9) = x0;
+    if (x0 == 0) {
+        *(s32 *)(t + 0x1864) = 9;
+    } else {
+        *(s32 *)(t + 0x1864) = 3;
+    }
+    func_001E5040(t);
+    return 1;
+}
 /* r6 best attempt diff 12 */
 /* Ours emits sltu for the flag; the original sets a1 = 1 and then movz a1,zero,v0. Forms tried: ?:, if, !!, f!=0, p[0]?f:0. */
 #if 0
