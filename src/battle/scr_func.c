@@ -865,32 +865,30 @@ s32 Scr_CmdSetStep(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD610);
-// GIVEN UP: the same shape as func_002AA8A0 (a tail call) but the order of the stores and the loads differs (45 of 52 instructions)
-#if 0
+extern s32 func_002AD610(s32 *, s32 *);
 s32 func_002AD800(s32 *a0, s32 *a1) {
-    u8 *obj = (u8 *)a0;
-    u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
-    u8 *sub = *(u8 **)((u8 *)a1 + 0x38);
-    s32 *q = (s32 *)(sub + 0x68);
     s32 v;
-
+    s32 *q;
+    u8 *sub;
+    u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
+    u8 *obj = (u8 *)a0;
     *(u8 *)(obj + 0x2A) = (u8)*(s32 *)(p + 0x10);
-    *(s32 *)(obj + 0x34) = *(s32 *)(p + 8) | ((*(s32 *)(p + 0xC) + 1) << 16);
+    *(s32 *)(obj + 0x34) = ((*(s32 *)(p + 0xC) + 1) << 16) | *(s32 *)(p + 8);
     *(f32 *)(obj + 0x2C) = *(f32 *)(p + 4) - *(f32 *)(obj + 0x38);
     *(f32 *)(obj + 0x30) = 1.0f + *(f32 *)(p + 0);
     *(u8 *)(obj + 0x2B) = 1;
     v = (s32)(*(f32 *)(obj + 0x30) - *(f32 *)(obj + 0x2C));
-    if (*(s32 *)(sub + 0x6C) != 0) {
-        q[0] += v;
+    sub = *(u8 **)((u8 *)a1 + 0x38);
+    q = (s32 *)(sub + 0x68);
+    if (*(s32 *)(sub + 0x6C) == 0) {
+        q[0] = v + (s32)gScrTimers[*(s32 *)a0[0]];
     } else {
-        q[0] = v + (s32)gScrTimers[*(s32 *)*a0];
+        q[0] += v;
     }
     q[1] = 1;
     a0[4] = (s32)func_002AD610;
     return func_002AD610(a0, a1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD800);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD8D0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ADA70);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ADB70);
