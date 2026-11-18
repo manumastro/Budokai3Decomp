@@ -5,6 +5,7 @@ extern void func_00125740(void *, void *, s32);
 extern s32 *D_0058BB64[];
 extern s32 D_0058BB70[];
 extern void func_0022C060(s32);
+extern void func_0022B900(s32 *, s32 *, f32);
 extern s32 func_0022BC30(s32 *, s32 *, f32);
 
 extern s32 D_004706D8;
@@ -724,7 +725,29 @@ void func_0022BFF0(s32 *p) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C060);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C1D0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C430);
+void func_0022C430(s32 *a0, f32 f) {
+    s32 buf[24];
+    u8 *a2;
+
+    memset(buf, 0, 0x60);
+    a2 = D_004706CC;
+    D_004706CC = a2 + 0x50;
+    *(F4 *)(a2 + 0x50) = *(F4 *)(a2 + 0x0);
+    *(QuadA *)(a2 + 0x60) = *(QuadA *)(a2 + 0x10);
+    *(F4 *)(a2 + 0x80) = *(F4 *)(a2 + 0x30);
+    *(F4 *)(a2 + 0x90) = *(F4 *)(a2 + 0x40);
+    D_004706D4 += 1;
+    func_0022B900(a0, buf, f);
+    D_004706D4 -= 1;
+    D_004706CC -= 0x50;
+    if (buf[1] & 1) {
+        if (*(s16 *)((u8 *)buf + 0x18) >= 0) {
+            func_002269B0(buf);
+        } else {
+            func_00226540(buf);
+        }
+    }
+}
 void func_0022C550(s32 *p) {
     func_0022C560(p[6]);
 }
@@ -905,7 +928,6 @@ INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D860);
 extern s32 *D_004706AC;
 extern s32 D_004706B0;
 extern s32 D_004706B8;
-extern void func_0022B900(s32 *, s32 *, f32);
 s32 *A2d_AllocObj(s32 *a0, f32 a1) {
     s32 *s1;
 
