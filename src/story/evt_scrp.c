@@ -475,7 +475,7 @@ void *func_002A2340(void) {
     return NULL;
 }
 #if 0
-// func_002A2350: the 64-bit local is copied through a pointer and the table index load comes after the args load in the original; ours keeps the index load early; five forms tried
+// func_002A2350 (r7p: 5 more forms, same output; the original keeps &bits in a0 for the sd and indexes via sp, lb is hoisted before the args load): the 64-bit local is copied through a pointer and the table index load comes after the args load in the original; ours keeps the index load early; five forms tried
 s32 func_002A2350(void *a0, char *a1) {
     u64 bits;
     u64 *pb = &bits;
