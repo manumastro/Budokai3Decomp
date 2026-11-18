@@ -2,7 +2,19 @@
 
 extern s32 _impure_ptr;
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libc", func_001221A8);
+s32 func_001221A8_x001221A8(s32 arg0) __asm__("func_001221A8");
+s32 func_001221A8_x001221A8(s32 arg0)
+{
+  s32 var_v0;
+  int new_var;
+  new_var = arg0 < 0;
+  var_v0 = arg0;
+  if (new_var)
+  {
+    var_v0 = -var_v0;
+  }
+  return var_v0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libc", func_001221C0);
 long strtol_x001221D8(const char *s, char **ptr, int base) __asm__("func_00129428");
 int func_001221D8_x001221D8(void *str) __asm__("func_001221D8");

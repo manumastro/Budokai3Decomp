@@ -131,7 +131,25 @@ void ADXT_SetSvrFreq(u8 *arg0, s32 arg1) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_SetReloadTime);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_ResetReloadTime);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_SetReloadSct);
+s32 ADXERR_CallErrFunc1_x0015F330(s32 *) __asm__("ADXERR_CallErrFunc1");
+s32 func_0015D4A8_x0015F330(s32, s32, s32) __asm__("func_0015D4A8");
+extern s32 D_00461C58_x0015F330 __asm__("D_00461C58");
+void ADXT_SetReloadSct_x0015F330(u8 *arg0, int arg1) __asm__("ADXT_SetReloadSct");
+void ADXT_SetReloadSct_x0015F330(u8 *arg0, int arg1)
+{
+  s32 temp_v0;
+  if (arg0 == ((void *) 0))
+  {
+    ADXERR_CallErrFunc1_x0015F330(&D_00461C58_x0015F330);
+    return;
+  }
+  temp_v0 = *((s32 *) (8 + ((u8 *) arg0)));
+  *((s16 *) (((u8 *) arg0) + 0x3E)) = arg1;
+  if (temp_v0 != 0)
+  {
+    func_0015D4A8_x0015F330(*((s32 *) (((u8 *) arg0) + 8)), ((s32) (arg1 << 0x10)) >> 5, (*((s16 *) (((u8 *) arg0) + 0x3C))) << 0xB);
+  }
+}
 s16 func_0015F388(u8 *arg0) {
     return *(s16 *)((u8 *)arg0 + 0x3E);
 }

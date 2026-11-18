@@ -139,7 +139,47 @@ u32_x00114440 *func_00114440_x00114440(u32_x00114440 *addr, u32_x00114440 *end, 
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114480);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114490);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001144C8);
+s32 func_00114480_x001144C8(s32, s32, s32 *) __asm__("func_00114480");
+s32 func_001145C8_x001144C8(s32, s32) __asm__("func_001145C8");
+extern u32 D_003ECD38_x001144C8 __asm__("D_003ECD38");
+extern s32 D_003ECD40_x001144C8 __asm__("D_003ECD40");
+extern s32 func_00114408_x001144C8 __asm__("func_00114408");
+extern s32 func_00114440_x001144C8 __asm__("func_00114440");
+void func_001144C8_x001144C8(void) __asm__("func_001144C8");
+void func_001144C8_x001144C8(void)
+{
+  s32 var_s2;
+  s32 var_s3;
+  s32 var_v0;
+  u32 var_s0;
+  u32 var_s1;
+  func_001145C8_x001144C8(*((s32 *) (((u8 *) (&D_003ECD40_x001144C8)) + 0)), *((s32 *) (((u8 *) (&D_003ECD40_x001144C8)) + 4)));
+  func_001145C8_x001144C8(*((s32 *) (((u8 *) (&D_003ECD40_x001144C8)) + 8)), *((s32 *) (((u8 *) (&D_003ECD40_x001144C8)) + 0xC)));
+  var_s3 = func_00114480_x001144C8(0x80000000, 0x80080000, &func_00114440_x001144C8);
+  var_s1 = var_s3 - 0x20C;
+  var_s2 = func_00114480_x001144C8(0x80000000, 0x80080000, &func_00114408_x001144C8);
+  var_s0 = var_s2 - 0x168;
+  if (var_s1 != var_s0)
+  {
+    ;
+    do
+    {
+      if ((var_s1 < var_s0) != 0)
+      {
+        var_s3 = func_00114480_x001144C8(var_s3 + 4, 0x80080000, &func_00114440_x001144C8);
+        var_s1 = var_s3 - 0x20C;
+      }
+      else
+      {
+        var_s2 = func_00114480_x001144C8(var_s2 + 4, 0x80080000, &func_00114408_x001144C8);
+        var_s0 = var_s2 - 0x168;
+      }
+      var_v0 = var_s1 < var_s0;
+    }
+    while (var_s1 != var_s0);
+  }
+  D_003ECD38_x001144C8 = var_s1;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001145C8);
 void func_001145D8(void) {
     func_00114388();
