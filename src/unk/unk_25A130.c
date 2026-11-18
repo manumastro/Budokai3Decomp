@@ -132,7 +132,7 @@ extern void CutIn_TaskKill(void);
 extern void A2d_CallHandler(s32, s32 *);
 s32 func_0025AA20(s32);
 void func_0025A7C0(s32, s32);
-void func_0025A580(s32, s32);
+s32 func_0025A580(s32, s32);
 void func_0025A130(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A130);
@@ -204,7 +204,95 @@ s32 func_0025A3A0(s32 arg, f32 x, f32 z) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A3A0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A580);
+extern char D_0046AEC0[];
+extern char D_0046AED0[];
+extern void func_00257860(void);
+extern void func_00256F80(void);
+extern void func_00256EB0(void);
+extern s32 func_0021C460(s16);
+extern void amTask_Kill(void *);
+typedef struct A5Work2 {
+    void *f0;
+    void *f4;
+    char pad8[4];
+    void *fC[2];
+    void *f14[2];
+    char pad1C[8];
+    void *f24[2];
+} A5Work2;
+typedef struct A5Task2 {
+    char pad0[0x30];
+    A5Work2 w;
+} A5Task2;
+typedef struct A5Work {
+    A5Task2 *f0;
+    char pad4[0xC];
+    f32 f10;
+    f32 f14;
+    char pad18[0x1C];
+    s16 f34[2];
+} A5Work;
+typedef struct A5Task {
+    char pad0[0x30];
+    A5Work w;
+} A5Task;
+s32 func_0025A580(s32 p0, s32 p1) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
+    ScrObj **g = (ScrObj **)D_0058D4F0;
+    A5Work *w;
+    A5Work2 *w2;
+    void *v;
+    s32 n;
+    s32 i;
+    s32 a;
+    s32 j;
+    s32 b;
+    s32 c;
+    s32 k;
+
+    if (g[0] != NULL) {
+        return 0;
+    }
+    g[0] = (ScrObj *)amTask_Create(func_00257860, func_00256F80, 0x5410, 0x1000, 0x2000000, D_0046AEC0);
+    if (g[0] == NULL) {
+        return 0;
+    }
+    w = &((A5Task *)g[0])->w;
+    memset(w, 0, 0x38);
+    w->f34[0] = p0;
+    w->f34[1] = p1;
+    w->f10 = 30.0f;
+    w->f14 = 180.0f;
+    w->f0 = (A5Task2 *)amTask_Create(func_00256EB0, NULL, 0x3A30, 0x1000, 0x2000008, D_0046AED0);
+    if (w->f0 == NULL) {
+        amTask_Kill(g[0]);
+        g[0] = NULL;
+        return 0;
+    }
+    w2 = &w->f0->w;
+    memset(w2, 0, 0x34);
+    w2->f0 = w;
+    D_00470704 = v = sys->fE60;
+    D_0047070C = n = 0x4000000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, n);
+    D_00470238 = 0;
+    w2->f4 = func_0022D860(sys->fE68->f14[0x67], 0.0f);
+    for (i = 0, j = 0; i < 2; i++, j += 6) {
+        a = func_0021C360(w->f34[i]);
+        b = a & 1;
+        w2->fC[i] = func_0022D860(sys->fE68->f14[0x12 + b], 0.0f);
+        w2->f14[i] = func_0022D860(sys->fE68->f14[0x7C + b * 3], 0.0f);
+        c = func_0021C460(w->f34[i]);
+        if (c == -1) {
+            c = 2;
+        }
+        k = a * 3 + (c + 0x1A);
+        k += j;
+        w2->f24[i] = func_0022D860(sys->fE68->f14[k], 0.0f);
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A7C0);
 extern char D_0046AF00[];
 extern char D_0046AF10[];
