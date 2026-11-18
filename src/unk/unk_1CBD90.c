@@ -99,10 +99,12 @@ extern f32 D_004B4238[];
 
 typedef struct KKey { u16 t; char pad[1]; s8 flag; f32 val; char pad2[8]; } KKey;
 typedef struct KList { char pad[2]; s16 n; KKey *keys; } KList;
-typedef struct KDst { char pad[0x1B4]; f32 a; f32 b; char pad1[8]; s16 flags; } KDst;
+typedef struct KDst { char pad0[0x1AE]; s8 v[3]; char padx[3]; f32 a; f32 b; char pad1[8]; s16 flags; } KDst;
 extern KDst *D_00470588;
 typedef struct KKey2 { u16 t; char pad[2]; u16 s4; char pad2[2]; u32 w8; char pad3[4]; } KKey2;
 typedef struct KList2 { char pad[2]; s16 n; KKey2 *keys; } KList2;
+typedef struct KKey3 { u16 t; char pad[2]; s32 d[2]; char pad3[4]; } KKey3;
+typedef struct KList3 { char pad[2]; s16 n; KKey3 *keys; } KList3;
 // func_001CBD90, func_001CBDF0, func_001CBE80: register and scheduling differences; not matched yet.
 // differs: 17 of 22 instructions at best. The Arg pointer stays in v1 in the original (ours takes a0); the flag -(p[0]==0) is sltu+xori in the original, sltiu in ours.
 /* r6 best attempt diff 7 */
@@ -1421,7 +1423,22 @@ void func_001CFAD0(CObj *o, CArg *a) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFB80);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFE50);
+void func_001CFE50(KList3 *l, f32 t0, f32 t1) {
+    s32 i, j;
+    s32 *d;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            d = l->keys[j].d;
+            switch (d[0]) {
+            case 0: D_00470588->v[0] = d[1]; break;
+            case 1: D_00470588->v[1] = d[1]; break;
+            case 2: D_00470588->v[2] = d[1]; break;
+            }
+        }
+    }
+}
 void func_001CFF90(KList2 *l, f32 t0, f32 t1) {
     s32 i, j;
     for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
