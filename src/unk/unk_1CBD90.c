@@ -852,7 +852,41 @@ int Scr_CmdGetStageByte(void *unused, Arg *a) {
     *(s32 *)a = *(s8 *)(D_0051CD20[0] + q);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD340);
+typedef struct TMast { char pad[0x10]; u32 prio; u32 g1; u32 g2; } TMast;
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void amTask_KillGroup(s32, s32, s32);
+extern void func_001CAC10(void *);
+extern char D_004692D0[];
+int func_001CD340(void *o, Arg *a) {
+    f32 *p = (f32 *)a->p;
+    f32 fr = p[0];
+    f32 fb = p[1];
+    f32 fg = p[2];
+    f32 fa = p[3];
+    s32 sel = ((s32 *)p)[4];
+    s32 flag = sel == 0 ? 0x40 : 0x80;
+    char *t = (char *)gBattle->tbl[sel];
+    u8 c[4];
+    TMast *m;
+    if (fr > 0.0f) {
+        s32 *r;
+        m = *(TMast **)o;
+        r = (s32 *)((char *)amTask_Create(func_001CAC10, 0, m->prio, m->g1, m->g2 | flag, D_004692D0) + 0x30);
+        c[0] = (u32)(255.0f * fa);
+        c[1] = (u32)(255.0f * fg);
+        c[2] = (u32)(255.0f * fb);
+        c[3] = 0;
+        r[0] = (s32)t;
+        r[1] = *(s32 *)c;
+        r[2] = *(s32 *)c;
+        *(f32 *)&r[3] = fr;
+        r[4] = 0x1000;
+    } else {
+        m = *(TMast **)o;
+        amTask_KillGroup(m->g1, m->g2 | flag, 1);
+    }
+    return 1;
+}
 int Scr_CmdFindBone(void *unused, Arg *a) {
     int *p = a->p;
     char *e = (char *)gBattle->tbl[p[2]] + p[1] * 0x680;
