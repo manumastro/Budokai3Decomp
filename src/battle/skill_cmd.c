@@ -162,6 +162,7 @@ static inline f32 SkillObj_Scale(void) {
     return (D_004703F4 != 3) ? 1.0f : 1.2f;
 }
 
+// r7b: 19 of 167. The original keeps off=side<<4 in a0 and the D_0046FE54 base in v1 and re-adds them per test (so the bc1t slot stays empty: a0 is live across the move a0,s1); mwcc CSEs base+off whatever the form (local base, static inline field reader, side*16 all tried).
 #if 0
 /* differs: the table offset is computed in $v1 (the original keeps it in $a0), and the call's
  * `move a0, s1` fills the delay slot of the first bc1t in the original. */
