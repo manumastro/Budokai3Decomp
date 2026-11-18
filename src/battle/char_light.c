@@ -305,57 +305,24 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236AF0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236C70);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236D60);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237000);
-// GIVEN UP: the loads for the model's index are scheduled in another order (tried two local orders)
-#if 0
-void func_00237110(s32 *p, s32 *q) {
-    u8 *pb = (u8 *)p;
-    u8 *qb = (u8 *)q;
-    s32 *a2;
-    s32 idx;
-
-    p[1] = 5;
-    p[8] = q[4];
-    p[9] = *(s16 *)(qb + 0x14);
-    *(f32 *)(pb + 0x28) = *(f32 *)(qb + 0x18);
-    *(f32 *)(pb + 0x34) = *(f32 *)(qb + 0x1C);
-    p[12] = 0;
-    a2 = (s32 *)p[8];
-    idx = p[9];
-    p[11] = *(s32 *)((u8 *)((s32 *)a2)[5] + (idx << 4) + 8);
-    if ((*(s16 *)(qb + 0x16) & 2) != 0) {
-        if ((p[12] & 2) == 0) {
-            amModel_SetupPart(p[0], p[8], p[9], *(f32 *)(pb + 0x28));
-        }
-    }
-    p[12] = *(s16 *)(qb + 0x16);
-}
-#endif
-#if 0
-// differs: 4 of 43 (6 forms of the index sum tried): the whole body matches except the register of the a0[0x20] intermediate (original loads it into v1 first); the amModel_SetupPart tail matches
-void func_00237110(u8 *a0, u8 *a1) {
-    s32 *p;
-    s32 q;
-    s32 r;
-
-    *(s32 *)(a0 + 4) = 5;
-    *(s32 *)(a0 + 0x20) = *(s32 *)(a1 + 0x10);
-    *(s32 *)(a0 + 0x24) = *(s16 *)(a1 + 0x14);
-    *(f32 *)(a0 + 0x28) = *(f32 *)(a1 + 0x18);
-    *(f32 *)(a0 + 0x34) = *(f32 *)(a1 + 0x1C);
-    *(s32 *)(a0 + 0x30) = 0;
-    q = *(s32 *)(a0 + 0x20);
-    r = *(s32 *)(a0 + 0x24);
-    p = (s32 *)(*(s32 *)(q + 0x14) + (r << 4));
-    *(s32 *)(a0 + 0x2C) = p[2];
+typedef struct L37Ent { s32 a, b, c, d; } L37Ent;
+typedef struct L37Mdl { u8 pad[0x14]; L37Ent *ents; } L37Mdl;
+typedef struct L37Obj { void *f0; s32 f4, f8, fC, f10, f14, f18, f1C; L37Mdl *mdl; s32 idx; f32 sc; s32 v; s32 fl; f32 f34; } L37Obj;
+void func_00237110(L37Obj *o, u8 *a1) {
+    o->f4 = 5;
+    o->mdl = *(L37Mdl **)(a1 + 0x10);
+    o->idx = *(s16 *)(a1 + 0x14);
+    o->sc = *(f32 *)(a1 + 0x18);
+    o->f34 = *(f32 *)(a1 + 0x1C);
+    o->fl = 0;
+    o->v = o->mdl->ents[o->idx].c;
     if ((*(s16 *)(a1 + 0x16) & 2) != 0) {
-        if ((*(s32 *)(a0 + 0x30) & 2) == 0) {
-            amModel_SetupPart(*(s32 *)a0, *(s32 *)(a0 + 0x20), *(s32 *)(a0 + 0x24), *(f32 *)(a0 + 0x28));
+        if ((o->fl & 2) == 0) {
+            amModel_SetupPart((s32)o->f0, (s32)o->mdl, o->idx, o->sc);
         }
     }
-    *(s32 *)(a0 + 0x30) = *(s16 *)(a1 + 0x16);
+    o->fl = *(s16 *)(a1 + 0x16);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237110);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002371C0);
 void func_002373E0(s32 *p, s32 *q) {
     p[1] = 4;
