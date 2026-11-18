@@ -810,8 +810,50 @@ s32 Scr_CmdSoundSend3(ScriptThread *t, ScriptCtx *ctx) {
     SoundRpc_Send3(a[2], a[1], a[0], 0);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC190);
-extern void func_002AC190(s32 *, s32 *);
+extern f32 D_00495718[];
+extern f32 D_00495758[];
+s32 func_002AC190(s32 *a0, s32 *a1) {
+    f32 *uv = (f32 *)(*(u8 **)((u8 *)a1 + 0x38) + 0x70);
+    f32 u;
+    f32 v;
+
+    if (a0[15] == 0) {
+        a0[4] = 0;
+        return 1;
+    }
+    u = uv[0];
+    v = uv[1];
+    if (((s32 *)a0[0])[3] != 3) {
+        u += uv[2];
+        v += uv[3];
+        while (u < 0.0f) {
+            u += 1.0f;
+        }
+        while (u >= 1.0f) {
+            u -= 1.0f;
+        }
+        while (v < 0.0f) {
+            v += 1.0f;
+        }
+        while (v >= 1.0f) {
+            v -= 1.0f;
+        }
+        uv[0] = u;
+        uv[1] = v;
+        if (a0[15] > 0) {
+            a0[15]--;
+        }
+    }
+    D_00495718[0] = u;
+    D_00495758[0] = v;
+    D_00495718[1] = u;
+    D_00495758[1] = v;
+    D_00495718[2] = u;
+    D_00495718[3] = u;
+    D_00495758[2] = v;
+    D_00495758[3] = v;
+    return 3;
+}
 void func_002AC330(s32 *a0, s32 *a1) {
     s32 *a3 = *(s32 **)((u8 *)a1 + 0x2C);
     s32 *a2 = (s32 *)(*(u8 **)((u8 *)a1 + 0x38) + 0x70);
