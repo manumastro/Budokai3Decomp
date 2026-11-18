@@ -229,7 +229,7 @@ def check(rel, name):
         shutil.rmtree(work, ignore_errors=True)
 
 
-def apply(items, jobs=12, log=None, dry=False):
+def apply(items, jobs=12, log=None, dry=False, real=False):
     rem = {r[0]: r for r in LR.remaining(True)}
     byseg = {}
     for it in items:
@@ -271,6 +271,13 @@ def apply(items, jobs=12, log=None, dry=False):
             new = pat.sub(lambda _: isolate(it).replace("\\", "\\\\"), text, count=1)
             path.write_text(new)
             good, msg = check(rel, it["name"])
+            if good and real:
+                # the build compiles the file with its INCLUDE_ASM blocks in: gcc can then compile another
+                # function of the file differently (scripts/lib_filecheck.py)
+                import lib_filecheck
+                bad = lib_filecheck.check(rel)
+                if bad:
+                    good, msg = False, "build-mode compile: " + "; ".join(bad)[:160]
             if good:
                 text = new
                 ok.append(it)
@@ -308,11 +315,12 @@ def main():
     ap.add_argument("--jobs", type=int, default=12)
     ap.add_argument("--log")
     ap.add_argument("--out", help="json of the applied items")
+    ap.add_argument("--real", action="store_true", help="also check the whole file compiled as the build does")
     a = ap.parse_args()
     items = json.loads(Path(a.items).read_text())
     if a.only_status:
         items = [i for i in items if i.get("status", "match") == a.only_status]
-    done = apply(items, a.jobs, a.log)
+    done = apply(items, a.jobs, a.log, real=a.real)
     if a.out:
         Path(a.out).write_text(json.dumps([{"addr": d["addr"], "name": d["name"]} for d in done]))
 

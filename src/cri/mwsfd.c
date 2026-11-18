@@ -510,7 +510,14 @@ void func_001815C8_x001815C8(u8 *arg0, s32 *arg1, s32 *arg2)
 s32 func_001815E0(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x188) != 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001815F0);
+s32 func_00181798_x001815F0() __asm__("func_00181798");
+s32 func_0018F910_x001815F0() __asm__("func_0018F910");
+void func_001815F0_x001815F0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("func_001815F0");
+void func_001815F0_x001815F0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    u8 sp[8];
+    func_0018F910_x001815F0(arg0, arg1, arg2, sp);
+    func_00181798_x001815F0(sp, arg3);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181628);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001816F0);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwl_convPtypeToSFD);

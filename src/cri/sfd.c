@@ -2199,9 +2199,46 @@ void func_00194100_x00194100(s32 arg0) __asm__("func_00194100");
 void func_00194100_x00194100(s32 arg0) {
     func_0018D650_x00194100(arg0, 0xFF000F0D);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194120);
+s32 func_001941C0_x00194120(s32, s32, void **) __asm__("func_001941C0");
+s32 func_00194798_x00194120() __asm__("func_00194798");
+s32 func_00194968_x00194120(s32, void *) __asm__("func_00194968");
+s32 func_00194120_x00194120(s32 arg0, u8 **arg1) __asm__("func_00194120");
+s32 func_00194120_x00194120(s32 arg0, u8 **arg1) {
+    u8 sp[8];
+    s32 temp_v0;
+    u8 *temp_s2;
+    u8 *temp_v1;
+
+    temp_s2 = arg0 + 0xCC0;
+    if (func_00194798_x00194120(arg0) == -1) {
+        *arg1 = NULL;
+        return 0;
+    }
+    temp_v0 = func_00194968_x00194120(arg0, sp);
+    if (temp_v0 == 0) {
+        *arg1 = NULL;
+        return temp_v0;
+    }
+    func_001941C0_x00194120(arg0, temp_v0, arg1);
+    temp_v1 = *arg1;
+    *(s32 *)((u8 *)temp_s2 + 0x270) = (s32) *(s32 *)((u8 *)temp_v1 + 0x14);
+    *(s32 *)((u8 *)temp_s2 + 0x274) = (s32) *(s32 *)((u8 *)temp_v1 + 0x18);
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001941C0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001942D0);
+s32 func_0018D908_x001942D0(void *) __asm__("func_0018D908");
+s32 func_0018D920_x001942D0(void *) __asm__("func_0018D920");
+s32 func_00194320_x001942D0(s32, s32) __asm__("func_00194320");
+s32 func_001942D0_x001942D0(s32 arg0, s32 arg1) __asm__("func_001942D0");
+s32 func_001942D0_x001942D0(s32 arg0, s32 arg1) {
+    u8 sp[8];
+    s32 temp_s0;
+
+    func_0018D908_x001942D0(sp);
+    temp_s0 = func_00194320_x001942D0(arg0, arg1);
+    func_0018D920_x001942D0(sp);
+    return temp_s0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194320);
 s32 func_001943F0_x001943F0(s32 a0, s32 a1) __asm__("func_001943F0");
 s32 func_001943F0_x001943F0(s32 a0, s32 a1) {
