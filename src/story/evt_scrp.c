@@ -1005,8 +1005,7 @@ s32 func_002A3C30(void *a0, char *a1) {
     func_002A3B50(loc);
     return 3;
 }
-#if 0
-// func_002A3CD0: 11 of 66 differ: the float callee order is right now; the original repeats `li v0,3` in both arms of the test (the then-arm ends in a b with the store in its delay slot), ours keeps one return; the duplicated-return forms gave 21 and 27 differ
+extern s32 func_002A3C30(void *, char *);
 s32 func_002A3CD0(s32 *a0, char *a1) {
     s32 loc[4];
     f32 av = *(f32 *)*(s32 **)(a1 + 0x2C);
@@ -1023,13 +1022,11 @@ s32 func_002A3CD0(s32 *a0, char *a1) {
     func_002A3B50(loc);
     *(f32 *)&a0[0x2C / 4] = *(f32 *)&a0[0x2C / 4] + 1.0f;
     if (*(f32 *)&a0[0x30 / 4] <= *(f32 *)&a0[0x2C / 4]) {
-        void *f = func_002A3C30;
-        a0[0x10 / 4] = (s32)((f == 0) ? 0 : f);
+        a0[0x10 / 4] = (s32)func_002A3C30;
+        return 3;
     }
     return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A3CD0);
 extern s32 func_002A3CD0(s32 *, char *);
 
 s32 Evt_CmdStartWait3CD0(s32 *p) {
