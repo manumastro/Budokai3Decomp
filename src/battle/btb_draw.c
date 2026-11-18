@@ -3357,7 +3357,7 @@ extern void memset(void *, s32, s32);
 
 #if 0
 void func_001EF730(char *o) {
-    u32 r;
+    u8 r;
     s32 n;
     u8 *q;
     s32 i;
@@ -3377,7 +3377,8 @@ void func_001EF730(char *o) {
     while (n--) {
         dst = (u8 *)(o + i);
         v = *src;
-        i = (i + 1) & 0xF;
+        i = i + 1;
+        i &= 0xF;
         dst[0x20] = (u8)(dst[0x20] + v);
         src++;
     }
@@ -3392,7 +3393,7 @@ void func_001EF730(char *o) {
         r = func_0012EAE0((s4 & 0xF) + 8);
         dst = (u8 *)(o + i);
         h = s5 & 0xFF;
-        v = h - s4 + (r & 0xFF);
+        v = h - s4 + r;
         i++;
         q[0] = (u8)v;
         dst[0x10] = (u8)(dst[0x10] + (v & 0xFF));
@@ -3402,6 +3403,7 @@ void func_001EF730(char *o) {
 }
 #endif
 // func_001EF730: 21 of 81 instructions differ (size right). Loops are the while (n--) form (the original tests a counter in a beqz and decrements it in the delay slot); the saved registers differ: the original gives o=s3, the hash local s4=s4, q=s2, i=s0, n=s1; random declaration orders (10! sampled, 90 tries) gave 21 at best, a copy of the parameter into a local gave 29. Not solved.
+// differs: func_001EF730: 16 of 81 (mnemonics 4): the second loop has n and i in s0/s1 swapped; round 7: u8 r with v = h - s4 + r fixed the add order, i = i + 1; i &= 0xF in place; 720 declaration orders of n,q,i,s5,h,s4 partly swept without a match.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001EF730);
 typedef struct BtbEntry {
     char pad0[0x8];
@@ -6239,6 +6241,80 @@ void func_001F47C0(s32 p0, char *p1, s32 p2, s32 flags) {
         rb->f0 = flags & 2;
     }
 }
+// differs: func_001F4910: mnemonics equal, 14 of 111 differ: idx/flags/slot saved registers rotated (ours idx s5, slot s3, flags s4; original idx s4, slot s5, flags s3). Round 7: s7 assigned before the compare (fills the bc1f slot), u8/u16 param types, declaration sweeps of slot,fb,s7,tb,s1,s0 and of copy variables: no match.
+#if 0
+typedef struct BtbSlot16 {
+    s16 used;
+    char pad2[14];
+} BtbSlot16;
+
+typedef struct BtbRecD {
+    s32 f0;
+    char *f4;
+    char *f8;
+    s32 fC;
+    char *f10;
+} BtbRecD;
+
+extern BtbSlot16 D_0051CD46[];
+extern char D_004697D8[];
+extern char *D_0051CD0C[];
+extern s32 D_0051CD20[];
+extern char *func_001A50F0(char *, s32);
+extern char *func_00209540(char *, s32, s32);
+extern void *func_001F5FD0(u32, char *, s32, void *, void *);
+extern void func_001F1AB0(char *);
+extern void BtbObj_ReleaseF40Copy(BtbObj *);
+extern void *amObject_Create(void *, s32);
+extern void func_00208D60(s32);
+extern void memset(void *, s32, s32);
+
+void func_001F4910(s32 idx, s32 a1, s32 a2, s32 flags) {
+    BtbSlot16 *slot;
+    char *fb;
+    f32 lim;
+    f32 d;
+    char *s7;
+    char *tb;
+    s32 k;
+    char *s1;
+    char *s0;
+    char *r;
+    BtbRecD *rr;
+
+    slot = &D_0051CD46[idx];
+    if (slot->used == 0) {
+        fb = (char *)gBattle + idx * 0x2020;
+        s7 = fb + 0x830;
+        lim = 5.0f + *(f32 *)(fb + 0x2074);
+        d = *(f32 *)(fb + 0x874) - *(f32 *)(*(char **)(fb + 0x13E4) + 0xC);
+        if (d <= lim) {
+            tb = D_0051CD0C[0];
+            k = 6;
+            if (flags & 4) {
+                k += 0x100;
+            }
+            k += D_0051CD20[0] << 7;
+            s1 = func_001A50F0(tb, k);
+            s0 = func_001A50F0(tb, 0x204);
+            if (s1 != NULL && s0 != NULL) {
+                r = func_001F5FD0(0x85000000, D_004697D8, 0, (void *)func_001F1AB0, (void *)BtbObj_ReleaseF40Copy);
+                *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x1801;
+                *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x1800;
+                memset(r + 0x30, 0, 0x80);
+                rr = (BtbRecD *)(r + 0x30);
+                rr->f8 = func_001A50F0(tb, 0x280);
+                rr->fC = (s32)amObject_Create(s0, 0);
+                func_00208D60(rr->fC);
+                rr->f10 = func_00209540(s1, (1 << idx) | 0x2000008, 0);
+                rr->f4 = s7 + 0xC0;
+                rr->f0 = flags & 2;
+                slot->used = 1;
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4910);
 typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVecX;
 extern BtbVecX D_0044B5F0;
