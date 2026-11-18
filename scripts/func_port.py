@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Function-level port of library code from other decompilations: one function at a time, into our C files.
 
-    func_port.py --repo fz [--scan ~/psvita/b3-scan/fz] [--min 6] [--jobs 8] --out build/port/fz.json
+    func_port.py --repo fz [--scan ~/b3-scan/fz] [--min 6] [--jobs 8] --out build/port/fz.json
     func_port.py ... --apply              (then: configure.py && ninja; CHECK)
 
 For every function a scan (scan_repo.sh + lib_scan.py output) found in our executable that is still INCLUDE_ASM (or in
@@ -35,7 +35,7 @@ import lib_remaining as LR  # noqa: E402
 g.eegcc  # the compiler wrapper gccmatch loads
 eegcc = g.eegcc
 
-SCAN = Path.home() / "psvita" / "b3-scan"
+SCAN = Path(os.environ.get("B3_SCAN", Path.home() / "b3-scan"))  # scan_repo.sh output folders
 LICENSES = {
     "fz": ("https://github.com/karamzov123/fzero-gx-decomp", "CC0-1.0"),
     "ico": ("https://github.com/nathanialf/ico-pc", "MIT"),

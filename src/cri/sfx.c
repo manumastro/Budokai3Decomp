@@ -377,20 +377,96 @@ void func_0019FBE0(void) {
 void func_0019FBF8(void) {
     func_001A0D98();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FC10);
+void func_0019FC10_x0019FC10(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0019FC10");
+void func_0019FC10_x0019FC10(u8 *arg0, s32 arg1, s32 arg2)
+{
+  u8 *new_var;
+  new_var = (u8 *) (arg0 + 0x5C);
+ do { *((s32 *) (new_var + 4)) = arg2; *((s32 *) (((u8 *) arg0) + 0x5C)) = arg1; } while (0);
+}
 s32 func_0019FC20(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x5C) != 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FC30);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FC50);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FC70);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FC90);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FCB0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FCD0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FCF0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FD10);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FD30);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FD50);
+s32 func_001A0F28_x0019FC30(s32, s32) __asm__("func_001A0F28");
+void func_0019FC30_x0019FC30(u8 *arg0) __asm__("func_0019FC30");
+void func_0019FC30_x0019FC30(u8 *arg0)
+{
+  u8 *new_var;
+  new_var = (u8 *) (arg0 + 0x5C);
+  func_001A0F28_x0019FC30(*((s32 *) (((u8 *) arg0) + 0x5C)), *((s32 *) (new_var + 4)));
+}
+s32 func_001A0F70_x0019FC50(s32, s32) __asm__("func_001A0F70");
+void func_0019FC50_x0019FC50(u8 *arg0) __asm__("func_0019FC50");
+void func_0019FC50_x0019FC50(u8 *arg0)
+{
+  u8 *new_var;
+  new_var = arg0 + 0x5C;
+  func_001A0F70_x0019FC50(*((s32 *) (((u8 *) arg0) + 0x5C)), *((s32 *) (((u8 *) new_var) + 4)));
+}
+s32 func_001A0FB0_x0019FC70(s32, s32) __asm__("func_001A0FB0");
+void func_0019FC70_x0019FC70(u8 *arg0) __asm__("func_0019FC70");
+void func_0019FC70_x0019FC70(u8 *arg0)
+{
+  u8 *new_var;
+  new_var = arg0 + 0x5C;
+  func_001A0FB0_x0019FC70(*((s32 *) (((u8 *) arg0) + 0x5C)), *((s32 *) (((u8 *) new_var) + 4)));
+}
+s32 func_001A0FF0_x0019FC90(s32, s32) __asm__("func_001A0FF0");
+void func_0019FC90_x0019FC90(u8 *arg0) __asm__("func_0019FC90");
+void func_0019FC90_x0019FC90(u8 *arg0)
+{
+  u8 *new_var;
+  new_var = (u8 *) (arg0 + 0x5C);
+  func_001A0FF0_x0019FC90(*((s32 *) (((u8 *) arg0) + 0x5C)), *((s32 *) (new_var + 4)));
+}
+s32 func_001A1050_x0019FCB0(s32, s32) __asm__("func_001A1050");
+void func_0019FCB0_x0019FCB0(u8 *arg0) __asm__("func_0019FCB0");
+void func_0019FCB0_x0019FCB0(u8 *arg0)
+{
+  u8 *new_var;
+  new_var = arg0 + 0x5C;
+  func_001A1050_x0019FCB0(*((s32 *) (((u8 *) arg0) + 0x5C)), *((s32 *) (((u8 *) new_var) + 4)));
+}
+s32 func_001A10E0_x0019FCD0(s32, s32) __asm__("func_001A10E0");
+void func_0019FCD0_x0019FCD0(u8 *arg0) __asm__("func_0019FCD0");
+void func_0019FCD0_x0019FCD0(u8 *arg0)
+{
+  u8 *new_var;
+  new_var = arg0 + 0x5C;
+  func_001A10E0_x0019FCD0(*((s32 *) (((u8 *) arg0) + 0x5C)), *((s32 *) (((u8 *) new_var) + 4)));
+}
+s32 func_001A1148_x0019FCF0(s32, s32) __asm__("func_001A1148");
+void func_0019FCF0_x0019FCF0(u8 *arg0) __asm__("func_0019FCF0");
+void func_0019FCF0_x0019FCF0(u8 *arg0)
+{
+  u8 *new_var;
+  new_var = (u8 *) (arg0 - -0x5C);
+  func_001A1148_x0019FCF0(*((s32 *) (((u8 *) arg0) + 0x5C)), *((s32 *) (new_var + 4)));
+}
+s32 func_001A11C8_x0019FD10(s32, s32) __asm__("func_001A11C8");
+void func_0019FD10_x0019FD10(u8 *arg0) __asm__("func_0019FD10");
+void func_0019FD10_x0019FD10(u8 *arg0)
+{
+  u8 *new_var;
+  new_var = (u8 *) (arg0 + 0x5C);
+  func_001A11C8_x0019FD10(*((s32 *) (((u8 *) arg0) + 0x5C)), *((s32 *) (new_var + 4)));
+}
+s32 func_001A1248_x0019FD30(s32, s32) __asm__("func_001A1248");
+void func_0019FD30_x0019FD30(u8 *arg0) __asm__("func_0019FD30");
+void func_0019FD30_x0019FD30(u8 *arg0)
+{
+  u8 *new_var;
+  new_var = (u8 *) (arg0 + 0x5C);
+  func_001A1248_x0019FD30(*((s32 *) (((u8 *) arg0) + 0x5C)), *((s32 *) (new_var + 4)));
+}
+s32 func_001A12C8_x0019FD50(s32, s32) __asm__("func_001A12C8");
+void func_0019FD50_x0019FD50(u8 *arg0) __asm__("func_0019FD50");
+void func_0019FD50_x0019FD50(u8 *arg0)
+{
+  u8 *new_var;
+  new_var = arg0 + 0x5C;
+  func_001A12C8_x0019FD50(*((s32 *) (((u8 *) arg0) + 0x5C)), *((s32 *) (((u8 *) new_var) + 4)));
+}
 void func_0019FD70(void) {
     func_0019FD88();
 }

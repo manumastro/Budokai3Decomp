@@ -1,0 +1,644 @@
+/* Draft (not built): func_001DCB70 at 0x001DCB70, size 0x110, segment unk/unk_1D5B30 (c)
+ * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
+ * Status: size, 23 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x16C, original 0x110; then decomp-permuter: score 2465 -> 465
+ * Original: asm/nonmatchings/unk/unk_1D5B30/func_001DCB70.s */
+
+typedef signed char s8;
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef signed long s64;
+typedef unsigned long u64;
+typedef float f32;
+typedef struct Fighter
+{
+  char pad0[0x6];
+  s8 f6;
+  char pad7[0x29];
+  s32 f30;
+  f32 f34;
+  f32 f38;
+  s32 f3C;
+  char pad40[0x500];
+  void *f540;
+  char pad544[0x4];
+  s32 f548;
+  char pad54C[0x1C];
+  s32 f568;
+  char pad56C[0xD4];
+  s32 f640;
+  s32 f644;
+  s32 f648;
+  char pad64C[0x20];
+  s8 f66C;
+  char pad66D[0x45C];
+  s8 fAC9;
+  char padACA[0x3];
+  s8 fACD;
+  char padACE[0xA2];
+  s32 fB70;
+  void *fB74;
+  char padB78[0x10];
+  void *fB88;
+  void *fB8C;
+  char padB90[0xC];
+  s32 fB9C;
+  char padBA0[0x4];
+  s32 fBA4;
+  s32 fBA8;
+  char padBAC[0xAC];
+  f32 fC58;
+  char padC5C[0x40];
+  s32 fC9C;
+  char padCA0[0xC];
+  s16 fCAC;
+  s16 fCAE;
+  char padCB0[0x2];
+  u16 fCB2;
+  s16 fCB4;
+  s16 fCB6;
+  f32 fCB8;
+  char padCBC[0x1];
+  s8 fCBD;
+  char padCBE[0x692];
+  s32 f1350;
+  struct Fighter *f1354;
+  struct Fighter *f1358;
+  char pad135C[0x48];
+  s16 f13A4;
+  char pad13A6[0x126];
+  s32 f14CC;
+  char pad14D0[0x28C];
+  s32 f175C;
+  char pad1760[0x20];
+  f32 f1780;
+  f32 f1784;
+  f32 f1788;
+  char pad178C[0x18];
+  s32 f17A4;
+  s32 f17A8;
+  s32 f17AC;
+  s32 f17B0;
+  s32 f17B4;
+  s32 f17B8;
+  char pad17BC[0x14];
+  f32 f17D0;
+  f32 f17D4;
+  char pad17D8[0x8];
+  s32 f17E0;
+  f32 f17E4;
+  char pad17E8[0x4];
+  s32 f17EC;
+  char pad17F0[0x4];
+  s32 f17F4;
+  char pad17F8[0x47];
+  s8 f183F;
+  s32 f1840;
+  char pad1844[0x4];
+  f32 f1848;
+  s32 f184C;
+  char pad1850[0xC];
+  f32 f185C;
+  s32 f1860;
+  s32 f1864;
+  char pad1868[0x4];
+  s32 f186C;
+  char pad1870[0x38];
+  s32 f18A8;
+  char pad18AC[0x14];
+  s32 f18C0;
+  char pad18C4[0x18];
+  s32 f18DC;
+  s32 f18E0;
+  char pad18E4[0x80];
+  u8 f1964;
+  u8 f1965;
+  s16 f1966[0x40];
+  u8 f19E6;
+  u8 f19E7;
+  char pad19E8[0x4A];
+  s16 f1A32;
+  char pad1A34[0x6];
+  s16 f1A3A;
+  s16 f1A3C;
+  char pad1A3E[0x2];
+  f32 f1A40;
+  char pad1A44[0x4];
+  s32 f1A48;
+  s32 f1A4C;
+  f32 f1A50;
+  f32 f1A54;
+  s16 f1A58;
+  char pad1A5A[0x16];
+  s32 f1A70;
+  s32 f1A74;
+  s32 f1A78;
+  s32 f1A7C;
+  s32 f1A80;
+  char pad1A84[0xC];
+  s32 f1A90;
+  s32 f1A94;
+  char pad1A98[0x8];
+  s32 f1AA0;
+  s32 f1AA4;
+  s32 f1AA8;
+  s32 f1AAC;
+  s32 f1AB0;
+  s32 f1AB4;
+  s16 f1AB8;
+  char pad1ABA[0xE];
+  void *f1AC8;
+  char pad1ACC[0x2];
+  s16 f1ACE;
+  s16 f1AD0;
+  s16 f1AD2;
+  s16 f1AD4;
+  s16 f1AD6;
+  s32 f1AD8;
+  s32 f1ADC;
+  char pad1AE0[0x210];
+  s32 f1CF0;
+  s32 f1CF4;
+  void *f1CF8;
+  s32 f1CFC;
+  char pad1D00[0x2C3];
+  s8 f1FC3;
+  char pad1FC4[0x4];
+  s8 f1FC8;
+  char pad1FC9[0x2];
+  s8 f1FCB;
+  char pad1FCC[0x1A];
+  s16 f1FE6;
+  s16 f1FE8;
+  char pad1FEA[0x2];
+  s16 f1FEC;
+  s16 f1FEE;
+  s16 f1FF0;
+  char pad1FF2[0x6];
+  s8 f1FF8;
+  s8 f1FF9;
+  char pad1FFA[0x5];
+  u8 f1FFF;
+  u8 f2000;
+  s8 f2001;
+  s8 f2002;
+  s8 f2003;
+  s8 f2004;
+  char pad2005[0x8];
+  s8 f200D;
+  char pad200E[0x1];
+  s8 f200F;
+  s8 f2010;
+  s8 f2011;
+  s8 f2012;
+  s8 f2013;
+  char pad2014[0x1];
+  s8 f2015;
+  s8 f2016;
+} Fighter;
+typedef struct Slot
+{
+  s32 a;
+  s32 b;
+} Slot;
+typedef struct Game
+{
+  char pad0[0x268];
+  Slot f268[5];
+  char pad290[0x330];
+  s32 f5C0;
+  char pad5C4[0x21E];
+  s16 f7E2;
+  char pad7E4[0x80F4];
+  s32 f88D8;
+  char pad88DC[0x10];
+  s32 f88EC;
+  f32 f88F0;
+  char pad88F4[0x4];
+  s32 f88F8;
+  char pad88FC[0x20];
+  s32 f891C;
+  char pad8920[0x8];
+  s32 f8928;
+  char pad892C[0x18];
+  s16 f8944;
+  char pad8946[0x4];
+  s16 f894A;
+  char pad894C[0x2B];
+  s8 f8977;
+  char pad8978[0x1];
+  s8 f8979;
+  char pad897A[0x4];
+  s16 f897E;
+  char pad8980[0x128];
+  s32 f8AA8;
+  char pad8AAC[0x1];
+  s8 f8AAD;
+  char pad8AAE[0x4];
+  s8 f8AB2;
+  s8 f8AB3;
+  char pad8AB4[0xEC3];
+  s8 f9977;
+} Game;
+extern Game *gBattle;
+typedef struct ObjB2013
+{
+  char pad0[0x2013];
+  s8 f2013;
+} ObjB2013;
+typedef struct PtrF
+{
+  void *p;
+  s32 n;
+  s16 k;
+  f32 r;
+} PtrF;
+typedef struct Blk4
+{
+  f32 f;
+  s32 a;
+  s32 b;
+  s32 c;
+} Blk4;
+typedef struct ObjA1A30
+{
+  char pad0[0x1A30];
+  s16 f1A30;
+  s16 f1A32;
+  char pad1[0x1B70 - 0x1A34];
+  s32 fB70;
+} ObjA1A30;
+typedef struct PtrCount
+{
+  void *p;
+  s32 n;
+} PtrCount;
+extern void func_002470B0(s32, PtrCount);
+extern f32 func_00200270(void *p, f32 a, f32 b);
+extern s32 func_002376B0(s32 a);
+extern void func_002181A0(void *a, Fighter *b);
+extern void func_001A3610(s32);
+extern void func_001E6F70();
+extern void func_00233E50(void *);
+extern void func_00236110(void);
+extern void func_002361D0(void);
+extern void func_002361E0(void);
+extern void func_002361F0(void);
+extern void func_00236500(void);
+extern void func_00236640(void);
+extern void func_002360F0(void);
+extern void Fighter_ClearFlags(void *, s32);
+extern void func_00125740(void *, void *, s32);
+extern void amTask_KillGroup(s32, s32, s32);
+extern s32 D_004705D4;
+extern void func_001E9B00(void *, s32, s32, void *, f32, f32);
+extern s32 func_002359F0(void *);
+extern s32 func_00235B60(void *);
+extern s32 func_00235BE0(void *);
+extern s32 func_00144430(void *);
+extern void func_00143E70(s32, s32, s32);
+extern void SoundRpc_SendWord(s32);
+extern void SoundRpc_SendWord2(s32);
+extern void *D_004693A0[];
+extern void func_001E7BE0(void *);
+extern void AdxSlot_Stop(void *);
+extern void func_00218440(s32, void *);
+extern void memset(void *, s32, s32);
+extern s8 D_00469468[];
+extern f32 D_004E0614[];
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void func_001D6CD0(Fighter *);
+extern char D_004695B8[];
+extern s32 D_004693C0[];
+extern s32 func_002356E0(void);
+extern s32 func_002CC450(void);
+extern s32 func_00235480(Fighter *);
+void func_001E73C0(Fighter *c);
+extern s32 func_00234C20(void *);
+extern s32 func_00234C90(void *);
+extern s32 func_00234D50(Fighter *c);
+extern s32 func_00234EA0(Fighter *c);
+extern s32 func_001E8290(void *);
+extern void func_001C81D0(s32, s32);
+extern void CharLight_Release(s32);
+extern void func_001E2290(Fighter *c);
+extern s32 func_001E1D60(Fighter *c);
+extern s32 func_00233D50(Fighter *c, void *p);
+extern s32 func_00235A90(Fighter *c);
+extern void A2d_CallHandler(s32, void *);
+extern void Sp_CallHandler(s32, void *);
+extern void func_001E5040(Fighter *c);
+extern void func_001C75D0(Fighter *c, s32 a);
+extern void Fighter_ClearPlyScr(void *c);
+extern u8 D_004E0660[];
+extern s32 func_001DFE60(Fighter *c, s32 a, f32 v);
+extern s32 func_001DFA90(Fighter *c, s32 idx);
+extern s32 func_002350A0();
+extern s32 D_00469478[];
+extern void func_001E11E0(s32 a, void *b);
+extern s32 func_001DFC80(Fighter *c, s32 a, f32 v);
+extern void func_001D7CC0(Fighter *c, s32 a);
+typedef struct Obj186C
+{
+  char pad0[0x186C];
+  s32 f186C;
+} Obj186C;
+extern char D_004694D0[];
+extern char D_004694E0[];
+extern void func_001D7290(Fighter *c);
+extern u32 func_0012EAE0(s32 a);
+extern char D_00447450[];
+extern s32 func_001DF8F0(s32 a, s32 b);
+extern void Sp_CallHandler(s32 a, void *b);
+extern void func_001E7070();
+extern s32 func_00233B20(Fighter *c, void *a, s32 v);
+extern s32 func_00233850(Fighter *c, void *a);
+extern void func_001F9BB0(s32 a, s32 b);
+extern void func_001E7F00(void *p);
+extern void func_001EA300(void);
+extern void func_002376F0(s32, void *);
+extern s32 func_002CC120(Fighter *c);
+extern s32 func_00236020(Fighter *c);
+extern void func_001D80A0(Fighter *c, s32 a);
+extern s32 func_002357C0(Fighter *c);
+extern void func_001D6170(Fighter *c);
+extern void func_001D5C40(Fighter *c);
+extern void func_001E2DE0(Fighter *c);
+extern void func_0021A030(void *a, s32 b, s32 c, s32 d);
+extern u8 *func_0021C660(s32 i);
+extern void func_00246E20(void *o);
+extern void func_001E73E0(void *p, s32 a, s32 b);
+typedef struct PlyVibBuf
+{
+  u8 a[12];
+  s16 h;
+  u8 b[2];
+} PlyVibBuf;
+extern s8 D_00447440[];
+extern char D_004694F0[];
+extern void func_001D6B90(Fighter *c);
+extern s32 func_001D9480(Fighter *);
+extern void func_002194C0(void *, s32, s32, s32);
+extern void AdxSlot_Pause(void *);
+extern void AdxSlot_Suspend(void *, s32, s32, s32);
+typedef struct Ent50
+{
+  char pad0[0x190];
+  s32 f190;
+  s32 f194;
+  s16 f198;
+  s16 f19A;
+  char pad19C[2];
+  s8 f19E;
+  s8 f19F;
+} Ent50;
+extern void func_0013B160(void *);
+extern void func_0013B960(void *);
+extern void func_0013BC00(f32, f32, f32);
+extern char D_004695A0[];
+extern void func_001D7450(void *);
+extern void func_002CBFF0(s32, void *);
+extern void func_001E74F0();
+extern void func_001E8640(Fighter *c, s32 mask);
+extern void func_00146ED0(void *, void *, f32);
+extern void func_0013BA20(void *);
+extern void func_001E8630();
+extern void func_001E8640();
+extern void func_0013B620(void *);
+extern char D_003F0800[];
+extern void * const jtbl_00469600[];
+extern void func_001E5500();
+void * const jtbl_00469600[2] = {(void *) func_001E5500, 0};
+const char D_00469608[] = "[LIT] MAIN";
+extern void *BtbBg_GetStageModelF10(void);
+extern void func_001E55C0(void *);
+extern s32 CharLight_Create(void);
+extern void func_00237760(s32, s32);
+typedef struct P66
+{
+  s32 f0;
+  f32 f4;
+  s32 f8;
+  s32 fC;
+} P66;
+extern void func_001C8480(s32, s32);
+extern void func_001E57C0();
+extern void func_001A5510();
+extern void func_001A5350(void *, f32);
+extern void func_001C9EF0();
+extern void func_001E80B0(Fighter *c);
+extern void func_001D0A20();
+typedef struct Ent1D5
+{
+  char pad0[0x3C];
+  f32 f3C;
+  s32 f40;
+  char buf44[0x80];
+  s32 fC4;
+  s32 fC8;
+} Ent1D5;
+extern void func_001E9980(void *);
+extern void amSound_Command(void *);
+extern void func_00144C00(s32, s32, s32, s32, s32, s32);
+extern void amFile_Load(s32 h);
+extern s32 *BtlCmd_GetMotEntry(s32 f, s32 i);
+extern void amCdFs_Close(void *, s32);
+extern char D_00469690[];
+void PlyScr_TaskInput(Fighter *c);
+void PlyVib_TaskKill(Fighter *c);
+void func_001D79F0(u8 *arg0);
+s32 func_001D7BC0(Fighter *c);
+f32 func_001D7DF0(void);
+s32 func_001D7E10(u8 *arg0);
+s32 func_001D7FB0(Fighter *c, s32 a1, s32 a2, u16 a3);
+void func_001D8320(Fighter *c);
+u8 *func_001D89E0(s32 arg0, s32 arg1);
+void func_001D8A50(Fighter *c);
+void PlyScr_Start(Fighter *c, s32 a1, s32 a2);
+void func_001D8B50(Fighter *c);
+void PlyVib_Start(Fighter *c, s32 a1, s32 a2, f32 f);
+void Fighter_CreateHitEffect(Fighter *c, s32 a1);
+s32 func_001D9220(Fighter *c);
+void func_001D9280(Fighter *c);
+void func_001D9290(Fighter *c);
+void func_001D96F0(void);
+void func_001D9760(Fighter *c, Fighter *o);
+void func_001D97D0(Fighter *c);
+void func_001D98A0(Fighter *c, s32 a1, s32 a2);
+void func_001D9900(Fighter *c, s32 a1, s32 a2);
+void func_001D9960(Fighter *c, s32 idx, s16 val);
+s16 func_001D99C0(Fighter *c, s32 a1);
+void func_001D9A10(Fighter *c);
+void func_001D9AB0(Fighter *c, s32 a1);
+void func_001D9B20(Fighter *c);
+void func_001D9BF0(Fighter *c);
+void func_001D9C00(Fighter *c);
+void func_001D9C40(Fighter *c, void *p, s32 n);
+void func_001D9C80(Fighter *c);
+void func_001D9CA0(Fighter *c, s32 a1);
+void func_001D9D20(Fighter *c, s32 a1);
+void func_001DA150(Fighter *c);
+void *func_001DA430(Fighter *c);
+void func_001DA4C0(void);
+void func_001DB660(u8 *s2);
+void func_001DB790(Fighter *c);
+s32 func_001DBFC0(u8 *arg0);
+void func_001DCB60(Fighter *c);
+void func_001DCC80(Fighter *c);
+inline s32 SelIdx1DD680(Fighter *c);
+s32 func_001DDD30(Fighter *c);
+s32 func_001DDD40(Fighter *c);
+void func_001DE490(Fighter *c);
+void func_001DF170(Fighter *c);
+s32 func_001DF420(Fighter *c, s32 idx, s32 flags);
+void func_001DF830(Fighter *c, s32 a1);
+void func_001DFBF0(Fighter *c);
+void func_001E09E0(Fighter *c);
+void func_001E1300(Fighter *c);
+void func_001E13F0(Fighter *c, s32 a1);
+void func_001E1460(Fighter *c, s32 flag);
+void Fighter_CreateHyperCtrl(Fighter *c, s32 a1);
+s32 func_001E1850(Fighter *c, s32 a1);
+s32 func_001E19B0(Fighter *c);
+void func_001E1A40(Fighter *c, s32 idx);
+s32 func_001E1B40(Fighter *c);
+void func_001E1BD0(Fighter *c, s32 a1, s32 idx);
+s32 func_001E1CE0(Fighter *c);
+void func_001E2070(Fighter *c);
+void func_001E20F0(Fighter *c);
+void func_001E2180(Fighter *c);
+void func_001E2190(Fighter *c, s32 idx);
+void func_001E2C50(Fighter *c);
+void func_001E3010(Fighter *c);
+void func_001E3100(Fighter *c);
+void func_001E3180(Fighter *c);
+void func_001E3200(Fighter *c);
+void func_001E3240(Fighter *c);
+void PlySe_Start(Fighter *c);
+void Fighter_ResetMotion(Fighter *c);
+void func_001E3460(Fighter *c);
+void func_001E3550(Fighter *c);
+void func_001E3900(Fighter *c);
+s32 func_001E3920(Fighter *c);
+void func_001E3930(Fighter *c);
+void func_001E3950(Fighter *c);
+void func_001E39B0(Fighter *c);
+void func_001E39C0(Fighter *c);
+void func_001E39F0(Fighter *c);
+s32 func_001E3D60(s32 a, f32 r);
+void func_001E3DD0(Fighter *c);
+void func_001E4800(Fighter *c);
+void func_001E4CE0(Fighter *c, void *a1, f32 f12);
+void func_001E4DA0(Fighter *c);
+void func_001E4F40(Fighter *c);
+void func_001E4FA0(Fighter *c, s32 a1);
+void func_001E5230(Fighter *c, char *a1);
+void func_001E57F0(s32 a);
+void func_001E5860(Fighter *c);
+void func_001E5870(void);
+void Lit_Start(void);
+void func_001E5960(void);
+void Lit_Create(void);
+void func_001E59F0(void);
+s32 func_001E5AC0(Fighter *c);
+void func_001E5C10(Fighter *c, s32 a1, s32 a2);
+void func_001E6E90(char *c, s32 sel);
+s32 func_001E8740(Fighter *c);
+s32 func_001E89B0(u8 *arg0);
+s32 func_001E89F0(u8 *arg0);
+s32 func_001E8AF0(Fighter *c);
+void func_001E8B80(void *p);
+s32 func_001E8B90(Fighter *c);
+s32 func_001E8C10(Fighter *c);
+s32 func_001E8C90(Fighter *c);
+s32 func_001E8D10(Fighter *c);
+s32 func_001E8D90(Fighter *c, s32 x);
+s32 func_001E8E70(Fighter *c);
+s32 func_001E8F20(Fighter *c);
+s32 func_001E8FC0(Fighter *c);
+s32 func_001E9190(Fighter *c);
+s32 func_001E91D0(Fighter *c);
+s32 func_001E9250(Fighter *c);
+s32 func_001E9290(Fighter *c);
+s32 func_001E9400(Fighter *c);
+void func_001E9910(void);
+void func_001E9920(void);
+void func_001E9930(void);
+void func_001E9940(void);
+void func_001E9950(void);
+void func_001E9960(void);
+void func_001E9970(void);
+void func_001E9D10(void);
+void func_001E9D60(void);
+void func_001E9D70(void);
+void func_001E9D80(void);
+void func_001E9E20(void);
+void func_001E9E30(void);
+s32 func_001E9ED0(void);
+void BtlSound_StartTrans(void);
+void func_001DCB70(u8 *arg0)
+{
+  f32 temp_f1;
+  f32 var_f0;
+  s32 var_v1;
+  u32 temp_hi;
+  u8 ***temp_a0;
+  if ((*((s8 *) (((u8 *) arg0) + 0x2000))) == 0)
+  {
+    goto block_14;
+  }
+  temp_a0 = *((u8 ****) (((u8 *) arg0) + 0xB88));
+  if (temp_a0 == ((void *) 0))
+  {
+    goto block_5;
+  }
+  if ((*((s16 *) (((u8 *) (*((u8 **) (((u8 *) arg0) + 0xB8C)))) + 0x26))) < 0)
+  {
+    goto block_5;
+  }
+  if ((*((s32 *) (((u8 *) (*(*temp_a0))) + 0x20))) >= 2)
+  {
+    goto block_6;
+  }
+  block_5:
+  return;
+
+  block_6:
+  temp_f1 = (*((f32 *) (((u8 *) arg0) + 0x18DC))) + ((*((f32 *) (((u8 *) arg0) + 0xC9C))) * (*((f32 *) (((u8 *) gBattle) + 0x88F0))));
+
+  *((f32 *) (((u8 *) arg0) + 0x18DC)) = temp_f1;
+  if (temp_f1 <= 10.0f)
+  {
+    goto block_11;
+  }
+  temp_hi = func_0012EAE0(0x20) % 300U;
+  if (((s32) temp_hi) < ((temp_hi >> 1) * 0))
+  {
+    goto block_9;
+  }
+  var_f0 = (f32) temp_hi;
+  goto block_10;
+  block_9:
+  var_f0 = 2.0f * ((f32) ((temp_hi >> 1) | (temp_hi & 1)));
+
+  block_10:
+  *((f32 *) (((u8 *) arg0) + 0x18DC)) = (f32) (-var_f0);
+
+  block_11:
+  var_v1 = 1;
+
+  if (!((*((f32 *) (((u8 *) arg0) + 0x18DC))) <= 0.0f))
+  {
+    goto block_13;
+  }
+  var_v1 = 0;
+  block_13:
+  *((s32 *) (((u8 *) arg0) + 0x18E0)) = var_v1;
+
+  block_14:
+  return;
+
+}

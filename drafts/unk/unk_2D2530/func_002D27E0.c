@@ -1,0 +1,110 @@
+/* Draft (not built): func_002D27E0 at 0x002D27E0, size 0x2E8, segment unk/unk_2D2530 (c)
+ * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
+ * Status: size, 154 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x17C, original 0x2E8
+ * Original: asm/nonmatchings/unk/unk_2D2530/func_002D27E0.s */
+
+// src/unk/unk_2D2530.c func_002D27E0 size diff=154/95
+s32 func_00136E80(s32, s32 *, s32, s32);
+s32 func_001484A0(s32);
+extern f32 D_0047042C;
+extern f32 D_00470430;
+extern void amDraw_FlushPacket(void);
+extern void func_00137C10(void *, void *);
+void func_002D27E0(s32 arg0, s32 arg1, f32 *arg2, f32 *arg3) {
+    f32 spC0;
+    f32 spC4;
+    s32 spC8;
+    s32 spCC;
+    f32 spD0;
+    f32 spD4;
+    f32 spD8;
+    s32 spDC;
+    f32 spE0;
+    f32 spE4;
+    f32 spE8;
+    s32 spEC;
+    s32 spF0;
+    s32 spF4;
+    s32 spF8;
+    s32 spFC;
+    f32 *var_s0;
+    f32 *var_s1;
+    f32 *var_s5;
+    f32 temp_f0;
+    f32 temp_f20;
+    f32 temp_f21;
+    f32 temp_f22;
+    f32 temp_f23;
+    f32 temp_f24;
+    f32 temp_f25;
+    f32 temp_f3;
+    f32 temp_f5;
+    s32 *var_fp;
+    s32 *var_s6;
+    s32 *var_s7;
+    s32 var_s2;
+    s32 var_s3;
+    s32 var_s4;
+
+    var_s4 = arg0;
+    var_s3 = arg1;
+    var_s1 = arg3;
+    var_s0 = arg2;
+    var_s2 = func_001484A0(0);
+    var_fp = &spF4;
+    temp_f25 = *(f32 *)((u8 *)var_s1 + 0);
+    temp_f5 = *(f32 *)((u8 *)var_s1 + 4);
+    temp_f0 = *(f32 *)((u8 *)var_s0 + 0);
+    temp_f3 = *(f32 *)((u8 *)var_s0 + 4);
+    temp_f23 = 0.5f * temp_f5;
+    var_s1 = &spE4;
+    spF0 = 0;
+    var_s0 = &spE8;
+    *var_fp = 0;
+    spF8 = 0x3F800000;
+    spFC = 0x3F800000;
+    temp_f21 = 0.5f * temp_f0;
+    temp_f20 = 0.5f * temp_f3;
+    temp_f24 = 0.5f * temp_f25;
+    spE0 = (D_0047042C / 2.0f) - temp_f24;
+    *var_s1 = ((D_00470430 / 2.0f) + temp_f20) - temp_f23;
+    *var_s0 = 90.0f;
+    temp_f22 = 0.5f * temp_f23;
+    spEC = 0x3F800000;
+    spD0 = spE0 + temp_f25;
+    spD4 = *var_s1 + temp_f5;
+    spD8 = *var_s0;
+    spDC = 0x3F800000;
+    func_00136E80(0x100, &spF0, -1, 0);
+    func_00137C10(&spE0, &spD0);
+    amDraw_FlushPacket();
+    var_s5 = &spC4;
+    var_s6 = &spC8;
+    var_s7 = &spCC;
+    spC0 = (D_0047042C / 2.0f) + temp_f21;
+    *var_s5 = ((D_00470430 / 2.0f) + temp_f20) - temp_f22;
+    *var_s6 = 0x42A00000;
+    *var_s7 = 0x3F800000;
+    func_002D2530(var_s4, 1, 0x80000, &spC0);
+    spC0 = (D_0047042C / 2.0f) + temp_f21;
+    *var_s5 = temp_f22 + ((D_00470430 / 2.0f) + temp_f20);
+    *var_s6 = 0x42A00000;
+    *var_s7 = 0x3F800000;
+    func_002D2530(var_s4, 2, 0x80000, &spC0);
+    spF0 = 0;
+    *var_fp = 0;
+    spF8 = 0;
+    spFC = 0x3F000000;
+    M2C_ERROR(/* unknown instruction: adda.s $f1, $f20 */);
+    spE0 = (D_0047042C / 2.0f) - temp_f24;
+    *var_s1 = M2C_ERROR(/* unknown instruction: msub.s $f0, $f23, $f0 */);
+    *var_s0 = 70.0f;
+    spD0 = spE0 + temp_f25;
+    spD4 = *var_s1 + temp_f23;
+    spD8 = 70.0f;
+    func_00136E80(0x900, &spF0, -1, 0x44);
+    func_00137C10(&spE0, &spD0);
+    amDraw_FlushPacket();
+    func_001484A0(var_s2);
+}

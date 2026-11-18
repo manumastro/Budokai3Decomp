@@ -636,7 +636,11 @@ Sint32_x00166BE0 func_00166BE0_x00166BE0(const Char8_x00166BE0* fname) {
     }
     return fp.size;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166C88);
+volatile int func_00166C88_x00166C88(u8 *arg0) __asm__("func_00166C88");
+volatile int func_00166C88_x00166C88(u8 *arg0)
+{
+  return ((s64) (((s64) (*((s32 *) (((u8 *) arg0) + 0x14)))) << 0xB)) >> 0x20;
+}
 typedef unsigned char u_char_x00166C98;
 typedef unsigned int u_int_x00166C98;
 typedef char Sint8_x00166C98;
