@@ -3,7 +3,69 @@
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029DB00);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029DD30);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E120);
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E450);
+extern void amHeap_Free(void *);
+extern void amCdFs_ReleaseCache(void *);
+extern void amCdFs_Close(void *, s32);
+extern void Character_Release(s32);
+void func_0029E450(u8 *s0) {
+    u8 *s1;
+    s32 *s3;
+    s32 s2;
+
+    if (s0 != 0) {
+        if (*(s32 *)(s0 + 0x290) != 0) {
+            amCdFs_ReleaseCache(*(void **)(s0 + 0x29C));
+            *(s32 *)(s0 + 0x29C) = 0;
+            *(s32 *)(s0 + 0x290) = 0;
+        } else if (*(s32 *)(s0 + 0x29C) != 0) {
+            amCdFs_Close(*(void **)(s0 + 0x29C), 0);
+            *(s32 *)(s0 + 0x29C) = 0;
+        }
+        s3 = *(s32 **)(s0 + 0x260);
+        for (s2 = 0; s2 < 2; s2++) {
+            if (*(s32 *)(s0 + 0x288 + s2 * 4) != 0) {
+                amCdFs_ReleaseCache(*(void **)(s0 + 0x294 + s2 * 4));
+                *(s32 *)(s0 + 0x294 + s2 * 4) = 0;
+                *(s32 *)(s0 + 0x288 + s2 * 4) = 0;
+                s3[0x126 + s2] = 0;
+            } else if (*(s32 *)(s0 + 0x294 + s2 * 4) != 0) {
+                amCdFs_Close(*(void **)(s0 + 0x294 + s2 * 4), 0);
+                *(s32 *)(s0 + 0x294 + s2 * 4) = 0;
+            }
+        }
+        if (*(s32 *)s0 == 0) {
+            if (*(s32 *)(s0 + 0x2AC) != 0) {
+                if (*(s32 *)(s0 + 0x260) != 0) {
+                    amHeap_Free(*(void **)(s0 + 0x260));
+                    *(s32 *)(s0 + 0x260) = 0;
+                }
+                amHeap_Free(*(void **)(s0 + 0x2AC));
+                *(s32 *)(s0 + 0x2AC) = 0;
+            }
+            if (*(s32 *)(s0 + 0x2A4) != 0) {
+                amCdFs_ReleaseCache(*(void **)(s0 + 0x2B0));
+                *(s32 *)(s0 + 0x2B0) = 0;
+                *(s32 *)(s0 + 0x2A4) = 0;
+            } else if (*(s32 *)(s0 + 0x2B0) != 0) {
+                amCdFs_Close(*(void **)(s0 + 0x2B0), 0);
+                *(s32 *)(s0 + 0x2B0) = 0;
+            }
+            if (*(s32 *)(s0 + 0x2A8) != 0) {
+                amCdFs_ReleaseCache(*(void **)(s0 + 0x2B4));
+                *(s32 *)(s0 + 0x2B4) = 0;
+                *(s32 *)(s0 + 0x2A8) = 0;
+            } else if (*(s32 *)(s0 + 0x2B4) != 0) {
+                amCdFs_Close(*(void **)(s0 + 0x2B4), 0);
+                *(s32 *)(s0 + 0x2B4) = 0;
+            }
+        }
+        if (*(s8 *)(s0 + 0x2B8) != 0) {
+            Character_Release(*(s32 *)s0);
+            *(s32 *)s0 = 0;
+        }
+        amHeap_Free(s0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E610);
 extern s32 func_001CAA30(s32 *);
 s32 func_0029E7F0(u8 *a0) {
