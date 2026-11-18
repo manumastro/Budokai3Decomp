@@ -1412,9 +1412,7 @@ void func_0023A240(LObj4 *a0) {
         }
     }
 }
-// differs: 16 of 64 (10 forms): the structure, null-checked callback stores and the call match; the clamp of p[3] against 0x2710 compiles into v1/slti v0 where the original reuses v0 with slti at, and a nop joins differ (clamp as if/else, ?:, u32/s32 value, reused variable tried)
-#if 0
-// FAKEMATCH: the `if (f == 0) t = 0` tests on the two callback addresses are compiled-out-looking checks (a function address is never null); they reproduce the original's bnez/move pair.
+// FAKEMATCH: the `f == 0` tests on the two callback addresses are compiled-out-looking checks (a function address is never null); the if/else form reproduces the original's unaligned bnez/move join.
 void func_0023A3B0(LObj4 *a0) {
     LSub4 *s0;
     s32 *p;
@@ -1433,12 +1431,18 @@ void func_0023A3B0(LObj4 *a0) {
             s0->f8 = v;
         }
         if (!(s0->t < 7.0f)) {
-            t = (void *)func_0023A240;
-            if (func_0023A240 == 0) { t = 0; }
+            if (func_0023A240 == 0) {
+                t = 0;
+            } else {
+                t = (void *)func_0023A240;
+            }
             a0->cb = t;
             l = s0->link;
-            t = (void *)func_00239DA0;
-            if (func_00239DA0 == 0) { t = 0; }
+            if (func_00239DA0 == 0) {
+                t = 0;
+            } else {
+                t = (void *)func_00239DA0;
+            }
             l->cb = t;
             s0->t = 0.0f;
             func_0023A000(s0, 1);
@@ -1447,8 +1451,6 @@ void func_0023A3B0(LObj4 *a0) {
         func_0023A000(s0, 0);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A3B0);
 extern u8 D_0058BF1C[];
 extern u8 D_0058BF24[];
 extern s32 D_00470730;
