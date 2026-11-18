@@ -268,7 +268,8 @@ s32 Scr_CmdCall25A3A0(void *ctx, ScrCmd *cmd) {
     return 1;
 }
 /* r6 best attempt diff 11: the load and store order matches, but the argument pointer lands in $v1 and the
-   object in $v0, the reverse of the original; register hints and a pointer-to-pointer global did not flip it. */
+   object in $v0, the reverse of the original; register hints and a pointer-to-pointer global did not flip it.
+   r7j: tsweep (120), explicit decl/assign orders (48), block-scope a, no local for args, permuter 300 s (265 -> 95): still 11. */
 #if 0
 s32 func_0025AF70(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
@@ -426,7 +427,28 @@ void func_0025B790(EffSrc *e) {
     f->f18 = e->f20;
     func_00125740(f->f20, e, 0x58);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B840);
+extern void func_00210C20(void);
+void func_0025B840(EffSrc *e) {
+    s32 owner = e->f8->f1350;
+    Eff *f;
+
+    func_0020D9F0(e->f0);
+    f = func_00215320(owner, 0x80);
+    if (f == NULL) {
+        return;
+    }
+    f->f8 = func_00211650;
+    f->fC = NULL;
+    f->f18 = e->f20;
+    f = func_00215320(owner, 0x100);
+    if (f == NULL) {
+        return;
+    }
+    f->f8 = func_00210C20;
+    f->fC = func_00212560;
+    f->f18 = e->f20;
+    func_00125740(f->f20, e, 0x58);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B8F0);
 void Wave_TaskAfterDraw(void) {
     gWave->f70 = 0;
