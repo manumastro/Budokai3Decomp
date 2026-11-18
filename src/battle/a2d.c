@@ -1095,4 +1095,42 @@ void func_0022DB90(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DC00);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DF10);
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
+extern char D_0046A6D8[];
+extern void *D_004706A8;
+extern void *D_004706C4;
+extern void *D_004706C8;
+extern void *D_004706DC;
+extern void *D_004706E0;
+extern s32 D_004706EC;
+extern void *D_004706F0;
+extern s32 D_00470700;
+extern void func_0022DC00(void);
+void func_0022DF10(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 n;
+
+    D_004706B8 = a0;
+    D_004706A8 = amHeap_Alloc(a0 * 0x60, 0, D_0046A6D8, 0x195);
+    D_004706AC = amHeap_Alloc(a0 * 4, 0, D_0046A6D8, 0x196);
+    D_004706C0 = amHeap_Alloc(a1 * 8, 0, D_0046A6D8, 0x199);
+    D_004706D4 = a2;
+    D_004706D8 = a2;
+    D_004706C4 = amHeap_Alloc(a2 * 0x50, 0, D_0046A6D8, 0x19E);
+    D_004706C8 = amHeap_Alloc(a2 * 4, 0, D_0046A6D8, 0x19F);
+    D_004706EC = a3;
+    D_004706DC = amHeap_Alloc(a3 * 0x40, 0, D_0046A6D8, 0x1A3);
+    n = a3 * 4;
+    D_004706E0 = amHeap_Alloc(n, 0, D_0046A6D8, 0x1A4);
+    D_00470700 = a3;
+    D_004706F0 = amHeap_Alloc(a3 * 0x20, 0, D_0046A6D8, 0x1A8);
+    D_004706F4 = amHeap_Alloc(n, 0, D_0046A6D8, 0x1A9);
+    func_0022DC00();
+    if (D_004703F4 == 3) {
+        D_00470710 = 1.2f;
+    } else {
+        D_00470710 = 1.0f;
+    }
+    D_00470714 = 0;
+    D_00470718 = 0;
+    D_0047071C = 0;
+}
