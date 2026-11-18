@@ -197,7 +197,125 @@ void func_001A48C0(void) {
     func_00125740(D_004957C0, D_00495740, 0x40);
     func_00125740(D_00495900, D_00495800, 0x100);
 }
+// differs: 1 of 116 (round 7): everything matches except the jump-table bias, which the original emits as addi v1,v1,-6 (a trapping add) where mwccps2 emits addiu; the docs list addi as a hand-written marker. Tried u32/s32/s16/u8/long switch value, switch (t - 6), pragma levels 0-3, a condition-assignment form.
+#if 0
+void func_001A4920(u8 *a0) {
+    u32 *p;
+    f32 *q;
+    s32 t;
+
+    p = *(u32 **)(a0 + 0xC);
+    q = (f32 *)(a0 + 0x260);
+    if (p != 0) {
+        t = (s32)(*p & 0x3C00000) >> 22;
+        if (t != 0) {
+            switch (t) {
+            case 6:
+                D_00495700[6] = q[0];
+                D_00495740[6] = q[1];
+                break;
+            case 7:
+                D_00495700[7] = q[0];
+                D_00495740[7] = q[1];
+                break;
+            case 8:
+                D_00495700[8] = q[0];
+                D_00495740[8] = q[1];
+                break;
+            case 9:
+                D_00495700[9] = q[0];
+                D_00495740[9] = q[1];
+                break;
+            case 10:
+                func_00125740(D_00495800[10], *(void **)(a0 + 0x260), 0x10);
+                D_00495700[10] = (*(f32 **)(a0 + 0x260))[4];
+                D_00495740[10] = (*(f32 **)(a0 + 0x260))[5];
+                break;
+            case 11:
+                func_00125740(D_00495800[11], *(void **)(a0 + 0x260), 0x10);
+                D_00495700[11] = (*(f32 **)(a0 + 0x260))[4];
+                D_00495740[11] = (*(f32 **)(a0 + 0x260))[5];
+                break;
+            case 12:
+                func_00125740(D_00495800[12], *(void **)(a0 + 0x260), 0x10);
+                D_00495700[12] = (*(f32 **)(a0 + 0x260))[4];
+                D_00495740[12] = (*(f32 **)(a0 + 0x260))[5];
+                break;
+            case 13:
+                func_00125740(D_00495800[13], *(void **)(a0 + 0x260), 0x10);
+                D_00495700[13] = (*(f32 **)(a0 + 0x260))[4];
+                D_00495740[13] = (*(f32 **)(a0 + 0x260))[5];
+                break;
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A4920);
+// differs: 1 of 125 (round 7): same as func_001A4920, only the addi jump-table bias differs (the 8 cases 6..13 are all right).
+#if 0
+extern u8 *amPkt_AllocTop(s32);
+void func_001A4AF0(u8 *a0) {
+    u32 *p;
+    f32 *q;
+    f32 *n;
+    s32 t;
+
+    p = *(u32 **)(a0 + 0xC);
+    q = (f32 *)(a0 + 0x260);
+    if (p != 0) {
+        t = (s32)(*p & 0x3C00000) >> 22;
+        if (t != 0) {
+            switch (t) {
+            case 6:
+                q[0] = D_00495700[6];
+                q[1] = D_00495740[6];
+                break;
+            case 7:
+                q[0] = D_00495700[7];
+                q[1] = D_00495740[7];
+                break;
+            case 8:
+                q[0] = D_00495700[8];
+                q[1] = D_00495740[8];
+                break;
+            case 9:
+                q[0] = D_00495700[9];
+                q[1] = D_00495740[9];
+                break;
+            case 10:
+                n = (f32 *)amPkt_AllocTop(0x20);
+                func_00125740(n, D_00495800[10], 0x10);
+                n[4] = D_00495700[10];
+                n[5] = D_00495740[10];
+                *(f32 **)(a0 + 0x260) = n;
+                break;
+            case 11:
+                n = (f32 *)amPkt_AllocTop(0x20);
+                func_00125740(n, D_00495800[11], 0x10);
+                n[4] = D_00495700[11];
+                n[5] = D_00495740[11];
+                *(f32 **)(a0 + 0x260) = n;
+                break;
+            case 12:
+                n = (f32 *)amPkt_AllocTop(0x20);
+                func_00125740(n, D_00495800[12], 0x10);
+                n[4] = D_00495700[12];
+                n[5] = D_00495740[12];
+                *(f32 **)(a0 + 0x260) = n;
+                break;
+            case 13:
+                n = (f32 *)amPkt_AllocTop(0x20);
+                func_00125740(n, D_00495800[13], 0x10);
+                n[4] = D_00495700[13];
+                n[5] = D_00495740[13];
+                *(f32 **)(a0 + 0x260) = n;
+                break;
+            }
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A4AF0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A4CF0);
 s32 func_001A50F0(u8 *f, s32 i) {
