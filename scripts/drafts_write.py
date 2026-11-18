@@ -161,6 +161,9 @@ def main():
                 how = (how + "; " if how else "") + f"m2c -t {'mipsee-gcc-c' if grp else 'mipsee-mwcc-c'} --valid-syntax, not compiled"
                 if status == "none":
                     status = "uncompiled"
+        how = re.sub(r"(/[\w.\-]+)+/(?=[\w.\-]+\.\w+)", "", how)  # no local paths in the tracked files
+        how = re.sub(r"\S*(?=d_[0-9A-F]{8}\.c)", "", how)
+        body = re.sub(r"(/[\w.\-]+)+/(?=[\w.\-]+\.\w+:)", "", body)
         head = (f"/* Draft (not built): {name} at 0x{addr:08X}, size 0x{size:X}, segment {seg} ({kind})\n"
                 f" * Compiler: {compiler}\n"
                 f" * Status: {status}" + (f", {diff} instructions differ" if diff is not None and status in ("diff", "size") else "") + "\n"

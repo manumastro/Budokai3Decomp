@@ -1,0 +1,140 @@
+/* Draft (not built): func_002D4CF0 at 0x002D4CF0, size 0x3A0, segment unk/unk_2D2530 (c)
+ * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
+ * Status: size, 145 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x254, original 0x3A0
+ * Original: asm/nonmatchings/unk/unk_2D2530/func_002D4CF0.s */
+
+// src/unk/unk_2D2530.c func_002D4CF0 size diff=145/149
+void func_002D4CF0(void) {
+    f32 sp40;
+    f32 sp44;
+    s32 sp48;
+    s32 sp4C;
+    s32 sp50;
+    f32 sp5C;
+    s32 sp60;
+    f32 sp6C;
+    f32 temp_f1;
+    u8 *temp_a0;
+    u8 *temp_a0_2;
+    u8 *temp_a0_3;
+    u8 *temp_a0_4;
+    u8 *temp_a0_5;
+    u8 *var_s0;
+    u8 *var_s1;
+    u8 *var_s2;
+
+    var_s1 = (u8 *)(gOptionWork);
+    sp40 = (f32) *(s32 *)((u8 *)D_004E05DC + 0x24);
+    sp4C = 0x3F800000;
+    sp48 = 0;
+    sp44 = (f32) *(s32 *)((u8 *)D_004E05DC + 0x28);
+    M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
+    M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
+    M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
+    M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
+    temp_f1 = *(f32 *)((u8 *)var_s1 + 0x398);
+    if (!(temp_f1 < 15.0f)) {
+        sp6C = 0.0f;
+        *(s32 *)((u8 *)var_s1 + 0x374) = 0;
+    } else {
+        sp6C = 1.0f - (temp_f1 / 15.0f);
+    }
+    var_s2 = (u8 *)(gOptionWork);
+    sp5C = sp6C;
+    var_s0 = *(u8 **)((u8 *)var_s1 + 0x2AC);
+    func_00228430(0);
+    func_00228430(0);
+    temp_a0 = *(u8 **)((u8 *)var_s2 + 0xC);
+    D_00470704 = (s32)(temp_a0);
+    D_00470708 = 0;
+    D_0047070C = 0;
+    amModel_SetCurrent((s32)(temp_a0), 0);
+    D_00470238 = 0;
+    func_0022C060((struct Model2D2530 *)(var_s0), 0x3F800000);
+    func_00228410();
+    if (&sp60 != NULL) {
+        M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
+        M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
+    }
+    func_0022CD00((void *)(var_s0));
+    func_00228410();
+    var_s0 = *(u8 **)((u8 *)var_s1 + 0x2B8);
+    var_s2 = (u8 *)(gOptionWork);
+    func_00228430(0);
+    func_00228430(0);
+    temp_a0_2 = *(u8 **)((u8 *)var_s2 + 0xC);
+    D_00470704 = (s32)(temp_a0_2);
+    D_00470708 = 0;
+    D_0047070C = 0;
+    amModel_SetCurrent((s32)(temp_a0_2), 0);
+    D_00470238 = 0;
+    func_0022C060((struct Model2D2530 *)(var_s0), 0x3F800000);
+    func_00228410();
+    if (&sp60 != NULL) {
+        M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
+        M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
+    }
+    func_0022CD00((void *)(var_s0));
+    func_00228410();
+    var_s0 = *(u8 **)((u8 *)var_s1 + 0x2BC);
+    var_s2 = (u8 *)(gOptionWork);
+    func_00228430(0);
+    func_00228430(0);
+    temp_a0_3 = *(u8 **)((u8 *)var_s2 + 0xC);
+    D_00470704 = (s32)(temp_a0_3);
+    D_00470708 = 0;
+    D_0047070C = 0;
+    amModel_SetCurrent((s32)(temp_a0_3), 0);
+    D_00470238 = 0;
+    func_0022C060((struct Model2D2530 *)(var_s0), 0x3F800000);
+    func_00228410();
+    if (&sp60 != NULL) {
+        M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
+        M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
+    }
+    func_0022CD00((void *)(var_s0));
+    func_00228410();
+    var_s0 = *(u8 **)((u8 *)var_s1 + 0x2C0);
+    var_s2 = (u8 *)(gOptionWork);
+    func_00228430(0);
+    func_00228430(0);
+    if (&sp40 != NULL) {
+        func_00227A30((struct Vec4 *)(&sp40));
+    }
+    temp_a0_4 = *(u8 **)((u8 *)var_s2 + 0xC);
+    D_00470704 = (s32)(temp_a0_4);
+    D_00470708 = 0;
+    D_0047070C = 0;
+    amModel_SetCurrent((s32)(temp_a0_4), 0);
+    D_00470238 = 0;
+    func_0022C060((struct Model2D2530 *)(var_s0), 0x3F800000);
+    func_00228410();
+    if (&sp60 != NULL) {
+        M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
+        M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
+    }
+    func_0022CD00((void *)(var_s0));
+    func_00228410();
+    var_s0 = *(u8 **)((u8 *)var_s1 + 0x2C4);
+    var_s1 = (u8 *)(gOptionWork);
+    func_00228430(0);
+    func_00228430(0);
+    if (&sp40 != NULL) {
+        func_00227A30((struct Vec4 *)(&sp40));
+    }
+    temp_a0_5 = *(u8 **)((u8 *)var_s1 + 0xC);
+    D_00470704 = (s32)(temp_a0_5);
+    D_00470708 = 0;
+    D_0047070C = 0;
+    amModel_SetCurrent((s32)(temp_a0_5), 0);
+    D_00470238 = 0;
+    func_0022C060((struct Model2D2530 *)(var_s0), 0x3F800000);
+    func_00228410();
+    if (&sp60 != NULL) {
+        M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
+        M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
+    }
+    func_0022CD00((void *)(var_s0));
+    func_00228410();
+}
