@@ -369,16 +369,17 @@ void func_001AC240(void) {
 #endif
 extern u8 D_00492FC0[];
 #if 0
-// differs: 35 of 57. The count address (bw+0x88D8, li/addu form) is hoisted into a saved register across the loop; the original reads the count with lui 0x1 and a -0x7728 displacement each pass. Frame 80 matches only with the battle pointer in $s2.
+// differs: 7 of 57 (r7k). bw typed as a struct whose count sits at 0x88D8 stops the count hoist; what is left is the saved-register numbering: original bw=s2, i=s1, p=s0, e=s3 (we get bw=s0); tsweep of order and types found nothing better
+typedef struct BSl { u8 pad[0x88D8]; s32 n; } BSl;
 void func_001AC240(void) {
     u8 *p;
     s32 i;
-    BattleWork *bw;
+    BSl *bw;
     u8 *e;
     s32 a;
-    bw = gBattle;
+    bw = (BSl *)gBattle;
     i = 0;
-    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+    if (0 < bw->n) {
         p = (u8 *)bw;
         do {
             a = *(s16 *)(p + 0x1BD4);
@@ -397,7 +398,7 @@ void func_001AC240(void) {
             }
             i++;
             p += 0x2020;
-        } while (i < BW_FIELD(bw, s32, 0x88D8));
+        } while (i < bw->n);
     }
 }
 #endif
@@ -498,7 +499,7 @@ void func_001AC400(void *pv) {
 }
 #endif
 #if 0
-// differs: size 0x80 against 0x90 with the do-while outer loop (the for-loop form has 34 instructions and an extra guard). The original has two nops after the outer bnez and a different pointer/counter assignment in the inner loop.
+// r7k: best of 4 more tries is 8 of 33 words (pointer update folded as (t1+(cnt-1)*4)+0x44 whatever the form: struct BtlEnt, &e->rel[1], q local; first load order of p+4/p+8 also differs). Older note: // differs: size 0x80 against 0x90 with the do-while outer loop (the for-loop form has 34 instructions and an extra guard). The original has two nops after the outer bnez and a different pointer/counter assignment in the inner loop.
 void func_001AC400(void *p0) {
     u8 *t1;
     s32 t0;
@@ -852,8 +853,6 @@ void Btl_FadeOutToExit(void) {
     func_001AC490(D_005116E0);
     Fade_SetRequest(-1, Btl_OnExitFadeDone, 0);
 }
-#if 0
-// differs: 2 of 75 after the case order was matched: the remaining differences are the call and pointer relocations, and the image check fails at byte 709021
 extern s32 func_00225380(void);
 extern void Btl_ResetScene(void);
 extern void (*D_00468300[])(void);
@@ -868,8 +867,8 @@ void func_001AD0E0(void) {
     v = func_00225380();
     switch (v) {
     case 4:
-    case 1:
     case 0:
+    case 1:
         Btl_ResetScene();
         break;
     case 3:
@@ -881,8 +880,6 @@ void func_001AD0E0(void) {
         break;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AD0E0);
 void func_001AD210(void) {
     BattleWork *bw = gBattle;
     s32 tmp[3];
@@ -1162,11 +1159,10 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE720);
 extern void func_001A8770(s32, void *);
 extern void func_00219270(s32);
 extern s32 func_00218CD0(s32, s32);
-#if 0
-// differs: 7 of 59. The frame is 0x90 as in the original, but the layout is buf at 0x30 and flag at 0x8C whichever of the two is declared first; the original has flag at 0x30 and buf at 0x40.
+// the handler argument is a 16-byte array: it sits below buf in the frame
 void func_001AE890(void) {
-    s32 flag;
     u8 buf[0x50];
+    s32 flag[4];
     BattleWork *bw;
     s32 old;
     bw = gBattle;
@@ -1184,14 +1180,12 @@ void func_001AE890(void) {
     if (old != 0) {
         func_001C8020(2, 0);
     }
-    flag = 1;
-    A2d_CallHandler(0x27, &flag);
+    flag[0] = 1;
+    A2d_CallHandler(0x27, flag);
     A2d_CallHandler(0x13, 0);
     func_00219270(*(s16 *)((u8 *)bw + 0x7E6));
     BW_FIELD(bw, s8, 0x8AB7) = func_00218CD0(0, -1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE890);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE980);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AEBF0);
 extern s32 func_001AC110(void);
@@ -1515,8 +1509,6 @@ void func_001AFAB0(u8 *p, s32 a) {
     }
 }
 #undef AFAB0_LEAF
-#if 0
-// differs: 7 of 66 instructions differ, all in the clamp: the original jumps over the second clamp's store with a b (one instruction more); the struct access to the battle fields matches the frame
 typedef struct Vec4a {
     f32 x, y, z, w;
 } __attribute__((aligned(16))) Vec4a;
@@ -1543,17 +1535,11 @@ void func_001AFC50(void) {
             func_00131700(&v);
             x = bz->f8920 - bz->f8924 * bz->f88F0;
             bz->f8920 = x;
-            if (x > 1.0f) {
-                x = 1.0f;
-            } else if (x < 0.0f) {
-                x = 0.0f;
-            }
+            x = (x > 1.0f) ? 1.0f : ((x < 0.0f) ? 0.0f : x);
             bz->f8920 = x;
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AFC50);
 extern u8 D_004312E0[];
 extern void func_00133780(s32, s32);
 extern void func_00139620(s32, void *, s32, s32, s32, f32);
@@ -2057,8 +2043,6 @@ void Fighter_ResetSpeed1B18B0(Fighter *f) {
     }
     FT_FIELD(f, f32, 0x17BC) = 0.0f;
 }
-#if 0
-// differs: the flag word 0x1864 is kept in an address register across the 0x1FF9 branch (CSE); the original stores it directly
 void func_001B1900(Fighter *f) {
     s32 r;
     void *p;
@@ -2068,8 +2052,8 @@ void func_001B1900(Fighter *f) {
         if (((FighterMain2 *)f)->unk1FF9 != 0) {
             p = FT_FIELD(f, void *, 0xBB4);
             if (FT_FIELD(f, f32, 0x44) - FT_FIELD(p, f32, 0xC) - FT_FIELD(f, f32, 0x1844) <= 0.0f) {
-                ((FighterMain2 *)f)->unk1FF9 = 0;
-                ((FighterMain2 *)f)->unk1864 |= 8;
+                FT_FIELD(f, s8, 0x1FF9) = 0;
+                FT_FIELD(f, s32, 0x1864) |= 8;
             }
         }
         func_001E5040(f);
@@ -2093,49 +2077,6 @@ void func_001B1900(Fighter *f) {
         func_002CBFF0(1, f);
     }
 }
-#endif
-#if 0
-// differs: 59 of 70. Prologue, the 0xC64/0x1FF9 tests and the call tail match up to the 0x1864 store; the compiler keeps the 0x1864 address in a register for the later store (the original reloads it), and the if/else join around the 13A4 call and the final call with the li a0 delay slot are two instructions long.
-void func_001B1900(void *a0) {
-    s32 v;
-    f32 f1;
-    f32 f2;
-    void *s0;
-    s0 = a0;
-    Fighter_ResetMotion(s0, 0);
-    if (FT_FIELD(s0, s32, 0xC64) != 0) {
-        FT_FIELD(s0, s32, 0x1864) = 1;
-        if (FT_FIELD(s0, s8, 0x1FF9) != 0) {
-            f2 = FT_FIELD(s0, f32, 0x44) - FT_FIELD(FT_FIELD(s0, void *, 0xBB4), f32, 0xC);
-            f1 = f2 - FT_FIELD(s0, f32, 0x1844);
-            if (f1 <= 0.0f) {
-                FT_FIELD(s0, s8, 0x1FF9) = 0;
-                FT_FIELD(s0, s32, 0x1864) |= 8;
-            }
-        }
-        func_001E5040(s0);
-        if (FT_FIELD(s0, s16, 0x13A4) < 0) {
-            v = func_001E94C0(s0);
-        } else {
-            v = func_001C2B10(s0);
-        }
-        if (v != 0) {
-            FT_FIELD(s0, s16, 0xCB4) = 0;
-        } else {
-            FT_FIELD(s0, s16, 0xCB4) = 1;
-        }
-        FT_FIELD(s0, s8, 0x2004) = 1;
-        FT_FIELD(s0, s8, 0x1FFB) = 1;
-        if (v != 15) {
-            FT_FIELD(s0, s16, 0xCB6) = 0;
-        }
-        FT_FIELD(s0, s8, 0x2006) = 0;
-        D_00468460[v](s0);
-        func_002CBFF0(1, s0);
-    }
-}
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B1900);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B1A10);
 void Fighter_ResetSpeed1B1BB0(Fighter *f) {
     func_001E4E20(f, 0);
@@ -2478,11 +2419,8 @@ void func_001B4C10(Fighter *f) {
     }
     FT_FIELD(f, f32, 0x17BC) = 0.5f;
 }
-#if 0
-// differs: 2 of 88 (the rest matches, relocations masked): the `(u32)(v - 7) < 2` test compares in place in $v1 (sltiu v1,v1,2) where the original writes $at; plain range tests and a separate difference local give 37 of 90 or the same 2
 void func_001B4C60(Fighter *f) {
     s32 v;
-    u32 uw;
     Fighter_ResetMotion(f, 0);
     if (FT_FIELD(f, f32, 0xCB8) > 5.0f) {
         FT_FIELD(f, s16, 0xCB2) = 1;
@@ -2507,8 +2445,7 @@ void func_001B4C60(Fighter *f) {
         } else {
             v = func_001E94C0(f);
         }
-        uw = (u32)(v - 7);
-        if (uw < 2u || v == 5 || v == 6) {
+        if ((u32)(v - 7) <= 1u || v == 5 || v == 6) {
             FT_FIELD(f, s16, 0xCB4) = 0;
             FT_FIELD(f, s8, 0x2004) = 1;
             FT_FIELD(f, s8, 0x1FFB) = 1;
@@ -2521,8 +2458,6 @@ void func_001B4C60(Fighter *f) {
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B4C60);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B4DC0);
 void Fighter_ResetSpeed1B5180(Fighter *f) {
     func_001E4E20(f, 0);
@@ -5366,8 +5301,6 @@ void func_001C5D50(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C5D50);
-#if 0
-// differs: 3 of 48 differ (the gp-relative and lui relocations are masked by fdiff): the constant 1 is kept in $v1 where the original uses $a1 (li a1,1 before the sh/sw pair); a local declared first or last, a literal 1 and a statement reorder did not change it
 void func_001C5F20(void) {
     s32 one;
     BattleSlots *bw = (BattleSlots *)gBattle;
@@ -5388,12 +5321,10 @@ void func_001C5F20(void) {
         FIGHTER_FIELD(f, s32, 0xCA4) = 0x3F800000;
         FIGHTER_FIELD(f, s32, 0xCA8) = 0;
         FIGHTER_FIELD(f, s32, 0x18D8) = one;
-        func_001D9CA0(f);
+        func_001D9CA0(f, one);
         f = (Fighter *)((u8 *)f + 0x2020);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C5F20);
 // differs: the battle pointer and the fighter pointers are kept in saved registers (frame 0x70 against 0x50, 83 of 85 differ) even with struct access
 typedef struct BWY {
     u8 a[0x88D8];
