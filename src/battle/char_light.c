@@ -693,6 +693,63 @@ void CharLight_Release(s32 *p) {
         amHeap_Free(p);
     }
 }
+// differs: 104 of 127 positional, tsweep best 33 of 127 (44 variants): flow, switch (case 1/5 fallthrough into 0, 2/3, tests 3,2,0,5,1) and the buf[0]/D_0046A760 call are written; the original keeps the parameter in s1 and the allocation in s0 and copies a0 first (ours: param s0, allocation s1)
+#if 0
+s32 *func_002378F0(s32 *a0) {
+    s32 *s0;
+    s32 s1;
+    s32 buf[12];
+    u16 v;
+    s0 = amHeap_Alloc(0x38, 1, D_0046A798, 0x108);
+    memset(s0, 0, 0x38);
+    s0[7] = 0x3F800000;
+    s0[0] = (s32)amNode_Alloc();
+    *(u16 *)((u8 *)s0[0] + 0x30) = 0;
+    *(u16 *)((u8 *)s0[0] + 0x32) |= 3;
+    s0[1] = -1;
+    if (a0 == 0) {
+        return s0;
+    }
+    a0[7] = (s32)s0;
+    if (s0 != 0) {
+        if (a0[6] >= 0 && a0[6] < 6) {
+            s0[2] = 0;
+            s0[2] = 0x100 << a0[6];
+            v = *(u16 *)(s0 + 2);
+            if (v & 0x30) {
+                *(u16 *)((u8 *)s0[0] + 0x32) &= 0xFFCF;
+            }
+            *(u16 *)((u8 *)s0[0] + 0x32) |= v;
+        } else {
+            s0[2] = 0;
+        }
+    }
+    if (a0 != 0) {
+        s1 = *(s16 *)(D_00447454 + a0[3] * 0x60 + a0[4] * 8);
+    } else {
+        s1 = 0;
+    }
+    memset(buf, 0, 0x30);
+    switch (s1) {
+    case 1:
+    case 5:
+        s1 = 0;
+    case 0:
+        buf[8] = 1;
+        break;
+    case 2:
+    case 3:
+        buf[4] = 0;
+        break;
+    }
+    buf[0] = s1;
+    if (s0 != 0 && buf[0] >= 0 && buf[0] < 6) {
+        s0[10] = 0;
+        D_0046A760[buf[0]](s0, buf);
+    }
+    return s0;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002378F0);
 void func_00237AE0(u8 *a0) {
     s32 s1;
