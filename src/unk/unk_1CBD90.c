@@ -862,24 +862,19 @@ int func_001CDEA0(void *unused, Arg *a) {
 int Scr_CmdNop(void *unused, Arg *a) {
     return 1;
 }
-/* r6 best attempt diff 1 */
-// differs: 1 of 28: the add of the table index and the address (the original loads p[0] and the table entry before the sh); the u8 table load order differs by one instruction.
-#if 0
 int func_001CDF10(void *unused, Arg *a) {
     int *p = a->p;
     s32 idx = p[0];
-    char *t = gBattle->tbl[p[1]];
+    s32 t = (s32)gBattle->tbl[p[1]];
     s8 *q;
     u8 *e = D_004E0660 + 21 + idx * 40;
     *(s16 *)(t + 0x1FEA) = idx;
-    q = (s8 *)(t + *e + 0x1FBD);
+    q = (s8 *)(*e + t + 0x1FBD);
     if (*q < 4) {
         *q = *q + 1;
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDF10);
 int Scr_CmdFighterFloatDFE60(void *unused, Arg *a) {
     int *p = a->p;
     func_001DFE60(gBattle->tbl[p[1]], 0, (f32)-p[0]);
