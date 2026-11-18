@@ -532,7 +532,17 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018BDE8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018BEA0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018BF88);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C020);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C0D8);
+s32 func_00178BA8_x0018C0D8(s32, s32, s32) __asm__("func_00178BA8");
+s32 func_0018CD70_x0018C0D8(void *) __asm__("func_0018CD70");
+void func_0018C0D8_x0018C0D8(s32 arg0, s32 arg1, u8 *arg2) __asm__("func_0018C0D8");
+void func_0018C0D8_x0018C0D8(s32 arg0, s32 arg1, u8 *arg2) {
+    s32 temp_s0;
+
+    temp_s0 = (arg1 < 0x801) ? arg1 : 0x800;
+    func_00178BA8_x0018C0D8(arg2 + 0x94, arg0, temp_s0);
+    *(s32 *)((u8 *)arg2 + 0x90) = temp_s0;
+    func_0018CD70_x0018C0D8(arg2);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C128);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C230);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C298);

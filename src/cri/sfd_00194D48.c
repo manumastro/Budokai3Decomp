@@ -392,7 +392,13 @@ s32 func_00198B78(u8 *arg0, s32 *arg1) {
     func_00198BE8(*(s32 *)((u8 *)arg0 + 0x31E8), arg1);
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198BE8);
+void func_00198BE8_x00198BE8(s32 *arg0, s32 *arg1) __asm__("func_00198BE8");
+void func_00198BE8_x00198BE8(s32 *arg0, s32 *arg1) {
+    s32 temp_v0;
+
+    temp_v0 = *arg0;
+    *arg1 = ((temp_v0 ^ 1) != 0) ? 0 : temp_v0;
+}
 void func_00198C00(u8 *arg0, s32 arg1, s32 arg2) {
     u8 *temp_v1;
 

@@ -1017,7 +1017,10 @@ Sint32_x0016E760 func_0016E760_x0016E760(SJRBF_x0016E760 sjrbf, Sint32_x0016E760
     SJCRS_Unlock_x0016E760();
     return unk == nbyte;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", fn_80057DB0);
+s32 fn_80057DB0_x0016E828(u8 *arg0) __asm__("fn_80057DB0");
+s32 fn_80057DB0_x0016E828(u8 *arg0) {
+    return *(s32 *)((u8 *)arg0 + 0x1C);
+}
 s32 func_0016E830(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x20);
 }

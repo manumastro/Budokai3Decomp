@@ -707,8 +707,26 @@ void func_00166DA0(s8 *arg0, s32 arg1) {
     }
     func_00166380(arg1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166E48);
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166E80);
+s8 func_00166E48_x00166E48(s8 arg0) __asm__("func_00166E48");
+s8 func_00166E48_x00166E48(s8 arg0) {
+    s8 temp_v1;
+    s8 var_a0;
+
+    var_a0 = arg0;
+    temp_v1 = var_a0;
+    if ((u32) (var_a0 - 0x61) < 0x1AU) {
+        var_a0 -= 0x20;
+    }
+    return ((temp_v1 ^ 0x5C) != 0) ? var_a0 : 0x2F;
+}
+s32 func_00166E48_x00166E80(s8) __asm__("func_00166E48");
+s32 func_00166E80_x00166E80(s8 arg0, s8 arg1) __asm__("func_00166E80");
+s32 func_00166E80_x00166E80(s8 arg0, s8 arg1) {
+    s32 temp_s0;
+
+    temp_s0 = func_00166E48_x00166E80(arg0);
+    return ((temp_s0 ^ func_00166E48_x00166E80(arg1)) != 0) ? -1 : 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166ED8);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166F70);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167108);

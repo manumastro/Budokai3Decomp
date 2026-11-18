@@ -550,7 +550,16 @@ s32 func_00182758(void) {
     return *(s32 *)((u8 *)(func_00181FA8()) + 0x34);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00182778);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001827C8);
+s32 func_0019AC90_x001827C8() __asm__("func_0019AC90");
+s32 mwPlyGetSfdHn_x001827C8() __asm__("mwPlyGetSfdHn");
+void func_001827C8_x001827C8(s32 arg0) __asm__("func_001827C8");
+void func_001827C8_x001827C8(s32 arg0) {
+    if (arg0 != 0) {
+        func_0019AC90_x001827C8(mwPlyGetSfdHn_x001827C8());
+        return;
+    }
+    func_0019AC90_x001827C8();
+}
 s32 mwPlySfdStandby(u8 *arg0) {
     s32 var_v0;
 
@@ -1351,7 +1360,28 @@ void mwPlyStartAfsLp_x00186200(u8 *arg0, s32 arg1, s32 arg2) {
     mwPlySetLpFlg_x00186200(arg0, 1);
     mwPlyStartSeamless_x00186200(arg0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetSlFname);
+s32 func_00183B38_x00186288() __asm__("func_00183B38");
+s32 func_00186128_x00186288() __asm__("func_00186128");
+s32 func_00186348_x00186288() __asm__("func_00186348");
+s32 func_00186360_x00186288() __asm__("func_00186360");
+s32 func_001870E8_x00186288() __asm__("func_001870E8");
+extern s32 D_00466F90_x00186288 __asm__("D_00466F90");
+extern s32 D_00466FC0_x00186288 __asm__("D_00466FC0");
+s32 mwPlyGetSlFname_x00186288(s32 arg0, s32 arg1) __asm__("mwPlyGetSlFname");
+s32 mwPlyGetSlFname_x00186288(s32 arg0, s32 arg1) {
+    if (func_00183B38_x00186288() == 0) {
+        func_001870E8_x00186288(&D_00466F90_x00186288);
+        return 0;
+    }
+    if (arg1 < func_00186128_x00186288(arg0)) {
+        if (arg1 < 0) {
+            func_001870E8_x00186288(&D_00466FC0_x00186288, arg1);
+            return 0;
+        }
+        return func_00186360_x00186288(arg0, func_00186348_x00186288(arg0, arg1));
+    }
+    return 0;
+}
 void func_00186330(u8 *arg0) {
     func_00169D68(*(s32 *)((u8 *)arg0 + 0x4C));
 }

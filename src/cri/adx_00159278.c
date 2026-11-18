@@ -398,7 +398,10 @@ void func_00159CD0(u8 *arg0) {
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159CE8);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159D48);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159D58);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", fn_800416DC);
+void fn_800416DC_x00159D68(u8 *arg0, s32 arg1) __asm__("fn_800416DC");
+void fn_800416DC_x00159D68(u8 *arg0, s32 arg1) {
+    *(s32 *)((u8 *)arg0 + 0x3C) = arg1;
+}
 s32 func_00159D70(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x3C);
 }
@@ -6438,7 +6441,18 @@ int func_0015DC00_x0015DC00(ADXPS2_FCPRM_x0015DC00* prm) {
 void func_0015DC50(void) {
     func_00169688();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015DC68);
+s32 func_001696B0_x0015DC68() __asm__("func_001696B0");
+s32 func_001696E0_x0015DC68() __asm__("func_001696E0");
+void func_0015DC68_x0015DC68(u8 *arg0) __asm__("func_0015DC68");
+void func_0015DC68_x0015DC68(u8 *arg0) {
+    if (arg0 != NULL) {
+        func_001696B0_x0015DC68(*(s32 *)((u8 *)arg0 + 4));
+        func_001696E0_x0015DC68(*(s32 *)((u8 *)arg0 + 0));
+        return;
+    }
+    func_001696B0_x0015DC68();
+    func_001696E0_x0015DC68(0);
+}
 s32 func_0015DCB8(void) {
     return D_00411158;
 }

@@ -2436,7 +2436,11 @@ void func_00158978(void) {
 void func_00158990(void) {
     func_0016D5E0();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", fn_8004EDC4);
+s32 func_0016D620_x001589A8() __asm__("func_0016D620");
+void fn_8004EDC4_x001589A8(void) __asm__("fn_8004EDC4");
+void fn_8004EDC4_x001589A8(void) {
+    func_0016D620_x001589A8();
+}
 void func_001589C0(void) {
     func_0016D670();
 }

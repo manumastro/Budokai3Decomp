@@ -481,7 +481,10 @@ void func_001A13A8(void) {
     func_00129688();
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A13C0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1488);
+s32 func_001A1488_x001A1488(s32 arg0) __asm__("func_001A1488");
+s32 func_001A1488_x001A1488(s32 arg0) {
+    return (arg0 == 0) ? 0 : 0x23;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1498);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A15C0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1630);

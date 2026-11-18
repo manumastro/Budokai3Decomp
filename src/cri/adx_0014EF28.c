@@ -290,7 +290,10 @@ Sint32_x00150BC8 func_00150BC8_x00150BC8(ADXB_x00150BC8 adxb, void* header, Sint
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150D30);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150D40);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", fn_800455A4);
+s32 fn_800455A4_x00150D50(u8 *arg0) __asm__("fn_800455A4");
+s32 fn_800455A4_x00150D50(u8 *arg0) {
+    return *(s32 *)((u8 *)arg0 + 0x3C);
+}
 s16 func_00150D58(u8 *arg0) {
     return *(s16 *)((u8 *)arg0 + 0x98);
 }

@@ -91,8 +91,18 @@ Sint32_x00168A80 func_00168A80_x00168A80(const Char8_x00168A80* str) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168AF0);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168B48);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168C60);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168C78);
+s8 func_00168C60_x00168C60(s8 arg0) __asm__("func_00168C60");
+s8 func_00168C60_x00168C60(s8 arg0) {
+    return ((arg0 ^ 0x5C) != 0) ? arg0 : 0x2F;
+}
+s32 func_00168C60_x00168C78(s8) __asm__("func_00168C60");
+s32 func_00168C78_x00168C78(s8 arg0, s8 arg1) __asm__("func_00168C78");
+s32 func_00168C78_x00168C78(s8 arg0, s8 arg1) {
+    s32 temp_s0;
+
+    temp_s0 = func_00168C60_x00168C78(arg0);
+    return ((temp_s0 ^ func_00168C60_x00168C78(arg1)) != 0) ? -1 : 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168CD0);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168D68);
 typedef unsigned int size_t_x00168F08;
