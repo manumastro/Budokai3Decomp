@@ -59,7 +59,7 @@ typedef struct BtlSlotRec {
     /* 0x00 */ s32 unk00;
     /* 0x04 */ s32 unk04;
     /* 0x08 */ s32 unk08;
-    /* 0x0C */ u8 unk0C[0x4C - 0x0C];
+    /* 0x0C */ MotFile *file[16];
     /* 0x4C */ s8 unk4C;
     /* 0x4D */ s8 unk4D;
     /* 0x4E */ s8 unk4E;
@@ -336,62 +336,40 @@ s32 func_001A5490(MotFile *f, s32 track, f32 t) {
     }
     return tr->keys[i].value;
 }
-#if 0
-/* differs: 3 of 65 real instructions (the jal is relocated). The table pointer and the index temporary
- * swap $v1/$a0 at the first lookup (the original loads the table into $a0 first), and the else block's
- * byte load is scheduled above the `addiu` (the original keeps the order). Tried: table local, clamp as
- * ?:, if/else with the entry pointer, integer and pointer address forms. */
-void func_001A5510(u8 *a0) {
-    u8 *s1;
-    u8 *s0;
+void func_001A5510(BtlSlotRec *a0) {
+    MotTrack *tr;
+    MotKey *key;
     f32 f;
-    s32 w;
     s32 r;
-    s32 v;
-    s32 a1;
     s32 a6;
     s32 a4;
+    s32 w;
     s32 idx;
-    s32 p;
-    u8 *ent;
-    s32 tb;
 
-    f = *(f32 *)(a0 + 0x5C);
-    w = *(s32 *)(a0 + 0x58);
-    if (f != *(f32 *)(a0 + 0x54)) {
-        s1 = a0;
-        *(f32 *)(s1 + 0x54) = f;
-        idx = ((w >> 16) - 1) << 2;
-        p = *(s32 *)((idx + (s32)s1) + 0xC);
-        s0 = *(u8 **)(p + 0x18) + ((w & 0xFFFF) << 4);
-        a1 = *(s32 *)(s0 + 0x4);
-        tb = *(s32 *)(s0 + 0xC);
-        if ((f32)(*(s16 *)(tb + (a1 << 2) - 4) - 1) <= f) {
-            r = a1 - 1;
+    f = a0->unk5C;
+    w = a0->unk58;
+    if (f != a0->unk54) {
+        a0->unk54 = f;
+        idx = (w >> 16) - 1;
+        tr = &a0->file[idx]->tracks[w & 0xFFFF];
+        if ((f32)(tr->keys[tr->numKeys - 1].time - 1) <= f) {
+            r = tr->numKeys - 1;
         } else {
-            r = func_001A51E0((MotTrack *)s0, *(s32 *)(s1 + 0x50), f);
+            r = func_001A51E0(tr, a0->unk50, f);
         }
-        v = *(s32 *)(s1 + 0x50);
-        if (r != v) {
-            *(s32 *)(s1 + 0x50) = r;
-            ent = (u8 *)(*(s32 *)(s0 + 0xC) + (r << 2));
-            a6 = *(s8 *)(ent + 3);
-            a1 = *(s32 *)(s1 + 0x8);
-            if (a6 < a1) {
-                a4 = *(s8 *)(ent + 2);
-            } else {
-                a4 = *(s8 *)(ent + 2);
-                a6 = a1 - 1;
-            }
-            *(s8 *)(s1 + 0x4C) = *(s8 *)(s1 + 0x4D);
-            *(s8 *)(s1 + 0x4E) = *(s8 *)(s1 + 0x4F);
-            *(s8 *)(s1 + 0x4D) = a6;
-            *(s8 *)(s1 + 0x4F) = a4;
+        if (r != a0->unk50) {
+            a0->unk50 = r;
+            key = &tr->keys[r];
+            a6 = key->unk03;
+            a6 = (a6 < a0->unk08) ? a6 : a0->unk08 - 1;
+            a4 = key->value;
+            a0->unk4C = a0->unk4D;
+            a0->unk4E = a0->unk4F;
+            a0->unk4D = a6;
+            a0->unk4F = a4;
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A5510);
 void BtlSlots_Clear(BtlSlots *s, s32 i) {
     s->slot[i] = 0;
 }
