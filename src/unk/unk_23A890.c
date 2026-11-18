@@ -2331,20 +2331,21 @@ void func_00247770(u8 *a0)
   }
 }
 
-#if 0
-void func_002477C0(u8 *o) {
-    u8 *s0 = o + 0x30;
-    s32 sv = *(s32 *)(s0 + 8);
-
-    D_00470238 = 0;
-    amModel_SetCurrent(*(s32 *)(o + 0x34), 0x2003000);
-    func_001F3DF0(o);
-    func_00208D70(sv);
-    BtbObj_CheckDrawFlags(o);
+void func_002477C0(u8 *arg0)
+{
+  u8 *new_var;
+  D_00470238 = 0;
+  new_var = (u8 *) (arg0 + 0x30);
+  D_00470238 = 0;
+  if ((arg0 && arg0) && arg0)
+  {
+  }
+  amModel_SetCurrent(*((s32 *) (((u8 *) arg0) + 0x34)), 0x02003000);
+  func_001F3DF0(arg0);
+  func_00208D70((s32) (*((u8 **) (new_var + 8))));
+  BtbObj_CheckDrawFlags(arg0);
 }
-// differs: round 6 (u23e): 6 of 22 differ. The prototype at line 60 is now (u8 *o) (the old (void) one was the conflict). The compiler folds s0 = o+0x30 into o+0x38, so the object pointer keeps one save fewer; the local sv loads 0x38 before the first call (the original after it); the cast and late-assignment forms fold too
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002477C0);
+
 #if 0
 void func_00247820(void) {
     s32 r;

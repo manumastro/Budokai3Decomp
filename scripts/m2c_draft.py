@@ -142,6 +142,13 @@ def build_context():
     for path in sorted((ROOT / "src").rglob("*.c")):
         for sym, d in parse_decls(path.read_text()).items():
             decls.setdefault(sym, d)
+    # M2C_PROTOS: a file of `extern T f(...);` lines for functions still in assembly (scripts/m2c_protos.py: the
+    # signatures m2c inferred for them), so that calls to them pass float and pointer arguments the right way
+    if os.environ.get("M2C_PROTOS"):
+        for line in Path(os.environ["M2C_PROTOS"]).read_text().splitlines():
+            pm = re.match(r"^extern .*?\b(\w+)\(", line)
+            if pm:
+                decls.setdefault(pm.group(1), line.strip())
     text = ctx_text(decls)
     ctx = CACHE / "ctx.h"
     if not ctx.exists() or ctx.read_text() != text:
@@ -242,7 +249,27 @@ def split_output(out, name):
     func = lines[start:]
     # `void *argN` parameters: the draft treats them as byte pointers (arithmetic and M2C_FIELD)
     func = [re.sub(r"\bvoid \*", "u8 *", l) for l in func]
+    func[0] = fill_arg_gaps(func[0])
     return [expand_macros(l) for l in lines[:start] if l.strip()], expand_macros("\n".join(func) + "\n")
+
+
+def fill_arg_gaps(sig):
+    """m2c leaves out the argument registers a function never reads (`f(s32 arg1)` for $a1): put placeholders back so
+    that each argN stays in its register when the draft is compiled."""
+    m = re.match(r"^(.*?\()(.*)(\)\s*\{?\s*)$", sig)
+    if not m or "..." in m.group(2):
+        return sig
+    params = [p.strip() for p in split_top(m.group(2)) if p.strip() and p.strip() != "void"]
+    named = {}
+    for p in params:
+        k = re.search(r"\barg(\d+)$", p)
+        if not k:
+            return sig  # other names (float arguments...): leave it
+        named[int(k.group(1))] = p
+    if not named or sorted(named) == list(range(len(named))):
+        return sig
+    out = [named.get(i, f"s32 unused_arg{i}") for i in range(max(named) + 1)]
+    return m.group(1) + ", ".join(out) + m.group(3)
 
 
 def wrapped(s):
@@ -372,7 +399,7 @@ def apply_function(path, name, add, ctext, filter_known=True):
         head = re.sub(r"(?:^//[^\n]*(?:differs|GIVEN UP|tried|%s)[^\n]*\n)+\Z" % re.escape(name), "", head, flags=re.M)
         src = head + src[m.start():]
         m = asm_info(name, src)[3]
-    rest =visible(src[:m.start()] + src[m.end():])
+    rest = re.sub(r"^INCLUDE_(?:ASM|RODATA)\(.*$", "", visible(src[:m.start()]), flags=re.M)  # declarations above only; INCLUDE_ASM declares nothing
     if filter_known:
         add = [a for a in add if not (DECL_SYM_RE.search(a) and known(rest, DECL_SYM_RE.search(a).group(1)))]
     path.write_text(splice(src, m, ctext, add, name, macros=False))
@@ -661,6 +688,7 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
             return res
         words, relocs = fns[name]
         res["total"] = len(words)
+        res["words"] = words  # (for scripts/size_causes.py)
         data = data_sections(obj)
     rom = mwmatch.ROM.read_bytes()
     n = len(words)

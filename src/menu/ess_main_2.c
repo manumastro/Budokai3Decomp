@@ -114,54 +114,52 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E4A0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E640);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E780);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E950);
-#if 0
-// differs: 18 of 57: the store of D_00470704 and D_0047070C are laid out differently (the original puts the 0x11401100 store before the call, mine in the delay slot), a pure scheduling difference
-extern s32 D_00470704;
-extern s32 D_0047070C;
-extern s32 D_00470708;
-extern s32 D_00470238;
-extern f32 gFrameDelta;
 extern void *gEssEdit;
-extern void amModel_SetCurrent(s32, s32);
-extern void func_00133780(s32, s32);
-extern void func_00228430(s32);
-extern void func_002284D0(s32);
-extern void func_0022C1D0(s32, s32, f32);
-extern void func_00228410(s32);
-extern s32 func_002B4C80(s32);
-extern void func_0026E950();
+s32 func_00133780(s32, s32);
+s32 func_00228430(s32);
+s32 func_002284D0(s32);
+s32 func_0022C1D0(s32, s32, f32);
+s32 func_002B4C80(s32);
+extern s32 D_00470238;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern f32 gFrameDelta;
+extern void func_00228410(void);
+extern void *D_00470704;
+extern void amModel_SetCurrent();
+extern void func_0026E950(void);
+// compiled with optimize_for_size on (the rest of the file is not)
+#pragma push
+#pragma optimize_for_size on
+void func_0026EC70(u8 *arg0) {
+    s32 *var_v1;
+    u8 *temp_a0;
+    u8 *temp_s0;
 
-void func_0026EC70(u8 *a0) {
-    u8 *s1;
-    u8 *s0;
-    u8 *v;
-    f32 f;
-    void *fp;
-    s32 t;
-    s1 = a0;
-    t = *(s32 *)((u8 *)gEssEdit + 0x1C);
-    D_00470704 = t;
+    temp_a0 = *(u8 **)((u8 *)gEssEdit + 0x1C);
+    D_00470704 = temp_a0;
     D_0047070C = 0x11401100;
-    amModel_SetCurrent(t, 0x11401100);
     D_00470708 = 0;
+    amModel_SetCurrent(temp_a0, 0x11401100);
     D_00470238 = 0;
     func_00133780(0, 1);
     func_00228430(0);
     func_002284D0(0);
-    v = (u8 *)gEssEdit;
-    f = (f32)*(s32 *)(v + 0x30) * gFrameDelta;
-    s0 = v + 0x28;
-    func_0022C1D0(*(s32 *)(*(u8 **)(*(u8 **)(v + 0x18) + 0x14) + *(s32 *)(v + 0x28) * 4), 1, f);
-    *(s32 *)(s0 + 8) = *(s32 *)(s0 + 8) + 1;
-    func_00228410(0);
+    temp_s0 = ((u8 *)gEssEdit) + 0x28;
+    func_0022C1D0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)gEssEdit + 0x18)) + 0x14) + (*(s32 *)((u8 *)gEssEdit + 0x28) * 4)), 1, (f32) *(s32 *)((u8 *)gEssEdit + 0x30) * gFrameDelta);
+    *(s32 *)((u8 *)temp_s0 + 8) = (s32) (*(s32 *)((u8 *)temp_s0 + 8) + 1);
+    func_00228410();
     func_00133780(0, 0);
     if (func_002B4C80(0) == 4) {
-        fp = (void *)func_0026E950;
-        *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        var_v1 = (int *)(&func_0026E950);
+        if (&func_0026E950 == NULL) {
+            var_v1 = NULL;
+        }
+        *(s32 **)((u8 *)arg0 + 0x1C) = var_v1;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026EC70);
+#pragma pop
+
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026ED60);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026EF00);
 extern void *gEssEdit;
