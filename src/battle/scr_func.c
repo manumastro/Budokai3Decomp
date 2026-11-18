@@ -747,7 +747,6 @@ s32 func_002ABA70(s32 *a0, s32 *a1) {
     }
     return r;
 }
-// GIVEN UP: the callback store and the return value are right; the frame keeps one register more than the original and the join differs
 s32 func_002ABAF0(s32 *a0, s32 *a1) {
     s32 *s0;
     s32 r;
