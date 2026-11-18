@@ -6745,9 +6745,13 @@ extern char D_0051CC20[];
 extern void amHeap_Free(void *);
 extern char *D_0051CB94[];
 extern char D_0051CC20[];
+extern char D_00511770[];
+extern BtbObj *D_0051C770[];
+extern char D_0051CB70[];
+extern char *D_0051CC48[];
+extern s32 D_0047062C;
+extern void memset(void *, s32, s32);
 
-// differs: list walk with frees: the flags word goes to a0 and the mask constant to v1 where the original uses v1 for the flags and v0 for the constant (flags as a local, or != 0 forms: same)
-#if 0
 void func_001F6140(void) {
     char *o;
     char *s1;
@@ -6779,10 +6783,15 @@ void func_001F6140(void) {
         }
         o = *(char **)(o + 0x24);
     }
+    D_0047062C = 0;
+    memset(D_00511770, 0, 0xB000);
+    memset(D_0051C770, 0, 0x400);
+    memset(D_0051CB70, 0, 0xB0);
+    memset(D_0051CC20, 0, 0xB0);
+    D_0051CB94[0] = D_0051CC20;
+    D_0051CC48[0] = D_0051CB70;
 }
-#endif
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F6140);
 extern void memset(void *, s32, s32);
 extern char D_00511770[];
 extern BtbObj *D_0051C770[];
