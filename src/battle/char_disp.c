@@ -65,7 +65,76 @@ void func_0029E450(u8 *s0) {
         amHeap_Free(s0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E610);
+extern void amFile_Load(s32);
+extern void amCdFs_Close(void *, s32);
+extern s32 amObject_Create(s32, s32);
+extern u8 *amMotion_CreateFromObj(s32, s32, s32);
+extern void amMotion_BindAnim(void *, s32, s32);
+extern void func_001CA8F0(s32);
+void func_0029E610(u8 *s5) {
+    u8 *s0;
+    u8 *s4;
+    s32 s3;
+    u8 *s2;
+    u8 *s1;
+    s32 a;
+
+    if (s5 == 0 || *(s8 *)(s5 + 0x2B9) != 0) {
+        return;
+    }
+    a = *(s32 *)s5;
+    if (a != 0) {
+        s4 = *(u8 **)(*(s32 *)a + 0x4C);
+        func_001CA8F0(a);
+    } else {
+        s0 = *(u8 **)(s5 + 0x2B0);
+        if (s0 != 0) {
+            *(s32 *)(s5 + 0x2B0) = *(s32 *)(s0 + 0x40);
+            *(s32 *)(s5 + 0x2A4) = *(s32 *)(*(s32 *)(s0 + 0x40) + 0x50);
+            amFile_Load(*(s32 *)(s5 + 0x2A4));
+            *(s32 *)(s0 + 0x40) = 0;
+            amCdFs_Close(s0, 0);
+            *(s32 *)(s5 + 0x2AC) = amObject_Create(*(s32 *)(s5 + 0x2A4), 0);
+            s4 = amMotion_CreateFromObj(*(s32 *)(s5 + 0x2AC), 2, 0);
+        }
+        s0 = *(u8 **)(s5 + 0x2B4);
+        if (s0 != 0) {
+            *(s32 *)(s5 + 0x2B4) = *(s32 *)(s0 + 0x40);
+            *(s32 *)(s5 + 0x2A8) = *(s32 *)(*(s32 *)(s0 + 0x40) + 0x50);
+            amFile_Load(*(s32 *)(s5 + 0x2A8));
+            *(s32 *)(s0 + 0x40) = 0;
+            amCdFs_Close(s0, 0);
+        }
+    }
+    s3 = 0;
+    s2 = s5;
+    s1 = s4;
+    for (; s3 < 2; s3++) {
+        s0 = *(u8 **)(s2 + 0x294);
+        if (s0 != 0) {
+            *(s32 *)(s2 + 0x294) = *(s32 *)(s0 + 0x40);
+            *(s32 *)(s2 + 0x288) = *(s32 *)(*(s32 *)(s0 + 0x40) + 0x50);
+            amFile_Load(*(s32 *)(s2 + 0x288));
+            *(s32 *)(s0 + 0x40) = 0;
+            amCdFs_Close(s0, 0);
+            *(s32 *)(s1 + 0x498) = 0;
+            amMotion_BindAnim(s4, s3 + 0xB, *(s32 *)(s2 + 0x288));
+        }
+        s2 += 4;
+        s1 += 4;
+    }
+    s0 = *(u8 **)(s5 + 0x29C);
+    if (s0 != 0) {
+        *(s32 *)(s5 + 0x29C) = *(s32 *)(s0 + 0x40);
+        *(s32 *)(s5 + 0x290) = *(s32 *)(*(s32 *)(s0 + 0x40) + 0x50);
+        amFile_Load(*(s32 *)(s5 + 0x290));
+        *(s32 *)(s0 + 0x40) = 0;
+        amCdFs_Close(s0, 0);
+    }
+    *(u8 **)(s5 + 0x260) = s4;
+    *(s32 *)(s5 + 0x264) = 0;
+    *(s8 *)(s5 + 0x2B9) = 1;
+}
 extern s32 func_001CAA30(s32 *);
 s32 func_0029E7F0(u8 *a0) {
     if (a0 == 0) {
