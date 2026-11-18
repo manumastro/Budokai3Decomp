@@ -306,7 +306,7 @@ void func_002E54A0(SofTask *s) {
     if (p->h >= 0) {
         st = amSofdec_GetStat(p->h);
         /* FAKEMATCH: the original has the trapping addi v1,v0,1 (stat + 1) that the compiler never emits; it is an asm
-         * statement here and the cases are shifted by one (1 = movie idle, 2 = playing, 3 = ended, 5 and 0 = error). */
+         * statement here and the cases are shifted by one. */
         asm { addi v, st, 1 }
         switch (v) {
         case 1:
