@@ -99,12 +99,16 @@ extern f32 D_004B4238[];
 
 typedef struct KKey { u16 t; char pad[1]; s8 flag; f32 val; char pad2[8]; } KKey;
 typedef struct KList { char pad[2]; s16 n; KKey *keys; } KList;
-typedef struct KDst { char pad0[0x1AE]; s8 v[3]; char padx[3]; f32 a; f32 b; char pad1[8]; s16 flags; } KDst;
+typedef struct KDst { char pad0[0x1AE]; s8 v[3]; char padx[3]; f32 a; f32 b; char pad1[8]; s16 flags; s16 flags2; } KDst;
 extern KDst *D_00470588;
 typedef struct KKey2 { u16 t; char pad[2]; u16 s4; char pad2[2]; u32 w8; char pad3[4]; } KKey2;
 typedef struct KList2 { char pad[2]; s16 n; KKey2 *keys; } KList2;
 typedef struct KKey3 { u16 t; char pad[2]; s32 d[2]; char pad3[4]; } KKey3;
 typedef struct KList3 { char pad[2]; s16 n; KKey3 *keys; } KList3;
+typedef struct KKey4 { u16 t; s8 id; s8 flag; char pad[4]; u16 fl; char pad2[6]; } KKey4;
+typedef struct KList4 { char pad[2]; s16 n; KKey4 *keys; } KList4;
+extern void func_001D0860();
+extern void func_001D0730();
 // func_001CBD90, func_001CBDF0, func_001CBE80: register and scheduling differences; not matched yet.
 // differs: 17 of 22 instructions at best. The Arg pointer stays in v1 in the original (ours takes a0); the flag -(p[0]==0) is sltu+xori in the original, sltiu in ours.
 /* r6 best attempt diff 7 */
@@ -1486,7 +1490,26 @@ void func_001D02C0(KList *l, f32 t0, f32 t1) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D03E0);
+void func_001D03E0(KList4 *l, f32 t0, f32 t1) {
+    s32 i, j;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            if (l->keys[j].flag) {
+                func_001D0860(D_00470588, &l->keys[j]);
+                switch (l->keys[j].fl & 0x10F) {
+                case 1: D_00470588->flags2 |= 1; break;
+                case 4: D_00470588->flags2 |= 2; break;
+                case 2: D_00470588->flags2 |= 4; break;
+                case 8: D_00470588->flags2 |= 8; break;
+                }
+            } else {
+                func_001D0730(D_00470588, l->keys[j].id);
+            }
+        }
+    }
+}
 void func_001D05D0(KList *l, f32 t0, f32 t1) {
     s32 i, j;
     for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
