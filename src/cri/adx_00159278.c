@@ -1132,7 +1132,16 @@ void func_0015C2B8_x0015C2B8(u8 *arg0, unsigned int arg1)
   }
   *((s16 *) (((u8 *) arg0) + 0x2E8)) = arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C2E0);
+void func_0015C2E0_x0015C2E0(u8 *arg0, s32 arg1, unsigned int arg2) __asm__("func_0015C2E0");
+void func_0015C2E0_x0015C2E0(u8 *arg0, s32 arg1, unsigned int arg2)
+{
+  if ((*((s8 *) (((u8 *) arg0) + 0x2D6))) != 1)
+  {
+    *((s8 *) (((u8 *) arg0) + 0x2D6)) = 1;
+    *((s32 *) (((u8 *) arg0) + 0x48)) = (s32) ((*((s32 *) (((u8 *) arg0) + 0x48))) + 0x24);
+  }
+  *((s16 *) (((u8 *) ((arg1 * 2) + arg0)) + 0x2EA)) = arg2;
+}
 s32 func_00128040_x0015C310(s32, s32, s32) __asm__("func_00128040");
 s32 memset_x0015C310(s32, s32, s32) __asm__("memset");
 void func_0015C310_x0015C310(u8 *arg0, s32 arg1) __asm__("func_0015C310");
