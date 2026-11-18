@@ -261,7 +261,14 @@ CVFSDevice_x00166120* func_00166120_x00166120() {
     dvCiSetRootDir_x00166120(0);
     return &dvg_ci_vtbl_x00166120;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00166150);
+extern s32 (*D_00412A54_x00166150)(s32, s32, s32) __asm__("D_00412A54");
+extern s32 D_00412A58_x00166150 __asm__("D_00412A58");
+void func_00166150_x00166150(s32 arg0, s32 arg1) __asm__("func_00166150");
+void func_00166150_x00166150(s32 arg0, s32 arg1) {
+    if (D_00412A54_x00166150 != NULL) {
+        D_00412A54_x00166150(D_00412A58_x00166150, arg1, arg0);
+    }
+}
 typedef unsigned char u_char_x00166180;
 typedef unsigned int u_int_x00166180;
 typedef signed int Sint32_x00166180;

@@ -15,7 +15,11 @@ s32 func_001221A8_x001221A8(s32 arg0)
   }
   return var_v0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc", func_001221C0);
+s32 func_001291A0_x001221C0(s32, s32) __asm__("func_001291A0");
+void func_001221C0_x001221C0(s32 arg0) __asm__("func_001221C0");
+void func_001221C0_x001221C0(s32 arg0) {
+    func_001291A0_x001221C0(arg0, 0);
+}
 long strtol_x001221D8(const char *s, char **ptr, int base) __asm__("func_00129428");
 int func_001221D8_x001221D8(void *str) __asm__("func_001221D8");
 /* atoi: from https://github.com/nathanialf/ico-pc (sce/libc/stdlib/atoi.c, MIT); ee-gcc 2.96 -O2 -G0 */

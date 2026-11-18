@@ -322,7 +322,14 @@ split:
     __malloc_unlock_x00126C50(reent_ptr);
     return ((void *)((char *)(newp) + 2 * (sizeof(INTERNAL_SIZE_T_x00126C50))));
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc_00126B70", func_001271F0);
+s32 fflush_x001271F0() __asm__("fflush");
+s32 func_001271F0_x001271F0(u8 *arg0) __asm__("func_001271F0");
+s32 func_001271F0_x001271F0(u8 *arg0) {
+    if ((*(u16 *)((u8 *)arg0 + 0xC) & 9) == 9) {
+        return fflush_x001271F0();
+    }
+    return 0;
+}
 typedef struct {
     unsigned char *base;
     int size;

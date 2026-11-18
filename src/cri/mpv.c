@@ -1171,7 +1171,29 @@ void func_0017E550_x0017E550(void)
     } while (i >= 0);
     D_003F1ABC_x0017E550 = D_003F1C48_x0017E550;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E5D8);
+extern s32 D_004814F0_x0017E5D8 __asm__("D_004814F0");
+void func_0017E5D8_x0017E5D8(void) __asm__("func_0017E5D8");
+void func_0017E5D8_x0017E5D8(void)
+{
+  s32 var_v0;
+  u8 *new_var;
+  int new_var2;
+  u8 *var_v1;
+  new_var = (u8 *) (&D_004814F0_x0017E5D8);
+  new_var2 = (*((s32 *) (((u8 *) (&D_004814F0_x0017E5D8)) + 0x54))) > 0;
+  var_v1 = *((u8 **) (new_var + 0x58));
+  if (new_var2)
+  {
+    var_v0 = *((s32 *) (((u8 *) (&D_004814F0_x0017E5D8)) + 0x54));
+    do
+    {
+      var_v0 -= 1;
+      *((s32 *) (((u8 *) var_v1) + 0x188)) = 1;
+      var_v1 += 0x400;
+    }
+    while (var_v0 != 0);
+  }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E620);
 void func_0017E658(void) {
 
