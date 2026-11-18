@@ -5,7 +5,9 @@ typedef struct LV { u8 p[0x40]; f32 a; u8 p2[4]; f32 b; } LV;
 typedef struct LSubA { u8 p[8]; s32 f8; u8 q[0x24]; LV *f30; } LSubA;
 typedef struct LObjA { f32 t; u8 p[8]; s32 type; LSubA *sub; u8 q[0x14]; s32 f28; } LObjA;
 typedef struct PtrCount { void *p; s32 n; } PtrCount;
-typedef struct LSub4 { f32 t; s32 f4; s32 f8; u8 pc[0x10]; s32 f1C; struct LObj4 *link; } LSub4;
+extern s32 func_0021C3D0(s32);
+extern s32 *func_0021C400(s32);
+typedef struct LSub4 { f32 t; s32 f4; s32 f8; u8 pc[0x10]; s32 f1C; struct LObj4 *link; s32 f24; } LSub4;
 typedef struct LObj4 { u8 p0[0x1C]; void *cb; u8 p1[0x10]; LSub4 sub; s32 f34; } LObj4;
 extern u8 *D_0058BEB0[];
 extern s32 Input_IsHeld(s32);
@@ -1076,10 +1078,8 @@ void func_0023A000(LSub4 *o, s32 a1) {
         func_00228410();
     }
 }
-extern s32 func_0021C3D0(s32);
-extern s32 *func_0021C400(s32);
 extern void func_0023A000(LSub4 *, s32);
-extern void func_0023A240(void);
+extern void func_0023A240(LObj4 *);
 // FAKEMATCH: the `if (f == 0) t = 0` tests on the two callback addresses are compiled-out-looking checks (a function address is never null); they reproduce the original's bnez/move pair.
 void func_0023A150(LObj4 *a0) {
     LSub4 *s0;
@@ -1108,7 +1108,55 @@ void func_0023A150(LObj4 *a0) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A240);
+void func_0023A240(LObj4 *a0) {
+    LSub4 *s1;
+    s32 *p;
+    LObj4 *l;
+    s32 v;
+    void *t;
+    if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0) {
+        s1 = &a0->sub;
+        p = func_0021C400(func_0021C3D0(*(s32 *)((u8 *)a0 + 0x34)));
+        if (*p & 4) {
+            if (s1->f24 != 0) {
+                s1->f24 = 0;
+                s1->t = 0.0f;
+                v = p[3];
+                if (v >= 0x270F) {
+                    s1->f8 = 0x270F;
+                } else {
+                    s1->f8 = v;
+                }
+            } else if (p[3] != s1->f8) {
+                s1->t = 0.0f;
+                v = p[3];
+                if (v >= 0x270F) {
+                    s1->f8 = 0x270F;
+                } else {
+                    s1->f8 = v;
+                }
+            } else {
+                s1->t = s1->t + D_00470710;
+            }
+        } else {
+            s1->f24 = 1;
+            s1->t = s1->t + D_00470710;
+        }
+        func_0023A000(s1, 1);
+        if (!(*p & 4)) {
+            if (!(s1->t < 60.0f)) {
+                t = (void *)func_0023A150;
+                if (func_0023A150 == 0) { t = 0; }
+                a0->cb = t;
+                l = s1->link;
+                t = (void *)func_00239CC0;
+                if (func_00239CC0 == 0) { t = 0; }
+                l->cb = t;
+                s1->t = 0.0f;
+            }
+        }
+    }
+}
 // differs: 16 of 64 (10 forms): the structure, null-checked callback stores and the call match; the clamp of p[3] against 0x2710 compiles into v1/slti v0 where the original reuses v0 with slti at, and a nop joins differ (clamp as if/else, ?:, u32/s32 value, reused variable tried)
 #if 0
 // FAKEMATCH: the `if (f == 0) t = 0` tests on the two callback addresses are compiled-out-looking checks (a function address is never null); they reproduce the original's bnez/move pair.
