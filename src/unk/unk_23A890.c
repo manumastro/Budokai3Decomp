@@ -1856,7 +1856,76 @@ void func_002453D0(void) {
     func_00244280();
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002454B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00245A80);
+extern u8 D_00451CC0[];
+void func_0020F700(s32);
+typedef struct B5V {
+    f32 x, y, z, w;
+} B5V __attribute__((aligned(16)));
+typedef struct B5E {
+    char pad0[0x10];
+    B5V f10;
+    char pad20[0x50 - 0x20];
+    s16 f50;
+    s16 f52;
+    s16 f54;
+    char pad56[0x6C - 0x56];
+    void *f6C;
+    char pad70[0x94 - 0x70];
+    s16 f94;
+    s16 f96;
+    s16 f98;
+    char pad9A[0xA0 - 0x9A];
+    s16 fA0;
+    s16 fA2;
+    s16 fA4;
+    char padA6[0xB0 - 0xA6];
+} B5E;
+typedef struct B5C {
+    B5V v;
+    void *f10;
+    s16 f14;
+    s16 f16;
+    char pad18[8];
+} B5C;
+void func_00245A80(u8 *o, s32 k) {
+    B5E e;
+    B5C c;
+    s8 *s0;
+    s32 m = *(s32 *)(o + 0x1CFC);
+
+    extern void func_00214DD0();
+    if (m == 0x23) {
+        s0 = (s8 *)(D_00451CC0 + *(s32 *)(o + 0xB9C) * 12 + k * 4);
+    } else {
+        s0 = (s8 *)(D_00451CC0 + m * 12 + k * 4);
+    }
+    func_0020F700(-1);
+    memset(&e, 0, 0xB0);
+    e.f50 = 0x400;
+    e.f52 = 0;
+    e.f54 = 0;
+    e.f10.y = -5000.0f;
+    e.f10.x = 1.0f;
+    e.f10.z = 1.0f;
+    e.f10.w = 1.0f;
+    e.f94 = 3;
+    e.f96 = 1;
+    e.f98 = 3;
+    e.fA0 = s0[0];
+    e.fA2 = s0[1];
+    e.fA4 = s0[2];
+    e.f6C = o;
+    func_00214DD0(&e);
+    func_00214F80(e.f52, &e);
+    if (s0[3] != -1) {
+        memset(&c, 0, 0x20);
+        __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(&c), "r"(&e.f10));
+        c.f10 = o;
+        c.f14 = 1;
+        c.f16 = s0[3];
+        func_0025BD40(&c);
+    }
+}
 void func_00245BE0(u8 *o) {
     func_00244CC0(*(s32 *)(o + 0x1350), 1);
 }
@@ -2513,6 +2582,7 @@ void func_00248350(s32 x) {
     D_00470734 = x;
 }
 #if 0
+// r7n: a one-case switch (switch (D_0051CD20[0]) { case 0: ...; break; }) gives the right beqz/b layout; only left: the original copies the call result into s0 (move s0,v0 in the jal slot, li a1 before the jal), ours keeps it in v0 (tried r/s0 locals, u8*/struct pointer, chained forms)
 // differs: the early exit is a bnez straight to the epilogue; the original has beqz to the body then a `b` to the epilogue
 // (the body is last). Tried: early return, if/else with return in either arm, both give a join `b` after the body.
 void func_00248360(void) {
