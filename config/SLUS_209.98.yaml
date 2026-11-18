@@ -172,8 +172,28 @@ segments:
       # CRI ADX and Sofdec (ee-gcc 2.96). One subsegment per module: each starts at the first function whose own
       # error strings name that module (inferred); the functions between two such runs may belong to either.
       - [0x04E5D0, asm, cri/adx]               # ADXB, ADXF, ADXT, ADXRNA, ADXSTMF, ... (ADXT 9.19, ADXF 7.14)
+      - [0x04E758, c, cri/adx/fz_ADXAMP_Start]
+      - [0x04E8F8, asm, cri/adx_0014E8F8]
       - [0x04EE38, c, cri/adx/mk_adx_bahx]
       - [0x04EF28, asm, cri/adx_0014EF28]
+      - [0x055458, c, cri/adx/fz_ADXT_DestroyAll]
+      - [0x0554B8, asm, cri/adx_001554B8]
+      - [0x056390, c, cri/adx/fz_fn_80008F60]
+      - [0x0563B0, asm, cri/adx_001563B0]
+      - [0x059158, c, cri/adx/fz_adxsjd_get_wr]
+      - [0x059278, asm, cri/adx_00159278]
+      - [0x05EEF8, c, cri/adx/fz_ADXT_SetOutPan]
+      - [0x05EFB0, asm, cri/adx_0015EFB0]
+      - [0x060550, c, cri/adx/fz_adxt_eos_entry]
+      - [0x0605E0, asm, cri/adx_001605E0]
+      - [0x060E98, c, cri/adx/fz_fn_800068F4]
+      - [0x060EB0, asm, cri/adx_00160EB0]
+      - [0x0618D0, c, cri/adx/fz_ADXPD_Create]
+      - [0x0619A0, asm, cri/adx_001619A0]
+      - [0x061B88, c, cri/adx/fz_fn_8000EB04]
+      - [0x061B98, asm, cri/adx_00161B98]
+      - [0x062A10, c, cri/adx/fz_cvFsExecServer]
+      - [0x062A70, asm, cri/adx_00162A70]
       - [0x063EE8, asm, cri/srd]
       - [0x065180, asm, cri/dtr]               # DTR_ExecHndl
       - [0x065AD0, asm, cri/dtx]               # DTX_Create
