@@ -62,7 +62,38 @@ int func_00100DE0_x00100DE0(int mode)
     return (int)c;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", sceGsSyncPath);
-INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", func_00101190);
+s32 AddIntcHandler_x00101190(s32, s32, s32) __asm__("AddIntcHandler");
+s32 RemoveIntcHandler_x00101190(s32, s32) __asm__("RemoveIntcHandler");
+s32 func_0010AD40_x00101190(s32) __asm__("func_0010AD40");
+s32 func_0010ADA8_x00101190(s32) __asm__("func_0010ADA8");
+void *sceGsGetGParam_x00101190() __asm__("sceGsGetGParam");
+s32 func_00101190_x00101190(s32 arg0) __asm__("func_00101190");
+s32 func_00101190_x00101190(s32 arg0)
+{
+  s32 temp_s2;
+  u8 *temp_s0;
+  s32 new_var;
+  temp_s0 = sceGsGetGParam_x00101190();
+  temp_s2 = *((s32 *) (((u8 *) temp_s0) + 8));
+  if ((new_var = arg0) == 0)
+  {
+    func_0010AD40_x00101190(2);
+    RemoveIntcHandler_x00101190(2, *((s32 *) (((u8 *) temp_s0) + 0xC)));
+    *((s32 *) (((u8 *) temp_s0) + 8)) = (*((s32 *) (((u8 *) temp_s0) + 0xC)) = 0);
+  }
+  else
+  {
+    if (temp_s2 != 0)
+    {
+      func_0010AD40_x00101190(2);
+      RemoveIntcHandler_x00101190(2, *((s32 *) (((u8 *) temp_s0) + 0xC)));
+    }
+    *((s32 *) (((u8 *) temp_s0) + 8)) = new_var;
+    *((s32 *) (((u8 *) temp_s0) + 0xC)) = AddIntcHandler_x00101190(2, arg0, -1);
+    func_0010ADA8_x00101190(2);
+  }
+  return temp_s2;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", func_00101230);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", func_001012B8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", func_00101498);

@@ -20,7 +20,23 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001128F0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112960);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001129E0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112A60);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112B60);
+s32 memcmp_x00112B60(s32 *, s32 *, s32) __asm__("memcmp");
+extern s32 D_003EC60C_x00112B60 __asm__("D_003EC60C");
+extern s32 *D_003EC6E4_x00112B60 __asm__("D_003EC6E4");
+extern s32 D_00475028_x00112B60 __asm__("D_00475028");
+s32 func_00112B60_x00112B60(void) __asm__("func_00112B60");
+s32 func_00112B60_x00112B60(void)
+{
+  s32 var_s2;
+  s32 *new_var;
+  var_s2 = 0;
+  new_var = &D_003EC60C_x00112B60;
+  if ((memcmp_x00112B60(&D_00475028_x00112B60, new_var, 4) != 0) && (memcmp_x00112B60(&D_00475028_x00112B60, D_003EC6E4_x00112B60, 4) != 0))
+  {
+    var_s2 = memcmp_x00112B60(new_var, D_003EC6E4_x00112B60, 4) != 0;
+  }
+  return var_s2;
+}
 s32 func_00112BF0(void) {
     D_003EC6E0 = -1;
     memset(&D_00475028, 0, 4);

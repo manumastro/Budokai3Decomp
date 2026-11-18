@@ -816,7 +816,34 @@ s32 func_00167D10(u8 *arg0) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167D78);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167DD8);
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167EA0);
+s32 func_00167DD8_x00167EA0(s8 *) __asm__("func_00167DD8");
+s32 func_00170A00_x00167EA0(s32 *) __asm__("func_00170A00");
+extern s32 D_004138F4_x00167EA0 __asm__("D_004138F4");
+extern s8 D_00413960_x00167EA0 __asm__("D_00413960");
+void func_00167EA0_x00167EA0(void) __asm__("func_00167EA0");
+void func_00167EA0_x00167EA0(void)
+{
+  s32 var_s1;
+  s8 *var_s0;
+  int new_var;
+  if (func_00170A00_x00167EA0(&D_004138F4_x00167EA0) != 0)
+  {
+    new_var = 1;
+    var_s0 = &D_00413960_x00167EA0;
+    var_s1 = 0xC;
+    do
+    {
+      if ((*var_s0) == new_var)
+      {
+        func_00167DD8_x00167EA0(var_s0);
+      }
+      var_s1 -= new_var;
+      var_s0 += 0x30;
+    }
+    while (var_s1 >= 0);
+    D_004138F4_x00167EA0 = 0;
+  }
+}
 void func_00167F18(s32 arg0, s32 arg1) {
     D_004138EC = arg0;
     D_004138F0 = arg1;

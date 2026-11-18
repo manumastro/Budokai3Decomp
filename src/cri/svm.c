@@ -263,8 +263,22 @@ void func_00170620_x00170620(SVMErrorFunction_x00170620 function, void* object)
     svm_err_func_x00170620.object = object;
     svm_unlock_x00170620();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/svm", func_00170660);
-INCLUDE_ASM("asm/nonmatchings/cri/svm", func_00170678);
+extern s32 D_00481460_x00170660 __asm__("D_00481460");
+void func_00170660_x00170660(s32 arg0, s32 arg1) __asm__("func_00170660");
+void func_00170660_x00170660(s32 arg0, s32 arg1)
+{
+  s32 *new_var;
+  new_var = &D_00481460_x00170660;
+  *((s32 *) (((u8 *) new_var) + 0)) = arg0;
+  *((s32 *) (((u8 *) new_var) + 4)) = arg1;
+}
+extern s32 D_00481468_x00170678 __asm__("D_00481468");
+void func_00170678_x00170678(s32 arg0, s32 arg1) __asm__("func_00170678");
+void func_00170678_x00170678(s32 arg0, s32 arg1)
+{
+  *((s32 *) (((u8 *) (&D_00481468_x00170678)) + 0)) = arg0;
+  *((s32 *) (((u8 *) (&D_00481468_x00170678)) + 4)) = arg1;
+}
 typedef int (*SVMServerFunction_x00170690)(void* object);
 struct SVMServerCallback_x00170690 {
     SVMServerFunction_x00170690 function;

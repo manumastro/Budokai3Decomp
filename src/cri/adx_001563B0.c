@@ -2524,7 +2524,13 @@ void func_00158DA0(u8 *arg0, s32 arg1) {
     ADXB_AhxTermSupply(*(s32 *)((u8 *)arg0 + 4));
     func_0014EC50(*(s32 *)((u8 *)arg0 + 4), arg1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00158DE0);
+void func_00158DE0_x00158DE0(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00158DE0");
+void func_00158DE0_x00158DE0(s32 arg0, s32 arg1, s32 arg2)
+{
+  s32 *new_var;
+  new_var = (s32 *) (((u8 *) (arg0 + (arg1 * 4))) + 0xC);
+  *new_var = arg2;
+}
 void func_00158DF0(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0x38) = arg1;
     ADXB_SetAhxDecSmpl(*(s32 *)((u8 *)arg0 + 4));

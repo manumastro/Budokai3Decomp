@@ -37,7 +37,47 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A2E0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A3C0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A470);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A588);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A700);
+s32 PollSema_x0011A700(s32) __asm__("PollSema");
+s32 SignalSema_x0011A700(s32) __asm__("SignalSema");
+s32 WaitSema_x0011A700(s32) __asm__("WaitSema");
+extern s32 D_003EF948_x0011A700 __asm__("D_003EF948");
+extern s32 D_003EF94C_x0011A700 __asm__("D_003EF94C");
+extern s32 D_003EF950_x0011A700 __asm__("D_003EF950");
+extern s32 D_0047A580_x0011A700 __asm__("D_0047A580");
+s32 func_0011A700_x0011A700(s32 arg0, s32 *arg1, s32 *arg2) __asm__("func_0011A700");
+s32 func_0011A700_x0011A700(s32 arg0, s32 *arg1, s32 *arg2)
+{
+  s32 temp_s0;
+  void *new_var;
+  s32 var_s0;
+  if (D_003EF948_x0011A700 == 0)
+  {
+    return -1;
+  }
+  var_s0 = 0;
+  var_s0 = PollSema_x0011A700(D_003EF950_x0011A700) < var_s0;
+  new_var = (void *) 0;
+  if ((arg0 == 0) && (var_s0 != 0))
+  {
+    var_s0 = 0;
+    WaitSema_x0011A700(D_003EF950_x0011A700);
+  }
+  temp_s0 = var_s0 == 0;
+  if (arg1 != new_var)
+  {
+    *arg1 = D_003EF948_x0011A700;
+  }
+  if (temp_s0 != 0)
+  {
+    D_003EF948_x0011A700 = 0;
+    if (arg2 != ((void *) 0))
+    {
+      *arg2 = D_0047A580_x0011A700;
+    }
+    SignalSema_x0011A700(D_003EF94C_x0011A700);
+  }
+  return temp_s0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A7C8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A820);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A9A0);

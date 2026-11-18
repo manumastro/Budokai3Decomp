@@ -379,7 +379,20 @@ void func_00173038(void) {
 
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173040);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173140);
+s32 func_00172EF8_x00173140(s32, s32) __asm__("func_00172EF8");
+s32 func_00178B80_x00173140() __asm__("func_00178B80");
+void func_00173140_x00173140(s32 arg0, s32 *arg1) __asm__("func_00173140");
+void func_00173140_x00173140(s32 arg0, s32 *arg1)
+{
+  int new_var;
+  new_var = arg0 + 0x158;
+  if (func_00178B80_x00173140() != 0)
+  {
+    func_00172EF8_x00173140(0, 0xFF03020D);
+    return;
+  }
+  *arg1 = *((s32 *) (((u8 *) new_var) + 0x2F8));
+}
 void func_001731A0(s32 arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     u8 *temp_s0;
 
@@ -689,7 +702,18 @@ void func_0017B3A8_x0017B3A8(u8 *arg0)
   *((s32 *) (((u8 *) arg0) + 0x10)) = -1;
  do { *((s32 *) (((u8 *) arg0) + 0x14)) = -1; *new_var = -1; } while (0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B3D0);
+s32 func_0017B048_x0017B3D0(s32, s32) __asm__("func_0017B048");
+s32 func_0017B218_x0017B3D0() __asm__("func_0017B218");
+volatile int func_0017B3D0_x0017B3D0(s32 *arg0) __asm__("func_0017B3D0");
+volatile int func_0017B3D0_x0017B3D0(s32 *arg0)
+{
+  if (func_0017B218_x0017B3D0() != 0)
+  {
+    func_0017B048_x0017B3D0(0, 0xFF020103);
+    return;
+  }
+  *arg0 = 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B420);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B4B8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B5B8);

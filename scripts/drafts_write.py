@@ -23,12 +23,49 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import lib_remaining as LR  # noqa: E402
 
-RANK = {"match": 0, "diff": 1, "size": 2, "data": 2, "cerr": 3, "jtbl": 4, "m2cfail": 4, "error": 4, "none": 5}
+RANK = {"match": 0, "diff": 1, "size": 2, "data": 2, "cerr": 3, "uncompiled": 4, "jtbl": 4, "m2cfail": 4, "error": 4,
+        "none": 5}
 
 
 def sizes():
     import gccmatch
     return gccmatch.function_sizes()
+
+
+RAW = {}
+
+
+def raw_drafts(rem, lib, game, game_drafts):
+    """m2c's plain output (not compiled) for every function that has no compiled draft."""
+    import subprocess
+    import tempfile
+    from concurrent.futures import ThreadPoolExecutor
+    import lib_m2c
+    asm = lib_m2c.function_asm_all()
+    todo = []
+    for addr, name, seg, kind in rem:
+        if LR.group_of(addr):
+            if lib.get(addr, {}).get("func"):
+                continue
+        else:
+            if game_drafts and list(Path(game_drafts).glob(f"{name}.*.c")):
+                continue
+        if addr in asm:
+            todo.append((addr, name, "mipsee-gcc-c" if LR.group_of(addr) else "mipsee-mwcc-c"))
+
+    def one(job):
+        addr, name, target = job
+        with tempfile.TemporaryDirectory() as td:
+            f = Path(td) / "f.s"
+            f.write_text(".set noat\n.set noreorder\n\n" + asm[addr][1])
+            r = subprocess.run([sys.executable, str(ROOT / "tools" / "m2c" / "m2c.py"), "-t", target, "--valid-syntax",
+                                "--no-cache", "-f", name, str(f)], capture_output=True, text=True, timeout=180)
+        return addr, r.stdout if r.returncode == 0 else ""
+
+    with ThreadPoolExecutor(8) as pool:
+        for addr, out in pool.map(one, todo):
+            if out.strip():
+                RAW[addr] = out
 
 
 def main():
@@ -59,6 +96,7 @@ def main():
         for row in csv.DictReader(open(a.game)):
             game[row["function"]] = row
     index = []
+    raw_drafts(rem, lib, game, a.game_drafts)
     for addr, name, seg, kind in rem:
         grp = LR.group_of(addr)
         size = sz.get(addr, 0)
@@ -104,6 +142,13 @@ def main():
                     if cands:
                         body = cands[0].read_text()
         asm = f"asm/nonmatchings/{seg}/{name}.s" if kind == "c" else f"asm/{seg}.s"
+        if not body.strip():
+            raw = RAW.get(addr)
+            if raw:
+                body = raw
+                how = (how + "; " if how else "") + f"m2c -t {'mipsee-gcc-c' if grp else 'mipsee-mwcc-c'} --valid-syntax, not compiled"
+                if status == "none":
+                    status = "uncompiled"
         head = (f"/* Draft (not built): {name} at 0x{addr:08X}, size 0x{size:X}, segment {seg} ({kind})\n"
                 f" * Compiler: {compiler}\n"
                 f" * Status: {status}" + (f", {diff} instructions differ" if diff is not None and status in ("diff", "size") else "") + "\n"

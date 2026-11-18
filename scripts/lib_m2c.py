@@ -66,6 +66,27 @@ def function_asm():
     return out
 
 
+def function_asm_all():
+    """{address: (name, text)} of every function in asm/ (all regions, game code too)."""
+    out = {}
+    glabel = re.compile(r"^glabel (\S+)")
+    for p in sorted((ROOT / "asm").rglob("*.s")):
+        rel = p.relative_to(ROOT / "asm")
+        if rel.parts[0] in ("data", "rodata", "sdata"):
+            continue
+        lines = p.read_text().splitlines()
+        starts = [i for i, l in enumerate(lines) if glabel.match(l)]
+        for k, i in enumerate(starts):
+            end = starts[k + 1] if k + 1 < len(starts) else len(lines)
+            body = lines[i:end]
+            while body and body[-1].startswith("nonmatching"):
+                body.pop()
+            m = re.search(r"/\* \w+ ([0-9A-F]{8}) ", "\n".join(body))
+            if m:
+                out[int(m.group(1), 16)] = (glabel.match(lines[i]).group(1), "\n".join(body) + "\n")
+    return out
+
+
 def m2c_text(name, text, opts=()):
     with tempfile.TemporaryDirectory() as td:
         f = Path(td) / "f.s"

@@ -471,7 +471,13 @@ void func_0018A9A0_x0018A9A0(u8 *arg0)
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A9B0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A9F8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AA40);
+void func_0018AA40_x0018AA40(s32 arg0, s32 arg1, s32 *arg2) __asm__("func_0018AA40");
+void func_0018AA40_x0018AA40(s32 arg0, s32 arg1, s32 *arg2)
+{
+  int new_var;
+  new_var = arg1 * 0x74;
+  *arg2 = *((s32 *) (((u8 *) (arg0 + new_var)) + 0x1294));
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AA68);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AA80);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AA98);
@@ -483,8 +489,20 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AD50);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AE48);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AEA0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AF10);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AF78);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AF98);
+s32 func_0018AF78_x0018AF78(s32 arg0, s32 arg1) __asm__("func_0018AF78");
+s32 func_0018AF78_x0018AF78(s32 arg0, s32 arg1)
+{
+  s32 *new_var;
+  new_var = (s32 *) (((u8 *) (arg0 + (arg1 * 0x74))) + 0x129C);
+  return *new_var;
+}
+s32 func_0018AF98_x0018AF98(s32 arg0, s32 arg1) __asm__("func_0018AF98");
+s32 func_0018AF98_x0018AF98(s32 arg0, s32 arg1)
+{
+  int new_var;
+  new_var = arg1 * 0x74;
+  return *((s32 *) (((u8 *) (arg0 + new_var)) + 0x12B4));
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AFB8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B058);
 void func_0018B0B8(s32 arg0, s32 arg1, s32 arg2) {
@@ -512,10 +530,36 @@ s32 func_0018B638_x0018B638(u8 *arg0)
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B648);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B6A0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B710);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B730);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B750);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B770);
+void func_0018B710_x0018B710(s32 arg0, s32 arg1, s32 arg2) __asm__("func_0018B710");
+void func_0018B710_x0018B710(s32 arg0, s32 arg1, s32 arg2)
+{
+  u8 *new_var;
+  new_var = ((u8 *) (arg0 + (arg1 * 0x74))) + 0x1288;
+  *((s32 *) new_var) = arg2;
+}
+s32 func_0018B730_x0018B730(s32 arg0, s32 arg1) __asm__("func_0018B730");
+s32 func_0018B730_x0018B730(s32 arg0, s32 arg1)
+{
+  s32 *new_var;
+  new_var = (s32 *) (((u8 *) (arg0 + (arg1 * 0x74))) + 0x1288);
+  return *new_var;
+}
+void func_0018B750_x0018B750(s32 arg0, s32 arg1, s32 arg2) __asm__("func_0018B750");
+void func_0018B750_x0018B750(s32 arg0, s32 arg1, s32 arg2)
+{
+  u8 *new_var2;
+  s32 new_var;
+  new_var = arg2;
+  new_var2 = (u8 *) (arg0 + (arg1 * 0x74));
+  *((s32 *) (new_var2 + 0x128C)) = new_var;
+}
+s32 func_0018B770_x0018B770(s32 arg0, s32 arg1) __asm__("func_0018B770");
+s32 func_0018B770_x0018B770(s32 arg0, s32 arg1)
+{
+  s32 *new_var;
+  new_var = (s32 *) (((u8 *) (arg0 + (arg1 * 0x74))) + 0x128C);
+  return *new_var;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B790);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B7B8);
 s32 func_0018B7E0(s32 arg0) {

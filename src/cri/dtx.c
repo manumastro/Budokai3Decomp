@@ -102,7 +102,35 @@ void func_00165E50_x00165E50() {
     }
     dtx_init_cnt_x00165E50 += 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00165F40);
+s32 func_00165C68_x00165F40(s8 *) __asm__("func_00165C68");
+extern s32 D_00411E3C_x00165F40 __asm__("D_00411E3C");
+extern s8 D_00411E40_x00165F40 __asm__("D_00411E40");
+void func_00165F40_x00165F40(void) __asm__("func_00165F40");
+void func_00165F40_x00165F40(void)
+{
+  s32 temp_v0;
+  s32 var_s1;
+  s8 *var_s0;
+  short new_var;
+  temp_v0 = D_00411E3C_x00165F40 - 1;
+  D_00411E3C_x00165F40 = temp_v0;
+  if (temp_v0 == 0)
+  {
+    new_var = 1;
+    var_s0 = &D_00411E40_x00165F40;
+    var_s1 = 0xF;
+    do
+    {
+      if ((*var_s0) == new_var)
+      {
+        func_00165C68_x00165F40(var_s0);
+      }
+      var_s1 -= 1;
+      var_s0 += 0x44;
+    }
+    while (var_s1 >= 0);
+  }
+}
 typedef int s32_x00165FB8;
 typedef s32_x00165FB8 intptr_t_x00165FB8;
 typedef unsigned int Uint32_x00165FB8;

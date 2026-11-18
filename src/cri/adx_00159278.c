@@ -1057,7 +1057,21 @@ void func_0015C2B0(u8 *arg0, s32 arg1) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C2B8);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C2E0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C310);
+s32 func_00128040_x0015C310(s32, s32, s32) __asm__("func_00128040");
+s32 memset_x0015C310(s32, s32, s32) __asm__("memset");
+void func_0015C310_x0015C310(u8 *arg0, s32 arg1) __asm__("func_0015C310");
+void func_0015C310_x0015C310(u8 *arg0, s32 arg1)
+{
+  s32 temp_s0;
+  temp_s0 = arg0 + 0x2D7;
+  if ((*((s8 *) (((u8 *) arg0) + 0x2D6))) != 1)
+  {
+    *((s8 *) (((u8 *) arg0) + 0x2D6)) = 1;
+    *((s32 *) (((u8 *) arg0) + 0x48)) = (s32) ((*((s32 *) (((u8 *) arg0) + 0x48))) + 0x24);
+  }
+  memset_x0015C310(arg0 + 0x2D7, 0, 0x10);
+  func_00128040_x0015C310(arg0 + 0x2D7, arg1, 0x10);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C378);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C3C8);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C418);
@@ -1074,7 +1088,17 @@ void func_0015C4F0(u8 *arg0, s32 arg1) {
 s32 func_0015C4F8(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x30);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C500);
+void func_0015C500_x0015C500(s32 arg0, u32 arg1, s32 arg2) __asm__("func_0015C500");
+void func_0015C500_x0015C500(s32 arg0, u32 arg1, s32 arg2)
+{
+  u8 *new_var;
+  if (arg1 < 2U)
+  {
+    new_var = ((u8 *) (arg0 + (arg1 * 4))) + 4;
+    *((s32 *) new_var) = arg2;
+  }
+ do { } while (0);
+}
 void func_0015C520(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0xC) = arg1;
 }
@@ -5987,7 +6011,13 @@ s32 func_0015D488(u8 *arg0, s32 *arg1, s32 *arg2) {
 s32 func_0015D4A0(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 4);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015D4A8);
+s32 func_0015D4A8_x0015D4A8(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0015D4A8");
+s32 func_0015D4A8_x0015D4A8(u8 *arg0, s32 arg1, s32 arg2)
+{
+  *((s32 *) (((u8 *) arg0) + 0x1C)) = arg1;
+  *((s32 *) (((u8 *) arg0) + 0x18)) = arg2;
+  return 1;
+}
 s32 func_0015D4B8(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0x2C) = arg1;
     return 1;

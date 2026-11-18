@@ -1510,7 +1510,42 @@ void func_0016A258_x0016A258(void) {
 
 }
 INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A260);
-INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A2E0);
+s32 func_00169980_x0016A2E0(s8 *) __asm__("func_00169980");
+s32 func_0016A198_x0016A2E0(s32, s32) __asm__("func_0016A198");
+s32 func_0016A258_x0016A2E0() __asm__("func_0016A258");
+s32 memset_x0016A2E0(s8 *, s32, s32) __asm__("memset");
+extern s32 D_00413F78_x0016A2E0 __asm__("D_00413F78");
+extern s8 D_00413F80_x0016A2E0 __asm__("D_00413F80");
+void func_0016A2E0_x0016A2E0(void) __asm__("func_0016A2E0");
+void func_0016A2E0_x0016A2E0(void)
+{
+  s32 temp_v0;
+  s32 var_s1;
+  int new_var2;
+  s8 *var_s0;
+  s8 *new_var;
+  temp_v0 = D_00413F78_x0016A2E0 - 1;
+  D_00413F78_x0016A2E0 = temp_v0;
+  if (0 == temp_v0)
+  {
+    new_var2 = 1;
+    var_s0 = &D_00413F80_x0016A2E0;
+    var_s1 = 0x1F;
+    do
+    {
+      if ((*(new_var = &(*var_s0))) == new_var2)
+      {
+        func_00169980_x0016A2E0(var_s0);
+      }
+      var_s1 -= new_var2;
+      var_s0 += 0x238;
+    }
+    while (var_s1 >= 0);
+    memset_x0016A2E0(&D_00413F80_x0016A2E0, 0, 0x4700);
+    func_0016A258_x0016A2E0();
+    func_0016A198_x0016A2E0(0, 0);
+  }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/lsc", LSC_ExecServer);
 INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A4C8);
 INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A590);
