@@ -83,7 +83,8 @@ typedef struct BtlCmdObj {
 } BtlCmdObj;
 
 extern s32 D_0047056C;
-extern s32 func_001A9460(void *, s32, s32);
+extern s32 func_001A9460(void *, s16, s32);
+extern s32 func_001A9230(void *, s16);
 
 
 typedef struct BtlRank {
@@ -1281,11 +1282,9 @@ s32 func_001AA9D0(s32 a0) {
     return n;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAA60);
-// GIVEN UP: 0x14C against 0x160 (fdiff): the original sign-extends s1, s2 and s3 at the return and s1 again before its shift in the third loop; s16 locals for all three break the loops (90 of 94); s1-only s16 gives the loop extension but not the return (2 forms)
-#if 0
 s32 func_001AAEA0(BtlRank *a0, s32 a1) {
-    s32 s3;
-    s32 s2;
+    s16 s3;
+    s16 s2;
     s16 s1;
     s32 s0;
 
@@ -1302,7 +1301,7 @@ s32 func_001AAEA0(BtlRank *a0, s32 a1) {
             if (func_001A9460(a0, s3, 0) != 0) {
                 break;
             }
-            s3 = (s16)(s3 << 1);
+            s3 <<= 1;
         } while (s3 <= 8);
     }
     if ((s0 & 0xF0) != 0) {
@@ -1311,7 +1310,7 @@ s32 func_001AAEA0(BtlRank *a0, s32 a1) {
             if (func_001A9230(a0, s2) != 0) {
                 break;
             }
-            s2 = (s16)(s2 << 1);
+            s2 <<= 1;
         } while (s2 <= 0x80);
     }
     if ((s0 & 0x300) != 0) {
@@ -1320,11 +1319,9 @@ s32 func_001AAEA0(BtlRank *a0, s32 a1) {
             if (func_001A90E0(a0, s1) != 0) {
                 break;
             }
-            s1 = (s16)(s1 << 1);
+            s1 <<= 1;
         } while (s1 <= 0x200);
     }
-    return (s16)(s0 & (s1 | s2 | s3));
+    return (s16)(s0 & (s3 | s2 | s1));
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AAEA0);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AB000);
