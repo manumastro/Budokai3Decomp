@@ -360,7 +360,33 @@ s32 func_002AAB40(s32 *a0, s32 *a1) {
     a0[4] = (s32)func_002AA980;
     return func_002AA980(a0, a1);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAC30);
+s32 func_002AAC30(s32 *a0, s32 *a1) {
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    f32 *f = (f32 *)p;
+    s32 i = *(s32 *)a0[0];
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + p[2] * 208;
+    u8 *tbl = *(u8 **)(e + 4);
+    u8 *base = tbl + *(s32 *)(tbl + 0x14);
+    u8 *rec = tbl + *(s32 *)(base + *(s32 *)(e + 8) * 4);
+
+    *(f32 *)(e + 0x50) = (f32)*(s16 *)(rec + 0x10) * f[1];
+    *(f32 *)(e + 0x54) = (f32)*(s16 *)(rec + 0x12) * f[0];
+    if (*(s32 *)(e + 0x14) & 1) {
+        f32 h = 0.5f * *(f32 *)(e + 0x50);
+        *(f32 *)(e + 0x60) = *(f32 *)(e + 0x80) - h;
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x80) + h;
+    } else {
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x60) + *(f32 *)(e + 0x50);
+    }
+    if (*(s32 *)(e + 0x14) & 2) {
+        f32 h = 0.5f * *(f32 *)(e + 0x54);
+        *(f32 *)(e + 0x64) = *(f32 *)(e + 0x84) - h;
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x84) + h;
+    } else {
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x64) + *(f32 *)(e + 0x54);
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAD80);
 extern s32 func_002AAD80(s32 *, s32 *);
 s32 func_002AAF30(s32 *a0, s32 *a1) {
