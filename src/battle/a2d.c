@@ -444,32 +444,22 @@ void func_00228410(void) {
     D_004706D4 -= 1;
     D_004706CC -= 0x50;
 }
-// differs: 48 of 50 at best: the bump block and the branch on the first argument are laid out differently (the copy source is reloaded from the bump global); the copy itself matches.
-#if 0
-void func_00228430(u8 *a0, s32 a1, u8 *a2) {
+typedef struct F4 { f32 v[4]; } F4;
+typedef struct QuadA { s32 v[8]; } __attribute__((aligned(16))) QuadA;
+void func_00228430(u8 *a0) {
+    u8 *a2;
+
     if (a0 == 0) {
         a0 = D_004706CC;
-        a2 = D_004706CC;
-        D_004706CC = a2 + 0x50;
     }
-    *(f32 *)(a2 + 0x50) = *(f32 *)(a0 + 0x0);
-    *(f32 *)(a2 + 0x54) = *(f32 *)(a0 + 0x4);
-    *(f32 *)(a2 + 0x58) = *(f32 *)(a0 + 0x8);
-    *(f32 *)(a2 + 0x5C) = *(f32 *)(a0 + 0xC);
-    *(QuadW *)(a2 + 0x60) = *(QuadW *)(a0 + 0x10);
-    *(QuadW *)(a2 + 0x70) = *(QuadW *)(a0 + 0x20);
-    *(f32 *)(a2 + 0x80) = *(f32 *)(a0 + 0x30);
-    *(f32 *)(a2 + 0x84) = *(f32 *)(a0 + 0x34);
-    *(f32 *)(a2 + 0x88) = *(f32 *)(a0 + 0x38);
-    *(f32 *)(a2 + 0x8C) = *(f32 *)(a0 + 0x3C);
-    *(f32 *)(a2 + 0x90) = *(f32 *)(a0 + 0x40);
-    *(f32 *)(a2 + 0x94) = *(f32 *)(a0 + 0x44);
-    *(f32 *)(a2 + 0x98) = *(f32 *)(a0 + 0x48);
-    *(f32 *)(a2 + 0x9C) = *(f32 *)(a0 + 0x4C);
+    a2 = D_004706CC;
+    D_004706CC = a2 + 0x50;
+    *(F4 *)(a2 + 0x50) = *(F4 *)(a0 + 0x0);
+    *(QuadA *)(a2 + 0x60) = *(QuadA *)(a0 + 0x10);
+    *(F4 *)(a2 + 0x80) = *(F4 *)(a0 + 0x30);
+    *(F4 *)(a2 + 0x90) = *(F4 *)(a0 + 0x40);
     D_004706D4 = D_004706D4 + 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00228430);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002284D0);
 void func_002285A0(s32 *p, f32 t) {
     s32 *n = p;
