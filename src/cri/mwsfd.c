@@ -1435,7 +1435,33 @@ void func_001847F8_x001847F8(s32 arg0, u8 *arg1, s32 *arg2) {
     func_001849A8_x001847F8(arg0, arg1, arg2);
     func_001849F0_x001847F8(arg0, arg2);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00184870);
+s32 func_001870E8_x00184870() __asm__("func_001870E8");
+extern s32 D_00466768_x00184870 __asm__("D_00466768");
+s32 func_00184870_x00184870(unsigned long arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) __asm__("func_00184870");
+s32 func_00184870_x00184870(unsigned long arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7)
+{
+  s32 temp_a1;
+  s32 var_v0;
+  s32 var_v1;
+  ;
+  var_v1 = 2;
+  if (arg0 == 2)
+  {
+    goto block_9;
+  }
+  if ((arg0 < 3U) != 0)
+  {
+    goto block_3;
+  }
+  var_v0 = 3;
+ do { goto block_6; block_3: var_v0 = 1; var_v1 = 1; goto block_7; block_6: var_v1 = 3; block_7: if (arg0 == var_v0) { goto block_10; } func_001870E8_x00184870(&D_00466768_x00184870, arg0 < 3U, arg2, arg3, arg4, arg5, arg6, arg7); } while (0);
+  var_v1 = 3;
+  block_9:
+  block_10:
+  return var_v1;
+
+
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001848D0);
 void func_00184988(u8 *arg0, u8 *arg1) {
     *(s32 *)((u8 *)arg1 + 0x4C) = (s32) *(s32 *)((u8 *)arg0 + 0x30);
@@ -1590,7 +1616,40 @@ s32 mwPlyFxGetOutZoffset_x00185180(s32 arg0) {
 s32 func_001851E0(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0xC) == 2;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001851F0);
+s32 func_001851F0_x001851F0(u8 *arg0) __asm__("func_001851F0");
+s32 func_001851F0_x001851F0(u8 *arg0)
+{
+  s32 temp_v1;
+  s32 var_a0;
+  if (temp_v1)
+  {
+    temp_v1 = *((s32 *) (((u8 *) arg0) + 0x20));
+    var_a0 = 1;
+  }
+  else
+  {
+    temp_v1 = *((s32 *) (((u8 *) arg0) + 0x20));
+    var_a0 = 1;
+  }
+  if (temp_v1 != 0)
+  {
+    var_a0 = 0;
+    if (temp_v1 == 0x101)
+    {
+      if (arg0)
+      {
+        temp_v1 = 1;
+        var_a0 = temp_v1;
+      }
+      else
+      {
+        temp_v1 = 1;
+        var_a0 = temp_v1;
+      }
+    }
+  }
+  return var_a0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00185218);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00185278);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001852A8);
@@ -1658,7 +1717,34 @@ void func_001857C0_x001857C0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_0019F948_x001857C0(func_001847D0_x001857C0(arg0), arg1, arg2, arg3 == 1);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00185810);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00185880);
+s32 func_001847D0_x00185880() __asm__("func_001847D0");
+s32 func_0019F978_x00185880(s32, s32, s32, s32) __asm__("func_0019F978");
+void func_00185880_x00185880(s32 arg0, unsigned char arg1, s32 arg2, s32 arg3) __asm__("func_00185880");
+void func_00185880_x00185880(s32 arg0, unsigned char arg1, s32 arg2, s32 arg3)
+{
+  int new_var6;
+  s32 new_var;
+  short new_var2;
+  unsigned int new_var4;
+  unsigned int new_var3;
+  int new_var5;
+  new_var = (new_var5 = arg3 & 0xFF);
+  new_var6 = 0xFF;
+  {
+    if (new_var4 || arg1)
+    {
+      ;
+      new_var2 = arg1;
+    }
+    else
+    {
+      ;
+      new_var2 = arg1;
+    }
+  }
+  new_var4 = arg2 & new_var6;
+  func_0019F978_x00185880(new_var3 = func_001847D0_x00185880(arg0), arg1, new_var4, new_var);
+}
 s32 func_001847D0_x001858D0() __asm__("func_001847D0");
 s32 func_0019F9B8_x001858D0(s32, s32, s32, s32) __asm__("func_0019F9B8");
 void func_001858D0_x001858D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("func_001858D0");
@@ -1953,7 +2039,41 @@ void func_001863D0_x001863D0(u8 *arg0) {
 void func_00186400(u8 *arg0, s32 *arg1) {
     *arg1 = func_0016A088(*(s32 *)((u8 *)arg0 + 0x4C));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyLinkStm);
+s32 func_00183B38_x00186430() __asm__("func_00183B38");
+s32 func_001870E8_x00186430(s32 *) __asm__("func_001870E8");
+s32 func_0018B7E0_x00186430(s32) __asm__("func_0018B7E0");
+extern s32 D_00466FE8_x00186430 __asm__("D_00466FE8");
+extern s32 D_00467018_x00186430 __asm__("D_00467018");
+void mwPlyLinkStm_x00186430(u8 *arg0, unsigned int arg1) __asm__("mwPlyLinkStm");
+void mwPlyLinkStm_x00186430(u8 *arg0, unsigned int arg1)
+{
+  int new_var;
+  s8 *new_var2;
+  s32 new_var4;
+  int new_var3;
+  s8 temp_v0;
+  if (func_00183B38_x00186430(arg0) == 0)
+  {
+    func_001870E8_x00186430(&D_00466FE8_x00186430);
+    return;
+  }
+  ;
+  new_var2 = (s8 *) (((u8 *) arg0) + 0x74);
+  new_var4 = *((s32 *) (((u8 *) arg0) + 0x40));
+  temp_v0 = *new_var2;
+  if (temp_v0 == 1)
+  {
+    if (arg1 == 0)
+    {
+      *((s8 *) (((u8 *) arg0) + 0x75)) = temp_v0;
+    }
+  }
+  if ((((*((s8 *) (((u8 *) arg0) + 0x74))) == 0) && (arg1 == 1)) && (new_var3 = func_0018B7E0_x00186430(new_var4) != 0))
+  {
+    func_001870E8_x00186430(&D_00467018_x00186430);
+  }
+  *((s8 *) (((u8 *) arg0) + 0x74)) = arg1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001864D0);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186530);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186558);

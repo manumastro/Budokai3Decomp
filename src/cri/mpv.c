@@ -1174,7 +1174,27 @@ INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017CBA8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017CC50);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017D308);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017D578);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DB18);
+s32 func_0016F050_x0017DB18(s32, s32, s32, void *) __asm__("func_0016F050");
+s32 func_0017E040_x0017DB18(void **) __asm__("func_0017E040");
+s32 func_0017DB18_x0017DB18(u8 *arg0, u8 **arg1) __asm__("func_0017DB18");
+s32 func_0017DB18_x0017DB18(u8 *arg0, u8 **arg1)
+{
+  u8 sp[8];
+  int new_var;
+  s32 temp_a1;
+  s32 temp_s1;
+  s32 temp_v1;
+  temp_s1 = arg0 + 0x388;
+  (*((s32 (**)(u8 **, s32, s32, s32)) (((u8 *) (*arg1)) + 0x18)))(arg1, 1, 0x7FFFFFFF, temp_s1);
+  temp_v1 = *((s32 *) (((u8 *) arg0) + 0x388));
+  temp_a1 = temp_v1 & (~3);
+  new_var = (temp_a1 + (((s32) ((temp_v1 - temp_a1) * 8)) >> 3)) + 4;
+  func_0016F050_x0017DB18(temp_s1, new_var - temp_v1, temp_s1, sp);
+  (*((s32 (**)(u8 **, s32, s32)) (((u8 *) (*arg1)) + 0x20)))(arg1, 0, temp_s1);
+  (*((s32 (**)(u8 **, s32, u8 *)) (((u8 *) (*arg1)) + 0x1C)))(arg1, 1, sp);
+  func_0017E040_x0017DB18(arg1);
+  return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DBD8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DCC8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DE90);

@@ -95,7 +95,31 @@ s32 func_00107BA8_x00107BA8(u8 *arg0, s32 arg1, s32 arg2)
   func_00107180_x00107BA8(*((s32 *) (((u8 *) arg0) + 0x40)), arg1, (((s32) new_var) >> 4) * 0x10);
   return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00107BE8);
+s32 func_00107348_x00107BE8() __asm__("func_00107348");
+void func_00107BE8_x00107BE8(u8 *arg0, int arg1, s32 arg2) __asm__("func_00107BE8");
+void func_00107BE8_x00107BE8(u8 *arg0, int arg1, s32 arg2)
+{
+  s32 temp_a1;
+  s32 new_var;
+  u8 *temp_a3;
+  temp_a3 = *((u8 **) (((u8 *) arg0) + 0x40));
+  temp_a1 = arg1 & 0x0FFFFFFF;
+  temp_a1 = temp_a1 | 0x20000000;
+ do { *((s32 *) (((u8 *) temp_a3) + 0xC4)) = 1; *((s32 *) (((u8 *) temp_a3) + 0xEC)) = temp_a1; } while (0);
+  new_var = arg2;
+  *((s32 *) (((u8 *) temp_a3) + 0xF8)) = new_var;
+  do
+  {
+    *((s32 *) (((u8 *) temp_a3) + 0xF0)) = 0;
+    do
+    {
+      *((s32 *) (((u8 *) temp_a3) + 0xF4)) = 0;
+    }
+    while (0);
+    func_00107348_x00107BE8(arg0, temp_a1, arg2, temp_a3);
+  }
+  while (0);
+}
 s32 func_00107348_x00107C30() __asm__("func_00107348");
 void func_00107C30_x00107C30(u8 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) __asm__("func_00107C30");
 void func_00107C30_x00107C30(u8 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7)
