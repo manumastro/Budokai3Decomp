@@ -40,7 +40,6 @@ typedef struct SofTask_c286FD0 {
 } SofTask_c286FD0;
 extern s32_c286FD0 D_0046FD5C;
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286E70);
 void func_00286FD0(Ac2E4_c286FD0 *s) {
     SofInit_c286FD0 in;
 

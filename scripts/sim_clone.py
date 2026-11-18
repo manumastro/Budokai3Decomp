@@ -212,6 +212,11 @@ def isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos):
         for t in more:
             chosen.add(t)
             need |= set(re.findall(r"[A-Za-z_]\w*", types[t]))
+    # a type the target sees with the same definition (types.h, a shared header) is used as it is
+    if tfile:
+        tpp = pp_chunks(tfile)
+        tset = {re.sub(r"\s+", " ", c) for c in tpp}
+        chosen = {t for t in chosen if re.sub(r"\s+", " ", types[t]) not in tset}
     def tren(text):
         for t in sorted(chosen, key=len, reverse=True):
             text = re.sub(rf"(?<![\w.>]){re.escape(t)}\b", t + suf, text)
@@ -245,8 +250,8 @@ def isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos):
                     body = re.sub(rf"(?<![\w.>&]){re.escape(n)}\b", f"(*({t} *)&{n})", body)
             if not re.search(rf"\b{re.escape(n)}\b", above):
                 # declared only further down: that declaration is needed above the function too
-                m = re.search(rf"^[^\n;{{}}#]*\b{re.escape(n)}\b[^\n;{{}}]*;", whole[whole.find("\n", 0):], re.M)
-                if m and not m.group(0).lstrip().startswith(("return", "if")):
+                m = re.search(rf"^(?:extern\s+)?[A-Za-z_][\w \*]*\b{re.escape(n)}\b[^\n;{{}}=]*;", whole, re.M)
+                if m and not m.group(0).lstrip().startswith(("return", "if", "INCLUDE_")):
                     out_decls.append(m.group(0).strip())
         else:
             out_decls.append(sd)
