@@ -625,48 +625,43 @@ void func_002A2AA0(s32 *a0, s32 *a1) {
 extern s32 func_0029E7F0(s32);
 extern void func_0029E610(s32);
 extern void func_0029E120(s32, s32, s32, f32, f32);
-extern s32 D_005AB7F0;
+extern s32 D_005AB7F0[];
 
 extern s32 func_0029E7F0(s32);
 extern void func_0029E610(s32);
 extern void func_0029E120(s32, s32, s32, f32, f32);
-extern s32 D_005AB7F0;
+extern s32 D_005AB7F0[];
 
 extern s32 func_0029E7F0(s32);
 extern void func_0029E610(s32);
 extern void func_0029E120(s32, s32, s32, f32, f32);
-extern s32 D_005AB7F0;
+extern s32 D_005AB7F0[];
 
 extern s32 func_0029E7F0(s32);
 extern void func_0029E610(s32);
 extern void func_0029E120(s32, s32, s32, f32, f32);
-extern s32 D_005AB7F0;
+extern s32 D_005AB7F0[];
 
-#if 0
-// func_002A2BB0: the range test is laid out with the other register and branch sense; three forms tried
+// FAKEMATCH: the then-arm of the first range test re-reads the global (the original keeps an empty-looking arm laid out with a `b`; a plain empty arm makes the compiler invert the branch)
 s32 func_002A2BB0(s32 *a0) {
     s32 s1 = D_00511450[0];
     s32 s0;
     if (s1 < 0x16) {
-        ;
+        s1 = D_00511450[0];
+    } else if (s1 < 0x1A) {
+        s1 += 5;
     } else {
-        if (s1 < 0x1A) {
-            s1 += 5;
-        } else {
-            s1 += 6;
-        }
+        s1 += 6;
     }
-    s0 = D_005AB7F0;
-    if (func_0029E7F0(s0) != 0) {
-        a0[0x10 / 4] = 0;
-        func_0029E610(s0);
-        func_0029E120(s0, s1, 1, 1.0f, 0.0f);
-        return 1;
+    s0 = D_005AB7F0[0];
+    if (func_0029E7F0(s0) == 0) {
+        return 3;
     }
-    return 3;
+    a0[0x10 / 4] = 0;
+    func_0029E610(s0);
+    func_0029E120(s0, s1, 1, 1.0f, 0.0f);
+    return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2BB0);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2C70);
 extern s32 func_00283BF0(void);
 extern void SklSheet_Free(void);
