@@ -243,43 +243,39 @@ void func_0029F350(u8 *s1, u8 *s0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F350);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F470);
-// round 5 chr2: three layouts of the state chain (if/else-if in order 0,1,2; switch in order; switch 2,1,0) all compile to 0xEC against 0x100; the original starts with li v1,2 and tests 2,1,0 with beq on the constants in v1.
-// differs: Compiled 0xD4 bytes against 0x100: the original tests state 2 first, then 1, then 0, and places the state 2 block at the end; ours lays out the state 0 and state 1 blocks differently. Recursion in state 0 matches.
-#if 0
-void func_0029F730(u8 *a0, f32 dt) {
-    s32 st = *(s32 *)(a0 + 0x10);
+void func_0029F730(DispAnim *a, f32 dt) {
     f32 c;
-    if (st != 2) {
-        if (st == 1) {
-            c = *(f32 *)(a0 + 0xC) + dt;
-            *(f32 *)(a0 + 0xC) = c;
-            if (*(f32 *)(a0 + 0x8) < 0.0f) {
-                return;
-            }
-            if (c - *(f32 *)a0 < *(f32 *)(a0 + 0x8)) {
-                return;
-            }
-            *(s32 *)(a0 + 0x10) = st + 1;
-        } else if (st == 0) {
-            c = *(f32 *)(a0 + 0xC) + dt;
-            *(f32 *)(a0 + 0xC) = c;
-            if (c < *(f32 *)a0) {
-                return;
-            }
-            *(s32 *)(a0 + 0x10) = st + 1;
-            func_0029F730(a0, dt);
+
+    switch (a->n10) {
+    case 0:
+        c = a->f0C + dt;
+        a->f0C = c;
+        if (c < a->f00) {
+            break;
         }
-    } else {
-        c = *(f32 *)(a0 + 0xC) + dt;
-        *(f32 *)(a0 + 0xC) = c;
-        if (c - *(f32 *)a0 - *(f32 *)(a0 + 0x8) < *(f32 *)(a0 + 0x4)) {
-            return;
+        a->n10++;
+        func_0029F730(a, dt);
+        break;
+    case 1:
+        a->f0C = a->f0C + dt;
+        if (a->f08 < 0.0f) {
+            break;
         }
-        *(s32 *)(a0 + 0x10) = st + 1;
+        if (a->f0C - a->f00 < a->f08) {
+            break;
+        }
+        a->n10++;
+        break;
+    case 2:
+        c = a->f0C + dt;
+        a->f0C = c;
+        if (c - a->f00 - a->f08 < a->f04) {
+            break;
+        }
+        a->n10++;
+        break;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F730);
 
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F830);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029FA90);
