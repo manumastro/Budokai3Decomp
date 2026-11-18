@@ -1271,7 +1271,12 @@ INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151840);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001518A0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001519C0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151AB8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151C30);
+s32 memcmp_x00151C30() __asm__("memcmp");
+extern s32 D_004604A8_x00151C30 __asm__("D_004604A8");
+s32 func_00151C30_x00151C30(s32 arg0) __asm__("func_00151C30");
+s32 func_00151C30_x00151C30(s32 arg0) {
+    return memcmp_x00151C30(arg0, &D_004604A8_x00151C30, 4) == 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151C58);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151E88);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151F88);
@@ -2355,7 +2360,11 @@ Sint32_x00154628 adxf_ChkPrmPt_x00154628(Sint32_x00154628 ptid, void *ptinfo) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154670);
+s32 func_00154690_x00154670() __asm__("func_00154690");
+void func_00154670_x00154670(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00154670");
+void func_00154670_x00154670(s32 arg0, s32 arg1, s32 arg2) {
+    func_00154690_x00154670(arg0, arg1, 0, arg2);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154690);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154710);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154738);

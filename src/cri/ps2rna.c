@@ -1438,7 +1438,25 @@ void PS2RNA_Start(void) {
         scePrintf(&D_00464B48);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CED8);
+s32 func_0016CF38_x0016CED8() __asm__("func_0016CF38");
+s32 func_0016CFD0_x0016CED8() __asm__("func_0016CFD0");
+extern s32 D_0041A0D0_x0016CED8 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016CED8 __asm__("D_0041A0D8");
+void func_0016CED8_x0016CED8(s32 arg0) __asm__("func_0016CED8");
+void func_0016CED8_x0016CED8(s32 arg0) {
+    if (D_0041A0D8_x0016CED8 != 1) {
+        goto block_4;
+    }
+    if (D_0041A0D0_x0016CED8 > 0) {
+        goto block_3;
+    }
+    return;
+block_3:
+block_4:
+    func_0016CF38_x0016CED8(arg0, 0);
+    func_0016CFD0_x0016CED8(arg0, 0);
+    return;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CF38);
 extern s32 D_0041A0D0_x0016CFD0 __asm__("D_0041A0D0");
 extern s32 D_0041A0D8_x0016CFD0 __asm__("D_0041A0D8");
@@ -1480,7 +1498,20 @@ void PS2RNA_SetPcmType(void) {
         scePrintf(&D_00464B90);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D128);
+extern s32 D_0041A0D0_x0016D128 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D128 __asm__("D_0041A0D8");
+void func_0016D128_x0016D128(s32 arg0, s32 *arg1, s32 *arg2) __asm__("func_0016D128");
+void func_0016D128_x0016D128(s32 arg0, s32 *arg1, s32 *arg2) {
+  unsigned int new_var;
+  s32 *new_var2;
+  new_var = 0xBB80;
+  if ((D_0041A0D8_x0016D128 != 1) || (D_0041A0D0_x0016D128 > 0))
+  {
+    *arg1 = 0;
+    *new_var2 = new_var;
+    new_var2 = arg2;
+  }
+}
 extern int D_003E0710_x0016D160 __asm__("D_0041A0D8");
 extern int D_003E0708_x0016D160 __asm__("D_0041A0D0");
 int func_0016D160_x0016D160(int a0) __asm__("func_0016D160");

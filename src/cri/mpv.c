@@ -643,7 +643,17 @@ void func_001790E0(void) {
 void func_001790E8(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001790F0);
+s32 func_0017B048_x001790F0(s32, s32) __asm__("func_0017B048");
+s32 func_0017B218_x001790F0() __asm__("func_0017B218");
+long long func_001790F0_x001790F0(u8 *arg0, s32 arg1) __asm__("func_001790F0");
+long long func_001790F0_x001790F0(u8 *arg0, s32 arg1) {
+  if (func_0017B218_x001790F0(arg0) != 0)
+  {
+    func_0017B048_x001790F0(0, 0xFF020302);
+    return;
+  }
+  *((s32 *) (((u8 *) arg0) + 0x10)) = arg1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179148);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001791F0);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179310);
@@ -845,7 +855,31 @@ INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B178);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B218);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B240);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B278);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B2D0);
+s32 func_00179018_x0017B2D0() __asm__("func_00179018");
+s32 func_0017B038_x0017B2D0() __asm__("func_0017B038");
+s32 func_0017B368_x0017B2D0() __asm__("func_0017B368");
+s32 func_0017B380_x0017B2D0() __asm__("func_0017B380");
+s32 func_0017B3A8_x0017B2D0() __asm__("func_0017B3A8");
+extern s32 func_001791F0_x0017B2D0 __asm__("func_001791F0");
+u8 * func_0017B2D0_x0017B2D0(u8 *arg0) __asm__("func_0017B2D0");
+u8 * func_0017B2D0_x0017B2D0(u8 *arg0) {
+    func_00179018_x0017B2D0(arg0, 0, 0x35);
+    *(s32 *)((u8 *)arg0 + 0) = 2;
+    func_0017B038_x0017B2D0(arg0 + 4);
+    *(s32 *)((u8 *)arg0 + 0x10) = 2;
+    func_0017B368_x0017B2D0(arg0 + 0x14);
+    func_0017B380_x0017B2D0(arg0 + 0x20);
+    func_0017B380_x0017B2D0(arg0 + 0x40);
+    func_0017B380_x0017B2D0(arg0 + 0x60);
+    func_0017B380_x0017B2D0(arg0 + 0x80);
+    func_0017B3A8_x0017B2D0(arg0 + 0xA0);
+    *(s32 *)((u8 *)arg0 + 0xC0) = 0;
+    *(s32 *)((u8 *)arg0 + 0xC8) = 0;
+    *(s32 *)((u8 *)arg0 + 0xCC) = 0;
+    *(s32 **)((u8 *)arg0 + 0xC4) = &func_001791F0_x0017B2D0;
+    *(s32 *)((u8 *)arg0 + 0xD0) = 0;
+    return arg0;
+}
 void func_0017B368_x0017B368(u8 *arg0) __asm__("func_0017B368");
 void func_0017B368_x0017B368(u8 *arg0)
 {

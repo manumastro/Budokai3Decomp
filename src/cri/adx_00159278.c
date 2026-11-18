@@ -953,7 +953,14 @@ void func_0015A730(void) {
     memset(&D_0040F848, 0, 0xC0);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A758);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A7B8);
+s32 memset_x0015A7B8() __asm__("memset");
+void func_0015A7B8_x0015A7B8(s8 *arg0) __asm__("func_0015A7B8");
+void func_0015A7B8_x0015A7B8(s8 *arg0) {
+    if (arg0 != NULL) {
+        *arg0 = 0;
+        memset_x0015A7B8(arg0, 0, 0xC);
+    }
+}
 void func_0015A7F0_x0015A7F0(u8 *arg0, s16 arg1, s16 arg2) __asm__("func_0015A7F0");
 void func_0015A7F0_x0015A7F0(u8 *arg0, s16 arg1, s16 arg2)
 {
@@ -1015,7 +1022,14 @@ loop_3:
     }
     return var_v0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A940);
+s32 memset_x0015A940() __asm__("memset");
+void func_0015A940_x0015A940(s8 *arg0) __asm__("func_0015A940");
+void func_0015A940_x0015A940(s8 *arg0) {
+    if (arg0 != NULL) {
+        *arg0 = 0;
+        memset_x0015A940(arg0, 0, 0x90);
+    }
+}
 void func_0015A978_x0015A978(u8 *arg0, s16 arg1, s16 arg2) __asm__("func_0015A978");
 void func_0015A978_x0015A978(u8 *arg0, s16 arg1, s16 arg2)
 {
@@ -6550,7 +6564,11 @@ void func_0015D680(u8 *arg0) {
         } while (*(s8 *)((u8 *)arg0 + 0x45) != 0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015D708);
+s32 ADXERR_CallErrFunc1_x0015D708(s32) __asm__("ADXERR_CallErrFunc1");
+void func_0015D708_x0015D708(s32 arg0, s32 arg1) __asm__("func_0015D708");
+void func_0015D708_x0015D708(s32 arg0, s32 arg1) {
+    ADXERR_CallErrFunc1_x0015D708(arg1);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015D720);
 typedef char Sint8_x0015D850;
 typedef signed int Sint32_x0015D850;
@@ -6634,7 +6652,11 @@ void func_0015D9C8(void) {
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015D9E0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015DA30);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015DA80);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015DAD0);
+s32 ADXERR_CallErrFunc1_x0015DAD0(s32) __asm__("ADXERR_CallErrFunc1");
+void func_0015DAD0_x0015DAD0(s32 arg0, s32 arg1) __asm__("func_0015DAD0");
+void func_0015DAD0_x0015DAD0(s32 arg0, s32 arg1) {
+    ADXERR_CallErrFunc1_x0015DAD0(arg1);
+}
 void func_0015DAE8(u8 *arg0) {
     func_001635A0(&func_0015DAD0, 0);
     func_00161F18(&D_00461800, &func_0016A798, 0);

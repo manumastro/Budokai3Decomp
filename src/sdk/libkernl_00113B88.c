@@ -495,7 +495,11 @@ s32 func_00115CD8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115D58);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115E00);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115E70);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115EC8);
+s32 func_00121288_x00115EC8(f32) __asm__("func_00121288");
+s32 func_00115EC8_x00115EC8(f32 fparg0) __asm__("func_00115EC8");
+s32 func_00115EC8_x00115EC8(f32 fparg0) {
+    return func_00121288_x00115EC8(1.47456e8f / fparg0);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115F00);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115F50);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115FB0);

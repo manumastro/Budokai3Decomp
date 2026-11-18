@@ -77,7 +77,11 @@ int func_00112608_x00112608(int type, int size, int addr)
     return sif_iopheap_rbuf_x00112608[0];
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112688);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112700);
+s32 func_00112688_x00112700() __asm__("func_00112688");
+s32 func_00112700_x00112700(s32 arg0) __asm__("func_00112700");
+s32 func_00112700_x00112700(s32 arg0) {
+    return func_00112688_x00112700(arg0);
+}
 typedef struct RpcPkt_x00112720 {
     void *cur_pkt;               
     int cur_pkt_id;
@@ -350,7 +354,11 @@ void func_001131F8_x001131F8(void *addr, int arglen, int args)
     int local[4];
     _sceSifLoadModuleBuffer_x001131F8(addr, arglen, args, &local);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00113218);
+s32 func_00112C28_x00113218() __asm__("func_00112C28");
+s32 func_00113218_x00113218(s32 arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("func_00113218");
+s32 func_00113218_x00113218(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    return func_00112C28_x00113218(arg0, arg1, arg2, arg3);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00113238);
 int _sceSifLoadModule_x00113460(void *name, int arglen, int args, int ret, int rpcno) __asm__("func_00113238");
 int _sceSifLoadModule_x00113460(void *name, int arglen, int args, int ret, int rpcno) __asm__("func_00113238");

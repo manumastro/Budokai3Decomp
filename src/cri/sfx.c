@@ -646,7 +646,11 @@ void func_001A08A8_x001A08A8(void *arg0, void *arg1, void *arg2) __asm__("func_0
 void func_001A08A8_x001A08A8(void *arg0, void *arg1, void *arg2) {
     fn_12_C60_x001A08A8(arg0, arg1, 16, arg2);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A08C8);
+s32 func_001A0908_x001A08C8() __asm__("func_001A0908");
+void func_001A08C8_x001A08C8(s32 arg0, s32 arg1, s32 arg2) __asm__("func_001A08C8");
+void func_001A08C8_x001A08C8(s32 arg0, s32 arg1, s32 arg2) {
+    func_001A0908_x001A08C8(arg0, arg1, 0x18, arg2);
+}
 typedef unsigned int u32_x001A08E8;
 extern void fn_12_C60_x001A08E8(u32_x001A08E8, u32_x001A08E8, u32_x001A08E8, u32_x001A08E8) __asm__("func_001A0908");
 void func_001A08E8_x001A08E8(u32_x001A08E8 arg0, u32_x001A08E8 arg1, u32_x001A08E8 arg2) __asm__("func_001A08E8");
