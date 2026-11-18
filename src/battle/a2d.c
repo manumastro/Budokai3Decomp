@@ -4,7 +4,7 @@ extern void func_00125740(void *, void *, s32);
 
 extern s32 *D_0058BB64[];
 extern s32 D_0058BB70[];
-extern void func_0022C060(s32);
+extern void func_0022C060(s32, f32);
 extern void amDraw_SetPacketMode(s32);
 extern void func_0022CD00(s32 *);
 typedef struct A2dEnt {
@@ -12,7 +12,7 @@ typedef struct A2dEnt {
     f32 v;
 } A2dEnt;
 extern void func_0022B900(s32 *, s32 *, f32);
-extern s32 func_0022BC30(s32 *, s32 *, f32);
+extern s32 func_0022BC30(s32 *, f32);
 
 extern s32 D_004706D8;
 extern s32 *D_004706D0;
@@ -711,17 +711,17 @@ s32 func_0022BF80(s32 *a) {
     s32 f = a[3];
 
     if (f & 1) {
-        return func_0022BC30((s32 *)a[0], a, *(f32 *)&a[4]);
+        return func_0022BC30((s32 *)a[0], *(f32 *)&a[4]);
     }
     if (f & 2) {
-        return func_0022BC30((s32 *)((s32 *)a[0])[4], a, *(f32 *)&a[4]);
+        return func_0022BC30((s32 *)((s32 *)a[0])[4], *(f32 *)&a[4]);
     }
     return -1;
 }
-void func_0022BFF0(s32 *p) {
+void func_0022BFF0(s32 *p, f32 f) {
     s32 *a;
 
-    func_0022C060(p[6]);
+    func_0022C060(p[6], f);
     a = (s32 *)p[6];
     if (a[2] == 0xFF) {
         p[3] |= 0x100;
@@ -729,7 +729,42 @@ void func_0022BFF0(s32 *p) {
         p[3] |= 0x100;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C060);
+extern void func_0022C7D0(s32 *, s32, f32);
+extern void func_0022ACF0(s32 *, u8 *);
+void func_0022C060(s32 a0, f32 dt) {
+    s32 *o = (s32 *)a0;
+    f32 t;
+    u8 *top;
+    s32 f;
+    s32 r;
+
+    if (o[1] & 1) {
+        t = *(f32 *)&o[4] + D_00470710 * dt;
+        if (t < 0.0f) {
+            t = 0.0f;
+        }
+        func_0022C7D0(o, 1, t);
+        top = D_004706CC;
+        D_004706CC = top + 0x50;
+        *(F4 *)(top + 0x50) = *(F4 *)(top + 0x0);
+        *(QuadA *)(top + 0x60) = *(QuadA *)(top + 0x10);
+        *(F4 *)(top + 0x80) = *(F4 *)(top + 0x30);
+        *(F4 *)(top + 0x90) = *(F4 *)(top + 0x40);
+        D_004706D4 += 1;
+        func_0022ACF0(o, top);
+        D_004706D4 -= 1;
+        D_004706CC -= 0x50;
+        f = o[3];
+        if (f & 1) {
+            r = func_0022BC30((s32 *)o[0], *(f32 *)&o[4]);
+        } else if (f & 2) {
+            r = func_0022BC30((s32 *)((s32 *)o[0])[4], *(f32 *)&o[4]);
+        } else {
+            r = -1;
+        }
+        o[2] = r;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C1D0);
 void func_0022C430(s32 *a0, f32 f) {
     s32 buf[24];
