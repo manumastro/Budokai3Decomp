@@ -5075,7 +5075,63 @@ void func_001F3180(BtLTop *a0) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F32F0);
+void func_001F32F0(char *a0) {
+    char *s0;
+    char *bg;
+    char *v;
+    s32 idx;
+    BtbHolder *h;
+    s32 b;
+    s32 t;
+    s32 w;
+    s32 fl;
+    s32 fl2;
+    char *c;
+
+    s0 = a0;
+    c = s0 + 0x30;
+    if (*(s32 *)c != 0) {
+        func_00125740(D_00495718, (u8 *)(c + 0x10), 0x10);
+        func_00125740(D_00495758, (u8 *)(c + 0x20), 0x10);
+    }
+    bg = (char *)gBtbBg;
+    b = *(s32 *)(bg + 0x34);
+    idx = D_0051CD20[0];
+    t = idx * 36;
+    v = (char *)*(s32 *)(t + b + 4);
+    w = *(s32 *)(v + 0xA4);
+    if (w != 0) {
+        D_00470238 = 1;
+        amModel_SetCurrent(w, 0x2002000);
+    }
+    h = *(BtbHolder **)(s0 + 0x10);
+    if (h->item->id != 0) {
+        func_002D04A0(h->item->kind2);
+        func_002CFDE0(0);
+        func_002D04A0(0);
+    }
+    fl = *(s32 *)(s0 + 0x20);
+    if ((fl & 0x800) || (fl & 0x8000)) {
+        if (*(s32 *)(s0 + 0x30) != 0) {
+            __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(BtbBg_GetStageModel()), "r"(D_0051CCD0) : "memory");
+            D_0051CCD0[3] = 1.0f;
+            D_0047064C = (s32)D_0051CCD0;
+        }
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            func_00133D80(*(s32 *)((char *)gBattle + 0x8928));
+            func_00133D90(*(f32 *)((char *)gBattle + 0x892C));
+            DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
+        }
+    }
+    func_0013E0A0(*(s32 *)(*(char **)(s0 + 0x10) + 4));
+    fl2 = *(s32 *)(s0 + 0x20);
+    if ((fl2 & 0x800) || (fl2 & 0x8000)) {
+        D_0047064C = 0;
+        if (!(*(f32 *)((char *)gBattle + 0x892C) <= 0.0f)) {
+            DrawFlags_Apply(0, 0x8000, 0, 0, 0);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F34E0);
 extern s32 D_0051CD20[];
 extern void amModel_SetCurrent(s32, s32);
