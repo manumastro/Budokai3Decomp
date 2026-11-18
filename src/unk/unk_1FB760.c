@@ -898,7 +898,6 @@ u8 *func_00209540(u8 *a, s32 k, s32 pri) {
 }
 extern u8 *func_00208A40(u8 *);
 extern u8 *func_00208BD0(u8 *);
-#if 0
 u8 *func_002096D0(u8 *a0, s32 a1, s32 a2) {
     u8 *s3 = a0;
     s32 s2 = a1;
@@ -906,6 +905,7 @@ u8 *func_002096D0(u8 *a0, s32 a1, s32 a2) {
     u8 *s0;
     u8 *loc[8];
     f32 vec[4];
+    u32 h;
     s0 = D_0051FA40[D_00470650];
     D_00470650 = D_00470650 + 1;
     if (D_00470650 >= 0x80) {
@@ -925,26 +925,27 @@ u8 *func_002096D0(u8 *a0, s32 a1, s32 a2) {
     *(u8 **)(a0 + 0x4) = s0;
     *(u8 **)s0 = a0;
     __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(vec) : "memory");
-    loc[0] = s0;
-    loc[2] = s3;
     loc[4] = (u8 *)vec;
     loc[5] = (u8 *)vec;
     loc[6] = (u8 *)vec;
     loc[7] = (u8 *)vec;
-    if ((*(s32 *)(s3 + 0x4) & 0xFFFF0000) != 0x20000) {
-        if ((*(s32 *)(s3 + 0x4) & 0xFFFF0000) == 0x10000) {
-            a0 = func_00208BD0((u8 *)loc);
-            *(s32 *)(a0 + 0x8) |= 0x2000;
-        }
-    } else {
-        a0 = func_00208A40(loc);
-        *(s32 *)(a0 + 0x8) |= 0x2000;
+    loc[0] = s0;
+    loc[2] = s3;
+    h = *(u32 *)(s3 + 4) & 0xFFFF0000;
+    switch (h) {
+    case 0x10000: {
+        u8 *r = func_00208BD0((u8 *)loc);
+        *(u32 *)(r + 8) |= 0x2000;
+        break;
+    }
+    case 0x20000: {
+        u8 *r = func_00208A40((u8 *)loc);
+        *(u32 *)(r + 8) |= 0x2000;
+        break;
+    }
     }
     return s0;
 }
-// differs: the dispatch on the high half of the node (0x20000 / 0x10000) is laid out with the 0x10000 case inline in the original; the layouts tried (else-if, nested != forms) are one or two instructions off in the branch order
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002096D0);
 void func_00209850(u8 *a0, u8 *a1) {
     u8 *s1;
     u8 *s0;
