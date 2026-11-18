@@ -538,7 +538,25 @@ void func_00228430(u8 *a0) {
     *(F4 *)(a2 + 0x90) = *(F4 *)(a0 + 0x40);
     D_004706D4 = D_004706D4 + 1;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002284D0);
+typedef struct F8 { f32 v[8]; } F8;
+typedef struct Mat50 {
+    F4 a;
+    QuadA b;
+    F8 c;
+} __attribute__((aligned(16))) Mat50;
+extern Mat50 D_0044FA60;
+void func_002284D0(u8 *a0) {
+    Mat50 m = D_0044FA60;
+    Mat50 *d;
+
+    if (a0 == 0) {
+        a0 = D_004706CC;
+    }
+    d = (Mat50 *)a0;
+    d->a = m.a;
+    d->b = m.b;
+    d->c = m.c;
+}
 void func_002285A0(s32 *p, f32 t) {
     s32 *n = p;
     s32 *c = (s32 *)p[6];
