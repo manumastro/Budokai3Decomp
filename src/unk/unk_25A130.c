@@ -131,7 +131,7 @@ extern void CutIn_TaskMain(void);
 extern void CutIn_TaskKill(void);
 extern void A2d_CallHandler(s32, s32 *);
 s32 func_0025AA20(s32);
-void func_0025A7C0(s32, s32);
+s32 func_0025A7C0(s32, s32);
 s32 func_0025A580(s32, s32);
 void func_0025A130(s32, s32);
 
@@ -209,7 +209,7 @@ extern char D_0046AED0[];
 extern void func_00257860(void);
 extern void func_00256F80(void);
 extern void func_00256EB0(void);
-extern s32 func_0021C460(s16);
+extern s32 func_0021C460();
 extern void amTask_Kill(void *);
 typedef struct A5Work2 {
     void *f0;
@@ -293,7 +293,88 @@ s32 func_0025A580(s32 p0, s32 p1) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A7C0);
+extern char D_0046AEE0[];
+extern char D_0046AEF0[];
+extern void func_002587F0(void);
+extern void func_00257E30(void);
+extern void func_00257DA0(void);
+typedef struct A7Work2 {
+    void *f0;
+    void *f4;
+    void *f8;
+    void *fC;
+    void *f10;
+    void *f14;
+    char pad18[0x18];
+    void *f30;
+    void *f34;
+} A7Work2;
+typedef struct A7Task2 {
+    char pad0[0x30];
+    A7Work2 w;
+} A7Task2;
+typedef struct A7Work {
+    A7Task2 *f0;
+    s32 f4;
+    char pad8[0x18];
+    s16 f20[2];
+} A7Work;
+typedef struct A7Task {
+    char pad0[0x30];
+    A7Work w;
+} A7Task;
+s32 func_0025A7C0(s32 p0, s32 p1) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
+    ScrObj **g = (ScrObj **)D_0058D4EC;
+    A7Work *w;
+    A7Work2 *w2;
+    void *v;
+    s32 n;
+    s32 c;
+    s32 k;
+
+    if (g[0] != NULL) {
+        return 0;
+    }
+    g[0] = (ScrObj *)amTask_Create(func_002587F0, func_00257E30, 0x5410, 0x1000, 0x2000000, D_0046AEE0);
+    w = &((A7Task *)g[0])->w;
+    memset(w, 0, 0x38);
+    w->f0 = (A7Task2 *)amTask_Create(func_00257DA0, NULL, 0x3A30, 0x1000, 0x2000008, D_0046AEF0);
+    w2 = &w->f0->w;
+    memset(w2, 0, 0x38);
+    w2->f0 = w;
+    w->f4 = 0;
+    w->f20[0] = p0;
+    w->f20[1] = p1;
+    D_00470704 = v = sys->fE60;
+    D_0047070C = n = 0x4000000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, n);
+    D_00470238 = 0;
+    k = (func_0021C360(p0) & 1) + 0x59;
+    w2->f4 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    w2->f8 = func_0022D860(sys->fE68->f14[0x36], 0.0f);
+    w2->f14 = func_0022D860(sys->fE68->f14[0x3C], 0.0f);
+    w2->fC = func_0022D860(sys->fE68->f14[0x38], 0.0f);
+    w2->f10 = func_0022D860(sys->fE68->f14[0x3A], 0.0f);
+    c = func_0021C460(p0);
+    if (c == -1) {
+        c = 2;
+    }
+    if (func_0021C360(p0) & 1) {
+        k = c + 0x1D;
+    } else {
+        k = c + 0x1A;
+    }
+    w2->f30 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    c = func_0021C460(p1);
+    if (c == -1) {
+        c = 2;
+    }
+    k = (func_0021C360(p0) & 1) ? c + 0x20 : c + 0x23;
+    w2->f34 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    return 1;
+}
 extern char D_0046AF00[];
 extern char D_0046AF10[];
 extern s32 D_0047035C;
