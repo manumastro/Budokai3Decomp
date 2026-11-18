@@ -1159,69 +1159,55 @@ void func_001AA450(BtlRank *a0) {
 }
 extern u8 D_00492FF0[];
 
-// GIVEN UP: the max/min folds are right, but the original keeps the entry address and the flag address in other
-// registers, loads the index in each step and is 18 instructions longer (0x2A0 against 0x258; 4 forms tried)
-#if 0
 static inline void BtlCmd_Fold(s32 *cur, s32 v) {
-    if (v > 0) {
-        if (*cur > 0) {
-            if (*cur < v) {
-                *cur = v;
-            }
-        } else {
-            *cur = v;
-        }
+    if (v <= 0) {
+        *cur = (v < *cur) ? *cur : v;
     } else {
-        if (v < *cur) {
+        if (*cur <= 0) {
             *cur = v;
+        } else {
+            *cur = (*cur < v) ? *cur : v;
         }
     }
 }
 
-void func_001AA5C0(u8 *a0) {
+void func_001AA5C0(BtlRank *a0) {
+    s8 *fl;
     s32 idx;
     s32 t0;
     s32 a3;
     s32 v;
-    s32 flags;
-    u8 *ent;
-
-    idx = *(s16 *)(a0 + 0x44);
+    idx = a0->idx;
     if (idx >= 0) {
-        *(s32 *)(a0 + 0x48) = 0x80000000;
-        *(s32 *)(a0 + 0x4C) = 0x80000000;
-        *(s32 *)(a0 + 0x50) = 0x80000000;
-        *(s32 *)(a0 + 0x54) = 0x80000000;
+        fl = (s8 *)gBattle + idx * 8 + 0x88B0;
+        a0->f48 = 0x80000000;
+        a0->f4C = 0x80000000;
+        a0->f50 = 0x80000000;
+        a0->f54 = 0x80000000;
         for (t0 = 0; t0 < 2; t0++) {
             for (a3 = 0; a3 < 8; a3++) {
-                flags = *(s8 *)((u8 *)gBattle + idx * 8 + 0x88B0 + a3);
-                ent = D_00492FC0 + *(s16 *)(a0 + 0x44) * 184;
                 if (t0 == 0) {
-                    v = *(s32 *)(ent + a3 * 4 + 0x48);
+                    v = *(s32 *)(D_00492FC0 + a0->idx * 184 + a3 * 4 + 0x48);
                 } else {
-                    v = *(s32 *)(ent + a3 * 4 + 0x94);
+                    v = *(s32 *)(D_00492FC0 + a0->idx * 184 + a3 * 4 + 0x94);
                 }
-                if ((flags & 1) != 0) {
-                    BtlCmd_Fold((s32 *)(a0 + 0x48), v);
+                if ((fl[a3] & 1) != 0) {
+                    BtlCmd_Fold(&a0->f48, v);
                 }
-                if ((flags & 2) != 0) {
-                    BtlCmd_Fold((s32 *)(a0 + 0x4C), v);
+                if ((fl[a3] & 2) != 0) {
+                    BtlCmd_Fold(&a0->f4C, v);
                 }
-                if ((flags & 4) != 0) {
-                    BtlCmd_Fold((s32 *)(a0 + 0x50), v);
+                if ((fl[a3] & 4) != 0) {
+                    BtlCmd_Fold(&a0->f50, v);
                 }
-                if ((flags & 8) != 0) {
-                    BtlCmd_Fold((s32 *)(a0 + 0x54), v);
+                if ((fl[a3] & 8) != 0) {
+                    BtlCmd_Fold(&a0->f54, v);
                 }
             }
         }
-        ent = D_00492FF0 + idx * 184;
-        v = *(s32 *)ent;
-        BtlCmd_Fold((s32 *)(a0 + 0x50), v);
+        BtlCmd_Fold(&a0->f50, *(s32 *)(D_00492FF0 + a0->idx * 184));
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001AA5C0);
 void func_001AA860(BtlRank *a0) {
     s32 x;
 
