@@ -1,0 +1,20 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_002861B0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286650);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286840);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286A30);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286C50);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286DA0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286E70);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286FD0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287060);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_002870D0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287110);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_002872A0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_002878B0);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287A70);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287C30);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287C60);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287E60);
+INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00288000);

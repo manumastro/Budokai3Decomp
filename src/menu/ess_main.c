@@ -725,53 +725,80 @@ void Ess_TaskMain(u8 *a0) {
     *(void **)(s3 + 0x1C) = ((void *)Ess_TaskBgStart == 0) ? 0 : (void *)Ess_TaskBgStart;
     *(s32 *)s2 = 0;
 }
-#if 0
-// differs: 18 of 87: the field and table lookups, the flag tests and the stores match in shape; the 2.0 divisor is kept in another FPU register (f1 here, f2 in the original) and the D_004706CC reloads are placed differently
-extern u8 *D_004706CC;
+extern u8 D_004E0660[];
+extern void amCdFs_ReleaseCache(s32);
+extern void func_0012F2C0(void);
+extern void amCamera_Init(void *);
+extern void func_002A9930(void);
+extern void func_002A9EA0(void);
+extern void amDraw_ResetPackets(void);
+extern void func_002AF650(void *, void *);
+extern void func_002AFCE0(void);
+extern void func_002AFE00(void);
+extern void func_002AF650(void *, void *);
+extern u8 D_005BCD20[];
 
-void func_0026D320(u8 *a0, u8 *a1, s32 a2, s32 a3) {
-    u8 *tb;
-    u8 *ent;
-    f32 x;
-    f32 y;
-    f32 t;
+extern void amCdFs_Close(void *, s32);
+extern s32 amCdFs_ReadFile(s32, s32, s32);
+extern void amCdFs_SetHeap(u8);
+extern void func_002AFCE0(void);
+extern void func_002AFE00(void);
+extern s32 func_002B0000(u8 *, s32 *);
+extern void func_002A9C00(s32, s32, s32, void *, s32);
+extern void func_002A9D30(s32, s32, void *, s32);
+extern s32 func_002B0390(u8 *, s32 *);
+
+extern void func_0012F2C0(void);
+extern void amDraw_ResetPackets(void);
+extern f32 D_004708F8;
+extern u8 D_004E0660[];
+extern u8 D_004E0668[];
+extern s32 func_002B0190(u8 *, u8 *);
+extern void amCdFs_ReleaseCache(s32);
+extern s32 func_002AF8E0(u8 *, u8 *);
+extern u8 D_005BC180[];
+extern void amCamera_Init(void *);
+extern u8 D_005ABA80[];
+extern u8 *gSklEdit;
+extern u8 D_004E0688[];
+extern void func_002B1D70(u8 *);
+extern void func_002B1B10(u8 *, s32);
+extern u8 *D_004706CC;
+void func_0026D320(u8 *d, u8 *b, s32 idx, s32 flags) {
     s32 off;
-    tb = a1 + *(s32 *)(a1 + 0x14);
-    off = *(s32 *)(tb + (a2 - *(s32 *)(a1 + 0x18)) * 4);
-    ent = a1 + off;
-    x = (f32)*(s16 *)(ent + 0x10);
-    y = (f32)*(s16 *)(ent + 0x12);
-    if (a3 & 1) {
-        *(s32 *)(a0 + 0x34) = 0;
-        *(f32 *)(a0 + 0x3C) = y * *(f32 *)((u8 *)D_004706CC + 0x3C);
-    } else if (a3 & 2) {
-        *(f32 *)(a0 + 0x34) = -y * *(f32 *)((u8 *)D_004706CC + 0x3C);
-        *(s32 *)(a0 + 0x3C) = 0;
+    u8 *e;
+    f32 X;
+    f32 Y;
+    off = *(s32 *)((*(s32 *)(b + 0x14) + (s32)b) + (idx - *(s32 *)(b + 0x18)) * 4);
+    e = b + off;
+    X = (f32)*(s16 *)(e + 0x10);
+    Y = (f32)*(s16 *)(e + 0x12);
+    if (flags & 1) {
+        *(s32 *)(d + 0x34) = 0;
+        *(f32 *)(d + 0x3C) = Y * *(f32 *)(D_004706CC + 0x3C);
+    } else if (flags & 2) {
+        *(f32 *)(d + 0x34) = -Y * *(f32 *)(D_004706CC + 0x3C);
+        *(s32 *)(d + 0x3C) = 0;
     } else {
-        t = -y / 2.0f;
-        *(f32 *)(a0 + 0x34) = t * *(f32 *)((u8 *)D_004706CC + 0x3C);
-        t = y / 2.0f;
-        *(f32 *)(a0 + 0x3C) = t * *(f32 *)((u8 *)D_004706CC + 0x3C);
+        *(f32 *)(d + 0x34) = (-Y / 2.0f) * *(f32 *)(D_004706CC + 0x3C);
+        *(f32 *)(d + 0x3C) = (Y / 2.0f) * *(f32 *)(D_004706CC + 0x3C);
     }
-    if (a3 & 8) {
-        *(s32 *)(a0 + 0x30) = 0;
-        *(f32 *)(a0 + 0x38) = x * *(f32 *)((u8 *)D_004706CC + 0x38);
-    } else if (a3 & 0x10) {
-        *(f32 *)(a0 + 0x30) = -x * *(f32 *)((u8 *)D_004706CC + 0x38);
-        *(s32 *)(a0 + 0x38) = 0;
+    if (flags & 8) {
+        *(s32 *)(d + 0x30) = 0;
+        *(f32 *)(d + 0x38) = X * *(f32 *)(D_004706CC + 0x38);
+    } else if (flags & 0x10) {
+        *(f32 *)(d + 0x30) = -X * *(f32 *)(D_004706CC + 0x38);
+        *(s32 *)(d + 0x38) = 0;
     } else {
-        t = -x / 2.0f;
-        *(f32 *)(a0 + 0x30) = t * *(f32 *)((u8 *)D_004706CC + 0x38);
-        t = x / 2.0f;
-        *(f32 *)(a0 + 0x38) = t * *(f32 *)((u8 *)D_004706CC + 0x38);
+        *(f32 *)(d + 0x30) = (-X / 2.0f) * *(f32 *)(D_004706CC + 0x38);
+        *(f32 *)(d + 0x38) = (X / 2.0f) * *(f32 *)(D_004706CC + 0x38);
     }
-    *(s32 *)(a0 + 0x40) = 0;
-    *(s32 *)(a0 + 0x44) = 0;
-    *(f32 *)(a0 + 0x48) = x;
-    *(f32 *)(a0 + 0x4C) = y;
+    *(s32 *)(d + 0x40) = 0;
+    *(s32 *)(d + 0x44) = 0;
+    *(f32 *)(d + 0x48) = X;
+    *(f32 *)(d + 0x4C) = Y;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D320);
+
 extern u8 D_0058F680[];
 extern u8 D_004E0660[];
 

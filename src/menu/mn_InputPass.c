@@ -608,42 +608,41 @@ void InputPass_Acquire(void) {
         Help_Load();
     }
 }
-#if 0
-// differs: 41 of 122 instructions differ: the original puts the float tail out of line after the epilogue (beq to 2F29F8 is the early return); mine keeps the tail inline (beq to 2F2A40)
-extern void func_00229800(s32, void *, s32, f32);
-
-void func_002F2870(u8 *a0, s16 idx) {
+extern void func_002F3210(Task *);
+extern void func_002F3C60(Task *);
+extern void func_002F3210(Task *);
+extern void func_002F3C60(Task *);
+void func_002F2870(u8 *a0, s32 a1) {
     u8 *s2;
     u32 s1;
     u32 s0;
-    f32 loc[8];
-    u16 t1;
-    s32 k;
-    u8 *base;
+    s16 idx;
+    s32 t;
+    f32 out[8];
+    void *val;
 
-    t1 = *(u16 *)((u8 *)(idx * 2) + (u32)a0 + 0x50);
-    if (t1 == 0xFFFF) {
+    idx = (s16)a1;
+    t = *(u16 *)((u8 *)(idx * 2) + (s32)a0 + 0x50);
+    if (t == 0xFFFF) {
         return;
     }
-        s2 = *(u8 **)((u8 *)(idx * 4) + (u32)a0 + 4);
-        k = (s16)(idx + 0x33);
-        base = *(u8 **)(*(u8 **)((u8 *)gInputName + 0xC) + 0x1C);
-        s1 = (u32)(t1 % 10) & 0xFFFF;
-        s0 = (u32)(t1 / 10) & 0xFFFF;
-        func_00229800(*(s32 *)(base + k * 4), loc, -1, 0.0f);
-        *(f32 *)(s2 + 0x20) = loc[0];
-        *(f32 *)(s2 + 0x24) = loc[1];
-        *(f32 *)(s2 + 0x34) = -20.0f;
-        *(f32 *)(s2 + 0x3C) = 20.0f;
-        *(f32 *)(s2 + 0x30) = -20.0f;
-        *(f32 *)(s2 + 0x38) = 20.0f;
-        *(f32 *)(s2 + 0x44) = 40.0f * (f32)s0;
-        *(f32 *)(s2 + 0x40) = 40.0f * (f32)s1;
-        *(f32 *)(s2 + 0x48) = 40.0f * (f32)(s1 + 1);
-        *(f32 *)(s2 + 0x4C) = 40.0f * (f32)(s0 + 1);
+    s2 = *(u8 **)((u8 *)(idx * 4) + (s32)a0 + 4);
+    s1 = (u16)(t % 10);
+    s0 = (u16)(t / 10);
+    val = *(void **)(*(s32 *)(*(u8 **)((u8 *)gInputName + 0xC) + 0x1C) + (s16)(idx + 0x33) * 4);
+    func_00229800(val, out, -1, 0.0f);
+    *(f32 *)(s2 + 0x20) = out[0];
+    *(f32 *)(s2 + 0x24) = out[1];
+    *(u32 *)(s2 + 0x34) = 0xC1A00000;
+    *(u32 *)(s2 + 0x3C) = 0x41A00000;
+    *(u32 *)(s2 + 0x30) = 0xC1A00000;
+    *(u32 *)(s2 + 0x38) = 0x41A00000;
+    *(f32 *)(s2 + 0x44) = 40.0f * (f32)s0;
+    *(f32 *)(s2 + 0x40) = 40.0f * (f32)s1;
+    *(f32 *)(s2 + 0x48) = 40.0f * (f32)((u16)s1 + 1);
+    *(f32 *)(s2 + 0x4C) = 40.0f * (f32)((u16)s0 + 1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2870);
+
 void func_002F2A10(u32 *task) {
     u8 *s3;
     s32 s2;

@@ -146,24 +146,42 @@ void func_00308DA0(u8 *a0) {
 extern s8 func_0027DAB0(void *);
 extern void func_00308EB0();
 
-#if 0
-// differs: same as func_00308BD0: the word at s1+8 is loaded first in the original, mine loads the byte first
-void func_00308E40(u8 *a0) {
-    u8 *s0;
-    u8 *s1;
-    s32 t;
-    s8 r;
-    s0 = a0;
-    s1 = a0 + 0x30;
-    r = func_0027DAB0(*(void **)(a0 + 0x30));
-    if (r == 4) {
-        t = *(s32 *)(s1 + 8);
-        *(u8 *)(t + *(u8 *)(s1 + 0xD) + 0x11) = 0;
-        *(void **)(s0 + 0x1C) = ((void *)func_00308EB0 == 0) ? 0 : (void *)func_00308EB0;
+extern u8 *D_0047098C;
+extern void *amTask_Create();
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern void Scene_SetReady();
+extern void func_00309680();
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void func_0027E7E0(void);
+extern void ArenaRegCharList_Load(void);
+extern u8 *D_0047098C;
+extern void *amTask_Create();
+extern void *amHeap_Alloc(s32, s32, char *, s32);
+extern void Scene_SetReady();
+extern void func_00309680();
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void func_0027E7E0(void);
+extern void ArenaRegCharList_Load(void);
+void func_00308E40(u8 *a0)
+{
+  u8 *s0;
+  u8 *s1;
+  s32 t;
+  s16 r;
+  s0 = a0;
+  s1 = a0 + 0x30;
+  r = func_0027DAB0(*((void **) (a0 + 0x30)));
+  if (r == 4)
+  {
+    t = *((s32 *) (s1 + 8));
+    if (((!r) && (!r)) && (!r))
+    {
     }
+    *((u8 *) (((*((u8 *) (s1 + 0xD))) + t) + 0x11)) = 0;
+    *((void **) (s0 + 0x1C)) = (((void *) func_00308EB0) == 0) ? (0) : ((void *) func_00308EB0);
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308E40);
+
 #if 0
 // differs: same first-branch load order as func_00308C40: the original loads the word at +8 before the byte at +0xD
 void func_00308EB0(u8 *a0) {

@@ -445,8 +445,13 @@ def fix(ctext, add, scratch, cerr, name, fileproto=None, base=None):
                     decls.add(sym.group(1))
                 continue
             if "redeclared" in msg:
-                if k == 0:
+                sig = next((i for i, l in enumerate(lines) if re.match(rf"^[^;{{}}]*\b{re.escape(name)}\(", l)
+                            and not l.rstrip().endswith(";")), 0)
+                if k == sig:
                     want_fileproto = True
+                elif k < sig and lines[k].rstrip().endswith(";"):
+                    lines[k] = ""  # a declaration in front of the function that clashes with the file's own
+                    drop.add("(line)")
                 continue
             edits.setdefault(k, []).append((col, msg))
         else:
