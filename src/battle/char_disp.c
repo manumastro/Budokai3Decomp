@@ -541,5 +541,76 @@ void func_0029F730(DispAnim *a, f32 dt) {
     }
 }
 
+// differs: 2 of 151 differ (round 7 r7c): in the second func_00136E80 call the original loads a3 (obj+0x20) before a2 (obj); ours loads a2 first. Tried: temporaries, +0, an inline helper taking a3. The pb/pd pointers (cast, used for the first member) are what makes the frame and the saved registers match.
+#if 0
+typedef struct DV4 { f32 x, y, z, w; } DV4;
+typedef struct DS30 {
+    f32 f00, f04, f08, f0c;
+    f32 f10, f14, f18, f1c;
+    f32 f20, f24, f28, f2c;
+    DV4 q;
+    f32 f40, f44, f48, f4c;
+} DS30;
+extern void func_00136E80(s32, void *, s32, s32, s32);
+extern void func_00137560(void *, void *);
+extern void amDraw_FlushPacket(void);
+void func_0029F830(u8 *a0) {
+    DV4 q[2];
+    DV4 b;
+    DV4 a;
+    DV4 d;
+    DV4 c;
+    DS30 *s;
+    DV4 *pd;
+    DV4 *pb;
+    s32 flags;
+
+    s = (DS30 *)(a0 + 0x30);
+    if (*(f32 *)(a0 + 0x30) < 0.0f) {
+        s->f00 = (s->f40 + s->f48) / 2.0f;
+    }
+    if (s->f04 < 0.0f) {
+        s->f04 = (s->f44 + s->f4c) / 2.0f;
+    }
+    a.x = s->f10 - s->f00 * s->f20;
+    pb = (DV4 *)&b;
+    pb->x = s->f10 + s->f20 * (*(f32 *)(a0 + 0x10) - s->f00);
+    a.y = s->f14 - s->f04 * s->f24;
+    b.y = s->f14 + s->f24 * (*(f32 *)(a0 + 0x14) - s->f04);
+    a.z = s->f08 + s->f18;
+    b.z = s->f08 + s->f18;
+    a.w = 1.0f;
+    b.w = 1.0f;
+    q[0].x = s->q.x;
+    q[0].y = s->q.y;
+    q[0].z = s->q.z;
+    q[0].w = s->q.w;
+    q[1].x = s->q.x;
+    q[1].y = s->q.y;
+    q[1].z = s->q.z;
+    q[1].w = s->q.w;
+    if (s->q.w > 0.0f) {
+        c.x = s->f40;
+        c.y = s->f44;
+        c.z = 1.0f;
+        c.w = 1.0f;
+        pd = (DV4 *)&d;
+        pd->x = s->f48 - 0.5f;
+        d.y = s->f4c - 0.5f;
+        d.z = 1.0f;
+        d.w = 1.0f;
+        if (*(s32 *)(a0 + 0x20) == 0) {
+            flags = 0x40001924;
+            func_00136E80(flags, q, *(s32 *)a0, 0, 5);
+        } else {
+            flags = 0x60000924;
+        }
+        func_00136E80(flags, q, *(s32 *)a0, *(s32 *)(a0 + 0x20), 5);
+        func_00137560(&a, &c);
+        func_00137560(pb, pd);
+        amDraw_FlushPacket();
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F830);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029FA90);
