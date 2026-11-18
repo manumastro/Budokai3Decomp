@@ -2899,27 +2899,20 @@ s32 func_001E1E80(Fighter *c) {
 // differs: 121 of 128 differ: the original keeps the object in s3 and the index in s2 (frame 0x50); the C takes the object into s4 whatever the declaration order (best order 120 of 128 instructions); the search compare (0x1FDC flag, the 1<<fBA4 mask, the 0x1A class test) is written as in the original
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E1E80);
 /* r6 best attempt diff 12 */
-#if 0
 void func_001E2070(Fighter *c) {
     s32 a;
 
-    if (gBattle->f8944 != 0) {
-        goto done;
+    if (gBattle->f8944 == 0) {
+        a = func_001E1D60(c);
+        if (c->fBA4 != a && c->fBA8 != a) {
+            if (c->f200F == 2) {
+                c->f1A48 = -1;
+                c->f200F = 0;
+            }
+            func_001E6F70((char *)c + 0x650, a);
+        }
     }
-    a = func_001E1D60(c);
-    if (c->fBA4 == a || c->fBA8 == a) {
-        goto done;
-    }
-    if (c->f200F == 2) {
-        c->f1A48 = -1;
-        c->f200F = 0;
-    }
-    func_001E6F70((char *)c + 0x650);
-done: ;
 }
-#endif
-// differs: the original copies the call result into a1 before its compares (move a1, v0; the C keeps it in v0); two local orders and the reversed compare tried
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2070);
 void func_001E20F0(Fighter *c) {
     s32 n;
     char *p;
@@ -4619,37 +4612,38 @@ go:
 void func_001E8B80(void *p) {
     func_00233E50(p);
 }
-/* r6 best attempt diff n/a (size 0x64 vs 0x80) */
-#if 0
 s32 func_001E8B90(Fighter *c) {
-    if (c->f1FF8 >= 2) {
-        if (gBattle->f7E2 != 3 || gBattle->f8977 == 3) {
-            return func_00234C20(c);
-        }
-    }
-    return 0;
-}
-#endif
-// r7 tried (no match): bool/ternary/result-var forms (0x54-0x6C), optimization_level 0/1/2/3 (O1 gives 0x70 closest; O0 38 instrs): original has slti-at/beqz-at, b+nop+nop pads before 16-aligned labels and a shared a1/v1 constant, no form found
-// differs: 0x64 bytes against 0x80: the original keeps the not-3 branch as an unconditional b to the call block placed after the check, and the zero return as a shared epilogue jump; the 0x8977 test is lui/addu/lb
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8B90);
-/* r6 best attempt diff n/a (size 0x64 vs 0x80) */
-#if 0
-s32 func_001E8C10(Fighter *c) {
+    Game *g;
+
     if (c->f1FF8 < 2) {
         return 0;
     }
-    if (gBattle->f7E2 == 3) {
-        if (gBattle->f8977 != 3) {
+    g = gBattle;
+    switch (g->f7E2) {
+    case 3:
+        if (g->f8977 != 3) {
             return 0;
         }
+        break;
+    }
+    return func_00234C20(c);
+}
+s32 func_001E8C10(Fighter *c) {
+    Game *g;
+
+    if (c->f1FF8 < 2) {
+        return 0;
+    }
+    g = gBattle;
+    switch (g->f7E2) {
+    case 3:
+        if (g->f8977 != 3) {
+            return 0;
+        }
+        break;
     }
     return func_00234C90(c);
 }
-#endif
-// differs: same shape as func_001E8B90 (0x64 against 0x80 bytes); the field is gBattle->f8977
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8C10);
-#if 0
 s32 func_001E8C90(Fighter *c) {
     Game *g;
 
@@ -4657,17 +4651,15 @@ s32 func_001E8C90(Fighter *c) {
         return 0;
     }
     g = gBattle;
-    if (g->f7E2 == 3) {
+    switch (g->f7E2) {
+    case 3:
         if (g->f8977 != 3) {
             return 0;
         }
+        break;
     }
     return func_00234D50(c);
 }
-#endif
-// differs: 0x64 bytes against 0x80: the original lays the Game field test out with the call block after a second branch (layout tried with ifs, else, gotos)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8C90);
-#if 0
 s32 func_001E8D10(Fighter *c) {
     Game *g;
 
@@ -4675,26 +4667,32 @@ s32 func_001E8D10(Fighter *c) {
         return 0;
     }
     g = gBattle;
-    if (g->f7E2 == 3) {
+    switch (g->f7E2) {
+    case 3:
         if (g->f8977 != 3) {
             return 0;
         }
+        break;
     }
     return func_00234EA0(c);
 }
-#endif
-// differs: same shape as func_001E8C90 (0x64 bytes against 0x80)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8D10);
 #if 0
 s32 func_001E8D90(Fighter *c) {
     Game *g;
     s32 v;
+    s32 st;
 
     if (c->f1FF8 < 2) {
         return 0;
     }
     g = gBattle;
-    switch (g->f7E2) {
+    st = g->f7E2;
+    switch (st) {
+    case 3:
+        if (g->f8977 != 3) {
+            return 0;
+        }
+        break;
     case 4:
         v = func_002CC450(c);
         if (v & 0x40000) {
@@ -4706,16 +4704,11 @@ s32 func_001E8D90(Fighter *c) {
             }
         }
         return 0;
-    case 3:
-        if (g->f8977 != 3) {
-            return 0;
-        }
-        break;
     }
     return func_002350A0(c);
 }
 #endif
-// differs: the state is read into a1 where the original uses a0, so the compares and the case order differ (both case orders tried)
+// differs: 3 of 56 differ: switch (case 3 then case 4) matches, but the state load goes to a1 where the original uses a0 (g stays a2); tsweep of g/v/st orders and types did not move it
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8D90);
 #if 0
 s32 func_001E8E70(Fighter *c) {
