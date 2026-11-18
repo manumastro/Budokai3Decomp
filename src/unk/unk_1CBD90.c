@@ -826,52 +826,39 @@ int Scr_CmdGetBattleF8960(void *unused, Arg *a) {
     *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle + 0x8960);
     return 1;
 }
-/* r6 best attempt diff 1 */
-// differs: 1 of 22: addu operand order at 001CDE14 (original `addu v0,v0,v1`, ours `addu v0,v1,v0`); the gp reloc at 001CDDE8 is an artifact. Tried: idx*16 + t, (s32)t + idx*16, (idx<<4) + t, 0x658 + (idx<<4), explicit off local; all give the same 1 difference.
-#if 0
 int func_001CDDE0(void *unused, Arg *a) {
     int *p = a->p;
     s32 idx = p[0];
-    char *t = gBattle->tbl[p[1]];
+    s32 t = (s32)gBattle->tbl[p[1]];
     if (idx >= 0 && idx < 0x16) {
-        *(f32 *)((char *)a + 0x40) = *(f32 *)((s32)t + idx * 16 + 0x658);
+        *(f32 *)((char *)a + 0x40) = *(f32 *)((idx << 4) + t + 0x658);
     } else {
         *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x48);
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDDE0);
-/* r6 best attempt diff 1 */
-// differs: 1 of 22: addu operand order at the element add (original `addu v0,v0,v1`, ours `addu v0,v1,v0`), the same as func_001CDDE0. The (s32)t cast form gave 5 of 22, not adopted.
-#if 0
 int func_001CDE40(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = gBattle->tbl[p[1]];
-    if (p[0] >= 0 && p[0] < 0x16) {
-        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + p[0] * 16 + 0x654);
+    s32 idx = p[0];
+    s32 t = (s32)gBattle->tbl[p[1]];
+    if (idx >= 0 && idx < 0x16) {
+        *(f32 *)((char *)a + 0x40) = *(f32 *)((idx << 4) + t + 0x654);
     } else {
         *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x44);
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDE40);
-/* r6 best attempt diff 1 */
-// differs: 1 of 22: addu operand order at the element add (original `addu v0,v0,v1`, ours `addu v0,v1,v0`), the same as func_001CDDE0. The (s32)t cast form gave 5 of 22, not adopted.
-#if 0
 int func_001CDEA0(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = gBattle->tbl[p[1]];
-    if (p[0] >= 0 && p[0] < 0x16) {
-        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + p[0] * 16 + 0x650);
+    s32 idx = p[0];
+    s32 t = (s32)gBattle->tbl[p[1]];
+    if (idx >= 0 && idx < 0x16) {
+        *(f32 *)((char *)a + 0x40) = *(f32 *)((idx << 4) + t + 0x650);
     } else {
         *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x40);
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDEA0);
 int Scr_CmdNop(void *unused, Arg *a) {
     return 1;
 }
