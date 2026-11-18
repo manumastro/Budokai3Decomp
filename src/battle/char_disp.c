@@ -934,8 +934,6 @@ void func_0029F730(DispAnim *a, f32 dt) {
     }
 }
 
-// differs: 2 of 151 differ (round 7 r7c): in the second func_00136E80 call the original loads a3 (obj+0x20) before a2 (obj); ours loads a2 first. Tried: temporaries, +0, an inline helper taking a3. The pb/pd pointers (cast, used for the first member) are what makes the frame and the saved registers match.
-#if 0
 typedef struct DV4 { f32 x, y, z, w; } DV4;
 typedef struct DS30 {
     f32 f00, f04, f08, f0c;
@@ -944,7 +942,7 @@ typedef struct DS30 {
     DV4 q;
     f32 f40, f44, f48, f4c;
 } DS30;
-extern void func_00136E80(s32, void *, s32, s32, s32);
+extern void func_00136E80(s32, void *, s32, long, s32);
 extern void func_00137560(void *, void *);
 extern void amDraw_FlushPacket(void);
 void func_0029F830(u8 *a0) {
@@ -1004,6 +1002,4 @@ void func_0029F830(u8 *a0) {
         amDraw_FlushPacket();
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F830);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029FA90);
