@@ -191,7 +191,17 @@ void func_00188040(void) {
     func_0015CB30();
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188058);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001880B0);
+typedef unsigned int u32_x001880B0;
+extern u32_x001880B0 fn_8004AC04_x001880B0(u32_x001880B0, u32_x001880B0) __asm__("func_0015CE98");
+extern u32_x001880B0 fn_8004B180_x001880B0(u32_x001880B0, u32_x001880B0, u32_x001880B0, u32_x001880B0, u32_x001880B0) __asm__("func_0015CB88");
+extern void fn_8004B0EC_x001880B0(void *) __asm__("func_0015CC38");
+void func_001880B0_x001880B0(u32_x001880B0 arg0, u32_x001880B0 arg1, u32_x001880B0 arg2, u32_x001880B0 arg3, u32_x001880B0 arg4) __asm__("func_001880B0");
+/* fn_12_34F04: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_34F04.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_001880B0_x001880B0(u32_x001880B0 arg0, u32_x001880B0 arg1, u32_x001880B0 arg2, u32_x001880B0 arg3, u32_x001880B0 arg4) {
+    fn_8004B0EC_x001880B0((void *)arg0);
+    fn_8004B180_x001880B0(arg0, arg1, arg2, arg3, arg4);
+    fn_8004AC04_x001880B0(arg0, arg4);
+}
 void func_00188128(void) {
     func_0015CD48();
 }
@@ -342,10 +352,74 @@ void func_00189FE0(void) {
 s32 func_00189FE8(void) {
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189FF0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A038);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A080);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A0C8);
+extern int fn_12_2D73C_x00189FF0(void *arg, int value) __asm__("func_001999E0");
+extern int fn_12_2F210_x00189FF0(void *arg, int a, int b, int c, int d) __asm__("func_0019C0D8");
+int func_00189FF0_x00189FF0(void *arg) __asm__("func_00189FF0");
+/* fn_12_21864: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_21864.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_00189FF0_x00189FF0(void *arg) {
+    int temp;
+    int result;
+    if (fn_12_2D73C_x00189FF0(arg, 6) == 0) {
+        return 0;
+    }
+    temp = fn_12_2F210_x00189FF0(arg, 3, 5, 0, 0);
+    result = 0;
+    if (temp != 0) {
+        result = temp;
+    }
+    return result;
+}
+extern int fn_12_2D73C_x0018A038(int arg0, int arg1) __asm__("func_001999E0");
+extern int fn_12_2F210_x0018A038(int arg0, int arg1, int arg2, int arg3, int arg4) __asm__("func_0019C0D8");
+int func_0018A038_x0018A038(int arg0) __asm__("func_0018A038");
+/* fn_12_217F8: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_217F8.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0018A038_x0018A038(int arg0) {
+    int result;
+    int value;
+    if (fn_12_2D73C_x0018A038(arg0, 6) == 0) {
+        return 0;
+    }
+    value = fn_12_2F210_x0018A038(arg0, 3, 6, 0, 0);
+    result = 0;
+    if (value != 0) {
+        result = value;
+    }
+    return result;
+}
+extern int fn_12_2D73C_x0018A080(void *arg0, int arg1) __asm__("func_001999E0");
+extern int fn_12_2F210_x0018A080(void *arg0, int arg1, int arg2, int arg3, int arg4) __asm__("func_0019C0D8");
+int func_0018A080_x0018A080(void *arg0) __asm__("func_0018A080");
+/* fn_12_2178C: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_2178C.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0018A080_x0018A080(void *arg0) {
+    int result;
+    int value;
+    if (!fn_12_2D73C_x0018A080(arg0, 6)) {
+        return 0;
+    }
+    value = fn_12_2F210_x0018A080(arg0, 3, 7, 0, 0);
+    result = 0;
+    if (value) {
+        result = value;
+    }
+    return result;
+}
+extern int fn_12_2D73C_x0018A0C8(void *arg0, int arg1) __asm__("func_001999E0");
+extern int fn_12_2F210_x0018A0C8(void *arg0, int arg1, int arg2, int arg3, int arg4) __asm__("func_0019C0D8");
+int func_0018A0C8_x0018A0C8(void *arg0, int arg1) __asm__("func_0018A0C8");
+/* fn_12_21714: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_21714.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0018A0C8_x0018A0C8(void *arg0, int arg1) {
+    int result;
+    int value;
+    if (!fn_12_2D73C_x0018A0C8(arg0, 6)) {
+        return 0;
+    }
+    value = fn_12_2F210_x0018A0C8(arg0, 3, 8, arg1, 0);
+    result = 0;
+    if (value) {
+        result = value;
+    }
+    return result;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A120);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A140);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A160);
@@ -476,7 +550,25 @@ void func_0018C918(void) {
 void func_0018C938(void) {
     func_0019D590();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C950);
+typedef unsigned char u8_x0018C950;
+typedef unsigned int u32_x0018C950;
+typedef struct MovieModule_x0018C950 {
+    u32_x0018C950 unk_00;
+    u32_x0018C950 unk_04;
+    u32_x0018C950 unk_08;
+    u32_x0018C950 unk_0c;
+    u8_x0018C950 pad_10[0x80];
+    u32_x0018C950 unk_90;
+} MovieModule_x0018C950;
+void func_0018C950_x0018C950(MovieModule_x0018C950 *self) __asm__("func_0018C950");
+/* fn_12_248E8: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_248E8.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_0018C950_x0018C950(MovieModule_x0018C950 *self) {
+    self->unk_00 = 0;
+    self->unk_04 = 0;
+    self->unk_08 = 0;
+    self->unk_0c = 0;
+    self->unk_90 = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C968);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C978);
 s32 func_0018CA30(void) {
@@ -485,7 +577,25 @@ s32 func_0018CA30(void) {
 s32 func_0018CA58(u8 *arg0) {
     return (((((*(u8 *)((u8 *)arg0 + 0) << 8) | *(u8 *)((u8 *)arg0 + 1)) << 8) | *(u8 *)((u8 *)arg0 + 2)) << 8) | *(u8 *)((u8 *)arg0 + 3);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018CA88);
+typedef unsigned int u32_x0018CA88;
+extern void *fn_12_3310C_x0018CA88(void) __asm__("func_0019D5D8");
+extern int fn_12_32EAC_x0018CA88(void *movie, u32_x0018CA88 *result) __asm__("func_0019D7F0");
+extern void fn_12_330E0_x0018CA88(void *movie) __asm__("func_0019D6A0");
+u32_x0018CA88 func_0018CA88_x0018CA88(void) __asm__("func_0018CA88");
+/* fn_12_24760: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_24760.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+u32_x0018CA88 func_0018CA88_x0018CA88(void) {
+    void *movie;
+    u32_x0018CA88 result;
+    movie = fn_12_3310C_x0018CA88();
+    if (movie == 0) {
+        return 0;
+    }
+    if (fn_12_32EAC_x0018CA88(movie, &result) == 0) {
+        result = 0;
+    }
+    fn_12_330E0_x0018CA88(movie);
+    return result;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018CAE0);
 void func_0018CBA8(s32 arg0) {
     s32 temp_v0;
@@ -545,7 +655,31 @@ s32 func_0018D3B8(void) {
     return 2;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018D3C0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018D3F8);
+typedef unsigned char u8_x0018D3F8;
+typedef signed int s32_x0018D3F8;
+typedef struct MovieSub_x0018D3F8 {
+    u8_x0018D3F8 pad_00[0x14];
+    s32_x0018D3F8 unk_14;
+    void *unk_18;
+} MovieSub_x0018D3F8;
+typedef struct MovieModule_x0018D3F8 {
+    u8_x0018D3F8 pad_00[0x78];
+    s32_x0018D3F8 unk_78;
+    u8_x0018D3F8 pad_7c[0x58];
+    u8_x0018D3F8 unk_d4[1];
+} MovieModule_x0018D3F8;
+void *func_0018D3F8_x0018D3F8(MovieModule_x0018D3F8 *self) __asm__("func_0018D3F8");
+/* fn_12_23F00: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_23F00.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void *func_0018D3F8_x0018D3F8(MovieModule_x0018D3F8 *self) {
+    void *base = (u8_x0018D3F8 *)self + 0xd4;
+    if (self->unk_78 == 0) {
+        return (void *)-1;
+    }
+    if (((MovieSub_x0018D3F8 *)base)->unk_14 != 0) {
+        return ((MovieSub_x0018D3F8 *)base)->unk_18;
+    }
+    return (void *)-1;
+}
 s32 *func_0018D420(void) {
     return &D_004673D0;
 }
@@ -751,7 +885,20 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F910);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F9A0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FA58);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FAE0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FB58);
+typedef unsigned int u32_x0018FB58;
+extern int fn_12_24990_x0018FB58(void *arg0, void *arg1) __asm__("func_0018D870");
+extern int fn_12_24A88_x0018FB58(int arg0, u32_x0018FB58 arg1) __asm__("func_0018D650");
+extern int fn_12_2ABF0_x0018FB58(void *arg0) __asm__("func_00194798");
+int func_0018FB58_x0018FB58(void *arg0, int *arg1) __asm__("func_0018FB58");
+/* fn_12_2A55C: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_2A55C.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0018FB58_x0018FB58(void *arg0, int *arg1) {
+    *arg1 = 0;
+    if (fn_12_24990_x0018FB58(arg0, arg1)) {
+        return fn_12_24A88_x0018FB58(0, 0xff000182);
+    }
+    *arg1 = fn_12_2ABF0_x0018FB58(arg0);
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FBC8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FC18);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FCC0);

@@ -349,9 +349,21 @@ void func_001A0888(s32 arg0) {
 s32 func_001A0898(void) {
     return D_004270CC;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A08A8);
+typedef signed int s32_x001A08A8;
+extern void fn_12_C60_x001A08A8(void *arg0, void *arg1, s32_x001A08A8 arg2, void *arg3) __asm__("func_001A0908");
+void func_001A08A8_x001A08A8(void *arg0, void *arg1, void *arg2) __asm__("func_001A08A8");
+/* fn_12_D60: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_D60.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_001A08A8_x001A08A8(void *arg0, void *arg1, void *arg2) {
+    fn_12_C60_x001A08A8(arg0, arg1, 16, arg2);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A08C8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A08E8);
+typedef unsigned int u32_x001A08E8;
+extern void fn_12_C60_x001A08E8(u32_x001A08E8, u32_x001A08E8, u32_x001A08E8, u32_x001A08E8) __asm__("func_001A0908");
+void func_001A08E8_x001A08E8(u32_x001A08E8 arg0, u32_x001A08E8 arg1, u32_x001A08E8 arg2) __asm__("func_001A08E8");
+/* fn_12_D38: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_D38.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_001A08E8_x001A08E8(u32_x001A08E8 arg0, u32_x001A08E8 arg1, u32_x001A08E8 arg2) {
+    fn_12_C60_x001A08E8(arg0, arg1, 0x20, arg2);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0908);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0A38);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0BC8);

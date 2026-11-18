@@ -2,7 +2,13 @@
 
 s32 memset(void *, s32, s32);           /* extern */
 
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001619A0", func_001619A0);
+typedef unsigned int u32_x001619A0;
+extern u32_x001619A0 fn_80046D94_x001619A0(u32_x001619A0, u32_x001619A0, u32_x001619A0, u32_x001619A0) __asm__("func_00152538");
+void func_001619A0_x001619A0(u32_x001619A0 arg0, u32_x001619A0 arg1, u32_x001619A0 arg2) __asm__("func_001619A0");
+/* fn_8004E324: from https://github.com/karamzov123/fzero-gx-decomp (src/dol/fn_8004E324.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_001619A0_x001619A0(u32_x001619A0 arg0, u32_x001619A0 arg1, u32_x001619A0 arg2) {
+    fn_80046D94_x001619A0(arg2, arg1, (arg0 + 48), (arg0 + 50));
+}
 void func_001619C8(u8 *arg0, u8 *arg1, u8 *arg2) {
     *(u16 *)((u8 *)arg0 + 0x28) = (u16) *(u16 *)((u8 *)arg1 + 0);
     *(u16 *)((u8 *)arg0 + 0x2A) = (u16) *(u16 *)((u8 *)arg2 + 0);

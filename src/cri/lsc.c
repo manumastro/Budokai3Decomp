@@ -15,7 +15,13 @@ void func_001699D0_x001699D0(u8 *arg0, s32 arg1) __asm__("func_001699D0");
 void func_001699D0_x001699D0(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0x28) = arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_001699D8);
+typedef unsigned int u32_x001699D8;
+extern u32_x001699D8 fn_80056E9C_x001699D8(u32_x001699D8, u32_x001699D8, u32_x001699D8, u32_x001699D8, u32_x001699D8) __asm__("func_00169A00");
+void func_001699D8_x001699D8(u32_x001699D8 arg0, u32_x001699D8 arg1) __asm__("func_001699D8");
+/* fn_800570DC: from https://github.com/karamzov123/fzero-gx-decomp (src/dol/fn_800570DC.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_001699D8_x001699D8(u32_x001699D8 arg0, u32_x001699D8 arg1) {
+    fn_80056E9C_x001699D8(arg0, arg1, 0, 0, (0x100000 - 1));
+}
 INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_00169A00);
 INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_00169B98);
 INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_00169BD8);
@@ -156,7 +162,16 @@ void func_0016A780_x0016A780(void) __asm__("func_0016A780");
 void func_0016A780_x0016A780(void) {
     func_0016FF58_x0016A780();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A798);
+typedef unsigned char u8_x0016A798;
+typedef unsigned int u32_x0016A798;
+extern volatile u32_x0016A798 lbl_80092528_x0016A798[36] __asm__("D_00418680");
+extern u8_x0016A798 lbl_801324F0_x0016A798[104] __asm__("D_00418690");
+u8_x0016A798 *func_0016A798_x0016A798(void) __asm__("func_0016A798");
+/* fn_8005A5A8: from https://github.com/karamzov123/fzero-gx-decomp (src/dol/fn_8005A5A8.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+u8_x0016A798 *func_0016A798_x0016A798(void) {
+    lbl_80092528_x0016A798[0];
+    return lbl_801324F0_x0016A798;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A7B0);
 s32 func_00129688_x0016A7E0() __asm__("func_00129688");
 void func_0016A7E0_x0016A7E0(void) __asm__("func_0016A7E0");

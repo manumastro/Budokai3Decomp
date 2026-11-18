@@ -19,7 +19,19 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_00119F30);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_00119F40);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A000);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A0C0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A1E8);
+int sceMcOpen_x0011A1E8(int port, int slot, char *name, int flags) __asm__("func_0011A0C0");
+extern int mcFunc_x0011A1E8 __asm__("D_003EF948");
+int sceMcOpen_x0011A1E8(int port, int slot, char *name, int flags) __asm__("func_0011A0C0");
+int func_0011A1E8_x0011A1E8(int port, int slot, char *name) __asm__("func_0011A1E8");
+/* sceMcMkdir: from https://github.com/Voicedrew11/kfiv-decomp (src/sce/libmc/libmc.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_0011A1E8_x0011A1E8(int port, int slot, char *name)
+{
+    int ret = sceMcOpen_x0011A1E8(port, slot, name, 0x40);
+    if (ret == 0) {
+        mcFunc_x0011A1E8 = 0xB;
+    }
+    return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A220);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A2E0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A3C0);

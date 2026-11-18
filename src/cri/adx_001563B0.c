@@ -357,7 +357,17 @@ void func_001587F8(void) {
 void func_00158800(void) {
     func_0016CA28();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00158818);
+typedef unsigned int u32_x00158818;
+extern u32_x00158818 fn_8005B0C4_x00158818(u32_x00158818, u32_x00158818) __asm__("func_0016CFD0");
+extern u32_x00158818 fn_8005B264_x00158818(u32_x00158818, u32_x00158818) __asm__("func_0016CF38");
+extern u32_x00158818 fn_8005B464_x00158818(u32_x00158818) __asm__("func_0016CDA8");
+void func_00158818_x00158818(u32_x00158818 arg0) __asm__("func_00158818");
+/* fn_8004EEE4: from https://github.com/karamzov123/fzero-gx-decomp (src/dol/fn_8004EEE4.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_00158818_x00158818(u32_x00158818 arg0) {
+    fn_8005B0C4_x00158818(arg0, 0);
+    fn_8005B264_x00158818(arg0, 0);
+    fn_8005B464_x00158818(arg0);
+}
 void func_00158850(void) {
     PS2RNA_Start();
 }

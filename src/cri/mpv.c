@@ -95,7 +95,17 @@ void func_001708A8(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001708C0);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001708E8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00170968);
+extern volatile int svm_init_level_x00170968 __asm__("D_004232F4");
+void svm_clear_x00170968(void) __asm__("func_001708E8");
+void func_00170968_x00170968(void) __asm__("func_00170968");
+/* SVM_Init: from https://github.com/ShulkMaster/mk-deception (src/libadxgca/crimw/dev/adx/src/svm/svm.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_00170968_x00170968(void)
+{
+    if (svm_init_level_x00170968 == 0) {
+        svm_clear_x00170968();
+    }
+    svm_init_level_x00170968++;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001709A8);
 s32 func_00170A00(s32 *arg0) {
     s32 temp_v0;
@@ -445,10 +455,109 @@ void func_0017AC28(void) {
 void func_0017AC30(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017AC38);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017ACA8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017AD58);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017ADF0);
+typedef unsigned char u8_x0017AC38;
+typedef unsigned int u32_x0017AC38;
+typedef struct MovieValues_x0017AC38 {
+    u32_x0017AC38 value_14;
+    u32_x0017AC38 value_18;
+    u32_x0017AC38 value_1c;
+} MovieValues_x0017AC38;
+typedef struct MovieModule_x0017AC38 {
+    u8_x0017AC38 pad[0x14];
+    MovieValues_x0017AC38 values;
+} MovieModule_x0017AC38;
+extern int fn_12_6C78_x0017AC38(MovieModule_x0017AC38 *module) __asm__("func_0017B218");
+extern int fn_12_6D5C_x0017AC38(int arg0, int arg1) __asm__("func_0017B048");
+int func_0017AC38_x0017AC38(MovieModule_x0017AC38 *module, MovieValues_x0017AC38 *result) __asm__("func_0017AC38");
+/* fn_12_6A18: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_6A18.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0017AC38_x0017AC38(MovieModule_x0017AC38 *module, MovieValues_x0017AC38 *result) {
+    if (fn_12_6C78_x0017AC38(module)) {
+        return fn_12_6D5C_x0017AC38(0, 0xff020201);
+    }
+    *result = module->values;
+    return 0;
+}
+typedef unsigned char u8_x0017ACA8;
+typedef unsigned int u32_x0017ACA8;
+typedef struct MovieValues_x0017ACA8 {
+    u32_x0017ACA8 value_00;
+    u32_x0017ACA8 value_04;
+    u32_x0017ACA8 value_08;
+    u32_x0017ACA8 value_0c;
+    u32_x0017ACA8 value_10;
+    u32_x0017ACA8 value_14;
+    u32_x0017ACA8 value_18;
+    u32_x0017ACA8 value_1c;
+} MovieValues_x0017ACA8;
+typedef struct MovieModule_x0017ACA8 {
+    u8_x0017ACA8 _pad00[0x40];
+    MovieValues_x0017ACA8 values[1];
+} MovieModule_x0017ACA8;
+extern int fn_12_6C78_x0017ACA8(MovieModule_x0017ACA8 *module) __asm__("func_0017B218");
+extern int fn_12_6D5C_x0017ACA8(int arg0, int arg1) __asm__("func_0017B048");
+int func_0017ACA8_x0017ACA8(MovieModule_x0017ACA8 *module, MovieValues_x0017ACA8 *result, int index) __asm__("func_0017ACA8");
+/* fn_12_696C: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_696C.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0017ACA8_x0017ACA8(MovieModule_x0017ACA8 *module, MovieValues_x0017ACA8 *result, int index) {
+    if (fn_12_6C78_x0017ACA8(module)) {
+        return fn_12_6D5C_x0017ACA8(0, 0xff020202);
+    }
+    *result = module->values[index];
+    return 0;
+}
+typedef unsigned char u8_x0017AD58;
+typedef unsigned int u32_x0017AD58;
+typedef struct MovieValues_x0017AD58 {
+    u32_x0017AD58 value_00;
+    u32_x0017AD58 value_04;
+    u32_x0017AD58 value_08;
+    u32_x0017AD58 value_0c;
+    u32_x0017AD58 value_10;
+    u32_x0017AD58 value_14;
+    u32_x0017AD58 value_18;
+    u32_x0017AD58 value_1c;
+} MovieValues_x0017AD58;
+typedef struct MovieModule_x0017AD58 {
+    u8_x0017AD58 _pad00[0x20];
+    MovieValues_x0017AD58 values;
+} MovieModule_x0017AD58;
+extern int fn_12_6C78_x0017AD58(MovieModule_x0017AD58 *module) __asm__("func_0017B218");
+extern int fn_12_6D5C_x0017AD58(int arg0, int arg1) __asm__("func_0017B048");
+int func_0017AD58_x0017AD58(MovieModule_x0017AD58 *module, MovieValues_x0017AD58 *result) __asm__("func_0017AD58");
+/* fn_12_68D4: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_68D4.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0017AD58_x0017AD58(MovieModule_x0017AD58 *module, MovieValues_x0017AD58 *result) {
+    if (fn_12_6C78_x0017AD58(module)) {
+        return fn_12_6D5C_x0017AD58(0, 0xff020202);
+    }
+    *result = module->values;
+    return 0;
+}
+typedef unsigned char u8_x0017ADF0;
+typedef unsigned int u32_x0017ADF0;
+typedef struct MovieValues_x0017ADF0 {
+    u32_x0017ADF0 value_00;
+    u32_x0017ADF0 value_04;
+    u32_x0017ADF0 value_08;
+    u32_x0017ADF0 value_0c;
+    u32_x0017ADF0 value_10;
+    u32_x0017ADF0 value_14;
+    u32_x0017ADF0 value_18;
+    u32_x0017ADF0 value_1c;
+} MovieValues_x0017ADF0;
+typedef struct MovieModule_x0017ADF0 {
+    u8_x0017ADF0 _pad00[0xa0];
+    MovieValues_x0017ADF0 values;
+} MovieModule_x0017ADF0;
+extern int fn_12_6C78_x0017ADF0(MovieModule_x0017ADF0 *) __asm__("func_0017B218");
+extern int fn_12_6D5C_x0017ADF0(int, int) __asm__("func_0017B048");
+int func_0017ADF0_x0017ADF0(MovieModule_x0017ADF0 *module, MovieValues_x0017ADF0 *result) __asm__("func_0017ADF0");
+/* fn_12_683C: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_683C.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0017ADF0_x0017ADF0(MovieModule_x0017ADF0 *module, MovieValues_x0017ADF0 *result) {
+    if (fn_12_6C78_x0017ADF0(module)) {
+        return fn_12_6D5C_x0017ADF0(0, 0xff020203);
+    }
+    *result = module->values;
+    return 0;
+}
 s32 *func_0017AE88(void) {
     return &D_00465328;
 }

@@ -75,7 +75,17 @@ void func_0016DB90(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016DBE0);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016DCA8);
+typedef unsigned char u8_x0016DCA8;
+typedef unsigned int u32_x0016DCA8;
+extern u32_x0016DCA8 memset_x0016DCA8(u32_x0016DCA8, u32_x0016DCA8, u32_x0016DCA8) __asm__("memset");
+void func_0016DCA8_x0016DCA8(u32_x0016DCA8 arg0) __asm__("func_0016DCA8");
+/* fn_80057B5C: from https://github.com/karamzov123/fzero-gx-decomp (src/dol/fn_80057B5C.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_0016DCA8_x0016DCA8(u32_x0016DCA8 arg0) {
+    if (arg0 != 0) {
+    memset_x0016DCA8(arg0, 0, 36);
+    *(u32_x0016DCA8 *)((u8_x0016DCA8 *)arg0 + 4) = 0;
+    }
+}
 s32 func_0016DCE0(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 8);
 }

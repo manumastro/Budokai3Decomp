@@ -287,6 +287,8 @@ def write_ninja():
     write_c_labels(linked)
     scripts = [f"build/{NAME}.ld", "build/undefined_funcs_auto.txt", "build/undefined_syms_auto.txt",
                "build/c_labels.ld", "config/linker_script_extra.ld"]
+    if (ROOT / "config" / "port_syms.ld").exists():
+        scripts.append("config/port_syms.ld")  # symbols of functions taken from other decompilations
     out += [
         f"build build/{NAME}.elf: ld | {' '.join(map(str, objs))} {' '.join(scripts)}",
         f"  scripts = {' '.join('-T ' + s for s in scripts)}",

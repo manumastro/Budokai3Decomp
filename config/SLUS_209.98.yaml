@@ -74,7 +74,7 @@ segments:
       - [0x000940, c, sdk/libgraph/ico_graph005]
       - [0x000A08, c, sdk/libgraph/ico_graph006]
       - [0x000BF0, c, sdk/libgraph/ico_graph007]
-      - [0x000CF8, asm, sdk/libgraph_00100CF8]
+      - [0x000CF8, c, sdk/libgraph_00100CF8]
       - [0x001868, c, sdk/libdma]            # "libdma: sync timeout"
       - [0x0019C0, c, sdk/libdma/kfiv_libdma]
       - [0x001CD8, asm, sdk/libdma_00101CD8]
@@ -82,8 +82,8 @@ segments:
       - [0x007BA0, c, sdk/libmpeg/kfiv_mpeg]
       - [0x0081F8, c, sdk/libmpeg_001081F8]
       - [0x0095C0, c, sdk/libmpeg/ico_init]
-      - [0x0095D0, asm, sdk/libmpeg_001095D0]
-      - [0x009AF8, asm, sdk/libipu]            # sceIpuInit (0x109BD8) uses libipu's data
+      - [0x0095D0, c, sdk/libmpeg_001095D0]
+      - [0x009AF8, c, sdk/libipu]            # sceIpuInit (0x109BD8) uses libipu's data
       - [0x009E40, asm, sdk/libkernl_syscalls] # `addiu $v1, N; syscall` stubs
       - [0x00A6E0, c, sdk/libkernl]          # threads, kprintf, SIF RPC, file stubs, TLB, timers
       - [0x00A828, c, sdk/libkernl/ico_glue]
@@ -114,10 +114,10 @@ segments:
       - [0x01B4E8, asm, sdk/libm]              # double maths (constant tables in .rodata)
       - [0x01EC60, c, sdk/libm/ico_s_isinf]
       - [0x01ECA8, c, sdk/libm/ico_s_isnan]
-      - [0x01ECE8, asm, sdk/libm_0011ECE8]
+      - [0x01ECE8, c, sdk/libm_0011ECE8]
       - [0x01F620, c, sdk/libgcc]            # __muldi3 (0x11F6E0), 64-bit division, soft double (dp-bit)
       - [0x01F6E0, c, sdk/libgcc/ico__muldi3]
-      - [0x01F758, asm, sdk/libgcc_0011F758]
+      - [0x01F758, c, sdk/libgcc_0011F758]
       - [0x0221A8, c, sdk/libc]              # newlib: _close_r, rand, vfprintf, ...
       - [0x023A00, c, sdk/libc/kfiv_findfp]
       - [0x023B90, c, sdk/libc_00123B90]

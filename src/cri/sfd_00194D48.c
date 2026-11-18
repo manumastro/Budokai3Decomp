@@ -217,9 +217,41 @@ void func_00196708(void) {
 void func_00196720(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00196728);
+typedef unsigned char u8_x00196728;
+typedef unsigned int u32_x00196728;
+typedef struct MovieModuleState_x00196728 {
+    u8_x00196728 _pad_0[0x44];
+    u32_x00196728 field_44;
+    u32_x00196728 field_48;
+} MovieModuleState_x00196728;
+u32_x00196728 func_00196728_x00196728(MovieModuleState_x00196728 *state) __asm__("func_00196728");
+/* fn_12_2CD44: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_2CD44.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+u32_x00196728 func_00196728_x00196728(MovieModuleState_x00196728 *state) {
+    if (state->field_48 - 1 > 3) {
+        return 1;
+    }
+    return state->field_44 == 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00196750);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001967B8);
+typedef unsigned char u8_x001967B8;
+typedef unsigned int u32_x001967B8;
+typedef struct MovieModuleState_x001967B8 {
+    u8_x001967B8 _pad_0[0x44];
+    u32_x001967B8 field_44;
+} MovieModuleState_x001967B8;
+extern int fn_12_24990_x001967B8(MovieModuleState_x001967B8 *state) __asm__("func_0018D870");
+extern int fn_12_24A88_x001967B8(int arg0, u32_x001967B8 arg1) __asm__("func_0018D650");
+extern void fn_12_2C9C4_x001967B8(MovieModuleState_x001967B8 *state) __asm__("func_00196868");
+int func_001967B8_x001967B8(MovieModuleState_x001967B8 *state) __asm__("func_001967B8");
+/* fn_12_2CC24: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_2CC24.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_001967B8_x001967B8(MovieModuleState_x001967B8 *state) {
+    if (fn_12_24990_x001967B8(state)) {
+        return fn_12_24A88_x001967B8(0, 0xFF000138);
+    }
+    state->field_44 = 1;
+    fn_12_2C9C4_x001967B8(state);
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00196810);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00196868);
 void func_00196980(s32 arg0) {
@@ -559,10 +591,49 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B120);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B1C8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B228);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B290);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B2E0);
+typedef unsigned char u8_x0019B2E0;
+typedef struct SfdPlaybackSettings_x0019B2E0 {
+    u8_x0019B2E0 unknown_00[0x14];
+    int frame_rate_code;
+} SfdPlaybackSettings_x0019B2E0;
+typedef struct SfdHandle_x0019B2E0 {
+    u8_x0019B2E0 unknown_0000[0x44];
+    int field_0044;
+    int playback_state;
+    u8_x0019B2E0 unknown_004C[0x8C0];
+    SfdPlaybackSettings_x0019B2E0 playback_settings;
+} SfdHandle_x0019B2E0;
+extern const int lbl_12_rodata_E10_x0019B2E0[9] __asm__("D_00467730");
+void func_0019B2E0_x0019B2E0(SfdHandle_x0019B2E0 *handle, int *value, int *scale) __asm__("func_0019B2E0");
+/* SFTIM_GetTimeOneFrmVideo: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/SFTIM_GetTimeOneFrmVideo.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_0019B2E0_x0019B2E0(SfdHandle_x0019B2E0 *handle, int *value, int *scale) {
+    int code = handle->playback_settings.frame_rate_code;
+    if (code == 0) {
+        *value = 0;
+        *scale = 29970;
+    } else {
+        *value = 1000;
+        *scale = lbl_12_rodata_E10_x0019B2E0[code];
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B320);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B398);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B428);
+typedef unsigned char u8_x0019B428;
+typedef signed int s32_x0019B428;
+typedef struct MovieEntry_x0019B428 {
+    u8_x0019B428 pad_0[0x14];
+    s32_x0019B428 value_14;
+    s32_x0019B428 value_18;
+} MovieEntry_x0019B428;
+extern int fn_12_2DEB0_x0019B428(void *arg0, s32_x0019B428 value_14, s32_x0019B428 value_18) __asm__("func_0019B460");
+int func_0019B428_x0019B428(void *arg0, MovieEntry_x0019B428 *entry) __asm__("func_0019B428");
+/* fn_12_2DEF0: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_2DEF0.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0019B428_x0019B428(void *arg0, MovieEntry_x0019B428 *entry) {
+    if (entry == 0) {
+        return 0;
+    }
+    return fn_12_2DEB0_x0019B428(arg0, entry->value_14, entry->value_18);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B460);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B498);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B520);

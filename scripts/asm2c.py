@@ -34,6 +34,11 @@ def main():
     funcs = re.findall(r"^[gj]label (\S+)", asm.read_text(), re.M)
     lines = ['#include "common.h"', ""]
     lines += [f'INCLUDE_ASM("asm/nonmatchings/{name}", {f});' for f in funcs]
+    # words after the last function (alignment nops) are not in any function's file: pad the object like the original
+    tail = asm.read_text().rsplit("\nendlabel ", 1)[-1].splitlines()[1:]
+    pad = 4 * sum(1 for t in tail if re.match(r"\s+/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/", t))
+    if pad:
+        lines.append(f"INCLUDE_PAD({pad});")
     src.parent.mkdir(parents=True, exist_ok=True)
     src.write_text("\n".join(lines) + "\n")
     YAML.write_text(pat.sub(r"\1c\2", text))

@@ -139,7 +139,61 @@ _Bigint *_s2b(Reent *ptr, const char *s, int nd0, int nd, unsigned int y9)
         b = _multadd(ptr, b, 10, *s++ - '0');
     return b;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc/kfiv_mprec", _hi0bits);
+typedef unsigned int __uint32_t_x00125D98;
+typedef __uint32_t_x00125D98 __ULong_x00125D98;
+int
+_hi0bits_x00125D98(register __ULong_x00125D98 x) __asm__("_hi0bits");
+/****************************************************************
+ *
+ * The author of this software is David M. Gay.
+ *
+ * Copyright (c) 1991 by AT&T.
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose without fee is hereby granted, provided that this entire notice
+ * is included in all copies of any software which is or includes a copy
+ * or modification of this software and in all copies of the supporting
+ * documentation for such software.
+ *
+ * THIS SOFTWARE IS BEING PROVIDED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTY.  IN PARTICULAR, NEITHER THE AUTHOR NOR AT&T MAKES ANY
+ * REPRESENTATION OR WARRANTY OF ANY KIND CONCERNING THE MERCHANTABILITY
+ * OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
+ *
+ ***************************************************************/
+/* _hi0bits_x00125D98: from newlib 1.10.0 (sourceware.org) (libc/stdlib/mprec.c, BSD-style, notices in LICENSES/THIRD_PARTY.md); ee-gcc 2.96 -O2 -G0 */
+int
+_hi0bits_x00125D98(register __ULong_x00125D98 x)
+{
+  register int k = 0;
+  if (!(x & 0xffff0000))
+    {
+      k = 16;
+      x <<= 16;
+    }
+  if (!(x & 0xff000000))
+    {
+      k += 8;
+      x <<= 8;
+    }
+  if (!(x & 0xf0000000))
+    {
+      k += 4;
+      x <<= 4;
+    }
+  if (!(x & 0xc0000000))
+    {
+      k += 2;
+      x <<= 2;
+    }
+  if (!(x & 0x80000000))
+    {
+      k++;
+      if (!(x & 0x40000000))
+        return 32;
+    }
+  return k;
+}
 
 
 int _lo0bits(unsigned int *y)

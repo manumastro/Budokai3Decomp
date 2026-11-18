@@ -1518,7 +1518,15 @@ void func_00186EA0(void) {
 void func_00186EC0(s32 arg0, s32 arg1) {
     D_0048CFC4 = func_00170380(2, arg0, arg1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186EF0);
+typedef unsigned int u32_x00186EF0;
+extern void fn_8005912C_x00186EF0(u32_x00186EF0, void *, void *, void *) __asm__("func_001704C8");
+extern u32_x00186EF0 lbl_12_bss_1B9A8_x00186EF0[2] __asm__("D_0048CFC4");
+void func_00186EF0_x00186EF0(void *arg0, void *arg1, void *arg2) __asm__("func_00186EF0");
+/* fn_12_34DE4: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_34DE4.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_00186EF0_x00186EF0(void *arg0, void *arg1, void *arg2) {
+    fn_8005912C_x00186EF0(2, arg0, arg1, arg2);
+    lbl_12_bss_1B9A8_x00186EF0[0] = (u32_x00186EF0)arg0;
+}
 void func_00186F30(void) {
     func_00170450(2, D_0048CFC4);
 }
