@@ -1162,37 +1162,42 @@ s32 func_002A4130(s32 *a0)
   return 1;
 }
 
-#if 0
-// func_002A41D0: the original moves a0 to s3 first and loads the slot into a1 before the test; reordering the locals swaps the saved registers s0/s1; 4 variants tried
+extern char D_005AB610[];
+extern void amCdFs_ReleaseCache(s32);
+extern void amCdFs_Close(s32, s32);
 s32 func_002A41D0(s32 *a0, char *a1) {
     s32 *s3 = a0;
+    s32 *args = *(s32 **)(a1 + 0x2C);
     s32 *s2 = (s32 *)a0[0x1C / 4];
-    s32 slot = ((s32 *)*(s32 **)(a1 + 0x2C))[1];
-    if (*(s16 *)((char *)s2 + 4) == 3) {
-        s32 idx = *(s32 *)s3[0];
-        s32 *s0 = (s32 *)s2[0x40 / 4];
-        s32 s1 = s0[0x50 / 4];
-        s32 *s4 = (s32 *)(D_005AB610 + idx * 240 + slot * 24);
-        if (s4[3] != 0) {
-            amCdFs_ReleaseCache(s4[3]);
-            s4[3] = 0;
-        }
-        s4[3] = (s32)s0;
-        s4[5] = s1;
-        s3[4] = 0;
-        s2[0x40 / 4] = 0;
-        amCdFs_Close((s32)s2, 0);
-        if (s3[6] != 0) {
-            amCdFs_Close(a0[6], 0);
-        }
-        s3[6] = 0;
-        s3[7] = 0;
-        return 1;
+    s32 *p5 = (s32 *)a0[0];
+    s32 slot = args[1];
+    s32 idx;
+    s32 s1;
+    s32 *s0;
+    s32 *s4;
+    if (*(s16 *)((char *)s2 + 4) != 3) {
+        return 3;
     }
-    return 3;
+    idx = *p5;
+    s0 = (s32 *)s2[0x40 / 4];
+    s1 = s0[0x50 / 4];
+    s4 = (s32 *)(D_005AB610 + idx * 240 + slot * 24);
+    if (s4[3] != 0) {
+        amCdFs_ReleaseCache(s4[3]);
+        s4[3] = 0;
+    }
+    s4[3] = (s32)s0;
+    s4[5] = s1;
+    s3[4] = 0;
+    s2[0x40 / 4] = 0;
+    amCdFs_Close((s32)s2, 0);
+    if (s3[6] != 0) {
+        amCdFs_Close(s3[6], 0);
+    }
+    s3[6] = 0;
+    s3[7] = 0;
+    return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A41D0);
 extern s32 func_002A41D0(s32 *, char *);
 
 s32 Evt_CmdStartTask2A41D0(s32 *a0, char *a1) {
