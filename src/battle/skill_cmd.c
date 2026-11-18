@@ -96,7 +96,7 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00248E00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249100);
 extern u32 func_0012EAE0(s32);
 extern void func_00146F30(s32 *);
-extern void func_00249100(s32 *, f32);
+extern void func_00249100(s32 *, s32, s32, s32, f32);
 extern void func_0013B160(void *);
 extern void func_00142100(s32 *, s32);
 extern u8 D_003F0800[];
@@ -121,7 +121,7 @@ void func_002499A0(s32 *out, s32 base, s32 side, s32 cfgp, f32 unused) {
         __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(s2), "r"(vec), "r"(s1));
         func_00146F30(s2);
     } else {
-        func_00249100(mtx, 30.0f);
+        func_00249100(mtx, base, side, cfgp, 30.0f);
         s2[0] = 0;
         s2[1] = 0;
         ((f32 *)s2)[2] = 1.0f;
@@ -861,7 +861,32 @@ void SkillKill_Kind03(s32 *p) {
         p[20] = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F520);
+extern void func_00146F10(s32 *, s32 *, f32);
+void func_0024F520(s32 a0) {
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    s32 v;
+    f32 f1;
+
+    s1 = *(u8 **)(a0 + 0x8);
+    s2 = *(u8 **)(a0 + 0xC);
+    s0 = *(s32 *)(s1 + 0x1350);
+    *(s32 *)(a0 + 0x50) = *(s32 *)((u8 *)D_0046FE54 + 0x10);
+    func_0020D400(a0 + 0x10, (s32)s1, *(s32 *)(s2 + 0x2C));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(a0 + 0x10));
+    func_002499A0((s32 *)(a0 + 0x30), a0 + 0x10, (s32)s1, (s32)s2, 30.0f);
+    f1 = SkillObj_Scale();
+    func_00146F10((s32 *)(a0 + 0x30), (s32 *)(a0 + 0x30), *(f32 *)(s2 + 0x28) * f1);
+    v = func_0020B020(s0, *(s16 *)(s2 + 0x58), *(s16 *)(s2 + 0x5E));
+    *(s32 *)(a0 + 0x54) = func_00209540(v, (s0 != 0) ? 0x4000020 : 0x4000010, 0);
+    if (*(s32 *)(a0 + 0x54) != 0) {
+        if (*(s32 *)(s1 + 0x1CFC) == 0x1B || *(s32 *)(s1 + 0xB9C) == 0x20) {
+            func_00249100((s32 *)(a0 + 0x40), a0 + 0x10, (s32)s1, (s32)s2, 30.0f);
+        }
+        func_00209B50(*(s32 *)(a0 + 0x54), a0 + 0x20, 0);
+    }
+}
 // GIVEN UP: differs: size 0x124 vs 0x140 (7 instructions short, in the call tail after the VU0 subtract); the param copy and the side register order differ; 4 forms of declaration order
 #if 0
 void func_0024F6B0(s32 *a0) {
