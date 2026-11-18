@@ -84,7 +84,6 @@ typedef struct BtlCmdObj {
 
 extern s32 D_0047056C;
 extern s32 func_001A9460(void *, s16, s32);
-extern s32 func_001A9230(void *, s16);
 
 
 typedef struct BtlRank {
@@ -908,67 +907,67 @@ s32 func_001A90E0(BtlRank *a0, s16 a1) {
 }
 // GIVEN UP: the switch chain and the case blocks are in the original order, but the pair block loads the
 // first field into another register ($v1 for $a1) and the rest is 0x18 bytes longer (4 forms tried)
-#if 0
-static inline s32 BtlCmd_PairAt(u8 *a0, s32 op, s32 oq) {
-    s16 p = *(s16 *)(a0 + op);
-    if (p == 1 && *(s16 *)(a0 + oq) > 0 && *(s16 *)(a0 + oq) < 5) {
-        return 1;
-    }
-    if (*(s16 *)(a0 + oq) == 1 && p > 0 && p < 5) {
-        return 1;
-    }
-    return 0;
-}
-
-s32 func_001A9230(u8 *a0, s32 a1) {
-    s16 k = (s16)a1;
-
-    switch (k) {
+s32 func_001A9230(BtlRank *a0, s16 a1) {
+    switch (a1) {
     case 0x10:
-        if (*(s16 *)(a0 + 0x42C) == 1) {
+        if (a0->cnt[0] == 1) {
             return 1;
         }
         break;
     case 0x20:
-        if (*(s16 *)(a0 + 0x42E) == 1) {
+        if (a0->cnt[1] == 1) {
             return 1;
         }
         break;
     case 0x40:
-        if (*(s16 *)(a0 + 0x432) == 1) {
+        if (a0->cnt[3] == 1) {
             return 1;
         }
         break;
     case 0x80:
-        if (*(s16 *)(a0 + 0x430) == 1) {
+        if (a0->cnt[2] == 1) {
             return 1;
         }
         break;
     case 0x30:
-        if (BtlCmd_PairAt(a0, 0x42C, 0x42E)) {
+        a1 = a0->cnt[0];
+        if (a1 == 1 && a0->cnt[1] > 0 && a0->cnt[1] < 5) {
+            return 1;
+        }
+        if (a0->cnt[1] == 1 && a1 > 0 && a1 < 5) {
             return 1;
         }
         break;
     case 0x90:
-        if (BtlCmd_PairAt(a0, 0x42C, 0x432)) {
+        a1 = a0->cnt[0];
+        if (a1 == 1 && a0->cnt[3] > 0 && a0->cnt[3] < 5) {
+            return 1;
+        }
+        if (a0->cnt[3] == 1 && a1 > 0 && a1 < 5) {
             return 1;
         }
         break;
     case 0x60:
-        if (BtlCmd_PairAt(a0, 0x430, 0x42E)) {
+        a1 = a0->cnt[2];
+        if (a1 == 1 && a0->cnt[1] > 0 && a0->cnt[1] < 5) {
+            return 1;
+        }
+        if (a0->cnt[1] == 1 && a1 > 0 && a1 < 5) {
             return 1;
         }
         break;
     case 0xC0:
-        if (BtlCmd_PairAt(a0, 0x430, 0x432)) {
+        a1 = a0->cnt[2];
+        if (a1 == 1 && a0->cnt[3] > 0 && a0->cnt[3] < 5) {
+            return 1;
+        }
+        if (a0->cnt[3] == 1 && a1 > 0 && a1 < 5) {
             return 1;
         }
         break;
     }
     return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9230);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9460);
 #if 0
 /* differs: 49 of 69 instructions (the switch form of an earlier round: the op and entry registers differ). */
