@@ -5,10 +5,10 @@ extern s32 D_003EC410;
 typedef unsigned long long u64_x00100250;
 typedef struct { short interlace, mode, field; unsigned short version; int active; int handler; } GsState_x00100250;
 extern GsState_x00100250 *sceGsGetGParam_1082a0_x00100250(void) __asm__("func_001003E0");
-extern u64_x00100250 GsPutIMR_x00100250(u64_x00100250) __asm__("GsPutIMR.NON_MATCHING");
+extern u64_x00100250 GsPutIMR_x00100250(u64_x00100250) __asm__("GsPutIMR");
 extern void DisableIntc_117080_x00100250(int) __asm__("func_0010AD40");
 extern void RemoveIntcHandler_x00100250(int,int) __asm__("RemoveIntcHandler");
-extern void SetGsCrt_x00100250(int,int,int) __asm__("SetGsCrt.NON_MATCHING");
+extern void SetGsCrt_x00100250(int,int,int) __asm__("SetGsCrt");
 void func_00100250_x00100250(short reset, short interlace, short mode, short field) __asm__("func_00100250");
 /* sceGsResetGraph_108110: from https://github.com/Dorgengoa/RGDecomp (src/main/sdk/sceGsResetGraph_108110.c, CC0-1.0); ee-gcc 2.9-991111-01 -O2 -G0 */
 void func_00100250_x00100250(short reset, short interlace, short mode, short field)

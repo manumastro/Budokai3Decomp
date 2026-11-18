@@ -89,7 +89,7 @@ typedef struct Reent_x00124788 {
     Glue_x00124788 glue;
     Fil_x00124788 sf[3];
 } Reent_x00124788;
-extern int errno_x00124788 __asm__("errno.NON_MATCHING");
+extern int errno_x00124788 __asm__("errno");
 int close_x00124788(int fd) __asm__("close");
 long lseek_x00124788(int fd, long offset, int whence) __asm__("lseek");
 int read_x00124788(int fd, void *buf, int size) __asm__("read");

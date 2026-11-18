@@ -131,7 +131,7 @@ typedef struct {
 } sceGsDBuffDc_x00101520;
 extern GParam_x00101520 *sceGsGetGParam_x00101520(void) __asm__("func_001003E0");
 extern short sceGszbufaddr_x00101520(short psm, short width, short height) __asm__("func_00100940");
-extern void sceGsSetDefDispEnv_x00101520(sceGsDispEnv_x00101520 *disp, short psm, short w, short h, short dx, short dy) __asm__("sceGsDefDispEnv.NON_MATCHING");
+extern void sceGsSetDefDispEnv_x00101520(sceGsDispEnv_x00101520 *disp, short psm, short w, short h, short dx, short dy) __asm__("sceGsDefDispEnv");
 extern int sceGsSetDefDrawEnv_x00101520(sceGsDrawEnv_x00101520 *env, short psm, short w, short h, short ztst, short zpsm) __asm__("func_00100A08");
 extern int sceGsSetDefDrawEnv2_x00101520(sceGsDrawEnv_x00101520 *env, short psm, short w, short h, short ztst, short zpsm) __asm__("func_001012B8");
 extern int sceGsSetDefClear_x00101520(sceGsClear_x00101520 *cl, short ztst, short x, short y, short w, short h, unsigned char r, unsigned char g, unsigned char b, unsigned char a, unsigned int z) __asm__("func_00100BF0");

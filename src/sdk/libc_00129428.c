@@ -170,7 +170,7 @@ typedef struct Reent_x001297A0 {
     Glue_x001297A0 glue;
     Fil_x001297A0 sf[3];
 } Reent_x001297A0;
-extern Reent_x001297A0 *_impure_ptr_x001297A0 __asm__("_impure_ptr.NON_MATCHING");
+extern Reent_x001297A0 *_impure_ptr_x001297A0 __asm__("_impure_ptr");
 typedef struct _Bigint_x001297A0 _Bigint_x001297A0;
 void __sinit_x001297A0(Reent_x001297A0 *s) __asm__("func_00123BB0");
 int __submore_x001297A0(Fil_x001297A0 *fp) __asm__("func_001296B8");
@@ -476,7 +476,7 @@ typedef struct Reent_x00129A28 {
     Glue_x00129A28 glue;
     Fil_x00129A28 sf[3];
 } Reent_x00129A28;
-extern Reent_x00129A28 *_impure_ptr_x00129A28 __asm__("_impure_ptr.NON_MATCHING");
+extern Reent_x00129A28 *_impure_ptr_x00129A28 __asm__("_impure_ptr");
 typedef struct _Bigint_x00129A28 _Bigint_x00129A28;
 void __sinit_x00129A28(Reent_x00129A28 *s) __asm__("func_00123BB0");
 int _vfiprintf_r_x00129A28(void *data, Fil_x00129A28 *fp, const char *fmt0, char *ap) __asm__("_vfprintf_r");
@@ -613,7 +613,7 @@ typedef struct Reent_x0012C140 {
     Glue_x0012C140 glue;
     Fil_x0012C140 sf[3];
 } Reent_x0012C140;
-extern Reent_x0012C140 *_impure_ptr_x0012C140 __asm__("_impure_ptr.NON_MATCHING");
+extern Reent_x0012C140 *_impure_ptr_x0012C140 __asm__("_impure_ptr");
 int func_0012C140_x0012C140(char *out, const char *fmt, char *ap) __asm__("func_0012C140");
 /* vsprintf: from https://github.com/nathanialf/ico-pc (sce/libc/stdio/vsprintf.c, MIT); ee-gcc 2.96 -O2 -G0 */
 int func_0012C140_x0012C140(char *out, const char *fmt, char *ap)
@@ -694,7 +694,7 @@ typedef struct Reent_x0012C250 {
     Glue_x0012C250 glue;
     Fil_x0012C250 sf[3];
 } Reent_x0012C250;
-extern Reent_x0012C250 *_impure_ptr_x0012C250 __asm__("_impure_ptr.NON_MATCHING");
+extern Reent_x0012C250 *_impure_ptr_x0012C250 __asm__("_impure_ptr");
 struct Reent_x0012C250;
 void _free_r_x0012C250(struct Reent_x0012C250 *reent_ptr, void *mem) __asm__("func_00123D60");
 typedef struct _Bigint_x0012C250 _Bigint_x0012C250;

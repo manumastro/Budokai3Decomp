@@ -103,7 +103,8 @@ def make_c(name, out):
     func = "\n".join(lines[start:]) + "\n"
     func = re.sub(r"\bvoid \*", "u8 *", func)
     func = expand(func)
-    func = re.sub(r"(?<![\w])\?(?![\w])", "int", func)
+    # m2c writes `?` for a type it could not tell; a `?` of a conditional expression follows an operand instead
+    func = re.sub(r"(^|[(,;{]\s*)\?(?=\s*[\w*(])", lambda m: m.group(1) + "int", func, flags=re.M)
     head = func.splitlines()[0]
     if "(" in head and re.search(r"\(\s*void\s*\)", head) is None and re.search(r"\bint\b\s*\)", head) is None:
         pass
@@ -124,6 +125,22 @@ def try_one(addr, name, text, exe):
         return {"addr": addr, "name": name, "status": "m2cfail", "detail": "no function in the output"}
     decls, func = r
     grp = group_of(addr)
+    import configure
+    version, _ = configure.gcc_group("src/sdk/x.c" if grp == "sdk" else "src/sdk/libc_x.c" if grp == "libc"
+                                     else "src/cri/x.c")
+    best = try_compile(addr, name, decls, func, size, exe, grp)
+    if best.get("status") == "cerr":
+        knr = [re.sub(r"^(\w[\w \*]*?\b\w+)\((.*)\);(.*)$", r"\1();", d) if "(" in d and "(*" not in d else d
+               for d in decls]
+        if knr != decls:
+            alt = try_compile(addr, name, knr, func, size, exe, grp)
+            if alt.get("status") != "cerr":
+                alt["decl_style"] = "unprototyped"
+                best = alt
+    return best
+
+
+def try_compile(addr, name, decls, func, size, exe, grp):
     import configure
     version, _ = configure.gcc_group("src/sdk/x.c" if grp == "sdk" else "src/sdk/libc_x.c" if grp == "libc"
                                      else "src/cri/x.c")
@@ -168,7 +185,9 @@ def try_one(addr, name, text, exe):
 def draft(a):
     exe = lp.Exe()
     funcs = function_asm()
-    todo = sorted(ad for ad in funcs if group_of(ad) and (a.region in ("all", group_of(ad))))
+    import lib_remaining
+    still = {r[0] for r in lib_remaining.remaining()}  # asm/ keeps stale files of functions now in C
+    todo = sorted(ad for ad in funcs if ad in still and group_of(ad) and (a.region in ("all", group_of(ad))))
     if a.limit:
         todo = todo[:a.limit]
     results = []

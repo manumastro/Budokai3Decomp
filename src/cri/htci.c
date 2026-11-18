@@ -68,14 +68,91 @@ s64 func_00168968_x00168968(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168988);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001689B8);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168A80);
+typedef unsigned int size_t_x00168A80;
+typedef signed int Sint32_x00168A80;
+typedef char Char8_x00168A80;
+extern int* sceCdCallback_x00168A80(void (*func)(int)) __asm__("sceCdCallback");
+size_t_x00168A80 strlen_x00168A80(const char* s) __asm__("func_00127BA0");
+Sint32_x00168A80 func_00168A80_x00168A80(const Char8_x00168A80* str) __asm__("func_00168A80");
+/* htci_is_inc_colon: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/htci_sub.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00168A80 func_00168A80_x00168A80(const Char8_x00168A80* str) {
+    size_t_x00168A80 len;
+    Sint32_x00168A80 i;
+    len = strlen_x00168A80(str);
+    if (len > 16) {
+        len = 16;
+    }
+    for (i = 0; i < len; i++) {
+        if (str[i] == ':') {
+            return 1;
+        }
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168AF0);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168B48);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168C60);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168C78);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168CD0);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168D68);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168F08);
+typedef unsigned int size_t_x00168F08;
+typedef char Sint8_x00168F08;
+typedef signed int Sint32_x00168F08;
+typedef signed long Sint64_x00168F08;
+typedef char Char8_x00168F08;
+extern int* sceCdCallback_x00168F08(void (*func)(int)) __asm__("sceCdCallback");
+void SRD_SetHistory_x00168F08(Sint32_x00168F08 arg0) __asm__("func_00164D38");
+Sint32_x00168F08 SRD_SceOpen_x00168F08(const Char8_x00168F08* filename, Sint32_x00168F08 flag) __asm__("func_00165048");
+Sint32_x00168F08 SRD_SceClose_x00168F08(Sint32_x00168F08 fd) __asm__("func_001650B0");
+Sint64_x00168F08 SRD_SceLseek_x00168F08(Sint32_x00168F08 fd, Sint64_x00168F08 offset, Sint32_x00168F08 whence) __asm__("func_00164F18");
+Sint32_x00168F08 SRD_SceRead_x00168F08(Sint32_x00168F08 fd, void* buf, Sint32_x00168F08 nbyte) __asm__("func_00165108");
+void* memset_x00168F08(void* s, int c, size_t_x00168F08 n) __asm__("memset");
+void htci_conv_fname_x00168F08(const Char8_x00168F08* flist, Char8_x00168F08* fname) __asm__("func_00168B48");
+Sint32_x00168F08 func_00168F08_x00168F08(const Char8_x00168F08* flist, Sint8_x00168F08* buf) __asm__("func_00168F08");
+/* htci_load_flist: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/htci_sub.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00168F08 func_00168F08_x00168F08(const Char8_x00168F08* flist, Sint8_x00168F08* buf) {
+    Char8_x00168F08 fname[256];
+    Sint32_x00168F08 fd;
+    Sint32_x00168F08 read_err;
+    Sint32_x00168F08 offset_start;
+    Sint64_x00168F08 offset_end;
+    memset_x00168F08(fname, 0, sizeof(fname));
+    htci_conv_fname_x00168F08(flist, fname);
+    SRD_SetHistory_x00168F08(0x6000);
+    fd = SRD_SceOpen_x00168F08(fname, 0x0001);
+    SRD_SetHistory_x00168F08(0x6001);
+    if (fd < 0) {
+        return 0;
+    }
+    SRD_SetHistory_x00168F08(0x6100);
+    offset_end = SRD_SceLseek_x00168F08(fd, 0, (2));
+    SRD_SetHistory_x00168F08(0x6101);
+    if (offset_end < 0) {
+        return 0;
+    }
+    SRD_SetHistory_x00168F08(0x6200);
+    offset_start = (Sint32_x00168F08)SRD_SceLseek_x00168F08(fd, 0, (0));
+    SRD_SetHistory_x00168F08(0x6201);
+    if (offset_start < 0) {
+        return 0;
+    }
+    if (offset_end > 0x1000) {
+        offset_end = 0x1000;
+    }
+    SRD_SetHistory_x00168F08(0x6300);
+    read_err = SRD_SceRead_x00168F08(fd, buf, (Sint32_x00168F08)offset_end);
+    SRD_SetHistory_x00168F08(0x6301);
+    if (read_err < 0) {
+        SRD_SetHistory_x00168F08(0x6500);
+        SRD_SceClose_x00168F08(fd);
+        SRD_SetHistory_x00168F08(0x6501);
+        return 0;
+    }
+    SRD_SetHistory_x00168F08(0x6400);
+    SRD_SceClose_x00168F08(fd);
+    SRD_SetHistory_x00168F08(0x6401);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00169068);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00169258);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001693C0);

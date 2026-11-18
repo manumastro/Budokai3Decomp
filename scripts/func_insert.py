@@ -56,12 +56,15 @@ def split_top(s, sep=","):
 def declarator_name(p):
     p = re.sub(r"__asm__\s*\(.*?\)", "", p.split("=")[0])
     p = re.sub(r"__attribute__\s*\(\(.*?\)\)", "", p)
-    m = re.search(r"\(\s*\*+\s*(?:const\s+)?(\w+)\s*\)", p)  # pointer to function / array
-    if m:
-        return m.group(1)
-    m = re.search(r"(\w+)\s*\(", p)
-    if m and m.group(1) not in KEYWORDS:
-        return m.group(1)
+    k = p.find("(")
+    if k >= 0:
+        # the first bracket decides: `name(` is a function, `(*name)` a pointer to function or array
+        m = re.match(r"\(\s*\*+\s*(?:const\s+|volatile\s+)*(\w+)", p[k:])
+        if m:
+            return m.group(1)
+        m = re.search(r"(\w+)\s*$", p[:k])
+        if m and m.group(1) not in KEYWORDS:
+            return m.group(1)
     ids = [i for i in re.findall(r"[A-Za-z_]\w*", re.sub(r"\[.*?\]", "", p)) if i not in KEYWORDS]
     return ids[-1] if ids else None
 
@@ -244,6 +247,8 @@ def apply(items, jobs=12, log=None, dry=False):
         subprocess.run([sys.executable, "scripts/asm2c.py", seg], cwd=ROOT, check=True, capture_output=True)
     if conv:
         subprocess.run([sys.executable, "configure.py"], cwd=ROOT, capture_output=True)
+        for seg in conv:
+            subprocess.run([sys.executable, "scripts/asm2c.py", "--fix-pad", seg], cwd=ROOT, check=True)
     segs = {}
     for (seg, kind), lst in byseg.items():
         segs.setdefault(seg, []).extend(lst)

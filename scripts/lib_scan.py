@@ -22,6 +22,7 @@ def main():
     ap.add_argument("-I", dest="inc", action="append", default=[])
     ap.add_argument("-D", dest="defs", action="append", default=[])
     ap.add_argument("--min", type=int, default=3, help="minimum function words")
+    ap.add_argument("--no-own-include", action="store_true", help="do not put our include/ first")
     a = ap.parse_args()
     lo, hi = (int(x, 16) for x in a.range.split("-"))
     rom = g.ROM.read_bytes()
@@ -30,7 +31,7 @@ def main():
     idx = defaultdict(list)
     for i, w in enumerate(words):
         idx[w].append(i)
-    inc = ["include", *a.inc]
+    inc = a.inc if a.no_own_include else ["include", *a.inc]
     for f in a.files:
         src = f.resolve()
         objs, work = g.compile_matrix(src, [a.version], [a.flags], "gas", a.defs, include_dirs=inc)

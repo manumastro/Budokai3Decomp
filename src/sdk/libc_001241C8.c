@@ -64,7 +64,7 @@ typedef struct Reent_x001241C8 {
     Fil_x001241C8 sf[3];
 } Reent_x001241C8;
 struct stat_x001241C8;
-extern int errno_x001241C8 __asm__("errno.NON_MATCHING");
+extern int errno_x001241C8 __asm__("errno");
 struct stat_x001241C8 {
     short st_dev;
     unsigned short st_ino;

@@ -77,4 +77,9 @@ wibo.
   how a Metrowerks PS2 game is set up.
 
 Dragon Ball Z: Budokai 3 is a game by Dimps, published by Atari (Bandai in Japan). This project is not affiliated
-with them. The code in this repository is under the MIT licence ([LICENSE](LICENSE)).
+with them. The code written for this repository is under the MIT licence ([LICENSE](LICENSE)). Some library
+functions (src/sdk/, src/cri/) were taken from other decompilations under their own licences, each named next to
+the code and listed in [LICENSES/THIRD_PARTY.md](LICENSES/THIRD_PARTY.md). Among them are CRI middleware functions
+from 3s-decomp, under the GNU Affero General Public License v3.0: the repository as a whole is therefore
+distributed under the terms of the AGPL-3.0 ([LICENSES/3s-decomp-AGPL-3.0.txt](LICENSES/3s-decomp-AGPL-3.0.txt)),
+while every file and function keeps its own notice.

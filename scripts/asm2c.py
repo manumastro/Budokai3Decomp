@@ -17,7 +17,25 @@ ROOT = Path(__file__).resolve().parent.parent
 YAML = ROOT / "config" / "SLUS_209.98.yaml"
 
 
+def fix_pad(name):
+    """After the split: drop the tail pad when the last function's own file already holds those words."""
+    src = ROOT / "src" / f"{name}.c"
+    text = src.read_text()
+    m = re.search(r"^INCLUDE_PAD\((\d+)\); /\* asm2c tail ([0-9A-F]{8}) \*/\n", text, re.M)
+    if not m:
+        return
+    last = re.findall(r'^INCLUDE_ASM\("([^"]+)", (\w+)\);', text[:m.start()], re.M)
+    if not last:
+        return
+    d, f = last[-1]
+    p = ROOT / d / f"{f}.s"
+    if p.exists() and f" {m.group(2)} " in p.read_text():
+        src.write_text(text[:m.start()] + text[m.end():])
+
+
 def main():
+    if len(sys.argv) == 3 and sys.argv[1] == "--fix-pad":
+        return fix_pad(sys.argv[2])
     if len(sys.argv) != 2:
         sys.exit(__doc__)
     name = sys.argv[1]
@@ -35,10 +53,11 @@ def main():
     lines = ['#include "common.h"', ""]
     lines += [f'INCLUDE_ASM("asm/nonmatchings/{name}", {f});' for f in funcs]
     # words after the last function (alignment nops) are not in any function's file: pad the object like the original
+    # (unless the split puts them in the last function's file: `asm2c.py --fix-pad NAME` after the split checks)
     tail = asm.read_text().rsplit("\nendlabel ", 1)[-1].splitlines()[1:]
-    pad = 4 * sum(1 for t in tail if re.match(r"\s+/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/", t))
-    if pad:
-        lines.append(f"INCLUDE_PAD({pad});")
+    words = [m.group(1) for t in tail for m in [re.match(r"\s+/\* [0-9A-F]+ ([0-9A-F]{8}) [0-9A-F]{8} \*/", t)] if m]
+    if words:
+        lines.append(f"INCLUDE_PAD({4 * len(words)}); /* asm2c tail {words[0]} */")
     src.parent.mkdir(parents=True, exist_ok=True)
     src.write_text("\n".join(lines) + "\n")
     YAML.write_text(pat.sub(r"\1c\2", text))

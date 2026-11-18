@@ -185,7 +185,7 @@ segments:
       - [0x05EEF8, c, cri/adx/fz_ADXT_SetOutPan]
       - [0x05EFB0, c, cri/adx_0015EFB0]
       - [0x060550, c, cri/adx/fz_adxt_eos_entry]
-      - [0x0605E0, asm, cri/adx_001605E0]
+      - [0x0605E0, c, cri/adx_001605E0]
       - [0x060E98, c, cri/adx/fz_fn_800068F4]
       - [0x060EB0, c, cri/adx_00160EB0]
       - [0x0618D0, c, cri/adx/fz_ADXPD_Create]

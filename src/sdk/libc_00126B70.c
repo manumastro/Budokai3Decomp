@@ -111,7 +111,7 @@ struct _reent_x00126B88
   struct _glue_x00126B88 __sglue;
   struct __sFILE_x00126B88 __sf[3];
 };
-extern struct _reent_x00126B88 *_impure_ptr_x00126B88 __asm__("_impure_ptr.NON_MATCHING");
+extern struct _reent_x00126B88 *_impure_ptr_x00126B88 __asm__("_impure_ptr");
 extern int atexit (void (*__func_x00126B88)(void)) __asm__("__func");
 extern void * bsearch (const void * __key,
                        const void * __base,
@@ -205,7 +205,7 @@ struct malloc_chunk_x00126C50 {
     struct malloc_chunk_x00126C50 *bk;
 };
 typedef struct malloc_chunk_x00126C50 *mchunkptr_x00126C50;
-extern struct malloc_chunk_x00126C50 *__malloc_av__x00126C50[] __asm__("__malloc_av_.NON_MATCHING");
+extern struct malloc_chunk_x00126C50 *__malloc_av__x00126C50[] __asm__("__malloc_av_");
 void __malloc_lock_x00126C50(Reent_x00126C50 *ptr) __asm__("func_001259B8");
 void __malloc_unlock_x00126C50(Reent_x00126C50 *ptr) __asm__("func_00125A38");
 void *func_00126C50_x00126C50(Reent_x00126C50 *reent_ptr, void *oldmem, unsigned int bytes) __asm__("func_00126C50");
@@ -385,7 +385,7 @@ typedef struct Reent_x00127228 {
     Glue_x00127228 glue;
     Fil_x00127228 sf[3];
 } Reent_x00127228;
-extern Reent_x00127228 *_impure_ptr_x00127228 __asm__("_impure_ptr.NON_MATCHING");
+extern Reent_x00127228 *_impure_ptr_x00127228 __asm__("_impure_ptr");
 struct Reent_x00127228;
 void _free_r_x00127228(struct Reent_x00127228 *reent_ptr, void *mem) __asm__("func_00123D60");
 typedef struct _Bigint_x00127228 _Bigint_x00127228;

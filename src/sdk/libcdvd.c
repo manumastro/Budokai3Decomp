@@ -34,7 +34,7 @@ s32 func_00118680(void) {
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_001186F8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_001189F8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118A18);
-int SignalSema_x00118B70(int sema) __asm__("SignalSema.NON_MATCHING");
+int SignalSema_x00118B70(int sema) __asm__("SignalSema");
 typedef void (*sceSifEndFunc_x00118B70)(void *param);
 typedef struct sceSifRpcClientData_x00118B70 {
     void *pkt;              
@@ -82,7 +82,7 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118E70);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118F20);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00119208);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00119420);
-int SignalSema_x00119640(int sema) __asm__("SignalSema.NON_MATCHING");
+int SignalSema_x00119640(int sema) __asm__("SignalSema");
 void scePrintf_x00119640(char *fmt, ...) __asm__("scePrintf");
 typedef void (*sceSifEndFunc_x00119640)(void *param);
 typedef struct sceSifRpcClientData_x00119640 {
@@ -188,7 +188,7 @@ int func_00119640_x00119640(int lsn, int sectors, void *buf, sceCdRMode_x0011964
     }
     return 1;
 }
-int SignalSema_x00119820(int sema) __asm__("SignalSema.NON_MATCHING");
+int SignalSema_x00119820(int sema) __asm__("SignalSema");
 typedef void (*sceSifEndFunc_x00119820)(void *param);
 typedef struct sceSifRpcClientData_x00119820 {
     void *pkt;              
@@ -236,7 +236,7 @@ int func_00119820_x00119820(int lsn)
     }
     return 1;
 }
-int SignalSema_x001198F0(int sema) __asm__("SignalSema.NON_MATCHING");
+int SignalSema_x001198F0(int sema) __asm__("SignalSema");
 typedef void (*sceSifEndFunc_x001198F0)(void *param);
 typedef struct sceSifRpcClientData_x001198F0 {
     void *pkt;              
@@ -273,7 +273,7 @@ int func_001198F0_x001198F0(void)
     return v;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00119988);
-int SignalSema_x00119A40(int sema) __asm__("SignalSema.NON_MATCHING");
+int SignalSema_x00119A40(int sema) __asm__("SignalSema");
 typedef void (*sceSifEndFunc_x00119A40)(void *param);
 typedef struct sceSifRpcClientData_x00119A40 {
     void *pkt;              

@@ -314,7 +314,7 @@ struct _reent_x00123888
   struct _glue_x00123888 __sglue;
   struct __sFILE_x00123888 __sf[3];
 };
-extern struct _reent_x00123888 *_impure_ptr_x00123888 __asm__("_impure_ptr.NON_MATCHING");
+extern struct _reent_x00123888 *_impure_ptr_x00123888 __asm__("_impure_ptr");
 typedef _fpos_t_x00123888 fpos_t_x00123888;
 typedef struct __sFILE_x00123888 FILE_x00123888;
 extern FILE_x00123888 *funopen (const void * _cookie,

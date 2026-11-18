@@ -90,7 +90,7 @@ int func_00113918_x00113918(void)
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00113940);
 int printf_x00113990(const char *fmt, ...) __asm__("scePrintf");
-void sceSifInitRpc_x00113990(int mode) __asm__("sceSifInitRpc.NON_MATCHING");
+void sceSifInitRpc_x00113990(int mode) __asm__("sceSifInitRpc");
 void sceSifExitRpc_x00113990(void) __asm__("func_0010D9C0");
 int sceSifResetIop_x00113990(char *arg, int mode) __asm__("func_001137C0");
 int sceSifResetIop_x00113990(char *arg, int mode) __asm__("func_001137C0");

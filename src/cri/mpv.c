@@ -94,7 +94,43 @@ void func_001708A8(void) {
     func_00170690(7);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001708C0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001708E8);
+typedef unsigned int size_t_x001708E8;
+typedef signed int Sint32_x001708E8;
+typedef char Char8_x001708E8;
+extern void SVM_SetCbErr_x001708E8(void (*callback)(void*, Char8_x001708E8*), void* object) __asm__("SVM_SetCbErr");
+extern Sint32_x001708E8 SVM_SetCbSvr_x001708E8(Sint32_x001708E8, Sint32_x001708E8 (*)(void*), void*) __asm__("SVM_SetCbSvr");
+extern void SVM_SetCbSvrId_x001708E8(Sint32_x001708E8, Sint32_x001708E8, Sint32_x001708E8 (*)(void*), void*) __asm__("SVM_SetCbSvrId");
+extern void SVM_SetCbLock_x001708E8(void (*func)(void*), void* object) __asm__("SVM_SetCbLock");
+extern void SVM_SetCbUnlock_x001708E8(void (*func)(void*), void* object) __asm__("SVM_SetCbUnlock");
+void* memset_x001708E8(void* s, int c, size_t_x001708E8 n) __asm__("memset");
+typedef struct {
+    void (*func)(void*);
+    void* object;
+} SVMLockCallback_x001708E8;
+extern Sint32_x001708E8 svm_exec_cnt_x001708E8[8] __asm__("D_00423300");
+extern Sint32_x001708E8 svm_svr_exec_flag_x001708E8[8] __asm__("D_00423320");
+extern Sint32_x001708E8 (*svm_test_and_set_callback_x001708E8)() __asm__("D_00481478");
+extern SVMLockCallback_x001708E8 svm_unlock_callback_x001708E8 __asm__("D_00481468");
+extern SVMLockCallback_x001708E8 svm_lock_callback_x001708E8 __asm__("D_00481460");
+Sint32_x001708E8 SVM_SetCbSvr_x001708E8(Sint32_x001708E8 index, Sint32_x001708E8 (*func)(void*), void* object) __asm__("SVM_SetCbSvr");
+void SVM_SetCbSvrId_x001708E8(Sint32_x001708E8 svtype, Sint32_x001708E8 id, Sint32_x001708E8 (*func)(void*), void* object) __asm__("SVM_SetCbSvrId");
+void SVM_SetCbErr_x001708E8(void (*func)(void*, Char8_x001708E8*), void* object) __asm__("SVM_SetCbErr");
+void SVM_SetCbLock_x001708E8(void (*func)(void*), void* object) __asm__("SVM_SetCbLock");
+void SVM_SetCbUnlock_x001708E8(void (*func)(void*), void* object) __asm__("SVM_SetCbUnlock");
+void func_001708E8_x001708E8() __asm__("func_001708E8");
+/* svm_reset_variable: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/svm.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+void func_001708E8_x001708E8() {
+    Sint32_x001708E8 i;
+    Sint32_x001708E8* exec_cnt_ptr;
+    memset_x001708E8(svm_svr_exec_flag_x001708E8, 0, sizeof(svm_svr_exec_flag_x001708E8));
+    memset_x001708E8(&svm_lock_callback_x001708E8, 0, sizeof(SVMLockCallback_x001708E8));
+    memset_x001708E8(&svm_unlock_callback_x001708E8, 0, sizeof(SVMLockCallback_x001708E8));
+    exec_cnt_ptr = svm_exec_cnt_x001708E8;
+    for (i = 0; i < 6; i++) {
+        *exec_cnt_ptr++ = 0;
+    }
+    svm_test_and_set_callback_x001708E8 = 0;
+}
 extern volatile int svm_init_level_x00170968 __asm__("D_004232F4");
 void svm_clear_x00170968(void) __asm__("func_001708E8");
 void func_00170968_x00170968(void) __asm__("func_00170968");
@@ -122,7 +158,17 @@ s32 func_00170A00(s32 *arg0) {
     }
     return var_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00170A68);
+typedef signed int Sint32_x00170A68;
+extern Sint32_x00170A68 (*svm_test_and_set_callback_x00170A68)() __asm__("D_00481478");
+Sint32_x00170A68 func_00170A68_x00170A68(Sint32_x00170A68 (*callback)()) __asm__("func_00170A68");
+/* SVM_SetCbTestAndSet: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/svm.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00170A68 func_00170A68_x00170A68(Sint32_x00170A68 (*callback)()) {
+    if (svm_test_and_set_callback_x00170A68 != 0) {
+        return 0;
+    }
+    svm_test_and_set_callback_x00170A68 = callback;
+    return 1;
+}
 void func_00170A90(void) {
     func_00170A68(0);
 }

@@ -44,7 +44,7 @@ LICENSES = {
     "newlib": ("newlib 1.10.0 (sourceware.org)", "BSD-style, notices in LICENSES/THIRD_PARTY.md"),
     "rg": ("https://github.com/Dorgengoa/RGDecomp", "CC0-1.0"),
     "recvx": ("https://github.com/AshfordFamily/recvx-decomp", "MIT"),
-    "s3": ("https://github.com/crowded-street/3s-decomp", "AGPL-3.0"),
+    "s3": ("https://github.com/crowded-street/3s-decomp", "AGPL-3.0-only"),
 }
 DATA_SECS = (".data", ".rodata", ".bss", ".sdata", ".sbss", ".lit4", ".lit8")
 PORT_LD = ROOT / "config" / "port_syms.ld"
@@ -72,6 +72,9 @@ def scan_hits(repo, min_words):
 def elf_symbols():
     """{address: [names]} of the global symbols of the last build's ELF."""
     from elftools.elf.elffile import ELFFile
+    elf, ok = ROOT / "build" / "SLUS_209.98.elf", ROOT / "build" / "SLUS_209.98.ok"
+    if not ok.exists() or ok.stat().st_mtime < elf.stat().st_mtime:
+        sys.exit("the last build did not pass CHECK: its symbols cannot be trusted (build a matching tree first)")
     out = {}
     with open(ROOT / "build" / "SLUS_209.98.elf", "rb") as f:
         for s in ELFFile(f).get_section_by_name(".symtab").iter_symbols():
@@ -149,9 +152,12 @@ class Unit:
     def __init__(self, repo, src, version, flags, exe):
         self.repo, self.src, self.version, self.flags, self.exe = repo, src, version, flags, exe
         inc = (SCAN / repo / "inc.txt").read_text().replace("-I", "").split()
-        self.inc = ["include", str(Path(src).parent), *inc]
+        defs_file = SCAN / repo / "defs.txt"  # scan_repo2.sh: the origin's own defines, no include/ of ours first
+        self.defs = defs_file.read_text().replace("-D", "").split() if defs_file.exists() else []
+        self.inc = ([] if defs_file.exists() else ["include"]) + [str(Path(src).parent), *inc]
         keep = f"build/port/w/{repo}_{abs(hash(src)) % 10**10}_{version}"
-        objs, self.work = g.compile_matrix(ROOT / src, [version], [flags], "gas", [], include_dirs=self.inc, keep=keep)
+        objs, self.work = g.compile_matrix(ROOT / src, [version], [flags], "gas", self.defs, include_dirs=self.inc,
+                                           keep=keep)
         obj = objs[(version, flags)]
         self.err = None if isinstance(obj, Path) else str(obj)
         if self.err:
@@ -161,7 +167,8 @@ class Unit:
         self.addr = self.an.resolve()
         _, self.status = self.an.bind(self.addr)
         pre = Path(self.work) / "pre.c"
-        rc, txt = eegcc.run_many([(version, [*flags.split(), *[f"-I{ROOT / d}" for d in self.inc], "-E", "-P",
+        rc, txt = eegcc.run_many([(version, [*flags.split(), *[f"-I{ROOT / d}" for d in self.inc],
+                                            *[f"-D{d}" for d in self.defs], "-E", "-P",
                                             str(ROOT / src), "-o", str(pre)])], cwd=ROOT)[0]
         if rc != 0 or not pre.exists():
             self.err = "preprocess: " + txt[-200:]
@@ -186,7 +193,7 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
     bind_all, _ = u.an.bind({ext_name: addr})
 
     def label(a, kind):
-        names = [n for n in syms.get(a, []) if not n.startswith(".")]
+        names = [n for n in syms.get(a, []) if "." not in n]
         if names:
             pref = [n for n in names if re.fullmatch(r"(func|D)_[0-9A-F]{8}", n)]
             return (pref or names)[0]
@@ -254,7 +261,10 @@ def main():
         if not want:
             continue
         seg = rem[next(iter(want.values()))][2]
-        version, flags = configure.gcc_group(f"src/{seg}.c")
+        grp = configure.gcc_group(f"src/{seg}.c")
+        if grp is None:
+            continue  # not a gcc library file
+        version, flags = grp
         work.append((f, version, flags, want))
     new_syms = {}
     results = []
