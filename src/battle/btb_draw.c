@@ -4371,11 +4371,11 @@ extern s32 gBattle;
 extern s32 D_0047064C;
 extern s32 D_00470238;
 extern f32 D_0051CCD0[];
-
-#if 0
 void func_001F2A90(char *a0) {
     char *bg;
     s32 idx;
+    s32 b;
+    s32 t;
     char *s1;
     char *s0;
     char *p;
@@ -4393,8 +4393,9 @@ void func_001F2A90(char *a0) {
         func_00125740(D_00495718, (u8 *)(s0 + 0x10), 0x10);
         func_00125740(D_00495758, (u8 *)(s0 + 0x20), 0x10);
     }
-    v = *(char **)(bg + 0x34);
-    v = (char *)((s32 *)v)[idx * 9 + 1];
+    b = *(s32 *)(bg + 0x34);
+    t = idx * 36;
+    v = (char *)*(s32 *)(t + b + 4);
     w = *(s32 *)(v + 0xA4);
     if (w != 0) {
         D_00470238 = 1;
@@ -4437,9 +4438,6 @@ void func_001F2A90(char *a0) {
         }
     }
 }
-#endif
-// differs: func_001F2A90 (540 bytes): the same draw shape as func_001F2570 (matches). The only misses: the table walk through gBtbBg+0x34 (base in v1 and entry in v0 in the original; ours base v0, entry v1, addu operands swapped: base-first and index-first forms and a separate pointer tried) and the register of the entry in the second chain. 5 real differences.
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2A90);
 #if 0
 void func_001F2CB0(char *a0) {
     char *s1;
