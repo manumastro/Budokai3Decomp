@@ -1208,21 +1208,23 @@ s32 Evt_CmdStartTask2A41D0(s32 *a0, char *a1) {
     a0[0x10 / 4] = (s32)func_002A41D0;
     return func_002A41D0(a0, a1);
 }
-#if 0
-// func_002A4320: same shape as func_002A41D0 (offsets 0x8/0x10); the original returns 3 through a bne with v0 set before the branch; locals reordered; not matched
+extern char D_005AB610[];
+extern void amCdFs_ReleaseCache(s32);
+extern void amCdFs_Close(s32, s32);
 s32 func_002A4320(s32 *a0, char *a1) {
+    s32 *s3 = a0;
+    s32 *args = *(s32 **)(a1 + 0x2C);
     s32 *s2 = (s32 *)a0[0x1C / 4];
-    s32 slot = ((s32 *)*(s32 **)(a1 + 0x2C))[1];
-    s32 *s3;
+    s32 *p5 = (s32 *)a0[0];
+    s32 slot = args[1];
     s32 idx;
-    s32 *s0;
     s32 s1;
+    s32 *s0;
     s32 *s4;
     if (*(s16 *)((char *)s2 + 4) != 3) {
         return 3;
     }
-    s3 = a0;
-    idx = *(s32 *)s3[0];
+    idx = *p5;
     s0 = (s32 *)s2[0x40 / 4];
     s1 = s0[0x50 / 4];
     s4 = (s32 *)(D_005AB610 + idx * 240 + slot * 24);
@@ -1242,8 +1244,6 @@ s32 func_002A4320(s32 *a0, char *a1) {
     s3[7] = 0;
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4320);
 extern s32 func_002A4320(s32 *, char *);
 
 s32 Evt_CmdStartTask2A4320(s32 *a0, char *a1) {
