@@ -1158,11 +1158,10 @@ INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE720);
 extern void func_001A8770(s32, void *);
 extern void func_00219270(s32);
 extern s32 func_00218CD0(s32, s32);
-#if 0
-// differs: 7 of 59. The frame is 0x90 as in the original, but the layout is buf at 0x30 and flag at 0x8C whichever of the two is declared first; the original has flag at 0x30 and buf at 0x40.
+// the handler argument is a 16-byte array: it sits below buf in the frame
 void func_001AE890(void) {
-    s32 flag;
     u8 buf[0x50];
+    s32 flag[4];
     BattleWork *bw;
     s32 old;
     bw = gBattle;
@@ -1180,14 +1179,12 @@ void func_001AE890(void) {
     if (old != 0) {
         func_001C8020(2, 0);
     }
-    flag = 1;
-    A2d_CallHandler(0x27, &flag);
+    flag[0] = 1;
+    A2d_CallHandler(0x27, flag);
     A2d_CallHandler(0x13, 0);
     func_00219270(*(s16 *)((u8 *)bw + 0x7E6));
     BW_FIELD(bw, s8, 0x8AB7) = func_00218CD0(0, -1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE890);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AE980);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AEBF0);
 extern s32 func_001AC110(void);
