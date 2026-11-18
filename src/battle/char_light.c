@@ -1,6 +1,18 @@
 #include "common.h"
 
 extern void func_00146F30(void *);
+typedef struct PtrCount { void *p; s32 n; } PtrCount;
+extern void BtbBg_SetFlag1(void);
+extern void func_001A8770(s32, void *);
+extern void func_001C75D0(void *, s32);
+extern void func_001ABD30(void *);
+extern void func_001D9900(void *, s32, s32);
+extern void func_001E1300(s32);
+extern void func_001E9B00(s32, s32, s32, s32, f32, f32);
+extern void Btl_UpdateLimitXY(s32, f32, f32);
+extern void func_002470B0(s32, PtrCount);
+extern void AdxSlot_Stop(void *);
+extern void AdxSlot_SetVolume(void *, f32);
 typedef struct L37Ent { s32 a, b, c, d; } L37Ent;
 typedef struct L37Mdl { u8 pad[0x14]; L37Ent *ents; } L37Mdl;
 typedef struct L37Obj { void *f0; s32 f4, f8, fC, f10, f14, f18, f1C; L37Mdl *mdl; s32 idx; f32 sc; s32 v; s32 fl; f32 f34; } L37Obj;
@@ -215,12 +227,6 @@ void func_002367B0(s32 *p) {
     func_002CBFF0(8, p[0]);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236830);
-typedef struct PtrCount { void *p; s32 n; } PtrCount;
-extern void func_001E1300(s32);
-extern void Btl_UpdateLimitXY(s32, f32, f32);
-extern void func_002470B0(s32, PtrCount);
-extern void AdxSlot_Stop(void *);
-extern void AdxSlot_SetVolume(void *, f32);
 void func_002369E0(void) {
     u8 *g = (u8 *)gBattle;
     PtrCount pc;
@@ -242,13 +248,41 @@ void func_002369E0(void) {
         AdxSlot_SetVolume(g + ((*(s32 *)(*(u8 **)(g + 0x8934) + 0x1350) + 3) << 5) + 0x5C4, 1.0f);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236AF0);
+void func_00236AF0(s32 *a0) {
+    PtrCount pc;
+    s32 args[6];
+    u8 *g = (u8 *)gBattle;
+    u8 *s1 = (u8 *)a0[0];
+    u8 *s0;
+    *(u8 **)(g + 0x8934) = s1;
+    s0 = (u8 *)a0[1];
+    *(u8 **)(g + 0x8938) = s0;
+    func_001E1300(0);
+    *(s8 *)(g + 0x8AB2) = 1;
+    *(s8 *)(g + 0x8AB3) = -1;
+    *(f32 *)(g + 0x891C) = 0.0f;
+    Btl_UpdateLimitXY(1, 0.5f, 0.0f);
+    *(s8 *)(g + 0x8AAD) = 1;
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(s1 + 0x100), "r"(s1 + 0x40) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(s0 + 0x100), "r"(s0 + 0x40) : "memory");
+    *(s16 *)(s1 + 0xCB4) = 1;
+    func_001C75D0(s1, 0x1D);
+    *(s16 *)(s0 + 0xCB4) = 0;
+    func_001C75D0(s0, 0x1D);
+    pc.n = 2;
+    pc.p = s1;
+    func_002470B0(-1, pc);
+    pc.p = s0;
+    func_002470B0(-1, pc);
+    func_001A8770(2, 0);
+    func_001E9B00(1, 0x1F, 0, 0, 0.0f, 1.0f);
+    args[0] = -1;
+    args[1] = 1;
+    A2d_CallHandler(0x2E, args);
+    A2d_CallHandler(0x34, 0);
+    *(s8 *)(g + 0x8AB9) = 1;
+}
 typedef struct B3Loc { s32 v[3]; s32 flag; s32 side; s32 pad[4]; } B3Loc;
-extern void BtbBg_SetFlag1(void);
-extern void func_001A8770(s32, void *);
-extern void func_001C75D0(void *, s32);
-extern void func_001ABD30(void *);
-extern void func_001D9900(void *, s32, s32);
 void func_00236C70(s32 *a0) {
     u8 buf[0x50];
     B3Loc loc;
