@@ -550,7 +550,7 @@ void func_0020ABB0(void) {
     D_005687C0[0] = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020ABE0);
-/* Returns the base of a sound-buffer slot; sel outside 0..8 returns whatever v0 held (no default in the original). */
+/* Returns a base address in the 0x3000000 range chosen by sel (0..8), plus a and idx scaled; sel outside 0..8 returns whatever v0 held (no default in the original). */
 s32 func_0020AD30(s32 a, s32 sel, s32 idx) {
     s32 r;
     switch (sel) {
