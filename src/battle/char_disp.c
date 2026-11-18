@@ -446,6 +446,92 @@ void func_0029F070(u8 *a0, f32 dt) {
         break;
     }
 }
+// differs: 55+ of 116 differ (round 7 r7c, structure right, VU0 copy via inline asm lqc2/sqc2): the first two loads/regs differ (the original takes the D_004B4B40 base pointer in a1, D in a0 and the stack address in v1; saved registers s0/s2/s1/s5 numbered differently), the second block's bltz slot is filled by the arg move in ours but is a nop in the original (same unsolved pattern as func_0029F350), mult/lwc1 order. Tried: declaration orders, pad pointer local, cast, separate locals for the block values.
+#if 0
+extern u8 *D_004708CC;
+extern s8 D_004B4B40[];
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_00228430(s32);
+extern void func_00227A30(u8 *);
+extern void func_0022C060(f32, s32);
+extern void func_00228410();
+extern void func_0022CD00(s32);
+typedef struct DispVec { f32 v[4]; } __attribute__((aligned(16))) DispVec;
+void func_0029F180(u8 *s4, u8 *s3) {
+    u8 *s6;
+    s32 s5;
+    s32 s2;
+    s32 s1;
+    s32 s0;
+    s32 stride;
+    s32 a1c;
+    s32 a18;
+    s32 mode;
+    s8 *pad;
+    DispVec tmp;
+
+    s6 = D_004708CC;
+    mode = *(s32 *)(s4 + 0x18);
+    if (mode == 2) {
+    } else if (mode == 1) {
+    } else if (mode == 0) {
+        return;
+    }
+    pad = D_004B4B40;
+    s0 = pad[0x23];
+    s2 = *(s32 *)(D_004708CC + 0x20);
+    stride = *(s32 *)(D_004708CC + 0x24);
+    s1 = *(s32 *)(D_004708CC + 0x28);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(s3), "r"(&tmp));
+    tmp.v[1] = tmp.v[1] + (f32)(stride * s2);
+    if (*(s32 *)(s4 + 4) >= 0) {
+        func_00228430(0);
+        func_00227A30((u8 *)&tmp);
+        s5 = *(s32 *)(s3 + 0x20);
+        a1c = *(s32 *)(s3 + 0x1C);
+        a18 = *(s32 *)(s3 + 0x18);
+        D_00470704 = a18;
+        D_0047070C = a1c;
+        D_00470708 = s5;
+        amModel_SetCurrent(a18, a1c);
+        D_00470238 = s5;
+        func_0022C060(1.0f, *(s32 *)(s3 + 0x10));
+        func_00228410();
+        func_0022CD00(*(s32 *)(s3 + 0x10));
+    }
+    if (*(s32 *)s4 >= 0) {
+        func_00228430(0);
+        func_00227A30((u8 *)&tmp);
+        s5 = *(s32 *)(s3 + 0x20);
+        a1c = *(s32 *)(s3 + 0x1C);
+        a18 = *(s32 *)(s3 + 0x18);
+        D_00470704 = a18;
+        D_0047070C = a1c;
+        D_00470708 = s5;
+        amModel_SetCurrent(a18, a1c);
+        D_00470238 = s5;
+        func_0022C060(1.0f, *(s32 *)(s4 + 0x1C));
+        func_00228410();
+        func_0022CD00(*(s32 *)(s4 + 0x1C));
+    }
+    if (s0 & 0x10 & *(s32 *)(s6 + 0x40)) {
+        s2--;
+        if (s2 < 0) {
+            s2 = s1 - 1;
+        }
+    } else if (s0 & 0x40 & *(s32 *)(s6 + 0x40)) {
+        s2++;
+        if (s2 >= s1) {
+            s2 = 0;
+        }
+    }
+    *(s32 *)(D_004708CC + 0x20) = s2;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F180);
 extern s32 D_00470704;
 extern s32 D_0047070C;
