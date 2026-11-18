@@ -2122,68 +2122,6 @@ void func_00254AC0(s32 *a0) {
         }
     }
 }
-// GIVEN UP: the field pointer is computed before the register save in the original (scheduling; 4 forms tried)
-#if 0
-extern s32 D_0058D4F4[];
-extern void func_0022D0E0(s32, s32);
-void func_00254B50(s32 *a0) {
-    s32 *s2;
-    s32 *s1;
-    s32 *s4;
-    s32 *s3;
-    s32 *v;
-    s32 i;
-    s32 j;
-
-    s2 = a0 + 12;
-    v = (s32 *)s2[0];
-    if (v != 0) {
-        s1 = v + 12;
-        j = 0;
-        if (s1[1] != 0) {
-            func_0022D0E0(s1[1], 1);
-        }
-        s1[1] = 0;
-        if (s1[2] != 0) {
-            func_0022D0E0(s1[2], 1);
-        }
-        s1[2] = 0;
-        if (s1[5] != 0) {
-            func_0022D0E0(s1[5], 1);
-        }
-        s1[5] = 0;
-        if (s1[4] != 0) {
-            func_0022D0E0(s1[4], 1);
-        }
-        s1[4] = 0;
-        if (s1[3] != 0) {
-            func_0022D0E0(s1[3], 1);
-        }
-        s1[3] = 0;
-        for (j = 0, s4 = s1; j < 2; j++, s1 += 1, s4 += 2) {
-            if (s1[12] != 0) {
-                func_0022D0E0(s1[12], 1);
-            }
-            s1[12] = 0;
-            if (s1[6] != 0) {
-                func_0022D0E0(s1[6], 1);
-            }
-            s1[6] = 0;
-            for (i = 0, s3 = s4; i < 2; i++, s3 += 1) {
-                if (s3[8] != 0) {
-                    func_0022D0E0(s3[8], 1);
-                }
-                s3[8] = 0;
-            }
-        }
-        amTask_Kill(s2[0]);
-        s2[0] = 0;
-    }
-    D_0058D4F4[0] = 0;
-}
-#endif
-// differs: 11 of 93 (adiff): s2 = a0+12 is scheduled into the beqz slot (original: before the saves), first SK_REL reads 52(v1) (original: 4(s1) after addiu s1), the original holds s1 and s4 in a different role. Best form: the b walker is set after the two +4 releases.
-#if 0
 extern void func_0022D0E0(s32, s32);
 extern s32 D_0058D4F4[];
 #define SK_REL(p, off) do { if (*(s32 *)((p) + (off))) { func_0022D0E0(*(s32 *)((p) + (off)), 1); } *(s32 *)((p) + (off)) = 0; } while (0)
@@ -2196,8 +2134,8 @@ void func_00254B50(s32 *a0) {
     s32 k;
     s32 q;
     q = *(s32 *)((u8 *)a0 + 0x30);
+    s4 = (u8 *)q + 0x30;
     if (q != 0) {
-        s4 = (u8 *)q + 0x30;
         SK_REL(s4, 0x4);
         SK_REL(s4, 0x8);
         SK_REL(s4, 0x14);
@@ -2217,8 +2155,6 @@ void func_00254B50(s32 *a0) {
     }
     D_0058D4F4[0] = 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00254B50);
 void func_00254CD0(u8 *a0) {
     u8 *t;
     u8 *sys;
@@ -2634,8 +2570,6 @@ void func_00257DA0(s32 *a0) {
         }
     }
 }
-// differs: 11 of 93, the same release shape as func_00254B50 (identical asm but for the global D_0058D4EC).
-#if 0
 extern void func_0022D0E0(s32, s32);
 extern s32 D_0058D4EC[];
 #define SK_REL(p, off) do { if (*(s32 *)((p) + (off))) { func_0022D0E0(*(s32 *)((p) + (off)), 1); } *(s32 *)((p) + (off)) = 0; } while (0)
@@ -2648,8 +2582,8 @@ void func_00257E30(s32 *a0) {
     s32 k;
     s32 q;
     q = *(s32 *)((u8 *)a0 + 0x30);
+    s4 = (u8 *)q + 0x30;
     if (q != 0) {
-        s4 = (u8 *)q + 0x30;
         SK_REL(s4, 0x4);
         SK_REL(s4, 0x8);
         SK_REL(s4, 0x14);
@@ -2669,8 +2603,6 @@ void func_00257E30(s32 *a0) {
     }
     D_0058D4EC[0] = 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00257E30);
 void func_00257FB0(u8 *a0) {
     u8 *t;
     u8 *sys;
@@ -3158,8 +3090,6 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259D90);
 extern s32 amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern u8 D_0046AE80[];
 extern u8 D_0046AE90[];
-// differs: 3 of 75 (adiff): in the second amTask_Create the original issues addiu t1 before ori t0 (ori in the jal slot), ours the reverse; gBtlSys is loaded before the test.
-#if 0
 s32 func_00259EB0(s32 a0, f32 f12) {
     s32 k;
     u8 *s1;
@@ -3188,14 +3118,12 @@ s32 func_00259EB0(s32 a0, f32 f12) {
         D_00470238 = 0;
     }
     s0[6] = func_0022D570(*(s32 *)((u8 *)((s32 *)(*(s32 *)(s1 + 0xE88)))[5] + ((k & 1) << 2)), 0x1000, 0x2000008, 0x3A30);
-    w = amTask_Create((void (*)(void *))LeverDraw_TaskMain, 0, 0x3A30, 0x1000, 0x2000008, (char *)D_0046AE90);
     ((f32 *)s0)[3] = f12;
+    w = amTask_Create((void (*)(void *))LeverDraw_TaskMain, 0, 0x3A30, 0x1000, 0x2000008, (char *)D_0046AE90);
     s0[0] = w;
     ((s32 *)w)[12] = (s32)s0;
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259EB0);
 extern u8 D_0058D4E0[];
 extern s32 D_0047074C;
 extern s32 D_00470748;
