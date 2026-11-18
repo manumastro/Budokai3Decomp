@@ -133,9 +133,93 @@ extern void A2d_CallHandler(s32, s32 *);
 s32 func_0025AA20(s32);
 s32 func_0025A7C0(s32, s32);
 s32 func_0025A580(s32, s32);
-void func_0025A130(s32, s32);
+s32 func_0025A130(s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A130);
+extern char D_0046AEA0[];
+extern char D_0046AEB0[];
+extern void func_00255E10(void);
+extern void func_00254B50(void);
+extern void func_00254AC0(void);
+typedef struct A1Work2 {
+    void *f0;
+    void *f4;
+    void *f8;
+    void *fC;
+    void *f10;
+    void *f14;
+    char pad18[0x18];
+    void *f30;
+    void *f34;
+} A1Work2;
+typedef struct A1Task2 {
+    char pad0[0x30];
+    A1Work2 w;
+} A1Task2;
+typedef struct A1Work {
+    A1Task2 *f0;
+    s32 f4;
+    char pad8[4];
+    f32 fC;
+    char pad10[0x10];
+    s16 f20[2];
+} A1Work;
+typedef struct A1Task {
+    char pad0[0x30];
+    A1Work w;
+} A1Task;
+s32 func_0025A130(s32 p0, s32 p1) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
+    ScrObj **g = (ScrObj **)D_0058D4F4;
+    A1Work *w;
+    A1Work2 *w2;
+    void *v;
+    s32 n;
+    s32 c;
+    s32 k;
+
+    if (g[0] != NULL) {
+        return 0;
+    }
+    g[0] = (ScrObj *)amTask_Create(func_00255E10, func_00254B50, 0x5410, 0x1000, 0x2000000, D_0046AEA0);
+    w = &((A1Task *)g[0])->w;
+    memset(w, 0, 0x38);
+    w->f0 = (A1Task2 *)amTask_Create(func_00254AC0, NULL, 0x3A30, 0x1000, 0x2000008, D_0046AEB0);
+    w2 = &w->f0->w;
+    memset(w2, 0, 0x38);
+    w2->f0 = w;
+    w->f4 = 0;
+    w->fC = 100.0f;
+    w->f20[0] = p0;
+    w->f20[1] = p1;
+    D_00470704 = v = sys->fE60;
+    D_0047070C = n = 0x4000000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, n);
+    D_00470238 = 0;
+    k = (func_0021C360(p0) & 1) + 0x18;
+    w2->f4 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    w2->f8 = func_0022D860(sys->fE68->f14[0x36], 0.0f);
+    w2->f14 = func_0022D860(sys->fE68->f14[0x3C], 0.0f);
+    w2->fC = func_0022D860(sys->fE68->f14[0x38], 0.0f);
+    w2->f10 = func_0022D860(sys->fE68->f14[0x3A], 0.0f);
+    c = func_0021C460(p0);
+    if (c == -1) {
+        c = 2;
+    }
+    if (func_0021C360(p0) & 1) {
+        k = c + 0x1D;
+    } else {
+        k = c + 0x1A;
+    }
+    w2->f30 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    c = func_0021C460(p1);
+    if (c == -1) {
+        c = 2;
+    }
+    k = (func_0021C360(p0) & 1) ? c + 0x20 : c + 0x23;
+    w2->f34 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    return 1;
+}
 extern void func_001E9B00(s32, s32, s32, s32, f32, f32);
 extern void func_0022C7D0(void *, s32, f32);
 typedef struct A3Work2 {
