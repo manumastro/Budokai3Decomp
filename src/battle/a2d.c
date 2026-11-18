@@ -402,7 +402,47 @@ void A2d_CallHandler(s32 idx, s32 arg) {
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00226070);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00226540);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002269B0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227010);
+typedef struct SortEnt {
+    s32 key;
+    f32 val;
+} SortEnt;
+void func_00227010(s32 *a0, s32 *a1) {
+    SortEnt *a = (SortEnt *)a0;
+    s32 n = ((u8 *)a1 - (u8 *)a0) >> 3;
+    s32 cnt;
+    s32 k0;
+    s32 max;
+    s32 k;
+    s32 p0;
+    SortEnt *best;
+    SortEnt *q;
+
+    if (n != 0) {
+        do {
+            cnt = n;
+            k0 = (s32)a->val;
+            p0 = a->key;
+            best = a;
+            q = a + 1;
+            n -= 1;
+            max = k0;
+            do {
+                k = (s32)q->val;
+                cnt -= 1;
+                if (max < k) {
+                    max = k;
+                    best = q;
+                }
+                q += 1;
+            } while (cnt != 0);
+            a->val = (f32)max;
+            a->key = best->key;
+            best->val = (f32)k0;
+            a += 1;
+            best->key = p0;
+        } while (n != 0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002270B0);
 extern s32 *D_004706F4;
 extern s32 D_004706FC;
