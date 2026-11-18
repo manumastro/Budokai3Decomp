@@ -369,16 +369,17 @@ void func_001AC240(void) {
 #endif
 extern u8 D_00492FC0[];
 #if 0
-// differs: 35 of 57. The count address (bw+0x88D8, li/addu form) is hoisted into a saved register across the loop; the original reads the count with lui 0x1 and a -0x7728 displacement each pass. Frame 80 matches only with the battle pointer in $s2.
+// differs: 7 of 57 (r7k). bw typed as a struct whose count sits at 0x88D8 stops the count hoist; what is left is the saved-register numbering: original bw=s2, i=s1, p=s0, e=s3 (we get bw=s0); tsweep of order and types found nothing better
+typedef struct BSl { u8 pad[0x88D8]; s32 n; } BSl;
 void func_001AC240(void) {
     u8 *p;
     s32 i;
-    BattleWork *bw;
+    BSl *bw;
     u8 *e;
     s32 a;
-    bw = gBattle;
+    bw = (BSl *)gBattle;
     i = 0;
-    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+    if (0 < bw->n) {
         p = (u8 *)bw;
         do {
             a = *(s16 *)(p + 0x1BD4);
@@ -397,7 +398,7 @@ void func_001AC240(void) {
             }
             i++;
             p += 0x2020;
-        } while (i < BW_FIELD(bw, s32, 0x88D8));
+        } while (i < bw->n);
     }
 }
 #endif
@@ -498,7 +499,7 @@ void func_001AC400(void *pv) {
 }
 #endif
 #if 0
-// differs: size 0x80 against 0x90 with the do-while outer loop (the for-loop form has 34 instructions and an extra guard). The original has two nops after the outer bnez and a different pointer/counter assignment in the inner loop.
+// r7k: best of 4 more tries is 8 of 33 words (pointer update folded as (t1+(cnt-1)*4)+0x44 whatever the form: struct BtlEnt, &e->rel[1], q local; first load order of p+4/p+8 also differs). Older note: // differs: size 0x80 against 0x90 with the do-while outer loop (the for-loop form has 34 instructions and an extra guard). The original has two nops after the outer bnez and a different pointer/counter assignment in the inner loop.
 void func_001AC400(void *p0) {
     u8 *t1;
     s32 t0;
