@@ -782,7 +782,7 @@ extern s32 func_001E1E80(Fighter *);
 extern s32 func_001DF420();
 extern s32 func_001DFE60(Fighter *, s32, f32);
 
-// GIVEN UP: 0x270 vs 0x280 (16 bytes short). Early returns, the s4 load and the mode test match; the case bodies of the switch (1,2,4,400 in source order) are laid out differently: the 0x400 body is placed after the 0x4 body in the original and the join differs (3 layouts tried)
+// differs: 6 of 160 (round 7, adiff). Fixed this round: gBattle tests as ternaries, 0x800 address in int arithmetic ((s32)c + 0x1360 keeps the addiu), mask first in the 0x1000 test. Left: the 0x800 addu takes (base + idx<<4) instead of (idx<<4 + base) and flipping it moves other regs (9), the and in the 0x1000 test has its operands swapped, the compare constant 2 of the switch sits in a1 where the original has a2 plus move a1,a2.
 #if 0
 s32 func_001A8E60(s32 a0, void *a1) {
     u8 *o = (u8 *)a0;
@@ -815,18 +815,21 @@ s32 func_001A8E60(s32 a0, void *a1) {
         return 0;
     }
     if ((flags & 0x8) != 0) {
-        if (gBattle != NULL && (*(s32 *)((u8 *)gBattle + 0x8AA8) & 0x200) != 0) {
+        if ((gBattle != NULL ? (*(s32 *)((u8 *)gBattle + 0x8AA8) & 0x200) : 0) != 0) {
             return 0;
         }
     }
     if ((flags & 0x800) != 0) {
-        if ((*(s32 *)(c + 0x1360 + (*(s32 *)(c + 0x175C) << 4) + 0x1F8) & 0x4) == 0) {
+        s32 ii = *(s32 *)(c + 0x175C);
+        u8 *b = (u8 *)((s32)c + 0x1360);
+        u8 *e = b + (ii << 4);
+        if ((*(s32 *)(e + 0x1F8) & 0x4) == 0) {
             return 0;
         }
     }
     if ((flags & 0x1000) != 0) {
         s32 r = func_001DDD30((Fighter *)c);
-        if ((*(s16 *)(o + 0x14) & ((1 << r) & 0xFF)) == 0) {
+        if ((((1 << r) & 0xFF) & *(s16 *)(o + 0x14)) == 0) {
             return 0;
         }
     }
@@ -840,18 +843,13 @@ s32 func_001A8E60(s32 a0, void *a1) {
     case 0x4:
         s0 = func_001E1E80((Fighter *)c);
         break;
-    case 0x400: {
-        s32 v = 0;
-        if (gBattle != NULL) {
-            v = *(s32 *)((u8 *)gBattle + 0x8AA8) & 0x80;
-        }
-        if (v == 0) {
-            s0 = (*(s8 *)(c + 0x2010) == 0);
-        } else {
+    case 0x400:
+        if ((gBattle != NULL ? (*(s32 *)((u8 *)gBattle + 0x8AA8) & 0x80) : 0) != 0) {
             s0 = 0;
+        } else {
+            s0 = !(*(s8 *)(c + 0x2010) != 0);
         }
         break;
-    }
     }
     return s0;
 }
