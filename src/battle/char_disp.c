@@ -76,27 +76,21 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EA20);
 extern void amHeap_Free(void *);
 extern void amAdx_Stop(s32);
 extern s32 func_002A8F70();
-// GIVEN UP (round 5 chr2): the frame is 0x80 against 0x70 (an extra saved register for the byte offset, off), and the stop test
-// keeps s4 in another register. Tried: the plain j loop (about 10 differ: s4 copied to s0, the outer test branches elsewhere).
-#if 0
 extern u8 *D_004708CC;
 void func_0029EC40(void) {
     u8 *s4;
+    s32 s5;
     s32 i;
     s32 j;
-    s32 s5;
-    s32 off;
 
     s4 = D_004708CC;
     if (*(s32 *)(s4 + 0x54) != 0) {
         for (i = 0; i < *(s32 *)(s4 + 8); i++) {
-            off = 0;
             for (j = 0; j < *(s32 *)s4; j++) {
-                s5 = *(s32 *)(*(s32 *)(s4 + 0x48 + off) + i * 0x20);
+                s5 = *(s32 *)(i * 0x20 + (s32)(*(u8 ***)(s4 + 0x48))[j]);
                 if (func_002A8F70() != 1 || s5 >= 2) {
-                    amAdx_Stop(*(s32 *)(*(s32 *)(s4 + 0x48 + off) + i * 0x20));
+                    amAdx_Stop(*(s32 *)(i * 0x20 + (s32)(*(u8 ***)(s4 + 0x48))[j]));
                 }
-                off += 4;
             }
         }
         amHeap_Free(*(void **)(s4 + 0x54));
@@ -104,19 +98,16 @@ void func_0029EC40(void) {
     }
     if (*(s32 *)(s4 + 0x48) != 0) {
         for (j = 0; j < *(s32 *)s4; j++) {
-            if (*(s32 *)(s4 + 0x48 + j * 4) != 0) {
-                amHeap_Free(*(void **)(s4 + 0x48 + j * 4));
-                *(s32 *)(s4 + 0x48 + j * 4) = 0;
+            if ((*(u8 ***)(s4 + 0x48))[j] != 0) {
+                amHeap_Free((*(u8 ***)(s4 + 0x48))[j]);
+                (*(u8 ***)(s4 + 0x48))[j] = 0;
             }
         }
         amHeap_Free(*(void **)(s4 + 0x48));
         *(s32 *)(s4 + 0x48) = 0;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EC40);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EDC0);
-extern u8 *D_004708CC;
 s32 func_0029EF70(void) {
     u8 *s = D_004708CC;
     s32 j;
