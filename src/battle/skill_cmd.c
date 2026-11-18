@@ -820,7 +820,50 @@ void SkillKill_Kind04(s32 *p) {
         p[16] = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024EFA0);
+extern void func_00146F10(s32 *, s32 *, f32);
+extern void func_00146F60(f32 *, s32 *);
+extern void func_00141C30(f32 *, f32 *, f32 *);
+extern void func_00209850(s32, f32 *);
+extern s32 amMotion_FindBone(s32, s32);
+extern u8 D_0046ADE8[];
+void func_0024EFA0(s32 a0) {
+    u8 *s2;
+    u8 *s1;
+    s32 s0;
+    s32 v;
+    f32 f1;
+    f32 v70[4] __attribute__((aligned(16)));
+    f32 v60[4] __attribute__((aligned(16)));
+    f32 v50[4] __attribute__((aligned(16)));
+    f32 *p50;
+
+    s1 = *(u8 **)(a0 + 0x8);
+    s2 = *(u8 **)(a0 + 0xC);
+    s0 = *(s32 *)(s1 + 0x1350);
+    *(s32 *)(a0 + 0x40) = *(s32 *)((u8 *)D_0046FE54 + 0x10);
+    func_0020D400(a0 + 0x10, (s32)s1, *(s32 *)(s2 + 0x2C));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(a0 + 0x20), "r"(a0 + 0x10));
+    func_002499A0((s32 *)(a0 + 0x30), a0 + 0x10, (s32)s1, (s32)s2, 30.0f);
+    f1 = SkillObj_Scale();
+    func_00146F10((s32 *)(a0 + 0x30), (s32 *)(a0 + 0x30), *(f32 *)(s2 + 0x28) * f1);
+    if (*(s32 *)(s1 + 0xB9C) == 0x1C) {
+        v = amMotion_FindBone(*(s32 *)(*(s32 *)(s1 + 0xB88) + 4), (s32)D_0046ADE8);
+    } else {
+        v = 0;
+    }
+    *(s32 *)(a0 + 0x48) = v;
+    v = func_0020B020(s0, *(s16 *)(s2 + 0x64), *(s16 *)(s2 + 0x6A));
+    *(s32 *)(a0 + 0x44) = func_00209540(v, (s0 != 0) ? 0x4000020 : 0x4000010, 0);
+    p50 = v50;
+    v60[0] = 0.0f;
+    v60[1] = 1.0f;
+    v60[2] = 0.0f;
+    v60[3] = 1.0f;
+    func_00146F60(p50, (s32 *)(a0 + 0x30));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vsub.xyz $vf1, $vf0, $vf1 ; sqc2 $vf1, 0x0(%0)" : : "r"(v50));
+    func_00141C30(v70, v60, v50);
+    func_00209850(*(s32 *)(a0 + 0x44), v70);
+}
 extern void func_00209950(s32, void *, s32);
 void func_0024F150(s32 *a0) {
     s32 *s1 = a0;
