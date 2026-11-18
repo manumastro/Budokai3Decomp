@@ -346,15 +346,13 @@ void SkillKill_Kind11(void) {
 }
 void func_0024B690(void) {
 }
-// GIVEN UP: 17 of 89 differ: the original keeps the object in s1 (move s1,a0) and the data pointer in s0; mwcc swaps them whatever the declaration order (5 forms), and the stack-array VU0 copies are in the other order
-#if 0
 void func_0024B6A0(u8 *ob) {
-    s32 side;
-    s32 r;
-    u8 *s0;
     u8 *s1 = ob;
-    s32 t;
+    u8 *s0;
+    s32 side;
     s32 k;
+    s32 r;
+    s32 t;
     s32 tmp[4] __attribute__((aligned(16)));
 
     s0 = *(u8 **)(s1 + 0xC);
@@ -388,8 +386,6 @@ void func_0024B6A0(u8 *ob) {
     func_0013B110(1);
     func_00209C50();
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024B6A0);
 #if 0
 /* differs: 0x284 bytes against 0x2A0. The original keeps the table offset (side << 4) in $a0 across the whole
  * else-if chain, so the `move a0, s1` of each call block is not hoisted into the bc1t delay slot and the
@@ -1092,24 +1088,20 @@ s32 Scr_CmdObjCall1F5B10(s32 a0, s32 *a1) {
     func_001F5B10(r[1], s);
     return 1;
 }
-// GIVEN UP: the call result is kept in another saved register and stored from the result register; the scheduler puts the f32 load first (or in the delay slot), the original loads q[1] before the first call and the float in its delay slot (6 forms tried)
-#if 0
 extern s32 D_0051CD0C[];
 extern void func_001F5B70(s32 *);
 s32 func_00252F30(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
-    f32 f = ((f32 *)q)[0];
-    s32 *r = (s32 *)q[1];
 
-    func_001F5EF0(q[3], q[2]);
-    r = (s32 *)func_001A50F0(D_0051CD0C[0], (s32)r);
-    *(s32 *)r[4] = (s32)r;
+    f32 f = ((f32 *)q)[0];
+    s32 q1 = q[1];
+    s32 *r = func_001F5EF0(q[3], q[2]);
+    s32 v = func_001A50F0(D_0051CD0C[0], q1);
+    *(s32 *)r[4] = v;
     *(f32 *)((u8 *)r[4] + 4) = f;
     func_001F5B70(r);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252F30);
 extern void BtbObj_ApplyMotSet(s32 *);
 s32 Scr_CmdObjSetApplyMotSet(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
