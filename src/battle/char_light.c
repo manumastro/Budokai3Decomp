@@ -1108,7 +1108,7 @@ void func_0023A150(LObj4 *a0) {
         }
     }
 }
-// FAKEMATCH: the  tests on the two callback addresses are compiled-out-looking checks (a function address is never null); they reproduce the original bnez/move pair.
+// FAKEMATCH: the `if (f == 0) t = 0` tests on the two callback addresses are compiled-out-looking checks (a function address is never null); they reproduce the original bnez/move pair.
 void func_0023A240(LObj4 *a0) {
     LSub4 *s1;
     s32 *p;
