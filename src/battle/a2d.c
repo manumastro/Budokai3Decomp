@@ -1067,7 +1067,63 @@ s32 *func_0022D570(s32 a0, s32 a1, s32 a2, u32 a3) {
     s0[5] = (s32)p;
     return s0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D670);
+extern void *D_004706E0;
+extern s32 D_004706B0;
+extern s32 D_004706E4;
+extern s32 D_004706EC;
+static inline void A2d_PushFlags(s32 a0, s32 a1) {
+    s32 *st = D_004706D0;
+
+    D_004706D0 = st + 1;
+    st[1] &= ~a0;
+    st[1] |= a0;
+    st[1] &= ~a1;
+    D_004706D8 += 1;
+}
+s32 *func_0022D670(s32 a0, f32 f) {
+    s32 *s0;
+    s32 *s2;
+    u8 *top;
+    s32 n;
+
+    n = D_004706E4;
+    s0 = ((s32 **)D_004706E0)[n];
+    D_004706E4 = n + 1;
+    if (n + 1 == D_004706EC) {
+        D_004706E4 = 0;
+    }
+    memset(s0, 0, 0x40);
+    if (a0 != 0) {
+        top = D_004706CC;
+        D_004706CC = top + 0x50;
+        *(F4 *)(top + 0x50) = *(F4 *)(top + 0x0);
+        *(QuadA *)(top + 0x60) = *(QuadA *)(top + 0x10);
+        *(F4 *)(top + 0x80) = *(F4 *)(top + 0x30);
+        *(F4 *)(top + 0x90) = *(F4 *)(top + 0x40);
+        D_004706D4 += 1;
+        A2d_PushFlags(0, -1);
+        s2 = ((s32 **)D_004706AC)[D_004706B0];
+        D_004706B0 = D_004706B0 + 1;
+        if (D_004706B0 == D_004706B8) {
+            D_004706B0 = 0;
+        }
+        memset(s2, 0, 0x60);
+        if (a0 != 0) {
+            func_0022B900((s32 *)a0, s2, f);
+        }
+        s0[12] = (s32)s2;
+        s0[3] |= 1;
+        s0[1] |= 1;
+        s0[0] = a0;
+        *(f32 *)&s0[4] = f;
+        s0[5] = -1;
+        D_004706D4 -= 1;
+        D_004706CC -= 0x50;
+        D_004706D8 -= 1;
+        D_004706D0 -= 1;
+    }
+    return s0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D860);
 extern s32 *D_004706AC;
 extern s32 D_004706B0;
