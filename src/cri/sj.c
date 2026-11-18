@@ -1955,8 +1955,31 @@ void func_0016F258(s32 arg0, u8 *arg1) {
     *(s32 *)((u8 *)arg1 + 4) = func_0016F148(arg0 + 8);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F290);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F360);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F3B8);
+extern int sjrmt_rpc_rbuf_x0016F360[] __asm__("D_00481180");
+extern int sjrmt_rpc_sbuf_x0016F360[] __asm__("D_00481080");
+int dtx_call_iop_x0016F360(int fno, int *in, int nin, int *out, int nout) __asm__("func_00165FB8");
+int func_0016F360_x0016F360(int word0, int word1, int word2) __asm__("func_0016F360");
+/* sjrmt_iop_call32: from https://github.com/new-coke/rez-decomp (src/cri/sjrmt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_0016F360_x0016F360(int word0, int word1, int word2)
+{
+    sjrmt_rpc_sbuf_x0016F360[0] = word0;
+    sjrmt_rpc_sbuf_x0016F360[1] = word1;
+    sjrmt_rpc_sbuf_x0016F360[2] = word2;
+    dtx_call_iop_x0016F360(32, sjrmt_rpc_sbuf_x0016F360, 3, sjrmt_rpc_rbuf_x0016F360, 1);
+    return sjrmt_rpc_rbuf_x0016F360[0];
+}
+extern int sjrmt_rpc_rbuf_x0016F3B8[] __asm__("D_00481180");
+extern int sjrmt_rpc_sbuf_x0016F3B8[] __asm__("D_00481080");
+int dtx_call_iop_x0016F3B8(int fno, int *in, int nin, int *out, int nout) __asm__("func_00165FB8");
+int func_0016F3B8_x0016F3B8(int word0, int word1) __asm__("func_0016F3B8");
+/* sjrmt_iop_call33: from https://github.com/new-coke/rez-decomp (src/cri/sjrmt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_0016F3B8_x0016F3B8(int word0, int word1)
+{
+    sjrmt_rpc_sbuf_x0016F3B8[0] = word0;
+    sjrmt_rpc_sbuf_x0016F3B8[1] = word1;
+    dtx_call_iop_x0016F3B8(33, sjrmt_rpc_sbuf_x0016F3B8, 2, sjrmt_rpc_rbuf_x0016F3B8, 1);
+    return sjrmt_rpc_rbuf_x0016F3B8[0];
+}
 typedef int s32_x0016F408;
 typedef s32_x0016F408 intptr_t_x0016F408;
 typedef char Sint8_x0016F408;
@@ -1988,13 +2011,110 @@ void func_0016F460_x0016F460(void* sjrmt) {
     D_006C0140_x0016F460[0] = sjrmt;
     DTX_CallUrpc_x0016F460(35, D_006C0140_x0016F460, 1, 0, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F490);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F500);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F530);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F5A0);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F5F0);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F640);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F690);
+extern int sjrmt_rpc_rbuf_x0016F490[] __asm__("D_00481180");
+extern int sjrmt_rpc_sbuf_x0016F490[] __asm__("D_00481080");
+extern int sjrmt_uuid_buf_x0016F490[] __asm__("D_00481040");
+int dtx_call_iop_x0016F490(int fno, int *in, int nin, int *out, int nout) __asm__("func_00165FB8");
+int *func_0016F490_x0016F490(void *sj) __asm__("func_0016F490");
+/* sjrmt_get_uuid: from https://github.com/new-coke/rez-decomp (src/cri/sjrmt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int *func_0016F490_x0016F490(void *sj)
+{
+    sjrmt_rpc_sbuf_x0016F490[0] = (int)sj;
+    dtx_call_iop_x0016F490(36, sjrmt_rpc_sbuf_x0016F490, 1, sjrmt_rpc_rbuf_x0016F490, 4);
+    sjrmt_uuid_buf_x0016F490[0] = sjrmt_rpc_rbuf_x0016F490[0];
+    sjrmt_uuid_buf_x0016F490[1] = sjrmt_rpc_rbuf_x0016F490[1];
+    sjrmt_uuid_buf_x0016F490[2] = sjrmt_rpc_rbuf_x0016F490[2];
+    sjrmt_uuid_buf_x0016F490[3] = sjrmt_rpc_rbuf_x0016F490[3];
+    return sjrmt_uuid_buf_x0016F490;
+}
+extern int sjrmt_rpc_sbuf_x0016F500[] __asm__("D_00481080");
+int dtx_call_iop_x0016F500(int fno, int *in, int nin, int *out, int nout) __asm__("func_00165FB8");
+void func_0016F500_x0016F500(void *sj) __asm__("func_0016F500");
+/* sjrmt_reset: from https://github.com/new-coke/rez-decomp (src/cri/sjrmt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0016F500_x0016F500(void *sj)
+{
+    sjrmt_rpc_sbuf_x0016F500[0] = (int)sj;
+    dtx_call_iop_x0016F500(37, sjrmt_rpc_sbuf_x0016F500, 1, 0, 0);
+}
+typedef struct SjChunk_x0016F530 {
+    char *data;
+    int len;
+} SjChunk_x0016F530;
+struct SjChunk_x0016F530;
+extern int sjrmt_rpc_rbuf_x0016F530[] __asm__("D_00481180");
+extern int sjrmt_rpc_sbuf_x0016F530[] __asm__("D_00481080");
+int dtx_call_iop_x0016F530(int fno, int *in, int nin, int *out, int nout) __asm__("func_00165FB8");
+void func_0016F530_x0016F530(void *sj, int id, int nbyte, SjChunk_x0016F530 *ck) __asm__("func_0016F530");
+/* sjrmt_get_chunk: from https://github.com/new-coke/rez-decomp (src/cri/sjrmt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0016F530_x0016F530(void *sj, int id, int nbyte, SjChunk_x0016F530 *ck)
+{
+    sjrmt_rpc_sbuf_x0016F530[0] = (int)sj;
+    sjrmt_rpc_sbuf_x0016F530[1] = id;
+    sjrmt_rpc_sbuf_x0016F530[2] = nbyte;
+    dtx_call_iop_x0016F530(38, sjrmt_rpc_sbuf_x0016F530, 3, sjrmt_rpc_rbuf_x0016F530, 2);
+    ck->data = (char *)sjrmt_rpc_rbuf_x0016F530[0];
+    ck->len = sjrmt_rpc_rbuf_x0016F530[1];
+}
+typedef struct SjChunk_x0016F5A0 {
+    char *data;
+    int len;
+} SjChunk_x0016F5A0;
+struct SjChunk_x0016F5A0;
+extern int sjrmt_rpc_sbuf_x0016F5A0[] __asm__("D_00481080");
+int dtx_call_iop_x0016F5A0(int fno, int *in, int nin, int *out, int nout) __asm__("func_00165FB8");
+void func_0016F5A0_x0016F5A0(void *sj, int id, SjChunk_x0016F5A0 *ck) __asm__("func_0016F5A0");
+/* sjrmt_put_chunk: from https://github.com/new-coke/rez-decomp (src/cri/sjrmt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0016F5A0_x0016F5A0(void *sj, int id, SjChunk_x0016F5A0 *ck)
+{
+    sjrmt_rpc_sbuf_x0016F5A0[0] = (int)sj;
+    sjrmt_rpc_sbuf_x0016F5A0[1] = id;
+    sjrmt_rpc_sbuf_x0016F5A0[2] = (int)ck->data;
+    sjrmt_rpc_sbuf_x0016F5A0[3] = ck->len;
+    dtx_call_iop_x0016F5A0(39, sjrmt_rpc_sbuf_x0016F5A0, 4, 0, 0);
+}
+typedef struct SjChunk_x0016F5F0 {
+    char *data;
+    int len;
+} SjChunk_x0016F5F0;
+struct SjChunk_x0016F5F0;
+extern int sjrmt_rpc_sbuf_x0016F5F0[] __asm__("D_00481080");
+int dtx_call_iop_x0016F5F0(int fno, int *in, int nin, int *out, int nout) __asm__("func_00165FB8");
+void func_0016F5F0_x0016F5F0(void *sj, int id, SjChunk_x0016F5F0 *ck) __asm__("func_0016F5F0");
+/* sjrmt_unget_chunk: from https://github.com/new-coke/rez-decomp (src/cri/sjrmt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0016F5F0_x0016F5F0(void *sj, int id, SjChunk_x0016F5F0 *ck)
+{
+    sjrmt_rpc_sbuf_x0016F5F0[0] = (int)sj;
+    sjrmt_rpc_sbuf_x0016F5F0[1] = id;
+    sjrmt_rpc_sbuf_x0016F5F0[2] = (int)ck->data;
+    sjrmt_rpc_sbuf_x0016F5F0[3] = ck->len;
+    dtx_call_iop_x0016F5F0(40, sjrmt_rpc_sbuf_x0016F5F0, 4, 0, 0);
+}
+extern int D_00758400_x0016F640[2] __asm__("D_00481080");
+extern int D_00758500_x0016F640[1] __asm__("D_00481180");
+extern int DTX_CallUrpc_x0016F640(int cmd, void *in, int nin, void *out, int nout) __asm__("func_00165FB8");
+int func_0016F640_x0016F640(int a, int b) __asm__("func_0016F640");
+/* SJRMT_GetNumData: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0033adc0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_0016F640_x0016F640(int a, int b)
+{
+    D_00758400_x0016F640[0] = a;
+    D_00758400_x0016F640[1] = b;
+    DTX_CallUrpc_x0016F640(0x29, D_00758400_x0016F640, 2, D_00758500_x0016F640, 1);
+    return D_00758500_x0016F640[0];
+}
+extern int sjrmt_rpc_rbuf_x0016F690[] __asm__("D_00481180");
+extern int sjrmt_rpc_sbuf_x0016F690[] __asm__("D_00481080");
+int dtx_call_iop_x0016F690(int fno, int *in, int nin, int *out, int nout) __asm__("func_00165FB8");
+int func_0016F690_x0016F690(void *sj, int id, int nbyte, int *rbyte) __asm__("func_0016F690");
+/* sjrmt_is_get_chunk: from https://github.com/new-coke/rez-decomp (src/cri/sjrmt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_0016F690_x0016F690(void *sj, int id, int nbyte, int *rbyte)
+{
+    sjrmt_rpc_sbuf_x0016F690[0] = (int)sj;
+    sjrmt_rpc_sbuf_x0016F690[1] = id;
+    sjrmt_rpc_sbuf_x0016F690[2] = nbyte;
+    dtx_call_iop_x0016F690(42, sjrmt_rpc_sbuf_x0016F690, 3, sjrmt_rpc_rbuf_x0016F690, 1);
+    *rbyte = sjrmt_rpc_rbuf_x0016F690[1];
+    return sjrmt_rpc_rbuf_x0016F690[0];
+}
 typedef signed int Sint32_x0016F6F8;
 typedef char Char8_x0016F6F8;
 extern int* sceCdCallback_x0016F6F8(void (*func)(int)) __asm__("sceCdCallback");

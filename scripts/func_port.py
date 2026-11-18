@@ -44,6 +44,13 @@ LICENSES = {
     "newlib": ("newlib 1.10.0 (sourceware.org)", "BSD-style, notices in LICENSES/THIRD_PARTY.md"),
     "rg": ("https://github.com/Dorgengoa/RGDecomp", "CC0-1.0"),
     "recvx": ("https://github.com/AshfordFamily/recvx-decomp", "MIT"),
+    "gh": ("https://github.com/LucasPicoli/god-hand-decomp", "MIT"),
+    "rez": ("https://github.com/new-coke/rez-decomp", "MIT"),
+    "sotc": ("https://github.com/TheRealestNwah/sotc-decomp", "CC0-1.0"),
+    "cwoc": ("https://github.com/denzi-gh/crashwoc-decomp-ps2", "GPL-3.0"),
+    "lomb": ("https://github.com/lombyte-project/Lombyte", "GPL-3.0"),
+    "rac1": ("https://github.com/OpenRAC/rac1-decomp", "GPL-3.0"),
+    "rac2": ("https://github.com/OpenRAC/rac2-decomp", "GPL-3.0"),
     "s3": ("https://github.com/crowded-street/3s-decomp", "AGPL-3.0-only"),
 }
 DATA_SECS = (".data", ".rodata", ".bss", ".sdata", ".sbss", ".lit4", ".lit8")

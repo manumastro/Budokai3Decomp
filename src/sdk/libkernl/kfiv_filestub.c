@@ -327,7 +327,113 @@ int sceFsReset(void)
 INCLUDE_PAD(4);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F3B8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F4F8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F5E8);
+extern int func_003B3EC8_x0010F5E8(int cmd) __asm__("func_0010EFC0");
+typedef struct { int f0; int f4; int f8; int fC; } Iob_x0010F5E8;
+typedef struct {
+    int sema;
+    void *dst;
+    int size;
+    int flags;
+    int mode;
+    char name[0x400];
+    int unit;
+} OpenPkt_x0010F5E8;
+struct SemaParam_x0010F5E8 {
+    int currentCount;
+    int maxCount;
+    int initCount;
+    int numWaitThreads;
+    unsigned int attr;
+    unsigned int option;
+};
+extern Iob_x0010F5E8 *new_iob_x0010F5E8(void) __asm__("func_0010E9C8");
+extern void func_003B3F50_x0010F5E8(void) __asm__("func_0010F0E8");
+extern int func_003B4158_x0010F5E8(void) __asm__("func_0010F2F0");
+extern int func_003B3958_x0010F5E8(void *, int, int, void *, int, void *, int, int, int, int) __asm__("func_0010EA50");
+extern int SignalSema_3B3EF8_x0010F5E8(void) __asm__("func_0010EFF0");
+extern int CreateSema_x0010F5E8(struct SemaParam_x0010F5E8 *p) __asm__("CreateSema");
+extern int DeleteSema_x0010F5E8(int id) __asm__("DeleteSema");
+extern int WaitSema_x0010F5E8(int id) __asm__("WaitSema");
+extern int SignalSema_x0010F5E8(int id) __asm__("SignalSema");
+extern int D_003FAEDC_x0010F5E8 __asm__("D_003EC6BC");
+extern int D_003FAEE8_x0010F5E8 __asm__("D_003EC6C8");
+extern Iob_x0010F5E8 D_007814C0_x0010F5E8[32] __asm__("D_00474940");
+extern OpenPkt_x0010F5E8 D_0077FFC0_x0010F5E8 __asm__("D_00473440");
+extern char D_00460120_x0010F5E8[] __asm__("D_0045D700");
+extern char D_00780C00_x0010F5E8[] __asm__("D_00474080");
+extern char D_007816C0_x0010F5E8[] __asm__("D_00474B40");
+int func_0010F5E8_x0010F5E8(const char *name, int flags, ...) __asm__("func_0010F5E8");
+/* func_003B4220: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003b4220.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_0010F5E8_x0010F5E8(const char *name, int flags, ...)
+{
+    struct SemaParam_x0010F5E8 sp;
+    int result;
+    Iob_x0010F5E8 *p;
+    int sid;
+    int r;
+    int i;
+    int mode;
+    int unit;
+
+    OpenPkt_x0010F5E8 *q = &D_0077FFC0_x0010F5E8;
+
+    func_003B3EC8_x0010F5E8(0);
+    if (!D_003FAEDC_x0010F5E8)
+        func_003B3F50_x0010F5E8();
+    if (func_003B4158_x0010F5E8()) {
+        SignalSema_3B3EF8_x0010F5E8();
+        return 0xFFFEFFFC;
+    }
+    p = new_iob_x0010F5E8();
+    if (!p) {
+        SignalSema_3B3EF8_x0010F5E8();
+        return -19;
+    }
+    mode = *(int *)((char *)__builtin_next_arg(flags) - 0x30);
+    for (i = 0; i < 0x400; i++) {
+        if ((q->name[i] = name[i]) == 0)
+            break;
+    }
+    if (i == 0x400)
+        q->name[0x3FF] = 0;
+    q->flags = flags & 0x7FFFFFFF;
+    q->mode = mode;
+    unit = p - D_007814C0_x0010F5E8;
+    q->unit = unit;
+    sp.maxCount = 1;
+    sp.initCount = 0;
+    sp.option = (unsigned int)D_00460120_x0010F5E8;
+    sid = CreateSema_x0010F5E8(&sp);
+    q->dst = &result;
+    q->sema = sid;
+    q->size = 4;
+    r = func_003B3958_x0010F5E8(D_007816C0_x0010F5E8, 0, 0, &D_0077FFC0_x0010F5E8, 0x418, D_00780C00_x0010F5E8, 4, 0, 0, 0);
+    if (r < 0) {
+        DeleteSema_x0010F5E8(sid);
+        SignalSema_3B3EF8_x0010F5E8();
+        return -11;
+    }
+    r = *(int *)((unsigned int)D_00780C00_x0010F5E8 | 0x20000000);
+    SignalSema_3B3EF8_x0010F5E8();
+    if (r == 0) {
+        DeleteSema_x0010F5E8(sid);
+        return -11;
+    }
+    WaitSema_x0010F5E8(sid);
+    DeleteSema_x0010F5E8(sid);
+    if (result < 0) {
+        WaitSema_x0010F5E8(D_003FAEE8_x0010F5E8);
+        p->f4 = 0;
+        SignalSema_x0010F5E8(D_003FAEE8_x0010F5E8);
+        return result;
+    }
+    r = unit;
+    WaitSema_x0010F5E8(D_003FAEE8_x0010F5E8);
+    p->f0 = result;
+    p->f4 |= flags;
+    SignalSema_x0010F5E8(D_003FAEE8_x0010F5E8);
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F878);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F9F0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010FC30);

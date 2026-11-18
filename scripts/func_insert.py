@@ -240,7 +240,13 @@ def apply(items, jobs=12, log=None, dry=False):
     # an asm segment with data labels in its code (words splat could not read as instructions) cannot be turned
     # into a C file of INCLUDE_ASM lines: asm2c.py would drop those words
     for (seg, kind) in list(byseg):
-        if kind == "asm" and re.search(r"^dlabel ", (ROOT / "asm" / f"{seg}.s").read_text(), re.M):
+        if kind != "asm":
+            continue
+        txt = (ROOT / "asm" / f"{seg}.s").read_text()
+        # INCLUDE_ASM aligns every function to 8 (.align 3): a function at an address that is not a multiple of 8
+        # would move
+        starts = [int(m.group(1), 16) for m in re.finditer(r"^[gj]label \S+\n\s+/\* \w+ ([0-9A-F]{8}) ", txt, re.M)]
+        if re.search(r"^dlabel ", txt, re.M) or any(s % 8 for s in starts):
             del byseg[(seg, kind)]
     conv = [seg for (seg, kind) in byseg if kind == "asm"]
     for seg in conv:

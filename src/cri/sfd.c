@@ -253,14 +253,41 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001885F0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188620);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001886A8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188760);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001889C0);
+typedef signed char Sint8_x001889C0;
+typedef signed int Sint32_x001889C0;
+Sint32_x001889C0 ADXT_IsEndcode_x001889C0(Sint8_x001889C0 *adr, Sint32_x001889C0 siz, Sint32_x001889C0 *endsiz) __asm__("func_0015FC98");
+Sint32_x001889C0 func_001889C0_x001889C0(Sint8_x001889C0 *buf, Sint32_x001889C0 size, Sint32_x001889C0 *pFound) __asm__("func_001889C0");
+/* sfadxt_AdjDiscard: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003358e8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x001889C0 func_001889C0_x001889C0(Sint8_x001889C0 *buf, Sint32_x001889C0 size, Sint32_x001889C0 *pFound) {
+    Sint32_x001889C0 endsiz;
+    Sint32_x001889C0 i;
+    *pFound = 0;
+    for (i = 0; i < size; i += 18) {
+        if (!ADXT_IsEndcode_x001889C0(buf, 18, &endsiz)) {
+            buf += 18;
+            continue;
+        }
+        *pFound = 1;
+        break;
+    }
+    return i;
+}
 void func_00188A48(u8 *arg0) {
     func_0015FCD8(**(s32 **)((u8 *)arg0 + 0x1CB4));
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188A68);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188B20);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188C40);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188D48);
+void *func_0034B618_x00188D48(char *self) __asm__("func_00189BC0");
+int func_00188D48_x00188D48(int a0, int *a1, int *a2) __asm__("func_00188D48");
+/* func_0034A6F8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0032f938.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00188D48_x00188D48(int a0, int *a1, int *a2) {
+    int *r = func_0034B618_x00188D48(a0);
+    if (r == 0) return -1;
+    *a1 = r[3];
+    *a2 = r[4];
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188D98);
 s32 func_00188E40(u8 *arg0) {
     return ADXT_GetStat(**(s32 **)((u8 *)arg0 + 0x1CB4)) == 3;
@@ -272,7 +299,14 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189070);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189088);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001890A0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001890C0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189178);
+extern int GuardedCall_00329FD0_329F98_x00189178(void *hn) __asm__("ADXT_GetStat");
+int func_00189178_x00189178(void *hn) __asm__("func_00189178");
+/* sfadxt_IsEndDecinfo: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00349d38.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00189178_x00189178(void *hn)
+{
+    if ((unsigned int)GuardedCall_00329FD0_329F98_x00189178(hn) < 2) return 0;
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001891A0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189208);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189360);
@@ -310,7 +344,13 @@ s32 func_00189838(s32 arg0) {
 s32 func_00189848(void) {
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189850);
+extern void func_0034B3E0_x00189850(int a, int b) __asm__("func_00189988");
+int func_00189850_x00189850(int a0) __asm__("func_00189850");
+/* func_0034B2A8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0031f4e0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00189850_x00189850(int a0) {
+    func_0034B3E0_x00189850(a0, 0);
+    return 0;
+}
 s32 func_00189870(u8 *arg0) {
     ADXT_Stop(**(s32 **)((u8 *)arg0 + 0x1CB4));
     return 0;
@@ -318,7 +358,15 @@ s32 func_00189870(u8 *arg0) {
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189898);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189988);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001899D8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189A20);
+extern void func_0032B300_x00189A20(void *hn, int sw) __asm__("ADXT_Pause");
+extern void Obj35C0_SetField_4_C538_x00189A20(int a0, int sw) __asm__("func_0019C340");
+void func_00189A20_x00189A20(void *hn, int a1, int sw) __asm__("func_00189A20");
+/* sfadxt_WtPause: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00349d38.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00189A20_x00189A20(void *hn, int a1, int sw)
+{
+    func_0032B300_x00189A20(hn, sw);
+    Obj35C0_SetField_4_C538_x00189A20(a1, sw);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189A60);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189AB0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189AD0);
@@ -437,7 +485,15 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A1B8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A318);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A358);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A420);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A478);
+extern void func_0034BD98_x0018A478(void *sj, int kind) __asm__("func_0018A4B8");
+void func_0018A478_x0018A478(void *sj) __asm__("func_0018A478");
+/* SFBUF_DestroySj: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00201a50.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0018A478_x0018A478(void *sj)
+{
+    func_0034BD98_x0018A478(sj, 0);
+    func_0034BD98_x0018A478(sj, 1);
+    func_0034BD98_x0018A478(sj, 2);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A4B8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A520);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A5D8);
@@ -484,8 +540,89 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AA98);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AB40);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AB58);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AB70);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018ACC0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AD50);
+extern void sfbuf_PeekChunk_x0018ACC0(void *buf, int a1, void *out0, void *out1) __asm__("func_0018AD50");
+typedef struct {
+    int start;
+    int len;
+} SfChunk_x0018ACC0;
+typedef struct {
+    int pos;
+    int next;
+} SfConti_x0018ACC0;
+typedef struct {
+    void *dummy0;
+    void *buf;
+    int pad[4];
+    SfConti_x0018ACC0 conti;
+} SfBuf_x0018ACC0;
+void func_0018ACC0_x0018ACC0(SfBuf_x0018ACC0 *a0) __asm__("func_0018ACC0");
+/* sfbuf_ResetConti: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003272c0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0018ACC0_x0018ACC0(SfBuf_x0018ACC0 *a0) {
+    SfConti_x0018ACC0 *s0;
+    SfChunk_x0018ACC0 chunk1;
+    SfChunk_x0018ACC0 chunk2;
+    unsigned int pos;
+    s0 = &a0->conti;
+    sfbuf_PeekChunk_x0018ACC0(a0->buf, 1, &chunk1, &chunk2);
+    pos = (unsigned int)s0->pos;
+    if ((unsigned int)pos < (unsigned int)chunk1.start) {
+        goto check2;
+    }
+    if ((unsigned int)pos < (unsigned int)(chunk1.start + chunk1.len)) {
+        return;
+    }
+check2:
+    if ((unsigned int)pos < (unsigned int)chunk2.start) {
+        s0->pos = 0;
+        s0->next = 0;
+        return;
+    }
+    if ((unsigned int)pos < (unsigned int)(chunk2.start + chunk2.len)) {
+        return;
+    }
+    s0->pos = 0;
+    s0->next = 0;
+}
+typedef unsigned char Uint8_x0018AD50;
+typedef int Sint32_x0018AD50;
+typedef struct _sj_obj_x0018AD50 {
+    struct _sj_vtbl_x0018AD50 *vtbl;
+} SJ_OBJ_x0018AD50, *SJ_x0018AD50;
+typedef struct {
+    Uint8_x0018AD50 *data;
+    Sint32_x0018AD50 len;
+} SJCK_x0018AD50;
+struct _sj_vtbl_x0018AD50 {
+    void (*QueryInterface)();
+    void (*AddRef)();
+    void (*Release)();
+    void (*Destroy)();
+    void *(*GetUuid)();
+    void (*Reset)();
+    void (*GetChunk)(SJ_x0018AD50, Sint32_x0018AD50, Sint32_x0018AD50, SJCK_x0018AD50 *);
+    void (*UngetChunk)(SJ_x0018AD50, Sint32_x0018AD50, SJCK_x0018AD50 *);
+    void (*PutChunk)();
+    Sint32_x0018AD50 (*GetNumData)(SJ_x0018AD50, Sint32_x0018AD50);
+    Sint32_x0018AD50 (*IsGetChunk)();
+    void (*EntryErrFunc)();
+};
+Sint32_x0018AD50 func_0018AD50_x0018AD50(SJ_x0018AD50 sj, Sint32_x0018AD50 type, SJCK_x0018AD50 *ck1, SJCK_x0018AD50 *ck2) __asm__("func_0018AD50");
+/* sfbuf_PeekChunk: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0034c588.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0018AD50 func_0018AD50_x0018AD50(SJ_x0018AD50 sj, Sint32_x0018AD50 type, SJCK_x0018AD50 *ck1, SJCK_x0018AD50 *ck2)
+{
+    Sint32_x0018AD50 ndata;
+    ndata = ((sj)->vtbl->GetNumData((sj), (type)));
+    ((sj)->vtbl->GetChunk((sj), (type), (0x7FFFFFFF), (ck1)));
+    if (ck1->len < ndata) {
+        ((sj)->vtbl->GetChunk((sj), (type), (0x7FFFFFFF), (ck2)));
+        ((sj)->vtbl->UngetChunk((sj), (type), (ck2)));
+    } else {
+        ck2->data = 0;
+        ck2->len = 0;
+    }
+    ((sj)->vtbl->UngetChunk((sj), (type), (ck1)));
+    return ndata;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AE48);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AEA0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AF10);
@@ -878,7 +1015,19 @@ u8 *func_0018E078(u8 *arg0) {
     return arg0 + (*(s32 *)((u8 *)arg0 + 0x1C34) * 0x74) + 0x1290;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018E0A0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018E218);
+extern int sfmps_CopySj_x0018E218(int a0, int a1, int a2, int a3) __asm__("func_0018E7D8");
+int func_0018E218_x0018E218(int a0, int (*a1)(int, int), int a2, int a3, int a4, int a5) __asm__("func_0018E218");
+/* func_0034EB28: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00323a00.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_0018E218_x0018E218(int a0, int (*a1)(int, int), int a2, int a3, int a4, int a5) {
+    int r;
+    r = sfmps_CopySj_x0018E218(a0, a4, a5, a3);
+    if (r == 1) {
+        if (a1) {
+            a1(a2, a3);
+        }
+    }
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018E288);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018E400);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018E5D8);
@@ -967,7 +1116,23 @@ s32 func_0018F6C0(u8 *arg0) {
     return *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1C2C)) + 0x14);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F6D0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F780);
+extern struct S24 { int w[9]; } D_00766BA8_x0018F780 __asm__("D_00492988");
+extern int D_00766BD0_x0018F780[] __asm__("D_004929B0");
+extern int D_00766BD8_x0018F780[] __asm__("D_004929B8");
+void func_0018F780_x0018F780(struct S24 *src, int *b, int *c) __asm__("func_0018F780");
+/* SFD_SetMpvParaTbl: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00350150.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0018F780_x0018F780(struct S24 *src, int *b, int *c) {
+    int i, n;
+    D_00766BA8_x0018F780 = *src;
+    D_00766BA8_x0018F780.w[4] = 0;
+    D_00766BA8_x0018F780.w[8] = 0;
+    for (i = 0; i < 2; i++) D_00766BD0_x0018F780[i] = (b[i] + 0x3F) & -0x40;
+    n = src->w[7];
+    for (i = 0; i < 0x10; i++) {
+        if (i < n) D_00766BD8_x0018F780[i] = (c[i] + 0x3F) & -0x40;
+        else D_00766BD8_x0018F780[i] = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F870);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F910);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F9A0);
@@ -1019,14 +1184,44 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190338);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190358);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001903D0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190610);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001907B8);
+typedef struct {
+    unsigned int f0;
+    unsigned int f4;
+    unsigned int f8;
+    unsigned int fC;
+} SfMpv_x001907B8;
+unsigned int func_001907B8_x001907B8(SfMpv_x001907B8 *p, unsigned int v) __asm__("func_001907B8");
+/* sfmpv_CalcDistance: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00351108.c, MIT); ee-gcc 2.96 -O2 -G0 */
+unsigned int func_001907B8_x001907B8(SfMpv_x001907B8 *p, unsigned int v) {
+    unsigned int lo0 = p->f0;
+    unsigned int r;
+    if (v >= lo0 && v < lo0 + p->f4) {
+        r = v - lo0;
+    } else if (v >= p->f8 && v < p->f8 + p->fC) {
+        r = (v - p->f8) + p->f4;
+    } else {
+        r = 0;
+    }
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190820);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001908A8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190A00);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190B68);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190DF0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190E40);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190EF8);
+typedef struct SfMpv_x00190EF8 SfMpv_x00190EF8;
+extern int func_003518D8_x00190EF8(SfMpv_x00190EF8 *p, int n) __asm__("func_00190F48");
+extern void sfmpv_DiscardSec_x00190EF8(SfMpv_x00190EF8 *p, int n) __asm__("func_00191120");
+int func_00190EF8_x00190EF8(SfMpv_x00190EF8 *p, int n) __asm__("func_00190EF8");
+/* sfmpv_Concat: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00351888.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00190EF8_x00190EF8(SfMpv_x00190EF8 *p, int n)
+{
+    if (func_003518D8_x00190EF8(p, n) == -1)
+        return -1;
+    sfmpv_DiscardSec_x00190EF8(p, n);
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190F48);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00191018);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00191078);

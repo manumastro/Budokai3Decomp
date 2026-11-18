@@ -10,16 +10,155 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112138);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112330);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112510);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112598);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112608);
+typedef struct RpcPkt_x00112608 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x00112608 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x00112608;
+struct RpcPkt_x00112608;
+extern int sceSifCallRpc_x00112608(struct RpcPkt_x00112608 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+extern int sif_iopheap_inited_x00112608 __asm__("D_003EC6D8");
+extern RpcPkt_x00112608 sif_iopheap_client_x00112608 __asm__("D_00474C40");
+extern int sif_iopheap_sbuf_x00112608[] __asm__("D_00474CC0");
+extern int sif_iopheap_rbuf_x00112608[] __asm__("D_00474C80");
+int func_00112608_x00112608(int type, int size, int addr) __asm__("func_00112608");
+/* sceSifAllocSysMemory: from https://github.com/new-coke/rez-decomp (src/sce/libkernl_iopheap.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00112608_x00112608(int type, int size, int addr)
+{
+    if (sif_iopheap_inited_x00112608 < 0)
+        return 0;
+    sif_iopheap_sbuf_x00112608[0] = size;
+    sif_iopheap_sbuf_x00112608[1] = type;
+    sif_iopheap_sbuf_x00112608[2] = addr;
+    if (sceSifCallRpc_x00112608(&sif_iopheap_client_x00112608, 4, 0, sif_iopheap_sbuf_x00112608, 12, sif_iopheap_rbuf_x00112608, 4, 0, 0) < 0)
+        return 0;
+    return sif_iopheap_rbuf_x00112608[0];
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112688);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112700);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112720);
+typedef struct RpcPkt_x00112720 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x00112720 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x00112720;
+struct RpcPkt_x00112720;
+extern int sceSifCallRpc_x00112720(struct RpcPkt_x00112720 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+typedef struct HeapPathArg_x00112720 {
+    int addr;                
+    char name[252];          
+} HeapPathArg_x00112720;
+extern int sif_iopheap_inited_x00112720 __asm__("D_003EC6D8");
+extern RpcPkt_x00112720 sif_iopheap_client_x00112720 __asm__("D_00474C40");
+extern int sif_iopheap_rbuf_x00112720[] __asm__("D_00474C80");
+extern HeapPathArg_x00112720 sif_iopheap_path_arg_x00112720 __asm__("D_00474D00");
+int func_00112720_x00112720(const char *name, int addr) __asm__("func_00112720");
+/* sceSifLoadIopHeap: from https://github.com/new-coke/rez-decomp (src/sce/libkernl_iopheap.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00112720_x00112720(const char *name, int addr)
+{
+    int i;
+
+    if (sif_iopheap_inited_x00112720 < 0)
+        return 0;
+    for (i = 0; i < 252; i++) {
+        if (!(sif_iopheap_path_arg_x00112720.name[i] = name[i]))
+            break;
+    }
+    if (i == 252) {
+        i = 251;
+        sif_iopheap_path_arg_x00112720.name[251] = 0;
+    }
+    sif_iopheap_path_arg_x00112720.addr = addr;
+    sif_iopheap_path_arg_x00112720.name[251] = 0;
+    if (sceSifCallRpc_x00112720(&sif_iopheap_client_x00112720, 3, 0, &sif_iopheap_path_arg_x00112720, i + 5, sif_iopheap_rbuf_x00112720, 4, 0, 0) < 0)
+        return -1;
+    return sif_iopheap_rbuf_x00112720[0];
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112810);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112880);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001128F0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112960);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001129E0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112A60);
+typedef struct RpcPkt_x00112A60 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x00112A60 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x00112A60;
+typedef struct Bytes4_x00112A60 {
+    char b[4];
+} Bytes4_x00112A60;
+typedef struct LoadArg_x00112A60 {
+    int id;                  
+    int len;                 
+    char path[252];          
+    char args[252];          
+} LoadArg_x00112A60;
+struct RpcPkt_x00112A60;
+int sceSifBindRpc_x00112A60(struct RpcPkt_x00112A60 *cd, unsigned int rpc_number, unsigned int mode) __asm__("sceSifBindRpc");
+extern int sceSifCallRpc_x00112A60(struct RpcPkt_x00112A60 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+extern int sif_loadfile_inited_x00112A60 __asm__("D_003EC6E0");
+extern RpcPkt_x00112A60 sif_loadfile_client_x00112A60 __asm__("D_00475000");
+extern char sif_loadfile_peer_ver_x00112A60[] __asm__("D_00475028");
+extern LoadArg_x00112A60 sif_loadfile_arg_x00112A60 __asm__("D_00474E00");
+int func_00112A60_x00112A60(void) __asm__("func_00112A60");
+/* sif_loadfile_init: from https://github.com/new-coke/rez-decomp (src/sce/libkernl_loadfile.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00112A60_x00112A60(void)
+{
+    int i;
+
+    if (sif_loadfile_inited_x00112A60 < 0) {
+        for (;;) {
+            if (sceSifBindRpc_x00112A60(&sif_loadfile_client_x00112A60, 0x80000006, 0) < 0)
+                return -1;
+            if (sif_loadfile_client_x00112A60.server) {
+                sif_loadfile_inited_x00112A60 = 0;
+                if (sceSifCallRpc_x00112A60(&sif_loadfile_client_x00112A60, 255, 0, 0, 0, ((char *)&sif_loadfile_arg_x00112A60), 4, 0, 0) < 0)  
+                    return 0xfffeffff;
+                *(Bytes4_x00112A60 *)sif_loadfile_peer_ver_x00112A60 = *(Bytes4_x00112A60 *)((char *)&sif_loadfile_arg_x00112A60);  
+                return 0;
+            }
+            i = 0x100000;
+            while (i--)
+                ;
+        }
+    }
+    return 0;
+}
 s32 memcmp_x00112B60(s32 *, s32 *, s32) __asm__("memcmp");
 extern s32 D_003EC60C_x00112B60 __asm__("D_003EC60C");
 extern s32 *D_003EC6E4_x00112B60 __asm__("D_003EC6E4");
@@ -44,9 +183,134 @@ s32 func_00112BF0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112C28);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112E30);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00113038);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001130C8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00113168);
+typedef struct RpcPkt_x00113038 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x00113038 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x00113038;
+typedef struct LoadArg_x00113038 {
+    int id;                  
+    int len;                 
+    char path[252];          
+    char args[252];          
+} LoadArg_x00113038;
+struct RpcPkt_x00113038;
+extern int sceSifCallRpc_x00113038(struct RpcPkt_x00113038 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+extern RpcPkt_x00113038 sif_loadfile_client_x00113038 __asm__("D_00475000");
+extern LoadArg_x00113038 sif_loadfile_arg_x00113038 __asm__("D_00474E00");
+int sif_loadfile_init_x00113038(void) __asm__("func_00112A60");
+int sif_loadfile_version_mismatch_x00113038(void) __asm__("func_00112B60");
+int func_00113038_x00113038(int id) __asm__("func_00113038");
+/* sceSifUnloadModule: from https://github.com/new-coke/rez-decomp (src/sce/libkernl_loadfile.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00113038_x00113038(int id)
+{
+    if (sif_loadfile_init_x00113038() < 0)
+        return 0xffff0000;
+    if (sif_loadfile_version_mismatch_x00113038())
+        return 0xfffefffc;
+    sif_loadfile_arg_x00113038.id = id;
+    if (sceSifCallRpc_x00113038(&sif_loadfile_client_x00113038, 8, 0, &sif_loadfile_arg_x00113038, 4, &sif_loadfile_arg_x00113038, 4, 0, 0) < 0)
+        return 0xfffeffff;
+    return sif_loadfile_arg_x00113038.id;
+}
+typedef struct RpcPkt_x001130C8 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x001130C8 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x001130C8;
+typedef struct LoadArg_x001130C8 {
+    int id;                  
+    int len;                 
+    char path[252];          
+    char args[252];          
+} LoadArg_x001130C8;
+char *strncpy_x001130C8(char *dst, const char *src, unsigned int n) __asm__("func_00128040");
+struct RpcPkt_x001130C8;
+extern int sceSifCallRpc_x001130C8(struct RpcPkt_x001130C8 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+extern RpcPkt_x001130C8 sif_loadfile_client_x001130C8 __asm__("D_00475000");
+extern LoadArg_x001130C8 sif_loadfile_arg_x001130C8 __asm__("D_00474E00");
+int sif_loadfile_init_x001130C8(void) __asm__("func_00112A60");
+int sif_loadfile_version_mismatch_x001130C8(void) __asm__("func_00112B60");
+int func_001130C8_x001130C8(const char *name) __asm__("func_001130C8");
+/* sceSifSearchModuleByName: from https://github.com/new-coke/rez-decomp (src/sce/libkernl_loadfile.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001130C8_x001130C8(const char *name)
+{
+    if (sif_loadfile_init_x001130C8() < 0)
+        return 0xffff0000;
+    if (sif_loadfile_version_mismatch_x001130C8())
+        return 0xfffefffc;
+    strncpy_x001130C8(sif_loadfile_arg_x001130C8.path, name, 252);
+    sif_loadfile_arg_x001130C8.path[251] = 0;
+    if (sceSifCallRpc_x001130C8(&sif_loadfile_client_x001130C8, 9, 0, &sif_loadfile_arg_x001130C8, 512, &sif_loadfile_arg_x001130C8, 4, 0, 0) < 0)
+        return 0xfffeffff;
+    return sif_loadfile_arg_x001130C8.id;
+}
+typedef struct RpcPkt_x00113168 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x00113168 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x00113168;
+typedef struct LoadArg_x00113168 {
+    int id;                  
+    int len;                 
+    char path[252];          
+    char args[252];          
+} LoadArg_x00113168;
+struct RpcPkt_x00113168;
+extern int sceSifCallRpc_x00113168(struct RpcPkt_x00113168 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+extern RpcPkt_x00113168 sif_loadfile_client_x00113168 __asm__("D_00475000");
+extern LoadArg_x00113168 sif_loadfile_arg_x00113168 __asm__("D_00474E00");
+int sif_loadfile_init_x00113168(void) __asm__("func_00112A60");
+int sif_loadfile_version_mismatch_x00113168(void) __asm__("func_00112B60");
+int func_00113168_x00113168(int id) __asm__("func_00113168");
+/* sceSifSearchModuleByAddress: from https://github.com/new-coke/rez-decomp (src/sce/libkernl_loadfile.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00113168_x00113168(int id)
+{
+    if (sif_loadfile_init_x00113168() < 0)
+        return 0xffff0000;
+    if (sif_loadfile_version_mismatch_x00113168())
+        return 0xfffefffc;
+    sif_loadfile_arg_x00113168.id = id;
+    if (sceSifCallRpc_x00113168(&sif_loadfile_client_x00113168, 10, 0, &sif_loadfile_arg_x00113168, 4, &sif_loadfile_arg_x00113168, 4, 0, 0) < 0)
+        return 0xfffeffff;
+    return sif_loadfile_arg_x00113168.id;
+}
 int _sceSifLoadModuleBuffer_x001131F8(void *addr, int arglen, int args, void *ret) __asm__("func_00112C28");
 int _sceSifLoadModuleBuffer_x001131F8(void *addr, int arglen, int args, void *ret) __asm__("func_00112C28");
 void func_001131F8_x001131F8(void *addr, int arglen, int args) __asm__("func_001131F8");
@@ -75,7 +339,56 @@ int func_00113480_x00113480(void *name, int arglen, int args, int ret)
 {
     return _sceSifLoadModule_x00113480(name, arglen, args, ret, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001134A0);
+typedef struct RpcPkt_x001134A0 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x001134A0 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x001134A0;
+typedef struct LoadArg_x001134A0 {
+    int id;                  
+    int len;                 
+    char path[252];          
+    char args[252];          
+} LoadArg_x001134A0;
+char *strncpy_x001134A0(char *dst, const char *src, unsigned int n) __asm__("func_00128040");
+struct RpcPkt_x001134A0;
+extern int sceSifCallRpc_x001134A0(struct RpcPkt_x001134A0 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+extern RpcPkt_x001134A0 sif_loadfile_client_x001134A0 __asm__("D_00475000");
+extern LoadArg_x001134A0 sif_loadfile_arg_x001134A0 __asm__("D_00474E00");
+int sif_loadfile_init_x001134A0(void) __asm__("func_00112A60");
+int sif_loadfile_version_mismatch_x001134A0(void) __asm__("func_00112B60");
+int func_001134A0_x001134A0(const char *name1, const char *name2, int *out, int fno) __asm__("func_001134A0");
+/* sif_loadfile_call_2str: from https://github.com/new-coke/rez-decomp (src/sce/libkernl_loadfile.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001134A0_x001134A0(const char *name1, const char *name2, int *out, int fno)
+{
+    if (sif_loadfile_init_x001134A0() < 0)
+        return 0xffff0000;
+    if (sif_loadfile_version_mismatch_x001134A0())
+        return 0xfffefffc;
+    strncpy_x001134A0(sif_loadfile_arg_x001134A0.path, name1, 252);
+    sif_loadfile_arg_x001134A0.path[251] = 0;
+    strncpy_x001134A0(sif_loadfile_arg_x001134A0.args, name2, 252);
+    sif_loadfile_arg_x001134A0.args[251] = 0;
+    if (sceSifCallRpc_x001134A0(&sif_loadfile_client_x001134A0, fno, 0, &sif_loadfile_arg_x001134A0, 512, &sif_loadfile_arg_x001134A0, 16, 0, 0) < 0)
+        return 0xfffeffff;
+    if (!sif_loadfile_arg_x001134A0.id)
+        return 0xfffefffd;
+    out[0] = sif_loadfile_arg_x001134A0.id;
+    out[1] = sif_loadfile_arg_x001134A0.len;
+    return 0;
+}
 int _sceSifLoadElfPart_x001135A8(void *name, int sec, int out, int rpcno) __asm__("func_001134A0");
 int _sceSifLoadElfPart_x001135A8(void *name, int sec, int out, int rpcno) __asm__("func_001134A0");
 int func_001135A8_x001135A8(void *name, int sec, int out) __asm__("func_001135A8");
@@ -93,8 +406,117 @@ int func_001135C8_x001135C8(void *name, int out)
 {
     return _sceSifLoadElfPart_x001135C8(name, (int)ext_str0_x001135C8, out, 1);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001135F0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001136E0);
+typedef struct RpcPkt_x001135F0 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x001135F0 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x001135F0;
+typedef struct LoadArg_x001135F0 {
+    int id;                  
+    int len;                 
+    char path[252];          
+    char args[252];          
+} LoadArg_x001135F0;
+typedef struct IopMemArg_x001135F0 {
+    int addr;                
+    unsigned int width;      
+    int value;               
+} IopMemArg_x001135F0;
+struct RpcPkt_x001135F0;
+extern int sceSifCallRpc_x001135F0(struct RpcPkt_x001135F0 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+extern RpcPkt_x001135F0 sif_loadfile_client_x001135F0 __asm__("D_00475000");
+extern LoadArg_x001135F0 sif_loadfile_arg_x001135F0 __asm__("D_00474E00");
+int sif_loadfile_init_x001135F0(void) __asm__("func_00112A60");
+int func_001135F0_x001135F0(int addr, void *dst, unsigned int width) __asm__("func_001135F0");
+/* sif_loadfile_peek: from https://github.com/new-coke/rez-decomp (src/sce/libkernl_loadfile.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001135F0_x001135F0(int addr, void *dst, unsigned int width)
+{
+    if (sif_loadfile_init_x001135F0() < 0)
+        return 0xffff0000;
+    if (width >= 3)
+        return 0xfffefffe;
+    (*(IopMemArg_x001135F0 *)&sif_loadfile_arg_x001135F0).addr = addr;  
+    (*(IopMemArg_x001135F0 *)&sif_loadfile_arg_x001135F0).width = width;  
+    if (sceSifCallRpc_x001135F0(&sif_loadfile_client_x001135F0, 3, 0, &(*(IopMemArg_x001135F0 *)&sif_loadfile_arg_x001135F0), 32, &(*(IopMemArg_x001135F0 *)&sif_loadfile_arg_x001135F0), 32, 0, 0) < 0)  
+        return 0xfffeffff;
+    if (width == 0)
+        *(unsigned char *)dst = *(unsigned char *)&(*(IopMemArg_x001135F0 *)&sif_loadfile_arg_x001135F0).addr;  
+    else if (width == 1)
+        *(unsigned short *)dst = *(unsigned short *)&(*(IopMemArg_x001135F0 *)&sif_loadfile_arg_x001135F0).addr;  
+    else if (width == 2)
+        *(int *)dst = (*(IopMemArg_x001135F0 *)&sif_loadfile_arg_x001135F0).addr;  
+    else
+        return 0xfffefffe;
+    return 0;
+}
+typedef struct RpcPkt_x001136E0 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x001136E0 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x001136E0;
+typedef struct LoadArg_x001136E0 {
+    int id;                  
+    int len;                 
+    char path[252];          
+    char args[252];          
+} LoadArg_x001136E0;
+typedef struct IopMemArg_x001136E0 {
+    int addr;                
+    unsigned int width;      
+    int value;               
+} IopMemArg_x001136E0;
+struct RpcPkt_x001136E0;
+extern int sceSifCallRpc_x001136E0(struct RpcPkt_x001136E0 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+extern RpcPkt_x001136E0 sif_loadfile_client_x001136E0 __asm__("D_00475000");
+extern LoadArg_x001136E0 sif_loadfile_arg_x001136E0 __asm__("D_00474E00");
+int sif_loadfile_init_x001136E0(void) __asm__("func_00112A60");
+int func_001136E0_x001136E0(int addr, void *src, unsigned int width) __asm__("func_001136E0");
+/* sif_loadfile_poke: from https://github.com/new-coke/rez-decomp (src/sce/libkernl_loadfile.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001136E0_x001136E0(int addr, void *src, unsigned int width)
+{
+    IopMemArg_x001136E0 *arg;
+
+    if (sif_loadfile_init_x001136E0() < 0)
+        return 0xffff0000;
+    arg = &(*(IopMemArg_x001136E0 *)&sif_loadfile_arg_x001136E0);  
+    (*(IopMemArg_x001136E0 *)&sif_loadfile_arg_x001136E0).addr = addr;  
+    arg->width = width;
+    if (width == 0)
+        *(unsigned char *)&arg->value = *(unsigned char *)src;
+    else if (width == 1)
+        *(unsigned short *)&arg->value = *(unsigned short *)src;
+    else if (width == 2)
+        arg->value = *(int *)src;
+    else
+        return 0xfffefffe;
+    if (sceSifCallRpc_x001136E0(&sif_loadfile_client_x001136E0, 2, 0, &(*(IopMemArg_x001136E0 *)&sif_loadfile_arg_x001136E0), 32, &(*(IopMemArg_x001136E0 *)&sif_loadfile_arg_x001136E0), 16, 0, 0) < 0)  
+        return 0xfffeffff;
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001137C0);
 unsigned int sceSifGetReg_x00113918(unsigned int reg) __asm__("sceSifGetReg");
 int func_00113918_x00113918(void) __asm__("func_00113918");
@@ -104,7 +526,20 @@ int func_00113918_x00113918(void)
     int t = sceSifGetReg_x00113918(4) & 0x10000;
     return t != 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00113940);
+extern int SifGetReg_x00113940(int reg) __asm__("sceSifGetReg");
+extern void Obj0000_Set_D_003FAE30_Field_10_Zero_x00113940(void) __asm__("func_0010A6E0");
+extern void func_003B79C0_x00113940(int a0, int a1) __asm__("func_001164A8");
+int func_00113940_x00113940(void) __asm__("func_00113940");
+/* func_003B6240: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0039c390.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00113940_x00113940(void) {
+    if (SifGetReg_x00113940(4) & 0x40000) {
+        Obj0000_Set_D_003FAE30_Field_10_Zero_x00113940();
+        func_003B79C0_x00113940(1, 1);
+        func_003B79C0_x00113940(0, 1);
+        return 1;
+    }
+    return 0;
+}
 int printf_x00113990(const char *fmt, ...) __asm__("scePrintf");
 void sceSifInitRpc_x00113990(int mode) __asm__("sceSifInitRpc");
 void sceSifExitRpc_x00113990(void) __asm__("func_0010D9C0");

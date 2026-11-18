@@ -215,14 +215,255 @@ int scePadPortClose(int port, int slot)
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116C18);
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116D70);
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116DC8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116E40);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116EB8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", scePadSetReqState);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116FA8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00117000);
+typedef struct PadData_x00116E40 {
+    unsigned char data[0x50];            
+    unsigned short modeTable[4];         
+    int frame;                           
+    int unk5C;
+    int length;                          
+    unsigned char modeConfig;            
+    unsigned char modeCurId;             
+    unsigned char model;                 
+    unsigned char unk67;
+    unsigned char nrOfModes;             
+    unsigned char modeCurOffs;           
+    unsigned char unk6A[6];
+    unsigned char state;                 
+    unsigned char reqState;              
+    unsigned char ok;                    
+    unsigned char unk73[0xD];
+} PadData_x00116E40;
+typedef struct PadCmd_x00116E40 {
+    int count;                           
+    int unk04;
+    int len;                             
+    unsigned char data[0x14];            
+} PadCmd_x00116E40;
+typedef struct {
+    PadData_x00116E40 *buf;                        
+    PadCmd_x00116E40 *cmd;                         
+    unsigned int iopCmd;                 
+    int dmaid;                           
+    int open;                            
+    int unk14;
+    int unk18;
+} PadInfoT_x00116E40;
+extern PadInfoT_x00116E40 D_0077C110_x00116E40[2][4] __asm__("D_00478990");
+PadData_x00116E40 *func_00397BC8_x00116E40(int port, int slot, PadData_x00116E40 *buf) __asm__("func_00116C18");
+int func_00116E40_x00116E40(int port, int slot) __asm__("func_00116E40");
+/* scePadGetState: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00397d98.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00116E40_x00116E40(int port, int slot)
+{
+    PadData_x00116E40 buf;
+
+    if (D_0077C110_x00116E40[port][slot].open == 0)
+        return 0x63;
+    func_00397BC8_x00116E40(port, slot, &buf);
+    if (buf.state == 6) {
+        if (buf.reqState == 2)
+            return 5;
+    }
+    return buf.state;
+}
+char *strcpy_x00116EB8(char *dst, const char *src) __asm__("func_00127A88");
+extern char *libpad_state_names_x00116EB8[] __asm__("D_003EDD10");
+extern const char libpad_empty_str_x00116EB8[] __asm__("D_0045DB18");
+void func_00116EB8_x00116EB8(unsigned int state, char *str) __asm__("func_00116EB8");
+/* scePadStateIntToStr: from https://github.com/new-coke/rez-decomp (src/sce/libpad.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00116EB8_x00116EB8(unsigned int state, char *str)
+{
+    if (state < 8)
+        strcpy_x00116EB8(str, libpad_state_names_x00116EB8[state]);
+    else
+        str[0] = libpad_empty_str_x00116EB8[0];
+}
+int DIntr_x00116EF0(void) __asm__("DI");
+int EIntr_x00116EF0(void) __asm__("EI");
+typedef struct PadData_x00116EF0 {
+    unsigned char data[0x50];            
+    unsigned short modeTable[4];         
+    int frame;                           
+    int unk5C;
+    int length;                          
+    unsigned char modeConfig;            
+    unsigned char modeCurId;             
+    unsigned char model;                 
+    unsigned char unk67;
+    unsigned char nrOfModes;             
+    unsigned char modeCurOffs;           
+    unsigned char unk6A[6];
+    unsigned char state;                 
+    unsigned char reqState;              
+    unsigned char ok;                    
+    unsigned char unk73[0xD];
+} PadData_x00116EF0;
+typedef struct PadCmd_x00116EF0 {
+    int count;                           
+    int unk04;
+    int len;                             
+    unsigned char data[0x14];            
+} PadCmd_x00116EF0;
+typedef struct {
+    PadData_x00116EF0 *buf;                        
+    PadCmd_x00116EF0 *cmd;                         
+    unsigned int iopCmd;                 
+    int dmaid;                           
+    int open;                            
+    int unk14;
+    int unk18;
+} PadInfoT_x00116EF0;
+extern PadInfoT_x00116EF0 D_0077C110_x00116EF0[2][4] __asm__("D_00478990");
+PadData_x00116EF0 *func_00397BC8_x00116EF0(int port, int slot, PadData_x00116EF0 *buf) __asm__("func_00116C18");
+extern void SyncDCache_x00116EF0(void *start, void *end) __asm__("func_0010AB58");
+int scePadSetReqState_x00116EF0(int port, int slot, int state) __asm__("scePadSetReqState");
+/* scePadSetReqState_x00116EF0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00397e18.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int scePadSetReqState_x00116EF0(int port, int slot, int state)
+{
+    int oldstat;
+    PadData_x00116EF0 *p;
+
+    if (D_0077C110_x00116EF0[port][slot].open == 0)
+        return 0;
+    oldstat = DIntr_x00116EF0();
+    p = func_00397BC8_x00116EF0(port, slot, 0);
+    p->reqState = state;
+    SyncDCache_x00116EF0(p, &p->unk73[sizeof(p->unk73) - 1]);  
+    if (oldstat == 1)
+        EIntr_x00116EF0();
+    return 1;
+}
+typedef struct PadData_x00116FA8 {
+    unsigned char data[0x50];            
+    unsigned short modeTable[4];         
+    int frame;                           
+    int unk5C;
+    int length;                          
+    unsigned char modeConfig;            
+    unsigned char modeCurId;             
+    unsigned char model;                 
+    unsigned char unk67;
+    unsigned char nrOfModes;             
+    unsigned char modeCurOffs;           
+    unsigned char unk6A[6];
+    unsigned char state;                 
+    unsigned char reqState;              
+    unsigned char ok;                    
+    unsigned char unk73[0xD];
+} PadData_x00116FA8;
+typedef struct PadCmd_x00116FA8 {
+    int count;                           
+    int unk04;
+    int len;                             
+    unsigned char data[0x14];            
+} PadCmd_x00116FA8;
+typedef struct {
+    PadData_x00116FA8 *buf;                        
+    PadCmd_x00116FA8 *cmd;                         
+    unsigned int iopCmd;                 
+    int dmaid;                           
+    int open;                            
+    int unk14;
+    int unk18;
+} PadInfoT_x00116FA8;
+extern PadInfoT_x00116FA8 D_0077C110_x00116FA8[2][4] __asm__("D_00478990");
+PadData_x00116FA8 *func_00397BC8_x00116FA8(int port, int slot, PadData_x00116FA8 *buf) __asm__("func_00116C18");
+int func_00116FA8_x00116FA8(int port, int slot) __asm__("func_00116FA8");
+/* scePadGetReqState: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00397ed0.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00116FA8_x00116FA8(int port, int slot)
+{
+    PadData_x00116FA8 *p;
+
+    if (D_0077C110_x00116FA8[port][slot].open == 0)
+        return 0;
+    p = func_00397BC8_x00116FA8(port, slot, 0);
+    return p->reqState;
+}
+char *strcpy_x00117000(char *dst, const char *src) __asm__("func_00127A88");
+extern const char libpad_empty_str_x00117000[] __asm__("D_0045DB18");
+extern char *libpad_req_state_names_x00117000[] __asm__("D_003EDD30");
+void func_00117000_x00117000(unsigned int state, char *str) __asm__("func_00117000");
+/* scePadReqIntToStr: from https://github.com/new-coke/rez-decomp (src/sce/libpad.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00117000_x00117000(unsigned int state, char *str)
+{
+    if (state < 4)
+        strcpy_x00117000(str, libpad_req_state_names_x00117000[state]);
+    else
+        str[0] = libpad_empty_str_x00117000[0];
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00117038);
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00117150);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00117268);
+typedef struct PadData_x00117268 {
+    unsigned char data[0x50];            
+    unsigned short modeTable[4];         
+    int frame;                           
+    int unk5C;
+    int length;                          
+    unsigned char modeConfig;            
+    unsigned char modeCurId;             
+    unsigned char model;                 
+    unsigned char unk67;
+    unsigned char nrOfModes;             
+    unsigned char modeCurOffs;           
+    unsigned char unk6A[6];
+    unsigned char state;                 
+    unsigned char reqState;              
+    unsigned char ok;                    
+    unsigned char unk73[0xD];
+} PadData_x00117268;
+typedef struct PadCmd_x00117268 {
+    int count;                           
+    int unk04;
+    int len;                             
+    unsigned char data[0x14];            
+} PadCmd_x00117268;
+typedef struct {
+    PadData_x00117268 *buf;                        
+    PadCmd_x00117268 *cmd;                         
+    unsigned int iopCmd;                 
+    int dmaid;                           
+    int open;                            
+    int unk14;
+    int unk18;
+} PadInfoT_x00117268;
+extern PadInfoT_x00117268 D_0077C110_x00117268[2][4] __asm__("D_00478990");
+PadData_x00117268 *func_00397BC8_x00117268(int port, int slot, PadData_x00117268 *buf) __asm__("func_00116C18");
+int func_00117268_x00117268(int port, int slot, int term, int offs) __asm__("func_00117268");
+/* scePadInfoMode: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00397f38.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00117268_x00117268(int port, int slot, int term, int offs)
+{
+    PadData_x00117268 fr;
+
+    if (D_0077C110_x00117268[port][slot].open == 0)
+        return 0;
+    func_00397BC8_x00117268(port, slot, &fr);
+    if (fr.ok != 1)
+        return 0;
+    if (fr.reqState == 2)
+        return 0;
+    switch (term) {
+    case 1:
+        if (fr.modeCurId == 0xF3)
+            return 0;
+        return fr.modeCurId >> 4;
+    case 2:
+        if (fr.modeConfig == 1)
+            return 0;
+        return fr.modeTable[fr.modeCurOffs];
+    case 3:
+        if (fr.modeConfig == 1)
+            return 0;
+        return fr.modeCurOffs;
+    case 4:
+        if (fr.modeConfig == 1)
+            return 0;
+        if (offs == -1)
+            return fr.nrOfModes;
+        if (offs >= fr.nrOfModes)
+            return 0;
+        return fr.modeTable[offs];
+    }
+    return 0;
+}
 
 
 int scePadSetMainMode(int port, int slot, int mode, int option)
@@ -248,7 +489,64 @@ int scePadSetMainMode(int port, int slot, int mode, int option)
     return s;
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00117458);
+typedef struct PadData_x00117458 {
+    unsigned char data[0x50];            
+    unsigned short modeTable[4];         
+    int frame;                           
+    int unk5C;
+    int length;                          
+    unsigned char modeConfig;            
+    unsigned char modeCurId;             
+    unsigned char model;                 
+    unsigned char unk67;
+    unsigned char nrOfModes;             
+    unsigned char modeCurOffs;           
+    unsigned char unk6A[6];
+    unsigned char state;                 
+    unsigned char reqState;              
+    unsigned char ok;                    
+    unsigned char unk73[0xD];
+} PadData_x00117458;
+typedef struct PadCmd_x00117458 {
+    int count;                           
+    int unk04;
+    int len;                             
+    unsigned char data[0x14];            
+} PadCmd_x00117458;
+typedef struct {
+    PadData_x00117458 *buf;                        
+    PadCmd_x00117458 *cmd;                         
+    unsigned int iopCmd;                 
+    int dmaid;                           
+    int open;                            
+    int unk14;
+    int unk18;
+} PadInfoT_x00117458;
+extern PadInfoT_x00117458 D_0077C110_x00117458[2][4] __asm__("D_00478990");
+PadData_x00117458 *func_00397BC8_x00117458(int port, int slot, PadData_x00117458 *buf) __asm__("func_00116C18");
+int func_003978C8_x00117458(int port, int slot) __asm__("func_00116860");
+int func_00117458_x00117458(int port, int slot, const unsigned char *data) __asm__("func_00117458");
+/* scePadSetActDirect: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00398128.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00117458_x00117458(int port, int slot, const unsigned char *data)
+{
+    PadData_x00117458 buf;
+    PadCmd_x00117458 *p;
+    int i;
+    int ret;
+
+    func_00397BC8_x00117458(port, slot, &buf);
+    if (buf.ok != 1)
+        return 0;
+    p = D_0077C110_x00117458[port][slot].cmd;
+    for (i = 0; i < 6; i++)
+        p->data[i] = data[i];
+    p->unk04 = 1;
+    p->len = 6;
+    ret = 1;
+    if (func_003978C8_x00117458(port, slot) != 1)
+        ret = 0;
+    return ret;
+}
 
 
 int scePadSetActAlign(int port, int slot, char *act)
@@ -306,7 +604,65 @@ int scePadExitPressMode(int port, int slot)
     return scePadSetButtonInfo(port, slot, 0);
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00117868);
+typedef struct PadRpcBuf_x00117868 {           
+    int cmd;
+    int port;
+    int slot;
+    int data;
+    int param;
+    int result;
+    char pad_18[4];
+    int vref_result;
+    char pad_20[96];
+} PadRpcBuf_x00117868;
+typedef struct RpcPkt_x00117868 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x00117868 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x00117868;
+int scePadSetReqState_x00117868(int port, int slot, int state) __asm__("func_00116EF0");
+struct RpcPkt_x00117868;
+extern int sceSifCallRpc_x00117868(struct RpcPkt_x00117868 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+typedef struct SifClient40_a_x00117868 {       
+    char pad_00[36];
+    void *server;                    
+} SifClient40_a_x00117868;
+typedef struct {
+    unsigned char b[12];
+} PadVrefParam_x00117868;
+extern SifClient40_a_x00117868 libpad_clients_x00117868[2] __asm__("D_00478940");
+extern PadRpcBuf_x00117868 libpad_rpc_buf_x00117868 __asm__("D_00478B80");
+int scePadSetReqState_x00117868(int port, int slot, int state) __asm__("func_00116EF0");
+int func_00117868_x00117868(int port, int slot, PadVrefParam_x00117868 *data) __asm__("func_00117868");
+/* scePadSetVrefParam: from https://github.com/new-coke/rez-decomp (src/sce/libpad.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00117868_x00117868(int port, int slot, PadVrefParam_x00117868 *data)
+{
+    PadRpcBuf_x00117868 *rpc;
+
+    rpc = &libpad_rpc_buf_x00117868;
+    rpc->cmd = 11;
+    rpc->port = port;
+    rpc->slot = slot;
+    *(PadVrefParam_x00117868 *)&rpc->data = *data;
+    if (sceSifCallRpc_x00117868(libpad_clients_x00117868, 1, 0, rpc, 128, rpc, 128, 0, 0) < 0)
+        return 0;
+    if (rpc->vref_result == 1) {
+        scePadSetReqState_x00117868(port, slot, 2);
+    }
+    return rpc->vref_result;
+}
 
 
 int scePadGetPortMax(void)
@@ -320,7 +676,55 @@ int scePadGetPortMax(void)
     return padRpcBuf[3];
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_001179A0);
+typedef struct PadRpcBuf_x001179A0 {           
+    int cmd;
+    int port;
+    int slot;
+    int data;
+    int param;
+    int result;
+    char pad_18[4];
+    int vref_result;
+    char pad_20[96];
+} PadRpcBuf_x001179A0;
+typedef struct RpcPkt_x001179A0 {
+    void *cur_pkt;               
+    int cur_pkt_id;
+    int sema;                
+    char pad_0c[4];
+    unsigned int rid;        
+    void *pkt_addr;               
+    int pkt_id;                 
+    struct RpcPkt_x001179A0 *client;      
+    void *cmd;               
+    void *server;               
+    void *buff;               
+    void *cbuff;               
+    void *rmode;               
+    char pad_34[12];
+} RpcPkt_x001179A0;
+struct RpcPkt_x001179A0;
+extern int sceSifCallRpc_x001179A0(struct RpcPkt_x001179A0 *cd, unsigned int fno, unsigned int mode, void *send, int ssize,
+                 void *receive, int rsize, void (*end_func)(void *), void *end_param) __asm__("sceSifCallRpc");
+typedef struct SifClient40_a_x001179A0 {       
+    char pad_00[36];
+    void *server;                    
+} SifClient40_a_x001179A0;
+extern SifClient40_a_x001179A0 libpad_clients_x001179A0[2] __asm__("D_00478940");
+extern PadRpcBuf_x001179A0 libpad_rpc_buf_x001179A0 __asm__("D_00478B80");
+int func_001179A0_x001179A0(int port) __asm__("func_001179A0");
+/* scePadGetSlotMax: from https://github.com/new-coke/rez-decomp (src/sce/libpad.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001179A0_x001179A0(int port)
+{
+    PadRpcBuf_x001179A0 *rpc;
+
+    rpc = &libpad_rpc_buf_x001179A0;
+    rpc->cmd = 13;
+    rpc->port = port;
+    if (sceSifCallRpc_x001179A0(libpad_clients_x001179A0, 1, 0, rpc, 128, rpc, 128, 0, 0) < 0)
+        return 0;
+    return rpc->data;
+}
 
 
 int scePadGetModVersion(void)

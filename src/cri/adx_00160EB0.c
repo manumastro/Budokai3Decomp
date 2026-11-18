@@ -396,12 +396,377 @@ void func_00160EB0_x00160EB0(ADXT_x00160EB0 adxt) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00160EB0", func_00161028);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00160EB0", func_001610E0);
+typedef signed char Sint8_x001610E0;
+typedef int Sint32_x001610E0;
+typedef struct SjChunk_x001610E0 {
+    Sint8_x001610E0 *data;
+    Sint32_x001610E0 len;
+} SjChunk_x001610E0;
+typedef struct SjObj_x001610E0 SjObj_x001610E0;
+typedef struct SjIf_x001610E0 {
+    void *obj;
+    void (*addRef)(SjObj_x001610E0 *sj);
+    void (*release)(SjObj_x001610E0 *sj);
+    void (*destroy)(SjObj_x001610E0 *sj);
+    void *(*getUuid)(SjObj_x001610E0 *sj);
+    void (*reset)(SjObj_x001610E0 *sj);
+    void (*getChunk)(SjObj_x001610E0 *sj, int id, int len, SjChunk_x001610E0 *ck);
+    void (*ungetChunk)(SjObj_x001610E0 *sj, int id, SjChunk_x001610E0 *ck);
+    void (*putChunk)(SjObj_x001610E0 *sj, int id, SjChunk_x001610E0 *ck);
+    int (*getNumData)(SjObj_x001610E0 *sj, int id);
+} SjIf_x001610E0;
+struct SjObj_x001610E0 {
+    SjIf_x001610E0 *vt;
+};
+typedef struct AdxSjdObj_x001610E0 {
+    char f0;
+    unsigned char stat;
+    char pad02[2];
+    void *sjd;
+    char pad08[4];
+    void *rna;
+    char pad10[8];
+    SjObj_x001610E0 *sj[2];
+    char pad20[0x28];
+    unsigned int flush;
+    char pad4C[0x5C];
+    int written;
+} AdxSjdObj_x001610E0;
+extern int D_003D1468_x001610E0 __asm__("D_004111BC");
+extern int Obj3260_Tramp_003383B0_D358_x001610E0(void *rna) __asm__("func_001588C8");
+extern int Obj3270_GetVia4_0033CE98_77A0_x001610E0(void *sjd) __asm__("func_00159DC8");
+extern void Forward33B658_33E678_x001610E0(void) __asm__("func_00152508");
+extern void Forward33B670_33E690_x001610E0(void) __asm__("func_00152520");
+extern void func_0033ACA0_x001610E0(SjChunk_x001610E0 *ck, int len, SjChunk_x001610E0 *head, SjChunk_x001610E0 *tail) __asm__("func_0016F050");
+extern void *func_003A52F0_x001610E0(void *dst, int c, int n) __asm__("memset");
+extern void Obj3260_Tramp_003382A0_D320_x001610E0(void *rna, int a) __asm__("func_00158880");
+extern void Obj3260_Tramp_00338338_D338_x001610E0(void *rna, int a) __asm__("func_00158898");
+extern void func_00338378_x001610E0(void *rna, int a) __asm__("func_0016D068");
+void func_001610E0_x001610E0(AdxSjdObj_x001610E0 *hn) __asm__("func_001610E0");
+/* func_0032CC90: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0032cc90.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001610E0_x001610E0(AdxSjdObj_x001610E0 *hn)
+{
+    SjChunk_x001610E0 ck[2];
+    SjChunk_x001610E0 tail[2];
+    int n;
+    int i;
+    unsigned int len;
+    int mx;
+    int v;
+    i = 0;
+    D_003D1468_x001610E0 = Obj3260_Tramp_003383B0_D358_x001610E0(hn->rna);
+    n = Obj3270_GetVia4_0033CE98_77A0_x001610E0(hn->sjd);
+    Forward33B658_33E678_x001610E0();
+    len = hn->flush;
+    for (; i < n; i++) {
+        hn->sj[i]->vt->getChunk(hn->sj[i], 0, len * 2, &ck[i]);
+        if ((unsigned int)ck[i].len / 2 < len)
+            len = (unsigned int)ck[i].len / 2;
+    }
+    for (i = 0; i < n; i++) {
+        func_0033ACA0_x001610E0(&ck[i], len * 2, &ck[i], &tail[i]);
+        func_003A52F0_x001610E0(ck[i].data, 0, ck[i].len);
+        hn->sj[i]->vt->putChunk(hn->sj[i], 1, &ck[i]);
+        hn->sj[i]->vt->ungetChunk(hn->sj[i], 0, &tail[i]);
+    }
+    hn->written += len;
+    Forward33B670_33E690_x001610E0();
+    mx = 0;
+    for (i = 0; i < n; i++) {
+        v = (unsigned int)hn->sj[i]->vt->getNumData(hn->sj[i], 1) >> 1;
+        if (v >= mx)
+            mx = v;
+    }
+    if (mx + Obj3260_Tramp_003383B0_D358_x001610E0(hn->rna) - hn->written <= 0) {
+        Obj3260_Tramp_003382A0_D320_x001610E0(hn->rna, 0);
+        Obj3260_Tramp_00338338_D338_x001610E0(hn->rna, 0);
+        func_00338378_x001610E0(hn->rna, 1);
+        hn->stat = 5;
+    }
+}
 void func_001612E8(void) {
 
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00160EB0", func_001612F0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00160EB0", func_001613E0);
+typedef int (*CvFsFn_x001613E0)();
+typedef struct {
+    CvFsFn_x001613E0 exec_server;
+    CvFsFn_x001613E0 entry_err_func;
+    CvFsFn_x001613E0 get_file_size;
+    CvFsFn_x001613E0 get_free_size;
+    CvFsFn_x001613E0 open;
+    CvFsFn_x001613E0 close;
+    CvFsFn_x001613E0 seek;
+    CvFsFn_x001613E0 tell;
+    CvFsFn_x001613E0 req_rd;
+    CvFsFn_x001613E0 req_wr;
+    CvFsFn_x001613E0 stop_tr;
+    CvFsFn_x001613E0 get_stat;
+    CvFsFn_x001613E0 get_sct_len;
+    CvFsFn_x001613E0 set_sct_len;
+    CvFsFn_x001613E0 get_num_tr;
+    CvFsFn_x001613E0 change_dir;
+    CvFsFn_x001613E0 is_exist_file;
+    CvFsFn_x001613E0 get_num_files;
+    CvFsFn_x001613E0 load_dir_info;
+    CvFsFn_x001613E0 get_max_byte_rate;
+    CvFsFn_x001613E0 make_dir;
+    CvFsFn_x001613E0 remove_dir;
+    CvFsFn_x001613E0 delete_file;
+    CvFsFn_x001613E0 get_file_size_ex;
+    CvFsFn_x001613E0 opt_fn1;
+    CvFsFn_x001613E0 opt_fn2;
+    char pad_68[8];
+} CvFsDevIf_x001613E0;
+typedef struct {
+    signed char used;
+    signed char busy;
+    signed char send_on;
+    char pad_03[1];
+    int svr;
+    int seq;
+    char *eewk;
+    int len;
+    int *ucwk;
+    char *iopwk;
+    int wklen;
+    void (*fn20)();
+    void *obj24;
+    void (*fn28)();
+    void *obj2c;
+    struct { int data; char *addr; int size; int mode; } dma;
+    int dmaid;
+} DtxObj_x001613E0;
+typedef struct SjObj_x001613E0 SjObj_x001613E0;
+typedef struct {
+    char pad_00[12];
+    void (*destroy)(SjObj_x001613E0 *sj);
+    void *(*get_uuid)(SjObj_x001613E0 *sj);
+    void (*reset)(SjObj_x001613E0 *sj);
+    void (*getchunk)(SjObj_x001613E0 *sj, int id, int nbyte, void *ck);
+    void (*ungetchunk)(SjObj_x001613E0 *sj, int id, void *ck);
+    void (*putchunk)(SjObj_x001613E0 *sj, int id, void *ck);
+    int (*getnum)(SjObj_x001613E0 *sj, int id);
+    int (*is_get_chunk)(SjObj_x001613E0 *sj, int id, int nbyte, int *rbyte);
+    void (*set_error_cb)(SjObj_x001613E0 *sj, void *fn, void *obj);
+} SjIf_x001613E0;
+struct SjObj_x001613E0 {
+    SjIf_x001613E0 *vtbl;
+};
+typedef struct SjChunk_x001613E0 {
+    char *data;
+    int len;
+} SjChunk_x001613E0;
+typedef struct {
+    signed char used;
+    signed char stat;
+    signed char pmode;
+    signed char nch;
+    void *sjd;
+    int fstm;
+    int rna;
+    SjObj_x001613E0 *sjf;
+    SjObj_x001613E0 *sji;
+    SjObj_x001613E0 *sjo[2];
+    unsigned char *wbuf;
+    int wsize;
+    int unk_28;
+    unsigned char *work;
+    int obuf_size;
+    int obuf_dist;
+    int svr_freq;
+    short maxsct;
+    short minsct;
+    short outvol;
+    short outpan[2];
+    char pad_46[6];
+    int lpcnt;
+    char pad_50[4];
+    int unk_54;
+    int unk_58;
+    int unk_5c;
+    short ercode;
+    char pad_62[2];
+    int unk_64;
+    short unk_68;
+    short unk_6a;
+    signed char lpflg;
+    signed char rcvr_mode;
+    char pad_6e[2];
+    signed char start_hold;
+    signed char ready;
+    signed char pause;
+    char pad_73[1];
+    void *pkm;
+    SjObj_x001613E0 *sjx[2];
+    SjObj_x001613E0 *sjy[2];
+    int time_ofst;
+    int unk_8c;
+    int unk_90;
+    void *stm;
+    signed char unk_98;
+    char pad_99[3];
+    int vsync_time;
+    int vsync_base;
+} AdxtObj_x001613E0;
+typedef struct {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtycnt;
+    int sj;
+    void *fd;
+    int start_sct;
+    int ofst;
+    int fsize;
+    int rq_size;
+    int fill_thr;
+    int nrd;
+    SjChunk_x001613E0 ck;
+    int maxsct;
+    int fsct;
+    int total_rd;
+    int end_cb;
+    int end_obj;
+} AdxstmObj_x001613E0;
+struct SjObj_x001613E0;
+struct SjObj_x001613E0;
+void adxt_stop_x001613E0(AdxtObj_x001613E0 *adxt) __asm__("ADXT_Stop");
+struct SjObj_x001613E0;
+struct SjObj_x001613E0;
+struct SjObj_x001613E0;
+int adxstm_get_stat_x001613E0(AdxstmObj_x001613E0 *stm) __asm__("func_0015CCD0");
+extern void cvFsAddDev_x001613E0(char *name, CvFsDevIf_x001613E0 *(*getif)(void)) __asm__("cvFsAddDev");
+struct SjObj_x001613E0;
+struct SjObj_x001613E0;
+struct SjChunk_x001613E0;
+struct SjChunk_x001613E0;
+struct SjChunk_x001613E0;
+struct SjObj_x001613E0;
+extern void dtx_set_send_cb_x001613E0(DtxObj_x001613E0 *dtx, void (*fn)(), void *obj) __asm__("dtx_set_send_cb");
+extern void dtx_set_recv_cb_x001613E0(DtxObj_x001613E0 *dtx, void (*fn)(), void *obj) __asm__("dtx_set_recv_cb");
+typedef struct {
+    signed char used;
+    signed char stat;
+    signed char pmode;
+    signed char maxnch;
+    void *sjd;
+    void *stm;
+    void *rna;
+    char pad_10[4];
+    SjObj_x001613E0 *sji;
+    SjObj_x001613E0 *sjo[2];
+    char pad_20[24];
+    int svrfreq;
+    char pad_3c[4];
+    short outvol;
+    short outpan0;
+    short outpan1;
+    char pad_46[2];
+    int maxdecsmpl;
+    int lpcnt;
+    int lp_skiplen;
+    char pad_54[12];
+    short ercode;
+    char pad_62[2];
+    int edecpos;
+    short edeccnt;
+    short eshrtcnt;
+    signed char lpflg;
+    signed char autorcvr;
+    char pad_6e[2];
+    signed char pstwait_flag;
+    signed char pstready_flag;
+    signed char pause_flag;
+    char pad_73[1];
+    int amp;
+    char pad_78[16];
+    int time_ofst;
+    int lesct;
+    int trpnsmpl;
+    char pad_94[4];
+    signed char lnkflg;
+    char pad_99[3];
+    int tvofst;
+    int svcnt;
+} AdxtObjView_x001613E0;
+extern int adxsjd_get_decoded_smpl_x001613E0(void *sjd) __asm__("func_00159C78");
+extern int adxsjd_get_stat_x001613E0(void *sjd) __asm__("func_00158D98");
+extern void adxt_restart_x001613E0(AdxtObjView_x001613E0 *adxt) __asm__("func_001612F0");
+void adxt_stop_x001613E0(AdxtObj_x001613E0 *adxt) __asm__("ADXT_Stop");
+void adxt_restart_x001613E0(AdxtObjView_x001613E0 *adxt) __asm__("func_001612F0");
+void func_001613E0_x001613E0(AdxtObjView_x001613E0 *adxt) __asm__("func_001613E0");
+/* adxt_check_error: from https://github.com/new-coke/rez-decomp (src/cri/adxt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001613E0_x001613E0(AdxtObjView_x001613E0 *adxt)
+{
+    int stat;
+    int n;
+    int nbyte;
+    SjObj_x001613E0 *sj;
+    stat = adxt->stat;
+    if (stat == 3 && adxt->pause_flag == 0 && adxsjd_get_stat_x001613E0(adxt->sjd) != stat) {
+        n = adxsjd_get_decoded_smpl_x001613E0(adxt->sjd);
+        if (adxt->edecpos == n) {
+            adxt->edeccnt++;
+            if (adxt->svrfreq * 5 < adxt->edeccnt)
+                adxt->ercode = -2;
+        } else {
+            adxt->edeccnt = 0;
+        }
+        adxt->edecpos = n;
+        if (adxt->ercode != 0) {
+            if (adxt->autorcvr == 1 || adxt->autorcvr == 2)
+                adxt_stop_x001613E0(adxt);
+            if (adxt->autorcvr != 0) {
+                adxt->ercode = 0;
+                adxt->edeccnt = 0;
+            }
+        }
+    } else {
+        adxt->edeccnt = 0;
+    }
+    if ((stat == 1 || stat == 2 || stat == 3) && adxt->pause_flag == 0 && adxsjd_get_stat_x001613E0(adxt->sjd) != 3) {
+        sj = adxt->sji;
+        if (sj)
+            nbyte = sj->vtbl->getnum(sj, 1);
+        else
+            nbyte = 0;
+        if (nbyte < 64) {
+            adxt->eshrtcnt++;
+            if (stat == 3) {
+                if (adxt->svrfreq * 5 < adxt->eshrtcnt)
+                    adxt->ercode = -1;
+            } else {
+                if (adxt->svrfreq * 20 < adxt->eshrtcnt)
+                    adxt->ercode = -1;
+            }
+            if (adxt->ercode != 0) {
+                if (adxt->autorcvr == 1)
+                    adxt_stop_x001613E0(adxt);
+                else if (adxt->autorcvr == 2)
+                    adxt_restart_x001613E0(adxt);
+                if (adxt->autorcvr != 0) {
+                    adxt->ercode = 0;
+                    adxt->eshrtcnt = 0;
+                }
+            }
+        } else {
+            adxt->eshrtcnt = 0;
+        }
+    } else {
+        adxt->eshrtcnt = 0;
+    }
+    if (adxt->stm && adxstm_get_stat_x001613E0(adxt->stm) == 4) {
+        if (adxt->autorcvr == 1)
+            adxt_stop_x001613E0(adxt);
+        else if (adxt->autorcvr == 2)
+            adxt_restart_x001613E0(adxt);
+        if (adxt->autorcvr != 0) {
+            adxt->ercode = 0;
+            adxt->eshrtcnt = 0;
+        }
+    }
+}
 typedef int s32_x00161630;
 typedef s32_x00161630 ptrdiff_t_x00161630;
 typedef unsigned char Uint8_x00161630;

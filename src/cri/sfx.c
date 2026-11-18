@@ -201,7 +201,53 @@ void func_0019F800(u8 *arg0, s32 arg1) {
 s32 func_0019F808(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x38);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F810);
+typedef signed char Sint8_x0019F810;
+typedef int Sint32_x0019F810;
+typedef struct SjChunk_x0019F810 {
+    Sint8_x0019F810 *data;
+    Sint32_x0019F810 len;
+} SjChunk_x0019F810;
+typedef struct SjTagRec_x0019F810 {
+    int set;
+    SjChunk_x0019F810 ck;
+} SjTagRec_x0019F810;
+extern Sint8_x0019F810 *SJ_SearchTag_x0019F810(SjChunk_x0019F810 *ck, Sint8_x0019F810 *tag, Sint8_x0019F810 *endtag, SjChunk_x0019F810 *tagck) __asm__("func_0016F290");
+typedef struct SfxZmvTagState_x0019F810 {
+    char unk00[0x08];
+    SjTagRec_x0019F810 input;
+    char unk14[0x04];
+    SjTagRec_x0019F810 header;
+    char unk24[0x04];
+    SjTagRec_x0019F810 frame;
+} SfxZmvTagState_x0019F810;
+extern void SFXZ_SetTagInf_x0019F810(SfxZmvTagState_x0019F810 *state, Sint8_x0019F810 *data, Sint32_x0019F810 len) __asm__("func_0019FEB0");
+typedef struct {
+    char pad0[0x14];
+    SjTagRec_x0019F810 rec;
+    char pad20[4];
+    SfxZmvTagState_x0019F810 *sfxz;
+} TagHn_x0019F810;
+extern Sint8_x0019F810 D_0045A050_x0019F810[] __asm__("D_00467D90");
+extern Sint8_x0019F810 D_0045A058_x0019F810[] __asm__("D_00467D98");
+void func_0019F810_x0019F810(TagHn_x0019F810 *hn, Sint8_x0019F810 *data, Sint32_x0019F810 len) __asm__("func_0019F810");
+/* func_0035FC88: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0035fc88.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0019F810_x0019F810(TagHn_x0019F810 *hn, Sint8_x0019F810 *data, Sint32_x0019F810 len)
+{
+    SjTagRec_x0019F810 *rec = &hn->rec;
+    SjChunk_x0019F810 ck;
+    SjChunk_x0019F810 tag;
+    SfxZmvTagState_x0019F810 *sfxz;
+    rec->ck.data = data;
+    rec->ck.len = len;
+    sfxz = hn->sfxz;
+    ck.data = data;
+    ck.len = len;
+    if (SJ_SearchTag_x0019F810(&ck, D_0045A050_x0019F810, D_0045A058_x0019F810, &tag) == 0)
+        SFXZ_SetTagInf_x0019F810(sfxz, 0, 0);
+    else
+        SFXZ_SetTagInf_x0019F810(sfxz, tag.data, tag.len);
+    rec->set = 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F8A8);
 void func_0019F8D8(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0x28) = arg1;
@@ -287,7 +333,16 @@ void func_0019FA98_x0019FA98(struct fn_12_68C_Arg0_x0019FA98 *arg0, u32_x0019FA9
     arg0->unk_1C = v2;
     arg0->unk_2C = v2;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FAC0);
+extern void func_0035FE20_x0019FAC0(int a0, int a1, int a2) __asm__("func_0019FB48");
+void func_0019FAC0_x0019FAC0(int a0, int a1, int a2) __asm__("func_0019FAC0");
+/* func_0035FD98: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0033d2d0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0019FAC0_x0019FAC0(int a0, int a1, int a2) {
+    int u = (a2 / 2) * 2;
+    int v = (a1 / 2) * 2;
+    func_0035FE20_x0019FAC0(a0 + 0x4, u, v);
+    func_0035FE20_x0019FAC0(a0 + 0x14, u >> 1, v >> 1);
+    func_0035FE20_x0019FAC0(a0 + 0x24, u >> 1, v >> 1);
+}
 void func_0019FB48(u8 *arg0, s32 arg1, s32 arg2) {
     *(s32 *)((u8 *)arg0 + 8) = (s32) (*(s32 *)((u8 *)arg0 + 8) - arg1);
     *(s32 *)((u8 *)arg0 + 0) = (s32) (*(s32 *)((u8 *)arg0 + 0) + (arg1 * *(s32 *)((u8 *)arg0 + 4)) + arg2);
@@ -348,8 +403,88 @@ void func_0019FE78_x0019FE78(u8 *arg0)
   *((s32 *) (((u8 *) arg0) + 0x40)) = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FE88);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FEB0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FED8);
+typedef signed char Sint8_x0019FEB0;
+typedef int Sint32_x0019FEB0;
+typedef struct SjChunk_x0019FEB0 {
+    Sint8_x0019FEB0 *data;
+    Sint32_x0019FEB0 len;
+} SjChunk_x0019FEB0;
+typedef struct SjTagRec_x0019FEB0 {
+    int set;
+    SjChunk_x0019FEB0 ck;
+} SjTagRec_x0019FEB0;
+typedef struct SfxZmvTagState_x0019FEB0 {
+    char unk00[0x08];
+    SjTagRec_x0019FEB0 input;
+    char unk14[0x04];
+    SjTagRec_x0019FEB0 header;
+    char unk24[0x04];
+    SjTagRec_x0019FEB0 frame;
+} SfxZmvTagState_x0019FEB0;
+extern void sfxzmv_SetTagGrp_x0019FEB0(SfxZmvTagState_x0019FEB0 *state) __asm__("func_0019FED8");
+void func_0019FEB0_x0019FEB0(SfxZmvTagState_x0019FEB0 *state, Sint8_x0019FEB0 *data, Sint32_x0019FEB0 len) __asm__("func_0019FEB0");
+/* SFXZ_SetTagInf: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0035ffd8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0019FEB0_x0019FEB0(SfxZmvTagState_x0019FEB0 *state, Sint8_x0019FEB0 *data, Sint32_x0019FEB0 len)
+{
+    SjTagRec_x0019FEB0 *input;
+    input = &state->input;
+    input->set = 1;
+    input->ck.data = data;
+    input->ck.len = len;
+    sfxzmv_SetTagGrp_x0019FEB0(state);
+}
+typedef signed char Sint8_x0019FED8;
+typedef int Sint32_x0019FED8;
+typedef struct SjChunk_x0019FED8 {
+    Sint8_x0019FED8 *data;
+    Sint32_x0019FED8 len;
+} SjChunk_x0019FED8;
+typedef struct SjTagRec_x0019FED8 {
+    int set;
+    SjChunk_x0019FED8 ck;
+} SjTagRec_x0019FED8;
+extern Sint8_x0019FED8 *SJ_SearchTag_x0019FED8(SjChunk_x0019FED8 *ck, Sint8_x0019FED8 *tag, Sint8_x0019FED8 *endtag, SjChunk_x0019FED8 *tagck) __asm__("func_0016F290");
+typedef struct SfxZmvTagState_x0019FED8 {
+    char unk00[0x08];
+    SjTagRec_x0019FED8 input;
+    char unk14[0x04];
+    SjTagRec_x0019FED8 header;
+    char unk24[0x04];
+    SjTagRec_x0019FED8 frame;
+} SfxZmvTagState_x0019FED8;
+extern Sint8_x0019FED8 D_0045A060_x0019FED8[] __asm__("D_00467DA0");
+extern Sint8_x0019FED8 D_0045A068_x0019FED8[] __asm__("D_00467DA8");
+extern Sint8_x0019FED8 D_0045A070_x0019FED8[] __asm__("D_00467DB0");
+void func_0019FED8_x0019FED8(SfxZmvTagState_x0019FED8 *state) __asm__("func_0019FED8");
+/* sfxzmv_SetTagGrp: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00360000.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0019FED8_x0019FED8(SfxZmvTagState_x0019FED8 *state)
+{
+    SjChunk_x0019FED8 input;
+    SjChunk_x0019FED8 found;
+    SjTagRec_x0019FED8 *header = &state->header;
+    SjTagRec_x0019FED8 *frame = &state->frame;
+    SjTagRec_x0019FED8 *source = &state->input;
+    Sint8_x0019FED8 *data = source->ck.data;
+    if (data == 0) {
+        header->ck.len = 0;
+        header->set = 1;
+        header->ck.data = 0;
+        frame->set = 1;
+        frame->ck.data = 0;
+        frame->ck.len = 0;
+        return;
+    }
+    input.data = data;
+    input.len = source->ck.len;
+    SJ_SearchTag_x0019FED8(&input, D_0045A060_x0019FED8, D_0045A068_x0019FED8, &found);
+    header->ck.data = found.data;
+    header->ck.len = found.len;
+    header->set = 1;
+    SJ_SearchTag_x0019FED8(&input, D_0045A070_x0019FED8, D_0045A068_x0019FED8, &found);
+    frame->set = 1;
+    frame->ck.data = found.data;
+    frame->ck.len = found.len;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FFC0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FFF0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0108);
@@ -427,7 +562,17 @@ block_5:
     }
     return var_v1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0D38);
+extern int D_003EEA6C_x001A0D38 __asm__("D_00427318");
+extern int *volatile D_00766CA4_x001A0D38 __asm__("D_00492A70");
+extern int *Obj0000_Get_D_0045A1B0_360790_x001A0D38(void) __asm__("func_001A0D88");
+void func_001A0D38_x001A0D38(void) __asm__("func_001A0D38");
+/* func_00360740: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00331ce0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001A0D38_x001A0D38(void) {
+    if (D_003EEA6C_x001A0D38 <= 0) {
+        D_00766CA4_x001A0D38 = Obj0000_Get_D_0045A1B0_360790_x001A0D38();
+        D_003EEA6C_x001A0D38 = D_003EEA6C_x001A0D38 + 1;
+    }
+}
 s32 *func_001A0D88(void) {
     return &D_00467EC0;
 }
@@ -502,7 +647,20 @@ s32 func_001A1488_x001A1488(s32 arg0) {
     return (arg0 == 0) ? 0 : 0x23;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1498);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A15C0);
+extern volatile int D_003EEA78_x001A15C0 __asm__("D_00427334");
+extern int D_003EEA7C_x001A15C0 __asm__("D_00427338");
+extern unsigned int D_003EEA80_x001A15C0 __asm__("D_0042733C");
+extern volatile unsigned int *D_0045A260_x001A15C0[] __asm__("D_00467F70");
+void func_001A15C0_x001A15C0(void) __asm__("func_001A15C0");
+/* IntrNest_leave: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0032afb0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001A15C0_x001A15C0(void)
+{
+    D_003EEA78_x001A15C0--;
+    if (D_003EEA78_x001A15C0 == 0 && D_003EEA7C_x001A15C0 != -1 && (D_003EEA80_x001A15C0 & 0xC7) != 0x82)
+        *D_0045A260_x001A15C0[D_003EEA7C_x001A15C0] = D_003EEA80_x001A15C0 ^ 0xC00;
+    if (D_003EEA78_x001A15C0 < 0)
+        D_003EEA78_x001A15C0 = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1630);
 s32 func_001A1758(void) {
     func_001A1630();

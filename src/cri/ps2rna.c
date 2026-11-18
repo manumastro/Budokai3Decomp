@@ -53,7 +53,100 @@ void PS2RNA_SetupVoice_x0016BBE0(Sint32_x0016BBE0 nste, Sint32_x0016BBE0 nmono) 
     ps2psj_iop_wksize_x0016BBE0 = voice_count * 0x4100;
     ps2rna_setupvoice_flag_x0016BBE0 = 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", ps2rna_init_psj);
+typedef struct StmObjVtbl_x0016BCA0 {
+    void *unk00[3];
+    void (*destroy)(void *obj);
+    void *unk10[4];
+    void (*setBuf)(void *obj, int idx, void *desc);
+} StmObjVtbl_x0016BCA0;
+typedef struct StmObj_x0016BCA0 {
+    StmObjVtbl_x0016BCA0 *vt;
+} StmObj_x0016BCA0;
+typedef struct StmEnt_x0016BCA0 {
+    char used;
+    void *f4;
+    StmObj_x0016BCA0 *obj;
+    void *sjx;
+    char *buf;
+    int bufSize;
+} StmEnt_x0016BCA0;
+extern int D_003E0708_x0016BCA0 __asm__("D_0041A0D0");
+extern int D_003E070C_x0016BCA0 __asm__("D_0041A0D4");
+extern int D_003E0710_x0016BCA0 __asm__("D_0041A0D8");
+extern void *D_003E0714_x0016BCA0 __asm__("D_0041A0DC");
+extern char *D_003E0718_x0016BCA0 __asm__("D_0041A0E0");
+extern char D_003E071C_x0016BCA0 __asm__("D_0041A0E4");
+extern StmEnt_x0016BCA0 D_003E0768_x0016BCA0[] __asm__("D_0041A120");
+extern void func_003260C8_x0016BCA0(const char *fmt, ...) __asm__("scePrintf");
+extern void *func_003A52F0_x0016BCA0(void *dst, int c, int n) __asm__("memset");
+extern char D_00455438_x0016BCA0[] __asm__("D_004648A0");
+extern char D_00455480_x0016BCA0[] __asm__("D_004648E8");
+extern char D_004554B0_x0016BCA0[] __asm__("D_00464918");
+extern char D_004554E0_x0016BCA0[] __asm__("D_00464948");
+extern char D_00455518_x0016BCA0[] __asm__("D_00464980");
+extern char D_00455548_x0016BCA0[] __asm__("D_004649B0");
+extern char D_00455580_x0016BCA0[] __asm__("D_004649E8");
+extern char D_003E0A68_x0016BCA0[] __asm__("D_0041A420");
+extern void *sceSifAllocIopHeap_x0016BCA0(int size) __asm__("func_00112598");
+extern void *SJUNI_CreateRmt_x0016BCA0(int mode, char *buf, int size) __asm__("func_0016F408");
+extern StmObj_x0016BCA0 *func_0033A190_x0016BCA0(int mode, char *buf, int size) __asm__("func_0016E930");
+extern void *SJX_Create_x0016BCA0(StmObj_x0016BCA0 *obj, void *uni, int mode) __asm__("func_0016FD00");
+void ps2rna_init_psj_x0016BCA0(void) __asm__("ps2rna_init_psj");
+/* func_00336F48: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00336e88.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void ps2rna_init_psj_x0016BCA0(void)
+{
+    StmEnt_x0016BCA0 *e;
+    char *buf;
+    int i;
+    if (D_003E0710_x0016BCA0 == 0) {
+        D_003E0708_x0016BCA0 = 16;
+        D_003E070C_x0016BCA0 = 0x41000;
+    }
+    if (D_003E0714_x0016BCA0 == 0) {
+        D_003E0714_x0016BCA0 = sceSifAllocIopHeap_x0016BCA0(D_003E070C_x0016BCA0 + 0x40);
+        if (D_003E0714_x0016BCA0 == 0) {
+            func_003260C8_x0016BCA0(D_00455438_x0016BCA0, D_003E070C_x0016BCA0 + 0x40);
+            for (;;);
+        }
+        func_003260C8_x0016BCA0(D_00455480_x0016BCA0, D_003E070C_x0016BCA0 + 0x40, D_003E0714_x0016BCA0);
+        D_003E0718_x0016BCA0 = (char *)(((int)D_003E0714_x0016BCA0 + 0x40) & ~0x3F);
+        D_003E071C_x0016BCA0 = 1;
+    }
+    func_003A52F0_x0016BCA0(D_003E0768_x0016BCA0, 0, 0x300);
+    buf = D_003E0718_x0016BCA0;
+    for (i = 0; i < D_003E0708_x0016BCA0; i++) {
+        e = &D_003E0768_x0016BCA0[i];
+        e->used = 0;
+        if ((int)buf & 0x3F) {
+            func_003260C8_x0016BCA0(D_004554B0_x0016BCA0);
+            for (;;);
+        }
+        e->f4 = SJUNI_CreateRmt_x0016BCA0(1, buf, 0x100);
+        buf += 0x100;
+        if (e->f4 == 0) {
+            func_003260C8_x0016BCA0(D_004554E0_x0016BCA0);
+            for (;;);
+        }
+        if ((int)buf & 0x3F) {
+            func_003260C8_x0016BCA0(D_00455518_x0016BCA0);
+            for (;;);
+        }
+        e->obj = func_0033A190_x0016BCA0(1, D_003E0A68_x0016BCA0 + i * 0x100, 0x100);
+        if (e->obj == 0) {
+            func_003260C8_x0016BCA0(D_00455548_x0016BCA0);
+            for (;;);
+        }
+        e->buf = buf;
+        e->bufSize = 0x4000;
+        e->obj->vt->setBuf(e->obj, 0, &e->buf);
+        buf += 0x4000;
+        e->sjx = SJX_Create_x0016BCA0(e->obj, e->f4, 1);
+        if (e->sjx == 0) {
+            func_003260C8_x0016BCA0(D_00455580_x0016BCA0);
+            for (;;);
+        }
+    }
+}
 typedef unsigned int size_t_x0016BF98;
 typedef int s32_x0016BF98;
 typedef s32_x0016BF98 ptrdiff_t_x0016BF98;
@@ -1300,7 +1393,44 @@ INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C7E8);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C838);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C8A8);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C910);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C968);
+extern int D_003E0710_x0016C968 __asm__("D_0041A0D8");
+extern int D_003E0708_x0016C968 __asm__("D_0041A0D0");
+extern int D_003E0754_x0016C968 __asm__("D_0041A10C");
+extern int D_003E0724_x0016C968 __asm__("D_0041A0EC");
+extern int D_003E31A8_x0016C968 __asm__("D_0041CB60");
+extern int D_003E075C_x0016C968 __asm__("D_0041A114");
+extern void Tramp_sceSifFreeSysMemory_3B5A50_x0016C968(int a0) __asm__("func_00112700");
+extern void DTX_Destroy_x0016C968(int a0) __asm__("func_00165C68");
+extern void func_00337240_x0016C968(void) __asm__("func_0016BF98");
+extern void func_00337AC8_x0016C968(void) __asm__("func_0016C7E8");
+extern void func_003325F8_x0016C968(void) __asm__("func_00165F40");
+extern void func_0033B3B0_x0016C968(void) __asm__("func_0016FC88");
+extern void func_0033B010_x0016C968(void) __asm__("func_0016F748");
+void func_0016C968_x0016C968(void) __asm__("func_0016C968");
+/* func_00337D20: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00331ce0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0016C968_x0016C968(void) {
+    int n;
+    if (D_003E0710_x0016C968 == 1) {
+        if (D_003E0708_x0016C968 <= 0) {
+            return;
+        }
+    }
+    n = D_003E0754_x0016C968 - 1;
+    D_003E0754_x0016C968 = n;
+    if (n == 0) {
+        Tramp_sceSifFreeSysMemory_3B5A50_x0016C968(D_003E0724_x0016C968);
+        D_003E0724_x0016C968 = 0;
+        DTX_Destroy_x0016C968(D_003E31A8_x0016C968);
+        D_003E31A8_x0016C968 = 0;
+        Tramp_sceSifFreeSysMemory_3B5A50_x0016C968(D_003E075C_x0016C968);
+        D_003E075C_x0016C968 = 0;
+        func_00337240_x0016C968();
+        func_00337AC8_x0016C968();
+        func_003325F8_x0016C968();
+        func_0033B3B0_x0016C968();
+        func_0033B010_x0016C968();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CA28);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CDA8);
 void PS2RNA_Start(void) {
@@ -1329,8 +1459,46 @@ void PS2RNA_SetPcmType(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D128);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D160);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D1C8);
+extern int D_003E0710_x0016D160 __asm__("D_0041A0D8");
+extern int D_003E0708_x0016D160 __asm__("D_0041A0D0");
+int func_0016D160_x0016D160(int a0) __asm__("func_0016D160");
+/* func_003383B0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00323a00.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_0016D160_x0016D160(int a0) {
+    int v0;
+    int v1;
+    int t;
+    if (D_003E0710_x0016D160 == 1 && D_003E0708_x0016D160 <= 0) {
+        return 0;
+    }
+    v0 = *(int *)(*(int *)(a0 + 8) + 8);
+    v1 = *(int *)v0;
+    v0 = ((int (*)(int, int))*(int *)(v1 + 0x24))(v0, 0);
+    v1 = 0x4000 - v0;
+    t = (unsigned int)v1 >> 31;
+    v1 = v1 + t;
+    v0 = v1 >> 1;
+    return v0;
+}
+extern int D_003E0710_x0016D1C8 __asm__("D_0041A0D8");
+extern int D_003E0708_x0016D1C8 __asm__("D_0041A0D0");
+int func_0016D1C8_x0016D1C8(int *a0) __asm__("func_0016D1C8");
+/* func_00338418: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00323a00.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_0016D1C8_x0016D1C8(int *a0) {
+    int r;
+    int *tmp;
+    int *obj;
+    int *vt;
+    if (D_003E0710_x0016D1C8 == 1) {
+        if (D_003E0708_x0016D1C8 <= 0) {
+            return 0;
+        }
+    }
+    tmp = *(int**)((char*)a0 + 8);
+    obj = *(int**)((char*)tmp + 8);
+    vt = *(int**)obj;
+    r = ((int(*)(int*, int))vt[9])(obj, 0);
+    return r / 2;
+}
 typedef int s32_x0016D228;
 typedef s32_x0016D228 ptrdiff_t_x0016D228;
 typedef unsigned char Uint8_x0016D228;
@@ -1715,7 +1883,38 @@ void func_0016D228_x0016D228(ADXRNA_x0016D228 rna) {
         DTR_Start_x0016D228(rna->dtr[i]);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D3E8);
+extern void Obj0000_PostInc_D_003E3A80_338960_x0016D3E8(void) __asm__("func_0016DA98");
+extern void func_00338478_x0016D3E8(char *p) __asm__("func_0016D228");
+extern void Obj0000_Decrement_D_003E3A80_338978_x0016D3E8(void) __asm__("func_0016DAB0");
+extern void func_00340130_x0016D3E8(void) __asm__("func_001654F8");
+extern void Forward332778_33B200_x0016D3E8(void) __asm__("func_0016FAD8");
+extern int D_003E0710_x0016D3E8 __asm__("D_0041A0D8");
+extern int D_003E0708_x0016D3E8 __asm__("D_0041A0D0");
+extern char D_003E2B68_x0016D3E8[] __asm__("D_0041C520");
+void func_0016D3E8_x0016D3E8(void) __asm__("func_0016D3E8");
+/* func_00338638: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003272c0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0016D3E8_x0016D3E8(void) {
+    int s1;
+    char *s0;
+    int s2;
+    if (D_003E0710_x0016D3E8 == 1 && D_003E0708_x0016D3E8 <= 0) {
+        return;
+    }
+    s2 = 1;
+    Obj0000_PostInc_D_003E3A80_338960_x0016D3E8();
+    s0 = D_003E2B68_x0016D3E8;
+    s1 = 15;
+    do {
+        if (*s0 == s2) {
+            func_00338478_x0016D3E8(s0);
+        }
+        s1--;
+        s0 += 0x64;
+    } while (s1 >= 0);
+    Obj0000_Decrement_D_003E3A80_338978_x0016D3E8();
+    func_00340130_x0016D3E8();
+    Forward332778_33B200_x0016D3E8();
+}
 void PS2RNA_SetStartSmpl(void) {
     if ((D_0041A0D8 != 1) || (D_0041A0D0 > 0)) {
         scePrintf(&D_00464BB8);
@@ -1726,7 +1925,18 @@ INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D508);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D5E0);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D620);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D670);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", PS2RNA_SetBitPerSmpl);
+extern int D_003E0708_x0016D700 __asm__("D_0041A0D0");
+extern int D_003E0710_x0016D700 __asm__("D_0041A0D8");
+extern void func_003260C8_x0016D700(const char *fmt, ...) __asm__("scePrintf");
+extern char D_004557C8_x0016D700[] __asm__("D_00464C00");
+int PS2RNA_SetBitPerSmpl_x0016D700(long handle, long bitsPerSample) __asm__("PS2RNA_SetBitPerSmpl");
+/* PS2RNA_SetBitPerSmpl_x0016D700: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00338848.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int PS2RNA_SetBitPerSmpl_x0016D700(long handle, long bitsPerSample) {
+    if ((D_003E0710_x0016D700 != 1 || D_003E0708_x0016D700 > 0) &&
+        bitsPerSample != 16) {
+        func_003260C8_x0016D700(D_004557C8_x0016D700, bitsPerSample);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", PS2RNA_GetStartSmpl);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D798);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D7C8);

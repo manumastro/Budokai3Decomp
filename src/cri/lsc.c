@@ -1347,7 +1347,16 @@ void func_0016A0B8_x0016A0B8(s32 arg0, s32 arg1, s32 arg2) {
     D_00413E4C_x0016A0B8 = arg1;
     D_00413E50_x0016A0B8 = arg2;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A0F8);
+extern void (*D_003DA4C4_x0016A0F8)(int, int) __asm__("D_00413E48");
+extern int D_003DA4C8_x0016A0F8 __asm__("D_00413E4C");
+extern int D_003DA4CC_x0016A0F8 __asm__("D_00413E50");
+void func_0016A0F8_x0016A0F8(void) __asm__("func_0016A0F8");
+/* func_00335C30: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00320388.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0016A0F8_x0016A0F8(void) {
+    if (D_003DA4C4_x0016A0F8) {
+        D_003DA4C4_x0016A0F8(D_003DA4C8_x0016A0F8, D_003DA4CC_x0016A0F8);
+    }
+}
 typedef unsigned char Uint8_x0016A130;
 typedef char Sint8_x0016A130;
 typedef unsigned short Uint16_x0016A130;
@@ -1509,7 +1518,31 @@ void func_0016A258_x0016A258(void) __asm__("func_0016A258");
 void func_0016A258_x0016A258(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A260);
+extern volatile int D_003DA5D8_x0016A260 __asm__("D_00413F60");
+extern int D_003DA5F0_x0016A260 __asm__("D_00413F78");
+extern int D_003DA5F8_x0016A260 __asm__("D_00413F80");
+extern void Forward33B658_335CE8_x0016A260(int *) __asm__("func_0016A160");
+extern void Forward33B670_335D00_x0016A260(int *) __asm__("func_0016A180");
+extern void func_003A52F0_x0016A260(void *, int, int) __asm__("memset");
+extern void func_00335DD0_x0016A260(void) __asm__("func_0016A250");
+extern void func_00335D18_x0016A260(int, int) __asm__("func_0016A198");
+void func_0016A260_x0016A260(void) __asm__("func_0016A260");
+/* func_00335DE0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003272c0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0016A260_x0016A260(void) {
+    int *s0;
+    int sp_buf[1];
+    int v3;
+    v3 = D_003DA5D8_x0016A260;
+    Forward33B658_335CE8_x0016A260(sp_buf);
+    s0 = &D_003DA5F0_x0016A260;
+    if (!*s0) {
+        func_003A52F0_x0016A260(&D_003DA5F8_x0016A260, 0, 0x4700);
+        func_00335DD0_x0016A260();
+        func_00335D18_x0016A260(0, 0);
+    }
+    *s0 = *s0 + 1;
+    Forward33B670_335D00_x0016A260(sp_buf);
+}
 s32 func_00169980_x0016A2E0(s8 *) __asm__("func_00169980");
 s32 func_0016A198_x0016A2E0(s32, s32) __asm__("func_0016A198");
 s32 func_0016A258_x0016A2E0() __asm__("func_0016A258");

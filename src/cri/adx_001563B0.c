@@ -1839,7 +1839,47 @@ void func_00156BD0_x00156BD0() {
     ExitDeleteThread_x00156BD0();
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00156C28);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00156CC0);
+extern volatile long D_003C8178_x00156CC0 __asm__("D_00405D78");
+extern volatile long D_003C8180_x00156CC0 __asm__("D_00405D80");
+extern volatile long D_003C8110_x00156CC0 __asm__("D_00405D10");
+extern volatile long D_003C8118_x00156CC0 __asm__("D_003C8118");
+extern volatile long D_003C8120_x00156CC0 __asm__("D_003C8120");
+extern volatile int D_003C80E8_x00156CC0 __asm__("D_00405CE8");
+extern volatile int D_003C8148_x00156CC0 __asm__("D_003C8148");
+extern volatile int D_003C814C_x00156CC0 __asm__("D_00405D4C");
+extern volatile int D_003C8150_x00156CC0 __asm__("D_00405D50");
+extern volatile int D_003C81C8_x00156CC0 __asm__("D_00405DC8");
+extern void SleepThread_3252E0_x00156CC0(void) __asm__("func_00157158");
+extern void ExitDeleteThread_x00156CC0(void) __asm__("ExitDeleteThread");
+extern int func_00325360_x00156CC0(int thid) __asm__("func_001571D8");
+extern void func_00325E78_x00156CC0(void) __asm__("func_00158090");
+extern void func_00325FD8_x00156CC0(void) __asm__("func_00158630");
+extern int GetD003C80A8_325610_x00156CC0(void) __asm__("func_00157610");
+extern void Forward33BC48_33BD48_x00156CC0(void) __asm__("func_00170830");
+void func_00325E78_x00156CC0(void) __asm__("func_00158090");
+void func_00156CC0_x00156CC0(void) __asm__("func_00156CC0");
+/* func_00324F08: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00324eb0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00156CC0_x00156CC0(void)
+{
+    while (D_003C8178_x00156CC0 == 0) {
+        D_003C8110_x00156CC0++;
+        func_00325360_x00156CC0(D_003C814C_x00156CC0);
+        if (D_003C81C8_x00156CC0 == 0) {
+            func_00325FD8_x00156CC0();
+        }
+        D_003C81C8_x00156CC0 = 0;
+        if (GetD003C80A8_325610_x00156CC0() == 1) {
+            func_00325360_x00156CC0(D_003C8150_x00156CC0);
+        }
+        func_00325E78_x00156CC0();
+        D_003C80E8_x00156CC0 = 1;
+        Forward33BC48_33BD48_x00156CC0();
+        D_003C80E8_x00156CC0 = 0;
+        SleepThread_3252E0_x00156CC0();
+    }
+    D_003C8180_x00156CC0 = 1;
+    ExitDeleteThread_x00156CC0();
+}
 typedef unsigned long u_long_x00156DC8;
 typedef unsigned short Uint16_x00156DC8;
 typedef signed int Sint32_x00156DC8;
@@ -1876,7 +1916,54 @@ void func_00156DC8_x00156DC8() {
     adxm_fs_exit_x00156DC8 = 1;
     ExitDeleteThread_x00156DC8();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00156EA8);
+extern volatile long D_003C8198_x00156EA8 __asm__("D_00405D98");
+extern volatile long D_003C81A0_x00156EA8 __asm__("D_00405DA0");
+extern volatile long D_003C8110_x00156EA8 __asm__("D_003C8110");
+extern volatile long D_003C8118_x00156EA8 __asm__("D_003C8118");
+extern volatile long D_003C8120_x00156EA8 __asm__("D_00405D20");
+extern volatile int D_003C80E4_x00156EA8 __asm__("D_00405CE4");
+extern volatile int D_003C80F4_x00156EA8 __asm__("D_00405CF4");
+extern volatile int D_003C8148_x00156EA8 __asm__("D_003C8148");
+extern volatile int D_003C814C_x00156EA8 __asm__("D_003C814C");
+extern volatile int D_003C8150_x00156EA8 __asm__("D_00405D50");
+extern volatile int D_003C81C8_x00156EA8 __asm__("D_00405DC8");
+extern void SleepThread_3252E0_x00156EA8(void) __asm__("func_00157158");
+extern void ExitDeleteThread_x00156EA8(void) __asm__("ExitDeleteThread");
+extern void func_00325290_x00156EA8(int thid) __asm__("func_00157108");
+extern void func_00325FD8_x00156EA8(void) __asm__("func_00158630");
+extern int GetD003C80A8_325610_x00156EA8(void) __asm__("func_00157610");
+extern int Forward33BC48_33BDA8_x00156EA8(void) __asm__("func_00170890");
+extern int adxm_ResumeThread_x00156EA8(int tid) __asm__("func_00157170");
+void func_00156EA8_x00156EA8(void) __asm__("func_00156EA8");
+/* func_00325100: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00324eb0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00156EA8_x00156EA8(void)
+{
+    int busy;
+    while (D_003C8198_x00156EA8 == 0) {
+        D_003C8120_x00156EA8++;
+        D_003C80F4_x00156EA8 = 1;
+        busy = Forward33BC48_33BDA8_x00156EA8();
+        D_003C80F4_x00156EA8 = 0;
+        if (D_003C80E4_x00156EA8 == 1) {
+            D_003C80E4_x00156EA8 = 0;
+            SleepThread_3252E0_x00156EA8();
+        }
+        if (busy == 0) {
+            if (GetD003C80A8_325610_x00156EA8() == 1) {
+                if (adxm_ResumeThread_x00156EA8(D_003C8150_x00156EA8) == D_003C8150_x00156EA8) {
+                    func_00325290_x00156EA8(D_003C8150_x00156EA8);
+                }
+            }
+            if (D_003C80E4_x00156EA8 != 1) {
+                func_00325FD8_x00156EA8();
+                D_003C81C8_x00156EA8 = 1;
+            }
+            SleepThread_3252E0_x00156EA8();
+        }
+    }
+    D_003C81A0_x00156EA8 = 1;
+    ExitDeleteThread_x00156EA8();
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00156FE0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_001570B8);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157108);
@@ -2220,7 +2307,25 @@ void func_00157FD8(void) {
 void func_00157FF0(void) {
     func_00170878();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00158008);
+extern volatile int D_003C8148_x00158008 __asm__("D_003C8148");
+extern volatile int D_003C814C_x00158008 __asm__("D_00405D4C");
+extern volatile int D_003C8150_x00158008 __asm__("D_00405D50");
+extern void func_00325290_x00158008(int thid) __asm__("func_00157108");
+extern int GetD003C80A8_325610_x00158008(void) __asm__("func_00157610");
+extern int adxm_ResumeThread_x00158008(int tid) __asm__("func_00157170");
+void func_00158008_x00158008(void) __asm__("func_00158008");
+/* func_00325DF0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00324eb0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00158008_x00158008(void)
+{
+    if (adxm_ResumeThread_x00158008(D_003C814C_x00158008) == D_003C814C_x00158008) {
+        func_00325290_x00158008(D_003C814C_x00158008);
+    }
+    if (GetD003C80A8_325610_x00158008() == 1) {
+        if (adxm_ResumeThread_x00158008(D_003C8150_x00158008) == D_003C8150_x00158008) {
+            func_00325290_x00158008(D_003C8150_x00158008);
+        }
+    }
+}
 typedef unsigned int u_int_x00158090;
 typedef signed int Sint32_x00158090;
 extern Sint32_x00158090 SVM_SetCbSvr_x00158090(Sint32_x00158090, Sint32_x00158090 (*)(void*), void*) __asm__("SVM_SetCbSvr");

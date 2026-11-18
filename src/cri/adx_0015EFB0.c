@@ -668,7 +668,21 @@ s32 ADXT_GetDecNumSmpl(u8 *arg0) {
     return func_00159C78(*(s32 *)((u8 *)arg0 + 4));
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", func_0015FC00);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", func_0015FC98);
+typedef unsigned short Uint16_x0015FC98;
+typedef signed char Sint8_x0015FC98;
+typedef signed int Sint32_x0015FC98;
+Sint32_x0015FC98 func_0015FC98_x0015FC98(Sint8_x0015FC98 *adr, Sint32_x0015FC98 siz, Sint32_x0015FC98 *endsiz) __asm__("func_0015FC98");
+/* ADXT_IsEndcode: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0032b7.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0015FC98 func_0015FC98_x0015FC98(Sint8_x0015FC98 *adr, Sint32_x0015FC98 siz, Sint32_x0015FC98 *endsiz) {
+    if (siz <= 1) {
+        return 0;
+    }
+    if ((Uint16_x0015FC98)((*(Uint16_x0015FC98*)adr >> 8) | (*(Uint16_x0015FC98*)adr << 8)) != 0x8001) {
+        return 0;
+    }
+    *endsiz = siz;
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", func_0015FCD8);
 void func_0015FE80(void) {
     func_00153028();
@@ -1110,4 +1124,70 @@ void func_00160300(u8 *arg0) {
     func_00159C80(temp_s1, temp_s3);
     func_00159D58(temp_s1, &adxt_trap_entry, arg0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", adxt_trap_entry);
+typedef signed char Sint8_x001603B8;
+typedef int Sint32_x001603B8;
+typedef struct SjChunk_x001603B8 {
+    Sint8_x001603B8 *data;
+    Sint32_x001603B8 len;
+} SjChunk_x001603B8;
+typedef struct SjObj_x001603B8 SjObj_x001603B8;
+typedef struct SjIf_x001603B8 {
+    void *obj;
+    void (*addRef)(SjObj_x001603B8 *sj);
+    void (*release)(SjObj_x001603B8 *sj);
+    void (*destroy)(SjObj_x001603B8 *sj);
+    void *(*getUuid)(SjObj_x001603B8 *sj);
+    void (*reset)(SjObj_x001603B8 *sj);
+    void (*getChunk)(SjObj_x001603B8 *sj, int id, int len, SjChunk_x001603B8 *ck);
+    void (*ungetChunk)(SjObj_x001603B8 *sj, int id, SjChunk_x001603B8 *ck);
+    void (*putChunk)(SjObj_x001603B8 *sj, int id, SjChunk_x001603B8 *ck);
+    int (*getNumData)(SjObj_x001603B8 *sj, int id);
+} SjIf_x001603B8;
+struct SjObj_x001603B8 {
+    SjIf_x001603B8 *vt;
+};
+extern int GetVia4_Obj33C8_GetField_28_7818_327818_x001603B8(void *sj) __asm__("func_00159E88");
+extern int func_00327830_x001603B8(void *sj) __asm__("func_00159EA0");
+extern int GetVia4_Obj33C8_GetField_30_7860_327860_x001603B8(void *sj) __asm__("func_00159ED0");
+extern void Forward33CFF8_327988_x001603B8(void *sj) __asm__("func_0015A070");
+extern void Obj3270_SetField_34_x001603B8(void *sj, int v) __asm__("func_00159C80");
+extern void Obj3270_SetField_3C_x001603B8(void *sj, int v) __asm__("func_00159D68");
+extern void Obj3270_SetField_40_x001603B8(void *sj, int v) __asm__("func_00159D78");
+extern void Obj3270_SetField_44_x001603B8(void *sj, int v) __asm__("func_00159D88");
+extern void func_0033F130_x001603B8(const char *msg) __asm__("ADXERR_CallErrFunc1");
+extern char D_00452890_x001603B8[] __asm__("D_004620E0");
+void adxt_trap_entry_x001603B8(char *self) __asm__("adxt_trap_entry");
+/* func_0032C048: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0032bf90.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void adxt_trap_entry_x001603B8(char *self)
+{
+    void *sj = *(void **)(self + 4);
+    SjObj_x001603B8 *in = *(SjObj_x001603B8 **)(self + 0x14);
+    int top = GetVia4_Obj33C8_GetField_28_7818_327818_x001603B8(sj);
+    int size = func_00327830_x001603B8(sj);
+    int end = GetVia4_Obj33C8_GetField_30_7860_327860_x001603B8(sj);
+    int len;
+    SjChunk_x001603B8 ck;
+    if ((*(signed char *)(self + 2) == 2 || *(signed char *)(self + 2) == 3) &&
+        *(signed char *)(self + 0x6C) == 0) {
+        Obj3270_SetField_3C_x001603B8(*(void **)(self + 4), -1);
+        return;
+    }
+    in->vt->getChunk(in, 1, *(int *)(self + 0x50), &ck);
+    if (ck.len < *(int *)(self + 0x50)) {
+        func_0033F130_x001603B8(D_00452890_x001603B8);
+    }
+    in->vt->putChunk(in, 0, &ck);
+    Obj3270_SetField_40_x001603B8(sj, 0);
+    len = end - top;
+    *(int *)(self + 0x90) = len;
+    Obj3270_SetField_3C_x001603B8(sj, len);
+    Obj3270_SetField_44_x001603B8(sj, size);
+    Obj3270_SetField_34_x001603B8(sj, top);
+    if (*(signed char *)(self + 2) == 2) {
+        in->vt->reset(in);
+        in->vt->getChunk(in, 1, size, &ck);
+        in->vt->putChunk(in, 0, &ck);
+    }
+    Forward33CFF8_327988_x001603B8(sj);
+    *(int *)(self + 0x4C) += 1;
+}

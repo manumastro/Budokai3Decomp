@@ -95,7 +95,57 @@ s32_x00163F88 func_00163F88_x00163F88(SRD_x00163F88 srd, s32_x00163F88 arg1, s32
     SVM_UnlockVar_x00163F88();
     return var_s4;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164078);
+typedef signed char Sint8_x00164078;
+typedef char Char8_x00164078;
+typedef int Sint32_x00164078;
+typedef unsigned int Uint32_x00164078;
+typedef unsigned long long Uint64_x00164078;
+typedef Sint32_x00164078 Bool_x00164078;
+typedef unsigned char u_char_x00164078;
+typedef struct {
+    u_char_x00164078 trycount;
+    u_char_x00164078 spindlctrl;
+    u_char_x00164078 datapattern;
+    u_char_x00164078 pad;
+} sceCdRMode_x00164078;
+typedef struct srd_obj_x00164078 {
+    Sint8_x00164078 used;
+    Sint8_x00164078 devtype;
+    Sint8_x00164078 stat;
+    Char8_x00164078 rsv;
+    Sint32_x00164078 break_flg;
+    Uint32_x00164078 d_lsn;
+    Uint32_x00164078 d_sct;
+    void *d_buf;
+    sceCdRMode_x00164078 d_mode;
+    void *h_buf;
+    Uint64_x00164078 h_byte;
+    Uint64_x00164078 h_skpos;
+    int h_fd;
+    int err_code;
+} SRD_OBJ_x00164078, *SRD_x00164078;
+extern int Forward33B568_33B688_x00164078(void) __asm__("func_0016FF70");
+extern int Forward33B5C8_33B6B8_x00164078(void) __asm__("func_0016FFE8");
+Bool_x00164078 func_00164078_x00164078(SRD_x00164078 srd, int h_fd, Sint32_x00164078 h_skpos, Uint64_x00164078 h_byte, void *h_buf) __asm__("func_00164078");
+/* SRD_ReqRdHst: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00331200.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Bool_x00164078 func_00164078_x00164078(SRD_x00164078 srd, int h_fd, Sint32_x00164078 h_skpos, Uint64_x00164078 h_byte, void *h_buf)
+{
+    Bool_x00164078 ret;
+    ret = 0;
+    Forward33B568_33B688_x00164078();
+    if (srd->stat == 0 || srd->stat == 3 || srd->stat == 9) {
+        srd->devtype = 2;
+        srd->stat = 1;
+        srd->h_fd = h_fd;
+        srd->h_buf = h_buf;
+        srd->h_byte = h_byte;
+        srd->h_skpos = h_skpos;
+        srd->break_flg = 0;
+        ret = 1;
+    }
+    Forward33B5C8_33B6B8_x00164078();
+    return ret;
+}
 s8 func_00164128(u8 *arg0) {
     return *(s8 *)((u8 *)arg0 + 2);
 }
@@ -322,7 +372,19 @@ void func_00164D68(s32 arg0) {
 s32 func_00164DA8(void) {
     return D_00411608;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164DB8);
+extern volatile int D_003D8454_x00164DB8 __asm__("D_004115DC");
+extern int D_003D8484_x00164DB8 __asm__("D_0041160C");
+extern char D_004540B8_x00164DB8[] __asm__("D_00463108");
+extern void func_003B1F28_x00164DB8(char *a0) __asm__("scePrintf");
+void func_00164DB8_x00164DB8(int a0) __asm__("func_00164DB8");
+/* func_00331CE0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00331ce0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00164DB8_x00164DB8(int a0) {
+    D_003D8454_x00164DB8 = (char)a0;
+    D_003D8484_x00164DB8 = D_003D8454_x00164DB8;
+    if (a0 == 1) {
+        func_003B1F28_x00164DB8(D_004540B8_x00164DB8);
+    }
+}
 s32 func_00164E10(void) {
     return D_0041160C;
 }

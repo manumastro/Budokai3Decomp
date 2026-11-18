@@ -53,8 +53,127 @@ s32 func_0014F6E0();                            /* extern */
 
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014EF28);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014F2B8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014F320);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014F430);
+typedef signed char Sint8_x0014F320;
+typedef signed short Sint16_x0014F320;
+typedef signed int Sint32_x0014F320;
+extern Sint8_x0014F320 *func_00340B00_x0014F320(Sint8_x0014F320 *ibuf, Sint32_x0014F320 *sfreq, Sint32_x0014F320 *nch, Sint32_x0014F320 *bps, Sint32_x0014F320 *nsmpl) __asm__("func_0014EF28");
+Sint32_x0014F320 func_0014F320_x0014F320(Sint8_x0014F320 *ibuf, Sint32_x0014F320 ibuflen, Sint16_x0014F320 *dlen, Sint8_x0014F320 *code, Sint8_x0014F320 *bps, Sint8_x0014F320 *blksize, Sint8_x0014F320 *nch, Sint32_x0014F320 *sfreq, Sint32_x0014F320 *total_nsmpl, Sint32_x0014F320 *nsmpl_blk) __asm__("func_0014F320");
+/* ADX_DecodeInfoAiff: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00340e.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0014F320 func_0014F320_x0014F320(Sint8_x0014F320 *ibuf, Sint32_x0014F320 ibuflen, Sint16_x0014F320 *dlen, Sint8_x0014F320 *code, Sint8_x0014F320 *bps, Sint8_x0014F320 *blksize, Sint8_x0014F320 *nch, Sint32_x0014F320 *sfreq, Sint32_x0014F320 *total_nsmpl, Sint32_x0014F320 *nsmpl_blk) {
+    Sint8_x0014F320 *dt;
+    Sint32_x0014F320 lsfreq, lnch, lbps, lnsmpl;
+    if (ibuflen < 4096) { *dlen = 0; return -1; }
+    dt = func_00340B00_x0014F320(ibuf, &lsfreq, &lnch, &lbps, &lnsmpl);
+    if (dt == 0) { return -1; }
+    *dlen = dt - ibuf;
+    if ((*dlen * 1024) <= 0) { return -1; }
+    *sfreq = lsfreq;
+    *nch = lnch;
+    *bps = lbps;
+    *total_nsmpl = lnsmpl;
+    *code = -1;
+    *blksize = (*nch * *bps) / 8;
+    *nsmpl_blk = 1;
+    return 0;
+}
+typedef signed char Sint8_x0014F430;
+typedef short Sint16_x0014F430;
+typedef int Sint32_x0014F430;
+typedef void *ADXPD_x0014F430;
+typedef void *AHXSJD_x0014F430;
+typedef struct _adx_dec_para_x0014F430 {
+    Sint8_x0014F430 *ibuf;
+    Sint32_x0014F430 niblk;
+    Sint32_x0014F430 nch;
+    Sint32_x0014F430 blksize;
+    Sint32_x0014F430 blknsmpl;
+    Sint8_x0014F430 *pcmbuf;
+    Sint32_x0014F430 pcmbsize;
+    Sint32_x0014F430 pcmbdist;
+    Sint32_x0014F430 wpos;
+    Sint32_x0014F430 nroom;
+    Sint32_x0014F430 lp_nsmpl;
+    Sint32_x0014F430 ndecsmpl;
+} AdxDecPara_x0014F430;
+typedef struct _adx_intbuf_x0014F430 {
+    Sint16_x0014F430 used;
+    Sint16_x0014F430 hdcdflag;
+    Sint32_x0014F430 stat;
+    ADXPD_x0014F430 xpd;
+    Sint8_x0014F430 code;
+    Sint8_x0014F430 bps;
+    Sint8_x0014F430 nch;
+    Sint8_x0014F430 blklen;
+    Sint32_x0014F430 blknsmpl;
+    Sint32_x0014F430 sfreq;
+    Sint32_x0014F430 total_nsmpl;
+    Sint16_x0014F430 cof;
+    Sint16_x0014F430 rsv1;
+    Sint32_x0014F430 lp_ins_nsmpl;
+    Sint16_x0014F430 nloop;
+    Sint16_x0014F430 lp_type;
+    Sint32_x0014F430 lp_spos;
+    Sint32_x0014F430 lp_sofst;
+    Sint32_x0014F430 lp_epos;
+    Sint32_x0014F430 lp_eofst;
+    Sint32_x0014F430 maxnch;
+    Sint16_x0014F430 *pcmbuf;
+    Sint32_x0014F430 pcmbsize;
+    Sint32_x0014F430 pcmbdist;
+    AdxDecPara_x0014F430 dp;
+    Sint32_x0014F430 (*getwrfunc)(void *, Sint32_x0014F430 *, Sint32_x0014F430 *, Sint32_x0014F430 *);
+    void *getwrobj;
+    void (*addwrfunc)(void *, Sint32_x0014F430, Sint32_x0014F430);
+    void *addwrobj;
+    Sint32_x0014F430 total_ndecsmpl;
+    Sint32_x0014F430 curwpos;
+    Sint32_x0014F430 ndecsmpl;
+    Sint32_x0014F430 ndeclen;
+    Sint16_x0014F430 fmttype;
+    Sint16_x0014F430 rsv2;
+    Sint16_x0014F430 cdctype;
+    Sint16_x0014F430 k0;
+    Sint16_x0014F430 km;
+    Sint16_x0014F430 ka;
+    AHXSJD_x0014F430 sjdh;
+    Sint32_x0014F430 ahxdecsmpl;
+    Sint32_x0014F430 ahxsvrfreq;
+} ADX_BASIC_x0014F430, *ADXB_x0014F430;
+extern Sint32_x0014F430 ADX_DecodeInfoAiff_x0014F430(Sint8_x0014F430 *ibuf, Sint32_x0014F430 ibuflen, Sint16_x0014F430 *dlen, Sint8_x0014F430 *code, Sint8_x0014F430 *bps, Sint8_x0014F430 *blksize, Sint8_x0014F430 *nch, Sint32_x0014F430 *sfreq, Sint32_x0014F430 *total_nsmpl, Sint32_x0014F430 *nsmpl_blk) __asm__("func_0014F320");
+Sint32_x0014F430 func_0014F430_x0014F430(ADXB_x0014F430 adxb, Sint8_x0014F430 *ibuf, Sint32_x0014F430 ibuflen) __asm__("func_0014F430");
+/* func_00341008: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00341008.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0014F430 func_0014F430_x0014F430(ADXB_x0014F430 adxb, Sint8_x0014F430 *ibuf, Sint32_x0014F430 ibuflen)
+{
+    Sint16_x0014F430 dlen;
+    adxb->hdcdflag = 1;
+    if (ADX_DecodeInfoAiff_x0014F430(ibuf, ibuflen, &dlen, &adxb->code, &adxb->bps, &adxb->blklen,
+                      &adxb->nch, &adxb->sfreq, &adxb->total_nsmpl, &adxb->blknsmpl) < 0) {
+        return 0;
+    }
+    adxb->cof = 0;
+    adxb->lp_eofst = 0;
+    adxb->lp_epos = 0;
+    adxb->lp_sofst = 0;
+    adxb->lp_spos = 0;
+    adxb->lp_ins_nsmpl = 0;
+    adxb->lp_type = 0;
+    adxb->nloop = 0;
+    adxb->dp.nch = adxb->nch;
+    adxb->dp.blksize = adxb->blklen;
+    adxb->dp.pcmbuf = (Sint8_x0014F430 *)adxb->pcmbuf;
+    adxb->fmttype = 3;
+    adxb->dp.blknsmpl = adxb->blknsmpl;
+    adxb->dp.pcmbsize = adxb->pcmbsize;
+    adxb->dp.pcmbdist = adxb->pcmbdist;
+    adxb->curwpos = 0;
+    adxb->total_ndecsmpl = 0;
+    if (adxb->bps == 8) {
+        adxb->cdctype = 1;
+    } else {
+        adxb->cdctype = 0;
+    }
+    return dlen;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014F548);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014F6E0);
 void func_0014F860(u8 *arg0) {
@@ -65,12 +184,251 @@ void func_0014F860(u8 *arg0) {
     func_0014F548();
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014F888);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014FBA0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014FBF8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014FD08);
+typedef signed char Sint8_x0014FBA0;
+typedef signed int Sint32_x0014FBA0;
+extern Sint32_x0014FBA0 func_003A50B4_x0014FBA0(const void *a, const void *b, unsigned n) __asm__("func_001256A8");
+extern const Sint8_x0014FBA0 D_00457050_x0014FBA0[] __asm__("D_0045FC10");
+extern const Sint8_x0014FBA0 D_00457058_x0014FBA0[] __asm__("D_0045FC18");
+typedef signed char Sint8_x0014FBA0;
+typedef signed int Sint32_x0014FBA0;
+Sint32_x0014FBA0 func_0014FBA0_x0014FBA0(Sint8_x0014FBA0 *ibuf) __asm__("func_0014FBA0");
+/* ADXB_CheckAu: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003417.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0014FBA0 func_0014FBA0_x0014FBA0(Sint8_x0014FBA0 *ibuf) {
+    if ((func_003A50B4_x0014FBA0(ibuf, D_00457050_x0014FBA0, 4) == 0) || (func_003A50B4_x0014FBA0(ibuf, D_00457058_x0014FBA0, 4) == 0)) {
+        return 1;
+    }
+    return 0;
+}
+typedef signed char Sint8_x0014FBF8;
+typedef signed int Sint32_x0014FBF8;
+typedef signed char Sint8_x0014FBF8;
+typedef signed short Sint16_x0014FBF8;
+typedef signed int Sint32_x0014FBF8;
+extern Sint8_x0014FBF8 *func_00341480_x0014FBF8(Sint8_x0014FBF8 *ibuf, Sint32_x0014FBF8 ibuflen, Sint32_x0014FBF8 *sfreq, Sint32_x0014FBF8 *nch, Sint32_x0014FBF8 *bps, Sint32_x0014FBF8 *nsmpl, Sint32_x0014FBF8 *cdc) __asm__("func_0014F888");
+Sint32_x0014FBF8 func_0014FBF8_x0014FBF8(Sint8_x0014FBF8 *ibuf, Sint32_x0014FBF8 ibuflen, Sint16_x0014FBF8 *dlen, Sint8_x0014FBF8 *code, Sint8_x0014FBF8 *bps, Sint8_x0014FBF8 *blksize, Sint8_x0014FBF8 *nch, Sint32_x0014FBF8 *sfreq, Sint32_x0014FBF8 *total_nsmpl, Sint32_x0014FBF8 *nsmpl_blk, Sint32_x0014FBF8 *cdc) __asm__("func_0014FBF8");
+/* ADX_DecodeInfoAu: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003417.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0014FBF8 func_0014FBF8_x0014FBF8(Sint8_x0014FBF8 *ibuf, Sint32_x0014FBF8 ibuflen, Sint16_x0014FBF8 *dlen, Sint8_x0014FBF8 *code, Sint8_x0014FBF8 *bps, Sint8_x0014FBF8 *blksize, Sint8_x0014FBF8 *nch, Sint32_x0014FBF8 *sfreq, Sint32_x0014FBF8 *total_nsmpl, Sint32_x0014FBF8 *nsmpl_blk, Sint32_x0014FBF8 *cdc) {
+    Sint8_x0014FBF8 *dt;
+    Sint32_x0014FBF8 lsfreq, lnch, lbps, lnsmpl;
+    if (ibuflen < 8) { *dlen = 0; return -1; }
+    dt = func_00341480_x0014FBF8(ibuf, ibuflen, &lsfreq, &lnch, &lbps, &lnsmpl, cdc);
+    if (dt == 0) { return -1; }
+    *dlen = dt - ibuf;
+    if ((*dlen * 1024) <= 0) { return -1; }
+    *sfreq = lsfreq;
+    *nch = lnch;
+    *bps = lbps;
+    *total_nsmpl = lnsmpl;
+    *code = -1;
+    *blksize = (*nch * *bps) / 8;
+    *nsmpl_blk = 1;
+    return 0;
+}
+typedef signed char Sint8_x0014FD08;
+typedef short Sint16_x0014FD08;
+typedef int Sint32_x0014FD08;
+typedef void *ADXPD_x0014FD08;
+typedef void *AHXSJD_x0014FD08;
+typedef struct _adx_dec_para_x0014FD08 {
+    Sint8_x0014FD08 *ibuf;
+    Sint32_x0014FD08 niblk;
+    Sint32_x0014FD08 nch;
+    Sint32_x0014FD08 blksize;
+    Sint32_x0014FD08 blknsmpl;
+    Sint8_x0014FD08 *pcmbuf;
+    Sint32_x0014FD08 pcmbsize;
+    Sint32_x0014FD08 pcmbdist;
+    Sint32_x0014FD08 wpos;
+    Sint32_x0014FD08 nroom;
+    Sint32_x0014FD08 lp_nsmpl;
+    Sint32_x0014FD08 ndecsmpl;
+} AdxDecPara_x0014FD08;
+typedef struct _adx_intbuf_x0014FD08 {
+    Sint16_x0014FD08 used;
+    Sint16_x0014FD08 hdcdflag;
+    Sint32_x0014FD08 stat;
+    ADXPD_x0014FD08 xpd;
+    Sint8_x0014FD08 code;
+    Sint8_x0014FD08 bps;
+    Sint8_x0014FD08 nch;
+    Sint8_x0014FD08 blklen;
+    Sint32_x0014FD08 blknsmpl;
+    Sint32_x0014FD08 sfreq;
+    Sint32_x0014FD08 total_nsmpl;
+    Sint16_x0014FD08 cof;
+    Sint16_x0014FD08 rsv1;
+    Sint32_x0014FD08 lp_ins_nsmpl;
+    Sint16_x0014FD08 nloop;
+    Sint16_x0014FD08 lp_type;
+    Sint32_x0014FD08 lp_spos;
+    Sint32_x0014FD08 lp_sofst;
+    Sint32_x0014FD08 lp_epos;
+    Sint32_x0014FD08 lp_eofst;
+    Sint32_x0014FD08 maxnch;
+    Sint16_x0014FD08 *pcmbuf;
+    Sint32_x0014FD08 pcmbsize;
+    Sint32_x0014FD08 pcmbdist;
+    AdxDecPara_x0014FD08 dp;
+    Sint32_x0014FD08 (*getwrfunc)(void *, Sint32_x0014FD08 *, Sint32_x0014FD08 *, Sint32_x0014FD08 *);
+    void *getwrobj;
+    void (*addwrfunc)(void *, Sint32_x0014FD08, Sint32_x0014FD08);
+    void *addwrobj;
+    Sint32_x0014FD08 total_ndecsmpl;
+    Sint32_x0014FD08 curwpos;
+    Sint32_x0014FD08 ndecsmpl;
+    Sint32_x0014FD08 ndeclen;
+    Sint16_x0014FD08 fmttype;
+    Sint16_x0014FD08 rsv2;
+    Sint16_x0014FD08 cdctype;
+    Sint16_x0014FD08 k0;
+    Sint16_x0014FD08 km;
+    Sint16_x0014FD08 ka;
+    AHXSJD_x0014FD08 sjdh;
+    Sint32_x0014FD08 ahxdecsmpl;
+    Sint32_x0014FD08 ahxsvrfreq;
+} ADX_BASIC_x0014FD08, *ADXB_x0014FD08;
+extern Sint32_x0014FD08 ADX_DecodeInfoAu_x0014FD08(Sint8_x0014FD08 *ibuf, Sint32_x0014FD08 ibuflen, Sint16_x0014FD08 *dlen, Sint8_x0014FD08 *code, Sint8_x0014FD08 *bps, Sint8_x0014FD08 *blksize, Sint8_x0014FD08 *nch, Sint32_x0014FD08 *sfreq, Sint32_x0014FD08 *total_nsmpl, Sint32_x0014FD08 *nsmpl_blk, Sint32_x0014FD08 *cdc) __asm__("func_0014FBF8");
+Sint32_x0014FD08 func_0014FD08_x0014FD08(ADXB_x0014FD08 adxb, Sint8_x0014FD08 *ibuf, Sint32_x0014FD08 ibuflen) __asm__("func_0014FD08");
+/* func_00341900: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00341900.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0014FD08 func_0014FD08_x0014FD08(ADXB_x0014FD08 adxb, Sint8_x0014FD08 *ibuf, Sint32_x0014FD08 ibuflen)
+{
+    Sint16_x0014FD08 dlen;
+    Sint32_x0014FD08 cdc;
+    adxb->hdcdflag = 1;
+    if (ADX_DecodeInfoAu_x0014FD08(ibuf, ibuflen, &dlen, &adxb->code, &adxb->bps, &adxb->blklen,
+                         &adxb->nch, &adxb->sfreq, &adxb->total_nsmpl, &adxb->blknsmpl,
+                         &cdc) < 0) {
+        return 0;
+    }
+    adxb->cof = 0;
+    adxb->lp_eofst = 0;
+    adxb->lp_epos = 0;
+    adxb->lp_sofst = 0;
+    adxb->lp_spos = 0;
+    adxb->lp_ins_nsmpl = 0;
+    adxb->lp_type = 0;
+    adxb->nloop = 0;
+    adxb->dp.nch = adxb->nch;
+    adxb->dp.blksize = adxb->blklen;
+    adxb->dp.pcmbuf = (Sint8_x0014FD08 *)adxb->pcmbuf;
+    adxb->fmttype = 4;
+    adxb->dp.blknsmpl = adxb->blknsmpl;
+    adxb->dp.pcmbsize = adxb->pcmbsize;
+    adxb->dp.pcmbdist = adxb->pcmbdist;
+    adxb->curwpos = 0;
+    adxb->total_ndecsmpl = 0;
+    adxb->cdctype = cdc;
+    return dlen;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014FE08);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014FFA0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150120);
+typedef signed char Sint8_x00150120;
+typedef unsigned char Uint8_x00150120;
+typedef short Sint16_x00150120;
+typedef unsigned short Uint16_x00150120;
+typedef int Sint32_x00150120;
+typedef void *ADXPD_x00150120;
+typedef void *AHXSJD_x00150120;
+typedef struct _adx_dec_para_x00150120 {
+    Sint8_x00150120 *ibuf;
+    Sint32_x00150120 niblk;
+    Sint32_x00150120 nch;
+    Sint32_x00150120 blksize;
+    Sint32_x00150120 blknsmpl;
+    Sint8_x00150120 *pcmbuf;
+    Sint32_x00150120 pcmbsize;
+    Sint32_x00150120 pcmbdist;
+    Sint32_x00150120 wpos;
+    Sint32_x00150120 nroom;
+    Sint32_x00150120 lp_nsmpl;
+    Sint32_x00150120 ndecsmpl;
+} AdxDecPara_x00150120;
+typedef struct _adx_intbuf_x00150120 {
+    Sint16_x00150120 used;
+    Sint16_x00150120 hdcdflag;
+    Sint32_x00150120 stat;
+    ADXPD_x00150120 xpd;
+    Sint8_x00150120 code;
+    Sint8_x00150120 bps;
+    Sint8_x00150120 nch;
+    Sint8_x00150120 blklen;
+    Sint32_x00150120 blknsmpl;
+    Sint32_x00150120 sfreq;
+    Sint32_x00150120 total_nsmpl;
+    Sint16_x00150120 cof;
+    Sint16_x00150120 rsv1;
+    Sint32_x00150120 lp_ins_nsmpl;
+    Sint16_x00150120 nloop;
+    Sint16_x00150120 lp_type;
+    Sint32_x00150120 lp_spos;
+    Sint32_x00150120 lp_sofst;
+    Sint32_x00150120 lp_epos;
+    Sint32_x00150120 lp_eofst;
+    Sint32_x00150120 maxnch;
+    Sint16_x00150120 *pcmbuf;
+    Sint32_x00150120 pcmbsize;
+    Sint32_x00150120 pcmbdist;
+    AdxDecPara_x00150120 dp;
+    Sint32_x00150120 (*getwrfunc)(void *, Sint32_x00150120 *, Sint32_x00150120 *, Sint32_x00150120 *);
+    void *getwrobj;
+    void (*addwrfunc)(void *, Sint32_x00150120, Sint32_x00150120);
+    void *addwrobj;
+    Sint32_x00150120 total_ndecsmpl;
+    Sint32_x00150120 curwpos;
+    Sint32_x00150120 ndecsmpl;
+    Sint32_x00150120 ndeclen;
+    Sint16_x00150120 fmttype;
+    Sint16_x00150120 rsv2;
+    Sint16_x00150120 cdctype;
+    Sint16_x00150120 k0;
+    Sint16_x00150120 km;
+    Sint16_x00150120 ka;
+    AHXSJD_x00150120 sjdh;
+    Sint32_x00150120 ahxdecsmpl;
+    Sint32_x00150120 ahxsvrfreq;
+} ADX_BASIC_x00150120, *ADXB_x00150120;
+extern Sint32_x00150120 Obj33F8_GetWord_C_FA68_x00150120(ADXPD_x00150120 xpd) __asm__("func_00161A88");
+extern Sint16_x00150120 D_003EC460_x00150120[256] __asm__("D_00400E80");
+void func_00150120_x00150120(ADXB_x00150120 adxb) __asm__("func_00150120");
+/* func_00341D18: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00341d18.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00150120_x00150120(ADXB_x00150120 adxb)
+{
+    AdxDecPara_x00150120 *dp;
+    Uint16_x00150120 *pcmbuf_l;
+    Uint16_x00150120 *pcmbuf_r;
+    Uint8_x00150120 *ibuf;
+    Sint32_x00150120 ndata;
+    Sint32_x00150120 i;
+    dp = &adxb->dp;
+    ibuf = (Uint8_x00150120 *)dp->ibuf;
+    if (adxb->stat == 1) {
+        if (Obj33F8_GetWord_C_FA68_x00150120(adxb->xpd) == 0) {
+            adxb->getwrfunc(adxb->getwrobj, &dp->wpos, &dp->nroom, &dp->lp_nsmpl);
+            ndata = dp->pcmbsize - dp->wpos;
+            if (dp->nroom < ndata) ndata = dp->nroom;
+            if (dp->niblk < ndata) ndata = dp->niblk;
+            pcmbuf_l = (Uint16_x00150120 *)dp->pcmbuf + dp->wpos;
+            if (adxb->nch == 2) {
+                pcmbuf_r = (Uint16_x00150120 *)dp->pcmbuf + (dp->pcmbdist + dp->wpos);
+                for (i = 0; i < ndata; i++) {
+                    pcmbuf_l[i] = D_003EC460_x00150120[ibuf[i * 2]];
+                    pcmbuf_r[i] = D_003EC460_x00150120[ibuf[i * 2 + 1]];
+                }
+            } else {
+                for (i = 0; i < ndata; i++) {
+                    pcmbuf_l[i] = D_003EC460_x00150120[ibuf[i]];
+                }
+            }
+            adxb->stat = 2;
+            adxb->ndecsmpl = ndata;
+            adxb->ndeclen = ndata * adxb->nch;
+        }
+    }
+    if (adxb->stat == 2) {
+        adxb->addwrfunc(adxb->addwrobj, adxb->ndeclen, adxb->ndecsmpl);
+        adxb->stat = 3;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001502C8);
 s32 func_00150308(void) {
     return 0;
@@ -315,7 +673,47 @@ INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", fn_80045588);
 s8 func_00150D98(u8 *arg0) {
     return *(s8 *)((u8 *)arg0 + 0xD);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150DA0);
+typedef signed char Sint8_x00150DA0;
+typedef signed short Sint16_x00150DA0;
+typedef signed int Sint32_x00150DA0;
+typedef struct {
+    Sint8_x00150DA0 pad0[152];
+    Sint16_x00150DA0 f152;
+    Sint16_x00150DA0 f154;
+    Sint16_x00150DA0 f156;
+} ADXB_x00150DA0;
+typedef signed char Sint8_x00150DA0;
+typedef signed short Sint16_x00150DA0;
+typedef signed int Sint32_x00150DA0;
+Sint32_x00150DA0 func_00150DA0_x00150DA0(ADXB_x00150DA0 *b) __asm__("func_00150DA0");
+/* func_0033CEF0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0033cef0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00150DA0 func_00150DA0_x00150DA0(ADXB_x00150DA0 *b)
+{
+    Sint32_x00150DA0 mode;
+    Sint32_x00150DA0 x;
+    mode = b->f152;
+    if (mode == 0) {
+        return 16;
+    }
+    if (mode == 2) {
+        x = b->f156;
+        if (x == 2) {
+            return 4;
+        }
+        if (x == 1) {
+            return 8;
+        }
+        return 16;
+    }
+    if (mode == 1) {
+        x = b->f156;
+        if (x == 2) {
+            return 4;
+        }
+        return 16;
+    }
+    return 16;
+}
 s32 func_00150E00(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x10);
 }
@@ -647,8 +1045,77 @@ void func_00151250_x00151250(ADXB_x00151250 adxb, Sint32_x00151250 arg1) {
     ADXPD_Start_x00151250(adxpd);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001512A8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151300);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151408);
+typedef struct AdxbIn_x00151300 {
+    int unk0;
+    int nbyte;
+    int nch;
+    int unkC;
+    int blk;
+    int unk14;
+    int end;
+    int unk1C;
+    int pos;
+    int room;
+    int wpos;
+} AdxbIn_x00151300;
+typedef struct AdxbHn_x00151300 {
+    char unk0[0x48];
+    AdxbIn_x00151300 in;
+    char unk74[0x74];
+    int ext;
+} AdxbHn_x00151300;
+extern void ADXB_EvokeExpandSte_x00151300(AdxbHn_x00151300 *adxb, int nblk) __asm__("func_00151250");
+extern int func_0033D378_x00151300(int a0, int a1) __asm__("func_001512A8");
+extern int func_0033D2D0_x00151300(int *a0, int a1) __asm__("func_00151200");
+void func_00151300_x00151300(AdxbHn_x00151300 *b) __asm__("func_00151300");
+/* func_0033D3D0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0033d3d0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00151300_x00151300(AdxbHn_x00151300 *b)
+{
+    AdxbIn_x00151300 *in = &b->in;
+    int nch = in->nch;
+    int blk, end, pos, wpos, room;
+    int full, len;
+    int nin, nout, nend, nroom, tail;
+    nin = in->nbyte / nch;
+    end = in->end;
+    pos = in->pos;
+    blk = in->blk;
+    wpos = in->wpos;
+    nend = (end - pos + blk - 1) / blk;
+    nout = (wpos + blk - 1) / blk;
+    room = in->room;
+    tail = blk - (wpos + blk - 1) % blk - 1;
+    full = wpos < room;
+    len = nend * blk;
+    if (nout < nend)
+        nend += pos + len - tail < end;
+    room += full * tail;
+    nroom = room / blk;
+    if (nroom < nin)
+        nin = nroom;
+    if (nout < nin)
+        nin = nout;
+    if (nend < nin)
+        nin = nend;
+    if (nch == 2) {
+        ADXB_EvokeExpandSte_x00151300(b, nin);
+        return;
+    }
+    if (b->ext != 0) {
+        func_0033D378_x00151300((int)b, nin);
+        return;
+    }
+    func_0033D2D0_x00151300((int *)b, nin);
+}
+void func_00151408_x00151408(short *dst, short *src, int n) __asm__("func_00151408");
+/* adxb_copy_words: from https://github.com/new-coke/rez-decomp (src/cri/adxb.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00151408_x00151408(short *dst, short *src, int n)
+{
+    while (n > 0) {
+        *dst++ = *src++;
+        n--;
+    }
+}
 typedef signed int Sint32_x00151438;
 extern int* sceCdCallback_x00151438(void (*func)(int)) __asm__("sceCdCallback");
 void memcpy2_x00151438(void* dest, const void* src, Sint32_x00151438 count) __asm__("func_00151408");
@@ -658,7 +1125,13 @@ void func_00151438_x00151438(void* arg0, Sint32_x00151438 arg1, Sint32_x00151438
     memcpy2_x00151438(arg0, arg0 + (arg1 * 2), arg3);
     memcpy2_x00151438(arg0 + (arg2 * 2), arg0 + ((arg2 + arg1) * 2), arg3);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001514A8);
+void adxb_copy_words_x001514A8(short *dst, short *src, int n) __asm__("func_00151408");
+void func_001514A8_x001514A8(short *buf, int ofs, int len, int n) __asm__("func_001514A8");
+/* adxb_move_mono: from https://github.com/new-coke/rez-decomp (src/cri/adxb.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001514A8_x001514A8(short *buf, int ofs, int len, int n)
+{
+    adxb_copy_words_x001514A8(buf, &buf[ofs], n);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001514C8);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151650);
 typedef int s32_x00151790;
@@ -802,8 +1275,214 @@ INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151C30);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151C58);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151E88);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151F88);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00152100);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00152298);
+typedef signed char Sint8_x00152100;
+typedef unsigned char Uint8_x00152100;
+typedef short Sint16_x00152100;
+typedef int Sint32_x00152100;
+typedef void *ADXPD_x00152100;
+typedef void *AHXSJD_x00152100;
+typedef struct _adx_dec_para_x00152100 {
+    Sint8_x00152100 *ibuf;
+    Sint32_x00152100 niblk;
+    Sint32_x00152100 nch;
+    Sint32_x00152100 blksize;
+    Sint32_x00152100 blknsmpl;
+    Sint8_x00152100 *pcmbuf;
+    Sint32_x00152100 pcmbsize;
+    Sint32_x00152100 pcmbdist;
+    Sint32_x00152100 wpos;
+    Sint32_x00152100 nroom;
+    Sint32_x00152100 lp_nsmpl;
+    Sint32_x00152100 ndecsmpl;
+} AdxDecPara_x00152100;
+typedef struct _adx_intbuf_x00152100 {
+    Sint16_x00152100 used;
+    Sint16_x00152100 hdcdflag;
+    Sint32_x00152100 stat;
+    ADXPD_x00152100 xpd;
+    Sint8_x00152100 code;
+    Sint8_x00152100 bps;
+    Sint8_x00152100 nch;
+    Sint8_x00152100 blklen;
+    Sint32_x00152100 blknsmpl;
+    Sint32_x00152100 sfreq;
+    Sint32_x00152100 total_nsmpl;
+    Sint16_x00152100 cof;
+    Sint16_x00152100 rsv1;
+    Sint32_x00152100 lp_ins_nsmpl;
+    Sint16_x00152100 nloop;
+    Sint16_x00152100 lp_type;
+    Sint32_x00152100 lp_spos;
+    Sint32_x00152100 lp_sofst;
+    Sint32_x00152100 lp_epos;
+    Sint32_x00152100 lp_eofst;
+    Sint32_x00152100 maxnch;
+    Sint16_x00152100 *pcmbuf;
+    Sint32_x00152100 pcmbsize;
+    Sint32_x00152100 pcmbdist;
+    AdxDecPara_x00152100 dp;
+    Sint32_x00152100 (*getwrfunc)(void *, Sint32_x00152100 *, Sint32_x00152100 *, Sint32_x00152100 *);
+    void *getwrobj;
+    void (*addwrfunc)(void *, Sint32_x00152100, Sint32_x00152100);
+    void *addwrobj;
+    Sint32_x00152100 total_ndecsmpl;
+    Sint32_x00152100 curwpos;
+    Sint32_x00152100 ndecsmpl;
+    Sint32_x00152100 ndeclen;
+    Sint16_x00152100 fmttype;
+    Sint16_x00152100 cdctype;
+    Sint16_x00152100 k0;
+    Sint16_x00152100 km;
+    Sint16_x00152100 ka;
+    AHXSJD_x00152100 sjdh;
+    Sint32_x00152100 ahxdecsmpl;
+    Sint32_x00152100 ahxsvrfreq;
+} ADX_BASIC_x00152100, *ADXB_x00152100;
+extern Sint32_x00152100 Obj33F8_GetWord_C_FA68_x00152100(ADXPD_x00152100 xpd) __asm__("func_00161A88");
+void func_00152100_x00152100(ADXB_x00152100 adxb) __asm__("func_00152100");
+/* func_0033E220: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0033e220.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00152100_x00152100(ADXB_x00152100 adxb)
+{
+    AdxDecPara_x00152100 *dp;
+    Sint16_x00152100 *pcmbuf_l;
+    Sint16_x00152100 *pcmbuf_r;
+    Uint8_x00152100 *ibuf;
+    Sint32_x00152100 ndata;
+    Sint32_x00152100 i;
+    dp = &adxb->dp;
+    ibuf = (Uint8_x00152100 *)dp->ibuf;
+    if (adxb->stat == 1) {
+        if (Obj33F8_GetWord_C_FA68_x00152100(adxb->xpd) == 0) {
+            adxb->getwrfunc(adxb->getwrobj, &dp->wpos, &dp->nroom, &dp->lp_nsmpl);
+            ndata = dp->pcmbsize - dp->wpos;
+            if (dp->nroom < ndata) ndata = dp->nroom;
+            if (dp->niblk < ndata) ndata = dp->niblk;
+            pcmbuf_l = (Sint16_x00152100 *)dp->pcmbuf + dp->wpos;
+            if (adxb->nch == 2) {
+                pcmbuf_r = (Sint16_x00152100 *)dp->pcmbuf + (dp->pcmbdist + dp->wpos);
+                for (i = 0; i < ndata; i++) {
+                    pcmbuf_l[i] = (ibuf[i * 2] + 0xff80) << 8;
+                    pcmbuf_r[i] = (ibuf[i * 2 + 1] + 0xff80) << 8;
+                }
+            } else {
+                for (i = 0; i < ndata; i++) {
+                    pcmbuf_l[i] = (ibuf[i] + 0xff80) << 8;
+                }
+            }
+            adxb->stat = 2;
+            adxb->ndecsmpl = ndata;
+            adxb->ndeclen = ndata * adxb->nch;
+        }
+    }
+    if (adxb->stat == 2) {
+        adxb->addwrfunc(adxb->addwrobj, adxb->ndeclen, adxb->ndecsmpl);
+        adxb->stat = 3;
+    }
+}
+typedef signed char Sint8_x00152298;
+typedef unsigned char Uint8_x00152298;
+typedef short Sint16_x00152298;
+typedef int Sint32_x00152298;
+typedef void *ADXPD_x00152298;
+typedef void *AHXSJD_x00152298;
+typedef struct _adx_dec_para_x00152298 {
+    Sint8_x00152298 *ibuf;
+    Sint32_x00152298 niblk;
+    Sint32_x00152298 nch;
+    Sint32_x00152298 blksize;
+    Sint32_x00152298 blknsmpl;
+    Sint8_x00152298 *pcmbuf;
+    Sint32_x00152298 pcmbsize;
+    Sint32_x00152298 pcmbdist;
+    Sint32_x00152298 wpos;
+    Sint32_x00152298 nroom;
+    Sint32_x00152298 lp_nsmpl;
+    Sint32_x00152298 ndecsmpl;
+} AdxDecPara_x00152298;
+typedef struct _adx_intbuf_x00152298 {
+    Sint16_x00152298 used;
+    Sint16_x00152298 hdcdflag;
+    Sint32_x00152298 stat;
+    ADXPD_x00152298 xpd;
+    Sint8_x00152298 code;
+    Sint8_x00152298 bps;
+    Sint8_x00152298 nch;
+    Sint8_x00152298 blklen;
+    Sint32_x00152298 blknsmpl;
+    Sint32_x00152298 sfreq;
+    Sint32_x00152298 total_nsmpl;
+    Sint16_x00152298 cof;
+    Sint16_x00152298 rsv1;
+    Sint32_x00152298 lp_ins_nsmpl;
+    Sint16_x00152298 nloop;
+    Sint16_x00152298 lp_type;
+    Sint32_x00152298 lp_spos;
+    Sint32_x00152298 lp_sofst;
+    Sint32_x00152298 lp_epos;
+    Sint32_x00152298 lp_eofst;
+    Sint32_x00152298 maxnch;
+    Sint16_x00152298 *pcmbuf;
+    Sint32_x00152298 pcmbsize;
+    Sint32_x00152298 pcmbdist;
+    AdxDecPara_x00152298 dp;
+    Sint32_x00152298 (*getwrfunc)(void *, Sint32_x00152298 *, Sint32_x00152298 *, Sint32_x00152298 *);
+    void *getwrobj;
+    void (*addwrfunc)(void *, Sint32_x00152298, Sint32_x00152298);
+    void *addwrobj;
+    Sint32_x00152298 total_ndecsmpl;
+    Sint32_x00152298 curwpos;
+    Sint32_x00152298 ndecsmpl;
+    Sint32_x00152298 ndeclen;
+    Sint16_x00152298 fmttype;
+    Sint16_x00152298 cdctype;
+    Sint16_x00152298 k0;
+    Sint16_x00152298 km;
+    Sint16_x00152298 ka;
+    AHXSJD_x00152298 sjdh;
+    Sint32_x00152298 ahxdecsmpl;
+    Sint32_x00152298 ahxsvrfreq;
+} ADX_BASIC_x00152298, *ADXB_x00152298;
+extern Sint32_x00152298 Obj33F8_GetWord_C_FA68_x00152298(ADXPD_x00152298 xpd) __asm__("func_00161A88");
+void func_00152298_x00152298(ADXB_x00152298 adxb) __asm__("func_00152298");
+/* func_0033E3B8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0033e3b8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00152298_x00152298(ADXB_x00152298 adxb)
+{
+    AdxDecPara_x00152298 *dp;
+    Sint16_x00152298 *pcmbuf_l;
+    Sint16_x00152298 *pcmbuf_r;
+    Uint8_x00152298 *ibuf;
+    Sint32_x00152298 ndata;
+    Sint32_x00152298 i;
+    dp = &adxb->dp;
+    ibuf = (Uint8_x00152298 *)dp->ibuf;
+    if (adxb->stat == 1) {
+        if (Obj33F8_GetWord_C_FA68_x00152298(adxb->xpd) == 0) {
+            adxb->getwrfunc(adxb->getwrobj, &dp->wpos, &dp->nroom, &dp->lp_nsmpl);
+            ndata = dp->pcmbsize - dp->wpos;
+            if (dp->nroom < ndata) ndata = dp->nroom;
+            if (dp->niblk < ndata) ndata = dp->niblk;
+            pcmbuf_l = (Sint16_x00152298 *)dp->pcmbuf + dp->wpos;
+            if (adxb->nch == 2) {
+                pcmbuf_r = (Sint16_x00152298 *)dp->pcmbuf + (dp->pcmbdist + dp->wpos);
+                for (i = 0; i < ndata; i++) {
+                    pcmbuf_l[i] = ibuf[i * 4] | (ibuf[i * 4 + 2] << 8);
+                    pcmbuf_r[i] = ibuf[i * 4 + 1] | (ibuf[i * 4 + 3] << 8);
+                }
+            } else {
+                for (i = 0; i < ndata; i++) {
+                    pcmbuf_l[i] = ibuf[i * 2] | (ibuf[i * 2 + 1] << 8);
+                }
+            }
+            adxb->stat = 2;
+            adxb->ndecsmpl = ndata;
+            adxb->ndeclen = ndata * adxb->nch * 2;
+        }
+    }
+    if (adxb->stat == 2) {
+        adxb->addwrfunc(adxb->addwrobj, adxb->ndeclen, adxb->ndecsmpl);
+        adxb->stat = 3;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00152438);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001524A0);
 void func_001524F8(void) {
@@ -816,7 +1495,29 @@ void func_00152520(void) {
     func_0016FF58();
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", fn_80046D94);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00152698);
+int func_00152698_x00152698(short *src, int len, short *out) __asm__("func_00152698");
+/* adxb_find_word80: from https://github.com/new-coke/rez-decomp (src/cri/adx_decode.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00152698_x00152698(short *src, int len, short *out)
+{
+    int n;
+    int i;
+    int k;
+    n = 0x7fffffff;
+    k = 0x80;
+    for (i = 0; i < len - 1; i += 2) {
+        if (*(short *)((char *)src + i) == k) {
+            if (i < n)
+                n = i;
+            break;
+        }
+    }
+    if (n != 0x7fffffff) {
+        *out = n;
+        return 0;
+    }
+    *out = 0;
+    return -1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00152718);
 typedef unsigned char Uint8_x001527C0;
 typedef char Sint8_x001527C0;
@@ -1215,11 +1916,39 @@ void func_00153028(s32 arg0) {
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00153038);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001531A8);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00153440);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001536E0);
+extern int adxd_mono_flag_x001536E0 __asm__("D_00401FF8");
+int adxd_decode_stereo_pair_x001536E0(unsigned char *src, int n, short *dstl, short *histl, short *dstr, short *histr,
+                 int coef1_q12, int coef2_q12) __asm__("func_001531A8");
+int adxd_decode_stereo_mix_x001536E0(unsigned char *src, int n, short *dstl, short *histl, short *dstr, short *histr,
+                 int coef1_q12, int coef2_q12) __asm__("func_00153440");
+int func_001536E0_x001536E0(unsigned char *src, int n, short *dstl, short *histl, short *dstr, short *histr,
+                 short coef1_q12, short coef2_q12) __asm__("func_001536E0");
+/* adxd_decode_stereo: from https://github.com/new-coke/rez-decomp (src/cri/adx_decode.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_001536E0_x001536E0(unsigned char *src, int n, short *dstl, short *histl, short *dstr, short *histr,
+                 short coef1_q12, short coef2_q12)
+{
+    if (adxd_mono_flag_x001536E0 == 0)
+        return adxd_decode_stereo_pair_x001536E0(src, n, dstl, histl, dstr, histr, coef1_q12, coef2_q12);
+    return adxd_decode_stereo_mix_x001536E0(src, n, dstl, histl, dstr, histr, coef1_q12, coef2_q12);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00153728);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00153908);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00153CD0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154018);
+extern int D_003EC660_x00154018 __asm__("D_00401FF8");
+extern void ADX_DecodeSte4AsSte_x00154018(int a0, int a1, int a2, int a3, int a4, int a5, short k0, short k1, int a8, short d0, short d1) __asm__("func_00153CD0");
+extern void func_003420E0_x00154018(int a0, int a1, int a2, int a3, int a4, int a5, short k0, short k1, int a8, short d0, short d1) __asm__("func_00153908");
+void func_00154018_x00154018(int a0, int a1, int a2, int a3, int a4, int a5,
+                   short k0, short k1, int a8, short d0, short d1) __asm__("func_00154018");
+/* func_003427F0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003427f0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00154018_x00154018(int a0, int a1, int a2, int a3, int a4, int a5,
+                   short k0, short k1, int a8, short d0, short d1)
+{
+    if (D_003EC660_x00154018 == 0) {
+        ADX_DecodeSte4AsSte_x00154018(a0, a1, a2, a3, a4, a5, k0, k1, a8, d0, d1);
+        return;
+    }
+    func_003420E0_x00154018(a0, a1, a2, a3, a4, a5, k0, k1, a8, d0, d1);
+}
 void func_00154088(void) {
     memset(&D_00402008, 0, 0x100);
     D_00402000 = 0;
@@ -1263,8 +1992,48 @@ void func_00154178_x00154178(s32 arg0, s32 arg1) {
     }
     func_00170070_x00154178(&D_00402008_x00154178);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001541E8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001542F0);
+typedef signed char Sint8_x001541E8;
+typedef int Sint32_x001541E8;
+extern Sint32_x001541E8 strlen_x001541E8(const Sint8_x001541E8 *s) __asm__("func_00127BA0");
+extern Sint8_x001541E8 D_007588D0_x001541E8[32] __asm__("D_0047E950");
+void func_001541E8_x001541E8(Sint32_x001541E8 val, Sint8_x001541E8 *str, Sint32_x001541E8 len) __asm__("func_001541E8");
+/* ADXERR_ItoA: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0033f240.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001541E8_x001541E8(Sint32_x001541E8 val, Sint8_x001541E8 *str, Sint32_x001541E8 len)
+{
+    Sint32_x001541E8 ncol;
+    Sint32_x001541E8 i;
+    i = 0;
+    while (i < 0x20) {
+        str[i] = val % 10;
+        val = val / 10;
+        if (val == 0) {
+            str[i] = 0;
+            break;
+        }
+        i++;
+    }
+    ncol = strlen_x001541E8(D_007588D0_x001541E8);
+    if (ncol >= len - 1) {
+        ncol = len - 1;
+    }
+    for (i = 0; i < ncol; i++) {
+        str[i] = D_007588D0_x001541E8[ncol - 1 - i];
+    }
+    str[i] = 0;
+}
+typedef signed char Sint8_x001542F0;
+typedef signed int Sint32_x001542F0;
+extern unsigned int strlen_x001542F0(const char *) __asm__("func_00127BA0");
+extern char *strncat_x001542F0(char *, const char *, unsigned int) __asm__("func_00127CD8");
+extern void ADXERR_ItoA_x001542F0(Sint32_x001542F0 val, Sint8_x001542F0 *str, Sint32_x001542F0 len) __asm__("func_001541E8");
+extern const Sint8_x001542F0 D_00456938_x001542F0[] __asm__("D_00460518");
+void func_001542F0_x001542F0(Sint32_x001542F0 val, Sint32_x001542F0 val2, Sint8_x001542F0 *str, Sint32_x001542F0 len) __asm__("func_001542F0");
+/* ADXERR_ItoA2: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0033f3.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001542F0_x001542F0(Sint32_x001542F0 val, Sint32_x001542F0 val2, Sint8_x001542F0 *str, Sint32_x001542F0 len) {
+    ADXERR_ItoA_x001542F0(val, str, len);
+    strncat_x001542F0((char *)str, (const char *)D_00456938_x001542F0, (len - strlen_x001542F0((const char *)str)) - 1);
+    ADXERR_ItoA_x001542F0(val2, &str[strlen_x001542F0((const char *)str)], 4 - strlen_x001542F0((const char *)str));
+}
 typedef char Sint8_x00154378;
 typedef signed int Sint32_x00154378;
 void InvalidDCache_x00154378(void*, void*) __asm__("func_0010AC98");
@@ -1567,7 +2336,25 @@ void func_001545F8_x001545F8() {
     for (i = 0; i < 50000; i++) {
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", adxf_ChkPrmPt);
+typedef signed char Sint8_x00154628;
+typedef signed int Sint32_x00154628;
+typedef unsigned int Uint32_x00154628;
+extern void func_0033F130_x00154628(const Sint8_x00154628 *msg) __asm__("ADXERR_CallErrFunc1");
+extern const Sint8_x00154628 D_00451390_x00154628[] __asm__("D_00460558");
+extern const Sint8_x00154628 D_004513C8_x00154628[] __asm__("D_00460590");
+Sint32_x00154628 adxf_ChkPrmPt_x00154628(Sint32_x00154628 ptid, void *ptinfo) __asm__("adxf_ChkPrmPt");
+/* adxf_ChkPrmPt_x00154628: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003229.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00154628 adxf_ChkPrmPt_x00154628(Sint32_x00154628 ptid, void *ptinfo) {
+    if ((Uint32_x00154628)ptid >= 0x100) {
+        func_0033F130_x00154628(D_00451390_x00154628);
+        return -3;
+    }
+    if (ptinfo == 0) {
+        func_0033F130_x00154628(D_004513C8_x00154628);
+        return -3;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154670);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154690);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154710);
@@ -1623,7 +2410,24 @@ void func_00154B68(void) {
     ADXF_GetPtStat();
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", ADXF_GetPtStat);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154F60);
+extern char adxf_pt_info_tbl_x00154F60[] __asm__("D_00402550");
+typedef struct {
+    int next;
+    int size;
+    int nfile;
+    unsigned short nfile16;
+    unsigned char added;
+    char pad_0f[1];
+    char fname[256];
+    void *dir;
+    short fsct[2];
+} AdxfPtInfo_x00154F60;
+int func_00154F60_x00154F60(int ptid) __asm__("func_00154F60");
+/* adxf_get_pt_rec_size: from https://github.com/new-coke/rez-decomp (src/cri/adxf.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00154F60_x00154F60(int ptid)
+{
+    return ((AdxfPtInfo_x00154F60 **)adxf_pt_info_tbl_x00154F60)[ptid]->size;
+}
 s8 *func_00154F78(void) {
     s32 var_a1;
     s8 *temp_v0;

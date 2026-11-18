@@ -430,7 +430,38 @@ Sint32_x001557F0 ADXF_ReadNw_x001557F0(ADXF_x001557F0 adxf, Sint32_x001557F0 nsc
     return ADXF_ReadNw32_x001557F0(adxf, nsct, buf);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", ADXF_Stop);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", ADXF_StopNw);
+extern int D_00451858_x00155920 __asm__("D_004609D8");
+extern int D_00451880_x00155920 __asm__("D_00460A00");
+int func_003228C0_x00155920(int, int, void*, int, int) __asm__("func_00154548");
+int func_0033F130_x00155920(void*) __asm__("ADXERR_CallErrFunc1");
+int func_003282D0_x00155920(int) __asm__("func_0015CDD0");
+int ADXF_StopNw_x00155920(int *a0) __asm__("ADXF_StopNw");
+/* func_00324040: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00324040.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int ADXF_StopNw_x00155920(int *a0) {
+    func_003228C0_x00155920(7, 0, a0, -1, -1);
+    if (a0 == 0) {
+        func_0033F130_x00155920(&D_00451858_x00155920);
+        return -3;
+    }
+    {
+        signed char v1 = *((signed char*)a0 + 1);
+        if (v1 == 1) {
+            return a0[5];
+        }
+        if (v1 == 3) {
+            *((char*)a0 + 1) = 1;
+            return a0[5];
+        }
+        if (a0[1] == 0) {
+            func_0033F130_x00155920(&D_00451880_x00155920);
+            return -1;
+        }
+        func_003282D0_x00155920(a0[1]);
+        *((char*)a0 + 3) = 1;
+        func_003228C0_x00155920(7, 1, a0, -1, -1);
+        return a0[5];
+    }
+}
 typedef unsigned char u8_x001559E8;
 typedef unsigned char Uint8_x001559E8;
 typedef char Sint8_x001559E8;
@@ -552,7 +583,77 @@ void func_001559E8_x001559E8(ADXF_x001559E8 adxf) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", func_00155AB0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", ADXF_Seek);
+typedef struct SjObj_x00155B10 SjObj_x00155B10;
+typedef struct {
+    char pad_00[12];
+    void (*destroy)(SjObj_x00155B10 *sj);
+    void *(*get_uuid)(SjObj_x00155B10 *sj);
+    void (*reset)(SjObj_x00155B10 *sj);
+    void (*getchunk)(SjObj_x00155B10 *sj, int id, int nbyte, void *ck);
+    void (*ungetchunk)(SjObj_x00155B10 *sj, int id, void *ck);
+    void (*putchunk)(SjObj_x00155B10 *sj, int id, void *ck);
+    int (*getnum)(SjObj_x00155B10 *sj, int id);
+    int (*is_get_chunk)(SjObj_x00155B10 *sj, int id, int nbyte, int *rbyte);
+    void (*set_error_cb)(SjObj_x00155B10 *sj, void *fn, void *obj);
+} SjIf_x00155B10;
+struct SjObj_x00155B10 {
+    SjIf_x00155B10 *vtbl;
+};
+typedef struct {
+    signed char used;
+    signed char stat;
+    signed char sjflag;
+    char pad_03[1];
+    void *stm;
+    SjObj_x00155B10 *sj;
+    int fsize_sct;
+    int fsize_byte;
+    int cursct;
+    int rqsct;
+    int rqnsct;
+    int nreadsct;
+    void *buf;
+    int bufsize;
+    int maxsct;
+    int ofst;
+    char pad_34[260];
+} AdxfObj_x00155B10;
+struct SjObj_x00155B10;
+void adx_error_x00155B10(const char *msg) __asm__("ADXERR_CallErrFunc1");
+struct SjObj_x00155B10;
+int ADXF_Stop_x00155B10(AdxfObj_x00155B10 *adxf) __asm__("ADXF_Stop");
+void adxf_history_add_x00155B10(int ptid, int kind, int target, int param, int extra) __asm__("func_00154548");
+int ADXF_Stop_x00155B10(AdxfObj_x00155B10 *adxf) __asm__("ADXF_Stop");
+extern char ext_str0_x00155B10[] __asm__("D_00460A58");
+extern char ext_str1_x00155B10[] __asm__("D_00460A30");
+int ADXF_Seek_x00155B10(AdxfObj_x00155B10 *adxf, int pos, int type) __asm__("ADXF_Seek");
+/* ADXF_Seek_x00155B10: from https://github.com/new-coke/rez-decomp (src/cri/adxf.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int ADXF_Seek_x00155B10(AdxfObj_x00155B10 *adxf, int pos, int type)
+{
+    adxf_history_add_x00155B10(6, 0, (int)adxf, pos, type);
+    if (adxf == 0) {
+        adx_error_x00155B10(ext_str1_x00155B10);
+        return -3;
+    }
+    if (adxf->stat == 2)
+        ADXF_Stop_x00155B10(adxf);
+    if (type == 0) {
+        adxf->cursct = pos;
+    } else if (type == 1) {
+        adxf->cursct = adxf->cursct + pos;
+    } else if (type == 2) {
+        adxf->cursct = adxf->fsize_sct + pos;
+    } else {
+        adx_error_x00155B10(ext_str0_x00155B10);
+        return -3;
+    }
+    if (adxf->cursct < 0)
+        adxf->cursct = 0;
+    else if (adxf->cursct > adxf->fsize_sct)
+        adxf->cursct = adxf->fsize_sct;
+    adxf_history_add_x00155B10(6, 1, (int)adxf, pos, type);
+    return adxf->cursct;
+}
 s32 ADXF_Tell(u8 *arg0) {
     if (arg0 == NULL) {
         ADXERR_CallErrFunc1(&D_00460A80);
@@ -587,7 +688,33 @@ s8 ADXF_GetStat(u8 *arg0) {
     }
     return *(s8 *)((u8 *)arg0 + 1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", func_00155DA0);
+typedef signed char Sint8_x00155DA0;
+typedef signed int Sint32_x00155DA0;
+typedef unsigned int Uint32_x00155DA0;
+typedef struct ADXF_PTINFO_x00155DA0 { char _pad[8]; Sint32_x00155DA0 nfile; } ADXF_PTINFO_x00155DA0;
+extern ADXF_PTINFO_x00155DA0 *D_003EB308_x00155DA0[] __asm__("D_00402550");
+extern void func_0033F130_x00155DA0(const Sint8_x00155DA0 *) __asm__("ADXERR_CallErrFunc1");
+extern const Sint8_x00155DA0 D_00451A18_x00155DA0[] __asm__("D_00460B60");
+extern const Sint8_x00155DA0 D_00451A40_x00155DA0[] __asm__("D_00460B88");
+Sint32_x00155DA0 func_00155DA0_x00155DA0(Sint32_x00155DA0 ptid, Sint32_x00155DA0 flid) __asm__("func_00155DA0");
+/* adxf_ChkPrmGfr: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003245.c, MIT); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00155DA0 func_00155DA0_x00155DA0(Sint32_x00155DA0 ptid, Sint32_x00155DA0 flid) {
+    ADXF_PTINFO_x00155DA0 *info;
+    if ((Uint32_x00155DA0)ptid >= 0x100) {
+        func_0033F130_x00155DA0(D_00451A18_x00155DA0);
+        return -3;
+    }
+    info = D_003EB308_x00155DA0[ptid];
+    if (info == 0) {
+        func_0033F130_x00155DA0(D_00451A18_x00155DA0);
+        return -3;
+    }
+    if ((flid < 0) || (flid >= info->nfile)) {
+        func_0033F130_x00155DA0(D_00451A40_x00155DA0);
+        return -3;
+    }
+    return 0;
+}
 typedef signed int Sint32_x00155E18;
 typedef char Char8_x00155E18;
 extern int* sceCdCallback_x00155E18(void (*func)(int)) __asm__("sceCdCallback");

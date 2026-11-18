@@ -131,8 +131,47 @@ void func_00170168(s32 arg0, s32 arg1) {
         (*(s32 (**)(s32, s32 *))((u8 *)(&D_00481470) + 0))(*(s32 *)((u8 *)(&D_00481470) + 4), &D_00423340);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/svm", func_001701D8);
-INCLUDE_ASM("asm/nonmatchings/cri/svm", func_001702E8);
+extern char svm_num_buf_x001701D8[] __asm__("D_00481280");
+unsigned int strlen_x001701D8(const char *s) __asm__("func_00127BA0");
+extern unsigned long __moddi3_x001701D8(unsigned long a, unsigned long b) __asm__("func_0011FDF0");
+extern unsigned long __divdi3_x001701D8(unsigned long a, unsigned long b) __asm__("func_0011F758");
+void func_001701D8_x001701D8(unsigned long num, char *buf, long size) __asm__("func_001701D8");
+/* svm_ltoa: from https://github.com/new-coke/rez-decomp (src/cri/svm.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001701D8_x001701D8(unsigned long num, char *buf, long size)
+{
+    long i;
+    long n;
+    char *digit;
+    for (i = 0; i < 32; i++) {
+        digit = &buf[i];
+        *digit = __moddi3_x001701D8(num, 10);
+        num = __divdi3_x001701D8(num, 10);
+        if (num == 0) {
+            *digit = 0;
+            break;
+        }
+    }
+    n = strlen_x001701D8(svm_num_buf_x001701D8);
+    if (n >= size - 1)
+        n = size - 1;
+    for (i = 0; i < n; i++)
+        buf[i] = svm_num_buf_x001701D8[n - 1 - i];
+    buf[i] = 0;
+}
+unsigned int strlen_x001702E8(const char *s) __asm__("func_00127BA0");
+char *strncat_x001702E8(char *dst, const char *src, unsigned int n) __asm__("func_00127CD8");
+void svm_ltoa_x001702E8(unsigned long num, char *buf, long size) __asm__("func_001701D8");
+extern char ext_str0_x001702E8[] __asm__("D_00464EE0");
+void func_001702E8_x001702E8(unsigned long first, unsigned long second, char *buf, long size) __asm__("func_001702E8");
+/* svm_format_2num: from https://github.com/new-coke/rez-decomp (src/cri/svm.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001702E8_x001702E8(unsigned long first, unsigned long second, char *buf, long size)
+{
+    int n;
+    svm_ltoa_x001702E8(first, buf, size);
+    n = size;
+    strncat_x001702E8(buf, ext_str0_x001702E8, n - strlen_x001702E8(buf) - 1);
+    svm_ltoa_x001702E8(second, buf + strlen_x001702E8(buf), 4 - strlen_x001702E8(buf));
+}
 INCLUDE_ASM("asm/nonmatchings/cri/svm", func_00170380);
 typedef unsigned int Uint32_x00170450;
 typedef signed int Sint32_x00170450;

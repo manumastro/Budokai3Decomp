@@ -1898,10 +1898,37 @@ s32 func_00187880_x00187880(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001878B8);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00187958);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001879B0);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001879E0);
+extern char *GetD003EC7E0_3452B0_x001879B0(void) __asm__("func_00181FA8");
+void func_001879B0_x001879B0(void) __asm__("func_001879B0");
+/* func_003493D8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00320388.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001879B0_x001879B0(void)
+{
+    char *s = GetD003EC7E0_3452B0_x001879B0();
+    void (*fp)(int) = *(void (**)(int))(s + 0x40);
+    int arg = *(int *)(s + 0x44);
+    if (fp) fp(arg);
+}
+extern char *GetD003EC7E0_3452B0_x001879E0(void) __asm__("func_00181FA8");
+void func_001879E0_x001879E0(void) __asm__("func_001879E0");
+/* func_00349408: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00320388.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001879E0_x001879E0(void)
+{
+    char *s = GetD003EC7E0_3452B0_x001879E0();
+    void (*fp)(int) = *(void (**)(int))(s + 0x48);
+    int arg = *(int *)(s + 0x4C);
+    if (fp) fp(arg);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00187A10);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00187A48);
+extern char *GetD003EC7E0_3452B0_x00187A48(void) __asm__("func_00181FA8");
+void func_00187A48_x00187A48(void) __asm__("func_00187A48");
+/* func_00349438: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00320388.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00187A48_x00187A48(void)
+{
+    char *s = GetD003EC7E0_3452B0_x00187A48();
+    void (*fp)(int) = *(void (**)(int))(s + 0x50);
+    int arg = *(int *)(s + 0x54);
+    if (fp) fp(arg);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00187A78);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyExecSvrHndl);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00187BE0);

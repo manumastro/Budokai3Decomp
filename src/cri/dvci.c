@@ -729,7 +729,71 @@ s32 func_00166E80_x00166E80(s8 arg0, s8 arg1) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166ED8);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166F70);
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167108);
+typedef struct CdlFile_x00167108 {
+    unsigned int lsn;
+    unsigned int size;
+    char name[16];
+    unsigned char date[8];
+    unsigned int flag;
+} CdlFile_x00167108;
+typedef struct CdRMode_x00167108 {
+    unsigned char trycount;
+    unsigned char spindlctrl;
+    unsigned char datapattern;
+    unsigned char pad;
+} CdRMode_x00167108;
+typedef struct DrvName_x00167108 {
+    char c[5];
+} DrvName_x00167108;
+extern char D_004544F0_x00167108[] __asm__("D_004636A0");
+extern char D_003D9EE8_x00167108[] __asm__("D_00413868");
+extern int func_003A9260_x00167108(const char *a, const char *b) __asm__("func_00127738");
+extern int func_00334F90_x00167108(char *path, void *buf) __asm__("func_00168F08");
+extern void *func_003A52F0_x00167108(void *dst, int c, int n) __asm__("memset");
+extern void func_00333390_x00167108(char *path, char *out) __asm__("func_00166DA0");
+extern void PushGlobalD8478History_331C78_x00167108(int code) __asm__("func_00164D38");
+extern int func_00398DA0_x00167108(int mode) __asm__("func_00118C08");
+extern int func_00332838_x00167108(CdlFile_x00167108 *file, char *name) __asm__("func_00166180");
+extern int sceCdRead_x00167108(unsigned int lsn, unsigned int sectors, void *buf, CdRMode_x00167108 *mode) __asm__("func_00119640");
+int func_00167108_x00167108(char *path, void *buf) __asm__("func_00167108");
+/* func_003336F8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003336f8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00167108_x00167108(char *path, void *buf)
+{
+    CdlFile_x00167108 file;
+    CdRMode_x00167108 mode;
+    char drv[5];
+    *(DrvName_x00167108 *)drv = *(DrvName_x00167108 *)path;
+    drv[4] = 0;
+    if (func_003A9260_x00167108(drv, D_004544F0_x00167108) == 0)
+        return func_00334F90_x00167108(path + 4, buf);
+    func_003A52F0_x00167108(D_003D9EE8_x00167108, 0, 0x80);
+    func_00333390_x00167108(path, D_003D9EE8_x00167108);
+    PushGlobalD8478History_331C78_x00167108(0x9000);
+    while (func_00398DA0_x00167108(1) == 1)
+        ;
+    PushGlobalD8478History_331C78_x00167108(0x9001);
+    PushGlobalD8478History_331C78_x00167108(0x9100);
+    if (func_00332838_x00167108(&file, D_003D9EE8_x00167108) == 0) {
+        PushGlobalD8478History_331C78_x00167108(0x9101);
+        return 0;
+    }
+    PushGlobalD8478History_331C78_x00167108(0x9102);
+    mode.trycount = 0;
+    mode.spindlctrl = 1;
+    mode.datapattern = 0;
+    mode.pad = 0;
+    PushGlobalD8478History_331C78_x00167108(0x9200);
+    if (sceCdRead_x00167108(file.lsn, 2, buf, &mode) == 0) {
+        PushGlobalD8478History_331C78_x00167108(0x9201);
+        return 0;
+    }
+    PushGlobalD8478History_331C78_x00167108(0x9202);
+    PushGlobalD8478History_331C78_x00167108(0x9300);
+    while (func_00398DA0_x00167108(1) == 1)
+        ;
+    PushGlobalD8478History_331C78_x00167108(0x9301);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167290);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167468);
 void func_00167530(void) {
@@ -740,7 +804,23 @@ INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167598);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167688);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", dvCiLoadDirInfo);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167928);
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167A90);
+typedef struct {
+    unsigned int lsn;
+    unsigned int size;
+    char name[16];
+    unsigned char date[8];
+    char pad_20[4];
+} DvciFile_x00167A90;
+void dvci_find_file_x00167A90(const char *fname, DvciFile_x00167A90 *file) __asm__("func_00167688");
+void dvci_find_file_x00167A90(const char *fname, DvciFile_x00167A90 *file) __asm__("func_00167688");
+int func_00167A90_x00167A90(const char *fname) __asm__("func_00167A90");
+/* dvci_is_cached: from https://github.com/new-coke/rez-decomp (src/cri/dvci.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00167A90_x00167A90(const char *fname)
+{
+    DvciFile_x00167A90 file;
+    dvci_find_file_x00167A90(fname, &file);
+    return file.lsn != 0;
+}
 typedef unsigned char u_char_x00167AB8;
 typedef signed int Sint32_x00167AB8;
 typedef struct {
@@ -783,7 +863,18 @@ void func_00167BF8(void) {
 void func_00167C10(void) {
     func_00164E10();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167C28);
+extern volatile int D_003D9F68_x00167C28 __asm__("D_004138E8");
+extern int D_003D9F78_x00167C28 __asm__("D_004138F8");
+extern void func_00335248_x00167C28(int a0) __asm__("func_001696E0");
+extern void setDevName_x00167C28(int a0) __asm__("func_00169770");
+int func_00167C28_x00167C28(void) __asm__("func_00167C28");
+/* func_00333FA0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00333fa0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00167C28_x00167C28(void) {
+    D_003D9F68_x00167C28;
+    func_00335248_x00167C28(0);
+    setDevName_x00167C28(0);
+    return (int)&D_003D9F78_x00167C28;
+}
 void func_00167C60_x00167C60(void) __asm__("func_00167C60");
 void func_00167C60_x00167C60(void)
 {
@@ -849,4 +940,9 @@ void func_00167F18(s32 arg0, s32 arg1) {
     D_004138F0 = arg1;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167F30);
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167FD0);
+extern long long func_00334310_x00167FD0(void) __asm__("htCiGetFileSize");
+int func_00167FD0_x00167FD0(void) __asm__("func_00167FD0");
+/* func_003342E8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0031f4e0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00167FD0_x00167FD0(void) {
+    return func_00334310_x00167FD0();
+}

@@ -89,7 +89,19 @@ Sint32_x00168A80 func_00168A80_x00168A80(const Char8_x00168A80* str) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168AF0);
+void *memset_x00168AF0(void *s, int c, unsigned int n) __asm__("memset");
+int strcmp_x00168AF0(const char *s1, const char *s2) __asm__("func_00127940");
+extern char ext_str0_x00168AF0[] __asm__("D_00463BA8");
+int func_00168AF0_x00168AF0(const char *path) __asm__("func_00168AF0");
+/* htci_is_host_path: from https://github.com/new-coke/rez-decomp (src/cri/htci_filelist.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00168AF0_x00168AF0(const char *path)
+{
+    char head[6];
+    memset_x00168AF0(head, 0, 6);
+    __builtin_memcpy(head, path, 4);
+    head[5] = 0;
+    return strcmp_x00168AF0(head, ext_str0_x00168AF0) == 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168B48);
 s8 func_00168C60_x00168C60(s8 arg0) __asm__("func_00168C60");
 s8 func_00168C60_x00168C60(s8 arg0) {
@@ -177,7 +189,20 @@ void func_001694B0(s32 arg0, u8 *arg1) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/htci", htCiLoadDirInfo);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00169688);
+typedef struct {
+    int fd;
+    int size;
+} HtciFile_x00169688;
+void htci_cache_lookup_x00169688(const char *fname, HtciFile_x00169688 *file) __asm__("func_001694B0");
+void htci_cache_lookup_x00169688(const char *fname, HtciFile_x00169688 *file) __asm__("func_001694B0");
+int func_00169688_x00169688(const char *fname) __asm__("func_00169688");
+/* htci_is_cached: from https://github.com/new-coke/rez-decomp (src/cri/htci_filelist.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00169688_x00169688(const char *fname)
+{
+    HtciFile_x00169688 file;
+    htci_cache_lookup_x00169688(fname, &file);
+    return file.size != 0;
+}
 void func_001696B0(s32 arg0) {
     if (arg0 != 0) {
         if (arg0 == 1) {

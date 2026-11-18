@@ -193,8 +193,77 @@ elem:
     return rd->client_table + rid * 64;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", func_0010DB20);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", func_0010DBF0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", func_0010DC30);
+typedef struct _sif_rpc_rpkt_x0010DBF0 {
+    unsigned char  pad00[0x24];
+    void          *src;       
+    void          *dst;       
+    int            size;      
+} sceSifRpcRpkt_x0010DBF0;
+extern int isceSifSendCmd_x0010DBF0(unsigned int fno, void *pkt, int pktsize, void *src, void *dst, int size) __asm__("func_0010D5E8");
+extern int isceSifSendCmd_x0010DBF0(unsigned int fno, void *pkt, int pktsize, void *src, void *dst, int size) __asm__("func_0010D5E8");
+unsigned int func_0010DBF0_x0010DBF0(int id, int t, int c, sceSifRpcRpkt_x0010DBF0 *p) __asm__("func_0010DBF0");
+/* func_003B2CD0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003b2cd0.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+unsigned int func_0010DBF0_x0010DBF0(int id, int t, int c, sceSifRpcRpkt_x0010DBF0 *p)
+{
+    return isceSifSendCmd_x0010DBF0(0x80000008, p, 64, p->src, p->dst, p->size) ? 0 : 0x800;
+}
+typedef struct sceSifRpcState_x0010DC30 {
+    int pid;                             
+    void *pktTable;                      
+    int pktTableLen;                     
+    int unk0C;
+    int unk10;
+    void *rdataTable;                    
+    int rdataTableLen;                   
+    void *clientTable;                   
+    int clientTableLen;                  
+    int rdataTableIdx;                   
+    void *activeQueue;                   
+} sceSifRpcState_x0010DC30;
+void *func_003B2B90_x0010DC30(sceSifRpcState_x0010DC30 *s) __asm__("func_0010DAB0");
+typedef struct _sif_rpc_pkt_x0010DC30 {
+    unsigned char  pad00[0x10];
+    unsigned int   mode;      
+    void          *rbuff;     
+    unsigned char  pad18[0x4];
+    void          *client;    
+    void          *paddr;     
+    void          *receive;   
+    void          *rsize;     
+    void          *w2c;       
+} sceSifRpcPkt_x0010DC30;
+extern void *_sceRpcGetFPacket2_x0010DC30(void *q, int i) __asm__("func_0010DAE0");
+extern int isceSifSendCmd_x0010DC30(unsigned int fno, void *pkt, int pktsize, void *src, void *dst, void *size) __asm__("func_0010D5E8");
+extern void func_003B7898_x0010DC30(int usec, void *handler, void *arg) __asm__("func_001160E0");
+extern unsigned int func_003B2CD0_x0010DC30(int id, int t, int c, void *rd) __asm__("func_0010DBF0");
+void func_0010DC30_x0010DC30(void *packet, void *q) __asm__("func_0010DC30");
+/* func_003B2D10: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003b2d10.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_0010DC30_x0010DC30(void *packet, void *q)
+{
+    sceSifRpcPkt_x0010DC30 *rq = packet;
+    sceSifRpcPkt_x0010DC30 *p;
+    unsigned int mode;
+    void *rbuff;
+    void *client;
+
+    mode = rq->mode;
+    if (mode & 4) {
+        p = _sceRpcGetFPacket2_x0010DC30(q, mode >> 16);
+    } else {
+        p = func_003B2B90_x0010DC30(q);
+    }
+    rbuff  = rq->rbuff;
+    client = rq->client;
+    p->rbuff   = rbuff;
+    p->client  = client;
+    p->paddr   = (void *)0x8000000C;
+    p->receive = rq->paddr;
+    p->rsize   = rq->receive;
+    p->w2c     = rq->rsize;
+    if (isceSifSendCmd_x0010DC30(0x80000008, p, 64, rq->paddr, rq->receive, rq->rsize) == 0) {
+        func_003B7898_x0010DC30(0x800, (void *)func_003B2CD0_x0010DC30, p);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", func_0010DD00);
 
 
@@ -212,8 +281,73 @@ void *_search_svdata(unsigned int sid, SifRpcData *rd)
     return 0;
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", func_0010DEB8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", func_0010DEF8);
+extern int isceSifSendCmd_x0010DEB8(unsigned int fno, void *pkt, int pktsize, void *src, void *dst, int size) __asm__("func_0010D5E8");
+extern int isceSifSendCmd_x0010DEB8(unsigned int fno, void *pkt, int pktsize, void *src, void *dst, int size) __asm__("func_0010D5E8");
+unsigned int func_0010DEB8_x0010DEB8(int id, int t, int c, void *rd) __asm__("func_0010DEB8");
+/* func_003B2E38: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003b2cd0.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+unsigned int func_0010DEB8_x0010DEB8(int id, int t, int c, void *rd)
+{
+    return isceSifSendCmd_x0010DEB8(0x80000008, rd, 64, 0, 0, 0) ? 0 : 0x800;
+}
+typedef struct sceSifRpcState_x0010DEF8 {
+    int pid;                             
+    void *pktTable;                      
+    int pktTableLen;                     
+    int unk0C;
+    int unk10;
+    void *rdataTable;                    
+    int rdataTableLen;                   
+    void *clientTable;                   
+    int clientTableLen;                  
+    int rdataTableIdx;                   
+    void *activeQueue;                   
+} sceSifRpcState_x0010DEF8;
+void *func_003B2B90_x0010DEF8(sceSifRpcState_x0010DEF8 *s) __asm__("func_0010DAB0");
+void *func_003B2DE8_x0010DEF8(int key, char *a1) __asm__("func_0010DE68");
+extern void func_003B2E38_x0010DEF8(void *p) __asm__("func_0010DEB8");
+extern void func_003B7898_x0010DEF8(int a, void (*f)(void *), void *p) __asm__("func_001160E0");
+typedef struct {
+    int pad00[2];
+    int f08;               
+} sceSifServeHdr_x0010DEF8;
+typedef struct {
+    int   pad00[5];
+    int   f14;             
+    int   pad18;
+    int   f1C;             
+    int   f20;             
+    int   f24;             
+    int   f28;             
+} sceSifRpcPkt_x0010DEF8;
+extern int isceSifSendCmd_x0010DEF8(unsigned int fid, void *pkt, int size, void *src, void *dest, int len) __asm__("func_0010D5E8");
+void func_0010DEF8_x0010DEF8(void *packet, void *q) __asm__("func_0010DEF8");
+/* _request_bind: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003b2e78.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_0010DEF8_x0010DEF8(void *packet, void *q)
+{
+    sceSifRpcPkt_x0010DEF8 *cd = packet;
+    sceSifRpcPkt_x0010DEF8 *p;
+    sceSifServeHdr_x0010DEF8 *sd;
+
+    p = func_003B2B90_x0010DEF8(q);
+    {
+        int t1 = cd->f14;
+        int t2 = cd->f1C;
+        p->f14 = t1;
+        p->f1C = t2;
+    }
+    p->f20 = 0x80000009;
+    sd = func_003B2DE8_x0010DEF8(cd->f20, q);
+    if (sd == 0) {
+        p->f24 = 0;
+        p->f28 = 0;
+    } else {
+        p->f24 = (int)sd;
+        p->f28 = sd->f08;
+    }
+    if (isceSifSendCmd_x0010DEF8(0x80000008, p, 0x40, 0, 0, 0) == 0) {
+        func_003B7898_x0010DEF8(0x800, func_003B2E38_x0010DEF8, p);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", sceSifBindRpc);
 
 

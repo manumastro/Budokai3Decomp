@@ -363,8 +363,39 @@ void func_00172DF0_x00172DF0(u8 *arg0)
  do { *((s32 *) (((u8 *) arg0) + 0x10)) = 0; *((s32 *) (((u8 *) arg0) + 0)) = 0; *((s32 *) (((u8 *) arg0) + 4)) = 0; *((s32 *) (((u8 *) arg0) + 8)) = 0; } while (0);
   *((s32 *) (((u8 *) arg0) + 0xC)) = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172E08);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172E78);
+typedef struct E_x00172E08 { void *fn; void *arg; } E_x00172E08;
+typedef struct H_x00172E08 { int f0; E_x00172E08 e; } H_x00172E08;
+extern int Obj0000_Set_D_0076A5D8_Check_Field_0_EQ_2_x00172E08(H_x00172E08 *h) __asm__("func_00178B80");
+extern void M2VERR_SetCode_x00172E08(int a, int b) __asm__("func_00172EF8");
+void func_00172E08_x00172E08(H_x00172E08 *h, void *fn, void *arg) __asm__("func_00172E08");
+/* M2V_SetErrFunc: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0036d7f8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00172E08_x00172E08(H_x00172E08 *h, void *fn, void *arg)
+{
+    E_x00172E08 *e;
+    int ok;
+    ok = Obj0000_Set_D_0076A5D8_Check_Field_0_EQ_2_x00172E08(h);
+    e = &h->e;
+    if (ok != 0) {
+        M2VERR_SetCode_x00172E08(0, 0xFF030203);
+        return;
+    }
+    e->fn = fn;
+    e->arg = arg;
+}
+typedef struct ErrInf_x00172E78 { int w[5]; } ErrInf_x00172E78;
+typedef struct H_x00172E78 { int f0; ErrInf_x00172E78 err; } H_x00172E78;
+extern int Obj0000_Set_D_0076A5D8_Check_Field_0_EQ_2_x00172E78(H_x00172E78 *h) __asm__("func_00178B80");
+extern void M2VERR_SetCode_x00172E78(int a, int b) __asm__("func_00172EF8");
+void func_00172E78_x00172E78(H_x00172E78 *h, ErrInf_x00172E78 *out) __asm__("func_00172E78");
+/* M2V_GetErrInf: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0036d868.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00172E78_x00172E78(H_x00172E78 *h, ErrInf_x00172E78 *out)
+{
+    if (Obj0000_Set_D_0076A5D8_Check_Field_0_EQ_2_x00172E78(h) != 0) {
+        M2VERR_SetCode_x00172E78(0, 0xFF030204);
+        return;
+    }
+    *out = h->err;
+}
 s32 func_00172EF8(s32 arg0, s32 arg1) {
     if (arg0 == 0) {
         func_00172F48(&D_00424C20);
@@ -447,7 +478,28 @@ void func_00173740(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173748);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173810);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001739B0);
+typedef struct SndObj_x001739B0 {
+    char unk000[0x38];
+    int state;
+    char unk03C[0x48 - 0x3C];
+    int f48;
+    char unk04C[0x118 - 0x4C];
+    int f118;
+    char unk11C[0x134 - 0x11C];
+    int f134;
+} SndObj_x001739B0;
+void func_001739B0_x001739B0(SndObj_x001739B0 *o) __asm__("func_001739B0");
+/* func_0036E2B8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0036e2b8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001739B0_x001739B0(SndObj_x001739B0 *o)
+{
+    if (o->f48 == 1 || o->f118 == 1 || o->f118 == 2) {
+        o->state = 1;
+    } else if (o->f134 == 1) {
+        o->state = 3;
+    } else {
+        o->state = 2;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173A00);
 void func_00173A70(void) {
 
@@ -485,7 +537,31 @@ void func_00178A20(s32 *arg0) {
 void func_00178A70(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178A78);
+extern int Obj0000_Set_D_0076A5D8_Check_Field_0_EQ_2_x00178A78(char *h) __asm__("func_00178B80");
+extern void M2VERR_SetCode_x00178A78(int a, int b) __asm__("func_00172EF8");
+extern void func_0036D630_x00178A78(int n, void *fn) __asm__("func_00178B28");
+extern void func_0036CD70_x00178A78(void) __asm__("func_00172BA0");
+extern void *D_0076A590_x00178A78[] __asm__("D_00481490");
+void func_00178A78_x00178A78(char *h, int n, void *fn) __asm__("func_00178A78");
+/* M2V_SetCond: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0036d580.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00178A78_x00178A78(char *h, int n, void *fn)
+{
+    void **p;
+    if (n == 8) {
+        if (fn == 0) fn = func_0036CD70_x00178A78;
+    }
+    if (h == 0) {
+        func_0036D630_x00178A78(n, fn);
+        p = D_0076A590_x00178A78;
+    } else {
+        if (Obj0000_Set_D_0076A5D8_Check_Field_0_EQ_2_x00178A78(h) != 0) {
+            M2VERR_SetCode_x00178A78(0, 0xFF030202);
+            return;
+        }
+        p = (void **)(h + 0x18);
+    }
+    p[n] = fn;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178B28);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178B80);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178BA8);
@@ -504,7 +580,41 @@ void func_00178C38(void) {
 void func_00178C50(void) {
     func_00178BF0();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178C68);
+void func_00178C68_x00178C68(char *d, signed char *s, unsigned int n) __asm__("func_00178C68");
+/* func_003669B0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/001bf2e8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00178C68_x00178C68(char *d, signed char *s, unsigned int n) {
+    unsigned int r = n & 0x1F;
+    if (r != 0) {
+        do {
+            *d++ = *(unsigned char *)s++;
+        } while (--r != 0);
+    }
+    n >>= 5;
+    if (n == 0) {
+        return;
+    }
+    do {
+        int t0, t1, t2, t3;
+        t0 = *s++; t1 = *s++; t2 = *s++; t3 = *s++;
+        d[0] = t0; d[1] = t1; d[2] = t2; d[3] = t3;
+        t0 = *s++; t1 = *s++; t2 = *s++; t3 = *s++;
+        d[4] = t0; d[5] = t1; d[6] = t2; d[7] = t3;
+        t0 = *s++; t1 = *s++; t2 = *s++; t3 = *s++;
+        d[8] = t0; d[9] = t1; d[10] = t2; d[11] = t3;
+        t0 = *s++; t1 = *s++; t2 = *s++; t3 = *s++;
+        d[12] = t0; d[13] = t1; d[14] = t2; d[15] = t3;
+        d += 0x10;
+        t0 = *s++; t1 = *s++; t2 = *s++; t3 = *s++;
+        d[0] = t0; d[1] = t1; d[2] = t2; d[3] = t3;
+        t0 = *s++; t1 = *s++; t2 = *s++; t3 = *s++;
+        d[4] = t0; d[5] = t1; d[6] = t2; d[7] = t3;
+        t0 = *s++; t1 = *s++; t2 = *s++; t3 = *s++;
+        d[8] = t0; d[9] = t1; d[10] = t2; d[11] = t3;
+        t0 = *s++; t1 = *s++; t2 = *s++; t3 = *s++;
+        d[12] = t0; d[13] = t1; d[14] = t2; d[15] = t3;
+        d += 0x10;
+    } while (--n != 0);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178E38);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178F48);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179018);
@@ -636,7 +746,31 @@ int func_0017ADF0_x0017ADF0(MovieModule_x0017ADF0 *module, MovieValues_x0017ADF0
 s32 *func_0017AE88(void) {
     return &D_00465328;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017AE98);
+extern void func_00366D18_x0017AE98(void) __asm__("func_001790E0");
+extern void func_00368AA0_x0017AE98(void) __asm__("func_0017AC28");
+extern unsigned char D_0045A370_x0017AE98 __asm__("D_00465378");
+extern char D_0045A320_x0017AE98[] __asm__("D_00465328");
+extern char *volatile D_00766CD4_x0017AE98 __asm__("D_004814E0");
+extern int func_00368D60_x0017AE98(int a, int b) __asm__("func_0017AF10");
+int func_0017AE98_x0017AE98(int a, int b) __asm__("func_0017AE98");
+/* sfd_InitPool: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0033b5c8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_0017AE98_x0017AE98(int a, int b)
+{
+    int r;
+    D_00766CD4_x0017AE98 = D_0045A320_x0017AE98;
+    if (D_0045A370_x0017AE98 != 4) {
+        for (;;) {
+            ((void (*)(void))-1)();
+        }
+    }
+    r = func_00368D60_x0017AE98(a, b);
+    if (r != 0) {
+        return r;
+    }
+    func_00366D18_x0017AE98();
+    func_00368AA0_x0017AE98();
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017AF10);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017AFA8);
 void func_0017B020(void) {
@@ -907,7 +1041,35 @@ void func_0017E500(s32 arg0) {
         D_00424CA4 = arg0 + 0x180;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E550);
+extern unsigned char D_003F1AC8_x0017E550[] __asm__("D_00424CB0");
+extern unsigned char *D_003F1ABC_x0017E550 __asm__("D_00424CA4");
+extern unsigned char D_003F1C48_x0017E550[] __asm__("D_00424E30");
+void func_0017E550_x0017E550(void) __asm__("func_0017E550");
+/* func_0036BFB0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0032d3a8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0017E550_x0017E550(void)
+{
+    unsigned char *p;
+    int i;
+    int fill;
+    p = D_003F1AC8_x0017E550;
+    i = 0x17F;
+    do {
+        *p++ = 0;
+        i--;
+    } while (i >= 0);
+    i = 0;
+    do {
+        *p++ = (unsigned char)i;
+        i++;
+    } while (i < 0x100);
+    fill = -1;
+    i = 0x17F;
+    do {
+        *p++ = (unsigned char)fill;
+        i--;
+    } while (i >= 0);
+    D_003F1ABC_x0017E550 = D_003F1C48_x0017E550;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E5D8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E620);
 void func_0017E658(void) {

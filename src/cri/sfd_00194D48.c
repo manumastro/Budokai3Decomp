@@ -84,7 +84,39 @@ void func_00195018(u8 *arg0, s32 arg1) {
     *(s64 *)((u8 *)arg0 + 0x48) = (s64) (arg1 + *(s64 *)((u8 *)arg0 + 0x48));
     SignalSema(*(s32 *)((u8 *)arg0 + 0x40));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00195068);
+extern int WaitSema_x00195068(int sid) __asm__("WaitSema");
+extern int SignalSema_x00195068(int sid) __asm__("SignalSema");
+typedef struct {
+               unsigned int base;
+               unsigned int tagp;
+               int nblk;
+               int rd;
+               int rdofs;
+               int wr;
+               int size;
+               unsigned char pad1C[0x40 - 0x1C];
+               int sema;
+               int active;
+               long long total;
+               void *ent;
+               int nent;
+               int f58;
+               int f5C;
+} ViBuf_x00195068;
+int func_00195068_x00195068(ViBuf_x00195068 *b, int n) __asm__("func_00195068");
+/* func_00355C08: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00353500.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00195068_x00195068(ViBuf_x00195068 *b, int n)
+{
+    WaitSema_x00195068(b->sema);
+    b->wr -= n;
+    b->total -= n;
+    if (b->wr < 0) {
+        for (;;) {
+        }
+    }
+    SignalSema_x00195068(b->sema);
+    return n;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001950E8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001952E8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001953E8);
@@ -270,7 +302,36 @@ s32 func_001969C0(u8 *arg0) {
     }
     return var_a1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001969F0);
+int sfply_IsPrepEnd_x001969F0(void*) __asm__("func_00196AB0");
+void sfply_AdjustPrepEnd_x001969F0(void*) __asm__("func_00196B60");
+void sfply_TrStart_x001969F0(void*) __asm__("func_00197DC0");
+int func_00357988_x001969F0(void*) __asm__("func_00196EA0");
+int func_001969F0_x001969F0(int *a0) __asm__("func_001969F0");
+/* func_003574D8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00324040.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_001969F0_x001969F0(int *a0) {
+    int ret = a0[0x12];
+    int sel = a0[0x13];
+    if (sfply_IsPrepEnd_x001969F0(a0) == 0) {
+        return ret;
+    }
+    sfply_AdjustPrepEnd_x001969F0(a0);
+    switch (sel) {
+        case 2:
+            ret = 2;
+            break;
+        case 4:
+        case 6:
+            if (func_00357988_x001969F0(a0) != 0) {
+                sfply_TrStart_x001969F0(a0);
+                ret = 4;
+                break;
+            }
+        case 3:
+            ret = 3;
+            break;
+    }
+    return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00196AB0);
 void func_00196B60(s32 arg0) {
     func_00196B90();
@@ -344,7 +405,19 @@ s32 func_00197EB8(void) {
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197EC8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197F28);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198128);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198198);
+extern int Obj34D8_SetGlobalEE0B8_IfField48_x00198198(void *hn) __asm__("func_0018D870");
+extern void func_0034DD70_x00198198(void *a0, unsigned int err) __asm__("func_0018D650");
+extern void func_0035C2D0_x00198198(void *hn, int a1, int a2, void *a3, int a4) __asm__("func_0019C0D8");
+void func_00198198_x00198198(void *hn, void *p, int n) __asm__("func_00198198");
+/* SFD_AddWritePtr: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0034d1b8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_00198198_x00198198(void *hn, void *p, int n)
+{
+    if (Obj34D8_SetGlobalEE0B8_IfField48_x00198198(hn) != 0) {
+        func_0034DD70_x00198198(0, 0xFF000135);
+        return;
+    }
+    func_0035C2D0_x00198198(hn, 0, 0xA, p, n);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198218);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001982A8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001982C8);
@@ -428,8 +501,60 @@ void func_00198C30_x00198C30(u8 *arg0) {
     func_001994D8_x00198C30(arg0);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198C78);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198DE0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198E60);
+extern int Obj35C0_IsIndexedSet_1F3C_C380_x00198DE0(int, int) __asm__("func_0019C188");
+extern int GetArrayElemA0C_35A1C8_x00198DE0(int, int) __asm__("func_001999E0");
+int func_00198DE0_x00198DE0(int a0, int a1, int a2) __asm__("func_00198DE0");
+/* sfsee_IsAudioAnalyzing: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003272c0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00198DE0_x00198DE0(int a0, int a1, int a2) {
+    int s0;
+    int s1;
+    int s2;
+    int r;
+    int v0;
+    s2 = a1;
+    s1 = a2;
+    r = Obj35C0_IsIndexedSet_1F3C_C380_x00198DE0(a0, 3);
+    s0 = a0;
+    if (r) {
+        r = GetArrayElemA0C_35A1C8_x00198DE0(s0, 6);
+        if (r == 1) {
+            *(int*)s1 = r;
+            v0 = *(int*)s2;
+            return ((unsigned int)v0 < 1u);
+        }
+    }
+    *(int*)s1 = 0;
+    return 0;
+}
+extern int Obj35C0_IsIndexedSet_1F3C_C380_x00198E60(int, int) __asm__("func_0019C188");
+extern int GetArrayElemA0C_35A1C8_x00198E60(int, int) __asm__("func_001999E0");
+int func_00198E60_x00198E60(void *a0, int *a1, int *a2) __asm__("func_00198E60");
+/* sfsee_IsVideoAnalyzing: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003272c0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00198E60_x00198E60(void *a0, int *a1, int *a2) {
+    int *s2;
+    void *s0;
+    int *s1;
+    int v1;
+    int v0;
+    s2 = a1;
+    s0 = a0;
+    s1 = a2;
+    if (!Obj35C0_IsIndexedSet_1F3C_C380_x00198E60(s0, 2)) {
+        goto fail;
+    }
+    v1 = GetArrayElemA0C_35A1C8_x00198E60(s0, 5);
+    if (v1 != 1) {
+        goto fail;
+    }
+    *s1 = v1;
+    v0 = !(*s2);
+    goto done;
+fail:
+    *s1 = 0;
+    v0 = 0;
+done:
+    return v0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198EE0);
 s32 func_00198F00(u8 *arg0, s32 *arg1) {
     *arg1 = 0;
@@ -530,7 +655,21 @@ void func_00199868(s32 arg0, s32 arg1, s32 arg2) {
         *(s32 *)((u8 *)((arg1 * 4) + arg0) + 0xB30) = arg2;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001998B8);
+extern int Obj35C0_IsIndexedSet_1F3C_C380_x001998B8(int, int) __asm__("func_0019C188");
+int func_001998B8_x001998B8(char *a0, int a1, int a2) __asm__("func_001998B8");
+/* sfset_IsCondValid: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003272c0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_001998B8_x001998B8(char *a0, int a1, int a2)
+{
+    if (a1 == 6 && a2 == 1) {
+        if (Obj35C0_IsIndexedSet_1F3C_C380_x001998B8(a0, 3) == 0)
+            return 0;
+    }
+    if (a1 == 5 && a2 == 1) {
+        if (Obj35C0_IsIndexedSet_1F3C_C380_x001998B8(a0, 2) == 0)
+            return 0;
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00199940);
 s32 func_001999E0(s32 arg0, s32 arg1) {
     return *(s32 *)((u8 *)((arg1 * 4) + arg0) + 0x9A0);
@@ -697,7 +836,22 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019AFB0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019AFE8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B088);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B120);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B1C8);
+extern void func_0035B5B8_x0019B1C8(void *, int *, int *) __asm__("func_0019B2E0");
+extern void func_0035B500_x0019B1C8(void *, int, int) __asm__("func_0019B228");
+extern void func_0035B568_x0019B1C8(void *, int, int) __asm__("func_0019B290");
+void func_0019B1C8_x0019B1C8(void *a0, int a1) __asm__("func_0019B1C8");
+/* func_0035B4A0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00323a00.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0019B1C8_x0019B1C8(void *a0, int a1) {
+    void *s0;
+    int tmp0;
+    int tmp1;
+    s0 = a0;
+    if ((unsigned int)a1 < 2) return;
+    if (a1 != 2) return;
+    func_0035B5B8_x0019B1C8(s0, &tmp0, &tmp1);
+    func_0035B500_x0019B1C8(s0, tmp0, tmp1);
+    func_0035B568_x0019B1C8(s0, tmp0, tmp1);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B228);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B290);
 typedef unsigned char u8_x0019B2E0;
@@ -798,7 +952,349 @@ s32 func_0019B940(u8 *arg0) {
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B948);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B968);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B9A8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019BA40);
+typedef struct cVec_x0019BA40 {
+    float x, y, z, w_x0019BA40;
+} cVec_x0019BA40;
+typedef struct cBox_x0019BA40 {
+    float center[3];
+    float half[3];
+} cBox_x0019BA40;
+typedef struct cMeshInfo_x0019BA40 {
+    int dataOfs;
+    char unk04[4];
+    long name_x0019BA40;
+    char unk10[0x24];
+    unsigned int flags_x0019BA40;
+    char unk38[0xB];
+    unsigned char layer;
+    char unk44[0x14];
+    unsigned char alpha;
+} cMeshInfo_x0019BA40;
+typedef struct cMeshData_x0019BA40 {
+    char unk00[8];
+    unsigned short num;
+} cMeshData_x0019BA40;
+typedef struct cModelNode_x0019BA40 {
+    char packet[2][0xB0];
+    char unk160[0x220];
+    unsigned int dispFlags;
+    unsigned char unk384;
+    char unk385;
+    unsigned char meshNum;
+    char unk387;
+    struct cMeshData_x0019BA40 *data;
+    float uvScroll[2];
+    char unk394[0xC];
+    float color[3];
+    float alpha;
+    char unk3B0[0x50];
+    int unk400;
+    struct cModelNode_x0019BA40 *next;
+    int pktBuf;
+    unsigned char layer;
+    char unk40D[0x3];
+    unsigned int tag;
+    cMeshInfo_x0019BA40 *info;
+} cModelNode_x0019BA40;
+typedef struct cVtEnt_x0019BA40 {
+    short delta;
+    short index;
+    void *pfn;
+} cVtEnt_x0019BA40;
+struct cParts_x0019BA40;
+typedef struct cParts_x0019BA40 {
+    float mtxLocal[16]; float mtxBind[16]; float mtx_x0019BA40[16]; cVec_x0019BA40 invPos; cVec_x0019BA40 *anchor; char unk0D4[0xC]; cVec_x0019BA40 trans; cVec_x0019BA40 *pos_x0019BA40; char unk0F4[0xC]; cVec_x0019BA40 rot_x0019BA40; cVec_x0019BA40 scale_x0019BA40; cVec_x0019BA40 scaleCalc; cVec_x0019BA40 rotAdd; unsigned char rotOrder; char unk141[3]; struct cParts_x0019BA40 *next; struct cParts_x0019BA40 *parent; struct cParts_x0019BA40 *link; char unk150[0x4]; int partFlags; char unk158[0xBC]; cVtEnt_x0019BA40 *vtable_x0019BA40; char unk218[0x8];
+} cParts_x0019BA40;
+typedef struct SEQ_DATA_HEADER_1_x0019BA40 {
+    char magic[4];
+    char unk04[0x10];
+    unsigned short entryOfs;
+    unsigned short entryNum;
+} SEQ_DATA_HEADER_1_x0019BA40;
+typedef struct cSeqEffect_x0019BA40 {
+    unsigned char kind_x0019BA40;
+    unsigned char id;
+    char unk02[2];
+    int handle;
+    unsigned char part;
+    unsigned char flags_x0019BA40;
+    char unk0A[2];
+} cSeqEffect_x0019BA40;
+typedef struct cGameObj_x0019BA40 cGameObj_x0019BA40;
+struct cGameObj_x0019BA40 {
+    float mtxLocal[16]; float mtxBind[16]; float mtx_x0019BA40[16]; cVec_x0019BA40 invPos; cVec_x0019BA40 *anchor; char unk0D4[0xC]; cVec_x0019BA40 trans; cVec_x0019BA40 *pos_x0019BA40; char unk0F4[0xC]; cVec_x0019BA40 rot_x0019BA40; cVec_x0019BA40 scale_x0019BA40; cVec_x0019BA40 scaleCalc; cVec_x0019BA40 rotAdd; unsigned char rotOrder; char unk141[3]; struct cParts_x0019BA40 *next; struct cParts_x0019BA40 *parent; struct cParts_x0019BA40 *link; char unk150[0x4]; int partFlags; char unk158[0xBC]; cVtEnt_x0019BA40 *vtable_x0019BA40; char unk218[0x8]; char *packet[2]; char *tailPacket[2]; char *partPacket[2]; char *alloc; char unk23C[0x4]; cVec_x0019BA40 tint; int objFlags_x0019BA40; int texFlags; int unk258; cModelNode_x0019BA40 *meshHead; cBox_x0019BA40 box; struct cOmBase_x0019BA40 **children_x0019BA40; float blend; char *script; int texSet; int unk288; char *extraPacket[2][2]; char *extraPacketB[2][2]; short id; short life; unsigned char fadeLen; unsigned char meshNum; unsigned short endTime; unsigned char partNum_x0019BA40; signed char depthBias; unsigned char alphaA; unsigned char alphaB; float fadeIn; unsigned char alphaC; char unk2BD; unsigned char layerForce; char unk2BF[0x1]; int drawKind; int drawPrio; void *arena; unsigned char lightOwner; unsigned char lightSlot[3]; unsigned int actorGroup; unsigned char texSlot[0x10]; char unk2E4[0xC]; unsigned int unk2F0; unsigned char mode; unsigned char phase; unsigned char step_x0019BA40; unsigned char stepArg; char unk2F8[0x4]; unsigned char unk2FC; char unk2FD[0x1]; unsigned short actorId; char unk300[0x4]; char *pack; char unk308[0x8]; cVec_x0019BA40 unk310; cVec_x0019BA40 unk320; cVec_x0019BA40 nullSpeed; float quat[4]; char unk350[0x10]; cVec_x0019BA40 nullRotSpeed; char unk370[0x10]; char unk380[0x10]; char unk390[0x10]; char unk3A0[0xC]; unsigned short seqFlags_x0019BA40; unsigned short seqEffectNum; cSeqEffect_x0019BA40 seqEffect[8]; char unk410[0x10]; char unk420[0x8]; char *motion; struct SEQ_DATA_HEADER_1_x0019BA40 *seqData_x0019BA40; float motionFrame_x0019BA40; unsigned short motionFlags; unsigned char seqSkip; char unk437[0x1]; float blendLeft; float blendLen; float motionRate; float motionStep; char ik_x0019BA40[0x4]; void *shadowData; char *kageWork; char unk454[0xC]; cVec_x0019BA40 kageHit; float kageHitY; int groundKind_x0019BA40; char unk478[0x8]; cVec_x0019BA40 unk480; cVec_x0019BA40 posA_x0019BA40; int unk4A0; int unk4A4; int kageFlags; const char *kindName_x0019BA40; int unk4B0; int unk4B4; float turnRate; char unk4BC[0x4]; cVec_x0019BA40 turnTarget; char unk4D0[0x520 - 0x4D0]; cVec_x0019BA40 stored_x0019BA40; unsigned char storedWait; signed char unk531; char unk532[0x538 - 0x532]; long name_x0019BA40; long modelHandle; short hpMax; short hp_x0019BA40; float hitFlash; cVec_x0019BA40 vel; int dropItem_x0019BA40; int emNo_x0019BA40; short unk568; short unk56A; char unk56C[0x570 - 0x56C]; short effNo_x0019BA40; short pad572; int effArg; char unk578[0x580 - 0x578]; cVec_x0019BA40 unk580; cVec_x0019BA40 unk590; int scrFlags_x0019BA40; char unk5A4[4]; float speedRate_x0019BA40;
+};
+typedef char cGameObj_chk_mtx[((int)&((struct cGameObj_x0019BA40 *)0)->mtx_x0019BA40) == 0x80 ? 1 : -1];
+typedef char cGameObj_chk_pos[((int)&((struct cGameObj_x0019BA40 *)0)->pos_x0019BA40) == 0xF0 ? 1 : -1];
+typedef char cGameObj_chk_rot[((int)&((struct cGameObj_x0019BA40 *)0)->rot_x0019BA40) == 0x100 ? 1 : -1];
+typedef char cGameObj_chk_anim[((int)&((struct cGameObj_x0019BA40 *)0)->tint.w_x0019BA40) == 0x24C ? 1 : -1];
+typedef char cGameObj_chk_vt[((int)&((struct cGameObj_x0019BA40 *)0)->vtable_x0019BA40) == 0x214 ? 1 : -1];
+typedef char cGameObj_chk_step[((int)&((struct cGameObj_x0019BA40 *)0)->step_x0019BA40) == 0x2F6 ? 1 : -1];
+typedef char cGameObj_chk_posA[((int)&((struct cGameObj_x0019BA40 *)0)->posA_x0019BA40) == 0x490 ? 1 : -1];
+typedef char cGameObj_chk_stored[((int)&((struct cGameObj_x0019BA40 *)0)->stored_x0019BA40) == 0x520 ? 1 : -1];
+typedef char cGameObj_chk_motion[((int)&((struct cGameObj_x0019BA40 *)0)->seqFlags_x0019BA40) == 0x3AC ? 1 : -1];
+typedef char cGameObj_chk_hp[((int)&((struct cGameObj_x0019BA40 *)0)->hp_x0019BA40) == 0x54A ? 1 : -1];
+typedef char cGameObj_chk_kind[((int)&((struct cGameObj_x0019BA40 *)0)->kindName_x0019BA40) == 0x4AC ? 1 : -1];
+typedef char cGameObj_chk_emno[((int)&((struct cGameObj_x0019BA40 *)0)->emNo_x0019BA40) == 0x564 ? 1 : -1];
+typedef char cGameObj_chk_eff[((int)&((struct cGameObj_x0019BA40 *)0)->seqData_x0019BA40) == 0x42C ? 1 : -1];
+typedef char cGameObj_chk_effno[((int)&((struct cGameObj_x0019BA40 *)0)->effNo_x0019BA40) == 0x570 ? 1 : -1];
+typedef char cGameObj_chk_scr[((int)&((struct cGameObj_x0019BA40 *)0)->scrFlags_x0019BA40) == 0x5A0 ? 1 : -1];
+typedef char cGameObj_chk_scale[((int)&((struct cGameObj_x0019BA40 *)0)->scale_x0019BA40) == 0x110 ? 1 : -1];
+typedef char cGameObj_chk_child[((int)&((struct cGameObj_x0019BA40 *)0)->children_x0019BA40) == 0x278 ? 1 : -1];
+typedef char cGameObj_chk_childn[((int)&((struct cGameObj_x0019BA40 *)0)->partNum_x0019BA40) == 0x2B4 ? 1 : -1];
+typedef char cGameObj_chk_ik[((int)&((struct cGameObj_x0019BA40 *)0)->ik_x0019BA40) == 0x448 ? 1 : -1];
+typedef char cGameObj_chk_drop[((int)&((struct cGameObj_x0019BA40 *)0)->dropItem_x0019BA40) == 0x560 ? 1 : -1];
+typedef char cGameObj_chk_rate[((int)&((struct cGameObj_x0019BA40 *)0)->speedRate_x0019BA40) == 0x5A8 ? 1 : -1];
+typedef char cGameObj_chk_ground[((int)&((struct cGameObj_x0019BA40 *)0)->groundKind_x0019BA40) == 0x474 ? 1 : -1];
+typedef char cGameObj_chk_frame[((int)&((struct cGameObj_x0019BA40 *)0)->motionFrame_x0019BA40) == 0x430 ? 1 : -1];
+typedef char cGameObj_chk_name[((int)&((struct cGameObj_x0019BA40 *)0)->name_x0019BA40) == 0x538 ? 1 : -1];
+typedef char cGameObj_chk_size[sizeof(struct cGameObj_x0019BA40) == 0x5B0 ? 1 : -1];
+typedef struct cOmBase_x0019BA40 {
+    float mtxLocal[16]; float mtxBind[16]; float mtx_x0019BA40[16]; cVec_x0019BA40 invPos; cVec_x0019BA40 *anchor; char unk0D4[0xC]; cVec_x0019BA40 trans; cVec_x0019BA40 *pos_x0019BA40; char unk0F4[0xC]; cVec_x0019BA40 rot_x0019BA40; cVec_x0019BA40 scale_x0019BA40; cVec_x0019BA40 scaleCalc; cVec_x0019BA40 rotAdd; unsigned char rotOrder; char unk141[3]; struct cParts_x0019BA40 *next; struct cParts_x0019BA40 *parent; struct cParts_x0019BA40 *link; char unk150[0x4]; int partFlags; char unk158[0xBC]; cVtEnt_x0019BA40 *vtable_x0019BA40; char unk218[0x8]; char *packet[2]; char *tailPacket[2]; char *partPacket[2]; char *alloc; char unk23C[0x4]; cVec_x0019BA40 tint; int objFlags_x0019BA40; int texFlags; int unk258; cModelNode_x0019BA40 *meshHead; cBox_x0019BA40 box; struct cOmBase_x0019BA40 **children_x0019BA40; float blend; char *script; int texSet; int unk288; char *extraPacket[2][2]; char *extraPacketB[2][2]; short id; short life; unsigned char fadeLen; unsigned char meshNum; unsigned short endTime; unsigned char partNum_x0019BA40; signed char depthBias; unsigned char alphaA; unsigned char alphaB; float fadeIn; unsigned char alphaC; char unk2BD; unsigned char layerForce; char unk2BF[0x1]; int drawKind; int drawPrio; void *arena; unsigned char lightOwner; unsigned char lightSlot[3]; unsigned int actorGroup; unsigned char texSlot[0x10]; char unk2E4[0xC]; unsigned int unk2F0; unsigned char mode; unsigned char phase; unsigned char step_x0019BA40; unsigned char stepArg; char unk2F8[0x4]; unsigned char unk2FC; char unk2FD[0x1]; unsigned short actorId; char unk300[0x4]; char *pack; char unk308[0x8]; cVec_x0019BA40 unk310; cVec_x0019BA40 unk320; cVec_x0019BA40 nullSpeed; float quat[4]; char unk350[0x10]; cVec_x0019BA40 nullRotSpeed; char unk370[0x10]; char unk380[0x10]; char unk390[0x10]; char unk3A0[0xC]; unsigned short seqFlags_x0019BA40; unsigned short seqEffectNum; cSeqEffect_x0019BA40 seqEffect[8]; char unk410[0x10]; char unk420[0x8]; char *motion; struct SEQ_DATA_HEADER_1_x0019BA40 *seqData_x0019BA40; float motionFrame_x0019BA40; unsigned short motionFlags; unsigned char seqSkip; char unk437[0x1]; float blendLeft; float blendLen; float motionRate; float motionStep; char ik_x0019BA40[0x4]; void *shadowData; char *kageWork; char unk454[0xC]; cVec_x0019BA40 kageHit; float kageHitY; int groundKind_x0019BA40; char unk478[0x8]; cVec_x0019BA40 unk480; cVec_x0019BA40 posA_x0019BA40; int unk4A0; int unk4A4; int kageFlags; const char *kindName_x0019BA40; int unk4B0; int unk4B4; float turnRate; char unk4BC[0x4]; cVec_x0019BA40 turnTarget; char unk4D0[0x520 - 0x4D0]; cVec_x0019BA40 stored_x0019BA40; unsigned char storedWait; signed char unk531; char unk532[0x538 - 0x532]; long name_x0019BA40; long modelHandle; short hpMax; short hp_x0019BA40; float hitFlash; cVec_x0019BA40 vel; int dropItem_x0019BA40; int emNo_x0019BA40; short unk568; short unk56A; char unk56C[0x570 - 0x56C]; short effNo_x0019BA40; short pad572; int effArg; char unk578[0x580 - 0x578]; cVec_x0019BA40 unk580; cVec_x0019BA40 unk590; int scrFlags_x0019BA40; char unk5A4[4]; float speedRate_x0019BA40;
+    char unk5AC_x0019BA40[0x4];
+    int flags0;
+    int hitFlags;
+    int flags2;
+    char unk5BC[0x4];
+    cVec_x0019BA40 knock;
+    cVec_x0019BA40 posB;
+} cOmBase_x0019BA40;
+typedef char cOmBase_size_check[(sizeof(cOmBase_x0019BA40) == 0x5E0) ? 1 : -1];
+typedef struct cCoreSaveCombo_x0019BA40 {
+    int id[6];
+    char lv[6];
+    char pad1E[2];
+    int max;
+} cCoreSaveCombo_x0019BA40;
+typedef struct cCoreSaveSpawn_x0019BA40 {
+    unsigned char kind_x0019BA40;
+    unsigned char sub;
+    unsigned short angle;
+    float pos_x0019BA40[4];
+    int param;
+} cCoreSaveSpawn_x0019BA40;
+typedef struct cCoreSaveItem_x0019BA40 {
+    unsigned short stage;
+    unsigned short kind_x0019BA40;
+    unsigned char flag;
+    signed char yaw;
+    unsigned short serial;
+    short pos_x0019BA40[3];
+    unsigned short extra;
+} cCoreSaveItem_x0019BA40;
+typedef struct cCoreSaveData_x0019BA40 {
+    int worldTime;
+    int worldTimeB;
+    unsigned int counter08;
+    unsigned short saveStageA;
+    unsigned short saveStageB;
+    unsigned short clearNum;
+    unsigned short continueNum;
+    unsigned int flags_x0019BA40;
+    char unk18[4];
+    short levelPoint;
+    char levelDownGrace;
+    char difficulty;
+    int gold;
+    int addGoldNum;
+    int addGold[16];
+    int keyCardNum;
+    int keyNum;
+    int upgradeLv[4];
+    int vitalMax;
+    int vital;
+    unsigned short counter88;
+    unsigned char comboST;
+    char unk8B;
+    short killEmNum[5];
+    unsigned short killNpcNum;
+    unsigned char reelSlot[10];
+    char unkA2[2];
+    unsigned int clearStageMask;
+    unsigned char godItem[6];
+    unsigned char costumeNo;
+    unsigned char prevCostumeNo;
+    char skill[0x80];
+    unsigned int godReel;
+    unsigned char stock[0x20];
+    unsigned char vitalItemNum;
+    unsigned char tensionItemNum;
+    unsigned char reelItemNum;
+    unsigned char paper;
+    cCoreSaveSpawn_x0019BA40 spawn;
+    int worldToggle;
+    int worldActive;
+    int savedToggle;
+    int unk17C;
+    char unk180[0x30];
+    cCoreSaveCombo_x0019BA40 combo[6];
+    unsigned short itemNum;
+    cCoreSaveItem_x0019BA40 item[0x80];
+    char unkA8A[0x102];
+    unsigned int unkB8C;
+    unsigned int eventFlags;
+    int casinoTicketNum;
+    unsigned int fightingRingClear[4];
+    int fightingRingEmListNo;
+    short allKillEmNum[5];
+    unsigned short allKillNpcNum;
+    unsigned short allContinueNum;
+    unsigned short stateBits;
+    unsigned int allStageTime;
+    int oliviaCostumeNo;
+    char unkBC4[0x8DC];
+} cCoreSaveData_x0019BA40;
+typedef char cCoreSaveData_size_check[sizeof(cCoreSaveData_x0019BA40) == 0x14A0 ? 1 : -1];
+typedef struct cCoreSave_x0019BA40 {
+    cCoreSaveData_x0019BA40 *data;
+} cCoreSave_x0019BA40;
+void cCoreSave_setGameLevel_x0019BA40(cCoreSave_x0019BA40 *self, int level) __asm__("func_0019BA58");
+typedef struct cOmbb_x0019BA40 {
+    cOmBase_x0019BA40 base;
+    char unk5E0[0x20];
+    unsigned char fireLit;
+    unsigned char bombKind;
+    char unk602[2];
+    float countdown;
+    int hissSe;
+} cOmbb_x0019BA40;
+typedef struct cEmActorVt_x0019BA40 {
+    char unk00[0x60];
+    short suspendDelta;
+    short pad62;
+    void (*suspend)(void *self, int flag);
+    char unk68[8];
+    short setPosDelta;
+    short pad72;
+    void (*setPos)(void *self, int pos_x0019BA40);
+    short setScaleDelta;
+    short pad7A;
+    void (*setScale)(void *self, void *scale_x0019BA40);
+    char unk80[0x98 - 0x80];
+    short entryDelta;
+    short pad9A;
+    int (*entry_x0019BA40)(void *self, void *data, void *parent);
+    char unkA0[0xD8 - 0xA0];
+    short startDelta;
+    short padDA;
+    void (*startAction)(void *self);
+} cEmActorVt_x0019BA40;
+typedef struct cEmActor_x0019BA40 {
+    char unk000[0xF0];
+    struct cVec_x0019BA40 *pos_x0019BA40;
+    char unk0F4[0x100 - 0xF4];
+    float rot_x0019BA40[3];
+    char unk10C[0x214 - 0x10C];
+    cEmActorVt_x0019BA40 *vt;
+    char unk218[0x250 - 0x218];
+    int objFlags_x0019BA40;
+    char unk254[0x2FE - 0x254];
+    unsigned short actorId;
+    char unk300[0x4AC - 0x300];
+    int kind_x0019BA40;
+    char unk4B0[0x548 - 0x4B0];
+    short vitalMax;
+    short vital;
+    char unk54C[0x560 - 0x54C];
+    int dropItem_x0019BA40;
+    int emNo_x0019BA40;
+    char unk568[0x5A0 - 0x568];
+    int scrFlags_x0019BA40;
+    char unk5A4[4];
+    float speedRate_x0019BA40;
+    char unk5AC_x0019BA40[0x640 - 0x5AC];
+    unsigned short entryNo_x0019BA40;
+} cEmActor_x0019BA40;
+typedef char cEmActor_chk_flags[((int)&((cEmActor_x0019BA40 *)0)->objFlags_x0019BA40) == 0x250 ? 1 : -1];
+typedef char cEmActor_chk_kind[((int)&((cEmActor_x0019BA40 *)0)->kind_x0019BA40) == 0x4AC ? 1 : -1];
+typedef char cEmActor_chk_emno[((int)&((cEmActor_x0019BA40 *)0)->emNo_x0019BA40) == 0x564 ? 1 : -1];
+typedef char cEmActor_chk_entry[((int)&((cEmActor_x0019BA40 *)0)->entryNo_x0019BA40) == 0x640 ? 1 : -1];
+typedef char cEmActorVt_chk_entry[(int)&((cEmActorVt_x0019BA40 *)0)->entry_x0019BA40 == 0x9C ? 1 : -1];
+typedef struct SET_EM_DATA_x0019BA40 {
+    int objId;
+    char unk04[0xC];
+    cVec_x0019BA40 pos_x0019BA40;
+    float rot_x0019BA40;
+    unsigned int flags_x0019BA40;
+    int seBank;
+    int seNo;
+    unsigned char appPattern;
+    unsigned char entryNo_x0019BA40;
+} SET_EM_DATA_x0019BA40;
+typedef struct cEmSlot_x0019BA40 {
+    struct cEmSlot_x0019BA40 *prev;
+    struct cEmSlot_x0019BA40 *next;
+    cEmActor_x0019BA40 *em;
+    int kind_x0019BA40;
+    unsigned char used;
+    char unk11[3];
+} cEmSlot_x0019BA40;
+typedef struct cEmList_x0019BA40 {
+    cEmSlot_x0019BA40 *top_x0019BA40;
+    cEmSlot_x0019BA40 *last;
+} cEmList_x0019BA40;
+typedef struct cEmManage_x0019BA40 {
+    cEmSlot_x0019BA40 slot[64];
+    cEmList_x0019BA40 list;
+    int emNum;
+    int kindNum;
+    int unk510;
+    int slotWait;
+    unsigned char darkWorld;
+    char unk519[7];
+    cVec_x0019BA40 unk520_x0019BA40;
+    int unk530;
+    char unk534[4];
+    signed char bigHitEffWait_x0019BA40;
+    signed char unk539;
+    signed char unk53A;
+    signed char plBombHit;
+    signed char plCatched;
+    signed char plSorry;
+    signed char unk53E;
+    unsigned char unk53F;
+    signed char unk540;
+    signed char unk541;
+    short unk542;
+    float unk544;
+    float speedRate_x0019BA40;
+    int unk54C;
+    int turnBehind_x0019BA40;
+    int turnPlus;
+    int turnMinus;
+    int nextNo_x0019BA40;
+    cEmActor_x0019BA40 *unk560[5];
+    cEmActor_x0019BA40 *specialEm_x0019BA40[5];
+    cEmActor_x0019BA40 *unk588[4];
+    char unk598[8];
+    unsigned char unk5A0_x0019BA40;
+    unsigned char unk5A1;
+    unsigned char unk5A2;
+    unsigned char unk5A3;
+    unsigned char unk5A4;
+    unsigned char unk5A5;
+    char unk5A6[6];
+    cOmbb_x0019BA40 *unk5AC_x0019BA40[2];
+    char unk5B4;
+    unsigned char unk5B5_x0019BA40;
+} cEmManage_x0019BA40;
+typedef char SET_EM_DATA_chk_size[sizeof(SET_EM_DATA_x0019BA40) == 0x34 ? 1 : -1];
+typedef char SET_EM_DATA_chk_pos[(int)&((SET_EM_DATA_x0019BA40 *)0)->pos_x0019BA40 == 0x10 ? 1 : -1];
+typedef char SET_EM_DATA_chk_flags[(int)&((SET_EM_DATA_x0019BA40 *)0)->flags_x0019BA40 == 0x24 ? 1 : -1];
+typedef char cEmSlot_chk_size[sizeof(cEmSlot_x0019BA40) == 0x14 ? 1 : -1];
+typedef char cEmManage_chk_top[((int)&((cEmManage_x0019BA40 *)0)->list.top_x0019BA40) == 0x500 ? 1 : -1];
+typedef char cEmManage_chk_vec[((int)&((cEmManage_x0019BA40 *)0)->unk520_x0019BA40) == 0x520 ? 1 : -1];
+typedef char cEmManage_chk_wait[((int)&((cEmManage_x0019BA40 *)0)->bigHitEffWait_x0019BA40) == 0x538 ? 1 : -1];
+typedef char cEmManage_chk_rate[((int)&((cEmManage_x0019BA40 *)0)->speedRate_x0019BA40) == 0x548 ? 1 : -1];
+typedef char cEmManage_chk_turn[((int)&((cEmManage_x0019BA40 *)0)->turnBehind_x0019BA40) == 0x550 ? 1 : -1];
+typedef char cEmManage_chk_no[((int)&((cEmManage_x0019BA40 *)0)->nextNo_x0019BA40) == 0x55C ? 1 : -1];
+typedef char cEmManage_chk_special[((int)&((cEmManage_x0019BA40 *)0)->specialEm_x0019BA40) == 0x574 ? 1 : -1];
+typedef char cEmManage_chk_flags[((int)&((cEmManage_x0019BA40 *)0)->unk5A0_x0019BA40) == 0x5A0 ? 1 : -1];
+typedef char cEmManage_chk_5ac[((int)&((cEmManage_x0019BA40 *)0)->unk5AC_x0019BA40) == 0x5AC ? 1 : -1];
+typedef char cEmManage_chk_5b5[((int)&((cEmManage_x0019BA40 *)0)->unk5B5_x0019BA40) == 0x5B5 ? 1 : -1];
+void func_0019BA40_x0019BA40(cCoreSave_x0019BA40 *self) __asm__("func_0019BA40");
+/* cCoreSave_setGameLevel1_1F9AD0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/001b5160.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0019BA40_x0019BA40(cCoreSave_x0019BA40 *self) { cCoreSave_setGameLevel_x0019BA40(self, 1); }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019BA58);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019BAD8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019BB90);
@@ -856,7 +1352,18 @@ void func_0019C340(u8 *arg0, s32 arg1) {
 void func_0019C348(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0xC) = arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019C350);
+extern long long func_0031DE10_x0019C350(long long, long long) __asm__("__muldi3");
+extern long long func_003B7FE0_x0019C350(long long, long long) __asm__("func_0011F758");
+void func_0019C350_x0019C350(char *a0, char *a1) __asm__("func_0019C350");
+/* func_0035C548: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003264c8.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0019C350_x0019C350(char *a0, char *a1) {
+    long long r, r2;
+    if (*(int *)(a0 + 0xC) == 0) {
+        r = func_0031DE10_x0019C350(*(long long *)(a0 + 0x130), *(long long *)(a1));
+        r2 = func_003B7FE0_x0019C350(r, *(long long *)(a1 + 8));
+        *(long long *)(a0 + 0x128) += r2;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019C3A8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019C810);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019C870);
@@ -865,7 +1372,27 @@ void func_0019C920(s32 arg0, s32 arg1) {
     D_00426B3C = arg0;
     D_00426B38 = arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019C938);
+extern char D_00459990_x0019C938[] __asm__("D_004677A0");
+extern int D_003EE320_x0019C938 __asm__("D_00426B3C");
+extern int D_003EE31C_x0019C938 __asm__("D_00426B38");
+extern int D_003EE328_x0019C938 __asm__("D_00426B44");
+extern int D_003EE32C_x0019C938 __asm__("D_00426B48");
+extern void func_003A52F0_x0019C938(int a0, int a1, int a2) __asm__("memset");
+extern void func_003A57C4_x0019C938(int a0, char *a1) __asm__("func_00127A88");
+extern int strlen_x0019C938(const char *s) __asm__("func_00127BA0");
+struct S35CB20_x0019C938 { char b[0x112]; };
+void func_0019C938_x0019C938(void) __asm__("func_0019C938");
+/* func_0035CB20: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0035cb20.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0019C938_x0019C938(void) {
+    struct S35CB20_x0019C938 buf = *(struct S35CB20_x0019C938 *)D_00459990_x0019C938;
+    if (D_003EE320_x0019C938 != 0) {
+        func_003A52F0_x0019C938(D_003EE320_x0019C938, 0, D_003EE31C_x0019C938);
+        D_003EE328_x0019C938 = D_003EE320_x0019C938;
+        func_003A57C4_x0019C938(D_003EE320_x0019C938, buf.b);
+        D_003EE328_x0019C938 = D_003EE328_x0019C938 + strlen_x0019C938(buf.b);
+        D_003EE32C_x0019C938 = D_003EE328_x0019C938;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019CA98);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019CCD0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019CDF8);
@@ -968,7 +1495,23 @@ s32 *func_0019D4E0(void) {
 s32 func_0019D4F0(s32 arg0) {
     return arg0 == 2;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019D500);
+extern volatile int D_00766C9C_x0019D500 __asm__("D_00492A64");
+extern volatile int *D_00766C88_x0019D500 __asm__("D_00492A50");
+extern int D_00766C90_x0019D500 __asm__("D_00492A58");
+extern int *Obj35D0_GetStringPtr_D00459BF0_x0019D500(void) __asm__("func_0019D4E0");
+extern void initLibWork_x0019D500(int a0, int a1) __asm__("func_0019D720");
+extern void Obj35D0_SetFields_a1_Clear4_a2_D718_x0019D500(int *a0, int a1, int a2) __asm__("func_0019D6E0");
+void func_0019D500_x0019D500(int a0, int a1) __asm__("func_0019D500");
+/* func_0035D538: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00331ce0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0019D500_x0019D500(int a0, int a1) {
+    int t = D_00766C9C_x0019D500;
+    if (t <= 0) {
+        D_00766C9C_x0019D500 = t + 1;
+        D_00766C88_x0019D500 = Obj35D0_GetStringPtr_D00459BF0_x0019D500();
+        initLibWork_x0019D500(a0, a1);
+        Obj35D0_SetFields_a1_Clear4_a2_D718_x0019D500(&D_00766C90_x0019D500, a0, a1);
+    }
+}
 void func_0019D590(void) {
     s32 temp_v0;
 

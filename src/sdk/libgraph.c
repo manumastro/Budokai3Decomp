@@ -47,7 +47,33 @@ s32 *sceGsGetGParam(void) {
     return &D_003EC410;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libgraph", func_001003F0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libgraph", func_00100458);
+extern char D_0045DF50_x00100458[] __asm__("D_0045CB80");
+extern int func_003B4220_x00100458(const char *path, int flag) __asm__("func_0010F5E8");
+extern int func_003B4868_x00100458(int fd, void *buf, int nbyte) __asm__("func_0010FC30");
+extern int func_003B44B0_x00100458(int fd) __asm__("func_0010F878");
+extern int func_003A7C48_x00100458(const char *s) __asm__("func_001221D8");
+int func_00100458_x00100458(void) __asm__("func_00100458");
+/* checkModelVersion: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003964c0.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00100458_x00100458(void)
+{
+    char buf[256];
+    char *p;
+    int fd;
+    int i;
+
+    fd = func_003B4220_x00100458(D_0045DF50_x00100458, 1);
+    if (fd < 0) {
+        return -1;
+    }
+    for (i = 0, p = buf; (unsigned int)i < 256; p++, i++) {
+        func_003B4868_x00100458(fd, p, 1);
+        if (*p == 0) {
+            break;
+        }
+    }
+    func_003B44B0_x00100458(fd);
+    return func_003A7C48_x00100458(&buf[i - 9]) > 0x1315670;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libgraph", func_001004F8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgraph", sceGsDefDispEnv);
 typedef struct {

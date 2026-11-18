@@ -351,7 +351,40 @@ void func_00159838(u8 *arg0) {
         func_001597A8(arg0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_001598E8);
+extern void Forward33B658_33E678_x001598E8(void) __asm__("func_00152508");
+extern void Forward33B670_33E690_x001598E8(void) __asm__("func_00152520");
+extern void func_00327418_x001598E8(void *a) __asm__("func_00159990");
+extern void func_003272C0_x001598E8(void *a) __asm__("func_00159838");
+extern void func_00326890_x001598E8(void *a) __asm__("ADXB_DecodeHeader");
+extern void func_00327568_x001598E8(void *a) __asm__("func_00159AD8");
+void func_003272C0_x001598E8(void *a0) __asm__("func_00159838");
+void func_001598E8_x001598E8(void *a0) __asm__("func_001598E8");
+/* func_00327370: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003272c0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_001598E8_x001598E8(void *a0) {
+    void *s0;
+    int v0;
+    char v1;
+    s0 = a0;
+    v0 = *(int *)((char *)s0 + 0xA0);
+    if (v0 > 0) {
+        Forward33B658_33E678_x001598E8();
+        func_00327418_x001598E8(s0);
+        Forward33B670_33E690_x001598E8();
+    }
+    v1 = *(char *)((char *)s0 + 1);
+    if (v1 == 2) {
+        func_003272C0_x001598E8(s0);
+    } else if (v1 == 1) {
+        func_00326890_x001598E8(s0);
+    }
+    v0 = *(int *)((char *)s0 + 0xA4);
+    if (v0 <= 0) {
+        return;
+    }
+    Forward33B658_33E678_x001598E8();
+    func_00327568_x001598E8(s0);
+    Forward33B670_33E690_x001598E8();
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159990);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159AD8);
 void func_00159C10(void) {
@@ -6449,7 +6482,51 @@ Sint32_x0015D850 func_0015D850_x0015D850(ADXPS2_FCPRM_x0015D850* fcprm) {
     return ret;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015D8B0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015D918);
+typedef int (*CvFsFn_x0015D918)();
+typedef struct {
+    CvFsFn_x0015D918 exec_server;
+    CvFsFn_x0015D918 entry_err_func;
+    CvFsFn_x0015D918 get_file_size;
+    CvFsFn_x0015D918 get_free_size;
+    CvFsFn_x0015D918 open;
+    CvFsFn_x0015D918 close;
+    CvFsFn_x0015D918 seek;
+    CvFsFn_x0015D918 tell;
+    CvFsFn_x0015D918 req_rd;
+    CvFsFn_x0015D918 req_wr;
+    CvFsFn_x0015D918 stop_tr;
+    CvFsFn_x0015D918 get_stat;
+    CvFsFn_x0015D918 get_sct_len;
+    CvFsFn_x0015D918 set_sct_len;
+    CvFsFn_x0015D918 get_num_tr;
+    CvFsFn_x0015D918 change_dir;
+    CvFsFn_x0015D918 is_exist_file;
+    CvFsFn_x0015D918 get_num_files;
+    CvFsFn_x0015D918 load_dir_info;
+    CvFsFn_x0015D918 get_max_byte_rate;
+    CvFsFn_x0015D918 make_dir;
+    CvFsFn_x0015D918 remove_dir;
+    CvFsFn_x0015D918 delete_file;
+    CvFsFn_x0015D918 get_file_size_ex;
+    CvFsFn_x0015D918 opt_fn1;
+    CvFsFn_x0015D918 opt_fn2;
+    char pad_68[8];
+} CvFsDevIf_x0015D918;
+extern void cvFsAddDev_x0015D918(char *name, CvFsDevIf_x0015D918 *(*getif)(void)) __asm__("cvFsAddDev");
+void dvci_set_read_mode_x0015D918(int trycount, int spindlctrl, int datapattern, int flag) __asm__("func_00167AB8");
+void dvci_set_cur_dir_x0015D918(const char *dir) __asm__("func_00167AD8");
+void func_0015D918_x0015D918(int *prm) __asm__("func_0015D918");
+/* adx_dvci_config: from https://github.com/new-coke/rez-decomp (src/cri/adx_dvci.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0015D918_x0015D918(int *prm)
+{
+    if (prm != 0) {
+        dvci_set_read_mode_x0015D918(prm[2], prm[3], prm[4], prm[1]);
+        dvci_set_cur_dir_x0015D918(prm[0]);
+    } else {
+        dvci_set_read_mode_x0015D918(0, 0, 0, 0);
+        dvci_set_cur_dir_x0015D918(0);
+    }
+}
 void func_0015D980(void) {
     func_00167A90();
 }
@@ -6534,7 +6611,219 @@ s32 func_0015DCB8(void) {
 void func_0015DCC8(s32 arg0) {
     D_00411158 = arg0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015DCD8);
+typedef int (*CvFsFn_x0015DCD8)();
+typedef struct {
+    CvFsFn_x0015DCD8 exec_server;
+    CvFsFn_x0015DCD8 entry_err_func;
+    CvFsFn_x0015DCD8 get_file_size;
+    CvFsFn_x0015DCD8 get_free_size;
+    CvFsFn_x0015DCD8 open;
+    CvFsFn_x0015DCD8 close;
+    CvFsFn_x0015DCD8 seek;
+    CvFsFn_x0015DCD8 tell;
+    CvFsFn_x0015DCD8 req_rd;
+    CvFsFn_x0015DCD8 req_wr;
+    CvFsFn_x0015DCD8 stop_tr;
+    CvFsFn_x0015DCD8 get_stat;
+    CvFsFn_x0015DCD8 get_sct_len;
+    CvFsFn_x0015DCD8 set_sct_len;
+    CvFsFn_x0015DCD8 get_num_tr;
+    CvFsFn_x0015DCD8 change_dir;
+    CvFsFn_x0015DCD8 is_exist_file;
+    CvFsFn_x0015DCD8 get_num_files;
+    CvFsFn_x0015DCD8 load_dir_info;
+    CvFsFn_x0015DCD8 get_max_byte_rate;
+    CvFsFn_x0015DCD8 make_dir;
+    CvFsFn_x0015DCD8 remove_dir;
+    CvFsFn_x0015DCD8 delete_file;
+    CvFsFn_x0015DCD8 get_file_size_ex;
+    CvFsFn_x0015DCD8 opt_fn1;
+    CvFsFn_x0015DCD8 opt_fn2;
+    char pad_68[8];
+} CvFsDevIf_x0015DCD8;
+typedef struct {
+    signed char used;
+    signed char busy;
+    signed char send_on;
+    char pad_03[1];
+    int svr;
+    int seq;
+    char *eewk;
+    int len;
+    int *ucwk;
+    char *iopwk;
+    int wklen;
+    void (*fn20)();
+    void *obj24;
+    void (*fn28)();
+    void *obj2c;
+    struct { int data; char *addr; int size; int mode; } dma;
+    int dmaid;
+} DtxObj_x0015DCD8;
+typedef struct SjObj_x0015DCD8 SjObj_x0015DCD8;
+typedef struct {
+    char pad_00[12];
+    void (*destroy)(SjObj_x0015DCD8 *sj);
+    void *(*get_uuid)(SjObj_x0015DCD8 *sj);
+    void (*reset)(SjObj_x0015DCD8 *sj);
+    void (*getchunk)(SjObj_x0015DCD8 *sj, int id, int nbyte, void *ck);
+    void (*ungetchunk)(SjObj_x0015DCD8 *sj, int id, void *ck);
+    void (*putchunk)(SjObj_x0015DCD8 *sj, int id, void *ck);
+    int (*getnum)(SjObj_x0015DCD8 *sj, int id);
+    int (*is_get_chunk)(SjObj_x0015DCD8 *sj, int id, int nbyte, int *rbyte);
+    void (*set_error_cb)(SjObj_x0015DCD8 *sj, void *fn, void *obj);
+} SjIf_x0015DCD8;
+struct SjObj_x0015DCD8 {
+    SjIf_x0015DCD8 *vtbl;
+};
+typedef struct {
+    signed char used;
+    char pad_01[3];
+    void *sjrmt;
+    SjObj_x0015DCD8 *sjuni;
+    void *sjx;
+    char *ckdata;
+    int cklen;
+} PsjObj_x0015DCD8;
+typedef struct SjChunk_x0015DCD8 {
+    char *data;
+    int len;
+} SjChunk_x0015DCD8;
+typedef struct {
+    signed char used;
+    signed char stat;
+    signed char busy;
+    SjObj_x0015DCD8 *sjin;
+    SjObj_x0015DCD8 *sjout;
+    SjChunk_x0015DCD8 ckin;
+    SjChunk_x0015DCD8 ckout;
+    int dma_data;
+    int dma_addr;
+    int dma_size;
+    int dma_mode;
+    int sema;
+    int unk_30;
+    int unk_34;
+    int unit;
+    int xfer_total;
+} DtrObj_x0015DCD8;
+typedef struct {
+    signed char used;
+    int nch;
+    PsjObj_x0015DCD8 *psj[2];
+    DtrObj_x0015DCD8 *dtr[2];
+    SjObj_x0015DCD8 *sj[2];
+    void *id;
+    signed char play;
+    signed char play_sent;
+    signed char nch_cur;
+    signed char nch_sent;
+    int sfreq;
+    int sfreq_sent;
+    int vol;
+    int vol_sent;
+    int outpan[2];
+    int unk_40[2];
+    signed char transfer_sw;
+    signed char unk_49;
+    int unk_4c;
+    int bufsize;
+} Ps2rnaObj_x0015DCD8;
+typedef struct {
+    signed char used;
+    signed char stat;
+    signed char pmode;
+    signed char nch;
+    void *sjd;
+    int fstm;
+    int rna;
+    SjObj_x0015DCD8 *sjf;
+    SjObj_x0015DCD8 *sji;
+    SjObj_x0015DCD8 *sjo[2];
+    unsigned char *wbuf;
+    int wsize;
+    int unk_28;
+    unsigned char *work;
+    int obuf_size;
+    int obuf_dist;
+    int svr_freq;
+    short maxsct;
+    short minsct;
+    short outvol;
+    short outpan[2];
+    char pad_46[6];
+    int lpcnt;
+    char pad_50[4];
+    int unk_54;
+    int unk_58;
+    int unk_5c;
+    short ercode;
+    char pad_62[2];
+    int unk_64;
+    short unk_68;
+    short unk_6a;
+    signed char lpflg;
+    signed char rcvr_mode;
+    char pad_6e[2];
+    signed char start_hold;
+    signed char ready;
+    signed char pause;
+    char pad_73[1];
+    void *pkm;
+    SjObj_x0015DCD8 *sjx[2];
+    SjObj_x0015DCD8 *sjy[2];
+    int time_ofst;
+    int unk_8c;
+    int unk_90;
+    void *stm;
+    signed char unk_98;
+    char pad_99[3];
+    int vsync_time;
+    int vsync_base;
+} AdxtObj_x0015DCD8;
+struct SjObj_x0015DCD8;
+int printf_x0015DCD8(const char *fmt, ...) __asm__("scePrintf");
+struct SjObj_x0015DCD8;
+struct SjObj_x0015DCD8;
+struct SjObj_x0015DCD8;
+struct SjObj_x0015DCD8;
+extern void cvFsAddDev_x0015DCD8(char *name, CvFsDevIf_x0015DCD8 *(*getif)(void)) __asm__("cvFsAddDev");
+struct SjObj_x0015DCD8;
+struct SjObj_x0015DCD8;
+struct SjObj_x0015DCD8 *ps2rna_get_sjuni_x0015DCD8(Ps2rnaObj_x0015DCD8 *rna, int ch) __asm__("func_0016D9F8");
+void *ps2rna_get_sjrmt_x0015DCD8(Ps2rnaObj_x0015DCD8 *rna, int ch) __asm__("func_0016DA38");
+struct SjChunk_x0015DCD8;
+struct SjChunk_x0015DCD8;
+int sjrmt_get_num_data_x0015DCD8(void *sj, int id) __asm__("func_0016F640");
+struct SjChunk_x0015DCD8;
+struct SjObj_x0015DCD8;
+extern void dtx_set_send_cb_x0015DCD8(DtxObj_x0015DCD8 *dtx, void (*fn)(), void *obj) __asm__("dtx_set_send_cb");
+extern void dtx_set_recv_cb_x0015DCD8(DtxObj_x0015DCD8 *dtx, void (*fn)(), void *obj) __asm__("dtx_set_recv_cb");
+extern char ext_str0_x0015DCD8[] __asm__("D_00461850");
+extern char ext_str1_x0015DCD8[] __asm__("D_00461830");
+extern char ext_str2_x0015DCD8[] __asm__("D_00461810");
+void func_0015DCD8_x0015DCD8(AdxtObj_x0015DCD8 *adxt) __asm__("func_0015DCD8");
+/* adxt_debug_print: from https://github.com/new-coke/rez-decomp (src/cri/adxt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0015DCD8_x0015DCD8(AdxtObj_x0015DCD8 *adxt)
+{
+    void *rna;
+    void *iop;
+    SjObj_x0015DCD8 *sj;
+    int ntmp0;
+    int ntmp2;
+    int niop0;
+    int niop2;
+    rna = (void *)adxt->rna;
+    iop = ps2rna_get_sjrmt_x0015DCD8(rna, 0);
+    sj = ps2rna_get_sjuni_x0015DCD8(rna, 0);
+    ntmp0 = sj->vtbl->getnum(sj, 1);
+    ntmp2 = sj->vtbl->getnum(sj, 0);
+    niop0 = sjrmt_get_num_data_x0015DCD8(iop, 1);
+    niop2 = sjrmt_get_num_data_x0015DCD8(iop, 0);
+    printf_x0015DCD8(ext_str2_x0015DCD8, ntmp0, ntmp2, ntmp0 + ntmp2);
+    printf_x0015DCD8(ext_str1_x0015DCD8, niop0, niop2, niop0 + niop2);
+    printf_x0015DCD8(ext_str0_x0015DCD8, adxt->stat, ntmp0 + ntmp2 + niop0 + niop2);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", ADXT_Create);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015E0E8);
 extern s32 (*D_0041116C_x0015E140)() __asm__("D_0041116C");
@@ -8260,8 +8549,253 @@ s8 ADXT_GetStat(u8 *arg0) {
     }
     return *(s8 *)((u8 *)arg0 + 1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015E7E0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015E818);
+typedef int (*CvFsFn_x0015E7E0)();
+typedef struct {
+    CvFsFn_x0015E7E0 exec_server;
+    CvFsFn_x0015E7E0 entry_err_func;
+    CvFsFn_x0015E7E0 get_file_size;
+    CvFsFn_x0015E7E0 get_free_size;
+    CvFsFn_x0015E7E0 open;
+    CvFsFn_x0015E7E0 close;
+    CvFsFn_x0015E7E0 seek;
+    CvFsFn_x0015E7E0 tell;
+    CvFsFn_x0015E7E0 req_rd;
+    CvFsFn_x0015E7E0 req_wr;
+    CvFsFn_x0015E7E0 stop_tr;
+    CvFsFn_x0015E7E0 get_stat;
+    CvFsFn_x0015E7E0 get_sct_len;
+    CvFsFn_x0015E7E0 set_sct_len;
+    CvFsFn_x0015E7E0 get_num_tr;
+    CvFsFn_x0015E7E0 change_dir;
+    CvFsFn_x0015E7E0 is_exist_file;
+    CvFsFn_x0015E7E0 get_num_files;
+    CvFsFn_x0015E7E0 load_dir_info;
+    CvFsFn_x0015E7E0 get_max_byte_rate;
+    CvFsFn_x0015E7E0 make_dir;
+    CvFsFn_x0015E7E0 remove_dir;
+    CvFsFn_x0015E7E0 delete_file;
+    CvFsFn_x0015E7E0 get_file_size_ex;
+    CvFsFn_x0015E7E0 opt_fn1;
+    CvFsFn_x0015E7E0 opt_fn2;
+    char pad_68[8];
+} CvFsDevIf_x0015E7E0;
+extern void cvFsAddDev_x0015E7E0(char *name, CvFsDevIf_x0015E7E0 *(*getif)(void)) __asm__("cvFsAddDev");
+extern int adxt_vsync_rate_x0015E7E0 __asm__("D_004111A8");
+extern int adxt_vsync_mode_x0015E7E0 __asm__("D_0041115C");
+void func_0015E7E0_x0015E7E0(int mode) __asm__("func_0015E7E0");
+/* adxt_set_vsync_mode: from https://github.com/new-coke/rez-decomp (src/cri/adxt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0015E7E0_x0015E7E0(int mode)
+{
+    if (mode == 1)
+        adxt_vsync_rate_x0015E7E0 = 5994;
+    else if (mode == 2)
+        adxt_vsync_rate_x0015E7E0 = 5000;
+    adxt_vsync_mode_x0015E7E0 = mode;
+}
+typedef int (*CvFsFn_x0015E818)();
+typedef struct {
+    CvFsFn_x0015E818 exec_server;
+    CvFsFn_x0015E818 entry_err_func;
+    CvFsFn_x0015E818 get_file_size;
+    CvFsFn_x0015E818 get_free_size;
+    CvFsFn_x0015E818 open;
+    CvFsFn_x0015E818 close;
+    CvFsFn_x0015E818 seek;
+    CvFsFn_x0015E818 tell;
+    CvFsFn_x0015E818 req_rd;
+    CvFsFn_x0015E818 req_wr;
+    CvFsFn_x0015E818 stop_tr;
+    CvFsFn_x0015E818 get_stat;
+    CvFsFn_x0015E818 get_sct_len;
+    CvFsFn_x0015E818 set_sct_len;
+    CvFsFn_x0015E818 get_num_tr;
+    CvFsFn_x0015E818 change_dir;
+    CvFsFn_x0015E818 is_exist_file;
+    CvFsFn_x0015E818 get_num_files;
+    CvFsFn_x0015E818 load_dir_info;
+    CvFsFn_x0015E818 get_max_byte_rate;
+    CvFsFn_x0015E818 make_dir;
+    CvFsFn_x0015E818 remove_dir;
+    CvFsFn_x0015E818 delete_file;
+    CvFsFn_x0015E818 get_file_size_ex;
+    CvFsFn_x0015E818 opt_fn1;
+    CvFsFn_x0015E818 opt_fn2;
+    char pad_68[8];
+} CvFsDevIf_x0015E818;
+typedef struct {
+    signed char used;
+    signed char busy;
+    signed char send_on;
+    char pad_03[1];
+    int svr;
+    int seq;
+    char *eewk;
+    int len;
+    int *ucwk;
+    char *iopwk;
+    int wklen;
+    void (*fn20)();
+    void *obj24;
+    void (*fn28)();
+    void *obj2c;
+    struct { int data; char *addr; int size; int mode; } dma;
+    int dmaid;
+} DtxObj_x0015E818;
+typedef struct SjObj_x0015E818 SjObj_x0015E818;
+typedef struct {
+    char pad_00[12];
+    void (*destroy)(SjObj_x0015E818 *sj);
+    void *(*get_uuid)(SjObj_x0015E818 *sj);
+    void (*reset)(SjObj_x0015E818 *sj);
+    void (*getchunk)(SjObj_x0015E818 *sj, int id, int nbyte, void *ck);
+    void (*ungetchunk)(SjObj_x0015E818 *sj, int id, void *ck);
+    void (*putchunk)(SjObj_x0015E818 *sj, int id, void *ck);
+    int (*getnum)(SjObj_x0015E818 *sj, int id);
+    int (*is_get_chunk)(SjObj_x0015E818 *sj, int id, int nbyte, int *rbyte);
+    void (*set_error_cb)(SjObj_x0015E818 *sj, void *fn, void *obj);
+} SjIf_x0015E818;
+struct SjObj_x0015E818 {
+    SjIf_x0015E818 *vtbl;
+};
+typedef struct {
+    signed char used;
+    char pad_01[3];
+    void *sjrmt;
+    SjObj_x0015E818 *sjuni;
+    void *sjx;
+    char *ckdata;
+    int cklen;
+} PsjObj_x0015E818;
+typedef struct SjChunk_x0015E818 {
+    char *data;
+    int len;
+} SjChunk_x0015E818;
+typedef struct {
+    signed char used;
+    signed char stat;
+    signed char busy;
+    SjObj_x0015E818 *sjin;
+    SjObj_x0015E818 *sjout;
+    SjChunk_x0015E818 ckin;
+    SjChunk_x0015E818 ckout;
+    int dma_data;
+    int dma_addr;
+    int dma_size;
+    int dma_mode;
+    int sema;
+    int unk_30;
+    int unk_34;
+    int unit;
+    int xfer_total;
+} DtrObj_x0015E818;
+typedef struct {
+    signed char used;
+    int nch;
+    PsjObj_x0015E818 *psj[2];
+    DtrObj_x0015E818 *dtr[2];
+    SjObj_x0015E818 *sj[2];
+    void *id;
+    signed char play;
+    signed char play_sent;
+    signed char nch_cur;
+    signed char nch_sent;
+    int sfreq;
+    int sfreq_sent;
+    int vol;
+    int vol_sent;
+    int outpan[2];
+    int unk_40[2];
+    signed char transfer_sw;
+    signed char unk_49;
+    int unk_4c;
+    int bufsize;
+} Ps2rnaObj_x0015E818;
+typedef struct {
+    signed char used;
+    signed char stat;
+    signed char pmode;
+    signed char nch;
+    void *sjd;
+    int fstm;
+    int rna;
+    SjObj_x0015E818 *sjf;
+    SjObj_x0015E818 *sji;
+    SjObj_x0015E818 *sjo[2];
+    unsigned char *wbuf;
+    int wsize;
+    int unk_28;
+    unsigned char *work;
+    int obuf_size;
+    int obuf_dist;
+    int svr_freq;
+    short maxsct;
+    short minsct;
+    short outvol;
+    short outpan[2];
+    char pad_46[6];
+    int lpcnt;
+    char pad_50[4];
+    int unk_54;
+    int unk_58;
+    int unk_5c;
+    short ercode;
+    char pad_62[2];
+    int unk_64;
+    short unk_68;
+    short unk_6a;
+    signed char lpflg;
+    signed char rcvr_mode;
+    char pad_6e[2];
+    signed char start_hold;
+    signed char ready;
+    signed char pause;
+    char pad_73[1];
+    void *pkm;
+    SjObj_x0015E818 *sjx[2];
+    SjObj_x0015E818 *sjy[2];
+    int time_ofst;
+    int unk_8c;
+    int unk_90;
+    void *stm;
+    signed char unk_98;
+    char pad_99[3];
+    int vsync_time;
+    int vsync_base;
+} AdxtObj_x0015E818;
+struct SjObj_x0015E818;
+void adxrna_get_time_x0015E818(Ps2rnaObj_x0015E818 *rna, int *type, int *rate) __asm__("func_001588B0");
+struct SjObj_x0015E818;
+struct SjObj_x0015E818;
+struct SjObj_x0015E818;
+struct SjObj_x0015E818;
+extern void cvFsAddDev_x0015E818(char *name, CvFsDevIf_x0015E818 *(*getif)(void)) __asm__("cvFsAddDev");
+struct SjObj_x0015E818;
+struct SjObj_x0015E818;
+struct SjChunk_x0015E818;
+struct SjChunk_x0015E818;
+struct SjChunk_x0015E818;
+struct SjObj_x0015E818;
+extern void dtx_set_send_cb_x0015E818(DtxObj_x0015E818 *dtx, void (*fn)(), void *obj) __asm__("dtx_set_send_cb");
+extern void dtx_set_recv_cb_x0015E818(DtxObj_x0015E818 *dtx, void (*fn)(), void *obj) __asm__("dtx_set_recv_cb");
+extern int adxsjd_get_total_smpl_x0015E818(void *sjd) __asm__("func_00159E28");
+extern int adxsjd_get_sfreq_x0015E818(void *sjd) __asm__("ADXSJD_GetSfreq");
+extern int adxsjd_get_out_bps_x0015E818(void *sjd) __asm__("func_00159DE0");
+void func_0015E818_x0015E818(AdxtObj_x0015E818 *adxt, int *ncount, int *tscale) __asm__("func_0015E818");
+/* adxt_get_time_raw: from https://github.com/new-coke/rez-decomp (src/cri/adxt.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0015E818_x0015E818(AdxtObj_x0015E818 *adxt, int *ncount, int *tscale)
+{
+    if (adxt->stat == 3 || adxt->stat == 4) {
+        adxrna_get_time_x0015E818((void *)adxt->rna, ncount, tscale);
+    } else if (adxt->stat == 5) {
+        *ncount = adxsjd_get_total_smpl_x0015E818(adxt->sjd);
+        *tscale = adxsjd_get_sfreq_x0015E818(adxt->sjd);
+        *ncount *= 16 / adxsjd_get_out_bps_x0015E818(adxt->sjd);
+    } else {
+        *ncount = 0;
+        *tscale = 1;
+    }
+    *ncount += adxt->time_ofst;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015E8E0);
 void func_0015EA08(void) {
     D_0041117C += 1;

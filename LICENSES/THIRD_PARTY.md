@@ -19,6 +19,9 @@ file's first comment) to the instructions of this executable.
 | https://github.com/AshfordFamily/recvx-decomp | MIT | LICENSES/recvx-decomp-MIT.txt |
 | https://github.com/Dorgengoa/RGDecomp (src/main/sdk/) | CC0-1.0 | LICENSES/RGDecomp-CC0.txt |
 | newlib 1.10.0 (https://sourceware.org/newlib/) | per-file notices (BSD-style) | below |
+| https://github.com/LucasPicoli/god-hand-decomp | MIT | LICENSES/god-hand-decomp-MIT.txt |
+| https://github.com/new-coke/rez-decomp | MIT | LICENSES/rez-decomp-MIT.txt |
+| https://github.com/TheRealestNwah/sotc-decomp | CC0-1.0 | LICENSES/sotc-decomp-CC0.txt |
 | https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/) | AGPL-3.0 | LICENSES/3s-decomp-AGPL-3.0.txt |
 
 newlib: each function taken from it carries its origin file's notice where that file has one. Files without a notice

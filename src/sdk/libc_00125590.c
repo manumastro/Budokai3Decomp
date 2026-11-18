@@ -106,4 +106,17 @@ void __malloc_lock(void) {
     D_003F00B0 = temp_v0;
     D_003F00B4 += 1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc_00125590", __malloc_unlock);
+extern int D_00040D60_x00125A38 __asm__("D_003F00B4");
+extern int D_00040D5C_x00125A38 __asm__("D_003F00B0");
+extern int B_000BF6CC_x00125A38 __asm__("D_003ECD50");
+extern void SignalSema_x00125A38(int) __asm__("SignalSema");
+void __malloc_unlock_x00125A38(void) __asm__("__malloc_unlock");
+/* isysObjSignalSema: from https://github.com/TheRealestNwah/sotc-decomp (src/xff/KERNEL/vscheduler.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void __malloc_unlock_x00125A38(void)
+{
+    int *p = &D_00040D60_x00125A38;
+    if (--*p == 0) {
+        D_00040D5C_x00125A38 = -1;
+        SignalSema_x00125A38(B_000BF6CC_x00125A38);
+    }
+}

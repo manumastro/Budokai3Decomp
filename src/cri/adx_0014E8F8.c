@@ -54,6 +54,13 @@ void func_0014EC80(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0xC8) = (s32) (arg1 / 1536);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014E8F8", func_0014ECA0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014E8F8", func_0014ECD0);
+extern void (*D_003E9D20_x0014ECD0)(void) __asm__("D_00400E68");
+void func_0014ECD0_x0014ECD0(int *a0) __asm__("func_0014ECD0");
+/* func_0033C2C0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0031f4e0.c, MIT); ee-gcc 2.96 -O2 -G0 */
+void func_0014ECD0_x0014ECD0(int *a0) {
+    if (a0[0x30]) {
+        D_003E9D20_x0014ECD0();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014E8F8", func_0014ED00);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014E8F8", func_0014EDB0);
