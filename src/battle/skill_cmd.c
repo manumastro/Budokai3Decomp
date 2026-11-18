@@ -638,9 +638,6 @@ void SkillKill_Kind05(s32 *p) {
         p[20] = 0;
     }
 }
-#if 0
-// differs: 23 of 85 at the start (s1/s2 order fixed by declaration order), then 33 of 87: the original computes
-// &a0->0x30 into a0 and loads the 0.5 scale (lwc1 f0) before move a1,a0 and the jal; a local pointer moves it to s1.
 extern s8 D_004703F4;
 void func_0024E7B0(s32 a0) {
     u8 *s2;
@@ -672,8 +669,6 @@ void func_0024E7B0(s32 a0) {
     *(s32 *)(a0 + 0x54) = func_00209540(v, (s0 != 0) ? 0x4000020 : 0x4000010, 0);
     func_00209B50(*(s32 *)(a0 + 0x54), a0 + 0x20, 0);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E7B0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E910);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024ECE0);
 void SkillKill_Kind04(s32 *p) {
