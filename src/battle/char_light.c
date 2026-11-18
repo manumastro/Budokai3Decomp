@@ -1,9 +1,9 @@
 #include "common.h"
 
 extern void func_00146F30(void *);
-typedef struct LObjA { f32 t; u8 p[8]; s32 type; LSubA *sub; u8 q[0x14]; s32 f28; } LObjA;
-typedef struct LSubA { u8 p[8]; s32 f8; u8 q[0x24]; LV *f30; } LSubA;
 typedef struct LV { u8 p[0x40]; f32 a; u8 p2[4]; f32 b; } LV;
+typedef struct LSubA { u8 p[8]; s32 f8; u8 q[0x24]; LV *f30; } LSubA;
+typedef struct LObjA { f32 t; u8 p[8]; s32 type; LSubA *sub; u8 q[0x14]; s32 f28; } LObjA;
 typedef struct PtrCount { void *p; s32 n; } PtrCount;
 extern void amTask_Kill(void *);
 extern void amModel_SetCurrent(s32, s32);
