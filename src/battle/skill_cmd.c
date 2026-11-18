@@ -1623,7 +1623,7 @@ void func_002538E0(s32 *a0, u8 *a1) {
     }
     func_00253320((s32 *)buf, a1, dx, dy);
 }
-// GIVEN UP: differs: size 0x140 vs 0x150 (4 instructions short): the range test order (the original tests the sign first and jumps to a shared b to the epilogue), and the zero float is hoisted to the entry; 4 forms
+// differs: 15 of 82: the original has an extra mtc1 zero,f0 at entry (a dead 0.0f, not a saved float local) and idx in v0 / at; shape matches (early return gives bltz; slti; bnez; b end).
 #if 0
 void func_00253A50(s32 *a0, u8 *a1) {
     u8 buf[0x60] __attribute__((aligned(16)));
@@ -1632,29 +1632,31 @@ void func_00253A50(s32 *a0, u8 *a1) {
     f32 dx;
     f32 dy;
 
-    if (0x1C > idx && 0 <= idx) {
-        s0 = D_00452740 + (idx << 4);
-        memset(buf, 0, 0x60);
-        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x20), "r"(a1));
-        func_00125740(buf + 0x40, s0, 16);
-        *(f32 *)(buf + 0x44) = *(f32 *)(buf + 0x44) + 0.5f;
-        *(f32 *)(buf + 0x48) = *(f32 *)(buf + 0x48) - 0.5f;
-        *(f32 *)(buf + 0x4C) = *(f32 *)(buf + 0x4C) - 0.5f;
-        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x50), "r"(a1 + 0x10));
-        *(f32 *)(buf + 0) = 0.0f;
-        *(s32 *)(buf + 4) = ((*(u32 *)(a1 + 0x30) & 0x30000) >> 15) | 1;
-        *(s32 *)(buf + 0x10) = ((s32 *)*(s32 *)((u8 *)a0 + 0xC))[1];
-        *(s32 *)(buf + 0x14) = *(s32 *)((u8 *)a0 + 4);
-        *(s16 *)(buf + 0x18) = 0;
-        *(s16 *)(buf + 0x1A) = 0;
-        {
-            f32 d0 = *(f32 *)(s0 + 8) - *(f32 *)(s0 + 0);
-            f32 d1 = *(f32 *)(s0 + 0xC) - *(f32 *)(s0 + 4);
-            __asm__ volatile ("abs.s %0, %1" : "=f"(dx) : "f"(d0));
-            __asm__ volatile ("abs.s %0, %1" : "=f"(dy) : "f"(d1));
-        }
-        func_00253320((s32 *)buf, a1, dx, dy);
+    if (idx < 0 || idx >= 0x1C) {
+        return;
     }
+    s0 = D_00452740 + (idx << 4);
+    memset(buf, 0, 0x60);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x20), "r"(a1));
+    func_00125740(buf + 0x40, s0, 16);
+    *(f32 *)(buf + 0x44) = *(f32 *)(buf + 0x44) + 0.5f;
+    *(f32 *)(buf + 0x48) = *(f32 *)(buf + 0x48) - 0.5f;
+    *(f32 *)(buf + 0x4C) = *(f32 *)(buf + 0x4C) - 0.5f;
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(buf + 0x50), "r"(a1 + 0x10));
+    *(f32 *)(buf + 0) = 0.0f;
+    *(s32 *)(buf + 4) = ((*(u32 *)(a1 + 0x30) & 0x30000) >> 15) | 1;
+    *(s32 *)(buf + 0x10) = ((s32 *)*(s32 *)((u8 *)a0 + 0xC))[1];
+    *(s32 *)(buf + 0x14) = *(s32 *)((u8 *)a0 + 4);
+    *(s16 *)(buf + 0x18) = 0;
+    *(s16 *)(buf + 0x1A) = 0;
+    {
+        f32 d0 = *(f32 *)(s0 + 8) - *(f32 *)(s0 + 0);
+        f32 d1 = *(f32 *)(s0 + 0xC) - *(f32 *)(s0 + 4);
+        __asm__ volatile ("abs.s %0, %1" : "=f"(dx) : "f"(d0));
+        __asm__ volatile ("abs.s %0, %1" : "=f"(dy) : "f"(d1));
+    }
+    func_00253320((s32 *)buf, a1, dx, dy);
+
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00253A50);
@@ -3156,10 +3158,8 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00259D90);
 extern s32 amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
 extern u8 D_0046AE80[];
 extern u8 D_0046AE90[];
+// differs: 3 of 75 (adiff): in the second amTask_Create the original issues addiu t1 before ori t0 (ori in the jal slot), ours the reverse; gBtlSys is loaded before the test.
 #if 0
-/* differs: 0x124 bytes against 0x130 whatever the order of the five locals (searched): a structural
- * 12-byte gap, probably one instruction of the table or the memset block. The argument copy and gBtlSys
- * swap $s1/$s2 as well. */
 s32 func_00259EB0(s32 a0, f32 f12) {
     s32 k;
     u8 *s1;
@@ -3167,12 +3167,12 @@ s32 func_00259EB0(s32 a0, f32 f12) {
     s32 v;
     s32 w;
 
+    s1 = gBtlSys;
     k = a0;
     s0 = &D_0058D4D0[k];
     if (*s0 != 0) {
         return 0;
     }
-    s1 = gBtlSys;
     v = amTask_Create((void (*)(void *))func_002599C0, 0, 0x5410, 0x1000, 0x2000000, (char *)D_0046AE80);
     *s0 = v;
     s0 = (s32 *)(v + 0x30);
