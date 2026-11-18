@@ -5,6 +5,12 @@ extern void func_00125740(void *, void *, s32);
 extern s32 *D_0058BB64[];
 extern s32 D_0058BB70[];
 extern void func_0022C060(s32);
+extern void amDraw_SetPacketMode(s32);
+extern void func_0022CD00(s32 *);
+typedef struct A2dEnt {
+    s32 *p;
+    f32 v;
+} A2dEnt;
 extern void func_0022B900(s32 *, s32 *, f32);
 extern s32 func_0022BC30(s32 *, s32 *, f32);
 
@@ -751,7 +757,50 @@ void func_0022C430(s32 *a0, f32 f) {
 void func_0022C550(s32 *p) {
     func_0022C560(p[6]);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C560);
+void func_0022C560(s32 a0) {
+    s32 *p;
+    s32 i;
+    s32 off;
+    A2dEnt *b;
+
+    p = *(s32 **)((u8 *)a0 + 0x30);
+    if (p != 0) {
+        ((A2dEnt *)D_004706C0)[D_004706BC].p = p;
+        b = (A2dEnt *)D_004706C0;
+        b[D_004706BC].v = 100.0f * *(f32 *)((u8 *)p + 0x28);
+        D_004706BC += 1;
+    }
+    p = *(s32 **)((u8 *)a0 + 0x28);
+    if (p != 0) {
+        func_0022CD00(p);
+    }
+    p = *(s32 **)((u8 *)a0 + 0x2C);
+    if (p != 0) {
+        func_0022CD00(p);
+    }
+    if (D_004706BC > 1) {
+        func_00227010((s32 *)D_004706C0, (s32 *)(D_004706C0 + (D_004706BC - 1) * 8));
+    }
+    amDraw_SetPacketMode(1);
+    if (0 < D_004706BC) {
+        i = 0;
+        off = 0;
+        do {
+            s32 *e = *(s32 **)(D_004706C0 + off);
+            if (e[1] & 1) {
+                if (*(s16 *)((u8 *)e + 0x18) >= 0) {
+                    func_002269B0(e);
+                } else {
+                    func_00226540(e);
+                }
+            }
+            i += 1;
+            off += 8;
+        } while (i < D_004706BC);
+    }
+    amDraw_SetPacketMode(0);
+    D_004706BC = 0;
+}
 void func_0022C6B0(s32 *p) {
     if (p[1] & 1) {
         if (*(s16 *)((u8 *)p + 0x18) >= 0) {
@@ -762,7 +811,6 @@ void func_0022C6B0(s32 *p) {
     }
 }
 extern void func_00227010(s32 *, s32 *);
-extern void amDraw_SetPacketMode(s32);
 void A2d_FlushList(void) {
     s32 i;
     s32 off;
@@ -810,10 +858,6 @@ void func_0022CC80(s32 a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CD00);
-typedef struct A2dEnt {
-    s32 *p;
-    f32 v;
-} A2dEnt;
 
 /* differs: 2 of 18: the order of the index scale and the mul.s, and which of the two globals the second block reads
    first (the addressing itself is right, the two `addu` orders — base first, then index first — are reproduced).
