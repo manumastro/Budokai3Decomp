@@ -852,8 +852,6 @@ void Btl_FadeOutToExit(void) {
     func_001AC490(D_005116E0);
     Fade_SetRequest(-1, Btl_OnExitFadeDone, 0);
 }
-#if 0
-// differs: 2 of 75 after the case order was matched: the remaining differences are the call and pointer relocations, and the image check fails at byte 709021
 extern s32 func_00225380(void);
 extern void Btl_ResetScene(void);
 extern void (*D_00468300[])(void);
@@ -868,8 +866,8 @@ void func_001AD0E0(void) {
     v = func_00225380();
     switch (v) {
     case 4:
-    case 1:
     case 0:
+    case 1:
         Btl_ResetScene();
         break;
     case 3:
@@ -881,8 +879,6 @@ void func_001AD0E0(void) {
         break;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AD0E0);
 void func_001AD210(void) {
     BattleWork *bw = gBattle;
     s32 tmp[3];
