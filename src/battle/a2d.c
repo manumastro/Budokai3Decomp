@@ -1161,7 +1161,83 @@ void func_0022D0B0(s32 *p, s32 flag) {
         func_0022C9A0(p[6]);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D0E0);
+extern s32 *D_004706AC;
+extern s32 D_004706B4;
+extern s32 D_004706B8;
+extern void *D_004706E0;
+extern s32 D_004706E8;
+extern s32 D_004706EC;
+extern void func_0022D4B0(s32, s32);
+extern void func_0022D0E0(s32, s32);
+/* same three-level expansion as func_0022CD00: pool push + remove inline at the first level, the push only at the second, calls at the third */
+static inline void A2d_NodeFree(s32 *o) {
+    s32 nx;
+
+    ((s32 **)D_004706E0)[D_004706E8] = o;
+    nx = D_004706E8 + 1;
+    D_004706E8 = nx;
+    if (nx == D_004706EC) {
+        D_004706E8 = 0;
+    }
+}
+static inline void A2d_DataFree1(s32 key, s32 flag) {
+    s32 nx;
+
+    D_004706AC[D_004706B4] = key;
+    nx = D_004706B4 + 1;
+    D_004706B4 = nx;
+    if (nx == D_004706B8) {
+        D_004706B4 = 0;
+    }
+    if (flag != 0) {
+        func_0022CC80(key);
+    }
+}
+static inline void A2d_DataFree0(s32 key, s32 flag) {
+    s32 nx;
+
+    D_004706AC[D_004706B4] = key;
+    nx = D_004706B4 + 1;
+    D_004706B4 = nx;
+    if (nx == D_004706B8) {
+        D_004706B4 = 0;
+    }
+    if (flag != 0) {
+        A2d_RemoveEnt(key);
+    }
+}
+static inline void A2d_FreeL2(s32 *o, s32 flag) {
+    if (o[10] != 0) {
+        func_0022D0E0(o[10], flag);
+    }
+    func_0022D4B0(o[12], flag);
+    A2d_NodeFree(o);
+    if (o[11] != 0) {
+        func_0022D0E0(o[11], flag);
+    }
+}
+static inline void A2d_FreeL1(s32 *o, s32 flag) {
+    if (o[10] != 0) {
+        A2d_FreeL2((s32 *)o[10], flag);
+    }
+    A2d_DataFree1(o[12], flag);
+    A2d_NodeFree(o);
+    if (o[11] != 0) {
+        A2d_FreeL2((s32 *)o[11], flag);
+    }
+}
+void func_0022D0E0(s32 a0, s32 flag) {
+    s32 *o = (s32 *)a0;
+
+    if (o[10] != 0) {
+        A2d_FreeL1((s32 *)o[10], flag);
+    }
+    A2d_DataFree0(o[12], flag);
+    A2d_NodeFree(o);
+    if (o[11] != 0) {
+        A2d_FreeL1((s32 *)o[11], flag);
+    }
+}
 // GIVEN UP: the list push and the removal loop are right; 32 of 45 instructions differ on the registers and the order of the loads
 extern s32 *D_004706AC;
 extern s32 D_004706B4;
