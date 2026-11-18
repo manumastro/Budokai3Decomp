@@ -333,17 +333,15 @@ s32 func_002AA8A0(s32 *a0, s32 *a1) {
     return func_002AA6B0(a0, a1);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA980);
-// GIVEN UP: a tail call and the stores match; the original is 16 bytes longer (0xF0 against 0xE0): the order of the index sums differs
-// differs: round 5 chr2: 2AAB40 live is 16 bytes short (0xE0 against 0xF0): the else arm reads gScrTimers through gp after a second *a0 load, and the float stores are scheduled differently.
-#if 0
+extern s32 func_002AA980(s32 *, s32 *);
 s32 func_002AAB40(s32 *a0, s32 *a1) {
     u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
     s32 i = *(s32 *)a0[0];
     s32 j = *(s32 *)(p + 0x10);
+    u8 *sub;
     u8 *e = (u8 *)D_005BC9E0 + i * 416 + j * 208;
-    u8 *sub = *(u8 **)((u8 *)a1 + 0x38);
-    s32 *q = (s32 *)(sub + 0x68);
     s32 k;
+    s32 *q;
 
     *(f32 *)(e + 0x20) = *(f32 *)(p + 0xC);
     *(f32 *)(e + 0xB0) = *(f32 *)(p + 8);
@@ -351,17 +349,17 @@ s32 func_002AAB40(s32 *a0, s32 *a1) {
     *(f32 *)(e + 0xB8) = *(f32 *)(p + 0);
     *(s32 *)(e + 0xBC) = 0x3F800000;
     k = (s32)*(f32 *)(e + 0x20);
-    if (*(s32 *)(sub + 0x6C) != 0) {
-        q[0] += k;
+    sub = *(u8 **)((u8 *)a1 + 0x38);
+    q = (s32 *)(sub + 0x68);
+    if (*(s32 *)(sub + 0x6C) == 0) {
+        q[0] = k + (s32)gScrTimers[*(s32 *)a0[0]];
     } else {
-        q[0] = k + (s32)gScrTimers[i];
+        q[0] += k;
     }
     q[1] = 1;
     a0[4] = (s32)func_002AA980;
     return func_002AA980(a0, a1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAB40);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAC30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAD80);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAF30);
