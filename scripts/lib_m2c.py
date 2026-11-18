@@ -66,12 +66,12 @@ def function_asm():
     return out
 
 
-def m2c_text(name, text):
+def m2c_text(name, text, opts=()):
     with tempfile.TemporaryDirectory() as td:
         f = Path(td) / "f.s"
         f.write_text(".set noat\n.set noreorder\n\n" + text)
         r = subprocess.run([sys.executable, str(M2C), "-t", "mipsee-gcc-c", "--valid-syntax", "--no-cache",
-                            "-f", name, str(f)], capture_output=True, text=True, timeout=120)
+                            *opts, "-f", name, str(f)], capture_output=True, text=True, timeout=120)
     return r.returncode, r.stdout, r.stderr
 
 
@@ -111,13 +111,33 @@ def make_c(name, out):
     return decls, func
 
 
-def try_one(addr, name, text, exe):
+VARIANTS = [(), ("--no-andor",), ("--gotos-only",), ("--no-switches",), ("--stack-structs",), ("--no-unk-inference",)]
+
+
+def try_variants(addr, name, text, exe):
+    """try_one with each m2c option set; the best result (match first, then fewest differing words) wins."""
+    best = None
+    for opts in VARIANTS:
+        r = try_one(addr, name, text, exe, opts)
+        if r is None:
+            continue
+        r["m2c_opts"] = " ".join(opts)
+        key = (0 if r["status"] == "match" else 1 if r["status"] == "diff" else 2 if r["status"] == "size" else 3,
+               r.get("diff", 1 << 30))
+        if best is None or key < best[0]:
+            best = (key, r)
+        if r["status"] == "match":
+            break
+    return best[1] if best else None
+
+
+def try_one(addr, name, text, exe, opts=()):
     size = exe.sizes.get(addr)
     if size is None:
         return None
     if re.search(r"jtbl_|%gp_rel|\$f\d|c1|\.float|%hi\(D_\w+\)\s*$", text) and re.search(r"jtbl_", text):
         return {"addr": addr, "name": name, "status": "jtbl"}
-    rc, out, err = m2c_text(name, text)
+    rc, out, err = m2c_text(name, text, opts)
     if rc != 0:
         return {"addr": addr, "name": name, "status": "m2cfail", "detail": err.strip().splitlines()[-1:] or ""}
     r = make_c(name, out)
@@ -188,6 +208,9 @@ def draft(a):
     import lib_remaining
     still = {r[0] for r in lib_remaining.remaining()}  # asm/ keeps stale files of functions now in C
     todo = sorted(ad for ad in funcs if ad in still and group_of(ad) and (a.region in ("all", group_of(ad))))
+    if a.only:
+        keep = {r["addr"] for r in json.loads(Path(a.only).read_text()) if r["status"] in a.only_status.split(",")}
+        todo = [ad for ad in todo if ad in keep]
     if a.limit:
         todo = todo[:a.limit]
     results = []
@@ -195,7 +218,7 @@ def draft(a):
     def job(ad):
         name, text = funcs[ad]
         try:
-            return try_one(ad, name, text, exe)
+            return (try_variants if a.variants else try_one)(ad, name, text, exe)
         except Exception as e:  # noqa: BLE001
             return {"addr": ad, "name": name, "status": "error", "detail": repr(e)[:160]}
 
@@ -295,6 +318,9 @@ def main():
     d.add_argument("--region", default="all")
     d.add_argument("--limit", type=int, default=0)
     d.add_argument("--jobs", type=int, default=12)
+    d.add_argument("--variants", action="store_true", help="try several m2c option sets, keep the best")
+    d.add_argument("--only", help="json of an earlier run: redo only its functions with these statuses (--only-status)")
+    d.add_argument("--only-status", default="diff,size,cerr")
     d.add_argument("--out", default="build/m2c/lib_matches.json")
     p = sub.add_parser("apply")
     p.add_argument("file")

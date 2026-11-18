@@ -142,7 +142,12 @@ CVFSHandle_x00162578* func_00162578_x00162578() {
     }
     return &D_006BDA68_x00162578[i];
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_001625E0);
+void func_001625E0_x001625E0(u8 *arg0) __asm__("func_001625E0");
+void func_001625E0_x001625E0(u8 *arg0)
+{
+  *((s32 *) (((u8 *) arg0) + 4)) = 0;
+  *((s32 *) (((u8 *) arg0) + 0)) = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_001625F0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_00162738);
 typedef signed int Sint32_x001627A0;

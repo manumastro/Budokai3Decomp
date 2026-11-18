@@ -226,7 +226,12 @@ void func_0016DCA8_x0016DCA8(u32_x0016DCA8 arg0) {
 s32 func_0016DCE0(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 8);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016DCE8);
+void func_0016DCE8_x0016DCE8(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0016DCE8");
+void func_0016DCE8_x0016DCE8(u8 *arg0, s32 arg1, s32 arg2)
+{
+  *((s32 *) (((u8 *) arg0) + 0x1C)) = arg1;
+  *((s32 *) (((u8 *) arg0) + 0x20)) = arg2;
+}
 void func_0016DCF8(u8 *arg0) {
     *(s32 *)((u8 *)arg0 + 0x10) = 0;
     *(s32 *)((u8 *)arg0 + 0xC) = (s32) *(s32 *)((u8 *)arg0 + 0x18);
@@ -660,7 +665,12 @@ void func_0016E210(u8 *arg0) {
 s32 func_0016E250(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 8);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016E258);
+void func_0016E258_x0016E258(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0016E258");
+void func_0016E258_x0016E258(u8 *arg0, s32 arg1, s32 arg2)
+{
+  *((s32 *) (((u8 *) arg0) + 0x38)) = arg1;
+  *((s32 *) (((u8 *) arg0) + 0x3C)) = arg2;
+}
 typedef unsigned char Uint8_x0016E268;
 typedef char Sint8_x0016E268;
 typedef unsigned short Uint16_x0016E268;
@@ -1267,7 +1277,13 @@ void func_0016EA18_x0016EA18(SJUNI_x0016EA18 sjuni) {
 s32 func_0016EA50(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 8);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016EA58);
+void func_0016EA58_x0016EA58(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0016EA58");
+void func_0016EA58_x0016EA58(u8 *arg0, s32 arg1, s32 arg2)
+{
+  u8 *new_var;
+  new_var = 0x28 + ((u8 *) arg0);
+ do { *((s32 *) (((u8 *) arg0) + 0x2C)) = arg2; *((s32 *) new_var) = arg1; } while (0);
+}
 typedef unsigned char Uint8_x0016EA68;
 typedef char Sint8_x0016EA68;
 typedef unsigned short Uint16_x0016EA68;

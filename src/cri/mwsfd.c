@@ -589,7 +589,12 @@ void func_00182958(u8 *arg0) {
     func_00198218(*(s32 *)((u8 *)arg0 + 0x40));
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mw_sfd_start_ex);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00182A68);
+void func_00182A68_x00182A68(u8 *arg0) __asm__("func_00182A68");
+void func_00182A68_x00182A68(u8 *arg0)
+{
+  *((s32 *) (((u8 *) arg0) + 0x84)) = (char) ((0, 0));
+ do { *((s32 *) (((u8 *) arg0) + ((unsigned char) 0x80))) = 0; } while (0);
+}
 void mwPlyStartFname(s32 arg0, s32 arg1) {
     if (func_00183B38() == 0) {
         func_001870E8(&D_00465F30);
@@ -1001,7 +1006,13 @@ INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001848D0);
 void func_00184988(u8 *arg0, u8 *arg1) {
     *(s32 *)((u8 *)arg1 + 0x4C) = (s32) *(s32 *)((u8 *)arg0 + 0x30);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00184998);
+void func_00184998_x00184998(u8 *arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("func_00184998");
+void func_00184998_x00184998(u8 *arg0, s32 arg1, s32 arg2, s32 arg3)
+{
+  *((s32 *) (((u8 *) arg0) + 8)) = arg3;
+  *((s32 *) (((u8 *) arg0) + 0)) = arg1;
+ do { *((s32 *) (((u8 *) arg0) + 4)) = arg2; } while (0);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001849A8);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001849F0);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00184A68);

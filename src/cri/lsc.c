@@ -1460,7 +1460,12 @@ void func_0016A130_x0016A130(LSC_x0016A130 lsc, Sint32_x0016A130 flg) {
     }
     lsc->lp_flg = flg;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A160);
+s32 func_0016DAD8_x0016A160() __asm__("func_0016DAD8");
+void func_0016A160_x0016A160(void) __asm__("func_0016A160");
+void func_0016A160_x0016A160(void)
+{
+ do { func_0016DAD8_x0016A160(); } while (0);
+}
 s32 func_0016DAF0_x0016A180() __asm__("func_0016DAF0");
 void func_0016A180_x0016A180(void) __asm__("func_0016A180");
 void func_0016A180_x0016A180(void) {

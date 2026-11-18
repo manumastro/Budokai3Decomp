@@ -21,7 +21,13 @@ void func_001619F0(u8 *arg0, u8 *arg1, u8 *arg2) {
     *(u16 *)((u8 *)arg1 + 2) = (u16) *(u16 *)((u8 *)arg0 + 0x2C);
     *(u16 *)((u8 *)arg2 + 2) = (u16) *(u16 *)((u8 *)arg0 + 0x2E);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001619A0", func_00161A18);
+void func_00161A18_x00161A18(u8 *arg0, s16 arg1, s16 arg2, s16 arg3) __asm__("func_00161A18");
+void func_00161A18_x00161A18(u8 *arg0, s16 arg1, s16 arg2, s16 arg3)
+{
+ do { *((s16 *) (((u8 *) arg0) + 0x38)) = arg3; } while (0);
+  *((s16 *) (((u8 *) arg0) + 0x34)) = arg1;
+  *((s16 *) (((u8 *) arg0) + 0x36)) = arg2;
+}
 void func_00161A28(u8 *arg0, u16 *arg1, u16 *arg2, u16 *arg3) {
     *arg1 = *(u16 *)((u8 *)arg0 + 0x34);
     *arg2 = *(u16 *)((u8 *)arg0 + 0x36);

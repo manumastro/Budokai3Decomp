@@ -242,4 +242,13 @@ void func_00165A00(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_00165A18);
 INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_00165A88);
-INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_00165AB8);
+void func_00165AB8_x00165AB8(u8 *arg0) __asm__("func_00165AB8");
+void func_00165AB8_x00165AB8(u8 *arg0)
+{
+  u8 *new_var;
+  int new_var2;
+  *((s32 *) (((u8 *) arg0) + 0x2C)) = 0;
+ do { *((s32 *) (((u8 *) arg0) + 0x20)) = (new_var2 = 0); *((s32 *) (((u8 *) arg0) + 0x24)) = 0; } while (0);
+  new_var = arg0;
+  *((s32 *) (((u8 *) new_var) + 0x28)) = 0;
+}

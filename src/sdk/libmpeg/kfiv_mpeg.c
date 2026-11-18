@@ -105,7 +105,15 @@ int sceMpegIsRefBuffEmpty(sceMpeg *mp)
     MpegSys *p = mp->sys;
     return p->refCount == 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00107D28);
+void func_00107D28_x00107D28(u8 *arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("func_00107D28");
+void func_00107D28_x00107D28(u8 *arg0, s32 arg1, s32 arg2, s32 arg3)
+{
+  u8 **new_var;
+  u8 *temp_v0;
+  new_var = (u8 **) (((u8 *) arg0) + 0x40);
+ do { temp_v0 = *new_var; *((s32 *) (((u8 *) temp_v0) + 0xB0)) = arg3; *((s32 *) (0xA8 + ((u8 *) temp_v0))) = arg1; } while (0);
+  *((s32 *) (((u8 *) temp_v0) + 0xAC)) = arg2;
+}
 void func_00107D40_x00107D40(u8 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) __asm__("func_00107D40");
 void func_00107D40_x00107D40(u8 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     u8 *temp_t0;

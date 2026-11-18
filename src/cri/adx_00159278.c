@@ -396,8 +396,19 @@ void func_00159CD0(u8 *arg0) {
     func_00150B20(*(s32 *)((u8 *)arg0 + 4));
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159CE8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159D48);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159D58);
+void func_00159D48_x00159D48(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_00159D48");
+void func_00159D48_x00159D48(u8 *arg0, s32 arg1, s32 arg2)
+{
+  *((s32 *) (((u8 *) arg0) + 0x50)) = arg1;
+  *((s32 *) (((u8 *) arg0) + 0x54)) = arg2;
+}
+void func_00159D58_x00159D58(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_00159D58");
+void func_00159D58_x00159D58(u8 *arg0, s32 arg1, s32 arg2)
+{
+  unsigned int new_var;
+  *((s32 *) (((u8 *) arg0) + 0x48)) = (new_var = arg1);
+  *((s32 *) (((u8 *) arg0) + 0x4C)) = arg2;
+}
 void fn_800416DC_x00159D68(u8 *arg0, s32 arg1) __asm__("fn_800416DC");
 void fn_800416DC_x00159D68(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0x3C) = arg1;
@@ -876,8 +887,19 @@ void func_0015A730(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A758);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A7B8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A7F0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A800);
+void func_0015A7F0_x0015A7F0(u8 *arg0, s16 arg1, s16 arg2) __asm__("func_0015A7F0");
+void func_0015A7F0_x0015A7F0(u8 *arg0, s16 arg1, s16 arg2)
+{
+  *((s16 *) (((u8 *) arg0) + 6)) = arg2;
+ do { } while (0);
+  *((s16 *) (((u8 *) arg0) + 4)) = arg1;
+}
+void func_0015A800_x0015A800(u8 *arg0, s16 arg1, s16 arg2) __asm__("func_0015A800");
+void func_0015A800_x0015A800(u8 *arg0, s16 arg1, s16 arg2)
+{
+  *((s16 *) (((u8 *) arg0) + 8)) = arg1;
+  *((s16 *) (((u8 *) arg0) + 0xA)) = arg2;
+}
 void func_0015A810(u8 *arg0, u16 *arg1, u16 *arg2) {
     *arg1 = *(u16 *)((u8 *)arg0 + 8);
     *arg2 = *(u16 *)((u8 *)arg0 + 0xA);
@@ -927,9 +949,22 @@ loop_3:
     return var_v0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A940);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A978);
+void func_0015A978_x0015A978(u8 *arg0, s16 arg1, s16 arg2) __asm__("func_0015A978");
+void func_0015A978_x0015A978(u8 *arg0, s16 arg1, s16 arg2)
+{
+  u8 *new_var;
+  *((s16 *) (((u8 *) arg0) + 6)) = arg2;
+ do { } while (0);
+  new_var = (u8 *) arg0;
+  *((s16 *) (new_var + 4)) = arg1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A988);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A9E0);
+void func_0015A9E0_x0015A9E0(u8 *arg0, s16 arg1, s16 arg2) __asm__("func_0015A9E0");
+void func_0015A9E0_x0015A9E0(u8 *arg0, s16 arg1, s16 arg2)
+{
+  *((s16 *) (((u8 *) arg0) + 0xA)) = arg2;
+ do { *((s16 *) (((u8 *) arg0) + 8)) = arg1; } while (0);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A9F0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015AAD8);
 s16 func_0015AB70(s32 arg0, s32 arg1) {
@@ -994,7 +1029,11 @@ INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C200);
 void func_0015C268(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0x50) = arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C270);
+void func_0015C270_x0015C270(u8 *arg0, s32 arg1) __asm__("func_0015C270");
+void func_0015C270_x0015C270(u8 *arg0, s32 arg1)
+{
+  *((s32 *) (((u8 *) arg0) + 0x60)) = (*((s32 *) (((u8 *) arg0) + 0x3C)) = arg1);
+}
 void func_0015C280(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0x64) = arg1;
 }
@@ -4713,7 +4752,13 @@ void func_0015CE38_x0015CE38(ADXSTM_x0015CE38 stm) {
         ADXT_ExecFsSvr_x0015CE38();
     } while (stm->stat != 1 || stm->unk24.data != 0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015CE88);
+void func_0015CE88_x0015CE88(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0015CE88");
+void func_0015CE88_x0015CE88(u8 *arg0, s32 arg1, s32 arg2)
+{
+  *((s32 *) (((u8 *) arg0) + 0x3C)) = arg2;
+  *((s32 *) (((u8 *) arg0) + 0x38)) = arg1;
+  *((s32 *) (((u8 *) arg0) + 0x3C)) = arg2;
+}
 typedef int s32_x0015CE98;
 typedef s32_x0015CE98 ptrdiff_t_x0015CE98;
 typedef unsigned char Uint8_x0015CE98;

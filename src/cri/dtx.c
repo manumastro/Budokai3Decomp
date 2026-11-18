@@ -5,8 +5,21 @@ extern s32 D_00412A58;
 
 INCLUDE_ASM("asm/nonmatchings/cri/dtx", DTX_Create);
 INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00165C68);
-INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00165CD0);
-INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00165CE0);
+int func_00165CD0_x00165CD0(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_00165CD0");
+int func_00165CD0_x00165CD0(u8 *arg0, s32 arg1, s32 arg2)
+{
+  *((s32 *) (((u8 *) arg0) + 0x20)) = arg1;
+  *((s32 *) (((u8 *) arg0) + 0x24)) = arg2;
+}
+void func_00165CE0_x00165CE0(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_00165CE0");
+void func_00165CE0_x00165CE0(u8 *arg0, s32 arg1, s32 arg2)
+{
+  if (1)
+  {
+  }
+  *((s32 *) (((u8 *) arg0) + 0x28)) = arg1;
+  *((s32 *) (((u8 *) arg0) + 0x2C)) = arg2;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00165CF0);
 typedef signed int Sint32_x00165E50;
 extern int* sceCdCallback_x00165E50(void (*func)(int)) __asm__("sceCdCallback");

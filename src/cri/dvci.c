@@ -784,7 +784,21 @@ void func_00167C10(void) {
     func_00164E10();
 }
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167C28);
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167C60);
+void func_00167C60_x00167C60(void) __asm__("func_00167C60");
+void func_00167C60_x00167C60(void)
+{
+  s32 var_v0;
+  int new_var;
+  int new_var2;
+  new_var2 = 0;
+  var_v0 = 0x1FFF;
+  new_var = 0x20;
+  do
+  {
+    var_v0 -= new_var;
+  }
+  while (var_v0 >= new_var2);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167C90);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167CC0);
 s32 func_00167D10(u8 *arg0) {

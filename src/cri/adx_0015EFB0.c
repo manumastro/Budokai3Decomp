@@ -101,8 +101,18 @@ s16 ADXT_GetOutVol(u8 *arg0) {
     }
     return *(s16 *)((u8 *)arg0 + 0x40);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", func_0015F110);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", func_0015F130);
+s32 func_00159F18_x0015F110(s32) __asm__("func_00159F18");
+void func_0015F110_x0015F110(u8 *arg0) __asm__("func_0015F110");
+void func_0015F110_x0015F110(u8 *arg0)
+{
+ do { func_00159F18_x0015F110(*((s32 *) (((u8 *) arg0) + 4))); } while (0);
+}
+s32 fn_80041460_x0015F130(s32) __asm__("fn_80041460");
+void func_0015F130_x0015F130(u8 *arg0) __asm__("func_0015F130");
+void func_0015F130_x0015F130(u8 *arg0)
+{
+ do { fn_80041460_x0015F130(*((s32 *) (((u8 *) arg0) + 4))); } while (0);
+}
 void func_0015F150(u8 *arg0) {
     func_00159FD8(*(s32 *)((u8 *)arg0 + 4));
 }
