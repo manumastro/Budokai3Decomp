@@ -966,7 +966,73 @@ s32 func_001A9230(BtlRank *a0, s16 a1) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_cmd", func_001A9460);
+// op bits 1,2,4,8 select the fields f48..f54 of the rank record; each case: one field == 1 and the others in 1..4, or a2 and all in 1..4.
+// One local per held field and case (declared in field order) reproduces the original registers.
+s32 func_001A9460(void *a0x, s16 a1x, s32 a2) {
+    BtlRank *a0 = a0x;
+    s32 f3;
+    s32 f5;
+    s32 f6;
+    s32 f7a;
+    s32 f7b;
+    s32 ffa;
+    s32 ffb;
+    s32 ffc;
+    switch (a1x) {
+    case 1:
+        if (a0->f48 == 1) { return 1; }
+        if (a2 != 0 && a0->f48 > 0 && a0->f48 < 5) { return 1; }
+        break;
+    case 2:
+        if (a0->f4C == 1) { return 1; }
+        if (a2 != 0 && a0->f4C > 0 && a0->f4C < 5) { return 1; }
+        break;
+    case 4:
+        if (a0->f50 == 1) { return 1; }
+        break;
+    case 8:
+        if (a0->f54 == 1) { return 1; }
+        if (a2 != 0 && a0->f54 > 0 && a0->f54 < 5) { return 1; }
+        break;
+    case 3:
+        f3 = a0->f48;
+        if (f3 == 1 && a0->f4C > 0 && a0->f4C < 5) { return 1; }
+        if (a0->f4C == 1 && f3 > 0 && f3 < 5) { return 1; }
+        if (a2 != 0 && f3 > 0 && f3 < 5 && a0->f4C > 0 && a0->f4C < 5) { return 1; }
+        break;
+    case 5:
+        f5 = a0->f48;
+        if (f5 == 1 && a0->f50 > 0 && a0->f50 < 5) { return 1; }
+        if (a0->f50 == 1 && f5 > 0 && f5 < 5) { return 1; }
+        if (a2 != 0 && f5 > 0 && f5 < 5 && a0->f50 > 0 && a0->f50 < 5) { return 1; }
+        break;
+    case 6:
+        f6 = a0->f4C;
+        if (f6 == 1 && a0->f50 > 0 && a0->f50 < 5) { return 1; }
+        if (a0->f50 == 1 && f6 > 0 && f6 < 5) { return 1; }
+        if (a2 != 0 && f6 > 0 && f6 < 5 && a0->f50 > 0 && a0->f50 < 5) { return 1; }
+        break;
+    case 7:
+        f7a = a0->f48;
+        if (f7a == 1 && a0->f4C > 0 && a0->f4C < 5 && a0->f50 > 0 && a0->f50 < 5) { return 1; }
+        f7b = a0->f4C;
+        if (f7b == 1 && f7a > 0 && f7a < 5 && a0->f50 > 0 && a0->f50 < 5) { return 1; }
+        if (a0->f50 == 1 && f7a > 0 && f7a < 5 && f7b > 0 && f7b < 5) { return 1; }
+        if (a2 != 0 && f7a > 0 && f7a < 5 && f7b > 0 && f7b < 5 && a0->f50 > 0 && a0->f50 < 5) { return 1; }
+        break;
+    case 15:
+        ffa = a0->f48;
+        if (ffa == 1 && a0->f4C > 0 && a0->f4C < 5 && a0->f50 > 0 && a0->f50 < 5 && a0->f54 > 0 && a0->f54 < 5) { return 1; }
+        ffb = a0->f4C;
+        if (ffb == 1 && ffa > 0 && ffa < 5 && a0->f50 > 0 && a0->f50 < 5 && a0->f54 > 0 && a0->f54 < 5) { return 1; }
+        ffc = a0->f50;
+        if (ffc == 1 && ffa > 0 && ffa < 5 && ffb > 0 && ffb < 5 && a0->f54 > 0 && a0->f54 < 5) { return 1; }
+        if (a0->f54 == 1 && ffa > 0 && ffa < 5 && ffb > 0 && ffb < 5 && ffc > 0 && ffc < 5) { return 1; }
+        if (a2 != 0 && ffa > 0 && ffa < 5 && ffb > 0 && ffb < 5 && ffc > 0 && ffc < 5 && a0->f54 > 0 && a0->f54 < 5) { return 1; }
+        break;
+    }
+    return 0;
+}
 #if 0
 /* differs: 49 of 69 instructions (the switch form of an earlier round: the op and entry registers differ). */
 s32 func_001A99C0(BtlCmdObj *a0, BtlCmdPair *a1, s32 a2) {
