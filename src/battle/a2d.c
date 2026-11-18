@@ -481,6 +481,59 @@ void func_00227010(s32 *a0, s32 *a1) {
         } while (n != 0);
     }
 }
+// differs: 3 of 70 (round 7): only the first-return path (original has move v0,zero in the bc1f slot and -1 in the b slot; ours hoists li -1) and slti at vs v0 on the binary-search pretest differ; the table search itself matches
+#if 0
+s32 func_002270B0(s32 *tbl, s32 n, s32 idx, f32 f) {
+    s32 key;
+    s32 step;
+    s32 *e;
+    s32 t;
+
+    if (f < 1.0f) {
+        return -1;
+    }
+    key = (s32)f;
+    if (idx == -1) {
+        step = (n + 1) >> 1;
+        idx = n >> 1;
+        if (!(step < 2)) {
+            do {
+                if (*(s16 *)&tbl[idx] <= key) {
+                    idx += step >> 1;
+                } else {
+                    idx -= step >> 1;
+                }
+                step = (step + 1) >> 1;
+            } while (!(step < 2));
+        }
+        if (key < *(s16 *)&tbl[idx]) {
+            idx -= 1;
+        }
+    } else {
+        t = n - 1;
+        for (;;) {
+            e = &tbl[idx];
+            if (*(s16 *)e <= key) {
+                if (!(*(s16 *)(e + 1) <= key)) {
+                    break;
+                }
+                idx += 1;
+            } else {
+                idx -= 1;
+            }
+            if (idx <= 0) {
+                idx = 0;
+                break;
+            }
+            if (idx >= t) {
+                idx = t;
+                break;
+            }
+        }
+    }
+    return idx;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002270B0);
 extern s32 *D_004706F4;
 extern s32 D_004706FC;
