@@ -767,6 +767,11 @@ extern void func_0022CD00(s32);
 // GIVEN UP (round 5 chr2): 4 of 70 differ, all in block 1 (the first s1->4 test). The original keeps the bltz delay slot a nop and the
 // argument 0 of func_00228430 in the jal delay slot; ours moves the argument into the bltz slot. Tried: switch on the mode (cases ascending, 62 differ),
 // if chain with empty bodies (this one, 4 differ), nested else (4 differ), a1c loaded before a18 (kept).
+// round 7 r7c: the same pattern is in func_0029F180 (second block). In both, mwccps2 moves the first instruction of the fall-through block
+// (`move a0,zero` of func_00228430(0)) into the delay slot of the bltz that guards it; the original leaves that slot a nop and puts the move
+// in the jal slot. Micro tests (scratch file, same flags) that did NOT change it: K&R/varargs/pointer/s16 prototypes of the callee, return type,
+// the mode kept in a0 or a separate local, switch instead of the if chain, do/while(0), `if (x < 0) {} else`, `x > -1`, a local for the field,
+// `#pragma peephole/scheduling off`, optimization_level 3, an inline helper (changes the frame). The permuter (900 s) reached 6 of 8 only.
 #if 0
 void func_0029F350(u8 *s1, u8 *s0) {
     s32 s2;
