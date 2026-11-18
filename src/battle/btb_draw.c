@@ -6983,12 +6983,9 @@ void func_001F7DB0(void) {
     s32 off;
     s32 flags;
     char *d;
-    char *p;
     s32 i;
     s32 cnt;
-    char *x1;
-    char *x2;
-    char *x3;
+    char *p;
     char *sp;
     char *r;
 
@@ -7006,21 +7003,18 @@ void func_001F7DB0(void) {
             *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x11;
             *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x10;
             flags = 0;
-            x1 = *(char **)(s1 + 4);
-            x2 = *(char **)x1;
-            x3 = *(char **)(x2 + 0x1C);
-            d = *(char **)x3;
+            d = **(char ***)((char *)**(char ***)(s1 + 4) + 0x1C);
             if (d != NULL) {
                 cnt = *(s32 *)(d + 0x10);
+                i = 0;
                 if (0 < cnt) {
                     p = *(char **)(d + 0x1C);
-                    i = 0;
                     do {
                         if (*(s8 *)p == 0x58) {
                             flags |= 0x200;
                         }
-                        p += 0x20;
                         i++;
+                        p += 0x20;
                     } while (i < cnt);
                 }
             }
@@ -7032,7 +7026,7 @@ void func_001F7DB0(void) {
     }
 }
 #endif
-// differs: func_001F7DB0 (404 bytes): the layout matches (saved registers, memset loop, call, flags test); the flags loop has its counter, count and pointer in a2/a3/t0 where the original has count=a2, i=t0, p=a3 (a 3-cycle on the temporaries); declaration orders (40 best of 105, relocations included) and a do-while form tried.
+// differs: func_001F7DB0: 5 of 101 differ (registers only, mnemonics equal): the flags loop has count in t0 and the counter in a2 where the original has count=a2, i=t0; round 7: i set before the if, do-while, d chain as one expression, i/cnt at every position of the declaration list, type sweep, i++ before p += 0x20: all 5.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7DB0);
 typedef void (*VoidFunc)(void);
 extern VoidFunc D_0044B4C0[];
