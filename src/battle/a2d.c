@@ -11,7 +11,7 @@ typedef struct A2dEnt {
     s32 *p;
     f32 v;
 } A2dEnt;
-extern void func_0022B900(s32 *, s32 *, f32);
+extern void func_0022B900(s32 *, f32, s32 *);
 extern s32 func_0022BC30(s32 *, f32);
 
 extern s32 D_004706D8;
@@ -823,7 +823,7 @@ void func_0022C430(s32 *a0, f32 f) {
     *(F4 *)(a2 + 0x80) = *(F4 *)(a2 + 0x30);
     *(F4 *)(a2 + 0x90) = *(F4 *)(a2 + 0x40);
     D_004706D4 += 1;
-    func_0022B900(a0, buf, f);
+    func_0022B900(a0, f, buf);
     D_004706D4 -= 1;
     D_004706CC -= 0x50;
     if (buf[1] & 1) {
@@ -1109,7 +1109,7 @@ s32 *func_0022D670(s32 a0, f32 f) {
         }
         memset(s2, 0, 0x60);
         if (a0 != 0) {
-            func_0022B900((s32 *)a0, s2, f);
+            func_0022B900((s32 *)a0, f, s2);
         }
         s0[12] = (s32)s2;
         s0[3] |= 1;
@@ -1162,7 +1162,7 @@ s32 func_0022D860(s32 a0, f32 f) {
         }
         memset(s0, 0, 0x60);
         if (s1 != 0) {
-            func_0022B900((s32 *)s1, s0, f);
+            func_0022B900((s32 *)s1, f, s0);
         }
         s2[12] = (s32)s0;
         s2[3] |= 2;
@@ -1193,7 +1193,7 @@ s32 *A2d_AllocObj(s32 *a0, f32 a1) {
     }
     memset(s1, 0, 0x60);
     if (a0 != 0) {
-        func_0022B900(a0, s1, a1);
+        func_0022B900(a0, a1, s1);
     }
     return s1;
 }
