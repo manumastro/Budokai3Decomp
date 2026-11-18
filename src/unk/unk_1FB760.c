@@ -174,7 +174,54 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FF4F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FFBA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00200270);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002009B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00201150);
+typedef struct { f32 v[4]; } R7V4 __attribute__((aligned(16)));
+extern R7V4 D_0044B900;
+s32 func_00201150(u8 *a0) {
+    u8 *s2 = *(u8 **)(a0 + 0x14);
+    u8 *s1 = *(u8 **)(a0 + 0x3C);
+    u8 *s0 = a0 + 0x44;
+    f32 w;
+    f32 h;
+    f32 t50[4];
+    R7V4 t40;
+    while (s1 != s0) {
+        func_00146F10(t50, s1 + 0x20, *(f32 *)D_0051D9AC);
+        __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(s1 + 0x10), "r"(t50) : "memory");
+        t40 = D_0044B900;
+        {
+            s32 bits;
+            __asm__ volatile (
+                "lqc2 $vf1, 0(%2)\n"
+                "lqc2 $vf2, 0(%3)\n"
+                "mfc1 %0, %4\n"
+                "qmtc2.ni %0, $vf3\n"
+                "vsub.xyz $vf2, $vf2, $vf1\n"
+                "vaddax.xyz ACC, $vf1, $vf0x\n"
+                "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+                "sqc2 $vf1, 0(%1)\n"
+                : "=r"(bits) : "r"(s1 + 0x30), "r"(&t40), "r"(s2 + 0x30), "f"(*(f32 *)(s2 + 0x40)) : "memory");
+        }
+        w = *(f32 *)(s2 + 0x50);
+        h = 0.5f * w;
+        if (*(f32 *)(s1 + 0x10) < -h) {
+            *(f32 *)(s1 + 0x10) = *(f32 *)(s1 + 0x10) + w;
+        }
+        if (*(f32 *)(s1 + 0x10) > h) {
+            *(f32 *)(s1 + 0x10) = *(f32 *)(s1 + 0x10) - w;
+        }
+        if (*(f32 *)(s1 + 0x14) < -h) {
+            *(f32 *)(s1 + 0x14) = *(f32 *)(s1 + 0x14) + w;
+        }
+        if (*(f32 *)(s1 + 0x18) < -h) {
+            *(f32 *)(s1 + 0x18) = *(f32 *)(s1 + 0x18) + w;
+        }
+        if (*(f32 *)(s1 + 0x18) > h) {
+            *(f32 *)(s1 + 0x18) = *(f32 *)(s1 + 0x18) - w;
+        }
+        s1 = *(u8 **)s1;
+    }
+    return 0;
+}
 void func_002012B0(u8 *a) {
     u8 *m = *(u8 **)(a + 0x8);
     u8 *c = *(u8 **)(a + 0xC);
