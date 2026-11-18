@@ -44,6 +44,135 @@ void func_0029DB00(u8 *s1, f32 rate) {
         func_0012F2C0();
     }
 }
+// differs: 86 of 249 differ (round 7 r7c). Full draft (two inlined motion-select blocks as the MOT_SELECT macro, per-slot loop over obj+0x270, clamp of the three slot ids). Open: (1) the flags sequence at s2+0x414 is lw/and -13/sw, then lw + dsll32 0 + dsrl32 0 + sw (a zero-extension of the word that no plain C cast/&0xFFFFFFFF reproduced in micro tests: casts are dropped, a long long mask gives dsra32), then lw/ori 4/sw; (2) float register roles in the wrap loop (time reload should be f1, the (f32)(len-1) value f0); (3) the slot clamp part: the original keeps a0=**s2 in a0 and reloads *s2 for the second and third store, ours keeps one pointer; (4) n = movz form was fixed with 'n = c != 0 ? 2 : 1'.
+#if 0
+extern void func_0013C1E0(void *, f32, f32);
+extern void amMotion_Update(void *, s32);
+extern void func_001D0A20(u8 *, f32);
+#define MOT_SELECT(m, id) \
+    do { \
+        u8 *p = (m) + 0x41C; \
+        s32 i; \
+        if (*(s32 *)p != (id)) { \
+            for (i = 0; i < *(s32 *)((m) + 0x418); i++) { \
+                *(s32 *)(*(u8 **)(p + 0x10) + i * 0x40 + 0x30) = -1; \
+                *(s32 *)(*(u8 **)(p + 0x10) + i * 0x40 + 0x34) = -1; \
+                *(s32 *)(*(u8 **)(p + 0x10) + i * 0x40 + 0x38) = -1; \
+            } \
+            *(f32 *)(p + 0xC) = -1.0f; \
+        } \
+        *(s32 *)p = (id); \
+    } while (0)
+void func_0029DD30(u8 *s3, f32 dt) {
+    s32 n;
+    s32 h;
+    u8 a3;
+    u8 *s2;
+    u8 *s1;
+    s32 i;
+    s32 a2;
+    s32 a1;
+    s32 lim;
+    s32 id;
+    u8 *s0;
+    f32 g;
+    f32 f;
+    f32 t;
+    if (s3 == 0 || (s2 = *(u8 **)(s3 + 0x260)) == 0) {
+        return;
+    }
+    if (*(s32 *)(s3 + 0x290) != 0) {
+        s1 = *(u8 **)*(u8 **)s3;
+        a1 = *(s32 *)(s3 + 0x264);
+        s0 = s3 + 0x10;
+        if (D_004703F4 != 3) {
+            g = 1.0f;
+        } else {
+            g = 1.2f;
+        }
+        f = *(f32 *)(s0 + 0x1B4);
+        n = (*(s32 *)(s3 + 0x26C) != 0) ? 2 : 1;
+        dt = dt * (f * g);
+        for (i = 0; i < n; i++) {
+            *(f32 *)(s3 + 0x270 + i * 4) = *(f32 *)(s3 + 0x270 + i * 4) + dt;
+            t = (f32)(*(s32 *)(s3 + 0x278 + i * 4) - 1);
+            if (*(f32 *)(s3 + 0x270 + i * 4) < t) {
+                continue;
+            }
+            if (*(s8 *)(s3 + 0x2BA) != 0) {
+                *(f32 *)(s3 + 0x270 + i * 4) = *(f32 *)(s3 + 0x270 + i * 4) - t;
+            } else {
+                *(f32 *)(s3 + 0x270 + i * 4) = t;
+            }
+        }
+        g = *(f32 *)(s3 + 0x280) + *(f32 *)(s3 + 0x284) * dt;
+        *(f32 *)(s3 + 0x280) = g;
+        if (g > 1.0f) {
+            g = 1.0f;
+        } else if (g < 0.0f) {
+            g = 0.0f;
+        }
+        *(f32 *)(s3 + 0x280) = g;
+        if (a1 != 0) {
+            func_001D0A20(s0, *(f32 *)(s3 + 0x270));
+            a3 = *(s8 *)(s0 + 0x1B0);
+            a2 = *(s8 *)(s0 + 0x1AE);
+            a1 = *(s8 *)(s0 + 0x1AF);
+            lim = *(s32 *)(**(u8 ***)s2 + 0x20);
+            if (a3 >= lim) {
+                a3 = 0;
+            }
+            if (a2 >= lim) {
+                a2 = 0;
+            }
+            if (a1 >= lim) {
+                a1 = 0;
+            }
+            h = *(s16 *)(s1 + 0x26);
+            if (h >= 0) {
+                *(s32 *)(*(u8 **)s2 + h * 8 + 8) = a3;
+            }
+            h = *(s16 *)(s1 + 0x14);
+            if (h >= 0) {
+                *(s32 *)(*(u8 **)s2 + h * 8 + 8) = a2;
+            }
+            h = *(s16 *)(s1 + 0x16);
+            if (h >= 0) {
+                *(s32 *)(*(u8 **)s2 + h * 8 + 8) = a1;
+            }
+        }
+    } else {
+        if (D_004703F4 != 3) {
+            g = 1.0f;
+        } else {
+            g = 1.2f;
+        }
+        *(f32 *)(s3 + 0x270) = *(f32 *)(s3 + 0x270) + g;
+        t = (f32)(*(s32 *)(s3 + 0x278) - 1);
+        if (!(*(f32 *)(s3 + 0x270) < t)) {
+            if (*(s8 *)(s3 + 0x2BA) != 0) {
+                *(f32 *)(s3 + 0x270) = *(f32 *)(s3 + 0x270) - t;
+            } else {
+                *(f32 *)(s3 + 0x270) = t;
+            }
+        }
+    }
+    *(s32 *)(s2 + 0x414) &= ~0xC;
+    *(s32 *)(s2 + 0x414) = (u32)*(s32 *)(s2 + 0x414);
+    *(s32 *)(s2 + 0x414) |= 4;
+    id = *(s32 *)(s3 + 0x268);
+    MOT_SELECT(s2, id);
+    *(f32 *)(s2 + 0x424) = *(f32 *)(s3 + 0x270);
+    amMotion_Update(s2, 0);
+    id = *(s32 *)(s3 + 0x26C);
+    if (id != 0) {
+        MOT_SELECT(s2, id);
+        *(f32 *)(s2 + 0x424) = *(f32 *)(s3 + 0x274);
+        amMotion_Update(s2, 1);
+    }
+    func_0013C1E0(s2, 0.0f, *(f32 *)(s3 + 0x280));
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029DD30);
 // differs: 51 of 204 differ (round 7 r7c). Structure and the saved/float registers match (zero declared before one gives f20=1.0f); the init block (macro ANIM_INIT, applied before and after the memset) is the same code twice. Still differs: the constant temps (t4/t5 for 1.0f/-1.0f swapped: in the original the float constants are created after the first stores), the address temps of the second ANIM_INIT (original hoists a+0x60, +0x90, +0xC0 before +0x30 and uses v0 for it), the table lookup sequence (sra/andi/sll order and registers v0/v1 swapped).
 #if 0
