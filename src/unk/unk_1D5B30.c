@@ -218,7 +218,9 @@ typedef struct Game {
     s16 f894A;
     char pad894C[0x2B];
     s8 f8977;
-    char pad8978[0x6];
+    char pad8978[0x1];
+    s8 f8979;
+    char pad897A[0x4];
     s16 f897E;
     char pad8980[0x128];
     s32 f8AA8;
@@ -4764,9 +4766,8 @@ s32 func_001E8FC0(Fighter *c) {
 s32 func_001E9050(Fighter *c) {
     Game *g;
     s32 s0;
-    s32 v;
 
-    if (*(s8 *)((char *)c + 0x1FF8) < 2) {
+    if (c->f1FF8 < 2) {
         return 0;
     }
     s0 = 0;
@@ -4776,13 +4777,14 @@ s32 func_001E9050(Fighter *c) {
     }
     switch (g->f7E2) {
     case 3:
-        if (*(s8 *)((char *)gBattle + 0x8977) != 3) {
-            v = *(s8 *)((char *)gBattle + 0x8979);
-            switch (v) {
+        if (gBattle->f8977 != 3) {
+            switch (gBattle->f8979) {
             case 0:
                 break;
             case 1:
                 s0 = 1;
+                break;
+            default:
                 break;
             case 2:
                 s0 = 2;
@@ -4792,11 +4794,11 @@ s32 func_001E9050(Fighter *c) {
         }
         break;
     case 4:
-        v = func_002CC450();
-        if (v & 0x10) {
+        s0 = func_002CC450();
+        if (s0 & 0x10) {
             return 1;
         }
-        if (v & 0x200) {
+        if (s0 & 0x200) {
             return 0;
         }
         break;
@@ -4804,7 +4806,7 @@ s32 func_001E9050(Fighter *c) {
     return func_002358A0(c);
 }
 #endif
-// differs: the state tests and the calls match in order; the returns are laid out differently (the original's shared epilogue sits 8 bytes after the call block here), so the blocks after the first return differ
+// differs: 2 mnemonics + 2 extra instructions (76 vs 78): the inner switch on f8979 lacks the original's separate "b end" block for the empty case 0 and the default (a nop + b before the case-2 pad); tried default: break; inserted in several places, state in s0 vs v. Outer switch, func_002CC450() void prototype and f8979 field are right.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E9050);
 s32 func_001E9190(Fighter *c) {
     if (c->f1FF8 < 2) {
