@@ -823,7 +823,41 @@ void Dmg_TaskKill(u8 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A000);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A150);
+typedef struct LSub4 { f32 t; u8 p[0x1C]; struct LObj4 *link; } LSub4;
+typedef struct LObj4 { u8 p0[0x1C]; void *cb; u8 p1[0x10]; LSub4 sub; s32 f34; } LObj4;
+extern s32 func_0021C3D0(s32);
+extern s32 *func_0021C400(s32);
+extern void func_0023A000(LSub4 *, s32);
+extern void func_0023A240(void);
+extern f32 D_00470710;
+// FAKEMATCH: the `if (f == 0) t = 0` tests on the two callback addresses are compiled-out-looking checks (a function address is never null); they reproduce the original's bnez/move pair.
+void func_0023A150(LObj4 *a0) {
+    LSub4 *s0;
+    s32 *v;
+    void *t;
+    LObj4 *l;
+    if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0) {
+        s0 = &a0->sub;
+        v = func_0021C400(func_0021C3D0(*(s32 *)((u8 *)a0 + 0x34)));
+        s0->t = s0->t + D_00470710;
+        if (*v & 4) {
+            t = (void *)func_0023A240;
+            if (func_0023A240 == 0) { t = 0; }
+            a0->cb = t;
+            l = s0->link;
+            t = (void *)func_00239DA0;
+            if (func_00239DA0 == 0) { t = 0; }
+            l->cb = t;
+            s0->t = 0.0f;
+            func_0023A000(s0, 1);
+            return;
+        }
+        func_0023A000(s0, 2);
+        if (!(s0->t < 7.0f)) {
+            amTask_Kill(a0);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A240);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A3B0);
 extern u8 D_0058BF1C[];
