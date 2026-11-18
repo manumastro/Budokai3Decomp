@@ -8,7 +8,6 @@ extern void amCdFs_ReleaseCache(void *);
 extern void amCdFs_Close(void *, s32);
 extern void Character_Release(s32);
 void func_0029E450(u8 *s0) {
-    u8 *s1;
     s32 *s3;
     s32 s2;
 
