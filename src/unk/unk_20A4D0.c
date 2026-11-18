@@ -119,38 +119,41 @@ extern u8 D_00568C14[];
 
 #if 0
 void func_0020A4D0(s32 idx) {
-    u8 *p = D_005687D0 + idx * 0xF0;
-    V4Q *q = (V4Q *)(p + 0x20);
+    u8 *p;
+    V4Q *q;
     V4Q d;
     V4Q c;
     V4Q b;
     V4Q a;
-    V4Q *pb = &b;
-    V4Q *pc = &c;
-    V4Q *pd = &d;
+    V4Q *pb = (V4Q *)&b;
+    V4Q *pd = (V4Q *)&d;
+    V4Q *pc = (V4Q *)&c;
 
+    idx *= 0xF0;
+    p = D_005687D0 + idx;
+    q = (V4Q *)(p + 0x20);
     a.x = *(f32 *)(p + 0x0);
     a.y = *(f32 *)(p + 0x4);
     a.z = *(f32 *)(p + 0x8);
     a.w = 0x3F800000;
-    func_00136870(1, 0x812, 0, -1, 0x44, 0);
-    b.x = *(f32 *)(p + 0x10);
+    pb->x = *(f32 *)(p + 0x10);
     b.y = *(f32 *)(p + 0x4);
     b.z = *(f32 *)(p + 0x8);
     b.w = 0x3F800000;
-    c.x = *(f32 *)(p + 0x0);
+    pc->x = *(f32 *)(p + 0x0);
     c.y = *(f32 *)(p + 0x14);
     c.z = *(f32 *)(p + 0x8);
     c.w = 0x3F800000;
-    d.x = *(f32 *)(p + 0x10);
+    pd->x = *(f32 *)(p + 0x10);
     d.y = *(f32 *)(p + 0x14);
     d.z = *(f32 *)(p + 0x8);
     d.w = 0x3F800000;
+    func_00136870(1, 0x812, 0, -1, 0x44, 0);
     func_00137920(&a, q, pb, q + 1);
     func_00137920(pc, q + 2, pd, q + 3);
     amDraw_FlushPacket();
 }
-// differs: the frame is 0x120 against 0x104 here: the original keeps four more saved registers (the vector addresses and the table base), and its four vector locals sit at other offsets
+// differs: 5 of 71: only the idx*0xF0 chain (the original keeps both temps of sll/subu in v0 and the product in a0; here the subu goes to a0); vector layout, saved registers and calls match
 #endif
 extern u8 D_0046A380[];
 void func_00209F40(s32);
@@ -549,7 +552,26 @@ void func_0020ABB0(void) {
     D_005687C4[0] = 0;
     D_005687C0[0] = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020ABE0);
+extern f32 func_0011F220(f32);
+extern f32 func_0011F4C0(f32);
+s32 func_0012EAE0(s32);
+void func_00146F30(void *p);
+void func_0020ABE0(V4Q *out, f32 a) {
+    f32 y = func_0011F220(a);
+    f32 r;
+    f32 t;
+    f32 ang;
+    y = y + ((1.0f - y) * (f32)((u32)func_0012EAE0(8) & 0xFF)) / 255.0f;
+    ang = 6.2831855f * ((f32)((u32)func_0012EAE0(8) & 0xFF) / 255.0f);
+    t = 1.0f - y * y;
+    /* FAKEMATCH: sqrt.s as inline asm; the compiler intrinsic (sqrtf) puts two hazard nops after it and hoists the f12 move, the original has neither */
+    __asm__ volatile ("sqrt.s %0, %1" : "=f"(r) : "f"(t));
+    out->x = r * func_0011F220(ang);
+    out->y = y;
+    out->z = r * func_0011F4C0(ang);
+    out->w = 0x3F800000;
+    func_00146F30(out);
+}
 /* Returns a base address in the 0x3000000 range chosen by sel (0..8), plus a and idx scaled; sel outside 0..8 returns whatever v0 held (no default in the original). */
 s32 func_0020AD30(s32 a, s32 sel, s32 idx) {
     s32 r;
@@ -3712,6 +3734,54 @@ void func_00216150(s32 idx) {
         *(s32 *)((s32)off + (s32)D_0046FDD0 + 0x190) = 0;
     }
 }
+#if 0
+void *BtlCmd_GetMotEntry(void *, s32);
+void *func_001A50F0(void *, s32);
+s32 func_00127E88(void *, void *, s32);
+void func_0020A100(void *);
+extern u8 D_00469CD0[];
+void *amObject_Create(void *, void *);
+void amFile_Load(void *);
+void amCdFs_Close(void *, s32);
+void func_00216270(s32 unused) {
+    u8 **pf = (u8 **)(D_0046FDD0 + 0x180);
+    u8 *f = *pf;
+    u8 *h;
+    u8 *e;
+    u8 *m;
+    s32 i;
+    s32 off;
+
+    if (f != 0) {
+        *pf = *(u8 **)(f + 0x40);
+        *(u8 **)(D_0046FDD0 + 0x184) = *(u8 **)(*(u8 **)(f + 0x40) + 0x50);
+        amFile_Load(*(u8 **)(D_0046FDD0 + 0x184));
+        *(u8 **)(f + 0x40) = 0;
+        amCdFs_Close(f, 0);
+        h = *(u8 **)(D_0046FDD0 + 0x184);
+        i = 0;
+        if (0 < *(s32 *)(h + 0x10)) {
+            off = 0;
+            do {
+                e = BtlCmd_GetMotEntry(h, i);
+                m = func_001A50F0(h, i);
+                if (*(s32 *)(e + 8) >= 0) {
+                    amFile_Load(m);
+                } else if (func_00127E88(m, D_00469CD0, 4) == 0) {
+                    func_0020A100(m);
+                }
+                *(u8 **)(D_0046FDD0 + off) = m;
+                if (*(s32 *)(e + 8) == 1) {
+                    *(void **)(D_0046FDD0 + off + 0xC0) = amObject_Create(*(void **)(D_0046FDD0 + off), 0);
+                }
+                i++;
+                off += 4;
+            } while (i < *(s32 *)(h + 0x10));
+        }
+    }
+}
+// differs: mn=0, 17 of 88 differ (registers only): original keeps i in s3, entry in s2, m in s1 and loads D_0046FDD0 into a0 with pf (the &D->0x180 pointer) in v1; tsweep order sweep reaches 4 differing instructions (variant not recorded, run scripts/tsweep.py --mode order --out)
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00216270);
 u8 *func_00215320(s32, s32);
 s32 func_00209540(s32, s32, s32);
