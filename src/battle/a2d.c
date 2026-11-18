@@ -559,7 +559,52 @@ void func_002271D0(s32 *a0) {
         D_004706FC = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227240);
+void func_00227240(u8 *base, s32 *n) {
+    s32 *c;
+
+    if (n[3] != 0) {
+        n[3] = (s32)(base + n[3]);
+    }
+    if (n[4] != 0) {
+        n[4] = (s32)(base + n[4]);
+    }
+    if (n[2] != 0) {
+        n[2] = (s32)(base + n[2]);
+        c = (s32 *)n[2];
+        if (c[3] != 0) {
+            c[3] = (s32)(base + c[3]);
+        }
+        if (c[4] != 0) {
+            c[4] = (s32)(base + c[4]);
+        }
+        if (c[2] != 0) {
+            c[2] = (s32)(base + c[2]);
+            func_00227240(base, (s32 *)c[2]);
+        }
+        if (c[1] != 0) {
+            c[1] = (s32)(base + c[1]);
+            func_00227240(base, (s32 *)c[1]);
+        }
+    }
+    if (n[1] != 0) {
+        n[1] = (s32)(base + n[1]);
+        c = (s32 *)n[1];
+        if (c[3] != 0) {
+            c[3] = (s32)(base + c[3]);
+        }
+        if (c[4] != 0) {
+            c[4] = (s32)(base + c[4]);
+        }
+        if (c[2] != 0) {
+            c[2] = (s32)(base + c[2]);
+            func_00227240(base, (s32 *)c[2]);
+        }
+        if (c[1] != 0) {
+            c[1] = (s32)(base + c[1]);
+            func_00227240(base, (s32 *)c[1]);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002273B0);
 void Title_StepCounters(void) {
     D_004706D8 -= 1;
