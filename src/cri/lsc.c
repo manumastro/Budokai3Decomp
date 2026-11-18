@@ -1603,7 +1603,14 @@ u8_x0016A798 *func_0016A798_x0016A798(void) {
     lbl_80092528_x0016A798[0];
     return lbl_801324F0_x0016A798;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A7B0);
+extern s32 (*D_00418684_x0016A7B0)(s32, s32, s32) __asm__("D_00418684");
+extern s32 D_00418688_x0016A7B0 __asm__("D_00418688");
+void func_0016A7B0_x0016A7B0(s32 arg0, s32 arg1) __asm__("func_0016A7B0");
+void func_0016A7B0_x0016A7B0(s32 arg0, s32 arg1) {
+    if (D_00418684_x0016A7B0 != NULL) {
+        D_00418684_x0016A7B0(D_00418688_x0016A7B0, arg1, arg0);
+    }
+}
 s32 func_00129688_x0016A7E0() __asm__("func_00129688");
 void func_0016A7E0_x0016A7E0(void) __asm__("func_0016A7E0");
 void func_0016A7E0_x0016A7E0(void) {

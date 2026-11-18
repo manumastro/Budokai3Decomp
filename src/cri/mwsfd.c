@@ -879,7 +879,12 @@ void func_00183500_x00183500(void) {
 
     } while (func_00101F90_x00183500(temp_a0, 1, 0x1E) != 0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00183548);
+s32 func_001019C0_x00183548() __asm__("func_001019C0");
+s32 func_00101F90_x00183548(s32, s32, s32) __asm__("func_00101F90");
+void func_00183548_x00183548(s32 arg0, s32 *arg1) __asm__("func_00183548");
+void func_00183548_x00183548(s32 arg0, s32 *arg1) {
+    *arg1 = func_00101F90_x00183548(func_001019C0_x00183548(arg0), 1, 0x1E);
+}
 void func_00183580(void) {
     func_001835A8();
     func_00158138();
@@ -924,8 +929,16 @@ s32 mwPlyGetNumDropFrm(s32 arg0) {
     return temp_s0 + mwPlyGetNumSkipDisp(arg0);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetNumSkipDec);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001837A8);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001837C0);
+s32 func_001837D8_x001837A8(s32, s32, s32) __asm__("func_001837D8");
+void func_001837A8_x001837A8(s32 arg0, s32 arg1) __asm__("func_001837A8");
+void func_001837A8_x001837A8(s32 arg0, s32 arg1) {
+    func_001837D8_x001837A8(arg0, arg1, 3);
+}
+s32 func_001837D8_x001837C0(s32, s32, s32) __asm__("func_001837D8");
+void func_001837C0_x001837C0(s32 a0, s32 a1) __asm__("func_001837C0");
+void func_001837C0_x001837C0(s32 a0, s32 a1) {
+    func_001837D8_x001837C0(a0, a1, 4);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001837D8);
 s32 func_00183B38_x00183850() __asm__("func_00183B38");
 s32 func_001870E8_x00183850() __asm__("func_001870E8");
@@ -1278,7 +1291,12 @@ void func_00184BB0(u8 *arg0) {
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyFxCnvFrmZ16);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyFxCnvFrmZ32);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyFxSetCompoMode);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00184E18);
+s32 func_001847D0_x00184E18(s32) __asm__("func_001847D0");
+s32 func_0019F760_x00184E18(s32, s32) __asm__("func_0019F760");
+void func_00184E18_x00184E18(s32 arg0, s32 arg1) __asm__("func_00184E18");
+void func_00184E18_x00184E18(s32 arg0, s32 arg1) {
+    func_0019F760_x00184E18(func_001847D0_x00184E18(arg0), arg1);
+}
 s32 func_00183B38_x00184E48() __asm__("func_00183B38");
 s32 func_001847D0_x00184E48(s32) __asm__("func_001847D0");
 s32 func_001870E8_x00184E48(s32 *) __asm__("func_001870E8");
@@ -1303,7 +1321,11 @@ void func_00184EC0_x00184EC0(void) {
 void func_00184ED8(u8 *arg0) {
     func_0019F9D8(*(s32 *)((u8 *)arg0 + 0xAC));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00184EF0);
+s32 MWSFSFX_SetOutBufSize_x00184EF0(s32, s32, s32, s32) __asm__("MWSFSFX_SetOutBufSize");
+void func_00184EF0_x00184EF0(s32 a0, s32 a1, s32 a2) __asm__("func_00184EF0");
+void func_00184EF0_x00184EF0(s32 a0, s32 a1, s32 a2) {
+    MWSFSFX_SetOutBufSize_x00184EF0(a0, a1, a2, 0);
+}
 s32 func_00183B38_x00184F08() __asm__("func_00183B38");
 s32 func_001847D0_x00184F08(s32) __asm__("func_001847D0");
 s32 func_001870E8_x00184F08(s32 *) __asm__("func_001870E8");
@@ -1317,7 +1339,11 @@ void mwPlyFxGetOutBufPitchHeight_x00184F08(s32 arg0, s32 arg1, s32 arg2) {
     }
     func_0019F780_x00184F08(func_001847D0_x00184F08(arg0), arg1, arg2);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00184F88);
+s32 MWSFSFX_SetOutBufSize_x00184F88(s32, s32, s32, s32) __asm__("MWSFSFX_SetOutBufSize");
+void func_00184F88_x00184F88(s32 a0, s32 a1, s32 a2) __asm__("func_00184F88");
+void func_00184F88_x00184F88(s32 a0, s32 a1, s32 a2) {
+    MWSFSFX_SetOutBufSize_x00184F88(a0, a1, a2, 0);
+}
 void func_00184FA0(void) {
     mwPlyFxGetOutBufPitchHeight();
 }
@@ -1530,7 +1556,12 @@ s32 func_00185C78_x00185C78(s32 arg0) {
     }
     return func_0019FBC8_x00185C78(func_001847D0_x00185C78(arg0));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00185CD8);
+s32 func_001847D0_x00185CD8(s32) __asm__("func_001847D0");
+s32 func_0019F750_x00185CD8(s32, s32) __asm__("func_0019F750");
+void func_00185CD8_x00185CD8(s32 arg0, s32 arg1) __asm__("func_00185CD8");
+void func_00185CD8_x00185CD8(s32 arg0, s32 arg1) {
+    func_0019F750_x00185CD8(func_001847D0_x00185CD8(arg0), arg1);
+}
 s32 func_00181B28_x00185D08() __asm__("func_00181B28");
 s32 func_001847D0_x00185D08(void *) __asm__("func_001847D0");
 s32 func_0019F760_x00185D08(s32, s32) __asm__("func_0019F760");

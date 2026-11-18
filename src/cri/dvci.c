@@ -894,7 +894,14 @@ void func_00167C60_x00167C60(void)
   }
   while (var_v0 >= new_var2);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167C90);
+extern s32 (*D_004138EC_x00167C90)(s32, s32, s32) __asm__("D_004138EC");
+extern s32 D_004138F0_x00167C90 __asm__("D_004138F0");
+void func_00167C90_x00167C90(s32 arg0, s32 arg1) __asm__("func_00167C90");
+void func_00167C90_x00167C90(s32 arg0, s32 arg1) {
+    if (D_004138EC_x00167C90 != NULL) {
+        D_004138EC_x00167C90(D_004138F0_x00167C90, arg1, arg0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167CC0);
 s32 func_00167D10(u8 *arg0) {
     s32 temp_s0;
