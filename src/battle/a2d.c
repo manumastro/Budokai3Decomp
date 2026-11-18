@@ -999,7 +999,61 @@ inline void func_0022C7D0(s32 *o, f32 t, s32 rec) {
     } while (o != 0);
 }
 #pragma inline_depth(8)
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C9A0);
+extern void func_0022CC80(s32);
+/* same three-level expansion as func_0022CD00, with the remove instead of the push */
+static inline void A2d_RemoveEnt(s32 a0) {
+    u8 *p;
+    s32 i = 0;
+    s32 n = D_004706BC;
+
+    if (0 < n) {
+        p = D_004706C0;
+        do {
+            if (*(s32 *)p == a0) {
+                func_00125740((u8 *)D_004706C0 + i * 8, (u8 *)D_004706C0 + (i + 1) * 8, (n - i) * 8);
+                D_004706BC -= 1;
+                break;
+            }
+            i += 1;
+            p += 8;
+        } while (i < n);
+    }
+}
+static inline void A2d_UnTree3(s32 *o) {
+    if (o[12] != 0) {
+        func_0022CC80(o[12]);
+    }
+    if (o[10] != 0) {
+        func_0022C9A0(o[10]);
+    }
+    if (o[11] != 0) {
+        func_0022C9A0(o[11]);
+    }
+}
+static inline void A2d_UnTree2(s32 *o) {
+    if (o[12] != 0) {
+        A2d_RemoveEnt(o[12]);
+    }
+    if (o[10] != 0) {
+        A2d_UnTree3((s32 *)o[10]);
+    }
+    if (o[11] != 0) {
+        A2d_UnTree3((s32 *)o[11]);
+    }
+}
+void func_0022C9A0(s32 a0) {
+    s32 *o = (s32 *)a0;
+
+    if (o[12] != 0) {
+        A2d_RemoveEnt(o[12]);
+    }
+    if (o[10] != 0) {
+        A2d_UnTree2((s32 *)o[10]);
+    }
+    if (o[11] != 0) {
+        A2d_UnTree2((s32 *)o[11]);
+    }
+}
 void func_0022CC80(s32 a0) {
     u8 *p;
     s32 i = 0;
