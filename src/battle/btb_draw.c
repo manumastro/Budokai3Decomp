@@ -5517,7 +5517,112 @@ void BtbObj_FreeFlagged(void) {
         n = n->next;
     } while (n != (BtbObj *)D_0051CC20);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3FE0);
+typedef struct BtMEnt {
+    char pad0[0x30];
+    s32 m30;
+    s32 m34;
+    s32 m38;
+    char pad3C[4];
+} BtMEnt;
+
+typedef struct BtMSel {
+    s32 packed;
+    s32 f4;
+    f32 f8;
+    f32 fC;
+    BtMEnt *ents;
+} BtMSel;
+
+typedef struct BtMObj {
+    char pad0[0x418];
+    s32 n;
+    BtMSel sel;
+} BtMObj;
+
+typedef struct BtMSt {
+    BtMObj *obj;
+    f32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    f32 f14;
+    s32 f18;
+    f32 f1C;
+} BtMSt;
+
+typedef struct BtMTop {
+    char pad0[4];
+    char *p4;
+    BtMSt *st;
+} BtMTop;
+
+extern char D_00469798[];
+extern char *D_0051CD0C[];
+extern char *func_001A50F0(char *, s32);
+extern char *func_00209540(char *, s32, s32);
+extern void *func_001F5FD0(u32, char *, s32, void *, void *);
+extern void func_001F16B0(char *);
+extern void func_001F1770(char *);
+extern void func_0029D270(void *, s32, void *);
+extern void func_0029D310(void *, void *);
+extern void amMotion_Apply(char *, f32, f32);
+extern void memset(void *, s32, s32);
+
+void func_001F3FE0(BtMTop *a0, s32 a1, s32 a2, f32 f12) {
+    char *s0;
+    char *s2;
+    char *s1;
+    char *tb;
+    char *ptr;
+    s32 t1;
+    BtMObj *P;
+    BtMSel *sel;
+    s32 i;
+    BtMSt *st;
+
+    tb = D_0051CD0C[0];
+    s0 = func_001A50F0(tb, 0x280);
+    ptr = func_001A50F0(tb, a2);
+    if (ptr != NULL) {
+        s2 = func_00209540(ptr, 0x2000000, 0);
+        s1 = (char *)func_001F5FD0(0x85000000, D_00469798, (s32)a0, (void *)func_001F16B0, (void *)func_001F1770);
+        *(s32 *)(s1 + 0x20) = *(s32 *)(s1 + 0x20) & -0x801;
+        *(s32 *)(s1 + 0x20) = *(s32 *)(s1 + 0x20) | 0x800;
+        memset(s1 + 0x30, 0, 0x80);
+        *(char **)(s1 + 0x34) = s0;
+        *(char **)(s1 + 0x38) = s2;
+        *(s32 *)(s1 + 0x3C) = a1;
+        *(f32 *)(s1 + 0x80) = f12;
+        st = a0->st;
+        s0 = s1 + 0x30;
+        if (st != NULL) {
+            if (st != NULL) {
+                st->f18 = 1;
+                t1 = ((st->f8 + 1) << 16) | st->f10;
+                P = st->obj;
+                sel = &P->sel;
+                if (sel->packed != t1) {
+                    if (0 < P->n) {
+                        i = 0;
+                        do {
+                            sel->ents[i].m30 = -1;
+                            sel->ents[i].m34 = -1;
+                            sel->ents[i].m38 = -1;
+                            i++;
+                        } while (i < P->n);
+                    }
+                    sel->fC = -1.0f;
+                }
+                sel->packed = t1;
+                st->obj->sel.f8 = st->f4;
+                amMotion_Apply((char *)st->obj, 0.0f, st->f1C);
+            }
+            func_0029D270(a0->st->obj, a1, s0 + 0x10);
+        } else {
+            func_0029D310(*(char **)(**(char ***)(*(char **)a0->p4 + 0x1C) + 0x14) + a1 * 80, s0 + 0x10);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F41E0);
 #if 0
 extern f32 func_002CFDD0(s32, f32, f32);
