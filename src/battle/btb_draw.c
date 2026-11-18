@@ -3409,84 +3409,23 @@ extern s8 D_004DFAF1[];
 extern s8 D_00511479[];
 extern s8 D_004DFB19[];
 extern s8 D_004B4B65[];
+typedef struct { s32 w[0x20]; } CpyBlk128;
+typedef struct { u8 b[0x2AE60]; } __attribute__((aligned(16))) CpyBlkBig;
+typedef struct { s8 b[0x28]; } CpyBlk40;
+typedef struct { s8 b[0x260]; } CpyBlk608;
 
-// differs: copy loops: loops 1, 2 and the scalar copies match; loops 3 and 4 get other registers (original src a3 dst a2 count a1, then a1/a0/a2); 56 of 76 differ with declaration variants
-#if 0
 void func_001F0530(void) {
-    s32 *s;
-    s32 *d;
-    s32 n;
-    Copy16B *s2;
-    Copy16B *d2;
-    u64 q;
-    s32 w;
-    s32 x;
-    s8 y;
-    s8 *c3;
-    s8 *e3;
-    s32 n3;
-    s8 *c4;
-    s8 *e4;
-    s32 n4;
-
-    s = D_004E6560;
-    d = D_004B4C00;
-    n = 0x10;
-    do {
-        d[0] = s[0];
-        d[1] = s[1];
-        s += 2;
-        d += 2;
-        n--;
-    } while (n > 0);
-
-    s2 = D_004E65E0;
-    d2 = D_004B4C80;
-    n = 0x1573;
-    do {
-        d2[0] = s2[0];
-        d2[1] = s2[1];
-        s2 += 2;
-        d2 += 2;
-        n--;
-    } while (n > 0);
-
-    q = D_00511440[0];
-    w = D_00511448[0];
-    x = D_0051144C[0];
-    y = D_00511450[0];
-    D_004DFAE0[0] = q;
-    D_004DFAE8[0] = w;
-    D_004DFAEC[0] = x;
-    D_004DFAF0[0] = y;
-
-    c3 = D_00511451;
-    e3 = D_004DFAF1;
-    n3 = 0x14;
-    do {
-        e3[0] = c3[0];
-        e3[1] = c3[1];
-        c3 += 2;
-        e3 += 2;
-        n3--;
-    } while (n3 > 0);
-
-    c4 = D_00511479;
-    e4 = D_004DFB19;
-    n4 = 0x130;
-    do {
-        e4[0] = c4[0];
-        e4[1] = c4[1];
-        c4 += 2;
-        e4 += 2;
-        n4--;
-    } while (n4 > 0);
-
+    *(CpyBlk128 *)D_004B4C00 = *(CpyBlk128 *)D_004E6560;
+    *(CpyBlkBig *)D_004B4C80 = *(CpyBlkBig *)D_004E65E0;
+    D_004DFAE0[0] = D_00511440[0];
+    D_004DFAE8[0] = D_00511448[0];
+    D_004DFAEC[0] = D_0051144C[0];
+    D_004DFAF0[0] = D_00511450[0];
+    *(CpyBlk40 *)D_004DFAF1 = *(CpyBlk40 *)D_00511451;
+    *(CpyBlk608 *)D_004DFB19 = *(CpyBlk608 *)D_00511479;
     D_004B4B65[0] = 1;
 }
-#endif
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F0530);
 typedef struct BtbSaveState {
     u64 f0;
     s32 f8;
