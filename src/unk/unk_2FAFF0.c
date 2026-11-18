@@ -11,9 +11,11 @@ typedef struct Ent2FAFF0 {
 
 /* The part of a task at 0x30 that the task functions use. */
 typedef struct Sub2FAFF0 {
-    char pad0[0xC];
+    char pad0[0x8];
+    f32 f8;
     f32 fC;
-    char pad10[0x8];
+    f32 f10;
+    s32 f14;
     Ent2FAFF0 *f18;
 } Sub2FAFF0;
 
@@ -697,27 +699,25 @@ void func_00300400(Task2FAFF0 *t) {
     }
     s->f18->f0 = s->f18->f0 + 1;
 }
-#if 0
-// differs: the object pointer a0+0x30 is computed before the first field load in the original; mwcc computes it at its first use
 void func_003004B0(Task2FAFF0 *t) {
-    Ent2FAFF0 *e = t->f48;
     Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
+    Ent2FAFF0 *e = s->f18;
+    f32 *p;
 
-    e->f10 = e->f10 - t->f40;
-    e = t->f48;
-    if (e->f10 < t->f3C) {
-        e->f10 = t->f3C;
-        t->f40 = 5.0f * gFrameDelta;
-        t->f44 = 1;
-        if (e->fC > s->f18->fC) {
-            t->f44 = -t->f44;
-            t->f40 = -t->f40;
+    e->f10 = e->f10 - s->f10;
+    e = s->f18;
+    p = &e->f10;
+    if (*p < t->f3C) {
+        *p = t->f3C;
+        s->f10 = 5.0f * gFrameDelta;
+        s->f14 = 1;
+        if (s->f18->fC > s->f8) {
+            s->f14 = -s->f14;
+            s->f10 = -s->f10;
         }
         t->f1C = (TourMap_TaskSlide == 0) ? 0 : TourMap_TaskSlide;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003004B0);
 void TourMap_TaskSlide(Task2FAFF0 *t) {
     Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
     f32 v;
