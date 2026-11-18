@@ -1,0 +1,78 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001020B0);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00102238);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00102940);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00102B90);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103018);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103238);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103478);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001037A8);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103BD0);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103D70);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001042C8);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104440);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001045A8);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104728);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104810);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001048A0);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104938);
+s32 func_001048A0_x00104970() __asm__("func_001048A0");
+void func_00104970_x00104970(void) __asm__("func_00104970");
+void func_00104970_x00104970(void) {
+    func_001048A0_x00104970();
+}
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104978);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104A38);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104BE8);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104D68);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104DE0);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104E78);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104F30);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105000);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001050B0);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105168);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105260);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105360);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105400);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001054B0);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105590);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105678);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105750);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105820);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105940);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105A58);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105AF8);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105C98);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00105FB0);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106260);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106300);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106448);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106588);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106670);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106680);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106690);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106878);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106888);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106898);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106A68);
+s32 func_001048A0_x00106AA0() __asm__("func_001048A0");
+void func_00106AA0_x00106AA0(void) __asm__("func_00106AA0");
+void func_00106AA0_x00106AA0(void) {
+    func_001048A0_x00106AA0();
+}
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106AA8);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106C00);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106C08);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106C58);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106CE8);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106D80);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106E78);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00106F48);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00107180);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00107280);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00107348);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00107500);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001077B8);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00107928);
+INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00107AF0);

@@ -1284,7 +1284,24 @@ s32 mwPlyGetCnvBottomUp_x00185DD8(s32 arg0) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyEntryFname);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyStartSeamless);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlySetLpFlg);
+typedef unsigned char u8_x00185F88;
+struct MovieModule_x00185F88 {
+    u8_x00185F88 pad_00[0x4c];
+    void *field_4c;
+};
+extern int fn_12_3A36C_x00185F88(struct MovieModule_x00185F88 *, void *) __asm__("func_00183B38");
+extern const u8_x00185F88 lbl_12_rodata_1420_x00185F88[] __asm__("D_00466E00");
+extern void MWSFSVM_Error_x00185F88(const u8_x00185F88 *, ...) __asm__("func_001870E8");
+extern void fn_80056730_x00185F88(void *, void *) __asm__("func_0016A130");
+void mwPlySetLpFlg_x00185F88(struct MovieModule_x00185F88 *self, void *arg) __asm__("mwPlySetLpFlg");
+/* fn_12_3496C: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_3496C.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void mwPlySetLpFlg_x00185F88(struct MovieModule_x00185F88 *self, void *arg) {
+    if (fn_12_3A36C_x00185F88(self, arg) == 0) {
+        MWSFSVM_Error_x00185F88(lbl_12_rodata_1420_x00185F88);
+    } else {
+        fn_80056730_x00185F88(self->field_4c, arg);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyStartFnameLp);
 s32 func_00183B38_x00186088() __asm__("func_00183B38");
 s32 func_001870E8_x00186088(s32 *, s32) __asm__("func_001870E8");

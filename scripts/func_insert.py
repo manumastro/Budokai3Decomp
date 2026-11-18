@@ -100,8 +100,11 @@ def decl_names(d):
 
 
 def is_type_decl(st):
-    return st.startswith("typedef") or re.match(r"^(?:const\s+)?(struct|union|enum)\s+\w*\s*\{[^;]*\}\s*;$", st, re.S) \
-        or re.match(r"^(struct|union|enum)\s+\w+\s*;$", st)
+    st = st.strip()
+    if st.startswith("typedef") or re.match(r"^(struct|union|enum)\s+\w+\s*;$", st):
+        return True
+    return bool(re.match(r"^(?:const\s+|volatile\s+)*(struct|union|enum)\s*\w*\s*\{", st)) and "}" in st \
+        and st[st.rindex("}") + 1:].strip() == ";"
 
 
 def is_func_def(st):

@@ -253,7 +253,30 @@ s32 func_0019FA08(u8 *arg0) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FA10);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FA70);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FA98);
+typedef unsigned char u8_x0019FA98;
+typedef signed int s32_x0019FA98;
+typedef unsigned int u32_x0019FA98;
+struct fn_12_68C_Arg0_x0019FA98 {
+    u8_x0019FA98 pad_0[0xC];
+    u32_x0019FA98 unk_C;
+    u8_x0019FA98 pad_10[0xC];
+    u32_x0019FA98 unk_1C;
+    u8_x0019FA98 pad_20[0xC];
+    u32_x0019FA98 unk_2C;
+};
+void func_0019FA98_x0019FA98(struct fn_12_68C_Arg0_x0019FA98 *arg0, u32_x0019FA98 arg1) __asm__("func_0019FA98");
+/* fn_12_68C: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_68C.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_0019FA98_x0019FA98(struct fn_12_68C_Arg0_x0019FA98 *arg0, u32_x0019FA98 arg1) {
+    s32_x0019FA98 v0;
+    u32_x0019FA98 v1;
+    s32_x0019FA98 v2;
+    v0 = ((s32_x0019FA98)(((u32_x0019FA98)arg1 >> 31) + arg1) >> 1);
+    v1 = (v0 << 1);
+    arg0->unk_C = v1;
+    v2 = ((s32_x0019FA98)(((v0 >> 30) & 0x1) + v1) >> 1);
+    arg0->unk_1C = v2;
+    arg0->unk_2C = v2;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FAC0);
 void func_0019FB48(u8 *arg0, s32 arg1, s32 arg2) {
     *(s32 *)((u8 *)arg0 + 8) = (s32) (*(s32 *)((u8 *)arg0 + 8) - arg1);

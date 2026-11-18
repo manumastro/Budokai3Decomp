@@ -637,7 +637,41 @@ void func_0017C868(u8 *arg0, s32 arg1, s32 arg2) {
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C880);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C8A8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017CA98);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017CB08);
+typedef unsigned char u8_x0017CB08;
+typedef signed int s32_x0017CB08;
+typedef unsigned int u32_x0017CB08;
+typedef struct MovieObject_x0017CB08 MovieObject_x0017CB08;
+typedef struct MovieArgs_x0017CB08 {
+    u32_x0017CB08 field_0000;
+    u32_x0017CB08 field_0004;
+} MovieArgs_x0017CB08;
+typedef struct MovieVTable_x0017CB08 {
+    u8_x0017CB08 pad_0000[0x0c];
+    void (*method_000c)(MovieObject_x0017CB08 *);
+    u8_x0017CB08 pad_0010[0x14];
+    s32_x0017CB08 (*method_0024)(MovieObject_x0017CB08 *, s32_x0017CB08);
+} MovieVTable_x0017CB08;
+struct MovieObject_x0017CB08 {
+    MovieVTable_x0017CB08 *vtable;
+};
+extern MovieObject_x0017CB08 *fn_80057B9C_x0017CB08(u32_x0017CB08 arg0, u32_x0017CB08 arg1) __asm__("func_0016DBE0");
+extern s32_x0017CB08 fn_12_C2C8_x0017CB08(void *arg0, MovieObject_x0017CB08 *movie) __asm__("func_0017C8A8");
+s32_x0017CB08 func_0017CB08_x0017CB08(void *arg0, MovieArgs_x0017CB08 *args, s32_x0017CB08 *result) __asm__("func_0017CB08");
+/* fn_12_C218: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/fn_12_C218.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+s32_x0017CB08 func_0017CB08_x0017CB08(void *arg0, MovieArgs_x0017CB08 *args, s32_x0017CB08 *result) {
+    s32_x0017CB08 status;
+    s32_x0017CB08 elapsed;
+    MovieObject_x0017CB08 *movie;
+    movie = fn_80057B9C_x0017CB08(args->field_0000, args->field_0004);
+    if (movie == 0) {
+        return -1;
+    }
+    status = fn_12_C2C8_x0017CB08(arg0, movie);
+    elapsed = movie->vtable->method_0024(movie, 1);
+    *result = args->field_0004 - elapsed;
+    movie->vtable->method_000c(movie);
+    return status;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017CBA8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017CC50);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017D308);
@@ -647,7 +681,61 @@ INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DBD8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DCC8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DE90);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DF98);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E040);
+typedef unsigned char u8_x0017E040;
+typedef struct SJCK_x0017E040 {
+    unsigned char *data;
+    int len;
+} SJCK_x0017E040;
+typedef struct SJ_x0017E040 SJ_x0017E040;
+typedef struct SJInterface_x0017E040 SJInterface_x0017E040;
+typedef void (*SJErrorCallback_x0017E040)(void *object, int error);
+struct SJInterface_x0017E040 {
+    void *reserved[3];
+    void (*destroy)(SJ_x0017E040 *sj);
+    const void *(*get_uuid)(SJ_x0017E040 *sj);
+    void (*reset)(SJ_x0017E040 *sj);
+    void (*get_chunk)(SJ_x0017E040 *sj, int channel, int max_size, SJCK_x0017E040 *chunk);
+    void (*unget_chunk)(SJ_x0017E040 *sj, int channel, SJCK_x0017E040 *chunk);
+    void (*put_chunk)(SJ_x0017E040 *sj, int channel, SJCK_x0017E040 *chunk);
+    int (*get_num_data)(SJ_x0017E040 *sj, int channel);
+    int (*is_get_chunk)(SJ_x0017E040 *sj, int channel, int size, int *available);
+    void (*entry_error_func)(SJ_x0017E040 *sj, SJErrorCallback_x0017E040 callback, void *object);
+};
+struct SJ_x0017E040 {
+    const SJInterface_x0017E040 *interface;
+};
+void fn_800589BC_x0017E040(const SJCK_x0017E040 *source, int nbyte, SJCK_x0017E040 *first, SJCK_x0017E040 *remainder) __asm__("func_0016F050");
+const unsigned char *fn_12_A0D8_x0017E040(const unsigned char *data, int length, int mask) __asm__("func_0017B5B8");
+int fn_12_A2C4_x0017E040(const unsigned char *data) __asm__("func_0017B420");
+int func_0017E040_x0017E040(SJ_x0017E040 *stream) __asm__("func_0017E040");
+/* MPV_GoNextDelimSj: from https://github.com/karamzov123/fzero-gx-decomp (src/rel/movie_module/MPV_GoNextDelimSj.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0017E040_x0017E040(SJ_x0017E040 *stream) {
+    SJCK_x0017E040 chunk;
+    SJCK_x0017E040 remainder;
+    const u8_x0017E040 *delimiter;
+    int delimiter_type;
+    for (;;) {
+        stream->interface->get_chunk(stream, 1, 0x7FFFFFFF, &chunk);
+        if (chunk.len < 4) {
+            stream->interface->unget_chunk(stream, 1, &chunk);
+            delimiter_type = 0;
+            break;
+        }
+        delimiter = fn_12_A0D8_x0017E040(chunk.data, chunk.len, -1);
+        if (delimiter == 0) {
+            fn_800589BC_x0017E040(&chunk, chunk.len - 3, &chunk, &remainder);
+            stream->interface->put_chunk(stream, 0, &chunk);
+            stream->interface->unget_chunk(stream, 1, &remainder);
+            continue;
+        }
+        delimiter_type = fn_12_A2C4_x0017E040(delimiter);
+        fn_800589BC_x0017E040(&chunk, delimiter - chunk.data, &chunk, &remainder);
+        stream->interface->put_chunk(stream, 0, &chunk);
+        stream->interface->unget_chunk(stream, 1, &remainder);
+        break;
+    }
+    return delimiter_type;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E198);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E268);
 s32 *func_0017E2C0(void) {

@@ -114,7 +114,19 @@ void func_00150620(void) {
     memset(&D_004010A8, 0, 0xF40);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150658);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150688);
+typedef unsigned char u8_x00150688;
+typedef unsigned int u32_x00150688;
+struct fn_80045F58_Arg0_x00150688 {
+    u8_x00150688 pad_0[0x88];
+    u32_x00150688 unk_88;
+    u32_x00150688 unk_8C;
+};
+void func_00150688_x00150688(struct fn_80045F58_Arg0_x00150688 *arg0, u32_x00150688 arg1, u32_x00150688 arg2) __asm__("func_00150688");
+/* fn_80045F58: from https://github.com/karamzov123/fzero-gx-decomp (src/dol/fn_80045F58.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_00150688_x00150688(struct fn_80045F58_Arg0_x00150688 *arg0, u32_x00150688 arg1, u32_x00150688 arg2) {
+    arg0->unk_8C = (arg0->unk_8C + arg2);
+    arg0->unk_88 = (arg0->unk_88 + arg2);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001506A8);
 void func_001507E8(u8 *arg0) {
     s32 temp_a0;

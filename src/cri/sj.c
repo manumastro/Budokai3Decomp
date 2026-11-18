@@ -150,7 +150,31 @@ s32 func_0016E250(u8 *arg0) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016E258);
 INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016E268);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016E2B0);
+typedef unsigned char u8_x0016E2B0;
+typedef struct Fn80058380Object_x0016E2B0 Fn80058380Object_x0016E2B0;
+typedef void (*Fn80058380Callback_x0016E2B0)(void *, int);
+struct Fn80058380Object_x0016E2B0 {
+    u8_x0016E2B0 pad_0x00[0x0C];
+    int value_0x0C;
+    int value_0x10;
+    u8_x0016E2B0 pad_0x14[0x24];
+    Fn80058380Callback_x0016E2B0 callback;
+    void *callback_context;
+};
+int func_0016E2B0_x0016E2B0(Fn80058380Object_x0016E2B0 *object, int mode) __asm__("func_0016E2B0");
+/* fn_80058380: from https://github.com/karamzov123/fzero-gx-decomp (src/dol/fn_80058380.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+int func_0016E2B0_x0016E2B0(Fn80058380Object_x0016E2B0 *object, int mode) {
+    if (mode == 1) {
+        return object->value_0x0C;
+    }
+    if (mode == 0) {
+        return object->value_0x10;
+    }
+    if (object->callback) {
+        object->callback(object->callback_context, -3);
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016E300);
 INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016E470);
 INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016E5C8);

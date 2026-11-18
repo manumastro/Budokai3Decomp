@@ -467,7 +467,209 @@ double _b2d(_Bigint *a, int *e)
     }
     return d.d;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc/kfiv_mprec", func_001267D8);
+typedef unsigned int __uint32_t_x001267D8;
+typedef unsigned int size_t_x001267D8;
+typedef __uint32_t_x001267D8 __ULong_x001267D8;
+struct _glue_x001267D8
+{
+  struct _glue_x001267D8 *_next;
+  int _niobs;
+  struct __sFILE_x001267D8 *_iobs;
+};
+struct _Bigint_x001267D8
+{
+  struct _Bigint_x001267D8 *_next;
+  int _k, _maxwds, _sign, _wds;
+  __ULong_x001267D8 _x[1];
+};
+struct __tm_x001267D8
+{
+  int __tm_sec;
+  int __tm_min;
+  int __tm_hour;
+  int __tm_mday;
+  int __tm_mon;
+  int __tm_year;
+  int __tm_wday;
+  int __tm_yday;
+  int __tm_isdst;
+};
+struct _atexit_x001267D8 {
+        struct _atexit_x001267D8 *_next;
+        int _ind;
+        void (*_fns[32])(void);
+};
+struct __sbuf_x001267D8 {
+        unsigned char *_base;
+        int _size;
+};
+typedef long _fpos_t_x001267D8;
+struct __sFILE_x001267D8 {
+  unsigned char *_p;
+  int _r;
+  int _w;
+  short _flags;
+  short _file;
+  struct __sbuf_x001267D8 _bf;
+  int _lbfsize;
+  void * _cookie;
+  int (*_read) (void * _cookie, char *_buf, int _n);
+  int (*_write) (void * _cookie, const char *_buf,
+                                            int _n);
+  _fpos_t_x001267D8 (*_seek) (void * _cookie, _fpos_t_x001267D8 _offset, int _whence);
+  int (*_close) (void * _cookie);
+  struct __sbuf_x001267D8 _ub;
+  unsigned char *_up;
+  int _ur;
+  unsigned char _ubuf[3];
+  unsigned char _nbuf[1];
+  struct __sbuf_x001267D8 _lb;
+  int _blksize;
+  int _offset;
+  struct _reent_x001267D8 *_data;
+};
+struct _rand48_x001267D8 {
+  unsigned short _seed[3];
+  unsigned short _mult[3];
+  unsigned short _add;
+};
+struct _reent_x001267D8
+{
+  int _errno;
+  struct __sFILE_x001267D8 *_stdin, *_stdout, *_stderr;
+  int _inc;
+  char _emergency[25];
+  int _current_category;
+  const char *_current_locale;
+  int __sdidinit;
+  void (*__cleanup) (struct _reent_x001267D8 *);
+  struct _Bigint_x001267D8 *_result;
+  int _result_k;
+  struct _Bigint_x001267D8 *_p5s;
+  struct _Bigint_x001267D8 **_freelist;
+  int _cvtlen;
+  char *_cvtbuf;
+  union
+    {
+      struct
+        {
+          unsigned int _unused_rand;
+          char * _strtok_last;
+          char _asctime_buf[26];
+          struct __tm_x001267D8 _localtime_buf;
+          int _gamma_signgam;
+          __extension__ unsigned long long _rand_next;
+          struct _rand48_x001267D8 _r48;
+        } _reent_x001267D8;
+      struct
+        {
+          unsigned char * _nextf[30];
+          unsigned int _nmalloc[30];
+        } _unused;
+    } _new;
+  struct _atexit_x001267D8 *_atexit_x001267D8;
+  struct _atexit_x001267D8 _atexit0;
+  void (**(_sig_func))(int);
+  struct _glue_x001267D8 __sglue;
+  struct __sFILE_x001267D8 __sf[3];
+};
+extern int atexit (void (*__func_x001267D8)(void)) __asm__("__func");
+extern void * bsearch (const void * __key,
+                       const void * __base,
+                       size_t_x001267D8 __nmemb,
+                       size_t_x001267D8 __size,
+                       int (* _compar_x001267D8) (const void *, const void *)) __asm__("_compar");
+extern void qsort (void * __base, size_t_x001267D8 __nmemb, size_t_x001267D8 __size, int(*_compar_x001267D8)(const void *, const void *)) __asm__("_compar");
+union double_union_x001267D8
+{
+  double d;
+  __uint32_t_x001267D8 i[2];
+};
+typedef struct _Bigint_x001267D8 _Bigint_x001267D8;
+struct _reent_x001267D8 ;
+_Bigint_x001267D8 * _Balloc_x001267D8 (struct _reent_x001267D8 *p, int k) __asm__("func_00125A88");
+int _hi0bits_x001267D8 (__ULong_x001267D8) __asm__("func_00125D98");
+int _lo0bits_x001267D8 (__ULong_x001267D8 *) __asm__("func_00125E18");
+_Bigint_x001267D8 *
+_Balloc_x001267D8(struct _reent_x001267D8 *ptr , int k) __asm__("func_00125A88");
+int
+_hi0bits_x001267D8(register __ULong_x001267D8 x) __asm__("func_00125D98");
+int
+_lo0bits_x001267D8(__ULong_x001267D8 *y) __asm__("func_00125E18");
+_Bigint_x001267D8 *
+func_001267D8_x001267D8(struct _reent_x001267D8 * ptr ,
+        double _d ,
+        int *e ,
+        int *bits) __asm__("func_001267D8");
+/****************************************************************
+ *
+ * The author of this software is David M. Gay.
+ *
+ * Copyright (c) 1991 by AT&T.
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose without fee is hereby granted, provided that this entire notice
+ * is included in all copies of any software which is or includes a copy
+ * or modification of this software and in all copies of the supporting
+ * documentation for such software.
+ *
+ * THIS SOFTWARE IS BEING PROVIDED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTY.  IN PARTICULAR, NEITHER THE AUTHOR NOR AT&T MAKES ANY
+ * REPRESENTATION OR WARRANTY OF ANY KIND CONCERNING THE MERCHANTABILITY
+ * OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
+ *
+ ***************************************************************/
+/* _d2b: from newlib 1.10.0 (sourceware.org) (libc/stdlib/mprec.c, BSD-style, notices in LICENSES/THIRD_PARTY.md); ee-gcc 2.96 -O2 -G0 */
+_Bigint_x001267D8 *
+func_001267D8_x001267D8(struct _reent_x001267D8 * ptr ,
+        double _d ,
+        int *e ,
+        int *bits)
+{
+  union double_union_x001267D8 d;
+  _Bigint_x001267D8 *b;
+  int de, i, k;
+  __ULong_x001267D8 *x, y, z;
+  d.d = _d;
+  d.d = _d;
+  b = _Balloc_x001267D8 (ptr, 1);
+  x = b->_x;
+  z = (d.i[1]) & ((__uint32_t_x001267D8)0xfffffL);
+  (d.i[1]) &= 0x7fffffff;
+  if ((de = (int) ((d.i[1]) >> 20)) != 0)
+    z |= ((__uint32_t_x001267D8)0x100000L);
+  if ((d.i[0]))
+    {
+      y = (d.i[0]);
+      k = _lo0bits_x001267D8 (&y);
+      if (k)
+        {
+         x[0] = y | z << (32 - k);
+          z >>= k;
+        }
+      else
+        x[0] = y;
+      i = b->_wds = (x[1] = z) ? 2 : 1;
+    }
+  else
+    {
+      k = _lo0bits_x001267D8 (&z);
+      x[0] = z;
+      i = b->_wds = 1;
+      k += 32;
+    }
+  if (de)
+    {
+      *e = de - 1023 - (53 - 1) + k;
+      *bits = 53 - k;
+    }
+  else
+    {
+      *e = de - 1023 - (53 - 1) + 1 + k;
+      *bits = 32 * i - _hi0bits_x001267D8 (x[i - 1]);
+    }
+  return b;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libc/kfiv_mprec", func_00126960);
 
 
