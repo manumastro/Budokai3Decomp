@@ -575,7 +575,38 @@ void SkillKill_Kind08(s32 *p) {
         p[16] = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024C950);
+extern void func_00146F10(s32 *, s32 *, f32);
+void func_0024C950(u8 *ob) {
+    u8 *s2;
+    u8 *s1;
+    s32 side;
+    s32 v;
+    f32 f;
+    f32 tmp[4] __attribute__((aligned(16)));
+
+    s1 = *(u8 **)(ob + 0x8);
+    s2 = *(u8 **)(ob + 0xC);
+    side = *(s32 *)(s1 + 0x1350);
+    *(s32 *)(ob + 0x40) = *(s32 *)((u8 *)D_0046FE54 + 0x10);
+    func_001D9C40((s32)s1, side + 2, 0x2D);
+    func_0020D400((s32)(ob + 0x10), *(s32 *)(s1 + 0x1354), 0);
+    *(f32 *)(ob + 0x14) = *(f32 *)(ob + 0x14) - 20.0f;
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(ob + 0x20), "r"(ob + 0x10));
+    *(f32 *)(ob + 0x30) = 0.0f;
+    *(f32 *)(ob + 0x34) = -1.0f;
+    *(f32 *)(ob + 0x38) = 0.0f;
+    *(f32 *)(ob + 0x3C) = 1.0f;
+    f = SkillObj_Scale();
+    func_00146F10((s32 *)(ob + 0x30), (s32 *)(ob + 0x30), *(f32 *)(s2 + 0x28) * f);
+    *(f32 *)(ob + 0x4C) = *(f32 *)(s2 + 0xCC);
+    *(f32 *)ob = *(f32 *)ob + 40.0f;
+    *(s32 *)(ob + 0x50) = 0;
+    v = func_0020B020(side, *(s16 *)(s2 + 0x58), *(s16 *)(s2 + 0x5E));
+    *(s32 *)(ob + 0x44) = func_00209540(v, (side != 0) ? 0x4000020 : 0x4000010, 0);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(tmp), "r"(ob + 0x20));
+    tmp[1] = tmp[1] + 100.0f;
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(ob + 0x20), "r"(tmp));
+}
 extern s32 func_00209540(s32, s32, s32);
 extern void func_00146F30(s32 *);
 extern void func_00146F10(s32 *, s32 *, f32);
