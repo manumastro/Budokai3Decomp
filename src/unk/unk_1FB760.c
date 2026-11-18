@@ -327,10 +327,23 @@ void func_00202CD0(u8 *a0, u8 *a1, u8 *a2) {
     func_00146ED0(t2, t2, k * g);
     __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(q2 + 0x10), "r"(t2) : "memory");
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00202DC0);
 extern u8 D_003F0800[];
 extern void func_00141CF0(s32, u8 *, s32);
 extern void func_0013B160(void *);
+void func_00202DC0(u8 *a0, u8 *a1, u8 *a2) {
+    f32 k = *(f32 *)D_0051D9AC;
+    f32 t[4];
+    u8 *q0 = a0;
+    u8 *q2 = a2;
+    u8 *q1 = a1;
+    func_00146F10(t, q1 + 0x30, *(f32 *)(q1 + 0x40) * k);
+    if (*(s32 *)(q1 + 0x8) & 0x2) {
+        func_0013B160(D_003F0800);
+        func_00141CF0(0, q0 + 0x20, 0);
+        __asm__ volatile ("lqc2 $vf1, 0(%1) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddz.xyz $vf1, $vf30, $vf1z ; sqc2 $vf1, 0(%0) ; vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27" : : "r"(t), "r"(t) : "memory");
+    }
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(q2 + 0x10), "r"(t) : "memory");
+}
 void func_00202E80(u8 *a0, u8 *a1, u8 *a2) {
     f32 k = *(f32 *)D_0051D9AC;
     f32 t2[4];
@@ -382,7 +395,7 @@ void func_00207200(u8 *a) {
         __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%2)" : : "r"(p18), "r"(p10), "r"(s0 + 0x10) : "memory");
     }
     __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(s0 + 0x10), "r"(s1 + 0x30) : "memory");
-    func_00146F10(s0 + 0x20, *(s32 *)(a + 0x1C), *(f32 *)(s1 + 0x58));
+    func_00146F10(s0 + 0x20, *(u8 **)(a + 0x1C), *(f32 *)(s1 + 0x58));
     __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%0) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%1)" : : "r"(*(u8 **)(a + 0x14)), "r"(s0 + 0x20) : "memory");
     __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(s0 + 0x30), "r"(s1 + 0x40) : "memory");
 }
