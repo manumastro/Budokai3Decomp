@@ -4693,7 +4693,6 @@ void func_001F2FD0(char *a0) {
 #endif
 // differs: func_001F2FD0 (424 bytes): same shape and prefix as func_001F3740 (the table base load and the index load come in the other order in ours; a volatile base read did not change it). 6 instructions differ.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F2FD0);
-// differs: func_001F3180: 8 of 89 instructions differ (size 0x164 right): the operand order of both sums and the andi/sll/lwc1 schedule, the register of the object pointer (v1 here, a0 in the original). Tried 24 declaration orders, the shift as its own statement.
 #if 0
 extern f32 func_002CFDD0(s32, f32, f32);
 extern void func_002D0110(s32, f32, s32);
@@ -5157,7 +5156,89 @@ void func_001F3180(char *a0) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3180);
+typedef struct BtLFrm {
+    char pad0[8];
+    s32 f8;
+    char padC[4];
+} BtLFrm;
+
+typedef struct BtLSlot {
+    char pad0[0x14];
+    BtLFrm *frm;
+} BtLSlot;
+
+typedef struct BtLObj {
+    char pad0[4];
+    BtLSlot *slots[1];
+} BtLObj;
+
+typedef struct BtLSt {
+    BtLObj *obj;
+    f32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    f32 f14;
+    s32 f18;
+    f32 f1C;
+} BtLSt;
+
+typedef struct BtLHolder {
+    char pad0[0xC];
+    BtLSt *ms;
+    BtbItem *it;
+} BtLHolder;
+
+typedef struct BtLTop {
+    char pad0[0x10];
+    BtLHolder *h;
+} BtLTop;
+
+extern f32 D_0051CD24[];
+extern void amMotSet_Apply(void *, f32, s32);
+extern f32 func_002CFDD0(s32, f32, f32);
+extern void func_002D0110(s32, f32, s32);
+extern void func_002D04A0(s32);
+
+void func_001F3180(BtLTop *a0) {
+    BtLSt *s0;
+    BtLHolder *h;
+    BtbItem *it;
+    s32 s2;
+    s32 idx;
+    f32 f20;
+
+    s0 = a0->h->ms;
+    if (s0 != NULL) {
+        f20 = D_0051CD24[0];
+        if (f20 >= 0.0f) {
+            if (s0->f18 != 0) {
+                s2 = ((s0->f8 + 1) << 16) | s0->f10;
+                amMotSet_Apply(s0->obj, s0->f4, s2);
+                s0->f4 = s0->f4 + s0->f14 * f20;
+                idx = (s2 >> 16) - 1;
+                if (!(s0->f4 < (f32)s0->obj->slots[idx]->frm[s2 & 0xFFFF].f8)) {
+                    s0->f4 = 0.0f;
+                }
+            }
+        }
+    }
+    h = a0->h;
+    it = h->it;
+    if (it != NULL) {
+        f20 = D_0051CD24[0];
+        if (f20 >= 0.0f) {
+            if (it->id != 0) {
+                func_002D04A0(it->kind2);
+                func_002D0110(h->it->id, h->it->val, 0);
+                func_002D04A0(0);
+            }
+            if (it->kind != 0) {
+                it->val = func_002CFDD0(it->id, it->val, f20);
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F32F0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F34E0);
 extern s32 D_0051CD20[];
@@ -6867,7 +6948,7 @@ extern s32 D_0051CD20[];
 extern char D_004698C0[];
 extern void *func_001F5FD0(u32, char *, s32, void *, void *);
 extern void func_001F2FD0(char *);
-extern void func_001F3180(void);
+extern void func_001F3180(struct BtLTop *);
 void func_001F7720(s32 p0) {
     s32 t;
     char *ent;
