@@ -657,7 +657,22 @@ int func_0012C140_x0012C140(char *out, const char *fmt, char *ap)
     return n;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libc_00129428", func_0012C198);
-INCLUDE_ASM("asm/nonmatchings/sdk/libc_00129428", _write_r);
+s32 write_x0012C1F0(s32, s32, s32) __asm__("write");
+extern s32 errno_x0012C1F0 __asm__("errno");
+unsigned long long _write_r_x0012C1F0(s32 *arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("_write_r");
+unsigned long long _write_r_x0012C1F0(s32 *arg0, s32 arg1, s32 arg2, s32 arg3)
+{
+  unsigned long long new_var;
+  s32 temp_v0;
+  errno_x0012C1F0 = 0;
+  temp_v0 = write_x0012C1F0(arg1, arg2, arg3);
+  new_var = 1;
+  if (((-new_var) == temp_v0) && (errno_x0012C1F0 != 0))
+  {
+    *arg0 = errno_x0012C1F0;
+  }
+  return temp_v0;
+}
 typedef struct {
     unsigned char *base;
     int size;

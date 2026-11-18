@@ -604,7 +604,14 @@ void func_00178A78_x00178A78(char *h, int n, void *fn)
     p[n] = fn;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178B28);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178B80);
+extern s32 *D_004814D8_x00178B80 __asm__("D_004814D8");
+s32 func_00178B80_x00178B80(s32 *arg0) __asm__("func_00178B80");
+s32 func_00178B80_x00178B80(s32 *arg0)
+{
+  s32 var_v0;
+  D_004814D8_x00178B80 = arg0;
+ do { var_v0 = -1; if (arg0 != ((void *) 0)) { var_v0 = (((*arg0) ^ 2) == 0) ? (0) : (-1); return var_v0; } } while (0);
+}
 s32 memcpy_x00178BA8() __asm__("memcpy");
 void func_00178BA8_x00178BA8(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00178BA8");
 void func_00178BA8_x00178BA8(s32 arg0, s32 arg1, s32 arg2) {

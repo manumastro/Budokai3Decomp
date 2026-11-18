@@ -607,7 +607,21 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A03B8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0588);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A05D8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0660);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", SFXZ_SetZclip);
+s32 func_0019F6D0_x001A07A8(s32, s32, s32 *) __asm__("func_0019F6D0");
+s32 func_001A0810_x001A07A8() __asm__("func_001A0810");
+extern s32 D_00467DF0_x001A07A8 __asm__("D_00467DF0");
+void SFXZ_SetZclip_x001A07A8(u8 *arg0, f32 fparg0, f32 fparg1) __asm__("SFXZ_SetZclip");
+void SFXZ_SetZclip_x001A07A8(u8 *arg0, f32 fparg0, f32 fparg1)
+{
+  u8 *new_var;
+  if (func_001A0810_x001A07A8() != 1)
+  {
+    func_0019F6D0_x001A07A8(0, 0, &D_00467DF0_x001A07A8);
+  }
+  new_var = ((u8 *) arg0) + 0x3C;
+  *((f32 *) new_var) = fparg0;
+  *((f32 *) (((u8 *) arg0) + 0x40)) = fparg1;
+}
 s32 func_001A0810(f32 fparg0, f32 fparg1) {
     s32 var_v0;
 

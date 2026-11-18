@@ -169,7 +169,28 @@ void ADXT_SetReloadSct_x0015F330(u8 *arg0, int arg1)
 s16 func_0015F388(u8 *arg0) {
     return *(s16 *)((u8 *)arg0 + 0x3E);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_GetNumSctIbuf);
+s32 ADXERR_CallErrFunc1_x0015F390(s32 *) __asm__("ADXERR_CallErrFunc1");
+extern s32 D_00461C88_x0015F390 __asm__("D_00461C88");
+s32 ADXT_GetNumSctIbuf_x0015F390(u8 *arg0) __asm__("ADXT_GetNumSctIbuf");
+s32 ADXT_GetNumSctIbuf_x0015F390(u8 *arg0)
+{
+  s32 new_var;
+  s32 temp_v0;
+  u8 **temp_v1;
+  if (arg0 == ((void *) 0))
+  {
+    ADXERR_CallErrFunc1_x0015F390(&D_00461C88_x0015F390);
+    return -1;
+  }
+  temp_v1 = *((u8 ***) (((u8 *) arg0) + 0x14));
+  if (temp_v1 != ((void *) 0))
+  {
+    temp_v0 = (*((s32 (**)(u8 **, s32)) (((u8 *) (*temp_v1)) + 0x24)))(temp_v1, 1);
+    new_var = (s32) ((temp_v0 < 0) ? (temp_v0 + 0x7FF) : (temp_v0));
+    return new_var >> 0xB;
+  }
+  return 0;
+}
 s32 ADXT_GetNumSmplObuf(s32 arg0, s32 arg1) {
     u32 temp_v0;
     u8 **temp_v0_2;
@@ -186,7 +207,26 @@ s32 ADXT_GetNumSmplObuf(s32 arg0, s32 arg1) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_GetIbufRemainTime);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_IsIbufSafety);
+s32 ADXERR_CallErrFunc1_x0015F540(s32 *) __asm__("ADXERR_CallErrFunc1");
+extern s32 D_00461D20_x0015F540 __asm__("D_00461D20");
+s32 ADXT_IsIbufSafety_x0015F540(u8 *arg0) __asm__("ADXT_IsIbufSafety");
+s32 ADXT_IsIbufSafety_x0015F540(u8 *arg0)
+{
+  u8 **temp_v1;
+  int new_var;
+  new_var = 0;
+  if (arg0 == ((void *) 0))
+  {
+    ADXERR_CallErrFunc1_x0015F540(&D_00461D20_x0015F540);
+    return -1;
+  }
+  temp_v1 = *((u8 ***) (((u8 *) arg0) + 0x14));
+  if (temp_v1 != ((void *) 0))
+  {
+    return ((float) ((*((s32 (**)(u8 **, s32)) (((u8 *) (*temp_v1)) + 0x24)))(temp_v1, (float) 1) < ((*((s16 *) (((u8 *) arg0) + 0x3E))) << 0xB))) == new_var;
+  }
+  return 0;
+}
 void func_0015F5B0(u8 *arg0, s8 arg1) {
     *(s8 *)((u8 *)arg0 + 0x6D) = arg1;
 }
@@ -208,7 +248,24 @@ s16 ADXT_GetErrCode(u8 *arg0) {
     }
     return *(s16 *)((u8 *)arg0 + 0x60);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_ClearErrCode);
+s32 ADXERR_CallErrFunc1_x0015F728(s32 *) __asm__("ADXERR_CallErrFunc1");
+extern s32 D_00461DB0_x0015F728 __asm__("D_00461DB0");
+void ADXT_ClearErrCode_x0015F728(u8 *arg0) __asm__("ADXT_ClearErrCode");
+void ADXT_ClearErrCode_x0015F728(u8 *arg0)
+{
+  u8 *new_var2;
+  s32 *new_var;
+  new_var2 = arg0;
+  if (arg0 == ((void *) 0))
+  {
+    ADXERR_CallErrFunc1_x0015F728(&D_00461DB0_x0015F728);
+    return;
+  }
+  *((s16 *) (((u8 *) arg0) + 0x60)) = 0;
+  *(new_var = (s32 *) (((u8 *) new_var2) + 0x64)) = 0;
+  *((s16 *) (((u8 *) arg0) + 0x68)) = 0;
+  *((s16 *) (((u8 *) arg0) + 0x6A)) = 0;
+}
 s32 ADXT_GetLpCnt(u8 *arg0) {
     if (arg0 == NULL) {
         ADXERR_CallErrFunc1(&D_00461DE0);

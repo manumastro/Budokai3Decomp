@@ -1233,7 +1233,53 @@ void func_0015C520(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0xC) = arg1;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C528);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C698);
+s32 func_0015B500_x0015C698(void *, s32) __asm__("func_0015B500");
+s32 func_0015B5B0_x0015C698(void *, s32) __asm__("func_0015B5B0");
+void func_0015C698_x0015C698(u8 *arg0, s32 arg1) __asm__("func_0015C698");
+void func_0015C698_x0015C698(u8 *arg0, s32 arg1)
+{
+  s32 var_a1;
+  int new_var;
+  var_a1 = arg1;
+  loop_1:
+  if ((*((s8 *) (((u8 *) arg0) + 3))) != 0)
+  {
+    goto block_10;
+  }
+
+  new_var = 1;
+  goto loop_5;
+  block_3:
+  *((s32 *) (((u8 *) arg0) + 0x2C)) = (s32) ((*((s32 *) (((u8 *) arg0) + 0x2C))) + var_a1);
+
+  if ((*((s32 *) (((u8 *) arg0) + 0x30))) < (*((s32 *) (((u8 *) arg0) + 0x3C))))
+  {
+    goto loop_5;
+  }
+  *((s8 *) (((u8 *) arg0) + 3)) = new_var;
+  goto loop_1;
+  loop_5:
+  var_a1 = func_0015B500_x0015C698(arg0, var_a1);
+
+  if (var_a1 == 0)
+  {
+    goto block_7;
+  }
+  goto block_3;
+  block_7:
+  return;
+
+  block_10:
+  if (func_0015B5B0_x0015C698(arg0, var_a1) <= 0)
+  {
+    goto block_12;
+  }
+
+  *((s8 *) (((u8 *) arg0) + 1)) = 3;
+  block_12:
+  return;
+
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C730);
 void func_0015C770(void) {
     s32 var_s1;
@@ -6180,7 +6226,28 @@ s32 func_0015D520_x0015D520(s32 arg0, s32 *arg1) {
     *arg1 = 0;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015D530);
+s32 func_00162AD8_x0015D530() __asm__("func_00162AD8");
+s32 func_0015D530_x0015D530(s32 arg0, s32 *arg1) __asm__("func_0015D530");
+s32 func_0015D530_x0015D530(s32 arg0, s32 *arg1)
+{
+  s32 temp_v0;
+  s32 *new_var3;
+  unsigned int new_var;
+  s32 temp_v1;
+  int new_var2;
+  new_var = arg0;
+  ;
+  temp_v0 = func_00162AD8_x0015D530(new_var);
+  temp_v1 = (s32) ((!(temp_v0 < 0)) ? (temp_v0) : (temp_v0 + 0x7FF));
+  temp_v1 = temp_v1 >> 0xB;
+  *arg1 = temp_v1;
+  if ((temp_v0 - (temp_v1 << 0xB)) > 0)
+  {
+    new_var2 = temp_v1 + 1;
+    *arg1 = new_var2;
+  }
+  return 1;
+}
 s32 func_00162AD8_x0015D588() __asm__("func_00162AD8");
 s32 func_0015D588_x0015D588(s32 a0, s32 *a1) __asm__("func_0015D588");
 s32 func_0015D588_x0015D588(s32 a0, s32 *a1) {

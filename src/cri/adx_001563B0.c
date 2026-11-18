@@ -2601,7 +2601,22 @@ void func_00158598(s32 arg0, s32 arg1) {
 void func_001585C0(void) {
     func_001705E0(7);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_001585D8);
+extern s32 D_0047E970_x001585D8 __asm__("D_0047E970");
+extern s32 D_0047E978_x001585D8 __asm__("D_0047E978");
+void func_001585D8_x001585D8(s32 arg0, int arg1, s32 arg2, int arg3) __asm__("func_001585D8");
+void func_001585D8_x001585D8(s32 arg0, int arg1, s32 arg2, int arg3)
+{
+  u8 *new_var;
+  *((s32 *) (((u8 *) (&D_0047E970_x001585D8)) + 0)) = arg0;
+  *((s32 *) (((u8 *) (&D_0047E970_x001585D8)) + 4)) = arg1;
+  new_var = (u8 *) (&D_0047E978_x001585D8);
+  *((s32 *) (new_var + 4)) = arg3;
+ if (1) { do {
+    }
+    while (0);
+  }
+  *((s32 *) (((u8 *) (&D_0047E978_x001585D8)) + 0)) = arg2;
+}
 extern s32 D_0047E970_x00158600 __asm__("D_0047E970");
 void func_00158600_x00158600(void) __asm__("func_00158600");
 void func_00158600_x00158600(void) {

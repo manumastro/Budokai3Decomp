@@ -87,7 +87,24 @@ void func_0016A9E0_x0016A9E0(s32 arg0) __asm__("func_0016A9E0");
 void func_0016A9E0_x0016A9E0(s32 arg0) {
     memset_x0016A9E0(arg0, 0, 0x38);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AA00);
+s32 func_0016A968_x0016AA00(s32) __asm__("func_0016A968");
+void func_0016AA00_x0016AA00(u8 *arg0) __asm__("func_0016AA00");
+void func_0016AA00_x0016AA00(u8 *arg0)
+{
+  s32 temp_v0;
+  s32 temp_v1;
+  *((s32 *) (((u8 *) arg0) + 4)) = 0x800;
+  temp_v0 = func_0016A968_x0016AA00(arg0 + 0x1C);
+  temp_v1 = *((s32 *) (((u8 *) arg0) + 4));
+  *((s32 *) (((u8 *) arg0) + 8)) = temp_v0;
+  *((s32 *) (((u8 *) arg0) + 0xC)) = (s32) (((s32) ((temp_v0 + temp_v1) - 1)) / temp_v1);
+  *((s8 *) (((u8 *) arg0) + 0)) = 1;
+  *((s32 *) (((u8 *) arg0) + 0x10)) = 0;
+  *((s32 *) (((u8 *) arg0) + 0x18)) = 0;
+  *((s32 *) (((u8 *) arg0) + 0x14)) = 0;
+  *((s8 *) (((u8 *) arg0) + 1)) = 0;
+  *((s8 *) (((u8 *) arg0) + 0)) = 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", mfCiOpen);
 s32 func_0016A9E0_x0016AB10(s8 *) __asm__("func_0016A9E0");
 s32 func_0016ADD8_x0016AB10() __asm__("func_0016ADD8");
@@ -105,7 +122,59 @@ void func_0016AB10_x0016AB10(s8 *arg0) {
 block_3:
     return;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AB58);
+s32 func_0016A768_x0016AB58() __asm__("func_0016A768");
+s32 func_0016A780_x0016AB58() __asm__("func_0016A780");
+s32 func_0016A7B0_x0016AB58() __asm__("func_0016A7B0");
+extern s32 D_00464048_x0016AB58 __asm__("D_00464048");
+s32 func_0016AB58_x0016AB58(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0016AB58");
+s32 func_0016AB58_x0016AB58(u8 *arg0, s32 arg1, s32 arg2)
+{
+  s32 temp_a0;
+  s32 temp_v0;
+  s32 temp_v0_2;
+  if (arg0 != ((void *) 0))
+  {
+    goto block_2;
+  }
+  func_0016A7B0_x0016AB58(arg0, &D_00464048_x0016AB58);
+  return 0;
+  block_2:
+  func_0016A768_x0016AB58();
+
+  if (arg2 != 0)
+  {
+    goto block_4;
+  }
+  *((s32 *) (((u8 *) arg0) + 0x10)) = arg1;
+  goto block_8;
+  block_4:
+  if (arg2 != 2)
+  {
+    goto block_6;
+  }
+
+  *((s32 *) (((u8 *) arg0) + 0x10)) = (s32) ((*((s32 *) (((u8 *) arg0) + 0xC))) + arg1);
+  goto block_9;
+  block_6:
+  if (arg2 != 1)
+  {
+    goto block_9;
+  }
+
+  *((s32 *) (((u8 *) arg0) + 0x10)) = (s32) ((*((s32 *) (((u8 *) arg0) + 0x10))) + arg1);
+  goto block_9;
+  block_8:
+  block_9:
+  temp_v0 = *((s32 *) (((u8 *) arg0) + 0x10));
+
+
+  temp_v0_2 = (temp_v0 >= (*((s32 *) (((u8 *) arg0) + 0xC)))) ? (*((s32 *) (((u8 *) arg0) + 0xC))) : (temp_v0);
+  temp_a0 = 0;
+  temp_a0 = temp_v0_2 < temp_a0;
+  *((s32 *) (((u8 *) arg0) + 0x10)) = (s32) (((float) (temp_a0 != 0)) ? (0) : (temp_v0_2));
+  func_0016A780_x0016AB58(temp_a0);
+  return *((s32 *) (((u8 *) arg0) + 0x10));
+}
 s32 func_0016A7B0_x0016AC18() __asm__("func_0016A7B0");
 extern s32 D_00464068_x0016AC18 __asm__("D_00464068");
 s32 func_0016AC18_x0016AC18(u8 *arg0) __asm__("func_0016AC18");
