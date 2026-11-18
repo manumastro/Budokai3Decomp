@@ -38,7 +38,7 @@ def disasm(words, addr, relocs):
     with tempfile.TemporaryDirectory() as d:
         p = Path(d) / "f.bin"
         p.write_bytes(struct.pack(f"<{len(words)}I", *words))
-        r = subprocess.run([str(mwmatch.OBJDUMP), "-D", "-b", "binary", "-m", "mips:5900", "-EL",
+        r = subprocess.run([str(mwmatch.OBJDUMP), "-D", "-z", "-b", "binary", "-m", "mips:5900", "-EL",
                             f"--adjust-vma={addr:#x}", str(p)], capture_output=True, text=True)
     out = []
     for line in r.stdout.splitlines():

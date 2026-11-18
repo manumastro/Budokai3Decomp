@@ -116,45 +116,34 @@ void func_0029EC40(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EC40);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EDC0);
-// GIVEN UP (round 5 chr2): best 63 of 68 (declare n1 before k, and the test 0 < n1). Still differs: the original loads k (a3) before the first slt $at, ours puts that load in the beqz delay slot; the return 0 / return 1 epilogue is laid out differently (the original falls into jr ra after daddu v0,zero,zero).
-#if 0
+extern u8 *D_004708CC;
 s32 func_0029EF70(void) {
     u8 *s = D_004708CC;
-    s32 k = *(s32 *)(s + 0x30);
     s32 j;
-    u8 *e;
+    s32 n1 = *(s32 *)(s + 4);
+    s32 k = *(s32 *)(s + 0x30);
+    s32 n2;
+    s32 n3;
 
-    if (*(s32 *)(s + 4) > 0) {
-        e = *(u8 **)(*(s32 *)(s + 0x44) + k * 4);
-        for (j = 0; j < *(s32 *)(s + 4); j++) {
-            if (*(s32 *)(e + 0x14) < 3) {
-                return 1;
-            }
-            e += 0xE0;
+    for (j = 0; j < n1; j++) {
+        if (*(s32 *)((*(u8 ***)(s + 0x44))[k] + j * 0xE0 + 0x14) < 3) {
+            return 1;
         }
     }
-    if (*(s32 *)(s + 8) >= 2) {
-        e = *(u8 **)(*(s32 *)(s + 0x48) + k * 4) + 0x20;
-        for (j = 1; j < *(s32 *)(s + 8); j++) {
-            if (*(s32 *)(e + 0x14) < 3) {
-                return 1;
-            }
-            e += 0x20;
+    n2 = *(s32 *)(s + 8);
+    for (j = 1; j < n2; j++) {
+        if (*(s32 *)((*(u8 ***)(s + 0x48))[k] + j * 0x20 + 0x14) < 3) {
+            return 1;
         }
     }
-    if (*(s32 *)(s + 0xC) > 0) {
-        e = *(u8 **)(*(s32 *)(s + 0x4C) + k * 4);
-        for (j = 0; j < *(s32 *)(s + 0xC); j++) {
-            if (*(s32 *)(e + 0x18) < 3) {
-                return 1;
-            }
-            e += 0x2C;
+    n3 = *(s32 *)(s + 0xC);
+    for (j = 0; j < n3; j++) {
+        if (*(s32 *)((*(u8 ***)(s + 0x4C))[k] + j * 0x2C + 0x18) < 3) {
+            return 1;
         }
     }
     return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EF70);
 typedef struct DispAnim {
     /* 0x00 */ f32 f00;
     /* 0x04 */ f32 f04;
