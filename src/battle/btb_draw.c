@@ -5372,7 +5372,6 @@ void BtbObj_FreeFlagged(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3FE0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F41E0);
-// differs: func_001F4520: 15 of 85 instructions differ and 8 bytes short (0x13C against 0x144): the flags test, the calls and the struct copy are in order; the store block and the branch layout after the func_00209B50 call differ.
 #if 0
 extern f32 func_002CFDD0(s32, f32, f32);
 extern void func_002D0110(s32, f32, s32);
@@ -5791,43 +5790,59 @@ void BtbBg_RunFunc(void) {
 typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16b;
 extern f32 func_00200270(s32, f32, f32);
 extern char D_004697A8[];
-void func_001F4520(s32 p0, char *vec, s32 p2, s32 flags) {
+#endif
+typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16b;
+typedef struct BtbRecC { s32 f0; void *f4; } BtbRecC;
+extern char *D_0051CD0C[];
+extern s32 D_0051CD20[];
+extern char D_004697A8[];
+extern f32 func_00200270(s32, f32, f32);
+extern char *func_001A50F0(char *, s32);
+extern char *func_00209540(char *, s32, s32);
+extern void func_00209B50(char *, char *, s32);
+extern void *func_001F5FD0(u32, char *, s32, void *, void *);
+extern void func_001F2150(char *);
+extern void memset(void *, s32, s32);
+
+void func_001F4520(s32 p0, char *p1, s32 p2, s32 flags) {
     BtbVec16b tmp;
     s32 s2;
     char *s1;
-    char *r;
-
-    s32 k;
+    char *s0;
     char *ptr;
+    char *q;
+    BtbRecC *rb;
+    s32 a1;
     f32 f;
 
     s2 = (s32)D_0051CD0C[0];
-    k = 0xB;
+    s0 = p1;
+    a1 = 0xB;
     if (flags & 4) {
-        k += 0x100;
+        a1 += 0x100;
     }
-    k += D_0051CD20[0] << 7;
+    a1 += D_0051CD20[0] << 7;
     s1 = NULL;
-    ptr = func_001A50F0((char *)s2, k);
+    ptr = func_001A50F0((char *)s2, a1);
     if (ptr != NULL) {
         s1 = func_00209540(ptr, 0x2000001, 0);
     }
     if (s1 != NULL) {
-        __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(vec), "r"(&tmp) : "memory");
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(s0), "r"(&tmp) : "memory");
         f = func_00200270(0, *(f32 *)&tmp.b[0], *(f32 *)&tmp.b[8]);
         *(f32 *)&tmp.b[4] = f;
         func_00209B50(s1, (char *)&tmp, 0);
-        r = func_001F5FD0(0x85000000, D_004697A8, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
-        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x801;
-        *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x800;
-        memset(r + 0x30, 0, 0x80);
-        *(char **)(r + 0x38) = s1;
-        *(s32 *)(r + 0x34) = (s32)func_001A50F0((char *)s2, 0x280);
-        *(s32 *)(r + 0x30) = flags & 2;
+        s0 = (char *)func_001F5FD0(0x85000000, D_004697A8, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) & -0x801;
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) | 0x800;
+        memset(s0 + 0x30, 0, 0x80);
+        *(s32 *)(s0 + 0x38) = (s32)s1;
+        rb = (BtbRecC *)(s0 + 0x30);
+        q = func_001A50F0((char *)s2, 0x280);
+        rb->f4 = q;
+        rb->f0 = flags & 2;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4520);
 #if 0
 typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVec16f;
 extern char D_004697B8[];
