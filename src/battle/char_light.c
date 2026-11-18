@@ -120,56 +120,29 @@ s32 func_00236090(s32 *a0) {
 void func_002360F0(void) {
     memset(D_0058BBB0, 0, 0x300);
 }
-// GIVEN UP: the loop's guard is a blez in the original (the compare with 0 comes out differently); a for loop and a != guard tried
-#if 0
+typedef struct BGlob { u8 pad[0x88D8]; s32 cnt; } BGlob;
+typedef struct CEnt2 { s32 h; s32 f; u8 pad[0xB8]; } CEnt2;
 void func_00236110(void) {
-    s32 i = 0;
-    u8 *s;
-
-    if (*(s32 *)((u8 *)gBattle + 0x88D8) > 0) {
-        s = D_0058BBB0;
+    CEnt2 *e;
+    s32 i;
+    i = 0;
+    if (i < ((BGlob *)gBattle)->cnt) {
+        e = (CEnt2 *)D_0058BBB0;
         do {
-            if (*(s32 *)(s + 4) != 0) {
-                amCdFs_ReleaseCache(*(void **)s);
-                *(s32 *)s = 0;
-                *(s32 *)(s + 4) = 0;
-            } else {
-                if (*(void **)s != 0) {
-                    amCdFs_Close(*(void **)s, 0);
-                }
-                *(s32 *)s = 0;
+            if (e->f != 0) {
+                amCdFs_ReleaseCache(e->h);
+                e->h = 0;
+                e->f = 0;
+            } else if (e->h != 0) {
+                amCdFs_Close(e->h, 0);
+                e->h = 0;
             }
             i++;
-            s += 0xC0;
-        } while (i < *(s32 *)((u8 *)gBattle + 0x88D8));
+            e++;
+        } while (i < ((BGlob *)gBattle)->cnt);
     }
     memset(D_0058BBB0, 0, 0x300);
 }
-#endif
-#if 0
-// differs: 38 of 48: the loop shape (cursor and counter registers, the lw of the 0x88D8 count, the memset tail) differs: the original keeps the counter in s1 and the cursor in s0, and reads the count from gBattle with a reload each pass (3 forms tried)
-void func_00236110(void) {
-    u8 *s0;
-    s32 i = 0;
-
-    if (0 < *(s32 *)((u8 *)gBattle + 0x88D8)) {
-        s0 = D_0058BBB0;
-        for (i = 0; i < *(s32 *)((u8 *)gBattle + 0x88D8); i++) {
-            if (*(s32 *)(s0 + 4) != 0) {
-                amCdFs_ReleaseCache(*(s32 *)s0);
-                *(s32 *)s0 = 0;
-                *(s32 *)(s0 + 4) = 0;
-            } else if (*(s32 *)s0 != 0) {
-                amCdFs_Close(*(s32 *)s0, 0);
-                *(s32 *)s0 = 0;
-            }
-            s0 += 0xC0;
-        }
-    }
-    memset(D_0058BBB0, 0, 0x300);
-}
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236110);
 void func_002361D0(void) {
     func_002361F0();
 }
