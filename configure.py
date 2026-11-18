@@ -136,6 +136,13 @@ def local_branch_targets():
     """
     for path in (ROOT / "asm" / "nonmatchings").rglob("*.s"):
         text = path.read_text()
+        if ".section .rodata" in text:
+            # Data that splat moved into the function (a jump table, a string): mwccgap's preprocessor does not take
+            # the "nonmatching <symbol>" line splat writes before it (the line before the function has a size).
+            stripped = re.sub(r"^nonmatching \w+\n", "", text, flags=re.M)
+            if stripped != text:
+                path.write_text(stripped)
+                text = stripped
         labels = re.findall(r"^\s*jlabel (\.L\w+)$", text, re.M)
         if not labels:
             continue
