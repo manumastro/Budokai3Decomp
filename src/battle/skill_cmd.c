@@ -480,10 +480,46 @@ void SkillKill_Kind10(s32 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BBA0);
-// GIVEN UP (round 5): 17 of 89, the same shape as func_0024B6A0 below: the original keeps the object in s1 (move s1,a0)
-// and the data pointer in s0; mwcc copies the parameter into s0 whatever the declaration order, a separate object local
-// first, or the parameter used directly (4 forms tried). The VU0 blocks match.
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BE30);
+void func_0024BE30(u8 *ob) {
+    u8 *s1 = ob;
+    u8 *s0;
+    s32 side;
+    s32 k;
+    s32 r;
+    s32 t;
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    s0 = *(u8 **)(s1 + 0xC);
+    side = *(s32 *)(*(u8 **)(s1 + 0x8) + 0x1350);
+    r = func_0020B020(side, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22));
+    amModel_SetCurrent(r, func_0020AD30(side, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22)));
+    k = *(s16 *)(s0 + 0x60);
+    if (k != 0) {
+        t = func_0020AE80(side, *(s16 *)(s0 + 0x5A), k);
+        if (t != 0) {
+            func_00208D60(t);
+        }
+    }
+    func_0013B0B0(0);
+    __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)"
+        : : "r"((u8 *)gBattle + 0x60));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%1)"
+        : : "r"(*(u8 **)((u8 *)gBattle + 0x264)), "r"(tmp), "r"(ob + 0x20));
+    func_00209D70(tmp);
+    if (*(s32 *)(ob + 0x48) != 0) {
+        func_0013B060(0);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w"
+            : : "r"(ob + 0x20));
+        func_00208D70(*(s32 *)(ob + 0x48));
+    }
+    if (*(s32 *)(ob + 0x4C) != 0) {
+        func_0013B060(0);
+        func_00209B50(*(s32 *)(ob + 0x4C), (s32)(ob + 0x20), 0);
+        func_00208D70(*(s32 *)(ob + 0x4C));
+    }
+    func_0013B110(1);
+    func_00209C50();
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BFA0);
 void SkillKill_Kind09(s32 *p) {
     if (p[18] != 0) {
@@ -568,7 +604,46 @@ void func_0024CB00(SkillObj *ob) {
     func_00146F30((s32 *)((u8 *)ob + 0x30));
     func_00146F10((s32 *)((u8 *)ob + 0x30), (s32 *)((u8 *)ob + 0x30), *(f32 *)(s2 + 0x28) * SkillObj_Scale());
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CC60);
+void func_0024CC60(u8 *ob) {
+    u8 *s1 = ob;
+    u8 *s0;
+    s32 side;
+    s32 k;
+    s32 r;
+    s32 t;
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    s0 = *(u8 **)(s1 + 0xC);
+    side = *(s32 *)(*(u8 **)(s1 + 0x8) + 0x1350);
+    r = func_0020B020(side, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22));
+    amModel_SetCurrent(r, func_0020AD30(side, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22)));
+    k = *(s16 *)(s0 + 0x60);
+    if (k != 0) {
+        t = func_0020AE80(side, *(s16 *)(s0 + 0x5A), k);
+        if (t != 0) {
+            func_00208D60(t);
+        }
+    }
+    func_0013B0B0(0);
+    __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)"
+        : : "r"((u8 *)gBattle + 0x60));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%1)"
+        : : "r"(*(u8 **)((u8 *)gBattle + 0x264)), "r"(tmp), "r"(ob + 0x20));
+    func_00209D70(tmp);
+    if (*(s32 *)(ob + 0x54) != 0) {
+        func_0013B060(0);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w"
+            : : "r"(ob + 0x20));
+        func_00208D70(*(s32 *)(ob + 0x54));
+    }
+    if (*(s32 *)(ob + 0x58) != 0) {
+        func_0013B060(0);
+        func_00209B50(*(s32 *)(ob + 0x58), (s32)(ob + 0x20), 0);
+        func_00208D70(*(s32 *)(ob + 0x58));
+    }
+    func_0013B110(1);
+    func_00209C50();
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024CDD0);
 void SkillKill_Kind07(s32 *p) {
     if (p[21] != 0) {
