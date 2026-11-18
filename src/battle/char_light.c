@@ -126,7 +126,49 @@ s32 func_00235B60(s32 *a0)
   return ((u32) new_var) < ((u32) r);
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235BE0);
+extern f32 func_001E52B0(s32, s32);
+extern s8 D_0044FAB0[];
+s32 func_00235BE0(u8 *a0) {
+    s32 k;
+    s32 d;
+    s32 a1 = *(s32 *)(a0 + 0x1350);
+    u32 sh;
+    s32 idx;
+    s32 a3;
+    u8 *e;
+    u32 v;
+    u8 *p;
+    u8 *ent = D_0058BBB0 + a1 * 0xC0;
+    u8 *s1 = *(u8 **)(a0 + 0x1354);
+    u8 *s0 = *(u8 **)(ent + 8);
+    u8 *s3 = *(u8 **)(ent + 0xC);
+    s16 t;
+    d = (s32)func_001E52B0(0, a1);
+    if (d < *(s16 *)s3) {
+        k = 0;
+    } else if ((f32)d < 1.2f * (f32)*(s16 *)(s3 + 2)) {
+        k = 1;
+    } else {
+        k = 2;
+    }
+    p = s0 + k * 9;
+    idx = D_0044FAB0[*(s16 *)(a0 + 0xCAC)];
+    t = *(s16 *)(s1 + 0xCAC);
+    a3 = 0;
+    e = s0 + idx * 0x12 + 0x1C;
+    if (t == 9 || t == 5) {
+        a3 = 1;
+    }
+    v = *(u16 *)(e + 0xC);
+    if (!(*(f32 *)(s1 + 0x1848) <= 0.0f)) {
+        v = (v * *(u16 *)(s0 + 0x10A)) >> 8;
+    }
+    if (a3 != 0) {
+        v = (v * *(u16 *)(s0 + 0x10C)) >> 8;
+    }
+    sh = (*(u8 *)(p + 6) * v) >> 8;
+    return (((func_0012EAE0(0x20) / 10) % 100) << sh) != 0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00235D90);
 s32 func_0022F900(u8 *, s32, s8);
 s32 func_002300E0(u8 *, s32, s8);
