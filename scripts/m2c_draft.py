@@ -40,6 +40,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT))
 import mwmatch  # noqa: E402
+import m2c_fix  # noqa: E402
+
+MAX_ROUNDS = int(os.environ.get("M2C_ROUNDS", "16"))
 
 M2C = ROOT / "tools" / "m2c" / "m2c.py"
 CACHE = ROOT / "build" / "m2c"
@@ -257,7 +260,7 @@ def wrapped(s):
 def expand_macros(text):
     """M2C_FIELD(expr, type, off) -> (*type((u8 *)(expr) + (off))), M2C_BITWISE(type, e) -> ((type)(e)), M2C_UNK -> s32:
     plain C in the project's style, no macro header needed (any other M2C_ macro stays and blocks applying)."""
-    text = text.replace("M2C_UNK", "s32")
+    text = re.sub(r"\bM2C_UNK(8|16|32|64)?\b", lambda mm: {"8": "s8", "16": "s16", "64": "s64"}.get(mm.group(1), "s32"), text)
     while True:
         i = text.rfind("M2C_FIELD(")
         if i < 0:
@@ -545,6 +548,9 @@ def repair(ctext, cerr, decls, filetext=""):
     return "\n".join(lines) if changed else ctext
 
 
+_MEMO = {}
+
+
 def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_override=None):
     """Returns a dict: name, size, status, diff, total, detail, c (the declarations and function)."""
     import configure
@@ -571,6 +577,17 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
         if ctext is None:
             res["detail"] = "no function in m2c output: " + first_error(err or out)
             return res
+        # another option variant often gives the same text: reuse its result
+        memo_key = (str(srcpath), name, "\n".join(pre), ctext)
+        if memo_key in _MEMO:
+            return dict(_MEMO[memo_key])
+        res = draft(srcpath, name, keep, verbose, decls, extra_m2c, c_override="\n".join(pre) + "\n\x00" + ctext)
+        _MEMO[memo_key] = dict(res)
+        return res
+    elif "\x00" in c_override:
+        # (from the memo path above: m2c's declarations, then the function)
+        p, ctext = c_override.split("\x00", 1)
+        pre = [l for l in p.split("\n") if l.strip()]
     else:
         pre, ctext = [], c_override
     # declarations the file lacks: m2c's own for symbols the context did not have, the context's for the others
@@ -600,7 +617,10 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
         incs = [d, srcpath.resolve().parent]
         relaxed = False
         res["repairs"] = 0
-        for attempt in range(6):
+        # the file's own prototype of the function (callers elsewhere in the file were written against it)
+        fp = re.search(rf"^(?:extern\s+)?[^\n;(){{}}#=]*\b{re.escape(name)}\([^;{{}}]*\)\s*;", before, re.M)
+        fileproto = fp.group(0) if fp else None
+        for attempt in range(MAX_ROUNDS):
             full = splice(src, m, ctext, add, name)
             scratch.write_text(full)
             obj.unlink(missing_ok=True)
@@ -608,7 +628,13 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
             if not cerr:
                 break
             if os.environ.get("M2C_DEBUG"): print("ATTEMPT", attempt, first_error(cerr), file=sys.stderr)
-            new = repair(ctext, cerr, decls, before)
+            pos = full.find("".join(x + "\n" for x in add) + ctext)
+            cbase = full[:pos].count("\n") + len(add) + 1 if pos >= 0 else None
+            new, add, notes = m2c_fix.fix(ctext, add, full, cerr, name, fileproto, cbase)
+            if os.environ.get("M2C_DEBUG"): print("   fixes:", notes, file=sys.stderr)
+            if notes and new == ctext:
+                new = ctext + " "  # only the declarations changed
+            new = repair(new, cerr, decls, before) if new == ctext else new
             for sym in UNDEF_RE.findall(cerr):
                 # a symbol m2c used but nobody declared (a callee whose address is taken, a global of another type)
                 if re.match(r"(func_|D_|g[A-Z])", sym) and not known("\n".join(add), sym):
