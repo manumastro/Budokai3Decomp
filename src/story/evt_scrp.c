@@ -1306,12 +1306,49 @@ s32 Evt_CmdVecCall2A0AD0(void *a0, char *a1) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4580);
+extern void func_002A0B20(s32, s32, s32, f32 *);
+s32 func_002A4580(void *a0, char *a1) {
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    f32 *fa = (f32 *)args;
+    f32 v[4] __attribute__((aligned(16)));
+    f32 t;
+    u32 tz1;
+    u32 tz2;
+    u32 tz3;
+    u32 tt;
+    s32 a0v = args[6];
+    s32 a1v = args[5];
+    f32 x3 = fa[3];
+    s32 a2v = args[4];
+    f32 x2 = fa[2];
+    f32 x1 = fa[1];
+    f32 x0 = fa[0];
+    t = x0 - 1.0f;
+    v[3] = 1.0f;
+    v[0] = x3;
+    v[1] = x2;
+    v[2] = x1;
+    __asm__ volatile (
+        "mfc1 %3, %5\n\t"
+        "mfc1 %0, %4\n\t"
+        "mfc1 %1, %4\n\t"
+        "mfc1 %2, %4\n\t"
+        "lqc2 $vf5, 0(%6)\n\t"
+        "qmtc2.ni %0, $vf1\n\t"
+        "qmtc2.ni %1, $vf2\n\t"
+        "qmtc2.ni %2, $vf3\n\t"
+        "qmtc2.ni %3, $vf4\n\t"
+        "vaddx.x $vf5, $vf5, $vf1x\n\t"
+        "vaddx.y $vf5, $vf5, $vf2x\n\t"
+        "vaddx.z $vf5, $vf5, $vf3x\n\t"
+        "vaddx.w $vf5, $vf5, $vf4x\n\t"
+        "sqc2 $vf5, 0(%6)"
+        : "=&r"(tz1), "=&r"(tz2), "=&r"(tz3), "=&r"(tt) : "f"(0.0f), "f"(t), "r"(v) : "memory");
+    func_002A0B20(a0v, a1v, a2v, v);
+    return 1;
+}
 extern void func_002A0B70(s32, s32, s32, f32 *);
 
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4620);
-#if 0
-// differs: VU0 qmtc2 leaf (twin of 2A4580): FPU registers of the four fa loads and of t differ (original f5..f2 for fa[3..0], t in f0); 200 declaration orders and a 0.0f constant tried, no match
 s32 func_002A4620(void *a0, char *a1) {
     s32 *args = *(s32 **)(a1 + 0x2C);
     f32 *fa = (f32 *)args;
@@ -1321,11 +1358,11 @@ s32 func_002A4620(void *a0, char *a1) {
     u32 tz2;
     u32 tz3;
     u32 tt;
-    f32 x3 = fa[3];
     s32 a0v = args[6];
     s32 a1v = args[5];
-    f32 x2 = fa[2];
+    f32 x3 = fa[3];
     s32 a2v = args[4];
+    f32 x2 = fa[2];
     f32 x1 = fa[1];
     f32 x0 = fa[0];
     t = x3 - 1.0f;
@@ -1352,7 +1389,6 @@ s32 func_002A4620(void *a0, char *a1) {
     func_002A0B70(a0v, a1v, a2v, v);
     return 1;
 }
-#endif
 extern void func_002A0BC0(s32, s32, s32, f32 *);
 
 s32 Evt_CmdVecCall2A0BC0(void *a0, char *a1) {
