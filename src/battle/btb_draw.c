@@ -6085,21 +6085,25 @@ extern void func_00141C30(void *, void *, void *);
 extern void func_00209850(void *, void *);
 extern void func_00209A90(void *, void *);
 extern void memset(void *, s32, s32);
-
-#if 0
 void func_001F4AD0(s32 p0, char *p1, s32 p2, s32 flags) {
-    BtbVecX v2;
     BtbVecX v3;
+    BtbVecX v2;
     BtbVecX v1;
-    char *ptr;
+    s32 tb;
     char *r;
     char *a;
-    s32 tb;
+    char *c1;
+    s32 c2;
+    s32 cf;
+    char *ptr;
     char *p;
 
+    c1 = p1;
+    c2 = p2;
+    cf = flags;
     tb = (s32)D_0051CD0C[0];
-    a = NULL;
     ptr = func_001A50F0((char *)tb, 0x202);
+    a = NULL;
     if (ptr != NULL) {
         a = func_00209540(ptr, 0x2000001, 0);
     }
@@ -6111,17 +6115,14 @@ void func_001F4AD0(s32 p0, char *p1, s32 p2, s32 flags) {
         *(char **)(r + 0x38) = a;
         p = r + 0x30;
         *(char **)(p + 4) = func_001A50F0((char *)tb, 0x280);
-        *(s32 *)p = flags;
-        func_00209A90(*(void **)(p + 8), p1);
+        *(s32 *)p = cf;
+        func_00209A90(*(void **)(p + 8), c1);
         v1 = D_0044B5F0;
-        func_00146F60(&v2, p2);
+        func_00146F60(&v2, c2);
         func_00141C30(&v3, &v1, &v2);
         func_00209850(*(void **)(p + 8), &v3);
     }
 }
-#endif
-// func_001F4AD0: 74 of 83 instructions differ (best of 60 random declaration orders; the draft was 78). The call and store shape now matches the original (store r+0x38 before the second func_001A50F0 call, addiu r+0x30 in its delay slot), but the 16-byte locals (sp+0x70/0x80/0x90) are laid out differently, so most sp-relative instructions differ, and the saved registers a/r are swapped. Not solved.
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4AD0);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4C20);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4E70);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5040);
