@@ -1,6 +1,9 @@
 #include "common.h"
 
 extern void func_00146F30(void *);
+typedef struct L37Ent { s32 a, b, c, d; } L37Ent;
+typedef struct L37Mdl { u8 pad[0x14]; L37Ent *ents; } L37Mdl;
+typedef struct L37Obj { void *f0; s32 f4, f8, fC, f10, f14, f18, f1C; L37Mdl *mdl; s32 idx; f32 sc; s32 v; s32 fl; f32 f34; } L37Obj;
 typedef struct CEnt { u8 pad[0x42]; s8 b42; u8 p2; u8 *p44; f32 f48; u8 p3[0x74]; } CEnt;
 typedef struct CharVec16 {
     f32 x, y, z, w;
@@ -216,10 +219,27 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002369E0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236AF0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236C70);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236D60);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237000);
-typedef struct L37Ent { s32 a, b, c, d; } L37Ent;
-typedef struct L37Mdl { u8 pad[0x14]; L37Ent *ents; } L37Mdl;
-typedef struct L37Obj { void *f0; s32 f4, f8, fC, f10, f14, f18, f1C; L37Mdl *mdl; s32 idx; f32 sc; s32 v; s32 fl; f32 f34; } L37Obj;
+extern void (*jtbl_0046A740[])(void *);
+extern s32 func_0029D8A0(void);
+extern f32 func_0029D850(void);
+void func_00237000(s32 idx, void *o) {
+    jtbl_0046A740[idx](o);
+}
+void func_00237030(L37Obj *o) {
+    if ((o->fl & 2) == 0) {
+        amModel_SetupPart((s32)o->f0, (s32)o->mdl, o->idx, o->sc);
+    }
+    if (func_0029D8A0() == 0 && (o->fl & 2) == 0) {
+        o->sc = o->sc + o->f34 * func_0029D850();
+        if (!(o->sc < (f32)o->v)) {
+            if (o->fl & 1) {
+                o->sc = o->sc - (f32)(o->v - 1);
+            } else {
+                o->sc = (f32)(o->v - 1);
+            }
+        }
+    }
+}
 void func_00237110(L37Obj *o, u8 *a1) {
     o->f4 = 5;
     o->mdl = *(L37Mdl **)(a1 + 0x10);
