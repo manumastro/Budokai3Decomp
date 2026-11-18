@@ -215,7 +215,33 @@ void func_002367B0(s32 *p) {
     func_002CBFF0(8, p[0]);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236830);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002369E0);
+typedef struct PtrCount { void *p; s32 n; } PtrCount;
+extern void func_001E1300(s32);
+extern void Btl_UpdateLimitXY(s32, f32, f32);
+extern void func_002470B0(s32, PtrCount);
+extern void AdxSlot_Stop(void *);
+extern void AdxSlot_SetVolume(void *, f32);
+void func_002369E0(void) {
+    u8 *g = (u8 *)gBattle;
+    PtrCount pc;
+    s32 args[4];
+    if (*(s8 *)(g + 0x8AB9) != 0) {
+        *(s8 *)(g + 0x8AB9) = 0;
+        *(s8 *)(g + 0x8AAD) = 0;
+        func_001E1300(0);
+        Btl_UpdateLimitXY(0, 0.0f, 0.2f);
+        pc.n = 4;
+        pc.p = *(u8 **)(g + 0x8934);
+        func_002470B0(-1, pc);
+        pc.p = *(u8 **)(g + 0x8938);
+        func_002470B0(-1, pc);
+        args[0] = -1;
+        args[1] = 0;
+        A2d_CallHandler(0x2E, args);
+        AdxSlot_Stop(g + ((*(s32 *)(*(u8 **)(g + 0x8934) + 0x1350) + 3) << 5) + 0x5C4);
+        AdxSlot_SetVolume(g + ((*(s32 *)(*(u8 **)(g + 0x8934) + 0x1350) + 3) << 5) + 0x5C4, 1.0f);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236AF0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236C70);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236D60);
