@@ -111,6 +111,8 @@ def align(words, relocs, orig, addr):
         for k in range(n):
             i = a0 + k if a0 + k < a1 else None
             j = b0 + k if b0 + k < b1 else None
+            i = i if i is not None and i < len(key_a) else None
+            j = j if j is not None and j < len(key_b) else None
             ta = key_a[i][0] if i is not None else ""
             tb = key_b[j][0] if j is not None else ""
             mark = "!"
