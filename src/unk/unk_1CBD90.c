@@ -1417,9 +1417,9 @@ void func_001CFAD0(CObj *o, CArg *a) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFB80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFE50);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFF90);
-typedef struct KKey { u16 t; char pad[2]; f32 val; char pad2[8]; } KKey;
+typedef struct KKey { u16 t; char pad[1]; s8 flag; f32 val; char pad2[8]; } KKey;
 typedef struct KList { char pad[2]; s16 n; KKey *keys; } KList;
-typedef struct KDst { char pad[0x1B4]; f32 a; f32 b; } KDst;
+typedef struct KDst { char pad[0x1B4]; f32 a; f32 b; char pad1[8]; s16 flags; } KDst;
 extern KDst *D_00470588;
 /* Key list walk: skip the keys at or before t0, then copy the value of every key up to t1 (the original keeps a
  * redundant `i < n` guard before the second loop). */
@@ -1443,7 +1443,20 @@ void func_001D01C0(KList *l, f32 t0, f32 t1) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D02C0);
+void func_001D02C0(KList *l, f32 t0, f32 t1) {
+    s32 i, j;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            if (l->keys[j].flag) {
+                D_00470588->flags |= 0x40;
+            } else {
+                D_00470588->flags &= ~0x40;
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D03E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D05D0);
 void *func_001D06F0(void *o, s32 mask) {
