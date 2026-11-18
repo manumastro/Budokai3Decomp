@@ -834,7 +834,50 @@ s32 func_00241010(s32 a0) {
 // differs: round 6 (u23e): 0xB8 bytes against 0xC0 (two instructions short). The original keeps the base pointer base+0x830 in a2 for the 0xB9C load and ends with sltu v0,zero,a1 / xori (a1 flag, one exit); the returns form and a2 form both give other layouts (34 to 38 of 48 differ)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241010);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002410D0);
+extern s8 D_004703F4;
+typedef struct B7Q {
+    u8 v[0x10];
+    s32 id;
+    s32 u14;
+    s32 u18;
+    s32 flags;
+    s16 h20;
+    s16 h22;
+    u8 pad[0xC];
+} B7Q;
+void func_00241280(B7Q *);
+void func_002410D0(s32 i) {
+    B7Q b;
+    f32 f2;
+    f32 f1;
+    u8 *o = D_0046FE44 + i * 0x80;
+    u8 *q = gBattle + i * 0x2020 + 0x830;
+    if ((gBattle ? *(s16 *)(gBattle + 0x8944) : 0) == 0 || *(s16 *)(D_0046FE4C + 0x91A) != 0) {
+        if (*(f32 *)(q + 0x17C0) > 0.0f && (*(s32 *)(o + 0x2C) & 1) == 0) {
+            if (gBattle != 0) {
+                f1 = *(f32 *)(gBattle + 0x88F0);
+            } else {
+                f1 = (D_004703F4 != 3) ? 1.0f : 1.2f;
+            }
+            *(f32 *)(o + 0x7C) = *(f32 *)(o + 0x7C) + f1;
+            if (gBattle != 0) {
+                f2 = *(f32 *)(gBattle + 0x88F0);
+            } else {
+                f2 = (D_004703F4 != 3) ? 1.0f : 1.2f;
+            }
+            if (*(f32 *)(o + 0x7C) >= 10.0f * f2) {
+                memset(&b, 0, 0x30);
+                __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(*(u8 **)(o + 0x20)), "r"(&b) : "memory");
+                b.h22 = 0x10;
+                b.flags = 0x800;
+                b.id = i;
+                b.h20 = 0;
+                func_00241280(&b);
+                *(f32 *)(o + 0x7C) = 0.0f;
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241280);
 void func_00241500(s32 x, s32 y) {
     u8 *s2 = D_0046FE44 + x * 0x80;
