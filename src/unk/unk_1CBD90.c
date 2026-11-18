@@ -1490,7 +1490,40 @@ void *func_001D06F0(void *o, s32 mask) {
     }
     return o;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0730);
+typedef struct LItem { char pad0[2]; s8 id; char pad1[5]; u16 flags; } LItem;
+typedef struct LNode { char pad[0x20]; LItem *item; char pad2[4]; struct LNode *prev; struct LNode *next; } LNode;
+typedef struct LObj { char pad[0x180]; LNode *slots[8]; LNode *head; char pad1[4]; s8 n; s8 c[5]; } LObj;
+/* Remove the node whose item has the given id from the active list, drop the per-kind counter and park the node in the
+ * slot table. */
+void func_001D0730(LObj *o, s32 id) {
+    LNode *node;
+    if (o->n > 0) {
+        node = o->head;
+        do {
+            if (node->item->id == id) {
+                switch (node->item->flags & 0x10F) {
+                case 1: o->c[0]--; break;
+                case 4: o->c[1]--; break;
+                case 2: o->c[2]--; break;
+                case 8: o->c[3]--; break;
+                case 0x100: o->c[4]--; break;
+                }
+                if (node->next) {
+                    node->next->prev = node->prev;
+                }
+                if (node->prev) {
+                    node->prev->next = node->next;
+                } else {
+                    o->head = node->next;
+                }
+                o->n--;
+                o->slots[o->n] = node;
+                return;
+            }
+            node = node->next;
+        } while (node);
+    }
+}
 // // differs: 53 of 90 (round 4 chr): the list insert matches up to the first flag test; the count byte and the 0xA halfword store are placed differently (the original keeps the item in a2 and the head in a1), and the switch block layout is untested beyond that.
 #if 0
 void func_001D0860(char *o, char *a1) {
