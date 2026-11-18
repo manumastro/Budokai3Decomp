@@ -831,31 +831,29 @@ extern u8 D_0058BF1C[];
 extern u8 D_0058BF24[];
 extern s32 D_00470730;
 extern void func_0022C7D0(s32, s32, f32);
-// GIVEN UP: the frame is 0x10 bytes short (0x40 against 0x30): the original keeps the sub-object pointer in a saved register across the call
-#if 0
+typedef struct LSub { f32 v; s32 p4; s32 f8; s32 pC; s32 f10; } LSub;
+typedef struct LObj3 { u8 pad[0x30]; LSub sub; } LObj3;
 void func_0023A4B0(void) {
-    u8 *s1 = *(u8 **)D_0058BF1C;
-    u8 *s0 = *(u8 **)D_0058BF24;
-    s32 *s2;
+    LObj3 *s1 = *(LObj3 **)D_0058BF1C;
+    LObj3 *s0 = *(LObj3 **)D_0058BF24;
+    LSub *s2;
 
     if (s1 != 0) {
-        *(s32 *)(s1 + 0x30) = 0x41000000;
-        s2 = (s32 *)(s1 + 0x30);
-        func_0022C7D0(*(s32 *)(s1 + 0x40), 1, 8.0f);
-        s2[2] = 1;
+        s1->sub.v = 8.0f;
+        s2 = &s1->sub;
+        func_0022C7D0(s2->f10, 1, 8.0f);
+        s2->f8 = 1;
     }
     if (s0 != 0) {
-        *(s32 *)(s0 + 0x30) = 0x41000000;
-        s2 = (s32 *)(s0 + 0x30);
-        func_0022C7D0(*(s32 *)(s0 + 0x40), 1, 8.0f);
-        s2[2] = 1;
+        s0->sub.v = 8.0f;
+        s2 = &s0->sub;
+        func_0022C7D0(s2->f10, 1, 8.0f);
+        s2->f8 = 1;
     }
     if (s1 == 0 && s0 == 0) {
         D_00470730 = 1;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A4B0);
 extern u8 *D_0058BEB0[];
 extern void func_00125740(void *, s32, s32);
 extern void func_0022C7D0(s32, s32, f32);
