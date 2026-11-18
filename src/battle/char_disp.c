@@ -1,6 +1,49 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029DB00);
+typedef struct DbVec { f32 x, y, z, w; } DbVec;
+extern s32 D_00470238;
+extern s8 D_004703F4;
+extern void func_0029D800(f32);
+extern void func_001CA780(s32, s32);
+extern void amModel_SetCurrent(s32, s32);
+extern s32 func_0029D8D0(void);
+extern DbVec *func_0029D4A0(void);
+extern void func_00133D90(f32);
+extern void func_00133D80(u32);
+extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
+extern void func_0013E170(s32);
+extern void func_0012F2C0(void);
+void func_0029DB00(u8 *s1, f32 rate) {
+    DbVec *c;
+    f32 k;
+
+    if (s1 != 0) {
+        D_00470238 = 0;
+        if (*(s32 *)s1 != 0) {
+            if (D_004703F4 != 3) {
+                k = 1.0f;
+            } else {
+                k = 1.2f;
+            }
+            func_0029D800(rate * k);
+            func_001CA780(*(s32 *)s1, 1);
+        } else if (*(s32 *)(s1 + 0x260) != 0) {
+            amModel_SetCurrent(*(s32 *)(s1 + 0x2A8), 0x16A1100);
+            if (func_0029D8D0() & 2) {
+                c = func_0029D4A0();
+                func_00133D90(c->w);
+                func_00133D80(((u32)(255.0f * c->z) << 16) | ((u32)(255.0f * c->y) << 8) | (u32)(255.0f * c->x));
+                DrawFlags_Apply(0x8000, 0, 0, 0x8000, 0);
+            }
+            func_0013E170(*(s32 *)(s1 + 0x260));
+            if (func_0029D8D0() & 2) {
+                DrawFlags_Apply(0, 0x8000, 0, 0, 0);
+                func_00133D90(0.0f);
+            }
+        }
+        func_0012F2C0();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029DD30);
 INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029E120);
 extern void amHeap_Free(void *);
