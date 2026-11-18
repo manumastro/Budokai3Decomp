@@ -1381,7 +1381,79 @@ void func_0022DB90(void) {
         n = (s32 *)n[5];
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DC00);
+extern void *D_004706A8;
+extern void *D_004706C4;
+extern void *D_004706C8;
+extern void *D_004706DC;
+extern void *D_004706F0;
+extern s32 D_004706EC;
+extern s32 D_004706E8;
+extern s32 D_00470700;
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470720;
+extern s32 D_00470724;
+extern s32 D_00470728;
+extern s32 D_0058BB50[];
+extern s32 D_0058BB60[];
+extern s32 *D_0058BB80[];
+extern s32 D_0058BB84[];
+extern u8 D_0058BB90[];
+void func_0022DC00(void) {
+    s32 i;
+    Mat50 m;
+    Mat50 *d;
+
+    memset(D_004706A8, 0, D_004706B8 * 0x60);
+    memset(D_004706AC, 0, D_004706B8 * 4);
+    for (i = 0; i < D_004706B8; i++) {
+        D_004706AC[i] = (s32)((u8 *)D_004706A8 + i * 0x60);
+    }
+    D_004706B0 = 0;
+    D_004706B4 = 0;
+    D_004706BC = 0;
+    memset(D_004706C4, 0, D_004706D4 * 0x50);
+    memset(D_004706C8, 0, D_004706D8 * 4);
+    D_004706D4 = 0;
+    D_004706D8 = 0;
+    D_004706CC = D_004706C4;
+    D_004706D0 = D_004706C8;
+    m = D_0044FA60;
+    d = (Mat50 *)D_004706CC;
+    d->a = m.a;
+    d->b = m.b;
+    d->c = m.c;
+    memset(D_004706DC, 0, D_004706EC * 0x40);
+    memset(D_004706E0, 0, D_004706EC * 4);
+    for (i = 0; i < D_004706EC; i++) {
+        ((s32 *)D_004706E0)[i] = (s32)((u8 *)D_004706DC + i * 0x40);
+    }
+    D_004706E4 = 0;
+    D_004706E8 = 0;
+    memset(D_004706F0, 0, D_004706EC * 0x20);
+    memset(D_004706F4, 0, D_004706EC * 4);
+    for (i = 0; i < D_00470700; i++) {
+        D_004706F4[i] = (s32)((u8 *)D_004706F0 + i * 0x20);
+    }
+    D_0058BB50[0] = 0;
+    D_0058BB60[0] = 0;
+    D_0058BB70[0] = -1;
+    D_004706F8 = 0;
+    D_0058BB64[0] = D_0058BB70;
+    D_004706FC = 0;
+    D_0058BB80[0] = D_0058BB50;
+    D_00470704 = 0;
+    D_0058BB84[0] = 0;
+    D_00470708 = 0;
+    D_0047070C = 0;
+    D_00470718 = 0;
+    D_0047071C = 0;
+    memset(D_0058BB90, 0, 0x20);
+    D_00470720 = 0;
+    memset(&D_00470724, 0, 4);
+    D_00470728 = 0;
+}
 extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
 extern char D_0046A6D8[];
 extern void *D_004706A8;
