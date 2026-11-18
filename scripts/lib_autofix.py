@@ -367,6 +367,29 @@ def transforms(name, src):
     if re.search(r"\bjal\s", asm) and not re.search(r"\bj\s+(?!\.)\w", asm):
         k = src.rstrip().rfind("}")
         alts.append(("nosib", src[:k] + '    __asm__ __volatile__("");\n' + src[k:]))
+    # pointer strides: typed pointers whose arithmetic m2c/permuter wrote in bytes
+    k = src.find("{", src.find(f"{name}("))
+    if k > 0:
+        head, body = src[:k], src[k:]
+        hm = head.rfind(f"{name}(")
+        newhead = head[:hm] + re.sub(r"\b(?:s32|u32|s16|u16|s8|int|unsigned int|s64|u64)\s*\*\s*(?=\w)", "u8 *", head[hm:])
+        newbody = re.sub(r"^(\s+)(?:s32|u32|s16|u16|s8|int|s64|u64)\s*\*\s*(\w+;)$", r"\1u8 *\2", body, flags=re.M)
+        if newhead + newbody != src:
+            alts.append(("u8ptr", newhead + newbody))
+    # m2c's `p += 4` on an s32 *p counts bytes: divide by the element size
+    SZ = {"s32": 4, "u32": 4, "int": 4, "f32": 4, "s16": 2, "u16": 2, "s64": 8, "u64": 8}
+    ptrs = {m.group(2): SZ[m.group(1)] for m in re.finditer(r"\b(s32|u32|int|f32|s16|u16|s64|u64)\s*\*\s*(\w+)\s*[;,)]", src)}
+
+    def fix(m):
+        name_, op, num = m.group(1), m.group(2), m.group(3)
+        n = int(num, 0)
+        s = ptrs.get(name_)
+        if not s or n % s:
+            return m.group(0)
+        return f"{name_} {op} {n // s};"
+    st = re.sub(r"\b(\w+)\s*(\+=|-=)\s*(0x[0-9A-Fa-f]+|\d+);", fix, src)
+    if st != src:
+        alts.append(("stride", st))
     for rule, s in alts:
         yield rule, s
     if len(alts) == 2:
@@ -429,6 +452,9 @@ def one(name, budget=24):
             score = int(m.group(1)) if m else 1 << 20 if "SIZE" in out else 1 << 30
             if best is None or score < best[0]:
                 best = (score, f"{sname}:{rule or 'asis'}", out.strip().splitlines()[0][:80] if out.strip() else "?")
+                miss = ROOT / "build" / "lh" / "miss"
+                miss.mkdir(parents=True, exist_ok=True)
+                (miss / f"{name}.c").write_text(src)
     except Exception as e:  # noqa: BLE001
         return name, None, f"error: {type(e).__name__} {e}"[:120]
     if best is None:

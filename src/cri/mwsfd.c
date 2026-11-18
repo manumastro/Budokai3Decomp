@@ -424,7 +424,25 @@ void func_00180D48(void) {
 
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180D50);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180D88);
+s32 func_00180CF8_x00180D88(s32, s32) __asm__("func_00180CF8");
+void func_00180D88_x00180D88(s32 arg0) __asm__("func_00180D88");
+void func_00180D88_x00180D88(s32 arg0) {
+    s32 *var_s0;
+    s32 temp_a1;
+    s32 var_s2;
+
+    var_s0 = arg0 + 0x290;
+    var_s2 = 0x1F;
+    do {
+        temp_a1 = *var_s0;
+        if (temp_a1 != 0) {
+            func_00180CF8_x00180D88(arg0, temp_a1);
+            *var_s0 = 0;
+        }
+        var_s2 -= 1;
+        var_s0 -= 1;
+    } while (var_s2 >= 0);
+}
 void func_00180DE8(u8 *arg0) {
     *(s32 *)((u8 *)arg0 + 0x210) = (s32) (*(s32 *)((u8 *)arg0 + 0x210) + 1);
 }

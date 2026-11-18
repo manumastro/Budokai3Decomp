@@ -1624,7 +1624,30 @@ block_8:
     return;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FA58);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FAE0);
+s32 func_0017E9E8_x0018FAE0(s32, s32, s32) __asm__("func_0017E9E8");
+void func_0018FAE0_x0018FAE0(u8 *arg0, s32 *arg1, s32 arg2) __asm__("func_0018FAE0");
+void func_0018FAE0_x0018FAE0(u8 *arg0, s32 *arg1, s32 arg2) {
+    s32 *var_s0;
+    s32 temp_a1;
+    s32 temp_a2;
+    s32 temp_s2;
+    s32 var_s1;
+
+    temp_s2 = **(s32 **)((u8 *)arg0 + 0x1C70);
+    if (temp_s2 != 0) {
+        var_s1 = 0;
+        if (arg2 > 0) {
+            var_s0 = arg1;
+            do {
+                temp_a2 = *var_s0;
+                var_s0 += 1;
+                temp_a1 = var_s1;
+                var_s1 += 1;
+                func_0017E9E8_x0018FAE0(temp_s2, temp_a1, temp_a2);
+            } while (var_s1 < arg2);
+        }
+    }
+}
 typedef unsigned int u32_x0018FB58;
 extern int fn_12_24990_x0018FB58(void *arg0, void *arg1) __asm__("func_0018D870");
 extern int fn_12_24A88_x0018FB58(int arg0, u32_x0018FB58 arg1) __asm__("func_0018D650");

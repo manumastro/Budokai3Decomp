@@ -1276,7 +1276,23 @@ void func_00151790_x00151790(ADXB_x00151790 adxb) {
         ADXB_ExecOneAc3_x00151790(adxb);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151840);
+s32 func_00151790_x00151840(s16 *) __asm__("func_00151790");
+extern s16 D_004010A8_x00151840 __asm__("D_004010A8");
+void func_00151840_x00151840(void) __asm__("func_00151840");
+void func_00151840_x00151840(void) {
+    s16 *var_s0;
+    s32 var_s1;
+
+    var_s0 = &D_004010A8_x00151840;
+    var_s1 = 0xF;
+    do {
+        if (*var_s0 == 1) {
+            func_00151790_x00151840(var_s0);
+        }
+        var_s1 -= 1;
+        var_s0 += 122;
+    } while (var_s1 >= 0);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001518A0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001519C0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151AB8);

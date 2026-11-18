@@ -35,7 +35,29 @@ s32 func_001162F0();                            /* extern */
 extern s32 D_003ECD54;
 
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113B88);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113B98);
+s32 func_00113B98_x00113B98(s32 *arg0, s32 *arg1, u32 arg2) __asm__("func_00113B98");
+s32 func_00113B98_x00113B98(s32 *arg0, s32 *arg1, u32 arg2) {
+    s32 *var_a0;
+    s32 *var_a1;
+    s32 temp_v1;
+    u32 temp_a2;
+    u32 var_a3;
+
+    var_a0 = arg0;
+    var_a1 = arg1;
+    temp_a2 = arg2 >> 2;
+    var_a3 = 0;
+    if (temp_a2 != 0) {
+        do {
+            temp_v1 = *var_a1;
+            var_a3 += 1;
+            var_a1 += 1;
+            *var_a0 = temp_v1;
+            var_a0 += 1;
+        } while (var_a3 < temp_a2);
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113BD0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113BE0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113BF0);
@@ -119,7 +141,29 @@ s32 func_001143E8(void) {
     return D_003ECD54;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001143F8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114408);
+s32 func_00114408_x00114408(s32 *arg0, s32 *arg1, u32 arg2) __asm__("func_00114408");
+s32 func_00114408_x00114408(s32 *arg0, s32 *arg1, u32 arg2) {
+    s32 *var_a0;
+    s32 *var_a1;
+    s32 temp_v1;
+    u32 temp_a2;
+    u32 var_a3;
+
+    var_a0 = arg0;
+    var_a1 = arg1;
+    temp_a2 = arg2 >> 2;
+    var_a3 = 0;
+    if (temp_a2 != 0) {
+        do {
+            temp_v1 = *var_a1;
+            var_a3 += 1;
+            var_a1 += 1;
+            *var_a0 = temp_v1;
+            var_a0 += 1;
+        } while (var_a3 < temp_a2);
+    }
+    return 0;
+}
 typedef unsigned int       u32_x00114440;
 u32_x00114440 *func_00114440_x00114440(u32_x00114440 *addr, u32_x00114440 *end, u32_x00114440 key) __asm__("func_00114440");
 /* FindKernelAddress: from https://github.com/lombyte-project/Lombyte (src/sdk/system/find_kernel_address.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
@@ -194,7 +238,29 @@ void func_001145D8(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114630);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114640);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114650);
+s32 func_00114650_x00114650(s32 *arg0, s32 *arg1, u32 arg2) __asm__("func_00114650");
+s32 func_00114650_x00114650(s32 *arg0, s32 *arg1, u32 arg2) {
+    s32 *var_a0;
+    s32 *var_a1;
+    s32 temp_v1;
+    u32 temp_a2;
+    u32 var_a3;
+
+    var_a0 = arg0;
+    var_a1 = arg1;
+    temp_a2 = arg2 >> 2;
+    var_a3 = 0;
+    if (temp_a2 != 0) {
+        do {
+            temp_v1 = *var_a1;
+            var_a3 += 1;
+            var_a1 += 1;
+            *var_a0 = temp_v1;
+            var_a0 += 1;
+        } while (var_a3 < temp_a2);
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114688);
 typedef unsigned char      u8_x00114698;
 typedef signed int         s32_x00114698;
@@ -256,7 +322,29 @@ void Exit_001149D8(s32 arg0) {
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114A00);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114A50);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114A60);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114A70);
+s32 func_00114A70_x00114A70(s32 *arg0, s32 *arg1, u32 arg2) __asm__("func_00114A70");
+s32 func_00114A70_x00114A70(s32 *arg0, s32 *arg1, u32 arg2) {
+    s32 *var_a0;
+    s32 *var_a1;
+    s32 temp_v1;
+    u32 temp_a2;
+    u32 var_a3;
+
+    var_a0 = arg0;
+    var_a1 = arg1;
+    temp_a2 = arg2 >> 2;
+    var_a3 = 0;
+    if (temp_a2 != 0) {
+        do {
+            temp_v1 = *var_a1;
+            var_a3 += 1;
+            var_a1 += 1;
+            *var_a0 = temp_v1;
+            var_a0 += 1;
+        } while (var_a3 < temp_a2);
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114AA8);
 void RFU090_x00114AB8(void *dst, void *src, int size) __asm__("func_00114A60");
 void *RFU091_x00114AB8(int num) __asm__("func_00114AA8");

@@ -62,10 +62,15 @@ RECIPES = """- The compiler is ee-gcc (2.96 for CRI and libc/libm/libgcc, 2.9-99
   report "no match: hand-written" unless the draft already compiles to it."""
 
 
+_REM = None
+
+
 def find_item(name):
-    for r in LR.remaining(True):
-        if r[1] == name:
-            return r
+    global _REM
+    if _REM is None:
+        _REM = {r[1]: r for r in LR.remaining(True)}
+    if name in _REM:
+        return _REM[name]
     sys.exit(f"{name}: not a function still in assembly (scripts/lib_remaining.py)")
 
 
