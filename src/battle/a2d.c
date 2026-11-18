@@ -1017,7 +1017,49 @@ void func_0022CC80(s32 a0) {
         } while (i < n);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CD00);
+/* the original expands this recursive tree walk three levels deep (the push inline at two, a call at the third): the helpers below reproduce that expansion. */
+extern void func_0022CF70(s32 *);
+static inline void A2d_PushEnt(s32 *p) {
+    A2dEnt *b;
+
+    ((A2dEnt *)D_004706C0)[D_004706BC].p = p;
+    b = (A2dEnt *)D_004706C0;
+    b[D_004706BC].v = 100.0f * *(f32 *)((u8 *)p + 0x28);
+    D_004706BC += 1;
+}
+static inline void A2d_Tree3(s32 *o) {
+    if (o[12] != 0) {
+        func_0022CF70((s32 *)o[12]);
+    }
+    if (o[10] != 0) {
+        func_0022CD00((s32 *)o[10]);
+    }
+    if (o[11] != 0) {
+        func_0022CD00((s32 *)o[11]);
+    }
+}
+static inline void A2d_Tree2(s32 *o) {
+    if (o[12] != 0) {
+        A2d_PushEnt((s32 *)o[12]);
+    }
+    if (o[10] != 0) {
+        A2d_Tree3((s32 *)o[10]);
+    }
+    if (o[11] != 0) {
+        A2d_Tree3((s32 *)o[11]);
+    }
+}
+void func_0022CD00(s32 *o) {
+    if (o[12] != 0) {
+        A2d_PushEnt((s32 *)o[12]);
+    }
+    if (o[10] != 0) {
+        A2d_Tree2((s32 *)o[10]);
+    }
+    if (o[11] != 0) {
+        A2d_Tree2((s32 *)o[11]);
+    }
+}
 
 /* differs: 2 of 18: the order of the index scale and the mul.s, and which of the two globals the second block reads
    first (the addressing itself is right, the two `addu` orders — base first, then index first — are reproduced).
