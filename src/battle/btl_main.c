@@ -2881,7 +2881,81 @@ void func_001B6800(Fighter *f) {
 void func_001B6820(Fighter *f) {
     Fighter_ResetMotion(f, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B6830);
+/* A fighter as the state-start functions with a 12-way state switch read it. */
+typedef struct FighterSt {
+    u8 pad0[0xB70];
+    s32 fB70;
+    u8 padB74[0xCA4 - 0xB74];
+    f32 fCA4;
+    f32 fCA8;
+    s16 fCAC;
+    s16 fCAE;
+    s16 fCB0;
+    u16 fCB2;
+    u8 padCB4[0xCB8 - 0xCB4];
+    s32 fCB8;
+    u8 padCBC[0x181C - 0xCBC];
+    s16 f181C;
+    u8 pad181E[0x183C - 0x181E];
+    s8 f183C;
+    u8 pad183D[0x1FFD - 0x183D];
+    s8 f1FFD;
+    u8 pad1FFE[0x2003 - 0x1FFE];
+    s8 f2003;
+    u8 pad2004[0x2010 - 0x2004];
+    s8 f2010;
+    s8 f2011;
+} FighterSt;
+
+void func_001B6830(FighterSt *f) {
+    f->fCAE = f->fCAC;
+    f->fCAC = 0x1E;
+    if (f->fCAE == f->fCAC) {
+        f->fCB0 = f->fCB0 + 1;
+    } else {
+        f->fCB0 = 0;
+    }
+    switch (f->fCAC) {
+    case 0:
+        f->fCB2 = 1;
+        break;
+    case 1:
+        f->fCB2 = 2;
+        break;
+    case 4:
+        f->fCB2 = 4;
+        break;
+    case 5:
+        f->fCB2 = 8;
+        break;
+    case 6:
+        f->fCB2 = 0x10;
+        break;
+    case 7:
+    case 8:
+        f->fCB2 = 0x20;
+        break;
+    case 9:
+        f->fCB2 = 0x40;
+        break;
+    case 11:
+        f->fCB2 = 0x80;
+        break;
+    default:
+        f->fCB2 = 0;
+        break;
+    }
+    if (f->f2010 != 0) {
+        f->fCB2 |= 0x8000;
+    }
+    if (f->f2011 != 0) {
+        f->fCB2 |= 0x4000;
+    }
+    f->fCB8 = 0;
+    f->f2003 = 0;
+    f->f1FFD = 1;
+    f->f181C = 0;
+}
 void func_001B6960(Fighter *f) {
     FT_FIELD(f, f32, 0x17BC) = 0.4f;
     func_001E4E20(f, 0);
@@ -3056,7 +3130,58 @@ void func_001B82F0(Fighter *f) {
     func_001E4E20(f, 0);
     FIGHTER_FIELD(f, f32, 0x44) = FIGHTER_FIELD(f, f32, 0x1844);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B8380);
+void func_001B8380(FighterSt *f) {
+    f->fCAE = f->fCAC;
+    f->fCAC = 0x18;
+    if (f->fCAE == f->fCAC) {
+        f->fCB0 = f->fCB0 + 1;
+    } else {
+        f->fCB0 = 0;
+    }
+    switch (f->fCAC) {
+    case 0:
+        f->fCB2 = 1;
+        break;
+    case 1:
+        f->fCB2 = 2;
+        break;
+    case 4:
+        f->fCB2 = 4;
+        break;
+    case 5:
+        f->fCB2 = 8;
+        break;
+    case 6:
+        f->fCB2 = 0x10;
+        break;
+    case 7:
+    case 8:
+        f->fCB2 = 0x20;
+        break;
+    case 9:
+        f->fCB2 = 0x40;
+        break;
+    case 11:
+        f->fCB2 = 0x80;
+        break;
+    default:
+        f->fCB2 = 0;
+        break;
+    }
+    if (f->f2010 != 0) {
+        f->fCB2 |= 0x8000;
+    }
+    if (f->f2011 != 0) {
+        f->fCB2 |= 0x4000;
+    }
+    f->fB70 = f->f183C + 0xAC;
+    func_001E3460(f);
+    f->fCA4 = 1.0f;
+    f->fCA8 = 0.0f;
+    f->fCB8 = 0;
+    f->f2003 = 0;
+    f->f1FFD = 0;
+}
 void func_001B84F0(Fighter *f) {
     FIGHTER_FIELD(f, s32, 0x17BC) = 0;
 }

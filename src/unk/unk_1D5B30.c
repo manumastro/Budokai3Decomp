@@ -267,7 +267,7 @@ typedef struct PtrCount {
 
 extern void func_002470B0(s32, PtrCount);
 extern f32 func_00200270(void *p, f32 a, f32 b);
-extern void func_002376B0(s32 a);
+extern s32 func_002376B0(s32 a);
 extern void func_002181A0(void *a, Fighter *b);
 extern void func_001A3610(s32);
 extern void func_001E6F70();
@@ -3813,8 +3813,11 @@ void func_001E5500(s32 idx, void *arg) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5500);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E55C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E57C0);
-extern void *jtbl_00469600[];
-extern char D_00469608[];
+/* .rodata of this unit up to 0x369640 is defined here (see the yaml): the call table of func_001E57C0, the task name of the
+ * Lit starters, then the switch table of func_001E6E90 that the compiler emits. */
+extern void func_001E5500();
+void *const jtbl_00469600[2] = {(void *)func_001E5500, 0};
+const char D_00469608[] = "[LIT] MAIN";
 extern void *BtbBg_GetStageModelF10(void);
 extern void func_001E55C0(void *);
 void func_001E57F0(s32 a) {
@@ -3846,8 +3849,6 @@ void func_001E5870(void) {
         s++;
     }
 }
-extern void *jtbl_00469600[];
-extern char D_00469608[];
 extern void *BtbBg_GetStageModelF10(void);
 extern void func_001E55C0(void *);
 
@@ -3857,7 +3858,7 @@ void Lit_Start(void) {
     s32 k;
 
     amTask_KillGroup(0x20, 0x10000000, 1);
-    amTask_Create((void (*)(void *))func_001E55C0, 0, 0x5600, 0x20, 0x10000002, D_00469608);
+    amTask_Create((void (*)(void *))func_001E55C0, 0, 0x5600, 0x20, 0x10000002, (char *)D_00469608);
     k = 0;
     memset(buf, 0, 0x30);
     buf[0] = 0;
@@ -3873,7 +3874,7 @@ void Lit_Create(void) {
     void *src;
     s32 k;
 
-    amTask_Create((void (*)(void *))func_001E55C0, 0, 0x5600, 0x20, 0x10000002, D_00469608);
+    amTask_Create((void (*)(void *))func_001E55C0, 0, 0x5600, 0x20, 0x10000002, (char *)D_00469608);
     k = 0;
     memset(buf, 0, 0x30);
     buf[0] = 0;
@@ -3886,7 +3887,6 @@ extern void func_00237760(s32, s32);
 extern void *BtbBg_GetStageModelF10(void);
 extern void func_001E55C0(void *);
 extern void memset(void *, s32, s32);
-extern void *jtbl_00469600[];
 
 void func_001E59F0(void) {
     s32 buf[12];
@@ -4081,40 +4081,34 @@ void func_001E6CE0(Fighter *c) {
 #endif
 // differs: size 0x198 vs 0x1B0, same gap as its sibling 1E66E0: the clamp-to-1 arm jumps to the nop before c.le.s (the 15.0f reload is skipped), the original compares with f0 = 1.0 on that path
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6CE0);
-#if 0
-/* func_001E6E90: parked, not compiled (0 of ~20 checks used). Jump table jtbl_00469620 (6 entries).
- * Obstacle: unk_1D5B30.o has a single contiguous .rodata, so the table would land at 0x369630,
- * but the original is at 0x369620. The 0x20 bytes before it (jtbl_00469600 and the "[LIT] MAIN"
- * string data) belong to an INCLUDE_ASM function and cannot be emitted from C. Would also need
- * Fighter fields f52C, f5F0 and func_002376B0 returning s32.
+extern void func_001E57C0();
 void func_001E6E90(char *c, s32 sel) {
-    char buf[0x20];
+    s32 buf[12];
     s32 s0;
     if (sel == -1) {
         sel = func_002376B0(*(s32 *)(c + 0x52C));
     }
     switch (sel) {
-    case 0:
-        s0 = 0;
-        break;
     case 1:
     case 5:
-        s0 = (*(s32 *)(c + 0x548) ? 3 : 1) + *(s32 *)(*(char **)(c + 0x568) + 0x1350);
+        s0 = *(s32 *)(c + 0x548) == 0 ? 1 : 3;
+        s0 += *(s32 *)(*(char **)(c + 0x568) + 0x1350);
+        break;
+    case 0:
+        s0 = 0;
         break;
     case 2:
     case 3:
     case 4:
-        s0 = (*(s32 *)(c + 0x548) ? 3 : 1) + *(s32 *)(*(char **)(c + 0x568) + 0x1350);
-        *(s32 *)buf = sel;
-        *(char **)(buf + 16) = (char *)gBattle + 0x264;
+        s0 = *(s32 *)(c + 0x548) == 0 ? 1 : 3;
+        s0 += *(s32 *)(*(char **)(c + 0x568) + 0x1350);
+        buf[0] = sel;
+        *(char **)((char *)buf + 16) = (char *)gBattle + 0x264;
         func_001E57C0(0, s0, buf, 3);
         break;
     }
     *(s32 *)(c + 0x5F0) = 0x100 << s0;
 }
-*/
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6E90);
 #if 0
 extern char D_00469640[];
 extern void func_001E6890();

@@ -274,14 +274,28 @@ segments:
       # initializer (code, 0x46FC80) and a pointer to it (0x46FCC0), as Metrowerks emits for a global whose
       # initial value is computed.
       - [0x35CB80, rodata, rodata/rodata_a]
+      # btl_main owns 0x368A90 to 0x368C40: the switch tables of func_001B6830 and func_001B8380; splat moves the tables
+      # of the INCLUDE_ASM functions between them into their asm files (configure.py drops the "nonmatching" line there)
+      - [0x368A90, .rodata, battle/btl_main]
+      - [0x368C40, rodata, rodata/rodata_a1b]
+      # unk_1D5B30 owns up to 0x369640: its strings, jtbl_00469600 (a function table), "[LIT] MAIN" and the switch table of func_001E6E90, all defined in the C file
       - [0x3695D0, .rodata, unk/unk_1D5B30]
-      - [0x369600, rodata, rodata/rodata_a2]
+      - [0x369640, rodata, rodata/rodata_a2]
+      # unk_20A4D0 owns 0x3699A0 to 0x369A00: its function table and the switch table of func_0020AD30
+      - [0x3699A0, .rodata, unk/unk_20A4D0]
+      - [0x369A00, rodata, rodata/rodata_a2c]
       - [0x36AE40, .rodata, battle/skill_cmd]
       - [0x36AE80, rodata, rodata/rodata_a2b]
       - [0x36EB20, .rodata, unk/unk_2AF860]
       - [0x36EB40, rodata, rodata/rodata_a3]
+      # unk_2CAED0 owns 0x36EFA0 to 0x36EFC4: the switch table of func_002CBFF0
+      - [0x36EFA0, .rodata, unk/unk_2CAED0]
+      - [0x36EFC4, rodata, rodata/rodata_a3c]
       - [0x36F350, .rodata, unk/unk_2D2530]
       - [0x36F368, rodata, rodata/rodata_b]
+      # unk_2E4030 owns 0x36F4F0 to 0x36F508: the switch table of func_002E54A0 (the tables before it stay in the data)
+      - [0x36F4F0, .rodata, unk/unk_2E4030]
+      - [0x36F508, rodata, rodata/rodata_b2]
       - [0x36F590, .rodata, unk/unk_2E8540]
       - [0x36F5AC, rodata, rodata/rodata_c]
       # .sdata, 0x46FD00 ($gp - 0x7FF0) to 0x470200.
