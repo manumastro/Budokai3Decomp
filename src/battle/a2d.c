@@ -810,7 +810,67 @@ void func_0022C060(s32 a0, f32 dt) {
         o[2] = r;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C1D0);
+extern s32 *amPkt_Alloc(s32);
+void func_0022C1D0(s32 *o, s32 flag, f32 t) {
+    s32 *pkt;
+    u8 *top;
+    A2dEnt *b;
+    s32 i;
+    s32 off;
+
+    if (o[2] != 0) {
+        func_0022C1D0((s32 *)o[2], 0, t);
+    }
+    if (o[4] != 0) {
+        top = D_004706CC;
+        D_004706CC = top + 0x50;
+        *(F4 *)(top + 0x50) = *(F4 *)(top + 0x0);
+        *(QuadA *)(top + 0x60) = *(QuadA *)(top + 0x10);
+        *(F4 *)(top + 0x80) = *(F4 *)(top + 0x30);
+        *(F4 *)(top + 0x90) = *(F4 *)(top + 0x40);
+        D_004706D4 += 1;
+        pkt = amPkt_Alloc(0x60);
+        pkt[1] = 0;
+        func_0022B900((s32 *)o[4], t, pkt);
+        if (pkt[1] & 1) {
+            ((A2dEnt *)D_004706C0)[D_004706BC].p = pkt;
+            b = (A2dEnt *)D_004706C0;
+            b[D_004706BC].v = 100.0f * *(f32 *)((u8 *)pkt + 0x28);
+            D_004706BC += 1;
+        }
+    }
+    if (o[1] != 0) {
+        func_0022C1D0((s32 *)o[1], 0, t);
+    }
+    if (o[4] != 0) {
+        D_004706D4 -= 1;
+        D_004706CC -= 0x50;
+    }
+    if (flag != 0) {
+        if (D_004706BC > 1) {
+            func_00227010((s32 *)D_004706C0, (s32 *)(D_004706C0 + (D_004706BC - 1) * 8));
+        }
+        amDraw_SetPacketMode(1);
+        if (0 < D_004706BC) {
+            i = 0;
+            off = 0;
+            do {
+                s32 *e = *(s32 **)(D_004706C0 + off);
+                if (e[1] & 1) {
+                    if (*(s16 *)((u8 *)e + 0x18) >= 0) {
+                        func_002269B0(e);
+                    } else {
+                        func_00226540(e);
+                    }
+                }
+                i += 1;
+                off += 8;
+            } while (i < D_004706BC);
+        }
+        amDraw_SetPacketMode(0);
+        D_004706BC = 0;
+    }
+}
 void func_0022C430(s32 *a0, f32 f) {
     s32 buf[24];
     u8 *a2;
