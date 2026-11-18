@@ -262,7 +262,45 @@ void func_00225A60(s32 *p) {
 void func_00225A90(s32 *p) {
     func_0023A5F0((s32)func_0021C360(p[0]) + 0x14);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00225AC0);
+extern void *gBattle;
+extern s32 func_0023F7A0(s32, s32);
+void func_00225AC0(s32 *a0) {
+    u8 *sys = gBtlSys;
+    s32 *slot = BtlSys_GetSlot(a0[0]);
+    s32 i = 0;
+    s32 mode;
+    s32 *v;
+
+    if (0 < *(s32 *)((u8 *)gBattle + 0x88D8)) {
+        do {
+            v = BtlSys_GetSlot(i);
+            *v = *v & 0x31C900;
+            *v |= 0xA;
+            i += 1;
+        } while (i < *(s32 *)((u8 *)gBattle + 0x88D8));
+    }
+    if (*(s16 *)(sys + 0xDF0) == 2 && a0[1] == 3) {
+        mode = 2;
+    } else {
+        mode = a0[1];
+    }
+    switch (mode) {
+    case 0:
+        *slot |= 0x4000;
+        break;
+    case 2:
+        *slot |= 0x8000;
+        break;
+    case 3:
+        *slot |= 0x10000;
+        break;
+    default:
+        *slot &= 0x31C900;
+        *slot |= 0xA;
+        return;
+    }
+    func_0023F7A0(a0[0], mode);
+}
 void func_00225C30(s32 *p) {
     u8 *o = (u8 *)BtlSys_GetSlot(p[0]);
 
