@@ -537,6 +537,56 @@ s32 func_002AB450(s32 *a0, s32 *a1) {
     *(f32 *)(e + 0x44) = (f32)p[0];
     return 1;
 }
+// differs: round 7: 104 words each, control flow equal; differs in register/schedule only. The original loads p[3],p[2],p[1],p[0] into a0/v1/v0 up front and hoists li 1 (a1) and 1.0f (a2); ours picks other registers and sinks the p[] loads. tsweep (1500 orders/types) found nothing better.
+#if 0
+s32 func_002AB4F0(s32 *a0, s32 *a1) {
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    s32 i = *(s32 *)a0[0];
+    s32 v3 = p[3];
+    s32 v2 = v2;
+    s32 v1 = v1;
+    s32 v0 = p[0];
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + v3 * 208;
+    u8 *tbl;
+    u8 *base;
+    u8 *rec;
+
+    *(s32 *)(e + 8) = v2;
+    *(s32 *)(e + 0xC) = v1;
+    tbl = *(u8 **)(e + 4);
+    base = tbl + *(s32 *)(tbl + 0x14);
+    rec = tbl + *(s32 *)(base + v2 * 4);
+    *(f32 *)(e + 0x50) = (f32)*(s16 *)(rec + 0x10);
+    *(f32 *)(e + 0x54) = (f32)*(s16 *)(rec + 0x12);
+    *(s32 *)(e + 0x30) = 0;
+    *(s32 *)(e + 0x34) = 0;
+    *(f32 *)(e + 0x38) = 1.0f;
+    *(f32 *)(e + 0x3C) = 1.0f;
+    if (v0 == 1) {
+        *(f32 *)(e + 0x40) = *(f32 *)(e + 0x50);
+    } else {
+        *(f32 *)(e + 0x40) = *(f32 *)(e + 0x50) - 0.5f;
+    }
+    *(f32 *)(e + 0x44) = *(f32 *)(e + 0x54);
+    *(f32 *)(e + 0x48) = 1.0f;
+    *(f32 *)(e + 0x4C) = 1.0f;
+    if (*(s32 *)(e + 0x14) & 1) {
+        f32 h = 0.5f * *(f32 *)(e + 0x50);
+        *(f32 *)(e + 0x60) = *(f32 *)(e + 0x80) - h;
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x80) + h;
+    } else {
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x60) + *(f32 *)(e + 0x50);
+    }
+    if (*(s32 *)(e + 0x14) & 2) {
+        f32 h = 0.5f * *(f32 *)(e + 0x54);
+        *(f32 *)(e + 0x64) = *(f32 *)(e + 0x84) - h;
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x84) + h;
+    } else {
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x64) + *(f32 *)(e + 0x54);
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB4F0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB690);
 s32 func_002AB9C0(ScriptThread *t, ScriptCtx *ctx) {
