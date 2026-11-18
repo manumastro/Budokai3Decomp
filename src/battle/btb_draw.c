@@ -6227,47 +6227,74 @@ typedef struct MotSlot {
 extern void amMotion_Apply(char *, f32, f32);
 
 extern f32 D_0051CD24[];
+typedef struct MotEnt {
+    char pad0[0x30];
+    s32 m30;
+    s32 m34;
+    s32 m38;
+    char pad3C[4];
+} MotEnt;
 
-// differs: motion update: the reloads of the state pointer and the register choice for the -1 constant differ (15 of 49 instructions, last variant tried)
-#if 0
-extern void amMotion_Apply(char *, f32, f32);
+typedef struct MotSel {
+    s32 packed;
+    s32 f4;
+    f32 f8;
+    f32 fC;
+    MotEnt *ents;
+} MotSel;
 
-void func_001F5BE0(char *c) {
-    char *v1;
-    char *P;
-    char *a3;
+typedef struct MotObj {
+    char pad0[0x418];
+    s32 n;
+    MotSel sel;
+} MotObj;
+
+typedef struct MotSt2 {
+    MotObj *obj;
+    f32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    f32 f14;
+    s32 f18;
+    f32 f1C;
+} MotSt2;
+
+typedef struct MotCtl2 {
+    char pad0[8];
+    MotSt2 *st;
+} MotCtl2;
+
+void func_001F5BE0(MotCtl2 *c) {
+    MotSt2 *st = c->st;
     s32 t1;
-    s32 a2;
-    s32 a1;
+    MotObj *P;
+    MotSel *sel;
+    s32 i;
 
-    v1 = *(char **)(c + 0x8);
-    if (v1 != NULL) {
-        *(s32 *)(v1 + 0x18) = 1;
-        t1 = ((*(s32 *)(v1 + 0x8) + 1) << 16) | *(s32 *)(v1 + 0x10);
-        P = *(char **)v1;
-        if (*(s32 *)(P + 0x41C) != t1) {
-            a3 = P + 0x41C;
-            if (*(s32 *)(P + 0x418) > 0) {
-                a2 = 0;
-                a1 = 0;
+    if (st != NULL) {
+        st->f18 = 1;
+        t1 = ((st->f8 + 1) << 16) | st->f10;
+        P = st->obj;
+        sel = &P->sel;
+        if (sel->packed != t1) {
+            if (0 < P->n) {
+                i = 0;
                 do {
-                    *(s32 *)(*(char **)(a3 + 0x10) + a1 + 0x30) = -1;
-                    *(s32 *)(*(char **)(a3 + 0x10) + a1 + 0x34) = -1;
-                    *(s32 *)(*(char **)(a3 + 0x10) + a1 + 0x38) = -1;
-                    a2++;
-                    a1 += 0x40;
-                } while (a2 < *(s32 *)(P + 0x418));
+                    sel->ents[i].m30 = -1;
+                    sel->ents[i].m34 = -1;
+                    sel->ents[i].m38 = -1;
+                    i++;
+                } while (i < P->n);
             }
-            *(s32 *)(a3 + 0xC) = (s32)0xBF800000;
+            sel->fC = -1.0f;
         }
-        *(s32 *)(P + 0x41C) = t1;
-        *(f32 *)(*(char **)v1 + 0x424) = *(f32 *)(v1 + 0x4);
-        amMotion_Apply(*(char **)v1, 0.0f, *(f32 *)(v1 + 0x1C));
+        sel->packed = t1;
+        st->obj->sel.f8 = st->f4;
+        amMotion_Apply((char *)st->obj, 0.0f, st->f1C);
     }
 }
-#endif
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5BE0);
 
 
 extern f32 func_002CFDD0(s32, f32, f32);
