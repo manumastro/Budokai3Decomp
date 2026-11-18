@@ -2500,17 +2500,15 @@ void func_0013B960(u8 *);
 void func_00209D20(s32);
 void func_0013B110(s32);
 void func_00209C50(void);
-#if 0
 void func_00211AF0(u8 *s1) {
+    s16 x;
     u8 *s0;
     u8 *s2;
-    s32 v;
 
-    s16 x = *(s16 *)(s1 + 0x66);
+    x = *(s16 *)(s1 + 0x66);
     s0 = s1 + 0x20;
-    v = *(s32 *)(s1 + 0x10);
     s2 = D_00568C90 + x * 0x2140;
-    if (v != 0) {
+    if (*(u8 **)(s1 + 0x10) != 0) {
         D_00470238 = 0;
         if (*(s32 *)(s0 + 0x20) != 0) {
             amModel_SetCurrent(*(s32 *)(s0 + 0x20), *(s32 *)(s0 + 0x28));
@@ -2521,15 +2519,17 @@ void func_00211AF0(u8 *s1) {
         func_0013B0B0(gBattle + 0x60);
         func_0013B960(s2 + 0x40);
         func_00209D20(0);
-        __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)" : : "r"(s2 + 0x40) : "memory");
+        __asm__ volatile (
+            "lqc2 $vf28, 0x0(%0)\n"
+            "lqc2 $vf29, 0x10(%0)\n"
+            "lqc2 $vf30, 0x20(%0)\n"
+            "lqc2 $vf31, 0x30(%0)\n"
+            : : "r"(s2 + 0x40) : "memory");
         func_00208D70(*(s32 *)(s1 + 0x10));
         func_0013B110(1);
+        func_00209C50();
     }
-    func_00209C50();
 }
-#endif
-// differs: 17 of 54 differ: the registers of the index (lh), the flag (lw) and the address chain are assigned in another order than the original (lh first into a2, the address built after the flag test in a0/a1)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00211AF0);
 #if 0
 void func_00211BD0(u8 *p) {
     u8 *q;
@@ -4942,21 +4942,22 @@ extern f32 D_004E0614[];
 extern f32 D_004E0618[];
 void amAdx_SetVolume(s32, f32);
 
-#if 0
 void func_00219790(s32 flag) {
-    s32 i = 0;
-    s32 two = 2;
+    s32 i;
+    u8 *p;
     f32 f22;
     f32 f21;
     f32 f20;
-    u8 *p;
 
-    i = (flag == 0) ? two : i;
+    s32 two = 2;
+    u8 *base;
     f22 = D_004E0610[0];
+    base = gBattle + 0x5C4;
+    i = (flag != 0) ? 0 : two;
     f21 = D_004E0614[0];
     f20 = D_004E0618[0];
     if (i < 5) {
-        p = gBattle + 0x5C4 + i * 0x20;
+        p = base + (i << 5);
         do {
             i++;
             *(s32 *)p = 0x3F800000;
@@ -4971,9 +4972,6 @@ void func_00219790(s32 flag) {
     amAdx_SetVolume(4, f20);
     amAdx_SetVolume(2, f21);
 }
-// differs: 15 of 53 differ: the flag-dependent start index (movz from a constant 2) and the order of the float loads; the compiler folds the constants
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00219790);
 extern s32 D_00470670;
 
 void func_00219870(void) {

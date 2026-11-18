@@ -333,58 +333,22 @@ s32 func_001AC110(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC110);
-#if 0
-// differs: the fighter-table walk keeps its registers differently (the gBattle pointer and the entry pointer in other saved registers: 36 of 57 instructions differ)
 extern u8 D_00492FC0[];
+typedef struct BSlA { u8 pad[0x88D8]; s32 n; } BSlA;
 void func_001AC240(void) {
-    u8 *c;
-    s32 i;
-    BattleWork *g;
     u8 *e;
-    s32 id;
-    g = gBattle;
-    if (0 < BW_FIELD(g, s32, 0x88D8)) {
-        i = 0;
-        c = (u8 *)g;
-        do {
-            id = *(s16 *)(c + 0x1BD4);
-            if (id > -1) {
-                e = D_00492FC0 + id * 0xB8;
-                *(s16 *)(e + 0xC) = 0;
-                *(s16 *)(e + 0xE) = 0;
-                *(s16 *)(e + 0x10) = 0;
-                *(s16 *)(e + 0x12) = 0;
-                *(s16 *)(e + 0x6C) = 0;
-                *(s16 *)(e + 0x6E) = 0;
-                *(s16 *)(e + 0x70) = 0;
-                *(s16 *)(e + 0x72) = 0;
-                memset(e + 0x28, 0, 0x40);
-                memset(e + 0x74, 0, 0x40);
-            }
-            i++;
-            c += 0x2020;
-        } while (i < BW_FIELD(g, s32, 0x88D8));
-    }
-}
-#endif
-extern u8 D_00492FC0[];
-#if 0
-// differs: 7 of 57 (r7k). bw typed as a struct whose count sits at 0x88D8 stops the count hoist; what is left is the saved-register numbering: original bw=s2, i=s1, p=s0, e=s3 (we get bw=s0); tsweep of order and types found nothing better
-typedef struct BSl { u8 pad[0x88D8]; s32 n; } BSl;
-void func_001AC240(void) {
+    BSlA *bw;
+    s32 i;
     u8 *p;
-    s32 i;
-    BSl *bw;
-    u8 *e;
     s32 a;
-    bw = (BSl *)gBattle;
+    bw = (BSlA *)gBattle;
     i = 0;
     if (0 < bw->n) {
         p = (u8 *)bw;
         do {
             a = *(s16 *)(p + 0x1BD4);
-            if (0 <= a) {
-                e = D_00492FC0 + a * 184;
+            if (a > -1) {
+                e = D_00492FC0 + a * 0xB8;
                 *(s16 *)(e + 0xC) = 0;
                 *(s16 *)(e + 0xE) = 0;
                 *(s16 *)(e + 0x10) = 0;
@@ -401,8 +365,6 @@ void func_001AC240(void) {
         } while (i < bw->n);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC240);
 void func_001AC330(void *p0) {
     s32 v;
     s32 off;
@@ -1234,70 +1196,33 @@ void Btl_StepTimer(void) {
         BW_FIELD(gBattle, f32, 0x890C) = BW_FIELD(gBattle, f32, 0x88F0);
     }
 }
-#if 0
-// differs: 0xF0 against 0x98 bytes (ours is 0x40 framed: the mask and arr land outside the frame); with a pad local the table stores are hoisted above the loop, the original stores them after it
-extern void func_00219270(s32);
-extern void func_00237000(s32, void *);
 extern s32 func_001B07C0(void);
 extern s32 func_001B0700(void);
-void func_001AF010(void) {
-    BattleWork *bw;
-    s16 arr[4];
-    s32 mask;
-    s32 pad[2];
-    void *tb[6];
-    s32 i;
-    bw = gBattle;
-    BW_FIELD(bw, s32, 0x88F8) = 0;
-    BW_FIELD(bw, s32, 0x890C) = 0;
-    BW_FIELD(bw, s32, 0x8910) = 0;
-    mask = 0;
-    i = 0;
-    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
-        do {
-            mask = mask | (1 << i);
-            arr[i] = 0;
-            i++;
-        } while (i < BW_FIELD(bw, s32, 0x88D8));
-    }
-    tb[0] = (u8 *)bw + 0x830;
-    tb[1] = (u8 *)bw + 0x2850;
-    tb[2] = BW_FIELD(bw, void *, 0x8AA0);
-    tb[3] = BW_FIELD(bw, void *, 0x7F4);
-    tb[4] = func_001B07C0;
-    tb[5] = func_001B0700;
-    func_00237000(4, tb);
-    func_00219270(*(s16 *)((u8 *)bw + 0x7E6));
-}
-#endif
-#if 0
-// differs: size 0xE4 against 0xF0. The 0x88D8 count address is hoisted into a1 here (original reloads with lui/addu per access); the six-word block at sp+0x20 and the calls match.
-extern void func_00237000(s32, void *);
-extern void func_00219270(s32);
-extern void func_001B07C0(void);
-extern void func_001B0700(void);
-typedef struct MaskArr {
+typedef struct MaskArrA {
     u32 mask;
     s16 pad[2];
     s16 arr[4];
-} MaskArr;
+} MaskArrA;
 void func_001AF010(void) {
-    BattleWork *bw;
+    BSlA *bw;
     s32 j;
-    MaskArr m;
+    MaskArrA m;
     s32 st[6];
-    bw = gBattle;
+    s16 *q;
+    bw = (BSlA *)gBattle;
     BW_FIELD(bw, s32, 0x88F8) = 0;
     BW_FIELD(bw, s32, 0x890C) = 0;
     BW_FIELD(bw, s32, 0x8910) = 0;
     m.mask = 0;
-    if (0 < BW_FIELD(bw, s32, 0x88D8)) {
+    if (0 < bw->n) {
         j = 0;
+        q = (s16 *)&m;
         do {
             m.mask = m.mask | (1 << j);
-            m.arr[j] = 0;
+            q[4] = 0;
             j++;
-        } while (j < BW_FIELD(bw, s32, 0x88D8));
+            q++;
+        } while (j < bw->n);
     }
     st[0] = (s32)((u8 *)bw + 0x830);
     st[1] = (s32)((u8 *)bw + 0x2850);
@@ -1308,8 +1233,6 @@ void func_001AF010(void) {
     func_00237000(4, st);
     func_00219270(*(s16 *)((u8 *)bw + 0x7E6));
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF010);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF100);
 void Btl_PopFileList(void) {
     u8 *g;
@@ -5756,7 +5679,11 @@ void func_001C7D90(Fighter *a0, s32 a1, void *a2) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C7D90);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8020);
+typedef s32 (*JtblFnA)(void *);
+extern JtblFnA jtbl_00468450[];
+s32 func_001C8020(s32 idx, void *arg) {
+    return jtbl_00468450[idx](arg);
+}
 /* Fighter view for func_001C8050: the slot pointer at 0x1CF4 (a table entry with two s16 at 0x14 and 0x16). */
 typedef struct FighterSlotView {
     u8 unk0000[0xBA4];

@@ -6,7 +6,7 @@ extern void func_002A9930(s32, s32, void *, s32);
 extern void amCdFs_Close(void *, s32);
 extern s32 amCdFs_ReadFile(s32, s32, s32);
 extern void amCdFs_SetHeap(u8);
-extern void func_002AFCE0(void);
+extern s32 func_002AFCE0(u8 *, s32 *);
 extern void func_002AFE00(void);
 extern s32 func_002B0000(u8 *, s32 *);
 extern void func_002A9C00(s32, s32, s32, void *, s32);
@@ -38,46 +38,39 @@ s32 func_002AF880(s32 **a, u8 *b) {
     *(s32 *)(e + 0x14) = v0;
     return 1;
 }
-#if 0
-s32 func_002AF8E0(u8 *a, u8 *b) {
-    s32 r = 3;
-    u8 *f;
+s32 func_002AF8E0(u8 *arg0, u8 *arg1) {
+    u8 *temp_s4;
+    u8 *temp_s2;
+    s32 temp_s1;
+    u8 *temp_s0;
     u8 *pa;
-    u8 *e;
-    u8 *g;
-    s32 s1;
-    u8 *pp;
-    f = *(u8 **)(a + 0x1C);
-    pa = *(u8 **)a;
-    pp = *(u8 **)(b + 0x2C);
-    r = 3;
-    switch (*(s16 *)(f + 4)) {
-    case 3:
-        *(s32 *)(a + 0x10) = 0;
-        g = *(u8 **)(f + 0x40);
-        s1 = *(s32 *)(g + 0x50);
-        e = D_005BCD20 + *(s32 *)pa * 160 + *(s32 *)(pp + 4) * 40;
-        if (*(s32 *)e != 0) {
-            amCdFs_ReleaseCache(*(s32 *)e);
-            *(s32 *)e = 0;
-        }
-        *(u8 **)e = g;
-        *(s32 *)(e + 8) = s1;
-        *(u8 **)(f + 0x40) = NULL;
-        amCdFs_Close(f, 0);
-        if (*(void **)(a + 0x18) != NULL) {
-            amCdFs_Close(*(void **)(a + 0x18), 0);
-        }
-        *(s32 *)(a + 0x18) = 0;
-        *(s32 *)(a + 0x1C) = 0;
-        r = 1;
-        break;
+    s32 idx;
+
+    temp_s2 = *(u8 **)(arg0 + 0x1C);
+    pa = *(u8 **)arg0;
+    idx = *(s32 *)(*(u8 **)(arg1 + 0x2C) + 4);
+    if (*(s16 *)(temp_s2 + 4) != 3) {
+        return 3;
     }
-    return r;
+    *(s32 *)(arg0 + 0x10) = 0;
+    temp_s0 = *(u8 **)(temp_s2 + 0x40);
+    temp_s4 = D_005BCD20 + (*(s32 *)pa * 160) + (idx * 40);
+    temp_s1 = *(s32 *)(temp_s0 + 0x50);
+    if (*(u8 **)temp_s4 != NULL) {
+        amCdFs_ReleaseCache(*(s32 *)temp_s4);
+        *(u8 **)temp_s4 = NULL;
+    }
+    *(u8 **)temp_s4 = temp_s0;
+    *(s32 *)(temp_s4 + 8) = temp_s1;
+    *(u8 **)(temp_s2 + 0x40) = NULL;
+    amCdFs_Close(temp_s2, 0);
+    if (*(u8 **)(arg0 + 0x18) != NULL) {
+        amCdFs_Close(*(u8 **)(arg0 + 0x18), 0);
+    }
+    *(u8 **)(arg0 + 0x18) = NULL;
+    *(u8 **)(arg0 + 0x1C) = NULL;
+    return 1;
 }
-// differs: the register roles of the object, the field pointer and the table entry differ (the original keeps the object in s3); the layout is otherwise the one of func_002AFB20
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002AF8E0);
 extern s32 func_002AF8E0(u8 *, u8 *);
 s32 func_002AF9E0(u8 *s3, u8 *s0)
 {
@@ -175,7 +168,30 @@ s32 func_002AFBC0(u8 *a, u8 *b) {
 void func_002AFCA0(u8 *a, u8 *b) {
     *(s32 *)a = amCdFs_ReadFile(*(s32 *)(b + 0x20) + *(s32 *)*(u8 **)(b + 0x2C), 0, 1);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002AFCE0);
+s32 func_002A9AE0(s32, s32, void *, s32);
+s32 func_002AFCE0(u8 *arg0, s32 *arg1) {
+    u8 *temp_s0;
+    u8 *temp_a2;
+    u8 *pa;
+
+    pa = *(u8 **)arg0;
+    temp_s0 = *(u8 **)(arg0 + 0x1C);
+    if (*(s16 *)(temp_s0 + 4) != 3) {
+        return 3;
+    }
+    *(s32 *)(arg0 + 0x10) = 0;
+    temp_a2 = *(u8 **)(temp_s0 + 0x40);
+    func_002A9AE0(*(s32 *)pa, *arg1, temp_a2, *(s32 *)(temp_a2 + 0x50));
+    *(u8 **)(temp_s0 + 0x40) = NULL;
+    amCdFs_Close(temp_s0, 0);
+    if (*(u8 **)(arg0 + 0x18) != NULL) {
+        amCdFs_Close(*(u8 **)(arg0 + 0x18), 0);
+    }
+    *(u8 **)(arg0 + 0x18) = NULL;
+    *(u8 **)(arg0 + 0x1C) = NULL;
+    amCdFs_SetHeap(0);
+    return 1;
+}
 s32 func_002AFD80(u8 *a, u8 *b) {
     s32 s1;
     s32 s0;

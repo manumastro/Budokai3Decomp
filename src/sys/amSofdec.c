@@ -212,7 +212,53 @@ L001414D0:
     jr         $ra
     addi      $sp, $sp, 0xA0
 }
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001415F0);
+extern void func_0012E830(void);
+asm void func_001415F0(void) {
+L001415F0:
+    sra        $a1, $a1, 1
+    sra        $a2, $a2, 1
+    sra        $a3, $a3, 1
+    addu       $t3, $zero, $ra
+    addu       $t0, $zero, $a0
+    addu       $t1, $zero, $a2
+    addu       $t2, $zero, $a3
+    jal        func_0012E830
+    addu       $a0, $zero, $a1
+    mov.s      $f12, $f0
+    mov.s      $f13, $f1
+    jal        func_0012E830
+    addu       $a0, $zero, $t1
+    mov.s      $f2, $f0
+    mov.s      $f3, $f1
+    jal        func_0012E830
+    addu       $a0, $zero, $t2
+    addu       $ra, $zero, $t3
+    mov.s      $f5, $f1
+    mov.s      $f4, $f0
+    mov.s      $f0, $f12
+    mov.s      $f1, $f13
+    mul.s      $f6, $f3, $f5
+    mul.s      $f7, $f2, $f4
+    mul.s      $f10, $f1, $f2
+    mul.s      $f11, $f0, $f3
+    mul.s      $f8, $f0, $f6
+    mul.s      $f9, $f1, $f7
+    mula.s     $f10, $f5
+    madd.s     $f10, $f11, $f4
+    mul.s      $f11, $f1, $f3
+    mul.s      $f12, $f0, $f2
+    sub.s      $f8, $f8, $f9
+    swc1       $f10, 0x4($t0)
+    mula.s     $f11, $f4
+    msub.s     $f12, $f12, $f5
+    swc1       $f8, 0x0($t0)
+    mula.s     $f1, $f6
+    madd.s     $f8, $f0, $f7
+    swc1       $f12, 0x8($t0)
+    swc1       $f8, 0xC($t0)
+    jr         $ra
+    nop
+}
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_001416A0);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00141920);
 asm void func_00141C30(void) {
@@ -302,8 +348,77 @@ L00142080:
 }
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142100);
 INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142120);
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142280);
-INCLUDE_ASM("asm/nonmatchings/sys/amSofdec", func_00142370);
+asm void func_00142280(void) {
+L00142280:
+    lwc1       $f0, 0x0($a2)
+    lwc1       $f1, 0x4($a2)
+    lwc1       $f2, 0x8($a2)
+    lwc1       $f3, 0xC($a2)
+    lwc1       $f4, 0x0($a1)
+    lwc1       $f5, 0x4($a1)
+    lwc1       $f6, 0x8($a1)
+    lwc1       $f7, 0xC($a1)
+    neg.s      $f8, $f0
+    neg.s      $f9, $f1
+    neg.s      $f10, $f2
+    mov.s      $f11, $f3
+    mula.s     $f7, $f8
+    msuba.s    $f6, $f9
+    madda.s    $f5, $f10
+    madd.s     $f12, $f4, $f11
+    mula.s     $f7, $f9
+    madda.s    $f6, $f8
+    madda.s    $f5, $f11
+    msub.s     $f13, $f4, $f10
+    mula.s     $f7, $f10
+    madda.s    $f6, $f11
+    msuba.s    $f5, $f8
+    madd.s     $f14, $f4, $f9
+    mula.s     $f7, $f11
+    msuba.s    $f6, $f10
+    msuba.s    $f5, $f9
+    msub.s     $f15, $f4, $f8
+    mula.s     $f3, $f12
+    msuba.s    $f2, $f13
+    madda.s    $f1, $f14
+    madd.s     $f4, $f0, $f15
+    mula.s     $f3, $f13
+    madda.s    $f2, $f12
+    madda.s    $f1, $f15
+    msub.s     $f5, $f0, $f14
+    mula.s     $f3, $f14
+    madda.s    $f2, $f15
+    msuba.s    $f1, $f12
+    madd.s     $f6, $f0, $f13
+    mula.s     $f3, $f15
+    msuba.s    $f2, $f14
+    msuba.s    $f1, $f13
+    beqz       $a3, L00142354
+    msub.s     $f7, $f0, $f12
+    lwc1       $f8, 0x0($a3)
+    lwc1       $f9, 0x4($a3)
+    lwc1       $f10, 0x8($a3)
+    lwc1       $f11, 0xC($a3)
+    add.s      $f4, $f4, $f8
+    add.s      $f5, $f5, $f9
+    add.s      $f6, $f6, $f10
+    add.s      $f7, $f7, $f11
+L00142354:
+    swc1       $f4, 0x0($a0)
+    swc1       $f5, 0x4($a0)
+    swc1       $f6, 0x8($a0)
+    jr         $ra
+    swc1       $f7, 0xC($a0)
+}
+extern void func_00142390(void);
+asm void func_00142370(void) {
+    lwc1       $f0, 0x0($a1)
+    lwc1       $f1, 0x4($a1)
+    lwc1       $f2, 0x8($a1)
+    lwc1       $f3, 0xC($a1)
+    j          func_00142390
+    lqc2      $vf1, 0x0($a1)
+}
 asm void func_00142390(void) {
 L00142390:
     mula.s     $f0, $f0
