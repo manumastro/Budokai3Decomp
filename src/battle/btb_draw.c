@@ -6100,10 +6100,6 @@ extern char D_00469868[];
 extern char *func_001A50F0(char *, s32);
 extern char *func_00209540(char *, s32, s32);
 extern void func_00209B50(char *, char *, s32);
-#if 0
-extern void func_001F2150(void);
-extern void BtbObj_ReleaseSub38(BtbObj *);
-
 void func_001F5950(s32 p0, char *p1, s32 p2, s32 flags) {
     s32 s2;
     char *s1;
@@ -6111,6 +6107,7 @@ void func_001F5950(s32 p0, char *p1, s32 p2, s32 flags) {
     char *s0;
     char *ptr;
     char *q;
+    BtbRecB *rb;
     s32 a1;
 
     s2 = (s32)D_0051CD0C[0];
@@ -6132,18 +6129,13 @@ void func_001F5950(s32 p0, char *p1, s32 p2, s32 flags) {
         *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) & -0x801;
         *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) | 0x800;
         memset(s0 + 0x30, 0, 0x80);
-        *(volatile s32 *)(s0 + 0x38) = (s32)s1;
+        *(s32 *)(s0 + 0x38) = (s32)s1;
+        rb = (BtbRecB *)(s0 + 0x30);
         q = func_001A50F0((char *)s2, 0x280);
-        s0 += 0x30;
-        *(char **)(s0 + 4) = q;
-        *(s32 *)s0 = s3 & 2;
+        rb->f4 = q;
+        rb->f0 = s3 & 2;
     }
 }
-#endif
-// differs: func_001F5950: 8 of 71 instructions differ (size right): the store of r+0x38 (s1) stays in the
-// jal delay slot (the original keeps the addiu s0,s0,48 there, with the store before the second call);
-// plain, s32 and volatile stores tried; register order of table base (s2), parameter (s0), result (s1) matched.
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5950);
 extern void func_002D04A0(s32);
 extern void func_002CFDE0(s32);
 
