@@ -56,3 +56,15 @@ the flags of `configure.py`) so that the mechanical part of a match does not hav
   `asm void` hand-written code, jump-table dispatch of function pointers.
 * A draft that compiles only with `-relax_pointers` is reported (column `relaxed`) but not applied.
 * The permuter closes register-allocation and operand-order differences; it does not repair a wrong control flow.
+
+## Round 7 helpers (after mh2-decomp tools)
+
+* `scripts/adiff.py FILE.c FUNC [-c N] [--c ALT.c]`: aligned diff of one function (difflib on the masked words, then
+  objdump text); the last line `mn= full=` ranks near misses (mn: mnemonic-only differences). Use `--c` for a scratch
+  copy of the file in which a parked `#if 0` attempt is switched on.
+* `scripts/tsweep.py FILE.c FUNC [--mode order|types|both]`: tries every declaration order and every integer type
+  (s8..u32) of the function leading locals and ranks the variants by instruction differences. MWCC numbers values
+  in declaration order and colours them Chaitin-style, so this is where most saved-register swaps are solved.
+* `scripts/gen_objdiff.py [--build]`: writes the git-ignored objdiff.json and, with --build, the target objects (the
+  original code of each file, assembled from asm/nonmatchings) for the objdiff GUI.
+* A match that depends on a contrived form carries a comment starting `FAKEMATCH:`; `git grep FAKEMATCH` lists them.

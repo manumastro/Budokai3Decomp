@@ -61,8 +61,8 @@ extern ScrLightSub D_005ABA80[][4];
 extern ScrModel D_005BC440[][3];
 extern ScrEffectSub D_005BC180[][2];
 extern void func_002A9930(void);
-extern void func_002A9AE0(void);
-extern void func_002A9C00(void);
+extern void func_002A9AE0(s32, s32, s32, s32);
+extern void func_002A9C00(s32, s32, s32, s32, s32);
 extern void func_002A9EA0(void);
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Stop(s32);
@@ -80,7 +80,51 @@ extern void SoundRpc_Send3(s32, s32, s32, s32);
 s32 func_002AB690(ScriptThread *t, ScriptCtx *ctx);
 
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9080);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A92B0);
+extern void memset(void *, s32, s32);
+extern void func_002B0A40(s32);
+extern u8 D_005AB3C0[];
+extern u8 D_005AB610[];
+extern s32 D_005AB7F0[];
+void func_002A92B0(s32 a0) {
+    u8 *w;
+    u8 *r;
+    u8 *q;
+    u8 *p;
+    s32 i;
+
+    i = 0;
+    p = D_005AB3C0 + a0 * 104;
+    q = p;
+    for (; i < 2; i++) {
+        memset(q, 0, 0x34);
+        q += 0x34;
+    }
+    memset(p, 0, 0x68);
+    i = 0;
+    r = D_005AB610 + a0 * 240;
+    for (; i < 10; i++) {
+        memset(r, 0, 0x18);
+        r += 0x18;
+    }
+    D_005AB7F0[0] = 0;
+    w = (u8 *)D_005AB7F0;
+    *(s32 *)(w + 0xB0) = 0;
+    *(s32 *)(w + 0xB0) = 0;
+    *(s32 *)(w + 0xB4) = 0;
+    *(s32 *)(w + 0xB4) = 0;
+    *(s32 *)(w + 0xB8) = 0;
+    *(s32 *)(w + 0xB8) = 0;
+    *(s32 *)(w + 0xBC) = 0;
+    *(s32 *)(w + 0xBC) = 0;
+    *(s32 *)(w + 0xC0) = 0;
+    *(s32 *)(w + 0xC0) = 0;
+    *(s32 *)(w + 0xC4) = 0;
+    *(s32 *)(w + 0xC8) = 0;
+    *(s32 *)(w + 0xCC) = 0;
+    *(s32 *)(w + 0xD0) = 0;
+    *(s32 *)(w + 0xD4) = 0;
+    func_002B0A40(a0);
+}
 extern u8 D_004E6560[];
 extern u8 D_005AB3A0[];
 extern s32 D_00511768[];
@@ -147,8 +191,86 @@ void func_002A98A0(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0) {
     s3[2] = t0;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9930);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9AE0);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9C00);
+extern f32 D_0047042C;
+extern f32 D_00470430;
+void func_002A9AE0(s32 a0, s32 a1, s32 a2, s32 a3) {
+    u8 *e = (u8 *)D_005BC9E0 + a0 * 416 + a1 * 208;
+
+    if (*(s32 *)e != 0) {
+        amCdFs_ReleaseCache(*(s32 *)e);
+    }
+    *(s32 *)(e + 0x00) = a2;
+    *(s32 *)(e + 0x04) = a3;
+    *(s32 *)(e + 0x08) = -1;
+    *(s32 *)(e + 0x10) = 0x40000124;
+    *(s32 *)(e + 0x14) = 0;
+    *(s32 *)(e + 0x30) = 0;
+    *(s32 *)(e + 0x34) = 0;
+    *(f32 *)(e + 0x38) = 1.0f;
+    *(f32 *)(e + 0x40) = 1.0f;
+    *(f32 *)(e + 0x44) = 1.0f;
+    *(f32 *)(e + 0x48) = 1.0f;
+    *(f32 *)(e + 0x60) = 0.0f;
+    *(f32 *)(e + 0x64) = 0.0f;
+    *(f32 *)(e + 0x68) = 0.0f;
+    *(f32 *)(e + 0x6C) = 1.0f;
+    *(f32 *)(e + 0x70) = 0.0f;
+    *(f32 *)(e + 0x74) = 0.0f;
+    *(f32 *)(e + 0x78) = 0.0f;
+    *(f32 *)(e + 0x7C) = 1.0f;
+    *(f32 *)(e + 0x80) = D_0047042C / 2.0f;
+    *(f32 *)(e + 0x84) = D_00470430 / 2.0f;
+    *(f32 *)(e + 0x90) = 1.0f;
+    *(f32 *)(e + 0x94) = 1.0f;
+    *(f32 *)(e + 0x98) = 1.0f;
+    *(f32 *)(e + 0x9C) = 1.0f;
+    *(s64 *)(e + 0xC0) = 0x44;
+    *(s64 *)(e + 0xC8) = 0;
+}
+typedef struct ScrLtE {
+    /* 0x0000 */ s32 f0;
+    /* 0x0004 */ s32 f4;
+    /* 0x0008 */ s32 f8;
+    /* 0x000C */ s32 res[5];
+    /* 0x0020 */ s32 f20;
+    /* 0x0024 */ s32 f24;
+    /* 0x0028 */ s32 id[4];
+    /* 0x0038 */ s32 f38;
+    /* 0x003C */ s32 f3C;
+    /* 0x0040 */ u8 anim[0x208C - 0x40];
+    /* 0x208C */ s32 f208C;
+    /* 0x2090 */ s32 f2090;
+    /* 0x2094 */ s32 f2094;
+    /* 0x2098 */ u8 pad2098[8];
+    /* 0x20A0 */ s8 f20A0;
+} ScrLtE;
+extern void *amMotion_CreateFromObj(s32, s32, s32);
+extern void *amMotion_Create(s32, s32, s32);
+extern void amMotion_BindAnim(s32, s32, s32);
+extern void amFile_Load(s32);
+void func_002A9C00(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    ScrLtE *e = (ScrLtE *)&D_005ABA80[a0][a1];
+
+    if (e->res[a2] != 0) {
+        amCdFs_ReleaseCache(e->res[a2]);
+    }
+    e->res[a2] = a3;
+    e->id[a2] = a4;
+    amFile_Load(a4);
+    if (e->f3C == 0) {
+        if (e->f38 != 0) {
+            e->f3C = (s32)amMotion_CreateFromObj(e->f38, 0, 0);
+        } else if (e->f4 != 0) {
+            e->f3C = (s32)amMotion_Create(e->f20, 0, 0);
+        }
+    }
+    if (e->f3C != 0) {
+        amMotion_BindAnim(e->f3C, a2, e->id[a2]);
+    }
+    e->f20A0 = 0;
+    e->f2094 = 0;
+    e->f208C = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9D30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9EA0);
 void func_002AA050(s32 a0, s32 a1, s32 a2, s32 a3) {
@@ -164,8 +286,8 @@ void func_002AA050(s32 a0, s32 a1, s32 a2, s32 a3) {
 void func_002AA0D0(void) {
     func_002A9930();
 }
-void func_002AA0E0(void) {
-    func_002A9AE0();
+void func_002AA0E0(s32 a0, s32 a1, s32 a2, s32 a3) {
+    func_002A9AE0(a0, a1, a2, a3);
 }
 extern void amFile_Load(s32);
 extern void amNode_Free(void *);
@@ -205,24 +327,25 @@ void ScrCamSlot_Load(s32 a0, s32 a1, s32 a2, s32 a3) {
     *(f32 *)&e[4] = D_004708F8;
     e[5] = 0;
 }
-// GIVEN UP: the arithmetic and the calls match; the original keeps the slot offset and recomputes the entry after the release call (0xD0 against 0xC4 bytes)
-#if 0
+typedef struct ScrAnmEnt {
+    /* 0x00 */ u8 unk00[0x14];
+    /* 0x14 */ s32 res[4];
+    /* 0x24 */ u8 unk24[0x30 - 0x24];
+    /* 0x30 */ s32 id[4];
+} ScrAnmEnt;
 void func_002AA260(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
-    u8 *s1 = (u8 *)D_005ABA80 + ((a0 * 33 * 8) - a0) * 128 + ((a1 * 33 * 8) - a1) * 32;
-    s32 *s5 = (s32 *)(s1 + a2 * 4 + 0x14);
+    ScrAnmEnt *e = (ScrAnmEnt *)((u8 *)D_005ABA80 + ((a0 * 33 * 8) - a0) * 128 + ((a1 * 33 * 8) - a1) * 32);
 
-    if (*s5 != 0) {
-        amCdFs_ReleaseCache(*s5);
+    if (e->res[a2] != 0) {
+        amCdFs_ReleaseCache(e->res[a2]);
     }
-    *s5 = a3;
+    e->res[a2] = a3;
+    e->id[a2] = a4;
     amFile_Load(a4);
-    *(s32 *)(s1 + a2 * 4 + 0x30) = a4;
-    amMotSet_Bind(s1 + 0x40, a2, a4);
+    amMotSet_Bind((u8 *)e + 0x40, a2, a4);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA260);
-void func_002AA330(void) {
-    func_002A9C00();
+void func_002AA330(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    func_002A9C00(a0, a1, a2, a3, a4);
 }
 void func_002AA340(s32 a0, s32 a1, s32 a2, s32 a3) {
     u8 *e0 = (u8 *)D_005ABA80 + ((a0 * 33 * 8) - a0) * 128;
@@ -307,44 +430,40 @@ s32 func_002AA600(s32 *a0, s32 *a1) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA6B0);
-// GIVEN UP: the same tail-call shape as func_002AAB40 and 16 bytes short (0xD0 against 0xE0): the extra instructions are not placed
-#if 0
+extern s32 func_002AA6B0(s32 *, s32 *);
 s32 func_002AA8A0(s32 *a0, s32 *a1) {
     u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
-    s32 i = *(s32 *)a0[0];
     s32 j = *(s32 *)(p + 0xC);
-    u8 *e = (u8 *)((s32)(j * 208) + ((s32)D_005BC9E0 + i * 416));
-    u8 *sub = *(u8 **)((u8 *)a1 + 0x38);
-    s32 *q = (s32 *)(sub + 0x68);
+    s32 i = *(s32 *)a0[0];
+    u8 *sub;
     s32 k;
-
+    s32 *q;
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + j * 208;
     *(f32 *)(e + 0x24) = *(f32 *)(p + 8);
     *(f32 *)(e + 0x28) = *(f32 *)(p + 4);
     *(f32 *)(e + 0x2C) = *(f32 *)(p + 0);
     k = (s32)*(f32 *)(e + 0x24);
-    if (*(s32 *)(sub + 0x6C) != 0) {
-        q[0] += k;
+    sub = *(u8 **)((u8 *)a1 + 0x38);
+    q = (s32 *)(sub + 0x68);
+    if (*(s32 *)(sub + 0x6C) == 0) {
+        q[0] = k + (s32)gScrTimers[*(s32 *)a0[0]];
     } else {
-        q[0] = k + (s32)gScrTimers[i];
+        q[0] += k;
     }
     q[1] = 1;
     a0[4] = (s32)func_002AA6B0;
     return func_002AA6B0(a0, a1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA8A0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AA980);
-// GIVEN UP: a tail call and the stores match; the original is 16 bytes longer (0xF0 against 0xE0): the order of the index sums differs
-// differs: round 5 chr2: 2AAB40 live is 16 bytes short (0xE0 against 0xF0): the else arm reads gScrTimers through gp after a second *a0 load, and the float stores are scheduled differently.
-#if 0
+extern s32 func_002AA980(s32 *, s32 *);
 s32 func_002AAB40(s32 *a0, s32 *a1) {
     u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
     s32 i = *(s32 *)a0[0];
     s32 j = *(s32 *)(p + 0x10);
+    u8 *sub;
     u8 *e = (u8 *)D_005BC9E0 + i * 416 + j * 208;
-    u8 *sub = *(u8 **)((u8 *)a1 + 0x38);
-    s32 *q = (s32 *)(sub + 0x68);
     s32 k;
+    s32 *q;
 
     *(f32 *)(e + 0x20) = *(f32 *)(p + 0xC);
     *(f32 *)(e + 0xB0) = *(f32 *)(p + 8);
@@ -352,23 +471,114 @@ s32 func_002AAB40(s32 *a0, s32 *a1) {
     *(f32 *)(e + 0xB8) = *(f32 *)(p + 0);
     *(s32 *)(e + 0xBC) = 0x3F800000;
     k = (s32)*(f32 *)(e + 0x20);
-    if (*(s32 *)(sub + 0x6C) != 0) {
-        q[0] += k;
+    sub = *(u8 **)((u8 *)a1 + 0x38);
+    q = (s32 *)(sub + 0x68);
+    if (*(s32 *)(sub + 0x6C) == 0) {
+        q[0] = k + (s32)gScrTimers[*(s32 *)a0[0]];
     } else {
-        q[0] = k + (s32)gScrTimers[i];
+        q[0] += k;
     }
     q[1] = 1;
     a0[4] = (s32)func_002AA980;
     return func_002AA980(a0, a1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAB40);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAC30);
+s32 func_002AAC30(s32 *a0, s32 *a1) {
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    f32 *f = (f32 *)p;
+    s32 i = *(s32 *)a0[0];
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + p[2] * 208;
+    u8 *tbl = *(u8 **)(e + 4);
+    u8 *base = tbl + *(s32 *)(tbl + 0x14);
+    u8 *rec = tbl + *(s32 *)(base + *(s32 *)(e + 8) * 4);
+
+    *(f32 *)(e + 0x50) = (f32)*(s16 *)(rec + 0x10) * f[1];
+    *(f32 *)(e + 0x54) = (f32)*(s16 *)(rec + 0x12) * f[0];
+    if (*(s32 *)(e + 0x14) & 1) {
+        f32 h = 0.5f * *(f32 *)(e + 0x50);
+        *(f32 *)(e + 0x60) = *(f32 *)(e + 0x80) - h;
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x80) + h;
+    } else {
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x60) + *(f32 *)(e + 0x50);
+    }
+    if (*(s32 *)(e + 0x14) & 2) {
+        f32 h = 0.5f * *(f32 *)(e + 0x54);
+        *(f32 *)(e + 0x64) = *(f32 *)(e + 0x84) - h;
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x84) + h;
+    } else {
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x64) + *(f32 *)(e + 0x54);
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAD80);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AAF30);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB020);
-// differs: 1 of 66 instructions: the store at offset 0x84 uses f4 in ours and f3 (the value of p[0]) in the original; float local orders tried.
-#if 0
+extern s32 func_002AAD80(s32 *, s32 *);
+s32 func_002AAF30(s32 *a0, s32 *a1) {
+    u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
+    s32 i = *(s32 *)a0[0];
+    s32 j = *(s32 *)(p + 0x14);
+    u8 *sub;
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + j * 208;
+    s32 k;
+    s32 *q;
+
+    *(f32 *)(e + 0x1C) = *(f32 *)(p + 0x10);
+    *(f32 *)(e + 0xA0) = *(f32 *)(p + 0xC);
+    *(f32 *)(e + 0xA4) = *(f32 *)(p + 8);
+    *(f32 *)(e + 0xA8) = *(f32 *)(p + 4);
+    *(f32 *)(e + 0xAC) = *(f32 *)(p + 0);
+    k = (s32)*(f32 *)(e + 0x1C);
+    sub = *(u8 **)((u8 *)a1 + 0x38);
+    q = (s32 *)(sub + 0x68);
+    if (*(s32 *)(sub + 0x6C) == 0) {
+        q[0] = k + (s32)gScrTimers[*(s32 *)a0[0]];
+    } else {
+        q[0] += k;
+    }
+    q[1] = 1;
+    a0[4] = (s32)func_002AAD80;
+    return func_002AAD80(a0, a1);
+}
+s32 func_002AB020(s32 *a0, s32 *a1) {
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    s32 i = *(s32 *)a0[0];
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + p[1] * 208;
+
+    *(s32 *)(e + 0x14) = p[0];
+    if (*(s32 *)(e + 0x14) & 1) {
+        f32 h = 0.5f * (1.0f + *(f32 *)(e + 0x50));
+        *(f32 *)(e + 0x60) = *(f32 *)(e + 0x80) - h;
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x80) + h;
+    } else {
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x60) + *(f32 *)(e + 0x50);
+    }
+    if (*(s32 *)(e + 0x14) & 2) {
+        f32 h = 0.5f * (1.0f + *(f32 *)(e + 0x54));
+        *(f32 *)(e + 0x64) = *(f32 *)(e + 0x84) - h;
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x84) + h;
+    } else {
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x64) + *(f32 *)(e + 0x54);
+    }
+    if (*(s32 *)(e + 0x14) & 4) {
+        *(s32 *)(e + 0x10) |= 0x800;
+    } else {
+        *(s32 *)(e + 0x10) &= ~0x800;
+    }
+    if (*(s32 *)(e + 0x14) & 8) {
+        *(s32 *)(e + 0x10) |= 0x1000;
+    } else {
+        *(s32 *)(e + 0x10) &= ~0x1000;
+    }
+    if (*(s32 *)(e + 0x14) & 0x10) {
+        *(s64 *)(e + 0xC0) = 0x48;
+    } else {
+        *(s64 *)(e + 0xC0) = 0x44;
+    }
+    if (*(s32 *)(e + 0x14) & 0x20) {
+        *(s64 *)(e + 0xC8) = 5;
+    } else {
+        *(s64 *)(e + 0xC8) = 0;
+    }
+    return 1;
+}
 s32 func_002AB1D0(s32 *a0, s32 *a1) {
     s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
     f32 *f = (f32 *)p;
@@ -379,7 +589,7 @@ s32 func_002AB1D0(s32 *a0, s32 *a1) {
     u8 *e = (u8 *)D_005BC9E0 + i * 416 + p[3] * 208;
 
     *(f32 *)(e + 0x80) = x2;
-    *(f32 *)(e + 0x84) = x0;
+    *(f32 *)(e + 0x84) = x1;
     if (*(s32 *)(e + 0x14) & 1) {
         f32 h = 0.5f * *(f32 *)(e + 0x50);
         *(f32 *)(e + 0x60) = *(f32 *)(e + 0x80) - h;
@@ -400,8 +610,6 @@ s32 func_002AB1D0(s32 *a0, s32 *a1) {
     *(f32 *)(e + 0x78) = x0;
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB1D0);
 s32 func_002AB2E0(s32 *a0, s32 *a1) {
     s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
     f32 *f = (f32 *)p;
@@ -451,6 +659,56 @@ s32 func_002AB450(s32 *a0, s32 *a1) {
     *(f32 *)(e + 0x44) = (f32)p[0];
     return 1;
 }
+// differs: round 7: 104 words each, control flow equal; differs in register/schedule only. The original loads p[3],p[2],p[1],p[0] into a0/v1/v0 up front and hoists li 1 (a1) and 1.0f (a2); ours picks other registers and sinks the p[] loads. tsweep (1500 orders/types) found nothing better.
+#if 0
+s32 func_002AB4F0(s32 *a0, s32 *a1) {
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    s32 i = *(s32 *)a0[0];
+    s32 v3 = p[3];
+    s32 v2 = v2;
+    s32 v1 = v1;
+    s32 v0 = p[0];
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + v3 * 208;
+    u8 *tbl;
+    u8 *base;
+    u8 *rec;
+
+    *(s32 *)(e + 8) = v2;
+    *(s32 *)(e + 0xC) = v1;
+    tbl = *(u8 **)(e + 4);
+    base = tbl + *(s32 *)(tbl + 0x14);
+    rec = tbl + *(s32 *)(base + v2 * 4);
+    *(f32 *)(e + 0x50) = (f32)*(s16 *)(rec + 0x10);
+    *(f32 *)(e + 0x54) = (f32)*(s16 *)(rec + 0x12);
+    *(s32 *)(e + 0x30) = 0;
+    *(s32 *)(e + 0x34) = 0;
+    *(f32 *)(e + 0x38) = 1.0f;
+    *(f32 *)(e + 0x3C) = 1.0f;
+    if (v0 == 1) {
+        *(f32 *)(e + 0x40) = *(f32 *)(e + 0x50);
+    } else {
+        *(f32 *)(e + 0x40) = *(f32 *)(e + 0x50) - 0.5f;
+    }
+    *(f32 *)(e + 0x44) = *(f32 *)(e + 0x54);
+    *(f32 *)(e + 0x48) = 1.0f;
+    *(f32 *)(e + 0x4C) = 1.0f;
+    if (*(s32 *)(e + 0x14) & 1) {
+        f32 h = 0.5f * *(f32 *)(e + 0x50);
+        *(f32 *)(e + 0x60) = *(f32 *)(e + 0x80) - h;
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x80) + h;
+    } else {
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x60) + *(f32 *)(e + 0x50);
+    }
+    if (*(s32 *)(e + 0x14) & 2) {
+        f32 h = 0.5f * *(f32 *)(e + 0x54);
+        *(f32 *)(e + 0x64) = *(f32 *)(e + 0x84) - h;
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x84) + h;
+    } else {
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x64) + *(f32 *)(e + 0x54);
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB4F0);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB690);
 s32 func_002AB9C0(ScriptThread *t, ScriptCtx *ctx) {
@@ -489,7 +747,6 @@ s32 func_002ABA70(s32 *a0, s32 *a1) {
     }
     return r;
 }
-// GIVEN UP: the callback store and the return value are right; the frame keeps one register more than the original and the join differs
 s32 func_002ABAF0(s32 *a0, s32 *a1) {
     s32 *s0;
     s32 r;
@@ -674,8 +931,50 @@ s32 Scr_CmdSoundSend3(ScriptThread *t, ScriptCtx *ctx) {
     SoundRpc_Send3(a[2], a[1], a[0], 0);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC190);
-extern void func_002AC190(s32 *, s32 *);
+extern f32 D_00495718[];
+extern f32 D_00495758[];
+s32 func_002AC190(s32 *a0, s32 *a1) {
+    f32 *uv = (f32 *)(*(u8 **)((u8 *)a1 + 0x38) + 0x70);
+    f32 u;
+    f32 v;
+
+    if (a0[15] == 0) {
+        a0[4] = 0;
+        return 1;
+    }
+    u = uv[0];
+    v = uv[1];
+    if (((s32 *)a0[0])[3] != 3) {
+        u += uv[2];
+        v += uv[3];
+        while (u < 0.0f) {
+            u += 1.0f;
+        }
+        while (u >= 1.0f) {
+            u -= 1.0f;
+        }
+        while (v < 0.0f) {
+            v += 1.0f;
+        }
+        while (v >= 1.0f) {
+            v -= 1.0f;
+        }
+        uv[0] = u;
+        uv[1] = v;
+        if (a0[15] > 0) {
+            a0[15]--;
+        }
+    }
+    D_00495718[0] = u;
+    D_00495758[0] = v;
+    D_00495718[1] = u;
+    D_00495758[1] = v;
+    D_00495718[2] = u;
+    D_00495718[3] = u;
+    D_00495758[2] = v;
+    D_00495758[3] = v;
+    return 3;
+}
 void func_002AC330(s32 *a0, s32 *a1) {
     s32 *a3 = *(s32 **)((u8 *)a1 + 0x2C);
     s32 *a2 = (s32 *)(*(u8 **)((u8 *)a1 + 0x38) + 0x70);
@@ -695,7 +994,93 @@ void func_002AC330(s32 *a0, s32 *a1) {
     }
     func_002AC190(a0, a1);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC3D0);
+extern void amMotSet_Apply(void *, f32, s32);
+s32 func_002AC3D0(s32 *a0, s32 *a1) {
+    u8 *t = (u8 *)a0;
+    s8 c;
+    f32 len = *(f32 *)(t + 0x30);
+    ScrLightSub *e = &D_005ABA80[*(s32 *)a0[0]][*(s8 *)(t + 0x2A)];
+
+    if (((s32 *)a0[0])[3] != 3) {
+        *(f32 *)(t + 0x2C) += *(f32 *)(t + 0x38);
+        if (*(s8 *)(t + 0x2B) == 1) {
+            len -= 1.0f;
+            if (!(*(f32 *)(t + 0x2C) <= len)) {
+                *(f32 *)(t + 0x2C) -= len;
+                (*(s8 *)(t + 0x2B))--;
+                *(s32 *)(t + 0x10) = 0;
+                return 1;
+            }
+        } else {
+            if (!(*(f32 *)(t + 0x2C) < len)) {
+                *(f32 *)(t + 0x2C) -= len;
+                c = *(s8 *)(t + 0x2B);
+                if (c != -1) {
+                    *(s8 *)(t + 0x2B) = c - 1;
+                    if (*(s8 *)(t + 0x2B) <= 0) {
+                        *(s32 *)(t + 0x10) = 0;
+                        return 1;
+                    }
+                }
+            }
+        }
+        if (*(s8 *)((u8 *)e + 0x20A2) != 0) {
+            amMotSet_Apply((u8 *)e + 0x40, (f32)(s32)*(f32 *)(t + 0x2C), *(s32 *)(t + 0x34));
+        } else {
+            amMotSet_Apply((u8 *)e + 0x40, *(f32 *)(t + 0x2C), *(s32 *)(t + 0x34));
+        }
+    }
+    return 3;
+}
+// differs: round 7: 16 of 80 differ (register numbers only): the original keeps the packed word in a2, the thread table pointer in v1 and the scaled indices in a3/a2; ours puts the word in v1 and the table pointer in a3. Typed table struct (tbl[k]->recs[r]) fixes the address order; tsweep over all 6 local orders/types gave 16 at best; w as a local and inline helper variants did not move it.
+#if 0
+extern s32 func_002AC3D0(s32 *, s32 *);
+typedef struct ScrRec {
+    s32 w0;
+    s32 w4;
+    s32 f8;
+    s32 wC;
+} ScrRec;
+typedef struct ScrRecTbl {
+    u8 pad[0x14];
+    ScrRec *recs;
+} ScrRecTbl;
+typedef struct ScrAnmE {
+    u8 pad[0x44];
+    ScrRecTbl *tbl[1];
+} ScrAnmE;
+static inline s32 srecw(ScrAnmE *e, u8 *o) {
+    s32 k = (*(s32 *)(o + 0x34) >> 16) - 1;
+    s32 r = *(s32 *)(o + 0x34) & 0xFFFF;
+    return e->tbl[k]->recs[r].f8;
+}
+#define SRECW(e, o) srecw(e, o)
+s32 func_002AC520(s32 *a0, s32 *a1) {
+    u8 *obj = (u8 *)a0;
+    s32 *p = *(s32 **)((u8 *)a1 + 0x2C);
+    ScrAnmE *e = (ScrAnmE *)&D_005ABA80[*(s32 *)a0[0]][p[3]];
+    u8 *sub;
+    s32 *q;
+    s32 v;
+
+    *(u8 *)(obj + 0x2A) = (u8)p[3];
+    *(s32 *)(obj + 0x34) = ((p[2] + 1) << 16) | p[1];
+    *(f32 *)(obj + 0x2C) = -*(f32 *)(obj + 0x38);
+    *(f32 *)(obj + 0x30) = (f32)SRECW(e, obj);
+    *(u8 *)(obj + 0x2B) = (u8)p[0];
+    v = SRECW(e, obj);
+    sub = *(u8 **)((u8 *)a1 + 0x38);
+    q = (s32 *)(sub + 0x68);
+    if (*(s32 *)(sub + 0x6C) == 0) {
+        q[0] = v + (s32)gScrTimers[*(s32 *)a0[0]];
+    } else {
+        q[0] += v;
+    }
+    q[1] = 1;
+    a0[4] = (s32)func_002AC3D0;
+    return func_002AC3D0(a0, a1);
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC520);
 s32 Scr_CmdLightF2094(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
@@ -872,32 +1257,43 @@ s32 Scr_CmdSetStep(ScriptThread *t, ScriptCtx *ctx) {
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD610);
-// GIVEN UP: the same shape as func_002AA8A0 (a tail call) but the order of the stores and the loads differs (45 of 52 instructions)
-#if 0
+extern s32 func_002AD610(s32 *, s32 *);
 s32 func_002AD800(s32 *a0, s32 *a1) {
-    u8 *obj = (u8 *)a0;
-    u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
-    u8 *sub = *(u8 **)((u8 *)a1 + 0x38);
-    s32 *q = (s32 *)(sub + 0x68);
     s32 v;
-
+    s32 *q;
+    u8 *sub;
+    u8 *p = *(u8 **)((u8 *)a1 + 0x2C);
+    u8 *obj = (u8 *)a0;
     *(u8 *)(obj + 0x2A) = (u8)*(s32 *)(p + 0x10);
-    *(s32 *)(obj + 0x34) = *(s32 *)(p + 8) | ((*(s32 *)(p + 0xC) + 1) << 16);
+    *(s32 *)(obj + 0x34) = ((*(s32 *)(p + 0xC) + 1) << 16) | *(s32 *)(p + 8);
     *(f32 *)(obj + 0x2C) = *(f32 *)(p + 4) - *(f32 *)(obj + 0x38);
     *(f32 *)(obj + 0x30) = 1.0f + *(f32 *)(p + 0);
     *(u8 *)(obj + 0x2B) = 1;
     v = (s32)(*(f32 *)(obj + 0x30) - *(f32 *)(obj + 0x2C));
-    if (*(s32 *)(sub + 0x6C) != 0) {
-        q[0] += v;
+    sub = *(u8 **)((u8 *)a1 + 0x38);
+    q = (s32 *)(sub + 0x68);
+    if (*(s32 *)(sub + 0x6C) == 0) {
+        q[0] = v + (s32)gScrTimers[*(s32 *)a0[0]];
     } else {
-        q[0] = v + (s32)gScrTimers[*(s32 *)*a0];
+        q[0] += v;
     }
     q[1] = 1;
     a0[4] = (s32)func_002AD610;
     return func_002AD610(a0, a1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD800);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AD8D0);
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ADA70);
+#define SCH(s) (*(u8 **)(*(u8 **)(*(u8 **)(*(u8 **)((u8 *)(s) + 0x1C) + 0x14) + 4) + 8))
+s32 func_002ADA70(s32 *a0, s32 *a1) {
+    f32 *p = *(f32 **)((u8 *)a1 + 0x2C);
+    ScrLightSub *s = &D_005ABA80[*(s32 *)a0[0]][((s32 *)p)[3]];
+    f32 v[4] = {0};
+
+    v[0] = p[2];
+    v[1] = p[1];
+    v[2] = p[0];
+    *(f32 *)(SCH(s) + 0x10) += v[0];
+    *(f32 *)(SCH(s) + 0x14) += v[1];
+    *(f32 *)(SCH(s) + 0x18) += v[2];
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ADB70);

@@ -35,7 +35,31 @@ extern u8 *gWave;
 extern u8 *D_0046FDD0;
 extern s32 D_00470670;
 extern u8 D_0046A3C8[];
-extern void (*D_004699A0[])(s32);
+/* .rodata of this unit starts at 0x3699A0 (see the yaml): this table, then the switch table of func_0020AD30. */
+extern void func_00214B50();
+extern void func_00214870();
+extern void func_002145E0();
+extern void func_00214370();
+extern void func_00213F30();
+extern void func_00213AE0();
+extern void func_00213570();
+extern void func_00213180();
+extern void func_00212DA0();
+extern void func_002129B0();
+extern void func_00212730();
+void (*const D_004699A0[11])(s32) = {
+    func_00214B50,
+    func_00214870,
+    func_002145E0,
+    func_00214370,
+    func_00213F30,
+    func_00213AE0,
+    func_00213570,
+    func_00213180,
+    func_00212DA0,
+    func_002129B0,
+    func_00212730,
+};
 extern void (*D_00469CC0[])(s32);
 extern void Obj_ResetF38(s32);
 extern void func_00208D70(s32);
@@ -526,7 +550,40 @@ void func_0020ABB0(void) {
     D_005687C0[0] = 0;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020ABE0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020AD30);
+/* Returns a base address in the 0x3000000 range chosen by sel (0..8), plus a and idx scaled; sel outside 0..8 returns whatever v0 held (no default in the original). */
+s32 func_0020AD30(s32 a, s32 sel, s32 idx) {
+    s32 r;
+    switch (sel) {
+    case 0:
+        r = 0x3015000 + (a << 11) + (idx << 5);
+        break;
+    case 1:
+        r = 0x3019000 + (a << 11) + (idx << 5);
+        break;
+    case 2:
+        r = 0x3011000 + (a << 11) + (idx << 5);
+        break;
+    case 3:
+        r = 0x3010000 + (idx << 5);
+        break;
+    case 4:
+        r = 0x3002000 + idx * 48;
+        break;
+    case 5:
+        r = 0x3006000 + a * 0x600 + idx * 48;
+        break;
+    case 6:
+        r = 0x3004000 + a * 0x600 + idx * 48;
+        break;
+    case 7:
+        r = 0x3001000 + (idx << 5);
+        break;
+    case 8:
+        r = 0x3035000 + (a << 11) + (idx << 5);
+        break;
+    }
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020AE80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020B020);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020B1C0);

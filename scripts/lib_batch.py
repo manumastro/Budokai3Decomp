@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Runs scripts/lib_port.py --apply over the files of the scans (~/psvita/b3-scan/<repo>/), best candidates first.
+"""Runs scripts/lib_port.py --apply over the files of the scans (build/scan/<repo>/), best candidates first.
 
     lib_batch.py REPO [REPO ...] [--scan-dir DIR] [--limit N]
 
@@ -30,7 +30,7 @@ def scan_hits(path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("repos", nargs="+")
-    ap.add_argument("--scan-dir", default=str(Path.home() / "psvita" / "b3-scan"))
+    ap.add_argument("--scan-dir", default="build/scan")
     ap.add_argument("--limit", type=int, default=0)
     a = ap.parse_args()
     jobs = []

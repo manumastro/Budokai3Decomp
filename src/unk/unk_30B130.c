@@ -125,22 +125,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030C400);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030C6F0);
 void func_0030C860(void) {
 }
-/* differs: the outer task store is shared by both paths of the timer test, and the original keeps the value in $v1 (19 of 35 with the ?: form) */
-#if 0
 void func_0030C870(Ac30C *s) {
     Part30C *p = s->f30;
-    f32 t;
 
     func_0030BFC0(p);
     func_0030B2E0(p);
-    t = p->f1C - gFrameDelta;
-    if (t <= 0.0f) {
-        p->f1C = t;
+    p->f1C = p->f1C - gFrameDelta;
+    if (p->f1C <= 0.0f) {
         p->f0 = 7;
+        s->f1C = (func_0030C860 == NULL) ? NULL : (void *)func_0030C860;
     }
-    s->f1C = (t <= 0.0f) ? (void *)func_0030C860 : NULL;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030C870);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030C8F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030C9C0);

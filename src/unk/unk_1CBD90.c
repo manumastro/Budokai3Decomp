@@ -33,6 +33,9 @@ typedef struct Side {
     char pad3[0x201E - 0x1358];
     signed char out;
 } Side;
+extern f32 func_00200270(f32, s32, f32);
+extern s32 BtlChara_GetF270C(s32);
+extern void *func_001F9A20(void);
 extern void func_001C8480(void *, int);
 extern void func_001C7D90(void *, int, void *);
 extern int AdxSlot_IsPlaying(void *);
@@ -51,7 +54,7 @@ extern void func_001E1BD0(void *, int, int);
 extern void func_001E3550();
 extern void func_001E4FA0(void *, int);
 extern void func_001E4820(void *, f32, int);
-extern void func_001C8A50(void *, int, int);
+extern s32 func_001C8A50(void *, int, int, int, int);
 extern void func_001C89A0(void *, int);
 extern s32 amMotion_FindBone(s32, s32);
 extern s32 D_004B4230[];
@@ -97,6 +100,52 @@ extern f32 D_004B4210[];
 extern f32 D_004B423C[];
 extern f32 D_004B4238[];
 
+typedef struct KKey { u16 t; char pad[1]; s8 flag; f32 val; char pad2[8]; } KKey;
+typedef struct KList { char pad[2]; s16 n; KKey *keys; } KList;
+typedef struct KDst {
+    char pad0[0x180];
+    void *slot[8];
+    void *head;
+    char pad1[4];
+    s8 n;
+    s8 c[5];
+    s8 v[3];
+    char padx[3];
+    f32 a;
+    f32 b;
+    f32 cur;
+    void *anim;
+    s16 flags;
+    s16 flags2;
+    s16 h1C8;
+    char pad2[0x1D8 - 0x1CA];
+    s16 h1D8;
+    char pad3[2];
+    s16 h1DC;
+    char pad4[0x1EC - 0x1DE];
+    s16 h1EC;
+    char pad5[0x1FC - 0x1EE];
+    s16 h1FC;
+    char pad6[0x20C - 0x1FE];
+    s32 w20C;
+    char pad7[0x22C - 0x210];
+    s16 h22C;
+    char pad8[0x23C - 0x22E];
+    s16 h23C;
+    char pad9[2];
+    s16 h240;
+    char padA[2];
+    s32 w244;
+} KDst;
+extern KDst *D_00470588;
+typedef struct KKey2 { u16 t; char pad[2]; u16 s4; char pad2[2]; u32 w8; char pad3[4]; } KKey2;
+typedef struct KList2 { char pad[2]; s16 n; KKey2 *keys; } KList2;
+typedef struct KKey3 { u16 t; char pad[2]; s32 d[2]; char pad3[4]; } KKey3;
+typedef struct KList3 { char pad[2]; s16 n; KKey3 *keys; } KList3;
+typedef struct KKey4 { u16 t; s8 id; s8 flag; char pad[4]; u16 fl; char pad2[6]; } KKey4;
+typedef struct KList4 { char pad[2]; s16 n; KKey4 *keys; } KList4;
+extern void func_001D0860();
+extern void func_001D0730();
 // func_001CBD90, func_001CBDF0, func_001CBE80: register and scheduling differences; not matched yet.
 // differs: 17 of 22 instructions at best. The Arg pointer stays in v1 in the original (ours takes a0); the flag -(p[0]==0) is sltu+xori in the original, sltiu in ours.
 /* r6 best attempt diff 7 */
@@ -112,6 +161,7 @@ int func_001CBD90(void *unused, Arg *a) {
     return 1;
 }
 #endif
+// r7a: 7 of 22, only the v0/v1 colouring of the temps (s in v1, flag chain in v0 in the original). Tried: all 720 orders of 6 locals (tsweep), u32 p, blk/flag/n locals, Big *b first.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBD90);
 #if 0
 int func_001CBDF0(void *unused, Arg *a) {
@@ -270,15 +320,15 @@ int Scr_CmdFighterCountSet(void *unused, Arg *a) {
     *(s32 *)a = s1;
     return 1;
 }
-// // differs: 59 of 120 (round 4 chr): the task setup and the float minimum loop are scheduled differently (the original moves the t+0x30 pointer into s2 right after the call and loads gBattle+0x61C before the stores).
-#if 0
+extern void amTask_Kill(void *);
 extern void func_002194C0(void *, s32, s32, s32);
 extern void Character_PauseVoice(s32 *);
 extern void func_001CB020(void *);
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
-extern void amTask_Kill(void *);
 extern char D_004692B0[];
 int func_001CC300(void *unused, Arg *a) {
+    void **tp;
+    char *g;
     int *p = a->p;
     s32 x;
     s32 y;
@@ -289,40 +339,47 @@ int func_001CC300(void *unused, Arg *a) {
     f32 f0;
     char *c;
     char *t;
-    s32 *q;
     char *e;
+    s32 *q;
+    char *g2;
     x = p[0];
     y = p[1];
     w = p[2];
-    if (w == -2) {
-        w = 0x6B;
-    } else if (w == -1) {
+    g = (char *)gBattle;
+    switch (w) {
+    case -1:
         w = 0x6A;
+        break;
+    case -2:
+        w = 0x6B;
+        break;
     }
     c = *(char **)unused;
     t = amTask_Create((void (*)(void *))func_001CB020, 0, *(s32 *)(c + 0x10), *(s32 *)(c + 0x14), *(s32 *)(c + 0x18), D_004692B0);
     *(s32 *)(t + 0x30) = 0;
     *(f32 *)(t + 0x34) = (f32)x;
     *(void **)(t + 0x38) = (void *)Character_PauseVoice;
-    best = *(f32 *)((char *)gBattle + 0x61C);
+    tp = (void **)(t + 0x3C);
+    best = *(f32 *)(g + 0x61C);
     idx = 2;
-    e = (char *)gBattle + 0x60;
     k = 3;
+    e = g + 0x60;
     do {
         f0 = *(f32 *)(e + 0x5DC);
-        if (best > f0) {
+        if (!(best <= f0)) {
             best = f0;
             idx = k;
         }
         k++;
         e += 0x20;
     } while (k < 5);
-    *(char **)(t + 0x3C) = (char *)gBattle + (idx << 5) + 0x5C4;
-    func_002194C0(*(void **)(t + 0x3C), w, y, -1);
+    *tp = (char *)gBattle + (idx << 5) + 0x5C4;
+    func_002194C0(*tp, w, y, -1);
     q = (s32 *)(t + 0x30);
-    if (*(s32 *)((char *)gBattle + 0x88EC) == 0) {
+    g2 = (char *)gBattle;
+    if (*(s32 *)(g2 + 0x88EC) == 0) {
         q[0] += 1;
-        if ((f32)q[0] * *(f32 *)((char *)gBattle + 0x88F0) >= *(f32 *)(q + 1)) {
+        if ((f32)q[0] * *(f32 *)(g2 + 0x88F0) >= *(f32 *)(q + 1)) {
             ((void (*)(void *))*(void **)(q + 2))(t);
             amTask_Kill(t);
         }
@@ -330,8 +387,6 @@ int func_001CC300(void *unused, Arg *a) {
     *(s32 *)a = idx;
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC300);
 extern void amTask_Kill(void *);
 extern void func_002194C0(void *, s32, s32, s32);
 extern void Character_PauseVoice(s32 *);
@@ -553,6 +608,7 @@ int func_001CCA90(void *unused, Arg *a) {
     return 1;
 }
 #endif
+// r7a: not close (40 of 85): the original computes p/2 (sra) before p%2 and keeps gBattle in s0; ours emits %2 first. Tried d/m locals, p/2*0x680, int-first sum.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCA90);
 int func_001CCBF0(void *unused, Arg *a) {
     f32 *f = (f32 *)a->p;
@@ -609,6 +665,73 @@ int Scr_CmdSetF218(void *unused, Arg *a) {
     D_004B4218[0] = *(f32 *)a->p;
     return 1;
 }
+// differs: 8 of 88 (adiff), structure and registers match. func_00200270 takes (f32, s32, f32) (float args are set first). Left: the original has no alignment nop after the lwc1 of D_004B4218 and after the add.s (our two if-joins get one), and li a0,1 is hoisted above the sw of 1.0f. Tried: g local first/zero-init, ternary, buf.g stores, fy = fy + ...
+#if 0
+typedef struct HitBuf {
+    char pad0[0x10];
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 one;
+    s32 k0;
+    s32 k1;
+    char pad1[8];
+    s32 flags;
+    s32 v;
+    s32 w;
+    s32 zero;
+    char pad2[4];
+    f32 f20;
+    char pad3[4];
+    f32 g;
+} HitBuf;
+int func_001CCDD0(void *unused, Arg *a) {
+    Big *bt;
+    f32 *p = (f32 *)a->p;
+    HitBuf buf;
+    f32 fx = p[0];
+    s32 flags = ((s32 *)p)[4];
+    f32 fy = p[1];
+    s32 w = ((s32 *)p)[5];
+    f32 fz = p[2];
+    f32 fw = p[3];
+    s32 k = ((s32 *)p)[6];
+    f32 g;
+    bt = gBattle;
+    switch (k) {
+    case 0:
+    case 1:
+        buf.v = BtlChara_GetF270C(*(s32 *)((char *)bt->tbl[k] + 0x1350));
+        break;
+    case 3:
+        buf.v = *(s32 *)((char *)bt + 0x81C);
+        break;
+    case 2:
+        buf.v = (s32)func_001F9A20();
+        break;
+    }
+    buf.k0 = 1;
+    buf.w = w;
+    buf.k1 = 7;
+    buf.f20 = fw;
+    buf.flags = flags;
+    buf.zero = 0;
+    g = 0.0f;
+    if (flags & 8) {
+        g = D_004B4218[0];
+    }
+    buf.g = g;
+    if (!(flags & 0x1000000)) {
+        fy += func_00200270(fz, 0, fx);
+    }
+    buf.one = 1.0f;
+    buf.x = fz;
+    buf.y = fy;
+    buf.z = fx;
+    func_001A8770(1, &buf);
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CCDD0);
 int Scr_CmdCallA8770(void *unused, Arg *a) {
     func_001A8770(3, 0);
@@ -646,7 +769,77 @@ int Scr_CmdSetF210To21C(void *unused, Arg *a) {
     D_004B421C[0] = ((f32 *)a->p)[0];
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD050);
+typedef struct ABuf {
+    f32 f0;
+    f32 f1;
+    f32 f2;
+    f32 one0;
+    f32 f4;
+    f32 f5;
+    f32 f6;
+    f32 one1;
+    s32 k;
+    s32 v;
+    s32 a;
+    s32 b;
+    s32 m;
+    char pad[0xC];
+    f32 g0;
+    char pad2[4];
+    f32 g1;
+    char pad3[4];
+} ABuf;
+int func_001CD050(void *unused, Arg *a) {
+    f32 *p = (f32 *)a->p;
+    ABuf buf;
+    f32 x = p[0];
+    s32 fl = ((s32 *)p)[6];
+    s32 v = ((s32 *)p)[7];
+    f32 y = p[1];
+    f32 z = p[2];
+    f32 w = p[3];
+    f32 u = p[4];
+    f32 t = p[5];
+    char *f = (char *)gBattle->tbl[0];
+    s32 hi;
+    s32 lo;
+    memset(&buf, 0, 0x50);
+    buf.m = fl & 0xF;
+    buf.v = v;
+    buf.k = 1;
+    hi = fl & 0xF00000;
+    lo = fl & 0xF0000;
+    switch (hi) {
+    case 0: buf.a = 2; break;
+    case 0x200000: buf.a = 0; break;
+    case 0x300000: buf.a = 1; break;
+    case 0x100000: buf.a = 3; break;
+    }
+    switch (lo) {
+    case 0: buf.b = 2; break;
+    case 0x20000: buf.b = 0; break;
+    case 0x30000: buf.b = 1; break;
+    case 0x40000: buf.b = 3; break;
+    }
+    if (hi == 0x200000 || lo == 0x20000) {
+        func_001E4FA0(f, -1);
+    }
+    if (hi == 0x300000 || lo == 0x30000) {
+        func_001E4FA0(*(void **)(f + 0x1354), -1);
+    }
+    buf.one0 = 1.0f;
+    buf.f0 = z;
+    buf.one1 = 1.0f;
+    buf.f1 = y;
+    buf.f2 = x;
+    buf.f4 = t;
+    buf.g0 = D_004B4210[0];
+    buf.f5 = u;
+    buf.f6 = w;
+    buf.g1 = D_004B4214[0];
+    func_001A8770(1, &buf);
+    return 1;
+}
 int Scr_CmdCallBuf20(void *unused, Arg *a) {
     s32 v = *(s32 *)*(s32 **)((char *)a + 0x2C);
     s32 buf[20];
@@ -666,7 +859,41 @@ int Scr_CmdGetStageByte(void *unused, Arg *a) {
     *(s32 *)a = *(s8 *)(D_0051CD20[0] + q);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CD340);
+typedef struct TMast { char pad[0x10]; u32 prio; u32 g1; u32 g2; } TMast;
+extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
+extern void amTask_KillGroup(s32, s32, s32);
+extern void func_001CAC10(void *);
+extern char D_004692D0[];
+int func_001CD340(void *o, Arg *a) {
+    f32 *p = (f32 *)a->p;
+    f32 fr = p[0];
+    f32 fb = p[1];
+    f32 fg = p[2];
+    f32 fa = p[3];
+    s32 sel = ((s32 *)p)[4];
+    s32 flag = sel == 0 ? 0x40 : 0x80;
+    char *t = (char *)gBattle->tbl[sel];
+    u8 c[4];
+    TMast *m;
+    if (fr > 0.0f) {
+        s32 *r;
+        m = *(TMast **)o;
+        r = (s32 *)((char *)amTask_Create(func_001CAC10, 0, m->prio, m->g1, m->g2 | flag, D_004692D0) + 0x30);
+        c[0] = (u32)(255.0f * fa);
+        c[1] = (u32)(255.0f * fg);
+        c[2] = (u32)(255.0f * fb);
+        c[3] = 0;
+        r[0] = (s32)t;
+        r[1] = *(s32 *)c;
+        r[2] = *(s32 *)c;
+        *(f32 *)&r[3] = fr;
+        r[4] = 0x1000;
+    } else {
+        m = *(TMast **)o;
+        amTask_KillGroup(m->g1, m->g2 | flag, 1);
+    }
+    return 1;
+}
 int Scr_CmdFindBone(void *unused, Arg *a) {
     int *p = a->p;
     char *e = (char *)gBattle->tbl[p[2]] + p[1] * 0x680;
@@ -792,10 +1019,9 @@ int Scr_CmdFighterGetInt0B70(void *unused, Arg *a) {
     *(s32 *)a = *(s32 *)((char *)gBattle->tbl[a->p[1]] + 0xB70);
     return 1;
 }
-extern f32 func_00200270(s32, f32, f32);
 int Scr_CmdFighterDistance(void *unused, Arg *a) {
     char *t = gBattle->tbl[a->p[0]];
-    f32 r = func_00200270(0, *(f32 *)(t + 0x650), *(f32 *)(t + 0x658));
+    f32 r = func_00200270(*(f32 *)(t + 0x650), 0, *(f32 *)(t + 0x658));
     *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x44) - r;
     return 1;
 }
@@ -826,73 +1052,55 @@ int Scr_CmdGetBattleF8960(void *unused, Arg *a) {
     *(f32 *)((char *)a + 0x40) = *(f32 *)((char *)gBattle + 0x8960);
     return 1;
 }
-/* r6 best attempt diff 1 */
-// differs: 1 of 22: addu operand order at 001CDE14 (original `addu v0,v0,v1`, ours `addu v0,v1,v0`); the gp reloc at 001CDDE8 is an artifact. Tried: idx*16 + t, (s32)t + idx*16, (idx<<4) + t, 0x658 + (idx<<4), explicit off local; all give the same 1 difference.
-#if 0
 int func_001CDDE0(void *unused, Arg *a) {
     int *p = a->p;
     s32 idx = p[0];
-    char *t = gBattle->tbl[p[1]];
+    s32 t = (s32)gBattle->tbl[p[1]];
     if (idx >= 0 && idx < 0x16) {
-        *(f32 *)((char *)a + 0x40) = *(f32 *)((s32)t + idx * 16 + 0x658);
+        *(f32 *)((char *)a + 0x40) = *(f32 *)((idx << 4) + t + 0x658);
     } else {
         *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x48);
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDDE0);
-/* r6 best attempt diff 1 */
-// differs: 1 of 22: addu operand order at the element add (original `addu v0,v0,v1`, ours `addu v0,v1,v0`), the same as func_001CDDE0. The (s32)t cast form gave 5 of 22, not adopted.
-#if 0
 int func_001CDE40(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = gBattle->tbl[p[1]];
-    if (p[0] >= 0 && p[0] < 0x16) {
-        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + p[0] * 16 + 0x654);
+    s32 idx = p[0];
+    s32 t = (s32)gBattle->tbl[p[1]];
+    if (idx >= 0 && idx < 0x16) {
+        *(f32 *)((char *)a + 0x40) = *(f32 *)((idx << 4) + t + 0x654);
     } else {
         *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x44);
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDE40);
-/* r6 best attempt diff 1 */
-// differs: 1 of 22: addu operand order at the element add (original `addu v0,v0,v1`, ours `addu v0,v1,v0`), the same as func_001CDDE0. The (s32)t cast form gave 5 of 22, not adopted.
-#if 0
 int func_001CDEA0(void *unused, Arg *a) {
     int *p = a->p;
-    char *t = gBattle->tbl[p[1]];
-    if (p[0] >= 0 && p[0] < 0x16) {
-        *(f32 *)((char *)a + 0x40) = *(f32 *)(t + p[0] * 16 + 0x650);
+    s32 idx = p[0];
+    s32 t = (s32)gBattle->tbl[p[1]];
+    if (idx >= 0 && idx < 0x16) {
+        *(f32 *)((char *)a + 0x40) = *(f32 *)((idx << 4) + t + 0x650);
     } else {
         *(f32 *)((char *)a + 0x40) = *(f32 *)(t + 0x40);
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDEA0);
 int Scr_CmdNop(void *unused, Arg *a) {
     return 1;
 }
-/* r6 best attempt diff 1 */
-// differs: 1 of 28: the add of the table index and the address (the original loads p[0] and the table entry before the sh); the u8 table load order differs by one instruction.
-#if 0
 int func_001CDF10(void *unused, Arg *a) {
     int *p = a->p;
     s32 idx = p[0];
-    char *t = gBattle->tbl[p[1]];
+    s32 t = (s32)gBattle->tbl[p[1]];
     s8 *q;
     u8 *e = D_004E0660 + 21 + idx * 40;
     *(s16 *)(t + 0x1FEA) = idx;
-    q = (s8 *)(t + *e + 0x1FBD);
+    q = (s8 *)(*e + t + 0x1FBD);
     if (*q < 4) {
         *q = *q + 1;
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CDF10);
 int Scr_CmdFighterFloatDFE60(void *unused, Arg *a) {
     int *p = a->p;
     func_001DFE60(gBattle->tbl[p[1]], 0, (f32)-p[0]);
@@ -942,20 +1150,19 @@ int Scr_CmdFighterCopyF17C4(void *unused, Arg *a) {
     *(f32 *)(t + 0x17C0) = *(f32 *)(t + 0x17C4);
     return 1;
 }
-// differs: 20 of 30. The original loads p[2] first, forms the table entry before the branch, and places the two calls with the delay slots of the branch; ours computes e after p[1].
-#if 0
 int func_001CE220(void *unused, Arg *a) {
     int *p = a->p;
-    char *e = (char *)gBattle->tbl[p[2]] + p[1] * 0x680 + 0x650;
-    if (p[1] != 0) {
-        func_001E6F70(e);
+    s32 x0 = p[0];
+    s32 k = p[1];
+    char *t = gBattle->tbl[p[2]];
+    char *e = t + k * 0x680 + 0x650;
+    if (k == 0) {
+        func_001E2180(t, x0);
     } else {
-        func_001E2180(unused, p[0]);
+        func_001E6F70(e);
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE220);
 extern void func_001E2190(void *, s32);
 extern void func_001E7070(void *, s32);
 extern void func_001E8290(void *);
@@ -1018,7 +1225,23 @@ int Scr_CmdFighterSlotSetVec(void *unused, Arg *a) {
     *(f32 *)(t + e + 0xCA8) = x0;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE4E0);
+extern void func_001E5040(void *);
+int func_001CE4E0(void *unused, Arg *a) {
+    int *p = a->p;
+    s32 x0 = p[0];
+    char *t = gBattle->tbl[p[1]];
+    if (*(s8 *)(t + 0x1FF9) == x0) {
+        return 1;
+    }
+    *(s8 *)(t + 0x1FF9) = x0;
+    if (x0 == 0) {
+        *(s32 *)(t + 0x1864) = 9;
+    } else {
+        *(s32 *)(t + 0x1864) = 3;
+    }
+    func_001E5040(t);
+    return 1;
+}
 /* r6 best attempt diff 12 */
 /* Ours emits sltu for the flag; the original sets a1 = 1 and then movz a1,zero,v0. Forms tried: ?:, if, !!, f!=0, p[0]?f:0. */
 #if 0
@@ -1028,6 +1251,7 @@ int func_001CE560(void *unused, Arg *a) {
     return 1;
 }
 #endif
+// r7a: 3 of 18. The original sets a1 = 1 then movz a1,zero,v0 (no sltu); ours is always sltu (ternary, if/else, !!, callee param s8/u8/s16/u16/u32, optimization_level 1-3).
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CE560);
 int Scr_CmdFighterSlotCall73C0(void *unused, Arg *a) {
     int *p = a->p;
@@ -1238,6 +1462,7 @@ int Scr_CmdFighterSet1864(void *unused, Arg *a) {
     func_001E4FA0(t, -1);
     return 1;
 }
+// r7a: VU0 macro code (lqc2/vmulax/vsub/sqc2): cannot come from C. Also func_001CF2C0 and func_001CE960.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF100);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF2C0);
 int Scr_CmdGetFighterE1690(void *unused, Arg *a) {
@@ -1279,6 +1504,7 @@ int func_001CF600(void *unused, Arg *a) {
     return 1;
 }
 #endif
+// r7a: 4 of 33 (v0/v1 colouring again: sum in v1 and the second chain in v0 in the original). tsweep 403 variants, u32 fields, Big *g, char *g locals: no change.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF600);
 int Scr_CmdFighterCall8860(void *unused, Arg *a) {
     int *p = a->p;
@@ -1395,103 +1621,197 @@ int Scr_CmdNop_001(void *unused, Arg *a) {
 int Scr_CmdNop_000(void *unused, Arg *a) {
     return 1;
 }
-// // differs: 47 of 80 (round 4 chr): the original keeps the -1 store in v1 and reloads 0x28(a1) at the loop end; ours uses a2 and hoists the loop registers (t2/t4 order).
-#if 0
-void func_001CFAD0(void *o, Arg *a) {
-    s32 off;
-    s32 i;
-    *(s32 *)((char *)o + 0x248) = -1;
-    i = 0;
-    off = 0;
-    if (0 < *(s32 *)((char *)a + 0x28)) {
-        do {
-            char *pe = *(char **)((char *)a + 0x2C) + off;
-            if (*(u16 *)pe == 1) {
-                s32 cnt = *(s16 *)(pe + 2);
-                if (cnt > 0) {
-                    char *arr = *(char **)(pe + 4);
-                    s32 j = 0;
-                    char *t1 = arr;
-                    do {
-                        if ((*(u16 *)(t1 + 8) & 0x10F) == 1) {
-                            *(s32 *)((char *)o + 0x248) = *(u16 *)(arr + j * 16);
-                            break;
-                        }
-                        j++;
-                        t1 += 16;
-                    } while (j < cnt);
-                }
-                if (*(s32 *)((char *)o + 0x248) >= 0) {
+typedef struct CItem { u16 id; char pad[6]; u16 flags; char pad2[6]; } CItem;
+typedef struct CEnt { u16 kind; s16 cnt; CItem *items; } CEnt;
+typedef struct CArg { char pad[0x28]; s32 n; CEnt *ents; } CArg;
+typedef struct CObj { char pad[0x248]; s32 v; } CObj;
+void func_001CFAD0(CObj *o, CArg *a) {
+    s32 i, j;
+    o->v = -1;
+    for (i = 0; i < a->n; i++) {
+        CEnt *e = &a->ents[i];
+        if (e->kind == 1) {
+            for (j = 0; j < e->cnt; j++) {
+                if ((e->items[j].flags & 0x10F) == 1) {
+                    o->v = e->items[j].id;
                     break;
                 }
             }
-            i++;
-            off += 8;
-        } while (i < *(s32 *)((char *)a + 0x28));
+            if (o->v >= 0) {
+                break;
+            }
+        }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFAD0);
+// r7a: jump table jtbl_00469310 (10 cases on the key kind): stays INCLUDE_ASM until the rodata of this range is migrated. The body is the same key walker as func_001CFE50 with 10 cases writing short counters into the work block.
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFB80);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFE50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFF90);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D00C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D01C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D02C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D03E0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D05D0);
+void func_001CFE50(KList3 *l, f32 t0, f32 t1) {
+    s32 i, j;
+    s32 *d;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            d = l->keys[j].d;
+            switch (d[0]) {
+            case 0: D_00470588->v[0] = d[1]; break;
+            case 1: D_00470588->v[1] = d[1]; break;
+            case 2: D_00470588->v[2] = d[1]; break;
+            }
+        }
+    }
+}
+void func_001CFF90(KList2 *l, f32 t0, f32 t1) {
+    s32 i, j;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            D_00470588->flags |= l->keys[j].s4;
+            D_00470588->flags &= ~(l->keys[j].w8 & 0x1F);
+        }
+    }
+}
+/* Key list walk: skip the keys at or before t0, then copy the value of every key up to t1 (the original keeps a
+ * redundant `i < n` guard before the second loop). */
+void func_001D00C0(KList *l, f32 t0, f32 t1) {
+    s32 i, j;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            D_00470588->a = l->keys[j].val;
+        }
+    }
+}
+void func_001D01C0(KList *l, f32 t0, f32 t1) {
+    s32 i, j;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            D_00470588->b = l->keys[j].val;
+        }
+    }
+}
+void func_001D02C0(KList *l, f32 t0, f32 t1) {
+    s32 i, j;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            if (l->keys[j].flag) {
+                D_00470588->flags |= 0x40;
+            } else {
+                D_00470588->flags &= ~0x40;
+            }
+        }
+    }
+}
+void func_001D03E0(KList4 *l, f32 t0, f32 t1) {
+    s32 i, j;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            if (l->keys[j].flag) {
+                func_001D0860(D_00470588, &l->keys[j]);
+                switch (l->keys[j].fl & 0x10F) {
+                case 1: D_00470588->flags2 |= 1; break;
+                case 4: D_00470588->flags2 |= 2; break;
+                case 2: D_00470588->flags2 |= 4; break;
+                case 8: D_00470588->flags2 |= 8; break;
+                }
+            } else {
+                func_001D0730(D_00470588, l->keys[j].id);
+            }
+        }
+    }
+}
+void func_001D05D0(KList *l, f32 t0, f32 t1) {
+    s32 i, j;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            if (l->keys[j].flag) {
+                D_00470588->flags |= 0x20;
+            } else {
+                D_00470588->flags &= ~0x20;
+            }
+        }
+    }
+}
 void *func_001D06F0(void *o, s32 mask) {
     while (!(o != 0) == 0 && (*(u16 *)(*(char **)((char *)o + 0x20) + 8) & mask) == 0) {
         o = *(void **)((char *)o + 0x2C);
     }
     return o;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0730);
-// // differs: 53 of 90 (round 4 chr): the list insert matches up to the first flag test; the count byte and the 0xA halfword store are placed differently (the original keeps the item in a2 and the head in a1), and the switch block layout is untested beyond that.
-#if 0
-void func_001D0860(char *o, char *a1) {
-    s32 n = *(s8 *)(o + 0x1A8);
-    if (n < 8) {
-        char *v;
-        u16 fl;
-        *(s8 *)(o + 0x1A8) = (s8)(n + 1);
-        v = *(char **)(o + 0x180 + n * 4);
-        if (*(u16 *)(a1 + 0xA) == 0x13) {
-            *(u16 *)(a1 + 0xA) = 3;
-        }
-        *(char **)(v + 0x20) = a1;
-        if (*(char **)(o + 0x1A0) != 0) {
-            *(char **)(*(char **)(o + 0x1A0) + 0x28) = v;
-        }
-        *(char **)(v + 0x2C) = *(char **)(o + 0x1A0);
-        *(s32 *)(v + 0x28) = 0;
-        *(char **)(o + 0x1A0) = v;
-        fl = *(u16 *)(*(char **)(v + 0x20) + 8);
-        if (fl & 0xF1) {
-            *(u16 *)(a1 + 8) = fl | 1;
-        }
-        switch (*(u16 *)(*(char **)(v + 0x20) + 8) & 0x10F) {
-        case 1:
-            *(s8 *)(o + 0x1A9) += 1;
-            break;
-        case 4:
-            *(s8 *)(o + 0x1AA) += 1;
-            break;
-        case 2:
-            *(s8 *)(o + 0x1AB) += 1;
-            break;
-        case 8:
-            *(s8 *)(o + 0x1AC) += 1;
-            break;
-        case 0x100:
-            *(s8 *)(o + 0x1AD) += 1;
-            break;
-        }
-        *(s32 *)(v + 0x24) = 1;
+typedef struct LItem { char pad0[2]; s8 id; char pad1[5]; u16 flags; u16 kind; } LItem;
+typedef struct LNode { char pad[0x20]; LItem *item; s32 live; struct LNode *prev; struct LNode *next; } LNode;
+typedef struct LObj { char pad[0x180]; LNode *slots[8]; LNode *head; char pad1[4]; s8 n; s8 c[5]; } LObj;
+/* Remove the node whose item has the given id from the active list, drop the per-kind counter and park the node in the
+ * slot table. */
+void func_001D0730(LObj *o, s32 id) {
+    LNode *node;
+    if (o->n > 0) {
+        node = o->head;
+        do {
+            if (node->item->id == id) {
+                switch (node->item->flags & 0x10F) {
+                case 1: o->c[0]--; break;
+                case 4: o->c[1]--; break;
+                case 2: o->c[2]--; break;
+                case 8: o->c[3]--; break;
+                case 0x100: o->c[4]--; break;
+                }
+                if (node->next) {
+                    node->next->prev = node->prev;
+                }
+                if (node->prev) {
+                    node->prev->next = node->next;
+                } else {
+                    o->head = node->next;
+                }
+                o->n--;
+                o->slots[o->n] = node;
+                return;
+            }
+            node = node->next;
+        } while (node);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0860);
+/* Take a node from the slot table, link it at the head of the active list and count its kind. */
+void func_001D0860(LObj *o, LItem *item) {
+    LNode *node;
+    s32 idx = o->n;
+    if (idx < 8) {
+        node = o->slots[idx];
+        o->n = idx + 1;
+        if (item->kind == 0x13) {
+            item->kind = 3;
+        }
+        node->item = item;
+        if (o->head) {
+            o->head->prev = node;
+        }
+        node->next = o->head;
+        node->prev = 0;
+        o->head = node;
+        if (node->item->flags & 0xF1) {
+            node->item->flags |= 1;
+        }
+        switch (node->item->flags & 0x10F) {
+        case 1: o->c[0]++; break;
+        case 4: o->c[1]++; break;
+        case 2: o->c[2]++; break;
+        case 8: o->c[3]++; break;
+        case 0x100: o->c[4]++; break;
+        }
+        node->live = 1;
+    }
+}
 extern void *D_004692E0[];
 void func_001D0990(void *o, void *s, s32 key, f32 val) {
     s32 i = 0;
@@ -1512,4 +1832,50 @@ void func_001D0990(void *o, void *s, s32 key, f32 val) {
         } while (i < n);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001D0A20);
+void func_001D0A20(KDst *d, CArg *an, f32 t) {
+    s32 i;
+    d->flags2 = 0;
+    d->h1C8 = 0;
+    d->h1D8 = 0;
+    d->h1DC = 0;
+    d->h1EC = 0;
+    d->h1FC = 0;
+    d->w20C = 0;
+    d->h22C = 0;
+    d->h23C = 0;
+    d->h240 = 0;
+    if (d->anim != an) {
+        d->flags = 0;
+        d->cur = -1.0f;
+        d->a = 1.0f;
+        d->b = 0.0f;
+        d->v[0] = 0;
+        d->v[1] = 0;
+        d->v[2] = 0;
+        d->n = 0;
+        d->head = 0;
+        d->slot[0] = d;
+        d->slot[1] = (char *)d + 0x30;
+        d->slot[2] = (char *)d + 0x60;
+        d->slot[3] = (char *)d + 0x90;
+        d->slot[4] = (char *)d + 0xC0;
+        d->slot[5] = (char *)d + 0xF0;
+        d->slot[6] = (char *)d + 0x120;
+        d->slot[7] = (char *)d + 0x150;
+        d->c[0] = 0;
+        d->c[1] = 0;
+        d->c[2] = 0;
+        d->c[3] = 0;
+        d->c[4] = 0;
+        d->w244 = 0;
+        func_001CFAD0((CObj *)d, an);
+    }
+    if (d->cur != t) {
+        D_00470588 = d;
+        for (i = 0; i < an->n; i++) {
+            ((void (*)(void *, f32, f32))D_004692E0[an->ents[i].kind])(&an->ents[i], d->cur, t);
+        }
+        d->cur = t;
+        d->anim = an;
+    }
+}
