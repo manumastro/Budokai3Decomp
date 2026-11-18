@@ -1524,8 +1524,43 @@ s32 func_002A4A30(s32 **arg0) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A4AD0);
-extern void func_002A4AD0(void);
+extern char D_005AB610[];
+extern void amCdFs_ReleaseCache(s32);
+extern void amCdFs_Close(s32, s32);
+s32 func_002A4AD0(s32 *a0, char *a1) {
+    s32 *s3 = a0;
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    s32 *s2 = (s32 *)a0[0x1C / 4];
+    s32 *p5 = (s32 *)a0[0];
+    s32 slot = args[1];
+    s32 idx;
+    s32 s1;
+    s32 *s0;
+    s32 *s4;
+    if (*(s16 *)((char *)s2 + 4) != 3) {
+        return 3;
+    }
+    s3[4] = 0;
+    idx = *p5;
+    s0 = (s32 *)s2[0x40 / 4];
+    s1 = s0[0x50 / 4];
+    s4 = (s32 *)(D_005AB610 + idx * 240 + slot * 24);
+    if (s4[0] != 0) {
+        amCdFs_ReleaseCache(s4[0]);
+        s4[0] = 0;
+    }
+    s4[0] = (s32)s0;
+    s4[1] = s1;
+    s2[0x40 / 4] = 0;
+    amCdFs_Close((s32)s2, 0);
+    if (s3[6] != 0) {
+        amCdFs_Close(s3[6], 0);
+    }
+    s3[6] = 0;
+    s3[7] = 0;
+    return 1;
+}
+extern s32 func_002A4AD0(s32 *, char *);
 #if 0
 // func_002A4BD0: 0x110 vs 0x120 bytes: the saved registers now match (obj s2, the 0x40 pointer s0, the value s1); the original loads a4 after the object and flag test, and keeps a nop after the release block clear (ours does not)
 s32 func_002A4BD0(s32 *a0, char *a1) {
