@@ -150,55 +150,28 @@ void func_002361E0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002361F0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236500);
-// GIVEN UP: the loop is right; the original's prologue has a 'move v0, zero' before the saves and a 16-byte longer frame (a return value kept in v0)
-// // differs: 7 of 40 (round 4 chr): the original copies the object pointer to s1 before the 0x150 count test (move in the first slot); ours copies it after the beqz, and the element pointer s2 is set from s1 later.
-#if 0
-s32 func_00236640(char *a0) {
-    s32 r;
-    char *s3;
-    char *s2;
-    char *p;
-    s32 i;
-    r = 0;
-    p = a0;
-    s2 = p;
-    if (0 < *(s16 *)(p + 0x150)) {
-        i = 0;
-        s3 = (char *)D_0058BBB0;
+typedef struct COb { u8 pad[0x20]; s16 f20; u8 p[0x2E]; } COb;
+typedef struct CObs { COb o[4]; u8 pad[0x10]; s16 n; } CObs;
+typedef struct CHd { s32 h; u8 p[0x10]; s8 b14; u8 q[0xAB]; } CHd;
+s32 func_00236640(CObs *a0) {
+    s32 r = 0;
+    s32 i = 0;
+    CHd *h;
+    COb *o;
+    if (i < a0->n) {
+        o = (COb *)a0;
+        h = (CHd *)D_0058BBB0;
         do {
             r = amCdFs_ReadFileId(0x1B9, 0, 1);
-            *(s32 *)s3 = r;
+            h->h = r;
             i++;
-            *(s8 *)(s3 + 0x14) = *(s16 *)(s2 + 0x20);
-            s2 += 0x50;
-            s3 += 0xC0;
-        } while (i < *(s16 *)(p + 0x150));
+            h->b14 = o->f20;
+            o++;
+            h++;
+        } while (i < a0->n);
     }
     return r;
 }
-#endif
-#if 0
-// differs: 15 of 37: the loop and the table/object cursors are right; the original keeps the 0x150 count reload, a dead v0=0 at entry and a different saved-register set (tried 24 declaration orders, best 15 of 37)
-void func_00236640(u8 *a0) {
-    u8 *tbl;
-    u8 *cur;
-    u8 *obj;
-    s32 i;
-    obj = a0;
-    i = 0;
-    if (0 < *(s16 *)(obj + 0x150)) {
-        tbl = D_0058BBB0;
-        cur = obj;
-        for (i = 0; i < *(s16 *)(obj + 0x150); i++) {
-            *(s32 *)tbl = amCdFs_ReadFileId(0x1B9, 0, 1);
-            tbl[0x14] = *(s16 *)(cur + 0x20);
-            cur += 0x50;
-            tbl += 0xC0;
-        }
-    }
-}
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236640);
 // GIVEN UP: the calls and the stores match; the frame is 0x10 bytes bigger (0x70 against 0x60) with the locals in any layout tried
 void func_002366E0(void) {
     s32 b[9];
