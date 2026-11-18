@@ -555,7 +555,25 @@ void func_0016E058_x0016E058(void) __asm__("func_0016E058");
 void func_0016E058_x0016E058(void) {
     func_0016DB08_x0016E058(&D_00464D58_x0016E058);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016E078);
+s32 func_0016DAD8_x0016E078() __asm__("func_0016DAD8");
+s32 func_0016DAF0_x0016E078() __asm__("func_0016DAF0");
+s32 memset_x0016E078(s32 *, s32, s32) __asm__("memset");
+extern s32 D_0041D960_x0016E078 __asm__("D_0041D960");
+extern s32 D_0041D968_x0016E078 __asm__("D_0041D968");
+void func_0016E078_x0016E078(void) __asm__("func_0016E078");
+void func_0016E078_x0016E078(void)
+{
+  s32 temp_v0;
+  func_0016DAD8_x0016E078();
+  ;
+  if ((temp_v0 = D_0041D960_x0016E078) == 0)
+  {
+    ;
+    memset_x0016E078(&D_0041D968_x0016E078, 0, 0x4000);
+  }
+  D_0041D960_x0016E078 = D_0041D960_x0016E078 - (temp_v0 = -1);
+  func_0016DAF0_x0016E078();
+}
 void func_0016E0D0(void) {
     s32 temp_v0;
 

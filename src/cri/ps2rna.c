@@ -1987,9 +1987,66 @@ void func_0016D4D8_x0016D4D8(u8 *arg0, unsigned int arg1)
   }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D508);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D5E0);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D620);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D670);
+extern s32 D_0041A0D0_x0016D5E0 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D5E0 __asm__("D_0041A0D8");
+void func_0016D5E0_x0016D5E0(u8 *arg0, s32 arg1) __asm__("func_0016D5E0");
+void func_0016D5E0_x0016D5E0(u8 *arg0, s32 arg1)
+{
+  unsigned int new_var;
+  s32 temp_a1;
+  if ((D_0041A0D8_x0016D5E0 != 1) || (D_0041A0D0_x0016D5E0 > 0))
+  {
+    new_var = 0x3E7;
+    temp_a1 = (arg1 > 0) ? (0) : (arg1);
+    *((s32 *) (((u8 *) arg0) + 0x3C)) = (s32) ((temp_a1 < (-0x3E7)) ? (-new_var) : (temp_a1));
+  }
+}
+extern s32 D_0041A0D0_x0016D620 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D620 __asm__("D_0041A0D8");
+void func_0016D620_x0016D620(s32 arg0, s32 arg1, s32 arg2) __asm__("func_0016D620");
+void func_0016D620_x0016D620(s32 arg0, s32 arg1, s32 arg2)
+{
+  int new_var;
+  int *new_var2;
+  s32 temp_v0;
+  if ((D_0041A0D8_x0016D620 != 1) || (D_0041A0D0_x0016D620 > 0))
+  {
+    temp_v0 = (arg2 >= (-0xF)) ? (arg2) : (-0xF);
+    temp_v0 = (temp_v0 >= 0x10) ? (0xF) : (temp_v0);
+    new_var = temp_v0;
+    *((s32 *) (((u8 *) ((arg1 * 4) + arg0)) + 0x44)) = (s32) (*(new_var2 = &new_var));
+  }
+}
+s32 func_0016D620_x0016D670(void *, s32, s32) __asm__("func_0016D620");
+extern s32 D_0041A0D0_x0016D670 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D670 __asm__("D_0041A0D8");
+void func_0016D670_x0016D670(u8 *arg0, s32 arg1) __asm__("func_0016D670");
+void func_0016D670_x0016D670(u8 *arg0, s32 arg1)
+{
+  s32 var_a1;
+  s32 var_s0;
+  if ((D_0041A0D8_x0016D670 != 1) || (D_0041A0D0_x0016D670 > 0))
+  {
+    var_s0 = 0;
+    var_a1 = 0;
+    if ((*((s32 *) (((u8 *) arg0) + 4))) > var_a1)
+    {
+      var_a1 = 0;
+      do
+      {
+        var_s0 += 1;
+        do
+        {
+        }
+        while (0);
+        func_0016D620_x0016D670(arg0, var_a1, arg1);
+        var_a1 = var_s0;
+      }
+      while (var_s0 < (*((s32 *) (((u8 *) arg0) + 4))));
+    }
+    *((s32 *) (((u8 *) arg0) + 0x60)) = arg1;
+  }
+}
 extern int D_003E0708_x0016D700 __asm__("D_0041A0D0");
 extern int D_003E0710_x0016D700 __asm__("D_0041A0D8");
 extern void func_003260C8_x0016D700(const char *fmt, ...) __asm__("scePrintf");

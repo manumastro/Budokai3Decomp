@@ -886,5 +886,19 @@ f32 func_001A18A0(void) {
     return func_00121010() * D_00427328;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A18C8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1970);
+void func_001A1970_x001A1970(u8 *arg0) __asm__("func_001A1970");
+void func_001A1970_x001A1970(u8 *arg0)
+{
+  unsigned long new_var2;
+  u8 *new_var;
+  unsigned int new_var3;
+  new_var2 = 1U;
+  *((s32 *) (((u8 *) arg0) + 0x18)) = 0;
+  new_var = (u8 *) arg0;
+  *((u64 *) (new_var + 8)) = (u64) ((-new_var2) >> 1);
+  new_var3 = 0x10;
+  *((s64 *) (new_var + 0)) = 0;
+ do { } while (0);
+  *((s64 *) (((u8 *) arg0) + new_var3)) = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1990);

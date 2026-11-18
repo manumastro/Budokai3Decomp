@@ -926,7 +926,27 @@ void func_0017B168_x0017B168(u8 *arg0, s32 arg1, s32 arg2)
  do { new_var = (u8 *) arg0; *((s32 *) (new_var + 0)) = arg1; } while (0);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B178);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B218);
+extern s32 *D_004814E4_x0017B218 __asm__("D_004814E4");
+s32 func_0017B218_x0017B218(s32 *arg0) __asm__("func_0017B218");
+s32 func_0017B218_x0017B218(s32 *arg0)
+{
+  s32 var_v0;
+  s32 *new_var2;
+  s32 *new_var;
+  D_004814E4_x0017B218 = arg0;
+  var_v0 = -1;
+  new_var = &var_v0;
+  new_var2 = &(*new_var);
+  if (arg0 != 0)
+  {
+    do
+    {
+      var_v0 = (!(0 != ((*arg0) ^ 1))) ? (-1) : (0);
+      return *new_var2;
+    }
+    while (0);
+  }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B240);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B278);
 s32 func_00179018_x0017B2D0() __asm__("func_00179018");

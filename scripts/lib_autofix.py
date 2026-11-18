@@ -390,6 +390,13 @@ def transforms(name, src):
     st = re.sub(r"\b(\w+)\s*(\+=|-=)\s*(0x[0-9A-Fa-f]+|\d+);", fix, src)
     if st != src:
         alts.append(("stride", st))
+    # m2c passes `sp` (the frame's first bytes) without declaring it: a stack buffer up to the next local
+    fb = src.find("{", src.find(f"{name}("))
+    if fb > 0 and re.search(r"\bsp\b", src[fb:]) and not re.search(r"\b\w+\s*\**\s*sp\s*[;\[=]", src[fb:]):
+        offs = sorted(int(o, 16) for o in re.findall(r"\bsp([0-9A-F]+)\b", src[fb:]))
+        sizes = {offs[0] if offs and offs[0] else 16, 16, 8}
+        for n in sorted(sizes):
+            alts.append((f"spbuf{n}", src[:fb + 1] + f"\n    u8 sp[{n}];" + src[fb + 1:]))
     for rule, s in alts:
         yield rule, s
     if len(alts) == 2:

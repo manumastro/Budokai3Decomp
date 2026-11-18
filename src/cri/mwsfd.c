@@ -1610,7 +1610,20 @@ void func_001853B0(u8 *arg0) {
     func_001855A8(arg0);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001853F8);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00185548);
+s32 func_001870E8_x00185548() __asm__("func_001870E8");
+extern s32 D_00466B60_x00185548 __asm__("D_00466B60");
+void func_00185548_x00185548(u8 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) __asm__("func_00185548");
+void func_00185548_x00185548(u8 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7)
+{
+  u8 *new_var;
+  new_var = arg0 + 0x19C;
+  if (arg2 <= 0x1FFFF)
+  {
+    func_001870E8_x00185548(&D_00466B60_x00185548, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+  }
+  *((s32 *) (((u8 *) arg0) + 0x19C)) = arg1;
+  *((s32 *) (((u8 *) new_var) + 4)) = arg2;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001855A8);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00185650);
 void func_001856B0(u8 *arg0) {

@@ -1555,7 +1555,24 @@ void func_0018EB18(u8 *arg0) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018EB30);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018EC78);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018ECC8);
+s32 func_0018B770_x0018ECC8() __asm__("func_0018B770");
+s32 func_0018EA38_x0018ECC8() __asm__("func_0018EA38");
+void func_0018ECC8_x0018ECC8(s32 arg0, s32 *arg1) __asm__("func_0018ECC8");
+void func_0018ECC8_x0018ECC8(s32 arg0, s32 *arg1)
+{
+  s32 var_a1;
+  u8 *temp_s1;
+  s32 new_var;
+  u8 *temp_v0;
+  temp_v0 = arg0 + 0x1C24;
+  temp_s1 = *((u8 **) (((u8 *) temp_v0) + 8));
+  new_var = func_0018B770_x0018ECC8(arg0, *((s32 *) (((u8 *) temp_v0) + 0x10)));
+ do { var_a1 = 0; if (new_var == 1) { func_0018EA38_x0018ECC8(arg0, *((s32 *) (((u8 *) temp_s1) + 0x30))); var_a1 = 1; } } while (0);
+  if (arg1 != ((void *) 0))
+  {
+    *arg1 = var_a1;
+  }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018ED30);
 void func_0018ED88(u8 *arg0) {
     s32 temp_s0;
@@ -2002,7 +2019,23 @@ void func_00192268_x00192268(u8 *arg0, u8 *arg1)
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001922B8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001923E8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00192508);
+void func_00192508_x00192508(u8 *arg0, s32 arg1, u8 *arg2, s32 arg3) __asm__("func_00192508");
+void func_00192508_x00192508(u8 *arg0, s32 arg1, u8 *arg2, s32 arg3)
+{
+  s32 *new_var2;
+  s32 new_var;
+  u8 *new_var3;
+  new_var = *((s32 *) (((u8 *) arg2) + 0x10));
+  *((s32 *) (((u8 *) arg0) + 0)) = (s32) (*((s32 *) (((u8 *) arg2) + 0)));
+  new_var2 = (s32 *) (((u8 *) arg0) + 0x20);
+  *((s32 *) (((u8 *) arg0) + 4)) = (s32) (*((s32 *) (((u8 *) arg2) + 4)));
+  *((s32 *) (((u8 *) arg0) + 8)) = (s32) (*((s32 *) (((u8 *) arg2) + 8)));
+  *((s32 *) (((u8 *) arg0) + 0xC)) = (s32) (*((s32 *) (((u8 *) arg2) + 0xC)));
+  *((s32 *) (((u8 *) arg0) + 0x14)) = (s32) new_var;
+  new_var3 = ((u8 *) arg0) + 0x10;
+  *((s32 *) new_var3) = arg1;
+  *new_var2 = arg3;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00192540);
 u32 func_001926F8(u8 *arg0) {
     return (u32) ~*(s32 *)((u8 *)arg0 + 0xE18) >> 0x1F;
