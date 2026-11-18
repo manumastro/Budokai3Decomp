@@ -70,7 +70,7 @@ typedef struct TutWork {
     s8 f30;
     char pad31;
     s16 f32;
-    char pad34[2];
+    s16 f34;
     s8 f36;
     s8 f37;
     s8 f38;
@@ -95,7 +95,7 @@ extern void A2d_CallHandler(s32, void *);
 extern void func_002E9BA0(s32);
 extern void (*D_004564A0[])(void);
 extern void (*D_004564C0[])(void);
-extern void func_002CBFF0(s32, s32);
+extern void func_002CBFF0(s32, TutChr *);
 
 s32 func_002CAED0(void) {
     s32 *p = &gTutWork->f20;
@@ -409,7 +409,65 @@ void func_002CBF60(void) {
         func_002CBFF0(0, 0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CBFF0);
+/* Tutorial event hook: ev 0 clears the marks, 1 stores a move id, 2 to 8 set one mark when f is the lesson fighter. */
+void func_002CBFF0(s32 ev, TutChr *f) {
+    TutWork *w = gTutWork;
+    if (w != 0) {
+        switch (ev) {
+        case 0:
+            w->f32 = -1;
+            w->f34 = -1;
+            w->f37 = 0;
+            w->f38 = 0;
+            w->f39 = 0;
+            w->f3A = 0;
+            w->f3B = 0;
+            w->f3C = 0;
+            break;
+        case 1:
+            if (w->chr == f) {
+                w->f32 = f->fCAC;
+            } else if (w->chr->f1354 == f) {
+                w->f34 = f->fCAC;
+            }
+            break;
+        case 2:
+            if (w->chr == f) {
+                w->f37 = 1;
+            }
+            break;
+        case 3:
+            if (w->chr == f) {
+                w->f38 = 1;
+            }
+            break;
+        case 4:
+            if (w->chr == f) {
+                w->f39 = 1;
+            }
+        case 5:
+            if (w->chr == f) {
+                w->f36 = 1;
+            }
+            break;
+        case 6:
+            if (w->chr == f) {
+                w->f3A = 1;
+            }
+            break;
+        case 7:
+            if (w->chr == f) {
+                w->f3B = 1;
+            }
+            break;
+        case 8:
+            if (w->chr == f) {
+                w->f3C = 1;
+            }
+            break;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC120);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CC240);
 s32 func_002CC450(void) {

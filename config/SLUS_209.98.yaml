@@ -284,6 +284,9 @@ segments:
       - [0x36AE80, rodata, rodata/rodata_a2b]
       - [0x36EB20, .rodata, unk/unk_2AF860]
       - [0x36EB40, rodata, rodata/rodata_a3]
+      # unk_2CAED0 owns 0x36EFA0 to 0x36EFC4: the switch table of func_002CBFF0
+      - [0x36EFA0, .rodata, unk/unk_2CAED0]
+      - [0x36EFC4, rodata, rodata/rodata_a3c]
       - [0x36F350, .rodata, unk/unk_2D2530]
       - [0x36F368, rodata, rodata/rodata_b]
       - [0x36F590, .rodata, unk/unk_2E8540]
