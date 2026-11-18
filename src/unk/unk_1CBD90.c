@@ -97,6 +97,12 @@ extern f32 D_004B4210[];
 extern f32 D_004B423C[];
 extern f32 D_004B4238[];
 
+typedef struct KKey { u16 t; char pad[1]; s8 flag; f32 val; char pad2[8]; } KKey;
+typedef struct KList { char pad[2]; s16 n; KKey *keys; } KList;
+typedef struct KDst { char pad[0x1B4]; f32 a; f32 b; char pad1[8]; s16 flags; } KDst;
+extern KDst *D_00470588;
+typedef struct KKey2 { u16 t; char pad[2]; u16 s4; char pad2[2]; u32 w8; char pad3[4]; } KKey2;
+typedef struct KList2 { char pad[2]; s16 n; KKey2 *keys; } KList2;
 // func_001CBD90, func_001CBDF0, func_001CBE80: register and scheduling differences; not matched yet.
 // differs: 17 of 22 instructions at best. The Arg pointer stays in v1 in the original (ours takes a0); the flag -(p[0]==0) is sltu+xori in the original, sltiu in ours.
 /* r6 best attempt diff 7 */
@@ -1416,11 +1422,17 @@ void func_001CFAD0(CObj *o, CArg *a) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFB80);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFE50);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CFF90);
-typedef struct KKey { u16 t; char pad[1]; s8 flag; f32 val; char pad2[8]; } KKey;
-typedef struct KList { char pad[2]; s16 n; KKey *keys; } KList;
-typedef struct KDst { char pad[0x1B4]; f32 a; f32 b; char pad1[8]; s16 flags; } KDst;
-extern KDst *D_00470588;
+void func_001CFF90(KList2 *l, f32 t0, f32 t1) {
+    s32 i, j;
+    for (i = 0; i < l->n && (f32)l->keys[i].t <= t0; i++) {
+    }
+    if (i < l->n) {
+        for (j = i; j < l->n && (f32)l->keys[j].t <= t1; j++) {
+            D_00470588->flags |= l->keys[j].s4;
+            D_00470588->flags &= ~(l->keys[j].w8 & 0x1F);
+        }
+    }
+}
 /* Key list walk: skip the keys at or before t0, then copy the value of every key up to t1 (the original keeps a
  * redundant `i < n` guard before the second loop). */
 void func_001D00C0(KList *l, f32 t0, f32 t1) {
