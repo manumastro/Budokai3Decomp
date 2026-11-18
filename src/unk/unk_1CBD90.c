@@ -319,15 +319,15 @@ int Scr_CmdFighterCountSet(void *unused, Arg *a) {
     *(s32 *)a = s1;
     return 1;
 }
-// // differs: 59 of 120 (round 4 chr): the task setup and the float minimum loop are scheduled differently (the original moves the t+0x30 pointer into s2 right after the call and loads gBattle+0x61C before the stores).
-#if 0
+extern void amTask_Kill(void *);
 extern void func_002194C0(void *, s32, s32, s32);
 extern void Character_PauseVoice(s32 *);
 extern void func_001CB020(void *);
 extern void *amTask_Create(void (*)(void *), void *, s32, s32, s32, char *);
-extern void amTask_Kill(void *);
 extern char D_004692B0[];
 int func_001CC300(void *unused, Arg *a) {
+    void **tp;
+    char *g;
     int *p = a->p;
     s32 x;
     s32 y;
@@ -338,40 +338,47 @@ int func_001CC300(void *unused, Arg *a) {
     f32 f0;
     char *c;
     char *t;
-    s32 *q;
     char *e;
+    s32 *q;
+    char *g2;
     x = p[0];
     y = p[1];
     w = p[2];
-    if (w == -2) {
-        w = 0x6B;
-    } else if (w == -1) {
+    g = (char *)gBattle;
+    switch (w) {
+    case -1:
         w = 0x6A;
+        break;
+    case -2:
+        w = 0x6B;
+        break;
     }
     c = *(char **)unused;
     t = amTask_Create((void (*)(void *))func_001CB020, 0, *(s32 *)(c + 0x10), *(s32 *)(c + 0x14), *(s32 *)(c + 0x18), D_004692B0);
     *(s32 *)(t + 0x30) = 0;
     *(f32 *)(t + 0x34) = (f32)x;
     *(void **)(t + 0x38) = (void *)Character_PauseVoice;
-    best = *(f32 *)((char *)gBattle + 0x61C);
+    tp = (void **)(t + 0x3C);
+    best = *(f32 *)(g + 0x61C);
     idx = 2;
-    e = (char *)gBattle + 0x60;
     k = 3;
+    e = g + 0x60;
     do {
         f0 = *(f32 *)(e + 0x5DC);
-        if (best > f0) {
+        if (!(best <= f0)) {
             best = f0;
             idx = k;
         }
         k++;
         e += 0x20;
     } while (k < 5);
-    *(char **)(t + 0x3C) = (char *)gBattle + (idx << 5) + 0x5C4;
-    func_002194C0(*(void **)(t + 0x3C), w, y, -1);
+    *tp = (char *)gBattle + (idx << 5) + 0x5C4;
+    func_002194C0(*tp, w, y, -1);
     q = (s32 *)(t + 0x30);
-    if (*(s32 *)((char *)gBattle + 0x88EC) == 0) {
+    g2 = (char *)gBattle;
+    if (*(s32 *)(g2 + 0x88EC) == 0) {
         q[0] += 1;
-        if ((f32)q[0] * *(f32 *)((char *)gBattle + 0x88F0) >= *(f32 *)(q + 1)) {
+        if ((f32)q[0] * *(f32 *)(g2 + 0x88F0) >= *(f32 *)(q + 1)) {
             ((void (*)(void *))*(void **)(q + 2))(t);
             amTask_Kill(t);
         }
@@ -379,8 +386,6 @@ int func_001CC300(void *unused, Arg *a) {
     *(s32 *)a = idx;
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CC300);
 extern void amTask_Kill(void *);
 extern void func_002194C0(void *, s32, s32, s32);
 extern void Character_PauseVoice(s32 *);
