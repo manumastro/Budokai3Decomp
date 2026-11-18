@@ -62,7 +62,7 @@ extern ScrModel D_005BC440[][3];
 extern ScrEffectSub D_005BC180[][2];
 extern void func_002A9930(void);
 extern void func_002A9AE0(s32, s32, s32, s32);
-extern void func_002A9C00(void);
+extern void func_002A9C00(s32, s32, s32, s32, s32);
 extern void func_002A9EA0(void);
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Stop(s32);
@@ -183,7 +183,50 @@ void func_002A9AE0(s32 a0, s32 a1, s32 a2, s32 a3) {
     *(s64 *)(e + 0xC0) = 0x44;
     *(s64 *)(e + 0xC8) = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9C00);
+typedef struct ScrLtE {
+    /* 0x0000 */ s32 f0;
+    /* 0x0004 */ s32 f4;
+    /* 0x0008 */ s32 f8;
+    /* 0x000C */ s32 res[5];
+    /* 0x0020 */ s32 f20;
+    /* 0x0024 */ s32 f24;
+    /* 0x0028 */ s32 id[4];
+    /* 0x0038 */ s32 f38;
+    /* 0x003C */ s32 f3C;
+    /* 0x0040 */ u8 anim[0x208C - 0x40];
+    /* 0x208C */ s32 f208C;
+    /* 0x2090 */ s32 f2090;
+    /* 0x2094 */ s32 f2094;
+    /* 0x2098 */ u8 pad2098[8];
+    /* 0x20A0 */ s8 f20A0;
+} ScrLtE;
+extern void *amMotion_CreateFromObj(s32, s32, s32);
+extern void *amMotion_Create(s32, s32, s32);
+extern void amMotion_BindAnim(s32, s32, s32);
+extern void amFile_Load(s32);
+void func_002A9C00(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    ScrLtE *e = (ScrLtE *)&D_005ABA80[a0][a1];
+
+    if (e->res[a2] != 0) {
+        amCdFs_ReleaseCache(e->res[a2]);
+    }
+    e->res[a2] = a3;
+    e->id[a2] = a4;
+    amFile_Load(a4);
+    if (e->f3C == 0) {
+        if (e->f38 != 0) {
+            e->f3C = (s32)amMotion_CreateFromObj(e->f38, 0, 0);
+        } else if (e->f4 != 0) {
+            e->f3C = (s32)amMotion_Create(e->f20, 0, 0);
+        }
+    }
+    if (e->f3C != 0) {
+        amMotion_BindAnim(e->f3C, a2, e->id[a2]);
+    }
+    e->f20A0 = 0;
+    e->f2094 = 0;
+    e->f208C = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9D30);
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9EA0);
 void func_002AA050(s32 a0, s32 a1, s32 a2, s32 a3) {
@@ -257,8 +300,8 @@ void func_002AA260(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     amFile_Load(a4);
     amMotSet_Bind((u8 *)e + 0x40, a2, a4);
 }
-void func_002AA330(void) {
-    func_002A9C00();
+void func_002AA330(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    func_002A9C00(a0, a1, a2, a3, a4);
 }
 void func_002AA340(s32 a0, s32 a1, s32 a2, s32 a3) {
     u8 *e0 = (u8 *)D_005ABA80 + ((a0 * 33 * 8) - a0) * 128;
