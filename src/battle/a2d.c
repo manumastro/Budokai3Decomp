@@ -763,7 +763,34 @@ void func_0022D4B0(s32 a0, s32 a1) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D570);
+extern s32 D_004706F8;
+extern s32 func_0022D860(s32, f32);
+s32 *func_0022D570(s32 a0, s32 a1, s32 a2, u32 a3) {
+    s32 *s0;
+    s32 *p;
+    s32 n;
+
+    n = D_004706F8;
+    s0 = (s32 *)D_004706F4[n];
+    D_004706F8 = n + 1;
+    if (n + 1 == D_00470700) {
+        D_004706F8 = 0;
+    }
+    memset(s0, 0, 0x20);
+    s0[6] = func_0022D860(a0, 0.0f);
+    s0[0] = a3;
+    s0[1] = a1;
+    s0[2] = a2;
+    p = D_0058BB64[0];
+    while ((u32)p[0] <= a3) {
+        p = (s32 *)p[5];
+    }
+    s0[4] = p[4];
+    *(s32 *)(p[4] + 0x14) = (s32)s0;
+    p[4] = (s32)s0;
+    s0[5] = (s32)p;
+    return s0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D670);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D860);
 extern s32 *D_004706AC;
