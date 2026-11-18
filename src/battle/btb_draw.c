@@ -5985,7 +5985,6 @@ INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4C20);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4E70);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5040);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5210);
-// differs: 49 of 72 instructions (one extra callee-saved register: the flag word is kept in s4 and s3 is used too)
 
 
 typedef struct BtbRecA {
@@ -6009,42 +6008,42 @@ extern void func_00209B50(char *, char *, s32);
 extern void *func_001F5FD0(u32, char *, s32, void *, void *);
 extern void func_001F2150(char *);
 extern void memset(void *, s32, s32);
-
-// differs: func_001F5540: 49 of 72 with this C: one more saved register (frame 96 against 80): the flags argument and the size local are kept in s4/s3, the original keeps flags in s3 and the size in a1 only.
-#if 0
-void func_001F5540(s32 p0, s32 p1, s32 p2, s32 flags) {
-    void *s1;
-    void *ptr;
-    void *s2;
-    BtbRecA *r;
-    BtbRecB *q;
+void func_001F5540(s32 p0, char *p1, s32 p2, s32 flags) {
+    s32 s2;
+    char *s1;
+    s32 s3;
+    char *s0;
+    char *ptr;
+    char *q;
+    BtbRecB *rb;
     s32 a1;
 
-    s2 = D_0051CD0C[0];
+    s2 = (s32)D_0051CD0C[0];
+    s0 = p1;
+    s3 = flags;
     a1 = 3;
     if (flags & 4) {
         a1 += 0x100;
     }
     a1 += D_0051CD20[0] << 7;
-    ptr = func_001A50F0(s2, a1);
     s1 = NULL;
+    ptr = func_001A50F0((char *)s2, a1);
     if (ptr != NULL) {
         s1 = func_00209540(ptr, 0x2000001, 0);
     }
     if (s1 != NULL) {
-        func_00209B50(s1, (char *)p1, 0);
-        r = func_001F5FD0(0x85000000, D_00469848, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
-        r->f20 = r->f20 & -0x801;
-        r->f20 = r->f20 | 0x800;
-        memset((char *)r + 0x30, 0, 0x80);
-        r->f38 = (s32)s1;
-        q = (BtbRecB *)((char *)r + 0x30);
-        q->f4 = func_001A50F0(s2, 0x280);
-        q->f0 = flags & 2;
+        func_00209B50(s1, s0, 0);
+        s0 = (char *)func_001F5FD0(0x85000000, D_00469848, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) & -0x801;
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) | 0x800;
+        memset(s0 + 0x30, 0, 0x80);
+        *(s32 *)(s0 + 0x38) = (s32)s1;
+        rb = (BtbRecB *)(s0 + 0x30);
+        q = func_001A50F0((char *)s2, 0x280);
+        rb->f4 = q;
+        rb->f0 = s3 & 2;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5540);
 
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5660);
 extern char *func_001A50F0(char *, s32);
@@ -6057,45 +6056,43 @@ extern s32 D_0051CD20[];
 extern char D_00469858[];
 extern void func_001F2150(char *);
 extern void func_001F1F50(char *);
-
-// differs: constructor: the call func_00209B50(s1, s0, 0) puts a0 = s1 in the delay slot where the original puts a2 = 0 (other argument types tried)
-#if 0
-void func_001F5830(s32 a0, char *s0, s32 a2, s32 flags) {
-    char *s2;
-    s32 s1;
-    s32 a1;
-    char *r;
-    char *p;
+void func_001F5830(s32 p0, char *p1, s32 p2, s32 flags) {
+    s32 s2;
+    char *s1;
+    s32 s3;
+    char *s0;
+    char *ptr;
     char *q;
+    BtbRecB *rb;
+    s32 a1;
 
-    s2 = D_0051CD0C[0];
-    if ((flags & 4) != 0) {
-        a1 = 0x101;
-    } else {
-        a1 = 1;
+    s2 = (s32)D_0051CD0C[0];
+    s0 = p1;
+    s3 = flags;
+    a1 = 1;
+    if (flags & 4) {
+        a1 += 0x100;
     }
     a1 += D_0051CD20[0] << 7;
-    s1 = 0;
-    r = func_001A50F0(s2, a1);
-    if (r != NULL) {
-        s1 = (s32)func_00209540(r, 0x2000001, 0);
+    s1 = NULL;
+    ptr = func_001A50F0((char *)s2, a1);
+    if (ptr != NULL) {
+        s1 = func_00209540(ptr, 0x2000001, 0);
     }
-    if (s1 != 0) {
-        func_00209B50((char *)s1, s0, 0);
-        p = func_001F5FD0(0x85000000, D_00469858, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
-        *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) & ~0x800;
-        *(s32 *)(p + 0x20) = *(s32 *)(p + 0x20) | 0x800;
-        memset(p + 0x30, 0, 0x80);
-        *(s32 *)(p + 0x38) = s1;
-        q = func_001A50F0(s2, 0x280);
-        p = p + 0x30;
-        *(char **)(p + 4) = q;
-        *(s32 *)p = flags & 2;
+    if (s1 != NULL) {
+        func_00209B50(s1, s0, 0);
+        s0 = (char *)func_001F5FD0(0x85000000, D_00469858, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) & -0x801;
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) | 0x800;
+        memset(s0 + 0x30, 0, 0x80);
+        *(s32 *)(s0 + 0x38) = (s32)s1;
+        rb = (BtbRecB *)(s0 + 0x30);
+        q = func_001A50F0((char *)s2, 0x280);
+        rb->f4 = q;
+        rb->f0 = s3 & 2;
     }
 }
-#endif
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5830);
 extern char D_00469868[];
 extern char *func_001A50F0(char *, s32);
 extern char *func_00209540(char *, s32, s32);
