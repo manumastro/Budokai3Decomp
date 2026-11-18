@@ -873,7 +873,44 @@ void func_002AC330(s32 *a0, s32 *a1) {
     }
     func_002AC190(a0, a1);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC3D0);
+extern void amMotSet_Apply(void *, f32, s32);
+s32 func_002AC3D0(s32 *a0, s32 *a1) {
+    u8 *t = (u8 *)a0;
+    s8 c;
+    f32 len = *(f32 *)(t + 0x30);
+    ScrLightSub *e = &D_005ABA80[*(s32 *)a0[0]][*(s8 *)(t + 0x2A)];
+
+    if (((s32 *)a0[0])[3] != 3) {
+        *(f32 *)(t + 0x2C) += *(f32 *)(t + 0x38);
+        if (*(s8 *)(t + 0x2B) == 1) {
+            len -= 1.0f;
+            if (!(*(f32 *)(t + 0x2C) <= len)) {
+                *(f32 *)(t + 0x2C) -= len;
+                (*(s8 *)(t + 0x2B))--;
+                *(s32 *)(t + 0x10) = 0;
+                return 1;
+            }
+        } else {
+            if (!(*(f32 *)(t + 0x2C) < len)) {
+                *(f32 *)(t + 0x2C) -= len;
+                c = *(s8 *)(t + 0x2B);
+                if (c != -1) {
+                    *(s8 *)(t + 0x2B) = c - 1;
+                    if (*(s8 *)(t + 0x2B) <= 0) {
+                        *(s32 *)(t + 0x10) = 0;
+                        return 1;
+                    }
+                }
+            }
+        }
+        if (*(s8 *)((u8 *)e + 0x20A2) != 0) {
+            amMotSet_Apply((u8 *)e + 0x40, (f32)(s32)*(f32 *)(t + 0x2C), *(s32 *)(t + 0x34));
+        } else {
+            amMotSet_Apply((u8 *)e + 0x40, *(f32 *)(t + 0x2C), *(s32 *)(t + 0x34));
+        }
+    }
+    return 3;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AC520);
 s32 Scr_CmdLightF2094(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
