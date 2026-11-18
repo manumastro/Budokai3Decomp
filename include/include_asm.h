@@ -23,6 +23,7 @@
 #define INCLUDE_ASM(FOLDER, NAME) \
     __asm__( \
         ".section .text\n" \
+        "    .align 3\n" \
         "    .set noat\n" \
         "    .set noreorder\n" \
         "    .include \"" FOLDER "/" #NAME ".s\"\n" \
