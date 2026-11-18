@@ -22,7 +22,32 @@ typedef struct Ac2E4 {
 
 extern s32 D_0046FD5C;
 extern void *amSofdec_Create(SofInit *);
-extern void func_002E54A0(void);
+/* The movie task: the player handle, the wanted and the played movie index. */
+typedef struct SofPlay {
+    s32 h;
+    s16 cur;
+    s16 prev;
+} SofPlay;
+
+typedef struct SofTask {
+    char pad0[0x1C];
+    void *f1C;
+    char pad20[0x10];
+    SofPlay p;
+} SofTask;
+
+/* The movie file ids (D_00456DD0), copied to the stack. */
+typedef struct SofIds {
+    s32 f0[12];
+    f32 f30;
+} SofIds __attribute__((aligned(16)));
+
+extern SofIds D_00456DD0;
+extern s32 amSofdec_GetStat(s32);
+extern void amSofdec_StartAfs(s32, s32, s32);
+extern void amSofdec_Destroy(s32);
+extern void func_002E54A0(SofTask *);
+extern void Sofdec_TaskMain(struct Ac2E4 *);
 
 typedef struct Obj2E4 {
     char pad0[4];
@@ -272,7 +297,48 @@ void ArenaStage_TaskEnd(void) {
 }
 void ArenaStage_TaskStart(void) {
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E54A0);
+void func_002E54A0(SofTask *s) {
+    SofIds ids = D_00456DD0;
+    SofPlay *p = &s->p;
+    s32 v;
+    s32 st;
+
+    if (p->h >= 0) {
+        st = amSofdec_GetStat(p->h);
+        /* FAKEMATCH: the original has the trapping addi v1,v0,1 (stat + 1) that the compiler never emits; it is an asm
+         * statement here and the cases are shifted by one (1 = movie idle, 2 = playing, 3 = ended, 5 and 0 = error). */
+        asm { addi v, st, 1 }
+        switch (v) {
+        case 1:
+        case 4:
+            if (p->cur >= 0) {
+                amSofdec_StartAfs(p->h, ids.f0[p->cur], -1);
+            }
+            p->prev = p->cur;
+            break;
+        case 3:
+            if (p->cur >= 0 && p->cur == p->prev) {
+                break;
+            }
+            if (p->h >= 0) {
+                amSofdec_Destroy(p->h);
+            }
+            p->h = -1;
+            s->f1C = (Sofdec_TaskMain == NULL) ? NULL : (void *)Sofdec_TaskMain;
+            break;
+        case 2:
+            break;
+        case 5:
+        case 0:
+            if (p->h >= 0) {
+                amSofdec_Destroy(p->h);
+            }
+            p->h = -1;
+            s->f1C = (Sofdec_TaskMain == NULL) ? NULL : (void *)Sofdec_TaskMain;
+            break;
+        }
+    }
+}
 void Sofdec_TaskMain(Ac2E4 *s) {
     SofInit in;
 

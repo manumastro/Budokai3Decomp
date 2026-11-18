@@ -289,6 +289,9 @@ segments:
       - [0x36EFC4, rodata, rodata/rodata_a3c]
       - [0x36F350, .rodata, unk/unk_2D2530]
       - [0x36F368, rodata, rodata/rodata_b]
+      # unk_2E4030 owns 0x36F4F0 to 0x36F508: the switch table of func_002E54A0 (the tables before it stay in the data)
+      - [0x36F4F0, .rodata, unk/unk_2E4030]
+      - [0x36F508, rodata, rodata/rodata_b2]
       - [0x36F590, .rodata, unk/unk_2E8540]
       - [0x36F5AC, rodata, rodata/rodata_c]
       # .sdata, 0x46FD00 ($gp - 0x7FF0) to 0x470200.
