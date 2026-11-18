@@ -84,7 +84,35 @@ s32 func_001FC820(u8 *a, u8 *b, u8 *c) {
     return r > *(f32 *)(c + 0x10) ? 0 : 1;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FC880);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FCCC0);
+extern f32 func_00146E90(f32 *);
+extern void func_00146F30(f32 *);
+extern void func_00146F10(void *, void *, f32);
+s32 func_001FCCC0(u8 *o0, u8 *o1, u8 *p, s32 a3, u8 *q) {
+    f32 e;
+    f32 a;
+    f32 v[4];
+    if (D_0051CD28[0] == 0) {
+        return 0;
+    }
+    if (*(f32 *)(p + 4) > *(f32 *)(q + 0x14) || *(f32 *)(p + 4) < *(f32 *)(q + 4)) {
+        return 0;
+    }
+    v[0] = *(f32 *)p - *(f32 *)(q + 0x10);
+    v[1] = 0.0f;
+    v[2] = *(f32 *)(p + 8) - *(f32 *)(q + 0x18);
+    v[3] = 1.0f;
+    e = *(f32 *)(q + 0x14) - *(f32 *)(p + 4);
+    a = *(f32 *)(q + 0x24) * e / *(f32 *)(q + 0x20);
+    if (func_00146E90(v) > a + *(f32 *)(p + 0x10)) {
+        return 0;
+    }
+    func_00146F30(v);
+    VU_COPY(o1, v);
+    func_00146F10(v, v, a);
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(o0), "r"(v), "r"(q) : "memory");
+    *(f32 *)(o0 + 4) = *(f32 *)(q + 0x20) - e;
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FCE20);
 extern f32 func_00146EB0(f32 *);
 extern void func_00146F30(f32 *);
