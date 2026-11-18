@@ -2182,7 +2182,7 @@ void func_00254B50(s32 *a0) {
     D_0058D4F4[0] = 0;
 }
 #endif
-// GIVEN UP: differs: size 0x16C vs 0x180 (4 instructions short): the global store after the if is laid out at the end (the original jumps to it from the false test), the release macro matches; 6 forms
+// differs: 11 of 93 (adiff): s2 = a0+12 is scheduled into the beqz slot (original: before the saves), first SK_REL reads 52(v1) (original: 4(s1) after addiu s1), the original holds s1 and s4 in a different role. Best form: the b walker is set after the two +4 releases.
 #if 0
 extern void func_0022D0E0(s32, s32);
 extern s32 D_0058D4F4[];
@@ -2205,9 +2205,9 @@ void func_00254B50(s32 *a0) {
         SK_REL(s4, 0xC);
         s1 = s4;
         for (j = 0; j < 2; j++) {
-            b = s4 + 8 * j;
             SK_REL(s1 + 4 * j, 0x30);
             SK_REL(s1 + 4 * j, 0x18);
+            b = s4 + 8 * j;
             for (k = 0; k < 2; k++) {
                 SK_REL(b + 4 * k, 0x20);
             }
@@ -2634,7 +2634,7 @@ void func_00257DA0(s32 *a0) {
         }
     }
 }
-// GIVEN UP: differs: size 0x16C vs 0x180 (4 instructions short), the same release shape as func_00254B50 (identical asm but for the global D_0058D4EC): the global store after the if is laid out at the end; 6 forms
+// differs: 11 of 93, the same release shape as func_00254B50 (identical asm but for the global D_0058D4EC).
 #if 0
 extern void func_0022D0E0(s32, s32);
 extern s32 D_0058D4EC[];
@@ -2657,9 +2657,9 @@ void func_00257E30(s32 *a0) {
         SK_REL(s4, 0xC);
         s1 = s4;
         for (j = 0; j < 2; j++) {
-            b = s4 + 8 * j;
             SK_REL(s1 + 4 * j, 0x30);
             SK_REL(s1 + 4 * j, 0x18);
+            b = s4 + 8 * j;
             for (k = 0; k < 2; k++) {
                 SK_REL(b + 4 * k, 0x20);
             }
