@@ -107,7 +107,57 @@ void func_0029EC40(void) {
         *(s32 *)(s4 + 0x48) = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EDC0);
+extern u8 *D_004708CC;
+extern s8 D_004B4B63[];
+typedef struct DispGT { u16 f00; u8 pad[0xB6]; } DispGT;
+extern DispGT D_00492FCE[];
+typedef struct DispE {
+    s32 a00;
+    s32 a04;
+    u8 pad08[0x14];
+    s32 a1C;
+    f32 f20;
+    u8 pad24[4];
+    f32 f28;
+} DispE;
+typedef struct DispF {
+    u8 pad00[0x10];
+    s32 a10;
+    u8 pad14[0x1C];
+} DispF;
+extern void func_0022C7D0(s32, s32, f32);
+s32 func_0029EDC0(void) {
+    u8 *s4;
+    s32 j;
+    DispE *e;
+    DispF *f;
+    s32 i;
+    s32 ok;
+
+    s4 = D_004708CC;
+    if (func_0029EF70() == 0) {
+        *(s32 *)(s4 + 0x30) += 1;
+    } else if ((ok = !((u16)(*(s32 *)(D_004708CC + 0x40) & D_00492FCE[D_004B4B63[0]].f00) & 0x4000)) != 0) {
+    } else {
+        for (j = 0; j < *(s32 *)(s4 + 0xC); j++) {
+            e = &(*(DispE ***)(s4 + 0x4C))[*(s32 *)(s4 + 0x30)][j];
+            f = &(*(DispF **)(s4 + 0x58))[j];
+            if (e->a04 >= 0 && e->f28 < e->f20) {
+                func_0022C7D0(f->a10, 1, e->f20);
+                e->f28 = e->f20;
+            }
+            if (e->a00 >= 0 && e->f28 < e->f20) {
+                func_0022C7D0(e->a1C, 1, e->f20);
+                e->f28 = e->f20;
+            }
+        }
+        for (i = 1; i < 4; i++) {
+            amAdx_Stop(i);
+        }
+        *(s32 *)(s4 + 0x30) += 1;
+    }
+    return *(s32 *)(s4 + 0x30) < *(s32 *)s4;
+}
 s32 func_0029EF70(void) {
     u8 *s = D_004708CC;
     s32 j;
