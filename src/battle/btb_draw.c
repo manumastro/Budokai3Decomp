@@ -5308,7 +5308,45 @@ void func_001F3740(char *a0) {
 #endif
 // differs: func_001F3740 (424 bytes): the draw shape of func_001F2570 without its prefix; the only misses are the load order of the table base (gBtbBg+0x34 in v1 first in the original) and the index D_0051CD20 (a0), which the compiler swaps (tried: index first, base in a local, split statements). 6 instructions differ, the rest matches.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3740);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F38F0);
+void func_001F38F0(BtLTop *a0) {
+    BtLSt *s0;
+    BtLHolder *h;
+    BtbItem *it;
+    s32 s2;
+    s32 idx;
+    f32 f20;
+
+    s0 = a0->h->ms;
+    if (s0 != NULL) {
+        f20 = D_0051CD24[0];
+        if (f20 >= 0.0f) {
+            if (s0->f18 != 0) {
+                s2 = ((s0->f8 + 1) << 16) | s0->f10;
+                amMotSet_Apply(s0->obj, s0->f4, s2);
+                s0->f4 = s0->f4 + s0->f14 * f20;
+                idx = (s2 >> 16) - 1;
+                if (!(s0->f4 < (f32)s0->obj->slots[idx]->frm[s2 & 0xFFFF].f8)) {
+                    s0->f4 = 0.0f;
+                }
+            }
+        }
+    }
+    h = a0->h;
+    it = h->it;
+    if (it != NULL) {
+        f20 = D_0051CD24[0];
+        if (f20 >= 0.0f) {
+            if (it->id != 0) {
+                func_002D04A0(it->kind2);
+                func_002D0110(h->it->id, h->it->val, 0);
+                func_002D04A0(0);
+            }
+            if (it->kind != 0) {
+                it->val = func_002CFDD0(it->id, it->val, f20);
+            }
+        }
+    }
+}
 #if 0
 void func_001F3A60(char *a0) {
     char *s0;
@@ -5361,7 +5399,45 @@ void func_001F3A60(char *a0) {
 #endif
 // differs: func_001F3A60 (424 bytes): same shape as func_001F3740 (the table base is loaded after the index in ours; the original loads the base first). s0 copy, bg and index locals tried. 6 instructions differ.
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3A60);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F3C10);
+void func_001F3C10(BtLTop *a0) {
+    BtLSt *s0;
+    BtLHolder *h;
+    BtbItem *it;
+    s32 s2;
+    s32 idx;
+    f32 f20;
+
+    s0 = a0->h->ms;
+    if (s0 != NULL) {
+        f20 = D_0051CD24[0];
+        if (f20 >= 0.0f) {
+            if (s0->f18 != 0) {
+                s2 = ((s0->f8 + 1) << 16) | s0->f10;
+                amMotSet_Apply(s0->obj, s0->f4, s2);
+                s0->f4 = s0->f4 + s0->f14 * f20;
+                idx = (s2 >> 16) - 1;
+                if (!(s0->f4 < (f32)s0->obj->slots[idx]->frm[s2 & 0xFFFF].f8)) {
+                    s0->f4 = 0.0f;
+                }
+            }
+        }
+    }
+    h = a0->h;
+    it = h->it;
+    if (it != NULL) {
+        f20 = D_0051CD24[0];
+        if (f20 >= 0.0f) {
+            if (it->id != 0) {
+                func_002D04A0(it->kind2);
+                func_002D0110(h->it->id, h->it->val, 0);
+                func_002D04A0(0);
+            }
+            if (it->kind != 0) {
+                it->val = func_002CFDD0(it->id, it->val, f20);
+            }
+        }
+    }
+}
 extern void DrawFlags_Apply(s32, s32, s32, s32, s32);
 extern s32 gBattle;
 extern s32 D_0047064C;
@@ -7008,7 +7084,7 @@ void func_001F7BF0(void) {
 }
 extern char D_004698D0[];
 extern void func_001F3A60(void);
-extern void func_001F3C10(void);
+extern void func_001F3C10(struct BtLTop *);
 void func_001F7C80(s32 a0) {
     char *v;
     char *s0;
