@@ -1063,17 +1063,11 @@ typedef struct SkillVec {
 
 extern void func_001F9CD0(s32, s32, s32, s32, s32);
 
-// GIVEN UP: the VU0 subtraction is right, but the original computes the two element addresses again for each
-// use (no common subexpression) and loads the call's fields in another order (2 forms tried)
-// GIVEN UP (round 5, skill): 12 of 31 instructions differ. The VU0 part and the call match; the registers do not:
-// the original keeps &tmp in $a3 from the first instruction and the fighter pointer in $a2, mwcc gives $a2 to &tmp
-// (9 forms tried: operand order incl. &tmp last, declaration order incl. &tmp first as an s32 local, fighter pointer as a local or inline in the operands).
-#if 0
 s32 func_00252E20(s32 a0, s32 *a1) {
     s32 *q = (s32 *)a1[11];
-    s32 idx = q[2];
     s32 q0 = q[0];
     s32 q1 = q[1];
+    s32 idx = q[2];
     u8 *f = (u8 *)gBattle->fighter[idx];
     SkillVec tmp;
 
@@ -1082,8 +1076,6 @@ s32 func_00252E20(s32 a0, s32 *a1) {
     func_001F9CD0(idx, q0, (s32)(f + (q1 << 4) + 0x650), (s32)&tmp, 0);
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00252E20);
 s32 Scr_CmdObjFreeFlag400(s32 a0, s32 a1) {
     BtbObj_FreeFlag400(a0, a1);
     return 1;
