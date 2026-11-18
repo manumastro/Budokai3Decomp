@@ -5,6 +5,8 @@ typedef struct LV { u8 p[0x40]; f32 a; u8 p2[4]; f32 b; } LV;
 typedef struct LSubA { u8 p[8]; s32 f8; u8 q[0x24]; LV *f30; } LSubA;
 typedef struct LObjA { f32 t; u8 p[8]; s32 type; LSubA *sub; u8 q[0x14]; s32 f28; } LObjA;
 typedef struct PtrCount { void *p; s32 n; } PtrCount;
+typedef struct LSub4 { f32 t; s32 f4; s32 f8; u8 pc[0x10]; s32 f1C; struct LObj4 *link; } LSub4;
+typedef struct LObj4 { u8 p0[0x1C]; void *cb; u8 p1[0x10]; LSub4 sub; s32 f34; } LObj4;
 extern u8 *D_0058BEB0[];
 extern s32 Input_IsHeld(s32);
 extern void amTask_Kill(void *);
@@ -1045,9 +1047,35 @@ void Dmg_TaskKill(u8 *a0) {
         s += 4;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_0023A000);
-typedef struct LSub4 { f32 t; s32 p4; s32 f8; u8 p[0x14]; struct LObj4 *link; } LSub4;
-typedef struct LObj4 { u8 p0[0x1C]; void *cb; u8 p1[0x10]; LSub4 sub; s32 f34; } LObj4;
+extern void func_00238C50(void *, s32, s32, s32, f32);
+extern s32 func_0022B900(s32, s32, f32);
+extern s32 A2d_AllocObj(s32, f32);
+void func_0023A000(LSub4 *o, s32 a1) {
+    char *sys = (char *)gBtlSys;
+    s32 e;
+    e = *(s32 *)(sys + 0xE84);
+    D_00470704 = e;
+    D_0047070C = 0x4010000;
+    D_00470708 = 0;
+    amModel_SetCurrent(e, 0x4010000);
+    D_00470238 = 0;
+    func_00228430(0);
+    func_002284D0(0);
+    func_00238C50((u8 *)o + 0xC, o->f4 ^ 1, o->f8, a1, o->t);
+    if (!(o->f4 & 1)) {
+        func_00228410();
+    }
+    if (o->f1C != 0) {
+        func_00228430(0);
+        func_0022B900(((s32 *)*(s32 *)(*(u8 **)(sys + 0xE88) + 0x1C))[a1 + ((o->f4 ^ 1) * 3 + 0x46)], o->f1C, o->t);
+        func_00228410();
+    } else {
+        o->f1C = A2d_AllocObj(((s32 *)*(s32 *)(*(u8 **)(sys + 0xE88) + 0x1C))[a1 + ((o->f4 ^ 1) * 3 + 0x46)], o->t);
+    }
+    if (o->f4 & 1) {
+        func_00228410();
+    }
+}
 extern s32 func_0021C3D0(s32);
 extern s32 *func_0021C400(s32);
 extern void func_0023A000(LSub4 *, s32);
