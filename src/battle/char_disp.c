@@ -202,7 +202,57 @@ void func_0029E9B0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
         r[0x2B8] = 1;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029EA20);
+extern u8 *D_004708CC;
+extern void func_0022D0E0(s32, s32);
+void func_0029EA20(void) {
+    u8 *s0;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 h;
+
+    s0 = D_004708CC;
+    if (*(s32 *)(s0 + 0x4C) != 0) {
+        for (i = 0; i < *(s32 *)(s0 + 0xC); i++) {
+            for (j = 0; j < *(s32 *)s0; j++) {
+                if (*(s32 *)(i * 0x2C + (s32)(*(u8 ***)(s0 + 0x4C))[j]) >= 0
+                    && *(s32 *)(i * 0x2C + (s32)(*(u8 ***)(s0 + 0x4C))[j] + 0x1C) != 0) {
+                    func_0022D0E0(*(s32 *)(i * 0x2C + (s32)(*(u8 ***)(s0 + 0x4C))[j] + 0x1C), 1);
+                    *(s32 *)(i * 0x2C + (s32)(*(u8 ***)(s0 + 0x4C))[j] + 0x1C) = 0;
+                }
+            }
+        }
+        for (i = 0; i < *(s32 *)(s0 + 0xC); i++) {
+            for (j = 0; j < *(s32 *)s0; j++) {
+                if (*(s32 *)(i * 0x2C + (s32)(*(u8 ***)(s0 + 0x4C))[j] + 4) >= 0) {
+                    h = *(s32 *)(*(s32 *)(s0 + 0x58) + i * 0x30 + 0x10);
+                    if (h != 0) {
+                        /* FAKEMATCH: the original tests the handle twice (probably an inlined guard); the repeated test reproduces both compares. */
+                        if (h != 0) {
+                            func_0022D0E0(h, 1);
+                            *(s32 *)(*(s32 *)(s0 + 0x58) + i * 0x30 + 0x10) = 0;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (*(s32 *)(s0 + 0x58) != 0) {
+            amHeap_Free(*(void **)(s0 + 0x58));
+            *(s32 *)(s0 + 0x58) = 0;
+        }
+        if (*(s32 *)(s0 + 0x4C) != 0) {
+            for (k = 0; k < *(s32 *)s0; k++) {
+                if ((*(u8 ***)(s0 + 0x4C))[k] != 0) {
+                    amHeap_Free((*(u8 ***)(s0 + 0x4C))[k]);
+                    (*(u8 ***)(s0 + 0x4C))[k] = 0;
+                }
+            }
+            amHeap_Free(*(void **)(s0 + 0x4C));
+            *(s32 *)(s0 + 0x4C) = 0;
+        }
+    }
+}
 extern void amHeap_Free(void *);
 extern void amAdx_Stop(s32);
 extern s32 func_002A8F70();
