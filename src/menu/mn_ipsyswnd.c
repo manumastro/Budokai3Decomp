@@ -120,7 +120,44 @@ void *IpSysWnd_Start(s16 a0) {
     *(s16 *)(s0 + 0xC) = a0;
     return s1;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4BB0);
+typedef unsigned char u8_c2F4BB0;
+typedef signed short s16_c2F4BB0;
+typedef unsigned short u16_c2F4BB0;
+typedef signed int s32_c2F4BB0;
+typedef unsigned int u32_c2F4BB0;
+typedef float f32_c2F4BB0;
+extern void func_00229800(void *, void *, s32_c2F4BB0, f32_c2F4BB0);
+void func_002F4BB0(u8_c2F4BB0 *a0, s32_c2F4BB0 a1) {
+    u8_c2F4BB0 *s2;
+    u32_c2F4BB0 s1;
+    u32_c2F4BB0 s0;
+    s16_c2F4BB0 idx;
+    s32_c2F4BB0 t;
+    f32_c2F4BB0 out[8];
+    void *val;
+
+    idx = (s16_c2F4BB0)a1;
+    t = *(u16_c2F4BB0 *)((u8_c2F4BB0 *)(idx * 2) + (s32_c2F4BB0)a0 + 0xC2);
+    if (t == 0xFFFF) {
+        return;
+    }
+    s2 = *(u8_c2F4BB0 **)((u8_c2F4BB0 *)(idx * 4) + (s32_c2F4BB0)a0 + 4);
+    s1 = (u16_c2F4BB0)(t % 10);
+    s0 = (u16_c2F4BB0)(t / 10);
+    val = *(void **)(*(s32_c2F4BB0 *)(*(u8_c2F4BB0 **)((u8_c2F4BB0 *)(*(void * *)&gOutputPass) + 0x8) + 0x1C) + (s16_c2F4BB0)(idx + 0x4) * 4);
+    func_00229800(val, out, -1, 0.0f);
+    *(f32_c2F4BB0 *)(s2 + 0x20) = out[0];
+    *(f32_c2F4BB0 *)(s2 + 0x24) = out[1];
+    *(u32_c2F4BB0 *)(s2 + 0x34) = 0xC1A00000;
+    *(u32_c2F4BB0 *)(s2 + 0x3C) = 0x41A00000;
+    *(u32_c2F4BB0 *)(s2 + 0x30) = 0xC1A00000;
+    *(u32_c2F4BB0 *)(s2 + 0x38) = 0x41A00000;
+    *(f32_c2F4BB0 *)(s2 + 0x44) = 40.0f * (f32_c2F4BB0)s0;
+    *(f32_c2F4BB0 *)(s2 + 0x40) = 40.0f * (f32_c2F4BB0)s1;
+    *(f32_c2F4BB0 *)(s2 + 0x48) = 40.0f * (f32_c2F4BB0)((u16_c2F4BB0)s1 + 1);
+    *(f32_c2F4BB0 *)(s2 + 0x4C) = 40.0f * (f32_c2F4BB0)((u16_c2F4BB0)s0 + 1);
+}
+
 #if 0
 // differs: 16 of 59: the register roles and the loop match; the original stores the call's return register into the cursor before the memset (mine copies it first, the store lands in the memset delay slot)
 extern void *A2d_AllocObj(s32, f32);

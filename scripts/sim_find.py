@@ -130,6 +130,20 @@ def main():
         res[name] = dict(addr=f"0x{addr:08X}", size=size, part=fam, sibling=cname, sibling_addr=f"0x{c:08X}",
                          sibling_size=csize, sibling_file=files.get(cname), score=round(r, 4),
                          identical=t == ct, same_length=len(t) == len(ct))
+    # the sibling's C text, and the result of scripts/sim_clone.py when it has been run (clones.json beside --out)
+    import sim_clone
+    texts = {}
+    for name, x in res.items():
+        key = (x["sibling_file"], x["sibling"])
+        if key not in texts:
+            texts[key] = sim_clone.function_text(x["sibling_file"], x["sibling"])[0] if x["sibling_file"] else None
+        x["sibling_c"] = texts[key]
+    clones = ROOT / Path(a.out).parent / "clones.json"
+    if clones.exists():
+        for c in json.loads(clones.read_text()):
+            if c["name"] in res and c.get("c"):
+                res[c["name"]]["clone_status"] = c["status"] + (f" {c['diff']}" if c.get("diff", -1) not in (-1, "", None) else "")
+                res[c["name"]]["clone_c"] = c["c"]
     out = ROOT / a.out
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(res, indent=1, sort_keys=True))

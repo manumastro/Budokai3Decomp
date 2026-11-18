@@ -36,7 +36,10 @@ INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028C310);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028C3E0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028C4C0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028C580);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028C730);
+
+void func_0028C730(void) {
+}
+
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028C740);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028CCE0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028CE10);
@@ -45,10 +48,62 @@ INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028D1E0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028D4D0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028D810);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DDA0);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DDB0);
+extern f32 D_00470884;
+extern s32 D_00470894;
+void func_0028DDB0(u8 *arg0) {
+    s32 var_v1;
+
+    if (D_00470884 == 0.0f) {
+        var_v1 = D_00470894;
+        if (var_v1 == 0) {
+            var_v1 = 0;
+        }
+        *(s32 *)((u8 *)arg0 + 0x1C) = var_v1;
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DDF0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DE30);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DEA0);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DF10);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DF20);
+
+void func_0028DF10(void) {
+}
+
+extern void amHeap_Free(void *);
+extern void amTask_Kill(void *);
+extern s32 D_00470048;
+extern s32 D_00470838;
+extern s32 D_0047083C;
+extern s32 D_00470848;
+
+extern void *D_0047088C;
+extern void *D_00470890;
+extern void *D_0047089C;
+extern void *D_004708A0;
+extern void amHeap_Free(void *);
+extern void amTask_Kill(void *);
+void func_0028DF20(void) {
+    if (D_0047088C != NULL) {
+        amTask_Kill(D_0047088C);
+    }
+    if (D_00470890 != NULL) {
+        amTask_Kill(D_00470890);
+    }
+    if (D_0047089C != NULL) {
+        amHeap_Free(D_0047089C);
+    }
+    if (D_004708A0 != NULL) {
+        amHeap_Free(D_004708A0);
+    }
+    D_00470848 = 0;
+    D_0047088C = NULL;
+    D_00470048 = -1;
+    D_00470890 = NULL;
+    D_00470884 = 0;
+    D_0047089C = NULL;
+    D_004708A0 = NULL;
+    D_00470838 = 0;
+    D_0047083C = 0;
+}
+
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DFC0);

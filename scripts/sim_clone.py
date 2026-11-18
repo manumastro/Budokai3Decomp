@@ -118,6 +118,141 @@ def function_text(path, name):
     return None, text
 
 
+_PP = {}
+
+
+def pp_chunks(sfile):
+    """The top-level pieces of the sibling's file after the preprocessor (headers included), cached."""
+    if sfile not in _PP:
+        import permuter_import as pi
+        _PP[sfile] = [c.strip() for c in pi.chunks(pi.preprocess(ROOT / sfile)) if c.strip()]
+    return _PP[sfile]
+
+
+def chunk_names(c):
+    """(kind, names defined) of a top-level piece: type / decl / func / other."""
+    c0 = re.sub(r"\s+", " ", c)
+    if re.match(r"^(typedef\b|(struct|union|enum)\s+\w+\s*\{)", c0) and c0.endswith(";"):
+        names = []
+        tag = re.match(r"^(?:typedef\s+)?(?:struct|union|enum)\s+(\w+)", c0)
+        if tag:
+            names.append(tag.group(1))
+        if c0.startswith("typedef"):
+            fp = re.search(r"\(\s*\*\s*(\w+)\s*\)\s*\(", c0)
+            tail = c0[c0.rfind("}") + 1:] if "}" in c0 else c0
+            m = fp or re.search(r"(\w+)\s*(?:\[[^\]]*\])*\s*;\s*$", tail)
+            if m:
+                names.append(m.group(1))
+        return "type", names
+    if c0.endswith("}") and "{" in c0:
+        m = re.match(r"^[^({=]*?\b(\w+)\s*\(", c0)
+        return "func", [m.group(1)] if m else []
+    if c0.endswith(";"):
+        c1 = re.sub(r"__asm__\s*\(\s*\"[^\"]*\"\s*\)", "", c0)
+        c1 = re.sub(r"=.*;$", ";", c1)
+        fp = re.search(r"\(\s*\*\s*(\w+)\s*(?:\[[^\]]*\])*\)\s*\(", c1)
+        if fp:
+            return "decl", [fp.group(1)]
+        m = re.match(r"^[^(]*?\b(\w+)\s*\(", c1)
+        if m and m.group(1) not in ("__attribute__",):
+            return "decl", [m.group(1)]
+        m = re.search(r"(\w+)\s*(?:\[[^\]]*\])*\s*;\s*$", c1)
+        return "decl", [m.group(1)] if m else []
+    return "other", []
+
+
+def decl_type(decl, nm):
+    """The type of an object declaration without its name: `extern Task *gX;` -> `Task *` (None for arrays and
+    functions)."""
+    d = re.sub(r"^\s*(extern|static)\s+", "", re.sub(r"\s+", " ", decl)).rstrip(";").strip()
+    d = re.sub(r"__asm__\s*\(\s*\"[^\"]*\"\s*\)", "", d).strip()
+    if "[" in d or "(" in d:
+        return None
+    t = re.sub(rf"\b{re.escape(nm)}\s*$", "", d).strip()
+    return t or None
+
+
+def isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos):
+    """The clone with every type the function needs copied from the sibling's preprocessed file under a name of
+    its own (T -> T_cADDR, so it never clashes with the target's types), the declarations the target lacks, and
+    the globals / functions the target already declares reached through a cast to the sibling's type."""
+    suf = f"_c{t_addr:X}"
+    chs = pp_chunks(sfile)
+    types, decls = {}, {}
+    order = []
+    for c in chs:
+        kind, names = chunk_names(c)
+        for n in names:
+            if kind == "type":
+                types.setdefault(n, c)
+            elif kind == "decl":
+                decls.setdefault(n, c)
+        if kind == "type":
+            order.append(c)
+    # undo an earlier isolation of the sibling (`T f_xADDR(...) __asm__("f")`): use the real names
+    alias = {}
+    for n, c in list(decls.items()):
+        m = re.search(r"__asm__\s*\(\s*\"(\w+)\"\s*\)", c)
+        if m and m.group(1) != n:
+            alias[n] = m.group(1)
+    body = func
+    for a_, real in alias.items():
+        body = re.sub(rf"\b{re.escape(a_)}\b", real, body)
+        decls.setdefault(real, re.sub(rf"\b{re.escape(a_)}\b", real, re.sub(r"\s*__asm__\s*\(\s*\"[^\"]*\"\s*\)", "", decls[a_])))
+    used = set(re.findall(r"[A-Za-z_]\w*", body))
+    # sibling names of the symbols the body uses (it was renamed to the target's names already)
+    back = {v: k for k, v in ren.items()}
+    need_decl = [n for n in used if back.get(n, n) in decls and n != name]
+    need = set(used) | {w for n in need_decl for w in re.findall(r"[A-Za-z_]\w*", decls[back.get(n, n)])}
+    chosen = set()
+    while True:
+        more = [t for t in types if t in need and t not in chosen]
+        if not more:
+            break
+        for t in more:
+            chosen.add(t)
+            need |= set(re.findall(r"[A-Za-z_]\w*", types[t]))
+    def tren(text):
+        for t in sorted(chosen, key=len, reverse=True):
+            text = re.sub(rf"(?<![\w.>]){re.escape(t)}\b", t + suf, text)
+        return text
+    out_types = []
+    for c in order:
+        _, names = chunk_names(c)
+        if set(names) & chosen and c not in out_types:
+            out_types.append(c)
+    out_types = [tren(c) for c in out_types]
+    body = tren(body)
+    above = re.sub(r"^INCLUDE_(?:ASM|RODATA)\(.*$", "", m2c_draft.visible(ttext[:mpos]), flags=re.M)
+    whole = m2c_draft.visible(ttext)
+    out_decls = []
+    for n in sorted(need_decl):
+        sd = decls[back.get(n, n)]
+        for o, nw in ren.items():
+            sd = re.sub(rf"\b{re.escape(o)}\b", nw, sd)
+        sd = tren(re.sub(r"\s*__asm__\s*\(\s*\"[^\"]*\"\s*\)", "", sd))
+        if re.search(rf"\b{re.escape(n)}\b", whole):
+            # the target declares it (maybe with another type): use the sibling's type through a cast
+            kind = "func" if re.search(rf"\b{re.escape(n)}\s*\(", sd) and not re.search(rf"\(\s*\*\s*{re.escape(n)}", sd) else "obj"
+            if kind == "func":
+                m = re.match(rf"^(?:extern\s+)?(.*?)\b{re.escape(n)}\s*\((.*)\)\s*;$", re.sub(r"\s+", " ", sd))
+                if m:
+                    fptr = f"(({m.group(1).strip()} (*)({m.group(2)})){n})"
+                    body = re.sub(rf"(?<![\w.>]){re.escape(n)}(?=\s*\()", fptr.replace("\\", "\\\\"), body)
+            else:
+                t = decl_type(sd, n)
+                if t:
+                    body = re.sub(rf"(?<![\w.>&]){re.escape(n)}\b", f"(*({t} *)&{n})", body)
+            if not re.search(rf"\b{re.escape(n)}\b", above):
+                # declared only further down: that declaration is needed above the function too
+                m = re.search(rf"^[^\n;{{}}#]*\b{re.escape(n)}\b[^\n;{{}}]*;", whole[whole.find("\n", 0):], re.M)
+                if m and not m.group(0).lstrip().startswith(("return", "if")):
+                    out_decls.append(m.group(0).strip())
+        else:
+            out_decls.append(sd)
+    return "\n".join(out_types + out_decls) + "\n" + body, out_types, out_decls, body
+
+
 def clone(job):
     name, info = job
     rom = ROM.read_bytes()
@@ -196,6 +331,14 @@ def clone(job):
                 func = re.sub(pat, f"0x{new:X}", func, count=1)
                 break
     body = "\n".join(items) + "\n" + func
+    if info["part"] == "gcc":
+        # library pairs: an item for scripts/func_insert.py (it isolates the declarations and checks with gccdiff);
+        # the declarations come from the preprocessed sibling, its own isolation undone
+        try:
+            _, ty, de, fb = isolated_body(sfile, sname, name, t_addr, ren, func, "", "", 0)
+        except Exception as e:
+            return dict(name=name, status="skip", why=f"isolate: {e}"[:120])
+        return dict(name=name, status="gcc-item", item=dict(addr=t_addr, name=name, decls=ty + de, func=fb))
     tfile = None
     for p in sorted((ROOT / "src").rglob("*.c")):
         if re.search(rf'^INCLUDE_ASM\(\s*"[^"]+"\s*,\s*{re.escape(name)}\s*\);', p.read_text(), re.M):
@@ -217,8 +360,18 @@ def clone(job):
         keep.append(it)
     body = "\n".join(keep) + "\n" + func
     r = m2c_draft.draft(ROOT / tfile, name, c_override=body)
+    how = "plain"
+    if r["status"] != "match":
+        # second form: the types copied under names of their own, the target's globals reached through casts
+        try:
+            body2 = isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos)[0]
+            r2 = m2c_draft.draft(ROOT / tfile, name, c_override=body2)
+            if m2c_draft.RANK.get(r2["status"], 9) < m2c_draft.RANK.get(r["status"], 9) or r2["status"] == "match":
+                r, body, how = r2, body2, "isolated"
+        except Exception as e:
+            how = f"isolate failed: {e}"[:80]
     return dict(name=name, file=tfile, status=r["status"], diff=r["diff"], why=r["detail"][:120], c=r["c"] or body,
-                renames=len(ren), literals=len(lits))
+                renames=len(ren), literals=len(lits), how=how)
 
 
 def main():
@@ -228,17 +381,25 @@ def main():
     ap.add_argument("-j", type=int, default=8)
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--out", default="build/sim/clones.json")
+    ap.add_argument("--gcc-items", help="also write the library (gcc) pairs as scripts/func_insert.py items to this json")
     a = ap.parse_args()
     sim = json.loads((ROOT / a.sim).read_text())
-    jobs = [(n, i) for n, i in sim.items() if i["part"] == "mw" and i["same_length"] and i["score"] >= a.min
-            and i["sibling_file"] and n != i["sibling"]]
+    jobs = [(n, i) for n, i in sim.items() if (i["part"] == "mw" or a.gcc_items) and i["same_length"]
+            and i["score"] >= a.min and i["sibling_file"] and n != i["sibling"]]
     print(f"{len(jobs)} pairs", file=sys.stderr)
     res = []
     with Pool(a.j) as pool:
         for r in pool.imap_unordered(clone, jobs):
             res.append(r)
             print(r["name"], r["status"], r.get("diff", ""), r.get("why", "")[:80], file=sys.stderr)
-    (ROOT / a.out).write_text(json.dumps(res, indent=1))
+    if a.gcc_items:
+        items = [r.pop("item") for r in res if r["status"] == "gcc-item"]
+        (ROOT / a.gcc_items).write_text(json.dumps(items, indent=1))
+        print(f"{len(items)} library items -> {a.gcc_items} (scripts/func_insert.py)", file=sys.stderr)
+    old = []
+    if (ROOT / a.out).exists():
+        old = [r for r in json.loads((ROOT / a.out).read_text()) if r["name"] not in {x["name"] for x in res}]
+    (ROOT / a.out).write_text(json.dumps(old + res, indent=1))
     from collections import Counter
     print(Counter(r["status"] for r in res))
     if a.apply:

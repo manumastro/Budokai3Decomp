@@ -77,7 +77,9 @@ def main():
     ap.add_argument("--game-drafts", help="m2c_batch.py --drafts folder")
     ap.add_argument("--game-perm", help="permuter_run.py CSV for game drafts (best output under build/permuter/NAME)")
     ap.add_argument("--out", default="drafts")
+    ap.add_argument("--sim", help="scripts/sim_find.py json: the most similar function in C, added under each draft")
     a = ap.parse_args()
+    sim = json.loads(Path(a.sim).read_text()) if a.sim and Path(a.sim).exists() else {}
     out = ROOT / a.out
     rem = LR.remaining(True)
     sz = sizes()
@@ -169,7 +171,27 @@ def main():
                 f" * Status: {status}" + (f", {diff} instructions differ" if diff is not None and status in ("diff", "size") else "") + "\n"
                 f" * Made with: {how or 'no machine draft'}\n"
                 f" * Original: {asm} */\n\n")
-        d.write_text(head + (body.strip() + "\n" if body.strip() else "/* no draft: decompile from the assembly */\n"))
+        text = head + (body.strip() + "\n" if body.strip() else "/* no draft: decompile from the assembly */\n")
+        # a draft already there that is closer (an agent's attempt, a permuter result) stays
+        if d.exists():
+            old = d.read_text()
+            om = re.search(r"^ \* Status: (\w+)(?:, (\d+) instructions differ)?", old, re.M)
+            if om:
+                okey = (RANK.get(om.group(1), 5), int(om.group(2)) if om.group(2) else (0 if om.group(1) == "match" else 1 << 30))
+                nkey = (RANK.get(status, 5), diff if diff is not None else (0 if status == "match" else 1 << 30))
+                if okey < nkey:
+                    text = re.sub(r"\n/\* Similar function already in C:.*\Z", "\n", old, flags=re.S)
+                    status, diff = om.group(1), okey[1] if okey[1] != 1 << 30 else None
+        s = sim.get(name)
+        if s and s.get("score", 0) >= 0.6:
+            sc = (s.get("clone_c") or s.get("sibling_c") or "").strip()
+            sc = re.sub(r"(/[\w.\-]+)+/(?=[\w.\-]+\.\w+:)", "", sc)
+            text = text.rstrip("\n") + "\n\n" + (
+                f"/* Similar function already in C: {s['sibling']} ({s.get('sibling_file')}), similarity {s['score']:.2f}"
+                + (", same instructions apart from immediates/symbols" if s.get("identical") else "")
+                + (f"; renamed copy (scripts/sim_clone.py): {s['clone_status']}" if s.get("clone_status") else "")
+                + ".\n * It is the template below (not built). */\n#if 0\n" + sc.replace("#endif", "/* endif */") + "\n#endif\n")
+        d.write_text(text)
         index.append((RANK.get(status, 5), diff if diff is not None else 1 << 30, size, name, seg, addr, status, grp or "game"))
     index.sort()
     lines = ["# Drafts of the functions still in assembly", "",
