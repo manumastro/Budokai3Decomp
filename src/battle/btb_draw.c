@@ -6868,54 +6868,42 @@ extern char D_004698C0[];
 extern void *func_001F5FD0(u32, char *, s32, void *, void *);
 extern void func_001F2FD0(char *);
 extern void func_001F3180(void);
-
-// differs: 29 of 65 instructions (the loop's registers and the layout of its test; the constructor call matches)
-
-#if 0
-
 void func_001F7720(s32 p0) {
-    s32 fl;
-    s32 n;
-    s32 i;
     s32 t;
-    char *a2;
-    char *d;
-    char *x1;
-    char *x2;
-    char *x3;
     char *ent;
     char *s0;
     char *r;
-
+    char *d;
+    s32 fl;
+    s32 i;
+    char *a2;
+    s32 n;
     t = D_0051CD20[0];
     ent = D_0051CD14[0] + t * 36;
     s0 = *(char **)(ent + 0xC) + (p0 << 5);
     r = func_001F5FD0(0x81000000, D_004698C0, (s32)s0, (void *)func_001F2FD0, (void *)func_001F3180);
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x41;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x40;
-    x1 = *(char **)(s0 + 4);
-    x2 = *(char **)x1;
-    x3 = *(char **)(x2 + 0x1C);
-    d = *(char **)x3;
+    d = **(char ***)((char *)**(char ***)(s0 + 4) + 0x1C);
     fl = 0;
     if (d != NULL) {
         n = *(s32 *)(d + 0x10);
+        i = 0;
         if (0 < n) {
             a2 = *(char **)(d + 0x1C);
-            for (i = 0; i < n; i++) {
+            do {
                 if (*(s8 *)a2 == 0x58) {
                     fl |= 0x200;
                 }
+                i++;
                 a2 += 0x20;
-            }
+            } while (i < n);
         }
     }
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & ~fl;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | fl;
 }
-#endif
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7720);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7820);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7990);
 extern char *D_0051CD14[];
