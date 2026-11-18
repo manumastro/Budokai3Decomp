@@ -7168,7 +7168,52 @@ void func_001F7720(s32 p0) {
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | fl;
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7820);
+void func_001F7820(void) {
+    char *v;
+    s32 s3;
+    char *s2;
+    s32 s1;
+    s32 s0;
+    char *r;
+    char *d;
+    s32 fl;
+    s32 i;
+    char *a2;
+    s32 n;
+
+    v = D_0051CD14[0] + D_0051CD20[0] * 36;
+    s3 = *(s32 *)(*(char **)(v + 4) + 0x80) + *(s32 *)(*(char **)(v + 4) + 0x84);
+    s0 = *(s32 *)(*(char **)(v + 4) + 0x8C) + s3;
+    if (s3 < s0) {
+        s1 = s3 << 5;
+        do {
+            s2 = *(char **)(D_0051CD14[0] + D_0051CD20[0] * 36 + 0xC) + s1;
+            r = func_001F5FD0(0x81000000, D_004698C0, (s32)s2, (void *)func_001F2FD0, (void *)func_001F3180);
+            *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x41;
+            *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x40;
+            d = **(char ***)((char *)**(char ***)(s2 + 4) + 0x1C);
+            fl = 0;
+            if (d != NULL) {
+                n = *(s32 *)(d + 0x10);
+                i = 0;
+                if (0 < n) {
+                    a2 = *(char **)(d + 0x1C);
+                    do {
+                        if (*(s8 *)a2 == 0x58) {
+                            fl |= 0x200;
+                        }
+                        i++;
+                        a2 += 0x20;
+                    } while (i < n);
+                }
+            }
+            *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & ~fl;
+            *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | fl;
+            s3++;
+            s1 += 0x20;
+        } while (s3 < s0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7990);
 extern char *D_0051CD14[];
 extern s32 D_0051CD20[];
