@@ -4,8 +4,15 @@ extern void func_00125740(void *, void *, s32);
 
 extern s32 *D_0058BB64[];
 extern s32 D_0058BB70[];
-extern void func_0022C060(s32);
-extern void func_0022BC30(s32, f32);
+extern void func_0022C060(s32, f32);
+extern void amDraw_SetPacketMode(s32);
+extern void func_0022CD00(s32 *);
+typedef struct A2dEnt {
+    s32 *p;
+    f32 v;
+} A2dEnt;
+extern void func_0022B900(s32 *, f32, s32 *);
+extern s32 func_0022BC30(s32 *, f32);
 
 extern s32 D_004706D8;
 extern s32 *D_004706D0;
@@ -262,7 +269,45 @@ void func_00225A60(s32 *p) {
 void func_00225A90(s32 *p) {
     func_0023A5F0((s32)func_0021C360(p[0]) + 0x14);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00225AC0);
+extern void *gBattle;
+extern s32 func_0023F7A0(s32, s32);
+void func_00225AC0(s32 *a0) {
+    u8 *sys = gBtlSys;
+    s32 *slot = BtlSys_GetSlot(a0[0]);
+    s32 i = 0;
+    s32 mode;
+    s32 *v;
+
+    if (0 < *(s32 *)((u8 *)gBattle + 0x88D8)) {
+        do {
+            v = BtlSys_GetSlot(i);
+            *v = *v & 0x31C900;
+            *v |= 0xA;
+            i += 1;
+        } while (i < *(s32 *)((u8 *)gBattle + 0x88D8));
+    }
+    if (*(s16 *)(sys + 0xDF0) == 2 && a0[1] == 3) {
+        mode = 2;
+    } else {
+        mode = a0[1];
+    }
+    switch (mode) {
+    case 0:
+        *slot |= 0x4000;
+        break;
+    case 2:
+        *slot |= 0x8000;
+        break;
+    case 3:
+        *slot |= 0x10000;
+        break;
+    default:
+        *slot &= 0x31C900;
+        *slot |= 0xA;
+        return;
+    }
+    func_0023F7A0(a0[0], mode);
+}
 void func_00225C30(s32 *p) {
     u8 *o = (u8 *)BtlSys_GetSlot(p[0]);
 
@@ -402,7 +447,100 @@ void A2d_CallHandler(s32 idx, s32 arg) {
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00226070);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00226540);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002269B0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227010);
+typedef struct SortEnt {
+    s32 key;
+    f32 val;
+} SortEnt;
+void func_00227010(s32 *a0, s32 *a1) {
+    SortEnt *a = (SortEnt *)a0;
+    s32 n = ((u8 *)a1 - (u8 *)a0) >> 3;
+    s32 cnt;
+    s32 k0;
+    s32 max;
+    s32 k;
+    s32 p0;
+    SortEnt *best;
+    SortEnt *q;
+
+    if (n != 0) {
+        do {
+            cnt = n;
+            k0 = (s32)a->val;
+            p0 = a->key;
+            best = a;
+            q = a + 1;
+            n -= 1;
+            max = k0;
+            do {
+                k = (s32)q->val;
+                cnt -= 1;
+                if (max < k) {
+                    max = k;
+                    best = q;
+                }
+                q += 1;
+            } while (cnt != 0);
+            a->val = (f32)max;
+            a->key = best->key;
+            best->val = (f32)k0;
+            a += 1;
+            best->key = p0;
+        } while (n != 0);
+    }
+}
+// differs: 3 of 70 (round 7): the original sets v0=0 (move v0,zero) as the first instruction of the main block and compares the hint with it (bne a2,v0), then binary search when equal; ours compares with -1 (li v0,-1). A literal 0 gives beqz (size 0x110 vs 0x120), a local = 0 is folded the same way; also the pretest slti at vs v0. The table search itself matches.
+#if 0
+s32 func_002270B0(s32 *tbl, s32 n, s32 idx, f32 f) {
+    s32 key;
+    s32 step;
+    s32 *e;
+    s32 t;
+
+    if (f < 1.0f) {
+        return -1;
+    }
+    key = (s32)f;
+    if (idx == -1) {
+        step = (n + 1) >> 1;
+        idx = n >> 1;
+        if (!(step < 2)) {
+            do {
+                if (*(s16 *)&tbl[idx] <= key) {
+                    idx += step >> 1;
+                } else {
+                    idx -= step >> 1;
+                }
+                step = (step + 1) >> 1;
+            } while (!(step < 2));
+        }
+        if (key < *(s16 *)&tbl[idx]) {
+            idx -= 1;
+        }
+    } else {
+        t = n - 1;
+        for (;;) {
+            e = &tbl[idx];
+            if (*(s16 *)e <= key) {
+                if (!(*(s16 *)(e + 1) <= key)) {
+                    break;
+                }
+                idx += 1;
+            } else {
+                idx -= 1;
+            }
+            if (idx <= 0) {
+                idx = 0;
+                break;
+            }
+            if (idx >= t) {
+                idx = t;
+                break;
+            }
+        }
+    }
+    return idx;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002270B0);
 extern s32 *D_004706F4;
 extern s32 D_004706FC;
@@ -421,7 +559,52 @@ void func_002271D0(s32 *a0) {
         D_004706FC = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00227240);
+void func_00227240(u8 *base, s32 *n) {
+    s32 *c;
+
+    if (n[3] != 0) {
+        n[3] = (s32)(base + n[3]);
+    }
+    if (n[4] != 0) {
+        n[4] = (s32)(base + n[4]);
+    }
+    if (n[2] != 0) {
+        n[2] = (s32)(base + n[2]);
+        c = (s32 *)n[2];
+        if (c[3] != 0) {
+            c[3] = (s32)(base + c[3]);
+        }
+        if (c[4] != 0) {
+            c[4] = (s32)(base + c[4]);
+        }
+        if (c[2] != 0) {
+            c[2] = (s32)(base + c[2]);
+            func_00227240(base, (s32 *)c[2]);
+        }
+        if (c[1] != 0) {
+            c[1] = (s32)(base + c[1]);
+            func_00227240(base, (s32 *)c[1]);
+        }
+    }
+    if (n[1] != 0) {
+        n[1] = (s32)(base + n[1]);
+        c = (s32 *)n[1];
+        if (c[3] != 0) {
+            c[3] = (s32)(base + c[3]);
+        }
+        if (c[4] != 0) {
+            c[4] = (s32)(base + c[4]);
+        }
+        if (c[2] != 0) {
+            c[2] = (s32)(base + c[2]);
+            func_00227240(base, (s32 *)c[2]);
+        }
+        if (c[1] != 0) {
+            c[1] = (s32)(base + c[1]);
+            func_00227240(base, (s32 *)c[1]);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002273B0);
 void Title_StepCounters(void) {
     D_004706D8 -= 1;
@@ -444,33 +627,41 @@ void func_00228410(void) {
     D_004706D4 -= 1;
     D_004706CC -= 0x50;
 }
-// differs: 48 of 50 at best: the bump block and the branch on the first argument are laid out differently (the copy source is reloaded from the bump global); the copy itself matches.
-#if 0
-void func_00228430(u8 *a0, s32 a1, u8 *a2) {
+typedef struct F4 { f32 v[4]; } F4;
+typedef struct QuadA { s32 v[8]; } __attribute__((aligned(16))) QuadA;
+void func_00228430(u8 *a0) {
+    u8 *a2;
+
     if (a0 == 0) {
         a0 = D_004706CC;
-        a2 = D_004706CC;
-        D_004706CC = a2 + 0x50;
     }
-    *(f32 *)(a2 + 0x50) = *(f32 *)(a0 + 0x0);
-    *(f32 *)(a2 + 0x54) = *(f32 *)(a0 + 0x4);
-    *(f32 *)(a2 + 0x58) = *(f32 *)(a0 + 0x8);
-    *(f32 *)(a2 + 0x5C) = *(f32 *)(a0 + 0xC);
-    *(QuadW *)(a2 + 0x60) = *(QuadW *)(a0 + 0x10);
-    *(QuadW *)(a2 + 0x70) = *(QuadW *)(a0 + 0x20);
-    *(f32 *)(a2 + 0x80) = *(f32 *)(a0 + 0x30);
-    *(f32 *)(a2 + 0x84) = *(f32 *)(a0 + 0x34);
-    *(f32 *)(a2 + 0x88) = *(f32 *)(a0 + 0x38);
-    *(f32 *)(a2 + 0x8C) = *(f32 *)(a0 + 0x3C);
-    *(f32 *)(a2 + 0x90) = *(f32 *)(a0 + 0x40);
-    *(f32 *)(a2 + 0x94) = *(f32 *)(a0 + 0x44);
-    *(f32 *)(a2 + 0x98) = *(f32 *)(a0 + 0x48);
-    *(f32 *)(a2 + 0x9C) = *(f32 *)(a0 + 0x4C);
+    a2 = D_004706CC;
+    D_004706CC = a2 + 0x50;
+    *(F4 *)(a2 + 0x50) = *(F4 *)(a0 + 0x0);
+    *(QuadA *)(a2 + 0x60) = *(QuadA *)(a0 + 0x10);
+    *(F4 *)(a2 + 0x80) = *(F4 *)(a0 + 0x30);
+    *(F4 *)(a2 + 0x90) = *(F4 *)(a0 + 0x40);
     D_004706D4 = D_004706D4 + 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_00228430);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002284D0);
+typedef struct F8 { f32 v[8]; } F8;
+typedef struct Mat50 {
+    F4 a;
+    QuadA b;
+    F8 c;
+} __attribute__((aligned(16))) Mat50;
+extern Mat50 D_0044FA60;
+void func_002284D0(u8 *a0) {
+    Mat50 m = D_0044FA60;
+    Mat50 *d;
+
+    if (a0 == 0) {
+        a0 = D_004706CC;
+    }
+    d = (Mat50 *)a0;
+    d->a = m.a;
+    d->b = m.b;
+    d->c = m.c;
+}
 void func_002285A0(s32 *p, f32 t) {
     s32 *n = p;
     s32 *c = (s32 *)p[6];
@@ -561,23 +752,21 @@ INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022A880);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022ACF0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022B900);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022BC30);
-// GIVEN UP: a dead store of -1 in the second branch and a frame the C did not reproduce; round 5 (chr2): 5 more forms, all 0x5C bytes vs 0x70: the original has a nop after the b and a nop at the join
-// // differs: 18 of 22 (round 4 chr): the original copies the object pointer to a1 only after the first test (delay slot of beqz); ours copies it at entry.
-#if 0
-void func_0022BF80(char *a) {
-    s32 f = *(s32 *)(a + 0xC);
-    if ((f & 1) != 0) {
-        func_0022BC30(*(s32 *)a, *(f32 *)(a + 0x10));
-    } else if ((f & 2) != 0) {
-        func_0022BC30(*(s32 *)(*(s32 *)a + 0x10), *(f32 *)(a + 0x10));
+s32 func_0022BF80(s32 *a) {
+    s32 f = a[3];
+
+    if (f & 1) {
+        return func_0022BC30((s32 *)a[0], *(f32 *)&a[4]);
     }
+    if (f & 2) {
+        return func_0022BC30((s32 *)((s32 *)a[0])[4], *(f32 *)&a[4]);
+    }
+    return -1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022BF80);
-void func_0022BFF0(s32 *p) {
+void func_0022BFF0(s32 *p, f32 f) {
     s32 *a;
 
-    func_0022C060(p[6]);
+    func_0022C060(p[6], f);
     a = (s32 *)p[6];
     if (a[2] == 0xFF) {
         p[3] |= 0x100;
@@ -585,13 +774,173 @@ void func_0022BFF0(s32 *p) {
         p[3] |= 0x100;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C060);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C1D0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C430);
+extern void func_0022C7D0(s32 *, f32, s32);
+extern void func_0022ACF0(s32 *, u8 *);
+void func_0022C060(s32 a0, f32 dt) {
+    s32 *o = (s32 *)a0;
+    f32 t;
+    u8 *top;
+    s32 f;
+    s32 r;
+
+    if (o[1] & 1) {
+        t = *(f32 *)&o[4] + D_00470710 * dt;
+        if (t < 0.0f) {
+            t = 0.0f;
+        }
+        func_0022C7D0(o, t, 1);
+        top = D_004706CC;
+        D_004706CC = top + 0x50;
+        *(F4 *)(top + 0x50) = *(F4 *)(top + 0x0);
+        *(QuadA *)(top + 0x60) = *(QuadA *)(top + 0x10);
+        *(F4 *)(top + 0x80) = *(F4 *)(top + 0x30);
+        *(F4 *)(top + 0x90) = *(F4 *)(top + 0x40);
+        D_004706D4 += 1;
+        func_0022ACF0(o, top);
+        D_004706D4 -= 1;
+        D_004706CC -= 0x50;
+        f = o[3];
+        if (f & 1) {
+            r = func_0022BC30((s32 *)o[0], *(f32 *)&o[4]);
+        } else if (f & 2) {
+            r = func_0022BC30((s32 *)((s32 *)o[0])[4], *(f32 *)&o[4]);
+        } else {
+            r = -1;
+        }
+        o[2] = r;
+    }
+}
+extern s32 *amPkt_Alloc(s32);
+void func_0022C1D0(s32 *o, s32 flag, f32 t) {
+    s32 *pkt;
+    u8 *top;
+    A2dEnt *b;
+    s32 i;
+    s32 off;
+
+    if (o[2] != 0) {
+        func_0022C1D0((s32 *)o[2], 0, t);
+    }
+    if (o[4] != 0) {
+        top = D_004706CC;
+        D_004706CC = top + 0x50;
+        *(F4 *)(top + 0x50) = *(F4 *)(top + 0x0);
+        *(QuadA *)(top + 0x60) = *(QuadA *)(top + 0x10);
+        *(F4 *)(top + 0x80) = *(F4 *)(top + 0x30);
+        *(F4 *)(top + 0x90) = *(F4 *)(top + 0x40);
+        D_004706D4 += 1;
+        pkt = amPkt_Alloc(0x60);
+        pkt[1] = 0;
+        func_0022B900((s32 *)o[4], t, pkt);
+        if (pkt[1] & 1) {
+            ((A2dEnt *)D_004706C0)[D_004706BC].p = pkt;
+            b = (A2dEnt *)D_004706C0;
+            b[D_004706BC].v = 100.0f * *(f32 *)((u8 *)pkt + 0x28);
+            D_004706BC += 1;
+        }
+    }
+    if (o[1] != 0) {
+        func_0022C1D0((s32 *)o[1], 0, t);
+    }
+    if (o[4] != 0) {
+        D_004706D4 -= 1;
+        D_004706CC -= 0x50;
+    }
+    if (flag != 0) {
+        if (D_004706BC > 1) {
+            func_00227010((s32 *)D_004706C0, (s32 *)(D_004706C0 + (D_004706BC - 1) * 8));
+        }
+        amDraw_SetPacketMode(1);
+        if (0 < D_004706BC) {
+            i = 0;
+            off = 0;
+            do {
+                s32 *e = *(s32 **)(D_004706C0 + off);
+                if (e[1] & 1) {
+                    if (*(s16 *)((u8 *)e + 0x18) >= 0) {
+                        func_002269B0(e);
+                    } else {
+                        func_00226540(e);
+                    }
+                }
+                i += 1;
+                off += 8;
+            } while (i < D_004706BC);
+        }
+        amDraw_SetPacketMode(0);
+        D_004706BC = 0;
+    }
+}
+void func_0022C430(s32 *a0, f32 f) {
+    s32 buf[24];
+    u8 *a2;
+
+    memset(buf, 0, 0x60);
+    a2 = D_004706CC;
+    D_004706CC = a2 + 0x50;
+    *(F4 *)(a2 + 0x50) = *(F4 *)(a2 + 0x0);
+    *(QuadA *)(a2 + 0x60) = *(QuadA *)(a2 + 0x10);
+    *(F4 *)(a2 + 0x80) = *(F4 *)(a2 + 0x30);
+    *(F4 *)(a2 + 0x90) = *(F4 *)(a2 + 0x40);
+    D_004706D4 += 1;
+    func_0022B900(a0, f, buf);
+    D_004706D4 -= 1;
+    D_004706CC -= 0x50;
+    if (buf[1] & 1) {
+        if (*(s16 *)((u8 *)buf + 0x18) >= 0) {
+            func_002269B0(buf);
+        } else {
+            func_00226540(buf);
+        }
+    }
+}
 void func_0022C550(s32 *p) {
     func_0022C560(p[6]);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C560);
+void func_0022C560(s32 a0) {
+    s32 *p;
+    s32 i;
+    s32 off;
+    A2dEnt *b;
+
+    p = *(s32 **)((u8 *)a0 + 0x30);
+    if (p != 0) {
+        ((A2dEnt *)D_004706C0)[D_004706BC].p = p;
+        b = (A2dEnt *)D_004706C0;
+        b[D_004706BC].v = 100.0f * *(f32 *)((u8 *)p + 0x28);
+        D_004706BC += 1;
+    }
+    p = *(s32 **)((u8 *)a0 + 0x28);
+    if (p != 0) {
+        func_0022CD00(p);
+    }
+    p = *(s32 **)((u8 *)a0 + 0x2C);
+    if (p != 0) {
+        func_0022CD00(p);
+    }
+    if (D_004706BC > 1) {
+        func_00227010((s32 *)D_004706C0, (s32 *)(D_004706C0 + (D_004706BC - 1) * 8));
+    }
+    amDraw_SetPacketMode(1);
+    if (0 < D_004706BC) {
+        i = 0;
+        off = 0;
+        do {
+            s32 *e = *(s32 **)(D_004706C0 + off);
+            if (e[1] & 1) {
+                if (*(s16 *)((u8 *)e + 0x18) >= 0) {
+                    func_002269B0(e);
+                } else {
+                    func_00226540(e);
+                }
+            }
+            i += 1;
+            off += 8;
+        } while (i < D_004706BC);
+    }
+    amDraw_SetPacketMode(0);
+    D_004706BC = 0;
+}
 void func_0022C6B0(s32 *p) {
     if (p[1] & 1) {
         if (*(s16 *)((u8 *)p + 0x18) >= 0) {
@@ -602,7 +951,6 @@ void func_0022C6B0(s32 *p) {
     }
 }
 extern void func_00227010(s32 *, s32 *);
-extern void amDraw_SetPacketMode(s32);
 void A2d_FlushList(void) {
     s32 i;
     s32 off;
@@ -630,54 +978,142 @@ void A2d_FlushList(void) {
     amDraw_SetPacketMode(0);
     D_004706BC = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C7D0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022C9A0);
-// GIVEN UP: the loop's count test and register use differ (tried two loop forms)
-#if 0
-void func_0022CC80(s32 key) {
-    s32 count = D_004706BC;
-    s32 i = 0;
-    s32 *arr = (s32 *)D_004706C0;
+/* the original expands this recursive function four levels deep into itself */
+#pragma inline_depth(4)
+inline void func_0022C7D0(s32 *o, f32 t, s32 rec) {
+    s32 *c;
 
-    if (count > 0) {
-        do {
-            if (arr[0] == key) {
-                func_00125740((u8 *)D_004706C0 + i * 8, (u8 *)D_004706C0 + (i + 1) * 8, (count - i) * 8);
-                D_004706BC -= 1;
-                return;
-            }
-            i += 1;
-            arr += 2;
-        } while (i < count);
-    }
+    do {
+        if (o[1] & 1) {
+            *(f32 *)&o[4] = t;
+            o[1] |= 2;
+        }
+        if (rec == 0) {
+            return;
+        }
+        c = (s32 *)o[11];
+        if (c != 0) {
+            func_0022C7D0(c, t, rec);
+        }
+        o = (s32 *)o[10];
+    } while (o != 0);
 }
-#endif
-#if 0
-// differs: 28 of 33 (6 declaration orders tried): the original keeps the count in a1 and the cursor in a2 and reloads D_004706BC for the decrement; the loop exit and the memmove call (func_00125740, size (n-i)*8) match
-void func_0022CC80(s32 a0) {
-    s32 i = 0;
+#pragma inline_depth(8)
+extern void func_0022CC80(s32);
+/* same three-level expansion as func_0022CD00, with the remove instead of the push */
+static inline void A2d_RemoveEnt(s32 a0) {
     u8 *p;
-    s32 n;
-    n = D_004706BC;
+    s32 i = 0;
+    s32 n = D_004706BC;
+
     if (0 < n) {
         p = D_004706C0;
-        for (i = 0; i < n; i++) {
+        do {
             if (*(s32 *)p == a0) {
                 func_00125740((u8 *)D_004706C0 + i * 8, (u8 *)D_004706C0 + (i + 1) * 8, (n - i) * 8);
-                D_004706BC = D_004706BC - 1;
+                D_004706BC -= 1;
                 break;
             }
+            i += 1;
             p += 8;
-        }
+        } while (i < n);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CC80);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CD00);
-typedef struct A2dEnt {
-    s32 *p;
-    f32 v;
-} A2dEnt;
+static inline void A2d_UnTree3(s32 *o) {
+    if (o[12] != 0) {
+        func_0022CC80(o[12]);
+    }
+    if (o[10] != 0) {
+        func_0022C9A0(o[10]);
+    }
+    if (o[11] != 0) {
+        func_0022C9A0(o[11]);
+    }
+}
+static inline void A2d_UnTree2(s32 *o) {
+    if (o[12] != 0) {
+        A2d_RemoveEnt(o[12]);
+    }
+    if (o[10] != 0) {
+        A2d_UnTree3((s32 *)o[10]);
+    }
+    if (o[11] != 0) {
+        A2d_UnTree3((s32 *)o[11]);
+    }
+}
+void func_0022C9A0(s32 a0) {
+    s32 *o = (s32 *)a0;
+
+    if (o[12] != 0) {
+        A2d_RemoveEnt(o[12]);
+    }
+    if (o[10] != 0) {
+        A2d_UnTree2((s32 *)o[10]);
+    }
+    if (o[11] != 0) {
+        A2d_UnTree2((s32 *)o[11]);
+    }
+}
+void func_0022CC80(s32 a0) {
+    u8 *p;
+    s32 i = 0;
+    s32 n = D_004706BC;
+    if (0 < n) {
+        p = D_004706C0;
+        do {
+            if (*(s32 *)p == a0) {
+                func_00125740((u8 *)D_004706C0 + i * 8, (u8 *)D_004706C0 + (i + 1) * 8, (n - i) * 8);
+                D_004706BC -= 1;
+                break;
+            }
+            i += 1;
+            p += 8;
+        } while (i < n);
+    }
+}
+/* the original expands this recursive tree walk three levels deep (the push inline at two, a call at the third): the helpers below reproduce that expansion. */
+extern void func_0022CF70(s32 *);
+static inline void A2d_PushEnt(s32 *p) {
+    A2dEnt *b;
+
+    ((A2dEnt *)D_004706C0)[D_004706BC].p = p;
+    b = (A2dEnt *)D_004706C0;
+    b[D_004706BC].v = 100.0f * *(f32 *)((u8 *)p + 0x28);
+    D_004706BC += 1;
+}
+static inline void A2d_Tree3(s32 *o) {
+    if (o[12] != 0) {
+        func_0022CF70((s32 *)o[12]);
+    }
+    if (o[10] != 0) {
+        func_0022CD00((s32 *)o[10]);
+    }
+    if (o[11] != 0) {
+        func_0022CD00((s32 *)o[11]);
+    }
+}
+static inline void A2d_Tree2(s32 *o) {
+    if (o[12] != 0) {
+        A2d_PushEnt((s32 *)o[12]);
+    }
+    if (o[10] != 0) {
+        A2d_Tree3((s32 *)o[10]);
+    }
+    if (o[11] != 0) {
+        A2d_Tree3((s32 *)o[11]);
+    }
+}
+void func_0022CD00(s32 *o) {
+    if (o[12] != 0) {
+        A2d_PushEnt((s32 *)o[12]);
+    }
+    if (o[10] != 0) {
+        A2d_Tree2((s32 *)o[10]);
+    }
+    if (o[11] != 0) {
+        A2d_Tree2((s32 *)o[11]);
+    }
+}
 
 /* differs: 2 of 18: the order of the index scale and the mul.s, and which of the two globals the second block reads
    first (the addressing itself is right, the two `addu` orders — base first, then index first — are reproduced).
@@ -693,12 +1129,11 @@ void func_0022CF70(s32 *p)
   D_004706BC += 1;
 }
 
-// GIVEN UP: the two mode loops are laid out in another order (tried both orders)
-#if 0
 void func_0022CFC0(s32 a0, s32 a1, s32 mode, s32 flag) {
-    s32 *n = (s32 *)D_0058BB64[0];
+    s32 *n = D_0058BB64[0];
 
-    if (mode == 0) {
+    switch (mode) {
+    case 0:
         while (n != D_0058BB70) {
             if (n[1] & a0) {
                 if (n[2] & a1) {
@@ -707,7 +1142,8 @@ void func_0022CFC0(s32 a0, s32 a1, s32 mode, s32 flag) {
             }
             n = (s32 *)n[5];
         }
-    } else if (mode == 1) {
+        break;
+    case 1:
         while (n != D_0058BB70) {
             if (n[1] & a0) {
                 if ((n[2] & a1) == n[2]) {
@@ -716,26 +1152,100 @@ void func_0022CFC0(s32 a0, s32 a1, s32 mode, s32 flag) {
             }
             n = (s32 *)n[5];
         }
+        break;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022CFC0);
 void func_0022D0B0(s32 *p, s32 flag) {
     p[3] |= 0x100;
     if (flag != 0) {
         func_0022C9A0(p[6]);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D0E0);
+extern s32 *D_004706AC;
+extern s32 D_004706B4;
+extern s32 D_004706B8;
+extern void *D_004706E0;
+extern s32 D_004706E8;
+extern s32 D_004706EC;
+extern void func_0022D4B0(s32, s32);
+extern void func_0022D0E0(s32, s32);
+/* same three-level expansion as func_0022CD00: pool push + remove inline at the first level, the push only at the second, calls at the third */
+static inline void A2d_NodeFree(s32 *o) {
+    s32 nx;
+
+    ((s32 **)D_004706E0)[D_004706E8] = o;
+    nx = D_004706E8 + 1;
+    D_004706E8 = nx;
+    if (nx == D_004706EC) {
+        D_004706E8 = 0;
+    }
+}
+static inline void A2d_DataFree1(s32 key, s32 flag) {
+    s32 nx;
+
+    D_004706AC[D_004706B4] = key;
+    nx = D_004706B4 + 1;
+    D_004706B4 = nx;
+    if (nx == D_004706B8) {
+        D_004706B4 = 0;
+    }
+    if (flag != 0) {
+        func_0022CC80(key);
+    }
+}
+static inline void A2d_DataFree0(s32 key, s32 flag) {
+    s32 nx;
+
+    D_004706AC[D_004706B4] = key;
+    nx = D_004706B4 + 1;
+    D_004706B4 = nx;
+    if (nx == D_004706B8) {
+        D_004706B4 = 0;
+    }
+    if (flag != 0) {
+        A2d_RemoveEnt(key);
+    }
+}
+static inline void A2d_FreeL2(s32 *o, s32 flag) {
+    if (o[10] != 0) {
+        func_0022D0E0(o[10], flag);
+    }
+    func_0022D4B0(o[12], flag);
+    A2d_NodeFree(o);
+    if (o[11] != 0) {
+        func_0022D0E0(o[11], flag);
+    }
+}
+static inline void A2d_FreeL1(s32 *o, s32 flag) {
+    if (o[10] != 0) {
+        A2d_FreeL2((s32 *)o[10], flag);
+    }
+    A2d_DataFree1(o[12], flag);
+    A2d_NodeFree(o);
+    if (o[11] != 0) {
+        A2d_FreeL2((s32 *)o[11], flag);
+    }
+}
+void func_0022D0E0(s32 a0, s32 flag) {
+    s32 *o = (s32 *)a0;
+
+    if (o[10] != 0) {
+        A2d_FreeL1((s32 *)o[10], flag);
+    }
+    A2d_DataFree0(o[12], flag);
+    A2d_NodeFree(o);
+    if (o[11] != 0) {
+        A2d_FreeL1((s32 *)o[11], flag);
+    }
+}
 // GIVEN UP: the list push and the removal loop are right; 32 of 45 instructions differ on the registers and the order of the loads
 extern s32 *D_004706AC;
 extern s32 D_004706B4;
 extern s32 D_004706B8;
-// differs: round 5 chr2: 29 of 47 differ. Globals as gp scalars now match (D_004706B4 reloads avoided with a local nx); the loop differs: the original keeps i in a3 with the loop test at the bottom and the match path jumping to the exit; a for with p += 2 in the clause tried (same count).
-#if 0
 void func_0022D4B0(s32 a0, s32 a1) {
+    u8 *p;
     s32 i;
-    s32 *p;
+    s32 n;
     s32 nx;
 
     D_004706AC[D_004706B4] = a0;
@@ -745,29 +1255,166 @@ void func_0022D4B0(s32 a0, s32 a1) {
         D_004706B4 = 0;
     }
     if (a1 != 0) {
-        a1 = D_004706BC;
-        if (0 < a1) {
-            p = (s32 *)D_004706C0;
-            for (i = 0; i < a1; i++) {
-                if (p[0] == a0) {
-                    func_00125740((s32 *)D_004706C0 + i * 2, (s32 *)D_004706C0 + (i + 1) * 2, (a1 - i) * 8);
-                    D_004706BC = D_004706BC - 1;
+        n = D_004706BC;
+        i = 0;
+        if (0 < n) {
+            p = D_004706C0;
+            do {
+                if (*(s32 *)p == a0) {
+                    func_00125740((u8 *)D_004706C0 + i * 8, (u8 *)D_004706C0 + (i + 1) * 8, (n - i) * 8);
+                    D_004706BC -= 1;
                     break;
                 }
-                p += 2;
-            }
+                i += 1;
+                p += 8;
+            } while (i < n);
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D4B0);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D570);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D670);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D860);
+extern s32 D_004706F8;
+extern s32 func_0022D860(s32, f32);
+s32 *func_0022D570(s32 a0, s32 a1, s32 a2, u32 a3) {
+    s32 *s0;
+    s32 *p;
+    s32 n;
+
+    n = D_004706F8;
+    s0 = (s32 *)D_004706F4[n];
+    D_004706F8 = n + 1;
+    if (n + 1 == D_00470700) {
+        D_004706F8 = 0;
+    }
+    memset(s0, 0, 0x20);
+    s0[6] = func_0022D860(a0, 0.0f);
+    s0[0] = a3;
+    s0[1] = a1;
+    s0[2] = a2;
+    p = D_0058BB64[0];
+    while ((u32)p[0] <= a3) {
+        p = (s32 *)p[5];
+    }
+    s0[4] = p[4];
+    *(s32 *)(p[4] + 0x14) = (s32)s0;
+    p[4] = (s32)s0;
+    s0[5] = (s32)p;
+    return s0;
+}
+extern void *D_004706E0;
+extern s32 D_004706B0;
+extern s32 D_004706E4;
+extern s32 D_004706EC;
+static inline void A2d_PushFlags(s32 a0, s32 a1) {
+    s32 *st = D_004706D0;
+
+    D_004706D0 = st + 1;
+    st[1] &= ~a0;
+    st[1] |= a0;
+    st[1] &= ~a1;
+    D_004706D8 += 1;
+}
+s32 *func_0022D670(s32 a0, f32 f) {
+    s32 *s0;
+    s32 *s2;
+    u8 *top;
+    s32 n;
+
+    n = D_004706E4;
+    s0 = ((s32 **)D_004706E0)[n];
+    D_004706E4 = n + 1;
+    if (n + 1 == D_004706EC) {
+        D_004706E4 = 0;
+    }
+    memset(s0, 0, 0x40);
+    if (a0 != 0) {
+        top = D_004706CC;
+        D_004706CC = top + 0x50;
+        *(F4 *)(top + 0x50) = *(F4 *)(top + 0x0);
+        *(QuadA *)(top + 0x60) = *(QuadA *)(top + 0x10);
+        *(F4 *)(top + 0x80) = *(F4 *)(top + 0x30);
+        *(F4 *)(top + 0x90) = *(F4 *)(top + 0x40);
+        D_004706D4 += 1;
+        A2d_PushFlags(0, -1);
+        s2 = ((s32 **)D_004706AC)[D_004706B0];
+        D_004706B0 = D_004706B0 + 1;
+        if (D_004706B0 == D_004706B8) {
+            D_004706B0 = 0;
+        }
+        memset(s2, 0, 0x60);
+        if (a0 != 0) {
+            func_0022B900((s32 *)a0, f, s2);
+        }
+        s0[12] = (s32)s2;
+        s0[3] |= 1;
+        s0[1] |= 1;
+        s0[0] = a0;
+        *(f32 *)&s0[4] = f;
+        s0[5] = -1;
+        D_004706D4 -= 1;
+        D_004706CC -= 0x50;
+        D_004706D8 -= 1;
+        D_004706D0 -= 1;
+    }
+    return s0;
+}
+extern s32 D_004706E4;
+extern s32 D_004706EC;
+extern void *D_004706E0;
+extern s32 D_004706B0;
+s32 func_0022D860(s32 a0, f32 f) {
+    s32 *s2;
+    s32 s1;
+    s32 *s0;
+    u8 *top;
+    s32 n;
+
+    n = D_004706E4;
+    s2 = ((s32 **)D_004706E0)[n];
+    D_004706E4 = n + 1;
+    if (n + 1 == D_004706EC) {
+        D_004706E4 = 0;
+    }
+    memset(s2, 0, 0x40);
+    if (a0 != 0) {
+        if (((s32 *)a0)[2] != 0) {
+            s2[10] = func_0022D860(((s32 *)a0)[2], f);
+        }
+        top = D_004706CC;
+        D_004706CC = top + 0x50;
+        *(F4 *)(top + 0x50) = *(F4 *)(top + 0x0);
+        *(QuadA *)(top + 0x60) = *(QuadA *)(top + 0x10);
+        *(F4 *)(top + 0x80) = *(F4 *)(top + 0x30);
+        *(F4 *)(top + 0x90) = *(F4 *)(top + 0x40);
+        D_004706D4 += 1;
+        A2d_PushFlags(0, -1);
+        s1 = ((s32 *)a0)[4];
+        s0 = ((s32 **)D_004706AC)[D_004706B0];
+        D_004706B0 = D_004706B0 + 1;
+        if (D_004706B0 == D_004706B8) {
+            D_004706B0 = 0;
+        }
+        memset(s0, 0, 0x60);
+        if (s1 != 0) {
+            func_0022B900((s32 *)s1, f, s0);
+        }
+        s2[12] = (s32)s0;
+        s2[3] |= 2;
+        s2[1] |= 1;
+        s2[0] = a0;
+        *(f32 *)&s2[4] = f;
+        s2[5] = -1;
+        if (((s32 *)a0)[1] != 0) {
+            s2[11] = func_0022D860(((s32 *)a0)[1], f);
+        }
+        D_004706D4 -= 1;
+        D_004706CC -= 0x50;
+        D_004706D8 -= 1;
+        D_004706D0 -= 1;
+    }
+    return (s32)s2;
+}
 extern s32 *D_004706AC;
 extern s32 D_004706B0;
 extern s32 D_004706B8;
-extern void func_0022B900(s32 *, s32 *, f32);
 s32 *A2d_AllocObj(s32 *a0, f32 a1) {
     s32 *s1;
 
@@ -778,7 +1425,7 @@ s32 *A2d_AllocObj(s32 *a0, f32 a1) {
     }
     memset(s1, 0, 0x60);
     if (a0 != 0) {
-        func_0022B900(a0, s1, a1);
+        func_0022B900(a0, a1, s1);
     }
     return s1;
 }
@@ -810,5 +1457,115 @@ void func_0022DB90(void) {
         n = (s32 *)n[5];
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DC00);
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022DF10);
+extern void *D_004706A8;
+extern void *D_004706C4;
+extern void *D_004706C8;
+extern void *D_004706DC;
+extern void *D_004706F0;
+extern s32 D_004706EC;
+extern s32 D_004706E8;
+extern s32 D_00470700;
+extern s32 D_00470704;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern s32 D_00470720;
+extern s32 D_00470724;
+extern s32 D_00470728;
+extern s32 D_0058BB50[];
+extern s32 D_0058BB60[];
+extern s32 *D_0058BB80[];
+extern s32 D_0058BB84[];
+extern u8 D_0058BB90[];
+void func_0022DC00(void) {
+    s32 i;
+    Mat50 m;
+    Mat50 *d;
+
+    memset(D_004706A8, 0, D_004706B8 * 0x60);
+    memset(D_004706AC, 0, D_004706B8 * 4);
+    for (i = 0; i < D_004706B8; i++) {
+        D_004706AC[i] = (s32)((u8 *)D_004706A8 + i * 0x60);
+    }
+    D_004706B0 = 0;
+    D_004706B4 = 0;
+    D_004706BC = 0;
+    memset(D_004706C4, 0, D_004706D4 * 0x50);
+    memset(D_004706C8, 0, D_004706D8 * 4);
+    D_004706D4 = 0;
+    D_004706D8 = 0;
+    D_004706CC = D_004706C4;
+    D_004706D0 = D_004706C8;
+    m = D_0044FA60;
+    d = (Mat50 *)D_004706CC;
+    d->a = m.a;
+    d->b = m.b;
+    d->c = m.c;
+    memset(D_004706DC, 0, D_004706EC * 0x40);
+    memset(D_004706E0, 0, D_004706EC * 4);
+    for (i = 0; i < D_004706EC; i++) {
+        ((s32 *)D_004706E0)[i] = (s32)((u8 *)D_004706DC + i * 0x40);
+    }
+    D_004706E4 = 0;
+    D_004706E8 = 0;
+    memset(D_004706F0, 0, D_004706EC * 0x20);
+    memset(D_004706F4, 0, D_004706EC * 4);
+    for (i = 0; i < D_00470700; i++) {
+        D_004706F4[i] = (s32)((u8 *)D_004706F0 + i * 0x20);
+    }
+    D_0058BB50[0] = 0;
+    D_0058BB60[0] = 0;
+    D_0058BB70[0] = -1;
+    D_004706F8 = 0;
+    D_0058BB64[0] = D_0058BB70;
+    D_004706FC = 0;
+    D_0058BB80[0] = D_0058BB50;
+    D_00470704 = 0;
+    D_0058BB84[0] = 0;
+    D_00470708 = 0;
+    D_0047070C = 0;
+    D_00470718 = 0;
+    D_0047071C = 0;
+    memset(D_0058BB90, 0, 0x20);
+    D_00470720 = 0;
+    memset(&D_00470724, 0, 4);
+    D_00470728 = 0;
+}
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
+extern char D_0046A6D8[];
+extern void *D_004706A8;
+extern void *D_004706C4;
+extern void *D_004706C8;
+extern void *D_004706DC;
+extern void *D_004706E0;
+extern s32 D_004706EC;
+extern void *D_004706F0;
+extern s32 D_00470700;
+extern void func_0022DC00(void);
+void func_0022DF10(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 n;
+
+    D_004706B8 = a0;
+    D_004706A8 = amHeap_Alloc(a0 * 0x60, 0, D_0046A6D8, 0x195);
+    D_004706AC = amHeap_Alloc(a0 * 4, 0, D_0046A6D8, 0x196);
+    D_004706C0 = amHeap_Alloc(a1 * 8, 0, D_0046A6D8, 0x199);
+    D_004706D4 = a2;
+    D_004706D8 = a2;
+    D_004706C4 = amHeap_Alloc(a2 * 0x50, 0, D_0046A6D8, 0x19E);
+    D_004706C8 = amHeap_Alloc(a2 * 4, 0, D_0046A6D8, 0x19F);
+    D_004706EC = a3;
+    D_004706DC = amHeap_Alloc(a3 * 0x40, 0, D_0046A6D8, 0x1A3);
+    n = a3 * 4;
+    D_004706E0 = amHeap_Alloc(n, 0, D_0046A6D8, 0x1A4);
+    D_00470700 = a3;
+    D_004706F0 = amHeap_Alloc(a3 * 0x20, 0, D_0046A6D8, 0x1A8);
+    D_004706F4 = amHeap_Alloc(n, 0, D_0046A6D8, 0x1A9);
+    func_0022DC00();
+    if (D_004703F4 == 3) {
+        D_00470710 = 1.2f;
+    } else {
+        D_00470710 = 1.0f;
+    }
+    D_00470714 = 0;
+    D_00470718 = 0;
+    D_0047071C = 0;
+}
