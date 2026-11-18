@@ -275,7 +275,48 @@ void func_002367B0(s32 *p) {
     *(u8 *)((u8 *)gBattle + 0x8AB8) = 1;
     func_002CBFF0(8, p[0]);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00236830);
+typedef struct SM5C { u8 p[0x18]; s32 x18; u8 q[0x40]; } SM5C;
+extern SM5C *gScrMachines;
+extern u8 gScrCmdGroupTable[];
+extern void amTask_KillGroup(s32, s32, s32);
+extern s32 Scr_Alloc(s32, s32, s32);
+extern void Scr_SetData(s32, s32);
+extern void Scr_SetCallback44(s32, void *);
+extern void Scr_SetStartCallback(s32, s32);
+extern void Scr_SetEndCallback(s32, s32);
+extern void Scr_SetTaskStartCallback(s32, s32);
+extern void Scr_SetTaskEndCallback(s32, s32);
+extern void Scr_Start(s32, s32);
+void func_00236830(s32 *a0) {
+    u8 *g = (u8 *)gBattle;
+    u8 *p;
+    if (g != 0) {
+        if (a0 == 0) {
+            amTask_KillGroup(1, 0x200030, 0);
+            return;
+        }
+        if (*(s16 *)(g + 0x8944) == 0) {
+            *(s16 *)(g + 0x8948) = Scr_Alloc(0x5200, 1, 0x200010);
+            if (*(s16 *)(g + 0x8948) >= 0) {
+                if (*(s16 *)(g + 0x8948) != *(s16 *)(g + 0x8946)) {
+                    gScrMachines[*(s16 *)(g + 0x8948)].x18 = 0x200020;
+                }
+                p = (u8 *)a0[0];
+                *(u8 **)(g + 0x8934) = p;
+                *(s32 *)(g + 0x8938) = a0[1];
+                *(s16 *)(g + 0x8944) = 1;
+                *(s16 *)(g + 0x894A) = *(s32 *)(p + 0x1350);
+                Scr_SetData(*(s16 *)(g + 0x8948), a0[2]);
+                Scr_SetCallback44(*(s16 *)(g + 0x8948), gScrCmdGroupTable);
+                Scr_SetStartCallback(*(s16 *)(g + 0x8948), a0[4]);
+                Scr_SetEndCallback(*(s16 *)(g + 0x8948), a0[5]);
+                Scr_SetTaskStartCallback(*(s16 *)(g + 0x8948), 0);
+                Scr_SetTaskEndCallback(*(s16 *)(g + 0x8948), 0);
+                Scr_Start(*(s16 *)(g + 0x8948), a0[3]);
+            }
+        }
+    }
+}
 void func_002369E0(void) {
     u8 *g = (u8 *)gBattle;
     PtrCount pc;
