@@ -25,7 +25,7 @@ extern s32 func_0021C460(s32);
 extern s32 func_0021C360(s32);
 extern s32 *func_00259CC0(s32 *, s32);
 extern void func_002525A0(u8 *, u8 *, s32);
-extern u8 D_0046FE4C[];
+extern u8 *D_0046FE4C;
 extern u8 D_004529B8[];
 extern s32 D_0058D4D0[];
 extern s32 func_0022D0B0(s32, s32);
@@ -94,10 +94,43 @@ extern s32 D_00470238;
 
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00248E00);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249100);
-// GIVEN UP (round 5): 66 of 86 with the best declaration order. Shape: out in s2, base in s1, side in s0 (the side field
-// is read after the func_0012EAE0 call, `r0 % 0x15` by divu); two 16-byte temporaries at sp+0x40 (vec, lqc2 + vsub) and
-// sp+0x50 (func_00249100 and func_00142100); the VU0 blocks match as inline asm. Draft kept in the round 5 scratch folder.
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002499A0);
+extern u32 func_0012EAE0(s32);
+extern void func_00146F30(s32 *);
+extern void func_00249100(s32 *, f32);
+extern void func_0013B160(void *);
+extern void func_00142100(s32 *, s32);
+extern u8 D_003F0800[];
+extern void func_0020D400(s32, s32, s32);
+void func_002499A0(s32 *out, s32 base, s32 side, s32 cfgp, f32 unused) {
+    u8 *cfg = (u8 *)cfgp;
+    s32 *s2 = out;
+    s32 s1 = base;
+    s32 s0 = side;
+    s32 mtx[4] __attribute__((aligned(16)));
+    s32 vec[4] __attribute__((aligned(16)));
+    s32 r;
+
+    if (*(s16 *)(cfg + 0x1A) != 0) {
+        if (((gBattle != 0) ? *(s16 *)((u8 *)gBattle + 0x8944) : 0) != 0 && *(s16 *)(cfg + 0xE0) == 1 && *(s16 *)(D_0046FE4C + 0x914) != 0) {
+            r = func_0012EAE0(5) % 0x15;
+            func_0020D400((s32)vec, *(s32 *)(s0 + 0x1354), r);
+            *(s32 *)(D_0046FE4C + 0x910) = r;
+        } else {
+            func_0020D400((s32)vec, *(s32 *)(s0 + 0x1354), *(s32 *)(cfg + 0xE8));
+        }
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(s2), "r"(vec), "r"(s1));
+        func_00146F30(s2);
+    } else {
+        func_00249100(mtx, 30.0f);
+        s2[0] = 0;
+        s2[1] = 0;
+        ((f32 *)s2)[2] = 1.0f;
+        ((f32 *)s2)[3] = 1.0f;
+        func_0013B160(D_003F0800);
+        func_00142100(mtx, 0);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddz.xyz $vf1, $vf30, $vf1z ; sqc2 $vf1, 0x0(%0) ; vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27" : : "r"(s2));
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249B00);
 // GIVEN UP (round 5): a draft is in the round 5 scratch folder (draft_249D50.c). It matches the calls (amTask_Create
 // with a sixth argument D_0046ADD0, memset, func_0020D400, the 16-byte copy) but is 0x1E8 bytes against 0x200: the
@@ -1577,67 +1610,90 @@ s32 func_00253690(s32 *a0, s32 a1, s32 *a2) {
     return 0;
 }
 #endif
+// differs: 42 of 84 (adiff) with struct views (size matches): the original keeps node in a3, sub in t2, count in v1, table in t0, index in t1; mwcc permutes them. See also the s32* version above.
 #if 0
-/* differs: the four search blocks (two tables at +8 and +4 of the sub-objects, the other two on a0 + 0xC)
- * and their stores match in shape; the temporaries do not: the original keeps a0->8 in $a3, its first
- * sub-object in $t2, the table in $t0 and the counter in $t1 (86 of 90 instructions differ, 2 of them
- * the join nops). Tried: declaration orders of the five locals. */
-s32 func_00253690(u8 *a0, s32 a1, u8 *a2) {
+typedef struct SkSub {
+    s32 pad0;
+    s16 *tblA;
+    s16 *tblB;
+    s8 cntA;
+    s8 cntB;
+} SkSub;
+typedef struct SkNode {
+    SkSub *sub;
+    s32 x4;
+} SkNode;
+typedef struct SkHdr {
+    s32 v0;
+    s32 v4;
+    SkNode *n8;
+    SkNode *nC;
+} SkHdr;
+s32 func_00253690(SkHdr *a0, s32 a1, s32 *a2) {
+    SkNode *a3;
+    SkSub *t2;
+    s16 *t0;
     s32 t1;
-    u8 *a3;
-    u8 *t2;
-    u8 *t0;
-    s32 v3;
+    s32 v1;
 
     if (a1 > 0) {
-        a3 = *(u8 **)(a0 + 0x8);
-        t2 = *(u8 **)a3;
-        v3 = *(s8 *)(t2 + 0xD);
-        if (0 < v3) {
-            t0 = *(u8 **)(t2 + 0x8);
-            for (t1 = 0; t1 < v3; t1++, t0 += 2) {
-                if (a1 == *(s16 *)t0) {
-                    *(s32 *)a2 = *(s32 *)(a3 + 0x4);
-                    *(s32 *)(a2 + 0x4) = *(s32 *)a0;
-                    *(s16 *)(a2 + 0x8) = t1 << 1;
-                    *(s16 *)(a2 + 0xA) = 0;
+        a3 = a0->n8;
+        t2 = a3->sub;
+        v1 = t2->cntB;
+        if (0 < v1) {
+            t0 = t2->tblB;
+            t1 = 0;
+            do {
+                if (t0[0] == a1) {
+                    a2[0] = a3->x4;
+                    a2[1] = a0->v0;
+                    *(s16 *)((u8 *)a2 + 8) = t1 << 1;
+                    *(s16 *)((u8 *)a2 + 0xA) = 0;
                     return 1;
                 }
-            }
+                t1++;
+                t0++;
+            } while (t1 < v1);
         }
-        v3 = *(s8 *)(t2 + 0xC);
-        if (0 < v3) {
-            t0 = *(u8 **)(t2 + 0x4);
-            for (t1 = 0; t1 < v3; t1++, t0 += 2) {
-                if (a1 == *(s16 *)t0) {
-                    *(s32 *)a2 = *(s32 *)(a3 + 0x4);
-                    *(s32 *)(a2 + 0x4) = *(s32 *)a0;
-                    *(s16 *)(a2 + 0x8) = (*(s8 *)(t2 + 0xD) + t1) << 1;
-                    *(s16 *)(a2 + 0xA) = 0;
+        v1 = t2->cntA;
+        if (0 < v1) {
+            t0 = t2->tblA;
+            t1 = 0;
+            do {
+                if (t0[0] == a1) {
+                    a2[0] = a3->x4;
+                    a2[1] = a0->v0;
+                    *(s16 *)((u8 *)a2 + 8) = (t2->cntB + t1) << 1;
+                    *(s16 *)((u8 *)a2 + 0xA) = 0;
                     return 1;
                 }
-            }
+                t1++;
+                t0++;
+            } while (t1 < v1);
         }
     }
-    a3 = *(u8 **)(a0 + 0xC);
-    t2 = *(u8 **)a3;
-    v3 = *(s8 *)(t2 + 0xC);
-    if (0 < v3) {
-        t0 = *(u8 **)(t2 + 0x4);
-        for (t1 = 0; t1 < v3; t1++, t0 += 2) {
-            if (a1 == *(s16 *)t0) {
-                *(s32 *)a2 = *(s32 *)(a3 + 0x4);
-                *(s32 *)(a2 + 0x4) = *(s32 *)(a0 + 0x4);
-                *(s16 *)(a2 + 0x8) = t1 + 2;
-                *(s16 *)(a2 + 0xA) = 1;
+    a3 = a0->nC;
+    t2 = a3->sub;
+    v1 = t2->cntA;
+    if (0 < v1) {
+        t0 = t2->tblA;
+        t1 = 0;
+        do {
+            if (t0[0] == a1) {
+                a2[0] = a3->x4;
+                a2[1] = a0->v4;
+                *(s16 *)((u8 *)a2 + 8) = t1 + 2;
+                *(s16 *)((u8 *)a2 + 0xA) = 1;
                 return 1;
             }
-        }
+            t1++;
+            t0++;
+        } while (t1 < v1);
     }
-    *(s32 *)a2 = *(s32 *)(a3 + 0x4);
-    *(s32 *)(a2 + 0x4) = *(s32 *)(a0 + 0x4);
-    *(s16 *)(a2 + 0x8) = 0;
-    *(s16 *)(a2 + 0xA) = 1;
+    a2[0] = a3->x4;
+    a2[1] = a0->v4;
+    *(s16 *)((u8 *)a2 + 8) = 0;
+    *(s16 *)((u8 *)a2 + 0xA) = 1;
     return 0;
 }
 #endif
