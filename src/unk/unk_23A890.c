@@ -811,7 +811,10 @@ u8 *func_00240F40(s32 i, s32 kind) {
     }
     return r;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00240FF0);
+extern void (*jtbl_00450160[])();
+void func_00240FF0(s32 a0, s32 a1) {
+    jtbl_00450160[a1](a0);
+}
 #if 0
 s32 func_00241010(s32 a0) {
     u8 *b = gBattle + a0 * 0x2020;
@@ -831,7 +834,50 @@ s32 func_00241010(s32 a0) {
 // differs: round 6 (u23e): 0xB8 bytes against 0xC0 (two instructions short). The original keeps the base pointer base+0x830 in a2 for the 0xB9C load and ends with sltu v0,zero,a1 / xori (a1 flag, one exit); the returns form and a2 form both give other layouts (34 to 38 of 48 differ)
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241010);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002410D0);
+extern s8 D_004703F4;
+typedef struct B7Q {
+    u8 v[0x10];
+    s32 id;
+    s32 u14;
+    s32 u18;
+    s32 flags;
+    s16 h20;
+    s16 h22;
+    u8 pad[0xC];
+} B7Q;
+void func_00241280(B7Q *);
+void func_002410D0(s32 i) {
+    B7Q b;
+    f32 f2;
+    f32 f1;
+    u8 *o = D_0046FE44 + i * 0x80;
+    u8 *q = gBattle + i * 0x2020 + 0x830;
+    if ((gBattle ? *(s16 *)(gBattle + 0x8944) : 0) == 0 || *(s16 *)(D_0046FE4C + 0x91A) != 0) {
+        if (*(f32 *)(q + 0x17C0) > 0.0f && (*(s32 *)(o + 0x2C) & 1) == 0) {
+            if (gBattle != 0) {
+                f1 = *(f32 *)(gBattle + 0x88F0);
+            } else {
+                f1 = (D_004703F4 != 3) ? 1.0f : 1.2f;
+            }
+            *(f32 *)(o + 0x7C) = *(f32 *)(o + 0x7C) + f1;
+            if (gBattle != 0) {
+                f2 = *(f32 *)(gBattle + 0x88F0);
+            } else {
+                f2 = (D_004703F4 != 3) ? 1.0f : 1.2f;
+            }
+            if (*(f32 *)(o + 0x7C) >= 10.0f * f2) {
+                memset(&b, 0, 0x30);
+                __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(*(u8 **)(o + 0x20)), "r"(&b) : "memory");
+                b.h22 = 0x10;
+                b.flags = 0x800;
+                b.id = i;
+                b.h20 = 0;
+                func_00241280(&b);
+                *(f32 *)(o + 0x7C) = 0.0f;
+            }
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241280);
 void func_00241500(s32 x, s32 y) {
     u8 *s2 = D_0046FE44 + x * 0x80;
@@ -1810,7 +1856,76 @@ void func_002453D0(void) {
     func_00244280();
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002454B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00245A80);
+extern u8 D_00451CC0[];
+void func_0020F700(s32);
+typedef struct B5V {
+    f32 x, y, z, w;
+} B5V __attribute__((aligned(16)));
+typedef struct B5E {
+    char pad0[0x10];
+    B5V f10;
+    char pad20[0x50 - 0x20];
+    s16 f50;
+    s16 f52;
+    s16 f54;
+    char pad56[0x6C - 0x56];
+    void *f6C;
+    char pad70[0x94 - 0x70];
+    s16 f94;
+    s16 f96;
+    s16 f98;
+    char pad9A[0xA0 - 0x9A];
+    s16 fA0;
+    s16 fA2;
+    s16 fA4;
+    char padA6[0xB0 - 0xA6];
+} B5E;
+typedef struct B5C {
+    B5V v;
+    void *f10;
+    s16 f14;
+    s16 f16;
+    char pad18[8];
+} B5C;
+void func_00245A80(u8 *o, s32 k) {
+    B5E e;
+    B5C c;
+    s8 *s0;
+    s32 m = *(s32 *)(o + 0x1CFC);
+
+    extern void func_00214DD0();
+    if (m == 0x23) {
+        s0 = (s8 *)(D_00451CC0 + *(s32 *)(o + 0xB9C) * 12 + k * 4);
+    } else {
+        s0 = (s8 *)(D_00451CC0 + m * 12 + k * 4);
+    }
+    func_0020F700(-1);
+    memset(&e, 0, 0xB0);
+    e.f50 = 0x400;
+    e.f52 = 0;
+    e.f54 = 0;
+    e.f10.y = -5000.0f;
+    e.f10.x = 1.0f;
+    e.f10.z = 1.0f;
+    e.f10.w = 1.0f;
+    e.f94 = 3;
+    e.f96 = 1;
+    e.f98 = 3;
+    e.fA0 = s0[0];
+    e.fA2 = s0[1];
+    e.fA4 = s0[2];
+    e.f6C = o;
+    func_00214DD0(&e);
+    func_00214F80(e.f52, &e);
+    if (s0[3] != -1) {
+        memset(&c, 0, 0x20);
+        __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(&c), "r"(&e.f10));
+        c.f10 = o;
+        c.f14 = 1;
+        c.f16 = s0[3];
+        func_0025BD40(&c);
+    }
+}
 void func_00245BE0(u8 *o) {
     func_00244CC0(*(s32 *)(o + 0x1350), 1);
 }
@@ -2467,6 +2582,7 @@ void func_00248350(s32 x) {
     D_00470734 = x;
 }
 #if 0
+// r7n: a one-case switch (switch (D_0051CD20[0]) { case 0: ...; break; }) gives the right beqz/b layout; only left: the original copies the call result into s0 (move s0,v0 in the jal slot, li a1 before the jal), ours keeps it in v0 (tried r/s0 locals, u8*/struct pointer, chained forms)
 // differs: the early exit is a bnez straight to the epilogue; the original has beqz to the body then a `b` to the epilogue
 // (the body is last). Tried: early return, if/else with return in either arm, both give a join `b` after the body.
 void func_00248360(void) {
