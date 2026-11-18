@@ -11,9 +11,11 @@ typedef struct Ent2FAFF0 {
 
 /* The part of a task at 0x30 that the task functions use. */
 typedef struct Sub2FAFF0 {
-    char pad0[0xC];
+    char pad0[0x8];
+    f32 f8;
     f32 fC;
-    char pad10[0x8];
+    f32 f10;
+    s32 f14;
     Ent2FAFF0 *f18;
 } Sub2FAFF0;
 
@@ -163,32 +165,34 @@ void func_002FBD90(Task2FAFF0 *t) {
     }
 }
 #if 0
-// differs: compiled 0x114 bytes, original 0x120; the original keeps the task in s2 and t+0x30 in s1, the compiler folds t+0x30 into t (a struct view or a char pointer did not change it)
+// differs: 10 of 70 (aligned, same size): gTourMap kept in v1 instead of a0 (the original loads 0x294 and 0x40 before the sw, which goes in the jal slot, so the pointer lives in a0), v0/v1 swapped in D_004DFAE8[0] + f58; tried a local w, w first, no local, operand order, tsweep of the 3 locals; a SubN view (s32 f8 at t+0x38) fixed the task/save-work split
 extern u16 D_00492FCE[];
 extern u16 D_00493086[];
 extern s32 D_004DFAE8[];
 extern void Zenie_SetTarget(s32);
 extern void Zenie_SetStep(s32);
+typedef struct SubN2FAFF0 {
+    char pad0[0x8];
+    s32 f8;
+} SubN2FAFF0;
 void func_002FBE20(Task2FAFF0 *t) {
+    SubN2FAFF0 *s = (SubN2FAFF0 *)((char *)t + 0x30);
     SaveWork2FAFF0 *w;
     Anim2FAFF0 *a;
 
     *(s32 *)&t->f38 = *(s32 *)&t->f38 + 1;
     w = gTourMap;
     w->f294 = w->f294 + 1;
-    a = (Anim2FAFF0 *)(gTourMap->f40 + 0x30);
+    a = (Anim2FAFF0 *)(w->f40 + 0x30);
     Zenie_Update();
     func_00208F70(a->f8);
-    if (((D_00492FCE[0] | D_00493086[0]) & 0x4008) == 0) {
-        if ((f32)*(s32 *)&t->f38 * gFrameDelta <= 120.0f) {
-            return;
-        }
+    if (((D_00492FCE[0] | D_00493086[0]) & 0x4008) != 0 || (f32)s->f8 * gFrameDelta > 120.0f) {
+        a->f0 = a->f0 + 1;
+        s->f8 = 0;
+        Zenie_SetTarget(D_004DFAE8[0] + gTourMap->f58);
+        Zenie_SetStep(gTourMap->f58 / 100);
+        t->f1C = (func_002FBD90 == 0) ? 0 : func_002FBD90;
     }
-    a->f0 = a->f0 + 1;
-    *(s32 *)&t->f38 = 0;
-    Zenie_SetTarget(D_004DFAE8[0] + gTourMap->f58);
-    Zenie_SetStep(gTourMap->f58 / 100);
-    t->f1C = (func_002FBD90 == 0) ? 0 : func_002FBD90;
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBE20);
@@ -697,27 +701,25 @@ void func_00300400(Task2FAFF0 *t) {
     }
     s->f18->f0 = s->f18->f0 + 1;
 }
-#if 0
-// differs: the object pointer a0+0x30 is computed before the first field load in the original; mwcc computes it at its first use
 void func_003004B0(Task2FAFF0 *t) {
-    Ent2FAFF0 *e = t->f48;
     Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
+    Ent2FAFF0 *e = s->f18;
+    f32 *p;
 
-    e->f10 = e->f10 - t->f40;
-    e = t->f48;
-    if (e->f10 < t->f3C) {
-        e->f10 = t->f3C;
-        t->f40 = 5.0f * gFrameDelta;
-        t->f44 = 1;
-        if (e->fC > s->f18->fC) {
-            t->f44 = -t->f44;
-            t->f40 = -t->f40;
+    e->f10 = e->f10 - s->f10;
+    e = s->f18;
+    p = &e->f10;
+    if (*p < t->f3C) {
+        *p = t->f3C;
+        s->f10 = 5.0f * gFrameDelta;
+        s->f14 = 1;
+        if (s->f18->fC > s->f8) {
+            s->f14 = -s->f14;
+            s->f10 = -s->f10;
         }
         t->f1C = (TourMap_TaskSlide == 0) ? 0 : TourMap_TaskSlide;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_003004B0);
 void TourMap_TaskSlide(Task2FAFF0 *t) {
     Sub2FAFF0 *s = (Sub2FAFF0 *)((char *)t + 0x30);
     f32 v;
