@@ -6928,52 +6928,53 @@ void func_001F7BF0(void) {
 extern char D_004698D0[];
 extern void func_001F3A60(void);
 extern void func_001F3C10(void);
-
-// differs: func_001F7C80: 28 of 77 at best (about 8 are relocations): the flags local is kept in another register (original t0, set in the delay slot of the first beqz) and the two early exits go to a different join; declaration orders tried.
-#if 0
 void func_001F7C80(s32 a0) {
-    s32 count;
-    s32 flags;
-    s32 i;
     char *v;
     char *s0;
     char *sp;
-    char *x2;
-    char *x3;
-    char *x4;
-    char *p;
     char *r;
+    char *d;
+    s32 fl;
+    s32 i;
+    char *a2;
+    s32 n;
+    s32 j;
+    char *w;
 
     v = D_0051CD14[0] + D_0051CD20[0] * 36;
     s0 = *(char **)(v + 0xC) + (a0 << 5);
     sp = *(char **)(s0 + 0x4);
-    for (i = 0; i < *(s32 *)(sp + 0x4); i++) {
-        *(s32 *)(sp + 0x8 + i * 8) = 0;
+    j = 0;
+    if (0 < *(s32 *)(sp + 0x4)) {
+        w = sp;
+        do {
+            *(s32 *)(w + 0x8) = 0;
+            j++;
+            w += 8;
+        } while (j < *(s32 *)(sp + 0x4));
     }
     r = func_001F5FD0(0x80000000, D_004698D0, (s32)s0, (void *)func_001F3A60, (void *)func_001F3C10);
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x11;
     *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x10;
-    flags = 0;
-    x2 = *(char **)(*(char **)(s0 + 0x4));
-    x3 = *(char **)(x2 + 0x1C);
-    x4 = *(char **)x3;
-    if (x4 != NULL) {
-        count = *(s32 *)(x4 + 0x10);
-        if (count > 0) {
-            p = *(char **)(x4 + 0x1C);
-            for (i = 0; i < count; i++) {
-                if (*(s8 *)p == 0x58) {
-                    flags |= 0x200;
+    d = **(char ***)((char *)**(char ***)(s0 + 4) + 0x1C);
+    fl = 0;
+    if (d != NULL) {
+        n = *(s32 *)(d + 0x10);
+        i = 0;
+        if (0 < n) {
+            a2 = *(char **)(d + 0x1C);
+            do {
+                if (*(s8 *)a2 == 0x58) {
+                    fl |= 0x200;
                 }
-                p += 0x20;
-            }
+                i++;
+                a2 += 0x20;
+            } while (i < n);
         }
     }
-    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & ~flags;
-    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | flags;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & ~fl;
+    *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | fl;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F7C80);
 #if 0
 void func_001F7DB0(void) {
     char *v;
