@@ -55,9 +55,9 @@ extern void func_0021C540(f32, f32, f32);
 extern void func_0021C560(s32, f32, f32, f32);
 extern void func_0021C5B0(s32);
 extern void func_0021C5D0(s32);
-extern s32 func_0021C360(void);
+extern s32 func_0021C360();
 extern void func_00215500(s32);
-void func_0025A3A0(s32, f32, f32);
+s32 func_0025A3A0(s32, f32, f32);
 
 typedef struct BtlPlayer {
     char pad0[0x1350];
@@ -102,6 +102,8 @@ typedef struct ScrTask {
 typedef struct ResTbl {
     char pad0[0x14];
     void **f14;
+    char pad18[4];
+    void **f1C;
 } ResTbl;
 
 typedef struct SysE60 {
@@ -120,7 +122,7 @@ extern void amModel_SetCurrent(void *, s32);
 extern ScrTask *amTask_Create(void *, void *, s32, s32, s32, char *);
 extern void *func_0022D860(void *, f32);
 extern void func_00125740(void *, void *, s32);
-extern void func_0020D9F0(s32);
+extern void *func_0020D9F0(s32);
 extern Eff *func_00215320(s16, s32);
 extern void func_00211650(void);
 extern void func_00210240(void);
@@ -128,16 +130,411 @@ extern void func_00212560(void);
 extern void CutIn_TaskMain(void);
 extern void CutIn_TaskKill(void);
 extern void A2d_CallHandler(s32, s32 *);
-void func_0025AA20(s32);
-void func_0025A7C0(s32, s32);
-void func_0025A580(s32, s32);
-void func_0025A130(s32, s32);
+s32 func_0025AA20(s32);
+s32 func_0025A7C0(s32, s32);
+s32 func_0025A580(s32, s32);
+s32 func_0025A130(s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A130);
+extern char D_0046AEA0[];
+extern char D_0046AEB0[];
+extern void func_00255E10(void);
+extern void func_00254B50(void);
+extern void func_00254AC0(void);
+typedef struct A1Work2 {
+    void *f0;
+    void *f4;
+    void *f8;
+    void *fC;
+    void *f10;
+    void *f14;
+    char pad18[0x18];
+    void *f30;
+    void *f34;
+} A1Work2;
+typedef struct A1Task2 {
+    char pad0[0x30];
+    A1Work2 w;
+} A1Task2;
+typedef struct A1Work {
+    A1Task2 *f0;
+    s32 f4;
+    char pad8[4];
+    f32 fC;
+    char pad10[0x10];
+    s16 f20[2];
+} A1Work;
+typedef struct A1Task {
+    char pad0[0x30];
+    A1Work w;
+} A1Task;
+s32 func_0025A130(s32 p0, s32 p1) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
+    ScrObj **g = (ScrObj **)D_0058D4F4;
+    A1Work *w;
+    A1Work2 *w2;
+    void *v;
+    s32 n;
+    s32 c;
+    s32 k;
+
+    if (g[0] != NULL) {
+        return 0;
+    }
+    g[0] = (ScrObj *)amTask_Create(func_00255E10, func_00254B50, 0x5410, 0x1000, 0x2000000, D_0046AEA0);
+    w = &((A1Task *)g[0])->w;
+    memset(w, 0, 0x38);
+    w->f0 = (A1Task2 *)amTask_Create(func_00254AC0, NULL, 0x3A30, 0x1000, 0x2000008, D_0046AEB0);
+    w2 = &w->f0->w;
+    memset(w2, 0, 0x38);
+    w2->f0 = w;
+    w->f4 = 0;
+    w->fC = 100.0f;
+    w->f20[0] = p0;
+    w->f20[1] = p1;
+    D_00470704 = v = sys->fE60;
+    D_0047070C = n = 0x4000000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, n);
+    D_00470238 = 0;
+    k = (func_0021C360(p0) & 1) + 0x18;
+    w2->f4 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    w2->f8 = func_0022D860(sys->fE68->f14[0x36], 0.0f);
+    w2->f14 = func_0022D860(sys->fE68->f14[0x3C], 0.0f);
+    w2->fC = func_0022D860(sys->fE68->f14[0x38], 0.0f);
+    w2->f10 = func_0022D860(sys->fE68->f14[0x3A], 0.0f);
+    c = func_0021C460(p0);
+    if (c == -1) {
+        c = 2;
+    }
+    if (func_0021C360(p0) & 1) {
+        k = c + 0x1D;
+    } else {
+        k = c + 0x1A;
+    }
+    w2->f30 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    c = func_0021C460(p1);
+    if (c == -1) {
+        c = 2;
+    }
+    k = (func_0021C360(p0) & 1) ? c + 0x20 : c + 0x23;
+    w2->f34 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    return 1;
+}
+extern void func_001E9B00(s32, s32, s32, s32, f32, f32);
+extern void func_0022C7D0(void *, s32, f32);
+typedef struct A3Work2 {
+    char pad0[0x2C];
+    void *f2C[2];
+} A3Work2;
+typedef struct A3Work {
+    A3Work2 *f0Task;
+    char pad4[4];
+    s32 f8;
+    char padC[0xC];
+    f32 f18[2];
+    f32 f20[2];
+    f32 f28[2];
+    s16 f30[2];
+    s16 f34[2];
+} A3Work;
+/* differs: 12 of 120, control flow and floats match (the float local holding 0.0f is assigned inside both arms of the
+   first test: FAKEMATCH-like, the original keeps it in $f20). Left: the original keeps arg*2 in s1 and forms
+   v0 = s1 + w (index first) with the count pointer in s0; ours has w + s1 and the pointer in s2 (arg*4 in s0).
+   Tried: tsweep both (1505), arg[w->f30], arg + w->f30, byte-offset forms with i2/i4 locals (worse, 27). */
+#if 0
+s32 func_0025A3A0(s32 arg, f32 x, f32 z) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
+    A3Work *w;
+    A3Work2 *w2;
+    s16 *cnt;
+    void *v;
+    s32 n;
+    f32 zero;
+
+    if (D_0058D4F0[0] == NULL) {
+        return 0;
+    }
+    w = (A3Work *)((u8 *)D_0058D4F0[0] + 0x30);
+    cnt = &w->f30[arg];
+    if (*cnt >= 3) {
+        return 0;
+    }
+    if (arg == 0) {
+        zero = 0.0f;
+        func_001E9B00(1, 0x2B, 0, 0, zero, 1.0f);
+    } else {
+        zero = 0.0f;
+        func_001E9B00(1, 0x2C, 0, 0, zero, 1.0f);
+    }
+    w->f20[arg] = x;
+    w->f28[arg] = z;
+    *cnt = *cnt + 1;
+    w->f8 |= (arg == 0) ? 1 : 2;
+    w->f18[arg] = zero;
+    if (!(x < 100.0f)) {
+        w2 = (A3Work2 *)((u8 *)w->f0Task + 0x30);
+        D_00470704 = v = sys->fE60;
+        D_0047070C = n = 0x4000000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, n);
+        D_00470238 = 0;
+        if (w2->f2C[arg] == NULL) {
+            w2->f2C[arg] = func_0022D860(((void **)sys->fE68->f14)[func_0021C360(w->f34[arg]) + 0x84], zero);
+        } else {
+            func_0022C7D0(w2->f2C[arg], 1, zero);
+        }
+    }
+    return 1;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A3A0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A580);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025A7C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025AA20);
+extern char D_0046AEC0[];
+extern char D_0046AED0[];
+extern void func_00257860(void);
+extern void func_00256F80(void);
+extern void func_00256EB0(void);
+extern s32 func_0021C460();
+extern void amTask_Kill(void *);
+typedef struct A5Work2 {
+    void *f0;
+    void *f4;
+    char pad8[4];
+    void *fC[2];
+    void *f14[2];
+    char pad1C[8];
+    void *f24[2];
+} A5Work2;
+typedef struct A5Task2 {
+    char pad0[0x30];
+    A5Work2 w;
+} A5Task2;
+typedef struct A5Work {
+    A5Task2 *f0;
+    char pad4[0xC];
+    f32 f10;
+    f32 f14;
+    char pad18[0x1C];
+    s16 f34[2];
+} A5Work;
+typedef struct A5Task {
+    char pad0[0x30];
+    A5Work w;
+} A5Task;
+s32 func_0025A580(s32 p0, s32 p1) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
+    ScrObj **g = (ScrObj **)D_0058D4F0;
+    A5Work *w;
+    A5Work2 *w2;
+    void *v;
+    s32 n;
+    s32 i;
+    s32 a;
+    s32 j;
+    s32 b;
+    s32 c;
+    s32 k;
+
+    if (g[0] != NULL) {
+        return 0;
+    }
+    g[0] = (ScrObj *)amTask_Create(func_00257860, func_00256F80, 0x5410, 0x1000, 0x2000000, D_0046AEC0);
+    if (g[0] == NULL) {
+        return 0;
+    }
+    w = &((A5Task *)g[0])->w;
+    memset(w, 0, 0x38);
+    w->f34[0] = p0;
+    w->f34[1] = p1;
+    w->f10 = 30.0f;
+    w->f14 = 180.0f;
+    w->f0 = (A5Task2 *)amTask_Create(func_00256EB0, NULL, 0x3A30, 0x1000, 0x2000008, D_0046AED0);
+    if (w->f0 == NULL) {
+        amTask_Kill(g[0]);
+        g[0] = NULL;
+        return 0;
+    }
+    w2 = &w->f0->w;
+    memset(w2, 0, 0x34);
+    w2->f0 = w;
+    D_00470704 = v = sys->fE60;
+    D_0047070C = n = 0x4000000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, n);
+    D_00470238 = 0;
+    w2->f4 = func_0022D860(sys->fE68->f14[0x67], 0.0f);
+    for (i = 0, j = 0; i < 2; i++, j += 6) {
+        a = func_0021C360(w->f34[i]);
+        b = a & 1;
+        w2->fC[i] = func_0022D860(sys->fE68->f14[0x12 + b], 0.0f);
+        w2->f14[i] = func_0022D860(sys->fE68->f14[0x7C + b * 3], 0.0f);
+        c = func_0021C460(w->f34[i]);
+        if (c == -1) {
+            c = 2;
+        }
+        k = a * 3 + (c + 0x1A);
+        k += j;
+        w2->f24[i] = func_0022D860(sys->fE68->f14[k], 0.0f);
+    }
+    return 1;
+}
+extern char D_0046AEE0[];
+extern char D_0046AEF0[];
+extern void func_002587F0(void);
+extern void func_00257E30(void);
+extern void func_00257DA0(void);
+typedef struct A7Work2 {
+    void *f0;
+    void *f4;
+    void *f8;
+    void *fC;
+    void *f10;
+    void *f14;
+    char pad18[0x18];
+    void *f30;
+    void *f34;
+} A7Work2;
+typedef struct A7Task2 {
+    char pad0[0x30];
+    A7Work2 w;
+} A7Task2;
+typedef struct A7Work {
+    A7Task2 *f0;
+    s32 f4;
+    char pad8[0x18];
+    s16 f20[2];
+} A7Work;
+typedef struct A7Task {
+    char pad0[0x30];
+    A7Work w;
+} A7Task;
+s32 func_0025A7C0(s32 p0, s32 p1) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
+    ScrObj **g = (ScrObj **)D_0058D4EC;
+    A7Work *w;
+    A7Work2 *w2;
+    void *v;
+    s32 n;
+    s32 c;
+    s32 k;
+
+    if (g[0] != NULL) {
+        return 0;
+    }
+    g[0] = (ScrObj *)amTask_Create(func_002587F0, func_00257E30, 0x5410, 0x1000, 0x2000000, D_0046AEE0);
+    w = &((A7Task *)g[0])->w;
+    memset(w, 0, 0x38);
+    w->f0 = (A7Task2 *)amTask_Create(func_00257DA0, NULL, 0x3A30, 0x1000, 0x2000008, D_0046AEF0);
+    w2 = &w->f0->w;
+    memset(w2, 0, 0x38);
+    w2->f0 = w;
+    w->f4 = 0;
+    w->f20[0] = p0;
+    w->f20[1] = p1;
+    D_00470704 = v = sys->fE60;
+    D_0047070C = n = 0x4000000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, n);
+    D_00470238 = 0;
+    k = (func_0021C360(p0) & 1) + 0x59;
+    w2->f4 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    w2->f8 = func_0022D860(sys->fE68->f14[0x36], 0.0f);
+    w2->f14 = func_0022D860(sys->fE68->f14[0x3C], 0.0f);
+    w2->fC = func_0022D860(sys->fE68->f14[0x38], 0.0f);
+    w2->f10 = func_0022D860(sys->fE68->f14[0x3A], 0.0f);
+    c = func_0021C460(p0);
+    if (c == -1) {
+        c = 2;
+    }
+    if (func_0021C360(p0) & 1) {
+        k = c + 0x1D;
+    } else {
+        k = c + 0x1A;
+    }
+    w2->f30 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    c = func_0021C460(p1);
+    if (c == -1) {
+        c = 2;
+    }
+    k = (func_0021C360(p0) & 1) ? c + 0x20 : c + 0x23;
+    w2->f34 = func_0022D860(sys->fE68->f14[k], 0.0f);
+    return 1;
+}
+extern char D_0046AF00[];
+extern char D_0046AF10[];
+extern s32 D_0047035C;
+extern void func_002596A0(void);
+extern void func_00258C20(void);
+extern void func_00258AC0(void);
+extern void *func_0022D670(void *, f32);
+extern s32 func_002544A0(s32, s32);
+typedef struct AaWork2 {
+    void *f0;
+    void *f4;
+    void *f8;
+    void *fC;
+    char pad10[0x14];
+    void *f24;
+} AaWork2;
+typedef struct AaTask2 {
+    char pad0[0x30];
+    AaWork2 w;
+} AaTask2;
+typedef struct AaWork {
+    AaTask2 *f0;
+    char pad4[8];
+    f32 fC;
+    f32 f10;
+    s32 f14;
+    s32 f18;
+    s32 f1C;
+    s32 f20;
+    s32 f24;
+    char pad28[0xC];
+    s32 f34;
+} AaWork;
+typedef struct AaTask {
+    char pad0[0x30];
+    AaWork w;
+} AaTask;
+s32 func_0025AA20(s32 arg) {
+    SysE60 *sys = (SysE60 *)gBtlSys;
+    AaWork *w;
+    AaWork2 *w2;
+    void *v;
+    s32 n;
+    ScrObj **g = (ScrObj **)D_0058D4E8;
+
+    if (g[0] != NULL) {
+        return 0;
+    }
+    g[0] = (ScrObj *)amTask_Create(func_002596A0, func_00258C20, 0x5410, 0x1000, 0x2000000, D_0046AF00);
+    w = &((AaTask *)g[0])->w;
+    memset(w, 0, D_0047035C);
+    w->fC = 30.0f;
+    w->f10 = 120.0f;
+    w->f34 = arg;
+    w->f14 = 8;
+    w->f18 = 8;
+    w->f1C = 8;
+    w->f20 = 8;
+    w->f24 = 8;
+    w->f0 = (AaTask2 *)amTask_Create(func_00258AC0, NULL, 0x3A30, 0x1000, 0x2000008, D_0046AF10);
+    w2 = &w->f0->w;
+    memset(w2, 0, D_0047035C);
+    w2->f0 = w;
+    D_00470704 = v = sys->fE60;
+    D_0047070C = n = 0x4000000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, n);
+    D_00470238 = 0;
+    w2->f4 = func_0022D860(sys->fE68->f14[2], 0.0f);
+    func_0021C360(w->f34);
+    w2->f8 = func_0022D670(sys->fE68->f1C[14], 0.0f);
+    func_002544A0(*(s32 *)((u8 *)w2->f8 + 0x30), w->f34);
+    w2->fC = func_0022D860(sys->fE68->f14[22], 0.0f);
+    w2->f24 = func_0022D860(sys->fE68->f14[8], 0.0f);
+    return 1;
+}
 s32 Scr_CmdA2dCall31(void *ctx, ScrCmd *cmd) {
     s32 buf[2] __attribute__((aligned(16)));
 
@@ -268,7 +665,8 @@ s32 Scr_CmdCall25A3A0(void *ctx, ScrCmd *cmd) {
     return 1;
 }
 /* r6 best attempt diff 11: the load and store order matches, but the argument pointer lands in $v1 and the
-   object in $v0, the reverse of the original; register hints and a pointer-to-pointer global did not flip it. */
+   object in $v0, the reverse of the original; register hints and a pointer-to-pointer global did not flip it.
+   r7j: tsweep (120), explicit decl/assign orders (48), block-scope a, no local for args, permuter 300 s (265 -> 95): still 11. */
 #if 0
 s32 func_0025AF70(void *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
@@ -426,8 +824,98 @@ void func_0025B790(EffSrc *e) {
     f->f18 = e->f20;
     func_00125740(f->f20, e, 0x58);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B840);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B8F0);
+extern void func_00210C20(void);
+void func_0025B840(EffSrc *e) {
+    s32 owner = e->f8->f1350;
+    Eff *f;
+
+    func_0020D9F0(e->f0);
+    f = func_00215320(owner, 0x80);
+    if (f == NULL) {
+        return;
+    }
+    f->f8 = func_00211650;
+    f->fC = NULL;
+    f->f18 = e->f20;
+    f = func_00215320(owner, 0x100);
+    if (f == NULL) {
+        return;
+    }
+    f->f8 = func_00210C20;
+    f->fC = func_00212560;
+    f->f18 = e->f20;
+    func_00125740(f->f20, e, 0x58);
+}
+extern void func_0013AFA0(void *);
+typedef struct B8F0Dst {
+    char pad0[0x10];
+    f32 f10, f14, f18;
+    s32 f1C;
+    f32 f20, f24, f28;
+    s32 f2C;
+    f32 f30, f34, f38;
+    s32 f3C;
+    f32 f40, f44, f48;
+    char pad4C[4];
+    char f50[0x40];
+    f32 f90, f94, f98;
+    char pad9C[4];
+    f32 fA0, fA4, fA8, fAC, fB0, fB4, fB8, fBC;
+} B8F0Dst;
+typedef struct B8F0Src {
+    char pad0[0x10];
+    f32 f10, f14, f18;
+    char pad1C[4];
+    f32 f20, f24, f28;
+    char pad2C[4];
+    f32 f30, f34, f38;
+    char pad3C[4];
+    f32 f40, f44, f48;
+    char pad4C[0x20];
+    f32 f6C, f70;
+    char pad74[0x14];
+    f32 f88, f8C, f90, f94, f98, f9C, fA0, fA4;
+} B8F0Src;
+typedef struct B8F0Arg {
+    s32 f0;
+    char pad4[0x14];
+    B8F0Src *f18;
+} B8F0Arg;
+void func_0025B8F0(B8F0Arg *a) {
+    B8F0Dst *d;
+    B8F0Src *s;
+
+    d = func_0020D9F0(a->f0);
+    s = a->f18;
+    memset(d, 0, 0xC0);
+    func_0013AFA0(d->f50);
+    d->f10 = s->f10;
+    d->f14 = s->f14;
+    d->f18 = s->f18;
+    d->f1C = 0x3F800000;
+    d->f30 = 3.1415927f * (2.0f * s->f20) / 360.0f;
+    d->f34 = 3.1415927f * (2.0f * s->f24) / 360.0f;
+    d->f38 = 3.1415927f * (2.0f * s->f28) / 360.0f;
+    d->f3C = 0x3F800000;
+    d->f20 = s->f30;
+    d->f24 = s->f34;
+    d->f28 = s->f38;
+    d->f2C = 0x3F800000;
+    d->f90 = s->f9C;
+    d->f94 = s->f6C;
+    d->f98 = s->f70;
+    d->fA0 = s->f88;
+    d->fA4 = s->f8C;
+    d->fA8 = s->f90;
+    d->fAC = s->f94;
+    d->fB0 = s->f98;
+    d->fB4 = s->f9C;
+    d->fB8 = s->fA0;
+    d->fBC = s->fA4;
+    d->f40 = s->f40;
+    d->f44 = s->f44;
+    d->f48 = s->f48;
+}
 void Wave_TaskAfterDraw(void) {
     gWave->f70 = 0;
 }
