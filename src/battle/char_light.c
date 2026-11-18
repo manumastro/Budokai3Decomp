@@ -5,6 +5,8 @@ typedef struct LV { u8 p[0x40]; f32 a; u8 p2[4]; f32 b; } LV;
 typedef struct LSubA { u8 p[8]; s32 f8; u8 q[0x24]; LV *f30; } LSubA;
 typedef struct LObjA { f32 t; u8 p[8]; s32 type; LSubA *sub; u8 q[0x14]; s32 f28; } LObjA;
 typedef struct PtrCount { void *p; s32 n; } PtrCount;
+extern s32 func_0022B900(s32, s32, f32);
+extern void func_00238790(void *, s32, s32, s32, f32);
 extern s32 D_0047072C;
 extern s32 func_0021C3D0(s32);
 extern s32 *func_0021C400(s32);
@@ -279,7 +281,6 @@ s32 func_00236640(CObs *a0) {
     }
     return r;
 }
-// GIVEN UP: the calls and the stores match; the frame is 0x10 bytes bigger (0x70 against 0x60) with the locals in any layout tried
 void func_002366E0(void) {
     s32 b[9];
     s32 a[9];
@@ -293,7 +294,6 @@ void func_002366E0(void) {
     Sp_CallHandler(7, a);
     func_001DA4C0();
 }
-// GIVEN UP: the local buffer lands 8 bytes higher in the frame
 void func_00236750(s32 *p) {
     s32 buf[4];
 
@@ -675,7 +675,6 @@ s32 *CharLight_Create(void) {
     s[1] = -1;
     return s;
 }
-// GIVEN UP: the frame and the join label differ (tried a combined condition)
 void func_00237840(void *o) {
     if (o == 0 || ((s32 *)o)[1] == -1) {
         return;
@@ -1107,7 +1106,6 @@ void func_002393E0(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239480);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239720);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00239920);
-// GIVEN UP: the battle-global load and the s0 pointer come out in other registers (a0 and a1 against s0 and a1); 46 of 56 differ with the plain form; tried a reordered pointer setup (43 of 56)
 void func_00239CC0(char *self) {
     char *sys = (char *)gBtlSys;
     char **s0;
@@ -1144,7 +1142,6 @@ void func_00239CC0(char *self) {
         }
     }
 }
-// GIVEN UP: same register shape as 239CC0 (the SetPacketMode(1) after the 145CC0 call); 46 of 56 differ, tried reordering
 void func_00239DA0(char *self) {
     char *sys = (char *)gBtlSys;
     char **s0;
@@ -1238,7 +1235,6 @@ void Dmg_TaskKill(u8 *a0) {
     }
 }
 extern void func_00238C50(void *, s32, s32, s32, f32);
-extern s32 func_0022B900(s32, s32, f32);
 extern s32 A2d_AllocObj(s32, f32);
 void func_0023A000(LSub4 *o, s32 a1) {
     char *sys = (char *)gBtlSys;
