@@ -49,7 +49,22 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D38);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D48);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D58);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D68);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D78);
+typedef signed int         s32_x00113D78;
+extern s32_x00113D78 GetMemorySize_x00113D78() __asm__("GetMemorySize");
+extern s32_x00113D78 _InitTLB_x00113D78() __asm__("func_0010A6D0");
+extern s32_x00113D78 InitTLB32MB_x00113D78() __asm__("func_00113DB8");
+s32_x00113D78 func_00113D78_x00113D78(void) __asm__("func_00113D78");
+/* InitTLB: from https://github.com/lombyte-project/Lombyte (src/sdk/kernel/init_tlb.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+s32_x00113D78 func_00113D78_x00113D78(void) {
+    s32_x00113D78 tlb_init_result;
+
+    if (GetMemorySize_x00113D78() == 0x2000000) {
+        tlb_init_result = InitTLB32MB_x00113D78();
+    } else {
+        tlb_init_result = _InitTLB_x00113D78();
+    }
+    return tlb_init_result;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113DB8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", _kTLBException);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", _kDebugException);
@@ -89,7 +104,23 @@ s32 func_001143E8(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001143F8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114408);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114440);
+typedef unsigned int       u32_x00114440;
+u32_x00114440 *func_00114440_x00114440(u32_x00114440 *addr, u32_x00114440 *end, u32_x00114440 key) __asm__("func_00114440");
+/* FindKernelAddress: from https://github.com/lombyte-project/Lombyte (src/sdk/system/find_kernel_address.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+u32_x00114440 *func_00114440_x00114440(u32_x00114440 *addr, u32_x00114440 *end, u32_x00114440 key) {
+    u32_x00114440 current_word;
+    for (;;) {
+        current_word = *addr;
+        if (current_word == key) {
+            break;
+        }
+        if (!(addr < end)) {
+            break;
+        }
+        addr++;
+    }
+    return (addr < end) ? addr : 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114480);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114490);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001144C8);
@@ -109,7 +140,30 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114630);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114640);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114650);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114688);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114698);
+typedef unsigned char      u8_x00114698;
+typedef signed int         s32_x00114698;
+typedef unsigned int       u32_x00114698;
+extern s32_x00114698 GetOsdConfigParam_x00114698() __asm__("GetOsdConfigParam");
+extern s32_x00114698 SetOsdConfigParam_x00114698() __asm__("SetOsdConfigParam");
+s32_x00114698 func_00114698_x00114698(void) __asm__("func_00114698");
+/* PatchIsNeeded: from https://github.com/lombyte-project/Lombyte (src/sdk/kernel/PatchIsNeeded.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+s32_x00114698 func_00114698_x00114698(void) {
+    union {
+        u32_x00114698 words[4];
+        struct {
+            u32_x00114698 a;
+            u32_x00114698 b;
+            u8_x00114698  pad[8];
+        } f;
+    } cfg;
+
+    GetOsdConfigParam_x00114698(&cfg);
+    cfg.f.b = (cfg.f.a & 0xFFFF1FFF) | 0x2000;
+    SetOsdConfigParam_x00114698(&cfg.f.b);
+    GetOsdConfigParam_x00114698(&cfg.f.b);
+    SetOsdConfigParam_x00114698(&cfg);
+    return ((cfg.f.b >> 13) & 7) == 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114700);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001147B0);
 s32 func_001147C0(u8 *arg0, u8 *arg1, u32 arg2) {

@@ -8,7 +8,37 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00111C50);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00111E90);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112138);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112330);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112510);
+typedef struct sceSifClientData_x00112510 {
+    unsigned char rpc_data[16];
+    unsigned int command;
+    void *buff;
+    void *cbuff;
+    void (*end_func)(void *);
+    void *end_param;
+    void *server;
+} sceSifClientData_x00112510;
+extern sceSifClientData_x00112510 cd_x00112510 __asm__("D_00474C40");
+extern int sceSifBindRpc_x00112510(sceSifClientData_x00112510 *client, unsigned int request, unsigned int mode) __asm__("sceSifBindRpc");
+extern int _bind_x00112510 __asm__("D_003EC6D8");
+int func_00112510_x00112510(void) __asm__("func_00112510");
+/* sceSifInitIopHeap: from https://github.com/denzi-gh/crashwoc-decomp-ps2 (src/sdk/sce/iopheap.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00112510_x00112510(void) {
+    int wait;
+
+    while (1) {
+        if (sceSifBindRpc_x00112510(&cd_x00112510, 0x80000003, 0) < 0) {
+            return -1;
+        }
+        if (cd_x00112510.server != 0) {
+            _bind_x00112510 = 0;
+            break;
+        }
+        wait = 0x100000;
+        while (wait--) {
+        }
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112598);
 typedef struct RpcPkt_x00112608 {
     void *cur_pkt;               

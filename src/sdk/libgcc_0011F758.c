@@ -52,7 +52,139 @@ int func_001214F8_x001214F8(float arg_a)
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121538);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121610);
-INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_001216D0);
+typedef signed int s32_x001216D0;
+typedef unsigned int u32_x001216D0;
+typedef signed long long s64_x001216D0;
+typedef unsigned long long u64_x001216D0;
+typedef struct FpNumber_x001216D0 {
+    s32_x001216D0 class;
+    u32_x001216D0 sign;
+    s32_x001216D0 normal_exp;
+    s32_x001216D0 alignment_padding;
+    u64_x001216D0 fraction;
+} FpNumber_x001216D0;
+extern FpNumber_x001216D0 D_001596F0_x001216D0 __asm__("D_0045EA90");
+FpNumber_x001216D0 *func_001216D0_x001216D0(FpNumber_x001216D0 *left_operand, FpNumber_x001216D0 *right_operand, FpNumber_x001216D0 *result_storage) __asm__("func_001216D0");
+/* This is a software floating point library which can be used instead of
+   the floating point routines in libgcc1.c for targets without hardware
+   floating point. 
+ Copyright (C) 1994, 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
+
+This file is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2, or (at your option) any
+later version.
+
+In addition to the permissions in the GNU General Public License, the
+Free Software Foundation gives you unlimited permission to link the
+compiled version of this file with other programs, and to distribute
+those programs without any restriction coming from the use of this
+file.  (The General Public License restrictions do apply in other
+respects; for example, they cover modification of the file, and
+distribution when not linked into another program.)
+
+This file is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; see the file COPYING.  If not, write to
+the Free Software Foundation, 59 Temple Place - Suite 330,
+Boston, MA 02111-1307, USA.  */
+/* _fpadd_parts: from https://github.com/lombyte-project/Lombyte (src/sdk/soft_float/fpadd_parts.c, GPL-3.0); ee-gcc 2.96 -O2 -G0 */
+FpNumber_x001216D0 *func_001216D0_x001216D0(FpNumber_x001216D0 *left_operand, FpNumber_x001216D0 *right_operand, FpNumber_x001216D0 *result_storage) {
+    s64_x001216D0 tfraction;
+    s32_x001216D0 a_normal_exp;
+    s32_x001216D0 b_normal_exp;
+    u64_x001216D0 a_fraction;
+    u64_x001216D0 b_fraction;
+    if ((u32_x001216D0)left_operand->class < 2) {
+        return left_operand;
+    }
+    if ((u32_x001216D0)right_operand->class < 2) {
+        return right_operand;
+    }
+    if ((left_operand->class ^ 4) == 0) {
+        if ((right_operand->class ^ 4) == 0 && left_operand->sign != right_operand->sign) {
+            return &D_001596F0_x001216D0;
+        }
+        return left_operand;
+    }
+    if ((right_operand->class ^ 4) == 0) {
+        return right_operand;
+    }
+    if ((right_operand->class ^ 2) == 0) {
+        if ((left_operand->class ^ 2) == 0) {
+            *result_storage = *left_operand;
+            result_storage->sign = left_operand->sign & right_operand->sign;
+            return result_storage;
+        }
+        return left_operand;
+    }
+    if ((left_operand->class ^ 2) == 0) {
+        return right_operand;
+    }
+    a_normal_exp = left_operand->normal_exp;
+    b_normal_exp = right_operand->normal_exp;
+    a_fraction = left_operand->fraction;
+    b_fraction = right_operand->fraction;
+    {
+        s32_x001216D0 exponent_difference;
+        exponent_difference = a_normal_exp - b_normal_exp;
+        if (exponent_difference < 0) {
+            exponent_difference = -exponent_difference;
+        }
+        if (exponent_difference < 64) {
+            while (a_normal_exp > b_normal_exp) {
+                b_normal_exp++;
+                { b_fraction = (b_fraction & 1) | (b_fraction >> 1); };
+            }
+            while (b_normal_exp > a_normal_exp) {
+                a_normal_exp++;
+                { a_fraction = (a_fraction & 1) | (a_fraction >> 1); };
+            }
+        } else {
+            if (a_normal_exp > b_normal_exp) {
+                b_normal_exp = a_normal_exp;
+                b_fraction = 0;
+            } else {
+                a_normal_exp = b_normal_exp;
+                a_fraction = 0;
+            }
+        }
+    }
+    if (left_operand->sign != right_operand->sign) {
+        if (left_operand->sign) {
+            tfraction = -a_fraction + b_fraction;
+        } else {
+            tfraction = a_fraction - b_fraction;
+        }
+        if (tfraction >= 0) {
+            result_storage->sign = 0;
+            result_storage->normal_exp = a_normal_exp;
+            result_storage->fraction = tfraction;
+        } else {
+            result_storage->sign = 1;
+            result_storage->normal_exp = a_normal_exp;
+            result_storage->fraction = -tfraction;
+        }
+        while (result_storage->fraction < 0x1000000000000000ULL && result_storage->fraction) {
+            result_storage->fraction <<= 1;
+            result_storage->normal_exp--;
+        }
+    } else {
+        result_storage->sign = left_operand->sign;
+        result_storage->normal_exp = a_normal_exp;
+        result_storage->fraction = a_fraction + b_fraction;
+    }
+    result_storage->class = 3;
+    if (result_storage->fraction >= 0x2000000000000000ULL) {
+        { result_storage->fraction = (result_storage->fraction & 1) | (result_storage->fraction >> 1); };
+        result_storage->normal_exp++;
+    }
+    return result_storage;
+}
 void __unpack_d_x00121930(void *in, void *out) __asm__("func_00121610");
 typedef struct {
     unsigned int class;
@@ -162,7 +294,46 @@ long long func_00121F28_x00121F28(int arg_a)
     }
     return __pack_d_x00121F28(&in);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121FE0);
+typedef signed int s32_x00121FE0;
+typedef unsigned int u32_x00121FE0;
+typedef unsigned long long u64_x00121FE0;
+typedef double f64_x00121FE0;
+s32_x00121FE0 __unpack_d_x00121FE0() __asm__("func_00121610");
+typedef struct FpNumber_x00121FE0 {
+    s32_x00121FE0 class;
+    u32_x00121FE0 sign;
+    s32_x00121FE0 normal_exp;
+    s32_x00121FE0 alignment_padding;
+    u64_x00121FE0 fraction;
+} FpNumber_x00121FE0;
+typedef union {
+    f64_x00121FE0 value;
+    u64_x00121FE0 value_raw;
+} FLOUnion_x00121FE0;
+s32_x00121FE0 func_00121FE0_x00121FE0(u64_x00121FE0 arg_a) __asm__("func_00121FE0");
+/* dptoli: from https://github.com/lombyte-project/Lombyte (src/sdk/soft_float/dptoli.c, GPL-3.0); ee-gcc 2.96 -O2 -G0 */
+s32_x00121FE0 func_00121FE0_x00121FE0(u64_x00121FE0 arg_a) {
+    FpNumber_x00121FE0 unpacked_value;
+    s32_x00121FE0 integer_magnitude;
+    __unpack_d_x00121FE0((FLOUnion_x00121FE0 *)&arg_a, &unpacked_value);
+    if ((unpacked_value.class ^ 2) == 0) {
+        return 0;
+    }
+    if ((u32_x00121FE0)unpacked_value.class < 2) {
+        return 0;
+    }
+    if ((unpacked_value.class ^ 4) == 0) {
+        return unpacked_value.sign ? 0x80000000 : 0x7FFFFFFF;
+    }
+    if (unpacked_value.normal_exp < 0) {
+        return 0;
+    }
+    if (unpacked_value.normal_exp > 30) {
+        return unpacked_value.sign ? 0x80000000 : 0x7FFFFFFF;
+    }
+    integer_magnitude = (s32_x00121FE0)(unpacked_value.fraction >> (60 - unpacked_value.normal_exp));
+    return unpacked_value.sign ? -integer_magnitude : integer_magnitude;
+}
 typedef struct {
     unsigned int class;
     int sign;
@@ -213,4 +384,47 @@ float func_001220B0_x001220B0(double arg_a)
         t = hi;
     __make_fp_x001220B0(buf.class, buf.sign, buf.normal_exp, t);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00122108);
+typedef signed int s32_x00122108;
+typedef unsigned int u32_x00122108;
+typedef unsigned long long u64_x00122108;
+typedef double f64_x00122108;
+s32_x00122108 __unpack_d_x00122108() __asm__("func_00121610");
+typedef struct FpNumber_x00122108 {
+    s32_x00122108 class;
+    u32_x00122108 sign;
+    s32_x00122108 normal_exp;
+    s32_x00122108 alignment_padding;
+    u64_x00122108 fraction;
+} FpNumber_x00122108;
+typedef union {
+    f64_x00122108 value;
+    u64_x00122108 value_raw;
+} FLOUnion_x00122108;
+u32_x00122108 func_00122108_x00122108(u64_x00122108 arg_a) __asm__("func_00122108");
+/* dptoul: from https://github.com/lombyte-project/Lombyte (src/sdk/soft_float/dptoul.c, GPL-3.0); ee-gcc 2.96 -O2 -G0 */
+u32_x00122108 func_00122108_x00122108(u64_x00122108 arg_a) {
+    FpNumber_x00122108 unpacked_value;
+    __unpack_d_x00122108((FLOUnion_x00122108 *)&arg_a, &unpacked_value);
+    if ((unpacked_value.class ^ 2) == 0) {
+        return 0;
+    }
+    if ((u32_x00122108)unpacked_value.class < 2) {
+        return 0;
+    }
+    if (unpacked_value.sign) {
+        return 0;
+    }
+    if ((unpacked_value.class ^ 4) == 0) {
+        return 0xFFFFFFFF;
+    }
+    if (unpacked_value.normal_exp < 0) {
+        return 0;
+    }
+    if (unpacked_value.normal_exp > 31) {
+        return 0xFFFFFFFF;
+    } else if (unpacked_value.normal_exp > 60) {
+        return (s32_x00122108)(unpacked_value.fraction << (unpacked_value.normal_exp - 60));
+    } else {
+        return (s32_x00122108)(unpacked_value.fraction >> (60 - unpacked_value.normal_exp));
+    }
+}

@@ -22,6 +22,9 @@ file's first comment) to the instructions of this executable.
 | https://github.com/LucasPicoli/god-hand-decomp | MIT | LICENSES/god-hand-decomp-MIT.txt |
 | https://github.com/new-coke/rez-decomp | MIT | LICENSES/rez-decomp-MIT.txt |
 | https://github.com/TheRealestNwah/sotc-decomp | CC0-1.0 | LICENSES/sotc-decomp-CC0.txt |
+| https://github.com/denzi-gh/crashwoc-decomp-ps2 | GPL-3.0 | LICENSES/crashwoc-decomp-ps2-GPL-3.0.txt |
+| https://github.com/lombyte-project/Lombyte | GPL-3.0 | LICENSES/Lombyte-GPL-3.0.txt |
+| https://github.com/OpenRAC/rac1-decomp | GPL-3.0 | LICENSES/rac1-decomp-GPL-3.0.txt |
 | https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/) | AGPL-3.0 | LICENSES/3s-decomp-AGPL-3.0.txt |
 
 newlib: each function taken from it carries its origin file's notice where that file has one. Files without a notice
@@ -37,8 +40,9 @@ of their own are covered by newlib's COPYING.NEWLIB section for Cygnus/Red Hat c
     WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
 Because of the 3s-decomp functions (AGPL-3.0), the repository as a whole is distributed under the terms of the
-AGPL-3.0; the rest of the code keeps its own licence (MIT for the code written here). No GPL-2.0-only code is used,
-since it cannot be combined with AGPL-3.0 code.
+AGPL-3.0; the rest of the code keeps its own licence (MIT for the code written here). GPL-3.0 code (crashwoc-decomp-ps2, Lombyte, rac1/rac2-decomp) is
+combined with it as both licences' section 13 allows. No GPL-2.0-only code is used, since it cannot be
+combined with AGPL-3.0 code.
 
 Not used: sources with no licence (Persona4-Decompilation; pes6decomp, whose own code has no licence: its
 LICENSES/GPL-2.0.txt covers only its libgcc files; the other repositories without one) and GPL-2.0-only sources

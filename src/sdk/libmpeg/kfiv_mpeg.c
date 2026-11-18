@@ -264,7 +264,24 @@ void _alalcFree(MpegHeap *heap)
     heap->cur = heap->dynamic;
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00108170);
+extern void func_0012C468_x00108170(void *, void *) __asm__("func_00109738");
+extern char D_00153B38_x00108170[] __asm__("D_0045D2D8");
+void func_0012C468_x00108170(void *arg0, void *arg1) __asm__("func_00109738");
+unsigned int func_00108170_x00108170(void *arg0, char *r, unsigned int size, unsigned int align) __asm__("func_00108170");
+/* func_0012BD60: from https://github.com/OpenRAC/rac1-decomp (src/core/mpeg/demux.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+unsigned int func_00108170_x00108170(void *arg0, char *r, unsigned int size, unsigned int align) {
+    unsigned int aligned;
+    unsigned int end;
+
+    aligned = ((*(unsigned int *)(r + 0x8) + align - 1) / align) * align;
+    end = aligned + size;
+    if (*(unsigned int *)(r + 0x0) + *(unsigned int *)(r + 0x4) >= end) {
+        *(unsigned int *)(r + 0x8) = end;
+        return aligned;
+    }
+    func_0012C468_x00108170(arg0, D_00153B38_x00108170);
+    return 0;
+}
 
 
 int _alalcRest(MpegHeap *heap)

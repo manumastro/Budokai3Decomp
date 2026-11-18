@@ -8,7 +8,32 @@ s32 func_00101CD8_x00101CD8(s32 arg0) {
     *(s32 *)0x1000E060 = arg0;
     return temp_v0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101CF0);
+typedef unsigned char      u8_x00101CF0;
+typedef signed int         s32_x00101CF0;
+typedef unsigned int       u32_x00101CF0;
+struct DmaChannelRegs_x00101CF0;
+void WaitDma_x00101CF0(volatile u32_x00101CF0 *) __asm__("func_00101868");
+u32_x00101CF0 CheckAddress_x00101CF0(u32_x00101CF0) __asm__("func_00101960");
+struct DmaChannelRegs_x00101CF0 {
+    s32_x00101CF0 chcr;
+    u8_x00101CF0  pad_4[0x1C];
+    s32_x00101CF0 qwc;
+    u8_x00101CF0  pad_24[0xC];
+    s32_x00101CF0 tadr;
+};
+void func_00101CF0_x00101CF0(struct DmaChannelRegs_x00101CF0 *channel, s32_x00101CF0 addr) __asm__("func_00101CF0");
+/* sceDmaSend: from https://github.com/lombyte-project/Lombyte (src/sdk/dma/sce_dma_send.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00101CF0_x00101CF0(struct DmaChannelRegs_x00101CF0 *channel, s32_x00101CF0 addr) {
+    s32_x00101CF0          phys_addr;
+    register u32_x00101CF0 sentinel;
+    phys_addr = CheckAddress_x00101CF0(addr);
+    WaitDma_x00101CF0(channel);
+    sentinel = 0xFFFFFFFFu;
+    if ((u32_x00101CF0)channel->tadr != sentinel)
+        channel->tadr = phys_addr;
+    channel->qwc = 0;
+    channel->chcr = (s32_x00101CF0)((channel->chcr & ~0xC) | 0x105);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101D58);
 INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101DD0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101E48);
