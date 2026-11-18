@@ -476,8 +476,6 @@ void func_00237AE0(u8 *a0) {
 
 
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237BB0);
-// differs: 11 of 47 at best: the register of the first stored constant (36.0f bits via lui/ori) and the index add operand order; the frame, the early return and the call order match.
-#if 0
 void func_00237E00(u8 *a0) {
     s32 s1;
     s32 buf[16];
@@ -486,11 +484,14 @@ void func_00237E00(u8 *a0) {
     if (*(f32 *)a0 < 8.0f) {
         return;
     }
-    s1 = *(s32 *)(s1 + *(s32 *)(a0 + 0x20) * 4 + 0xEC0);
+    {
+        s32 off = *(s32 *)(a0 + 0x20) * 4;
+        s1 = *(s32 *)(off + s1 + 0xEC0);
+    }
     memset(buf, 0, 0x40);
-    buf[12] = buf[12] | 0x20000;
-    *(f32 *)&buf[0] = 36.0f;
+    buf[0] = 0x42100000;
     buf[1] = 0x43B98000;
+    buf[12] = buf[12] | 0x20000;
     *(f32 *)&buf[4] = 1.0f;
     *(f32 *)&buf[5] = 1.0f;
     *(f32 *)&buf[6] = 1.0f;
@@ -498,8 +499,6 @@ void func_00237E00(u8 *a0) {
     *(s16 *)&buf[13] = *(s32 *)(a0 + 0x24);
     func_00253FC0(s1, buf);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237E00);
 
 
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237EC0);
