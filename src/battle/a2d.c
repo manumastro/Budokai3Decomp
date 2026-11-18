@@ -707,11 +707,10 @@ INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D0E0);
 extern s32 *D_004706AC;
 extern s32 D_004706B4;
 extern s32 D_004706B8;
-// differs: round 5 chr2: 29 of 47 differ. Globals as gp scalars now match (D_004706B4 reloads avoided with a local nx); the loop differs: the original keeps i in a3 with the loop test at the bottom and the match path jumping to the exit; a for with p += 2 in the clause tried (same count).
-#if 0
 void func_0022D4B0(s32 a0, s32 a1) {
+    u8 *p;
     s32 i;
-    s32 *p;
+    s32 n;
     s32 nx;
 
     D_004706AC[D_004706B4] = a0;
@@ -721,22 +720,22 @@ void func_0022D4B0(s32 a0, s32 a1) {
         D_004706B4 = 0;
     }
     if (a1 != 0) {
-        a1 = D_004706BC;
-        if (0 < a1) {
-            p = (s32 *)D_004706C0;
-            for (i = 0; i < a1; i++) {
-                if (p[0] == a0) {
-                    func_00125740((s32 *)D_004706C0 + i * 2, (s32 *)D_004706C0 + (i + 1) * 2, (a1 - i) * 8);
-                    D_004706BC = D_004706BC - 1;
+        n = D_004706BC;
+        i = 0;
+        if (0 < n) {
+            p = D_004706C0;
+            do {
+                if (*(s32 *)p == a0) {
+                    func_00125740((u8 *)D_004706C0 + i * 8, (u8 *)D_004706C0 + (i + 1) * 8, (n - i) * 8);
+                    D_004706BC -= 1;
                     break;
                 }
-                p += 2;
-            }
+                i += 1;
+                p += 8;
+            } while (i < n);
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D4B0);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D570);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D670);
 INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_0022D860);
