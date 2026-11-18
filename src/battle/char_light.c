@@ -5,6 +5,8 @@ typedef struct LV { u8 p[0x40]; f32 a; u8 p2[4]; f32 b; } LV;
 typedef struct LSubA { u8 p[8]; s32 f8; u8 q[0x24]; LV *f30; } LSubA;
 typedef struct LObjA { f32 t; u8 p[8]; s32 type; LSubA *sub; u8 q[0x14]; s32 f28; } LObjA;
 typedef struct PtrCount { void *p; s32 n; } PtrCount;
+extern u8 *D_0058BEB0[];
+extern s32 Input_IsHeld(s32);
 extern void amTask_Kill(void *);
 extern void amModel_SetCurrent(s32, s32);
 extern s32 D_00470704;
@@ -625,7 +627,6 @@ void func_00237E00(u8 *a0) {
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237EC0);
 // differs: 5 of 68 (10 forms): all calls/stores match; the original fills the slot of the D_0047072C beqz with lw a0,0xC(s0) and builds the D_0058BEB0 index as lui/sll/addiu (ours nop slot, lui/addiu/sll, plus one nop pair); tried nested ifs, index local, pointer-add forms, tsweep
 #if 0
-extern u8 *D_0058BEB0[];
 extern s32 D_0047072C;
 extern s32 func_00228430(s32);
 extern s32 func_002284D0(s32);
@@ -668,7 +669,52 @@ void func_002380F0(LObjA *o) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002380F0);
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238200);
+extern u8 D_0046A982[];
+extern void (*D_0046AB70[])(void *);
+extern s32 func_0021C280(s32);
+void func_00238200(u8 *a0) {
+    u8 *s1 = a0 + 0x30;
+    char *sys = (char *)gBtlSys;
+    s32 i;
+    s32 a;
+    s32 b;
+    void (*fn)(void *);
+    if (*(s8 *)((u8 *)gBattle + 0x8975) != 1) {
+        if (*(s32 *)s1 < 0x14) {
+            if (func_0021C280(0x10) == 0) {
+                return;
+            }
+        } else if (Input_IsHeld(0x10) == 0) {
+            return;
+        }
+        i = *(s32 *)s1;
+        fn = D_0046AB70[i];
+        if (fn != 0) {
+            fn(D_0058BEB0[i] + 0x30);
+            return;
+        }
+        if (*(s32 *)(s1 + 4) != 0) {
+            a = 0;
+            b = 0;
+            switch (*(s16 *)(D_0046A982 + i * 12)) {
+            case 0:
+                a = *(s32 *)(sys + 0xED0);
+                b = 0x4030000;
+                break;
+            case 1:
+                a = *(s32 *)(sys + 0xE84);
+                b = 0x4010000;
+                break;
+            }
+            D_00470704 = a;
+            D_0047070C = b;
+            D_00470708 = 0;
+            amModel_SetCurrent(a, b);
+            D_00470238 = 0;
+            func_0022C560(*(s32 *)(s1 + 4));
+        }
+    }
+}
 extern void func_0022D0E0(s32, s32);
 extern void func_0023A5F0(s32);
 extern u8 D_0046A98A[];
@@ -692,7 +738,6 @@ INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238610);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238790);
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00238C50);
 extern s32 gBtlSys;
-extern s32 Input_IsHeld(s32);
 extern void amDraw_SetPacketMode(s32);
 extern void func_0022C6B0(s32 *);
 void func_00239110(char *self) {
@@ -733,7 +778,6 @@ void func_00239110(char *self) {
     }
 }
 extern s32 gBtlSys;
-extern s32 Input_IsHeld(s32);
 extern void amDraw_SetPacketMode(s32);
 extern void func_0022C6B0(s32 *);
 void func_00239200(char *self) {
@@ -774,7 +818,6 @@ void func_00239200(char *self) {
     }
 }
 extern s32 gBtlSys;
-extern s32 Input_IsHeld(s32);
 extern void amDraw_SetPacketMode(s32);
 extern void func_0022C6B0(s32 *);
 void func_002392F0(char *self) {
@@ -1069,7 +1112,6 @@ void func_0023A4B0(void) {
         D_00470730 = 1;
     }
 }
-extern u8 *D_0058BEB0[];
 extern void func_00125740(void *, s32, s32);
 extern void func_0022C7D0(s32, s32, f32);
 extern s32 func_002535D0(s32);
