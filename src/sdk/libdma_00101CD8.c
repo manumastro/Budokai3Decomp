@@ -36,7 +36,16 @@ void func_00101CF0_x00101CF0(struct DmaChannelRegs_x00101CF0 *channel, s32_x0010
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101D58);
 INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101DD0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101E48);
+s32 func_00101868_x00101E48() __asm__("func_00101868");
+void func_00101E48_x00101E48(u8 *arg0) __asm__("func_00101E48");
+void func_00101E48_x00101E48(u8 *arg0)
+{
+  func_00101868_x00101E48();
+  *((s32 *) (((u8 *) arg0) + 0x20)) = 0;
+  arg0++;
+  arg0--;
+  *((s32 *) (((u8 *) arg0) + 0)) = (s32) (((((*((s32 *) (((u8 *) arg0) + 0))) & (~0xC)) | 4) & (~1)) | 0x100);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101E90);
 INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101F10);
 s32 func_00101868_x00101F90() __asm__("func_00101868");

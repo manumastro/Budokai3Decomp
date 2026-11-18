@@ -2468,10 +2468,44 @@ void func_00158630(void) {
 void func_00158660(void) {
     PS2RNA_SetupVoice();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00158678);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_001586B8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_001586F8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00158730);
+u32 func_00158678_x00158678(u8 *arg0, s32 arg1) __asm__("func_00158678");
+u32 func_00158678_x00158678(u8 *arg0, s32 arg1)
+{
+  u8 **temp_a0;
+  u8 *temp_a2;
+  int new_var;
+  new_var = (*((s32 *) (((u8 *) arg0) + 0xC))) + (arg1 * 4);
+  temp_a0 = *((u8 ***) (((u8 *) (*((u8 **) (((u8 *) new_var) + 8)))) + 8));
+  temp_a2 = *temp_a0;
+  return (*((u32 (**)(u8 **, s32, u8 *)) (((u8 *) temp_a2) + 0x24)))(temp_a0, 1, temp_a2) >> 1;
+}
+u32 func_001586B8_x001586B8(u8 *arg0, s32 arg1) __asm__("func_001586B8");
+u32 func_001586B8_x001586B8(u8 *arg0, s32 arg1)
+{
+  u8 **temp_a0;
+  u8 *new_var;
+  u8 *temp_a2;
+  new_var = (u8 *) ((*((s32 *) (((u8 *) arg0) + 0xC))) + (arg1 * 4));
+  temp_a0 = *((u8 ***) (((u8 *) (*((u8 **) (new_var + 8)))) + 8));
+  temp_a2 = *temp_a0;
+  return (*((u32 (**)(u8 **, s32, u8 *)) (((u8 *) temp_a2) + 0x24)))(temp_a0, 0, temp_a2) >> 1;
+}
+u32 func_0016F640_x001586F8(s32, s32) __asm__("func_0016F640");
+u32 func_001586F8_x001586F8(u8 *arg0, s32 arg1) __asm__("func_001586F8");
+u32 func_001586F8_x001586F8(u8 *arg0, s32 arg1)
+{
+  int new_var;
+  new_var = 1;
+  return func_0016F640_x001586F8(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) ((*((s32 *) (((u8 *) arg0) + 0xC))) + (arg1 * 4))) - -8)))) + 4)), 1) >> new_var;
+}
+u32 func_0016F640_x00158730(s32, s32) __asm__("func_0016F640");
+u32 func_00158730_x00158730(u8 *arg0, s32 arg1) __asm__("func_00158730");
+u32 func_00158730_x00158730(u8 *arg0, s32 arg1)
+{
+  int new_var;
+  new_var = (*((s32 *) (((u8 *) arg0) + 0xC))) + (arg1 * 4);
+  return func_0016F640_x00158730(*((s32 *) (((u8 *) (*((u8 **) (((u8 *) new_var) + 8)))) + 4)), 0) >> 1;
+}
 void func_00158768(void) {
     func_0016C730();
 }

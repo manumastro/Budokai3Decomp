@@ -356,7 +356,22 @@ s32 func_00189870(u8 *arg0) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189898);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189988);
+s32 func_00189A20_x00189988(s32, s32, s32, s32) __asm__("func_00189A20");
+void func_00189988_x00189988(u8 *arg0, s32 arg1) __asm__("func_00189988");
+void func_00189988_x00189988(u8 *arg0, s32 arg1)
+{
+  s32 temp_a3;
+  u8 *temp_v1;
+  u8 *new_var;
+  temp_v1 = *((u8 **) (((u8 *) arg0) + 0x1CB4));
+  *((s32 *) (((u8 *) temp_v1) + 0x2C)) = arg1;
+  new_var = arg0 + 0xFA0;
+  temp_a3 = *((s32 *) (((u8 *) temp_v1) + 0));
+  if ((arg1 != 0) || ((*((s32 *) (((u8 *) arg0) + 0x50))) != 1))
+  {
+    func_00189A20_x00189988(temp_a3, new_var, arg1, temp_a3);
+  }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001899D8);
 extern void func_0032B300_x00189A20(void *hn, int sw) __asm__("ADXT_Pause");
 extern void Obj35C0_SetField_4_C538_x00189A20(int a0, int sw) __asm__("func_0019C340");
@@ -981,7 +996,27 @@ s32 func_0018DA28(void) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018DA30);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018DAE0);
+s32 func_0017AE98_x0018DAE0(s32, s32 *) __asm__("func_0017AE98");
+s32 func_0018D650_x0018DAE0(s32, s32) __asm__("func_0018D650");
+s32 func_0018DB50_x0018DAE0() __asm__("func_0018DB50");
+extern s32 D_00426B08_x0018DAE0 __asm__("D_00426B08");
+extern s32 D_0048E298_x0018DAE0 __asm__("D_0048E298");
+unsigned int func_0018DAE0_x0018DAE0(void) __asm__("func_0018DAE0");
+unsigned int func_0018DAE0_x0018DAE0(void)
+{
+  if (func_0018DB50_x0018DAE0() != 0)
+  {
+    loop_1:
+    goto loop_1;
+
+  }
+  if (func_0017AE98_x0018DAE0(8, &D_0048E298_x0018DAE0) != 0)
+  {
+    func_0018D650_x0018DAE0(0, 0xFF000D01);
+    return;
+  }
+  D_00426B08_x0018DAE0 = 0;
+}
 s32 func_0018DB50(void) {
     return 0;
 }
@@ -1364,5 +1399,17 @@ s32 func_00194AB0(void) {
     return func_00194AD0() != 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194AD0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194C08);
+s32 func_00194C08_x00194C08(u8 *arg0, u8 *arg1) __asm__("func_00194C08");
+s32 func_00194C08_x00194C08(u8 *arg0, u8 *arg1)
+{
+  s32 new_var;
+  s32 var_v0;
+  var_v0 = 1;
+  if (arg0 != ((void *) 0))
+  {
+    new_var = *((s32 *) (((u8 *) arg0) + 0x38));
+    var_v0 = (*((s32 *) (((u8 *) arg1) + 0x38))) < new_var;
+  }
+  return var_v0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194C28);

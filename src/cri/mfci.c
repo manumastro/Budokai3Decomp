@@ -126,7 +126,18 @@ void func_0016B090(s32 arg0) {
     func_0016B0C0(arg0);
     func_0016AFF0();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016B0C0);
+s32 memcmp_x0016B0C0(s32 *, s32 *, s32) __asm__("memcmp");
+extern s32 D_004190E8_x0016B0C0 __asm__("D_004190E8");
+extern s32 D_00419118_x0016B0C0 __asm__("D_00419118");
+void func_0016B0C0_x0016B0C0(void) __asm__("func_0016B0C0");
+void func_0016B0C0_x0016B0C0(void)
+{
+  s32 *new_var;
+  int new_var2;
+ new_var2 = 0; do { new_var = &D_004190E8_x0016B0C0; } while (new_var2);
+  memcmp_x0016B0C0(new_var, &D_004190E8_x0016B0C0, 0x168);
+  D_00419118_x0016B0C0 += 1;
+}
 void func_0016B100(s32 arg0) {
     func_0016AFD8();
     func_0016B130(arg0);
@@ -190,7 +201,30 @@ void func_0016BA20_x0016BA20(void) {
         D_00411178_x0016BA20();
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016BA48);
+s32 ADXERR_CallErrFunc1_x0016BA48(s32 *) __asm__("ADXERR_CallErrFunc1");
+s32 func_0016B720_x0016BA48(s32) __asm__("func_0016B720");
+extern s32 D_00464768_x0016BA48 __asm__("D_00464768");
+extern s32 D_00464798_x0016BA48 __asm__("D_00464798");
+void func_0016BA48_x0016BA48(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0016BA48");
+void func_0016BA48_x0016BA48(u8 *arg0, s32 arg1, s32 arg2)
+{
+  s32 temp_a0;
+  u8 *temp_s0;
+  if (arg0 == ((void *) 0))
+  {
+    ADXERR_CallErrFunc1_x0016BA48(&D_00464768_x0016BA48);
+    return;
+  }
+  temp_s0 = *((u8 **) (((u8 *) (*((u8 **) (((u8 *) arg0) + 4)))) + 4));
+  temp_a0 = *((s32 *) (((u8 *) temp_s0) + 0xE8));
+  if (((*((s8 *) (((u8 *) arg0) + 3))) < 2) || (temp_a0 == 0))
+  {
+    ADXERR_CallErrFunc1_x0016BA48(&D_00464798_x0016BA48);
+    return;
+  }
+  func_0016B720_x0016BA48(temp_a0);
+ do { *((s32 *) (((u8 *) temp_s0) + 0xF0)) = arg2; *((s32 *) (((u8 *) temp_s0) + 0xEC)) = arg1; } while (0);
+}
 void func_0016BAF0(u8 *arg0) {
     s32 temp_s0;
     u8 *temp_s1;

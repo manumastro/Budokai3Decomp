@@ -9212,7 +9212,24 @@ void ADXT_GetTime_x0015EA20(ADX_TALK_x0015EA20* adxt, Sint32_x0015EA20* ncount, 
     *tscale = adxt_time_unit_x0015EA20;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015ED18);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", ADXT_GetNumSmpl);
+s32 ADXERR_CallErrFunc1_x0015ED68(s32 *) __asm__("ADXERR_CallErrFunc1");
+s32 func_00159E28_x0015ED68(s32) __asm__("func_00159E28");
+extern s32 D_00461988_x0015ED68 __asm__("D_00461988");
+s32 ADXT_GetNumSmpl_x0015ED68(u8 *arg0) __asm__("ADXT_GetNumSmpl");
+s32 ADXT_GetNumSmpl_x0015ED68(u8 *arg0)
+{
+  unsigned long long new_var;
+  s32 *new_var2;
+  u8 *new_var3;
+  if (arg0 == ((void *) 0))
+  {
+    new_var = -1;
+    ADXERR_CallErrFunc1_x0015ED68(&D_00461988_x0015ED68);
+    return new_var;
+  }
+ do { if (2 > (*((s8 *) (((u8 *) arg0) + 1)))) { return 0; } new_var = 4; new_var2 = (s32 *) ((new_var3 = (u8 *) arg0) + new_var); } while (0);
+  return func_00159E28_x0015ED68(*new_var2);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", ADXT_GetSfreq);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", ADXT_GetNumChan);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", ADXT_GetHdrLen);

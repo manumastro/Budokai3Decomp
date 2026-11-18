@@ -1941,7 +1941,25 @@ INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", PS2RNA_GetStartSmpl);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D798);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D7C8);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D7F8);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D830);
+extern s32 D_0041A0D0_x0016D830 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D830 __asm__("D_0041A0D8");
+s32 func_0016D830_x0016D830(u8 *arg0) __asm__("func_0016D830");
+s32 func_0016D830_x0016D830(u8 *arg0)
+{
+  s32 var_v0;
+  if ((D_0041A0D8_x0016D830 != 1) || ((var_v0 = 0, D_0041A0D0_x0016D830 > 0)))
+  {
+    var_v0 = *((s32 *) (((u8 *) arg0) + 0x60));
+    return var_v0;
+  }
+  if (D_0041A0D8_x0016D830)
+  {
+    return var_v0;
+  }
+  else
+  {
+  }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D860);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", PS2RNA_IsOverflow);
 void PS2RNA_ClearOverflow(void) {

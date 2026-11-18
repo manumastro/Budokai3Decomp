@@ -373,4 +373,20 @@ fflush_x00123888(register FILE_x00123888 * fp)
     }
   return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc", func_001239A0);
+extern s32 __sclose_x001239A0 __asm__("__sclose");
+extern s32 __sread_x001239A0 __asm__("__sread");
+extern s32 __sseek_x001239A0 __asm__("__sseek");
+extern s32 __swrite_x001239A0 __asm__("__swrite");
+void func_001239A0_x001239A0(u8 *arg0, s16 arg1, s16 arg2, s32 arg3) __asm__("func_001239A0");
+void func_001239A0_x001239A0(u8 *arg0, s16 arg1, s16 arg2, s32 arg3)
+{
+  *((s32 *) (((u8 *) arg0) + 0x54)) = arg3;
+  *((s16 *) (((u8 *) arg0) + 0xC)) = arg1;
+  *((s16 *) (((u8 *) arg0) + 0xE)) = arg2;
+  *((s32 **) (((u8 *) arg0) + 0x20)) = &__sread_x001239A0;
+  *((s32 **) (((u8 *) arg0) + 0x24)) = &__swrite_x001239A0;
+  *((s32 **) (((u8 *) arg0) + 0x28)) = &__sseek_x001239A0;
+  *((s32 **) (((u8 *) arg0) + 0x2C)) = &__sclose_x001239A0;
+ do { *((s32 *) (((u8 *) arg0) + 0)) = 0; *((s32 *) (((u8 *) arg0) + 4)) = 0; *((s32 *) (((u8 *) arg0) + 8)) = 0; *((s32 *) (((u8 *) arg0) + 0x10)) = 0; *((s32 *) (((u8 *) arg0) + 0x14)) = 0; *((s32 *) (((u8 *) arg0) + 0x18)) = 0; } while (0);
+  *((u8 **) (((u8 *) arg0) + 0x1C)) = arg0;
+}
