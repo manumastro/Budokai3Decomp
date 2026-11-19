@@ -96,7 +96,7 @@ segments:
       - [0x00B038, c, sdk/libkernl_0010B038]
       - [0x00B540, c, sdk/libkernl/ico_deci2]
       - [0x00B778, c, sdk/libkernl/ico_tty]
-      - [0x00B9B8, asm, sdk/libkernl_0010B9B8]
+      - [0x00B9B8, c, sdk/libkernl_0010B9B8]
       - [0x00BCC0, c, sdk/libkernl/ico_kprintf]
       - [0x00BE70, c, sdk/libkernl_0010BE70]
       - [0x00D048, c, sdk/libkernl/kfiv_sifcmd]

@@ -575,7 +575,132 @@ int scePadSetActAlign(int port, int slot, char *act)
     return val;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", scePadGetButtonMask);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", scePadSetButtonInfo);
+typedef unsigned char u8_x001176A8;
+typedef signed int s32_x001176A8;
+typedef unsigned int u32_x001176A8;
+typedef struct _sif_rpc_data_x001176A8 {
+      void *paddr;
+      u32_x001176A8 pid;
+      s32_x001176A8 tid;
+      u32_x001176A8 mode;
+} sceSifRpcData_x001176A8;
+typedef void (*sceSifEndFunc_x001176A8)(void *);
+typedef void *(*sceSifRpcFunc_x001176A8)(u32_x001176A8 fno, void *data, s32_x001176A8 size);
+struct _sif_serve_data_x001176A8;
+typedef struct _sif_client_data_x001176A8 {
+      sceSifRpcData_x001176A8 rpcd;
+      u32_x001176A8 command;
+      void *buff;
+      void *cbuff;
+      sceSifEndFunc_x001176A8 func;
+      void *para;
+      struct _sif_serve_data_x001176A8 *serve;
+} sceSifClientData_x001176A8;
+struct _sif_queue_data_x001176A8;
+typedef struct _sif_serve_data_x001176A8 {
+      u32_x001176A8 command;
+      sceSifRpcFunc_x001176A8 func;
+      void *buff;
+      s32_x001176A8 size;
+      sceSifRpcFunc_x001176A8 cfunc;
+      void *cbuff;
+      s32_x001176A8 csize;
+      sceSifClientData_x001176A8 *client;
+      void *paddr;
+      u32_x001176A8 fno;
+      void *receive;
+      s32_x001176A8 rsize;
+      s32_x001176A8 rmode;
+      u32_x001176A8 rid;
+      struct _sif_serve_data_x001176A8 *link;
+      struct _sif_serve_data_x001176A8 *next;
+      struct _sif_queue_data_x001176A8 *base;
+} sceSifServeData_x001176A8;
+typedef struct _sif_queue_data_x001176A8 {
+      s32_x001176A8 key;
+      s32_x001176A8 active;
+      struct _sif_serve_data_x001176A8 *link;
+      struct _sif_serve_data_x001176A8 *start;
+      struct _sif_serve_data_x001176A8 *end;
+      struct _sif_queue_data_x001176A8 *next;
+} sceSifQueueData_x001176A8;
+typedef struct ScePadVrefParam_x001176A8 {
+      u8_x001176A8 data[12];
+} ScePadVrefParam_x001176A8;
+typedef union ScePadRpcBuf_x001176A8 {
+    s32_x001176A8 command;
+    struct {  
+          s32_x001176A8 command;
+          s32_x001176A8 port;
+          s32_x001176A8 slot;
+          s32_x001176A8 result;
+          s32_x001176A8 mode;           
+          s32_x001176A8 iopAddr;        
+    } port;
+    struct {  
+          s32_x001176A8 command;
+          s32_x001176A8 arg;
+          s32_x001176A8 result;
+    } cmd14;
+    struct {  
+          s32_x001176A8 command;
+          s32_x001176A8 port;
+          s32_x001176A8 slot;
+          s32_x001176A8 mask;
+          s32_x001176A8 result;
+    } buttonInfo;
+    struct {  
+          s32_x001176A8 command;
+          s32_x001176A8 port;
+          s32_x001176A8 slot;
+          s32_x001176A8 offs;
+          s32_x001176A8 lock;
+          s32_x001176A8 result;
+    } mainMode;
+    struct {  
+          s32_x001176A8 command;
+          s32_x001176A8 port;
+          s32_x001176A8 slot;
+          u8_x001176A8 align[6];
+          u8_x001176A8 pad12[2];
+          s32_x001176A8 result;
+    } actAlign;
+    struct {  
+          s32_x001176A8 command;
+          s32_x001176A8 port;
+          s32_x001176A8 slot;
+          ScePadVrefParam_x001176A8 param;
+          s32_x001176A8 unk18;
+          s32_x001176A8 result;
+    } vref;
+    u8_x001176A8 raw[0x80];
+} ScePadRpcBuf_x001176A8;
+extern sceSifClientData_x001176A8 _scePadClient_x001176A8[2] __asm__("D_00478940");
+extern ScePadRpcBuf_x001176A8 _scePadRpcBuf_x001176A8 __asm__("D_00478B80");
+struct ScePadVrefParam_x001176A8;
+struct _sif_queue_data_x001176A8;
+struct _sif_serve_data_x001176A8;
+s32_x001176A8 scePadSetReqState_x001176A8(s32_x001176A8, s32_x001176A8, s32_x001176A8) __asm__("func_00116EF0");
+extern s32_x001176A8 sceSifCallRpc_x001176A8(void *, s32_x001176A8, s32_x001176A8, ScePadRpcBuf_x001176A8 *, s32_x001176A8, ScePadRpcBuf_x001176A8 *, s32_x001176A8, void *, void *) __asm__("sceSifCallRpc");
+s32_x001176A8 scePadSetButtonInfo_x001176A8(s32_x001176A8 arg0, s32_x001176A8 arg1, s32_x001176A8 arg2) __asm__("scePadSetButtonInfo");
+/* scePadSetButtonInfo_x001176A8: from https://github.com/gekoii/grandia_xtreme (src/main/47A790.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+s32_x001176A8 scePadSetButtonInfo_x001176A8(s32_x001176A8 arg0, s32_x001176A8 arg1, s32_x001176A8 arg2) {
+    ScePadRpcBuf_x001176A8 *b;
+
+    b = &_scePadRpcBuf_x001176A8;
+
+    b->buttonInfo.command = 10;
+    b->buttonInfo.port = arg0;
+    b->buttonInfo.slot = arg1;
+    b->buttonInfo.mask = arg2;
+    if (sceSifCallRpc_x001176A8(_scePadClient_x001176A8, 1, 0, b, 0x80, b, 0x80, ((void *)0), ((void *)0)) < 0) {
+        return 0;
+    }
+    if (b->buttonInfo.result == 1) {
+        scePadSetReqState_x001176A8(arg0, arg1, 2);
+    }
+    return b->buttonInfo.result;
+}
 
 
 int scePadInfoPressMode(int port, int slot)
