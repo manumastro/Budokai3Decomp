@@ -13,7 +13,7 @@ closest first. For each: a permuter folder build/permute/NAME holding
   compile.sh    ee-gcc (native: the 32-bit builds run in WSL; no docker) with the draft's flags, then the build's
                 assembler call (gcc_prelude.inc) -> the .o the permuter scores
   settings.toml func_name, compiler_type "gcc", the r5900 objdump
-then tools/permuter/permuter.py -j1 --stop-on-zero --stack-diffs for --budget seconds, --cpus functions at a time
+then decomp-permuter (scripts/fastperm/perm.py) -j1 --stop-on-zero --stack-diffs for --budget seconds, --cpus functions at a time
 (--stack-diffs: without it the permuter does not count stack offsets, so a frame of the wrong size scored 0).
 Every score-0 output is re-checked with gccmatch (same compile + word compare as lib_m2c.py: every word equal,
 same size, no data). Outputs under --out (default ~/b3-scan/perm, or $B3_SCAN/perm):
@@ -47,6 +47,9 @@ import lib_m2c  # noqa: E402
 import permuter_import as pi  # noqa: E402  (chunks / is_function_def / function_name)
 
 PY = sys.executable
+# decomp-permuter through scripts/fastperm/perm.py (same scoring; fast compile/objdump/AST paths, ~1.5-3x the
+# candidates per CPU second); B3_FASTPERM=0 in the environment gives the plain permuter
+PERMUTER = ROOT / "scripts" / "fastperm" / "perm.py"
 WORK = ROOT / "build" / "permute"
 DEFAULT_OUT = Path(os.environ.get("B3_SCAN", Path.home() / "b3-scan")) / "perm"
 EE_DEFS = ["-DNO_INCLUDE_ASM", "-I" + str(ROOT / "include"), "-I" + str(ROOT / "src")]
@@ -118,7 +121,7 @@ cd {shlex_quote(str(ROOT))}
 {g.BINUTILS}as {' '.join(g.GAS_FLAGS)} -G0 -Iinclude {g.PRELUDE} "$S" -o "$OUT"
 """)
     (d / "compile.sh").chmod(0o755)
-    # fast.json: scripts/fastperm/perm.py compiles the same thing without bash/driver and with gas as a zygote
+    # fast.json: scripts/fastperm/perm.py compiles the same thing without bash/driver (cc1 direct, Sony era as)
     (d / "fast.json").write_text(json.dumps({
         "kind": "gcc", "version": e["version"], "flags": flags, "cwd": str(ROOT),
         "as": [f"{g.BINUTILS}as", *g.GAS_FLAGS, "-G0", "-Iinclude", str(g.PRELUDE), "{in}", "-o", "{out}"]}))
@@ -182,7 +185,7 @@ def job(args):
             row.update(status="nocompile", detail=err)
             row["seconds"] = round(time.time() - t0)
             return row, None
-        p = subprocess.run(["timeout", "-k", "30", str(budget), PY, str(ROOT / "tools/permuter/permuter.py"), str(d), "-j", "1",
+        p = subprocess.run(["timeout", "-k", "30", str(budget), PY, str(PERMUTER), str(d), "-j", "1",
                             "--stop-on-zero", "--stack-diffs"], capture_output=True, text=True, cwd=ROOT / "tools/permuter")
         txt = p.stdout
         base = re.findall(r"base score = (\d+)", txt)
@@ -225,6 +228,7 @@ def candidates(a):
     c = [e for e in data if (e["status"] == "diff" and e.get("diff", 99) <= a.max_diff)
          or (e["status"] == "size" and e.get("diff", 99) <= a.max_size)]
     c = [e for e in c if func_asm_text(e["addr"])]  # already converted to C: nothing to permute
+    c = [e for e in c if "M2C_ERROR" not in e["func"]]  # an m2c failure stub: no permutation can match it
     if a.names:
         ns = set(a.names.split(","))
         c = [e for e in data if e["name"] in ns and func_asm_text(e["addr"])]
@@ -289,7 +293,7 @@ def check(a):
         if d is None:
             print(n, "SETUP FAIL", err)
             continue
-        p = subprocess.run(["timeout", "20", PY, str(ROOT / "tools/permuter/permuter.py"), str(d), "-j", "1",
+        p = subprocess.run(["timeout", "20", PY, str(PERMUTER), str(d), "-j", "1",
                             "--stop-on-zero", "--stack-diffs"], capture_output=True, text=True, cwd=ROOT / "tools/permuter")
         print(n, e["status"], e.get("diff"), re.findall(r"base score = (\d+)", p.stdout) or p.stdout[-200:])
 
