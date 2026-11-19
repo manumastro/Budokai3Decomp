@@ -95,10 +95,24 @@ class Obj:
                 add = s16(w)
             elif typ == "R_MIPS_HI16":
                 add = None
+                # the next LO16 of the same symbol that uses the lui's register (two luis of one section can
+                # interleave: `lui $s3; lui $v0; lw ..($v0); addiu ..($s3)`), else the next of the symbol
+                rt = (w >> 16) & 31
                 for off2, typ2, si2 in rel[k + 1:]:
+                    if typ2 == "R_MIPS_LO16" and si2 == si and (self.word(off2) >> 21) & 31 == rt:
+                        add = (w & 0xFFFF) * 65536 + s16(self.word(off2))
+                        break
+                for off2, typ2, si2 in rel[k + 1:] if add is None else ():
                     if typ2 == "R_MIPS_LO16" and si2 == si:
                         add = (w & 0xFFFF) * 65536 + s16(self.word(off2))
                         break
+                if add is None:
+                    # no LO16 after it: the compiler moved the lui below its %lo users (a loop's head, a branch
+                    # target); pair it with the nearest LO16 of the same symbol before it that uses its register
+                    for off2, typ2, si2 in reversed(rel[:k]):
+                        if typ2 == "R_MIPS_LO16" and si2 == si and (self.word(off2) >> 21) & 31 == rt:
+                            add = (w & 0xFFFF) * 65536 + s16(self.word(off2))
+                            break
                 if add is None:
                     out.append(((off - start) // 4, typ, ("bad", name, 0)))
                     continue
