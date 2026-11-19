@@ -329,7 +329,24 @@ void func_00188288(u8 *arg0) {
 void func_001882A8(u8 *arg0) {
     ADXT_GetOutVol(**(s32 **)((u8 *)arg0 + 0x1CB4));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001882C8);
+s32 func_00121F28_x001882C8(s32) __asm__("func_00121F28");
+s32 func_0011F638_x001882C8(s32) __asm__("func_0011F638");
+float func_001220B0_x001882C8(s32) __asm__("func_001220B0");
+void func_0015F9E8_x001882C8(s32, s32, s32) __asm__("func_0015F9E8");
+void func_001882C8_x001882C8(u8 *a0, s32 a1) __asm__("func_001882C8");
+void func_001882C8_x001882C8(u8 *a0, s32 a1)
+{
+    s32 h;
+    float f;
+    s32 hi;
+
+    h = **(s32 **)(a0 + 0x1CB4);
+    if (h) {
+        f = (func_001220B0_x001882C8(func_0011F638_x001882C8(func_00121F28_x001882C8(a1))) - 6.907755f) * 1731.2341f;
+        hi = (s32)(f * 0.01f);
+        func_0015F9E8_x001882C8(h, hi, (s32)f - hi * 100);
+    }
+}
 typedef unsigned int Uint32_x00188380;
 typedef signed int Sint32_x00188380;
 typedef struct {

@@ -212,7 +212,27 @@ void func_00116690_x00116690(volatile PadDmaData_x00116690 *dd)
     __asm__ __volatile__(".set noreorder\n\t"                                                           "ei\n\t"                                                                       ".set reorder"                                                                 : : : "memory");
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", scePadInit2);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_001167D0);
+extern u32 D_00478B80_x001167D0[] __asm__("D_00478B80");
+extern u8 D_00478940_x001167D0[] __asm__("D_00478940");
+extern u32 D_003EDD00_x001167D0 __asm__("D_003EDD00");
+int func_00117AD8_x001167D0(int) __asm__("func_00117AD8");
+void func_0010D420_x001167D0(unsigned int) __asm__("func_0010D420");
+int sceSifCallRpc_x001167D0(void *, unsigned int, unsigned int, void *, int, void *, int, void *, void *) __asm__("sceSifCallRpc");
+int func_001167D0_x001167D0(void) __asm__("func_001167D0");
+int func_001167D0_x001167D0(void)
+{
+    int result;
+
+    func_00117AD8_x001167D0(0);
+    D_00478B80_x001167D0[0] = 0xF;
+    if (sceSifCallRpc_x001167D0(D_00478940_x001167D0, 1, 0, D_00478B80_x001167D0, 0x80, D_00478B80_x001167D0, 0x80, 0, 0) < 0)
+        return 0;
+    func_0010D420_x001167D0(0x80000019);
+    result = D_00478B80_x001167D0[3];
+    if (result == 1)
+        D_003EDD00_x001167D0 = 0;
+    return result;
+}
 typedef struct {
     unsigned int data;
     unsigned int addr;
@@ -465,7 +485,22 @@ s32 func_00116D70_x00116D70(s32 arg0, s32 arg1)
     }
     return *(s32 *)((u8 *)func_00116C18_x00116D70(arg0, arg1, 0) + 0x58);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116DC8);
+typedef struct { u8 pad[0x10]; s32 f10; u8 pad2[0x8]; } PadSlot_x00116DC8;
+extern PadSlot_x00116DC8 D_00478990_x00116DC8[][4] __asm__("D_00478990");
+void func_00116C18_x00116DC8(s32, s32, u8 *) __asm__("func_00116C18");
+void *memcpy_x00116DC8(void *, const void *, unsigned int) __asm__("memcpy");
+s32 func_00116DC8_x00116DC8(s32 port, s32 slot, u8 *out) __asm__("func_00116DC8");
+s32 func_00116DC8_x00116DC8(s32 port, s32 slot, u8 *out)
+{
+    u8 buf[0x80];
+
+    if (D_00478990_x00116DC8[port][slot].f10 == 0) {
+        return 0;
+    }
+    func_00116C18_x00116DC8(port, slot, buf);
+    memcpy_x00116DC8(out, buf, *(s32 *)(buf + 0x60));
+    return *(s32 *)(buf + 0x60);
+}
 typedef struct PadData_x00116E40 {
     unsigned char data[0x50];            
     unsigned short modeTable[4];         

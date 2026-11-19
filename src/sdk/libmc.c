@@ -113,7 +113,34 @@ void func_00119F30_x00119F30(void) __asm__("func_00119F30");
 void func_00119F30_x00119F30(void) {
     iSignalSema_x00119F30(D_003EF950_x00119F30);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_00119F40);
+extern u8 D_00478FC0_x00119F40[] __asm__("D_00478FC0");
+extern s32 D_00479040_x00119F40[] __asm__("D_00479040");
+extern u8 D_0047A580_x00119F40[] __asm__("D_0047A580");
+extern s32 D_003EF94C_x00119F40 __asm__("D_003EF94C");
+extern s32 D_003EF948_x00119F40 __asm__("D_003EF948");
+void func_00119F30_x00119F40(void *) __asm__("func_00119F30");
+int PollSema_x00119F40(int) __asm__("PollSema");
+int SignalSema_x00119F40(int) __asm__("SignalSema");
+int sceSifCallRpc_x00119F40(void *, int, int, void *, int, void *, int, void *, void *) __asm__("sceSifCallRpc");
+s32 func_00119F40_x00119F40(s32 a0) __asm__("func_00119F40");
+s32 func_00119F40_x00119F40(s32 a0)
+{
+    u8 *cd = D_00478FC0_x00119F40;
+
+    if (*(s32 *)(cd + 0x24) == 0) {
+        return -0x64;
+    }
+    if (PollSema_x00119F40(D_003EF94C_x00119F40) < 0) {
+        return -0xC8;
+    }
+    D_00479040_x00119F40[5] = a0;
+    if (sceSifCallRpc_x00119F40(cd, 0x14, 1, D_00479040_x00119F40, 0x30, D_0047A580_x00119F40, 4, func_00119F30_x00119F40, 0) != 0) {
+        SignalSema_x00119F40(D_003EF94C_x00119F40);
+        return -0x5B;
+    }
+    D_003EF948_x00119F40 = 0x14;
+    return 0;
+}
 typedef struct {
     unsigned char reserved_00[0x24];
     int is_initialized;
