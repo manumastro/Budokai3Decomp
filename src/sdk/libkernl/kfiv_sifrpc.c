@@ -457,7 +457,128 @@ void _request_call(void *pkt, void *data)
     iWakeupThread(q[0]);
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", sceSifCallRpc);
+extern __inline__ void *GetGp_x0010E1A8(void) __asm__("GetGp");
+static __inline__ void *GetGp_x0010E1A8(void)
+{
+        void *gp;
+        __asm__ volatile (
+                "move           %0, $28\n"
+                : "=r"(gp)
+                :
+                : "memory"
+        );
+        return(gp);
+}
+typedef unsigned int u_int_x0010E1A8;
+typedef struct _sif_rpc_pkt_x0010E1A8 {
+    unsigned char  pad00[0x14];
+    u_int_x0010E1A8          self;      
+    u_int_x0010E1A8          pid;       
+    u_int_x0010E1A8          client;    
+    u_int_x0010E1A8          fno;       
+    int            ssize;     
+    u_int_x0010E1A8          recv;      
+    int            rsize;     
+    int            rmode;     
+    int            server;    
+    unsigned char  pad38[0x8];
+} sceSifRpcPkt_x0010E1A8;
+typedef struct _sif_client_data_x0010E1A8 {
+    sceSifRpcPkt_x0010E1A8  *paddr;     
+    u_int_x0010E1A8          pid;       
+    int            sema;      
+    int            pad0C;     
+    u_int_x0010E1A8          command;   
+    u_int_x0010E1A8          buff;      
+    u_int_x0010E1A8          gp;        
+    void         (*efunc)(void *);  
+    void          *epara;     
+    int            server;    
+} sceSifClientData_x0010E1A8;
+struct SemaParam_x0010E1A8 {
+    int            count;         
+    int            max_count;     
+    int            init_count;    
+    int            wait_threads;  
+    u_int_x0010E1A8          attr;          
+    u_int_x0010E1A8          option;        
+};
+extern unsigned char D_0077FF40_x0010E1A8 __asm__("D_004733C0");
+extern unsigned char D_00460070_x0010E1A8 __asm__("D_0045D648");
+extern sceSifRpcPkt_x0010E1A8 *func_003B2AC8_x0010E1A8(void *rd) __asm__("func_0010D9E8");
+extern void func_003B2B70_x0010E1A8(sceSifRpcPkt_x0010E1A8 *p) __asm__("func_0010DA90");
+extern void func_003B2850_x0010E1A8(void *p, int size) __asm__("func_0010D770");
+extern int sceSifSendCmd_x0010E1A8(u_int_x0010E1A8 fno, void *pkt, int pktsize, void *src, void *dst, int size) __asm__("func_0010D5A8");
+extern int CreateSema_x0010E1A8(struct SemaParam_x0010E1A8 *sp) __asm__("CreateSema");
+extern int DeleteSema_x0010E1A8(int id) __asm__("DeleteSema");
+extern int WaitSema_x0010E1A8(int id) __asm__("WaitSema");
+int sceSifCallRpc_x0010E1A8(sceSifClientData_x0010E1A8 *cd, u_int_x0010E1A8 fno, u_int_x0010E1A8 mode, void *send, int ssize,
+                  void *recv, int rsize, void (*efunc)(void *), void *epara) __asm__("sceSifCallRpc");
+/* func_003B3128: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003b3128.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int sceSifCallRpc_x0010E1A8(sceSifClientData_x0010E1A8 *cd, u_int_x0010E1A8 fno, u_int_x0010E1A8 mode, void *send, int ssize,
+                  void *recv, int rsize, void (*efunc)(void *), void *epara)
+{
+    sceSifRpcPkt_x0010E1A8 *p;
+    struct SemaParam_x0010E1A8 sp;
+    int srv;
+
+    p = func_003B2AC8_x0010E1A8(&D_0077FF40_x0010E1A8);
+    if (p == 0)
+        return -1;
+    cd->epara = epara;
+    cd->pid = p->pid;
+    cd->paddr = p;
+    cd->efunc = efunc;
+    cd->gp = (u_int_x0010E1A8)GetGp_x0010E1A8();
+    p->fno = fno;
+    p->ssize = ssize;
+    p->recv = (u_int_x0010E1A8)recv;
+    p->rsize = rsize;
+    p->self = (u_int_x0010E1A8)p;
+    srv = cd->server;
+    p->client = (u_int_x0010E1A8)cd;
+    p->server = srv;
+    if ((mode & 2) == 0) {
+        if (send == recv) {
+            func_003B2850_x0010E1A8(send, (ssize < rsize) ? rsize : ssize);
+        } else {
+            if (ssize > 0)
+                func_003B2850_x0010E1A8(send, ssize);
+            if (rsize > 0)
+                func_003B2850_x0010E1A8(recv, rsize);
+        }
+    }
+    if (mode & 1) {
+        if (efunc == 0) {
+            p->rmode = 0;
+        } else {
+            p->rmode = 1;
+        }
+        cd->sema = -1;
+        if (sceSifSendCmd_x0010E1A8(0x8000000A, p, 64, send, (void *)cd->buff, ssize) != 0)
+            return 0;
+        func_003B2B70_x0010E1A8(p);
+        return -2;
+    } else {
+        sp.init_count = 0;
+        sp.option = (u_int_x0010E1A8)&D_00460070_x0010E1A8;
+        sp.max_count = 1;
+        cd->sema = CreateSema_x0010E1A8(&sp);
+        if (cd->sema < 0) {
+            func_003B2B70_x0010E1A8(p);
+            return -3;
+        }
+        p->rmode = 1;
+        if (sceSifSendCmd_x0010E1A8(0x8000000A, p, 64, send, (void *)cd->buff, ssize) == 0) {
+            DeleteSema_x0010E1A8(cd->sema);
+            func_003B2B70_x0010E1A8(p);
+            return -2;
+        }
+        WaitSema_x0010E1A8(cd->sema);
+        DeleteSema_x0010E1A8(cd->sema);
+        return 0;
+    }
+}
 
 
 int sceSifCheckStatRpc(sceSifRpcClientData *cd)
