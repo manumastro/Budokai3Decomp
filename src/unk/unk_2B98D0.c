@@ -82,7 +82,7 @@ extern void func_00227A30(u8 *);
 extern void func_0022C060(f32, s32);
 extern void func_00228410(void);
 extern void func_0022C560(s32);
-extern void func_002BC090(void);
+extern void func_002BC090(Ac98D *s);
 extern V16 D_00456000;
 extern char D_0046EE00[];
 extern void *func_0022D670(f32, s32);
@@ -439,28 +439,19 @@ void func_002BC000(Ac98D *s) {
         s->f1C = (func_002BBCB0 == NULL) ? NULL : (void *)func_002BBCB0;
     }
 }
-/* differs: the handle reset and the task store are scheduled in the other order (9 of 36) */
-#if 0
 void func_002BC090(Ac98D *s) {
-    W98D *w;
-    void *t;
-
-    if (func_0022BF80(gStrStatus->f1C0) == 0xFF) {
+    if (func_0022BF80((void *)gStrStatus->f1C0) == 0xFF) {
         if (gStrStatus->f1C0 != NULL) {
             func_0022D0E0(gStrStatus->f1C0, 1);
             gStrStatus->f1C0 = NULL;
         }
         if (gStrStatus->fA8 != NULL) {
             amTask_Kill(gStrStatus->fA8);
+            gStrStatus->fA8 = NULL;
         }
-        w = gStrStatus;
-        t = (func_002BC250 == NULL) ? NULL : (void *)func_002BC250;
-        w->fA8 = NULL;
-        s->f1C = t;
+        s->f1C = (func_002BC250 == NULL) ? NULL : (void *)func_002BC250;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B98D0", func_002BC090);
 void func_002BC120(Ac98D *s) {
     V16 tmp = D_00455DF0;
     W98D *w;
