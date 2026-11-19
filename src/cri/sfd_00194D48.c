@@ -21809,7 +21809,78 @@ void func_00199DF0_x00199DF0(u8 *arg0, s32 arg1)
 void func_00199E00(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00199E08);
+typedef int s32_x00199E08;
+typedef unsigned char u8_x00199E08;
+void func_0019AE00_x00199E08(void *, void *, s32_x00199E08) __asm__("func_0019AE00");
+void func_0019A058_x00199E08(u8_x00199E08 *) __asm__("func_0019A058");
+void func_0019A010_x00199E08(u8_x00199E08 *, s32_x00199E08) __asm__("func_0019A010");
+s32_x00199E08 func_0019A848_x00199E08() __asm__("func_0019A848");
+s32_x00199E08 func_0019A890_x00199E08() __asm__("func_0019A890");
+s32_x00199E08 func_0019A8F0_x00199E08() __asm__("func_0019A8F0");
+s32_x00199E08 func_0019A910_x00199E08() __asm__("func_0019A910");
+void func_00199E08_x00199E08(void *a0, u8_x00199E08 *a1) __asm__("func_00199E08");
+void func_00199E08_x00199E08(void *a0, u8_x00199E08 *a1) {
+    s32_x00199E08 i;
+    func_0019AE00_x00199E08(a0, func_0019A848_x00199E08, 0);
+    func_0019AE00_x00199E08(a0, func_0019A890_x00199E08, 1);
+    func_0019AE00_x00199E08(a0, 0, 2);
+    func_0019AE00_x00199E08(a0, func_0019A8F0_x00199E08, 3);
+    func_0019AE00_x00199E08(a0, 0, 4);
+    func_0019AE00_x00199E08(a0, func_0019A910_x00199E08, 5);
+    *(s32_x00199E08 *)(a1 + 0x18) = 0;
+    func_0019A058_x00199E08(a1 + 0x1C);
+    func_0019A010_x00199E08(a1 + 0xC0, 0);
+    func_0019A010_x00199E08(a1 + 0x3C, 0x7FFFFFFF);
+    func_0019A010_x00199E08(a1 + 0x68, -1);
+    func_0019A010_x00199E08(a1 + 0x94, -1);
+    func_0019A010_x00199E08(a1 + 0xEC, -1);
+    func_0019A010_x00199E08(a1 + 0x118, 0x7FFFFFFF);
+    *(s32_x00199E08 *)(a1 + 0x144) = 0;
+    *(s32_x00199E08 *)(a1 + 0x148) = 0;
+    *(s32_x00199E08 *)(a1 + 0x14C) = -1;
+    *(s32_x00199E08 *)(a1 + 0x150) = -1;
+    *(s32_x00199E08 *)(a1 + 0x154) = 0;
+    *(s32_x00199E08 *)(a1 + 0x158) = 0;
+    *(s32_x00199E08 *)(a1 + 0x15C) = 0;
+    for (i = 31; i >= 0; i--) {
+        ((s32_x00199E08 *)(a1 + 0x160))[i] = 0;
+    }
+    *(s32_x00199E08 *)(a1 + 0x1E0) = 1;
+    *(s32_x00199E08 *)(a1 + 0x1E4) = 0;
+    *(s32_x00199E08 *)(a1 + 0x1E8) = 0;
+    *(s32_x00199E08 *)(a1 + 0x1EC) = 0;
+    for (i = 31; i >= 0; i--) {
+        ((s32_x00199E08 *)(a1 + 0x1F0))[i] = 0;
+    }
+    *(s32_x00199E08 *)(a1 + 0x270) = -5;
+    *(s32_x00199E08 *)(a1 + 0x274) = 1;
+    *(s32_x00199E08 *)(a1 + 0x278) = -5;
+    *(s32_x00199E08 *)(a1 + 0x27C) = 1;
+    *(s32_x00199E08 *)(a1 + 0x280) = -1;
+    *(s32_x00199E08 *)(a1 + 0x284) = 1;
+    *(s32_x00199E08 *)(a1 + 0x288) = -5;
+    *(s32_x00199E08 *)(a1 + 0x28C) = 0x7FFFFFFF;
+    *(s32_x00199E08 *)(a1 + 0x290) = 0;
+    *(s32_x00199E08 *)(a1 + 0x294) = 0x7FFFFFFF;
+    *(s32_x00199E08 *)(a1 + 0x298) = 0;
+    *(s32_x00199E08 *)(a1 + 0x29C) = 0;
+    *(s32_x00199E08 *)(a1 + 0x2A0) = 1000;
+    *(s32_x00199E08 *)(a1 + 0x2A4) = 0;
+    *(s32_x00199E08 *)(a1 + 0x2A8) = 0;
+    *(s32_x00199E08 *)(a1 + 0x2AC) = 1;
+    *(s32_x00199E08 *)(a1 + 0x2B0) = 100;
+    *(float *)(a1 + 0x2B4) = -1.0f;
+    *(s32_x00199E08 *)(a1 + 0x2B8) = 0;
+    *(float *)(a1 + 0x2BC) = -1.0f;
+    *(volatile s32_x00199E08 *)(a1 + 0x2C0) = -1;
+    *(s32_x00199E08 *)(a1 + 0x2C4) = *(volatile s32_x00199E08 *)(a1 + 0x29C);
+    *(s32_x00199E08 *)(a1 + 0x2C8) = 0;
+    *(volatile s32_x00199E08 *)(a1 + 0x2CC) = -5;
+    *(volatile s32_x00199E08 *)(a1 + 0x2D0) = 0;
+    *(volatile s32_x00199E08 *)(a1 + 0x2D4) = 1;
+    *(volatile s32_x00199E08 *)(a1 + 0x2D8) = -1;
+    *(s32_x00199E08 *)(a1 + 0x2DC) = 0;
+}
 void func_0019A010(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0) = 0;
     func_0019A058(arg0 + 4);
@@ -26589,6 +26660,8 @@ void func_0019AE00_x0019AE00(s32 arg0, s32 arg1, s32 arg2)
   new_var = arg0 + (arg2 * 4);
   *((s32 *) (((u8 *) new_var) + 0xCC0)) = arg1;
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3m9e081_000000;
 typedef unsigned char Uint8_x0019AE10;
 typedef signed char Sint8_x0019AE10;
 typedef signed short Sint16_x0019AE10;
@@ -27291,6 +27364,8 @@ void func_0019B2E0_x0019B2E0(SfdHandle_x0019B2E0 *handle, int *value, int *scale
         *scale = lbl_12_rodata_E10_x0019B2E0[code];
     }
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m9e0820;
 typedef unsigned char Uint8_x0019B320;
 typedef signed char Sint8_x0019B320;
 typedef signed short Sint16_x0019B320;

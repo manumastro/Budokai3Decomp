@@ -1305,7 +1305,41 @@ u8 *func_00115198_x00115198(u8 *arg0)
   *((u8 ***) (((u8 *) arg0) + 4)) = (void *) 0;
   return temp_v1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001151D0);
+typedef struct Alarm_51D0_x001151D0 { struct Alarm_51D0_x001151D0 *next; struct Alarm_51D0_x001151D0 *prev; int id; unsigned int flags; unsigned long x10; unsigned long x18; unsigned long x20; unsigned long (*handler)(int,unsigned long,unsigned long,void *,void *); void *gp; void *arg; } Alarm_51D0_x001151D0;
+typedef struct { volatile unsigned long a; int id; volatile int seq; volatile int cnt; Alarm_51D0_x001151D0 *free; Alarm_51D0_x001151D0 *head; volatile int cur; } TimCtl_51D0_x001151D0;
+extern TimCtl_51D0_x001151D0 D_003EDCC8_x001151D0 __asm__("D_003EDCC8");
+void func_00114C10_x001151D0(unsigned int) __asm__("func_00114C10");
+Alarm_51D0_x001151D0 *func_00115198_x001151D0(Alarm_51D0_x001151D0 *) __asm__("func_00115198");
+void func_00115110_x001151D0(Alarm_51D0_x001151D0 *) __asm__("func_00115110");
+void func_00114F80_x001151D0(unsigned long) __asm__("func_00114F80");
+static __inline__ unsigned long GetTime_51D0(void) { unsigned int cnt = *(volatile unsigned int *)0x10001000, mode = *(volatile unsigned int *)0x10001010; if (mode & 0x800) { D_003EDCC8_x001151D0.a++; func_00114C10_x001151D0(mode & ~0x400); cnt = *(volatile unsigned int *)0x10001000; } return ((D_003EDCC8_x001151D0.a << 16) | cnt) << ((mode & 3) * 4); };
+int func_001151D0_x001151D0(int cause, void *arg, void *addr) __asm__("func_001151D0");
+int func_001151D0_x001151D0(int cause, void *arg, void *addr)
+{
+ Alarm_51D0_x001151D0 *a, *next; unsigned long now, target, r;
+ if (*(volatile unsigned int *)0x10001010 & 0x400) {
+  a = D_003EDCC8_x001151D0.head;
+  while (a) {
+   target = a->x20 + a->x10 - a->x18;
+   now = GetTime_51D0();
+   if (now < target) break;
+   next = func_00115198_x001151D0(a);
+   now = now + a->x18 - a->x10;
+   D_003EDCC8_x001151D0.cur = ((int)a << 4) | a->id;
+   { __asm__ volatile("lw $gp, %0" :: "m"(a->gp));
+   r = a->handler(((int)a << 4) | a->id, a->x20, now, a->arg, addr); }
+   if (r == 0) a->flags &= ~2;
+   else if (r == -1) { a->id = 0; a->flags = 0; a->next = D_003EDCC8_x001151D0.free; D_003EDCC8_x001151D0.free = a; D_003EDCC8_x001151D0.cnt--; }
+   else { if (r < 0x3999) r = 0x3999; a->x20 += r; func_00115110_x001151D0(a); }
+   a = next;
+  }
+ }
+ D_003EDCC8_x001151D0.cur = -1;
+ func_00114F80_x001151D0(GetTime_51D0());
+ GetTime_51D0();
+ __asm__ volatile("sync\n\tei");
+ return 0;
+}
 typedef struct Alarm_x00115478 { struct Alarm_x00115478 *next; struct Alarm_x00115478 *prev; int id; unsigned int flags; unsigned long x10; unsigned long x18; unsigned long x20; unsigned long (*handler)(int,unsigned long,unsigned long,void *,void *); void *gp; void *arg; } Alarm_x00115478;
 typedef struct { volatile unsigned long a; int id; int seq; int cnt; Alarm_x00115478 *free; Alarm_x00115478 *head; int cur; } TimCtl_x00115478;
 extern TimCtl_x00115478 D_00487848_x00115478 __asm__("D_003EDCC8");
