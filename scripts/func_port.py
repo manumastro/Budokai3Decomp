@@ -414,7 +414,8 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
         nm = f"ext_str{k}"
         k += 1
         func = func[:s] + nm + func[e:]
-        extra.append(f"extern char {nm}[];")
+        # sized like the literal: `sizeof("AFS") - 1` must still compile (and fold) once the literal is a name
+        extra.append(f"extern char {nm}[{len(v) + 1}];")
         bind[nm] = lits[v]
     # drop declarations of names bound to nothing that the function does not use as types: fine to keep them
     dl = [t for kind, n, t in decls if n != ext_name]
