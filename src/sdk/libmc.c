@@ -543,7 +543,22 @@ int func_0011A820_x0011A820(int arg0, int arg1, int arg2, int arg3, int arg4) {
     MC_STATUS_x0011A820 = 1;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A9A0);
+extern int D_00478FC0_x0011A9A0[] __asm__("D_00478FC0");
+extern int D_00479040_x0011A9A0[] __asm__("D_00479040");
+extern int D_0047A580_x0011A9A0[] __asm__("D_0047A580");
+extern char D_0045DE98_x0011A9A0[] __asm__("D_0045DE98");
+void func_00119F30_x0011A9A0(void *) __asm__("func_00119F30");
+int sceSifCallRpc_x0011A9A0(void *, int, int, void *, int, void *, int, void *, void *) __asm__("sceSifCallRpc");
+int scePrintf_x0011A9A0(const char *, ...) __asm__("scePrintf");
+int func_0011A9A0_x0011A9A0(void) __asm__("func_0011A9A0");
+int func_0011A9A0_x0011A9A0(void)
+{
+    if (sceSifCallRpc_x0011A9A0(D_00478FC0_x0011A9A0, 0x35, 0, D_00479040_x0011A9A0, 0x30, D_0047A580_x0011A9A0, 4, func_00119F30_x0011A9A0, 0) != 0) {
+        scePrintf_x0011A9A0(D_0045DE98_x0011A9A0);
+        return -0x5B;
+    }
+    return D_0047A580_x0011A9A0[0];
+}
 typedef struct {
     unsigned char reserved_00[0x24];
     int is_initialized;

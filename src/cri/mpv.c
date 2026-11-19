@@ -3190,7 +3190,24 @@ void func_00178A78_x00178A78(char *h, int n, void *fn)
     }
     p[n] = fn;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178B28);
+typedef struct { s32 type; s32 pad[5]; s32 x[(0x6E0 - 0x18) / 4]; } MpvE_r3_x00178B28;
+typedef struct { u8 pad[0x40]; s32 n; MpvE_r3_x00178B28 *e; } MpvT_r3_x00178B28;
+extern MpvT_r3_x00178B28 D_00481490_x00178B28 __asm__("D_00481490");
+void func_00178B28_x00178B28(s32 a0, s32 a1) __asm__("func_00178B28");
+void func_00178B28_x00178B28(s32 a0, s32 a1)
+{
+    MpvT_r3_x00178B28 *t = &D_00481490_x00178B28;
+    MpvE_r3_x00178B28 *e;
+    s32 i, n;
+
+    n = t->n;
+    e = t->e;
+    for (i = 0; i < n; i++, e++) {
+        if (e->type == 2) {
+            e->x[a0] = a1;
+        }
+    }
+}
 extern s32 *D_004814D8_x00178B80 __asm__("D_004814D8");
 s32 func_00178B80_x00178B80(s32 *arg0) __asm__("func_00178B80");
 s32 func_00178B80_x00178B80(s32 *arg0)

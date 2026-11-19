@@ -22331,7 +22331,26 @@ void func_00190338_x00190338(u8 *arg0, s32 arg1) __asm__("func_00190338");
 void func_00190338_x00190338(u8 *arg0, s32 arg1) {
     func_0018B750_x00190338(arg0, *(s32 *)((u8 *)arg0 + 0x1C7C), arg1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190358);
+s32 func_001903D0_x00190358(s32, s32 *, s32 *, s32 *) __asm__("func_001903D0");
+s32 func_00190B68_x00190358(s32, s32, s32, s32, s32 *) __asm__("func_00190B68");
+s32 func_00190358_x00190358(s32 a0) __asm__("func_00190358");
+s32 func_00190358_x00190358(s32 a0)
+{
+    s32 a, b, c, d;
+    s32 r;
+
+    do {
+        r = func_001903D0_x00190358(a0, &a, &b, &c);
+        if (r != 0) {
+            break;
+        }
+        r = func_00190B68_x00190358(a0, a, b, c, &d);
+        if (r != 0) {
+            break;
+        }
+    } while (d != 0);
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001903D0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190610);
 typedef struct {

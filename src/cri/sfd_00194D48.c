@@ -17457,7 +17457,18 @@ s32 func_001982A8_x001982A8(void *a0) {
     return func_0018B770_x001982A8(a0, *(s32 *)((u8 *)a0 + 0x1BF4)) != 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001982C8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198380);
+s32 func_0018D870_x00198380(s32, s32) __asm__("func_0018D870");
+s32 func_0018D650_x00198380(s32, s32, s32, s32, s32) __asm__("func_0018D650");
+s32 func_0019C0D8_x00198380(s32, s32) __asm__("func_0019C0D8");
+s32 func_00198380_x00198380(s32 a0, s32 a1) __asm__("func_00198380");
+s32 func_00198380_x00198380(s32 a0, s32 a1)
+{
+    if (func_0018D870_x00198380(a0, a1) != 0) {
+        return func_0018D650_x00198380(0, 0xFF000137, 0xC, a1, 0);
+    }
+    *(s32 *)(a0 + 0x964) = 0;
+    return func_0019C0D8_x00198380(a0, 6);
+}
 void func_001983F0(s32 arg0, s32 arg1) {
     if (func_0018D870() != 0) {
         func_0018D650(0, 0xFF000139);
@@ -29940,7 +29951,20 @@ int func_0019DA68_x0019DA68(SfhHn_x0019DA68 *hn, char *out) {
     *(SfhStr12_x0019DA68 *)out = *date;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019DAD8);
+typedef struct { u8 b[12]; } Sfh12_x0019DAD8_x0019DAD8;
+s32 func_0019D780_x0019DAD8(s32) __asm__("func_0019D780");
+s32 func_0019DAD8_x0019DAD8(s32 a0, Sfh12_x0019DAD8_x0019DAD8 *out) __asm__("func_0019DAD8");
+s32 func_0019DAD8_x0019DAD8(s32 a0, Sfh12_x0019DAD8_x0019DAD8 *out)
+{
+    u8 *h = *(u8 **)(a0 + 4);
+
+    if (func_0019D780_x0019DAD8(a0) == 0) {
+        return 0;
+    }
+    memset(out, 0, 13);
+    *out = *(Sfh12_x0019DAD8_x0019DAD8 *)(h + 0x4C);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019DB48);
 s32 func_0019DB48_x0019DBD8() __asm__("func_0019DB48");
 s32 func_0019DE18_x0019DBD8() __asm__("func_0019DE18");

@@ -8499,7 +8499,20 @@ s32 mwPlyGetNumDropFrm(s32 arg0) {
     temp_s0 = mwPlyGetNumSkipDec(arg0);
     return temp_s0 + mwPlyGetNumSkipDisp(arg0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetNumSkipDec);
+extern s32 D_004661E8_x00183748 __asm__("D_004661E8");
+void func_00199AC8_x00183748(s32, s32 *) __asm__("func_00199AC8");
+s32 mwPlyGetNumSkipDec_x00183748(s32 arg0) __asm__("mwPlyGetNumSkipDec");
+s32 mwPlyGetNumSkipDec_x00183748(s32 arg0)
+{
+    s32 buf[16];
+
+    if (func_00183B38(arg0) == 0) {
+        func_001870E8(&D_004661E8_x00183748);
+        return 0;
+    }
+    func_00199AC8_x00183748(mwPlyGetSfdHn(arg0), buf);
+    return buf[1] - buf[4];
+}
 s32 func_001837D8_x001837A8(s32, s32, s32) __asm__("func_001837D8");
 void func_001837A8_x001837A8(s32 arg0, s32 arg1) __asm__("func_001837A8");
 void func_001837A8_x001837A8(s32 arg0, s32 arg1) {

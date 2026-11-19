@@ -86,7 +86,19 @@ void func_001097D0_x001097D0(unsigned int chcr)
     (*(volatile unsigned int *)0x1000f590) = (*(volatile unsigned int *)0x1000f520) & ~0x10000;
     if (intr) EIntr_x001097D0();
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001095D0", func_00109848);
+int DI_x00109848(void) __asm__("DI");
+int EI_x00109848(void) __asm__("EI");
+void func_00109848_x00109848(unsigned int a0) __asm__("func_00109848");
+void func_00109848_x00109848(unsigned int a0)
+{
+    int oldstat;
+
+    oldstat = DI_x00109848();
+    *(volatile unsigned int *)0x1000F590 = *(volatile unsigned int *)0x1000F520 | 0x10000;
+    *(volatile unsigned int *)0x1000B400 = a0;
+    *(volatile unsigned int *)0x1000F590 = *(volatile unsigned int *)0x1000F520 & 0xFFFEFFFFU;
+    if (oldstat != 0) EI_x00109848();
+}
 typedef struct {  
     unsigned int d4madr;
     unsigned int d4tadr;

@@ -16,7 +16,19 @@ int func_00109AF8_x00109AF8(int mode, unsigned short timeout)
     }
     return r;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libipu", func_00109B60);
+int DI_x00109B60(void) __asm__("DI");
+int EI_x00109B60(void) __asm__("EI");
+void func_00109B60_x00109B60(unsigned int a0) __asm__("func_00109B60");
+void func_00109B60_x00109B60(unsigned int a0)
+{
+    int oldstat;
+
+    oldstat = DI_x00109B60();
+    *(volatile unsigned int *)0x1000F590 = *(volatile unsigned int *)0x1000F520 | 0x10000;
+    *(volatile unsigned int *)0x1000B400 = a0;
+    *(volatile unsigned int *)0x1000F590 = *(volatile unsigned int *)0x1000F520 & 0xFFFEFFFFU;
+    if (oldstat != 0) EI_x00109B60();
+}
 void setD4_CHCR_x00109BD8(int chcr) __asm__("func_00109B60");
 typedef unsigned int u128_ipu_x00109BD8 __attribute__((mode(TI)));
 extern union {  
