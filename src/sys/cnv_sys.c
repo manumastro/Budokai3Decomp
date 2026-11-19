@@ -87,11 +87,36 @@ void func_002A0AD0(s32 arg0, s32 arg1, u8 *arg2) {
     *(s32 *)((u8 *)temp_v1 + 0x14) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0B20);
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0B70);
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0BC0);
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0C10);
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0C60);
+void func_002A0B20(s32 arg0, s32 arg1, s32 arg2, u8 *arg3) {
+    u8 *p;
+    p = *(u8 **)(*(s32 *)((u8 *)D_004708CC + 0x44) + arg0 * 4) + arg1 * 0xE0 + arg2 * 0x50 + 0x80;
+    __asm__ volatile("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(arg3), "r"(p) : "memory");
+}
+
+void func_002A0B70(s32 arg0, s32 arg1, s32 arg2, u8 *arg3) {
+    u8 *p;
+    p = *(u8 **)(*(s32 *)((u8 *)D_004708CC + 0x44) + arg0 * 4) + arg1 * 0xE0 + arg2 * 0x50 + 0x70;
+    __asm__ volatile("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(arg3), "r"(p) : "memory");
+}
+
+void func_002A0BC0(s32 arg0, s32 arg1, s32 arg2, u8 *arg3) {
+    u8 *p;
+    p = *(u8 **)(*(s32 *)((u8 *)D_004708CC + 0x44) + arg0 * 4) + arg1 * 0xE0 + arg2 * 0x50 + 0x60;
+    __asm__ volatile("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(arg3), "r"(p) : "memory");
+}
+
+void func_002A0C10(s32 arg0, s32 arg1, s32 arg2, u8 *arg3) {
+    u8 *p;
+    p = *(u8 **)(*(s32 *)((u8 *)D_004708CC + 0x44) + arg0 * 4) + arg1 * 0xE0 + arg2 * 0x50 + 0x50;
+    __asm__ volatile("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(arg3), "r"(p) : "memory");
+}
+
+void func_002A0C60(s32 arg0, s32 arg1, s32 arg2, u8 *arg3) {
+    u8 *p;
+    p = *(u8 **)(*(s32 *)((u8 *)D_004708CC + 0x44) + arg0 * 4) + arg1 * 0xE0 + arg2 * 0x50 + 0x40;
+    __asm__ volatile("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(arg3), "r"(p) : "memory");
+}
+
 void func_002A0CB0(s32 arg0, s32 arg1, s32 arg2) {
     *(s32 *)((u8 *)((u8 *)(arg1 * 0xE0) + (s32)*(s32 *)(*(s32 *)((u8 *)D_004708CC + 0x44) + arg0 * 4)) + 0x30) = arg2;
 }

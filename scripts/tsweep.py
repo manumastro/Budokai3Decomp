@@ -128,6 +128,49 @@ class Sweep:
     def variant_text(self, decls):
         return self.text[:self.a] + render(decls, self.rest, self.head) + self.text[self.b:]
 
+    def _diff(self, words, relocs):
+        mw = [mwmatch.mask(w, i in relocs) for i, w in enumerate(words)]
+        ow = [mwmatch.mask(w, i in relocs) for i, w in enumerate(self.orig)]
+        if len(mw) == len(ow):
+            return sum(1 for x, y in zip(mw, ow) if x != y)
+        sm = difflib.SequenceMatcher(None, mw, ow, autojunk=False)
+        return max(len(mw), len(ow)) - sum(bl.size for bl in sm.get_matching_blocks()) + abs(len(mw) - len(ow))
+
+    def score_batch(self, cands):
+        """Scores several variants with ONE compile: the original definition stays and every variant is added
+        right after it, renamed FUNC__bK. Metrowerks compiles each function on its own (checked on 573 permuter
+        variants of 21 game functions: identical code alone or in a batch), so the per-variant code is the same as
+        a compile of its own file; the file's other functions are compiled once per batch instead of once per
+        variant. A batch that does not compile falls back to one compile per variant."""
+        todo = [c for c in dict.fromkeys(cands) if tuple(c) not in self.cache]
+        if len(todo) <= 1:
+            return [self.score(c) for c in cands]
+        extra = []
+        for k, c in enumerate(todo):
+            m = re.search(rf"^[^\n;#/]*\b{re.escape(self.func)}\s*\([^;{{]*\)\s*\{{", self.text, re.M)
+            fn = self.text[m.start():self.a] + render(c, self.rest, self.head) + "}\n"
+            extra.append("\n" + re.sub(rf"\b{re.escape(self.func)}\b", f"{self.func}__b{k}", fn, count=1))
+        text = self.text[:self.b + 1] + "".join(extra) + self.text[self.b + 1:]
+        fd, path = tempfile.mkstemp(suffix=".c", prefix=".tsweep_", dir=self.src.parent)
+        os.close(fd)
+        obj = Path(path + ".o")
+        try:
+            Path(path).write_text(text)
+            err = mwmatch.compile_c(self.version, self.flags, Path(path), obj)
+            fns = {} if err else mwmatch.functions(obj)
+        finally:
+            for q in (Path(path), obj):
+                try:
+                    q.unlink()
+                except OSError:
+                    pass
+        if err:
+            return [self.score(c) for c in cands]
+        for k, c in enumerate(todo):
+            f = fns.get(f"{self.func}__b{k}")
+            self.cache[tuple(c)] = (10 ** 6, None) if f is None else (self._diff(*f), self.variant_text(c))
+        return [self.cache[tuple(c)] for c in cands]
+
     def score(self, decls, tag=0):
         key = tuple(decls)
         if key in self.cache:
@@ -201,6 +244,7 @@ def main():
     ap.add_argument("-j", type=int, default=8)
     ap.add_argument("--out", type=Path)
     ap.add_argument("--top", type=int, default=5)
+    ap.add_argument("--batch", type=int, default=32, help="variants per compile (1 = one compile per variant)")
     args = ap.parse_args()
     sw = Sweep(args.src, args.func)
     rng = random.Random(1)
@@ -213,6 +257,11 @@ def main():
 
     def run(cands):
         cands = list(dict.fromkeys(cands))
+        if args.batch > 1:
+            size = max(1, min(args.batch, -(-len(cands) // args.j)))
+            chunks = [cands[i:i + size] for i in range(0, len(cands), size)]
+            scores = [r[0] for rs in pool.map(sw.score_batch, chunks) for r in rs]
+            return list(zip(cands, scores))
         return list(zip(cands, pool.map(lambda c: sw.score(c)[0], cands)))
 
     rounds = 0
