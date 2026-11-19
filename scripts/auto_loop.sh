@@ -79,13 +79,16 @@ while [ $pass -lt "$MAX" ]; do
   a1=$(count); log "  sibling clones: +$((a1 - start))"
 
   # 2. mechanical draft repairs
-  $PY scripts/lib_remaining.py > $P/remaining.txt 2>/dev/null
-  awk '{print $2}' $P/remaining.txt | grep -E '^[A-Za-z_]' > $P/queue.txt
-  step autofix 7200 $PY scripts/lib_autofix.py $P/queue.txt --jobs 4 --out $P/fix --log $P/autofix.log
-  if ls $P/fix/*.c > /dev/null 2>&1; then
-    step items 1800 $PY scripts/lib_try.py --items $P/fix_items.json $P/fix/*.c
-    [ -s $P/fix_items.json ] && step ins_fix 3600 $PY scripts/func_insert.py $P/fix_items.json --real --jobs 4 \
-      --log $P/ins_fix.log --out $P/ins_fix.json
+  # (AUTOFIX=0 skips it: on 2026-11-19 two 2-hour runs over ~1,000 drafts added nothing)
+  if [ "${AUTOFIX:-1}" = 1 ]; then
+    $PY scripts/lib_remaining.py > $P/remaining.txt 2>/dev/null
+    awk '{print $2}' $P/remaining.txt | grep -E '^[A-Za-z_]' > $P/queue.txt
+    step autofix 7200 $PY scripts/lib_autofix.py $P/queue.txt --jobs 4 --out $P/fix --log $P/autofix.log
+    if ls $P/fix/*.c > /dev/null 2>&1; then
+      step items 1800 $PY scripts/lib_try.py --items $P/fix_items.json $P/fix/*.c
+      [ -s $P/fix_items.json ] && step ins_fix 3600 $PY scripts/func_insert.py $P/fix_items.json --real --jobs 4 \
+        --log $P/ins_fix.log --out $P/ins_fix.json
+    fi
   fi
   a2=$(count); log "  draft repairs: +$((a2 - a1))"
 
