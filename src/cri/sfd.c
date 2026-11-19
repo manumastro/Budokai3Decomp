@@ -23811,7 +23811,120 @@ char *func_00190A00_x00190A00(SfdBufStat_x00190A00 *ring, int mask, SfdDelim_x00
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190B68);
+s32 func_001962A0_x00190B68(u8 *) __asm__("func_001962A0");
+s32 func_00191248_x00190B68(u8 *) __asm__("func_00191248");
+void func_00194768_x00190B68(u8 *) __asm__("func_00194768");
+s32 func_00190820_x00190B68(u8 *) __asm__("func_00190820");
+s32 func_0018B058_x00190B68(u8 *, void *, s32 *) __asm__("func_0018B058");
+void func_00194788_x00190B68(u8 *, s32) __asm__("func_00194788");
+void func_00190E40_x00190B68(u8 *) __asm__("func_00190E40");
+s32 func_0018B840_x00190B68(u8 *) __asm__("func_0018B840");
+s32 func_00190EF8_x00190B68(u8 *, s32) __asm__("func_00190EF8");
+s32 func_0018B8A8_x00190B68(u8 *) __asm__("func_0018B8A8");
+void func_00191120_x00190B68(u8 *, s32) __asm__("func_00191120");
+s32 func_00191200_x00190B68(u8 *, s32, s32) __asm__("func_00191200");
+void func_00190DF0_x00190B68(u8 *, s32 *) __asm__("func_00190DF0");
+s32 func_00191300_x00190B68(u8 *, s32 *, s32, s32) __asm__("func_00191300");
+s32 func_001926F8_x00190B68(u8 *) __asm__("func_001926F8");
+s32 func_00192708_x00190B68(u8 *, s32 *) __asm__("func_00192708");
+s32 func_00192C78_x00190B68(u8 *, s32) __asm__("func_00192C78");
+s32 func_00192DE0_x00190B68(u8 *, s32) __asm__("func_00192DE0");
+s32 func_00193870_x00190B68(u8 *, s32, s32) __asm__("func_00193870");
+s32 func_00190B68_x00190B68(u8 *ply, s32 n, s32 fl, s32 nowait, s32 *out) __asm__("func_00190B68");
+s32 func_00190B68_x00190B68(u8 *ply, s32 n, s32 fl, s32 nowait, s32 *out)
+{
+    s32 ck[4];
+    s32 pic;
+    u8 *q;
+    u8 *t;
+    u8 *s;
+    s32 r;
+    void *k;
+
+    q = ply + 0x94C;
+    *out = 0;
+    t = ply + 0x1C68;
+    k = *(void **)(t + 0x10);
+    s = (u8 *)*(s32 *)(t + 0x8);
+    *(s32 *)(q + 0x24) = 0;
+    if (func_001962A0_x00190B68(ply) == 0) {
+        if (func_00191248_x00190B68(ply) == 1) {
+            func_00194768_x00190B68(ply);
+            return 0;
+        }
+        *(s32 *)(q + 0x24) = 1;
+        return func_00190820_x00190B68(ply);
+    }
+    if (*(s32 *)(s + 0x78) != 0xCC) {
+        fl &= 0xCC;
+    }
+    r = func_0018B058_x00190B68(ply, k, &pic);
+    if (r != 0) {
+        return 0;
+    }
+    if (fl & 0xC8) {
+        func_00194788_x00190B68(ply, 1);
+    }
+    if (fl == 0x80) {
+        func_00190E40_x00190B68(ply);
+        if (func_0018B840_x00190B68(ply)) {
+            if (func_00190EF8_x00190B68(ply, pic) == 0) {
+                *out = 1;
+            }
+            goto end;
+        }
+        if (func_0018B8A8_x00190B68(ply)) {
+            func_00191120_x00190B68(ply, pic);
+            goto ok;
+        }
+    }
+    if (nowait == 0) {
+        if (func_00191200_x00190B68(ply, n, fl)) {
+            func_00194768_x00190B68(ply);
+            goto end;
+        }
+        if (n < 5) {
+            *(s32 *)(q + 0x24) = 1;
+            goto end;
+        }
+    }
+    if (fl & 0x4C) {
+        func_00190DF0_x00190B68(ply, ck);
+        r = func_00191300_x00190B68(ply, ck, pic, (fl & *(s32 *)(s + 0x78)) != 0);
+        if (r != 0) {
+            return r;
+        }
+        if (fl & *(s32 *)(s + 0x78)) {
+            *(s32 *)(s + 0x78) = 0xCC;
+        }
+    } else if (fl & 2) {
+        if (func_001926F8_x00190B68(ply) == 0) {
+            return 0;
+        }
+        func_00190DF0_x00190B68(ply, ck);
+        if (func_00192708_x00190B68(ply, ck)) {
+            r = func_00192C78_x00190B68(ply, pic);
+            if (r == 0) {
+                *out = 1;
+            }
+            goto end;
+        } else {
+            r = func_00192DE0_x00190B68(ply, pic);
+            goto end;
+        }
+    } else {
+        if (fl == 0x80) {
+            goto end;
+        }
+        if (func_00193870_x00190B68(ply, pic, 0xCC) <= 0) {
+            goto end;
+        }
+    }
+ok:
+    *out = 1;
+end:
+    return r;
+}
 s32 func_0018AA80_x00190DF0(u8 *, s32, s32 *) __asm__("func_0018AA80");
 void func_00190DF0_x00190DF0(u8 *arg0, s32 *arg1) __asm__("func_00190DF0");
 void func_00190DF0_x00190DF0(u8 *arg0, s32 *arg1) {
