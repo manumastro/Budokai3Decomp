@@ -36,7 +36,7 @@ s32 func_002CD5F0(s32 arg0, s32 arg1) {
     temp_s2 = func_0021C660();
     temp_s1 = BtlSys_GetSlot(arg0);
     temp_s0 = func_0021C360(arg0);
-    temp_s3 = &D_005C2050 + (arg0 * 4);
+    temp_s3 = (unsigned char **)(((u8 *)&D_005C2050) + (arg0 * 4));
     if (*temp_s3 != NULL) {
         return 0;
     }
@@ -60,7 +60,7 @@ s32 func_002CD5F0(s32 arg0, s32 arg1) {
     *(u8 **)((u8 *)temp_v0 + 0x30) = amTask_Create(&func_002CCFD0, NULL, 0x3A10, 0x1000);
     temp_v0_2 = *(u8 **)((u8 *)temp_v0 + 0x30);
     if (temp_v0_2 == NULL) {
-        amTask_Kill((s32)((void *)(*temp_s3)));
+        amTask_Kill((s32)(*temp_s3));
         *temp_s3 = NULL;
         return 0;
     }

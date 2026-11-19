@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001DFA90.s */
 
 // src/unk/unk_1D5B30.c func_001DFA90 diff diff=56/88
-s32 func_001DFA90(u8 *arg0, s16 arg1) {
+s32 func_001DFA90(Fighter *arg0, s32 arg1) {
     s16 temp_a3;
     s16 temp_a3_2;
     s16 temp_t0;
@@ -21,7 +21,7 @@ s32 func_001DFA90(u8 *arg0, s16 arg1) {
     if (var_a1 <= 0) {
         return 0;
     }
-    temp_v1 = &D_004E0660 + (var_a1 * 0x28);
+    temp_v1 = ((u8 *)&D_004E0660) + (var_a1 * 0x28);
     temp_a3 = *(s16 *)((u8 *)gBattle + 0x7E2);
     if (temp_a3 != 2) {
         if (temp_a3 != 0) {

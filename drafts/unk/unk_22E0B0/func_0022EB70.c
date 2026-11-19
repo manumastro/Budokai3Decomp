@@ -78,7 +78,7 @@ s32 func_0022EB70(u8 *arg0) {
     temp_s7 = *(u8 **)((u8 *)temp_v0 + 0x1B84);
     temp_s4 = temp_v0 + 0x830;
     temp_a1 = *(s32 *)((u8 *)temp_v0 + 0x1B80);
-    temp_v0_2 = (u8 *)(&D_0058BBB0 + (temp_a1 * 0xC0));
+    temp_v0_2 = (unsigned char *)(&D_0058BBB0 + (temp_a1 * 0xC0));
     sp130 = temp_v0_2;
     temp_s0 = *(u8 **)((u8 *)temp_v0_2 + 8);
     temp_fp = *(u8 **)((u8 *)temp_v0_2 + 0xC);

@@ -1,10 +1,10 @@
 /* Draft (not built): func_001FB500 at 0x001FB500, size 0x248, segment unk/unk_1FA3C0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 54 instructions differ
+ * Status: size, 52 instructions differ
  * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x238, original 0x248
  * Original: asm/nonmatchings/unk/unk_1FA3C0/func_001FB500.s */
 
-// src/unk/unk_1FA3C0.c func_001FB500 size diff=54/142
+// src/unk/unk_1FA3C0.c func_001FB500 size diff=52/142
 s32 amDraw3d_Flip(s32 *, s32);
 s32 amDraw3d_SetTexFrame(s32, s32, s32, s32);
 s32 amDraw_SetScissor(s128 *, s32);
@@ -78,17 +78,17 @@ void func_001FB500(u8 *arg0) {
     func_0013E370(arg0 + 0x40, temp_a1, *(s32 *)((u8 *)arg0 + 0xF0), 0);
     D_0046FD44 = 0;
     func_00132DF0(arg0 + 0x40);
-    DrawFlags_Apply(0x13C00728, 0, 0, 0x10800200, 0);
-    func_00133980(0, 0, 0, 0x3F800000);
+    DrawFlags_Apply(0x13C00728, 0, 0, 0x10800200, M2C_ERROR(/* Read from unset register $a4 */));
+    func_00133980(0.0f, 0.0f, 0.0f, 1.0f);
     func_0013E170(*(s32 *)((u8 *)arg0 + 0xF0));
     func_001D44C0(*(s32 *)((u8 *)arg0 + 0xF4));
-    DrawFlags_Apply(0, 0x13C00728, 0, 0, 0);
-    func_00133980(0x3F800000, 0x3F800000, 0x3F800000, 0x3F800000);
+    DrawFlags_Apply(0, 0x13C00728, 0, 0, M2C_ERROR(/* Read from unset register $a4 */));
+    func_00133980(1.0f, 1.0f, 1.0f, 1.0f);
     func_0013B110(1);
     amGs_SetReg32(0, temp_s0);
     *(s32 *)((u8 *)arg0 + 0xF8) = amDraw3d_SetTexFrame(0, D_00470634, 0, 0);
     amDraw3d_Flip(NULL, 0);
     func_00131F00(D_00470638, 0, 0);
-    func_00132DF0((void *)(D_00470640));
+    func_00132DF0((u8 *) D_00470640);
     amDraw_SetScissor(NULL, 0);
 }

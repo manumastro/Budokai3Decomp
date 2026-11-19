@@ -42,7 +42,7 @@ void func_002B5620(u8 *arg0) {
     u8 *var_s5;
 
     var_s0 = arg0;
-    var_s5 = (u8 *)(gHelp);
+    var_s5 = (unsigned char *)(gHelp);
     var_f20 = 0.0f;
     spD0 = D_00455300;
     amDraw_SetScissor(&spD0, 0);

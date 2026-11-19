@@ -34,7 +34,7 @@ void func_00217390(u8 *arg0) {
     case 2:
         temp_a0_2 = *(u8 **)((u8 *)D_0046FDD0 + 0x1A8);
         if (temp_a0_2 != NULL) {
-            amTask_Kill((s32)((void *)(temp_a0_2)));
+            amTask_Kill((s32)(temp_a0_2));
             *(u8 **)((u8 *)D_0046FDD0 + 0x1A8) = NULL;
         }
         func_00215230(-1, 0x400);

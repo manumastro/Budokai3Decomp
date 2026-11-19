@@ -1,7 +1,7 @@
 /* Draft (not built): func_002021C0 at 0x002021C0, size 0x6B4, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); egal implicit conversion from 'int' to 'int *' mwccps2.exe Compiler: @ 563: temp_a2 = *(&D_00526440 + (D_00470668 * 4));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 574: *)&D_0044B860) + (*(u16 *)((u8 *)spF8 + 4) * 0x10))(&spF0, spF4, temp_a2, &spA0);
  * Original: asm/nonmatchings/unk/unk_1FB760/func_002021C0.s */
 
 // src/unk/unk_1FB760.c func_002021C0 cerr diff=-1/0
@@ -113,13 +113,13 @@ loop_57:
             case 3:                                 /* switch 1 */
             case 5:                                 /* switch 1 */
                 if ((var_f1 / 255.0f) <= 0.3f) {
-                    func_00146ED0(&spB0, &spB0, *(f32 *)((u8 *)temp_s3 + 0x58));
+                    func_00146ED0((f32 *)(&spB0), (f32 *)(&spB0), *(f32 *)((u8 *)temp_s3 + 0x58));
                     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
                     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
                     M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
                 } else {
                 default:                            /* switch 1 */
-                    func_00146ED0(&spB0, &spB0, *(f32 *)((u8 *)temp_s3 + 0x54));
+                    func_00146ED0((f32 *)(&spB0), (f32 *)(&spB0), *(f32 *)((u8 *)temp_s3 + 0x54));
                     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
                     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
                     M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
@@ -138,7 +138,7 @@ loop_57:
                     M2C_ERROR(/* unknown instruction: vopmula.xyz ACC, $vf1, $vf2 */);
                     M2C_ERROR(/* unknown instruction: vopmsub.xyz $vf1, $vf2, $vf1 */);
                     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-                    func_00146F30((void *)(&sp90));
+                    func_00146F30((f32 *)(&sp90));
                     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
                     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
                     temp_v0_3 = func_0012EAE0(8) & 0xFF;
@@ -175,7 +175,7 @@ loop_57:
                     func_00146F10(&spB0, &D_0051D9D0, var_f20_2);
                     spB4 += *(f32 *)((u8 *)temp_s3 + 0x64);
                 }
-                func_00146F30((void *)(&spB0));
+                func_00146F30((f32 *)(&spB0));
                 break;
             case 1:                                 /* switch 2 */
                 spB4 = 1.0f;
@@ -198,18 +198,18 @@ loop_57:
             sp104 = &spC0;
             sp108 = &spA0;
             sp10C = &spA0;
-            temp_a2 = *(&D_00526440 + (D_00470668 * 4));
+            temp_a2 = (int *)(*(((u8 *)&D_00526440) + (D_00470668 * 4)));
             D_00470668 += 1;
             if (D_00470668 >= 0x800) {
                 D_00470668 = 0;
             }
             *(s32 **)((u8 *)temp_a2 + 4) = (s32 *) *(s32 **)((u8 *)spF4 + 0x48);
-            *(s32 **)((u8 *)temp_a2 + 0) = **(s32 **)((u8 *)spF4 + 0x48);
-            **(s32 **)((u8 *)spF4 + 0x48) = temp_a2;
+            *(s32 **)((u8 *)temp_a2 + 0) = (int *)(**(s32 **)((u8 *)spF4 + 0x48));
+            **(s32 **)((u8 *)spF4 + 0x48) = (int)(temp_a2);
             *(s32 **)((u8 *)spF4 + 0x48) = temp_a2;
             *(s32 *)((u8 *)spF4 + 0x4C) = (s32) (*(s32 *)((u8 *)spF4 + 0x4C) + 1);
             spFC = temp_a2;
-            *(&D_0044B860 + (*(u16 *)((u8 *)spF8 + 4) * 0x10))(&spF0, spF4, temp_a2, &spA0);
+            *(((u8 *)&D_0044B860) + (*(u16 *)((u8 *)spF8 + 4) * 0x10))(&spF0, spF4, temp_a2, &spA0);
             goto loop_57;
         }
         var_s2 = *(u8 **)((u8 *)var_s2 + 0);

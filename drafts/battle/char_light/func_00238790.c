@@ -1,14 +1,15 @@
 /* Draft (not built): func_00238790 at 0x00238790, size 0x4B4, segment battle/char_light (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 'sp' mwccps2.exe Compiler: 1026: if (*(s32 *)((u8 *)(temp_a1 + sp) + 0x90) != -1) { @ 1007: temp_t1 = (var_s0 * 4) + sp;
+ * Status: size, 177 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x4B0, original 0x4B4
  * Original: asm/nonmatchings/battle/char_light/func_00238790.s */
 
-// src/battle/char_light.c func_00238790 cerr diff=-1/0
+// src/battle/char_light.c func_00238790 size diff=177/300
 extern void func_0022D4B0(s32, s32);
 extern s32 A2d_AllocObj(s32, f32);
 s32 func_00227A30(f32 *, s32, u32, void **);
-void func_00238790(s32 arg0, s32 arg1, s32 arg2, s32 arg3, f32 fparg0) {
+void func_00238790(void *arg0, s32 arg1, s32 arg2, s32 arg3, f32 fparg0) {
+    u8 sp[0x400];
     f32 sp70;
     f32 sp80;
     s32 temp_a0;
@@ -20,8 +21,9 @@ void func_00238790(s32 arg0, s32 arg1, s32 arg2, s32 arg3, f32 fparg0) {
     s32 temp_v1_6;
     s32 var_a2;
     s32 var_s0;
-    s32 var_s0_2;
-    s32 var_s0_3;
+    s32 var_s2;
+    s32 var_s3;
+    s32 var_s4;
     s32 var_t2;
     s32 var_t3;
     u32 temp_a2_2;
@@ -29,7 +31,6 @@ void func_00238790(s32 arg0, s32 arg1, s32 arg2, s32 arg3, f32 fparg0) {
     u8 **temp_a3;
     u8 *temp_a0_2;
     u8 *temp_a0_3;
-    u8 *temp_s1;
     u8 *temp_t1;
     u8 *temp_t1_2;
     u8 *temp_t1_3;
@@ -37,10 +38,14 @@ void func_00238790(s32 arg0, s32 arg1, s32 arg2, s32 arg3, f32 fparg0) {
     u8 *temp_v1_3;
     u8 *temp_v1_4;
     u8 *temp_v1_5;
+    u8 *var_s1;
 
     var_a2 = arg2;
-    temp_s1 = (u8 *)(gBtlSys);
-    if (arg0 != 0) {
+    var_s4 = (int)(arg0);
+    var_s3 = arg1;
+    var_s2 = arg3;
+    var_s1 = (unsigned char *)(gBtlSys);
+    if (var_s4 != 0) {
         var_t3 = 0x64;
         var_t2 = 0;
         if (var_a2 >= 0x3E8) {
@@ -63,29 +68,29 @@ loop_10:
             var_s0 += 1;
             goto loop_10;
         }
-        var_s0_2 = 2;
-        if (arg1 & 1) {
+        var_s0 = 2;
+        if (var_s3 & 1) {
 loop_24:
-            if (var_s0_2 >= 0) {
-                temp_a1 = var_s0_2 * 4;
+            if (var_s0 >= 0) {
+                temp_a1 = var_s0 * 4;
                 if (*(s32 *)((u8 *)(temp_a1 + sp) + 0x90) != -1) {
-                    if (var_s0_2 != 2) {
+                    if (var_s0 != 2) {
                         M2C_ERROR(/* unknown instruction: sqc2 $vf0, ($v0) */);
                         sp80 = -18.0f;
                         func_00227A30(&sp80, temp_a1, 0, 0);
                     }
-                    temp_v1 = *(arg0 + (var_s0_2 * 4));
+                    temp_v1 = (unsigned char *)(*(s32 *)(var_s4 + (var_s0 * 4)));
                     if (temp_v1 != NULL) {
                         *(s32 *)((u8 *)temp_v1 + 4) = (s32) (*(s32 *)((u8 *)temp_v1 + 4) ^ 1);
                         func_00228430(0);
-                        func_0022B900(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 0xE88)) + 0x1C) + ((arg3 + ((arg1 * 3) + 0x34)) * 4)), *(arg0 + (var_s0_2 * 4)), fparg0);
+                        func_0022B900(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)var_s1 + 0xE88)) + 0x1C) + ((var_s2 + ((var_s3 * 3) + 0x34)) * 4)), *(s32 *)(var_s4 + (var_s0 * 4)), fparg0);
                         func_00228410();
                     } else {
-                        *(arg0 + (var_s0_2 * 4)) = A2d_AllocObj(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 0xE88)) + 0x1C) + ((arg3 + ((arg1 * 3) + 0x34)) * 4)), fparg0);
+                        *(s32 *)(var_s4 + (var_s0 * 4)) = A2d_AllocObj(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)var_s1 + 0xE88)) + 0x1C) + ((var_s2 + ((var_s3 * 3) + 0x34)) * 4)), fparg0);
                     }
-                    temp_v1_2 = var_s0_2 * 4;
+                    temp_v1_2 = var_s0 * 4;
                     temp_t1_2 = temp_v1_2 + sp;
-                    temp_a2 = (u8 **)(arg0 + temp_v1_2);
+                    temp_a2 = (unsigned char **)(var_s4 + temp_v1_2);
                     *(f32 *)((u8 *)(*temp_a2) + 0x40) = (f32) (24.0f * (f32) ((s32) *(s32 *)((u8 *)temp_t1_2 + 0x90) % 5));
                     temp_v1_3 = *temp_a2;
                     *(f32 *)((u8 *)temp_v1_3 + 0x48) = (f32) (24.0f + *(f32 *)((u8 *)temp_v1_3 + 0x40));
@@ -93,34 +98,34 @@ loop_24:
                     temp_v1_4 = *temp_a2;
                     *(f32 *)((u8 *)temp_v1_4 + 0x4C) = (f32) (24.0f + *(f32 *)((u8 *)temp_v1_4 + 0x44));
                 } else {
-                    temp_a0 = *(arg0 + temp_a1);
+                    temp_a0 = *(s32 *)(var_s4 + temp_a1);
                     if (temp_a0 != 0) {
                         func_0022D4B0(temp_a0, 1);
-                        *(arg0 + (var_s0_2 * 4)) = 0;
+                        *(s32 *)(var_s4 + (var_s0 * 4)) = 0;
                     }
                 }
-                var_s0_2 -= 1;
+                var_s0 -= 1;
                 goto loop_24;
             }
             return;
         }
-        var_s0_3 = 0;
+        var_s0 = 0;
 loop_38:
-        if (var_s0_3 < 3) {
-            temp_a1_2 = var_s0_3 * 4;
+        if (var_s0 < 3) {
+            temp_a1_2 = var_s0 * 4;
             if (*(s32 *)((u8 *)(temp_a1_2 + sp) + 0x90) != -1) {
-                temp_v1_5 = *(arg0 + temp_a1_2);
+                temp_v1_5 = (unsigned char *)(*(s32 *)(var_s4 + temp_a1_2));
                 if (temp_v1_5 != NULL) {
                     *(s32 *)((u8 *)temp_v1_5 + 4) = (s32) (*(s32 *)((u8 *)temp_v1_5 + 4) ^ 1);
                     func_00228430(0, temp_a1_2);
-                    func_0022B900(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 0xE88)) + 0x1C) + ((arg3 + ((arg1 * 3) + 0x34)) * 4)), *(arg0 + (var_s0_3 * 4)), fparg0);
+                    func_0022B900(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)var_s1 + 0xE88)) + 0x1C) + ((var_s2 + ((var_s3 * 3) + 0x34)) * 4)), *(s32 *)(var_s4 + (var_s0 * 4)), fparg0);
                     func_00228410();
                 } else {
-                    *(arg0 + (var_s0_3 * 4)) = A2d_AllocObj(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 0xE88)) + 0x1C) + ((arg3 + ((arg1 * 3) + 0x34)) * 4)), M2C_BITWISE(f32, temp_a1_2), fparg0);
+                    *(s32 *)(var_s4 + (var_s0 * 4)) = A2d_AllocObj(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)var_s1 + 0xE88)) + 0x1C) + ((var_s2 + ((var_s3 * 3) + 0x34)) * 4)), M2C_BITWISE(f32, temp_a1_2));
                 }
-                temp_v1_6 = var_s0_3 * 4;
+                temp_v1_6 = var_s0 * 4;
                 temp_t1_3 = temp_v1_6 + sp;
-                temp_a3 = (u8 **)(arg0 + temp_v1_6);
+                temp_a3 = (unsigned char **)(var_s4 + temp_v1_6);
                 *(f32 *)((u8 *)(*temp_a3) + 0x40) = (f32) (24.0f * (f32) ((s32) *(s32 *)((u8 *)temp_t1_3 + 0x90) % 5));
                 temp_a0_2 = *temp_a3;
                 *(f32 *)((u8 *)temp_a0_2 + 0x48) = (f32) (24.0f + *(f32 *)((u8 *)temp_a0_2 + 0x40));
@@ -129,19 +134,19 @@ loop_38:
                 *(f32 *)((u8 *)(*temp_a3) + 0x44) = (f32) (24.0f * (f32) temp_a1_3);
                 temp_a0_3 = *temp_a3;
                 *(f32 *)((u8 *)temp_a0_3 + 0x4C) = (f32) (24.0f + *(f32 *)((u8 *)temp_a0_3 + 0x44));
-                if (var_s0_3 != 2) {
+                if (var_s0 != 2) {
                     M2C_ERROR(/* unknown instruction: sqc2 $vf0, ($v0) */);
                     sp70 = 18.0f;
-                    func_00227A30(&sp70, temp_a1_3, temp_a2_2, temp_a3);
+                    func_00227A30((f32 *)(&sp70), (s32)(temp_a1_3), (u32)(temp_a2_2), (void **)(temp_a3));
                 }
             } else {
-                temp_a0_4 = *(arg0 + temp_a1_2);
+                temp_a0_4 = *(s32 *)(var_s4 + temp_a1_2);
                 if (temp_a0_4 != 0) {
                     func_0022D4B0(temp_a0_4, 1);
-                    *(arg0 + (var_s0_3 * 4)) = 0;
+                    *(s32 *)(var_s4 + (var_s0 * 4)) = 0;
                 }
             }
-            var_s0_3 += 1;
+            var_s0 += 1;
             goto loop_38;
         }
     }

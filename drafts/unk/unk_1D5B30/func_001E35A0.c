@@ -21,7 +21,7 @@ s32 func_001E35A0(s32 arg0, s32 arg1) {
     s8 temp_v0;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gBattle);
+    temp_s0 = (unsigned char *)(gBattle);
     temp_v0 = *(s8 *)((u8 *)temp_s0 + 0x8AB9);
     if (temp_v0 == 0) {
         return 0;
@@ -52,7 +52,7 @@ s32 func_001E35A0(s32 arg0, s32 arg1) {
         *(s16 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0x8938)) + 0x1A36) = 0;
         *(s16 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0x8938)) + 0x1A38) = 0;
         *(s16 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0x8938)) + 0x1A34) = 0;
-        func_001E9B00(1, 0x24, 0, 0, 0, 0x3F800000);
+        func_001E9B00(1, 0x24, 0, 0, 0, (void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)(0x3F800000))))))))))))))));
         AdxSlot_Suspend(temp_s0 + ((*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0x8934)) + 0x1350) + 3) << 5) + 0x5C4, 0x6A, 0, -1);
         *(s8 *)((u8 *)temp_s0 + 0x8AB9) = 2;
         /* fallthrough */

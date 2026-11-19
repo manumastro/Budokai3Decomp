@@ -38,7 +38,7 @@ void func_002371C0(u8 *arg0) {
         var_v0 = 0;
     }
     if (var_v0 == 0) {
-        var_v0 = (s32)(func_0029D7F0());
+        var_v0 = (int)(func_0029D7F0());
     }
     if (var_v0 != 0) {
         sp24 = 1.0f;

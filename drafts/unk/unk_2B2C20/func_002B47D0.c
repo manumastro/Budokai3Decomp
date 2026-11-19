@@ -23,16 +23,16 @@ void func_002B47D0(u8 *arg0) {
     u8 *temp_s1;
 
     temp_a3 = *(s32 *)((u8 *)arg0 + 0x30);
-    temp_a1 = (u8 *)(gSklEdit + (temp_a3 * 0x1C8));
+    temp_a1 = (unsigned char *)(gSklEdit + (temp_a3 * 0x1C8));
     temp_s1 = temp_a1 + 0x48;
     if (*(s32 *)((u8 *)temp_a1 + 0x54) == 3) {
-        var_v0 = (s32 *)(&func_002B4680);
+        var_v0 = (int *)(&func_002B4680);
         if (&func_002B4680 == NULL) {
             var_v0 = NULL;
         }
         *(s32 **)((u8 *)arg0 + 0x1C) = var_v0;
         temp_a2 = *(s32 *)((u8 *)arg0 + 0x30);
-        temp_s0 = (u8 **)(gSklEdit + (temp_a2 * 8) + 0x1C);
+        temp_s0 = (unsigned char **)(gSklEdit + (temp_a2 * 8) + 0x1C);
         sprintf(&sp40, &D_0046EB40, temp_a2, temp_a3);
         *temp_s0 = amTask_Create(&func_002B2C20, 0, *(s32 *)((u8 *)gSklEdit + 0x38), 0x200);
         *(s32 *)((u8 *)(*temp_s0) + 0x30) = (s32) *(s32 *)((u8 *)arg0 + 0x30);

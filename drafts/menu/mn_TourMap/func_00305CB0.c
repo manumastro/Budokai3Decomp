@@ -28,7 +28,7 @@ void func_00305CB0(void) {
     u8 *temp_a2_9;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(D_0047097C);
+    temp_s0 = (unsigned char *)(D_0047097C);
     func_002AA3D0();
     temp_a2 = *(u8 **)((u8 *)temp_s0 + 0x70);
     func_002AA340(*(s32 *)((u8 *)temp_s0 + 4), 0, temp_a2, *(s32 *)((u8 *)temp_a2 + 0x50));

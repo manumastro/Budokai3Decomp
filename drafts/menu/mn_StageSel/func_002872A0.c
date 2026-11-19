@@ -1,30 +1,21 @@
-/* Draft (not built): func_002872A0 at 0x002872A0, size 0x610, segment menu/mn_StageSel (asm)
+/* Draft (not built): func_002872A0 at 0x002872A0, size 0x610, segment menu/mn_StageSel (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: uncompiled
- * Made with: m2c -t mipsee-mwcc-c --valid-syntax, not compiled
- * Original: asm/menu/mn_StageSel.s */
+ * Status: size, 273 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x5D0, original 0x610
+ * Original: asm/nonmatchings/menu/mn_StageSel/func_002872A0.s */
 
-M2C_UNK Help_Open(s32, s32);                        /* extern */
-M2C_UNK SoundRpc_Send3(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK); /* extern */
-M2C_UNK SoundRpc_SetVolume(M2C_UNK, M2C_UNK, f32);  /* extern */
-M2C_UNK amModel_SetCurrent(s32, M2C_UNK, u8);       /* extern */
-u32 func_0012EAE0(M2C_UNK);                         /* extern */
-M2C_UNK func_0022D0E0(s32, M2C_UNK);                /* extern */
-s32 func_0022D670(s32, M2C_UNK);                    /* extern */
-M2C_UNK func_00284AA0(void *);                      /* extern */
-M2C_UNK func_00285EF0(void *);                      /* extern */
-M2C_UNK func_002861B0(void *);                      /* extern */
-M2C_UNK func_00286650(void *);                      /* extern */
-M2C_UNK func_00286840(void *);                      /* extern */
-M2C_UNK func_00286DA0(void *, u16);                 /* extern */
-extern M2C_UNK D_00453490;
-extern M2C_UNK D_0046B860;
-extern M2C_UNK D_0046B861;
+// src/menu/mn_StageSel.c func_002872A0 size diff=273/372
+s32 Help_Open(s32, s32);
+s32 SoundRpc_SetVolume(s32, s32, f32);
+u32 func_0012EAE0(s32);
+s32 func_0022D0E0(s32, s32);
+s32 func_0022D670(s32, s32);
+extern s32 D_00453490;
+extern s32 D_0046B860;
+extern s32 D_0046B861;
 extern s32 D_00470238;
-extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
-extern u16 D_00492FCE;
 extern u16 D_00492FD2;
 extern u16 D_00493032;
 extern u16 D_00493086;
@@ -33,16 +24,16 @@ extern u16 D_004930EA;
 extern s8 D_004B4B56;
 extern s8 D_004B4B5B;
 extern f32 D_004E0614;
-extern M2C_UNK func_00287060;
-extern M2C_UNK func_002870D0;
-extern M2C_UNK func_00287110;
-
-void func_002872A0(void *arg0) {
-    M2C_UNK *var_v0_2;
-    M2C_UNK *var_v0_3;
-    M2C_UNK *var_v0_4;
+extern void *D_00470704;
+extern void amModel_SetCurrent();
+extern void SoundRpc_Send3();
+extern char D_00492FCE[];
+extern void func_00287110(void);
+void func_002872A0(u8 *arg0) {
+    s32 *var_v0_2;
+    s32 *var_v0_3;
+    s32 *var_v0_4;
     s16 temp_v1;
-    s32 temp_a0_2;
     s32 temp_a0_3;
     s32 temp_a0_4;
     s32 temp_s0;
@@ -57,21 +48,22 @@ void func_002872A0(void *arg0) {
     u8 temp_v0;
     u8 temp_v1_2;
     u8 var_a2;
-    void *temp_s3;
-    void *var_a1;
+    u8 *temp_a0_2;
+    u8 *temp_s3;
+    u8 *var_a1;
 
     var_s2 = 0;
     var_s1 = 0;
-    temp_s3 = M2C_FIELD(arg0, void **, 0x30);
-    temp_a1 = M2C_FIELD(temp_s3, u16 *, 0x240);
+    temp_s3 = *(u8 **)((u8 *)arg0 + 0x30);
+    temp_a1 = *(u16 *)((u8 *)temp_s3 + 0x240);
     var_s0 = 0;
-    if (M2C_FIELD(temp_s3, u16 *, 0x23E) != temp_a1) {
+    if (*(u16 *)((u8 *)temp_s3 + 0x23E) != temp_a1) {
         func_00286DA0(temp_s3, temp_a1);
     }
-    temp_a1_2 = M2C_FIELD(temp_s3, u16 *, 0x23C);
+    temp_a1_2 = *(u16 *)((u8 *)temp_s3 + 0x23C);
     if (temp_a1_2 & 2) {
         var_s0 = 1 & 0xFF;
-        var_s1 = (0 | D_00492FCE) & 0xFFFF;
+        var_s1 = (0 | *D_00492FCE) & 0xFFFF;
         var_s2 = (0 | ((D_00492FD2 | D_00493032) & 0xFFFF)) & 0xFFFF;
     }
     if (temp_a1_2 & 4) {
@@ -91,11 +83,11 @@ void func_002872A0(void *arg0) {
             SoundRpc_Send3(0, 0, 3, 0);
         }
         func_00286840(temp_s3);
-        M2C_FIELD(temp_s3, s8 *, 0x262) = 4;
-        M2C_FIELD(temp_s3, s8 *, 0x264) = 4;
-        D_004B4B56 = (s8) M2C_FIELD(temp_s3, s16 *, 0x25C);
-        if (M2C_FIELD(temp_s3, s16 *, 0x25C) == 0xC) {
-            M2C_FIELD(temp_s3, s16 *, 0x25C) = (s16) M2C_FIELD((((func_0012EAE0(8) % (u32) (M2C_FIELD(temp_s3, u8 *, 0x261) - 1)) * 2) + temp_s3), s16 *, 0x242);
+        *(s8 *)((u8 *)temp_s3 + 0x262) = 4;
+        *(s8 *)((u8 *)temp_s3 + 0x264) = 4;
+        D_004B4B56 = (s8) *(s16 *)((u8 *)temp_s3 + 0x25C);
+        if (*(s16 *)((u8 *)temp_s3 + 0x25C) == 0xC) {
+            *(s16 *)((u8 *)temp_s3 + 0x25C) = (s16) *(s16 *)((u8 *)(((func_0012EAE0(8) % (u32) (*(u8 *)((u8 *)temp_s3 + 0x261) - 1)) * 2) + temp_s3) + 0x242);
             var_v0 = (s64) (((func_0012EAE0(8) >> 2) & 1) << 0x30) >> 0x30;
         } else {
             var_v0 = 0;
@@ -105,69 +97,69 @@ void func_002872A0(void *arg0) {
                 var_v0 = 1;
             }
         }
-        var_v0_2 = &func_002870D0;
-        D_004B4B5B = (s8) *((((s64) (var_v0 << 0x30) >> 0x30) * 2) + (&D_00453490 + (M2C_FIELD(temp_s3, s16 *, 0x25C) * 4)));
-        M2C_FIELD(M2C_FIELD(temp_s3, void **, 0x230), s16 *, 0x34) = -1;
-        M2C_FIELD(temp_s3, s8 *, 0x263) = 0;
-        M2C_FIELD(temp_s3, s32 *, 0x28C) = 0x42700000;
+        var_v0_2 = (int *)(&func_002870D0);
+        D_004B4B5B = (s8) *((((s64) (var_v0 << 0x30) >> 0x30) * 2) + (&D_00453490 + (*(s16 *)((u8 *)temp_s3 + 0x25C) * 4)));
+        *(s16 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x230)) + 0x34) = -1;
+        *(s8 *)((u8 *)temp_s3 + 0x263) = 0;
+        *(s32 *)((u8 *)temp_s3 + 0x28C) = 0x42700000;
         if (&func_002870D0 == NULL) {
             var_v0_2 = NULL;
         }
-        M2C_FIELD(arg0, M2C_UNK **, 0x1C) = var_v0_2;
+        *(s32 **)((u8 *)arg0 + 0x1C) = var_v0_2;
     } else if (temp_s0 & 0x1000) {
         SoundRpc_SetVolume(0, 0, D_004E0614);
         if (!(D_004E0614 <= 0.0f)) {
             SoundRpc_Send3(0, 0, 5, 0);
         }
         func_00286650(temp_s3);
-        M2C_FIELD(temp_s3, s32 *, 0x28C) = 0x42700000;
-        var_v0_3 = &func_00287060;
-        M2C_FIELD(temp_s3, s8 *, 0x264) = 5;
+        *(s32 *)((u8 *)temp_s3 + 0x28C) = 0x42700000;
+        var_v0_3 = (int *)(&func_00287060);
+        *(s8 *)((u8 *)temp_s3 + 0x264) = 5;
         if (&func_00287060 == NULL) {
             var_v0_3 = NULL;
         }
-        M2C_FIELD(arg0, M2C_UNK **, 0x1C) = var_v0_3;
-    } else if ((temp_s0 & 0x8000) && (M2C_FIELD(temp_s3, s16 *, 0x25C) != 0xC)) {
+        *(s32 **)((u8 *)arg0 + 0x1C) = var_v0_3;
+    } else if ((temp_s0 & 0x8000) && (*(s16 *)((u8 *)temp_s3 + 0x25C) != 0xC)) {
         SoundRpc_SetVolume(1, 0, D_004E0614);
         if (!(D_004E0614 <= 0.0f)) {
             SoundRpc_Send3(1, 0, 0xE, 0);
         }
-        temp_a0 = M2C_FIELD(temp_s3, u8 *, 0x261);
+        temp_a0 = *(u8 *)((u8 *)temp_s3 + 0x261);
         var_a2 = 0;
         if ((s32) temp_a0 > 0) {
             var_a1 = temp_s3;
 loop_33:
-            if (M2C_FIELD(var_a1, s16 *, 0x4C) == 0xC) {
-                M2C_FIELD(temp_s3, s8 *, 0x263) = 0;
-                M2C_FIELD(temp_s3, u8 *, 0x260) = var_a2;
-                M2C_FIELD(temp_s3, s16 *, 0x25C) = 0xC;
-                M2C_FIELD(temp_s3, s32 *, 0x270) = (s32) M2C_FIELD(((var_a2 * 0xC) + temp_s3), s32 *, 0x48);
-                M2C_FIELD(temp_s3, s32 *, 0x26C) = (s32) M2C_FIELD(temp_s3, s32 *, 0x270);
-                M2C_FIELD(temp_s3, s32 *, 0x274) = 0;
-                M2C_FIELD(temp_s3, s32 *, 0x27C) = 0;
-                M2C_FIELD(temp_s3, s8 *, 0x262) = 2;
-                M2C_FIELD(temp_s3, s8 *, 0x264) = 2;
-                M2C_FIELD(M2C_FIELD(temp_s3, void **, 0x230), s16 *, 0x34) = (s16) M2C_FIELD(temp_s3, s16 *, 0x25C);
-                M2C_FIELD(temp_s3, s8 *, 0x263) = 0;
-                temp_v1 = M2C_FIELD(temp_s3, s16 *, 0x25C);
-                if (M2C_FIELD(temp_s3, s16 *, 0x25E) != temp_v1) {
-                    M2C_FIELD(temp_s3, s16 *, 0x25E) = temp_v1;
-                    temp_a0_2 = M2C_FIELD(temp_s3, s32 *, 4);
+            if (*(s16 *)((u8 *)var_a1 + 0x4C) == 0xC) {
+                *(s8 *)((u8 *)temp_s3 + 0x263) = 0;
+                *(u8 *)((u8 *)temp_s3 + 0x260) = var_a2;
+                *(s16 *)((u8 *)temp_s3 + 0x25C) = 0xC;
+                *(s32 *)((u8 *)temp_s3 + 0x270) = (s32) *(s32 *)((u8 *)((var_a2 * 0xC) + temp_s3) + 0x48);
+                *(s32 *)((u8 *)temp_s3 + 0x26C) = (s32) *(s32 *)((u8 *)temp_s3 + 0x270);
+                *(s32 *)((u8 *)temp_s3 + 0x274) = 0;
+                *(s32 *)((u8 *)temp_s3 + 0x27C) = 0;
+                *(s8 *)((u8 *)temp_s3 + 0x262) = 2;
+                *(s8 *)((u8 *)temp_s3 + 0x264) = 2;
+                *(s16 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x230)) + 0x34) = (s16) *(s16 *)((u8 *)temp_s3 + 0x25C);
+                *(s8 *)((u8 *)temp_s3 + 0x263) = 0;
+                temp_v1 = *(s16 *)((u8 *)temp_s3 + 0x25C);
+                if (*(s16 *)((u8 *)temp_s3 + 0x25E) != temp_v1) {
+                    *(s16 *)((u8 *)temp_s3 + 0x25E) = temp_v1;
+                    temp_a0_2 = *(u8 **)((u8 *)temp_s3 + 4);
                     D_00470704 = temp_a0_2;
                     D_0047070C = 0x7000;
                     D_00470708 = 0;
                     amModel_SetCurrent(temp_a0_2, 0x7000, var_a2);
                     D_00470238 = 0;
-                    temp_a0_3 = M2C_FIELD(temp_s3, s32 *, 0x18);
+                    temp_a0_3 = *(s32 *)((u8 *)temp_s3 + 0x18);
                     if (temp_a0_3 != 0) {
                         func_0022D0E0(temp_a0_3, 1);
                     }
-                    M2C_FIELD(temp_s3, s32 *, 0x18) = func_0022D670(*(M2C_FIELD(M2C_FIELD(temp_s3, void **, 0), s32 *, 0x1C) + (*(&D_0046B860 + (M2C_FIELD(temp_s3, s16 *, 0x25C) * 2)) * 4)), 0);
-                    temp_a0_4 = M2C_FIELD(temp_s3, s32 *, 0x28);
+                    *(s32 *)((u8 *)temp_s3 + 0x18) = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0)) + 0x1C) + (*(&D_0046B860 + (*(s16 *)((u8 *)temp_s3 + 0x25C) * 2)) * 4)), 0);
+                    temp_a0_4 = *(s32 *)((u8 *)temp_s3 + 0x28);
                     if (temp_a0_4 != 0) {
                         func_0022D0E0(temp_a0_4, 1);
                     }
-                    M2C_FIELD(temp_s3, s32 *, 0x28) = func_0022D670(*(M2C_FIELD(M2C_FIELD(temp_s3, void **, 0), s32 *, 0x1C) + (*(&D_0046B861 + (M2C_FIELD(temp_s3, s16 *, 0x25C) * 2)) * 4)), 0);
+                    *(s32 *)((u8 *)temp_s3 + 0x28) = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0)) + 0x1C) + (*(&D_0046B861 + (*(s16 *)((u8 *)temp_s3 + 0x25C) * 2)) * 4)), 0);
                 }
             } else {
                 var_a2 += 1;
@@ -187,38 +179,38 @@ loop_33:
                 SoundRpc_Send3(1, 0, 0xE, 0);
             }
             if (temp_s0_2 & 0x20) {
-                temp_v1_2 = M2C_FIELD(temp_s3, u8 *, 0x260);
-                if ((s32) temp_v1_2 < (M2C_FIELD(temp_s3, u8 *, 0x261) - 1)) {
-                    M2C_FIELD(temp_s3, u8 *, 0x260) = (u8) (temp_v1_2 + 1);
+                temp_v1_2 = *(u8 *)((u8 *)temp_s3 + 0x260);
+                if ((s32) temp_v1_2 < (*(u8 *)((u8 *)temp_s3 + 0x261) - 1)) {
+                    *(u8 *)((u8 *)temp_s3 + 0x260) = (u8) (temp_v1_2 + 1);
                 } else {
-                    M2C_FIELD(temp_s3, u8 *, 0x260) = 0U;
+                    *(u8 *)((u8 *)temp_s3 + 0x260) = 0U;
                 }
-                M2C_FIELD(temp_s3, s32 *, 0x274) = (s32) M2C_FIELD(temp_s3, s32 *, 0x278);
+                *(s32 *)((u8 *)temp_s3 + 0x274) = (s32) *(s32 *)((u8 *)temp_s3 + 0x278);
             } else if (temp_s0_2 & 0x80) {
-                temp_v0 = M2C_FIELD(temp_s3, u8 *, 0x260);
+                temp_v0 = *(u8 *)((u8 *)temp_s3 + 0x260);
                 if ((s32) temp_v0 > 0) {
-                    M2C_FIELD(temp_s3, u8 *, 0x260) = (u8) (temp_v0 - 1);
+                    *(u8 *)((u8 *)temp_s3 + 0x260) = (u8) (temp_v0 - 1);
                 } else {
-                    M2C_FIELD(temp_s3, u8 *, 0x260) = (u8) (M2C_FIELD(temp_s3, u8 *, 0x261) - 1);
+                    *(u8 *)((u8 *)temp_s3 + 0x260) = (u8) (*(u8 *)((u8 *)temp_s3 + 0x261) - 1);
                 }
-                M2C_FIELD(temp_s3, s32 *, 0x274) = (s32) -M2C_FIELD(temp_s3, s32 *, 0x278);
+                *(s32 *)((u8 *)temp_s3 + 0x274) = (s32) -*(s32 *)((u8 *)temp_s3 + 0x278);
             }
-            M2C_FIELD(temp_s3, s8 *, 0x263) = 0;
-            var_v0_4 = &func_00287110;
-            M2C_FIELD(temp_s3, s16 *, 0x25C) = (s16) M2C_FIELD(((M2C_FIELD(temp_s3, u8 *, 0x260) * 0xC) + temp_s3), s16 *, 0x4C);
-            M2C_FIELD(temp_s3, s32 *, 0x270) = (s32) M2C_FIELD(((M2C_FIELD(temp_s3, u8 *, 0x260) * 0xC) + temp_s3), s32 *, 0x48);
-            M2C_FIELD(temp_s3, s32 *, 0x27C) = 0x41400000;
-            M2C_FIELD(temp_s3, s8 *, 0x262) = 3;
-            M2C_FIELD(temp_s3, s8 *, 0x264) = 3;
+            *(s8 *)((u8 *)temp_s3 + 0x263) = 0;
+            var_v0_4 = (int *)(&func_00287110);
+            *(s16 *)((u8 *)temp_s3 + 0x25C) = (s16) *(s16 *)((u8 *)((*(u8 *)((u8 *)temp_s3 + 0x260) * 0xC) + temp_s3) + 0x4C);
+            *(s32 *)((u8 *)temp_s3 + 0x270) = (s32) *(s32 *)((u8 *)((*(u8 *)((u8 *)temp_s3 + 0x260) * 0xC) + temp_s3) + 0x48);
+            *(s32 *)((u8 *)temp_s3 + 0x27C) = 0x41400000;
+            *(s8 *)((u8 *)temp_s3 + 0x262) = 3;
+            *(s8 *)((u8 *)temp_s3 + 0x264) = 3;
             if (&func_00287110 == NULL) {
                 var_v0_4 = NULL;
             }
-            M2C_FIELD(arg0, M2C_UNK **, 0x1C) = var_v0_4;
-            M2C_FIELD(M2C_FIELD(temp_s3, void **, 0x230), s16 *, 0x34) = -1;
-            M2C_FIELD(temp_s3, s8 *, 0x263) = 0;
+            *(s32 **)((u8 *)arg0 + 0x1C) = var_v0_4;
+            *(s16 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x230)) + 0x34) = -1;
+            *(s8 *)((u8 *)temp_s3 + 0x263) = 0;
         }
     }
-    func_00284AA0(temp_s3);
+    func_00284AA0((s32)(temp_s3));
     func_002861B0(temp_s3);
-    func_00285EF0(temp_s3);
+    func_00285EF0((s32)(temp_s3));
 }

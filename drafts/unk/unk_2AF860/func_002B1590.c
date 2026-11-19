@@ -30,7 +30,7 @@ block_3:
         goto block_7;
     }
 loop_5:
-    var_t0 += *(u8 *)((u8 *)(&D_004E0660 + (*(s32 *)((u8 *)var_t1 + 4) * 0x28)) + 8) & 7;
+    var_t0 += *(u8 *)((u8 *)(((u8 *)&D_004E0660) + (*(s32 *)((u8 *)var_t1 + 4) * 0x28)) + 8) & 7;
     if (var_t0 == *(s32 *)((u8 *)arg0 + 0x20)) {
         goto block_7;
     }
@@ -64,7 +64,7 @@ loop_13:
     var_t1_2 += 1;
     temp_v1 = temp_a2_2 * 4;
     var_t3 += 4;
-    var_t2 += *(u8 *)((u8 *)(&D_004E0660 + ((temp_v1 + temp_a2_2) * 8)) + 8) & 7;
+    var_t2 += *(u8 *)((u8 *)(((u8 *)&D_004E0660) + ((temp_v1 + temp_a2_2) * 8)) + 8) & 7;
     if (var_t1_2 < temp_t0) {
         goto loop_13;
     }

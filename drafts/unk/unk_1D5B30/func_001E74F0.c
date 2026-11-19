@@ -1,7 +1,7 @@
 /* Draft (not built): func_001E74F0 at 0x001E74F0, size 0x6E4, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ersion from 'int' to 'void *' mwccps2.exe Compiler: @ 4502: func_001D9C40(temp_s2, 1, *(s16 *)((u8 *)var_s0_2 + 0x1DE));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); o 'void *' mwccps2.exe Compiler: @ 4502: func_001D9C40(temp_s2, 1,(struct Fighter *)(*(s16 *)((u8 *)var_s0_2 + 0x1DE)));
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001E74F0.s */
 
 // src/unk/unk_1D5B30.c func_001E74F0 cerr diff=-1/0
@@ -51,7 +51,7 @@ void func_001E74F0(u8 *arg0) {
     u8 *var_s0_3;
     u8 *var_s0_4;
 
-    temp_s3 = (u8 *)(gBattle);
+    temp_s3 = (unsigned char *)(gBattle);
     if (*(s8 *)((u8 *)arg0 + 0x66C) == 0) {
         temp_s2 = *(u8 **)((u8 *)arg0 + 0x568);
         temp_s0 = *(u8 ****)((u8 *)arg0 + 0x538);
@@ -166,7 +166,7 @@ block_37:
         if (*(s16 *)((u8 *)temp_s1 + 0x1DC) > 0) {
             var_s0_2 = temp_s1;
             do {
-                func_001D9C40(temp_s2, 1, *(s16 *)((u8 *)var_s0_2 + 0x1DE));
+                func_001D9C40(temp_s2, 1,(struct Fighter *)(*(s16 *)((u8 *)var_s0_2 + 0x1DE)));
                 var_s3_2 += 1;
                 var_s0_2 += 2;
             } while (var_s3_2 < *(s16 *)((u8 *)temp_s1 + 0x1DC));
@@ -175,7 +175,7 @@ block_37:
         if (*(s16 *)((u8 *)temp_s1 + 0x1EC) > 0) {
             var_s0_3 = temp_s1;
             do {
-                func_001D9C40(temp_s2, *(s32 *)((u8 *)temp_s2 + 0x1350) + 2, *(s16 *)((u8 *)var_s0_3 + 0x1EE));
+                func_001D9C40(temp_s2, *(s32 *)((u8 *)temp_s2 + 0x1350) + 2,(struct Fighter *)(*(s16 *)((u8 *)var_s0_3 + 0x1EE)));
                 var_s3_3 += 1;
                 var_s0_3 += 2;
             } while (var_s3_3 < *(s16 *)((u8 *)temp_s1 + 0x1EC));
@@ -184,7 +184,7 @@ block_37:
             func_001D9EB0(temp_s2, *(s16 *)((u8 *)temp_s1 + 0x1DA));
         }
         if ((*(s16 *)((u8 *)temp_s1 + 0x23C) != 0) && (*(s16 *)((u8 *)gBattle + 0x8944) == 0)) {
-            func_001D9D20(temp_s2, *(s16 *)((u8 *)temp_s1 + 0x23E));
+            func_001D9D20(temp_s2,(struct Fighter *)(*(s16 *)((u8 *)temp_s1 + 0x23E)));
         }
         var_s3_4 = 0;
         if (*(s16 *)((u8 *)temp_s1 + 0x1FC) > 0) {
@@ -193,12 +193,12 @@ block_37:
             sp7C = 0;
 loop_75:
             if (var_s3_4 < *(s16 *)((u8 *)temp_s1 + 0x1FC)) {
-                func_002470B0(*(s16 *)((u8 *)var_s0_4 + 0x1FE), (s64) sp78);
+                func_002470B0((s32)(*(s16 *)((u8 *)var_s0_4 + 0x1FE)), (s64) sp78);
                 temp_v1_5 = *(s16 *)((u8 *)temp_s2 + 0xCAC);
                 if ((temp_v1_5 == 0xF) || (temp_v1_5 == 0x1D) || (temp_v1_5 == 0x32)) {
                     temp_a1 = *(s16 *)((u8 *)temp_s2 + 0x1A58);
                     if ((temp_a1 > 0) && (*(s16 *)((u8 *)temp_s2 + 0x1A5A) == 0)) {
-                        func_001DF830(temp_s2, temp_a1);
+                        func_001DF830(temp_s2,(struct Fighter *)(temp_a1));
                         *(s16 *)((u8 *)temp_s2 + 0x1A5A) = 1;
                     }
                 }

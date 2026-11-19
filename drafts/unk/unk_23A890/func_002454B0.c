@@ -46,7 +46,7 @@ void func_002454B0(void) {
             *(s16 *)((u8 *)temp_s2 + 0x36) = 0;
             temp_a0_3 = *(u8 **)((u8 *)temp_s2 + 0x30);
             if (temp_a0_3 != NULL) {
-                Obj_ResetF38((s32)((void *)(temp_a0_3)));
+                Obj_ResetF38((s32)(temp_a0_3));
                 *(u8 **)((u8 *)temp_s2 + 0x30) = NULL;
             }
         }
@@ -61,7 +61,7 @@ void func_002454B0(void) {
         if (var_v1 == 0) {
             temp_a0_4 = *(u8 **)((u8 *)temp_s2 + 0x30);
             if (temp_a0_4 != NULL) {
-                func_00208F70((s32)((void *)(temp_a0_4)));
+                func_00208F70((s32)(temp_a0_4));
                 if (*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 0x30)) + 0x38) < 0) {
                     *(u8 **)((u8 *)temp_s2 + 0x30) = NULL;
                 }

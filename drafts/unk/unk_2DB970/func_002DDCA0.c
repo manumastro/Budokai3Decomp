@@ -1,12 +1,13 @@
 /* Draft (not built): func_002DDCA0 at 0x002DDCA0, size 0x94, segment unk/unk_2DB970 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); efined identifier 'sp' @ 87: if (!(temp_f1 < *(f32 *)((u8 *)((*(s32 *)((u8 *)gOptionWork + 0x378) * 4) + sp) + 0x10))) {
+ * Status: diff, 33 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/unk/unk_2DB970/func_002DDCA0.s */
 
-// src/unk/unk_2DB970.c func_002DDCA0 cerr diff=-1/0
+// src/unk/unk_2DB970.c func_002DDCA0 diff diff=33/37
 extern s32 D_00456B80;
 void func_002DDCA0(void) {
+    u8 sp[0x400];
     s32 sp10;
     f32 temp_f1;
     f32 var_f1;

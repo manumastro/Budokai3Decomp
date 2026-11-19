@@ -66,9 +66,9 @@ void func_002016F0(u8 *arg0) {
     goto loop_3;
 block_2:
     func_00137920(var_s1 + 0x10, var_s1 + 0x30, var_s1 + 0x20, var_s1 + 0x40);
-    var_s1 = (s32 *)(*var_s1);
+    var_s1 = (int *)(*var_s1);
 loop_3:
-    if (var_s1 != temp_s0) {
+    if ((s32)(var_s1) != (s32)(temp_s0)) {
         goto block_2;
     }
     amDraw_FlushPacket();
@@ -111,7 +111,7 @@ block_7:
     amDraw_ClosePacket(-1, 0);
     var_s1 = *(s32 **)((u8 *)var_s1 + 0);
 loop_8:
-    if (var_s1 != temp_s0) {
+    if ((s32)(var_s1) != (s32)(temp_s0)) {
         goto block_7;
     }
     amDraw_FlushPacket();
@@ -199,7 +199,7 @@ loop_21:
     amDraw_ClosePacket(-1, temp_a1);
     var_s1 = *(s32 **)((u8 *)var_s1 + 0);
 loop_23:
-    if (var_s1 != temp_s0) {
+    if ((s32)(var_s1) != (s32)(temp_s0)) {
         goto block_13;
     }
     amDraw_FlushPacket();

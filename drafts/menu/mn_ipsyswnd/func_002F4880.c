@@ -55,7 +55,7 @@ void func_002F4880(u8 *arg0) {
 block_3:
         temp_s0_2 = gInputName;
         temp_a0 = *(u8 **)((u8 *)temp_s0_2 + 0x10);
-        D_00470704 = (s32)(temp_a0);
+        D_00470704 = (int)(temp_a0);
         D_0047070C = 0x5000;
         D_00470708 = 0;
         amModel_SetCurrent((s32)(temp_a0), 0x5000);
@@ -81,10 +81,61 @@ block_3:
         if (!(D_004E0614 <= 0.0f)) {
             SoundRpc_Send3(0, 0, 0x15, 0);
         }
-        var_v1 = (s32 *)(&func_002F4780);
+        var_v1 = (int *)(&func_002F4780);
         if (&func_002F4780 == NULL) {
             var_v1 = NULL;
         }
         *(s32 **)((u8 *)arg0 + 0x1C) = var_v1;
     }
 }
+
+/* Similar function already in C: func_002F2350 (src/menu/mn_InputPass.c), similarity 0.75.
+ * It is the template below (not built). */
+#if 0
+void func_002F2350(Task *a0) {
+    u8 *s2;
+    u8 *s1;
+    u8 *s0;
+    s32 v;
+
+    s2 = (u8 *)a0;
+    s0 = (u8 *)gInputName;
+    s1 = *(u8 **)((u8 *)a0 + 0x30);
+    if (*(s32 *)(s0 + 0x14) == 0) {
+        if (*(s16 *)(*(u8 **)(s0 + 0x8) + 0x4) != 3) {
+            return;
+        }
+        {
+            *(s32 *)(s0 + 0xC) = *(s32 *)(*(u8 **)s0 + 0x54);
+            *(s32 *)(*(u8 **)s0 + 0x54) = 0;
+            amCdFs_Close(*(void **)s0, 0);
+            *(s32 *)s0 = 0;
+            *(s32 *)(s0 + 0x10) = *(s32 *)(*(u8 **)(s0 + 0x4) + 0x54);
+            *(s32 *)(*(u8 **)(s0 + 0x4) + 0x54) = 0;
+            amCdFs_Close(*(void **)(s0 + 0x4), 0);
+            *(s32 *)(s0 + 0x4) = 0;
+            *(s32 *)(s0 + 0x14) = *(s32 *)(*(u8 **)(s0 + 0x8) + 0x54);
+            *(s32 *)(*(u8 **)(s0 + 0x8) + 0x54) = 0;
+            amCdFs_Close(*(void **)(s0 + 0x8), 0);
+            *(s32 *)(s0 + 0x8) = 0;
+            func_0022E0B0(*(s32 *)(s0 + 0xC));
+            amFile_Load(*(s32 *)(s0 + 0x10));
+            amFile_Load(*(s32 *)(s0 + 0x14));
+        }
+    }
+    s0 = (u8 *)gInputName;
+    v = *(s32 *)(s0 + 0x10);
+    D_00470704 = v;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x5000);
+    D_00470238 = 0;
+    *(void **)s1 = func_0022D860(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x14)));
+    *(u8 *)(s1 + 0x170) = 1;
+    *(f32 *)(s1 + 0x118) = 30.0f;
+    *(s16 *)(s1 + 0x124) = 0x21;
+    func_002F0B00(s1);
+    func_002F0870((u32 *)s1);
+    *(void **)(s2 + 0x1C) = ((void *)func_002F21B0 == 0) ? 0 : (void *)func_002F21B0;
+}
+#endif

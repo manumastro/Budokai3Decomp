@@ -1,17 +1,18 @@
 /* Draft (not built): func_00271AF0 at 0x00271AF0, size 0x890, segment menu/ess_list (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); )var_a2 + 0x64) + (*temp_a0_3 * 4)) = temp_a3_3; @ 109: *(*(s32 *)((u8 *)var_a2 + 0x64) + (*temp_a0_3 * 4)) = temp_a3_3;
+ * Status: size, 262 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x904, original 0x890
  * Original: asm/nonmatchings/menu/ess_list/func_00271AF0.s */
 
-// src/menu/ess_list.c func_00271AF0 cerr diff=-1/0
-s32 Help_Open(s32, s32, void *, s32);
+// src/menu/ess_list.c func_00271AF0 size diff=262/577
+void func_00272380(u8 *a0);
+s32 Help_Open(s32, s32, s32, s32);
 s32 SklSheet_SetIndex(s32);
 s32 SoundRpc_SetVolume(s32, s32, u16, s32, f32);
 s32 func_0026FF30();
 s32 func_00270020();
 s32 func_00283D00(s32, s16, s32, s32);
-s32 func_002D2370(s32, s32, void *, void *);
+s32 func_002D2370(s32, s32, s32, void *);
 extern u16 D_00492FD2;
 extern u16 D_00493032;
 extern u16 D_00493086;
@@ -24,7 +25,6 @@ extern s32 func_00271A20;
 extern s32 func_00271A70;
 extern void SoundRpc_Send3();
 extern char D_00492FCE[];
-extern void func_00272380(void);
 void func_00271AF0(u8 *arg0) {
     s32 *var_v1;
     s32 *var_v1_10;
@@ -78,7 +78,7 @@ void func_00271AF0(u8 *arg0) {
             SoundRpc_Send3(0, 0, 5, 0);
         }
         *(s32 *)((u8 *)arg0 + 0x30) = 0x3C;
-        var_v1 = (s32 *)(&func_00272380);
+        var_v1 = (int *)(&func_00272380);
         *(s32 *)((u8 *)D_004707FC + 0x74) = 1;
         *(s32 *)((u8 *)D_004707FC + 0x7C) = 0;
         if (&func_00272380 == NULL) {
@@ -90,7 +90,7 @@ void func_00271AF0(u8 *arg0) {
     if (temp_a0 & 0x4000) {
         var_a2 = (u16) D_004707FC;
         if (*(s32 *)((u8 *)var_a2 + 0x40) == 1) {
-            temp_v1 = (u8 *)(var_a2 + ((*(s32 *)((u8 *)var_a2 + 0x48) + 1) * 8));
+            temp_v1 = (unsigned char *)(var_a2 + ((*(s32 *)((u8 *)var_a2 + 0x48) + 1) * 8));
             temp_a0_2 = *(u8 *)((u8 *)temp_v1 + 0x763);
             temp_a3_2 = temp_v1 + 0x75C;
             if (temp_a0_2 == 0) {
@@ -98,7 +98,7 @@ void func_00271AF0(u8 *arg0) {
                 temp_a0_3 = *(s32 **)((u8 *)var_a2 + 0x68);
                 var_s0_2 = 0;
                 if (*(s32 *)((u8 *)var_a2 + 0x70) == 0) {
-                    *(*(s32 *)((u8 *)var_a2 + 0x64) + (*temp_a0_3 * 4)) = temp_a3_3;
+                    *(s32 *)(*(s32 *)((u8 *)var_a2 + 0x64) + (*temp_a0_3 * 4)) = temp_a3_3;
                     temp_v0 = *temp_a0_3 + 1;
                     *temp_a0_3 = temp_v0;
                     if (temp_v0 >= 4) {
@@ -107,18 +107,18 @@ void func_00271AF0(u8 *arg0) {
                     }
                 } else {
                     var_s0_2 = 1;
-                    *(*(s32 *)((u8 *)var_a2 + 0x64) + (*temp_a0_3 * 4)) = temp_a3_3;
+                    *(s32 *)(*(s32 *)((u8 *)var_a2 + 0x64) + (*temp_a0_3 * 4)) = temp_a3_3;
                 }
                 SoundRpc_SetVolume(0, 0, var_a2, temp_a3_3, D_004E0614);
                 if (!(D_004E0614 <= 0.0f)) {
                     SoundRpc_Send3(0, 0, 0x10, 0);
                 }
                 if (var_s0_2 != 0) {
-                    SoundRpc_SetVolume(0, 0, M2C_BITWISE(u16, D_004E0614));
+                    SoundRpc_SetVolume(0, 0, M2C_BITWISE(u16, D_004E0614), 0, 0);
                     if (!(D_004E0614 <= 0.0f)) {
                         SoundRpc_Send3(0, 0, 5, 0);
                     }
-                    var_v1_2 = (s32 *)(&func_00272380);
+                    var_v1_2 = (int *)(&func_00272380);
                     *(s32 *)((u8 *)D_004707FC + 0x74) = 1;
                     *(s32 *)((u8 *)D_004707FC + 0x7C) = 0;
                     if (&func_00272380 == NULL) {
@@ -127,21 +127,21 @@ void func_00271AF0(u8 *arg0) {
                     *(s32 **)((u8 *)arg0 + 0x1C) = var_v1_2;
                 }
             } else if (temp_a0_2 & 1) {
-                func_002D2370(2, 1, (u8 *) var_a2, temp_a3_2);
+                func_002D2370(2, 1, (s32) var_a2, temp_a3_2);
                 var_v1_3 = &func_002719D0;
                 if (&func_002719D0 == NULL) {
                     var_v1_3 = NULL;
                 }
                 *(s32 **)((u8 *)arg0 + 0x1C) = var_v1_3;
             } else if (temp_a0_2 & 2) {
-                func_002D2370(3, 1, (u8 *) var_a2, temp_a3_2);
+                func_002D2370(3, 1, (s32) var_a2, temp_a3_2);
                 var_v1_4 = &func_002719D0;
                 if (&func_002719D0 == NULL) {
                     var_v1_4 = NULL;
                 }
                 *(s32 **)((u8 *)arg0 + 0x1C) = var_v1_4;
             } else if (temp_a0_2 & 4) {
-                func_002D2370(4, 1, (u8 *) var_a2, temp_a3_2);
+                func_002D2370(4, 1, (s32) var_a2, temp_a3_2);
                 var_v1_5 = &func_002719D0;
                 if (&func_002719D0 == NULL) {
                     var_v1_5 = NULL;
@@ -177,17 +177,17 @@ void func_00271AF0(u8 *arg0) {
         } else {
             var_a0 = temp_a0_4 | (0x800000 << 0x20);
         }
-        Help_Open(var_a0, 3, (u8 *) var_a2, temp_a3);
+        Help_Open(var_a0, 3, (s32) var_a2, temp_a3);
         var_s0 = 0;
     }
     if ((var_s0 & 0x800) && (func_00270020() != 0)) {
-        SoundRpc_SetVolume(0, 0, M2C_BITWISE(u16, D_004E0614));
+        SoundRpc_SetVolume(0, 0, M2C_BITWISE(u16, D_004E0614), 0, 0);
         if (!(D_004E0614 <= 0.0f)) {
             SoundRpc_Send3(0, 0, 2, 0);
         }
     }
     if ((var_s0 & 0x400) && (func_0026FF30() != 0)) {
-        SoundRpc_SetVolume(0, 0, M2C_BITWISE(u16, D_004E0614));
+        SoundRpc_SetVolume(0, 0, M2C_BITWISE(u16, D_004E0614), 0, 0);
         if (!(D_004E0614 <= 0.0f)) {
             SoundRpc_Send3(0, 0, 2, 0);
         }
@@ -222,7 +222,7 @@ void func_00271AF0(u8 *arg0) {
             }
         }
         if (var_a2_2 != 0) {
-            SoundRpc_SetVolume(0, 0, var_a2_2, M2C_BITWISE(s32, D_004E0614));
+            SoundRpc_SetVolume(0, 0, var_a2_2, M2C_BITWISE(s32, D_004E0614), 0);
             if (!(D_004E0614 <= 0.0f)) {
                 SoundRpc_Send3(0, 0, 2, 0);
             }
@@ -256,7 +256,7 @@ void func_00271AF0(u8 *arg0) {
             }
         }
         if (var_a2_3 != 0) {
-            SoundRpc_SetVolume(0, 0, var_a2_3, M2C_BITWISE(s32, D_004E0614));
+            SoundRpc_SetVolume(0, 0, var_a2_3, M2C_BITWISE(s32, D_004E0614), 0);
             if (!(D_004E0614 <= 0.0f)) {
                 SoundRpc_Send3(0, 0, 2, 0);
             }
@@ -281,7 +281,7 @@ void func_00271AF0(u8 *arg0) {
             var_a1_2 = 0;
         }
         if (var_a1_2 != 0) {
-            SoundRpc_SetVolume(0, 0, (u16) temp_a2, (s32) (D_004707FC + 0x4C), D_004E0614);
+            SoundRpc_SetVolume(0, 0, (u16) temp_a2, D_004707FC + 0x4C, D_004E0614);
             if (!(D_004E0614 <= 0.0f)) {
                 SoundRpc_Send3(0, 0, 2, 0);
             }
@@ -301,7 +301,7 @@ void func_00271AF0(u8 *arg0) {
             var_a0_2 = 0;
         }
         if (var_a0_2 != 0) {
-            SoundRpc_SetVolume(0, 0, (u16) temp_a2_2, M2C_BITWISE(s32, D_004E0614));
+            SoundRpc_SetVolume(0, 0, (u16) temp_a2_2, M2C_BITWISE(s32, D_004E0614), 0);
             if (!(D_004E0614 <= 0.0f)) {
                 SoundRpc_Send3(0, 0, 2, 0);
             }

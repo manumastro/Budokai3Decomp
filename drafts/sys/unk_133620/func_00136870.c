@@ -1,10 +1,10 @@
 /* Draft (not built): func_00136870 at 0x00136870, size 0x610, segment sys/unk_133620 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operands 'unsigned int *' | 'int' @ 537: *(s32 *)((u8 *)var_s1 + 0x30) = (s32) (D_0046FD18 | 1);
+ * Status: size, 212 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x550, original 0x610
  * Original: asm/nonmatchings/sys/unk_133620/func_00136870.s */
 
-// src/sys/unk_133620.c func_00136870 cerr diff=-1/0
+// src/sys/unk_133620.c func_00136870 size diff=212/340
 s32 func_00145D70(s32, s32, s32, s32);
 extern s32 D_00470238;
 extern s32 D_00470270;
@@ -36,14 +36,22 @@ void func_00136870(s32 arg0, s32 arg1, f32 *arg2, s32 arg3) {
     s32 temp_v1;
     s32 var_s0;
     s32 var_s3;
+    s32 var_s4;
+    s32 var_s5;
     s64 var_a0;
-    u8 *temp_s1;
+    s64 var_s6;
+    s64 var_s7;
     u8 *var_s1;
 
+    var_s4 = arg0;
     var_s3 = arg1;
     var_s2 = arg2;
+    var_s5 = arg3;
+    var_s6 = M2C_ERROR(/* Read from unset register $t0 */);
+    var_s7 = M2C_ERROR(/* Read from unset register $t1 */);
     var_s0 = 0;
     if (var_s2 == NULL) {
+        var_s2 = &D_0047CA30;
         var_s2 = &D_0047CA30;
         temp_v1 = var_s3 & 0x700;
         switch (temp_v1) {                          /* switch 1; irregular */
@@ -51,10 +59,12 @@ void func_00136870(s32 arg0, s32 arg1, f32 *arg2, s32 arg3) {
         case 0x200:                                 /* switch 1 */
             break;
         case 0x300:                                 /* switch 1 */
-            var_s3 = (var_s3 & ~0x700) | 0x200;
+            var_s3 &= ~0x700;
+            var_s3 |= 0x200;
             break;
         default:                                    /* switch 1 */
-            var_s3 = (var_s3 & ~0x700) | 0x400;
+            var_s3 &= ~0x700;
+            var_s3 |= 0x400;
             break;
         }
     }
@@ -62,8 +72,8 @@ void func_00136870(s32 arg0, s32 arg1, f32 *arg2, s32 arg3) {
     amDraw_FlushPacket();
     var_s1 = gPacketPtr;
     D_00470278 = var_s1;
-    if (arg3 >= 0) {
-        temp_v0 = func_00145D70(D_00470238, arg3, 0, 1);
+    if (var_s5 >= 0) {
+        temp_v0 = func_00145D70(D_00470238, var_s5, 0, 1);
         if (temp_v0 & 2) {
             *(s32 *)((u8 *)var_s1 + 0) = 0x50000000;
             *(s32 *)((u8 *)var_s1 + 4) = (s32) *(s32 *)((u8 *)sp9C + 0x28);
@@ -105,12 +115,12 @@ void func_00136870(s32 arg0, s32 arg1, f32 *arg2, s32 arg3) {
     *(s64 *)((u8 *)var_s1 + 0x20) = 1;
     *(s64 *)((u8 *)var_s1 + 0x28) = 0x46;
     if (var_s3 & 0x1000) {
-        *(s32 *)((u8 *)var_s1 + 0x30) = (s32) (D_0046FD18 | 1);
+        *(s32 *)((u8 *)var_s1 + 0x30) = (s32) (((s32)(D_0046FD18)) | 1);
     } else {
         *(s32 *)((u8 *)var_s1 + 0x30) = (s32) D_0046FD18;
     }
-    *(s64 *)((u8 *)var_s1 + 0x40) = (s64) M2C_ERROR(/* Read from unset register $t0 */);
-    *(s64 *)((u8 *)var_s1 + 0x50) = (s64) M2C_ERROR(/* Read from unset register $t1 */);
+    *(s64 *)((u8 *)var_s1 + 0x40) = var_s6;
+    *(s64 *)((u8 *)var_s1 + 0x50) = var_s7;
     if (var_s0 == 0) {
         *(s64 *)((u8 *)var_s1 + 0x38) = 0x47;
         *(s64 *)((u8 *)var_s1 + 0x48) = 0x42;
@@ -120,8 +130,8 @@ void func_00136870(s32 arg0, s32 arg1, f32 *arg2, s32 arg3) {
         *(s64 *)((u8 *)var_s1 + 0x48) = 0x43;
         *(s64 *)((u8 *)var_s1 + 0x58) = 9;
     }
-    temp_s1 = var_s1 + 0x60;
-    switch (arg0) {                                 /* switch 2; irregular */
+    var_s1 += 0x60;
+    switch (var_s4) {                               /* switch 2; irregular */
     case 1:                                         /* switch 2 */
         var_a0 = 4;
         break;
@@ -153,7 +163,7 @@ void func_00136870(s32 arg0, s32 arg1, f32 *arg2, s32 arg3) {
     }
     D_0047CA10 = var_a0;
     D_0047CA18 = 0;
-    *(s128 *)((u8 *)var_s1 + 0x60) = (s128) D_0047CA10;
+    *(s128 *)((u8 *)var_s1 + 0) = (s128) D_0047CA10;
     if (var_s3 & 0x20) {
         var_f1 = 128.0f;
     } else {
@@ -198,11 +208,12 @@ void func_00136870(s32 arg0, s32 arg1, f32 *arg2, s32 arg3) {
     D_0047CA23 = M2C_BITWISE(s8, D_0047CA3C);
     D_0047CA24 = 1.0f;
     D_0047CA28 = 1;
-    *(s128 *)((u8 *)temp_s1 + 0x10) = (s128) D_0047CA20;
+    *(s128 *)((u8 *)var_s1 + 0x10) = (s128) D_0047CA20;
+    var_s1 += 0x20;
     D_00470270 = 6;
     gPacketQwc = 7;
     D_00470294 = 7;
     D_00470298 = 6;
-    D_0047029C = arg0;
-    gPacketPtr = temp_s1 + 0x20;
+    D_0047029C = var_s4;
+    gPacketPtr = var_s1;
 }

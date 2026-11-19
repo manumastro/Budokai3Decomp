@@ -1,10 +1,10 @@
 /* Draft (not built): func_001AD2E0 at 0x001AD2E0, size 0x288, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operand @ 967: if ((D_004B4B59 == 0) || (D_004B4B59 == 3)) {
+ * Status: size, 88 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x25C, original 0x288
  * Original: asm/nonmatchings/battle/btl_main/func_001AD2E0.s */
 
-// src/battle/btl_main.c func_001AD2E0 cerr diff=-1/0
+// src/battle/btl_main.c func_001AD2E0 size diff=88/151
 extern s8 D_004B4B59[];
 extern s8 D_004B4B63;
 extern s16 D_005C9F04;
@@ -16,7 +16,7 @@ void func_001AD2E0(void) {
     s32 var_v0_2;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gBattle);
+    temp_s0 = (unsigned char *)(gBattle);
     *(f32 *)((u8 *)temp_s0 + 0x8910) = (f32) *(f32 *)((u8 *)temp_s0 + 0x890C);
     *(f32 *)((u8 *)gBattle + 0x890C) = (f32) (*(f32 *)((u8 *)gBattle + 0x890C) + *(f32 *)((u8 *)gBattle + 0x88F0));
     if (!(*(f32 *)((u8 *)gBattle + 0x890C) <= 1e8f)) {
@@ -59,10 +59,10 @@ void func_001AD2E0(void) {
 block_24:
                 D_00470574 = var_v0;
             }
-            D_00468300[0]();
+            ((s32 (*)(s32, s32))D_00468300[0])(2, temp_a1);
             return;
         case 5:
-            if ((D_004B4B59 == 0) || (D_004B4B59 == 3)) {
+            if ((D_004B4B59 == 0) || ((s32)(D_004B4B59) == (s32)(3))) {
                 D_00470574 = 2;
                 D_004682FC(2, temp_a1);
                 return;
@@ -82,7 +82,7 @@ block_24:
 block_38:
                 D_00470574 = var_v0_2;
             }
-            D_00468300[0]();
+            ((s32 (*)(s32, s32))D_00468300[0])(2, temp_a1);
             break;
         }
     }

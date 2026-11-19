@@ -51,7 +51,7 @@ void func_002186D0(u8 *arg0) {
             *(s32 *)((u8 *)temp_s0_2 + 0x18) = 0xBF800000;
         }
         *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 0x1C) = 0;
-        amTask_Kill((s32)((void *)(arg0)));
+        amTask_Kill((s32)(arg0));
         return;
     }
     *(f32 *)((u8 *)temp_s1 + 0xC) = (f32) (temp_f1 + *(f32 *)((u8 *)gBattle + 0x88F0));

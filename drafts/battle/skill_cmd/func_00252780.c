@@ -1,10 +1,10 @@
 /* Draft (not built): func_00252780 at 0x00252780, size 0x160, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operands 'void *' + 'int' @ 1204: if (var_s0 < *(s32 *)((u8 *)((temp_s1 * 4) + D_0046FE54) + 8)) {
+ * Status: size, 52 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x130, original 0x160
  * Original: asm/nonmatchings/battle/skill_cmd/func_00252780.s */
 
-// src/battle/skill_cmd.c func_00252780 cerr diff=-1/0
+// src/battle/skill_cmd.c func_00252780 size diff=52/76
 void func_00252780(s32 arg0, u8 *arg1) {
     s32 sp50;
     s32 sp60;
@@ -31,9 +31,9 @@ void func_00252780(s32 arg0, u8 *arg1) {
     var_s0 = 0;
     sp68 = *(u8 **)((u8 *)arg1 + 0x1354);
 loop_10:
-    if (var_s0 < *(s32 *)((u8 *)((temp_s1 * 4) + D_0046FE54) + 8)) {
+    if (var_s0 < *(s32 *)((u8 *)(((s32)(((u8 *)(temp_s1 * 4)))) + ((s32)(D_0046FE54))) + 8)) {
         var_a1 = temp_s1 * 4;
-        temp_a2 = (u8 *)(*(((u8 *)D_0046FE54) + var_a1) + (var_s0 * 0xF0));
+        temp_a2 = (unsigned char *)(*(((u8 *)D_0046FE54) + var_a1) + (var_s0 * 0xF0));
         temp_v1 = *(s16 *)((u8 *)temp_a2 + 0x16);
         if (temp_v1 != 0) {
             if (((s64) ((s64) temp_v1 << 0x30) >> 0x30) != *(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x1354)) + 0xBA4)) {

@@ -13,7 +13,7 @@ void func_001A6AD0(void) {
     u8 *temp_s1;
     u8 *temp_s2;
 
-    temp_s2 = (u8 *)(gBattle);
+    temp_s2 = (unsigned char *)(gBattle);
     temp_s1 = temp_s2 + 0xA0;
     temp_s0 = temp_s1 + 0xF0;
     if (*(s32 *)((u8 *)temp_s2 + 0x88EC) == 0) {

@@ -1,10 +1,10 @@
 /* Draft (not built): func_002ECCE0 at 0x002ECCE0, size 0x138, segment unk/unk_2ECB90 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); it conversion from 'signed char *' to 'int' @ 51: *(s32 *)((u8 *)temp_a1 + 0) = (s8 *)func_001A50F0(*D_0051CD0C, 0x27F);
+ * Status: diff, 65 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/unk/unk_2ECB90/func_002ECCE0.s */
 
-// src/unk/unk_2ECB90.c func_002ECCE0 cerr diff=-1/0
+// src/unk/unk_2ECB90.c func_002ECCE0 diff diff=65/78
 s32 BtbObj_RemoveByIdx(s32, s32);
 s32 func_001A50F0(s8 *, s32);
 s32 func_001F5B70(void *, void *);
@@ -20,34 +20,33 @@ extern void func_001F7BF0(void);
 extern void func_001F7DB0(void);
 extern void func_002ECBD0(void);
 void func_002ECCE0(void) {
-    s8 *temp_s1;
+    s8 *var_s1;
     u8 *temp_a1;
     u8 *temp_a1_2;
-    u8 *temp_s0;
-    u8 *temp_s0_2;
-    u8 *temp_v0;
+    u8 *var_s0;
+    u8 *var_s2;
 
     func_001F7DB0();
     func_001F7BF0();
     func_001F7820();
     func_001F7690();
     func_001F6E50();
-    temp_s1 = (s8 *)(*D_0051CD0C);
+    var_s1 = (signed char *)(*D_0051CD0C);
     if (D_0051CD20 != 0) {
         return;
     }
     BtbObj_RemoveByIdx(3, 2);
-    temp_v0 = func_001F5EF0(3, 2);
-    temp_s0 = (s32 *)(func_001F5FD0(0x83000000, &D_0046F6C8, temp_v0, &func_002ECBD0));
-    temp_a1 = *(u8 **)((u8 *)temp_v0 + 0x10);
-    *(s32 *)((u8 *)temp_a1 + 0) = (s8 *)func_001A50F0(*D_0051CD0C, 0x27F);
-    *(s16 *)((u8 *)(*(u8 **)((u8 *)temp_v0 + 0x10)) + 0xE) = 1;
-    func_001F5B70(temp_v0, temp_a1);
-    *(s32 *)((u8 *)temp_s0 + 0x20) = (s32) (*(s32 *)((u8 *)temp_s0 + 0x20) & ~0x800);
-    *(s32 *)((u8 *)temp_s0 + 0x20) = (s32) (*(s32 *)((u8 *)temp_s0 + 0x20) | 0x800);
-    temp_s0_2 = func_001F5EF0(3, 3);
-    temp_a1_2 = *(u8 **)((u8 *)temp_s0_2 + 0x10);
-    *(s32 *)((u8 *)temp_a1_2 + 0) = func_001A50F0(temp_s1, 0x27E);
-    *(s16 *)((u8 *)(*(u8 **)((u8 *)temp_s0_2 + 0x10)) + 0xE) = 2;
-    func_001F5B70(temp_s0_2, temp_a1_2);
+    var_s2 = func_001F5EF0(3, 2);
+    var_s0 = func_001F5FD0(0x83000000, (s32 *)(&D_0046F6C8), (void *)(var_s2), (s32 *)(&func_002ECBD0));
+    temp_a1 = *(u8 **)((u8 *)var_s2 + 0x10);
+    *(s32 *)((u8 *)temp_a1 + 0) = func_001A50F0((s8 *)(*D_0051CD0C), 0x27F);
+    *(s16 *)((u8 *)(*(u8 **)((u8 *)var_s2 + 0x10)) + 0xE) = 1;
+    func_001F5B70(var_s2, temp_a1);
+    *(s32 *)((u8 *)var_s0 + 0x20) = (s32) (*(s32 *)((u8 *)var_s0 + 0x20) & ~0x800);
+    *(s32 *)((u8 *)var_s0 + 0x20) = (s32) (*(s32 *)((u8 *)var_s0 + 0x20) | 0x800);
+    var_s0 = func_001F5EF0(3, 3);
+    temp_a1_2 = *(u8 **)((u8 *)var_s0 + 0x10);
+    *(s32 *)((u8 *)temp_a1_2 + 0) = func_001A50F0(var_s1, 0x27E);
+    *(s16 *)((u8 *)(*(u8 **)((u8 *)var_s0 + 0x10)) + 0xE) = 2;
+    func_001F5B70(var_s0, temp_a1_2);
 }

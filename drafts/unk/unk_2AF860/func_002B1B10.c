@@ -16,9 +16,9 @@ void func_002B1B10(u8 *arg0, s32 arg1) {
     u8 *temp_a0;
     u8 *temp_a0_2;
 
-    var_t2 = (s32 *)(&D_004E0688);
+    var_t2 = (int *)(&D_004E0688);
     if (arg1 > 0) {
-        *(s32 *)((u8 *)arg0 + 0x24) = (s32) (*(u8 *)((u8 *)(&D_004E0660 + (arg1 * 0x28)) + 0xA) & 3);
+        *(s32 *)((u8 *)arg0 + 0x24) = (s32) (*(u8 *)((u8 *)(((u8 *)&D_004E0660) + (arg1 * 0x28)) + 0xA) & 3);
     }
     temp_t1 = *(s32 *)((u8 *)arg0 + 0x24);
     var_a3 = 1;
@@ -26,7 +26,7 @@ void func_002B1B10(u8 *arg0, s32 arg1) {
     var_a2 = 0;
     temp_a0 = arg0 + (temp_t1 * 0x1C);
     temp_a0_2 = temp_a0 + 0x48;
-    var_t4 = (u8 *)(*(s32 *)((u8 *)gSklEdit + 0x44) + 1);
+    var_t4 = (unsigned char *)(*(s32 *)((u8 *)gSklEdit + 0x44) + 1);
     do {
         if (var_a3 == arg1) {
             var_v1 = var_a2;

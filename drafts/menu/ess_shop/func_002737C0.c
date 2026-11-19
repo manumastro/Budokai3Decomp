@@ -57,7 +57,7 @@ block_8:
     *(s32 *)((u8 *)gEssShop + 0x58) = var_s1;
     var_s4 = &sp70;
     var_s3 = 0;
-    var_s5 = (u8 *)(gEssShop + 0x74);
+    var_s5 = (unsigned char *)(gEssShop + 0x74);
 loop_9:
     var_s2 = *(s8 *)((u8 *)var_s4 + 0);
     if (var_s2 <= 0) {
@@ -98,7 +98,7 @@ block_18:
     temp_t1 = *(u8 *)((u8 *)temp_s0 + 0x1FD);
     temp_a3 = *(s32 *)((u8 *)gEssShop + 0x6C);
     temp_a2 = *(&D_0058F71C + (*(s32 *)((u8 *)gEssShop + 0x50) * 0xD680));
-    temp_a0 = (u8 *)(gEssShop + (temp_a3 * 0x14));
+    temp_a0 = (unsigned char *)(gEssShop + (temp_a3 * 0x14));
     var_a0 = temp_a0 + 0x74;
     if (temp_t1 != 0) {
         goto block_21;
@@ -109,7 +109,7 @@ block_18:
     *(s32 *)((u8 *)temp_a0 + 0x74) = 0x1FD;
     *(s32 *)((u8 *)var_a0 + 0x10) = 0;
     func_002730B0(var_a0, 0x1FD, temp_a2, temp_a3);
-    var_a0 = (u8 *)(M2C_ERROR(/* Read from unset register $a0 */) + 0x14);
+    var_a0 = (unsigned char *)(M2C_ERROR(/* Read from unset register $a0 */) + 0x14);
     *(s32 *)((u8 *)gEssShop + 0x6C) = (s32) (*(s32 *)((u8 *)gEssShop + 0x6C) + 1);
     goto block_30;
 block_21:
@@ -126,7 +126,7 @@ block_21:
     *(s32 *)((u8 *)temp_a0 + 0x74) = 0x1FE;
     *(s32 *)((u8 *)var_a0 + 0x10) = 0;
     func_002730B0(var_a0, 0x1FE, temp_a2, temp_a3);
-    var_a0 = (u8 *)(M2C_ERROR(/* Read from unset register $a0 */) + 0x14);
+    var_a0 = (unsigned char *)(M2C_ERROR(/* Read from unset register $a0 */) + 0x14);
     *(s32 *)((u8 *)gEssShop + 0x6C) = (s32) (*(s32 *)((u8 *)gEssShop + 0x6C) + 1);
     goto block_30;
 block_26:
@@ -142,7 +142,7 @@ block_26:
     *(s32 *)((u8 *)temp_a0 + 0x74) = 0x1FF;
     *(s32 *)((u8 *)var_a0 + 0x10) = 0;
     func_002730B0(var_a0, 0x1FF, temp_a2, temp_a3);
-    var_a0 = (u8 *)(M2C_ERROR(/* Read from unset register $a0 */) + 0x14);
+    var_a0 = (unsigned char *)(M2C_ERROR(/* Read from unset register $a0 */) + 0x14);
     *(s32 *)((u8 *)gEssShop + 0x6C) = (s32) (*(s32 *)((u8 *)gEssShop + 0x6C) + 1);
 block_30:
     var_t0 = 0;
@@ -159,7 +159,7 @@ block_33:
     }
     temp_a3_2 = *(s32 *)((u8 *)gEssShop + 0x50);
     temp_a2_2 = temp_a3_2 * 0xD680;
-    temp_a1_3 = (u8 *)(&D_0058F680 + temp_a2_2);
+    temp_a1_3 = (unsigned char *)(&D_0058F680 + temp_a2_2);
     if (*(u8 *)((u8 *)temp_s0 + 0x201) != 0) {
         goto block_38;
     }

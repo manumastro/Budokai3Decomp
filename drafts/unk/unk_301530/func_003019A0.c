@@ -1,10 +1,10 @@
 /* Draft (not built): func_003019A0 at 0x003019A0, size 0xAB0, segment unk/unk_301530 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); s2.exe Compiler: 225: *(s16 *)((u8 *)var_s0 + 0x5C16) = (s16) spE8; @ 223: *(s16 *)((u8 *)var_s0 + 0x5C14) = (s16) spE4;
+ * Status: size, 583 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x2BC, original 0xAB0
  * Original: asm/nonmatchings/unk/unk_301530/func_003019A0.s */
 
-// src/unk/unk_301530.c func_003019A0 cerr diff=-1/0
+// src/unk/unk_301530.c func_003019A0 size diff=583/175
 s32 SoundRpc_SetVolume(s32, s32, s8, f32);
 f32 func_00146E30(f32 *, f32 *, void *, void *);
 s32 func_0026E000(s32 *, s32, s8, s32 *);
@@ -40,6 +40,13 @@ extern char D_005C4140[];
 extern void Scene_Request();
 extern void func_00301820(void);
 void func_003019A0(u8 *arg0) {
+    s32 spFC;
+    s32 spF8;
+    s32 spF4;
+    s32 spF0;
+    s32 spEC;
+    s32 spE8;
+    s32 spE4;
     f32 spA0;
     f32 spA4;
     f32 spA8;
@@ -181,19 +188,19 @@ void func_003019A0(u8 *arg0) {
             if (var_s7 >= 0) {
                 *(s32 *)((u8 *)gTourMap + 0x60) = (s32) (*(s32 *)((u8 *)gTourMap + 0x60) | (1 << var_s7));
             }
-            var_s1 = (s8 *)(D_005C4140[0]);
+            var_s1 = (signed char *)(D_005C4140);
             var_s5 = 0;
             var_s3 = &D_005CA030;
-            var_s2 = (s8 *)(D_004B4B40[0]);
-            var_s0 = (s8 *)(D_005C4140[0]);
+            var_s2 = (signed char *)(D_004B4B40);
+            var_s0 = (signed char *)(D_005C4140);
             do {
                 temp_a0 = ((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s3 + 0x6050) * 0x14);
                 temp_a2_3 = *(s16 *)((u8 *)temp_a0 + 0x2F6);
                 if (temp_a2_3 >= 0) {
-                    temp_t1 = (u8 *)(D_005C4140 + (temp_a2_3 * 0xB80));
+                    temp_t1 = (unsigned char *)(D_005C4140 + (temp_a2_3 * 0xB80));
                     var_a0 = var_s0 + 0x5C14;
                     var_v1 = 7;
-                    var_a1 = (s16 *)(temp_t1 + 0xB82);
+                    var_a1 = (short *)(temp_t1 + 0xB82);
                     *(s8 *)((u8 *)var_s2 + 0x1C) = (s8) *(&D_0046B560 + (*(s16 *)((u8 *)temp_a0 + 0x2F4) * 2));
                     temp_a2_4 = *(s8 *)((u8 *)temp_t1 + 0xB71);
                     *(s8 *)((u8 *)var_s2 + 0x1E) = temp_a2_4;
@@ -239,7 +246,7 @@ void func_003019A0(u8 *arg0) {
                     if (D_004B4B57 != 3) {
                         var_v1_3 = 0;
                         var_v0 = var_s0;
-                        var_a1_3 = (u8 *)(&D_00447440 + (*(&D_0046B560 + (*(s16 *)((u8 *)temp_a0 + 0x2F4) * 2)) * 0x60));
+                        var_a1_3 = (unsigned char *)(&D_00447440 + (*(&D_0046B560 + (*(s16 *)((u8 *)temp_a0 + 0x2F4) * 2)) * 0x60));
                         *(s16 *)((u8 *)var_s0 + 0x5C12) = (s16) *(s16 *)((u8 *)var_a1_3 + 0x50);
                         do {
                             temp_a0_2 = *(s16 *)((u8 *)var_a1_3 + 0x52);
@@ -254,7 +261,7 @@ void func_003019A0(u8 *arg0) {
                         *(s16 *)((u8 *)var_s0 + 0x5C12) = 1;
                         *(s16 *)((u8 *)var_s0 + 0x5C14) = (s16) (*(s16 *)((u8 *)(((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s3 + 0x6050) * 0x14)) + 0x2F4) + 0xCF);
                     }
-                    *(s8 *)((u8 *)var_s2 + 0x1C) = (s8) *(&((u8 *)D_0046B560) + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s3 + 0x6050) * 0x14)) + 0x2F4) * 2));
+                    *(s8 *)((u8 *)var_s2 + 0x1C) = (s8) *(&D_0046B560 + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s3 + 0x6050) * 0x14)) + 0x2F4) * 2));
                     *(s8 *)((u8 *)var_s2 + 0x1E) = 0;
                     *(s8 *)((u8 *)var_s1 + 0x5C10) = 3;
                 }
@@ -268,7 +275,7 @@ void func_003019A0(u8 *arg0) {
                 D_004B4B5E = 0;
                 D_004B4B5F = 1;
             }
-            if (*(s16 *)((u8 *)((D_005D0080 * 0x14) + gTourMap) + 0x2F6) >= 0) {
+            if (*(s16 *)((u8 *)(((s32)(((u8 *)(D_005D0080 * 0x14)))) + ((s32)(gTourMap))) + 0x2F6) >= 0) {
                 D_004B4B5A = 0;
                 if (D_005CA030 >= 4) {
                     D_004B4B63 = var_s4;
@@ -355,7 +362,7 @@ void func_003019A0(u8 *arg0) {
             var_s2_2 = 0;
             var_s0_2 = &D_005CA030;
             do {
-                temp_s1 = amTask_Create(&TourMap_TaskSlideF10, 0, 0x3000, 0x200) + 0x30;
+                temp_s1 = ((u8 *)amTask_Create(&TourMap_TaskSlideF10, 0, 0x3000, 0x200)) + 0x30;
                 memset(temp_s1, 0, 0x1C);
                 temp_a2_6 = *(s8 *)((u8 *)var_s0_2 + 0x6050);
                 var_s2_2 += 1;
@@ -378,7 +385,7 @@ void func_003019A0(u8 *arg0) {
     case 2:                                         /* switch 1 */
         temp_a3 = ((u8 *)gTourMap) + 0x2F0;
         if ((*(temp_a3 + (D_005D0080 * 0x14)) == 1) && (*(temp_a3 + (D_005D0081 * 0x14)) == 1)) {
-            var_v1_7 = (s32 *)(&func_00301820);
+            var_v1_7 = (int *)(&func_00301820);
             if (&func_00301820 == NULL) {
                 var_v1_7 = NULL;
             }

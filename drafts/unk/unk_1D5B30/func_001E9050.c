@@ -16,7 +16,7 @@ s32 func_001E9050(u8 *arg0) {
     if (*(s8 *)((u8 *)arg0 + 0x1FF8) < 2) {
         return 0;
     }
-    temp_s2 = (u8 *)(gBattle);
+    temp_s2 = (unsigned char *)(gBattle);
     var_s0 = 0;
     if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 0x43480000) != 0) {
         return 0;

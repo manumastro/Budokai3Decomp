@@ -1,10 +1,10 @@
 /* Draft (not built): func_002560A0 at 0x002560A0, size 0x2BC, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); exe Compiler: 2619: temp_v0 = (var_s1 * 4) + sp; @ 2618: func_00136870(2, 0x40008934, (var_s1 * 0x10) + sp + 0x70, 0xE);
+ * Status: size, 134 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x214, original 0x2BC
  * Original: asm/nonmatchings/battle/skill_cmd/func_002560A0.s */
 
-// src/battle/skill_cmd.c func_002560A0 cerr diff=-1/0
+// src/battle/skill_cmd.c func_002560A0 size diff=134/133
 s32 func_00136870(s32, s32, void *, s32);
 s32 func_00137440(s32, s32);
 extern s32 D_00452A80;
@@ -14,6 +14,10 @@ extern s32 D_00452AE0;
 extern void amDraw_FlushPacket(void);
 extern void func_00137560(void *, void *);
 void func_002560A0(s32 arg1, s32 arg2, f32 fparg0) {
+    s32 spB4;
+    s32 spB0;
+    s32 spA4;
+    u8 sp[0x400];
     f32 sp50;
     s32 sp54;
     f32 sp58;

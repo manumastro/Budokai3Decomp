@@ -1,13 +1,14 @@
 /* Draft (not built): func_0026E000 at 0x0026E000, size 0x2E8, segment menu/ess_main_2 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); r 'sp' mwccps2.exe Compiler: 72: *(s128 *)((u8 *)sp + 0) = (s128) *(s128 *)((u8 *)(&D_00452F00) + 0); @ 68: var_t2 = sp;
+ * Status: size, 149 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x2D0, original 0x2E8
  * Original: asm/nonmatchings/menu/ess_main_2/func_0026E000.s */
 
-// src/menu/ess_main_2.c func_0026E000 cerr diff=-1/0
+// src/menu/ess_main_2.c func_0026E000 size diff=149/180
 extern s32 D_00452F00;
 extern s32 D_004E0660;
 void func_0026E000(u8 *arg0, s32 arg1) {
+    u8 sp[0x400];
     s32 *var_t0;
     s32 *var_t2;
     s32 *var_t2_2;
@@ -32,12 +33,12 @@ void func_0026E000(u8 *arg0, s32 arg1) {
     u8 *var_t1_8;
     u8 *var_t3_2;
 
-    var_t2 = sp;
+    var_t2 = (int *)(sp);
     var_a2 = 0;
     var_t3 = 0;
     var_t1 = arg0;
     *(s128 *)((u8 *)sp + 0) = (s128) *(s128 *)((u8 *)(&D_00452F00) + 0);
-    var_t0 = sp;
+    var_t0 = (int *)(sp);
     *(s64 *)((u8 *)sp + 0x10) = (s64) *(s64 *)((u8 *)(&D_00452F00) + 0x10);
     *(f32 *)((u8 *)sp + 0x18) = (f32) *(f32 *)((u8 *)(&D_00452F00) + 0x18);
     do {
@@ -71,7 +72,7 @@ void func_0026E000(u8 *arg0, s32 arg1) {
         temp_a3 = var_t0_2 * 4;
         if (var_t0_2 < var_a2) {
             var_t1_3 = arg0 + temp_a3;
-            var_t2_2 = temp_a3 + sp;
+            var_t2_2 = (int *)(temp_a3 + sp);
             do {
                 var_t0_2 += 1;
                 *(s32 *)((u8 *)var_t1_3 + 4) = (s32) *var_t2_2;

@@ -1,10 +1,10 @@
 /* Draft (not built): func_002D2530 at 0x002D2530, size 0x2B0, segment unk/unk_2D2530 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'unsigned char *' to 'int' @ 257: amModel_SetCurrent(arg0, arg2, temp_a2, temp_a3);
+ * Status: size, 135 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x170, original 0x2B0
  * Original: asm/nonmatchings/unk/unk_2D2530/func_002D2530.s */
 
-// src/unk/unk_2D2530.c func_002D2530 cerr diff=-1/0
+// src/unk/unk_2D2530.c func_002D2530 size diff=135/92
 s32 func_00136E80(s32, s32, s32, s32);
 s32 func_00137650(f32 *, s32 *, f32 *);
 s32 func_001484A0(s32);
@@ -53,7 +53,7 @@ void func_002D2530(u8 *arg0, s32 arg1, s32 arg2, u8 *arg3) {
     sp90 = (f32) *(s16 *)((u8 *)temp_s3 + 0x10);
     sp98 = 0x3F800000;
     sp94 = (f32) *(s16 *)((u8 *)temp_s3 + 0x12);
-    amModel_SetCurrent(arg0, arg2, temp_a2, temp_a3);
+    amModel_SetCurrent((s32)(arg0), (s32)(arg2));
     func_00136E80(0x40000C26, 0, arg1, 0x44);
     func_00137650(&spC0, &spD0, &spA0);
     func_00137650(&spB0, &spD0, &sp90);

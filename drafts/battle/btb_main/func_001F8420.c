@@ -1,10 +1,10 @@
 /* Draft (not built): func_001F8420 at 0x001F8420, size 0x320, segment battle/btb_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 0xC)) + 8)) + 4); @ 81: *(s3232 *)((u8 *)temp_s3 + 0x1C) = (s3232) *(s3232 *)((u8 *)(*(s32 **)((u8 *)temp_v1 + 8)) + 8);
+ * Status: size, 101 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x344, original 0x320
  * Original: asm/nonmatchings/battle/btb_main/func_001F8420.s */
 
-// src/battle/btb_main.c func_001F8420 cerr diff=-1/0
+// src/battle/btb_main.c func_001F8420 size diff=101/209
 extern char D_004698D8[];
 extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
 extern void memset(void *, s32, s32);
@@ -13,7 +13,7 @@ s32 amMotSet_Init(void *, void *);
 s32 amMotion_BindAnim(void *, s32, s32);
 void *amMotion_CreateFromObj(void *, s32, s32);
 extern void *amObject_Create(void *, void *);
-void func_001F8420(u8 *arg0, u8 *arg1) {
+void func_001F8420(void *arg0, StageObj *arg1) {
     s32 temp_a3;
     s32 var_a0;
     s32 var_a1;
@@ -58,12 +58,12 @@ void func_001F8420(u8 *arg0, u8 *arg1) {
         *(s32 *)((u8 *)temp_s3 + 0xC) = var_v0;
         temp_v1 = *(u8 **)((u8 *)arg0 + 0xC);
         if (*(s32 *)((u8 *)temp_v1 + 0) > 0) {
-            *(s3232 *)((u8 *)temp_s3 + 0x1C) = (s3232) *(s3232 *)((u8 *)(*(s32 **)((u8 *)temp_v1 + 8)) + 8);
-            *(s3232 *)((u8 *)temp_s3 + 0x14) = (s3232) *(s3232 *)((u8 *)(*(s32 **)((u8 *)(*(u8 **)((u8 *)arg0 + 0xC)) + 8)) + 4);
+            *(s32 *)((u8 *)temp_s3 + 0x1C) = (s32) *(s32 *)((u8 *)(*(s32 **)((u8 *)temp_v1 + 8)) + 8);
+            *(s32 *)((u8 *)temp_s3 + 0x14) = (s32) *(s32 *)((u8 *)(*(s32 **)((u8 *)(*(u8 **)((u8 *)arg0 + 0xC)) + 8)) + 4);
             *(s32 *)((u8 *)temp_s3 + 0x10) = (s32) **(s32 **)((u8 *)(*(u8 **)((u8 *)arg0 + 0xC)) + 8);
         } else {
-            *(s3232 *)((u8 *)temp_s3 + 0x1C) = 0x3F800000;
-            *(s3232 *)((u8 *)temp_s3 + 0x14) = 0x3F800000;
+            *(s32 *)((u8 *)temp_s3 + 0x1C) = 0x3F800000;
+            *(s32 *)((u8 *)temp_s3 + 0x14) = 0x3F800000;
         }
         temp_t0 = *(u8 **)((u8 *)temp_s3 + 0);
         temp_a3 = ((*(s32 *)((u8 *)temp_s3 + 8) + 1) << 0x10) | *(s32 *)((u8 *)temp_s3 + 0x10);
@@ -110,9 +110,9 @@ void func_001F8420(u8 *arg0, u8 *arg1) {
         *(s32 *)((u8 *)temp_s4 + 0xC) = var_v0_2;
         temp_v1_2 = *(u8 **)((u8 *)arg0 + 0x10);
         if (*(s32 *)((u8 *)temp_v1_2 + 0) > 0) {
-            *(s3232 *)((u8 *)temp_s4 + 0x14) = (s3232) *(s3232 *)((u8 *)(*(u8 **)((u8 *)temp_v1_2 + 8)) + 4);
+            *(s32 *)((u8 *)temp_s4 + 0x14) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)temp_v1_2 + 8)) + 4);
         } else {
-            *(s3232 *)((u8 *)temp_s4 + 0x14) = 0x3F800000;
+            *(s32 *)((u8 *)temp_s4 + 0x14) = 0x3F800000;
         }
     }
     *(u8 **)((u8 *)arg1 + 0x10) = amHeap_Alloc(0x10, 0, D_004698D8, 0x6C3);

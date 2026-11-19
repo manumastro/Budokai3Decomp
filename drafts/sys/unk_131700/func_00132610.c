@@ -1,11 +1,10 @@
 /* Draft (not built): func_00132610 at 0x00132610, size 0x704, segment sys/unk_131700 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ';' expected mwccps2.exe Compiler: 238: *(s3232 *)((u8 *)var_s0 + 0x58) = 0; @ 96: extern Tri D_0047CA40;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); identifier 'D_0047CA40' redeclared was declared as: 'int' now declared as: 'struct Tri' @ 320: extern Tri D_0047CA40;
  * Original: asm/nonmatchings/sys/unk_131700/func_00132610.s */
 
 // src/sys/unk_131700.c func_00132610 cerr diff=-1/0
-extern Tri D_0047CA40;
 s32 func_0013B110(s32);
 s32 memset(f32 *, s32, s32);
 extern f32 D_00459350;
@@ -49,6 +48,7 @@ extern f32 D_0047CA94;
 extern s32 D_0047CA98;
 extern void func_0013B0B0(void *);
 extern void func_0013B960(void *);
+extern s32 D_0047CA40;
 void func_00132610(s32 *arg0, f32 fparg0, f32 fparg1) {
     f32 sp40;
     f32 sp44;
@@ -88,7 +88,7 @@ void func_00132610(s32 *arg0, f32 fparg0, f32 fparg1) {
 
     var_s0 = arg0;
     if (var_s0 == NULL) {
-        func_00131B90((void *)(&sp80));
+        func_00131B90((struct Screen *)(&sp80));
         var_s0 = &sp80;
     }
     temp_f21 = *(f32 *)((u8 *)var_s0 + 0x10);
@@ -147,7 +147,7 @@ void func_00132610(s32 *arg0, f32 fparg0, f32 fparg1) {
     *(f32 *)((u8 *)var_s0 + 0x38) = var_f0_2;
     *(f32 *)((u8 *)var_s0 + 0x50) = (f32) (0.5f * (*(f32 *)((u8 *)var_s0 + 0x3C) * temp_f21));
     *(f32 *)((u8 *)var_s0 + 0x54) = (f32) (0.5f * (*(f32 *)((u8 *)var_s0 + 0x3C) * var_f20));
-    *(s3232 *)((u8 *)var_s0 + 0x58) = 0;
+    *(s32 *)((u8 *)var_s0 + 0x58) = 0;
     *(s32 *)((u8 *)var_s0 + 0x5C) = 0;
     memset(&D_0047C8D0, 0, 0x40);
     D_0047C8D0 = 1.0f;
@@ -205,7 +205,7 @@ void func_00132610(s32 *arg0, f32 fparg0, f32 fparg1) {
     *(f32 *)((u8 *)(&D_0047CA88) + 4) = (f32) *(f32 *)((u8 *)(var_s0 + 0x48) + 4);
     D_0047CA90 = *(f32 *)((u8 *)var_s0 + 0x50);
     D_0047CA94 = *(f32 *)((u8 *)var_s0 + 0x54);
-    *(s3232 *)((u8 *)(&D_0047CA98) + 0) = (s3232) *(s3232 *)((u8 *)var_s0 + 0x58);
+    *(s32 *)((u8 *)(&D_0047CA98) + 0) = (s32) *(s32 *)((u8 *)var_s0 + 0x58);
     *(f32 *)((u8 *)(&D_0047CA98) + 4) = (f32) *(f32 *)((u8 *)(var_s0 + 0x58) + 4);
     sp40 = D_004704A0;
     sp44 = D_004704A4;

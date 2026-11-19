@@ -18,3 +18,15 @@ s32 func_0011A9A0(void) {
     }
     return D_0047A580;
 }
+
+/* Similar function already in C: sceMtapGetModVersion (src/sdk/libmtap.c), similarity 0.64.
+ * It is the template below (not built). */
+#if 0
+int sceMtapGetModVersion(void) {
+    if (sceSifCallRpc(&D_00492AC0, 5, 0, D_00492B00, 0x80, D_00492B00, 0x80, 0, 0) < 0) {
+        func_001A19D0(D_00468090);
+        return 0;
+    }
+    return D_00492B00[0];
+}
+#endif

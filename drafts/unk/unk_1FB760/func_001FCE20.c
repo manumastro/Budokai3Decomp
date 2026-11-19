@@ -1,13 +1,15 @@
 /* Draft (not built): func_001FCE20 at 0x001FCE20, size 0x27C, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); : 171: } else if ((sp54 <= temp_f2_2) && !(sp54 < temp_f1_3)) { @ 168: if (!(sp54 < temp_f2_2) && (sp54 <= temp_f1_3)) {
+ * Status: size, 114 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x220, original 0x27C
  * Original: asm/nonmatchings/unk/unk_1FB760/func_001FCE20.s */
 
-// src/unk/unk_1FB760.c func_001FCE20 cerr diff=-1/0
+// src/unk/unk_1FB760.c func_001FCE20 size diff=114/136
 f32 func_00146E30(f32 *, void *);
 f32 func_00146F90(s32 *, f32 *);
 s32 func_001FCE20(s32 arg0, s32 arg1, u8 *arg2) {
+    s32 sp58;
+    s32 sp54;
     f32 sp50;
     s32 sp60;
     f32 sp70;

@@ -1,7 +1,7 @@
 /* Draft (not built): func_002832E0 at 0x002832E0, size 0x430, segment menu/skl_sheet (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 17: C30(*(*(s32 *)((u8 *)temp_a3 + 0x1C) + (*(s32 *)((u8 *)D_00470820 + 0x64) * 4)), D_00470820, temp_a2, temp_a3, (f32)
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal explicit conversion from 'float' to 'unsigned char *' mwccps2.exe Compiler: @ 173: ((u8 *)(D_004E0614))
  * Original: asm/nonmatchings/menu/skl_sheet/func_002832E0.s */
 
 // src/menu/skl_sheet.c func_002832E0 cerr diff=-1/0
@@ -52,20 +52,20 @@ void func_002832E0(void) {
         switch (temp_a2) {                          /* switch 2; irregular */
         case 7:                                     /* switch 2 */
             *(s32 *)((u8 *)D_00470820 + 0x64) = (s32) ((*(s32 *)((u8 *)D_00470820 + 0x58) == 0) ? 4 : 3);
-            if (func_0022BC30(*(*(s32 *)((u8 *)temp_a3 + 0x1C) + (*(s32 *)((u8 *)D_00470820 + 0x64) * 4)), D_00470820, temp_a2, temp_a3, (f32) *(s32 *)((u8 *)temp_s2 + 8) * gFrameDelta) == 0xFF) {
+            if (func_0022BC30(*(s32 *)(*(s32 *)((u8 *)temp_a3 + 0x1C) + (*(s32 *)((u8 *)D_00470820 + 0x64) * 4)), D_00470820, temp_a2, temp_a3, (f32) *(s32 *)((u8 *)temp_s2 + 8) * gFrameDelta) == 0xFF) {
                 *(s32 *)((u8 *)D_00470820 + 0x48) = 8;
             }
             return;
         case 3:                                     /* switch 2 */
             *(s32 *)((u8 *)D_00470820 + 0x64) = 2;
-            if (func_0022BC30(*(*(s32 *)((u8 *)temp_a3 + 0x1C) + (*(s32 *)((u8 *)D_00470820 + 0x64) * 4)), (u8 *)3, temp_a2, temp_a3, (f32) *(s32 *)((u8 *)temp_s2 + 8) * gFrameDelta) == 0xFF) {
+            if (func_0022BC30(*(s32 *)(*(s32 *)((u8 *)temp_a3 + 0x1C) + (*(s32 *)((u8 *)D_00470820 + 0x64) * 4)), (u8 *)3, temp_a2, temp_a3, (f32) *(s32 *)((u8 *)temp_s2 + 8) * gFrameDelta) == 0xFF) {
                 *(s32 *)((u8 *)D_00470820 + 0x48) = 5;
                 *(s32 *)((u8 *)D_00470820 + 0x64) = 6;
                 *(s32 *)((u8 *)temp_s2 + 8) = 0x3E8;
             }
             return;
         case 4:                                     /* switch 2 */
-            if (func_0022BC30(*(*(s32 *)((u8 *)temp_a3 + 0x1C) + (*(s32 *)((u8 *)D_00470820 + 0x64) * 4)), (u8 *)3, temp_a2, temp_a3, (f32) *(s32 *)((u8 *)temp_s2 + 8) * gFrameDelta) == 0xFF) {
+            if (func_0022BC30(*(s32 *)(*(s32 *)((u8 *)temp_a3 + 0x1C) + (*(s32 *)((u8 *)D_00470820 + 0x64) * 4)), (u8 *)3, temp_a2, temp_a3, (f32) *(s32 *)((u8 *)temp_s2 + 8) * gFrameDelta) == 0xFF) {
                 if (*(s32 *)((u8 *)D_00470820 + 0x5C) != 0) {
                     *(s32 *)((u8 *)D_00470820 + 0x48) = 5;
                     *(s32 *)((u8 *)D_00470820 + 0x58) = (s32) (*(s32 *)((u8 *)D_00470820 + 0x58) ^ 1);

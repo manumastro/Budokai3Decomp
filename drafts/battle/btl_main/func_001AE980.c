@@ -24,7 +24,7 @@ void func_001AE980(void) {
     u8 *temp_s0;
     u8 *temp_s1;
 
-    temp_s1 = (u8 *)(gBattle);
+    temp_s1 = (unsigned char *)(gBattle);
     temp_f1 = *(f32 *)((u8 *)temp_s1 + 0x890C) / 180.0f;
     if (M2C_BITWISE(s32, temp_f1) != M2C_BITWISE(s32, (*(f32 *)((u8 *)temp_s1 + 0x8910) / 180.0f))) {
         temp_s0 = *(u8 **)((u8 *)((M2C_BITWISE(s32, temp_f1) * 4) + temp_s1) + 0x8934);

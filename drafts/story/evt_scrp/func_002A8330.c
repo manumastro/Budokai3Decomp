@@ -1,10 +1,10 @@
 /* Draft (not built): func_002A8330 at 0x002A8330, size 0x638, segment story/evt_scrp (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'sp' mwccps2.exe Compiler: 3092: var_v0 = sp; @ 3075: var_t0_7 = sp;
+ * Status: size, 275 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x65C, original 0x638
  * Original: asm/nonmatchings/story/evt_scrp/func_002A8330.s */
 
-// src/story/evt_scrp.c func_002A8330 cerr diff=-1/0
+// src/story/evt_scrp.c func_002A8330 size diff=275/407
 extern s32 D_00454780;
 extern s128 D_004547A0;
 extern s128 D_00454840;
@@ -28,6 +28,7 @@ extern f32 D_004700C8;
 extern f32 D_004700CC;
 extern f32 D_004700D0;
 s32 func_002A8330(s32 arg0) {
+    u8 sp[0x400];
     s64 spA0;
     s64 sp140;
     s64 sp1E0;
@@ -258,7 +259,7 @@ s32 func_002A8330(s32 arg0) {
         var_a2_15 += 0x10;
         var_a3_8 += 0x10;
     } while (var_a1_15 > 0);
-    var_t0_7 = sp;
+    var_t0_7 = (long *)(sp);
     var_a1_16 = 9;
     *var_a3_8 = *var_a2_15;
     var_a2_16 = &D_00455120;
@@ -275,10 +276,10 @@ s32 func_002A8330(s32 arg0) {
         var_v0 = &spA54;
         var_v1 = 0x4000;
     } else if (arg0 >= 0x2000) {
-        var_v0 = sp;
+        var_v0 = (long *)(sp);
         var_v1 = 0x2000;
     } else if (arg0 >= 0x17D4) {
-        var_v0 = sp;
+        var_v0 = (long *)(sp);
         var_v1 = 0x17D4;
     } else if (arg0 >= 0x1770) {
         var_v0 = &spA0;

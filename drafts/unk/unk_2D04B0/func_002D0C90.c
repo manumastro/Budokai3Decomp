@@ -1,10 +1,10 @@
 /* Draft (not built): func_002D0C90 at 0x002D0C90, size 0x614, segment unk/unk_2D04B0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  @ 138: 32 *)((u8 *)temp_s0 + 0x40) = amAdx_PlayAfs(1, *(s32 *)((u8 *)((temp_s2 * 4) + sp) + 0x78) | 0x20000, 0, &sp78);
+ * Status: size, 249 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x560, original 0x614
  * Original: asm/nonmatchings/unk/unk_2D04B0/func_002D0C90.s */
 
-// src/unk/unk_2D04B0.c func_002D0C90 cerr diff=-1/0
+// src/unk/unk_2D04B0.c func_002D0C90 size diff=249/344
 s32 Help_Open(s32, s32);
 s32 Scene_FadeTo(s32, s32);
 s32 SoundRpc_SetVolume(s32, s32, f32);
@@ -42,16 +42,17 @@ extern s16 D_005C4138;
 extern s16 D_005C9DAA;
 extern s16 D_005C9DFA;
 extern void A2d_FlushList(void);
+extern void *D_00470704;
+extern void amModel_SetCurrent();
 extern void func_0022CD00(void *);
 extern void SoundRpc_Send3();
 extern void Obj_SetF3C();
 extern char D_00492FCE[];
-extern void *D_00470704;
-extern void amModel_SetCurrent();
 extern void Scene_Request();
 extern void func_002D0A00(void);
 extern void func_002D0B60(void);
 void func_002D0C90(u8 *arg0) {
+    u8 sp[0x400];
     u8 *sp50;
     s32 sp54;
     s32 sp58;
@@ -86,7 +87,8 @@ void func_002D0C90(u8 *arg0) {
         *(u8 *)((u8 *)temp_s0 + 0x3A) = (u8) (temp_s2 + 7);
         Obj_SetF3C(*(s32 *)((u8 *)temp_s0 + 0x30), *(u8 *)((u8 *)temp_s0 + 0x3A));
         sp78 = D_00470158;
-        *(s32 *)((u8 *)temp_s0 + 0x40) = amAdx_PlayAfs(1, *(s32 *)((u8 *)((temp_s2 * 4) + sp) + 0x78) | 0x20000, 0, &sp78);
+        amAdx_PlayAfs(1, *(s32 *)((u8 *)((temp_s2 * 4) + sp) + 0x78) | 0x20000, 0);
+        *(s32 *)((u8 *)temp_s0 + 0x40) = (s32) M2C_ERROR(/* Read from unset register $v0 */);
         amAdx_SetVolume(*(s32 *)((u8 *)temp_s0 + 0x40), D_004E0618);
         amAdx_Pause(*(s32 *)((u8 *)temp_s0 + 0x40), 0);
         *(u8 *)((u8 *)temp_s0 + 0x44) = 1U;
@@ -146,7 +148,7 @@ void func_002D0C90(u8 *arg0) {
             *(s32 *)((u8 *)temp_s0 + 0x3C) = 0x42700000;
             func_002D0830(temp_s0, 1, temp_a2);
             Scene_Request(0x18, 0);
-            var_v0 = (s32 *)(&func_002D0A00);
+            var_v0 = (int *)(&func_002D0A00);
             if (&func_002D0A00 == NULL) {
                 var_v0 = NULL;
             }
@@ -161,7 +163,7 @@ void func_002D0C90(u8 *arg0) {
         Obj_SetF3C(*(s32 *)((u8 *)temp_s0 + 0x30), -1U);
         Scene_Request(5, 0);
         Scene_FadeTo(0xA, 0);
-        var_v0_2 = (s32 *)(&func_002D0B60);
+        var_v0_2 = (int *)(&func_002D0B60);
         if (&func_002D0B60 == NULL) {
             var_v0_2 = NULL;
         }
@@ -176,7 +178,8 @@ void func_002D0C90(u8 *arg0) {
             *(u8 *)((u8 *)temp_s0 + 0x3A) = (u8) (temp_s1 + 7);
             Obj_SetF3C(*(s32 *)((u8 *)temp_s0 + 0x30), *(u8 *)((u8 *)temp_s0 + 0x3A));
             sp70 = D_00470158;
-            *(s32 *)((u8 *)temp_s0 + 0x40) = amAdx_PlayAfs(1, *(s32 *)((u8 *)((temp_s1 * 4) + sp) + 0x70) | 0x20000, 0, &sp70);
+            amAdx_PlayAfs(1, *(s32 *)((u8 *)((temp_s1 * 4) + sp) + 0x70) | 0x20000, 0);
+            *(s32 *)((u8 *)temp_s0 + 0x40) = (s32) M2C_ERROR(/* Read from unset register $v0 */);
             amAdx_SetVolume(*(s32 *)((u8 *)temp_s0 + 0x40), D_004E0618);
             amAdx_Pause(*(s32 *)((u8 *)temp_s0 + 0x40), 0);
             *(u8 *)((u8 *)temp_s0 + 0x44) = 1U;

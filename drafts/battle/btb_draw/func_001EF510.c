@@ -37,7 +37,7 @@ s32 func_001EF510(u8 *arg0, s32 arg1) {
     u8 *temp_a0_2;
     u8 *temp_a1;
 
-    if (func_00127E88(&D_004696F0, 8) != 0) {
+    if (func_00127E88((s32 *)(&D_004696F0), 8) != 0) {
         return 1;
     }
     temp_t0 = arg1 - 0x20;

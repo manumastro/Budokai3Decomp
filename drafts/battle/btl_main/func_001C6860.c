@@ -81,7 +81,7 @@ void func_001C6860(void) {
     u8 *var_v0;
 
     var_s3 = 0;
-    temp_s1 = (u8 *)(gBattle);
+    temp_s1 = (unsigned char *)(gBattle);
     var_s0 = temp_s1 + 0x830;
     if (*(s32 *)((u8 *)temp_s1 + 0x88D8) <= 0) {
         goto block_4;
@@ -332,7 +332,7 @@ loop_67:
     var_v0 = NULL;
     goto block_70;
 block_69:
-    var_v0 = (u8 *)(&D_004E0660 + (temp_a1 * 0x28));
+    var_v0 = (unsigned char *)(&D_004E0660 + (temp_a1 * 0x28));
 block_70:
     if (var_v0 == NULL) {
         goto block_72;
@@ -434,7 +434,7 @@ loop_96:
     func_001C3120(var_s0);
     goto block_99;
 block_98:
-    func_001ABD30((void *)(var_s0 + 0x1360));
+    func_001ABD30((struct Fighter *)(var_s0 + 0x1360));
 block_99:
     var_s2_8 += 1;
     var_s0 += 0x2020;

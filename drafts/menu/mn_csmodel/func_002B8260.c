@@ -33,7 +33,7 @@ void func_002B8260(u8 *arg0) {
 
     temp_s1 = *(u8 **)((u8 *)arg0 + 0x30);
     temp_a0 = *(u8 **)((u8 *)gPracMode + 0xC);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x1000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x1000);
@@ -54,7 +54,7 @@ void func_002B8260(u8 *arg0) {
     sp70 = *(s32 *)((u8 *)temp_s1 + 0x40);
     sp74 = *(s32 *)((u8 *)temp_s1 + 0x44);
     temp_a0_2 = *(u8 **)((u8 *)gPracMode + 0xC);
-    D_00470704 = (s32)(temp_a0_2);
+    D_00470704 = (int)(temp_a0_2);
     D_0047070C = 0x1000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0_2), 0x1000);
@@ -77,7 +77,7 @@ void func_002B8260(u8 *arg0) {
         temp_s0 = *(&D_00455350 + (*(u8 *)((u8 *)temp_s1 + 0x5E) * 2));
         func_00283D00(0x2000, temp_s0, 1, 0x11403000);
         SklSheet_SetIndex((s32) *(&D_004DFB19 + temp_s0) <= 0);
-        var_v1_2 = (s32 *)(&func_002B8070);
+        var_v1_2 = (int *)(&func_002B8070);
         if (&func_002B8070 == NULL) {
             var_v1_2 = NULL;
         }

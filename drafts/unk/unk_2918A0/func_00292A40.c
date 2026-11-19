@@ -1,10 +1,10 @@
 /* Draft (not built): func_00292A40 at 0x00292A40, size 0x5A8, segment unk/unk_2918A0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operand 'int *' @ 353: switch (D_005AA640) {                           /* switch 1; irregular */
+ * Status: size, 174 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x534, original 0x5A8
  * Original: asm/nonmatchings/unk/unk_2918A0/func_00292A40.s */
 
-// src/unk/unk_2918A0.c func_00292A40 cerr diff=-1/0
+// src/unk/unk_2918A0.c func_00292A40 size diff=174/333
 s32 Fade_Request(s32, s32, s32);
 s32 Flight_MapIndex(s8);
 s32 SoundRpc_SetVolume(s32, s32, f32);
@@ -68,10 +68,10 @@ void func_00292A40(u8 *arg0) {
     s32 var_s0;
     s32 var_s1;
     s8 temp_a3;
-    s8 var_s0_2;
     void (*var_v1)();
-    u8 *temp_s0;
+    u8 *var_s2;
 
+    var_s2 = arg0;
     if (func_002A8F90() != 0) {
         D_004708B0 = 0;
         return;
@@ -81,48 +81,48 @@ void func_00292A40(u8 *arg0) {
         SoundRpc_SendWord2(-1);
         SoundRpc_SendWord(0);
         amAdx_Stop(-1);
-        func_0028EB40(arg0, 0xA, 0, 0);
+        func_0028EB40(var_s2, 0xA, 0, 0);
         return;
     }
     var_s1 = 0;
     var_s0 = 0;
     do {
-        func_00290330(*(s32 *)((u8 *)(D_005AA604 + var_s0) + 0x80), func_002920E0(D_005AA604 + var_s0 + 0x80));
+        func_00290330(*(s32 *)((u8 *)(*D_005AA604 + var_s0) + 0x80), func_002920E0(*D_005AA604 + var_s0 + 0x80));
         var_s1 += 1;
         var_s0 += 0x40;
     } while (var_s1 < 0x40);
-    switch (D_005AA640) {                           /* switch 1; irregular */
+    switch (*D_005AA640) {                          /* switch 1; irregular */
     case 9:                                         /* switch 1 */
         Scene_MarkDone();
-        *(void (**)())((u8 *)arg0 + 0x1C) = NULL;
+        *(void (**)())((u8 *)var_s2 + 0x1C) = NULL;
         return;
     case 11:                                        /* switch 1 */
         Scene_MarkDone();
-        *(void (**)())((u8 *)arg0 + 0x1C) = NULL;
+        *(void (**)())((u8 *)var_s2 + 0x1C) = NULL;
         return;
     case 12:                                        /* switch 1 */
         Scene_MarkDone();
-        *(void (**)())((u8 *)arg0 + 0x1C) = NULL;
+        *(void (**)())((u8 *)var_s2 + 0x1C) = NULL;
         return;
     case 6:                                         /* switch 1 */
         Scene_MarkDone();
-        *(void (**)())((u8 *)arg0 + 0x1C) = NULL;
+        *(void (**)())((u8 *)var_s2 + 0x1C) = NULL;
         return;
     default:                                        /* switch 1 */
         if (D_005AA63C != 0) {
             sp50 = D_00511450;
-            sp51 = *(s8 *)((u8 *)D_005AA604 + 0x11E1);
-            sp52 = *(s8 *)((u8 *)D_005AA604 + 0x11E3);
-            sp53 = *(s8 *)((u8 *)D_005AA604 + 0x11E2);
-            sp54 = *(s8 *)((u8 *)D_005AA604 + 0x11E7);
-            *(s8 *)((u8 *)(&sp55) + 0) = (s8) *(s8 *)((u8 *)D_005AA604 + 0x11E8);
-            *(s8 *)((u8 *)(&sp55) + 1) = (s8) *(s8 *)((u8 *)D_005AA604 + 0x11E9);
-            *(s8 *)((u8 *)(&sp55) + 2) = (s8) *(s8 *)((u8 *)D_005AA604 + 0x11EA);
-            *(s8 *)((u8 *)(&sp55) + 3) = (s8) *(s8 *)((u8 *)D_005AA604 + 0x11EB);
-            *(s8 *)((u8 *)(&sp55) + 4) = (s8) *(s8 *)((u8 *)D_005AA604 + 0x11EC);
-            *(s8 *)((u8 *)(&sp55) + 5) = (s8) *(s8 *)((u8 *)D_005AA604 + 0x11ED);
-            *(s8 *)((u8 *)(&sp55) + 6) = (s8) *(s8 *)((u8 *)D_005AA604 + 0x11EE);
-            sp5C = *(s32 *)((u8 *)D_005AA604 + 0x1200);
+            sp51 = *(s8 *)((u8 *)(*D_005AA604) + 0x11E1);
+            sp52 = *(s8 *)((u8 *)(*D_005AA604) + 0x11E3);
+            sp53 = *(s8 *)((u8 *)(*D_005AA604) + 0x11E2);
+            sp54 = *(s8 *)((u8 *)(*D_005AA604) + 0x11E7);
+            *(s8 *)((u8 *)(&sp55) + 0) = (s8) *(s8 *)((u8 *)(*D_005AA604) + 0x11E8);
+            *(s8 *)((u8 *)(&sp55) + 1) = (s8) *(s8 *)((u8 *)(*D_005AA604) + 0x11E9);
+            *(s8 *)((u8 *)(&sp55) + 2) = (s8) *(s8 *)((u8 *)(*D_005AA604) + 0x11EA);
+            *(s8 *)((u8 *)(&sp55) + 3) = (s8) *(s8 *)((u8 *)(*D_005AA604) + 0x11EB);
+            *(s8 *)((u8 *)(&sp55) + 4) = (s8) *(s8 *)((u8 *)(*D_005AA604) + 0x11EC);
+            *(s8 *)((u8 *)(&sp55) + 5) = (s8) *(s8 *)((u8 *)(*D_005AA604) + 0x11ED);
+            *(s8 *)((u8 *)(&sp55) + 6) = (s8) *(s8 *)((u8 *)(*D_005AA604) + 0x11EE);
+            sp5C = *(s32 *)((u8 *)(*D_005AA604) + 0x1200);
             sp60 = D_005AA63C;
             func_002BD6B0(&sp50);
             StrStatus_Start(0xB000, 0x80000);
@@ -136,26 +136,26 @@ void func_00292A40(u8 *arg0) {
             D_0046FD80 = 0x3E19999A;
             if (D_005AA644 & 1) {
                 StrMap_Free();
-                StrMap_Load(*(s8 *)((u8 *)D_005AA604 + 0x11E0));
+                StrMap_Load(*(s8 *)((u8 *)(*D_005AA604) + 0x11E0));
                 StrBg_Stop();
-                func_00291390(*(s8 *)((u8 *)D_005AA604 + 0x11E0));
+                func_00291390(*(s8 *)((u8 *)(*D_005AA604) + 0x11E0));
             }
             if (D_005AA644 & 2) {
-                temp_s0 = (u8 *)(D_005AA604);
+                var_s0 = *D_005AA604;
                 Character_Release(*D_005AA608);
-                *D_005AA608 = func_001CAAB0(Flight_MapIndex(*(s8 *)((u8 *)temp_s0 + 0x11E1)), *(s8 *)((u8 *)temp_s0 + 0x11E2), *(s8 *)((u8 *)temp_s0 + 0x11E3), 0);
-                *D_005AA568 = amCdFs_ReadFileId(*(&D_00453C80 + (*(s8 *)((u8 *)temp_s0 + 0x11E1) * 4)), 0, 1, 0);
+                *D_005AA608 = func_001CAAB0(Flight_MapIndex(*(s8 *)((u8 *)var_s0 + 0x11E1)), *(s8 *)((u8 *)var_s0 + 0x11E2), *(s8 *)((u8 *)var_s0 + 0x11E3), 0);
+                *D_005AA568 = amCdFs_ReadFileId(*(&D_00453C80 + (*(s8 *)((u8 *)var_s0 + 0x11E1) * 4)), 0, 1, 0);
                 func_002BFD90();
-                func_002BFEE0(*(s8 *)((u8 *)temp_s0 + 0x11E1), *(s8 *)((u8 *)temp_s0 + 0x11E2), 1);
-                var_s0_2 = *(s8 *)((u8 *)D_005AA604 + 0x11E3);
-                if (*(s8 *)((u8 *)D_005AA604 + 0x11E2) >= 3) {
-                    var_s0_2 = 4;
+                func_002BFEE0(*(s8 *)((u8 *)var_s0 + 0x11E1), *(s8 *)((u8 *)var_s0 + 0x11E2), 1);
+                var_s0 = (s32) *(s8 *)((u8 *)(*D_005AA604) + 0x11E3);
+                if (*(s8 *)((u8 *)(*D_005AA604) + 0x11E2) >= 3) {
+                    var_s0 = 4;
                 }
                 *D_005AA560 = amCdFs_ReadFileId(0xEDE, 0, 1, 0);
-                temp_a3 = *(s8 *)((u8 *)D_005AA604 + 0x11E1);
-                *D_005AA564 = amCdFs_ReadFileId(*((var_s0_2 * 4) + (&D_00453980 + (temp_a3 * 0x14))), 0, 1, temp_a3);
-                *D_005AA558 = amCdFs_ReadFileId((*(s8 *)((u8 *)D_005AA604 + 0x11E6) * 2) + 0xEE0, 0, 1, 0);
-                *D_005AA55C = amCdFs_ReadFileId((*(s8 *)((u8 *)D_005AA604 + 0x11E6) * 2) + 0xEE1, 0, 1, 0);
+                temp_a3 = *(s8 *)((u8 *)(*D_005AA604) + 0x11E1);
+                *D_005AA564 = amCdFs_ReadFileId(*((var_s0 * 4) + (&D_00453980 + (temp_a3 * 0x14))), 0, 1, temp_a3);
+                *D_005AA558 = amCdFs_ReadFileId((*(s8 *)((u8 *)(*D_005AA604) + 0x11E6) * 2) + 0xEE0, 0, 1, 0);
+                *D_005AA55C = amCdFs_ReadFileId((*(s8 *)((u8 *)(*D_005AA604) + 0x11E6) * 2) + 0xEE1, 0, 1, 0);
             }
             if (D_005AA644 != 0) {
                 var_v1 = func_00297C60;
@@ -169,7 +169,7 @@ void func_00292A40(u8 *arg0) {
                 D_005AA61C = 0;
                 D_005AA614 = (f32) *(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)D_005AA60C + 0x46C)) + 0x14)) + 0xB8);
                 amAdx_SetVolume(0, D_005AA60C, D_004E0610);
-                amAdx_PlayAfs(0, *(&D_00453D20 + (*(s32 *)((u8 *)D_005AA604 + 0x11DC) * 4)), 0);
+                amAdx_PlayAfs(0, *(&D_00453D20 + (*(s32 *)((u8 *)(*D_005AA604) + 0x11DC) * 4)), 0);
                 switch (D_005AA630) {               /* switch 2; irregular */
                 case 0:                             /* switch 2 */
                     break;
@@ -197,7 +197,7 @@ void func_00292A40(u8 *arg0) {
                 }
             }
         }
-        *(void (**)())((u8 *)arg0 + 0x1C) = var_v1;
+        *(void (**)())((u8 *)var_s2 + 0x1C) = var_v1;
         return;
     }
 }

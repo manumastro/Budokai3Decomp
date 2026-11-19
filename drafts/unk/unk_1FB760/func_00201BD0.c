@@ -1,10 +1,10 @@
 /* Draft (not built): func_00201BD0 at 0x00201BD0, size 0x370, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ' mwccps2.exe Compiler: 397: *(s3232 *)((u8 *)temp_s0 + 0x1C) = 0x3F800000; @ 396: *(s3232 *)((u8 *)temp_s0 + 0x18) = 0;
+ * Status: size, 140 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x2D0, original 0x370
  * Original: asm/nonmatchings/unk/unk_1FB760/func_00201BD0.s */
 
-// src/unk/unk_1FB760.c func_00201BD0 cerr diff=-1/0
+// src/unk/unk_1FB760.c func_00201BD0 size diff=140/180
 extern u32 func_0012EAE0(s32);
 extern void func_00146ED0(f32 *, f32 *, f32);
 s32 func_0012E890(f32, f32 *, f32 *);
@@ -42,12 +42,12 @@ void func_00201BD0(u8 *arg0) {
         func_0012E890((32768.0f * (3.1415927f * (2.0f * (var_f2 / 255.0f)))) / 3.141592f, &sp4C, &sp48);
         *(f32 *)((u8 *)temp_s0 + 0x10) = (f32) (*(f32 *)((u8 *)temp_s1 + 0x58) + (*(f32 *)((u8 *)temp_s1 + 0x60) * sp4C));
         *(f32 *)((u8 *)temp_s0 + 0x14) = (f32) (*(f32 *)((u8 *)temp_s1 + 0x5C) + (*(f32 *)((u8 *)temp_s1 + 0x60) * sp48));
-        *(s3232 *)((u8 *)temp_s0 + 0x18) = 0;
-        *(s3232 *)((u8 *)temp_s0 + 0x1C) = 0x3F800000;
+        *(s32 *)((u8 *)temp_s0 + 0x18) = 0;
+        *(s32 *)((u8 *)temp_s0 + 0x1C) = 0x3F800000;
         *(f32 *)((u8 *)temp_s0 + 0x20) = (f32) (*(f32 *)((u8 *)temp_s1 + 0x58) + (*(f32 *)((u8 *)temp_s1 + 0x64) * sp4C));
         *(f32 *)((u8 *)temp_s0 + 0x24) = (f32) (*(f32 *)((u8 *)temp_s1 + 0x5C) + (*(f32 *)((u8 *)temp_s1 + 0x64) * sp48));
-        *(s3232 *)((u8 *)temp_s0 + 0x28) = 0;
-        *(s3232 *)((u8 *)temp_s0 + 0x2C) = 0x3F800000;
+        *(s32 *)((u8 *)temp_s0 + 0x28) = 0;
+        *(s32 *)((u8 *)temp_s0 + 0x2C) = 0x3F800000;
     } else if (temp_v1 == 1) {
         M2C_ERROR(/* unknown instruction: sqc2 $vf0, ($v0) */);
         sp30 = *(f32 *)((u8 *)temp_s1 + 0x74) - *(f32 *)((u8 *)temp_s1 + 0x6C);
@@ -61,12 +61,12 @@ void func_00201BD0(u8 *arg0) {
         func_00146ED0(&sp30, &sp30, *(f32 *)((u8 *)temp_s1 + 0x78) * ((var_f3 / 255.0f) - 0.5f));
         *(f32 *)((u8 *)temp_s0 + 0x10) = (f32) *(f32 *)((u8 *)temp_s1 + 0x68);
         *(f32 *)((u8 *)temp_s0 + 0x14) = (f32) *(f32 *)((u8 *)temp_s1 + 0x6C);
-        *(s3232 *)((u8 *)temp_s0 + 0x18) = 0;
-        *(s3232 *)((u8 *)temp_s0 + 0x1C) = 0x3F800000;
+        *(s32 *)((u8 *)temp_s0 + 0x18) = 0;
+        *(s32 *)((u8 *)temp_s0 + 0x1C) = 0x3F800000;
         *(f32 *)((u8 *)temp_s0 + 0x20) = (f32) *(f32 *)((u8 *)temp_s1 + 0x70);
         *(f32 *)((u8 *)temp_s0 + 0x24) = (f32) *(f32 *)((u8 *)temp_s1 + 0x74);
-        *(s3232 *)((u8 *)temp_s0 + 0x28) = 0;
-        *(s3232 *)((u8 *)temp_s0 + 0x2C) = 0x3F800000;
+        *(s32 *)((u8 *)temp_s0 + 0x28) = 0;
+        *(s32 *)((u8 *)temp_s0 + 0x2C) = 0x3F800000;
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
         M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);

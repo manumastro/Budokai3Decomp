@@ -29,7 +29,7 @@ s32 func_0022E9D0(u8 *arg0, s32 *arg1) {
         temp_v1 = *(s32 *)((u8 *)arg0 + 0x17A0);
         var_v0 = NULL;
         if (temp_v1 != 0) {
-            var_v0 = (u8 *)(temp_v1 + 0x20);
+            var_v0 = (unsigned char *)(temp_v1 + 0x20);
         }
         temp_a0 = *(u8 **)((u8 *)arg0 + 0xB74);
         var_t2 = 0;

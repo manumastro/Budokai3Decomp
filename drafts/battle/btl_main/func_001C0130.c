@@ -1,13 +1,13 @@
 /* Draft (not built): func_001C0130 at 0x001C0130, size 0x870, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ')' expected mwccps2.exe Compiler: 4456: f32 func_00146F90(s32 *, s3232 *); @ 4455: f32 func_00146E90(s3232 *);
+ * Status: size, 369 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x648, original 0x870
  * Original: asm/nonmatchings/battle/btl_main/func_001C0130.s */
 
-// src/battle/btl_main.c func_001C0130 cerr diff=-1/0
+// src/battle/btl_main.c func_001C0130 size diff=369/402
 s32 func_0013B500(s32);
-f32 func_00146E90(s3232 *);
-f32 func_00146F90(s32 *, s3232 *);
+f32 func_00146E90(f32 *);
+f32 func_00146F90(s32 *, f32 *);
 s32 func_001FED00(f32 *, s32 *, s32 *);
 extern s32 D_004313F0;
 extern void func_00146F30(void *);
@@ -15,14 +15,20 @@ extern void func_0013B160(void *);
 extern void func_0011F680(void);
 extern char D_003F0800[];
 extern void func_0013B620(void *);
-void func_001C0130(u8 *arg0, s32 arg1) {
-    s3232 sp80;
+void func_001C0130(Fighter *arg0, s32 arg1) {
+    s32 spC4;
+    s32 spBC;
+    s32 spB4;
+    s32 spB0;
+    s32 sp98;
+    u8 sp[0x400];
+    f32 sp80;
     f32 sp90;
     f32 sp94;
     s32 spA0;
     s32 spB8;
-    s3232 spC0;
-    s3232 spD0;
+    f32 spC0;
+    f32 spD0;
     f32 spD4;
     f32 spD8;
     s32 spDC;
@@ -31,6 +37,7 @@ void func_001C0130(u8 *arg0, s32 arg1) {
     s32 sp110;
     s32 sp120;
     s32 sp130;
+    BattleWork *temp_s5;
     f32 temp_f0;
     f32 temp_f0_2;
     f32 temp_f20;
@@ -46,7 +53,6 @@ void func_001C0130(u8 *arg0, s32 arg1) {
     s32 var_v1;
     s64 temp_a1;
     u8 *temp_a1_2;
-    u8 *temp_s5;
     u8 *temp_v1;
 
     temp_s5 = gBattle;
@@ -54,9 +60,9 @@ void func_001C0130(u8 *arg0, s32 arg1) {
     *(s64 *)((u8 *)(&spE0) + 0x10) = (s64) *(s64 *)((u8 *)(&D_004313F0) + 0x10);
     func_001E4FA0(arg0, 1);
     func_001E4FA0(*(u8 **)((u8 *)arg0 + 0x1354), 1);
-    func_001E4820(arg0, 0, 0x358637BD);
-    func_001E4820(*(u8 **)((u8 *)arg0 + 0x1354), 0, 0x358637BD);
-    temp_v0 = func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 0x43340000);
+    func_001E4820(0.000001f, arg0, 0);
+    func_001E4820(0.000001f, *(u8 **)((u8 *)arg0 + 0x1354), 0);
+    temp_v0 = func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 180.0f);
     if (temp_v0 != 0) {
         *(s16 *)((u8 *)arg0 + 0xCB4) = 1;
         *(s8 *)((u8 *)arg0 + 0x183C) = (s8) *(s32 *)((u8 *)((*(s8 *)((u8 *)arg0 + 0x183C) * 4) + sp) + 0xE0);
@@ -68,7 +74,7 @@ void func_001C0130(u8 *arg0, s32 arg1) {
     *(s8 *)((u8 *)arg0 + 0x183E) = 0;
     switch (arg1) {                                 /* irregular */
     case 0:
-        spD0 = 0;
+        spD0 = 0.0f;
         spD4 = 0.0f;
         spD8 = *(f32 *)((u8 *)arg0 + 0x1828);
         spDC = 0x3F800000;
@@ -87,7 +93,7 @@ void func_001C0130(u8 *arg0, s32 arg1) {
         M2C_ERROR(/* unknown instruction: vmove.xyzw $vf31, $vf27 */);
         break;
     case 2:
-        spD0 = 0;
+        spD0 = 0.0f;
         spD4 = 0.0f;
         spD8 = *(f32 *)((u8 *)arg0 + 0x1828);
         spDC = 0x3F800000;
@@ -148,7 +154,7 @@ loop_18:
         temp_s3 = func_001FED00(&sp90, &sp110, &sp100);
         temp_f0 = func_00146F90(&spA0, &spC0);
         var_v1 = 1;
-        if ((*(s16 *)((u8 *)temp_s5 + 0x8944) != 0) && (*(s8 *)((u8 *)temp_s5 + 0x8AAE) == 0)) {
+        if ((temp_s5->unk8944 != 0) && ((s8) temp_s5->unk8954[0x15A] == 0)) {
             var_v1 = 0;
         }
         if ((var_v1 != 0) && (temp_s3 > 0) && (temp_f0 < 0.0f)) {
@@ -201,7 +207,7 @@ loop_18:
             var_s1 = 1;
         }
     }
-    if (((spB8 == 0) || (gBtbBg != 0)) && ((*(s8 *)((u8 *)arg0 + 0x1FF8) == -1) || (*(s8 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1354)) + 0x1FF8) == -1) || (*(s8 *)((u8 *)arg0 + 0x2013) == 1))) {
+    if (((spB8 == 0) || (gBtbBg.stage != 0)) && ((*(s8 *)((u8 *)arg0 + 0x1FF8) == -1) || (*(s8 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1354)) + 0x1FF8) == -1) || (*(s8 *)((u8 *)arg0 + 0x2013) == 1))) {
         func_00146F30(&spC0);
         *(s16 *)((u8 *)arg0 + 0x181E) = (s16) *(s16 *)((u8 *)arg0 + 0xCB4);
         *(s16 *)((u8 *)arg0 + 0xCB4) = 1;
@@ -225,7 +231,7 @@ loop_18:
         return;
     }
     if (var_s1 != 0) {
-        func_00146ED0(arg0 + 0xD0, &spC0, 3.0f);
+        func_00146ED0((f32 *)(arg0 + 0xD0), (f32 *)(&spC0), 3.0f);
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
@@ -255,7 +261,7 @@ block_55:
 loop_61:
                 if (var_a2 < *(s32 *)((u8 *)temp_s5 + 0x88D8)) {
                     if (*(s32 *)((u8 *)arg0 + 0x1350) != var_a2) {
-                        temp_a1_2 = (var_a2 * 0x2020) + temp_s5;
+                        temp_a1_2 = (unsigned char *)((var_a2 * 0x2020) + temp_s5);
                         if (*(s8 *)((u8 *)temp_a1_2 + 0x2828) != -1) {
                             *(s8 *)((u8 *)temp_a1_2 + 0x2828) = 0;
                         }
@@ -274,7 +280,7 @@ block_63:
         *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1354)) + 0x1A6C) = 0;
         return;
     }
-    func_00146ED0(arg0 + 0xD0, &spC0, 3.0f);
+    func_00146ED0((f32 *)(arg0 + 0xD0), (f32 *)(&spC0), 3.0f);
     *(s8 *)((u8 *)arg0 + 0x2004) = 1;
     *(s8 *)((u8 *)arg0 + 0x1FFB) = 1;
     *(s16 *)((u8 *)arg0 + 0xCB6) = 0;

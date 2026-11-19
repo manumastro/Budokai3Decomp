@@ -17,7 +17,7 @@ s32 func_001D9480(u8 *arg0) {
     s8 var_v0;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gBattle);
+    temp_s0 = (unsigned char *)(gBattle);
     if (*(s8 *)((u8 *)arg0 + 0x1FF8) != -1) {
         *(s32 *)((u8 *)arg0 + 0x1898) = -1;
         return *(s32 *)((u8 *)arg0 + 0x1898);
@@ -65,7 +65,7 @@ block_18:
             *(s32 *)((u8 *)arg0 + 0x1AC4) = 0x20;
             *(s8 *)((u8 *)arg0 + 0x1FE4) = 1;
             *(s32 *)((u8 *)arg0 + 0x1898) = 2;
-            func_001D7CC0((void *)(arg0), 1);
+            func_001D7CC0((Fighter *)(arg0), 1);
         }
         if (*(s8 *)((u8 *)arg0 + 0x1FD9) > 0) {
             *(s32 *)((u8 *)arg0 + 0x1AC0) = (s32) *(s32 *)((u8 *)arg0 + 0x1EE8);

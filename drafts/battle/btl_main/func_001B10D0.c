@@ -38,9 +38,9 @@ void func_001B10D0(s8 *arg0, s8 arg1) {
     u8 *var_s2;
 
     if (gBattle == NULL) {
-        gBattle = (struct BattleWork *)(D_00495B70[0]);
+        gBattle = (struct BattleWork *)(D_00495B70);
     }
-    temp_s0 = (u8 *)(gBattle);
+    temp_s0 = (unsigned char *)(gBattle);
     memset(temp_s0, 0, 0x8AC0);
     memcpy(temp_s0 + 0x690, arg0, 0x180);
     var_s4 = 0;

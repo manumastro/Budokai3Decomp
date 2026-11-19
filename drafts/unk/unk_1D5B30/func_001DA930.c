@@ -1,7 +1,7 @@
 /* Draft (not built): func_001DA930 at 0x001DA930, size 0x9E4, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); version from 'int' to 'void *' @ 1888: , (void *)((void *)((void *)((void *)((void *)(var_s0))))), 0, 0, 0, 0x3F800000);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); legal implicit conversion from 'int' to 'void *' @ 1888: func_001E9B00(1, (s32)(var_s0), 0, 0, 0, (void *)(0x3F800000));
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001DA930.s */
 
 // src/unk/unk_1D5B30.c func_001DA930 cerr diff=-1/0
@@ -42,7 +42,7 @@ s32 func_001DA930(u8 *arg0, s32 arg1, s32 arg2, s32 arg3) {
         if (temp_v1 == 0) {
             var_v0 = NULL;
         } else {
-            var_v0 = &D_004E0660 + (temp_v1 * 0x28);
+            var_v0 = ((u8 *)&D_004E0660) + (temp_v1 * 0x28);
         }
         if (var_v0 != NULL) {
             var_v0_2 = *(u8 *)((u8 *)var_v0 + 0x15);
@@ -63,7 +63,7 @@ block_11:
     if (temp_v1_2 == 0) {
         var_v0_3 = NULL;
     } else {
-        var_v0_3 = &D_004E0660 + (temp_v1_2 * 0x28);
+        var_v0_3 = ((u8 *)&D_004E0660) + (temp_v1_2 * 0x28);
     }
     if (var_v0_3 != NULL) {
         var_v0_4 = *(u8 *)((u8 *)var_v0_3 + 0x15);
@@ -75,7 +75,7 @@ block_11:
         if (temp_v1_3 == 0) {
             var_v0_5 = NULL;
         } else {
-            var_v0_5 = &D_004E0660 + (temp_v1_3 * 0x28);
+            var_v0_5 = ((u8 *)&D_004E0660) + (temp_v1_3 * 0x28);
         }
         var_f1 = (100.0f - (((f32) *(s16 *)((u8 *)var_v0_5 + 0x16) * (100.0f + *(f32 *)((u8 *)arg0 + 0x1FB8))) / 100.0f)) / 100.0f;
         var_f0 = 0x3F800000;
@@ -174,7 +174,7 @@ block_101:
             break;
         }
         if (arg3 != 0) {
-            func_001E9B00(1, (void *)((void *)((void *)((void *)((void *)((void *)(var_s0)))))), 0, 0, 0, 0x3F800000);
+            func_001E9B00(1, (s32)(var_s0), 0, 0, 0, (void *)(0x3F800000));
         }
         temp_v1_5 = *(s8 *)((u8 *)arg0 + 0x1FF8);
         if (temp_v1_5 < 2) {
@@ -206,10 +206,10 @@ block_101:
                 var_f12 = 0x42C80000;
                 /* fallthrough */
             case 16:                                /* switch 4 */
-                func_001DFC80(arg0, 1, var_f12);
+                func_001DFC80((Fighter *)(arg0), 1, var_f12);
                 break;
             case 26:                                /* switch 4 */
-                func_001DFE60((struct Fighter *)(arg0), 0, 0xC3FA0000);
+                func_001DFE60((Fighter *)(arg0), 0, 0xC3FA0000);
                 break;
             }
             break;

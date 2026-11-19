@@ -1,16 +1,17 @@
 /* Draft (not built): func_002A8CE0 at 0x002A8CE0, size 0x15C, segment unk/unk_2A8970 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); dentifier 'sp' @ 114: *(s32 *)((u8 *)arg1 + 0x11D4) = (s32) (arg0 + (*(s32 *)((u8 *)((arg0 * 4) + sp) + 0x30) << 0x10));
+ * Status: size, 47 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x168, original 0x15C
  * Original: asm/nonmatchings/unk/unk_2A8970/func_002A8CE0.s */
 
-// src/unk/unk_2A8970.c func_002A8CE0 cerr diff=-1/0
+// src/unk/unk_2A8970.c func_002A8CE0 size diff=47/90
 s32 func_001F0510(s8, s128 *);
 s32 func_00298CC0(s32, s32, s32, s128 *, s32);
 extern s128 D_004546D0;
 extern s128 D_004546E0;
 extern void func_00298DA0(void);
 void func_002A8CE0(s8 arg0, u8 *arg1) {
+    u8 sp[0x400];
     s128 sp30;
     s128 spD0;
     s128 *var_a0;
@@ -46,7 +47,7 @@ void func_002A8CE0(s8 arg0, u8 *arg1) {
     *(s8 *)((u8 *)arg1 + 0x11E5) = 0;
     *(s8 *)((u8 *)arg1 + 0x11E6) = 0;
     var_a0_2 = 0;
-    var_v1_2 = (s16 *)(D_004E6560 + (arg0 * 0x1210) + 0x1270);
+    var_v1_2 = (short *)(D_004E6560 + (arg0 * 0x1210) + 0x1270);
     do {
         temp_v0 = *var_v1_2;
         if (temp_v0 > 0) {

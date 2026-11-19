@@ -1,7 +1,7 @@
 /* Draft (not built): func_0028EE90 at 0x0028EE90, size 0x200, segment story/str_bg (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  temp_a0_2 = *(arg3 + (*(s16 *)((u8 *)var_s2 + 2) * 4)); @ 198: var_a0 = *M2C_ERROR(/* Read from unset register $t0 */);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ((u8 *)var_s1 + 0x34) = (s32) *(arg2 + (temp_a0_3 * 4)); @ 198: var_a0 = *M2C_ERROR(/* Read from unset register $t0 */);
  * Original: asm/nonmatchings/story/str_bg/func_0028EE90.s */
 
 // src/story/str_bg.c func_0028EE90 cerr diff=-1/0
@@ -28,23 +28,23 @@ void func_0028EE90(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (var_a0 != -1) {
         do {
             temp_a0 = (s64) ((s64) var_a0 << 0x38) >> 0x38;
-            temp_s0 = (u8 **)(spAC + (temp_a0 * 4));
+            temp_s0 = (unsigned char **)(spAC + (temp_a0 * 4));
             var_s1 = *temp_s0;
             if (var_s1 == NULL) {
                 var_s1 = amTask_Create(&func_0028E790, 0, M2C_ERROR(/* Read from unset register $t1 */) + temp_a0, 2);
                 *temp_s0 = var_s1;
             }
-            temp_a0_2 = *(arg3 + (*(s16 *)((u8 *)var_s2 + 2) * 4));
+            temp_a0_2 = *(s32 *)(arg3 + (*(s16 *)((u8 *)var_s2 + 2) * 4));
             if (temp_a0_2 != 0) {
                 func_0022D0E0(temp_a0_2, 1);
             }
             temp_v1 = *(s16 *)((u8 *)var_s2 + 4);
             if (temp_v1 & 0x8000) {
-                var_v0 = func_0022D860(*(*(s32 *)((u8 *)(*(arg1 + (*(s8 *)((u8 *)var_s2 + 1) * 4))) + 0x14) + ((temp_v1 & 0x7FFF) * 4)), 0);
-                var_v1 = (s32 *)(arg3 + (*(s16 *)((u8 *)var_s2 + 2) * 4));
+                var_v0 = func_0022D860(*(s32 *)(*(s32 *)((u8 *)(*(s32 *)(arg1 + (*(s8 *)((u8 *)var_s2 + 1) * 4))) + 0x14) + ((temp_v1 & 0x7FFF) * 4)), 0);
+                var_v1 = (int *)(arg3 + (*(s16 *)((u8 *)var_s2 + 2) * 4));
             } else {
-                var_v0 = func_0022D670(*(*(s32 *)((u8 *)(*(arg1 + (*(s8 *)((u8 *)var_s2 + 1) * 4))) + 0x1C) + (temp_v1 * 4)), 0);
-                var_v1 = (s32 *)(arg3 + (*(s16 *)((u8 *)var_s2 + 2) * 4));
+                var_v0 = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(s32 *)(arg1 + (*(s8 *)((u8 *)var_s2 + 1) * 4))) + 0x1C) + (temp_v1 * 4)), 0);
+                var_v1 = (int *)(arg3 + (*(s16 *)((u8 *)var_s2 + 2) * 4));
             }
             *var_v1 = var_v0;
             temp_a0_3 = *(s8 *)((u8 *)var_s2 + 1);
@@ -58,7 +58,7 @@ void func_0028EE90(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
             *(s32 *)((u8 *)var_s1 + 0x4C) = 0x3F800000;
             *(s32 *)((u8 *)var_s1 + 0x50) = 0;
             temp_a0_4 = *(s16 *)((u8 *)var_s2 + 6);
-            temp_v1_2 = (s32 *)(arg1 + (*(s8 *)((u8 *)var_s2 + 1) * 4));
+            temp_v1_2 = (int *)(arg1 + (*(s8 *)((u8 *)var_s2 + 1) * 4));
             var_s2 += 8;
             *(s32 *)((u8 *)var_s1 + 0x48) = (s32) *temp_v1_2;
             *(s16 *)((u8 *)var_s1 + 0x32) = temp_a0_4;

@@ -25,7 +25,6 @@ extern void func_001E18B0(void *, int);
 extern void func_001E1A40(void *, int);
 extern void func_001E1BD0(void *, int, int);
 extern void func_001E3550();
-extern void func_001E1460(void *, int);
 extern void func_001D80A0(void *, int);
 void func_001C7670(u8 *arg0) {
     f32 temp_f0;
@@ -46,7 +45,7 @@ void func_001C7670(u8 *arg0) {
     s8 var_v0_3;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gBattle);
+    temp_s0 = (unsigned char *)(gBattle);
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
     if (func_00146EB0(*(u8 **)((u8 *)arg0 + 0x1CF4)) == 0.0f) {
@@ -71,7 +70,7 @@ void func_001C7670(u8 *arg0) {
         var_v0 = 0;
     }
     *(s8 *)((u8 *)arg0 + 0x1FF9) = var_v0;
-    func_0013AFA0((s32)((void *)(arg0)));
+    func_0013AFA0((s32)(arg0));
     func_001E5AD0(arg0 + 0x650);
     func_001E5AD0(arg0 + 0xCD0);
     *(s32 *)((u8 *)arg0 + 0x1A48) = -1;

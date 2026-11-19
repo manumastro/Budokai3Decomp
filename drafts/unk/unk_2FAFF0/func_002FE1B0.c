@@ -40,7 +40,7 @@ void func_002FE1B0(s32 arg0) {
 
     var_v0 = 1;
     temp_s1 = *(u8 **)((u8 *)gTourMap + 0x30);
-    temp_s0 = (u8 *)(gTourMap + 0xDC);
+    temp_s0 = (unsigned char *)(gTourMap + 0xDC);
     temp_a3 = ((D_005D0082 + 1) * 0x64) + 0x88;
     var_a1 = D_005D0082 * 0x64;
     var_f5 = (f32) ((((1 << D_005D0082) - 1) * 0x64) + 0x190 + (D_005D0082 * 5)) / -2.0f;

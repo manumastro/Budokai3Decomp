@@ -44,7 +44,7 @@ void func_00309E40(u8 *arg0) {
         }
         sp4C = *(u8 **)((u8 *)temp_s0 + 0x1C);
         temp_a0 = *(u8 **)((u8 *)temp_s0 + 4);
-        D_00470704 = (s32)(temp_a0);
+        D_00470704 = (int)(temp_a0);
         D_0047070C = 0x2000;
         D_00470708 = 0;
         amModel_SetCurrent((s32)(temp_a0), 0x2000);

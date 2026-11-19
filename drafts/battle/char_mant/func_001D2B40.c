@@ -50,7 +50,7 @@ u8 *func_001D2B40(u8 *arg0) {
         do {
             temp_f0 = *(f32 *)((u8 *)var_v1 + 0xDC);
             var_a1 += 1;
-            temp_v0_2 = (u8 *)(*(s32 *)((u8 *)temp_a2 + 0x7C) + var_a0);
+            temp_v0_2 = (unsigned char *)(*(s32 *)((u8 *)temp_a2 + 0x7C) + var_a0);
             *(f32 *)((u8 *)temp_v0_2 + 0x30) = temp_f0;
             var_a0 += 0x40;
             *(f32 *)((u8 *)temp_v0_2 + 0x34) = (f32) (temp_f0 * temp_f0);

@@ -1,10 +1,10 @@
 /* Draft (not built): func_00205BC0 at 0x00205BC0, size 0x410, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); nversion from 'unsigned char[]' to 'float' mwccps2.exe Compiler: @ 540: func_00146F10(&sp60, var_s1 + 0x20, D_0051D9AC);
+ * Status: size, 173 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x3E8, original 0x410
  * Original: asm/nonmatchings/unk/unk_1FB760/func_00205BC0.s */
 
-// src/unk/unk_1FB760.c func_00205BC0 cerr diff=-1/0
+// src/unk/unk_1FB760.c func_00205BC0 size diff=173/250
 extern f32 D_0051D9A8;
 s32 func_00205BC0(u8 *arg0) {
     s32 sp60;
@@ -34,7 +34,7 @@ loop_39:
         if (temp_f1 <= 0.0f) {
             *(s32 *)((u8 *)var_s1 + 0xC) = (s32) (*(s32 *)((u8 *)var_s1 + 0xC) | 1);
         } else {
-            func_00146F10(&sp60, var_s1 + 0x20, D_0051D9AC);
+            func_00146F10((void *)(&sp60), (void *)(var_s1 + 0x20),(*(f32 *)(D_0051D9AC)));
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
             M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
@@ -46,7 +46,7 @@ loop_39:
                 **(u8 ***)((u8 *)var_s1 + 4) = *(u8 **)((u8 *)var_s1 + 0);
                 *(u8 ***)((u8 *)(*(u8 **)((u8 *)var_s1 + 0)) + 4) = (u8 **) *(u8 ***)((u8 *)var_s1 + 4);
                 *(s32 *)((u8 *)arg0 + 0x4C) = (s32) (*(s32 *)((u8 *)arg0 + 0x4C) - 1);
-                *(&D_00526440 + (D_0047066C * 4)) = var_s1;
+                *(((u8 *)&D_00526440) + (D_0047066C * 4)) = (unsigned char)(var_s1);
                 D_0047066C += 1;
                 if (D_0047066C >= 0x800) {
                     D_0047066C = 0;
@@ -58,9 +58,9 @@ loop_39:
                 }
                 if (*(s32 *)((u8 *)temp_s2 + 8) & 8) {
                     if (*(s32 *)((u8 *)var_s1 + 0xC) & 4) {
-                        *(f32 *)((u8 *)var_s1 + 0x58) = (f32) (*(f32 *)((u8 *)var_s1 + 0x58) - (*(f32 *)((u8 *)temp_s2 + 0x7C) * D_0051D9AC));
+                        *(f32 *)((u8 *)var_s1 + 0x58) = (f32) (*(f32 *)((u8 *)var_s1 + 0x58) - (*(f32 *)((u8 *)temp_s2 + 0x7C) * (*(f32 *)(D_0051D9AC))));
                     } else {
-                        *(f32 *)((u8 *)var_s1 + 0x58) = (f32) (*(f32 *)((u8 *)var_s1 + 0x58) + (*(f32 *)((u8 *)temp_s2 + 0x7C) * D_0051D9AC));
+                        *(f32 *)((u8 *)var_s1 + 0x58) = (f32) (*(f32 *)((u8 *)var_s1 + 0x58) + (*(f32 *)((u8 *)temp_s2 + 0x7C) * (*(f32 *)(D_0051D9AC))));
                     }
                 }
                 if (*(s32 *)((u8 *)temp_s2 + 8) & 0x10) {
@@ -107,8 +107,8 @@ loop_39:
                         *(f32 *)((u8 *)var_s1 + 0x4C) = temp_f1_3;
                     }
                 } else if (temp_v1 & 0x4000) {
-                    var_f2 = *(f32 *)((u8 *)temp_s2 + 0xB8) * D_0051D9AC;
-                    var_f1 = *(f32 *)((u8 *)temp_s2 + 0xBC) * D_0051D9AC;
+                    var_f2 = *(f32 *)((u8 *)temp_s2 + 0xB8) * (*(f32 *)(D_0051D9AC));
+                    var_f1 = *(f32 *)((u8 *)temp_s2 + 0xBC) * (*(f32 *)(D_0051D9AC));
                     if (*(s32 *)((u8 *)var_s1 + 0xC) & 8) {
                         var_f2 = -var_f2;
                     }

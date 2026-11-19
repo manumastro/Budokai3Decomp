@@ -1,10 +1,10 @@
 /* Draft (not built): func_00251A60 at 0x00251A60, size 0x1BC, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); rom 'unsigned char *' to 'int' @ 1154: (u8 *)arg0 + 8)) + 0x1350), *(s32 *)((u8 *)temp_s0 + 0xE4), arg0 + 0x20, &sp110);
+ * Status: size, 73 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x128, original 0x1BC
  * Original: asm/nonmatchings/battle/skill_cmd/func_00251A60.s */
 
-// src/battle/skill_cmd.c func_00251A60 cerr diff=-1/0
+// src/battle/skill_cmd.c func_00251A60 size diff=73/74
 extern void func_001F9CD0(s32, s32, s32, s32, s32);
 s16 func_0020F690();
 s32 func_00214F80(s16, s32 *);
@@ -45,7 +45,7 @@ void func_00251A60(u8 *arg0) {
     sp110 = D_004502A0;
     if (!(*(s16 *)((u8 *)arg0 + 4) & 0x200)) {
         if (*(s16 *)((u8 *)temp_s0 + 0xE2) != 0) {
-            func_001F9CD0(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 8)) + 0x1350), *(s32 *)((u8 *)temp_s0 + 0xE4), arg0 + 0x20, &sp110);
+            func_001F9CD0((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 8)) + 0x1350)), (s32)(*(s32 *)((u8 *)temp_s0 + 0xE4)), (s32)(arg0 + 0x20), (s32)(&sp110), 0);
             if (*(s16 *)((u8 *)temp_s0 + 0xE2) != 1) {
                 goto block_4;
             }
@@ -62,8 +62,8 @@ block_4:
                 spA6 = temp_v1;
                 spA8 = *(s16 *)((u8 *)temp_s0 + 0xC2);
                 if ((((s64) ((s64) temp_v1 << 0x30) >> 0x30) == 9) || (spA8 == 5)) {
-                    func_00146F60(&sp100, arg0 + 0x30);
-                    func_00141C30((void *)(&sp90), (void *)(&sp110), (void *)(&sp100));
+                    func_00146F60((f32 *)(&sp100), (s32 *)(arg0 + 0x30));
+                    func_00141C30((f32 *)(&sp90), (f32 *)(&sp110), (f32 *)(&sp100));
                 }
                 spE4 = *(s16 *)((u8 *)temp_s0 + 0xAC);
                 spE6 = *(s16 *)((u8 *)temp_s0 + 0xAE);

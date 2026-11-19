@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/battle/a2d/func_0022BC30.s */
 
 // src/battle/a2d.c func_0022BC30 size diff=132/178
-s32 func_0022BC30(u8 *arg0, f32 fparg0) {
+s32 func_0022BC30(s32 *arg0, f32 fparg0) {
     f32 temp_f0;
     f32 var_f12;
     s32 var_a1;
@@ -24,7 +24,7 @@ s32 func_0022BC30(u8 *arg0, f32 fparg0) {
     u8 *var_a0;
     u8 *var_v1;
 
-    var_a0 = arg0;
+    var_a0 = (unsigned char *)(arg0);
     var_f12 = fparg0;
     var_v0 = 0;
     if (var_a0 != NULL) {

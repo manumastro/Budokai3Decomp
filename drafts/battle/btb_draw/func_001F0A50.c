@@ -1,7 +1,7 @@
 /* Draft (not built): func_001F0A50 at 0x001F0A50, size 0x3C4, segment battle/btb_draw (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 8 *)((u8 *)(&sp130[0]) + 0) = (s128) *(s128 *)((u8 *)(&D_0044B6D0) + 0); @ 3584: s32 func_00146F10(s32 *, s32 *, s3232);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 64 *)((u8 *)(&D_0044B6D0) + 0x10); @ 3647: *(s128 *)((u8 *)(&sp130[0]) + 0) = (s128) *(s128 *)((u8 *)(&D_0044B6D0) + 0);
  * Original: asm/nonmatchings/battle/btb_draw/func_001F0A50.s */
 
 // src/battle/btb_draw.c func_001F0A50 cerr diff=-1/0
@@ -11,7 +11,7 @@ s32 amDraw_SetPacketMode(s32);
 s32 func_00136870(s32, s32, s128 *, s32);
 s32 func_001374A0(void *, void *);
 s32 func_0013B8D0(f32);
-s32 func_00146F10(s32 *, s32 *, s3232);
+s32 func_00146F10(s32 *, s32 *, s32);
 extern s128 D_0044B610;
 extern s32 D_0044B620;
 extern s128 D_0044B660;
@@ -24,6 +24,9 @@ extern f32 D_0047042C;
 extern f32 D_00470430;
 extern void amDraw_FlushPacket(void);
 void func_001F0A50(u8 *arg0) {
+    s32 sp130;
+    s32 sp110;
+    u8 sp[0x400];
     s32 sp90;
     f32 spA0;
     f32 spA4;
@@ -117,7 +120,7 @@ loop_13:
             spD4 = temp_f20;
 loop_11:
             if (var_s4 < 4) {
-                func_0013B160((s32)((void *)(D_003F0800)));
+                func_0013B160((s32)(D_003F0800));
                 func_0013B8D0(0.001f * (*(f32 *)((u8 *)temp_s3 + 0x10) / (f32) (var_s5 + 1)));
                 M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
                 M2C_ERROR(/* unknown instruction: vmulax.xyzw ACC, $vf28, $vf1x */);

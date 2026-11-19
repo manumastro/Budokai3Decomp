@@ -38,7 +38,7 @@ void func_001ABF10(u8 *arg0) {
     if (var_s5 > 0) {
         do {
             temp_s3 = var_s4 + 0x10;
-            temp_s2 = (s16 *)(temp_s3 + 0x36);
+            temp_s2 = (short *)(temp_s3 + 0x36);
             memset(temp_s1, 0, 0x980);
             *(s16 *)((u8 *)temp_s3 + 0x34) = 0;
             var_v1 = 0;
@@ -49,13 +49,13 @@ loop_5:
                 if (temp_a2 >= 0x253) {
                     goto block_8;
                 }
-                temp_t2 = (u8 *)(&D_004E0660 + (temp_a2 * 0x28));
+                temp_t2 = (unsigned char *)(&D_004E0660 + (temp_a2 * 0x28));
                 if (!(*(s64 *)((u8 *)temp_t2 + 0) & (1 << (s64) *(s16 *)((u8 *)temp_s3 + 0x10)))) {
                     *var_v0 = 0;
                 } else if ((s32) *(u8 *)((u8 *)temp_t2 + 0xD) <= 0) {
                     *var_v0 = 0;
                 } else {
-                    temp_a2_2 = (s32 *)(temp_s1 + (temp_a2 * 4));
+                    temp_a2_2 = (int *)(temp_s1 + (temp_a2 * 4));
                     temp_a0 = *temp_a2_2;
                     if ((temp_a0 > 0) && ((temp_a0 == 2) || !(*(u8 *)((u8 *)temp_t2 + 0xB) & 8))) {
                         *var_v0 = 0;
@@ -79,7 +79,7 @@ loop_21:
             var_a2 = var_a3 + 1;
             if (*var_a1 <= 0) {
                 if (var_a2 < 7) {
-                    var_a0 = (u8 *)(temp_s2 + (var_a2 * 2));
+                    var_a0 = (unsigned char *)(temp_s2 + (var_a2 * 2));
                     do {
                         var_a2 += 1;
                         *(s16 *)((u8 *)var_a0 + -2) = (s16) *(s16 *)((u8 *)var_a0 + 0);

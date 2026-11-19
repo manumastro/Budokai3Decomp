@@ -1,10 +1,10 @@
 /* Draft (not built): func_002CE500 at 0x002CE500, size 0x12C, segment unk/unk_2CD5F0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); )var_t3 + 0xC) * D_0051CD24)); @ 489: f32) (*(f32 *)((u8 *)temp_t0 + 0x10) + (*(f32 *)((u8 *)var_t3 + 8) * D_0051CD24));
+ * Status: diff, 54 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/unk/unk_2CD5F0/func_002CE500.s */
 
-// src/unk/unk_2CD5F0.c func_002CE500 cerr diff=-1/0
+// src/unk/unk_2CD5F0.c func_002CE500 diff diff=54/75
 void func_002CE500(u8 *arg0) {
     f32 temp_f2;
     f32 temp_f2_2;
@@ -23,8 +23,8 @@ loop_2:
         temp_a3 = *(s32 *)((u8 *)var_t3 + 4);
         if (!((var_t1 >> temp_a3) & 1)) {
             temp_t0 = arg0 + 0x30 + ((temp_a3 - 6) * 4);
-            *(f32 *)((u8 *)temp_t0 + 0x10) = (f32) (*(f32 *)((u8 *)temp_t0 + 0x10) + (*(f32 *)((u8 *)var_t3 + 8) * D_0051CD24));
-            *(f32 *)((u8 *)temp_t0 + 0x20) = (f32) (*(f32 *)((u8 *)temp_t0 + 0x20) + (*(f32 *)((u8 *)var_t3 + 0xC) * D_0051CD24));
+            *(f32 *)((u8 *)temp_t0 + 0x10) = (f32) (*(f32 *)((u8 *)temp_t0 + 0x10) + (*(f32 *)((u8 *)var_t3 + 8) * (*(f32 *)(D_0051CD24))));
+            *(f32 *)((u8 *)temp_t0 + 0x20) = (f32) (*(f32 *)((u8 *)temp_t0 + 0x20) + (*(f32 *)((u8 *)var_t3 + 0xC) * (*(f32 *)(D_0051CD24))));
             temp_f2 = *(f32 *)((u8 *)temp_t0 + 0x10);
             if (!(temp_f2 <= 1.0f)) {
                 *(f32 *)((u8 *)temp_t0 + 0x10) = 0.0f;

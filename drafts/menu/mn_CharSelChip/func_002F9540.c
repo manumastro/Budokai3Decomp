@@ -37,3 +37,44 @@ void func_002F9540(void *arg0) {
     amHeap_Free(temp_s3);
     amTask_Kill(arg0);
 }
+
+/* Similar function already in C: func_002F2600 (src/menu/mn_InputPass.c), similarity 0.69.
+ * It is the template below (not built). */
+#if 0
+void func_002F2600(u8 *task) {
+    u8 *s3;
+    u8 *s2;
+    s32 s1;
+    u32 *s0;
+
+    s3 = (u8 *)gInputName;
+    if (task != 0) {
+        s2 = *(u8 **)(task + 0x30);
+        if (*(void **)(s2 + 0x94) != 0) {
+            func_0022D4B0(*(void **)(s2 + 0x94), 1);
+        }
+        if (*(void **)s2 != 0) {
+            func_0022D0E0(*(void **)s2, 1);
+            *(void **)s2 = 0;
+        }
+        if (*(void **)(s2 + 0x98) != 0) {
+            func_0022D0E0(*(void **)(s2 + 0x98), 1);
+            *(void **)(s2 + 0x98) = 0;
+        }
+        if (*(void **)(s2 + 0x9C) != 0) {
+            func_0022D0E0(*(void **)(s2 + 0x9C), 1);
+            *(void **)(s2 + 0x9C) = 0;
+        }
+        s1 = 0;
+        s0 = (u32 *)s2;
+        do {
+            func_0022D4B0((void *)s0[1], 1);
+            s1++;
+            s0++;
+        } while (s1 < 0x24);
+        amHeap_Free(s2);
+        amTask_Kill((void *)task);
+        *(s32 *)(s3 + 0x18) = 0;
+    }
+}
+#endif

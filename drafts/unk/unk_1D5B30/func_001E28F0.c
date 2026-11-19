@@ -1,11 +1,10 @@
 /* Draft (not built): func_001E28F0 at 0x001E28F0, size 0x210, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 94 instructions differ
+ * Status: size, 93 instructions differ
  * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x200, original 0x210
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001E28F0.s */
 
-// src/unk/unk_1D5B30.c func_001E28F0 size diff=94/128
-extern void func_001C8480(s32, s32);
+// src/unk/unk_1D5B30.c func_001E28F0 size diff=93/128
 s32 func_00246EB0(void *);
 extern void func_001C8860(void *, int);
 void func_001E28F0(u8 *arg0) {
@@ -24,7 +23,7 @@ void func_001E28F0(u8 *arg0) {
 
     if (*(s32 *)((u8 *)arg0 + 0x1CFC) == 0x2A) {
         func_001C8860(arg0, 1);
-        func_001C8480((s32)((void *)(arg0)), 1);
+        func_001C8480((s32) arg0, 1);
         if (*(s32 *)((u8 *)arg0 + 0x1DBC) != 0) {
             func_001E7070(arg0 + 0x650, 1);
             sp50 = *(s32 *)((u8 *)arg0 + 0x1350);
@@ -59,7 +58,7 @@ void func_001E28F0(u8 *arg0) {
         temp_f1 = *(f32 *)((u8 *)arg0 + 0x1A54);
         temp_f0 = *(f32 *)((u8 *)arg0 + 0x1A50);
         if ((((s32) (MULT_HI(0x88888889, M2C_BITWISE(s32, temp_f0)) + M2C_BITWISE(s32, temp_f0)) >> 5) + (M2C_BITWISE(u32, temp_f0) >> 0x1F)) < (((s32) (MULT_HI(0x88888889, M2C_BITWISE(s32, temp_f1)) + M2C_BITWISE(s32, temp_f1)) >> 5) + (M2C_BITWISE(u32, temp_f1) >> 0x1F))) {
-            func_001E9B00((void *)(*(s32 *)((u8 *)arg0 + 0x1350) + 2), 0x34, 0, 0, 0, 0x3F800000);
+            func_001E9B00((void *)(*(s32 *)((u8 *)arg0 + 0x1350) + 2), 0x34, 0, (void *)(NULL), 0.0f, 1.0f);
         }
         func_00246EB0(arg0);
     }

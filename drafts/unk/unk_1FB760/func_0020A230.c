@@ -1,10 +1,10 @@
 /* Draft (not built): func_0020A230 at 0x0020A230, size 0x29C, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operands 'int[]' = 'int *' mwccps2.exe Compiler: 1322: D_0051D9A4 = 1; @ 1321: D_0051D9A0 = (s32 *)1;
+ * Status: size, 137 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x264, original 0x29C
  * Original: asm/nonmatchings/unk/unk_1FB760/func_0020A230.s */
 
-// src/unk/unk_1FB760.c func_0020A230 cerr diff=-1/0
+// src/unk/unk_1FB760.c func_0020A230 size diff=137/153
 extern s32 D_0047064C;
 extern s32 D_0051D9A8;
 extern s32 *D_0051DA40;
@@ -35,10 +35,10 @@ s32 func_0020A230(void) {
     s32 var_a2_4;
 
     memset(&D_0051D9A0, 0, 0x70);
-    D_0051D9A0 = (s32 *)1;
-    D_0051D9A4 = 1;
+    D_0051D9A0[0] = ((s32)((s32 *)1));
+    D_0051D9A4[0] = 1;
     D_0051D9A8 = 0x3F800000;
-    D_0051D9AC = 0x3C888889;
+    D_0051D9AC[0] = 0x3C888889;
     D_00470648 = 0;
     D_0047064C = 0;
     memset(&D_0051DA40, 0, 0x2000);
@@ -49,9 +49,9 @@ s32 func_0020A230(void) {
     D_00470654 = 0;
     memset(&D_00568440, 0, 0x40);
     memset(&D_00568480, 0, 0x40);
-    D_00568440 = &D_00568480;
+    D_00568440[0] = (unsigned char *)(&D_00568480);
     var_a2 = 0x7F;
-    D_00568484 = (s32 **)(&D_00568440);
+    D_00568484 = (int **)(&D_00568440);
     var_a1 = &D_0051FA00;
     var_a0 = &D_0051FC3C;
     do {

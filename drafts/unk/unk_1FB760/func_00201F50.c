@@ -1,7 +1,7 @@
 /* Draft (not built): func_00201F50 at 0x00201F50, size 0x248, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); al implicit conversion from 'int' to 'int *' mwccps2.exe Compiler: @ 409: temp_v0_2 = *(&D_00526440 + (D_00470668 * 4));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 421: *)&D_0044B860) + (*(u16 *)((u8 *)spB8 + 4) * 0x10))(&spB0, &D_0044B860, temp_a2);
  * Original: asm/nonmatchings/unk/unk_1FB760/func_00201F50.s */
 
 // src/unk/unk_1FB760.c func_00201F50 cerr diff=-1/0
@@ -52,19 +52,19 @@ s32 func_00201F50(u8 *arg0) {
                         spCC = 0;
                         spC0 = 0;
                         spC4 = 0;
-                        temp_v0_2 = *(&D_00526440 + (D_00470668 * 4));
+                        temp_v0_2 = (int *)(*(((u8 *)&D_00526440) + (D_00470668 * 4)));
                         D_00470668 += 1;
                         if (D_00470668 >= 0x800) {
                             D_00470668 = 0;
                         }
                         temp_a2 = spB4;
                         *(s32 **)((u8 *)temp_v0_2 + 4) = (s32 *) *(s32 **)((u8 *)temp_a2 + 0x48);
-                        *(s32 **)((u8 *)temp_v0_2 + 0) = **(s32 **)((u8 *)temp_a2 + 0x48);
-                        **(s32 **)((u8 *)temp_a2 + 0x48) = temp_v0_2;
+                        *(s32 **)((u8 *)temp_v0_2 + 0) = (int *)(**(s32 **)((u8 *)temp_a2 + 0x48));
+                        **(s32 **)((u8 *)temp_a2 + 0x48) = (int)(temp_v0_2);
                         *(s32 **)((u8 *)temp_a2 + 0x48) = temp_v0_2;
                         *(s32 *)((u8 *)temp_a2 + 0x4C) = (s32) (*(s32 *)((u8 *)temp_a2 + 0x4C) + 1);
                         spBC = temp_v0_2;
-                        *(&D_0044B860 + (*(u16 *)((u8 *)spB8 + 4) * 0x10))(&spB0, &D_0044B860, temp_a2);
+                        *(((u8 *)&D_0044B860) + (*(u16 *)((u8 *)spB8 + 4) * 0x10))(&spB0, &D_0044B860, temp_a2);
                     }
                 } while (!(*(f32 *)((u8 *)var_s3 + 0x24) < 1.0f));
             }

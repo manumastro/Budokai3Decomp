@@ -12,9 +12,9 @@ s32 func_0022D860(s32, s32);
 extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
-extern void Obj_SetF3C();
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void Obj_SetF3C();
 extern void Scene_Request();
 void func_002682E0(u8 *arg0) {
     s32 temp_a0_10;

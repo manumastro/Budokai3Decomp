@@ -1,7 +1,7 @@
 /* Draft (not built): func_001AAA60 at 0x001AAA60, size 0x43C, segment battle/btl_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 8BD0(&spA0, temp_a1, &spB0); @ 1447: mp_s3 == *(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3FC) * 0x10) + arg0) + 0x204))) {
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); char *)' does not match 'func_001A8BD0(unsigned char *)' @ 1460: func_001A8BD0(&spA0, temp_a1,(unsigned char *)(&spB0));
  * Original: asm/nonmatchings/battle/btl_cmd/func_001AAA60.s */
 
 // src/battle/btl_cmd.c func_001AAA60 cerr diff=-1/0
@@ -56,10 +56,10 @@ void func_001AAA60(u8 *arg0) {
             *(s32 *)((u8 *)arg0 + 0x40C) = (s32) (*(s32 *)((u8 *)arg0 + 0x40C) + 1);
             return;
         }
-        if ((temp_s3 == *(s32 **)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1E4)) + 8)) || (temp_s3 == *(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3FC) * 0x10) + arg0) + 0x204))) {
+        if ((temp_s3 == *(s32 **)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1E4)) + 8)) || ((s32)(temp_s3) == (s32)(*(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3FC) * 0x10) + arg0) + 0x204)))) {
             temp_a0 = *(s16 *)((u8 *)arg0 + 0x46);
             spA6 = (s8) temp_a0;
-            temp_s7 = (u8 *)(gBattle + (temp_a0 * 0x2020) + 0x830);
+            temp_s7 = (unsigned char *)(gBattle + (temp_a0 * 0x2020) + 0x830);
             spA7 = (s32) temp_s3 != (s32) *(s32 **)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1E4)) + 8);
             spA2 = 0;
             temp_v0 = amHeap_Alloc(*(s16 *)((u8 *)temp_s3 + 0xE) * 8, 1, &D_00468230, 0x2FF);
@@ -68,14 +68,14 @@ void func_001AAA60(u8 *arg0) {
             temp_a1 = *(s16 *)((u8 *)temp_s3 + 0xE) * 2;
             spB4 = spB0 + temp_a1;
             spA0 = *(s16 *)((u8 *)temp_s3 + 0xE);
-            spA8 = (u8 *)(temp_s3 + 0x40);
-            func_001A8BD0(&spA0, temp_a1, &spB0);
+            spA8 = (unsigned char *)(temp_s3 + 0x40);
+            func_001A8BD0(&spA0, temp_a1,(unsigned char *)(&spB0));
             if (spA2 > 0) {
                 var_s1 = func_001E9400(&spA0);
                 if (var_s1 < 0) {
                     var_s2 = NULL;
                 } else {
-                    var_s2 = (s32 *)(*(spAC + (var_s1 * 4)));
+                    var_s2 = (int *)(*(spAC + (var_s1 * 4)));
                 }
             } else {
                 var_s1 = -1;
@@ -89,7 +89,7 @@ void func_001AAA60(u8 *arg0) {
                     *(s32 *)((u8 *)arg0 + 0x1EC) = 0;
                     *(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x1F8) = 0;
                     *(s32 **)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x204) = (s32 *) *(s32 **)((u8 *)arg0 + 0x1E8);
-                    *(s3232 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x200) = (s3232) *(s3232 *)((u8 *)gBattle + 0x8908);
+                    *(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x200) = (s32) *(s32 *)((u8 *)gBattle + 0x8908);
                     *(s32 *)((u8 *)arg0 + 0x3F8) = (s32) ((*(s32 *)((u8 *)arg0 + 0x3F8) + 1) & 0x1F);
                 }
                 return;
@@ -97,7 +97,7 @@ void func_001AAA60(u8 *arg0) {
             *(s32 **)((u8 *)arg0 + 0x1E8) = var_s2;
             *(s32 *)((u8 *)arg0 + 0x1F0) = 0;
             *(s32 *)((u8 *)arg0 + 0x1F4) = 0;
-            temp_s2 = (u8 *)(gBattle + (*(s16 *)((u8 *)arg0 + 0x46) * 0x2020) + 0x830);
+            temp_s2 = (unsigned char *)(gBattle + (*(s16 *)((u8 *)arg0 + 0x46) * 0x2020) + 0x830);
             var_s1_2 = 0;
             if (*(s16 *)((u8 *)(*(s32 **)((u8 *)arg0 + 0x1E8)) + 0xE) > 0) {
                 var_s5 = 0;
@@ -114,9 +114,9 @@ void func_001AAA60(u8 *arg0) {
             }
             *(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x1F8) = 0;
             *(s32 **)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x204) = (s32 *) *(s32 **)((u8 *)arg0 + 0x1E8);
-            *(s3232 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x200) = (s3232) *(s3232 *)((u8 *)gBattle + 0x8908);
-            if (temp_s3 == *(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3FC) * 0x10) + arg0) + 0x204)) {
-                *(s3232 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x1FC) = (s3232) *(s3232 *)((u8 *)temp_s7 + 0xC58);
+            *(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x200) = (s32) *(s32 *)((u8 *)gBattle + 0x8908);
+            if ((s32)(temp_s3) == (s32)(*(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3FC) * 0x10) + arg0) + 0x204))) {
+                *(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x1FC) = (s32) *(s32 *)((u8 *)temp_s7 + 0xC58);
             } else {
                 *(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x3F8) * 0x10) + arg0) + 0x1FC) = -1;
             }

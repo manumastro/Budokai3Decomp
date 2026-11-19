@@ -1,12 +1,12 @@
 /* Draft (not built): func_002FBFD0 at 0x002FBFD0, size 0x538, segment unk/unk_2FAFF0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  operands 'signed char *' ^ 'int' mwccps2.exe Compiler: 254: temp_s0 = D_005CA030 == 1; @ 253: temp_a1 = D_005CA030 ^ 1;
+ * Status: size, 207 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x620, original 0x538
  * Original: asm/nonmatchings/unk/unk_2FAFF0/func_002FBFD0.s */
 
-// src/unk/unk_2FAFF0.c func_002FBFD0 cerr diff=-1/0
+// src/unk/unk_2FAFF0.c func_002FBFD0 size diff=207/392
 extern void func_0029DD30(s32, f32);
-void func_002FBFD0(u8 *arg0) {
+void func_002FBFD0(Task2FAFF0 *arg0) {
     s32 *var_v1;
     s32 temp_a0;
     s32 temp_a0_2;
@@ -42,11 +42,11 @@ void func_002FBFD0(u8 *arg0) {
 
     temp_s3 = *(u8 **)((u8 *)gTourMap + 0x34);
     var_s2 = -1;
-    func_00208F70((s32)((void *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)gTourMap + 0x40)) + 0x38))));
-    temp_s1 = (u8 *)(gTourMap + 0x25C);
+    func_00208F70((s32)(*(u8 **)((u8 *)(*(u8 **)((u8 *)gTourMap + 0x40)) + 0x38)));
+    temp_s1 = (unsigned char *)(gTourMap + 0x25C);
     temp_a0 = *(s32 *)((u8 *)gTourMap + 0x4C);
-    temp_a1 = D_005CA030 ^ 1;
-    temp_s0 = D_005CA030 == 1;
+    temp_a1 = ((s32)(D_005CA030)) ^ 1;
+    temp_s0 = (s32)(D_005CA030) == (s32)(1);
     switch (temp_a0) {                              /* irregular */
     case 0:
         temp_s2 = -1 & func_0022BC30(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x1C)) + 0xD8), temp_a1);
@@ -102,17 +102,17 @@ void func_002FBFD0(u8 *arg0) {
         temp_a0_3 = *(u8 **)((u8 *)gTourMap + 0x40);
         *(s32 *)((u8 *)temp_a0_3 + 0x30) = (s32) (*(s32 *)((u8 *)temp_a0_3 + 0x30) + 1);
         if (*(s32 *)((u8 *)gTourMap + 0x4C) == 0) {
-            var_v1 = (s32 *)(&func_002FBAE0);
+            var_v1 = (int *)(&func_002FBAE0);
             if (&func_002FBAE0 == NULL) {
                 var_v1 = NULL;
             }
-        } else if (D_005CA030 == 1) {
-            var_v1 = (s32 *)(&func_002FBF40);
+        } else if ((s32)(D_005CA030) == (s32)(1)) {
+            var_v1 = (int *)(&func_002FBF40);
             if (&func_002FBF40 == NULL) {
                 var_v1 = NULL;
             }
         } else {
-            var_v1 = (s32 *)(&func_002FBAE0);
+            var_v1 = (int *)(&func_002FBAE0);
             if (&func_002FBAE0 == NULL) {
                 var_v1 = NULL;
             }

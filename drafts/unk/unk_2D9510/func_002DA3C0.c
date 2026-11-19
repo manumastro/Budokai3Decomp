@@ -1,7 +1,7 @@
 /* Draft (not built): func_002DA3C0 at 0x002DA3C0, size 0x768, segment unk/unk_2D9510 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); x1C) + (temp_s1_2 * 4)), 0); @ 341: 022D670(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + (temp_fp * 4)), 0);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal explicit conversion from 'long *' to 'float' @ 514: ((f32)(var_a1_5))
  * Original: asm/nonmatchings/unk/unk_2D9510/func_002DA3C0.s */
 
 // src/unk/unk_2D9510.c func_002DA3C0 cerr diff=-1/0
@@ -40,6 +40,8 @@ extern char D_00492FCE[];
 extern char D_004E05DC[];
 extern char D_00456C80[];
 void func_002DA3C0(void) {
+    s32 spCC;
+    u8 sp[0x400];
     s32 spA0;
     s64 spB0;
     s32 sp140;
@@ -91,7 +93,7 @@ void func_002DA3C0(void) {
     u8 *temp_s2;
     u8 *temp_s6_2;
 
-    temp_s2 = (u8 *)(gOptionWork);
+    temp_s2 = (unsigned char *)(gOptionWork);
     temp_s4 = *(s32 *)((u8 *)temp_s2 + 0x37C);
     temp_s3 = *D_00492FCE | D_00493086;
     temp_s6 = D_00492FCC | D_0049302C | (D_00493084 | D_004930E4);
@@ -105,14 +107,14 @@ void func_002DA3C0(void) {
     }
     if ((temp_s5 & 0xA0) && (temp_s4 == 0)) {
         func_002D3290(temp_s5, *(s32 **)((u8 *)temp_s2 + 0x3EC), *(s32 *)((u8 *)temp_s2 + 0x3F8), 0);
-        temp_s1 = (u8 *)(gOptionWork);
-        temp_s7 = (s32 *)(temp_s1 + 0x308);
+        temp_s1 = (unsigned char *)(gOptionWork);
+        temp_s7 = (int *)(temp_s1 + 0x308);
         temp_a0 = *(s32 *)((u8 *)temp_s1 + 0x308);
         temp_fp = 0x6A - **(s32 **)((u8 *)temp_s1 + 0x3EC);
         if (temp_a0 != 0) {
             func_0022D0E0(temp_a0, 1);
         }
-        *temp_s7 = func_0022D670(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + (temp_fp * 4)), 0);
+        *temp_s7 = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + (temp_fp * 4)), 0);
         if (*(s32 *)((u8 *)D_004E05DC + 0x30) == 0) {
             func_0015FE80();
             func_001446E0(0);
@@ -234,12 +236,12 @@ block_35:
         *(s32 **)((u8 *)temp_s2 + 0x3F0) = (s32 *) (temp_s2 + 0x404);
         *(s32 **)((u8 *)temp_s2 + 0x3F4) = (s32 *) (temp_s2 + 0x408);
         temp_a0_2 = *(s32 *)((u8 *)temp_s2 + 0x308);
-        temp_s6_2 = (u8 *)(gOptionWork);
+        temp_s6_2 = (unsigned char *)(gOptionWork);
         temp_s1_2 = sp160 - **(s32 **)((u8 *)temp_s2 + 0x3EC);
         if (temp_a0_2 != 0) {
             func_0022D0E0(temp_a0_2, 1);
         }
-        *(s32 *)((u8 *)temp_s2 + 0x308) = func_0022D670(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s6_2 + 8)) + 0x1C) + (temp_s1_2 * 4)), 0);
+        *(s32 *)((u8 *)temp_s2 + 0x308) = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s6_2 + 8)) + 0x1C) + (temp_s1_2 * 4)), 0);
     }
     var_s1 = 1;
     if (spA0 & 0xA0) {
@@ -271,7 +273,7 @@ block_35:
         if (!(D_004E0614 <= 0.0f)) {
             SoundRpc_Send3(0, 0, 5, 0);
         }
-        var_a2 = (s8 *)(D_00456C80[0]);
+        var_a2 = (signed char *)(D_00456C80);
         var_a1_5 = &spB0;
         var_a0_5 = 4;
         do {

@@ -1,12 +1,20 @@
 /* Draft (not built): func_0020D5C0 at 0x0020D5C0, size 0x1C0, segment unk/unk_20A4D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); d as: 'void (void *, int, void *, unsigned char *)' @ 1071: void func_0020D5C0(u8 *arg0, s32 arg1, s32 arg2, s32 arg3) {
+ * Status: size, 106 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x40, original 0x1C0
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_0020D5C0.s */
 
-// src/unk/unk_20A4D0.c func_0020D5C0 cerr diff=-1/0
+// src/unk/unk_20A4D0.c func_0020D5C0 size diff=106/16
 s32 func_0013B190(f32 *);
-void func_0020D5C0(u8 *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void func_0020D5C0(void *arg0, s32 arg1, void *arg2, u8 *arg3) {
+    s32 spA8;
+    s32 spA4;
+    s32 spA0;
+    s32 sp98;
+    s32 sp94;
+    s32 sp90;
+    s32 sp88;
+    s32 sp84;
     f32 sp40;
     f32 sp44;
     f32 sp48;
@@ -46,19 +54,19 @@ void func_0020D5C0(u8 *arg0, s32 arg1, s32 arg2, s32 arg3) {
     M2C_ERROR(/* unknown instruction: sqc2 $vf2, 0x10($a0) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf3, 0x20($a0) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf4, 0x30($a0) */);
-    if (arg3 & 1) {
+    if (((s32)(arg3)) & 1) {
         sp54 = sp94;
         sp58 = sp98;
         sp64 = spA4;
         sp68 = spA8;
     }
-    if (arg3 & 2) {
+    if (((s32)(arg3)) & 2) {
         sp40 = sp80;
         sp48 = sp88;
         sp60 = spA0;
         sp68 = spA8;
     }
-    if (arg3 & 4) {
+    if (((s32)(arg3)) & 4) {
         sp40 = sp80;
         sp44 = sp84;
         sp50 = sp90;

@@ -23,16 +23,16 @@ void func_00272660(u8 *arg0) {
     u8 *var_a1;
 
     temp_s0 = *(s32 *)((u8 *)arg0 + 4);
-    temp_s2 = (u8 **)(&D_00470800 + (temp_s0 * 4));
+    temp_s2 = (unsigned char **)(&D_00470800 + (temp_s0 * 4));
     if (*temp_s2 == NULL) {
         *temp_s2 = amHeap_Alloc(0x7C0, 0, D_0046B4F0, 0xAB);
-        D_004707FC = (s32)(*temp_s2);
+        D_004707FC = (int)(*temp_s2);
         memset(D_004707FC, 0, 0x7C0);
         *(s32 *)((u8 *)D_004707FC + 0x44) = temp_s0;
         *(s32 *)((u8 *)D_004707FC + 0) = amCdFs_ReadFileId(0x107F1, 0, 1);
         *(s32 *)((u8 *)D_004707FC + 4) = amCdFs_ReadFileId((temp_s0 + 0x7F2) | 0x10000, 0, 1);
         *(s32 *)((u8 *)D_004707FC + 8) = amCdFs_ReadFileId(0x10A9C, 0, 1);
-        *(u8 **)((u8 *)D_004707FC + 0x54) = (u8 *) (&D_0058F680 + (temp_s0 * 0xD680) + 0xD41D);
+        *(u8 **)((u8 *)D_004707FC + 0x54) = (u8 *) (((u8 *)&D_0058F680) + (temp_s0 * 0xD680) + 0xD41D);
     }
     *(s32 *)((u8 *)D_004707FC + 0x44) = (s32) *(s32 *)((u8 *)arg0 + 4);
     *(u8 **)((u8 *)D_004707FC + 0x18) = amTask_Create(&func_00272510, 0, 0x3200, 0x200);
@@ -70,7 +70,7 @@ void func_00272660(u8 *arg0) {
                 do {
                     var_t0 = 0;
                     if (temp_a2 > 0) {
-                        var_a1 = (u8 *)(D_004707FC);
+                        var_a1 = (unsigned char *)(D_004707FC);
 loop_18:
                         if (var_t2 == *(s16 *)((u8 *)var_a1 + 0x134)) {
                             var_t2 = *(s16 *)((u8 *)(D_004707FC + (var_t0 * 2)) + 0x136);

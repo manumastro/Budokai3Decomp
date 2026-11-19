@@ -32,7 +32,7 @@ void func_0023B4C0(void) {
     var_s4 = gBtlSys;
     if ((Input_IsHeld(0x80000000) != 0) && ((temp_a0 = *(s16 *)((u8 *)var_s4 + 0xE52), (temp_a0 == 0)) || (temp_a0 == 2))) {
         temp_a0_2 = *(u8 **)((u8 *)var_s4 + 0xE64);
-        D_00470704 = (s32)(temp_a0_2);
+        D_00470704 = (int)(temp_a0_2);
         D_0047070C = 0x04001000;
         D_00470708 = 0;
         amModel_SetCurrent((s32)(temp_a0_2), 0x04001000);

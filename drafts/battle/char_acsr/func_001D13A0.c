@@ -34,7 +34,7 @@ void func_001D13A0(void) {
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
             M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-            func_00146F10(var_s2 + 0x30, var_s2 + 0x30, *(f32 *)((u8 *)var_s2 + 0x64));
+            func_00146F10((s32 *)(var_s2 + 0x30), (void *)(var_s2 + 0x30), *(f32 *)((u8 *)var_s2 + 0x64));
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($s2) */);
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v1) */);
             M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);

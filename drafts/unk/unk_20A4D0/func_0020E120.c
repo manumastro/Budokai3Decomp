@@ -15,7 +15,7 @@ void func_0020E120(s32 arg0, s32 arg1) {
     s32 sp50;
     u8 *temp_s0;
 
-    temp_s0 = &D_00568C90 + (arg0 * 0x2140);
+    temp_s0 = ((u8 *)&D_00568C90) + (arg0 * 0x2140);
     sp40 = 0;
     sp44 = 0x3F800000;
     sp4C = 0x3F800000;

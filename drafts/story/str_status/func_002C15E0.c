@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/story/str_status/func_002C15E0.s */
 
 // src/story/str_status.c func_002C15E0 size diff=41/82
-void func_002C15E0(u8 *arg0) {
+void func_002C15E0(s32 *arg0) {
     s32 temp_a0_2;
     s32 temp_a0_3;
     s32 temp_a0_4;
@@ -13,7 +13,7 @@ void func_002C15E0(u8 *arg0) {
     u8 *temp_a0;
 
     temp_a0 = *(u8 **)((u8 *)arg0 + 4);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x2000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x2000);
@@ -47,3 +47,38 @@ void func_002C15E0(u8 *arg0) {
     }
     *(s32 *)((u8 *)arg0 + 0x28) = func_0022D670(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0x1C)) + 0xB8), 0);
 }
+
+/* Similar function already in C: func_002E5040 (src/unk/unk_2E4030.c), similarity 0.75.
+ * It is the template below (not built). */
+#if 0
+void func_002E5040(u8 *a0) {
+    s32 f4;
+
+    f4 = *(s32 *)(a0 + 4);
+    D_00470704 = f4;
+    D_0047070C = 0x7000;
+    D_00470708 = 0;
+    amModel_SetCurrent(f4, 0x7000);
+    D_00470238 = 0;
+    if (*(s32 *)(a0 + 0x10) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x10), 0);
+    }
+    *(s32 *)(a0 + 0x10) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x0), 0.0f);
+    if (*(s32 *)(a0 + 0x18) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x18), 0);
+    }
+    *(s32 *)(a0 + 0x18) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x4), 0.0f);
+    if (*(s32 *)(a0 + 0x14) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x14), 0);
+    }
+    *(s32 *)(a0 + 0x14) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x14), 0.0f);
+    if (*(s32 *)(a0 + 0x1C) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x1C), 0);
+    }
+    *(s32 *)(a0 + 0x1C) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x20), 0.0f);
+    if (*(s32 *)(a0 + 0x24) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x24), 0);
+    }
+    *(s32 *)(a0 + 0x24) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x28), 0.0f);
+}
+#endif

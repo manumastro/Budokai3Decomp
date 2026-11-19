@@ -28,3 +28,18 @@ void func_0019A160(void)
   while (var_s1 >= 0);
   var_s0 = (&D_00426A90) + 0x54;
 }
+
+/* Similar function already in C: cvFsExecServer (src/cri/adx/fz_cvFsExecServer.c), similarity 0.62.
+ * It is the template below (not built). */
+#if 0
+void cvFsExecServer(void) {
+    int i;
+    CvFsInterface *interface;
+    for (i = 0; i < 32; i++) {
+        interface = lbl_80187574[i].interface;
+        if (interface != ((void *)0) && interface->ExecServer != ((void *)0)) {
+            interface->ExecServer();
+        }
+    }
+}
+#endif

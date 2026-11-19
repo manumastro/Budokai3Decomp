@@ -48,7 +48,7 @@ void func_00299390(void) {
     if (*(s8 *)((u8 *)gStrMap + 0x1BC) != -1) {
         *(s16 *)((u8 *)(&sp30) + 4) = 1;
     }
-    var_v0 = (s8 *)(&sp30 + 8);
+    var_v0 = (signed char *)(&sp30 + 8);
     var_a3 = 0;
     do {
         if (*(s8 *)((u8 *)gStrMap + 0x1BC) == var_a3) {
@@ -69,7 +69,7 @@ void func_00299390(void) {
         var_a3 += 1;
     } while (var_a3 < 7);
     *var_v0 = -1;
-    func_0028EE90(((u8 *)gStrMap) + 0x20, ((u8 *)gStrMap) + 0x58, ((u8 *)gStrMap) + 0x60, ((u8 *)gStrMap) + 0x68);
+    func_0028EE90(((u8 *)gStrMap) + 0x20,((u8 *)gStrMap) + 0x58,((u8 *)gStrMap) + 0x60,((u8 *)gStrMap) + 0x68);
     var_s0 = 0;
     var_s1 = 0;
     do {

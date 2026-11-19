@@ -1,14 +1,16 @@
 /* Draft (not built): func_0013D360 at 0x0013D360, size 0x64C, segment sys/amMotion (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  Compiler: 952: var_s1 = *(*(s32 *)((u8 *)temp_s4 + 0xC) + (temp_s3 * 0xC)); @ 947: temp_s3 = *(temp_fp + (var_s2 * 2));
+ * Status: size, 296 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x488, original 0x64C
  * Original: asm/nonmatchings/sys/amMotion/func_0013D360.s */
 
-// src/sys/amMotion.c func_0013D360 cerr diff=-1/0
+// src/sys/amMotion.c func_0013D360 size diff=296/290
+s32 amMotion_FindKeyHint8(Track8s *t, f32 frame, s32 i);
+s32 amMotion_FindKeyHint16(Track16 *t, f32 frame, s32 i);
 s32 func_001415F0(s32 *, u16, u16, u16);
 s32 func_00142370(s32 *, s32 *);
 s32 func_001423F0(s32 *, s32 *, s32 *, f32);
-void func_0013D360(u8 *arg0, u8 *arg1) {
+void func_0013D360(MotInst *arg0, MotSlot *arg1) {
     s32 spA0;
     f32 spB0;
     f32 spB4;
@@ -19,53 +21,54 @@ void func_0013D360(u8 *arg0, u8 *arg1) {
     f32 spC8;
     f32 spCC;
     s32 spD0;
-    s32 *temp_s0;
-    s16 temp_s3;
+    s32 *var_s0;
+    MotSeq *var_s4;
+    s16 var_s3;
     s32 temp_a1;
     s32 temp_a1_3;
-    s32 temp_fp;
     s32 temp_v0;
     s32 temp_v0_3;
     s32 temp_v0_4;
-    s32 var_s1;
+    s32 var_fp;
     s32 var_s2;
     u8 *temp_a0;
     u8 *temp_a0_2;
     u8 *temp_a1_2;
     u8 *temp_a1_4;
-    u8 *temp_s1;
-    u8 *temp_s1_2;
-    u8 *temp_s4;
-    u8 *temp_s6;
     u8 *temp_v0_2;
     u8 *temp_v1;
-    u8 *var_s1_2;
+    u8 *var_s1;
+    u8 *var_s5;
+    u8 *var_s6;
+    u8 *var_s7;
 
-    temp_s4 = (u8 *)(D_004702EC);
-    temp_fp = (s32)(arg0 + ((((s32) *(s32 *)((u8 *)arg1 + 0) >> 0x10) - 1) << 9) + 0x4B0);
+    var_s7 = (unsigned char *)(arg0);
+    var_s5 = (unsigned char *)(arg1);
+    var_s4 = D_004702EC;
+    var_fp = (int)(arg0 + ((((s32) *(s32 *)((u8 *)arg1 + 0) >> 0x10) - 1) << 9) + 0x4B0);
     spA0 = *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 4)) + 0x10);
     var_s2 = 0;
 loop_44:
     if (var_s2 < spA0) {
-        temp_s3 = *(temp_fp + (var_s2 * 2));
-        if (temp_s3 >= 0) {
-            temp_s0 = (s32 *)(*(s32 *)((u8 *)arg1 + 0x10) + (var_s2 << 6));
-            if (*(s32 *)((u8 *)temp_s4 + 0) & 1) {
-                if (*(s32 *)((u8 *)temp_s4 + 0) & 0x10) {
-                    var_s1 = *(*(s32 *)((u8 *)temp_s4 + 0xC) + (temp_s3 * 0xC));
+        var_s3 = *(s16 *)(var_fp + (var_s2 * 2));
+        if (var_s3 >= 0) {
+            var_s0 = (int *)(*(s32 *)((u8 *)var_s5 + 0x10) + (var_s2 << 6));
+            if (var_s4->pad0 & 1) {
+                if (var_s4->pad0 & 0x10) {
+                    var_s1 = (unsigned char *)(*(s32 *)(var_s4->nC + (var_s3 * 0xC)));
                 } else {
-                    var_s1 = *(*(s32 *)((u8 *)temp_s4 + 0xC) + (temp_s3 * 8));
+                    var_s1 = (unsigned char *)(*(s32 *)(var_s4->nC + (var_s3 * 8)));
                 }
-                if (var_s1 != 0) {
-                    temp_v0 = amMotion_FindKeyHint8(var_s1, *(s32 *)((u8 *)temp_s0 + 0x30), *(f32 *)((u8 *)arg1 + 8));
-                    *(s32 *)((u8 *)temp_s0 + 0x30) = temp_v0;
-                    temp_v0_2 = (u8 *)(var_s1 + (temp_v0 * 8));
-                    temp_s1 = temp_v0_2 + 0xC;
-                    func_001415F0(temp_s0, *(u16 *)((u8 *)temp_v0_2 + 0xE), *(u16 *)((u8 *)temp_v0_2 + 0x10), *(u16 *)((u8 *)temp_v0_2 + 0x12));
-                    if (((f32) *(s16 *)((u8 *)temp_v0_2 + 0xC) != *(f32 *)((u8 *)arg1 + 8)) && ((temp_s6 = temp_s1 + 8, (*(u16 *)((u8 *)temp_s1 + 2) != *(u16 *)((u8 *)temp_s1 + 0xA))) || (*(u16 *)((u8 *)temp_s1 + 4) != *(u16 *)((u8 *)temp_s6 + 4)) || (*(u16 *)((u8 *)temp_s1 + 6) != *(u16 *)((u8 *)temp_s6 + 6)))) {
-                        func_001415F0(&spD0, *(u16 *)((u8 *)temp_s6 + 2), *(u16 *)((u8 *)temp_s6 + 4), *(u16 *)((u8 *)temp_s6 + 6));
-                        func_001423F0(temp_s0, temp_s0, &spD0, (*(f32 *)((u8 *)arg1 + 8) - (f32) *(s16 *)((u8 *)temp_v0_2 + 0xC)) / (f32) (*(s16 *)((u8 *)temp_s1 + 8) - *(s16 *)((u8 *)temp_v0_2 + 0xC)));
-                        func_00142370(temp_s0, temp_s0);
+                if (var_s1 != NULL) {
+                    temp_v0 = amMotion_FindKeyHint8((Track8s *)(var_s1), *(s32 *)((u8 *)var_s0 + 0x30), (s32)(*(f32 *)((u8 *)var_s5 + 8)));
+                    *(s32 *)((u8 *)var_s0 + 0x30) = temp_v0;
+                    temp_v0_2 = var_s1 + (temp_v0 * 8);
+                    var_s1 = temp_v0_2 + 0xC;
+                    func_001415F0(var_s0, *(u16 *)((u8 *)temp_v0_2 + 0xE), *(u16 *)((u8 *)temp_v0_2 + 0x10), *(u16 *)((u8 *)temp_v0_2 + 0x12));
+                    if (((f32) *(s16 *)((u8 *)var_s1 + 0) != *(f32 *)((u8 *)var_s5 + 8)) && ((var_s6 = var_s1 + 8, (*(u16 *)((u8 *)var_s1 + 2) != *(u16 *)((u8 *)var_s1 + 0xA))) || (*(u16 *)((u8 *)var_s1 + 4) != *(u16 *)((u8 *)var_s6 + 4)) || (*(u16 *)((u8 *)var_s1 + 6) != *(u16 *)((u8 *)var_s6 + 6)))) {
+                        func_001415F0(&spD0, *(u16 *)((u8 *)var_s6 + 2), *(u16 *)((u8 *)var_s6 + 4), *(u16 *)((u8 *)var_s6 + 6));
+                        func_001423F0(var_s0, var_s0, &spD0, (*(f32 *)((u8 *)var_s5 + 8) - (f32) *(s16 *)((u8 *)var_s1 + 0)) / (f32) (*(s16 *)((u8 *)var_s1 + 8) - *(s16 *)((u8 *)var_s1 + 0)));
+                        func_00142370(var_s0, var_s0);
                     }
                 } else {
                     goto block_12;
@@ -77,25 +80,25 @@ block_12:
                     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($s0) */);
                 }
             }
-            if (*(s32 *)((u8 *)temp_s4 + 0) & 1) {
-                if (*(s32 *)((u8 *)temp_s4 + 0) & 0x10) {
-                    var_s1_2 = *(u8 **)((u8 *)((temp_s3 * 0xC) + *(s32 *)((u8 *)temp_s4 + 0xC)) + 4);
+            if (var_s4->pad0 & 1) {
+                if (var_s4->pad0 & 0x10) {
+                    var_s1 = *(u8 **)((u8 *)((var_s3 * 0xC) + var_s4->nC) + 4);
                 } else {
-                    var_s1_2 = *(u8 **)((u8 *)((temp_s3 * 8) + *(s32 *)((u8 *)temp_s4 + 0xC)) + 4);
+                    var_s1 = *(u8 **)((u8 *)((var_s3 * 8) + var_s4->nC) + 4);
                 }
             } else {
-                var_s1_2 = *(*(s32 *)((u8 *)temp_s4 + 0xC) + (temp_s3 * 4));
+                var_s1 = (unsigned char *)(*(s32 *)(var_s4->nC + (var_s3 * 4)));
             }
-            if (var_s1_2 != NULL) {
-                temp_v0_3 = amMotion_FindKeyHint16(var_s1_2, *(s32 *)((u8 *)temp_s0 + 0x34), *(f32 *)((u8 *)arg1 + 8));
-                *(s32 *)((u8 *)temp_s0 + 0x34) = temp_v0_3;
-                temp_a0 = var_s1_2 + (temp_v0_3 * 0x10);
-                *(f32 *)((u8 *)temp_s0 + 0x10) = (f32) *(f32 *)((u8 *)temp_a0 + 0x10);
-                *(f32 *)((u8 *)temp_s0 + 0x14) = (f32) *(f32 *)((u8 *)temp_a0 + 0x14);
-                *(f32 *)((u8 *)temp_s0 + 0x18) = (f32) *(f32 *)((u8 *)temp_a0 + 0x18);
-                *(s32 *)((u8 *)temp_s0 + 0x1C) = 0x3F800000;
-                if ((f32) *(s32 *)((u8 *)((temp_v0_3 * 0x10) + var_s1_2) + 0xC) != *(f32 *)((u8 *)arg1 + 8)) {
-                    temp_a1 = *(s32 *)((u8 *)var_s1_2 + 4);
+            if (var_s1 != NULL) {
+                temp_v0_3 = amMotion_FindKeyHint16((Track16 *)(var_s1), *(s32 *)((u8 *)var_s0 + 0x34), (s32)(*(f32 *)((u8 *)var_s5 + 8)));
+                *(s32 *)((u8 *)var_s0 + 0x34) = temp_v0_3;
+                temp_a0 = var_s1 + (temp_v0_3 * 0x10);
+                *(f32 *)((u8 *)var_s0 + 0x10) = (f32) *(f32 *)((u8 *)temp_a0 + 0x10);
+                *(f32 *)((u8 *)var_s0 + 0x14) = (f32) *(f32 *)((u8 *)temp_a0 + 0x14);
+                *(f32 *)((u8 *)var_s0 + 0x18) = (f32) *(f32 *)((u8 *)temp_a0 + 0x18);
+                *(s32 *)((u8 *)var_s0 + 0x1C) = 0x3F800000;
+                if ((f32) *(s32 *)((u8 *)((temp_v0_3 * 0x10) + var_s1) + 0xC) != *(f32 *)((u8 *)var_s5 + 8)) {
+                    temp_a1 = *(s32 *)((u8 *)var_s1 + 4);
                     if (temp_a1 != 2) {
                         if ((temp_a1 != 1) && (temp_a1 != 0)) {
 
@@ -118,17 +121,17 @@ block_12:
             } else if (D_00470308 != 1) {
                 M2C_ERROR(/* unknown instruction: sqc2 $vf0, ($v1) */);
             }
-            if ((*(s32 *)((u8 *)temp_s4 + 0) & 0x10) && (*(s32 *)((u8 *)((temp_s3 * 0xC) + *(s32 *)((u8 *)temp_s4 + 0xC)) + 8) != 0)) {
-                temp_s1_2 = *(u8 **)((u8 *)((temp_s3 * 0xC) + *(s32 *)((u8 *)temp_s4 + 0xC)) + 8);
-                temp_v0_4 = amMotion_FindKeyHint16(temp_s1_2, *(s32 *)((u8 *)temp_s0 + 0x38), *(f32 *)((u8 *)arg1 + 8));
-                *(s32 *)((u8 *)temp_s0 + 0x38) = temp_v0_4;
-                temp_a0_2 = temp_s1_2 + (temp_v0_4 * 0x10);
-                *(f32 *)((u8 *)temp_s0 + 0x20) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x10);
-                *(f32 *)((u8 *)temp_s0 + 0x24) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x14);
-                *(f32 *)((u8 *)temp_s0 + 0x28) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x18);
-                *(s32 *)((u8 *)temp_s0 + 0x2C) = 0x3F800000;
-                if ((f32) *(s32 *)((u8 *)((temp_v0_4 * 0x10) + temp_s1_2) + 0xC) != *(f32 *)((u8 *)arg1 + 8)) {
-                    temp_a1_3 = *(s32 *)((u8 *)temp_s1_2 + 4);
+            if ((var_s4->pad0 & 0x10) && (*(s32 *)((u8 *)((var_s3 * 0xC) + var_s4->nC) + 8) != 0)) {
+                var_s1 = *(u8 **)((u8 *)((var_s3 * 0xC) + var_s4->nC) + 8);
+                temp_v0_4 = amMotion_FindKeyHint16((Track16 *)(var_s1), *(s32 *)((u8 *)var_s0 + 0x38), (s32)(*(f32 *)((u8 *)var_s5 + 8)));
+                *(s32 *)((u8 *)var_s0 + 0x38) = temp_v0_4;
+                temp_a0_2 = var_s1 + (temp_v0_4 * 0x10);
+                *(f32 *)((u8 *)var_s0 + 0x20) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x10);
+                *(f32 *)((u8 *)var_s0 + 0x24) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x14);
+                *(f32 *)((u8 *)var_s0 + 0x28) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x18);
+                *(s32 *)((u8 *)var_s0 + 0x2C) = 0x3F800000;
+                if ((f32) *(s32 *)((u8 *)((temp_v0_4 * 0x10) + var_s1) + 0xC) != *(f32 *)((u8 *)var_s5 + 8)) {
+                    temp_a1_3 = *(s32 *)((u8 *)var_s1 + 4);
                     if (temp_a1_3 != 2) {
                         if ((temp_a1_3 != 1) && (temp_a1_3 != 0)) {
 
@@ -153,7 +156,7 @@ block_12:
                 M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
             }
         } else if (D_00470308 != 1) {
-            temp_v1 = (u8 *)(*(s32 *)((u8 *)arg1 + 0x10) + (var_s2 << 6));
+            temp_v1 = (unsigned char *)(*(s32 *)((u8 *)var_s5 + 0x10) + (var_s2 << 6));
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($a0) */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf0, ($a0) */);

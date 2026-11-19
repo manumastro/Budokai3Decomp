@@ -1,10 +1,10 @@
 /* Draft (not built): func_001DDA30 at 0x001DDA30, size 0x2FC, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); s not match 'func_001DFE60(struct Fighter *, int, float)' @ 2014: func_001DFE60(temp_s0, 0, temp_a2_3, var_a3, -var_f3);
+ * Status: size, 150 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x224, original 0x2FC
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001DDA30.s */
 
-// src/unk/unk_1D5B30.c func_001DDA30 cerr diff=-1/0
+// src/unk/unk_1D5B30.c func_001DDA30 size diff=150/137
 void func_001DDA30(u8 *arg0) {
     s32 sp30;
     s32 sp34;
@@ -33,7 +33,7 @@ void func_001DDA30(u8 *arg0) {
     } else {
         var_v1 = *(s32 *)((u8 *)arg0 + 0x1350);
     }
-    temp_v1 = (u8 *)(gBattle + (var_v1 * 0x48));
+    temp_v1 = (unsigned char *)(gBattle + (var_v1 * 0x48));
     *(s16 *)((u8 *)temp_v1 + 0x8980) = (s16) (*(s16 *)((u8 *)temp_v1 + 0x8980) + 1);
     temp_a2 = *(s8 *)((u8 *)arg0 + 0x2015);
     if (temp_a2 != 0) {
@@ -64,7 +64,7 @@ void func_001DDA30(u8 *arg0) {
     } else {
         var_v1_3 = *(s32 *)((u8 *)arg0 + 0x1350);
     }
-    temp_v1_2 = (u8 *)(gBattle + (var_v1_3 * 0x48) + 0x897E);
+    temp_v1_2 = (unsigned char *)(gBattle + (var_v1_3 * 0x48) + 0x897E);
     if (*(s16 *)((u8 *)temp_v1_2 + 6) < temp_a2_2) {
         *(s16 *)((u8 *)temp_v1_2 + 6) = temp_a2_2;
     }
@@ -80,7 +80,7 @@ void func_001DDA30(u8 *arg0) {
         }
         if (*(s8 *)((u8 *)temp_s0 + 0x2019) != 0) {
             *(s8 *)((u8 *)temp_s0 + 0x2019) = 0;
-            func_001DFE60((struct Fighter *)(arg0), 4, 0xC3FA0000);
+            func_001DFE60((Fighter *)(arg0), 4, 0xC3FA0000);
             return;
         }
         if (*(s8 *)((u8 *)temp_s0 + 0x2010) == 0) {
@@ -95,7 +95,7 @@ void func_001DDA30(u8 *arg0) {
             if (var_v0 != 0) {
                 var_f3 *= 0.5f;
             }
-            func_001DFE60(temp_s0, 0, temp_a2_3, var_a3, -var_f3);
+            func_001DFE60((Fighter *)(temp_s0), 0, temp_a2_3);
         }
     }
 }

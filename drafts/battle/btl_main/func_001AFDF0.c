@@ -14,8 +14,8 @@ void func_001AFDF0(void) {
     u8 *temp_s0;
     u8 *var_at;
 
-    temp_s0 = (u8 *)(gBattle);
-    func_0013AFA0((s32)((void *)(NULL)));
+    temp_s0 = (unsigned char *)(gBattle);
+    func_0013AFA0((s32)(NULL));
     func_001A87A0();
     amVram_Apply(0);
     if (*(s8 *)((u8 *)gBattle + 0x8975) != 1) {

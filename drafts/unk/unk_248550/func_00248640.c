@@ -1,11 +1,10 @@
 /* Draft (not built): func_00248640 at 0x00248640, size 0x2C4, segment unk/unk_248550 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ted mwccps2.exe Compiler: 67: temp_s0 = *(D_0046FE50 + (temp_a3 * 4)) + (arg0 * 0xD0); @ 5: extern PackRefs *D_0046FE50;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  'D_0046FE50' redeclared was declared as: 'int' now declared as: 'struct PackRefs *' @ 174: extern PackRefs *D_0046FE50;
  * Original: asm/nonmatchings/unk/unk_248550/func_00248640.s */
 
 // src/unk/unk_248550.c func_00248640 cerr diff=-1/0
-extern PackRefs *D_0046FE50;
 extern void memset(void *, s32, s32);
 s16 func_0020F690();
 s32 func_00214F80(s16, s32 *);
@@ -14,6 +13,7 @@ s32 func_002CA2F0(s32 *);
 extern void *D_0046FE4C;
 extern void *gBattle;
 extern void func_00214DD0();
+extern s32 D_0046FE50;
 void func_00248640(s32 arg0, u8 *arg1, s32 arg2) {
     s32 sp50;
     u8 *sp60;
@@ -67,7 +67,7 @@ void func_00248640(s32 arg0, u8 *arg1, s32 arg2) {
     u8 *temp_s0;
 
     temp_a3 = *(s32 *)((u8 *)arg1 + 0x1350);
-    temp_s0 = *(D_0046FE50 + (temp_a3 * 4)) + (arg0 * 0xD0);
+    temp_s0 = (unsigned char *)(*(s32 *)(D_0046FE50 + (temp_a3 * 4)) + (arg0 * 0xD0));
     temp_a0 = *(s16 *)((u8 *)temp_s0 + 0x70);
     var_t0 = 0;
     if (temp_a0 != 5) {

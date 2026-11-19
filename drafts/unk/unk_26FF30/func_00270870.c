@@ -54,7 +54,7 @@ void func_00270870(void) {
         if ((spB0 == 0) && (*(s32 *)((u8 *)D_004707FC + 0x4C) == 0)) {
             func_00227A30(&spF0);
         } else {
-            temp_v0_2 = (u8 *)(D_004707FC + spA0);
+            temp_v0_2 = (unsigned char *)(D_004707FC + spA0);
             if (*(s32 *)((u8 *)temp_v0_2 + 0x75C) >= 0) {
                 var_s2 = 0;
                 var_s7 = 0;

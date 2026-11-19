@@ -1,7 +1,7 @@
 /* Draft (not built): func_0021DCF0 at 0x0021DCF0, size 0x55C, segment unk/unk_21D260 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); to 'float' mwccps2.exe Compiler: @ 119: *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0xEDC)) + 0x1C)) + 0x18), &spE0, 0);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  'void *' mwccps2.exe Compiler: @ 119: 8 **)((u8 *)temp_s0 + 0xEDC)) + 0x1C)) + 0x18)), &spE0, (void *)((f32)(s32)(0)));
  * Original: asm/nonmatchings/unk/unk_21D260/func_0021DCF0.s */
 
 // src/unk/unk_21D260.c func_0021DCF0 cerr diff=-1/0
@@ -65,16 +65,16 @@ void func_0021DCF0(u8 *arg0) {
     u8 *temp_a3;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gBtlSys);
+    temp_s0 = (unsigned char *)(gBtlSys);
     sp148 = D_0046FE28;
     temp_a0 = *(u8 **)((u8 *)temp_s0 + 0xED8);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x04040000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x04040000);
     D_00470238 = 0;
     func_00228430(0);
-    func_0022B900(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0xEDC)) + 0x1C)) + 0x18), &spE0, 0);
+    func_0022B900((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0xEDC)) + 0x1C)) + 0x18)), &spE0, (void *)((f32)(s32)(0)));
     func_00228410();
     temp_f2 = sp110;
     temp_f1 = sp118;
@@ -123,7 +123,7 @@ loop_11:
     case 4:
         func_0021D6C0(0, temp_f12, temp_f20);
         func_00228430(0);
-        func_0022B900(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0xEDC)) + 0x1C)) + 0x18), &spE0, 0);
+        func_0022B900((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0xEDC)) + 0x1C)) + 0x18)), &spE0, (void *)((f32)(s32)(0)));
         func_00228410();
         sp104 -= ((temp_f20 / 2.0f) + sp114) - 10.0f;
         func_0022C6B0(&spE0);
@@ -136,7 +136,7 @@ loop_11:
             }
             temp_s5 = *var_s2;
             func_00228430(0);
-            func_0022B900(*(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0xEDC)) + 0x1C) + (var_s3 * 4)), &spE0, 0);
+            func_0022B900((s32)(*(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0xEDC)) + 0x1C) + (var_s3 * 4))), &spE0, (void *)((f32)(s32)(0)));
             func_00228410();
             spF8 = (s16) temp_s5;
             temp_a2 = *(u8 **)((u8 *)temp_s0 + 0xED8);

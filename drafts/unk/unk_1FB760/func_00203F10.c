@@ -1,10 +1,10 @@
 /* Draft (not built): func_00203F10 at 0x00203F10, size 0x3E8, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); nversion from 'unsigned char[]' to 'float' mwccps2.exe Compiler: @ 537: func_00146F10(&sp70, var_s1 + 0x20, D_0051D9AC);
+ * Status: size, 164 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x3B8, original 0x3E8
  * Original: asm/nonmatchings/unk/unk_1FB760/func_00203F10.s */
 
-// src/unk/unk_1FB760.c func_00203F10 cerr diff=-1/0
+// src/unk/unk_1FB760.c func_00203F10 size diff=164/238
 s32 func_00141C80(s32 *, void *, f32);
 extern f32 D_0051D9A8;
 s32 func_00203F10(u8 *arg0) {
@@ -37,7 +37,7 @@ loop_36:
         if (temp_f1 <= 0.0f) {
             *(s32 *)((u8 *)var_s1 + 0xC) = (s32) (*(s32 *)((u8 *)var_s1 + 0xC) | 1);
         } else {
-            func_00146F10(&sp70, var_s1 + 0x20, D_0051D9AC);
+            func_00146F10((void *)(&sp70), (void *)(var_s1 + 0x20),(*(f32 *)(D_0051D9AC)));
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
             M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
@@ -49,16 +49,16 @@ loop_36:
                 **(u8 ***)((u8 *)var_s1 + 4) = *(u8 **)((u8 *)var_s1 + 0);
                 *(u8 ***)((u8 *)(*(u8 **)((u8 *)var_s1 + 0)) + 4) = (u8 **) *(u8 ***)((u8 *)var_s1 + 4);
                 *(s32 *)((u8 *)arg0 + 0x4C) = (s32) (*(s32 *)((u8 *)arg0 + 0x4C) - 1);
-                *(&D_00526440 + (D_0047066C * 4)) = var_s1;
+                *(((u8 *)&D_00526440) + (D_0047066C * 4)) = (unsigned char)(var_s1);
                 D_0047066C += 1;
                 if (D_0047066C >= 0x800) {
                     D_0047066C = 0;
                 }
             } else {
                 if (*(s32 *)((u8 *)temp_s2 + 8) & 4) {
-                    func_00141C80(&sp60, var_s1 + 0x40, *(f32 *)((u8 *)var_s1 + 0x4C) * D_0051D9AC);
+                    func_00141C80(&sp60, var_s1 + 0x40, *(f32 *)((u8 *)var_s1 + 0x4C) * (*(f32 *)(D_0051D9AC)));
                     temp_a0 = var_s1 + 0x30;
-                    func_00142080(temp_a0, temp_a0, &sp60);
+                    func_00142080((u8 *)(temp_a0), (u8 *)(temp_a0), (u8 *)(&sp60));
                 }
                 if (*(s32 *)((u8 *)temp_s2 + 8) & 8) {
                     M2C_ERROR(/* unknown instruction: mula.s $f1, $f2 */);
@@ -108,8 +108,8 @@ loop_36:
                         *(f32 *)((u8 *)var_s1 + 0x6C) = temp_f1_3;
                     }
                 } else if (temp_v1 & 0x4000) {
-                    var_f2 = *(f32 *)((u8 *)temp_s2 + 0xB8) * D_0051D9AC;
-                    var_f1 = *(f32 *)((u8 *)temp_s2 + 0xBC) * D_0051D9AC;
+                    var_f2 = *(f32 *)((u8 *)temp_s2 + 0xB8) * (*(f32 *)(D_0051D9AC));
+                    var_f1 = *(f32 *)((u8 *)temp_s2 + 0xBC) * (*(f32 *)(D_0051D9AC));
                     if (*(s32 *)((u8 *)var_s1 + 0xC) & 8) {
                         var_f2 = -var_f2;
                     }

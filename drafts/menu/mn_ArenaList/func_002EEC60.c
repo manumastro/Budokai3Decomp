@@ -75,7 +75,7 @@ void func_002EEC60(u8 *arg0) {
     }
     if ((*(s16 *)((u8 *)arg0 + 0x14) != ((s64) ((s64) temp_v1 << 0x30) >> 0x30)) || (*(s16 *)((u8 *)arg0 + 0x16) != ((s64) ((s64) temp_v0 << 0x30) >> 0x30))) {
         SoundRpc_SetVolume(0, 0, (s64) var_a2, D_004E0614);
-        if (!(D_004E0614 <= 0.0f)) {
+        if (!(D_004E0614[0] <= 0.0f)) {
             SoundRpc_Send3(0, 0, 2, 0);
         }
     }

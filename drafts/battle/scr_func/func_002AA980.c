@@ -5,13 +5,13 @@
  * Original: asm/nonmatchings/battle/scr_func/func_002AA980.s */
 
 // src/battle/scr_func.c func_002AA980 size diff=81/84
-s32 func_002AA980(u8 *arg0, u8 *arg1) {
+s32 func_002AA980(s32 *arg0, s32 *arg1) {
     f32 temp_f2;
     f32 var_f0;
     f32 var_f0_2;
     u8 *temp_a1;
 
-    temp_a1 = (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x2C)) + 0x10) * 0xD0) + (&D_005BC9E0 + (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0) * 0x1A0));
+    temp_a1 = (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x2C)) + 0x10) * 0xD0) + (((u8 *)&D_005BC9E0) + (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0) * 0x1A0));
     temp_f2 = *(f32 *)((u8 *)temp_a1 + 0x20);
     if (temp_f2 <= 0.0f) {
         *(s32 *)((u8 *)arg0 + 0x10) = 0;

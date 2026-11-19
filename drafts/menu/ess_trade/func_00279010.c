@@ -41,7 +41,7 @@ void func_00279010(u8 *arg0) {
     var_s2 = *D_00492FCE | D_00493086;
     var_s3 = D_00492FD2 | D_00493032 | (D_0049308A | D_004930EA);
     if (var_s2 & 0x1000) {
-        var_v0 = (s32 *)(&func_00278D40);
+        var_v0 = (int *)(&func_00278D40);
         *(s32 *)((u8 *)gEssTrade + 0x1B8) = 6;
         *(s32 *)((u8 *)gEssTrade + 0x1C8) = 0x16;
         *(s32 *)((u8 *)gEssTrade + 0x1CC) = 0x15;
@@ -82,7 +82,7 @@ void func_00279010(u8 *arg0) {
                 SoundRpc_Send3(0, 0, 3, 0);
             }
         }
-        var_v0_2 = (s32 *)(&func_00278D40);
+        var_v0_2 = (int *)(&func_00278D40);
         *(s32 *)((u8 *)gEssTrade + 0x218) = var_s4;
         *(s32 *)((u8 *)gEssTrade + 0x220) = 0;
         *(s32 *)((u8 *)gEssTrade + 0x248) = var_s3;

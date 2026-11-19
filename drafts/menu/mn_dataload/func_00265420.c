@@ -15,9 +15,9 @@ extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern void func_00228410(void);
-extern void func_0022CD00(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022CD00(void *);
 void func_00265420(u8 *arg0) {
     s32 sp40;
     f32 sp44;

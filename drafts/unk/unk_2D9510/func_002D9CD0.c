@@ -1,7 +1,7 @@
 /* Draft (not built): func_002D9CD0 at 0x002D9CD0, size 0x104, segment unk/unk_2D9510 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal explicit conversion from 'unsigned char *' to 'float' @ 254: func_0022C060((f32)(temp_s1), 0x3F800000);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); egal implicit conversion from 'unsigned char *' to 'float' @ 254: func_0022C060(temp_s1, (s32)((f32)(s32)(0x3F800000)));
  * Original: asm/nonmatchings/unk/unk_2D9510/func_002D9CD0.s */
 
 // src/unk/unk_2D9510.c func_002D9CD0 cerr diff=-1/0
@@ -22,19 +22,37 @@ void func_002D9CD0(void) {
     *(f32 *)((u8 *)gOptionWork + 0x390) = temp_f1;
     if (!(temp_f1 < 60.0f)) {
         temp_s1 = *(u8 **)((u8 *)gOptionWork + 0x34);
-        temp_s0 = (u8 *)(gOptionWork);
+        temp_s0 = (unsigned char *)(gOptionWork);
         func_00228430(0);
         func_00228430(0);
         temp_a0 = *(u8 **)((u8 *)temp_s0 + 0xC);
-        D_00470704 = (s32)(temp_a0);
+        D_00470704 = (int)(temp_a0);
         D_00470708 = 0;
         D_0047070C = 0;
         amModel_SetCurrent((s32)(temp_a0), 0);
         D_00470238 = 0;
-        func_0022C060((f32)(temp_s1), 0x3F800000);
+        func_0022C060(temp_s1, (s32)((f32)(s32)(0x3F800000)));
         func_00228410();
-        func_0022CD00((s32)((void *)(temp_s1)));
+        func_0022CD00((s32)(temp_s1));
         func_00228410();
         func_002D7450();
     }
 }
+
+/* Similar function already in C: func_002D5D70 (src/unk/unk_2D2530.c), similarity 0.71.
+ * It is the template below (not built). */
+#if 0
+void func_002D5D70(void) {
+    Obj2D2530 *o = gOptionWork;
+    Obj2D2530 *s;
+    Model2D2530 *m;
+
+    func_002D58B0();
+    s = gOptionWork;
+    m = s->f2A0;
+    DrawModel(s, m, 0, 0);
+    if (o->f374 != 0) {
+        o->f374();
+    }
+}
+#endif

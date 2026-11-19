@@ -11,3 +11,11 @@ extern s32 D_00405D4C;
 void func_00156B68(void) {
     func_00156A90(D_00405D4C, D_00405CC8);
 }
+
+/* Similar function already in C: func_00123B90 (src/sdk/libc_00123B90.c), similarity 0.82.
+ * It is the template below (not built). */
+#if 0
+void func_00123B90(void) {
+    _cleanup_r(_impure_ptr);
+}
+#endif

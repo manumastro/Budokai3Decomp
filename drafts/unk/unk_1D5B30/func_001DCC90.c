@@ -1,10 +1,10 @@
 /* Draft (not built): func_001DCC90 at 0x001DCC90, size 0x9E4, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); dentifier 'sp68' mwccps2.exe Compiler: 2015: var_f1_3 = sp64 / temp_f1; @ 2012: temp_f1 = (sp60 * sp60) + (sp68 * sp68);
+ * Status: size, 524 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x4EC, original 0x9E4
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001DCC90.s */
 
-// src/unk/unk_1D5B30.c func_001DCC90 cerr diff=-1/0
+// src/unk/unk_1D5B30.c func_001DCC90 size diff=524/315
 s32 func_0013B190(s32);
 s32 func_001414D0(s32 *, f32, f32, f32);
 s32 func_001416A0(f32 *, f32 *, f32 *, s32);
@@ -13,6 +13,8 @@ s32 func_001423F0(s32, s32, s32 *, f32);
 extern void func_0011F680(void);
 extern void func_00142100(void *, void *);
 void func_001DCC90(u8 *arg0) {
+    s32 sp68;
+    s32 sp64;
     f32 sp60;
     s32 sp70;
     s32 spB0;

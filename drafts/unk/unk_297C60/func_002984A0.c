@@ -1,7 +1,7 @@
 /* Draft (not built): func_002984A0 at 0x002984A0, size 0x2D0, segment unk/unk_297C60 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); onversion from 'void' to 'unsigned char *' mwccps2.exe Compiler: @ 250: temp_s1 = *(s32 *)((u8 *)(**D_005AA608) + 0x4C);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal explicit conversion from 'void' to 'unsigned char *' @ 250: temp_s1 = *(s32 *)((u8 *)(**D_005AA608) + 0x4C);
  * Original: asm/nonmatchings/unk/unk_297C60/func_002984A0.s */
 
 // src/unk/unk_297C60.c func_002984A0 cerr diff=-1/0
@@ -59,7 +59,7 @@ void func_002984A0(u8 *arg0) {
 
     if ((func_00290C90() == 0) && (func_0029AEF0() == 0)) {
         var_s2 = 0;
-        var_s1 = (u8 **)(D_005AA550);
+        var_s1 = (unsigned char **)(D_005AA550);
         do {
             *(u8 **)((u8 *)var_s1 + 0x28) = (u8 *) *(u8 **)((u8 *)(*(u8 **)((u8 *)var_s1 + 0)) + 0x40);
             *(u8 **)((u8 *)(*(u8 **)((u8 *)var_s1 + 0)) + 0x40) = NULL;
@@ -93,13 +93,13 @@ void func_002984A0(u8 *arg0) {
         D_005AA61C = 0;
         D_005AA628 = 0;
         D_005AA614 = (f32) *(s32 *)((u8 *)(((D_005AA610 & 0xFFFF) * 0x10) + *(s32 *)((u8 *)(*(u8 **)((u8 *)(temp_a1_2 + temp_s1) + 0x46C)) + 0x14)) + 8);
-        func_00290A70(D_005AA604 + 0x1080, temp_a1_2);
+        func_00290A70((s32)(D_005AA604 + 0x1080), (s32)(temp_a1_2));
         func_00290780((s32)(D_005AA604 + 0x11A0));
         var_s1_2 = 0;
         var_s2_2 = 0;
         do {
-            func_002904C0((struct Slot *)(D_005AA604 + var_s2_2 + 0x80));
-            func_00290330(*(s32 *)((u8 *)(D_005AA604 + var_s2_2) + 0x80), func_002920E0(D_005AA604 + var_s2_2 + 0x80));
+            func_002904C0((Slot *)(D_005AA604 + var_s2_2 + 0x80));
+            func_00290330(*(s32 *)((u8 *)(D_005AA604 + var_s2_2) + 0x80), func_002920E0((s32)(D_005AA604 + var_s2_2 + 0x80)));
             var_s1_2 += 1;
             var_s2_2 += 0x40;
         } while (var_s1_2 < 0x40);
@@ -113,7 +113,7 @@ void func_002984A0(u8 *arg0) {
         sp4C = *(s32 *)((u8 *)D_005AA594 + 0x50);
         sp50 = *(s32 *)((u8 *)D_005AA598 + 0x50);
         amSound_LoadStream(&sp40, D_005AA594);
-        var_v1 = (s32 *)(&func_00298420);
+        var_v1 = (int *)(&func_00298420);
         if (&func_00298420 == NULL) {
             var_v1 = NULL;
         }

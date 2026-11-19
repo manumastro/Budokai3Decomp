@@ -26,7 +26,7 @@ void func_001BC4D0(u8 *arg0) {
     u8 *temp_s0;
 
     temp_f21 = *(f32 *)((u8 *)gBattle + 0x88F0) * *(f32 *)((u8 *)arg0 + 0xC9C);
-    func_001C37F0((struct Fighter *)(arg0 + 0xD0), 0);
+    func_001C37F0((Fighter *)(arg0 + 0xD0), 0);
     *(s32 *)((u8 *)arg0 + 0xD4) = 0;
     var_f20 = *(f32 *)((u8 *)arg0 + 0xB64);
     if (var_f20 == 0.0f) {
@@ -68,7 +68,7 @@ void func_001BC4D0(u8 *arg0) {
     temp_a0 = arg0 + 0xD0;
     *(f32 *)((u8 *)arg0 + 0xD0) = (f32) (*(f32 *)((u8 *)arg0 + 0xD0) * 0.4f);
     *(f32 *)((u8 *)arg0 + 0xD8) = (f32) (*(f32 *)((u8 *)arg0 + 0xD8) * 0.4f);
-    func_00146ED0(temp_a0, temp_a0, var_f20 * temp_f21);
+    func_00146ED0((f32 *)(temp_a0), (f32 *)(temp_a0), var_f20 * temp_f21);
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
     M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);

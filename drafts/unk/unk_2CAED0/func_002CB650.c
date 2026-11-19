@@ -18,7 +18,7 @@ void func_002CB650(void) {
 
     temp_s3 = gBattle;
     var_s0 = 0;
-    temp_s1 = (u8 *)(gTutWork);
+    temp_s1 = (unsigned char *)(gTutWork);
     *(s8 *)((u8 *)temp_s3 + 0x8AAD) = 0;
     var_s2 = temp_s3 + 0x830;
     if (*(s32 *)((u8 *)temp_s3 + 0x88D8) > 0) {

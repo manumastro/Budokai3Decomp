@@ -1,14 +1,16 @@
 /* Draft (not built): func_001E5040 at 0x001E5040, size 0x1E8, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  (*(f32 *)((u8 *)arg0 + 0x44) + sp54); @ 3733: *(f32 *)((u8 *)arg0 + 0x48) = (f32) (*(f32 *)((u8 *)arg0 + 0x48) + sp58);
+ * Status: size, 97 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x184, original 0x1E8
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001E5040.s */
 
-// src/unk/unk_1D5B30.c func_001E5040 cerr diff=-1/0
+// src/unk/unk_1D5B30.c func_001E5040 size diff=97/97
 extern void func_0013B620(void *);
 extern char D_003F0800[];
 extern void amMotion_BuildMatrices(char *);
-void func_001E5040(u8 *arg0) {
+void func_001E5040(Fighter *arg0) {
+    s32 sp58;
+    s32 sp54;
     f32 sp50;
     f32 var_f0;
     s32 temp_v0;

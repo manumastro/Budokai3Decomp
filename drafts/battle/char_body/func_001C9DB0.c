@@ -25,11 +25,11 @@ void func_001C9DB0(s16 *arg0, u8 *arg1, s32 arg2) {
                 var_a2 = *(u8 **)((u8 *)var_a0 + 0x1C);
                 var_t3 = var_a0;
                 var_v1 = *(u8 **)((u8 *)arg1 + 0x4C);
-                var_a0 = (s16 *)(arg1 + 0x30);
+                var_a0 = (short *)(arg1 + 0x30);
             } else {
                 var_a2 = *(u8 **)((u8 *)arg1 + 0x4C);
                 var_v1 = *(u8 **)((u8 *)var_a0 + 0x1C);
-                var_t3 = (s16 *)(arg1 + 0x30);
+                var_t3 = (short *)(arg1 + 0x30);
             }
             var_t2 = 0;
             do {
@@ -37,8 +37,8 @@ void func_001C9DB0(s16 *arg0, u8 *arg1, s32 arg2) {
                 if (temp_a1 >= 0) {
                     temp_v1 = *var_a0;
                     if (temp_v1 >= 0) {
-                        temp_t0 = (u8 *)(*(s32 *)((u8 *)var_a2 + 0x45C) + (temp_a1 << 7));
-                        temp_t1 = (u8 *)(*(s32 *)((u8 *)var_v1 + 0x45C) + (temp_v1 << 7));
+                        temp_t0 = (unsigned char *)(*(s32 *)((u8 *)var_a2 + 0x45C) + (temp_a1 << 7));
+                        temp_t1 = (unsigned char *)(*(s32 *)((u8 *)var_v1 + 0x45C) + (temp_v1 << 7));
                         *(s128 *)((u8 *)temp_t1 + 0) = (s128) *(s128 *)((u8 *)temp_t0 + 0);
                         *(s128 *)((u8 *)temp_t1 + 0x10) = (s128) *(s128 *)((u8 *)temp_t0 + 0x10);
                         *(s128 *)((u8 *)temp_t1 + 0x20) = (s128) *(s128 *)((u8 *)temp_t0 + 0x20);

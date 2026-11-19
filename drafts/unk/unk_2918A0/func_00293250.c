@@ -1,10 +1,10 @@
 /* Draft (not built): func_00293250 at 0x00293250, size 0x298, segment unk/unk_2918A0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); mwccps2.exe Compiler: 332: *(s32 *)((u8 *)D_005AA604 + 0x1200) = sp5C; @ 324: *(s8 *)((u8 *)D_005AA604 + 0x11E7) = sp54;
+ * Status: size, 83 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x27C, original 0x298
  * Original: asm/nonmatchings/unk/unk_2918A0/func_00293250.s */
 
-// src/unk/unk_2918A0.c func_00293250 cerr diff=-1/0
+// src/unk/unk_2918A0.c func_00293250 size diff=83/159
 s32 Fade_Request(s32, s32, s32);
 s32 StrMap_Start(s32, s32, s32);
 s32 StrStatus_Dispatch(s32 *);
@@ -32,6 +32,8 @@ extern char *gStrStatus;
 extern void func_002BD400(void *);
 extern void StrStatus_Free(void);
 void func_00293250(u8 *arg0) {
+    s32 sp5C;
+    s32 sp54;
     s32 sp20;
     s32 sp30;
     s32 sp34;

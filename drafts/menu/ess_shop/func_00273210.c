@@ -1,10 +1,10 @@
 /* Draft (not built): func_00273210 at 0x00273210, size 0x118, segment menu/ess_shop (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); (temp_t0 + *(s16 *)((u8 *)var_v1 + 2)) != 0) && ((temp_t4 = *(s16 *)((u8 *)var_v1 + 0), temp_t3 = &D_004E0660 + (temp_t4
+ * Status: size, 53 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x130, original 0x118
  * Original: asm/nonmatchings/menu/ess_shop/func_00273210.s */
 
-// src/menu/ess_shop.c func_00273210 cerr diff=-1/0
+// src/menu/ess_shop.c func_00273210 size diff=53/76
 extern s32 D_004530D0;
 extern s32 D_0058F710;
 s16 func_00273210(void) {
@@ -26,8 +26,8 @@ s16 func_00273210(void) {
     var_v1 = &D_004530D0;
     temp_t0 = *(s32 *)((u8 *)gEssShop + 0x54);
 loop_1:
-    if ((*(temp_t0 + *(s16 *)((u8 *)var_v1 + 2)) != 0) && ((temp_t4 = *(s16 *)((u8 *)var_v1 + 0), temp_t3 = &D_004E0660 + (temp_t4 * 0x28), temp_t1 = *(s64 *)((u8 *)temp_t3 + 0), (temp_t1 == 0)) || (*(&D_0058F710 + (*(s32 *)((u8 *)gEssShop + 0x50) * 0xD680)) & temp_t1))) {
-        temp_t2 = *(temp_t0 + temp_t4);
+    if ((*(s32 *)(temp_t0 + *(s16 *)((u8 *)var_v1 + 2)) != 0) && ((temp_t4 = *(s16 *)((u8 *)var_v1 + 0), temp_t3 = ((u8 *)&D_004E0660) + (temp_t4 * 0x28), temp_t1 = *(s64 *)((u8 *)temp_t3 + 0), (temp_t1 == 0)) || (*(&D_0058F710 + (*(s32 *)((u8 *)gEssShop + 0x50) * 0xD680)) & temp_t1))) {
+        temp_t2 = *(s32 *)(temp_t0 + temp_t4);
         if (temp_t2 == 0) {
             var_v0 = *(&D_004530D0 + (var_a0 * 4));
         } else {

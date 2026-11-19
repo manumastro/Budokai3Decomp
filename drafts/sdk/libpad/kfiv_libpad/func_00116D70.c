@@ -17,3 +17,15 @@ s32 func_00116D70(s32 arg0, s32 arg1)
   }
   return *((s32 *) ((new_var = (u8 *) func_00116C18(arg0, 0)) + 0x58));
 }
+
+/* Similar function already in C: scePadExitPressMode (src/sdk/libpad/kfiv_libpad.c), similarity 0.98.
+ * It is the template below (not built). */
+#if 0
+int scePadExitPressMode(int port, int slot)
+{
+    if (padSlot[port][slot].opened == 0) {
+        return 0;
+    }
+    return scePadSetButtonInfo(port, slot, 0);
+}
+#endif

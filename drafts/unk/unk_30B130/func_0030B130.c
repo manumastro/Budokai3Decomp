@@ -1,14 +1,14 @@
 /* Draft (not built): func_0030B130 at 0x0030B130, size 0x1AC, segment unk/unk_30B130 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: size, 80 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x134, original 0x1AC
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x12C, original 0x1AC
  * Original: asm/nonmatchings/unk/unk_30B130/func_0030B130.s */
 
-// src/unk/unk_30B130.c func_0030B130 size diff=80/77
+// src/unk/unk_30B130.c func_0030B130 size diff=80/75
 void *A2d_AllocObj(s32, s32, s16, s32, s32);
 s32 memset(void *, s32, s32);
 extern void *gArenaRegCharList;
-void func_0030B130(u8 *arg1, u8 *arg2, s32 arg3) {
+void func_0030B130(s32 unused_arg0, u8 *arg1, u8 *arg2, s32 arg3) {
     f32 temp_f2;
     f32 temp_f4;
     s16 temp_a2;

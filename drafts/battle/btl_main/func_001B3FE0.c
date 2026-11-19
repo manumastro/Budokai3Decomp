@@ -1,4 +1,4 @@
-/* Draft (not built): func_001B3FE0 at 0x001B3FE0, size 0x294, segment battle/btl_main (c)
+/* Draft (not built): func_001B3FE0 at 0x00468910, size 0x0, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: size, 96 instructions differ
  * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x270, original 0x294
@@ -6,7 +6,6 @@
 
 // src/battle/btl_main.c func_001B3FE0 size diff=96/156
 extern s32 func_0012EAE0(s32);
-s32 func_001E3100(void *);
 void func_001B3FE0(u8 *arg0) {
     s32 sp20;
     s32 sp2C;
@@ -99,6 +98,6 @@ void func_001B3FE0(u8 *arg0) {
     *(s8 *)((u8 *)arg0 + 0x2004) = 0;
     func_001E3100(arg0);
     func_001D9C00(arg0);
-    func_001ABD30((void *)(arg0 + 0x1360));
+    func_001ABD30((struct Fighter *)(arg0 + 0x1360));
     func_001D9900(arg0, 0xC, 1);
 }

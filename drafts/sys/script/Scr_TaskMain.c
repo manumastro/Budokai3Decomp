@@ -75,7 +75,7 @@ case 5:
     *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 0xC) = 4;
     amTask_KillGroup(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 0x14), *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 0x18), 1);
     *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 0xC) = 2;
-    temp_v0_2 = (struct ScrMachine *)Scr_CreateTask(*(u8 **)((u8 *)arg0 + 0x30), *(s32 *)((u8 *)temp_s0 + 0), *(s32 *)((u8 *)temp_s0 + 4));
+    temp_v0_2 = (int)(Scr_CreateTask((ScrMachine *)(*(u8 **)((u8 *)arg0 + 0x30)), (u8 *)(*(s32 *)((u8 *)temp_s0 + 0)), (s32)(*(s32 *)((u8 *)temp_s0 + 4))));
     temp_v1_2 = *(s32 (**)(s32, u8 *))((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 0x50);
     if (temp_v1_2 == NULL) {
         goto block_19;
@@ -88,7 +88,7 @@ case 6:
     goto block_25;
 case 7:
     *(u8 **)((u8 *)temp_s0 + 0x24) = sp4C;
-    var_a1 = *(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 0x44) + (((var_a1 >> 0xC) & 0xFFF) * 4)) + (((var_a1 >> 8) & 0xF) * 4))(temp_s1, temp_s0);
+    var_a1 = *(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 0x44) + (((var_a1 >> 0xC) & 0xFFF) * 4)) + (((var_a1 >> 8) & 0xF) * 4))(temp_s1, temp_s0);
     if (var_a1 != 1) {
         goto loop_9;
     }

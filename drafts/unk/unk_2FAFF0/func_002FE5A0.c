@@ -28,7 +28,7 @@ void func_002FE5A0(void) {
 
     var_s1 = D_004B4B58;
     temp_s0 = *(u8 **)((u8 *)gTourMap + 0x30);
-    temp_s5 = (u8 *)(gTourMap + 0x10C);
+    temp_s5 = (unsigned char *)(gTourMap + 0x10C);
     if (var_s1 != D_005D0082) {
         if ((var_s1 + 1) == D_005D0082) {
             var_s1 = 4;

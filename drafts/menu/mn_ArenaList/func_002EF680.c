@@ -53,3 +53,42 @@ block_14:
         goto block_14;
     }
 }
+
+/* Similar function already in C: func_002EF540 (src/menu/mn_ArenaList.c), similarity 0.68.
+ * It is the template below (not built). */
+#if 0
+void func_002EF540(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    s32 s2;
+    void *fp;
+    s16 a2v;
+    s1 = a0;
+    s0 = *(u8 **)(a0 + 0x30);
+    s2 = 0;
+    func_002EE1C0(s0);
+    func_002ECFD0(s0, 1);
+    if ((s16)func_002F4A80(*(void **)(s0 + 0x58)) == 4) {
+        if ((s16)func_002F4A70(*(void **)(s0 + 0x58)) == 0) {
+            s2 = 1;
+        }
+        func_002F4A90(*(void **)(s0 + 0x58));
+        *(void **)(s0 + 0x58) = 0;
+        if (s2 != 0) {
+            a2v = *(s16 *)(s0 + 0x14);
+            *(u8 *)((u8 *)D_004B4B40 + a2v * 40 + 0x30000 - 0x4A2A) = 0;
+            func_002EE7A0(s0, 0, a2v);
+            func_002EE9F0(s0);
+            func_002EDC50(s0);
+            *(s16 *)(s0 + 0x18) = 4;
+            Save_Load(0x3000, 0);
+            Save_Request(6, -1, 0);
+            fp = (void *)func_002EF4C0;
+            *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        } else {
+            fp = (void *)func_002EF7C0;
+            *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
+        }
+    }
+}
+#endif

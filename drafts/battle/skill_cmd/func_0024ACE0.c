@@ -1,10 +1,10 @@
 /* Draft (not built): func_0024ACE0 at 0x0024ACE0, size 0x57C, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ) + 0x54) = 0; @ 492: f) && (temp_v1_2 = temp_s0 * 4, (*(s32 *)((u8 *)(((u8 *)temp_v1_2) + D_0046FE54) + 0x54) != 0))) {
+ * Status: size, 240 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x278, original 0x57C
  * Original: asm/nonmatchings/battle/skill_cmd/func_0024ACE0.s */
 
-// src/battle/skill_cmd.c func_0024ACE0 cerr diff=-1/0
+// src/battle/skill_cmd.c func_0024ACE0 size diff=240/158
 s32 func_001EA240(s32 *);
 extern f32 D_0051D9AC;
 extern void func_00251F30(void);
@@ -47,7 +47,7 @@ s32 func_0024ACE0(u8 *arg0) {
         func_001D9280((s32)(*(u8 **)((u8 *)arg0 + 8)));
         temp_a0 = *(u8 **)((u8 *)arg0 + 0x54);
         if (temp_a0 != NULL) {
-            Obj_ResetF38((s32)((void *)(temp_a0)));
+            Obj_ResetF38((s32)(temp_a0));
             *(u8 **)((u8 *)arg0 + 0x54) = NULL;
         }
         *(f32 *)((u8 *)arg0 + 0) = 12.0f;
@@ -81,7 +81,7 @@ s32 func_0024ACE0(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
         sp70 = *(f32 *)((u8 *)temp_s2 + 0xCC);
-        sp78 = (s32 *)(&func_00251F30);
+        sp78 = (int *)(&func_00251F30);
         sp7C = arg0;
         if (*(s32 *)((u8 *)temp_s1 + 0xB9C) == 0x10) {
             temp_f1_2 = *(f32 *)((u8 *)arg0 + 0x5C);
@@ -134,10 +134,10 @@ s32 func_0024ACE0(u8 *arg0) {
         func_001EA240(&sp50);
         *(s16 *)((u8 *)arg0 + 4) = (s16) (*(s16 *)((u8 *)arg0 + 4) & ~0x400);
     }
-    if ((*(f32 *)((u8 *)arg0 + 0) < 50.0f) && (temp_v1_2 = temp_s0 * 4, (*(s32 *)((u8 *)(((u8 *)temp_v1_2) + D_0046FE54) + 0x54) != 0))) {
+    if ((*(f32 *)((u8 *)arg0 + 0) < 50.0f) && (temp_v1_2 = temp_s0 * 4, (*(s32 *)((u8 *)(((s32)(((u8 *)temp_v1_2))) + ((s32)(D_0046FE54))) + 0x54) != 0))) {
         *(s16 *)((u8 *)arg0 + 4) = (s16) (*(s16 *)((u8 *)arg0 + 4) | 0x1000);
         *(s16 *)((u8 *)arg0 + 4) = (s16) (*(s16 *)((u8 *)arg0 + 4) | 0x800);
-        *(s32 *)((u8 *)(((u8 *)temp_v1_2) + D_0046FE54) + 0x54) = 0;
+        *(s32 *)((u8 *)(((s32)(((u8 *)temp_v1_2))) + ((s32)(D_0046FE54))) + 0x54) = 0;
     } else if (!(*(f32 *)((u8 *)arg0 + 0) < 50.0f)) {
         temp_v1_3 = *(s16 *)((u8 *)temp_s1 + 0xCAC);
         if ((temp_v1_3 != 0x10) && (temp_v1_3 != 0x19) && (temp_v1_3 != 0x14)) {

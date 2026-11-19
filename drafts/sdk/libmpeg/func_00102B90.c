@@ -1,8 +1,8 @@
-/* Draft (not built): func_00102B90 at 0x00102B90, size 0x488, segment sdk/libmpeg (asm)
+/* Draft (not built): func_00102B90 at 0x00102B90, size 0x488, segment sdk/libmpeg (c)
  * Compiler: ee-gcc 2.9-991111-01 -O2 -G0
  * Status: cerr
  * Made with: m2c -t mipsee-gcc-c --valid-syntax; compiled with 2.9-991111-01 -O2 -G0; compile error: d_00102B90.c:189: warning: assignment makes pointer from integer without a cast
- * Original: asm/sdk/libmpeg.s */
+ * Original: asm/nonmatchings/sdk/libmpeg/func_00102B90.s */
 
 extern s32 D_003EC478;
 extern s32 D_003EC498;

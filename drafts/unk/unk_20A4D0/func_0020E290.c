@@ -8,7 +8,7 @@
 void func_0020E290(s32 arg0, s32 arg1, s32 arg2) {
     switch (arg2) {                                 /* irregular */
     case 0:
-        func_0013B160(&D_00568C90 + (arg0 * 0x2140) + 0x40);
+        func_0013B160(((u8 *)&D_00568C90) + (arg0 * 0x2140) + 0x40);
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($s0) */);
         M2C_ERROR(/* unknown instruction: vmulx.xyz $vf28, $vf28, $vf1x */);
         M2C_ERROR(/* unknown instruction: vmuly.xyz $vf29, $vf29, $vf1y */);
@@ -23,7 +23,7 @@ void func_0020E290(s32 arg0, s32 arg1, s32 arg2) {
         M2C_ERROR(/* unknown instruction: vmove.xyzw $vf31, $vf27 */);
         return;
     case 1:
-        func_0013B160(&D_0058A090 + (arg0 * 0xC0) + 0x50);
+        func_0013B160(((u8 *)&D_0058A090) + (arg0 * 0xC0) + 0x50);
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($s0) */);
         M2C_ERROR(/* unknown instruction: vmulx.xyz $vf28, $vf28, $vf1x */);
         M2C_ERROR(/* unknown instruction: vmuly.xyz $vf29, $vf29, $vf1y */);

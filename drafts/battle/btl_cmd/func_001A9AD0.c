@@ -1,10 +1,10 @@
 /* Draft (not built): func_001A9AD0 at 0x001A9AD0, size 0x980, segment battle/btl_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); (temp_s7 + (*(s32 *)((u8 *)arg0 + 0x60) * 4)) = var_s2; @ 1497: *(temp_s6 + (*(s32 *)((u8 *)arg0 + 0x5C) * 4)) = var_s3;
+ * Status: size, 493 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x800, original 0x980
  * Original: asm/nonmatchings/battle/btl_cmd/func_001A9AD0.s */
 
-// src/battle/btl_cmd.c func_001A9AD0 cerr diff=-1/0
+// src/battle/btl_cmd.c func_001A9AD0 size diff=493/512
 f32 func_00146F90(f32 *, void *);
 extern s32 D_00492FCC;
 extern s32 D_00492FDA;
@@ -71,8 +71,8 @@ void func_001A9AD0(u8 *arg0) {
     u8 *temp_a0_6;
     u8 *temp_s0;
 
-    temp_s6 = (s32)(arg0 + 0xE4);
-    temp_s7 = (s32)(arg0 + 0x164);
+    temp_s6 = (int)(arg0 + 0xE4);
+    temp_s7 = (int)(arg0 + 0x164);
     temp_s0 = arg0 + 0x64;
     var_s4 = 0;
     var_s3 = 0;
@@ -250,10 +250,10 @@ block_64:
         }
     }
     temp_a1_2 = *(s32 *)((u8 *)arg0 + 0x5C);
-    temp_a0_5 = (u8 *)(temp_s6 + (temp_a1_2 * 4));
+    temp_a0_5 = (unsigned char *)(temp_s6 + (temp_a1_2 * 4));
     if (var_s3 != *(s16 *)((u8 *)temp_a0_5 + 0)) {
         *(s32 *)((u8 *)arg0 + 0x5C) = (s32) ((temp_a1_2 + 1) & 0x1F);
-        *(temp_s6 + (*(s32 *)((u8 *)arg0 + 0x5C) * 4)) = var_s3;
+        *(s32 *)(temp_s6 + (*(s32 *)((u8 *)arg0 + 0x5C) * 4)) = var_s3;
         if (*(s32 *)((u8 *)arg0 + 0x50) > 0) {
             var_a0_2 = -1;
         } else {
@@ -271,10 +271,10 @@ block_64:
         }
     }
     temp_a1_3 = *(s32 *)((u8 *)arg0 + 0x60);
-    temp_a0_6 = (u8 *)(temp_s7 + (temp_a1_3 * 4));
+    temp_a0_6 = (unsigned char *)(temp_s7 + (temp_a1_3 * 4));
     if (var_s2 != *(s16 *)((u8 *)temp_a0_6 + 0)) {
         *(s32 *)((u8 *)arg0 + 0x60) = (s32) ((temp_a1_3 + 1) & 0x1F);
-        *(temp_s7 + (*(s32 *)((u8 *)arg0 + 0x60) * 4)) = var_s2;
+        *(s32 *)(temp_s7 + (*(s32 *)((u8 *)arg0 + 0x60) * 4)) = var_s2;
         if (*(s32 *)((u8 *)arg0 + 0x50) > 0) {
             var_a0_3 = -1;
         } else {

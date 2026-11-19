@@ -1,10 +1,10 @@
 /* Draft (not built): func_002507B0 at 0x002507B0, size 0x604, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); *, float, int, float)' mwccps2.exe Compiler: @ 1162: func_00146ED0(&sp140, arg0 + 0x30, *(f32 *)((u8 *)temp_s2 + 0x3C));
+ * Status: size, 293 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x37C, original 0x604
  * Original: asm/nonmatchings/battle/skill_cmd/func_002507B0.s */
 
-// src/battle/skill_cmd.c func_002507B0 cerr diff=-1/0
+// src/battle/skill_cmd.c func_002507B0 size diff=293/223
 s32 func_00133780(s32, s32);
 s32 func_00134690(s32, s32, s32, s64);
 s32 func_001351F0(s32, s32, s32, f32 *);
@@ -78,14 +78,14 @@ void func_002507B0(u8 *arg0) {
     M2C_ERROR(/* unknown instruction: lqc2 $vf29, 0x10($v0) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf30, 0x20($v0) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf31, 0x30($v0) */);
-    func_00146ED0(&sp140, arg0 + 0x30, *(f32 *)((u8 *)temp_s2 + 0x3C));
+    func_00146ED0((s32 *)(&sp140), (s32 *)(arg0 + 0x30), *(f32 *)((u8 *)temp_s2 + 0x3C), 0, 0);
     if (gBattle != NULL) {
         var_v0 = *(s16 *)((u8 *)gBattle + 0x8944);
     } else {
         var_v0 = 0;
     }
     if ((var_v0 != 0) && ((temp_v1 = *(s16 *)((u8 *)temp_s2 + 0xE0), (temp_v1 == 3)) || (temp_v1 == 4))) {
-        func_0020D400(arg0 + 0x10, temp_s1, *(s32 *)((u8 *)temp_s2 + 0x2C));
+        func_0020D400((s32)(arg0 + 0x10), (s32)(temp_s1), (s32)(*(s32 *)((u8 *)temp_s2 + 0x2C)));
     }
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
@@ -103,7 +103,7 @@ void func_002507B0(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);
         M2C_ERROR(/* unknown instruction: vmaddaz.xyzw ACC, $vf30, $vf1z */);
         M2C_ERROR(/* unknown instruction: vmaddw.xyzw $vf31, $vf31, $vf0w */);
-        func_00208D70((s32)((void *)(*(u8 **)((u8 *)arg0 + 0x48))));
+        func_00208D70((s32)(*(u8 **)((u8 *)arg0 + 0x48)));
     }
     if ((*(u8 **)((u8 *)arg0 + 0x4C) != NULL) && !(*(s16 *)((u8 *)arg0 + 4) & 0x2000)) {
         func_0013B060(NULL);
@@ -112,7 +112,7 @@ void func_002507B0(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);
         M2C_ERROR(/* unknown instruction: vmaddaz.xyzw ACC, $vf30, $vf1z */);
         M2C_ERROR(/* unknown instruction: vmaddw.xyzw $vf31, $vf31, $vf0w */);
-        func_00208D70((s32)((void *)(*(u8 **)((u8 *)arg0 + 0x4C))));
+        func_00208D70((s32)(*(u8 **)((u8 *)arg0 + 0x4C)));
     }
     func_0013B110(1);
     func_00209C50();
@@ -212,7 +212,7 @@ void func_002507B0(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);
         M2C_ERROR(/* unknown instruction: vmaddaz.xyzw ACC, $vf30, $vf1z */);
         M2C_ERROR(/* unknown instruction: vmaddw.xyzw $vf31, $vf31, $vf0w */);
-        func_00208D70((s32)((void *)(*(u8 **)((u8 *)D_0046FE54 + 0x5C))));
+        func_00208D70((s32)(*(u8 **)((u8 *)D_0046FE54 + 0x5C)));
         func_0013B110(1);
         func_00209C50();
     }

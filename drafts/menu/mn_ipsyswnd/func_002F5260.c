@@ -1,10 +1,10 @@
 /* Draft (not built): func_002F5260 at 0x002F5260, size 0x218, segment menu/mn_ipsyswnd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: size, 89 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1C4, original 0x218
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1CC, original 0x218
  * Original: asm/nonmatchings/menu/mn_ipsyswnd/func_002F5260.s */
 
-// src/menu/mn_ipsyswnd.c func_002F5260 size diff=89/113
+// src/menu/mn_ipsyswnd.c func_002F5260 size diff=89/115
 s32 func_0022D860(s32, s32);
 s32 func_002F8340(s16 *);
 extern void amFile_Load(void *);
@@ -59,7 +59,7 @@ block_3:
         *(s32 *)((u8 *)var_s1 + 0xBC) = 0x41F00000;
         var_s0 = gOutputPass;
         temp_a0 = *(u8 **)((u8 *)var_s0 + 0xC);
-        D_00470704 = (s32)(temp_a0);
+        D_00470704 = (int)(temp_a0);
         D_0047070C = 0x6000;
         D_00470708 = 0;
         amModel_SetCurrent((s32)(temp_a0), 0x6000);
@@ -102,7 +102,7 @@ block_3:
             func_002F4BB0(var_s1, (s64) ((s64) var_s0 << 0x30) >> 0x30);
             var_s0 += 1;
         } while ((s32) var_s0 < 0x24);
-        var_v1 = (s32 *)(&func_002F5120);
+        var_v1 = (int *)(&func_002F5120);
         if (&func_002F5120 == NULL) {
             var_v1 = NULL;
         }

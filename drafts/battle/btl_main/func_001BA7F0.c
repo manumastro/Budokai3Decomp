@@ -1,7 +1,7 @@
 /* Draft (not built): func_001BA7F0 at 0x001BA7F0, size 0x320, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); unction mwccps2.exe Compiler: 3437: *(&D_00468460 + (temp_v0 * 4))(arg0); @ 3419: *(&D_00468460 + (var_v0_3 * 4))(arg0);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); exe Compiler: 4132: *(((u8 *)&D_00468460) + (temp_v0 * 4))(arg0); @ 4114: *(((u8 *)&D_00468460) + (var_v0_3 * 4))(arg0);
  * Original: asm/nonmatchings/battle/btl_main/func_001BA7F0.s */
 
 // src/battle/btl_main.c func_001BA7F0 cerr diff=-1/0
@@ -33,7 +33,7 @@ void func_001BA7F0(u8 *arg0) {
                 temp_v1 = *(s32 *)((u8 *)arg0 + 0x13B0);
                 temp_a0 = arg0 + 0x1360;
                 if ((temp_v1 >= -6) && (temp_v1 < 7)) {
-                    temp_s1 = (s16 *)(temp_a0 + (*(s32 *)((u8 *)temp_a0 + 0x5C) * 4) + 0xE4);
+                    temp_s1 = (short *)(temp_a0 + (*(s32 *)((u8 *)temp_a0 + 0x5C) * 4) + 0xE4);
                     if (gBattle != NULL) {
                         var_v0_2 = *(s32 *)((u8 *)gBattle + 0x8AA8) & 0x2000;
                     } else {
@@ -77,7 +77,7 @@ block_27:
                         *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
                     }
                     *(s8 *)((u8 *)arg0 + 0x2006) = 0;
-                    *(&D_00468460 + (var_v0_3 * 4))(arg0);
+                    *(((u8 *)&D_00468460) + (var_v0_3 * 4))(arg0);
                     func_002CBFF0(1, arg0);
                     return;
                 }
@@ -95,7 +95,7 @@ block_27:
                     *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
                 }
                 *(s8 *)((u8 *)arg0 + 0x2006) = 0;
-                *(&D_00468460 + (temp_v0 * 4))(arg0);
+                *(((u8 *)&D_00468460) + (temp_v0 * 4))(arg0);
                 func_002CBFF0(1, arg0);
                 return;
             }

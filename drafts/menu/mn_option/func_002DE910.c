@@ -1,18 +1,18 @@
 /* Draft (not built): func_002DE910 at 0x002DE910, size 0xEC, segment menu/mn_option (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 58 instructions differ
+ * Status: size, 56 instructions differ
  * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x13C, original 0xEC
  * Original: asm/nonmatchings/menu/mn_option/func_002DE910.s */
 
-// src/menu/mn_option.c func_002DE910 size diff=58/79
+// src/menu/mn_option.c func_002DE910 size diff=56/79
 void func_002DE910(void) {
     s32 var_t2;
-    s8 *var_t1;
     u8 *var_a3;
     u8 *var_t0;
+    u8 *var_t1;
 
     var_t2 = 0;
-    var_t1 = (s8 *)(D_004E05DC[0]);
+    var_t1 = D_004E05DC;
     var_t0 = gOptionWork;
     var_a3 = gOptionWork;
     *(s16 *)((u8 *)gOptionWork + 0x41A) = (s16) *(s16 *)((u8 *)D_004E05DC + 0);

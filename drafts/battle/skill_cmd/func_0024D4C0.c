@@ -1,10 +1,10 @@
 /* Draft (not built): func_0024D4C0 at 0x0024D4C0, size 0x64C, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); nc_00146ED0(int *, int *, float, int, float)' @ 824: func_00146ED0(&sp140, arg0 + 0x30, *(f32 *)((u8 *)temp_s3 + 0x3C));
+ * Status: size, 300 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x39C, original 0x64C
  * Original: asm/nonmatchings/battle/skill_cmd/func_0024D4C0.s */
 
-// src/battle/skill_cmd.c func_0024D4C0 cerr diff=-1/0
+// src/battle/skill_cmd.c func_0024D4C0 size diff=300/231
 s32 func_00133780(s32, s32);
 s32 func_00134690(s32, s32, s32, s64);
 s32 func_001351F0(s32, s32, s32, f32 *);
@@ -56,20 +56,20 @@ void func_0024D4C0(u8 *arg0) {
     f32 temp_f20;
     f32 temp_f8;
     f32 var_f20;
-    s32 temp_s0;
-    s32 temp_s0_2;
-    s32 temp_s1;
     s32 var_s0;
-    u8 *temp_s2;
-    u8 *temp_s3;
+    s32 var_s1;
+    u8 *var_s2;
+    u8 *var_s3;
+    u8 *var_s4;
 
-    temp_s2 = *(u8 **)((u8 *)arg0 + 8);
-    temp_s3 = *(u8 **)((u8 *)arg0 + 0xC);
-    temp_s1 = *(s32 *)((u8 *)temp_s2 + 0x1350);
-    temp_s0 = func_0020B020(temp_s1, *(s16 *)((u8 *)temp_s3 + 0x20), *(s16 *)((u8 *)temp_s3 + 0x22));
-    amModel_SetCurrent(temp_s0, func_0020AD30(temp_s1, *(s16 *)((u8 *)temp_s3 + 0x20), *(s16 *)((u8 *)temp_s3 + 0x22)));
+    var_s4 = arg0;
+    var_s2 = *(u8 **)((u8 *)arg0 + 8);
+    var_s3 = *(u8 **)((u8 *)arg0 + 0xC);
+    var_s1 = *(s32 *)((u8 *)var_s2 + 0x1350);
+    var_s0 = func_0020B020(var_s1, *(s16 *)((u8 *)var_s3 + 0x20), *(s16 *)((u8 *)var_s3 + 0x22));
+    amModel_SetCurrent(var_s0, func_0020AD30(var_s1, *(s16 *)((u8 *)var_s3 + 0x20), *(s16 *)((u8 *)var_s3 + 0x22)));
     var_f20 = 1.0f;
-    temp_f1 = *(f32 *)((u8 *)arg0 + 0);
+    temp_f1 = *(f32 *)((u8 *)var_s4 + 0);
     if (temp_f1 < 12.0f) {
         temp_f20 = temp_f1 / 12.0f;
         var_f20 = temp_f20 * temp_f20;
@@ -100,7 +100,7 @@ loop_17:
         M2C_ERROR(/* unknown instruction: lqc2 $vf29, 0x10($v0) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf30, 0x20($v0) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf31, 0x30($v0) */);
-        func_00146ED0(&sp140, arg0 + 0x30, *(f32 *)((u8 *)temp_s3 + 0x3C));
+        func_00146ED0((s32 *)(&sp140), (s32 *)(var_s4 + 0x30), *(f32 *)((u8 *)var_s3 + 0x3C), 0, 0);
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
         M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
@@ -110,54 +110,54 @@ loop_17:
         M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
         func_00209D70(&sp180);
-        if (*(u8 **)((u8 *)arg0 + 0x58) != NULL) {
+        if (*(u8 **)((u8 *)var_s4 + 0x58) != NULL) {
             func_0013B060(NULL);
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
             M2C_ERROR(/* unknown instruction: vmulax.xyzw ACC, $vf28, $vf1x */);
             M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);
             M2C_ERROR(/* unknown instruction: vmaddaz.xyzw ACC, $vf30, $vf1z */);
             M2C_ERROR(/* unknown instruction: vmaddw.xyzw $vf31, $vf31, $vf0w */);
-            func_00208D70((s32)((void *)(*(u8 **)((u8 *)arg0 + 0x58))));
+            func_00208D70((s32)(*(u8 **)((u8 *)var_s4 + 0x58)));
         }
-        if ((*(u8 **)((u8 *)arg0 + 0x5C) != NULL) && !(*(s16 *)((u8 *)arg0 + 4) & 0x2000)) {
+        if ((*(u8 **)((u8 *)var_s4 + 0x5C) != NULL) && !(*(s16 *)((u8 *)var_s4 + 4) & 0x2000)) {
             func_0013B060(NULL);
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
             M2C_ERROR(/* unknown instruction: vmulax.xyzw ACC, $vf28, $vf1x */);
             M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);
             M2C_ERROR(/* unknown instruction: vmaddaz.xyzw ACC, $vf30, $vf1z */);
             M2C_ERROR(/* unknown instruction: vmaddw.xyzw $vf31, $vf31, $vf0w */);
-            func_00208D70((s32)((void *)(*(u8 **)((u8 *)arg0 + 0x5C))));
+            func_00208D70((s32)(*(u8 **)((u8 *)var_s4 + 0x5C)));
         }
         func_0013B110(1);
         func_00209C50();
         func_00133780(0, 1);
-        if (!(*(f32 *)((u8 *)arg0 + 0) <= 0.0f)) {
+        if (!(*(f32 *)((u8 *)var_s4 + 0) <= 0.0f)) {
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v1) */);
             M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
-            func_00146ED0(&sp170, &sp170, *(f32 *)((u8 *)temp_s3 + 0x40), 0, 0);
+            func_00146ED0(&sp170, &sp170, *(f32 *)((u8 *)var_s3 + 0x40), 0, 0);
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
             M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
-            sp130 = *(f32 *)((u8 *)temp_s3 + 0x44) * var_f20;
+            sp130 = *(f32 *)((u8 *)var_s3 + 0x44) * var_f20;
             sp138 = 0.0f;
             sp13C = 1.0f;
             sp120 = 0.0f;
             sp124 = 0.0f;
             sp128 = 1.0f;
-            sp134 = *(f32 *)((u8 *)temp_s3 + 0x44) * var_f20;
+            sp134 = *(f32 *)((u8 *)var_s3 + 0x44) * var_f20;
             sp12C = 1.0f;
             func_001351F0(1, 0xC21, 0, &sp120);
             func_00136230(&sp180, &sp130);
             amDraw_FlushPacket();
         }
-        if (!(*(f32 *)((u8 *)arg0 + 0) <= 0.0f)) {
+        if (!(*(f32 *)((u8 *)var_s4 + 0) <= 0.0f)) {
             temp_f0 = func_00146E30(&sp160, &sp150);
-            temp_f8 = *(f32 *)((u8 *)arg0 + 0x54);
+            temp_f8 = *(f32 *)((u8 *)var_s4 + 0x54);
             spA4 = 0.0f;
-            temp_f0_2 = (temp_f0 / (2.0f * *(f32 *)((u8 *)temp_s3 + 0x4C) * *(f32 *)((u8 *)temp_s3 + 0x54))) + *(f32 *)((u8 *)arg0 + 0x54);
+            temp_f0_2 = (temp_f0 / (2.0f * *(f32 *)((u8 *)var_s3 + 0x4C) * *(f32 *)((u8 *)var_s3 + 0x54))) + *(f32 *)((u8 *)var_s4 + 0x54);
             spA8 = 1.0f;
             spC0 = temp_f0_2;
             spD0 = temp_f0_2;
@@ -182,7 +182,7 @@ loop_17:
             M2C_ERROR(/* unknown instruction: vopmula.xyz ACC, $vf1, $vf2 */);
             M2C_ERROR(/* unknown instruction: vopmsub.xyz $vf1, $vf2, $vf1 */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
-            func_00146ED0(&sp70, &sp80, 1.0f, 0x3F800000, *(f32 *)((u8 *)temp_s3 + 0x4C) * var_f20);
+            func_00146ED0(&sp70, &sp80, 1.0f, 0x3F800000, *(f32 *)((u8 *)var_s3 + 0x4C) * var_f20);
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
             M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
@@ -199,7 +199,7 @@ loop_17:
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
             M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
-            func_00134690(1, 0xC24, 0, (s64) ((s64) *(s16 *)((u8 *)temp_s3 + 0x4A) << 0x30) >> 0x30);
+            func_00134690(1, 0xC24, 0, (s64) ((s64) *(s16 *)((u8 *)var_s3 + 0x4A) << 0x30) >> 0x30);
             func_00135F10(&spE0, &spA0);
             func_00135F10(&spF0, &spB0);
             func_00135F10(&sp100, &spC0);
@@ -210,9 +210,9 @@ loop_17:
         var_s0 += 1;
         goto loop_17;
     }
-    if ((*(u8 **)((u8 *)D_0046FE54 + 0x5C) != NULL) && (*(s16 *)((u8 *)D_0046FE54 + 0x62) == *(s32 *)((u8 *)temp_s2 + 0x1350))) {
-        temp_s0_2 = func_0020B020(0, 7, 0);
-        amModel_SetCurrent(temp_s0_2, func_0020AD30(temp_s1, 7, 0));
+    if ((*(u8 **)((u8 *)D_0046FE54 + 0x5C) != NULL) && (*(s16 *)((u8 *)D_0046FE54 + 0x62) == *(s32 *)((u8 *)var_s2 + 0x1350))) {
+        var_s0 = func_0020B020(0, 7, 0);
+        amModel_SetCurrent(var_s0, func_0020AD30(var_s1, 7, 0));
         func_0013B0B0(NULL);
         M2C_ERROR(/* unknown instruction: lqc2 $vf28, ($v0) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf29, 0x10($v0) */);
@@ -229,7 +229,7 @@ loop_17:
         M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);
         M2C_ERROR(/* unknown instruction: vmaddaz.xyzw ACC, $vf30, $vf1z */);
         M2C_ERROR(/* unknown instruction: vmaddw.xyzw $vf31, $vf31, $vf0w */);
-        func_00208D70((s32)((void *)(*(u8 **)((u8 *)D_0046FE54 + 0x5C))));
+        func_00208D70((s32)(*(u8 **)((u8 *)D_0046FE54 + 0x5C)));
         func_0013B110(1);
         func_00209C50();
     }

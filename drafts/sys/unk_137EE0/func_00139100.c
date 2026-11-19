@@ -1,7 +1,7 @@
 /* Draft (not built): func_00139100 at 0x00139100, size 0x224, segment sys/unk_137EE0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operand mwccps2.exe Compiler: 184: D_0047CAB8(temp_s0, var_a1); @ 183: if (D_0047CAB8 != NULL) {
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 184: D_0047CAB8(temp_s0, var_a1);
  * Original: asm/nonmatchings/sys/unk_137EE0/func_00139100.s */
 
 // src/sys/unk_137EE0.c func_00139100 cerr diff=-1/0
@@ -35,8 +35,8 @@ void func_00139100(s32 arg0) {
     u8 *temp_s0;
     u8 *var_a1;
 
-    temp_s0 = (u8 *)(gPacketPtr);
-    temp_a1 = (u8 *)(D_00470234 + (D_00470230 * 8));
+    temp_s0 = (unsigned char *)(gPacketPtr);
+    temp_a1 = (unsigned char *)(D_00470234 + (D_00470230 * 8));
     D_00470230 += 1;
     *(s32 *)((u8 *)temp_a1 + 0) = (s32) M2C_ERROR(/* Read from unset register $f0 */);
     *(u8 **)((u8 *)temp_a1 + 4) = temp_s0;
@@ -89,8 +89,8 @@ void func_00139100(s32 arg0) {
     } while (var_v1 != 0);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a1) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf2, 0x10($a1) */);
-    if (D_0047CAB8 != NULL) {
+    if ((s32)(D_0047CAB8) != 0) {
         D_0047CAB8(temp_s0, var_a1);
     }
-    gPacketPtr = (u32 *)(temp_s0 + 0x270);
+    gPacketPtr = (unsigned int *)(temp_s0 + 0x270);
 }

@@ -23,7 +23,7 @@ void func_00223660(u8 *arg0) {
     u8 *temp_s3;
     u8 *var_v0_2;
 
-    temp_s3 = (u8 *)(gBtlSys);
+    temp_s3 = (unsigned char *)(gBtlSys);
     var_v0 = *(s16 *)((u8 *)temp_s3 + 0xE42);
     temp_s1 = arg0 + 0x30;
     if (var_v0 != -1) {
@@ -97,7 +97,7 @@ block_24:
     *(s16 *)((u8 *)temp_s1 + 8) = 8;
     *(s32 *)((u8 *)temp_s1 + 4) = 3;
     *(s16 *)((u8 *)temp_s1 + 0xA) = 0;
-    var_v1 = (s32 *)(&func_002228F0);
+    var_v1 = (int *)(&func_002228F0);
     *(s32 *)((u8 *)temp_s1 + 0x14) = (s32) *(s32 *)((u8 *)var_v0_2 + 0x1C);
     *(s32 *)((u8 *)temp_s1 + 0x30) = 0;
     *(s32 *)((u8 *)temp_s1 + 0x34) = 0;
@@ -107,7 +107,7 @@ block_24:
     var_v1 = NULL;
 block_28:
     *(s32 **)((u8 *)arg0 + 0x1C) = var_v1;
-    var_v1_2 = (s32 *)(&func_0021F0E0);
+    var_v1_2 = (int *)(&func_0021F0E0);
     if (&func_0021F0E0 != NULL) {
         goto block_30;
     }
@@ -121,7 +121,7 @@ block_31:
         goto block_35;
     }
     *(s32 *)((u8 *)temp_s1 + 4) = 1;
-    var_v1_3 = (s32 *)(&func_00222BF0);
+    var_v1_3 = (int *)(&func_00222BF0);
     *(f32 *)((u8 *)temp_s1 + 0x1C) = 0.0f;
     if (&func_00222BF0 != NULL) {
         goto block_34;

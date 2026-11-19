@@ -38,7 +38,7 @@ void func_002214B0(u8 *arg0) {
     u8 *temp_s2;
 
     temp_s2 = *(u8 **)((u8 *)arg0 + 0x30);
-    temp_s0 = (u8 *)(gBtlSys);
+    temp_s0 = (unsigned char *)(gBtlSys);
     if (*(s16 *)((u8 *)temp_s0 + 0xE42) != -1) {
         goto block_3;
     }
@@ -48,7 +48,7 @@ void func_002214B0(u8 *arg0) {
     var_s1 = &D_0044F720;
     goto block_4;
 block_3:
-    var_s1 = (s32 *)(*(&D_0046FE10 + (*(s16 *)((u8 *)temp_s0 + 0xE46) * 4)) + (*(s16 *)((u8 *)temp_s0 + 0xDF0) * 0x10));
+    var_s1 = (int *)(*(&D_0046FE10 + (*(s16 *)((u8 *)temp_s0 + 0xE46) * 4)) + (*(s16 *)((u8 *)temp_s0 + 0xDF0) * 0x10));
 block_4:
     if (*(s8 *)((u8 *)gBattle + 0x8975) != 1) {
         goto block_6;

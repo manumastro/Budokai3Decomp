@@ -82,19 +82,19 @@ block_12:
     if (temp_a0_2 == NULL) {
         goto block_14;
     }
-    func_00208D70((s32)((void *)(temp_a0_2)));
+    func_00208D70((s32)(temp_a0_2));
 block_14:
     temp_a0_3 = *(u8 **)((u8 *)temp_s1 + 0x44);
     if (temp_a0_3 == NULL) {
         goto block_16;
     }
-    func_00208D70((s32)((void *)(temp_a0_3)));
+    func_00208D70((s32)(temp_a0_3));
 block_16:
     temp_a0_4 = *(u8 **)((u8 *)temp_s1 + 0x48);
     if (temp_a0_4 == NULL) {
         goto block_18;
     }
-    func_00208D70((s32)((void *)(temp_a0_4)));
+    func_00208D70((s32)(temp_a0_4));
 block_18:
     func_0013B060(NULL);
     func_00209C50();

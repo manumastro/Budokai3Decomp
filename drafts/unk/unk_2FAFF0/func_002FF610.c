@@ -70,7 +70,7 @@ void func_002FF610(void) {
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
     M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf0, $vf1 */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-    temp_s4 = (u8 *)(gTourMap + 0xAC);
+    temp_s4 = (unsigned char *)(gTourMap + 0xAC);
     temp_s2 = A2d_AllocObj(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x1C)) + 0xCC), (f32) *(s32 *)((u8 *)temp_s4 + 8) * gFrameDelta);
     temp_s0 = A2d_AllocObj(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x1C)) + 0xCC), (f32) *(s32 *)((u8 *)temp_s4 + 8) * gFrameDelta);
     temp_s1 = A2d_AllocObj(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x1C)) + 0xD0), (f32) *(s32 *)((u8 *)temp_s4 + 8) * gFrameDelta);

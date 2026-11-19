@@ -12,9 +12,9 @@ s32 func_003075B0(void *);
 extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
-extern void func_0022CD00(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022CD00(void *);
 void func_003077E0(u8 *arg0) {
     u8 *sp5C;
     f32 var_f12;

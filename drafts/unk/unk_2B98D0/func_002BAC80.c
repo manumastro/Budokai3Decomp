@@ -1,10 +1,10 @@
 /* Draft (not built): func_002BAC80 at 0x002BAC80, size 0x314, segment unk/unk_2B98D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); from 'unsigned char *' to 'int' @ 175: Model_SetCurrent(*(u8 **)((u8 *)gStrStatus + 0x158), 0x600000, temp_a2, temp_a3);
+ * Status: size, 134 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1F0, original 0x314
  * Original: asm/nonmatchings/unk/unk_2B98D0/func_002BAC80.s */
 
-// src/unk/unk_2B98D0.c func_002BAC80 cerr diff=-1/0
+// src/unk/unk_2B98D0.c func_002BAC80 size diff=134/124
 s32 amGs_SetReg32(s32, s32);
 s32 func_00133780(s32, s32);
 s32 func_00136E80(s32, s32, s32, s32);
@@ -39,7 +39,7 @@ void func_002BAC80(void) {
     temp_v0 = temp_a3 + *(*(s32 *)((u8 *)temp_a3 + 0x14) + temp_a3 + ((temp_a2 - *(s32 *)((u8 *)temp_a3 + 0x18)) * 4));
     temp_f21 = (f32) *(s16 *)((u8 *)temp_v0 + 0x10);
     temp_f20 = (f32) *(s16 *)((u8 *)temp_v0 + 0x12);
-    amModel_SetCurrent(*(u8 **)((u8 *)gStrStatus + 0x158), 0x600000, temp_a2, temp_a3);
+    amModel_SetCurrent((s32)(*(u8 **)((u8 *)gStrStatus + 0x158)), 0x600000);
     func_00136E80(0x40000C24, 0, *(s32 *)((u8 *)gStrStatus + 0x288) + 0x1B, 0x44);
     sp30 = 0.0f;
     sp34 = 0.0f;

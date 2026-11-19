@@ -18,9 +18,9 @@ extern f32 D_00470430;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern void amDraw_FlushPacket(void);
-extern void func_00137C10(void *, void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_00137C10(void *, void *);
 void func_002B58A0(u8 *arg0) {
     f32 sp40;
     f32 sp44;
@@ -39,7 +39,7 @@ void func_002B58A0(u8 *arg0) {
     var_v0 = 0x10;
     var_v1 = &sp60;
     temp_s0 = *(s32 *)((u8 *)arg0 + 0xC);
-    temp_s1 = (u8 *)(gHelp);
+    temp_s1 = (unsigned char *)(gHelp);
     var_s2 = arg0;
     if (var_v1 != NULL) {
         do {

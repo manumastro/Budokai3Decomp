@@ -1,10 +1,10 @@
 /* Draft (not built): func_002518B0 at 0x002518B0, size 0x1AC, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); o 'unsigned char *' mwccps2.exe Compiler: @ 1171: *(u8 **)((u8 *)D_0046FE54 + 0x5C) = func_00209540(temp_v0, var_a1, 0);
+ * Status: size, 66 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x148, original 0x1AC
  * Original: asm/nonmatchings/battle/skill_cmd/func_002518B0.s */
 
-// src/battle/skill_cmd.c func_002518B0 cerr diff=-1/0
+// src/battle/skill_cmd.c func_002518B0 size diff=66/82
 s32 func_002183F0(s32, void **);
 s32 func_0025BD40(s32 *, void *);
 extern s128 D_004502B0;
@@ -63,12 +63,12 @@ void func_002518B0(u8 *arg0) {
         } else {
             var_a1 = 0x04000010;
         }
-        *(u8 **)((u8 *)D_0046FE54 + 0x5C) = func_00209540(temp_v0, var_a1, 0);
+        *(u8 **)((u8 *)D_0046FE54 + 0x5C) = (unsigned char *)(func_00209540(temp_v0, var_a1, 0));
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($a0) */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a1) */);
         func_00146F30(&sp50);
-        func_00141C30((void *)(&sp30), (void *)(&sp40), (void *)(&sp50));
-        func_00209850((void *)(*(u8 **)((u8 *)D_0046FE54 + 0x5C)), (void *)(&sp30));
+        func_00141C30((f32 *)(&sp30), (f32 *)(&sp40), (f32 *)(&sp50));
+        func_00209850((s32)(*(u8 **)((u8 *)D_0046FE54 + 0x5C)), (f32 *)(&sp30));
         *(s16 *)((u8 *)D_0046FE54 + 0x60) = (s16) (*(s16 *)((u8 *)D_0046FE54 + 0x60) | 0x40);
     }
 }

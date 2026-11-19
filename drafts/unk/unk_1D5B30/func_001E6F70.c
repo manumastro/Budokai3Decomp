@@ -21,18 +21,18 @@ void func_001E6F70(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)temp_v0 + 0x40) = (s32) (arg1 - *(s32 *)((u8 *)arg0 + 0x554));
     if (*(s32 *)((u8 *)temp_v0 + 0x40) > 0) {
         if (*(s8 *)((u8 *)((*(s32 *)((u8 *)(temp_v0 + 0x30) + 0xC) * 0x14) + *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x568)) + 0x1CF8)) + 0xDB) & 1) {
-            var_v1 = (s32 *)(&func_001E6890);
+            var_v1 = (int *)(&func_001E6890);
             if (&func_001E6890 == NULL) {
                 var_v1 = NULL;
             }
         } else {
-            var_v1 = (s32 *)(&func_001E6CE0);
+            var_v1 = (int *)(&func_001E6CE0);
             if (&func_001E6CE0 == NULL) {
                 var_v1 = NULL;
             }
         }
     } else {
-        var_v1 = (s32 *)(&func_001E66E0);
+        var_v1 = (int *)(&func_001E66E0);
         if (&func_001E66E0 == NULL) {
             var_v1 = NULL;
         }

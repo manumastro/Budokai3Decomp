@@ -1,10 +1,10 @@
 /* Draft (not built): func_002BC7E0 at 0x002BC7E0, size 0x140, segment unk/unk_2B98D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ion from 'int' to 'void *' mwccps2.exe Compiler: @ 531: if (func_0022BF80(*(s32 *)((u8 *)gStrStatus + 0x1C0)) == 0xFF) {
+ * Status: size, 49 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x14C, original 0x140
  * Original: asm/nonmatchings/unk/unk_2B98D0/func_002BC7E0.s */
 
-// src/unk/unk_2B98D0.c func_002BC7E0 cerr diff=-1/0
+// src/unk/unk_2B98D0.c func_002BC7E0 size diff=49/83
 extern void func_002BAFA0(void);
 void func_002BC7E0(u8 *arg0) {
     s32 sp20;
@@ -15,7 +15,7 @@ void func_002BC7E0(u8 *arg0) {
     void (*var_v1)();
     u8 *temp_a0_2;
 
-    if (func_0022BF80(*(s32 *)((u8 *)gStrStatus + 0x1C0)) == 0xFF) {
+    if (func_0022BF80((void *)(*(s32 *)((u8 *)gStrStatus + 0x1C0))) == 0xFF) {
         temp_a0 = *(s32 *)((u8 *)gStrStatus + 0x1C0);
         if (temp_a0 != 0) {
             func_0022D0E0((void *)(temp_a0), 1);
@@ -33,9 +33,9 @@ void func_002BC7E0(u8 *arg0) {
         sp24 = temp_t1 + 0x25;
         sp2C = (temp_t1 + 8) | 0x8000;
         func_0028EE90(gStrStatus + 0x38, gStrStatus + 0x14C, gStrStatus + 0x158, gStrStatus + 0x168);
-        *(s32 *)((u8 *)gStrStatus + 0x1BC) = func_0022D670((s32)((s32)((s32)((s32)((s32)((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)gStrStatus + 0x14C)) + 0x1C)) + 0x100))))))), 0);
+        *(s32 *)((u8 *)gStrStatus + 0x1BC) = (int)(func_0022D670(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)gStrStatus + 0x14C)) + 0x1C)) + 0x100), 0));
         var_v1 = func_002BC250;
-        *(u8 **)((u8 *)gStrStatus + 0x9C) = amTask_Create(&func_002BAFA0, 0, *(s32 *)((u8 *)gStrStatus + 0x274) + 0x19, 2);
+        *(u8 **)((u8 *)gStrStatus + 0x9C) = amTask_Create((void (*)(void *))func_002BAFA0, 0, (s32)(*(s32 *)((u8 *)gStrStatus + 0x274) + 0x19), 2, 0, 0);
         if (func_002BC250 == NULL) {
             var_v1 = NULL;
         }

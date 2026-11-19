@@ -1,10 +1,10 @@
 /* Draft (not built): func_00275230 at 0x00275230, size 0x7B4, segment menu/ess_shop (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); sion from 'int' to 'void *' mwccps2.exe Compiler: @ 500: temp_s0 = (void *)(func_0012EAE0(0x20, gEssShop, 0x32, 8) & 3);
+ * Status: diff, 399 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/menu/ess_shop/func_00275230.s */
 
-// src/menu/ess_shop.c func_00275230 cerr diff=-1/0
+// src/menu/ess_shop.c func_00275230 diff diff=399/493
 extern f32 D_004E0618[];
 extern s32 EssMain_GetFlag();
 extern void amAdx_SetVolume(s32, f32);
@@ -15,7 +15,7 @@ s32 Help_Open(s32, s32);
 s32 SoundRpc_SetVolume(s32, s32, f32);
 s32 Zenie_SetStep(s32, s32);
 s32 Zenie_SetValue(s32, s32);
-s32 func_0012EAE0(s32, void *, s32, s32);
+s32 func_0012EAE0(s32, s32, s32, s32);
 s32 func_0026D530(s32, s32);
 s32 func_0026D9C0(void *, s32);
 extern s32 D_00452FBC;
@@ -39,9 +39,6 @@ void func_00275230(u8 *arg0) {
     s32 temp_a0;
     s32 temp_a0_3;
     s32 temp_a1;
-    s32 temp_a1_2;
-    s32 temp_a1_3;
-    s32 temp_a1_4;
     s32 temp_a2;
     s32 temp_s0;
     s32 temp_s0_2;
@@ -88,16 +85,15 @@ void func_00275230(u8 *arg0) {
         *(s32 *)((u8 *)gEssShop + 0x31C) = 0x34;
         *(s32 *)((u8 *)gEssShop + 0x354) = 0;
         *(s32 *)((u8 *)gEssShop + 0x34C) = 0x37;
-        temp_s0 = (void *)(func_0012EAE0(0x20, gEssShop, 0x32, 8) & 3);
-        temp_s1 = (u8 *)(gEssShop + 0x1FC);
+        temp_s0 = func_0012EAE0(0x20, gEssShop, 0x32, 8) & 3;
+        temp_s1 = (unsigned char *)(gEssShop + 0x1FC);
         *(s32 *)((u8 *)temp_s1 + 0x10) = (s32) *(temp_s0 + (&D_00452FC0 + ((EssMain_GetFlag() & 0xFF) * 0x1C)));
         func_0026D530(1, 4);
-        temp_a1 = (EssMain_GetFlag() & 0xFF) * 0x70;
-        temp_s0_2 = *((temp_s0 * 4) + (&D_00453030 + temp_a1));
-        amAdx_SetVolume(1, temp_a1);
+        temp_s0_2 = *((temp_s0 * 4) + (&D_00453030 + ((EssMain_GetFlag() & 0xFF) * 0x70)));
+        amAdx_SetVolume(1, *D_004E0618);
         amAdx_Pause(1, 0);
         amAdx_PlayAfs(1, temp_s0_2 | 0x20000, 0);
-        var_v0 = (s32 *)(&func_00274E70);
+        var_v0 = (int *)(&func_00274E70);
         if (&func_00274E70 == NULL) {
             var_v0 = NULL;
         }
@@ -114,29 +110,27 @@ void func_00275230(u8 *arg0) {
         *(s32 *)((u8 *)gEssShop + 0x300) = 0x31;
         if (*(s32 *)((u8 *)temp_s5 + 8) != 0) {
             var_s1 = 0x34;
-            temp_s3_2 = (void *)(func_0012EAE0(0x20, gEssShop) & 3);
-            temp_s4 = (u8 *)(gEssShop + 0x1FC);
+            temp_s3_2 = func_0012EAE0(0x20, gEssShop, 0, 0) & 3;
+            temp_s4 = (unsigned char *)(gEssShop + 0x1FC);
             *(s32 *)((u8 *)temp_s4 + 0x10) = (s32) *(temp_s3_2 + (&D_00452FC0 + ((EssMain_GetFlag() & 0xFF) * 0x1C)));
             func_0026D530(1, 4);
-            temp_a1_2 = (EssMain_GetFlag() & 0xFF) * 0x70;
-            temp_s3_3 = *((temp_s3_2 * 4) + (&D_00453030 + temp_a1_2));
-            amAdx_SetVolume(1, temp_a1_2);
+            temp_s3_3 = *((temp_s3_2 * 4) + (&D_00453030 + ((EssMain_GetFlag() & 0xFF) * 0x70)));
+            amAdx_SetVolume(1, *D_004E0618);
             amAdx_Pause(1, 0);
             amAdx_PlayAfs(1, temp_s3_3 | 0x20000, 0);
-            var_s3 = (s32 *)(&func_00274E70);
+            var_s3 = (int *)(&func_00274E70);
             SoundRpc_SetVolume(0, 0, D_004E0614);
             if (!(D_004E0614 <= 0.0f)) {
                 SoundRpc_Send3(0, 0, 0x16, 0);
             }
         } else {
             var_s1 = 0x35;
-            temp_s3_4 = (void *)(func_0012EAE0(0x20, gEssShop) & 3);
-            temp_s4_2 = (u8 *)(gEssShop + 0x1FC);
+            temp_s3_4 = func_0012EAE0(0x20, gEssShop, 0, 0) & 3;
+            temp_s4_2 = (unsigned char *)(gEssShop + 0x1FC);
             *(s32 *)((u8 *)temp_s4_2 + 0x10) = (s32) *(temp_s3_4 + (&D_00452FBC + ((EssMain_GetFlag() & 0xFF) * 0x1C)));
             func_0026D530(1, 3);
-            temp_a1_3 = (EssMain_GetFlag() & 0xFF) * 0x70;
-            temp_s3_5 = *((temp_s3_4 * 4) + (&D_00453020 + temp_a1_3));
-            amAdx_SetVolume(1, temp_a1_3);
+            temp_s3_5 = *((temp_s3_4 * 4) + (&D_00453020 + ((EssMain_GetFlag() & 0xFF) * 0x70)));
+            amAdx_SetVolume(1, *D_004E0618);
             amAdx_Pause(1, 0);
             amAdx_PlayAfs(1, temp_s3_5 | 0x20000, 0);
             func_002735D0();
@@ -151,16 +145,16 @@ void func_00275230(u8 *arg0) {
             temp_a3 = *(u32 *)((u8 *)temp_s4_3 + 8);
             *(s32 *)((u8 *)gEssShop + 0x70) = (s32) (*(s32 *)((u8 *)gEssShop + 0x70) - temp_a3);
             temp_a2 = *(s32 *)((u8 *)gEssShop + 0x50);
-            temp_s3_6 = (u8 *)(&D_0058F680 + (temp_a2 * 0xD680));
+            temp_s3_6 = (unsigned char *)(&D_0058F680 + (temp_a2 * 0xD680));
             *(s32 *)((u8 *)temp_s3_6 + 0x98) = (s32) *(s32 *)((u8 *)gEssShop + 0x70);
             *(s32 *)((u8 *)temp_s3_6 + 0x9C) = (s32) (*(s32 *)((u8 *)temp_s3_6 + 0x9C) + ((*(u32 *)((u8 *)temp_s4_3 + 8) / 100) + ((u32) *(u32 *)((u8 *)temp_s4_3 + 8) >> 0x1F)));
             if (*(s32 *)((u8 *)temp_s3_6 + 0x9C) < 0) {
                 *(s32 *)((u8 *)temp_s3_6 + 0x9C) = 0x7FFFFFFF;
             }
-            temp_a1_4 = *(s32 *)((u8 *)temp_s4_3 + 4);
-            temp_a0_2 = temp_a1_4 + temp_s3_6;
+            temp_a1 = *(s32 *)((u8 *)temp_s4_3 + 4);
+            temp_a0_2 = temp_a1 + temp_s3_6;
             var_a1 = *(u8 *)((u8 *)temp_a0_2 + 0xD41D);
-            if ((s32) var_a1 < (s32) *(&D_004E066D + (temp_a1_4 * 0x28))) {
+            if ((s32) var_a1 < (s32) *(&D_004E066D + (temp_a1 * 0x28))) {
                 var_a1 += 1;
             }
             *(u8 *)((u8 *)temp_a0_2 + 0xD41D) = var_a1;
@@ -172,9 +166,9 @@ void func_00275230(u8 *arg0) {
                 SoundRpc_Send3(0, 0, 3, 0);
             }
             if (*(s32 *)((u8 *)temp_s4_3 + 0) == 0x242) {
-                var_s3 = (s32 *)(&func_00274C10);
+                var_s3 = (int *)(&func_00274C10);
             } else {
-                var_s3 = (s32 *)(&func_00274E70);
+                var_s3 = (int *)(&func_00274E70);
                 *(s32 *)((u8 *)temp_s4_3 + 0x10) = (s32) (*(s32 *)((u8 *)temp_s4_3 + 0x10) | 1);
                 *(s32 *)((u8 *)temp_s4_3 + 0x10) = (s32) (*(s32 *)((u8 *)temp_s4_3 + 0x10) & ~2);
             }
@@ -198,21 +192,20 @@ void func_00275230(u8 *arg0) {
         var_s4 = 0;
     }
     temp_a0_3 = var_s4 & 0xF0;
-    switch (temp_a0_3) {                            /* irregular */
-    case 0x10:
-        *(s32 *)((u8 *)temp_s5 + 8) = (s32) (*(s32 *)((u8 *)temp_s5 + 8) ^ 1);
-        SoundRpc_SetVolume(0, 0, D_004E0614);
-        if (!(D_004E0614 <= 0.0f)) {
-            SoundRpc_Send3(0, 0, 2, 0);
+    if (temp_a0_3 != 0x40) {
+        if (temp_a0_3 != 0x10) {
             return;
         }
-        return;
-    case 0x40:
         *(s32 *)((u8 *)temp_s5 + 8) = (s32) (*(s32 *)((u8 *)temp_s5 + 8) ^ 1);
         SoundRpc_SetVolume(0, 0, D_004E0614);
         if (!(D_004E0614 <= 0.0f)) {
             SoundRpc_Send3(0, 0, 2, 0);
         }
-        break;
+    } else {
+        *(s32 *)((u8 *)temp_s5 + 8) = (s32) (*(s32 *)((u8 *)temp_s5 + 8) ^ 1);
+        SoundRpc_SetVolume(0, 0, D_004E0614);
+        if (!(D_004E0614 <= 0.0f)) {
+            SoundRpc_Send3(0, 0, 2, 0);
+        }
     }
 }

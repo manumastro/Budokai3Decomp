@@ -17,7 +17,7 @@ s32 func_002BB650(void *);
 s32 func_002BCCD0(void *);
 extern s32 D_0046FD80;
 extern f32 D_004E0610;
-void func_002BD140(u8 *arg0) {
+void func_002BD140(Task *arg0) {
     s32 sp40;
     s32 sp50;
     s32 sp54;
@@ -31,14 +31,14 @@ void func_002BD140(u8 *arg0) {
     var_s1 = 0;
     var_s0 = 0;
     do {
-        temp_v1 = (s8 *)(&gStrStatus[var_s0]);
+        temp_v1 = (signed char *)(&gStrStatus[var_s0]);
         temp_v0 = *(u8 **)((u8 *)temp_v1 + 0);
         if (temp_v0 != NULL) {
             *(s32 *)((u8 *)temp_v1 + 0x1C) = (s32) *(s32 *)((u8 *)temp_v0 + 0x40);
             *(s32 *)((u8 *)(gStrStatus[var_s0]) + 0x40) = 0;
             amCdFs_Close((s32)(gStrStatus[var_s0]), 0);
             gStrStatus[var_s0] = 0;
-            amFile_Load((s32)((void *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)(&gStrStatus[var_s0]) + 0x1C)) + 0x50))));
+            amFile_Load((s32)(*(u8 **)((u8 *)(*(u8 **)((u8 *)(&gStrStatus[var_s0]) + 0x1C)) + 0x50)));
         }
         var_s1 += 1;
         var_s0 += 4;

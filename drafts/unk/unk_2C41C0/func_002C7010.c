@@ -55,14 +55,14 @@ void func_002C7010(u8 *arg0) {
 
     temp_s3 = *(u8 **)((u8 *)arg0 + 0);
     temp_s2 = *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x14)) + 0x1350);
-    temp_a0 = (u8 *)(gEffWork + (*(s16 *)((u8 *)arg0 + 0x3E) * 0xF80));
+    temp_a0 = (unsigned char *)(gEffWork + (*(s16 *)((u8 *)arg0 + 0x3E) * 0xF80));
     temp_s4 = *(u8 **)((u8 *)temp_a0 + 0xF78);
     temp_s5 = temp_a0 + 0xF00;
     var_s1 = 0;
     if (*(u8 **)((u8 *)temp_s4 + 0x38) == temp_s5) {
         goto block_10;
     }
-    temp_s2_2 = (s32)(func_0020B020(temp_s2, *(s16 *)((u8 *)temp_s3 + 0x88), *(s16 *)((u8 *)temp_s3 + 0x8A)));
+    temp_s2_2 = (int)(func_0020B020(temp_s2, *(s16 *)((u8 *)temp_s3 + 0x88), *(s16 *)((u8 *)temp_s3 + 0x8A)));
     amModel_SetCurrent(temp_s2_2, func_0020AD30(temp_s2, *(s16 *)((u8 *)temp_s3 + 0x88), *(s16 *)((u8 *)temp_s3 + 0x8A)));
     spF0 = D_00456480;
     spE0 = *(s128 *)((u8 *)temp_s3 + 0x10);
@@ -127,7 +127,7 @@ block_6:
     goto loop_8;
 block_7:
     *(s32 *)((u8 *)arg0 + 0x44) = (s32) (*(s32 *)((u8 *)arg0 + 0x40) - (var_s1 + 2));
-    func_002C6EF0(var_s4, arg0, &spE0);
+    func_002C6EF0(var_s4, arg0,(char *)(&spE0));
     var_s4 = *(u8 **)((u8 *)var_s4 + 0x38);
     var_s1 += 1;
 loop_8:

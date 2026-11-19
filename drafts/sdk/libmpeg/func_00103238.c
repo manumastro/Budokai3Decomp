@@ -1,8 +1,8 @@
-/* Draft (not built): func_00103238 at 0x00103238, size 0x240, segment sdk/libmpeg (asm)
+/* Draft (not built): func_00103238 at 0x00103238, size 0x240, segment sdk/libmpeg (c)
  * Compiler: ee-gcc 2.9-991111-01 -O2 -G0
  * Status: size, 84 instructions differ
  * Made with: m2c -t mipsee-gcc-c --valid-syntax; compiled with 2.9-991111-01 -O2 -G0
- * Original: asm/sdk/libmpeg.s */
+ * Original: asm/nonmatchings/sdk/libmpeg/func_00103238.s */
 
 s32 func_00103018(void *, s32);                 /* extern */
 s32 func_00103478(void *, s32);                     /* extern */

@@ -1,4 +1,4 @@
-/* Draft (not built): func_001B2AA0 at 0x001B2AA0, size 0x1E0, segment battle/btl_main (c)
+/* Draft (not built): func_001B2AA0 at 0x004687F0, size 0x0, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: size, 75 instructions differ
  * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1E4, original 0x1E0
@@ -70,3 +70,60 @@ void func_001B2AA0(u8 *arg0) {
     *(s16 *)((u8 *)arg0 + 0xCB4) = 0;
     *(s16 *)((u8 *)arg0 + 0x1A5C) = 0;
 }
+
+/* Similar function already in C: func_001B8380 (src/battle/btl_main.c), similarity 0.81.
+ * It is the template below (not built). */
+#if 0
+void func_001B8380(FighterSt *f) {
+    f->fCAE = f->fCAC;
+    f->fCAC = 0x18;
+    if (f->fCAE == f->fCAC) {
+        f->fCB0 = f->fCB0 + 1;
+    } else {
+        f->fCB0 = 0;
+    }
+    switch (f->fCAC) {
+    case 0:
+        f->fCB2 = 1;
+        break;
+    case 1:
+        f->fCB2 = 2;
+        break;
+    case 4:
+        f->fCB2 = 4;
+        break;
+    case 5:
+        f->fCB2 = 8;
+        break;
+    case 6:
+        f->fCB2 = 0x10;
+        break;
+    case 7:
+    case 8:
+        f->fCB2 = 0x20;
+        break;
+    case 9:
+        f->fCB2 = 0x40;
+        break;
+    case 11:
+        f->fCB2 = 0x80;
+        break;
+    default:
+        f->fCB2 = 0;
+        break;
+    }
+    if (f->f2010 != 0) {
+        f->fCB2 |= 0x8000;
+    }
+    if (f->f2011 != 0) {
+        f->fCB2 |= 0x4000;
+    }
+    f->fB70 = f->f183C + 0xAC;
+    func_001E3460(f);
+    f->fCA4 = 1.0f;
+    f->fCA8 = 0.0f;
+    f->fCB8 = 0;
+    f->f2003 = 0;
+    f->f1FFD = 0;
+}
+#endif

@@ -7,7 +7,6 @@
 // src/battle/btl_main.c func_001B2CD0 diff diff=86/134
 s32 func_001D9AB0(void *, s32);
 s32 func_001E3010(void *);
-s32 func_001E3100(void *);
 s32 func_001E9190(void *);
 s32 func_001E91D0();
 void func_001B2CD0(u8 *arg0) {
@@ -62,7 +61,7 @@ void func_001B2CD0(u8 *arg0) {
                 *(s32 *)((u8 *)arg0 + 0xCA4) = 0x3F400000;
                 *(s32 *)((u8 *)arg0 + 0xCA8) = 0x3CF5C28F;
                 *(s8 *)((u8 *)arg0 + 0x2002) = 0;
-                func_001ABD30((void *)(arg0 + 0x1360));
+                func_001ABD30((struct Fighter *)(arg0 + 0x1360));
                 func_001D9AB0(arg0, -3);
             }
             *(s32 *)((u8 *)arg0 + 0x184C) = 0x3DCCCCCD;
@@ -76,6 +75,6 @@ void func_001B2CD0(u8 *arg0) {
         *(s8 *)((u8 *)arg0 + 0x2006) = 0;
         D_0046851C(arg0);
         func_002CBFF0(1, arg0);
-        func_001ABD30((void *)(temp_s0));
+        func_001ABD30((struct Fighter *)(temp_s0));
     }
 }

@@ -1,8 +1,8 @@
-/* Draft (not built): sceTtyRead at 0x0010BB30, size 0xD0, segment sdk/libkernl_0010B9B8 (asm)
+/* Draft (not built): sceTtyRead at 0x0010BB30, size 0xD0, segment sdk/libkernl_0010B9B8 (c)
  * Compiler: ee-gcc 2.9-991111-01 -O2 -G0
  * Status: size, 4 instructions differ
  * Made with: m2c -t mipsee-gcc-c --valid-syntax; compiled with 2.9-991111-01 -O2 -G0; then decomp-permuter: score 1090 -> 505
- * Original: asm/sdk/libkernl_0010B9B8.s */
+ * Original: asm/nonmatchings/sdk/libkernl_0010B9B8/sceTtyRead.s */
 
 // sceTtyRead 0010BB30 -O2 -G0 ee-gcc 2.9-991111-01: score 1090 -> 505
 s32 QueuePeekReadDone(void *, s32 *);       /* extern */

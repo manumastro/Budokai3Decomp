@@ -17,3 +17,21 @@ void func_00189BF0(u8 *arg0, s32 arg1, s32 arg2) {
         (*(s32 (**)(u8 *, s32, s32))((u8 *)(*(u8 **)((u8 *)arg0 + 0x1DC4)) + 4))(arg0, arg1, arg2);
     }
 }
+
+/* Similar function already in C: func_00199D58 (src/cri/sfd_00194D48.c), similarity 0.71.
+ * It is the template below (not built). */
+#if 0
+s32 func_00199D58(u8 *arg0, u8 **arg1, s32 *arg2) {
+    if (func_0018D870() != 0) {
+        return func_0018D650(0, 0xFF00011C);
+    }
+    if (*(s32 *)((u8 *)arg0 + 0x78) != 0) {
+        *arg1 = arg0 + 0x10C;
+        *arg2 = *(s32 *)((u8 *)arg0 + 0x108);
+    } else {
+        *arg1 = NULL;
+        *arg2 = 0;
+    }
+    return 0;
+}
+#endif

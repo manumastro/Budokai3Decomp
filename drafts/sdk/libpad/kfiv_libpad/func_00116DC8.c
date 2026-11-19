@@ -16,3 +16,15 @@ s32 func_00116DC8(s32 arg0, s32 arg1, s32 arg2) {
     func_00125740(arg2, sp, sp60);
     return sp60;
 }
+
+/* Similar function already in C: scePadEnterPressMode (src/sdk/libpad/kfiv_libpad.c), similarity 0.68.
+ * It is the template below (not built). */
+#if 0
+int scePadEnterPressMode(int port, int slot)
+{
+    if (padSlot[port][slot].opened == 0) {
+        return 0;
+    }
+    return scePadSetButtonInfo(port, slot, 0xFFF);
+}
+#endif

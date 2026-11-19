@@ -15,14 +15,14 @@ void func_002A17D0(u8 *arg0) {
     s32 var_a1;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gEvtWork);
+    temp_s0 = (unsigned char *)(gEvtWork);
     *(f32 *)((u8 *)temp_s0 + 0x5C) = (f32) (*(f32 *)((u8 *)temp_s0 + 0x5C) + func_002B06A0());
     func_002A1510(0);
     Zenie_Update();
     Zenie_Draw();
     if (func_002A1020(3) == 0) {
         *(f32 *)((u8 *)temp_s0 + 0x5C) = 10.0f;
-        var_v0 = (s32 *)(&func_002A1700);
+        var_v0 = (int *)(&func_002A1700);
         *(s32 *)((u8 *)temp_s0 + 0x60) = 0x41200000;
         if (&func_002A1700 == NULL) {
             var_v0 = NULL;

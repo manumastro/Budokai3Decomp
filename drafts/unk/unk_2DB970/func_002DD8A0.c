@@ -30,7 +30,7 @@ void func_002DD8A0(void) {
 
     var_s2 = NULL;
     var_s1 = NULL;
-    var_s0 = (u8 *)(gOptionWork);
+    var_s0 = (unsigned char *)(gOptionWork);
     temp_v1 = *(s32 *)((u8 *)var_s0 + 0x37C);
     *(s32 *)((u8 *)var_s0 + 0x388) = 0;
     switch (temp_v1) {                              /* irregular */

@@ -1,11 +1,13 @@
 /* Draft (not built): func_00235D90 at 0x00235D90, size 0x288, segment battle/char_light (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); u32) (func_0012EAE0(0x20, (u32) var_a1, (u8 *) var_a2) / 10) % 100U) < temp_s2_2) { @ 200: temp_f1 = second half of f64;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); u32) (func_0012EAE0(0x20, (u32) var_a1, (u8 *) var_a2) / 10) % 100U) < temp_s2_2) { @ 202: temp_f1 = second half of f64;
  * Original: asm/nonmatchings/battle/char_light/func_00235D90.s */
 
 // src/battle/char_light.c func_00235D90 cerr diff=-1/0
 s32 func_00235D90(u8 *arg0) {
+    s32 sp58;
+    s32 second;
     f32 sp50;
     f32 temp_f0;
     s16 temp_a0_2;
@@ -26,7 +28,7 @@ s32 func_00235D90(u8 *arg0) {
 
     temp_a1 = *(s32 *)((u8 *)arg0 + 0x1350);
     temp_s0 = *(u8 **)((u8 *)arg0 + 0x1354);
-    temp_v0 = &D_0058BBB0 + (temp_a1 * 0xC0);
+    temp_v0 = ((u8 *)&D_0058BBB0) + (temp_a1 * 0xC0);
     temp_s3 = *(s32 *)((u8 *)temp_v0 + 8);
     temp_s2 = *(u8 **)((u8 *)temp_v0 + 0xC);
     temp_f0 = func_001E52B0(0, temp_a1);
@@ -42,7 +44,7 @@ s32 func_00235D90(u8 *arg0) {
             var_v1 = 2;
         }
     }
-    var_a2 = *(&D_0044FAB0 + *(s16 *)((u8 *)arg0 + 0xCAC));
+    var_a2 = *(((u8 *)&D_0044FAB0) + *(s16 *)((u8 *)arg0 + 0xCAC));
     var_a1 = *(u16 *)((u8 *)(temp_s3 + (var_a2 * 0x12)) + 0x2C);
     if (*(s16 *)((u8 *)temp_s0 + 0xCAC) == 0xF) {
         temp_v1 = *(u8 **)((u8 *)temp_s0 + 0x17A0);

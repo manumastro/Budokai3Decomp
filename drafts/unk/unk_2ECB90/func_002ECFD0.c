@@ -1,15 +1,15 @@
 /* Draft (not built): func_002ECFD0 at 0x002ECFD0, size 0xC78, segment unk/unk_2ECB90 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal function definition mwccps2.exe Compiler: 39: s3232 sp130; @ 22: s32 func_00228AC0(s32, s3232 *, s32, f32);
+ * Status: size, 677 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0xB4C, original 0xC78
  * Original: asm/nonmatchings/unk/unk_2ECB90/func_002ECFD0.s */
 
-// src/unk/unk_2ECB90.c func_002ECFD0 cerr diff=-1/0
+// src/unk/unk_2ECB90.c func_002ECFD0 size diff=677/723
 s32 func_00228240(f32 *);
 s32 func_00228430(s32);
 s32 func_002284D0(f32 *);
 s32 func_002285A0(s32, s32 *, s32, f32);
-s32 func_00228AC0(s32, s3232 *, s32, f32);
+s32 func_00228AC0(s32, s32 *, s32, f32);
 s32 func_00229800(s32, f32 *, s32, f32);
 s32 func_0022C060(void *, s32);
 extern s32 D_00458020;
@@ -19,6 +19,13 @@ extern void func_00228410(void);
 extern void func_0022CD00(void *);
 extern void func_0022CF70();
 void func_002ECFD0(u8 *arg0, s8 arg1) {
+    s32 spFC;
+    s32 spF8;
+    s32 spF4;
+    s32 sp11C;
+    s32 sp118;
+    s32 sp114;
+    s32 saved_reg_s1;
     s64 *spA0;
     u8 **spB0;
     u8 *spC0;
@@ -26,10 +33,10 @@ void func_002ECFD0(u8 *arg0, s8 arg1) {
     s8 spEF;
     f32 spF0;
     f32 sp110;
-    s3232 sp130;
-    s3232 sp134;
-    s3232 sp138;
-    s3232 sp13C;
+    s32 sp130;
+    s32 sp134;
+    s32 sp138;
+    s32 sp13C;
     f32 sp150;
     f32 sp154;
     f32 sp158;
@@ -58,14 +65,14 @@ void func_002ECFD0(u8 *arg0, s8 arg1) {
     f32 sp234;
     f32 sp238;
     f32 sp23C;
-    s3232 sp240;
-    s3232 sp244;
-    s3232 sp248;
+    s32 sp240;
+    s32 sp244;
+    s32 sp248;
     s32 sp260;
     s64 sp288;
     s32 *var_s0;
-    s3232 var_f0;
-    s3232 var_f0_2;
+    s32 var_f0;
+    s32 var_f0_2;
     s16 temp_a0;
     s16 temp_a0_3;
     s16 temp_a1;
@@ -196,23 +203,23 @@ loop_19:
                 temp_v0 = (s64) ((s64) temp_s4 << 0x30) >> 0x30;
                 if (temp_v0 != -1) {
                     temp_s4_2 = temp_v0 * 4;
-                    func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_2), &sp1B0, -1, 0.0f);
+                    func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_2), &sp1B0, -1, 0.0f);
                     sp230 = sp1B0;
                     sp234 = sp1B4;
                     sp238 = sp1B8;
                     sp23C = sp1BC;
-                    func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_2), &sp240, -1, 0.0f);
-                    func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_2), &sp260, -1, 0.0f);
+                    func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_2), &sp240, -1, 0.0f);
+                    func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_2), &sp260, -1, 0.0f);
                 }
                 func_00228240(&sp230);
                 func_002284D0(&sp230);
-                func_00229800(*(temp_s6 + *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C)), &sp1B0, -1, 0.0f);
+                func_00229800(*(s32 *)(temp_s6 + *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C)), &sp1B0, -1, 0.0f);
                 sp230 = sp1B0;
                 sp234 = sp1B4;
                 sp238 = sp1B8;
                 sp23C = sp1BC;
-                func_00228AC0(*(temp_s6 + *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C)), &sp240, -1, 0.0f);
-                func_002285A0(*(temp_s6 + *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C)), &sp260, -1, 0.0f);
+                func_00228AC0(*(s32 *)(temp_s6 + *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C)), &sp240, -1, 0.0f);
+                func_002285A0(*(s32 *)(temp_s6 + *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C)), &sp260, -1, 0.0f);
                 func_00228240(&sp230);
                 temp_v1_4 = *(s16 *)((u8 *)arg0 + 4);
                 switch (temp_v1_4) {                /* switch 1 */
@@ -225,13 +232,13 @@ block_36:
                     temp_v0_2 = (s64) ((s64) var_s1 << 0x30) >> 0x30;
                     temp_s4_3 = temp_v0_2 * 4;
                     if (temp_v0_2 != -1) {
-                        func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_3), &sp1B0, -1, *(f32 *)((u8 *)temp_s3 + 0x10));
+                        func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_3), &sp1B0, -1, *(f32 *)((u8 *)temp_s3 + 0x10));
                         sp230 = sp1B0;
                         sp234 = sp1B4;
                         sp238 = sp1B8;
                         sp23C = sp1BC;
-                        func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_3), &sp240, -1, *(f32 *)((u8 *)temp_s3 + 0x10));
-                        func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_3), &sp260, -1, *(f32 *)((u8 *)temp_s3 + 0x10));
+                        func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_3), &sp240, -1, *(f32 *)((u8 *)temp_s3 + 0x10));
+                        func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s4_3), &sp260, -1, *(f32 *)((u8 *)temp_s3 + 0x10));
                     }
                     if (*(s8 *)((u8 *)spC0 + 0x7C) == 0) {
                         var_f0 = 0x3F800000;
@@ -289,13 +296,13 @@ block_55:
                             temp_v0_3 = (s64) ((s64) var_s1 << 0x30) >> 0x30;
                             temp_s3_2 = temp_v0_3 * 4;
                             if (temp_v0_3 != -1) {
-                                func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_2), &sp190, -1, *(f32 *)((u8 *)temp_s0 + 0x10));
+                                func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_2), &sp190, -1, *(f32 *)((u8 *)temp_s0 + 0x10));
                                 sp230 = sp190;
                                 sp234 = sp194;
                                 sp238 = sp198;
                                 sp23C = sp19C;
-                                func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_2), &sp240, -1, *(f32 *)((u8 *)temp_s0 + 0x10));
-                                func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_2), &sp260, -1, *(f32 *)((u8 *)temp_s0 + 0x10));
+                                func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_2), &sp240, -1, *(f32 *)((u8 *)temp_s0 + 0x10));
+                                func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_2), &sp260, -1, *(f32 *)((u8 *)temp_s0 + 0x10));
                             }
                             if (*(s8 *)((u8 *)spC0 + 0x7C) == 0) {
                                 var_f0_2 = 0x3F800000;
@@ -308,13 +315,13 @@ block_55:
                             func_00228240(&sp230);
                             func_002284D0(&sp230);
                             temp_s3_3 = ((s64) (((s64) ((var_s7 + 0x40) << 0x30) >> 0x30) << 0x30) >> 0x30) * 4;
-                            func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_3), &sp190, -1, 0.0f);
+                            func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_3), &sp190, -1, 0.0f);
                             sp230 = sp190;
                             sp234 = sp194;
                             sp238 = sp198;
                             sp23C = sp19C;
-                            func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_3), &sp240, -1, 0.0f);
-                            func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_3), &sp260, -1, 0.0f);
+                            func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_3), &sp240, -1, 0.0f);
+                            func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_3), &sp260, -1, 0.0f);
                             func_00228240(&sp230);
                             func_0022C060(temp_s0, 0x3F800000);
                             func_0022CD00(temp_s0);
@@ -343,7 +350,7 @@ block_61:
                             func_002284D0(&sp230);
                             func_00228430(0);
                             var_s1 = (s16) ((s64) ((var_s7 + 0x89) << 0x30) >> 0x30);
-                            func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + (var_s1 * 4)), &sp170, -1, 0.0f);
+                            func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + (var_s1 * 4)), &sp170, -1, 0.0f);
                             temp_v1_6 = *(s16 *)((u8 *)arg0 + 4);
                             switch (temp_v1_6) {    /* switch 3; irregular */
                             case 1:                 /* switch 3 */
@@ -368,8 +375,8 @@ block_61:
                             temp_s4_4 = (s64) ((s64) var_s1 << 0x30) >> 0x30;
                             if (temp_s4_4 != -1) {
                                 temp_s0_2 = temp_s4_4 * 4;
-                                func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s0_2), &sp150, -1, *(f32 *)((u8 *)temp_s3_4 + 0x10));
-                                func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s0_2), &sp130, -1, *(f32 *)((u8 *)temp_s3_4 + 0x10));
+                                func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s0_2), &sp150, -1, *(f32 *)((u8 *)temp_s3_4 + 0x10));
+                                func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s0_2), &sp130, -1, *(f32 *)((u8 *)temp_s3_4 + 0x10));
                             }
                             var_s3 = 0;
                             var_s0_2 = 0;
@@ -379,18 +386,18 @@ block_61:
                                     *(f32 *)((u8 *)temp_a0_2 + 0x20) = (f32) (sp170 + (f32) var_s0_2);
                                     *(f32 *)((u8 *)temp_a0_2 + 0x24) = (f32) sp174;
                                     *(f32 *)((u8 *)temp_a0_2 + 0x28) = (f32) sp178;
-                                    *(s3232 *)((u8 *)temp_a0_2 + 0x50) = 0x3F800000;
-                                    *(s3232 *)((u8 *)temp_a0_2 + 0x54) = 0x3F800000;
-                                    *(s3232 *)((u8 *)temp_a0_2 + 0x58) = 0x3F800000;
-                                    *(s3232 *)((u8 *)temp_a0_2 + 0x5C) = 0x3F800000;
+                                    *(s32 *)((u8 *)temp_a0_2 + 0x50) = 0x3F800000;
+                                    *(s32 *)((u8 *)temp_a0_2 + 0x54) = 0x3F800000;
+                                    *(s32 *)((u8 *)temp_a0_2 + 0x58) = 0x3F800000;
+                                    *(s32 *)((u8 *)temp_a0_2 + 0x5C) = 0x3F800000;
                                     if (temp_s4_4 != -1) {
                                         *(f32 *)((u8 *)temp_a0_2 + 0x20) = (f32) (*(f32 *)((u8 *)temp_a0_2 + 0x20) + sp150);
                                         *(f32 *)((u8 *)temp_a0_2 + 0x24) = (f32) (*(f32 *)((u8 *)temp_a0_2 + 0x24) + sp154);
                                         *(f32 *)((u8 *)temp_a0_2 + 0x28) = (f32) (*(f32 *)((u8 *)temp_a0_2 + 0x28) + sp158);
-                                        *(s3232 *)((u8 *)temp_a0_2 + 0x50) = sp130;
-                                        *(s3232 *)((u8 *)temp_a0_2 + 0x54) = (s3232) sp134;
-                                        *(s3232 *)((u8 *)temp_a0_2 + 0x58) = (s3232) sp138;
-                                        *(s3232 *)((u8 *)temp_a0_2 + 0x5C) = (s3232) sp13C;
+                                        *(s32 *)((u8 *)temp_a0_2 + 0x50) = sp130;
+                                        *(s32 *)((u8 *)temp_a0_2 + 0x54) = (s32) sp134;
+                                        *(s32 *)((u8 *)temp_a0_2 + 0x58) = (s32) sp138;
+                                        *(s32 *)((u8 *)temp_a0_2 + 0x5C) = (s32) sp13C;
                                     }
                                     func_0022CF70(temp_a0_2, 0x3F800000);
                                 }
@@ -431,13 +438,13 @@ block_85:
                 func_002284D0(&sp230);
                 func_00228430(0);
                 temp_s3_5 = ((s64) ((s64) var_s1 << 0x30) >> 0x30) * 4;
-                func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_5), &sp110, -1, 0.0f);
+                func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_5), &sp110, -1, 0.0f);
                 sp230 = sp110;
                 sp234 = sp114;
                 sp238 = sp118;
                 sp23C = sp11C;
-                func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_5), &sp240, -1, 0.0f);
-                func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_5), &sp260, -1, 0.0f);
+                func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_5), &sp240, -1, 0.0f);
+                func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s3_5), &sp260, -1, 0.0f);
                 func_00228240(&sp230);
                 func_0022C060(temp_s0_3, 0x3F800000);
                 func_0022CD00(temp_s0_3);
@@ -456,13 +463,13 @@ block_103:
                     func_002284D0(&sp230);
                     func_00228430(0);
                     temp_s1 = ((s64) ((s64) var_s1 << 0x30) >> 0x30) * 4;
-                    func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s1), &spF0, -1, *(f32 *)((u8 *)temp_s0_4 + 0x10));
+                    func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s1), &spF0, -1, *(f32 *)((u8 *)temp_s0_4 + 0x10));
                     sp230 = spF0;
                     sp234 = spF4;
                     sp238 = spF8;
                     sp23C = spFC;
-                    func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s1), &sp240, -1, *(f32 *)((u8 *)temp_s0_4 + 0x10));
-                    func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s1), &sp260, -1, *(f32 *)((u8 *)temp_s0_4 + 0x10));
+                    func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s1), &sp240, -1, *(f32 *)((u8 *)temp_s0_4 + 0x10));
+                    func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x23C)) + 0x1C) + temp_s1), &sp260, -1, *(f32 *)((u8 *)temp_s0_4 + 0x10));
                     func_00228240(&sp230);
                     func_0022C060(temp_s0_4, 0x3F800000);
                     func_0022CD00(temp_s0_4);

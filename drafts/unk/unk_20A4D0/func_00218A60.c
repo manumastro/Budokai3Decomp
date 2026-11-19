@@ -39,7 +39,7 @@ block_6:
 block_8:
     temp_a1 = var_a1 * 2;
     var_s0 = 0;
-    temp_s1 = &D_0046A380 + (var_a0 * 0xA) + temp_a1;
+    temp_s1 = (signed char *)(((u8 *)&D_0046A380) + (var_a0 * 0xA) + temp_a1);
     var_v1 = temp_s1;
     goto loop_10;
 block_9:

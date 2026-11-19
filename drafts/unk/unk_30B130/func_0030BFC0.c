@@ -14,10 +14,10 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 extern void *gArenaRegCharList;
 extern void func_00228410(void);
-extern void func_0022CD00(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
-void func_0030BFC0(u8 *arg0) {
+extern void func_0022CD00(void *);
+void func_0030BFC0(Part30C *arg0) {
     s32 sp70;
     s32 sp80;
     s32 sp84;

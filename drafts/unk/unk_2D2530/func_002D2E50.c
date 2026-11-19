@@ -1,14 +1,15 @@
 /* Draft (not built): func_002D2E50 at 0x002D2E50, size 0x1FC, segment unk/unk_2D2530 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); )' redeclared was declared as: 'void (int)' now declared as: 'void (unsigned int)' @ 215: void func_002D2E50(u32 arg0) {
+ * Status: size, 90 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x18C, original 0x1FC
  * Original: asm/nonmatchings/unk/unk_2D2530/func_002D2E50.s */
 
-// src/unk/unk_2D2530.c func_002D2E50 cerr diff=-1/0
+// src/unk/unk_2D2530.c func_002D2E50 size diff=90/99
 extern s32 D_00456D10;
 extern void Obj_CopyVec4F50(void *, void *);
 extern void Obj_SetF3C();
-void func_002D2E50(u32 arg0) {
+void func_002D2E50(s32 arg0) {
+    u8 sp[0x400];
     s32 sp30;
     s32 sp34;
     s32 sp38;
@@ -34,17 +35,14 @@ void func_002D2E50(u32 arg0) {
     s32 sp88;
     s32 sp8C;
     s32 sp90;
-    u8 *temp_s0;
-    u8 *temp_s0_2;
-    u8 *temp_s0_3;
-    u8 *temp_s0_4;
-    u8 *temp_s0_5;
-    u8 *temp_s0_6;
+    u32 var_s1;
+    u8 *var_s0;
 
+    var_s1 = arg0;
     *(s128 *)((u8 *)(&sp90) + 0) = (s128) *(s128 *)((u8 *)(&D_00456D10) + 0);
     *(s128 *)((u8 *)(&sp90) + 0x10) = (s128) *(s128 *)((u8 *)(&D_00456D10) + 0x10);
     *(s16 *)((u8 *)(&sp90) + 0x20) = (s16) *(s16 *)((u8 *)(&D_00456D10) + 0x20);
-    switch (arg0) {
+    switch (var_s1) {
     case 0:
     case 1:
     case 2:
@@ -73,20 +71,20 @@ void func_002D2E50(u32 arg0) {
     case 29:
     case 32:
     case 33:
-        temp_s0 = (u8 *)(gOptionWork);
+        var_s0 = (unsigned char *)(gOptionWork);
         sp88 = 0;
         sp80 = 0x43CF8000;
         sp84 = 0x43BE0000;
         sp8C = 0x3F800000;
-        Obj_CopyVec4F50(*(u8 **)((u8 *)temp_s0 + 0x33C), &sp80);
-        Obj_SetF3C(*(s32 *)((u8 *)temp_s0 + 0x33C), *(s8 *)((u8 *)(arg0 + sp) + 0x90));
-        temp_s0_2 = (u8 *)(gOptionWork);
+        Obj_CopyVec4F50(*(u8 **)((u8 *)var_s0 + 0x33C), &sp80);
+        Obj_SetF3C(*(u8 **)((u8 *)var_s0 + 0x33C), *(s8 *)((u8 *)(var_s1 + sp) + 0x90));
+        var_s0 = (unsigned char *)(gOptionWork);
         sp78 = 0;
         sp70 = 0x43DE8000;
         sp74 = 0x43C30000;
         sp7C = 0x3F800000;
-        Obj_CopyVec4F50(*(u8 **)((u8 *)temp_s0_2 + 0x340), &sp70);
-        Obj_SetF3C(*(s32 *)((u8 *)temp_s0_2 + 0x340), -1);
+        Obj_CopyVec4F50(*(u8 **)((u8 *)var_s0 + 0x340), &sp70);
+        Obj_SetF3C(*(u8 **)((u8 *)var_s0 + 0x340), -1);
         return;
     case 20:
     case 21:
@@ -94,36 +92,36 @@ void func_002D2E50(u32 arg0) {
     case 23:
     case 30:
     case 31:
-        temp_s0_3 = (u8 *)(gOptionWork);
+        var_s0 = (unsigned char *)(gOptionWork);
         sp68 = 0;
         sp60 = 0x43CF8000;
         sp64 = 0x43BE0000;
         sp6C = 0x3F800000;
-        Obj_CopyVec4F50(*(u8 **)((u8 *)temp_s0_3 + 0x33C), &sp60);
-        Obj_SetF3C(*(s32 *)((u8 *)temp_s0_3 + 0x33C), -1);
-        temp_s0_4 = (u8 *)(gOptionWork);
+        Obj_CopyVec4F50(*(u8 **)((u8 *)var_s0 + 0x33C), &sp60);
+        Obj_SetF3C(*(u8 **)((u8 *)var_s0 + 0x33C), -1);
+        var_s0 = (unsigned char *)(gOptionWork);
         sp58 = 0;
         sp50 = 0x43DE8000;
         sp54 = 0x43C30000;
         sp5C = 0x3F800000;
-        Obj_CopyVec4F50(*(u8 **)((u8 *)temp_s0_4 + 0x340), &sp50);
-        Obj_SetF3C(*(s32 *)((u8 *)temp_s0_4 + 0x340), *(s8 *)((u8 *)(arg0 + sp) + 0x90));
+        Obj_CopyVec4F50(*(u8 **)((u8 *)var_s0 + 0x340), &sp50);
+        Obj_SetF3C(*(u8 **)((u8 *)var_s0 + 0x340), *(s8 *)((u8 *)(var_s1 + sp) + 0x90));
         return;
     default:
-        temp_s0_5 = (u8 *)(gOptionWork);
+        var_s0 = (unsigned char *)(gOptionWork);
         sp48 = 0;
         sp40 = 0x43CF8000;
         sp44 = 0x43BE0000;
         sp4C = 0x3F800000;
-        Obj_CopyVec4F50(*(u8 **)((u8 *)temp_s0_5 + 0x33C), &sp40);
-        Obj_SetF3C(*(s32 *)((u8 *)temp_s0_5 + 0x33C), -1);
-        temp_s0_6 = (u8 *)(gOptionWork);
+        Obj_CopyVec4F50(*(u8 **)((u8 *)var_s0 + 0x33C), &sp40);
+        Obj_SetF3C(*(u8 **)((u8 *)var_s0 + 0x33C), -1);
+        var_s0 = (unsigned char *)(gOptionWork);
         sp38 = 0;
         sp30 = 0x43DE8000;
         sp34 = 0x43C30000;
         sp3C = 0x3F800000;
-        Obj_CopyVec4F50(*(u8 **)((u8 *)temp_s0_6 + 0x340), &sp30);
-        Obj_SetF3C(*(s32 *)((u8 *)temp_s0_6 + 0x340), -1);
+        Obj_CopyVec4F50(*(u8 **)((u8 *)var_s0 + 0x340), &sp30);
+        Obj_SetF3C(*(u8 **)((u8 *)var_s0 + 0x340), -1);
         return;
     }
 }

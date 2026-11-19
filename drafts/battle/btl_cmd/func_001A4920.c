@@ -1,10 +1,10 @@
 /* Draft (not built): func_001A4920 at 0x001A4920, size 0x1D0, segment battle/btl_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); cit conversion from 'unsigned char *' to 'char' mwccps2.exe Compiler: @ 286: *D_00495718 = *(u8 **)((u8 *)arg0 + 0x260);
+ * Status: size, 97 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x188, original 0x1D0
  * Original: asm/nonmatchings/battle/btl_cmd/func_001A4920.s */
 
-// src/battle/btl_cmd.c func_001A4920 cerr diff=-1/0
+// src/battle/btl_cmd.c func_001A4920 size diff=97/98
 s32 memcpy(s32 *, void *, s32);
 extern void *D_0049571C;
 extern void *D_00495720;
@@ -33,10 +33,11 @@ void func_001A4920(u8 *arg0) {
 
     temp_v1 = *(s32 **)((u8 *)arg0 + 0xC);
     temp_a1 = arg0 + 0x260;
-    if ((temp_v1 != NULL) && (temp_v1_2 = (s32) (*temp_v1 & 0x03C00000) >> 0x16, (temp_v1_2 != 0))) {
-        switch (temp_v1_2) {
+    if (temp_v1 != NULL) {
+        temp_v1_2 = (s32) (*temp_v1 & 0x03C00000) >> 0x16;
+        switch (temp_v1_2) {                        /* irregular */
         case 6:
-            *D_00495718 = *(u8 **)((u8 *)arg0 + 0x260);
+            *D_00495718 = (char)(*(u8 **)((u8 *)arg0 + 0x260));
             *D_00495758 = *(f32 *)((u8 *)temp_a1 + 4);
             return;
         case 7:
@@ -72,7 +73,5 @@ void func_001A4920(u8 *arg0) {
             D_00495774 = *(f32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x260)) + 0x14);
             break;
         }
-    } else {
-    default:
     }
 }

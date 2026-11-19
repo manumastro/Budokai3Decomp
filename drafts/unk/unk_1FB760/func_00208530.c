@@ -1,7 +1,7 @@
 /* Draft (not built): func_00208530 at 0x00208530, size 0x414, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); egal implicit conversion from 'int' to 'int *' mwccps2.exe Compiler: @ 663: temp_a2 = *(&D_00526440 + (D_00470668 * 4));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 674: *(((u8 *)&D_0044B860) + (*(u16 *)((u8 *)sp48 + 4) * 0x10))(&sp40, sp44, temp_a2);
  * Original: asm/nonmatchings/unk/unk_1FB760/func_00208530.s */
 
 // src/unk/unk_1FB760.c func_00208530 cerr diff=-1/0
@@ -42,26 +42,26 @@ void func_00208530(u8 *arg0, u8 *arg1) {
     sp40 = *(s32 *)((u8 *)arg0 + 0x10);
     sp44 = *(u8 **)((u8 *)arg0 + 0x1C);
     sp48 = *(u8 **)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1C)) + 0x14);
-    sp58 = (s32)(arg1 + 0x10);
-    sp5C = (s32)(arg1 + 0x20);
+    sp58 = (int)(arg1 + 0x10);
+    sp5C = (int)(arg1 + 0x20);
     sp50 = &sp30;
     sp54 = &sp30;
     if (*(s32 *)((u8 *)arg0 + 8) & 0x2000) {
         temp_v1 = *(u8 **)((u8 *)arg0 + 0x1C);
         *(s32 *)((u8 *)temp_v1 + 8) = (s32) (*(s32 *)((u8 *)temp_v1 + 8) | 0x2000);
     }
-    temp_a2 = *(&D_00526440 + (D_00470668 * 4));
+    temp_a2 = (int *)(*(((u8 *)&D_00526440) + (D_00470668 * 4)));
     D_00470668 += 1;
     if (D_00470668 >= 0x800) {
         D_00470668 = 0;
     }
     *(s32 **)((u8 *)temp_a2 + 4) = (s32 *) *(s32 **)((u8 *)sp44 + 0x48);
-    *(s32 **)((u8 *)temp_a2 + 0) = **(s32 **)((u8 *)sp44 + 0x48);
-    **(s32 **)((u8 *)sp44 + 0x48) = temp_a2;
+    *(s32 **)((u8 *)temp_a2 + 0) = (int *)(**(s32 **)((u8 *)sp44 + 0x48));
+    **(s32 **)((u8 *)sp44 + 0x48) = (int)(temp_a2);
     *(s32 **)((u8 *)sp44 + 0x48) = temp_a2;
     *(s32 *)((u8 *)sp44 + 0x4C) = (s32) (*(s32 *)((u8 *)sp44 + 0x4C) + 1);
     sp4C = temp_a2;
-    *(&D_0044B860 + (*(u16 *)((u8 *)sp48 + 4) * 0x10))(&sp40, sp44, temp_a2);
+    *(((u8 *)&D_0044B860) + (*(u16 *)((u8 *)sp48 + 4) * 0x10))(&sp40, sp44, temp_a2);
     temp_a1 = *(u8 **)((u8 *)arg0 + 0x14);
     temp_a2_2 = (s32) *(u16 *)((u8 *)sp48 + 4);
     if (*(s32 *)((u8 *)temp_a1 + 4) == temp_a2_2) {

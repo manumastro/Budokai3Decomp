@@ -1,7 +1,7 @@
 /* Draft (not built): func_0030E890 at 0x0030E890, size 0x250, segment story/str_staffroll (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); : sp60 = D_00459140; @ 540: if ((*(D_00492FCE + (D_004B4B63 * 0xB8)) & 8) || (*(f32 *)((u8 *)temp_s1 + 0x14) <= 0.0f)) {
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'struct ' to '__int128' mwccps2.exe Compiler: @ 555: sp60 = D_00459140;
  * Original: asm/nonmatchings/story/str_staffroll/func_0030E890.s */
 
 // src/story/str_staffroll.c func_0030E890 cerr diff=-1/0
@@ -36,7 +36,7 @@ void func_0030E890(u8 *arg0) {
     case 4:
         *(f32 *)((u8 *)temp_s1 + 0x18) = 0.0f;
         *(f32 *)((u8 *)temp_s1 + 0x14) = (f32) (*(f32 *)((u8 *)temp_s1 + 0x14) - gFrameDelta);
-        if ((*(D_00492FCE + (D_004B4B63 * 0xB8)) & 8) || (*(f32 *)((u8 *)temp_s1 + 0x14) <= 0.0f)) {
+        if ((*(D_00492FCE + (((s32)(D_004B4B63)) * 0xB8)) & 8) || (*(f32 *)((u8 *)temp_s1 + 0x14) <= 0.0f)) {
             *(u8 *)((u8 *)temp_s1 + 0x1C) = 5U;
         }
         break;
@@ -49,7 +49,7 @@ void func_0030E890(u8 *arg0) {
         }
         break;
     }
-    func_0030D7D0((s32 *)(temp_s1));
+    func_0030D7D0((int *)(temp_s1));
     var_v1 = &sp40;
     sp60 = D_00459140;
     var_v0 = 0x10;
@@ -71,13 +71,13 @@ void func_0030E890(u8 *arg0) {
         if (*(u8 *)((u8 *)temp_s1 + 0x1E) == 0) {
             *(u8 *)((u8 *)temp_s1 + 0x1C) = 9U;
             Ball_Start();
-            var_v1_2 = (s32 *)(&func_0030E630);
+            var_v1_2 = (int *)(&func_0030E630);
             if (&func_0030E630 == NULL) {
                 var_v1_2 = NULL;
             }
         } else {
             *(u8 *)((u8 *)temp_s1 + 0x1C) = 6U;
-            var_v1_2 = (s32 *)(&func_0030E690);
+            var_v1_2 = (int *)(&func_0030E690);
             if (&func_0030E690 == NULL) {
                 var_v1_2 = NULL;
             }

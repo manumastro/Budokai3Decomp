@@ -19,7 +19,7 @@ s32 func_001ACBC0(void) {
     u8 *var_a0;
     u8 *var_s0;
 
-    temp_s4 = (u8 *)(gBattle);
+    temp_s4 = (unsigned char *)(gBattle);
     temp_s3 = temp_s4 + 0x830;
     if (*(s8 *)((u8 *)temp_s4 + 0x8AB1) > 0) {
         *(s32 *)((u8 *)temp_s4 + 0x88FC) = 4;

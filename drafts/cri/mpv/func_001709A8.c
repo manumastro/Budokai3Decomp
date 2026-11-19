@@ -21,3 +21,14 @@ void func_001709A8(void)
     memset(&D_00481470, 0, 8);
   }
 }
+
+/* Similar function already in C: func_001957C8 (src/cri/sfd_00194D48.c), similarity 0.67.
+ * It is the template below (not built). */
+#if 0
+void func_001957C8(void) {
+    if (D_00426B18 != 0) {
+        func_00107AF0();
+        func_00178F48(&D_004929F8, 0, 0x48);
+    }
+}
+#endif

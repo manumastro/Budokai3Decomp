@@ -30,13 +30,13 @@ void func_002700E0(void) {
     var_a0 = 0;
     temp_t4 = *(s32 *)((u8 *)D_004707FC + 0x54);
     do {
-        var_t1 = (u8 *)(temp_t4 + 1);
+        var_t1 = (unsigned char *)(temp_t4 + 1);
         var_t0 = &D_004E0688;
         var_a3 = 1;
         *(s32 *)((u8 *)(D_004707FC + var_a1) + 0x5DC) = -1;
 loop_2:
         if ((*(s64 *)((u8 *)var_t0 + 0) == (1 << var_t3)) && !(*(u8 *)((u8 *)var_t0 + 0xA) & 3) && (*var_t1 != 0)) {
-            temp_t5 = (u8 *)(var_a1 + D_004707FC);
+            temp_t5 = (unsigned char *)(var_a1 + D_004707FC);
             if (*(s32 *)((u8 *)temp_t5 + 0x5DC) == -1) {
                 *(s32 *)((u8 *)temp_t5 + 0x5DC) = var_t2;
             }
@@ -58,13 +58,13 @@ loop_2:
         var_t0_2 = var_t3 * 4;
         var_a3_2 = var_t2 * 2;
         do {
-            var_a2 = (u8 *)(temp_t4 + 1);
+            var_a2 = (unsigned char *)(temp_t4 + 1);
             var_a1_2 = &D_004E0688;
             var_a0_2 = 1;
             *(s32 *)((u8 *)(D_004707FC + var_t0_2) + 0x5DC) = -1;
 loop_13:
             if (((*(u8 *)((u8 *)var_a1_2 + 0xA) & 3) == var_t1_2) && ((s32) *var_a2 > 0)) {
-                temp_t5_2 = (u8 *)(var_t0_2 + D_004707FC);
+                temp_t5_2 = (unsigned char *)(var_t0_2 + D_004707FC);
                 if (*(s32 *)((u8 *)temp_t5_2 + 0x5DC) == -1) {
                     *(s32 *)((u8 *)temp_t5_2 + 0x5DC) = var_t2;
                     *(s32 *)((u8 *)(var_t0_2 + D_004707FC) + 0x69C) = var_t2;

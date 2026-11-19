@@ -9,3 +9,11 @@ M2C_UNK func_002F8A40();                            /* extern */
 void func_002F91B0(void) {
     func_002F8A40();
 }
+
+/* Similar function already in C: Character_PauseVoice (src/battle/character.c), similarity 1.00, same instructions apart from immediates/symbols.
+ * It is the template below (not built). */
+#if 0
+void Character_PauseVoice(s32 *a) {
+    AdxSlot_Pause((void *)a[15]);
+}
+#endif

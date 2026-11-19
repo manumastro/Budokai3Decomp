@@ -1,10 +1,10 @@
 /* Draft (not built): func_00281E40 at 0x00281E40, size 0x7E0, segment unk/unk_280730 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 338 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x714, original 0x7E0
+ * Status: size, 337 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x70C, original 0x7E0
  * Original: asm/nonmatchings/unk/unk_280730/func_00281E40.s */
 
-// src/unk/unk_280730.c func_00281E40 size diff=338/453
+// src/unk/unk_280730.c func_00281E40 size diff=337/451
 s32 Help_Open(s32, s32, s32, s32);
 s32 SoundRpc_SetVolume(s32, s32, f32);
 s32 func_0026E000(s32 *, s32);
@@ -28,7 +28,7 @@ extern void SoundRpc_Send3();
 extern char D_00492FCE[];
 extern char D_005C4140[];
 extern void func_00281D20(void);
-void func_00281E40(u8 *arg0, s32 arg3) {
+void func_00281E40(u8 *arg0, s32 unused_arg1, s32 unused_arg2, s32 arg3) {
     s32 sp60;
     s32 sp64;
     s32 sp68;
@@ -139,8 +139,8 @@ block_15:
                 *(&D_005C9D50 + temp_t0) = *(s8 *)((u8 *)var_s2 + 6);
                 if (*(u8 *)((u8 *)var_s2 + 0) == 0) {
                     temp_a1_3 = temp_t0 * 0x10;
-                    temp_v1_3 = (u8 *)(&D_00447440 + (((s64) ((s64) temp_a1_2 << 0x30) >> 0x30) * 0x60));
-                    temp_v0 = (u8 *)(&D_005C9D54 + temp_a1_3);
+                    temp_v1_3 = (unsigned char *)(&D_00447440 + (((s64) ((s64) temp_a1_2 << 0x30) >> 0x30) * 0x60));
+                    temp_v0 = (unsigned char *)(&D_005C9D54 + temp_a1_3);
                     *(&D_005C9D52 + temp_a1_3) = *(s16 *)((u8 *)temp_v1_3 + 0x50);
                     *(s16 *)((u8 *)(*(u8 **)((u8 *)var_s1 + 0x78)) + 0xB70) = (s16) *(s16 *)((u8 *)temp_v1_3 + 0x50);
                     *(s16 *)((u8 *)temp_v0 + 0) = (s16) *(s16 *)((u8 *)temp_v1_3 + 0x52);
@@ -159,13 +159,13 @@ block_15:
                     *(s16 *)((u8 *)(*(u8 **)((u8 *)var_s1 + 0x78)) + 0xB7E) = (s16) *(s16 *)((u8 *)temp_v1_3 + 0x5E);
                 } else {
                     temp_v1_4 = temp_t0 * 0x10;
-                    temp_a2_2 = (s16 *)(&D_005C9D52 + temp_v1_4);
+                    temp_a2_2 = (short *)(&D_005C9D52 + temp_v1_4);
                     var_t2 = 0;
                     var_t0 = 0;
-                    var_t1 = (u8 *)(D_005C4140 + temp_v1_4);
-                    temp_a3_2 = (s16 *)(var_t1 + 0x5C12);
+                    var_t1 = (unsigned char *)(D_005C4140 + temp_v1_4);
+                    temp_a3_2 = (short *)(var_t1 + 0x5C12);
                     *temp_a2_2 = 0;
-                    var_a0_3 = (s16 *)(*(u8 **)((u8 *)var_s1 + 0x78) + (temp_a3 * 0xE) + 0x44);
+                    var_a0_3 = (short *)(*(u8 **)((u8 *)var_s1 + 0x78) + (temp_a3 * 0xE) + 0x44);
                     do {
                         *(s16 *)((u8 *)var_t1 + 0x5C14) = (s16) *var_a0_3;
                         *(s16 *)((u8 *)(*(u8 **)((u8 *)var_s1 + 0x78) + var_t0) + 0xB72) = (s16) *var_a0_3;
@@ -182,7 +182,7 @@ block_15:
                 *(s32 *)((u8 *)var_s2 + 0xC) = 0x41F00000;
                 *(s8 *)((u8 *)var_s2 + 2) = 4;
                 *(s8 *)((u8 *)var_s2 + 8) = 3;
-                var_v0 = (s32 *)(&func_00281CC0);
+                var_v0 = (int *)(&func_00281CC0);
                 if (&func_00281CC0 == NULL) {
                     var_v0 = NULL;
                 }
@@ -233,7 +233,7 @@ block_15:
                 }
                 func_0026E000(&sp60, var_a1_3);
                 func_002B4E40(var_s0, &sp60, 0, 0);
-                var_v0_2 = (s32 *)(&func_00281D20);
+                var_v0_2 = (int *)(&func_00281D20);
                 *(s8 *)((u8 *)var_s2 + 2) = 3;
                 if (&func_00281D20 == NULL) {
                     var_v0_2 = NULL;
@@ -249,7 +249,7 @@ block_15:
             func_00281870(var_s2);
             *(s32 *)((u8 *)var_s2 + 0xC) = 0x41F00000;
             *(s8 *)((u8 *)var_s2 + 2) = 4;
-            var_v0_3 = (s32 *)(&CsSubStat_CloseStep);
+            var_v0_3 = (int *)(&CsSubStat_CloseStep);
             *(s8 *)((u8 *)var_s2 + 8) = 4;
             if (&CsSubStat_CloseStep == NULL) {
                 var_v0_3 = NULL;

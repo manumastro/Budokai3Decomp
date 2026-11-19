@@ -1,7 +1,7 @@
 /* Draft (not built): func_002DDF00 at 0x002DDF00, size 0x34C, segment unk/unk_2DB970 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal use of keyword mwccps2.exe Compiler: 171: if (temp_s1 & 0x1000) { @ 170: default:
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal use of keyword mwccps2.exe Compiler: 172: if (temp_s1 & 0x1000) { @ 171: default:
  * Original: asm/nonmatchings/unk/unk_2DB970/func_002DDF00.s */
 
 // src/unk/unk_2DB970.c func_002DDF00 cerr diff=-1/0
@@ -32,6 +32,7 @@ extern void func_002D8C00(void);
 extern void func_002D8D00(void);
 extern void func_002DDCA0(void);
 void func_002DDF00(void) {
+    u8 sp[0x400];
     s32 sp50;
     s32 sp54;
     s32 sp58;
@@ -43,7 +44,7 @@ void func_002DDF00(void) {
     u8 *temp_s0;
     u8 *temp_s0_2;
 
-    temp_s0 = (u8 *)(gOptionWork);
+    temp_s0 = (unsigned char *)(gOptionWork);
     temp_s3 = *(u32 *)((u8 *)temp_s0 + 0x378);
     temp_s1 = *D_00492FCE | D_00493086;
     temp_s2 = D_00492FD2 | D_00493032 | (D_0049308A | D_004930EA);
@@ -85,7 +86,7 @@ void func_002DDF00(void) {
             *(s32 *)((u8 *)temp_s0 + 0x390) = 0;
             *(void (**)())((u8 *)temp_s0 + 0x344) = func_002DDCA0;
             *(void (**)())((u8 *)temp_s0 + 0x364) = func_002D8D00;
-            temp_s0_2 = (u8 *)(gOptionWork);
+            temp_s0_2 = (unsigned char *)(gOptionWork);
             sp58 = 0;
             sp50 = 0x43CF8000;
             sp54 = 0x43BE0000;

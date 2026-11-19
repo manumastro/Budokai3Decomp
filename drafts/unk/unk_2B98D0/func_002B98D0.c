@@ -1,10 +1,10 @@
 /* Draft (not built): func_002B98D0 at 0x002B98D0, size 0x340, segment unk/unk_2B98D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  'void *' mwccps2.exe Compiler: @ 188: *)((u8 *)(gStrStatus + (spE0 * 4)) + 0x38), (f32) *(s32 *)((u8 *)var_s4 + 8), 0);
+ * Status: size, 136 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x2A8, original 0x340
  * Original: asm/nonmatchings/unk/unk_2B98D0/func_002B98D0.s */
 
-// src/unk/unk_2B98D0.c func_002B98D0 cerr diff=-1/0
+// src/unk/unk_2B98D0.c func_002B98D0 size diff=136/170
 s32 StrBg_SetFlags(s32, s32, s32 *);
 extern s32 D_00456020;
 extern s32 D_00456050;
@@ -66,7 +66,7 @@ void func_002B98D0(s32 arg0) {
     var_s7 = 0x27;
     var_fp = 0x2D;
     var_s0_2 = &D_00456050;
-    var_s4 = (u8 *)(gStrStatus + (spC0 * 0xC) + 0x424);
+    var_s4 = (unsigned char *)(gStrStatus + (spC0 * 0xC) + 0x424);
     spB0 = 0x26;
 loop_7:
     if (spC0 < *(s32 *)((u8 *)gStrStatus + 0x41C)) {
@@ -89,10 +89,10 @@ loop_7:
         StrBg_SetFlags(*(s32 *)((u8 *)(gStrStatus + (spD0 * 4)) + 0x38), 1, var_s0_2);
         StrBg_SetFlags(*(s32 *)((u8 *)(gStrStatus + (spD8 * 4)) + 0x38), 0, var_s0_2 + 0x10);
         StrBg_SetFlags(*(s32 *)((u8 *)(gStrStatus + (spE0 * 4)) + 0x38), 1, var_s0_2);
-        StrBg_SetPos(*(s32 *)((u8 *)(gStrStatus + (spE0 * 4)) + 0x38), (f32) *(s32 *)((u8 *)var_s4 + 8), 0);
+        StrBg_SetPos((void *)(*(s32 *)((u8 *)(gStrStatus + (spE0 * 4)) + 0x38)), (f32) *(s32 *)((u8 *)var_s4 + 8), 0);
         if (*(s32 *)((u8 *)var_s4 + 4) >= 0) {
             StrBg_SetFlags(*(s32 *)((u8 *)(gStrStatus + (spE8 * 4)) + 0x38), 1, var_s0_2);
-            StrBg_SetPos(*(s32 *)((u8 *)(gStrStatus + (spE8 * 4)) + 0x38), (f32) *(s32 *)((u8 *)var_s4 + 4), 0);
+            StrBg_SetPos((void *)(*(s32 *)((u8 *)(gStrStatus + (spE8 * 4)) + 0x38)), (f32) *(s32 *)((u8 *)var_s4 + 4), 0);
         }
         var_s3 += 4;
         var_s2 += 4;

@@ -1,10 +1,10 @@
 /* Draft (not built): func_00251F30 at 0x00251F30, size 0x478, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); igned char *' to 'int' mwccps2.exe Compiler: @ 1153: func_001D9C40(temp_s2, *(s32 *)((u8 *)temp_s2 + 0x1350) + 2, 0x2E);
+ * Status: size, 82 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x460, original 0x478
  * Original: asm/nonmatchings/battle/skill_cmd/func_00251F30.s */
 
-// src/battle/skill_cmd.c func_00251F30 cerr diff=-1/0
+// src/battle/skill_cmd.c func_00251F30 size diff=82/280
 s32 func_001E2630(void *);
 s32 func_00248910(s32, void *);
 s32 func_00251F30(u8 *arg0, u32 arg1, s32 arg2) {
@@ -34,16 +34,16 @@ s32 func_00251F30(u8 *arg0, u32 arg1, s32 arg2) {
             func_002518B0(D_0046FE54);
             temp_a0 = *(u8 **)((u8 *)D_0046FE54 + 0x5C);
             if (temp_a0 != NULL) {
-                Obj_ResetF38((s32)((void *)(temp_a0)));
+                Obj_ResetF38((s32)(temp_a0));
                 *(u8 **)((u8 *)D_0046FE54 + 0x5C) = NULL;
             }
         }
         if (*(s16 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0xC)) + 0x10) == 3) {
             temp_v1 = *(s32 *)((u8 *)temp_s2 + 0xB9C);
             if (temp_v1 == 0xA) {
-                func_001D9C40(temp_s2, *(s32 *)((u8 *)temp_s2 + 0x1350) + 2, 0x2E);
+                func_001D9C40((s32)(temp_s2), (s32)(*(s32 *)((u8 *)temp_s2 + 0x1350) + 2), 0x2E);
             } else if (temp_v1 == 0x1E) {
-                func_001D9C40(temp_s2, *(s32 *)((u8 *)temp_s2 + 0x1350) + 2, 0x30);
+                func_001D9C40((s32)(temp_s2), (s32)(*(s32 *)((u8 *)temp_s2 + 0x1350) + 2), 0x30);
             }
         }
         if (*(s16 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0xC)) + 0x10) == 0xC) {
@@ -118,7 +118,7 @@ block_39:
         case 5:                                     /* switch 2 */
             func_00251A60(temp_a1);
             if (*(s32 *)((u8 *)temp_s2 + 0xB9C) == 0x2A) {
-                func_001D9C40(temp_s2, *(s32 *)((u8 *)temp_s2 + 0x1350) + 2, 0x2C);
+                func_001D9C40((s32)(temp_s2), (s32)(*(s32 *)((u8 *)temp_s2 + 0x1350) + 2), 0x2C);
             }
             break;
         case 12:                                    /* switch 2 */
@@ -144,7 +144,7 @@ block_39:
         temp_s2_2 = *(s32 *)((u8 *)temp_s1 + 0x1350);
         if (*(s32 *)((u8 *)temp_s1 + 0xB9C) == 0x20) {
             func_00248910(0xF, temp_s1);
-            func_001D9C40(temp_s1, temp_s2_2 + 2, 0x34);
+            func_001D9C40((s32)(temp_s1), (s32)(temp_s2_2 + 2), 0x34);
         }
         *(s16 *)((u8 *)arg0 + 4) = (s16) (*(s16 *)((u8 *)arg0 + 4) | 0x2000);
         *(s16 *)((u8 *)arg0 + 4) = (s16) (*(s16 *)((u8 *)arg0 + 4) & ~0x1800);

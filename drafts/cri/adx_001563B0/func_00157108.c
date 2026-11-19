@@ -15,3 +15,15 @@ void func_00157108(s32 arg0) {
         }
     }
 }
+
+/* Similar function already in C: func_0014E700 (src/cri/adx.c), similarity 0.65.
+ * It is the template below (not built). */
+#if 0
+void func_0014E700(s32 arg0) {
+    if (arg0 != 0) {
+        func_00152508();
+        memset(arg0, 0, 0x30);
+        func_00152520();
+    }
+}
+#endif

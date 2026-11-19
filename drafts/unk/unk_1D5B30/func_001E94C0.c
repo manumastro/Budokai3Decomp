@@ -30,7 +30,7 @@ s32 func_001E94C0(u8 *arg0) {
     if (*(s8 *)((u8 *)arg0 + 0x1FF8) <= 0) {
         return 0;
     }
-    var_s2 = (u8 *)(gBattle);
+    var_s2 = (unsigned char *)(gBattle);
     var_s1 = -1;
     var_s0 = func_001D9220(0);
     if (*(s8 *)((u8 *)var_s3 + 0x2013) == 1) {

@@ -1,10 +1,10 @@
 /* Draft (not built): func_00231E70 at 0x00231E70, size 0x19E0, segment unk/unk_231E70 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); wccps2.exe Compiler: 499: var_a0 -= *(s32 *)((u8 *)((var_s7 * 4) + sp) + 0x180); @ 488: temp_v0_6 = (var_s7_2 * 4) + sp;
+ * Status: size, 971 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1EB8, original 0x19E0
  * Original: asm/nonmatchings/unk/unk_231E70/func_00231E70.s */
 
-// src/unk/unk_231E70.c func_00231E70 cerr diff=-1/0
+// src/unk/unk_231E70.c func_00231E70 size diff=971/1966
 s32 func_00146F60(f32 *, f32 *);
 s32 func_001D9220(void *);
 s32 func_001DF8F0(s32, s32);
@@ -17,6 +17,9 @@ extern s32 D_0044FAF8;
 extern s32 D_004E0660;
 extern void *gBattle;
 s16 func_00231E70(u8 *arg0) {
+    s32 sp178;
+    s32 sp168;
+    u8 sp[0x400];
     u32 spB0;
     s32 spC0;
     s32 spD0;
@@ -113,10 +116,10 @@ s16 func_00231E70(u8 *arg0) {
     temp_s3 = *(u8 **)((u8 *)arg0 + 0x1354);
     temp_s0 = gBattle;
     sp130 = *(u8 **)((u8 *)arg0 + 0x1AE0);
-    temp_s2 = &D_0058BBB0 + (*(s32 *)((u8 *)arg0 + 0x1350) * 0xC0);
+    temp_s2 = ((u8 *)&D_0058BBB0) + (*(s32 *)((u8 *)arg0 + 0x1350) * 0xC0);
     temp_s1 = *(u8 **)((u8 *)temp_s2 + 8);
     sp150 = *(u8 **)((u8 *)temp_s2 + 0xC);
-    temp_fp = &D_0058BBB0 + (*(s32 *)((u8 *)temp_s3 + 0x1350) * 0xC0);
+    temp_fp = ((u8 *)&D_0058BBB0) + (*(s32 *)((u8 *)temp_s3 + 0x1350) * 0xC0);
     if (!(*(f32 *)((u8 *)arg0 + 0x1A40) <= 0.0f)) {
         var_f22 = *(f32 *)((u8 *)arg0 + 0x17D4);
     } else {
@@ -502,7 +505,7 @@ block_226:
         temp_a0_2 = *(s16 *)((u8 *)arg0 + 0x1FEC);
         var_s7 = 0;
         if (temp_a0_2 != 0) {
-            temp_a0_3 = (u8 *)(&D_004E0660 + (temp_a0_2 * 0x28));
+            temp_a0_3 = (unsigned char *)(&D_004E0660 + (temp_a0_2 * 0x28));
             if ((var_s6 == 2) && (*(s16 *)((u8 *)temp_s3 + 0xCAC) != 9) && (sp130 == NULL)) {
                 temp_v0_8 = *(u8 *)((u8 *)temp_a0_3 + 0x15);
                 var_s0_3 = 0xA;

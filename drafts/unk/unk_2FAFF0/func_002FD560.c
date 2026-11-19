@@ -31,7 +31,7 @@ void func_002FD560(void) {
     if ((1 << D_005D0082) > 0) {
         var_s2 = 0;
         do {
-            temp_a1 = (u8 *)(gTourMap + var_s2);
+            temp_a1 = (unsigned char *)(gTourMap + var_s2);
             var_s0 = temp_a1 + 0x2EC;
             if ((*(s16 *)((u8 *)temp_a1 + 0x2F6) == -1) && (*(s8 *)((u8 *)var_s0 + 4) == 1)) {
                 temp_a0 = *(s8 *)((u8 *)var_s0 + 7);
@@ -42,14 +42,14 @@ void func_002FD560(void) {
                         temp_a2_2 = var_s4 + temp_a2;
                         var_s3 = var_s4;
                         if (var_s4 < temp_a2_2) {
-                            var_a1 = (u8 *)(gTourMap + (var_s4 * 0x14));
+                            var_a1 = (unsigned char *)(gTourMap + (var_s4 * 0x14));
 loop_8:
                             if (*(s8 *)((u8 *)var_a1 + 0x2F3) == temp_a0) {
                                 if (func_0012EAE0(0x20) & 1) {
                                     *(s8 *)((u8 *)(gTourMap + (var_s3 * 0x14)) + 0x2F0) = 5;
                                     *(s8 *)((u8 *)var_s0 + 7) = (s8) (*(s8 *)((u8 *)var_s0 + 7) + 1);
                                 } else {
-                                    temp_a1_2 = (u8 *)(gTourMap + (var_s3 * 0x14));
+                                    temp_a1_2 = (unsigned char *)(gTourMap + (var_s3 * 0x14));
                                     *(s8 *)((u8 *)temp_a1_2 + 0x2F3) = (s8) (*(s8 *)((u8 *)temp_a1_2 + 0x2F3) + 1);
                                     *(s8 *)((u8 *)var_s0 + 4) = 5;
                                 }
@@ -71,14 +71,14 @@ loop_8:
                         temp_a2_4 = var_s4 + temp_a2_3;
                         var_s3 = var_s4;
                         if (var_s4 < temp_a2_4) {
-                            var_a1_2 = (u8 *)(gTourMap + (var_s4 * 0x14));
+                            var_a1_2 = (unsigned char *)(gTourMap + (var_s4 * 0x14));
 loop_18:
                             if (*(s8 *)((u8 *)var_a1_2 + 0x2F3) == temp_a0) {
                                 if (func_0012EAE0(0x20) & 1) {
                                     *(s8 *)((u8 *)(gTourMap + (var_s3 * 0x14)) + 0x2F0) = 5;
                                     *(s8 *)((u8 *)var_s0 + 7) = (s8) (*(s8 *)((u8 *)var_s0 + 7) + 1);
                                 } else {
-                                    temp_a1_3 = (u8 *)(gTourMap + (var_s3 * 0x14));
+                                    temp_a1_3 = (unsigned char *)(gTourMap + (var_s3 * 0x14));
                                     *(s8 *)((u8 *)temp_a1_3 + 0x2F3) = (s8) (*(s8 *)((u8 *)temp_a1_3 + 0x2F3) + 1);
                                     *(s8 *)((u8 *)var_s0 + 4) = 5;
                                 }

@@ -20,3 +20,19 @@ void func_0019B498(u8 *arg0, s32 arg1, s32 arg2) {
     *(s32 *)((u8 *)temp_a2 + 0x2A4) = (s32) (*(s32 *)((u8 *)temp_a2 + 0x2A4) + 1);
     *(s32 *)((u8 *)arg0 + 0x44) = 1;
 }
+
+/* Similar function already in C: func_00173230 (src/cri/mpv.c), similarity 0.63.
+ * It is the template below (not built). */
+#if 0
+void func_00173230(s32 arg0, s32 *arg1, s32 *arg2) {
+    u8 *temp_s0;
+
+    temp_s0 = arg0 + 0x158;
+    if (func_00178B80() != 0) {
+        func_00172EF8(0, 0xFF03020E);
+        return;
+    }
+    *arg1 = *(s32 *)((u8 *)temp_s0 + 0xD0);
+    *arg2 = *(s32 *)((u8 *)temp_s0 + 0xD4);
+}
+#endif

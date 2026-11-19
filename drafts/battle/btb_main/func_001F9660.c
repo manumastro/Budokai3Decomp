@@ -1,11 +1,10 @@
 /* Draft (not built): func_001F9660 at 0x001F9660, size 0x138, segment battle/btb_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); tifier 'D_0044A9C0' redeclared was declared as: 'struct StageFog[]' now declared as: 'int' @ 280: extern s32 D_0044A9C0;
+ * Status: diff, 42 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/battle/btb_main/func_001F9660.s */
 
-// src/battle/btb_main.c func_001F9660 cerr diff=-1/0
-extern s32 D_0044A9C0;
+// src/battle/btb_main.c func_001F9660 diff diff=42/78
 extern s32 D_0051CD20;
 extern s32 D_0051CD2C;
 void func_001F9660(void) {
@@ -15,7 +14,7 @@ void func_001F9660(void) {
     u8 *temp_s0;
 
     if (*(s8 *)((u8 *)gBattle + 0x8975) != 1) {
-        temp_s0 = &D_0044A9C0 + (*(s32 *)((u8 *)((D_0051CD20 << 5) + (&D_0044AE50 + (gBtbBg * 0x5C))) + 0x20) * 0x14);
+        temp_s0 = ((u8 *)&D_0044A9C0) + (*(s32 *)((u8 *)((D_0051CD20 << 5) + (((u8 *)&D_0044AE50) + ((*(s32 *)(&gBtbBg)) * 0x5C))) + 0x20) * 0x14);
         BtbBg_DrawObjs();
         var_v1 = &sp20;
         var_v0 = 0x10;

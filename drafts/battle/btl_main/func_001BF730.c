@@ -1,10 +1,10 @@
 /* Draft (not built): func_001BF730 at 0x001BF730, size 0x62C, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 's3232' mwccps2.exe Compiler: 4470: s32 spB4; @ 4469: s3232 spB0;
+ * Status: size, 243 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x514, original 0x62C
  * Original: asm/nonmatchings/battle/btl_main/func_001BF730.s */
 
-// src/battle/btl_main.c func_001BF730 cerr diff=-1/0
+// src/battle/btl_main.c func_001BF730 size diff=243/325
 extern s32 func_0012EAE0(s32);
 s32 dpmul(s32, s32);
 s32 func_001214F8(f32);
@@ -14,6 +14,7 @@ s32 func_001D9EB0(void *, s32);
 s32 func_002470B0(s32, s64);
 extern void func_00146F30(void *);
 void func_001BF730(u8 *arg0, s32 arg1, s32 arg2, f32 fparg0) {
+    s32 saved_reg_s2;
     f32 sp90;
     f32 sp94;
     f32 sp98;
@@ -22,7 +23,7 @@ void func_001BF730(u8 *arg0, s32 arg1, s32 arg2, f32 fparg0) {
     s32 spA4;
     s32 spA8;
     s32 spAC;
-    s3232 spB0;
+    s32 spB0;
     s32 spB4;
     u8 *spC0;
     f32 *spC4;
@@ -118,7 +119,7 @@ void func_001BF730(u8 *arg0, s32 arg1, s32 arg2, f32 fparg0) {
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
         var_s0 = 0;
-        Btl_UpdateLimitXY(0, temp_a2, temp_a3, 0x3F000000, 0x3DCCCCCD);
+        Btl_UpdateLimitXY(0, 0.5f, 0.1f);
         break;
     case 4:                                         /* switch 1 */
         if (var_s3 == 0xC8) {
@@ -198,7 +199,7 @@ void func_001BF730(u8 *arg0, s32 arg1, s32 arg2, f32 fparg0) {
             }
         }
         func_00218440(var_s2, &spC0);
-        func_001E9B00(1, var_s4, 0, 0, 0, 0x3F800000);
+        func_001E9B00(1, var_s4, 0, 0, 0.0f, 1.0f);
     } else {
         spF8 = arg0;
         spFC = 1;

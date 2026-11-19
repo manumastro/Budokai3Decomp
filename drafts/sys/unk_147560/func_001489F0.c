@@ -17,7 +17,7 @@ extern s32 D_004593E0;
 extern s32 D_00459C30;
 extern s32 D_00459C50;
 extern s32 D_0046FD10;
-extern s3232 D_0046FD74;
+extern s32 D_0046FD74;
 extern s32 D_00470230;
 extern s32 D_00470234;
 extern f32 D_004703C0;
@@ -54,6 +54,7 @@ extern s32 D_0047E87C;
 extern s32 D_0047E880;
 extern f32 gFrameDelta;
 void func_001489F0(u8 *arg0) {
+    s32 saved_reg_s1;
     f32 var_f0;
     f32 var_f1;
     f32 var_v1_3;
@@ -193,7 +194,7 @@ block_7:
     FlushCache(0);
     temp_s1 = (s32) D_0047E540 | 0x20000000;
     func_00101520(temp_s1, D_00470454, (s16) D_00470424, (s16) D_00470428);
-    *(s3232 *)((u8 *)temp_s1 + 0x180) = (s3232) D_0046FD74;
+    *(s32 *)((u8 *)temp_s1 + 0x180) = (s32) D_0046FD74;
     if (D_0046FD70 != 0) {
         *(s64 *)((u8 *)temp_s1 + 0x198) = 5;
         *(s64 *)((u8 *)temp_s1 + 0x1A8) = 5;
@@ -205,7 +206,7 @@ block_7:
     *(s64 *)((u8 *)temp_s1 + 0x2D8) = (s64) *(s64 *)((u8 *)temp_s1 + 0x168);
     *(s64 *)((u8 *)temp_s1 + 0x2E0) = (s64) *(s64 *)((u8 *)temp_s1 + 0x170);
     *(s64 *)((u8 *)temp_s1 + 0x2E8) = (s64) *(s64 *)((u8 *)temp_s1 + 0x178);
-    *(s3232 *)((u8 *)temp_s1 + 0x2F0) = (s3232) *(s3232 *)((u8 *)temp_s1 + 0x180);
+    *(s32 *)((u8 *)temp_s1 + 0x2F0) = (s32) *(s32 *)((u8 *)temp_s1 + 0x180);
     *(f32 *)((u8 *)temp_s1 + 0x2F4) = (f32) *(f32 *)((u8 *)temp_s1 + 0x184);
     *(s64 *)((u8 *)temp_s1 + 0x2F8) = (s64) *(s64 *)((u8 *)temp_s1 + 0x188);
     *(s64 *)((u8 *)temp_s1 + 0x300) = (s64) *(s64 *)((u8 *)temp_s1 + 0x190);
@@ -305,8 +306,8 @@ block_7:
     D_004703AC = (s32) ((s64) ((((u64) *(u64 *)0x12001000 >> 0xD) & 1) << 0x20) >> 0x20);
     D_004703B0 = 0;
     if (D_004703F8 != 0) {
-        func_00101230(temp_s1 + 0x60, 0x800, 0x800, (s16) D_004703AC);
-        func_00101498(temp_s1 + 0xE0, 0x800, 0x800, (s16) D_004703AC);
+        func_00101230((void *)(temp_s1 + 0x60), 0x800, 0x800, (s32)((s16) D_004703AC));
+        func_00101498((void *)(temp_s1 + 0xE0), 0x800, 0x800, (s32)((s16) D_004703AC));
     } else {
         func_00101230((void *)(temp_s1 + 0x60), 0x800, 0x800, 0);
         func_00101498((void *)(temp_s1 + 0xE0), 0x800, 0x800, 0);

@@ -313,8 +313,8 @@ block_36:
     *D_0047CAA0 = func_001A4CF0;
     D_0047CAB8 = &func_001A4AF0;
     D_0047CABC = &func_001A4920;
-    D_0047CAB0 = (s32)(func_001A48C0);
-    D_0047CAB4 = (s32)(func_001A4860);
+    D_0047CAB0 = (int)(func_001A48C0);
+    D_0047CAB4 = (int)(func_001A4860);
     D_0047CAA8 = &func_001A4850;
     D_0047CAAC = &func_001A4830;
     func_0021A120();

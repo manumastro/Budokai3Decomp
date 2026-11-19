@@ -15,11 +15,11 @@ extern s32 D_0047070C;
 extern s32 D_00492FCC;
 extern s32 D_0049302E;
 extern void func_00228410(void);
+extern void *D_00470704;
+extern void amModel_SetCurrent();
 extern void func_0022CD00(void *);
 extern char D_004B4B40[];
 extern char D_00492FCE[];
-extern void *D_00470704;
-extern void amModel_SetCurrent();
 void func_002DBFE0(void) {
     s32 temp_a1;
     s32 temp_v1;
@@ -86,7 +86,7 @@ void func_002DBFE0(void) {
     u8 *temp_t2_8;
     u8 *var_s1;
 
-    temp_s0 = (u8 *)(gOptionWork);
+    temp_s0 = (unsigned char *)(gOptionWork);
     temp_v1 = *(s32 *)((u8 *)temp_s0 + 0x380);
     var_a3 = temp_v1 * 0xB8;
     temp_a0 = *(&D_00492FCC + var_a3);
@@ -94,8 +94,8 @@ void func_002DBFE0(void) {
     var_s1 = NULL;
     if (temp_a0 & 0x400) {
         if (temp_a1 & 0x80) {
-            var_a2 = (s8 *)(D_004B4B40 + (temp_v1 * 0xA));
-            temp_t2 = (u8 *)(var_a2 + 0x2BA86);
+            var_a2 = (signed char *)(D_004B4B40 + (temp_v1 * 0xA));
+            temp_t2 = (unsigned char *)(var_a2 + 0x2BA86);
             var_a3 = *(s8 *)((u8 *)temp_t2 + 4);
             var_t1 = 0;
             var_t0 = &D_00456B10;
@@ -121,8 +121,8 @@ loop_3:
             var_a2 = (s8 *) (temp_a1 & 0x20);
             var_a3 = temp_v1 * 4;
             if (var_a2 != NULL) {
-                var_a2 = (s8 *)(D_004B4B40 + (temp_v1 * 0xA));
-                temp_t2_2 = (u8 *)(var_a2 + 0x2BA86);
+                var_a2 = (signed char *)(D_004B4B40 + (temp_v1 * 0xA));
+                temp_t2_2 = (unsigned char *)(var_a2 + 0x2BA86);
                 var_a3 = *(s8 *)((u8 *)temp_t2_2 + 4);
                 var_t1_3 = 0;
                 var_t0_2 = &D_00456B10;
@@ -149,8 +149,8 @@ loop_13:
         var_s1 = *(u8 **)((u8 *)temp_s0 + 0xD8);
     } else if (temp_a0 & 0x100) {
         if (temp_a1 & 0x80) {
-            var_a2 = (s8 *)(D_004B4B40 + (temp_v1 * 0xA));
-            temp_t2_3 = (u8 *)(var_a2 + 0x2BA86);
+            var_a2 = (signed char *)(D_004B4B40 + (temp_v1 * 0xA));
+            temp_t2_3 = (unsigned char *)(var_a2 + 0x2BA86);
             var_a3 = *(s8 *)((u8 *)temp_t2_3 + 2);
             var_t1_5 = 0;
             var_t0_3 = &D_00456B10;
@@ -176,8 +176,8 @@ loop_25:
             var_a2 = (s8 *) (temp_a1 & 0x20);
             var_a3 = temp_v1 * 4;
             if (var_a2 != NULL) {
-                var_a2 = (s8 *)(D_004B4B40 + (temp_v1 * 0xA));
-                temp_t2_4 = (u8 *)(var_a2 + 0x2BA86);
+                var_a2 = (signed char *)(D_004B4B40 + (temp_v1 * 0xA));
+                temp_t2_4 = (unsigned char *)(var_a2 + 0x2BA86);
                 var_a3 = *(s8 *)((u8 *)temp_t2_4 + 2);
                 var_t1_7 = 0;
                 var_t0_4 = &D_00456B10;
@@ -204,8 +204,8 @@ loop_35:
         var_s1 = *(u8 **)((u8 *)temp_s0 + 0xD4);
     } else if (temp_a0 & 0x800) {
         if (temp_a1 & 0x80) {
-            var_a2 = (s8 *)(D_004B4B40 + (temp_v1 * 0xA));
-            temp_t2_5 = (u8 *)(var_a2 + 0x2BA86);
+            var_a2 = (signed char *)(D_004B4B40 + (temp_v1 * 0xA));
+            temp_t2_5 = (unsigned char *)(var_a2 + 0x2BA86);
             var_a3 = *(s8 *)((u8 *)temp_t2_5 + 5);
             var_t1_9 = 0;
             var_t0_5 = &D_00456B10;
@@ -231,8 +231,8 @@ loop_47:
             var_a2 = (s8 *) (temp_a1 & 0x20);
             var_a3 = temp_v1 * 4;
             if (var_a2 != NULL) {
-                var_a2 = (s8 *)(D_004B4B40 + (temp_v1 * 0xA));
-                temp_t2_6 = (u8 *)(var_a2 + 0x2BA86);
+                var_a2 = (signed char *)(D_004B4B40 + (temp_v1 * 0xA));
+                temp_t2_6 = (unsigned char *)(var_a2 + 0x2BA86);
                 var_a3 = *(s8 *)((u8 *)temp_t2_6 + 5);
                 var_t1_11 = 0;
                 var_t0_6 = &D_00456B10;
@@ -261,8 +261,8 @@ loop_57:
         var_a2 = (s8 *) (temp_a1 & 0x80);
         if (temp_a0 & 0x200) {
             if (var_a2 != NULL) {
-                var_a2 = (s8 *)(D_004B4B40 + (temp_v1 * 0xA));
-                temp_t2_7 = (u8 *)(var_a2 + 0x2BA86);
+                var_a2 = (signed char *)(D_004B4B40 + (temp_v1 * 0xA));
+                temp_t2_7 = (unsigned char *)(var_a2 + 0x2BA86);
                 var_a3 = *(s8 *)((u8 *)temp_t2_7 + 3);
                 var_t1_13 = 0;
                 var_t0_7 = &D_00456B10;
@@ -288,8 +288,8 @@ loop_69:
                 var_a2 = (s8 *) (temp_a1 & 0x20);
                 var_a3 = temp_v1 * 4;
                 if (var_a2 != NULL) {
-                    var_a2 = (s8 *)(D_004B4B40 + (temp_v1 * 0xA));
-                    temp_t2_8 = (u8 *)(var_a2 + 0x2BA86);
+                    var_a2 = (signed char *)(D_004B4B40 + (temp_v1 * 0xA));
+                    temp_t2_8 = (unsigned char *)(var_a2 + 0x2BA86);
                     var_a3 = *(s8 *)((u8 *)temp_t2_8 + 3);
                     var_t1_15 = 0;
                     var_t0_8 = &D_00456B10;
@@ -320,7 +320,7 @@ loop_79:
         if (temp_a1 & 0x80) {
             var_a3_2 = 0;
             var_a2 = &D_00456B10;
-            temp_a0_2 = (u8 *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
+            temp_a0_2 = (unsigned char *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
             temp_t0 = temp_a0_2 + 0x2BA86;
 loop_91:
             if (*var_a2 == *(s8 *)((u8 *)temp_t0 + 9)) {
@@ -343,7 +343,7 @@ loop_91:
         } else if (temp_a1 & 0x20) {
             var_a3_3 = 0;
             var_a2 = &D_00456B10;
-            temp_a0_3 = (u8 *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
+            temp_a0_3 = (unsigned char *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
             temp_t0_2 = temp_a0_3 + 0x2BA86;
 loop_101:
             if (*var_a2 == *(s8 *)((u8 *)temp_t0_2 + 9)) {
@@ -369,7 +369,7 @@ loop_101:
         if (temp_a1 & 0x80) {
             var_a3_4 = 0;
             var_a2 = &D_00456B10;
-            temp_a0_4 = (u8 *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
+            temp_a0_4 = (unsigned char *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
             temp_t0_3 = temp_a0_4 + 0x2BA86;
 loop_113:
             if (*var_a2 == *(s8 *)((u8 *)temp_t0_3 + 6)) {
@@ -392,7 +392,7 @@ loop_113:
         } else if (temp_a1 & 0x20) {
             var_a3_5 = 0;
             var_a2 = &D_00456B10;
-            temp_a0_5 = (u8 *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
+            temp_a0_5 = (unsigned char *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
             temp_t0_4 = temp_a0_5 + 0x2BA86;
 loop_123:
             if (*var_a2 == *(s8 *)((u8 *)temp_t0_4 + 6)) {
@@ -418,7 +418,7 @@ loop_123:
         if (temp_a1 & 0x80) {
             var_a3_6 = 0;
             var_a2 = &D_00456B10;
-            temp_a0_6 = (u8 *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
+            temp_a0_6 = (unsigned char *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
             temp_t0_5 = temp_a0_6 + 0x2BA86;
 loop_135:
             if (*var_a2 == *(s8 *)((u8 *)temp_t0_5 + 7)) {
@@ -441,7 +441,7 @@ loop_135:
         } else if (temp_a1 & 0x20) {
             var_a3_7 = 0;
             var_a2 = &D_00456B10;
-            temp_a0_7 = (u8 *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
+            temp_a0_7 = (unsigned char *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
             temp_t0_6 = temp_a0_7 + 0x2BA86;
 loop_145:
             if (*var_a2 == *(s8 *)((u8 *)temp_t0_6 + 7)) {
@@ -467,7 +467,7 @@ loop_145:
         if (temp_a1 & 0x80) {
             var_a3_8 = 0;
             var_a2 = &D_00456B10;
-            temp_a0_8 = (u8 *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
+            temp_a0_8 = (unsigned char *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
             temp_t0_7 = temp_a0_8 + 0x2BA86;
 loop_157:
             if (*var_a2 == *(s8 *)((u8 *)temp_t0_7 + 8)) {
@@ -490,7 +490,7 @@ loop_157:
         } else if (temp_a1 & 0x20) {
             var_a3_9 = 0;
             var_a2 = &D_00456B10;
-            temp_a0_9 = (u8 *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
+            temp_a0_9 = (unsigned char *)(D_004B4B40 + (*(s32 *)((u8 *)gOptionWork + 0x380) * 0xA));
             temp_t0_8 = temp_a0_9 + 0x2BA86;
 loop_167:
             if (*var_a2 == *(s8 *)((u8 *)temp_t0_8 + 8)) {

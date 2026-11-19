@@ -1,7 +1,7 @@
 /* Draft (not built): func_002A5030 at 0x002A5030, size 0x1AC, segment story/evt_scrp (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); red was declared as: 'int (...)' now declared as: 'void (float *, float)' @ 1854: extern void func_002A21F0(f32 *, f32);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); red was declared as: 'int (...)' now declared as: 'void (float *, float)' @ 1890: extern void func_002A21F0(f32 *, f32);
  * Original: asm/nonmatchings/story/evt_scrp/func_002A5030.s */
 
 // src/story/evt_scrp.c func_002A5030 cerr diff=-1/0

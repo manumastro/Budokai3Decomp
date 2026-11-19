@@ -28,21 +28,21 @@ s32 func_002AFE00(u8 *arg0, s32 *arg1) {
         return 3;
     }
     *(s32 *)((u8 *)arg0 + 0x10) = 0;
-    temp_s4 = (u8 *)(((*arg1 + 1) * 0x30) + (&D_005BC440 + (*temp_s0 * 0x90)));
+    temp_s4 = (unsigned char *)(((*arg1 + 1) * 0x30) + (&D_005BC440 + (*temp_s0 * 0x90)));
     temp_a0 = *(u8 **)((u8 *)temp_s4 + 0);
     if (temp_a0 != NULL) {
-        amCdFs_ReleaseCache((s32)((void *)(temp_a0)));
+        amCdFs_ReleaseCache((s32)(temp_a0));
     }
     temp_a0_2 = *(u8 **)((u8 *)temp_s4 + 8);
     if (temp_a0_2 != NULL) {
         amNode_Free(temp_a0_2);
     }
     temp_s0_2 = *(u8 **)((u8 *)temp_s2 + 0x40);
-    temp_s4_2 = (u8 *)(((*arg1 + 1) * 0x30) + (&D_005BC440 + (*temp_s0 * 0x90)));
+    temp_s4_2 = (unsigned char *)(((*arg1 + 1) * 0x30) + (&D_005BC440 + (*temp_s0 * 0x90)));
     temp_a0_3 = *(u8 **)((u8 *)temp_s4_2 + 0);
     temp_s1 = *(u8 **)((u8 *)temp_s0_2 + 0x50);
     if (temp_a0_3 != NULL) {
-        amCdFs_ReleaseCache((s32)((void *)(temp_a0_3)));
+        amCdFs_ReleaseCache((s32)(temp_a0_3));
     }
     temp_a0_4 = *(u8 **)((u8 *)temp_s4_2 + 8);
     if (temp_a0_4 != NULL) {

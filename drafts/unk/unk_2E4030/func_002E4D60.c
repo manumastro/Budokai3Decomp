@@ -1,16 +1,10 @@
 /* Draft (not built): func_002E4D60 at 0x002E4D60, size 0x2DC, segment unk/unk_2E4030 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); c_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0x1C) + temp_s1), &sp50, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ')' expected mwccps2.exe Compiler: 175: s32 var_v1; @ 174: void func_002E4D60(Sub57 *arg0) {
  * Original: asm/nonmatchings/unk/unk_2E4030/func_002E4D60.s */
 
 // src/unk/unk_2E4030.c func_002E4D60 cerr diff=-1/0
-extern s32 D_00470704;
-extern s32 D_0047070C;
-extern s32 D_00470708;
-extern s32 D_00470238;
-extern f32 gFrameDelta;
-extern void A2d_FlushList(void);
 s32 func_00133B50(s32, s32);
 s32 func_00227830(s32, s32);
 s32 func_00228240(f32 *);
@@ -23,7 +17,100 @@ s32 func_0022C060(void *, s32);
 extern void Title_StepCounters(void);
 extern void func_00228410(void);
 extern void func_0022CD00(void *);
-void func_002E4D60(u8 *arg0) {
+void func_002E4D60(Sub57 *arg0) {
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 var_v1;
+    s32 var_v0;
+    s32 var_s1;
+    s32 var_s0_2;
+    s32 var_s0;
+    s32 temp_s3;
+    s32 sp5C;
+    s32 sp58;
+    s32 sp54;
     f32 sp50;
     u8 *sp70;
     s32 sp74;
@@ -64,7 +151,7 @@ void func_002E4D60(u8 *arg0) {
     sp78 = *(s32 *)((u8 *)arg0 + 0x1C);
     sp7C = *(s32 *)((u8 *)arg0 + 0x24);
     temp_a0 = *(u8 **)((u8 *)arg0 + 4);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x7000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x7000);
@@ -77,7 +164,7 @@ void func_002E4D60(u8 *arg0) {
     A2d_FlushList();
     func_00133B50(0, 0);
     temp_a0_2 = *(u8 **)((u8 *)arg0 + 4);
-    D_00470704 = (s32)(temp_a0_2);
+    D_00470704 = (int)(temp_a0_2);
     D_0047070C = 0x7000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0_2), 0x7000);
@@ -126,13 +213,13 @@ void func_002E4D60(u8 *arg0) {
         }
         temp_s1 = var_v0_2 * 4;
         if (var_v0_2 != -1) {
-            func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0x1C) + temp_s1), &sp50, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
+            func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0x1C) + temp_s1), &sp50, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
             sp80 = sp50;
             sp84 = sp54;
             sp88 = sp58;
             sp8C = sp5C;
-            func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0x1C) + temp_s1), &sp90, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
-            func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0x1C) + temp_s1), &spB0, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
+            func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0x1C) + temp_s1), &sp90, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
+            func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0x1C) + temp_s1), &spB0, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
         }
         func_00228240(&sp80);
         func_00227830(0, -1);

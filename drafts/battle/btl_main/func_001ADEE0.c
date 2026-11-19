@@ -1,7 +1,7 @@
 /* Draft (not built): func_001ADEE0 at 0x001ADEE0, size 0x6E0, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 1102: if (*(&D_00468340 + (*(s16 *)((u8 *)temp_s1 + 0x7E2) * 4))() != 0) {
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 1065: if (*(&D_00468340 + (*(s16 *)((u8 *)temp_s1 + 0x7E2) * 4))() != 0) {
  * Original: asm/nonmatchings/battle/btl_main/func_001ADEE0.s */
 
 // src/battle/btl_main.c func_001ADEE0 cerr diff=-1/0
@@ -49,7 +49,7 @@ void func_001ADEE0(void) {
     u8 *var_a3_2;
     u8 *var_s0;
 
-    temp_s1 = (u8 *)(gBattle);
+    temp_s1 = (unsigned char *)(gBattle);
     var_s0 = temp_s1 + 0x830;
     if (*(s32 *)((u8 *)temp_s1 + 0x88EC) == 0) {
         if (*(s8 *)((u8 *)temp_s1 + 0x8AAD) == 0) {
@@ -66,7 +66,7 @@ void func_001ADEE0(void) {
             *(f32 *)((u8 *)temp_s1 + 0x891C) = (f32) (*(f32 *)((u8 *)temp_s1 + 0x891C) + *(f32 *)((u8 *)temp_s1 + 0x88F0));
         }
     }
-    temp_s2 = (u8 *)(gBattle);
+    temp_s2 = (unsigned char *)(gBattle);
     temp_v0_2 = func_0021C600();
     temp_v1 = *(s32 *)((u8 *)temp_s2 + 0x7EC);
     if (temp_v1 >= 0) {
@@ -82,7 +82,7 @@ void func_001ADEE0(void) {
             if (*(s8 *)((u8 *)temp_v1_2 + 0x2015) != 0) {
                 var_a0 = *(s32 *)((u8 *)(*(u8 **)((u8 *)temp_v1_2 + 0x1358)) + 0x1350);
             }
-            temp_v1_3 = &D_00495B60 + (var_a0 * 4);
+            temp_v1_3 = (int *)(((u8 *)&D_00495B60) + (var_a0 * 4));
             *temp_v1_3 += 1;
         }
         var_s2 = 0;
@@ -145,7 +145,7 @@ void func_001ADEE0(void) {
                     }
                     var_fp = 0;
 loop_47:
-                    spA0 = (s32 *)(temp_s1 + 0x88D8);
+                    spA0 = (int *)(temp_s1 + 0x88D8);
                     var_s7 = 0;
                     spB0 = (var_fp & 3) * 2;
 loop_48:
@@ -170,11 +170,11 @@ loop_50:
                         }
                     }
                     if ((var_s5 >= 0) || (var_s4 <= 0)) {
-                        if ((var_s5 >= 0) && (*(s16 *)((u8 *)temp_s1 + 0x7E2) == 3) && (*(u16 *)((u8 *)(&D_00492FC0 + (temp_s3 * 0xB8)) + 0xE) & 1)) {
+                        if ((var_s5 >= 0) && (*(s16 *)((u8 *)temp_s1 + 0x7E2) == 3) && (*(u16 *)((u8 *)(((u8 *)&D_00492FC0) + (temp_s3 * 0xB8)) + 0xE) & 1)) {
                             temp_v0_4 = temp_s1 + (var_s5 * 0x2020);
-                            func_001DFE60(temp_v0_4 + 0x830, 0x10, -*(f32 *)((u8 *)temp_v0_4 + 0x2004));
+                            func_001DFE60((Fighter *)(temp_v0_4 + 0x830), 0x10, -*(f32 *)((u8 *)temp_v0_4 + 0x2004));
                         }
-                        temp_a0 = &D_00492FC0 + (temp_s3 * 0xB8);
+                        temp_a0 = ((u8 *)&D_00492FC0) + (temp_s3 * 0xB8);
                         if ((*(u16 *)((u8 *)temp_a0 + 0xE) & 8) || (*(s8 *)((u8 *)temp_s1 + 0x8AB4) != 0) || ((var_s5 >= 0) && (*(s32 *)((u8 *)temp_a0 + 0) == 0))) {
                             temp_v0_5 = *(s8 *)((u8 *)temp_s1 + 0x8AB4);
                             var_s2_2 = 1;

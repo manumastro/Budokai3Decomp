@@ -19,9 +19,9 @@ extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern void func_00228410(void);
-extern void func_0022C6B0(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022C6B0(void *);
 void func_00271580(void) {
     s32 sp60;
     f32 sp64;
@@ -55,7 +55,7 @@ void func_00271580(void) {
     func_00228430(0);
     func_002284D0(0);
     M2C_ERROR(/* unknown instruction: sqc2 $vf0, ($v0) */);
-    temp_s4 = (u8 *)(D_004707FC + 0x74);
+    temp_s4 = (unsigned char *)(D_004707FC + 0x74);
     temp_s0 = A2d_AllocObj(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x1C)) + 4), 0.0f);
     func_00228430(0);
     *(f32 *)((u8 *)temp_s0 + 0x20) = (f32) -*(f32 *)((u8 *)temp_s0 + 0x20);
@@ -80,8 +80,8 @@ void func_00271580(void) {
     func_0022C430(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x1C)) + 0xE8), 0.0f);
     func_00270660();
     var_s0 = 0;
-    temp_s4_2 = (u8 *)(D_004707FC + 0x104);
-    temp_s1 = (u8 *)(D_004707FC + ((*(s32 *)((u8 *)D_004707FC + 0x48) + 1) * 8) + 0x75C);
+    temp_s4_2 = (unsigned char *)(D_004707FC + 0x104);
+    temp_s1 = (unsigned char *)(D_004707FC + ((*(s32 *)((u8 *)D_004707FC + 0x48) + 1) * 8) + 0x75C);
     func_00228430(0);
     sp74 = D_00470018 * (f32) *(s32 *)((u8 *)D_004707FC + 0x48);
     func_00227A30(&sp70);
@@ -112,10 +112,10 @@ loop_4:
     amDraw_SetScissor(NULL, 0);
     func_0022C6B0(temp_s2);
     func_0022D4B0(temp_s2, 1);
-    temp_s4_3 = (u8 *)(D_004707FC + 0xA4);
+    temp_s4_3 = (unsigned char *)(D_004707FC + 0xA4);
     func_0022C430(*(*(u8 **)((u8 *)temp_s3 + 0x1C) + (*(s32 *)((u8 *)D_004707FC + 0xA4) * 4)), (f32) *(s32 *)((u8 *)D_004707FC + 0xAC) * gFrameDelta);
     *(s32 *)((u8 *)temp_s4_3 + 8) = (s32) (*(s32 *)((u8 *)temp_s4_3 + 8) + 1);
-    temp_s4_4 = (u8 *)(D_004707FC + 0xD4);
+    temp_s4_4 = (unsigned char *)(D_004707FC + 0xD4);
     func_0022C430(*(*(u8 **)((u8 *)temp_s3 + 0x1C) + (*(s32 *)((u8 *)D_004707FC + 0xD4) * 4)), (f32) *(s32 *)((u8 *)D_004707FC + 0xDC) * gFrameDelta);
     *(s32 *)((u8 *)temp_s4_4 + 8) = (s32) (*(s32 *)((u8 *)temp_s4_4 + 8) + 1);
     func_0022C430(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x1C)) + 0xEC), 0.0f);

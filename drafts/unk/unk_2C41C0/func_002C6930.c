@@ -18,10 +18,10 @@ s32 func_002C6930(u8 *arg0) {
     u8 *temp_v0;
 
     temp_s0 = *(u8 **)((u8 *)arg0 + 0);
-    temp_a0 = (s32)(gEffWork + (*(s16 *)((u8 *)arg0 + 0x3E) * 0xF80));
-    temp_s3 = (u8 *)(temp_a0 + (*(s16 *)((u8 *)arg0 + 0x5C) << 6));
-    temp_s2 = (u8 *)(temp_a0 + 0xF40);
-    temp_s1 = (u8 *)(temp_a0 + 0xF00);
+    temp_a0 = (int)(gEffWork + (*(s16 *)((u8 *)arg0 + 0x3E) * 0xF80));
+    temp_s3 = (unsigned char *)(temp_a0 + (*(s16 *)((u8 *)arg0 + 0x5C) << 6));
+    temp_s2 = (unsigned char *)(temp_a0 + 0xF40);
+    temp_s1 = (unsigned char *)(temp_a0 + 0xF00);
     if (*(s16 *)((u8 *)arg0 + 0x38) & 0x8000) {
         return 1;
     }

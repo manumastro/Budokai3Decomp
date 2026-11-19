@@ -19,7 +19,7 @@ s32 func_002AB4F0(s32 **arg0, u8 *arg1) {
 
     temp_a3 = *(u8 **)((u8 *)arg1 + 0x2C);
     temp_a0 = *(s32 *)((u8 *)temp_a3 + 8);
-    temp_t2 = (*(s32 *)((u8 *)temp_a3 + 0xC) * 0xD0) + (&D_005BC9E0 + (**arg0 * 0x1A0));
+    temp_t2 = (*(s32 *)((u8 *)temp_a3 + 0xC) * 0xD0) + (((u8 *)&D_005BC9E0) + (**arg0 * 0x1A0));
     temp_t1 = *(u8 **)((u8 *)temp_t2 + 4);
     *(s32 *)((u8 *)temp_t2 + 8) = temp_a0;
     temp_a3_2 = temp_t1 + *(temp_t1 + *(s32 *)((u8 *)temp_t1 + 0x14) + (temp_a0 * 4));

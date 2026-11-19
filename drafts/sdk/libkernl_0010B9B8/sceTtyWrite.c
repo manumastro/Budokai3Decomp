@@ -1,8 +1,8 @@
-/* Draft (not built): sceTtyWrite at 0x0010B9B8, size 0x174, segment sdk/libkernl_0010B9B8 (asm)
+/* Draft (not built): sceTtyWrite at 0x0010B9B8, size 0x174, segment sdk/libkernl_0010B9B8 (c)
  * Compiler: ee-gcc 2.9-991111-01 -O2 -G0
  * Status: size, 4 instructions differ
  * Made with: m2c -t mipsee-gcc-c --valid-syntax; compiled with 2.9-991111-01 -O2 -G0; then decomp-permuter: score 3595 -> 2750
- * Original: asm/sdk/libkernl_0010B9B8.s */
+ * Original: asm/nonmatchings/sdk/libkernl_0010B9B8/sceTtyWrite.s */
 
 // sceTtyWrite 0010B9B8 -O2 -G0 ee-gcc 2.9-991111-01: score 3595 -> 2750
 s32 DI();                                           /* extern */

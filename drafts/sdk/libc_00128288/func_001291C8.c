@@ -14,3 +14,13 @@ void func_001291C8(void)
   func_001220B0(new_var);
   new_var = func_001291A0();
 }
+
+/* Similar function already in C: func_00188418 (src/cri/sfd.c), similarity 0.90.
+ * It is the template below (not built). */
+#if 0
+s32 func_00188418(void) {
+    func_00158B08();
+    func_001563B0();
+    return 0;
+}
+#endif

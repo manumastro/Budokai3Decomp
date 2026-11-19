@@ -32,7 +32,7 @@ void func_002DAB30(void) {
     u8 *temp_a0;
     u8 *var_s2;
 
-    var_s2 = (u8 *)(gOptionWork);
+    var_s2 = (unsigned char *)(gOptionWork);
     var_s1 = *D_00492FCE | D_00493086;
     if ((D_00492FD2 | D_00493032 | (D_0049308A | D_004930EA)) & 0x50) {
         *(s32 *)((u8 *)var_s2 + 0x410) = (s32) (*(s32 *)((u8 *)var_s2 + 0x410) + 1);
@@ -82,7 +82,7 @@ loop_4:
         }
         func_0022C7D0(*(s32 *)((u8 *)var_s2 + 0x2C8), 1, 0);
         *(s32 *)((u8 *)var_s2 + 0x388) = 0;
-        *(s32 **)((u8 *)var_s2 + 0x34C) = &func_002D9DE0;
+        *(s32 **)((u8 *)var_s2 + 0x34C) = (int *)(&func_002D9DE0);
         func_002DDD40();
         Fade_Request(-1, 0, 0);
         *(s32 *)((u8 *)var_s2 + 0x39C) = 0;
@@ -98,13 +98,13 @@ loop_4:
         func_00227A30((u8 *)(&sp40));
     }
     temp_a0 = *(u8 **)((u8 *)var_s1 + 0xC);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_00470708 = 0;
     D_0047070C = 0;
     amModel_SetCurrent((s32)(temp_a0), 0);
     D_00470238 = 0;
     func_0022C060(var_s0, 0x3F800000);
     func_00228410();
-    func_0022CD00((s32)((void *)((u8 *) var_s0)));
+    func_0022CD00((s32)((u8 *) var_s0));
     func_00228410();
 }

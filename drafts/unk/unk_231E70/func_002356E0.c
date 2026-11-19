@@ -12,7 +12,7 @@ s32 func_002356E0(u8 *arg0) {
     u8 *temp_v1;
 
     temp_a1 = *(s32 *)((u8 *)arg0 + 0x1350);
-    temp_v1 = &D_0058BBB0 + (temp_a1 * 0xC0);
+    temp_v1 = ((u8 *)&D_0058BBB0) + (temp_a1 * 0xC0);
     temp_v0 = *(u8 **)((u8 *)temp_v1 + 8);
     if (*(f32 *)((u8 *)arg0 + 0x17C0) < (0.2f * *(f32 *)((u8 *)arg0 + 0x17C4))) {
         var_s0 = *(u8 *)((u8 *)temp_v0 + 0x121);

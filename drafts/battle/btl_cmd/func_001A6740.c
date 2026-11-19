@@ -27,12 +27,12 @@ void func_001A6740(void) {
     u8 *temp_s3;
 
     temp_s1 = *(s32 *)((u8 *)gBattle + 0x228);
-    temp_s3 = (u8 *)(gBattle + 0xA0);
+    temp_s3 = (unsigned char *)(gBattle + 0xA0);
     temp_s2 = temp_s3 + 0xB0;
     if (temp_s1 != 0) {
 
     }
-    temp_s0 = (u8 *)(gBattle + (temp_s1 * 0x2020) + 0x830);
+    temp_s0 = (unsigned char *)(gBattle + (temp_s1 * 0x2020) + 0x830);
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
     M2C_ERROR(/* unknown instruction: qmtc2.ni $v0, $vf3 */);

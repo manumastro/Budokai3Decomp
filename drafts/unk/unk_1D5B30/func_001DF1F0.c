@@ -32,7 +32,7 @@ void func_001DF1F0(u8 *arg0) {
         do {
             temp_t3 = *(s16 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1CF4) + var_v1) + 0x36);
             if (temp_t3 > 0) {
-                temp_t5 = &D_004E0660 + (temp_t3 * 0x28);
+                temp_t5 = ((u8 *)&D_004E0660) + (temp_t3 * 0x28);
                 temp_a1 = *(u8 *)((u8 *)temp_t5 + 0x15);
                 if ((s32) temp_a1 < 0x64) {
                     temp_t3_2 = arg0 + temp_a1;

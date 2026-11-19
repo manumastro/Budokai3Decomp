@@ -1,7 +1,7 @@
 /* Draft (not built): func_0021E740 at 0x0021E740, size 0x99C, segment unk/unk_21D260 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); o 'float' mwccps2.exe Compiler: @ 220: *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x44), &sp100, 0);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); o 'void *' mwccps2.exe Compiler: @ 221: **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x44)), &sp100, (void *)((f32)(s32)(0)));
  * Original: asm/nonmatchings/unk/unk_21D260/func_0021E740.s */
 
 // src/unk/unk_21D260.c func_0021E740 cerr diff=-1/0
@@ -20,6 +20,7 @@ s32 func_00253FC0(s32, s32 *);
 s32 memset(s32 *, s32, s32);
 extern s128 D_0044FA50;
 void func_0021E740(s8 *arg0) {
+    s32 sp118;
     s128 sp80;
     f32 sp8C;
     s128 sp90;
@@ -80,7 +81,7 @@ void func_0021E740(s8 *arg0) {
     u8 *temp_a3_2;
     u8 *temp_s3;
 
-    temp_s3 = (u8 *)(gBtlSys);
+    temp_s3 = (unsigned char *)(gBtlSys);
     var_v1 = *(s16 *)((u8 *)temp_s3 + 0xE42);
     if (var_v1 != -1) {
 
@@ -94,7 +95,7 @@ void func_0021E740(s8 *arg0) {
     switch (temp_v1) {                              /* switch 1; irregular */
     case 4:                                         /* switch 1 */
         temp_a0 = *(u8 **)((u8 *)temp_s3 + 0xED8);
-        D_00470704 = (s32)(temp_a0);
+        D_00470704 = (int)(temp_a0);
         D_0047070C = 0x04040000;
         D_00470708 = 0;
         amModel_SetCurrent((s32)(temp_a0), 0x04040000);
@@ -106,7 +107,7 @@ void func_0021E740(s8 *arg0) {
         func_00228410();
         amDraw_SetPacketMode(1);
         func_00228430(0);
-        func_0022B900(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x44), &sp100, 0);
+        func_0022B900((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x44)), &sp100, (void *)((f32)(s32)(0)));
         func_00228410();
         var_s0 = 0;
 loop_10:
@@ -123,7 +124,7 @@ loop_10:
             var_s0_2 = 3;
         }
         func_00228430(0);
-        func_0022B900(*(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C) + (var_s0_2 * 4)), &sp100, 0);
+        func_0022B900((s32)(*(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C) + (var_s0_2 * 4))), &sp100, (void *)((f32)(s32)(0)));
         func_00228410();
         sp124 -= (205.0f + sp134) - 5.0f;
         func_0022C6B0(&sp100);
@@ -166,13 +167,13 @@ loop_38:
                     spDC = 0x3F800000;
                     spD8 = 0x3E4CCCCD;
                     temp_a0_2 = *(u8 **)((u8 *)temp_s3 + 0xED8);
-                    D_00470704 = (s32)(temp_a0_2);
+                    D_00470704 = (int)(temp_a0_2);
                     D_0047070C = 0x04040000;
                     D_00470708 = 0;
                     amModel_SetCurrent((s32)(temp_a0_2), 0x04040000);
                     D_00470238 = 0;
                     func_00228430(0);
-                    func_0022B900(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x6C), &sp100, 0);
+                    func_0022B900((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x6C)), &sp100, (void *)((f32)(s32)(0)));
                     func_00228410();
                     sp124 += 56.0f * (f32) var_s1;
                     func_0022C6B0(&sp100);
@@ -242,13 +243,13 @@ loop_38:
         func_0021E250((char *)(arg0));
         if (*(s16 *)((u8 *)gBattle + 0x7E2) == 3) {
             temp_a0_3 = *(u8 **)((u8 *)temp_s3 + 0xED8);
-            D_00470704 = (s32)(temp_a0_3);
+            D_00470704 = (int)(temp_a0_3);
             D_0047070C = 0x04040000;
             D_00470708 = 0;
             amModel_SetCurrent((s32)(temp_a0_3), 0x04040000);
             D_00470238 = 0;
             func_00228430(0);
-            func_0022B900(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x58), &sp100, 0);
+            func_0022B900((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x58)), &sp100, (void *)((f32)(s32)(0)));
             func_00228410();
             temp_a3 = *(u8 **)((u8 *)temp_s3 + 0xED8);
             temp_a1 = temp_a3 + *(*(s32 *)((u8 *)temp_a3 + 0x14) + temp_a3 + ((sp118 - *(s32 *)((u8 *)temp_a3 + 0x18)) * 4));
@@ -262,7 +263,7 @@ loop_38:
             temp_f20_2 = (f32) *(s16 *)((u8 *)temp_a1 + 0x10);
             func_0022C6B0(&sp100);
             func_00228430(0);
-            func_0022B900(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x5C), &sp100, 0);
+            func_0022B900((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x5C)), &sp100, (void *)((f32)(s32)(0)));
             func_00228410();
             temp_a3_2 = *(u8 **)((u8 *)temp_s3 + 0xED8);
             temp_a1_2 = temp_a3_2 + *(*(s32 *)((u8 *)temp_a3_2 + 0x14) + temp_a3_2 + ((sp118 - *(s32 *)((u8 *)temp_a3_2 + 0x18)) * 4));

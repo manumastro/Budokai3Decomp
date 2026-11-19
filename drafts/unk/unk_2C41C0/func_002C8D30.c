@@ -63,7 +63,7 @@ void func_002C8D30(u8 *arg0) {
 
     temp_s3 = *(u8 **)((u8 *)arg0 + 0);
     temp_s2 = *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x14)) + 0x1350);
-    temp_a0 = (u8 *)(gEffWork + (*(s16 *)((u8 *)arg0 + 0x3E) * 0xF80));
+    temp_a0 = (unsigned char *)(gEffWork + (*(s16 *)((u8 *)arg0 + 0x3E) * 0xF80));
     temp_s4 = *(u8 **)((u8 *)temp_a0 + 0xF78);
     temp_s5 = temp_a0 + 0xF00;
     var_s1 = 0;
@@ -88,7 +88,7 @@ void func_002C8D30(u8 *arg0) {
 block_4:
     *(f32 *)((u8 *)arg0 + 0x2C) = var_f20;
     sp15C = *(f32 *)((u8 *)temp_s3 + 0x50);
-    temp_s2_2 = (s32)(func_0020B020(temp_s2, *(s16 *)((u8 *)temp_s3 + 0x88), *(s16 *)((u8 *)temp_s3 + 0x8A)));
+    temp_s2_2 = (int)(func_0020B020(temp_s2, *(s16 *)((u8 *)temp_s3 + 0x88), *(s16 *)((u8 *)temp_s3 + 0x8A)));
     amModel_SetCurrent(temp_s2_2, func_0020AD30(temp_s2, *(s16 *)((u8 *)temp_s3 + 0x88), *(s16 *)((u8 *)temp_s3 + 0x8A)));
     func_00133780(0, 1);
     if (*(s16 *)((u8 *)temp_s3 + 0x80) == 0) {

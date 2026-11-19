@@ -15,3 +15,16 @@ void func_002F6E00(s32 arg0) {
     func_002F66E0(&sp20);
     func_002F57E0(arg0, &sp20);
 }
+
+/* Similar function already in C: Character_Release (src/battle/character.c), similarity 0.65.
+ * It is the template below (not built). */
+#if 0
+void Character_Release(s32 *c) {
+    if (c != 0) {
+        CharLight_Release(c[7]);
+        CharBody_Release(c[1]);
+        func_001C9840(c[0]);
+        amHeap_Free(c);
+    }
+}
+#endif

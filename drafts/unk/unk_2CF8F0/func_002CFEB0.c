@@ -1,14 +1,14 @@
 /* Draft (not built): func_002CFEB0 at 0x002CFEB0, size 0x258, segment unk/unk_2CF8F0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal explicit conversion from 'unsigned char *' to 'float' mwccps2.exe Compiler: @ 289: ((f32)(var_a0))
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal explicit conversion from 'float' to 'float *' mwccps2.exe Compiler: @ 225: var_s0 = (f32 *)(arg2);
  * Original: asm/nonmatchings/unk/unk_2CF8F0/func_002CFEB0.s */
 
 // src/unk/unk_2CF8F0.c func_002CFEB0 cerr diff=-1/0
 s32 func_0011ECE8(s32, s32 *);
 s32 func_001214F8(f32, void *, s32, void *, f32);
 f32 func_001220B0(s32);
-void func_002CFEB0(u8 *arg0, s32 arg1, f32 *arg2, f32 fparg0) {
+void func_002CFEB0(LightObj *arg0, s32 arg1, f32 arg2, LightEntry *fparg0) {
     s32 sp28;
     f32 *var_s0;
     f32 *var_v1;
@@ -28,13 +28,13 @@ void func_002CFEB0(u8 *arg0, s32 arg1, f32 *arg2, f32 fparg0) {
     u8 *temp_a3;
     u8 *var_a0;
 
-    var_a0 = arg0;
+    var_a0 = (unsigned char *)(arg0);
     var_a1 = arg1;
-    var_s0 = arg2;
+    var_s0 = (f32 *)(arg2);
     if (var_s0 == NULL) {
-        var_s0 = &D_005C2100 + (D_00470928 << 9);
+        var_s0 = (float *)(((u8 *)&D_005C2100) + (D_00470928 << 9));
     }
-    temp_a3 = (u8 *)(*(s32 *)((u8 *)var_a0 + 8) + (var_a1 << 7));
+    temp_a3 = (unsigned char *)(*(s32 *)((u8 *)var_a0 + 8) + (var_a1 << 7));
     var_a2 = 0;
     if (*(s32 *)((u8 *)temp_a3 + 0x60) > 0) {
         var_a1 = (s32) temp_a3;
@@ -50,11 +50,11 @@ void func_002CFEB0(u8 *arg0, s32 arg1, f32 *arg2, f32 fparg0) {
                     temp_t2 = *(s32 *)((u8 *)var_a1 + 4);
                     var_f1 = 0.0f;
                     if (temp_t2 < temp_v0) {
-                        var_f1 = fparg0 - (f32) temp_v0;
+                        var_f1 = (*(f32 *)(fparg0)) - (f32) temp_v0;
                         var_t0 = temp_v0 % temp_t2;
                     }
                     temp_t1 = *(s32 *)((u8 *)var_a1 + 0);
-                    var_t4 = (s32 *)(temp_a0 + 0x10);
+                    var_t4 = (int *)(temp_a0 + 0x10);
                     var_t3 = 1;
                     if (temp_t1 >= 2) {
 loop_11:

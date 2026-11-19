@@ -33,3 +33,20 @@ block_4:
 block_6:
     return;
 }
+
+/* Similar function already in C: func_0018CCB8 (src/cri/sfd.c), similarity 0.64.
+ * It is the template below (not built). */
+#if 0
+void func_0018CCB8(s32 arg0) {
+    s32 temp_s0;
+    s32 temp_v0;
+
+    temp_s0 = arg0 + 0x78;
+    temp_v0 = func_0018CD20();
+    if (temp_v0 != 0) {
+        func_0018CBE8(temp_s0, temp_v0);
+        func_0018CD70(temp_s0);
+        func_0018D390(arg0);
+    }
+}
+#endif

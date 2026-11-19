@@ -1,12 +1,13 @@
 /* Draft (not built): func_002AC9F0 at 0x002AC9F0, size 0x1FC, segment battle/scr_func (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 50 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x21C, original 0x1FC
+ * Status: size, 44 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x20C, original 0x1FC
  * Original: asm/nonmatchings/battle/scr_func/func_002AC9F0.s */
 
-// src/battle/scr_func.c func_002AC9F0 size diff=50/135
-s32 amModel_SetupPart(s32, void *, s32, s32, f32);
+// src/battle/scr_func.c func_002AC9F0 size diff=44/131
+s32 amModel_SetupPart(ScrFlag *, void *, s32, s32, f32);
 s32 func_002AC9F0(u8 *arg0, u8 *arg1) {
+    ScrModel *temp_v1;
     f32 temp_f0;
     f32 temp_f1;
     f32 temp_f1_2;
@@ -18,14 +19,13 @@ s32 func_002AC9F0(u8 *arg0, u8 *arg1) {
     s32 temp_a1_2;
     s32 temp_a3;
     u8 *temp_t0;
-    u8 *temp_v1;
 
     temp_t0 = *(u8 **)((u8 *)arg0 + 0);
-    temp_v1 = ((*(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x2C)) + 8) + 1) * 0x30) + (&D_005BC440 + (*(s32 *)((u8 *)temp_t0 + 0) * 0x90));
+    temp_v1 = &D_005BC440[*(s32 *)((u8 *)temp_t0 + 0)][*(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x2C)) + 8) + 1];
     if (*(s32 *)((u8 *)temp_v1 + 0) == 0) {
         goto block_3;
     }
-    if (*(s32 *)((u8 *)temp_v1 + 8) != 0) {
+    if (temp_v1->flag != NULL) {
         goto block_5;
     }
 block_3:
@@ -37,7 +37,7 @@ block_5:
     if (*(s32 *)((u8 *)temp_t0 + 0xC) == 3) {
         goto block_26;
     }
-    *(f32 *)((u8 *)temp_v1 + 0x10) = (f32) (*(f32 *)((u8 *)temp_v1 + 0x10) + *(f32 *)((u8 *)temp_v1 + 0x14));
+    *(f32 *)((u8 *)temp_v1 + 0x10) = (f32) (*(f32 *)((u8 *)temp_v1 + 0x10) + temp_v1->speed);
     if (*(s32 *)((u8 *)temp_v1 + 0x18) != 1) {
         goto block_12;
     }
@@ -103,6 +103,6 @@ block_22:
     *(s32 *)((u8 *)arg0 + 0x10) = 0;
     return 1;
 block_26:
-    amModel_SetupPart(*(s32 *)((u8 *)temp_v1 + 8), *(u8 **)((u8 *)temp_v1 + 4), *(s32 *)((u8 *)temp_v1 + 0xC), temp_a3, *(f32 *)((u8 *)temp_v1 + 0x10));
+    amModel_SetupPart(temp_v1->flag, *(u8 **)((u8 *)temp_v1 + 4), *(s32 *)((u8 *)temp_v1 + 0xC), temp_a3, *(f32 *)((u8 *)temp_v1 + 0x10));
     return 3;
 }

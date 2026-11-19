@@ -1,10 +1,10 @@
 /* Draft (not built): func_003074C0 at 0x003074C0, size 0xEC, segment unk/unk_3074C0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'char' to 'signed char *' @ 54: func_002BFEE0(sp11, sp13, 1, D_005C4150[0]);
+ * Status: size, 54 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x44, original 0xEC
  * Original: asm/nonmatchings/unk/unk_3074C0/func_003074C0.s */
 
-// src/unk/unk_3074C0.c func_003074C0 cerr diff=-1/0
+// src/unk/unk_3074C0.c func_003074C0 size diff=54/17
 s32 func_002BFEE0(s8, s8, s32, s8 *);
 extern char D_005116E0[];
 extern void func_002BD6B0(void *);
@@ -46,7 +46,7 @@ void func_003074C0(void) {
     sp1A = *(s8 *)((u8 *)D_005C4150 + 0xB6A);
     sp1B = *(s8 *)((u8 *)D_005C4150 + 0xB6B);
     sp1C = *(s32 *)((u8 *)D_005C4150 + 0xB6C);
-    sp24 = (s8 *)(D_005116E0[0]);
+    sp24 = (signed char *)(D_005116E0);
     sp20 = 0;
     sp28 = (s32) *(s16 *)((u8 *)D_005C4150 + 0xB72);
     sp2C = (s32) *(s16 *)((u8 *)D_005C4150 + 0xB74);
@@ -55,6 +55,6 @@ void func_003074C0(void) {
     sp38 = (s32) *(s16 *)((u8 *)D_005C4150 + 0xB7A);
     sp3C = (s32) *(s16 *)((u8 *)D_005C4150 + 0xB7C);
     sp40 = (s32) *(s16 *)((u8 *)D_005C4150 + 0xB7E);
-    func_002BFEE0(sp11, sp13, 1, D_005C4150[0]);
+    func_002BFEE0((s8)(sp11), (s8)(sp13), 1, (s8 *)(D_005C4150));
     func_002BD6B0(&sp10);
 }

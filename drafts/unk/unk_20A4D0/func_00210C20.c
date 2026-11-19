@@ -1,10 +1,10 @@
 /* Draft (not built): func_00210C20 at 0x00210C20, size 0x880, segment unk/unk_20A4D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  from 'float *' to 'int' mwccps2.exe Compiler: @ 2364: amMath_SinCosI(var_s0, &temp_s5[var_s1], temp_s6 + (var_s1 * 4));
+ * Status: size, 397 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x5CC, original 0x880
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_00210C20.s */
 
-// src/unk/unk_20A4D0.c func_00210C20 cerr diff=-1/0
+// src/unk/unk_20A4D0.c func_00210C20 size diff=397/371
 s32 amDma_Request(s32, s32, s32, s32);
 s32 amDraw_ClosePacket(s32);
 s32 amDraw_SetPacketMode(s32);
@@ -26,6 +26,9 @@ extern f32 D_0047040C;
 extern f32 D_00470410;
 extern char D_00459390[];
 void func_00210C20(u8 *arg0) {
+    s32 spC8;
+    s32 spB8;
+    u8 sp[0x400];
     f32 spB0;
     f32 spC0;
     s32 spD0;
@@ -83,7 +86,7 @@ void func_00210C20(u8 *arg0) {
 
     temp_s3 = arg0 + 0x20;
     temp_a1 = *(s32 *)((u8 *)arg0 + 0x2C);
-    temp_s2 = &D_0058A090 + (*(s32 *)((u8 *)arg0 + 0x20) * 0xC0);
+    temp_s2 = ((u8 *)&D_0058A090) + (*(s32 *)((u8 *)arg0 + 0x20) * 0xC0);
     if ((temp_a1 & 2) && !(*(f32 *)((u8 *)arg0 + 0x14) < *(f32 *)((u8 *)temp_s3 + 0x24))) {
         *(s32 *)((u8 *)temp_s3 + 0xC) = (s32) (temp_a1 & ~2);
         *(f32 *)((u8 *)arg0 + 0x14) = 1.0f;
@@ -119,7 +122,7 @@ void func_00210C20(u8 *arg0) {
             temp_s7 = (s64) (M2C_BITWISE(s64, ((32768.0f * (360.0f / (f32) temp_a0)) / 180.0f)) << 0x30) >> 0x30;
 loop_9:
             if (var_s1 < *(s32 *)((u8 *)temp_s3 + 0x14)) {
-                amMath_SinCosI(var_s0, &temp_s5[var_s1], temp_s6 + (var_s1 * 4));
+                amMath_SinCosI((s32)(var_s0), (f32 *)(&temp_s5[var_s1]), (s32)(temp_s6 + (var_s1 * 4)));
                 var_s0 += temp_s7;
                 var_s1 += 1;
                 goto loop_9;
@@ -281,7 +284,7 @@ block_51:
                     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
                     M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
                     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($s2) */);
-                    func_0013B160(&D_0058A090 + (*(s32 *)((u8 *)arg0 + 0x20) * 0xC0) + 0x50);
+                    func_0013B160(((u8 *)&D_0058A090) + (*(s32 *)((u8 *)arg0 + 0x20) * 0xC0) + 0x50);
                     M2C_ERROR(/* unknown instruction: lqc2 $vf31, ($s2) */);
                     M2C_ERROR(/* unknown instruction: sqc2 $vf28, ($s0) */);
                     M2C_ERROR(/* unknown instruction: sqc2 $vf29, 0x10($s0) */);

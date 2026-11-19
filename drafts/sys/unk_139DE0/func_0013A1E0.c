@@ -1,7 +1,7 @@
 /* Draft (not built): func_0013A1E0 at 0x0013A1E0, size 0x4AC, segment sys/unk_139DE0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'int' to 'unsigned char *' mwccps2.exe Compiler: @ 79: func_0013A1E0(a0, p, d2);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'int' to 'unsigned char *' @ 79: func_0013A1E0(a0, p, d2);
  * Original: asm/nonmatchings/sys/unk_139DE0/func_0013A1E0.s */
 
 // src/sys/unk_139DE0.c func_0013A1E0 cerr diff=-1/0
@@ -94,7 +94,7 @@ void func_0013A1E0(u8 *arg0, u8 *arg1, u8 *arg2, f32 fparg0) {
         *(f32 *)((u8 *)arg0 + 0x20) = (f32) *(f32 *)((u8 *)temp_a0 + 0x10);
         *(f32 *)((u8 *)arg0 + 0x24) = (f32) *(f32 *)((u8 *)temp_a0 + 0x14);
         *(f32 *)((u8 *)arg0 + 0x28) = (f32) *(f32 *)((u8 *)temp_a0 + 0x18);
-        *(s3232 *)((u8 *)arg0 + 0x2C) = 0x3F800000;
+        *(s32 *)((u8 *)arg0 + 0x2C) = 0x3F800000;
         if ((f32) *(s32 *)((u8 *)temp_a0 + 0xC) != fparg0) {
             temp_a1_2 = temp_a0 + 0xC + 0x10;
             sp90 = *(f32 *)((u8 *)temp_a1_2 + 4);
@@ -110,7 +110,7 @@ void func_0013A1E0(u8 *arg0, u8 *arg1, u8 *arg2, f32 fparg0) {
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a1) */);
         }
         M2C_ERROR(/* unknown instruction: adda.s $f2, $f0 */);
-        *(s3232 *)((u8 *)arg0 + 0x2C) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f1, $f0 */);
+        *(s32 *)((u8 *)arg0 + 0x2C) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f1, $f0 */);
         if (*(s32 *)((u8 *)arg1 + 0) & 0x20) {
             temp_s0_6 = *(u8 **)((u8 *)arg2 + 8);
             if ((f32) *(s32 *)((u8 *)(temp_s0_6 + ((*(s32 *)((u8 *)temp_s0_6 + 8) - 1) * 0xC)) + 0xC) != fparg0) {

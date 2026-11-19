@@ -1,10 +1,10 @@
 /* Draft (not built): func_001B1C00 at 0x001B1C00, size 0x274, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 2175: *(&D_00468460 + (var_v0 * 4))(arg0);
+ * Status: size, 82 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x280, original 0x274
  * Original: asm/nonmatchings/battle/btl_main/func_001B1C00.s */
 
-// src/battle/btl_main.c func_001B1C00 cerr diff=-1/0
+// src/battle/btl_main.c func_001B1C00 size diff=82/160
 extern s32 func_001CAA30(s32 a);
 s32 func_001D9AB0(void *, s32);
 void func_001B1C00(u8 *arg0) {
@@ -18,7 +18,7 @@ void func_001B1C00(u8 *arg0) {
     u8 *temp_v1;
     u8 *temp_v1_2;
 
-    Fighter_ResetMotion(0, 0);
+    Fighter_ResetMotion(arg0, 0);
     temp_a0 = *(s16 *)((u8 *)arg0 + 0xCB4);
     if (temp_a0 != 2) {
         var_a1 = 1;
@@ -91,9 +91,9 @@ void func_001B1C00(u8 *arg0) {
             *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
         }
         *(s8 *)((u8 *)arg0 + 0x2006) = 0;
-        *(&D_00468460 + (var_v0 * 4))(arg0);
+        D_00468460[var_v0](arg0);
         func_002CBFF0(1, arg0);
-        func_001ABD30((void *)(arg0 + 0x1360));
+        func_001ABD30((struct Fighter *)(arg0 + 0x1360));
         func_001D9AB0(arg0, -2);
     }
 }

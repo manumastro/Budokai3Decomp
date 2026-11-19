@@ -1,10 +1,10 @@
 /* Draft (not built): func_002BCAE0 at 0x002BCAE0, size 0x100, segment unk/unk_2B98D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); legal implicit conversion from 'int' to 'void *' @ 597: if (func_0022BF80(*(s32 *)((u8 *)gStrStatus + 0x1D4)) == 0xFF) {
+ * Status: diff, 52 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/unk/unk_2B98D0/func_002BCAE0.s */
 
-// src/unk/unk_2B98D0.c func_002BCAE0 cerr diff=-1/0
+// src/unk/unk_2B98D0.c func_002BCAE0 diff diff=52/64
 void func_002BCAE0(u8 *arg0) {
     s32 sp20;
     s32 sp30;
@@ -16,7 +16,7 @@ void func_002BCAE0(u8 *arg0) {
 
     *(s128 *)((u8 *)(&sp50) + 0) = (s128) *(s128 *)((u8 *)(&D_00455DA0) + 0);
     *(s64 *)((u8 *)(&sp50) + 0x10) = (s64) *(s64 *)((u8 *)(&D_00455DA0) + 0x10);
-    if (func_0022BF80(*(s32 *)((u8 *)gStrStatus + 0x1D4)) == 0xFF) {
+    if (func_0022BF80((void *)(*(s32 *)((u8 *)gStrStatus + 0x1D4))) == 0xFF) {
         amTask_Kill(*(u8 **)((u8 *)gStrStatus + 0xB0));
         *(u8 **)((u8 *)gStrStatus + 0xB0) = NULL;
         temp_a0 = *(s32 *)((u8 *)gStrStatus + 0x1D4);
@@ -33,7 +33,7 @@ void func_002BCAE0(u8 *arg0) {
         sp30 = 3;
         StrStatus_Dispatch(&sp20);
         func_0028EE90(gStrStatus + 0x38, gStrStatus + 0x14C, gStrStatus + 0x158, gStrStatus + 0x168);
-        var_v1 = (s32 *)(&func_002BCA30);
+        var_v1 = (int *)(&func_002BCA30);
         if (&func_002BCA30 == NULL) {
             var_v1 = NULL;
         }

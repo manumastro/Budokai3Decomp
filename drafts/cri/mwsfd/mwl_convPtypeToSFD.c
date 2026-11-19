@@ -42,3 +42,29 @@ block_10:
 block_11:
     return var_v1;
 }
+
+/* Similar function already in C: sfxcnv_CnvZbitToCft (src/cri/sfx.c), similarity 0.64.
+ * It is the template below (not built). */
+#if 0
+s32 sfxcnv_CnvZbitToCft(u32 arg0) {
+    s32 var_v1;
+
+    var_v1 = 1;
+    if (arg0 != 0x10) {
+        if (arg0 >= 0x11U) {
+            var_v1 = 2;
+            if (arg0 != 0x18) {
+                var_v1 = 3;
+                if (arg0 != 0x20) {
+                    goto block_5;
+                }
+            }
+        } else {
+block_5:
+            func_0019F6D0(0, 0, &D_00467E90);
+            var_v1 = 0;
+        }
+    }
+    return var_v1;
+}
+#endif

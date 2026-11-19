@@ -51,7 +51,7 @@ loop_2:
     }
 block_8:
     var_s4 = 0;
-    var_s2 = (s8 *)(D_004B4B40[0]);
+    var_s2 = (signed char *)(D_004B4B40);
     do {
         var_s3 = var_s4 + 1;
         temp_s0 = var_s2 + 0x2B5D6;
@@ -60,7 +60,7 @@ block_8:
             do {
                 temp_v1 = *(s8 *)((u8 *)var_s2 + 0x2B5D6);
                 var_a0_2 = 0;
-                temp_s5 = (s8 *)(var_s1 + 0x2B5D6);
+                temp_s5 = (signed char *)(var_s1 + 0x2B5D6);
                 if (temp_v1 == 0) {
                     var_a0_2 = 1;
                 }
@@ -85,7 +85,7 @@ block_8:
     } while (var_s4 < 0x1D);
     var_a1 = 0;
     var_a0_3 = 0;
-    var_v1_2 = (s8 *)(D_004B4B40[0]);
+    var_v1_2 = (signed char *)(D_004B4B40);
     do {
         if (*(s8 *)((u8 *)var_v1_2 + 0x2B5D6) != 0) {
             var_a1 = (s64) ((var_a1 + 1) << 0x30) >> 0x30;

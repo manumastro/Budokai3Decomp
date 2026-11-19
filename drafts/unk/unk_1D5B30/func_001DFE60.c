@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001DFE60.s */
 
 // src/unk/unk_1D5B30.c func_001DFE60 size diff=119/233
-s32 func_001DFE60(u8 *arg0, s32 arg1, f32 fparg0) {
+s32 func_001DFE60(Fighter *arg0, s32 arg1, f32 fparg0) {
     f32 temp_f0;
     f32 temp_f0_2;
     f32 temp_f0_3;

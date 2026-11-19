@@ -1,10 +1,10 @@
 /* Draft (not built): func_002F0D70 at 0x002F0D70, size 0x260, segment menu/mn_InputPass (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  mwccps2.exe Compiler: 237: *(s8 *)((u8 *)temp_s1 + 0xB7) = (s8) sp44; @ 236: *(s8 *)((u8 *)temp_s1 + 0xB6) = (s8) sp42;
+ * Status: size, 117 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x268, original 0x260
  * Original: asm/nonmatchings/menu/mn_InputPass/func_002F0D70.s */
 
-// src/menu/mn_InputPass.c func_002F0D70 cerr diff=-1/0
+// src/menu/mn_InputPass.c func_002F0D70 size diff=117/154
 s32 StrStatus_Start(s32, s32);
 s32 func_002BFEE0(s8, s8, s32);
 s32 func_002F6E00(s16 *, void *, s32);
@@ -12,6 +12,21 @@ extern void func_002BD6B0(void *);
 extern void func_002F1500(void);
 extern void func_002F1650(void);
 void func_002F0D70(u8 *arg0) {
+    s32 sp5E;
+    s32 sp5C;
+    s32 sp5A;
+    s32 sp58;
+    s32 sp56;
+    s32 sp54;
+    s32 sp52;
+    s32 sp50;
+    s32 sp4E;
+    s32 sp4C;
+    s32 sp4A;
+    s32 sp48;
+    s32 sp46;
+    s32 sp44;
+    s32 sp42;
     s16 sp40;
     s32 *var_v1;
     s16 *var_a0;
@@ -93,12 +108,12 @@ void func_002F0D70(u8 *arg0) {
         func_002BFEE0(*(s8 *)((u8 *)temp_s1 + 0xDD), *(s8 *)((u8 *)temp_s1 + 0xDF), 1);
         func_002BD6B0(temp_s1 + 0xDC);
         StrStatus_Start(0x5000, 0x80000);
-        var_v1 = (s32 *)(&func_002F1500);
+        var_v1 = (int *)(&func_002F1500);
         if (&func_002F1500 == NULL) {
             var_v1 = NULL;
         }
     } else {
-        var_v1 = (s32 *)(&func_002F1650);
+        var_v1 = (int *)(&func_002F1650);
         *(s32 *)((u8 *)temp_s1 + 0x110) = IpSysWnd_Start(3);
         if (&func_002F1650 == NULL) {
             var_v1 = NULL;

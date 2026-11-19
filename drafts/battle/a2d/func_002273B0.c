@@ -1,11 +1,14 @@
 /* Draft (not built): func_002273B0 at 0x002273B0, size 0x458, segment battle/a2d (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); d identifier 'spD' mwccps2.exe Compiler: 758: *(u8 *)((u8 *)arg0 + 0x12) = spE; @ 757: *(u8 *)((u8 *)arg0 + 0x11) = spD;
+ * Status: size, 250 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1F8, original 0x458
  * Original: asm/nonmatchings/battle/a2d/func_002273B0.s */
 
-// src/battle/a2d.c func_002273B0 cerr diff=-1/0
+// src/battle/a2d.c func_002273B0 size diff=250/126
 void func_002273B0(u8 *arg0, u8 *arg1, u8 *arg2, f32 fparg0) {
+    s32 spF;
+    s32 spE;
+    s32 spD;
     s8 sp8;
     s8 sp9;
     s8 spA;

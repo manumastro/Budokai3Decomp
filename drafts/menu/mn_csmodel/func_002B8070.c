@@ -1,10 +1,10 @@
 /* Draft (not built): func_002B8070 at 0x002B8070, size 0x1F0, segment menu/mn_csmodel (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); type mismatch 'signed char *' and 'int' @ 326: if (D_004B4BEA < 0xC) {
+ * Status: size, 71 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1B8, original 0x1F0
  * Original: asm/nonmatchings/menu/mn_csmodel/func_002B8070.s */
 
-// src/menu/mn_csmodel.c func_002B8070 cerr diff=-1/0
+// src/menu/mn_csmodel.c func_002B8070 size diff=71/110
 s32 func_0022C060(void *, s32);
 s32 func_00283BF0();
 extern s32 D_00455350;
@@ -35,7 +35,7 @@ void func_002B8070(u8 *arg0) {
 
     temp_s0 = *(u8 **)((u8 *)arg0 + 0x30);
     temp_a0 = *(u8 **)((u8 *)gPracMode + 0xC);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x1000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x1000);
@@ -56,7 +56,7 @@ void func_002B8070(u8 *arg0) {
     sp70 = *(s32 *)((u8 *)temp_s0 + 0x40);
     sp74 = *(s32 *)((u8 *)temp_s0 + 0x44);
     temp_a0_2 = *(u8 **)((u8 *)gPracMode + 0xC);
-    D_00470704 = (s32)(temp_a0_2);
+    D_00470704 = (int)(temp_a0_2);
     D_0047070C = 0x1000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0_2), 0x1000);
@@ -75,17 +75,17 @@ void func_002B8070(u8 *arg0) {
     A2d_FlushList();
     if (func_00283BF0() == 8) {
         SklSheet_Free();
-        temp_v1 = (u8 *)(&D_004DFB19 + *(&D_00455350 + (*(u8 *)((u8 *)temp_s0 + 0x5E) * 2)));
+        temp_v1 = (unsigned char *)(&D_004DFB19 + *(&D_00455350 + (*(u8 *)((u8 *)temp_s0 + 0x5E) * 2)));
         *temp_v1 += 1;
-        if (D_004B4BEA < 0xC) {
+        if (D_004B4BEA[0] < 0xC) {
             *(u8 *)((u8 *)temp_s0 + 0x5E) = (u8) (*(u8 *)((u8 *)temp_s0 + 0x5E) + 1);
-            D_004B4BEA += 1;
+            D_004B4BEA[0] += 1;
         } else {
             D_004B4BEB = 1;
         }
         Save_Load(0x2000, 0);
         Save_Request(6, -1, 0);
-        var_v1_2 = (s32 *)(&func_002B7F00);
+        var_v1_2 = (int *)(&func_002B7F00);
         if (&func_002B7F00 == NULL) {
             var_v1_2 = NULL;
         }

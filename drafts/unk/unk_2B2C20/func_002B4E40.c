@@ -1,13 +1,13 @@
 /* Draft (not built): func_002B4E40 at 0x002B4E40, size 0x1E4, segment unk/unk_2B2C20 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: diff, 93 instructions differ
+ * Status: diff, 89 instructions differ
  * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/unk/unk_2B2C20/func_002B4E40.s */
 
-// src/unk/unk_2B2C20.c func_002B4E40 diff diff=93/121
+// src/unk/unk_2B2C20.c func_002B4E40 diff diff=89/121
 s32 memcpy(s32 *, s32 *, s32, s32);
 extern s32 D_004552C0;
-void func_002B4E40(s32 arg0, s32 arg3) {
+void func_002B4E40(s32 arg0, s32 unused_arg1, s32 unused_arg2, s32 arg3) {
     s32 sp40;
     s32 sp60;
     s32 *var_a1;
@@ -27,7 +27,7 @@ void func_002B4E40(s32 arg0, s32 arg3) {
     u8 *var_a2_2;
     u8 *var_a3_2;
 
-    temp_v1 = (u8 *)(gSklEdit + ((arg0 >> 1) * 0x1C8));
+    temp_v1 = (unsigned char *)(gSklEdit + ((arg0 >> 1) * 0x1C8));
     temp_s0 = temp_v1 + 0x48;
     temp_v1_2 = *(s32 *)((u8 *)temp_v1 + 0x54);
     if (temp_v1_2 == 1) {
@@ -77,7 +77,7 @@ block_14:
         goto loop_12;
     }
 block_15:
-    memcpy(temp_s0 + 0xB8, &sp40, 0x20, var_a3);
+    memcpy((s32 *)(temp_s0 + 0xB8), (s32 *)(&sp40), 0x20, (s32)(var_a3));
     var_t1 = 0;
     var_t0 = 0;
     var_a3_2 = temp_s0;

@@ -1,10 +1,10 @@
 /* Draft (not built): func_0026B880 at 0x0026B880, size 0x48C, segment menu/ess_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  'void *' mwccps2.exe Compiler: @ 493: )gEssMain + 0x90) * 4)), 1, (f32) *(s32 *)((u8 *)gEssMain + 0x98) * gFrameDelta);
+ * Status: size, 135 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x4A4, original 0x48C
  * Original: asm/nonmatchings/menu/ess_main/func_0026B880.s */
 
-// src/menu/ess_main.c func_0026B880 cerr diff=-1/0
+// src/menu/ess_main.c func_0026B880 size diff=135/297
 s32 A2d_AllocObj(s32, s32);
 s32 func_00139620(s32, void *, s32, s32, s32);
 s32 func_001A5490(s32, s32, f32);
@@ -20,6 +20,7 @@ extern void Obj_CopyVec4F50(void *, void *);
 extern void func_0022CF70();
 extern void Obj_SetF3C();
 void func_0026B880(void) {
+    u8 sp[0x400];
     s32 sp60;
     f32 temp_f2;
     s32 temp_a1;
@@ -39,7 +40,7 @@ void func_0026B880(void) {
     u8 *var_s1;
 
     temp_a0 = *(u8 **)((u8 *)gEssMain + 0x28);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x11401000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x11401000);
@@ -48,7 +49,7 @@ void func_0026B880(void) {
     temp_s3 = *(u8 **)((u8 *)gEssMain + 0x24);
     func_00228430(0);
     func_002284D0(0);
-    func_0022C1D0(*(*(u8 **)((u8 *)temp_s3 + 0x14) + (*(s32 *)((u8 *)gEssMain + 0x90) * 4)), 1, (f32) *(s32 *)((u8 *)gEssMain + 0x98) * gFrameDelta);
+    func_0022C1D0((void *)(*(*(u8 **)((u8 *)temp_s3 + 0x14) + (*(s32 *)((u8 *)gEssMain + 0x90) * 4))), 1, (f32) *(s32 *)((u8 *)gEssMain + 0x98) * gFrameDelta);
     func_00228430(0);
     temp_v0 = func_0022D860(*(*(u8 **)((u8 *)temp_s3 + 0x14) + (*(s32 *)((u8 *)gEssMain + 0x1E0) * 4)), (f32) *(s32 *)((u8 *)gEssMain + 0x1E8) * gFrameDelta);
     func_0022CD00(temp_v0);
@@ -92,7 +93,7 @@ loop_8:
         goto loop_8;
     }
     func_00228410();
-    func_0022C1D0(*(*(u8 **)((u8 *)temp_s3 + 0x14) + (*(s32 *)((u8 *)gEssMain + 0xC0) * 4)), 1, (f32) *(s32 *)((u8 *)gEssMain + 0xC8) * gFrameDelta);
+    func_0022C1D0((void *)(*(*(u8 **)((u8 *)temp_s3 + 0x14) + (*(s32 *)((u8 *)gEssMain + 0xC0) * 4))), 1, (f32) *(s32 *)((u8 *)gEssMain + 0xC8) * gFrameDelta);
     var_s0_2 = 0;
 loop_12:
     if (var_s0_2 < 4) {

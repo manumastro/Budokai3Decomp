@@ -31,8 +31,8 @@ void func_002D6890(void) {
     u8 *temp_s3;
     u8 *temp_s4;
 
-    temp_s4 = (u8 *)(gOptionWork);
-    temp_s3 = (u8 *)(D_004B4B40 + (*(s32 *)((u8 *)temp_s4 + 0x380) * 0xA) + 0x2BA86);
+    temp_s4 = (unsigned char *)(gOptionWork);
+    temp_s3 = (unsigned char *)(D_004B4B40 + (*(s32 *)((u8 *)temp_s4 + 0x380) * 0xA) + 0x2BA86);
     if (D_004703F4 == 3) {
         goto block_3;
     }
@@ -46,7 +46,7 @@ block_4:
     if (temp_f0 < 50.0f) {
         goto block_24;
     }
-    *(s32 **)((u8 *)temp_s4 + 0x368) = &func_002D7050;
+    *(s32 **)((u8 *)temp_s4 + 0x368) = (int *)(&func_002D7050);
     spF0 = 0x3F800000;
     spF4 = 0x3F800000;
     spF8 = 0x3F800000;
@@ -93,22 +93,22 @@ loop_15:
     }
     var_a1_2 = 0;
 block_17:
-    temp_s0 = (u8 *)(gOptionWork);
+    temp_s0 = (unsigned char *)(gOptionWork);
     temp_s1 = *(u8 **)((u8 *)((var_a1_2 * 4) + ((var_s2 * 0x28) + temp_s4)) + 0x110);
     func_00228430(0);
     func_00228430(0);
     if (&spE0 == NULL) {
         goto block_19;
     }
-    func_00227A30((struct Vec4 *)(&spE0));
+    func_00227A30((Vec4 *)(&spE0));
 block_19:
     temp_a0 = *(u8 **)((u8 *)temp_s0 + 0xC);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_00470708 = 0;
     D_0047070C = 0;
     amModel_SetCurrent((s32)(temp_a0), 0);
     D_00470238 = 0;
-    func_0022C060((struct Model2D2530 *)(temp_s1), 0x3F800000);
+    func_0022C060((Model2D2530 *)(temp_s1), 0x3F800000);
     func_00228410();
     if (&spF0 == NULL) {
         goto block_21;
@@ -116,7 +116,7 @@ block_19:
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
 block_21:
-    func_0022CD00((void *)(temp_s1));
+    func_0022CD00((Model2D2530 *)(temp_s1));
     func_00228410();
     var_s2 += 1;
 loop_22:

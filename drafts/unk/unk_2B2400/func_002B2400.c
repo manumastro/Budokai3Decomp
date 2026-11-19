@@ -1,14 +1,14 @@
 /* Draft (not built): func_002B2400 at 0x002B2400, size 0x818, segment unk/unk_2B2400 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ')' expected mwccps2.exe Compiler: 8: s32 func_00227B20(s32, s32, s32, s32, f32); @ 7: s32 func_00227A30(s3232 *);
+ * Status: size, 317 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x728, original 0x818
  * Original: asm/nonmatchings/unk/unk_2B2400/func_002B2400.s */
 
-// src/unk/unk_2B2400.c func_002B2400 cerr diff=-1/0
+// src/unk/unk_2B2400.c func_002B2400 size diff=317/458
 void *A2d_AllocObj(s32, f32);
 s32 func_00227830(s32, s32);
 s32 func_00227880(s32 *, u8, u8, u8);
-s32 func_00227A30(s3232 *);
+s32 func_00227A30(s32 *);
 s32 func_00227B20(s32, s32, s32, s32, f32);
 s32 func_00228430(s32);
 s32 func_0022C430(s32, f32);
@@ -16,7 +16,7 @@ s32 func_0022D4B0(void *, s32);
 s32 func_002B0BF0(s32, s32, s32, void *);
 s32 func_002B1E90(void *, void *, s32, s32);
 s32 memcpy(f32 *, s32 *, s32);
-extern s3232 D_004700E4;
+extern s32 D_004700E4;
 extern f32 D_004700E8;
 extern f32 D_004700EC;
 extern f32 D_004700F0;
@@ -34,15 +34,21 @@ extern f32 gFrameDelta;
 extern void *gSklEdit;
 extern void Title_StepCounters(void);
 extern void func_00228410(void);
-extern void func_0022C6B0(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022C6B0(void *);
 void func_002B2400(u8 *arg0) {
+    s32 sp14F;
+    s32 sp14E;
+    s32 sp14D;
+    s32 sp14B;
+    s32 sp14A;
+    s32 sp149;
     s32 *spA0;
     s32 *spB0;
     s32 spC0;
     s32 spD0;
-    s3232 spE0;
+    s32 spE0;
     f32 spE4;
     s32 spE8;
     s32 spEC;
@@ -167,7 +173,7 @@ void func_002B2400(u8 *arg0) {
         temp_v0_2 = A2d_AllocObj(*(*(u8 **)((u8 *)temp_s3 + 0x1C) + (*(s32 *)((u8 *)arg0 + 0xD8) * 4)), (f32) *(s32 *)((u8 *)(arg0 + 0xD8) + 8) * gFrameDelta);
         func_0022C6B0(temp_v0_2);
         func_0022D4B0(temp_v0_2, 1);
-        spB0 = arg0 + 0xB8;
+        spB0 = (int *)(arg0 + 0xB8);
         func_00228430(0);
         spE0 = D_004700E4;
         spE4 = D_004700E8;
@@ -182,7 +188,7 @@ void func_002B2400(u8 *arg0) {
             do {
                 temp_s2 = *(s32 *)((u8 *)spA0 + 4);
                 if ((temp_s2 > 0) && (temp_s2 < 0x253)) {
-                    temp_s6 = &D_004E0660 + (temp_s2 * 0x28);
+                    temp_s6 = (unsigned char *)(&D_004E0660 + (temp_s2 * 0x28));
                     temp_s1 = *(u8 *)((u8 *)temp_s6 + 8) & 7;
                     spE0 = 0;
                     var_s5 += temp_s1;
@@ -234,7 +240,7 @@ block_21:
 loop_23:
                         temp_v0_4 = *(s32 *)((u8 *)var_a0_2 + 0x2C);
                         if (temp_v0_4 > 0) {
-                            if (temp_v0_4 == var_a3_2) {
+                            if ((s32)(temp_v0_4) == (s32)(var_a3_2)) {
                                 var_v0 = 0;
                             } else {
                                 var_a2_2 += 1;

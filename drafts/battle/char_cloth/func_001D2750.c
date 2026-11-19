@@ -75,7 +75,7 @@ block_6:
     temp_a1 = var_a2 * 0x10;
     temp_v1 = temp_v0 + (var_a2 * 4);
     var_a2 += 1;
-    *temp_v1 = (s32)(*(u8 **)((u8 *)arg0 + 0x68) + temp_a1 + 0x40);
+    *temp_v1 = (int)(*(u8 **)((u8 *)arg0 + 0x68) + temp_a1 + 0x40);
 loop_7:
     temp_a1_2 = *(s32 *)((u8 *)arg0 + 0x48);
     if (var_a2 < temp_a1_2) {
@@ -122,7 +122,7 @@ block_16:
     temp_a1_4 = var_a2_3 << 5;
     temp_v1_5 = temp_v0_6 + (var_a2_3 * 4);
     var_a2_3 += 1;
-    *temp_v1_5 = (s32)(*(u8 **)((u8 *)arg0 + 0x68) + temp_a1_4 + 0xC0);
+    *temp_v1_5 = (int)(*(u8 **)((u8 *)arg0 + 0x68) + temp_a1_4 + 0xC0);
 loop_17:
     temp_a1_5 = *(s32 *)((u8 *)arg0 + 0x64);
     if (var_a2_3 < temp_a1_5) {
@@ -133,7 +133,7 @@ loop_17:
     goto loop_20;
 block_19:
     temp_a0_2 = *(temp_s1_2 + (var_a1 * 2));
-    temp_v0_7 = (u8 *)((var_a1 << 6) + *(s32 *)((u8 *)arg0 + 4));
+    temp_v0_7 = (unsigned char *)((var_a1 << 6) + *(s32 *)((u8 *)arg0 + 4));
     var_a1 += 1;
     *(s32 *)((u8 *)temp_v0_7 + 0x38) = (s32) temp_a0_2;
 loop_20:

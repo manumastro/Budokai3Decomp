@@ -28,7 +28,7 @@ void func_002B7F00(u8 *arg0) {
 
     temp_s0 = *(u8 **)((u8 *)arg0 + 0x30);
     temp_a0 = *(u8 **)((u8 *)gPracMode + 0xC);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x1000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x1000);
@@ -49,7 +49,7 @@ void func_002B7F00(u8 *arg0) {
     sp70 = *(s32 *)((u8 *)temp_s0 + 0x40);
     sp74 = *(s32 *)((u8 *)temp_s0 + 0x44);
     temp_a0_2 = *(u8 **)((u8 *)gPracMode + 0xC);
-    D_00470704 = (s32)(temp_a0_2);
+    D_00470704 = (int)(temp_a0_2);
     D_0047070C = 0x1000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0_2), 0x1000);

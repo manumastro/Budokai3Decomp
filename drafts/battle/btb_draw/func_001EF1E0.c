@@ -1,13 +1,13 @@
 /* Draft (not built): func_001EF1E0 at 0x001EF1E0, size 0x32C, segment battle/btb_draw (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operand 'signed char *' @ 3354: switch (D_004B4B41) {
+ * Status: data
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); .rodata 0x1C
  * Original: asm/nonmatchings/battle/btb_draw/func_001EF1E0.s */
 
-// src/battle/btb_draw.c func_001EF1E0 cerr diff=-1/0
+// src/battle/btb_draw.c func_001EF1E0 data diff=0/203
 extern void func_002A93E0(void);
 void func_001EF1E0(s32 arg0) {
-    switch (D_004B4B41) {
+    switch (*D_004B4B41) {
     case 1:
         if (arg0 == 2) {
             if (gSceneNext == -1) {

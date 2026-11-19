@@ -16,7 +16,7 @@ void func_002DD180(void) {
     f32 var_f2;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gOptionWork);
+    temp_s0 = (unsigned char *)(gOptionWork);
     M2C_ERROR(/* unknown instruction: sqc2 $vf0, ($v0) */);
     temp_f1 = *(f32 *)((u8 *)temp_s0 + 0x38C);
     if (!(temp_f1 < 7.0f)) {
@@ -40,6 +40,6 @@ void func_002DD180(void) {
         *(s32 *)((u8 *)temp_s0 + 0x354) = 0;
     }
     if (!(*(f32 *)((u8 *)temp_s0 + 0x388) <= 95.0f)) {
-        *(s32 **)((u8 *)temp_s0 + 0x344) = &func_002DCC60;
+        *(s32 **)((u8 *)temp_s0 + 0x344) = (int *)(&func_002DCC60);
     }
 }

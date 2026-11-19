@@ -22,7 +22,7 @@ void func_0020E390(s32 arg0, u8 *arg1, s32 arg2, s32 arg3) {
     switch (arg2) {                                 /* irregular */
     case 0:
         spB0 = D_0044BA40;
-        temp_s0 = &D_00568C90 + (arg0 * 0x2140);
+        temp_s0 = ((u8 *)&D_00568C90) + (arg0 * 0x2140);
         spA0 = D_0044BA50;
         if (arg3 & 2) {
             func_00141C30(&sp90, &spA0, arg1);
@@ -39,7 +39,7 @@ void func_0020E390(s32 arg0, u8 *arg1, s32 arg2, s32 arg3) {
         func_00141CF0(temp_s0 + 0x40, &sp90, &sp80);
         return;
     case 1:
-        temp_s0_2 = &D_0058A090 + (arg0 * 0xC0);
+        temp_s0_2 = ((u8 *)&D_0058A090) + (arg0 * 0xC0);
         sp70 = D_0044BA40;
         sp60 = D_0044BA50;
         if (arg3 & 2) {

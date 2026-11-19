@@ -1,10 +1,10 @@
 /* Draft (not built): func_00284AA0 at 0x00284AA0, size 0x208, segment unk/unk_284AA0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); llegal implicit conversion from 'unsigned char *' to 'int' @ 79: func_00133720(arg0 + 0xF0, arg0 + 0x130, arg0 + 0x160);
+ * Status: size, 59 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1E8, original 0x208
  * Original: asm/nonmatchings/unk/unk_284AA0/func_00284AA0.s */
 
-// src/unk/unk_284AA0.c func_00284AA0 cerr diff=-1/0
+// src/unk/unk_284AA0.c func_00284AA0 size diff=59/122
 s32 DrawFlags_Apply(s32, s32, s32, s32);
 s32 amGs_SetReg64(s32, s32);
 s32 amMotion_Apply(s8 *, s32, s32);
@@ -28,9 +28,9 @@ void func_00284AA0(u8 *arg0) {
     s32 var_s2;
 
     func_0013B0B0(NULL);
-    func_00133720(arg0 + 0xF0, arg0 + 0x130, arg0 + 0x160);
+    func_00133720((s32)(arg0 + 0xF0), (s32)(arg0 + 0x130), (s32)(arg0 + 0x160));
     var_s2 = 0;
-    var_s1 = (s32)(arg0 + 0xF0);
+    var_s1 = (int)(arg0 + 0xF0);
     do {
         func_00133620(var_s2, 1, var_s1, var_s1 + 0x40);
         var_s2 += 1;

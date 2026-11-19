@@ -1,7 +1,7 @@
 /* Draft (not built): func_0021F740 at 0x0021F740, size 0x19C8, segment unk/unk_21D260 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); o 'float' mwccps2.exe Compiler: @ 264: *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x1C), &sp120, 0);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); o 'void *' mwccps2.exe Compiler: @ 264: **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x1C)), &sp120, (void *)((f32)(s32)(0)));
  * Original: asm/nonmatchings/unk/unk_21D260/func_0021F740.s */
 
 // src/unk/unk_21D260.c func_0021F740 cerr diff=-1/0
@@ -135,11 +135,11 @@ void func_0021F740(u8 *arg0) {
     u8 *temp_v1_2;
     u8 *temp_v1_3;
 
-    temp_s3 = (u8 *)(gBtlSys);
+    temp_s3 = (unsigned char *)(gBtlSys);
     spB0 = &D_0044F760;
     amDraw_SetPacketMode(1);
     temp_a0 = *(u8 **)((u8 *)temp_s3 + 0xED8);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x04040000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x04040000);
@@ -147,19 +147,19 @@ void func_0021F740(u8 *arg0) {
     temp_a0_2 = *(s16 *)((u8 *)temp_s3 + 0xE42);
     if (temp_a0_2 == -1) {
         func_00228430(0);
-        func_0022B900(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x1C), &sp120, 0);
+        func_0022B900((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x1C)), &sp120, (void *)((f32)(s32)(0)));
         func_00228410();
     } else {
         temp_s0 = (func_0021C460(temp_a0_2) != 0) ? 3 : 2;
         func_00228430(0);
-        func_0022B900(*(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C) + (temp_s0 * 4)), &sp120, 0);
+        func_0022B900((s32)(*(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C) + (temp_s0 * 4))), &sp120, (void *)((f32)(s32)(0)));
         func_00228410();
     }
     sp144 -= (170.0f + sp154) - 5.0f;
     func_0022C6B0(&sp120);
     temp_f20 = 10.0f + (sp144 + sp15C);
     func_00228430(0);
-    func_0022B900(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x20), &sp120, 0);
+    func_0022B900((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x20)), &sp120, (void *)((f32)(s32)(0)));
     func_00228410();
     func_00228AC0(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x20), &sp100, -1, 0);
     func_00228AC0(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0xEDC)) + 0x1C)) + 0x28), &spE0, -1, 0);
@@ -220,7 +220,7 @@ void func_0021F740(u8 *arg0) {
     sp16C = (f32) *(s16 *)((u8 *)temp_a1 + 0x12) - 0.5f;
     sp168 = (f32) *(s16 *)((u8 *)temp_a1 + 0x10) - 0.5f;
     func_0022C6B0(&sp120);
-    temp_a2_3 = *(D_0044FA24 + (*(s16 *)((u8 *)temp_s3 + 0xE48) * 4));
+    temp_a2_3 = *(s32 *)(D_0044FA24 + (*(s16 *)((u8 *)temp_s3 + 0xE48) * 4));
     sp138 = (s16) temp_a2_3;
     temp_a3 = *(u8 **)((u8 *)temp_s3 + 0xED8);
     temp_a1_2 = temp_a3 + *(*(s32 *)((u8 *)temp_a3 + 0x14) + temp_a3 + ((temp_a2_3 - *(s32 *)((u8 *)temp_a3 + 0x18)) * 4));
@@ -268,7 +268,7 @@ void func_0021F740(u8 *arg0) {
     sp16C = (f32) *(s16 *)((u8 *)temp_a1_3 + 0x12) - 0.5f;
     sp168 = (f32) *(s16 *)((u8 *)temp_a1_3 + 0x10) - 0.5f;
     func_0022C6B0(&sp120);
-    temp_a2_4 = *(D_0044FA28 + (*(s16 *)((u8 *)temp_s3 + 0xE4A) * 4));
+    temp_a2_4 = *(s32 *)(D_0044FA28 + (*(s16 *)((u8 *)temp_s3 + 0xE4A) * 4));
     sp138 = (s16) temp_a2_4;
     temp_a3_3 = *(u8 **)((u8 *)temp_s3 + 0xED8);
     temp_a1_4 = temp_a3_3 + *(*(s32 *)((u8 *)temp_a3_3 + 0x14) + temp_a3_3 + ((temp_a2_4 - *(s32 *)((u8 *)temp_a3_3 + 0x18)) * 4));
@@ -320,7 +320,7 @@ block_18:
     sp16C = (f32) *(s16 *)((u8 *)temp_a1_5 + 0x12) - 0.5f;
     sp168 = (f32) *(s16 *)((u8 *)temp_a1_5 + 0x10) - 0.5f;
     func_0022C6B0(&sp120);
-    temp_a2_5 = *(D_0044FA2C + (*(s16 *)((u8 *)temp_s3 + 0xE4C) * 4));
+    temp_a2_5 = *(s32 *)(D_0044FA2C + (*(s16 *)((u8 *)temp_s3 + 0xE4C) * 4));
     sp138 = (s16) temp_a2_5;
     temp_a3_5 = *(u8 **)((u8 *)temp_s3 + 0xED8);
     temp_a1_6 = temp_a3_5 + *(*(s32 *)((u8 *)temp_a3_5 + 0x14) + temp_a3_5 + ((temp_a2_5 - *(s32 *)((u8 *)temp_a3_5 + 0x18)) * 4));
@@ -372,7 +372,7 @@ block_26:
     sp16C = (f32) *(s16 *)((u8 *)temp_a1_7 + 0x12) - 0.5f;
     sp168 = (f32) *(s16 *)((u8 *)temp_a1_7 + 0x10) - 0.5f;
     func_0022C6B0(&sp120);
-    temp_a2_6 = *(D_0044FA30 + (*(s16 *)((u8 *)temp_s3 + 0xE4E) * 4));
+    temp_a2_6 = *(s32 *)(D_0044FA30 + (*(s16 *)((u8 *)temp_s3 + 0xE4E) * 4));
     sp138 = (s16) temp_a2_6;
     temp_a3_7 = *(u8 **)((u8 *)temp_s3 + 0xED8);
     temp_a1_8 = temp_a3_7 + *(*(s32 *)((u8 *)temp_a3_7 + 0x14) + temp_a3_7 + ((temp_a2_6 - *(s32 *)((u8 *)temp_a3_7 + 0x18)) * 4));
@@ -425,7 +425,7 @@ block_34:
     sp16C = (f32) *(s16 *)((u8 *)temp_a1_9 + 0x12) - 0.5f;
     sp168 = (f32) *(s16 *)((u8 *)temp_a1_9 + 0x10) - 0.5f;
     func_0022C6B0(&sp120);
-    temp_a2_7 = *(D_0044FA34 + (*(s16 *)((u8 *)temp_s3 + 0xE50) * 4));
+    temp_a2_7 = *(s32 *)(D_0044FA34 + (*(s16 *)((u8 *)temp_s3 + 0xE50) * 4));
     sp138 = (s16) temp_a2_7;
     temp_a3_9 = *(u8 **)((u8 *)temp_s3 + 0xED8);
     temp_a1_10 = temp_a3_9 + *(*(s32 *)((u8 *)temp_a3_9 + 0x14) + temp_a3_9 + ((temp_a2_7 - *(s32 *)((u8 *)temp_a3_9 + 0x18)) * 4));
@@ -468,7 +468,7 @@ block_34:
     sp16C = (f32) *(s16 *)((u8 *)temp_a1_11 + 0x12) - 0.5f;
     sp168 = (f32) *(s16 *)((u8 *)temp_a1_11 + 0x10) - 0.5f;
     func_0022C6B0(&sp120);
-    temp_a2_8 = *(D_0044FA38 + (*(s16 *)((u8 *)temp_s3 + 0xE52) * 4));
+    temp_a2_8 = *(s32 *)(D_0044FA38 + (*(s16 *)((u8 *)temp_s3 + 0xE52) * 4));
     sp138 = (s16) temp_a2_8;
     temp_a3_11 = *(u8 **)((u8 *)temp_s3 + 0xED8);
     temp_a1_12 = temp_a3_11 + *(*(s32 *)((u8 *)temp_a3_11 + 0x14) + temp_a3_11 + ((temp_a2_8 - *(s32 *)((u8 *)temp_a3_11 + 0x18)) * 4));

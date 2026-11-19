@@ -1,13 +1,13 @@
 /* Draft (not built): func_001C37F0 at 0x001C37F0, size 0x300, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); gal implicit conversion from 'void *' to 'int' mwccps2.exe Compiler: @ 3785: func_001C37F0(f, (void *)((u8 *)f + 0xD0));
+ * Status: size, 148 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x130, original 0x300
  * Original: asm/nonmatchings/battle/btl_main/func_001C37F0.s */
 
-// src/battle/btl_main.c func_001C37F0 cerr diff=-1/0
+// src/battle/btl_main.c func_001C37F0 size diff=148/76
 f32 func_00146F90(s32 *, s32 *);
 extern void func_00146F30(void *);
-void func_001C37F0(u8 *arg0, s32 arg1) {
+void func_001C37F0(Fighter *arg0, void *arg1) {
     s32 sp40;
     f32 sp44;
     s32 sp50;
@@ -26,21 +26,16 @@ void func_001C37F0(u8 *arg0, s32 arg1) {
 
     temp_s0 = *(u8 **)((u8 *)arg0 + 0x1354);
     temp_a0 = *(s16 *)((u8 *)arg0 + 0xCAC);
-    switch (temp_a0) {                              /* switch 1; irregular */
-    case 18:                                        /* switch 1 */
-    case 11:                                        /* switch 1 */
-    case 9:                                         /* switch 1 */
-    case 4:                                         /* switch 1 */
-    case 3:                                         /* switch 1 */
-    case 2:                                         /* switch 1 */
-    case 1:                                         /* switch 1 */
-    case 0:                                         /* switch 1 */
-        M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
-        M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
-        sp84 = *(f32 *)((u8 *)arg0 + 0x64);
-        break;
-    case 26:                                        /* switch 1 */
-    case 25:                                        /* switch 1 */
+    if ((temp_a0 != 0x1A) && (temp_a0 != 0x19)) {
+        if ((temp_a0 != 0x12) && (temp_a0 != 0xB) && (temp_a0 != 9) && (temp_a0 != 4) && (temp_a0 != 3) && (temp_a0 != 2) && (temp_a0 != 1) && (temp_a0 != 0)) {
+            M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
+            M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
+        } else {
+            M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
+            M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
+            sp84 = *(f32 *)((u8 *)arg0 + 0x64);
+        }
+    } else {
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
         M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
@@ -58,31 +53,21 @@ void func_001C37F0(u8 *arg0, s32 arg1) {
         M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
         sp84 = *(f32 *)((u8 *)arg0 + 0x94);
-        break;
-    default:                                        /* switch 1 */
-        M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
-        M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
-        break;
     }
     if (*(s16 *)((u8 *)arg0 + 0x181C) != 0) {
         sp84 = *(f32 *)((u8 *)arg0 + 0x1818);
     }
     temp_a0_2 = *(s16 *)((u8 *)temp_s0 + 0xCAC);
-    switch (temp_a0_2) {                            /* switch 2; irregular */
-    case 18:                                        /* switch 2 */
-    case 11:                                        /* switch 2 */
-    case 9:                                         /* switch 2 */
-    case 4:                                         /* switch 2 */
-    case 3:                                         /* switch 2 */
-    case 2:                                         /* switch 2 */
-    case 1:                                         /* switch 2 */
-    case 0:                                         /* switch 2 */
-        M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
-        M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
-        sp94 = *(f32 *)((u8 *)temp_s0 + 0x64);
-        break;
-    case 6:                                         /* switch 2 */
-    case 5:                                         /* switch 2 */
+    if ((temp_a0_2 != 6) && (temp_a0_2 != 5)) {
+        if ((temp_a0_2 != 0x12) && (temp_a0_2 != 0xB) && (temp_a0_2 != 9) && (temp_a0_2 != 4) && (temp_a0_2 != 3) && (temp_a0_2 != 2) && (temp_a0_2 != 1) && (temp_a0_2 != 0)) {
+            M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
+            M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
+        } else {
+            M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
+            M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
+            sp94 = *(f32 *)((u8 *)temp_s0 + 0x64);
+        }
+    } else {
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
         M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
@@ -100,11 +85,6 @@ void func_001C37F0(u8 *arg0, s32 arg1) {
         M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
         sp94 = *(f32 *)((u8 *)temp_s0 + 0x94);
-        break;
-    default:                                        /* switch 2 */
-        M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
-        M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
-        break;
     }
     if (*(s16 *)((u8 *)temp_s0 + 0x181C) != 0) {
         sp94 = *(f32 *)((u8 *)temp_s0 + 0x1818);

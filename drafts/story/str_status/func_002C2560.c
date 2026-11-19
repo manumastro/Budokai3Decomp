@@ -35,13 +35,13 @@ void func_002C2560(u8 *arg0) {
 
     temp_s1 = *(u8 **)((u8 *)arg0 + 0x30);
     temp_a0 = *(u8 **)((u8 *)temp_s1 + 4);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x2000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x2000);
     D_00470238 = 0;
     temp_a0_2 = *(u8 **)((u8 *)temp_s1 + 4);
-    D_00470704 = (s32)(temp_a0_2);
+    D_00470704 = (int)(temp_a0_2);
     D_0047070C = 0x2000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0_2), 0x2000);
@@ -49,7 +49,7 @@ void func_002C2560(u8 *arg0) {
     temp_s0 = *(u8 **)((u8 *)temp_s1 + 8);
     if (temp_s0 != NULL) {
         func_0022C060((s32)(temp_s0), 0x3F800000);
-        func_0022CD00((s32)((void *)(temp_s0)));
+        func_0022CD00((s32)(temp_s0));
     }
     func_002C0860((s32 *)(temp_s1));
     A2d_FlushList();
@@ -75,7 +75,7 @@ block_9:
                 var_v1 += 1;
             } while (var_v0 != 0);
         }
-        sp50 = (s32 *)(temp_s1 + 0xC);
+        sp50 = (int *)(temp_s1 + 0xC);
         var_s0 = 0;
         sp54 = temp_s1 + 0x10;
         sp58 = temp_s1 + 0x14;
@@ -103,8 +103,8 @@ block_9:
         *(s32 *)((u8 *)temp_s1 + 0xA0) = func_0027E2D0(3, 6, 1, (s8) *(u8 *)((u8 *)temp_s1 + 0xB2), 0, 0, 0, 0);
         *(f32 *)((u8 *)temp_s1 + 0xC4) = 60.0f;
         *(s8 *)((u8 *)temp_s1 + 0xAF) = 0xA;
-        func_002C0FC0((s32 *)(temp_s1));
-        var_v1_2 = (s32 *)(&func_002C2470);
+        func_002C0FC0((int *)(temp_s1));
+        var_v1_2 = (int *)(&func_002C2470);
         if (&func_002C2470 == NULL) {
             var_v1_2 = NULL;
         }

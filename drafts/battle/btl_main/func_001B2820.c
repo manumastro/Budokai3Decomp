@@ -1,7 +1,7 @@
 /* Draft (not built): func_001B2820 at 0x001B2820, size 0x280, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 2269: *(&D_00468460 + (var_v0 * 4))(arg0);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 2357: *(((u8 *)&D_00468460) + (var_v0 * 4))(arg0);
  * Original: asm/nonmatchings/battle/btl_main/func_001B2820.s */
 
 // src/battle/btl_main.c func_001B2820 cerr diff=-1/0
@@ -17,7 +17,7 @@ void func_001B2820(u8 *arg0) {
     if ((*(s16 *)((u8 *)arg0 + 0x1A5C) == 0) && (*(s32 *)((u8 *)arg0 + 0x1554) == 0)) {
         temp_a0 = *(u8 **)((u8 *)arg0 + 0x17A0);
         if (*(s32 *)((u8 *)temp_a0 + 8) & 1) {
-            func_001DFE60(arg0, 0, (f32) *(s16 *)((u8 *)temp_a0 + 0x12));
+            func_001DFE60((Fighter *)(arg0), 0, (f32) *(s16 *)((u8 *)temp_a0 + 0x12));
         }
         *(s16 *)((u8 *)arg0 + 0x1A5C) = 1;
     }
@@ -25,7 +25,7 @@ void func_001B2820(u8 *arg0) {
         temp_v1 = *(s16 *)((u8 *)arg0 + 0xCB4) + 1;
         *(s16 *)((u8 *)arg0 + 0xCB4) = (s16) temp_v1;
         if (((s64) (temp_v1 << 0x30) >> 0x30) < *(s8 *)((u8 *)arg0 + 0x2014)) {
-            if (func_001DFE60(arg0, 2, 10.0f) != 0) {
+            if (func_001DFE60((Fighter *)(arg0), 2, 10.0f) != 0) {
                 *(s32 *)((u8 *)arg0 + 0xB70) = (s32) (*(s32 *)((u8 *)arg0 + 0xB78) + (!(*(s16 *)((u8 *)arg0 + 0xCB4) & 1) ? 1 : 2));
                 func_001E3460(arg0);
                 *(s32 *)((u8 *)arg0 + 0xCA4) = 0x3DCCCCCD;
@@ -70,9 +70,9 @@ block_12:
             *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
         }
         *(s8 *)((u8 *)arg0 + 0x2006) = 0;
-        *(&D_00468460 + (var_v0 * 4))(arg0);
+        *(((u8 *)&D_00468460) + (var_v0 * 4))(arg0);
         func_002CBFF0(1, arg0);
-        func_001ABD30((void *)(arg0 + 0x1360));
+        func_001ABD30((struct Fighter *)(arg0 + 0x1360));
         func_001D9AB0(arg0, -2);
     }
 }

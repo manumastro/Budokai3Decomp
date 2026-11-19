@@ -25,11 +25,11 @@ extern void func_00132DF0(void *);
 extern void func_0013B0B0(void *);
 extern char D_00495758[];
 extern void func_0012F2C0(void);
-extern void func_0022CD00(void *);
-extern char D_003F0800[];
 extern void amDraw_ResetPackets(void);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022CD00(void *);
+extern char D_003F0800[];
 void func_00267090(u8 *arg0) {
     f32 temp_f2;
     s32 var_s2;

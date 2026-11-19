@@ -23,7 +23,7 @@ s32 func_00233850(u8 *arg0, u8 *arg1) {
     u8 *temp_s2;
 
     temp_a1 = *(s32 *)((u8 *)arg1 + 4);
-    temp_s2 = &D_0058BBB0 + (*(s32 *)((u8 *)arg0 + 0x1350) * 0xC0);
+    temp_s2 = ((u8 *)&D_0058BBB0) + (*(s32 *)((u8 *)arg0 + 0x1350) * 0xC0);
     temp_v0 = *(s16 *)((u8 *)temp_s2 + 0x3C);
     if (temp_v0 < temp_a1) {
         *(s16 *)((u8 *)temp_s2 + 0x3C) = (s16) temp_a1;

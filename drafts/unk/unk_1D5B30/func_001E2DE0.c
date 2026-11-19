@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001E2DE0.s */
 
 // src/unk/unk_1D5B30.c func_001E2DE0 size diff=67/148
-void func_001E2DE0(u8 *arg0) {
+void func_001E2DE0(Fighter *arg0) {
     s32 *var_a2;
     f32 temp_f1;
     f32 temp_f20;
@@ -24,7 +24,7 @@ void func_001E2DE0(u8 *arg0) {
     if (!(*(f32 *)((u8 *)arg0 + 0x1A40) <= 0.0f)) {
         temp_t0 = *(u8 **)((u8 *)arg0 + 0xBB0);
         var_a3 = *(s16 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1CF4)) + 0x16);
-        var_a2 = (s32 *)(&D_004693C0);
+        var_a2 = (int *)(&D_004693C0);
         if (var_a3 < 0) {
             var_a3 = (s16) *(s32 *)((u8 *)arg0 + 0xBA4);
         }
@@ -51,7 +51,7 @@ loop_7:
                 var_t1 = 0;
                 if (temp_a3 > 0) {
                     do {
-                        temp_a2 = &D_004E0660 + (*(s16 *)((u8 *)var_t0 + 0x36) * 0x28);
+                        temp_a2 = ((u8 *)&D_004E0660) + (*(s16 *)((u8 *)var_t0 + 0x36) * 0x28);
                         if (*(u8 *)((u8 *)temp_a2 + 0x15) == 0x17) {
                             var_f3 -= ((f32) *(s16 *)((u8 *)temp_a2 + 0x16) * (100.0f + *(f32 *)((u8 *)arg0 + 0x1FB8))) / 100.0f;
                         }
@@ -73,7 +73,7 @@ loop_7:
                 *(f32 *)((u8 *)arg0 + 0x17D0) = 0.0f;
                 *(s8 *)((u8 *)arg0 + 0x200F) = 1;
                 if (*(s8 *)((u8 *)arg0 + 0x2010) != 0) {
-                    func_001D7CC0((void *)(arg0), 1);
+                    func_001D7CC0((Fighter *)(arg0), 1);
                 }
             }
         }

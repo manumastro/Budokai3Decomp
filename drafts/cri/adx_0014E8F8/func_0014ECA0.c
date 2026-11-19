@@ -14,3 +14,14 @@ void func_0014ECA0(u8 *arg0) {
         D_00400E64(temp_v0);
     }
 }
+
+/* Similar function already in C: ADXB_AhxTermSupply (src/cri/adx/mk_adx_bahx.c), similarity 1.00, same instructions apart from immediates/symbols.
+ * It is the template below (not built). */
+#if 0
+void ADXB_AhxTermSupply(AdxBasicAhx* adxb)
+{
+    if (adxb->decoder != 0) {
+        ahxtermsupplyfunc(adxb->decoder);
+    }
+}
+#endif

@@ -1,8 +1,8 @@
-/* Draft (not built): func_00104A38 at 0x00104A38, size 0xEC, segment sdk/libmpeg (asm)
+/* Draft (not built): func_00104A38 at 0x00104A38, size 0xEC, segment sdk/libmpeg (c)
  * Compiler: ee-gcc 2.9-991111-01 -O2 -G0
  * Status: cerr
  * Made with: m2c -t mipsee-gcc-c --valid-syntax; compiled with 2.9-991111-01 -O2 -G0; compile error: ompile error: d_00104A38.c:40: parse error before `M2C_ERROR'
- * Original: asm/sdk/libmpeg.s */
+ * Original: asm/nonmatchings/sdk/libmpeg/func_00104A38.s */
 
 void func_00104A38(u8 *arg0) {
     s32 var_v0;

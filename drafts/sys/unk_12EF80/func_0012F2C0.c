@@ -1,7 +1,7 @@
 /* Draft (not built): func_0012F2C0 at 0x0012F2C0, size 0x8DC, segment sys/unk_12EF80 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'saved_reg_s2' mwccps2.exe Compiler: 318: if (D_0047CAB0 != NULL) { @ 234: var_s2 = saved_reg_s2;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); iler: 323: var_s0 = D_0047CABC; @ 320: 28 *)((u8 *)D_00459390 + 0x10), *(s128 *)((u8 *)D_00459390 + 0), &sp2F0, var_a3);
  * Original: asm/nonmatchings/sys/unk_12EF80/func_0012F2C0.s */
 
 // src/sys/unk_12EF80.c func_0012F2C0 cerr diff=-1/0
@@ -33,14 +33,15 @@ extern s32 D_00470260;
 extern s32 D_00470264;
 extern s32 D_00470268;
 extern s32 gModelBlock;
+extern void amModel_SetCurrent();
 extern void func_0012FBA0(void);
 extern char D_00459390[];
 extern void *gModelUser;
-extern void amModel_SetCurrent();
 extern s32 D_0047CAB0;
 extern s32 D_0047CABC;
 extern s32 D_0047CAB4;
-void func_0012F2C0(s32 arg3) {
+void func_0012F2C0(s32 unused_arg0, s32 unused_arg1, s32 unused_arg2, s32 arg3) {
+    s32 saved_reg_s2;
     s64 spC0;
     s64 spD0;
     s32 spE0;
@@ -90,7 +91,7 @@ void func_0012F2C0(s32 arg3) {
     u8 *temp_s4;
     u8 *temp_s7;
 
-    var_s2 = saved_reg_s2;
+    var_s2 = (int *)(saved_reg_s2);
     var_a3 = arg3;
     var_s3 = 0;
     var_s1 = D_00470230;
@@ -174,7 +175,7 @@ loop_7:
         *(f32 *)((u8 *)(&sp334) + 0) = (f32) *(f32 *)((u8 *)(&D_004593D4) + 0);
         *(f32 *)((u8 *)(&sp334) + 4) = (f32) *(f32 *)((u8 *)(&D_004593D4) + 4);
         *(f32 *)((u8 *)(&sp334) + 8) = (f32) *(f32 *)((u8 *)(&D_004593D4) + 8);
-        if (D_0047CAB0 != NULL) {
+        if ((s32)(D_0047CAB0) != 0) {
             D_0047CAB0(*(s128 *)((u8 *)D_00459390 + 0x10), *(s128 *)((u8 *)D_00459390 + 0), &sp2F0, var_a3);
         }
         func_00133780(2, 1);
@@ -254,7 +255,7 @@ loop_7:
             } else {
                 var_s3 = func_00138390(*(s32 *)((u8 *)temp_s4 + 0xC), *(s32 *)((u8 *)temp_s4 + 0x14), *(s32 *)((u8 *)temp_s4 + 0x18));
             }
-            var_s2 = (s32 *)(gPacketPtr - 0x10);
+            var_s2 = (int *)(gPacketPtr - 0x10);
         } while (var_s1 != 0);
         *var_s2 = 0x60000000;
         amDma_Request(0, 1, 1, 1);
@@ -312,7 +313,7 @@ loop_7:
         *(f32 *)((u8 *)(&D_004593D4) + 0) = (f32) *(f32 *)((u8 *)(&sp334) + 0);
         *(f32 *)((u8 *)(&D_004593D4) + 4) = (f32) *(f32 *)((u8 *)(&sp334) + 4);
         *(f32 *)((u8 *)(&D_004593D4) + 8) = (f32) *(f32 *)((u8 *)(&sp334) + 8);
-        if (D_0047CAB4 != NULL) {
+        if ((s32)(D_0047CAB4) != 0) {
             D_0047CAB4(temp_a0, temp_a1, D_00459390);
         }
         D_00470230 = 0;

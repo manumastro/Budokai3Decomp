@@ -1,7 +1,7 @@
 /* Draft (not built): func_00206C90 at 0x00206C90, size 0x570, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); version from 'unsigned char[]' to 'float' mwccps2.exe Compiler: @ 575: func_00146F10(&spD0, temp_s2 + 0x20, D_0051D9AC);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); oes not match 'func_00208BD0(unsigned char *)' @ 658: temp_v0_4 = func_00208BD0((u8 *)(&sp80), &spC0, temp_a2, temp_a3);
  * Original: asm/nonmatchings/unk/unk_1FB760/func_00206C90.s */
 
 // src/unk/unk_1FB760.c func_00206C90 cerr diff=-1/0
@@ -62,14 +62,14 @@ s32 func_00206C90(u8 *arg0) {
     if ((temp_f1 != -1.0f) && !(temp_f2 < temp_f1)) {
         return 1;
     }
-    func_00146F10(&spD0, temp_s2 + 0x20, D_0051D9AC);
+    func_00146F10((void *)(&spD0), (void *)(temp_s2 + 0x20),(*(f32 *)(D_0051D9AC)));
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
     M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
     var_s1 = *(s32 **)((u8 *)arg0 + 0x28);
 loop_31:
-    if (var_s1 != (arg0 + 0x30)) {
+    if ((s32)(var_s1) != (s32)((arg0 + 0x30))) {
         *(f32 *)((u8 *)var_s1 + 0x24) = (f32) (*(f32 *)((u8 *)var_s1 + 0x24) + (*(f32 *)((u8 *)temp_s3 + 0x78) * D_0051D9A8));
 loop_29:
         if (!(*(f32 *)((u8 *)var_s1 + 0x24) < 1.0f)) {
@@ -96,7 +96,7 @@ loop_29:
                 M2C_ERROR(/* unknown instruction: vopmula.xyz ACC, $vf1, $vf2 */);
                 M2C_ERROR(/* unknown instruction: vopmsub.xyz $vf1, $vf2, $vf1 */);
                 M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
-                func_00146F30((void *)(&sp70));
+                func_00146F30((f32 *)(&sp70));
                 func_00141C80(&sp60, &sp70, (3.1415927f * (2.0f * *(f32 *)((u8 *)temp_s3 + 0x80))) / 360.0f);
                 func_00142280(&spA0, &spA0, &sp60, 0);
                 func_0013B160(D_003F0800);
@@ -145,11 +145,11 @@ loop_29:
                 temp_v1 = *(s32 *)((u8 *)(*(u8 **)((u8 *)var_s1 + 0x14)) + 4) & 0xFFFF0000;
                 switch (temp_v1) {                  /* irregular */
                 case 0x10000:
-                    temp_v0_4 = (u8 *)func_00208BD0(&sp80, &spC0, temp_a2, temp_a3);
+                    temp_v0_4 = func_00208BD0((u8 *)(&sp80), &spC0, temp_a2, temp_a3);
                     *(s32 **)((u8 *)temp_v0_4 + 0x18) = sp84;
                     *(s32 **)((u8 *)temp_v0_4 + 4) = (s32 *) *(s32 **)((u8 *)sp84 + 0x48);
-                    *(s32 **)((u8 *)temp_v0_4 + 0) = **(s32 **)((u8 *)sp84 + 0x48);
-                    **(s32 **)((u8 *)sp84 + 0x48) = temp_v0_4;
+                    *(s32 **)((u8 *)temp_v0_4 + 0) = (int *)(**(s32 **)((u8 *)sp84 + 0x48));
+                    **(s32 **)((u8 *)sp84 + 0x48) = (int)(temp_v0_4);
                     *(s32 **)((u8 *)sp84 + 0x48) = temp_v0_4;
                     *(s32 *)((u8 *)sp84 + 0x4C) = (s32) (*(s32 *)((u8 *)sp84 + 0x4C) + 1);
                     sp84 = temp_v0_4;
@@ -157,18 +157,18 @@ loop_29:
                     sp8C = *(s32 **)((u8 *)temp_v0_4 + 0x20);
                     break;
                 case 0x20000:
-                    temp_a2_2 = *(&D_00526440 + (D_00470668 * 4));
+                    temp_a2_2 = (int *)(*(((u8 *)&D_00526440) + (D_00470668 * 4)));
                     D_00470668 += 1;
                     if (D_00470668 >= 0x800) {
                         D_00470668 = 0;
                     }
                     *(s32 **)((u8 *)temp_a2_2 + 4) = (s32 *) *(s32 **)((u8 *)sp84 + 0x48);
-                    *(s32 **)((u8 *)temp_a2_2 + 0) = **(s32 **)((u8 *)sp84 + 0x48);
-                    **(s32 **)((u8 *)sp84 + 0x48) = temp_a2_2;
+                    *(s32 **)((u8 *)temp_a2_2 + 0) = (int *)(**(s32 **)((u8 *)sp84 + 0x48));
+                    **(s32 **)((u8 *)sp84 + 0x48) = (int)(temp_a2_2);
                     *(s32 **)((u8 *)sp84 + 0x48) = temp_a2_2;
                     *(s32 *)((u8 *)sp84 + 0x4C) = (s32) (*(s32 *)((u8 *)sp84 + 0x4C) + 1);
                     sp8C = temp_a2_2;
-                    *(&D_0044B860 + (*(u16 *)((u8 *)sp88 + 4) * 0x10))(&sp80, sp84, temp_a2_2, temp_a3);
+                    *(((u8 *)&D_0044B860) + (*(u16 *)((u8 *)sp88 + 4) * 0x10))(&sp80, sp84, temp_a2_2, temp_a3);
                     break;
                 }
             }

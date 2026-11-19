@@ -17,7 +17,7 @@ void func_001D6B90(u8 *arg0) {
 
     temp_a3 = *(s32 *)((u8 *)arg0 + 0x3C);
     temp_s0 = arg0 + 0x30;
-    temp_v1 = *(&D_00469478 + (temp_a3 * 4));
+    temp_v1 = *(((u8 *)&D_00469478) + (temp_a3 * 4));
     sp34 = 0x3000;
     sp38 = temp_v1;
     sp3C = temp_v1;

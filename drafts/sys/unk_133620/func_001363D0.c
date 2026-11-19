@@ -1,10 +1,10 @@
 /* Draft (not built): func_001363D0 at 0x001363D0, size 0x494, segment sys/unk_133620 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operands 'unsigned int *' | 'int' @ 500: *(s32 *)((u8 *)gPacketPtr + 0x40) = (s32) (D_0046FD18 | 1);
+ * Status: size, 178 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x434, original 0x494
  * Original: asm/nonmatchings/sys/unk_133620/func_001363D0.s */
 
-// src/sys/unk_133620.c func_001363D0 cerr diff=-1/0
+// src/sys/unk_133620.c func_001363D0 size diff=178/269
 extern s32 D_00470270;
 extern s32 D_00470274;
 extern void *D_00470278;
@@ -36,12 +36,16 @@ void func_001363D0(s32 arg0, s32 arg1, u8 *arg2, s64 arg3) {
     var_s2 = arg1;
     if (arg2 == NULL) {
         temp_v1 = var_s2 & 0x700;
-        if ((temp_v1 != 0x400) && (temp_v1 != 0x200)) {
-            if (temp_v1 != 0x300) {
-                var_s2 = (var_s2 & ~0x700) | 0x400;
-            } else {
-                var_s2 = (var_s2 & ~0x700) | 0x200;
-            }
+        switch (temp_v1) {                          /* switch 1; irregular */
+        case 0x400:                                 /* switch 1 */
+        case 0x200:                                 /* switch 1 */
+            break;
+        case 0x300:                                 /* switch 1 */
+            var_s2 = (var_s2 & ~0x700) | 0x200;
+            break;
+        default:                                    /* switch 1 */
+            var_s2 = (var_s2 & ~0x700) | 0x400;
+            break;
         }
     }
     D_00470274 = var_s2;
@@ -69,7 +73,7 @@ void func_001363D0(s32 arg0, s32 arg1, u8 *arg2, s64 arg3) {
     *(s64 *)((u8 *)gPacketPtr + 0x30) = 1;
     *(s64 *)((u8 *)gPacketPtr + 0x38) = 0x46;
     if (var_s2 & 0x1000) {
-        *(s32 *)((u8 *)gPacketPtr + 0x40) = (s32) (D_0046FD18 | 1);
+        *(s32 *)((u8 *)gPacketPtr + 0x40) = (s32) (((s32)(D_0046FD18)) | 1);
     } else {
         *(s32 *)((u8 *)gPacketPtr + 0x40) = (s32) D_0046FD18;
     }
@@ -102,8 +106,8 @@ void func_001363D0(s32 arg0, s32 arg1, u8 *arg2, s64 arg3) {
         var_f1 = 128.0f;
     }
     temp_a1 = var_s2 & 0x700;
-    switch (temp_a1) {                              /* irregular */
-    case 0x300:
+    switch (temp_a1) {                              /* switch 2; irregular */
+    case 0x300:                                     /* switch 2 */
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($s1) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($a0) */);
         M2C_ERROR(/* unknown instruction: vmul.xyzw $vf1, $vf1, $vf2 */);
@@ -113,20 +117,20 @@ void func_001363D0(s32 arg0, s32 arg1, u8 *arg2, s64 arg3) {
         D_0047CA38 *= var_f1;
         D_0047CA3C *= 128.0f;
         break;
-    case 0x200:
+    case 0x200:                                     /* switch 2 */
         D_0047CA30 = *(f32 *)((u8 *)(&D_003F01E0) + 0) * var_f1;
         D_0047CA34 = *(f32 *)((u8 *)(&D_003F01E0) + 4) * var_f1;
         D_0047CA38 = *(f32 *)((u8 *)(&D_003F01E0) + 8) * var_f1;
         D_0047CA3C = 128.0f * *(f32 *)((u8 *)(&D_003F01E0) + 0xC);
         break;
-    case 0x400:
-    case 0x0:
+    case 0x400:                                     /* switch 2 */
+    case 0x0:                                       /* switch 2 */
         D_0047CA30 = var_f1;
         D_0047CA34 = var_f1;
         D_0047CA38 = var_f1;
         D_0047CA3C = 128.0f;
         break;
-    default:
+    default:                                        /* switch 2 */
         D_0047CA30 = *(f32 *)((u8 *)arg2 + 0) * var_f1;
         D_0047CA34 = *(f32 *)((u8 *)arg2 + 4) * var_f1;
         D_0047CA38 = *(f32 *)((u8 *)arg2 + 8) * var_f1;

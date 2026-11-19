@@ -1,10 +1,10 @@
 /* Draft (not built): func_00278490 at 0x00278490, size 0x4E4, segment menu/ess_trade (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal explicit conversion from 'float *' to 'float' @ 291: amAdx_SetVolume(1, (f32)(D_004E0618));
+ * Status: size, 231 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x4EC, original 0x4E4
  * Original: asm/nonmatchings/menu/ess_trade/func_00278490.s */
 
-// src/menu/ess_trade.c func_00278490 cerr diff=-1/0
+// src/menu/ess_trade.c func_00278490 size diff=231/315
 extern s32 EssMain_GetFlag();
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Pause(s32, s32);
@@ -77,7 +77,7 @@ void func_00278490(u8 *arg0) {
         do {
             var_a1 = 4;
             var_a3 = var_s0;
-            temp_v0 = (u8 *)(gEssTrade + var_s1 + 0x280);
+            temp_v0 = (unsigned char *)(gEssTrade + var_s1 + 0x280);
             var_a2 = temp_v0;
 loop_3:
             var_a1 -= 1;
@@ -89,7 +89,7 @@ loop_3:
             if (var_a1 > 0) {
                 goto loop_3;
             }
-            var_a3_2 = (u8 *)(var_s0 + 0x10);
+            var_a3_2 = (unsigned char *)(var_s0 + 0x10);
             var_a2_2 = temp_v0 + 0x10;
             var_a1_2 = 8;
             *(s32 *)((u8 *)temp_v0 + 8) = (s32) *(s32 *)((u8 *)var_s0 + 8);
@@ -104,7 +104,7 @@ loop_5:
             if (var_a1_2 > 0) {
                 goto loop_5;
             }
-            var_a3_3 = (u8 *)(var_s0 + 0x20);
+            var_a3_3 = (unsigned char *)(var_s0 + 0x20);
             var_a2_3 = temp_v0 + 0x20;
             var_a1_3 = 8;
 loop_7:
@@ -117,7 +117,7 @@ loop_7:
             if (var_a1_3 > 0) {
                 goto loop_7;
             }
-            var_a3_4 = (u8 *)(var_s0 + 0x68);
+            var_a3_4 = (unsigned char *)(var_s0 + 0x68);
             var_a2_4 = temp_v0 + 0x68;
             var_a1_4 = 0xA;
             *(s128 *)((u8 *)temp_v0 + 0x30) = (s128) *(s128 *)((u8 *)var_s0 + 0x30);
@@ -140,7 +140,7 @@ loop_9:
             if (var_a1_4 > 0) {
                 goto loop_9;
             }
-            var_a3_5 = (u8 *)(var_s0 + 0xA6);
+            var_a3_5 = (unsigned char *)(var_s0 + 0xA6);
             var_a2_5 = temp_v0 + 0xA6;
             var_a1_5 = 0x18C;
             *(s16 *)((u8 *)temp_v0 + 0x7C) = (s16) *(s16 *)((u8 *)var_s0 + 0x7C);
@@ -177,7 +177,7 @@ loop_11:
             if (var_a1_5 > 0) {
                 goto loop_11;
             }
-            var_a3_6 = (u8 *)(var_s0 + 0x6D8);
+            var_a3_6 = (unsigned char *)(var_s0 + 0x6D8);
             var_a2_6 = temp_v0 + 0x6D8;
             var_a1_6 = 0x39;
 loop_13:
@@ -190,7 +190,7 @@ loop_13:
             if (var_a1_6 > 0) {
                 goto loop_13;
             }
-            var_a3_7 = (u8 *)(var_s0 + 0x8A0);
+            var_a3_7 = (unsigned char *)(var_s0 + 0x8A0);
             var_a2_7 = temp_v0 + 0x8A0;
             var_a1_7 = 0x10B;
 loop_15:
@@ -203,7 +203,7 @@ loop_15:
             if (var_a1_7 > 0) {
                 goto loop_15;
             }
-            var_a3_8 = (u8 *)(var_s0 + 0xCCC);
+            var_a3_8 = (unsigned char *)(var_s0 + 0xCCC);
             var_a2_8 = temp_v0 + 0xCCC;
             var_a1_8 = 6;
 loop_17:
@@ -216,7 +216,7 @@ loop_17:
             if (var_a1_8 > 0) {
                 goto loop_17;
             }
-            var_a3_9 = (u8 *)(var_s0 + 0xCD8);
+            var_a3_9 = (unsigned char *)(var_s0 + 0xCD8);
             var_a2_9 = temp_v0 + 0xCD8;
             var_a1_9 = 0x10;
 loop_19:
@@ -229,8 +229,8 @@ loop_19:
             if (var_a1_9 > 0) {
                 goto loop_19;
             }
-            var_a2_10 = var_s0 + 0xD60;
-            var_a1_10 = temp_v0 + 0xD60;
+            var_a2_10 = (__int128 *)(var_s0 + 0xD60);
+            var_a1_10 = (__int128 *)(temp_v0 + 0xD60);
             var_a0 = 0xC6B;
 loop_21:
             var_a0 -= 1;
@@ -241,7 +241,7 @@ loop_21:
                 goto loop_21;
             }
             var_a0_2 = 0x130;
-            var_a2_11 = (u8 *)(var_s0 + 0xD41D);
+            var_a2_11 = (unsigned char *)(var_s0 + 0xD41D);
             var_a1_11 = temp_v0 + 0xD41D;
             *(s64 *)((u8 *)temp_v0 + 0xD410) = (s64) *(s64 *)((u8 *)var_s0 + 0xD410);
             *(s32 *)((u8 *)temp_v0 + 0xD418) = (s32) *(s32 *)((u8 *)var_s0 + 0xD418);
@@ -272,11 +272,11 @@ loop_23:
         return;
     }
     *(s32 *)((u8 *)gEssTrade + 0x54) = 0;
-    temp_s0 = (u8 *)(gEssTrade + 0xC8);
+    temp_s0 = (unsigned char *)(gEssTrade + 0xC8);
     *(s32 *)((u8 *)temp_s0 + 0x10) = (s32) ((EssMain_GetFlag() & 0xFF) + 4);
     func_0026D530(2, 4);
     temp_s0_2 = *(&D_00453280 + ((EssMain_GetFlag() & 0xFF) * 4));
-    amAdx_SetVolume(1, (f32)(D_004E0618));
+    amAdx_SetVolume(1,(*(f32 *)(D_004E0618)));
     amAdx_Pause(1, 0);
     amAdx_PlayAfs(1, temp_s0_2 | 0x20000, 0);
     var_v1 = func_002794D0;

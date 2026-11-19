@@ -1,10 +1,10 @@
 /* Draft (not built): func_00276840 at 0x00276840, size 0x1C4, segment menu/ess_shop (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); cps2.exe Compiler: 512: amCdFs_Close(*(gEssShop + var_s0), 0); @ 511: *(s32 *)((u8 *)(*(gEssShop + var_s0)) + 0x40) = 0;
+ * Status: size, 47 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1C8, original 0x1C4
  * Original: asm/nonmatchings/menu/ess_shop/func_00276840.s */
 
-// src/menu/ess_shop.c func_00276840 cerr diff=-1/0
+// src/menu/ess_shop.c func_00276840 size diff=47/114
 extern void amCdFs_Close(void *, s32);
 s32 func_0026D610(s32);
 void *func_002C0510(s32, s32, s32);
@@ -20,11 +20,11 @@ void func_00276840(u8 *arg0) {
         var_s1 = 0;
         var_s0 = 0;
         do {
-            temp_v1 = (u8 *)(gEssShop + var_s0);
+            temp_v1 = (unsigned char *)(gEssShop + var_s0);
             *(s32 *)((u8 *)temp_v1 + 0x10) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)temp_v1 + 0)) + 0x40);
-            *(s32 *)((u8 *)(*(gEssShop + var_s0)) + 0x40) = 0;
-            amCdFs_Close(*(gEssShop + var_s0), 0);
-            *(gEssShop + var_s0) = 0;
+            *(s32 *)((u8 *)(*(s32 *)(gEssShop + var_s0)) + 0x40) = 0;
+            amCdFs_Close((void *)(*(s32 *)(gEssShop + var_s0)), 0);
+            *(s32 *)(gEssShop + var_s0) = 0;
             amFile_Load(*(u8 **)((u8 *)(*(u8 **)((u8 *)(gEssShop + var_s0) + 0x10)) + 0x50));
             func_0026D610(*(s32 *)((u8 *)(gEssShop + var_s0) + 0x10));
             var_s1 += 1;
@@ -43,7 +43,7 @@ void func_00276840(u8 *arg0) {
                 var_v0 = NULL;
             }
             *(void (**)())((u8 *)arg0 + 0x1C) = var_v0;
-            amAdx_SetVolume(1, (f32)(D_004E0618));
+            amAdx_SetVolume(1,(*(f32 *)(D_004E0618)));
             amAdx_Pause(1, 0);
             amAdx_PlayAfs(1, 0x210BB, 0);
             return;

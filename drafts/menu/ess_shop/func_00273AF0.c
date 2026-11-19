@@ -1,10 +1,10 @@
 /* Draft (not built): func_00273AF0 at 0x00273AF0, size 0x328, segment menu/ess_shop (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); tifier 'sp' @ 310: *)((u8 *)temp_s1 + 0x1C) + (*(s32 *)((u8 *)((*(s16 *)((u8 *)arg0 + 0xC) * 4) + sp) + 0x80) * 4)), 0);
+ * Status: diff, 186 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/menu/ess_shop/func_00273AF0.s */
 
-// src/menu/ess_shop.c func_00273AF0 cerr diff=-1/0
+// src/menu/ess_shop.c func_00273AF0 diff diff=186/202
 extern f32 gFrameDelta;
 void *A2d_AllocObj(s32, s32);
 s32 func_00227880(s32 *);
@@ -20,10 +20,11 @@ extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern void func_00228410(void);
-extern void func_0022C6B0(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022C6B0(void *);
 void func_00273AF0(u8 *arg0, s32 arg1) {
+    u8 sp[0x400];
     s128 sp80;
     s32 sp90;
     s32 temp_a2;

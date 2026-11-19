@@ -20,7 +20,7 @@ void func_001433F0(void) {
     if (gSoundState != 0) {
         do {
 
-        } while (sceSifCheckStatRpc(&gSoundRpc) != 0);
+        } while (sceSifCheckStatRpc((s32 *)(&gSoundRpc)) != 0);
         if (sceSifCallRpc(&gSoundRpc, 0x19, 0, NULL, 0) >= 0) {
             switch (gSoundState) {
             case 1:
@@ -35,10 +35,10 @@ void func_001433F0(void) {
                 if (gSoundState != 1) {
                 case 2:
                     if (D_00470324 == 0) {
-                        memcpy(gSoundSendBuf, &D_0047E3F0, 0x10);
+                        memcpy((void *)(gSoundSendBuf), (s32 *)(&D_0047E3F0), 0x10);
                         sceSifCallRpc(&gSoundRpc, 5, 1, gSoundSendBuf, 0);
                     } else {
-                        memcpy(gSoundSendBuf, &D_0047E400, 0x10);
+                        memcpy((void *)(gSoundSendBuf), (s32 *)(&D_0047E400), 0x10);
                         sceSifCallRpc(&gSoundRpc, 0x12, 1, gSoundSendBuf, 0);
                     }
                     gSoundState = 0;
@@ -56,7 +56,7 @@ void func_001433F0(void) {
                 D_0047032C += var_s0_2;
                 return;
             case 4:
-                var_s0_3 = (s32)(D_0047E418);
+                var_s0_3 = (*(int *)(D_0047E418));
                 if (var_s0_3 < 0x8000) {
                     gSoundState = 6;
                 } else {
@@ -64,15 +64,15 @@ void func_001433F0(void) {
                     gSoundState = 5;
                     var_s0_3 = 0x8000;
                 }
-                func_00117CC0(D_0047E420, D_00470348, var_s0_3, 1);
-                memcpy(gSoundSendBuf, &D_0047E410, 0x20);
+                func_00117CC0((s32)(D_0047E420), (s32)(D_00470348), (s32)(var_s0_3), 1);
+                memcpy((void *)(gSoundSendBuf), (s32 *)(&D_0047E410), 0x20);
                 D_0047033C = 1;
                 D_0047032C = var_s0_3;
-                D_00470344 = (s32)(D_0047E420);
+                D_00470344 = (*(int *)(D_0047E420));
                 sceSifCallRpc(&gSoundRpc, 0x18, 3, gSoundSendBuf, 0);
                 return;
             case 5:
-                if (gSoundRecvBuf != D_0047033C) {
+                if ((s32)(gSoundRecvBuf) != (s32)(D_0047033C)) {
                     var_s0_4 = D_00470340 - D_0047032C;
                     if (var_s0_4 >= 0x8001) {
                         var_s0_4 = 0x8000;
@@ -89,7 +89,7 @@ void func_001433F0(void) {
                 }
                 break;
             case 6:
-                if (gSoundRecvBuf == -1) {
+                if ((s32)(gSoundRecvBuf) == (s32)(-1)) {
                     gSoundState = 0;
                 }
                 break;

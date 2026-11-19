@@ -10,9 +10,9 @@ extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern void A2d_FlushList(void);
-extern void func_0022CD00(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022CD00(void *);
 void func_002D0B60(u8 *arg0) {
     u8 *sp50;
     s32 sp54;

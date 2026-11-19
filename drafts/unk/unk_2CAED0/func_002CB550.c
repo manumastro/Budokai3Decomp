@@ -12,7 +12,7 @@ void func_002CB550(void) {
     s32 temp_v0;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gTutWork);
+    temp_s0 = (unsigned char *)(gTutWork);
     if (*(s16 *)((u8 *)gBattle + 0x8944) != 0) {
         func_002E9BE0(0);
     } else {
@@ -29,7 +29,7 @@ void func_002CB550(void) {
             *(s32 *)((u8 *)gTutWork + 8) = 2;
             *(f32 *)((u8 *)gTutWork + 0x1C) = (f32) -*(f32 *)((u8 *)gBattle + 0x88F0);
             *(s32 *)((u8 *)gTutWork + 0x18) = 0;
-            *(&D_004564A0 + (*(s32 *)((u8 *)gTutWork + 8) * 4))(gTutWork);
+            *(((u8 *)&D_004564A0) + (*(s32 *)((u8 *)gTutWork + 8) * 4))(gTutWork);
         }
         return;
     }

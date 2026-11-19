@@ -1,10 +1,10 @@
 /* Draft (not built): func_002B3D90 at 0x002B3D90, size 0x8EC, segment unk/unk_2B2C20 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'saved_reg_s0' @ 288: var_s0 = saved_reg_s0;
+ * Status: size, 284 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x8D4, original 0x8EC
  * Original: asm/nonmatchings/unk/unk_2B2C20/func_002B3D90.s */
 
-// src/unk/unk_2B2C20.c func_002B3D90 cerr diff=-1/0
+// src/unk/unk_2B2C20.c func_002B3D90 size diff=284/565
 s32 Help_Open(s32, s32, s32, u16);
 s32 SklSheet_SetIndex(s32);
 s32 SoundRpc_SetVolume(s32, s32, s32, u16, f32);
@@ -23,6 +23,7 @@ extern f32 D_004E0614;
 extern void SoundRpc_Send3();
 extern char D_00492FCE[];
 void func_002B3D90(u8 *arg0) {
+    s32 saved_reg_s0;
     s32 *var_v1_2;
     s32 *var_v1_3;
     s32 *var_v1_4;
@@ -73,9 +74,9 @@ void func_002B3D90(u8 *arg0) {
     u8 *var_t3;
     u8 *var_v1_5;
 
-    var_s0 = saved_reg_s0;
+    var_s0 = (unsigned char *)(saved_reg_s0);
     temp_s2 = arg0 + 0x30;
-    temp_a0 = (u8 *)(gSklEdit + (*(s32 *)((u8 *)arg0 + 0x30) * 0x1C8));
+    temp_a0 = (unsigned char *)(gSklEdit + (*(s32 *)((u8 *)arg0 + 0x30) * 0x1C8));
     temp_t0 = *(s32 *)((u8 *)temp_a0 + 0x60);
     temp_s1 = temp_a0 + 0x48;
     if (temp_t0 != 2) {
@@ -95,7 +96,7 @@ void func_002B3D90(u8 *arg0) {
                 SoundRpc_Send3(0, 0, 5, 0);
             }
             *(s32 *)((u8 *)temp_s1 + 0xC) = 4;
-            var_v1_2 = (s32 *)(&func_002B3D40);
+            var_v1_2 = (int *)(&func_002B3D40);
             if (&func_002B3D40 == NULL) {
                 var_v1_2 = NULL;
             }
@@ -120,7 +121,7 @@ void func_002B3D90(u8 *arg0) {
                 SoundRpc_Send3(0, 0, 0x11, 0);
             }
             *(s32 *)((u8 *)temp_s1 + 0xC) = 8;
-            var_v1_2 = (s32 *)(&func_002B3C40);
+            var_v1_2 = (int *)(&func_002B3C40);
             if (&func_002B3C40 == NULL) {
                 var_v1_2 = NULL;
             }
@@ -152,7 +153,7 @@ loop_34:
                     var_t1 += 1;
                     temp_a0_2 = temp_a2 * 4;
                     var_t3 += 4;
-                    var_t2 += *(u8 *)((u8 *)(&D_004E0660 + ((temp_a0_2 + temp_a2) * 8)) + 8) & 7;
+                    var_t2 += *(u8 *)((u8 *)(((u8 *)&D_004E0660) + ((temp_a0_2 + temp_a2) * 8)) + 8) & 7;
                     if (var_t1 >= temp_a3_2) {
 
                     } else {
@@ -176,7 +177,7 @@ block_41:
         if ((var_a1 > 0) && (var_a1 < 0x253)) {
             func_00283D00(*(s32 *)((u8 *)gSklEdit + 0x38) + 0x20, var_a1, 0, 0x11403000);
             SklSheet_SetIndex(0);
-            var_v1_3 = (s32 *)(&func_002B2D50);
+            var_v1_3 = (int *)(&func_002B2D50);
             *(void (**)(u8 *))((u8 *)temp_s2 + 4) = func_002B3D90;
             if (&func_002B2D50 == NULL) {
                 var_v1_3 = NULL;
@@ -201,7 +202,7 @@ loop_53:
                     var_t0 += 1;
                     temp_v1_2 = temp_a1 * 4;
                     var_t2_2 += 4;
-                    var_t1_2 += *(u8 *)((u8 *)(&D_004E0660 + ((temp_v1_2 + temp_a1) * 8)) + 8) & 7;
+                    var_t1_2 += *(u8 *)((u8 *)(((u8 *)&D_004E0660) + ((temp_v1_2 + temp_a1) * 8)) + 8) & 7;
                     if (var_t0 >= temp_a2_2) {
 
                     } else {
@@ -235,7 +236,7 @@ block_60:
             *(s16 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x30) * 2) + gSklEdit) + 0x34) = 1;
         } else {
             func_002D2370(*(s32 *)((u8 *)gSklEdit + 0x30), 0, 0, 0);
-            var_v1_4 = (s32 *)(&func_002B2D00);
+            var_v1_4 = (int *)(&func_002B2D00);
             *(void (**)(u8 *))((u8 *)temp_s2 + 4) = func_002B3D90;
             if (&func_002B2D00 == NULL) {
                 var_v1_4 = NULL;
@@ -260,7 +261,7 @@ loop_79:
                     var_t0_2 += 1;
                     temp_v1_3 = temp_a1_2 * 4;
                     var_t2_3 += 4;
-                    var_t1_3 += *(u8 *)((u8 *)(&D_004E0660 + ((temp_v1_3 + temp_a1_2) * 8)) + 8) & 7;
+                    var_t1_3 += *(u8 *)((u8 *)(((u8 *)&D_004E0660) + ((temp_v1_3 + temp_a1_2) * 8)) + 8) & 7;
                     if (var_t0_2 >= temp_a2_3) {
 
                     } else {
@@ -303,7 +304,7 @@ block_93:
         if (var_v0_2 == 0) {
             *(s32 *)((u8 *)gSklEdit + 0x30) = 4;
             func_002D2370(*(s32 *)((u8 *)gSklEdit + 0x30), var_a1_2, temp_a2_3, (s32) var_a3);
-            var_v1_6 = (s32 *)(&func_002B2D00);
+            var_v1_6 = (int *)(&func_002B2D00);
             *(void (**)(u8 *))((u8 *)temp_s2 + 4) = func_002B3D90;
             if (&func_002B2D00 == NULL) {
                 var_v1_6 = NULL;
@@ -356,7 +357,7 @@ block_93:
             *(s32 *)((u8 *)temp_a1_3 + 8) = 0x2710;
         }
         *(s32 *)((u8 *)temp_s1 + 0xC) = 6;
-        var_v1_7 = (s32 *)(&func_002B3BA0);
+        var_v1_7 = (int *)(&func_002B3BA0);
         if (&func_002B3BA0 == NULL) {
             var_v1_7 = NULL;
         }

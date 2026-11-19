@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/battle/scr_func/func_002AA6B0.s */
 
 // src/battle/scr_func.c func_002AA6B0 diff diff=89/124
-s32 func_002AA6B0(u8 *arg0, u8 *arg1) {
+s32 func_002AA6B0(s32 *arg0, s32 *arg1) {
     f32 temp_f1;
     f32 temp_f1_2;
     f32 temp_f1_3;
@@ -18,7 +18,7 @@ s32 func_002AA6B0(u8 *arg0, u8 *arg1) {
     u8 *temp_v0;
 
     temp_v0 = *(u8 **)((u8 *)arg0 + 0);
-    temp_a3 = (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x2C)) + 0xC) * 0xD0) + (&D_005BC9E0 + (*(s32 *)((u8 *)temp_v0 + 0) * 0x1A0));
+    temp_a3 = (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x2C)) + 0xC) * 0xD0) + (((u8 *)&D_005BC9E0) + (*(s32 *)((u8 *)temp_v0 + 0) * 0x1A0));
     temp_a2 = *(u8 **)((u8 *)temp_a3 + 4);
     temp_f1 = *(f32 *)((u8 *)temp_a3 + 0x24);
     temp_a1 = temp_a2 + *(temp_a2 + *(s32 *)((u8 *)temp_a2 + 0x14) + (*(s32 *)((u8 *)temp_a3 + 8) * 4));

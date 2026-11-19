@@ -15,10 +15,10 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 extern u16 D_00493086;
 extern void func_00228410(void);
-extern void func_0022CD00(void *);
-extern char D_00492FCE[];
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022CD00(void *);
+extern char D_00492FCE[];
 void func_002DF930(void) {
     s32 (*temp_v0)();
     s32 (*temp_v0_2)();
@@ -99,3 +99,17 @@ void func_002DF930(void) {
     func_00228410();
     A2d_FlushList();
 }
+
+/* Similar function already in C: func_002D4600 (src/unk/unk_2D2530.c), similarity 0.71.
+ * It is the template below (not built). */
+#if 0
+void func_002D4600(Vec4 *a, Vec4 *b, Vec4 *c, Vec4 *d) {
+    Obj2D2530 *s = gOptionWork;
+    Model2D2530 *m;
+
+    DrawModel(s, s->f278, 0, a);
+    DrawModel(gOptionWork, s->f27C, 0, b);
+    m = s->f280;
+    DrawModel(gOptionWork, m, 0, c);
+}
+#endif

@@ -47,7 +47,7 @@ void func_001B70B0(u8 *arg0) {
             *(s32 *)((u8 *)arg0 + 0xCA8) = 0x3E19999A;
             *(s16 *)((u8 *)arg0 + 0x1A38) = (s16) (*(s16 *)((u8 *)arg0 + 0x1A38) + *(s16 *)((u8 *)arg0 + 0x1A36));
             *(s16 *)((u8 *)arg0 + 0x1A36) = 0;
-            func_001D9960((struct Fighter *)(arg0), 0xE, 0);
+            func_001D9960((Fighter *)(arg0), 0xE, 0);
         }
     } else {
         Btl_UpdateLimitXY(0, 0x3F0CCCCD, 0);

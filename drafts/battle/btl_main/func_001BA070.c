@@ -1,14 +1,15 @@
 /* Draft (not built): func_001BA070 at 0x001BA070, size 0x4F8, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ' to 'float' mwccps2.exe Compiler: @ 3377: if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), temp_a1, 0x43340000) != 0) {
+ * Status: size, 181 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x490, original 0x4F8
  * Original: asm/nonmatchings/battle/btl_main/func_001BA070.s */
 
-// src/battle/btl_main.c func_001BA070 cerr diff=-1/0
+// src/battle/btl_main.c func_001BA070 size diff=181/292
 s32 func_001E8FC0(void *);
 s32 func_001E92D0(void *);
 void func_001BA070(u8 *arg0) {
     s32 sp40;
+    BattleWork *temp_s0;
     f32 temp_f20;
     s16 *temp_s0_2;
     s16 *temp_s0_3;
@@ -23,11 +24,10 @@ void func_001BA070(u8 *arg0) {
     s32 var_v0_3;
     s32 var_v0_4;
     u8 *temp_a1;
-    u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gBattle);
-    temp_f20 = *(f32 *)((u8 *)temp_s0 + 0x88F0) * *(f32 *)((u8 *)arg0 + 0xC9C);
-    Fighter_ResetMotion(0, 0);
+    temp_s0 = gBattle;
+    temp_f20 = temp_s0->unk88F0 * *(f32 *)((u8 *)arg0 + 0xC9C);
+    Fighter_ResetMotion(arg0, 0);
     func_001E4E20(arg0, 0);
     if ((*(s8 *)((u8 *)arg0 + 0x2013) <= 0) && (*(s8 *)((u8 *)arg0 + 0x1FF9) != 0)) {
         if (*(s16 *)((u8 *)arg0 + 0x13A4) >= 0) {
@@ -35,14 +35,14 @@ void func_001BA070(u8 *arg0) {
                 temp_a0 = *(s32 *)((u8 *)arg0 + 0x13B0);
                 temp_a1 = arg0 + 0x1360;
                 if ((temp_a0 >= -6) && (temp_a0 < 7)) {
-                    temp_s0_2 = (s16 *)(temp_a1 + (*(s32 *)((u8 *)temp_a1 + 0x5C) * 4) + 0xE4);
+                    temp_s0_2 = (short *)(temp_a1 + (*(s32 *)((u8 *)temp_a1 + 0x5C) * 4) + 0xE4);
                     if (gBattle != NULL) {
                         var_v0 = *(s32 *)((u8 *)gBattle + 0x8AA8) & 0x2000;
                     } else {
                         var_v0 = 0;
                     }
                     if (var_v0 == 0) {
-                        if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), temp_a1, 0x43340000) != 0) {
+                        if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 180.0f) != 0) {
                             temp_v1 = *temp_s0_2;
                             var_v0_2 = 0x25;
                             if (temp_v1 == -1) {
@@ -79,7 +79,7 @@ block_22:
                         *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
                     }
                     *(s8 *)((u8 *)arg0 + 0x2006) = 0;
-                    *(&D_00468460 + (var_v0_2 * 4))(arg0);
+                    D_00468460[var_v0_2](arg0);
                     func_002CBFF0(1, arg0);
                     return;
                 }
@@ -99,7 +99,7 @@ block_22:
                     *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
                 }
                 *(s8 *)((u8 *)arg0 + 0x2006) = 0;
-                *(&D_00468460 + (temp_v0 * 4))(arg0);
+                D_00468460[temp_v0](arg0);
                 func_002CBFF0(1, arg0);
                 return;
             }
@@ -120,7 +120,7 @@ block_37:
     } else {
         *(f32 *)((u8 *)arg0 + 0x44) = (f32) *(f32 *)((u8 *)arg0 + 0x1844);
     }
-    if (*(s16 *)((u8 *)temp_s0 + 0x8944) == 0) {
+    if (temp_s0->unk8944 == 0) {
         if (!(*(f32 *)((u8 *)arg0 + 0xCB8) < 30.0f)) {
             func_001DD680(arg0);
         }
@@ -138,14 +138,14 @@ block_37:
             if (*(s8 *)((u8 *)arg0 + 0x2013) == 1) {
 
             } else if (*(s16 *)((u8 *)arg0 + 0x13A4) >= 0) {
-                temp_s0_3 = (s16 *)(arg0 + 0x1360 + (*(s32 *)((u8 *)arg0 + 0x13BC) * 4) + 0xE4);
+                temp_s0_3 = (short *)(arg0 + 0x1360 + (*(s32 *)((u8 *)arg0 + 0x13BC) * 4) + 0xE4);
                 if (gBattle != NULL) {
                     var_v0_4 = *(s32 *)((u8 *)gBattle + 0x8AA8) & 0x2000;
                 } else {
                     var_v0_4 = 0;
                 }
                 if (var_v0_4 == 0) {
-                    if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), (u8 *)0x43340000) != 0) {
+                    if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 180.0f) != 0) {
                         temp_v1_3 = *temp_s0_3;
                         var_v0_3 = 0x25;
                         if (temp_v1_3 == -1) {
@@ -185,7 +185,7 @@ block_70:
                 *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
             }
             *(s8 *)((u8 *)arg0 + 0x2006) = 0;
-            *(&D_00468460 + (var_v0_3 * 4))(arg0);
+            D_00468460[var_v0_3](arg0);
             func_002CBFF0(1, arg0);
         }
     }

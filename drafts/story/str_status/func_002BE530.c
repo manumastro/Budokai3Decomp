@@ -32,7 +32,7 @@ void func_002BE530(u8 *arg0) {
     u8 *temp_v1;
 
     temp_s1 = *(u8 **)((u8 *)arg0 + 0x1C);
-    temp_s2 = (u8 *)(D_0046FE44);
+    temp_s2 = (unsigned char *)(D_0046FE44);
     temp_s0 = *(s32 *)((u8 *)temp_s1 + 0xB4);
     spA0 = D_004562E0;
     temp_a0 = *(s32 *)((u8 *)arg0 + 0x14);
@@ -53,15 +53,15 @@ void func_002BE530(u8 *arg0) {
         temp_a1 = (((s64) ((s64) *(s16 *)((u8 *)temp_s2 + 0x34) << 0x30) >> 0x30) * 2) + 0x19;
         sp94 = temp_a1;
         *(u8 **)((u8 *)D_0047011C + 0x1A0) = temp_v1;
-        temp_v0 = (u8 *)(D_0047011C + 0x10);
-        sp78 = (u8 *)(D_0047011C + 0x10);
+        temp_v0 = (unsigned char *)(D_0047011C + 0x10);
+        sp78 = (unsigned char *)(D_0047011C + 0x10);
         sp74 = temp_v0;
         sp7C = temp_v0;
-        func_002CA2F0(&sp70, temp_a1);
+        func_002CA2F0((void **)(&sp70), (s32)(temp_a1));
         func_002BED90(sp9A);
         temp_a0_2 = *(u8 **)((u8 *)D_0047011C + 0x1B8);
         if (temp_a0_2 != NULL) {
-            Obj_ResetF38((s32)((void *)(temp_a0_2)));
+            Obj_ResetF38((s32)(temp_a0_2));
             *(u8 **)((u8 *)D_0047011C + 0x1B8) = NULL;
         }
         memset(&sp40, 0, 0x30);
@@ -73,7 +73,7 @@ void func_002BE530(u8 *arg0) {
         *(s32 *)((u8 *)D_0047011C + 0x1BC) = (s32) (*(s32 *)((u8 *)D_0047011C + 0x1BC) & ~2);
         temp_a0_3 = *(u8 **)((u8 *)D_0047011C + 0x1A4);
         if (temp_a0_3 != NULL) {
-            Obj_ResetF38((s32)((void *)(temp_a0_3)));
+            Obj_ResetF38((s32)(temp_a0_3));
             *(u8 **)((u8 *)D_0047011C + 0x1A4) = NULL;
         }
         return;

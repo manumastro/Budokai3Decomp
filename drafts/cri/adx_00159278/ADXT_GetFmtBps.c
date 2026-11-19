@@ -22,3 +22,15 @@ s32 ADXT_GetFmtBps(u8 *arg0)
   }
   return 0;
 }
+
+/* Similar function already in C: ADXT_IsCompleted (src/cri/adx_0015EFB0.c), similarity 0.73.
+ * It is the template below (not built). */
+#if 0
+s32 ADXT_IsCompleted(u8 *arg0) {
+    if (arg0 == NULL) {
+        ADXERR_CallErrFunc1(&D_00461D50);
+        return -1;
+    }
+    return *(s8 *)((u8 *)arg0 + 1) == 5;
+}
+#endif

@@ -1,10 +1,10 @@
 /* Draft (not built): func_002ACDB0 at 0x002ACDB0, size 0x3D0, segment battle/scr_func (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'sp30' mwccps2.exe Compiler: 1372: D_005BCF34 = sp34; @ 1371: D_005BCF30 = sp30;
+ * Status: size, 178 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x38C, original 0x3D0
  * Original: asm/nonmatchings/battle/scr_func/func_002ACDB0.s */
 
-// src/battle/scr_func.c func_002ACDB0 cerr diff=-1/0
+// src/battle/scr_func.c func_002ACDB0 size diff=178/227
 s32 amCamera_SetScreen(s32 *, void *, s32);
 s32 func_0012E100(void *, void *, s32, void *, f32);
 s32 func_00131D00(s32 *, s32, s128, s128, f32, f32);
@@ -33,6 +33,22 @@ extern s32 D_005BCF78;
 extern void func_00132DF0(void *);
 extern void func_0013B160(void *);
 s32 func_002ACDB0(u8 *arg0, u8 *arg1) {
+    s32 sp74;
+    s32 sp70;
+    s32 sp64;
+    s32 sp60;
+    s32 sp5C;
+    s32 sp58;
+    s32 sp54;
+    s32 sp50;
+    s32 sp4C;
+    s32 sp48;
+    s32 sp44;
+    s32 sp40;
+    s32 sp3C;
+    s32 sp38;
+    s32 sp34;
+    s32 sp30;
     s32 sp20;
     s32 sp68;
     s32 sp78;
@@ -49,7 +65,7 @@ s32 func_002ACDB0(u8 *arg0, u8 *arg1) {
     u8 *temp_s0;
 
     temp_a3 = *(u8 **)((u8 *)arg0 + 0);
-    temp_s0 = (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x2C)) + 8) * 0xB0) + (&D_005BC180 + (*(s32 *)((u8 *)temp_a3 + 0) * 0x160));
+    temp_s0 = (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x2C)) + 8) * 0xB0) + (((u8 *)&D_005BC180) + (*(s32 *)((u8 *)temp_a3 + 0) * 0x160));
     if (*(s32 *)((u8 *)temp_s0 + 0) == 0) {
         *(s32 *)((u8 *)arg0 + 0x10) = 0;
         return 1;

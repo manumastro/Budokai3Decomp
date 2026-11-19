@@ -24,7 +24,7 @@ void func_001E2630(u8 *arg0) {
     u8 *var_a1;
     u8 *var_s0;
 
-    temp_s1 = (u8 *)(gBattle);
+    temp_s1 = (unsigned char *)(gBattle);
     temp_a0 = *(s32 *)((u8 *)arg0 + 0x1CFC);
     var_s0 = temp_s1 + 0x830;
     if (temp_a0 == 0x2A) {
@@ -55,7 +55,7 @@ void func_001E2630(u8 *arg0) {
         if (*(s32 *)((u8 *)gBattle + 0x88F8) == 4) {
             var_a2 = 0;
             if (*(s32 *)((u8 *)gBattle + 0x88D8) > 0) {
-                var_a1 = (u8 *)(gBattle);
+                var_a1 = (unsigned char *)(gBattle);
                 do {
                     if (*(s8 *)((u8 *)var_a1 + 0x2828) != -1) {
                         *(s8 *)((u8 *)var_a1 + 0x2828) = 2;
@@ -68,14 +68,14 @@ void func_001E2630(u8 *arg0) {
         *(s8 *)((u8 *)arg0 + 0x183F) = -1;
         *(s32 *)((u8 *)arg0 + 0x1840) = 0;
         func_001D97D0((struct Fighter *)(arg0));
-        func_001D7CC0((void *)(arg0), 0);
+        func_001D7CC0((Fighter *)(arg0), 0);
         *(s32 *)((u8 *)arg0 + 0xC9C) = 0x3F800000;
         temp_a0_2 = *(s8 *)((u8 *)arg0 + 0x1FF8);
         if (temp_a0_2 == -1) {
             *(s16 *)((u8 *)arg0 + 0xCB4) = 1;
             *(s8 *)((u8 *)arg0 + 0x1FF9) = 1;
             *(s32 *)((u8 *)arg0 + 0xB70) = 0x100;
-            func_001C75D0((void *)(arg0), 0xF);
+            func_001C75D0((Fighter *)(arg0), 0xF);
             *(s8 *)((u8 *)temp_s1 + 0x8AAF) = 0;
             *(s8 *)((u8 *)arg0 + 0xCBD) = 1;
             *(s8 *)((u8 *)arg0 + 0x2004) = 0;
@@ -94,7 +94,7 @@ void func_001E2630(u8 *arg0) {
             *(s16 *)((u8 *)arg0 + 0x181E) = 0;
             *(s32 *)((u8 *)arg0 + 0x1814) = 0;
             *(s32 *)((u8 *)arg0 + 0x1810) = 0;
-            func_001C75D0((void *)(arg0), 0x10);
+            func_001C75D0((Fighter *)(arg0), 0x10);
             *(s8 *)((u8 *)arg0 + 0x1FF8) = 2;
             *(s8 *)((u8 *)arg0 + 0x2004) = 1;
             *(s8 *)((u8 *)arg0 + 0xCBD) = 0;

@@ -1,12 +1,15 @@
 /* Draft (not built): func_001416A0 at 0x001416A0, size 0x280, segment sys/amSofdec (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'sp78' @ 226: temp_f2 = 2.0f * ((sp70 * sp78) - (sp74 * sp7C));
+ * Status: size, 146 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x70, original 0x280
  * Original: asm/nonmatchings/sys/amSofdec/func_001416A0.s */
 
-// src/sys/amSofdec.c func_001416A0 cerr diff=-1/0
+// src/sys/amSofdec.c func_001416A0 size diff=146/28
 extern void func_0011F680(void);
 void func_001416A0(f32 *arg0, f32 *arg1, f32 *arg2, s32 arg3) {
+    s32 sp7C;
+    s32 sp74;
+    s32 sp78;
     f32 sp70;
     f32 temp_f21;
     f32 temp_f2;

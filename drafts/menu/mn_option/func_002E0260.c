@@ -1,10 +1,10 @@
 /* Draft (not built): func_002E0260 at 0x002E0260, size 0x438, segment menu/mn_option (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); version from 'int *' to 'float' @ 527: 2D2AD0(&sp80, &sp70, 0x3F800000, 0x42200000, *(f32 *)((u8 *)gOptionState + 0xC));
+ * Status: size, 144 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x3D4, original 0x438
  * Original: asm/nonmatchings/menu/mn_option/func_002E0260.s */
 
-// src/menu/mn_option.c func_002E0260 cerr diff=-1/0
+// src/menu/mn_option.c func_002E0260 size diff=144/245
 s32 SoundRpc_SetVolume(s32, s32, f32);
 s32 func_00148360(s8, u16, f32);
 s32 func_002D2530(s32, s32, s32, f32 *);
@@ -32,11 +32,11 @@ void func_002E0260(u8 *arg0) {
     f32 sp64;
     s32 sp68;
     s32 sp6C;
-    s32 sp70;
+    f32 sp70;
     s32 sp74;
     s32 sp78;
     s32 sp7C;
-    s32 sp80;
+    f32 sp80;
     s32 sp84;
     s32 sp88;
     s32 sp8C;
@@ -60,13 +60,13 @@ void func_002E0260(u8 *arg0) {
     *(f32 *)((u8 *)temp_s1 + 0x10) = (f32) (*(f32 *)((u8 *)temp_s1 + 0x10) + var_f1);
     sp74 = 0x43000000;
     sp84 = 0x42200000;
-    sp70 = 0x44070000;
-    sp80 = 0;
+    sp70 = 540.0f;
+    sp80 = 0.0f;
     sp88 = 0x3F800000;
     sp8C = 0x3F800000;
     sp78 = 0x3F800000;
     sp7C = 0x3F800000;
-    func_002D2AD0(&sp80, &sp70, 0x3F800000, 0x42200000, *(f32 *)((u8 *)gOptionState + 0xC));
+    func_002D2AD0(*(f32 *)((u8 *)gOptionState + 0xC), &sp80, &sp70);
     sp68 = 0x42A00000;
     sp6C = 0x3F800000;
     sp60 = D_0047042C / 2.0f;
@@ -86,7 +86,7 @@ void func_002E0260(u8 *arg0) {
         *(s8 *)((u8 *)temp_s1 + 0x14) = 1;
         func_002E0050(0);
         func_00148360(0x3F800000, 0, 0);
-        var_v1 = (s32 *)(&func_002E0170);
+        var_v1 = (int *)(&func_002E0170);
         if (&func_002E0170 == NULL) {
             var_v1 = NULL;
         }
@@ -102,7 +102,7 @@ void func_002E0260(u8 *arg0) {
         *(s8 *)((u8 *)temp_s1 + 0x14) = 1;
         func_002E0050(0);
         func_00148360(0x3F800000, 0, 0);
-        var_v1_2 = (s32 *)(&func_002E0170);
+        var_v1_2 = (int *)(&func_002E0170);
         if (&func_002E0170 == NULL) {
             var_v1_2 = NULL;
         }
@@ -119,7 +119,7 @@ void func_002E0260(u8 *arg0) {
             func_002E0050(0);
             func_00148360(0x3F800000, 0, 0);
         }
-        var_v1_3 = (s32 *)(&func_002E0170);
+        var_v1_3 = (int *)(&func_002E0170);
         if (&func_002E0170 == NULL) {
             var_v1_3 = NULL;
         }

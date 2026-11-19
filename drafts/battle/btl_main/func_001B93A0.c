@@ -1,14 +1,15 @@
 /* Draft (not built): func_001B93A0 at 0x001B93A0, size 0x460, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'sp44' @ 3337: *(f32 *)((u8 *)arg0 + 0x1810) = (f32) (3.0f * sp44);
+ * Status: size, 157 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x440, original 0x460
  * Original: asm/nonmatchings/battle/btl_main/func_001B93A0.s */
 
-// src/battle/btl_main.c func_001B93A0 cerr diff=-1/0
+// src/battle/btl_main.c func_001B93A0 size diff=157/272
 extern void (*D_004684A4[])(void *);
 extern f32 func_001E52B0(s32);
 extern void func_001E4DA0(void *);
 void func_001B93A0(u8 *arg0) {
+    s32 sp44;
     s32 sp40;
     s32 *temp_a0_2;
     f32 temp_f1;
@@ -22,7 +23,7 @@ void func_001B93A0(u8 *arg0) {
     u8 *temp_a1;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gBattle);
+    temp_s0 = (unsigned char *)(gBattle);
     var_f22 = *(f32 *)((u8 *)arg0 + 0x1830) / *(f32 *)((u8 *)arg0 + 0x182C);
     temp_f20 = *(f32 *)((u8 *)temp_s0 + 0x88F0) * *(f32 *)((u8 *)arg0 + 0xC9C);
     if (var_f22 < 1.0f) {
@@ -81,7 +82,7 @@ block_13:
                 }
             }
             if (!(var_f22 < 0.6f)) {
-                temp_a0_2 = (s32 *)(arg0 + 0xD0);
+                temp_a0_2 = (int *)(arg0 + 0xD0);
                 func_00146F10(temp_a0_2, temp_a0_2, 0.75f);
                 *(s8 *)((u8 *)arg0 + 0x2004) = 1;
                 *(s8 *)((u8 *)arg0 + 0x1FFB) = 1;

@@ -22,7 +22,7 @@ s32 func_002908D0(s32 arg0, s32 arg1) {
     if (*(s32 *)((u8 *)D_004708A4 + 0x1AB0) == 0) {
         return -1;
     }
-    var_s3 = (u8 *)(D_004708A4 + 0x430);
+    var_s3 = (unsigned char *)(D_004708A4 + 0x430);
     var_s0 = 0;
 loop_4:
     temp_a0 = *(s32 *)((u8 *)var_s3 + 0x40);
@@ -52,7 +52,7 @@ block_8:
     }
     var_s1 |= 0x10000;
     temp_t0 = *(u8 **)((u8 *)((var_s0 * 4) + D_004708A4) + 0x334);
-    temp_a2 = (u8 *)(D_004708A4 + ((var_s0 + 5) * 0x10));
+    temp_a2 = (unsigned char *)(D_004708A4 + ((var_s0 + 5) * 0x10));
     *(s32 *)((u8 *)temp_a2 + 0x354) = var_s1;
     *(f32 *)((u8 *)temp_a2 + 0x358) = (f32) *(s32 *)((u8 *)(((var_s1 & 0xFFFF) * 0x10) + *(s32 *)((u8 *)(*(u8 **)((u8 *)((((var_s1 >> 0x10) - 1) * 4) + temp_t0) + 0x46C)) + 0x14)) + 8);
     *(s32 *)((u8 *)temp_a2 + 0x35C) = 0;

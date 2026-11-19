@@ -58,7 +58,7 @@ void func_002E5C20(u8 *arg0) {
     var_s1 = 0;
     temp_s3 = *(u8 **)((u8 *)arg0 + 0x30);
     var_s0 = 0;
-    func_002E4D60((struct Sub57 *)(temp_s3));
+    func_002E4D60((Sub57 *)(temp_s3));
     if (*(u16 *)((u8 *)temp_s3 + 0xD0) & 0x80) {
         var_t0 = 0;
         var_a3 = &D_00470838;
@@ -112,24 +112,24 @@ void func_002E5C20(u8 *arg0) {
             }
         }
         temp_a3 = *(s16 *)((u8 *)temp_s3 + 0xF0) * 4;
-        temp_a2_2 = (u8 *)(&D_00453490 + temp_a3);
+        temp_a2_2 = (unsigned char *)(&D_00453490 + temp_a3);
         temp_a0 = *((((s64) (var_v0 << 0x30) >> 0x30) * 2) + temp_a2_2);
         D_004B4B5B = (s8) temp_a0;
         D_005C9ED4 = temp_a0;
         *(s8 *)((u8 *)temp_s3 + 0xF4) = 4;
         *(s32 *)((u8 *)temp_s3 + 0x10C) = 0x420C0000;
         temp_a0_2 = *(u8 **)((u8 *)temp_s3 + 4);
-        D_00470704 = (s32)(temp_a0_2);
+        D_00470704 = (int)(temp_a0_2);
         D_0047070C = 0x7000;
         D_00470708 = 0;
-        amModel_SetCurrent(temp_a0_2, 0x7000, temp_a2_2, temp_a3);
+        amModel_SetCurrent((s32)(temp_a0_2), 0x7000, temp_a2_2, temp_a3);
         D_00470238 = 0;
         temp_a0_3 = *(s32 *)((u8 *)temp_s3 + 0x14);
         if (temp_a0_3 != 0) {
             func_0022D0E0(temp_a0_3, 0);
         }
         *(s32 *)((u8 *)temp_s3 + 0x14) = func_0022D860(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0)) + 0x14)) + 0x10), 0);
-        var_v1 = (s32 *)(&func_002E5980);
+        var_v1 = (int *)(&func_002E5980);
         *(s16 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x114)) + 0x34) = -1;
         *(s8 *)((u8 *)temp_s3 + 0xCE) = 0;
         if (&func_002E5980 == NULL) {
@@ -147,8 +147,8 @@ void func_002E5C20(u8 *arg0) {
         *(s8 *)((u8 *)temp_s3 + 0xCE) = 0;
         *(s32 *)((u8 *)temp_s3 + 0x10C) = 0x42700000;
         *(s32 *)((u8 *)temp_s3 + 0x2C) = 0;
-        ArenaStageSel_CreateObj((struct Ctx2E4 *)(temp_s3), -1);
-        var_v1_2 = (s32 *)(&func_002E5690);
+        ArenaStageSel_CreateObj(temp_s3,(struct Ctx2E4 *)(-1));
+        var_v1_2 = (int *)(&func_002E5690);
         if (&func_002E5690 == NULL) {
             var_v1_2 = NULL;
         }
@@ -176,16 +176,16 @@ loop_39:
                 *(s16 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0x114)) + 0x34) = (s16) *(s16 *)((u8 *)temp_s3 + 0xF0);
                 *(s8 *)((u8 *)temp_s3 + 0xCE) = 0;
                 temp_a0_4 = *(u8 **)((u8 *)temp_s3 + 4);
-                D_00470704 = (s32)(temp_a0_4);
+                D_00470704 = (int)(temp_a0_4);
                 D_0047070C = 0x7000;
                 D_00470708 = 0;
-                amModel_SetCurrent(temp_a0_4, 0x7000, var_a2_2, var_a3_2);
+                amModel_SetCurrent((s32)(temp_a0_4), 0x7000, var_a2_2, var_a3_2);
                 D_00470238 = 0;
                 temp_a0_5 = *(s32 *)((u8 *)temp_s3 + 0x20);
                 if (temp_a0_5 != 0) {
                     func_0022D0E0(temp_a0_5, 0);
                 }
-                *(s32 *)((u8 *)temp_s3 + 0x20) = func_0022D670(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0)) + 0x1C) + (*(&D_0046F4B8 + *(s16 *)((u8 *)temp_s3 + 0xF0)) * 4)), 0);
+                *(s32 *)((u8 *)temp_s3 + 0x20) = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 0)) + 0x1C) + (*(((u8 *)&D_0046F4B8) + *(s16 *)((u8 *)temp_s3 + 0xF0)) * 4)), 0);
                 return;
             }
             var_a3_2 += 1;
@@ -219,7 +219,7 @@ loop_39:
                 }
                 *(s32 *)((u8 *)temp_s3 + 0x100) = (s32) -*(s32 *)((u8 *)temp_s3 + 0x104);
             }
-            var_v1_3 = (s32 *)(&func_002E5B10);
+            var_v1_3 = (int *)(&func_002E5B10);
             *(s16 *)((u8 *)temp_s3 + 0xF0) = (s16) *(s16 *)((u8 *)((*(u8 *)((u8 *)temp_s3 + 0xF2) * 0xC) + temp_s3) + 0x38);
             *(s32 *)((u8 *)temp_s3 + 0xFC) = (s32) *(s32 *)((u8 *)((*(u8 *)((u8 *)temp_s3 + 0xF2) * 0xC) + temp_s3) + 0x34);
             *(s32 *)((u8 *)temp_s3 + 0x108) = 0x41400000;

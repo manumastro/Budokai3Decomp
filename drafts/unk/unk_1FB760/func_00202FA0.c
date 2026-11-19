@@ -1,10 +1,10 @@
 /* Draft (not built): func_00202FA0 at 0x00202FA0, size 0x2B0, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); .exe Compiler: 570: *D_00495758 = *(s3232 *)((u8 *)var_s3 + 0x74); @ 569: *D_00495718 = *(s3232 *)((u8 *)var_s3 + 0x70);
+ * Status: size, 87 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x254, original 0x2B0
  * Original: asm/nonmatchings/unk/unk_1FB760/func_00202FA0.s */
 
-// src/unk/unk_1FB760.c func_00202FA0 cerr diff=-1/0
+// src/unk/unk_1FB760.c func_00202FA0 size diff=87/149
 s32 DrawFlags_Apply(s32, s32, s32, s32);
 s32 amGs_SetReg32(s32, s32);
 s32 amGs_SetReg64(s32, s64);
@@ -70,11 +70,11 @@ loop_20:
                 M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
                 var_v0 = &sp60;
             } else {
-                var_v0 = (s32 *)(var_s3 + 0x60);
+                var_v0 = (int *)(var_s3 + 0x60);
             }
             func_00133980(*(f32 *)((u8 *)var_v0 + 0), *(f32 *)((u8 *)var_v0 + 4), *(f32 *)((u8 *)var_v0 + 8), *(f32 *)((u8 *)var_v0 + 0xC));
-            *D_00495718 = *(s3232 *)((u8 *)var_s3 + 0x70);
-            *D_00495758 = *(s3232 *)((u8 *)var_s3 + 0x74);
+            *D_00495718 = *(s32 *)((u8 *)var_s3 + 0x70);
+            *D_00495758 = *(s32 *)((u8 *)var_s3 + 0x74);
             *(s32 *)((u8 *)D_00470648 + 8) = (s32) *(s32 *)((u8 *)temp_s4 + 0x5C);
             func_0013E0A0(D_00470648);
             func_0013B060(NULL);

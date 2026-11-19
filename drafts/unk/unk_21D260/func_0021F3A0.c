@@ -1,10 +1,10 @@
 /* Draft (not built): func_0021F3A0 at 0x0021F3A0, size 0x39C, segment unk/unk_21D260 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 155 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x258, original 0x39C
+ * Status: size, 151 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x244, original 0x39C
  * Original: asm/nonmatchings/unk/unk_21D260/func_0021F3A0.s */
 
-// src/unk/unk_21D260.c func_0021F3A0 size diff=155/150
+// src/unk/unk_21D260.c func_0021F3A0 size diff=151/145
 s32 func_00139620(s32, s128 *, s32, s32, s32);
 extern s32 D_0044F760;
 extern s128 D_0044FA50;
@@ -20,6 +20,7 @@ void func_0021F3A0(u8 *arg0) {
     f32 sp8C;
     s128 sp90;
     f32 sp9C;
+    Work21D260 *temp_s2;
     f32 temp_f1;
     f32 temp_f1_2;
     f32 temp_f21;
@@ -29,16 +30,15 @@ void func_0021F3A0(u8 *arg0) {
     f32 var_f22;
     s32 temp_v1;
     u8 *temp_s0;
-    u8 *temp_s2;
 
     temp_s0 = *(u8 **)((u8 *)arg0 + 0x30);
-    temp_s2 = (u8 *)(gBtlSys);
+    temp_s2 = gBtlSys;
     if (*(s8 *)((u8 *)gBattle + 0x8975) != 1) {
         goto block_2;
     }
     func_002CFC50();
 block_2:
-    if (D_0058BB38 != 0) {
+    if (*D_0058BB38 != 0) {
         goto block_10;
     }
     temp_f1 = *(f32 *)((u8 *)temp_s0 + 0x20);
@@ -69,7 +69,7 @@ block_10:
     }
     goto block_16;
 block_12:
-    if (*(s32 *)((u8 *)temp_s2 + 0xE30) & 2) {
+    if (temp_s2->fE30 & 2) {
         goto block_14;
     }
     sp80 = D_0044FA50;
@@ -78,7 +78,7 @@ block_12:
 block_14:
     func_0021D6C0(0, temp_f21, 340.0f);
     func_0021F740(temp_s0);
-    if (!(*(s32 *)((u8 *)temp_s2 + 0xE30) & 2)) {
+    if (!(temp_s2->fE30 & 2)) {
         goto block_27;
     }
     sp70 = D_0044FA50;
@@ -95,7 +95,7 @@ block_16:
 block_19:
     var_f22 = (8.0f - *(f32 *)((u8 *)temp_s0 + 0x1C)) / 8.0f;
 block_20:
-    if (*(s32 *)((u8 *)temp_s2 + 0xE30) & 2) {
+    if (temp_s2->fE30 & 2) {
         goto block_26;
     }
     var_f1_2 = var_f22;

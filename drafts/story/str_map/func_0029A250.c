@@ -9,7 +9,7 @@ extern void amCdFs_Close(s32, s32);
 extern void amFile_Load(s32);
 s32 func_0022D860(s32, s32);
 s32 func_002995F0(s8);
-void func_0029A250(s32 arg0) {
+void func_0029A250(Task *arg0) {
     s32 temp_a0_3;
     s32 temp_a0_4;
     s32 temp_a0_5;
@@ -37,14 +37,14 @@ block_8:
             var_s1 = 0;
             var_s0 = 0;
             do {
-                temp_v1_2 = (u8 *)(gStrMap + var_s0);
+                temp_v1_2 = (unsigned char *)(gStrMap + var_s0);
                 temp_a0_2 = *(u8 **)((u8 *)temp_v1_2 + 0);
                 if (temp_a0_2 != NULL) {
                     *(s32 *)((u8 *)temp_v1_2 + 0x10) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0x40);
                     *(s32 *)((u8 *)(*(gStrMap + var_s0)) + 0x40) = 0;
                     amCdFs_Close(*(gStrMap + var_s0), 0);
                     *(gStrMap + var_s0) = 0;
-                    amFile_Load((s32)((void *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)(gStrMap + var_s0) + 0x10)) + 0x50))));
+                    amFile_Load((s32)(*(u8 **)((u8 *)(*(u8 **)((u8 *)(gStrMap + var_s0) + 0x10)) + 0x50)));
                 }
                 var_s1 += 1;
                 var_s0 += 4;

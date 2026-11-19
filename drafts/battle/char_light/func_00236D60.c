@@ -1,13 +1,14 @@
 /* Draft (not built): func_00236D60 at 0x00236D60, size 0x294, segment battle/char_light (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'spF8' @ 483: temp_f0 = func_001FE2B0(temp_s1 + 0x40, &spF0, spF0, spF8);
+ * Status: size, 114 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x184, original 0x294
  * Original: asm/nonmatchings/battle/char_light/func_00236D60.s */
 
-// src/battle/char_light.c func_00236D60 cerr diff=-1/0
+// src/battle/char_light.c func_00236D60 size diff=114/97
 f32 func_001FE2B0(s32, f32 *, f32, f32);
 extern void BtbBg_ClearFlag1(void);
 void func_00236D60(u8 *arg0) {
+    s32 spF8;
     s32 sp50;
     s32 sp54;
     s32 sp60;
@@ -34,7 +35,7 @@ void func_00236D60(u8 *arg0) {
     *(s8 *)((u8 *)temp_s2 + 0x8AAD) = 1;
     func_001E1300(0);
     BtbBg_ClearFlag1();
-    Btl_UpdateLimitXY(0, 0x3F4CCCCD, 0x3BA3D70A);
+    Btl_UpdateLimitXY(0, 0.8f, 0.005f);
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($a0) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v1) */);
     M2C_ERROR(/* unknown instruction: qmtc2.ni $v0, $vf3 */);
@@ -42,7 +43,7 @@ void func_00236D60(u8 *arg0) {
     M2C_ERROR(/* unknown instruction: vaddax.xyz ACC, $vf1, $vf0x */);
     M2C_ERROR(/* unknown instruction: vmaddx.xyz $vf1, $vf2, $vf3x */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a1) */);
-    temp_f0 = func_001FE2B0(temp_s1 + 0x40, &spF0, spF0, spF8);
+    temp_f0 = func_001FE2B0((s32)(temp_s1 + 0x40), (f32 *)(&spF0), spF0, spF8);
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
     M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
@@ -81,7 +82,7 @@ void func_00236D60(u8 *arg0) {
     sp88 = 3;
     sp80 = 0;
     func_001A8770(1, &sp60);
-    func_001E9B00(1, 0x1F, 0, 0, 0, 0x3F800000);
+    func_001E9B00(1, 0x1F, 0, 0, 0.0f, 1.0f);
     sp50 = -1;
     sp54 = 1;
     A2d_CallHandler(0x2E, &sp50);

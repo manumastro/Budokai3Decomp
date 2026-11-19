@@ -34,14 +34,14 @@ void func_0023E570(s32 arg0) {
     var_s1 = BtlSys_GetSlot(var_s0);
     func_0021C400(var_s0);
     temp_a0 = *(u8 **)((u8 *)var_s3 + 0xE84);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x04010000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x04010000);
     D_00470238 = 0;
     var_v1 = 0;
     var_s0 = var_s4 * 0x64;
-    var_t1 = &D_0058BF70 + var_s0;
+    var_t1 = ((u8 *)&D_0058BF70) + var_s0;
     temp_t0 = (*(u32 *)((u8 *)var_s2 + 0x10) / 1000) + ((u32) *(u32 *)((u8 *)var_s2 + 0x10) >> 0x1F);
     temp_a3 = (*(u32 *)((u8 *)var_s2 + 0x14) / 1000) + ((u32) *(u32 *)((u8 *)var_s2 + 0x14) >> 0x1F);
     var_a1 = 0x3E8;
@@ -59,7 +59,7 @@ void func_0023E570(s32 arg0) {
     } while (var_v1 < 7);
     if (*(s32 *)((u8 *)var_s1 + 0) & 0x200) {
         var_a1 = (u32) *(u32 *)((u8 *)var_s2 + 0x10) >> 0x1F;
-        temp_v1 = (f32 *)((((*(u32 *)((u8 *)var_s2 + 0x10) / 1000) + var_a1) * 4) + (&D_0058C190 + var_s0));
+        temp_v1 = (float *)((((*(u32 *)((u8 *)var_s2 + 0x10) / 1000) + var_a1) * 4) + (&D_0058C190 + var_s0));
         *temp_v1 += *(f32 *)((u8 *)var_s1 + 0x34);
     }
     if (*(s32 *)((u8 *)var_s1 + 0) & 0x400) {

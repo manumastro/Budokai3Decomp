@@ -8,7 +8,7 @@
 extern s32 D_0046B560;
 extern s64 D_004B4B48;
 extern s8 D_005D0082;
-void func_002FDAC0(s32 arg2) {
+void func_002FDAC0(s32 unused_arg0, s32 unused_arg1, s32 arg2) {
     s16 var_s3;
     s32 temp_a0_2;
     s32 temp_s0;
@@ -37,7 +37,7 @@ void func_002FDAC0(s32 arg2) {
     var_a2 = arg2;
     var_a3 = 0;
     temp_s2 = 1 << D_005D0082;
-    temp_s1 = (u8 *)(gTourMap + 0x2EC);
+    temp_s1 = (unsigned char *)(gTourMap + 0x2EC);
     if (temp_s2 > 0) {
         var_a2 = temp_s2 - 8;
         if (temp_s2 >= 9) {
@@ -64,10 +64,10 @@ void func_002FDAC0(s32 arg2) {
             } while (var_a3 < temp_s2);
         }
     }
-    var_a3_2 = (s8)(D_005CA030);
+    var_a3_2 = (*(signed char *)(D_005CA030));
     var_s3 = 0;
     if (var_a3_2 > 0) {
-        var_s0 = (s8 *)(&D_005CA030);
+        var_s0 = (signed char *)(&D_005CA030);
         do {
             var_a3_3 = func_0012EAE0(0x20) % (u32) (temp_s2 - var_s3);
             var_a2 = 0;
@@ -84,7 +84,7 @@ void func_002FDAC0(s32 arg2) {
             temp_a0 = temp_s1 + (var_a3_3 * 0x14);
             *(s16 *)((u8 *)temp_a0 + 8) = (s16) *(s8 *)((u8 *)var_s0 + 0xB70);
             *(s16 *)((u8 *)temp_a0 + 0xA) = var_s3;
-            var_a3_2 = (s8)(D_005CA030);
+            var_a3_2 = (*(signed char *)(D_005CA030));
             var_s3 += 1;
             var_s0 += 0xB80;
         } while (var_s3 < var_a3_2);
@@ -93,7 +93,7 @@ void func_002FDAC0(s32 arg2) {
     var_t2 = 0;
     if (var_a3_2 > 0) {
         if (var_a3_2 >= 9) {
-            var_t0 = (s8 *)(&D_005CA030);
+            var_t0 = (signed char *)(&D_005CA030);
             var_a2 = (s32) &D_0046B560;
             do {
                 var_t2 += 8;
@@ -105,7 +105,7 @@ void func_002FDAC0(s32 arg2) {
         }
         if (var_t2 < var_a3_2) {
             var_a3_2 = (s8) ((s64) ((s64) var_a3_2 << 0x38) >> 0x38);
-            var_t0_2 = &D_005CA030 + (var_t2 * 0xB80);
+            var_t0_2 = ((u8 *)&D_005CA030) + (var_t2 * 0xB80);
             var_a2 = (s32) &D_0046B560;
             do {
                 var_t2 += 1;

@@ -43,7 +43,7 @@ void func_0020E8F0(s32 arg0, s32 arg1, s32 arg2) {
     }
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($s0) */);
-    func_0013B160(&D_00568C90 + (arg0 * 0x2140) + 0x40);
+    func_0013B160(((u8 *)&D_00568C90) + (arg0 * 0x2140) + 0x40);
     M2C_ERROR(/* unknown instruction: lqc2 $vf31, ($v1) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf28, ($v1) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf29, 0x10($v1) */);

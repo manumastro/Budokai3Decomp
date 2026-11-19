@@ -1,10 +1,10 @@
 /* Draft (not built): func_0026DC80 at 0x0026DC80, size 0x1A8, segment menu/ess_main_2 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 82 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1B0, original 0x1A8
+ * Status: diff, 99 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/menu/ess_main_2/func_0026DC80.s */
 
-// src/menu/ess_main_2.c func_0026DC80 size diff=82/108
+// src/menu/ess_main_2.c func_0026DC80 diff diff=99/106
 extern s32 D_0046B8F2;
 extern s64 D_004B4B48;
 extern s32 D_004B4B50;
@@ -50,7 +50,7 @@ loop_13:
         var_t1 += 1;
         var_t0 += 2;
     } while (var_t1 < 0x1EF);
-    if (arg0 == D_004B4B40) {
+    if ((s32)(arg0) == (s32)(D_004B4B40)) {
         D_004B4B48 |= *(s64 *)((u8 *)arg0 + 0xB8);
     }
     if (*(u8 *)((u8 *)arg1 + 0x204) != 0) {
@@ -61,7 +61,7 @@ loop_13:
     do {
         if (*(arg1 + var_t0_2) != 0) {
             *(s32 *)((u8 *)arg0 + 0xAC) = (s32) (*(s32 *)((u8 *)arg0 + 0xAC) | (1 << (var_t0_2 - 0x205)));
-            if (arg0 == D_004B4B40) {
+            if ((s32)(arg0) == (s32)(D_004B4B40)) {
                 D_004B4B50 |= *(s32 *)((u8 *)arg0 + 0xAC);
             }
         }

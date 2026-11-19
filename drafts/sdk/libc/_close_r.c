@@ -18,3 +18,20 @@ void _close_r(s32 *arg0, s32 arg1)
     *arg0 = errno;
   }
 }
+
+/* Similar function already in C: _lseek_r (src/sdk/libc/ico_lseekr.c), similarity 0.96.
+ * It is the template below (not built). */
+#if 0
+long _lseek_r(Reent *ptr, int fd, long pos, int whence)
+{
+    long ret;
+    errno = 0;
+    ret = lseek(fd, pos, whence);
+    if (ret == -1) {
+        if (errno != 0) {
+            ptr->err = errno;
+        }
+    }
+    return ret;
+}
+#endif

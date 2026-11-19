@@ -51,7 +51,7 @@ void func_002CC840(u8 **arg0, u8 *arg1, s32 arg2) {
     var_s5 = spAC;
     D_00470238 = 0;
     var_s3 = 0;
-    var_s7 = (u8 *)(&D_0046EFF0 + (temp_s2 * 0x10));
+    var_s7 = (unsigned char *)(&D_0046EFF0 + (temp_s2 * 0x10));
     do {
         temp_s2_2 = *(u8 **)((u8 *)var_s5 + 4);
         if (temp_s2_2 != NULL) {
@@ -70,7 +70,7 @@ void func_002CC840(u8 **arg0, u8 *arg1, s32 arg2) {
             } else {
                 func_0022C7D0(var_s2, 0, *(&D_0046F0D0 + (temp_s4 * 0xC)));
             }
-            temp_s6 = (u8 *)(&D_0046F0D0 + (temp_s4 * 0xC));
+            temp_s6 = (unsigned char *)(&D_0046F0D0 + (temp_s4 * 0xC));
             var_s2_2 = *(u8 **)((u8 *)var_s2 + 0x2C);
             if (*(s32 *)((u8 *)temp_s6 + 4) != -1) {
                 if (arg2 == 2) {

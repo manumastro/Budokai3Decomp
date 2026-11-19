@@ -39,12 +39,12 @@ extern void func_00131B90(void *);
 extern void func_00132DF0(void *);
 extern void func_0013B0B0(void *);
 extern void amCamera_Init(void *);
+extern void *D_00470704;
+extern void amModel_SetCurrent();
 extern void func_0029D8B0(int, int);
 extern void func_0013B620(void *);
 extern void func_0022C6B0(void *);
-extern void *D_00470704;
 extern void func_0013AFA0(void *);
-extern void amModel_SetCurrent();
 extern void func_0029D8E0(void);
 void func_00300F70(void) {
     s32 sp70;
@@ -102,7 +102,7 @@ void func_00300F70(void) {
     var_s0 = 0;
     goto loop_4;
 block_1:
-    temp_v0_2 = (u8 *)(gTourMap + (var_s0 * 0x14));
+    temp_v0_2 = (unsigned char *)(gTourMap + (var_s0 * 0x14));
     if (*(u8 *)((u8 *)temp_v0_2 + 0x2F2) == 0) {
         goto block_3;
     }
@@ -120,7 +120,7 @@ loop_4:
     func_002284D0(0);
     func_00227A30(&D_00458A90);
     func_0022C430(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 0x1C)) + 0x298), 0.0f);
-    temp_s0 = (u8 *)(gTourMap + 0x16C);
+    temp_s0 = (unsigned char *)(gTourMap + 0x16C);
     func_0022C430(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 0x1C)) + 0x24C), (f32) *(s32 *)((u8 *)gTourMap + 0x174) * gFrameDelta);
     func_0022C430(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 0x1C)) + 0x258), (f32) *(s32 *)((u8 *)temp_s0 + 8) * gFrameDelta);
     func_0022C430(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 0x1C)) + 0x264), (f32) *(s32 *)((u8 *)temp_s0 + 8) * gFrameDelta);
@@ -147,7 +147,7 @@ loop_4:
     var_s4 = 0;
     goto loop_7;
 block_6:
-    temp_s3 = (u8 *)((var_s4 * 0x1C) + (&D_004580B0 + (*(s32 *)((u8 *)(**(u8 ***)((u8 *)((var_s4 * 4) + gTourMap) + 0x74)) + 0xC) * 0x38)));
+    temp_s3 = (unsigned char *)((var_s4 * 0x1C) + (&D_004580B0 + (*(s32 *)((u8 *)(**(u8 ***)((u8 *)((var_s4 * 4) + gTourMap) + 0x74)) + 0xC) * 0x38)));
     func_0013B0B0(NULL);
     func_0013BC00(*(f32 *)((u8 *)temp_s3 + 0) * *(&D_004701B0 + (var_s4 * 4)), *(f32 *)((u8 *)temp_s3 + 4) + D_004701A8, *(f32 *)((u8 *)temp_s3 + 8));
     temp_f12 = *(f32 *)((u8 *)temp_s3 + 0xC);

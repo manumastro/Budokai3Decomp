@@ -1,7 +1,7 @@
 /* Draft (not built): func_0027AAE0 at 0x0027AAE0, size 0x1B0, segment menu/ess_trade (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 0 + 8) * 2) + sp) + 0x98); @ 344: *)((u8 *)temp_s3 + 8)) + 0x1C) + (*(var_s0 + (*(u8 *)((u8 *)arg0 + 7) * 2)) * 4)), 0);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal data size @ 345: *)((u8 *)temp_s3 + 8)) + 0x1C) + (*(var_s0 + (*(u8 *)((u8 *)arg0 + 7) * 2)) * 4)), 0);
  * Original: asm/nonmatchings/menu/ess_trade/func_0027AAE0.s */
 
 // src/menu/ess_trade.c func_0027AAE0 cerr diff=-1/0
@@ -14,10 +14,11 @@ extern s16 D_0047002C;
 extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
-extern void *D_00470810;
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void *D_00470810;
 void func_0027AAE0(u8 *arg0) {
+    u8 sp[0x400];
     s128 sp60;
     s32 *sp70;
     s32 sp74;
@@ -50,10 +51,10 @@ void func_0027AAE0(u8 *arg0) {
             var_v1 += 1;
         } while (var_v0 != 0);
     }
-    sp70 = (s32 *)(arg0 + 0x38);
-    sp74 = (s32)(arg0 + 0x3C);
-    sp78 = (s32)(arg0 + 0x40);
-    sp7C = (s32)(arg0 + 0x48);
+    sp70 = (int *)(arg0 + 0x38);
+    sp74 = (int)(arg0 + 0x3C);
+    sp78 = (int)(arg0 + 0x40);
+    sp7C = (int)(arg0 + 0x48);
     sp60 = D_004532D0;
     temp_a0 = *(u8 **)((u8 *)temp_s3 + 0xC);
     D_00470704 = temp_a0;
@@ -80,5 +81,5 @@ void func_0027AAE0(u8 *arg0) {
     } else {
         var_v0_2 = *(s16 *)((u8 *)((*(u8 *)((u8 *)arg0 + 8) * 2) + sp) + 0x80);
     }
-    *(s32 *)((u8 *)arg0 + 0x44) = func_0022D670(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 8)) + 0x1C) + (((s64) ((s64) var_v0_2 << 0x30) >> 0x30) * 4)), 0);
+    *(s32 *)((u8 *)arg0 + 0x44) = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s3 + 8)) + 0x1C) + (((s64) ((s64) var_v0_2 << 0x30) >> 0x30) * 4)), 0);
 }

@@ -1,10 +1,10 @@
 /* Draft (not built): func_002350A0 at 0x002350A0, size 0x3D8, segment unk/unk_231E70 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); implicit conversion from 'int *' to 'int' @ 96: var_s0 = (s32 *)(func_001D9220(temp_a2 * 2, temp_a2, &D_0058BBB0) == 0);
+ * Status: size, 99 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x3C8, original 0x3D8
  * Original: asm/nonmatchings/unk/unk_231E70/func_002350A0.s */
 
-// src/unk/unk_231E70.c func_002350A0 cerr diff=-1/0
+// src/unk/unk_231E70.c func_002350A0 size diff=99/242
 s32 func_001D9220(s32, s32, s32 *);
 s32 func_001E3D60(s32, s32);
 s32 func_002350A0(u8 *arg0, s8 arg1) {
@@ -32,12 +32,12 @@ s32 func_002350A0(u8 *arg0, s8 arg1) {
     temp_s3 = *(u8 **)((u8 *)arg0 + 0x1354);
     spD0 = NULL;
     spC0 = 0;
-    temp_s2 = &D_0058BBB0 + (*(s32 *)((u8 *)arg0 + 0x1350) * 0xC0);
+    temp_s2 = ((u8 *)&D_0058BBB0) + (*(s32 *)((u8 *)arg0 + 0x1350) * 0xC0);
     temp_a2 = *(s32 *)((u8 *)temp_s3 + 0x1350);
     spA0 = (s32) *(s8 *)((u8 *)temp_s2 + 0xB5);
-    spE0 = &D_0058BBB0 + (temp_a2 * 0xC0);
+    spE0 = ((u8 *)&D_0058BBB0) + (temp_a2 * 0xC0);
     spB0 = (s32) *(u16 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 8)) + 0x12A);
-    var_s0 = (s32 *)(func_001D9220(temp_a2 * 2, temp_a2, &D_0058BBB0) == 0);
+    var_s0 = func_001D9220((s32)(temp_a2 * 2), (s32)(temp_a2), (s32 *)(&D_0058BBB0)) == 0;
     if (var_s0 == 0) {
         var_s0 = *(s16 *)((u8 *)temp_s2 + 0x1C) != 1;
     }
@@ -49,7 +49,7 @@ s32 func_002350A0(u8 *arg0, s8 arg1) {
     temp_v1 = *(u8 **)((u8 *)temp_s3 + 0x17A0);
     if (temp_v1 != NULL) {
         var_s6 = temp_v1;
-        spD0 = (s32 *)(temp_v1 + 0x20);
+        spD0 = (int *)(temp_v1 + 0x20);
         temp_v1_2 = *(s32 *)((u8 *)temp_v1 + 0x20);
         var_s7 = temp_s3 + 0x1360;
         if (temp_v1_2 & 0x200) {

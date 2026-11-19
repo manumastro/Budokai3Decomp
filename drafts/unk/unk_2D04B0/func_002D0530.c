@@ -1,10 +1,10 @@
 /* Draft (not built): func_002D0530 at 0x002D0530, size 0x300, segment unk/unk_2D04B0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); (u8 **)((u8 *)temp_s0 + 0)) + 0x1C) + temp_s2), &spC0, -1, *(f32 *)((u8 *)temp_s1 + 0x10)); @ 81: var_s5 = saved_reg_s5;
+ * Status: size, 95 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x2B8, original 0x300
  * Original: asm/nonmatchings/unk/unk_2D04B0/func_002D0530.s */
 
-// src/unk/unk_2D04B0.c func_002D0530 cerr diff=-1/0
+// src/unk/unk_2D04B0.c func_002D0530 size diff=95/174
 s32 func_00228240(f32 *);
 s32 func_00228430(s32);
 s32 func_002284D0(f32 *);
@@ -16,6 +16,10 @@ extern f32 gFrameDelta;
 extern void func_00228410(void);
 extern void func_0022CD00(void *);
 void func_002D0530(u8 *arg0) {
+    s32 spAC;
+    s32 spA8;
+    s32 spA4;
+    s32 saved_reg_s5;
     f32 spA0;
     f32 spC0;
     f32 spC4;
@@ -90,13 +94,13 @@ block_11:
                 temp_v0 = (s64) (var_s5 << 0x30) >> 0x30;
                 temp_s2 = temp_v0 * 4;
                 if (temp_v0 != -1) {
-                    func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x1C) + temp_s2), &spC0, -1, *(f32 *)((u8 *)temp_s1 + 0x10));
+                    func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x1C) + temp_s2), &spC0, -1, *(f32 *)((u8 *)temp_s1 + 0x10));
                     spE0 = spC0;
                     spE4 = spC4;
                     spE8 = spC8;
                     spEC = spCC;
-                    func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x1C) + temp_s2), &spF0, -1, *(f32 *)((u8 *)temp_s1 + 0x10));
-                    func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x1C) + temp_s2), &sp110, -1, *(f32 *)((u8 *)temp_s1 + 0x10));
+                    func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x1C) + temp_s2), &spF0, -1, *(f32 *)((u8 *)temp_s1 + 0x10));
+                    func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x1C) + temp_s2), &sp110, -1, *(f32 *)((u8 *)temp_s1 + 0x10));
                 }
                 if (*(u8 *)((u8 *)temp_s0 + 0x35) == var_s4) {
                     var_f0 = 1.0f;
@@ -119,7 +123,7 @@ block_11:
             if (temp_s1_2 != NULL) {
                 func_002284D0(&spE0);
                 func_00228430(0);
-                func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x1C) + ((*(u8 *)((u8 *)temp_s0 + 0x35) + 0x1E) * 4)), &spA0, -1, 0.0f);
+                func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x1C) + ((*(u8 *)((u8 *)temp_s0 + 0x35) + 0x1E) * 4)), &spA0, -1, 0.0f);
                 spE0 = spA0;
                 spE4 = spA4;
                 spE8 = spA8;

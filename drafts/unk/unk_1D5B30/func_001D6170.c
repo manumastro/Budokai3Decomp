@@ -1,12 +1,12 @@
 /* Draft (not built): func_001D6170 at 0x001D6170, size 0x300, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'unsigned char *' to 'int' @ 485: func_001E11E0(arg0, &sp20);
+ * Status: size, 113 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x278, original 0x300
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001D6170.s */
 
-// src/unk/unk_1D5B30.c func_001D6170 cerr diff=-1/0
+// src/unk/unk_1D5B30.c func_001D6170 size diff=113/158
 extern void func_0011F4C0(void);
-void func_001D6170(u8 *arg0) {
+void func_001D6170(Fighter *arg0) {
     f32 sp20;
     s32 sp24;
     s32 sp28;
@@ -37,13 +37,13 @@ void func_001D6170(u8 *arg0) {
     var_f3 = 0.0f;
     temp_t1 = *(u8 **)((u8 *)arg0 + 0x1CF4);
     temp_t0 = *(s16 *)((u8 *)temp_t1 + 0x34);
-    var_t3 = (u8 *)(gBattle + 0x830);
+    var_t3 = (unsigned char *)(gBattle + 0x830);
     if (temp_t0 > 0) {
         var_t4 = temp_t1;
         var_t2 = 0;
 loop_2:
         if (*(s16 *)((u8 *)var_t4 + 0x36) > 0) {
-            temp_a3 = &D_004E0660 + (*(s16 *)((u8 *)(temp_t1 + var_t2) + 0x36) * 0x28);
+            temp_a3 = ((u8 *)&D_004E0660) + (*(s16 *)((u8 *)(temp_t1 + var_t2) + 0x36) * 0x28);
             if (*(u8 *)((u8 *)temp_a3 + 0x15) == 5) {
                 temp_f2 = *(f32 *)((u8 *)arg0 + 0x17C0);
                 if (!(temp_f2 <= 500.0f)) {
@@ -65,7 +65,7 @@ loop_2:
     if (temp_a2 == 0) {
         var_a0 = NULL;
     } else {
-        var_a0 = &D_004E0660 + (temp_a2 * 0x28);
+        var_a0 = ((u8 *)&D_004E0660) + (temp_a2 * 0x28);
     }
     if (var_a0 != NULL) {
         var_a0_2 = *(u8 *)((u8 *)var_a0 + 0x15);
@@ -85,7 +85,7 @@ loop_2:
                     var_a3 = 0;
 loop_20:
                     if (*(s16 *)((u8 *)var_t0 + 0x36) > 0) {
-                        temp_t7 = &D_004E0660 + (*(s16 *)((u8 *)(temp_a2_2 + var_a3) + 0x36) * 0x28);
+                        temp_t7 = ((u8 *)&D_004E0660) + (*(s16 *)((u8 *)(temp_a2_2 + var_a3) + 0x36) * 0x28);
                         if (*(u8 *)((u8 *)temp_t7 + 0x15) == 0x14) {
                             var_f3 += ((f32) *(s16 *)((u8 *)temp_t7 + 0x16) * (100.0f + *(f32 *)((u8 *)var_t3 + 0x1FB8))) / 100.0f;
                         }
@@ -121,6 +121,6 @@ loop_20:
         M2C_ERROR(/* unknown instruction: mula.s $f3, $f2 */);
         sp2C = 0xC000C0;
         sp20 = M2C_ERROR(/* unknown instruction: madd.s $f0, $f1, $f0 */);
-        func_001E11E0(arg0, &sp20);
+        func_001E11E0((s32)(arg0), (void *)(&sp20));
     }
 }

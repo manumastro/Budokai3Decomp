@@ -50,7 +50,7 @@ void func_001DE4B0(u8 *arg0, s32 *arg1, s32 arg2, s32 arg3) {
     var_a2 = arg2;
     var_a3 = arg3;
     var_s2 = 0;
-    temp_s0 = (u8 *)(gBattle);
+    temp_s0 = (unsigned char *)(gBattle);
     *(s32 *)((u8 *)arg0 + 0x1A0C) = (s32) *(s16 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1CF4)) + 0x44);
     *(s32 *)((u8 *)arg0 + 0x1A10) = (s32) *(s16 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1CF4)) + 0x46);
     *(s32 *)((u8 *)arg0 + 0x1A14) = (s32) (0x64 - *(s16 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1CF4)) + 0x4A));
@@ -63,7 +63,7 @@ void func_001DE4B0(u8 *arg0, s32 *arg1, s32 arg2, s32 arg3) {
 loop_2:
         temp_s4 = *(s16 *)((u8 *)(var_s3 + var_t9) + 0x36);
         if (temp_s4 > 0) {
-            temp_s3 = &D_004E0660 + (temp_s4 * 0x28);
+            temp_s3 = ((u8 *)&D_004E0660) + (temp_s4 * 0x28);
             temp_s4_2 = *(u8 *)((u8 *)temp_s3 + 0x15);
             switch (temp_s4_2) {                    /* switch 1; irregular */
             case 1:                                 /* switch 1 */
@@ -128,9 +128,9 @@ block_51:
                 *(s32 *)((u8 *)arg0 + 0x1A14) = M2C_BITWISE(s32, (0.01f * ((f32) *(s32 *)((u8 *)arg0 + 0x1A14) * (100.0f - (((f32) *(s16 *)((u8 *)temp_s3 + 0x16) * (100.0f + *(f32 *)((u8 *)arg0 + 0x1FB8))) / 100.0f)))));
                 break;
             case 30:                                /* switch 1 */
-                *(s32 *)((u8 *)arg0 + 0x1A0C) = (s32) (*(s32 *)((u8 *)arg0 + 0x1A0C) + (*(s16 *)((u8 *)(&D_004E0660 + (*(s16 *)((u8 *)arg0 + 0x1FE6) * 0x28)) + 0x16) * (*(s8 *)((u8 *)arg0 + 0x1FC3) - 1)));
-                *(s32 *)((u8 *)arg0 + 0x1A0C) = (s32) (*(s32 *)((u8 *)arg0 + 0x1A0C) + (*(s16 *)((u8 *)(&D_004E0660 + (*(s16 *)((u8 *)arg0 + 0x1FEA) * 0x28)) + 0x16) * (*(s8 *)((u8 *)arg0 + 0x1FC4) - 1)));
-                var_s3_2 = M2C_BITWISE(f32, (*(s32 *)((u8 *)arg0 + 0x1A10) + (*(s16 *)((u8 *)(&D_004E0660 + (*(s16 *)((u8 *)arg0 + 0x1FE8) * 0x28)) + 0x16) * (*(s8 *)((u8 *)arg0 + 0x1FC8) - 1))));
+                *(s32 *)((u8 *)arg0 + 0x1A0C) = (s32) (*(s32 *)((u8 *)arg0 + 0x1A0C) + (*(s16 *)((u8 *)(((u8 *)&D_004E0660) + (*(s16 *)((u8 *)arg0 + 0x1FE6) * 0x28)) + 0x16) * (*(s8 *)((u8 *)arg0 + 0x1FC3) - 1)));
+                *(s32 *)((u8 *)arg0 + 0x1A0C) = (s32) (*(s32 *)((u8 *)arg0 + 0x1A0C) + (*(s16 *)((u8 *)(((u8 *)&D_004E0660) + (*(s16 *)((u8 *)arg0 + 0x1FEA) * 0x28)) + 0x16) * (*(s8 *)((u8 *)arg0 + 0x1FC4) - 1)));
+                var_s3_2 = M2C_BITWISE(f32, (*(s32 *)((u8 *)arg0 + 0x1A10) + (*(s16 *)((u8 *)(((u8 *)&D_004E0660) + (*(s16 *)((u8 *)arg0 + 0x1FE8) * 0x28)) + 0x16) * (*(s8 *)((u8 *)arg0 + 0x1FC8) - 1))));
                 goto block_51;
             }
             var_s3 = *(u8 **)((u8 *)arg0 + 0x1CF4);
@@ -145,7 +145,7 @@ block_51:
     if (temp_a0 == 0) {
         var_s2_2 = NULL;
     } else {
-        var_s2_2 = &D_004E0660 + (temp_a0 * 0x28);
+        var_s2_2 = ((u8 *)&D_004E0660) + (temp_a0 * 0x28);
     }
     if (var_s2_2 != NULL) {
         temp_v0 = func_0021C660(*(s32 *)((u8 *)arg0 + 0x1350));
@@ -204,7 +204,7 @@ block_51:
     }
     *(s32 *)((u8 *)arg0 + 0x1A0C) = M2C_BITWISE(s32, ((f32) *(s32 *)((u8 *)arg0 + 0x1A0C) + (f32) *(s8 *)((u8 *)(*(s32 *)((u8 *)arg0 + 0x1CF8) + (*(s32 *)((u8 *)arg0 + 0xBA4) * 0x14)) + 0xDC)));
     var_a2_2 = *(s32 *)((u8 *)arg0 + 0xBA4);
-    var_a1_2 = (s32 *)(&D_004693C0);
+    var_a1_2 = (int *)(&D_004693C0);
     if (var_a2_2 < 0) {
 
     }
@@ -242,8 +242,8 @@ loop_78:
             }
         }
         temp_a0_2 = *(s8 *)((u8 *)((var_a2_2 * 0x14) + *(s32 *)((u8 *)arg0 + 0x1CF8)) + 0xDD);
-        var_a1_2 = (s32 *)((M2C_BITWISE(s32, var_f0_2) / 1000) + (M2C_BITWISE(u32, var_f0_2) >> 0x1F));
-        temp_v1_3 = (s32)(var_a1_2 - temp_a0_2);
+        var_a1_2 = (int *)((M2C_BITWISE(s32, var_f0_2) / 1000) + (M2C_BITWISE(u32, var_f0_2) >> 0x1F));
+        temp_v1_3 = (int)(var_a1_2 - temp_a0_2);
         var_v1_2 = temp_v1_3 * 2;
         var_a2_2 = var_v1_2;
         if ((var_a1_2 == (s32 *)7) && (temp_a0_2 != 7)) {

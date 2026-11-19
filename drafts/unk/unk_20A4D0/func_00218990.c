@@ -24,7 +24,7 @@ block_2:
     var_a0 = 0;
 block_4:
     var_s1 = 0;
-    temp_s0 = &D_0046A3A0 + (var_a0 * 2);
+    temp_s0 = (signed char *)(((u8 *)&D_0046A3A0) + (var_a0 * 2));
     var_v1 = temp_s0;
     goto loop_7;
 block_6:

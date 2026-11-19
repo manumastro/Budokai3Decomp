@@ -18,13 +18,13 @@ void func_0022E8C0(u8 *arg0, u8 *arg1) {
 
     temp_a3 = *(s32 *)((u8 *)arg0 + 0x1350);
     *(s8 *)((u8 *)arg1 + 0x3B) = 0;
-    temp_s0 = (u8 *)(&D_0058BBB0 + (temp_a3 * 0xC0));
+    temp_s0 = (unsigned char *)(&D_0058BBB0 + (temp_a3 * 0xC0));
     if (*(s32 *)((u8 *)arg1 + 0x20) & 0x1000) {
         temp_s3 = *(s16 *)((u8 *)arg1 + 0x10);
         if (temp_s3 > 0) {
             if (func_001DFA90(temp_s3, &D_0058BBB0, temp_a3 * 3) > 0) {
                 *(s8 *)((u8 *)temp_s0 + 0xB7) = 1;
-                temp_a1 = (u8 *)(&D_004E0660 + (temp_s3 * 0x28));
+                temp_a1 = (unsigned char *)(&D_004E0660 + (temp_s3 * 0x28));
                 *(s16 *)((u8 *)temp_s0 + 0xBA) = (s16) (*(u8 *)((u8 *)temp_a1 + 0xF) * 0x64);
                 *(u8 *)((u8 *)temp_s0 + 0xB9) = (u8) *(u8 *)((u8 *)temp_a1 + 0xE);
             }

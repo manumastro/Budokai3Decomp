@@ -31,7 +31,7 @@ void func_001A6FA0(void) {
     if (*(s32 *)((u8 *)gBattle + 0x88EC) != 0) {
         goto block_15;
     }
-    temp_s2 = (u8 *)(gBattle + 0xA0 + 0xF0);
+    temp_s2 = (unsigned char *)(gBattle + 0xA0 + 0xF0);
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($s2) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a1) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);

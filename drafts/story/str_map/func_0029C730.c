@@ -1,10 +1,10 @@
 /* Draft (not built): func_0029C730 at 0x0029C730, size 0x278, segment story/str_map (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); tle + 0xB0) * 8) + sp) + 0x2E) = 0xC; @ 490: *(s16 *)((u8 *)((*(s32 *)((u8 *)gStrTitle + 0xB0) * 8) + sp) + 0x2C) = 0xB;
+ * Status: size, 67 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x260, original 0x278
  * Original: asm/nonmatchings/story/str_map/func_0029C730.s */
 
-// src/story/str_map.c func_0029C730 cerr diff=-1/0
+// src/story/str_map.c func_0029C730 size diff=67/152
 s32 SoundRpc_SetVolume(s32, s32, s32 *, f32);
 s32 func_0028EC10(s32, s32, s32, s32);
 extern s32 D_00454120;
@@ -16,6 +16,7 @@ extern void SoundRpc_Send3();
 extern char D_00492FCE[];
 extern void Scene_Request();
 void func_0029C730(u8 *arg0) {
+    u8 sp[0x400];
     s32 sp20;
     s32 *var_v1;
     s32 temp_a0;
@@ -54,19 +55,19 @@ void func_0029C730(u8 *arg0) {
         }
         temp_a0_3 = *(u8 **)((u8 *)gStrTitle + 0x1C);
         if (temp_a0_3 != NULL) {
-            amTask_Kill((void *)(temp_a0_3));
+            amTask_Kill((Task *)(temp_a0_3));
             *(u8 **)((u8 *)gStrTitle + 0x1C) = NULL;
         }
         *(s16 *)((u8 *)((*(s32 *)((u8 *)gStrTitle + 0xB0) * 8) + sp) + 0x2C) = 0xB;
         *(s16 *)((u8 *)((*(s32 *)((u8 *)gStrTitle + 0xB0) * 8) + sp) + 0x2E) = 0xC;
-        func_0028EE90(((u8 *)gStrTitle) + 0x10, ((u8 *)gStrTitle) + 0x64, ((u8 *)gStrTitle) + 0x68, ((u8 *)gStrTitle) + 0x6C);
+        func_0028EE90(((u8 *)gStrTitle) + 0x10,((u8 *)gStrTitle) + 0x64,((u8 *)gStrTitle) + 0x68,((u8 *)gStrTitle) + 0x6C);
         func_0028EC10(*(s32 *)((u8 *)gStrTitle + 0x28), *(s32 *)((u8 *)gStrTitle + 0x64), 0x10, 0);
-        func_0028EBB0(*(s32 *)((u8 *)gStrTitle + 0x28), 0, *(s32 *)((u8 *)gStrTitle + 0x64), 0x10);
+        func_0028EBB0((char *)(*(s32 *)((u8 *)gStrTitle + 0x28)), 0, (s32 *)(*(s32 *)((u8 *)gStrTitle + 0x64)), 0x10);
         func_0028EC10(*(s32 *)((u8 *)gStrTitle + 0x2C), *(s32 *)((u8 *)gStrTitle + 0x64), 0x11, 0);
-        func_0028EBB0(*(s32 *)((u8 *)gStrTitle + 0x2C), 0, *(s32 *)((u8 *)gStrTitle + 0x64), 0x11);
+        func_0028EBB0((char *)(*(s32 *)((u8 *)gStrTitle + 0x2C)), 0, (s32 *)(*(s32 *)((u8 *)gStrTitle + 0x64)), 0x11);
         func_0028EC10(*(s32 *)((u8 *)gStrTitle + 0x30), *(s32 *)((u8 *)gStrTitle + 0x64), 0x12, 0);
-        func_0028EBB0(*(s32 *)((u8 *)gStrTitle + 0x30), 0, *(s32 *)((u8 *)gStrTitle + 0x64), 0x12);
-        var_v1 = (s32 *)(&func_0029C680);
+        func_0028EBB0((char *)(*(s32 *)((u8 *)gStrTitle + 0x30)), 0, (s32 *)(*(s32 *)((u8 *)gStrTitle + 0x64)), 0x12);
+        var_v1 = (int *)(&func_0029C680);
         if (&func_0029C680 == NULL) {
             var_v1 = NULL;
         }

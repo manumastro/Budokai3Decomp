@@ -28,7 +28,7 @@ void func_001D8710(u8 *arg0) {
     var_a1 = 0;
     goto loop_5;
 block_1:
-    temp_v0 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x1CF8) + (var_a1 * 4));
+    temp_v0 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x1CF8) + (var_a1 * 4));
     temp_a0 = *(s8 *)((u8 *)temp_v0 + 0x64);
     var_a2 = temp_v0 + 0x64;
     if (temp_a0 == -1) {
@@ -91,7 +91,7 @@ block_19:
     *(s32 *)((u8 *)arg0 + 0xB70) = (s32) (var_a1_2 + 0x280);
     *(s16 *)((u8 *)arg0 + 0xCB6) = 2;
     *(s16 *)((u8 *)arg0 + 0xCB4) = 1;
-    func_001C75D0((void *)(arg0), 0xF);
+    func_001C75D0((Fighter *)(arg0), 0xF);
     sp40 = arg0;
     sp48 = -1;
     sp44 = 0;
@@ -117,7 +117,7 @@ block_21:
     M2C_ERROR(/* unknown instruction: vmove.xyzw $vf29, $vf25 */);
     M2C_ERROR(/* unknown instruction: vmove.xyzw $vf30, $vf26 */);
     M2C_ERROR(/* unknown instruction: vmove.xyzw $vf31, $vf27 */);
-    func_001E8640((struct Fighter *)(arg0 + 0x650), -1);
+    func_001E8640((Fighter *)(arg0 + 0x650), -1);
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
     *(f32 *)((u8 *)arg0 + 0x84) = (f32) (*(f32 *)((u8 *)arg0 + 0x84) + **(f32 **)((u8 *)arg0 + 0xB94));

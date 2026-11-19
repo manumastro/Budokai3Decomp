@@ -19,6 +19,8 @@ extern s128 D_0044BA80;
 extern f32 D_0046FD80;
 extern void func_001339B0(void *);
 void func_0020B600(u8 *arg0) {
+    s32 sp24;
+    s32 sp28;
     f32 sp20;
     s128 sp30;
     s32 sp40;
@@ -53,8 +55,8 @@ void func_0020B600(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: vmove.xyzw $vf31, $vf27 */);
         func_0020D5C0(arg0 + 0x40, 0, &sp50, 7);
     }
-    *D_00495718 = *(s3232 *)((u8 *)arg0 + 0x2120);
-    *D_00495758 = *(s3232 *)((u8 *)arg0 + 0x2124);
+    *D_00495718 = *(s32 *)((u8 *)arg0 + 0x2120);
+    *D_00495758 = *(s32 *)((u8 *)arg0 + 0x2124);
     func_00133780(0, 0);
     func_0013B0B0(NULL);
     func_0013B960(arg0 + 0x40);

@@ -1,10 +1,10 @@
 /* Draft (not built): func_002CED60 at 0x002CED60, size 0x2B0, segment unk/unk_2CD5F0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'sp' @ 687: temp_v0 = (var_s0 * 0x10) + sp;
+ * Status: size, 92 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x240, original 0x2B0
  * Original: asm/nonmatchings/unk/unk_2CD5F0/func_002CED60.s */
 
-// src/unk/unk_2CD5F0.c func_002CED60 cerr diff=-1/0
+// src/unk/unk_2CD5F0.c func_002CED60 size diff=92/144
 s32 DrawFlags_Apply(s32, s32, s32, s32);
 s32 amGs_SetReg64(s32, s32);
 s32 func_00133420(s32);
@@ -20,6 +20,7 @@ extern void func_001FB760(void *, void *);
 extern void *func_001FB7E0(void *);
 extern void func_0013B160(void *);
 void func_002CED60(u8 *arg0) {
+    u8 sp[0x400];
     s32 sp40;
     u8 *sp8C;
     s32 sp98;
@@ -38,10 +39,12 @@ void func_002CED60(u8 *arg0) {
     u8 *temp_v0;
 
     temp_a0 = *(s32 *)((u8 *)(*D_0051CD00) + 0x1C);
-    if (temp_a0 != 0) {
-        D_00470238 = 0;
-        amModel_SetCurrent(temp_a0, 0x02001000);
+    if (temp_a0 == 0) {
+        goto block_2;
     }
+    D_00470238 = 0;
+    amModel_SetCurrent(temp_a0, 0x02001000);
+block_2:
     temp_s1 = *(u8 ***)((u8 *)(*(u8 **)((u8 *)arg0 + 0x10)) + 8);
     func_00133CE0(0);
     sp170 = 0x40000000;
@@ -58,19 +61,24 @@ void func_002CED60(u8 *arg0) {
     func_00133420(1);
     func_00133720(&spE0, &sp120, &sp150);
     var_s0 = 0;
+    goto loop_4;
+block_3:
+    temp_v0 = (var_s0 * 0x10) + sp;
+    func_00133620(var_s0, 1, temp_v0 + 0xE0, temp_v0 + 0x120);
+    var_s0 += 1;
 loop_4:
     if (var_s0 < 4) {
-        temp_v0 = (var_s0 * 0x10) + sp;
-        func_00133620(var_s0, 1, temp_v0 + 0xE0, temp_v0 + 0x120);
-        var_s0 += 1;
-        goto loop_4;
+        goto block_3;
     }
     temp_a1 = *(u8 **)((u8 *)gBattle + 0x264);
-    if (temp_a1 == NULL) {
-        var_f0 = D_0046FD80;
-    } else {
-        var_f0 = func_0029D550(&spD0, temp_a1, *(f32 *)((u8 *)temp_a1 + 0x34));
+    if (temp_a1 != NULL) {
+        goto block_8;
     }
+    var_f0 = D_0046FD80;
+    goto block_9;
+block_8:
+    var_f0 = func_0029D550(&spD0, temp_a1, *(f32 *)((u8 *)temp_a1 + 0x34));
+block_9:
     D_0046FD80 = var_f0;
     func_001F3DF0(arg0);
     func_0013E2A0((s32)(*temp_s1));
@@ -94,4 +102,5 @@ loop_4:
     sp98 = 0;
     func_001FB760(func_001FB7E0(&sp40), func_001F9DF0);
     func_00133CE0(1);
+    return;
 }

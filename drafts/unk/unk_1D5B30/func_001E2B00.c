@@ -52,7 +52,7 @@ void func_001E2B00(u8 *arg0) {
             return;
         }
         if (*(s32 *)((u8 *)arg0 + 0x1CFC) == 0x20) {
-            func_001E9B00(*(s32 *)((u8 *)arg0 + 0x1350) + 2, 0x33, 0, arg0 + 0x1AA0, 0x42AA0000, 0x3F800000);
+            func_001E9B00((void *)(*(s32 *)((u8 *)arg0 + 0x1350) + 2), 0x33, 0, (void *)(arg0 + 0x1AA0), 0x42AA0000, 0x3F800000);
         }
     }
 }

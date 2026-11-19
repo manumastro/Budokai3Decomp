@@ -1,10 +1,10 @@
 /* Draft (not built): func_002B8D20 at 0x002B8D20, size 0x4C4, segment menu/mn_csmodel (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); *)temp_s1 + 0x5E) * 4) + sp) + 0x60); @ 537: var_v1 = *(s32 *)((u8 *)((*(u8 *)((u8 *)temp_s1 + 0x5E) * 4) + sp) + 0x98);
+ * Status: size, 188 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x480, original 0x4C4
  * Original: asm/nonmatchings/menu/mn_csmodel/func_002B8D20.s */
 
-// src/menu/mn_csmodel.c func_002B8D20 cerr diff=-1/0
+// src/menu/mn_csmodel.c func_002B8D20 size diff=188/288
 s32 Help_Open(s32, s32);
 s32 SoundRpc_SetVolume(s32, s32, f32);
 s32 amAdx_GetStat(s32);
@@ -20,6 +20,7 @@ extern void VsCharasel_Load(void);
 extern char D_00492FCE[];
 extern void func_002B8C70(void);
 void func_002B8D20(u8 *arg0) {
+    u8 sp[0x400];
     s32 sp30;
     s32 sp60;
     s64 sp90;
@@ -58,7 +59,7 @@ void func_002B8D20(u8 *arg0) {
             *(s8 *)((u8 *)temp_s1 + 0x63) = (s8) ((temp_a1 == 0) ? 2 : 0);
             func_002B7A60(temp_s1, temp_a1);
             VsCharasel_Load();
-            var_v0 = (s32 *)(&func_002B8C70);
+            var_v0 = (int *)(&func_002B8C70);
             if (&func_002B8C70 == NULL) {
                 var_v0 = NULL;
             }
@@ -68,7 +69,7 @@ block_13:
         case 1:
             *(s8 *)((u8 *)temp_s1 + 0x61) = 4;
             *(s32 *)((u8 *)temp_s1 + 0x68) = 0x41A00000;
-            var_v0 = (s32 *)(&func_002B8B50);
+            var_v0 = (int *)(&func_002B8B50);
             if (&func_002B8B50 == NULL) {
                 var_v0 = NULL;
             }
@@ -87,7 +88,7 @@ block_13:
         Obj_SetF3C(*(s32 *)((u8 *)temp_s1 + 0x54), -1);
         Scene_Request(5, 0);
         Scene_FadeTo(0xA, 0);
-        var_v0_2 = (s32 *)(&CsModel_Start2);
+        var_v0_2 = (int *)(&CsModel_Start2);
         if (&CsModel_Start2 == NULL) {
             var_v0_2 = NULL;
         }
@@ -110,13 +111,13 @@ block_13:
             var_v1 = *(s32 *)((u8 *)((*(u8 *)((u8 *)temp_s1 + 0x5E) * 4) + sp) + 0x60);
         }
         *(s32 *)((u8 *)temp_s1 + 0x58) = amAdx_PlayAfs(1, var_v1 | 0x20000, 0);
-        amAdx_SetVolume(*(s32 *)((u8 *)temp_s1 + 0x58), D_004E0618);
+        amAdx_SetVolume((void *)(*(s32 *)((u8 *)temp_s1 + 0x58)),(*(f32 *)(D_004E0618)));
         amAdx_Pause(*(s32 *)((u8 *)temp_s1 + 0x58), 0);
         *(u8 *)((u8 *)temp_s1 + 0x5C) = (u8) (*(u8 *)((u8 *)temp_s1 + 0x5E) + var_s0 + 1);
         Obj_SetF3C(*(s32 *)((u8 *)temp_s1 + 0x54), (s64) ((*(u8 *)((u8 *)temp_s1 + 0x5E) + 1) << 0x30) >> 0x30);
     }
     temp_a0_2 = *(u8 **)((u8 *)gPracMode + 0xC);
-    D_00470704 = (s32)(temp_a0_2);
+    D_00470704 = (int)(temp_a0_2);
     D_0047070C = 0x1000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0_2), 0x1000);
@@ -137,7 +138,7 @@ block_13:
             var_v1_2 = *(s32 *)((u8 *)((*(u8 *)((u8 *)temp_s1 + 0x5E) * 4) + sp) + 0x30);
         }
         *(s32 *)((u8 *)temp_s1 + 0x58) = amAdx_PlayAfs(1, var_v1_2 | 0x20000, 0);
-        amAdx_SetVolume(*(s32 *)((u8 *)temp_s1 + 0x58), D_004E0618);
+        amAdx_SetVolume((void *)(*(s32 *)((u8 *)temp_s1 + 0x58)),(*(f32 *)(D_004E0618)));
         amAdx_Pause(*(s32 *)((u8 *)temp_s1 + 0x58), 0);
         *(u8 *)((u8 *)temp_s1 + 0x5C) = (u8) (*(u8 *)((u8 *)temp_s1 + 0x5E) + var_s0_2 + 1);
     }

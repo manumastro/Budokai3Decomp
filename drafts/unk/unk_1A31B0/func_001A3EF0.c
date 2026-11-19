@@ -1,10 +1,10 @@
 /* Draft (not built): func_001A3EF0 at 0x001A3EF0, size 0x568, segment unk/unk_1A31B0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 143 instructions differ
+ * Status: size, 139 instructions differ
  * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x508, original 0x568
  * Original: asm/nonmatchings/unk/unk_1A31B0/func_001A3EF0.s */
 
-// src/unk/unk_1A31B0.c func_001A3EF0 size diff=143/322
+// src/unk/unk_1A31B0.c func_001A3EF0 size diff=139/322
 s32 memcpy(void *, void *, s32);
 void func_001A3EF0(s32 arg0) {
     s32 *var_v1_2;
@@ -21,8 +21,8 @@ void func_001A3EF0(s32 arg0) {
     u8 *temp_s1;
     u8 *temp_s2;
 
-    temp_s2 = (u8 *)(D_00492EC0 + (arg0 << 5));
-    temp_s1 = &D_00492FC0 + (arg0 * 0xB8);
+    temp_s2 = (unsigned char *)(D_00492EC0 + (arg0 << 5));
+    temp_s1 = ((u8 *)&D_00492FC0) + (arg0 * 0xB8);
     temp_a0 = ~*(u16 *)((u8 *)temp_s2 + 2);
     temp_s0 = temp_a0 & 0xFFFF;
     temp_a1 = (*(u16 *)((u8 *)temp_s1 + 0xC) ^ temp_s0) & 0xFFFF;
@@ -150,7 +150,7 @@ block_39:
     memcpy(temp_s1 + 0x1C, temp_s2 + 8, 0xC);
 block_41:
     var_a0 = 1;
-    var_v1_2 = (s32 *)(temp_s1 + 0x28);
+    var_v1_2 = (int *)(temp_s1 + 0x28);
     var_a2 = 0;
     goto loop_52;
 block_43:
@@ -182,7 +182,7 @@ loop_52:
         goto block_43;
     }
     var_a0_2 = 1;
-    var_v1_3 = (s32 *)(temp_s1 + 0x74);
+    var_v1_3 = (int *)(temp_s1 + 0x74);
     var_a2_2 = 0;
     goto loop_63;
 block_54:

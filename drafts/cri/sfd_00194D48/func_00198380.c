@@ -21,3 +21,15 @@ void func_00198380(u8 *arg0, s32 arg1)
   *((s32 *) (((u8 *) arg0) + 0x964)) = 0;
   func_0019C0D8(arg0, 6, 0xC, arg1);
 }
+
+/* Similar function already in C: func_001983F0 (src/cri/sfd_00194D48.c), similarity 0.67.
+ * It is the template below (not built). */
+#if 0
+void func_001983F0(s32 arg0, s32 arg1) {
+    if (func_0018D870() != 0) {
+        func_0018D650(0, 0xFF000139);
+        return;
+    }
+    func_0018A7A0(arg0, arg1);
+}
+#endif

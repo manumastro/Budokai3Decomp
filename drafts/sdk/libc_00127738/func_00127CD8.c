@@ -1,8 +1,8 @@
-/* Draft (not built): func_00127CD8 at 0x00127CD8, size 0x1AC, segment sdk/libc_00127738 (asm)
+/* Draft (not built): func_00127CD8 at 0x00127CD8, size 0x1AC, segment sdk/libc_00127738 (c)
  * Compiler: ee-gcc 2.96 -O2 -G0
  * Status: cerr
  * Made with: m2c -t mipsee-gcc-c --valid-syntax; compiled with 2.96 -O2 -G0; compile error: d_00127CD8.c:72: `temp_v0_4' undeclared (first use in this function)
- * Original: asm/sdk/libc_00127738.s */
+ * Original: asm/nonmatchings/sdk/libc_00127738/func_00127CD8.s */
 
 s32 func_00127CD8(s32 arg0, u8 *arg1, s32 arg2) {
     s128 *var_a3_2;

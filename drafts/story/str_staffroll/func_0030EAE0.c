@@ -1,7 +1,7 @@
 /* Draft (not built): func_0030EAE0 at 0x0030EAE0, size 0x2B4, segment story/str_staffroll (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); eclared was declared as: 'void (struct Task *)' now declared as: 'void (void *)' @ 514: extern void amTask_Kill(void *);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'struct ' to '__int128' mwccps2.exe Compiler: @ 553: sp70 = D_00459140;
  * Original: asm/nonmatchings/story/str_staffroll/func_0030EAE0.s */
 
 // src/story/str_staffroll.c func_0030EAE0 cerr diff=-1/0
@@ -9,9 +9,8 @@ s32 amAdx_SetVolume(s32, f32);
 s32 dpmul(s32, s32);
 s32 func_001214F8(u8, s8, f32);
 f32 func_001220B0(s32);
-extern void amTask_Kill(void *);
 extern void func_0030E890(void);
-void func_0030EAE0(u8 *arg0, s8 arg3) {
+void func_0030EAE0(u8 *arg0, s32 unused_arg1, s32 unused_arg2, s8 arg3) {
     s8 sp50;
     f32 sp5C;
     f32 sp60;
@@ -34,7 +33,7 @@ void func_0030EAE0(u8 *arg0, s8 arg3) {
     temp_s0 = *(u8 **)((u8 *)arg0 + 0x30);
     *(f32 *)((u8 *)temp_s0 + 0x14) = (f32) (*(f32 *)((u8 *)temp_s0 + 0x14) + gFrameDelta);
     if ((*(u8 *)((u8 *)temp_s0 + 0x1C) == 1) && (*(u8 *)((u8 *)temp_s0 + 0x1D) != 0)) {
-        var_a3 = (s8)(D_004B4B63);
+        var_a3 = (*(signed char *)(D_004B4B63));
         if (*(D_00492FCE + (var_a3 * 0xB8)) & 8) {
             *(u8 *)((u8 *)temp_s0 + 0x1C) = 2U;
             *(f32 *)((u8 *)temp_s0 + 0x18) = 0.0f;
@@ -94,7 +93,7 @@ void func_0030EAE0(u8 *arg0, s8 arg3) {
         *(u8 *)((u8 *)temp_s0 + 0x1C) = 3U;
         *(f32 *)((u8 *)temp_s0 + 0x18) = 1.0f;
         *(f32 *)((u8 *)temp_s0 + 0x14) = 300.0f;
-        var_v1_2 = (s32 *)(&func_0030E890);
+        var_v1_2 = (int *)(&func_0030E890);
         if (&func_0030E890 == NULL) {
             var_v1_2 = NULL;
         }

@@ -39,7 +39,7 @@ void func_001C3120(u8 *arg0) {
         temp_s2 = (temp_a0 + 1) & 0x1F;
         temp_a0_2 = (temp_a0 * 0x10) + temp_s0;
         if (*(s32 *)((u8 *)temp_a0_2 + 0x204) != 0) {
-            var_a1 = (s32 *)(temp_a0_2 + 0x1F8);
+            var_a1 = (int *)(temp_a0_2 + 0x1F8);
             temp_a0_3 = *(s32 *)((u8 *)temp_a0_2 + 0x1F8);
             if (temp_a0_3 & 1) {
                 var_s1 = *(u8 **)((u8 *)var_a1 + 0xC);
@@ -52,11 +52,11 @@ void func_001C3120(u8 *arg0) {
             var_a2 = 1;
             temp_v1 = temp_s0 + (temp_s2 * 0x10);
             var_s1 = *(u8 **)((u8 *)temp_v1 + 0x204);
-            var_a1 = (s32 *)(temp_v1 + 0x1F8);
+            var_a1 = (int *)(temp_v1 + 0x1F8);
 block_12:
             if (var_s1 != NULL) {
                 if ((*(u16 *)((u8 *)var_s1 + 0xC) & 0x4000) && (*(s32 *)((u8 *)gBattle + 0x88F8) != 4)) {
-                    func_001ABD30((void *)(arg0 + 0x1360));
+                    func_001ABD30((struct Fighter *)(arg0 + 0x1360));
                     return;
                 }
                 if (*var_a1 & 2) {

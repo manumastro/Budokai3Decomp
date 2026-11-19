@@ -1,10 +1,10 @@
 /* Draft (not built): func_00251DA0 at 0x00251DA0, size 0x184, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 68 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0xE4, original 0x184
+ * Status: size, 66 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0xEC, original 0x184
  * Original: asm/nonmatchings/battle/skill_cmd/func_00251DA0.s */
 
-// src/battle/skill_cmd.c func_00251DA0 size diff=68/57
+// src/battle/skill_cmd.c func_00251DA0 size diff=66/59
 s16 func_0020F690();
 s32 func_00214F80(s16, s32 *);
 s32 func_0025BD40(s32 *);
@@ -17,7 +17,7 @@ void func_00251DA0(u8 *arg0) {
     s16 sp46;
     s32 sp50;
     s32 sp60;
-    s32 sp90;
+    f32 sp90;
     s16 spA0;
     s16 spA2;
     s16 spA4;
@@ -35,13 +35,13 @@ void func_00251DA0(u8 *arg0) {
     s16 spF2;
     s16 spF4;
     s16 spFA;
-    s32 sp100;
-    s128 sp110;
+    f32 sp100;
+    f32 sp110;
     s16 temp_v1;
     u8 *temp_s0;
 
     temp_s0 = *(u8 **)((u8 *)arg0 + 0xC);
-    sp110 = D_00450290;
+    sp110 = (s128) D_00450290;
     if (!(*(s16 *)((u8 *)arg0 + 4) & 0x200)) {
         if (*(s16 *)((u8 *)temp_s0 + 0x7A) != 0) {
             memset(&sp50, 0, 0xB0);
@@ -54,8 +54,8 @@ void func_00251DA0(u8 *arg0) {
             spA6 = temp_v1;
             spA8 = *(s16 *)((u8 *)temp_s0 + 0x86);
             if ((((s64) ((s64) temp_v1 << 0x30) >> 0x30) == 9) || (spA8 == 5)) {
-                func_00146F60(&sp100, arg0 + 0x30);
-                func_00141C30((void *)(&sp90), (void *)(&sp110), (void *)(&sp100));
+                func_00146F60((f32 *)(&sp100), (s32 *)(arg0 + 0x30));
+                func_00141C30(&sp90, &sp110, &sp100);
             }
             spE4 = *(s16 *)((u8 *)temp_s0 + 0x70);
             spE6 = *(s16 *)((u8 *)temp_s0 + 0x72);

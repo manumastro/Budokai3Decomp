@@ -73,12 +73,12 @@ loop_15:
     }
     goto block_20;
 block_18:
-    temp_s4 = &D_005687C0 + (var_s0 * 4);
+    temp_s4 = (unsigned char **)(((u8 *)&D_005687C0) + (var_s0 * 4));
     temp_a0 = *temp_s4;
     if (temp_a0 == NULL) {
         goto block_20;
     }
-    Obj_ResetF38((s32)((void *)(temp_a0)));
+    Obj_ResetF38((s32)(temp_a0));
     *temp_s4 = NULL;
 block_20:
     if (var_s0 < 3) {
@@ -86,12 +86,12 @@ block_20:
     }
     goto block_25;
 block_23:
-    temp_s0 = &D_005687C0 + (var_s1 * 4);
+    temp_s0 = (unsigned char **)(((u8 *)&D_005687C0) + (var_s1 * 4));
     temp_a0_2 = *temp_s0;
     if (temp_a0_2 == NULL) {
         goto block_25;
     }
-    Obj_ResetF38((s32)((void *)(temp_a0_2)));
+    Obj_ResetF38((s32)(temp_a0_2));
     *temp_s0 = NULL;
 block_25:
     if (var_s1 < 3) {
@@ -99,12 +99,12 @@ block_25:
     }
     goto block_30;
 block_28:
-    temp_s0_2 = &D_005687C0 + (var_s2 * 4);
+    temp_s0_2 = (unsigned char **)(((u8 *)&D_005687C0) + (var_s2 * 4));
     temp_a0_3 = *temp_s0_2;
     if (temp_a0_3 == NULL) {
         goto block_30;
     }
-    Obj_ResetF38((s32)((void *)(temp_a0_3)));
+    Obj_ResetF38((s32)(temp_a0_3));
     *temp_s0_2 = NULL;
 block_30:
     if (var_s2 < 3) {
@@ -112,12 +112,12 @@ block_30:
     }
     goto block_35;
 block_33:
-    temp_s0_3 = &D_005687C0 + (var_s3 * 4);
+    temp_s0_3 = (unsigned char **)(((u8 *)&D_005687C0) + (var_s3 * 4));
     temp_a0_4 = *temp_s0_3;
     if (temp_a0_4 == NULL) {
         goto block_35;
     }
-    Obj_ResetF38((s32)((void *)(temp_a0_4)));
+    Obj_ResetF38((s32)(temp_a0_4));
     *temp_s0_3 = NULL;
 block_35:
     if (var_s3 < 3) {
@@ -125,12 +125,12 @@ block_35:
     }
     return;
 block_38:
-    temp_s0_4 = &D_005687C0 + (var_s3 * 4);
+    temp_s0_4 = (unsigned char **)(((u8 *)&D_005687C0) + (var_s3 * 4));
     temp_a0_5 = *temp_s0_4;
     if (temp_a0_5 == NULL) {
         goto block_40;
     }
-    Obj_ResetF38((s32)((void *)(temp_a0_5)));
+    Obj_ResetF38((s32)(temp_a0_5));
     *temp_s0_4 = NULL;
 block_40:
     return;

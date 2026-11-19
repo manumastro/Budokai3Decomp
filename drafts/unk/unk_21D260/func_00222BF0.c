@@ -51,7 +51,7 @@ void func_00222BF0(u8 *arg0) {
     u8 *var_s2;
 
     var_s2 = arg0;
-    var_s1 = (u8 *)(gBtlSys);
+    var_s1 = (unsigned char *)(gBtlSys);
     var_v0 = *(s16 *)((u8 *)var_s1 + 0xE42);
     var_s0 = var_s2 + 0x30;
     if (var_v0 == -1) {
@@ -101,7 +101,7 @@ void func_00222BF0(u8 *arg0) {
             case 0:                                 /* switch 2 */
                 *(s32 *)((u8 *)var_s0 + 4) = 2;
                 *(s16 *)((u8 *)var_s1 + 0xE44) = 0;
-                var_v0_3 = (s32 *)(&func_00222A90);
+                var_v0_3 = (int *)(&func_00222A90);
                 *(s32 *)((u8 *)var_s0 + 0x1C) = 0;
                 if (&func_00222A90 == NULL) {
                     var_v0_3 = NULL;
@@ -115,7 +115,7 @@ void func_00222BF0(u8 *arg0) {
             case 7:                                 /* switch 2 */
                 *(s32 *)((u8 *)var_s0 + 4) = 2;
                 *(s16 *)((u8 *)var_s1 + 0xE44) = 1;
-                var_v0_4 = (s32 *)(&func_00222A90);
+                var_v0_4 = (int *)(&func_00222A90);
                 *(s32 *)((u8 *)var_s0 + 0x1C) = 0;
                 if (&func_00222A90 == NULL) {
                     var_v0_4 = NULL;
@@ -132,7 +132,7 @@ void func_00222BF0(u8 *arg0) {
                         *(s32 *)((u8 *)var_s0 + 4) = 3;
                         *(s32 *)((u8 *)var_s0 + 0x1C) = 0;
                         *(s16 *)((u8 *)var_s0 + 0xA) = 0;
-                        var_v0_5 = (s32 *)(&func_002228F0);
+                        var_v0_5 = (int *)(&func_002228F0);
                         *(s32 *)((u8 *)var_s0 + 0x14) = (s32) *(s32 *)((u8 *)var_s3 + 0x1C);
                         *(s32 *)((u8 *)var_s0 + 0x30) = 0x43C80000;
                         *(s32 *)((u8 *)var_s0 + 0x34) = 0x43AA0000;
@@ -140,7 +140,7 @@ void func_00222BF0(u8 *arg0) {
                             var_v0_5 = NULL;
                         }
                         *(s32 **)((u8 *)var_s2 + 0x1C) = var_v0_5;
-                        var_v0_6 = (s32 *)(&func_0021F0E0);
+                        var_v0_6 = (int *)(&func_0021F0E0);
                         if (&func_0021F0E0 == NULL) {
                             var_v0_6 = NULL;
                         }
@@ -162,12 +162,12 @@ void func_00222BF0(u8 *arg0) {
                 *(s32 *)((u8 *)var_s0 + 4) = 3;
                 *(s16 *)((u8 *)var_s1 + 0xE44) = 2;
                 *(s16 *)((u8 *)var_s0 + 0xA) = 1;
-                var_v0_7 = (s32 *)(&func_002228F0);
+                var_v0_7 = (int *)(&func_002228F0);
                 if (&func_002228F0 == NULL) {
                     var_v0_7 = NULL;
                 }
                 *(s32 **)((u8 *)var_s2 + 0x1C) = var_v0_7;
-                var_v0_8 = (s32 *)(&func_0021F0E0);
+                var_v0_8 = (int *)(&func_0021F0E0);
                 if (&func_0021F0E0 == NULL) {
                     var_v0_8 = NULL;
                 }
@@ -180,13 +180,13 @@ void func_00222BF0(u8 *arg0) {
             case 10:                                /* switch 2 */
                 *(s32 *)((u8 *)var_s0 + 4) = 3;
                 *(s16 *)((u8 *)var_s1 + 0xE44) = 3;
-                var_v0_9 = (s32 *)(&func_002228F0);
+                var_v0_9 = (int *)(&func_002228F0);
                 *(s16 *)((u8 *)var_s0 + 0xA) = 1;
                 if (&func_002228F0 == NULL) {
                     var_v0_9 = NULL;
                 }
                 *(s32 **)((u8 *)var_s2 + 0x1C) = var_v0_9;
-                var_v0_10 = (s32 *)(&func_0021F0E0);
+                var_v0_10 = (int *)(&func_0021F0E0);
                 if (&func_0021F0E0 == NULL) {
                     var_v0_10 = NULL;
                 }
@@ -246,7 +246,7 @@ block_75:
                     if (*(s16 *)((u8 *)var_s1 + 0xE48) >= 5) {
                         *(s16 *)((u8 *)var_s1 + 0xE48) = 0;
                     }
-                    var_s3 = (s8 *)(gBattle);
+                    var_s3 = (signed char *)(gBattle);
                     temp_a1_2 = *(s16 *)((u8 *)var_s1 + 0xE48);
                     *(s8 *)((u8 *)var_s3 + 0x8977) = (s8) temp_a1_2;
                     temp_v1_2 = *(s16 *)((u8 *)var_s3 + 0x1BD4);
@@ -258,7 +258,7 @@ block_75:
                         var_s4 = -1;
                     }
                     if (var_s4 >= 0) {
-                        memcpy(var_s3 + (var_s5 * 0x2020) + 0x272C, &D_00492FC0 + (var_s4 * 0xB8), 0xB8);
+                        memcpy(var_s3 + (var_s5 * 0x2020) + 0x272C,((u8 *)&D_00492FC0) + (var_s4 * 0xB8), 0xB8);
                     }
                     *(s16 *)((u8 *)((var_s5 * 0x2020) + var_s3) + 0x1BD4) = var_s4;
                     SoundRpc_SetVolume(0, 0, D_004E0614, 0, 0);
@@ -333,7 +333,7 @@ block_75:
 block_125:
                 *(s32 *)((u8 *)var_s0 + 4) = 2;
                 *(s16 *)((u8 *)var_s1 + 0xE44) = 0;
-                var_v0_11 = (s32 *)(&func_00222A90);
+                var_v0_11 = (int *)(&func_00222A90);
                 *(s32 *)((u8 *)var_s0 + 0x1C) = 0;
                 if (&func_00222A90 == NULL) {
                     var_v0_11 = NULL;

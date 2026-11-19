@@ -41,3 +41,33 @@ void func_001E2510(u8 *arg0) {
         A2d_CallHandler(0x33, &sp60);
     }
 }
+
+/* Similar function already in C: func_001E18B0 (src/unk/unk_1D5B30.c), similarity 0.78.
+ * It is the template below (not built). */
+#if 0
+void func_001E18B0(Fighter *c, s32 idx) {
+    char buf[0x30];
+    s32 arr[3];
+    f32 f;
+    s32 k;
+    void *bp;
+
+    if (((s32 *)((char *)c + 0x1DB8))[idx] != 0) {
+        func_001E7070((char *)c + 0x650, idx);
+        arr[0] = c->f1350;
+        arr[1] = idx;
+        if (*(s16 *)*(void **)((char *)c + 0xBB0) != 0 && func_001DF8F0(0, 0x1B) > 0) {
+            f = 0.0f;
+        } else {
+            k = c->fBA4;
+            bp = c->f1CF8;
+            f = (f32)(((s8 *)((char *)bp + 0xDD))[k * 20] * 1000);
+        }
+        arr[2] = (s32)f;
+        A2d_CallHandler(8, arr);
+        *(s32 *)(buf + 0x10) = c->f1350;
+        *(s16 *)(buf + 0x18) = (s16)c->fBA4;
+        Sp_CallHandler(1, buf);
+    }
+}
+#endif

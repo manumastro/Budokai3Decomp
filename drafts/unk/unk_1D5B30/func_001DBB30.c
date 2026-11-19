@@ -1,7 +1,7 @@
 /* Draft (not built): func_001DBB30 at 0x001DBB30, size 0x48C, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'int' to 'void *' @ 1875: func_001E9B00(1, 0x23, 0, 0, 0, 0x3F800000);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); struct Fighter *' to 'int' mwccps2.exe Compiler: @ 1874: Fighter_CreateHitEffect((void *)(arg0), (struct Fighter *)(1));
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001DBB30.s */
 
 // src/unk/unk_1D5B30.c func_001DBB30 cerr diff=-1/0
@@ -122,8 +122,8 @@ loop_41:
                 func_001D0730(temp_s7, *(s8 *)((u8 *)(*(u8 **)((u8 *)temp_v0_3 + 0x20)) + 2));
                 spC0 = arg0 + 0x130;
                 func_00218440(8, &spC0);
-                Fighter_CreateHitEffect((void *)(arg0), 1);
-                func_001E9B00(1, 0x23, 0, 0, 0, 0x3F800000);
+                Fighter_CreateHitEffect((void *)(arg0), (struct Fighter *)(1));
+                func_001E9B00(1, 0x23, 0, 0, 0, (void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)(0x3F800000))))))))))))))));
                 var_s6 = 1;
                 *(s8 *)((u8 *)arg0 + 0x2007) = 1;
                 func_002CBFF0(4, arg0);

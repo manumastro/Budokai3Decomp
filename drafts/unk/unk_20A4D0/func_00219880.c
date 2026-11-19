@@ -48,7 +48,7 @@ void func_00219880(void) {
     do {
         temp_a0_3 = *(u8 **)((u8 *)var_s1 + 0x1C);
         if (temp_a0_3 != NULL) {
-            amTask_Kill((s32)((void *)(temp_a0_3)));
+            amTask_Kill((s32)(temp_a0_3));
             *(u8 **)((u8 *)var_s1 + 0x1C) = NULL;
         }
         var_s2_2 += 1;

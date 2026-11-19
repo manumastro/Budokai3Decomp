@@ -1,17 +1,19 @@
 /* Draft (not built): func_00217DD0 at 0x00217DD0, size 0x19C, segment unk/unk_20A4D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 90 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0xB8, original 0x19C
+ * Status: size, 83 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0xE4, original 0x19C
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_00217DD0.s */
 
-// src/unk/unk_20A4D0.c func_00217DD0 size diff=90/46
-s32 func_00217DD0(u8 *arg1) {
+// src/unk/unk_20A4D0.c func_00217DD0 size diff=83/57
+s32 func_00217DD0(s32 unused_arg0, u8 *arg1) {
     s32 sp20;
     s32 sp50;
     f32 sp54;
     s32 sp60;
     s32 *sp70;
     s32 *sp74;
+    f32 temp_f20;
+    f32 temp_f20_2;
     f32 temp_f2;
     s128 temp_a1;
 
@@ -24,14 +26,14 @@ s32 func_00217DD0(u8 *arg1) {
     } else if (temp_f2 <= -89.0f) {
         sp54 = 1.0f;
     } else {
+        temp_f20 = -((3.1415927f * temp_f2) / 180.0f);
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($a3) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
         M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a1) */);
         func_00146F30(&sp50);
-        func_0011F4C0(0);
-        func_0011F220(0);
-        sp54 = M2C_ERROR(/* Read from unset register $f0 */) / M2C_ERROR(/* Read from unset register $f0 */);
+        temp_f20_2 = func_0011F4C0(temp_f20);
+        sp54 = temp_f20_2 / func_0011F220(temp_f20);
         func_00146F30(&sp50);
     }
     memset(&sp70, 0, 0x2C);

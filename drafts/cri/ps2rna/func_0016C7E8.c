@@ -13,3 +13,13 @@ void func_0016C7E8(void) {
         func_00165FB8(0xD, 0, 0, 0);
     }
 }
+
+/* Similar function already in C: PS2RNA_ClearBuf (src/cri/ps2rna.c), similarity 0.79.
+ * It is the template below (not built). */
+#if 0
+void PS2RNA_ClearBuf(void) {
+    if ((D_0041A0D8 != 1) || (D_0041A0D0 > 0)) {
+        scePrintf(&D_00464B68);
+    }
+}
+#endif

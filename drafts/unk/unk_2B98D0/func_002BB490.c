@@ -1,7 +1,7 @@
 /* Draft (not built): func_002BB490 at 0x002BB490, size 0x158, segment unk/unk_2B98D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); sion from 'int' to 'void *' mwccps2.exe Compiler: @ 317: func_0029DD30(*(s32 *)((u8 *)gStrStatus + 0x25C), gFrameDelta);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ersion from 'struct W98D *' to 'float' mwccps2.exe Compiler: @ 335: func_0013BBD0(gStrStatus, 0, 0, (f32)(s32)(-32.0f));
  * Original: asm/nonmatchings/unk/unk_2B98D0/func_002BB490.s */
 
 // src/unk/unk_2B98D0.c func_002BB490 cerr diff=-1/0
@@ -13,9 +13,9 @@ void func_002BB490(void) {
     s32 sp30;
     u8 *temp_s0;
 
-    func_0029DD30(*(s32 *)((u8 *)gStrStatus + 0x25C), gFrameDelta);
+    func_0029DD30((void *)(*(s32 *)((u8 *)gStrStatus + 0x25C)), gFrameDelta);
     func_002BF850(gStrStatus);
-    temp_s0 = &D_00455920 + (*(s32 *)((u8 *)gStrStatus + 0x28C) * 0x1C);
+    temp_s0 = ((u8 *)&D_00455920) + (*(s32 *)((u8 *)gStrStatus + 0x28C) * 0x1C);
     sp20 = *(f32 *)((u8 *)temp_s0 + 0x10);
     sp2C = 0x3F800000;
     sp24 = *(f32 *)((u8 *)temp_s0 + 0x14);
@@ -31,14 +31,14 @@ void func_002BB490(void) {
         if (*(s32 *)((u8 *)gStrStatus + 0x294) != 0) {
             goto block_3;
         }
-        func_0013BBD0(gStrStatus, 0, 0, -32.0f);
+        func_0013BBD0(gStrStatus, 0, 0, (f32)(s32)(-32.0f));
     } else {
 block_3:
-        func_0013BBD0(gStrStatus, 0, 0, *(f32 *)((u8 *)temp_s0 + 8));
+        func_0013BBD0(gStrStatus, 0, 0, (f32)(s32)(*(f32 *)((u8 *)temp_s0 + 8)));
     }
     func_00133D10(0);
     func_0029D8B0(-1, 4);
-    func_0029DB00((f32)((void *)(*(s32 *)((u8 *)gStrStatus + 0x25C))), 0x3F800000);
+    func_0029DB00(*(s32 *)((u8 *)gStrStatus + 0x25C),(void *)(0x3F800000));
     func_002BF610();
     func_0013B110(1);
     func_002BF520();

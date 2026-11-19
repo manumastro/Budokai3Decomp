@@ -1,36 +1,50 @@
-/* Draft (not built): func_00289E80 at 0x00289E80, size 0xAC, segment sys/mc_opr (asm)
+/* Draft (not built): func_00289E80 at 0x00289E80, size 0xAC, segment sys/mc_opr (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: uncompiled
- * Made with: m2c -t mipsee-mwcc-c --valid-syntax, not compiled
- * Original: asm/sys/mc_opr.s */
+ * Status: diff, 33 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
+ * Original: asm/nonmatchings/sys/mc_opr/func_00289E80.s */
 
-M2C_UNK SoundRpc_Send3(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK); /* extern */
-M2C_UNK SoundRpc_SetVolume(M2C_UNK, M2C_UNK, f32);  /* extern */
-M2C_UNK func_00288870(M2C_UNK);                     /* extern */
-extern s32 D_00470858;
+extern s32 D_00470894;
 extern void *D_0047088C;
-extern M2C_UNK *D_00470894;
-extern u16 D_00492FCE;
+void func_0028DDB0(u8 *arg0);
+s32 SoundRpc_SetVolume(s32, s32, f32);
+extern s32 D_00470858;
 extern u16 D_00493086;
 extern f32 D_004E0614;
-extern M2C_UNK func_0028DDA0;
-extern M2C_UNK func_0028DDB0;
-
+extern void SoundRpc_Send3();
+extern char D_00492FCE[];
+extern void func_0028DDA0(void);
 void func_00289E80(void) {
-    M2C_UNK *var_v1;
-
-    if ((D_00492FCE | D_00493086) & 0x4000) {
+    s32 *var_v1;
+    if ((*(u16 *)D_00492FCE | D_00493086) & 0x4000) {
         SoundRpc_SetVolume(0, 0, D_004E0614);
         if (!(D_004E0614 <= 0.0f)) {
             SoundRpc_Send3(0, 0, 3, 0);
         }
         D_00470858 = 2;
         func_00288870(-1);
-        var_v1 = &func_0028DDB0;
+        var_v1 = (int *)&func_0028DDB0;
         if (&func_0028DDB0 == NULL) {
             var_v1 = NULL;
         }
-        M2C_FIELD(D_0047088C, M2C_UNK **, 0x1C) = var_v1;
-        D_00470894 = &func_0028DDA0;
+        *(s32 **)((u8 *)D_0047088C + 0x1C) = var_v1;
+        D_00470894 = (s32)func_0028DDA0;
     }
 }
+
+/* Similar function already in C: func_002D1F20 (src/unk/unk_2D1C20.c), similarity 0.65.
+ * It is the template below (not built). */
+#if 0
+void func_002D1F20(SmsgTask *t) {
+    SmsgWork *w = &t->w;
+
+    if (t->w.state == 3) {
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 0x15, 0);
+        }
+        w->f20 = 0;
+        SET_FUNC(t, func_002D1DB0);
+    }
+}
+#endif

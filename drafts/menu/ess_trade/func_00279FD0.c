@@ -1,10 +1,10 @@
 /* Draft (not built): func_00279FD0 at 0x00279FD0, size 0x1BC, segment menu/ess_trade (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); s2.exe Compiler: 220: amCdFs_Close(*(gEssTrade + var_s0), 0); @ 219: *(s32 *)((u8 *)(*(gEssTrade + var_s0)) + 0x40) = 0;
+ * Status: size, 47 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1C0, original 0x1BC
  * Original: asm/nonmatchings/menu/ess_trade/func_00279FD0.s */
 
-// src/menu/ess_trade.c func_00279FD0 cerr diff=-1/0
+// src/menu/ess_trade.c func_00279FD0 size diff=47/112
 s32 func_0026D610(s32);
 void *func_002C0510(s32, s32, s32);
 extern void amFile_Load(void *);
@@ -19,11 +19,11 @@ void func_00279FD0(u8 *arg0) {
         var_s1 = 0;
         var_s0 = 0;
         do {
-            temp_v1 = (u8 *)(gEssTrade + var_s0);
+            temp_v1 = (unsigned char *)(gEssTrade + var_s0);
             *(s32 *)((u8 *)temp_v1 + 0x10) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)temp_v1 + 0)) + 0x40);
-            *(s32 *)((u8 *)(*(gEssTrade + var_s0)) + 0x40) = 0;
-            amCdFs_Close(*(gEssTrade + var_s0), 0);
-            *(gEssTrade + var_s0) = 0;
+            *(s32 *)((u8 *)(*(s32 *)(gEssTrade + var_s0)) + 0x40) = 0;
+            amCdFs_Close((void *)(*(s32 *)(gEssTrade + var_s0)), 0);
+            *(s32 *)(gEssTrade + var_s0) = 0;
             amFile_Load(*(u8 **)((u8 *)(*(u8 **)((u8 *)(gEssTrade + var_s0) + 0x10)) + 0x50));
             func_0026D610(*(s32 *)((u8 *)(gEssTrade + var_s0) + 0x10));
             var_s1 += 1;
@@ -42,7 +42,7 @@ void func_00279FD0(u8 *arg0) {
                 var_v0 = NULL;
             }
             *(void (**)())((u8 *)arg0 + 0x1C) = var_v0;
-            amAdx_SetVolume(1, (f32)(D_004E0618));
+            amAdx_SetVolume(1,(*(f32 *)(D_004E0618)));
             amAdx_Pause(1, 0);
             amAdx_PlayAfs(1, 0x210BB, 0);
             return;

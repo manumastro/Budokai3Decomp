@@ -24,7 +24,7 @@ void func_00270660(void) {
     temp_a2 = *(s32 *)((u8 *)D_004707FC + 0x50);
     var_a0 = temp_a2 - 1;
     if (var_a0 >= 0) {
-        var_v1 = (u8 *)(D_004707FC + (var_a0 * 4));
+        var_v1 = (unsigned char *)(D_004707FC + (var_a0 * 4));
 loop_2:
         if (*(s32 *)((u8 *)var_v1 + 0x5DC) >= 0) {
 
@@ -47,7 +47,7 @@ block_7:
     }
     var_a0_2 = temp_a2 + 1;
     if (var_a0_2 < 0x30) {
-        var_v1_2 = (u8 *)(D_004707FC + (var_a0_2 * 4));
+        var_v1_2 = (unsigned char *)(D_004707FC + (var_a0_2 * 4));
 loop_13:
         if (*(s32 *)((u8 *)var_v1_2 + 0x5DC) >= 0) {
 

@@ -20,7 +20,7 @@ void func_002BDD10(u8 *arg0) {
     u8 *temp_a0_3;
     u8 *temp_s1;
 
-    temp_s1 = (u8 *)(D_0046FE44);
+    temp_s1 = (unsigned char *)(D_0046FE44);
     if (*(s16 *)((u8 *)temp_s1 + 0x100) == 1) {
         temp_s0 = *(u8 ***)((u8 *)arg0 + 0xB8);
         if (!(*(s32 *)((u8 *)temp_s1 + 0x2C) & 1) && (*(s16 *)((u8 *)temp_s1 + 0x36) == 0xE)) {

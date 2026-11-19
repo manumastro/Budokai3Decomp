@@ -1,10 +1,10 @@
 /* Draft (not built): func_00131700 at 0x00131700, size 0x488, segment sys/unk_131700 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'sp24' mwccps2.exe Compiler: 121: var_a0 = sp24; @ 120: if (!(sp24 >= 2.1474836e9f)) {
+ * Status: size, 158 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x51C, original 0x488
  * Original: asm/nonmatchings/sys/unk_131700/func_00131700.s */
 
-// src/sys/unk_131700.c func_00131700 cerr diff=-1/0
+// src/sys/unk_131700.c func_00131700 size diff=158/327
 void *amPkt_Alloc(s32, s32, s32, s32);
 extern s32 D_004703B0;
 extern s8 D_00470408;
@@ -19,6 +19,9 @@ extern s8 D_004704A8;
 extern u16 D_0047E5A0;
 extern u16 D_0047E710;
 void func_00131700(void) {
+    s32 sp2C;
+    s32 sp28;
+    s32 sp24;
     f32 sp20;
     f32 var_a0;
     f32 var_a0_2;
@@ -113,5 +116,5 @@ void func_00131700(void) {
     *(s32 *)((u8 *)temp_v0 + 0xF0) = (s32) (D_00470490 | (D_0047045C << 0x18));
     *(s32 *)((u8 *)temp_v0 + 0xF4) = 0;
     *(s64 *)((u8 *)temp_v0 + 0xF8) = 0x4E;
-    amDma_Request(0, 1, 1, 1);
+    amDma_Request(0U, 1U, 1U, 1U, M2C_ERROR(/* Read from unset register $a4 */), M2C_ERROR(/* Read from unset register $a5 */), M2C_ERROR(/* Read from unset register $a6 */), M2C_ERROR(/* Read from unset register $a7 */));
 }

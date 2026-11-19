@@ -20,9 +20,9 @@ extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern void func_00228410(void);
-extern void func_0022C6B0(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022C6B0(void *);
 void func_00271080(u8 *arg0) {
     s32 sp70;
     f32 sp74;
@@ -85,8 +85,8 @@ block_4:
     func_00228430(0);
     func_002284D0(0);
     var_s0 = 0;
-    temp_s3 = (u8 *)(D_004707FC + 0x104);
-    temp_s5 = (u8 *)(D_004707FC + ((*(s32 *)((u8 *)D_004707FC + 0x48) + 1) * 8) + 0x75C);
+    temp_s3 = (unsigned char *)(D_004707FC + 0x104);
+    temp_s5 = (unsigned char *)(D_004707FC + ((*(s32 *)((u8 *)D_004707FC + 0x48) + 1) * 8) + 0x75C);
     func_00228430(0);
     sp84 = D_00470018 * (f32) *(s32 *)((u8 *)D_004707FC + 0x48);
     func_00227A30(&sp80);
@@ -139,10 +139,10 @@ loop_17:
     func_00228410();
     amDraw_SetScissor(NULL, 0);
     func_0022C430(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 0x1C)) + 4), 0.0f);
-    temp_s3_2 = (u8 *)(D_004707FC + 0xA4);
+    temp_s3_2 = (unsigned char *)(D_004707FC + 0xA4);
     func_0022C430(*(*(u8 **)((u8 *)temp_s2 + 0x1C) + (*(s32 *)((u8 *)D_004707FC + 0xA4) * 4)), (f32) *(s32 *)((u8 *)D_004707FC + 0xAC) * gFrameDelta);
     *(s32 *)((u8 *)temp_s3_2 + 8) = (s32) (*(s32 *)((u8 *)temp_s3_2 + 8) + 1);
-    temp_s3_3 = (u8 *)(D_004707FC + 0xD4);
+    temp_s3_3 = (unsigned char *)(D_004707FC + 0xD4);
     func_0022C430(*(*(u8 **)((u8 *)temp_s2 + 0x1C) + (*(s32 *)((u8 *)D_004707FC + 0xD4) * 4)), (f32) *(s32 *)((u8 *)D_004707FC + 0xDC) * gFrameDelta);
     *(s32 *)((u8 *)temp_s3_3 + 8) = (s32) (*(s32 *)((u8 *)temp_s3_3 + 8) + 1);
     func_0022C430(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 0x1C)) + 0xEC), 0.0f);

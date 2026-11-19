@@ -34,7 +34,7 @@ block_1:
     if (var_t6 == D_005D0081) {
         goto block_23;
     }
-    temp_a1 = (u8 *)(gTourMap + (var_t6 * 0x14));
+    temp_a1 = (unsigned char *)(gTourMap + (var_t6 * 0x14));
     temp_t5 = temp_a1 + 0x2EC;
     if (*(s8 *)((u8 *)temp_a1 + 0x2F0) != 1) {
         goto block_16;

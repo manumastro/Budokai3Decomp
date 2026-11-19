@@ -26,3 +26,22 @@ void func_0015C038(u8 *arg0) {
         func_00152520();
     }
 }
+
+/* Similar function already in C: func_00158D38 (src/cri/adx_001563B0.c), similarity 0.76.
+ * It is the template below (not built). */
+#if 0
+void func_00158D38(u8 *arg0) {
+    s32 temp_v0;
+
+    if (arg0 != NULL) {
+        temp_v0 = *(s32 *)((u8 *)arg0 + 4);
+        if (temp_v0 != 0) {
+            *(s32 *)((u8 *)arg0 + 4) = 0;
+            func_001507E8(temp_v0);
+        }
+        func_00152508();
+        memset(arg0, 0, 0xA8);
+        func_00152520();
+    }
+}
+#endif

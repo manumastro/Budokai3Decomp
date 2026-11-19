@@ -1,10 +1,10 @@
 /* Draft (not built): func_00133FF0 at 0x00133FF0, size 0x694, segment sys/unk_133620 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); mwccps2.exe Compiler: 428: *(s3232 *)((u8 *)sp5C + 0x58) = (s3232) D_00470258; @ 426: *(s3232 *)((u8 *)sp5C + 0x58) = 0;
+ * Status: size, 234 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x6D8, original 0x694
  * Original: asm/nonmatchings/sys/unk_133620/func_00133FF0.s */
 
-// src/sys/unk_133620.c func_00133FF0 cerr diff=-1/0
+// src/sys/unk_133620.c func_00133FF0 size diff=234/438
 s32 func_00139330(void **, s32, s32);
 extern s32 D_00470270;
 extern s32 D_00470274;
@@ -40,18 +40,22 @@ void func_00133FF0(s32 arg0, s32 arg1, u8 *arg2, s64 arg3) {
     var_s2 = var_v1 | (arg1 & var_a0);
     if (arg2 == NULL) {
         temp_v1 = var_s2 & 0x700;
-        if ((temp_v1 != 0x400) && (temp_v1 != 0x200)) {
-            if (temp_v1 != 0x300) {
-                var_s2 = (var_s2 & ~0x700) | 0x400;
-            } else {
-                var_s2 = (var_s2 & ~0x700) | 0x200;
-            }
+        switch (temp_v1) {                          /* switch 1; irregular */
+        case 0x400:                                 /* switch 1 */
+        case 0x200:                                 /* switch 1 */
+            break;
+        case 0x300:                                 /* switch 1 */
+            var_s2 = (var_s2 & ~0x700) | 0x200;
+            break;
+        default:                                    /* switch 1 */
+            var_s2 = (var_s2 & ~0x700) | 0x400;
+            break;
         }
     }
     D_00470274 = var_s2;
     sp5C = gPacketPtr;
     D_00470278 = gPacketPtr;
-    func_00139330(&sp5C, 3, var_s2);
+    func_00139330((void **)(&sp5C), 3, (s32)(var_s2));
     M2C_ERROR(/* unknown instruction: sqc2 $vf28, ($v1) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf29, 0x10($v1) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf30, 0x20($v1) */);
@@ -107,26 +111,26 @@ void func_00133FF0(s32 arg0, s32 arg1, u8 *arg2, s64 arg3) {
     *(s32 *)((u8 *)sp5C + 0x3C) = (s32) (temp_a3 | 0x8000);
     temp_v1_2 = sp5C + 0x48;
     temp_a2 = var_s2 & 0x700;
-    switch (temp_a2) {                              /* irregular */
-    case 0x300:
+    switch (temp_a2) {                              /* switch 2; irregular */
+    case 0x300:                                     /* switch 2 */
         *(f32 *)((u8 *)sp5C + 0x48) = (f32) (255.0f * (*(f32 *)((u8 *)arg2 + 0) * *(f32 *)((u8 *)(&D_003F01E0) + 0)));
         *(f32 *)((u8 *)temp_v1_2 + 4) = (f32) (255.0f * (*(f32 *)((u8 *)arg2 + 4) * *(f32 *)((u8 *)(&D_003F01E0) + 4)));
         *(f32 *)((u8 *)temp_v1_2 + 8) = (f32) (255.0f * (*(f32 *)((u8 *)arg2 + 8) * *(f32 *)((u8 *)(&D_003F01E0) + 8)));
         *(f32 *)((u8 *)temp_v1_2 + 0xC) = (f32) (128.0f * (*(f32 *)((u8 *)arg2 + 0xC) * *(f32 *)((u8 *)(&D_003F01E0) + 0xC)));
         break;
-    case 0x200:
+    case 0x200:                                     /* switch 2 */
         *(f32 *)((u8 *)sp5C + 0x48) = (f32) (255.0f * *(f32 *)((u8 *)(&D_003F01E0) + 0));
         *(f32 *)((u8 *)temp_v1_2 + 4) = (f32) (255.0f * *(f32 *)((u8 *)(&D_003F01E0) + 4));
         *(f32 *)((u8 *)temp_v1_2 + 8) = (f32) (255.0f * *(f32 *)((u8 *)(&D_003F01E0) + 8));
         *(f32 *)((u8 *)temp_v1_2 + 0xC) = (f32) (128.0f * *(f32 *)((u8 *)(&D_003F01E0) + 0xC));
         break;
-    case 0x400:
+    case 0x400:                                     /* switch 2 */
         *(f32 *)((u8 *)sp5C + 0x48) = 255.0f;
         *(f32 *)((u8 *)temp_v1_2 + 4) = 255.0f;
         *(f32 *)((u8 *)temp_v1_2 + 8) = 255.0f;
         *(f32 *)((u8 *)temp_v1_2 + 0xC) = 128.0f;
         break;
-    default:
+    default:                                        /* switch 2 */
         *(f32 *)((u8 *)sp5C + 0x48) = (f32) (255.0f * *(f32 *)((u8 *)arg2 + 0));
         *(f32 *)((u8 *)temp_v1_2 + 4) = (f32) (255.0f * *(f32 *)((u8 *)arg2 + 4));
         *(f32 *)((u8 *)temp_v1_2 + 8) = (f32) (255.0f * *(f32 *)((u8 *)arg2 + 8));
@@ -134,15 +138,15 @@ void func_00133FF0(s32 arg0, s32 arg1, u8 *arg2, s64 arg3) {
         break;
     }
     if (!(var_s2 & 0x8080)) {
-        *(s3232 *)((u8 *)sp5C + 0x58) = 0;
+        *(s32 *)((u8 *)sp5C + 0x58) = 0;
     } else if (var_s2 & 0x80) {
-        *(s3232 *)((u8 *)sp5C + 0x58) = (s3232) D_00470258;
+        *(s32 *)((u8 *)sp5C + 0x58) = (s32) D_00470258;
         *(f32 *)((u8 *)sp5C + 0x5C) = (f32) D_0046FD30;
         *(f32 *)((u8 *)sp5C + 0x60) = (f32) D_0046FD2C;
         *(f32 *)((u8 *)sp5C + 0x64) = (f32) D_0046FD28;
         *(s32 *)((u8 *)sp5C + 0xB0) = (s32) D_0047025C;
     } else if (var_s2 & 0x8000) {
-        *(s3232 *)((u8 *)sp5C + 0x58) = (s3232) D_00470260;
+        *(s32 *)((u8 *)sp5C + 0x58) = (s32) D_00470260;
         *(s32 *)((u8 *)sp5C + 0xB0) = (s32) D_00470264;
     }
     *(s32 *)((u8 *)sp5C + 0x68) = 0;
@@ -152,7 +156,7 @@ void func_00133FF0(s32 arg0, s32 arg1, u8 *arg2, s64 arg3) {
     *(s64 *)((u8 *)sp5C + 0x80) = 1;
     *(s64 *)((u8 *)sp5C + 0x88) = 0x46;
     if (var_s2 & 0x1000) {
-        *(s32 *)((u8 *)sp5C + 0x90) = (s32) (D_0046FD18 | 1);
+        *(s32 *)((u8 *)sp5C + 0x90) = (s32) (((s32)(D_0046FD18)) | 1);
     } else {
         *(s32 *)((u8 *)sp5C + 0x90) = (s32) D_0046FD18;
     }

@@ -65,8 +65,8 @@ block_20:
                 temp_v0 = func_00215320(-1, 0x10);
                 if (temp_v0 != NULL) {
                     temp_s0_2 = temp_v0 + 0x20;
-                    *(s32 **)((u8 *)temp_v0 + 8) = &func_00212480;
-                    *(s32 **)((u8 *)temp_v0 + 0xC) = &func_00212650;
+                    *(s32 **)((u8 *)temp_v0 + 8) = (int *)(&func_00212480);
+                    *(s32 **)((u8 *)temp_v0 + 0xC) = (int *)(&func_00212650);
                     memset(temp_s0_2, 0, 0x50);
                     temp_a0 = *(D_0046FDD0 + (sp90 * 4));
                     if (temp_a0 != 0) {
@@ -83,7 +83,7 @@ block_20:
             *(f32 *)((u8 *)temp_s3 + 0xC) = (f32) (*(f32 *)((u8 *)temp_s3 + 0xC) + temp_f20);
             return;
         }
-        amTask_Kill((s32)((void *)(arg0)));
+        amTask_Kill((s32)(arg0));
         *(s32 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x30) * 4) + D_0046FDD0) + 0x188) = 0;
     }
 }

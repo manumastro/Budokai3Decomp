@@ -1,12 +1,14 @@
 /* Draft (not built): func_001BFD60 at 0x001BFD60, size 0x3CC, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); o 'float' mwccps2.exe Compiler: @ 4523: func_00146ED0(&sp50, temp_a2 + 0xD0, temp_a2, *(f32 *)((u8 *)temp_a2 + 0x1828));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); om 'unsigned char *' to 'float' @ 5543: (f32 *)(temp_a2 + 0xD0), temp_a2, (f32)(s32)(*(f32 *)((u8 *)temp_a2 + 0x1828)));
  * Original: asm/nonmatchings/battle/btl_main/func_001BFD60.s */
 
 // src/battle/btl_main.c func_001BFD60 cerr diff=-1/0
 s64 func_001E8C90(void *);
 s32 func_001BFD60(u8 *arg0) {
+    s32 sp58;
+    s32 sp54;
     u8 *sp30;
     u8 *sp34;
     f32 sp50;
@@ -63,7 +65,7 @@ s32 func_001BFD60(u8 *arg0) {
     if (*(s8 *)((u8 *)arg0 + 0x200F) != 0) {
         return 0;
     }
-    if (func_001DFE60(arg0, 0xA, 0x447A0000) == 0) {
+    if (func_001DFE60((Fighter *)(arg0), 0xA, 0x447A0000) == 0) {
         return 0;
     }
     var_s0 = *(s8 *)((u8 *)arg0 + 0x2018);
@@ -75,7 +77,7 @@ s32 func_001BFD60(u8 *arg0) {
     }
     temp_a2 = *(u8 **)((u8 *)arg0 + 0x1354);
     if ((*(s16 *)((u8 *)temp_a2 + 0xCAC) == 0x14) && ((8.0f + *(f32 *)((u8 *)temp_a2 + 0x1830)) < *(f32 *)((u8 *)temp_a2 + 0x182C))) {
-        func_00146ED0(&sp50, temp_a2 + 0xD0, temp_a2, *(f32 *)((u8 *)temp_a2 + 0x1828));
+        func_00146ED0((f32 *)(&sp50), (f32 *)(temp_a2 + 0xD0), temp_a2, (f32)(s32)(*(f32 *)((u8 *)temp_a2 + 0x1828)));
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
         M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
@@ -119,7 +121,7 @@ s32 func_001BFD60(u8 *arg0) {
         *(s8 *)((u8 *)arg0 + 0x2006) = 0;
         D_00468500(arg0, temp_a1);
         func_002CBFF0(1, arg0);
-        func_001DFE60((struct Fighter *)(arg0), 0, 0x447A0000);
+        func_001DFE60((Fighter *)(arg0), 0, 0x447A0000);
         goto block_65;
     }
 block_65:

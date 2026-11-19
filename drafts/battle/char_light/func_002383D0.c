@@ -1,7 +1,7 @@
 /* Draft (not built): func_002383D0 at 0x002383D0, size 0x240, segment battle/char_light (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  'int (*)(unsigned char *)' mwccps2.exe Compiler: @ 934: temp_v1 = *(&D_0046AAF0 + (*(s32 *)((u8 *)temp_s0 + 0xC) * 4));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); nversion from 'int' to 'int (*)(unsigned char *)' @ 934: temp_v1 = *(&D_0046AAF0 + (*(s32 *)((u8 *)temp_s0 + 0xC) * 4));
  * Original: asm/nonmatchings/battle/char_light/func_002383D0.s */
 
 // src/battle/char_light.c func_002383D0 cerr diff=-1/0
@@ -37,7 +37,7 @@ void func_002383D0(u8 *arg0) {
                 temp_a3 = *(s32 *)((u8 *)temp_s0 + 0xC);
                 var_a0 = NULL;
                 temp_a2 = temp_a3 * 0xC;
-                temp_v1_2 = *(&D_0046A982 + temp_a2);
+                temp_v1_2 = *(((u8 *)&D_0046A982) + temp_a2);
                 var_a1 = 0;
                 switch (temp_v1_2) {                /* irregular */
                 case 0:
@@ -49,10 +49,10 @@ void func_002383D0(u8 *arg0) {
                     var_a1 = 0x04010000;
                     break;
                 }
-                D_00470704 = (s32)(var_a0);
+                D_00470704 = (int)(var_a0);
                 D_0047070C = var_a1;
                 D_00470708 = 0;
-                amModel_SetCurrent(var_a0, var_a1, temp_a2, temp_a3);
+                amModel_SetCurrent((s32)(var_a0), (s32)(var_a1));
                 D_00470238 = 0;
                 func_00228430(0);
                 func_002284D0(0);
@@ -67,7 +67,7 @@ void func_002383D0(u8 *arg0) {
                     *(f32 *)((u8 *)temp_v0_2 + 0x24) = (f32) (*(f32 *)((u8 *)temp_v0_2 + 0x24) + 28.0f);
                 }
                 if ((func_0022BF80(*(u8 **)((u8 *)temp_s0 + 0x10)) == 0xFF) && (D_0047072C != 0)) {
-                    var_s0 = &D_0058BEB0 + (*(s32 *)((u8 *)temp_s0 + 0xC) * 4);
+                    var_s0 = (unsigned char **)(((u8 *)&D_0058BEB0) + (*(s32 *)((u8 *)temp_s0 + 0xC) * 4));
                     temp_a0 = *var_s0;
                     if (temp_a0 != NULL) {
                         amTask_Kill(temp_a0);
@@ -75,7 +75,7 @@ void func_002383D0(u8 *arg0) {
                     }
                 }
             } else if (!(*(f32 *)((u8 *)arg0 + 0x30) < *(f32 *)((u8 *)temp_s0 + 4)) && (D_0047072C != 0)) {
-                var_s0 = &D_0058BEB0 + (*(s32 *)((u8 *)temp_s0 + 0xC) * 4);
+                var_s0 = (unsigned char **)(((u8 *)&D_0058BEB0) + (*(s32 *)((u8 *)temp_s0 + 0xC) * 4));
                 temp_a0_2 = *var_s0;
                 if (temp_a0_2 != NULL) {
                     amTask_Kill(temp_a0_2);

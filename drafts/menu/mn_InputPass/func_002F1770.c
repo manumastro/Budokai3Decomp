@@ -1,10 +1,10 @@
 /* Draft (not built): func_002F1770 at 0x002F1770, size 0xA34, segment menu/mn_InputPass (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  471: if (!(*(&D_00492FCC + (D_004B4B63 * 0xB8)) & 0x4008)) { @ 430: if (*(D_00492FCE + (D_004B4B63 * 0xB8)) & 0x4000) {
+ * Status: size, 413 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x96C, original 0xA34
  * Original: asm/nonmatchings/menu/mn_InputPass/func_002F1770.s */
 
-// src/menu/mn_InputPass.c func_002F1770 cerr diff=-1/0
+// src/menu/mn_InputPass.c func_002F1770 size diff=413/603
 extern void *func_0022D860(f32, void *);
 s32 SoundRpc_SetVolume(s32, s32, f32, f32);
 s32 func_001221A8(s8);
@@ -28,9 +28,8 @@ void func_002F1770(u8 *arg0) {
     f32 temp_f4;
     f32 var_f1;
     f32 var_f2;
-    s32 temp_a0_10;
-    s32 temp_a0_8;
-    s32 temp_a0_9;
+    s32 temp_a0;
+    s32 temp_a0_7;
     s32 temp_s3_2;
     s32 var_s5;
     s64 temp_a1;
@@ -49,8 +48,9 @@ void func_002F1770(u8 *arg0) {
     u16 temp_v1;
     u16 temp_v1_2;
     u16 temp_v1_3;
-    u8 *temp_a0;
-    u8 *temp_a0_7;
+    u8 *temp_a0_10;
+    u8 *temp_a0_8;
+    u8 *temp_a0_9;
     u8 *temp_s1;
     u8 *temp_s3;
     u8 *temp_s3_4;
@@ -62,11 +62,11 @@ void func_002F1770(u8 *arg0) {
     temp_s0 = *(u16 *)((u8 *)temp_s1 + 0x124);
     A2d_FlushList();
     func_00133B50(0, 0);
-    temp_a0 = *(u8 **)((u8 *)temp_s3 + 0x10);
-    D_00470704 = (s32)(temp_a0);
+    temp_a0 = *(s32 *)((u8 *)temp_s3 + 0x10);
+    D_00470704 = temp_a0;
     D_0047070C = 0x5000;
     D_00470708 = 0;
-    amModel_SetCurrent((s32)(temp_a0), 0x5000);
+    amModel_SetCurrent(temp_a0, 0x5000);
     D_00470238 = 0;
     func_002F0BC0(temp_s1);
     var_s5 = 0;
@@ -85,7 +85,7 @@ void func_002F1770(u8 *arg0) {
     A2d_FlushList();
     func_00133B50(0, 0);
     if (*(u8 *)((u8 *)temp_s1 + 0x170) == 2) {
-        if (*(D_00492FCE + (D_004B4B63 * 0xB8)) & 0x4000) {
+        if (*(D_00492FCE + (*D_004B4B63 * 0xB8)) & 0x4000) {
             *(u8 *)((u8 *)temp_s1 + 0x170) = 3U;
             temp_a0_2 = *(u16 *)((u8 *)temp_s1 + 0x124);
             switch ((s32) temp_a0_2) {              /* irregular */
@@ -126,7 +126,7 @@ void func_002F1770(u8 *arg0) {
         }
         goto block_34;
     }
-    if (!(*(&D_00492FCC + (D_004B4B63 * 0xB8)) & 0x4008)) {
+    if (!(*(&D_00492FCC + (*D_004B4B63 * 0xB8)) & 0x4008)) {
         *(u8 *)((u8 *)temp_s1 + 0x170) = 2U;
         if (*(u8 *)((u8 *)temp_s1 + 0x173) != 0) {
             *(u8 *)((u8 *)temp_s1 + 0x173) = 0U;
@@ -145,14 +145,14 @@ void func_002F1770(u8 *arg0) {
     }
 block_34:
     if (*(u8 *)((u8 *)temp_s1 + 0x170) != 3) {
-        temp_s3_2 = D_004B4B63 * 0xB8;
-        temp_s4 = (s8 *)(&D_0049302A + temp_s3_2);
+        temp_s3_2 = *D_004B4B63 * 0xB8;
+        temp_s4 = (signed char *)(&D_0049302A + temp_s3_2);
         if (func_001221A8(*temp_s4) >= 5) {
             var_f1 = 0.0625f * (f32) *temp_s4;
         } else {
             var_f1 = 0.0f;
         }
-        temp_s3_3 = (s8 *)(&D_0049302B + temp_s3_2);
+        temp_s3_3 = (signed char *)(&D_0049302B + temp_s3_2);
         *(f32 *)((u8 *)temp_s1 + 0x11C) = (f32) (*(f32 *)((u8 *)temp_s1 + 0x11C) + var_f1);
         if (func_001221A8(*temp_s3_3) >= 5) {
             var_f2 = 0.0625f * (f32) *temp_s3_3;
@@ -172,7 +172,7 @@ block_34:
         } else if (!(temp_f1_2 <= 160.0f)) {
             *(f32 *)((u8 *)temp_s1 + 0x120) = 160.0f;
         }
-        temp_a0_3 = *(&D_00492FD2 + (D_004B4B63 * 0xB8));
+        temp_a0_3 = *(&D_00492FD2 + (*D_004B4B63 * 0xB8));
         if (temp_a0_3 & 0xF0) {
             if (temp_a0_3 & 0x80) {
                 temp_f1_3 = *(f32 *)((u8 *)temp_s1 + 0x11C);
@@ -184,7 +184,7 @@ block_34:
             } else if (temp_a0_3 & 0x20) {
                 *(f32 *)((u8 *)temp_s1 + 0x11C) = (f32) (*(f32 *)((u8 *)temp_s1 + 0x11C) + 30.0f);
             }
-            temp_a0_4 = *(&D_00492FD2 + (D_004B4B63 * 0xB8));
+            temp_a0_4 = *(&D_00492FD2 + (*D_004B4B63 * 0xB8));
             if (temp_a0_4 & 0x10) {
                 *(f32 *)((u8 *)temp_s1 + 0x120) = (f32) (*(f32 *)((u8 *)temp_s1 + 0x120) - 30.0f);
             } else if (temp_a0_4 & 0x40) {
@@ -223,7 +223,7 @@ block_34:
 block_78:
             *(u16 *)((u8 *)temp_s1 + 0x124) = 0xFFFFU;
         }
-        temp_a0_5 = *(&D_00492FD2 + (D_004B4B63 * 0xB8));
+        temp_a0_5 = *(&D_00492FD2 + (*D_004B4B63 * 0xB8));
         if (temp_a0_5 & 0xC00) {
             if (temp_a0_5 & 0x800) {
                 temp_a1_3 = *(u16 *)((u8 *)temp_s1 + 0x126);
@@ -237,13 +237,13 @@ block_78:
                 }
             }
         }
-        temp_a0_6 = *(D_00492FCE + (D_004B4B63 * 0xB8));
+        temp_a0_6 = *(D_00492FCE + (*D_004B4B63 * 0xB8));
         if (temp_a0_6 & 8) {
             *(u8 *)((u8 *)temp_s1 + 0x170) = 3U;
             *(f32 *)((u8 *)temp_s1 + 0x11C) = 434.5f;
             *(f32 *)((u8 *)temp_s1 + 0x120) = 140.0f;
             *(u16 *)((u8 *)temp_s1 + 0x124) = 0x104U;
-            func_002F0960(temp_s1, D_004B4B63);
+            func_002F0960(temp_s1, *D_004B4B63);
         } else if (temp_a0_6 & 0x1000) {
             SoundRpc_SetVolume(0, 0, D_004E0614, 0);
             if (!(D_004E0614 <= 0.0f)) {
@@ -253,28 +253,28 @@ block_78:
             *(s32 *)((u8 *)temp_s1 + 0x118) = 0x41A00000;
             *(u8 *)((u8 *)temp_s1 + 0x170) = 5U;
             temp_s3_4 = gInputName;
-            temp_a0_7 = *(u8 **)((u8 *)temp_s3_4 + 0x10);
-            D_00470704 = (s32)(temp_a0_7);
+            temp_a0_7 = *(s32 *)((u8 *)temp_s3_4 + 0x10);
+            D_00470704 = temp_a0_7;
             D_0047070C = 0x5000;
             D_00470708 = 0;
-            amModel_SetCurrent((s32)(temp_a0_7), 0x5000);
+            amModel_SetCurrent(temp_a0_7, 0x5000);
             D_00470238 = 0;
-            temp_a0_8 = *(s32 *)((u8 *)temp_s1 + 0);
-            if (temp_a0_8 != 0) {
+            temp_a0_8 = *(u8 **)((u8 *)temp_s1 + 0);
+            if (temp_a0_8 != NULL) {
                 func_0022D0E0(temp_a0_8, 1);
             }
-            *(s32 *)((u8 *)temp_s1 + 0) = func_0022D860((s32)((s32)((s32)((s32)((s32)((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3_4 + 0xC)) + 0x14)) + 4))))))), 0);
-            temp_a0_9 = *(s32 *)((u8 *)temp_s1 + 0x98);
-            if (temp_a0_9 != 0) {
+            *(u8 **)((u8 *)temp_s1 + 0) = func_0022D860(0.0f, *(u8 **)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s3_4 + 0xC)) + 0x14)) + 4));
+            temp_a0_9 = *(u8 **)((u8 *)temp_s1 + 0x98);
+            if (temp_a0_9 != NULL) {
                 func_0022D0E0(temp_a0_9, 1);
-                *(s32 *)((u8 *)temp_s1 + 0x98) = 0;
+                *(u8 **)((u8 *)temp_s1 + 0x98) = NULL;
             }
-            temp_a0_10 = *(s32 *)((u8 *)temp_s1 + 0x9C);
-            if (temp_a0_10 != 0) {
+            temp_a0_10 = *(u8 **)((u8 *)temp_s1 + 0x9C);
+            if (temp_a0_10 != NULL) {
                 func_0022D0E0(temp_a0_10, 1);
-                *(s32 *)((u8 *)temp_s1 + 0x9C) = 0;
+                *(u8 **)((u8 *)temp_s1 + 0x9C) = NULL;
             }
-            var_v1 = (s32 *)(&func_002F0FD0);
+            var_v1 = (int *)(&func_002F0FD0);
             if (&func_002F0FD0 == NULL) {
                 var_v1 = NULL;
             }

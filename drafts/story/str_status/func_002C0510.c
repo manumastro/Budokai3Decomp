@@ -1,22 +1,22 @@
 /* Draft (not built): func_002C0510 at 0x002C0510, size 0x120, segment story/str_status (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); d (*)(struct Task *), int, int, @ 891: p_v0 = amTask_Create(&StrStatus_TaskComment, 0, (s64) (arg1 << 0x30) >> 0x30, 8);
+ * Status: size, 59 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x9C, original 0x120
  * Original: asm/nonmatchings/story/str_status/func_002C0510.s */
 
-// src/story/str_status.c func_002C0510 cerr diff=-1/0
+// src/story/str_status.c func_002C0510 size diff=59/39
 extern s128 D_00456310;
 extern s128 D_00456320;
-u8 *func_002C0510(s32 arg0, s64 arg1, s32 arg2) {
+Task *func_002C0510(s32 arg0, s64 arg1, s32 arg2, s32 unused_arg3, s32 arg4, s8 *arg5) {
     s128 sp50;
     s128 sp60;
+    Task *temp_v0;
     u8 *temp_s1;
-    u8 *temp_v0;
 
     sp60 = D_00456310;
     sp50 = D_00456320;
-    temp_v0 = amTask_Create(&StrStatus_TaskComment, 0, (s64) (arg1 << 0x30) >> 0x30, 8);
-    temp_s1 = temp_v0 + 0x30;
+    temp_v0 = amTask_Create((void (*)(Task *)) StrStatus_TaskComment, NULL, (s32) ((s64) (arg1 << 0x30) >> 0x30), 8, arg4,(char *)(arg5));
+    temp_s1 = (unsigned char *)(temp_v0 + 0x30);
     memset(temp_s1, 0, 0x40);
     if (arg2 == 0) {
 

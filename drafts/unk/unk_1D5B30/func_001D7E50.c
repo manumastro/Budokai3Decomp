@@ -1,7 +1,7 @@
 /* Draft (not built): func_001D7E50 at 0x001D7E50, size 0x154, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'int' to 'struct Fighter *' @ 867: return func_001DFE60(0xA, 0x453B8000) != 0;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); int' to 'struct Fighter *' @ 867: turn (struct Fighter *)func_001DFE60(0xA, (s32)((struct Fighter *)(0x453B8000))) != 0;
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001D7E50.s */
 
 // src/unk/unk_1D5B30.c func_001D7E50 cerr diff=-1/0
@@ -58,5 +58,5 @@ block_15:
         goto block_31;
     }
 block_31:
-    return func_001DFE60(0xA, 0x453B8000) != 0;
+    return (struct Fighter *)func_001DFE60(0xA, (s32)((struct Fighter *)(0x453B8000))) != 0;
 }

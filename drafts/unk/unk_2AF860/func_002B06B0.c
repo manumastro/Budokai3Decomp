@@ -51,28 +51,28 @@ void func_002B06B0(s32 arg0) {
     u8 *temp_a0_8;
     u8 *temp_a0_9;
 
-    temp_s3 = &D_005ABA80 + (arg0 * 0x8380);
+    temp_s3 = (unsigned char **)(((u8 *)&D_005ABA80) + (arg0 * 0x8380));
     var_s1 = 0;
     var_s0 = temp_s3;
     do {
         temp_a0 = *(u8 **)((u8 *)var_s0 + 0);
         if (temp_a0 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0)));
+            amCdFs_ReleaseCache((s32)(temp_a0));
         }
         temp_a0_2 = *(u8 **)((u8 *)var_s0 + 4);
         if (temp_a0_2 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0_2)));
+            amCdFs_ReleaseCache((s32)(temp_a0_2));
         }
         temp_a0_3 = *(u8 **)((u8 *)var_s0 + 8);
         if (temp_a0_3 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0_3)));
+            amCdFs_ReleaseCache((s32)(temp_a0_3));
         }
         var_s5 = 0;
         var_s2 = var_s0;
 loop_8:
         temp_a0_4 = *(u8 **)((u8 *)var_s2 + 0xC);
         if (temp_a0_4 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0_4)));
+            amCdFs_ReleaseCache((s32)(temp_a0_4));
         }
         var_s5 += 1;
         var_s2 += 4;
@@ -84,7 +84,7 @@ loop_8:
 loop_12:
         temp_a0_5 = *(u8 **)((u8 *)var_s5_2 + 0x14);
         if (temp_a0_5 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0_5)));
+            amCdFs_ReleaseCache((s32)(temp_a0_5));
         }
         var_s2_2 += 1;
         var_s5_2 += 4;
@@ -107,34 +107,34 @@ loop_12:
         var_s0 += 0x20E0;
     } while (var_s1 < 4);
     var_s0_2 = 0;
-    temp_s7 = (u8 **)(&D_005BC9E0 + (arg0 * 0x1A0));
+    temp_s7 = (unsigned char **)(&D_005BC9E0 + (arg0 * 0x1A0));
     var_s1_2 = temp_s7;
     do {
         temp_a0_9 = *var_s1_2;
         if (temp_a0_9 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0_9)));
+            amCdFs_ReleaseCache((s32)(temp_a0_9));
         }
         var_s0_2 += 1;
         var_s1_2 += 0xD0;
     } while (var_s0_2 < 2);
     var_s0_3 = 0;
-    temp_s2 = &D_005BC180 + (arg0 * 0x160);
+    temp_s2 = (unsigned char **)(((u8 *)&D_005BC180) + (arg0 * 0x160));
     var_s1_3 = temp_s2;
     do {
         temp_a0_10 = *var_s1_3;
         if (temp_a0_10 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0_10)));
+            amCdFs_ReleaseCache((s32)(temp_a0_10));
         }
         var_s0_3 += 1;
         var_s1_3 += 0xB0;
     } while (var_s0_3 < 2);
     var_s0_4 = 0;
-    temp_s1 = (u8 **)(&D_005BC440 + (arg0 * 0x90));
+    temp_s1 = (unsigned char **)(&D_005BC440 + (arg0 * 0x90));
     var_s5_3 = temp_s1;
     do {
         temp_a0_11 = *(u8 **)((u8 *)var_s5_3 + 0);
         if (temp_a0_11 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0_11)));
+            amCdFs_ReleaseCache((s32)(temp_a0_11));
         }
         temp_a0_12 = *(u8 **)((u8 *)var_s5_3 + 8);
         if (temp_a0_12 != NULL) {
@@ -144,18 +144,18 @@ loop_12:
         var_s5_3 += 0x30;
     } while (var_s0_4 < 3);
     var_s5_4 = 0;
-    temp_s0 = (u8 **)(&D_005BC560 + (arg0 * 0x240));
+    temp_s0 = (unsigned char **)(&D_005BC560 + (arg0 * 0x240));
     var_s6 = temp_s0;
     do {
         temp_a0_13 = *var_s6;
         if (temp_a0_13 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0_13)));
+            amCdFs_ReleaseCache((s32)(temp_a0_13));
         }
         var_s5_4 += 1;
         var_s6 += 0xC;
     } while (var_s5_4 < 0x30);
     var_s5_5 = 0;
-    temp_s4 = &D_005BCD20 + (arg0 * 0xA0);
+    temp_s4 = (unsigned char **)(((u8 *)&D_005BCD20) + (arg0 * 0xA0));
     var_s6_2 = temp_s4;
     do {
         func_002AE810((void **)(var_s6_2));

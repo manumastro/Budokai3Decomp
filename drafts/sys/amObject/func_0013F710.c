@@ -13,8 +13,9 @@ extern void func_0013B960(void *);
 extern void func_00146F30(void *);
 extern void func_00142100(void *, void *);
 extern void func_0013B060(void *);
+extern s32 D_0047CAC4;
 void func_0013F710(u8 *arg0, s32 **arg1, u8 ***arg2, s32 *arg3) {
-    s3232 spA0;
+    s32 spA0;
     f32 spA4;
     f32 spA8;
     f32 spAC;
@@ -24,12 +25,12 @@ void func_0013F710(u8 *arg0, s32 **arg1, u8 ***arg2, s32 *arg3) {
     f32 spBC;
     f32 spC0;
     f32 spC4;
-    s3232 spC8;
+    s32 spC8;
     f32 spCC;
     s32 spE0;
     f32 spF0;
-    s3232 spF4;
-    s3232 spF8;
+    s32 spF4;
+    s32 spF8;
     s32 spFC;
     s32 sp100;
     s32 (*temp_fp)(u8 *);
@@ -45,7 +46,7 @@ void func_0013F710(u8 *arg0, s32 **arg1, u8 ***arg2, s32 *arg3) {
     var_s3 = arg0;
     temp_s7 = M2C_ERROR(/* Read from unset register $t0 */);
     temp_fp = D_0047CAC4;
-    func_0013B0B0((s32)((void *)(NULL)));
+    func_0013B0B0((s32)(NULL));
     do {
         temp_s5 = **arg2;
         *arg2 += 4;
@@ -76,7 +77,7 @@ block_4:
         }
         if ((var_s4 != -1) && (*(u8 **)((u8 *)var_s0 + 0x34) != NULL) && (*(s32 *)((u8 *)(*(u8 **)((u8 *)var_s0 + 0x34)) + 4) != 0)) {
             temp_s4 = *(u8 **)((u8 *)(*(u8 **)((u8 *)var_s0 + 0x34)) + 0xC);
-            func_0013B0B0((s32)((void *)(NULL)));
+            func_0013B0B0((s32)(NULL));
             if (*(s32 *)((u8 *)var_s0 + 0x30) & 0xC000) {
                 M2C_ERROR(/* unknown instruction: sqc2 $vf31, ($v0) */);
                 M2C_ERROR(/* unknown instruction: lqc2 $vf28, ($v0) */);
@@ -141,7 +142,7 @@ block_4:
                 func_0013B110(1);
             } else {
                 temp_s4_2 = *temp_s7;
-                temp_v0 = func_00138070(*(s32 *)((u8 *)(*(u8 **)((u8 *)var_s0 + 0x34)) + 4), temp_s7);
+                temp_v0 = func_00138070((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)var_s0 + 0x34)) + 4)), (void **)(temp_s7));
                 if (temp_v0 != 0) {
                     if (*arg3 != 0) {
                         *(s32 *)((u8 *)temp_s4_2 + 0) = 0x20000000;

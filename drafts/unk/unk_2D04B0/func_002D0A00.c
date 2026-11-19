@@ -12,9 +12,9 @@ extern s32 D_0047070C;
 extern f32 gFrameDelta;
 extern void A2d_FlushList(void);
 extern void func_001F07E0(void);
-extern void func_0022CD00(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022CD00(void *);
 void func_002D0A00(u8 *arg0) {
     u8 *sp50;
     s32 sp54;

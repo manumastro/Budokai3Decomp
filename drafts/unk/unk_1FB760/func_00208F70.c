@@ -45,7 +45,7 @@ void func_00208F70(u8 *arg0) {
                     case 0x10000:
                         temp_a1 = *(s32 *)((u8 *)temp_s0 + 0x20);
                         if ((temp_a1 != 0) && (temp_a1 != 0)) {
-                            if ((*(s32 (**)(u8 *, s32, s32))((u8 *)(&D_0044B7F0 + ((temp_a2 & 0xFFFF) * 0x10)) + 4))(temp_s0, temp_a1, temp_a2) != 0) {
+                            if ((*(s32 (**)(u8 *, s32, s32))((u8 *)(((u8 *)&D_0044B7F0) + ((temp_a2 & 0xFFFF) * 0x10)) + 4))(temp_s0, temp_a1, temp_a2) != 0) {
                                 temp_a0_3 = temp_s0 + 0x30;
                                 *(s32 *)((u8 *)temp_s0 + 8) = (s32) (*(s32 *)((u8 *)temp_s0 + 8) | 0x8000);
                                 var_a1 = *(u8 **)((u8 *)temp_s0 + 0x28);
@@ -76,10 +76,10 @@ void func_00208F70(u8 *arg0) {
                         }
                         break;
                     case 0x20000:
-                        (*(s32 (**)(u8 *))((u8 *)(&D_0044B860 + ((temp_a2 & 0xFFFF) * 0x10)) + 4))(temp_s0);
+                        (*(s32 (**)(u8 *))((u8 *)(((u8 *)&D_0044B860) + ((temp_a2 & 0xFFFF) * 0x10)) + 4))(temp_s0);
                         var_s5 = *(s32 **)((u8 *)temp_s0 + 0x3C);
                         temp_s4 = temp_s0 + 0x44;
-                        if (var_s5 != temp_s4) {
+                        if ((s32)(var_s5) != (s32)(temp_s4)) {
                             do {
                                 var_s3_2 = *(u8 **)((u8 *)temp_s6 + 0x24);
                                 if (var_s3_2 != NULL) {
@@ -91,8 +91,8 @@ void func_00208F70(u8 *arg0) {
                                         var_s3_2 = *(u8 **)((u8 *)var_s3_2 + 0x28);
                                     } while (var_s3_2 != NULL);
                                 }
-                                var_s5 = (s32 *)(*var_s5);
-                            } while (var_s5 != temp_s4);
+                                var_s5 = (int *)(*var_s5);
+                            } while ((s32)(var_s5) != (s32)(temp_s4));
                         }
                         break;
                     }

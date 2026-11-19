@@ -62,7 +62,7 @@ void func_00280AB0(u8 *arg0) {
         *(s32 *)((u8 *)temp_s2 + 0x58) = 0x3F800000;
         *(s32 *)((u8 *)temp_s2 + 0x5C) = 0;
         func_00280730(temp_s3);
-        var_v1 = (s32 *)(&func_00280A00);
+        var_v1 = (int *)(&func_00280A00);
         if (&func_00280A00 == NULL) {
             var_v1 = NULL;
         }

@@ -1,10 +1,10 @@
 /* Draft (not built): func_002065F0 at 0x002065F0, size 0x3C0, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); nversion from 'unsigned char[]' to 'float' mwccps2.exe Compiler: @ 544: func_00146F10(&sp60, var_s1 + 0x20, D_0051D9AC);
+ * Status: size, 161 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x410, original 0x3C0
  * Original: asm/nonmatchings/unk/unk_1FB760/func_002065F0.s */
 
-// src/unk/unk_1FB760.c func_002065F0 cerr diff=-1/0
+// src/unk/unk_1FB760.c func_002065F0 size diff=161/260
 extern f32 D_0051D9A8;
 s32 func_002065F0(u8 *arg0) {
     s32 sp60;
@@ -35,7 +35,7 @@ loop_34:
         if (temp_f1 <= 0.0f) {
             *(s32 *)((u8 *)var_s1 + 0xC) = (s32) (*(s32 *)((u8 *)var_s1 + 0xC) | 1);
         } else {
-            func_00146F10(&sp60, var_s1 + 0x20, D_0051D9AC);
+            func_00146F10(&sp60, var_s1 + 0x20, *D_0051D9AC);
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
             M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
@@ -47,7 +47,7 @@ loop_34:
                 **(u8 ***)((u8 *)var_s1 + 4) = *(u8 **)((u8 *)var_s1 + 0);
                 *(u8 ***)((u8 *)(*(u8 **)((u8 *)var_s1 + 0)) + 4) = (u8 **) *(u8 ***)((u8 *)var_s1 + 4);
                 *(s32 *)((u8 *)arg0 + 0x4C) = (s32) (*(s32 *)((u8 *)arg0 + 0x4C) - 1);
-                *(&D_00526440 + (D_0047066C * 4)) = var_s1;
+                D_00526440[D_0047066C] = (s32) var_s1;
                 D_0047066C += 1;
                 if (D_0047066C >= 0x800) {
                     D_0047066C = 0;
@@ -103,8 +103,8 @@ loop_34:
                         *(f32 *)((u8 *)var_s1 + 0x4C) = temp_f1_4;
                     }
                 } else if (temp_v1 & 0x4000) {
-                    var_f2 = *(f32 *)((u8 *)temp_s2 + 0xB8) * D_0051D9AC;
-                    var_f1 = *(f32 *)((u8 *)temp_s2 + 0xBC) * D_0051D9AC;
+                    var_f2 = *(f32 *)((u8 *)temp_s2 + 0xB8) * *D_0051D9AC;
+                    var_f1 = *(f32 *)((u8 *)temp_s2 + 0xBC) * *D_0051D9AC;
                     if (*(s32 *)((u8 *)var_s1 + 0xC) & 8) {
                         var_f2 = -var_f2;
                     }

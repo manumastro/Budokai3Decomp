@@ -1,16 +1,14 @@
 /* Draft (not built): func_00260CB0 at 0x00260CB0, size 0xAD8, segment unk/unk_260CB0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  mwccps2.exe Compiler: 10: extern FadeTask *D_004707A0; @ 8: extern void func_00136E80(s32, FadeColor *, s32, s32, s32);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); value mwccps2.exe Compiler: 216: func_00136E80(0x100, (FadeColor *)(&sp110), -1, 0); @ 212: ((s32)(gPacketPtr)) += 0x60;
  * Original: asm/nonmatchings/unk/unk_260CB0/func_00260CB0.s */
 
 // src/unk/unk_260CB0.c func_00260CB0 cerr diff=-1/0
 extern s32 amGs_SetReg32(s32, s32);
 extern f32 D_0047042C;
 extern f32 D_00470430;
-extern void func_00136E80(s32, FadeColor *, s32, s32, s32);
 extern void amDraw_FlushPacket(void);
-extern FadeTask *D_004707A0;
 s32 amDma_Request(s32, s32, s32, s32);
 s32 amDraw_ClosePacket(s32);
 s32 amVram_Apply(s32);
@@ -34,6 +32,7 @@ extern void func_00137560(void *, void *);
 extern void func_00137C10(void *, void *);
 extern void amDraw3d_Sync(void);
 extern void func_00263FB0(void);
+extern s32 D_004707A0;
 void func_00260CB0(f32 fparg0) {
     f32 spB0;
     s32 spB4;
@@ -46,31 +45,31 @@ void func_00260CB0(f32 fparg0) {
     s32 spD8;
     f32 spE0;
     f32 spE4;
-    s3232 spE8;
-    s3232 spEC;
+    s32 spE8;
+    s32 spEC;
     f32 spF0;
     f32 spF4;
-    s3232 spF8;
-    s3232 spFC;
+    s32 spF8;
+    s32 spFC;
     f32 sp100;
     f32 sp104;
-    s3232 sp108;
-    s3232 sp10C;
+    s32 sp108;
+    s32 sp10C;
     s128 sp110;
     s128 sp120;
     s128 sp130;
     f32 sp140;
     f32 sp144;
-    s3232 sp148;
-    s3232 sp14C;
+    s32 sp148;
+    s32 sp14C;
     f32 sp150;
     f32 sp154;
-    s3232 sp158;
-    s3232 sp15C;
+    s32 sp158;
+    s32 sp15C;
     f32 sp160;
     f32 sp164;
-    s3232 sp168;
-    s3232 sp16C;
+    s32 sp168;
+    s32 sp16C;
     f32 temp_f0;
     f32 temp_f0_2;
     f32 temp_f0_3;
@@ -102,7 +101,7 @@ void func_00260CB0(f32 fparg0) {
             var_s4 = 1.4e-43f;
         }
         if (M2C_BITWISE(s32, var_s4) < 0x41) {
-            if (*(s32 *)((u8 *)D_004707A0 + 0x1C) == &func_00263FB0) {
+            if ((s32)(*(s32 *)((u8 *)D_004707A0 + 0x1C)) == (s32)(&func_00263FB0)) {
                 sp130 = D_00452E30;
                 sp120 = D_00452E40;
                 sp140 = 0.0f;
@@ -199,7 +198,7 @@ void func_00260CB0(f32 fparg0) {
             } else {
                 var_v0 = (D_0047E5A0 & 0x1FF & 0x1FF) << 5;
             }
-            *((s32) &D_0045A4F0 | 0x20000000) = var_v0;
+            *(s32 *)((s32) &D_0045A4F0 | 0x20000000) = var_v0;
             *(s32 *)((u8 *)gPacketPtr + 0) = 0x50000000;
             *(s32 **)((u8 *)gPacketPtr + 4) = &D_0045A4D0;
             *(s64 *)((u8 *)gPacketPtr + 8) = 0;
@@ -213,11 +212,11 @@ void func_00260CB0(f32 fparg0) {
             *(s64 *)((u8 *)gPacketPtr + 0x48) = 6;
             *(s64 *)((u8 *)gPacketPtr + 0x50) = (s64) (0x80 | (0x80 << 0x20));
             *(s64 *)((u8 *)gPacketPtr + 0x58) = 0x3B;
-            gPacketPtr += 0x60;
+            ((s32)(gPacketPtr)) += 0x60;
             amDma_Request(0, 1, 1, 1);
             amDraw3d_Sync();
             temp_s5 = amGs_SetReg32(0, 0x30000);
-            func_00136E80(0x100, &sp110, -1, 0);
+            func_00136E80(0x100, (FadeColor *)(&sp110), -1, 0);
             sp100 = 0.0f;
             sp104 = 0.0f;
             sp108 = 0x461C4000;

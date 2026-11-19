@@ -1,7 +1,7 @@
 /* Draft (not built): func_001B42D0 at 0x001B42D0, size 0x3EC, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 2536: *(&D_00468460 + (var_v0_2 * 4))(arg0);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 2793: *(((u8 *)&D_00468460) + (var_v0_2 * 4))(arg0);
  * Original: asm/nonmatchings/battle/btl_main/func_001B42D0.s */
 
 // src/battle/btl_main.c func_001B42D0 cerr diff=-1/0
@@ -88,7 +88,7 @@ void func_001B42D0(u8 *arg0) {
                 sp3C = 1;
                 func_00218440(0xE, &sp30);
                 func_001E9B00(1, 0x53, 0, 0, 0, 0x3F800000);
-                func_001ABD30((void *)(temp_s0));
+                func_001ABD30((struct Fighter *)(temp_s0));
                 *(s16 *)((u8 *)arg0 + 0xCB4) = 1;
                 *(s8 *)((u8 *)arg0 + 0x2004) = 1;
                 *(s8 *)((u8 *)arg0 + 0x1FFB) = 1;
@@ -127,7 +127,7 @@ block_37:
             *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
         }
         *(s8 *)((u8 *)arg0 + 0x2006) = 0;
-        *(&D_00468460 + (var_v0_2 * 4))(arg0);
+        *(((u8 *)&D_00468460) + (var_v0_2 * 4))(arg0);
         func_002CBFF0(1, arg0);
     }
 }

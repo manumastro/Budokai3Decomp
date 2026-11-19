@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001E2290.s */
 
 // src/unk/unk_1D5B30.c func_001E2290 size diff=108/185
-void func_001E2290(u8 *arg0) {
+void func_001E2290(Fighter *arg0) {
     f32 temp_f0;
     f32 temp_f0_2;
     f32 temp_f1;
@@ -17,7 +17,7 @@ void func_001E2290(u8 *arg0) {
     u8 *var_a1;
     u8 *var_a1_2;
 
-    temp_s0 = (u8 *)(gBattle);
+    temp_s0 = (unsigned char *)(gBattle);
     if (*(s32 *)((u8 *)arg0 + 0x1A4C) != 0) {
         func_001D5B30();
         if ((*(s8 *)((u8 *)temp_s0 + 0x8AAD) == 0) && (*(s32 *)((u8 *)temp_s0 + 0x88F8) == 4) && (*(s8 *)((u8 *)arg0 + 0x1FF8) == 2)) {
@@ -42,7 +42,7 @@ void func_001E2290(u8 *arg0) {
                     if (*(s32 *)((u8 *)gBattle + 0x88F8) == 4) {
                         var_a2 = 0;
                         if (*(s32 *)((u8 *)gBattle + 0x88D8) > 0) {
-                            var_a1 = (u8 *)(gBattle);
+                            var_a1 = (unsigned char *)(gBattle);
                             do {
                                 if (*(s8 *)((u8 *)var_a1 + 0x2828) != -1) {
                                     *(s8 *)((u8 *)var_a1 + 0x2828) = 2;
@@ -58,7 +58,7 @@ void func_001E2290(u8 *arg0) {
                     if (*(s32 *)((u8 *)gBattle + 0x88F8) == 4) {
                         var_a2_2 = 0;
                         if (*(s32 *)((u8 *)gBattle + 0x88D8) > 0) {
-                            var_a1_2 = (u8 *)(gBattle);
+                            var_a1_2 = (unsigned char *)(gBattle);
                             do {
                                 if (*(s8 *)((u8 *)var_a1_2 + 0x2828) != -1) {
                                     *(s8 *)((u8 *)var_a1_2 + 0x2828) = 2;

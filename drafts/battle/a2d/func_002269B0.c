@@ -1,10 +1,10 @@
 /* Draft (not built): func_002269B0 at 0x002269B0, size 0x660, segment battle/a2d (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'saved_reg_s0' mwccps2.exe Compiler: 583: spC4 = sp104; @ 514: var_s0 = saved_reg_s0;
+ * Status: size, 328 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x3E0, original 0x660
  * Original: asm/nonmatchings/battle/a2d/func_002269B0.s */
 
-// src/battle/a2d.c func_002269B0 cerr diff=-1/0
+// src/battle/a2d.c func_002269B0 size diff=328/248
 extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
@@ -18,7 +18,11 @@ extern s32 D_004703DC;
 extern void amDraw_FlushPacket(void);
 extern void func_00137560(void *, void *);
 extern void amModel_SetCurrent();
-void func_002269B0(u8 *arg0) {
+void func_002269B0(s32 *arg0) {
+    s32 sp10C;
+    s32 sp108;
+    s32 sp104;
+    s32 saved_reg_s0;
     f32 sp80;
     f32 sp84;
     s32 sp88;
@@ -78,7 +82,7 @@ void func_002269B0(u8 *arg0) {
     if (temp_a0 != NULL) {
         temp_s1 = *(s16 *)((u8 *)arg0 + 0x1A);
         temp_a1 = *(s32 *)((u8 *)arg0 + 0x14);
-        D_00470704 = (s32)(temp_a0);
+        D_00470704 = (int)(temp_a0);
         D_0047070C = temp_a1;
         D_00470708 = (s32) temp_s1;
         amModel_SetCurrent(temp_a0, temp_a1);

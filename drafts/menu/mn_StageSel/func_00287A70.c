@@ -1,74 +1,71 @@
-/* Draft (not built): func_00287A70 at 0x00287A70, size 0x1C0, segment menu/mn_StageSel (asm)
+/* Draft (not built): func_00287A70 at 0x00287A70, size 0x1C0, segment menu/mn_StageSel (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: uncompiled
- * Made with: m2c -t mipsee-mwcc-c --valid-syntax, not compiled
- * Original: asm/menu/mn_StageSel.s */
+ * Status: size, 66 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x204, original 0x1C0
+ * Original: asm/nonmatchings/menu/mn_StageSel/func_00287A70.s */
 
-M2C_UNK amCdFs_Close(void *, M2C_UNK);              /* extern */
-M2C_UNK amFile_Load(s32);                           /* extern */
-M2C_UNK func_00131B90(M2C_UNK *);                   /* extern */
-M2C_UNK func_00131D00(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK); /* extern */
-M2C_UNK func_00131F00(M2C_UNK *, M2C_UNK, M2C_UNK); /* extern */
-M2C_UNK func_00132DF0(M2C_UNK);                     /* extern */
-M2C_UNK func_0013B0B0(M2C_UNK *, u8);               /* extern */
-M2C_UNK func_0013B110(M2C_UNK);                     /* extern */
-M2C_UNK func_0022E0B0(s32);                         /* extern */
-M2C_UNK func_00284CB0(void *);                      /* extern */
-M2C_UNK func_00286A30(void *);                      /* extern */
-extern M2C_UNK D_003F0800;
+// src/menu/mn_StageSel.c func_00287A70 size diff=66/129
+s32 amCdFs_Close(void *, s32);
+s32 func_00131D00(s32 *, s32, s32, s32);
+s32 func_00131F00(s32 *, s32, s32);
+s32 func_0013B110(s32);
+s32 func_00284CB0(void *);
 extern void *D_0047082C;
-extern M2C_UNK func_002878B0;
+extern void func_00131B90(void *);
+extern void func_00132DF0(void *);
+extern void func_0013B0B0(void *);
+extern void amFile_Load(void *);
+extern void func_0022E0B0(void *);
+extern char D_003F0800[];
+extern void func_002878B0(void);
+void func_00287A70(u8 *arg0) {
+    s32 sp40;
+    s32 *var_v1;
+    u8 *temp_s0;
+    u8 *temp_s1;
 
-void func_00287A70(void *arg0) {
-    M2C_UNK sp40;
-    M2C_UNK *var_v1;
-    u8 temp_a1;
-    void *temp_s0;
-    void *temp_s1;
-
-    temp_s1 = M2C_FIELD(arg0, void **, 0x30);
+    temp_s1 = *(u8 **)((u8 *)arg0 + 0x30);
     temp_s0 = D_0047082C;
-    if (M2C_FIELD(M2C_FIELD(temp_s0, void **, 4), s16 *, 4) == 3) {
-        M2C_FIELD(temp_s1, s32 *, 8) = (s32) M2C_FIELD(M2C_FIELD(temp_s0, void **, 8), s32 *, 0x54);
-        M2C_FIELD(M2C_FIELD(temp_s0, void **, 8), s32 *, 0x54) = 0;
-        amCdFs_Close(M2C_FIELD(temp_s0, void **, 8), 0);
-        M2C_FIELD(temp_s0, s32 *, 8) = 0;
-        M2C_FIELD(temp_s1, s32 *, 0xC) = (s32) M2C_FIELD(M2C_FIELD(temp_s0, void **, 0xC), s32 *, 0x54);
-        M2C_FIELD(M2C_FIELD(temp_s0, void **, 0xC), s32 *, 0x54) = 0;
-        amCdFs_Close(M2C_FIELD(temp_s0, void **, 0xC), 0);
-        M2C_FIELD(temp_s0, void **, 0xC) = NULL;
-        M2C_FIELD(temp_s1, s32 *, 0x10) = (s32) M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x10), s32 *, 0x54);
-        M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x10), s32 *, 0x54) = 0;
-        amCdFs_Close(M2C_FIELD(temp_s0, void **, 0x10), 0);
-        M2C_FIELD(temp_s0, void **, 0x10) = NULL;
-        M2C_FIELD(temp_s1, s32 *, 0) = (s32) M2C_FIELD(M2C_FIELD(temp_s0, void **, 0), s32 *, 0x54);
-        M2C_FIELD(M2C_FIELD(temp_s0, void **, 0), s32 *, 0x54) = 0;
-        amCdFs_Close(M2C_FIELD(temp_s0, void **, 0), 0);
-        M2C_FIELD(temp_s0, void **, 0) = NULL;
-        M2C_FIELD(temp_s1, s32 *, 4) = (s32) M2C_FIELD(M2C_FIELD(temp_s0, void **, 4), s32 *, 0x54);
-        M2C_FIELD(M2C_FIELD(temp_s0, void **, 4), s32 *, 0x54) = 0;
-        amCdFs_Close(M2C_FIELD(temp_s0, void **, 4), 0);
-        M2C_FIELD(temp_s0, void **, 4) = NULL;
-        amFile_Load(M2C_FIELD(temp_s1, s32 *, 8));
-        amFile_Load(M2C_FIELD(temp_s1, s32 *, 0xC));
-        amFile_Load(M2C_FIELD(temp_s1, s32 *, 0x10));
-        func_0022E0B0(M2C_FIELD(temp_s1, s32 *, 0));
-        amFile_Load(M2C_FIELD(temp_s1, s32 *, 4));
+    if (*(s16 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 4)) + 4) == 3) {
+        *(u8 **)((u8 *)temp_s1 + 8) = (u8 *) *(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x54);
+        *(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x54) = NULL;
+        amCdFs_Close(*(u8 **)((u8 *)temp_s0 + 8), 0);
+        *(s32 *)((u8 *)temp_s0 + 8) = 0;
+        *(u8 **)((u8 *)temp_s1 + 0xC) = (u8 *) *(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0xC)) + 0x54);
+        *(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0xC)) + 0x54) = NULL;
+        amCdFs_Close(*(u8 **)((u8 *)temp_s0 + 0xC), 0);
+        *(u8 **)((u8 *)temp_s0 + 0xC) = NULL;
+        *(u8 **)((u8 *)temp_s1 + 0x10) = (u8 *) *(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0x10)) + 0x54);
+        *(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0x10)) + 0x54) = NULL;
+        amCdFs_Close(*(u8 **)((u8 *)temp_s0 + 0x10), 0);
+        *(u8 **)((u8 *)temp_s0 + 0x10) = NULL;
+        *(u8 **)((u8 *)temp_s1 + 0) = (u8 *) *(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x54);
+        *(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x54) = NULL;
+        amCdFs_Close(*(u8 **)((u8 *)temp_s0 + 0), 0);
+        *(u8 **)((u8 *)temp_s0 + 0) = NULL;
+        *(u8 **)((u8 *)temp_s1 + 4) = (u8 *) *(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 4)) + 0x54);
+        *(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 4)) + 0x54) = NULL;
+        amCdFs_Close(*(u8 **)((u8 *)temp_s0 + 4), 0);
+        *(u8 **)((u8 *)temp_s0 + 4) = NULL;
+        amFile_Load(*(u8 **)((u8 *)temp_s1 + 8));
+        amFile_Load(*(u8 **)((u8 *)temp_s1 + 0xC));
+        amFile_Load(*(u8 **)((u8 *)temp_s1 + 0x10));
+        func_0022E0B0(*(u8 **)((u8 *)temp_s1 + 0));
+        amFile_Load(*(u8 **)((u8 *)temp_s1 + 4));
         func_00284CB0(temp_s1);
         func_00286A30(temp_s1);
-        temp_a1 = M2C_FIELD(temp_s1, u8 *, 0x260);
-        M2C_FIELD(temp_s1, s16 *, 0x25C) = (s16) M2C_FIELD(((temp_a1 * 0xC) + temp_s1), s16 *, 0x4C);
-        M2C_FIELD(temp_s1, s32 *, 0x28C) = 0x42700000;
-        func_0013B0B0(&D_003F0800, temp_a1);
+        *(s16 *)((u8 *)temp_s1 + 0x25C) = (s16) *(s16 *)((u8 *)((*(u8 *)((u8 *)temp_s1 + 0x260) * 0xC) + temp_s1) + 0x4C);
+        *(s32 *)((u8 *)temp_s1 + 0x28C) = 0x42700000;
+        func_0013B0B0(D_003F0800);
         func_00131B90(&sp40);
         func_00131D00(&sp40, 0, 0, 0);
         func_00131F00(&sp40, 0, 0);
-        func_00132DF0(0);
+        func_00132DF0(NULL);
         func_0013B110(1);
-        var_v1 = &func_002878B0;
+        var_v1 = (int *)(&func_002878B0);
         if (&func_002878B0 == NULL) {
             var_v1 = NULL;
         }
-        M2C_FIELD(arg0, M2C_UNK **, 0x1C) = var_v1;
+        *(s32 **)((u8 *)arg0 + 0x1C) = var_v1;
     }
 }

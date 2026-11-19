@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_0020D400.s */
 
 // src/unk/unk_20A4D0.c func_0020D400 size diff=52/16
-void func_0020D400(s32 arg1, s32 arg2) {
+void func_0020D400(s32 unused_arg0, s32 arg1, s32 arg2) {
     if (arg2 == 0x19) {
         goto block_7;
     }

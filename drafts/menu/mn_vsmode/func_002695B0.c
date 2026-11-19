@@ -55,10 +55,45 @@ void func_002695B0(u8 *arg0) {
         amAdx_SetVolume(0, D_004E0610);
         amAdx_PlayAfs(0, 0x210A5, 0);
         amAdx_Pause(0, 0);
-        var_v1 = (s32 *)(&func_002693E0);
+        var_v1 = (int *)(&func_002693E0);
         if (&func_002693E0 == NULL) {
             var_v1 = NULL;
         }
         *(s32 **)((u8 *)arg0 + 0x1C) = var_v1;
     }
 }
+
+/* Similar function already in C: func_002C3D20 (src/story/str_status.c), similarity 0.63.
+ * It is the template below (not built). */
+#if 0
+void func_002C3D20(s32 *a0)
+{
+  s32 *s1 = (s32 *) a0[0x30 / 4];
+  s32 *s0 = (s32 *) gTourMode;
+  void *f;
+  s32 v;
+  if ((*((s16 *) (((char *) ((s32 *) s0[1])) + 4))) == 3)
+  {
+    s1[0] = ((s32 *) s0[0])[0x54 / 4];
+    ((s32 *) s0[0])[0x54 / 4] = 0;
+    amCdFs_Close(s0[0], 0);
+    s1[1] = ((s32 *) s0[1])[0x54 / 4];
+    ((s32 *) s0[1])[0x54 / 4] = 0;
+    amCdFs_Close(s0[1], 0);
+    func_0022E0B0(s1[0]);
+    amFile_Load(s1[1]);
+    Fade_Request(-1, 0, 0);
+    v = s1[1];
+    D_00470704 = v;
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x2000);
+    D_00470238 = 0;
+    s1[2] = func_0022D670(((s32 *) ((s32 *) s1[0])[0x1C / 4])[0], 0.0f);
+    func_002C1860((u8 *)s1);
+    *((s32 *) (((char *) s1) + 0xC4)) = 0x41F00000;
+    f = (void *) func_002C3B40;
+    a0[0x1C / 4] = (s32) ((f == 0) ? (0) : ((void *) func_002C3B40));
+  }
+}
+#endif

@@ -1,13 +1,14 @@
 /* Draft (not built): func_002470B0 at 0x002470B0, size 0x1CC, segment unk/unk_23A890 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'unksp3C' @ 2172: switch (unksp3C) {
+ * Status: size, 49 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1E0, original 0x1CC
  * Original: asm/nonmatchings/unk/unk_23A890/func_002470B0.s */
 
-// src/unk/unk_23A890.c func_002470B0 cerr diff=-1/0
+// src/unk/unk_23A890.c func_002470B0 size diff=49/120
 s32 func_002528E0(s32, s32, s32, void *);
 extern void *D_0046FE54;
 void func_002470B0(s32 arg0, s64 arg1) {
+    s32 unksp3C;
     s64 sp38;
     s32 temp_a2;
     u8 *temp_s0;
@@ -24,7 +25,7 @@ void func_002470B0(s32 arg0, s64 arg1) {
         return;
     case 1:
         func_002528E0(0, -1, temp_a2, (u8 *) sp38);
-        func_002463B0(arg0, &sp38);
+        func_002463B0(arg0,(unsigned char **)(&sp38));
         return;
     case 2:
         func_002528E0(0, -1, temp_a2, (u8 *) sp38);

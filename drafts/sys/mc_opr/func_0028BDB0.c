@@ -1,47 +1,60 @@
-/* Draft (not built): func_0028BDB0 at 0x0028BDB0, size 0xF8, segment sys/mc_opr (asm)
+/* Draft (not built): func_0028BDB0 at 0x0028BDB0, size 0xF8, segment sys/mc_opr (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: uncompiled
- * Made with: m2c -t mipsee-mwcc-c --valid-syntax, not compiled
- * Original: asm/sys/mc_opr.s */
+ * Status: diff, 32 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
+ * Original: asm/nonmatchings/sys/mc_opr/func_0028BDB0.s */
 
-s32 amMc_Unformat(s32, M2C_UNK, s32);               /* extern */
-M2C_UNK func_00288870(M2C_UNK);                     /* extern */
-extern M2C_UNK D_00453740;
+// src/sys/mc_opr.c func_0028BDB0 diff diff=32/62
+extern s32 D_00470894;
+s32 amMc_Unformat(s32, s32, s32);
+extern s32 D_00453740;
 extern s32 D_0047084C;
 extern s32 D_00470858;
-extern M2C_UNK *D_00470894;
 extern s32 D_00470898;
-extern M2C_UNK func_0028C580;
-extern M2C_UNK func_0028DDF0;
 extern s32 gMcState;
-
-void func_0028BDB0(void *arg0) {
-    M2C_UNK *var_v1;
+extern void func_0028DDF0(void);
+extern void func_0028C580(void);
+void func_0028BDB0(u8 *arg0) {
+    s32 *var_v1;
 
 loop_1:
-    if (!(D_00470898 & 1)) {
-        if (amMc_Unformat(D_0047084C, 0, *(&D_00453740 + (((s32) D_00470898 >> 1) * 4))) != 0) {
-            D_00470898 += 2;
-            goto block_10;
-        }
-        D_00470898 += 1;
-        return;
+    if (D_00470898 & 1) {
+        goto block_5;
     }
-    if ((gMcState != 3) && (gMcState != 2)) {
-        return;
+    if (amMc_Unformat(D_0047084C, 0, *(&D_00453740 + (((s32) D_00470898 >> 1) * 4))) == 0) {
+        goto block_4;
     }
+    D_00470898 += 2;
+    goto block_10;
+block_4:
     D_00470898 += 1;
-block_10:
-    if (D_00470898 >= 2) {
-        func_00288870(0x13);
-        var_v1 = &func_0028DDF0;
-        if (&func_0028DDF0 == NULL) {
-            var_v1 = NULL;
-        }
-        M2C_FIELD(arg0, M2C_UNK **, 0x1C) = var_v1;
-        D_00470858 = 3;
-        D_00470894 = &func_0028C580;
-        return;
+    return;
+block_5:
+    if (gMcState == 3) {
+        goto block_8;
     }
-    goto loop_1;
+    if (gMcState == 2) {
+        goto block_8;
+    }
+    goto block_9;
+block_8:
+    D_00470898 += 1;
+    goto block_10;
+block_9:
+    return;
+block_10:
+    if (D_00470898 < 2) {
+        goto loop_1;
+    }
+    func_00288870(0x13);
+    var_v1 = (int *)(&func_0028DDF0);
+    if (&func_0028DDF0 != NULL) {
+        goto block_13;
+    }
+    var_v1 = NULL;
+block_13:
+    *(s32 **)((u8 *)arg0 + 0x1C) = var_v1;
+    D_00470858 = 3;
+    D_00470894 = (int)(&func_0028C580);
+    return;
 }

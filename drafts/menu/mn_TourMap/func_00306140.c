@@ -19,7 +19,7 @@ void func_00306140(void) {
     var_v1 = 0;
     var_t3 = 0;
     var_t2 = 0;
-    var_t1 = (u8 *)(D_0047097C);
+    var_t1 = (unsigned char *)(D_0047097C);
     do {
         temp_t4 = *(var_t2 + (&D_00458DE0 + (*(s32 *)((u8 *)D_0047097C + 0xC) * 0xC)));
         if ((s32) *(u8 *)((u8 *)(&D_004E6560[temp_t4]) + 0x2AF19) < (s32) *(u8 *)((u8 *)(&D_004E0660 + (temp_t4 * 0x28)) + 0xD)) {

@@ -86,9 +86,9 @@ void func_00233E50(u8 *arg0) {
     temp_f1 = *(f32 *)((u8 *)arg0 + 0x1A40);
     temp_a2 = *(s32 *)((u8 *)arg0 + 0x1350);
     temp_s6 = gBattle;
-    temp_s4 = &D_0058BBB0 + (temp_a2 * 0xC0);
+    temp_s4 = ((u8 *)&D_0058BBB0) + (temp_a2 * 0xC0);
     temp_s2 = *(u8 **)((u8 *)temp_s4 + 8);
-    temp_s3 = &D_0058BBB0 + (*(s32 *)((u8 *)temp_s5 + 0x1350) * 0xC0);
+    temp_s3 = ((u8 *)&D_0058BBB0) + (*(s32 *)((u8 *)temp_s5 + 0x1350) * 0xC0);
     if (!(temp_f1 <= 0.0f)) {
         var_f20 = *(f32 *)((u8 *)arg0 + 0x17D4);
     } else {
@@ -126,7 +126,7 @@ void func_00233E50(u8 *arg0) {
     }
     temp_v0 = *(s32 *)((u8 *)temp_s5 + 0x17A0);
     if (temp_v0 != 0) {
-        var_v0 = (u8 *)(temp_v0 + 0x20);
+        var_v0 = (unsigned char *)(temp_v0 + 0x20);
     } else {
         var_v0 = NULL;
     }
@@ -445,12 +445,12 @@ block_174:
         temp_a3 = temp_a1 + 1;
         temp_s1_2 = *(s32 *)((u8 *)arg0 + 0x1CF8) + 0xD4;
         if (temp_a3 < 8) {
-            temp_a2_2 = (u8 *)((temp_a1 * 0x14) + temp_s1_2);
+            temp_a2_2 = (unsigned char *)((temp_a1 * 0x14) + temp_s1_2);
             temp_a1_2 = *(s8 *)((u8 *)temp_a2_2 + 6);
             if ((temp_a1_2 != 6) && (temp_a1_2 != 7) && (temp_a1_2 != 4)) {
                 temp_v1_10 = *(s8 *)((u8 *)temp_a2_2 + 0x1A);
                 if ((temp_v1_10 != 0) && (temp_v1_10 != 4)) {
-                    temp_s1_3 = (s16 *)(temp_s1_2 + (temp_a3 * 0x14));
+                    temp_s1_3 = (short *)(temp_s1_2 + (temp_a3 * 0x14));
                     if (func_001DFA90(arg0, *temp_s1_3, temp_a2_2, temp_a3) > 0) {
                         *(s16 *)((u8 *)temp_s4 + 0xBE) = (s16) (*(u8 *)((u8 *)(&D_004E0660 + (*temp_s1_3 * 0x28)) + 0xF) * 0x64);
                     }

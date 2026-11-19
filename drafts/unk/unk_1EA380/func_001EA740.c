@@ -1,10 +1,10 @@
 /* Draft (not built): func_001EA740 at 0x001EA740, size 0x4D8, segment unk/unk_1EA380 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operands 'signed char[]' = 'int' mwccps2.exe Compiler: 413: D_004B4B41 = 0; @ 398: D_004B4B41 = 0;
+ * Status: size, 155 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x450, original 0x4D8
  * Original: asm/nonmatchings/unk/unk_1EA380/func_001EA740.s */
 
-// src/unk/unk_1EA380.c func_001EA740 cerr diff=-1/0
+// src/unk/unk_1EA380.c func_001EA740 size diff=155/276
 s32 MainMenu_Start(s8, s8);
 s32 Scr_Init(s32, s32, s32, s32);
 s32 Title_Start(s16);
@@ -16,7 +16,6 @@ s32 func_001A3610(s32);
 s32 func_001CA4D0();
 s32 func_0020A230();
 s32 func_0022DF10(s32, s32, s32, s32);
-s32 func_00280470();
 extern void *D_004705F0;
 extern s32 D_0047060C;
 extern s32 D_00470610;
@@ -67,6 +66,7 @@ extern void SklSheet_Clear(void);
 extern void ArenaMode_Clear(void);
 extern void Logomark_ClearFlag(void);
 extern void TourMap_Clear(void);
+extern void func_00280470(void);
 extern void CsModel_ResetPrac(void);
 extern void Help_Clear(void);
 extern void OutputPass_Clear(void);
@@ -165,8 +165,8 @@ void func_001EA740(s32 arg0) {
     func_001B0E40();
     func_002A8FC0();
     Shenron_Clear();
-    var_a2 = (s8 *)(D_004B4C00[0]);
-    var_a1 = (s8 *)(D_004E6560[0]);
+    var_a2 = (signed char *)(D_004B4C00);
+    var_a1 = (signed char *)(D_004E6560);
     var_a0 = 0x10;
     do {
         var_a0 -= 1;
@@ -203,7 +203,7 @@ void func_001EA740(s32 arg0) {
         var_a1_3 += 2;
     } while (var_a0_3 > 0);
     var_a2_4 = &D_004DFB19;
-    var_a1_4 = (s8 *)(D_00511479[0]);
+    var_a1_4 = (signed char *)(D_00511479);
     var_a0_4 = 0x130;
     do {
         var_a0_4 -= 1;
@@ -253,7 +253,7 @@ void func_001EA740(s32 arg0) {
         Logomark_Load();
         D_004B4BB0 = 0;
         Logomark_Start();
-        D_004B4B41 = 0;
+        D_004B4B41[0] = 0;
         *D_004B4B40 = 1;
         var_v1 = &SceneSw_LoadOpening;
         D_00511768 = 0;
@@ -268,7 +268,7 @@ block_26:
         Title_Load();
         D_004B4BB0 = 0;
         Title_Start((s16) gSceneArg);
-        D_004B4B41 = 0;
+        D_004B4B41[0] = 0;
         *D_004B4B40 = 4;
         var_v1 = &SceneSw_LoadTitle;
         D_00511768 = 0;
@@ -281,7 +281,7 @@ block_26:
         MainMenu_Load();
         D_004B4BB0 = 0;
         MainMenu_Start(D_004B4B62, D_004B4BE9);
-        D_004B4B41 = 0;
+        D_004B4B41[0] = 0;
         *D_004B4B40 = 5;
         var_v1 = &SceneSw_LoadAll;
         D_00511768 = 0;

@@ -1,25 +1,25 @@
 /* Draft (not built): func_002DB3B0 at 0x002DB3B0, size 0x244, segment unk/unk_2D9510 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 82 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x274, original 0x244
+ * Status: size, 80 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x27C, original 0x244
  * Original: asm/nonmatchings/unk/unk_2D9510/func_002DB3B0.s */
 
-// src/unk/unk_2D9510.c func_002DB3B0 size diff=82/157
+// src/unk/unk_2D9510.c func_002DB3B0 size diff=80/159
 s32 Help_Open(s32, s32, u16, s32);
 s32 SoundRpc_SetVolume(s32, s32, f32);
 s32 func_00148310(s32, s32, u16, s32, f32);
-s32 func_002DDD40();
 extern u16 D_00492FCC;
 extern u16 D_0049302C;
 extern u16 D_00493084;
 extern u16 D_00493086;
 extern u16 D_004930E4;
 extern f32 D_004E0614;
-extern s32 func_002D5570;
 extern void SoundRpc_Send3();
 extern char D_00492FCE[];
 extern char D_004E05DC[];
 extern void func_002D5D70(void);
+extern void func_002D5570(void);
+extern void func_002DDD40(void);
 extern void func_002D9DE0(void);
 void func_002DB3B0(void) {
     f32 var_f0;
@@ -33,7 +33,7 @@ void func_002DB3B0(void) {
     s32 temp_s0;
     u8 *temp_s1;
 
-    temp_s1 = (u8 *)(gOptionWork);
+    temp_s1 = (unsigned char *)(gOptionWork);
     temp_s0 = *D_00492FCE | D_00493086;
     temp_a3 = D_00492FCC | D_0049302C;
     temp_a1 = temp_a3 | (D_00493084 | D_004930E4);
@@ -83,11 +83,11 @@ void func_002DB3B0(void) {
             SoundRpc_Send3(0, 0, 3, 0);
         }
         *(s32 *)((u8 *)temp_s1 + 0x388) = 0;
-        *(s32 **)((u8 *)temp_s1 + 0x34C) = &func_002D9DE0;
+        *(void (**)())((u8 *)temp_s1 + 0x34C) = func_002D9DE0;
         func_002DDD40();
         *(s32 *)((u8 *)temp_s1 + 0x39C) = 0;
         *(s32 *)((u8 *)temp_s1 + 0x398) = 0;
         *(void (**)())((u8 *)temp_s1 + 0x370) = func_002D5D70;
-        *(s32 **)((u8 *)temp_s1 + 0x374) = &func_002D5570;
+        *(void (**)())((u8 *)temp_s1 + 0x374) = func_002D5570;
     }
 }

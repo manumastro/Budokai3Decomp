@@ -41,7 +41,7 @@ void func_00241C10(s32 arg0) {
     var_a3 = 0;
     if (*(s32 *)((u8 *)var_s2 + 0x70) > 0) {
         var_a1 = var_s2;
-        var_a2 = (s32 *)(&D_00452100);
+        var_a2 = (int *)(&D_00452100);
         do {
             var_a3 += 1;
             temp_a0 = temp_t0 + (*(s32 *)((u8 *)var_a2 + 0) * 0x10);

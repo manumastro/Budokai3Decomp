@@ -1,16 +1,15 @@
 /* Draft (not built): func_00273330 at 0x00273330, size 0x298, segment menu/ess_shop (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 85 instructions differ
+ * Status: size, 84 instructions differ
  * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x2B0, original 0x298
  * Original: asm/nonmatchings/menu/ess_shop/func_00273330.s */
 
-// src/menu/ess_shop.c func_00273330 size diff=85/172
+// src/menu/ess_shop.c func_00273330 size diff=84/172
 s32 *amHeap_Alloc(s32, s32, s32 *, s32);
-u32 func_0012EAE0(s32, s32 *, s64, s32);
+u32 func_0012EAE0(s32, u8 *, s64, s32);
 extern s32 D_0046B520;
 extern s32 D_0058F710;
 s32 func_00273330(s32 arg0, s32 arg1, s32 arg2) {
-    s32 *var_a1;
     s32 *temp_s6;
     s32 *temp_v0;
     s32 *var_a0_2;
@@ -25,13 +24,14 @@ s32 func_00273330(s32 arg0, s32 arg1, s32 arg2) {
     u32 var_s2;
     u32 var_v1;
     u8 *var_a0;
+    u8 *var_a1;
     u8 temp_a3;
     u8 temp_t2;
     u8 *var_t4;
 
     temp_s6 = amHeap_Alloc(0x94C, 0, &D_0046B520, 0x7E6);
     temp_v0 = amHeap_Alloc(0x94C, 0, &D_0046B520, 0x7E7);
-    var_a1 = (s32 *)(&D_004E0660);
+    var_a1 = D_004E0660;
     var_t1 = temp_s6;
     var_t0 = temp_v0;
     var_s2 = 0;
@@ -67,7 +67,7 @@ block_4:
         goto block_16;
     }
     var_t6 = 0;
-    var_t4 = (u8 *)(gEssShop + 0x74);
+    var_t4 = (unsigned char *)(gEssShop + 0x74);
 loop_9:
     if (*(s32 *)((u8 *)var_t4 + 0) == 0x242) {
         goto block_11;

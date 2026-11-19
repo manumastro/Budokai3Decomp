@@ -1,7 +1,7 @@
 /* Draft (not built): func_002C9EF0 at 0x002C9EF0, size 0x334, segment unk/unk_2C41C0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 'unsigned char *' to 'int' mwccps2.exe Compiler: @ 795: *(&D_005BD260 + (*(s16 *)((u8 *)temp_s0 + 0x3E) * 4)) = temp_v0;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); (u8 *)temp_v0 + 0x20)) + 0x84) * 4))(temp_s0); @ 797: var_v0_3 = amTask_Create(&func_002C9AF0 + 0x30, 0, 0x9002, 0x400);
  * Original: asm/nonmatchings/unk/unk_2C41C0/func_002C9EF0.s */
 
 // src/unk/unk_2C41C0.c func_002C9EF0 cerr diff=-1/0
@@ -34,8 +34,8 @@ void func_002C9EF0(u8 *arg0, u8 *arg1) {
     temp_v0 = func_00215320((s64) ((s64) var_v0 << 0x30) >> 0x30, *(s16 *)((u8 *)arg1 + 0x2E));
     if (temp_v0 != NULL) {
         temp_s0 = temp_v0 + 0x20;
-        *(s32 **)((u8 *)temp_v0 + 8) = &func_002C9C40;
-        *(s32 **)((u8 *)temp_v0 + 0xC) = &func_002C9AF0;
+        *(s32 **)((u8 *)temp_v0 + 8) = (int *)(&func_002C9C40);
+        *(s32 **)((u8 *)temp_v0 + 0xC) = (int *)(&func_002C9AF0);
         *(s32 *)((u8 *)temp_v0 + 0x18) = 0xBF800000;
         memset(temp_s0, 0, 0x60);
         temp_f1 = *(f32 *)((u8 *)arg1 + 0x14);
@@ -84,10 +84,10 @@ void func_002C9EF0(u8 *arg0, u8 *arg1) {
         } else if (temp_v1 == 3) {
             *(s16 *)((u8 *)temp_s0 + 0x38) = (s16) (*(s16 *)((u8 *)temp_s0 + 0x38) | 0x80);
         }
-        if (*(&D_005BD260 + (*(s16 *)((u8 *)temp_s0 + 0x3E) * 4)) != 0) {
+        if (*(((u8 *)&D_005BD260) + (*(s16 *)((u8 *)temp_s0 + 0x3E) * 4)) != 0) {
             func_002152E0();
         }
-        *(&D_005BD260 + (*(s16 *)((u8 *)temp_s0 + 0x3E) * 4)) = temp_v0;
+        *(((u8 *)&D_005BD260) + (*(s16 *)((u8 *)temp_s0 + 0x3E) * 4)) = (unsigned char)(temp_v0);
         if (*(s16 *)((u8 *)arg1 + 0x2C) & 0x2000) {
             var_v0_3 = amTask_Create(&func_002C9AF0 + 0x30, 0, 0x9002, 0x400);
         } else {

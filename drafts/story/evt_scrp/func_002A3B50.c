@@ -1,13 +1,14 @@
 /* Draft (not built): func_002A3B50 at 0x002A3B50, size 0xE0, segment story/evt_scrp (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'sp' mwccps2.exe Compiler: 1031: func_002A3B50(loc); @ 970: temp_v0 = (var_v1 * 4) + sp;
+ * Status: size, 41 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x70, original 0xE0
  * Original: asm/nonmatchings/story/evt_scrp/func_002A3B50.s */
 
-// src/story/evt_scrp.c func_002A3B50 cerr diff=-1/0
+// src/story/evt_scrp.c func_002A3B50 size diff=41/28
 s32 func_00136E80(s32, s32 *, s32, s32);
 extern void amDraw_FlushPacket(void);
-void func_002A3B50(void) {
+void func_002A3B50() {
+    u8 sp[0x400];
     s32 sp10;
     s32 sp1C;
     s32 sp20;
@@ -37,8 +38,8 @@ loop_3:
     }
     sp1C = 0x3F800000;
     func_00136E80(0x100, &sp10, 0, 0);
-    func_00137B60((s32)(&sp20));
-    func_00137B60((s32)(&sp30));
+    func_00137B60((s32) &sp20);
+    func_00137B60((s32) &sp30);
     amDraw_FlushPacket();
     func_0012F2C0();
 }

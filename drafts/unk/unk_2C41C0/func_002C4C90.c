@@ -1,12 +1,15 @@
 /* Draft (not built): func_002C4C90 at 0x002C4C90, size 0x1218, segment unk/unk_2C41C0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ' mwccps2.exe Compiler: 294: memcpy((f32 (*)[]) &spC0[0], arg1 + 0x10, 0x10); @ 293: memcpy((f32 (*)[]) &spB0[0], 0x10);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); d mwccps2.exe Compiler: 297: memcpy((f32 (*)[]) &spC0[0], arg1 + 0x10, 0x10); @ 296: memcpy((f32 (*)[]) &spB0[0], 0x10);
  * Original: asm/nonmatchings/unk/unk_2C41C0/func_002C4C90.s */
 
 // src/unk/unk_2C41C0.c func_002C4C90 cerr diff=-1/0
 s32 memcpy(f32 (*)[], s32, s32);
 s32 func_002C4C90(u8 *arg0, s32 arg1, f32 fparg0, f32 fparg1, f32 fparg2) {
+    s32 spC0;
+    s32 spB0;
+    u8 sp[0x400];
     s32 sp100;
     f32 temp_f20;
     f32 temp_f20_2;

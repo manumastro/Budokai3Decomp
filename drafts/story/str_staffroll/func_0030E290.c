@@ -1,10 +1,9 @@
 /* Draft (not built): func_0030E290 at 0x0030E290, size 0x94, segment story/str_staffroll (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 24 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x58, original 0x94
+ * Status: size, 23 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/story/str_staffroll/func_0030E290.s */
 
-// src/story/str_staffroll.c func_0030E290 size diff=24/22
 void func_0030E290(u8 *arg0) {
     s32 sp30;
     s32 sp34;
@@ -17,7 +16,6 @@ void func_0030E290(u8 *arg0) {
     s16 sp50;
     s32 *var_v1;
     u8 *temp_s0;
-
     sp34 = 1;
     sp30 = 0;
     sp38 = 0x600000;
@@ -28,12 +26,39 @@ void func_0030E290(u8 *arg0) {
     sp44 = 3;
     sp48 = -1;
     sp4C = D_0046FD5C;
-    *(u8 **)((u8 *)arg0 + 0x30) = (s32 *)amSofdec_Create((u8 *)((void *)(&sp30)));
     *(s32 *)((u8 *)temp_s0 + 8) = 0;
-    var_v1 = (s32 *)(&StaffRoll_TaskEnding);
+    *(u8 **)((u8 *)arg0 + 0x30) = (unsigned char *)amSofdec_Create(&sp30);
+    var_v1 = (int *)&StaffRoll_TaskEnding;
     *(s32 *)((u8 *)temp_s0 + 0xC) = 0;
     if (&StaffRoll_TaskEnding == NULL) {
         var_v1 = NULL;
     }
     *(s32 **)((u8 *)arg0 + 0x1C) = var_v1;
 }
+
+/* Similar function already in C: func_002E8270 (src/menu/mn_Logomark.c), similarity 0.88.
+ * It is the template below (not built). */
+#if 0
+void func_002E8270(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    u8 blk[0x24];
+
+    s1 = a0;
+    *(s32 *)(blk + 4) = 1;
+    s0 = s1 + 0x30;
+    *(s32 *)(blk + 8) = 0xA00000;
+    *(s32 *)(blk + 0xC) = 0x280;
+    *(s32 *)(blk + 0x10) = 0x200;
+    *(s32 *)blk = 0;
+    *(s16 *)(blk + 0x20) = 0;
+    *(s32 *)(blk + 0x14) = 3;
+    *(s32 *)(blk + 0x18) = -1;
+    *(s32 *)(blk + 0x1C) = D_0046FD5C;
+    *(void **)(s0 + 0xC) = amSofdec_Create(blk);
+    *(s32 *)(s0 + 4) = 0x43700000;
+    *(s32 *)(s0 + 0x10) = 0;
+    amSofdec_StartAfs(*(void **)(s0 + 0xC), 0xF4E, 1);
+    *(void **)(s1 + 0x1C) = ((void *)func_002E8190 == 0) ? 0 : (void *)func_002E8190;
+}
+#endif

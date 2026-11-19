@@ -19,8 +19,8 @@ void func_002194C0(u8 *arg0, s16 arg1, s16 arg2, s32 arg3) {
 
         } else {
             temp_t1 = arg2 * 4;
-            temp_t0_2 = &D_0044F2F0 + temp_t0;
-            if (*(*temp_t0_2 + temp_t1) != -1) {
+            temp_t0_2 = (int *)(((u8 *)&D_0044F2F0) + temp_t0);
+            if (*(s32 *)(*temp_t0_2 + temp_t1) != -1) {
                 *(s32 *)((u8 *)arg0 + 0x10) = (s32) (*(s32 *)((u8 *)arg0 + 0x10) | 1);
                 *(s16 *)((u8 *)arg0 + 0x14) = arg1;
                 *(s16 *)((u8 *)arg0 + 0x16) = arg2;

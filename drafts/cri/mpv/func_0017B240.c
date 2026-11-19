@@ -15,3 +15,13 @@ void func_0017B240(void) {
         func_0017B2D0(temp_v0);
     }
 }
+
+/* Similar function already in C: func_00187FA8 (src/cri/sfd.c), similarity 0.73.
+ * It is the template below (not built). */
+#if 0
+void func_00187FA8(s32 arg0) {
+    if (arg0 != 0) {
+        func_0015D4A8();
+    }
+}
+#endif

@@ -14,10 +14,10 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 extern f32 D_004E0610;
 extern void *amTask_Create();
-extern void Help_Load();
-extern char D_004B4BC0[];
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void Help_Load();
+extern char D_004B4BC0[];
 void func_002661D0(s32 arg0, u8 *arg1) {
     s32 var_f12;
     f32 var_f0;

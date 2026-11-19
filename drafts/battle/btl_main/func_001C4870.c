@@ -1,10 +1,10 @@
 /* Draft (not built): func_001C4870 at 0x001C4870, size 0x3A0, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); it conversion from 'int' to 'int *' @ 5310: temp_f20 = (s32 *)(sp100 - func_00146E30(&spF0, temp_s1 + (var_s0 * 0x30)));
+ * Status: size, 144 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x284, original 0x3A0
  * Original: asm/nonmatchings/battle/btl_main/func_001C4870.s */
 
-// src/battle/btl_main.c func_001C4870 cerr diff=-1/0
+// src/battle/btl_main.c func_001C4870 size diff=144/161
 f32 func_00146E30(s32 *, s32 *);
 s32 func_00146F60(s32 *, s32 *);
 f32 func_00146F90(s32 *, s32 *);
@@ -67,7 +67,7 @@ loop_21:
             if (var_s3 <= 0) {
                 var_s2 += 1;
 block_11:
-                temp_f20 = (s32 *)(sp100 - func_00146E30(&spF0, temp_s1 + (var_s0 * 0x30)));
+                temp_f20 = sp100 - func_00146E30((s32 *)(&spF0), (s32 *)(temp_s1 + (var_s0 * 0x30)));
                 M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
                 M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
                 spC4 = 0.0f;
@@ -86,7 +86,7 @@ block_14:
                         }
                     }
                 }
-                func_00146ED0(&spB0, &spC0, temp_f20);
+                func_00146ED0((f32 *)(&spB0), (f32 *)(&spC0), temp_f20);
                 M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($a0) */);
                 M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v1) */);
                 M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);

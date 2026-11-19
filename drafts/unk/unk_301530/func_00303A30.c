@@ -1,10 +1,10 @@
 /* Draft (not built): func_00303A30 at 0x00303A30, size 0xF3C, segment unk/unk_301530 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ) * 2)) == *(&((u8 *)D_0046B560) + @ 263: memset(amTask_Create(&func_00300800, 0, 0x3000, 0x200) + 0x30, 0, D_0047035C);
+ * Status: size, 684 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0xE30, original 0xF3C
  * Original: asm/nonmatchings/unk/unk_301530/func_00303A30.s */
 
-// src/unk/unk_301530.c func_00303A30 cerr diff=-1/0
+// src/unk/unk_301530.c func_00303A30 size diff=684/908
 s32 SoundRpc_SetVolume(s32, s32, f32);
 s32 amAdx_PlayAfs(s32, s32, s32);
 s32 amAdx_SetVolume(s32, s32, s32, void *, f32);
@@ -39,7 +39,7 @@ extern void *amTask_Create();
 extern void SoundRpc_Send3();
 extern void amAdx_Pause();
 extern void func_003019A0(void);
-void func_00303A30(u8 *arg0, s8 arg2) {
+void func_00303A30(u8 *arg0, s32 unused_arg1, s8 arg2) {
     s32 sp50;
     f32 sp70;
     f32 sp74;
@@ -259,7 +259,7 @@ block_9:
             sp110 = ((((50.0f + (f32) (((D_005D0082 + 1) * 0x64) + 0x88)) / 2.0f) - 64.0f) - 50.0f) - 0.0f;
             *(f32 *)((u8 *)temp_v0_2 + 0x3C) = temp_f1_2;
             *(f32 *)((u8 *)temp_v0_2 + 0x40) = (f32) (sp110 - 100.0f);
-            memset(amTask_Create(&func_00300800, 0, 0x3000, 0x200) + 0x30, 0, D_0047035C);
+            memset((s32)(((u8 *)amTask_Create(&func_00300800, 0, 0x3000, 0x200)) + 0x30), 0, (s32)(D_0047035C));
             *(u32 *)((u8 *)arg0 + 0x30) = (u32) (*(u32 *)((u8 *)arg0 + 0x30) + 1);
             return;
         }
@@ -409,7 +409,7 @@ block_62:
                 var_s1 = 0;
                 do {
                     var_a2_4 = var_s3;
-                    if (*(&((u8 *)D_0046B560) + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (D_005D0080 * 0x14)) + 0x2F4) * 2)) == *(&((u8 *)D_0046B560) + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (D_005D0081 * 0x14)) + 0x2F4) * 2))) {
+                    if (*(&D_0046B560 + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (D_005D0080 * 0x14)) + 0x2F4) * 2)) == *(&D_0046B560 + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (D_005D0081 * 0x14)) + 0x2F4) * 2))) {
 
                     } else {
                         temp_a1_3 = *(s16 *)((u8 *)(((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s2 + 0x6050) * 0x14)) + 0x2F6);
@@ -419,7 +419,7 @@ block_62:
                             var_a2_4 = 0;
                         }
                     }
-                    temp_v0_5 = func_0029E9B0(*(&((u8 *)D_0046B560) + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s2 + 0x6050) * 0x14)) + 0x2F4) * 2)), 0, var_a2_4, ((u8 *)var_s3) + 1);
+                    temp_v0_5 = func_0029E9B0(*(&D_0046B560 + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s2 + 0x6050) * 0x14)) + 0x2F4) * 2)), 0, var_a2_4, var_s3 + 1);
                     var_s3 += 1;
                     var_s2 += 1;
                     *(s32 *)((u8 *)(((u8 *)gTourMap) + var_s1) + 0x74) = temp_v0_5;
@@ -518,7 +518,7 @@ block_80:
                 var_v1_11 = NULL;
             }
             *(s32 **)((u8 *)(*(u8 **)((u8 *)gTourMap + 0x40)) + 0x1C) = var_v1_11;
-            var_v1_12 = (s32 *)(&func_003019A0);
+            var_v1_12 = (int *)(&func_003019A0);
             if (&func_003019A0 == NULL) {
                 var_v1_12 = NULL;
             }

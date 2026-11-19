@@ -27,7 +27,7 @@ void func_002E5980(u8 *arg0) {
 
     temp_s1 = *(u8 **)((u8 *)arg0 + 0x30);
     var_s0 = 0;
-    func_002E4D60((struct Sub57 *)(temp_s1));
+    func_002E4D60((Sub57 *)(temp_s1));
     temp_f2 = *(f32 *)((u8 *)temp_s1 + 0x10C);
     if (!(temp_f2 <= 0.0f)) {
         temp_f0 = temp_f2 - gFrameDelta;
@@ -56,7 +56,7 @@ void func_002E5980(u8 *arg0) {
         *(s8 *)((u8 *)temp_s1 + 0xF4) = 5;
         Obj_SetF3C(*(s32 *)((u8 *)temp_s1 + 8), -1);
         func_002E5040(temp_s1);
-        var_v1 = (s32 *)(&func_002E5840);
+        var_v1 = (int *)(&func_002E5840);
         if (&func_002E5840 == NULL) {
             var_v1 = NULL;
         }

@@ -1,7 +1,7 @@
 /* Draft (not built): func_00245DA0 at 0x00245DA0, size 0x604, segment unk/unk_23A890 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ed char *)' does not match 'Sp_CallHandler(int, struct Blk48 *)' @ 2026: Sp_CallHandler(2, &sp160, D_0046FE4C, temp_a3);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); not match 'Sp_CallHandler(int, struct Blk48 *)' @ 2026: Sp_CallHandler(2, &sp160, D_0046FE4C,(struct Blk48 *)(temp_a3));
  * Original: asm/nonmatchings/unk/unk_23A890/func_00245DA0.s */
 
 // src/unk/unk_23A890.c func_00245DA0 cerr diff=-1/0
@@ -62,7 +62,7 @@ void func_00245DA0(s32 arg0, u8 **arg1) {
     case 0x12C:
         sp170 = temp_a0;
         sp174 = 0;
-        Sp_CallHandler(2, &sp160, D_0046FE4C, temp_a3);
+        Sp_CallHandler(2, &sp160, D_0046FE4C,(struct Blk48 *)(temp_a3));
         return;
     case 0x12D:
         memset(&spB0, 0, 0xB0);
@@ -255,7 +255,7 @@ block_33:
         return;
     case 0x13C:
         sp170 = temp_a0;
-        Sp_CallHandler(5, &sp160, D_0046FE4C, temp_a3);
+        Sp_CallHandler(5, &sp160, D_0046FE4C,(struct Blk48 *)(temp_a3));
         return;
     case 0x13D:
         if (*(s32 *)((u8 *)temp_s1 + 0xB9C) == 0x25) {

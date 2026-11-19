@@ -24,3 +24,42 @@ void func_0013B620(void) {
     M2C_ERROR(/* unknown instruction: vmaddz.xyzw $vf30, $vf30, $vf3z */);
     M2C_ERROR(/* unknown instruction: vmove.xyzw $vf28, $vf1 */);
 }
+
+/* Similar function already in C: func_0013B750 (src/sys/amMotion.c), similarity 0.91.
+ * It is the template below (not built). */
+#if 0
+asm void func_0013B750(void) {
+L0013B750:
+    addu       $t3, $zero, $ra
+    lui        $at, 0x3f
+    lq         $v1, 2048($at)
+    lui        $at, 0x3f
+    lq         $a3, 2064($at)
+    jal func_0012E830
+    nop
+    lui        $at, 0x48
+    sq         $v1, -8192($at)
+    lui        $at, 0x48
+    sq         $a3, -8176($at)
+    lui        $at, 0x48
+    swc1       $f0, -8188($at)
+    neg.s      $f0, $f0
+    lui        $at, 0x48
+    swc1       $f1, -8192($at)
+    lui        $at, 0x48
+    swc1       $f1, -8172($at)
+    lui        $at, 0x48
+    swc1       $f0, -8176($at)
+    lui        $at, 0x48
+    lqc2       $vf1, -8192($at)
+    lui        $at, 0x48
+    lqc2       $vf3, -8176($at)
+    vmulax.xyzw ACC, $vf28, $vf1x
+    vmaddy.xyzw $vf1, $vf29, $vf1y
+    addu       $ra, $zero, $t3
+    vmulax.xyzw ACC, $vf28, $vf3x
+    vmaddy.xyzw $vf29, $vf29, $vf3y
+    jr         $ra
+    vmove.xyzw $vf28, $vf1
+}
+#endif

@@ -1,10 +1,11 @@
 /* Draft (not built): func_00138070 at 0x00138070, size 0x304, segment sys/unk_137EE0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); r: 180: func_00139100(temp_s0, temp_a1, 1000.0f * (spA8 + *(f32 *)((u8 *)temp_s0 + 0x1C))); @ 112: var_fp = amDraw_Null;
+ * Status: size, 93 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x244, original 0x304
  * Original: asm/nonmatchings/sys/unk_137EE0/func_00138070.s */
 
-// src/sys/unk_137EE0.c func_00138070 cerr diff=-1/0
+// src/sys/unk_137EE0.c func_00138070 size diff=93/145
+s32 amDraw_Null(void);
 s32 func_00132D20(s32, s32 *, f32);
 extern s32 D_0046FD20;
 extern s32 D_00470250;
@@ -12,7 +13,8 @@ extern s32 D_00470254;
 extern void func_0013B160(void *);
 extern char D_00459390[];
 extern void *D_0047CAC0[];
-s32 func_00138070(u8 *arg0, u8 **arg1) {
+s32 func_00138070(u8 *arg0, u32 **arg1) {
+    s32 spA8;
     s32 spA0;
     s32 *var_s7;
     s32 temp_a1;
@@ -43,10 +45,10 @@ s32 func_00138070(u8 *arg0, u8 **arg1) {
     M2C_ERROR(/* unknown instruction: vmove.xyzw $vf27, $vf4 */);
     var_fp = *D_0047CAC0;
     if (var_fp == NULL) {
-        var_fp = amDraw_Null;
+        var_fp = (unsigned char *)(amDraw_Null);
     }
     var_s3 = *(s32 *)((u8 *)arg0 + 0);
-    var_s7 = (s32 *)(arg0 + *(s32 *)((u8 *)arg0 + 4));
+    var_s7 = (int *)(arg0 + *(s32 *)((u8 *)arg0 + 4));
     if (D_00470254 != 0) {
         var_s1 = D_0046FD20 | 0x80;
         var_s2 = ~D_0046FD20 & D_00470250;
@@ -109,7 +111,7 @@ block_9:
                         } else {
                             var_s5 = func_00138390(temp_s0, var_s1, var_s2);
                         }
-                        *arg1 = (u8 *)(gPacketPtr - 0x10);
+                        *arg1 = gPacketPtr - 0x10;
                     } else {
                         func_00139100(temp_s0, temp_a1, 1000.0f * (spA8 + *(f32 *)((u8 *)temp_s0 + 0x1C)));
                     }
@@ -117,7 +119,7 @@ block_9:
             }
         } while (var_s3 > 0);
         if (var_s5 != 0) {
-            *(s32 *)((u8 *)(*arg1) + 0) = 0x60000000;
+            *(u32 *)((u8 *)(*arg1) + 0) = 0x60000000;
             return var_s5;
         }
         goto block_21;

@@ -1,7 +1,7 @@
 /* Draft (not built): func_001A3940 at 0x001A3940, size 0x518, segment unk/unk_1A31B0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ' to 'int' mwccps2.exe Compiler: @ 199: func_00116978(*(s32 *)((u8 *)temp_s1 + 0), *(s32 *)((u8 *)temp_s1 + 4), var_a2);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); declared was declared as: 'int (...)' now declared as: 'void (struct PadWork *)' @ 329: void func_001A3E60(PadWork *p) {
  * Original: asm/nonmatchings/unk/unk_1A31B0/func_001A3940.s */
 
 // src/unk/unk_1A31B0.c func_001A3940 cerr diff=-1/0
@@ -26,16 +26,16 @@ s32 func_001A3940(s32 arg0) {
     u8 *temp_s1;
     u8 *temp_s2;
 
-    temp_s3 = (u8 *)(D_00492EC0 + (arg0 << 5));
-    temp_s2 = &D_00492FC0 + (arg0 * 0xB8);
-    temp_s1 = &D_00493580 + (arg0 * 0x2C);
+    temp_s3 = (unsigned char *)(D_00492EC0 + (arg0 << 5));
+    temp_s2 = ((u8 *)&D_00492FC0) + (arg0 * 0xB8);
+    temp_s1 = ((u8 *)&D_00493580) + (arg0 * 0x2C);
     if (*(s32 *)((u8 *)temp_s1 + 8) == 0) {
         if (arg0 == 0) {
-            var_a2 = (s32 *)(&D_00493700);
+            var_a2 = (int *)(&D_00493700);
         } else {
             var_a2 = &D_00493B00;
         }
-        *(s32 *)((u8 *)temp_s1 + 8) = (u8 *)func_00116978(*(s32 *)((u8 *)temp_s1 + 0), *(s32 *)((u8 *)temp_s1 + 4), var_a2);
+        *(s32 *)((u8 *)temp_s1 + 8) = func_00116978((s32)(*(s32 *)((u8 *)temp_s1 + 0)), (s32)(*(s32 *)((u8 *)temp_s1 + 4)), (u8 *)(var_a2));
         if (*(s32 *)((u8 *)temp_s1 + 8) != 0) {
             return 0;
         }

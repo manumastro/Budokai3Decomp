@@ -1,11 +1,11 @@
 /* Draft (not built): func_002BB650 at 0x002BB650, size 0x240, segment unk/unk_2B98D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); was declared as: 'void (struct Ac98D *)' now declared as: 'void (unsigned char *)' @ 391: void func_002BB650(u8 *arg0) {
+ * Status: size, 80 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x198, original 0x240
  * Original: asm/nonmatchings/unk/unk_2B98D0/func_002BB650.s */
 
-// src/unk/unk_2B98D0.c func_002BB650 cerr diff=-1/0
-void func_002BB650(u8 *arg0) {
+// src/unk/unk_2B98D0.c func_002BB650 size diff=80/102
+void func_002BB650(Ac98D *arg0) {
     s32 sp20;
     s8 sp21;
     s8 sp22;
@@ -27,25 +27,25 @@ void func_002BB650(u8 *arg0) {
     s32 var_a0;
     u16 temp_a0;
 
-    if (D_004B4B41 == 6) {
+    if ((s32)(D_004B4B41) == (s32)(6)) {
         if (*(s32 *)((u8 *)gStrStatus + 0x280) != 0) {
             goto block_3;
         }
     } else {
 block_3:
-        temp_a0 = *(D_00492FCE + (D_004B4B63 * 0xB8));
+        temp_a0 = *(D_00492FCE + (((s32)(D_004B4B63)) * 0xB8));
         if (temp_a0 & 1) {
             if (*(s32 *)((u8 *)gStrStatus + 0x280) != 0) {
                 var_a0 = 0x200 | (0x200000 << 0x20);
             } else {
                 var_a0 = 0x200 | (0x100000 << 0x20);
             }
-            Help_Open(var_a0, (1 << D_004B4B63) & 0xFF);
+            Help_Open(var_a0, (1 << ((s32)(D_004B4B63))) & 0xFF);
             return;
         }
         if (temp_a0 & 0x5000) {
             SoundRpc_SetVolume(0, 0, (s32)(D_004E0614));
-            if (!(D_004E0614 <= 0.0f)) {
+            if (!(D_004E0614[0] <= 0.0f)) {
                 SoundRpc_Send3(0, 0, 5, 0);
             }
             Fade_SetRequest(0xA, func_002B9C10, 0);
@@ -60,7 +60,7 @@ block_3:
 block_16:
             *(s32 *)((u8 *)gStrStatus + 0x400) = 0;
             SoundRpc_SetVolume(0, 0, (s32)(D_004E0614));
-            if (!(D_004E0614 <= 0.0f)) {
+            if (!(D_004E0614[0] <= 0.0f)) {
                 SoundRpc_Send3(0, 0, 0, 0);
             }
             sp21 = (s8) *(s32 *)((u8 *)gStrStatus + 0x288);
@@ -80,7 +80,7 @@ block_16:
             sp34 = (s16) *(s32 *)((u8 *)gStrStatus + 0x2F0);
             sp36 = (s16) *(s32 *)((u8 *)gStrStatus + 0x2F4);
             OutputPass_Start(&sp20, 0xC000);
-            var_v1 = (s32 *)(&func_002BB5F0);
+            var_v1 = (int *)(&func_002BB5F0);
             if (&func_002BB5F0 == NULL) {
                 var_v1 = NULL;
             }

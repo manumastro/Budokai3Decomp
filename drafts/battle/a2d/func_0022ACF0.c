@@ -1,12 +1,13 @@
 /* Draft (not built): func_0022ACF0 at 0x0022ACF0, size 0xC10, segment battle/a2d (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); r: 920: 2A880(*(s32 *)((u8 *)var_v1 + 4), &spC0, *(s32 *)((u8 *)arg0 + 0x14), var_f12_2)); @ 837: var_s2 = saved_reg_s2;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  'float' mwccps2.exe Compiler: @ 921: )((u8 *)var_v1 + 4)), &spC0, *(s32 *)((u8 *)arg0 + 0x14), (f32)(s32)(var_f12_2)));
  * Original: asm/nonmatchings/battle/a2d/func_0022ACF0.s */
 
 // src/battle/a2d.c func_0022ACF0 cerr diff=-1/0
 extern s32 D_00470720;
 void func_0022ACF0(u8 *arg0) {
+    s32 saved_reg_s2;
     s32 sp60;
     s32 sp80;
     s32 spA0;
@@ -89,7 +90,7 @@ void func_0022ACF0(u8 *arg0) {
     u8 *var_v1_4;
     u8 *var_v1_7;
 
-    var_s2 = saved_reg_s2;
+    var_s2 = (unsigned char *)(saved_reg_s2);
     temp_a0 = *(u8 **)((u8 *)arg0 + 0x28);
     if (temp_a0 != NULL) {
         func_0022ACF0(temp_a0);
@@ -172,7 +173,7 @@ loop_34:
                 goto loop_34;
             }
         }
-        temp_f0_3 = (f32)(func_0022A880(*(s32 *)((u8 *)var_v1 + 4), &spC0, *(s32 *)((u8 *)arg0 + 0x14), var_f12_2));
+        temp_f0_3 = (f32)(func_0022A880((s32)(*(s32 *)((u8 *)var_v1 + 4)), &spC0, *(s32 *)((u8 *)arg0 + 0x14), (f32)(s32)(var_f12_2)));
         temp_a0_4 = *(u8 **)((u8 *)var_s2 + 8);
         var_f12_3 = var_f20;
         var_v0_2 = -1;
@@ -216,7 +217,7 @@ loop_55:
                 goto loop_55;
             }
         }
-        temp_f0_6 = (f32)(func_00229480(*(s32 *)((u8 *)var_v1_2 + 8), &spA0, *(s32 *)((u8 *)arg0 + 0x1C), var_f12_4));
+        temp_f0_6 = (f32)(func_00229480((s32)(*(s32 *)((u8 *)var_v1_2 + 8)), &spA0, *(s32 *)((u8 *)arg0 + 0x1C), (f32)(s32)(var_f12_4)));
         temp_a0_5 = *(u8 **)((u8 *)var_s2 + 4);
         var_f12_5 = var_f20;
         var_v0_3 = -1;
@@ -260,7 +261,7 @@ loop_76:
                 goto loop_76;
             }
         }
-        temp_f0_9 = (f32)(func_0022A0A0(*(s32 *)((u8 *)var_v1_3 + 4), &sp80, *(s32 *)((u8 *)arg0 + 0x18), var_f12_6));
+        temp_f0_9 = (f32)(func_0022A0A0((s32)(*(s32 *)((u8 *)var_v1_3 + 4)), &sp80, *(s32 *)((u8 *)arg0 + 0x18), (f32)(s32)(var_f12_6)));
         temp_a0_6 = *(u8 **)((u8 *)var_s2 + 8);
         var_f12_7 = var_f20;
         var_v0_4 = -1;
@@ -304,7 +305,7 @@ loop_97:
                 goto loop_97;
             }
         }
-        var_f0_2 = (f32)(func_00228FA0(*(s32 *)((u8 *)var_v1_4 + 8), &sp60, *(s32 *)((u8 *)arg0 + 0x20), var_f12_8));
+        var_f0_2 = (f32)(func_00228FA0((s32)(*(s32 *)((u8 *)var_v1_4 + 8)), &sp60, *(s32 *)((u8 *)arg0 + 0x20), (f32)(s32)(var_f12_8)));
         temp_a3 = *(u8 **)((u8 *)var_s2 + 0x10);
         var_f12_9 = var_f20;
         var_s1 = -1;
@@ -366,14 +367,14 @@ loop_118:
                                 var_a1 = func_002270B0(*(s32 *)((u8 *)temp_t0 + 8), *(s16 *)((u8 *)temp_t0 + 4), -1, var_f12_10);
                             }
                         }
-                        var_a2_2 = (s32 *)(*(s32 *)((u8 *)temp_t0 + 0xC) + (var_a1 * 0x10));
+                        var_a2_2 = (int *)(*(s32 *)((u8 *)temp_t0 + 0xC) + (var_a1 * 0x10));
                     }
                     if (var_a2_2 != NULL) {
                         temp_v1_6 = *var_a2_2;
                         if (temp_v1_6 >= 0) {
-                            temp_v1_7 = *(D_00470720 + (temp_v1_6 * 4));
+                            temp_v1_7 = *(s32 *)(D_00470720 + (temp_v1_6 * 4));
                             if (temp_v1_7 != NULL) {
-                                temp_v1_7(var_a2_2 + 4, var_a1, var_a2_2);
+                                temp_v1_7(var_a2_2 + 4, var_a1,(unsigned char *)(var_a2_2));
                             }
                         }
                     }
@@ -421,14 +422,14 @@ loop_143:
                                 var_a1_2 = temp_ret_2;
                             }
                         }
-                        var_a2_3 = (s32 *)(*(s32 *)((u8 *)temp_t0_2 + 0xC) + (var_a1_2 * 0x10));
+                        var_a2_3 = (int *)(*(s32 *)((u8 *)temp_t0_2 + 0xC) + (var_a1_2 * 0x10));
                     }
                     if (var_a2_3 != NULL) {
                         temp_v1_8 = *var_a2_3;
                         if (temp_v1_8 >= 0) {
-                            temp_v1_9 = *(D_00470720 + (temp_v1_8 * 4));
+                            temp_v1_9 = *(s32 *)(D_00470720 + (temp_v1_8 * 4));
                             if (temp_v1_9 != NULL) {
-                                var_f0_2 = (u8 *)temp_v1_9(var_a2_3 + 4, var_a1_2, var_a2_3);
+                                var_f0_2 = (u8 *)temp_v1_9(var_a2_3 + 4, var_a1_2,(unsigned char *)(var_a2_3));
                             }
                         }
                     }

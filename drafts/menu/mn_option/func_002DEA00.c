@@ -14,11 +14,11 @@ extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern void func_00228410(void);
+extern void *D_00470704;
+extern void amModel_SetCurrent();
 extern void func_0022CD00(void *);
 extern void Obj_CopyVec4F50(void *, void *);
 extern void Obj_SetF3C();
-extern void *D_00470704;
-extern void amModel_SetCurrent();
 void func_002DEA00(void) {
     s32 sp40;
     s32 sp44;

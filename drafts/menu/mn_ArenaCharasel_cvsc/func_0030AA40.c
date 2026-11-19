@@ -104,7 +104,7 @@ void func_0030AA40(u8 *arg0) {
             ArenaList_SetF2(*(s32 *)((u8 *)temp_s0 + 0x14), 0);
         }
         temp_a0_3 = *(u8 **)((u8 *)temp_s0 + 4);
-        D_00470704 = (s32)(temp_a0_3);
+        D_00470704 = (int)(temp_a0_3);
         D_0047070C = 0x2000;
         D_00470708 = 0;
         amModel_SetCurrent((s32)(temp_a0_3), 0x2000);
@@ -130,13 +130,13 @@ void func_0030AA40(u8 *arg0) {
                 ArenaList_SetF0(*(s32 *)((u8 *)temp_s0 + 0x14), 4);
                 ArenaList_SetF2(*(s32 *)((u8 *)temp_s0 + 0x14), -1);
             }
-            var_v1 = (s32 *)(&func_0030A120);
+            var_v1 = (int *)(&func_0030A120);
             if (&func_0030A120 == NULL) {
                 var_v1 = NULL;
             }
         } else {
             *(s32 *)((u8 *)temp_s0 + 0x24) = 0x41A00000;
-            var_v1 = (s32 *)(&func_0030A950);
+            var_v1 = (int *)(&func_0030A950);
             if (&func_0030A950 == NULL) {
                 var_v1 = NULL;
             }

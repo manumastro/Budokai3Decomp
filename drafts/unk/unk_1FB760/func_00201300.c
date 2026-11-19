@@ -1,7 +1,7 @@
 /* Draft (not built): func_00201300 at 0x00201300, size 0x3D4, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operand mwccps2.exe Compiler: 435: temp_a2 = *(&D_00526440 + (D_00470668 * 4)); @ 382: if (var_s2 != temp_s1) {
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 447: (u8 *)&D_0044B860) + (*(u16 *)((u8 *)spC8 + 4) * 0x10))(&spC0, temp_a1, temp_a2);
  * Original: asm/nonmatchings/unk/unk_1FB760/func_00201300.s */
 
 // src/unk/unk_1FB760.c func_00201300 cerr diff=-1/0
@@ -44,14 +44,14 @@ s32 func_00201300(u8 *arg0) {
     u8 *temp_v1;
     u8 *var_s2;
 
-    temp_s1 = (s32)(arg0 + 0x30);
+    temp_s1 = (int)(arg0 + 0x30);
     temp_v1 = *(u8 **)((u8 *)arg0 + 0x20);
     temp_s3 = *(u8 **)((u8 *)arg0 + 0x14);
     *(f32 *)((u8 *)temp_v1 + 8) = (f32) (*(f32 *)((u8 *)temp_v1 + 8) + D_0051D9A8);
     var_s2 = *(u8 **)((u8 *)arg0 + 0x28);
     spD8 = &D_003F0830;
     spDC = &D_003F0830;
-    if (var_s2 != temp_s1) {
+    if ((s32)(var_s2) != (s32)(temp_s1)) {
         do {
             if ((f32) *(s32 *)((u8 *)var_s2 + 0x4C) < *(f32 *)((u8 *)temp_s3 + 0x30)) {
                 temp_f1 = *(f32 *)((u8 *)var_s2 + 0x24) + (*(f32 *)((u8 *)temp_s3 + 0x34) * D_0051D9A8);
@@ -104,24 +104,24 @@ s32 func_00201300(u8 *arg0) {
                         spC8 = *(u8 **)((u8 *)var_s2 + 0x14);
                         spD0 = &spB0;
                         spD4 = &spA0;
-                        temp_a2 = *(&D_00526440 + (D_00470668 * 4));
+                        temp_a2 = (int *)(*(((u8 *)&D_00526440) + (D_00470668 * 4)));
                         D_00470668 += 1;
                         if (D_00470668 >= 0x800) {
                             D_00470668 = 0;
                         }
                         temp_a1 = spC4;
                         *(s32 **)((u8 *)temp_a2 + 4) = (s32 *) *(s32 **)((u8 *)temp_a1 + 0x48);
-                        *(s32 **)((u8 *)temp_a2 + 0) = **(s32 **)((u8 *)temp_a1 + 0x48);
-                        **(s32 **)((u8 *)temp_a1 + 0x48) = temp_a2;
+                        *(s32 **)((u8 *)temp_a2 + 0) = (int *)(**(s32 **)((u8 *)temp_a1 + 0x48));
+                        **(s32 **)((u8 *)temp_a1 + 0x48) = (int)(temp_a2);
                         *(s32 **)((u8 *)temp_a1 + 0x48) = temp_a2;
                         *(s32 *)((u8 *)temp_a1 + 0x4C) = (s32) (*(s32 *)((u8 *)temp_a1 + 0x4C) + 1);
                         spCC = temp_a2;
-                        *(&D_0044B860 + (*(u16 *)((u8 *)spC8 + 4) * 0x10))(&spC0, temp_a1, temp_a2);
+                        *(((u8 *)&D_0044B860) + (*(u16 *)((u8 *)spC8 + 4) * 0x10))(&spC0, temp_a1, temp_a2);
                     } while (!(*(f32 *)((u8 *)var_s2 + 0x24) < 1.0f));
                 }
             }
             var_s2 = *(u8 **)((u8 *)var_s2 + 0);
-        } while (var_s2 != temp_s1);
+        } while ((s32)(var_s2) != (s32)(temp_s1));
     }
     return 0;
 }

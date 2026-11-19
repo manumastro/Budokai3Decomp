@@ -29,7 +29,7 @@ void func_0026D6A0(void) {
         var_s0 = gEssMain + 0x210;
         *(s32 *)((u8 *)gEssMain + 0x218) = 0;
         memset(var_s0 + 0x10, 0, 0x20, gEssMain);
-        var_v1 = (s32 *)(&Ess_TaskEditEnd);
+        var_v1 = (int *)(&Ess_TaskEditEnd);
         *(s32 *)((u8 *)((*(s32 *)((u8 *)gEssMain + 0x54) * 4) + var_s0) + 0x10) = 0x39;
         *(s32 *)((u8 *)gEssMain + 0x120) = 0xA;
         *(s32 *)((u8 *)gEssMain + 0x128) = 0;
@@ -59,7 +59,7 @@ void func_0026D6A0(void) {
         var_s0 = gEssMain + 0x210;
         *(s32 *)((u8 *)gEssMain + 0x218) = 0;
         memset(var_s0 + 0x10, 0, 0x20, gEssMain);
-        var_v1_2 = (s32 *)(&Ess_TaskShopEnd);
+        var_v1_2 = (int *)(&Ess_TaskShopEnd);
         *(s32 *)((u8 *)((*(s32 *)((u8 *)gEssMain + 0x54) * 4) + var_s0) + 0x10) = 0x39;
         *(s32 *)((u8 *)gEssMain + 0x1B0) = 0xD;
         *(s32 *)((u8 *)gEssMain + 0x1B8) = 0;
@@ -75,7 +75,7 @@ void func_0026D6A0(void) {
         return;
     case 2:
         *(s32 *)((u8 *)var_s1 + 0x30) = 0;
-        var_v1_3 = (s32 *)(&func_0026AEB0);
+        var_v1_3 = (int *)(&func_0026AEB0);
         if (&func_0026AEB0 == NULL) {
             var_v1_3 = NULL;
         }

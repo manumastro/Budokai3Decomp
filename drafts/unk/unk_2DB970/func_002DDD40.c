@@ -1,17 +1,17 @@
 /* Draft (not built): func_002DDD40 at 0x002DDD40, size 0x1C0, segment unk/unk_2DB970 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 58 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1A8, original 0x1C0
+ * Status: size, 57 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1B0, original 0x1C0
  * Original: asm/nonmatchings/unk/unk_2DB970/func_002DDD40.s */
 
-// src/unk/unk_2DB970.c func_002DDD40 size diff=58/106
+// src/unk/unk_2DB970.c func_002DDD40 size diff=57/108
 s32 func_0022C7D0(s32, s32, s32);
-void func_002DB600();
-extern s32 func_002D9F80;
 extern void Option_ReadSound(void);
 extern void func_002D44C0(void);
 extern void func_002D9580(void);
 extern void func_002D9930(void);
+extern void func_002D9F80(void);
+extern void func_002DB600(void);
 void func_002DDD40(void) {
     f32 var_f1;
     s32 var_s2;
@@ -19,7 +19,7 @@ void func_002DDD40(void) {
     u8 *temp_s0;
     u8 *var_s1;
 
-    temp_s0 = (u8 *)(gOptionWork);
+    temp_s0 = (unsigned char *)(gOptionWork);
     if (*(f32 *)((u8 *)temp_s0 + 0x388) < 75.0f) {
         if (D_004703F4 != 3) {
             var_f1 = 1.0f;
@@ -31,7 +31,7 @@ void func_002DDD40(void) {
         return;
     }
     *(f32 *)((u8 *)temp_s0 + 0x388) = 0.0f;
-    *(s32 **)((u8 *)temp_s0 + 0x34C) = &func_002D9F80;
+    *(void (**)())((u8 *)temp_s0 + 0x34C) = func_002D9F80;
     *(void (**)())((u8 *)temp_s0 + 0x344) = func_002DB600;
     var_v0 = Option_ReadSound;
     if (Option_ReadSound == NULL) {

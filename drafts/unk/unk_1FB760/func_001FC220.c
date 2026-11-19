@@ -1,10 +1,10 @@
 /* Draft (not built): func_001FC220 at 0x001FC220, size 0x39C, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'int' to 'void *' @ 209: func_00146F10(arg0, &sp70, var_f4 / temp_f20);
+ * Status: size, 187 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x264, original 0x39C
  * Original: asm/nonmatchings/unk/unk_1FB760/func_001FC220.s */
 
-// src/unk/unk_1FB760.c func_001FC220 cerr diff=-1/0
+// src/unk/unk_1FB760.c func_001FC220 size diff=187/153
 extern f32 func_00146E90(f32 *);
 extern void func_00146F30(f32 *);
 extern void func_00146F10(void *, void *, f32);
@@ -137,7 +137,7 @@ s32 func_001FC220(s32 arg0, u8 *arg1, u8 *arg2, u8 *arg3) {
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($s2) */);
         M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
-        func_00146F10(arg0, &sp70, var_f4 / temp_f20);
+        func_00146F10((void *)(arg0), (void *)(&sp70), var_f4 / temp_f20);
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($s4) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($s2) */);
         M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
@@ -147,7 +147,7 @@ s32 func_001FC220(s32 arg0, u8 *arg1, u8 *arg2, u8 *arg3) {
         M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($s3) */);
         *(f32 *)((u8 *)arg1 + 4) = 0.0f;
-        func_00146F30((void *)(arg1));
+        func_00146F30((f32 *)(arg1));
         return 1;
     }
     return 0;

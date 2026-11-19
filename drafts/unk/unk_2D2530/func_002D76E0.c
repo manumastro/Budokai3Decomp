@@ -30,7 +30,7 @@ void func_002D76E0(void) {
     u8 *var_s2_6;
     u8 *var_s2_7;
 
-    temp_s0 = (u8 *)(gOptionWork);
+    temp_s0 = (unsigned char *)(gOptionWork);
     *(s32 *)((u8 *)temp_s0 + 0xAC) = func_0022D670(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C)) + 0xE0), 0);
     *(s32 *)((u8 *)temp_s0 + 0xB0) = func_0022D670(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C)) + 0x1EC), 0);
     *(s32 *)((u8 *)temp_s0 + 0xB4) = func_0022D860(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x14)) + 0x28), 0);

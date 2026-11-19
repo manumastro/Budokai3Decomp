@@ -27,13 +27,13 @@ block_3:
     }
 block_6:
     var_s1 = *(u8 **)((u8 *)(*arg1) + 0x1354);
-    var_v0 = (s32)(D_0046FE4C + (*(s32 *)((u8 *)var_s1 + 0x1350) * 0x480));
+    var_v0 = (int)(D_0046FE4C + (*(s32 *)((u8 *)var_s1 + 0x1350) * 0x480));
     goto block_8;
 block_7:
     var_s1 = *arg1;
-    var_v0 = (s32)(D_0046FE4C + (*(s32 *)((u8 *)var_s1 + 0x1350) * 0x480));
+    var_v0 = (int)(D_0046FE4C + (*(s32 *)((u8 *)var_s1 + 0x1350) * 0x480));
 block_8:
-    temp_s0 = (u8 *)(var_v0 + 0x10);
+    temp_s0 = (unsigned char *)(var_v0 + 0x10);
     if (*(s32 *)((u8 *)temp_s0 + 0x14) != -1) {
         goto block_14;
     }

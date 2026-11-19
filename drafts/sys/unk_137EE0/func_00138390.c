@@ -1,7 +1,7 @@
 /* Draft (not built): func_00138390 at 0x00138390, size 0xD00, segment sys/unk_137EE0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ';' expected mwccps2.exe Compiler: 91: extern s3232 D_00470260; @ 89: extern s3232 D_00470258;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); s2.exe Compiler: 482: void amDraw_PutTexRegs(u32 **pp, Tex *t, s32 flags) { @ 411: D_0047CAA4((s64) var_s2, spD8, spD4);
  * Original: asm/nonmatchings/sys/unk_137EE0/func_00138390.s */
 
 // src/sys/unk_137EE0.c func_00138390 cerr diff=-1/0
@@ -16,9 +16,9 @@ extern f32 D_0046FD28;
 extern f32 D_0046FD2C;
 extern f32 D_0046FD30;
 extern s32 D_00470238;
-extern s3232 D_00470258;
+extern s32 D_00470258;
 extern s32 D_0047025C;
-extern s3232 D_00470260;
+extern s32 D_00470260;
 extern s32 D_00470264;
 extern s32 D_00470268;
 extern s32 D_004702A0;
@@ -29,6 +29,7 @@ extern char D_0047E4C0[];
 extern void *gModelUser;
 extern s32 D_0047CAA4;
 s32 func_00138390(u8 *arg0, s32 arg1, s32 arg2) {
+    s32 saved_reg_fp;
     u8 *spAC;
     s32 spB0;
     s32 spC0;
@@ -63,8 +64,8 @@ s32 func_00138390(u8 *arg0, s32 arg1, s32 arg2) {
     u8 *var_s3;
     u8 *var_s3_2;
 
-    var_fp = saved_reg_fp;
-    spDC = (u8 *)(gPacketPtr);
+    var_fp = (unsigned char *)(saved_reg_fp);
+    spDC = (unsigned char *)(gPacketPtr);
     var_s5 = 0;
     var_s1 = arg2 | (*(s32 *)((u8 *)arg0 + 0) & arg1);
     var_s0 = arg2 | (*(s32 *)((u8 *)arg0 + 4) & arg1);
@@ -133,7 +134,7 @@ s32 func_00138390(u8 *arg0, s32 arg1, s32 arg2) {
     spD4 = NULL;
     if ((*(s32 *)((u8 *)arg0 + 0xC) != -1) && !(var_s0 & 0x10000000)) {
         var_s7 = func_00145D70(D_00470238, *(s32 *)((u8 *)arg0 + 0xC), 0, 1);
-        if ((spD8 != NULL) && (func_001461D0(((u8 *)D_0047E4C0) + (D_00470238 << 6), *(s32 *)((u8 *)arg0 + 8) + gModelUser) == 0)) {
+        if ((spD8 != NULL) && (func_001461D0((void *)(D_0047E4C0 + (D_00470238 << 6)), (void *)(((s32)(((u8 *)*(s32 *)((u8 *)arg0 + 8)))) + ((s32)(gModelUser)))) == 0)) {
             spB0 = 1;
             var_s6 = func_00145D70(D_00470238, *(s32 *)((u8 *)arg0 + 8), 0, 1);
         }
@@ -244,15 +245,15 @@ loop_19:
     *(f32 *)((u8 *)temp_s2 + 0x80) = var_f1;
     *(f32 *)((u8 *)temp_s2 + 0x84) = var_f0;
     if (!(var_a2 & 0x8080)) {
-        *(s3232 *)((u8 *)temp_s2 + 0x58) = 0;
+        *(s32 *)((u8 *)temp_s2 + 0x58) = 0;
     } else if (var_a2 & 0x80) {
-        *(s3232 *)((u8 *)temp_s2 + 0x58) = (s3232) D_00470258;
+        *(s32 *)((u8 *)temp_s2 + 0x58) = (s32) D_00470258;
         *(f32 *)((u8 *)temp_s2 + 0x5C) = (f32) D_0046FD30;
         *(f32 *)((u8 *)temp_s2 + 0x60) = (f32) D_0046FD2C;
         *(f32 *)((u8 *)temp_s2 + 0x64) = (f32) D_0046FD28;
         *(s32 *)((u8 *)temp_s2 + 0x120) = (s32) D_0047025C;
     } else if (var_a2 & 0x8000) {
-        *(s3232 *)((u8 *)temp_s2 + 0x58) = (s3232) D_00470260;
+        *(s32 *)((u8 *)temp_s2 + 0x58) = (s32) D_00470260;
         *(s32 *)((u8 *)temp_s2 + 0x120) = (s32) D_00470264;
     }
     *(s32 *)((u8 *)temp_s2 + 0xC8) = 0;
@@ -336,7 +337,7 @@ loop_85:
         *(s32 *)((u8 *)spDC + 0xC) = 0;
         spDC += 0x10;
     }
-    if (D_0047CAA4 != NULL) {
+    if ((s32)(D_0047CAA4) != 0) {
         D_0047CAA4((s64) var_s2, spD8, spD4);
     }
     if (var_s5_2 == 0) {
@@ -404,6 +405,6 @@ loop_85:
     *(s32 *)((u8 *)spDC + 0xC) = 0;
     temp_v0_4 = spDC + 0x10;
     spDC = temp_v0_4;
-    gPacketPtr = (u32 *)(temp_v0_4);
+    gPacketPtr = (unsigned int *)(temp_v0_4);
     return spC0;
 }

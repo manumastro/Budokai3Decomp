@@ -1,7 +1,7 @@
 /* Draft (not built): func_00241710 at 0x00241710, size 0x3AC, segment unk/unk_23A890 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ersion from 'unsigned char *' to 'int' mwccps2.exe Compiler: @ 944: temp_s1 = (s32)(func_00240F40(0, temp_a2, temp_a3));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); al implicit conversion from 'unsigned char *' to 'int' @ 944: temp_s1 = (s32)(func_00240F40(0, temp_a2,(int)(temp_a3)));
  * Original: asm/nonmatchings/unk/unk_23A890/func_00241710.s */
 
 // src/unk/unk_23A890.c func_00241710 cerr diff=-1/0
@@ -23,10 +23,10 @@ void func_00241710(s32 arg0) {
     temp_a2 = gBattle + temp_a3;
     temp_s3 = temp_a2 + 0x830;
     temp_s2 = D_0046FE44 + (arg0 << 7);
-    temp_s1 = (s32)(func_00240F40(0, temp_a2, temp_a3));
-    temp_s0 = (s32)(func_00240F40(arg0, (u8 *)1));
+    temp_s1 = (s32)(func_00240F40(0, temp_a2,(int)(temp_a3)));
+    temp_s0 = func_00240F40(arg0,(int)((u8 *)1));
     sp50 = D_00450180;
-    temp_f0 = (s32)(func_00146E30(temp_s3 + 0x650, temp_s2 + 0x10));
+    temp_f0 = func_00146E30((void *)(temp_s3 + 0x650), (s32)(temp_s2 + 0x10));
     if ((*(s16 *)((u8 *)temp_s3 + 0xCAC) == 0xF) && !((*(f32 *)((u8 *)temp_s3 + 0x654) - *(f32 *)((u8 *)temp_s2 + 0x14)) <= 0.1f)) {
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($a0) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($s2) */);

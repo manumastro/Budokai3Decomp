@@ -1,18 +1,18 @@
-/* Draft (not built): func_00289DF0 at 0x00289DF0, size 0x88, segment sys/mc_opr (asm)
+/* Draft (not built): func_00289DF0 at 0x00289DF0, size 0x88, segment sys/mc_opr (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: uncompiled
- * Made with: m2c -t mipsee-mwcc-c --valid-syntax, not compiled
- * Original: asm/sys/mc_opr.s */
+ * Status: size, 10 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x90, original 0x88
+ * Original: asm/nonmatchings/sys/mc_opr/func_00289DF0.s */
 
-s32 amMc_GetInfo(s32, M2C_UNK, M2C_UNK);            /* extern */
-extern M2C_UNK D_00470838;
+// src/sys/mc_opr.c func_00289DF0 size diff=10/36
+extern s32 D_00470838;
+s32 amMc_GetInfo(s32, s32, s32);
 extern s32 D_0047084C;
-extern M2C_UNK func_00289BE0;
+extern void func_00289BE0(void);
+void func_00289DF0(u8 *arg0) {
+    s32 *var_v1;
 
-void func_00289DF0(void *arg0) {
-    M2C_UNK *var_v1;
-
-    if (*(&D_00470838 + (D_0047084C * 4)) & 0x8000) {
+    if ((&D_00470838)[D_0047084C] & 0x8000) {
         D_0047084C ^= 1;
         return;
     }
@@ -20,9 +20,9 @@ void func_00289DF0(void *arg0) {
         D_0047084C ^= 1;
         return;
     }
-    var_v1 = &func_00289BE0;
+    var_v1 = (int *)(&func_00289BE0);
     if (&func_00289BE0 == NULL) {
         var_v1 = NULL;
     }
-    M2C_FIELD(arg0, M2C_UNK **, 0x1C) = var_v1;
+    *(s32 **)((u8 *)arg0 + 0x1C) = var_v1;
 }

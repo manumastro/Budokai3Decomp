@@ -38,7 +38,7 @@ void func_002922C0(s32 arg0) {
     func_0013B0B0(&D_005AA6F0);
     var_f23 = 100000.0f;
     D_005AA730 = 0;
-    var_s1 = (u8 *)(arg0 + 0x80);
+    var_s1 = (unsigned char *)(arg0 + 0x80);
     D_005AA734 = NULL;
     var_s2 = 0;
     var_s0 = &D_005AA740;

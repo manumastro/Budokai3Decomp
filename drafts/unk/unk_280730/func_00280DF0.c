@@ -15,7 +15,7 @@ void func_00280DF0(u8 *arg0, s64 arg1) {
     if (*(s16 *)((u8 *)arg0 + 0x40) != ((s64) (arg1 << 0x30) >> 0x30)) {
         *(s8 *)((u8 *)temp_a3 + 0xC) = 0;
         *(s16 *)((u8 *)temp_a3 + 0x10) = (s16) arg1;
-        var_v1 = (s32 *)(&func_00280C70);
+        var_v1 = (int *)(&func_00280C70);
         *(f32 *)((u8 *)temp_a3 + 0x14) = 0.0f;
         if (&func_00280C70 == NULL) {
             var_v1 = NULL;

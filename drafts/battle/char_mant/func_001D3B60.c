@@ -48,7 +48,7 @@ loop_3:
     do {
         D_004705A0 = *(u8 **)((u8 *)D_0047059C + 0x128);
         D_004705B4 = ((u8 *)D_0047059C) + 0x40;
-        D_004705B8 = (s32)(*(u8 **)((u8 *)D_0047059C + 0x124) + 0x40);
+        D_004705B8 = (int)(*(u8 **)((u8 *)D_0047059C + 0x124) + 0x40);
         if (*(s32 *)((u8 *)D_0047059C + 0x120) != 0) {
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, 0x10($v0) */);

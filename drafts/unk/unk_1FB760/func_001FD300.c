@@ -66,7 +66,7 @@ block_13:
     if (*(&D_0051CD30 + temp_a1) <= 0) {
         goto block_31;
     }
-    var_s0 = (u8 *)(&gBtbBg + (temp_s3 * 0x10));
+    var_s0 = (unsigned char *)(&gBtbBg + (temp_s3 * 0x10));
 loop_15:
     temp_a0_2 = *(s16 *)((u8 *)var_s0 + 0x58);
     temp_hi = temp_a0_2 % 1000;

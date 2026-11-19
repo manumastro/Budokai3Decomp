@@ -92,3 +92,67 @@ block_24:
     }
     return var_a1;
 }
+
+/* Similar function already in C: _strtol_r (src/sdk/libc/ico_strtol.c), similarity 0.80.
+ * It is the template below (not built). */
+#if 0
+long _strtol_r(struct _reent *rptr, const char *nptr, char **endptr, int base)
+{
+    register const char *s = nptr;
+    register unsigned long acc;
+    register int c;
+    register unsigned long cutoff;
+    register int neg = 0, any, cutlim;
+
+    do {
+        c = *s++;
+    } while ((_ctype_ + 1)[c] & _S);
+    if (c == '-') {
+        neg = 1;
+        c = *s++;
+    } else if (c == '+') {
+        c = *s++;
+    }
+    if ((base == 0 || base == 16) && c == '0' && (*s == 'x' || *s == 'X')) {
+        c = s[1];
+        s += 2;
+        base = 16;
+    }
+    if (base == 0) {
+        base = c == '0' ? 8 : 10;
+    }
+
+    cutoff = neg ? -(unsigned long)LONG_MIN : LONG_MAX;
+    cutlim = cutoff % (unsigned long)base;
+    cutoff /= (unsigned long)base;
+    for (acc = 0, any = 0;; c = *s++) {
+        if ((_ctype_ + 1)[c] & _N) {
+            c -= '0';
+        } else if ((_ctype_ + 1)[c] & (_U | _L)) {
+            c -= ((_ctype_ + 1)[c] & _U) ? 'A' - 10 : 'a' - 10;
+        } else {
+            break;
+        }
+        if (c >= base) {
+            break;
+        }
+        if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim)) {
+            any = -1;
+        } else {
+            any = 1;
+            acc *= base;
+            acc += c;
+        }
+    }
+    if (any < 0) {
+        acc = neg ? LONG_MIN : LONG_MAX;
+        rptr->_errno = ERANGE;
+    } else if (neg) {
+        acc = -acc;
+    }
+    if (endptr != 0) {
+        *endptr = (char *)(any ? s - 1 : nptr);
+    }
+    return acc;
+}
+#endif

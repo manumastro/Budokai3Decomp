@@ -1,7 +1,7 @@
 /* Draft (not built): func_001B13F0 at 0x001B13F0, size 0x4B8, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);                  /* switch 3; irregular */ @ 2135: switch (D_004B4B59) {                       /* switch 2; irregular */
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);                  /* switch 3; irregular */ @ 2059: switch (D_004B4B59) {                       /* switch 2; irregular */
  * Original: asm/nonmatchings/battle/btl_main/func_001B13F0.s */
 
 // src/battle/btl_main.c func_001B13F0 cerr diff=-1/0
@@ -68,9 +68,9 @@ void func_001B13F0(s32 arg0) {
         do {
             *(s16 *)((u8 *)var_s1 + 0x20) = (s16) *(s8 *)((u8 *)var_s2 + 0x1C);
             *(s16 *)((u8 *)var_s1 + 0x22) = (s16) *(s8 *)((u8 *)var_s2 + 0x1E);
-            temp_v1 = (u8 *)(&D_00447440 + (*(s16 *)((u8 *)var_s1 + 0x20) * 0x60));
+            temp_v1 = (unsigned char *)(&D_00447440 + (*(s16 *)((u8 *)var_s1 + 0x20) * 0x60));
             *(s16 *)((u8 *)var_s1 + 0x44) = (s16) *(s16 *)((u8 *)temp_v1 + 0x50);
-            memcpy(var_s1 + 0x46, temp_v1 + 0x52, *(s16 *)((u8 *)temp_v1 + 0x50) * 2);
+            memcpy((s32 *)(var_s1 + 0x46), (s8 *)(temp_v1 + 0x52), (s32)(*(s16 *)((u8 *)temp_v1 + 0x50) * 2));
             var_s3 += 1;
             *(s16 *)((u8 *)var_s1 + 0x2A) = -1;
             var_s2 += 1;
@@ -82,11 +82,11 @@ void func_001B13F0(s32 arg0) {
         sp1C4 = (s16) D_004B4B5B;
         break;
     case 3:                                         /* switch 1 */
-        var_s2_2 = (s8 *)(D_005C4140[0]);
+        var_s2_2 = (signed char *)(D_005C4140);
         var_s5 = 0;
         var_s4 = D_004B4B40;
         var_s3_2 = &sp70;
-        var_s1_2 = (s8 *)(D_005C4140[0]);
+        var_s1_2 = (signed char *)(D_005C4140);
         do {
             *(s16 *)((u8 *)var_s3_2 + 0x20) = (s16) *(s8 *)((u8 *)var_s4 + 0x1C);
             *(s16 *)((u8 *)var_s3_2 + 0x22) = (s16) *(s8 *)((u8 *)var_s4 + 0x1E);
@@ -120,7 +120,7 @@ void func_001B13F0(s32 arg0) {
         var_s4_2 = 0;
         var_s3_3 = D_004B4B40;
         var_s2_3 = &sp70;
-        var_s1_3 = (s8 *)(D_005C4140[0]);
+        var_s1_3 = (signed char *)(D_005C4140);
         do {
             *(s16 *)((u8 *)var_s2_3 + 0x20) = (s16) *(s8 *)((u8 *)var_s3_3 + 0x1C);
             *(s16 *)((u8 *)var_s2_3 + 0x22) = (s16) *(s8 *)((u8 *)var_s3_3 + 0x1E);
@@ -144,11 +144,11 @@ void func_001B13F0(s32 arg0) {
         break;
     case 2:                                         /* switch 1 */
     case 6:                                         /* switch 1 */
-        var_s2_4 = (s8 *)(D_005C4140[0]);
+        var_s2_4 = (signed char *)(D_005C4140);
         var_s5_2 = 0;
         var_s4_3 = D_004B4B40;
         var_s3_4 = &sp70;
-        var_s1_4 = (s8 *)(D_005C4140[0]);
+        var_s1_4 = (signed char *)(D_005C4140);
         do {
             *(s16 *)((u8 *)var_s3_4 + 0x20) = (s16) *(s8 *)((u8 *)var_s4_3 + 0x1C);
             *(s16 *)((u8 *)var_s3_4 + 0x22) = (s16) *(s8 *)((u8 *)var_s4_3 + 0x1E);
@@ -186,7 +186,7 @@ void func_001B13F0(s32 arg0) {
         sp1CC = (s32) D_004E05E0;
         break;
     case 5:                                         /* switch 1 */
-        memcpy(&sp70, &D_0042FDC0 + (arg0 * 0x180), 0x180);
+        memcpy((s32 *)(&sp70), (s8 *)(&D_0042FDC0 + (arg0 * 0x180)), 0x180);
         sp9A = (s16) D_004B4B63;
         break;
     }

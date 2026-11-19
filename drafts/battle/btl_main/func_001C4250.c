@@ -1,18 +1,15 @@
 /* Draft (not built): func_001C4250 at 0x001C4250, size 0x4C0, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); onversion from 'struct Fighter *' to 'int' mwccps2.exe Compiler: @ 5245: var_v0 = (struct Fighter *)func_001C2A00(arg0);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  Compiler: 6347: *(((u8 *)&D_00468460) + (var_s0 * 4))(arg0, 1); @ 6335: *(((u8 *)&D_00468460) + (var_s0 * 4))(arg0, 1);
  * Original: asm/nonmatchings/battle/btl_main/func_001C4250.s */
 
 // src/battle/btl_main.c func_001C4250 cerr diff=-1/0
 f32 func_001D7DF0(void *);
 s32 func_001D7E50(void *, s32, s32);
-s32 func_001D97D0(void *);
 s32 func_001D9EB0(void *, s32);
 s32 func_001DA930(void *, s16, s16, s32);
 s32 func_001DFC80(void *, s32, s32);
-s32 func_001E2C50(void *);
-s32 func_001E3100(void *);
 s32 func_001E39B0(s32);
 s32 func_001E8D90(void *, s32);
 extern void Fighter_CreateHitEffect(void *, int);
@@ -45,7 +42,7 @@ s32 func_001C4250(u8 *arg0, u8 *arg1, s32 arg2) {
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
     if ((var_s2 == 0) && !(*(s32 *)((u8 *)arg1 + 0x38) & 0x10) && (func_001D7E50(arg0, 0, 0) != 0)) {
         if (*(s16 *)((u8 *)arg0 + 0x13A4) >= 0) {
-            var_v0 = (struct Fighter *)func_001C2A00(arg0);
+            var_v0 = func_001C2A00((struct Fighter *)(arg0));
         } else {
             var_a1 = 1;
             if (*(s32 *)((u8 *)arg1 + 0x24) == 1) {
@@ -56,7 +53,7 @@ s32 func_001C4250(u8 *arg0, u8 *arg1, s32 arg2) {
             var_v0 = func_001E8D90(arg0, var_a1);
         }
         if (var_v0 != 0) {
-            func_001DFE60(arg0, 8, func_001D7DF0(arg0));
+            func_001DFE60((Fighter *)(arg0), 8, func_001D7DF0(arg0));
             func_001DFC80(arg0, 0, 0x42C80000);
             *(s16 *)((u8 *)arg0 + 0xCB4) = 0;
             *(s8 *)((u8 *)arg0 + 0x2004) = 1;
@@ -86,7 +83,7 @@ block_14:
             }
             var_s0 = func_001DA930(arg0, *(s16 *)((u8 *)arg1 + 0x30), *(s16 *)((u8 *)arg1 + 0x36), var_a3);
             if (var_s0 != -1) {
-                func_001E3100(arg0);
+                func_001E3100(arg0, 0, 0, 0);
                 func_001E2C50(arg0);
                 func_001E39B0(*(s32 *)((u8 *)arg0 + 0x1354));
                 func_001D9C00(arg0);
@@ -109,7 +106,7 @@ block_14:
                     if (*(s32 *)((u8 *)arg1 + 0x38) & 0x20) {
                         var_a1_2 = 0;
                     }
-                    func_001C0130(arg0, var_a1_2);
+                    func_001C0130((Fighter *)(arg0), (s32)(var_a1_2));
                     var_s0_2 = 0x66;
                     break;
                 case 26:                            /* switch 2 */
@@ -120,7 +117,7 @@ block_14:
                         *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
                     }
                     *(s8 *)((u8 *)arg0 + 0x2006) = 0;
-                    *(&D_00468460 + (var_s0 * 4))(arg0, 1);
+                    *(((u8 *)&D_00468460) + (var_s0 * 4))(arg0, 1);
                     func_002CBFF0(1, arg0);
                     func_001DD680(arg0);
                     var_s0_2 = 0x190;
@@ -132,7 +129,7 @@ block_14:
                         *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
                     }
                     *(s8 *)((u8 *)arg0 + 0x2006) = 0;
-                    *(&D_00468460 + (var_s0 * 4))(arg0, 1);
+                    *(((u8 *)&D_00468460) + (var_s0 * 4))(arg0, 1);
                     func_002CBFF0(1, arg0);
                     var_s0_2 = 0x6B;
                     break;

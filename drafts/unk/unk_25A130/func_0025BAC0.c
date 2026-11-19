@@ -1,7 +1,7 @@
 /* Draft (not built): func_0025BAC0 at 0x0025BAC0, size 0x274, segment unk/unk_25A130 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); n from 'void *' to 'int' mwccps2.exe Compiler: @ 1016: temp_v0 = func_0020D9F0((s32)((s32)((s32)((s32)((s32)(sp30))))));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 1034: *(&D_0046AF30 + (*(s16 *)((u8 *)arg1 + 0x52) * 4))(&sp30);
  * Original: asm/nonmatchings/unk/unk_25A130/func_0025BAC0.s */
 
 // src/unk/unk_25A130.c func_0025BAC0 cerr diff=-1/0
@@ -88,7 +88,7 @@ void func_0025BAC0(u8 *arg0, u8 *arg1) {
     func_0025B8F0((struct B8F0Arg *)(&sp30));
     func_0025B4D0(&sp30);
     func_0025B340(&sp30);
-    temp_v0 = func_0020D9F0((s32)((s32)((s32)((s32)((s32)((s32)(sp30)))))));
+    temp_v0 = (int)(func_0020D9F0(sp30));
     temp_a0 = *(s16 *)((u8 *)sp48 + 0x58);
     switch (temp_a0) {                              /* switch 2; irregular */
     case 0:                                         /* switch 2 */

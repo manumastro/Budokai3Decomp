@@ -59,7 +59,7 @@ void func_001D5900(u8 *arg0, s32 arg1, s32 arg2) {
     M2C_ERROR(/* unknown instruction: vmove.xyzw $vf31, $vf27 */);
     func_00141C30(&sp40, &sp80, &sp70);
     temp_s1 = *(u8 **)((u8 *)((*(s16 *)((u8 *)temp_s0 + 0x48) * 4) + arg0) + 8);
-    temp_a0 = (s32)(temp_s1 + 0x40);
+    temp_a0 = (int)(temp_s1 + 0x40);
     func_00142080(temp_a0, temp_a0, &sp40);
     func_0013B160(temp_s1);
     func_00142100(&sp40, NULL);

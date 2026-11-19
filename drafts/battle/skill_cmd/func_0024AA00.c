@@ -1,10 +1,10 @@
 /* Draft (not built): func_0024AA00 at 0x0024AA00, size 0x2E0, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'void *' to 'int' @ 427: func_00142100((void *)(arg0 + 0x40), (void *)(&sp60));
+ * Status: size, 82 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x28C, original 0x2E0
  * Original: asm/nonmatchings/battle/skill_cmd/func_0024AA00.s */
 
-// src/battle/skill_cmd.c func_0024AA00 cerr diff=-1/0
+// src/battle/skill_cmd.c func_0024AA00 size diff=82/163
 void func_0024AA00(u8 *arg0) {
     s32 sp60;
     f32 sp64;
@@ -70,8 +70,8 @@ void func_0024AA00(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
         sp64 -= 4.5f;
-        func_00142100((void *)(arg0 + 0x40), (void *)(&sp60));
-        func_00208D70((s32)((void *)(*(u8 **)((u8 *)arg0 + 0x54))));
+        func_00142100((s32 *)(arg0 + 0x40), (s32)(&sp60));
+        func_00208D70((s32)(*(u8 **)((u8 *)arg0 + 0x54)));
     }
     func_0013B110(1);
     func_00209C50();

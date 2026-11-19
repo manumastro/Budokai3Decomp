@@ -25,13 +25,13 @@ extern u16 D_0049308A;
 extern u16 D_004930EA;
 extern f32 D_004E0614;
 extern void *gArenaRegCharList;
+extern void *D_00470704;
+extern void amModel_SetCurrent();
 extern void SoundRpc_Send3();
 extern char D_00492FCE[];
 extern char D_005C4140[];
-extern void *D_00470704;
-extern void amModel_SetCurrent();
 extern void func_0030C8F0(void);
-void func_0030C9C0(u8 *arg0, u16 arg2, u16 arg3) {
+void func_0030C9C0(u8 *arg0, s32 unused_arg1, u16 arg2, u16 arg3) {
     s32 *var_v0_3;
     f32 var_f0;
     s16 temp_a3;
@@ -87,7 +87,7 @@ void func_0030C9C0(u8 *arg0, u16 arg2, u16 arg3) {
                 SoundRpc_Send3(0, 0, 3, 0);
             }
             temp_a0 = *(s8 *)((u8 *)temp_s0 + 0xB);
-            temp_v0 = (u8 *)(D_005C4140 + (temp_a0 * 0x50));
+            temp_v0 = (unsigned char *)(D_005C4140 + (temp_a0 * 0x50));
             temp_a2 = temp_v0 + 0x5C50;
             if (temp_a0 != 0) {
                 var_f0 = 15.0f;
@@ -147,7 +147,7 @@ void func_0030C9C0(u8 *arg0, u16 arg2, u16 arg3) {
                 func_0022D0E0(temp_a0_3, 1);
                 *(s32 *)((u8 *)temp_s2 + 0x64) = 0;
             }
-            var_v0_3 = (s32 *)(&func_0030C8F0);
+            var_v0_3 = (int *)(&func_0030C8F0);
             if (&func_0030C8F0 == NULL) {
                 var_v0_3 = NULL;
             }
@@ -156,7 +156,7 @@ void func_0030C9C0(u8 *arg0, u16 arg2, u16 arg3) {
     } else if (var_v1 & 0xFFFF & 0xF0) {
         func_0030C400(temp_s0);
     }
-    func_0030BFC0((struct Part30C *)(temp_s0));
-    func_0030B2E0((struct Part30C *)(temp_s0));
+    func_0030BFC0((Part30C *)(temp_s0));
+    func_0030B2E0((Part30C *)(temp_s0));
     func_0030C6F0(temp_s0);
 }

@@ -25,3 +25,13 @@ void func_0015C730(u8 *arg0)
   }
 
 }
+
+/* Similar function already in C: func_00164E20 (src/cri/srd.c), similarity 0.62.
+ * It is the template below (not built). */
+#if 0
+void func_00164E20(void) {
+    if (D_0041160C == 1) {
+        func_0016FFA0(1);
+    }
+}
+#endif

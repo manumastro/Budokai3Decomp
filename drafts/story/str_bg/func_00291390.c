@@ -1,10 +1,10 @@
 /* Draft (not built): func_00291390 at 0x00291390, size 0x508, segment story/str_bg (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  555: mHeap_Alloc(0x3CF0, 0, (s32)((s32 *)((s32)((s32 *)((s32)(&D_0046BAE8))))), 0xE6); @ 552: if (D_004708A4 != NULL) {
+ * Status: size, 142 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x500, original 0x508
  * Original: asm/nonmatchings/story/str_bg/func_00291390.s */
 
-// src/story/str_bg.c func_00291390 cerr diff=-1/0
+// src/story/str_bg.c func_00291390 size diff=142/320
 s32 amCdFs_ReadFileId(s32, s32, s32);
 void *amHeap_Alloc(s32, s32, s32 *, s32);
 extern s32 D_004537A0;
@@ -31,10 +31,10 @@ void func_00291390(s8 arg0) {
     s32 var_v1;
     s8 var_s0;
 
-    if (D_004708A4 != NULL) {
+    if ((s32)(D_004708A4) != 0) {
         amHeap_Free((void *)(D_004708A4));
     }
-    D_004708A4 = amHeap_Alloc(0x3CF0, 0, (s32 *)((s32)((s32 *)((s32)((s32 *)((s32)(&D_0046BAE8)))))), 0xE6);
+    D_004708A4 = (int)(amHeap_Alloc(0x3CF0, 0, &D_0046BAE8, 0xE6));
     memset((void *)(D_004708A4), 0, 0x3CF0);
     var_a1 = 0;
     var_a0 = 0;
@@ -91,7 +91,7 @@ void func_00291390(s8 arg0) {
     if (var_a0_2 != -1) {
         var_s2 = 0x70;
         do {
-            *(D_004708A4 + var_s2) = amCdFs_ReadFileId(var_a0_2, 0, 1);
+            *(s32 *)(D_004708A4 + var_s2) = amCdFs_ReadFileId(var_a0_2, 0, 1);
             temp_a0 = *(s32 *)((u8 *)var_s3 + 4);
             if (temp_a0 != -1) {
                 *(s32 *)((u8 *)(D_004708A4 + var_s2) + 4) = amCdFs_ReadFileId(temp_a0, 0, 1);
@@ -115,7 +115,7 @@ void func_00291390(s8 arg0) {
     if (var_a0_3 != -1) {
         var_s3_2 = 0x20;
         do {
-            *(D_004708A4 + var_s3_2) = amCdFs_ReadFileId(var_a0_3, 0, 1);
+            *(s32 *)(D_004708A4 + var_s3_2) = amCdFs_ReadFileId(var_a0_3, 0, 1);
             *(s8 *)((u8 *)D_004708A4 + 0x1AB5) = var_s0;
             temp_a0_4 = *(s32 *)((u8 *)var_s1 + 4);
             if (temp_a0_4 != -1) {

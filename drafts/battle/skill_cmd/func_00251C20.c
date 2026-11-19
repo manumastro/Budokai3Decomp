@@ -59,8 +59,8 @@ block_5:
                 sp11C = 0x3F800000;
                 sp110 = 0;
                 sp118 = 0;
-                func_00146F60(&sp100, arg0 + 0x30);
-                func_00141C30((void *)(&sp90), (void *)(&sp110), (void *)(&sp100));
+                func_00146F60((f32 *)(&sp100), (s32 *)(arg0 + 0x30));
+                func_00141C30((f32 *)(&sp90), (f32 *)(&sp110), (f32 *)(&sp100));
             }
             spE4 = *(s16 *)((u8 *)temp_s0 + 0x8C);
             spE6 = *(s16 *)((u8 *)temp_s0 + 0x8E);

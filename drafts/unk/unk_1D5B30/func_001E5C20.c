@@ -1,7 +1,7 @@
 /* Draft (not built): func_001E5C20 at 0x001E5C20, size 0x6A0, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ct Fighter *, int, int, float)' @ 4022: >> 1) & 0xFF, temp_a3, 3.0f + (7.0f * (f32) (((arg1 - var_v0) / 3) + temp_a3)));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ghter *' mwccps2.exe Compiler: @ 4022: _a3,(struct Fighter *)(3.0f + (7.0f * (f32) (((arg1 - var_v0) / 3) + temp_a3))));
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001E5C20.s */
 
 // src/unk/unk_1D5B30.c func_001E5C20 cerr diff=-1/0
@@ -62,7 +62,7 @@ void func_001E5C20(u8 *arg0, s32 arg1) {
         temp_a2 = arg1 - var_v0;
         temp_a3 = (u32) temp_a2 >> 0x1F;
         temp_a1 = (((temp_a2 % 3) << 6) + 0x7F) & 0xFF;
-        PlyVib_Start(var_s0, temp_a1, (temp_a1 >> 1) & 0xFF, temp_a3, 3.0f + (7.0f * (f32) (((arg1 - var_v0) / 3) + temp_a3)));
+        PlyVib_Start(var_s0, temp_a1, (temp_a1 >> 1) & 0xFF, temp_a3,(struct Fighter *)(3.0f + (7.0f * (f32) (((arg1 - var_v0) / 3) + temp_a3))));
         return;
     case 0x32:
         *(s8 *)((u8 *)var_s0 + 0x200D) = 0xA;
@@ -94,16 +94,16 @@ void func_001E5C20(u8 *arg0, s32 arg1) {
         func_001E20F0((struct Fighter *)(var_s0));
         return;
     case 0x2A:
-        func_001DFE60((struct Fighter *)(*(u8 **)((u8 *)var_s0 + 0x1354)), 4, 0x447A0000);
-        func_001D9900((struct Fighter *)(var_s0), 6, 1);
+        func_001DFE60((Fighter *)(*(u8 **)((u8 *)var_s0 + 0x1354)), 4, 0x447A0000);
+        func_001D9900(var_s0, 6,(struct Fighter *)(1));
         *(s8 *)((u8 *)var_s0 + 0x2006) = 0;
         return;
     case 0x2C:
-        Fighter_CreateHyperCtrl((void *)(var_s0), 0);
+        Fighter_CreateHyperCtrl((struct Fighter *)(var_s0), 0);
         return;
     case 0x64:
         if (*(s16 *)((u8 *)gBattle + 0x8944) == 0) {
-            func_001E13F0((struct Fighter *)(var_s0), 0x200800);
+            func_001E13F0(var_s0,(struct Fighter *)(0x200800));
             func_001ABCC0(var_s0 + 0x1360);
             return;
         }
@@ -163,7 +163,7 @@ void func_001E5C20(u8 *arg0, s32 arg1) {
     case 0x68:
         if (*(s8 *)((u8 *)gBattle + 0x8AB9) != 0) {
             func_001E3930((struct Fighter *)(var_s0));
-            if (func_001E3920(*(u8 **)((u8 *)var_s0 + 0x1354)) != 0) {
+            if (func_001E3920((struct Fighter *)(*(u8 **)((u8 *)var_s0 + 0x1354))) != 0) {
                 func_001E3900((struct Fighter *)(var_s0));
                 return;
             }

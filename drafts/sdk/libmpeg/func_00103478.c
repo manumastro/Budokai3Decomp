@@ -1,8 +1,8 @@
-/* Draft (not built): func_00103478 at 0x00103478, size 0x32C, segment sdk/libmpeg (asm)
+/* Draft (not built): func_00103478 at 0x00103478, size 0x32C, segment sdk/libmpeg (c)
  * Compiler: ee-gcc 2.9-991111-01 -O2 -G0
  * Status: cerr
  * Made with: m2c -t mipsee-gcc-c --valid-syntax; compiled with 2.9-991111-01 -O2 -G0; compile error: compile error: d_00103478.c:133: parse error before `int'
- * Original: asm/sdk/libmpeg.s */
+ * Original: asm/nonmatchings/sdk/libmpeg/func_00103478.s */
 
 s32 func_00102940(void *, s32, s32, s32);           /* extern */
 s32 func_00103018(void *, s32);                 /* extern */

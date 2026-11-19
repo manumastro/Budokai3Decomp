@@ -71,7 +71,7 @@ s32 func_0024BFA0(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
         sp76 = *(s16 *)((u8 *)arg0 + 6);
         sp60 = *(f32 *)((u8 *)temp_s1 + 0xCC);
-        sp68 = (s32 *)(&func_00251F30);
+        sp68 = (int *)(&func_00251F30);
         sp6C = arg0;
         sp72 = 0;
         sp70 = (s16) ((s64) ((s64) *(s32 *)((u8 *)temp_s1 + 0xD4) << 0x30) >> 0x30);

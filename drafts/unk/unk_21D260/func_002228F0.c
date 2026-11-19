@@ -15,7 +15,7 @@ void func_002228F0(u8 *arg0) {
     u8 *temp_s0;
     u8 *temp_s2;
 
-    temp_s2 = (u8 *)(gBtlSys);
+    temp_s2 = (unsigned char *)(gBtlSys);
     temp_s0 = arg0 + 0x30;
     func_00224680(temp_s0);
     if (*(s32 *)((u8 *)temp_s2 + 0xE30) & 2) {
@@ -56,7 +56,7 @@ block_19:
     *(f32 *)((u8 *)temp_s0 + 0x1C) = temp_f1_3;
     if (!(temp_f1_3 < 8.0f)) {
         *(s32 *)((u8 *)temp_s0 + 4) = 4;
-        var_v1 = (s32 *)(&func_00222440);
+        var_v1 = (int *)(&func_00222440);
         *(f32 *)((u8 *)temp_s0 + 0x1C) = 0.0f;
         if (&func_00222440 == NULL) {
             var_v1 = NULL;

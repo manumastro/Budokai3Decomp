@@ -79,7 +79,7 @@ loop_10:
     var_t0 += 1;
     temp_v1 = temp_a1 * 4;
     var_t2 += 4;
-    var_t1 += *(u8 *)((u8 *)(&D_004E0660 + ((temp_v1 + temp_a1) * 8)) + 8) & 7;
+    var_t1 += *(u8 *)((u8 *)(((u8 *)&D_004E0660) + ((temp_v1 + temp_a1) * 8)) + 8) & 7;
     if (var_t0 < temp_a2) {
         goto loop_10;
     }
@@ -135,7 +135,7 @@ loop_28:
     var_t4 += 1;
     temp_a3 = temp_t0 * 4;
     var_t3_2 += 4;
-    var_t5 += *(u8 *)((u8 *)(&D_004E0660 + ((temp_a3 + temp_t0) * 8)) + 8) & 7;
+    var_t5 += *(u8 *)((u8 *)(((u8 *)&D_004E0660) + ((temp_a3 + temp_t0) * 8)) + 8) & 7;
     if (var_t4 < temp_t2) {
         goto loop_28;
     }
@@ -160,7 +160,7 @@ loop_34:
     var_t3_3 += 1;
     temp_a3_2 = temp_t0_2 * 4;
     var_t5_2 += 4;
-    var_t4_2 += *(u8 *)((u8 *)(&D_004E0660 + ((temp_a3_2 + temp_t0_2) * 8)) + 8) & 7;
+    var_t4_2 += *(u8 *)((u8 *)(((u8 *)&D_004E0660) + ((temp_a3_2 + temp_t0_2) * 8)) + 8) & 7;
     if (var_t3_3 < temp_t2_2) {
         goto loop_34;
     }
@@ -197,7 +197,7 @@ loop_44:
     var_t0_2 += 1;
     temp_v1_2 = temp_a2_3 * 4;
     var_t2_2 += 4;
-    var_t1_2 += *(u8 *)((u8 *)(&D_004E0660 + ((temp_v1_2 + temp_a2_3) * 8)) + 8) & 7;
+    var_t1_2 += *(u8 *)((u8 *)(((u8 *)&D_004E0660) + ((temp_v1_2 + temp_a2_3) * 8)) + 8) & 7;
     if (var_t0_2 < temp_a3_3) {
         goto loop_44;
     }
@@ -224,7 +224,7 @@ block_54:
     temp_a1_2 = *(s32 *)((u8 *)arg0 + 0xB8);
     *(s32 *)((u8 *)arg0 + 0xB8) = (s32) (temp_a1_2 + 1);
     *(s32 *)((u8 *)((temp_a1_2 * 4) + (arg0 + 0xB8)) + 4) = arg1;
-    *(s32 *)((u8 *)arg0 + 0x20) = (s32) (*(s32 *)((u8 *)arg0 + 0x20) + (*(&D_004E0668 + (arg1 * 0x28)) & 7));
+    *(s32 *)((u8 *)arg0 + 0x20) = (s32) (*(s32 *)((u8 *)arg0 + 0x20) + (*(((u8 *)&D_004E0668) + (arg1 * 0x28)) & 7));
     if (*(s32 *)((u8 *)arg0 + 0x20) < 8) {
         goto block_56;
     }

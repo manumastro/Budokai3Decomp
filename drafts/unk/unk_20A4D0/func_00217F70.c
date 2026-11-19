@@ -1,15 +1,15 @@
 /* Draft (not built): func_00217F70 at 0x00217F70, size 0x230, segment unk/unk_20A4D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 4480: *(&D_00469C70 + (temp_s1 * 4))(&sp30, temp_a1, &sp80);
+ * Status: size, 92 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x188, original 0x230
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_00217F70.s */
 
-// src/unk/unk_20A4D0.c func_00217F70 cerr diff=-1/0
+// src/unk/unk_20A4D0.c func_00217F70 size diff=92/98
 extern void (*D_00469C70[])(void *, void *);
 s32 func_0013B460(s16, f32);
 s32 func_0013B580(s16, f32);
 extern char D_003F0800[];
-s32 func_00217F70(u8 *arg1) {
+s32 func_00217F70(s32 unused_arg0, u8 *arg1) {
     s32 sp30;
     f32 sp60;
     f32 sp64;
@@ -39,7 +39,7 @@ s32 func_00217F70(u8 *arg1) {
     } else {
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-        func_0013B0B0((void *)(D_003F0800));
+        func_0013B0B0((u8 *) D_003F0800);
         temp_a0 = *(s16 *)((u8 *)temp_s0 + 0x17A4);
         func_0013B580(temp_a0, (3.1415927f * (f32) temp_a0) / 32768.0f);
         temp_a0_2 = *(s16 *)((u8 *)temp_s0 + 0x17A8);
@@ -64,7 +64,7 @@ s32 func_00217F70(u8 *arg1) {
     *(s64 *)((u8 *)(&sp30) + 0x20) = (s64) *(s64 *)((u8 *)(&sp80) + 0x20);
     *(f32 *)((u8 *)(&sp30) + 0x28) = (f32) *(f32 *)((u8 *)(&sp80) + 0x28);
     if ((temp_s1 >= 0) && (temp_s1 < 0x11)) {
-        *(&D_00469C70 + (temp_s1 * 4))(&sp30, temp_a1, &sp80);
+        D_00469C70[temp_s1](&sp30, (u8 *) temp_a1);
     }
     return 1;
 }

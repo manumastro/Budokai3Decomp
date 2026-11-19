@@ -1,10 +1,10 @@
 /* Draft (not built): func_002794D0 at 0x002794D0, size 0x7A8, segment menu/ess_trade (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); llegal explicit conversion from 'float *' to 'float' mwccps2.exe Compiler: @ 222: amAdx_SetVolume(1, (f32)(D_004E0618));
+ * Status: size, 233 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x764, original 0x7A8
  * Original: asm/nonmatchings/menu/ess_trade/func_002794D0.s */
 
-// src/menu/ess_trade.c func_002794D0 cerr diff=-1/0
+// src/menu/ess_trade.c func_002794D0 size diff=233/473
 extern s32 EssMain_GetFlag();
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Pause(s32, s32);
@@ -90,16 +90,16 @@ void func_002794D0(u8 *arg0) {
         *(s32 *)((u8 *)gEssTrade + 0x220) = 0;
         *(s32 *)((u8 *)gEssTrade + 0x248) = 0x1A;
         *(s32 *)((u8 *)gEssTrade + 0x250) = 0;
-        temp_s0 = (u8 *)(gEssTrade + 0xC8);
+        temp_s0 = (unsigned char *)(gEssTrade + 0xC8);
         *(s32 *)((u8 *)temp_s0 + 0x10) = (s32) ((EssMain_GetFlag(gEssTrade, gEssTrade, 0x14, 5) & 0xFF) + 4);
         func_0026D530(2, 4);
         temp_s0_2 = *(&D_00453280 + ((EssMain_GetFlag() & 0xFF) * 4));
-        amAdx_SetVolume(1, (f32)(D_004E0618));
+        amAdx_SetVolume(1,(*(f32 *)(D_004E0618)));
         amAdx_Pause(1, 0);
         amAdx_PlayAfs(1, temp_s0_2 | 0x20000, 0);
         *(s32 *)((u8 *)temp_s3 + 8) = 1;
         var_v1 = func_00278EA0;
-        *(s32 **)((u8 *)temp_s3 + 0x18) = &func_00278980;
+        *(s32 **)((u8 *)temp_s3 + 0x18) = (int *)(&func_00278980);
         if (func_00278EA0 == NULL) {
             var_v1 = NULL;
         }
@@ -108,7 +108,7 @@ void func_002794D0(u8 *arg0) {
     }
     if (temp_s1 & 0x4000) {
         sp60 = 1;
-        temp_a1 = (u8 *)(gEssTrade + (*(s32 *)((u8 *)gEssTrade + 0x50) << 5));
+        temp_a1 = (unsigned char *)(gEssTrade + (*(s32 *)((u8 *)gEssTrade + 0x50) << 5));
         temp_a2 = temp_a1 + 0x58;
         sp64 = *(s32 *)((u8 *)gEssTrade + 0x50);
         sp68 = *(s32 *)((u8 *)temp_a1 + 0x70);
@@ -128,7 +128,7 @@ void func_002794D0(u8 *arg0) {
         }
         *(void (**)())((u8 *)arg0 + 0x1C) = var_v1_2;
     }
-    temp_a0 = (u8 *)(gEssTrade + (*(s32 *)((u8 *)gEssTrade + 0x50) << 5));
+    temp_a0 = (unsigned char *)(gEssTrade + (*(s32 *)((u8 *)gEssTrade + 0x50) << 5));
     temp_s0_3 = temp_a0 + 0x58;
     if (temp_s1 & 0x2000) {
         if (*(s32 *)((u8 *)((*(s32 *)((u8 *)temp_a0 + 0x58) * 4) + temp_s0_3) + 8) > 0) {
@@ -183,15 +183,15 @@ void func_002794D0(u8 *arg0) {
             *(s32 *)((u8 *)gEssTrade + 0x220) = 0;
             *(s32 *)((u8 *)gEssTrade + 0x248) = 0x1A;
             *(s32 *)((u8 *)gEssTrade + 0x250) = 0;
-            temp_s0_4 = (u8 *)(gEssTrade + 0xC8);
+            temp_s0_4 = (unsigned char *)(gEssTrade + 0xC8);
             *(s32 *)((u8 *)temp_s0_4 + 0x10) = (s32) ((EssMain_GetFlag(gEssTrade, gEssTrade) & 0xFF) + 2);
             func_0026D530(2, 2);
             temp_s0_5 = *(&D_00453278 + ((EssMain_GetFlag() & 0xFF) * 4));
-            amAdx_SetVolume(1, (f32)(D_004E0618));
+            amAdx_SetVolume(1,(*(f32 *)(D_004E0618)));
             amAdx_Pause(1, 0);
             amAdx_PlayAfs(1, temp_s0_5 | 0x20000, 0);
             *(s32 *)((u8 *)temp_s3 + 8) = 1;
-            *(s32 **)((u8 *)temp_s3 + 0x18) = &func_00278490;
+            *(s32 **)((u8 *)temp_s3 + 0x18) = (int *)(&func_00278490);
             var_v0 = func_00278EA0;
             *(s32 *)((u8 *)gEssTrade + 0x54) = 1;
             if (func_00278EA0 == NULL) {

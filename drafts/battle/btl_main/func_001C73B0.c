@@ -15,7 +15,7 @@ void func_001C73B0(u8 *arg0) {
     u8 *var_s3;
 
     var_s1 = 0;
-    var_s3 = (u8 *)(gBattle);
+    var_s3 = (unsigned char *)(gBattle);
     var_s0 = arg0;
     do {
         temp_a1 = *(s16 *)((u8 *)var_s0 + 0x20);

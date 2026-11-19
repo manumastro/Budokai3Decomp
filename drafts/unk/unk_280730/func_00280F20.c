@@ -1,10 +1,10 @@
 /* Draft (not built): func_00280F20 at 0x00280F20, size 0x2B0, segment unk/unk_280730 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); << 0x30) >> 0x30) * 4)), 0); @ 344: (*(u8 **)((u8 *)temp_s2 + 8)) + 0x1C) + (((s64) (var_s0 << 0x30) >> 0x30) * 4)), 0);
+ * Status: size, 109 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x320, original 0x2B0
  * Original: asm/nonmatchings/unk/unk_280730/func_00280F20.s */
 
-// src/unk/unk_280730.c func_00280F20 cerr diff=-1/0
+// src/unk/unk_280730.c func_00280F20 size diff=109/200
 s32 func_0022D0E0(s32, s32, s64, s8);
 s32 func_0022D670(s32, s32);
 extern s32 D_00470238;
@@ -52,7 +52,7 @@ void func_00280F20(u8 *arg0) {
         if (temp_a0_2 != 0) {
             func_0022D0E0(temp_a0_2, 1, 0, 0);
         }
-        *(s32 *)((u8 *)arg0 + 0x3C) = func_0022D670(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 8)) + 0x1C) + (((s64) (var_s0 << 0x30) >> 0x30) * 4)), 0);
+        *(s32 *)((u8 *)arg0 + 0x3C) = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 8)) + 0x1C) + (((s64) (var_s0 << 0x30) >> 0x30) * 4)), 0);
     }
     temp_a3 = *(s8 *)((u8 *)arg0 + 4);
     temp_a2 = (temp_a3 == 0) ? 0x2C : 0x32;
@@ -62,7 +62,7 @@ void func_00280F20(u8 *arg0) {
         if (temp_a0_3 != 0) {
             func_0022D0E0(temp_a0_3, 1, temp_a2, temp_a3);
         }
-        var_v0 = func_0022D670(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 8)) + 0x1C) + (((s64) (temp_s0 << 0x30) >> 0x30) * 4)), 0);
+        var_v0 = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 8)) + 0x1C) + (((s64) (temp_s0 << 0x30) >> 0x30) * 4)), 0);
         goto block_16;
     }
     if (*(s8 *)((u8 *)arg0 + 6) == 1) {
@@ -82,7 +82,7 @@ block_16:
         if (temp_a0_5 != 0) {
             func_0022D0E0(temp_a0_5, 1, temp_a2_2, temp_a3_2);
         }
-        var_v0_2 = func_0022D670(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 8)) + 0x1C) + (((s64) (temp_s0_2 << 0x30) >> 0x30) * 4)), 0);
+        var_v0_2 = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 8)) + 0x1C) + (((s64) (temp_s0_2 << 0x30) >> 0x30) * 4)), 0);
         goto block_26;
     }
     if (*(s8 *)((u8 *)arg0 + 6) == 7) {
@@ -103,7 +103,7 @@ block_26:
         }
         temp_v1 = *(s8 *)((u8 *)arg0 + 6);
         if (var_s1 < temp_v1) {
-            var_v1 = func_0022D670(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 8)) + 0x1C) + ((temp_v1 + 0x16) * 4)), 0);
+            var_v1 = func_0022D670(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 8)) + 0x1C) + ((temp_v1 + 0x16) * 4)), 0);
         } else {
             var_v1 = 0;
         }

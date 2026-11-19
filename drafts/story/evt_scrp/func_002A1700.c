@@ -14,7 +14,7 @@ void func_002A1700(u8 *arg0) {
     s32 *var_v1;
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gEvtWork);
+    temp_s0 = (unsigned char *)(gEvtWork);
     sp30 = 0x3F800000;
     sp34 = 0x3F800000;
     sp38 = 0x3F800000;
@@ -30,7 +30,7 @@ void func_002A1700(u8 *arg0) {
         }
     } else {
 block_3:
-        var_v1 = (s32 *)(&EvtZenie_TaskMain);
+        var_v1 = (int *)(&EvtZenie_TaskMain);
         if (&EvtZenie_TaskMain == NULL) {
             var_v1 = NULL;
         }

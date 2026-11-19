@@ -1,12 +1,12 @@
 /* Draft (not built): func_001D7450 at 0x001D7450, size 0x5A0, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'unsigned char *' to 'int' @ 762: func_001E11E0(temp_s0, &sp40);
+ * Status: size, 302 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x4BC, original 0x5A0
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001D7450.s */
 
-// src/unk/unk_1D5B30.c func_001D7450 cerr diff=-1/0
+// src/unk/unk_1D5B30.c func_001D7450 size diff=302/303
 extern void func_0011F4C0(void);
-void func_001D7450(u8 *arg0) {
+void func_001D7450(void *arg0) {
     f32 sp40;
     s32 sp44;
     s32 sp48;
@@ -50,7 +50,7 @@ void func_001D7450(u8 *arg0) {
     sp5C = (f32) *(f32 *)((u8 *)arg0 + 0x3C);
     sp58 = (f32) *(f32 *)((u8 *)arg0 + 0x40);
     temp_f1 = *(f32 *)((u8 *)arg0 + 0x38);
-    temp_s1 = arg0 + 0x30;
+    temp_s1 = ((u8 *)arg0) + 0x30;
     if (temp_f1 <= 30.0f) {
         var_f0 = temp_f1 / 30.0f;
         var_f20 *= var_f0;
@@ -170,5 +170,5 @@ void func_001D7450(u8 *arg0) {
     sp40 = var_f20;
     sp48 = (s32) sp5C;
     sp4C = (s32) sp58;
-    func_001E11E0(temp_s0, &sp40);
+    func_001E11E0((s32)(temp_s0), (void *)(&sp40));
 }

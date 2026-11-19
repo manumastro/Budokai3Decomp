@@ -22,7 +22,7 @@ void func_002BAFA0(void) {
     u8 *temp_v1_2;
 
     temp_a0 = *(u8 **)((u8 *)gStrStatus + 0x158);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x600000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x600000);
@@ -36,7 +36,7 @@ void func_002BAFA0(void) {
     var_s5 = 0;
     var_s6 = &sp84;
     do {
-        temp_v1 = (s8 *)(&gStrStatus[var_s1]);
+        temp_v1 = (signed char *)(&gStrStatus[var_s1]);
         var_s2 = *(s32 *)((u8 *)temp_v1 + 0x2B8);
         var_s0 = var_s2 * 4;
         if (var_s2 < *(s32 *)((u8 *)temp_v1 + 0x29C)) {

@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/sys/amSofdec/func_00142120.s */
 
 // src/sys/amSofdec.c func_00142120 size diff=86/2
-void func_00142120(s32 arg1) {
+void func_00142120(s32 unused_arg0, s32 arg1) {
     M2C_ERROR(/* unknown instruction: mula.s $f0, $f0 */);
     M2C_ERROR(/* unknown instruction: madda.s $f1, $f1 */);
     M2C_ERROR(/* unknown instruction: madda.s $f2, $f2 */);

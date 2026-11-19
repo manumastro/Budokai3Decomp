@@ -1,8 +1,8 @@
-/* Draft (not built): func_00127810 at 0x00127810, size 0x12C, segment sdk/libc_00127738 (asm)
+/* Draft (not built): func_00127810 at 0x00127810, size 0x12C, segment sdk/libc_00127738 (c)
  * Compiler: ee-gcc 2.96 -O2 -G0
  * Status: cerr
  * Made with: m2c -t mipsee-gcc-c --valid-syntax; compiled with 2.96 -O2 -G0; compile error: compile error: d_00127810.c:62: parse error before ')' token
- * Original: asm/sdk/libc_00127738.s */
+ * Original: asm/nonmatchings/sdk/libc_00127738/func_00127810.s */
 
 s32 func_00127A88(s128 *, s128 *, s32);         /* extern */
 

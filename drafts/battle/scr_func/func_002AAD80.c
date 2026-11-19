@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/battle/scr_func/func_002AAD80.s */
 
 // src/battle/scr_func.c func_002AAD80 size diff=96/38
-s32 func_002AAD80(u8 *arg0, u8 *arg1) {
+s32 func_002AAD80(s32 *arg0, s32 *arg1) {
     f32 sp0;
     f32 sp4;
     f32 sp8;
@@ -17,7 +17,7 @@ s32 func_002AAD80(u8 *arg0, u8 *arg1) {
     f32 temp_f2;
     u8 *temp_a3;
 
-    temp_a3 = (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x2C)) + 0x14) * 0xD0) + (&D_005BC9E0 + (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0) * 0x1A0));
+    temp_a3 = (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg1 + 0x2C)) + 0x14) * 0xD0) + (((u8 *)&D_005BC9E0) + (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0)) + 0) * 0x1A0));
     temp_f2 = *(f32 *)((u8 *)temp_a3 + 0x1C);
     if (temp_f2 <= 0.0f) {
         *(s32 *)((u8 *)arg0 + 0x10) = 0;

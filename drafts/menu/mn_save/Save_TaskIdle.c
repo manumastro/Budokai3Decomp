@@ -1,11 +1,11 @@
 /* Draft (not built): Save_TaskIdle at 0x002E3A50, size 0x3D4, segment menu/mn_save (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  was declared as: 'void (struct Task *)' now declared as: 'void (unsigned char *)' @ 175: void Save_TaskIdle(u8 *arg0) {
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ifier 'jtbl_0046F480' mwccps2.exe Compiler: 300: Save_TaskWrite(&jtbl_0046F480); @ 277: Save_TaskCreate(&jtbl_0046F480);
  * Original: asm/nonmatchings/menu/mn_save/Save_TaskIdle.s */
 
 // src/menu/mn_save.c Save_TaskIdle cerr diff=-1/0
-void Save_TaskIdle(u8 *arg0) {
+void Save_TaskIdle(Task *arg0) {
     u32 temp_v1;
     void (*var_v0)(u8 *);
     void (*var_v1)(u8 *);
@@ -22,7 +22,7 @@ void Save_TaskIdle(u8 *arg0) {
     u8 *temp_s0;
 
     *(s32 *)((u8 *)arg0 + 0x48) = 0;
-    temp_s0 = arg0 + 0x30;
+    temp_s0 = (unsigned char *)(arg0 + 0x30);
     if (*(s32 *)((u8 *)arg0 + 0x5C) != 0) {
         temp_v1 = *(u32 *)((u8 *)temp_s0 + 0x1C);
         switch (temp_v1) {
@@ -68,7 +68,7 @@ void Save_TaskIdle(u8 *arg0) {
             return;
         case 4:
             Save_ClearBusy();
-            if (func_0028DFC0(5, *(s32 *)((u8 *)temp_s0 + 0xC), *(s32 *)((u8 *)temp_s0 + 0x20), *(s32 *)((u8 *)temp_s0 + 0x28), 0x1D) == 1) {
+            if (func_0028DFC0(5, (s32)(*(s32 *)((u8 *)temp_s0 + 0xC)), (s32)(*(s32 *)((u8 *)temp_s0 + 0x20)), (char *)(*(s32 *)((u8 *)temp_s0 + 0x28)), 0x1D, 0, 0, 0, 0) == 1) {
                 var_v1_5 = Save_TaskWait;
                 if (Save_TaskWait == NULL) {
                     var_v1_5 = NULL;
@@ -88,7 +88,7 @@ void Save_TaskIdle(u8 *arg0) {
             return;
         case 5:
             Save_ClearBusy();
-            if (func_0028DFC0(8, *(s32 *)((u8 *)temp_s0 + 0xC), 0, *(s32 *)((u8 *)temp_s0 + 0x28), 0x1E) == 1) {
+            if (func_0028DFC0(8, (s32)(*(s32 *)((u8 *)temp_s0 + 0xC)), 0, (char *)(*(s32 *)((u8 *)temp_s0 + 0x28)), 0x1E, 0, 0, 0, 0) == 1) {
                 var_v1_7 = Save_TaskSlots;
                 if (Save_TaskSlots == NULL) {
                     var_v1_7 = NULL;

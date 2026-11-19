@@ -46,7 +46,7 @@ void func_001F0E20(u8 *arg0) {
         *(f32 *)((u8 *)temp_s0 + 0x18) = -1.0f;
         return;
     }
-    func_0013B160((s32)((void *)(&D_00459290)));
+    func_0013B160((s32)(&D_00459290));
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
     M2C_ERROR(/* unknown instruction: vmulax.xyzw ACC, $vf28, $vf1x */);
     M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);

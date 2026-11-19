@@ -13,7 +13,7 @@ s32 func_00243600(s32, s32);
 void *func_00243DC0(s32);
 extern s32 D_0046EEA0;
 extern s32 D_0058CA08;
-void func_002BE320(u8 *arg0) {
+void func_002BE320(s32 arg0) {
     s32 temp_a1;
     s32 var_v0;
     u8 *temp_s1;
@@ -25,8 +25,8 @@ void func_002BE320(u8 *arg0) {
     u8 *temp_v0_2;
     u8 *temp_v0_3;
 
-    temp_s5 = (u8 *)(D_0046FE44);
-    temp_s4 = (u8 *)(D_0046FE48);
+    temp_s5 = (unsigned char *)(D_0046FE44);
+    temp_s4 = (unsigned char *)(D_0046FE48);
     temp_s3 = func_00240F40(0, 0);
     temp_s2 = func_00240F40(0, 1);
     temp_s1 = func_00240F40(0, 2);

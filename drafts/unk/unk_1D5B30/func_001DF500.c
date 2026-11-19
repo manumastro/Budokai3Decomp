@@ -26,7 +26,7 @@ s32 func_001DF500(u8 *arg0, s32 arg1) {
     if (*(s8 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0xBB0)) + 6) == 4) {
         return 0;
     }
-    temp_s0 = &D_004E0660 + (arg1 * 0x28);
+    temp_s0 = ((u8 *)&D_004E0660) + (arg1 * 0x28);
     temp_v0 = func_001DFA90(0, 0);
     if ((temp_v0 <= 0) && (*(s16 *)((u8 *)temp_s0 + 0x1E) != 1)) {
         return 0;
@@ -42,13 +42,13 @@ block_58:
         if (!(*(u8 *)((u8 *)temp_s0 + 0xE) & ((1 << *(s32 *)((u8 *)arg0 + 0xBA4)) & 0xFF))) {
             return temp_v1 != 5;
         }
-        if (func_001DFE60(arg0, 2, (f32) (*(u8 *)((u8 *)temp_s0 + 0xF) * 0x64)) == 0) {
+        if (func_001DFE60((Fighter *)(arg0), 2, (f32) (*(u8 *)((u8 *)temp_s0 + 0xF) * 0x64)) == 0) {
             return 1;
         }
         return (*(s16 *)((u8 *)gBattle + 0x8944) == 0) ? 2 : 1;
     case 2:
         temp_a3 = *(s32 *)((u8 *)arg0 + 0xBA4);
-        var_a2 = (s32 *)(&D_004693C0);
+        var_a2 = (int *)(&D_004693C0);
         if (temp_a3 < 0) {
 
         }
@@ -68,7 +68,7 @@ loop_18:
         goto block_58;
     case 3:
         temp_a3_2 = *(s32 *)((u8 *)arg0 + 0xBA4);
-        var_a2_2 = (s32 *)(&D_004693C0);
+        var_a2_2 = (int *)(&D_004693C0);
         if (temp_a3_2 < 0) {
 
         }
@@ -99,7 +99,7 @@ loop_30:
         goto block_58;
     case 4:
         temp_a3_3 = *(s32 *)((u8 *)arg0 + 0xBA4);
-        var_a2_3 = (s32 *)(&D_004693C0);
+        var_a2_3 = (int *)(&D_004693C0);
         if (temp_a3_3 < 0) {
 
         }

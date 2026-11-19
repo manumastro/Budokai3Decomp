@@ -1,17 +1,17 @@
 /* Draft (not built): func_002401A0 at 0x002401A0, size 0x1E8, segment unk/unk_23A890 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 78 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1F4, original 0x1E8
+ * Status: size, 70 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1EC, original 0x1E8
  * Original: asm/nonmatchings/unk/unk_23A890/func_002401A0.s */
 
-// src/unk/unk_23A890.c func_002401A0 size diff=78/125
+// src/unk/unk_23A890.c func_002401A0 size diff=70/123
 s32 func_0022D0E0(s32, s32);
 void func_002401A0(void) {
-    s32 *var_s1;
-    s32 *var_s2;
     s32 temp_a0;
     s32 temp_a0_10;
     s32 temp_a0_11;
+    s32 temp_a0_12;
+    s32 temp_a0_13;
     s32 temp_a0_2;
     s32 temp_a0_3;
     s32 temp_a0_4;
@@ -23,19 +23,19 @@ void func_002401A0(void) {
     s32 var_s0_2;
     s32 var_s3;
     s32 var_s4;
-    u8 *temp_a0_12;
-    u8 *temp_a0_13;
     u8 *temp_s6;
     u8 *var_s0;
+    u8 *var_s1;
+    u8 *var_s2;
     u8 *var_s5;
 
     var_s4 = 0;
-    var_s2 = (s32 *)(&D_0058BF70);
-    var_s1 = (s32 *)(&D_0058BF70);
+    var_s2 = D_0058BF70;
+    var_s1 = D_0058BF70;
     do {
         temp_a0 = *(s32 *)((u8 *)var_s2 + 0x210);
-        temp_s6 = (u8 *)(var_s2 + 0x210);
-        var_s5 = (u8 *)(var_s1 + 0x3A0);
+        temp_s6 = var_s2 + 0x210;
+        var_s5 = var_s1 + 0x3A0;
         if (temp_a0 != 0) {
             func_0022D4B0(temp_a0, 1);
         }
@@ -105,17 +105,17 @@ loop_18:
             func_0022D0E0(temp_a0_11, 1);
         }
         *(s32 *)((u8 *)var_s2 + 0x270) = 0;
-        temp_a0_12 = *(u8 **)((u8 *)temp_s6 + 0x54);
-        if (temp_a0_12 != NULL) {
-            Obj_ResetF38((s32)((void *)(temp_a0_12)));
+        temp_a0_12 = *(s32 *)((u8 *)temp_s6 + 0x54);
+        if (temp_a0_12 != 0) {
+            Obj_ResetF38(temp_a0_12);
         }
-        *(u8 **)((u8 *)temp_s6 + 0x54) = NULL;
-        temp_a0_13 = *(u8 **)((u8 *)temp_s6 + 0x58);
-        if (temp_a0_13 != NULL) {
-            Obj_ResetF38((s32)((void *)(temp_a0_13)));
+        *(s32 *)((u8 *)temp_s6 + 0x54) = 0;
+        temp_a0_13 = *(s32 *)((u8 *)temp_s6 + 0x58);
+        if (temp_a0_13 != 0) {
+            Obj_ResetF38(temp_a0_13);
         }
         var_s4 += 1;
-        *(u8 **)((u8 *)temp_s6 + 0x58) = NULL;
+        *(s32 *)((u8 *)temp_s6 + 0x58) = 0;
         var_s2 += 0x64;
         var_s1 += 0x70;
     } while (var_s4 < 4);

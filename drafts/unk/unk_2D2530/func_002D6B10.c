@@ -36,7 +36,7 @@ void func_002D6B10(void) {
     u8 *temp_s2_3;
     u8 *temp_s2_4;
 
-    temp_s1 = (u8 *)(gOptionWork);
+    temp_s1 = (unsigned char *)(gOptionWork);
     if (D_004703F4 != 3) {
         var_f2 = 1.0f;
     } else {
@@ -67,77 +67,77 @@ void func_002D6B10(void) {
     sp78 = 0x3E4CCCCD;
     if (*(s32 *)((u8 *)temp_s1 + 0x380) == 0) {
         temp_s0 = *(u8 **)((u8 *)temp_s1 + 0xC4);
-        temp_s2 = (u8 *)(gOptionWork);
+        temp_s2 = (unsigned char *)(gOptionWork);
         func_00228430(0);
         func_00228430(0);
         temp_a0 = *(u8 **)((u8 *)temp_s2 + 0xC);
-        D_00470704 = (s32)(temp_a0);
+        D_00470704 = (int)(temp_a0);
         D_00470708 = 0;
         D_0047070C = 0;
         amModel_SetCurrent((s32)(temp_a0), 0);
         D_00470238 = 0;
-        func_0022C060((struct Model2D2530 *)(temp_s0), 0x3F800000);
+        func_0022C060((Model2D2530 *)(temp_s0), 0x3F800000);
         func_00228410();
         if (&sp60 != NULL) {
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
         }
-        func_0022CD00((void *)(temp_s0));
+        func_0022CD00((Model2D2530 *)(temp_s0));
         func_00228410();
         temp_s0_2 = *(u8 **)((u8 *)temp_s1 + 0x260);
-        temp_s2_2 = (u8 *)(gOptionWork);
+        temp_s2_2 = (unsigned char *)(gOptionWork);
         func_00228430(0);
         func_00228430(0);
         temp_a0_2 = *(u8 **)((u8 *)temp_s2_2 + 0xC);
-        D_00470704 = (s32)(temp_a0_2);
+        D_00470704 = (int)(temp_a0_2);
         D_00470708 = 0;
         D_0047070C = 0;
         amModel_SetCurrent((s32)(temp_a0_2), 0);
         D_00470238 = 0;
-        func_0022C060((struct Model2D2530 *)(temp_s0_2), 0x3F800000);
+        func_0022C060((Model2D2530 *)(temp_s0_2), 0x3F800000);
         func_00228410();
         if (&sp60 != NULL) {
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
         }
-        func_0022CD00((void *)(temp_s0_2));
+        func_0022CD00((Model2D2530 *)(temp_s0_2));
         func_00228410();
     } else {
         temp_s0_3 = *(u8 **)((u8 *)temp_s1 + 0x25C);
-        temp_s2_3 = (u8 *)(gOptionWork);
+        temp_s2_3 = (unsigned char *)(gOptionWork);
         func_00228430(0);
         func_00228430(0);
         temp_a0_3 = *(u8 **)((u8 *)temp_s2_3 + 0xC);
-        D_00470704 = (s32)(temp_a0_3);
+        D_00470704 = (int)(temp_a0_3);
         D_00470708 = 0;
         D_0047070C = 0;
         amModel_SetCurrent((s32)(temp_a0_3), 0);
         D_00470238 = 0;
-        func_0022C060((struct Model2D2530 *)(temp_s0_3), 0x3F800000);
+        func_0022C060((Model2D2530 *)(temp_s0_3), 0x3F800000);
         func_00228410();
         if (&sp60 != NULL) {
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
         }
-        func_0022CD00((void *)(temp_s0_3));
+        func_0022CD00((Model2D2530 *)(temp_s0_3));
         func_00228410();
         temp_s0_4 = *(u8 **)((u8 *)temp_s1 + 0xCC);
-        temp_s2_4 = (u8 *)(gOptionWork);
+        temp_s2_4 = (unsigned char *)(gOptionWork);
         func_00228430(0);
         func_00228430(0);
         temp_a0_4 = *(u8 **)((u8 *)temp_s2_4 + 0xC);
-        D_00470704 = (s32)(temp_a0_4);
+        D_00470704 = (int)(temp_a0_4);
         D_00470708 = 0;
         D_0047070C = 0;
         amModel_SetCurrent((s32)(temp_a0_4), 0);
         D_00470238 = 0;
-        func_0022C060((struct Model2D2530 *)(temp_s0_4), 0x3F800000);
+        func_0022C060((Model2D2530 *)(temp_s0_4), 0x3F800000);
         func_00228410();
         if (&sp60 != NULL) {
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
         }
-        func_0022CD00((void *)(temp_s0_4));
+        func_0022CD00((Model2D2530 *)(temp_s0_4));
         func_00228410();
     }
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
@@ -152,15 +152,15 @@ void func_002D6B10(void) {
     temp_a1 = *(s32 *)((u8 *)temp_s1 + 0x37C);
     switch (temp_a1) {                              /* irregular */
     case 0:
-        func_002D66B0(&sp50, &sp50, &sp50);
+        func_002D66B0(&sp50, &sp50,(struct Vec4 *)(&sp50));
         func_002D6400(&sp70, &sp70);
         return;
     case 1:
-        func_002D66B0(&sp50, NULL, &sp50);
+        func_002D66B0(&sp50, NULL,(struct Vec4 *)(&sp50));
         func_002D6400(&sp80, &sp70);
         return;
     case 2:
-        func_002D66B0(&sp50, &sp50, NULL);
+        func_002D66B0(&sp50, &sp50,(struct Vec4 *)(NULL));
         func_002D6400(&sp70, &sp80);
         return;
     }

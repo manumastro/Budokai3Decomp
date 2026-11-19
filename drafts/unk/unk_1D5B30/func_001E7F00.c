@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001E7F00.s */
 
 // src/unk/unk_1D5B30.c func_001E7F00 cerr diff=-1/0
-void func_001E7F00(u8 *arg0) {
+void func_001E7F00(void *arg0) {
     f32 temp_f1;
     s32 temp_a0;
     s32 temp_a3;
@@ -14,14 +14,14 @@ void func_001E7F00(u8 *arg0) {
     u8 *temp_a2;
     u8 *temp_s0;
 
-    temp_s0 = arg0 + 0x2D0;
+    temp_s0 = ((u8 *)arg0) + 0x2D0;
     func_001E80B0(0);
     *(f32 *)((u8 *)arg0 + 0x608) = 0.0f;
     *(s32 *)((u8 *)arg0 + 0x650) = 0;
     *(f32 *)((u8 *)arg0 + 0x628) = 0.0f;
     *(f32 *)((u8 *)arg0 + 0x630) = 0.0f;
     *(f32 *)((u8 *)arg0 + 0x63C) = 0.0f;
-    temp_a3 = (s32)(temp_s0 + 0x90);
+    temp_a3 = (int)(temp_s0 + 0x90);
     *(s16 *)((u8 *)temp_s0 + 0x1C4) = 0;
     temp_a2 = temp_s0 + 0xC0;
     *(f32 *)((u8 *)temp_s0 + 0x1BC) = -1.0f;

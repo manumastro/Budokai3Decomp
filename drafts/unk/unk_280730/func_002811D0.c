@@ -1,10 +1,10 @@
 /* Draft (not built): func_002811D0 at 0x002811D0, size 0x698, segment unk/unk_280730 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); *)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_3), &spD0, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10)); @ 372: var_s5 = saved_reg_s5;
+ * Status: size, 252 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x5A8, original 0x698
  * Original: asm/nonmatchings/unk/unk_280730/func_002811D0.s */
 
-// src/unk/unk_280730.c func_002811D0 cerr diff=-1/0
+// src/unk/unk_280730.c func_002811D0 size diff=252/362
 s32 func_00133B50(s32, s32);
 s32 func_00227A30(f32 *);
 s32 func_00228240(f32 *);
@@ -21,10 +21,17 @@ extern s32 D_0047070C;
 extern void *gCsSubStat;
 extern void func_00228410(void);
 extern void A2d_FlushList(void);
-extern void func_0022CD00(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
-void func_002811D0(u8 *arg0) {
+extern void func_0022CD00(void *);
+void func_002811D0(void *arg0) {
+    s32 spBC;
+    s32 spB8;
+    s32 spB4;
+    s32 sp16C;
+    s32 sp168;
+    s32 sp164;
+    s32 saved_reg_s5;
     s16 spA0;
     f32 spB0;
     f32 spD0;
@@ -169,111 +176,117 @@ loop_20:
     temp_s0_2 = *(u8 **)((u8 *)var_s6_2 + 0x24);
     if (temp_s0_2 != NULL) {
         temp_a0_2 = *(u8 *)((u8 *)arg0 + 8);
-        switch (temp_a0_2) {                        /* switch 1; irregular */
-            return;
-        case 1:                                     /* switch 1 */
-            var_s5_2 = ((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x1F : 0x25) << 0x30;
-block_34:
-            var_s5 = var_s5_2 >> 0x30;
-        default:                                    /* switch 1 */
-block_35:
-            temp_v0_3 = (s64) (var_s5 << 0x30) >> 0x30;
-            temp_s3_3 = temp_v0_3 * 4;
-            if (temp_v0_3 != -1) {
-                func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_3), &spD0, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
-                spF0 = spD0;
-                spF4 = spD4;
-                spF8 = spD8;
-                spFC = spDC;
-                func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_3), &sp100, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
-                func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_3), &sp120, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
+        if (temp_a0_2 != 4) {
+            if (temp_a0_2 != 3) {
+                if (temp_a0_2 != 2) {
+                    if (temp_a0_2 != 1) {
+                        if (temp_a0_2 != 0) {
+                            goto block_35;
+                        }
+                        return;
+                    }
+                    var_s5_2 = ((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x1F : 0x25) << 0x30;
+                    goto block_34;
+                }
+                var_s5 = -1;
+                goto block_35;
             }
-            func_00228430(0);
-            if (*(u8 *)((u8 *)arg0 + 0) == var_s4_3) {
-                var_f0 = 1.0f;
-            } else {
-                var_f0 = 0.5f;
-            }
-            sp108 = var_f0;
-            sp104 = var_f0;
-            sp100 = var_f0;
-            func_00228240(&spF0);
-            func_0022C060(temp_s0_2, 0x3F800000);
-            func_00228410();
-            func_0022CD00(temp_s0_2);
-            goto block_41;
-        case 2:                                     /* switch 1 */
-            var_s5 = -1;
-            goto block_35;
-        case 3:                                     /* switch 1 */
             var_s5_2 = ((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x20 : 0x27) << 0x30;
             goto block_34;
-        case 4:                                     /* switch 1 */
-            var_s5_2 = ((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x1E : 0x26) << 0x30;
-            goto block_34;
         }
-    } else {
+        var_s5_2 = ((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x1E : 0x26) << 0x30;
+block_34:
+        var_s5 = var_s5_2 >> 0x30;
+block_35:
+        temp_v0_3 = (s64) (var_s5 << 0x30) >> 0x30;
+        temp_s3_3 = temp_v0_3 * 4;
+        if (temp_v0_3 != -1) {
+            func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_3), &spD0, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
+            spF0 = spD0;
+            spF4 = spD4;
+            spF8 = spD8;
+            spFC = spDC;
+            func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_3), &sp100, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
+            func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_3), &sp120, -1, *(f32 *)((u8 *)temp_s0_2 + 0x10));
+        }
+        func_00228430(0);
+        if (*(u8 *)((u8 *)arg0 + 0) == var_s4_3) {
+            var_f0 = 1.0f;
+        } else {
+            var_f0 = 0.5f;
+        }
+        sp108 = var_f0;
+        sp104 = var_f0;
+        sp100 = var_f0;
+        func_00228240(&spF0);
+        func_0022C060(temp_s0_2, 0x3F800000);
+        func_00228410();
+        func_0022CD00(temp_s0_2);
+        goto block_41;
+    }
 block_41:
-        var_s4_3 += 1;
-        var_s6_2 += 4;
-        if (var_s4_3 >= 3) {
-            func_002284D0(&spF0);
-            temp_s0_3 = *(u8 **)((u8 *)arg0 + 0x20);
-            if (temp_s0_3 != NULL) {
-                temp_a0_3 = *(u8 *)((u8 *)arg0 + 8);
-                switch (temp_a0_3) {                /* switch 2; irregular */
-                    return;
-                case 1:                             /* switch 2 */
-                    spA0 = (s16) ((s64) (((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x1F : 0x25) << 0x30) >> 0x30);
-                default:                            /* switch 2 */
-block_55:
-                    temp_s3_4 = spA0 * 4;
-                    if (spA0 != -1) {
-                        func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_4), &spB0, -1, *(f32 *)((u8 *)temp_s0_3 + 0x10));
-                        spF0 = spB0;
-                        spF4 = spB4;
-                        spF8 = spB8;
-                        spFC = spBC;
-                        func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_4), &sp100, -1, *(f32 *)((u8 *)temp_s0_3 + 0x10));
-                        func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_4), &sp120, -1, *(f32 *)((u8 *)temp_s0_3 + 0x10));
+    var_s4_3 += 1;
+    var_s6_2 += 4;
+    if (var_s4_3 >= 3) {
+        func_002284D0(&spF0);
+        temp_s0_3 = *(u8 **)((u8 *)arg0 + 0x20);
+        if (temp_s0_3 != NULL) {
+            temp_a0_3 = *(u8 *)((u8 *)arg0 + 8);
+            if (temp_a0_3 != 4) {
+                if (temp_a0_3 != 3) {
+                    if (temp_a0_3 != 2) {
+                        if (temp_a0_3 != 1) {
+                            if (temp_a0_3 != 0) {
+                                goto block_55;
+                            }
+                            return;
+                        }
+                        spA0 = (s16) ((s64) (((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x1F : 0x25) << 0x30) >> 0x30);
+                        goto block_55;
                     }
-                    func_00228430(0);
-                    func_00228240(&spF0);
-                    func_0022C060(temp_s0_3, 0x3F800000);
-                    func_00228410();
-                    func_0022CD00(temp_s0_3);
-                    goto block_58;
-                case 2:                             /* switch 2 */
                     spA0 = -1;
                     goto block_55;
-                case 3:                             /* switch 2 */
-                    spA0 = (s16) ((s64) (((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x20 : 0x27) << 0x30) >> 0x30);
-                    goto block_55;
-                case 4:                             /* switch 2 */
-                    spA0 = (s16) ((s64) (((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x1E : 0x26) << 0x30) >> 0x30);
-                    goto block_55;
                 }
-            } else {
-block_58:
-                temp_s0_4 = *(u8 **)((u8 *)arg0 + 0x38);
-                if (temp_s0_4 != NULL) {
-                    temp_s3_5 = (*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x21 : 0x28;
-                    func_002284D0(&spF0);
-                    func_00228430(0);
-                    func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + ((((s64) (temp_s3_5 << 0x30) >> 0x30) + *(u8 *)((u8 *)arg0 + 0)) * 4)), &sp160, -1, 0.0f);
-                    spF0 = sp160;
-                    spF4 = sp164;
-                    spF8 = sp168;
-                    spFC = sp16C;
-                    func_00228240(&spF0);
-                    func_0022C060(temp_s0_4, 0x3F800000);
-                    func_0022CD00(temp_s0_4);
-                    func_00228410();
-                }
-                func_00228410();
+                spA0 = (s16) ((s64) (((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x20 : 0x27) << 0x30) >> 0x30);
+                goto block_55;
             }
-        } else {
-            goto loop_20;
+            spA0 = (s16) ((s64) (((*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x1E : 0x26) << 0x30) >> 0x30);
+block_55:
+            temp_s3_4 = spA0 * 4;
+            if (spA0 != -1) {
+                func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_4), &spB0, -1, *(f32 *)((u8 *)temp_s0_3 + 0x10));
+                spF0 = spB0;
+                spF4 = spB4;
+                spF8 = spB8;
+                spFC = spBC;
+                func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_4), &sp100, -1, *(f32 *)((u8 *)temp_s0_3 + 0x10));
+                func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + temp_s3_4), &sp120, -1, *(f32 *)((u8 *)temp_s0_3 + 0x10));
+            }
+            func_00228430(0);
+            func_00228240(&spF0);
+            func_0022C060(temp_s0_3, 0x3F800000);
+            func_00228410();
+            func_0022CD00(temp_s0_3);
+            goto block_58;
         }
+block_58:
+        temp_s0_4 = *(u8 **)((u8 *)arg0 + 0x38);
+        if (temp_s0_4 != NULL) {
+            temp_s3_5 = (*(s8 *)((u8 *)arg0 + 4) == 0) ? 0x21 : 0x28;
+            func_002284D0(&spF0);
+            func_00228430(0);
+            func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s1 + 8)) + 0x1C) + ((((s64) (temp_s3_5 << 0x30) >> 0x30) + *(u8 *)((u8 *)arg0 + 0)) * 4)), &sp160, -1, 0.0f);
+            spF0 = sp160;
+            spF4 = sp164;
+            spF8 = sp168;
+            spFC = sp16C;
+            func_00228240(&spF0);
+            func_0022C060(temp_s0_4, 0x3F800000);
+            func_0022CD00(temp_s0_4);
+            func_00228410();
+        }
+        func_00228410();
+        return;
     }
+    goto loop_20;
 }

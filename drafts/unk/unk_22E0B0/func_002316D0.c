@@ -1,10 +1,10 @@
 /* Draft (not built): func_002316D0 at 0x002316D0, size 0x7A0, segment unk/unk_22E0B0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'saved_reg_f20' @ 164: var_f20 = saved_reg_f20;
+ * Status: size, 308 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x850, original 0x7A0
  * Original: asm/nonmatchings/unk/unk_22E0B0/func_002316D0.s */
 
-// src/unk/unk_22E0B0.c func_002316D0 cerr diff=-1/0
+// src/unk/unk_22E0B0.c func_002316D0 size diff=308/532
 s32 func_0012EAE0(s32);
 s32 func_001E3D60(s32, s32 *, s32);
 f32 func_001E52B0(s32);
@@ -12,6 +12,7 @@ extern s32 D_0044FB30;
 extern f32 D_0046FE30;
 extern s32 D_0058BBB0;
 s32 func_002316D0(u8 *arg0) {
+    s32 saved_reg_f20;
     s8 *spBC;
     f32 temp_f0;
     f32 temp_f0_2;
@@ -44,7 +45,7 @@ s32 func_002316D0(u8 *arg0) {
 
     var_f20 = saved_reg_f20;
     temp_s6 = *(u8 **)((u8 *)arg0 + 0x1354);
-    temp_s3 = (u8 *)(&D_0058BBB0 + (*(s32 *)((u8 *)arg0 + 0x1350) * 0xC0));
+    temp_s3 = (unsigned char *)(&D_0058BBB0 + (*(s32 *)((u8 *)arg0 + 0x1350) * 0xC0));
     temp_s7 = *(u8 **)((u8 *)(&D_0058BBB0 + (*(s32 *)((u8 *)temp_s6 + 0x1350) * 0xC0)) + 0xC);
     var_s1 = -3;
     if (*(f32 *)((u8 *)temp_s6 + 0x17C0) <= 0.0f) {

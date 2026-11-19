@@ -55,7 +55,7 @@ void func_001F0280(u8 *arg0) {
             var_t3 = -1;
             *(s8 *)((u8 *)(arg0 + var_a0) + 0x2AFD9) = 1;
             temp_a0 = *var_a1;
-            temp_t4 = (u8 *)(&D_004E0660 + (temp_a0 * 0x28));
+            temp_t4 = (unsigned char *)(&D_004E0660 + (temp_a0 * 0x28));
             var_t2 = *(u64 *)((u8 *)temp_t4 + 0);
             var_a3 = 0;
             if (var_t2 != 0) {
@@ -79,7 +79,7 @@ block_11:
             }
             if (var_t3 != -1) {
                 var_t2_2 = 0;
-                var_t3_2 = (s16 *)(arg0 + (var_t3 * 0xE) + 0x2B242);
+                var_t3_2 = (short *)(arg0 + (var_t3 * 0xE) + 0x2B242);
                 var_t4 = 7 - (*(u8 *)((u8 *)temp_t4 + 8) & 7);
 loop_15:
                 temp_a3 = *var_t3_2;

@@ -1,10 +1,10 @@
 /* Draft (not built): func_002E8F90 at 0x002E8F90, size 0x344, segment unk/unk_2E8540 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); cit conversion from 'int *' to 'int' mwccps2.exe Compiler: @ 384: func_002E8C80(arg0, &D_0058F680 + (temp_t1 * 0xD680));
+ * Status: size, 147 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x354, original 0x344
  * Original: asm/nonmatchings/unk/unk_2E8540/func_002E8F90.s */
 
-// src/unk/unk_2E8540.c func_002E8F90 cerr diff=-1/0
+// src/unk/unk_2E8540.c func_002E8F90 size diff=147/213
 extern s32 D_00470830;
 extern s32 D_00470838;
 extern s32 D_0058F680;
@@ -34,7 +34,7 @@ void func_002E8F90(u8 *arg0, s64 arg1, s64 arg2, s64 arg3) {
         if (D_00470830 == 1) {
             temp_t1 = (s64) ((arg3 != 0) << 0x30) >> 0x30;
             if ((*(&D_00470838 + (temp_t1 * 4)) & 0x7FFF) == 4) {
-                func_002E8C80(arg0, &D_0058F680 + (temp_t1 * 0xD680));
+                func_002E8C80(arg0, (int)(&D_0058F680 + (temp_t1 * 0xD680)), 0, 0);
             } else {
                 if (*(s16 *)((u8 *)arg0 + 0) == 0) {
                     var_v1 = (s64) (1 << 0x30) >> 0x30;
@@ -46,7 +46,7 @@ void func_002E8F90(u8 *arg0, s64 arg1, s64 arg2, s64 arg3) {
                 if (var_v1 != 0) {
                     var_a3 = (s64) (((s64) (var_a3 << 0x30) >> 0x30) << 0x30) >> 0x30;
                     if ((*(&D_00470838 + (var_a3 * 4)) & 0x7FFF) == 4) {
-                        func_002E8C80(arg0, &D_0058F680 + (var_a3 * 0xD680));
+                        func_002E8C80(arg0, (int)(&D_0058F680 + (var_a3 * 0xD680)), 0, 0);
                     } else {
                         goto block_19;
                     }
@@ -70,7 +70,7 @@ block_19:
             if (var_a3_2 == 1) {
                 temp_t2 = (s64) ((arg3 != 0) << 0x30) >> 0x30;
                 if ((*(&D_00470838 + (temp_t2 * 4)) & 0x7FFF) == 4) {
-                    func_002E8830(arg0, &D_0058F680 + (temp_t2 * 0xD680));
+                    func_002E8830(arg0, (int)(&D_0058F680 + (temp_t2 * 0xD680)), 0, 0);
                 } else {
                     if (*(s16 *)((u8 *)arg0 + 0) == 0) {
                         var_v1_2 = (s64) (1 << 0x30) >> 0x30;
@@ -82,7 +82,7 @@ block_19:
                     if (var_v1_2 != 0) {
                         var_a3_2 = (s32) ((s64) (((s64) ((arg3 == 0) << 0x30) >> 0x30) << 0x30) >> 0x30);
                         if ((*(&D_00470838 + (var_a3_2 * 4)) & 0x7FFF) == 4) {
-                            func_002E8830(arg0, &D_0058F680 + (var_a3_2 * 0xD680));
+                            func_002E8830(arg0, (int)(&D_0058F680 + (var_a3_2 * 0xD680)), 0, 0);
                         } else {
                             goto block_39;
                         }

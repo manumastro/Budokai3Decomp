@@ -38,7 +38,7 @@ block_3:
     var_s1 = 0;
     goto loop_9;
 block_4:
-    temp_v1 = (u8 *)(gTourMap + (var_s1 * 0x14));
+    temp_v1 = (unsigned char *)(gTourMap + (var_s1 * 0x14));
     temp_s0 = temp_v1 + 0x2EC;
     if (*(u8 *)((u8 *)temp_v1 + 0x2F1) != 0) {
         goto block_8;

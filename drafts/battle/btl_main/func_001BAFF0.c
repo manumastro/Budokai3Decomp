@@ -1,11 +1,10 @@
-/* Draft (not built): func_001BAFF0 at 0x001BAFF0, size 0x2C8, segment battle/btl_main (c)
+/* Draft (not built): func_001BAFF0 at 0x00468D90, size 0x0, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: size, 119 instructions differ
  * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x294, original 0x2C8
  * Original: asm/nonmatchings/battle/btl_main/func_001BAFF0.s */
 
 // src/battle/btl_main.c func_001BAFF0 size diff=119/165
-s32 func_001E2070(void *);
 extern s32 D_00468710;
 extern void func_0013B160(void *);
 extern char D_003F0800[];
@@ -64,7 +63,7 @@ void func_001BAFF0(u8 *arg0) {
         *(u16 *)((u8 *)arg0 + 0xCB2) = (u16) (*(u16 *)((u8 *)arg0 + 0xCB2) | 0x4000);
     }
     if (*(s16 *)((u8 *)arg0 + 0xCB4) == 0) {
-        func_001C37F0(arg0, arg0 + 0xD0);
+        func_001C37F0((Fighter *)(arg0), (void *)(arg0 + 0xD0));
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
         M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf0, $vf1 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v0) */);
@@ -91,7 +90,7 @@ void func_001BAFF0(u8 *arg0) {
     }
     *(f32 *)((u8 *)arg0 + 0xD4) = 0.0f;
     temp_a0 = arg0 + 0xD0;
-    func_00146ED0(temp_a0, temp_a0, *(f32 *)((u8 *)arg0 + 0x1814));
+    func_00146ED0((f32 *)(temp_a0), (f32 *)(temp_a0), *(f32 *)((u8 *)arg0 + 0x1814));
     *(f32 *)((u8 *)arg0 + 0xD4) = (f32) *(f32 *)((u8 *)arg0 + 0x1810);
     if (*(s16 *)((u8 *)arg0 + 0x181C) == 0) {
         *(s16 *)((u8 *)arg0 + 0x181C) = 1;
@@ -109,5 +108,5 @@ void func_001BAFF0(u8 *arg0) {
     *(s8 *)((u8 *)arg0 + 0x1FFD) = 1;
     *(s8 *)((u8 *)arg0 + 0xCBD) = 0;
     func_001E2070(arg0);
-    func_001ABD30((void *)(arg0 + 0x1360));
+    func_001ABD30((struct Fighter *)(arg0 + 0x1360));
 }

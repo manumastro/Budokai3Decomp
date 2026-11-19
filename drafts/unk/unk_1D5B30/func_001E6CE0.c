@@ -1,7 +1,7 @@
 /* Draft (not built): func_001E6CE0 at 0x001E6CE0, size 0x1A8, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); on from 'void *' to 'int' mwccps2.exe Compiler: @ 4109: func_001C8480((void *)(temp_s0), *(s32 *)((u8 *)temp_s1 + 0xC));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); hter *' to 'int' mwccps2.exe Compiler: @ 4110: func_001E2190(temp_s0,(struct Fighter *)(*(s32 *)((u8 *)temp_s1 + 0xC)));
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001E6CE0.s */
 
 // src/unk/unk_1D5B30.c func_001E6CE0 cerr diff=-1/0
@@ -36,9 +36,9 @@ void func_001E6CE0(u8 *arg0) {
     if (!(*(f32 *)((u8 *)temp_s1 + 4) <= 15.0f)) {
         switch (temp_v1) {                          /* irregular */
         case 0:
-            func_001C8480((void *)(temp_s0), *(s32 *)((u8 *)temp_s1 + 0xC));
-            func_001E2190(temp_s0, *(s32 *)((u8 *)temp_s1 + 0xC));
-            func_001E9B00(1, 0x14, 0, 0, 0, 0x3F800000);
+            func_001C8480((s32)(temp_s0), (s32)(*(s32 *)((u8 *)temp_s1 + 0xC)));
+            func_001E2190(temp_s0,(struct Fighter *)(*(s32 *)((u8 *)temp_s1 + 0xC)));
+            func_001E9B00(1, 0x14, 0, 0, 0, (void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)((void *)(0x3F800000))))))))))))))));
             *(f32 *)((u8 *)temp_s1 + 4) = 0.0f;
             *(s32 *)((u8 *)temp_s1 + 8) = 1;
             goto block_16;
@@ -52,6 +52,6 @@ block_16:
         sp48 = 0xFFFFFF;
         sp40 = var_f20;
         sp4C = 0xFFFFFF;
-        func_001E11E0(temp_s0, &sp40);
+        func_001E11E0((s32)(temp_s0), (void *)(&sp40));
     }
 }

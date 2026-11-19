@@ -21,7 +21,7 @@ void func_001E55C0(void) {
     u8 *var_s2;
     u8 *var_s5;
 
-    temp_s6 = (u8 *)(gBattle);
+    temp_s6 = (unsigned char *)(gBattle);
     var_s5 = temp_s6 + 0x268;
     func_00237840(*(u8 **)((u8 *)temp_s6 + 0x268));
     temp_v1 = *(s32 *)((u8 *)temp_s6 + 0x88D8);
@@ -32,7 +32,7 @@ void func_001E55C0(void) {
             do {
                 var_s3 = 0;
 loop_4:
-                temp_s0 = (u8 **)(var_s5 + ((((var_s3 != 0) ? 3 : 1) + var_s4) * 8));
+                temp_s0 = (unsigned char **)(var_s5 + ((((var_s3 != 0) ? 3 : 1) + var_s4) * 8));
                 var_a0 = *temp_s0;
                 if (*(s32 *)((u8 *)var_a0 + 4) != 4) {
                     var_f12 = *(f32 *)((u8 *)temp_s6 + 0x88F0);
@@ -43,7 +43,7 @@ loop_4:
                         var_f1 = *(f32 *)((u8 *)var_s2 + 0x2000);
                     }
                     *(f32 *)((u8 *)var_a0 + 0x1C) = (f32) (var_f1 / *(f32 *)((u8 *)var_s2 + 0x2004));
-                    var_a0 = (u8 *)(gBattle);
+                    var_a0 = (unsigned char *)(gBattle);
                     if (M2C_LWL(*(s32 *)((u8 *)var_a0 + 0x88EF)) == 0) {
                         var_v0 = -1;
                         if (*(s8 *)((u8 *)var_a0 + 0x8AB2) != 0) {

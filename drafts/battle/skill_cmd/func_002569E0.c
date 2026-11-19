@@ -7,7 +7,7 @@
 // src/battle/skill_cmd.c func_002569E0 size diff=72/147
 extern s32 amGs_SetReg32(s32, s32);
 void *func_0021C430(s16);
-void func_002569E0(u8 *arg0) {
+void func_002569E0(s32 *arg0) {
     f32 temp_f20;
     f32 temp_f20_2;
     f32 var_f20;
@@ -22,8 +22,8 @@ void func_002569E0(u8 *arg0) {
     D_00470238 = 0;
     amModel_SetCurrent(*(s32 *)((u8 *)gBtlSys + 0xE60), 0x04000000);
     var_s2 = 0;
-    var_s1 = arg0;
-    var_s0 = arg0;
+    var_s1 = (unsigned char *)(arg0);
+    var_s0 = (unsigned char *)(arg0);
     do {
         temp_s3 = func_0021C360(*(s16 *)((u8 *)var_s1 + 0x34));
         if ((*(s32 *)((u8 *)arg0 + 4) == 1) && (*(s16 *)((u8 *)var_s1 + 0x30) < 3)) {

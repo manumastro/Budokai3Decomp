@@ -22,7 +22,7 @@ s32 func_002AD610(u8 *arg0) {
 
     temp_a3 = *(u8 **)((u8 *)arg0 + 0);
     var_a2 = *(s32 *)((u8 *)temp_a3 + 0);
-    temp_s0 = (*(s8 *)((u8 *)arg0 + 0x2A) * 0x20E0) + (&D_005ABA80 + (var_a2 * 0x8380));
+    temp_s0 = (*(s8 *)((u8 *)arg0 + 0x2A) * 0x20E0) + (((u8 *)&D_005ABA80) + (var_a2 * 0x8380));
     temp_f2 = *(f32 *)((u8 *)arg0 + 0x30);
     if (*(u8 **)((u8 *)temp_s0 + 0x3C) == NULL) {
         return 3;

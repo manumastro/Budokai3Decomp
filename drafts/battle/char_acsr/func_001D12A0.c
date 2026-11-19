@@ -23,7 +23,7 @@ block_1:
     var_s0 = 1;
     goto loop_6;
 block_3:
-    temp_s3 = (u8 *)(*(s32 *)((u8 *)temp_s4 + 0x54) + ((var_s1 + (*(s16 *)((u8 *)temp_s4 + 0x6C) * var_s0)) << 7));
+    temp_s3 = (unsigned char *)(*(s32 *)((u8 *)temp_s4 + 0x54) + ((var_s1 + (*(s16 *)((u8 *)temp_s4 + 0x6C) * var_s0)) << 7));
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($s3) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($s2) */);
     M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);

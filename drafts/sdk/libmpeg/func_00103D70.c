@@ -1,8 +1,8 @@
-/* Draft (not built): func_00103D70 at 0x00103D70, size 0x558, segment sdk/libmpeg (asm)
+/* Draft (not built): func_00103D70 at 0x00103D70, size 0x558, segment sdk/libmpeg (c)
  * Compiler: ee-gcc 2.9-991111-01 -O2 -G0
  * Status: size, 108 instructions differ
  * Made with: m2c -t mipsee-gcc-c --valid-syntax; compiled with 2.9-991111-01 -O1 -G0; declarations unprototyped
- * Original: asm/sdk/libmpeg.s */
+ * Original: asm/nonmatchings/sdk/libmpeg/func_00103D70.s */
 
 s32 func_001037A8();
 s32 func_00103BD0();

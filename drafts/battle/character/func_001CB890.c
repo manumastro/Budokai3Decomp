@@ -7,7 +7,7 @@
 // src/battle/character.c func_001CB890 size diff=54/51
 s32 func_00146ED0(f32 *, f32 *, f32 *, s32);
 s32 func_001DA5C0(s32, s32, s32, s32);
-s32 func_001CB890(u8 *arg1) {
+s32 func_001CB890(s32 unused_arg0, u8 *arg1) {
     f32 sp40;
     f32 sp44;
     f32 sp48;

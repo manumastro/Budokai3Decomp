@@ -10,3 +10,15 @@ extern s32 func_0010CD60;
 void func_0010CE58(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_0010C048(&func_0010CD60, sp, arg1, arg2, arg0);
 }
+
+/* Similar function already in C: sceDeci2ExReqSend (src/sdk/libkernl/ico_deci2.c), similarity 0.62.
+ * It is the template below (not built). */
+#if 0
+void sceDeci2ExReqSend(int s, signed char a1)
+{
+    int args[4];
+    args[0] = s;
+    args[1] = a1;
+    Deci2Call(-7, args);
+}
+#endif

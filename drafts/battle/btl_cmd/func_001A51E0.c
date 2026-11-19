@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/battle/btl_cmd/func_001A51E0.s */
 
 // src/battle/btl_cmd.c func_001A51E0 cerr diff=-1/0
-s32 func_001A51E0(u8 *arg0, s32 arg1, f32 fparg0) {
+s32 func_001A51E0(MotTrack *arg0, s32 arg1, f32 fparg0) {
     s32 temp_v0;
     s32 temp_v1_2;
     s32 var_a1;
@@ -37,7 +37,7 @@ s32 func_001A51E0(u8 *arg0, s32 arg1, f32 fparg0) {
         }
     } else {
 loop_15:
-        temp_v1 = (u8 *)(*(s32 *)((u8 *)arg0 + 0xC) + (var_a1 * 4));
+        temp_v1 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0xC) + (var_a1 * 4));
         if ((f32) *(s16 *)((u8 *)temp_v1 + 0) <= fparg0) {
             if (!((f32) *(s16 *)((u8 *)temp_v1 + 4) <= fparg0)) {
 

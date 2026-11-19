@@ -30,7 +30,7 @@ void func_0021F0E0(u8 *arg0) {
 
     temp_s0 = *(u8 **)((u8 *)arg0 + 0x30);
     temp_f20 = D_0044F768;
-    temp_s1 = (u8 *)(gBtlSys);
+    temp_s1 = (unsigned char *)(gBtlSys);
     if (*(s8 *)((u8 *)gBattle + 0x8975) != 1) {
         goto block_2;
     }

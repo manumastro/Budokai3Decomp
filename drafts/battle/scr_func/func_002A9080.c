@@ -1,10 +1,10 @@
 /* Draft (not built): func_002A9080 at 0x002A9080, size 0x224, segment battle/scr_func (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operands 'int[]' = 'void *' @ 160: D_005AB7F0 = NULL;
+ * Status: size, 69 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x230, original 0x224
  * Original: asm/nonmatchings/battle/scr_func/func_002A9080.s */
 
-// src/battle/scr_func.c func_002A9080 cerr diff=-1/0
+// src/battle/scr_func.c func_002A9080 size diff=69/140
 extern void memset(void *, s32, s32);
 extern u8 D_005AB3C0[];
 extern u8 D_005AB610[];
@@ -37,7 +37,7 @@ void func_002A9080(s32 arg0) {
     var_s3 = temp_s2;
     do {
         if (*(s32 *)((u8 *)var_s3 + 4) != 0) {
-            amCdFs_ReleaseCache((s32)((void *)(*(u8 **)((u8 *)var_s3 + 0))));
+            amCdFs_ReleaseCache((s32)(*(u8 **)((u8 *)var_s3 + 0)));
             *(u8 **)((u8 *)var_s3 + 0) = NULL;
         }
         memset(var_s3, 0, 0x34);
@@ -50,17 +50,17 @@ void func_002A9080(s32 arg0) {
     do {
         temp_a0 = *(u8 **)((u8 *)var_s2 + 0);
         if (temp_a0 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0)));
+            amCdFs_ReleaseCache((s32)(temp_a0));
             *(u8 **)((u8 *)var_s2 + 0) = NULL;
         }
         temp_a0_2 = *(u8 **)((u8 *)var_s2 + 8);
         if (temp_a0_2 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0_2)));
+            amCdFs_ReleaseCache((s32)(temp_a0_2));
             *(u8 **)((u8 *)var_s2 + 8) = NULL;
         }
         temp_a0_3 = *(u8 **)((u8 *)var_s2 + 0xC);
         if (temp_a0_3 != NULL) {
-            amCdFs_ReleaseCache((s32)((void *)(temp_a0_3)));
+            amCdFs_ReleaseCache((s32)(temp_a0_3));
             *(u8 **)((u8 *)var_s2 + 0xC) = NULL;
         }
         memset(var_s2, 0, 0x18);
@@ -71,18 +71,18 @@ void func_002A9080(s32 arg0) {
     temp_s2_2 = gEvtWork;
     if (temp_s2_2 != NULL) {
         if (*(s32 *)((u8 *)temp_s2_2 + 0x1C) != 0) {
-            amCdFs_ReleaseCache((s32)((void *)(*(u8 **)((u8 *)temp_s2_2 + 0x18))));
+            amCdFs_ReleaseCache((s32)(*(u8 **)((u8 *)temp_s2_2 + 0x18)));
             *(s32 *)((u8 *)temp_s2_2 + 0x18) = 0;
             *(s32 *)((u8 *)temp_s2_2 + 0x1C) = 0;
         }
         if (*(s32 *)((u8 *)temp_s2_2 + 0x3C) != 0) {
-            amCdFs_ReleaseCache((s32)((void *)(*(u8 **)((u8 *)temp_s2_2 + 0x38))));
+            amCdFs_ReleaseCache((s32)(*(u8 **)((u8 *)temp_s2_2 + 0x38)));
             *(u8 **)((u8 *)temp_s2_2 + 0x38) = NULL;
             *(s32 *)((u8 *)temp_s2_2 + 0x3C) = 0;
         }
         if (D_005AB7F0 != NULL) {
             func_0029E450(D_005AB7F0);
-            D_005AB7F0 = NULL;
+            D_005AB7F0[0] = ((s32)(NULL));
         }
         var_s0_3 = 0;
         var_s3_2 = temp_s2_2;

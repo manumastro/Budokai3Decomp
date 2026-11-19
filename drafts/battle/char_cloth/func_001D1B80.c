@@ -91,28 +91,28 @@ loop_9:
     temp_a3 = var_a0 + 7;
     temp_a2_2 = (var_a0 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7;
     var_a0 += 8;
-    temp_a2_3 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + temp_a2_2);
+    temp_a2_3 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + temp_a2_2);
     *(f32 *)((u8 *)temp_a2_3 + 0x64) = var_f20;
     *(f32 *)((u8 *)temp_a2_3 + 0x68) = temp_f0;
-    temp_a2_4 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t5 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
+    temp_a2_4 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t5 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
     *(f32 *)((u8 *)temp_a2_4 + 0x64) = var_f20;
     *(f32 *)((u8 *)temp_a2_4 + 0x68) = temp_f0;
-    temp_a2_5 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t4 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
+    temp_a2_5 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t4 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
     *(f32 *)((u8 *)temp_a2_5 + 0x64) = var_f20;
     *(f32 *)((u8 *)temp_a2_5 + 0x68) = temp_f0;
-    temp_a2_6 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t3 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
+    temp_a2_6 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t3 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
     *(f32 *)((u8 *)temp_a2_6 + 0x64) = var_f20;
     *(f32 *)((u8 *)temp_a2_6 + 0x68) = temp_f0;
-    temp_a2_7 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t2 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
+    temp_a2_7 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t2 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
     *(f32 *)((u8 *)temp_a2_7 + 0x64) = var_f20;
     *(f32 *)((u8 *)temp_a2_7 + 0x68) = temp_f0;
-    temp_a2_8 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t1 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
+    temp_a2_8 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t1 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
     *(f32 *)((u8 *)temp_a2_8 + 0x64) = var_f20;
     *(f32 *)((u8 *)temp_a2_8 + 0x68) = temp_f0;
-    temp_a2_9 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t0 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
+    temp_a2_9 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_t0 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
     *(f32 *)((u8 *)temp_a2_9 + 0x64) = var_f20;
     *(f32 *)((u8 *)temp_a2_9 + 0x68) = temp_f0;
-    temp_a2_10 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_a3 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
+    temp_a2_10 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + ((temp_a3 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7));
     *(f32 *)((u8 *)temp_a2_10 + 0x64) = var_f20;
     *(f32 *)((u8 *)temp_a2_10 + 0x68) = temp_f0;
     if (var_a0 < (temp_s1_2 - 8)) {
@@ -125,7 +125,7 @@ block_10:
 loop_12:
     temp_a1 = (var_a0 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s3)) << 7;
     var_a0 += 1;
-    temp_a1_2 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + temp_a1);
+    temp_a1_2 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + temp_a1);
     *(f32 *)((u8 *)temp_a1_2 + 0x64) = var_f20;
     *(f32 *)((u8 *)temp_a1_2 + 0x68) = temp_f0;
     if (var_a0 < temp_s1_2) {
@@ -145,14 +145,14 @@ block_15:
     var_s4 = 0;
 loop_17:
     var_s5 = 1;
-    var_s3_2 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + var_s4);
+    var_s3_2 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + var_s4);
     *(s32 *)((u8 *)var_s3_2 + 0x6C) = 0;
     if (temp_s0 < 2) {
         goto block_20;
     }
 loop_18:
     temp_a1_3 = var_s3_2;
-    var_s3_2 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x54) + ((var_s6 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s5)) << 7));
+    var_s3_2 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x54) + ((var_s6 + (*(s16 *)((u8 *)arg0 + 0x6C) * var_s5)) << 7));
     var_s5 += 1;
     *(f32 *)((u8 *)var_s3_2 + 0x6C) = func_00146E30(var_s3_2, temp_a1_3);
     if (var_s5 < temp_s0) {

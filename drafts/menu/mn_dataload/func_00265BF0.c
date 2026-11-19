@@ -1,10 +1,10 @@
 /* Draft (not built): func_00265BF0 at 0x00265BF0, size 0x474, segment menu/mn_dataload (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 00, 0); @ 243: 0x50) = amAdx_PlayAfs(1, *(s32 *)((u8 *)((*(u8 *)((u8 *)temp_s0 + 0x30) * 4) + sp) + 0x50) | 0x20000, 0);
+ * Status: size, 137 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x450, original 0x474
  * Original: asm/nonmatchings/menu/mn_dataload/func_00265BF0.s */
 
-// src/menu/mn_dataload.c func_00265BF0 cerr diff=-1/0
+// src/menu/mn_dataload.c func_00265BF0 size diff=137/276
 extern void Obj_SetF3C(s32, s32);
 extern s32 amAdx_PlayAfs(s32, s32, s32);
 s32 Help_Open(s32, s32);
@@ -25,6 +25,7 @@ extern void Save_Request();
 extern char D_00492FCE[];
 extern void func_00265A00(void);
 void func_00265BF0(u8 *arg0) {
+    u8 sp[0x400];
     s128 sp30;
     s32 sp40;
     s32 sp50;
@@ -54,7 +55,7 @@ void func_00265BF0(u8 *arg0) {
         case 0:
             Save_Load(0, 1);
             Save_Request(0, -1, 0);
-            var_v1 = (s32 *)(&func_00265A00);
+            var_v1 = (int *)(&func_00265A00);
             if (&func_00265A00 == NULL) {
                 var_v1 = NULL;
             }
@@ -63,7 +64,7 @@ void func_00265BF0(u8 *arg0) {
         case 1:
             Save_Load(0, 1);
             Save_Request(1, -1, 0);
-            var_v1_2 = (s32 *)(&func_00265A00);
+            var_v1_2 = (int *)(&func_00265A00);
             if (&func_00265A00 == NULL) {
                 var_v1_2 = NULL;
             }
@@ -126,7 +127,7 @@ block_36:
                 SoundRpc_Send3(0, 0, 5, 0);
             }
             amAdx_Stop(*(s32 *)((u8 *)temp_s0 + 0x50));
-            var_v1_4 = (s32 *)(&func_00265B40);
+            var_v1_4 = (int *)(&func_00265B40);
             if (&func_00265B40 == NULL) {
                 var_v1_4 = NULL;
             }

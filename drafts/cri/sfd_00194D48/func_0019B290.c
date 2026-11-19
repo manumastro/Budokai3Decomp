@@ -18,3 +18,15 @@ void func_0019B290(s32 arg0) {
     *(s32 *)((u8 *)temp_s0 + 0x2D0) = (s32) (*(s32 *)((u8 *)temp_s0 + 0x2D0) + temp_s1);
     func_0018D920(sp);
 }
+
+/* Similar function already in C: func_0015CD88 (src/cri/adx_00159278.c), similarity 0.65.
+ * It is the template below (not built). */
+#if 0
+s32 func_0015CD88(u8 *arg0, s32 arg1) {
+    func_00152508();
+    func_0015CD10(arg0);
+    *(s32 *)((u8 *)arg0 + 0x5C) = arg1;
+    func_00152520();
+    return 1;
+}
+#endif

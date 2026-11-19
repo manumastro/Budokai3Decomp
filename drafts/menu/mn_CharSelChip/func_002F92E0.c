@@ -7,3 +7,11 @@
 s8 func_002F92E0(void *arg0) {
     return M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s8 *, 0xA);
 }
+
+/* Similar function already in C: CsSubStat_GetResult (src/menu/mn_cssubstat.c), similarity 1.00, same instructions apart from immediates/symbols.
+ * It is the template below (not built). */
+#if 0
+s32 CsSubStat_GetResult(Task *t) {
+    return ((CsSubStatWork *)t->data.work)->f3;
+}
+#endif

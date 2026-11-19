@@ -25,7 +25,7 @@ void func_0020A4D0(s32 arg0) {
     u8 *temp_s3;
     u8 *temp_v1;
 
-    temp_v1 = &D_005687D0 + (arg0 * 0xF0);
+    temp_v1 = ((u8 *)&D_005687D0) + (arg0 * 0xF0);
     temp_s3 = temp_v1 + 0x20;
     sp50 = *(f32 *)((u8 *)temp_v1 + 0);
     sp54 = *(f32 *)((u8 *)temp_v1 + 4);

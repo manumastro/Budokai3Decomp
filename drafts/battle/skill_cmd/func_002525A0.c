@@ -22,7 +22,7 @@ void func_002525A0(u8 *arg0, u8 *arg1, s32 arg2) {
     if (temp_v0 != NULL) {
         *(u8 **)((u8 *)temp_v0 + 8) = (u8 *) (&func_00252410 + 0x30);
         temp_s0 = temp_v0 + 0x20;
-        *(s32 **)((u8 *)temp_v0 + 0xC) = &func_00252410;
+        *(s32 **)((u8 *)temp_v0 + 0xC) = (int *)(&func_00252410);
         *(s32 *)((u8 *)temp_v0 + 0x18) = 0xBF800000;
         temp_v1 = D_0046FE4C + ((s32) *(s16 *)((u8 *)arg0 + 0x1350) * 0x480) + 0x10;
         if (arg2 != 0) {

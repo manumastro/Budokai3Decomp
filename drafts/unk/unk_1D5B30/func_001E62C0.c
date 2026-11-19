@@ -62,7 +62,7 @@ block_9:
         }
     }
     temp_a3 = *(s32 *)((u8 *)arg0 + 0x604);
-    temp_a2 = (u8 *)(temp_s0 + 0x41C);
+    temp_a2 = (unsigned char *)(temp_s0 + 0x41C);
     if (*(s32 *)((u8 *)temp_s0 + 0x41C) != temp_a3) {
         var_a1 = 0;
         if (*(s32 *)((u8 *)temp_s0 + 0x418) > 0) {

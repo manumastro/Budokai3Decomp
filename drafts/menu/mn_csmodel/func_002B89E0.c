@@ -1,14 +1,15 @@
 /* Draft (not built): func_002B89E0 at 0x002B89E0, size 0x168, segment menu/mn_csmodel (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); *)temp_s1 + 0x5E) * 4) + sp) + 0x40); @ 359: var_v1 = *(s32 *)((u8 *)((*(u8 *)((u8 *)temp_s1 + 0x5E) * 4) + sp) + 0x78);
+ * Status: size, 50 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x160, original 0x168
  * Original: asm/nonmatchings/menu/mn_csmodel/func_002B89E0.s */
 
-// src/menu/mn_csmodel.c func_002B89E0 cerr diff=-1/0
+// src/menu/mn_csmodel.c func_002B89E0 size diff=50/88
 extern s32 D_00455370;
 extern s64 D_00470110;
 extern void func_002B85F0(void);
 void func_002B89E0(u8 *arg0) {
+    u8 sp[0x400];
     s32 sp40;
     s64 sp78;
     s32 *var_v1_2;
@@ -20,7 +21,7 @@ void func_002B89E0(u8 *arg0) {
 
     temp_s1 = *(u8 **)((u8 *)arg0 + 0x30);
     temp_a0 = *(u8 **)((u8 *)gPracMode + 0xC);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x1000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x1000);
@@ -44,9 +45,9 @@ void func_002B89E0(u8 *arg0) {
             var_v1 = *(s32 *)((u8 *)((*(u8 *)((u8 *)temp_s1 + 0x5E) * 4) + sp) + 0x40);
         }
         *(s32 *)((u8 *)temp_s1 + 0x58) = amAdx_PlayAfs(1, var_v1 | 0x20000, 0);
-        amAdx_SetVolume(*(s32 *)((u8 *)temp_s1 + 0x58), D_004E0618);
+        amAdx_SetVolume((void *)(*(s32 *)((u8 *)temp_s1 + 0x58)),(*(f32 *)(D_004E0618)));
         amAdx_Pause(*(s32 *)((u8 *)temp_s1 + 0x58), 0);
-        var_v1_2 = (s32 *)(&func_002B85F0);
+        var_v1_2 = (int *)(&func_002B85F0);
         *(s8 *)((u8 *)temp_s1 + 0x5C) = (s8) (*(u8 *)((u8 *)temp_s1 + 0x5E) + var_s0 + 1);
         if (&func_002B85F0 == NULL) {
             var_v1_2 = NULL;

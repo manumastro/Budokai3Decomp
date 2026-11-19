@@ -21,12 +21,12 @@ void func_001E53B0(s32 arg0, s32 arg1) {
     temp_v1 = arg1 * 4;
     temp_a2 = **(u8 ***)((u8 *)(temp_v1 + arg0) + 0x1DB8);
     temp_a1 = *(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_a2 + 0x4C)) + 4)) + 0x14);
-    temp_a3 = (u8 *)((*(s16 *)((u8 *)temp_a2 + 0x18) * 0x50) + temp_a1);
+    temp_a3 = (unsigned char *)((*(s16 *)((u8 *)temp_a2 + 0x18) * 0x50) + temp_a1);
     temp_t0 = *(s16 *)((u8 *)temp_a3 + 0x4A);
     if (!(temp_t0 & 1)) {
         *(s16 *)((u8 *)temp_a3 + 0x4A) = (s16) (temp_t0 | 1);
     }
-    temp_a3_2 = (u8 *)((*(s16 *)((u8 *)temp_a2 + 0x1A) * 0x50) + temp_a1);
+    temp_a3_2 = (unsigned char *)((*(s16 *)((u8 *)temp_a2 + 0x1A) * 0x50) + temp_a1);
     temp_t0_2 = *(s16 *)((u8 *)temp_a3_2 + 0x4A);
     if (!(temp_t0_2 & 1)) {
         *(s16 *)((u8 *)temp_a3_2 + 0x4A) = (s16) (temp_t0_2 | 1);

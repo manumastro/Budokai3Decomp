@@ -1,10 +1,10 @@
 /* Draft (not built): func_002B1FF0 at 0x002B1FF0, size 0x404, segment unk/unk_2AF860 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); pointer/array required @ 842: BITWISE(f32, temp_a1_2), (f32) (*(*(s32 *)((u8 *)gSklEdit + 0x44) + temp_a1_2) - 1));
+ * Status: size, 113 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x420, original 0x404
  * Original: asm/nonmatchings/unk/unk_2AF860/func_002B1FF0.s */
 
-// src/unk/unk_2AF860.c func_002B1FF0 cerr diff=-1/0
+// src/unk/unk_2AF860.c func_002B1FF0 size diff=113/264
 void *A2d_AllocObj(s32, f32);
 s32 func_00227830(s32, s32);
 s32 func_00227B20(s32, s32, s32, s32, f32);
@@ -18,9 +18,9 @@ extern s32 D_0047070C;
 extern f32 gFrameDelta;
 extern void Title_StepCounters(void);
 extern void func_00228410(void);
-extern void func_0022C6B0(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022C6B0(void *);
 void func_002B1FF0(u8 *arg0) {
     f32 var_f20;
     s16 temp_a1_2;
@@ -74,7 +74,7 @@ void func_002B1FF0(u8 *arg0) {
         func_0022C430(*(*(u8 **)((u8 *)temp_s4 + 0x1C) + (*(s32 *)((u8 *)arg0 + 0x198) * 4)), (f32) *(s32 *)((u8 *)arg0 + 0x1A0) * gFrameDelta, 0);
         temp_a1_2 = *(s16 *)((u8 *)((*(s32 *)((u8 *)var_s3 + 4) * 2) + var_s3) + 8);
         if (temp_a1_2 > 0) {
-            func_0022C430(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s4 + 0x1C)) + 0x104), M2C_BITWISE(f32, temp_a1_2), (f32) (*(*(s32 *)((u8 *)gSklEdit + 0x44) + temp_a1_2) - 1));
+            func_0022C430(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s4 + 0x1C)) + 0x104), M2C_BITWISE(f32, temp_a1_2), (f32) (*(s32 *)(*(s32 *)((u8 *)gSklEdit + 0x44) + temp_a1_2) - 1));
         }
         func_0022C430(*(*(u8 **)((u8 *)temp_s4 + 0x1C) + (*(&D_00455230 + *(s32 *)((u8 *)arg0 + 0x1C)) * 4)), 0.0f, 0);
         temp_a0_2 = *(u8 **)((u8 *)arg0 + 8);

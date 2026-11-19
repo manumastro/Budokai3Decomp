@@ -1,10 +1,10 @@
 /* Draft (not built): func_0029FA90 at 0x0029FA90, size 0x384, segment battle/char_disp (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); from 'unsigned char *' to 'int' @ 1038: amModel_SetCurrent(*(u8 **)((u8 *)arg1 + 0), *(s32 *)((u8 *)arg1 + 4), temp_a2);
+ * Status: size, 167 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x154, original 0x384
  * Original: asm/nonmatchings/battle/char_disp/func_0029FA90.s */
 
-// src/battle/char_disp.c func_0029FA90 cerr diff=-1/0
+// src/battle/char_disp.c func_0029FA90 size diff=167/85
 s32 amGs_SetReg64(s32, s32);
 s32 func_0013B110(s32);
 extern void func_0013B0B0(void *);
@@ -37,7 +37,7 @@ void func_0029FA90(u8 *arg0, u8 *arg1) {
         *(s32 *)((u8 *)arg0 + 0) = temp_a2;
     }
     D_00470238 = 0;
-    amModel_SetCurrent(*(u8 **)((u8 *)arg1 + 0), *(s32 *)((u8 *)arg1 + 4), temp_a2);
+    amModel_SetCurrent((s32)(*(u8 **)((u8 *)arg1 + 0)), (s32)(*(s32 *)((u8 *)arg1 + 4)));
     DrawFlags_Apply(0x800, 0, 0, 0x800, 0);
     DrawFlags_Apply(0x20000000, 0, 0, 0x20000000, 0);
     amGs_SetReg64(0, sp50);
@@ -55,7 +55,7 @@ void func_0029FA90(u8 *arg0, u8 *arg1) {
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-        func_0029F830((u8 *)(&sp30));
+        func_0029F830((unsigned char *)(&sp30));
         break;
     case 1:
         temp_f2 = *(f32 *)((u8 *)temp_s0 + 8);
@@ -100,7 +100,7 @@ void func_0029FA90(u8 *arg0, u8 *arg1) {
         M2C_ERROR(/* unknown instruction: vmaddx.xyz $vf1, $vf2, $vf3x */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
         spAC = (*(f32 *)((u8 *)arg0 + 0x8C) * (1.0f - var_f3)) + (*(f32 *)((u8 *)arg0 + 0xDC) * var_f3);
-        func_0029F830((u8 *)(&sp30));
+        func_0029F830((unsigned char *)(&sp30));
         break;
     default:
     case 2:
@@ -114,7 +114,7 @@ void func_0029FA90(u8 *arg0, u8 *arg1) {
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-        func_0029F830((u8 *)(&sp30));
+        func_0029F830((unsigned char *)(&sp30));
         break;
     }
     DrawFlags_Apply(0, 0x800, 0, 0, 0);

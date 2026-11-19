@@ -9,7 +9,7 @@ void func_001E3310(u8 *arg0) {
     f32 temp_f1;
     u8 *temp_s1;
 
-    temp_s1 = (u8 *)(gBattle);
+    temp_s1 = (unsigned char *)(gBattle);
     func_001E74F0(arg0 + 0x650);
     func_001E74F0(arg0 + 0xCD0);
     temp_f1 = *(f32 *)((u8 *)arg0 + 0x1808);
@@ -24,7 +24,7 @@ void func_001E3310(u8 *arg0) {
     } else {
         *(f32 *)((u8 *)arg0 + 0x189C) = 0.0f;
     }
-    func_001E8640((struct Fighter *)(arg0 + 0x650), -1);
+    func_001E8640((Fighter *)(arg0 + 0x650), -1);
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
     *(f32 *)((u8 *)arg0 + 0x84) = (f32) (*(f32 *)((u8 *)arg0 + 0x84) + **(f32 **)((u8 *)arg0 + 0xB94));

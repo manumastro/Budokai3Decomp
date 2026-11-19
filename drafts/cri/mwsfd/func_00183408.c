@@ -15,3 +15,16 @@ void func_00183408(void) {
     }
     func_00183448();
 }
+
+/* Similar function already in C: func_001576B0 (src/cri/adx_001563B0.c), similarity 0.65.
+ * It is the template below (not built). */
+#if 0
+s32 func_001576B0(void) {
+    func_00170818();
+    func_00170830();
+    func_00170878();
+    func_00170890();
+    func_001708A8();
+    return 0;
+}
+#endif

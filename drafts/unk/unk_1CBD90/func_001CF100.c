@@ -9,7 +9,7 @@ extern void func_0013B160(void *);
 extern char D_003F0800[];
 extern void func_0013B620(void *);
 extern void func_0013AFA0(void *);
-s32 func_001CF100(u8 *arg1) {
+s32 func_001CF100(s32 unused_arg0, u8 *arg1) {
     s32 sp40;
     s32 sp50;
     f32 temp_f0;

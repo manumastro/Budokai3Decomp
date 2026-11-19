@@ -80,7 +80,7 @@ block_24:
     goto block_27;
 block_25:
     func_00215040((s64) ((s64) temp_s1 << 0x30) >> 0x30, 0x800, 0xC6);
-    amTask_Kill((s32)((void *)(arg0)));
+    amTask_Kill((s32)(arg0));
     *(s32 *)((u8 *)temp_s0 + 0x24) = 0;
     return;
 block_27:

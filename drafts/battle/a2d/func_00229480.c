@@ -34,8 +34,8 @@ void func_00229480(u8 *arg0, u8 *arg1, s32 arg2, f32 fparg0) {
                 var_a2 = func_002270B0(*(s32 *)((u8 *)arg0 + 0x10), *(s16 *)((u8 *)arg0 + 4), -1, var_f12);
             }
         }
-        temp_a0 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x10) + (var_a2 * 4));
-        temp_v1_2 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x14) + (var_a2 << 5));
+        temp_a0 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x10) + (var_a2 * 4));
+        temp_v1_2 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x14) + (var_a2 << 5));
         temp_a3 = *(s16 *)((u8 *)temp_a0 + 2);
         switch (temp_a3) {                          /* irregular */
         case 0:

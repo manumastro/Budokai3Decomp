@@ -1,10 +1,10 @@
 /* Draft (not built): func_001E8A30 at 0x001E8A30, size 0xB4, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'short' to 'void *' @ 4612: return func_00233B20(&sp10, temp_a2) & 0xF;
+ * Status: size, 20 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x9C, original 0xB4
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001E8A30.s */
 
-// src/unk/unk_1D5B30.c func_001E8A30 cerr diff=-1/0
+// src/unk/unk_1D5B30.c func_001E8A30 size diff=20/39
 s32 func_001E8A30(u8 *arg0) {
     s32 sp10;
     s32 sp14;
@@ -12,20 +12,53 @@ s32 func_001E8A30(u8 *arg0) {
     s32 sp1C;
     s16 temp_a2;
 
-    if (*(s16 *)((u8 *)gBattle + 0x8944) != 0) {
-        if (*(s16 *)((u8 *)arg0 + 0x1AD0) == 0) {
-            goto block_3;
-        }
-        if ((*(s16 *)((u8 *)gBattle + 0x7E2) == 3) && (*(s8 *)((u8 *)gBattle + 0x8977) != 3)) {
-            return 0;
-        }
-        sp14 = (s32) *(s16 *)((u8 *)arg0 + 0x1AD2);
-        sp18 = (s32) *(s16 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1354)) + 0x1ACE);
-        temp_a2 = *(s16 *)((u8 *)gBattle + 0x894A);
-        sp1C = 0xF;
-        sp10 = *(s32 *)((u8 *)arg0 + 0x1350) == temp_a2;
-        return func_00233B20(&sp10, temp_a2) & 0xF;
+    if (*(s16 *)((u8 *)gBattle + 0x8944) == 0) {
+        goto block_3;
+    }
+    if (*(s16 *)((u8 *)arg0 + 0x1AD0) != 0) {
+        goto block_4;
     }
 block_3:
     return 0;
+block_4:
+    if (*(s16 *)((u8 *)gBattle + 0x7E2) != 3) {
+        goto block_7;
+    }
+    if (*(s8 *)((u8 *)gBattle + 0x8977) == 3) {
+        goto block_7;
+    }
+    return 0;
+block_7:
+    sp14 = (s32) *(s16 *)((u8 *)arg0 + 0x1AD2);
+    sp18 = (s32) *(s16 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1354)) + 0x1ACE);
+    temp_a2 = *(s16 *)((u8 *)gBattle + 0x894A);
+    sp1C = 0xF;
+    sp10 = *(s32 *)((u8 *)arg0 + 0x1350) == temp_a2;
+    return func_00233B20((Fighter *)(&sp10), (void *)(temp_a2), 0) & 0xF;
 }
+
+/* Similar function already in C: func_001E8AF0 (src/unk/unk_1D5B30.c), similarity 0.67.
+ * It is the template below (not built). */
+#if 0
+s32 func_001E8AF0(Fighter *c) {
+    Game *g;
+    s32 pair[2];
+
+    g = gBattle;
+    if (g->f8944 == 0) {
+        goto ret0;
+    }
+    if (c->f1AD0 != 0) {
+        goto go;
+    }
+ret0:
+    return 0;
+go:
+    if (g->f7E2 == 3 && g->f8977 != 3) {
+        return 0;
+    }
+    pair[0] = c->f1AD2;
+    pair[1] = c->f1AD4;
+    return func_00233D50(c, pair);
+}
+#endif

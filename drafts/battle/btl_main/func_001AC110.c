@@ -23,7 +23,7 @@ s32 func_001AC110(void) {
     var_v0 = 0;
     var_a3 = 0;
     temp_a1 = *(s32 *)((u8 *)gBattle + 0x88D8);
-    temp_v1 = (u8 *)(gBattle + 0x830);
+    temp_v1 = (unsigned char *)(gBattle + 0x830);
     if (temp_a1 > 0) {
         var_a2 = temp_v1;
         do {
@@ -55,7 +55,7 @@ loop_9:
             }
         }
     }
-    if (((var_t5 >= 0) || (var_v0 <= 0)) && (*(u16 *)((u8 *)(&D_00492FC0 + (temp_t4 * 0xB8)) + 0xE) & 8)) {
+    if (((var_t5 >= 0) || (var_v0 <= 0)) && (*(u16 *)((u8 *)(((u8 *)&D_00492FC0) + (temp_t4 * 0xB8)) + 0xE) & 8)) {
         return 1;
     }
     var_t2 += 1;

@@ -5,8 +5,6 @@
  * Original: asm/nonmatchings/menu/mn_ArenaCharasel_pvsp/func_00309680.s */
 
 // src/menu/mn_ArenaCharasel_pvsp.c func_00309680 size diff=175/248
-extern u8 *D_0047098C;
-extern void *amTask_Create();
 s32 A2d_SetMode(s32);
 s32 DataErase_IsReady(s16);
 s32 Fade_Request(s32, s32, s32);
@@ -23,10 +21,10 @@ extern u8 D_005C4121;
 extern s16 D_005C4124;
 extern void amFile_Load(void *);
 extern void amAdx_Stop();
-extern void func_0022E0B0(void *);
-extern void func_0028DF20(void);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022E0B0(void *);
+extern void func_0028DF20(void);
 extern void func_002D09B0(void);
 extern void func_003095A0(void);
 void func_00309680(u8 *arg0) {
@@ -146,7 +144,7 @@ void func_00309680(u8 *arg0) {
         D_00470238 = 0;
         *(s32 *)((u8 *)temp_s0 + 0x14) = func_0022D860(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x14)) + 4), 0);
         *(s32 *)((u8 *)temp_s0 + 0x18) = 0x41A00000;
-        var_v1 = (s32 *)(&func_003095A0);
+        var_v1 = (int *)(&func_003095A0);
         if (&func_003095A0 == NULL) {
             var_v1 = NULL;
         }

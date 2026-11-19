@@ -27,7 +27,7 @@ u8 *func_002925A0(s32 arg0) {
     u8 *var_s2;
 
     func_0013B0B0(&D_005AA6F0);
-    var_s2 = (u8 *)(arg0 + 0x80);
+    var_s2 = (unsigned char *)(arg0 + 0x80);
     var_f22 = 5000000.0f;
     var_s1 = NULL;
     var_s3 = 0;

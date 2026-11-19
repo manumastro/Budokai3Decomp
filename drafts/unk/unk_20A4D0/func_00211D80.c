@@ -1,10 +1,10 @@
 /* Draft (not built): func_00211D80 at 0x00211D80, size 0x200, segment unk/unk_20A4D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); nc_00248640(int, void *, int)' @ 3048: (s16 *)((u8 *)temp_s0 + 0x44), temp_a1, *(s32 *)((u8 *)temp_s0 + 0x40), gBattle);
+ * Status: size, 61 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1E0, original 0x200
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_00211D80.s */
 
-// src/unk/unk_20A4D0.c func_00211D80 cerr diff=-1/0
+// src/unk/unk_20A4D0.c func_00211D80 size diff=61/120
 void func_00211D80(u8 *arg0) {
     f32 var_f1;
     s16 temp_a0;
@@ -67,10 +67,10 @@ block_21:
             case 0x1:
                 break;
             case 0x2:
-                func_00248640(*(s16 *)((u8 *)temp_s0 + 0x44), temp_a1, *(s32 *)((u8 *)temp_s0 + 0x40), gBattle);
+                func_00248640((s32) *(s16 *)((u8 *)temp_s0 + 0x44), temp_a1, *(s32 *)((u8 *)temp_s0 + 0x40));
                 break;
             case 0x400:
-                func_00248640(*(s16 *)((u8 *)temp_s0 + 0x44), temp_a1, *(s32 *)((u8 *)temp_s0 + 0x40), gBattle);
+                func_00248640((s32) *(s16 *)((u8 *)temp_s0 + 0x44), temp_a1, *(s32 *)((u8 *)temp_s0 + 0x40));
                 break;
             }
             *(s32 *)((u8 *)temp_s0 + 0x38) = 0;

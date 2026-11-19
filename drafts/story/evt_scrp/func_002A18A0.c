@@ -13,7 +13,7 @@ void func_002A18A0(u8 *arg0) {
     void (*var_v1)();
     u8 *temp_s0;
 
-    temp_s0 = (u8 *)(gEvtWork);
+    temp_s0 = (unsigned char *)(gEvtWork);
     sp30 = 0x3F800000;
     sp34 = 0x3F800000;
     sp38 = 0x3F800000;

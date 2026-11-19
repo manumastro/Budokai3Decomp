@@ -1,10 +1,10 @@
 /* Draft (not built): func_002AE380 at 0x002AE380, size 0x3DC, segment unk/unk_2ADDC0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'saved_reg_s0' @ 101: var_s0 = saved_reg_s0;
+ * Status: size, 104 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x394, original 0x3DC
  * Original: asm/nonmatchings/unk/unk_2ADDC0/func_002AE380.s */
 
-// src/unk/unk_2ADDC0.c func_002AE380 cerr diff=-1/0
+// src/unk/unk_2ADDC0.c func_002AE380 size diff=104/229
 s32 DrawFlags_Apply(s32, s32, s32, s32);
 s32 amGs_SetReg32(s32, s32);
 s32 amGs_SetReg64(s32, s32);
@@ -23,11 +23,12 @@ extern s32 D_005BCE60;
 extern s32 D_005BCEA0;
 extern s32 D_005BCED0;
 extern void func_0013B0B0(void *);
+extern void amModel_SetCurrent();
 extern void amDraw3d_Sync(void);
 extern void func_001339B0(void *);
 extern void func_0013AFA0(void *);
-extern void amModel_SetCurrent();
 s32 func_002AE380(u8 *arg0, u8 *arg1) {
+    s32 saved_reg_s0;
     f32 sp50;
     f32 sp54;
     f32 sp58;
@@ -45,7 +46,7 @@ s32 func_002AE380(u8 *arg0, u8 *arg1) {
     u8 *temp_v0;
 
     var_s0 = saved_reg_s0;
-    temp_s1 = (*(s8 *)((u8 *)arg0 + 0x28) * 0x20E0) + (&D_005ABA80 + (**(s32 **)((u8 *)arg0 + 0) * 0x8380));
+    temp_s1 = (*(s8 *)((u8 *)arg0 + 0x28) * 0x20E0) + (((u8 *)&D_005ABA80) + (**(s32 **)((u8 *)arg0 + 0) * 0x8380));
     if ((*(s32 *)((u8 *)temp_s1 + 0) == 0) && (*(s32 *)((u8 *)temp_s1 + 4) == 0)) {
         *(s32 **)((u8 *)arg1 + 0) = &D_004700E0;
         *(s32 *)((u8 *)arg1 + 4) = 0;
@@ -97,25 +98,21 @@ s32 func_002AE380(u8 *arg0, u8 *arg1) {
         } while (var_s3 < 4);
     }
     temp_v1 = *(s8 *)((u8 *)temp_s1 + 0x20A3);
-    switch (temp_v1) {                              /* irregular */
-    case 1:
+    if (temp_v1 == 1) {
         DrawFlags_Apply(0x700, 0, 0, 0x200);
         DrawFlags_Apply(0x800, 0, 0, 0x800);
         func_001339B0(temp_s1 + 0x20B0);
-        break;
-    case 2:
+    } else if (temp_v1 == 2) {
         DrawFlags_Apply(0x700, 0, 0, 0x300);
         DrawFlags_Apply(0x800, 0, 0, 0x800);
         func_001339B0(temp_s1 + 0x20B0);
-        break;
-    case 3:
+    } else if (temp_v1 == 3) {
         DrawFlags_Apply(0x700, 0, 0, 0x300);
         DrawFlags_Apply(0x800, 0, 0, 0x800);
         DrawFlags_Apply(0x20000000, 0, 0, 0x20000000);
         amGs_SetReg64(0, 0x44);
         var_s0 = amGs_SetReg32(0, 0x7000D);
         func_001339B0(temp_s1 + 0x20B0);
-        break;
     }
     D_00470238 = *(s32 *)((u8 *)temp_s1 + 0x2098);
     temp_a0 = *(s32 *)((u8 *)temp_s1 + 0x24);

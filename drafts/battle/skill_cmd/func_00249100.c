@@ -1,10 +1,10 @@
 /* Draft (not built): func_00249100 at 0x00249100, size 0x898, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); gal implicit conversion from 'int[4]' to 'int' mwccps2.exe Compiler: @ 306: func_00249100(mtx, base, side, cfgp, 30.0f);
+ * Status: size, 419 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x858, original 0x898
  * Original: asm/nonmatchings/battle/skill_cmd/func_00249100.s */
 
-// src/battle/skill_cmd.c func_00249100 cerr diff=-1/0
+// src/battle/skill_cmd.c func_00249100 size diff=419/534
 extern u32 func_0012EAE0(s32);
 s32 func_001214F8(f32);
 f32 func_001220B0(s32);
@@ -13,7 +13,7 @@ f32 func_00146E90(s32 *);
 s32 func_001E3C70(void *, s32 *);
 extern s128 D_004502D0;
 extern void func_0011F620(void);
-void func_00249100(s32 arg0, s32 arg1, u8 *arg2, u8 *arg3, f32 fparg0) {
+void func_00249100(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, f32 fparg0) {
     s128 sp60;
     s32 sp70;
     f32 sp74;
@@ -81,43 +81,41 @@ void func_00249100(s32 arg0, s32 arg1, u8 *arg2, u8 *arg3, f32 fparg0) {
     temp_a0 = *(u8 **)((u8 *)arg2 + 0x1354);
     if ((*(s8 *)((u8 *)temp_a0 + 0x1FF9) == 0) && (*(s8 *)((u8 *)arg2 + 0x1FF9) == 0)) {
         temp_v1 = *(s16 *)((u8 *)arg3 + 0x10);
-        switch (temp_v1) {                          /* switch 1; irregular */
-        case 0:                                     /* switch 1 */
-            temp_v1_2 = *(s32 *)((u8 *)arg2 + 0x1CFC);
-            if ((temp_v1_2 == 0x1B) || (temp_v1_2 == 0x26) || (temp_v1_3 = *(s32 *)((u8 *)arg2 + 0xB9C), (temp_v1_3 == 0xC)) || (temp_v1_3 == 0x4E)) {
-                if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= 15.0f)) {
+        if (temp_v1 != 1) {
+            if (temp_v1 != 6) {
+                if ((temp_v1 != 9) && (temp_v1 != 0xA)) {
+                    if ((temp_v1 != 3) && (temp_v1 != 4)) {
+                        if (temp_v1 != 0) {
+                            var_f0 = 0.0f;
+                        } else {
+                            temp_v1_2 = *(s32 *)((u8 *)arg2 + 0x1CFC);
+                            if ((temp_v1_2 == 0x1B) || (temp_v1_2 == 0x26) || (temp_v1_3 = *(s32 *)((u8 *)arg2 + 0xB9C), (temp_v1_3 == 0xC)) || (temp_v1_3 == 0x4E)) {
+                                if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= 15.0f)) {
+                                    if (var_f0 < 0.0f) {
+                                        var_f0 = (3.1415927f * (2.0f * -15.0f)) / 360.0f;
+                                    } else {
+                                        var_f0 = (3.1415927f * (2.0f * 15.0f)) / 360.0f;
+                                    }
+                                }
+                            } else {
+                                var_f0 = 0.0f;
+                            }
+                        }
+                    } else if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= var_f20)) {
+                        if (var_f0 < 0.0f) {
+                            var_f0 = (3.1415927f * (2.0f * -var_f20)) / 360.0f;
+                        } else {
+                            var_f0 = (3.1415927f * (2.0f * var_f20)) / 360.0f;
+                        }
+                    }
+                } else if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= 5.0f)) {
                     if (var_f0 < 0.0f) {
-                        var_f0 = (3.1415927f * (2.0f * -15.0f)) / 360.0f;
+                        var_f0 = (3.1415927f * (2.0f * -5.0f)) / 360.0f;
                     } else {
-                        var_f0 = (3.1415927f * (2.0f * 15.0f)) / 360.0f;
+                        var_f0 = (3.1415927f * (2.0f * 5.0f)) / 360.0f;
                     }
                 }
-            } else {
-                var_f0 = 0.0f;
-            }
-            break;
-        case 3:                                     /* switch 1 */
-        case 4:                                     /* switch 1 */
-            if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= var_f20)) {
-                if (var_f0 < 0.0f) {
-                    var_f0 = (3.1415927f * (2.0f * -var_f20)) / 360.0f;
-                } else {
-                    var_f0 = (3.1415927f * (2.0f * var_f20)) / 360.0f;
-                }
-            }
-            break;
-        case 9:                                     /* switch 1 */
-        case 10:                                    /* switch 1 */
-            if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= 5.0f)) {
-                if (var_f0 < 0.0f) {
-                    var_f0 = (3.1415927f * (2.0f * -5.0f)) / 360.0f;
-                } else {
-                    var_f0 = (3.1415927f * (2.0f * 5.0f)) / 360.0f;
-                }
-            }
-            break;
-        case 6:                                     /* switch 1 */
-            if (*(s32 *)((u8 *)arg2 + 0xB9C) == 0x12) {
+            } else if (*(s32 *)((u8 *)arg2 + 0xB9C) == 0x12) {
                 if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= 5.0f)) {
                     if (var_f0 < 0.0f) {
                         var_f0 = (3.1415927f * (2.0f * -5.0f)) / 360.0f;
@@ -126,51 +124,37 @@ void func_00249100(s32 arg0, s32 arg1, u8 *arg2, u8 *arg3, f32 fparg0) {
                     }
                 }
             }
-            break;
-        case 1:                                     /* switch 1 */
-            if (!(*(f32 *)((u8 *)temp_a0 + 0x18A4) <= 0.0f)) {
-                if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= var_f20)) {
+        } else if (!(*(f32 *)((u8 *)temp_a0 + 0x18A4) <= 0.0f)) {
+            if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= var_f20)) {
+                if (var_f0 < 0.0f) {
+                    var_f0 = (3.1415927f * (2.0f * -var_f20)) / 360.0f;
+                } else {
+                    var_f0 = (3.1415927f * (2.0f * var_f20)) / 360.0f;
+                }
+            }
+        } else {
+            temp_v1_4 = *(s32 *)((u8 *)arg2 + 0xB9C);
+            if ((temp_v1_4 != 0x48) && (temp_v1_4 != 0x27) && (temp_v1_4 != 0x1D) && (temp_v1_4 != 0x1E) && (temp_v1_4 != 0x25) && (temp_v1_4 != 0x29) && (temp_v1_4 != 0x4C)) {
+                if (temp_v1_4 == 0x54) {
+                    goto block_70;
+                }
+                if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= 5.0f)) {
                     if (var_f0 < 0.0f) {
-                        var_f0 = (3.1415927f * (2.0f * -var_f20)) / 360.0f;
+                        var_f0 = (3.1415927f * (2.0f * -5.0f)) / 360.0f;
                     } else {
-                        var_f0 = (3.1415927f * (2.0f * var_f20)) / 360.0f;
+                        var_f0 = (3.1415927f * (2.0f * 5.0f)) / 360.0f;
                     }
                 }
             } else {
-                temp_v1_4 = *(s32 *)((u8 *)arg2 + 0xB9C);
-                switch (temp_v1_4) {                /* switch 2; irregular */
-                case 0x54:                          /* switch 2 */
-                    /* fallthrough */
-                case 0x48:                          /* switch 2 */
-                case 0x27:                          /* switch 2 */
-                case 0x1D:                          /* switch 2 */
-                case 0x1E:                          /* switch 2 */
-                case 0x25:                          /* switch 2 */
-                case 0x29:                          /* switch 2 */
-                case 0x4C:                          /* switch 2 */
-                    if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= 10.0f)) {
-                        if (var_f0 < 0.0f) {
-                            var_f0 = (3.1415927f * (2.0f * -10.0f)) / 360.0f;
-                        } else {
-                            var_f0 = (3.1415927f * (2.0f * 10.0f)) / 360.0f;
-                        }
+block_70:
+                if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= 10.0f)) {
+                    if (var_f0 < 0.0f) {
+                        var_f0 = (3.1415927f * (2.0f * -10.0f)) / 360.0f;
+                    } else {
+                        var_f0 = (3.1415927f * (2.0f * 10.0f)) / 360.0f;
                     }
-                    break;
-                default:                            /* switch 2 */
-                    if (!(fabsf((360.0f * var_f0) / 6.2831855f) <= 5.0f)) {
-                        if (var_f0 < 0.0f) {
-                            var_f0 = (3.1415927f * (2.0f * -5.0f)) / 360.0f;
-                        } else {
-                            var_f0 = (3.1415927f * (2.0f * 5.0f)) / 360.0f;
-                        }
-                    }
-                    break;
                 }
             }
-            break;
-        default:                                    /* switch 1 */
-            var_f0 = 0.0f;
-            break;
         }
     } else {
         temp_v1_5 = *(s32 *)((u8 *)arg2 + 0xB9C);
@@ -185,5 +169,5 @@ void func_00249100(s32 arg0, s32 arg1, u8 *arg2, u8 *arg3, f32 fparg0) {
             }
         }
     }
-    func_001414D0(arg0, temp_a1, var_f0, (3.1415927f * (f32) temp_a1) / 32768.0f, 0);
+    func_001414D0((s32)(arg0), (s16)(temp_a1), var_f0, (3.1415927f * (f32) temp_a1) / 32768.0f, 0);
 }

@@ -19,7 +19,7 @@ void func_001A5880(void) {
     u8 *temp_s2;
 
     var_f1 = 0.7853982f;
-    temp_s2 = (u8 *)(gBattle);
+    temp_s2 = (unsigned char *)(gBattle);
     temp_a0 = temp_s2 + 0xA0;
     temp_s1 = temp_a0 + 0xB0;
     temp_s0 = temp_a0 + 0x160;
@@ -36,7 +36,7 @@ void func_001A5880(void) {
 
         } else {
             func_0013B0B0(D_003F0800);
-            func_0013B620((s32)((void *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)((*(s32 *)((u8 *)temp_s0 + 0x28) * 4) + temp_s2) + 0x8934)) + 0x17A4))));
+            func_0013B620((s32)(*(u8 **)((u8 *)(*(u8 **)((u8 *)((*(s32 *)((u8 *)temp_s0 + 0x28) * 4) + temp_s2) + 0x8934)) + 0x17A4)));
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($s0) */);
             M2C_ERROR(/* unknown instruction: vmulax.xyzw ACC, $vf28, $vf1x */);
             M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);
@@ -53,7 +53,7 @@ void func_001A5880(void) {
 
         } else {
             func_0013B0B0(D_003F0800);
-            func_0013B620((s32)((void *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)((*(s32 *)((u8 *)temp_s0 + 0x2C) * 4) + temp_s2) + 0x8934)) + 0x17A4))));
+            func_0013B620((s32)(*(u8 **)((u8 *)(*(u8 **)((u8 *)((*(s32 *)((u8 *)temp_s0 + 0x2C) * 4) + temp_s2) + 0x8934)) + 0x17A4)));
             M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
             M2C_ERROR(/* unknown instruction: vmulax.xyzw ACC, $vf28, $vf1x */);
             M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);

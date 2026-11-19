@@ -1,10 +1,10 @@
 /* Draft (not built): func_00262290 at 0x00262290, size 0x1A5C, segment unk/unk_260CB0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'saved_reg_s1' mwccps2.exe Compiler: 223: var_s2 = saved_reg_s2; @ 222: var_s1 = saved_reg_s1;
+ * Status: size, 1227 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1394, original 0x1A5C
  * Original: asm/nonmatchings/unk/unk_260CB0/func_00262290.s */
 
-// src/unk/unk_260CB0.c func_00262290 cerr diff=-1/0
+// src/unk/unk_260CB0.c func_00262290 size diff=1227/1253
 extern void func_00136E80(s32, FadeColor *, s32, s32, s32);
 extern void amDraw_FlushPacket(void);
 s32 FlushCache(s32);
@@ -43,11 +43,28 @@ extern s32 D_0058F5B0;
 extern s32 D_0058F5BC;
 extern s32 *gModelBlock;
 extern void func_00137560(void *, void *);
+extern void amModel_SetCurrent();
 extern char D_00492FCE[];
 extern void amDraw3d_Sync(void);
 extern void *gModelUser;
-extern void amModel_SetCurrent();
 void func_00262290(s32 arg0) {
+    s32 sp1F4;
+    s32 sp3DC;
+    s32 sp3D8;
+    s32 sp3D4;
+    s32 sp3D0;
+    s32 sp2FC;
+    s32 sp2F8;
+    s32 sp2F4;
+    s32 sp2F0;
+    s32 sp2CC;
+    s32 sp2C8;
+    s32 sp2C4;
+    s32 sp1F0;
+    s32 sp1E4;
+    u8 sp[0x400];
+    s32 saved_reg_s2;
+    s32 saved_reg_s1;
     s32 spBC;
     u8 *spC0;
     f32 spD0;
@@ -160,8 +177,8 @@ void func_00262290(s32 arg0) {
     u8 *temp_s4;
     u8 *temp_v0_2;
 
-    var_s1 = saved_reg_s1;
-    var_s2 = saved_reg_s2;
+    var_s1 = (int *)(saved_reg_s1);
+    var_s2 = (int *)(saved_reg_s2);
     *(s128 *)((u8 *)(&sp430) + 0) = (s128) *(s128 *)((u8 *)(&D_00452B70) + 0);
     *(s128 *)((u8 *)(&sp430) + 0x10) = (s128) *(s128 *)((u8 *)(&D_00452B70) + 0x10);
     *(s64 *)((u8 *)(&sp430) + 0x20) = (s64) *(s64 *)((u8 *)(&D_00452B70) + 0x20);
@@ -195,14 +212,14 @@ void func_00262290(s32 arg0) {
     sp3F0 = D_00452BD0;
     if (arg0 < 0x1E) {
         sp3FC = (f32) arg0 / 30.0f;
-        func_00139620(0x900, (struct FadeColor *)(&sp3F0), -1, 0x44, 0);
+        func_00139620(0x900, (FadeColor *)(&sp3F0), -1, 0x44, 0, 0);
         return;
     }
     if (arg0 < 0x3C) {
-        func_00139620(0x900, (struct FadeColor *)(&sp3F0), -1, 0x44, 0);
+        func_00139620(0x900, (FadeColor *)(&sp3F0), -1, 0x44, 0, 0);
         return;
     }
-    func_00139620(0x900, (struct FadeColor *)(&sp3F0), -1, 0x44, 0);
+    func_00139620(0x900, (FadeColor *)(&sp3F0), -1, 0x44, 0, 0);
     var_a3 = 0;
 loop_18:
     var_s4 = 0;
@@ -493,10 +510,10 @@ loop_128:
     } while (var_a0_5 > 0);
     temp_s7 = gModelBlock;
     temp_fp = gModelUser;
-    temp_a1_2 = (u8 *)(D_003858F4 + &D_003858E0);
-    temp_s4 = (u8 *)(&D_003858E0 + *(s32 *)((u8 *)(&D_003858E0 + *(temp_a1_2 + (D_003858F8 * -4))) + 0x24));
-    spC0 = (u8 *)(&D_003858E0 + *(s32 *)((u8 *)(&D_003858E0 + *(temp_a1_2 + ((2 - D_003858F8) * 4))) + 0x24));
-    memcpy(&sp1A0, temp_s4 + 0x20, 0x40, &D_003858E0);
+    temp_a1_2 = (unsigned char *)(D_003858F4 + &D_003858E0);
+    temp_s4 = (unsigned char *)(&D_003858E0 + *(s32 *)((u8 *)(&D_003858E0 + *(temp_a1_2 + (D_003858F8 * -4))) + 0x24));
+    spC0 = (unsigned char *)(&D_003858E0 + *(s32 *)((u8 *)(&D_003858E0 + *(temp_a1_2 + ((2 - D_003858F8) * 4))) + 0x24));
+    memcpy((s32 *)(&sp1A0), (s32 *)(temp_s4 + 0x20), 0x40, (s32 *)(&D_003858E0));
     D_00470238 = 1;
     amModel_SetCurrent(&D_003858E0, (u8 *)0xFFEE0000);
     func_00133B50(0, 0);
@@ -557,7 +574,7 @@ block_141:
                         sp160 = sp1F0;
                         sp154 = sp1E4;
                         sp164 = sp1E4 + (temp_f0_4 * (sp1F4 - sp1E4));
-                        func_00136E80(0x40001920, (struct FadeColor *)(&sp190), 0, 0x44);
+                        func_00136E80(0x40001920, (FadeColor *)(&sp190), 0, 0x44, 0);
                         func_00137560(&sp170, &sp150);
                         func_00137560(&sp180, &sp160);
                         amDraw_FlushPacket();
@@ -605,7 +622,7 @@ block_141:
                         M2C_ERROR(/* unknown instruction: vaddx.y $vf4, $vf4, $vf2x */);
                         M2C_ERROR(/* unknown instruction: vaddx.z $vf4, $vf4, $vf3x */);
                         M2C_ERROR(/* unknown instruction: sqc2 $vf4, ($v0) */);
-                        func_00136E80(0x40001920, (struct FadeColor *)(&sp190), 1, 0x44);
+                        func_00136E80(0x40001920, (FadeColor *)(&sp190), 1, 0x44, 0);
                         func_00137560(&sp170, &sp150);
                         func_00137560(&sp180, &sp160);
                         amDraw_FlushPacket();
@@ -638,7 +655,7 @@ block_141:
                         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
                         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
                         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-                        func_00136E80(0x40001920, (struct FadeColor *)(&sp190), 0, 0x44);
+                        func_00136E80(0x40001920, (FadeColor *)(&sp190), 0, 0x44, 0);
                         func_00137560(&sp130, &sp110);
                         func_00137560(&sp140, &sp120);
                         amDraw_FlushPacket();
@@ -666,7 +683,7 @@ block_141:
                         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
                         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
                         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-                        func_00136E80(0x40001920, (struct FadeColor *)(&sp190), 1, 0x44);
+                        func_00136E80(0x40001920, (FadeColor *)(&sp190), 1, 0x44, 0);
                         func_00137560(&sp130, &sp110);
                         func_00137560(&sp140, &sp120);
                         amDraw_FlushPacket();
@@ -711,7 +728,7 @@ block_141:
                         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
                         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
                         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-                        func_00136E80(0x40001920, (struct FadeColor *)(&sp190), 0, 0x44);
+                        func_00136E80(0x40001920, (FadeColor *)(&sp190), 0, 0x44, 0);
                         func_00137560(&spF0, &spD0);
                         func_00137560(&sp100, &spE0);
                         amDraw_FlushPacket();
@@ -739,7 +756,7 @@ block_141:
                         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
                         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
                         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-                        func_00136E80(0x40001920, (struct FadeColor *)(&sp190), 1, 0x44);
+                        func_00136E80(0x40001920, (FadeColor *)(&sp190), 1, 0x44, 0);
                         func_00137560(&spF0, &spD0);
                         func_00137560(&sp100, &spE0);
                         amDraw_FlushPacket();
@@ -753,11 +770,11 @@ block_141:
         }
         amDraw3d_Sync();
         if (var_s3_2 == 0) {
-            memcpy(temp_s4 + 0x20, spC0 + 0x20, 0x40);
+            memcpy((s32 *)(temp_s4 + 0x20), (s32 *)(spC0 + 0x20), 0x40, 0);
             FlushCache(0);
             func_00145CE0(1, 0, 0x2000);
         } else {
-            memcpy(temp_s4 + 0x20, &sp1A0, 0x40);
+            memcpy((s32 *)(temp_s4 + 0x20), (s32 *)(&sp1A0), 0x40, 0);
             FlushCache(0);
             func_00145CE0(1, 0, 0x2000);
             if (var_s6 == 0) {
@@ -770,7 +787,7 @@ block_141:
         goto loop_174;
     }
     func_00133780(0, 0);
-    memcpy(temp_s4 + 0x20, &sp1A0, 0x40);
+    memcpy((s32 *)(temp_s4 + 0x20), (s32 *)(&sp1A0), 0x40, 0);
     FlushCache(0);
     func_00145CE0(1, 0, 0x2000);
     amGs_SetReg32(0, spBC);

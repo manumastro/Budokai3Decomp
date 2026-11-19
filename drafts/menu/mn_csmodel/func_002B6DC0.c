@@ -22,7 +22,7 @@ extern s32 D_00458A60;
 extern s32 D_00458A64;
 extern s32 D_00458A68;
 extern void func_002B6C30(void);
-void func_002B6DC0(u8 *arg0) {
+void func_002B6DC0(Task *arg0) {
     s32 *var_v1_2;
     f32 temp_f0;
     f32 temp_f0_2;
@@ -102,7 +102,7 @@ block_12:
         var_v1 = *(&D_00458A68 + temp_t1);
     }
     *(s32 *)((u8 *)temp_s1 + 0xDC) = var_v1;
-    var_v1_2 = (s32 *)(&func_002B6C30);
+    var_v1_2 = (int *)(&func_002B6C30);
     if (&func_002B6C30 == NULL) {
         var_v1_2 = NULL;
     }

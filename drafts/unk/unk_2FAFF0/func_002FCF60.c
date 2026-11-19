@@ -26,7 +26,7 @@ s32 func_002FCF60(void) {
     temp_t3 = 1 << D_005D0082;
     var_a3 = 0;
     if (temp_t3 > 0) {
-        var_a1 = (u8 *)(gTourMap);
+        var_a1 = (unsigned char *)(gTourMap);
 loop_2:
         if ((*(s16 *)((u8 *)var_a1 + 0x2F6) >= 0) && ((temp_v0 = *(s8 *)((u8 *)(var_a1 + 0x2EC) + 4), (temp_v0 == 1)) || (temp_v0 == 2))) {
             var_t2 = 0;
@@ -41,7 +41,7 @@ loop_2:
     var_t0 = 0;
     var_a3_2 = 0;
     if (temp_t3 > 0) {
-        var_a1_2 = (u8 *)(gTourMap);
+        var_a1_2 = (unsigned char *)(gTourMap);
         do {
             temp_a2 = var_a1_2 + 0x2EC;
             if (*(s16 *)((u8 *)var_a1_2 + 0x2F6) >= 0) {

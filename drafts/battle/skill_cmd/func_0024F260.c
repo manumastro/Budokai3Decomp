@@ -1,10 +1,10 @@
 /* Draft (not built): func_0024F260 at 0x0024F260, size 0x268, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'unsigned char *' to 'int' @ 982: func_00209B50(temp_a0_2, arg0 + 0x20, 0);
+ * Status: size, 89 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x198, original 0x268
  * Original: asm/nonmatchings/battle/skill_cmd/func_0024F260.s */
 
-// src/battle/skill_cmd.c func_0024F260 cerr diff=-1/0
+// src/battle/skill_cmd.c func_0024F260 size diff=89/102
 s32 func_001EA240(s32 *);
 extern void func_00251F30(void);
 s32 func_0024F260(u8 *arg0) {
@@ -38,7 +38,7 @@ s32 func_0024F260(u8 *arg0) {
         func_001D9280((s32)(*(u8 **)((u8 *)arg0 + 8)));
         temp_a0 = *(u8 **)((u8 *)arg0 + 0x54);
         if (temp_a0 != NULL) {
-            Obj_ResetF38((s32)((void *)(temp_a0)));
+            Obj_ResetF38((s32)(temp_a0));
             *(u8 **)((u8 *)arg0 + 0x54) = NULL;
         }
         *(f32 *)((u8 *)arg0 + 0) = 12.0f;
@@ -66,7 +66,7 @@ s32 func_0024F260(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
         sp76 = *(s16 *)((u8 *)arg0 + 6);
         sp60 = *(f32 *)((u8 *)temp_s1 + 0xCC);
-        sp68 = (s32 *)(&func_00251F30);
+        sp68 = (int *)(&func_00251F30);
         sp6C = arg0;
         sp72 = 0;
         sp70 = (s16) ((s64) ((s64) *(s32 *)((u8 *)temp_s1 + 0xD4) << 0x30) >> 0x30);
@@ -89,7 +89,7 @@ s32 func_0024F260(u8 *arg0) {
     }
     temp_a0_2 = *(u8 **)((u8 *)arg0 + 0x54);
     if (temp_a0_2 != NULL) {
-        func_00209B50(temp_a0_2, arg0 + 0x20, 0);
+        func_00209B50((s32)(temp_a0_2), (s32)(arg0 + 0x20), 0);
         func_00208F70(*(u8 **)((u8 *)arg0 + 0x54));
         if (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x54)) + 0x38) < 0) {
             *(u8 **)((u8 *)arg0 + 0x54) = NULL;

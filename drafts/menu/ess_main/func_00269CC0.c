@@ -1,14 +1,14 @@
 /* Draft (not built): func_00269CC0 at 0x00269CC0, size 0x824, segment menu/ess_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  'void *' mwccps2.exe Compiler: @ 225: )gEssMain + 0x90) * 4)), 1, (f32) *(s32 *)((u8 *)gEssMain + 0x98) * gFrameDelta);
+ * Status: size, 236 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x890, original 0x824
  * Original: asm/nonmatchings/menu/ess_main/func_00269CC0.s */
 
-// src/menu/ess_main.c func_00269CC0 cerr diff=-1/0
-extern u8 D_0058F680[];
+// src/menu/ess_main.c func_00269CC0 size diff=236/548
 extern u8 D_004E0660[];
-void *A2d_AllocObj(s32, s32, s32, s32 *, s32);
-s32 func_00139620(s32, void *, s32, s32, s32);
+extern u8 D_0058F680[];
+void *A2d_AllocObj(s32, s32, s32, u8 *, s32);
+s32 func_00139620(s32, u8 *, s32, s32, s32);
 s32 func_001A5490(s32, s32, f32);
 s32 func_00227A30(f32 *);
 s32 func_00227B20(s32, s32, s32, s32, f32);
@@ -30,8 +30,8 @@ void func_00269CC0(void) {
     s32 spB0;
     u8 *spD0;
     u8 *spE0;
-    s32 *var_a3;
     f32 temp_f20;
+    s32 temp_a0;
     s32 temp_a1;
     s32 temp_lo;
     s32 temp_v0_2;
@@ -47,16 +47,17 @@ void func_00269CC0(void) {
     s32 var_s2_2;
     s32 var_s3;
     s32 var_s5_3;
+    u8 *temp_s0;
+    u8 *temp_s0_2;
+    u8 *temp_s0_3;
+    u8 *temp_s2;
+    u8 *var_a3;
+    u8 *var_s5;
     u8 *var_v1;
     u8 **var_s1;
     u8 **var_s1_2;
     u8 **var_s5_2;
     u8 **var_s7;
-    u8 *temp_a0;
-    u8 *temp_s0;
-    u8 *temp_s0_2;
-    u8 *temp_s0_3;
-    u8 *temp_s2;
     u8 *temp_s4;
     u8 *temp_v0;
     u8 *temp_v0_5;
@@ -66,21 +67,20 @@ void func_00269CC0(void) {
     u8 *temp_v0_9;
     u8 *temp_v1;
     u8 *temp_v1_2;
-    u8 *var_s5;
     u8 *var_s6;
     u8 *var_s6_2;
 
-    temp_a0 = *(u8 **)((u8 *)gEssMain + 0x28);
-    D_00470704 = (s32)(temp_a0);
+    temp_a0 = *(s32 *)((u8 *)gEssMain + 0x28);
+    D_00470704 = temp_a0;
     D_0047070C = 0x11401000;
     D_00470708 = 0;
-    amModel_SetCurrent((s32)(temp_a0), 0x11401000);
+    amModel_SetCurrent(temp_a0, 0x11401000);
     D_00470238 = 0;
     func_00133780(0, 1);
     temp_s4 = *(u8 **)((u8 *)gEssMain + 0x24);
     func_00228430(0);
     func_002284D0(0);
-    func_0022C1D0(*(*(u8 **)((u8 *)temp_s4 + 0x14) + (*(s32 *)((u8 *)gEssMain + 0x90) * 4)), 1, (f32) *(s32 *)((u8 *)gEssMain + 0x98) * gFrameDelta);
+    func_0022C1D0((void *)(*(*(u8 **)((u8 *)temp_s4 + 0x14) + (*(s32 *)((u8 *)gEssMain + 0x90) * 4))), 1, (f32) *(s32 *)((u8 *)gEssMain + 0x98) * gFrameDelta);
     func_00228430(0);
     temp_v0 = func_0022D860(*(*(u8 **)((u8 *)temp_s4 + 0x14) + (*(s32 *)((u8 *)gEssMain + 0x1E0) * 4)), (f32) *(s32 *)((u8 *)gEssMain + 0x1E8) * gFrameDelta);
     func_0022CD00(temp_v0);
@@ -149,7 +149,7 @@ void func_00269CC0(void) {
         var_s1_2 += 4;
     } while (var_s2_2 < 3);
     func_00228410();
-    func_0022C1D0(*(*(u8 **)((u8 *)temp_s4 + 0x14) + (*(s32 *)((u8 *)gEssMain + 0xC0) * 4)), 1, (f32) *(s32 *)((u8 *)gEssMain + 0xC8) * gFrameDelta);
+    func_0022C1D0((void *)(*(*(u8 **)((u8 *)temp_s4 + 0x14) + (*(s32 *)((u8 *)gEssMain + 0xC0) * 4))), 1, (f32) *(s32 *)((u8 *)gEssMain + 0xC8) * gFrameDelta);
     func_0022D0E0(temp_v0, 1);
     var_s0 = 0;
     do {
@@ -199,11 +199,11 @@ void func_00269CC0(void) {
             var_s3 = 0x59;
         }
     }
-    var_a3 = (s32 *)(&D_004E0660);
+    var_a3 = D_004E0660;
     var_a2 = 0;
     var_a1 = 0;
     var_a0 = 0;
-    var_v1 = &D_0058F680 + (*(s32 *)((u8 *)gEssMain + 0x50) * 0xD680) + 0xD41D;
+    var_v1 = D_0058F680 + (*(s32 *)((u8 *)gEssMain + 0x50) * 0xD680) + 0xD41D;
     do {
         if ((s32) *(u8 *)((u8 *)var_a3 + 0xD) > 0) {
             var_a1 += 1;
@@ -236,7 +236,7 @@ void func_00269CC0(void) {
     func_00227A30(&spA0);
     func_00227A30((f32 *)(temp_v0_8 + 0x20));
     func_0022D4B0(temp_v0_8, 1);
-    func_0022C1D0(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s4 + 0x14)) + 0x38), 1, (f32) temp_lo);
+    func_0022C1D0(*(u8 **)((u8 *)(*(u8 **)((u8 *)temp_s4 + 0x14)) + 0x38), 1, (f32) temp_lo);
     func_00228410();
     func_00228410();
     if (*(f32 *)((u8 *)gEssMain + 0x4C) != 0.0f) {

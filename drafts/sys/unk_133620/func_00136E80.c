@@ -1,10 +1,10 @@
 /* Draft (not built): func_00136E80 at 0x00136E80, size 0x5B4, segment sys/unk_133620 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operands 'unsigned int *' | 'int' @ 536: *(s32 *)((u8 *)var_s1 + 0x30) = (s32) (D_0046FD18 | 1);
+ * Status: size, 212 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x4E4, original 0x5B4
  * Original: asm/nonmatchings/sys/unk_133620/func_00136E80.s */
 
-// src/sys/unk_133620.c func_00136E80 cerr diff=-1/0
+// src/sys/unk_133620.c func_00136E80 size diff=212/313
 s32 func_00145D70(s32, s32, s32, s32);
 extern s32 D_00470238;
 extern s32 D_00470270;
@@ -35,15 +35,21 @@ void func_00136E80(s32 arg0, f32 *arg1, s32 arg2, s64 arg3) {
     s32 temp_v0;
     s32 temp_v1;
     s32 var_s0;
+    s32 var_s2;
     s32 var_s4;
     s64 var_a0;
-    u8 *temp_s1;
+    s64 var_s5;
+    s64 var_s6;
     u8 *var_s1;
 
     var_s4 = arg0;
     var_s3 = arg1;
+    var_s2 = arg2;
+    var_s5 = arg3;
+    var_s6 = M2C_ERROR(/* Read from unset register $t0 */);
     var_s0 = 0;
     if (var_s3 == NULL) {
+        var_s3 = &D_0047CA30;
         var_s3 = &D_0047CA30;
         temp_v1 = var_s4 & 0x700;
         switch (temp_v1) {                          /* switch 1; irregular */
@@ -51,10 +57,12 @@ void func_00136E80(s32 arg0, f32 *arg1, s32 arg2, s64 arg3) {
         case 0x200:                                 /* switch 1 */
             break;
         case 0x300:                                 /* switch 1 */
-            var_s4 = (var_s4 & ~0x700) | 0x200;
+            var_s4 &= ~0x700;
+            var_s4 |= 0x200;
             break;
         default:                                    /* switch 1 */
-            var_s4 = (var_s4 & ~0x700) | 0x400;
+            var_s4 &= ~0x700;
+            var_s4 |= 0x400;
             break;
         }
     }
@@ -63,8 +71,8 @@ void func_00136E80(s32 arg0, f32 *arg1, s32 arg2, s64 arg3) {
     var_s1 = gPacketPtr;
     D_00470278 = var_s1;
     sp8C = NULL;
-    if (arg2 >= 0) {
-        temp_v0 = func_00145D70(D_00470238, arg2, 0, 1);
+    if (var_s2 >= 0) {
+        temp_v0 = func_00145D70(D_00470238, var_s2, 0, 1);
         if (temp_v0 & 2) {
             *(s32 *)((u8 *)var_s1 + 0) = 0x50000000;
             *(s32 *)((u8 *)var_s1 + 4) = (s32) *(s32 *)((u8 *)sp8C + 0x28);
@@ -103,12 +111,12 @@ void func_00136E80(s32 arg0, f32 *arg1, s32 arg2, s64 arg3) {
     *(s64 *)((u8 *)var_s1 + 0x20) = 1;
     *(s64 *)((u8 *)var_s1 + 0x28) = 0x46;
     if (var_s4 & 0x1000) {
-        *(s32 *)((u8 *)var_s1 + 0x30) = (s32) (D_0046FD18 | 1);
+        *(s32 *)((u8 *)var_s1 + 0x30) = (s32) (((s32)(D_0046FD18)) | 1);
     } else {
         *(s32 *)((u8 *)var_s1 + 0x30) = (s32) D_0046FD18;
     }
-    *(s64 *)((u8 *)var_s1 + 0x40) = arg3;
-    *(s64 *)((u8 *)var_s1 + 0x50) = (s64) M2C_ERROR(/* Read from unset register $t0 */);
+    *(s64 *)((u8 *)var_s1 + 0x40) = var_s5;
+    *(s64 *)((u8 *)var_s1 + 0x50) = var_s6;
     if ((sp8C != NULL) && (*(s32 *)((u8 *)sp8C + 0x1C) & 0x80000000)) {
         var_s0 = 1;
     }
@@ -121,7 +129,7 @@ void func_00136E80(s32 arg0, f32 *arg1, s32 arg2, s64 arg3) {
         *(s64 *)((u8 *)var_s1 + 0x48) = 0x43;
         *(s64 *)((u8 *)var_s1 + 0x58) = 9;
     }
-    temp_s1 = var_s1 + 0x60;
+    var_s1 += 0x60;
     var_a0 = 6;
     if (var_s4 & 0x20) {
         var_a0 = 6 | 0x10;
@@ -140,7 +148,7 @@ void func_00136E80(s32 arg0, f32 *arg1, s32 arg2, s64 arg3) {
     }
     D_0047CA10 = var_a0;
     D_0047CA18 = 0;
-    *(s128 *)((u8 *)var_s1 + 0x60) = (s128) D_0047CA10;
+    *(s128 *)((u8 *)var_s1 + 0) = (s128) D_0047CA10;
     var_f1 = 255.0f;
     if (var_s4 & 0x20) {
         var_f1 = 128.0f;
@@ -184,11 +192,12 @@ void func_00136E80(s32 arg0, f32 *arg1, s32 arg2, s64 arg3) {
     D_0047CA23 = M2C_BITWISE(s8, D_0047CA3C);
     D_0047CA24 = 1.0f;
     D_0047CA28 = 1;
-    *(s128 *)((u8 *)temp_s1 + 0x10) = (s128) D_0047CA20;
+    *(s128 *)((u8 *)var_s1 + 0x10) = (s128) D_0047CA20;
+    var_s1 += 0x20;
     D_00470270 = 4;
     gPacketQwc = 7;
     D_00470294 = 7;
     D_00470298 = 6;
     D_0047029C = 0;
-    gPacketPtr = temp_s1 + 0x20;
+    gPacketPtr = var_s1;
 }

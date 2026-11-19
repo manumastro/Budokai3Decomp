@@ -25,7 +25,7 @@ u8 *amMotion_Create(u8 *arg0, s32 arg1, u8 *arg2) {
 
     var_s4 = arg2;
     temp_s3 = *(s32 *)((u8 *)arg0 + 0x10);
-    temp_s5 = (struct MotHdr *)amMotion_CalcSize(arg0, arg1);
+    temp_s5 = (struct MotHdr *)amMotion_CalcSize(arg0,(struct MotHdr *)(arg1));
     if (var_s4 != NULL) {
 
     } else {
@@ -35,9 +35,9 @@ u8 *amMotion_Create(u8 *arg0, s32 arg1, u8 *arg2) {
     *(u8 **)((u8 *)var_s4 + 0) = (u8 *) D_00470304;
     D_00470304 = NULL;
     *(u8 **)((u8 *)var_s4 + 4) = arg0;
-    temp_v1 = (s8 *)(var_s4 + 0x24B0);
+    temp_v1 = (signed char *)(var_s4 + 0x24B0);
     *(s8 **)((u8 *)var_s4 + 0x408) = temp_v1;
-    temp_v1_2 = (u8 *)(temp_v1 + (*(s32 *)((u8 *)arg0 + 0x10) << 6));
+    temp_v1_2 = (unsigned char *)(temp_v1 + (*(s32 *)((u8 *)arg0 + 0x10) << 6));
     *(u8 **)((u8 *)var_s4 + 0x45C) = temp_v1_2;
     var_v1 = temp_v1_2 + (temp_s3 << 7);
     if (arg1 & 2) {

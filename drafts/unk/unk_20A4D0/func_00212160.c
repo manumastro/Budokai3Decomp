@@ -46,14 +46,59 @@ void func_00212160(u8 *arg0) {
             M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($s0) */);
         }
-        func_0013B060((s32)((void *)(NULL)));
+        func_0013B060((s32)(NULL));
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($s0) */);
         M2C_ERROR(/* unknown instruction: vmulax.xyzw ACC, $vf28, $vf1x */);
         M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);
         M2C_ERROR(/* unknown instruction: vmaddaz.xyzw ACC, $vf30, $vf1z */);
         M2C_ERROR(/* unknown instruction: vmaddw.xyzw $vf31, $vf31, $vf0w */);
-        func_00208D70((s32)((void *)(*(u8 **)((u8 *)arg0 + 0x10))));
+        func_00208D70((s32)(*(u8 **)((u8 *)arg0 + 0x10)));
         func_0013B110(1);
         func_00209C50();
     }
 }
+
+/* Similar function already in C: func_00212480 (src/unk/unk_20A4D0.c), similarity 0.80.
+ * It is the template below (not built). */
+#if 0
+void func_00212480(u8 *a0) {
+    u8 *s0 = a0 + 0x20;
+    V4Q t;
+    u8 *p2;
+    if (*(s32 *)(a0 + 0x10) != 0) {
+        D_00470238 = 0;
+        if (*(s32 *)(s0 + 0x20) != 0) {
+            amModel_SetCurrent(*(s32 *)(s0 + 0x20), *(s32 *)(s0 + 0x28));
+        }
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            func_00208D60(*(s32 *)(s0 + 0x24));
+        }
+        func_0013B0B0(0);
+        __asm__ volatile (
+            "lqc2 $vf28, 0x0(%0)\n"
+            "lqc2 $vf29, 0x10(%0)\n"
+            "lqc2 $vf30, 0x20(%0)\n"
+            "lqc2 $vf31, 0x30(%0)\n"
+            : : "r"((u8 *)gBattle + 0x60));
+        p2 = *(u8 **)((u8 *)gBattle + 0x264);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "lqc2 $vf2, 0(%1)\n"
+            "vsub.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%2)\n"
+            : : "r"(p2), "r"(s0), "r"(&t));
+        func_00209D70(&t);
+        func_0013B060(0);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "vmulax.xyzw $ACC, $vf28, $vf1x\n"
+            "vmadday.xyzw $ACC, $vf29, $vf1y\n"
+            "vmaddaz.xyzw $ACC, $vf30, $vf1z\n"
+            "vmaddw.xyzw $vf31, $vf31, $vf0w\n"
+            : : "r"(s0));
+        func_00208D70(*(s32 *)(a0 + 0x10));
+        func_00209C50();
+        func_0013B110(1);
+    }
+}
+#endif

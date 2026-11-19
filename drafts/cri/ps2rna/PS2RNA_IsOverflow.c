@@ -20,3 +20,13 @@ s32 PS2RNA_IsOverflow(void)
   }
   return 0;
 }
+
+/* Similar function already in C: func_00164E20 (src/cri/srd.c), similarity 0.60.
+ * It is the template below (not built). */
+#if 0
+void func_00164E20(void) {
+    if (D_0041160C == 1) {
+        func_0016FFA0(1);
+    }
+}
+#endif

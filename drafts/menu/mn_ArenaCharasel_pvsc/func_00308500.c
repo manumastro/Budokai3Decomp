@@ -1,10 +1,10 @@
 /* Draft (not built): func_00308500 at 0x00308500, size 0x32C, segment menu/mn_ArenaCharasel_pvsc (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); mplicit conversion from 'unsigned char[]' to 'short' mwccps2.exe Compiler: @ 322: func_002E87C0(D_005C4150, D_005C4126);
+ * Status: size, 131 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x2E8, original 0x32C
  * Original: asm/nonmatchings/menu/mn_ArenaCharasel_pvsc/func_00308500.s */
 
-// src/menu/mn_ArenaCharasel_pvsc.c func_00308500 cerr diff=-1/0
+// src/menu/mn_ArenaCharasel_pvsc.c func_00308500 size diff=131/186
 extern void amCdFs_Close(void *, s32);
 extern void *amTask_Create();
 s32 A2d_SetMode(s32);
@@ -25,11 +25,11 @@ extern s16 D_005C4122;
 extern u8 D_005C4CB4;
 extern void amFile_Load(void *);
 extern void amAdx_Stop();
+extern void *D_00470704;
+extern void amModel_SetCurrent();
 extern void ArenaList_Load(void);
 extern void func_0022E0B0(void *);
 extern char D_005C4150[];
-extern void *D_00470704;
-extern void amModel_SetCurrent();
 extern void func_002D09B0(void);
 extern void func_00308070(void);
 extern void func_00308450(void);
@@ -37,11 +37,11 @@ void func_00308500(u8 *arg0) {
     s32 *var_v1;
     s16 temp_a0_2;
     s32 temp_a0;
+    u8 *temp_s2;
     u8 *temp_a0_3;
     u8 *temp_a0_4;
     u8 *temp_s0;
     u8 *temp_s1;
-    u8 *temp_s2;
 
     temp_s0 = *(u8 **)((u8 *)arg0 + 0x30);
     temp_s2 = D_00470988;
@@ -90,10 +90,10 @@ void func_00308500(u8 *arg0) {
             D_00470238 = 0;
             *(s32 *)((u8 *)temp_s0 + 0x58) = func_0022D860(**(s32 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x14), 0);
             ArenaList_Load();
-            func_002E87C0(D_005C4150, D_005C4126);
-            func_002E8540(D_005C4150, 0, D_004B4B63);
-            var_v1 = (s32 *)(&func_00308070);
-            D_005C4136 = (s16) D_005C4CB4;
+            func_002E87C0((s8 *)(D_005C4150), (s16)(*D_005C4126));
+            func_002E8540((s8 *)(D_005C4150), 0, (s8) *D_004B4B63);
+            var_v1 = (int *)(&func_00308070);
+            *D_005C4136 = (s16) D_005C4CB4;
             *(s8 *)((u8 *)temp_s0 + 0x1D) = (s8) ((s64) ((s64) D_005C4CB4 << 0x30) >> 0x30);
             *(s32 *)((u8 *)temp_s0 + 0x40) = 0x42700000;
             *(s32 *)((u8 *)temp_s0 + 0x44) = 0;
@@ -101,7 +101,7 @@ void func_00308500(u8 *arg0) {
                 var_v1 = NULL;
             }
         } else {
-            *(s32 *)((u8 *)temp_s0 + 8) = func_0027E2D0(5, (0 | (((D_004B4B63 == 0) ? 2 : 4) & 0xFF)) & 0xFF, 1, -1);
+            *(s32 *)((u8 *)temp_s0 + 8) = func_0027E2D0(5, (0 | ((((s8) *D_004B4B63 == 0) ? 2 : 4) & 0xFF)) & 0xFF, 1, -1);
             *(s32 *)((u8 *)temp_s0 + 0xC) = 0;
             temp_a0_4 = *(u8 **)((u8 *)temp_s0 + 4);
             D_00470704 = temp_a0_4;
@@ -111,7 +111,7 @@ void func_00308500(u8 *arg0) {
             D_00470238 = 0;
             *(s32 *)((u8 *)temp_s0 + 0x58) = func_0022D860(**(s32 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0)) + 0x14), 0);
             *(s32 *)((u8 *)temp_s0 + 0x40) = 0x42700000;
-            var_v1 = (s32 *)(&func_00308450);
+            var_v1 = (int *)(&func_00308450);
             *(s32 *)((u8 *)temp_s0 + 0x44) = 0;
             if (&func_00308450 == NULL) {
                 var_v1 = NULL;

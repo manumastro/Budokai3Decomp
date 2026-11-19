@@ -60,7 +60,7 @@ block_2:
     M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);
     M2C_ERROR(/* unknown instruction: vmaddaz.xyzw ACC, $vf30, $vf1z */);
     M2C_ERROR(/* unknown instruction: vmaddw.xyzw $vf31, $vf31, $vf0w */);
-    func_00208D70((s32)((void *)(*(u8 **)((u8 *)(temp_v1 + 0x10) + 0x30))));
+    func_00208D70((s32)(*(u8 **)((u8 *)(temp_v1 + 0x10) + 0x30)));
     func_0013B110(1);
     func_00209C50();
 block_4:

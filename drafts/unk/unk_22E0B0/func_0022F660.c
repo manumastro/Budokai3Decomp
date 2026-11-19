@@ -27,7 +27,7 @@ s32 func_0022F660(u8 *arg0) {
 
     temp_s4 = *(u8 **)((u8 *)arg0 + 0x1354);
     temp_a0 = *(s32 *)((u8 *)arg0 + 0x1350);
-    temp_s3 = (u8 *)(&D_0058BBB0 + (temp_a0 * 0xC0));
+    temp_s3 = (unsigned char *)(&D_0058BBB0 + (temp_a0 * 0xC0));
     temp_s0 = *(u8 **)((u8 *)temp_s3 + 0xC);
     temp_s2 = *(u8 **)((u8 *)temp_s3 + 8);
     if (func_002CC450(temp_a0) & 0x80) {

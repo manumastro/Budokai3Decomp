@@ -63,8 +63,8 @@ void func_0029BA80(u8 *arg0) {
 
     temp_s1 = *(s32 *)((u8 *)gStrTitle + 0xB4);
     temp_v0 = D_004B4B63 * 0xB8;
-    temp_a2 = (u16 *)(D_00492FCE + temp_v0);
-    temp_a1 = (u16 *)(&D_00492FD2 + temp_v0);
+    temp_a2 = (unsigned short *)(D_00492FCE + temp_v0);
+    temp_a1 = (unsigned short *)(&D_00492FD2 + temp_v0);
     temp_s3 = *temp_a2;
     temp_s2 = *temp_a1 | *(&D_00493032 + temp_v0);
     if (amAdx_IsStopped(1, temp_a1, temp_a2, D_004B4B63 * 0x18) != 0) {
@@ -87,7 +87,7 @@ void func_0029BA80(u8 *arg0) {
             }
             temp_a0_2 = *(u8 **)((u8 *)(((u8 *)gStrTitle) + var_s1) + 0x3C);
             if (temp_a0_2 != NULL) {
-                amTask_Kill((void *)(temp_a0_2));
+                amTask_Kill((Task *)(temp_a0_2));
                 *(s32 *)((u8 *)(((u8 *)gStrTitle) + var_s1) + 0x3C) = 0;
             }
             var_s2 += 1;
@@ -95,7 +95,7 @@ void func_0029BA80(u8 *arg0) {
         } while (var_s2 < 8);
         temp_a0_3 = *(u8 **)((u8 *)gStrTitle + 0x60);
         if (temp_a0_3 != NULL) {
-            amTask_Kill((void *)(temp_a0_3));
+            amTask_Kill((Task *)(temp_a0_3));
             *(u8 **)((u8 *)gStrTitle + 0x60) = NULL;
         }
         var_v1 = func_0029C2E0;
@@ -125,9 +125,9 @@ block_37:
                 temp_v1 = var_s0 * 8;
                 var_t5 = 0;
                 if (*(&D_00453F14 + temp_v1) > 0) {
-                    temp_v0_2 = (u8 *)(&D_00453F10 + temp_v1);
+                    temp_v0_2 = (unsigned char *)(&D_00453F10 + temp_v1);
                     temp_t3 = *(s16 *)((u8 *)temp_v0_2 + 0);
-                    var_t4 = (s8 *)(D_004B4B40[0]);
+                    var_t4 = (signed char *)(D_004B4B40);
 loop_42:
                     if (temp_t3 != -1) {
                         var_v0 = *(u8 *)((u8 *)(&D_004B4B40[temp_t3]) + 0x2AFD9);
@@ -163,13 +163,13 @@ loop_42:
             if (sp54 != 0x2B) {
                 temp_a0_5 = *(u8 **)((u8 *)gStrTitle + 0x60);
                 if (temp_a0_5 != NULL) {
-                    amTask_Kill((void *)(temp_a0_5));
+                    amTask_Kill((Task *)(temp_a0_5));
                     *(u8 **)((u8 *)gStrTitle + 0x60) = NULL;
                 }
             } else if (*(u8 **)((u8 *)gStrTitle + 0x60) == NULL) {
                 *(u8 **)((u8 *)gStrTitle + 0x60) = amTask_Create(&func_0029B130, 0, 0x8014, 2);
             }
-            func_0028EC80(((u8 *)gStrTitle) + 0x10, ((u8 *)gStrTitle) + 0x64, ((u8 *)gStrTitle) + 0x68, ((u8 *)gStrTitle) + 0x6C);
+            func_0028EC80((s32)(((u8 *)gStrTitle) + 0x10), (s32)(((u8 *)gStrTitle) + 0x64), (s32)(((u8 *)gStrTitle) + 0x68), (s32)(((u8 *)gStrTitle) + 0x6C), 0, 0, 0, 0);
             StrBg_SetPos(*(s32 *)((u8 *)gStrTitle + 0x58), 0, 0);
             temp_v1_3 = *(&D_00453F10 + (var_s0 * 8));
             if (temp_v1_3 != -1) {
@@ -182,7 +182,7 @@ loop_42:
                 var_v0_2 = 0;
             }
             if (var_v0_2 == 0) {
-                StrBg_SetValue(*(s32 *)((u8 *)gStrTitle + 0x58), ((u8 *)gStrTitle) + 0xC0);
+                StrBg_SetValue(*(s32 *)((u8 *)gStrTitle + 0x58),((u8 *)gStrTitle) + 0xC0);
             } else {
                 StrBg_SetValue(*(s32 *)((u8 *)gStrTitle + 0x58), NULL);
             }
@@ -205,7 +205,7 @@ block_20:
             }
             return;
         }
-        func_0028EC80(((u8 *)gStrTitle) + 0x10, ((u8 *)gStrTitle) + 0x64, ((u8 *)gStrTitle) + 0x68, ((u8 *)gStrTitle) + 0x6C);
+        func_0028EC80((s32)(((u8 *)gStrTitle) + 0x10), (s32)(((u8 *)gStrTitle) + 0x64), (s32)(((u8 *)gStrTitle) + 0x68), (s32)(((u8 *)gStrTitle) + 0x6C), 0, 0, 0, 0);
         SoundRpc_SetVolume(0, 0, D_004E0614, 0);
         if (!(D_004E0614 <= 0.0f)) {
             SoundRpc_Send3(0, 0, 2, 0);

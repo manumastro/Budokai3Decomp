@@ -31,7 +31,7 @@ s32 func_00235480(u8 *arg0) {
     temp_a1 = *(s32 *)((u8 *)arg0 + 0x1350);
     var_s0 = 0x100;
     var_s4 = *(u8 **)((u8 *)arg0 + 0x1354);
-    var_s3 = &D_0058BBB0 + (temp_a1 * 0xC0);
+    var_s3 = ((u8 *)&D_0058BBB0) + (temp_a1 * 0xC0);
     var_s6 = *(s8 *)((u8 *)var_s3 + 0xB5);
     spA0 = (s32) *(u16 *)((u8 *)(*(u8 **)((u8 *)var_s3 + 8)) + 0x128);
     var_a0 = func_001D9220(temp_a1) == 0;
@@ -42,7 +42,7 @@ s32 func_00235480(u8 *arg0) {
     if (temp_v0 != NULL) {
         var_s2 = var_s4 + 0x1360;
         var_s1 = temp_v0;
-        var_fp = (s32 *)(temp_v0 + 0x20);
+        var_fp = (int *)(temp_v0 + 0x20);
     }
     if (var_s1 != NULL) {
         temp_v1 = *var_fp;

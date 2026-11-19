@@ -23,12 +23,12 @@ void func_002B0A40(s32 arg0) {
     f32 var_f0;
 
     gScrTimers = 0;
-    memset(&D_005ABA80 + (arg0 * 0x8380), 0, 0x8380);
+    memset((s32 *)(((u8 *)&D_005ABA80) + (arg0 * 0x8380)), 0, 0x8380);
     memset(&D_005BC9E0 + (arg0 * 0x1A0), 0, 0x1A0);
-    memset(&D_005BC180 + (arg0 * 0x160), 0, 0x160);
+    memset((s32 *)(((u8 *)&D_005BC180) + (arg0 * 0x160)), 0, 0x160);
     memset(&D_005BC440 + (arg0 * 0x90), 0, 0x90);
     memset(&D_005BC560 + (arg0 * 0x240), 0, 0x240);
-    memset(&D_005BCD20 + (arg0 * 0xA0), 0, 0xA0);
+    memset((s32 *)(((u8 *)&D_005BCD20) + (arg0 * 0xA0)), 0, 0xA0);
     func_0013AFA0(NULL);
     memset(&D_005BCF20, 0, 0x60);
     func_00131B90(&D_005BCF20);

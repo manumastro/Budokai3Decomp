@@ -83,7 +83,7 @@ void func_00139E60(u8 *arg0, u8 *arg1, u8 *arg2, f32 fparg0) {
         *(f32 *)((u8 *)arg0 + 0x20) = (f32) *(f32 *)((u8 *)temp_v1 + 0x10);
         *(f32 *)((u8 *)arg0 + 0x24) = (f32) *(f32 *)((u8 *)temp_v1 + 0x14);
         *(f32 *)((u8 *)arg0 + 0x28) = (f32) *(f32 *)((u8 *)temp_v1 + 0x18);
-        *(s3232 *)((u8 *)arg0 + 0x2C) = 0x3F800000;
+        *(s32 *)((u8 *)arg0 + 0x2C) = 0x3F800000;
         if ((f32) *(s32 *)((u8 *)temp_v1 + 0xC) != fparg0) {
             temp_a0_2 = temp_v1 + 0xC + 0x10;
             sp80 = *(f32 *)((u8 *)temp_a0_2 + 4);
@@ -99,7 +99,7 @@ void func_00139E60(u8 *arg0, u8 *arg1, u8 *arg2, f32 fparg0) {
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
         }
         M2C_ERROR(/* unknown instruction: adda.s $f2, $f0 */);
-        *(s3232 *)((u8 *)arg0 + 0x2C) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f1, $f0 */);
+        *(s32 *)((u8 *)arg0 + 0x2C) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f1, $f0 */);
     }
     func_00146F30(arg0 + 0x10);
     *(s16 *)((u8 *)arg0 + 0x30) = 0;

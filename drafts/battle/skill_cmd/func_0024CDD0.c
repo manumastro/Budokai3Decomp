@@ -1,10 +1,10 @@
 /* Draft (not built): func_0024CDD0 at 0x0024CDD0, size 0x21C, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); om 'int' to 'void *' @ 739: 4) & 8) && (func_00146E60(arg0 + 0x20, *(s32 *)((u8 *)temp_s0 + 0x1354) + 0x660) < 16.0f)) {
+ * Status: size, 63 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1D8, original 0x21C
  * Original: asm/nonmatchings/battle/skill_cmd/func_0024CDD0.s */
 
-// src/battle/skill_cmd.c func_0024CDD0 cerr diff=-1/0
+// src/battle/skill_cmd.c func_0024CDD0 size diff=63/118
 f32 func_00146E60(void *, void *);
 s32 func_0024CDD0(u8 *arg0) {
     f32 temp_f1;
@@ -31,7 +31,7 @@ s32 func_0024CDD0(u8 *arg0) {
     if ((temp_f1 < 0.0f) && (*(s16 *)((u8 *)arg0 + 4) & 0x1000)) {
         func_0024CB00((struct SkillObj *)(arg0));
     }
-    if ((*(s16 *)((u8 *)arg0 + 4) & 8) && (func_00146E60(arg0 + 0x20, *(s32 *)((u8 *)temp_s0 + 0x1354) + 0x660) < 16.0f)) {
+    if ((*(s16 *)((u8 *)arg0 + 4) & 8) && (func_00146E60((void *)(arg0 + 0x20), (void *)(*(s32 *)((u8 *)temp_s0 + 0x1354) + 0x660)) < 16.0f)) {
         *(f32 *)((u8 *)arg0 + 0) = 0.0f;
         *(s16 *)((u8 *)arg0 + 4) = (s16) (*(s16 *)((u8 *)arg0 + 4) | ~0x7FFF);
     }

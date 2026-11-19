@@ -68,7 +68,7 @@ void func_001471C0(void) {
                         temp_a2 = var_a0 & 0xFFFF;
                         temp_a1 = ((D_00470418 * 0x10) + var_a0) & 0xFFFF;
                         if (D_004703D0 != 0) {
-                            var_a3 = (u8 *)(temp_a3 + 0xB0);
+                            var_a3 = (unsigned char *)(temp_a3 + 0xB0);
                             var_v0 = (u32) D_00470424 >> 6;
 loop_23:
                             if (var_v0 != 0) {
@@ -81,7 +81,7 @@ loop_23:
                                 goto loop_23;
                             }
                         } else {
-                            var_a3_2 = (u8 *)(temp_a3 + 0xD0);
+                            var_a3_2 = (unsigned char *)(temp_a3 + 0xD0);
                             var_v0_2 = (u32) D_00470424 >> 6;
 loop_28:
                             if (var_v0_2 != 0) {
@@ -115,7 +115,7 @@ loop_28:
                     func_00101498(var_s1, 0x800, 0x800, (s16) D_004703AC);
                 }
                 func_00101808(temp_s0, D_004703B0);
-                temp_a0_2 = (u8 *)(temp_s0 + (D_004703B0 * 0x28));
+                temp_a0_2 = (unsigned char *)(temp_s0 + (D_004703B0 * 0x28));
                 *(s64 *)0x12000070 = *(s64 *)((u8 *)temp_a0_2 + 0x10);
                 *(s64 *)0x12000080 = *(s64 *)((u8 *)temp_a0_2 + 0x18);
                 *(s64 *)0x12000000 = *(s64 *)((u8 *)temp_a0_2 + 0);

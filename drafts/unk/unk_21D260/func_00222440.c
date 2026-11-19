@@ -33,7 +33,7 @@ void func_00222440(u8 *arg0) {
     u8 *temp_s2;
 
     temp_s1 = arg0 + 0x30;
-    temp_s2 = (u8 *)(gBtlSys);
+    temp_s2 = (unsigned char *)(gBtlSys);
     func_00224680(temp_s1);
     if (!(*(s32 *)((u8 *)temp_s2 + 0xE30) & 2)) {
         goto block_12;
@@ -139,7 +139,7 @@ block_34:
 block_39:
     *(s32 *)((u8 *)temp_s1 + 4) = 5;
     *(s16 *)((u8 *)temp_s2 + 0xE44) = -1;
-    var_v0 = (s32 *)(&func_00222280);
+    var_v0 = (int *)(&func_00222280);
     *(s32 *)((u8 *)temp_s1 + 0x1C) = 0;
     if (&func_00222280 != NULL) {
         goto block_41;
@@ -155,7 +155,7 @@ block_41:
     return;
 block_43:
     *(s32 *)((u8 *)temp_s1 + 4) = 2;
-    var_v0_2 = (s32 *)(&func_00222A90);
+    var_v0_2 = (int *)(&func_00222A90);
     *(s32 *)((u8 *)temp_s1 + 0x1C) = 0;
     if (&func_00222A90 != NULL) {
         goto block_45;
@@ -163,7 +163,7 @@ block_43:
     var_v0_2 = NULL;
 block_45:
     *(s32 **)((u8 *)arg0 + 0x1C) = var_v0_2;
-    var_v0_3 = (s32 *)(&func_0021F3A0);
+    var_v0_3 = (int *)(&func_0021F3A0);
     if (&func_0021F3A0 != NULL) {
         goto block_47;
     }
@@ -192,7 +192,7 @@ block_52:
     *(s32 *)((u8 *)temp_s1 + 0x30) = 0x43C80000;
     *(s32 *)((u8 *)temp_s1 + 0x34) = 0x43AA0000;
     *(s32 *)((u8 *)temp_s1 + 0x1C) = 0;
-    var_v0_4 = (s32 *)(&func_00222280);
+    var_v0_4 = (int *)(&func_00222280);
     *(s16 *)((u8 *)temp_s0 + 0x4E) = -2;
     if (&func_00222280 != NULL) {
         goto block_54;
@@ -209,7 +209,7 @@ block_54:
 block_57:
     *(s16 *)((u8 *)temp_s0 + 0x4E) = temp_v0;
     *(s32 *)((u8 *)temp_s1 + 4) = 2;
-    var_v0_5 = (s32 *)(&func_00222A90);
+    var_v0_5 = (int *)(&func_00222A90);
     *(s16 *)((u8 *)temp_s2 + 0xE44) = 0;
     *(s32 *)((u8 *)temp_s1 + 0x30) = 0;
     *(s32 *)((u8 *)temp_s1 + 0x34) = 0;
@@ -220,7 +220,7 @@ block_57:
     var_v0_5 = NULL;
 block_59:
     *(s32 **)((u8 *)arg0 + 0x1C) = var_v0_5;
-    var_v0_6 = (s32 *)(&func_0021F3A0);
+    var_v0_6 = (int *)(&func_0021F3A0);
     if (&func_0021F3A0 != NULL) {
         goto block_61;
     }

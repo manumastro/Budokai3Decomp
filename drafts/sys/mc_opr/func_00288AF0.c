@@ -1,20 +1,18 @@
-/* Draft (not built): func_00288AF0 at 0x00288AF0, size 0x100, segment sys/mc_opr (asm)
+/* Draft (not built): func_00288AF0 at 0x00288AF0, size 0x100, segment sys/mc_opr (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: uncompiled
- * Made with: m2c -t mipsee-mwcc-c --valid-syntax, not compiled
- * Original: asm/sys/mc_opr.s */
+ * Status: size, 29 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
+ * Original: asm/nonmatchings/sys/mc_opr/func_00288AF0.s */
 
-s32 func_00127940(void *, s32 *);                   /* extern */
+s32 func_00127940(void *, s32 *);
 extern s32 D_004535E0;
-
-void *func_00288AF0(void *arg0, s32 arg1, s32 *arg2) {
+u8 *func_00288AF0(u8 *arg0, s32 arg1, s32 *arg2) {
     s32 *var_s0;
     s32 var_s2;
     s32 var_s3;
     s32 var_s5;
-    void *var_s1;
-    void *var_s6;
-
+    u8 *var_s1;
+    u8 *var_s6;
     var_s6 = arg0;
     var_s5 = arg1;
     var_s1 = NULL;
@@ -30,8 +28,8 @@ void *func_00288AF0(void *arg0, s32 arg1, s32 *arg2) {
                 var_s0 = &D_004535E0;
             }
             var_s3 = 0;
-loop_8:
-            if ((M2C_FIELD(var_s6, s32 *, 0x10) == *var_s0) && (func_00127940(var_s6 + 0x20, var_s0 + 4) == 0)) {
+            loop_8:
+            if (*var_s0 == *(s32 *)((u8 *)var_s6 + 0x10) && func_00127940(var_s6 + 0x20, var_s0 + 4) == 0) {
                 var_s2 += 1;
                 if (var_s3 == 2) {
                     var_s1 = var_s6;
@@ -43,9 +41,11 @@ loop_8:
                     goto loop_8;
                 }
             }
+
             var_s5 -= 1;
             var_s6 += 0x40;
-        } while (var_s5 > 0);
+        }
+        while (var_s5 > 0);
     }
     if (var_s2 != 3) {
         var_s1 = NULL;

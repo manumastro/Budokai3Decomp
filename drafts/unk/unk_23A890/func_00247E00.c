@@ -1,10 +1,10 @@
 /* Draft (not built): func_00247E00 at 0x00247E00, size 0x170, segment unk/unk_23A890 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); function call does not match prototype @ 2587: temp_v0();
+ * Status: size, 58 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x18C, original 0x170
  * Original: asm/nonmatchings/unk/unk_23A890/func_00247E00.s */
 
-// src/unk/unk_23A890.c func_00247E00 cerr diff=-1/0
+// src/unk/unk_23A890.c func_00247E00 size diff=58/99
 extern f32 D_0051CD24;
 void func_00247E00(u8 *arg0) {
     s32 (*temp_v0)(u8 *, u8 *);
@@ -15,9 +15,9 @@ void func_00247E00(u8 *arg0) {
     s32 var_a0;
     s32 var_a1;
     u8 *temp_a1;
+    u8 *temp_t0;
     u8 *temp_a2;
     u8 *temp_s0;
-    u8 *temp_t0;
 
     temp_f20 = D_0051CD24;
     if (!(temp_f20 < 0.0f)) {
@@ -27,7 +27,7 @@ void func_00247E00(u8 *arg0) {
             *(f32 *)((u8 *)temp_s0 + 0x10) = 0.0f;
             temp_v0 = *(s32 (**)(u8 *, u8 *))((u8 *)temp_s0 + 0x24);
             if (temp_v0 != NULL) {
-                temp_v0();
+                ((s32 (*)(void))temp_v0)();
             }
         }
         temp_t0 = *(u8 **)((u8 *)temp_s0 + 8);
@@ -49,7 +49,7 @@ void func_00247E00(u8 *arg0) {
         }
         *(s32 *)((u8 *)temp_t0 + 0x41C) = temp_a3;
         *(f32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x424) = (f32) *(f32 *)((u8 *)temp_s0 + 0x10);
-        amMotion_Apply(*(u8 **)((u8 *)temp_s0 + 8), 0, 0x3F800000);
+        amMotion_Apply(*(u8 **)((u8 *)temp_s0 + 8), 0.0f, 1.0f);
         *(f32 *)((u8 *)temp_s0 + 0x10) = (f32) (*(f32 *)((u8 *)temp_s0 + 0x10) + temp_f20);
         temp_v1 = *(s32 *)((u8 *)temp_s0 + 0x14);
         temp_a1 = *(u8 **)((u8 *)temp_s0 + 8);

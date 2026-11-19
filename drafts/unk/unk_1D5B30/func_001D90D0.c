@@ -1,11 +1,12 @@
 /* Draft (not built): func_001D90D0 at 0x001D90D0, size 0x150, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); E11E0(arg0, &sp40); @ 1067: var_f1 = temp_f3 + (*(f32 *)((u8 *)gBattle + 0x88F0) * (0.05f * ((1.0f - sp5C) - temp_f3)));
+ * Status: size, 45 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x144, original 0x150
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001D90D0.s */
 
-// src/unk/unk_1D5B30.c func_001D90D0 cerr diff=-1/0
+// src/unk/unk_1D5B30.c func_001D90D0 size diff=45/81
 void func_001D90D0(u8 *arg0) {
+    s32 sp5C;
     f32 sp40;
     s32 sp44;
     s32 sp48;
@@ -39,7 +40,7 @@ void func_001D90D0(u8 *arg0) {
         sp44 = 0x5000;
         sp48 = 0;
         sp4C = 0;
-        func_001E11E0(arg0, &sp40);
+        func_001E11E0((s32)(arg0), (void *)(&sp40));
     }
     *(s8 *)((u8 *)arg0 + 0xCBF) = 0;
     temp_v1 = *(s32 *)((u8 *)arg0 + 0xB2C);
@@ -48,7 +49,7 @@ void func_001D90D0(u8 *arg0) {
         if (temp_v1 > 0) {
             var_s1 = arg0;
             do {
-                func_002181A0(*(s32 *)((u8 *)var_s1 + 0xB30), arg0);
+                func_002181A0((void *)(*(s32 *)((u8 *)var_s1 + 0xB30)), (Fighter *)(arg0));
                 var_s2 += 1;
                 var_s1 += 4;
             } while (var_s2 < *(s32 *)((u8 *)arg0 + 0xB2C));

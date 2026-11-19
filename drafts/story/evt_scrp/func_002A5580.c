@@ -1,12 +1,14 @@
 /* Draft (not built): func_002A5580 at 0x002A5580, size 0x118, segment story/evt_scrp (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ccps2.exe Compiler: 2011: *(s32 *)((u8 *)D_005AA604 + 0x1200) = sp5C; @ 2003: *(s8 *)((u8 *)D_005AA604 + 0x11E7) = sp54;
+ * Status: diff, 58 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/story/evt_scrp/func_002A5580.s */
 
-// src/story/evt_scrp.c func_002A5580 cerr diff=-1/0
+// src/story/evt_scrp.c func_002A5580 diff diff=58/70
 extern void amHeap_Free(void *);
 void func_002A5580(void) {
+    s32 sp5C;
+    s32 sp54;
     s32 sp20;
     s32 sp30;
     s32 sp34;
@@ -37,10 +39,10 @@ void func_002A5580(void) {
         sp34 = 1;
         sp30 = 2;
         StrStatus_Dispatch(&sp20);
-        temp_s0 = (u8 *)(gEvtWork);
+        temp_s0 = (unsigned char *)(gEvtWork);
         temp_a0_2 = *(u8 **)((u8 *)temp_s0 + 8);
         if (temp_a0_2 != NULL) {
-            amTask_Kill((void *)(temp_a0_2));
+            amTask_Kill((struct Task *)(temp_a0_2));
             *(s32 *)((u8 *)temp_s0 + 8) = 0;
         }
         if (gEvtWork != NULL) {
@@ -54,3 +56,54 @@ void func_002A5580(void) {
         return;
     }
 }
+
+/* Similar function already in C: func_002EC850 (src/unk/unk_2EC850.c), similarity 0.84.
+ * It is the template below (not built). */
+#if 0
+void func_002EC850(ResultTask *t)
+{
+  ResultArg arg;
+  ResultMsg msg;
+  ResultWork *w;
+  s32 i;
+  switch (gStrStatus->f27C)
+  {
+    case 0:
+
+    case 1:
+      D_00470964 = 0;
+      break;
+
+    case 2:
+      if (D_00470964 == 0)
+    {
+      Scene_Request(8, 0);
+      D_00470964 = 1;
+    }
+      break;
+
+    case 3:
+      func_002BD400(&arg);
+      w = D_005AA604[0];
+      if ((D_00470964 && D_00470964) && D_00470964)
+    {
+    }
+      w->f0 = arg.e.f0;
+      for (i = 0; i < 7; i++)
+    {
+      w->b[i] = arg.e.b[i];
+    }
+
+      w->w = arg.e.w;
+      StrStatus_Free();
+      msg.f14 = 1;
+      msg.f10 = 2;
+      StrStatus_Dispatch(&msg);
+      Scene_MarkDone();
+      t->f1C = (void *) 0;
+      break;
+
+  }
+
+}
+#endif

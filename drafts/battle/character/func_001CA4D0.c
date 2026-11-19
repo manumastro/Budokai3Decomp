@@ -127,7 +127,7 @@ loop_18:
         if (var_t2 < 0x61) {
             goto loop_18;
         }
-        temp_a0_2 = (u8 *)(var_t0_2 + (var_t2 * 8));
+        temp_a0_2 = (unsigned char *)(var_t0_2 + (var_t2 * 8));
         temp_f1 = *var_t1;
         var_t3 += 1;
         var_t1 += 4;

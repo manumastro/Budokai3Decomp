@@ -1,10 +1,10 @@
 /* Draft (not built): func_0024DB10 at 0x0024DB10, size 0x5D4, segment battle/skill_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); conversion from 'unsigned char *' to 'int' @ 797: func_001D9280(*(u8 **)((u8 *)arg0 + 8), var_a1, temp_a3 * 9, temp_a3);
+ * Status: size, 227 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x3E0, original 0x5D4
  * Original: asm/nonmatchings/battle/skill_cmd/func_0024DB10.s */
 
-// src/battle/skill_cmd.c func_0024DB10 cerr diff=-1/0
+// src/battle/skill_cmd.c func_0024DB10 size diff=227/248
 f32 func_00146E30(s32, void *);
 s32 func_001EA240(s32 *);
 s32 func_002183F0(s32, void **, void *);
@@ -53,10 +53,10 @@ s32 func_0024DB10(u8 *arg0) {
 
     temp_s2 = *(u8 **)((u8 *)arg0 + 8);
     temp_s3 = *(u8 **)((u8 *)arg0 + 0xC);
-    var_a1 = (s32)(D_0046FE4C);
+    var_a1 = (int)(D_0046FE4C);
     temp_a3 = *(s32 *)((u8 *)temp_s2 + 0x1350);
-    temp_s1 = (u8 *)(var_a1 + (temp_a3 * 0x480) + 0x10);
-    temp_s0 = (u8 *)(var_a1 + (*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 0x1354)) + 0x1350) * 0x480) + 0x10);
+    temp_s1 = (unsigned char *)(var_a1 + (temp_a3 * 0x480) + 0x10);
+    temp_s0 = (unsigned char *)(var_a1 + (*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 0x1354)) + 0x1350) * 0x480) + 0x10);
     if (*(s16 *)((u8 *)arg0 + 4) & 0x8000) {
         return 1;
     }
@@ -72,7 +72,7 @@ s32 func_0024DB10(u8 *arg0) {
             }
         } else {
 block_11:
-            func_001D9280(*(u8 **)((u8 *)arg0 + 8), var_a1, temp_a3 * 9, temp_a3);
+            func_001D9280((s32)(*(u8 **)((u8 *)arg0 + 8)));
             temp_a0 = *(u8 **)((u8 *)arg0 + 0x58);
             if (temp_a0 != NULL) {
                 func_00209390(temp_a0);
@@ -123,7 +123,7 @@ block_11:
             spE0 = 10.0f * *(f32 *)((u8 *)temp_s3 + 0xCC);
         }
         spEC = arg0;
-        spE8 = (s32 *)(&func_00251F30);
+        spE8 = (int *)(&func_00251F30);
         spF0 = (s16) *(s32 *)((u8 *)temp_s3 + 0xD4);
         spF2 = 0;
         spF4 = (s8) *(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s2 + 0x1354)) + 0x1350);
@@ -167,7 +167,7 @@ block_11:
             spA8 = 0.0f;
             spA0 = 5;
             spA2 = 0;
-            func_002183F0(2, &sp80, temp_a2);
+            func_002183F0(2, (void **)(&sp80), (void *)(temp_a2));
         }
     } else if (*(s16 *)((u8 *)arg0 + 4) & 0x1000) {
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);

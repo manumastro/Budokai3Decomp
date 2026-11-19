@@ -1,12 +1,12 @@
 /* Draft (not built): func_00215500 at 0x00215500, size 0x3F8, segment unk/unk_20A4D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 00215500(long)' redeclared was declared as: 'void (long)' now declared as: 'void (int)' @ 4081: void func_00215500(s32);
+ * Status: size, 236 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x98, original 0x3F8
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_00215500.s */
 
-// src/unk/unk_20A4D0.c func_00215500 cerr diff=-1/0
+// src/unk/unk_20A4D0.c func_00215500 size diff=236/38
 extern void *D_0046FE44;
-void func_00215500(s64 arg0) {
+void func_00215500(s32 arg0) {
     f32 temp_f1;
     f32 temp_f1_2;
     f32 var_f1;
@@ -30,8 +30,8 @@ void func_00215500(s64 arg0) {
     if (*(s16 *)((u8 *)D_0046FE44 + 0x100) == 0) {
         var_s1 = 1;
     }
-    var_s2 = D_00568B90;
-    if (var_s2 != &D_00568C10) {
+    var_s2 = (unsigned char *)(*D_00568B90);
+    if (var_s2 != D_00568C10) {
         do {
             temp_a1 = *(s32 *)((u8 *)var_s2 + 8);
             if ((temp_a1 > 0) && (*(s16 *)((u8 *)var_s2 + 0x1E) & ((s64) (arg0 << 0x30) >> 0x30))) {
@@ -137,15 +137,15 @@ block_48:
                 }
             }
             var_s2 = *(u8 **)((u8 *)var_s2 + 0);
-        } while (var_s2 != &D_00568C10);
+        } while (var_s2 != D_00568C10);
     }
-    var_s0 = D_00568B90;
-    if (var_s0 != &D_00568C10) {
+    var_s0 = (unsigned char *)(*D_00568B90);
+    if (var_s0 != D_00568C10) {
         do {
             if (*(s32 *)((u8 *)var_s0 + 8) == -1) {
                 func_0020CB90(var_s0);
             }
             var_s0 = *(u8 **)((u8 *)var_s0 + 0);
-        } while (var_s0 != &D_00568C10);
+        } while (var_s0 != D_00568C10);
     }
 }

@@ -16,9 +16,9 @@ extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
 extern void func_00228410(void);
-extern void func_0022C6B0(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022C6B0(void *);
 void func_002D20E0(void) {
     f32 temp_f3;
     f32 temp_f4;
@@ -37,7 +37,7 @@ void func_002D20E0(void) {
     u8 *temp_v0;
 
     temp_a0 = *(s32 *)((u8 *)gSmsgTask + 0x4C);
-    temp_s3 = (u8 *)(gSmsgTask + 0x30);
+    temp_s3 = (unsigned char *)(gSmsgTask + 0x30);
     if ((temp_a0 >= 3) && (temp_a0 < 6)) {
         if (temp_a0 < 5) {
             var_s2 = 0;

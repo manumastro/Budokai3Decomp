@@ -1,12 +1,11 @@
 /* Draft (not built): func_002BD6B0 at 0x002BD6B0, size 0x59C, segment story/str_status (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); nt, char *, int)' now declared as: 'signed char * (int, int, int *, int)' @ 150: s8 *amHeap_Alloc(s32, s32, s32 *, s32);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  to 'int' mwccps2.exe Compiler: @ 176: StrStatus = (char *)amHeap_Alloc(0x5B0, 0, (s32 *)(&D_0046EE20),(char *)(0x288));
  * Original: asm/nonmatchings/story/str_status/func_002BD6B0.s */
 
 // src/story/str_status.c func_002BD6B0 cerr diff=-1/0
 s32 Flight_MapIndex(s8);
-s8 *amHeap_Alloc(s32, s32, s32 *, s32);
 void *func_0029E9B0(s32, s8, s8, s32);
 extern s32 D_00455920;
 extern s32 D_00455D50;
@@ -33,7 +32,7 @@ void func_002BD6B0(u8 *arg0, s32 arg1) {
     if (gStrStatus != NULL) {
         amHeap_Free(gStrStatus);
     }
-    gStrStatus = (char *)amHeap_Alloc(0x5B0, 0, &D_0046EE20, 0x288);
+    gStrStatus = (char *)amHeap_Alloc(0x5B0, 0, (s32 *)(&D_0046EE20),(char *)(0x288));
     memset(gStrStatus, 0, 0x5B0);
     *(s32 *)((u8 *)gStrStatus + 0x284) = arg1;
     *(s32 *)((u8 *)gStrStatus + 0x27C) = 1;
@@ -62,7 +61,7 @@ void func_002BD6B0(u8 *arg0, s32 arg1) {
     temp_a0 = *(u8 **)((u8 *)arg0 + 0x14);
     if (temp_a0 != NULL) {
         var_a2 = 0;
-        var_a1 = (s32 *)(arg0 + 0x18);
+        var_a1 = (int *)(arg0 + 0x18);
         var_a3 = 0;
         *(s32 *)((u8 *)gStrStatus + 0x2F8) = (s32) *(s32 *)((u8 *)temp_a0 + 0);
         *(s32 *)((u8 *)gStrStatus + 0x2FC) = (s32) *(s32 *)((u8 *)temp_a0 + 4);
@@ -135,11 +134,11 @@ block_15:
     *(s32 *)((u8 *)gStrStatus + 0x2F4) = (s32) *(s32 *)((u8 *)arg0 + 0x30);
     temp_a0_3 = *(u8 **)((u8 *)gStrStatus + 0x258);
     if (temp_a0_3 != NULL) {
-        Character_Release((s32)((void *)(temp_a0_3)));
+        Character_Release((s32)(temp_a0_3));
     }
     var_v1 = &sp30;
     var_v0 = 0x10;
-    temp_a1 = (u8 *)(&D_00455920 + (*(s32 *)((u8 *)gStrStatus + 0x28C) * 0x1C));
+    temp_a1 = (unsigned char *)(&D_00455920 + (*(s32 *)((u8 *)gStrStatus + 0x28C) * 0x1C));
     if (var_v1 != NULL) {
         do {
             *var_v1 = 0;
@@ -155,7 +154,7 @@ block_15:
     OutputPass_Load();
     temp_a0_4 = *(u8 **)((u8 *)gStrStatus + 0x25C);
     if (temp_a0_4 != NULL) {
-        func_0029E450((s32)((void *)(temp_a0_4)));
+        func_0029E450((s32)(temp_a0_4));
     }
     *(u8 **)((u8 *)gStrStatus + 0x25C) = func_0029E9B0(Flight_MapIndex(*(s8 *)((u8 *)arg0 + 1)), *(s8 *)((u8 *)arg0 + 3), *(s8 *)((u8 *)arg0 + 2), 4);
     if (*(s32 *)((u8 *)gStrStatus + 0x280) != 0) {

@@ -5,14 +5,12 @@
  * Original: asm/nonmatchings/menu/ess_main_2/func_0026EF00.s */
 
 // src/menu/ess_main_2.c func_0026EF00 size diff=43/88
-extern void *gEssEdit;
 extern void amCdFs_Close(void *, s32);
 s32 DataErase_IsReady();
 s32 func_0026D610(s32);
 s32 func_0027D820(s32);
 s32 func_0027E000(s16);
 s32 func_0027E2D0(s32, s32, s32, s32);
-s32 func_002B4C80(s32);
 extern void amFile_Load(void *);
 extern void func_0026ED60(void);
 void func_0026EF00(u8 *arg0) {
@@ -39,7 +37,7 @@ void func_0026EF00(u8 *arg0) {
             var_s1 += 1;
             var_s0 += 4;
         } while (var_s1 < 2);
-        var_v1 = (s32 *)(&func_0026ED60);
+        var_v1 = (int *)(&func_0026ED60);
         *(s32 *)((u8 *)gEssEdit + 0x18) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)gEssEdit + 8)) + 0x50);
         *(s32 *)((u8 *)gEssEdit + 0x1C) = (s32) *(s32 *)((u8 *)(*(u8 **)((u8 *)gEssEdit + 0xC)) + 0x50);
         if (&func_0026ED60 == NULL) {

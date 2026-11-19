@@ -14,7 +14,7 @@ s32 func_00137650(f32 *, s128 *, f32 *, s32);
 extern s128 D_004590D0;
 extern s128 D_004590E0;
 extern s128 D_004590F0;
-void func_0030DC70(u8 *arg0) {
+void func_0030DC70(s32 *arg0) {
     s128 spA0;
     s32 spAC;
     f32 spB0;
@@ -36,7 +36,7 @@ void func_0030DC70(u8 *arg0) {
     s32 var_s5;
     u8 *var_s7;
 
-    var_s7 = arg0;
+    var_s7 = (unsigned char *)(arg0);
     temp_v0 = amSofdec_Draw(*(s32 *)((u8 *)arg0 + 0));
     switch (temp_v0) {                              /* irregular */
     case 0:

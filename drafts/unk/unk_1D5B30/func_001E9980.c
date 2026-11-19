@@ -21,7 +21,7 @@ void func_001E9980(u8 *arg0) {
     u8 *var_s2;
 
     temp_s1 = arg0 + 0x30;
-    var_s2 = (u8 *)(gBattle + 0x290);
+    var_s2 = (unsigned char *)(gBattle + 0x290);
     if (gSoundState == 0) {
         temp_a0 = *(s32 *)((u8 *)temp_s1 + 8);
         temp_a2 = *(s32 *)((u8 *)temp_s1 + 4);

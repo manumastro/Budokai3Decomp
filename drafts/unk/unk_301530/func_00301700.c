@@ -40,7 +40,7 @@ void func_00301700(u8 *arg0) {
         break;
     }
     if ((*(s32 *)((u8 *)arg0 + 0x30) == 0) && (var_a2 & 0x4008)) {
-        memcpy(&D_005CFE00, ((u8 *)gTourMap) + 0x2EC, 0x280);
+        memcpy(&D_005CFE00,((u8 *)gTourMap) + 0x2EC, 0x280);
         Scene_FadeTo(-1, 0);
         *(s32 *)((u8 *)arg0 + 0x30) = (s32) (*(s32 *)((u8 *)arg0 + 0x30) + 1);
     }

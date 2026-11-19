@@ -17,7 +17,7 @@ s32 func_00132D20(s32 *arg0, u8 *arg1, f32 fparg0) {
     if (var_a0 != NULL) {
         goto block_2;
     }
-    var_a0 = (s32 *)(&D_0047CA40);
+    var_a0 = (int *)(&D_0047CA40);
 block_2:
     temp_f2 = fparg0 * *(f32 *)((u8 *)var_a0 + 0x38);
     temp_f4 = *(f32 *)((u8 *)arg1 + 8) + temp_f2;

@@ -1,14 +1,17 @@
 /* Draft (not built): func_001D83E0 at 0x001D83E0, size 0x328, segment unk/unk_1D5B30 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 2EAE0(0x20, -1, var_a2, var_a3) / 10) & 1; @ 892: *(s16 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x1350) * 2) + sp) + 0x48) = 0;
+ * Status: size, 102 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x368, original 0x328
  * Original: asm/nonmatchings/unk/unk_1D5B30/func_001D83E0.s */
 
-// src/unk/unk_1D5B30.c func_001D83E0 cerr diff=-1/0
+// src/unk/unk_1D5B30.c func_001D83E0 size diff=102/218
+void func_001D97D0(Fighter *c);
+void func_001E1300(Fighter *c);
 s32 func_001C8020(s32, s32 *);
-s32 func_001D4AF0();
 extern s32 D_00492FCC;
+extern void func_001D4AF0(void);
 void func_001D83E0(u8 *arg0) {
+    u8 sp[0x400];
     s32 sp40;
     s16 temp_a0;
     s32 temp_v1;
@@ -23,10 +26,10 @@ void func_001D83E0(u8 *arg0) {
     u8 *var_a2;
 
     var_s1 = -1;
-    temp_s0 = (u8 *)(gBattle);
+    temp_s0 = (unsigned char *)(gBattle);
     sp40 = 1 << *(s32 *)((u8 *)arg0 + 0x1350);
     func_001E1300(0);
-    func_001D97D0(arg0);
+    func_001D97D0((Fighter *)(arg0));
     temp_v1 = *(s32 *)((u8 *)temp_s0 + 0x8900);
     if (temp_v1 < 0) {
         if (*(s8 *)((u8 *)arg0 + 0x1FF8) >= 0) {
@@ -62,7 +65,7 @@ loop_6:
         }
         if (var_s1 < 0) {
             temp_a0 = *(s16 *)((u8 *)arg0 + 0x13A4);
-            var_s1_2 = (func_0012EAE0(0x20, -1, var_a2, var_a3) / 10) & 1;
+            var_s1_2 = (func_0012EAE0(0x20) / 10) & 1;
             if (temp_a0 >= 0) {
                 temp_v1_3 = *(&D_00492FCC + (temp_a0 * 0xB8));
                 if (temp_v1_3 & 0x4000) {
@@ -76,8 +79,8 @@ loop_6:
         *(s32 *)((u8 *)arg0 + 0xB70) = (s32) (var_s1 + 0x2A0);
         *(s16 *)((u8 *)arg0 + 0xCB6) = 2;
         *(s16 *)((u8 *)arg0 + 0xCB4) = 1;
-        func_001C75D0((void *)(arg0), 0xF);
-        func_001C75D0((void *)(*(u8 **)((u8 *)arg0 + 0x1354)), 0);
+        func_001C75D0((Fighter *)(arg0), 0xF);
+        func_001C75D0((Fighter *)(*(u8 **)((u8 *)arg0 + 0x1354)), 0);
         *(s16 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x1350) * 2) + sp) + 0x48) = 0;
         func_001C8020(0, &sp40);
     } else {
@@ -86,8 +89,8 @@ loop_6:
         *(s32 *)((u8 *)arg0 + 0xB70) = (s32) (*(s32 *)((u8 *)arg0 + 0xBA4) + 0x2C0);
         *(s16 *)((u8 *)arg0 + 0xCB6) = 2;
         *(s16 *)((u8 *)arg0 + 0xCB4) = 1;
-        func_001C75D0((void *)(arg0), 0xF);
-        func_001C75D0((void *)(*(u8 **)((u8 *)arg0 + 0x1354)), 0);
+        func_001C75D0((Fighter *)(arg0), 0xF);
+        func_001C75D0((Fighter *)(*(u8 **)((u8 *)arg0 + 0x1354)), 0);
         if (*(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0xB74)) + 0x10) & 3) {
             *(s16 *)((u8 *)arg0 + 0xCB6) = 0;
             *(s16 *)((u8 *)((*(s32 *)((u8 *)arg0 + 0x1350) * 2) + sp) + 0x48) = -1;

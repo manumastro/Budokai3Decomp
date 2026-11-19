@@ -1,7 +1,7 @@
 /* Draft (not built): func_0012E100 at 0x0012E100, size 0x540, segment sys/unk_12DE80 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 's3232' mwccps2.exe Compiler: 109: f32 var_f1; @ 108: s3232 sp6C;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal explicit conversion from 'unsigned char *' to 'float' mwccps2.exe Compiler: @ 185: ((f32)(temp_a1))
  * Original: asm/nonmatchings/sys/unk_12DE80/func_0012E100.s */
 
 // src/sys/unk_12DE80.c func_0012E100 cerr diff=-1/0
@@ -11,7 +11,7 @@ void func_0012E100(u8 *arg0, u8 *arg1, s32 arg2, f32 fparg0) {
     f32 sp60;
     f32 sp64;
     f32 sp68;
-    s3232 sp6C;
+    s32 sp6C;
     f32 var_f1;
     f32 var_f1_2;
     f32 var_f1_3;
@@ -35,7 +35,7 @@ void func_0012E100(u8 *arg0, u8 *arg1, s32 arg2, f32 fparg0) {
     u8 *temp_v1_4;
     u8 *temp_v1_5;
 
-    temp_s2 = *(s32 *)((u8 *)arg1 + 0x14) + (arg2 * 0x10);
+    temp_s2 = (unsigned char *)(*(s32 *)((u8 *)arg1 + 0x14) + (arg2 * 0x10));
     temp_s1 = *(u8 **)((u8 *)temp_s2 + 0xC);
     if ((f32) (*(s32 *)((u8 *)temp_s2 + 8) - 1) <= fparg0) {
         temp_s0 = *(u8 **)((u8 *)temp_s1 + 0);
@@ -68,7 +68,7 @@ void func_0012E100(u8 *arg0, u8 *arg1, s32 arg2, f32 fparg0) {
         }
     } else {
         temp_s0_5 = *(u8 **)((u8 *)temp_s1 + 0);
-        temp_v1_3 = temp_s0_5 + (amMotion_FindKey16(temp_s0_5, fparg0) * 0x10);
+        temp_v1_3 = temp_s0_5 + (amMotion_FindKey16(temp_s0_5, fparg0, 0) * 0x10);
         temp_a1 = temp_v1_3 + 0xC;
         *(f32 *)((u8 *)arg0 + 0) = (f32) *(f32 *)((u8 *)temp_v1_3 + 0x10);
         *(f32 *)((u8 *)arg0 + 4) = (f32) *(f32 *)((u8 *)temp_v1_3 + 0x14);

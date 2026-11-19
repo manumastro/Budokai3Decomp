@@ -1,15 +1,15 @@
 /* Draft (not built): func_001CF2C0 at 0x001CF2C0, size 0x1E0, segment unk/unk_1CBD90 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); on from 'struct Big *' to 'int' @ 1502: sp24 = (s32)(func_00200270(0, gBattle, temp_a2_2, temp_a3, temp_f12, temp_f13));
+ * Status: size, 90 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x104, original 0x1E0
  * Original: asm/nonmatchings/unk/unk_1CBD90/func_001CF2C0.s */
 
-// src/unk/unk_1CBD90.c func_001CF2C0 cerr diff=-1/0
+// src/unk/unk_1CBD90.c func_001CF2C0 size diff=90/65
 s32 func_0013B500(s32);
 extern void func_0013B160(void *);
 extern char D_003F0800[];
 extern void func_0013B620(void *);
-s32 func_001CF2C0(u8 *arg1) {
+s32 func_001CF2C0(s32 unused_arg0, u8 *arg1) {
     s32 sp20;
     f32 sp24;
     f32 sp30;
@@ -19,7 +19,6 @@ s32 func_001CF2C0(u8 *arg1) {
     f32 temp_f12;
     f32 temp_f13;
     s32 temp_a2_2;
-    s32 temp_a3;
     s32 temp_t0;
     u8 *temp_a2;
     u8 *temp_s0;
@@ -27,10 +26,9 @@ s32 func_001CF2C0(u8 *arg1) {
     temp_a2 = *(u8 **)((u8 *)arg1 + 0x2C);
     temp_f13 = *(f32 *)((u8 *)temp_a2 + 0);
     temp_t0 = *(s32 *)((u8 *)temp_a2 + 0xC);
-    temp_a3 = *(s32 *)((u8 *)temp_a2 + 0x10);
     temp_f12 = *(f32 *)((u8 *)temp_a2 + 8);
     temp_a2_2 = temp_t0 & 0xF0000;
-    temp_s0 = *(u8 **)((u8 *)((temp_a3 * 4) + gBattle) + 0x8934);
+    temp_s0 = gBattle->tbl[*(s32 *)((u8 *)temp_a2 + 0x10)];
     sp34 = *(f32 *)((u8 *)temp_a2 + 4);
     sp3C = 0x3F800000;
     sp30 = temp_f12;
@@ -39,7 +37,7 @@ s32 func_001CF2C0(u8 *arg1) {
     case 0x0:
         M2C_ERROR(/* unknown instruction: sqc2 $vf0, ($v0) */);
         if (!(temp_t0 & 0x01000000)) {
-            sp24 = (s32)(func_00200270(0, gBattle, temp_a2_2, temp_a3, temp_f12, temp_f13));
+            sp24 = func_00200270(temp_f12, 0, temp_f13);
         }
         break;
     case 0x10000:

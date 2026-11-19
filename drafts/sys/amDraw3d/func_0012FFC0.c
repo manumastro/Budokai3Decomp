@@ -1,15 +1,15 @@
 /* Draft (not built): func_0012FFC0 at 0x0012FFC0, size 0x414, segment sys/amDraw3d (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'unsigned char *' to 'int' mwccps2.exe Compiler: @ 567: func_0012FFC0(buf, 0, 0);
+ * Status: size, 147 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x620, original 0x414
  * Original: asm/nonmatchings/sys/amDraw3d/func_0012FFC0.s */
 
-// src/sys/amDraw3d.c func_0012FFC0 cerr diff=-1/0
+// src/sys/amDraw3d.c func_0012FFC0 size diff=147/392
 extern u16 D_0047E5A0;
 extern u16 D_0047E710;
 extern s32 D_8000003F;
 extern void *gPacketPtr;
-void func_0012FFC0(s32 arg0, s32 arg1, u8 *arg2) {
+void func_0012FFC0(u8 *arg0, s32 arg1, s32 arg2) {
     f32 temp_f1;
     f32 temp_f1_2;
     f32 temp_f1_3;
@@ -24,8 +24,8 @@ void func_0012FFC0(s32 arg0, s32 arg1, u8 *arg2) {
     u32 temp_t1;
     u8 *var_s0;
 
-    var_a0 = arg0;
-    if (arg2 != NULL) {
+    var_a0 = (int)(arg0);
+    if ((s32)(arg2) != 0) {
         temp_f1 = 16.0f * *(f32 *)((u8 *)arg2 + 0);
         if (!(temp_f1 >= 2.1474836e9f)) {
             var_a3 = temp_f1;
@@ -56,23 +56,24 @@ void func_0012FFC0(s32 arg0, s32 arg1, u8 *arg2) {
         var_t0 = M2C_BITWISE(f32, D_00470414);
         var_a2 = M2C_BITWISE(f32, D_00470418);
     }
-    *(s32 *)((u8 *)gPacketPtr + 0) = 0x10000002;
-    *(s64 *)((u8 *)gPacketPtr + 0x10) = (s64) (1 | (0x10000000 << 0x20));
-    *(s64 *)((u8 *)gPacketPtr + 0x18) = 0xE;
+    var_s0 = gPacketPtr;
+    *(s32 *)((u8 *)var_s0 + 0) = 0x10000002;
+    *(s64 *)((u8 *)var_s0 + 0x10) = (s64) (1 | (0x10000000 << 0x20));
+    *(s64 *)((u8 *)var_s0 + 0x18) = 0xE;
     if (arg1 == 2) {
-        *(s8 *)((u8 *)gPacketPtr + 0x22) = (s8) (M2C_BITWISE(u32, var_t0) >> 6);
-        *(s8 *)((u8 *)gPacketPtr + 0x23) = (s8) (D_0047045C | 0x30);
-        *(s8 *)((u8 *)gPacketPtr + 0x27) = (s8) (D_0047045C | 0x30);
-        *(s16 *)((u8 *)gPacketPtr + 0x24) = (s16) ((u32) D_00470494 >> 8);
+        *(s8 *)((u8 *)var_s0 + 0x22) = (s8) (M2C_BITWISE(u32, var_t0) >> 6);
+        *(s8 *)((u8 *)var_s0 + 0x23) = (s8) (D_0047045C | 0x30);
+        *(s8 *)((u8 *)var_s0 + 0x27) = (s8) (D_0047045C | 0x30);
+        *(s16 *)((u8 *)var_s0 + 0x24) = (s16) ((u32) D_00470494 >> 8);
         var_v0 = D_00470460;
     } else if (D_004704A8 != 0) {
-        *(s8 *)((u8 *)gPacketPtr + 0x22) = (s8) ((u32) (M2C_BITWISE(s32, var_t0) + 0x3F) >> 6);
-        *(s8 *)((u8 *)gPacketPtr + 0x23) = (s8) D_0047044C;
-        *(s8 *)((u8 *)gPacketPtr + 0x27) = (s8) D_0047044C;
+        *(s8 *)((u8 *)var_s0 + 0x22) = (s8) ((u32) (M2C_BITWISE(s32, var_t0) + 0x3F) >> 6);
+        *(s8 *)((u8 *)var_s0 + 0x23) = (s8) D_0047044C;
+        *(s8 *)((u8 *)var_s0 + 0x27) = (s8) D_0047044C;
         if ((D_004703B0 ^ arg1) != 0) {
-            *(s16 *)((u8 *)gPacketPtr + 0x24) = (s16) ((D_0047E710 & 0x1FF & 0x1FF) << 5);
+            *(s16 *)((u8 *)var_s0 + 0x24) = (s16) ((D_0047E710 & 0x1FF & 0x1FF) << 5);
         } else {
-            *(s16 *)((u8 *)gPacketPtr + 0x24) = (s16) ((D_0047E5A0 & 0x1FF & 0x1FF) << 5);
+            *(s16 *)((u8 *)var_s0 + 0x24) = (s16) ((D_0047E5A0 & 0x1FF & 0x1FF) << 5);
         }
         if (D_0047044C != 1) {
             var_v0 = D_00470450;
@@ -80,19 +81,19 @@ void func_0012FFC0(s32 arg0, s32 arg1, u8 *arg2) {
             var_v0 = 3;
         }
     } else {
-        *(s8 *)((u8 *)gPacketPtr + 0x22) = (s8) ((u32) (M2C_BITWISE(s32, var_t0) + 0x3F) >> 6);
-        *(s8 *)((u8 *)gPacketPtr + 0x23) = (s8) D_0047044C;
-        *(s8 *)((u8 *)gPacketPtr + 0x27) = (s8) D_0047044C;
-        *(s16 *)((u8 *)gPacketPtr + 0x24) = (s16) (D_00470474 << 5);
+        *(s8 *)((u8 *)var_s0 + 0x22) = (s8) ((u32) (M2C_BITWISE(s32, var_t0) + 0x3F) >> 6);
+        *(s8 *)((u8 *)var_s0 + 0x23) = (s8) D_0047044C;
+        *(s8 *)((u8 *)var_s0 + 0x27) = (s8) D_0047044C;
+        *(s16 *)((u8 *)var_s0 + 0x24) = (s16) (D_00470474 << 5);
         if (D_0047044C != 1) {
             var_v0 = D_00470450;
         } else {
             var_v0 = 3;
         }
     }
-    *(s8 *)((u8 *)gPacketPtr + 0x26) = (s8) ((s32) (D_00470414 + 0x3F) >> 6);
-    *(s64 *)((u8 *)gPacketPtr + 0x28) = 0x50;
-    var_s0 = ((u8 *)gPacketPtr) + 0x30;
+    *(s8 *)((u8 *)var_s0 + 0x26) = (s8) ((s32) (D_00470414 + 0x3F) >> 6);
+    *(s64 *)((u8 *)var_s0 + 0x28) = 0x50;
+    var_s0 += 0x30;
 loop_38:
     if (M2C_BITWISE(s32, var_a2) != 0) {
         *(s32 *)((u8 *)var_s0 + 0) = 0x10000005;
@@ -126,6 +127,7 @@ loop_38:
     *(s64 *)((u8 *)var_s0 + 0x10) = (s64) (0x8001 | (0x10000000 << 0x20));
     *(s64 *)((u8 *)var_s0 + 0x18) = 0xE;
     *(s64 *)((u8 *)var_s0 + 0x28) = 0x3F;
+    var_s0 += 0x30;
     amDma_Request(0, 2, 1, 1, 0, 0, 0, 0);
-    gPacketPtr = var_s0 + 0x30;
+    gPacketPtr = var_s0;
 }

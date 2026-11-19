@@ -1,10 +1,10 @@
 /* Draft (not built): func_0027A4C0 at 0x0027A4C0, size 0x614, segment menu/ess_trade (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); : func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3), &sp110, -1, *(f32 *)((u8 *)temp_s2 + 
+ * Status: size, 221 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x590, original 0x614
  * Original: asm/nonmatchings/menu/ess_trade/func_0027A4C0.s */
 
-// src/menu/ess_trade.c func_0027A4C0 cerr diff=-1/0
+// src/menu/ess_trade.c func_0027A4C0 size diff=221/356
 s32 func_00227830(s32, s32);
 s32 func_00228240(f32 *);
 s32 func_00228430(f32 *);
@@ -17,12 +17,12 @@ s32 func_002F9500(s32, f32, s32);
 extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
-extern void *D_00470810;
 extern void Title_StepCounters(void);
 extern void func_00228410(void);
-extern void func_0022CD00(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022CD00(void *);
+extern void *D_00470810;
 void func_0027A4C0(u8 *arg0) {
     u8 *spB0;
     s32 spB4;
@@ -144,13 +144,13 @@ void func_0027A4C0(u8 *arg0) {
             var_v1_2 += 2;
         }
         temp_s3 = var_v1_2 * 4;
-        func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3), &sp110, -1, *(f32 *)((u8 *)temp_s2 + 0x10));
+        func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3), &sp110, -1, *(f32 *)((u8 *)temp_s2 + 0x10));
         spC0 = sp110;
         spC4 = sp114;
         spC8 = sp118;
         spCC = sp11C;
-        func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3), &spD0, -1, *(f32 *)((u8 *)temp_s2 + 0x10));
-        func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3), &spF0, -1, *(f32 *)((u8 *)temp_s2 + 0x10));
+        func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3), &spD0, -1, *(f32 *)((u8 *)temp_s2 + 0x10));
+        func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3), &spF0, -1, *(f32 *)((u8 *)temp_s2 + 0x10));
         func_00228240(&spC0);
         func_0022C060(temp_s2, var_f20);
         func_0022CD00(temp_s2);
@@ -173,13 +173,13 @@ void func_0027A4C0(u8 *arg0) {
         func_002284D0(&spC0);
         func_00228430(NULL);
         temp_s3_2 = ((temp_s4 != 0) ? 0x68 : 0x67) * 4;
-        func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3_2), &sp110, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
+        func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3_2), &sp110, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
         spC0 = sp110;
         spC4 = sp114;
         spC8 = sp118;
         spCC = sp11C;
-        func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3_2), &spD0, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
-        func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3_2), &spF0, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
+        func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3_2), &spD0, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
+        func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s3_2), &spF0, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
         if (temp_s4 == 0) {
             var_f1 = *(f32 *)((u8 *)(*(u8 **)((u8 *)temp_s2_3 + 0x30)) + 0x30);
         } else {
@@ -193,13 +193,13 @@ void func_0027A4C0(u8 *arg0) {
             var_v1_3 = (temp_s4 != 0) ? 0x66 : 0x65;
         }
         temp_s1 = var_v1_3 * 4;
-        func_00229800(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s1), &sp110, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
+        func_00229800(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s1), &sp110, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
         spC0 = sp110;
         spC4 = sp114;
         spC8 = sp118;
         spCC = sp11C;
-        func_00228AC0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s1), &spD0, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
-        func_002285A0(*(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s1), &spF0, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
+        func_00228AC0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s1), &spD0, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
+        func_002285A0(*(s32 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 8)) + 0x1C) + temp_s1), &spF0, -1, *(f32 *)((u8 *)temp_s2_3 + 0x10));
         func_00228240(&spC0);
         func_00227830(0, -1);
         func_0022C060(temp_s2_3, 0x3F800000);

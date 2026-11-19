@@ -1,20 +1,20 @@
 /* Draft (not built): func_00293E80 at 0x00293E80, size 0xA40, segment unk/unk_2918A0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 005AA664 * 0xF) >> 4) << 0x30) >> 0x30) & 0xFFFF; @ 428: D_005AA664 = (D_005AA664 - M2C_BITWISE(s32, temp_f0)) & 0xFFFF;
+ * Status: size, 444 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x824, original 0xA40
  * Original: asm/nonmatchings/unk/unk_2918A0/func_00293E80.s */
 
-// src/unk/unk_2918A0.c func_00293E80 cerr diff=-1/0
+// src/unk/unk_2918A0.c func_00293E80 size diff=444/521
 s32 Help_Open(s32, s32);
 s32 SoundRpc_SetVolume(s32, s32, f32, s32, f32);
-s32 StrBg_SetFlags(void *, s32, s32 *);
+s32 StrBg_SetFlags(s32, s32, s32 *);
 s32 StrMap_StartPos(s32, s32, s32);
 s32 StrStatus_Dispatch(s32 *);
 s32 func_00144050(s32, s32, s32, s32, f32, s32, s32);
 s32 func_00144370(s32, s32, s32, s32);
-f32 func_00146E30(s32 *, void *);
+f32 func_00146E30(s32, s32);
 s32 func_002A94B0(s32, s32, s32, s32);
-s32 func_002BF000(void **);
+s32 func_002BF000(s32 *);
 s32 memset(s32 *, s32, s32);
 extern s128 D_00453DD0;
 extern s32 D_00492FD8;
@@ -28,7 +28,7 @@ extern s32 D_005AA618;
 extern s32 D_005AA61C;
 extern s32 D_005AA628;
 extern s32 D_005AA62C;
-extern s32 *D_005AA638;
+extern s32 D_005AA638;
 extern s32 D_005AA668;
 extern void *D_005AA734;
 extern s32 D_005AB350;
@@ -56,17 +56,14 @@ void func_00293E80(u8 *arg0) {
     s32 sp74;
     s128 sp90;
     s16 sp94;
-    s32 *var_a0_3;
-    s32 *var_v0_3;
-    s32 *var_v1;
     f32 temp_f0;
-    s32 *temp_s1;
-    s32 *temp_s1_2;
     s32 temp_a0;
     s32 temp_a2;
     s32 temp_a2_2;
     s32 temp_a2_3;
     s32 temp_a3;
+    s32 temp_s1;
+    s32 temp_s1_2;
     s32 var_a0;
     s32 var_a0_2;
     s32 var_s0;
@@ -78,6 +75,9 @@ void func_00293E80(u8 *arg0) {
     s8 temp_v0;
     s8 temp_v0_2;
     u16 temp_s0;
+    void (*var_a0_3)();
+    void (*var_v0_3)();
+    void (*var_v1)();
 
     temp_a0 = D_004B4B63 * 0xB8;
     temp_v0 = *(&D_00492FD8 + temp_a0);
@@ -104,9 +104,9 @@ void func_00293E80(u8 *arg0) {
         }
     }
     temp_f0 = 192.0f * ((f32) var_a0 / 96.0f) * gFrameDelta;
-    *(s32 *)((u8 *)D_005AA604 + 0x11D0) = (s32) ((*(s32 *)((u8 *)D_005AA604 + 0x11D0) - M2C_BITWISE(s32, temp_f0)) & 0xFFFF);
-    D_005AA664 = (D_005AA664 - M2C_BITWISE(s32, temp_f0)) & 0xFFFF;
-    D_005AA664 = ((s64) ((s64) ((s32) ((s16) D_005AA664 * 0xF) >> 4) << 0x30) >> 0x30) & 0xFFFF;
+    *(s32 *)((u8 *)(*D_005AA604) + 0x11D0) = (s32) ((*(s32 *)((u8 *)(*D_005AA604) + 0x11D0) - M2C_BITWISE(s32, temp_f0)) & 0xFFFF);
+    *D_005AA664 = (*D_005AA664 - M2C_BITWISE(s32, temp_f0)) & 0xFFFF;
+    *D_005AA664 = ((s64) ((s64) ((s32) ((s16) *D_005AA664 * 0xF) >> 4) << 0x30) >> 0x30) & 0xFFFF;
     D_005AA668 += M2C_BITWISE(s32, (96.0f * ((f32) var_a0_2 / 96.0f) * gFrameDelta));
     D_005AA668 = (s32) (u16) D_005AA668;
     if ((s16) D_005AA668 < -0x1400) {
@@ -118,19 +118,19 @@ void func_00293E80(u8 *arg0) {
 block_17:
         D_005AA668 = var_v0;
     }
-    func_002922C0(D_005AA604, D_004B4B63);
-    func_002BF000((void **)(D_005AA550));
+    func_002922C0(*D_005AA604, D_004B4B63);
+    func_002BF000(D_005AA550);
     if (D_005AA734 == NULL) {
-        if (D_005AB340 != NULL) {
-            if (D_005AA5F4 != 0) {
-                func_0022D0E0((s32)(D_005AA5F4), 1);
-                D_005AA5F4 = 0;
+        if (*D_005AB340 != 0) {
+            if (*D_005AA5F4 != 0) {
+                func_0022D0E0(*D_005AA5F4, 1);
+                *D_005AA5F4 = 0;
             }
-            if (D_005AA5BC != NULL) {
-                amTask_Kill((s32)((void *)(D_005AA5BC)));
-                D_005AA5BC = NULL;
+            if (*D_005AA5BC != 0) {
+                amTask_Kill(*D_005AA5BC);
+                *D_005AA5BC = 0;
             }
-            D_005AB340 = NULL;
+            *D_005AB340 = 0;
             func_00144370(1, 0x11122234, 0, D_005AB364);
         }
         if (D_005AA62C != -1) {
@@ -138,10 +138,10 @@ block_17:
             var_v0_2 = -1;
             goto block_54;
         }
-    } else if (*(s32 **)((u8 *)D_005AA734 + 0x20) != D_005AB340) {
+    } else if (*(s32 *)((u8 *)D_005AA734 + 0x20) != *D_005AB340) {
         if (D_005AA734 != NULL) {
             sp90 = D_00453DD0;
-            if (*(s8 *)((u8 *)D_005AA604 + 0x11E6) != 0) {
+            if (*(s8 *)((u8 *)(*D_005AA604) + 0x11E6) != 0) {
                 if (!(D_004E0614 <= 0.0f)) {
                     func_00144370(1, 0x11122234, 0, D_005AB364);
                     func_00144050(1, 0x11122234, 0, 6, D_004E0614, 0, 0);
@@ -165,13 +165,13 @@ block_17:
                     SoundRpc_Send3(1, 0, 7, 0);
                 }
             }
-            if (*(s8 *)((u8 *)D_005AA604 + 0x11E6) != 0) {
+            if (*(s8 *)((u8 *)(*D_005AA604) + 0x11E6) != 0) {
                 sp94 = -0x8000;
             }
-            func_0028EE90(D_005AA5A0, &D_005AA5CC, &D_005AA5D8, &D_005AA5E4);
-            StrBg_SetFlags(D_005AA5BC, 0, &D_005AB350);
-            D_005AB340 = *(s32 **)((u8 *)D_005AA734 + 0x20);
-            temp_s1 = *(s32 **)((u8 *)D_005AA734 + 0x20);
+            func_0028EE90(D_005AA5A0, D_005AA5CC, D_005AA5D8, D_005AA5E4, M2C_ERROR(/* Read from unset register $a4 */), M2C_ERROR(/* Read from unset register $a5 */), M2C_ERROR(/* Read from unset register $a6 */), M2C_ERROR(/* Read from unset register $a7 */));
+            StrBg_SetFlags(*D_005AA5BC, 0, &D_005AB350);
+            *D_005AB340 = *(s32 *)((u8 *)D_005AA734 + 0x20);
+            temp_s1 = *(s32 *)((u8 *)D_005AA734 + 0x20);
             temp_a2 = *(s32 *)((u8 *)temp_s1 + 8);
             if (temp_a2 == -1) {
                 func_0029AC30();
@@ -184,15 +184,15 @@ block_17:
                 goto block_54;
             }
         } else {
-            if (D_005AA5F4 != 0) {
-                func_0022D0E0((s32)(D_005AA5F4), 1);
-                D_005AA5F4 = 0;
+            if (*D_005AA5F4 != 0) {
+                func_0022D0E0(*D_005AA5F4, 1);
+                *D_005AA5F4 = 0;
             }
-            if (D_005AA5BC != NULL) {
-                amTask_Kill((s32)((void *)(D_005AA5BC)));
-                D_005AA5BC = NULL;
+            if (*D_005AA5BC != 0) {
+                amTask_Kill(*D_005AA5BC);
+                *D_005AA5BC = 0;
             }
-            D_005AB340 = NULL;
+            *D_005AB340 = 0;
             if (D_005AA62C != -1) {
                 func_0029AC30();
                 var_v0_2 = -1;
@@ -219,17 +219,17 @@ loop_64:
             goto loop_64;
         }
         func_002919B0();
-        var_v1 = (s32 *)(&func_00293D70);
-        if (&func_00293D70 == NULL) {
+        var_v1 = func_00293D70;
+        if (func_00293D70 == NULL) {
             var_v1 = NULL;
         }
-        *(s32 **)((u8 *)arg0 + 0x1C) = var_v1;
+        *(void (**)())((u8 *)arg0 + 0x1C) = var_v1;
         return;
     }
     if (temp_s0 & 0x4000) {
-        temp_s1_2 = D_005AB340;
+        temp_s1_2 = *D_005AB340;
         var_s0_2 = 0;
-        if (temp_s1_2 != NULL) {
+        if (temp_s1_2 != 0) {
 loop_73:
             if (var_s0_2 < 8) {
                 func_00144370(1, var_s0_2 + 0x11122233, 0, *(&D_005AB360 + (var_s0_2 * 4)));
@@ -238,7 +238,7 @@ loop_73:
             }
             func_002919B0();
             D_005AA638 = temp_s1_2;
-            if (func_00146E30(temp_s1_2 + 0x10, D_005AA604 + 0x11C0) < 1500.0f) {
+            if (func_00146E30(temp_s1_2 + 0x10, *D_005AA604 + 0x11C0) < 1500.0f) {
                 M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
                 M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
                 M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
@@ -249,8 +249,8 @@ loop_73:
                 func_00146F30(&sp50);
                 func_0011F680();
                 temp_t3 = (s64) (M2C_BITWISE(s64, ((32768.0f * M2C_ERROR(/* Read from unset register $f0 */)) / 3.1415927f)) << 0x30) >> 0x30;
-                D_005AA664 += temp_t3 - *(s32 *)((u8 *)D_005AA604 + 0x11D0);
-                *(s32 *)((u8 *)D_005AA604 + 0x11D0) = (s32) temp_t3;
+                *D_005AA664 += temp_t3 - *(s32 *)((u8 *)(*D_005AA604) + 0x11D0);
+                *(s32 *)((u8 *)(*D_005AA604) + 0x11D0) = (s32) temp_t3;
                 D_005AA610 = 0x10007;
                 D_005AA618 = 0;
                 temp_a2_2 = *(s32 *)((u8 *)(*(u8 **)((u8 *)((0 * 4) + D_005AA60C) + 0x46C)) + 0x14);
@@ -260,14 +260,14 @@ loop_73:
                 if (!(D_004E0614 <= 0.0f)) {
                     SoundRpc_Send3(1, 0, 9, 0);
                 }
-                func_002A94B0(*temp_s1_2, 0, 0, 0);
-                Fade_SetRequest(0xA, &func_002918A0, 0);
-                var_a0_3 = (s32 *)(&func_00292FF0);
+                func_002A94B0(*(s32 *)temp_s1_2, 0, 0, 0);
+                Fade_SetRequest(0xA, func_002918A0, 0);
+                var_a0_3 = func_00292FF0;
                 D_005AA628 = 7;
-                if (&func_00292FF0 == NULL) {
+                if (func_00292FF0 == NULL) {
                     var_a0_3 = NULL;
                 }
-                *(s32 **)((u8 *)arg0 + 0x1C) = var_a0_3;
+                *(void (**)())((u8 *)arg0 + 0x1C) = var_a0_3;
             } else {
                 M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
                 M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
@@ -279,20 +279,20 @@ loop_73:
                 func_00146F30(&sp40);
                 func_0011F680();
                 temp_t1 = (s64) (M2C_BITWISE(s64, ((32768.0f * M2C_ERROR(/* Read from unset register $f0 */)) / 3.1415927f)) << 0x30) >> 0x30;
-                temp_a3 = temp_t1 - *(s32 *)((u8 *)D_005AA604 + 0x11D0);
-                temp_a2_3 = (s32)(D_005AA664 + temp_a3);
-                D_005AA664 = temp_a2_3;
-                *(s32 *)((u8 *)D_005AA604 + 0x11D0) = (s32) temp_t1;
+                temp_a3 = temp_t1 - *(s32 *)((u8 *)(*D_005AA604) + 0x11D0);
+                temp_a2_3 = *D_005AA664 + temp_a3;
+                *D_005AA664 = temp_a2_3;
+                *(s32 *)((u8 *)(*D_005AA604) + 0x11D0) = (s32) temp_t1;
                 D_005AA610 = 0x10005;
                 D_005AA618 = 0;
                 D_005AA61C = 0x40A00000;
                 D_005AA614 = (f32) *(s32 *)((u8 *)(*(s32 *)((u8 *)(*(u8 **)((u8 *)((0 * 4) + D_005AA60C) + 0x46C)) + 0x14) + 0x50) + 8);
-                func_002A94B0(*temp_s1_2, D_005AA60C, temp_a2_3, temp_a3);
-                var_v0_3 = (s32 *)(&func_00293950);
-                if (&func_00293950 == NULL) {
+                func_002A94B0(*(s32 *)temp_s1_2, D_005AA60C, temp_a2_3, temp_a3);
+                var_v0_3 = func_00293950;
+                if (func_00293950 == NULL) {
                     var_v0_3 = NULL;
                 }
-                *(s32 **)((u8 *)arg0 + 0x1C) = var_v0_3;
+                *(void (**)())((u8 *)arg0 + 0x1C) = var_v0_3;
                 memset(&sp60, 0, 0x30);
                 sp70 = 5;
                 sp74 = 0;

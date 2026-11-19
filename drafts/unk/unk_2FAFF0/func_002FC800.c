@@ -1,10 +1,10 @@
 /* Draft (not built): func_002FC800 at 0x002FC800, size 0x1F0, segment unk/unk_2FAFF0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operand @ 329: if (D_005CA030 != 1) {
+ * Status: size, 77 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1D4, original 0x1F0
  * Original: asm/nonmatchings/unk/unk_2FAFF0/func_002FC800.s */
 
-// src/unk/unk_2FAFF0.c func_002FC800 cerr diff=-1/0
+// src/unk/unk_2FAFF0.c func_002FC800 size diff=77/117
 s32 Zenie_Create(s32, s32, s32, s32);
 s32 amCdFs_ReadFileId(s32, s32, s32, void *);
 s32 func_0029E9B0(s16, s32, s32, s32);
@@ -35,8 +35,8 @@ void func_002FC800(s32 arg0) {
     Zenie_Create(0x3000, 2, 0x11402000, 0);
     *(s32 *)((u8 *)gTourMap + 0x4C) = arg0;
     *(s32 *)((u8 *)gTourMap + 0x74) = 0;
-    if (D_005CA030 != 1) {
-        var_a1 = (u8 *)(gTourMap);
+    if ((s32)(D_005CA030) != (s32)(1)) {
+        var_a1 = (unsigned char *)(gTourMap);
         if (*(s32 *)((u8 *)var_a1 + 0x4C) != 0) {
             var_s1 = -1;
             var_a3 = 0;
@@ -58,7 +58,7 @@ void func_002FC800(s32 arg0) {
                 } while (var_a2 < temp_a0);
             }
             var_v1 = &sp30;
-            temp_a1 = (u8 *)(&D_00455920 + (var_s1 * 0x1C));
+            temp_a1 = (unsigned char *)(&D_00455920 + (var_s1 * 0x1C));
             var_v0 = 0x10;
             if (var_v1 != NULL) {
                 do {

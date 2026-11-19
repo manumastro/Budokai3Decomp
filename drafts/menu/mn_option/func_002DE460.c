@@ -34,13 +34,13 @@ void func_002DE460(void) {
     *(f32 *)((u8 *)D_004E05DC + 0x3C) = temp_f0;
     if (func_002DE2C0() != 0) {
         Save_Request(6, -1, 0);
-        var_v0 = (s32 *)(&func_002DEFF0);
+        var_v0 = (int *)(&func_002DEFF0);
         if (&func_002DEFF0 == NULL) {
             var_v0 = NULL;
         }
         *(s32 **)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0x320)) + 0x1C) = var_v0;
     } else {
-        var_v0_2 = (s32 *)(&func_002DEA00);
+        var_v0_2 = (int *)(&func_002DEA00);
         if (&func_002DEA00 == NULL) {
             var_v0_2 = NULL;
         }

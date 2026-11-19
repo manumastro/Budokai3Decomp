@@ -1,11 +1,12 @@
 /* Draft (not built): func_001C9440 at 0x001C9440, size 0x1A8, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'sp' mwccps2.exe Compiler: 6494: var_v1 = sp; @ 6483: var_a3 = sp;
+ * Status: size, 56 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1A0, original 0x1A8
  * Original: asm/nonmatchings/battle/btl_main/func_001C9440.s */
 
-// src/battle/btl_main.c func_001C9440 cerr diff=-1/0
+// src/battle/btl_main.c func_001C9440 size diff=56/104
 void func_001C9440(u8 *arg0) {
+    u8 sp[0x400];
     s32 *var_t0;
     s128 temp_v1;
     s16 temp_a1;
@@ -19,7 +20,7 @@ void func_001C9440(u8 *arg0) {
     u8 *var_t0_2;
     u8 *var_v1;
 
-    var_t0 = (s32 *)(&D_00431340);
+    var_t0 = (int *)(&D_00431340);
     var_a3 = sp;
     var_a2 = 5;
     do {

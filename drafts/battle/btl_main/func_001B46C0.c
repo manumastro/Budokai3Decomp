@@ -1,7 +1,7 @@
-/* Draft (not built): func_001B46C0 at 0x001B46C0, size 0x54C, segment battle/btl_main (c)
+/* Draft (not built): func_001B46C0 at 0x00468940, size 0x0, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); g0), 0, 0x3F800000); @ 2523: func_0013B580((3.1415927f * (2.0f * *(f32 *)((u8 *)((var_s1 * 4) + sp) + 0x90))) / 360.0f);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); gal implicit conversion from 'unsigned char *' to 'float' @ 2840: func_001E4820(arg0, 0, (s32)((f32)(s32)(0x3F800000)));
  * Original: asm/nonmatchings/battle/btl_main/func_001B46C0.s */
 
 // src/battle/btl_main.c func_001B46C0 cerr diff=-1/0
@@ -13,13 +13,13 @@ s32 func_0013B190(s32);
 s32 func_0013B580(f32);
 s16 func_001D7E10(void *);
 s32 func_001E1850(void *, s32);
-s32 func_001E3100(void *);
 s32 func_001FED00(s32 *, s32 *, s32 *);
 extern s32 D_00431420;
 extern s128 D_00431440;
 extern void func_0013B160(void *);
 extern char D_003F0800[];
 void func_001B46C0(u8 *arg0) {
+    u8 sp[0x400];
     f32 sp50;
     s32 sp60;
     s32 sp90;
@@ -99,7 +99,7 @@ void func_001B46C0(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
         spC4 = 0.0f;
-        func_00146ED0(&spC0, &spC0, *(f32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0xBB4)) + 0x10) + *(f32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1354)) + 0xBB4)) + 0x10));
+        func_00146ED0((f32 *)(&spC0), (f32 *)(&spC0), *(f32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0xBB4)) + 0x10) + *(f32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1354)) + 0xBB4)) + 0x10));
         var_s1 = 0;
         *(s128 *)((u8 *)(&sp90) + 0) = (s128) *(s128 *)((u8 *)(&D_00431420) + 0);
         *(s64 *)((u8 *)(&sp90) + 0x10) = (s64) *(s64 *)((u8 *)(&D_00431420) + 0x10);
@@ -173,7 +173,7 @@ loop_34:
     func_001E3460(arg0);
     *(s32 *)((u8 *)arg0 + 0xCA4) = 0x3F800000;
     *(s32 *)((u8 *)arg0 + 0xCA8) = 0;
-    func_001E4820((f32)(arg0), 0, 0x3F800000);
+    func_001E4820(arg0, 0, (s32)((f32)(s32)(0x3F800000)));
     *(s32 *)((u8 *)arg0 + 0xCB8) = 0;
     *(s8 *)((u8 *)arg0 + 0x2003) = 0;
     *(s8 *)((u8 *)arg0 + 0x1FFD) = 0;
@@ -198,9 +198,9 @@ loop_34:
     func_001E3100(arg0);
     func_001D9C00(arg0);
     Btl_UpdateLimitXY(0, 0x3F4CCCCD, 0x3DA3D70A);
-    func_001ABD30((void *)(arg0 + 0x1360));
+    func_001ABD30((struct Fighter *)(arg0 + 0x1360));
     *(s8 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1354)) + 0x200C) = 1;
     func_001DD680(arg0);
     func_001D9900(arg0, 9, 1);
-    func_001D9960((struct Fighter *)(arg0), 0x1F, 0);
+    func_001D9960((Fighter *)(arg0), 0x1F, 0);
 }

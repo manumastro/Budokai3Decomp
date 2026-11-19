@@ -28,7 +28,7 @@ block_2:
     if (*(s32 *)((u8 *)(temp_v1 + 0x830) + 0xB9C) != 0xE) {
         goto block_9;
     }
-    func_0013B160((s32)((void *)(NULL)));
+    func_0013B160((s32)(NULL));
     func_00142100(temp_s2 + 0x50, temp_s2 + 0x60);
     D_00470238 = 0;
     amModel_SetCurrent(*(s32 *)((u8 *)temp_s1 + 0x1A0), 0x03003000);
@@ -36,13 +36,13 @@ block_2:
     if (temp_a0 == NULL) {
         goto block_6;
     }
-    func_00208D70((s32)((void *)(temp_a0)));
+    func_00208D70((s32)(temp_a0));
 block_6:
     temp_a0_2 = *(u8 **)((u8 *)temp_s2 + 0x74);
     if (temp_a0_2 == NULL) {
         goto block_8;
     }
-    func_00208D70((s32)((void *)(temp_a0_2)));
+    func_00208D70((s32)(temp_a0_2));
 block_8:
     M2C_ERROR(/* unknown instruction: vmove.xyzw $vf28, $vf24 */);
     M2C_ERROR(/* unknown instruction: vmove.xyzw $vf29, $vf25 */);

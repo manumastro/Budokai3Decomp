@@ -1,7 +1,7 @@
 /* Draft (not built): func_0013EE90 at 0x0013EE90, size 0x408, segment sys/amObject (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 's3232' mwccps2.exe Compiler: 307: f32 sp64; @ 306: s3232 sp60;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'int' to 'int (*)(unsigned char *)' @ 332: temp_s1 = D_0047CAC4;
  * Original: asm/nonmatchings/sys/amObject/func_0013EE90.s */
 
 // src/sys/amObject.c func_0013EE90 cerr diff=-1/0
@@ -12,8 +12,9 @@ s32 func_0013B190(s32);
 extern void func_00146F30(void *);
 extern void func_00142100(void *, void *);
 extern void func_0013B060(void *);
-void func_0013EE90(u8 *arg0, s32 *arg1, u8 **arg2) {
-    s3232 sp60;
+extern s32 D_0047CAC4;
+void func_0013EE90(void *arg0, s32 *arg1, s32 *arg2) {
+    s32 sp60;
     f32 sp64;
     f32 sp68;
     f32 sp6C;
@@ -23,12 +24,12 @@ void func_0013EE90(u8 *arg0, s32 *arg1, u8 **arg2) {
     f32 sp7C;
     f32 sp80;
     f32 sp84;
-    s3232 sp88;
+    s32 sp88;
     f32 sp8C;
     s32 spA0;
     f32 spB0;
-    s3232 spB4;
-    s3232 spB8;
+    s32 spB4;
+    s32 spB8;
     s32 spBC;
     s32 spC0;
     s32 (*temp_s1)(u8 *);
@@ -39,12 +40,12 @@ void func_0013EE90(u8 *arg0, s32 *arg1, u8 **arg2) {
 
     var_s4 = arg0;
     temp_s1 = D_0047CAC4;
-    func_0013B0B0((s32)((void *)(NULL)));
+    func_0013B0B0((s32)(NULL));
     do {
         func_00142100(var_s4, var_s4 + 0x10);
         if ((*(u8 **)((u8 *)var_s4 + 0x34) != NULL) && (*(s32 *)((u8 *)(*(u8 **)((u8 *)var_s4 + 0x34)) + 4) != 0)) {
             temp_s0 = *(u8 **)((u8 *)(*(u8 **)((u8 *)var_s4 + 0x34)) + 0xC);
-            func_0013B0B0((s32)((void *)(NULL)));
+            func_0013B0B0((s32)(NULL));
             if (*(s32 *)((u8 *)var_s4 + 0x30) & 0xC000) {
                 M2C_ERROR(/* unknown instruction: sqc2 $vf31, ($v0) */);
                 M2C_ERROR(/* unknown instruction: lqc2 $vf28, ($v0) */);
@@ -102,8 +103,8 @@ void func_0013EE90(u8 *arg0, s32 *arg1, u8 **arg2) {
             } else if ((temp_s1 != NULL) && (temp_s1(var_s4) != 0)) {
                 func_0013B110(1);
             } else {
-                temp_s0_2 = *arg2;
-                temp_v0 = func_00138070(*(s32 *)((u8 *)(*(u8 **)((u8 *)var_s4 + 0x34)) + 4), arg2);
+                temp_s0_2 = (unsigned char *)(*arg2);
+                temp_v0 = func_00138070((s32)(*(s32 *)((u8 *)(*(u8 **)((u8 *)var_s4 + 0x34)) + 4)), (void **)(arg2));
                 if (temp_v0 != 0) {
                     if (*arg1 != 0) {
                         *(s32 *)((u8 *)temp_s0_2 + 0) = 0x20000000;

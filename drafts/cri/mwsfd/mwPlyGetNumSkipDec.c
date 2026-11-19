@@ -18,3 +18,18 @@ s32 mwPlyGetNumSkipDec(s32 arg0) {
     func_00199AC8(mwPlyGetSfdHn(arg0), sp);
     return sp4 - sp10;
 }
+
+/* Similar function already in C: mwPlyGetNumDropFrm (src/cri/mwsfd.c), similarity 0.69.
+ * It is the template below (not built). */
+#if 0
+s32 mwPlyGetNumDropFrm(s32 arg0) {
+    s32 temp_s0;
+
+    if (func_00183B38() == 0) {
+        func_001870E8(&D_004661B8);
+        return 0;
+    }
+    temp_s0 = mwPlyGetNumSkipDec(arg0);
+    return temp_s0 + mwPlyGetNumSkipDisp(arg0);
+}
+#endif

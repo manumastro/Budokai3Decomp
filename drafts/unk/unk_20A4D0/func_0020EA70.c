@@ -11,7 +11,7 @@ void func_0020EA70(s32 arg0) {
     s32 sp40;
     u8 *temp_s0;
 
-    temp_s0 = &D_00568C90 + (arg0 * 0x2140);
+    temp_s0 = ((u8 *)&D_00568C90) + (arg0 * 0x2140);
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v1) */);
     M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);

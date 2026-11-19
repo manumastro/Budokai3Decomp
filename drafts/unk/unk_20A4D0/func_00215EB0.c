@@ -49,13 +49,13 @@ void func_00215EB0(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: vsub.xyz $vf1, $vf1, $vf2 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($a0) */);
         func_00209D70(&sp40);
-        func_0013B060((s32)((void *)(NULL)));
+        func_0013B060((s32)(NULL));
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v0) */);
         M2C_ERROR(/* unknown instruction: vmulax.xyzw ACC, $vf28, $vf1x */);
         M2C_ERROR(/* unknown instruction: vmadday.xyzw ACC, $vf29, $vf1y */);
         M2C_ERROR(/* unknown instruction: vmaddaz.xyzw ACC, $vf30, $vf1z */);
         M2C_ERROR(/* unknown instruction: vmaddw.xyzw $vf31, $vf31, $vf0w */);
-        func_00208D70((s32)((void *)(*(u8 **)((u8 *)arg0 + 0x10))));
+        func_00208D70((s32)(*(u8 **)((u8 *)arg0 + 0x10)));
         func_00209C50();
         func_0013B110(1);
     }

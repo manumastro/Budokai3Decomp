@@ -1,15 +1,16 @@
 /* Draft (not built): func_001A6C70 at 0x001A6C70, size 0x318, segment battle/btl_cmd (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 'sp74' @ 653: var_f1 = sp84 - sp74;
+ * Status: size, 153 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x164, original 0x318
  * Original: asm/nonmatchings/battle/btl_cmd/func_001A6C70.s */
 
-// src/battle/btl_cmd.c func_001A6C70 cerr diff=-1/0
+// src/battle/btl_cmd.c func_001A6C70 size diff=153/89
 extern void func_00146F10(void *, void *, f32);
 f32 func_00146E90(s32 *, s32);
 s32 func_00146ED0(s32 *, s32 *, f32);
 extern void func_00146F30(void *);
 void func_001A6C70(void) {
+    s32 sp74;
     s32 sp60;
     f32 sp64;
     s32 sp70;
@@ -25,7 +26,7 @@ void func_001A6C70(void) {
     u8 *temp_s2;
     u8 *temp_s3;
 
-    temp_s3 = (u8 *)(gBattle);
+    temp_s3 = (unsigned char *)(gBattle);
     temp_s2 = temp_s3 + 0xA0;
     var_a1 = 1 - *(s32 *)((u8 *)temp_s3 + 0x8900);
     temp_s1 = temp_s2 + 0xF0;

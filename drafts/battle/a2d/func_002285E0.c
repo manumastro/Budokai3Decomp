@@ -36,27 +36,27 @@ void func_002285E0(u8 *arg0, u8 *arg1, s32 arg2, f32 fparg0) {
             }
         }
         temp_v1 = *(u8 **)((u8 *)arg0 + 0x1C);
-        temp_t2 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x18) + (var_a2 * 4));
+        temp_t2 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x18) + (var_a2 * 4));
         temp_a3 = *(s16 *)((u8 *)temp_t2 + 2);
         temp_a0_2 = temp_v1 + (var_a2 << 5);
         switch (temp_a3) {                          /* irregular */
         case 0:
-            *(s3232 *)((u8 *)arg1 + 0) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0);
-            *(s3232 *)((u8 *)arg1 + 4) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 4);
-            *(s3232 *)((u8 *)arg1 + 8) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 8);
-            *(s3232 *)((u8 *)arg1 + 0xC) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0xC);
-            *(s3232 *)((u8 *)arg1 + 0x10) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0x10);
+            *(s32 *)((u8 *)arg1 + 0) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0);
+            *(s32 *)((u8 *)arg1 + 4) = (s32) *(s32 *)((u8 *)temp_a0_2 + 4);
+            *(s32 *)((u8 *)arg1 + 8) = (s32) *(s32 *)((u8 *)temp_a0_2 + 8);
+            *(s32 *)((u8 *)arg1 + 0xC) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0xC);
+            *(s32 *)((u8 *)arg1 + 0x10) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0x10);
             *(f32 *)((u8 *)arg1 + 0x14) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x14);
             *(f32 *)((u8 *)arg1 + 0x18) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x18);
             *(f32 *)((u8 *)arg1 + 0x1C) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x1C);
             return;
         case 1:
             if ((M2C_ERROR(/* Read from unset register $f12 */) - (f32) *(s16 *)((u8 *)temp_t2 + 0)) < 0.00001f) {
-                *(s3232 *)((u8 *)arg1 + 0) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0);
-                *(s3232 *)((u8 *)arg1 + 4) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 4);
-                *(s3232 *)((u8 *)arg1 + 8) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 8);
-                *(s3232 *)((u8 *)arg1 + 0xC) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0xC);
-                *(s3232 *)((u8 *)arg1 + 0x10) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0x10);
+                *(s32 *)((u8 *)arg1 + 0) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0);
+                *(s32 *)((u8 *)arg1 + 4) = (s32) *(s32 *)((u8 *)temp_a0_2 + 4);
+                *(s32 *)((u8 *)arg1 + 8) = (s32) *(s32 *)((u8 *)temp_a0_2 + 8);
+                *(s32 *)((u8 *)arg1 + 0xC) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0xC);
+                *(s32 *)((u8 *)arg1 + 0x10) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0x10);
                 *(f32 *)((u8 *)arg1 + 0x14) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x14);
                 *(f32 *)((u8 *)arg1 + 0x18) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x18);
                 *(f32 *)((u8 *)arg1 + 0x1C) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x1C);
@@ -65,11 +65,11 @@ void func_002285E0(u8 *arg0, u8 *arg1, s32 arg2, f32 fparg0) {
             if (var_a2 == (*(s16 *)((u8 *)arg0 + 4) - 1)) {
                 if (*(s32 *)((u8 *)arg0 + 0) & 1) {
                     if (((f32) *(s16 *)((u8 *)arg0 + 6) - M2C_ERROR(/* Read from unset register $f12 */)) < 0.00001f) {
-                        *(s3232 *)((u8 *)arg1 + 0) = (s3232) *(s3232 *)((u8 *)temp_v1 + 0);
-                        *(s3232 *)((u8 *)arg1 + 4) = (s3232) *(s3232 *)((u8 *)temp_v1 + 4);
-                        *(s3232 *)((u8 *)arg1 + 8) = (s3232) *(s3232 *)((u8 *)temp_v1 + 8);
-                        *(s3232 *)((u8 *)arg1 + 0xC) = (s3232) *(s3232 *)((u8 *)temp_v1 + 0xC);
-                        *(s3232 *)((u8 *)arg1 + 0x10) = (s3232) *(s3232 *)((u8 *)temp_v1 + 0x10);
+                        *(s32 *)((u8 *)arg1 + 0) = (s32) *(s32 *)((u8 *)temp_v1 + 0);
+                        *(s32 *)((u8 *)arg1 + 4) = (s32) *(s32 *)((u8 *)temp_v1 + 4);
+                        *(s32 *)((u8 *)arg1 + 8) = (s32) *(s32 *)((u8 *)temp_v1 + 8);
+                        *(s32 *)((u8 *)arg1 + 0xC) = (s32) *(s32 *)((u8 *)temp_v1 + 0xC);
+                        *(s32 *)((u8 *)arg1 + 0x10) = (s32) *(s32 *)((u8 *)temp_v1 + 0x10);
                         *(f32 *)((u8 *)arg1 + 0x14) = (f32) *(f32 *)((u8 *)temp_v1 + 0x14);
                         *(f32 *)((u8 *)arg1 + 0x18) = (f32) *(f32 *)((u8 *)temp_v1 + 0x18);
                         *(f32 *)((u8 *)arg1 + 0x1C) = (f32) *(f32 *)((u8 *)temp_v1 + 0x1C);
@@ -78,37 +78,37 @@ void func_002285E0(u8 *arg0, u8 *arg1, s32 arg2, f32 fparg0) {
                     M2C_ERROR(/* unknown instruction: mula.s $f6, $f4 */);
                     M2C_ERROR(/* unknown instruction: madd.s $f4, $f2, $f5 */);
                     M2C_ERROR(/* unknown instruction: mula.s $f2, $f1 */);
-                    *(s3232 *)((u8 *)arg1 + 0) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
+                    *(s32 *)((u8 *)arg1 + 0) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
                     M2C_ERROR(/* unknown instruction: mula.s $f2, $f1 */);
-                    *(s3232 *)((u8 *)arg1 + 4) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
+                    *(s32 *)((u8 *)arg1 + 4) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
                     M2C_ERROR(/* unknown instruction: mula.s $f6, $f2 */);
                     M2C_ERROR(/* unknown instruction: madd.s $f2, $f2, $f5 */);
                     M2C_ERROR(/* unknown instruction: mula.s $f4, $f1 */);
-                    *(s3232 *)((u8 *)arg1 + 8) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f2, $f0 */);
+                    *(s32 *)((u8 *)arg1 + 8) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f2, $f0 */);
                     M2C_ERROR(/* unknown instruction: mula.s $f4, $f1 */);
-                    *(s3232 *)((u8 *)arg1 + 0xC) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f2, $f0 */);
+                    *(s32 *)((u8 *)arg1 + 0xC) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f2, $f0 */);
                     M2C_ERROR(/* unknown instruction: mula.s $f6, $f2 */);
                     M2C_ERROR(/* unknown instruction: madd.s $f4, $f2, $f5 */);
                     M2C_ERROR(/* unknown instruction: mula.s $f2, $f1 */);
-                    *(s3232 *)((u8 *)arg1 + 0x10) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
+                    *(s32 *)((u8 *)arg1 + 0x10) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
                     return;
                 }
-                *(s3232 *)((u8 *)arg1 + 0) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0);
-                *(s3232 *)((u8 *)arg1 + 4) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 4);
-                *(s3232 *)((u8 *)arg1 + 8) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 8);
-                *(s3232 *)((u8 *)arg1 + 0xC) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0xC);
-                *(s3232 *)((u8 *)arg1 + 0x10) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0x10);
+                *(s32 *)((u8 *)arg1 + 0) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0);
+                *(s32 *)((u8 *)arg1 + 4) = (s32) *(s32 *)((u8 *)temp_a0_2 + 4);
+                *(s32 *)((u8 *)arg1 + 8) = (s32) *(s32 *)((u8 *)temp_a0_2 + 8);
+                *(s32 *)((u8 *)arg1 + 0xC) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0xC);
+                *(s32 *)((u8 *)arg1 + 0x10) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0x10);
                 *(f32 *)((u8 *)arg1 + 0x14) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x14);
                 *(f32 *)((u8 *)arg1 + 0x18) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x18);
                 *(f32 *)((u8 *)arg1 + 0x1C) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x1C);
                 return;
             }
             if (((f32) *(s16 *)((u8 *)temp_t2 + 4) - M2C_ERROR(/* Read from unset register $f12 */)) < 0.00001f) {
-                *(s3232 *)((u8 *)arg1 + 0) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0x20);
-                *(s3232 *)((u8 *)arg1 + 4) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0x24);
-                *(s3232 *)((u8 *)arg1 + 8) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0x28);
-                *(s3232 *)((u8 *)arg1 + 0xC) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0x2C);
-                *(s3232 *)((u8 *)arg1 + 0x10) = (s3232) *(s3232 *)((u8 *)temp_a0_2 + 0x30);
+                *(s32 *)((u8 *)arg1 + 0) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0x20);
+                *(s32 *)((u8 *)arg1 + 4) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0x24);
+                *(s32 *)((u8 *)arg1 + 8) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0x28);
+                *(s32 *)((u8 *)arg1 + 0xC) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0x2C);
+                *(s32 *)((u8 *)arg1 + 0x10) = (s32) *(s32 *)((u8 *)temp_a0_2 + 0x30);
                 *(f32 *)((u8 *)arg1 + 0x14) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x34);
                 *(f32 *)((u8 *)arg1 + 0x18) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x38);
                 *(f32 *)((u8 *)arg1 + 0x1C) = (f32) *(f32 *)((u8 *)temp_a0_2 + 0x3C);
@@ -117,27 +117,27 @@ void func_002285E0(u8 *arg0, u8 *arg1, s32 arg2, f32 fparg0) {
             M2C_ERROR(/* unknown instruction: mula.s $f6, $f4 */);
             M2C_ERROR(/* unknown instruction: madd.s $f4, $f2, $f5 */);
             M2C_ERROR(/* unknown instruction: mula.s $f2, $f1 */);
-            *(s3232 *)((u8 *)arg1 + 0) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
+            *(s32 *)((u8 *)arg1 + 0) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
             M2C_ERROR(/* unknown instruction: mula.s $f2, $f1 */);
-            *(s3232 *)((u8 *)arg1 + 4) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
+            *(s32 *)((u8 *)arg1 + 4) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
             M2C_ERROR(/* unknown instruction: mula.s $f6, $f2 */);
             M2C_ERROR(/* unknown instruction: madd.s $f2, $f2, $f5 */);
             M2C_ERROR(/* unknown instruction: mula.s $f4, $f1 */);
-            *(s3232 *)((u8 *)arg1 + 8) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f2, $f0 */);
+            *(s32 *)((u8 *)arg1 + 8) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f2, $f0 */);
             M2C_ERROR(/* unknown instruction: mula.s $f4, $f1 */);
-            *(s3232 *)((u8 *)arg1 + 0xC) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f2, $f0 */);
+            *(s32 *)((u8 *)arg1 + 0xC) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f2, $f0 */);
             M2C_ERROR(/* unknown instruction: mula.s $f6, $f2 */);
             M2C_ERROR(/* unknown instruction: madd.s $f4, $f2, $f5 */);
             M2C_ERROR(/* unknown instruction: mula.s $f2, $f1 */);
-            *(s3232 *)((u8 *)arg1 + 0x10) = (s3232) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
+            *(s32 *)((u8 *)arg1 + 0x10) = (s32) M2C_ERROR(/* unknown instruction: madd.s $f0, $f4, $f0 */);
             return;
         }
     } else {
-        *(s3232 *)((u8 *)arg1 + 0) = 0x3F800000;
-        *(s3232 *)((u8 *)arg1 + 4) = 0x3F800000;
-        *(s3232 *)((u8 *)arg1 + 8) = 0x3F800000;
-        *(s3232 *)((u8 *)arg1 + 0xC) = 0x3F800000;
-        *(s3232 *)((u8 *)arg1 + 0x10) = 0;
+        *(s32 *)((u8 *)arg1 + 0) = 0x3F800000;
+        *(s32 *)((u8 *)arg1 + 4) = 0x3F800000;
+        *(s32 *)((u8 *)arg1 + 8) = 0x3F800000;
+        *(s32 *)((u8 *)arg1 + 0xC) = 0x3F800000;
+        *(s32 *)((u8 *)arg1 + 0x10) = 0;
     case 3:
     case 2:
     }

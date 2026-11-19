@@ -1,10 +1,10 @@
 /* Draft (not built): func_002034F0 at 0x002034F0, size 0x400, segment unk/unk_1FB760 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  'void *' mwccps2.exe Compiler: @ 549: F10(temp_s0 + 0x20, *(s32 *)((u8 *)arg0 + 0x1C), *(f32 *)((u8 *)temp_s1 + 0x58));
+ * Status: size, 159 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x3C0, original 0x400
  * Original: asm/nonmatchings/unk/unk_1FB760/func_002034F0.s */
 
-// src/unk/unk_1FB760.c func_002034F0 cerr diff=-1/0
+// src/unk/unk_1FB760.c func_002034F0 size diff=159/240
 s32 func_00141C80(void *, f32 *, f32);
 void func_002034F0(u8 *arg0) {
     f32 sp40;
@@ -51,7 +51,7 @@ void func_002034F0(u8 *arg0) {
     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
     M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
     M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-    func_00146F10(temp_s0 + 0x20, *(s32 *)((u8 *)arg0 + 0x1C), *(f32 *)((u8 *)temp_s1 + 0x58));
+    func_00146F10((void *)(temp_s0 + 0x20), (void *)(*(s32 *)((u8 *)arg0 + 0x1C)), *(f32 *)((u8 *)temp_s1 + 0x58));
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);
     M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($a0) */);
     M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
@@ -113,9 +113,9 @@ void func_002034F0(u8 *arg0) {
             var_f2_7 = 2.0f * (f32) (((u32) temp_v0_7 >> 1) | (temp_v0_7 & 1));
         }
         *(f32 *)((u8 *)temp_s0 + 0x48) = (f32) ((var_f2_7 / 255.0f) - 0.5f);
-        *(s3232 *)((u8 *)temp_s0 + 0x4C) = 0x3F800000;
-        func_00146F30((void *)(temp_s0 + 0x40));
-        *(s3232 *)((u8 *)temp_s0 + 0x4C) = (s3232) *(s3232 *)((u8 *)temp_s1 + 0x6C);
+        *(s32 *)((u8 *)temp_s0 + 0x4C) = 0x3F800000;
+        func_00146F30((f32 *)(temp_s0 + 0x40));
+        *(s32 *)((u8 *)temp_s0 + 0x4C) = (s32) *(s32 *)((u8 *)temp_s1 + 0x6C);
         return;
     }
     M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($v1) */);

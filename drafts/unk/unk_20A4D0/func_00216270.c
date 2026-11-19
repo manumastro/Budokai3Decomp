@@ -1,7 +1,7 @@
 /* Draft (not built): func_00216270 at 0x00216270, size 0x160, segment unk/unk_20A4D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); cit conversion from 'unsigned char *' to 'unsigned char' mwccps2.exe Compiler: @ 3822: *(D_0046FDD0 + var_s0) = temp_v0;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); )' redeclared was declared as: 'int (...)' now declared as: 'void (void *, int)' @ 4494: void amCdFs_Close(void *, s32);
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_00216270.s */
 
 // src/unk/unk_20A4D0.c func_00216270 cerr diff=-1/0
@@ -41,7 +41,7 @@ void func_00216270(void) {
                 } else if (func_00127E88(temp_v0, &D_00469CD0, 4) == 0) {
                     func_0020A100(temp_v0);
                 }
-                *(D_0046FDD0 + var_s0) = temp_v0;
+                *(D_0046FDD0 + var_s0) = (unsigned char)(temp_v0);
                 if (*(s32 *)((u8 *)temp_s2 + 8) == 1) {
                     *(u8 **)((u8 *)(D_0046FDD0 + var_s0) + 0xC0) = amObject_Create((void *)(*(D_0046FDD0 + var_s0)), (void *)(NULL));
                 }
@@ -51,3 +51,53 @@ void func_00216270(void) {
         }
     }
 }
+
+/* Similar function already in C: func_00245240 (src/unk/unk_23A890.c), similarity 0.70.
+ * It is the template below (not built). */
+#if 0
+void func_00245240(void) {
+    u8 *s0;
+    s32 s4;
+    u8 *s3;
+    u8 *s2;
+    s32 s1;
+    s32 off;
+    s32 i;
+
+    s0 = *(u8 **)(D_0046FE4C + 0x99C);
+    if (s0 != 0) {
+        *(s32 *)(D_0046FE4C + 0x99C) = *(s32 *)(s0 + 0x40);
+        *(s32 *)(D_0046FE4C + 0x9A0) = *(s32 *)(*(u8 **)(s0 + 0x40) + 0x50);
+        amFile_Load(*(s32 *)(D_0046FE4C + 0x9A0));
+        *(s32 *)(s0 + 0x40) = 0;
+        amCdFs_Close((s32)s0, 0);
+        s3 = *(u8 **)(D_0046FE4C + 0x9A0);
+        if (0 < *(s32 *)(s3 + 0x10)) {
+            s4 = 0;
+            off = 0;
+            do {
+                s2 = (u8 *)BtlCmd_GetMotEntry((s32)s3, s4);
+                s1 = func_001A50F0((s32)s3, s4);
+                if (*(s32 *)(s2 + 8) >= 0) {
+                    amFile_Load(s1);
+                } else {
+                    if (func_00127E88((void *)s1, (void *)D_0046AD08, 4) == 0) {
+                        func_0020A100((void *)s1);
+                    }
+                }
+                *(s32 *)(D_0046FE4C + off + 0x91C) = s1;
+                if (*(s32 *)(s2 + 8) == 1) {
+                    *(s32 *)(D_0046FE4C + off + 0x95C) =
+                        amObject_Create(*(s32 *)(D_0046FE4C + off + 0x91C), 0);
+                }
+                s4++;
+                off += 4;
+            } while (s4 < *(s32 *)(s3 + 0x10));
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        func_00244F00(i, 0);
+        func_00244F00(i, 1);
+    }
+}
+#endif

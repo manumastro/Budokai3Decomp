@@ -1,10 +1,10 @@
 /* Draft (not built): func_00290D00 at 0x00290D00, size 0x680, segment story/str_bg (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'int' to 'signed char **' @ 569: var_s2 = D_004708A4 + 0x320;
+ * Status: size, 264 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x710, original 0x680
  * Original: asm/nonmatchings/story/str_bg/func_00290D00.s */
 
-// src/story/str_bg.c func_00290D00 cerr diff=-1/0
+// src/story/str_bg.c func_00290D00 size diff=264/452
 s32 amMath_SinCosI(s32, f32 *, f32 *);
 s32 amMotion_Update(s8 *, s32);
 s32 func_0013C1E0(s8 *, s32, s32);
@@ -52,9 +52,9 @@ void func_00290D00(void) {
     u8 *var_s0;
 
     var_s3 = 0;
-    var_s2 = D_004708A4 + 0x320;
-    var_s1 = (s32 *)(D_004708A4 + 0x2EC);
-    var_s0 = (u8 *)(D_004708A4 + 0x354);
+    var_s2 = (signed char **)(D_004708A4 + 0x320);
+    var_s1 = (int *)(D_004708A4 + 0x2EC);
+    var_s0 = (unsigned char *)(D_004708A4 + 0x354);
     do {
         temp_v0 = *var_s2;
         if (temp_v0 != NULL) {
@@ -92,7 +92,7 @@ void func_00290D00(void) {
     *(f32 *)((u8 *)D_004708A4 + 0x1AB8) = (f32) (*(f32 *)((u8 *)D_004708A4 + 0x1AB8) - (0.0001f * (sp6C * temp_f20)));
     *(f32 *)((u8 *)D_004708A4 + 0x1ABC) = (f32) (*(f32 *)((u8 *)D_004708A4 + 0x1ABC) + (0.0001f * (sp68 * temp_f20)));
     var_f3 = *(f32 *)((u8 *)D_004708A4 + 0x1AB8);
-    temp_v1 = (u8 *)(D_004708A4 + 0x1AB8);
+    temp_v1 = (unsigned char *)(D_004708A4 + 0x1AB8);
     if (var_f3 < 0.0f) {
         do {
             var_f3 = *(f32 *)((u8 *)D_004708A4 + 0x1AB8) + 1.0f;
@@ -177,25 +177,25 @@ void func_00290D00(void) {
         } while (!(temp_f0_9 < 1.0f));
     }
     temp_a1 = *(s8 *)((u8 *)D_004708A4 + 0x1AB4);
-    switch (temp_a1) {                              /* irregular */
-    case 1:
-        break;
-    case 0:
-        *(f32 *)((u8 *)temp_v1 + 0x20) = (f32) (*(f32 *)((u8 *)temp_v1 + 0x20) + 0.001f);
-        *(f32 *)((u8 *)temp_v1 + 0x24) = (f32) (*(f32 *)((u8 *)temp_v1 + 0x24) + 0.0015f);
-        if (!(*(f32 *)((u8 *)temp_v1 + 0x20) < 1.0f)) {
-            do {
-                temp_f0_10 = *(f32 *)((u8 *)temp_v1 + 0x20) - 1.0f;
-                *(f32 *)((u8 *)temp_v1 + 0x20) = temp_f0_10;
-            } while (!(temp_f0_10 < 1.0f));
+    if (temp_a1 != 1) {
+        if (temp_a1 != 0) {
+
+        } else {
+            *(f32 *)((u8 *)temp_v1 + 0x20) = (f32) (*(f32 *)((u8 *)temp_v1 + 0x20) + 0.001f);
+            *(f32 *)((u8 *)temp_v1 + 0x24) = (f32) (*(f32 *)((u8 *)temp_v1 + 0x24) + 0.0015f);
+            if (!(*(f32 *)((u8 *)temp_v1 + 0x20) < 1.0f)) {
+                do {
+                    temp_f0_10 = *(f32 *)((u8 *)temp_v1 + 0x20) - 1.0f;
+                    *(f32 *)((u8 *)temp_v1 + 0x20) = temp_f0_10;
+                } while (!(temp_f0_10 < 1.0f));
+            }
+            if (!(*(f32 *)((u8 *)temp_v1 + 0x24) < 1.0f)) {
+                do {
+                    temp_f0_11 = *(f32 *)((u8 *)temp_v1 + 0x24) - 1.0f;
+                    *(f32 *)((u8 *)temp_v1 + 0x24) = temp_f0_11;
+                } while (!(temp_f0_11 < 1.0f));
+            }
         }
-        if (!(*(f32 *)((u8 *)temp_v1 + 0x24) < 1.0f)) {
-            do {
-                temp_f0_11 = *(f32 *)((u8 *)temp_v1 + 0x24) - 1.0f;
-                *(f32 *)((u8 *)temp_v1 + 0x24) = temp_f0_11;
-            } while (!(temp_f0_11 < 1.0f));
-        }
-        break;
     }
     *D_00495718 = *(f32 *)((u8 *)D_004708A4 + 0x1AB8);
     *D_00495758 = *(f32 *)((u8 *)temp_v1 + 4);

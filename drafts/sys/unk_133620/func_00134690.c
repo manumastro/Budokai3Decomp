@@ -1,7 +1,7 @@
 /* Draft (not built): func_00134690 at 0x00134690, size 0xB58, segment sys/unk_133620 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); undefined identifier 's3232' mwccps2.exe Compiler: 317: f32 sp84; @ 316: s3232 sp80;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); call of non-function @ 647: D_0047CAA4(temp_a0, spE8, 0);
  * Original: asm/nonmatchings/sys/unk_133620/func_00134690.s */
 
 // src/sys/unk_133620.c func_00134690 cerr diff=-1/0
@@ -23,7 +23,7 @@ extern void amDraw_FlushPacket(void);
 extern void func_00146F30(void *);
 extern s32 D_0047CAA4;
 void func_00134690(s32 arg0, s32 arg1, u8 *arg2, s32 arg3) {
-    s3232 sp80;
+    s32 sp80;
     f32 sp84;
     f32 sp88;
     f32 sp8C;
@@ -33,12 +33,12 @@ void func_00134690(s32 arg0, s32 arg1, u8 *arg2, s32 arg3) {
     f32 sp9C;
     f32 spA0;
     f32 spA4;
-    s3232 spA8;
+    s32 spA8;
     f32 spAC;
     s32 spC0;
     f32 spD0;
-    s3232 spD4;
-    s3232 spD8;
+    s32 spD4;
+    s32 spD8;
     s32 spDC;
     u8 *spE8;
     u8 *spEC;
@@ -93,7 +93,7 @@ block_15:
     }
     D_00470274 = var_s3;
     D_00470278 = spEC;
-    func_00139330(&spEC, 7, var_s3);
+    func_00139330((void **)(&spEC), 7, (s32)(var_s3));
     if (var_s3 & 0x300000) {
         func_0013B0B0(NULL);
         M2C_ERROR(/* unknown instruction: sqc2 $vf31, ($v0) */);
@@ -302,15 +302,15 @@ block_15:
     *(f32 *)((u8 *)temp_a0 + 0x80) = var_f1;
     *(f32 *)((u8 *)temp_a0 + 0x84) = var_f0;
     if (!(var_s3 & 0x8080)) {
-        *(s3232 *)((u8 *)temp_a0 + 0x58) = 0;
+        *(s32 *)((u8 *)temp_a0 + 0x58) = 0;
     } else if (var_s3 & 0x80) {
-        *(s3232 *)((u8 *)temp_a0 + 0x58) = (s3232) D_00470258;
+        *(s32 *)((u8 *)temp_a0 + 0x58) = (s32) D_00470258;
         *(f32 *)((u8 *)temp_a0 + 0x5C) = (f32) D_0046FD30;
         *(f32 *)((u8 *)temp_a0 + 0x60) = (f32) D_0046FD2C;
         *(f32 *)((u8 *)temp_a0 + 0x64) = (f32) D_0046FD28;
         *(s32 *)((u8 *)temp_a0 + 0x120) = (s32) D_0047025C;
     } else if (var_s3 & 0x8000) {
-        *(s3232 *)((u8 *)temp_a0 + 0x58) = (s3232) D_00470260;
+        *(s32 *)((u8 *)temp_a0 + 0x58) = (s32) D_00470260;
         *(s32 *)((u8 *)temp_a0 + 0x120) = (s32) D_00470264;
     }
     *(s32 *)((u8 *)temp_a0 + 0xC8) = 0;
@@ -320,7 +320,7 @@ block_15:
     *(s64 *)((u8 *)temp_a0 + 0xE0) = 1;
     *(s64 *)((u8 *)temp_a0 + 0xE8) = 0x46;
     if (var_s3 & 0x1000) {
-        *(s32 *)((u8 *)temp_a0 + 0xF0) = (s32) (D_0046FD18 | 1);
+        *(s32 *)((u8 *)temp_a0 + 0xF0) = (s32) (((s32)(D_0046FD18)) | 1);
     } else {
         *(s32 *)((u8 *)temp_a0 + 0xF0) = (s32) D_0046FD18;
     }
@@ -353,7 +353,7 @@ block_15:
         *(s64 *)((u8 *)temp_a0 + 0x138) = 8;
     }
     spEC = temp_a0 + 0x140;
-    if (D_0047CAA4 != NULL) {
+    if ((s32)(D_0047CAA4) != 0) {
         D_0047CAA4(temp_a0, spE8, 0);
     }
     D_00470280 = spEC;

@@ -1,27 +1,21 @@
 /* Draft (not built): func_00261790 at 0x00261790, size 0x9F0, segment unk/unk_260CB0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); Compiler: 9: extern void func_00137B60(FadeVec *); @ 6: extern void func_00139620(s32, FadeColor *, s32, s32, s32, f32);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); object 'var_f25' redefined mwccps2.exe Compiler: 46: f32 var_f26; @ 45: f32 var_f25;
  * Original: asm/nonmatchings/unk/unk_260CB0/func_00261790.s */
 
 // src/unk/unk_260CB0.c func_00261790 cerr diff=-1/0
-extern void func_00139620(s32, FadeColor *, s32, s32, s32, f32);
 extern f32 D_0047042C;
 extern f32 D_00470430;
-extern void func_00137B60(FadeVec *);
-extern void amDraw_FlushPacket(void);
+extern s32 D_00452E10;
+extern s32 D_00452E20;
 extern s32 gFadeMode;
-s32 amDraw_ClosePacket(s32);
-s32 func_00133B50(s32, s32);
-s32 func_00136870(s32, s32, f32 *, s32);
-s32 func_001377E0(f32 *, f32 *);
+extern s32 D_004707D0;
 extern s32 D_00452B3C;
-extern s128 D_00452E10;
-extern s128 D_00452E20;
-extern f32 D_004707D0;
-extern void func_0011F4C0(void);
-extern void func_0011F220(void);
 void func_00261790(f32 fparg0) {
+    s32 var_f27;
+    s32 var_f26;
+    s32 var_f25;
     f32 sp80;
     f32 sp84;
     f32 sp88;
@@ -83,7 +77,7 @@ void func_00261790(f32 fparg0) {
         }
         func_00133B50(0, 0);
         if (fparg0 != 1.0f) {
-            var_s0 = *(&D_00452B3C + (var_s3 * 4));
+            var_s0 = (float *)(*(&D_00452B3C + (var_s3 * 4)));
             if (var_s3 == 8) {
                 sp88 = 0.0f;
                 sp84 = 0.5f;

@@ -1,11 +1,11 @@
 /* Draft (not built): Scr_ReadInt at 0x0014D3C0, size 0x1B0, segment sys/script (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'struct ScrCtx *' to 'int' mwccps2.exe Compiler: @ 284: s32 v = Scr_ReadInt(ctx, pc);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  $v0 */)) + 2) << 0x10) | (*M2C_ERROR(/* Read from unset register $v0 */) | (*(u8 *)((u8 *)(M2C_ERROR(/* Read from unset
  * Original: asm/nonmatchings/sys/script/Scr_ReadInt.s */
 
 // src/sys/script.c Scr_ReadInt cerr diff=-1/0
-s32 Scr_ReadInt(s32 arg0, u8 **arg1) {
+s32 Scr_ReadInt(ScrCtx *arg0, u8 **arg1) {
     s32 temp_a2;
     s32 temp_a2_3;
     s8 temp_a2_2;
@@ -19,7 +19,7 @@ s32 Scr_ReadInt(s32 arg0, u8 **arg1) {
     temp_a2 = (s32) temp_v1 >> 4;
     switch (temp_a2) {
     case 0:
-        return *(arg0 + ((temp_v1 & 0xF) * 4));
+        return *(s32 *)(arg0 + ((temp_v1 & 0xF) * 4));
     case 1:
         temp_v0 = *arg1;
         *arg1 += 1;
@@ -43,7 +43,7 @@ block_12:
         *arg1 += 2;
         goto block_12;
     case 7:
-        temp_a2_3 = *(arg0 + ((((s8) *(u8 *)((u8 *)(*arg1) + 0) >> 4) & 0xF) * 4));
+        temp_a2_3 = *(s32 *)(arg0 + ((((s8) *(u8 *)((u8 *)(*arg1) + 0) >> 4) & 0xF) * 4));
         *arg1 += 1;
         goto block_12;
     }

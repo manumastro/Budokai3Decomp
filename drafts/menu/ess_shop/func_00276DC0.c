@@ -1,12 +1,19 @@
 /* Draft (not built): func_00276DC0 at 0x00276DC0, size 0x250, segment menu/ess_shop (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  does not match 'func_0026E000(unsigned char *, int)' mwccps2.exe Compiler: @ 691: func_0026E000(&spC0, 0xF0, var_a2_2);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'unsigned char *' to 'int' @ 699: func_00276CE0(&spC0,(unsigned char *)(temp_s4));
  * Original: asm/nonmatchings/menu/ess_shop/func_00276DC0.s */
 
 // src/menu/ess_shop.c func_00276DC0 cerr diff=-1/0
 extern s32 gEssTrade;
 void func_00276DC0(s32 arg0, s32 arg1) {
+    s32 spDC;
+    s32 spD8;
+    s32 spD4;
+    s32 spD0;
+    s32 spCC;
+    s32 spC8;
+    s32 spC4;
     s32 spA0;
     s32 spB8;
     s32 spBC;
@@ -36,7 +43,7 @@ void func_00276DC0(s32 arg0, s32 arg1) {
     spBC = arg0;
     spA0 = arg0 << 5;
     spB8 = arg1;
-    temp_s6 = (u8 *)(gEssTrade + (spBC * 0xD680) + 0x280);
+    temp_s6 = (unsigned char *)(gEssTrade + (spBC * 0xD680) + 0x280);
 loop_1:
     temp_s4 = *(s32 *)((u8 *)(spA0 + gEssTrade + var_fp) + 0x60);
     temp_a1 = temp_s6 + temp_s4;
@@ -78,8 +85,8 @@ loop_7:
                     var_a0_2 += 4;
                 } while (var_a2_2 < 7);
                 spC0 = var_v1;
-                func_0026E000(&spC0, 0xF0, var_a2_2);
-                func_00276CE0(&spC0, temp_s4);
+                func_0026E000((u8 *)(&spC0), 0xF0);
+                func_00276CE0(&spC0,(unsigned char *)(temp_s4));
                 *(s16 *)((u8 *)var_s0 + 0x8A2) = (s16) spC4;
                 *(s16 *)((u8 *)var_s0 + 0x8A4) = (s16) spC8;
                 *(s16 *)((u8 *)var_s0 + 0x8A6) = (s16) spCC;

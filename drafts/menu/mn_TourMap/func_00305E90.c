@@ -1,10 +1,10 @@
 /* Draft (not built): func_00305E90 at 0x00305E90, size 0x1D0, segment menu/mn_TourMap (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 60 instructions differ
+ * Status: size, 47 instructions differ
  * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x19C, original 0x1D0
  * Original: asm/nonmatchings/menu/mn_TourMap/func_00305E90.s */
 
-// src/menu/mn_TourMap.c func_00305E90 size diff=60/103
+// src/menu/mn_TourMap.c func_00305E90 size diff=47/103
 s32 ScrCamSlot_Load(s32, s32, void *, s32);
 s32 Scr_Start(s32, s32);
 s32 SoundSlot_Create(s32, s32, s32);
@@ -21,6 +21,7 @@ s32 func_002AA340(s32, s32, void *, s32);
 extern void *amObject_Create(void *, void *);
 extern void func_002AA3D0(void);
 void func_00305E90(void) {
+    s32 temp_s0;
     u8 *temp_a2;
     u8 *temp_a2_2;
     u8 *temp_a2_3;
@@ -30,9 +31,8 @@ void func_00305E90(void) {
     u8 *temp_a2_7;
     u8 *temp_a2_8;
     u8 *temp_a2_9;
-    u8 *temp_s0;
 
-    temp_s0 = (u8 *)(D_0047097C);
+    temp_s0 = D_0047097C;
     func_002A92B0(*(s32 *)((u8 *)temp_s0 + 4));
     func_002AA3D0();
     temp_a2 = *(u8 **)((u8 *)temp_s0 + 0x64);

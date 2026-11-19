@@ -1,7 +1,7 @@
 /* Draft (not built): func_00226070 at 0x00226070, size 0x4D0, segment battle/a2d (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  = sp71 + sp6D; @ 485: 0 + 0x18) = (s16) ((s64) ((s64) *M2C_ERROR(/* Read from unset register $t0 */) << 0x30) >> 0x30);
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); /array required @ 491: 0 + 0x18) = (s16) ((s64) ((s64) *M2C_ERROR(/* Read from unset register $t0 */) << 0x30) >> 0x30);
  * Original: asm/nonmatchings/battle/a2d/func_00226070.s */
 
 // src/battle/a2d.c func_00226070 cerr diff=-1/0
@@ -10,6 +10,12 @@ extern s32 D_00470708;
 extern s32 D_0047070C;
 s32 amMath_SinCosI(s64, f32 *, f32 *);
 void func_00226070(u8 *arg0, u8 *arg1, u8 *arg2, u8 *arg3) {
+    s32 sp77;
+    s32 sp76;
+    s32 sp75;
+    s32 sp6F;
+    s32 sp6E;
+    s32 sp6D;
     f32 sp40;
     f32 sp44;
     f32 sp48;

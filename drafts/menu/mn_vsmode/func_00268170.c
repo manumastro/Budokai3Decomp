@@ -12,9 +12,9 @@ void *func_0022D860(s32, s32);
 extern s32 D_00470238;
 extern s32 D_00470708;
 extern s32 D_0047070C;
-extern void func_0022CD00(void *);
 extern void *D_00470704;
 extern void amModel_SetCurrent();
+extern void func_0022CD00(void *);
 void func_00268170(u8 *arg0) {
     s32 var_s1;
     u8 *temp_a0;

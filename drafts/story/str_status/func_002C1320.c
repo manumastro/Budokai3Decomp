@@ -5,7 +5,7 @@
  * Original: asm/nonmatchings/story/str_status/func_002C1320.s */
 
 // src/story/str_status.c func_002C1320 size diff=82/180
-void func_002C1320(u8 *arg0) {
+void func_002C1320(s32 *arg0) {
     s32 temp_a0_10;
     s32 temp_a0_11;
     s32 temp_a0_12;
@@ -21,7 +21,7 @@ void func_002C1320(u8 *arg0) {
     u8 *temp_a0;
 
     temp_a0 = *(u8 **)((u8 *)arg0 + 4);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x2000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x2000);

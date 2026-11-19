@@ -1,7 +1,7 @@
 /* Draft (not built): func_0030E690 at 0x0030E690, size 0x1F8, segment story/str_staffroll (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); gned char *' * 'int' mwccps2.exe Compiler: 481: sp60 = D_00459140; @ 466: if (*(D_00492FCE + (D_004B4B63 * 0xB8)) & 8) {
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); 630(int *, int *)' does not match 'func_0030D630(int *)' mwccps2.exe Compiler: @ 479: func_0030D630(temp_s1,(int *)(8));
  * Original: asm/nonmatchings/story/str_staffroll/func_0030E690.s */
 
 // src/story/str_staffroll.c func_0030E690 cerr diff=-1/0
@@ -34,7 +34,7 @@ void func_0030E690(u8 *arg0) {
         break;
     case 7:
         *(f32 *)((u8 *)temp_s1 + 0x18) = 0.0f;
-        if (*(D_00492FCE + (D_004B4B63 * 0xB8)) & 8) {
+        if (*(D_00492FCE + (((s32)(D_004B4B63)) * 0xB8)) & 8) {
             *(u8 *)((u8 *)temp_s1 + 0x1C) = 8U;
         }
         break;
@@ -47,7 +47,7 @@ void func_0030E690(u8 *arg0) {
         }
         break;
     }
-    func_0030D630((s32 *)(temp_s1));
+    func_0030D630(temp_s1,(int *)(8));
     var_v1 = &sp40;
     sp60 = D_00459140;
     var_v0 = 0x10;
@@ -68,7 +68,7 @@ void func_0030E690(u8 *arg0) {
     if (((s64) (var_s0 << 0x30) >> 0x30) != 0) {
         *(u8 *)((u8 *)temp_s1 + 0x1C) = 9U;
         Ball_Start();
-        var_v1_2 = (s32 *)(&func_0030E630);
+        var_v1_2 = (int *)(&func_0030E630);
         if (&func_0030E630 == NULL) {
             var_v1_2 = NULL;
         }

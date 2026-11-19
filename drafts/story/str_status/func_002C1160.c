@@ -37,19 +37,19 @@ void func_002C1160(u8 *arg0) {
             var_v1 += 1;
         } while (var_v0 != 0);
     }
-    sp70 = (s32 *)(arg0 + 0xC);
-    sp74 = (s32)(arg0 + 0x10);
-    sp78 = (s32)(arg0 + 0x14);
-    sp7C = (s32)(arg0 + 0x18);
-    sp80 = (s32)(arg0 + 0x1C);
-    sp84 = (s32)(arg0 + 0x20);
-    sp88 = (s32)(arg0 + 0x2C);
-    sp8C = (s32)(arg0 + 0x28);
-    sp90 = (s32)(arg0 + 0x30);
+    sp70 = (int *)(arg0 + 0xC);
+    sp74 = (int)(arg0 + 0x10);
+    sp78 = (int)(arg0 + 0x14);
+    sp7C = (int)(arg0 + 0x18);
+    sp80 = (int)(arg0 + 0x1C);
+    sp84 = (int)(arg0 + 0x20);
+    sp88 = (int)(arg0 + 0x2C);
+    sp8C = (int)(arg0 + 0x28);
+    sp90 = (int)(arg0 + 0x30);
     *(s128 *)((u8 *)(&sp50) + 0) = (s128) *(s128 *)((u8 *)(&D_00456380) + 0);
     *(s16 *)((u8 *)(&sp50) + 0x10) = (s16) *(s16 *)((u8 *)(&D_00456380) + 0x10);
     temp_a0 = *(u8 **)((u8 *)arg0 + 4);
-    D_00470704 = (s32)(temp_a0);
+    D_00470704 = (int)(temp_a0);
     D_0047070C = 0x2000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0), 0x2000);
@@ -69,7 +69,7 @@ void func_002C1160(u8 *arg0) {
         var_s1 += 4;
     } while (var_s2 < 9);
     temp_a0_3 = *(u8 **)((u8 *)arg0 + 4);
-    D_00470704 = (s32)(temp_a0_3);
+    D_00470704 = (int)(temp_a0_3);
     D_0047070C = 0x2000;
     D_00470708 = 0;
     amModel_SetCurrent((s32)(temp_a0_3), 0x2000);

@@ -79,7 +79,7 @@ void func_002B2E40(u8 *arg0) {
     u8 *var_t2;
 
     temp_s3 = arg0 + 0x30;
-    temp_a1 = (u8 *)(gSklEdit + (*(s32 *)((u8 *)arg0 + 0x30) * 0x1C8));
+    temp_a1 = (unsigned char *)(gSklEdit + (*(s32 *)((u8 *)arg0 + 0x30) * 0x1C8));
     temp_t1 = *(s32 *)((u8 *)temp_a1 + 0x60);
     temp_s2 = temp_a1 + 0x48;
     if (temp_t1 != 2) {
@@ -114,7 +114,7 @@ void func_002B2E40(u8 *arg0) {
         if (!(D_004E0614 <= 0.0f)) {
             SoundRpc_Send3(0, 0, 0x16, 0);
         }
-        var_v1 = (s32 *)(&func_002B2DA0);
+        var_v1 = (int *)(&func_002B2DA0);
         if (&func_002B2DA0 == NULL) {
             var_v1 = NULL;
         }
@@ -127,7 +127,7 @@ void func_002B2E40(u8 *arg0) {
         if ((temp_a1_2 > 0) && (temp_a1_2 < 0x253)) {
             func_00283D00(*(s32 *)((u8 *)gSklEdit + 0x38) + 0x20, temp_a1_2, 0, 0x11403000);
             SklSheet_SetIndex(0);
-            var_v1_2 = (s32 *)(&func_002B2D50);
+            var_v1_2 = (int *)(&func_002B2D50);
             *(void (**)(u8 *))((u8 *)temp_s3 + 4) = func_002B2E40;
             if (&func_002B2D50 == NULL) {
                 var_v1_2 = NULL;
@@ -366,7 +366,7 @@ loop_141:
                             var_t0 += 1;
                             temp_v1_7 = temp_a1_6 * 4;
                             var_t2 += 4;
-                            var_t1 += *(u8 *)((u8 *)(&D_004E0660 + ((temp_v1_7 + temp_a1_6) * 8)) + 8) & 7;
+                            var_t1 += *(u8 *)((u8 *)(((u8 *)&D_004E0660) + ((temp_v1_7 + temp_a1_6) * 8)) + 8) & 7;
                             if (var_t0 >= temp_a2_2) {
 
                             } else {
@@ -401,7 +401,7 @@ block_148:
                         }
                     } else {
                         func_002D2370(*(s32 *)((u8 *)gSklEdit + 0x30));
-                        var_v1_3 = (s32 *)(&func_002B2D00);
+                        var_v1_3 = (int *)(&func_002B2D00);
                         *(void (**)(u8 *))((u8 *)temp_s3 + 4) = func_002B2E40;
                         if (&func_002B2D00 == NULL) {
                             var_v1_3 = NULL;
@@ -447,7 +447,7 @@ block_173:
                         }
                     } else {
                         func_002D2370(*(s32 *)((u8 *)gSklEdit + 0x30));
-                        var_v1_4 = (s32 *)(&func_002B2D00);
+                        var_v1_4 = (int *)(&func_002B2D00);
                         *(void (**)(u8 *))((u8 *)temp_s3 + 4) = func_002B2E40;
                         if (&func_002B2D00 == NULL) {
                             var_v1_4 = NULL;

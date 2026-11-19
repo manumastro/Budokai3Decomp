@@ -16,3 +16,15 @@ void SFX_MakeTblZ16(u8 *arg0, s32 arg1) {
     }
     func_0019F0D0(arg0, arg1, &D_00467C88);
 }
+
+/* Similar function already in C: func_001983F0 (src/cri/sfd_00194D48.c), similarity 0.69.
+ * It is the template below (not built). */
+#if 0
+void func_001983F0(s32 arg0, s32 arg1) {
+    if (func_0018D870() != 0) {
+        func_0018D650(0, 0xFF000139);
+        return;
+    }
+    func_0018A7A0(arg0, arg1);
+}
+#endif

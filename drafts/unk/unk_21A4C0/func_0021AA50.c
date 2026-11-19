@@ -18,7 +18,7 @@ void func_0021AA50(u8 *arg0) {
     if (temp_v0 != NULL) {
         *(u8 **)((u8 *)temp_v0 + 8) = (u8 *) (&func_0021A930 + 0x40);
         temp_s0 = temp_v0 + 0x20;
-        *(s32 **)((u8 *)temp_v0 + 0xC) = &func_0021A930;
+        *(s32 **)((u8 *)temp_v0 + 0xC) = (int *)(&func_0021A930);
         *(s32 *)((u8 *)temp_v0 + 0x18) = 0xBF800000;
         memcpy(temp_s0, arg0, 0x60);
         M2C_ERROR(/* unknown instruction: lqc2 $vf1, ($s1) */);

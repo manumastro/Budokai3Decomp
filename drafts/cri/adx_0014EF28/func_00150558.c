@@ -16,3 +16,13 @@ s32 func_00150558(s32 arg0, s32 arg1, s32 arg2) {
     func_001503A0(&D_00460450, 6, arg0, arg1);
     return 0;
 }
+
+/* Similar function already in C: func_0016B720 (src/cri/mfci.c), similarity 0.61.
+ * It is the template below (not built). */
+#if 0
+void func_0016B720(s32 arg0, s32 arg1, s32 arg2) {
+    func_0016AFD8();
+    func_0016B770(arg0, arg1, arg2);
+    func_0016AFF0();
+}
+#endif

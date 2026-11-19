@@ -1,7 +1,7 @@
 /* Draft (not built): func_001D33E0 at 0x001D33E0, size 0x5E4, segment battle/char_mant (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); o 'int *' mwccps2.exe Compiler: @ 149: 0(temp_s1 + 0x40, temp_s1 + 0x40, D_00470598, *(f32 *)((u8 *)D_00470598 + 0x68));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); gned char *' mwccps2.exe Compiler: @ 182: ((u8 *)(((0.5f + (0.5f *  (0))) * (1.0f / *(f32 *)((u8 *)temp_s1_2 + 0x6C)))))
  * Original: asm/nonmatchings/battle/char_mant/func_001D33E0.s */
 
 // src/battle/char_mant.c func_001D33E0 cerr diff=-1/0
@@ -146,7 +146,7 @@ block_18:
         M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
         M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-        func_00146F10(temp_s1 + 0x40, temp_s1 + 0x40, D_00470598, *(f32 *)((u8 *)D_00470598 + 0x68));
+        func_00146F10((s32 *)(temp_s1 + 0x40), (s32 *)(temp_s1 + 0x40), (void *)(D_00470598), *(f32 *)((u8 *)D_00470598 + 0x68));
     }
     if (var_s6 == 0) {
         if (*(s32 *)((u8 *)temp_s4 + 0x124) == 0) {
@@ -233,7 +233,7 @@ block_27:
             M2C_ERROR(/* unknown instruction: lqc2 $vf2, ($v0) */);
             M2C_ERROR(/* unknown instruction: vadd.xyz $vf1, $vf1, $vf2 */);
             M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
-            func_00146F10(temp_s0 + 0x40, temp_s0 + 0x40, D_00470598, *(f32 *)((u8 *)D_00470598 + 0x68));
+            func_00146F10((s32 *)(temp_s0 + 0x40), (s32 *)(temp_s0 + 0x40), (void *)(D_00470598), *(f32 *)((u8 *)D_00470598 + 0x68));
         }
     }
 }

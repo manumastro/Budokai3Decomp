@@ -1,10 +1,10 @@
 /* Draft (not built): func_00302450 at 0x00302450, size 0x15DC, segment unk/unk_301530 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); + gTourMap) + 0x2F0) == 4) { @ 203: *(u8 **)((u8 *)temp_v0 + 0x48) = (u8 *) (((u8 *)gTourMap) + ((u8 *)var_s0) + 0x2EC);
+ * Status: size, 1030 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x149C, original 0x15DC
  * Original: asm/nonmatchings/unk/unk_301530/func_00302450.s */
 
-// src/unk/unk_301530.c func_00302450 cerr diff=-1/0
+// src/unk/unk_301530.c func_00302450 size diff=1030/1319
 s32 SoundRpc_SetVolume(s32, s32, f32);
 s32 amAdx_PlayAfs(s32, s32, s32);
 s32 amAdx_SetVolume(s32, s16, void *, f32);
@@ -42,7 +42,7 @@ extern void *amTask_Create();
 extern void SoundRpc_Send3();
 extern void amAdx_Pause();
 extern void func_003019A0(void);
-void func_00302450(u8 *arg0, s8 arg2) {
+void func_00302450(u8 *arg0, s32 unused_arg1, s8 arg2) {
     s32 sp50;
     f32 sp70;
     f32 sp74;
@@ -107,10 +107,8 @@ void func_00302450(u8 *arg0, s8 arg2) {
     s32 temp_t6_2;
     s32 temp_t6_3;
     s32 temp_t6_4;
-    s32 temp_t7;
     s32 temp_v0_2;
     s32 temp_v0_3;
-    s32 temp_v0_4;
     s32 temp_v1_10;
     s32 temp_v1_2;
     s32 temp_v1_4;
@@ -121,8 +119,6 @@ void func_00302450(u8 *arg0, s8 arg2) {
     s32 var_a2_4;
     s32 var_a3;
     s32 var_a3_3;
-    s32 var_s0;
-    s32 var_s1;
     s32 var_s2;
     s32 var_t1;
     s32 var_t2;
@@ -133,7 +129,6 @@ void func_00302450(u8 *arg0, s8 arg2) {
     s32 var_v0_4;
     s32 var_v1_2;
     s8 *var_a2_2;
-    s8 *var_s2_2;
     s8 temp_t2;
     s8 temp_t3;
     s8 temp_t3_2;
@@ -149,22 +144,22 @@ void func_00302450(u8 *arg0, s8 arg2) {
     u8 *temp_a1_4;
     u8 *temp_a2_3;
     u8 *temp_a2_4;
-    u8 *temp_s0;
-    u8 *temp_s0_2;
-    u8 *temp_s1;
     u8 *temp_t4;
     u8 *temp_v0;
+    u8 *temp_v0_4;
     u8 *temp_v0_5;
-    u8 *temp_v0_6;
     u8 *temp_v1_3;
     u8 *temp_v1_5;
     u8 *temp_v1_6;
     u8 *temp_v1_7;
     u8 *var_a3_2;
+    u8 *var_s0;
+    u8 *var_s1;
 
     var_a2 = arg2;
+    var_s0 = arg0;
     var_f1 = *(f32 *)((u8 *)gTourMap + 0x54);
-    temp_s1 = arg0 + 0x30;
+    var_s1 = var_s0 + 0x30;
     if (D_005CA030 == 1) {
         var_a2 = D_004B4B63;
         var_a1 = *(&D_00492FCC + (var_a2 * 0xB8));
@@ -185,22 +180,22 @@ block_9:
         }
     }
     *(f32 *)((u8 *)gTourMap + 0x50) = var_f1;
-    temp_v1 = *(u32 *)((u8 *)arg0 + 0x30);
+    temp_v1 = *(u32 *)((u8 *)var_s0 + 0x30);
     switch (temp_v1) {
     case 0:
-        temp_a0 = *(s32 *)((u8 *)temp_s1 + 8);
-        *(s32 *)((u8 *)temp_s1 + 8) = (s32) (temp_a0 + 1);
+        temp_a0 = *(s32 *)((u8 *)var_s1 + 8);
+        *(s32 *)((u8 *)var_s1 + 8) = (s32) (temp_a0 + 1);
         if (!((f32) temp_a0 <= (20.0f * gFrameDelta))) {
-            *(s32 *)((u8 *)temp_s1 + 8) = 0;
+            *(s32 *)((u8 *)var_s1 + 8) = 0;
             var_s2 = 0;
             if ((1 << D_005D0082) > 0) {
-                var_s0 = 0;
+                var_s0 = NULL;
                 do {
-                    if (*(s8 *)((u8 *)(((u8 *)gTourMap) + var_s0) + 0x2F0) == 3) {
+                    if (*(s8 *)((u8 *)(((s32)(gTourMap)) + ((s32)(var_s0))) + 0x2F0) == 3) {
                         temp_v0 = amTask_Create(&func_00300400, 0, 0x3000, 0x200);
                         *(s32 *)((u8 *)temp_v0 + 0x30) = 0;
                         *(s32 *)((u8 *)temp_v0 + 0x34) = 0;
-                        *(u8 **)((u8 *)temp_v0 + 0x48) = (u8 *) (((u8 *)gTourMap) + ((u8 *)var_s0) + 0x2EC);
+                        *(u8 **)((u8 *)temp_v0 + 0x48) = (u8 *) (((s32)(gTourMap)) + ((s32)(var_s0)) + 0x2EC);
                     }
                     var_s2 += 1;
                     var_s0 += 0x14;
@@ -210,34 +205,34 @@ block_9:
             if (!(D_004E0614 <= 0.0f)) {
                 SoundRpc_Send3(1, 0, 4, 0);
             }
-            var_v1 = *(u32 *)((u8 *)arg0 + 0x30) + 1;
+            var_v1 = *(u32 *)((u8 *)var_s0 + 0x30) + 1;
 block_126:
-            *(u32 *)((u8 *)arg0 + 0x30) = var_v1;
+            *(u32 *)((u8 *)var_s0 + 0x30) = var_v1;
         }
     default:
         return;
     case 1:
         temp_a1 = *(s16 *)((u8 *)gTourMap + 0x66);
-        if (*(s8 *)((u8 *)((temp_a1 * 0x14) + gTourMap) + 0x2F0) == 4) {
+        if (*(s8 *)((u8 *)(((s32)(((u8 *)(temp_a1 * 0x14)))) + ((s32)(gTourMap))) + 0x2F0) == 4) {
             amAdx_SetVolume(0, temp_a1, gTourMap, D_004E0618);
             amAdx_Pause(0, 0);
             amAdx_PlayAfs(0, 0x210A7, 0);
             func_002F9930(0xB);
             if (*(s16 *)((u8 *)gTourMap + 0x64) >= 0) {
-                temp_s0 = amTask_Create(&TourMap_TaskSlide, 0, 0x3000, 0x200) + 0x30;
-                memset(temp_s0, 0, 0x1C);
-                *(u8 **)((u8 *)temp_s0 + 0x18) = (u8 *) (((u8 *)gTourMap) + (*(s16 *)((u8 *)gTourMap + 0x64) * 0x14) + 0x2EC);
+                var_s0 = ((u8 *)amTask_Create(&TourMap_TaskSlide, 0, 0x3000, 0x200)) + 0x30;
+                memset(var_s0, 0, 0x1C);
+                *(u8 **)((u8 *)var_s0 + 0x18) = (u8 *) (((u8 *)gTourMap) + (*(s16 *)((u8 *)gTourMap + 0x64) * 0x14) + 0x2EC);
                 var_v1_2 = -1;
                 if (*(s16 *)((u8 *)gTourMap + 0x66) < *(s16 *)((u8 *)gTourMap + 0x64)) {
 
                 } else {
                     var_v1_2 = 1;
                 }
-                *(s32 *)((u8 *)temp_s0 + 0x14) = var_v1_2;
-                temp_t2 = *(s8 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0x18)) + 7);
+                *(s32 *)((u8 *)var_s0 + 0x14) = var_v1_2;
+                temp_t2 = *(s8 *)((u8 *)(*(u8 **)((u8 *)var_s0 + 0x18)) + 7);
                 var_f0 = (f32) ((((1 << D_005D0082) - 1) * 0x64) + 0x190 + (D_005D0082 * 5)) / -2.0f;
-                if ((temp_s0 + 0xC) != NULL) {
-                    *(f32 *)((u8 *)temp_s0 + 0xC) = (f32) (((((50.0f + (f32) (((D_005D0082 + 1) * 0x64) + 0x88)) / 2.0f) - 64.0f) - 50.0f) - (f32) (temp_t2 * 0x64));
+                if ((var_s0 + 0xC) != NULL) {
+                    *(f32 *)((u8 *)var_s0 + 0xC) = (f32) (((((50.0f + (f32) (((D_005D0082 + 1) * 0x64) + 0x88)) / 2.0f) - 64.0f) - 50.0f) - (f32) (temp_t2 * 0x64));
                 }
                 var_t1 = 1;
                 if (temp_t2 > 0) {
@@ -262,13 +257,13 @@ block_126:
                         } while (temp_t2 >= var_t1);
                     }
                 }
-                if ((temp_s0 + 8) != NULL) {
-                    *(f32 *)((u8 *)temp_s0 + 8) = (f32) (200.0f + var_f0 + (f32) ((1 << temp_t2) * 0x64 * ((s16) *(s16 *)((u8 *)gTourMap + 0x64) >> temp_t2)));
+                if ((var_s0 + 8) != NULL) {
+                    *(f32 *)((u8 *)var_s0 + 8) = (f32) (200.0f + var_f0 + (f32) ((1 << temp_t2) * 0x64 * ((s16) *(s16 *)((u8 *)gTourMap + 0x64) >> temp_t2)));
                 }
-                *(f32 *)((u8 *)temp_s0 + 0x10) = (f32) (5.0f * gFrameDelta * (f32) *(s32 *)((u8 *)temp_s0 + 0x14));
-                *(s8 *)((u8 *)(*(u8 **)((u8 *)temp_s0 + 0x18)) + 4) = 2;
+                *(f32 *)((u8 *)var_s0 + 0x10) = (f32) (5.0f * gFrameDelta * (f32) *(s32 *)((u8 *)var_s0 + 0x14));
+                *(s8 *)((u8 *)(*(u8 **)((u8 *)var_s0 + 0x18)) + 4) = 2;
             }
-            var_v1 = *(u32 *)((u8 *)arg0 + 0x30) + 1;
+            var_v1 = *(u32 *)((u8 *)var_s0 + 0x30) + 1;
             goto block_126;
         }
         break;
@@ -305,11 +300,11 @@ loop_43:
                         temp_a1_3 = (1 << (var_t2 + 2)) * 0x64;
                         temp_a0_4 = (1 << (var_t2 + 3)) * 0x64;
                         temp_v1_4 = (1 << (var_t2 + 4)) * 0x64;
+                        var_s0 = (u8 *) ((1 << (var_t2 + 5)) * 5);
                         temp_f0_2 = var_f0_2 + (0.5f * (f32) ((1 << (var_t2 - 1)) * 0x64)) + (0.5f * (f32) ((1 << var_t2) * 0x64));
-                        temp_t6_2 = (1 << (var_t2 + 5)) * 0x19;
                         temp_t5_2 = (1 << (var_t2 + 6)) * 5;
                         var_t2 += 8;
-                        var_f0_2 = temp_f0_2 + (0.5f * (f32) temp_a2_2) + (0.5f * (f32) temp_a1_3) + (0.5f * (f32) temp_a0_4) + (0.5f * (f32) temp_v1_4) + (0.5f * (f32) (temp_t6_2 * 4)) + (0.5f * (f32) (temp_t5_2 * 0x14));
+                        var_f0_2 = temp_f0_2 + (0.5f * (f32) temp_a2_2) + (0.5f * (f32) temp_a1_3) + (0.5f * (f32) temp_a0_4) + (0.5f * (f32) temp_v1_4) + (0.5f * (f32) ((s32) (var_s0 + ((s32) var_s0 * 4)) * 4)) + (0.5f * (f32) (temp_t5_2 * 0x14));
                     } while ((temp_t3 - 8) >= var_t2);
                 }
                 if (temp_t3 >= var_t2) {
@@ -338,7 +333,7 @@ loop_43:
             }
         }
         *(s32 *)((u8 *)(*(u8 **)((u8 *)gTourMap + 0x44)) + 0x44) = 0;
-        var_v1 = *(u32 *)((u8 *)arg0 + 0x30) + 1;
+        var_v1 = *(u32 *)((u8 *)var_s0 + 0x30) + 1;
         goto block_126;
     case 3:
         var_v1_4 = &spA0;
@@ -372,7 +367,7 @@ loop_43:
             var_a0 = 0;
         }
         if (var_a0 != 0) {
-            var_v1 = *(u32 *)((u8 *)arg0 + 0x30) + 1;
+            var_v1 = *(u32 *)((u8 *)var_s0 + 0x30) + 1;
             goto block_126;
         }
         break;
@@ -408,29 +403,30 @@ loop_43:
             var_a0_2 = 0;
         }
         if (var_a0_2 != 0) {
-            *(u32 *)((u8 *)arg0 + 0x30) = 0U;
-            temp_v0_2 = func_002FCF60(var_a0_2);
-            if (temp_v0_2 == 3) {
+            *(u32 *)((u8 *)var_s0 + 0x30) = 0U;
+            var_s2 = func_002FCF60(var_a0_2);
+            if (var_s2 == 3) {
+                var_s2 = (s32) &D_005CA030;
                 var_s3 = 0;
-                var_s2_2 = &D_005CA030;
-                var_s1 = 0;
+                var_s2 = (s32) &D_005CA030;
+                var_s1 = NULL;
                 *(s32 *)((u8 *)gTourMap + 0x48) = 2;
                 do {
                     var_a2_3 = var_s3;
-                    if (*(&((u8 *)D_0046B560) + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (D_005D0080 * 0x14)) + 0x2F4) * 2)) == *(&((u8 *)D_0046B560) + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (D_005D0081 * 0x14)) + 0x2F4) * 2))) {
+                    if (*(&D_0046B560 + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (D_005D0080 * 0x14)) + 0x2F4) * 2)) == *(&D_0046B560 + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (D_005D0081 * 0x14)) + 0x2F4) * 2))) {
 
                     } else {
-                        temp_a1_5 = *(s16 *)((u8 *)(((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s2_2 + 0x6050) * 0x14)) + 0x2F6);
+                        temp_a1_5 = *(s16 *)((u8 *)(((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s2 + 0x6050) * 0x14)) + 0x2F6);
                         if (temp_a1_5 >= 0) {
                             var_a2_3 = *(s8 *)((u8 *)(&D_005CA030 + (temp_a1_5 * 0xB80)) + 0xB71);
                         } else {
                             var_a2_3 = 0;
                         }
                     }
-                    temp_v0_3 = func_0029E9B0(*(&((u8 *)D_0046B560) + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s2_2 + 0x6050) * 0x14)) + 0x2F4) * 2)), 0, var_a2_3, ((u8 *)var_s3) + 1);
+                    temp_v0_2 = func_0029E9B0(*(&D_0046B560 + (*(s16 *)((u8 *)(((u8 *)gTourMap) + (*(s8 *)((u8 *)var_s2 + 0x6050) * 0x14)) + 0x2F4) * 2)), 0, var_a2_3, var_s3 + 1);
                     var_s3 += 1;
-                    var_s2_2 += 1;
-                    *(s32 *)((u8 *)(((u8 *)gTourMap) + var_s1) + 0x74) = temp_v0_3;
+                    var_s2 += 1;
+                    *(s32 *)((u8 *)(((s32)(gTourMap)) + ((s32)(var_s1))) + 0x74) = temp_v0_2;
                     var_s1 += 4;
                 } while (var_s3 < 2);
                 var_a1_2 = &sp50;
@@ -452,16 +448,16 @@ loop_43:
                     var_v1_8 = NULL;
                 }
                 *(s32 **)((u8 *)(*(u8 **)((u8 *)gTourMap + 0x44)) + 0x1C) = var_v1_8;
-                var_v1_9 = (s32 *)(&func_003019A0);
+                var_v1_9 = (int *)(&func_003019A0);
                 if (&func_003019A0 == NULL) {
                     var_v1_9 = NULL;
                 }
-                *(s32 **)((u8 *)arg0 + 0x1C) = var_v1_9;
+                *(s32 **)((u8 *)var_s0 + 0x1C) = var_v1_9;
                 return;
             }
-            if (temp_v0_2 == 4) {
-                temp_s0_2 = amTask_Create(&func_003004B0, 0, 0x3000, 0x200) + 0x30;
-                memset(temp_s0_2, 0, 0x1C);
+            if (var_s2 == 4) {
+                var_s0 = ((u8 *)amTask_Create(&func_003004B0, 0, 0x3000, 0x200)) + 0x30;
+                memset(var_s0, 0, 0x1C);
                 var_t2_2 = 1;
                 temp_a0_8 = *(u8 **)((u8 *)gTourMap + 0x70);
                 *(s8 *)((u8 *)temp_a0_8 + 7) = (s8) (*(s8 *)((u8 *)temp_a0_8 + 7) + 1);
@@ -475,12 +471,13 @@ loop_43:
                             temp_a2_5 = (1 << (var_t2_2 + 1)) * 0x64;
                             temp_a1_6 = (1 << (var_t2_2 + 2)) * 0x64;
                             temp_a0_9 = (1 << (var_t2_2 + 3)) * 0x64;
+                            temp_t6_2 = 1 << (var_t2_2 + 5);
                             temp_v1_8 = (1 << (var_t2_2 + 4)) * 0x64;
+                            var_s2 = temp_t6_2 * 5;
                             temp_f0_4 = var_f0_3 + (0.5f * (f32) ((1 << (var_t2_2 - 1)) * 0x64)) + (0.5f * (f32) ((1 << var_t2_2) * 0x64));
-                            temp_t7 = (1 << (var_t2_2 + 5)) * 0x19;
                             temp_t6_3 = (1 << (var_t2_2 + 6)) * 5;
                             var_t2_2 += 8;
-                            var_f0_3 = temp_f0_4 + (0.5f * (f32) temp_a2_5) + (0.5f * (f32) temp_a1_6) + (0.5f * (f32) temp_a0_9) + (0.5f * (f32) temp_v1_8) + (0.5f * (f32) (temp_t7 * 4)) + (0.5f * (f32) (temp_t6_3 * 0x14));
+                            var_f0_3 = temp_f0_4 + (0.5f * (f32) temp_a2_5) + (0.5f * (f32) temp_a1_6) + (0.5f * (f32) temp_a0_9) + (0.5f * (f32) temp_v1_8) + (0.5f * (f32) (temp_t6_2 * 0x64)) + (0.5f * (f32) (temp_t6_3 * 0x14));
                         } while ((temp_t3_2 - 8) >= var_t2_2);
                     }
                     if (temp_t3_2 >= var_t2_2) {
@@ -492,23 +489,23 @@ loop_43:
                     }
                 }
                 var_v1 = 5;
-                temp_f0_5 = 200.0f + ((u8 *)var_f0_3) + (f32) ((1 << temp_t3_2) * 0x64 * ((s32) ((temp_t4 - (((u8 *)gTourMap) + 0x2EC)) / 20) >> temp_t3_2));
+                temp_f0_5 = 200.0f + var_f0_3 + (f32) ((1 << temp_t3_2) * 0x64 * ((s32) ((temp_t4 - (((u8 *)gTourMap) + 0x2EC)) / 20) >> temp_t3_2));
                 spC4 = temp_f0_5;
                 *(s8 *)((u8 *)(*(u8 **)((u8 *)gTourMap + 0x70)) + 4) = 2;
-                *(u8 **)((u8 *)temp_s0_2 + 0x18) = (u8 *) *(u8 **)((u8 *)gTourMap + 0x70);
-                *(f32 *)((u8 *)temp_s0_2 + 8) = temp_f0_5;
-                *(f32 *)((u8 *)temp_s0_2 + 0xC) = spC0;
-                *(f32 *)((u8 *)temp_s0_2 + 0x10) = (f32) (5.0f * gFrameDelta);
+                *(u8 **)((u8 *)var_s0 + 0x18) = (u8 *) *(u8 **)((u8 *)gTourMap + 0x70);
+                *(f32 *)((u8 *)var_s0 + 8) = temp_f0_5;
+                *(f32 *)((u8 *)var_s0 + 0xC) = spC0;
+                *(f32 *)((u8 *)var_s0 + 0x10) = (f32) (5.0f * gFrameDelta);
                 goto block_126;
             }
-            func_002FC800(temp_v0_2);
-            func_002F9930(temp_v0_2 + 0xE);
+            func_002FC800(var_s2);
+            func_002F9930(var_s2 + 0xE);
             var_v1_10 = &func_002FC660;
             if (&func_002FC660 == NULL) {
                 var_v1_10 = NULL;
             }
-            *(s32 **)((u8 *)arg0 + 0x1C) = var_v1_10;
-            if (temp_v0_2 != 0) {
+            *(s32 **)((u8 *)var_s0 + 0x1C) = var_v1_10;
+            if (var_s2 != 0) {
                 var_a3_3 = 1;
                 var_f0_4 = (f32) ((((1 << D_005D0082) - 1) * 0x64) + 0x190 + (D_005D0082 * 5)) / -2.0f;
                 spB8 = ((((50.0f + (f32) (((D_005D0082 + 1) * 0x64) + 0x88)) / 2.0f) - 64.0f) - 50.0f) - (f32) (D_005D0082 * 0x64);
@@ -517,13 +514,13 @@ loop_43:
                         do {
                             temp_a0_11 = (1 << (var_a3_3 + 1)) * 0x64;
                             temp_v1_9 = (1 << (var_a3_3 + 2)) * 0x64;
-                            temp_v0_4 = (1 << (var_a3_3 + 3)) * 0x64;
+                            temp_v0_3 = (1 << (var_a3_3 + 3)) * 0x64;
                             temp_t6_4 = (1 << (var_a3_3 + 4)) * 0x64;
                             temp_t4_2 = (1 << (var_a3_3 + 5)) * 0x19;
                             temp_f0_6 = var_f0_4 + (0.5f * (f32) ((1 << (var_a3_3 - 1)) * 0x64)) + (0.5f * (f32) ((1 << var_a3_3) * 0x64));
                             temp_t3_3 = (1 << (var_a3_3 + 6)) * 5;
                             var_a3_3 += 8;
-                            var_f0_4 = temp_f0_6 + (0.5f * (f32) temp_a0_11) + (0.5f * (f32) temp_v1_9) + (0.5f * (f32) temp_v0_4) + (0.5f * (f32) temp_t6_4) + (0.5f * (f32) (temp_t4_2 * 4)) + (0.5f * (f32) (temp_t3_3 * 0x14));
+                            var_f0_4 = temp_f0_6 + (0.5f * (f32) temp_a0_11) + (0.5f * (f32) temp_v1_9) + (0.5f * (f32) temp_v0_3) + (0.5f * (f32) temp_t6_4) + (0.5f * (f32) (temp_t4_2 * 4)) + (0.5f * (f32) (temp_t3_3 * 0x14));
                         } while ((D_005D0082 - 8) >= var_a3_3);
                     }
                     if (D_005D0082 >= var_a3_3) {
@@ -536,15 +533,15 @@ loop_43:
                 }
                 temp_f0_7 = 200.0f + var_f0_4 + 0.0f;
                 spBC = temp_f0_7;
-                temp_v0_5 = *(u8 **)((u8 *)gTourMap + 0x44);
-                *(f32 *)((u8 *)temp_v0_5 + 0x3C) = temp_f0_7;
-                *(f32 *)((u8 *)temp_v0_5 + 0x40) = spB8;
-                *(s32 *)((u8 *)temp_v0_5 + 0x44) = 0;
-                temp_v0_6 = amTask_Create(&TourMap_TaskWaitEntity, 0, 0x3000, 0x200);
-                *(s32 *)((u8 *)temp_v0_6 + 0x30) = 0;
-                *(s32 *)((u8 *)temp_v0_6 + 0x34) = 0;
-                *(u8 **)((u8 *)temp_v0_6 + 0x48) = (u8 *) (((u8 *)gTourMap) + (*(s16 *)((u8 *)gTourMap + 0x64) * 0x14) + 0x2EC);
-                *(f32 *)((u8 *)temp_v0_6 + 0x40) = (f32) ((-5.0f * gFrameDelta) / 2.0f);
+                temp_v0_4 = *(u8 **)((u8 *)gTourMap + 0x44);
+                *(f32 *)((u8 *)temp_v0_4 + 0x3C) = temp_f0_7;
+                *(f32 *)((u8 *)temp_v0_4 + 0x40) = spB8;
+                *(s32 *)((u8 *)temp_v0_4 + 0x44) = 0;
+                temp_v0_5 = amTask_Create(&TourMap_TaskWaitEntity, 0, 0x3000, 0x200);
+                *(s32 *)((u8 *)temp_v0_5 + 0x30) = 0;
+                *(s32 *)((u8 *)temp_v0_5 + 0x34) = 0;
+                *(u8 **)((u8 *)temp_v0_5 + 0x48) = (u8 *) (((u8 *)gTourMap) + (*(s16 *)((u8 *)gTourMap + 0x64) * 0x14) + 0x2EC);
+                *(f32 *)((u8 *)temp_v0_5 + 0x40) = (f32) ((-5.0f * gFrameDelta) / 2.0f);
                 return;
             }
         }
@@ -556,7 +553,7 @@ loop_43:
                 D_004B4B58 += 1;
                 func_002FCAF0();
                 *(u8 **)((u8 *)gTourMap + 0x70) = NULL;
-                *(u32 *)((u8 *)arg0 + 0x30) = 2U;
+                *(u32 *)((u8 *)var_s0 + 0x30) = 2U;
                 *(s32 *)((u8 *)gTourMap + 0x68) = 1;
                 return;
             }

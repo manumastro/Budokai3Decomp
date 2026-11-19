@@ -16,11 +16,11 @@ extern s32 D_0047070C;
 extern f32 D_004E0618;
 extern f32 gFrameDelta;
 extern void A2d_FlushList(void);
+extern void *D_00470704;
+extern void amModel_SetCurrent();
 extern void func_0022CD00(void *);
 extern void amAdx_Pause();
 extern void Obj_SetF3C();
-extern void *D_00470704;
-extern void amModel_SetCurrent();
 extern void func_00268E40(void);
 void func_002693E0(u8 *arg0) {
     s32 *var_v1;
@@ -87,7 +87,7 @@ void func_002693E0(u8 *arg0) {
         D_00470708 = 0;
         amModel_SetCurrent(temp_a0_2, 0x1000);
         D_00470238 = 0;
-        var_v1 = (s32 *)(&func_00268E40);
+        var_v1 = (int *)(&func_00268E40);
         *(s32 *)((u8 *)var_s0 + 0x3C) = func_0022D860(*(s32 *)((u8 *)(*(u8 **)((u8 *)(*(u8 **)((u8 *)var_s2 + 8)) + 0x14)) + 0x10), 0);
         if (&func_00268E40 == NULL) {
             var_v1 = NULL;

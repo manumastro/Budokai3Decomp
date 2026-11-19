@@ -9,3 +9,11 @@ s32 func_00168900();                                /* extern */
 s64 func_00168988(void) {
     return (s64) ((func_00168900() & (0xFFFF0000U >> 0x20)) << 0x20) >> 0x20;
 }
+
+/* Similar function already in C: func_00163BA0 (src/cri/adx_00162A70.c), similarity 0.70.
+ * It is the template below (not built). */
+#if 0
+s32 func_00163BA0(void) {
+    return func_00162080() != 0;
+}
+#endif

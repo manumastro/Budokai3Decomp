@@ -26,7 +26,7 @@ s32 func_002CC120(u8 *arg0) {
     if (temp_v1 >= 0x22) {
         goto block_5;
     }
-    var_a1 = *(&D_004565B0 + (temp_v1 * 4));
+    var_a1 = *(((u8 *)&D_004565B0) + (temp_v1 * 4));
     goto block_6;
 block_5:
     var_a1 = 0;

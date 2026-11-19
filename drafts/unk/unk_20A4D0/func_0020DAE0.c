@@ -1,22 +1,22 @@
 /* Draft (not built): func_0020DAE0 at 0x0020DAE0, size 0x2F0, segment unk/unk_20A4D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal function definition mwccps2.exe Compiler: 1211: s3232 sp40; @ 1209: s32 func_00135F10(f32 *, s3232 *);
+ * Status: size, 134 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1C0, original 0x2F0
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_0020DAE0.s */
 
-// src/unk/unk_20A4D0.c func_0020DAE0 cerr diff=-1/0
+// src/unk/unk_20A4D0.c func_0020DAE0 size diff=134/112
 s32 amDma_Request(s32, s32, s32, s32);
 s32 func_00134690(s32, s32, s32, s32);
-s32 func_00135F10(f32 *, s3232 *);
+s32 func_00135F10(f32 *, s32 *);
 void func_0020DAE0(s32 arg0) {
-    s3232 sp40;
-    s3232 sp44;
-    s3232 sp48;
-    s3232 sp4C;
+    s32 sp40;
+    s32 sp44;
+    s32 sp48;
+    s32 sp4C;
     f32 sp50;
     f32 sp54;
-    s3232 sp58;
-    s3232 sp5C;
+    s32 sp58;
+    s32 sp5C;
     f32 temp_f0;
     f32 temp_f12;
     f32 temp_f21;
@@ -24,7 +24,7 @@ void func_0020DAE0(s32 arg0) {
     u8 *temp_s0;
     u8 *temp_s1;
 
-    temp_s1 = &D_00568C90 + (arg0 * 0x2140);
+    temp_s1 = ((u8 *)&D_00568C90) + (arg0 * 0x2140);
     temp_s0 = gWave;
     if (*(s8 *)((u8 *)gBattle + 0x8975) != 1) {
         func_0013B0B0(NULL);

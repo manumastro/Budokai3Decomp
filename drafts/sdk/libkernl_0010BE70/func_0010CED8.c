@@ -18,3 +18,21 @@ void func_0010CED8(s32 arg0, s32 arg1) {
         EI();
     }
 }
+
+/* Similar function already in C: func_00118680 (src/sdk/libcdvd.c), similarity 0.62.
+ * It is the template below (not built). */
+#if 0
+s32 func_00118680(void) {
+    s32 temp_s0;
+
+    D_003EDDA4 = 1;
+    temp_s0 = DI();
+    func_0010D3A8(0x80000012, &func_00118628, 0);
+    if (temp_s0 != 0) {
+        EI();
+    }
+    D_003EDDA4 = 0;
+    D_003EDDC8 = 1;
+    return 1;
+}
+#endif

@@ -1,7 +1,7 @@
 /* Draft (not built): func_002145E0 at 0x002145E0, size 0x290, segment unk/unk_20A4D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); char *' mwccps2.exe Compiler: @ 3407: func_0020B020(temp_s0, *(s16 *)((u8 *)arg0 + 0x96), *(s16 *)((u8 *)arg0 + 0xA2)));
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); s declared as: 'int (...)' now declared as: 'void (int, void *, int)' @ 3963: void func_00209950(s32 a, void *b, s32 c);
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_002145E0.s */
 
 // src/unk/unk_20A4D0.c func_002145E0 cerr diff=-1/0
@@ -20,13 +20,13 @@ void func_002145E0(u8 *arg0) {
     temp_v0 = func_00215320(*(s16 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x6C)) + 0x1350), *(s16 *)((u8 *)arg0 + 0x50));
     if (temp_v0 != NULL) {
         temp_s1 = temp_v0 + 0x20;
-        *(s32 **)((u8 *)temp_v0 + 8) = &func_002122A0;
-        *(s32 **)((u8 *)temp_v0 + 0xC) = &func_00212650;
+        *(s32 **)((u8 *)temp_v0 + 8) = (int *)(&func_002122A0);
+        *(s32 **)((u8 *)temp_v0 + 0xC) = (int *)(&func_00212650);
         *(f32 *)((u8 *)temp_v0 + 0x18) = (f32) *(f32 *)((u8 *)arg0 + 0x84);
         memset(temp_s1, 0, 0x50);
         temp_s4 = *(s16 *)((u8 *)arg0 + 0x50);
         temp_s0 = *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x6C)) + 0x1350);
-        temp_v0_2 = (u8 *)(func_0020B020(temp_s0, *(s16 *)((u8 *)arg0 + 0x96), *(s16 *)((u8 *)arg0 + 0xA2)));
+        temp_v0_2 = (int)((unsigned char *)func_0020B020((u8 *)(temp_s0), (s32)(*(s16 *)((u8 *)arg0 + 0x96)), (s32)(*(s16 *)((u8 *)arg0 + 0xA2)), 0));
         if (temp_v0_2 != 0) {
             temp_a0 = (s64) ((s64) temp_s4 << 0x30) >> 0x30;
             switch (temp_a0) {                      /* irregular */
@@ -74,7 +74,7 @@ void func_002145E0(u8 *arg0) {
             *(s32 *)((u8 *)temp_v0 + 0x10) = func_00209540(temp_v0_2, var_a1, 0);
         }
         temp_s0_2 = *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x6C)) + 0x1350);
-        *(s32 *)((u8 *)temp_s1 + 0x20) = func_0020B020(temp_s0_2, *(s16 *)((u8 *)arg0 + 0x94), *(s16 *)((u8 *)arg0 + 0xA0));
+        *(s32 *)((u8 *)temp_s1 + 0x20) = (int)((unsigned char *)func_0020B020((u8 *)(temp_s0_2), (s32)(*(s16 *)((u8 *)arg0 + 0x94)), (s32)(*(s16 *)((u8 *)arg0 + 0xA0)), 0));
         *(s32 *)((u8 *)temp_s1 + 0x28) = func_0020AD30(temp_s0_2, *(s16 *)((u8 *)arg0 + 0x94), *(s16 *)((u8 *)arg0 + 0xA0));
         temp_a2 = *(s16 *)((u8 *)arg0 + 0xA4);
         if (temp_a2 > 0) {

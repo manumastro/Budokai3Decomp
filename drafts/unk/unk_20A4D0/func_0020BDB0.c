@@ -1,388 +1,57 @@
 /* Draft (not built): func_0020BDB0 at 0x0020BDB0, size 0x180, segment unk/unk_20A4D0 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: size, 26 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1A0, original 0x180; then decomp-permuter: score 1165 -> 675
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x1A0, original 0x180
  * Original: asm/nonmatchings/unk/unk_20A4D0/func_0020BDB0.s */
 
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef signed long s64;
-typedef unsigned long u64;
-typedef float f32;
-void func_0013B160(void *p);
-void func_0013B0B0(u8 *);
-void func_0013B110(s32);
-void func_0013B060(s32);
-extern s32 D_00470238;
-void amModel_SetCurrent(s32, s32);
-void func_00208D60(s32);
-void func_00209C50(void);
-void func_00209D70(void *);
-void func_0013B960(u8 *);
-extern u8 D_005687D0[];
-void func_00136870(s32, s32, s32, s32, s32, s32);
-void func_00137920(void *, void *, void *, void *);
-void amDraw_FlushPacket(void);
-typedef struct V4Q
-{
-  f32 x;
-  f32 y;
-  f32 z;
-  s32 w;
-} V4Q;
-extern s32 D_005687C0[];
-extern s32 D_005687C4[];
-extern s32 D_005687C8[];
-extern s32 D_005687CC[];
-extern u8 D_00568C90[];
-s32 func_0020BBD0(u8 *, s32);
-void func_00244190(u8 *);
-void func_002475E0(u8 *);
-s32 func_00218690(void);
-extern u8 *gWave;
-extern u8 *D_0046FDD0;
-extern s32 D_00470670;
-extern u8 D_0046A3C8[];
-extern void func_00214B50();
-extern void func_00214870();
-extern void func_002145E0();
-extern void func_00214370();
-extern void func_00213F30();
-extern void func_00213AE0();
-extern void func_00213570();
-extern void func_00213180();
-extern void func_00212DA0();
-extern void func_002129B0();
-extern void func_00212730();
-void (* const D_004699A0[11])(s32) = {func_00214B50, func_00214870, func_002145E0, func_00214370, func_00213F30, func_00213AE0, func_00213570, func_00213180, func_00212DA0, func_002129B0, func_00212730};
-extern void (*D_00469CC0[])(s32);
-extern void Obj_ResetF38(s32);
-extern void func_00208D70(s32);
-void func_002184F0(void);
-void func_00243ED0(void);
-void func_00247280(void);
-void Hm_Exit(void);
-void func_00243F20(void);
-void func_002472F0(void);
-void Adx_TaskStopCheck(void);
-void memset(void *, s32, s32);
-s32 amCdFs_ReadFileId(s32, s32, s32);
-extern void (*jtbl_00469CC4[])(void *);
-extern u8 D_0044BA90[];
-extern void amAdx_Pause(s32, s32);
-void func_0020D780(void *);
-void func_002194C0(u8 *);
-extern u8 *gBattle;
-void amAdx_SetVolume(s32, f32);
-s32 Hm_IsBusy(void);
-void func_00216150(s32);
-void func_002CA290(s32);
-void func_00215230(s16, s16);
-void func_00208E50(s32, s32);
-extern u8 D_00469CF8[];
-extern u8 D_00469D00[];
-extern u8 D_00568B90[];
-extern u8 D_00568C10[];
-void func_00208F70(void *);
-void func_00216D20(void);
-void func_0020CB90(void *);
-u8 *func_00215320(s32, s32);
-void func_00211D80(u8 *a);
-void func_002186D0(u8 *p);
-extern u8 D_0046A3B8[];
-void amTask_Kill(s32);
-typedef struct Blk44
-{
-  u8 b[0x2C];
-} Blk44;
-typedef struct Blk40
-{
-  f32 f[11];
-} Blk40;
-void func_00218440(s32, Blk40 *);
-extern void (*D_00469CB0[])(void *);
-void func_0020D5C0(void *a, s32 b, void *c, u8 *d);
-void func_0020B600(void);
-void func_0020BA60();
-void func_0020CCF0(s16, void *);
-s32 amMotion_FindBone(s32, void *);
-void func_00146ED0(void *a, void *b, f32 s);
-extern void (*D_00469CC8[])(void *);
-void amAdx_Stop(s32);
-void amHeap_Free(void *);
-extern s32 D_00568B94[];
-extern u8 D_00568C14[];
-extern u8 D_0046A380[];
-void func_00209F40(s32);
-extern u8 D_00469CD8[];
-void func_00216880(void);
-extern void (*D_00469CCC[])(void *);
-extern s8 D_004703F4;
-void amMotSet_Apply(void *, s32, f32);
-extern u8 D_0051D9A8[];
-typedef struct Copy16A
-{
-  s32 a;
-  s32 b;
-  s32 c;
-  s32 d;
-} Copy16A;
-extern u8 D_005684C0[];
-extern u8 D_005685C0[];
-s32 func_002096D0(s32, s32, s32);
-void func_0020A7F0(s32);
-extern f32 func_0011F220(f32);
-extern f32 func_0011F4C0(f32);
-s32 func_0012EAE0(s32);
-void func_00146F30(void *p);
-void DrawFlags_Apply(s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_00133980(f32 a, f32 b, f32 c, f32 d);
-void func_0013BC30(f32 a, f32 b, f32 c);
-void func_0013E0A0(s32);
-extern u8 D_00495718[];
-extern u8 D_00495758[];
-extern void amMotion_Update(void *m, s32 x);
-extern u8 D_0058A090[];
-void func_0013AFA0(void *);
-extern s32 D_0046FD5C;
-void amVram_Set(s32, s32, s32);
-extern void amMotion_BuildMatrices(void *m);
-void func_00141C30(void *a, void *b, void *c);
-void func_00141CF0(void *a, void *b, void *c);
-void func_0013B2B0(u8 *x);
-void func_0013B960(u8 *p);
-void func_00146F10(void *a, void *b, f32 s);
-void func_00209D20(s32 a);
-s32 func_0020B020(u8 *, s32, s32, s32);
-void amMotSet_Init(void *, s32);
-void amMotSet_Bind(void *, s32, s32);
-s32 amMotion_CreateFr(void *, s32, s32);
-void amMotion_BindAnim(void *, s32, s32);
-extern void memset(void *, s32, s32);
-void func_0020ABB0(void);
-void func_00246D20(void);
-void func_0020D290(u8 *o, u8 *a1, s32 a2, f32 f);
-extern void func_00146ED0(void *a, void *b, f32 s);
-void func_0020D7C0(void);
-void func_00209D20(s32);
-void func_00248640(s32 a, void *b, s32 c);
-extern V4Q D_0044B920;
-void func_00209CA0(void *, void *, void *);
-extern u8 D_0044B910[];
-void func_00142100(void *a, void *b);
-void func_0020DA10(s32);
-void func_00209390(s32);
-void func_0013AFA0x(void);
-extern s32 func_00209F80(void);
-void func_0020F700(s32);
-void func_002185E0(void);
-void Sp_KillTasks(void);
-void func_00247410(void);
-void func_0020F870(s32);
-void Hm_Start(void);
-void Ar_Start(void);
-void func_00247500(void);
-void func_00218680();
-void func_00244150(void);
-void func_002475D0(void);
-s32 func_00209540(s32, s32, s32);
-void func_00215EB0(void);
-void func_00212650(u8 *p);
-void func_00212050();
-extern u8 D_0044BAA0[];
-void func_00209950(s32 a, void *b, s32 c);
-void func_00215500(s32);
-extern u8 D_00469CE8[];
-void func_00216A60(void);
-u8 *amTask_Create(void *, s32, s32, s32, s32, void *);
-s32 func_00216080(s32);
-void func_002CA2F0(void *);
-extern void (*D_00469C70[])(void *, void *);
-extern u8 D_0058A730[];
-void amCdFs_ReleaseCache(void *);
-void amCdFs_Close(void *, s32);
-void amTask_KillGroup(s32, s32, s32);
-void func_00216270(s32);
-s32 amAdx_IsStopped(s32);
-s32 amAdx_IsPlaying(s32);
-extern s8 D_0046A3A0[];
-extern s32 rand(void);
-extern u8 D_00469D10[];
-s32 amAdx_PlayAfs(s32, s32, s32);
-extern u8 D_0044F494[];
-void func_00218F00(s32);
-extern s32 D_0044F4E0[];
-extern s32 *D_0044F2F0[];
-void amAdx_Pause(s32, s32);
-extern f32 D_004E0610[];
-extern f32 D_004E0614[];
-extern f32 D_004E0618[];
-u8 *func_0020A720(s32 i);
-void func_0020A740(s32 i);
-s32 func_0020A780(s32 i);
-void func_0020ABE0(V4Q *out, f32 a);
-s32 func_0020AD30(s32 a, s32 sel, s32 idx);
-void func_0020D500(u8 *out, u8 *src, u8 *x, s32 idx);
-s32 func_0020D9B0(void);
-u8 *func_0020D9F0(s32 i);
-void func_0020DDD0(s32 i, u8 *src);
-void func_0020DE30(void);
-void func_0020E070(s32 i, u8 *o);
-void func_0020E210(s32 i, u8 *src);
-void func_0020E730(s32 i, u8 *x, s32 j);
-void func_0020E7D0(s32 i, u8 *x, s32 j);
-void func_0020E870(s32 i, u8 *src, s32 j);
-void func_0020EB70(s32 i, u8 *src);
-void func_0020EBF0(s32 i);
-void func_0020EC70(s32 i);
-void func_0020EDA0(s32 i);
-void func_0020EF80(s32 i, s32 flag);
-void func_0020EFB0(s32 i);
-void func_0020F040(s32 i, s32 flag);
-void func_0020F090(s32 i, s32 flag, s32 v);
-void func_0020F0E0(s32 i, s32 flag);
-void func_0020F130(s32 i, s32 flag);
-void func_0020F180(s32 i, s32 flag);
-void func_0020F1D0(s32 i, f32 f);
-void func_0020F200(s32 i, f32 f);
-void func_0020F230(s32 i, f32 f);
-void func_0020F260(s32 i, f32 f);
-void func_0020F370(s32 i, f32 a, f32 b, f32 c, f32 d);
-void func_0020F3B0(s32 i, f32 f);
-void func_0020F3E0(s32 i, f32 f);
-void func_0020F410(s32 i, f32 f);
-void func_0020F440(s32 i, f32 f);
-void func_0020F470(s32 i, f32 a, f32 b, f32 c);
-void func_0020F4A0(s32 i, f32 a, f32 b);
-s32 func_0020F690(void);
-u8 *func_0020F6D0(s32 i);
-void func_002114A0(u8 *a);
-void func_002115A0(u8 *a);
-void func_00211650(void);
-void func_00211680(u8 *a);
-void func_002116B0(u8 *p);
-void func_002117F0(u8 *p);
-void func_00211980(u8 *p);
-void func_00211F80(u8 *a0);
-void func_00212480(u8 *a0);
-void func_00212560(s32 *a);
-void func_00212570(u8 *s);
-void func_00212600(u8 *p);
-void func_00212690(u8 *s);
-void func_00214F80(s32 i, s32 a);
-void func_00214FD0(void);
-void func_00215040(s16 id, s16 mask, s16 k);
-void func_00215120(s16 id, s16 mask, s16 k);
-void func_002152E0(u8 *p);
-void func_00215900(void);
-void func_00215990(s16 id);
-void func_00215AA0(void);
-void func_00215AE0(void);
-void func_00215D90(void);
-void func_00215E40(void);
-void func_00215E70(u8 *p);
-void func_002164D0(u8 *a);
-void func_00216640(u8 *a);
-void func_00216770(u8 *a);
-void Hm_TaskMain(void);
-void func_00217060(void);
-void func_002174C0(u8 *s);
-void func_00217550(u8 *s);
-void func_00217870(u8 *s);
-void func_00217B00(u8 *s);
-void func_00217B20(u8 *s);
-void func_00217B70(u8 *s);
-void func_00217BC0(u8 *s);
-void func_00217C50(u8 *s);
-void func_00217CC0(u8 *s);
-void func_00217D10(u8 *p);
-s32 Scr_CmdCallTable469CB0(void);
-void func_002183F0(s32 i, s32 a);
-s32 AdxSlot_IsPlaying(s32 *a);
-s32 func_00218CD0(s32 a, s32 b);
-void AdxSlot_SetVolume(u8 *s, f32 v);
-void AdxSlot_Stop(u8 *s);
-void AdxSlot_Suspend(u8 *s);
-void AdxSlot_Pause(u8 *s);
-void AdxSlot_SetPausedAll(s32 a);
-void func_00219870(void);
-void Adx_KillStopCheck(void);
-void Adx_StartStopCheck(void);
-void func_0020BDB0(u8 *arg0)
-{
-  f32 temp_f1;
-  f32 temp_f1_2;
-  f32 temp_f1_3;
-  f32 temp_f1_4;
-  int new_var;
-  f32 temp_f1_5;
-  f32 var_f3;
-  s32 var_v1;
-  u8 *new_var2;
-  new_var2 = (u8 *) arg0;
-  if (arg0)
-  {
-  }
-  var_v1 = 0;
-  if (gBattle != ((void *) 0))
-  {
-    var_v1 = *((s32 *) (((u8 *) gBattle) + 0x88EC));
-  }
-  if (var_v1 == 0)
-  {
-    if (gBattle != ((void *) 0))
-    {
-      if (arg0)
-      {
-      }
-      var_f3 = *((f32 *) (((u8 *) gBattle) + 0x88F0));
+// src/unk/unk_20A4D0.c func_0020BDB0 size diff=26/104
+void func_0020BDB0(u8 *arg0) {
+    f32 temp_f1;
+    f32 temp_f1_2;
+    f32 temp_f1_3;
+    f32 temp_f1_4;
+    f32 temp_f1_5;
+    f32 var_f3;
+    s32 var_v1;
+
+    var_v1 = 0;
+    if (gBattle != NULL) {
+        var_v1 = *(s32 *)((u8 *)gBattle + 0x88EC);
     }
-    else
-      if (D_004703F4 != 3)
-    {
-      var_f3 = 1.0f;
+    if (var_v1 == 0) {
+        if (gBattle != NULL) {
+            var_f3 = *(f32 *)((u8 *)gBattle + 0x88F0);
+        } else if (D_004703F4 != 3) {
+            var_f3 = 1.0f;
+        } else {
+            var_f3 = 1.2f;
+        }
+        *(f32 *)((u8 *)arg0 + 0x2120) = (f32) (*(f32 *)((u8 *)arg0 + 0x2120) + (*(f32 *)((u8 *)arg0 + 0x2118) * var_f3));
+        *(f32 *)((u8 *)arg0 + 0x2124) = (f32) (*(f32 *)((u8 *)arg0 + 0x2124) + (*(f32 *)((u8 *)arg0 + 0x211C) * var_f3));
+        temp_f1 = *(f32 *)((u8 *)arg0 + 0x2120);
+        if (temp_f1 < 0.0f) {
+            *(f32 *)((u8 *)arg0 + 0x2120) = (f32) (temp_f1 + 1.0f);
+        }
+        temp_f1_2 = *(f32 *)((u8 *)arg0 + 0x2124);
+        if (temp_f1_2 < 0.0f) {
+            *(f32 *)((u8 *)arg0 + 0x2124) = (f32) (temp_f1_2 + 1.0f);
+        }
+        temp_f1_3 = *(f32 *)((u8 *)arg0 + 0x2120);
+        if (!(temp_f1_3 <= 1.0f)) {
+            *(f32 *)((u8 *)arg0 + 0x2120) = (f32) (temp_f1_3 - 1.0f);
+        }
+        temp_f1_4 = *(f32 *)((u8 *)arg0 + 0x2124);
+        if (!(temp_f1_4 <= 1.0f)) {
+            *(f32 *)((u8 *)arg0 + 0x2124) = (f32) (temp_f1_4 - 1.0f);
+        }
+        *(f32 *)((u8 *)arg0 + 0x2130) = (f32) (*(f32 *)((u8 *)arg0 + 0x2130) + (*(f32 *)((u8 *)arg0 + 0x2134) * var_f3));
+        temp_f1_5 = *(f32 *)((u8 *)arg0 + 0x2128) + (*(f32 *)((u8 *)arg0 + 0x212C) * var_f3);
+        *(f32 *)((u8 *)arg0 + 0x2128) = temp_f1_5;
+        if (temp_f1_5 < 0.0f) {
+            *(f32 *)((u8 *)arg0 + 0x2128) = 0.0f;
+        }
+        if (!(*(f32 *)((u8 *)arg0 + 0x2128) <= 1.0f)) {
+            *(f32 *)((u8 *)arg0 + 0x2128) = 1.0f;
+        }
     }
-    else
-    {
-      var_f3 = 1.2f;
-    }
-    *((f32 *) (((u8 *) arg0) + 0x2120)) = (f32) ((*((f32 *) (new_var2 + 0x2120))) + ((*((f32 *) (((u8 *) arg0) + 0x2118))) * var_f3));
-    *((f32 *) (new_var2 + 0x2124)) = (f32) ((*((f32 *) (new_var2 + 0x2124))) + ((*((f32 *) (((u8 *) arg0) + 0x211C))) * var_f3));
-    temp_f1 = *((f32 *) (new_var2 + 0x2120));
-    if (temp_f1 < 0.0f)
-    {
-      new_var = 0x2120;
-      *((f32 *) (new_var2 + new_var)) = (f32) (temp_f1 + 1.0f);
-    }
-    temp_f1_2 = *((f32 *) (new_var2 + 0x2124));
-    if (temp_f1_2 < 0.0f)
-    {
-      *((f32 *) (((u8 *) arg0) + 0x2124)) = (f32) (temp_f1_2 + 1.0f);
-    }
-    temp_f1_3 = *((f32 *) (((u8 *) arg0) + 0x2120));
-    if (!(temp_f1_3 <= 1.0f))
-    {
-      *((f32 *) (new_var2 + 0x2120)) = (f32) (temp_f1_3 - 1.0f);
-    }
-    temp_f1_4 = *((f32 *) (new_var2 + 0x2124));
-    if (!(temp_f1_4 <= 1.0f))
-    {
-      *((f32 *) (((u8 *) arg0) + 0x2124)) = (f32) (temp_f1_4 - 1.0f);
-    }
-    *((f32 *) (((u8 *) arg0) + 0x2130)) = (f32) ((*((f32 *) (((u8 *) arg0) + 0x2130))) + ((*((f32 *) (new_var2 + 0x2134))) * var_f3));
-    temp_f1_5 = (*((f32 *) (new_var2 + 0x2128))) + ((*((f32 *) (((u8 *) arg0) + 0x212C))) * var_f3);
-    *((f32 *) (new_var2 + 0x2128)) = temp_f1_5;
-    if (temp_f1_5 < 0.0f)
-    {
-      *((f32 *) (((u8 *) arg0) + 0x2128)) = 0.0f;
-    }
-    if (!((*((f32 *) (new_var2 + 0x2128))) <= 1.0f))
-    {
-      *((f32 *) (new_var2 + 0x2128)) = 1.0f;
-    }
-  }
 }

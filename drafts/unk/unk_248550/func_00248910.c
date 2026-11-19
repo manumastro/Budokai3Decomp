@@ -1,17 +1,17 @@
 /* Draft (not built): func_00248910 at 0x00248910, size 0x344, segment unk/unk_248550 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); ';' expected mwccps2.exe Compiler: 50: temp_s2 = *(temp_s7 + temp_v1_2) + var_s5; @ 6: extern PackRefs *D_0046FE50;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept);  'D_0046FE50' redeclared was declared as: 'int' now declared as: 'struct PackRefs *' @ 147: extern PackRefs *D_0046FE50;
  * Original: asm/nonmatchings/unk/unk_248550/func_00248910.s */
 
 // src/unk/unk_248550.c func_00248910 cerr diff=-1/0
-extern PackRefs *D_0046FE50;
 extern void memset(void *, s32, s32);
 s32 func_001D9C40(void *, s32, s32);
 s32 func_00212690(s32 *);
 s32 func_00215040(s64, s32, s64);
 s32 func_00215120(s64, s32, s64);
 extern s32 D_0046FE4C;
+extern s32 D_0046FE50;
 s32 func_00248910(s64 arg0, u8 *arg1) {
     s32 spA0;
     s16 spF0;
@@ -38,7 +38,7 @@ s32 func_00248910(s64 arg0, u8 *arg1) {
     u8 *temp_v1;
 
     temp_s6 = *(s32 *)((u8 *)arg1 + 0x1350);
-    temp_v1 = (u8 *)(D_0046FE4C + (temp_s6 * 0x480));
+    temp_v1 = (unsigned char *)(D_0046FE4C + (temp_s6 * 0x480));
     temp_fp = temp_v1 + 0x10;
     if (*(s32 *)((u8 *)temp_v1 + 0x24) == -1) {
         *(s32 *)((u8 *)temp_fp + 0x14) = (s32) *(s32 *)((u8 *)arg1 + 0xB70);
@@ -49,7 +49,7 @@ s32 func_00248910(s64 arg0, u8 *arg1) {
     if (*(s32 *)((u8 *)(temp_s7 + temp_v1_2) + 8) > 0) {
         var_s5 = 0;
         do {
-            temp_s2 = *(temp_s7 + temp_v1_2) + var_s5;
+            temp_s2 = (unsigned char *)(*(s32 *)(temp_s7 + temp_v1_2) + var_s5);
             temp_v0 = *(s16 *)((u8 *)temp_s2 + 0xA2);
             if (temp_v0 != 0) {
                 if (((s64) ((s64) temp_v0 << 0x30) >> 0x30) != *(s32 *)((u8 *)arg1 + 0xBA4)) {
@@ -71,7 +71,7 @@ block_11:
 block_16:
                             func_00248640(var_s1, arg1, arg0);
                             if (*(s32 *)((u8 *)temp_s2 + 0x7C) > 0) {
-                                temp_s0 = *(D_0046FE50 + (*(s32 *)((u8 *)arg1 + 0x1350) * 4)) + var_s5;
+                                temp_s0 = (unsigned char *)(*(s32 *)(D_0046FE50 + (*(s32 *)((u8 *)arg1 + 0x1350) * 4)) + var_s5);
                                 memset(&spA0, 0, 0xB0);
                                 if ((arg0 >= 0) && (var_v1 = 2, ((arg0 < 0x64) != 0))) {
 

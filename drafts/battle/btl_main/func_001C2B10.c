@@ -1,13 +1,13 @@
 /* Draft (not built): func_001C2B10 at 0x001C2B10, size 0x610, segment battle/btl_main (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: size, 234 instructions differ
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x5D8, original 0x610
+ * Status: size, 227 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x5D0, original 0x610
  * Original: asm/nonmatchings/battle/btl_main/func_001C2B10.s */
 
-// src/battle/btl_main.c func_001C2B10 size diff=234/374
+// src/battle/btl_main.c func_001C2B10 size diff=227/372
 f32 func_00146EB0(s32 *);
 s32 func_001D9220(void *);
-s32 func_001C2B10(u8 *arg0) {
+s32 func_001C2B10(void *arg0) {
     s32 sp40;
     f32 sp44;
     f32 temp_f20;
@@ -34,7 +34,7 @@ s32 func_001C2B10(u8 *arg0) {
     u8 *temp_a0_4;
     u8 *temp_s0;
 
-    temp_s0 = arg0 + 0x1360;
+    temp_s0 = ((u8 *)arg0) + 0x1360;
     if (*(s8 *)((u8 *)arg0 + 0x1FF8) > 0) {
         goto block_3;
     }
@@ -67,7 +67,7 @@ block_13:
     if (*(s8 *)((u8 *)arg0 + 0x1FF8) < 2) {
         goto block_17;
     }
-    if (func_001C2340(temp_s0) == 0) {
+    if (func_001C2340((struct Fighter *)(temp_s0)) == 0) {
         goto block_17;
     }
     return 4;
@@ -75,7 +75,7 @@ block_17:
     if (*(s8 *)((u8 *)arg0 + 0x1FF8) < 2) {
         goto block_33;
     }
-    if (func_001C21C0(temp_s0) == 0) {
+    if (func_001C21C0((struct Fighter *)(temp_s0)) == 0) {
         goto block_33;
     }
     if (gBattle == NULL) {
@@ -107,7 +107,7 @@ block_31:
     }
     return 0x31;
 block_33:
-    if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 0x42F00000) == 0) {
+    if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 120.0f) == 0) {
         goto block_70;
     }
     temp_v0 = *(s32 *)((u8 *)temp_s0 + 0x50);
@@ -266,7 +266,7 @@ block_104:
     }
     return 8;
 block_106:
-    if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 0x43110000) == 0) {
+    if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 145.0f) == 0) {
         goto block_111;
     }
     if (*(s32 *)((u8 *)temp_s0 + 0x50) > 0) {
@@ -284,7 +284,7 @@ block_111:
     if (*(s32 *)((u8 *)temp_s0 + 0x50) <= 0) {
         goto block_117;
     }
-    if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 0x43480000) == 0) {
+    if (func_001E3D60(*(s32 *)((u8 *)arg0 + 0x17AC), 200.0f) == 0) {
         goto block_116;
     }
     return 3;

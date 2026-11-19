@@ -1,7 +1,7 @@
 /* Draft (not built): func_002A2020 at 0x002A2020, size 0x1BC, segment story/evt_scrp (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
  * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal operands 'int[]' = 'int' mwccps2.exe Compiler: 441: D_005AB490 = 0; @ 440: D_005AB49C = 0x3F800000;
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); does not match 'func_002A2020(int, int, unsigned char *, unsigned char *)' mwccps2.exe Compiler: @ 458: func_002A2020();
  * Original: asm/nonmatchings/story/evt_scrp/func_002A2020.s */
 
 // src/story/evt_scrp.c func_002A2020 cerr diff=-1/0
@@ -21,10 +21,10 @@ void func_002A2020(s32 arg0, s32 arg1, u8 *arg2, u8 *arg3) {
 block_3:
         var_a1 = 0;
     }
-    temp_s0 = (u8 *)((var_a1 * 0x34) + (D_005AB3C0 + (arg0 * 0x68)));
+    temp_s0 = (unsigned char *)((var_a1 * 0x34) + (D_005AB3C0 + (arg0 * 0x68)));
     temp_a0 = *(u8 **)((u8 *)temp_s0 + 0);
     if (temp_a0 != NULL) {
-        amCdFs_ReleaseCache((s32)((void *)(temp_a0)));
+        amCdFs_ReleaseCache((s32)(temp_a0));
         *(u8 **)((u8 *)temp_s0 + 0) = NULL;
     }
     *(u8 **)((u8 *)temp_s0 + 0) = arg2;
@@ -42,18 +42,18 @@ block_3:
     *(u8 **)((u8 *)temp_s0 + 0x28) = (u8 *) (*(u8 **)((u8 *)temp_s0 + 0xC) + 0x2F8);
     *(u8 **)((u8 *)temp_s0 + 0x2C) = (u8 *) (*(u8 **)((u8 *)temp_s0 + 0xC) + 0x390);
     *(u8 **)((u8 *)temp_s0 + 0x30) = (u8 *) (*(u8 **)((u8 *)temp_s0 + 0xC) + 0x428);
-    D_005AB49C = 0x3F800000;
-    D_005AB490 = 0;
-    D_005AB494 = 0;
-    D_005AB498 = 0;
+    D_005AB49C[0] = 0x3F800000;
+    D_005AB490[0] = 0;
+    D_005AB494[0] = 0;
+    D_005AB498[0] = 0;
     memset(&D_005AB490, 0, 0x180);
-    D_005AB5E6 = -1;
-    D_005AB4B8 = 8;
-    D_005AB4BE = 1;
-    D_005AB508 = 8;
-    D_005AB50E = 1;
-    D_005AB558 = 8;
-    D_005AB5A8 = 8;
-    D_005AB55E = 1;
-    D_005AB5AE = 1;
+    D_005AB5E6[0] = -1;
+    D_005AB4B8[0] = 8;
+    D_005AB4BE[0] = 1;
+    D_005AB508[0] = 8;
+    D_005AB50E[0] = 1;
+    D_005AB558[0] = 8;
+    D_005AB5A8[0] = 8;
+    D_005AB55E[0] = 1;
+    D_005AB5AE[0] = 1;
 }

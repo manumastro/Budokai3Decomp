@@ -45,7 +45,7 @@ s32 func_0024F7F0(u8 *arg0) {
         M2C_ERROR(/* unknown instruction: sqc2 $vf1, ($v1) */);
         sp86 = *(s16 *)((u8 *)arg0 + 6);
         sp70 = *(f32 *)((u8 *)arg0 + 0x4C);
-        sp78 = (s32 *)(&func_00251F30);
+        sp78 = (int *)(&func_00251F30);
         sp7C = arg0;
         sp82 = 0;
         sp80 = (s16) ((s64) ((s64) *(s32 *)((u8 *)temp_s2 + 0xD4) << 0x30) >> 0x30);
@@ -73,7 +73,7 @@ s32 func_0024F7F0(u8 *arg0) {
     if ((*(s32 *)((u8 *)temp_s1 + 0x1CFC) != 0x2A) && !(*(s16 *)((u8 *)arg0 + 4) & 0x2000) && (*(s32 *)((u8 *)temp_s0 + 0x14) == -1)) {
         temp_a0 = *(u8 **)((u8 *)arg0 + 0x44);
         if (temp_a0 != NULL) {
-            Obj_ResetF38((s32)((void *)(temp_a0)));
+            Obj_ResetF38((s32)(temp_a0));
             *(u8 **)((u8 *)arg0 + 0x44) = NULL;
             return 1;
         }

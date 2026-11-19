@@ -81,3 +81,51 @@ void func_003075B0(u8 *arg0) {
     func_00137B60(&spA0);
     amDraw_FlushPacket();
 }
+
+/* Similar function already in C: StrSelect_DrawRadar (src/story/str_select.c), similarity 1.00, same instructions apart from immediates/symbols.
+ * It is the template below (not built). */
+#if 0
+void StrSelect_DrawRadar(StrSelectWork *w) {
+    Vec4 pos;
+    Vec4 pts[7];
+    Vec4 c1;
+    Vec4 c2;
+    f32 r;
+    s32 a;
+    s32 i;
+    Vec4 *q;
+    Vec4 *p;
+    s32 j;
+
+    a = 0xC000;
+    pos = D_00457E80;
+    pos.x = w->f44;
+    pos.y = w->f48;
+    c1 = D_00457E90;
+    c2 = D_00457EA0;
+    func_00136870(2, 0x900, &c1, -1, 0x44, 5);
+    func_00137B60(&pos);
+    q = pts;
+    p = q;
+    for (i = 0; i < 7; i++) {
+        r = w->f4C * w->f58[i] / 20.0f;
+        p->x = w->f44 + r * amMath_CosI(a);
+        r = w->f4C * w->f58[i] / 20.0f;
+        p->y = w->f48 + r * amMath_SinI(a);
+        p->z = 1.0f;
+        p->w = 1.0f;
+        func_00137B60(p);
+        a += 0x2492;
+        p++;
+    }
+    func_00137B60(pts);
+    amDraw_FlushPacket();
+    func_001363D0(1, 0x100, &c2, 0x44);
+    for (j = 0; j < 7; j++) {
+        func_00137B60(q);
+        q++;
+    }
+    func_00137B60(pts);
+    amDraw_FlushPacket();
+}
+#endif

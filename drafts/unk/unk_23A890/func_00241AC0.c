@@ -1,10 +1,10 @@
 /* Draft (not built): func_00241AC0 at 0x00241AC0, size 0x148, segment unk/unk_23A890 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal implicit conversion from 'unsigned char *' to 'int' @ 1014: func_00243280(temp_a1, gBattle, temp_a3);
+ * Status: size, 47 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); compiled 0x170, original 0x148
  * Original: asm/nonmatchings/unk/unk_23A890/func_00241AC0.s */
 
-// src/unk/unk_23A890.c func_00241AC0 cerr diff=-1/0
+// src/unk/unk_23A890.c func_00241AC0 size diff=47/92
 void func_00241AC0(s32 arg0) {
     f32 var_f1;
     f32 var_f2;
@@ -49,5 +49,5 @@ void func_00241AC0(s32 arg0) {
     if (*(f32 *)((u8 *)temp_a1 + 0x24) <= 0.0f) {
         *(f32 *)((u8 *)temp_a1 + 0x24) = 0.0f;
     }
-    func_00243280(temp_a1, gBattle, temp_a3);
+    func_00243280(arg0);
 }

@@ -1,10 +1,9 @@
 /* Draft (not built): func_002CD480 at 0x002CD480, size 0x16C, segment unk/unk_2CC840 (c)
  * Compiler: Metrowerks CodeWarrior PS2 3.0b52 -O4,p (game code; see configure.py)
- * Status: cerr
- * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept); illegal use of type 'void' @ 110: temp_s1 = func_0021C660(*(s32 *)((u8 *)arg0 + 0x3C));
+ * Status: size, 31 instructions differ
+ * Made with: m2c -t mipsee-mwcc-c (scripts/m2c_draft.py, option variants, best kept)
  * Original: asm/nonmatchings/unk/unk_2CC840/func_002CD480.s */
 
-// src/unk/unk_2CC840.c func_002CD480 cerr diff=-1/0
 s32 *BtlSys_GetSlot(s32);
 s32 func_0021C360(s32);
 s32 func_0022C060(s32, s32);
@@ -18,15 +17,14 @@ extern void *D_00470704;
 extern void amModel_SetCurrent();
 extern void func_002CD2D0(void);
 void func_002CD480(u8 *arg0) {
+    s32 temp_v0;
+    u8 *temp_s3;
     s32 *var_v1_2;
     s32 temp_s1;
-    s32 temp_v0;
     s32 var_v1;
     u8 *temp_a0;
     u8 *temp_s2;
-    u8 *temp_s3;
     u8 *temp_s4;
-
     temp_s4 = gBtlSys;
     if (gBattle != NULL) {
         var_v1 = *(s32 *)((u8 *)gBattle + 0x88EC);
@@ -35,10 +33,11 @@ void func_002CD480(u8 *arg0) {
     }
     if (var_v1 == 0) {
         temp_s3 = arg0 + 0x30;
-        temp_s2 = (u8 *)(*(s32 *)((u8 *)arg0 + 0x30) + 0x30);
-        temp_s1 = func_0021C660(*(s32 *)((u8 *)arg0 + 0x3C));
+        temp_s2 = (unsigned char *)(*(s32 *)((u8 *)arg0 + 0x30) + 0x30);
+        func_0021C660(*(s32 *)((u8 *)arg0 + 0x3C));
+        temp_s1 = M2C_ERROR();
         temp_v0 = func_0021C360(*(s32 *)((u8 *)temp_s3 + 0xC));
-        *(f32 *)((u8 *)temp_s3 + 8) = (f32) (*(f32 *)((u8 *)temp_s3 + 8) + D_00470710);
+        *(f32 *)((u8 *)temp_s3 + 8) = (f32)(*(f32 *)((u8 *)temp_s3 + 8) + D_00470710);
         if (*BtlSys_GetSlot(*(s32 *)((u8 *)temp_s3 + 0xC)) & 0x80) {
             if (D_00470920 == 0) {
                 func_002CCB70(temp_s2, temp_s1, temp_v0, 0);
@@ -57,7 +56,7 @@ void func_002CD480(u8 *arg0) {
         func_0022C060(*(s32 *)((u8 *)temp_s2 + 0x14), 0x3F800000);
         if (!(*(f32 *)((u8 *)temp_s3 + 8) < 30.0f)) {
             func_002CCB70(temp_s2, temp_s1, temp_v0, 2);
-            var_v1_2 = (s32 *)(&func_002CD2D0);
+            var_v1_2 = (int *)&func_002CD2D0;
             if (&func_002CD2D0 == NULL) {
                 var_v1_2 = NULL;
             }
