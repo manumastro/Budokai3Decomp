@@ -183,7 +183,21 @@ Sint32_x00170A68 func_00170A68_x00170A68(Sint32_x00170A68 (*callback)()) {
 void func_00170A90(void) {
     func_00170A68(0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00170AA8);
+void CFT_SetMaxAlpha_x00170AA8(int max) __asm__("func_00170AF8");
+extern char *volatile DAT_00573ea8_x00170AA8 __asm__("D_00481480");
+int *CFT_GetVersionStr_x00170AA8(void) __asm__("func_00170AE8");
+void CFT_SetMaxAlpha_x00170AA8(int max) __asm__("func_00170AF8");
+int *CFT_GetVersionStr_x00170AA8(void) __asm__("func_00170AE8");
+void CFT_SetMaxAlpha_x00170AA8(int max) __asm__("func_00170AF8");
+extern char ext_str0_x00170AA8[] __asm__("D_00465018");
+void func_00170AA8_x00170AA8(void) __asm__("func_00170AA8");
+/* CFT_Init: from https://github.com/crashbashash/DW4_Decomp (src/cri/cft.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00170AA8_x00170AA8(void)
+{
+    DAT_00573ea8_x00170AA8 = ext_str0_x00170AA8;
+    *CFT_GetVersionStr_x00170AA8() = 0;
+    CFT_SetMaxAlpha_x00170AA8(128);
+}
 void func_00170AE0(void) {
 
 }
