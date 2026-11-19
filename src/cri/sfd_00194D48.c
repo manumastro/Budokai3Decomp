@@ -20091,7 +20091,167 @@ s32_x0019A488 func_0019A488_x0019A488(Obj_x0019A488 *p, s32_x0019A488 a1) {
     D_00426B2C_x0019A488 = r;
     return r;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019A4D8);
+int UTY_MulDiv_x0019A4D8(int a, int b, int c) __asm__("func_0017EE78");
+typedef int (*SfdTimeFn_x0019A4D8)(void *sfd, int *time, int *unit);
+typedef struct SfdTimeCode_x0019A4D8 {
+    int rate;
+    int drop;
+    int hour;
+    int minute;
+    int second;
+    int frame;
+    int add;
+    short repeat;
+    short field;
+} SfdTimeCode_x0019A4D8;
+typedef struct SfdTimeRec_x0019A4D8 {
+    int valid;
+    SfdTimeCode_x0019A4D8 tc;
+    int time;
+    int unit;
+} SfdTimeRec_x0019A4D8;
+typedef struct SfdTst_x0019A4D8 {
+    int f0;
+    unsigned int pastat;
+    unsigned int adjmode;
+    int paused;
+    int count;
+    int pos;
+    int values[60];
+    long long master_time;
+    long long f272;
+    long long help_time;
+    long long help_unit;
+    long long out_time;
+    long long f304;
+    long long f312;
+    long long f320;
+    long long f328;
+    long long f336;
+    long long f344;
+    long long f352;
+    long long f360;
+    long long f368;
+    long long f376;
+    long long f384;
+    long long mt_max;
+    int adj_limit;
+    int adj_front;
+    int adj_rear;
+    int resethist;
+    int excesserr;
+    int movave_1st;
+    int movave_2nd;
+    int diff_l_max;
+    int diff_l_min;
+    int diff_a_max;
+    int diff_a_min;
+    int pad444;
+} SfdTst_x0019A4D8;
+typedef struct SfdSyncTally_x0019A4D8 {
+    int total;
+    int count;
+    int history[32];
+} SfdSyncTally_x0019A4D8;
+typedef struct SfdSyncQueue_x0019A4D8 {
+    int last;
+    int f4;
+    int wr;
+    int rd;
+    int items[32];
+} SfdSyncQueue_x0019A4D8;
+typedef struct SfdFieldEntry_x0019A4D8 {
+    short repeat;
+    unsigned short total;
+} SfdFieldEntry_x0019A4D8;
+typedef struct SfdPtsm_x0019A4D8 {
+    int f0;
+    int f4;
+    int f8;
+} SfdPtsm_x0019A4D8;
+typedef int (*SfdExtClockFn_x0019A4D8)(int ctx, int *time, int *unit);
+typedef int (*SfdIsSkipFn_x0019A4D8)(void *sfd, int type, int time, int unit);
+typedef struct SfdTim_x0019A4D8 {
+    SfdTimeFn_x0019A4D8 timefn[6];
+    SfdIsSkipFn_x0019A4D8 isSkipFn;
+    SfdTimeCode_x0019A4D8 tc;
+    SfdTimeRec_x0019A4D8 state;
+    SfdTimeRec_x0019A4D8 best;
+    SfdTimeRec_x0019A4D8 tot;
+    SfdTimeRec_x0019A4D8 cur;
+    SfdTimeRec_x0019A4D8 latest;
+    SfdTimeRec_x0019A4D8 vofst;
+    int astart_smpl;
+    int astart_sfreq;
+    int pad332;
+    long long baseTime;
+    long long ofsTime;
+    int concat_frmcnt;
+    SfdSyncTally_x0019A4D8 tally;
+    SfdSyncQueue_x0019A4D8 queue;
+    int base;
+    int base_frames;
+    int dec_time;
+    int dec_unit;
+    int cached_pos;
+    int cached_rate;
+    int last;
+    int estimate;
+    int largest;
+    int smallest;
+    int usr_frm_sync;
+    int stream_pos;
+    int speed;
+    int disp_sync_cnt;
+    int disp_sync_time;
+    int disp_sync_unit;
+    int sync_count;
+    float sync_pending;
+    int sync_last;
+    float sync_time;
+    int count;
+    int chg_base;
+    SfdExtClockFn_x0019A4D8 clock_get;
+    int clock_last;
+    int decoded_pos;
+    int rate;
+    int clock_wrap;
+    int clock_ctx;
+    int pad748;
+    SfdTst_x0019A4D8 tst;
+    SfdFieldEntry_x0019A4D8 fields[64];
+    SfdPtsm_x0019A4D8 ptsm;
+    char pad1468[36];
+} SfdTim_x0019A4D8;
+extern int sftim_v_time_x0019A4D8 __asm__("D_00426B30");
+extern int sftim_v_sample_x0019A4D8 __asm__("D_00426B34");
+int func_0019A4D8_x0019A4D8(SfdTim_x0019A4D8 *tim, int scale, int *valid) __asm__("func_0019A4D8");
+/* SFTIM_GetVideoStartSample: from https://github.com/crashbashash/DW4_Decomp (src/cri/sftim.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0019A4D8_x0019A4D8(SfdTim_x0019A4D8 *tim, int scale, int *valid)
+{
+    SfdTimeRec_x0019A4D8 *rec = &tim->vofst;
+    SfdTimeRec_x0019A4D8 *fallback = &tim->latest;
+    int time;
+    int unit;
+    int result;
+    int ok = rec->valid;
+    *valid = ok;
+    if (ok != 0) {
+        time = rec->time;
+        unit = rec->unit;
+    } else if (fallback->time >= 0) {
+        time = fallback->time;
+        unit = fallback->unit;
+    } else {
+        return -1;
+    }
+    result = UTY_MulDiv_x0019A4D8(time, scale, unit);
+    sftim_v_time_x0019A4D8 = time;
+    sftim_v_sample_x0019A4D8 = result;
+    return result;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3cse_pad32_0019A4D8_0_xxxx;
 void func_0019A550_x0019A550(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0019A550");
 void func_0019A550_x0019A550(u8 *arg0, s32 arg1, s32 arg2)
 {

@@ -368,6 +368,19 @@ def apply(items, jobs=12, log=None, dry=False, real=False):
                         good, msg = False, "build-mode compile: " + "; ".join(bad)[:160]
                 if good or not re.search(r"differ", msg):
                     break
+            if not good and msg.startswith("the object keeps data") and not it.get("rebind"):
+                # a constant the pairing did not see (e.g. a float gcc folded into a literal): bind the function's
+                # own data to the executable's (gcc_rebind.py) and try again
+                it["rebind"] = True
+                rep = isolate(it, 0) + tail_pad(seg, it["name"])
+                new = pat.sub(lambda _: rep, text, count=1)
+                path.write_text(new)
+                good, msg = check(rel, it["name"])
+                if good and real:
+                    import lib_filecheck
+                    bad = lib_filecheck.check(rel)
+                    if bad:
+                        good, msg = False, "build-mode compile: " + "; ".join(bad)[:160]
             if not good and real and msg.startswith("build-mode compile") and "differ" in msg:
                 # another function of the file moved: padding identifiers (cse_pad), fewest first
                 combos = sorted((c for c in itertools.product(range(CSE_PADS), repeat=3) if any(c)), key=sum)

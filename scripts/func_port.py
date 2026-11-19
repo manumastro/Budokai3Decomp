@@ -369,6 +369,15 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
             d = lp.section_bytes(u.ob.path, key[1])
             end = d.find(b"\0", key[2])
             lits[d[key[2]:end]] = label(a, "data")
+    # a file-scope static table of the origin the pairing bound to nothing (e.g. only reached through an index
+    # register): kept as the function's own static, its references bound to the executable's copy (gcc_rebind.py)
+    unbound = {n for kind, n, t in decls if kind == "data" and n and n not in bind}
+    statics = {it.name for it in u.items if it.kind == "data" and it.name in unbound
+               and re.match(r"\s*static\b", cparse._strip_comments(it.text))}
+    if statics:
+        decls, why = closure(u.items, fi, ext_name, set(getattr(u.an, "rebind_data", set())) | statics)
+        if decls is None:
+            return None, why
     # calls the compiler makes by itself (libgcc: __divdi3, __floatdisf, dptoli ...): their names go to
     # config/port_syms.ld at the executable's address when the build does not define them
     used = identifiers(fi.text)
@@ -378,7 +387,7 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
     # a jump table, a local static/const or a non-string constant: the function's own data is bound to the
     # executable's copy, reference by reference, when the file is assembled (scripts/gcc_rebind.py)
     rebind = bool(re.search(r"\bswitch\b", func) or ext_name in getattr(u.an, "rebind", ())
-                  or re.search(r"\bstatic\b", func[func.index("{"):]))
+                  or re.search(r"\bstatic\b", func[func.index("{"):]) or statics)
     extra = []
     k = 0
     toks = [(s, e, tok) for s, e, tok in reversed(cparse.string_tokens(func)) if not in_asm(func, s)]
