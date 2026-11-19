@@ -136,6 +136,30 @@ def symbol_map(fz_words, fz_rel, our_words, our_addr):
     return {s: c.most_common(1)[0][0] for s, c in votes.items()}, offmap
 
 
+def global_offmap(pairs, objs, min_votes=3):
+    """{their offset: ours} over every paired function (matched ones included): the struct layout differences
+    (e.g. our Sofdec handle has 0x140 more bytes before 0x1100); only offsets every vote agrees on."""
+    import gccmatch as g
+    rom = g.ROM.read_bytes()
+    votes = defaultdict(Counter)
+    for addr, fz_fn in pairs:
+        d = objs.get(fz_fn)
+        if not d:
+            continue
+        size = fz_map_size(addr)
+        ow = list(struct.unpack(f"<{size // 4}I", rom[addr - g.VRAM:addr - g.VRAM + size]))
+        rel = [(int(k), "", "x") for k in d["m"]]
+        _, om = symbol_map(d["w"], rel, ow, addr)
+        for x, y in om.items():
+            votes[x][y] += 1
+    out = {}
+    for x, c in votes.items():
+        (y, n), = c.most_common(1)
+        if n >= min_votes and n >= 0.8 * sum(c.values()):
+            out[x] = y
+    return out
+
+
 PAD = re.compile(r"^(\s*(?:unsigned char|signed char|char|u8|s8)\s+[A-Za-z]\w*?_?(?:0x)?([0-9A-Fa-f]{1,5})\s*\[\s*)"
                  r"(0x[0-9A-Fa-f]+|\d+)(\s*\]\s*;)", re.M)
 
@@ -274,7 +298,7 @@ def lib_try(name, path):
 
 def job(args):
     """All the candidates of one function of ours, one after the other (lib_try's temporary file is per function)."""
-    our_addr, our_name, cands = args
+    our_addr, our_name, cands, gmap = args
     import gccmatch as g
     rom = g.ROM.read_bytes()
     size = fz_map_size(our_addr)
@@ -289,6 +313,7 @@ def job(args):
             continue
         fw, frel = comp[fz_fn]
         smap, offmap = symbol_map(fw, frel, ow, our_addr)
+        offmap = {**gmap, **offmap}
         fz_fn_names = {s for _, t, s in frel if t == "R_MIPS_26"}
         d = OUT / "drafts"
         d.mkdir(parents=True, exist_ok=True)
@@ -325,6 +350,7 @@ def main():
     ap.add_argument("--funcs", nargs="*")
     ap.add_argument("-j", type=int, default=6)
     ap.add_argument("--out", default=str(OUT / "drafts.csv"))
+    ap.add_argument("--no-global", action="store_true", help="pads from the function's own offset pairs only")
     a = ap.parse_args()
     objs = __import__("json").loads((OUT / "objs.json").read_text())
     order = {}
@@ -342,7 +368,12 @@ def main():
             if fz_fn and sc >= a.min_score and fz_fn in objs and fz_fn not in [c[0] for c in cands]:
                 cands.append((fz_fn, f"content{sc:.2f}"))
         if cands:
-            jobs.append((int(r["addr"], 16), r["name"], [(f, objs[f]["file"], why) for f, why in cands]))
+            jobs.append((int(r["addr"], 16), r["name"], [(f, objs[f]["file"], why) for f, why in cands], {}))
+    if Path(a.order).exists() and not a.no_global:
+        gmap = global_offmap([(int(r["addr"], 16), r["fz"]) for r in csv.DictReader(open(a.order)) if r["fz"]], objs)
+        print(f"global struct offset map: {len(gmap)} offsets, {sum(1 for x, y in gmap.items() if x != y)} moved",
+              file=sys.stderr)
+        jobs = [(x, n, c, gmap) for x, n, c, _ in jobs]
     print(f"{len(jobs)} functions, {sum(len(j[2]) for j in jobs)} drafts to try", file=sys.stderr)
     rows = []
     fields = ["function", "fz", "how", "status", "diff", "words", "mapped", "pads", "path"]
