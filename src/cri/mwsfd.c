@@ -2337,7 +2337,167 @@ int MWSFCRE_ResetSfdHn_x001801D8(MwsfdPly_x001801D8 *ply) {
 void func_00180268(u8 *arg0) {
     func_0016E120(*(s32 *)((u8 *)arg0 + 0x1D8), *(s32 *)((u8 *)arg0 + 0x1DC), *(s32 *)((u8 *)arg0 + 0x1E0));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180290);
+typedef struct { int f0, f4, maxWidth, maxHeight; int f10[4]; int addInfMode; int f24[3]; } MwsfdCreInf_x00180290;
+typedef struct MwsfdPly_x00180290 { void *vtbl; int used; int execFlg; MwsfdCreInf_x00180290 cre; int rsvMade; void *sfd; void *stm; void *adxt; void *lsc; int compoSet; int compoMode; int frmSync; int sjbSize; int waitingSvr; int f64[2]; int stat; int rsvMade2; char linkReq; char linkPrev; char pause; char pad119; int nEntry; int f7c[3]; int numSkipDisp; int f8c[8]; void *sfx; int sfxWork; int sfxWorkSize; int fb8[54]; void *addInfSj; int f194[16]; void *defSj; int f1d8[7]; void *memSj; int f1f8[48]; } MwsfdPly_x00180290;
+typedef struct { int f0, dispCycle, dispLatency; } MwsfdInitPrm_x00180290;
+typedef struct { int f0; MwsfdInitPrm_x00180290 prm; int f10[23]; MwsfdPly_x00180290 ply[8]; } MwsfdWork_x00180290;
+extern char D_00465768_x00180290[] __asm__("D_00465768");
+extern char D_00465798_x00180290[] __asm__("D_00465798");
+extern char D_004657C8_x00180290[] __asm__("D_004657C8");
+extern char D_00465808_x00180290[] __asm__("D_00465808");
+extern char D_00465830_x00180290[] __asm__("D_00465830");
+extern char D_00465858_x00180290[] __asm__("D_00465858");
+extern char D_00465880_x00180290[] __asm__("D_00465880");
+extern char D_004658A0_x00180290[] __asm__("D_004658A0");
+extern int D_004250B0_x00180290 __asm__("D_004250B0");
+void func_001870E8_x00180290(char *) __asm__("func_001870E8");
+int func_001806C8_x00180290(MwsfdCreInf_x00180290 *) __asm__("func_001806C8");
+MwsfdWork_x00180290 *func_00181FA8_x00180290(void) __asm__("func_00181FA8");
+void func_00182420_x00180290(int) __asm__("func_00182420");
+int func_00180620_x00180290(MwsfdCreInf_x00180290 *) __asm__("func_00180620");
+void *memset_x00180290(void *, int, unsigned int) __asm__("memset");
+void func_00180670_x00180290(MwsfdPly_x00180290 *, MwsfdCreInf_x00180290 *) __asm__("func_00180670");
+void *func_0017F750_x00180290(MwsfdPly_x00180290 *, MwsfdCreInf_x00180290 *) __asm__("func_0017F750");
+void func_001807F8_x00180290(MwsfdPly_x00180290 *) __asm__("func_001807F8");
+void func_0017FED0_x00180290(MwsfdPly_x00180290 *) __asm__("func_0017FED0");
+void func_0017EF98_x00180290(MwsfdCreInf_x00180290 *, int *, int *, int *, int *, int *, int *) __asm__("func_0017EF98");
+void func_00180078_x00180290(MwsfdPly_x00180290 *, MwsfdCreInf_x00180290 *, int, int) __asm__("func_00180078");
+void *func_00180268_x00180290(MwsfdPly_x00180290 *) __asm__("func_00180268");
+void *func_0016DBE0_x00180290(int, int) __asm__("func_0016DBE0");
+int func_00199CA8_x00180290(void *, int, void **) __asm__("func_00199CA8");
+void func_00187D20_x00180290(MwsfdPly_x00180290 *, int) __asm__("func_00187D20");
+void func_00187D30_x00180290(MwsfdPly_x00180290 *, int) __asm__("func_00187D30");
+void *func_00188028_x00180290(void *) __asm__("func_00188028");
+void func_00182F70_x00180290(MwsfdPly_x00180290 *) __asm__("func_00182F70");
+void *LSC_Create_x00180290(void *) __asm__("LSC_Create");
+void func_001699D0_x00180290(void *, void *) __asm__("func_001699D0");
+int func_00180730_x00180290(MwsfdPly_x00180290 *) __asm__("func_00180730");
+void *func_001847A0_x00180290(int, int, int, int) __asm__("func_001847A0");
+void func_00184E18_x00180290(MwsfdPly_x00180290 *, int) __asm__("func_00184E18");
+void *func_00185218_x00180290(MwsfdPly_x00180290 *) __asm__("func_00185218");
+int func_001852A8_x00180290(MwsfdPly_x00180290 *) __asm__("func_001852A8");
+void func_00185308_x00180290(MwsfdPly_x00180290 *) __asm__("func_00185308");
+void func_00181BB0_x00180290(MwsfdPly_x00180290 *) __asm__("func_00181BB0");
+void func_00181C30_x00180290(MwsfdPly_x00180290 *) __asm__("func_00181C30");
+MwsfdPly_x00180290 *func_00180290_x00180290(MwsfdCreInf_x00180290 *cprm) __asm__("func_00180290");
+MwsfdPly_x00180290 *func_00180290_x00180290(MwsfdCreInf_x00180290 *cprm) {
+    MwsfdWork_x00180290 *work;
+    MwsfdInitPrm_x00180290 *prm;
+    MwsfdPly_x00180290 *ply;
+    void *sfd;
+    int sjb;
+    int sib;
+    int vib;
+    int aib;
+    int adxibuf;
+    int adxwk;
+    int i;
+    void *sfx;
+
+    if (cprm == 0) {
+        func_001870E8_x00180290(D_00465768_x00180290);
+        return 0;
+    }
+    if (func_001806C8_x00180290(cprm) != 1) {
+        return 0;
+    }
+    work = func_00181FA8_x00180290();
+    prm = &work->prm;
+    for (i = 0; i < 8; i++) {
+        ply = &work->ply[i];
+        if (*(volatile int *)&ply->used == 0) {
+            break;
+        }
+    }
+    if (i == 8) {
+        func_00182420_x00180290(-11);
+        func_001870E8_x00180290(D_00465798_x00180290);
+        return 0;
+    }
+    if (func_00180620_x00180290(cprm) == -1) {
+        func_001870E8_x00180290(D_004657C8_x00180290);
+        return 0;
+    }
+    if (ply != 0) {
+        memset_x00180290(ply, 0, sizeof(MwsfdPly_x00180290));
+    }
+    func_00180670_x00180290(ply, cprm);
+    ply->cre = *cprm;
+    sfd = func_0017F750_x00180290(ply, cprm);
+    ply->sfd = sfd;
+    if (sfd == 0) {
+        func_001870E8_x00180290(D_00465808_x00180290);
+        func_001807F8_x00180290(ply);
+        return 0;
+    }
+    func_0017FED0_x00180290(ply);
+    func_0017EF98_x00180290(cprm, &sjb, &sib, &vib, &aib, &adxibuf, &adxwk);
+    func_00180078_x00180290(ply, cprm, prm->dispCycle, prm->dispLatency);
+    ply->defSj = func_00180268_x00180290(ply);
+    if (ply->defSj == 0) {
+        func_001870E8_x00180290(D_00465830_x00180290);
+        func_001807F8_x00180290(ply);
+        return 0;
+    }
+    ply->memSj = func_0016DBE0_x00180290(0, 0);
+    if (ply->memSj == 0) {
+        func_001870E8_x00180290(D_00465858_x00180290);
+        func_001807F8_x00180290(ply);
+        return 0;
+    }
+    ply->sjbSize = sjb;
+    ply->vtbl = &D_004250B0_x00180290;
+    ply->rsvMade = 1;
+    ply->stat = 0;
+    ply->compoSet = cprm->addInfMode;
+    ply->execFlg = 0;
+    ply->compoMode = cprm->addInfMode;
+    if (func_00199CA8_x00180290(sfd, 3, &ply->adxt) != 0) {
+        ply->adxt = 0;
+    }
+    ply->rsvMade2 = 1;
+    ply->linkReq = 0;
+    ply->linkPrev = 0;
+    ply->pause = 0;
+    ply->pad119 = 0;
+    ply->waitingSvr = 0;
+    func_00187D20_x00180290(ply, 0);
+    func_00187D30_x00180290(ply, 0);
+    ply->frmSync = 1;
+    ply->numSkipDisp = 0;
+    ply->stm = func_00188028_x00180290(ply->defSj);
+    if (ply->stm == 0) {
+        func_001807F8_x00180290(ply);
+        return 0;
+    }
+    func_00182F70_x00180290(ply);
+    ply->lsc = LSC_Create_x00180290(ply->defSj);
+    ply->nEntry = 0;
+    func_001699D0_x00180290(ply->lsc, ply->stm);
+    if (func_00180730_x00180290(ply) == -1) {
+        func_001807F8_x00180290(ply);
+        return 0;
+    }
+    sfx = func_001847A0_x00180290(ply->sfxWork, ply->sfxWorkSize, cprm->maxWidth, cprm->maxHeight);
+    if (sfx == 0) {
+        func_001870E8_x00180290(D_00465880_x00180290);
+        func_001807F8_x00180290(ply);
+        return 0;
+    }
+    ply->sfx = sfx;
+    func_00184E18_x00180290(ply, ply->cre.addInfMode);
+    ply->addInfSj = func_00185218_x00180290(ply);
+    if (func_001852A8_x00180290(ply) != 0) {
+        func_001870E8_x00180290(D_004658A0_x00180290);
+        func_001807F8_x00180290(ply);
+        return 0;
+    }
+    func_00185308_x00180290(ply);
+    func_00181BB0_x00180290(ply);
+    func_00181C30_x00180290(ply);
+    ply->used = 1;
+    return ply;
+}
 typedef unsigned char Uint8_x00180620;
 typedef signed char Sint8_x00180620;
 typedef unsigned int Uint32_x00180620;
@@ -6622,7 +6782,72 @@ s32 func_00182518(void) {
     func_0018D578();
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00182538);
+extern int D_00426894_x00182538 __asm__("D_00426894");
+extern int D_00426898_x00182538 __asm__("D_00426898");
+extern int D_00484E00_x00182538 __asm__("D_00484E00");
+extern int D_00484DC0_x00182538[] __asm__("D_00484DC0");
+extern char D_00484E08_x00182538[] __asm__("D_00484E08");
+extern char D_00465D88_x00182538[] __asm__("D_00465D88");
+extern char D_00465DA0_x00182538[] __asm__("D_00465DA0");
+extern char D_00465DB8_x00182538[] __asm__("D_00465DB8");
+extern char D_00465DF0_x00182538[] __asm__("D_00465DF0");
+extern char D_00465E50_x00182538[] __asm__("D_00465E50");
+void *mwPlyGetSfdHn_x00182538(void *) __asm__("mwPlyGetSfdHn");
+int sprintf_x00182538(char *, const char *, ...) __asm__("sprintf");
+char *func_00195A90_x00182538(void *) __asm__("func_00195A90");
+char *func_00127CD8_x00182538(char *, const char *, int) __asm__("func_00127CD8");
+void func_001870E8_x00182538(char *) __asm__("func_001870E8");
+void func_00182538_x00182538(void *obj, unsigned int code) __asm__("func_00182538");
+void func_00182538_x00182538(void *obj, unsigned int code)
+{
+    void *ply;
+    void *sfd;
+    char *msg = 0;
+
+    if (obj != 0) {
+        ply = obj;
+        sfd = mwPlyGetSfdHn_x00182538(ply);
+        D_00426894_x00182538 = (int)ply;
+        D_00426898_x00182538 = (int)sfd;
+    } else {
+        ply = 0;
+        sfd = 0;
+        D_00426894_x00182538 = (int)ply;
+        D_00426898_x00182538 = (int)sfd;
+    }
+    if (code != 0) {
+        D_00484DC0_x00182538[D_00484E00_x00182538] = code;
+        if (D_00484E00_x00182538 < 15) {
+            D_00484E00_x00182538++;
+        }
+    }
+    switch (code) {
+    case -3:
+    case -2:
+        sprintf_x00182538(D_00484E08_x00182538, D_00465D88_x00182538, code);
+        break;
+    case 0xff000f40:
+        sprintf_x00182538(D_00484E08_x00182538, D_00465DA0_x00182538, 0xff000f40);
+        if (sfd != 0) {
+            msg = func_00195A90_x00182538(sfd);
+        }
+        if (msg != 0) {
+            func_00127CD8_x00182538(D_00484E08_x00182538, msg, 105);
+        }
+        break;
+    case 0xff000f17:
+    case 0xff000f18:
+        sprintf_x00182538(D_00484E08_x00182538, D_00465DB8_x00182538, code);
+        break;
+    case 0xff000f1c:
+        sprintf_x00182538(D_00484E08_x00182538, D_00465DF0_x00182538, 0xff000f1c);
+        break;
+    default:
+        sprintf_x00182538(D_00484E08_x00182538, D_00465E50_x00182538, code);
+        break;
+    }
+    func_001870E8_x00182538(D_00484E08_x00182538);
+}
 s32 func_00182720(void) {
     return D_00426894;
 }
@@ -18065,6 +18290,10 @@ int mwsst_CreateExt_x00186B38____(char *work, int size) {}
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int m1fd010;
 extern int m1fd011;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m029010;
+extern int m029011;
+extern int m029012;
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo) __asm__("MWSST_Create");
 /* MWSST_Create_x00186B38____: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfsst.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo)

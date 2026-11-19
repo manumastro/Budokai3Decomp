@@ -6111,7 +6111,86 @@ int func_00154878_x00154878(int ptid, int afsid, int flid, AdxfPtInfo_x00154878 
 int func_00154878_x00154878(int ptid, int afsid, int flid, AdxfPtInfo_x00154878 *ptinfo, void *tmpbuf, int tbsize) {
     return adxf_LoadPtBothNw_x00154878(ptid, afsid, flid, 0, 0, ptinfo, tmpbuf, tbsize, 1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001548B0);
+typedef struct Pt_48B0_x001548B0 { struct Pt_48B0_x001548B0 *next; int size; int nfile; unsigned short nentry; signed char type; signed char rev; char fname[256]; void *curdir; int ofst; int top; } Pt_48B0_x001548B0;
+extern Pt_48B0_x001548B0 *D_00402550_x001548B0[256] __asm__("D_00402550");
+extern int D_00402A7C_x001548B0 __asm__("D_00402A7C");
+extern void *D_00402A80_x001548B0 __asm__("D_00402A80");
+extern int D_00402A84_x001548B0 __asm__("D_00402A84");
+extern void *D_00402A88_x001548B0 __asm__("D_00402A88");
+extern int D_00402A8C_x001548B0 __asm__("D_00402A8C");
+extern char D_004605C0_x001548B0[] __asm__("D_004605C0");
+extern char D_004605F0_x001548B0[] __asm__("D_004605F0");
+extern char D_00460618_x001548B0[] __asm__("D_00460618");
+extern char D_00460648_x001548B0[] __asm__("D_00460648");
+int ADXERR_CallErrFunc1_x001548B0(char *) __asm__("ADXERR_CallErrFunc1");
+int adxf_ChkPrmPt_x001548B0(int, void *) __asm__("adxf_ChkPrmPt");
+void *memset_x001548B0(void *, int, unsigned int) __asm__("memset");
+void *func_00155290_x001548B0(int, int) __asm__("func_00155290");
+int func_00155E40_x001548B0(int, int, char *, void **, int *, int *) __asm__("func_00155E40");
+void *func_00155118_x001548B0(char *, void *) __asm__("func_00155118");
+char *func_00128040_x001548B0(char *, char *, int) __asm__("func_00128040");
+int ADXF_ReadNw_x001548B0(void *, int, void *) __asm__("ADXF_ReadNw");
+void fn_8004FC94_x001548B0(void *) __asm__("fn_8004FC94");
+int func_001548B0_x001548B0(int ptid, int arg1, int arg2, char *fname, void *dir, Pt_48B0_x001548B0 *ptinfo, void *tmpbuf, int tbsize, int rev) __asm__("func_001548B0");
+int func_001548B0_x001548B0(int ptid, int arg1, int arg2, char *fname, void *dir, Pt_48B0_x001548B0 *ptinfo, void *tmpbuf, int tbsize, int rev)
+{
+    int ofst;
+    int fnsct;
+    int err;
+
+    if (tmpbuf == 0) {
+        ADXERR_CallErrFunc1_x001548B0(D_004605C0_x001548B0);
+        return -3;
+    }
+    if (tbsize <= 0) {
+        ADXERR_CallErrFunc1_x001548B0(D_004605F0_x001548B0);
+        return -3;
+    }
+    err = adxf_ChkPrmPt_x001548B0(ptid, ptinfo);
+    if (err < 0) {
+        return err;
+    }
+    if (D_00402A84_x001548B0 >= 0) {
+        ADXERR_CallErrFunc1_x001548B0(D_00460618_x001548B0);
+        return -1;
+    }
+    D_00402A84_x001548B0 = ptid;
+    D_00402A7C_x001548B0 = 0;
+    memset_x001548B0(ptinfo, 0, sizeof(Pt_48B0_x001548B0));
+    D_00402550_x001548B0[ptid] = ptinfo;
+    ptinfo->next = 0;
+    if (fname == 0) {
+        D_00402A80_x001548B0 = func_00155290_x001548B0(arg1, arg2);
+        if (D_00402A80_x001548B0 == 0) {
+            ADXERR_CallErrFunc1_x001548B0(D_00460648_x001548B0);
+            return -1;
+        }
+        err = func_00155E40_x001548B0(arg1, arg2, ptinfo->fname, &dir, &ofst, &fnsct);
+        if (err < 0) {
+            return err;
+        }
+        ptinfo->ofst = ofst;
+    } else {
+        D_00402A80_x001548B0 = func_00155118_x001548B0(fname, dir);
+        if (D_00402A80_x001548B0 == 0) {
+            ADXERR_CallErrFunc1_x001548B0(D_00460648_x001548B0);
+            return -1;
+        }
+        func_00128040_x001548B0(ptinfo->fname, fname, 256);
+    }
+    ptinfo->type = 0;
+    ptinfo->rev = rev;
+    ptinfo->curdir = dir;
+    D_00402A88_x001548B0 = tmpbuf;
+    D_00402A8C_x001548B0 = tbsize / 2048;
+    err = ADXF_ReadNw_x001548B0(D_00402A80_x001548B0, D_00402A8C_x001548B0, D_00402A88_x001548B0);
+    if (err < 0) {
+        fn_8004FC94_x001548B0(D_00402A80_x001548B0);
+        return err;
+    }
+    ptinfo->nfile = 0;
+    return 0;
+}
 void func_00154AB0(void) {
     func_001553A0(D_00402A80);
     D_00402A80 = 0;

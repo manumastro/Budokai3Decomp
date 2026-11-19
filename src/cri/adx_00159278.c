@@ -2585,7 +2585,35 @@ void func_0015A9E0_x0015A9E0(u8 *arg0, s16 arg1, s16 arg2)
   *((s16 *) (((u8 *) arg0) + 0xA)) = arg2;
  do { *((s16 *) (((u8 *) arg0) + 8)) = arg1; } while (0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A9F0);
+typedef struct IirFilt_x0015A9F0 { signed char used; char rsv1; short rsv2; short k0; short k1; short d0; short d1; } IirFilt_x0015A9F0;
+typedef struct PredictFilt_x0015A9F0 { char used; char rsv1; short rsv2; short k0; short k1; short d0; short d1; short d0_0; short d1_0; short d0_1; short d1_1; int nsmpl; short rsig[32]; signed char rsig_q[32]; int max; short gain; char pad126[2]; double dgain; IirFilt_x0015A9F0 *iflt; char pad140[4]; } PredictFilt_x0015A9F0;
+void func_0015A9F0_x0015A9F0(PredictFilt_x0015A9F0 *f, int i, short input) __asm__("func_0015A9F0");
+void func_0015A9F0_x0015A9F0(PredictFilt_x0015A9F0 *f, int i, short input)
+{
+    int j;
+    int value;
+    short output;
+    int level;
+    unsigned short prev;
+
+    if (i == 0) {
+        for (j = 0; j < f->nsmpl; j++) {
+            f->rsig[j] = 0;
+        }
+        f->max = 0;
+    }
+    if (f != 0) {
+        value = input - ((f->k0 * f->d0) >> 12) - ((f->k1 * f->d1) >> 12);
+        f->rsig[i] = output = value > 32767 ? 32767 : (value < -32768 ? -32768 : value);
+        level = output < 0 ? -output : output;
+        if (f->max < level) {
+            f->max = level;
+        }
+        prev = f->d0;
+        f->d0 = input;
+        f->d1 = prev;
+    }
+}
 typedef struct SfdSj_x0015AAD8 SfdSj_x0015AAD8;
 typedef struct SfdSjChunk_x0015AAD8 {
     char *data;
@@ -3669,7 +3697,55 @@ void func_0015AF88_x0015AF88(AdxEnc_x0015AF88 *e, int ch)
         j++;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015B210);
+typedef struct { char pad0[0x7C]; unsigned short f7C; char pad7E[2]; long f80; int f88; } Sub_B210_x0015B210;
+typedef struct { char pad0[0x30]; int pos; char pad34[0x3C - 0x34]; int end; char pad40[0x44 - 0x40]; int len; char pad48[0x58 - 0x48]; int nch; char pad5C[0x80 - 0x5C]; Sub_B210_x0015B210 *sub[2]; short v0[2]; short v1[2]; short buf0[0x20]; short buf1[0x20]; char padD0[0x290 - 0x110]; unsigned short f290[4]; long f298[2]; } Obj_B210_x0015B210;
+void *memset_x0015B210(void *, int, unsigned int) __asm__("memset");
+int func_0015ABB8_x0015B210(Obj_B210_x0015B210 *, int, int, short **) __asm__("func_0015ABB8");
+int func_0015AD28_x0015B210(Obj_B210_x0015B210 *, int) __asm__("func_0015AD28");
+void func_0015A810_x0015B210(int, unsigned short *, unsigned short *) __asm__("func_0015A810");
+void func_0015AF88_x0015B210(Obj_B210_x0015B210 *, int) __asm__("func_0015AF88");
+int func_0015B210_x0015B210(Obj_B210_x0015B210 *e) __asm__("func_0015B210");
+int func_0015B210_x0015B210(Obj_B210_x0015B210 *e)
+{
+    short *bufs[2];
+    unsigned short h0;
+    unsigned short h1;
+    int n;
+    int i;
+    int ch;
+    Sub_B210_x0015B210 *f;
+    int pred;
+
+    bufs[0] = e->buf0;
+    bufs[1] = e->buf1;
+    n = e->end - e->pos;
+    if (e->len < n) {
+        n = e->len;
+    }
+    if (func_0015ABB8_x0015B210(e, e->pos, n, bufs) == 0) {
+        return 0;
+    }
+    if (n < e->len) {
+        for (i = 0; i < e->nch; i++) {
+            if (bufs[i] != 0) {
+                memset_x0015B210((void *)(n * 2 + (int)bufs[i]), 0, (e->len - n) * 2);
+            }
+        }
+    }
+    e->pos += e->len;
+    for (ch = 0; ch < e->nch; ch++) {
+        func_0015AD28_x0015B210(e, ch);
+        f = e->sub[ch];
+        pred = f->f88;
+        e->f290[ch] = f->f7C;
+        e->f298[ch] = f->f80;
+        func_0015A810_x0015B210(pred, &h0, &h1);
+        e->v0[ch] = h0;
+        e->v1[ch] = h1;
+        func_0015AF88_x0015B210(e, ch);
+    }
+    return e->len;
+}
 typedef struct SfdSj_x0015B3D0 SfdSj_x0015B3D0;
 typedef struct SfdSjChunk_x0015B3D0 {
     char *data;
@@ -12252,7 +12328,84 @@ void func_0015CEC8_x0015CEC8(ADXSTM_x0015CEC8 stm) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", adxstmf_stat_exec);
+typedef struct { signed char unk0; signed char stat; signed char read_flg; signed char unk3; char pad4[4]; void *cvfs; int unkC; int file_len; int file_sct; char pad18[0x45 - 0x18]; signed char unk45; signed char unk46; signed char unk47; signed char unk48; signed char unk49; char pad4A[0x50 - 0x4A]; char *fname; void *dir; } Stm_D208_x0015D208;
+void func_001627A0_x0015D208(void *) __asm__("func_001627A0");
+void func_0016FF40_x0015D208(void) __asm__("func_0016FF40");
+void func_0016FF58_x0015D208(void) __asm__("func_0016FF58");
+void *func_00162450_x0015D208(char *, void *, int) __asm__("func_00162450");
+void func_00154178_x0015D208(char *, char *) __asm__("func_00154178");
+int func_00162880_x0015D208(void *, int, int) __asm__("func_00162880");
+int func_00162818_x0015D208(void *) __asm__("func_00162818");
+void fn_8004AE94_x0015D208(Stm_D208_x0015D208 *, int) __asm__("fn_8004AE94");
+void func_0015CEC8_x0015D208(Stm_D208_x0015D208 *) __asm__("func_0015CEC8");
+extern char D_004617B0_x0015D208[] __asm__("D_004617B0");
+void adxstmf_stat_exec_x0015D208(Stm_D208_x0015D208 *stm) __asm__("adxstmf_stat_exec");
+void adxstmf_stat_exec_x0015D208(Stm_D208_x0015D208 *stm)
+{
+    void *fd;
+    int nsct;
+    int nbyte;
+
+    if (stm->read_flg == 0) {
+        if (stm->unk48 == 1) {
+            stm->unk48 = 0;
+            if (stm->unk47 == 0) {
+                stm->stat = 1;
+            }
+        }
+        if (stm->unk46 == 1) {
+            fd = stm->cvfs;
+            if (fd != 0) {
+                stm->cvfs = 0;
+                func_001627A0_x0015D208(fd);
+            }
+            stm->unk46 = 0;
+            stm->unk49 = 0;
+        }
+        func_0016FF40_x0015D208();
+        if (stm->unk45 == 1) {
+            stm->unk49 = 1;
+            func_0016FF58_x0015D208();
+            if (stm->cvfs == 0) {
+                stm->cvfs = func_00162450_x0015D208(stm->fname, stm->dir, 0);
+                if (stm->cvfs == 0) {
+                    func_00154178_x0015D208(D_004617B0_x0015D208, stm->fname);
+                    stm->stat = 4;
+                    stm->unk49 = 0;
+                    stm->unk45 = 0;
+                    return;
+                }
+                __asm__ __volatile__("");
+                func_00162880_x0015D208(stm->cvfs, 0, 2);
+                nsct = func_00162818_x0015D208(stm->cvfs);
+                func_00162880_x0015D208(stm->cvfs, 0, 0);
+                nbyte = nsct << 11;
+                if (stm->file_len == 0x7FFFF800) {
+                    stm->file_len = nbyte;
+                    stm->file_sct = nsct;
+                } else {
+                    if (stm->unkC > nsct) {
+                        stm->unkC = nsct;
+                    }
+                    if (stm->file_sct + stm->unkC > nsct) {
+                        stm->file_sct = nsct - stm->unkC;
+                        stm->file_len = stm->file_sct << 11;
+                    }
+                }
+                fn_8004AE94_x0015D208(stm, 0);
+                stm->unk45 = 0;
+            }
+        } else {
+            func_0016FF58_x0015D208();
+        }
+        if (stm->unk47 == 1) {
+            stm->unk47 = 0;
+        }
+    }
+    if (stm->stat == 2 && stm->unk49 == 1) {
+        func_0015CEC8_x0015D208(stm);
+    }
+}
 typedef int s32_x0015D3D8;
 typedef s32_x0015D3D8 ptrdiff_t_x0015D3D8;
 typedef unsigned char Uint8_x0015D3D8;
