@@ -6273,7 +6273,33 @@ s32 func_00182420(s32 arg0) {
 s32 func_00182450(void) {
     return *(s32 *)((u8 *)(func_00181FA8()) + 0x68);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlySfdInit);
+typedef struct { s32 a; s32 b; } MwInit_xSfdInit_x00182470;
+extern MwInit_xSfdInit_x00182470 D_00465CC8_x00182470 __asm__("D_00465CC8");
+extern s32 D_00465D48_x00182470 __asm__("D_00465D48");
+extern s32 D_00465D50_x00182470 __asm__("D_00465D50");
+s32 func_0018D430_x00182470(s32 *, s32) __asm__("func_0018D430");
+s32 func_0018D440_x00182470(MwInit_xSfdInit_x00182470 *) __asm__("func_0018D440");
+s32 func_00182420_x00182470(s32) __asm__("func_00182420");
+s32 func_0018D700_x00182470(s32, void *, s32) __asm__("func_0018D700");
+void func_00182538_x00182470(void) __asm__("func_00182538");
+s32 mwPlySfdInit_x00182470(s32 arg0) __asm__("mwPlySfdInit");
+s32 mwPlySfdInit_x00182470(s32 arg0)
+{
+    MwInit_xSfdInit_x00182470 init = D_00465CC8_x00182470;
+
+    init.b = arg0;
+    if (func_0018D430_x00182470(&D_00465D48_x00182470, 0x32B8) != 1) {
+        func_001870E8(&D_00465D50_x00182470);
+        return -1;
+    }
+    if (func_0018D440_x00182470(&init) != 0) {
+        return func_00182420_x00182470(-0x12D);
+    }
+    if (func_0018D700_x00182470(0, func_00182538_x00182470, 0) != 0) {
+        return func_00182420_x00182470(-0x12F);
+    }
+    return 0;
+}
 s32 func_00182518(void) {
     func_0018D578();
     return 0;

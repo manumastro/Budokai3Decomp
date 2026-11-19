@@ -288,7 +288,52 @@ Sint32_x0014F430 func_0014F430_x0014F430(ADXB_x0014F430 adxb, Sint8_x0014F430 *i
     return dlen;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014F548);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014F6E0);
+typedef struct { unsigned char *in; int f4; char pad8[0x14 - 8]; short *out; int f18; int f1C; int f20; int f24; } Inf_F6E0_x0014F6E0;
+typedef struct { int pad0; int stat; void *pd; char padC[0xE - 0xC]; signed char nch; char padF[0x48 - 0xF]; Inf_F6E0_x0014F6E0 inf; char pad70[0x68 - 0x70 + 0x8]; int f70; int pad74; int (*cb1)(void *, int *, int *, int *); void *cb1obj; void (*cb2)(void *, int, int); void *cb2obj; char pad88[0x90 - 0x88]; int f90, f94; } Obj_F6E0_x0014F6E0;
+int func_00161A88_x0014F6E0(void *) __asm__("func_00161A88");
+void func_0014F6E0_x0014F6E0(Obj_F6E0_x0014F6E0 *o) __asm__("func_0014F6E0");
+void func_0014F6E0_x0014F6E0(Obj_F6E0_x0014F6E0 *o)
+{
+    Inf_F6E0_x0014F6E0 *inf = &o->inf;
+    unsigned char *in = inf->in;
+    short *out;
+    short *out2;
+    unsigned char *p;
+    int n;
+    int i;
+
+    if (o->stat == 1) {
+        if (func_00161A88_x0014F6E0(o->pd) == 0) {
+            o->cb1(o->cb1obj, (int *)((char *)o + 0x68), (int *)((char *)o + 0x6C), &o->f70);
+            n = inf->f18 - inf->f20;
+            if (inf->f24 < n) {
+                n = inf->f24;
+            }
+            if (inf->f4 < n) {
+                n = inf->f4;
+            }
+            out = inf->out + inf->f20;
+            if (o->nch == 2) {
+                out2 = inf->out + (inf->f1C + inf->f20);
+                for (i = 0; i < n; i++) {
+                    out[i] = in[i * 2] << 8;
+                    out2[i] = in[i * 2 + 1] << 8;
+                }
+            } else {
+                for (i = 0; i < n; i++) {
+                    out[i] = in[i] << 8;
+                }
+            }
+            o->stat = 2;
+            o->f90 = n;
+            o->f94 = n * o->nch;
+        }
+    }
+    if (o->stat == 2) {
+        o->cb2(o->cb2obj, o->f94, o->f90);
+        o->stat = 3;
+    }
+}
 void func_0014F860(u8 *arg0) {
     if (*(s16 *)((u8 *)arg0 + 0x9C) == 1) {
         func_0014F6E0();
@@ -509,7 +554,52 @@ Sint32_x0014FD08 func_0014FD08_x0014FD08(ADXB_x0014FD08 adxb, Sint8_x0014FD08 *i
     return dlen;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014FE08);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014FFA0);
+typedef struct { unsigned char *in; int f4; char pad8[0x14 - 8]; short *out; int f18; int f1C; int f20; int f24; } Inf_FFA0_x0014FFA0;
+typedef struct { int pad0; int stat; void *pd; char padC[0xE - 0xC]; signed char nch; char padF[0x48 - 0xF]; Inf_FFA0_x0014FFA0 inf; char pad70[0x68 - 0x70 + 0x8]; int f70; int pad74; int (*cb1)(void *, int *, int *, int *); void *cb1obj; void (*cb2)(void *, int, int); void *cb2obj; char pad88[0x90 - 0x88]; int f90, f94; } Obj_FFA0_x0014FFA0;
+int func_00161A88_x0014FFA0(void *) __asm__("func_00161A88");
+void func_0014FFA0_x0014FFA0(Obj_FFA0_x0014FFA0 *o) __asm__("func_0014FFA0");
+void func_0014FFA0_x0014FFA0(Obj_FFA0_x0014FFA0 *o)
+{
+    Inf_FFA0_x0014FFA0 *inf = &o->inf;
+    unsigned char *in = inf->in;
+    short *out;
+    short *out2;
+    unsigned char *p;
+    int n;
+    int i;
+
+    if (o->stat == 1) {
+        if (func_00161A88_x0014FFA0(o->pd) == 0) {
+            o->cb1(o->cb1obj, (int *)((char *)o + 0x68), (int *)((char *)o + 0x6C), &o->f70);
+            n = inf->f18 - inf->f20;
+            if (inf->f24 < n) {
+                n = inf->f24;
+            }
+            if (inf->f4 < n) {
+                n = inf->f4;
+            }
+            out = inf->out + inf->f20;
+            if (o->nch == 2) {
+                out2 = inf->out + (inf->f1C + inf->f20);
+                for (i = 0; i < n; i++) {
+                    out[i] = in[i * 2] << 8;
+                    out2[i] = in[i * 2 + 1] << 8;
+                }
+            } else {
+                for (i = 0; i < n; i++) {
+                    out[i] = in[i] << 8;
+                }
+            }
+            o->stat = 2;
+            o->f90 = n;
+            o->f94 = n * o->nch;
+        }
+    }
+    if (o->stat == 2) {
+        o->cb2(o->cb2obj, o->f94, o->f90);
+        o->stat = 3;
+    }
+}
 typedef signed char Sint8_x00150120;
 typedef unsigned char Uint8_x00150120;
 typedef short Sint16_x00150120;
@@ -3546,7 +3636,52 @@ Sint32_x001519C0 func_001519C0_x001519C0(ADXB_x001519C0 adxb, void *buf, Sint32_
         adxb->x98 = 2;
         return hdrlen;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151AB8);
+typedef struct { short *in; int f4; char pad8[0x14 - 8]; short *out; int f18; int f1C; int f20; int f24; } Inf_1AB8_x00151AB8;
+typedef struct { int pad0; int stat; void *pd; char padC[0xE - 0xC]; signed char nch; char padF[0x48 - 0xF]; Inf_1AB8_x00151AB8 inf; char pad70[0x68 - 0x70 + 0x8]; int f70; int pad74; int (*cb1)(void *, int *, int *, int *); void *cb1obj; void (*cb2)(void *, int, int); void *cb2obj; char pad88[0x90 - 0x88]; int f90, f94; } Obj_1AB8_x00151AB8;
+int func_00161A88_x00151AB8(void *) __asm__("func_00161A88");
+void func_00151AB8_x00151AB8(Obj_1AB8_x00151AB8 *o) __asm__("func_00151AB8");
+void func_00151AB8_x00151AB8(Obj_1AB8_x00151AB8 *o)
+{
+    Inf_1AB8_x00151AB8 *inf = &o->inf;
+    short *in = inf->in;
+    short *out;
+    short *out2;
+    short *p;
+    int n;
+    int i;
+
+    if (o->stat == 1) {
+        if (func_00161A88_x00151AB8(o->pd) == 0) {
+            o->cb1(o->cb1obj, (int *)((char *)o + 0x68), (int *)((char *)o + 0x6C), &o->f70);
+            n = inf->f18 - inf->f20;
+            if (inf->f24 < n) {
+                n = inf->f24;
+            }
+            if (inf->f4 < n) {
+                n = inf->f4;
+            }
+            out = inf->out + inf->f20;
+            if (o->nch == 2) {
+                out2 = inf->out + (inf->f1C + inf->f20);
+                for (i = 0; i < n; i++) {
+                    out[i] = in[i * 2];
+                    out2[i] = in[i * 2 + 1];
+                }
+            } else {
+                for (i = 0; i < n; i++) {
+                    out[i] = in[i];
+                }
+            }
+            o->stat = 2;
+            o->f90 = n;
+            o->f94 = n * o->nch * 2;
+        }
+    }
+    if (o->stat == 2) {
+        o->cb2(o->cb2obj, o->f94, o->f90);
+        o->stat = 3;
+    }
+}
 s32 memcmp_x00151C30() __asm__("memcmp");
 extern s32 D_004604A8_x00151C30 __asm__("D_004604A8");
 s32 func_00151C30_x00151C30(s32 arg0) __asm__("func_00151C30");
