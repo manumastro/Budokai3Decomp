@@ -1056,7 +1056,52 @@ void func_00150688_x00150688(struct fn_80045F58_Arg0_x00150688 *arg0, u32_x00150
     arg0->unk_8C = (arg0->unk_8C + arg2);
     arg0->unk_88 = (arg0->unk_88 + arg2);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001506A8);
+typedef struct { short used; short pad2; int pad4; void *pd; char padC[0x38 - 0xC]; int a, b, c, d; char pad48[0x78 - 0x48]; void (*cb1)(void); void *cb1obj; void (*cb2)(void); void *cb2obj; char pad88[0xCC - 0x88]; int fCC; char fD0[0x10]; short fE0, fE2, fE4; char padE6[0xF4 - 0xE6]; } Obj_06A8_x001506A8;
+extern Obj_06A8_x001506A8 D_004010A8_x001506A8[16] __asm__("D_004010A8");
+void *memset_x001506A8(void *, int, unsigned int) __asm__("memset");
+void *ADXPD_Create_x001506A8(void) __asm__("ADXPD_Create");
+void func_001507E8_x001506A8(Obj_06A8_x001506A8 *) __asm__("func_001507E8");
+void func_00150658_x001506A8(void) __asm__("func_00150658");
+void func_00150688_x001506A8(void) __asm__("func_00150688");
+Obj_06A8_x001506A8 *func_001506A8_x001506A8(int a, int b, int c, int d) __asm__("func_001506A8");
+Obj_06A8_x001506A8 *func_001506A8_x001506A8(int a, int b, int c, int d)
+{
+    Obj_06A8_x001506A8 *o;
+    int i;
+
+    for (i = 0; i < 16; i++) {
+        if (D_004010A8_x001506A8[i].used == 0) {
+            break;
+        }
+    }
+    if (i == 16) {
+        return 0;
+    }
+    o = &D_004010A8_x001506A8[i];
+    memset_x001506A8(o, 0, sizeof(Obj_06A8_x001506A8));
+    o->used = 1;
+    o->pd = ADXPD_Create_x001506A8();
+    if (o->pd == 0) {
+        func_001507E8_x001506A8(o);
+        return 0;
+    }
+    o->a = a;
+    o->b = b;
+    o->c = c;
+    o->d = d;
+    o->cb1 = func_00150658_x001506A8;
+    o->cb1obj = o;
+    o->cb2 = func_00150688_x001506A8;
+    o->cb2obj = o;
+    o->fCC = 0;
+    o->fE0 = 0;
+    o->fE2 = -128;
+    o->fE4 = -128;
+    memset_x001506A8(o->fD0, 0, 0x10);
+    return o;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3c001506A8_0;
 void func_001507E8(u8 *arg0) {
     s32 temp_a0;
 
