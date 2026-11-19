@@ -23674,7 +23674,24 @@ s32 func_001900D8(s32 arg0) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190138);
+int func_00194798_x00190138(void *player) __asm__("func_00194798");
+int func_00190138_x00190138(char *player) __asm__("func_00190138");
+int func_00190138_x00190138(char *player)
+{
+    int limit = *(int *)(player + 0x9FC);
+    int size = *(int *)(player + 0x2C);
+
+    if (limit == -1) {
+        limit = size;
+    }
+    if (size < limit) {
+        limit = size;
+    }
+    if (func_00194798_x00190138(player) < limit) {
+        return 0;
+    }
+    return 1;
+}
 s32 func_00191248_x00190180(void *) __asm__("func_00191248");
 void func_0017C698_x00190180(s32, s32 *) __asm__("func_0017C698");
 s32 func_0018AFB8_x00190180(void *, s32) __asm__("func_0018AFB8");
@@ -28082,6 +28099,11 @@ void func_00191C40_x00191C40(u8 *a0, unsigned int a1, s32 a2, s32 a3)
 extern int b3mda301_000000;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int m900830;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m013810;
+extern int b3m01381_000000;
+extern int b3m01381_000001;
+extern int b3m01381_000002;
 typedef struct { int rate; int drop; int hour; int minute; int second; int frame; int pad18; short pad1c; short field; } SfdTC_x00191D38;
 extern int D_00467730_x00191D38[] __asm__("D_00467730");
 extern int D_004674D8_x00191D38[] __asm__("D_004674D8");
@@ -28152,6 +28174,8 @@ extern int mb39010;
 extern int b3mb3901_000000;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mda302_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m013820;
 typedef struct SfdTimeCode_x00191F48 { int rate; int drop; int hour; int minute; int second; int frame; int add; short repeat; short field; } SfdTimeCode_x00191F48;
 extern int D_004674D8_x00191F48[] __asm__("D_004674D8");
 void func_00191F48_x00191F48(SfdTimeCode_x00191F48 *src, SfdTimeCode_x00191F48 *dst) __asm__("func_00191F48");
@@ -28680,6 +28704,8 @@ extern int m061010;
 extern int b3m06101_000000;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int m900850;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m013830;
 s32 func_0017EE78_x00193520() __asm__("func_0017EE78");
 s32 func_001957B8_x00193520() __asm__("func_001957B8");
 extern s32 D_00467730_x00193520 __asm__("D_00467730");
@@ -28751,6 +28777,8 @@ extern int b3m93601_000000;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3m06102_000000;
 extern int b3m06102_000001;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m013840;
 typedef struct SfdSj_x001936B0 SfdSj_x001936B0;
 typedef struct SfdSjChunk_x001936B0 {
     char *data;
