@@ -365,7 +365,26 @@ s32 func_00188418(void) {
     func_001563B0();
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188440);
+s32 ADXT_GetNumSmpl_x00188440(s32) __asm__("ADXT_GetNumSmpl");
+s32 ADXT_GetSfreq_x00188440(s32) __asm__("ADXT_GetSfreq");
+void func_0018B970_x00188440(u8 *, s32, s32) __asm__("func_0018B970");
+void func_00188440_x00188440(u8 *a0) __asm__("func_00188440");
+void func_00188440_x00188440(u8 *a0)
+{
+    u8 *q = a0 + 0xCC0;
+    s32 h = **(s32 **)(a0 + 0x1CB4);
+    s32 n;
+    s32 fr;
+    if (*(s32 *)(q + 0x1E8) != *(s32 *)(q + 0x1EC)) {
+        return;
+    }
+    n = ADXT_GetNumSmpl_x00188440(h);
+    fr = ADXT_GetSfreq_x00188440(h);
+    if (n <= 0 || fr <= 0) {
+        return;
+    }
+    func_0018B970_x00188440(a0, n, fr);
+}
 void func_001884D0(void) {
     func_001884E8();
 }
@@ -2875,7 +2894,30 @@ void func_001890A0_x001890A0(u8 *arg0, s32 arg1) __asm__("func_001890A0");
 void func_001890A0_x001890A0(u8 *arg0, s32 arg1) {
     func_0018B750_x001890A0(arg0, *(s32 *)((u8 *)arg0 + 0x1CC0), arg1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001890C0);
+s32 *func_00189BC0_x001890C0(u8 *) __asm__("func_00189BC0");
+s32 func_00189178_x001890C0(s32) __asm__("func_00189178");
+s32 ADXT_GetSfreq_x001890C0(s32) __asm__("ADXT_GetSfreq");
+s32 ADXT_GetNumSmpl_x001890C0(s32) __asm__("ADXT_GetNumSmpl");
+s32 ADXT_GetNumChan_x001890C0(s32) __asm__("ADXT_GetNumChan");
+void func_001890C0_x001890C0(u8 *a0) __asm__("func_001890C0");
+void func_001890C0_x001890C0(u8 *a0)
+{
+    s32 *s = func_00189BC0_x001890C0(a0);
+    s32 h;
+    if (s == 0 || s[0] != 0) {
+        return;
+    }
+    h = **(s32 **)(a0 + 0x1CB4);
+    if (func_00189178_x001890C0(h) == 0) {
+        return;
+    }
+    s[4] = ADXT_GetSfreq_x001890C0(h);
+    s[5] = ADXT_GetNumSmpl_x001890C0(h);
+    s[3] = ADXT_GetNumChan_x001890C0(h);
+    s[1] = s[4] * s[3] * 9 / 16;
+    s[2] = 1;
+    s[0] = 1;
+}
 extern int GuardedCall_00329FD0_329F98_x00189178(void *hn) __asm__("ADXT_GetStat");
 int func_00189178_x00189178(void *hn) __asm__("func_00189178");
 /* sfadxt_IsEndDecinfo: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00349d38.c, MIT); ee-gcc 2.96 -O2 -G0 */
@@ -4610,7 +4652,38 @@ void func_0018A5D8_x0018A5D8(SfdBufEnt_x0018A5D8 *ents, char **areas, int *sizes
     body->wtot = 0;
     body->rtot = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A678);
+typedef struct { s32 base; s32 size; s32 x; s32 bits; s32 n; s32 f14; s32 f18; s32 f1C; } SfdEl_x0018A678_x0018A678;
+void func_0018A678_x0018A678(s32 a0, s32 a1, s32 bits, s32 n, s32 x) __asm__("func_0018A678");
+void func_0018A678_x0018A678(s32 a0, s32 a1, s32 bits, s32 n, s32 x)
+{
+  SfdEl_x0018A678_x0018A678 *e = (SfdEl_x0018A678_x0018A678 *) ((a0 + (a1 * 0x74)) + 0x1290);
+  s32 bytes;
+  int new_var;
+  s32 v = e->size;
+  s32 new_var2;
+  int new_var3;
+  s32 new_var4;
+  s32 base = e->base;
+  if (n >= 2)
+  {
+    v = v / n;
+  }
+  bytes = (bits + 7) / 8;
+  new_var4 = bytes;
+  e->bits = bits;
+  e->n = n;
+  new_var3 = base + v;
+  e->x = x;
+  new_var = new_var3;
+  new_var2 = base;
+  e->f14 = new_var2;
+  e->f18 = new_var;
+  e->f1C = v / new_var4;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3c0018A678_0;
+extern int b3c0018A678_1;
+extern int b3cse_pad32_0018A678_0_xxxx;
 s32 func_0018A750_x0018A700(s32, s32, s32) __asm__("func_0018A750");
 s32 func_0018A770_x0018A700(s32) __asm__("func_0018A770");
 void func_0018A700_x0018A700(s32 arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("func_0018A700");
@@ -22191,7 +22264,30 @@ void func_0018F208(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F210);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F2C8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F390);
+void func_0018F390_x0018F390(s32 *a0) __asm__("func_0018F390");
+void func_0018F390_x0018F390(s32 *a0)
+{
+    s32 i;
+    s32 *p;
+    a0[0] = 0;
+    a0[1] = 0;
+    a0[2] = 0;
+    a0[3] = 0x7FFFFFFF;
+    a0[4] = 0x7FFFFFFF;
+    a0[5] = 0;
+    a0[6] = 0x7FFFFFFF;
+    a0[7] = 0x7FFFFFFF;
+    a0[8] = -1;
+    a0[9] = -1;
+    a0[10] = -1;
+    a0[11] = -1;
+    a0[12] = 0;
+    for (i = 0x43, p = &a0[0x140 / 4]; i >= 0; i--) {
+        *p-- = 0;
+    }
+    a0[0x144 / 4] = 0;
+    a0[0x148 / 4] = 0;
+}
 s32 func_0018D650_x0018F400() __asm__("func_0018D650");
 void func_0018F400_x0018F400(void) __asm__("func_0018F400");
 void func_0018F400_x0018F400(void) {
@@ -26811,7 +26907,26 @@ s32 func_00192708_x00192708(u8 *arg0, s32 arg1)
   return var_v0;
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00192800);
+s32 func_00192800_x00192800(u8 *a0, s32 x) __asm__("func_00192800");
+s32 func_00192800_x00192800(u8 *a0, s32 x)
+{
+    s32 m = *(s32 *)(*(u8 **)(a0 + 0x1C70) + 0x74);
+    s32 r = 0;
+
+    switch ((u32)m) {
+    case 4:
+        break;
+    case 2:
+        if (x == 2 || x == 3) {
+            r = 1;
+        }
+        break;
+    case 3:
+        r = (x == m);
+        break;
+    }
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00192860);
 s32 func_00172A40_x00192968(s32, s32, s32, s32) __asm__("func_00172A40");
 s32 func_00192968_x00192968(u8 *p) __asm__("func_00192968");

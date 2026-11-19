@@ -1016,7 +1016,28 @@ void func_001732A8_x001732A8(void)
   }
   while ((*(new_var = &var_v0)) >= 0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001732D8);
+void *memset_x001732D8(void *, int, unsigned int) __asm__("memset");
+void func_001732D8_x001732D8(u8 *a0) __asm__("func_001732D8");
+void func_001732D8_x001732D8(u8 *a0)
+{
+    u8 *p = a0 + 0x158;
+    memset_x001732D8(p, 0, 0x570);
+    *(s32 *)(p + 0x70) = 0;
+    *(s32 *)(p + 0xD4) = 1;
+    *(s32 *)(p + 0x564) = 0;
+    *(s32 *)(p + 0x74) = 0xff;
+    *(s32 *)(p + 0x78) = 0xff;
+    *(s32 *)(p + 0x4C8) = 0;
+    *(s32 *)(p + 0x4CC) = 0;
+    *(s32 *)(p + 0x4D0) = 0;
+    *(s32 *)(p + 0x4D4) = 0;
+    *(s32 *)(p + 0x4D8) = 0;
+    *(s32 *)(p + 0x4DC) = 0;
+    *(s32 *)(p + 0x4E4) = 0;
+    *(s32 *)(p + 0x424) = 0;
+    *(s32 *)(p + 0xD0) = 0;
+    *(s32 *)(p + 0x7C) = 0xff;
+}
 struct SfdSj_x00173350;
 typedef struct M2vErrInf_x00173350 {
     int (*func)(void *obj);
@@ -3562,7 +3583,29 @@ int func_0017AE98_x0017AE98(int a, int b)
     func_00368AA0_x0017AE98();
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017AF10);
+typedef struct { s32 f0; u8 pad[0xD0]; } MpvE_x0017AF10_x0017AF10;
+typedef struct { s32 pad[3]; s32 n; MpvE_x0017AF10_x0017AF10 e[1]; } MpvT_x0017AF10_x0017AF10;
+extern MpvT_x0017AF10_x0017AF10 *D_00424C38_x0017AF10 __asm__("D_00424C38");
+void func_00179018_x0017AF10(void *, s32, s32) __asm__("func_00179018");
+void func_0017B020_x0017AF10(MpvT_x0017AF10_x0017AF10 *) __asm__("func_0017B020");
+s32 func_0017AF10_x0017AF10(s32 n, MpvT_x0017AF10_x0017AF10 *buf) __asm__("func_0017AF10");
+s32 func_0017AF10_x0017AF10(s32 n, MpvT_x0017AF10_x0017AF10 *buf)
+{
+  MpvT_x0017AF10_x0017AF10 *t;
+  MpvE_x0017AF10_x0017AF10 (*new_var)[1];
+  s32 i;
+  D_00424C38_x0017AF10 = buf;
+  func_00179018_x0017AF10(buf, 0, (n * 0x35) + 4);
+  func_0017B020_x0017AF10(D_00424C38_x0017AF10);
+  (*D_00424C38_x0017AF10).n = n;
+  new_var = &D_00424C38_x0017AF10->e;
+  for (i = 0; i < n; i++)
+  {
+    (*((*new_var) + i)).f0 = 1;
+  }
+
+  return 0;
+}
 s32 func_001790E8_x0017AFA8() __asm__("func_001790E8");
 s32 func_0017AC30_x0017AFA8() __asm__("func_0017AC30");
 s32 func_0017B3D0_x0017AFA8(s32 *) __asm__("func_0017B3D0");

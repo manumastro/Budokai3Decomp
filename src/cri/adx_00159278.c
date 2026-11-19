@@ -5230,7 +5230,25 @@ ADXSJE_x0015BE68 func_0015BE68_x0015BE68(Sint32_x0015BE68 nch, SJ_x0015BE68 *sji
         sje->used = 1;
         return sje;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C038);
+void func_00152508_x0015C038(void) __asm__("func_00152508");
+void func_00152520_x0015C038(void) __asm__("func_00152520");
+void func_0015A940_x0015C038(s32) __asm__("func_0015A940");
+void func_0015C038_x0015C038(s32 *o) __asm__("func_0015C038");
+void func_0015C038_x0015C038(s32 *o)
+{
+    if (o == 0) {
+        return;
+    }
+    func_00152508_x0015C038();
+    if (o[0x80 / 4] != 0) {
+        func_0015A940_x0015C038(o[0x80 / 4]);
+    }
+    if (o[0x84 / 4] != 0) {
+        func_0015A940_x0015C038(o[0x84 / 4]);
+    }
+    o[0] = 0;
+    func_00152520_x0015C038();
+}
 s8 func_0015C0A0(u8 *arg0) {
     return *(s8 *)((u8 *)arg0 + 1);
 }

@@ -877,11 +877,40 @@ void func_001696B0(s32 arg0) {
     }
     D_00413D10 = 0x8001;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001696E0);
+typedef struct { char c[2]; } HtStr2_x001696E0;
+extern char D_00413D18_x001696E0[] __asm__("D_00413D18");
+extern HtStr2_x001696E0 D_00463BB0_x001696E0 __asm__("D_00463BB0");
+char *func_00127A88_x001696E0(char *, char *) __asm__("func_00127A88");
+void func_001696E0_x001696E0(char *s) __asm__("func_001696E0");
+void func_001696E0_x001696E0(char *s)
+{
+    if (s == 0) {
+        D_00413D18_x001696E0[0] = 0;
+        return;
+    }
+    if (s[0] != '/' && s[0] != 0x5C) {
+        *(HtStr2_x001696E0 *)D_00413D18_x001696E0 = D_00463BB0_x001696E0;
+    } else {
+        D_00413D18_x001696E0[0] = 0;
+    }
+    func_00127A88_x001696E0(D_00413D18_x001696E0, s);
+}
 s32 *func_00169760(void) {
     return &D_00413D18;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00169770);
+typedef struct { char c[6]; } Str6_x00169770;
+extern char D_00413E20_x00169770[] __asm__("D_00413E20");
+extern Str6_x00169770 D_00463D60_x00169770 __asm__("D_00463D60");
+char *func_00127A88_x00169770(char *, const char *) __asm__("func_00127A88");
+void func_00169770_x00169770(const char *s) __asm__("func_00169770");
+void func_00169770_x00169770(const char *s)
+{
+    if (s == 0) {
+        *(Str6_x00169770 *)D_00413E20_x00169770 = D_00463D60_x00169770;
+        return;
+    }
+    func_00127A88_x00169770(D_00413E20_x00169770, s);
+}
 s32 *func_001697D8(void) {
     return &D_00413E20;
 }
