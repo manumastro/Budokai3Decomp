@@ -205,7 +205,7 @@ def isolate(item, pad=0):
 
 
 _KNOWN = None
-PADS = int(os.environ.get("B3_PADS", "6"))  # apply(): renaming-suffix lengths tried
+PADS = int(os.environ.get("B3_PADS", "32"))  # apply(): renaming-suffix lengths tried
 _CACHE = {}
 
 
