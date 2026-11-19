@@ -14,6 +14,7 @@ Exit status 0 only on MATCH (same words, same size, no data defined, every outsi
 """
 import argparse
 import json
+import os
 import re
 import shutil
 import struct
@@ -112,17 +113,33 @@ def split_snippet(text, name):
     return decls, func[:end] + "\n"
 
 
-def compile_one(src, rel, keep):
+def compile_one(src, rel, keep, build_mode=False):
+    """Compiles src (a copy of the file rel) as the build does: the source and the -I folders named relative to the
+    checkout (ee-gcc 2.96's CSE depends on the length of those strings, see gccmatch.compile_matrix), gcc_rebind.py
+    on the output; with build_mode the INCLUDE_ASM blocks are compiled in too (they can change gcc's code)."""
     version, flags = configure.gcc_group(rel)
     inc = ["include", "src", *configure.gcc_extra_includes(rel).replace("-I", "").split()]
     work = ROOT / keep
     shutil.rmtree(work, ignore_errors=True)
     work.mkdir(parents=True)
     asm = work / "out.s"
-    args = [*flags.split(), *[f"-I{ROOT / d}" for d in inc], "-DNO_INCLUDE_ASM", "-S", str(src), "-o", str(asm)]
+    try:
+        src_arg = Path(src).resolve().relative_to(ROOT.resolve()).as_posix()
+    except ValueError:
+        src_arg = str(src)
+    args = [*flags.split(), *[f"-I{G._rel(d)}" for d in inc], *([] if build_mode else ["-DNO_INCLUDE_ASM"]),
+            "-S", src_arg, "-o", str(asm)]
     rc, out = eegcc.run(version, args, cwd=ROOT)
     if rc != 0 or not asm.exists():
         return None, out, work
+    t = asm.read_text(errors="replace")
+    if "rebind" in t or ".b3stub" in t:
+        import gcc_rebind
+        import os
+        t2 = gcc_rebind.rebind(t, [f"-I{ROOT / d}" for d in inc], log=open(os.devnull, "w"))
+        if t2 != t:
+            asm = work / "out_rb.s"  # ee-gcc's container owns its output file
+            asm.write_text(t2)
     obj = asm.with_suffix(".o")
     err = G.assemble(asm, obj, version, "gas", inc)
     if err:
@@ -149,6 +166,20 @@ def try_snippet(name, snippet_text, quiet=False):
     tmp = ROOT / tmp_rel
     base_secs = {}
     if kind == "c":
+        # the copy gets a path as long as the build's src/<seg>.c (the code can depend on that length): a folder
+        # of three characters, claimed with O_EXCL so that concurrent checks of one file never share it
+        import hashlib
+        import os
+        h0 = int(hashlib.md5(name.encode()).hexdigest()[:2], 16)
+        for k in range(256):
+            cand = ROOT / f"x{(h0 + k) % 256:02x}" / f"{seg}.c"
+            cand.parent.mkdir(parents=True, exist_ok=True)
+            try:
+                os.close(os.open(cand, os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+            except FileExistsError:
+                continue
+            tmp, tmp_rel = cand, f"src/{seg}.c"
+            break
         orig = (ROOT / "src" / f"{seg}.c").read_text()
         pat = re.compile(r'^INCLUDE_ASM\("[^"]+", ' + re.escape(name) + r'\);[ \t]*$', re.M)
         body = pat.sub(lambda _: text, orig, count=1)  # a function replacement is taken literally
@@ -174,7 +205,7 @@ def try_snippet(name, snippet_text, quiet=False):
         body = '#include "common.h"\n\n' + text
     tmp.write_text(body)
     try:
-        obj, err, work = compile_one(tmp, tmp_rel, f"build/lh/w_{name}")
+        obj, err, work = compile_one(tmp, tmp_rel, f"build/lh/w_{name}", build_mode=(kind == "c" and not os.environ.get("LIB_TRY_NO_BUILD_MODE")))
     finally:
         tmp.unlink(missing_ok=True)
     if obj is None:

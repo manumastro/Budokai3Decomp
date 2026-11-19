@@ -16,3 +16,4 @@
 /.venv/
 __pycache__/
 /objdiff.json
+/x[0-9a-f][0-9a-f]/
