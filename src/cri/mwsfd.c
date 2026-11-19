@@ -5433,7 +5433,37 @@ INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181A20);
 void func_00181B28(void) {
     func_00181F20();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181B40);
+s32 func_0019E948_x00181B40(void *, s32, s32 *) __asm__("func_0019E948");
+s32 func_00181B40_x00181B40(void *hn) __asm__("func_00181B40");
+s32 func_00181B40_x00181B40(void *hn)
+{
+    s32 v;
+    s32 r;
+
+    if (func_0019E948_x00181B40(hn, 0xE0, &v) == 0) {
+        return 0x11;
+    }
+    switch (v) {
+    case 1:
+        r = 0x21;
+        break;
+    case 3:
+        r = 0x41;
+        break;
+    case 0:
+    case 2:
+    case 4:
+    case 5:
+    default:
+        r = 0x11;
+        break;
+    }
+    return r;
+}
+__asm__("# rebind func_00181B40 0x00181B40");
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3p16_0606d0_0_x __asm__("b3a0606d0_0");
+extern int b3p32_0606d0_0_x __asm__("b3cse_asmpad_0606d0_0_xx");
 typedef struct SfdSj_x00181BB0 SfdSj_x00181BB0;
 typedef struct SfdSjChunk_x00181BB0 {
     char *data;

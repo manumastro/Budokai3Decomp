@@ -90,7 +90,56 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfx", sfxcnv_IsCnvUpHalf);
 void func_0019EE88(void) {
     sfxcnv_MakeTable();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", sfxcnv_MakeTable);
+extern s32 D_00467AB0_x0019EEA0[] __asm__("D_00467AB0");
+s32 func_0019F018_x0019EEA0(u8 *, s32) __asm__("func_0019F018");
+void func_0019F0D0_x0019EEA0(u8 *, s32) __asm__("func_0019F0D0");
+void func_0019F0F0_x0019EEA0(u8 *, s32) __asm__("func_0019F0F0");
+void func_0019F110_x0019EEA0(u8 *, s32) __asm__("func_0019F110");
+void func_0019F1E0_x0019EEA0(u8 *, s32) __asm__("func_0019F1E0");
+void func_0019F200_x0019EEA0(u8 *, s32) __asm__("func_0019F200");
+void func_0019F220_x0019EEA0(u8 *, s32) __asm__("func_0019F220");
+void func_0019F238_x0019EEA0(u8 *, s32) __asm__("func_0019F238");
+void func_0019F6D0_x0019EEA0(u8 *, s32, s32 *) __asm__("func_0019F6D0");
+void sfxcnv_MakeTable_x0019EEA0(u8 *cnv, s32 tbl, s32 type) __asm__("sfxcnv_MakeTable");
+void sfxcnv_MakeTable_x0019EEA0(u8 *cnv, s32 tbl, s32 type)
+{
+    if (func_0019F018_x0019EEA0(cnv, type) != 1) {
+        return;
+    }
+    *(s32 *)(cnv + 0x38) = type;
+    switch (type) {
+    case 11:
+        func_0019F0D0_x0019EEA0(cnv, tbl);
+        return;
+    case 13:
+        func_0019F0F0_x0019EEA0(cnv, tbl);
+        return;
+    case 2:
+        func_0019F1E0_x0019EEA0(cnv, tbl);
+        return;
+    case 3:
+        func_0019F200_x0019EEA0(cnv, tbl);
+        return;
+    case 21:
+        func_0019F220_x0019EEA0(cnv, tbl);
+        return;
+    case 22:
+        func_0019F238_x0019EEA0(cnv, tbl);
+        return;
+    case 1:
+        func_0019F110_x0019EEA0(cnv, tbl);
+        return;
+    case 0:
+    case 4:
+    case 10:
+    case 12:
+    case 100:
+    default:
+        func_0019F6D0_x0019EEA0(cnv, tbl, D_00467AB0_x0019EEA0);
+        return;
+    }
+}
+__asm__("# rebind sfxcnv_MakeTable 0x0019EEA0");
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F018);
 void func_0019F0D0(u8 *arg0, u8 *arg1) {
     func_001A02E0(*(s32 *)((u8 *)arg0 + 0x24), *(s32 *)((u8 *)arg1 + 0x4C), *(s32 *)((u8 *)arg0 + 0x3C));
@@ -1615,4 +1664,12 @@ void func_001A1970_x001A1970(u8 *arg0)
  do { } while (0);
   *((s64 *) (((u8 *) arg0) + new_var3)) = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1990);
+typedef struct { long long current; long long max; long long min; int count; } SftmrTsum_x001A1990;
+void func_001A1990_x001A1990(SftmrTsum_x001A1990 *tsum, long long delta) __asm__("func_001A1990");
+void func_001A1990_x001A1990(SftmrTsum_x001A1990 *tsum, long long delta)
+{
+    tsum->current += delta;
+    tsum->max = (delta < tsum->max) ? delta : tsum->max;
+    tsum->min = (delta > tsum->min) ? delta : tsum->min;
+    tsum->count++;
+}

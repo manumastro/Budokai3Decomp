@@ -2308,8 +2308,108 @@ void func_00174758_x00174758(M2vObj_x00174758 *ctx, void *src, int len)
     memcpy_x00174758(dst, src, n);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00174798);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001777F0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00177D48);
+typedef struct { char p0[0x18]; int marker_bit; char p1C[0x9C]; int group_start_code; int drop_frame_flag; int time_code_hours; int time_code_minutes; int time_code_seconds; int time_code_pictures; int closed_gop; int broken_link; int picture_start_code; int temporal_reference; int picture_coding_type; int vbv_delay; int full_pel_forward_vector; int forward_f_code; int full_pel_backward_vector; int backward_f_code; int extra_bit_picture; int extra_information_picture; char p100[0x228]; int ext_state; int expected_ext_id; char p330[0x1AC]; int header_level; char p4E0[0x18]; int gsc_count; int psc_count; int picture_count[4]; char p510[0x40]; int error_count; } Ext_77F0_x001777F0;
+char *func_001777F0_x001777F0(char *ctx, char *buf) __asm__("func_001777F0");
+char *func_001777F0_x001777F0(char *ctx, char *buf)
+{
+    Ext_77F0_x001777F0 *h = (Ext_77F0_x001777F0 *)(ctx + 0x158);
+    char *p;
+    int cnt;
+    unsigned int acc, nxt;
+
+    h->header_level = 2;
+    h->gsc_count++;
+    if ((h->ext_state != 0 && h->ext_state != 8) || h->expected_ext_id != 0) {
+        h->error_count++;
+    }
+    p = (char *)((unsigned int)buf & ~3);
+    cnt = (buf - p) << 3;
+    { (acc) = *p++; (acc) <<= 8; (acc) |= *p++ & 255; (acc) <<= 8; (acc) |= *p++ & 255; (acc) <<= 8; (acc) |= *p++ & 255; }
+    { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; }
+    acc <<= cnt;
+    if (cnt != 0) {
+        h->group_start_code = acc | (nxt >> (32 - cnt));
+        acc = nxt << cnt;
+    } else {
+        h->group_start_code = acc;
+        acc = nxt;
+    }
+    { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; }
+    { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->drop_frame_flag) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->drop_frame_flag) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->drop_frame_flag) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+    { if (cnt >= 32 - (5)) { cnt -= 32 - (5); if (cnt != 0) { acc |= nxt >> ((5) - cnt); (h->time_code_hours) = acc >> (32 - (5)); acc = nxt << cnt; } else { (h->time_code_hours) = acc >> (32 - (5)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->time_code_hours) = acc >> (32 - (5)); acc <<= (5); cnt += (5); } }
+    { if (cnt >= 32 - (6)) { cnt -= 32 - (6); if (cnt != 0) { acc |= nxt >> ((6) - cnt); (h->time_code_minutes) = acc >> (32 - (6)); acc = nxt << cnt; } else { (h->time_code_minutes) = acc >> (32 - (6)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->time_code_minutes) = acc >> (32 - (6)); acc <<= (6); cnt += (6); } }
+    { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->marker_bit) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->marker_bit) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->marker_bit) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+    { if (cnt >= 32 - (6)) { cnt -= 32 - (6); if (cnt != 0) { acc |= nxt >> ((6) - cnt); (h->time_code_seconds) = acc >> (32 - (6)); acc = nxt << cnt; } else { (h->time_code_seconds) = acc >> (32 - (6)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->time_code_seconds) = acc >> (32 - (6)); acc <<= (6); cnt += (6); } }
+    { if (cnt >= 32 - (6)) { cnt -= 32 - (6); if (cnt != 0) { acc |= nxt >> ((6) - cnt); (h->time_code_pictures) = acc >> (32 - (6)); acc = nxt << cnt; } else { (h->time_code_pictures) = acc >> (32 - (6)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->time_code_pictures) = acc >> (32 - (6)); acc <<= (6); cnt += (6); } }
+    { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->closed_gop) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->closed_gop) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->closed_gop) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+    { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->broken_link) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->broken_link) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->broken_link) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+    return buf + ((cnt + (p - buf) * 8 - 57) / 8);
+}
+typedef struct { char p0[0x18]; int marker_bit_hdr; char p1C[0x9C]; int group_start_code; int drop_frame_flag; int time_code_hours; int time_code_minutes; int time_code_seconds; int time_code_pictures; int closed_gop; int broken_link; int picture_start_code; int temporal_reference; int picture_coding_type; int vbv_delay; int full_pel_forward_vector; int forward_f_code; int full_pel_backward_vector; int backward_f_code; int extra_bit_picture; int extra_information_picture; char p100[0x228]; int ext_state; int expected_ext_id; char p330[0x1AC]; int header_level; char p4E0[0x18]; int gsc_count; int psc_count; int picture_count[4]; char p510[0x40]; int error_count; } Ext_7D48_x00177D48;
+char *func_00177D48_x00177D48(char *ctx, char *buf) __asm__("func_00177D48");
+char *func_00177D48_x00177D48(char *ctx, char *buf)
+{
+    Ext_7D48_x00177D48 *h = (Ext_7D48_x00177D48 *)(ctx + 0x158);
+    char *p;
+    int cnt;
+    unsigned int acc, nxt;
+
+    h->header_level = 3;
+    h->psc_count++;
+    if ((h->ext_state != 0 && h->ext_state != 4) || h->expected_ext_id != 0) {
+        h->error_count++;
+    }
+    p = (char *)((unsigned int)buf & ~3);
+    cnt = (buf - p) << 3;
+    { (acc) = *p++; (acc) <<= 8; (acc) |= *p++ & 255; (acc) <<= 8; (acc) |= *p++ & 255; (acc) <<= 8; (acc) |= *p++ & 255; }
+    { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; }
+    acc <<= cnt;
+    if (cnt != 0) {
+        h->picture_start_code = acc | (nxt >> (32 - cnt));
+        acc = nxt << cnt;
+    } else {
+        h->picture_start_code = acc;
+        acc = nxt;
+    }
+    { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; }
+    { if (cnt >= 32 - (10)) { cnt -= 32 - (10); if (cnt != 0) { acc |= nxt >> ((10) - cnt); (h->temporal_reference) = acc >> (32 - (10)); acc = nxt << cnt; } else { (h->temporal_reference) = acc >> (32 - (10)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->temporal_reference) = acc >> (32 - (10)); acc <<= (10); cnt += (10); } }
+    { if (cnt >= 32 - (3)) { cnt -= 32 - (3); if (cnt != 0) { acc |= nxt >> ((3) - cnt); (h->picture_coding_type) = acc >> (32 - (3)); acc = nxt << cnt; } else { (h->picture_coding_type) = acc >> (32 - (3)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->picture_coding_type) = acc >> (32 - (3)); acc <<= (3); cnt += (3); } }
+    { if (cnt >= 32 - (16)) { cnt -= 32 - (16); if (cnt != 0) { acc |= nxt >> ((16) - cnt); (h->vbv_delay) = acc >> (32 - (16)); acc = nxt << cnt; } else { (h->vbv_delay) = acc >> (32 - (16)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->vbv_delay) = acc >> (32 - (16)); acc <<= (16); cnt += (16); } }
+    if (h->picture_coding_type < 1 || h->picture_coding_type > 3) {
+        h->error_count++;
+    }
+    if (h->picture_coding_type == 2 || h->picture_coding_type == 3) {
+        { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->full_pel_forward_vector) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->full_pel_forward_vector) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->full_pel_forward_vector) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+        { if (cnt >= 32 - (3)) { cnt -= 32 - (3); if (cnt != 0) { acc |= nxt >> ((3) - cnt); (h->forward_f_code) = acc >> (32 - (3)); acc = nxt << cnt; } else { (h->forward_f_code) = acc >> (32 - (3)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->forward_f_code) = acc >> (32 - (3)); acc <<= (3); cnt += (3); } }
+        if (h->full_pel_forward_vector != 0) {
+            h->error_count++;
+        }
+        if (h->forward_f_code != 7) {
+            h->error_count++;
+        }
+    }
+    if (h->picture_coding_type == 3) {
+        { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->full_pel_backward_vector) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->full_pel_backward_vector) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->full_pel_backward_vector) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+        { if (cnt >= 32 - (3)) { cnt -= 32 - (3); if (cnt != 0) { acc |= nxt >> ((3) - cnt); (h->backward_f_code) = acc >> (32 - (3)); acc = nxt << cnt; } else { (h->backward_f_code) = acc >> (32 - (3)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->backward_f_code) = acc >> (32 - (3)); acc <<= (3); cnt += (3); } }
+        if (h->full_pel_backward_vector != 0) {
+            h->error_count++;
+        }
+        if (h->backward_f_code != 7) {
+            h->error_count++;
+        }
+    }
+    for (;;) {
+        { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->extra_bit_picture) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->extra_bit_picture) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->extra_bit_picture) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+        if (h->extra_bit_picture == 0) {
+            break;
+        }
+        { if (cnt >= 32 - (8)) { cnt -= 32 - (8); if (cnt != 0) { acc |= nxt >> ((8) - cnt); (h->extra_information_picture) = acc >> (32 - (8)); acc = nxt << cnt; } else { (h->extra_information_picture) = acc >> (32 - (8)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->extra_information_picture) = acc >> (32 - (8)); acc <<= (8); cnt += (8); } }
+    }
+    h->picture_count[h->picture_coding_type]++;
+    h->ext_state = 16;
+    h->expected_ext_id = 8;
+    return buf + ((cnt + (p - buf) * 8 - 57) / 8);
+}
 struct SfdSj_x00178440;
 typedef struct M2vErrInf_x00178440 {
     int (*func)(void *obj);
@@ -3688,9 +3788,165 @@ s32 func_00179310_x00179310(u8 *o, s32 a1, s32 a2, s32 *p3, u32 *p4)
     }
     return r;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179400);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179860);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179EA0);
+typedef struct { int isMpeg1; unsigned int scr; int muxRate; } Pack_9400_x00179400;
+void func_00179400_x00179400(Pack_9400_x00179400 *pack, unsigned char *pos, int *len) __asm__("func_00179400");
+void func_00179400_x00179400(Pack_9400_x00179400 *pack, unsigned char *pos, int *len)
+{
+    unsigned int cur, nxt;
+    int bit;
+    char *rp;
+    unsigned int prefix, scrHi, scrMid, scrLo, muxRate;
+    { (rp) = (char *)((int)(pos + 4) & ~3); (bit) = ((char *)(pos + 4) - (rp)) << 3; { (cur) = *(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; }; (cur) <<= (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) >= 30) { (bit) -= 30; if ((bit) != 0) { (cur) |= (nxt) >> 1; (prefix) = (cur) >> 30; (cur) = (nxt) << 1; } else { (prefix) = (cur) >> 30; (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (prefix) = (cur) >> 30; (cur) <<= 2; (bit) += 2; } };
+    { (bit) += (2); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (2); } };
+    { if ((bit) >= 32 - (3)) { (bit) -= 32 - (3); if ((bit) != 0) { (cur) |= (nxt) >> ((3) - (bit)); (scrHi) = (cur) >> (32 - (3)); (cur) = (nxt) << (bit); } else { (scrHi) = (cur) >> (32 - (3)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (scrHi) = (cur) >> (32 - (3)); (cur) <<= (3); (bit) += (3); } };
+    { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+    { if ((bit) >= 32 - (15)) { (bit) -= 32 - (15); if ((bit) != 0) { (cur) |= (nxt) >> ((15) - (bit)); (scrMid) = (cur) >> (32 - (15)); (cur) = (nxt) << (bit); } else { (scrMid) = (cur) >> (32 - (15)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (scrMid) = (cur) >> (32 - (15)); (cur) <<= (15); (bit) += (15); } };
+    { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+    { if ((bit) >= 32 - (15)) { (bit) -= 32 - (15); if ((bit) != 0) { (cur) |= (nxt) >> ((15) - (bit)); (scrLo) = (cur) >> (32 - (15)); (cur) = (nxt) << (bit); } else { (scrLo) = (cur) >> (32 - (15)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (scrLo) = (cur) >> (32 - (15)); (cur) <<= (15); (bit) += (15); } };
+    { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+    { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+    { if ((bit) >= 32 - (22)) { (bit) -= 32 - (22); if ((bit) != 0) { (cur) |= (nxt) >> ((22) - (bit)); (muxRate) = (cur) >> (32 - (22)); (cur) = (nxt) << (bit); } else { (muxRate) = (cur) >> (32 - (22)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (muxRate) = (cur) >> (32 - (22)); (cur) <<= (22); (bit) += (22); } };
+    pack->isMpeg1 = prefix == 0;
+    pack->scr = (scrHi << 28) | (scrMid << 13) | (scrLo >> 2);
+    pack->muxRate = muxRate;
+    *len = 12;
+}
+typedef struct { int headerLength; int rateBound; int audioBound; int videoBound; int fixedFlag; int cspsFlag; int audioLockFlag; int videoLockFlag; } SysHd_9860_x00179860;
+int func_0017AAF0_x00179860(unsigned char *) __asm__("func_0017AAF0");
+void func_00179860_x00179860(SysHd_9860_x00179860 *sysHd, unsigned char *pos, int *len) __asm__("func_00179860");
+void func_00179860_x00179860(SysHd_9860_x00179860 *sysHd, unsigned char *pos, int *len)
+{
+    unsigned int cur, nxt;
+    int bit;
+    char *rp;
+    unsigned char *end;
+    unsigned char *next;
+    { (rp) = (char *)((int)(pos + 4) & ~3); (bit) = ((char *)(pos + 4) - (rp)) << 3; { (cur) = *(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; }; (cur) <<= (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) >= 32 - (16)) { (bit) -= 32 - (16); if ((bit) != 0) { (cur) |= (nxt) >> ((16) - (bit)); (sysHd->headerLength) = (cur) >> (32 - (16)); (cur) = (nxt) << (bit); } else { (sysHd->headerLength) = (cur) >> (32 - (16)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (sysHd->headerLength) = (cur) >> (32 - (16)); (cur) <<= (16); (bit) += (16); } };
+    { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+    { if ((bit) >= 32 - (22)) { (bit) -= 32 - (22); if ((bit) != 0) { (cur) |= (nxt) >> ((22) - (bit)); (sysHd->rateBound) = (cur) >> (32 - (22)); (cur) = (nxt) << (bit); } else { (sysHd->rateBound) = (cur) >> (32 - (22)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (sysHd->rateBound) = (cur) >> (32 - (22)); (cur) <<= (22); (bit) += (22); } };
+    { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+    { if ((bit) >= 32 - (6)) { (bit) -= 32 - (6); if ((bit) != 0) { (cur) |= (nxt) >> ((6) - (bit)); (sysHd->audioBound) = (cur) >> (32 - (6)); (cur) = (nxt) << (bit); } else { (sysHd->audioBound) = (cur) >> (32 - (6)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (sysHd->audioBound) = (cur) >> (32 - (6)); (cur) <<= (6); (bit) += (6); } };
+    { (sysHd->fixedFlag) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    { (sysHd->cspsFlag) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    { (sysHd->audioLockFlag) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    { (sysHd->videoLockFlag) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+    { if ((bit) >= 32 - (5)) { (bit) -= 32 - (5); if ((bit) != 0) { (cur) |= (nxt) >> ((5) - (bit)); (sysHd->videoBound) = (cur) >> (32 - (5)); (cur) = (nxt) << (bit); } else { (sysHd->videoBound) = (cur) >> (32 - (5)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (sysHd->videoBound) = (cur) >> (32 - (5)); (cur) <<= (5); (bit) += (5); } };
+    { (bit) += (8); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (8); } };
+    while (cur >> 31) {
+        { (bit) += (24); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (24); } };
+    }
+    end = (unsigned char *)rp + ((bit + 7) >> 3);
+    next = end - 8;
+    *len = next - pos;
+    if (func_0017AAF0_x00179860(next) == 0 && func_0017AAF0_x00179860(end - 7) == 0x40000) {
+        *len += 1;
+    }
+}
+typedef struct { int streamId; int streamKind; int streamNo; int packetLength; int stdBufferSize; unsigned int pts; unsigned int dts; int dataSize; } Pes_9EA0_x00179EA0;
+void func_00179EA0_x00179EA0(Pes_9EA0_x00179EA0 *pes, unsigned char *pos, int *len, int pesSw) __asm__("func_00179EA0");
+void func_00179EA0_x00179EA0(Pes_9EA0_x00179EA0 *pes, unsigned char *pos, int *len, int pesSw)
+{
+    unsigned int cur, nxt;
+    int bit;
+    char *rp;
+    unsigned int streamId, bufferBoundScale, bufferSizeBound, tsHi, tsMid, tsLo, peek;
+    int streamKind, streamNo;
+    int headerBase;
+    unsigned char *end;
+    { (rp) = (char *)((int)(pos + 3) & ~3); (bit) = ((char *)(pos + 3) - (rp)) << 3; { (cur) = *(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; }; (cur) <<= (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) >= 32 - (8)) { (bit) -= 32 - (8); if ((bit) != 0) { (cur) |= (nxt) >> ((8) - (bit)); (streamId) = (cur) >> (32 - (8)); (cur) = (nxt) << (bit); } else { (streamId) = (cur) >> (32 - (8)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (streamId) = (cur) >> (32 - (8)); (cur) <<= (8); (bit) += (8); } };
+    pes->streamId = streamId;
+    if (streamId - 0xE0 < 16) {
+        streamKind = 1;
+        streamNo = streamId - 0xE0;
+    } else if (streamId - 0xC0 < 32) {
+        streamKind = 0;
+        streamNo = streamId - 0xC0;
+    } else if (streamId == 0xBD) {
+        streamKind = 2;
+        streamNo = 1;
+    } else if (streamId == 0xBF) {
+        streamKind = 2;
+        streamNo = 2;
+    } else if (streamId == 0xBE) {
+        streamKind = 3;
+        streamNo = 0;
+    } else {
+        streamKind = 4;
+        streamNo = 0;
+    }
+    pes->streamKind = streamKind;
+    pes->streamNo = streamNo;
+    if (pesSw == 2) {
+        { if ((bit) >= 32 - (16)) { (bit) -= 32 - (16); if ((bit) != 0) { (cur) |= (nxt) >> ((16) - (bit)); (pes->packetLength) = (cur) >> (32 - (16)); (cur) = (nxt) << (bit); } else { (pes->packetLength) = (cur) >> (32 - (16)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (pes->packetLength) = (cur) >> (32 - (16)); (cur) <<= (16); (bit) += (16); } };
+        headerBase = 6;
+    } else {
+        { if ((bit) != 0) { (pes->packetLength) = (cur) | ((nxt) >> (32 - (bit))); (cur) = (nxt) << (bit); } else { (pes->packetLength) = (cur); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+        headerBase = 8;
+    }
+    if (streamId - 0xBE < 2) {
+        *len = headerBase;
+        pes->dataSize = pes->packetLength;
+        return;
+    }
+    for (;;) {
+        { (peek) = (cur) >> (32 - (8)); if ((bit) > 32 - (8)) { (peek) |= (nxt) >> (64 - (8) - (bit)); } };
+        if (peek != 0xFF) {
+            break;
+        }
+        { (bit) += (8); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (8); } };
+    }
+    { (peek) = (cur) >> (32 - (2)); if ((bit) > 32 - (2)) { (peek) |= (nxt) >> (64 - (2) - (bit)); } };
+    if (peek == 1) {
+        { (bit) += (2); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (2); } };
+        { (bufferBoundScale) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+        { if ((bit) >= 32 - (13)) { (bit) -= 32 - (13); if ((bit) != 0) { (cur) |= (nxt) >> ((13) - (bit)); (bufferSizeBound) = (cur) >> (32 - (13)); (cur) = (nxt) << (bit); } else { (bufferSizeBound) = (cur) >> (32 - (13)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bufferSizeBound) = (cur) >> (32 - (13)); (cur) <<= (13); (bit) += (13); } };
+        bufferSizeBound <<= 7;
+        if (bufferBoundScale != 0) {
+            bufferSizeBound <<= 3;
+        }
+        pes->stdBufferSize = bufferSizeBound;
+    }
+    { (peek) = (cur) >> (32 - (4)); if ((bit) > 32 - (4)) { (peek) |= (nxt) >> (64 - (4) - (bit)); } };
+    if (peek == 2) {
+        { (bit) += (4); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (4); } };
+        { if ((bit) >= 32 - (3)) { (bit) -= 32 - (3); if ((bit) != 0) { (cur) |= (nxt) >> ((3) - (bit)); (tsHi) = (cur) >> (32 - (3)); (cur) = (nxt) << (bit); } else { (tsHi) = (cur) >> (32 - (3)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (tsHi) = (cur) >> (32 - (3)); (cur) <<= (3); (bit) += (3); } };
+        { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+        { if ((bit) >= 32 - (15)) { (bit) -= 32 - (15); if ((bit) != 0) { (cur) |= (nxt) >> ((15) - (bit)); (tsMid) = (cur) >> (32 - (15)); (cur) = (nxt) << (bit); } else { (tsMid) = (cur) >> (32 - (15)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (tsMid) = (cur) >> (32 - (15)); (cur) <<= (15); (bit) += (15); } };
+        { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+        { if ((bit) >= 32 - (15)) { (bit) -= 32 - (15); if ((bit) != 0) { (cur) |= (nxt) >> ((15) - (bit)); (tsLo) = (cur) >> (32 - (15)); (cur) = (nxt) << (bit); } else { (tsLo) = (cur) >> (32 - (15)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (tsLo) = (cur) >> (32 - (15)); (cur) <<= (15); (bit) += (15); } };
+        { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+        pes->pts = (tsHi << 28) | (tsMid << 13) | (tsLo >> 2);
+        pes->dts = -1;
+    } else if (peek == 3) {
+        { (bit) += (4); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (4); } };
+        { if ((bit) >= 32 - (3)) { (bit) -= 32 - (3); if ((bit) != 0) { (cur) |= (nxt) >> ((3) - (bit)); (tsHi) = (cur) >> (32 - (3)); (cur) = (nxt) << (bit); } else { (tsHi) = (cur) >> (32 - (3)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (tsHi) = (cur) >> (32 - (3)); (cur) <<= (3); (bit) += (3); } };
+        { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+        { if ((bit) >= 32 - (15)) { (bit) -= 32 - (15); if ((bit) != 0) { (cur) |= (nxt) >> ((15) - (bit)); (tsMid) = (cur) >> (32 - (15)); (cur) = (nxt) << (bit); } else { (tsMid) = (cur) >> (32 - (15)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (tsMid) = (cur) >> (32 - (15)); (cur) <<= (15); (bit) += (15); } };
+        { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+        { if ((bit) >= 32 - (15)) { (bit) -= 32 - (15); if ((bit) != 0) { (cur) |= (nxt) >> ((15) - (bit)); (tsLo) = (cur) >> (32 - (15)); (cur) = (nxt) << (bit); } else { (tsLo) = (cur) >> (32 - (15)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (tsLo) = (cur) >> (32 - (15)); (cur) <<= (15); (bit) += (15); } };
+        { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+        pes->pts = (tsHi << 28) | (tsMid << 13) | (tsLo >> 2);
+        { (bit) += (4); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (4); } };
+        { if ((bit) >= 32 - (3)) { (bit) -= 32 - (3); if ((bit) != 0) { (cur) |= (nxt) >> ((3) - (bit)); (tsHi) = (cur) >> (32 - (3)); (cur) = (nxt) << (bit); } else { (tsHi) = (cur) >> (32 - (3)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (tsHi) = (cur) >> (32 - (3)); (cur) <<= (3); (bit) += (3); } };
+        { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+        { if ((bit) >= 32 - (15)) { (bit) -= 32 - (15); if ((bit) != 0) { (cur) |= (nxt) >> ((15) - (bit)); (tsMid) = (cur) >> (32 - (15)); (cur) = (nxt) << (bit); } else { (tsMid) = (cur) >> (32 - (15)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (tsMid) = (cur) >> (32 - (15)); (cur) <<= (15); (bit) += (15); } };
+        { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+        { if ((bit) >= 32 - (15)) { (bit) -= 32 - (15); if ((bit) != 0) { (cur) |= (nxt) >> ((15) - (bit)); (tsLo) = (cur) >> (32 - (15)); (cur) = (nxt) << (bit); } else { (tsLo) = (cur) >> (32 - (15)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (tsLo) = (cur) >> (32 - (15)); (cur) <<= (15); (bit) += (15); } };
+        { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+        pes->dts = (tsHi << 28) | (tsMid << 13) | (tsLo >> 2);
+    } else {
+        { (bit) += (8); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (8); } };
+        pes->pts = -1;
+        pes->dts = -1;
+    }
+    end = (unsigned char *)rp + ((bit + 7) >> 3) - 8;
+    *len = end - pos;
+    pes->dataSize = pes->packetLength + headerBase - *len;
+}
 int func_0017AAF0_x0017AAF0(unsigned char *p) __asm__("func_0017AAF0");
 /* MPS_GetStartCodeKind: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpsdmx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
 int func_0017AAF0_x0017AAF0(unsigned char *p) {
