@@ -692,7 +692,45 @@ void func_0011AB60_x0011AB60(char *dir)
     }
     iSignalSema_x0011AB60(semaid_timerfunc_x0011AB60);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011ABF0);
+typedef struct { unsigned char reserved_00[0x24]; int serve; } McClient_X_x0011ABF0;
+typedef struct { int port; int slot; int flags; int maxent; void *table; char path[1024]; } McPathCommand_X_x0011ABF0;
+extern McClient_X_x0011ABF0 D_00478FC0_x0011ABF0 __asm__("D_00478FC0");
+extern int D_003EF94C_x0011ABF0 __asm__("D_003EF94C");
+extern int D_003EF948_x0011ABF0 __asm__("D_003EF948");
+extern McPathCommand_X_x0011ABF0 D_00479070_x0011ABF0 __asm__("D_00479070");
+extern char D_00479580_x0011ABF0[] __asm__("D_00479580");
+extern int D_0047A580_x0011ABF0[] __asm__("D_0047A580");
+int PollSema_x0011ABF0(int) __asm__("PollSema");
+int SignalSema_x0011ABF0(int) __asm__("SignalSema");
+char *func_00128040_x0011ABF0(char *, const char *, unsigned int) __asm__("func_00128040");
+void sceSifWriteBackDCache_x0011ABF0(void *, int) __asm__("sceSifWriteBackDCache");
+void func_0011AB60_x0011ABF0(void *) __asm__("func_0011AB60");
+int sceSifCallRpc_x0011ABF0(void *, int, int, void *, int, void *, int, void *, void *) __asm__("sceSifCallRpc");
+int func_0011ABF0_x0011ABF0(int port, int slot, char *name, void *arg) __asm__("func_0011ABF0");
+int func_0011ABF0_x0011ABF0(int port, int slot, char *name, void *arg)
+{
+    int result;
+
+    if (D_00478FC0_x0011ABF0.serve == 0) return -0x64;
+    if (PollSema_x0011ABF0(D_003EF94C_x0011ABF0) < 0) return -0xC8;
+    if (name == 0 || *name == 0) {
+        SignalSema_x0011ABF0(D_003EF94C_x0011ABF0);
+        return -0xD2;
+    }
+    D_00479070_x0011ABF0.port = port;
+    D_00479070_x0011ABF0.slot = slot;
+    D_00479070_x0011ABF0.table = D_00479580_x0011ABF0;
+    func_00128040_x0011ABF0(D_00479070_x0011ABF0.path, name, 1023);
+    D_00479070_x0011ABF0.path[1023] = 0;
+    sceSifWriteBackDCache_x0011ABF0(D_00479580_x0011ABF0, 0x400);
+    result = sceSifCallRpc_x0011ABF0(&D_00478FC0_x0011ABF0, 0xC, 1, &D_00479070_x0011ABF0, 0x414, D_0047A580_x0011ABF0, 4, func_0011AB60_x0011ABF0, arg);
+    if (result != 0) {
+        SignalSema_x0011ABF0(D_003EF94C_x0011ABF0);
+        return -0x5B;
+    }
+    D_003EF948_x0011ABF0 = 0xC;
+    return 0;
+}
 typedef struct {
     unsigned char reserved_00[0x24];
     int is_initialized;
@@ -820,7 +858,49 @@ int func_0011AF20_x0011AF20(int file_descriptor) {
     MC_STATUS_x0011AF20 = 0x0A;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011AFE0);
+typedef struct { unsigned char reserved_00[0x24]; int serve; } McClient_X_x0011AFE0;
+typedef struct { char bytes[0x40]; } McTblGetDir_X_x0011AFE0;
+typedef struct { int port; int slot; int flags; int maxent; void *table; char path[1024]; } McPathCommand_X_x0011AFE0;
+extern McClient_X_x0011AFE0 D_00478FC0_x0011AFE0 __asm__("D_00478FC0");
+extern int D_003EF94C_x0011AFE0 __asm__("D_003EF94C");
+extern int D_003EF948_x0011AFE0 __asm__("D_003EF948");
+extern McPathCommand_X_x0011AFE0 D_00479070_x0011AFE0 __asm__("D_00479070");
+extern McTblGetDir_X_x0011AFE0 D_00479000_x0011AFE0 __asm__("D_00479000");
+extern int D_0047A580_x0011AFE0[] __asm__("D_0047A580");
+int PollSema_x0011AFE0(int) __asm__("PollSema");
+int SignalSema_x0011AFE0(int) __asm__("SignalSema");
+char *func_00128040_x0011AFE0(char *, const char *, unsigned int) __asm__("func_00128040");
+void FlushCache_x0011AFE0(int) __asm__("FlushCache");
+void func_00119F30_x0011AFE0(void *) __asm__("func_00119F30");
+int sceSifCallRpc_x0011AFE0(void *, int, int, void *, int, void *, int, void *, void *) __asm__("sceSifCallRpc");
+int func_0011AFE0_x0011AFE0(int port, int slot, char *name, McTblGetDir_X_x0011AFE0 *info, unsigned int flags) __asm__("func_0011AFE0");
+int func_0011AFE0_x0011AFE0(int port, int slot, char *name, McTblGetDir_X_x0011AFE0 *info, unsigned int flags)
+{
+    int result;
+
+    if (D_00478FC0_x0011AFE0.serve == 0) return -0x64;
+    if (PollSema_x0011AFE0(D_003EF94C_x0011AFE0) < 0) return -0xC8;
+    if (name == 0 || *name == 0) {
+        SignalSema_x0011AFE0(D_003EF94C_x0011AFE0);
+        return -0xD2;
+    }
+    D_00479070_x0011AFE0.port = port;
+    D_00479070_x0011AFE0.slot = slot;
+    flags &= 7;
+    D_00479070_x0011AFE0.flags = flags;
+    D_00479000_x0011AFE0 = *info;
+    D_00479070_x0011AFE0.table = &D_00479000_x0011AFE0;
+    func_00128040_x0011AFE0(D_00479070_x0011AFE0.path, name, 1023);
+    D_00479070_x0011AFE0.path[1023] = 0;
+    FlushCache_x0011AFE0(0);
+    result = sceSifCallRpc_x0011AFE0(&D_00478FC0_x0011AFE0, 0xE, 1, &D_00479070_x0011AFE0, 0x414, D_0047A580_x0011AFE0, 4, func_00119F30_x0011AFE0, 0);
+    if (result != 0) {
+        SignalSema_x0011AFE0(D_003EF94C_x0011AFE0);
+        return -0x5B;
+    }
+    D_003EF948_x0011AFE0 = 0xE;
+    return 0;
+}
 typedef struct {
     unsigned char reserved_00[0x24];
     int is_initialized;

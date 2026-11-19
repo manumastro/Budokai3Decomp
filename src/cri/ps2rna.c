@@ -1491,7 +1491,21 @@ void func_0016C730_x0016C730(void *arg0)
         func_004e58a0_x0016C730(0xb, &tmp, 1, 0, 0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C788);
+extern s32 D_0041A0D8_x0016C788 __asm__("D_0041A0D8");
+extern s32 D_0041A0D0_x0016C788 __asm__("D_0041A0D0");
+extern s32 D_0041A104_x0016C788 __asm__("D_0041A104");
+extern s32 D_0041A108_x0016C788 __asm__("D_0041A108");
+s32 func_00165FB8_x0016C788(s32, s32, s32, s32, s32) __asm__("func_00165FB8");
+void func_0016C788_x0016C788(void) __asm__("func_0016C788");
+void func_0016C788_x0016C788(void)
+{
+    if (D_0041A0D8_x0016C788 == 1 && D_0041A0D0_x0016C788 <= 0) {
+        return;
+    }
+    func_00165FB8_x0016C788(0xC, 0, 0, 0, 0);
+    D_0041A104_x0016C788 = 0;
+    D_0041A108_x0016C788 = 0;
+}
 s32 func_00165FB8_x0016C7E8(s32, s32, s32, s32, s32) __asm__("func_00165FB8");
 extern s32 D_0041A0D0_x0016C7E8 __asm__("D_0041A0D0");
 extern s32 D_0041A0D8_x0016C7E8 __asm__("D_0041A0D8");

@@ -473,7 +473,31 @@ int scePadPortClose(int port, int slot)
     padSlot[port][slot].opened = 0;
     return padRpcBuf[3];
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116C18);
+typedef struct PadDmaData_X_x00116C18 { unsigned char data[32]; unsigned int actDirData[2]; unsigned int actAlignData[2]; unsigned char combData[4][4]; unsigned char actData[4][4]; unsigned short modeTable[4]; int frame; int findPadRetries; int length; unsigned char rest[0x80 - 0x64]; } PadDmaData_X_x00116C18;
+typedef struct { PadDmaData_X_x00116C18 *padData; int command; int iopCommand; int dmaId; int open; int reserved[2]; } PadPortState_X_x00116C18;
+extern PadPortState_X_x00116C18 D_00478990_x00116C18[2][4] __asm__("D_00478990");
+int DI_x00116C18(void) __asm__("DI");
+int EI_x00116C18(void) __asm__("EI");
+void iInvalidDCache_x00116C18(void *, void *) __asm__("iInvalidDCache");
+PadDmaData_X_x00116C18 *func_00116C18_x00116C18(int port, int slot, PadDmaData_X_x00116C18 *out) __asm__("func_00116C18");
+PadDmaData_X_x00116C18 *func_00116C18_x00116C18(int port, int slot, PadDmaData_X_x00116C18 *out)
+{
+    PadDmaData_X_x00116C18 *pdata;
+    int intr;
+    int idx;
+
+    intr = DI_x00116C18();
+    pdata = D_00478990_x00116C18[port][slot].padData;
+    iInvalidDCache_x00116C18(pdata, (char *)pdata + 0xFF);
+    idx = pdata[0].frame < pdata[1].frame;
+    if (out) {
+        *out = pdata[idx];
+    }
+    if (intr == 1) {
+        EI_x00116C18();
+    }
+    return &pdata[idx];
+}
 typedef struct { s32 pad0[4]; s32 f10; s32 pad14[2]; } PadSlot_x00116D70;
 void *func_00116C18_x00116D70(s32, s32, s32) __asm__("func_00116C18");
 extern PadSlot_x00116D70 D_00478990_x00116D70[][4] __asm__("D_00478990");
@@ -676,8 +700,60 @@ void func_00117000_x00117000(unsigned int state, char *str)
     else
         str[0] = libpad_empty_str_x00117000[0];
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00117038);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00117150);
+typedef struct { unsigned char data[0x30]; unsigned char actData[4][4]; unsigned char pad40[0x24]; unsigned char modeConfig; unsigned char pad65[5]; unsigned char nrOfActuators; unsigned char pad6B[7]; unsigned char currentTask; unsigned char pad73[0xD]; } PadDmaData_X_x00117038;
+typedef struct { void *padData; int command; int iopCommand; int dmaId; int open; int reserved[2]; } PadPortState_X_x00117038;
+extern PadPortState_X_x00117038 D_00478990_x00117038[2][4] __asm__("D_00478990");
+PadDmaData_X_x00117038 *func_00116C18_x00117038(int, int, PadDmaData_X_x00117038 *) __asm__("func_00116C18");
+int func_00117038_x00117038(int port, int slot, int actuator, int cmd) __asm__("func_00117038");
+int func_00117038_x00117038(int port, int slot, int actuator, int cmd)
+{
+    PadDmaData_X_x00117038 frame;
+
+    if (D_00478990_x00117038[port][slot].open == 0) return 0;
+    func_00116C18_x00117038(port, slot, &frame);
+    if (frame.currentTask != 1) return 0;
+    if (frame.modeConfig < 2) return 0;
+    if (actuator >= frame.nrOfActuators) return 0;
+    if (actuator == -1) return frame.nrOfActuators;
+    switch (cmd) {
+    case 1:
+        return frame.actData[actuator][0];
+    case 2:
+        return frame.actData[actuator][1];
+    case 3:
+        return frame.actData[actuator][2];
+    case 4:
+        return frame.actData[actuator][3];
+    }
+    return 0;
+}
+typedef struct { unsigned char data[0x40]; unsigned char actData[4][4]; unsigned char pad50[0x14]; unsigned char modeConfig; unsigned char pad65[6]; unsigned char nrOfActuators; unsigned char pad6C[6]; unsigned char currentTask; unsigned char pad73[0xD]; } PadDmaData_X_x00117150;
+typedef struct { void *padData; int command; int iopCommand; int dmaId; int open; int reserved[2]; } PadPortState_X_x00117150;
+extern PadPortState_X_x00117150 D_00478990_x00117150[2][4] __asm__("D_00478990");
+PadDmaData_X_x00117150 *func_00116C18_x00117150(int, int, PadDmaData_X_x00117150 *) __asm__("func_00116C18");
+int func_00117150_x00117150(int port, int slot, int actuator, int cmd) __asm__("func_00117150");
+int func_00117150_x00117150(int port, int slot, int actuator, int cmd)
+{
+    PadDmaData_X_x00117150 frame;
+
+    if (D_00478990_x00117150[port][slot].open == 0) return 0;
+    func_00116C18_x00117150(port, slot, &frame);
+    if (frame.currentTask != 1) return 0;
+    if (frame.modeConfig < 2) return 0;
+    if (actuator == -1) return frame.nrOfActuators;
+    if (actuator >= frame.nrOfActuators) return 0;
+    switch (cmd) {
+    case -1:
+        return frame.actData[actuator][0];
+    case 0:
+        return frame.actData[actuator][1];
+    case 1:
+        return frame.actData[actuator][2];
+    case 2:
+        return frame.actData[actuator][3];
+    }
+    return 0;
+}
 typedef struct PadData_x00117268 {
     unsigned char data[0x50];            
     unsigned short modeTable[4];         

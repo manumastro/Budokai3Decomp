@@ -2920,7 +2920,47 @@ void func_001807F8_x001807F8(u8 *arg0) {
 void func_00180900(s32 arg0) {
     D_00425214 = arg0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180910);
+typedef struct { s32 w[9]; } W9_x00180910;
+typedef struct { s8 b30; s8 b31; u8 pad[0x12]; s32 w44; s32 w48; s32 pad4c; s32 w50; s32 pad54; s8 b58; u8 pad59[3]; s32 w5C; u8 tail[0x10]; } Info_x00180910;
+extern s32 D_00465988_x00180910 __asm__("D_00465988");
+extern s32 D_004659B0_x00180910 __asm__("D_004659B0");
+s32 func_001870E8_x00180910(s32 *) __asm__("func_001870E8");
+void *memset_x00180910(void *, int, unsigned int) __asm__("memset");
+void func_0018BC30_x00180910(s32, s32, Info_x00180910 *) __asm__("func_0018BC30");
+s32 func_00180AB8_x00180910(Info_x00180910 *) __asm__("func_00180AB8");
+void func_00181A20_x00180910(s32, s32, W9_x00180910 *) __asm__("func_00181A20");
+s32 func_00180B08_x00180910(W9_x00180910 *) __asm__("func_00180B08");
+void func_00180910_x00180910(s32 a0, s32 a1, W9_x00180910 *a2) __asm__("func_00180910");
+void func_00180910_x00180910(s32 a0, s32 a1, W9_x00180910 *a2)
+{
+    W9_x00180910 b;
+    Info_x00180910 in;
+
+    if (a0 == 0 || a2 == 0) {
+        func_001870E8_x00180910(&D_00465988_x00180910);
+        return;
+    }
+    if (a1 <= 0) {
+        func_001870E8_x00180910(&D_004659B0_x00180910);
+        return;
+    }
+    memset_x00180910(&b, 0, 0x24);
+    func_0018BC30_x00180910(a0, a1, &in);
+    if (in.b30 == 0 || in.b31 == 0) {
+        *a2 = b;
+        a2->w[0] = 0;
+        return;
+    }
+    b.w[1] = func_00180AB8_x00180910(&in);
+    b.w[2] = in.w44;
+    b.w[3] = in.w48;
+    b.w[4] = in.w50;
+    b.w[5] = in.w5C;
+    b.w[6] = in.b58;
+    func_00181A20_x00180910(a0, a1, &b);
+    b.w[0] = func_00180B08_x00180910(&b);
+    *a2 = b;
+}
 typedef signed char Sint8_x00180AB8;
 typedef signed int Sint32_x00180AB8;
 typedef struct {

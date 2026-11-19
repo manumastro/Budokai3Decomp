@@ -405,7 +405,59 @@ void func_0010DC30_x0010DC30(void *packet, void *q)
         func_003B7898_x0010DC30(0x800, (void *)func_003B2CD0_x0010DC30, p);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", func_0010DD00);
+struct SemaParam_X_x0010DD00 { int currentCount; int maxCount; int initCount; int numWaitThreads; unsigned int attr; unsigned int option; };
+typedef struct { void *paddr; unsigned int pid; int tid; } RecvData_X_x0010DD00;
+typedef struct { int hdr[4]; int pad10; void *pkt_addr; unsigned int rpc_id; RecvData_X_x0010DD00 *recv; unsigned int src; unsigned int dest; int size; } OtherPkt_X_x0010DD00;
+extern int D_004733C0_x0010DD00[] __asm__("D_004733C0");
+extern char D_0045D628_x0010DD00[] __asm__("D_0045D628");
+OtherPkt_X_x0010DD00 *_sceRpcGetPacket_x0010DD00(void *) __asm__("_sceRpcGetPacket");
+void _sceRpcFreePacket_x0010DD00(void *) __asm__("_sceRpcFreePacket");
+int CreateSema_x0010DD00(struct SemaParam_X_x0010DD00 *) __asm__("CreateSema");
+int DeleteSema_x0010DD00(int) __asm__("DeleteSema");
+int WaitSema_x0010DD00(int) __asm__("WaitSema");
+unsigned int sceSifSendCmd_x0010DD00(unsigned int, void *, int, void *, void *, int) __asm__("sceSifSendCmd");
+int func_0010DD00_x0010DD00(RecvData_X_x0010DD00 *rd, void *src, void *dest, int size, unsigned int mode) __asm__("func_0010DD00");
+int func_0010DD00_x0010DD00(RecvData_X_x0010DD00 *rd, void *src, void *dest, int size, unsigned int mode)
+{
+    struct SemaParam_X_x0010DD00 param;
+    OtherPkt_X_x0010DD00 *packet;
+
+    packet = _sceRpcGetPacket_x0010DD00(D_004733C0_x0010DD00);
+    if (packet == 0) {
+        return -1;
+    }
+    rd->paddr = packet;
+    rd->pid = packet->rpc_id;
+    packet->src = (unsigned int)src;
+    packet->dest = (unsigned int)dest;
+    packet->size = size;
+    packet->pkt_addr = packet;
+    packet->recv = rd;
+    if (!(mode & 1)) {
+        param.maxCount = 1;
+        param.option = (unsigned int)D_0045D628_x0010DD00;
+        param.initCount = 0;
+        rd->tid = CreateSema_x0010DD00(&param);
+        if (rd->tid < 0) {
+            _sceRpcFreePacket_x0010DD00(packet);
+            return -3;
+        }
+        if (!sceSifSendCmd_x0010DD00(0x8000000C, packet, 0x40, 0, 0, 0)) {
+            _sceRpcFreePacket_x0010DD00(packet);
+            DeleteSema_x0010DD00(rd->tid);
+            return -2;
+        }
+        WaitSema_x0010DD00(rd->tid);
+        DeleteSema_x0010DD00(rd->tid);
+        return 0;
+    }
+    rd->tid = -1;
+    if (!sceSifSendCmd_x0010DD00(0x8000000C, packet, 0x40, 0, 0, 0)) {
+        _sceRpcFreePacket_x0010DD00(packet);
+        return -2;
+    }
+    return 0;
+}
 
 
 void *_search_svdata(unsigned int sid, SifRpcData *rd)

@@ -12,7 +12,63 @@ s32 func_00108220(u8 *arg0) {
     func_001099A8(*(s32 *)((u8 *)arg0 + 0x40) + 0x68);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001081F8", func_00108248);
+typedef struct { char pad0[0xEC]; unsigned int image_buff; int pad; int image_height; int image_size; char padFC[0x184 - 0xFC]; int ps; } Dec8248_x00108248;
+typedef struct { unsigned int base; int pad4, pad8; int mb_width, mb_height; } Pic8248_x00108248;
+int DI_x00108248(void) __asm__("DI");
+int EI_x00108248(void) __asm__("EI");
+void func_00108248_x00108248(Dec8248_x00108248 *dec, Pic8248_x00108248 *picture) __asm__("func_00108248");
+void func_00108248_x00108248(Dec8248_x00108248 *dec, Pic8248_x00108248 *picture)
+{
+    int fields;
+    unsigned int src = picture->base & 0x0FFFFFFF;
+    unsigned int dst = dec->image_buff & 0x0FFFFFFF;
+    unsigned int out;
+    int srcstep, dststep, qwc;
+    int f, i, intr;
+
+    if (dec->ps == 3 || dec->image_height == 0) {
+        srcstep = picture->mb_height * 384;
+        qwc = srcstep >> 4;
+        if (dec->image_height) {
+            dststep = (dec->image_height >> 4) * 384;
+        } else {
+            dststep = srcstep;
+        }
+        fields = 1;
+    } else {
+        dststep = (dec->image_height >> 4) * 192;
+        srcstep = (picture->mb_height >> 1) * 384;
+        fields = 2;
+        qwc = srcstep >> 4;
+    }
+    for (f = 0; f < fields; f++) {
+        out = dst;
+        for (i = 0; i < picture->mb_width; i++) {
+            intr = DI_x00108248();
+            *(volatile unsigned int *)0x1000D480 = 0;
+            *(volatile unsigned int *)0x1000D410 = src;
+            *(volatile unsigned int *)0x1000D420 = qwc;
+            *(volatile unsigned int *)0x1000D400 = 0x101;
+            if (intr) {
+                EI_x00108248();
+            }
+            while (*(volatile unsigned int *)0x1000D400 & 0x100);
+            intr = DI_x00108248();
+            *(volatile unsigned int *)0x1000D080 = 0;
+            *(volatile unsigned int *)0x1000D010 = out;
+            *(volatile unsigned int *)0x1000D020 = qwc;
+            *(volatile unsigned int *)0x1000D000 = 0x100;
+            if (intr) {
+                EI_x00108248();
+            }
+            while (*(volatile unsigned int *)0x1000D000 & 0x100);
+            while (*(volatile unsigned int *)0x1000D020);
+            out += dststep;
+            src += srcstep;
+        }
+        dst += dec->image_size * 192;
+    }
+}
 extern long long func_0031DE10_x001084D8(long long a, long long b) __asm__("__muldi3");
 extern void func_003B1EE0_x001084D8(char *buf, int size, char *fmt, int a, int b) __asm__("func_0010CE90");
 extern void _sceMpegError_x001084D8(char *c, char *msg) __asm__("func_00109738");
@@ -99,7 +155,60 @@ void func_001084D8_x001084D8(char *c, char *pic, int n)
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001081F8", func_00108798);
+typedef struct { char pad0[0x10]; long pts, dts; unsigned long flags; long pts2nd, dts2nd; unsigned long flags2nd; } Mp8798_x00108798;
+typedef struct { int pad0; int width, height, mb_width, mb_height; char pad14[0x18 - 0x14]; long pts, dts; int decoded, pct, ps, pseq, pframe, tff, rff; int co[6]; int dw, dh; } Pic8798_x00108798;
+typedef struct { char pad0[8]; int seq_state; char padC[0x8C - 0xC]; int has_pts_gap; long pts_gap; int last_pts; int half_field; long field_count; char padA8[0xC0 - 0xA8]; int first_frame_no; int rgb32; int co[6]; int disp_width, disp_height; char padE8[0xF0 - 0xE8]; int image_width, image_height, image_size; char padFC[0x100 - 0xFC]; long ptm; int ptm_state; char pad10C[0x128 - 0x10C]; int frame_no; char pad12C[0x184 - 0x12C]; int ps; char pad188[0x834 - 0x188]; int stopped; char pad838[0x868 - 0x838]; Mp8798_x00108798 *mp; } Dec8798_x00108798;
+extern char D_0045D2F8_x00108798[] __asm__("D_0045D2F8");
+int func_0010CE90_x00108798(char *, int, const char *, ...) __asm__("func_0010CE90");
+void func_00109738_x00108798(Dec8798_x00108798 *, char *) __asm__("func_00109738");
+void func_00108EC8_x00108798(Dec8798_x00108798 *, Pic8798_x00108798 *) __asm__("func_00108EC8");
+void func_00108248_x00108798(Dec8798_x00108798 *, Pic8798_x00108798 *) __asm__("func_00108248");
+static __inline__ void ts8798(Dec8798_x00108798 *dec, Pic8798_x00108798 *picture, long *pts, long *dts, unsigned long *flags) { if (dec->has_pts_gap && picture->pts < 0 && dec->last_pts >= 0) { int count = dec->field_count; int odd = count & 1; int carry = odd & (dec->pts_gap & 1) & (dec->half_field & 1); *pts = dec->last_pts + ((int)((dec->pts_gap * count) >> 1) + carry); if (odd & dec->pts_gap) { dec->half_field++; } } else { *pts = picture->pts; } if (dec->ptm_state == 2 && dec->ptm >= 0) { *pts = dec->ptm; dec->ptm_state = 0; dec->ptm = -1; } *dts = picture->dts; *flags = (long)picture->pseq << 8 | (long)picture->pframe << 7 | (long)picture->tff << 6 | (long)picture->rff << 5 | (long)picture->ps << 3 | picture->pct; };
+static __inline__ int chk8798(Dec8798_x00108798 *dec, Pic8798_x00108798 *picture) { char message[256]; int fits; if (dec->image_height) { fits = dec->image_width >= picture->width && dec->image_height >= picture->height; } else { fits = dec->image_size >= picture->mb_width * picture->mb_height; } if (!fits) { func_0010CE90_x00108798(message, 256, D_0045D2F8_x00108798, picture->width, picture->height); func_00109738_x00108798(dec, message); } return fits; };
+void func_00108798_x00108798(Dec8798_x00108798 *dec, Pic8798_x00108798 *top, Pic8798_x00108798 *bottom) __asm__("func_00108798");
+void func_00108798_x00108798(Dec8798_x00108798 *dec, Pic8798_x00108798 *top, Pic8798_x00108798 *bottom)
+{
+    Pic8798_x00108798 *first;
+    Pic8798_x00108798 *second;
+    int topFirst = 0;
+
+    if (dec->ps == 2) {
+        first = top;
+        second = bottom;
+        topFirst = 64;
+    } else {
+        first = bottom;
+        second = top;
+    }
+    ts8798(dec, first, &dec->mp->pts, &dec->mp->dts, &dec->mp->flags);
+    dec->last_pts = dec->mp->pts;
+    dec->field_count = 1;
+    ts8798(dec, second, &dec->mp->pts2nd, &dec->mp->dts2nd, &dec->mp->flags2nd);
+    dec->last_pts = dec->mp->pts2nd;
+    dec->field_count = 1;
+    dec->disp_width = first->dw;
+    dec->mp->flags |= topFirst;
+    dec->mp->flags2nd |= topFirst;
+    dec->disp_height = first->dh;
+    dec->co[0] = first->co[0];
+    dec->co[1] = second->co[1];
+    dec->co[3] = first->co[3];
+    dec->co[4] = second->co[4];
+    if (chk8798(dec, top) && top->decoded == 1 && bottom->decoded == 1) {
+        top->mb_height *= 2;
+        if (dec->rgb32) {
+            func_00108EC8_x00108798(dec, top);
+        } else {
+            func_00108248_x00108798(dec, top);
+        }
+        top->mb_height >>= 1;
+        if (dec->seq_state != 2) {
+            dec->seq_state = 2;
+            dec->first_frame_no = dec->frame_no;
+        }
+        dec->stopped = 1;
+    }
+}
 typedef struct Ctx_x00108BB8 {
     char pad_00[0x004];
     int  f004;

@@ -5,9 +5,221 @@ extern s32 D_003EC6E0;
 extern s32 D_00475028;
 
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00111C50);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00111E90);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112138);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112330);
+struct SemaParam_X_x00111E90 { int currentCount; int maxCount; int initCount; int numWaitThreads; unsigned int attr; unsigned int option; };
+typedef struct { int sema; int *result; int resultSize; char name[0x400]; unsigned char arg[0x400]; int cmd; unsigned int arglen; void *buf; unsigned int buflen; } FsDevctl_X_x00111E90;
+typedef struct { int f0; int f4; void *f8; int fC; } DevArg_X_x00111E90;
+extern FsDevctl_X_x00111E90 D_00473440_x00111E90 __asm__("D_00473440");
+extern char D_0045D8C8_x00111E90[] __asm__("D_0045D8C8");
+extern int D_003EC6BC_x00111E90 __asm__("D_003EC6BC");
+extern int D_00474B40_x00111E90[] __asm__("D_00474B40");
+extern int D_00474080_x00111E90[] __asm__("D_00474080");
+int _sceFsWaitS_x00111E90(int) __asm__("_sceFsWaitS");
+void func_0010F0E8_x00111E90(void) __asm__("func_0010F0E8");
+int func_0010EFF0_x00111E90(void) __asm__("func_0010EFF0");
+int CreateSema_x00111E90(struct SemaParam_X_x00111E90 *) __asm__("CreateSema");
+int DeleteSema_x00111E90(int) __asm__("DeleteSema");
+int WaitSema_x00111E90(int) __asm__("WaitSema");
+void sceSifWriteBackDCache_x00111E90(void *, int) __asm__("sceSifWriteBackDCache");
+int func_0010EA50_x00111E90(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_00111E90_x00111E90(const char *name, int cmd, const void *arg, unsigned int arglen, void *buf, unsigned int buflen) __asm__("func_00111E90");
+int func_00111E90_x00111E90(const char *name, int cmd, const void *arg, unsigned int arglen, void *buf, unsigned int buflen)
+{
+    FsDevctl_X_x00111E90 *call = &D_00473440_x00111E90;
+    struct SemaParam_X_x00111E90 param;
+    int result;
+    int sema;
+    int sent;
+    int fno;
+    int i;
+
+    _sceFsWaitS_x00111E90(0x17);
+    if (D_003EC6BC_x00111E90 == 0) func_0010F0E8_x00111E90();
+    i = 0;
+    while (i < 0x400) {
+        if ((*(((char *)call + i) + 0xC) = name[i]) == 0) break;
+        i++;
+    }
+    if (i == 0x400) {
+        *((char *)call + 0x40B) = 0;
+    }
+    if (arglen > 0x400 || buflen > 0x400) {
+        goto einval;
+    }
+    if (cmd == 0x4601) {
+        if (((DevArg_X_x00111E90 *)arg)->f4 == 0) {
+            func_0010EFF0_x00111E90();
+            return 0;
+        }
+        if (((DevArg_X_x00111E90 *)arg)->fC == 0) {
+        einval:
+            func_0010EFF0_x00111E90();
+            return -22;
+        }
+    }
+    for (i = 0; i < arglen; i++) {
+        call->arg[i] = ((const unsigned char *)arg)[i];
+    }
+    call->arglen = arglen;
+    call->cmd = cmd;
+    param.maxCount = 1;
+    param.option = (unsigned)D_0045D8C8_x00111E90;
+    param.initCount = 0;
+    sema = CreateSema_x00111E90(&param);
+    call->buflen = buflen;
+    call->result = &result;
+    call->resultSize = 4;
+    call->buf = buf;
+    call->sema = sema;
+    if (cmd == 0x4601) {
+        sceSifWriteBackDCache_x00111E90(((DevArg_X_x00111E90 *)arg)->f8, ((DevArg_X_x00111E90 *)arg)->f4 * ((DevArg_X_x00111E90 *)arg)->fC);
+        fno = 0x1C;
+    } else {
+        fno = 0x17;
+    }
+    sceSifWriteBackDCache_x00111E90(&D_00473440_x00111E90, 0x81C);
+    if (func_0010EA50_x00111E90(D_00474B40_x00111E90, fno, 0, &D_00473440_x00111E90, 0x81C, D_00474080_x00111E90, 4, 0, 0, 0) < 0) {
+        DeleteSema_x00111E90(sema);
+        func_0010EFF0_x00111E90();
+        return -11;
+    }
+    sent = *(int *)((unsigned)D_00474080_x00111E90 | 0x20000000);
+    func_0010EFF0_x00111E90();
+    if (sent == 0) {
+        DeleteSema_x00111E90(sema);
+        return -11;
+    }
+    WaitSema_x00111E90(sema);
+    DeleteSema_x00111E90(sema);
+    return result;
+}
+struct SemaParam_5D8_x00112138 { int currentCount; int maxCount; int initCount; int numWaitThreads; unsigned int attr; unsigned int option; };
+struct FsCall_5D8_x00112138 { int sema; int *result; int result_size; char from[0x400]; char to[0x400]; };
+extern struct FsCall_5D8_x00112138 D_00473440_x00112138 __asm__("D_00473440");
+extern int D_003EC6BC_x00112138 __asm__("D_003EC6BC");
+extern int D_00474B40_x00112138[] __asm__("D_00474B40");
+extern int D_00474080_x00112138[] __asm__("D_00474080");
+extern char D_0045D8E0_x00112138[] __asm__("D_0045D8E0");
+int _sceFsWaitS_x00112138(int) __asm__("_sceFsWaitS");
+void func_0010F0E8_x00112138(void) __asm__("func_0010F0E8");
+int func_0010EFF0_x00112138(void) __asm__("func_0010EFF0");
+int CreateSema_x00112138(struct SemaParam_5D8_x00112138 *) __asm__("CreateSema");
+int DeleteSema_x00112138(int) __asm__("DeleteSema");
+int WaitSema_x00112138(int) __asm__("WaitSema");
+void sceSifWriteBackDCache_x00112138(void *, int) __asm__("sceSifWriteBackDCache");
+int func_0010EA50_x00112138(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_00112138_x00112138(const char *from, const char *to) __asm__("func_00112138");
+int func_00112138_x00112138(const char *from, const char *to)
+{
+    struct FsCall_5D8_x00112138 *call = &D_00473440_x00112138;
+    struct SemaParam_5D8_x00112138 sp;
+    int sema;
+    int result;
+    int status;
+    int i;
+
+    _sceFsWaitS_x00112138(0x11);
+    if (D_003EC6BC_x00112138 == 0) func_0010F0E8_x00112138();
+    i = 0;
+    while (i < 0x400) {
+        if ((*(((char *)call + i) + 0xC) = from[i]) == 0) break;
+        i++;
+    }
+    if (i == 0x400) {
+        *((char *)call + 0x40B) = 0;
+    }
+    for (i = 0; i < 0x400; i++) {
+        if ((call->to[i] = to[i]) == 0) {
+            break;
+        }
+    }
+    if (i == 0x400) {
+        call->to[0x3FF] = 0;
+    }
+    sp.maxCount = 1;
+    sp.option = (unsigned)D_0045D8E0_x00112138;
+    sp.initCount = 0;
+    sema = CreateSema_x00112138(&sp);
+    call->result = &result;
+    call->sema = sema;
+    call->result_size = 4;
+    if (func_0010EA50_x00112138(D_00474B40_x00112138, 0x18, 0, &D_00473440_x00112138, 0x80C, D_00474080_x00112138, 4, 0, 0, 0) < 0) {
+        DeleteSema_x00112138(sema);
+        func_0010EFF0_x00112138();
+        return -11;
+    }
+    status = *(int *)((unsigned)D_00474080_x00112138 | 0x20000000);
+    func_0010EFF0_x00112138();
+    if (status == 0) {
+        DeleteSema_x00112138(sema);
+        return -11;
+    }
+    WaitSema_x00112138(sema);
+    DeleteSema_x00112138(sema);
+    return result;
+}
+struct SemaParam_X_x00112330 { int currentCount; int maxCount; int initCount; int numWaitThreads; unsigned int attr; unsigned int option; };
+typedef struct { int sema; int *result; int resultSize; unsigned int buflen; void *buf; char name[0x400]; } FsReadlink_X_x00112330;
+extern FsReadlink_X_x00112330 D_00473440_x00112330 __asm__("D_00473440");
+extern char D_0045D8F8_x00112330[] __asm__("D_0045D8F8");
+extern int D_003EC6BC_x00112330 __asm__("D_003EC6BC");
+extern int D_00474B40_x00112330[] __asm__("D_00474B40");
+extern int D_00474080_x00112330[] __asm__("D_00474080");
+int _sceFsWaitS_x00112330(int) __asm__("_sceFsWaitS");
+void func_0010F0E8_x00112330(void) __asm__("func_0010F0E8");
+int func_0010EFF0_x00112330(void) __asm__("func_0010EFF0");
+int CreateSema_x00112330(struct SemaParam_X_x00112330 *) __asm__("CreateSema");
+int DeleteSema_x00112330(int) __asm__("DeleteSema");
+int WaitSema_x00112330(int) __asm__("WaitSema");
+void sceSifWriteBackDCache_x00112330(void *, int) __asm__("sceSifWriteBackDCache");
+int func_0010EA50_x00112330(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_00112330_x00112330(const char *name, void *buf, unsigned int buflen) __asm__("func_00112330");
+int func_00112330_x00112330(const char *name, void *buf, unsigned int buflen)
+{
+    FsReadlink_X_x00112330 *call = &D_00473440_x00112330;
+    struct SemaParam_X_x00112330 param;
+    int result;
+    int sema;
+    int sent;
+    int i;
+
+    _sceFsWaitS_x00112330(0x11);
+    if (D_003EC6BC_x00112330 == 0) func_0010F0E8_x00112330();
+    i = 0;
+    while (i < 0x400) {
+        if ((*(((char *)call + i) + 0x14) = name[i]) == 0) break;
+        i++;
+    }
+    if (i == 0x400) {
+        *((char *)call + 0x413) = 0;
+    }
+    if (buflen >= 0x400) {
+        buflen = 0x3FF;
+    }
+    call->buf = buf;
+    call->buflen = buflen;
+    sceSifWriteBackDCache_x00112330(buf, buflen);
+    param.maxCount = 1;
+    param.option = (unsigned)D_0045D8F8_x00112330;
+    param.initCount = 0;
+    sema = CreateSema_x00112330(&param);
+    call->result = &result;
+    call->sema = sema;
+    call->resultSize = 4;
+    if (func_0010EA50_x00112330(D_00474B40_x00112330, 0x19, 0, &D_00473440_x00112330, 0x80C, D_00474080_x00112330, 4, 0, 0, 0) < 0) {
+        DeleteSema_x00112330(sema);
+        func_0010EFF0_x00112330();
+        return -11;
+    }
+    sent = *(int *)((unsigned)D_00474080_x00112330 | 0x20000000);
+    func_0010EFF0_x00112330();
+    if (sent == 0) {
+        DeleteSema_x00112330(sema);
+        return -11;
+    }
+    WaitSema_x00112330(sema);
+    DeleteSema_x00112330(sema);
+    return result;
+}
 typedef struct sceSifClientData_x00112510 {
     unsigned char rpc_data[16];
     unsigned int command;

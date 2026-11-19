@@ -1,6 +1,44 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00104BE8);
+typedef struct { unsigned int src; int pad; void *block[4]; void *block_right[4]; char pad28[0x12C - 0x28]; int pred_count; char pad130[0x10]; } Spr_X_x00104BE8;
+typedef struct { char pad0[0x5A0]; Spr_X_x00104BE8 spr[2]; char pad820[0x820 - 0x5A0 - 0x280]; int mb_buffer; char pad824[0x87C - 0x824]; int f87C; } Dec_X_x00104BE8;
+extern unsigned long long D_00470A40_x00104BE8[64] __asm__("D_00470A40");
+int DI_x00104BE8(void) __asm__("DI");
+int EI_x00104BE8(void) __asm__("EI");
+void func_00104BE8_x00104BE8(Dec_X_x00104BE8 *dec) __asm__("func_00104BE8");
+void func_00104BE8_x00104BE8(Dec_X_x00104BE8 *dec)
+{
+    unsigned long long *tag;
+    int count;
+    int intr;
+    int i;
+
+    if (dec->f87C == 0) {
+        tag = (unsigned long long *)(((unsigned int)D_00470A40_x00104BE8 & 0x0FFFFFFF) | 0x20000000);
+        count = dec->spr[dec->mb_buffer].pred_count;
+        for (i = 0; i < count; i++) {
+            unsigned long long a0, a1;
+            unsigned long long ref = 3;
+            unsigned long long id;
+
+            a0 = (unsigned int)dec->spr[dec->mb_buffer].block[i] & 0x0FFFFFFF;
+            a1 = (unsigned int)dec->spr[dec->mb_buffer].block_right[i] & 0x0FFFFFFF;
+            id = i == count - 1 ? 0 : 3;
+            tag[0] = (a0 << 32) | (ref << 28) | 48;
+            tag[2] = (a1 << 32) | (id << 28) | 48;
+            tag += 4;
+        }
+        intr = DI_x00104BE8();
+        __asm__("sync");
+        *(volatile unsigned int *)0x1000D480 = dec->spr[dec->mb_buffer].src;
+        *(volatile unsigned int *)0x1000D430 = (unsigned int)D_00470A40_x00104BE8;
+        *(volatile unsigned int *)0x1000D420 = 0;
+        *(volatile unsigned int *)0x1000D400 = 0x105;
+        if (intr) {
+            EI_x00104BE8();
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00104D68);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00104DE0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00104E78);
@@ -488,7 +526,38 @@ void func_00106888_x00106888(s32 arg0) __asm__("func_00106888");
 void func_00106888_x00106888(s32 arg0) {
     func_00109738_x00106888(arg0, &D_0045D0E8_x00106888);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00106898);
+typedef struct { char pad[0x878]; int f878; } Dec6898_x00106898;
+typedef struct { void (*f[11])(Dec6898_x00106898 *); } Tab6898_x00106898;
+extern Tab6898_x00106898 D_0045D120_x00106898 __asm__("D_0045D120");
+void func_00106C08_x00106898(Dec6898_x00106898 *) __asm__("func_00106C08");
+void func_00106C00_x00106898(Dec6898_x00106898 *) __asm__("func_00106C00");
+void func_00106AA0_x00106898(Dec6898_x00106898 *, int) __asm__("func_00106AA0");
+unsigned int func_00104810_x00106898(Dec6898_x00106898 *, int) __asm__("func_00104810");
+unsigned int func_00104728_x00106898(Dec6898_x00106898 *, int) __asm__("func_00104728");
+void func_00106898_x00106898(Dec6898_x00106898 *dec) __asm__("func_00106898");
+void func_00106898_x00106898(Dec6898_x00106898 *dec)
+{
+    Tab6898_x00106898 ext = D_0045D120_x00106898;
+    unsigned int code;
+    unsigned int id;
+
+    func_00106C08_x00106898(dec);
+    while (func_00104810_x00106898(dec, 24) != 1 && !dec->f878) func_00106AA0_x00106898(dec, 8);
+    while ((code = func_00104810_x00106898(dec, 32)) == 0x1B5 || code == 0x1B2) {
+        if (code == 0x1B5) {
+            func_00106C00_x00106898(dec);
+            id = func_00104728_x00106898(dec, 4);
+            id = id > 10 ? 0 : id;
+            ext.f[id](dec);
+            func_00106C08_x00106898(dec);
+            while (func_00104810_x00106898(dec, 24) != 1 && !dec->f878) func_00106AA0_x00106898(dec, 8);
+        } else {
+            func_00106C00_x00106898(dec);
+            func_00106C08_x00106898(dec);
+            while (func_00104810_x00106898(dec, 24) != 1 && !dec->f878) func_00106AA0_x00106898(dec, 8);
+        }
+    }
+}
 s32 func_00104440_x00106A68(s32) __asm__("func_00104440");
 void func_00106A68_x00106A68(s32 a0) __asm__("func_00106A68");
 void func_00106A68_x00106A68(s32 a0) {
@@ -771,7 +840,39 @@ int func_00106F48_x00106F48(sceMpeg_x00106F48 *mp, unsigned char *work, int size
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107180);
+void FlushCache_x00107180(int) __asm__("FlushCache");
+int DI_x00107180(void) __asm__("DI");
+int EI_x00107180(void) __asm__("EI");
+void func_00107180_x00107180(unsigned char *dec, unsigned char *data, int size) __asm__("func_00107180");
+void func_00107180_x00107180(unsigned char *dec, unsigned char *data, int size)
+{
+    unsigned long long *tag = (unsigned long long *)(((unsigned int)(dec + 0x1180) + 15) >> 4 << 4);
+    unsigned long long *first = tag;
+    int intr;
+
+    while (size > 0) {
+        int chunk = size < 0xFFF40 ? size : 0xFFF40;
+        unsigned long long addr = (unsigned int)data & 0x0FFFFFFF;
+        unsigned long long ref = 3;
+        int qwc = (chunk + 15) / 16;
+        unsigned long long id;
+
+        size -= chunk;
+        id = size ? ref : 0;
+        *tag = (addr << 32) | (id << 28) | (unsigned int)qwc;
+        __asm__("sync");
+        data += chunk;
+        tag += 2;
+    }
+    FlushCache_x00107180(0);
+    intr = DI_x00107180();
+    *(volatile unsigned int *)0x1000B430 = (unsigned int)first & 0x0FFFFFFF;
+    *(volatile unsigned int *)0x1000B420 = 0;
+    *(volatile unsigned int *)0x1000B400 = 0x105;
+    if (intr) {
+        EI_x00107180();
+    }
+}
 int DIntr_x00107280(void) __asm__("DI");
 int EIntr_x00107280(void) __asm__("EI");
 extern void func_003BACA0_x00107280(int, int) __asm__("func_00109AF8");
@@ -795,7 +896,105 @@ void func_00107280_x00107280(void *m) {
     func_003BACA0_x00107280(0, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107348);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107500);
+typedef struct { char pad0[0x18]; long pts, dts; int decoded, pct, ps, pseq, pframe, tff, rff; int co[6]; int dw, dh; } Pic7500_x00107500;
+typedef struct { Pic7500_x00107500 *ref, *prev, *decode, *image; } Slot7500_x00107500;
+typedef struct { char pad0[0xB4]; int count_i, count_p; char padBC[0xFC - 0xBC]; int set_broken_link; char pad100[0x14C - 0x100]; int pseq; char pad150[0x158 - 0x150]; int dw, dh, pct; char pad164[0x184 - 0x164]; int ps, tff; char pad18C[0x194 - 0x18C]; int rff, pframe; char pad19C[0x19C - 0x19C]; int hoff[3], voff[3]; int closed_gop, broken_link; char pad1BC[0x1C8 - 0x1BC]; Slot7500_x00107500 slots[3]; char pad1F8[0x838 - 0x1F8]; long pts, dts; } Dec7500_x00107500;
+int func_00107500_x00107500(Dec7500_x00107500 *dec, int second) __asm__("func_00107500");
+int func_00107500_x00107500(Dec7500_x00107500 *dec, int second)
+{
+    Pic7500_x00107500 *selected;
+    Pic7500_x00107500 *picture = 0;
+    int ready = 0;
+    int refs_needed = dec->ps == 3 ? 2 : 4;
+
+    if (dec->pct == 3) {
+        dec->slots[0].decode = dec->slots[0].image;
+        dec->slots[1].decode = dec->slots[1].image;
+        dec->slots[2].decode = dec->slots[2].image;
+        if (dec->count_i + dec->count_p >= refs_needed) {
+            dec->set_broken_link = 0;
+            dec->broken_link = 0;
+            dec->closed_gop = 0;
+        }
+        if ((dec->set_broken_link || dec->broken_link) && !dec->closed_gop) {
+            dec->slots[0].ref->decoded = 0;
+            dec->slots[1].ref->decoded = 0;
+            dec->slots[2].ref->decoded = 0;
+        }
+        dec->set_broken_link = 0;
+        dec->broken_link = 0;
+        if (dec->ps == 3) {
+            if (dec->slots[0].ref->decoded == 1 || dec->closed_gop) {
+                if (dec->slots[0].prev->decoded == 1) {
+                    ready = 1;
+                }
+            }
+        } else if ((dec->slots[1].ref->decoded == 1 && dec->slots[2].ref->decoded == 1) || dec->closed_gop) {
+            if (dec->slots[1].prev->decoded == 1) {
+                if (dec->slots[2].prev->decoded == 1) {
+                    ready = 1;
+                }
+            }
+        }
+    } else {
+        if (!second) {
+            Pic7500_x00107500 *tmp;
+
+            tmp = dec->slots[0].ref;
+            dec->slots[0].ref = dec->slots[0].prev;
+            dec->slots[0].prev = tmp;
+            tmp = dec->slots[1].ref;
+            dec->slots[1].ref = dec->slots[1].prev;
+            dec->slots[1].prev = tmp;
+            tmp = dec->slots[2].ref;
+            dec->slots[2].ref = dec->slots[2].prev;
+            dec->slots[2].prev = tmp;
+        }
+        dec->slots[0].decode = dec->slots[0].prev;
+        dec->slots[1].decode = dec->slots[1].prev;
+        dec->slots[2].decode = dec->slots[2].prev;
+        if (dec->ps == 3) {
+            if (dec->pct != 2 || dec->slots[0].ref->decoded == 1) {
+                ready = 1;
+            }
+        } else {
+            selected = dec->ps == 1 ? dec->slots[2].prev : dec->slots[1].prev;
+            if (dec->pct != 2 || (second && selected->decoded == 1) ||
+                (dec->slots[1].ref->decoded == 1 && dec->slots[2].ref->decoded == 1)) {
+                ready = 1;
+            }
+        }
+    }
+    switch (dec->ps) {
+    case 3:
+        picture = dec->slots[0].decode;
+        break;
+    case 1:
+        picture = dec->slots[1].decode;
+        break;
+    case 2:
+        picture = dec->slots[2].decode;
+        break;
+    }
+    picture->decoded = 0;
+    picture->pts = dec->pts;
+    picture->dts = dec->dts;
+    picture->pct = dec->pct;
+    picture->ps = dec->ps;
+    picture->pseq = dec->pseq;
+    picture->pframe = dec->pframe;
+    picture->tff = dec->tff;
+    picture->rff = dec->rff;
+    picture->co[0] = dec->hoff[0];
+    picture->co[1] = dec->hoff[1];
+    picture->co[2] = dec->hoff[2];
+    picture->co[3] = dec->voff[0];
+    picture->co[4] = dec->voff[1];
+    picture->co[5] = dec->voff[2];
+    picture->dw = dec->dw;
+    picture->dh = dec->dh;
+    return ready;
+}
 typedef struct { int type; int pad[7]; } sceMpegCbData_x001077B8;
 typedef int (*sceMpegCallback_x001077B8)(void *mp, sceMpegCbData_x001077B8 *cbd, void *data);
 typedef struct { sceMpegCallback_x001077B8 func; void *data; void *gp; } CB_x001077B8;
