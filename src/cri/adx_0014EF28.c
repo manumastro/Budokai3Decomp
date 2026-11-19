@@ -4881,7 +4881,81 @@ int func_00152FD0_x00152FD0(int type, int len, int ofst, unsigned int blk)
 void func_00153028(s32 arg0) {
     D_00401FF8 = arg0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00153038);
+extern const float D_00460EC8_x00153038[256] __asm__("D_00460EC8");
+extern const float D_004612C8_x00153038[256] __asm__("D_004612C8");
+int func_00153038_x00153038(signed char *ibuf, int nblk, short *obuf_l, short *dly_l, short k0, short k1) __asm__("func_00153038");
+int func_00153038_x00153038(signed char *ibuf, int nblk, short *obuf_l, short *dly_l, short k0, short k1)
+{
+    int qsig;
+    int dt16;
+    float gain;
+    float kf0;
+    float kf1;
+    float d0_l;
+    float d1_l;
+    float qsigf;
+    int sno;
+    int blkno2;
+    unsigned char *ibufdt;
+    short code;
+    float dt_l;
+
+    ibufdt = (unsigned char *)ibuf;
+
+    d0_l = dly_l[0] * 65536;
+    d1_l = dly_l[1] * 65536;
+
+    kf0 = (k0 * 16) / 65536.0f;
+    kf1 = (k1 * 16) / 65536.0f;
+
+    for (blkno2 = 0; blkno2 < nblk; blkno2++)
+    {
+        code = (unsigned short)(((*(unsigned short *)ibufdt << 8) & 0xFF00) | ibufdt[1]);
+
+        if ((code & 0x8000))
+        {
+            return blkno2;
+        }
+
+        gain = (code & 0x1FFF) + 1;
+
+        ibufdt += 2;
+
+        for (sno = 0; sno < 32; sno += 2)
+        {
+            qsig = *ibufdt++;
+
+            qsigf = D_00460EC8_x00153038[qsig];
+
+            dt_l = (kf0 * d0_l) + (kf1 * d1_l) + (qsigf * gain);
+
+            d1_l = d0_l;
+            d0_l = dt_l;
+
+            dt16 = d0_l;
+
+            *obuf_l++ = dt16 >> 16;
+
+            qsigf = D_004612C8_x00153038[qsig];
+
+            dt_l = (kf0 * d0_l) + (kf1 * d1_l) + (qsigf * gain);
+
+            d1_l = d0_l;
+            d0_l = dt_l;
+
+            dt16 = d0_l;
+
+            *obuf_l++ = dt16 >> 16;
+        }
+    }
+
+    dly_l[0] = (int)d0_l >> 16;
+    dly_l[1] = (int)d1_l >> 16;
+
+    return nblk;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3p8_054c0e_0_x __asm__("p54c0e0");
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001531A8);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00153440);
 extern int adxd_mono_flag_x001536E0 __asm__("D_00401FF8");
