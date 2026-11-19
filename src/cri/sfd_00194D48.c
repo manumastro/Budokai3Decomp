@@ -18065,7 +18065,1271 @@ s32 func_001996B0(u8 *arg0) {
     }
     return *(s32 *)((u8 *)arg0 + 0x48);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001996F0);
+struct SfdSj_x001996F0_____________;
+struct SfdRecSlot_x001996F0_____________;
+struct SfdRec_x001996F0_____________;
+struct SfdMpvCond_x001996F0_____________;
+struct SfdPlanes_x001996F0_____________;
+struct SfdFrameInfo_x001996F0_____________;
+struct SfdPly_x001996F0_____________;
+typedef int (*SfdTimeFn_x001996F0_____________)(void *sfd, int *time, int *unit);
+typedef struct SfdTimeCode_x001996F0_____________ {
+    int rate;
+    int drop;
+    int hour;
+    int minute;
+    int second;
+    int frame;
+    int add;
+    short repeat;
+    short field;
+} SfdTimeCode_x001996F0_____________;
+typedef struct SfdTimeRec_x001996F0_____________ {
+    int valid;
+    SfdTimeCode_x001996F0_____________ tc;
+    int time;
+    int unit;
+} SfdTimeRec_x001996F0_____________;
+typedef struct SfdTst_x001996F0_____________ {
+    int f0;
+    unsigned int pastat;
+    unsigned int adjmode;
+    int paused;
+    int count;
+    int pos;
+    int values[60];
+    long long master_time;
+    long long f272;
+    long long help_time;
+    long long help_unit;
+    long long out_time;
+    long long f304;
+    long long f312;
+    long long f320;
+    long long f328;
+    long long f336;
+    long long f344;
+    long long f352;
+    long long f360;
+    long long f368;
+    long long f376;
+    long long f384;
+    long long mt_max;
+    int adj_limit;
+    int adj_front;
+    int adj_rear;
+    int resethist;
+    int excesserr;
+    int movave_1st;
+    int movave_2nd;
+    int diff_l_max;
+    int diff_l_min;
+    int diff_a_max;
+    int diff_a_min;
+    int pad444;
+} SfdTst_x001996F0_____________;
+typedef struct SfdSyncTally_x001996F0_____________ {
+    int total;
+    int count;
+    int history[32];
+} SfdSyncTally_x001996F0_____________;
+typedef struct SfdSyncQueue_x001996F0_____________ {
+    int last;
+    int f4;
+    int wr;
+    int rd;
+    int items[32];
+} SfdSyncQueue_x001996F0_____________;
+typedef struct SfdFieldEntry_x001996F0_____________ {
+    short repeat;
+    unsigned short total;
+} SfdFieldEntry_x001996F0_____________;
+typedef struct SfdPtsm_x001996F0_____________ {
+    int f0;
+    int f4;
+    int f8;
+} SfdPtsm_x001996F0_____________;
+typedef struct SfdHdrAudio_x001996F0_____________ {
+    int codec;
+    int nch;
+    int bps;
+    int sfreq;
+} SfdHdrAudio_x001996F0_____________;
+typedef struct SfdHdrMux_x001996F0_____________ {
+    int kind[4];
+    int numFrm;
+    int totalTime;
+    int timeUnit;
+} SfdHdrMux_x001996F0_____________;
+typedef struct SfdHdrVideo_x001996F0_____________ {
+    int codec;
+    int bitRate;
+    int width;
+    int height;
+    int frameRate;
+    int avail;
+    int picType;
+    int profile;
+    int flag0;
+    int flag4;
+    int chroma;
+    int zFirst;
+    int zSecond;
+} SfdHdrVideo_x001996F0_____________;
+typedef struct SfdHdrInf_x001996F0_____________ {
+    int valid;
+    int verMajor;
+    int verMinor;
+    int muxRate;
+    int bitRate;
+    int sysType;
+    int numStm;
+    int totalSize;
+    SfdHdrMux_x001996F0_____________ mux;
+    int adxStm;
+    int prv2Stm;
+    int audioStm;
+    int videoStm;
+    SfdHdrAudio_x001996F0_____________ audio;
+    SfdHdrVideo_x001996F0_____________ video;
+    int size;
+    char data[2048];
+} SfdHdrInf_x001996F0_____________;
+typedef struct SfdMvInf_x001996F0_____________ {
+    int width;
+    int height;
+    int mbWidth;
+    int mbHeight;
+    int bitRate;
+    int frameRate;
+    int muxRate;
+    int fixedFlag;
+    int vbvSize;
+    int audioBound;
+    int videoBound;
+    int privateBound;
+    int f48[4];
+} SfdMvInf_x001996F0_____________;
+typedef struct SfdPlyInf_x001996F0_____________ {
+    int numTotalDec;
+    int numSkip;
+    int f8;
+    int f12;
+    int numSkipEmptyB;
+    int numSkipEmptyP;
+    int frmOut;
+    int bpaActive;
+    int noSupply;
+    int vidShort;
+    int noFreeFrm;
+    int lockCnt;
+    long long sysFlow;
+    long long sysByte;
+    long long sysSkip;
+    long long vidFlow;
+    long long vidByte;
+    long long vidSkip;
+    long long audInWr;
+    long long audInRd;
+    long long audByte;
+    long long audSjWr;
+    long long audSjRd;
+    long long f136;
+    int f144[4];
+} SfdPlyInf_x001996F0_____________;
+typedef void (*SfdErrFn_x001996F0_____________)(void *obj, int code);
+typedef struct SfdErrInf_x001996F0_____________ {
+    SfdErrFn_x001996F0_____________ func;
+    void *obj;
+    int code;
+    int f12;
+    int f16;
+} SfdErrInf_x001996F0_____________;
+typedef int (*SfdExtClockFn_x001996F0_____________)(int ctx, int *time, int *unit);
+typedef int (*SfdIsSkipFn_x001996F0_____________)(void *sfd, int type, int time, int unit);
+typedef struct SfdTim_x001996F0_____________ {
+    SfdTimeFn_x001996F0_____________ timefn[6];
+    SfdIsSkipFn_x001996F0_____________ isSkipFn;
+    SfdTimeCode_x001996F0_____________ tc;
+    SfdTimeRec_x001996F0_____________ state;
+    SfdTimeRec_x001996F0_____________ best;
+    SfdTimeRec_x001996F0_____________ tot;
+    SfdTimeRec_x001996F0_____________ cur;
+    SfdTimeRec_x001996F0_____________ latest;
+    SfdTimeRec_x001996F0_____________ vofst;
+    int astart_smpl;
+    int astart_sfreq;
+    int pad332;
+    long long baseTime;
+    long long ofsTime;
+    int concat_frmcnt;
+    SfdSyncTally_x001996F0_____________ tally;
+    SfdSyncQueue_x001996F0_____________ queue;
+    int base;
+    int base_frames;
+    int dec_time;
+    int dec_unit;
+    int cached_pos;
+    int cached_rate;
+    int last;
+    int estimate;
+    int largest;
+    int smallest;
+    int usr_frm_sync;
+    int stream_pos;
+    int speed;
+    int disp_sync_cnt;
+    int disp_sync_time;
+    int disp_sync_unit;
+    int sync_count;
+    float sync_pending;
+    int sync_last;
+    float sync_time;
+    int count;
+    int chg_base;
+    SfdExtClockFn_x001996F0_____________ clock_get;
+    int clock_last;
+    int decoded_pos;
+    int rate;
+    int clock_wrap;
+    int clock_ctx;
+    int pad748;
+    SfdTst_x001996F0_____________ tst;
+    SfdFieldEntry_x001996F0_____________ fields[64];
+    SfdPtsm_x001996F0_____________ ptsm;
+    char pad1468[36];
+} SfdTim_x001996F0_____________;
+enum {
+    SFD_COND_VIDEO_x001996F0_____________ = 5,
+    SFD_COND_AUDIO_x001996F0_____________ = 6,
+    SFD_COND_KEEPSUP_x001996F0_____________ = 8,
+    SFD_COND_SYNCMODE_x001996F0_____________ = 15,
+    SFD_COND_ETIME_x001996F0_____________ = 20,
+    SFD_COND_ETUNIT_x001996F0_____________ = 21,
+    SFD_COND_LNKSTM_x001996F0_____________ = 49,
+    SFD_COND_SUPPLY_END_x001996F0_____________ = 56,
+    SFD_COND_DECODE_END_x001996F0_____________ = 57,
+    SFD_COND_DEMUX_SPLIT_x001996F0_____________ = 59,
+    SFD_COND_VIDEO_AUTO_OFF_x001996F0_____________ = 79,
+    SFD_COND_AUDIO_AUTO_OFF_x001996F0_____________ = 80,
+    SFD_COND_SYSHD_FN_x001996F0_____________ = 85,
+    SFD_COND_SYSHD_FN_OBJ_x001996F0_____________ = 86,
+    SFD_COND_NUM_x001996F0_____________ = 100
+};
+typedef enum SfdBufFmt_x001996F0_____________ {
+    SFD_BUFFMT_0_x001996F0_____________ = 0
+} SfdBufFmt_x001996F0_____________;
+typedef enum SfdBufId_x001996F0_____________ {
+    SFD_BUF_NONE_x001996F0_____________ = 8
+} SfdBufId_x001996F0_____________;
+typedef struct SfdCrePrm_x001996F0_____________ {
+    struct SfdTrnConfig_x001996F0_____________ *trnConfig;
+    char *bufWork;
+    int bufSize[8];
+    int unit;
+    int f44;
+    int f48;
+    int f52;
+    SfdBufFmt_x001996F0_____________ bufFmt;
+    char *work;
+    unsigned int workSize;
+} SfdCrePrm_x001996F0_____________;
+typedef struct SfdItem_x001996F0_____________ {
+    long long pos;
+    unsigned int addr;
+    unsigned int size;
+} SfdItem_x001996F0_____________;
+typedef struct SfdRing_x001996F0_____________ {
+    SfdItem_x001996F0_____________ *items;
+    int size;
+    int count;
+    int wr;
+    int rd;
+} SfdRing_x001996F0_____________;
+typedef struct SfdBufInf_x001996F0_____________ {
+    char *data;
+    struct SfdSj_x001996F0_____________ *sj;
+    char *buf;
+    int size;
+    int xsize;
+    char *p0;
+} SfdBufInf_x001996F0_____________;
+typedef struct SfdBufCur_x001996F0_____________ {
+    char *pos;
+    int len;
+} SfdBufCur_x001996F0_____________;
+typedef struct SfdBufDlm_x001996F0_____________ {
+    char *pos;
+    char *end;
+} SfdBufDlm_x001996F0_____________;
+typedef struct SfdBufRing_x001996F0_____________ {
+    SfdBufInf_x001996F0_____________ sup;
+    SfdBufDlm_x001996F0_____________ dlm;
+    int wtot;
+    int rtot;
+    SfdRing_x001996F0_____________ ptsque;
+} SfdBufRing_x001996F0_____________;
+typedef struct SfdBufAring_x001996F0_____________ {
+    SfdBufInf_x001996F0_____________ sup;
+    SfdBufCur_x001996F0_____________ ch1;
+    int wpos;
+    int rpos;
+    int wtot;
+    int rtot;
+} SfdBufAring_x001996F0_____________;
+typedef struct SfdUoch_x001996F0_____________ {
+    struct SfdSj_x001996F0_____________ *sj;
+    void (*begin)(void *hn, int id);
+    void (*end)(void *arg, int id);
+    void *arg;
+} SfdUoch_x001996F0_____________;
+typedef struct SfdBufEnt_x001996F0_____________ {
+    int mode;
+    int used;
+    int prepFlg;
+    int termFlg;
+    union {
+        SfdBufRing_x001996F0_____________ ring;
+        SfdBufAring_x001996F0_____________ aring;
+        SfdBufInf_x001996F0_____________ vfrm;
+        SfdUoch_x001996F0_____________ uoch[3];
+    } u;
+    int inTr;
+    int outTr;
+    char pad84[32];
+} SfdBufEnt_x001996F0_____________;
+typedef int (*SfdTrnFn_x001996F0_____________)();
+typedef struct SfdTrnModules_x001996F0_____________ {
+    SfdTrnFn_x001996F0_____________ *fns[15];
+} SfdTrnModules_x001996F0_____________;
+typedef struct SfdTrnConfig_x001996F0_____________ {
+    SfdTrnFn_x001996F0_____________ *fns[9];
+} SfdTrnConfig_x001996F0_____________;
+typedef struct SfdInitPrm_x001996F0_____________ {
+    SfdTrnModules_x001996F0_____________ *modules;
+    int vrate;
+} SfdInitPrm_x001996F0_____________;
+typedef struct SfdMpsPrm_x001996F0_____________ {
+    void *mps;
+    int videoBound;
+    int audioBound;
+    int pad12;
+    long long startPts;
+    long long firstPts;
+    int nPics;
+    int f36;
+    int f40;
+    int f44;
+    int f48;
+    int videoCh;
+    int audioCh;
+    int f60;
+    struct SfdSj_x001996F0_____________ *object[68];
+    int (*stmCb)(void *obj, int arg);
+    void *stmCbObj;
+    int f344;
+} SfdMpsPrm_x001996F0_____________;
+typedef struct SfdAdxCfg_x001996F0_____________ {
+    int bsize;
+    int xsize;
+    char *buf;
+    int maxnch;
+    int f16;
+    int worksize;
+    char *work;
+} SfdAdxCfg_x001996F0_____________;
+typedef void (*SfdAdxStep_x001996F0_____________)(struct SfdPly_x001996F0_____________ *h, char *buf, int size, int *used);
+typedef struct SfdAdxCtx_x001996F0_____________ {
+    void *adxt;
+    void *sj;
+    SfdAdxCfg_x001996F0_____________ cfg;
+    int time;
+    int unit;
+    int f44;
+    int carry;
+    int started;
+    int pos;
+    SfdAdxStep_x001996F0_____________ step;
+    int f64;
+    int opt27;
+    int total;
+    int f76;
+} SfdAdxCtx_x001996F0_____________;
+typedef struct SfdAoap_x001996F0_____________ {
+    int rna;
+    void (*setOutPan)(struct SfdPly_x001996F0_____________ *h, int ch, int pan);
+    int (*getOutPan)(struct SfdPly_x001996F0_____________ *h, int ch);
+    void (*setOutVol)(struct SfdPly_x001996F0_____________ *h, int vol);
+    int (*getOutVol)(struct SfdPly_x001996F0_____________ *h);
+    void (*setSpeed)(struct SfdPly_x001996F0_____________ *h, int speed);
+} SfdAoap_x001996F0_____________;
+typedef struct SfainfOut_x001996F0_____________ {
+    int kind;
+    void *sj;
+    void *buf;
+    int size;
+} SfainfOut_x001996F0_____________;
+typedef struct SfainfList_x001996F0_____________ {
+    int nout;
+    SfainfOut_x001996F0_____________ out[3];
+} SfainfList_x001996F0_____________;
+typedef struct SfdTrnSlot_x001996F0_____________ {
+    int prepFlg;
+    int termFlg;
+    union {
+        void *obj;
+        SfdMpsPrm_x001996F0_____________ *mps;
+        struct SfdMpv_x001996F0_____________ *mpv;
+        SfdAdxCtx_x001996F0_____________ *adxt;
+        SfdAoap_x001996F0_____________ *aoap;
+        SfainfList_x001996F0_____________ *uo;
+    } hn;
+    SfdTrnFn_x001996F0_____________ *fns;
+    SfdBufId_x001996F0_____________ bufIn;
+    int bufOut[3];
+    int readTot;
+    char pad36[32];
+} SfdTrnSlot_x001996F0_____________;
+typedef struct SfdTsum_x001996F0_____________ {
+    long long sum;
+    long long min;
+    long long max;
+    int count;
+    int pad28;
+} SfdTsum_x001996F0_____________;
+typedef struct SfdTmrInf_x001996F0_____________ {
+    SfdTsum_x001996F0_____________ tsum[6];
+} SfdTmrInf_x001996F0_____________;
+typedef struct SfdTimLib_x001996F0_____________ {
+    int vcount;
+    int f4;
+    int vrate;
+} SfdTimLib_x001996F0_____________;
+typedef struct SfdSvrCnt_x001996F0_____________ {
+    int cnt;
+    int busy;
+} SfdSvrCnt_x001996F0_____________;
+typedef struct SfdLibInf_x001996F0_____________ {
+    int cond[SFD_COND_NUM_x001996F0_____________];
+    SfdInitPrm_x001996F0_____________ prm;
+    int sysStat;
+    SfdErrInf_x001996F0_____________ err;
+    SfdTimLib_x001996F0_____________ tim;
+    int buf;
+    SfdTrnModules_x001996F0_____________ trn;
+    SfdSvrCnt_x001996F0_____________ svr;
+    struct SfdPly_x001996F0_____________ *hn[8];
+} SfdLibInf_x001996F0_____________;
+extern SfdLibInf_x001996F0_____________ sfd_lib_x001996F0_____________ __asm__("D_004268E0");
+void SFSET_SetCond_x001996F0_____________(void *sfd, int index, int value) __asm__("func_00199818");
+int sfd_ReportError_x001996F0_____________(void *sfd, int code) __asm__("func_0018D650");
+int SFLIB_CheckHn_x001996F0_____________(void *sfd) __asm__("func_0018D870");
+typedef struct SfdSj_x001996F0_____________ SfdSj_x001996F0_____________;
+typedef struct SfdSjChunk_x001996F0_____________ {
+    char *data;
+    int len;
+} SfdSjChunk_x001996F0_____________;
+typedef struct SfdSjVtbl_x001996F0_____________ {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x001996F0_____________ *sj);
+    int (*getUuid)(SfdSj_x001996F0_____________ *sj);
+    void (*reset)(SfdSj_x001996F0_____________ *sj);
+    void (*getChunk)(SfdSj_x001996F0_____________ *sj, int id, int n, SfdSjChunk_x001996F0_____________ *ck);
+    void (*ungetChunk)(SfdSj_x001996F0_____________ *sj, int id, SfdSjChunk_x001996F0_____________ *ck);
+    void (*putChunk)(SfdSj_x001996F0_____________ *sj, int id, SfdSjChunk_x001996F0_____________ *ck);
+    int (*getNumData)(SfdSj_x001996F0_____________ *sj, int id);
+} SfdSjVtbl_x001996F0_____________;
+struct SfdSj_x001996F0_____________ {
+    SfdSjVtbl_x001996F0_____________ *vtbl;
+};
+struct SfdSj_x001996F0_____________;
+typedef struct M2vErrInf_x001996F0_____________ {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x001996F0_____________;
+typedef struct Mpeg2Ext_x001996F0_____________ {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x001996F0_____________;
+typedef enum M2vFrameRate_x001996F0_____________ {
+    M2V_FRAME_RATE_FORBIDDEN_x001996F0_____________ = 0
+} M2vFrameRate_x001996F0_____________;
+typedef enum M2vPicType_x001996F0_____________ {
+    M2V_PICTYPE_I_x001996F0_____________ = 1,
+    M2V_PICTYPE_P_x001996F0_____________ = 2,
+    M2V_PICTYPE_B_x001996F0_____________ = 3,
+    M2V_PICTYPE_D_x001996F0_____________ = 4
+} M2vPicType_x001996F0_____________;
+typedef enum M2vPicStruct_x001996F0_____________ {
+    M2V_PICSTRUCT_TOP_FIELD_x001996F0_____________ = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x001996F0_____________ = 2,
+    M2V_PICSTRUCT_FRAME_x001996F0_____________ = 3
+} M2vPicStruct_x001996F0_____________;
+typedef enum M2vPicAtrF64_x001996F0_____________ {
+    M2V_PICATR_F64_0_x001996F0_____________ = 0
+} M2vPicAtrF64_x001996F0_____________;
+typedef struct M2vPicAtr_x001996F0_____________ {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x001996F0_____________ frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x001996F0_____________ picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x001996F0_____________ picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x001996F0_____________ f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x001996F0_____________;
+typedef void (*M2vUsrDatFn_x001996F0_____________)(void *obj, int level);
+typedef struct M2vUsrSj_x001996F0_____________ {
+    struct SfdSj_x001996F0_____________ *sj;
+    M2vUsrDatFn_x001996F0_____________ fn;
+    void *obj;
+} M2vUsrSj_x001996F0_____________;
+typedef struct M2vPicUsr_x001996F0_____________ {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x001996F0_____________;
+typedef void (*M2vCondFn_x001996F0_____________)();
+typedef struct M2vObj_x001996F0_____________ {
+    int stat;
+    M2vErrInf_x001996F0_____________ err;
+    M2vCondFn_x001996F0_____________ cond[16];
+    M2vPicAtr_x001996F0_____________ picatr;
+    char pad216[64];
+    M2vUsrSj_x001996F0_____________ usrsj[4];
+    M2vPicUsr_x001996F0_____________ picusr;
+    char pad340[12];
+    Mpeg2Ext_x001996F0_____________ ext;
+    char pad1656[8];
+} M2vObj_x001996F0_____________;
+extern void M2V_SetErrFunc_x001996F0_____________(M2vObj_x001996F0_____________ *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef struct sceIpuDmaEnv_x001996F0_____________ {
+    unsigned int d4madr;
+    unsigned int d4tadr;
+    unsigned int d4qwc;
+    unsigned int d4chcr;
+    unsigned int d3madr;
+    unsigned int d3qwc;
+    unsigned int d3chcr;
+    unsigned int ipubp;
+    unsigned int ipuctrl;
+} sceIpuDmaEnv_x001996F0_____________;
+typedef struct sceMpeg_x001996F0_____________ {
+    int width;
+    int height;
+    int frameCount;
+    long pts;
+    long dts;
+    unsigned long flags;
+    long pts2nd;
+    long dts2nd;
+    unsigned long flags2nd;
+    struct _sceMpegDecoder_x001996F0_____________ *sys;
+} sceMpeg_x001996F0_____________;
+typedef enum {
+    sceMpegCbError_x001996F0_____________,
+    sceMpegCbNodata_x001996F0_____________,
+    sceMpegCbStopDMA_x001996F0_____________,
+    sceMpegCbRestartDMA_x001996F0_____________,
+    sceMpegCbBackground_x001996F0_____________,
+    sceMpegCbTimeStamp_x001996F0_____________,
+    sceMpegCbStr_x001996F0_____________,
+    sceMpegCbNum_x001996F0_____________
+} sceMpegCbType_x001996F0_____________;
+typedef struct {
+    sceMpegCbType_x001996F0_____________ type;
+    char *errMessage;
+} sceMpegCbDataError_x001996F0_____________;
+typedef struct {
+    sceMpegCbType_x001996F0_____________ type;
+    long pts;
+    long dts;
+} sceMpegCbDataTimeStamp_x001996F0_____________;
+typedef struct {
+    sceMpegCbType_x001996F0_____________ type;
+    unsigned char *header;
+    unsigned char *data;
+    unsigned int len;
+    long pts;
+    long dts;
+} sceMpegCbDataStr_x001996F0_____________;
+typedef union {
+    sceMpegCbType_x001996F0_____________ type;
+    sceMpegCbDataError_x001996F0_____________ error;
+    sceMpegCbDataTimeStamp_x001996F0_____________ ts;
+    sceMpegCbDataStr_x001996F0_____________ str;
+} sceMpegCbData_x001996F0_____________;
+typedef int (*sceMpegCallback_x001996F0_____________)(sceMpeg_x001996F0_____________ *mp, sceMpegCbData_x001996F0_____________ *cbdata, void *anyData);
+typedef struct {
+    sceMpegCallback_x001996F0_____________ func;
+    void *data;
+    void *gp;
+} _sceMpegCallbackSlot_x001996F0_____________;
+typedef struct {
+    char *start;
+    int size;
+    char *cur;
+    char *dynamic;
+} _sceMpegAlalc_x001996F0_____________;
+typedef struct {
+    char *base;
+    int width;
+    int height;
+    int mb_width;
+    int mb_height;
+    int pad_20;
+    long pts;
+    long dts;
+    int decoded;
+    int picture_coding_type;
+    int picture_structure;
+    int progressive_sequence;
+    int progressive_frame;
+    int top_field_first;
+    int repeat_first_field;
+    int center_offsets[6];
+    int disp_width;
+    int disp_height;
+} _sceMpegPicture_x001996F0_____________;
+typedef struct {
+    _sceMpegPicture_x001996F0_____________ *ref_image;
+    _sceMpegPicture_x001996F0_____________ *prev_image;
+    _sceMpegPicture_x001996F0_____________ *decode;
+    _sceMpegPicture_x001996F0_____________ *image;
+} _sceMpegPictureSlot_x001996F0_____________;
+typedef struct {
+    short *dst;
+    int column;
+    int rows;
+    int rows_below;
+    int pitch;
+    unsigned char *left;
+    unsigned char *right;
+} _sceMpegMcFetch_x001996F0_____________;
+typedef void (*_sceMpegMcKernel_x001996F0_____________)(_sceMpegMcFetch_x001996F0_____________ *fetch);
+typedef struct {
+    unsigned int src;
+    unsigned int dst;
+    unsigned char *block[4];
+    unsigned char *block_right[4];
+    _sceMpegMcKernel_x001996F0_____________ luma_kernel[4];
+    _sceMpegMcKernel_x001996F0_____________ chroma_kernel[4];
+    _sceMpegMcFetch_x001996F0_____________ luma[4];
+    _sceMpegMcFetch_x001996F0_____________ chroma[4];
+    char *dest;
+    int pred_count;
+    int intra;
+    int skipped;
+    int predicted;
+    int empty;
+} _sceMpegSprBuffer_x001996F0_____________;
+typedef struct _sceMpegDecoder_x001996F0_____________ {
+    int is_end;
+    int ref_count;
+    int seq_state;
+    _sceMpegCallbackSlot_x001996F0_____________ callbacks[sceMpegCbNum_x001996F0_____________];
+    char *spare_buffer;
+    int spare;
+    sceIpuDmaEnv_x001996F0_____________ ipu_dma_env;
+    int has_pts_gap;
+    long pts_gap;
+    int last_pts;
+    int pad_156;
+    long field_count;
+    int half_field;
+    int ni;
+    int np;
+    int nb;
+    int count_i;
+    int count_p;
+    int count_b;
+    int first_frame_no;
+    int rgb32;
+    int center_offsets[6];
+    int disp_width;
+    int disp_height;
+    int first_picture_structure;
+    unsigned int image_buff;
+    int image_width;
+    int image_height;
+    int image_size;
+    int set_broken_link;
+    int pad_260;
+    long ptm;
+    int ptm_state;
+    char *frame_buffers[3];
+    _sceMpegAlalc_x001996F0_____________ alalc;
+    int frame_no;
+    int error;
+    int second_field;
+    int h_size;
+    int v_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    int progressive_sequence;
+    int chroma_format;
+    int matrix_coefficients;
+    int display_h_size;
+    int display_v_size;
+    int picture_coding_type;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int f_code[2][2];
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int repeat_first_field;
+    int progressive_frame;
+    int frame_center_horizontal_offset[3];
+    int frame_center_vertical_offset[3];
+    int closed_gop;
+    int broken_link;
+    int temporal_order;
+    int dc_reset;
+    int quantiser_scale_code;
+    _sceMpegPictureSlot_x001996F0_____________ slots[3];
+    _sceMpegPicture_x001996F0_____________ pictures[9];
+    _sceMpegSprBuffer_x001996F0_____________ spr[2];
+    int mb_buffer;
+    int mb_count;
+    int ipu_cmd_pending;
+    unsigned int mc_work;
+    int stopped;
+    int pad_2108;
+    long pts;
+    long dts;
+    unsigned int bits;
+    int bit_count;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int mpeg2;
+    int temporal_base;
+    int temporal_max;
+    int gop_started;
+    sceMpeg_x001996F0_____________ *mp;
+    char pad_2164[12];
+    unsigned long long ipu_tags[260];
+    int abort;
+    char pad_4260[28];
+} _sceMpegDecoder_x001996F0_____________;
+typedef struct SfdPlanes_x001996F0_____________ {
+    char *luma;
+    char *chroma;
+    char *base;
+    short chromaStride;
+    short lumaStride;
+} SfdPlanes_x001996F0_____________;
+typedef struct SfdUserData_x001996F0_____________ {
+    char data[512];
+    int size;
+} SfdUserData_x001996F0_____________;
+typedef struct SfdRecVideo_x001996F0_____________ {
+    int valid;
+    int time;
+    int unit;
+    SfdTimeRec_x001996F0_____________ stamp;
+    SfdUserData_x001996F0_____________ user;
+} SfdRecVideo_x001996F0_____________;
+typedef struct SfdSlot_x001996F0_____________ {
+    int state;
+    int refs;
+    void *buf;
+    SfdTimeRec_x001996F0_____________ stamp;
+    int ftime;
+    int tunit;
+    int errcnt;
+    int rcvcnt;
+    int concat_cnt;
+    int time_per_file;
+    int cat_time;
+    SfdSjChunk_x001996F0_____________ *blob;
+    M2vPicAtr_x001996F0_____________ info;
+    long long pts;
+    int frmcnt;
+    int pad228;
+} SfdSlot_x001996F0_____________;
+typedef struct SfdBufPool_x001996F0_____________ {
+    char *base;
+    int count;
+    int size;
+    SfdSjChunk_x001996F0_____________ slot[18];
+} SfdBufPool_x001996F0_____________;
+typedef struct SfdMpvCond_x001996F0_____________ {
+    int rfb_width;
+    int rfb_height;
+    int max_width;
+    int max_height;
+    int rfb_adr;
+    int frm_width;
+    int frm_height;
+    int count;
+    int ta_adr;
+} SfdMpvCond_x001996F0_____________;
+typedef struct SfdMpvWorkBufs_x001996F0_____________ {
+    int w[2];
+} SfdMpvWorkBufs_x001996F0_____________;
+typedef struct SfdMpvFrameBufs_x001996F0_____________ {
+    int w[16];
+} SfdMpvFrameBufs_x001996F0_____________;
+typedef struct SfdIpuEntry_x001996F0_____________ {
+    long long f0;
+    long long f8;
+    int f16;
+    int f20;
+} SfdIpuEntry_x001996F0_____________;
+typedef struct SfdDmaTag_x001996F0_____________ {
+    long long tag;
+    long long pad;
+} SfdDmaTag_x001996F0_____________;
+typedef struct SfdIpuStream_x001996F0_____________ {
+    void *base;
+    SfdDmaTag_x001996F0_____________ *uncached;
+    int sectors;
+    int headSct;
+    int queuedSct;
+    int restBytes;
+    int bytes;
+    unsigned int r28;
+    unsigned int r32;
+    unsigned int r36;
+    unsigned int r40;
+    unsigned int r44;
+    unsigned int r48;
+    unsigned int r52;
+    unsigned int r56;
+    unsigned int r60;
+    int sema;
+    int active;
+    long long totalBytes;
+    SfdIpuEntry_x001996F0_____________ *entries;
+    int entryCount;
+    int f88;
+    int f92;
+} SfdIpuStream_x001996F0_____________;
+typedef struct SfdIpuCtl_x001996F0_____________ {
+    int enabled;
+    int pscNext;
+    int pscFound;
+    int pscCount;
+    char tail0;
+    char tail1;
+    char tail2;
+    char f19;
+    int endRequest;
+    int endSent;
+    int stopped;
+    int value;
+    int pad36;
+    sceMpeg_x001996F0_____________ mpeg;
+    SfdIpuStream_x001996F0_____________ stream;
+    sceMpegCbDataError_x001996F0_____________ error;
+} SfdIpuCtl_x001996F0_____________;
+typedef struct SfdPtsComp_x001996F0_____________ {
+    int tmpref;
+    int ofst;
+    int max;
+    int pad12;
+    SfdItem_x001996F0_____________ ptsent;
+} SfdPtsComp_x001996F0_____________;
+typedef struct SfdMpv_x001996F0_____________ {
+    void *handle;
+    SfdMpvCond_x001996F0_____________ cond;
+    SfdMpvWorkBufs_x001996F0_____________ work;
+    SfdMpvFrameBufs_x001996F0_____________ bufs;
+    SfdSlot_x001996F0_____________ *current;
+    unsigned int picstat;
+    int dlmmask;
+    int termflg;
+    int gopstat;
+    int nskip;
+    int nconcat;
+    M2vPicAtr_x001996F0_____________ pic;
+    int last_ngop;
+    int newgop;
+    int limit;
+    SfdPtsComp_x001996F0_____________ ptscomp;
+    int refidx_fwd;
+    int refidx_bwd;
+    SfdPlanes_x001996F0_____________ planes[2];
+    SfdSlot_x001996F0_____________ *first;
+    SfdSlot_x001996F0_____________ *second;
+    SfdSlot_x001996F0_____________ *pendfrm;
+    int skipret;
+    int dlmwait;
+    int tmpref_adj;
+    int slotCount;
+    int pad380;
+    SfdSlot_x001996F0_____________ slots[16];
+    SfdBufPool_x001996F0_____________ pool;
+    int pad4252;
+    long long pts;
+    SfdIpuCtl_x001996F0_____________ ipu;
+} SfdMpv_x001996F0_____________;
+typedef enum SfdPicType_x001996F0_____________ {
+    SFD_PICTYPE_I_x001996F0_____________ = 1,
+    SFD_PICTYPE_P_x001996F0_____________ = 2,
+    SFD_PICTYPE_B_x001996F0_____________ = 3
+} SfdPicType_x001996F0_____________;
+typedef enum SfdFrmInfF60_x001996F0_____________ {
+    SFD_FRMINF_F60_0_x001996F0_____________ = 0
+} SfdFrmInfF60_x001996F0_____________;
+typedef struct SfdFrameDetail_x001996F0_____________ {
+    int f72;
+    char pad76[4];
+    long long pts;
+    int picture_structure;
+    int chroma_format;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    unsigned char repeat_first_field;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad123[5];
+} SfdFrameDetail_x001996F0_____________;
+typedef struct SfdFrameInfo_x001996F0_____________ {
+    int width;
+    int height;
+    int x_mb;
+    int y_mb;
+    SfdPicType_x001996F0_____________ picType;
+    int time;
+    int unit;
+    SfdBufFmt_x001996F0_____________ bufFmt;
+    void *buf;
+    int errcnt;
+    int rcvcnt;
+    int concat_cnt;
+    int time_per_file;
+    int cat_time;
+    SfdSjChunk_x001996F0_____________ *picUsr;
+    SfdFrmInfF60_x001996F0_____________ f60;
+    int f64;
+    char pad68[4];
+    union {
+        SfdFrameDetail_x001996F0_____________ detail;
+        long long words[7];
+    } tail;
+} SfdFrameInfo_x001996F0_____________;
+typedef struct SfdVfrm_x001996F0_____________ {
+    int used;
+    int f4;
+    SfdFrameInfo_x001996F0_____________ inf;
+} SfdVfrm_x001996F0_____________;
+typedef struct SfdPly_x001996F0_____________ SfdPly_x001996F0_____________;
+typedef struct SfdRec_x001996F0_____________ SfdRec_x001996F0_____________;
+typedef struct SfdRecSub_x001996F0_____________ {
+    int f0;
+    int time;
+    int unit;
+} SfdRecSub_x001996F0_____________;
+typedef struct SfdRecSlot_x001996F0_____________ {
+    SfdRec_x001996F0_____________ *rec;
+    SfdRecSub_x001996F0_____________ sub;
+} SfdRecSlot_x001996F0_____________;
+typedef struct SfdSysHd_x001996F0_____________ {
+    char data[2][176];
+    int len[2];
+} SfdSysHd_x001996F0_____________;
+typedef struct SfdRecSys_x001996F0_____________ {
+    int valid;
+    int time;
+    int unit;
+    int nvid;
+    int naud;
+    int f20;
+    long long scrBase;
+    long long ptsMin;
+    int stmidVid;
+    int stmidAud;
+    SfdSysHd_x001996F0_____________ syshd;
+} SfdRecSys_x001996F0_____________;
+typedef struct SfdRecAudio_x001996F0_____________ {
+    int valid;
+    int time;
+    int unit;
+    int nch;
+    int sfreq;
+    int nsmpl;
+} SfdRecAudio_x001996F0_____________;
+struct SfdRec_x001996F0_____________ {
+    int state;
+    int time;
+    int unit;
+    SfdHdrInf_x001996F0_____________ hdrInf;
+    SfdRecSys_x001996F0_____________ sys;
+    char pad2616[152];
+    SfdRecVideo_x001996F0_____________ video;
+    SfdRecAudio_x001996F0_____________ audio;
+    char pad3364[132];
+    int derived;
+    int default_value;
+    int default_divisor;
+    int default_scale;
+    int id3512;
+    int id3516;
+    int delegate;
+    int fsize;
+    int tottime;
+    int tunit;
+    int byterate;
+    int seekpos;
+};
+struct SfdPly_x001996F0_____________ {
+    SfdCrePrm_x001996F0_____________ cre;
+    int pending;
+    int stat;
+    int reqStat;
+    int pause;
+    int pauseCnt;
+    char pad88[32];
+    SfdHdrInf_x001996F0_____________ hdr;
+    SfdMvInf_x001996F0_____________ mvInf;
+    char pad2380[4];
+    SfdPlyInf_x001996F0_____________ plyInf;
+    SfdErrInf_x001996F0_____________ err;
+    int cond[SFD_COND_NUM_x001996F0_____________];
+    int cond2[SFD_COND_NUM_x001996F0_____________];
+    char pad3364[4];
+    SfdTim_x001996F0_____________ tim;
+    SfdBufEnt_x001996F0_____________ buf[8];
+    SfdVfrm_x001996F0_____________ vfrm[16];
+    SfdTrnSlot_x001996F0_____________ trn[9];
+    char pad8588[4];
+    SfdMpsPrm_x001996F0_____________ mps;
+    char pad8944[176];
+    SfdMpv_x001996F0_____________ mpv;
+    SfdAdxCtx_x001996F0_____________ adxt;
+    char pad13680[100];
+    SfdAoap_x001996F0_____________ aoap;
+    char pad13804[4];
+    SfainfList_x001996F0_____________ uo;
+    char pad13860[4];
+    SfdRecSlot_x001996F0_____________ see;
+    SfdTmrInf_x001996F0_____________ tmr;
+};
+void sfset_SetCondAll_x001996F0_____________(int index, int value) __asm__("func_001997A8");
+void sfset_SetUsrCond_x001996F0_____________(SfdPly_x001996F0_____________ *hn, int index, int value) __asm__("func_00199868");
+void sfset_SetCondAll_x001996F0_____________(int index, int value) __asm__("func_001997A8");
+void SFSET_SetCond_x001996F0_____________(void *sfd, int index, int value) __asm__("func_00199818");
+void sfset_SetUsrCond_x001996F0_____________(SfdPly_x001996F0_____________ *hn, int index, int value) __asm__("func_00199868");
+int func_001996F0_x001996F0_____________(void *sfd, int index, int value) __asm__("func_001996F0");
+/* SFD_SetCond: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfdcond.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_001996F0_x001996F0_____________(void *sfd, int index, int value)
+{
+    SfdPly_x001996F0_____________ *hn = sfd;
+    if (hn == 0) {
+        sfset_SetCondAll_x001996F0_____________(index, value);
+        sfd_lib_x001996F0_____________.cond[index] = value;
+    } else {
+        if (SFLIB_CheckHn_x001996F0_____________(hn) != 0) {
+            return sfd_ReportError_x001996F0_____________(0, 0xFF000112);
+        }
+        SFSET_SetCond_x001996F0_____________(hn, index, value);
+        sfset_SetUsrCond_x001996F0_____________(hn, index, value);
+    }
+    return 0;
+}
 s32 func_00199818_x001997A8(s32, s32, s32) __asm__("func_00199818");
 extern s32 D_00426AE4_x001997A8 __asm__("D_00426AE4");
 void func_001997A8_x001997A8(s32 arg0, s32 arg1) __asm__("func_001997A8");

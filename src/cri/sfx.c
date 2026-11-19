@@ -1131,7 +1131,23 @@ void func_001A0DB8_x001A0DB8(char *out, int unused, int *flags) {
     SUD_SetFmtTypeToBuf_x001A0DB8(field, flags);
     strcat_x001A0DB8(field, ext_str0_x001A0DB8);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0E48);
+typedef unsigned int size_t_x001A0E48;
+extern void qsort_x001A0E48(void *, size_t_x001A0E48, size_t_x001A0E48, int (*)(const void *, const void *)) __asm__("qsort");
+char *strncpy_x001A0E48(char *, const char *, size_t_x001A0E48) __asm__("func_00128040");
+typedef struct SudFlagChars_x001A0E48 {
+    char *s[2];
+} SudFlagChars_x001A0E48;
+void func_001A0E48_x001A0E48(char *dst, int *flags) __asm__("func_001A0E48");
+/* SUD_SetFmtTypeToBuf: from https://github.com/crashbashash/DW4_Decomp (src/cri/sud.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001A0E48_x001A0E48(char *dst, int *flags) {
+    SudFlagChars_x001A0E48 a = {{"A", "D"}};
+    SudFlagChars_x001A0E48 b = {{"N", "C"}};
+    SudFlagChars_x001A0E48 c = {{"P", "I"}};
+    strncpy_x001A0E48(dst + 2, a.s[flags[0]], 1);
+    strncpy_x001A0E48(dst + 3, b.s[flags[1]], 1);
+    strncpy_x001A0E48(dst + 4, c.s[flags[2]], 1);
+}
+__asm__("# rebind func_001A0E48 0x001A0E48");
 int atoi_x001A0F28(const char *) __asm__("func_001221D8");
 typedef struct SudChars2_x001A0F28 {
     char c[2];
