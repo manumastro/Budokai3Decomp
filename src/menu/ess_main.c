@@ -877,15 +877,14 @@ extern s32 D_0058F5D0[];
 extern s32 D_0058F5D4[];
 extern void amCdFs_ReleaseCache(s32);
 
-#if 0
-// differs: the original keeps the loop count in a1 and tests 0 < n before setting up the walking pointer; mine orders the pointer and index set-up differently (tried for, do-while and walking pointer forms)
 void func_0026D610(s32 a0) {
     s32 i;
     s32 *p;
     s32 n;
+
+    i = 0;
     n = D_0058F5D0[0];
     if (0 < n) {
-        i = 0;
         p = D_0058F5D0;
         do {
             if (p[1] == a0) {
@@ -897,10 +896,8 @@ void func_0026D610(s32 a0) {
         } while (i < n);
     }
     D_0058F5D4[n] = a0;
-    D_0058F5D0[0] = n + 1;
+    D_0058F5D0[0] = D_0058F5D0[0] + 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D610);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main", func_0026D6A0);
 #if 0
 // differs: a switch on the mode: the original keeps the block pointer in a1/t3 and tests case 3 first with its constant in v1; mine lays the registers out differently
