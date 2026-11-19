@@ -187,7 +187,30 @@ int scePadInit(int a0)
     }
     return scePadInit2(a0);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116690);
+extern void (*D_003F85D0_x00116690)(int port) __asm__("D_003EDD08");
+extern void *D_0077C380_x00116690 __asm__("D_00478C00");
+typedef struct {
+    int f0;
+    int f4;
+    int f8;
+    int port;
+} PadDmaData_x00116690;
+void func_00116690_x00116690(volatile PadDmaData_x00116690 *dd) __asm__("func_00116690");
+/* _pad_intr_hdr: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00397780.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00116690_x00116690(volatile PadDmaData_x00116690 *dd)
+{
+    void (*cb)(int);
+
+    cb = D_003F85D0_x00116690;
+    if (cb != 0) {
+        void *oldgp;
+        __asm__ __volatile__("move           %0, $28\n"                                                     "\tlw            $28, %1"                                                      : "=&r"(oldgp)                                                                   : "m"( D_0077C380_x00116690));
+        cb(dd->port);
+        __asm__ __volatile__("move           $28, %0"                                                       :                                                                              : "r"(oldgp));
+    }
+    __asm__ __volatile__(".set noreorder\n\t"                                                           "sync\n\t"                                                                     ".set reorder"                                                                 : : : "memory");
+    __asm__ __volatile__(".set noreorder\n\t"                                                           "ei\n\t"                                                                       ".set reorder"                                                                 : : : "memory");
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", scePadInit2);
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_001167D0);
 typedef struct {
