@@ -1,7 +1,110 @@
 /* newlib objects were assembled without delay-slot filling: as-flags: -O1 */
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011B4E8);
+typedef int __int32_t_x0011B4E8;
+typedef unsigned int __uint32_t_x0011B4E8;
+typedef union {
+    double value;
+    struct {
+        __uint32_t_x0011B4E8 lsw;
+        __uint32_t_x0011B4E8 msw;
+    } parts;
+} ieee_double_shape_type_x0011B4E8;
+extern double atan_x0011B4E8(double x) __asm__("func_0011E548");
+extern double fabs_x0011B4E8(double x, ...) __asm__("func_0011EA10");
+static const double
+tiny_x0011B4E8 = 1.0e-300,
+zero_x0011B4E8 = 0.0,
+pi_o_4_x0011B4E8 = 7.8539816339744827900E-01,
+pi_o_2_x0011B4E8 = 1.5707963267948965580E+00,
+pi_x0011B4E8 = 3.1415926535897931160E+00,
+pi_lo_x0011B4E8 = 1.2246467991473531772E-16;
+double func_0011B4E8_x0011B4E8(double y, double x) __asm__("func_0011B4E8");
+/* __ieee754_atan2: from https://github.com/denzi-gh/crashwoc-decomp-ps2 (src/sdk/newlib/libm/math/e_atan2.c, GPL-3.0); ee-gcc 2.96 -O2 -G0 */
+double func_0011B4E8_x0011B4E8(double y, double x)
+{
+    double z;
+    __int32_t_x0011B4E8 k, m, hx, hy, ix, iy;
+    __uint32_t_x0011B4E8 lx, ly;
+    do { ieee_double_shape_type_x0011B4E8 ew_u; ew_u.value = (x); (hx) = ew_u.parts.msw; (lx) = ew_u.parts.lsw; } while (0);
+    ix = hx & 0x7fffffff;
+    do { ieee_double_shape_type_x0011B4E8 ew_u; ew_u.value = (y); (hy) = ew_u.parts.msw; (ly) = ew_u.parts.lsw; } while (0);
+    iy = hy & 0x7fffffff;
+    if (((ix | ((lx | -lx) >> 31)) > 0x7ff00000) ||
+        ((iy | ((ly | -ly) >> 31)) > 0x7ff00000)) {
+        return x + y;
+    }
+    if (((hx - 0x3ff00000) | lx) == 0) {
+        return atan_x0011B4E8(y);
+    }
+    m = ((hy >> 31) & 1) | ((hx >> 30) & 2);
+    if ((iy | ly) == 0) {
+        switch (m) {
+        case 0:
+        case 1:
+            return y;
+        case 2:
+            return pi_x0011B4E8 + tiny_x0011B4E8;
+        case 3:
+            return -pi_x0011B4E8 - tiny_x0011B4E8;
+        }
+    }
+    if ((ix | lx) == 0) {
+        return (hy < 0) ? -pi_o_2_x0011B4E8 - tiny_x0011B4E8 : pi_o_2_x0011B4E8 + tiny_x0011B4E8;
+    }
+    if (ix == 0x7ff00000) {
+        if (iy == 0x7ff00000) {
+            switch (m) {
+            case 0:
+                return pi_o_4_x0011B4E8 + tiny_x0011B4E8;
+            case 1:
+                return -pi_o_4_x0011B4E8 - tiny_x0011B4E8;
+            case 2:
+                return 3.0 * pi_o_4_x0011B4E8 + tiny_x0011B4E8;
+            case 3:
+                return -3.0 * pi_o_4_x0011B4E8 - tiny_x0011B4E8;
+            }
+        } else {
+            switch (m) {
+            case 0:
+                return zero_x0011B4E8;
+            case 1:
+                return -zero_x0011B4E8;
+            case 2:
+                return pi_x0011B4E8 + tiny_x0011B4E8;
+            case 3:
+                return -pi_x0011B4E8 - tiny_x0011B4E8;
+            }
+        }
+    }
+    if (iy == 0x7ff00000) {
+        return (hy < 0) ? -pi_o_2_x0011B4E8 - tiny_x0011B4E8 : pi_o_2_x0011B4E8 + tiny_x0011B4E8;
+    }
+    k = (iy - ix) >> 20;
+    if (k > 60) {
+        z = pi_o_2_x0011B4E8 + 0.5 * pi_lo_x0011B4E8;
+    } else if (hx < 0 && k < -60) {
+        z = 0.0;
+    } else {
+        z = atan_x0011B4E8(fabs_x0011B4E8(y / x));
+    }
+    switch (m) {
+    case 0:
+        return z;
+    case 1: {
+        __uint32_t_x0011B4E8 zh;
+        do { ieee_double_shape_type_x0011B4E8 gh_u; gh_u.value = (z); (zh) = gh_u.parts.msw; } while (0);
+        do { ieee_double_shape_type_x0011B4E8 sh_u; sh_u.value = (z); sh_u.parts.msw = (zh ^ 0x80000000); (z) = sh_u.value; } while (0);
+    }
+        return z;
+    case 2:
+        return pi_x0011B4E8 - (z - pi_lo_x0011B4E8);
+    default:
+        return (z - pi_lo_x0011B4E8) - pi_x0011B4E8;
+    }
+}
+__asm__("# rebind func_0011B4E8 0x0011B4E8");
+__asm__("# noswap func_0011B4E8");
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011B828);
 typedef union {
     float value;

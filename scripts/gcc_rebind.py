@@ -333,6 +333,20 @@ def rebind(text, extra=(), log=sys.stderr):
                 drop.add(label)
                 if re.fullmatch(r"\$L\d+", label):
                     jlabels[label] = base
+        # a marked function's own static constants (func_insert.py tags them `_xADDR`) that no code names any more:
+        # ee-gcc folded their values into the instructions (li.d), so their definitions only add data
+        tags = tuple(f"_x{int(a, 16):08X}" for _, a in marks)
+        cur = ".text"
+        used, own = set(), set()
+        for ln in lines:
+            cur = section_of(ln, cur)
+            m = LABEL.match(ln)
+            code = ln.split("#", 1)[0]
+            if cur != ".text" and m and m.group(1).endswith(tags):
+                own.add(m.group(1))
+            elif not re.match(r"^\s*\.(type|size|globl|local)\b", code):
+                used |= set(re.findall(r"[$\w.]+", code))
+        drop |= own - used
         # data only the dropped data pointed at (the strings of a rebound table of string pointers) goes too
         if drop:
             drop |= orphans(lines, drop)
