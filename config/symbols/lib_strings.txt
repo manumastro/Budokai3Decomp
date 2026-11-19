@@ -181,7 +181,8 @@ mwPlyStartAfsLp = 0x00186200; // type:func
 mwPlyGetSlFname = 0x00186288; // type:func
 mwPlyLinkStm = 0x00186430; // type:func
 MWSST_Create = 0x00186B38; // type:func
-MWSTM_ReqStart = 0x00187500; // type:func
+// its "MWSTM_ReqStart" error string names the function it calls (func_00188128), not this one
+func_00187500 = 0x00187500; // type:func
 mwlSfdExecDecSvrPlaying = 0x001875C0; // type:func
 mwPlyExecSvrHndl = 0x00187B40; // type:func
 MWSFSVR_IsSvrBdrHndl = 0x00187D40; // type:func
