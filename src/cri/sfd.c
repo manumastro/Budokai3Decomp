@@ -4348,7 +4348,15 @@ void func_0018A1B0(void) {
 
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A1B8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A318);
+void func_0018A318_x0018A318(char **areas, int *sizes, char *base) __asm__("func_0018A318");
+/* sfbuf_MakeBufPtr: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfdbuf.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0018A318_x0018A318(char **areas, int *sizes, char *base) {
+    int i;
+    for (i = 0; i < 8; i++) {
+        areas[i] = base;
+        base += sizes[i];
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A358);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A420);
 extern void func_0034BD98_x0018A478(void *sj, int kind) __asm__("func_0018A4B8");
