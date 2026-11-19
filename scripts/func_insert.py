@@ -210,6 +210,9 @@ def isolate(item, pad=0):
     if item.get("noswap"):
         # its original object was assembled with gas -O1: gas fills none of its delay slots (scripts/gcc_rebind.py)
         tail += f'\n__asm__("# noswap {name}");'
+    if item.get("fphazard"):
+        # its assembler kept the FPU compare hazard nop (scripts/gcc_rebind.py fp_hazard)
+        tail += f'\n__asm__("# fphazard {name}");'
     return "\n".join(out) + "\n" + func + tail
 
 

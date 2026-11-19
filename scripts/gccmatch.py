@@ -296,7 +296,7 @@ def compile_matrix(src, versions, flagsets, how, defines=(), include_dirs=("incl
             # as the build does: a REBIND_DATA function's own data bound to the executable's (gcc_rebind.py)
             import gcc_rebind
             t = asm.read_text(errors="replace")
-            if "rebind" in t or ".b3stub" in t or "noswap" in t:
+            if "rebind" in t or ".b3stub" in t or "noswap" in t or "fphazard" in t:
                 t2 = gcc_rebind.rebind(t, [f"-I{ROOT / d}" for d in include_dirs] + file_as_flags(src),
                                        log=open(os.devnull, "w"))
                 if t2 != t:

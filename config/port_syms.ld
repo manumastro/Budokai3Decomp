@@ -10,6 +10,7 @@ dpdiv = 0x00121C78;
 litodp = 0x00121F28;
 dptoli = 0x00121FE0;
 __divdi3 = 0x0011F758;
+__moddi3 = 0x0011FDF0;
 dptofp = 0x001220B0;
 SoftFloat_DoubleAdd = 0x00121930;
 SoftFloat_UnpackAndCompare = 0x00121ED8;

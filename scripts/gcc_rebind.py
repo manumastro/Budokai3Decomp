@@ -246,8 +246,38 @@ def no_swap(text):
     return "\n".join(out)
 
 
+FPHAZARD = re.compile(r"^\s*#\s*fphazard\s+(\S+)\s*$", re.M)
+
+
+def fp_hazard(text):
+    """Functions marked `# fphazard NAME` (a Sony SDK object whose assembler kept the FPU compare hazard): ee-gcc
+    writes `#nop` after a `c.cond.fmt` that a bc1t/bc1f reads; the SDK's gas emitted that nop, ours (r5900, with
+    cop interlocks) does not, so it is written out (_sceSnprintf's `%f` zero test, func_0010C048)."""
+    names = set(FPHAZARD.findall(text))
+    if not names:
+        return text
+    out = []
+    cur = None
+    prev_cmp = False
+    for ln in text.split("\n"):
+        code = ln.split("#", 1)[0]
+        m = re.match(r"^\s*\.ent\s+(\S+)", code)
+        if m:
+            cur = m.group(1) if m.group(1) in names else None
+        elif re.match(r"^\s*\.end\s+", code):
+            cur = None
+        if cur and prev_cmp and ln.strip() == "#nop":
+            out.append("\tnop")
+            prev_cmp = False
+            continue
+        if code.strip():
+            prev_cmp = bool(re.match(r"^\s*c\.[a-z]+\.[sd]\s", code))
+        out.append(ln)
+    return "\n".join(out)
+
+
 def rebind(text, extra=(), log=sys.stderr):
-    text = no_swap(strip_stubs(text))
+    text = fp_hazard(no_swap(strip_stubs(text)))
     marks = MARK.findall(text)
     if not marks:
         return text

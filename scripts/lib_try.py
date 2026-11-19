@@ -133,7 +133,7 @@ def compile_one(src, rel, keep, build_mode=False):
     if rc != 0 or not asm.exists():
         return None, out, work
     t = asm.read_text(errors="replace")
-    if "rebind" in t or ".b3stub" in t or "noswap" in t:
+    if "rebind" in t or ".b3stub" in t or "noswap" in t or "fphazard" in t:
         import gcc_rebind
         import os
         t2 = gcc_rebind.rebind(t, [f"-I{ROOT / d}" for d in inc], log=open(os.devnull, "w"))
@@ -163,7 +163,7 @@ def try_snippet(name, snippet_text, quiet=False):
     item = {"addr": addr, "name": name, "decls": decls, "func": func}
     # markers a snippet may carry in a comment: B3:noswap (its object was assembled with gas -O1: gcc_rebind.no_swap),
     # B3:rebind (its own constants / jump tables bound to the executable's copy: gcc_rebind.py)
-    for k in ("noswap", "rebind"):
+    for k in ("noswap", "rebind", "fphazard"):
         if re.search(rf"\bB3:{k}\b", snippet_text):
             item[k] = True
     text = FI.isolate(item)
