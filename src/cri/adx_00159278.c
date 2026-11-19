@@ -13089,7 +13089,45 @@ void func_0015D708_x0015D708(s32 arg0, s32 arg1) __asm__("func_0015D708");
 void func_0015D708_x0015D708(s32 arg0, s32 arg1) {
     ADXERR_CallErrFunc1_x0015D708(arg1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015D720);
+typedef struct { int rtdir; int nrtry; int speed; int dtype; int rdmode; } SprmD_x0015D720;
+extern volatile char D_00411128_x0015D720[12] __asm__("D_00411128");
+extern volatile char D_00411134_x0015D720 __asm__("D_00411134");
+extern volatile char D_00411135_x0015D720 __asm__("D_00411135");
+extern volatile char D_00411136_x0015D720 __asm__("D_00411136");
+extern volatile char D_00411137_x0015D720 __asm__("D_00411137");
+extern volatile char D_00411138_x0015D720[29] __asm__("D_00411138");
+extern char D_004617E0_x0015D720[] __asm__("D_004617E0");
+extern char D_004617E8_x0015D720[] __asm__("D_004617E8");
+void func_0015D708_x0015D720(void *obj, char *msg) __asm__("func_0015D708");
+void func_001635A0_x0015D720(void *fn, void *obj) __asm__("func_001635A0");
+void func_00161F18_x0015D720(char *name, void *fn, int x) __asm__("func_00161F18");
+void func_00162250_x0015D720(char *name) __asm__("func_00162250");
+int func_0016A798_x0015D720() __asm__("func_0016A798");
+int func_00166120_x0015D720() __asm__("func_00166120");
+void func_00167AB8_x0015D720(int, int, int, int) __asm__("func_00167AB8");
+void func_00167AD8_x0015D720(int) __asm__("func_00167AD8");
+void func_0015D720_x0015D720(SprmD_x0015D720 *sprmd) __asm__("func_0015D720");
+void func_0015D720_x0015D720(SprmD_x0015D720 *sprmd)
+{
+    D_00411128_x0015D720;
+    D_00411134_x0015D720;
+    D_00411135_x0015D720;
+    D_00411136_x0015D720;
+    D_00411137_x0015D720;
+    D_00411138_x0015D720;
+    func_001635A0_x0015D720(func_0015D708_x0015D720, 0);
+    func_00161F18_x0015D720(D_004617E0_x0015D720, func_0016A798_x0015D720, 0);
+    func_001635A0_x0015D720(func_0015D708_x0015D720, 0);
+    func_00161F18_x0015D720(D_004617E8_x0015D720, func_00166120_x0015D720, 0);
+    func_00162250_x0015D720(D_004617E8_x0015D720);
+    if (sprmd != 0) {
+        func_00167AB8_x0015D720(sprmd->speed, sprmd->dtype, sprmd->rdmode, sprmd->nrtry);
+        func_00167AD8_x0015D720(sprmd->rtdir);
+    } else {
+        func_00167AB8_x0015D720(0, 0, 0, 0);
+        func_00167AD8_x0015D720(0);
+    }
+}
 typedef char Sint8_x0015D850;
 typedef signed int Sint32_x0015D850;
 extern int* sceCdCallback_x0015D850(void (*func)(int)) __asm__("sceCdCallback");

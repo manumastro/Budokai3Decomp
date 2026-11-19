@@ -2533,7 +2533,45 @@ Sint32_x0015FC98 func_0015FC98_x0015FC98(Sint8_x0015FC98 *adr, Sint32_x0015FC98 
     *endsiz = siz;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", func_0015FCD8);
+typedef struct { char *data; int len; } Ck_FCD8_x0015FCD8;
+struct Sj_FCD8_x0015FCD8;
+typedef struct { char pad[0x18]; void (*get_chunk)(struct Sj_FCD8_x0015FCD8 *, int, int, Ck_FCD8_x0015FCD8 *); void (*unget_chunk)(struct Sj_FCD8_x0015FCD8 *, int, Ck_FCD8_x0015FCD8 *); void (*put_chunk)(struct Sj_FCD8_x0015FCD8 *, int, Ck_FCD8_x0015FCD8 *); } Vt_FCD8_x0015FCD8;
+typedef struct Sj_FCD8_x0015FCD8 { Vt_FCD8_x0015FCD8 *interface; } Sj_FCD8_x0015FCD8;
+typedef struct { char pad[0x14]; Sj_FCD8_x0015FCD8 *input_sj; } Obj_FCD8_x0015FCD8;
+void *memset_x0015FCD8(void *, int, unsigned int) __asm__("memset");
+void func_0016F050_x0015FCD8(Ck_FCD8_x0015FCD8 *, int, Ck_FCD8_x0015FCD8 *, Ck_FCD8_x0015FCD8 *) __asm__("func_0016F050");
+int func_0015FCD8_x0015FCD8(Obj_FCD8_x0015FCD8 *handle, int channels, int samples) __asm__("func_0015FCD8");
+int func_0015FCD8_x0015FCD8(Obj_FCD8_x0015FCD8 *handle, int channels, int samples)
+{
+  int block_bytes;
+  int requested_bytes;
+  Sj_FCD8_x0015FCD8 *sj;
+  int first_bytes;
+  int second_bytes;
+  Ck_FCD8_x0015FCD8 chunk;
+  Ck_FCD8_x0015FCD8 remainder;
+  sj = handle->input_sj;
+  if (handle->input_sj == 0)
+  {
+    return 0;
+  }
+  block_bytes = channels * 18;
+  requested_bytes = (samples / 32) * block_bytes;
+  sj->interface->get_chunk(sj, 0, requested_bytes, &chunk);
+  second_bytes = (chunk.len / block_bytes) * block_bytes;
+  first_bytes = second_bytes;
+  memset_x0015FCD8(chunk.data, 0, first_bytes);
+  func_0016F050_x0015FCD8(&chunk, first_bytes, &chunk, &remainder);
+  sj->interface->put_chunk(sj, 1, &chunk);
+  sj->interface->unget_chunk(sj, 0, &remainder);
+  sj->interface->get_chunk(sj, 0, requested_bytes - first_bytes, &chunk);
+  second_bytes = (chunk.len / block_bytes) * block_bytes;
+  memset_x0015FCD8(chunk.data, 0, second_bytes);
+  func_0016F050_x0015FCD8(&chunk, second_bytes, &chunk, &remainder);
+  sj->interface->put_chunk(sj, 1, &chunk);
+  sj->interface->unget_chunk(sj, 0, &remainder);
+  return ((first_bytes + second_bytes) / block_bytes) * 32;
+}
 void func_0015FE80(void) {
     func_00153028();
 }
