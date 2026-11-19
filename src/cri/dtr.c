@@ -227,7 +227,47 @@ void DTR_Init_x001655B8(void)
 void func_00165620(void) {
     D_00411614 -= 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_00165638);
+typedef struct { signed char used, f1, f2, f3; int a, b; char padC[0x30 - 0xC]; int f30, f34, f38; int pad3C; } Dtr_5638_x00165638;
+extern Dtr_5638_x00165638 D_00411618_x00165638[32] __asm__("D_00411618");
+extern char D_00463328_x00165638[] __asm__("D_00463328");
+void func_0016DAD8_x00165638(void) __asm__("func_0016DAD8");
+void func_0016DAF0_x00165638(void) __asm__("func_0016DAF0");
+int scePrintf_x00165638(const char *, ...) __asm__("scePrintf");
+Dtr_5638_x00165638 *func_00165638_x00165638(int a, int b) __asm__("func_00165638");
+Dtr_5638_x00165638 *func_00165638_x00165638(int a, int b)
+{
+  Dtr_5638_x00165638 *d;
+  int i;
+  func_0016DAD8_x00165638();
+  for (i = 0; i < 32; i++)
+  {
+    d = &D_00411618_x00165638[i];
+    if (d->used == 0)
+    {
+      break;
+    }
+  }
+
+  if (i == 32)
+  {
+    scePrintf_x00165638(D_00463328_x00165638, 32, 32);
+    d = 0;
+  }
+  else
+  {
+    memset(d, 0, sizeof(Dtr_5638_x00165638));
+    d->f1 = 0;
+    d->f38 = 0x40;
+    d->a = a;
+    d->b = b;
+    d->f2 = 0;
+    d->f30 = 1;
+    d->f34 = 0;
+    d->used = 1;
+  }
+  func_0016DAF0_x00165638();
+  return d;
+}
 void func_00165728(s8 *arg0) {
     func_0016DAD8();
     *arg0 = 0;

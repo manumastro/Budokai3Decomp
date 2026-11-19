@@ -3193,7 +3193,43 @@ void func_001514C8_x001514C8(AdxbObj_x001514C8 *d)
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151650);
+typedef struct { char pad[0x10]; int nblk; char pad14[0x20 - 0x14]; short *in; short *out; } Pd_1650_x00151650_;
+typedef struct { int pad0; int stat; Pd_1650_x00151650_ *pd; char padC[0x68 - 0xC]; int f68, f6C, f70; int pad74; int (*cb1)(void *, int *, int *, int *); void *cb1obj; void (*cb2)(void *, int, int); void *cb2obj; char pad88[0x90 - 0x88]; int f90, f94; char pad98[0xE8 - 0x98]; int fE8; } Obj_1650_x00151650_;
+extern void (*D_00401094_x00151650_)(Obj_1650_x00151650_ *, int, short *, short *) __asm__("D_00401094");
+int func_00161A88_x00151650_(Pd_1650_x00151650_ *) __asm__("func_00161A88");
+void func_00161B98_x00151650_(Pd_1650_x00151650_ *) __asm__("func_00161B98");
+void func_00161B68_x00151650_(Pd_1650_x00151650_ *) __asm__("func_00161B68");
+void func_00151300_x00151650_(Obj_1650_x00151650_ *) __asm__("func_00151300");
+void func_001514C8_x00151650_(Obj_1650_x00151650_ *) __asm__("func_001514C8");
+void func_00151650_x00151650_(Obj_1650_x00151650_ *o) __asm__("func_00151650");
+void func_00151650_x00151650_(Obj_1650_x00151650_ *o)
+{
+    Pd_1650_x00151650_ *pd;
+    int i;
+
+    if (o->stat == 1) {
+        if (func_00161A88_x00151650_(o->pd) == 0) {
+            o->cb1(o->cb1obj, &o->f68, &o->f6C, &o->f70);
+            func_00151300_x00151650_(o);
+            o->stat = 2;
+        }
+    }
+    if (o->stat == 2) {
+        func_00161B98_x00151650_(o->pd);
+        if (func_00161A88_x00151650_(o->pd) == 3) {
+            if (o->fE8 != 0) {
+                pd = o->pd;
+                for (i = 0; i < pd->nblk * 32; i++) {
+                    D_00401094_x00151650_(o, pd->in[i], &pd->in[i], &pd->out[i]);
+                }
+            }
+            func_001514C8_x00151650_(o);
+            func_00161B68_x00151650_(o->pd);
+            o->cb2(o->cb2obj, o->f94, o->f90);
+            o->stat = 3;
+        }
+    }
+}
 typedef int s32_x00151790;
 typedef s32_x00151790 ptrdiff_t_x00151790;
 typedef char Sint8_x00151790;
