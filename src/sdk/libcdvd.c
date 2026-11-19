@@ -80,7 +80,46 @@ void func_001181F8_x001181F8(void *arg)
         *(volatile int *)&D_004878B4_x001181F8 = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", sceCdInitEeCB);
+typedef struct {
+    int status;
+    void (*entry)(void *);
+    void *stack;
+    int stackSize;
+    void *gpReg;
+    int initPriority;
+    int currentPriority;
+    unsigned int attr;
+    unsigned int option;
+} ThreadParam_x001182C8;
+extern ThreadParam_x001182C8 cb_thread_x001182C8 __asm__("D_00478D18");
+extern int cb_thid_x001182C8 __asm__("D_003EDD94");
+extern char cb_option_x001182C8[] __asm__("D_0045DBA0");
+extern void cb_loop_x001182C8(void *) __asm__("func_001181F8");
+extern int CreateThread_x001182C8(ThreadParam_x001182C8 *) __asm__("CreateThread");
+extern int StartThread_x001182C8(int, void *) __asm__("func_0010B3A0");
+extern int ChangeThreadPriority_x001182C8(int, int) __asm__("ChangeThreadPriority");
+int sceCdInitEeCB_x001182C8(int prio, void *stack, int stacksize) __asm__("sceCdInitEeCB");
+/* sceCdInitEeCB: written by hand after socom2-decomp's version (src/lib/sdk/libcdvd.c), this one without its
+ * GetThreadId / ReferThreadStatus */
+int sceCdInitEeCB_x001182C8(int prio, void *stack, int stacksize)
+{
+    int ret = 1;
+
+    if (cb_thid_x001182C8 == 0) {
+        cb_thread_x001182C8.stackSize = stacksize;
+        cb_thread_x001182C8.entry = cb_loop_x001182C8;
+        cb_thread_x001182C8.stack = stack;
+        cb_thread_x001182C8.initPriority = prio;
+        cb_thread_x001182C8.option = (unsigned int)cb_option_x001182C8;
+        cb_thread_x001182C8.gpReg = 0;
+        cb_thid_x001182C8 = CreateThread_x001182C8(&cb_thread_x001182C8);
+        StartThread_x001182C8(cb_thid_x001182C8, 0);
+    } else {
+        ChangeThreadPriority_x001182C8(cb_thid_x001182C8, prio);
+        ret = 0;
+    }
+    return ret;
+}
 extern char D_004878D8_x00118368[] __asm__("D_003EDDE0");
 extern void _sceCd_cd_callback_x00118368(char *) __asm__("func_00118158");
 typedef struct {int n,m;unsigned char *a,*b;unsigned char x[64],y[64];} Req_x00118368;
