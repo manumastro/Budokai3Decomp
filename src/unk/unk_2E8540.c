@@ -405,7 +405,66 @@ void func_002E95C0(char *o) {
     }
     *t = NULL;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9600);
+extern s32 D_005C9F14[];
+extern s32 D_005C9F1C[];
+extern s32 D_005C9F68[];
+extern s32 D_005C9F6C[];
+extern s32 D_005C9F60[];
+extern s32 D_005C9F64[];
+extern s32 D_004573C0[];
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern s32 gBtlSys;
+extern void *gBattle;
+extern void amModel_SetCurrent(s32, s32);
+extern void func_0022C060(s32, f32);
+
+void func_002E9600(void) {
+    s32 var_s2;
+    s32 var_s1;
+    s32 var_s0;
+    s32 temp_v1;
+    s32 temp_a0;
+
+    var_s2 = gBtlSys;
+    var_s1 = 0;
+    if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0 && D_005C9F14[0] != 0) {
+        if (D_005C9F1C[0] != 0 && D_005C9F68[0] != 0) {
+            temp_a0 = *(s32 *)((u8 *)var_s2 + 0xE64);
+            D_00470704 = temp_a0;
+            D_0047070C = 0x04001000;
+            D_00470708 = 0;
+            amModel_SetCurrent(temp_a0, 0x04001000);
+            D_00470238 = 0;
+            func_0022C060(D_005C9F68[0], 1.0f);
+        }
+        if (D_005C9F6C[0] != 0) {
+            temp_v1 = *(s32 *)(D_004573C0[D_005C9F60[0]] + D_005C9F64[0] * 16);
+            switch (temp_v1) {
+            case 0:
+                var_s1 = *(s32 *)((u8 *)var_s2 + 0xE60);
+                var_s0 = 0x04000000;
+                break;
+            case 1:
+                var_s1 = *(s32 *)((u8 *)var_s2 + 0xE84);
+                var_s0 = 0x04010000;
+                break;
+            case 2:
+                var_s1 = *(s32 *)((u8 *)var_s2 + 0xE64);
+                var_s0 = 0x04001000;
+                break;
+            }
+            D_00470704 = var_s1;
+            D_00470708 = 0;
+            D_0047070C = var_s0;
+            amModel_SetCurrent(var_s1, var_s0);
+            D_00470238 = 0;
+            func_0022C060(D_005C9F6C[0], 1.0f);
+        }
+    }
+}
 void func_002E9770(void) {
     if (D_005C9F10[0] != 0) {
         amTask_Kill((void *)D_005C9F10[0]);
