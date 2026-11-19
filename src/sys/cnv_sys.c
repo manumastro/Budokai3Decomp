@@ -73,7 +73,9 @@ INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0B70);
 INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0BC0);
 INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0C10);
 INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0C60);
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0CB0);
+void func_002A0CB0(s32 arg0, s32 arg1, s32 arg2) {
+    *(s32 *)((u8 *)((u8 *)(arg1 * 0xE0) + (s32)*(s32 *)(*(s32 *)((u8 *)D_004708CC + 0x44) + arg0 * 4)) + 0x30) = arg2;
+}
 INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0CE0);
 void func_002A0D20(s32 arg0, s32 arg1, s32 arg2) {
     *(s32 *)(*(s32 *)(*(s32 *)((u8 *)D_004708CC + 0x44) + (arg0 * 4)) + (arg1 * 0xE0)) = arg2;
