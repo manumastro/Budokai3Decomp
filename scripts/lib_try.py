@@ -141,7 +141,7 @@ def compile_one(src, rel, keep, build_mode=False):
             asm = work / "out_rb.s"  # ee-gcc's container owns its output file
             asm.write_text(t2)
     obj = asm.with_suffix(".o")
-    err = G.assemble(asm, obj, version, "gas", inc)
+    err = G.assemble(asm, obj, version, "gas", inc, G.file_as_flags(rel))
     if err:
         return None, "assembler: " + err, work
     return obj, "", work
@@ -249,6 +249,27 @@ def try_snippet(name, snippet_text, quiet=False):
         if bad:
             ok = False
             print("UNDEFINED: the code matches but these symbols are not known to the link: " + " ".join(bad[:8]))
+    if ok and kind == "c" and not os.environ.get("LIB_TRY_NO_BUILD_MODE"):
+        # the build compiles the whole file: the new function can change ANOTHER C function of the file (ee-gcc
+        # 2.96 CSE/name allocation); func_insert --real refuses those, so say it here (lib_filecheck's rule)
+        asm_names = set(re.findall(r'INCLUDE_ASM\("[^"]+", (\w+)\)', body))
+        syms = G.symbol_addresses()
+        others = []
+        for n2, (w2, m2) in fns.items():
+            if n2 == name or n2 in asm_names:
+                continue
+            mm = re.fullmatch(r"func_([0-9A-F]{8})", n2)
+            a2 = int(mm.group(1), 16) if mm else syms.get(n2)
+            if a2 is None:
+                continue
+            d2, _ = G.compare(w2, m2, a2, rom)
+            if d2:
+                others.append(f"{n2}: {len(d2)} words differ")
+        if others:
+            ok = False
+            print("OTHERS: the function matches, but with it in the file the build compiles other functions "
+                  "differently (" + "; ".join(others[:4]) + "). Change how the function is written (names of "
+                  "locals/externs, declaration order, types) until the others are back.")
     if ok:
         print(f"MATCH {name}")
     return ok, item
