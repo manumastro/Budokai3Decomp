@@ -17421,8 +17421,80 @@ int func_0018E218_x0018E218(int a0, int (*a1)(int, int), int a2, int a3, int a4,
     }
     return r;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018E288);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018E400);
+s32 func_001999E0_x0018E288(void *, s32) __asm__("func_001999E0");
+s32 func_0018E8F8_x0018E288(void *, s32, s32, s32, s32) __asm__("func_0018E8F8");
+s32 func_0018E288_x0018E288(u8 *a0, s32 a1, s32 a2, s32 a3, s32 n) __asm__("func_0018E288");
+s32 func_0018E288_x0018E288(u8 *a0, s32 a1, s32 a2, s32 a3, s32 n)
+{
+    u8 *s;
+    u8 *o;
+    s32 r;
+    s32 a;
+    s32 b;
+
+    if (func_001999E0_x0018E288(a0, 6) == 0) return 1;
+    s = a0 + 0x1C24;
+    o = *(u8 **)(s + 8);
+    if (*(s32 *)(o + 0x2C) == -1) *(s32 *)(o + 0x2C) = a1;
+    if (*(s32 *)(o + 0x24) == -1) *(s32 *)(o + 0x24) = a1;
+    r = func_001999E0_x0018E288(a0, 0x1E);
+    if (r != -1) {
+        if (func_001999E0_x0018E288(a0, 0x37) != 0 ? a1 < *(s32 *)(o + 0x1C) : a1 == *(s32 *)(o + 0x24)) *(s32 *)(o + 0x2C) = r;
+    }
+    *(s32 *)(o + 0x1C) = a1;
+    if (*(s32 *)(o + 0x2C) != a1) return 1;
+    if (n >= 0) {
+        a = *(s32 *)(o + 0xC);
+        b = *(s32 *)(o + 0x10);
+        if (n < a) a = n;
+        if (n < b) b = n;
+        n -= a;
+        *(s32 *)(o + 0xC) = a;
+        *(s32 *)(o + 0x10) = b;
+    }
+    return func_0018E8F8_x0018E288(a0, *(s32 *)(s + 0x18), a2, a3, n);
+}
+s32 func_001999E0_x0018E400_______(void *, s32) __asm__("func_001999E0");
+s32 func_0018E5D8_x0018E400_______(void *, s32) __asm__("func_0018E5D8");
+s32 func_00195D50_x0018E400_______(void *, char *, s32) __asm__("func_00195D50");
+s32 func_0018E8F8_x0018E400_______(void *, s32, char *, s32, s32) __asm__("func_0018E8F8");
+void func_00195DC0_x0018E400_______(void *, s32) __asm__("func_00195DC0");
+void func_001960F0_x0018E400_______(void *, char *, s32) __asm__("func_001960F0");
+s32 func_0018E400_x0018E400_______(u8 *a0, s32 a1, char *buf, s32 len, s32 t) __asm__("func_0018E400");
+s32 func_0018E400_x0018E400_______(u8 *a0, s32 a1, char *buf, s32 len, s32 t)
+{
+    u8 *s;
+    u8 *o;
+    s32 r;
+    s32 n;
+    s32 x;
+
+    if (func_001999E0_x0018E400_______(a0, 5) == 0) return 1;
+    s = a0 + 0x1C24;
+    o = *(u8 **)(s + 8);
+    if (*(s32 *)(o + 0x28) == -1) *(s32 *)(o + 0x28) = func_0018E5D8_x0018E400_______(a0, a1);
+    if (*(s32 *)(o + 0x20) == -1) *(s32 *)(o + 0x20) = a1;
+    r = func_001999E0_x0018E400_______(a0, 0x1D);
+    if (r != -1) {
+        if (func_001999E0_x0018E400_______(a0, 0x37) != 0 ? a1 < *(s32 *)(o + 0x18) : a1 == *(s32 *)(o + 0x20)) {
+            if (*(s32 *)(o + 0x28) != r && len >= 4 && buf[0] == 0 && buf[1] == 0 && ((u8 *)buf)[2] == 1
+                && (((u8 *)buf)[3] == 0xB3 || ((u8 *)buf)[3] == 0xB8)) {
+                *(s32 *)(o + 0x28) = r;
+            }
+        }
+    }
+    *(s32 *)(o + 0x18) = a1;
+    if (*(s32 *)(o + 0x28) != a1) return 1;
+    len = func_00195D50_x0018E400_______(a0, buf, len);
+    if (len <= 0) return 0;
+    x = func_0018E8F8_x0018E400_______(a0, *(s32 *)(s + 0x14), buf, len, t);
+    if (x != 1) {
+        func_00195DC0_x0018E400_______(a0, len);
+    } else {
+        func_001960F0_x0018E400_______(a0, buf, len);
+    }
+    return x;
+}
 typedef struct SfdSj_x0018E5D8 SfdSj_x0018E5D8;
 typedef struct SfdSjChunk_x0018E5D8 {
     char *data;

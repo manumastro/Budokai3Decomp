@@ -846,7 +846,58 @@ Sint32_x00168F08 func_00168F08_x00168F08(const Char8_x00168F08* flist, Sint8_x00
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00169068);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00169258);
+typedef struct { char *base; unsigned int num; int f8; int fC; } Tbl_9258_x00169258;
+extern Tbl_9258_x00169258 D_00413D00_x00169258 __asm__("D_00413D00");
+extern int D_00413D14_x00169258 __asm__("D_00413D14");
+extern char D_00463C48_x00169258[] __asm__("D_00463C48");
+extern char D_00463C70_x00169258[] __asm__("D_00463C70");
+extern char D_00463C90_x00169258[] __asm__("D_00463C90");
+void func_00168B48_x00169258(char *, char *) __asm__("func_00168B48");
+void func_00164D38_x00169258(int) __asm__("func_00164D38");
+int func_001650B0_x00169258(int) __asm__("func_001650B0");
+void func_00169488_x00169258(void) __asm__("func_00169488");
+int scePrintf_x00169258(const char *, ...) __asm__("scePrintf");
+int func_00169258_x00169258(void) __asm__("func_00169258");
+int func_00169258_x00169258(void)
+{
+    char path[256];
+    char *base;
+    char *ent;
+    unsigned int i;
+    int r;
+    int cnt = 0;
+    unsigned int n;
+
+    base = D_00413D00_x00169258.base;
+    if (base == 0) {
+        return 0;
+    }
+    n = D_00413D00_x00169258.num;
+    for (i = 0; i < n; i++) {
+        ent = base + (D_00413D00_x00169258.f8 * 8 + i * (D_00413D00_x00169258.fC + 1));
+        func_00168B48_x00169258(ent, path);
+        if (*ent != 0) {
+            func_00164D38_x00169258(0x6900);
+            r = func_001650B0_x00169258(((int *)base)[i * 2]);
+            func_00164D38_x00169258(0x6901);
+            if (r < 0) {
+                if (D_00413D14_x00169258 != 2) {
+                    scePrintf_x00169258(D_00463C48_x00169258, path);
+                }
+            } else {
+                cnt++;
+                if (D_00413D14_x00169258 != 2) {
+                    scePrintf_x00169258(D_00463C70_x00169258, path);
+                }
+            }
+        }
+    }
+    if (D_00413D14_x00169258 != 2) {
+        scePrintf_x00169258(D_00463C90_x00169258, cnt);
+    }
+    func_00169488_x00169258();
+    return 1;
+}
 s32 func_00168CD0_x001693C0(s32, s32) __asm__("func_00168CD0");
 extern s32 D_00413D00_x001693C0 __asm__("D_00413D00");
 void func_001693C0_x001693C0(u8 *arg0, s32 arg1, u8 *arg2, s32 arg3) __asm__("func_001693C0");

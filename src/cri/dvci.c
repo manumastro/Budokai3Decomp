@@ -1349,7 +1349,43 @@ Sint32_x00167778 dvCiLoadDirInfo_x00167778(Char8_x00167778* flist, Sint8_x001677
     return (((Uint32_x00167778)fcsize / (maxflen + 9)) * 8) + search_fstate_x00167778(fcbuf, temp) * (maxflen + 1);
 }
 __asm__("# rebind dvCiLoadDirInfo 0x00167778");
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167928);
+extern char D_0047F040_x00167928[] __asm__("D_0047F040");
+extern int D_00413740_x00167928 __asm__("D_00413740");
+extern int D_00413758_x00167928 __asm__("D_00413758");
+extern char D_00463790_x00167928[] __asm__("D_00463790");
+extern char D_004637C0_x00167928[] __asm__("D_004637C0");
+void *memset_x00167928(void *, int, unsigned int) __asm__("memset");
+void func_00167530_x00167928(void) __asm__("func_00167530");
+int func_00166F70_x00167928(int, int, int, unsigned int, int) __asm__("func_00166F70");
+int func_00167290_x00167928(int, int) __asm__("func_00167290");
+int scePrintf_x00167928(const char *, ...) __asm__("scePrintf");
+int func_00167928_x00167928(int a0, int a1, int a2, unsigned int a3, int t0) __asm__("func_00167928");
+int func_00167928_x00167928(int a0, int a1, int a2, unsigned int a3, int t0)
+{
+    memset_x00167928(D_0047F040_x00167928, 0, 0x1000);
+    if (D_00413740_x00167928 != 0) {
+        func_00167530_x00167928();
+    }
+    if (a0 == 0 || a2 == 0 || a1 == 0 || a3 == 0) {
+        func_00167530_x00167928();
+    }
+    if (a0 == 0) {
+        return 0;
+    }
+    if (a2 == 0) {
+        if (D_00413758_x00167928 == 0) {
+            scePrintf_x00167928(D_00463790_x00167928, 0);
+        }
+        return 0;
+    }
+    if (a1 == 0 || a3 == 0) {
+        if (D_00413758_x00167928 == 0) {
+            scePrintf_x00167928(D_004637C0_x00167928, 0);
+        }
+        return 0;
+    }
+    return (a3 / (t0 + 9)) * 8 + func_00167290_x00167928(a2, func_00166F70_x00167928(a2, a0, a1, a3 / (t0 + 9), t0)) * (t0 + 1);
+}
 typedef struct {
     unsigned int lsn;
     unsigned int size;
