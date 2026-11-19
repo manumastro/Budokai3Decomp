@@ -5938,7 +5938,80 @@ void func_00181FB8_x00181FB8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s
 void func_00181FB8_x00181FB8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
     func_001870E8_x00181FB8(arg1, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181FD0);
+extern char D_00465CD8_x00181FD0[] __asm__("D_00465CD8");
+extern char D_00465C38_x00181FD0[] __asm__("D_00465C38");
+extern char D_00465D00_x00181FD0[] __asm__("D_00465D00");
+extern char D_00465D28_x00181FD0[] __asm__("D_00465D28");
+extern char *volatile D_00484DB8_x00181FD0 __asm__("D_00484DB8");
+extern s32 D_00425260_x00181FD0 __asm__("D_00425260");
+extern volatile s32 D_004268B4_x00181FD0 __asm__("D_004268B4");
+extern s32 D_00425264_x00181FD0 __asm__("D_00425264");
+void func_001870E8_x00181FD0(char *) __asm__("func_001870E8");
+void func_00186E18_x00181FD0(void) __asm__("func_00186E18");
+void fn_80008FB0_x00181FD0(void) __asm__("fn_80008FB0");
+void func_0016E078_x00181FD0(void) __asm__("func_0016E078");
+void func_0016DB40_x00181FD0(void) __asm__("func_0016DB40");
+void func_0016E890_x00181FD0(void) __asm__("func_0016E890");
+s32 func_00187E70_x00181FD0(void) __asm__("func_00187E70");
+void func_00182420_x00181FD0(s32) __asm__("func_00182420");
+void func_00182190_x00181FD0(void *) __asm__("func_00182190");
+s64 func_001214F8_x00181FD0(float) __asm__("func_001214F8");
+s64 func_00121930_x00181FD0(s64, s64) __asm__("func_00121930");
+s32 func_00121FE0_x00181FD0(s64) __asm__("func_00121FE0");
+s32 mwPlySfdInit_x00181FD0(s32) __asm__("mwPlySfdInit");
+void func_001822C8_x00181FD0(void *) __asm__("func_001822C8");
+void func_0016A260_x00181FD0(void) __asm__("func_0016A260");
+void func_00181FB8_x00181FD0() __asm__("func_00181FB8");
+void func_0016A198_x00181FD0(void *, s32) __asm__("func_0016A198");
+void func_00184740_x00181FD0(void) __asm__("func_00184740");
+void func_00182148_x00181FD0(void *) __asm__("func_00182148");
+void func_00181FD0_x00181FD0(float *p) __asm__("func_00181FD0");
+void func_00181FD0_x00181FD0(float *p)
+{
+  float f;
+  volatile s32 *q;
+  s32 n;
+  if (p == 0)
+  {
+    func_001870E8_x00181FD0(D_00465CD8_x00181FD0);
+    return;
+  }
+  D_00484DB8_x00181FD0 = D_00465C38_x00181FD0;
+  func_00186E18_x00181FD0();
+  n = ((s32 *) p)[2] - 2;
+  if (n < 0)
+  {
+    n = 0;
+  }
+  ((s32 *) p)[2] = n;
+  if (D_00425260_x00181FD0 == 0)
+  {
+    fn_80008FB0_x00181FD0();
+    func_0016E078_x00181FD0();
+    func_0016DB40_x00181FD0();
+    func_0016E890_x00181FD0();
+    if (func_00187E70_x00181FD0() != 0)
+    {
+      func_00182420_x00181FD0(-0x65);
+      func_001870E8_x00181FD0(D_00465D00_x00181FD0);
+    }
+    func_00182190_x00181FD0(p);
+    q = &D_004268B4_x00181FD0;
+    f = p[0];
+    *q = 0;
+    if (mwPlySfdInit_x00181FD0(func_00121FE0_x00181FD0(func_00121930_x00181FD0(func_001214F8_x00181FD0(f * 1000.0f), 0x3FE0000000000000LL))) != 0)
+    {
+      func_001870E8_x00181FD0(D_00465D28_x00181FD0);
+    }
+    D_00425264_x00181FD0 = 1;
+    func_001822C8_x00181FD0(p);
+    func_0016A260_x00181FD0();
+    func_0016A198_x00181FD0(func_00181FB8_x00181FD0, 0);
+    func_00184740_x00181FD0();
+    func_00182148_x00181FD0(p);
+  }
+  D_00425260_x00181FD0++;
+}
 void func_00182148(void) {
     func_00186EF0(2, &func_00187730, 0);
     func_00186FA0(&func_00187778, 0);
@@ -17989,6 +18062,9 @@ int mwsst_CalcWork_x00186B38____(int *size0, int *size1, int *size2) __attribute
 int mwsst_CalcWork_x00186B38____(int *size0, int *size1, int *size2) {}
 int mwsst_CreateExt_x00186B38____(char *work, int size) __attribute__((weak, section(".b3stub")));
 int mwsst_CreateExt_x00186B38____(char *work, int size) {}
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m1fd010;
+extern int m1fd011;
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo) __asm__("MWSST_Create");
 /* MWSST_Create_x00186B38____: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfsst.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo)
