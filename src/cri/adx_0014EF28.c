@@ -4968,7 +4968,130 @@ int func_00153038_x00153038(signed char *ibuf, int nblk, short *obuf_l, short *d
 }
 /* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
 extern int b3p8_054c0e_0_x __asm__("p54c0e0");
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001531A8);
+extern const float D_00460EC8_x001531A8[256] __asm__("D_00460EC8");
+extern const float D_004612C8_x001531A8[256] __asm__("D_004612C8");
+int func_001531A8_x001531A8(signed char *ibuf, int nblk, short *obuf_l, short *dly_l, short *obuf_r, short *dly_r, short k0, short k1) __asm__("func_001531A8");
+int func_001531A8_x001531A8(signed char *ibuf, int nblk, short *obuf_l, short *dly_l, short *obuf_r, short *dly_r, short k0, short k1) 
+{
+	int qsigz;
+	int qsig_rz;
+	int dt16z;
+	float gainz;
+	float gain_rz;
+	float kf0z;
+	float kf1z;
+	float d0_lz;
+	float d1_lz;
+	float d0_rz;
+	float d1_rz;
+	float qsigfz;
+	float qsigf_rz;
+	int snoz;
+	int blkno2z;
+	unsigned char *ibufdtz;
+	unsigned char *ibufdt_rz;
+	short codez;
+    float dt_lz;
+    float dt_rz;
+
+    d0_lz = dly_l[0] * 65536;
+    d1_lz = dly_l[1] * 65536;
+    
+    d0_rz = dly_r[0] * 65536;
+    d1_rz = dly_r[1] * 65536;
+    
+    kf0z = (k0 * 16) / 65536.0f;
+    kf1z = (k1 * 16) / 65536.0f;
+    
+    ibufdt_rz = (unsigned char*)ibuf;
+    
+    for (blkno2z = 0; blkno2z < (nblk / 2); blkno2z++) 
+    {
+        ibufdtz = ibufdt_rz;
+        
+        ibufdt_rz += 18;
+        
+        codez = (unsigned short)(((*(unsigned short *)ibufdtz << 8) & 0xFF00) | ibufdtz[1]);
+        
+        if ((codez & 0x8000)) 
+        {
+            return blkno2z * 2;
+        }
+        
+        gainz = (codez & 0x1FFF) + 1;
+        
+        codez = (unsigned short)(((*(unsigned short *)ibufdt_rz << 8) & 0xFF00) | ibufdt_rz[1]);
+        
+        if ((codez & 0x8000))
+        {
+            return blkno2z * 2;
+        }
+
+        gain_rz = (codez & 0x1FFF) + 1;
+        
+        ibufdtz += 2;
+        ibufdt_rz += 2;
+        
+        for (snoz = 0; snoz < 32; snoz += 2)
+        {
+            qsigz = *ibufdtz++;
+            qsigfz = D_00460EC8_x001531A8[qsigz];
+            
+            qsig_rz = *ibufdt_rz++;
+            qsigf_rz = D_00460EC8_x001531A8[qsig_rz];
+
+            dt_lz = (kf0z * d0_lz) + (kf1z * d1_lz) + (qsigfz * gainz);
+            
+            d1_lz = d0_lz;
+            d0_lz = dt_lz;
+            
+            dt_rz = (kf0z * d0_rz) + (kf1z * d1_rz) + (qsigf_rz * gain_rz);
+            
+            d1_rz = d0_rz;
+            d0_rz = dt_rz;
+            
+            dt16z = d0_lz;
+            
+            *obuf_l++ = dt16z >> 16;
+            
+            dt16z = d0_rz;
+            
+            *obuf_r++ = dt16z >> 16;
+
+            qsigfz = D_004612C8_x001531A8[qsigz];
+            qsigf_rz = D_004612C8_x001531A8[qsig_rz];
+            
+            dt_lz = (kf0z * d0_lz) + (kf1z * d1_lz) + (qsigfz * gainz);
+            
+            d1_lz = d0_lz;
+            d0_lz = dt_lz;
+            
+            dt_rz = (kf0z * d0_rz) + (kf1z * d1_rz) + (qsigf_rz * gain_rz);
+            
+            d1_rz = d0_rz;
+            d0_rz = dt_rz;
+            
+            dt16z = d0_lz;
+            
+            *obuf_l++ = dt16z >> 16;
+            
+            dt16z = d0_rz;
+            
+            *obuf_r++ = dt16z >> 16;
+        }
+    }
+    
+    dly_l[0] = (int)d0_lz >> 16;
+    dly_l[1] = (int)d1_lz >> 16;
+    
+    dly_r[0] = (int)d0_rz >> 16;
+    dly_r[1] = (int)d1_rz >> 16;
+    
+    return nblk;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3p16_054c6a_0_x __asm__("b3a054c6a_0");
+extern int b3p16_054c6a_1_x __asm__("b3a054c6a_1");
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00153440);
 extern int adxd_mono_flag_x001536E0 __asm__("D_00401FF8");
 int adxd_decode_stereo_pair_x001536E0(unsigned char *src, int n, short *dstl, short *histl, short *dstr, short *histr,

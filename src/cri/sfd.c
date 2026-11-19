@@ -29175,7 +29175,29 @@ s32 func_001943F0_x001943F0(s32 a0, s32 a1) __asm__("func_001943F0");
 s32 func_001943F0_x001943F0(s32 a0, s32 a1) {
     return a1 - 4;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001943F8);
+typedef struct { unsigned char pad[0x74]; int picstat; int dlmmask; } SfdMpv_43F8_x001943F8;
+typedef struct { unsigned char pad[0x1C70]; SfdMpv_43F8_x001943F8 *mpv; } SfdPly_43F8_x001943F8;
+int func_00194468_x001943F8(SfdPly_43F8_x001943F8 *player, SfdMpv_43F8_x001943F8 *mpv, int *ok) __asm__("func_00194468");
+int func_001999E0_x001943F8(SfdPly_43F8_x001943F8 *player, int cond) __asm__("func_001999E0");
+int func_001943F8_x001943F8(SfdPly_43F8_x001943F8 *player) __asm__("func_001943F8");
+int func_001943F8_x001943F8(SfdPly_43F8_x001943F8 *player) {
+    SfdMpv_43F8_x001943F8 *mpv = player->mpv;
+    int flag[4];
+    int ready;
+    int status;
+    status = func_00194468_x001943F8(player, mpv, flag);
+    if (status != 0) {
+        return status;
+    }
+    ready = flag[0];
+    mpv->picstat = 2;
+    if (ready == 0 || func_001999E0_x001943F8(player, 48) == 0) {
+        mpv->dlmmask = 192;
+    } else {
+        mpv->dlmmask = 200;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194468);
 s32 func_00194560_x00194560(u8 *p) __asm__("func_00194560");
 s32 func_00194560_x00194560(u8 *p)
