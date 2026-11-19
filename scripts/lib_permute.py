@@ -118,6 +118,10 @@ cd {shlex_quote(str(ROOT))}
 {g.BINUTILS}as {' '.join(g.GAS_FLAGS)} -G0 -Iinclude {g.PRELUDE} "$S" -o "$OUT"
 """)
     (d / "compile.sh").chmod(0o755)
+    # fast.json: scripts/fastperm/perm.py compiles the same thing without bash/driver and with gas as a zygote
+    (d / "fast.json").write_text(json.dumps({
+        "kind": "gcc", "version": e["version"], "flags": flags, "cwd": str(ROOT),
+        "as": [f"{g.BINUTILS}as", *g.GAS_FLAGS, "-G0", "-Iinclude", str(g.PRELUDE), "{in}", "-o", "{out}"]}))
     objdump = f"{g.BINUTILS}objdump -drz -m mips:5900"
     (d / "settings.toml").write_text(f'func_name = "{name}"\ncompiler_type = "gcc"\nobjdump_command = "{objdump}"\n')
     (d / "function.txt").write_text(name + "\n")
