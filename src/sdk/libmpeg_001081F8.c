@@ -181,6 +181,114 @@ void func_00108C78_x00108C78(D_x00108C78 *d, int n, int flag)
         d->x108 = 2;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001081F8", func_00108D08);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001081F8", func_00108EC8);
+typedef struct { int type; int pad[7]; } CB_x00108EC8;
+typedef struct { unsigned int size; unsigned int addr; int pad[2]; } ST_x00108EC8;
+typedef struct { unsigned int addr; int x4; int x8; int w; int h; } P_x00108EC8;
+typedef struct {
+    char p0[0xEC]; unsigned int xEC;
+    char pF0[0x828 - 0xF0]; int x828; int x82C;
+    char p830[0x868 - 0x830]; void *mp;
+} D_x00108EC8;
+int _ch4dma_x00108EC8(int ch, void *arg) __asm__("func_001094E8");
+extern int func_00234740_x00108EC8(int ch, int (*h)(int, void *), int next, void *arg) __asm__("AddDmacHandler2");
+int func_00234750_x00108EC8(int ch, int id) __asm__("RemoveDmacHandler");
+int func_00235248_x00108EC8(int ch) __asm__("func_0010AE78");
+int func_002351E0_x00108EC8(int ch) __asm__("func_0010AE10");
+void s1_FlushCache_x00108EC8(int) __asm__("FlushCache");
+int func_00239450_x00108EC8(void) __asm__("DI");
+int func_002394A0_x00108EC8(void) __asm__("EI");
+int _sceMpegDispatchMpegCallback_x00108EC8(void *mp, CB_x00108EC8 *cb) __asm__("func_00107DE0");
+void _doCSC2_x00108EC8(D_x00108EC8 *d, unsigned int out, int n) __asm__("func_00108D08");
+static inline void ipuCmd_x00108EC8(D_x00108EC8 *d, unsigned int cmd)
+{
+    (*(volatile unsigned int *)(0x10002000)) = cmd;
+    d->x82C = cmd & 0xF0000000;
+    if ((cmd & 0xF0000000) == 0x20000000 || (cmd & 0xF0000000) == 0x30000000 || (cmd & 0xF0000000) == 0x40000000)
+        d->x828 = 0;
+    else
+        d->x828 = 1;
+}
+static inline void cscStore_x00108EC8(D_x00108EC8 *d, int n)
+{
+    CB_x00108EC8 cb2;
+    CB_x00108EC8 *pcb;
+    unsigned int out;
+    int qwc;
+    int e;
+    if (n < 0x400) {
+        out = d->xEC;
+        pcb = &cb2;
+        qwc = n << 6;
+        while ((*(volatile int *)(0x10002010)) < 0)
+            ;
+        e = func_00239450_x00108EC8();
+        { volatile unsigned int *m = (void *)0x1000B010, *q = (void *)0x1000B020, *c = (void *)0x1000B000;
+        *m = out & 0x0FFFFFFF;
+        *q = qwc;
+        *c = 0x100; }
+        if (e)
+            func_002394A0_x00108EC8();
+        ipuCmd_x00108EC8(d, n | 0x70000000);
+        pcb->type = 4;
+        _sceMpegDispatchMpegCallback_x00108EC8(d->mp, &cb2);
+        while (((*(volatile unsigned int *)(0x1000B000)) >> 8) & 1)
+            ;
+        while ((*(volatile int *)(0x10002010)) < 0)
+            ;
+    } else {
+        _doCSC2_x00108EC8(d, d->xEC, n);
+    }
+}
+void func_00108EC8_x00108EC8(D_x00108EC8 *d, P_x00108EC8 *p) __asm__("func_00108EC8");
+/* _sceMpegCscStoreRefImage: from https://github.com/Komasia/sly2-decomp (src/lib/_sceMpegCscStoreRefImage.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00108EC8_x00108EC8(D_x00108EC8 *d, P_x00108EC8 *p)
+{
+    CB_x00108EC8 cb;
+    ST_x00108EC8 st;
+    int n, id, e;
+
+    n = p->w * p->h;
+    cb.type = 2;
+    _sceMpegDispatchMpegCallback_x00108EC8(d->mp, &cb);
+    if ((*(volatile unsigned int *)(0x10002010)) & 0x4000)
+        (*(volatile unsigned int *)(0x10002010)) = 0x40000000;
+    while ((*(volatile int *)(0x10002010)) < 0)
+        ;
+    ipuCmd_x00108EC8(d, 0);
+    while ((*(volatile int *)(0x10002010)) < 0)
+        ;
+    s1_FlushCache_x00108EC8(0);
+    st.addr = p->addr & 0x0FFFFFFF;
+    st.size = n * 0x18;
+    if (st.size > 0xFFFF) {
+        id = func_00234740_x00108EC8(4, _ch4dma_x00108EC8, 0, &st);
+        (*(volatile unsigned int *)(0x1000E010)) = 0x10;
+        func_00235248_x00108EC8(4);
+        e = func_00239450_x00108EC8();
+        { volatile unsigned int *m = (void *)0x1000B410, *q = (void *)0x1000B420, *c = (void *)0x1000B400;
+        *m = st.addr;
+        *q = 0xFFFF;
+        *c = 0x101; }
+        if (e)
+            func_002394A0_x00108EC8();
+        st.addr = (st.addr + 0xFFFF0) & 0x0FFFFFFF;
+        st.size -= 0xFFFF;
+        cscStore_x00108EC8(d, n);
+        func_002351E0_x00108EC8(4);
+        func_00234750_x00108EC8(4, id);
+    } else {
+        e = func_00239450_x00108EC8();
+        { volatile unsigned int *m = (void *)0x1000B410, *q = (void *)0x1000B420, *c = (void *)0x1000B400;
+        *m = p->addr & 0x0FFFFFFF;
+        *q = st.size;
+        *c = 0x101; }
+        if (e)
+            func_002394A0_x00108EC8();
+        st.size = 0;
+        cscStore_x00108EC8(d, n);
+    }
+    cb.type = 3;
+    _sceMpegDispatchMpegCallback_x00108EC8(d->mp, &cb);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001081F8", func_001093A0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001081F8", func_001094E8);

@@ -230,7 +230,35 @@ SifCmdEntry *sceSifSetSysCmdBuffer(SifCmdEntry *tbl, int n)
     cmdData.nsys = n;
     return old;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifcmd", func_0010D3A8);
+typedef struct { void *func; void *data; void *gp; } SifCmdHandlerData_x0010D3A8;
+typedef struct {
+    int x0, x4, x8;
+    SifCmdHandlerData_x0010D3A8 *sys_cmd_buffer;
+    int sys_size;
+    SifCmdHandlerData_x0010D3A8 *usr_cmd_buffer;
+    int usr_size;
+} SifCmdData_x0010D3A8;
+extern SifCmdData_x0010D3A8 D_0044EDD8_x0010D3A8 __asm__("D_00471998");
+static inline void *GetGp_x0010D3A8(void)
+{
+    void *gp;
+    __asm__ volatile("move %0, $gp" : "=r"(gp) : : "memory");
+    return gp;
+}
+void func_0010D3A8_x0010D3A8(int cid, void *handler, void *data) __asm__("func_0010D3A8");
+/* sceSifAddCmdHandler: from https://github.com/Komasia/sly2-decomp (src/hand/sceSifAddCmdHandler.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_0010D3A8_x0010D3A8(int cid, void *handler, void *data)
+{
+    if (cid < 0) {
+        D_0044EDD8_x0010D3A8.sys_cmd_buffer[cid & 0x7FFFFFFF].func = handler;
+        D_0044EDD8_x0010D3A8.sys_cmd_buffer[cid & 0x7FFFFFFF].data = data;
+        D_0044EDD8_x0010D3A8.sys_cmd_buffer[cid & 0x7FFFFFFF].gp = GetGp_x0010D3A8();
+    } else {
+        D_0044EDD8_x0010D3A8.usr_cmd_buffer[cid].func = handler;
+        D_0044EDD8_x0010D3A8.usr_cmd_buffer[cid].data = data;
+        D_0044EDD8_x0010D3A8.usr_cmd_buffer[cid].gp = GetGp_x0010D3A8();
+    }
+}
 typedef struct { int used; int unk4; int unk8; } Slot12_x0010D420;
 extern Slot12_x0010D420* D_004E2D64_x0010D420 __asm__("D_004719A4");
 extern Slot12_x0010D420* D_004E2D6C_x0010D420 __asm__("D_004719AC");

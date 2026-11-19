@@ -127,6 +127,11 @@ def isolate(item):
             ren[n] = n + tag
             if not is_type_decl(st) and not is_func_def(st):
                 labels[n] = bind.get(n, n)
+        if is_func_def(st):
+            # a static inline helper copied whole (func_port.py): renamed, never bound to a symbol
+            m = re.search(r"(\w+)\s*\([^()]*\)\s*$", st[:st.index("{")])
+            if m:
+                ren[m.group(1)] = m.group(1) + tag
     ren[name] = name + tag
     pat = re.compile(r"\b(" + "|".join(sorted(map(re.escape, ren), key=len, reverse=True)) + r")\b")
     out = []

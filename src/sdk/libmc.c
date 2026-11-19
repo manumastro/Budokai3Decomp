@@ -5,7 +5,99 @@ s32 func_0011A700(s32, s32, s32);   /* extern */
 extern s32 D_003EF94C;
 extern s32 D_003EF950;
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_00119CB0);
+typedef struct { char p[0x24]; int server; } RpcCD_x00119CB0;
+struct SemaParam_x00119CB0 {
+    int currentCount;
+    int maxCount;
+    int initCount;
+    int numWaitThreads;
+    unsigned int attr;
+    unsigned int option;
+};
+extern RpcCD_x00119CB0 D_00450880_x00119CB0 __asm__("D_00478FC0");
+extern char D_00450900_x00119CB0[] __asm__("D_00479040");
+extern int D_00451E40_x00119CB0[] __asm__("D_0047A580");
+extern int D_002C8354_x00119CB0 __asm__("D_003EF94C");
+extern int D_002C8358_x00119CB0 __asm__("D_003EF950");
+extern char D_002AB7B0_x00119CB0[] __asm__("D_0045DE08");
+extern char D_002AB7C0_x00119CB0[] __asm__("D_0045DE18");
+extern char D_002AB7D8_x00119CB0[] __asm__("D_0045DE30");
+extern char D_002AB7F0_x00119CB0[] __asm__("D_0045DE48");
+extern char D_002AB818_x00119CB0[] __asm__("D_0045DE70");
+int func_00234A20_x00119CB0(struct SemaParam_x00119CB0 *) __asm__("CreateSema");
+int func_00234A30_x00119CB0(int) __asm__("DeleteSema");
+int func_00234A40_x00119CB0(int) __asm__("SignalSema");
+int func_00234A60_x00119CB0(int) __asm__("WaitSema");
+void func_00244450_x00119CB0(int, int, int) __asm__("func_0011A700");
+void func_00236A60_x00119CB0(int) __asm__("sceSifInitRpc");
+int func_00236960_x00119CB0(const char *, ...) __asm__("scePrintf");
+int func_002370A8_x00119CB0(void *, unsigned int, int) __asm__("sceSifBindRpc");
+int func_00237288_x00119CB0(void *cd, int fno, unsigned int mode, void *send, int ssize, void *recv, int rsize, void *end, void *earg) __asm__("sceSifCallRpc");
+static inline int bindmc_x00119CB0(void)
+{
+    if (func_002370A8_x00119CB0(&D_00450880_x00119CB0, 0x80000400, 0) < 0) {
+        func_00236960_x00119CB0(D_002AB7D8_x00119CB0);
+        while (1) ;
+    }
+    return D_00450880_x00119CB0.server;
+}
+int func_00119CB0_x00119CB0(void) __asm__("func_00119CB0");
+/* sceMcInit: from https://github.com/Komasia/sly2-decomp (src/lib/sceMcInit.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00119CB0_x00119CB0(void)
+{
+    struct SemaParam_x00119CB0 sp;
+    int i = 0;
+    int j;
+    int r;
+
+    if (D_002C8354_x00119CB0 < 0) {
+        int m1 = -1;
+        sp.initCount = 1;
+        sp.option = (unsigned int)D_002AB7B0_x00119CB0;
+        sp.maxCount = 1;
+        D_002C8354_x00119CB0 = func_00234A20_x00119CB0(&sp);
+        if (D_002C8354_x00119CB0 == m1)
+            return -101;
+        sp.maxCount = 1;
+        sp.initCount = 0;
+        sp.option = (unsigned int)D_002AB7C0_x00119CB0;
+        r = func_00234A20_x00119CB0(&sp);
+        D_002C8358_x00119CB0 = r;
+        if (r == m1) {
+            func_00234A30_x00119CB0(D_002C8354_x00119CB0);
+            D_002C8354_x00119CB0 = r;
+            return -101;
+        }
+    }
+    func_00244450_x00119CB0(0, 0, 0);
+    func_00234A60_x00119CB0(D_002C8354_x00119CB0);
+    func_00236A60_x00119CB0(0);
+    while (bindmc_x00119CB0() == 0) {
+        j = 0x100000;
+        while (--j) ;
+        if (++i >= 0x200) {
+            func_00236960_x00119CB0(D_002AB7D8_x00119CB0);
+            return -91;
+        }
+    }
+    r = func_00237288_x00119CB0(&D_00450880_x00119CB0, 0xFE, 0, D_00450900_x00119CB0, 0x30, D_00451E40_x00119CB0, 0xC, 0, 0);
+    func_00234A40_x00119CB0(D_002C8354_x00119CB0);
+    if (r < 0) {
+        D_00450880_x00119CB0.server = 0;
+        return -91;
+    }
+    if (D_00451E40_x00119CB0[1] < 0x20A) {
+        func_00236960_x00119CB0(D_002AB7F0_x00119CB0);
+        D_00450880_x00119CB0.server = 0;
+        return -120;
+    }
+    if (D_00451E40_x00119CB0[2] < 0x20E) {
+        func_00236960_x00119CB0(D_002AB818_x00119CB0);
+        D_00450880_x00119CB0.server = 0;
+        return -121;
+    }
+    return D_00451E40_x00119CB0[0];
+}
 s32 func_00119ED8(void) {
     if (D_003EF94C >= 0) {
         func_0011A700(0, 0, 0);

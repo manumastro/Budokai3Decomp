@@ -190,7 +190,8 @@ def closure(items, func_item, own):
             need.add(k)
             it = items[k]
             if it.kind == "func":
-                txt = it.head
+                # an inline helper is copied whole (func_insert.py renames it), so its body's names are needed too
+                txt = it.text if re.search(r"\binline\b|__inline", it.head) else it.head
             elif it.kind == "data":
                 txt = it.head
             else:
@@ -201,7 +202,10 @@ def closure(items, func_item, own):
         it = items[k]
         if it.kind == "func":
             if re.search(r"\binline\b|__inline", it.head):
-                return None, f"needs the inline function {it.name}"
+                if not re.search(r"\bstatic\b", it.head):
+                    return None, f"needs the non-static inline function {it.name}"
+                out.append(("inline", it.name, cparse._strip_comments(it.text).strip()))
+                continue
             h = re.sub(r"\b(static|extern)\b\s*", "", cparse.strip_attr(it.head)).strip()
             out.append(("func", it.name, h + ";"))
         elif it.kind == "data":
