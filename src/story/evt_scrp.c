@@ -2017,48 +2017,47 @@ void func_002A5580(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A5580);
-#if 0
-// func_002A56A0: the copy loop keeps the counter in a2 and the pointer in a1 in the original; ours takes the other registers (240 vs 232 bytes, 41 instructions differ); 5 variants tried
-extern s32 func_002B4C80(s32);
-extern void func_002B4CC0(s32, s32 *);
+s32 func_002B4C80(s32);
+s32 func_002B4CC0(s32, s32 *);
 extern void SklEdit_Close(void);
-extern s32 D_005AA604;
-
 void func_002A56A0(void) {
-    s32 *g = gEvtWork;
     s32 buf[8];
-    s32 i;
-    s32 *p;
-    s16 *tab;
+    s32 *temp_s0;
+    s32 *var_a0;
+    s32 var_a1;
+    s32 var_v1;
+    u8 *var_a0_2;
+    temp_s0 = gEvtWork;
     if (func_002B4C80(0) >= 9) {
         func_002A0D50(1);
         func_002A13C0(func_002A13B0() + 1);
         func_002B4CC0(0, buf);
         SklEdit_Close();
-        i = 0;
-        tab = (s16 *)((char *)D_005AA604 + 0x11F0);
-        if (buf[0] > 0) {
-            p = buf;
+        var_a1 = 0;
+        if (0 < buf[0]) {
+            var_a0 = buf;
+            var_v1 = *D_005AA604;
             do {
-                tab[i] = (s16)p[1];
-                p++;
-                i++;
-            } while (i < buf[0]);
+                var_a1 += 1;
+                *(s16 *)((u8 *)var_v1 + 0x11F0) = (s16)var_a0[1];
+                var_a0 += 1;
+                var_v1 += 2;
+            }
+            while (var_a1 < buf[0]);
         }
-        if (i < 7) {
-            s16 *q = tab + i;
+        if (var_a1 < 7) {
+            var_a0_2 = (unsigned char *)(*D_005AA604 + var_a1 * 2);
             do {
-                *q = -1;
-                q++;
-                i++;
-            } while (i < 7);
+                var_a1 += 1;
+                *(s16 *)((u8 *)var_a0_2 + 0x11F0) = -1;
+                var_a0_2 += 2;
+            }
+            while (var_a1 < 7);
         }
-        amTask_Kill((void *)g[0x9C / 4]);
-        g[0x9C / 4] = 0;
+        amTask_Kill((Task *)temp_s0[0x9C / 4]);
+        temp_s0[0x9C / 4] = 0;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A56A0);
 
 extern void SklEdit_Open(s32, char *, s32, s32, s32);
 extern void func_002B5030(s32, s32, s32);
