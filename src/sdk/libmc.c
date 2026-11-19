@@ -318,7 +318,33 @@ int func_0011A2E0_x0011A2E0(int file_descriptor, int offset, int origin) {
     MC_STATUS_x0011A2E0 = 4;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A3C0);
+typedef struct { int n, m; unsigned char *a, *b; unsigned char x[64], y[64]; } Req_A3C0_x0011A3C0;
+extern int D_003EF950_x0011A3C0 __asm__("D_003EF950");
+int iSignalSema_x0011A3C0(int) __asm__("iSignalSema");
+void func_0011A3C0_x0011A3C0(Req_A3C0_x0011A3C0 *p) __asm__("func_0011A3C0");
+void func_0011A3C0_x0011A3C0(Req_A3C0_x0011A3C0 *p)
+{
+    int i;
+
+    p = (Req_A3C0_x0011A3C0 *)((unsigned)p | 0x20000000);
+    if (p->n) {
+        unsigned char *dest = p->a, *uncached = (unsigned char *)((unsigned)dest | 0x20000000);
+        for (i = 0; i < p->n; i++) {
+            unsigned char c = p->x[i];
+            *dest++ = c;
+            *uncached++ = c;
+        }
+    }
+    if (p->m) {
+        unsigned char *dest = p->b, *uncached = (unsigned char *)((unsigned)dest | 0x20000000);
+        for (i = 0; i < p->m; i++) {
+            unsigned char c = p->y[i];
+            *dest++ = c;
+            *uncached++ = c;
+        }
+    }
+    iSignalSema_x0011A3C0(D_003EF950_x0011A3C0);
+}
 typedef struct {
     unsigned char reserved_00[0x24];
     int is_initialized;

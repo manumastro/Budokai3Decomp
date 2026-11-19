@@ -520,8 +520,83 @@ int sceFsReset(void)
     return 0;
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F3B8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F4F8);
+extern unsigned int D_00473440_x0010F3B8[] __asm__("D_00473440");
+extern int D_003EC6BC_x0010F3B8 __asm__("D_003EC6BC");
+extern int D_00474B40_x0010F3B8[] __asm__("D_00474B40");
+extern int D_00474080_x0010F3B8[] __asm__("D_00474080");
+int _sceFsWaitS_x0010F3B8(int) __asm__("_sceFsWaitS");
+void func_0010F0E8_x0010F3B8(void) __asm__("func_0010F0E8");
+int _fs_version_x0010F3B8(void) __asm__("_fs_version");
+int func_0010EFF0_x0010F3B8(void) __asm__("func_0010EFF0");
+int func_0010E948_x0010F3B8(void) __asm__("func_0010E948");
+int func_0010EA50_x0010F3B8(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_0010F3B8_x0010F3B8(unsigned int a, unsigned int b) __asm__("func_0010F3B8");
+int func_0010F3B8_x0010F3B8(unsigned int a, unsigned int b)
+{
+    int r;
+
+    _sceFsWaitS_x0010F3B8(0xFE);
+    if (D_003EC6BC_x0010F3B8 == 0) {
+        func_0010F0E8_x0010F3B8();
+    }
+    if (_fs_version_x0010F3B8()) {
+        func_0010EFF0_x0010F3B8();
+        return 0xFFFEFFFC;
+    }
+    if (func_0010E948_x0010F3B8()) {
+        func_0010EFF0_x0010F3B8();
+        return -16;
+    }
+    if ((a & 0x3FFF) || a == 0 || a > 0xFFFFF || b == 0 || b > 0x20) {
+        func_0010EFF0_x0010F3B8();
+        return -22;
+    }
+    D_00473440_x0010F3B8[0] = a;
+    D_00473440_x0010F3B8[1] = b;
+    if (func_0010EA50_x0010F3B8(D_00474B40_x0010F3B8, 0xFE, 0, D_00473440_x0010F3B8, 8, D_00474080_x0010F3B8, 4, 0, 0, 0) < 0) {
+        func_0010EFF0_x0010F3B8();
+        return -11;
+    }
+    r = *(int *)((unsigned)D_00474080_x0010F3B8 | 0x20000000);
+    func_0010EFF0_x0010F3B8();
+    return r;
+}
+extern int D_00473440_x0010F4F8 __asm__("D_00473440");
+extern int D_003EC6BC_x0010F4F8 __asm__("D_003EC6BC");
+extern int D_00474B40_x0010F4F8[] __asm__("D_00474B40");
+extern int D_00474080_x0010F4F8[] __asm__("D_00474080");
+int _sceFsWaitS_x0010F4F8(int) __asm__("_sceFsWaitS");
+void func_0010F0E8_x0010F4F8(void) __asm__("func_0010F0E8");
+int _fs_version_x0010F4F8(void) __asm__("_fs_version");
+int func_0010EFF0_x0010F4F8(void) __asm__("func_0010EFF0");
+int func_0010E948_x0010F4F8(void) __asm__("func_0010E948");
+int func_0010EA50_x0010F4F8(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_0010F4F8_x0010F4F8(int a) __asm__("func_0010F4F8");
+int func_0010F4F8_x0010F4F8(int a)
+{
+    int r;
+
+    _sceFsWaitS_x0010F4F8(0xFD);
+    if (D_003EC6BC_x0010F4F8 == 0) {
+        func_0010F0E8_x0010F4F8();
+    }
+    if (_fs_version_x0010F4F8()) {
+        func_0010EFF0_x0010F4F8();
+        return 0xFFFEFFFC;
+    }
+    if (func_0010E948_x0010F4F8()) {
+        func_0010EFF0_x0010F4F8();
+        return -16;
+    }
+    D_00473440_x0010F4F8 = a;
+    if (func_0010EA50_x0010F4F8(D_00474B40_x0010F4F8, 0xFD, 0, &D_00473440_x0010F4F8, 8, D_00474080_x0010F4F8, 4, 0, 0, 0) < 0) {
+        func_0010EFF0_x0010F4F8();
+        return -11;
+    }
+    r = *(int *)((unsigned)D_00474080_x0010F4F8 | 0x20000000);
+    func_0010EFF0_x0010F4F8();
+    return r;
+}
 extern int func_003B3EC8_x0010F5E8(int cmd) __asm__("func_0010EFC0");
 typedef struct { int f0; int f4; int f8; int fC; } Iob_x0010F5E8;
 typedef struct {
@@ -1029,7 +1104,63 @@ int func_00110160_x00110160(int fd, int req, void *data)
     return res;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_001104E8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", _sceCallCode);
+struct SemaParam_CC_x001106D0 { int currentCount; int maxCount; int initCount; int numWaitThreads; unsigned int attr; unsigned int option; };
+struct FsCall_CC_x001106D0 { int sema; int *result; int result_size; char name[0x400]; };
+extern struct FsCall_CC_x001106D0 D_00473440_x001106D0 __asm__("D_00473440");
+extern int D_003EC6BC_x001106D0 __asm__("D_003EC6BC");
+extern int D_00474B40_x001106D0[] __asm__("D_00474B40");
+extern int D_00474080_x001106D0[] __asm__("D_00474080");
+extern char D_0045D7A8_x001106D0[] __asm__("D_0045D7A8");
+int _sceFsWaitS_x001106D0(int) __asm__("_sceFsWaitS");
+void func_0010F0E8_x001106D0(void) __asm__("func_0010F0E8");
+int func_0010EFF0_x001106D0(void) __asm__("func_0010EFF0");
+int CreateSema_x001106D0(struct SemaParam_CC_x001106D0 *) __asm__("CreateSema");
+int DeleteSema_x001106D0(int) __asm__("DeleteSema");
+int WaitSema_x001106D0(int) __asm__("WaitSema");
+int func_0010EA50_x001106D0(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int _sceCallCode_x001106D0(const char *path, int cmd) __asm__("_sceCallCode");
+int _sceCallCode_x001106D0(const char *path, int cmd)
+{
+    struct FsCall_CC_x001106D0 *call = &D_00473440_x001106D0;
+    struct SemaParam_CC_x001106D0 sp;
+    int sema;
+    int result;
+    int status;
+    int i;
+
+    _sceFsWaitS_x001106D0(cmd);
+    if (D_003EC6BC_x001106D0 == 0) func_0010F0E8_x001106D0();
+    i = 0;
+    while (i < 0x400) {
+        if ((*(((char *)call + i) + 0xC) = path[i]) == 0) break;
+        i++;
+    }
+    if (i == 0x400) {
+        *((char *)call + 0x40B) = 0;
+        i = 0x3FF;
+    }
+    sp.maxCount = 1;
+    sp.option = (unsigned)D_0045D7A8_x001106D0;
+    sp.initCount = 0;
+    sema = CreateSema_x001106D0(&sp);
+    call->result = &result;
+    call->sema = sema;
+    call->result_size = 4;
+    if (func_0010EA50_x001106D0(D_00474B40_x001106D0, cmd, 0, &D_00473440_x001106D0, i + 0xD, D_00474080_x001106D0, 4, 0, 0, 0) < 0) {
+        DeleteSema_x001106D0(sema);
+        func_0010EFF0_x001106D0();
+        return -11;
+    }
+    status = *(int *)((unsigned)D_00474080_x001106D0 | 0x20000000);
+    func_0010EFF0_x001106D0();
+    if (status == 0) {
+        DeleteSema_x001106D0(sema);
+        return -11;
+    }
+    WaitSema_x001106D0(sema);
+    DeleteSema_x001106D0(sema);
+    return result;
+}
 
 
 int sceRemove(void *name)
@@ -1117,7 +1248,54 @@ int sceRmdir(void *name)
 }
 INCLUDE_PAD(4);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00110A78);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00110CF8);
+struct SemaParam_CF8_x00110CF8 { int currentCount; int maxCount; int initCount; int numWaitThreads; unsigned int attr; unsigned int option; };
+struct FsCall_CF8_x00110CF8 { int sema; int *result; int result_size; int arg; };
+extern struct FsCall_CF8_x00110CF8 D_00473440_x00110CF8 __asm__("D_00473440");
+extern int D_003EC6BC_x00110CF8 __asm__("D_003EC6BC");
+extern int D_00474B40_x00110CF8[] __asm__("D_00474B40");
+extern int D_00474080_x00110CF8[] __asm__("D_00474080");
+extern char D_0045D7F0_x00110CF8[] __asm__("D_0045D7F0");
+int _sceFsWaitS_x00110CF8(int) __asm__("_sceFsWaitS");
+void func_0010F0E8_x00110CF8(void) __asm__("func_0010F0E8");
+int func_0010EFF0_x00110CF8(void) __asm__("func_0010EFF0");
+int CreateSema_x00110CF8(struct SemaParam_CF8_x00110CF8 *) __asm__("CreateSema");
+int DeleteSema_x00110CF8(int) __asm__("DeleteSema");
+int WaitSema_x00110CF8(int) __asm__("WaitSema");
+int func_0010EA50_x00110CF8(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_00110CF8_x00110CF8(int arg) __asm__("func_00110CF8");
+int func_00110CF8_x00110CF8(int arg)
+{
+    struct FsCall_CF8_x00110CF8 *call = &D_00473440_x00110CF8;
+    struct SemaParam_CF8_x00110CF8 sp;
+    int sema;
+    int result;
+    int status;
+
+    _sceFsWaitS_x00110CF8(0xF);
+    if (D_003EC6BC_x00110CF8 == 0) func_0010F0E8_x00110CF8();
+    call->arg = arg;
+    sp.maxCount = 1;
+    sp.option = (unsigned)D_0045D7F0_x00110CF8;
+    sp.initCount = 0;
+    sema = CreateSema_x00110CF8(&sp);
+    call->sema = sema;
+    call->result = &result;
+    call->result_size = 4;
+    if (func_0010EA50_x00110CF8(D_00474B40_x00110CF8, 0xF, 0, call, 0x10, D_00474080_x00110CF8, 4, 0, 0, 0) < 0) {
+        DeleteSema_x00110CF8(sema);
+        func_0010EFF0_x00110CF8();
+        return -11;
+    }
+    status = *(int *)((unsigned)D_00474080_x00110CF8 | 0x20000000);
+    func_0010EFF0_x00110CF8();
+    if (status == 0) {
+        DeleteSema_x00110CF8(sema);
+        return -11;
+    }
+    WaitSema_x00110CF8(sema);
+    DeleteSema_x00110CF8(sema);
+    return result;
+}
 
 
 int sceDelDrv(void *name)
@@ -1152,7 +1330,64 @@ int func_00110E48_x00110E48(int path){
  SignalSema_x00110E48(sem);
  return r;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00110F10);
+struct SemaParam_F10_x00110F10 { int currentCount; int maxCount; int initCount; int numWaitThreads; unsigned int attr; unsigned int option; };
+struct FsCall_F10_x00110F10 { int sema; int *result; int result_size; int fd; };
+typedef struct { int fd; int mode; } FsIob_F10_x00110F10;
+extern struct FsCall_F10_x00110F10 D_00473440_x00110F10 __asm__("D_00473440");
+extern int D_003EC6BC_x00110F10 __asm__("D_003EC6BC");
+extern int D_00474B40_x00110F10[] __asm__("D_00474B40");
+extern int D_00474080_x00110F10[] __asm__("D_00474080");
+extern char D_0045D808_x00110F10[] __asm__("D_0045D808");
+FsIob_F10_x00110F10 *get_iob_x00110F10(int) __asm__("get_iob");
+int _sceFsWaitS_x00110F10(int) __asm__("_sceFsWaitS");
+int func_0010EFF0_x00110F10(void) __asm__("func_0010EFF0");
+int CreateSema_x00110F10(struct SemaParam_F10_x00110F10 *) __asm__("CreateSema");
+int DeleteSema_x00110F10(int) __asm__("DeleteSema");
+int WaitSema_x00110F10(int) __asm__("WaitSema");
+int func_0010EA50_x00110F10(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_00110F10_x00110F10(int fd) __asm__("func_00110F10");
+int func_00110F10_x00110F10(int fd)
+{
+    struct FsCall_F10_x00110F10 *call = &D_00473440_x00110F10;
+    FsIob_F10_x00110F10 *io;
+    struct SemaParam_F10_x00110F10 sp;
+    int sema;
+    int result;
+    int status;
+
+    io = get_iob_x00110F10(fd);
+    _sceFsWaitS_x00110F10(0xA);
+    if (D_003EC6BC_x00110F10 == 0 || io == 0 || io->mode == 0) {
+        func_0010EFF0_x00110F10();
+        return -9;
+    }
+    call->fd = io->fd;
+    sp.maxCount = 1;
+    sp.option = (unsigned)D_0045D808_x00110F10;
+    sp.initCount = 0;
+    sema = CreateSema_x00110F10(&sp);
+    call->sema = sema;
+    call->result = &result;
+    call->result_size = 4;
+    if (func_0010EA50_x00110F10(D_00474B40_x00110F10, 0xA, 0, call, 0x14, D_00474080_x00110F10, 4, 0, 0, 0) < 0) {
+        DeleteSema_x00110F10(sema);
+        func_0010EFF0_x00110F10();
+        return -11;
+    }
+    io->mode = 0;
+    status = *(int *)((unsigned)D_00474080_x00110F10 | 0x20000000);
+    func_0010EFF0_x00110F10();
+    if (status == 0) {
+        DeleteSema_x00110F10(sema);
+        return -11;
+    }
+    WaitSema_x00110F10(sema);
+    DeleteSema_x00110F10(sema);
+    if (result < 0) {
+        return result;
+    }
+    return 0;
+}
 struct FsIob_x00111078 {
     int fd;
     int mode;

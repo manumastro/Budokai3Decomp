@@ -1,6 +1,50 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B038", func_0010B038);
+struct ThreadParam_B038_x0010B038 { int status; void *entry; void *stack; int stackSize; void *gpReg; int initPriority; int currentPriority; unsigned int attr; unsigned int option; int waitType; int waitId; int wakeupCount; };
+struct SemaParam_B038_x0010B038 { int currentCount; int maxCount; int initCount; int numWaitThreads; unsigned int attr; unsigned int option; };
+typedef struct { int readIndex; int writeIndex; } TopArg_B038_x0010B038;
+extern int D_003EC618_x0010B038 __asm__("D_003EC618");
+extern int D_00471040_x0010B038 __asm__("D_00471040");
+extern char D_00470C40_x0010B038[] __asm__("D_00470C40");
+extern char D_00477CF0_x0010B038[] __asm__("D_00477CF0");
+extern char D_0045D3B8_x0010B038[] __asm__("D_0045D3B8");
+extern TopArg_B038_x0010B038 D_00471048_x0010B038 __asm__("D_00471048");
+void topThread_x0010B038(void *) __asm__("topThread");
+int CreateSema_x0010B038(struct SemaParam_B038_x0010B038 *) __asm__("CreateSema");
+int CreateThread_x0010B038(struct ThreadParam_B038_x0010B038 *) __asm__("CreateThread");
+int DeleteSema_x0010B038(int) __asm__("DeleteSema");
+int func_0010B3A0_x0010B038(int, void *) __asm__("func_0010B3A0");
+int GetThreadId_x0010B038(void) __asm__("GetThreadId");
+int ChangeThreadPriority_x0010B038(int, int) __asm__("ChangeThreadPriority");
+int func_0010B038_x0010B038(void) __asm__("func_0010B038");
+int func_0010B038_x0010B038(void)
+{
+    struct ThreadParam_B038_x0010B038 thread;
+    struct SemaParam_B038_x0010B038 sema;
+
+    if (D_003EC618_x0010B038 > 0) return -1;
+    sema.initCount = 0;
+    sema.maxCount = 255;
+    sema.option = (unsigned int)D_0045D3B8_x0010B038;
+    D_00471040_x0010B038 = CreateSema_x0010B038(&sema);
+    if (D_00471040_x0010B038 < 0) return -1;
+    thread.entry = topThread_x0010B038;
+    thread.stack = D_00470C40_x0010B038;
+    thread.stackSize = 0x400;
+    thread.gpReg = D_00477CF0_x0010B038;
+    thread.initPriority = 0;
+    thread.option = (unsigned int)D_0045D3B8_x0010B038;
+    D_003EC618_x0010B038 = CreateThread_x0010B038(&thread);
+    if (D_003EC618_x0010B038 < 0) {
+        DeleteSema_x0010B038(D_00471040_x0010B038);
+        return -1;
+    }
+    D_00471048_x0010B038.readIndex = 0;
+    D_00471048_x0010B038.writeIndex = 0;
+    func_0010B3A0_x0010B038(D_003EC618_x0010B038, &D_00471048_x0010B038);
+    ChangeThreadPriority_x0010B038(GetThreadId_x0010B038(), 1);
+    return D_003EC618_x0010B038;
+}
 extern int D_004E2400_x0010B128 __asm__("D_00471040");
 extern int D_00486198_x0010B128 __asm__("D_003EC618");
 extern int D_004E2408_x0010B128[2] __asm__("D_00471048");

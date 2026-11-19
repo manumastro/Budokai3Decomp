@@ -1749,8 +1749,55 @@ int func_001160E0_x001160E0(u_long_x001160E0 clocks, AlarmCallback_x001160E0 cal
     iStartTimerCounter_x001160E0(counter);
     return (((int)(alarm) << 4) | (( counter) & 0xfe) | 1);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001161D0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00116278);
+typedef struct Alarm_x001161D0 { struct Alarm_x001161D0 *next; volatile int counter; void *callback; void *arg; } Alarm_x001161D0;
+extern Alarm_x001161D0 *D_00478700_x001161D0 __asm__("D_00478700");
+int DI_x001161D0(void) __asm__("DI");
+int EI_x001161D0(void) __asm__("EI");
+int func_001156A0_x001161D0(int) __asm__("func_001156A0");
+int func_001161D0_x001161D0(int id) __asm__("func_001161D0");
+int func_001161D0_x001161D0(int id)
+{
+    Alarm_x001161D0 *alarm;
+    int intr;
+    alarm = (Alarm_x001161D0 *)(((unsigned int)id >> 8) << 4);
+    intr = DI_x001161D0();
+    if (id < 0 || ((id ^ alarm->counter) & 0xff) != 0) {
+        if (intr) EI_x001161D0();
+        return 0x80008002;
+    }
+    {
+        int c = alarm->counter;
+        __asm__ volatile("1:");
+        func_001156A0_x001161D0(c);
+    }
+    alarm->next = D_00478700_x001161D0;
+    D_00478700_x001161D0 = alarm;
+    alarm->counter = 0;
+    if (intr) EI_x001161D0();
+    return 0;
+}
+typedef struct Alarm_x00116278 { struct Alarm_x00116278 *next; volatile int counter; void *callback; void *arg; } Alarm_x00116278;
+extern Alarm_x00116278 *D_00478700_x00116278 __asm__("D_00478700");
+int DI_x00116278(void) __asm__("DI");
+int EI_x00116278(void) __asm__("EI");
+int func_00115600_x00116278(int) __asm__("func_00115600");
+int func_00116278_x00116278(int id) __asm__("func_00116278");
+int func_00116278_x00116278(int id)
+{
+    Alarm_x00116278 *alarm;
+    int result;
+    alarm = (Alarm_x00116278 *)(((unsigned int)id >> 8) << 4);
+    if (id < 0 || ((id ^ alarm->counter) & 0xff) != 0) return 0x80008002;
+    result = alarm->counter;
+    __asm__ volatile("1:");
+    result = func_00115600_x00116278(result);
+    if (result == 0) {
+        alarm->next = D_00478700_x00116278;
+        D_00478700_x00116278 = alarm;
+        alarm->counter = 0;
+    }
+    return result;
+}
 s32 memset_x001162F0(s32 *, s32, s32) __asm__("memset");
 extern s32 D_003EDCE8_x001162F0 __asm__("D_003EDCE8");
 extern s32 D_003EDCEC_x001162F0 __asm__("D_003EDCEC");

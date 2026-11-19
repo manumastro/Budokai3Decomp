@@ -15874,7 +15874,15 @@ int func_0017EE78_x0017EE78(int a, int b, int c) {
     }
     return (long)a * b / c;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EEE8);
+double func_0011EA48_x0017EEE8(double) __asm__("func_0011EA48");
+int func_0017EEE8_x0017EEE8(int a, int b, int c) __asm__("func_0017EEE8");
+int func_0017EEE8_x0017EEE8(int a, int b, int c)
+{
+    if (c == 0) {
+        return ((a ^ b) >= 0) ? 0x7FFFFFFF : 0x80000000;
+    }
+    return (int)func_0011EA48_x0017EEE8((double)a * (double)b / (double)c + 0.5);
+}
 typedef struct MwsfdCreInf_x0017EF98 {
     int type;
     int maxBps;

@@ -71,6 +71,22 @@ int func_0010CE90_x0010CE90(int a0, int a1, int a2, ...) {
     (ap = (void *)((char *)__builtin_next_arg( a2) - 0x28));
     return _sceSnprintf_x0010CE90((void *)func_003B1DE8_x0010CE90, &state, a1, a2, ap);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010BE70", func_0010CED8);
+int DI_x0010CED8(void) __asm__("DI");
+int EI_x0010CED8(void) __asm__("EI");
+void func_0010CDB8_x0010CED8(void) __asm__("func_0010CDB8");
+int func_0010C048_x0010CED8(void *, int *, unsigned int, int, int) __asm__("func_0010C048");
+void func_0010CED8_x0010CED8(int a, int b) __asm__("func_0010CED8");
+void func_0010CED8_x0010CED8(int a, int b)
+{
+    int x;
+    int intr;
+
+    x = 0;
+    intr = DI_x0010CED8();
+    func_0010C048_x0010CED8(func_0010CDB8_x0010CED8, &x, -1, a, b);
+    if (intr) {
+        EI_x0010CED8();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010BE70", scePrintf);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010BE70", kprintf);
