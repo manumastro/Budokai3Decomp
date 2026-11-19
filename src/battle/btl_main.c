@@ -6845,28 +6845,26 @@ void func_001C81D0(Fighter *f, s32 i) {
     func_001C80E0(f, i);
     func_001C8050(f, i);
 }
-// differs: 14 of 41: the original keeps the fighter in $s2, the index in $s1 and the slot pointer in $s0 (ours the other way round); copying the parameters into locals did not change it
-#if 0
-// differs: 14 of 41 differ: the two calls get f+0x650 computed separately now, but the register allocation is different (the original keeps the slot pointer in s2, f in s1, i in s0)
-void func_001C8210(Fighter *f, s32 i) {
-    s32 *slot;
-    slot = (s32 *)((u8 *)f + 0x1DB8) + i;
-    if (*slot != 0) {
-        if (FT_FIELD(f, s32, 0xB7C) == *slot) {
-            func_001E7070((u8 *)f + 0x650, -1);
-            func_001E8290((void *)((s32)f + 0x650));
+void func_001C8210(u8 *arg0, s32 arg1) {
+    u8 *temp_v0;
+    u8 *temp_v1;
+
+    temp_v0 = (u8 *)(arg1 * 4) + (s32)arg0;
+    temp_v1 = *(u8 **)((u8 *)temp_v0 + 0x1DB8);
+    if (temp_v1 != NULL) {
+        if ((s32)(*(s32 *)((u8 *)arg0 + 0xB7C)) == (s32)(temp_v1)) {
+            func_001E7070(arg0 + 0x650, -1);
+            func_001E8290(arg0 + 0x650);
         }
-        if (FT_FIELD(f, s32, 0x11FC) == *slot) {
-            func_001E7070((u8 *)f + 0xCD0, -1);
-            func_001E8290((void *)((s32)f + 0xCD0));
+        if ((s32)(*(s32 *)((u8 *)arg0 + 0x11FC)) == (s32)(*(u8 **)((u8 *)temp_v0 + 0x1DB8))) {
+            func_001E7070(arg0 + 0xCD0, -1);
+            func_001E8290(arg0 + 0xCD0);
         }
-        Character_Release((void *)*slot);
-        *slot = 0;
+        Character_Release(*(u8 **)((u8 *)temp_v0 + 0x1DB8));
+        *(u8 **)((u8 *)temp_v0 + 0x1DB8) = NULL;
     }
-    func_001C82C0(f, i);
+    func_001C82C0((Fighter *)(arg0), (s32)(arg1));
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8210);
 void func_001C82C0(Fighter *f, s32 i) {
     CdSlot *s = (CdSlot *)((u8 *)f + 0x1DF8 + i * 28);
 

@@ -2021,28 +2021,27 @@ void func_0020F260(s32 i, f32 f) {
     u8 *p = D_00568C90 + i * 0x2140;
     *(f32 *)(p + 0x20FC) = f;
 }
-#if 0
-void func_0020F290(s32 i, s32 x) {
-    u8 *p = D_00568C90 + i * 0x2140;
-    s32 t = x | 0x10000;
-    *(s32 *)(p + 0x2114) = t;
-    *(f32 *)(p + 0x210C) = (f32)*(s32 *)(*(u8 **)(*(u8 **)(p + ((*(s32 *)(p + 0x2114) >> 16) - 1) * 4 + 0xA4) + 0x14)
-        + ((*(s32 *)(p + 0x2114) & 0xFFFF) << 4) + 8);
+void func_0020F290(s32 arg0, s32 arg1) {
+    u32 t;
+    u8 *p;
+    p = D_00568C90 + arg0 * 0x2140;
+    *(s32 *)(p + 0x2114) = (s32)(arg1 | 0x10000);
+    t = *(s32 *)(p + 0x2114);
+    *(f32 *)(p + 0x210C) = (f32)*(s32 *)((t & 0xFFFF) * 0x10 + *(s32 *)(*(u8 **)((u8 *)((((s32)t >> 0x10) - 1) * 4) + (s32)p + 0xA4) + 0x14) + 8);
 }
-// differs: 15 of 25 differ: the or with 0x10000 sits between the i*133 add and the shift by 6 in the original (lui before the addu); here it comes after the shift (both statement orders tried)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F290);
-#if 0
-void func_0020F300(s32 i, s32 x) {
-    s32 t = x | 0x10000;
-    u8 *p = D_00568C90 + i * 0x2140;
-    *(s32 *)(p + 0x2100) = t;
-    *(f32 *)(p + 0x20F8) = (f32)*(s32 *)(*(u8 **)(*(u8 **)(*(u8 **)(p + 0x9C) + ((*(s32 *)(p + 0x2100) >> 16) - 1) * 4 + 0x46C) + 0x14)
-        + ((*(s32 *)(p + 0x2100) & 0xFFFF) << 4) + 8);
+typedef struct { s32 a; s32 b; s32 v; s32 c; } F300E;
+typedef struct { u8 pad[0x14]; F300E *e; } F300D;
+typedef struct { u8 pad[0x46C]; F300D *d[1]; } F300C;
+void func_0020F300(s32 arg0, s32 arg1) {
+    u32 t;
+    u8 *p;
+    s32 k;
+    p = D_00568C90 + arg0 * 0x2140;
+    *(s32 *)(p + 0x2100) = (s32)(arg1 | 0x10000);
+    t = *(s32 *)(p + 0x2100);
+    k = ((s32)t >> 0x10) - 1;
+    *(f32 *)(p + 0x20F8) = (f32)(*(F300C **)(p + 0x9C))->d[k]->e[t & 0xFFFF].v;
 }
-// differs: 12 of 26 differ: the same order as func_0020F290 (the constant 0x10000 is or-ed in before the element address in the original); the 0x9C table chain matches
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F300);
 void func_0020F370(s32 i, f32 a, f32 b, f32 c, f32 d) {
     u8 *p = D_00568C90 + i * 0x2140;
     *(f32 *)(p + 0x2138) = a;
