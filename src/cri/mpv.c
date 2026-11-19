@@ -4471,7 +4471,22 @@ s32 func_0017B240_x0017B240(void)
     }
     return func_0017B2D0_x0017B240(h);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B278);
+typedef struct { int used; char pad[0xD0]; } Ent_B278_x0017B278;
+typedef struct { char pad[0xC]; int n; Ent_B278_x0017B278 e[1]; } Tbl_B278_x0017B278;
+extern Tbl_B278_x0017B278 *D_00424C38_x0017B278 __asm__("D_00424C38");
+Ent_B278_x0017B278 *func_0017B278_x0017B278(void) __asm__("func_0017B278");
+Ent_B278_x0017B278 *func_0017B278_x0017B278(void)
+{
+    Ent_B278_x0017B278 *e = D_00424C38_x0017B278->e;
+    int n = D_00424C38_x0017B278->n;
+    int i;
+    for (i = 0; i < n; i++) {
+        if (e[i].used == 1) {
+            return &e[i];
+        }
+    }
+    return 0;
+}
 s32 func_00179018_x0017B2D0() __asm__("func_00179018");
 s32 func_0017B038_x0017B2D0() __asm__("func_0017B038");
 s32 func_0017B368_x0017B2D0() __asm__("func_0017B368");
