@@ -246,47 +246,60 @@ void func_002228F0(Task2_21D260 *o) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002228F0);
-#if 0
-// differs: the step test's two branches are laid out in another order and the lb block is two instructions short
-void func_00222A90(Task2_21D260 *t) {
-    Work21D260 *w = gBtlSys;
-    Sub2_21D260 *s = (Sub2_21D260 *)((char *)t + 0x30);
-    f32 f;
+void func_00222A90(u8 *arg0) {
+    Task21D260 *temp_v1;
+    Work21D260 *temp_s0_2;
+    Work21D260 *temp_s1;
+    f32 temp_f1;
+    s32 temp_a0;
+    s32 *f30p;
+    void (*var_v1)();
+    u8 *temp_s0;
 
-    func_00224680(s);
-    if ((w->fE30 & 2) != 0) {
-        t->f1C = (func_00223660 == 0) ? 0 : func_00223660;
-    } else {
-        func_00224BB0(D_0058BB30);
-        func_002249B0();
-        if (D_0058BB38[0] == 0) {
-            if (D_0058BB36[0] != 0) {
-                s->f20 = s->f20 + D_00470710;
-            } else {
-                s->f20 = 0.0f;
-            }
+    temp_s1 = gBtlSys;
+    temp_s0 = arg0 + 0x30;
+    func_00224680(temp_s0);
+    if (temp_s1->fE30 & 2) {
+        var_v1 = func_00223660;
+        if (func_00223660 == NULL) {
+            var_v1 = NULL;
+        }
+        *(void (**)())((u8 *)arg0 + 0x1C) = var_v1;
+        return;
+    }
+    func_00224BB0(D_0058BB30);
+    func_002249B0();
+    if (*D_0058BB38 == 0) {
+        if (*D_0058BB36 != 0) {
+            *(f32 *)((u8 *)temp_s0 + 0x20) = (f32) (*(f32 *)((u8 *)temp_s0 + 0x20) + D_00470710);
         } else {
-            f = s->f1C + D_00470710;
-            s->f1C = f;
-            if (f >= 8.0f) {
-                amTask_Kill(s->f0);
-                amTask_Kill((s32)t);
-                w->fEF0 = 0;
-                gBtlSys->fE30 = gBtlSys->fE30 & -2;
-                func_0022D4B0(D_0058BAE0[0], 1);
-                D_0058BAE0[0] = 0;
-                if (gBtlSys->fEF0 != 0) {
-                    amTask_Kill(gBtlSys->fEF0->f30);
-                    amTask_Kill((s32)gBtlSys->fEF0);
-                    gBtlSys->fEF0->f30 = 0;
-                    gBtlSys->fEF0 = 0;
-                }
+            *(f32 *)((u8 *)temp_s0 + 0x20) = 0.0f;
+        }
+        return;
+    }
+    temp_f1 = *(f32 *)((u8 *)temp_s0 + 0x1C) + D_00470710;
+    *(f32 *)((u8 *)temp_s0 + 0x1C) = temp_f1;
+    if (!(temp_f1 < 8.0f)) {
+        amTask_Kill(*(s32 *)temp_s0);
+        amTask_Kill((s32) arg0);
+        temp_s1->fEF0 = NULL;
+        temp_s0_2 = gBtlSys;
+        temp_s0_2->fE30 &= ~1;
+        func_0022D4B0(*D_0058BAE0, 1);
+        *D_0058BAE0 = 0;
+        temp_v1 = temp_s0_2->fEF0;
+        if (temp_v1 != NULL) {
+            f30p = &temp_v1->f30;
+            temp_a0 = *f30p;
+            if (temp_a0 != 0) {
+                amTask_Kill(temp_a0);
             }
+            amTask_Kill((s32) temp_s0_2->fEF0);
+            *f30p = 0;
+            temp_s0_2->fEF0 = NULL;
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00222A90);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00222BF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00223660);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002238B0);
