@@ -439,7 +439,92 @@ int func_0010F5E8_x0010F5E8(const char *name, int flags, ...)
     SignalSema_x0010F5E8(D_003FAEE8_x0010F5E8);
     return r;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F878);
+typedef unsigned char u8_x0010F878;
+typedef signed int s32_x0010F878;
+typedef unsigned int u32_x0010F878;
+typedef struct {
+    int handle;
+    int active;
+} CloseIob_x0010F878;
+typedef struct {
+    int sema;
+    int result;
+    int size;
+    int handle;
+    int slot;
+} CloseState_x0010F878;
+typedef struct {
+    int count;
+    int maxCount;
+    int initialCount;
+    int waitThreads;
+    int attr;
+    const char *name;
+} CloseSema_x0010F878;
+extern CloseState_x0010F878 D_01FE5940_x0010F878 __asm__("D_00473440");
+extern u8_x0010F878 D_01FE6E40_x0010F878[] __asm__("D_00474940");
+extern u8_x0010F878 D_01FE6580_x0010F878[] __asm__("D_00474080");
+extern u8_x0010F878 D_01FE7040_x0010F878[] __asm__("D_00474B40");
+extern s32_x0010F878 D_01EFEFDC_x0010F878 __asm__("D_003EC6BC");
+extern const char S_01F27878_x0010F878[] __asm__("D_0045D718");
+extern CloseIob_x0010F878 *F_iob_lookup_x0010F878(u32_x0010F878 fd) __asm__("func_0010EB40");
+extern s32_x0010F878 F_lock_x0010F878(s32_x0010F878 n) __asm__("func_0010EFC0");
+extern void F_unlock_x0010F878(void) __asm__("func_0010EFF0");
+extern s32_x0010F878 CreateSema_x0010F878(CloseSema_x0010F878 *sema) __asm__("CreateSema");
+extern s32_x0010F878 DeleteSema_x0010F878(s32_x0010F878 sid) __asm__("DeleteSema");
+extern s32_x0010F878 WaitSema_x0010F878(s32_x0010F878 sid) __asm__("WaitSema");
+extern s32_x0010F878 F_call_rpc_x0010F878(u8_x0010F878 *send, s32_x0010F878 f1, s32_x0010F878 f2, CloseState_x0010F878 *state, s32_x0010F878 n, u8_x0010F878 *recv, s32_x0010F878 rsize, s32_x0010F878 z1, s32_x0010F878 z2, s32_x0010F878 z3) __asm__("func_0010EA50");
+int func_0010F878_x0010F878(unsigned int fd) __asm__("func_0010F878");
+/* sceClose: from https://github.com/OpenRAC/rac5-sm-decomp (src/boot/sceClose.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_0010F878_x0010F878(unsigned int fd) {
+    CloseSema_x0010F878 sema;
+    int result;
+    int sid;
+    int rpcResult;
+    CloseIob_x0010F878 *iob;
+    CloseState_x0010F878 *state = &D_01FE5940_x0010F878;
+
+    iob = F_iob_lookup_x0010F878(fd);
+    F_lock_x0010F878(1);
+     
+    if (D_01EFEFDC_x0010F878 == 0) {
+        F_unlock_x0010F878();
+        return -9;
+    }
+    if (iob == 0 || iob->active == 0) {
+        F_unlock_x0010F878();
+        return -9;
+    }
+    state->handle = iob->handle;
+    state->slot = ((char *)iob - (char *)D_01FE6E40_x0010F878) >> 4;
+    sema.maxCount = 1;
+    sema.name = S_01F27878_x0010F878;
+    sema.initialCount = 0;
+    sid = CreateSema_x0010F878(&sema);
+    state->sema = sid;
+    state->result = (int)&result;
+    state->size = 4;
+    rpcResult = F_call_rpc_x0010F878(D_01FE7040_x0010F878, 1, 0, state, 0x14,
+                           D_01FE6580_x0010F878, 4, 0, 0, 0);
+    if (rpcResult < 0) {
+        DeleteSema_x0010F878(sid);
+        F_unlock_x0010F878();
+        return -11;
+    }
+    iob->active = 0;
+    rpcResult = *(int *)((unsigned int)D_01FE6580_x0010F878 | 0x20000000);
+    F_unlock_x0010F878();
+    if (rpcResult == 0) {
+        DeleteSema_x0010F878(sid);
+        return -11;
+    }
+    WaitSema_x0010F878(sid);
+    DeleteSema_x0010F878(sid);
+    if (result < 0) {
+        return result;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F9F0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010FC30);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010FEA0);
@@ -453,7 +538,78 @@ int sceRemove(void *name)
     return _sceCallCode(name, 6);
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_001108A0);
+struct FsCallMk_x001108A0 {
+    int sema;             
+    void *result;         
+    int result_size;      
+    int arg;              
+    char path[0x400];     
+};
+struct SemaParam_x001108A0 {
+    int count;
+    int max_count;
+    int init_count;
+    int wait_threads;
+    unsigned attr;
+    unsigned option;
+};
+extern struct FsCallMk_x001108A0 fs_call_x001108A0 __asm__("D_00473440");
+extern int fs_ready_x001108A0 __asm__("D_003EC6BC");
+extern int fs_rpc_client_x001108A0[] __asm__("D_00474B40");
+extern int fs_rpc_result_x001108A0[] __asm__("D_00474080");
+extern char fs_mkdir_sema_name_x001108A0[] __asm__("D_0045D7C0");
+extern void _sceFsWaitS_x001108A0(int) __asm__("func_0010EFC0");
+extern void sceFsInit_x001108A0(void) __asm__("func_0010F0E8");
+extern int CreateSema_x001108A0(struct SemaParam_x001108A0 *) __asm__("CreateSema");
+extern int DeleteSema_x001108A0(int) __asm__("DeleteSema");
+extern int WaitSema_x001108A0(int) __asm__("WaitSema");
+extern int ReadQueueStatus_x001108A0(void) __asm__("func_0010EFF0");
+extern int fs_call_rpc_x001108A0(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_001108A0_x001108A0(char *path, int mode) __asm__("func_001108A0");
+/* sceMkdir: from https://github.com/OpenRAC/rac5-sm-decomp (src/boot/sceMkdir.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001108A0_x001108A0(char *path, int mode) {
+    struct FsCallMk_x001108A0 *call = &fs_call_x001108A0;
+    struct SemaParam_x001108A0 sp;
+    int sema;
+    int result;
+    int status;
+    int i;
+
+    _sceFsWaitS_x001108A0(7);
+    if (fs_ready_x001108A0 == 0) sceFsInit_x001108A0();
+    i = 0;
+    while (i < 0x400) {
+        if ((*(((char *)call + i) + 0x10) = path[i]) == 0) break;
+        i++;
+    }
+    if (i == 0x400) {
+        *((char *)call + 0x40F) = 0;
+        i = 0x3FF;
+    }
+    call->arg = mode;
+    sp.max_count = 1;
+    sp.option = (unsigned)fs_mkdir_sema_name_x001108A0;
+    sp.init_count = 0;
+    sema = CreateSema_x001108A0(&sp);
+    call->result = &result;
+    call->sema = sema;
+    call->result_size = 4;
+    if (fs_call_rpc_x001108A0(fs_rpc_client_x001108A0, 7, 0, &fs_call_x001108A0, i + 0x11, fs_rpc_result_x001108A0, 4, 0, 0,
+                    0) < 0) {
+        DeleteSema_x001108A0(sema);
+        ReadQueueStatus_x001108A0();
+        return -11;
+    }
+    status = *(int *)((unsigned)fs_rpc_result_x001108A0 | 0x20000000);
+    ReadQueueStatus_x001108A0();
+    if (status == 0) {
+        DeleteSema_x001108A0(sema);
+        return -11;
+    }
+    WaitSema_x001108A0(sema);
+    DeleteSema_x001108A0(sema);
+    return result;
+}
 
 
 int sceRmdir(void *name)
@@ -498,8 +654,156 @@ int func_00110E48_x00110E48(int path){
  return r;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00110F10);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00111078);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_001111D0);
+struct FsIob_x00111078 {
+    int fd;
+    int mode;
+    int pad8;
+    int padC;
+};
+struct FsCall_x00111078 {
+    int sema;             
+    void *result;         
+    int result_size;      
+    int fd;               
+    void *buf;            
+    int size;             
+    int unk18;            
+    int iob;              
+};
+struct SemaParam_x00111078 {
+    int count;
+    int max_count;
+    int init_count;
+    int wait_threads;
+    unsigned attr;
+    unsigned option;
+};
+extern struct FsCall_x00111078 fs_call_x00111078 __asm__("D_00473440");
+extern int fs_ready_x00111078 __asm__("D_003EC6BC");
+extern unsigned char fs_rpc_client_x00111078[] __asm__("D_00474B40");
+extern unsigned char fs_rpc_result_x00111078[] __asm__("D_00474080");
+extern char sceStdioDreadSemaName_x00111078[] __asm__("D_0045D820");
+extern struct FsIob_x00111078 *get_iob_x00111078(int fd) __asm__("func_0010EB40");
+extern void _sceFsWaitS_x00111078(int) __asm__("func_0010EFC0");
+extern int ReadQueueStatus_x00111078(void) __asm__("func_0010EFF0");
+extern int CreateSema_x00111078(struct SemaParam_x00111078 *) __asm__("CreateSema");
+extern int DeleteSema_x00111078(int) __asm__("DeleteSema");
+extern int WaitSema_x00111078(int) __asm__("WaitSema");
+extern int fs_call_rpc_x00111078(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_00111078_x00111078(int fd, void *buf, int size) __asm__("func_00111078");
+/* sceDread: from https://github.com/OpenRAC/rac5-sm-decomp (src/boot/sceDread.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00111078_x00111078(int fd, void *buf, int size) {
+    struct FsCall_x00111078 *call = &fs_call_x00111078;
+    struct FsIob_x00111078 *iob;
+    struct SemaParam_x00111078 sp;
+    int result;
+    int mode;
+    int sema;
+    int ret;
+
+    iob = get_iob_x00111078(fd);
+    _sceFsWaitS_x00111078(0xB);
+    if (fs_ready_x00111078 == 0 || iob == 0 || (mode = iob->mode) == 0) {
+        ReadQueueStatus_x00111078();
+        return -9;
+    }
+    call->fd = iob->fd;
+    call->buf = buf;
+    sp.max_count = 1;
+    sp.option = (unsigned)sceStdioDreadSemaName_x00111078;
+    sp.init_count = 0;
+    sema = CreateSema_x00111078(&sp);
+    call->sema = sema;
+    call->result = &result;
+    call->result_size = 4;
+    if (fs_call_rpc_x00111078(fs_rpc_client_x00111078, 0xB, 0, call, 0x20, fs_rpc_result_x00111078, 4, 0, 0, 0) < 0) {
+        WaitSema_x00111078(sema);
+        ReadQueueStatus_x00111078();
+        return -11;
+    }
+    ret = *(int *)((unsigned)fs_rpc_result_x00111078 | 0x20000000);
+    ReadQueueStatus_x00111078();
+    if (ret == 0) {
+        DeleteSema_x00111078(sema);
+        return -11;
+    }
+    WaitSema_x00111078(sema);
+    DeleteSema_x00111078(sema);
+    return result;
+}
+struct FsCallGs_x001111D0 {
+    int sema;             
+    void *result;         
+    int result_size;      
+    void *stat;           
+    char path[0x400];     
+};
+struct SemaParam_x001111D0 {
+    int count;
+    int max_count;
+    int init_count;
+    int wait_threads;
+    unsigned attr;
+    unsigned option;
+};
+extern struct FsCallGs_x001111D0 fs_call_x001111D0 __asm__("D_00473440");
+extern int fs_ready_x001111D0 __asm__("D_003EC6BC");
+extern int fs_rpc_client_x001111D0[] __asm__("D_00474B40");
+extern int fs_rpc_result_x001111D0[] __asm__("D_00474080");
+extern char fs_getstat_sema_name_x001111D0[] __asm__("D_0045D838");
+extern void _sceFsWaitS_x001111D0(int) __asm__("func_0010EFC0");
+extern void sceFsInit_x001111D0(void) __asm__("func_0010F0E8");
+extern int CreateSema_x001111D0(struct SemaParam_x001111D0 *) __asm__("CreateSema");
+extern int DeleteSema_x001111D0(int) __asm__("DeleteSema");
+extern int WaitSema_x001111D0(int) __asm__("WaitSema");
+extern int ReadQueueStatus_x001111D0(void) __asm__("func_0010EFF0");
+extern int fs_call_rpc_x001111D0(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_001111D0_x001111D0(unsigned char *path, void *stat) __asm__("func_001111D0");
+/* sceGetstat: from https://github.com/OpenRAC/rac5-sm-decomp (src/boot/sceGetstat.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001111D0_x001111D0(unsigned char *path, void *stat) {
+    struct FsCallGs_x001111D0 *call = &fs_call_x001111D0;
+    struct SemaParam_x001111D0 sp;
+    int sema;
+    int result;
+    int status;
+    int i;
+
+    _sceFsWaitS_x001111D0(0xC);
+    if (fs_ready_x001111D0 == 0) sceFsInit_x001111D0();
+    i = 0;
+    while (i < 0x400) {
+        if ((*(((unsigned char *)call + i) + 0x10) = path[i]) == 0) break;
+        i++;
+    }
+
+    if (i == 0x400) {
+        *((unsigned char *)call + 0x40F) = 0;
+        i = 0x3FF;
+    }
+    call->stat = stat;
+    sp.max_count = 1;
+    sp.option = (unsigned)fs_getstat_sema_name_x001111D0;
+    sp.init_count = 0;
+    sema = CreateSema_x001111D0(&sp);
+    call->result = &result;
+    call->sema = sema;
+    call->result_size = 4;
+    if (fs_call_rpc_x001111D0(fs_rpc_client_x001111D0, 0xC, 0, &fs_call_x001111D0, i + 0x11, fs_rpc_result_x001111D0,
+                    4, 0, 0, 0) < 0) {
+        DeleteSema_x001111D0(sema);
+        ReadQueueStatus_x001111D0();
+        return -11;
+    }
+    status = *(int *)((unsigned)fs_rpc_result_x001111D0 | 0x20000000);
+    ReadQueueStatus_x001111D0();
+    if (status == 0) {
+        DeleteSema_x001111D0(sema);
+        return -11;
+    }
+    WaitSema_x001111D0(sema);
+    DeleteSema_x001111D0(sema);
+    return result;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00111388);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_001115D8);
 
@@ -509,7 +813,76 @@ int sceChdir(void *name)
     return _sceCallCode(name, 0x12);
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00111800);
+struct FsCallSync_x00111800 {
+    int sema;             
+    void *result;         
+    int result_size;      
+    int pad0C;            
+    int flag;             
+    char path[0x400];     
+};
+struct SemaParam_x00111800 {
+    int count;
+    int max_count;
+    int init_count;
+    int wait_threads;
+    unsigned attr;
+    unsigned option;
+};
+extern struct FsCallSync_x00111800 fs_call_x00111800 __asm__("D_00473440");
+extern int fs_ready_x00111800 __asm__("D_003EC6BC");
+extern int fs_rpc_client_x00111800[] __asm__("D_00474B40");
+extern int fs_rpc_result_x00111800[] __asm__("D_00474080");
+extern char fs_sync_sema_name_x00111800[] __asm__("D_0045D880");
+extern void _sceFsWaitS_x00111800(int) __asm__("func_0010EFC0");
+extern void sceFsInit_x00111800(void) __asm__("func_0010F0E8");
+extern int CreateSema_x00111800(struct SemaParam_x00111800 *) __asm__("CreateSema");
+extern int DeleteSema_x00111800(int) __asm__("DeleteSema");
+extern int WaitSema_x00111800(int) __asm__("WaitSema");
+extern int ReadQueueStatus_x00111800(void) __asm__("func_0010EFF0");
+extern int fs_call_rpc_x00111800(void *, int, int, void *, int, void *, int, void *, void *, void *) __asm__("func_0010EA50");
+int func_00111800_x00111800(char *path, int flag) __asm__("func_00111800");
+/* sceSync: from https://github.com/OpenRAC/rac5-sm-decomp (src/boot/sceSync.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00111800_x00111800(char *path, int flag) {
+    struct FsCallSync_x00111800 *call = &fs_call_x00111800;
+    struct SemaParam_x00111800 sp;
+    int sema;
+    int result;
+    int status;
+    int i;
+
+    _sceFsWaitS_x00111800(0x13);
+    if (fs_ready_x00111800 == 0) sceFsInit_x00111800();
+    i = 0;
+    while (i < 0x400) {
+        if ((*(((char *)call + i) + 0x14) = path[i]) == 0) break;
+        i++;
+    }
+    if (i == 0x400) *((char *)call + 0x413) = 0;
+    call->flag = flag;
+    sp.max_count = 1;
+    sp.option = (unsigned)fs_sync_sema_name_x00111800;
+    sp.init_count = 0;
+    sema = CreateSema_x00111800(&sp);
+    call->result = &result;
+    call->sema = sema;
+    call->result_size = 4;
+    if (fs_call_rpc_x00111800(fs_rpc_client_x00111800, 0x13, 0, &fs_call_x00111800, 0x414, fs_rpc_result_x00111800, 4, 0,
+                    0, 0) < 0) {
+        DeleteSema_x00111800(sema);
+        ReadQueueStatus_x00111800();
+        return -11;
+    }
+    status = *(int *)((unsigned)fs_rpc_result_x00111800 | 0x20000000);
+    ReadQueueStatus_x00111800();
+    if (status == 0) {
+        DeleteSema_x00111800(sema);
+        return -11;
+    }
+    WaitSema_x00111800(sema);
+    DeleteSema_x00111800(sema);
+    return result;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_001119B0);
 
 

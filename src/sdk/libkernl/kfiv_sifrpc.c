@@ -348,7 +348,78 @@ void func_0010DEF8_x0010DEF8(void *packet, void *q)
         func_003B7898_x0010DEF8(0x800, func_003B2E38_x0010DEF8, p);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", sceSifBindRpc);
+typedef struct {
+    int unk0;
+    int unk4;
+    int unk8;
+    unsigned char pad_C[0x4];
+    int unk10;
+    unsigned char pad_14[0x10];
+    int unk24;
+} SifClient_x0010DFC8;
+typedef struct {
+    unsigned char pad_0[0x14];
+    int unk14;
+    int unk18;
+    int unk1C;
+    int unk20;
+} SifRequest_x0010DFC8;
+extern int D_01FE58C0_x0010DFC8[] __asm__("D_004733C0");
+extern char SIF_BIND_SEMA_NAME_x0010DFC8[] __asm__("D_0045D638");
+extern int CreateSema_x0010DFC8(int *) __asm__("CreateSema");
+extern int DeleteSema_x0010DFC8(int) __asm__("DeleteSema");
+extern int WaitSema_x0010DFC8(int) __asm__("WaitSema");
+extern int func_1ED3F50_x0010DFC8(int *) __asm__("func_0010D9E8");
+extern int func_1ED3FF8_x0010DFC8(SifRequest_x0010DFC8 *) __asm__("func_0010DA90");
+extern int sceSifSendCmd_x0010DFC8(int, SifRequest_x0010DFC8 *, int, int, int, int) __asm__("func_0010D5A8");
+int sceSifBindRpc_x0010DFC8(SifClient_x0010DFC8 *client, int fno, int mode) __asm__("sceSifBindRpc");
+/* sceSifBindRpc_x0010DFC8: from https://github.com/OpenRAC/rac5-sm-decomp (src/boot/sceSifBindRpc_x0010DFC8.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+int sceSifBindRpc_x0010DFC8(SifClient_x0010DFC8 *client, int fno, int mode) {
+    int sema_param[6];
+    SifRequest_x0010DFC8 *request;
+    int sema;
+    int sent;
+
+    client->unk10 = 0;
+    client->unk24 = 0;
+    request = (SifRequest_x0010DFC8 *)func_1ED3F50_x0010DFC8(D_01FE58C0_x0010DFC8);
+    if (request == 0) {
+        return -1;
+    }
+    client->unk4 = request->unk18;
+    client->unk0 = (int)request;
+    request->unk20 = fno;
+    request->unk14 = (int)request;
+    request->unk1C = (int)client;
+    if (!(mode & 1)) {
+        sema_param[1] = 1;
+        sema_param[2] = 0;
+        sema_param[5] = (int)SIF_BIND_SEMA_NAME_x0010DFC8;
+        sema = CreateSema_x0010DFC8(sema_param);
+        client->unk8 = sema;
+        if (sema < 0) {
+            func_1ED3FF8_x0010DFC8(request);
+            return -3;
+        }
+        sent = sceSifSendCmd_x0010DFC8(0x80000009, request, 0x40, 0, 0, 0);
+        if (sent == 0) {
+            func_1ED3FF8_x0010DFC8(request);
+            DeleteSema_x0010DFC8(client->unk8);
+            return -2;
+        }
+        WaitSema_x0010DFC8(client->unk8);
+        DeleteSema_x0010DFC8(client->unk8);
+        return 0;
+    } else {
+        client->unk8 = -1;
+        sent = sceSifSendCmd_x0010DFC8(0x80000009, request, 0x40, 0, 0, 0);
+        if (sent != 0) {
+            return 0;
+        }
+        func_1ED3FF8_x0010DFC8(request);
+        return -2;
+    }
+}
 
 
 /* The call request is queued on its server word by word: the ROM orders
