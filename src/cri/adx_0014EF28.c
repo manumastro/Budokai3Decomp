@@ -771,7 +771,19 @@ s32 func_00150380(void) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001503A0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150558);
+extern s32 D_00401084_x00150558 __asm__("D_00401084");
+extern u8 D_00460450_x00150558[] __asm__("D_00460450");
+void func_00150360_x00150558(void) __asm__("func_00150360");
+void func_001503A0_x00150558(u8 *, s32, s32, s32, s32) __asm__("func_001503A0");
+s32 func_00150558_x00150558(s32 a0, s32 a1, s32 a2) __asm__("func_00150558");
+s32 func_00150558_x00150558(s32 a0, s32 a1, s32 a2)
+{
+    if (D_00401084_x00150558 == 0) {
+        func_00150360_x00150558();
+    }
+    func_001503A0_x00150558(D_00460450_x00150558, 6, a0, a1, a2);
+    return 0;
+}
 s32 func_001505C8(u16 *arg0, u16 *arg1, u16 *arg2) {
     *arg0 = *arg2 + (*arg0 * *arg1);
     return 0;
@@ -5302,7 +5314,12 @@ s32 func_00154760_x00154760(s32 a0, s32 a1, s32 a2, s32 a3) __asm__("func_001547
 s32 func_00154760_x00154760(s32 a0, s32 a1, s32 a2, s32 a3) {
     return func_00154830_x00154760(a0, a1, a2, a3, (s32)D_00402B20_x00154760 & ~0x3F, 0x800);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154788);
+s32 func_00154878_x00154788(s32, s32, s32, s32, s32, s32) __asm__("func_00154878");
+extern u8 D_00402B20_x00154788[] __asm__("D_00402B20");
+s32 func_00154788_x00154788(s32 a0, s32 a1, s32 a2, s32 a3) __asm__("func_00154788");
+s32 func_00154788_x00154788(s32 a0, s32 a1, s32 a2, s32 a3) {
+    return func_00154878_x00154788(a0, a1, a2, a3, (s32)D_00402B20_x00154788 & ~0x3F, 0x800);
+}
 typedef char Sint8_x001547B0;
 typedef unsigned short Uint16_x001547B0;
 typedef signed int Sint32_x001547B0;

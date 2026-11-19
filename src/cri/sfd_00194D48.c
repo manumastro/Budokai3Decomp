@@ -666,7 +666,18 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00195878);
 s32 func_00195A90(u8 *arg0) {
     return *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1C70)) + 0x109C);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00195AA0);
+typedef struct { u64 v; } __attribute__((packed)) U64P_x00195AA0;
+extern s32 D_00492A40_x00195AA0 __asm__("D_00492A40");
+extern U64P_x00195AA0 D_00492A48_x00195AA0 __asm__("D_00492A48");
+void func_0018D650_x00195AA0(u8 *a0, s32 a1) __asm__("func_0018D650");
+s32 func_00195AA0_x00195AA0(s32 a0, U64P_x00195AA0 *a1, u8 *a2) __asm__("func_00195AA0");
+s32 func_00195AA0_x00195AA0(s32 a0, U64P_x00195AA0 *a1, u8 *a2) {
+    D_00492A40_x00195AA0 = 1;
+    D_00492A48_x00195AA0 = *a1;
+    *(U64P_x00195AA0 *)(*(u8 **)(a2 + 0x1C70) + 0x1098) = *a1;
+    func_0018D650_x00195AA0(a2, 0xFF000F40);
+    return 1;
+}
 typedef struct SfdIpuEntry_x00195B08 {
     long long f0;
     long long f8;
@@ -25098,7 +25109,23 @@ void func_0019B1C8_x0019B1C8(void *a0, int a1) {
     func_0035B500_x0019B1C8(s0, tmp0, tmp1);
     func_0035B568_x0019B1C8(s0, tmp0, tmp1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B228);
+s32 func_0017EE78_x0019B228() __asm__("func_0017EE78");
+s32 func_0018D908_x0019B228() __asm__("func_0018D908");
+s32 func_0018D920_x0019B228() __asm__("func_0018D920");
+extern s32 D_00426A98_x0019B228 __asm__("D_00426A98");
+void func_0019B228_x0019B228(s32 arg0, s32 arg1, s32 arg2) __asm__("func_0019B228");
+void func_0019B228_x0019B228(s32 arg0, s32 arg1, s32 arg2) {
+    u8 sp[8];
+    s32 temp_s1;
+    u8 *temp_s0;
+
+    temp_s0 = arg0 + 0xCC0;
+    temp_s1 = func_0017EE78_x0019B228(D_00426A98_x0019B228, arg1, arg2);
+    func_0018D908_x0019B228(sp);
+    *(volatile s32 *)((u8 *)temp_s0 + 0x29C) = *(volatile s32 *)((u8 *)temp_s0 + 0x29C) + temp_s1;
+    *(volatile s32 *)((u8 *)temp_s0 + 0x2C0) = *(volatile s32 *)((u8 *)temp_s0 + 0x2C0) + temp_s1;
+    func_0018D920_x0019B228(sp);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B290);
 typedef unsigned char u8_x0019B2E0;
 typedef struct SfdPlaybackSettings_x0019B2E0 {
