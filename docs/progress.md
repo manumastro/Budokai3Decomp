@@ -6,15 +6,15 @@ between them). Regenerate with `.venv/bin/python scripts/progress.py --write` af
 
 <!-- progress table -->
 
-Measured 2026-11-18 (scripts/progress.py).
+Measured 2026-11-19 (scripts/progress.py).
 
 | Part | Functions in C | All | % | Bytes in C | All bytes | % |
 |---|---|---|---|---|---|---|
-| Sony SDK + C library (gcc) | 332 | 858 | 38.69 | 49,396 | 179,380 | 27.54 |
-| Metrowerks, linked before CRI (am* layer, main) | 339 | 411 | 82.48 | 66,464 | 137,476 | 48.35 |
-| CRI ADX / Sofdec, libmtap (gcc) | 1,578 | 2,797 | 56.42 | 100,332 | 337,068 | 29.77 |
-| Metrowerks, linked after CRI (the game) | 2,663 | 4,230 | 62.96 | 408,516 | 1,476,836 | 27.66 |
-| All | 4,912 | 8,296 | 59.21 | 624,708 | 2,130,760 | 29.32 |
+| Sony SDK + C library (gcc) | 376 | 858 | 43.82 | 52,072 | 179,380 | 29.03 |
+| Metrowerks, linked before CRI (am* layer, main) | 342 | 411 | 83.21 | 66,892 | 137,476 | 48.66 |
+| CRI ADX / Sofdec, libmtap (gcc) | 1,872 | 2,797 | 66.93 | 121,240 | 337,028 | 35.97 |
+| Metrowerks, linked after CRI (the game) | 2,741 | 4,229 | 64.81 | 420,648 | 1,476,380 | 28.49 |
+| All | 5,331 | 8,295 | 64.27 | 660,852 | 2,130,264 | 31.02 |
 
 <!-- end of progress table -->
 
