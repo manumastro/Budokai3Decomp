@@ -17914,7 +17914,33 @@ Sint32_x0019A560 func_0019A560_x0019A560(SFD_x0019A560 sfd, Sint32_x0019A560 *nc
         }
         return SFTIM_GetTimeSub_x0019A560(sfd, ncount, tscale);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019A5D8);
+s32 func_0017EE78_x0019A5D8(s32, s32, s32) __asm__("func_0017EE78");
+s32 func_0019A700_x0019A5D8() __asm__("func_0019A700");
+s32 func_0019A5D8_x0019A5D8(u8 *arg0, s32 *arg1, s32 *arg2) __asm__("func_0019A5D8");
+s32 func_0019A5D8_x0019A5D8(u8 *arg0, s32 *arg1, s32 *arg2)
+{
+  s32 temp_a1;
+  s32 var_v0;
+  u8 *temp_s1;
+  u8 *temp_s3;
+  temp_s1 = arg0 + 0xDD8;
+  temp_s3 = arg0 + 0xCC0;
+  var_v0 = func_0019A700_x0019A5D8(arg0, arg1, arg2);
+  temp_a1 = *arg2;
+  if (temp_a1 != 1)
+  {
+    if (!(temp_a1 != (*((s32 *) (((u8 *) temp_s3) + 0x148)))))
+    {
+      *arg1 += *((s32 *) (((u8 *) temp_s3) + 0x144));
+    }
+    else
+      if ((*((s32 *) (((u8 *) arg0) + 0xDD8))) != 0)
+    {
+      *arg1 += func_0017EE78_x0019A5D8(*((s32 *) (((u8 *) temp_s1) + 0x24)), temp_a1, *((s32 *) (((u8 *) temp_s1) + 0x28)));
+    }
+    return var_v0;
+  }
+}
 struct SfdSj_x0019A688;
 struct SfdRecSlot_x0019A688;
 struct SfdRec_x0019A688;

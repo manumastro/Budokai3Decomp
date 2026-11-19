@@ -4214,7 +4214,63 @@ void func_00181300_x00181300(s32 arg0, s32 arg1, s32 arg2) __asm__("func_0018130
 void func_00181300_x00181300(s32 arg0, s32 arg1, s32 arg2) {
     func_0017EE78_x00181300(arg0, arg1, arg2 * 0x3E8);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181330);
+s32 func_00181330_x00181330(unsigned int arg0) __asm__("func_00181330");
+s32 func_00181330_x00181330(unsigned int arg0)
+{
+  int new_var;
+  u32 new_var2;
+  int new_var5;
+  u32 new_var4;
+  short new_var3;
+  s32 var_v0;
+  s32 var_v1;
+  if (new_var2)
+  {
+    var_v1 = 2;
+    new_var2 = arg0;
+  }
+  else
+  {
+    new_var4 = (new_var2 = arg0);
+    var_v1 = 2;
+  }
+  if (new_var2 != 2)
+  {
+    new_var3 = 3U;
+    if (!(new_var2 >= new_var3))
+    {
+ do { var_v0 = 1; } while (0);
+      new_var5 = 1;
+      var_v1 = new_var5;
+    }
+    else
+    {
+      new_var5 = 3;
+      do
+      {
+        var_v0 = new_var5;
+      }
+      while (0);
+      var_v1 = new_var5;
+    }
+    if (new_var2 != var_v0)
+    {
+      if (new_var)
+      {
+        new_var = 3;
+        var_v0 = new_var;
+        var_v1 = var_v0;
+      }
+      else
+      {
+        new_var = 3;
+        var_v0 = new_var;
+        var_v1 = var_v0;
+      }
+    }
+  }
+  return var_v1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwl_convPtypeFromSFD);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001813D8);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181480);
