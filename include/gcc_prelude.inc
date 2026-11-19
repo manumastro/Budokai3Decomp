@@ -248,10 +248,13 @@ __gp_lis
 # `li.d` into an integer register (a `double` constant handled by the soft-float library, e.g. `pow(10.0, n)` in
 # src/menu/menu_za_d.c): gas refuses the mnemonic for the r5900, Sony's assembler encoded it like `dli` of the
 # constant's bits (10.0 is `ori $22,$0,0x8048 / dsll32 $22,$22,15`). Assembled as mips3, gas does the same.
-# Its size is not measured for the delay-slot rules above.
+# For the delay-slot rules above it counts as several machine instructions (__gp_note 0): behind a delay slot
+# the compiler filled, the instruction after it may still be swapped into the next call's slot
+# (mwPlySetFloatSpeed: `li.d $5,0.5 / move $4,$2 / jal dpadd` -> `ori / dsll32 / jal / move`).
 .macro __gp_lid
     .macro li.d reg, value
         .purgem li.d
+        __gp_note 0
         .set push
         .set mips3
         li.d \reg, \value
