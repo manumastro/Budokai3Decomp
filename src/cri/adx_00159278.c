@@ -17429,4 +17429,20 @@ s32 ADXT_GetHdrLen_x0015EE58(u8 *arg0)
  new_var2 = new_var3; do { if ((*((s8 *) (((u8 *) arg0) + 1))) < 2) { return new_var2; } } while (new_var3);
   return func_0015A030_x0015EE58(*((s32 *) (arg0 + 4)));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", ADXT_GetFmtBps);
+s32 ADXERR_CallErrFunc1_x0015EEA8(s32 *) __asm__("ADXERR_CallErrFunc1");
+s32 func_0015A038_x0015EEA8(s32) __asm__("func_0015A038");
+extern s32 D_00461A48_x0015EEA8 __asm__("D_00461A48");
+s32 ADXT_GetFmtBps_x0015EEA8(u8 *arg0) __asm__("ADXT_GetFmtBps");
+s32 ADXT_GetFmtBps_x0015EEA8(u8 *arg0)
+{
+  if (arg0 == ((void *) 0))
+  {
+    ADXERR_CallErrFunc1_x0015EEA8(&D_00461A48_x0015EEA8);
+    return -1;
+  }
+  if ((*((s8 *) (((u8 *) arg0) + 1))) >= 2)
+  {
+    return func_0015A038_x0015EEA8(*((s32 *) (((u8 *) arg0) + 4)));
+  }
+  return 0;
+}
