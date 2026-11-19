@@ -379,7 +379,40 @@ def clone(job):
                 renames=len(ren), literals=len(lits), how=how)
 
 
+class ItemTimeout(Exception):
+    pass
+
+
+def _alarm(signum, frame):
+    raise ItemTimeout()
+
+
+ITEM_TIMEOUT = 600
+
+
+def _init_timeout(t):
+    global ITEM_TIMEOUT
+    ITEM_TIMEOUT = t
+
+
+def safe_clone(job):
+    """clone() that always returns a row: any exception (SystemExit too: a pool worker that dies on it never hands
+    its task back, and imap_unordered then waits forever) and a pair over ITEM_TIMEOUT seconds become `error`."""
+    import signal
+    signal.signal(signal.SIGALRM, _alarm)
+    signal.alarm(ITEM_TIMEOUT)
+    try:
+        return clone(job)
+    except ItemTimeout:
+        return dict(name=job[0], status="error", why=f"timeout after {ITEM_TIMEOUT} s")
+    except BaseException as e:  # noqa: BLE001
+        return dict(name=job[0], status="error", why=f"{type(e).__name__}: {e}"[:200])
+    finally:
+        signal.alarm(0)
+
+
 def main():
+    global ITEM_TIMEOUT
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--sim", default="build/sim/siblings.json")
     ap.add_argument("--min", type=float, default=0.95)
@@ -387,16 +420,38 @@ def main():
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--out", default="build/sim/clones.json")
     ap.add_argument("--gcc-items", help="also write the library (gcc) pairs as scripts/func_insert.py items to this json")
+    ap.add_argument("--timeout", type=int, default=600, help="seconds per pair (default 600)")
+    ap.add_argument("--deadline", type=int, default=7200, help="seconds for the whole run (default 7200)")
     a = ap.parse_args()
+    ITEM_TIMEOUT = a.timeout
     sim = json.loads((ROOT / a.sim).read_text())
     jobs = [(n, i) for n, i in sim.items() if (i["part"] == "mw" or a.gcc_items) and i["same_length"]
             and i["score"] >= a.min and i["sibling_file"] and n != i["sibling"]]
     print(f"{len(jobs)} pairs", file=sys.stderr)
     res = []
-    with Pool(a.j) as pool:
-        for r in pool.imap_unordered(clone, jobs):
+    # spawn, not fork (no inherited locks or pipes); a heartbeat line every minute so a stall is visible; the
+    # whole pool is abandoned after --deadline seconds with the pairs still out reported as `error`
+    import multiprocessing
+    import time
+    t0 = time.time()
+    with multiprocessing.get_context("spawn").Pool(a.j, initializer=_init_timeout, initargs=(a.timeout,),
+                                                   maxtasksperchild=50) as pool:
+        it = pool.imap_unordered(safe_clone, jobs)
+        while True:
+            try:
+                r = it.next(timeout=60)
+            except StopIteration:
+                break
+            except multiprocessing.TimeoutError:
+                print(f"[sim_clone] {len(res)}/{len(jobs)} done, {time.time() - t0:.0f} s", file=sys.stderr, flush=True)
+                if time.time() - t0 > a.deadline:
+                    done = {r["name"] for r in res}
+                    res += [dict(name=n, status="error", why="deadline") for n, _ in jobs if n not in done]
+                    pool.terminate()
+                    break
+                continue
             res.append(r)
-            print(r["name"], r["status"], r.get("diff", ""), r.get("why", "")[:80], file=sys.stderr)
+            print(r["name"], r["status"], r.get("diff", ""), r.get("why", "")[:80], file=sys.stderr, flush=True)
     if a.gcc_items:
         items = [r.pop("item") for r in res if r["status"] == "gcc-item"]
         (ROOT / a.gcc_items).write_text(json.dumps(items, indent=1))
@@ -413,7 +468,7 @@ def main():
                 if not m2c_draft.asm_info(r["name"], (ROOT / r["file"]).read_text()):
                     continue
                 # checked again in the file as it is now (an earlier clone may have added clashing declarations)
-                again = clone((r["name"], sim[r["name"]]))
+                again = safe_clone((r["name"], sim[r["name"]]))
                 if again["status"] != "match":
                     print("skipped", r["name"], again["status"], again.get("why", "")[:80])
                     continue

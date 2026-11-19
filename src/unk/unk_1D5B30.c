@@ -2635,36 +2635,87 @@ s32 func_001E1850(Fighter *c, s32 a1) {
     }
     return 0;
 }
-#if 0
-void func_001E18B0(Fighter *c, s32 a1) {
-    s32 st[4];
-    char sb[0x30];
+extern void func_001E74F0();
+extern void func_001E8640(Fighter *c, s32 mask);
+extern void func_00146ED0(void *, void *, f32);
+extern void func_0013BA20(void *);
+extern void func_001E8630();
+extern void func_0013B620(void *);
+extern char D_003F0800[];
+extern void *const jtbl_00469600[];
+extern void func_001E5500();
+extern void *BtbBg_GetStageModelF10(void);
+extern void func_001E55C0(void *);
+extern s32 CharLight_Create(void);
+extern void func_00237760(s32, s32);
+extern void func_001C8480(s32, s32);
+extern void func_001E57C0();
+extern void func_001A5510();
+extern void func_001A5350(void *, f32);
+extern void func_001C9EF0();
+extern void func_001E80B0(Fighter *c);
+extern void func_001D0A20();
+extern void func_001E9980(void *);
+extern void amSound_Command(void *);
+extern void func_00144C00(s32, s32, s32, s32, s32, s32);
+extern void amFile_Load(s32 h);
+extern s32 *BtlCmd_GetMotEntry(s32 f, s32 i);
+extern void amCdFs_Close(void *, s32);
+extern char D_00469690[];
+extern void func_001E74F0();
+extern void func_001E8640(Fighter *c, s32 mask);
+extern void func_00146ED0(void *, void *, f32);
+extern void func_0013BA20(void *);
+extern void func_001E8630();
+extern void func_001E8640();
+extern void func_0013B620(void *);
+extern char D_003F0800[];
+extern void *const jtbl_00469600[];
+extern void func_001E5500();
+extern void *BtbBg_GetStageModelF10(void);
+extern void func_001E55C0(void *);
+extern s32 CharLight_Create(void);
+extern void func_00237760(s32, s32);
+extern void func_001C8480(s32, s32);
+extern void func_001E57C0();
+extern void func_001A5510();
+extern void func_001A5350(void *, f32);
+extern void func_001C9EF0();
+extern void func_001E80B0(Fighter *c);
+extern void func_001D0A20();
+extern void func_001E9980(void *);
+extern void amSound_Command(void *);
+extern void func_00144C00(s32, s32, s32, s32, s32, s32);
+extern void amFile_Load(s32 h);
+extern s32 *BtlCmd_GetMotEntry(s32 f, s32 i);
+extern void amCdFs_Close(void *, s32);
+extern char D_00469690[];
+void func_001E18B0(Fighter *c, s32 idx) {
+    char buf[0x30];
+    s32 arr[3];
     f32 f;
-    s32 v;
-    char *base;
+    s32 k;
+    void *bp;
 
-    if (((s32 *)((char *)c + 0x1DB8))[a1] == 0) {
-        return;
+    if (((s32 *)((char *)c + 0x1DB8))[idx] != 0) {
+        func_001E7070((char *)c + 0x650, idx);
+        arr[0] = c->f1350;
+        arr[1] = idx;
+        if (*(s16 *)*(void **)((char *)c + 0xBB0) != 0 && func_001DF8F0(0, 0x1B) > 0) {
+            f = 0.0f;
+        } else {
+            k = c->fBA4;
+            bp = c->f1CF8;
+            f = (f32)(((s8 *)((char *)bp + 0xDD))[k * 20] * 1000);
+        }
+        arr[2] = (s32)f;
+        A2d_CallHandler(8, arr);
+        *(s32 *)(buf + 0x10) = c->f1350;
+        *(s16 *)(buf + 0x18) = (s16)c->fBA4;
+        Sp_CallHandler(1, buf);
     }
-    func_001E7070((char *)c + 0x650);
-    st[0] = c->f1350;
-    st[1] = a1;
-    if (*(s16 *)(*(char **)((char *)c + 0xBB0)) != 0 && func_001DF8F0(0, 0x1B) > 0) {
-        f = 0.0f;
-    } else {
-        v = c->fBA4;
-        base = *(char **)((char *)c + 0x1CF8);
-        f = (f32)(*(s8 *)(base + v * 20 + 0xDD) * 1000);
-    }
-    st[2] = (s32)f;
-    A2d_CallHandler(8, st);
-    *(s32 *)(sb + 0x10) = c->f1350;
-    *(s16 *)(sb + 0x18) = (s16)c->fBA4;
-    Sp_CallHandler(1, sb);
 }
-#endif
-// differs: 6 of 61 by fdiff (two are jal relocation placeholders); the table lookup puts the counter in $a0 and the base in $v0 here, the original the other way round (two declaration orders tried). Frame and call order match. func_001E7070 is now unprototyped (called with one argument here).
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E18B0);
+
 s32 func_001E19B0(Fighter *c) {
     s32 a;
     s32 *p;

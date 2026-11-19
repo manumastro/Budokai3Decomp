@@ -84,7 +84,12 @@ def ensure_container():
     vols = []
     for m in mounts():
         vols += ["-v", f"{m}:{m}"]
-    _docker("run", "-d", "--rm", "--name", name, *vols, IMAGE)
+    r = _docker("run", "-d", "--rm", "--name", name, *vols, IMAGE, check=False)
+    if r.returncode:
+        # ninja starts many compiles at once: another one may have started the container meanwhile
+        again = _docker("inspect", "-f", "{{.State.Running}}", name, check=False)
+        if again.returncode or again.stdout.strip() != "true":
+            raise subprocess.CalledProcessError(r.returncode, r.args, r.stdout, r.stderr)
     return name
 
 
@@ -140,7 +145,8 @@ def run_many(jobs, cwd=None, workers=8):
                 log = work / f"batch_{tag}_{i}.log"
                 lines.append(f"{argv} > '{log}' 2>&1; echo $? >> '{log}'")
             script.write_text("\n".join(lines) + "\n")
-            subprocess.run(["docker", "exec", name, "sh", str(script)], check=True)
+            subprocess.run(["docker", "exec", name, "sh", str(script)], check=True, stdin=subprocess.DEVNULL,
+                           timeout=max(600, 60 * len(linux)))
             for i, _ in linux:
                 log = work / f"batch_{tag}_{i}.log"
                 text = log.read_text().rstrip("\n").split("\n")

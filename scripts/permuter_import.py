@@ -37,12 +37,23 @@ KEEP_HEAD = re.compile(r"^\s*(typedef|struct|union|enum)\b")
 KNR_HEAD = re.compile(r"^[^;(){}=]*\(\s*\w+(?:\s*,\s*\w+)*\s*\)\s*[^;(){}]+;$")
 
 
+class PreprocessError(RuntimeError):
+    pass
+
+
 def preprocess(path):
+    # a library file copied from another decompilation names its own header folders (`ext-include: repo:dir,dir`,
+    # configure.py's gcc_extra_includes): without them cpp fails on its #include lines
+    head = Path(path).read_text(errors="replace")[:800]
+    ext = [f"-I{ROOT / 'include' / 'ext' / repo / d}" for repo, dirs in re.findall(r"ext-include:\s*(\w+):(\S+)", head)
+           for d in dirs.split(",")]
     cmd = ["cpp", "-P", "-undef", "-D__MWERKS__", "-D__attribute__(x)=", f"-I{ROOT / 'include'}", f"-I{ROOT / 'src'}",
-           str(path)]
-    r = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
+           *ext, str(path)]
+    r = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT, timeout=120, stdin=subprocess.DEVNULL)
     if r.returncode:
-        raise SystemExit(r.stderr)
+        # an ordinary exception, not SystemExit: a multiprocessing worker that raises SystemExit dies without
+        # handing its task back, and Pool.imap_unordered then waits forever (sim_clone.py hung 13 h on this)
+        raise PreprocessError(r.stderr[:2000])
     return r.stdout
 
 

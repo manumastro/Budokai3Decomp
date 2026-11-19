@@ -51,7 +51,14 @@ void sceDeci2Poll(int s)
 }
 INCLUDE_PAD(4);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/ico_deci2", func_0010B608);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/ico_deci2", func_0010B638);
+int Deci2Call_x0010B638(int req, void *args) __asm__("Deci2Call");
+void func_0010B638_x0010B638(char *s) __asm__("func_0010B638");
+void func_0010B638_x0010B638(char *s)
+{
+    int args[4];
+    args[0] = (int)s;
+    Deci2Call_x0010B638(0x21, args);
+}
 
 
 int sceDeci2ExRecv(int s, void *buf, unsigned short len)
