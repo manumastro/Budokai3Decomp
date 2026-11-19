@@ -143,7 +143,25 @@ void func_0027E070(void) {
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027E120);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027E2D0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027E7E0);
+s32 amCdFs_ReadFileId(s32, s32, s32);
+void *amHeap_Alloc(s32, s32, s32 *, s32);
+extern u8 D_0046B6D0[];
+
+void func_0027E7E0(void)
+{
+    u8 *temp_s0;
+
+    if (D_00470810 != NULL) {
+        *(s8 *)((u8 *)D_00470810 + 0x10) = (s8)(*(s8 *)((u8 *)D_00470810 + 0x10) + 1);
+        return;
+    }
+    temp_s0 = D_00470810 = amHeap_Alloc(0x14, 0, (s32 *)D_0046B6D0, 0x123);
+    *(s32 *)(temp_s0 + 0x0) = amCdFs_ReadFileId(0x10820, 0, 0);
+    *(s32 *)(temp_s0 + 0x4) = amCdFs_ReadFileId(0x10821, 0, 0);
+    *(s32 *)(temp_s0 + 0x8) = 0;
+    *(s32 *)(temp_s0 + 0xC) = 0;
+    *(s8 *)(temp_s0 + 0x10) = 1;
+}
 s32 func_0022D0E0(s32, s32);
 s32 func_0022D4B0(s32, s32);
 void func_0027E880(u8 *arg0) {
