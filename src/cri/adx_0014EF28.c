@@ -4414,7 +4414,19 @@ void func_00152508(void) {
 void func_00152520(void) {
     func_0016FF58();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", fn_80046D94);
+__asm__(".set sqrtf, func_0011F6C8");
+float func_0011F220_x00152538(float) __asm__("func_0011F220");
+void fn_80046D94_x00152538(int highpass_frequency, int sample_rate, short *coef1_ptr, short *coef2_ptr) __asm__("fn_80046D94");
+void fn_80046D94_x00152538(int highpass_frequency, int sample_rate, short *coef1_ptr, short *coef2_ptr) {
+    float a, b, r, s, c;
+    s = __builtin_sqrtf(2.0f);
+    c = func_0011F220_x00152538(((float) highpass_frequency * 6.2831851f) / (float) sample_rate);
+    a = s - c;
+    b = __builtin_sqrtf(2.0f) - 1.0f;
+    r = (a - __builtin_sqrtf((a + b) * (a - b))) / b;
+    *coef1_ptr = (short) (int) (2.0f * r * 4096.0f);
+    *coef2_ptr = (short) (int) (-r * r * 4096.0f);
+}
 int func_00152698_x00152698(short *src, int len, short *out) __asm__("func_00152698");
 /* adxb_find_word80: from https://github.com/new-coke/rez-decomp (src/cri/adx_decode.c, MIT); ee-gcc 2.96 -O2 -G0 */
 int func_00152698_x00152698(short *src, int len, short *out)
@@ -6756,6 +6768,10 @@ ADXF_x00155118 func_00155118_x00155118(Char8_x00155118* fname, void* atr) {
     adxf_SetCmdHstry_x00155118((1), 1, (intptr_t_x00155118)fname, (intptr_t_x00155118)atr, -1);
     return adxf;
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m253810;
+extern int m253811;
+extern int m253812;
 typedef unsigned char Uint8_x001551B8;
 typedef char Sint8_x001551B8;
 typedef unsigned short Uint16_x001551B8;

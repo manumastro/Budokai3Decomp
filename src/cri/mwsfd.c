@@ -8027,7 +8027,14 @@ void mwPlyStartAfs_x00182ED0(s32 arg0, s32 arg1, s32 arg2)
 extern int b3c00182ED0_0;
 extern int b3c00182ED0_1;
 extern int b3cse_pad32_00182ED0_0_xxxx;
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00182F70);
+void func_00183A90_x00182F70(void *ply, int limit, int cap) __asm__("func_00183A90");
+void func_00182F70_x00182F70(unsigned char *ply) __asm__("func_00182F70");
+void func_00182F70_x00182F70(unsigned char *ply) {
+    int size = *(int *)(ply + 0x1DC);
+
+    func_00183A90_x00182F70(ply, size * 0.8, size);
+}
+__asm__("# rebind func_00182F70 0x00182F70");
 void func_00182FC8(u8 *arg0) {
     s32 temp_s0;
     s32 temp_v0;
