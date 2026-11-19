@@ -244,7 +244,25 @@ int func_00113DB8_x00113DB8(void)
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", _kTLBException);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", _kDebugException);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", DI);
+int DI_x00114320(void) __asm__("DI");
+/* DIntr: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_1161A0.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int DI_x00114320(void)
+{
+    int s, v;
+    __asm__ volatile("mfc0 %0, $12" : "=r"(s));
+    s &= 0x10000;
+    if (s) {
+        do {
+            __asm__ volatile("di");
+            __asm__ volatile("sync.p");
+            __asm__ volatile("mfc0 %0, $12" : "=r"(v));
+            v &= 0x10000;
+             
+            __asm__ volatile("nop\n\tnop" : "+r"(v));
+        } while (v);
+    }
+    return s != 0;
+}
 int EI_x00114370(void) __asm__("EI");
 /* EIntr: from https://github.com/denzi-gh/crashwoc-decomp-ps2 (src/sdk/sce/diei.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
 int EI_x00114370(void)
@@ -1646,7 +1664,36 @@ s32 func_00116318_x00116318(s32 arg0, s32 arg1)
   }
   return temp_s3;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00116398);
+typedef struct { void *fn; void *arg; int gp; int pad; } HEnt_x00116398;
+extern HEnt_x00116398 *D_00487868_x00116398 __asm__("D_003EDCE8");
+extern int D_0048786C_x00116398 __asm__("D_003EDCEC");
+extern HEnt_x00116398 D_004E9AC8_x00116398[] __asm__("D_00478708");
+extern int DIntr_x00116398(void) __asm__("DI");
+extern void EIntr_x00116398(void) __asm__("EI");
+int func_00116398_x00116398(unsigned int idx, void *fn, void *arg) __asm__("func_00116398");
+/* sceSifAddRebootNotifyHandler: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_118180.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00116398_x00116398(unsigned int idx, void *fn, void *arg)
+{
+    HEnt_x00116398 *tbl;
+    unsigned int max;
+    int s, gp;
+    if ((int)idx < 0) {
+        idx &= 0x7FFFFFFF;
+        tbl = D_004E9AC8_x00116398;
+        max = 32;
+    } else {
+        tbl = D_00487868_x00116398;
+        max = D_0048786C_x00116398;
+    }
+    if (idx >= max) return 0x80000069;
+    s = DIntr_x00116398();
+    tbl[idx].fn = fn;
+    tbl[idx].arg = arg;
+    __asm__ volatile ("move %0, $gp" : "=r" (gp));
+    tbl[idx].gp = gp;
+    if (s) EIntr_x00116398();
+    return 0;
+}
 typedef void (*NotifyHandler_x00116450)(void *arg, void *data);
 typedef struct {
     NotifyHandler_x00116450 func;
@@ -1675,4 +1722,31 @@ int func_00116450_x00116450(unsigned int index)
     table[index].func = 0;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001164A8);
+typedef struct { void *fn; void *arg; int gp; int pad; } HEnt_x001164A8;
+extern HEnt_x001164A8 *D_00487868_x001164A8 __asm__("D_003EDCE8");
+extern int D_0048786C_x001164A8 __asm__("D_003EDCEC");
+extern HEnt_x001164A8 D_004E9AC8_x001164A8[] __asm__("D_00478708");
+int func_001164A8_x001164A8(int which, int arg) __asm__("func_001164A8");
+/* sceSifExecNotifyHandler: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_118310.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001164A8_x001164A8(int which, int arg)
+{
+    HEnt_x001164A8 *tbl, *p;
+    int cnt, i, oldgp, prev;
+    if (which) {
+        tbl = D_004E9AC8_x001164A8;
+        cnt = 32;
+    } else {
+        tbl = D_00487868_x001164A8;
+        cnt = D_0048786C_x001164A8;
+    }
+    __asm__ volatile ("move %0, $gp" : "=r" (oldgp));
+    p = tbl;
+    for (i = 0; i < cnt; i++, p++) {
+        if (p->fn) {
+            __asm__ volatile ("move $3, $gp\n\tmove $gp, %0" : : "r" (p->gp) : "$3", "memory");
+            ((void (*)(int, void *))p->fn)(arg, p->arg);
+        }
+    }
+    __asm__ volatile ("move %0, $gp\n\tmove $gp, %1" : "=&r" (prev) : "r" (oldgp));
+    return prev;
+}

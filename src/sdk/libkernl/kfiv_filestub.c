@@ -335,7 +335,23 @@ void func_0010EFF0_x0010EFF0(void) {
     SignalSema_x0010EFF0(D_003EC6C4_x0010EFF0);
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F000);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F0A0);
+extern volatile int D_004E5FC0_x0010F0A0 __asm__("D_00474C00");
+typedef struct { void (*func)(void *); void *arg; } Cb11298_x0010F0A0;
+void func_0010F0A0_x0010F0A0(int a, Cb11298_x0010F0A0 *cb) __asm__("func_0010F0A0");
+/* _sceFs_Poff_Intr: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_1111E0.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_0010F0A0_x0010F0A0(int a, Cb11298_x0010F0A0 *cb)
+{
+    void (*f)(void *) = cb->func;
+    if (f != 0) {
+        void *save;
+         
+        __asm__ volatile("move %0, $gp\n\tlw $gp, %1" : "=&r"(save) : "m"((*(void **)&D_004E5FC0_x0010F0A0)));
+        f(cb->arg);
+        __asm__ volatile("move $gp, %0" : : "r"(save));
+    }
+    __asm__ volatile("sync");
+    __asm__ volatile("ei");
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F0E8);
  /* derived name */
 

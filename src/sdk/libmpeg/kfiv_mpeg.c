@@ -189,7 +189,28 @@ void func_00107D40_x00107D40(u8 *arg0, s32 *arg1, s32 *arg2, s32 *arg3) {
     *arg2 = *(s32 *)((u8 *)temp_t0 + 0xAC);
     *arg3 = *(s32 *)((u8 *)temp_t0 + 0xB0);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00107D60);
+typedef void *(*CbFnB450_x00107D60)(void *, int *, void *);
+typedef struct { CbFnB450_x00107D60 func; void *arg; void *gp; } CbB450_x00107D60;
+typedef struct { int f0; int f4; int f8; CbB450_x00107D60 cb[1]; } CbTblB450_x00107D60;
+typedef struct { char pad[0x40]; CbTblB450_x00107D60 *tbl; } ObjB450_x00107D60;
+static __inline__ void *GetGP_B450_x00107D60(void)
+{
+    void *gp;
+     
+    __asm__ volatile("move %0, $gp" : "=r"(gp));
+    return gp;
+}
+CbFnB450_x00107D60 func_00107D60_x00107D60(ObjB450_x00107D60 *o, int type, CbFnB450_x00107D60 func, void *arg) __asm__("func_00107D60");
+/* sceMpegAddCallback: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libmpeg/func_0010B450.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+CbFnB450_x00107D60 func_00107D60_x00107D60(ObjB450_x00107D60 *o, int type, CbFnB450_x00107D60 func, void *arg)
+{
+    CbTblB450_x00107D60 *t = o->tbl;
+    CbFnB450_x00107D60 old = t->cb[type].func;
+    t->cb[type].func = func;
+    t->cb[type].arg = arg;
+    t->cb[type].gp = GetGP_B450_x00107D60();
+    return old;
+}
 s32 func_00106E78_x00107D98(void *) __asm__("func_00106E78");
 s32 func_00107D98_x00107D98(u8 *arg0, u32 arg1) __asm__("func_00107D98");
 s32 func_00107D98_x00107D98(u8 *arg0, u32 arg1) {
