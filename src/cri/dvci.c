@@ -807,7 +807,92 @@ int func_00167108_x00167108(char *path, void *buf)
     PushGlobalD8478History_331C78_x00167108(0x9301);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167290);
+typedef unsigned char u_char_x00167290;
+typedef unsigned int u_int_x00167290;
+typedef unsigned int u32_x00167290;
+typedef u32_x00167290 uintptr_t_x00167290;
+typedef char Sint8_x00167290;
+typedef unsigned int Uint32_x00167290;
+typedef signed int Sint32_x00167290;
+typedef char Char8_x00167290;
+typedef struct {
+    u_int_x00167290 lsn;
+    u_int_x00167290 size;
+    char name[16];
+    u_char_x00167290 date[8];
+    u_int_x00167290 flag;
+} sceCdlFILE_x00167290;
+extern int* sceCdCallback_x00167290(void (*func)(int)) __asm__("sceCdCallback");
+int sceCdSync_x00167290(int mode) __asm__("func_00118C08");
+typedef struct {
+    Uint32_x00167290 lsn;
+    Uint32_x00167290 size;
+} DVG_FLIST_SUB_x00167290;
+typedef struct {
+    uintptr_t_x00167290 unk0;
+    Sint32_x00167290 unk4;
+    Sint32_x00167290 unk8;
+    Sint32_x00167290 unkC;
+} DVG_FLIST_TBL_x00167290;
+void SRD_SetHistory_x00167290(Sint32_x00167290 arg0) __asm__("func_00164D38");
+Sint32_x00167290 dvCiCdSearchFile_x00167290(sceCdlFILE_x00167290* fp, const Char8_x00167290* fname) __asm__("func_00166180");
+extern Sint32_x00167290 dvg_ci_dbg_out_lv_x00167290 __asm__("D_00413758");
+void dvci_conv_fname_x00167290(const Char8_x00167290* fname, Char8_x00167290* path) __asm__("func_00166DA0");
+extern int AddIntcHandler_x00167290(int, int (*)(int), int) __asm__("AddIntcHandler");
+extern int AddDmacHandler_x00167290(int, int (*)(int), int) __asm__("AddDmacHandler");
+void scePrintf_x00167290(const char* fmt, ...) __asm__("scePrintf");
+extern DVG_FLIST_TBL_x00167290 dvg_flist_tbl_x00167290 __asm__("D_00413740");
+extern Sint32_x00167290 dvg_ci_dbg_out_lv_x00167290 __asm__("D_00413758");
+extern Char8_x00167290 dvg_fpath_x00167290[128] __asm__("D_00413868");
+void dvci_conv_fname_x00167290(const Char8_x00167290* fname, Char8_x00167290* path) __asm__("func_00166DA0");
+extern char ext_str0_x00167290[] __asm__("D_004636F0");
+extern char ext_str1_x00167290[] __asm__("D_004636D8");
+extern char ext_str2_x00167290[] __asm__("D_004636C0");
+extern char ext_str3_x00167290[] __asm__("D_004636A8");
+Sint32_x00167290 func_00167290_x00167290(Sint8_x00167290* arg0, Sint32_x00167290 arg1) __asm__("func_00167290");
+/* search_fstate: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/dvci_sub.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00167290 func_00167290_x00167290(Sint8_x00167290* arg0, Sint32_x00167290 arg1) {
+    sceCdlFILE_x00167290 fp;
+    Sint32_x00167290 numf = 0;
+    Sint32_x00167290 numf_not_found = 0;
+    Sint32_x00167290 i;
+    Char8_x00167290* fname;
+    DVG_FLIST_SUB_x00167290* flist_sub = arg0;
+    for (i = 0; i < arg1; i++) {
+        fname = arg0 + ((dvg_flist_tbl_x00167290.unk8 * 8) + ((dvg_flist_tbl_x00167290.unkC + 1) * i));
+        if (fname[0] == '\0') {
+            continue;
+        }
+        dvci_conv_fname_x00167290(fname, dvg_fpath_x00167290);
+        SRD_SetHistory_x00167290(0x9400);
+        while (sceCdSync_x00167290(1) == 1) {
+        }
+        SRD_SetHistory_x00167290(0x9401);
+        SRD_SetHistory_x00167290(0x9500);
+        if (dvCiCdSearchFile_x00167290(&fp, dvg_fpath_x00167290) == 1) {
+            numf += 1;
+            SRD_SetHistory_x00167290(0x9501);
+            flist_sub[i].lsn = fp.lsn;
+            flist_sub[i].size = fp.size;
+            if (dvg_ci_dbg_out_lv_x00167290 == 0) {
+                scePrintf_x00167290(ext_str3_x00167290, fname);
+            }
+        } else {
+            SRD_SetHistory_x00167290(0x9502);
+            if (dvg_ci_dbg_out_lv_x00167290 == 0) {
+                scePrintf_x00167290(ext_str2_x00167290, fname);
+            }
+            numf_not_found += 1;
+        }
+    }
+    if (dvg_ci_dbg_out_lv_x00167290 == 0) {
+        scePrintf_x00167290(ext_str1_x00167290, numf);
+    }
+    if (numf_not_found > 0 && dvg_ci_dbg_out_lv_x00167290 != 2) {
+        scePrintf_x00167290(ext_str0_x00167290, '\n');
+    }
+    return numf;
+}
 s32 func_00166ED8_x00167468(s32, s32) __asm__("func_00166ED8");
 extern s32 D_00413740_x00167468 __asm__("D_00413740");
 void func_00167468_x00167468(u8 *arg0, s32 arg1, u8 *arg2, s32 arg3) __asm__("func_00167468");

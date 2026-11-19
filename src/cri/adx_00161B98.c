@@ -255,7 +255,71 @@ void func_00161F18_x00161F18(char *name, CvFsDevIf_x00161F18 *(*getif)(void))
     if (dev->entry_err_func)
         dev->entry_err_func(cvfs_call_error_cb_x00161F18, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_00161FA8);
+typedef unsigned int size_t_x00161FA8;
+typedef signed int Sint32_x00161FA8;
+typedef char Char8_x00161FA8;
+extern int* sceCdCallback_x00161FA8(void (*func)(int)) __asm__("sceCdCallback");
+typedef struct {
+               void (*ExecServer)();
+               void (*EntryErrFunc)();
+               Sint32_x00161FA8 (*GetFileSize)();
+               void (*unkC)();
+               void* (*Open)(Char8_x00161FA8* device_name, void*, Sint32_x00161FA8);
+               void (*Close)(void* fd);
+               Sint32_x00161FA8 (*Seek)(void* fd, Sint32_x00161FA8 offset, Sint32_x00161FA8 whence);
+               Sint32_x00161FA8 (*Tell)(void* fd);
+               Sint32_x00161FA8 (*ReqRd)(void* fd, Sint32_x00161FA8 len, void* buf);
+               void (*unk24)();
+               void (*StopTr)();
+               Sint32_x00161FA8 (*GetStat)(void* fd);
+               void (*GetSctLen)();
+               void (*unk34)();
+               void (*GetNumTr)();
+               void (*unk3C)();
+               void (*IsExistFile)();
+               void (*unk44)();
+               void (*unk48)();
+               void (*unk4C)();
+               void (*unk50)();
+               void (*unk54)();
+               void (*unk58)();
+               void (*unk5C)();
+               Sint32_x00161FA8 (*OptFn1)();
+               void (*unk64)();
+} CVFSDevice_x00161FA8;
+size_t_x00161FA8 strlen_x00161FA8(const char* s) __asm__("func_00127BA0");
+typedef struct {
+    CVFSDevice_x00161FA8* device;
+    Char8_x00161FA8 name[12];
+} CVFSNamedDevice_x00161FA8;
+extern void (*cvfs_errfn_x00161FA8)(void*, const Char8_x00161FA8*) __asm__("cvfs_errfn");
+extern CVFSNamedDevice_x00161FA8 D_006BDBA8_x00161FA8[32] __asm__("lbl_80187574");
+CVFSDevice_x00161FA8* getDevice_x00161FA8(const Char8_x00161FA8* name) __asm__("func_00162080");
+void toUpperStr_x00161FA8(Char8_x00161FA8* str) __asm__("func_00162118");
+CVFSDevice_x00161FA8* getDevice_x00161FA8(const Char8_x00161FA8* name) __asm__("func_00162080");
+void toUpperStr_x00161FA8(Char8_x00161FA8* str) __asm__("func_00162118");
+CVFSDevice_x00161FA8* func_00161FA8_x00161FA8(const Char8_x00161FA8* device_name, CVFSDevice_x00161FA8* (*device_provider)()) __asm__("func_00161FA8");
+/* addDevice: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/cri_cvfs.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+CVFSDevice_x00161FA8* func_00161FA8_x00161FA8(const Char8_x00161FA8* device_name, CVFSDevice_x00161FA8* (*device_provider)()) {
+    CVFSDevice_x00161FA8* device;
+    Sint32_x00161FA8 i = 0;
+    toUpperStr_x00161FA8(device_name);
+    device = device_provider();
+    if (getDevice_x00161FA8(device_name) != 0) {
+        return device;
+    }
+    for (i = 0; i < 32; i++) {
+        if (D_006BDBA8_x00161FA8[i].name[0] == '\0') {
+            break;
+        }
+    }
+    if (i == 32) {
+        return 0;
+    }
+    D_006BDBA8_x00161FA8[i].device = device;
+    memcpy(D_006BDBA8_x00161FA8[i].name, device_name, strlen_x00161FA8(device_name) + 1);
+    return device;
+}
 typedef int (*CvFsFn_x00162080)();
 typedef struct {
     CvFsFn_x00162080 exec_server;
