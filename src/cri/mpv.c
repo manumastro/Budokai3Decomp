@@ -3848,7 +3848,45 @@ char *func_0017B5B8_x0017B5B8(char *buf, int len, int mask)
     return 0;
 }
 __asm__("# rebind func_0017B5B8 0x0017B5B8");
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B6C0);
+int MPV_CheckDelim_x0017B6C0(const unsigned char *p) __asm__("func_0017B420");
+int MPV_CheckDelim_x0017B6C0(const unsigned char *p) __asm__("func_0017B420");
+int MPV_CheckDelim_x0017B6C0(const unsigned char *p) __attribute__((weak, section(".b3stub")));
+int MPV_CheckDelim_x0017B6C0(const unsigned char *p) {}
+char *func_0017B6C0_x0017B6C0(char *dst, char *src, int len, int mask) __asm__("func_0017B6C0");
+/* MPV_CopyStm: from https://github.com/crashbashash/DW4_Decomp (src/cri/startcode.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+char *func_0017B6C0_x0017B6C0(char *dst, char *src, int len, int mask)
+{
+    char *p = src;
+    char *end = src + len;
+    unsigned int state = 0;
+    char c;
+    while (p < end) {
+        c = *p++;
+        *dst++ = c;
+        switch (state) {
+        case 0:
+            if (c == 0)
+                state = 1;
+            break;
+        case 1:
+            state = c != 0 ? 0 : 2;
+            break;
+        case 2:
+            if (c == 1)
+                state = 3;
+            else if (c != 0)
+                state = 0;
+            break;
+        case 3:
+            if (mask & MPV_CheckDelim_x0017B6C0((const unsigned char *)(p - 4)))
+                return p;
+            state = 0;
+            break;
+        }
+    }
+    return p;
+}
+__asm__("# rebind func_0017B6C0 0x0017B6C0");
 extern short mpvsc_mbaddr_incr_vlc_x0017B7D0[] __asm__("D_00424C40");
 int func_0017B7D0_x0017B7D0(unsigned char *buf, int nbyte, int nmb) __asm__("func_0017B7D0");
 /* MPV_IsEmptyBpic: from https://github.com/crashbashash/DW4_Decomp (src/cri/startcode.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */

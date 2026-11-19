@@ -51,7 +51,111 @@ extern s32 D_0040108C;
 s32 func_0014F548();                            /* extern */
 s32 func_0014F6E0();                            /* extern */
 
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014EF28);
+static inline int RD32_x0014EF28___(unsigned char *src)
+{
+    return src[0] | src[1] << 8 | src[2] << 16 | src[3] << 24;
+}
+static inline int RD16_x0014EF28___(unsigned char *src)
+{
+    return src[0] | src[1] << 8;
+}
+static inline int swap32_x0014EF28___(int x)
+{
+    int byte0;
+    int bytes01;
+    int bytes012;
+    byte0 = x >> 24 & 0xff;
+    bytes01 = byte0 | (x >> 8 & 0xff00);
+    bytes012 = bytes01 | (x << 8 & 0xff0000);
+    return bytes012 | x << 24;
+}
+unsigned char *func_0014EF28_x0014EF28___(unsigned char *hdr, int *rate, int *nch, int *bits, int *nframes) __asm__("func_0014EF28");
+/* adxb_read_aiff_chunks: from https://github.com/new-coke/rez-decomp (src/cri/adxb_aiff.c, MIT); ee-gcc 2.96 -O2 -G0 */
+unsigned char *func_0014EF28_x0014EF28___(unsigned char *hdr, int *rate, int *nch, int *bits, int *nframes)
+{
+    unsigned char *p;
+    unsigned char *end;
+    unsigned char *data;
+    int id;
+    int size;
+    int form;
+    int comm;
+    int ssnd;
+    int exp_raw;
+    int raw16;
+    int raw32;
+    unsigned int ssnd_ofs;
+    unsigned short mt;
+    unsigned short ex;
+    p = hdr;
+    id = RD32_x0014EF28___(p);
+    p += 4;
+    size = RD32_x0014EF28___(p);
+    p += 4;
+    size = swap32_x0014EF28___(size);
+    form = RD32_x0014EF28___(p);
+    comm = 0;
+    ssnd = 0;
+    data = 0;
+    ssnd_ofs = 0;
+    p += 4;
+    if (id != 0x4d524f46)
+        return 0;
+    if (form != 0x46464941)
+        return 0;
+    end = p + size - 4;
+    while (p < end) {
+        id = RD32_x0014EF28___(p);
+        p += 4;
+        size = RD32_x0014EF28___(p);
+        p += 4;
+        size = swap32_x0014EF28___(size);
+        switch (id) {
+        case 0x4d4d4f43:
+            if (comm)
+                continue;
+            if (size < 18)
+                return 0;
+            raw16 = RD16_x0014EF28___(p);
+            p += 2;
+            comm = 1;
+            *nch = (((raw16) >> 8 & 0xff) | ((raw16) << 8 & 0xff00));
+            raw32 = RD32_x0014EF28___(p);
+            p += 4;
+            *nframes = (((raw32) >> 24 & 0xff) | ((raw32) >> 8 & 0xff00) | ((raw32) << 8 & 0xff0000) | (raw32) << 24);
+            raw16 = RD16_x0014EF28___(p);
+            p += 2;
+            *bits = (((raw16) >> 8 & 0xff) | ((raw16) << 8 & 0xff00));
+            exp_raw = p[0];
+            exp_raw |= p[1] << 8;
+            p += 2;
+            ex = (((exp_raw) >> 8 & 0xff) | ((exp_raw) << 8 & 0xff00));
+            raw16 = RD16_x0014EF28___(p);
+            p += 8;
+            mt = (((raw16) >> 8 & 0xff) | ((raw16) << 8 & 0xff00));
+            *rate = mt >> (16398 - (ex & 0xff));
+            if (ssnd)
+                return data;
+            break;
+        case 0x444e5353:
+            if (ssnd)
+                continue;
+            ssnd = 1;
+            ssnd_ofs = RD32_x0014EF28___(p);
+            p += 4;
+            ssnd_ofs = (((ssnd_ofs) >> 24 & 0xff) | ((ssnd_ofs) >> 8 & 0xff00) | ((ssnd_ofs) << 8 & 0xff0000) | (ssnd_ofs) << 24);
+            data = p + ssnd_ofs;
+            if (comm)
+                return data;
+            break;
+        default:
+            p += (size + 1) & ~1;
+            break;
+        }
+    }
+    return data;
+}
+__asm__("# rebind func_0014EF28 0x0014EF28");
 s32 memcmp_x0014F2B8(s32 *, s32 *, s32) __asm__("memcmp");
 extern s32 D_0045FC00_x0014F2B8 __asm__("D_0045FC00");
 extern s32 D_0045FC08_x0014F2B8 __asm__("D_0045FC08");

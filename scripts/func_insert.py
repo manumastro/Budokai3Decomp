@@ -205,6 +205,7 @@ def isolate(item, pad=0):
 
 
 _KNOWN = None
+PADS = int(os.environ.get("B3_PADS", "6"))  # apply(): renaming-suffix lengths tried
 _CACHE = {}
 
 
@@ -332,17 +333,23 @@ def apply(items, jobs=12, log=None, dry=False, real=False):
             pat = re.compile(r'^INCLUDE_ASM\("[^"]+", ' + re.escape(it["name"]) + r'\);[ \t]*$', re.M)
             if not pat.search(text):
                 continue
-            rep = isolate(it) + tail_pad(seg, it["name"])
-            new = pat.sub(lambda _: rep, text, count=1)  # a function replacement is taken literally
-            path.write_text(new)
-            good, msg = check(rel, it["name"])
-            if good and real:
-                # the build compiles the file with its INCLUDE_ASM blocks in: gcc can then compile another
-                # function of the file differently (scripts/lib_filecheck.py)
-                import lib_filecheck
-                bad = lib_filecheck.check(rel)
-                if bad:
-                    good, msg = False, "build-mode compile: " + "; ".join(bad)[:160]
+            # pad 0, then longer renaming suffixes: ee-gcc 2.96's CSE hashes symbols by the address of their
+            # name, so the length of the names allocated before a function can change its code (or another
+            # function's, later in the file); a few lengths are tried when the words differ
+            for pad in range(0, PADS + 1):
+                rep = isolate(it, pad) + tail_pad(seg, it["name"])
+                new = pat.sub(lambda _: rep, text, count=1)  # a function replacement is taken literally
+                path.write_text(new)
+                good, msg = check(rel, it["name"])
+                if good and real:
+                    # the build compiles the file with its INCLUDE_ASM blocks in: gcc can then compile another
+                    # function of the file differently (scripts/lib_filecheck.py)
+                    import lib_filecheck
+                    bad = lib_filecheck.check(rel)
+                    if bad:
+                        good, msg = False, "build-mode compile: " + "; ".join(bad)[:160]
+                if good or not re.search(r"differ", msg):
+                    break
             if good:
                 text = new
                 ok.append(it)

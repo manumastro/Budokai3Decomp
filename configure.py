@@ -281,7 +281,7 @@ def write_ninja():
             out.append(f"build {obj}: cc {src} | {deps} include/macro_cc.inc")
             out.append(f"  mwcc_flags = {mwcc_flags(src)}")
         else:
-            out.append(f"build {obj}: gcc {src} | {deps} include/gcc_prelude.inc include/macro.inc")
+            out.append(f"build {obj}: gcc {src} | {deps} include/gcc_prelude.inc include/macro.inc scripts/gcc_rebind.py")
             out.append(f"  gcc_version = {group[0]}")
             out.append(f"  gcc_flags = {group[1]}")
             out.append(f"  gcc_inc = {gcc_extra_includes(src)}")

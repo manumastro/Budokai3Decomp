@@ -433,7 +433,47 @@ void func_0010EFF0_x0010EFF0(void) __asm__("func_0010EFF0");
 void func_0010EFF0_x0010EFF0(void) {
     SignalSema_x0010EFF0(D_003EC6C4_x0010EFF0);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F000);
+int DIntr_x0010F000(void) __asm__("DI");
+int EIntr_x0010F000(void) __asm__("EI");
+typedef void (*scePowerOffFunc_x0010F000)(void *data);
+typedef struct {
+    scePowerOffFunc_x0010F000 func;
+    void *data;
+} FsPowerOffData_x0010F000;
+int sceFsInit_x0010F000(void) __asm__("func_0010F0E8");
+extern int _fs_init_x0010F000 __asm__("D_003EC6BC");
+static FsPowerOffData_x0010F000 _sif_FsPoff_Data_x0010F000;
+extern void *sceCbPoff_Gp_x0010F000 __asm__("D_00474C00") __attribute__((aligned(64)));
+int _sceFsWaitS_x0010F000(int cmd) __asm__("func_0010EFC0");
+void _sceFsSigSema_x0010F000(void) __asm__("func_0010EFF0");
+int sceFsInit_x0010F000(void) __asm__("func_0010F0E8");
+int _sceFsWaitS_x0010F000(int cmd) __attribute__((weak, section(".b3stub")));
+int _sceFsWaitS_x0010F000(int cmd) {}
+void _sceFsSigSema_x0010F000(void) __attribute__((weak, section(".b3stub")));
+void _sceFsSigSema_x0010F000(void) {}
+scePowerOffFunc_x0010F000 func_0010F000_x0010F000(scePowerOffFunc_x0010F000 func, void *data) __asm__("func_0010F000");
+/* scePowerOffHandler: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/filestub.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+scePowerOffFunc_x0010F000 func_0010F000_x0010F000(scePowerOffFunc_x0010F000 func, void *data)
+{
+    FsPowerOffData_x0010F000 *poff = &_sif_FsPoff_Data_x0010F000;
+    scePowerOffFunc_x0010F000 old;
+    int enabled;
+    _sceFsWaitS_x0010F000(27);
+    if (_fs_init_x0010F000 == 0) {
+        sceFsInit_x0010F000();
+    }
+    enabled = DIntr_x0010F000();
+    old = _sif_FsPoff_Data_x0010F000.func;
+    poff->data = data;
+    _sif_FsPoff_Data_x0010F000.func = func;
+    __asm__("sw $28,%0" : : "m"(sceCbPoff_Gp_x0010F000));
+    if (enabled) {
+        EIntr_x0010F000();
+    }
+    _sceFsSigSema_x0010F000();
+    return old;
+}
+__asm__("# rebind func_0010F000 0x0010F000");
 extern volatile int D_004E5FC0_x0010F0A0 __asm__("D_00474C00");
 typedef struct { void (*func)(void *); void *arg; } Cb11298_x0010F0A0;
 void func_0010F0A0_x0010F0A0(int a, Cb11298_x0010F0A0 *cb) __asm__("func_0010F0A0");

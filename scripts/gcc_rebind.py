@@ -35,6 +35,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ROM = ROOT / "disc" / "SLUS_209.98.rom"
 VRAM = 0x100000
+BSS_END = 0x5D0100  # the startup code clears .sbss + .bss up to here
 AS = ROOT / "tools" / "binutils" / "mips-ps2-decompals-as"
 AS_FLAGS = ["-EL", "-march=r5900", "-mabi=o64", "-no-pad-sections", "-mno-pdr", "-G0"]
 PRELUDE = ROOT / "include" / "gcc_prelude.inc"
@@ -241,6 +242,9 @@ def rebind(text, extra=(), log=sys.stderr):
                 elif label not in cur:
                     bad = f"{label}: a %lo with no %hi before it"
                     break
+                if not (VRAM <= cur[label] < BSS_END):
+                    bad = f"{label}: {cur[label]:#x} is not an address of the executable"
+                    break
                 plan.append((i, label, cur[label]))
             if bad:
                 print(f"gcc_rebind: {name}: {bad}: left as it is", file=log)
@@ -273,7 +277,7 @@ def rebind(text, extra=(), log=sys.stderr):
                     skipping = None
                 if skipping and cur != ".text":
                     w = re.match(r"^\s*\.(word|gpword)\s+(\S+)", ln)
-                    if skipping in jlabels and w:
+                    if skipping in jlabels and w and VRAM <= jlabels[skipping] + 4 * n < VRAM + len(rom):
                         t = rom_word(rom, jlabels[skipping] + 4 * n)
                         defs.append(f".L{t:08X}")
                         n += 1

@@ -243,6 +243,15 @@ def assemble(asm, obj, version, how, include_dirs):
     return None if rc == 0 else out
 
 
+def _rel(d):
+    """An include folder as the build names it: relative to the checkout when inside it (cpp passes the header
+    paths on to cc1, where they are allocated like the file name, see compile_matrix)."""
+    try:
+        return Path(os.path.abspath(ROOT / d)).relative_to(ROOT).as_posix()
+    except ValueError:
+        return str(ROOT / d)
+
+
 def compile_matrix(src, versions, flagsets, how, defines=(), include_dirs=("include",), keep=None):
     """Compiles src with every version x flag set. Returns {(version, flags): object path or error text}."""
     work = Path(keep) if keep else ROOT / "build" / "gccmatch" / f"run_{os.getpid()}"
@@ -259,7 +268,7 @@ def compile_matrix(src, versions, flagsets, how, defines=(), include_dirs=("incl
     for v in versions:
         for k, flags in enumerate(flagsets):
             asm = work / f"{v}_{k}.s"
-            args = [*flags.split(), *[f"-I{ROOT / d}" for d in include_dirs], *[f"-D{d}" for d in defines],
+            args = [*flags.split(), *[f"-I{_rel(d)}" for d in include_dirs], *[f"-D{d}" for d in defines],
                     "-S", src_arg, "-o", str(asm)]
             jobs.append((v, args))
             keys.append((v, flags, asm))
