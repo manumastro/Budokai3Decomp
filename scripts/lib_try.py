@@ -266,8 +266,9 @@ def try_snippet(name, snippet_text, quiet=False):
             if d2:
                 others.append(f"{n2}: {len(d2)} words differ")
         if others:
-            ok = False
-            print("OTHERS: the function matches, but with it in the file the build compiles other functions "
+            if not os.environ.get("LIB_TRY_ALLOW_OTHERS"):
+                ok = False
+            print(("OTHERS (allowed: func_insert tries its CSE pads): " if ok else "OTHERS: ") + "the function matches, but with it in the file the build compiles other functions "
                   "differently (" + "; ".join(others[:4]) + "). Change how the function is written (names of "
                   "locals/externs, declaration order, types) until the others are back.")
     if ok:
