@@ -164,6 +164,40 @@ def identifiers(text):
     return set(re.findall(r"[A-Za-z_]\w*", text))
 
 
+def more_declarators(text):
+    """The declarators after the first of a data definition (`T a = 1, *b = 0, c[2] = {..};`): [(name, declarator)]
+    without their initializers; [] for a single one."""
+    t = cparse._strip_comments(text).strip().rstrip(";")
+    parts, depth, cur = [], 0, []
+    i = 0
+    while i < len(t):
+        c = t[i]
+        if c in "\"'":
+            j = cparse._skip_string(t, i)
+            cur.append(t[i:j])
+            i = j
+            continue
+        if c in "({[":
+            depth += 1
+        elif c in ")}]":
+            depth -= 1
+        elif c == "," and depth == 0:
+            parts.append("".join(cur))
+            cur = []
+            i += 1
+            continue
+        cur.append(c)
+        i += 1
+    parts.append("".join(cur))
+    out = []
+    for p in parts[1:]:
+        d = p.split("=", 1)[0].strip()
+        m = re.search(r"(\w+)(?:\s*\[[^\]]*\])*\s*$", d)
+        if m:
+            out.append((m.group(1), d))
+    return out
+
+
 def closure(items, func_item, own, local=()):
     """The declarations (in source order) the function needs, functions as prototypes, data as extern."""
     import func_insert as FI
@@ -227,6 +261,15 @@ def closure(items, func_item, own, local=()):
         elif it.kind == "data":
             h = re.sub(r"\b(static|extern|const)\b\s*", lambda m: "const " if m.group(1) == "const" else "",
                        cparse.strip_attr(it.head)).strip()
+            more = more_declarators(it.text)
+            if more:
+                # `static const float a = 1, b = 2;`: one extern per declarator the function names
+                m = re.match(r"(.*?)([\s\*]*\b\w+(?:\s*\[[^\]]*\])*)\s*$", h, re.S)
+                typ = m.group(1).strip() if m else h
+                for name, d in [(it.name, h[len(typ):].strip())] + more:
+                    if name in seen:
+                        out.append(("data", name, f"extern {typ} {d};"))
+                continue
             out.append(("data", it.name, "extern " + h + ";"))
         else:
             t = cparse._strip_comments(it.text).strip()

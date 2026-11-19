@@ -851,7 +851,117 @@ s32 func_00166E80_x00166E80(s8 arg0, s8 arg1) {
     return ((temp_s0 ^ func_00166E48_x00166E80(arg1)) != 0) ? -1 : 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166ED8);
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166F70);
+typedef void (*CvFsErrFn_x00166F70)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00166F70)(CvFsErrFn_x00166F70 func, void *obj);
+typedef int (*CvFsPathFn_x00166F70)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00166F70)(void);
+typedef int (*CvFsOpenFn_x00166F70)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00166F70)(int fd);
+typedef int (*CvFsFdIntFn_x00166F70)(int fd);
+typedef int (*CvFsSeekFn_x00166F70)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00166F70)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00166F70)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00166F70)(void);
+typedef int (*CvFsLoadDirInfoFn_x00166F70)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00166F70)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00166F70)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00166F70 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00166F70 entry_err_func;
+    CvFsPathFn_x00166F70 get_file_size;
+    CvFsGetFreeSizeFn_x00166F70 get_free_size;
+    CvFsOpenFn_x00166F70 open;
+    CvFsFdFn_x00166F70 close_x00166F70;
+    CvFsSeekFn_x00166F70 seek;
+    CvFsFdIntFn_x00166F70 tell;
+    CvFsXferFn_x00166F70 req_rd;
+    CvFsXferFn_x00166F70 req_wr;
+    CvFsFdFn_x00166F70 stop_tr;
+    CvFsFdIntFn_x00166F70 get_stat;
+    CvFsFdIntFn_x00166F70 get_sct_len;
+    CvFsSetSctLenFn_x00166F70 set_sct_len;
+    CvFsFdIntFn_x00166F70 get_num_tr;
+    CvFsPathFn_x00166F70 change_dir;
+    CvFsPathFn_x00166F70 is_exist_file;
+    CvFsGetNumFilesFn_x00166F70 get_num_files;
+    CvFsLoadDirInfoFn_x00166F70 load_dir_info;
+    CvFsFdIntFn_x00166F70 get_max_byte_rate;
+    CvFsPathFn_x00166F70 make_dir;
+    CvFsPathFn_x00166F70 remove_dir;
+    CvFsPathFn_x00166F70 delete_file;
+    CvFsGetFileSizeExFn_x00166F70 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00166F70 opt_fn2;
+} CvFsVtbl_x00166F70;
+extern CvFsVtbl_x00166F70 *addDevice_x00166F70(char *devname, CvFsVtbl_x00166F70 *(*get_if)(void)) __asm__("addDevice");
+typedef unsigned int size_t_x00166F70;
+extern void qsort_x00166F70(void *, size_t_x00166F70, size_t_x00166F70, int (*)(const void *, const void *)) __asm__("qsort");
+void *memcpy_x00166F70(void *, const void *, size_t_x00166F70) __asm__("func_00125740");
+int close_x00166F70(int fd) __asm__("close");
+typedef struct DvCiFileLoc_x00166F70 {
+    unsigned int lsn;
+    unsigned int size;
+} DvCiFileLoc_x00166F70;
+typedef struct DvCiTable_x00166F70 {
+    int files;
+    int nfiles;
+    int nent;
+    int namelen;
+} DvCiTable_x00166F70;
+extern DvCiTable_x00166F70 dvci_dir_table_x00166F70 __asm__("D_00413740");
+void dvci_to_large_to_yen_x00166F70(char *path) __asm__("func_00166380");
+void dvci_to_large_to_yen_x00166F70(char *path) __asm__("func_00166380");
+void dvci_to_large_to_yen_x00166F70(char *path) __attribute__((weak, section(".b3stub")));
+void dvci_to_large_to_yen_x00166F70(char *path) {}
+int func_00166F70_x00166F70(char *buf, char *list, int listlen, int n, int nameLen) __asm__("func_00166F70");
+/* dvci_analysis_flist: from https://github.com/crashbashash/DW4_Decomp (src/cri/dvci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00166F70_x00166F70(char *buf, char *list, int listlen, int n, int nameLen)
+{
+    int i;
+    int start;
+    int count;
+    int len;
+    char *dst;
+    i = 0;
+    count = 0;
+    start = 0;
+    while (list[i] != 0) {
+        if (list[i] == '\n' || list[i] == 0) {
+            if (list[i + 1] == '\n' || list[i + 1] == 0) {
+                i++;
+            }
+            len = i - start;
+            if (list[i - 1] == '\n' || list[i - 1] == '\r') {
+                list[i - 1] = 0;
+            }
+            if (list[i - 2] == '\n' || list[i - 2] == '\r') {
+                list[i - 2] = 0;
+            }
+            dst = buf + (n * sizeof(DvCiFileLoc_x00166F70) + count * (nameLen + 1));
+            memcpy_x00166F70(dst, list + start, len);
+            dvci_to_large_to_yen_x00166F70(dst);
+            if (dst[len - 1] != 0) {
+                dst[len] = 0;
+            }
+            start = i + 1;
+            count++;
+            if (count == n) {
+                break;
+            }
+        }
+        i++;
+        if (i > listlen) {
+            break;
+        }
+    }
+    if (dvci_dir_table_x00166F70.files == 0) {
+        dvci_dir_table_x00166F70.files = (int)buf;
+        dvci_dir_table_x00166F70.nfiles = count;
+        dvci_dir_table_x00166F70.nent = n;
+        dvci_dir_table_x00166F70.namelen = nameLen;
+    }
+    return count;
+}
 typedef struct CdlFile_x00167108 {
     unsigned int lsn;
     unsigned int size;

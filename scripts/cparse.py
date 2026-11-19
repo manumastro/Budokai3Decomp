@@ -34,6 +34,18 @@ def _skip_comment(s, i):
 IDENT = re.compile(r"[A-Za-z_]\w*")
 
 
+# a K&R function definition's head: `int f(a, b) T a; U *b;` (the parameter declarations follow the identifier list)
+KR_DECL = r"[A-Za-z_][\w \t\n\*\[\],]*"
+KR_HEAD = re.compile(r"^[\w \t\n\*]*?\b\w+\s*\(\s*\w+(?:\s*,\s*\w+)*\s*\)((?:\s*" + KR_DECL + r";)*)\s*"
+                     + KR_DECL + r";?\s*$")
+
+
+def kr_head(head):
+    """Whether head (comments stripped) is a K&R function head with its parameter declarations."""
+    head = head.strip()
+    return bool(KR_HEAD.match(head)) and not re.match(r"(typedef|extern|struct|union|enum)\b", head)
+
+
 def split_items(s):
     items = []
     i = 0
@@ -94,13 +106,15 @@ def split_items(s):
                 depth -= 1
                 if depth == 0 and first_brace is not None:
                     head = s[start:first_brace]
-                    if re.search(r"\)\s*(__attribute__\s*\(\(.*?\)\)\s*)?$", head.rstrip(), re.S) and \
-                            "=" not in head and not re.match(r"\s*(typedef|struct|union|enum)\b[^()]*$", head):
+                    if (re.search(r"\)\s*(__attribute__\s*\(\(.*?\)\)\s*)?$", head.rstrip(), re.S) and
+                            "=" not in head and not re.match(r"\s*(typedef|struct|union|enum)\b[^()]*$", head)) or \
+                            kr_head(_strip_comments(head)):
                         end = j + 1
                         break
             elif c == ";" and depth == 0 and paren == 0:
-                end = j + 1
-                break
+                if not kr_head(_strip_comments(s[start:j])):
+                    end = j + 1
+                    break
             j += 1
         if end is None:
             end = n
@@ -135,8 +149,8 @@ def classify(text, lead):
     brace = t.find("{")
     if brace >= 0 and t.rstrip().endswith("}"):
         head = t[:brace]
-        if "=" not in head and re.search(r"\)\s*(__attribute__\s*\(\(.*?\)\)\s*)?$", head.rstrip(), re.S) \
-                and not re.match(r"\s*(typedef|struct|union|enum)\b[^()]*$", head):
+        if ("=" not in head and re.search(r"\)\s*(__attribute__\s*\(\(.*?\)\)\s*)?$", head.rstrip(), re.S)
+                and not re.match(r"\s*(typedef|struct|union|enum)\b[^()]*$", head)) or kr_head(head):
             m = re.search(r"(\w+)\s*\(", head)
             # the function name is the identifier before the first '(' that is not an attribute
             h = strip_attr(head)

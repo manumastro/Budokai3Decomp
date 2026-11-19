@@ -559,7 +559,108 @@ s32 func_00168C78_x00168C78(s8 arg0, s8 arg1) {
     return ((temp_s0 ^ func_00168C60_x00168C78(arg1)) != 0) ? -1 : 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168CD0);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168D68);
+typedef void (*CvFsErrFn_x00168D68)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00168D68)(CvFsErrFn_x00168D68 func, void *obj);
+typedef int (*CvFsPathFn_x00168D68)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00168D68)(void);
+typedef int (*CvFsOpenFn_x00168D68)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00168D68)(int fd);
+typedef int (*CvFsFdIntFn_x00168D68)(int fd);
+typedef int (*CvFsSeekFn_x00168D68)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00168D68)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00168D68)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00168D68)(void);
+typedef int (*CvFsLoadDirInfoFn_x00168D68)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00168D68)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00168D68)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00168D68 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00168D68 entry_err_func;
+    CvFsPathFn_x00168D68 get_file_size;
+    CvFsGetFreeSizeFn_x00168D68 get_free_size;
+    CvFsOpenFn_x00168D68 open;
+    CvFsFdFn_x00168D68 close_x00168D68;
+    CvFsSeekFn_x00168D68 seek;
+    CvFsFdIntFn_x00168D68 tell;
+    CvFsXferFn_x00168D68 req_rd;
+    CvFsXferFn_x00168D68 req_wr;
+    CvFsFdFn_x00168D68 stop_tr;
+    CvFsFdIntFn_x00168D68 get_stat;
+    CvFsFdIntFn_x00168D68 get_sct_len;
+    CvFsSetSctLenFn_x00168D68 set_sct_len;
+    CvFsFdIntFn_x00168D68 get_num_tr;
+    CvFsPathFn_x00168D68 change_dir;
+    CvFsPathFn_x00168D68 is_exist_file;
+    CvFsGetNumFilesFn_x00168D68 get_num_files;
+    CvFsLoadDirInfoFn_x00168D68 load_dir_info;
+    CvFsFdIntFn_x00168D68 get_max_byte_rate;
+    CvFsPathFn_x00168D68 make_dir;
+    CvFsPathFn_x00168D68 remove_dir;
+    CvFsPathFn_x00168D68 delete_file;
+    CvFsGetFileSizeExFn_x00168D68 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00168D68 opt_fn2;
+} CvFsVtbl_x00168D68;
+extern CvFsVtbl_x00168D68 *addDevice_x00168D68(char *devname, CvFsVtbl_x00168D68 *(*get_if)(void)) __asm__("addDevice");
+typedef unsigned int size_t_x00168D68;
+void *memcpy_x00168D68(void *, const void *, size_t_x00168D68) __asm__("func_00125740");
+int close_x00168D68(int fd) __asm__("close");
+typedef struct HtCiFileLoc_x00168D68 {
+    int fd;
+    int size;
+} HtCiFileLoc_x00168D68;
+typedef struct HtCiTable_x00168D68 {
+    int files;
+    unsigned int nfiles;
+    int nent;
+    int namelen;
+} HtCiTable_x00168D68;
+extern HtCiTable_x00168D68 htci_dir_table_x00168D68 __asm__("D_00413D00");
+int func_00168D68_x00168D68(char *buf, char *list, int n, int nameLen) __asm__("func_00168D68");
+/* htci_analysis_flist: from https://github.com/crashbashash/DW4_Decomp (src/cri/htci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00168D68_x00168D68(char *buf, char *list, int n, int nameLen)
+{
+    int i;
+    int start;
+    int count;
+    int len;
+    char *dst;
+    i = 0;
+    count = 0;
+    start = 0;
+    while (list[i] != 0) {
+        if (list[i] == '\\') {
+            list[i] = '/';
+        }
+        if (list[i] == '\n' || list[i] == '\r' || list[i] == 0) {
+            if (list[i + 1] == '\n' || list[i + 1] == '\r' || list[i + 1] == 0) {
+                i++;
+            }
+            len = i - start;
+            if (list[i - 1] == '\n' || list[i - 1] == '\r') {
+                list[i - 1] = 0;
+            }
+            dst = buf + (n * sizeof(HtCiFileLoc_x00168D68) + count * (nameLen + 1));
+            memcpy_x00168D68(dst, list + start, len);
+            if (dst[len - 1] != 0) {
+                dst[len] = 0;
+            }
+            start = i + 1;
+            count++;
+            if (count == n) {
+                break;
+            }
+        }
+        i++;
+    }
+    if (htci_dir_table_x00168D68.files == 0) {
+        htci_dir_table_x00168D68.files = (int)buf;
+        htci_dir_table_x00168D68.nfiles = count;
+        htci_dir_table_x00168D68.nent = n;
+        htci_dir_table_x00168D68.namelen = nameLen;
+    }
+    return count;
+}
 typedef unsigned int size_t_x00168F08;
 typedef char Sint8_x00168F08;
 typedef signed int Sint32_x00168F08;
