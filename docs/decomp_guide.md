@@ -110,6 +110,18 @@ Until a function is named in a symbol file, keep its `func_XXXXXXXX` name in C (
 - `x & ~(u16)a` loads `a` with `lhu` (func_002AC860).
 - A small `switch` (two or three cases, no jump table) compiles to a chain of `beq`; the case blocks are laid out
   in the source order of the `case` labels (func_001CB4A0).
+- The operand order of an address sum's `addu` follows the source form: `(u8 *)(i * 4) + (s32)p` gives
+  `addu x, idx, p`, `p + i * 4` gives `addu x, p, idx` (func_0020F290, func_001C8210; game_mutate.py `addcast`).
+- A pointer chain written with struct fields (`c->d[k]->e[j].v`) and the index in its own local gets other
+  registers than the same chain in byte offsets, and keeps the `-1` of an index out of the load offset
+  (func_0020F300).
+- More shapes that fixed same-size near misses by hand (2026-11-19): `a = g = f();` to store a call's result
+  right after the call (func_0027E7E0, func_002F4D50); a ternary `v = (f == NULL) ? NULL : f;` instead of an
+  `if` (func_00289380, func_0027B7E0); `(b == 0) ? 1U : 2U` for a `movn` with 1 as the base (func_002B8C70); an
+  argument variable reused as a local when the original keeps the value in that argument register
+  (func_002C5FC0); a pointer to a field (`s32 *fp = &p->f30;`) to keep a base register (func_00222A90); cases of a
+  small switch tested in reverse source order, a case body after the switch behind a `goto` (func_002E9BF0);
+  `mtc1 $zero, $f12` before a call = an `f32` argument `0.0f`, fix the callee's prototype (func_0027E9C0).
 - Tail calls (`j func` with the stack restored in the delay slot) come from `-O3` and up. The `am*` files have
   none: a `j` there is either hand-written or in gcc code (`func_0014E580`).
 
