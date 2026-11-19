@@ -6247,7 +6247,35 @@ s32 func_0018B8A8_x0018B8A8(s32 arg0) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B8F0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B970);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018BA20);
+s32 func_0018D908_x0018BA20(void *) __asm__("func_0018D908");
+s32 func_0018D920_x0018BA20(void *) __asm__("func_0018D920");
+s32 func_0018BA20_x0018BA20(s32 arg0, s32 *arg1, s32 *arg2) __asm__("func_0018BA20");
+s32 func_0018BA20_x0018BA20(s32 arg0, s32 *arg1, s32 *arg2)
+{
+  u8 sp[8];
+  s32 temp_v1;
+  int new_var;
+  s32 var_s3;
+  u8 *temp_s0;
+  temp_s0 = arg0 + 0xCC0;
+  func_0018D908_x0018BA20(sp);
+  if (((*((s32 *) (((u8 *) temp_s0) + 0x1E8))) - (*((s32 *) (((u8 *) temp_s0) + 0x1EC)))) <= 0)
+  {
+    var_s3 = 0;
+    *arg1 = -1;
+  }
+  else
+  {
+    var_s3 = 1;
+    *arg2 = *((s32 *) (((u8 *) temp_s0) + 0x1E0));
+    temp_v1 = *((s32 *) (((u8 *) temp_s0) + 0x1EC));
+    new_var = (s32) ((temp_v1 < 0) ? (temp_v1 + 0x1F) : (temp_v1));
+    *arg1 = *((s32 *) (((u8 *) (((temp_v1 - ((new_var >> 5) << 5)) * 4) + temp_s0)) + 0x1F0));
+    *((s32 *) (((u8 *) temp_s0) + 0x1EC)) = (s32) ((*((s32 *) (((u8 *) temp_s0) + 0x1EC))) + 1);
+  }
+  func_0018D920_x0018BA20(sp);
+  return var_s3;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018BAE0);
 typedef unsigned char Uint8_x0018BC30;
 typedef signed char Sint8_x0018BC30;
@@ -22458,7 +22486,26 @@ void func_00190268_x00190268(u8 *arg0)
     *((s32 *) (((u8 *) arg0) + 0xDD8)) = 1;
   }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00190290);
+s32 func_00190338_x00190290(void *, s32) __asm__("func_00190338");
+s32 func_00194778_x00190290(void *) __asm__("func_00194778");
+s32 func_00194798_x00190290() __asm__("func_00194798");
+s32 func_00199818_x00190290(void *, s32, s32) __asm__("func_00199818");
+void func_00190290_x00190290(u8 *arg0) __asm__("func_00190290");
+void func_00190290_x00190290(u8 *arg0)
+{
+  s32 temp_v0;
+  u8 *new_var;
+  temp_v0 = func_00194798_x00190290();
+  new_var = arg0 + 0x94C;
+  if ((temp_v0 == (-1)) || (((func_00194778_x00190290(arg0) != 0) && (temp_v0 == 1)) && ((*((s32 *) (((u8 *) new_var) + 0x18))) != 0)))
+  {
+    func_00190338_x00190290(arg0, 1);
+    if ((*((s32 *) (((u8 *) arg0) + 0x94C))) == 0)
+    {
+      func_00199818_x00190290(arg0, 5, 0);
+    }
+  }
+}
 s32 func_0018B750_x00190338() __asm__("func_0018B750");
 void func_00190338_x00190338(u8 *arg0, s32 arg1) __asm__("func_00190338");
 void func_00190338_x00190338(u8 *arg0, s32 arg1) {
