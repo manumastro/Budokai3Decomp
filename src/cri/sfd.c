@@ -4801,7 +4801,31 @@ void func_0018A4B8_x0018A4B8(u8 *a0, s32 a1)
 }
 /* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
 extern int b3p32_06292e_0_x __asm__("b3cse_asmpad_06292e_0_xx");
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A520);
+typedef struct { s32 a; s32 b; s32 c; s32 d; void *p; } Sub_A520_x0018A520;
+void func_0018A750_x0018A520(u8 *, s32, s32) __asm__("func_0018A750");
+void func_0018A520_x0018A520(u8 *a0, u8 *a1, s32 *a2, s32 *a3, s32 n) __asm__("func_0018A520");
+void func_0018A520_x0018A520(u8 *a0, u8 *a1, s32 *a2, s32 *a3, s32 n)
+{
+    s32 x, y;
+    u8 *e;
+    Sub_A520_x0018A520 *q;
+    s32 i;
+
+    a2 += n;
+    a3 += n;
+    e = a1 + n * 0x74;
+    func_0018A750_x0018A520(e, 1, *a3 != 0);
+    x = *a2; y = *a3;
+    q = (Sub_A520_x0018A520 *)(e + 0x10);
+    q->a = x;
+    q->b = y;
+    q->c = 0;
+    q->d = 0;
+    q->p = a0 + 0x1620;
+    for (i = 0; i < 16; i++) {
+        *(s32 *)(a0 + 0x1620 + i * 0x5C) = 0;
+    }
+}
 typedef struct SfdSj_x0018A5D8 SfdSj_x0018A5D8;
 typedef struct SfdSjChunk_x0018A5D8 {
     char *data;
@@ -17567,7 +17591,63 @@ int func_0018E018_x0018E018(SfdPly_x0018E018 *hn, unsigned char *pos) {
 u8 *func_0018E078(u8 *arg0) {
     return arg0 + (*(s32 *)((u8 *)arg0 + 0x1C34) * 0x74) + 0x1290;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018E0A0);
+typedef s32 (*Fn_E0A0_x0018E0A0)(u8 *, s32, s32, s32, s32);
+extern Fn_E0A0_x0018E0A0 D_00467490_x0018E0A0[] __asm__("D_00467490");
+s32 func_0017ADF0_x0018E0A0(s32, s32 *) __asm__("func_0017ADF0");
+s32 func_0018D650_x0018E0A0(u8 *, s32) __asm__("func_0018D650");
+void func_0018ECC8_x0018E0A0(u8 *, s32) __asm__("func_0018ECC8");
+s32 func_0018E218_x0018E0A0(s32, s32, s32, s32, s32, s32) __asm__("func_0018E218");
+s32 func_0018E0A0_x0018E0A0(u8 *ply, s32 x, s32 lim, s32 *outlen, s32 *outst) __asm__("func_0018E0A0");
+s32 func_0018E0A0_x0018E0A0(u8 *ply, s32 x, s32 lim, s32 *outlen, s32 *outst)
+{
+    s32 ck[8];
+    u8 *sj;
+    s32 ret;
+    s32 len;
+    s32 st;
+    s32 fn;
+    s32 c0, c1, c2, c5;
+
+    ret = 0;
+    *outlen = 0;
+    *outst = 0;
+    sj = (u8 *)*(s32 *)(ply + 0x1C2C);
+    if (func_0017ADF0_x0018E0A0(*(s32 *)sj, ck)) {
+        ret = func_0018D650_x0018E0A0(ply, 0xFF000D06);
+    }
+    len = ck[7];
+    c0 = ck[0];
+    c1 = ck[1];
+    c2 = ck[2];
+    c5 = ck[5];
+    if (len < 0) {
+        return func_0018D650_x0018E0A0(ply, 0xFF000D0E);
+    }
+    if (len == 0) {
+        *outlen = 0;
+        *outst = 1;
+        return 0;
+    }
+    if (lim < len) {
+        func_0018ECC8_x0018E0A0(ply, 0);
+        return 0;
+    }
+    fn = *(s32 *)((s32)sj + c0 * 4 - 0x2BC);
+    if (fn) {
+        *outst = func_0018E218_x0018E0A0(fn, *(s32 *)(sj + 0x144), *(s32 *)(sj + 0x148), c0, x, len);
+    } else {
+        *outst = D_00467490_x0018E0A0[c1](ply, c2, x, len, c5);
+    }
+    st = *outst;
+    if (st != 0) {
+        if (st == 1) {
+            *outlen = len;
+        } else {
+            ret = st;
+        }
+    }
+    return ret;
+}
 extern int sfmps_CopySj_x0018E218(int a0, int a1, int a2, int a3) __asm__("func_0018E7D8");
 int func_0018E218_x0018E218(int a0, int (*a1)(int, int), int a2, int a3, int a4, int a5) __asm__("func_0018E218");
 /* func_0034EB28: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00323a00.c, MIT); ee-gcc 2.96 -O2 -G0 */
@@ -30093,7 +30173,54 @@ void func_00194A50_x00194A50(void *sfd, char **data, int *size) {
 s32 func_00194AB0(void) {
     return func_00194AD0() != 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194AD0);
+void func_0018D908_x00194AD0(void *) __asm__("func_0018D908");
+void func_0018D920_x00194AD0(void *) __asm__("func_0018D920");
+s32 func_00194C08_x00194AD0(u8 *, u8 *) __asm__("func_00194C08");
+s32 func_001999E0_x00194AD0(u8 *, s32) __asm__("func_001999E0");
+s32 func_0019B460_x00194AD0(u8 *, s32, s32) __asm__("func_0019B460");
+u8 *func_00194AD0_x00194AD0(u8 *ply) __asm__("func_00194AD0");
+u8 *func_00194AD0_x00194AD0(u8 *ply)
+{
+    u8 buf[16];
+    u8 *best;
+    u8 *prev;
+    s32 cnt;
+    s32 n;
+    u8 *s;
+    s32 ok;
+    s32 i;
+    u8 *t;
+
+    best = 0;
+    prev = 0;
+    cnt = 0;
+    func_0018D908_x00194AD0(buf);
+    t = *(u8 **)(ply + 0x1C70);
+    n = *(s32 *)(t + 0x168);
+    s = t + 0x16C;
+    for (i = 0; i < n; i++, s += 0xDC) {
+        if (*(s32 *)s == 2 || *(s32 *)s == 4) {
+            cnt++;
+            if (func_00194C08_x00194AD0(prev, s)) {
+                best = prev;
+                prev = s;
+            } else if (func_00194C08_x00194AD0(best, s)) {
+                best = s;
+            }
+        }
+    }
+    ok = 0;
+    if (*(s32 *)(ply + 0x48) == 4 && cnt >= 2) {
+        if (func_001999E0_x00194AD0(ply, 15)) {
+            ok = func_0019B460_x00194AD0(ply, *(s32 *)(best + 0x38), *(s32 *)(best + 0x3C)) != 0;
+        } else {
+            ok = 1;
+        }
+    }
+    if (!ok) best = 0;
+    func_0018D920_x00194AD0(buf);
+    return best;
+}
 s32 func_00194C08_x00194C08(u8 *arg0, u8 *arg1) __asm__("func_00194C08");
 s32 func_00194C08_x00194C08(u8 *arg0, u8 *arg1)
 {

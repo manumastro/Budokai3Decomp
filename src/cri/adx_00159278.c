@@ -1544,7 +1544,43 @@ s32 func_0015A100(void) {
     D_0040E070 -= 1;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A120);
+extern int D_0040E070_x0015A120 __asm__("D_0040E070");
+extern short D_0045FC50_x0015A120[] __asm__("D_0045FC50");
+void func_0015A0E0_x0015A120(void) __asm__("func_0015A0E0");
+int func_0015A120_x0015A120(signed char *key, int len, short *k0, short *k1, short *k2) __asm__("func_0015A120");
+int func_0015A120_x0015A120(signed char *key, int len, short *k0, short *k1, short *k2)
+{
+    int i;
+    int a;
+    int b;
+    int c;
+
+    if (D_0040E070_x0015A120 == 0) {
+        func_0015A0E0_x0015A120();
+    }
+    *k0 = 0;
+    *k1 = 0;
+    *k2 = 0;
+    if (key == 0 && len <= 0) {
+        return 0;
+    }
+    a = D_0045FC50_x0015A120[0x100];
+    for (i = 0; i < len; i++) {
+        a = D_0045FC50_x0015A120[(a * D_0045FC50_x0015A120[key[i] + 0x80]) % 1024];
+    }
+    b = D_0045FC50_x0015A120[0x200];
+    for (i = 0; i < len; i++) {
+        b = D_0045FC50_x0015A120[(b * D_0045FC50_x0015A120[key[i] + 0x80]) % 1024];
+    }
+    c = D_0045FC50_x0015A120[0x300];
+    for (i = 0; i < len; i++) {
+        c = D_0045FC50_x0015A120[(c * D_0045FC50_x0015A120[key[i] + 0x80]) % 1024];
+    }
+    *k0 = a;
+    *k1 = b;
+    *k2 = c;
+    return 0;
+}
 extern s32 D_0040E070_x0015A2D8 __asm__("D_0040E070");
 extern s32 D_00461738_x0015A2D8 __asm__("D_00461738");
 void func_0015A0E0_x0015A2D8(void) __asm__("func_0015A0E0");

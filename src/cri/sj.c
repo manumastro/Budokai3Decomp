@@ -1011,7 +1011,49 @@ void func_0016E300_x0016E300(SJRBF_x0016E300 sjrbf, Sint32_x0016E300 id, Sint32_
     }
     SJCRS_Unlock_x0016E300();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016E470);
+typedef struct { char *data; int len; } Ck_E470_x0016E470;
+typedef struct { void *sj; int used; void *uuid; int unkC; int unk10; int unk14; int unk18; char *buf; int bsize; int xsize; int unk28; int unk2C; int unk30; int unk34; void (*err_func)(void *, int); void *err_obj; } Rbf_E470_x0016E470;
+void *memcpy_x0016E470(void *, const void *, unsigned int) __asm__("memcpy");
+void func_0016DAD8_x0016E470(void) __asm__("func_0016DAD8");
+void func_0016DAF0_x0016E470(void) __asm__("func_0016DAF0");
+void func_0016E470_x0016E470(Rbf_E470_x0016E470 *sjrbf, int id, Ck_E470_x0016E470 *ck) __asm__("func_0016E470");
+void func_0016E470_x0016E470(Rbf_E470_x0016E470 *sjrbf, int id, Ck_E470_x0016E470 *ck)
+{
+    int temp_a2_4;
+    int temp_a3;
+
+    if ((ck->len <= 0) || (ck->data == 0)) {
+        return;
+    }
+    if (id == 1) {
+        temp_a3 = ck->data - sjrbf->buf;
+        if (temp_a3 < sjrbf->xsize) {
+            memcpy_x0016E470(sjrbf->buf + (sjrbf->bsize + temp_a3), ck->data, (ck->len < sjrbf->xsize - temp_a3) ? ck->len : sjrbf->xsize - temp_a3);
+        }
+        temp_a3 = (ck->data - sjrbf->buf) + ck->len;
+        if (sjrbf->bsize < temp_a3) {
+            temp_a2_4 = (ck->len < temp_a3 - sjrbf->bsize) ? ck->len : temp_a3 - sjrbf->bsize;
+            memcpy_x0016E470(sjrbf->buf, sjrbf->buf + (temp_a3 - temp_a2_4), temp_a2_4);
+        }
+        func_0016DAD8_x0016E470();
+        sjrbf->unkC += ck->len;
+        sjrbf->unk34 += ck->len;
+        func_0016DAF0_x0016E470();
+    } else if (id == 0) {
+        func_0016DAD8_x0016E470();
+        sjrbf->unk10 += ck->len;
+        sjrbf->unk2C += ck->len;
+        func_0016DAF0_x0016E470();
+    } else {
+        func_0016DAD8_x0016E470();
+        ck->len = 0;
+        ck->data = 0;
+        func_0016DAF0_x0016E470();
+        if (sjrbf->err_func != 0) {
+            sjrbf->err_func(sjrbf->err_obj, -3);
+        }
+    }
+}
 typedef unsigned char Uint8_x0016E5C8;
 typedef char Sint8_x0016E5C8;
 typedef unsigned short Uint16_x0016E5C8;
@@ -2442,7 +2484,55 @@ void func_0016F788_x0016F788(void* obj, void* arg1, Sint32_x0016F788 arg2) {
     }
     SJCRS_Unlock_x0016F788();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F828);
+typedef struct { int ptr; int len; } Ck_F828_x0016F828;
+struct Sj_F828_x0016F828;
+typedef struct { char pad[0x18]; void (*getck)(struct Sj_F828_x0016F828 *, int, int, Ck_F828_x0016F828 *); } Vt_F828_x0016F828;
+typedef struct Sj_F828_x0016F828 { Vt_F828_x0016F828 *vt; } Sj_F828_x0016F828;
+typedef struct { signed char used; char pad1; unsigned short f2; Sj_F828_x0016F828 *sj; int pad8; int id; int f10; } Ent_F828_x0016F828;
+typedef struct { signed char f0; unsigned char id; unsigned short f2; int f4; Ck_F828_x0016F828 ck; } Item_F828_x0016F828;
+typedef struct { int count; int pad[3]; Item_F828_x0016F828 items[128]; } Out_F828_x0016F828;
+extern Ent_F828_x0016F828 D_00422798_x0016F828[32] __asm__("D_00422798");
+void func_0016DAD8_x0016F828(void) __asm__("func_0016DAD8");
+void func_0016DAF0_x0016F828(void) __asm__("func_0016DAF0");
+void func_0016F828_x0016F828(int unused, Out_F828_x0016F828 *head) __asm__("func_0016F828");
+void func_0016F828_x0016F828(int unused, Out_F828_x0016F828 *head)
+{
+    Ck_F828_x0016F828 chunk;
+    Ent_F828_x0016F828 *sjx;
+    int j;
+    int i;
+    Item_F828_x0016F828 *items = head->items;
+
+    j = 0;
+    func_0016DAD8_x0016F828();
+    for (i = 0; i < 32; i++) {
+        sjx = &D_00422798_x0016F828[i];
+        if (sjx->used != 1) {
+            continue;
+        }
+        while (1) {
+            if (j == 0x80) {
+                goto end;
+            }
+            sjx->sj->vt->getck(sjx->sj, sjx->id, 0x7FFFFFFF, &chunk);
+            if (chunk.len == 0) {
+                break;
+            }
+            items[j].f0 = 0;
+            {
+                int t = sjx->f10;
+                items[j].id = sjx->id;
+                items[j].f4 = t;
+            }
+            items[j].ck = chunk;
+            items[j].f2 = sjx->f2;
+            j++;
+        }
+    }
+end:
+    func_0016DAF0_x0016F828();
+    head->count = j;
+}
 s32 func_0016DAD8_x0016F938() __asm__("func_0016DAD8");
 s32 func_0016DAF0_x0016F938() __asm__("func_0016DAF0");
 void func_0016F938_x0016F938(s32 arg0, u8 *arg1) __asm__("func_0016F938");
@@ -2470,7 +2560,55 @@ loop_1:
     }
     func_0016DAF0_x0016F938();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F9C8);
+typedef struct { int ptr; int len; } Ck_F9C8_x0016F9C8;
+struct Sj_F9C8_x0016F9C8;
+typedef struct { char pad[0x18]; void (*getck)(struct Sj_F9C8_x0016F9C8 *, int, int, Ck_F9C8_x0016F9C8 *); } Vt_F9C8_x0016F9C8;
+typedef struct Sj_F9C8_x0016F9C8 { Vt_F9C8_x0016F9C8 *vt; } Sj_F9C8_x0016F9C8;
+typedef struct { signed char used; char pad1; unsigned short f2; Sj_F9C8_x0016F9C8 *sj; int pad8; int id; int f10; } Ent_F9C8_x0016F9C8;
+typedef struct { signed char f0; unsigned char id; unsigned short f2; int f4; Ck_F9C8_x0016F9C8 ck; } Item_F9C8_x0016F9C8;
+typedef struct { int count; int pad[3]; Item_F9C8_x0016F9C8 items[128]; } Out_F9C8_x0016F9C8;
+extern Ent_F9C8_x0016F9C8 D_00422798_x0016F9C8[32] __asm__("D_00422798");
+void func_0016DAD8_x0016F9C8(void) __asm__("func_0016DAD8");
+void func_0016DAF0_x0016F9C8(void) __asm__("func_0016DAF0");
+void func_0016F9C8_x0016F9C8(int unused, Out_F9C8_x0016F9C8 *head) __asm__("func_0016F9C8");
+void func_0016F9C8_x0016F9C8(int unused, Out_F9C8_x0016F9C8 *head)
+{
+    Ck_F9C8_x0016F9C8 chunk;
+    Ent_F9C8_x0016F9C8 *sjx;
+    int j;
+    int i;
+    Item_F9C8_x0016F9C8 *items = head->items;
+
+    j = 0;
+    func_0016DAD8_x0016F9C8();
+    for (i = 0; i < 32; i++) {
+        sjx = &D_00422798_x0016F9C8[i];
+        if (sjx->used != 1) {
+            continue;
+        }
+        while (1) {
+            if (j == 0x80) {
+                goto end;
+            }
+            sjx->sj->vt->getck(sjx->sj, sjx->id, 0x7FFFFFFF, &chunk);
+            if (chunk.len == 0) {
+                break;
+            }
+            items[j].f0 = 0;
+            {
+                int t = sjx->f10;
+                items[j].id = sjx->id;
+                items[j].f4 = t;
+            }
+            items[j].ck = chunk;
+            items[j].f2 = sjx->f2;
+            j++;
+        }
+    }
+end:
+    func_0016DAF0_x0016F9C8();
+    head->count = j;
+}
 void func_0016FAD8(void) {
     func_001660C0();
 }

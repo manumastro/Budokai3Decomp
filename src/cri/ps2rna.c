@@ -1620,7 +1620,118 @@ void func_0016C968_x0016C968(void) {
         func_0033B010_x0016C968();
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CA28);
+struct Sj_CA28_x0016CA28;
+typedef struct { char pad[0x24]; int (*getnum)(struct Sj_CA28_x0016CA28 *, int); } SjVt_CA28_x0016CA28;
+typedef struct Sj_CA28_x0016CA28 { SjVt_CA28_x0016CA28 *vt; } Sj_CA28_x0016CA28;
+typedef struct { int unk0; int unk4; int unk8; } Psj_CA28_x0016CA28;
+typedef struct { signed char used; char pad1[3]; int maxnch; Psj_CA28_x0016CA28 *psj[2]; int dtr[2]; Sj_CA28_x0016CA28 *sjo[2]; int unk20; int unk24; int unk28; int unk2C; signed char unk30; signed char unk31; signed char num_chan; signed char unk33; char pad34[0x3C - 0x34]; int out_vol; int unk40; int pan[2]; int unk4C[2]; int unk54; int unk58; signed char unk5C; signed char unk5D; signed char unk5E; signed char unk5F; char pad60[4]; } Rna_CA28_x0016CA28;
+extern Rna_CA28_x0016CA28 D_0041C520_x0016CA28[16] __asm__("D_0041C520");
+extern int D_0041A0D0_x0016CA28 __asm__("D_0041A0D0");
+extern int D_0041A0D8_x0016CA28 __asm__("D_0041A0D8");
+extern char D_00464AD0_x0016CA28[] __asm__("D_00464AD0");
+extern char D_00464AF8_x0016CA28[] __asm__("D_00464AF8");
+extern char D_00464B20_x0016CA28[] __asm__("D_00464B20");
+void *memset_x0016CA28(void *, int, unsigned int) __asm__("memset");
+int scePrintf_x0016CA28(const char *, ...) __asm__("scePrintf");
+Psj_CA28_x0016CA28 *func_0016C078_x0016CA28(void) __asm__("func_0016C078");
+void func_0016C0F0_x0016CA28(Psj_CA28_x0016CA28 *) __asm__("func_0016C0F0");
+int func_00165FB8_x0016CA28(int, int *, int, int *, int) __asm__("func_00165FB8");
+int func_00165638_x0016CA28(Sj_CA28_x0016CA28 *, int) __asm__("func_00165638");
+void func_00165728_x0016CA28(int) __asm__("func_00165728");
+Rna_CA28_x0016CA28 *func_0016CA28_x0016CA28(Sj_CA28_x0016CA28 **sjo, int maxnch) __asm__("func_0016CA28");
+Rna_CA28_x0016CA28 *func_0016CA28_x0016CA28(Sj_CA28_x0016CA28 **sjo, int maxnch)
+{
+    int snd_buf[4];
+    int rcv_buf[1];
+    Psj_CA28_x0016CA28 *psj;
+    int i;
+    int j;
+    int k;
+    Rna_CA28_x0016CA28 *rna;
+
+    for (i = 0; i < 16; i++) {
+        rna = &D_0041C520_x0016CA28[i];
+        if (rna->used == 0) {
+            break;
+        }
+    }
+    if (i == 16) {
+        return 0;
+    }
+    if (D_0041A0D8_x0016CA28 == 1 && D_0041A0D0_x0016CA28 <= 0) {
+        rna->used = 1;
+        return rna;
+    }
+    memset_x0016CA28(rna, 0, sizeof(Rna_CA28_x0016CA28));
+    rna->maxnch = maxnch;
+    for (i = 0; i < maxnch; i++) {
+        psj = func_0016C078_x0016CA28();
+        rna->psj[i] = psj;
+        if (psj == 0) {
+            scePrintf_x0016CA28(D_00464AD0_x0016CA28);
+            for (j = 0; j < maxnch; j++) {
+                psj = rna->psj[j];
+                if (psj != 0) {
+                    func_0016C0F0_x0016CA28(psj);
+                }
+            }
+            return 0;
+        }
+    }
+    snd_buf[0] = maxnch;
+    snd_buf[1] = 0;
+    for (i = 0; i < maxnch; i++) {
+        snd_buf[2 + i] = rna->psj[i]->unk4;
+    }
+    rna->unk20 = func_00165FB8_x0016CA28(8, snd_buf, 4, rcv_buf, 1);
+    if (rna->unk20 == 0) {
+        scePrintf_x0016CA28(D_00464AF8_x0016CA28);
+        return 0;
+    }
+    for (i = 0; i < maxnch; i++) {
+        rna->dtr[i] = func_00165638_x0016CA28(sjo[i], rna->psj[i]->unk8);
+        if (rna->dtr[i] == 0) {
+            scePrintf_x0016CA28(D_00464B20_x0016CA28);
+            for (k = 0; k < maxnch; k++) {
+                if (rna->dtr[k] != 0) {
+                    func_00165728_x0016CA28(rna->dtr[k]);
+                }
+                if (rna->unk20 != 0) {
+                    snd_buf[0] = rna->unk20;
+                    func_00165FB8_x0016CA28(9, snd_buf, 1, 0, 0);
+                }
+                if (rna->psj[k] != 0) {
+                    func_0016C0F0_x0016CA28(rna->psj[k]);
+                }
+            }
+            return 0;
+        }
+    }
+    for (i = 0; i < maxnch; i++) {
+        rna->sjo[i] = sjo[i];
+    }
+    rna->unk30 = 0;
+    rna->unk31 = 0;
+    rna->num_chan = maxnch;
+    rna->unk33 = maxnch;
+    rna->out_vol = 0;
+    rna->unk40 = 0;
+    rna->unk54 = 0;
+    rna->unk58 = 0;
+    rna->unk5F = 0;
+    rna->unk5E = 0;
+    for (i = 0; i < maxnch; i++) {
+        rna->pan[i] = 0;
+        rna->unk4C[i] = 0;
+    }
+    rna->unk5C = 0;
+    rna->unk5D = 1;
+    rna->unk24 = 0;
+    rna->unk28 = sjo[0]->vt->getnum(sjo[0], 1) + sjo[0]->vt->getnum(sjo[0], 0);
+    rna->unk2C = 0x4000;
+    rna->used = 1;
+    return rna;
+}
 typedef struct SfdSj_x0016CDA8 SfdSj_x0016CDA8;
 typedef struct SfdSjChunk_x0016CDA8 {
     char *data;

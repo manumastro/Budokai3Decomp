@@ -1654,8 +1654,133 @@ void func_00173A70(void) {
 
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173A78);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001742A8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001743C8);
+typedef struct { char pad0[0x2C]; unsigned int f2C; char pad30[0x328 - 0x30]; int f328; int f32C; char pad330[0x4DC - 0x330]; int f4DC; char pad4E0[0x4EC - 0x4E0]; int f4EC; char pad4F0[0x550 - 0x4F0]; int f550; } St_42A8_x001742A8;
+char *func_001742A8_x001742A8(char *m, char *buf) __asm__("func_001742A8");
+char *func_001742A8_x001742A8(char *m, char *buf)
+{
+    St_42A8_x001742A8 *s = (St_42A8_x001742A8 *)(m + 0x158);
+    unsigned char *p;
+    int sh;
+    unsigned int w0;
+    unsigned int w1;
+
+    s->f4EC++;
+    s->f4DC = 1;
+    if ((s->f328 != 0 && s->f328 != 0x80) || s->f32C != 0) {
+        s->f550++;
+    }
+    p = (unsigned char *)((int)buf & ~3);
+    sh = ((int)buf - (int)p) * 8;
+    w0 = (signed char)*p++;
+    w0 <<= 8;
+    w0 |= *p++;
+    w0 <<= 8;
+    w0 |= *p++;
+    w0 <<= 8;
+    w0 |= *p++;
+    w1 = (signed char)*p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    w0 <<= sh;
+    if (sh != 0) {
+        s->f2C = w0 | (w1 >> (32 - sh));
+        w0 = w1 << sh;
+    } else {
+        s->f2C = w0;
+        w0 = w1;
+    }
+    w1 = (signed char)*p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    s->f328 = 0;
+    s->f32C = 0;
+    return buf + (sh + ((int)p - (int)buf) * 8 - 57) / 8;
+}
+typedef struct { char pad0[0x30]; unsigned int f30; char pad34[0x328 - 0x34]; int f328; int f32C; char pad330[0x4F0 - 0x330]; int f4F0; char pad4F4[0x550 - 0x4F4]; int f550; } St_43C8_x001743C8;
+void func_001745E0_x001743C8(char *, char *, int) __asm__("func_001745E0");
+char *func_001743C8_x001743C8(char *m, char *buf) __asm__("func_001743C8");
+char *func_001743C8_x001743C8(char *m, char *buf)
+{
+    St_43C8_x001743C8 *s = (St_43C8_x001743C8 *)(m + 0x158);
+    unsigned char *p;
+    int sh;
+    unsigned int w0;
+    unsigned int w1;
+    unsigned int v;
+    int cnt;
+
+    s->f4F0++;
+    if ((s->f328 != 0 && s->f328 != 0x20) || s->f32C != 0) {
+        s->f550++;
+    }
+    p = (unsigned char *)((int)buf & ~3);
+    sh = ((int)buf - (int)p) * 8;
+    w0 = (signed char)*p++;
+    w0 <<= 8;
+    w0 |= *p++;
+    w0 <<= 8;
+    w0 |= *p++;
+    w0 <<= 8;
+    w0 |= *p++;
+    w1 = (signed char)*p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    w0 <<= sh;
+    if (sh != 0) {
+        s->f30 = w0 | (w1 >> (32 - sh));
+        w0 = w1 << sh;
+    } else {
+        s->f30 = w0;
+        w0 = w1;
+    }
+    w1 = (signed char)*p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    w1 <<= 8;
+    w1 |= *p++;
+    cnt = 0;
+    while (cnt <= 0xFFFFF) {
+        v = w0 >> 8;
+        w0 <<= 8;
+        if (sh >= 9) {
+            v |= w1 >> (40 - sh);
+        }
+        if (v == 1) {
+            break;
+        }
+        sh += 8;
+        cnt++;
+        if (sh >= 32) {
+            sh -= 32;
+            w0 = w1 << sh;
+            w1 = (signed char)*p++;
+            w1 <<= 8;
+            w1 |= *p++;
+            w1 <<= 8;
+            w1 |= *p++;
+            w1 <<= 8;
+            w1 |= *p++;
+        }
+    }
+    func_001745E0_x001743C8(m, buf, cnt + 4);
+    return buf + (sh + ((int)p - (int)buf) * 8 - 57) / 8;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3p32_05d0f2_0_x __asm__("b3cse_asmpad_05d0f2_0_xx");
 typedef struct { char *data; int len; } Ck_45E0_x001745E0;
 struct Sj_45E0_x001745E0;
 typedef struct { char pad[0x18]; void (*getck)(struct Sj_45E0_x001745E0 *, int, int, Ck_45E0_x001745E0 *); void *pad1C; void (*putck)(struct Sj_45E0_x001745E0 *, int, Ck_45E0_x001745E0 *); } Vt_45E0_x001745E0;
