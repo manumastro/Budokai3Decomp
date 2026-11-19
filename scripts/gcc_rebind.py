@@ -213,8 +213,41 @@ def orphans(lines, drop):
     return out
 
 
+NOSWAP = re.compile(r"^\s*#\s*noswap\s+(\S+)\s*$", re.M)
+BRANCH = re.compile(r"^\s+(j|jal|jr|jalr|b|bal|b(?!reak\b)[a-z0-9]+)\s")
+
+
+def no_swap(text):
+    """Functions marked `# noswap NAME` (func_insert.py, for a function whose original object was assembled with gas
+    -O1, as libc's: gas fills no delay slot there): every branch or jump ee-gcc left to gas (outside its own
+    `.set noreorder` blocks) is written with an explicit nop in its delay slot, which is what gas -O1 emits. The rest
+    of the file keeps gas's default delay-slot filling."""
+    names = set(NOSWAP.findall(text))
+    if not names:
+        return text
+    out = []
+    cur = None
+    noreorder = False
+    for ln in text.split("\n"):
+        code = ln.split("#", 1)[0]
+        m = re.match(r"^\s*\.ent\s+(\S+)", code)
+        if m:
+            cur = m.group(1) if m.group(1) in names else None
+        elif re.match(r"^\s*\.end\s+", code):
+            cur = None
+        if re.fullmatch(r"\s*\.set\s+noreorder\s*", code):
+            noreorder = True
+        elif re.fullmatch(r"\s*\.set\s+reorder\s*", code):
+            noreorder = False
+        if cur and not noreorder and BRANCH.match(code):
+            out += ["\t.set\tnoreorder", ln, "\tnop", "\t.set\treorder"]
+            continue
+        out.append(ln)
+    return "\n".join(out)
+
+
 def rebind(text, extra=(), log=sys.stderr):
-    text = strip_stubs(text)
+    text = no_swap(strip_stubs(text))
     marks = MARK.findall(text)
     if not marks:
         return text

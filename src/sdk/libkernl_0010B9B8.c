@@ -1,6 +1,3 @@
-/* libkernl's DECI2 console (tty.c) and what follows it, assembled without delay-slot filling by gas (as libc's
-   objects: sceTtyWrite's poll loop keeps its call's argument load out of the delay slot only so).
-   as-flags: -O1 */
 #include "common.h"
 
 typedef unsigned int u_int_x0010B9B8;
@@ -84,6 +81,7 @@ int sceTtyWrite_x0010B9B8(char *buf, int n)
     }
     return written;
 }
+__asm__("# noswap sceTtyWrite");
 typedef unsigned int u_int_x0010BB30;
 typedef unsigned char u_char_x0010BB30;
 typedef struct {

@@ -133,7 +133,7 @@ def compile_one(src, rel, keep, build_mode=False):
     if rc != 0 or not asm.exists():
         return None, out, work
     t = asm.read_text(errors="replace")
-    if "rebind" in t or ".b3stub" in t:
+    if "rebind" in t or ".b3stub" in t or "noswap" in t:
         import gcc_rebind
         import os
         t2 = gcc_rebind.rebind(t, [f"-I{ROOT / d}" for d in inc], log=open(os.devnull, "w"))

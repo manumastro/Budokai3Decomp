@@ -414,7 +414,8 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
     notice = re.match(r"\s*(/\*.*?\*/)", (ROOT / u.src).read_text(errors="replace"), re.S)
     if notice and re.search(r"copyright|permission|licen[cs]e", notice.group(1), re.I):
         head = notice.group(1) + "\n" + head  # the source's own notice goes with the function
-    return dict(addr=addr, name=our_name, decls=dl + extra, func=func, note=head, bind=bind, repo=u.repo, src=origin, ext_name=ext_name, status="match", rebind=rebind, aliases=aliases), None
+    return dict(addr=addr, name=our_name, decls=dl + extra, func=func, note=head, bind=bind, repo=u.repo, src=origin, ext_name=ext_name, status="match", rebind=rebind, aliases=aliases,
+                noswap="-O1" in os.environ.get("B3_AS_EXTRA", "").split()), None
 
 
 def main():
@@ -476,6 +477,8 @@ def main():
     Path(a.out).write_text(json.dumps(dict(items=results, new_syms={f"{k:08X}": v for k, v in new_syms.items()}),
                                       indent=0))
     if a.apply:
+        # B3_AS_EXTRA=-O1 found the matches; in the file each one is noswap, the rest keeps gas's filling
+        os.environ.pop("B3_AS_EXTRA", None)
         apply_items([r for r in results if r["status"] == "match"], new_syms, a.jobs, f"{a.out}.log", real=a.real)
 
 

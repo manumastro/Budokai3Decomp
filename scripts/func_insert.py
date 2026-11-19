@@ -207,6 +207,9 @@ def isolate(item, pad=0):
     if item.get("rebind"):
         # its jump tables / static data / constants are the executable's (scripts/gcc_rebind.py)
         tail = f'\n__asm__("# rebind {name} 0x{item["addr"]:08X}");'
+    if item.get("noswap"):
+        # its original object was assembled with gas -O1: gas fills none of its delay slots (scripts/gcc_rebind.py)
+        tail += f'\n__asm__("# noswap {name}");'
     return "\n".join(out) + "\n" + func + tail
 
 
