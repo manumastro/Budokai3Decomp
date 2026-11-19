@@ -86,7 +86,14 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287110);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_002872A0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_002878B0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287A70);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287C30);
+void func_00287C30(u8 *arg0, s32 arg1) {
+    u8 *temp_a2;
+    if (arg0 != NULL) {
+        temp_a2 = *(u8 **)((u8 *)arg0 + 0x30);
+        *(u16 *)((u8 *)temp_a2 + 0x240) |= arg1;
+    }
+}
+
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287C60);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287E60);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00288000);

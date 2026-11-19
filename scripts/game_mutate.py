@@ -44,6 +44,9 @@ INT_PAIRS = {"s8": "u8", "u8": "s8", "s16": "u16", "u16": "s16", "s32": "u32", "
 INT_TYPES = ["s32", "u32", "s16", "u16", "s8", "u8"]
 MIRROR = {"<": ">", ">": "<", "<=": ">=", ">=": "<="}
 COMMUTE = {"+", "*", "&", "|", "^", "==", "!="}
+WIDTH = 3      # beam width
+PLATEAU = 3    # rounds without a better key before giving up
+SLACK = 4      # a state up to this many instructions worse may still be expanded (two-step fixes)
 
 _TYPEDEFS = None
 KEYWORDS = set("auto break case char const continue default do double else enum extern float for goto if inline int "
@@ -178,10 +181,25 @@ def ptr_base_name(tn):
     return None
 
 
+PRIORITY = ["gderef", "ptrload", "bderef", "compound", "commute", "decltype", "declfirst", "nomask", "shift",
+            "signed", "nonull", "ifswap", "nocast", "stmtswap"]
+
+
 def mutations(fd):
-    """Yields (label, new FuncDef) for every single mutation."""
+    """Yields (label, new FuncDef) for every single mutation, the kinds that fixed most near misses first."""
+    out = list(_mutations(fd))
+    rank = {k: i for i, k in enumerate(PRIORITY)}
+    out.sort(key=lambda lc: rank.get(re.match(r"[a-z]+", lc[0]).group(0), len(rank)))
+    return out
+
+
+def _mutations(fd):
     base = nodes(fd)
     n = len(base)
+    pmap = {}
+    for p in base:
+        for _, ch in p.children():
+            pmap[id(ch)] = p
 
     def at(i):
         c = copy.deepcopy(fd)
@@ -196,7 +214,9 @@ def mutations(fd):
             yield f"commute{i}", c
         if isinstance(x, c_ast.Cast):
             it = ptr_base_name(x.to_type)
-            if it is not None and len(it.names) == 1 and it.names[0] in INT_PAIRS:
+            pa = pmap.get(id(x))
+            under_deref = isinstance(pa, c_ast.UnaryOp) and pa.op == "*" or isinstance(pa, c_ast.ArrayRef)
+            if it is not None and len(it.names) == 1 and it.names[0] in INT_PAIRS and under_deref:
                 c, y = at(i)
                 ptr_base_name(y.to_type).names = [INT_PAIRS[it.names[0]]]
                 yield f"signed{i}", c
@@ -220,6 +240,14 @@ def mutations(fd):
                 y.expr = c_ast.Cast(c_ast.Typename(None, [], None, c_ast.PtrDecl([], c_ast.TypeDecl(
                     None, [], None, c_ast.IdentifierType([t])))), y.expr)
                 yield f"gderef{i}_{t}", c
+        if isinstance(x, c_ast.UnaryOp) and x.op == "*" and isinstance(x.expr, c_ast.BinaryOp) and \
+                x.expr.op in ("+", "-"):
+            # `*((u8 *)&D_x + i * 2)`: m2c did not know the element type of the table
+            for t in INT_TYPES:
+                c, y = at(i)
+                y.expr = c_ast.Cast(c_ast.Typename(None, [], None, c_ast.PtrDecl([], c_ast.TypeDecl(
+                    None, [], None, c_ast.IdentifierType([t])))), y.expr)
+                yield f"bderef{i}_{t}", c
         if isinstance(x, c_ast.If) and x.iffalse is not None:
             c, y = at(i)
             y.cond = c_ast.UnaryOp("!", y.cond)
@@ -232,8 +260,47 @@ def mutations(fd):
             if parent:
                 replace_child(parent[0], y, y.left)
                 yield f"nonull{i}", c
-        if isinstance(x, c_ast.ID) and x.name == "NULL":
-            pass
+        if isinstance(x, c_ast.BinaryOp) and x.op == "&" and isinstance(x.right, c_ast.Constant) and \
+                x.right.value.lower() in ("0xff", "0xffff", "255", "65535"):
+            c, y = at(i)
+            parent = [p for p in nodes(c) if any(ch is y for _, ch in p.children())]
+            if parent:
+                replace_child(parent[0], y, y.left)
+                yield f"nomask{i}", c
+        if isinstance(x, c_ast.BinaryOp) and x.op == ">>":
+            for t in ("s32", "u32"):
+                c, y = at(i)
+                y.left = c_ast.Cast(c_ast.Typename(None, [], None, c_ast.TypeDecl(
+                    None, [], None, c_ast.IdentifierType([t]))), y.left)
+                yield f"shift{i}_{t}", c
+        if isinstance(x, c_ast.Assignment) and x.op == "=":
+            r = x.rvalue
+            while isinstance(r, c_ast.Cast):
+                r = r.expr
+            if isinstance(r, c_ast.BinaryOp) and r.op in ("+", "-", "*", "&", "|", "^", "<<", ">>"):
+                lv = GEN.visit(x.lvalue)
+                for side, other in (("left", "right"), ("right", "left")):
+                    s = getattr(r, side)
+                    while isinstance(s, c_ast.Cast):
+                        s = s.expr
+                    if GEN.visit(s) == lv and (side == "left" or r.op in ("+", "*", "&", "|", "^")):
+                        c, y = at(i)
+                        r2 = y.rvalue
+                        while isinstance(r2, c_ast.Cast):
+                            r2 = r2.expr
+                        y.op = r.op + "="
+                        y.rvalue = getattr(r2, other)
+                        yield f"compound{i}", c
+                        o = y.rvalue
+                        while isinstance(o, c_ast.Cast):
+                            o = o.expr
+                        if isinstance(o, c_ast.BinaryOp) and o.op == "&" and isinstance(o.right, c_ast.Constant) \
+                                and o.right.value.lower() in ("0xff", "0xffff", "255", "65535"):
+                            # m2c's mask of a narrow store's value: `x = (u16)(a & 0xFFFF | x)` is `x |= a`
+                            c2 = copy.deepcopy(c)
+                            nodes(c2)[i].rvalue = copy.deepcopy(o.left)
+                            yield f"compound{i}m", c2
+                        break
         if isinstance(x, c_ast.Compound) and x.block_items:
             items = x.block_items
             for k in range(len(items) - 1):
@@ -318,30 +385,42 @@ def work(job):
         if base_key < cur_key:  # the pycparser round trip changed the code: start from the draft as it is
             cur_key, cur_desc = base_key, base_desc
             cur_text = head + ctext
-        steps, n, last = [], 0, time.time()
+        # beam search: the WIDTH best states (ties included, so a plateau step that only prepares the next mutation
+        # survives) are expanded each round; stop at a match, the budget, or PLATEAU rounds without a better key
+        n, last, flat = 0, time.time(), 0
         seen = {cur_text}
-        while cur_key[0] > 0 and n < evals and time.time() - t0 < seconds:
-            best = None
-            for label, c in mutations(fd):
-                if n >= evals or time.time() - t0 >= seconds:
-                    break
-                t = head + gen(c)
-                if t in seen:
-                    continue
-                seen.add(t)
-                n += 1
-                k, desc = score(rel, name, t)
-                if time.time() - last > 50:
-                    print(f"  .. {name} {n} evals, best {cur_desc}", file=sys.stderr, flush=True)
-                    last = time.time()
-                if k < cur_key and (best is None or k < best[0]):
-                    best = (k, desc, label, c, t)
+        steps = []
+        frontier = [(cur_key, cur_desc, fd, cur_text, [])]
+        while cur_key[0] > 0 and n < evals and time.time() - t0 < seconds and frontier and flat < PLATEAU:
+            cands = []
+            for fkey, _, ffd, _, fsteps in frontier:
+                for label, c in mutations(ffd):
+                    if n >= evals or time.time() - t0 >= seconds:
+                        break
+                    t = head + gen(c)
+                    if t in seen:
+                        continue
+                    seen.add(t)
+                    n += 1
+                    k, desc = score(rel, name, t)
+                    if time.time() - last > 50:
+                        print(f"  .. {name} {n} evals, best {cur_desc}", file=sys.stderr, flush=True)
+                        last = time.time()
+                    if k <= cur_key or (k[0] == cur_key[0] and k[1] <= cur_key[1] + SLACK):
+                        cands.append((k, desc, c, t, fsteps + [label]))
                     if k[0] == 0:
                         break
-            if best is None:
+                if cands and cands[-1][0][0] == 0:
+                    break
+            if not cands:
                 break
-            cur_key, cur_desc, fd, cur_text = best[0], best[1], best[3], best[4]
-            steps.append(best[2])
+            cands.sort(key=lambda x: x[0])
+            frontier = cands[:WIDTH]
+            if frontier[0][0] < cur_key:
+                cur_key, cur_desc, fd, cur_text, steps = frontier[0]
+                flat = 0
+            else:
+                flat += 1
         res = "match" if cur_key[0] == 0 else ("better" if cur_key < base_key else "same")
         return dict(function=name, file=rel, result=res, base=base_desc, best=cur_desc, steps=" ".join(steps),
                     detail=f"{n} evals {time.time() - t0:.0f}s", text=cur_text)
@@ -359,13 +438,19 @@ def best_drafts(pairs, max_diff, only):
         if not Path(csvf).exists():
             continue
         for r in csv.DictReader(open(csvf)):
-            st = r.get("status") or r.get("best_status")
             name = r["function"]
+            if "result" in r:  # an earlier game_mutate.py run: its improved draft
+                bm = re.match(r"(diff|size) (\d+)", r["best"])
+                if r["result"] != "better" or not bm:
+                    continue
+                st, d = bm.group(1), int(bm.group(2))
+            else:
+                st = r.get("status") or r.get("best_status")
+                if st not in ("diff", "size"):
+                    continue
+                d = int(r["diff"])
             if only and name not in only:
                 continue
-            if st not in ("diff", "size"):
-                continue
-            d = int(r["diff"])
             if d > max_diff:
                 continue
             f = Path(ddir) / f"{name}.{st}.c"

@@ -276,4 +276,55 @@ void func_00280470(void) {
     func_0027E040();
 }
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_002804A0);
+extern void amTask_Kill(void *);
+extern void func_0028DF20(void);
+void func_002804A0(void) {
+    s32 temp_a0_5;
+    s32 temp_a0_6;
+    s32 temp_s0;
+    u8 *temp_a0;
+    u8 *temp_a0_2;
+    u8 *temp_a0_3;
+    u8 *temp_a0_4;
+    u8 *temp_s1;
+    u8 *temp_v0;
+
+    temp_s0 = gVsCharasel;
+    temp_v0 = *(u8 **)((u8 *)temp_s0 + 0x14);
+    if (temp_v0 != NULL) {
+        temp_s1 = *(u8 **)((u8 *)temp_v0 + 0x38);
+        func_0027E880(temp_s1);
+        amHeap_Free(temp_s1);
+        amTask_Kill(*(u8 **)((u8 *)temp_s0 + 0x14));
+    }
+    temp_a0 = *(u8 **)((u8 *)temp_s0 + 0x10);
+    if (temp_a0 != NULL) {
+        amTask_Kill(temp_a0);
+    }
+    temp_a0_2 = *(u8 **)((u8 *)temp_s0 + 0x18);
+    if (temp_a0_2 != NULL) {
+        amTask_Kill(temp_a0_2);
+    }
+    temp_a0_3 = *(u8 **)((u8 *)temp_s0 + 8);
+    if (temp_a0_3 != NULL) {
+        amHeap_Free(temp_a0_3);
+    }
+    temp_a0_4 = *(u8 **)((u8 *)temp_s0 + 0xC);
+    if (temp_a0_4 != NULL) {
+        amHeap_Free(temp_a0_4);
+    }
+    temp_a0_5 = *(s32 *)((u8 *)temp_s0 + 0);
+    if (temp_a0_5 != 0) {
+        amCdFs_Close(temp_a0_5, 0);
+    }
+    temp_a0_6 = *(s32 *)((u8 *)temp_s0 + 4);
+    if (temp_a0_6 != 0) {
+        amCdFs_Close(temp_a0_6, 0);
+    }
+    amHeap_Free((u8 *) temp_s0);
+    gVsCharasel = 0;
+    func_0027E070();
+    func_0027E070();
+    func_0028DF20();
+}
+
