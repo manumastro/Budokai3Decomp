@@ -615,41 +615,18 @@ void func_001D79F0(u8 *arg0) {
     }
 }
 
-#if 0
-void func_001D7A70(Fighter *c) {
-    char *p;
-    s32 x;
-    s32 y;
-
-    p = (char *)c->f1CF8;
-    x = *(s16 *)(p + 0xD6);
-    y = *(s16 *)(p + 0xD8);
-    *(s8 *)((char *)c + 0x1D04) = *(s16 *)(D_00447450 + x * 96 + y * 8);
-    x = *(s16 *)(p + 0xEA);
-    y = *(s16 *)(p + 0xEC);
-    *(s8 *)((char *)c + 0x1D05) = *(s16 *)(D_00447450 + x * 96 + y * 8);
-    x = *(s16 *)(p + 0xFE);
-    y = *(s16 *)(p + 0x100);
-    *(s8 *)((char *)c + 0x1D06) = *(s16 *)(D_00447450 + x * 96 + y * 8);
-    x = *(s16 *)(p + 0x112);
-    y = *(s16 *)(p + 0x114);
-    *(s8 *)((char *)c + 0x1D07) = *(s16 *)(D_00447450 + x * 96 + y * 8);
-    x = *(s16 *)(p + 0x126);
-    y = *(s16 *)(p + 0x128);
-    *(s8 *)((char *)c + 0x1D08) = *(s16 *)(D_00447450 + x * 96 + y * 8);
-    x = *(s16 *)(p + 0x13A);
-    y = *(s16 *)(p + 0x13C);
-    *(s8 *)((char *)c + 0x1D09) = *(s16 *)(D_00447450 + x * 96 + y * 8);
-    x = *(s16 *)(p + 0x14E);
-    y = *(s16 *)(p + 0x150);
-    *(s8 *)((char *)c + 0x1D0A) = *(s16 *)(D_00447450 + x * 96 + y * 8);
-    x = *(s16 *)(p + 0x162);
-    y = *(s16 *)(p + 0x164);
-    *(s8 *)((char *)c + 0x1D0B) = *(s16 *)(D_00447450 + x * 96 + y * 8);
+void func_001D7A70(u8 *arg0) {
+    u8 *temp_a1;
+    temp_a1 = *(u8 **)((u8 *)arg0 + 0x1CF8);
+    *(s8 *)((u8 *)arg0 + 0x1D04) = (s8)*(s16 *)(*(s16 *)((u8 *)temp_a1 + 0xD8) * 8 + (D_00447450 + *(s16 *)((u8 *)temp_a1 + 0xD6) * 0x60));
+    *(s8 *)((u8 *)arg0 + 0x1D05) = (s8)*(s16 *)(*(s16 *)((u8 *)temp_a1 + 0xEC) * 8 + (D_00447450 + *(s16 *)((u8 *)temp_a1 + 0xEA) * 0x60));
+    *(s8 *)((u8 *)arg0 + 0x1D06) = (s8)*(s16 *)(*(s16 *)((u8 *)temp_a1 + 0x100) * 8 + (D_00447450 + *(s16 *)((u8 *)temp_a1 + 0xFE) * 0x60));
+    *(s8 *)((u8 *)arg0 + 0x1D07) = (s8)*(s16 *)(*(s16 *)((u8 *)temp_a1 + 0x114) * 8 + (D_00447450 + *(s16 *)((u8 *)temp_a1 + 0x112) * 0x60));
+    *(s8 *)((u8 *)arg0 + 0x1D08) = (s8)*(s16 *)(*(s16 *)((u8 *)temp_a1 + 0x128) * 8 + (D_00447450 + *(s16 *)((u8 *)temp_a1 + 0x126) * 0x60));
+    *(s8 *)((u8 *)arg0 + 0x1D09) = (s8)*(s16 *)(*(s16 *)((u8 *)temp_a1 + 0x13C) * 8 + (D_00447450 + *(s16 *)((u8 *)temp_a1 + 0x13A) * 0x60));
+    *(s8 *)((u8 *)arg0 + 0x1D0A) = (s8)*(s16 *)(*(s16 *)((u8 *)temp_a1 + 0x150) * 8 + (D_00447450 + *(s16 *)((u8 *)temp_a1 + 0x14E) * 0x60));
+    *(s8 *)((u8 *)arg0 + 0x1D0B) = (s8)*(s16 *)(*(s16 *)((u8 *)temp_a1 + 0x164) * 8 + (D_00447450 + *(s16 *)((u8 *)temp_a1 + 0x162) * 0x60));
 }
-#endif
-// differs: 36 of 84 instructions; x and y land in a3/t0 where the original uses t0/a2 (register choice, not the table math). Tried: x/y declaration order, s32/u32/s16/u16 locals, index as y*8 + (D + x*96) (same 36 either way)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7A70);
 s32 func_001D7BC0(Fighter *c) {
     if (c->f1FF8 == -1) {
         return 0;
