@@ -378,7 +378,51 @@ int htCiReqRd_x001685D8(HtCiFile_x001685D8 *h, int nsct, char *buf)
     h->end_fg = 0;
     return h->req;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168768);
+typedef struct { u8 f0; u8 f1; s8 stat; u8 pad[0x25]; s32 f28; s32 f2C; } HtFs_x00168768;
+extern s32 D_00413D14_x00168768 __asm__("D_00413D14");
+extern char D_00463B70_x00168768[] __asm__("D_00463B70");
+extern char D_00463B88_x00168768[] __asm__("D_00463B88");
+void func_00167C90_x00168768(s32, char *) __asm__("func_00167C90");
+void func_00164388_x00168768(s32) __asm__("func_00164388");
+void func_00167C60_x00168768(void) __asm__("func_00167C60");
+void func_001648B0_x00168768(void) __asm__("func_001648B0");
+void func_00167EA0_x00168768(void) __asm__("func_00167EA0");
+void func_00168870_x00168768(HtFs_x00168768 *) __asm__("func_00168870");
+int scePrintf_x00168768(const char *, ...) __asm__("scePrintf");
+void func_00168768_x00168768(HtFs_x00168768 *fs) __asm__("func_00168768");
+void func_00168768_x00168768(HtFs_x00168768 *fs)
+{
+    s32 i;
+
+    i = 0;
+    if (fs == 0) {
+        func_00167C90_x00168768(0, D_00463B70_x00168768);
+        return;
+    }
+    if ((u8)fs->stat < 2) {
+        return;
+    }
+    if (fs->f2C != 0) {
+        func_00164388_x00168768(fs->f2C);
+    }
+    for (;;) {
+        func_001648B0_x00168768();
+        func_00167EA0_x00168768();
+        func_00168870_x00168768(fs);
+        if (fs->stat != 2) {
+            break;
+        }
+        if (++i > 0x63FFF6) {
+            if (D_00413D14_x00168768 != 2) {
+                scePrintf_x00168768(D_00463B88_x00168768);
+            }
+            break;
+        }
+        func_00167C60_x00168768();
+    }
+    fs->stat = 0;
+    fs->f28 = 0;
+}
 s32 func_00167C90_x00168870() __asm__("func_00167C90");
 extern s32 D_00463B10_x00168870 __asm__("D_00463B10");
 s8 func_00168870_x00168870(u8 *arg0) __asm__("func_00168870");

@@ -17850,7 +17850,40 @@ void func_00198938_x00198938(u8 *arg0)
     *((s32 *) (((u8 *) arg0) + 0xDB4)) = 0;
     *((s32 *) (((u8 *) arg0) + 0xDC0)) = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001989A8);
+void func_0018C950_x001989A8(u8 *) __asm__("func_0018C950");
+void func_0019A010_x001989A8(u8 *, s32) __asm__("func_0019A010");
+void func_001989A8_x001989A8(u8 *a0) __asm__("func_001989A8");
+void func_001989A8_x001989A8(u8 *a0)
+{
+    s32 *p1 = (s32 *)(a0 + 0x8A0);
+    s32 *p2 = (s32 *)(a0 + 0xD00);
+    s32 *p3 = (s32 *)(a0 + 0xAC4);
+    ((s32 *)a0)[0] = 0;
+    ((s32 *)a0)[1] = 0;
+    ((s32 *)a0)[2] = 0;
+    func_0018C950_x001989A8(a0 + 0xC);
+    p1[0] = 0;
+    p1[1] = 0;
+    p1[2] = 0;
+    p1[3] = 0;
+    p1[4] = 0;
+    p1[5] = 0;
+    p1[6] = 0;
+    p1[7] = 0;
+    p1[8] = 0;
+    p3[0] = 0;
+    p3[1] = 0;
+    p3[2] = 0;
+    func_0019A010_x001989A8(a0 + 0xAD0, 0x7FFFFFFF);
+    p2[0] = 0;
+    p2[1] = 0;
+    p2[3] = 0;
+    p2[4] = 0;
+    p2[5] = 0;
+    p2[2] = 1;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3cse_pad32_001989A8_0_xxxx;
 s32 func_0018D650_x00198A60(s32, s32) __asm__("func_0018D650");
 s32 func_0018D870_x00198A60() __asm__("func_0018D870");
 char func_00198A60_x00198A60(u8 *arg0, s32 arg1) __asm__("func_00198A60");

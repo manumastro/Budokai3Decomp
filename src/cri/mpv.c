@@ -3397,9 +3397,51 @@ long long func_001790F0_x001790F0(u8 *arg0, s32 arg1) {
   }
   *((s32 *) (((u8 *) arg0) + 0x10)) = arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179148);
+typedef struct MpvO_x00179148 MpvO_x00179148;
+struct MpvO_x00179148 { u8 pad[0xC4]; void (*fn)(MpvO_x00179148 *, s32); };
+s32 func_0017B218_x00179148(MpvO_x00179148 *) __asm__("func_0017B218");
+void func_0017B048_x00179148(s32, s32, s32, s32 *, s32 *) __asm__("func_0017B048");
+void func_00179148_x00179148(MpvO_x00179148 *o, s32 a1, s32 a2, s32 *p3, s32 *p4) __asm__("func_00179148");
+void func_00179148_x00179148(MpvO_x00179148 *o, s32 a1, s32 a2, s32 *p3, s32 *p4)
+{
+    *p3 = 0;
+    *p4 = 0;
+    if (func_0017B218_x00179148(o) != 0) {
+        func_0017B048_x00179148(0, 0xFF020301, a2, p3, p4);
+        return;
+    }
+    o->fn(o, a1);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001791F0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179310);
+u32 func_0017AAF0_x00179310(s32) __asm__("func_0017AAF0");
+void func_00179400_x00179310(u8 *, s32, s32 *) __asm__("func_00179400");
+void func_00179860_x00179310(u8 *, s32, s32 *) __asm__("func_00179860");
+void func_00179EA0_x00179310(u8 *, s32, s32 *, s32) __asm__("func_00179EA0");
+s32 func_00179310_x00179310(u8 *o, s32 a1, s32 a2, s32 *p3, u32 *p4) __asm__("func_00179310");
+s32 func_00179310_x00179310(u8 *o, s32 a1, s32 a2, s32 *p3, u32 *p4)
+{
+    u32 t;
+    s32 r;
+
+    *p3 = 0;
+    t = func_0017AAF0_x00179310(a1);
+    *p4 = t;
+    r = 0;
+    switch (t) {
+    case 0x10000:
+        r = 1;
+        func_00179400_x00179310(o + 0x14, a1, p3);
+        break;
+    case 0x20000:
+        r = 1;
+        func_00179860_x00179310(o + 0x20, a1, p3);
+        break;
+    case 0x40000:
+        func_00179EA0_x00179310(o + 0xA0, a1, p3, *(s32 *)(o + 0x10));
+        break;
+    }
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179400);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179860);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179EA0);

@@ -131,8 +131,34 @@ void func_0019F220(u8 *arg0) {
 void func_0019F238(u8 *arg0) {
     func_001726E8(*(s32 *)((u8 *)arg0 + 0x3C));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", SFX_MakeTblZ16);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", SFX_MakeTblZ32);
+typedef struct { s32 f0[9]; s32 f24; } SfxO3_x0019F250;
+extern char D_00467C88_x0019F250[] __asm__("D_00467C88");
+s32 func_001A0858_x0019F250(s32) __asm__("func_001A0858");
+void func_0019F6D0_x0019F250(SfxO3_x0019F250 *, s32, char *) __asm__("func_0019F6D0");
+void func_0019F0D0_x0019F250(SfxO3_x0019F250 *, s32) __asm__("func_0019F0D0");
+void SFX_MakeTblZ16_x0019F250(SfxO3_x0019F250 *o, s32 a1) __asm__("SFX_MakeTblZ16");
+void SFX_MakeTblZ16_x0019F250(SfxO3_x0019F250 *o, s32 a1)
+{
+    if (func_001A0858_x0019F250(o->f24) != 1) {
+        func_0019F6D0_x0019F250(o, a1, D_00467C88_x0019F250);
+        return;
+    }
+    func_0019F0D0_x0019F250(o, a1);
+}
+typedef struct { s32 f0[9]; s32 f24; } SfxO3_x0019F2B8;
+extern char D_00467CB8_x0019F2B8[] __asm__("D_00467CB8");
+s32 func_001A0858_x0019F2B8(s32) __asm__("func_001A0858");
+void func_0019F6D0_x0019F2B8(SfxO3_x0019F2B8 *, s32, char *) __asm__("func_0019F6D0");
+void func_0019F0F0_x0019F2B8(SfxO3_x0019F2B8 *, s32) __asm__("func_0019F0F0");
+void SFX_MakeTblZ32_x0019F2B8(SfxO3_x0019F2B8 *o, s32 a1) __asm__("SFX_MakeTblZ32");
+void SFX_MakeTblZ32_x0019F2B8(SfxO3_x0019F2B8 *o, s32 a1)
+{
+    if (func_001A0858_x0019F2B8(o->f24) != 1) {
+        func_0019F6D0_x0019F2B8(o, a1, D_00467CB8_x0019F2B8);
+        return;
+    }
+    func_0019F0F0_x0019F2B8(o, a1);
+}
 s32 func_0019F320(void) {
     return 0x11;
 }

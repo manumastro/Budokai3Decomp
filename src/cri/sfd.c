@@ -6015,7 +6015,25 @@ Sint32_x0018A848 func_0018A848_x0018A848(SFBUF_SUP_x0018A848 *sup)
         return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A890);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A900);
+typedef struct { s32 w[6]; } SfdW6_x0018A900_;
+void func_0018D908_x0018A900_(void *) __asm__("func_0018D908");
+void func_0018D920_x0018A900_(void *) __asm__("func_0018D920");
+void func_0018A9A0_x0018A900_(u8 *) __asm__("func_0018A9A0");
+void func_00198450_x0018A900_(u8 *) __asm__("func_00198450");
+void func_0018A900_x0018A900_(u8 *o, SfdW6_x0018A900_ *src, s32 *p2, s32 v) __asm__("func_0018A900");
+void func_0018A900_x0018A900_(u8 *o, SfdW6_x0018A900_ *src, s32 *p2, s32 v)
+{
+    s32 lk[4];
+
+    func_0018D908_x0018A900_(lk);
+    p2[1] = v;
+    *(SfdW6_x0018A900_ *)o = *src;
+    func_0018A9A0_x0018A900_(o + 0x18);
+    *(s32 *)(o + 0x20) = 0;
+    *(s32 *)(o + 0x24) = 0;
+    func_00198450_x0018A900_(o + 0x28);
+    func_0018D920_x0018A900_(lk);
+}
 void func_0018A9A0_x0018A9A0(u8 *arg0) __asm__("func_0018A9A0");
 void func_0018A9A0_x0018A9A0(u8 *arg0)
 {
