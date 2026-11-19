@@ -229,13 +229,64 @@ void func_00170B88(void) {
 void func_00170B90(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00170B98);
+typedef struct CftImage_x00170B98 {
+    int f0;
+    int *base;
+    int stride;
+    int f12;
+    int height;
+    int width;
+} CftImage_x00170B98;
+void func_00170B98_x00170B98(unsigned char **src, CftImage_x00170B98 *img, int *table) __asm__("func_00170B98");
+/* CFT_Argb8888mbToZ32: from https://github.com/crashbashash/DW4_Decomp (src/cri/cft.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00170B98_x00170B98(unsigned char **src, CftImage_x00170B98 *img, int *table)
+{
+    int rows = img->height / 16;
+    int cols = img->width / 16;
+    unsigned char *s = *src;
+    int *column = img->base;
+    int y, x;
+    int *o;
+    for (y = 0; y < rows; y++) {
+        o = column;
+        s += cols * 1024;
+        for (x = 0; x < cols; x++) {
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+            (o)[0] = (table)[(s)[0]]; (o)[1] = (table)[(s)[4]]; (o)[2] = (table)[(s)[8]]; (o)[3] = (table)[(s)[12]]; (o)[4] = (table)[(s)[16]]; (o)[5] = (table)[(s)[20]]; (o)[6] = (table)[(s)[24]]; (o)[7] = (table)[(s)[28]]; (o)[8] = (table)[(s)[32]]; (o)[9] = (table)[(s)[36]]; (o)[10] = (table)[(s)[40]]; (o)[11] = (table)[(s)[44]]; (o)[12] = (table)[(s)[48]]; (o)[13] = (table)[(s)[52]]; (o)[14] = (table)[(s)[56]]; (o)[15] = (table)[(s)[60]]; (s) += 64; (o) += img->stride;
+        }
+        column += 16;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172110);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001723E0);
 void func_001726E8(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001726F0);
+typedef struct CftGifPacket_x001726F0 {
+    int w[0x600];
+} CftGifPacket_x001726F0;
+extern CftGifPacket_x001726F0 DAT_004bb3f8_x001726F0 __asm__("D_004233C8");
+void func_001726F0_x001726F0(void *dstp) __asm__("func_001726F0");
+/* CFT_MakeArgb8888ColAdjTbl: from https://github.com/crashbashash/DW4_Decomp (src/cri/cft.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001726F0_x001726F0(void *dstp)
+{
+    CftGifPacket_x001726F0 *dst = dstp;
+    *dst = DAT_004bb3f8_x001726F0;
+}
 void func_001727A8_x001727A8(u8 *arg0) __asm__("func_001727A8");
 void func_001727A8_x001727A8(u8 *arg0)
 {
@@ -301,8 +352,76 @@ void func_001727A8_x001727A8(u8 *arg0)
         while (rows != 0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172858);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172968);
+typedef struct CftPlane_x00172858 {
+    unsigned char *base;
+    int height;
+    int width;
+} CftPlane_x00172858;
+typedef struct CftArgbBuf_x00172858 {
+    unsigned char *base;
+    int f4;
+    int f8;
+    int stride;
+} CftArgbBuf_x00172858;
+void func_00172858_x00172858(CftPlane_x00172858 *plane, CftArgbBuf_x00172858 *dest, unsigned char *table) __asm__("func_00172858");
+/* FUN_00284f30: from https://github.com/crashbashash/DW4_Decomp (src/cri/cft.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00172858_x00172858(CftPlane_x00172858 *plane, CftArgbBuf_x00172858 *dest, unsigned char *table)
+{
+    int rows = plane->height / 16;
+    int cols = plane->width / 32;
+    unsigned char *s = plane->base + cols * 384;
+    int stride = dest->stride;
+    unsigned char *d;
+    int y, x, r, c;
+    for (y = 0; y < rows; y++) {
+        s = plane->base + cols * y * 768 + cols * 384;
+        for (x = 0; x < cols; x++) {
+            d = dest->base + y * 64 + x * stride * 16 + 3;
+            for (r = 0; r < 16; r++) {
+                for (c = 0; c < 16; c++) {
+                    *d = table[*s];
+                    s++;
+                    d += 4;
+                }
+                d += stride - 64;
+            }
+            s += 128;
+        }
+    }
+}
+typedef struct CftPlane_x00172968 {
+    unsigned char *base;
+    int height;
+    int width;
+} CftPlane_x00172968;
+typedef struct CftArgbBuf_x00172968 {
+    unsigned char *base;
+    int f4;
+    int f8;
+    int stride;
+} CftArgbBuf_x00172968;
+void func_00172968_x00172968(CftPlane_x00172968 *plane, CftArgbBuf_x00172968 *dest, unsigned char *table) __asm__("func_00172968");
+/* FUN_00285040: from https://github.com/crashbashash/DW4_Decomp (src/cri/cft.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00172968_x00172968(CftPlane_x00172968 *plane, CftArgbBuf_x00172968 *dest, unsigned char *table)
+{
+    int rows = plane->height / 16;
+    int cols = plane->width / 32;
+    unsigned char *s = plane->base + cols * 384;
+    unsigned char *d = dest->base + 3;
+    int y, x, i;
+    for (y = 0; y < rows; y++) {
+        s = plane->base + cols * y * 768 + cols * 384;
+        d = dest->base + cols * y * 1024 + 3;
+        for (x = 0; x < cols; x++) {
+            for (i = 0; i < 256; i++) {
+                *d = table[*s];
+                s++;
+                d += 4;
+            }
+            s += 128;
+        }
+    }
+}
 typedef signed int Sint32_x00172A40;
 typedef signed long long Sint64_x00172A40;
 typedef Sint32_x00172A40 Bool_x00172A40;
@@ -503,7 +622,259 @@ INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172F80);
 void func_00173038(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173040);
+struct SfdSj_x00173040;
+typedef struct M2vErrInf_x00173040 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x00173040;
+typedef struct Mpeg2Ext_x00173040 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x00173040;
+typedef enum M2vFrameRate_x00173040 {
+    M2V_FRAME_RATE_FORBIDDEN_x00173040 = 0
+} M2vFrameRate_x00173040;
+typedef enum M2vPicType_x00173040 {
+    M2V_PICTYPE_I_x00173040 = 1,
+    M2V_PICTYPE_P_x00173040 = 2,
+    M2V_PICTYPE_B_x00173040 = 3,
+    M2V_PICTYPE_D_x00173040 = 4
+} M2vPicType_x00173040;
+typedef enum M2vPicStruct_x00173040 {
+    M2V_PICSTRUCT_TOP_FIELD_x00173040 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x00173040 = 2,
+    M2V_PICSTRUCT_FRAME_x00173040 = 3
+} M2vPicStruct_x00173040;
+typedef enum M2vPicAtrF64_x00173040 {
+    M2V_PICATR_F64_0_x00173040 = 0
+} M2vPicAtrF64_x00173040;
+typedef struct M2vPicAtr_x00173040 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x00173040 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x00173040 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x00173040 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x00173040 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x00173040;
+typedef void (*M2vUsrDatFn_x00173040)(void *obj, int level);
+typedef struct M2vUsrSj_x00173040 {
+    struct SfdSj_x00173040 *sj;
+    M2vUsrDatFn_x00173040 fn;
+    void *obj;
+} M2vUsrSj_x00173040;
+typedef struct M2vPicUsr_x00173040 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x00173040;
+typedef void (*M2vCondFn_x00173040)();
+typedef struct M2vObj_x00173040 {
+    int stat;
+    M2vErrInf_x00173040 err;
+    M2vCondFn_x00173040 cond[16];
+    M2vPicAtr_x00173040 picatr;
+    char pad216[64];
+    M2vUsrSj_x00173040 usrsj[4];
+    M2vPicUsr_x00173040 picusr;
+    char pad340[12];
+    Mpeg2Ext_x00173040 ext;
+    char pad1656[8];
+} M2vObj_x00173040;
+int M2VLIB_CheckHn_x00173040(M2vObj_x00173040 *hn) __asm__("func_00178B80");
+extern void M2V_SetErrFunc_x00173040(M2vObj_x00173040 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+int M2VERR_SetCode_x00173040(M2vObj_x00173040 *hn, int code) __asm__("func_00172EF8");
+void func_00173040_x00173040(M2vObj_x00173040 *hn, M2vPicAtr_x00173040 *picatr) __asm__("func_00173040");
+/* M2V_GetPicAtr: from https://github.com/crashbashash/DW4_Decomp (src/cri/m2vget.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00173040_x00173040(M2vObj_x00173040 *hn, M2vPicAtr_x00173040 *picatr)
+{
+    if (M2VLIB_CheckHn_x00173040(hn) != 0) {
+        M2VERR_SetCode_x00173040(0, 0xFF03020C);
+        return;
+    }
+    *picatr = hn->picatr;
+}
 s32 func_00172EF8_x00173140(s32, s32) __asm__("func_00172EF8");
 s32 func_00178B80_x00173140() __asm__("func_00178B80");
 void func_00173140_x00173140(s32 arg0, s32 *arg1) __asm__("func_00173140");
@@ -955,8 +1326,57 @@ void func_00178440_x00178440(void) {
 s32 *func_001785E8(void) {
     return &D_00465288;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001785F8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001786A8);
+int MPV_CheckDelim_x001785F8(const unsigned char *p) __asm__("func_0017B420");
+char *MPV_SearchDelim_x001785F8(char *buf, int len, int mask) __asm__("func_0017B5B8");
+int func_001785F8_x001785F8(char *buf, int size) __asm__("func_001785F8");
+/* M2V_IsConformable: from https://github.com/crashbashash/DW4_Decomp (src/cri/m2vlib.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_001785F8_x001785F8(char *buf, int size)
+{
+    char *p;
+    p = MPV_SearchDelim_x001785F8(buf, size, 64);
+    if (p == 0) {
+        return 0;
+    }
+    p += 4;
+    size -= p - buf;
+    if (size <= 0) {
+        return 0;
+    }
+    buf = p;
+    p = MPV_SearchDelim_x001785F8(buf, size, -1);
+    if (p == 0) {
+        return 0;
+    }
+    if ((MPV_CheckDelim_x001785F8(p) & 0x10) == 0) {
+        return 0;
+    }
+    p += 4;
+    size -= p - buf;
+    if (size <= 0) {
+        return 0;
+    }
+    return (*(unsigned char *)p >> 4) == 1;
+}
+void M2VERR_Init_x001786A8(void) __asm__("func_00172DD0");
+void M2VHDEC_Init_x001786A8(void) __asm__("func_001732A8");
+extern char M2VLIB_version_str_x001786A8[] __asm__("D_00465288");
+extern char *volatile m2vlib_version_ptr_x001786A8 __asm__("D_00481488");
+extern unsigned char m2vlib_endian_mark_x001786A8[4] __asm__("D_00465324");
+void m2vlib_InitObjTbl_x001786A8(void) __asm__("func_00178738");
+void m2vlib_InitWork_x001786A8(int nobj, char *work, unsigned int size) __asm__("func_00178780");
+void m2vlib_InitObjTbl_x001786A8(void) __asm__("func_00178738");
+void m2vlib_InitWork_x001786A8(int nobj, char *work, unsigned int size) __asm__("func_00178780");
+void func_001786A8_x001786A8(int nobj, char *work, unsigned int size) __asm__("func_001786A8");
+/* M2V_Init: from https://github.com/crashbashash/DW4_Decomp (src/cri/m2vlib.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001786A8_x001786A8(int nobj, char *work, unsigned int size)
+{
+    do { if (m2vlib_endian_mark_x001786A8[0] != 4) { for (;;) { ((void (*)(void))-1)(); } } } while (0);
+    m2vlib_version_ptr_x001786A8 = M2VLIB_version_str_x001786A8;
+    M2VERR_Init_x001786A8();
+    M2VHDEC_Init_x001786A8();
+    m2vlib_InitWork_x001786A8(nobj, work, size);
+    m2vlib_InitObjTbl_x001786A8();
+}
 extern s32 D_00481490_x00178738 __asm__("D_00481490");
 void func_00178738_x00178738(void) __asm__("func_00178738");
 void func_00178738_x00178738(void) {
@@ -980,8 +1400,391 @@ void func_00178738_x00178738(void) {
     while (var_v0 != 0);
   }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178780);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178820);
+struct SfdSj_x00178780;
+typedef struct M2vErrInf_x00178780 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x00178780;
+typedef struct Mpeg2Ext_x00178780 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x00178780;
+typedef enum M2vFrameRate_x00178780 {
+    M2V_FRAME_RATE_FORBIDDEN_x00178780 = 0
+} M2vFrameRate_x00178780;
+typedef enum M2vPicType_x00178780 {
+    M2V_PICTYPE_I_x00178780 = 1,
+    M2V_PICTYPE_P_x00178780 = 2,
+    M2V_PICTYPE_B_x00178780 = 3,
+    M2V_PICTYPE_D_x00178780 = 4
+} M2vPicType_x00178780;
+typedef enum M2vPicStruct_x00178780 {
+    M2V_PICSTRUCT_TOP_FIELD_x00178780 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x00178780 = 2,
+    M2V_PICSTRUCT_FRAME_x00178780 = 3
+} M2vPicStruct_x00178780;
+typedef enum M2vPicAtrF64_x00178780 {
+    M2V_PICATR_F64_0_x00178780 = 0
+} M2vPicAtrF64_x00178780;
+typedef struct M2vPicAtr_x00178780 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x00178780 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x00178780 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x00178780 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x00178780 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x00178780;
+typedef void (*M2vUsrDatFn_x00178780)(void *obj, int level);
+typedef struct M2vUsrSj_x00178780 {
+    struct SfdSj_x00178780 *sj;
+    M2vUsrDatFn_x00178780 fn;
+    void *obj;
+} M2vUsrSj_x00178780;
+typedef struct M2vPicUsr_x00178780 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x00178780;
+typedef void (*M2vCondFn_x00178780)();
+typedef struct M2vObj_x00178780 {
+    int stat;
+    M2vErrInf_x00178780 err;
+    M2vCondFn_x00178780 cond[16];
+    M2vPicAtr_x00178780 picatr;
+    char pad216[64];
+    M2vUsrSj_x00178780 usrsj[4];
+    M2vPicUsr_x00178780 picusr;
+    char pad340[12];
+    Mpeg2Ext_x00178780 ext;
+    char pad1656[8];
+} M2vObj_x00178780;
+typedef struct M2vLibWork_x00178780 {
+    M2vCondFn_x00178780 cond[16];
+    int nobj;
+    M2vObj_x00178780 *obj;
+} M2vLibWork_x00178780;
+extern void M2V_SetErrFunc_x00178780(M2vObj_x00178780 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef unsigned int size_t_x00178780;
+void *memset_x00178780(void *, int, size_t_x00178780) __asm__("memset");
+typedef struct SfdSj_x00178780 SfdSj_x00178780;
+typedef struct SfdSjChunk_x00178780 {
+    char *data;
+    int len;
+} SfdSjChunk_x00178780;
+typedef struct SfdSjVtbl_x00178780 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x00178780 *sj);
+    int (*getUuid)(SfdSj_x00178780 *sj);
+    void (*reset)(SfdSj_x00178780 *sj);
+    void (*getChunk)(SfdSj_x00178780 *sj, int id, int n, SfdSjChunk_x00178780 *ck);
+    void (*ungetChunk)(SfdSj_x00178780 *sj, int id, SfdSjChunk_x00178780 *ck);
+    void (*putChunk)(SfdSj_x00178780 *sj, int id, SfdSjChunk_x00178780 *ck);
+    int (*getNumData)(SfdSj_x00178780 *sj, int id);
+} SfdSjVtbl_x00178780;
+struct SfdSj_x00178780 {
+    SfdSjVtbl_x00178780 *vtbl;
+};
+extern void mpvhook_SetErrFunc_x00178780(M2vObj_x00178780 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+extern M2vLibWork_x00178780 m2vlib_libwork_x00178780 __asm__("D_00481490");
+void func_00178780_x00178780(int nobj, char *work, unsigned int size) __asm__("func_00178780");
+/* m2vlib_InitWork: from https://github.com/crashbashash/DW4_Decomp (src/cri/m2vlib.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00178780_x00178780(int nobj, char *work, unsigned int size)
+{
+    while (size < nobj * 0x700 + 64) {
+        nobj--;
+    }
+    work = (char *)(((int)work + 63) & ~63);
+    memset_x00178780(work, 0, nobj * 0x700);
+    m2vlib_libwork_x00178780.nobj = nobj;
+    m2vlib_libwork_x00178780.obj = (M2vObj_x00178780 *)work;
+}
+typedef enum M2vFrameRate_x00178820 {
+    M2V_FRAME_RATE_FORBIDDEN_x00178820 = 0
+} M2vFrameRate_x00178820;
+typedef enum M2vPicType_x00178820 {
+    M2V_PICTYPE_I_x00178820 = 1,
+    M2V_PICTYPE_P_x00178820 = 2,
+    M2V_PICTYPE_B_x00178820 = 3,
+    M2V_PICTYPE_D_x00178820 = 4
+} M2vPicType_x00178820;
+typedef enum M2vPicStruct_x00178820 {
+    M2V_PICSTRUCT_TOP_FIELD_x00178820 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x00178820 = 2,
+    M2V_PICSTRUCT_FRAME_x00178820 = 3
+} M2vPicStruct_x00178820;
+typedef enum M2vPicAtrF64_x00178820 {
+    M2V_PICATR_F64_0_x00178820 = 0
+} M2vPicAtrF64_x00178820;
+typedef struct M2vPicAtr_x00178820 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x00178820 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x00178820 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x00178820 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x00178820 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x00178820;
+void func_00178820_x00178820(M2vPicAtr_x00178820 *picatr) __asm__("func_00178820");
+/* m2vlib_InitPicAtr: from https://github.com/crashbashash/DW4_Decomp (src/cri/m2vlib.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00178820_x00178820(M2vPicAtr_x00178820 *picatr)
+{
+    picatr->horizontal_size = 0;
+    picatr->vertical_size = 0;
+    picatr->mb_width = 0;
+    picatr->mb_height = 0;
+    picatr->frame_rate_code = 0;
+    picatr->temporal_reference = 0;
+    picatr->picture_coding_type = 0;
+    picatr->drop_frame_flag = 0;
+    picatr->time_code_hours = 0;
+    picatr->time_code_minutes = 0;
+    picatr->time_code_seconds = 0;
+    picatr->time_code_pictures = 0;
+    picatr->gsc_count = 0;
+    picatr->shc_count = 0;
+    picatr->picture_structure = 3;
+    picatr->chroma_format = 1;
+    picatr->f64 = 0;
+    picatr->f68 = 1;
+    picatr->bit_rate = 0;
+    picatr->vbv_buffer_size = 0;
+    picatr->display_horizontal_size = -1;
+    picatr->display_vertical_size = -1;
+    picatr->field_count = 0;
+    picatr->progressive_frame = 1;
+    picatr->top_field_first = 0;
+    picatr->repeat_first_field = 0;
+    picatr->field_964 = 0;
+    picatr->aspect_ratio_information = 1;
+    picatr->constrained_parameters_flag = 0;
+    picatr->frame_rate_extension_n = 0;
+    picatr->frame_rate_extension_d = 0;
+    picatr->profile_and_level_indication = 255;
+    picatr->progressive_sequence = 0;
+    picatr->low_delay = 255;
+    picatr->video_format = 255;
+    picatr->colour_description = 0;
+    picatr->colour_primaries = 255;
+    picatr->transfer_characteristics = 255;
+    picatr->matrix_coefficients = 255;
+}
 void func_001788D0(void) {
 
 }
@@ -1099,9 +1902,58 @@ void func_00178C68_x00178C68(char *d, signed char *s, unsigned int n) {
         d += 0x10;
     } while (--n != 0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178E38);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178F48);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179018);
+void func_00178E38_x00178E38(void *dst, void *src, unsigned int n) __asm__("func_00178E38");
+/* UTY_MemcpyDword: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpsutl.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00178E38_x00178E38(void *dst, void *src, unsigned int n) {
+    int *to = dst;
+    int *from = src;
+    int i;
+    int a, b, c, d;
+    for (i = n & 15; i != 0; i--) {
+        *to++ = *from++;
+    }
+    for (n >>= 4; n != 0; n--) {
+        a = *from++; b = *from++; c = *from++; d = *from++;
+        to[0] = a; to[1] = b; to[2] = c; to[3] = d;
+        a = *from++; b = *from++; c = *from++; d = *from++;
+        to[4] = a; to[5] = b; to[6] = c; to[7] = d;
+        a = *from++; b = *from++; c = *from++; d = *from++;
+        to[8] = a; to[9] = b; to[10] = c; to[11] = d;
+        a = *from++; b = *from++; c = *from++; d = *from++;
+        to[12] = a; to[13] = b; to[14] = c; to[15] = d;
+        to += 16;
+    }
+}
+void func_00178F48_x00178F48(void *dst, char value, unsigned int count) __asm__("func_00178F48");
+/* UTY_MemsetByte: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpsutl.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00178F48_x00178F48(void *dst, char value, unsigned int count) {
+    char *p = (char *)dst + count;
+    unsigned int n;
+    for (n = count & 15; n != 0; n--) {
+        *--p = value;
+    }
+    for (count >>= 4; count != 0; count--) {
+        *--p = value; *--p = value; *--p = value; *--p = value;
+        *--p = value; *--p = value; *--p = value; *--p = value;
+        *--p = value; *--p = value; *--p = value; *--p = value;
+        *--p = value; *--p = value; *--p = value; *--p = value;
+    }
+}
+void func_00179018_x00179018(void *dst, int value, unsigned int count) __asm__("func_00179018");
+/* UTY_MemsetDword: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpsutl.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00179018_x00179018(void *dst, int value, unsigned int count) {
+    int *p = (int *)dst + count;
+    unsigned int n;
+    for (n = count & 15; n != 0; n--) {
+        *--p = value;
+    }
+    for (count >>= 4; count != 0; count--) {
+        *--p = value; *--p = value; *--p = value; *--p = value;
+        *--p = value; *--p = value; *--p = value; *--p = value;
+        *--p = value; *--p = value; *--p = value; *--p = value;
+        *--p = value; *--p = value; *--p = value; *--p = value;
+    }
+}
 void func_001790E0(void) {
 
 }

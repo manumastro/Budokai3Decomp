@@ -242,7 +242,16 @@ u32_x00114440 *func_00114440_x00114440(u32_x00114440 *addr, u32_x00114440 *end, 
     return (addr < end) ? addr : 0;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114480);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114490);
+extern int *_SyscallEntry_x00114490 __asm__("D_003ECD38");
+int Copy_x00114490(void *dst, void *src, int size) __asm__("func_001143F8");
+void *func_00114490_x00114490(int number) __asm__("func_00114490");
+/* GetSystemCallEntry: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/initsys.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+void *func_00114490_x00114490(int number)
+{
+    void *entry;
+    Copy_x00114490(&entry, _SyscallEntry_x00114490 + number, 4);
+    return entry;
+}
 s32 func_00114480_x001144C8(s32, s32, s32 *) __asm__("func_00114480");
 s32 func_001145C8_x001144C8(s32, s32) __asm__("func_001145C8");
 extern u32 D_003ECD38_x001144C8 __asm__("D_003ECD38");
@@ -406,7 +415,41 @@ s32 func_001147C0(u8 *arg0, u8 *arg1, u32 arg2) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001147F0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114800);
+typedef struct {
+    int number;
+    void *handler;
+} SyscallEntry_x00114800;
+extern char *_kExecArg_x00114800 __asm__("D_003ECA60");
+typedef unsigned int size_t_x00114800;
+size_t_x00114800 strlen_x00114800(const char *) __asm__("func_00127BA0");
+extern SyscallEntry_x00114800 SysEntry_exit_x00114800 __asm__("D_003ED518");
+int Copy_x00114800(void *dst, const void *src, int size) __asm__("func_001147B0");
+void setup_x00114800(int number, void *handler) __asm__("func_001147F0");
+char *func_00114800_x00114800(const char *filename, int argc, char **argv) __asm__("func_00114800");
+/* SetArg: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/exit.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+char *func_00114800_x00114800(const char *filename, int argc, char **argv)
+{
+    char **slot = (char **)_kExecArg_x00114800;
+    char *data = (char *)(slot + 16);
+    char *strings = data;
+    int length;
+    int i;
+    setup_x00114800(SysEntry_exit_x00114800.number, SysEntry_exit_x00114800.handler);
+    if (argc > (16 - 1)) argc = (16 - 1);
+    Copy_x00114800(slot, &data, 4);
+    slot++;
+    length = strlen_x00114800(filename) + 1;
+    Copy_x00114800(data, filename, length);
+    data += length;
+    for (i = 0; i < argc; i++) {
+        Copy_x00114800(slot, &data, 4);
+        slot++;
+        length = strlen_x00114800(argv[i]) + 1;
+        Copy_x00114800(data, argv[i], length);
+        data += length;
+    }
+    return strings;
+}
 void func_00114918(void) {
     func_00113D78();
 }

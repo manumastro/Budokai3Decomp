@@ -15425,7 +15425,195 @@ s32 func_001865D8_x001865D8(s32 *arg0, s32 *arg1, s32 *arg2)
 void func_00186610(void) {
     func_00186628();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186628);
+typedef struct SfdSj_x00186628 SfdSj_x00186628;
+typedef struct SfdSjChunk_x00186628 {
+    char *data;
+    int len;
+} SfdSjChunk_x00186628;
+typedef struct SfdSjVtbl_x00186628 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x00186628 *sj);
+    int (*getUuid)(SfdSj_x00186628 *sj);
+    void (*reset)(SfdSj_x00186628 *sj);
+    void (*getChunk)(SfdSj_x00186628 *sj, int id, int n, SfdSjChunk_x00186628 *ck);
+    void (*ungetChunk)(SfdSj_x00186628 *sj, int id, SfdSjChunk_x00186628 *ck);
+    void (*putChunk)(SfdSj_x00186628 *sj, int id, SfdSjChunk_x00186628 *ck);
+    int (*getNumData)(SfdSj_x00186628 *sj, int id);
+} SfdSjVtbl_x00186628;
+struct SfdSj_x00186628 {
+    SfdSjVtbl_x00186628 *vtbl;
+};
+typedef struct MwsfdPly_x00186628 MwsfdPly_x00186628;
+typedef struct MwsfdPlyVtbl_x00186628 {
+    void *reserved0[3];
+    void (*vsyncProc)(void);
+    int (*execSvrHndl)(MwsfdPly_x00186628 *ply);
+    void (*destroy)(MwsfdPly_x00186628 *ply);
+    void (*startFname)(MwsfdPly_x00186628 *ply, char *fname);
+    void (*stop)(MwsfdPly_x00186628 *ply);
+    int (*getStat)(MwsfdPly_x00186628 *ply);
+    void (*getTime)(MwsfdPly_x00186628 *ply, int *count, int *unit);
+    void (*pause)(MwsfdPly_x00186628 *ply, int sw);
+    void (*setOutVol)(MwsfdPly_x00186628 *ply, int vol);
+    int (*getOutVol)(MwsfdPly_x00186628 *ply);
+    void (*setOutPan)(MwsfdPly_x00186628 *ply, int channel, int pan);
+    int (*getOutPan)(MwsfdPly_x00186628 *ply, int channel);
+    void (*setSj)(MwsfdPly_x00186628 *ply, SfdSj_x00186628 *sj);
+    void (*startMem)(MwsfdPly_x00186628 *ply, char *buf, int size);
+} MwsfdPlyVtbl_x00186628;
+typedef struct MwsfdCreInf_x00186628 {
+    int type;
+    int maxBps;
+    int maxWidth;
+    int maxHeight;
+    int nfrmPoolWk;
+    int nfrm;
+    char *work;
+    int workSize;
+    int addInfMode;
+    int bufFmt;
+    int f40;
+    int f44;
+} MwsfdCreInf_x00186628;
+typedef struct MwsfdMemPool_x00186628 {
+    char *base;
+    int size;
+    char *cur;
+    int used;
+} MwsfdMemPool_x00186628;
+typedef enum MwsfdChromaPos_x00186628 {
+    MWSFD_CHROMA_POS_0_x00186628,
+    MWSFD_CHROMA_POS_1_x00186628
+} MwsfdChromaPos_x00186628;
+typedef struct MwsfdPicInf_x00186628 {
+    unsigned int pictureStructure;
+    unsigned int chromaFormat;
+    int f8;
+    int f12;
+    int f16;
+    MwsfdChromaPos_x00186628 chromaPosH;
+    MwsfdChromaPos_x00186628 chromaPosV;
+    int f28;
+} MwsfdPicInf_x00186628;
+typedef struct MwsfdPicLog_x00186628 {
+    int valid;
+    int picNo;
+    int itemTypeThree;
+    int hdrInfo;
+    int compoMode;
+} MwsfdPicLog_x00186628;
+typedef struct MwsfdPicUsrBuf_x00186628 {
+    char *addr;
+    int size;
+    int unit;
+} MwsfdPicUsrBuf_x00186628;
+typedef struct MwsfdUsrBuf_x00186628 {
+    char *buf;
+    int size;
+    int f8;
+} MwsfdUsrBuf_x00186628;
+typedef struct MwsfdAddInf_x00186628 {
+    int valid;
+    char *addr;
+    int size;
+} MwsfdAddInf_x00186628;
+typedef struct MwsfdSst_x00186628 {
+    int created;
+    char *work;
+    int workSize;
+    SfdSj_x00186628 *sj;
+    int stmNo;
+    int extHn;
+} MwsfdSst_x00186628;
+struct MwsfdPly_x00186628 {
+    MwsfdPlyVtbl_x00186628 *vtbl;
+    int used;
+    int stat;
+    MwsfdCreInf_x00186628 cre;
+    int f60;
+    void *sfd;
+    void *stm;
+    void *adxt;
+    struct LscObj_x00186628 *lsc;
+    int compoSet;
+    int compoMode;
+    int frmSync;
+    int f92;
+    int waitingSvr;
+    int svrBusy;
+    int inSfdExec;
+    int execFlg;
+    int f112;
+    signed char linkReq;
+    signed char linkPrev;
+    signed char pause;
+    char pad119;
+    int nEntry;
+    void *curFrm;
+    int limit;
+    int count;
+    int numSkipDisp;
+    MwsfdPicInf_x00186628 pic;
+    void *sfx;
+    char *sfxWork;
+    int sfxWorkSize;
+    int picCount;
+    int logPos;
+    int logWrite;
+    MwsfdPicLog_x00186628 log[8];
+    MwsfdPicUsrBuf_x00186628 sysPicUsrBuf;
+    MwsfdPicUsrBuf_x00186628 attPicUsrBuf;
+    MwsfdPicUsrBuf_x00186628 *picUsrBuf;
+    char *udbuf;
+    int udbufsize;
+    char *ud;
+    int udsize;
+    SfdSj_x00186628 *addInfSj;
+    char *addInfBase;
+    int addInfSize;
+    MwsfdUsrBuf_x00186628 usrBuf;
+    MwsfdAddInf_x00186628 addInf;
+    char pad436[4];
+    char *fname;
+    int fnameMax;
+    int stmReq;
+    void *stmDir;
+    int stmOfst;
+    int stmNsct;
+    SfdSj_x00186628 *sj;
+    SfdSj_x00186628 *defSj;
+    char *inputBuf;
+    int inputBufSize;
+    int inputXSize;
+    int srcType;
+    unsigned int srcBuf;
+    int srcSize;
+    int srcXSize;
+    SfdSj_x00186628 *memSj;
+    char *memBuf;
+    int memSize;
+    MwsfdMemPool_x00186628 pool;
+    int mallocCnt;
+    void *mallocBlk[32];
+    MwsfdSst_x00186628 sst;
+    char pad684[8];
+    int f692;
+};
+struct LscObj_x00186628;
+void SFD_SetStmObject_x00186628(void *sfd, int stmId, SfdSj_x00186628 *sj, int a3, int t0) __asm__("func_0018DA30");
+void func_00186628_x00186628(MwsfdPly_x00186628 *ply, int stmNo) __asm__("func_00186628");
+/* mwsst_ChangeStm: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfsst.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00186628_x00186628(MwsfdPly_x00186628 *ply, int stmNo)
+{
+    MwsfdSst_x00186628 *sst = &ply->sst;
+    void *sfd = ply->sfd;
+    SfdSj_x00186628 *sj = sst->sj;
+    SFD_SetStmObject_x00186628(sfd, sst->stmNo + 0xC0, 0, 0, 0);
+    SFD_SetStmObject_x00186628(sfd, stmNo + 0xC0, sj, 0, 0);
+    sst->stmNo = stmNo;
+}
 s32 func_001866A8(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x2A0);
 }
@@ -15827,7 +16015,226 @@ Sint32_x00186AD0 func_00186AD0_x00186AD0(MWSST_x00186AD0 sst)
         return stat;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", MWSST_Create);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186C58);
+typedef struct SfdSj_x00186C58 SfdSj_x00186C58;
+typedef struct SfdSjChunk_x00186C58 {
+    char *data;
+    int len;
+} SfdSjChunk_x00186C58;
+typedef struct SfdSjVtbl_x00186C58 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x00186C58 *sj);
+    int (*getUuid)(SfdSj_x00186C58 *sj);
+    void (*reset)(SfdSj_x00186C58 *sj);
+    void (*getChunk)(SfdSj_x00186C58 *sj, int id, int n, SfdSjChunk_x00186C58 *ck);
+    void (*ungetChunk)(SfdSj_x00186C58 *sj, int id, SfdSjChunk_x00186C58 *ck);
+    void (*putChunk)(SfdSj_x00186C58 *sj, int id, SfdSjChunk_x00186C58 *ck);
+    int (*getNumData)(SfdSj_x00186C58 *sj, int id);
+} SfdSjVtbl_x00186C58;
+struct SfdSj_x00186C58 {
+    SfdSjVtbl_x00186C58 *vtbl;
+};
+typedef struct MwsfdPly_x00186C58 MwsfdPly_x00186C58;
+typedef struct MwsfdPlyVtbl_x00186C58 {
+    void *reserved0[3];
+    void (*vsyncProc)(void);
+    int (*execSvrHndl)(MwsfdPly_x00186C58 *ply);
+    void (*destroy)(MwsfdPly_x00186C58 *ply);
+    void (*startFname)(MwsfdPly_x00186C58 *ply, char *fname);
+    void (*stop)(MwsfdPly_x00186C58 *ply);
+    int (*getStat)(MwsfdPly_x00186C58 *ply);
+    void (*getTime)(MwsfdPly_x00186C58 *ply, int *count, int *unit);
+    void (*pause)(MwsfdPly_x00186C58 *ply, int sw);
+    void (*setOutVol)(MwsfdPly_x00186C58 *ply, int vol);
+    int (*getOutVol)(MwsfdPly_x00186C58 *ply);
+    void (*setOutPan)(MwsfdPly_x00186C58 *ply, int channel, int pan);
+    int (*getOutPan)(MwsfdPly_x00186C58 *ply, int channel);
+    void (*setSj)(MwsfdPly_x00186C58 *ply, SfdSj_x00186C58 *sj);
+    void (*startMem)(MwsfdPly_x00186C58 *ply, char *buf, int size);
+} MwsfdPlyVtbl_x00186C58;
+typedef struct MwsfdCreInf_x00186C58 {
+    int type;
+    int maxBps;
+    int maxWidth;
+    int maxHeight;
+    int nfrmPoolWk;
+    int nfrm;
+    char *work;
+    int workSize;
+    int addInfMode;
+    int bufFmt;
+    int f40;
+    int f44;
+} MwsfdCreInf_x00186C58;
+typedef struct MwsfdMemPool_x00186C58 {
+    char *base;
+    int size;
+    char *cur;
+    int used;
+} MwsfdMemPool_x00186C58;
+typedef enum MwsfdChromaPos_x00186C58 {
+    MWSFD_CHROMA_POS_0_x00186C58,
+    MWSFD_CHROMA_POS_1_x00186C58
+} MwsfdChromaPos_x00186C58;
+typedef struct MwsfdPicInf_x00186C58 {
+    unsigned int pictureStructure;
+    unsigned int chromaFormat;
+    int f8;
+    int f12;
+    int f16;
+    MwsfdChromaPos_x00186C58 chromaPosH;
+    MwsfdChromaPos_x00186C58 chromaPosV;
+    int f28;
+} MwsfdPicInf_x00186C58;
+typedef struct MwsfdPicLog_x00186C58 {
+    int valid;
+    int picNo;
+    int itemTypeThree;
+    int hdrInfo;
+    int compoMode;
+} MwsfdPicLog_x00186C58;
+typedef struct MwsfdPicUsrBuf_x00186C58 {
+    char *addr;
+    int size;
+    int unit;
+} MwsfdPicUsrBuf_x00186C58;
+typedef struct MwsfdUsrBuf_x00186C58 {
+    char *buf;
+    int size;
+    int f8;
+} MwsfdUsrBuf_x00186C58;
+typedef struct MwsfdAddInf_x00186C58 {
+    int valid;
+    char *addr;
+    int size;
+} MwsfdAddInf_x00186C58;
+typedef struct MwsfdSst_x00186C58 {
+    int created;
+    char *work;
+    int workSize;
+    SfdSj_x00186C58 *sj;
+    int stmNo;
+    int extHn;
+} MwsfdSst_x00186C58;
+struct MwsfdPly_x00186C58 {
+    MwsfdPlyVtbl_x00186C58 *vtbl;
+    int used;
+    int stat;
+    MwsfdCreInf_x00186C58 cre;
+    int f60;
+    void *sfd;
+    void *stm;
+    void *adxt;
+    struct LscObj_x00186C58 *lsc;
+    int compoSet;
+    int compoMode;
+    int frmSync;
+    int f92;
+    int waitingSvr;
+    int svrBusy;
+    int inSfdExec;
+    int execFlg;
+    int f112;
+    signed char linkReq;
+    signed char linkPrev;
+    signed char pause;
+    char pad119;
+    int nEntry;
+    void *curFrm;
+    int limit;
+    int count;
+    int numSkipDisp;
+    MwsfdPicInf_x00186C58 pic;
+    void *sfx;
+    char *sfxWork;
+    int sfxWorkSize;
+    int picCount;
+    int logPos;
+    int logWrite;
+    MwsfdPicLog_x00186C58 log[8];
+    MwsfdPicUsrBuf_x00186C58 sysPicUsrBuf;
+    MwsfdPicUsrBuf_x00186C58 attPicUsrBuf;
+    MwsfdPicUsrBuf_x00186C58 *picUsrBuf;
+    char *udbuf;
+    int udbufsize;
+    char *ud;
+    int udsize;
+    SfdSj_x00186C58 *addInfSj;
+    char *addInfBase;
+    int addInfSize;
+    MwsfdUsrBuf_x00186C58 usrBuf;
+    MwsfdAddInf_x00186C58 addInf;
+    char pad436[4];
+    char *fname;
+    int fnameMax;
+    int stmReq;
+    void *stmDir;
+    int stmOfst;
+    int stmNsct;
+    SfdSj_x00186C58 *sj;
+    SfdSj_x00186C58 *defSj;
+    char *inputBuf;
+    int inputBufSize;
+    int inputXSize;
+    int srcType;
+    unsigned int srcBuf;
+    int srcSize;
+    int srcXSize;
+    SfdSj_x00186C58 *memSj;
+    char *memBuf;
+    int memSize;
+    MwsfdMemPool_x00186C58 pool;
+    int mallocCnt;
+    void *mallocBlk[32];
+    MwsfdSst_x00186C58 sst;
+    char pad684[8];
+    int f692;
+};
+struct LscObj_x00186C58;
+void mwsst_Stop_x00186C58(MwsfdSst_x00186C58 *sst) __asm__("func_001868E0");
+typedef struct MwsfdInputCbTbl_x00186C58 {
+    void (*init)(void);
+    void (*finish)(void);
+    int (*calcWork)(int *size0, int *size1, int *size2);
+    int (*create)(char *work, int size);
+    void (*destroy)(int hn);
+    void (*start)(int hn, SfdSj_x00186C58 *sj);
+    void (*stop)(int hn);
+    int (*getStat)(int hn);
+    void (*func32)(int hn, int a, int b);
+    void (*pause)(int hn, int sw);
+    void (*func40)(int hn, int arg);
+    int (*func44)(int hn);
+} MwsfdInputCbTbl_x00186C58;
+void SFD_SetStmObject_x00186C58(void *sfd, int stmId, SfdSj_x00186C58 *sj, int a3, int t0) __asm__("func_0018DA30");
+MwsfdInputCbTbl_x00186C58 *mwsst_GetCbTbl_x00186C58(void) __asm__("func_00186DB8");
+int mwsst_IsActive_x00186C58(MwsfdSst_x00186C58 *sst) __asm__("func_00186DD8");
+void mwsst_Stop_x00186C58(MwsfdSst_x00186C58 *sst) __asm__("func_001868E0");
+MwsfdInputCbTbl_x00186C58 *mwsst_GetCbTbl_x00186C58(void) __asm__("func_00186DB8");
+int mwsst_IsActive_x00186C58(MwsfdSst_x00186C58 *sst) __asm__("func_00186DD8");
+void func_00186C58_x00186C58(MwsfdPly_x00186C58 *ply) __asm__("func_00186C58");
+/* MWSST_Restart: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfsst.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00186C58_x00186C58(MwsfdPly_x00186C58 *ply)
+{
+    MwsfdSst_x00186C58 *sst = &ply->sst;
+    void *sfd = ply->sfd;
+    int hn;
+    SfdSj_x00186C58 *sj;
+    int stmNo;
+    mwsst_GetCbTbl_x00186C58();
+    hn = sst->extHn;
+    sj = sst->sj;
+    stmNo = sst->stmNo;
+    if (mwsst_IsActive_x00186C58(sst) != 1) {
+        return;
+    }
+    if (hn != 0) {
+        mwsst_Stop_x00186C58((MwsfdSst_x00186C58 *)hn);
+    }
+    sj->vtbl->reset(sj);
+    SFD_SetStmObject_x00186C58(sfd, stmNo + 0xC0, sj, 0, 0);
+}
 void func_00186D08(u8 *arg0) {
     s32 temp_s0;
     u8 **temp_s2;

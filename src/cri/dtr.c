@@ -7,11 +7,207 @@ s32 func_0016DAF0();                            /* extern */
 
 extern s32 D_00411614;
 
-INCLUDE_ASM("asm/nonmatchings/cri/dtr", DTR_ExecHndl);
+typedef struct SfdSj_x00165180 SfdSj_x00165180;
+typedef struct SfdSjChunk_x00165180 {
+    char *data;
+    int len;
+} SfdSjChunk_x00165180;
+typedef struct SfdSjVtbl_x00165180 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x00165180 *sj);
+    int (*getUuid)(SfdSj_x00165180 *sj);
+    void (*reset)(SfdSj_x00165180 *sj);
+    void (*getChunk)(SfdSj_x00165180 *sj, int id, int n, SfdSjChunk_x00165180 *ck);
+    void (*ungetChunk)(SfdSj_x00165180 *sj, int id, SfdSjChunk_x00165180 *ck);
+    void (*putChunk)(SfdSj_x00165180 *sj, int id, SfdSjChunk_x00165180 *ck);
+    int (*getNumData)(SfdSj_x00165180 *sj, int id);
+} SfdSjVtbl_x00165180;
+struct SfdSj_x00165180 {
+    SfdSjVtbl_x00165180 *vtbl;
+};
+void SJ_SplitChunk_x00165180(SfdSjChunk_x00165180 *ck, int nbyte, SfdSjChunk_x00165180 *head, SfdSjChunk_x00165180 *rest) __asm__("func_0016F050");
+typedef struct DtrObj_x00165180 DtrObj_x00165180;
+void ADXMSG_PrintErr_x00165180(const char *format, ...) __asm__("scePrintf");
+void SyncDCache_x00165180(void *start, void *end) __asm__("func_0010AB58");
+struct stat_x00165180;
+typedef struct {
+    unsigned int data;
+    unsigned int addr;
+    unsigned int size;
+    unsigned int mode;
+} sceSifDmaData_x00165180;
+unsigned int sceSifSetDma_x00165180(sceSifDmaData_x00165180 *sdd, int len) __asm__("sceSifSetDma");
+struct DtrObj_x00165180 {
+    signed char used;
+    signed char stat_x00165180;
+    signed char transfer;
+    char rsv;
+    SfdSj_x00165180 *sjs;
+    SfdSj_x00165180 *sjd;
+    SfdSjChunk_x00165180 cks;
+    SfdSjChunk_x00165180 ckd;
+    sceSifDmaData_x00165180 dma;
+    unsigned int dmaid;
+    int srclin;
+    int dstlin;
+    int unit;
+    int total;
+};
+extern char ext_str0_x00165180[] __asm__("D_004632D8");
+extern char ext_str1_x00165180[] __asm__("D_00463258");
+extern char ext_str2_x00165180[] __asm__("D_004632B0");
+extern char ext_str3_x00165180[] __asm__("D_00463258");
+extern char ext_str4_x00165180[] __asm__("D_00463288");
+extern char ext_str5_x00165180[] __asm__("D_00463258");
+extern char ext_str6_x00165180[] __asm__("D_00463230");
+extern char ext_str7_x00165180[] __asm__("D_00463210");
+void DTR_ExecHndl_x00165180(DtrObj_x00165180 *dtr) __asm__("DTR_ExecHndl");
+/* DTR_ExecHndl_x00165180: from https://github.com/crashbashash/DW4_Decomp (src/cri/dtr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void DTR_ExecHndl_x00165180(DtrObj_x00165180 *dtr)
+{
+    SfdSjChunk_x00165180 cks;
+    SfdSjChunk_x00165180 cks2;
+    SfdSjChunk_x00165180 ckd;
+    SfdSjChunk_x00165180 ckd2;
+    int n;
+    if (dtr->stat_x00165180 != 1) {
+        return;
+    }
+    if (dtr->transfer == 1) {
+        dtr->sjs->vtbl->putChunk(dtr->sjs, 0, &dtr->cks);
+        dtr->cks.data = 0;
+        dtr->cks.len = 0;
+        dtr->sjd->vtbl->putChunk(dtr->sjd, 1, &dtr->ckd);
+        dtr->ckd.data = 0;
+        dtr->ckd.len = 0;
+        dtr->total += dtr->cks.len;
+        dtr->transfer = 0;
+        if (dtr->cks.len != 0) {
+            ADXMSG_PrintErr_x00165180(ext_str7_x00165180);
+            for (;;) {
+            }
+        }
+    }
+    if (dtr->transfer != 0) {
+        return;
+    }
+    dtr->sjs->vtbl->getChunk(dtr->sjs, 1, 0x7fffffff, &cks);
+    dtr->sjd->vtbl->getChunk(dtr->sjd, 0, 0x7fffffff, &ckd);
+    n = cks.len < ckd.len ? cks.len : ckd.len;
+    n = n / dtr->unit * dtr->unit;
+    SJ_SplitChunk_x00165180(&cks, n, &cks, &cks2);
+    dtr->sjs->vtbl->ungetChunk(dtr->sjs, 1, &cks2);
+    SJ_SplitChunk_x00165180(&ckd, n, &ckd, &ckd2);
+    dtr->sjd->vtbl->ungetChunk(dtr->sjd, 0, &ckd2);
+    if (n <= 0) {
+        return;
+    }
+    if (cks.len & 63) {
+        ADXMSG_PrintErr_x00165180(ext_str6_x00165180);
+        ADXMSG_PrintErr_x00165180(ext_str5_x00165180, cks.data, ckd.data, cks.len);
+        for (;;) {
+        }
+    }
+    if ((int)cks.data & 63) {
+        ADXMSG_PrintErr_x00165180(ext_str4_x00165180);
+        ADXMSG_PrintErr_x00165180(ext_str3_x00165180, cks.data, ckd.data, cks.len);
+        for (;;) {
+        }
+    }
+    if ((int)ckd.data & 63) {
+        ADXMSG_PrintErr_x00165180(ext_str2_x00165180);
+        ADXMSG_PrintErr_x00165180(ext_str1_x00165180, cks.data, ckd.data, cks.len);
+        for (;;) {
+        }
+    }
+    SyncDCache_x00165180(cks.data, cks.data + cks.len - 1);
+    dtr->dma.data = (unsigned int)cks.data & 0x0fffffff;
+    dtr->dma.addr = (unsigned int)ckd.data;
+    dtr->dma.size = cks.len;
+    dtr->dma.mode = 0;
+    dtr->dmaid = sceSifSetDma_x00165180(&dtr->dma, 1);
+    if (dtr->dmaid == 0) {
+        ADXMSG_PrintErr_x00165180(ext_str0_x00165180);
+        dtr->sjs->vtbl->ungetChunk(dtr->sjs, 1, &cks);
+        dtr->sjd->vtbl->ungetChunk(dtr->sjd, 0, &ckd);
+        return;
+    }
+    dtr->cks = cks;
+    dtr->ckd = ckd;
+    dtr->transfer = 1;
+}
 s8 func_001654F0(u8 *arg0) {
     return *(s8 *)((u8 *)arg0 + 1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_001654F8);
+typedef struct SfdSj_x001654F8 SfdSj_x001654F8;
+typedef struct SfdSjChunk_x001654F8 {
+    char *data;
+    int len;
+} SfdSjChunk_x001654F8;
+typedef struct SfdSjVtbl_x001654F8 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x001654F8 *sj);
+    int (*getUuid)(SfdSj_x001654F8 *sj);
+    void (*reset)(SfdSj_x001654F8 *sj);
+    void (*getChunk)(SfdSj_x001654F8 *sj, int id, int n, SfdSjChunk_x001654F8 *ck);
+    void (*ungetChunk)(SfdSj_x001654F8 *sj, int id, SfdSjChunk_x001654F8 *ck);
+    void (*putChunk)(SfdSj_x001654F8 *sj, int id, SfdSjChunk_x001654F8 *ck);
+    int (*getNumData)(SfdSj_x001654F8 *sj, int id);
+} SfdSjVtbl_x001654F8;
+struct SfdSj_x001654F8 {
+    SfdSjVtbl_x001654F8 *vtbl;
+};
+typedef struct DtrObj_x001654F8 DtrObj_x001654F8;
+void DTX_ExecServer_x001654F8(void) __asm__("func_001660C0");
+struct stat_x001654F8;
+typedef struct {
+    unsigned int data;
+    unsigned int addr;
+    unsigned int size;
+    unsigned int mode;
+} sceSifDmaData_x001654F8;
+int sceSifDmaStat_x001654F8(unsigned int id) __asm__("sceSifDmaStat");
+struct DtrObj_x001654F8 {
+    signed char used;
+    signed char stat_x001654F8;
+    signed char transfer;
+    char rsv;
+    SfdSj_x001654F8 *sjs;
+    SfdSj_x001654F8 *sjd;
+    SfdSjChunk_x001654F8 cks;
+    SfdSjChunk_x001654F8 ckd;
+    sceSifDmaData_x001654F8 dma;
+    unsigned int dmaid;
+    int srclin;
+    int dstlin;
+    int unit;
+    int total;
+};
+extern DtrObj_x001654F8 dtr_obj_x001654F8[32] __asm__("D_00411618");
+void DTR_ExecHndl_x001654F8(DtrObj_x001654F8 *dtr) __asm__("DTR_ExecHndl");
+void func_001654F8_x001654F8(void) __asm__("func_001654F8");
+/* DTR_ExecServer: from https://github.com/crashbashash/DW4_Decomp (src/cri/dtr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001654F8_x001654F8(void)
+{
+    int i;
+    for (i = 0; i < 32; i++) {
+        if (dtr_obj_x001654F8[i].stat_x001654F8 == 1 && dtr_obj_x001654F8[i].transfer == 1) {
+            if (sceSifDmaStat_x001654F8(dtr_obj_x001654F8[i].dmaid) >= 0) {
+                return;
+            }
+        }
+    }
+    for (i = 0; i < 32; i++) {
+        if (dtr_obj_x001654F8[i].used == 1) {
+            DTR_ExecHndl_x001654F8(&dtr_obj_x001654F8[i]);
+        }
+    }
+    DTX_ExecServer_x001654F8();
+}
 s32 memset_x001655B8() __asm__("memset");
 s32 scePrintf_x001655B8() __asm__("scePrintf");
 extern s32 D_00411614_x001655B8 __asm__("D_00411614");

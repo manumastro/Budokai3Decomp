@@ -69,7 +69,58 @@ int func_001214F8_x001214F8(float arg_a)
                      (long long)((unsigned long long)a3_val >> 2));
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121538);
-INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121610);
+typedef unsigned int UDItype_x00121610 __attribute__((mode(DI)));
+typedef float DFtype_x00121610 __attribute__((mode(DF)));
+typedef enum { CLASS_SNAN_x00121610, CLASS_QNAN_x00121610, CLASS_ZERO_x00121610, CLASS_NUMBER_x00121610, CLASS_INFINITY_x00121610 } fp_class_type_x00121610;
+typedef UDItype_x00121610 fractype_x00121610;
+typedef DFtype_x00121610 FLO_type_x00121610;
+typedef struct {
+    fp_class_type_x00121610 class;
+    unsigned int sign;
+    int normal_exp;
+    union {
+        fractype_x00121610 ll;
+    } fraction;
+} fp_number_type_x00121610;
+typedef union {
+    FLO_type_x00121610 value;
+    struct {
+        fractype_x00121610 fraction : 52 __attribute__((packed));
+        unsigned int exp : 11 __attribute__((packed));
+        unsigned int sign : 1 __attribute__((packed));
+    } bits;
+} FLO_union_type_x00121610;
+void func_00121610_x00121610(FLO_union_type_x00121610 *src, fp_number_type_x00121610 *dst) __asm__("func_00121610");
+/* __unpack_d: from https://github.com/crashbashash/DW4_Decomp (src/libgcc/dp_bit.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00121610_x00121610(FLO_union_type_x00121610 *src, fp_number_type_x00121610 *dst) {
+    fractype_x00121610 fraction;
+    int exp;
+    int sign;
+    fraction = src->bits.fraction;
+    exp = src->bits.exp;
+    sign = src->bits.sign;
+    dst->sign = sign;
+    if (exp == 0) {
+        dst->class = CLASS_ZERO_x00121610;
+    } else if (exp == (0x7ff)) {
+        dst->normal_exp = 1023;
+        if (fraction == 0) {
+            dst->class = CLASS_INFINITY_x00121610;
+            dst->fraction.ll = (1LL << (52 + 8L));
+        } else {
+            if (fraction & 0x8000000000000LL) {
+                dst->class = CLASS_QNAN_x00121610;
+            } else {
+                dst->class = CLASS_SNAN_x00121610;
+            }
+            dst->fraction.ll = fraction;
+        }
+    } else {
+        dst->normal_exp = exp - 1023;
+        dst->class = CLASS_NUMBER_x00121610;
+        dst->fraction.ll = (fraction << 8L) | (1LL << (52 + 8L));
+    }
+}
 typedef signed int s32_x001216D0;
 typedef unsigned int u32_x001216D0;
 typedef signed long long s64_x001216D0;

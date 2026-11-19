@@ -456,7 +456,94 @@ Sint32_x00166180 func_00166180_x00166180(sceCdlFILE_x00166180* fp, const Char8_x
     SRD_SetHistory_x00166180(0x8001);
     return err;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_001661D8);
+typedef void (*CvFsErrFn_x001661D8)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x001661D8)(CvFsErrFn_x001661D8 func, void *obj);
+typedef int (*CvFsPathFn_x001661D8)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x001661D8)(void);
+typedef int (*CvFsOpenFn_x001661D8)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x001661D8)(int fd);
+typedef int (*CvFsFdIntFn_x001661D8)(int fd);
+typedef int (*CvFsSeekFn_x001661D8)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x001661D8)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x001661D8)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x001661D8)(void);
+typedef int (*CvFsLoadDirInfoFn_x001661D8)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x001661D8)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x001661D8)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x001661D8 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x001661D8 entry_err_func;
+    CvFsPathFn_x001661D8 get_file_size;
+    CvFsGetFreeSizeFn_x001661D8 get_free_size;
+    CvFsOpenFn_x001661D8 open;
+    CvFsFdFn_x001661D8 close_x001661D8;
+    CvFsSeekFn_x001661D8 seek;
+    CvFsFdIntFn_x001661D8 tell;
+    CvFsXferFn_x001661D8 req_rd;
+    CvFsXferFn_x001661D8 req_wr;
+    CvFsFdFn_x001661D8 stop_tr;
+    CvFsFdIntFn_x001661D8 get_stat;
+    CvFsFdIntFn_x001661D8 get_sct_len;
+    CvFsSetSctLenFn_x001661D8 set_sct_len;
+    CvFsFdIntFn_x001661D8 get_num_tr;
+    CvFsPathFn_x001661D8 change_dir;
+    CvFsPathFn_x001661D8 is_exist_file;
+    CvFsGetNumFilesFn_x001661D8 get_num_files;
+    CvFsLoadDirInfoFn_x001661D8 load_dir_info;
+    CvFsFdIntFn_x001661D8 get_max_byte_rate;
+    CvFsPathFn_x001661D8 make_dir;
+    CvFsPathFn_x001661D8 remove_dir;
+    CvFsPathFn_x001661D8 delete_file;
+    CvFsGetFileSizeExFn_x001661D8 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x001661D8 opt_fn2;
+} CvFsVtbl_x001661D8;
+extern CvFsVtbl_x001661D8 *addDevice_x001661D8(char *devname, CvFsVtbl_x001661D8 *(*get_if)(void)) __asm__("addDevice");
+typedef unsigned int size_t_x001661D8;
+extern void qsort_x001661D8(void *, size_t_x001661D8, size_t_x001661D8, int (*)(const void *, const void *)) __asm__("qsort");
+int close_x001661D8(int fd) __asm__("close");
+typedef struct {
+    unsigned int lsn;
+    unsigned int size;
+    char name[16];
+    unsigned char date[8];
+    unsigned int flag;
+} sceCdlFILE_x001661D8;
+typedef struct {
+    unsigned char trycount;
+    unsigned char spindlctrl;
+    unsigned char datapattern;
+    unsigned char pad;
+} sceCdRMode_x001661D8;
+typedef struct SrdObj_x001661D8 SrdObj_x001661D8;
+typedef struct DvCiFile_x001661D8 {
+    signed char used;
+    signed char cached;
+    signed char state;
+    signed char instat;
+    unsigned int size;
+    int nsct;
+    int pos;
+    int req;
+    int done;
+    char *buf;
+    SrdObj_x001661D8 *stm;
+    sceCdlFILE_x001661D8 fp;
+    sceCdRMode_x001661D8 rmode;
+} DvCiFile_x001661D8;
+extern DvCiFile_x001661D8 dvci_files_x001661D8[40] __asm__("D_00412AD0");
+int func_001661D8_x001661D8(void) __asm__("func_001661D8");
+/* dvci_is_exec_hn: from https://github.com/crashbashash/DW4_Decomp (src/cri/dvci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_001661D8_x001661D8(void)
+{
+    int i;
+    for (i = 0; i < 40; i++) {
+        if (dvci_files_x001661D8[i].used == 1 && dvci_files_x001661D8[i].state == 2) {
+            return 1;
+        }
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00166228);
 typedef unsigned char u_char_x001662F0;
 typedef unsigned int u_int_x001662F0;

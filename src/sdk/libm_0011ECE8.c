@@ -2,7 +2,42 @@
 
 INCLUDE_ASM("asm/nonmatchings/sdk/libm_0011ECE8", func_0011ECE8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libm_0011ECE8", func_0011EE78);
-INCLUDE_ASM("asm/nonmatchings/sdk/libm_0011ECE8", func_0011F108);
+typedef int __int32_t_x0011F108;
+typedef unsigned int __uint32_t_x0011F108;
+typedef union {
+    float value;
+    unsigned int word;
+} IeeeFloatWord_x0011F108;
+float func_0011F108_x0011F108(float x) __asm__("func_0011F108");
+/* ceilf: from https://github.com/crashbashash/DW4_Decomp (src/newlib/sf_ceil.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+float func_0011F108_x0011F108(float x)
+{
+        __int32_t_x0011F108 i0,j0;
+        __uint32_t_x0011F108 i,ix;
+        do { IeeeFloatWord_x0011F108 gf_u; gf_u.value = (x); (i0) = gf_u.word; } while (0);
+        ix = (i0&0x7fffffff);
+        j0 = (ix>>23)-0x7f;
+        if(j0<23) {
+            if(j0<0) {
+                if(((float)1.0e30)+x>(float)0.0) {
+                    if(i0<0) {i0=0x80000000;}
+                    else if(!((ix)<0x00800000L)) { i0=0x3f800000;}
+                }
+            } else {
+                i = (0x007fffff)>>j0;
+                if((i0&i)==0) return x;
+                if(((float)1.0e30)+x>(float)0.0) {
+                    if(i0>0) i0 += (0x00800000)>>j0;
+                    i0 &= (~i);
+                }
+            }
+        } else {
+            if(!1) return x+x;
+            else return x;
+        }
+        do { IeeeFloatWord_x0011F108 sf_u; sf_u.word = (i0); (x) = sf_u.value; } while (0);
+        return x;
+}
 typedef union {
     float value;
     unsigned int word;
@@ -163,4 +198,25 @@ float func_0011F4C0_x0011F4C0(float x)
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libm_0011ECE8", func_0011F5A8);
+typedef int __int32_t_x0011F5A8;
+typedef union {
+    float value;
+    unsigned int word;
+} IeeeFloatWord_x0011F5A8;
+int __ieee754_rem_pio2f_x0011F5A8(float x, float *y) __asm__("func_0011D380");
+float __kernel_tanf_x0011F5A8(float x, float y, int iy) __asm__("func_0011E2C0");
+float func_0011F5A8_x0011F5A8(float x) __asm__("func_0011F5A8");
+/* tanf: from https://github.com/crashbashash/DW4_Decomp (src/newlib/sf_tan.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+float func_0011F5A8_x0011F5A8(float x)
+{
+        float y[2],z=0.0;
+        __int32_t_x0011F5A8 n,ix;
+        do { IeeeFloatWord_x0011F5A8 gf_u; gf_u.value = (x); (ix) = gf_u.word; } while (0);
+        ix &= 0x7fffffff;
+        if(ix <= 0x3f490fda) return __kernel_tanf_x0011F5A8(x,z,1);
+        else if (!1) return x-x;
+        else {
+            n = __ieee754_rem_pio2f_x0011F5A8(x,y);
+            return __kernel_tanf_x0011F5A8(y[0],y[1],1-((n&1)<<1));
+        }
+}

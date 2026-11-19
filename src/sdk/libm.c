@@ -125,7 +125,37 @@ float func_0011D730_x0011D730(float x)
     do { ieee_float_shape_type_x0011D730 sf_u; sf_u.word = (ix); (z) = sf_u.value; } while (0);
     return z;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011D800);
+typedef int __int32_t_x0011D800;
+typedef union {
+    float value;
+    unsigned int word;
+} IeeeFloatWord_x0011D800;
+float func_0011D800_x0011D800(float x, float y) __asm__("func_0011D800");
+/* __kernel_cosf: from https://github.com/crashbashash/DW4_Decomp (src/newlib/kf_cos.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+float func_0011D800_x0011D800(float x, float y)
+{
+        float a,hz,z,r,qx;
+        __int32_t_x0011D800 ix;
+        do { IeeeFloatWord_x0011D800 gf_u; gf_u.value = (x); (ix) = gf_u.word; } while (0);
+        ix &= 0x7fffffff;
+        if(ix<0x32000000) {
+            if(((int)x)==0) return ((float)1.0000000000e+00);
+        }
+        z = x*x;
+        r = z*(((float)4.1666667908e-02)+z*(((float)-1.3888889225e-03)+z*(((float)2.4801587642e-05)+z*(((float)-2.7557314297e-07)+z*(((float)2.0875723372e-09)+z*((float)-1.1359647598e-11))))));
+        if(ix < 0x3e99999a)
+            return ((float)1.0000000000e+00) - ((float)0.5*z - (z*r - x*y));
+        else {
+            if(ix > 0x3f480000) {
+                qx = (float)0.28125;
+            } else {
+                do { IeeeFloatWord_x0011D800 sf_u; sf_u.word = (ix-0x01000000); (qx) = sf_u.value; } while (0);
+            }
+            hz = (float)0.5*z-qx;
+            a = ((float)1.0000000000e+00)-qx;
+            return a - (hz - (z*r-x*y));
+        }
+}
 extern float scalbnf_x0011D950(float, int) __asm__("func_0011F3F8");
 extern float floorf_x0011D950(float) __asm__("func_0011F320");
 extern const int D_0045EF90_x0011D950[3] __asm__("D_0045E4D8");
@@ -257,7 +287,27 @@ recompute:
         }
         return n&7;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011E1B8);
+typedef int __int32_t_x0011E1B8;
+typedef union {
+    float value;
+    unsigned int word;
+} IeeeFloatWord_x0011E1B8;
+float func_0011E1B8_x0011E1B8(float x, float y, int iy) __asm__("func_0011E1B8");
+/* __kernel_sinf: from https://github.com/crashbashash/DW4_Decomp (src/newlib/kf_sin.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+float func_0011E1B8_x0011E1B8(float x, float y, int iy)
+{
+        float z,r,v;
+        __int32_t_x0011E1B8 ix;
+        do { IeeeFloatWord_x0011E1B8 gf_u; gf_u.value = (x); (ix) = gf_u.word; } while (0);
+        ix &= 0x7fffffff;
+        if(ix<0x32000000)
+           {if((int)x==0) return x;}
+        z = x*x;
+        v = z*x;
+        r = ((float)8.3333337680e-03)+z*(((float)-1.9841270114e-04)+z*(((float)2.7557314297e-06)+z*(((float)-2.5050759689e-08)+z*((float)1.5896910177e-10))));
+        if(iy==0) return x+v*(((float)-1.6666667163e-01)+z*r);
+        else return x-((z*(((float)5.0000000000e-01)*y-v*r)-y)-v*((float)-1.6666667163e-01));
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011E2C0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011E548);
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011EA10);

@@ -991,7 +991,80 @@ s32 func_00167D10(u8 *arg0) {
     }
     return var_v0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167D78);
+typedef void (*CvFsErrFn_x00167D78)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00167D78)(CvFsErrFn_x00167D78 func, void *obj);
+typedef int (*CvFsPathFn_x00167D78)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00167D78)(void);
+typedef int (*CvFsOpenFn_x00167D78)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00167D78)(int fd);
+typedef int (*CvFsFdIntFn_x00167D78)(int fd);
+typedef int (*CvFsSeekFn_x00167D78)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00167D78)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00167D78)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00167D78)(void);
+typedef int (*CvFsLoadDirInfoFn_x00167D78)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00167D78)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00167D78)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00167D78 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00167D78 entry_err_func;
+    CvFsPathFn_x00167D78 get_file_size;
+    CvFsGetFreeSizeFn_x00167D78 get_free_size;
+    CvFsOpenFn_x00167D78 open;
+    CvFsFdFn_x00167D78 close_x00167D78;
+    CvFsSeekFn_x00167D78 seek;
+    CvFsFdIntFn_x00167D78 tell;
+    CvFsXferFn_x00167D78 req_rd;
+    CvFsXferFn_x00167D78 req_wr;
+    CvFsFdFn_x00167D78 stop_tr;
+    CvFsFdIntFn_x00167D78 get_stat;
+    CvFsFdIntFn_x00167D78 get_sct_len;
+    CvFsSetSctLenFn_x00167D78 set_sct_len;
+    CvFsFdIntFn_x00167D78 get_num_tr;
+    CvFsPathFn_x00167D78 change_dir;
+    CvFsPathFn_x00167D78 is_exist_file;
+    CvFsGetNumFilesFn_x00167D78 get_num_files;
+    CvFsLoadDirInfoFn_x00167D78 load_dir_info;
+    CvFsFdIntFn_x00167D78 get_max_byte_rate;
+    CvFsPathFn_x00167D78 make_dir;
+    CvFsPathFn_x00167D78 remove_dir;
+    CvFsPathFn_x00167D78 delete_file;
+    CvFsGetFileSizeExFn_x00167D78 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00167D78 opt_fn2;
+} CvFsVtbl_x00167D78;
+extern CvFsVtbl_x00167D78 *addDevice_x00167D78(char *devname, CvFsVtbl_x00167D78 *(*get_if)(void)) __asm__("addDevice");
+typedef unsigned int size_t_x00167D78;
+void *memset_x00167D78(void *, int, size_t_x00167D78) __asm__("memset");
+int close_x00167D78(int fd) __asm__("close");
+typedef struct SrdObj_x00167D78 SrdObj_x00167D78;
+typedef struct HtCiFile_x00167D78 {
+    signed char used;
+    signed char cached;
+    signed char state;
+    signed char rsv;
+    long long size;
+    int nsct;
+    int end_fg;
+    int fd;
+    int pos;
+    char *buf;
+    int req;
+    int done;
+    SrdObj_x00167D78 *stm;
+} HtCiFile_x00167D78;
+void func_00167D78_x00167D78(HtCiFile_x00167D78 *h, int nsct) __asm__("func_00167D78");
+/* htci_zero_padding: from https://github.com/crashbashash/DW4_Decomp (src/cri/htci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00167D78_x00167D78(HtCiFile_x00167D78 *h, int nsct)
+{
+    unsigned long long end;
+    int n;
+    end = ((unsigned long long)h->pos + h->req) << 11;
+    if (h->size < end) {
+        n = end - h->size;
+        memset_x00167D78(h->buf + (h->req << 11) - n, 0, n);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167DD8);
 s32 func_00167DD8_x00167EA0(s8 *) __asm__("func_00167DD8");
 s32 func_00170A00_x00167EA0(s32 *) __asm__("func_00170A00");
@@ -1025,7 +1098,84 @@ void func_00167F18(s32 arg0, s32 arg1) {
     D_004138EC = arg0;
     D_004138F0 = arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167F30);
+typedef void (*CvFsErrFn_x00167F30)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00167F30)(CvFsErrFn_x00167F30 func, void *obj);
+typedef int (*CvFsPathFn_x00167F30)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00167F30)(void);
+typedef int (*CvFsOpenFn_x00167F30)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00167F30)(int fd);
+typedef int (*CvFsFdIntFn_x00167F30)(int fd);
+typedef int (*CvFsSeekFn_x00167F30)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00167F30)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00167F30)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00167F30)(void);
+typedef int (*CvFsLoadDirInfoFn_x00167F30)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00167F30)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00167F30)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00167F30 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00167F30 entry_err_func;
+    CvFsPathFn_x00167F30 get_file_size;
+    CvFsGetFreeSizeFn_x00167F30 get_free_size;
+    CvFsOpenFn_x00167F30 open;
+    CvFsFdFn_x00167F30 close_x00167F30;
+    CvFsSeekFn_x00167F30 seek;
+    CvFsFdIntFn_x00167F30 tell;
+    CvFsXferFn_x00167F30 req_rd;
+    CvFsXferFn_x00167F30 req_wr;
+    CvFsFdFn_x00167F30 stop_tr;
+    CvFsFdIntFn_x00167F30 get_stat;
+    CvFsFdIntFn_x00167F30 get_sct_len;
+    CvFsSetSctLenFn_x00167F30 set_sct_len;
+    CvFsFdIntFn_x00167F30 get_num_tr;
+    CvFsPathFn_x00167F30 change_dir;
+    CvFsPathFn_x00167F30 is_exist_file;
+    CvFsGetNumFilesFn_x00167F30 get_num_files;
+    CvFsLoadDirInfoFn_x00167F30 load_dir_info;
+    CvFsFdIntFn_x00167F30 get_max_byte_rate;
+    CvFsPathFn_x00167F30 make_dir;
+    CvFsPathFn_x00167F30 remove_dir;
+    CvFsPathFn_x00167F30 delete_file;
+    CvFsGetFileSizeExFn_x00167F30 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00167F30 opt_fn2;
+} CvFsVtbl_x00167F30;
+extern CvFsVtbl_x00167F30 *addDevice_x00167F30(char *devname, CvFsVtbl_x00167F30 *(*get_if)(void)) __asm__("addDevice");
+int close_x00167F30(int fd) __asm__("close");
+void SRD_SetHistory_x00167F30(int value) __asm__("func_00164D38");
+int SRD_SceOpen_x00167F30(const char *name, int flags) __asm__("func_00165048");
+int SRD_SceClose_x00167F30(int fd) __asm__("func_001650B0");
+typedef struct HtCiFileLoc_x00167F30 {
+    int fd;
+    int size;
+} HtCiFileLoc_x00167F30;
+extern char htci_path_x00167F30[304] __asm__("D_00413BD0");
+void htci_conv_fname_x00167F30(const char *name, char *out) __asm__("func_00168B48");
+void htci_get_finf_x00167F30(const char *name, HtCiFileLoc_x00167F30 *loc) __asm__("func_001694B0");
+int func_00167F30_x00167F30(const char *name) __asm__("func_00167F30");
+/* htCiIsExistFileOnHost: from https://github.com/crashbashash/DW4_Decomp (src/cri/htci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00167F30_x00167F30(const char *name)
+{
+    HtCiFileLoc_x00167F30 loc;
+    int fd;
+    if (name == 0) {
+        return 0;
+    }
+    htci_get_finf_x00167F30(name, &loc);
+    if (loc.size == 0) {
+        htci_conv_fname_x00167F30(name, htci_path_x00167F30);
+        SRD_SetHistory_x00167F30(0x4200);
+        fd = SRD_SceOpen_x00167F30(htci_path_x00167F30, 1);
+        SRD_SetHistory_x00167F30(0x4201);
+        if (fd < 0) {
+            return 0;
+        }
+        SRD_SetHistory_x00167F30(0x4300);
+        SRD_SceClose_x00167F30(fd);
+        SRD_SetHistory_x00167F30(0x4301);
+    }
+    return 1;
+}
 extern long long func_00334310_x00167FD0(void) __asm__("htCiGetFileSize");
 int func_00167FD0_x00167FD0(void) __asm__("func_00167FD0");
 /* func_003342E8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0031f4e0.c, MIT); ee-gcc 2.96 -O2 -G0 */

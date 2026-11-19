@@ -46,7 +46,80 @@ s32 func_001681F0_x001681F0(s32 arg0)
   }
   return var_v0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168278);
+typedef void (*CvFsErrFn_x00168278)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00168278)(CvFsErrFn_x00168278 func, void *obj);
+typedef int (*CvFsPathFn_x00168278)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00168278)(void);
+typedef int (*CvFsOpenFn_x00168278)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00168278)(int fd);
+typedef int (*CvFsFdIntFn_x00168278)(int fd);
+typedef int (*CvFsSeekFn_x00168278)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00168278)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00168278)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00168278)(void);
+typedef int (*CvFsLoadDirInfoFn_x00168278)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00168278)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00168278)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00168278 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00168278 entry_err_func;
+    CvFsPathFn_x00168278 get_file_size;
+    CvFsGetFreeSizeFn_x00168278 get_free_size;
+    CvFsOpenFn_x00168278 open;
+    CvFsFdFn_x00168278 close_x00168278;
+    CvFsSeekFn_x00168278 seek;
+    CvFsFdIntFn_x00168278 tell;
+    CvFsXferFn_x00168278 req_rd;
+    CvFsXferFn_x00168278 req_wr;
+    CvFsFdFn_x00168278 stop_tr;
+    CvFsFdIntFn_x00168278 get_stat;
+    CvFsFdIntFn_x00168278 get_sct_len;
+    CvFsSetSctLenFn_x00168278 set_sct_len;
+    CvFsFdIntFn_x00168278 get_num_tr;
+    CvFsPathFn_x00168278 change_dir;
+    CvFsPathFn_x00168278 is_exist_file;
+    CvFsGetNumFilesFn_x00168278 get_num_files;
+    CvFsLoadDirInfoFn_x00168278 load_dir_info;
+    CvFsFdIntFn_x00168278 get_max_byte_rate;
+    CvFsPathFn_x00168278 make_dir;
+    CvFsPathFn_x00168278 remove_dir;
+    CvFsPathFn_x00168278 delete_file;
+    CvFsGetFileSizeExFn_x00168278 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00168278 opt_fn2;
+} CvFsVtbl_x00168278;
+extern CvFsVtbl_x00168278 *addDevice_x00168278(char *devname, CvFsVtbl_x00168278 *(*get_if)(void)) __asm__("addDevice");
+int close_x00168278(int fd) __asm__("close");
+typedef struct SrdObj_x00168278 SrdObj_x00168278;
+typedef struct HtCiFile_x00168278 {
+    signed char used;
+    signed char cached;
+    signed char state;
+    signed char rsv;
+    long long size;
+    int nsct;
+    int end_fg;
+    int fd;
+    int pos;
+    char *buf;
+    int req;
+    int done;
+    SrdObj_x00168278 *stm;
+} HtCiFile_x00168278;
+extern HtCiFile_x00168278 htci_files_x00168278[13] __asm__("D_00413960");
+HtCiFile_x00168278 *func_00168278_x00168278(void) __asm__("func_00168278");
+/* htci_alloc: from https://github.com/crashbashash/DW4_Decomp (src/cri/htci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+HtCiFile_x00168278 *func_00168278_x00168278(void)
+{
+    HtCiFile_x00168278 *found = 0;
+    int i;
+    for (i = 0; i < 13; i++) {
+        if (htci_files_x00168278[i].used == 0) {
+            found = &htci_files_x00168278[i];
+        }
+    }
+    return found;
+}
 s32 memset_x001682B0() __asm__("memset");
 void func_001682B0_x001682B0(s32 arg0) __asm__("func_001682B0");
 void func_001682B0_x001682B0(s32 arg0) {
@@ -72,7 +145,98 @@ void func_00168458(u8 *arg0) {
         func_001682B0(arg0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168508);
+typedef void (*CvFsErrFn_x00168508)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00168508)(CvFsErrFn_x00168508 func, void *obj);
+typedef int (*CvFsPathFn_x00168508)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00168508)(void);
+typedef int (*CvFsOpenFn_x00168508)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00168508)(int fd);
+typedef int (*CvFsFdIntFn_x00168508)(int fd);
+typedef int (*CvFsSeekFn_x00168508)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00168508)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00168508)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00168508)(void);
+typedef int (*CvFsLoadDirInfoFn_x00168508)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00168508)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00168508)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00168508 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00168508 entry_err_func;
+    CvFsPathFn_x00168508 get_file_size;
+    CvFsGetFreeSizeFn_x00168508 get_free_size;
+    CvFsOpenFn_x00168508 open;
+    CvFsFdFn_x00168508 close_x00168508;
+    CvFsSeekFn_x00168508 seek;
+    CvFsFdIntFn_x00168508 tell;
+    CvFsXferFn_x00168508 req_rd;
+    CvFsXferFn_x00168508 req_wr;
+    CvFsFdFn_x00168508 stop_tr;
+    CvFsFdIntFn_x00168508 get_stat;
+    CvFsFdIntFn_x00168508 get_sct_len;
+    CvFsSetSctLenFn_x00168508 set_sct_len;
+    CvFsFdIntFn_x00168508 get_num_tr;
+    CvFsPathFn_x00168508 change_dir;
+    CvFsPathFn_x00168508 is_exist_file;
+    CvFsGetNumFilesFn_x00168508 get_num_files;
+    CvFsLoadDirInfoFn_x00168508 load_dir_info;
+    CvFsFdIntFn_x00168508 get_max_byte_rate;
+    CvFsPathFn_x00168508 make_dir;
+    CvFsPathFn_x00168508 remove_dir;
+    CvFsPathFn_x00168508 delete_file;
+    CvFsGetFileSizeExFn_x00168508 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00168508 opt_fn2;
+} CvFsVtbl_x00168508;
+extern CvFsVtbl_x00168508 *addDevice_x00168508(char *devname, CvFsVtbl_x00168508 *(*get_if)(void)) __asm__("addDevice");
+int close_x00168508(int fd) __asm__("close");
+typedef struct SrdObj_x00168508 SrdObj_x00168508;
+typedef struct HtCiFile_x00168508 {
+    signed char used;
+    signed char cached;
+    signed char state;
+    signed char rsv;
+    long long size;
+    int nsct;
+    int end_fg;
+    int fd;
+    int pos;
+    char *buf;
+    int req;
+    int done;
+    SrdObj_x00168508 *stm;
+} HtCiFile_x00168508;
+extern void htCiEntryErrFunc_x00168508(void (*callback)(void *context, const char *message, void *detail), void *context) __asm__("htCiEntryErrFunc");
+extern void (*htci_err_func_x00168508)(void *context, const char *message, void *detail) __asm__("htci_err_func");
+void htci_call_errfn_x00168508(void *detail, const char *message) __asm__("func_00167C90");
+void htCiEntryErrFunc_x00168508(void (*callback)(void *context, const char *message, void *detail), void *context) __asm__("htCiEntryErrFunc");
+extern char ext_str0_x00168508[] __asm__("D_00463B10");
+int func_00168508_x00168508(HtCiFile_x00168508 *h, int offset, int origin) __asm__("func_00168508");
+/* htCiSeek: from https://github.com/crashbashash/DW4_Decomp (src/cri/htci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00168508_x00168508(HtCiFile_x00168508 *h, int offset, int origin)
+{
+    int position;
+    if (h == 0) {
+        htci_call_errfn_x00168508(h, ext_str0_x00168508);
+        return 0;
+    }
+    if (origin == 0) {
+        h->pos = offset;
+    } else if (origin == 2) {
+        h->pos = h->nsct + offset;
+    } else if (origin == 1) {
+        h->pos += offset;
+    }
+    position = h->pos;
+    h->done = 0;
+    if (position >= h->nsct) {
+        position = h->nsct;
+    }
+    if (position < 0) {
+        position = 0;
+    }
+    h->pos = position;
+    return position;
+}
 s32 func_00167C90_x001685A0() __asm__("func_00167C90");
 extern s32 D_00463B10_x001685A0 __asm__("D_00463B10");
 s32 func_001685A0_x001685A0(u8 *arg0) __asm__("func_001685A0");
@@ -83,7 +247,137 @@ s32 func_001685A0_x001685A0(u8 *arg0) {
     }
     return *(s32 *)((u8 *)arg0 + 0x1C);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", htCiReqRd);
+typedef void (*CvFsErrFn_x001685D8)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x001685D8)(CvFsErrFn_x001685D8 func, void *obj);
+typedef int (*CvFsPathFn_x001685D8)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x001685D8)(void);
+typedef int (*CvFsOpenFn_x001685D8)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x001685D8)(int fd);
+typedef int (*CvFsFdIntFn_x001685D8)(int fd);
+typedef int (*CvFsSeekFn_x001685D8)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x001685D8)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x001685D8)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x001685D8)(void);
+typedef int (*CvFsLoadDirInfoFn_x001685D8)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x001685D8)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x001685D8)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x001685D8 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x001685D8 entry_err_func;
+    CvFsPathFn_x001685D8 get_file_size;
+    CvFsGetFreeSizeFn_x001685D8 get_free_size;
+    CvFsOpenFn_x001685D8 open;
+    CvFsFdFn_x001685D8 close_x001685D8;
+    CvFsSeekFn_x001685D8 seek;
+    CvFsFdIntFn_x001685D8 tell;
+    CvFsXferFn_x001685D8 req_rd;
+    CvFsXferFn_x001685D8 req_wr;
+    CvFsFdFn_x001685D8 stop_tr;
+    CvFsFdIntFn_x001685D8 get_stat;
+    CvFsFdIntFn_x001685D8 get_sct_len;
+    CvFsSetSctLenFn_x001685D8 set_sct_len;
+    CvFsFdIntFn_x001685D8 get_num_tr;
+    CvFsPathFn_x001685D8 change_dir;
+    CvFsPathFn_x001685D8 is_exist_file;
+    CvFsGetNumFilesFn_x001685D8 get_num_files;
+    CvFsLoadDirInfoFn_x001685D8 load_dir_info;
+    CvFsFdIntFn_x001685D8 get_max_byte_rate;
+    CvFsPathFn_x001685D8 make_dir;
+    CvFsPathFn_x001685D8 remove_dir;
+    CvFsPathFn_x001685D8 delete_file;
+    CvFsGetFileSizeExFn_x001685D8 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x001685D8 opt_fn2;
+} CvFsVtbl_x001685D8;
+extern CvFsVtbl_x001685D8 *addDevice_x001685D8(char *devname, CvFsVtbl_x001685D8 *(*get_if)(void)) __asm__("addDevice");
+int close_x001685D8(int fd) __asm__("close");
+typedef struct SrdObj_x001685D8 SrdObj_x001685D8;
+SrdObj_x001685D8 *SRD_Create_x001685D8(void) __asm__("func_00163E60");
+void SRD_Destroy_x001685D8(SrdObj_x001685D8 *srd) __asm__("func_00163EE8");
+int SRD_ReqRdHst_x001685D8(SrdObj_x001685D8 *srd, int fd, long long sector, long long size, void *buf) __asm__("func_00164078");
+void SRD_ExecServer_x001685D8(void) __asm__("func_001648B0");
+void SRD_WaitForExecServer_x001685D8(void) __asm__("func_001649C0");
+typedef struct HtCiFile_x001685D8 {
+    signed char used;
+    signed char cached;
+    signed char state;
+    signed char rsv;
+    long long size;
+    int nsct;
+    int end_fg;
+    int fd;
+    int pos;
+    char *buf;
+    int req;
+    int done;
+    SrdObj_x001685D8 *stm;
+} HtCiFile_x001685D8;
+extern void htCiEntryErrFunc_x001685D8(void (*callback)(void *context, const char *message, void *detail), void *context) __asm__("htCiEntryErrFunc");
+extern void (*htci_err_func_x001685D8)(void *context, const char *message, void *detail) __asm__("htci_err_func");
+extern int htci_open_mode_x001685D8 __asm__("D_00413D10");
+void htci_call_errfn_x001685D8(void *detail, const char *message) __asm__("func_00167C90");
+int htci_is_exec_hn_x001685D8(void) __asm__("func_00167CC0");
+void htci_zero_padding_x001685D8(HtCiFile_x001685D8 *h, int nsct) __asm__("func_00167D78");
+void htCiEntryErrFunc_x001685D8(void (*callback)(void *context, const char *message, void *detail), void *context) __asm__("htCiEntryErrFunc");
+extern char ext_str0_x001685D8[] __asm__("D_00463B48");
+extern char ext_str1_x001685D8[] __asm__("D_00463B28");
+extern char ext_str2_x001685D8[] __asm__("D_00463B10");
+int htCiReqRd_x001685D8(HtCiFile_x001685D8 *h, int nsct, char *buf) __asm__("htCiReqRd");
+/* htCiReqRd_x001685D8: from https://github.com/crashbashash/DW4_Decomp (src/cri/htci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int htCiReqRd_x001685D8(HtCiFile_x001685D8 *h, int nsct, char *buf)
+{
+    unsigned long nbyte;
+    if (h == 0) {
+        htci_call_errfn_x001685D8(h, ext_str2_x001685D8);
+        return 0;
+    }
+    if (nsct < 0) {
+        htci_call_errfn_x001685D8(h, ext_str1_x001685D8);
+        return 0;
+    }
+    if (buf == 0) {
+        htci_call_errfn_x001685D8(h, ext_str0_x001685D8);
+        return 0;
+    }
+    if (htci_is_exec_hn_x001685D8() == 1) {
+        return 0;
+    }
+    if (h->state == 2) {
+        return 0;
+    }
+    if (nsct == 0) {
+        h->state = 1;
+        return 0;
+    }
+    h->stm = SRD_Create_x001685D8();
+    if (h->stm == 0) {
+        return 0;
+    }
+    h->buf = buf;
+    h->req = (nsct < h->nsct - h->pos) ? nsct : h->nsct - h->pos;
+    nbyte = nsct << 11;
+    if (h->size < nbyte) {
+        nbyte = h->size;
+    }
+    htci_zero_padding_x001685D8(h, h->req);
+    if (SRD_ReqRdHst_x001685D8(h->stm, h->fd, h->pos, nbyte, buf) == 0) {
+        return 0;
+    }
+    if (htci_open_mode_x001685D8 == 1) {
+        SRD_WaitForExecServer_x001685D8();
+        SRD_ExecServer_x001685D8();
+        h->pos += h->req;
+        SRD_Destroy_x001685D8(h->stm);
+        h->stm = 0;
+        h->state = 1;
+        h->done = h->req;
+    } else {
+        h->state = 2;
+        h->done = 0;
+    }
+    h->end_fg = 0;
+    return h->req;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168768);
 s32 func_00167C90_x00168870() __asm__("func_00167C90");
 extern s32 D_00463B10_x00168870 __asm__("D_00463B10");
