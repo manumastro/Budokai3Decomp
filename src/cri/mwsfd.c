@@ -12694,7 +12694,26 @@ void mwPlySetSpeed_x00184588(s32 arg0, s32 arg1) {
     }
     func_00196558_x00184588(mwPlyGetSfdHn_x00184588(arg0), arg1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlySetFloatSpeed);
+int func_00183B38_x001845F0(void *ply) __asm__("func_00183B38");
+void func_001870E8_x001845F0(const char *fmt, ...) __asm__("func_001870E8");
+void *mwPlyGetSfdHn_x001845F0(void *ply) __asm__("mwPlyGetSfdHn");
+void func_00196558_x001845F0(void *sfd, int speed) __asm__("func_00196558");
+extern char D_00466708_x001845F0[] __asm__("D_00466708");
+void mwPlySetFloatSpeed_x001845F0(void *ply, float speed) __asm__("mwPlySetFloatSpeed");
+void mwPlySetFloatSpeed_x001845F0(void *ply, float speed) {
+    void *sfd;
+    double rounded;
+    int milli;
+
+    if (func_00183B38_x001845F0(ply) == 0) {
+        func_001870E8_x001845F0(D_00466708_x001845F0);
+        return;
+    }
+    sfd = mwPlyGetSfdHn_x001845F0(ply);
+    rounded = speed * 1000.0f + 0.5;
+    milli = (int)rounded;
+    func_00196558_x001845F0(sfd, milli - ((double)milli > rounded));
+}
 void func_001846C0(u8 *arg0) {
     func_0018DA30(*(s32 *)((u8 *)arg0 + 0x40));
 }
@@ -18301,6 +18320,8 @@ extern int m1fd011;
 extern int m029010;
 extern int m029011;
 extern int m029012;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mpad_45f01_00000000000000000;
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo) __asm__("MWSST_Create");
 /* MWSST_Create_x00186B38____: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfsst.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo)
