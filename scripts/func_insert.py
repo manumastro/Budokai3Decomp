@@ -149,7 +149,8 @@ def isolate(item, pad=0):
     for k, st in enumerate(decls):
         for n in decl_names(st):
             ren[n] = n + tag
-            if not is_type_decl(st) and not is_func_def(st) and k not in local:
+            # a global register variable (`register int gp asm("$28");`) names a register, not a symbol
+            if not is_type_decl(st) and not is_func_def(st) and k not in local and not st.startswith("register"):
                 labels[n] = bind.get(n, n)
         if is_func_def(st):
             # a static inline helper copied whole (func_port.py): renamed, never bound to a symbol

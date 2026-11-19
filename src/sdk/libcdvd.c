@@ -34,7 +34,53 @@ void *func_001180F0_x001180F0(void (*func)(int))
 	return old;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118158);
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_001181F8);
+register int gp_x001181F8 asm("$28");
+extern int D_004878A0_x001181F8 __asm__("D_003EDDA0");
+extern int D_004878D8_x001181F8 __asm__("D_003EDDE0");
+extern int D_004878B4_x001181F8 __asm__("D_003EDDB4");
+extern int D_00487894_x001181F8 __asm__("D_003EDD94");
+extern int D_004E9D14_x001181F8 __asm__("D_00478D14");
+extern int D_00487890_x001181F8 __asm__("D_003EDD90");
+extern int D_004E9D00_x001181F8 __asm__("D_00478D00");
+extern int D_004E9D04_x001181F8 __asm__("D_00478D04");
+extern int D_004878DC_x001181F8 __asm__("D_003EDDE4");
+extern char D_00498C38_x001181F8[] __asm__("D_0045DB78");
+extern int WaitSema_x001181F8(int) __asm__("WaitSema");
+extern void ExitDeleteThread_x001181F8(void) __asm__("ExitDeleteThread");
+extern int scePrintf_x001181F8(const char *, ...) __asm__("scePrintf");
+extern int D_00487894_x001181F8 __asm__("D_003EDD94");
+void func_001181F8_x001181F8(void *arg) __asm__("func_001181F8");
+/* func_001184C0: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libcdvd/func_001184C0.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_001181F8_x001181F8(void *arg)
+{
+    int save;
+
+    while (1) {
+        WaitSema_x001181F8(D_004878A0_x001181F8);
+        if (D_004878D8_x001181F8 == -1) {
+            D_004878B4_x001181F8 = 0;
+             
+            __asm__ volatile("");
+            D_004878D8_x001181F8 = 0;
+            D_00487894_x001181F8 = 0;
+            D_004E9D14_x001181F8 = 0;
+            ExitDeleteThread_x001181F8();
+        }
+        if (D_00487890_x001181F8 > 0) {
+            scePrintf_x001181F8(D_00498C38_x001181F8, D_004E9D00_x001181F8, D_004878DC_x001181F8);
+        }
+        if (D_004E9D00_x001181F8 != 0 && *(volatile int *)&D_004878DC_x001181F8 != 0) {
+             
+            __asm__ volatile("");
+            save = gp_x001181F8;
+            gp_x001181F8 = *(volatile int *)&D_004E9D04_x001181F8;
+            ((void (*)(int))D_004E9D00_x001181F8)(*(volatile int *)&D_004878DC_x001181F8);
+            gp_x001181F8 = save;
+        }
+        *(volatile int *)&D_004878B4_x001181F8 = 0;
+    }
+}
+INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", sceCdInitEeCB);
 extern char D_004878D8_x00118368[] __asm__("D_003EDDE0");
 extern void _sceCd_cd_callback_x00118368(char *) __asm__("func_00118158");
 typedef struct {int n,m;unsigned char *a,*b;unsigned char x[64],y[64];} Req_x00118368;
