@@ -23,6 +23,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(PERMUTER))
 
 import fastcc  # noqa: E402
+import mwbatch  # noqa: E402
 import src.compiler as pc  # noqa: E402
 import src.main as pm  # noqa: E402
 import src.scorer as ps  # noqa: E402
@@ -74,6 +75,11 @@ def fast_objdump(o_filename, arch, *, objdump_command=None, stack_differences=Fa
     if not objdump_command or not ENABLED:
         return _orig_objdump(o_filename, arch, objdump_command=objdump_command, stack_differences=stack_differences,
                              ign_branch_targets=ign_branch_targets)
+    raw = mwbatch.PENDING_DUMPS.get(o_filename)
+    if raw is not None:
+        # a function of a batched Metrowerks compile, already dumped and put back at offset 0 (mwbatch.py)
+        return simplify_objdump(raw.splitlines(), arch, stack_differences=stack_differences,
+                                ign_branch_targets=ign_branch_targets)
     key = (tuple(objdump_command), os.getpid())
     z = _DUMPS.get(key)
     if z is None:
@@ -85,6 +91,7 @@ def fast_objdump(o_filename, arch, *, objdump_command=None, stack_differences=Fa
 if ENABLED:
     import fastast  # noqa: E402
     fastast.install()
+    mwbatch.install()
 pm.Compiler = FastCompiler
 ps.objdump = fast_objdump
 
