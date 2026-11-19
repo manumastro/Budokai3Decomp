@@ -7,8 +7,11 @@
 
 Two kinds of build are in the archive:
 
-- Linux builds (2.9-ee-99xxxx, 2.96-ee-001003-1, 3.2-ee-0309xx / 0409xx): 32-bit i386 programs. They run in a
-  long-lived Docker container of the image `budokai3-eegcc` (scripts/eegcc/Dockerfile: Debian with the i386 C
+- Linux builds (2.9-ee-99xxxx, 2.96-ee-001003-1, 3.2-ee-0309xx / 0409xx): 32-bit i386 programs. On an x86-64
+  Linux host with the i386 C library (/lib/ld-linux.so.2: `dpkg --add-architecture i386; apt install libc6:i386`)
+  they run directly, same argv, with the container's small fixed environment: a few ms a compile instead of
+  ~0.3 s, objects byte-identical to the container's (checked over every library C file, 2026-11-19).
+  Otherwise, or with B3_EEGCC_DOCKER=1, they run in a long-lived Docker container of the image `budokai3-eegcc` (scripts/eegcc/Dockerfile: Debian with the i386 C
   library, nothing else), started on first use with the checkout and tools/ mounted at their own paths. The image
   is built for linux/amd64; on Apple Silicon Docker runs it under Rosetta or QEMU. One `docker exec` costs about
   0.3 s, so callers with many compiles batch them (`run_many`).
@@ -47,6 +50,18 @@ VERSIONS = {
     "3.2-030926": ("linux", "3.2-ee-030926"),
     "3.2-040921": ("linux", "3.2-ee-040921"),
 }
+
+
+# what the compilers get as environment when run directly: the container's (nothing of the caller's leaks in)
+NATIVE_ENV = {"PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", "HOME": "/root"}
+
+
+def native():
+    """True when the Linux builds run on this host without the container."""
+    if os.environ.get("B3_EEGCC_DOCKER") == "1":
+        return False
+    return (sys.platform.startswith("linux") and os.uname().machine in ("x86_64", "i686", "i386")
+            and os.path.exists("/lib/ld-linux.so.2"))
 
 
 def _real(p):
@@ -125,18 +140,36 @@ def command(version, args, assembler=False):
 def run_many(jobs, cwd=None, workers=8):
     """Runs [(version, args)] (args: list of str, `assembler`: optional 3rd item). Returns [(returncode, output)].
 
-    Linux jobs go to the container in one `docker exec` (a generated shell script under build/eegcc/), Windows
-    jobs run in parallel threads."""
+    Linux jobs run directly in parallel threads when native(), else in the container in one `docker exec` (a
+    generated shell script under build/eegcc/); Windows jobs run in parallel threads."""
     cwd = _real(cwd or os.getcwd())
     results = [None] * len(jobs)
     linux = [(i, j) for i, j in enumerate(jobs) if kind(j[0]) == "linux"]
     win = [(i, j) for i, j in enumerate(jobs) if kind(j[0]) == "win"]
+    if linux and native():
+        win, linux = win + linux, []
 
     def one_win(item):
         i, j = item
+        if kind(j[0]) == "linux":
+            # an output the container left (owned by root) cannot be rewritten in place: remove it first
+            args = list(j[1])
+            for k, a in enumerate(args[:-1]):
+                if a == "-o":
+                    o = Path(cwd) / args[k + 1]
+                    if o.exists() and not os.access(o, os.W_OK):
+                        o.unlink()
+            # stdout and stderr in one stream, trailing newlines dropped: what the container's log gives
+            r = subprocess.run(command(j[0], j[1], *j[2:]), cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               stdin=subprocess.DEVNULL, text=True, env=NATIVE_ENV)
+            results[i] = (r.returncode, r.stdout.rstrip("\n"))
+            return
         r = subprocess.run(command(j[0], j[1]), cwd=cwd, capture_output=True, text=True)
         results[i] = (r.returncode, r.stdout + r.stderr)
 
+    if len(win) == 1 and not linux:
+        one_win(win[0])
+        return results
     with ThreadPoolExecutor(workers) as pool:
         futures = [pool.submit(one_win, item) for item in win]
         if linux:
