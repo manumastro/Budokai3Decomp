@@ -669,7 +669,41 @@ int func_00162FF0_x00162FF0(const char *path)
     cvFsError_x00162FF0(cvFsIsExistFile_4_vtbl_error_x00162FF0);
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00163098);
+typedef struct { char pad0[0x44]; int (*fn44)(void); char pad48[0x60 - 0x48]; void *OptFn1; } Dev3098_x00163098;
+typedef struct { Dev3098_x00163098 *dev; char name[12]; } Tbl3098_x00163098;
+extern char D_0047EAD4_x00163098[] __asm__("D_0047EAD4");
+unsigned int strlen_x00163098(const char *) __asm__("strlen");
+int func_00127E88_x00163098(const char *, const char *, unsigned int) __asm__("func_00127E88");
+int func_00163AB8_x00163098(char *) __asm__("func_00163AB8");
+int func_00163098_x00163098(char *name) __asm__("func_00163098");
+int func_00163098_x00163098(char *name)
+{
+    struct { void *p0; void *name; void *p2, *p3, *p4; } prm;
+    int len;
+    int i;
+    int ret = 0;
+    Dev3098_x00163098 *dev;
+
+    len = strlen_x00163098(name);
+    for (i = 0; i < 32; i++) {
+        if (func_00127E88_x00163098(name, ((Tbl3098_x00163098 *)(D_0047EAD4_x00163098 - 4))[i].name, len) == 0) {
+            dev = ((Tbl3098_x00163098 *)(D_0047EAD4_x00163098 - 4))[i].dev;
+            if (func_00163AB8_x00163098(name) != 0) {
+                if (dev != 0 && dev->OptFn1 != 0) {
+                    prm.name = name;
+                    ret = ((int (*)(void *, int, int, int))dev->OptFn1)(&prm, 4, 0, 0);
+                    break;
+                }
+            } else {
+                if (dev != 0 && dev->fn44 != 0) {
+                    ret = dev->fn44();
+                    break;
+                }
+            }
+        }
+    }
+    return ret;
+}
 typedef int (*CvFsFn_x001631A8)();
 typedef struct {
     CvFsFn_x001631A8 exec_server;
