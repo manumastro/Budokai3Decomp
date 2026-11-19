@@ -15861,7 +15861,32 @@ void func_0017EC30(u8 *arg0) {
 void func_0017EC48(u8 *arg0) {
     func_00172BC8(*(s32 *)((u8 *)arg0 + 0x3B0));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EC60);
+typedef struct { int a, b, c; } Ent_EC60_x0017EC60;
+typedef struct { char pad0[0x3B0]; int h; int pad3B4; Ent_EC60_x0017EC60 ent[4]; int f3E8, f3EC; int f3F0; } Mpv_EC60_x0017EC60;
+int func_00172A88_x0017EC60(Mpv_EC60_x0017EC60 *) __asm__("func_00172A88");
+void func_00172C90_x0017EC60(int, int, int, int, int) __asm__("func_00172C90");
+void func_00172CB8_x0017EC60(int, int, int) __asm__("func_00172CB8");
+void func_00172D08_x0017EC60(int, int) __asm__("func_00172D08");
+void func_00172CE0_x0017EC60(int, int, int *) __asm__("func_00172CE0");
+void func_0017ED20_x0017EC60(Mpv_EC60_x0017EC60 *) __asm__("func_0017ED20");
+int func_0017EC60_x0017EC60(Mpv_EC60_x0017EC60 *m, int a1) __asm__("func_0017EC60");
+int func_0017EC60_x0017EC60(Mpv_EC60_x0017EC60 *m, int a1)
+{
+    int i;
+    Ent_EC60_x0017EC60 *e;
+
+    if (func_00172A88_x0017EC60(m) != 0) {
+        for (i = 0, e = m->ent; i < 4; i++, e++) {
+            func_00172C90_x0017EC60(m->h, i, e->a, e->b, e->c);
+        }
+        func_00172CB8_x0017EC60(m->h, m->f3E8, m->f3EC);
+        func_00172D08_x0017EC60(m->h, a1);
+        func_00172CE0_x0017EC60(m->h, 0, &m->f3F0);
+        func_0017ED20_x0017EC60(m);
+        return 0;
+    }
+    return -1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017ED20);
 void func_0017EE60(void) {
     func_0017EE78();

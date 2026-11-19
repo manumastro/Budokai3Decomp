@@ -289,7 +289,55 @@ void func_00108C78_x00108C78(D_x00108C78 *d, int n, int flag)
     if (d->x108 == 1)
         d->x108 = 2;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001081F8", func_00108D08);
+typedef struct { char pad0[0x868]; void *mp; } Dec8D08_x00108D08;
+typedef struct { int type; int pad[7]; } Cb8D08_x00108D08;
+typedef struct { volatile int count; int done; int remain; unsigned int addr; int total; } St8D08_x00108D08;
+extern char D_0045D348_x00108D08[] __asm__("D_0045D348");
+int func_001093A0_x00108D08(int, void *) __asm__("func_001093A0");
+int AddDmacHandler2_x00108D08(int, int (*)(int, void *), int, void *) __asm__("AddDmacHandler2");
+int func_0010AE78_x00108D08(int) __asm__("func_0010AE78");
+int DisableDmac_x00108D08(int) __asm__("DisableDmac");
+int RemoveDmacHandler_x00108D08(int, int) __asm__("RemoveDmacHandler");
+int DI_x00108D08(void) __asm__("DI");
+int EI_x00108D08(void) __asm__("EI");
+void func_00107DE0_x00108D08(void *, Cb8D08_x00108D08 *) __asm__("func_00107DE0");
+void func_00109738_x00108D08(Dec8D08_x00108D08 *, char *) __asm__("func_00109738");
+void func_00108D08_x00108D08(Dec8D08_x00108D08 *dec, unsigned int addr, int count) __asm__("func_00108D08");
+void func_00108D08_x00108D08(Dec8D08_x00108D08 *dec, unsigned int addr, int count)
+{
+    Cb8D08_x00108D08 cbdata;
+    St8D08_x00108D08 state;
+    int handler;
+    int intr;
+    unsigned int qwc = 1023 * 64;
+
+    state.total = count / 1023 + 1;
+    state.done = 0;
+    state.count = 0;
+    state.remain = count;
+    state.addr = (addr + 0xFFC00) & 0x0FFFFFFF;
+    while (*(volatile int *)0x10002010 < 0);
+    handler = AddDmacHandler2_x00108D08(3, func_001093A0_x00108D08, 0, &state);
+    *(volatile unsigned int *)0x1000E010 = 8;
+    func_0010AE78_x00108D08(3);
+    intr = DI_x00108D08();
+    *(volatile unsigned int *)0x1000B010 = addr & 0x0FFFFFFF;
+    *(volatile unsigned int *)0x1000B020 = qwc;
+    *(volatile unsigned int *)0x1000B000 = 0x100;
+    if (intr) {
+        EI_x00108D08();
+    }
+    *(volatile unsigned int *)0x10002000 = 0x700003FF;
+    cbdata.type = 4;
+    func_00107DE0_x00108D08(dec->mp, &cbdata);
+    while (state.count < state.total);
+    if (state.done) {
+        func_00109738_x00108D08(dec, D_0045D348_x00108D08);
+    }
+    while (*(volatile int *)0x10002010 < 0);
+    DisableDmac_x00108D08(3);
+    RemoveDmacHandler_x00108D08(3, handler);
+}
 typedef struct { int type; int pad[7]; } CB_x00108EC8;
 typedef struct { unsigned int size; unsigned int addr; int pad[2]; } ST_x00108EC8;
 typedef struct { unsigned int addr; int x4; int x8; int w; int h; } P_x00108EC8;

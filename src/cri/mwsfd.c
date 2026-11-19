@@ -7439,7 +7439,25 @@ void mwSfdPause_x00182DB0(MwsfdPly_x00182DB0 *ply, int sw)
     mwsst_Pause_x00182DB0(&ply->sst, sw);
     ply->pause = sw;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyStartAfs);
+extern s32 D_00466098_x00182ED0 __asm__("D_00466098");
+typedef struct { u8 pad[0x3C]; void (*fn)(s32, s32); } MwVt_xStartAfs_x00182ED0;
+s32 mwPlyGetInputSj_x00182ED0(s32) __asm__("mwPlyGetInputSj");
+void func_001830D8_x00182ED0(s32, s32, s32) __asm__("func_001830D8");
+void mwPlyStartAfs_x00182ED0(s32 arg0, s32 arg1, s32 arg2) __asm__("mwPlyStartAfs");
+void mwPlyStartAfs_x00182ED0(s32 arg0, s32 arg1, s32 arg2)
+{
+    if (func_00183B38(arg0) == 0) {
+        func_001870E8(&D_00466098_x00182ED0);
+        return;
+    }
+    (*(MwVt_xStartAfs_x00182ED0 **)arg0)->fn(arg0, mwPlyGetInputSj_x00182ED0(arg0));
+    func_001830D8_x00182ED0(arg0, arg1, arg2);
+    *(s32 *)(arg0 + 0x1C0) = 1;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3c00182ED0_0;
+extern int b3c00182ED0_1;
+extern int b3cse_pad32_00182ED0_0_xxxx;
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00182F70);
 void func_00182FC8(u8 *arg0) {
     s32 temp_s0;
@@ -11396,7 +11414,25 @@ SfdSj_x001843C0 *mwPlyGetInputSj_x001843C0(MwsfdPly_x001843C0 *ply) {
     }
     return ply->defSj;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetPlyInf);
+extern s32 D_004666A8_x00184400 __asm__("D_004666A8");
+void func_00199AC8_x00184400(s32, s32 *) __asm__("func_00199AC8");
+s32 mwPlyGetNumSkipEmptyB_x00184400(s32) __asm__("mwPlyGetNumSkipEmptyB");
+void mwPlyGetPlyInf_x00184400(s32 arg0, s32 *inf) __asm__("mwPlyGetPlyInf");
+void mwPlyGetPlyInf_x00184400(s32 arg0, s32 *inf)
+{
+    s32 buf[16];
+
+    if (func_00183B38(arg0) == 0) {
+        func_001870E8(&D_004666A8_x00184400);
+        return;
+    }
+    func_00199AC8_x00184400(mwPlyGetSfdHn(arg0), buf);
+    inf[0] = mwPlyGetNumDropFrm(arg0);
+    inf[1] = mwPlyGetNumSkipDec(arg0);
+    inf[2] = mwPlyGetNumSkipDisp(arg0);
+    inf[3] = mwPlyGetNumSkipEmptyB_x00184400(arg0);
+    inf[4] = buf[8];
+}
 typedef struct SfdSj_x00184498 SfdSj_x00184498;
 typedef struct SfdSjChunk_x00184498 {
     char *data;

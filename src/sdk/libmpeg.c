@@ -24,8 +24,158 @@ void func_001020B0_x001020B0(void *pic, int DMV[][2], int *dmvector, int mvx, in
             DMV[0][1]++;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00102238);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00102940);
+typedef struct { int base; } Pic2238_x00102238;
+typedef struct { Pic2238_x00102238 *ref_image, *prev_image, *decode, *image; } Slot2238_x00102238;
+typedef struct { int dest; int pred_count; char pad8[0x140 - 8]; } Spr2238_x00102238;
+typedef struct { char pad0[0x130]; int second_field; char pad134[0x160 - 0x134]; int picture_coding_type; char pad164[0x184 - 0x164]; int picture_structure; char pad188[0x1C8 - 0x188]; Slot2238_x00102238 slots[3]; char pad1F8[0x6C8 - 0x1F8]; Spr2238_x00102238 spr[1]; char pad808[0x820 - 0x808]; int mb_buffer; } Dec2238_x00102238;
+extern char D_0045CDF8_x00102238[] __asm__("D_0045CDF8");
+extern char D_0045CE18_x00102238[] __asm__("D_0045CE18");
+extern char D_0045CE38_x00102238[] __asm__("D_0045CE38");
+void func_00109790_x00102238(Dec2238_x00102238 *, char *, int) __asm__("func_00109790");
+void func_001020B0_x00102238(Dec2238_x00102238 *, int DMV[][2], int *, int, int) __asm__("func_001020B0");
+void func_00102B90_x00102238(Dec2238_x00102238 *, Pic2238_x00102238 *, int, int, int, int, int, int, int, int, int, int) __asm__("func_00102B90");
+void func_00102238_x00102238(Dec2238_x00102238 *dec, int x, int y, int macroblock_type, int motion_type, int PMV[2][2][2], int mv_field_sel[2][2], int dmvector[2]) __asm__("func_00102238");
+void func_00102238_x00102238(Dec2238_x00102238 *dec, int x, int y, int macroblock_type, int motion_type, int PMV[2][2][2], int mv_field_sel[2][2], int dmvector[2])
+{
+    int bottom;
+    int dstParity = 1;
+    int average = 0;
+    int DMV[2][2];
+    Pic2238_x00102238 *refs[2][2];
+
+    dec->spr[dec->mb_buffer].pred_count = 0;
+    if ((macroblock_type & 8) || dec->picture_coding_type == 2) {
+        if (dec->picture_structure == 3) {
+            if (motion_type == 2 || !(macroblock_type & 8)) {
+                func_00102B90_x00102238(dec, dec->slots[0].ref_image, 0, 0, 0, 16, x, y, PMV[0][0][0], PMV[0][0][1], 0, 0);
+            } else if (motion_type == 1) {
+                func_00102B90_x00102238(dec, dec->slots[0].ref_image, mv_field_sel[0][0], 0, 0, 8, x, y, PMV[0][0][0],
+             PMV[0][0][1] >> 1, 1, 0);
+                func_00102B90_x00102238(dec, dec->slots[0].ref_image, mv_field_sel[1][0], 1, 0, 8, x, y, PMV[1][0][0],
+             PMV[1][0][1] >> 1, 1, 0);
+            } else if (motion_type == 3) {
+                func_001020B0_x00102238(dec, DMV, dmvector, PMV[0][0][0], PMV[0][0][1] >> 1);
+                func_00102B90_x00102238(dec, dec->slots[0].ref_image, 0, 0, 0, 8, x, y, PMV[0][0][0], PMV[0][0][1] >> 1, 1, 0);
+                func_00102B90_x00102238(dec, dec->slots[0].ref_image, 1, 0, 0, 8, x, y, DMV[0][0], DMV[0][1], 1, 1);
+                func_00102B90_x00102238(dec, dec->slots[0].ref_image, 1, 1, 0, 8, x, y, PMV[0][0][0], PMV[0][0][1] >> 1, 1, 0);
+                func_00102B90_x00102238(dec, dec->slots[0].ref_image, 0, 1, 0, 8, x, y, DMV[1][0], DMV[1][1], 1, 1);
+            } else {
+                func_00109790_x00102238(dec, D_0045CDF8_x00102238, motion_type);
+            }
+        } else {
+            refs[0][0] = dec->slots[1].ref_image;
+            refs[0][1] = dec->slots[2].ref_image;
+            refs[1][0] = dec->slots[1].prev_image;
+            refs[1][1] = dec->slots[2].prev_image;
+            bottom = dec->picture_structure == 2;
+            if (dec->picture_coding_type == 2 && dec->second_field && bottom != mv_field_sel[0][0]) {
+                dstParity = 1;
+            } else {
+                dstParity = 0;
+            }
+            if (motion_type == 1 || !(macroblock_type & 8)) {
+                func_00102B90_x00102238(dec, refs[dstParity][mv_field_sel[0][0]], 0, 0, 0, 16, x, y, PMV[0][0][0], PMV[0][0][1], 0,
+             0);
+            } else if (motion_type == 2) {
+                func_00102B90_x00102238(dec, refs[dstParity][mv_field_sel[0][0]], 0, 0, 0, 8, x, y, PMV[0][0][0], PMV[0][0][1], 0,
+             0);
+                if (dec->picture_coding_type == 2 && dec->second_field && bottom != mv_field_sel[1][0]) {
+                    dstParity = 1;
+                } else {
+                    dstParity = 0;
+                }
+                func_00102B90_x00102238(dec, refs[dstParity][mv_field_sel[1][0]], 0, 0, 8, 8, x, y, PMV[1][0][0], PMV[1][0][1], 0,
+             0);
+            } else if (motion_type == 3) {
+                if (dec->second_field) {
+                    dstParity = 1;
+                } else {
+                    dstParity = 0;
+                }
+                func_001020B0_x00102238(dec, DMV, dmvector, PMV[0][0][0], PMV[0][0][1]);
+                func_00102B90_x00102238(dec, refs[0][bottom], 0, 0, 0, 16, x, y, PMV[0][0][0], PMV[0][0][1], 0, 0);
+                func_00102B90_x00102238(dec, refs[dstParity][!bottom], 0, 0, 0, 16, x, y, DMV[0][0], DMV[0][1], 0, 1);
+            } else {
+                func_00109790_x00102238(dec, D_0045CE18_x00102238, motion_type);
+            }
+        }
+        average = 1;
+    }
+    if (macroblock_type & 4) {
+        if (dec->picture_structure == 3) {
+            dstParity = 1;
+            if (motion_type == 2) {
+                func_00102B90_x00102238(dec, dec->slots[0].prev_image, 0, 0, 0, 16, x, y, PMV[0][1][0], PMV[0][1][1], 0, average);
+            } else {
+                func_00102B90_x00102238(dec, dec->slots[0].prev_image, mv_field_sel[0][1], 0, 0, 8, x, y, PMV[0][1][0],
+             PMV[0][1][1] >> 1, dstParity, average);
+                func_00102B90_x00102238(dec, dec->slots[0].prev_image, mv_field_sel[1][1], 1, 0, 8, x, y, PMV[1][1][0],
+             PMV[1][1][1] >> 1, dstParity, average);
+            }
+        } else if (motion_type == 1) {
+            func_00102B90_x00102238(dec, mv_field_sel[0][1] ? dec->slots[2].prev_image : dec->slots[1].prev_image, 0, 0, 0, 16, x, y,
+                     PMV[0][1][0], PMV[0][1][1], 0, average);
+        } else if (motion_type == 2) {
+            func_00102B90_x00102238(dec, mv_field_sel[0][1] ? dec->slots[2].prev_image : dec->slots[1].prev_image, 0, 0, 0, 8, x, y,
+                     PMV[0][1][0], PMV[0][1][1], 0, average);
+            func_00102B90_x00102238(dec, mv_field_sel[1][1] ? dec->slots[2].prev_image : dec->slots[1].prev_image, 0, 0, 8, 8, x, y,
+                     PMV[1][1][0], PMV[1][1][1], 0, average);
+        } else {
+            func_00109790_x00102238(dec, D_0045CE38_x00102238, motion_type);
+        }
+    }
+}
+typedef struct { int base; int pad[3]; int mb_height; } Pic2940_x00102940;
+typedef struct { Pic2940_x00102940 *ref, *prev, *decode, *image; } Slot2940_x00102940;
+typedef struct { int dest; int pad; int intra, skipped, predicted; char pad14[0x140 - 0x14]; } Spr2940_x00102940;
+typedef struct { char pad0[0x12C]; int error; char pad130[0x13C - 0x130]; int mb_width; char pad140[0x184 - 0x140]; int ps; char pad188[0x1C8 - 0x188]; Slot2940_x00102940 slots[3]; char pad1F8[0x6C8 - 0x1F8]; Spr2940_x00102940 spr[1]; char pad808[0x820 - 0x808]; int mb_buffer; } Dec2940_x00102940;
+extern char D_0045CE58_x00102940[] __asm__("D_0045CE58");
+void func_00109790_x00102940(Dec2940_x00102940 *, char *, int) __asm__("func_00109790");
+void func_00102238_x00102940(Dec2940_x00102940 *, int, int, int, int, int *, int *, int *) __asm__("func_00102238");
+void func_00104BE8_x00102940(Dec2940_x00102940 *) __asm__("func_00104BE8");
+int func_00102940_x00102940(Dec2940_x00102940 *dec, int MBA, int MBAinc, int macroblock_type, int motion_type,
+                  int *PMV, int *mv_field_sel, int *dmvector) __asm__("func_00102940");
+int func_00102940_x00102940(Dec2940_x00102940 *dec, int MBA, int MBAinc, int macroblock_type, int motion_type,
+                  int *PMV, int *mv_field_sel, int *dmvector)
+{
+    int intra = macroblock_type & 1;
+    int bx = MBA % dec->mb_width;
+    int by = MBA / dec->mb_width;
+    int x = bx * 16;
+    int y = by * 16;
+    Pic2940_x00102940 *picture;
+
+    if (intra) {
+        while ((*(volatile unsigned int *)0x1000D400 >> 8) & 1)
+            ;
+        dec->spr[dec->mb_buffer].predicted = 0;
+    } else {
+        if ((unsigned int)(motion_type - 1) >= 3) {
+            func_00109790_x00102940(dec, D_0045CE58_x00102940, motion_type);
+            dec->error = 1;
+            return 0;
+        }
+        func_00102238_x00102940(dec, x, y, macroblock_type, motion_type, PMV, mv_field_sel, dmvector);
+        while ((*(volatile unsigned int *)0x1000D400 >> 8) & 1)
+            ;
+        func_00104BE8_x00102940(dec);
+        dec->spr[dec->mb_buffer].predicted = 1;
+    }
+    if (MBAinc == 1 && (macroblock_type & 2)) {
+        dec->spr[dec->mb_buffer].skipped = MBAinc;
+    } else {
+        dec->spr[dec->mb_buffer].skipped = 0;
+    }
+    dec->spr[dec->mb_buffer].intra = intra;
+    if (dec->ps == 3) {
+        dec->spr[dec->mb_buffer].dest =
+            dec->slots[0].decode->base + (bx * dec->slots[0].decode->mb_height + by) * 384;
+    } else {
+        picture = dec->ps == 2 ? dec->slots[2].decode : dec->slots[1].decode;
+        dec->spr[dec->mb_buffer].dest = picture->base + (bx * picture->mb_height + by) * 384;
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00102B90);
 int _sceMpegError_x00103018(int m, int msg) __asm__("func_00109738");
 typedef struct MpegMcSet_x00103018 {

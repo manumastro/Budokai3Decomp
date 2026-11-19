@@ -936,7 +936,29 @@ int scePadSetActAlign(int port, int slot, char *act)
     }
     return val;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", scePadGetButtonMask);
+typedef struct { u8 pad[0x10]; s32 f10; u8 pad2[0x8]; } PadSlot_x001175F8;
+extern PadSlot_x001175F8 D_00478990_x001175F8[][4] __asm__("D_00478990");
+void func_00116C18_x001175F8(s32, s32, u8 *) __asm__("func_00116C18");
+s32 scePadGetButtonMask_x001175F8(s32 port, s32 slot) __asm__("scePadGetButtonMask");
+s32 scePadGetButtonMask_x001175F8(s32 port, s32 slot)
+{
+    u8 buf[0x80];
+
+    if (D_00478990_x001175F8[port][slot].f10 == 0) {
+        return 0;
+    }
+    func_00116C18_x001175F8(port, slot, buf);
+    if (buf[0x72] != 1) {
+        return 0;
+    }
+    if (buf[0x64] < 2) {
+        return 0;
+    }
+    if (buf[0x66] < 2) {
+        return 0;
+    }
+    return (s32)((u64)buf[0x79] + ((u64)buf[0x7A] << 8) + ((u64)buf[0x7B] << 16) + ((u64)buf[0x7C] << 24));
+}
 typedef unsigned char u8_x001176A8;
 typedef signed int s32_x001176A8;
 typedef unsigned int u32_x001176A8;

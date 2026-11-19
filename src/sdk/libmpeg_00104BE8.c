@@ -144,7 +144,62 @@ int func_00105AF8_x00105AF8(Ctx_x00105AF8 *s, int unused, int *p3, int *p4, Blk_
     return 0;
 }
 __asm__("# noswap func_00105AF8");
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00105C98);
+typedef struct { char *base; int width, height, mb_width, mb_height; char pad14[0x68 - 0x14]; } Pic5C98_x00105C98;
+typedef struct { char pad0[0x10C]; char *frame_buffers[3]; int alalc[7]; int h_size, v_size, mb_width, mb_height; char pad144[0x14C - 0x144]; int progressive_sequence, chroma_format, matrix_coefficients; char pad158[0x184 - 0x158]; int picture_structure; int pad188; int frame_pred_frame_dct; char pad190[0x198 - 0x190]; int progressive_frame; char pad19C[0x1F8 - 0x19C]; Pic5C98_x00105C98 pictures[9]; char pad5A0[0x858 - 0x5A0]; int mpeg2; char pad85C[0x87C - 0x85C]; int buffer_mode; } Dec5C98_x00105C98;
+typedef struct { int width, height; char pad8[0x40 - 8]; Dec5C98_x00105C98 *sys; } Mp5C98_x00105C98;
+void _alalcFree_x00105C98(int *) __asm__("_alalcFree");
+char *func_00108170_x00105C98(Dec5C98_x00105C98 *, int *, unsigned int, int) __asm__("func_00108170");
+static __inline__ char *unc5C98(char *p) { return (char *)(((unsigned int)p & 0x0FFFFFFF) | 0x20000000); };
+static __inline__ void fp5C98(Pic5C98_x00105C98 *p0, Pic5C98_x00105C98 *p1, Pic5C98_x00105C98 *p2, Pic5C98_x00105C98 *p3, Pic5C98_x00105C98 *p4, Pic5C98_x00105C98 *p5, Pic5C98_x00105C98 *p6, Pic5C98_x00105C98 *p7, Pic5C98_x00105C98 *p8, char *buffer0, char *buffer1, char *buffer2, int width, int height) { p0->base = buffer0; p1->base = buffer1; p2->base = buffer2; p3->base = buffer0; p4->base = buffer1; p5->base = buffer2; p6->base = buffer0 + width * height / 512 * 384; p7->base = buffer1 + width * height / 512 * 384; p8->base = buffer2 + width * height / 512 * 384; };
+static __inline__ void ps5C98(Pic5C98_x00105C98 *p, int width, int height) { p->width = width; p->height = height; p->mb_width = width >> 4; p->mb_height = height >> 4; };
+void func_00105C98_x00105C98(Mp5C98_x00105C98 *mp) __asm__("func_00105C98");
+void func_00105C98_x00105C98(Mp5C98_x00105C98 *mp)
+{
+    Dec5C98_x00105C98 *dec = mp->sys;
+    int width, height;
+    unsigned int bytes;
+
+    if (!dec->mpeg2) {
+        dec->progressive_sequence = 1;
+        dec->chroma_format = 1;
+        dec->progressive_frame = 1;
+        dec->picture_structure = 3;
+        dec->frame_pred_frame_dct = 1;
+        dec->matrix_coefficients = 5;
+    }
+    dec->mb_width = (dec->h_size + 15) >> 4;
+    dec->mb_height = dec->mpeg2 && !dec->progressive_sequence ? (dec->v_size + 31) >> 5 << 1 : (dec->v_size + 15) >> 4;
+    height = dec->mb_height << 4;
+    width = dec->mb_width << 4;
+    if (width == mp->width && height == mp->height) {
+        return;
+    }
+    mp->width = width;
+    mp->height = height;
+    bytes = (unsigned int)(width * 384 * height) >> 8;
+    _alalcFree_x00105C98(dec->alalc);
+    dec->frame_buffers[0] = func_00108170_x00105C98(dec, dec->alalc, bytes, 64);
+    dec->frame_buffers[1] = func_00108170_x00105C98(dec, dec->alalc, bytes, 64);
+    dec->frame_buffers[2] = func_00108170_x00105C98(dec, dec->alalc, bytes, 64);
+    if (dec->buffer_mode == 0) {
+        fp5C98(&dec->pictures[0], &dec->pictures[1], &dec->pictures[2], &dec->pictures[3], &dec->pictures[4],
+               &dec->pictures[5], &dec->pictures[6], &dec->pictures[7], &dec->pictures[8],
+               unc5C98(dec->frame_buffers[0]), unc5C98(dec->frame_buffers[1]), unc5C98(dec->frame_buffers[2]), mp->width, mp->height);
+    } else if (dec->buffer_mode == 1) {
+        fp5C98(&dec->pictures[0], &dec->pictures[1], &dec->pictures[2], &dec->pictures[3], &dec->pictures[4],
+               &dec->pictures[5], &dec->pictures[6], &dec->pictures[7], &dec->pictures[8],
+               dec->frame_buffers[0], dec->frame_buffers[1], dec->frame_buffers[2], mp->width, mp->height);
+    }
+    ps5C98(&dec->pictures[0], width, height);
+    ps5C98(&dec->pictures[1], width, height);
+    ps5C98(&dec->pictures[2], width, height);
+    ps5C98(&dec->pictures[3], width, height / 2);
+    ps5C98(&dec->pictures[4], width, height / 2);
+    ps5C98(&dec->pictures[5], width, height / 2);
+    ps5C98(&dec->pictures[6], width, height / 2);
+    ps5C98(&dec->pictures[7], width, height / 2);
+    ps5C98(&dec->pictures[8], width, height / 2);
+}
 int DIntr_x00105FB0(void) __asm__("DI");
 int EIntr_x00105FB0(void) __asm__("EI");
 extern void _initSeq_x00105FB0(int h) __asm__("func_00105C98");
@@ -895,7 +950,70 @@ void func_00107280_x00107280(void *m) {
     *(volatile unsigned int *)0x10002010 = 0x40000000;
     func_003BACA0_x00107280(0, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107348);
+typedef struct { int f0; char pad4[0xA8 - 4]; int fA8, fAC, fB0, fB4, fB8, fBC; char padC0[0xE8 - 0xC0]; int fE8, fEC; char padF0[0x184 - 0xF0]; int f184; char pad188[0x834 - 0x188]; int f834; char pad838[0x858 - 0x838]; int f858; char pad85C[0x878 - 0x85C]; int f878; } Dec7348_x00107348;
+typedef struct { char pad[0x40]; Dec7348_x00107348 *sys; } M_7348_x00107348;
+extern char D_0045D1E0_x00107348[] __asm__("D_0045D1E0");
+extern char D_0045D220_x00107348[] __asm__("D_0045D220");
+extern char D_0045D260_x00107348[] __asm__("D_0045D260");
+void func_00109790_x00107348(Dec7348_x00107348 *, char *, int) __asm__("func_00109790");
+int func_00106AA8_x00107348(Dec7348_x00107348 *) __asm__("func_00106AA8");
+int func_00108BB8_x00107348(M_7348_x00107348 *) __asm__("func_00108BB8");
+int func_00107ED0_x00107348(M_7348_x00107348 *, int, int) __asm__("func_00107ED0");
+int scePrintf_x00107348(const char *, ...) __asm__("scePrintf");
+__asm__("# rebind func_" "00107348 0x00107348");
+int func_00107348_x00107348(M_7348_x00107348 *mp) __asm__("func_00107348");
+int func_00107348_x00107348(M_7348_x00107348 *mp)
+{
+    Dec7348_x00107348 *d = mp->sys;
+    int ret = 0;
+    int type = 1;
+    d->f0 = 0;
+    if (d->fEC & 0x3F) {
+        func_00109790_x00107348(d, D_0045D1E0_x00107348, d->fEC);
+        return -1;
+    }
+    if (d->f878) {
+        scePrintf_x00107348(D_0045D220_x00107348);
+        return -1;
+    }
+    d->f834 = 0;
+    do {
+        if (ret != -1) {
+            do {
+                type = func_00106AA8_x00107348(d);
+                if (type < 0) return -1;
+            } while (type != 0 && d->f184 != d->fE8 && d->f858 != 0);
+        }
+        switch (type) {
+        case 0:
+            func_00108BB8_x00107348(mp);
+            d->f0 = 1;
+            break;
+        case 1:
+            d->fBC = 0;
+            d->fB8 = 0;
+            d->fB4 = 0;
+            ret = func_00107ED0_x00107348(mp, 0, d->fA8);
+            d->fB4++;
+            break;
+        case 2:
+            ret = func_00107ED0_x00107348(mp, d->fB8, d->fAC);
+            d->fB8++;
+            break;
+        case 3:
+        case 4:
+            ret = func_00107ED0_x00107348(mp, d->fBC, d->fB0);
+            d->fBC++;
+            break;
+        }
+        if (d->f878) {
+            scePrintf_x00107348(D_0045D260_x00107348);
+            return -1;
+        }
+        if (d->f834) return 1;
+    } while (d->f0 == 0);
+    return 1;
+}
 typedef struct { char pad0[0x18]; long pts, dts; int decoded, pct, ps, pseq, pframe, tff, rff; int co[6]; int dw, dh; } Pic7500_x00107500;
 typedef struct { Pic7500_x00107500 *ref, *prev, *decode, *image; } Slot7500_x00107500;
 typedef struct { char pad0[0xB4]; int count_i, count_p; char padBC[0xFC - 0xBC]; int set_broken_link; char pad100[0x14C - 0x100]; int pseq; char pad150[0x158 - 0x150]; int dw, dh, pct; char pad164[0x184 - 0x164]; int ps, tff; char pad18C[0x194 - 0x18C]; int rff, pframe; char pad19C[0x19C - 0x19C]; int hoff[3], voff[3]; int closed_gop, broken_link; char pad1BC[0x1C8 - 0x1BC]; Slot7500_x00107500 slots[3]; char pad1F8[0x838 - 0x1F8]; long pts, dts; } Dec7500_x00107500;

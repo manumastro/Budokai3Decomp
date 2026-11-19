@@ -894,7 +894,61 @@ void func_001694B0(s32 arg0, u8 *arg1) {
         func_001693C0(arg1, arg0, *(s32 *)((u8 *)(&D_00413D00) + 0), *(s32 *)((u8 *)(&D_00413D00) + 4));
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", htCiLoadDirInfo);
+void *memset_x00169500(void *, int, unsigned int) __asm__("memset");
+extern u8 D_00480040_x00169500[] __asm__("D_00480040");
+extern s32 D_00413D00_x00169500 __asm__("D_00413D00");
+extern s32 D_00413D14_x00169500 __asm__("D_00413D14");
+extern char D_00463CA8_x00169500[] __asm__("D_00463CA8");
+extern char D_00463CD8_x00169500[] __asm__("D_00463CD8");
+extern char D_00463D08_x00169500[] __asm__("D_00463D08");
+extern char D_00463D30_x00169500[] __asm__("D_00463D30");
+void func_00169488_x00169500(void) __asm__("func_00169488");
+void func_00169258_x00169500(void) __asm__("func_00169258");
+int scePrintf_x00169500(const char *, ...) __asm__("scePrintf");
+s32 func_00168F08_x00169500(char *, u8 *) __asm__("func_00168F08");
+void func_00167C90_x00169500(s32, char *) __asm__("func_00167C90");
+s32 func_00168D68_x00169500(u8 *, u8 *, u32, u32) __asm__("func_00168D68");
+s32 func_00169068_x00169500(u8 *, s32) __asm__("func_00169068");
+s32 htCiLoadDirInfo_x00169500(char *fname, u8 *buf, u32 size, u32 n) __asm__("htCiLoadDirInfo");
+s32 htCiLoadDirInfo_x00169500(char *fname, u8 *buf, u32 size, u32 n)
+{
+    s32 cnt;
+    u32 u;
+    u32 m;
+
+    memset_x00169500(D_00480040_x00169500, 0, 0x1000);
+    if (D_00413D00_x00169500 == 0) {
+        func_00169488_x00169500();
+    }
+    func_00169258_x00169500();
+    if (fname == 0) {
+        return 0;
+    }
+    if (buf == 0) {
+        if (D_00413D14_x00169500 == 0) {
+            scePrintf_x00169500(D_00463CA8_x00169500, 0);
+        }
+        return 0;
+    }
+    if (size == 0) {
+        if (D_00413D14_x00169500 == 0) {
+            scePrintf_x00169500(D_00463CD8_x00169500, 0);
+        }
+        return 0;
+    }
+    memset_x00169500(buf, 0, size);
+    if (func_00168F08_x00169500(fname, D_00480040_x00169500) == 0) {
+        if (D_00413D14_x00169500 == 0) {
+            scePrintf_x00169500(D_00463D08_x00169500, fname);
+        }
+        func_00167C90_x00169500(0, D_00463D30_x00169500);
+        return 0;
+    }
+    u = n + 9;
+    m = n + 1;
+    cnt = func_00168D68_x00169500(buf, D_00480040_x00169500, size / u, n);
+    return (size / u) * 8 + func_00169068_x00169500(buf, cnt) * m;
+}
 typedef struct {
     int fd;
     int size;
