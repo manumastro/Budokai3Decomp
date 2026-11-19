@@ -1371,7 +1371,24 @@ void func_0017E9E0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E9E8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EAB0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EB00);
+s32 func_0017C2E0_x0017EB00(s32, s32) __asm__("func_0017C2E0");
+s32 func_0017EB90_x0017EB00(void) __asm__("func_0017EB90");
+extern s32 D_004814F0_x0017EB00 __asm__("D_004814F0");
+s32 func_0017EB00_x0017EB00(s32 arg0, s32 arg1, s32 *arg2) __asm__("func_0017EB00");
+s32 func_0017EB00_x0017EB00(s32 arg0, s32 arg1, s32 *arg2)
+{
+    s32 *p;
+    if (arg0 == 0) {
+        p = &D_004814F0_x0017EB00;
+    } else {
+        if (func_0017EB90_x0017EB00() != 0) {
+            return func_0017C2E0_x0017EB00(0, 0xFF030210);
+        }
+        p = (s32 *)(arg0 + 0x190);
+    }
+    *arg2 = p[arg1];
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EB90);
 void func_0017EBB8(void) {
     func_00172A88();

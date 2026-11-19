@@ -946,7 +946,30 @@ void func_00167C90_x00167C90(s32 arg0, s32 arg1) {
         D_004138EC_x00167C90(D_004138F0_x00167C90, arg1, arg0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167CC0);
+extern s32 D_00413960_x00167CC0 __asm__("D_00413960");
+s32 func_00167CC0_x00167CC0(void) __asm__("func_00167CC0");
+s32 func_00167CC0_x00167CC0(void)
+{
+  s32 i;
+  s8 *p;
+
+  i = 0;
+  p = (s8 *) &D_00413960_x00167CC0;
+  do
+  {
+    if (p[0] == 1)
+    {
+      if (p[2] == 2)
+      {
+        return 1;
+      }
+    }
+    i++;
+    p += 0x30;
+  }
+  while (i < 0xD);
+  return 0;
+}
 s32 func_00167D10(u8 *arg0) {
     s32 temp_s0;
     s32 var_v0;

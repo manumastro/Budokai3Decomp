@@ -638,7 +638,13 @@ void func_00182280(s32 arg0) {
 s32 func_001822A8(void) {
     return *(s32 *)((u8 *)(func_00181FA8()) + 0x3C);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001822C8);
+s32 func_00183A30_x001822C8(s32, s32, s32) __asm__("func_00183A30");
+void func_001822C8_x001822C8(f32 *arg0) __asm__("func_001822C8");
+void func_001822C8_x001822C8(f32 *arg0)
+{
+  func_00183A30_x001822C8(0, 27, (s32)*arg0);
+  func_00183A30_x001822C8(0, 7, 1);
+}
 void func_00182300(void) {
     if (D_00425260 != 0) {
         D_00425260 = 0;
@@ -1390,8 +1396,29 @@ INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlySetFloatSpeed);
 void func_001846C0(u8 *arg0) {
     func_0018DA30(*(s32 *)((u8 *)arg0 + 0x40));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001846D8);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00184718);
+typedef int s32_x001846D8;
+typedef unsigned int u32_x001846D8;
+void Rand_Range_x001846D8(const char *fmt, ...) __asm__("func_001870E8");
+extern char D_00379458_x001846D8[] __asm__("D_00466738");
+void func_002D04A8_x001846D8(void *sfd, s32_x001846D8 id, s32_x001846D8 val) __asm__("func_001996F0");
+void func_001846D8_x001846D8(s32_x001846D8 ch) __asm__("func_001846D8");
+/* func_002B92B0: from https://github.com/RexxColder/BT2-Recomp (src/cri/xf_2B92B0.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void func_001846D8_x001846D8(s32_x001846D8 ch) {
+    if ((u32_x001846D8)(ch + 1) >= 3) {
+        Rand_Range_x001846D8(D_00379458_x001846D8);
+        return;
+    }
+    func_002D04A8_x001846D8(0, 0x3D, ch);
+}
+typedef int s32_x00184718;
+void func_002D0710_x00184718(void *sfd, s32_x00184718 id, s32_x00184718 *val) __asm__("func_00199940");
+s32_x00184718 func_00184718_x00184718(void) __asm__("func_00184718");
+/* func_002B92F0: from https://github.com/RexxColder/BT2-Recomp (src/cri/xf_2B92B0.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+s32_x00184718 func_00184718_x00184718(void) {
+    s32_x00184718 ch;
+    func_002D0710_x00184718(0, 0x3D, &ch);
+    return ch;
+}
 void func_00184740(void) {
     func_0019F328();
     func_0019F450(&func_00184768, 0);

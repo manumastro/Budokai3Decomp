@@ -1511,7 +1511,24 @@ void func_0019B968_x0019B968(u8 *arg0, s64 arg1)
   *((s64 *) (((u8 *) arg0) + 0x10)) = (s64) (((*((s64 *) (((u8 *) arg0) + 0x10))) < arg1) ? (arg1) : (*((s64 *) (((u8 *) arg0) + 0x10))));
   *((s32 *) (((u8 *) arg0) + 0x18)) = (*((s32 *) (((u8 *) arg0) + 0x18))) + 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B9A8);
+typedef signed long Sint32_x0019B9A8;
+typedef Sint32_x0019B9A8 (*SFD_TR_FUNC_x0019B9A8)();
+typedef struct {
+    SFD_TR_FUNC_x0019B9A8 functions[14];
+} SFD_TR_IF_x0019B9A8;
+typedef struct {
+    const SFD_TR_IF_x0019B9A8 *tbl[15];
+} SFTRN_TRIF_TBL_x0019B9A8;
+Sint32_x0019B9A8 sftrn_CallInit_x0019B9A8(const SFD_TR_IF_x0019B9A8 **p, Sint32_x0019B9A8 ret) __asm__("func_0019BA58");
+Sint32_x0019B9A8 func_0019B9A8_x0019B9A8(SFTRN_TRIF_TBL_x0019B9A8 *dst, SFTRN_TRIF_TBL_x0019B9A8 *src) __asm__("func_0019B9A8");
+/* SFTRN_Init: from https://github.com/dev-camo/shadow-decomp (src/CRI/sfd_trn.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0019B9A8 func_0019B9A8_x0019B9A8(SFTRN_TRIF_TBL_x0019B9A8 *dst, SFTRN_TRIF_TBL_x0019B9A8 *src) {
+    Sint32_x0019B9A8 ret;
+    ret = 0;
+    *dst = *src;
+    ret = sftrn_CallInit_x0019B9A8(src->tbl, ret);
+    return ret;
+}
 typedef struct cVec_x0019BA40 {
     float x, y, z, w_x0019BA40;
 } cVec_x0019BA40;
@@ -2656,7 +2673,26 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E300);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E380);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E3E8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E450);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E4B8);
+void *func_0019E240_x0019E4B8(s32, s32) __asm__("func_0019E240");
+s32 func_0019EAC0_x0019E4B8(s32) __asm__("func_0019EAC0");
+s32 func_0019E4B8_x0019E4B8(s32 arg0, s32 arg1, s32 *arg2) __asm__("func_0019E4B8");
+s32 func_0019E4B8_x0019E4B8(s32 arg0, s32 arg1, s32 *arg2)
+{
+    u8 *temp;
+    u16 v;
+    s32 c;
+    c = arg1 & 0xFF;
+    temp = func_0019E240_x0019E4B8(arg0, c);
+    if (temp == 0) {
+        return 0;
+    }
+    if (func_0019EAC0_x0019E4B8(c) != 0xE0) {
+        return 0;
+    }
+    v = *(u16 *)(temp + 0x1A);
+    *arg2 = (v == 0xFFFF) ? 0 : v;
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E528);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E5D0);
 void * func_0019E240_x0019E640() __asm__("func_0019E240");

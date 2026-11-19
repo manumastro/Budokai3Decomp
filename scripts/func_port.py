@@ -52,6 +52,9 @@ LICENSES = {
     "rac1": ("https://github.com/OpenRAC/rac1-decomp", "GPL-3.0"),
     "rac2": ("https://github.com/OpenRAC/rac2-decomp", "GPL-3.0"),
     "s3": ("https://github.com/crowded-street/3s-decomp", "AGPL-3.0-only"),
+    "BT2-Recomp": ("https://github.com/RexxColder/BT2-Recomp", "CC0-1.0"),
+    "shadow-decomp": ("https://github.com/dev-camo/shadow-decomp", "no licence stated by the repository"),
+    "sonic-adventure": ("https://github.com/reshaped/sonic-adventure", "no licence stated by the repository"),
 }
 DATA_SECS = (".data", ".rodata", ".bss", ".sdata", ".sbss", ".lit4", ".lit8")
 PORT_LD = ROOT / "config" / "port_syms.ld"

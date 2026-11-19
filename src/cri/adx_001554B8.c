@@ -582,7 +582,30 @@ void func_001559E8_x001559E8(ADXF_x001559E8 adxf) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", func_00155AB0);
+void func_00152508_x00155AB0() __asm__("func_00152508");
+void func_00152520_x00155AB0() __asm__("func_00152520");
+void func_001559E8_x00155AB0(s8 *) __asm__("func_001559E8");
+extern s8 lbl_80186B68_x00155AB0 __asm__("lbl_80186B68");
+void func_00155AB0_x00155AB0(void) __asm__("func_00155AB0");
+void func_00155AB0_x00155AB0(void)
+{
+  s8 *var_s0;
+  s32 var_s1;
+  var_s1 = 0xF;
+  func_00152508_x00155AB0();
+  var_s0 = &lbl_80186B68_x00155AB0;
+  do
+  {
+    if (*var_s0 == 1)
+    {
+      func_001559E8_x00155AB0(var_s0);
+    }
+    var_s1--;
+    var_s0 += 0x44;
+  }
+  while (var_s1 >= 0);
+  func_00152520_x00155AB0();
+}
 typedef struct SjObj_x00155B10 SjObj_x00155B10;
 typedef struct {
     char pad_00[12];

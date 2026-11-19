@@ -12,7 +12,22 @@ s8 func_001654F0(u8 *arg0) {
     return *(s8 *)((u8 *)arg0 + 1);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_001654F8);
-INCLUDE_ASM("asm/nonmatchings/cri/dtr", DTR_Init);
+s32 memset_x001655B8() __asm__("memset");
+s32 scePrintf_x001655B8() __asm__("scePrintf");
+extern s32 D_00411614_x001655B8 __asm__("D_00411614");
+extern s32 D_00411618_x001655B8 __asm__("D_00411618");
+extern s32 D_00463300_x001655B8 __asm__("D_00463300");
+extern s32 D_00463318_x001655B8 __asm__("D_00463318");
+void DTR_Init_x001655B8(void) __asm__("DTR_Init");
+void DTR_Init_x001655B8(void)
+{
+  scePrintf_x001655B8(&D_00463300_x001655B8, D_00411614_x001655B8);
+  if (D_00411614_x001655B8 == 0) {
+    memset_x001655B8(&D_00411618_x001655B8, 0, 0x800);
+  }
+  D_00411614_x001655B8 = D_00411614_x001655B8 + 1;
+  scePrintf_x001655B8(&D_00463318_x001655B8);
+}
 void func_00165620(void) {
     D_00411614 -= 1;
 }

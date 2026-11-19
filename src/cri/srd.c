@@ -367,7 +367,26 @@ s32 func_00164B18(void) {
     return temp_s0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164B58);
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164BF8);
+s32 func_00164B18_x00164BF8(s8) __asm__("func_00164B18");
+s32 func_00164B58_x00164BF8(s8) __asm__("func_00164B58");
+extern s8 D_00411599_x00164BF8 __asm__("D_00411599");
+s32 func_00164BF8_x00164BF8(void) __asm__("func_00164BF8");
+s32 func_00164BF8_x00164BF8(void)
+{
+  s8 x;
+  x = D_00411599_x00164BF8;
+  if (x == 1)
+  {
+    __asm__ __volatile__ ("" : "+r" (x));
+    return func_00164B18_x00164BF8(x) * 2;
+  }
+  if (x != 2)
+  {
+    return 0;
+  }
+  __asm__ __volatile__ ("" : "+r" (x));
+  return func_00164B58_x00164BF8(x);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164C48);
 extern volatile s32 D_004115F4_x00164D18 __asm__("D_004115F4");
 s32 func_00164D18_x00164D18(void) __asm__("func_00164D18");

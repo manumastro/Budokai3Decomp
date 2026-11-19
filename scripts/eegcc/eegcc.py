@@ -87,8 +87,14 @@ def ensure_container():
     r = _docker("run", "-d", "--rm", "--name", name, *vols, IMAGE, check=False)
     if r.returncode:
         # ninja starts many compiles at once: another one may have started the container meanwhile
-        again = _docker("inspect", "-f", "{{.State.Running}}", name, check=False)
-        if again.returncode or again.stdout.strip() != "true":
+        # (it can take a few seconds to reach the running state)
+        import time
+        for _ in range(40):
+            again = _docker("inspect", "-f", "{{.State.Running}}", name, check=False)
+            if again.returncode == 0 and again.stdout.strip() == "true":
+                break
+            time.sleep(0.5)
+        else:
             raise subprocess.CalledProcessError(r.returncode, r.args, r.stdout, r.stderr)
     return name
 

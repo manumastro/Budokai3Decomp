@@ -26,6 +26,9 @@ file's first comment) to the instructions of this executable.
 | https://github.com/lombyte-project/Lombyte | GPL-3.0 | LICENSES/Lombyte-GPL-3.0.txt |
 | https://github.com/OpenRAC/rac1-decomp | GPL-3.0 | LICENSES/rac1-decomp-GPL-3.0.txt |
 | https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/) | AGPL-3.0 | LICENSES/3s-decomp-AGPL-3.0.txt |
+| https://github.com/RexxColder/BT2-Recomp (src/cri/) | CC0-1.0 | LICENSES/BT2-Recomp-CC0.txt |
+| https://github.com/dev-camo/shadow-decomp (src/CRI/) | none stated by the repository (used at the maintainer's request; remove with `git grep -n shadow-decomp src`) | - |
+| https://github.com/reshaped/sonic-adventure (sdk/sofdec/, modules/movie/sdk/) | none stated by the repository (same) | - |
 
 newlib: each function taken from it carries its origin file's notice where that file has one. Files without a notice
 of their own are covered by newlib's COPYING.NEWLIB section for Cygnus/Red Hat code:
