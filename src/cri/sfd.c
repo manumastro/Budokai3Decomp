@@ -6806,7 +6806,38 @@ int func_0018C488_x0018C488(unsigned char *p, int size) {
     }
     return kbps * 1000;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C500);
+typedef struct SfdMpaHdr_x0018C500 {
+    unsigned char layer;
+    unsigned char protection;
+    unsigned char bitrate;
+    unsigned char sfreq;
+    unsigned char padding;
+    unsigned char priv;
+    unsigned char mode;
+    unsigned char modeExt;
+    unsigned char copyright;
+    unsigned char original;
+    unsigned char emphasis;
+} SfdMpaHdr_x0018C500;
+extern int sfana_mpa_sfreqs_x0018C500[4] __asm__("D_004672B0");
+extern int sfana_mpa_bitrates_x0018C500[4][16] __asm__("D_004672C0");
+extern int sfana_mpa_frame_samples_x0018C500[4] __asm__("D_004673C0");
+unsigned char *sfcre_SerachMpaAau_x0018C500(SfdMpaHdr_x0018C500 *hdr, unsigned char *p, int size) __asm__("func_0018C660");
+unsigned char *sfcre_SerachMpaAau_x0018C500(SfdMpaHdr_x0018C500 *hdr, unsigned char *p, int size) __asm__("func_0018C660");
+int func_0018C500_x0018C500(unsigned char *p, int size) __asm__("func_0018C500");
+/* SFCRE_AnalyAauSiz: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfdana.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0018C500_x0018C500(unsigned char *p, int size) {
+    SfdMpaHdr_x0018C500 hdr;
+    int kbps;
+    if (sfcre_SerachMpaAau_x0018C500(&hdr, p, size) == 0) {
+        return -1;
+    }
+    kbps = sfana_mpa_bitrates_x0018C500[hdr.layer][hdr.bitrate];
+    if (kbps == -1) {
+        return -1;
+    }
+    return sfana_mpa_frame_samples_x0018C500[hdr.layer] * kbps * 1000 / (sfana_mpa_sfreqs_x0018C500[hdr.sfreq] * 8);
+}
 typedef struct SfdAnaInf_x0018C5B8 {
     char found;
     char isAv;
@@ -26190,7 +26221,71 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193360);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193478);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193520);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193608);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001936B0);
+typedef struct SfdSj_x001936B0 SfdSj_x001936B0;
+typedef struct SfdSjChunk_x001936B0 {
+    char *data;
+    int len;
+} SfdSjChunk_x001936B0;
+typedef struct SfdSjVtbl_x001936B0 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x001936B0 *sj);
+    int (*getUuid)(SfdSj_x001936B0 *sj);
+    void (*reset)(SfdSj_x001936B0 *sj);
+    void (*getChunk)(SfdSj_x001936B0 *sj, int id, int n, SfdSjChunk_x001936B0 *ck);
+    void (*ungetChunk)(SfdSj_x001936B0 *sj, int id, SfdSjChunk_x001936B0 *ck);
+    void (*putChunk)(SfdSj_x001936B0 *sj, int id, SfdSjChunk_x001936B0 *ck);
+    int (*getNumData)(SfdSj_x001936B0 *sj, int id);
+} SfdSjVtbl_x001936B0;
+struct SfdSj_x001936B0 {
+    SfdSjVtbl_x001936B0 *vtbl;
+};
+struct SfdSj_x001936B0;
+struct SfdSj_x001936B0;
+int MPV_CheckDelim_x001936B0(const unsigned char *p) __asm__("func_0017B420");
+char *MPV_SearchDelim_x001936B0(char *buf, int len, int mask) __asm__("func_0017B5B8");
+extern int DAT_004beb0c_x001936B0 __asm__("D_00426B14");
+extern int DAT_004f4e70_x001936B0[] __asm__("D_00467540");
+void func_001936B0_x001936B0(SfdSj_x001936B0 *source, int *kind, char **data, int *size) __asm__("func_001936B0");
+/* FUN_002a7278: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfmpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001936B0_x001936B0(SfdSj_x001936B0 *source, int *kind, char **data, int *size) {
+    SfdSjChunk_x001936B0 chunk;
+    char *seq;
+    char *pic;
+    char *ext;
+    int rest;
+    *kind = 0;
+    *data = 0;
+    *size = 0;
+    source->vtbl->getChunk(source, 1, 0x7FFFFFFF, &chunk);
+    seq = MPV_SearchDelim_x001936B0(chunk.data, chunk.len, 204);
+    if (seq == 0) {
+        DAT_004beb0c_x001936B0++;
+    } else {
+        if ((MPV_CheckDelim_x001936B0(seq) & 4) != 0) {
+            if (chunk.len < seq - chunk.data + 6) {
+                DAT_004beb0c_x001936B0++;
+            } else {
+                *kind = DAT_004f4e70_x001936B0[(seq[5] >> 3) & 7];
+                if (*kind == 3) {
+                    rest = chunk.data - seq + chunk.len;
+                    pic = MPV_SearchDelim_x001936B0(seq, rest, 34);
+                    if (pic != 0 && (MPV_CheckDelim_x001936B0(pic) & 0x20) != 0) {
+                        ext = MPV_SearchDelim_x001936B0(seq, rest, 2);
+                        if (ext == 0) {
+                            DAT_004beb0c_x001936B0++;
+                        } else {
+                            *data = pic;
+                            *size = ext - pic;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    source->vtbl->ungetChunk(source, 1, &chunk);
+}
 void func_00193828(u8 *arg0, u8 *arg1) {
     memcpy(*(s32 *)((u8 *)arg0 + 0), *(s32 *)((u8 *)arg1 + 0), *(s32 *)((u8 *)arg1 + 4));
     *(s32 *)((u8 *)arg0 + 4) = (s32) *(s32 *)((u8 *)arg1 + 4);

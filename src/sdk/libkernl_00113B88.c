@@ -678,7 +678,29 @@ void func_00114AB8_x00114AB8(void)
     for (i = 2, patch = &libkernl_syscall_patches_x00114AB8[2]; i < 8; i++, patch++)
         RFU116_SetSyscall_x00114AB8(patch->num, RFU091_x00114AB8(patch->num));
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114B90);
+void func_00114B90_x00114B90(unsigned int addr, unsigned int value) __asm__("func_00114B90");
+/* SetT2: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00114B90_x00114B90(unsigned int addr, unsigned int value)
+{
+    unsigned int eie;
+    unsigned int status;
+
+    __asm__("mfc0 %0, $12" : "=r"(eie));
+    eie &= 0x10000;
+    if (eie) {
+        do {
+            __asm__ volatile(".p2align 3\n"
+                             "di\n"
+                             "sync.p\n"
+                             "mfc0 %0, $12" : "=r"(status));
+        } while (status & 0x10000);
+    }
+    __asm__ volatile("mfc0 %0, $12\n\tsync.p" : "=r"(status));
+    status = ((status | 0x2 | 0x4) ^ 0x2) | eie;
+    __asm__("mtc0 %0, $12\n\tsync.p" : : "r"(status));
+    *(unsigned int *)addr = value;
+    __asm__(".set push\n\t.set noreorder\n\tmtc0 $31, $30\n\tsync.p\n\teret\n\t.set pop");
+}
 s32 func_00114B90_x00114C00(s32, s32) __asm__("func_00114B90");
 void func_00114C00_x00114C00(s32 arg0) __asm__("func_00114C00");
 void func_00114C00_x00114C00(s32 arg0) {

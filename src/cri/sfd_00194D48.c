@@ -75,7 +75,69 @@ s32 WaitSema(s32);                              /* extern */
 void func_00194D48(s64 *arg0, s64 arg1, s64 arg2, s64 arg3) {
     *arg0 = (arg1 << 0x20) | ((u64) (arg2 << 0x20) >> 4) | ((u64) (arg3 << 0x20) >> 0x20);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00194D70);
+typedef struct SfdIpuEntry_x00194D70 {
+    long long f0;
+    long long f8;
+    int f16;
+    int f20;
+} SfdIpuEntry_x00194D70;
+typedef struct SfdDmaTag_x00194D70 {
+    long long tag;
+    long long pad;
+} SfdDmaTag_x00194D70;
+typedef struct SfdIpuStream_x00194D70 {
+    void *base;
+    SfdDmaTag_x00194D70 *uncached;
+    int sectors;
+    int headSct;
+    int queuedSct;
+    int restBytes;
+    int bytes;
+    unsigned int r28;
+    unsigned int r32;
+    unsigned int r36;
+    unsigned int r40;
+    unsigned int r44;
+    unsigned int r48;
+    unsigned int r52;
+    unsigned int r56;
+    unsigned int r60;
+    int sema;
+    int active;
+    long long totalBytes;
+    SfdIpuEntry_x00194D70 *entries;
+    int entryCount;
+    int f88;
+    int f92;
+} SfdIpuStream_x00194D70;
+struct SemaParam_x00194D70 {
+    int currentCount;
+    int maxCount;
+    int initCount;
+    int numWaitThreads;
+    unsigned int attr;
+    unsigned int option;
+};
+int CreateSema_x00194D70(struct SemaParam_x00194D70 *param) __asm__("CreateSema");
+int viBufReset_x00194D70(SfdIpuStream_x00194D70 *stream) __asm__("func_00194DE8");
+int viBufReset_x00194D70(SfdIpuStream_x00194D70 *stream) __asm__("func_00194DE8");
+int func_00194D70_x00194D70(SfdIpuStream_x00194D70 *stream, void *base, void *address, int sectors, SfdIpuEntry_x00194D70 *entries, int entryCount) __asm__("func_00194D70");
+/* viBufCreate: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfmpvps2.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00194D70_x00194D70(SfdIpuStream_x00194D70 *stream, void *base, void *address, int sectors, SfdIpuEntry_x00194D70 *entries, int entryCount) {
+    struct SemaParam_x00194D70 param;
+    stream->base = base;
+    stream->uncached = (SfdDmaTag_x00194D70 *)((((unsigned int)address) & 0x0FFFFFFF) | 0x20000000);
+    stream->sectors = sectors;
+    stream->bytes = sectors * 2048;
+    stream->entries = entries;
+    stream->entryCount = entryCount;
+    param.initCount = 1;
+    param.maxCount = 1;
+    stream->sema = CreateSema_x00194D70(&param);
+    viBufReset_x00194D70(stream);
+    stream->totalBytes = 0;
+    return 1;
+}
 typedef struct SfdIpuEntry_x00194DE8 {
     long long f0;
     long long f8;
@@ -729,7 +791,33 @@ void func_00195E20_x00195E20(u8 *arg0, s32 arg1)
   *((s32 *) (((u8 *) temp_s0_2) + 0x20)) = arg1;
   *((s32 *) (((u8 *) temp_s0_2) + 0x1C)) = 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00195E68);
+typedef unsigned int size_t_x00195E68;
+void *memcpy_x00195E68(void *, const void *, size_t_x00195E68) __asm__("func_00125740");
+int func_00195E68_x00195E68(char *buf, int size, char *dst, int cap, char *src, int pos, char *data, int len) __asm__("func_00195E68");
+/* copy2area: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfmpvps2.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00195E68_x00195E68(char *buf, int size, char *dst, int cap, char *src, int pos, char *data, int len) {
+    int end = pos + len;
+    int r = 0;
+    if (size + cap >= end) {
+        if (pos >= size) {
+            memcpy_x00195E68(buf, src, size);
+            memcpy_x00195E68(dst, src + size, pos - size);
+            memcpy_x00195E68(dst + pos - size, data, len);
+        } else {
+            int room = size - pos;
+            if (len >= room) {
+                memcpy_x00195E68(buf, src, pos);
+                memcpy_x00195E68(buf + pos, data, room);
+                memcpy_x00195E68(dst, data + size - pos, len - room);
+            } else {
+                memcpy_x00195E68(buf, src, pos);
+                memcpy_x00195E68(buf + pos, data, len);
+            }
+        }
+        r = end;
+    }
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00195F98);
 s32 func_001960E0(u8 *arg0) {
     return *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x1C70)) + 0xFF8);
@@ -10567,7 +10655,39 @@ int func_00197830_x00197830(void) {
     return -1;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197870);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197A60);
+typedef struct SfdMvInf_x00197A60 {
+    int width;
+    int height;
+    int mbWidth;
+    int mbHeight;
+    int bitRate;
+    int frameRate;
+    int muxRate;
+    int fixedFlag;
+    int vbvSize;
+    int audioBound;
+    int videoBound;
+    int privateBound;
+    int f48[4];
+} SfdMvInf_x00197A60;
+void UTY_MemsetDword_x00197A60(void *dst, int value, unsigned int count) __asm__("func_00179018");
+void func_00197A60_x00197A60(SfdMvInf_x00197A60 *rec) __asm__("func_00197A60");
+/* sfply_InitMvInf: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfdply.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00197A60_x00197A60(SfdMvInf_x00197A60 *rec) {
+    UTY_MemsetDword_x00197A60(rec, 0, 16);
+    rec->width = 0;
+    rec->height = 0;
+    rec->mbWidth = 0;
+    rec->mbHeight = 0;
+    rec->bitRate = 0;
+    rec->frameRate = 0;
+    rec->muxRate = 0;
+    rec->vbvSize = 0;
+    rec->fixedFlag = 1;
+    rec->audioBound = -1;
+    rec->videoBound = -1;
+    rec->privateBound = -1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197AC8);
 s32 func_00179018_x00197B20() __asm__("func_00179018");
 s32 func_0019B948_x00197B20() __asm__("func_0019B948");
@@ -10688,7 +10808,1224 @@ s32 func_00197DB0(u8 *arg0) {
     *(s32 *)((u8 *)arg0 + 0x4C) = 4;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197DC0);
+typedef struct SfdSj_x00197DC0 SfdSj_x00197DC0;
+typedef struct SfdSjChunk_x00197DC0 {
+    char *data;
+    int len;
+} SfdSjChunk_x00197DC0;
+typedef struct SfdSjVtbl_x00197DC0 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x00197DC0 *sj);
+    int (*getUuid)(SfdSj_x00197DC0 *sj);
+    void (*reset)(SfdSj_x00197DC0 *sj);
+    void (*getChunk)(SfdSj_x00197DC0 *sj, int id, int n, SfdSjChunk_x00197DC0 *ck);
+    void (*ungetChunk)(SfdSj_x00197DC0 *sj, int id, SfdSjChunk_x00197DC0 *ck);
+    void (*putChunk)(SfdSj_x00197DC0 *sj, int id, SfdSjChunk_x00197DC0 *ck);
+    int (*getNumData)(SfdSj_x00197DC0 *sj, int id);
+} SfdSjVtbl_x00197DC0;
+struct SfdSj_x00197DC0 {
+    SfdSjVtbl_x00197DC0 *vtbl;
+};
+struct SfdSj_x00197DC0;
+struct SfdRecSlot_x00197DC0;
+struct SfdRec_x00197DC0;
+struct SfdMpvCond_x00197DC0;
+struct SfdPlanes_x00197DC0;
+struct SfdFrameInfo_x00197DC0;
+struct SfdPly_x00197DC0;
+typedef int (*SfdTimeFn_x00197DC0)(void *sfd, int *time, int *unit);
+typedef struct SfdTimeCode_x00197DC0 {
+    int rate;
+    int drop;
+    int hour;
+    int minute;
+    int second;
+    int frame;
+    int add;
+    short repeat;
+    short field;
+} SfdTimeCode_x00197DC0;
+typedef struct SfdTimeRec_x00197DC0 {
+    int valid;
+    SfdTimeCode_x00197DC0 tc;
+    int time;
+    int unit;
+} SfdTimeRec_x00197DC0;
+typedef struct SfdTst_x00197DC0 {
+    int f0;
+    unsigned int pastat;
+    unsigned int adjmode;
+    int paused;
+    int count;
+    int pos;
+    int values[60];
+    long long master_time;
+    long long f272;
+    long long help_time;
+    long long help_unit;
+    long long out_time;
+    long long f304;
+    long long f312;
+    long long f320;
+    long long f328;
+    long long f336;
+    long long f344;
+    long long f352;
+    long long f360;
+    long long f368;
+    long long f376;
+    long long f384;
+    long long mt_max;
+    int adj_limit;
+    int adj_front;
+    int adj_rear;
+    int resethist;
+    int excesserr;
+    int movave_1st;
+    int movave_2nd;
+    int diff_l_max;
+    int diff_l_min;
+    int diff_a_max;
+    int diff_a_min;
+    int pad444;
+} SfdTst_x00197DC0;
+typedef struct SfdSyncTally_x00197DC0 {
+    int total;
+    int count;
+    int history[32];
+} SfdSyncTally_x00197DC0;
+typedef struct SfdSyncQueue_x00197DC0 {
+    int last;
+    int f4;
+    int wr;
+    int rd;
+    int items[32];
+} SfdSyncQueue_x00197DC0;
+typedef struct SfdFieldEntry_x00197DC0 {
+    short repeat;
+    unsigned short total;
+} SfdFieldEntry_x00197DC0;
+typedef struct SfdPtsm_x00197DC0 {
+    int f0;
+    int f4;
+    int f8;
+} SfdPtsm_x00197DC0;
+typedef struct SfdHdrAudio_x00197DC0 {
+    int codec;
+    int nch;
+    int bps;
+    int sfreq;
+} SfdHdrAudio_x00197DC0;
+typedef struct SfdHdrMux_x00197DC0 {
+    int kind[4];
+    int numFrm;
+    int totalTime;
+    int timeUnit;
+} SfdHdrMux_x00197DC0;
+typedef struct SfdHdrVideo_x00197DC0 {
+    int codec;
+    int bitRate;
+    int width;
+    int height;
+    int frameRate;
+    int avail;
+    int picType;
+    int profile;
+    int flag0;
+    int flag4;
+    int chroma;
+    int zFirst;
+    int zSecond;
+} SfdHdrVideo_x00197DC0;
+typedef struct SfdHdrInf_x00197DC0 {
+    int valid;
+    int verMajor;
+    int verMinor;
+    int muxRate;
+    int bitRate;
+    int sysType;
+    int numStm;
+    int totalSize;
+    SfdHdrMux_x00197DC0 mux;
+    int adxStm;
+    int prv2Stm;
+    int audioStm;
+    int videoStm;
+    SfdHdrAudio_x00197DC0 audio;
+    SfdHdrVideo_x00197DC0 video;
+    int size;
+    char data[2048];
+} SfdHdrInf_x00197DC0;
+typedef struct SfdMvInf_x00197DC0 {
+    int width;
+    int height;
+    int mbWidth;
+    int mbHeight;
+    int bitRate;
+    int frameRate;
+    int muxRate;
+    int fixedFlag;
+    int vbvSize;
+    int audioBound;
+    int videoBound;
+    int privateBound;
+    int f48[4];
+} SfdMvInf_x00197DC0;
+typedef struct SfdPlyInf_x00197DC0 {
+    int numTotalDec;
+    int numSkip;
+    int f8;
+    int f12;
+    int numSkipEmptyB;
+    int numSkipEmptyP;
+    int frmOut;
+    int bpaActive;
+    int noSupply;
+    int vidShort;
+    int noFreeFrm;
+    int lockCnt;
+    long long sysFlow;
+    long long sysByte;
+    long long sysSkip;
+    long long vidFlow;
+    long long vidByte;
+    long long vidSkip;
+    long long audInWr;
+    long long audInRd;
+    long long audByte;
+    long long audSjWr;
+    long long audSjRd;
+    long long f136;
+    int f144[4];
+} SfdPlyInf_x00197DC0;
+typedef void (*SfdErrFn_x00197DC0)(void *obj, int code);
+typedef struct SfdErrInf_x00197DC0 {
+    SfdErrFn_x00197DC0 func;
+    void *obj;
+    int code;
+    int f12;
+    int f16;
+} SfdErrInf_x00197DC0;
+typedef int (*SfdExtClockFn_x00197DC0)(int ctx, int *time, int *unit);
+typedef int (*SfdIsSkipFn_x00197DC0)(void *sfd, int type, int time, int unit);
+typedef struct SfdTim_x00197DC0 {
+    SfdTimeFn_x00197DC0 timefn[6];
+    SfdIsSkipFn_x00197DC0 isSkipFn;
+    SfdTimeCode_x00197DC0 tc;
+    SfdTimeRec_x00197DC0 state;
+    SfdTimeRec_x00197DC0 best;
+    SfdTimeRec_x00197DC0 tot;
+    SfdTimeRec_x00197DC0 cur;
+    SfdTimeRec_x00197DC0 latest;
+    SfdTimeRec_x00197DC0 vofst;
+    int astart_smpl;
+    int astart_sfreq;
+    int pad332;
+    long long baseTime;
+    long long ofsTime;
+    int concat_frmcnt;
+    SfdSyncTally_x00197DC0 tally;
+    SfdSyncQueue_x00197DC0 queue;
+    int base;
+    int base_frames;
+    int dec_time;
+    int dec_unit;
+    int cached_pos;
+    int cached_rate;
+    int last;
+    int estimate;
+    int largest;
+    int smallest;
+    int usr_frm_sync;
+    int stream_pos;
+    int speed;
+    int disp_sync_cnt;
+    int disp_sync_time;
+    int disp_sync_unit;
+    int sync_count;
+    float sync_pending;
+    int sync_last;
+    float sync_time;
+    int count;
+    int chg_base;
+    SfdExtClockFn_x00197DC0 clock_get;
+    int clock_last;
+    int decoded_pos;
+    int rate;
+    int clock_wrap;
+    int clock_ctx;
+    int pad748;
+    SfdTst_x00197DC0 tst;
+    SfdFieldEntry_x00197DC0 fields[64];
+    SfdPtsm_x00197DC0 ptsm;
+    char pad1468[36];
+} SfdTim_x00197DC0;
+enum {
+    SFD_COND_VIDEO_x00197DC0 = 5,
+    SFD_COND_AUDIO_x00197DC0 = 6,
+    SFD_COND_KEEPSUP_x00197DC0 = 8,
+    SFD_COND_SYNCMODE_x00197DC0 = 15,
+    SFD_COND_ETIME_x00197DC0 = 20,
+    SFD_COND_ETUNIT_x00197DC0 = 21,
+    SFD_COND_LNKSTM_x00197DC0 = 49,
+    SFD_COND_SUPPLY_END_x00197DC0 = 56,
+    SFD_COND_DECODE_END_x00197DC0 = 57,
+    SFD_COND_DEMUX_SPLIT_x00197DC0 = 59,
+    SFD_COND_VIDEO_AUTO_OFF_x00197DC0 = 79,
+    SFD_COND_AUDIO_AUTO_OFF_x00197DC0 = 80,
+    SFD_COND_SYSHD_FN_x00197DC0 = 85,
+    SFD_COND_SYSHD_FN_OBJ_x00197DC0 = 86,
+    SFD_COND_NUM_x00197DC0 = 100
+};
+typedef enum SfdBufFmt_x00197DC0 {
+    SFD_BUFFMT_0_x00197DC0 = 0
+} SfdBufFmt_x00197DC0;
+typedef enum SfdBufId_x00197DC0 {
+    SFD_BUF_NONE_x00197DC0 = 8
+} SfdBufId_x00197DC0;
+typedef struct SfdCrePrm_x00197DC0 {
+    struct SfdTrnConfig_x00197DC0 *trnConfig;
+    char *bufWork;
+    int bufSize[8];
+    int unit;
+    int f44;
+    int f48;
+    int f52;
+    SfdBufFmt_x00197DC0 bufFmt;
+    char *work;
+    unsigned int workSize;
+} SfdCrePrm_x00197DC0;
+typedef struct SfdItem_x00197DC0 {
+    long long pos;
+    unsigned int addr;
+    unsigned int size;
+} SfdItem_x00197DC0;
+typedef struct SfdRing_x00197DC0 {
+    SfdItem_x00197DC0 *items;
+    int size;
+    int count;
+    int wr;
+    int rd;
+} SfdRing_x00197DC0;
+typedef struct SfdBufInf_x00197DC0 {
+    char *data;
+    struct SfdSj_x00197DC0 *sj;
+    char *buf;
+    int size;
+    int xsize;
+    char *p0;
+} SfdBufInf_x00197DC0;
+typedef struct SfdBufCur_x00197DC0 {
+    char *pos;
+    int len;
+} SfdBufCur_x00197DC0;
+typedef struct SfdBufDlm_x00197DC0 {
+    char *pos;
+    char *end;
+} SfdBufDlm_x00197DC0;
+typedef struct SfdBufRing_x00197DC0 {
+    SfdBufInf_x00197DC0 sup;
+    SfdBufDlm_x00197DC0 dlm;
+    int wtot;
+    int rtot;
+    SfdRing_x00197DC0 ptsque;
+} SfdBufRing_x00197DC0;
+typedef struct SfdBufAring_x00197DC0 {
+    SfdBufInf_x00197DC0 sup;
+    SfdBufCur_x00197DC0 ch1;
+    int wpos;
+    int rpos;
+    int wtot;
+    int rtot;
+} SfdBufAring_x00197DC0;
+typedef struct SfdUoch_x00197DC0 {
+    struct SfdSj_x00197DC0 *sj;
+    void (*begin)(void *hn, int id);
+    void (*end)(void *arg, int id);
+    void *arg;
+} SfdUoch_x00197DC0;
+typedef struct SfdBufEnt_x00197DC0 {
+    int mode;
+    int used;
+    int prepFlg;
+    int termFlg;
+    union {
+        SfdBufRing_x00197DC0 ring;
+        SfdBufAring_x00197DC0 aring;
+        SfdBufInf_x00197DC0 vfrm;
+        SfdUoch_x00197DC0 uoch[3];
+    } u;
+    int inTr;
+    int outTr;
+    char pad84[32];
+} SfdBufEnt_x00197DC0;
+typedef int (*SfdTrnFn_x00197DC0)();
+typedef struct SfdTrnConfig_x00197DC0 {
+    SfdTrnFn_x00197DC0 *fns[9];
+} SfdTrnConfig_x00197DC0;
+typedef struct SfdMpsPrm_x00197DC0 {
+    void *mps;
+    int videoBound;
+    int audioBound;
+    int pad12;
+    long long startPts;
+    long long firstPts;
+    int nPics;
+    int f36;
+    int f40;
+    int f44;
+    int f48;
+    int videoCh;
+    int audioCh;
+    int f60;
+    struct SfdSj_x00197DC0 *object[68];
+    int (*stmCb)(void *obj, int arg);
+    void *stmCbObj;
+    int f344;
+} SfdMpsPrm_x00197DC0;
+typedef struct SfdAdxCfg_x00197DC0 {
+    int bsize;
+    int xsize;
+    char *buf;
+    int maxnch;
+    int f16;
+    int worksize;
+    char *work;
+} SfdAdxCfg_x00197DC0;
+typedef void (*SfdAdxStep_x00197DC0)(struct SfdPly_x00197DC0 *h, char *buf, int size, int *used);
+typedef struct SfdAdxCtx_x00197DC0 {
+    void *adxt;
+    void *sj;
+    SfdAdxCfg_x00197DC0 cfg;
+    int time;
+    int unit;
+    int f44;
+    int carry;
+    int started;
+    int pos;
+    SfdAdxStep_x00197DC0 step;
+    int f64;
+    int opt27;
+    int total;
+    int f76;
+} SfdAdxCtx_x00197DC0;
+typedef struct SfdAoap_x00197DC0 {
+    int rna;
+    void (*setOutPan)(struct SfdPly_x00197DC0 *h, int ch, int pan);
+    int (*getOutPan)(struct SfdPly_x00197DC0 *h, int ch);
+    void (*setOutVol)(struct SfdPly_x00197DC0 *h, int vol);
+    int (*getOutVol)(struct SfdPly_x00197DC0 *h);
+    void (*setSpeed)(struct SfdPly_x00197DC0 *h, int speed);
+} SfdAoap_x00197DC0;
+typedef struct SfainfOut_x00197DC0 {
+    int kind;
+    void *sj;
+    void *buf;
+    int size;
+} SfainfOut_x00197DC0;
+typedef struct SfainfList_x00197DC0 {
+    int nout;
+    SfainfOut_x00197DC0 out[3];
+} SfainfList_x00197DC0;
+typedef struct SfdTrnSlot_x00197DC0 {
+    int prepFlg;
+    int termFlg;
+    union {
+        void *obj;
+        SfdMpsPrm_x00197DC0 *mps;
+        struct SfdMpv_x00197DC0 *mpv;
+        SfdAdxCtx_x00197DC0 *adxt;
+        SfdAoap_x00197DC0 *aoap;
+        SfainfList_x00197DC0 *uo;
+    } hn;
+    SfdTrnFn_x00197DC0 *fns;
+    SfdBufId_x00197DC0 bufIn;
+    int bufOut[3];
+    int readTot;
+    char pad36[32];
+} SfdTrnSlot_x00197DC0;
+typedef struct SfdTsum_x00197DC0 {
+    long long sum;
+    long long min;
+    long long max;
+    int count;
+    int pad28;
+} SfdTsum_x00197DC0;
+typedef struct SfdTmrInf_x00197DC0 {
+    SfdTsum_x00197DC0 tsum[6];
+} SfdTmrInf_x00197DC0;
+int SFTRN_CallTrtTrif_x00197DC0(void *sfd, int index, int k, int a, int b) __asm__("func_0019C0D8");
+struct SfdSj_x00197DC0;
+typedef struct M2vErrInf_x00197DC0 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x00197DC0;
+typedef struct Mpeg2Ext_x00197DC0 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x00197DC0;
+typedef enum M2vFrameRate_x00197DC0 {
+    M2V_FRAME_RATE_FORBIDDEN_x00197DC0 = 0
+} M2vFrameRate_x00197DC0;
+typedef enum M2vPicType_x00197DC0 {
+    M2V_PICTYPE_I_x00197DC0 = 1,
+    M2V_PICTYPE_P_x00197DC0 = 2,
+    M2V_PICTYPE_B_x00197DC0 = 3,
+    M2V_PICTYPE_D_x00197DC0 = 4
+} M2vPicType_x00197DC0;
+typedef enum M2vPicStruct_x00197DC0 {
+    M2V_PICSTRUCT_TOP_FIELD_x00197DC0 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x00197DC0 = 2,
+    M2V_PICSTRUCT_FRAME_x00197DC0 = 3
+} M2vPicStruct_x00197DC0;
+typedef enum M2vPicAtrF64_x00197DC0 {
+    M2V_PICATR_F64_0_x00197DC0 = 0
+} M2vPicAtrF64_x00197DC0;
+typedef struct M2vPicAtr_x00197DC0 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x00197DC0 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x00197DC0 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x00197DC0 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x00197DC0 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x00197DC0;
+typedef void (*M2vUsrDatFn_x00197DC0)(void *obj, int level);
+typedef struct M2vUsrSj_x00197DC0 {
+    struct SfdSj_x00197DC0 *sj;
+    M2vUsrDatFn_x00197DC0 fn;
+    void *obj;
+} M2vUsrSj_x00197DC0;
+typedef struct M2vPicUsr_x00197DC0 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x00197DC0;
+typedef void (*M2vCondFn_x00197DC0)();
+typedef struct M2vObj_x00197DC0 {
+    int stat;
+    M2vErrInf_x00197DC0 err;
+    M2vCondFn_x00197DC0 cond[16];
+    M2vPicAtr_x00197DC0 picatr;
+    char pad216[64];
+    M2vUsrSj_x00197DC0 usrsj[4];
+    M2vPicUsr_x00197DC0 picusr;
+    char pad340[12];
+    Mpeg2Ext_x00197DC0 ext;
+    char pad1656[8];
+} M2vObj_x00197DC0;
+extern void M2V_SetErrFunc_x00197DC0(M2vObj_x00197DC0 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef struct sceIpuDmaEnv_x00197DC0 {
+    unsigned int d4madr;
+    unsigned int d4tadr;
+    unsigned int d4qwc;
+    unsigned int d4chcr;
+    unsigned int d3madr;
+    unsigned int d3qwc;
+    unsigned int d3chcr;
+    unsigned int ipubp;
+    unsigned int ipuctrl;
+} sceIpuDmaEnv_x00197DC0;
+typedef struct sceMpeg_x00197DC0 {
+    int width;
+    int height;
+    int frameCount;
+    long pts;
+    long dts;
+    unsigned long flags;
+    long pts2nd;
+    long dts2nd;
+    unsigned long flags2nd;
+    struct _sceMpegDecoder_x00197DC0 *sys;
+} sceMpeg_x00197DC0;
+typedef enum {
+    sceMpegCbError_x00197DC0,
+    sceMpegCbNodata_x00197DC0,
+    sceMpegCbStopDMA_x00197DC0,
+    sceMpegCbRestartDMA_x00197DC0,
+    sceMpegCbBackground_x00197DC0,
+    sceMpegCbTimeStamp_x00197DC0,
+    sceMpegCbStr_x00197DC0,
+    sceMpegCbNum_x00197DC0
+} sceMpegCbType_x00197DC0;
+typedef struct {
+    sceMpegCbType_x00197DC0 type;
+    char *errMessage;
+} sceMpegCbDataError_x00197DC0;
+typedef struct {
+    sceMpegCbType_x00197DC0 type;
+    long pts;
+    long dts;
+} sceMpegCbDataTimeStamp_x00197DC0;
+typedef struct {
+    sceMpegCbType_x00197DC0 type;
+    unsigned char *header;
+    unsigned char *data;
+    unsigned int len;
+    long pts;
+    long dts;
+} sceMpegCbDataStr_x00197DC0;
+typedef union {
+    sceMpegCbType_x00197DC0 type;
+    sceMpegCbDataError_x00197DC0 error;
+    sceMpegCbDataTimeStamp_x00197DC0 ts;
+    sceMpegCbDataStr_x00197DC0 str;
+} sceMpegCbData_x00197DC0;
+typedef int (*sceMpegCallback_x00197DC0)(sceMpeg_x00197DC0 *mp, sceMpegCbData_x00197DC0 *cbdata, void *anyData);
+typedef struct {
+    sceMpegCallback_x00197DC0 func;
+    void *data;
+    void *gp;
+} _sceMpegCallbackSlot_x00197DC0;
+typedef struct {
+    char *start;
+    int size;
+    char *cur;
+    char *dynamic;
+} _sceMpegAlalc_x00197DC0;
+typedef struct {
+    char *base;
+    int width;
+    int height;
+    int mb_width;
+    int mb_height;
+    int pad_20;
+    long pts;
+    long dts;
+    int decoded;
+    int picture_coding_type;
+    int picture_structure;
+    int progressive_sequence;
+    int progressive_frame;
+    int top_field_first;
+    int repeat_first_field;
+    int center_offsets[6];
+    int disp_width;
+    int disp_height;
+} _sceMpegPicture_x00197DC0;
+typedef struct {
+    _sceMpegPicture_x00197DC0 *ref_image;
+    _sceMpegPicture_x00197DC0 *prev_image;
+    _sceMpegPicture_x00197DC0 *decode;
+    _sceMpegPicture_x00197DC0 *image;
+} _sceMpegPictureSlot_x00197DC0;
+typedef struct {
+    short *dst;
+    int column;
+    int rows;
+    int rows_below;
+    int pitch;
+    unsigned char *left;
+    unsigned char *right;
+} _sceMpegMcFetch_x00197DC0;
+typedef void (*_sceMpegMcKernel_x00197DC0)(_sceMpegMcFetch_x00197DC0 *fetch);
+typedef struct {
+    unsigned int src;
+    unsigned int dst;
+    unsigned char *block[4];
+    unsigned char *block_right[4];
+    _sceMpegMcKernel_x00197DC0 luma_kernel[4];
+    _sceMpegMcKernel_x00197DC0 chroma_kernel[4];
+    _sceMpegMcFetch_x00197DC0 luma[4];
+    _sceMpegMcFetch_x00197DC0 chroma[4];
+    char *dest;
+    int pred_count;
+    int intra;
+    int skipped;
+    int predicted;
+    int empty;
+} _sceMpegSprBuffer_x00197DC0;
+typedef struct _sceMpegDecoder_x00197DC0 {
+    int is_end;
+    int ref_count;
+    int seq_state;
+    _sceMpegCallbackSlot_x00197DC0 callbacks[sceMpegCbNum_x00197DC0];
+    char *spare_buffer;
+    int spare;
+    sceIpuDmaEnv_x00197DC0 ipu_dma_env;
+    int has_pts_gap;
+    long pts_gap;
+    int last_pts;
+    int pad_156;
+    long field_count;
+    int half_field;
+    int ni;
+    int np;
+    int nb;
+    int count_i;
+    int count_p;
+    int count_b;
+    int first_frame_no;
+    int rgb32;
+    int center_offsets[6];
+    int disp_width;
+    int disp_height;
+    int first_picture_structure;
+    unsigned int image_buff;
+    int image_width;
+    int image_height;
+    int image_size;
+    int set_broken_link;
+    int pad_260;
+    long ptm;
+    int ptm_state;
+    char *frame_buffers[3];
+    _sceMpegAlalc_x00197DC0 alalc;
+    int frame_no;
+    int error;
+    int second_field;
+    int h_size;
+    int v_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    int progressive_sequence;
+    int chroma_format;
+    int matrix_coefficients;
+    int display_h_size;
+    int display_v_size;
+    int picture_coding_type;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int f_code[2][2];
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int repeat_first_field;
+    int progressive_frame;
+    int frame_center_horizontal_offset[3];
+    int frame_center_vertical_offset[3];
+    int closed_gop;
+    int broken_link;
+    int temporal_order;
+    int dc_reset;
+    int quantiser_scale_code;
+    _sceMpegPictureSlot_x00197DC0 slots[3];
+    _sceMpegPicture_x00197DC0 pictures[9];
+    _sceMpegSprBuffer_x00197DC0 spr[2];
+    int mb_buffer;
+    int mb_count;
+    int ipu_cmd_pending;
+    unsigned int mc_work;
+    int stopped;
+    int pad_2108;
+    long pts;
+    long dts;
+    unsigned int bits;
+    int bit_count;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int mpeg2;
+    int temporal_base;
+    int temporal_max;
+    int gop_started;
+    sceMpeg_x00197DC0 *mp;
+    char pad_2164[12];
+    unsigned long long ipu_tags[260];
+    int abort;
+    char pad_4260[28];
+} _sceMpegDecoder_x00197DC0;
+typedef struct SfdPlanes_x00197DC0 {
+    char *luma;
+    char *chroma;
+    char *base;
+    short chromaStride;
+    short lumaStride;
+} SfdPlanes_x00197DC0;
+typedef struct SfdUserData_x00197DC0 {
+    char data[512];
+    int size;
+} SfdUserData_x00197DC0;
+typedef struct SfdRecVideo_x00197DC0 {
+    int valid;
+    int time;
+    int unit;
+    SfdTimeRec_x00197DC0 stamp;
+    SfdUserData_x00197DC0 user;
+} SfdRecVideo_x00197DC0;
+typedef struct SfdSlot_x00197DC0 {
+    int state;
+    int refs;
+    void *buf;
+    SfdTimeRec_x00197DC0 stamp;
+    int ftime;
+    int tunit;
+    int errcnt;
+    int rcvcnt;
+    int concat_cnt;
+    int time_per_file;
+    int cat_time;
+    SfdSjChunk_x00197DC0 *blob;
+    M2vPicAtr_x00197DC0 info;
+    long long pts;
+    int frmcnt;
+    int pad228;
+} SfdSlot_x00197DC0;
+typedef struct SfdBufPool_x00197DC0 {
+    char *base;
+    int count;
+    int size;
+    SfdSjChunk_x00197DC0 slot[18];
+} SfdBufPool_x00197DC0;
+typedef struct SfdMpvCond_x00197DC0 {
+    int rfb_width;
+    int rfb_height;
+    int max_width;
+    int max_height;
+    int rfb_adr;
+    int frm_width;
+    int frm_height;
+    int count;
+    int ta_adr;
+} SfdMpvCond_x00197DC0;
+typedef struct SfdMpvWorkBufs_x00197DC0 {
+    int w[2];
+} SfdMpvWorkBufs_x00197DC0;
+typedef struct SfdMpvFrameBufs_x00197DC0 {
+    int w[16];
+} SfdMpvFrameBufs_x00197DC0;
+typedef struct SfdIpuEntry_x00197DC0 {
+    long long f0;
+    long long f8;
+    int f16;
+    int f20;
+} SfdIpuEntry_x00197DC0;
+typedef struct SfdDmaTag_x00197DC0 {
+    long long tag;
+    long long pad;
+} SfdDmaTag_x00197DC0;
+typedef struct SfdIpuStream_x00197DC0 {
+    void *base;
+    SfdDmaTag_x00197DC0 *uncached;
+    int sectors;
+    int headSct;
+    int queuedSct;
+    int restBytes;
+    int bytes;
+    unsigned int r28;
+    unsigned int r32;
+    unsigned int r36;
+    unsigned int r40;
+    unsigned int r44;
+    unsigned int r48;
+    unsigned int r52;
+    unsigned int r56;
+    unsigned int r60;
+    int sema;
+    int active;
+    long long totalBytes;
+    SfdIpuEntry_x00197DC0 *entries;
+    int entryCount;
+    int f88;
+    int f92;
+} SfdIpuStream_x00197DC0;
+typedef struct SfdIpuCtl_x00197DC0 {
+    int enabled;
+    int pscNext;
+    int pscFound;
+    int pscCount;
+    char tail0;
+    char tail1;
+    char tail2;
+    char f19;
+    int endRequest;
+    int endSent;
+    int stopped;
+    int value;
+    int pad36;
+    sceMpeg_x00197DC0 mpeg;
+    SfdIpuStream_x00197DC0 stream;
+    sceMpegCbDataError_x00197DC0 error;
+} SfdIpuCtl_x00197DC0;
+typedef struct SfdPtsComp_x00197DC0 {
+    int tmpref;
+    int ofst;
+    int max;
+    int pad12;
+    SfdItem_x00197DC0 ptsent;
+} SfdPtsComp_x00197DC0;
+typedef struct SfdMpv_x00197DC0 {
+    void *handle;
+    SfdMpvCond_x00197DC0 cond;
+    SfdMpvWorkBufs_x00197DC0 work;
+    SfdMpvFrameBufs_x00197DC0 bufs;
+    SfdSlot_x00197DC0 *current;
+    unsigned int picstat;
+    int dlmmask;
+    int termflg;
+    int gopstat;
+    int nskip;
+    int nconcat;
+    M2vPicAtr_x00197DC0 pic;
+    int last_ngop;
+    int newgop;
+    int limit;
+    SfdPtsComp_x00197DC0 ptscomp;
+    int refidx_fwd;
+    int refidx_bwd;
+    SfdPlanes_x00197DC0 planes[2];
+    SfdSlot_x00197DC0 *first;
+    SfdSlot_x00197DC0 *second;
+    SfdSlot_x00197DC0 *pendfrm;
+    int skipret;
+    int dlmwait;
+    int tmpref_adj;
+    int slotCount;
+    int pad380;
+    SfdSlot_x00197DC0 slots[16];
+    SfdBufPool_x00197DC0 pool;
+    int pad4252;
+    long long pts;
+    SfdIpuCtl_x00197DC0 ipu;
+} SfdMpv_x00197DC0;
+typedef enum SfdPicType_x00197DC0 {
+    SFD_PICTYPE_I_x00197DC0 = 1,
+    SFD_PICTYPE_P_x00197DC0 = 2,
+    SFD_PICTYPE_B_x00197DC0 = 3
+} SfdPicType_x00197DC0;
+typedef enum SfdFrmInfF60_x00197DC0 {
+    SFD_FRMINF_F60_0_x00197DC0 = 0
+} SfdFrmInfF60_x00197DC0;
+typedef struct SfdFrameDetail_x00197DC0 {
+    int f72;
+    char pad76[4];
+    long long pts;
+    int picture_structure;
+    int chroma_format;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    unsigned char repeat_first_field;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad123[5];
+} SfdFrameDetail_x00197DC0;
+typedef struct SfdFrameInfo_x00197DC0 {
+    int width;
+    int height;
+    int x_mb;
+    int y_mb;
+    SfdPicType_x00197DC0 picType;
+    int time;
+    int unit;
+    SfdBufFmt_x00197DC0 bufFmt;
+    void *buf;
+    int errcnt;
+    int rcvcnt;
+    int concat_cnt;
+    int time_per_file;
+    int cat_time;
+    SfdSjChunk_x00197DC0 *picUsr;
+    SfdFrmInfF60_x00197DC0 f60;
+    int f64;
+    char pad68[4];
+    union {
+        SfdFrameDetail_x00197DC0 detail;
+        long long words[7];
+    } tail;
+} SfdFrameInfo_x00197DC0;
+typedef struct SfdVfrm_x00197DC0 {
+    int used;
+    int f4;
+    SfdFrameInfo_x00197DC0 inf;
+} SfdVfrm_x00197DC0;
+typedef struct SfdPly_x00197DC0 SfdPly_x00197DC0;
+typedef struct SfdRec_x00197DC0 SfdRec_x00197DC0;
+typedef struct SfdRecSub_x00197DC0 {
+    int f0;
+    int time;
+    int unit;
+} SfdRecSub_x00197DC0;
+typedef struct SfdRecSlot_x00197DC0 {
+    SfdRec_x00197DC0 *rec;
+    SfdRecSub_x00197DC0 sub;
+} SfdRecSlot_x00197DC0;
+typedef struct SfdSysHd_x00197DC0 {
+    char data[2][176];
+    int len[2];
+} SfdSysHd_x00197DC0;
+typedef struct SfdRecSys_x00197DC0 {
+    int valid;
+    int time;
+    int unit;
+    int nvid;
+    int naud;
+    int f20;
+    long long scrBase;
+    long long ptsMin;
+    int stmidVid;
+    int stmidAud;
+    SfdSysHd_x00197DC0 syshd;
+} SfdRecSys_x00197DC0;
+typedef struct SfdRecAudio_x00197DC0 {
+    int valid;
+    int time;
+    int unit;
+    int nch;
+    int sfreq;
+    int nsmpl;
+} SfdRecAudio_x00197DC0;
+struct SfdRec_x00197DC0 {
+    int state;
+    int time;
+    int unit;
+    SfdHdrInf_x00197DC0 hdrInf;
+    SfdRecSys_x00197DC0 sys;
+    char pad2616[152];
+    SfdRecVideo_x00197DC0 video;
+    SfdRecAudio_x00197DC0 audio;
+    char pad3364[132];
+    int derived;
+    int default_value;
+    int default_divisor;
+    int default_scale;
+    int id3512;
+    int id3516;
+    int delegate;
+    int fsize;
+    int tottime;
+    int tunit;
+    int byterate;
+    int seekpos;
+};
+struct SfdPly_x00197DC0 {
+    SfdCrePrm_x00197DC0 cre;
+    int pending;
+    int stat;
+    int reqStat;
+    int pause;
+    int pauseCnt;
+    char pad88[32];
+    SfdHdrInf_x00197DC0 hdr;
+    SfdMvInf_x00197DC0 mvInf;
+    char pad2380[4];
+    SfdPlyInf_x00197DC0 plyInf;
+    SfdErrInf_x00197DC0 err;
+    int cond[SFD_COND_NUM_x00197DC0];
+    int cond2[SFD_COND_NUM_x00197DC0];
+    char pad3364[4];
+    SfdTim_x00197DC0 tim;
+    SfdBufEnt_x00197DC0 buf[8];
+    SfdVfrm_x00197DC0 vfrm[16];
+    SfdTrnSlot_x00197DC0 trn[9];
+    char pad8588[4];
+    SfdMpsPrm_x00197DC0 mps;
+    char pad8944[176];
+    SfdMpv_x00197DC0 mpv;
+    SfdAdxCtx_x00197DC0 adxt;
+    char pad13680[100];
+    SfdAoap_x00197DC0 aoap;
+    char pad13804[4];
+    SfainfList_x00197DC0 uo;
+    char pad13860[4];
+    SfdRecSlot_x00197DC0 see;
+    SfdTmrInf_x00197DC0 tmr;
+};
+long func_00197DC0_x00197DC0(SfdPly_x00197DC0 *h) __asm__("func_00197DC0");
+/* sfply_TrStart: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfdply.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+long func_00197DC0_x00197DC0(SfdPly_x00197DC0 *h) {
+    return SFTRN_CallTrtTrif_x00197DC0(h, 7, 6, 0, 0);
+}
 typedef unsigned char Uint8_x00197DE8;
 typedef signed char Sint8_x00197DE8;
 typedef signed short Sint16_x00197DE8;
@@ -25752,7 +27089,19 @@ int func_0019DE18_x0019DE18(char *text, int *major, int *minor) {
     convAsciiToDigit_x0019DE18(convAsciiToDigit_x0019DE18(found + 4, major) + 1, minor);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019DE78);
+char *func_0019DE78_x0019DE78(char *text, int *value) __asm__("func_0019DE78");
+/* convAsciiToDigit: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfh.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+char *func_0019DE78_x0019DE78(char *text, int *value) {
+    char c = *text;
+    int number = 0;
+    while (c != '.' && c != ' ' && c != '\0' && (unsigned int)(c - '0') < 10) {
+        text++;
+        number = number * 10 + c - '0';
+        c = *text;
+    }
+    *value = number;
+    return text;
+}
 s32 func_0019D780_x0019DF00() __asm__("func_0019D780");
 s32 func_0019DF00_x0019DF00(u8 *arg0, s32 *arg1) __asm__("func_0019DF00");
 s32 func_0019DF00_x0019DF00(u8 *arg0, s32 *arg1)
