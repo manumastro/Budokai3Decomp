@@ -9,7 +9,57 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121010);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_001210F8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121210);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121288);
-INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_001213B0);
+typedef signed int s32_x001213B0;
+typedef unsigned int u32_x001213B0;
+typedef float f32_x001213B0;
+typedef struct fp_number_type_x001213B0 {
+    s32_x001213B0 class;
+    s32_x001213B0 sign;
+    s32_x001213B0 normal_exp;
+    u32_x001213B0 fraction;
+} fp_number_type_x001213B0;
+typedef union f32_bits_x001213B0 {
+    f32_x001213B0 f;
+    u32_x001213B0 u;
+    struct {
+        u32_x001213B0 fraction : 23;
+        u32_x001213B0 exponent : 8;
+        u32_x001213B0 sign : 1;
+    } fields;
+} f32_bits_x001213B0;
+static inline s32_x001213B0 sfIsZero_x001213B0(const fp_number_type_x001213B0 *number) {
+    return number->class == 2;
+}
+f32_x001213B0 func_001213B0_x001213B0(const fp_number_type_x001213B0 *number) __asm__("func_001213B0");
+/* sdfPackFloat: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libgcc.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+f32_x001213B0 func_001213B0_x001213B0(const fp_number_type_x001213B0 *number) {
+    f32_bits_x001213B0 result;
+    s32_x001213B0 zero = sfIsZero_x001213B0(number);
+    u32_x001213B0 fraction;
+    s32_x001213B0 exponent;
+    u32_x001213B0 sign;
+    exponent = 0;
+    fraction = number->fraction;
+    sign = number->sign;
+    if (zero) {
+        fraction = 0;
+    } else if (fraction != 0) {
+        if (number->normal_exp < -126) {
+            fraction = 0;
+        } else if (number->normal_exp > 128 ||
+                   (number->normal_exp == 128 && fraction >= 0x80000000U)) {
+            exponent = 255;
+            fraction = 0;
+        } else {
+            exponent = number->normal_exp + 127;
+            fraction >>= 7;
+        }
+    }
+    result.fields.fraction = fraction;
+    result.fields.exponent = exponent;
+    result.fields.sign = sign;
+    return result.f;
+}
 void func_00121468_x00121468(u32 *arg0, u8 *arg1) __asm__("func_00121468");
 void func_00121468_x00121468(u32 *arg0, u8 *arg1)
 {
@@ -68,7 +118,64 @@ int func_001214F8_x001214F8(float arg_a)
     return __make_dp_x001214F8(in.class, in.sign, in.normal_exp,
                      (long long)((unsigned long long)a3_val >> 2));
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121538);
+typedef signed int s32_x00121538;
+typedef unsigned int u32_x00121538;
+typedef unsigned long long u64_x00121538;
+typedef double f64_x00121538;
+typedef union sdfDoubleBits_t_x00121538 {
+    double value;
+    struct {
+        u64_x00121538 fraction : 52;
+        u32_x00121538 exponent : 11;
+        u32_x00121538 sign : 1;
+    } fields;
+} sdfDoubleBits_t_x00121538;
+typedef struct fp_number_type_df_x00121538 {
+    s32_x00121538 class;
+    s32_x00121538 sign;
+    s32_x00121538 normal_exp;
+    u64_x00121538 fraction;
+} fp_number_type_df_x00121538;
+static inline s32_x00121538 dfIsNaN_x00121538(const fp_number_type_df_x00121538 *number) {
+    return (u32_x00121538)number->class < 2;
+}
+static inline s32_x00121538 dfIsZero_x00121538(const fp_number_type_df_x00121538 *number) {
+    return number->class == 2;
+}
+static inline s32_x00121538 dfIsInfinity_x00121538(const fp_number_type_df_x00121538 *number) {
+    return number->class == 4;
+}
+f64_x00121538 func_00121538_x00121538(const fp_number_type_df_x00121538 *u) __asm__("func_00121538");
+/* __pack_df: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libgcc.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+f64_x00121538 func_00121538_x00121538(const fp_number_type_df_x00121538 *u) {
+    sdfDoubleBits_t_x00121538 result;
+    u64_x00121538 fraction = u->fraction;
+    u32_x00121538 exponent = 0;
+    u32_x00121538 sign = u->sign;
+    if (dfIsNaN_x00121538(u)) {
+        fraction |= (u64_x00121538)1 << 51;
+        exponent = 0x7FF;
+    } else if (dfIsInfinity_x00121538(u)) {
+        exponent = 0x7FF;
+        fraction = 0;
+    } else if (dfIsZero_x00121538(u)) {
+        fraction = 0;
+    } else if (fraction != 0) {
+        if (u->normal_exp < -1022) {
+            fraction = 0;
+        } else if (u->normal_exp > 1023) {
+            exponent = 0x7FF;
+            fraction = 0;
+        } else {
+            exponent = u->normal_exp + 1023;
+            fraction >>= 8;
+        }
+    }
+    result.fields.fraction = fraction;
+    result.fields.exponent = exponent;
+    result.fields.sign = sign;
+    return result.value;
+}
 typedef unsigned int UDItype_x00121610 __attribute__((mode(DI)));
 typedef float DFtype_x00121610 __attribute__((mode(DF)));
 typedef enum { CLASS_SNAN_x00121610, CLASS_QNAN_x00121610, CLASS_ZERO_x00121610, CLASS_NUMBER_x00121610, CLASS_INFINITY_x00121610 } fp_class_type_x00121610;
@@ -301,8 +408,214 @@ long long func_00121988_x00121988(long arg_a, long arg_b)
     y.sign ^= 1;
     return __pack_d_x00121988(_fpadd_parts_x00121988(&x, &y, &z));
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", dpmul);
-INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121C78);
+typedef signed int s32_x001219F0;
+typedef unsigned int u32_x001219F0;
+typedef unsigned long long u64_x001219F0;
+typedef double f64_x001219F0;
+typedef struct fp_number_type_df_x001219F0 {
+    s32_x001219F0 class;
+    s32_x001219F0 sign;
+    s32_x001219F0 normal_exp;
+    u64_x001219F0 fraction;
+} fp_number_type_df_x001219F0;
+extern f64_x001219F0 __pack_df_x001219F0(const fp_number_type_df_x001219F0 *u) __asm__("func_00121538");
+extern void sdfUnpackDouble_x001219F0(const double *x, fp_number_type_df_x001219F0 *u) __asm__("func_00121610");
+extern const fp_number_type_df_x001219F0 libgccDfInvalidResult_x001219F0 __asm__("D_0045EA90");
+static inline s32_x001219F0 dfIsNaN_x001219F0(const fp_number_type_df_x001219F0 *number) {
+    return (u32_x001219F0)number->class < 2;
+}
+static inline s32_x001219F0 dfIsZero_x001219F0(const fp_number_type_df_x001219F0 *number) {
+    return number->class == 2;
+}
+static inline s32_x001219F0 dfIsInfinity_x001219F0(const fp_number_type_df_x001219F0 *number) {
+    return number->class == 4;
+}
+static inline const fp_number_type_df_x001219F0 *dfMultiplyParts_x001219F0(fp_number_type_df_x001219F0 *left,
+                                                       fp_number_type_df_x001219F0 *right,
+                                                       fp_number_type_df_x001219F0 *result) {
+    u64_x001219F0 leftLow;
+    u64_x001219F0 leftHigh;
+    u64_x001219F0 rightLow;
+    u64_x001219F0 rightHigh;
+    u64_x001219F0 lowProduct;
+    u64_x001219F0 crossLeft;
+    u64_x001219F0 crossRight;
+    u64_x001219F0 cross;
+    u64_x001219F0 low;
+    u64_x001219F0 high;
+    u64_x001219F0 highProduct;
+    if (dfIsNaN_x001219F0(left)) {
+        left->sign = left->sign != right->sign;
+        return left;
+    }
+    if (dfIsNaN_x001219F0(right)) {
+        right->sign = left->sign != right->sign;
+        return right;
+    }
+    if (dfIsInfinity_x001219F0(left)) {
+        if (dfIsZero_x001219F0(right)) {
+            return &libgccDfInvalidResult_x001219F0;
+        }
+        left->sign = left->sign != right->sign;
+        return left;
+    }
+    if (dfIsInfinity_x001219F0(right)) {
+        if (dfIsZero_x001219F0(left)) {
+            return &libgccDfInvalidResult_x001219F0;
+        }
+        right->sign = left->sign != right->sign;
+        return right;
+    }
+    if (dfIsZero_x001219F0(left)) {
+        left->sign = left->sign != right->sign;
+        return left;
+    }
+    if (dfIsZero_x001219F0(right)) {
+        right->sign = left->sign != right->sign;
+        return right;
+    }
+    leftLow = (u64_x001219F0)left->fraction & 0xFFFFFFFFULL;
+    leftHigh = (u64_x001219F0)left->fraction >> 32;
+    rightLow = (u64_x001219F0)right->fraction & 0xFFFFFFFFULL;
+    rightHigh = (u64_x001219F0)right->fraction >> 32;
+    lowProduct = rightLow * leftLow;
+    crossLeft = rightHigh * leftLow;
+    crossRight = rightLow * leftHigh;
+    highProduct = rightHigh * leftHigh;
+    {
+        u64_x001219F0 upperAccum = 0;
+        u64_x001219F0 lowerAccum;
+        u64_x001219F0 shiftedCross;
+        cross = crossLeft + crossRight;
+        if (cross < crossLeft) {
+            upperAccum += (u64_x001219F0)1 << 32;
+        }
+        shiftedCross = (cross << 32) & 0xFFFFFFFF00000000ULL;
+        lowerAccum = lowProduct + shiftedCross;
+        if (lowerAccum < lowProduct) {
+            upperAccum++;
+        }
+        upperAccum += ((cross >> 32) & 0xFFFFFFFFULL) + highProduct;
+        high = upperAccum;
+        low = lowerAccum;
+    }
+    result->normal_exp = left->normal_exp + right->normal_exp;
+    result->sign = left->sign != right->sign;
+    result->normal_exp += 4;
+    while (high > (~(u64_x001219F0)0 >> 3)) {
+        result->normal_exp++;
+        if (high & 1) {
+            low >>= 1;
+            low |= (u64_x001219F0)1 << 63;
+        }
+        high >>= 1;
+    }
+    while (high <= (~(u64_x001219F0)0 >> 4)) {
+        result->normal_exp--;
+        high <<= 1;
+        if (low & ((u64_x001219F0)1 << 63)) {
+            high |= 1;
+        }
+        low <<= 1;
+    }
+    result->class = 3;
+    result->fraction = high;
+    return result;
+}
+f64_x001219F0 __pack_df_x001219F0(const fp_number_type_df_x001219F0 *u) __asm__("func_00121538");
+void sdfUnpackDouble_x001219F0(const double *x, fp_number_type_df_x001219F0 *u) __asm__("func_00121610");
+f64_x001219F0 dpmul_x001219F0(f64_x001219F0 a, f64_x001219F0 b) __asm__("dpmul");
+/* dpmul_x001219F0: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libgcc.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+f64_x001219F0 dpmul_x001219F0(f64_x001219F0 a, f64_x001219F0 b) {
+    fp_number_type_df_x001219F0 left;
+    fp_number_type_df_x001219F0 right;
+    fp_number_type_df_x001219F0 result;
+    sdfUnpackDouble_x001219F0(&a, &left);
+    sdfUnpackDouble_x001219F0(&b, &right);
+    return __pack_df_x001219F0(dfMultiplyParts_x001219F0(&left, &right, &result));
+}
+typedef signed int s32_x00121C78;
+typedef unsigned int u32_x00121C78;
+typedef unsigned long long u64_x00121C78;
+typedef double f64_x00121C78;
+typedef struct fp_number_type_df_x00121C78 {
+    s32_x00121C78 class;
+    s32_x00121C78 sign;
+    s32_x00121C78 normal_exp;
+    long fraction;
+} fp_number_type_df_x00121C78;
+extern void sdfUnpackDouble_x00121C78(const double *value, fp_number_type_df_x00121C78 *parts) __asm__("func_00121610");
+extern f64_x00121C78 __pack_df_x00121C78(const fp_number_type_df_x00121C78 *parts) __asm__("func_00121538");
+extern const fp_number_type_df_x00121C78 libgccDfInvalidResult_x00121C78 __asm__("D_0045EA90");
+static inline s32_x00121C78 dfIsNaN_x00121C78(const fp_number_type_df_x00121C78 *number)
+{
+    return (u32_x00121C78)number->class < 2;
+}
+static inline s32_x00121C78 dfIsZero_x00121C78(const fp_number_type_df_x00121C78 *number)
+{
+    return number->class == 2;
+}
+static inline s32_x00121C78 dfIsInfinity_x00121C78(const fp_number_type_df_x00121C78 *number)
+{
+    return number->class == 4;
+}
+static inline const fp_number_type_df_x00121C78 *dfDivideParts_x00121C78(fp_number_type_df_x00121C78 *numerator,
+                                                    fp_number_type_df_x00121C78 *denominator)
+{
+    u64_x00121C78 remainder;
+    u64_x00121C78 divisor;
+    u64_x00121C78 quotient;
+    u64_x00121C78 bit;
+    if (dfIsNaN_x00121C78(numerator)) return numerator;
+    if (dfIsNaN_x00121C78(denominator)) return denominator;
+    numerator->sign ^= denominator->sign;
+    if (dfIsInfinity_x00121C78(numerator) || dfIsZero_x00121C78(numerator)) {
+        if (numerator->class == denominator->class) return &libgccDfInvalidResult_x00121C78;
+        return numerator;
+    }
+    if (dfIsInfinity_x00121C78(denominator)) {
+        numerator->fraction = 0;
+        numerator->normal_exp = 0;
+        return numerator;
+    }
+    if (dfIsZero_x00121C78(denominator)) {
+        numerator->class = 4;
+        return numerator;
+    }
+    numerator->normal_exp -= denominator->normal_exp;
+    remainder = (u64_x00121C78)numerator->fraction;
+    divisor = (u64_x00121C78)denominator->fraction;
+    if (remainder < divisor) {
+        numerator->normal_exp--;
+        remainder <<= 1;
+    }
+    bit = 1ULL << 60;
+    quotient = 0;
+    while (bit != 0) {
+        u64_x00121C78 nextRemainder;
+        if (remainder >= divisor) {
+            remainder -= divisor;
+            quotient |= bit;
+        }
+        nextRemainder = remainder << 1;
+        bit >>= 1;
+        remainder = nextRemainder;
+    }
+    numerator->fraction = quotient;
+    return numerator;
+}
+f64_x00121C78 func_00121C78_x00121C78(f64_x00121C78 a, f64_x00121C78 b) __asm__("func_00121C78");
+/* dpdiv: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libgcc_dpdiv.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+f64_x00121C78 func_00121C78_x00121C78(f64_x00121C78 a, f64_x00121C78 b)
+{
+    fp_number_type_df_x00121C78 numerator;
+    fp_number_type_df_x00121C78 denominator;
+    const fp_number_type_df_x00121C78 *result;
+    sdfUnpackDouble_x00121C78(&a, &numerator);
+    sdfUnpackDouble_x00121C78(&b, &denominator);
+    result = dfDivideParts_x00121C78(&numerator, &denominator);
+    return __pack_df_x00121C78(result);
+}
 typedef enum {
     CLASS_SNAN_x00121DB8,
     CLASS_QNAN_x00121DB8,
