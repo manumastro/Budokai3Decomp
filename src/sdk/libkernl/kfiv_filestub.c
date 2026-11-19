@@ -470,7 +470,33 @@ int sceDelDrv(void *name)
     return _sceCallCode(name, 0x10);
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00110E48);
+typedef struct { int fd, used, a, b; } Entry2DB0_x00110E48;
+extern Entry2DB0_x00110E48 D_004E5D00_x00110E48[] __asm__("D_00474940");
+extern int D_0048623C_x00110E48 __asm__("D_003EC6BC");
+extern int D_00486248_x00110E48 __asm__("D_003EC6C8");
+extern int _sceFsWaitS_x00110E48(int) __asm__("func_0010EFC0");
+extern void func_001112E0_x00110E48(void) __asm__("func_0010F0E8");
+extern void _sceFsSigSema_x00110E48(void) __asm__("func_0010EFF0");
+extern Entry2DB0_x00110E48 *new_iob_x00110E48(void) __asm__("func_0010E9C8");
+extern int _sceCallCode_x00110E48(int,int) __asm__("func_001106D0");
+extern int WaitSema_x00110E48(int) __asm__("WaitSema");
+extern int SignalSema_x00110E48(int) __asm__("SignalSema");
+int func_00110E48_x00110E48(int path) __asm__("func_00110E48");
+/* sceDopen: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_112DB0.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00110E48_x00110E48(int path){
+ Entry2DB0_x00110E48 *e;
+ int r, sem;
+ _sceFsWaitS_x00110E48(9);
+ if(!D_0048623C_x00110E48)func_001112E0_x00110E48();
+ _sceFsSigSema_x00110E48();
+ e=new_iob_x00110E48();
+ if(!e)return -19;
+ r=_sceCallCode_x00110E48(path,9);
+ if(r<0){WaitSema_x00110E48(D_00486248_x00110E48);e->used=0;sem=D_00486248_x00110E48;}
+ else{WaitSema_x00110E48(D_00486248_x00110E48);e->fd=r;sem=D_00486248_x00110E48;r=e-D_004E5D00_x00110E48;}
+ SignalSema_x00110E48(sem);
+ return r;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00110F10);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00111078);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_001111D0);

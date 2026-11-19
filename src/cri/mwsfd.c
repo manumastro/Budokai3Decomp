@@ -904,7 +904,17 @@ INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetNumSkipDisp);
 void func_001819D8(void) {
     func_00181EA0();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001819F0);
+extern int sceInsockInetAton_x001819F0(void* self, unsigned int* out) __asm__("func_0019E118");
+unsigned int func_001819F0_x001819F0(void* self) __asm__("func_001819F0");
+/* sceInsockInetAddr: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libinsck/libinsck_357340.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+unsigned int func_001819F0_x001819F0(void* self)
+{
+    unsigned int value;
+    if (!sceInsockInetAton_x001819F0(self, &value)) {
+        return 0xFFFFFFFF;
+    }
+    return value;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181A20);
 void func_00181B28(void) {
     func_00181F20();

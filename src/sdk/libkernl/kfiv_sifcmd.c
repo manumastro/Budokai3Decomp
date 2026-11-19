@@ -126,7 +126,84 @@ void *sceSifGetDataTable(void)
     return &cmdData;
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifcmd", func_0010D0C0);
+typedef struct { void (*func)(void *, void *); void *data; int pad; } SysH_x0010D0C0;
+typedef struct { void *pkt; void *buf; int iop; SysH_x0010D0C0 *sys; int nsys; void *usr; int nusr; int *sregs; } CmdData_x0010D0C0;
+typedef struct { int x0; int x4; int x8; int xC; void *x10; } CmdPkt_x0010D0C0;
+extern int D_004861A8_x0010D0C0 __asm__("D_003EC628");
+extern char D_004E2C80_x0010D0C0[] __asm__("D_004718C0");
+extern char D_004E2D00_x0010D0C0[] __asm__("D_00471940");
+extern CmdPkt_x0010D0C0 D_004E2D40_x0010D0C0 __asm__("D_00471980");
+extern int D_004E2D54_x0010D0C0 __asm__("D_00471994");
+extern CmdData_x0010D0C0 D_004E2D58_x0010D0C0 __asm__("D_00471998");
+extern SysH_x0010D0C0 D_004E2D80_x0010D0C0[32] __asm__("D_004719C0");
+extern int D_004E2F00_x0010D0C0[32] __asm__("D_00471B40");
+extern int DIntr_x0010D0C0(void) __asm__("DI");
+extern int EIntr_x0010D0C0(void) __asm__("EI");
+extern void FlushCache_x0010D0C0(int) __asm__("FlushCache");
+extern void sceSifSetDChain_x0010D0C0(void) __asm__("sceSifSetDChain");
+extern int sceSifSetReg_x0010D0C0(unsigned int, unsigned int) __asm__("sceSifSetReg");
+extern unsigned int sceSifGetReg_x0010D0C0(unsigned int) __asm__("sceSifGetReg");
+extern int AddDmacHandler_x0010D0C0(int, void *, int) __asm__("AddDmacHandler");
+extern int EnableDmac_x0010D0C0(int) __asm__("func_0010AE78");
+extern int sceSifSendCmd_x0010D0C0(unsigned int, void *, int, void *, void *, int) __asm__("func_0010D5A8");
+extern void _change_addr_x0010D0C0(void *, void *) __asm__("func_0010D068");
+extern void _set_sreg_x0010D0C0(void *, void *) __asm__("func_0010D048");
+extern int _sceSifCmdIntrHdlr_x0010D0C0(int) __asm__("func_0010D628");
+void func_0010D0C0_x0010D0C0(void) __asm__("func_0010D0C0");
+/* sceSifInitCmd: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_10F460.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_0010D0C0_x0010D0C0(void)
+{
+    int i;
+    unsigned int v;
+    DIntr_x0010D0C0();
+    if (D_004861A8_x0010D0C0) {
+        EIntr_x0010D0C0();
+        return;
+    }
+    D_004861A8_x0010D0C0 = 1;
+    D_004E2D58_x0010D0C0.pkt = (void *)((unsigned int)D_004E2C80_x0010D0C0 | 0x20000000);
+    D_004E2D58_x0010D0C0.buf = (void *)((unsigned int)D_004E2D00_x0010D0C0 | 0x20000000);
+    D_004E2D58_x0010D0C0.iop = 0;
+    D_004E2D58_x0010D0C0.sys = D_004E2D80_x0010D0C0;
+    D_004E2D58_x0010D0C0.nsys = 32;
+    D_004E2D58_x0010D0C0.usr = 0;
+    D_004E2D58_x0010D0C0.nusr = 0;
+    D_004E2D58_x0010D0C0.sregs = D_004E2F00_x0010D0C0;
+    for (i = 0; i < 32; i++) {
+        D_004E2D80_x0010D0C0[i].func = 0;
+        D_004E2D80_x0010D0C0[i].data = 0;
+    }
+    for (i = 0; i < 32; i++)
+        D_004E2F00_x0010D0C0[i] = 0;
+    D_004E2D80_x0010D0C0[0].func = _change_addr_x0010D0C0;
+    D_004E2D80_x0010D0C0[0].data = &D_004E2D58_x0010D0C0;
+    D_004E2D80_x0010D0C0[1].func = _set_sreg_x0010D0C0;
+    D_004E2D80_x0010D0C0[1].data = &D_004E2D58_x0010D0C0;
+    EIntr_x0010D0C0();
+    FlushCache_x0010D0C0(0);
+    if ((*(volatile unsigned int *)(0x1000E010)) & 0x20)
+        (*(volatile unsigned int *)(0x1000E010)) = 0x20;
+    if (!((*(volatile unsigned int *)(0x1000C000)) & 0x100))
+        sceSifSetDChain_x0010D0C0();
+    D_004E2D54_x0010D0C0 = AddDmacHandler_x0010D0C0(5, _sceSifCmdIntrHdlr_x0010D0C0, 0);
+    EnableDmac_x0010D0C0(5);
+    v = sceSifGetReg_x0010D0C0(0x80000000);
+    D_004E2D58_x0010D0C0.iop = v;
+    if (v) {
+        D_004E2D40_x0010D0C0.x10 = D_004E2C80_x0010D0C0;
+        sceSifSendCmd_x0010D0C0(0x80000000, &D_004E2D40_x0010D0C0, 0x14, 0, 0, 0);
+        return;
+    }
+    while (!(sceSifGetReg_x0010D0C0(4) & 0x20000))
+        ;
+    v = sceSifGetReg_x0010D0C0(2);
+    D_004E2D58_x0010D0C0.iop = v;
+    sceSifSetReg_x0010D0C0(0x80000000, v);
+    sceSifSetReg_x0010D0C0(0x80000001, (unsigned int)&D_004E2D58_x0010D0C0);
+    D_004E2D40_x0010D0C0.x10 = D_004E2C80_x0010D0C0;
+    D_004E2D40_x0010D0C0.xC = 0;
+    sceSifSendCmd_x0010D0C0(0x80000002, &D_004E2D40_x0010D0C0, 0x14, 0, 0, 0);
+}
 
 
 void sceSifExitCmd(void)
@@ -154,7 +231,18 @@ SifCmdEntry *sceSifSetSysCmdBuffer(SifCmdEntry *tbl, int n)
     return old;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifcmd", func_0010D3A8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifcmd", func_0010D420);
+typedef struct { int used; int unk4; int unk8; } Slot12_x0010D420;
+extern Slot12_x0010D420* D_004E2D64_x0010D420 __asm__("D_004719A4");
+extern Slot12_x0010D420* D_004E2D6C_x0010D420 __asm__("D_004719AC");
+void func_0010D420_x0010D420(int handle) __asm__("func_0010D420");
+/* sceSifRemoveCmdHandler: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_10F7C0.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_0010D420_x0010D420(int handle)
+{
+    if (handle < 0)
+        D_004E2D64_x0010D420[handle & 0x7FFFFFFF].used = 0;
+    else
+        D_004E2D6C_x0010D420[handle].used = 0;
+}
 
 
 int _sceSifSendCmd(int cid, int mode, void *pkt, int pktsize, void *src, void *dest, int size)

@@ -50,7 +50,19 @@ void sceDeci2Poll(int s)
     Deci2Call(4, args);
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/ico_deci2", func_0010B608);
+typedef struct { int value; int pad; } Request_x0010B608;
+extern void Deci2Call_x0010B608(int kind, Request_x0010B608* req) __asm__("Deci2Call");
+typedef struct { int code; int a; int b; char pad[0x14]; } Request_0010E378_x0010B608;
+void func_0010B608_x0010B608(unsigned char code, int a, int b) __asm__("func_0010B608");
+/* sceDeci2GrpOpen: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_10E2F8.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_0010B608_x0010B608(unsigned char code, int a, int b)
+{
+    Request_0010E378_x0010B608 req;
+    req.a = a;
+    req.code = code;
+    req.b = b;
+    (Deci2Call_x0010B608((0x20), (Request_x0010B608 *)( &req)));
+}
 int Deci2Call_x0010B638(int req, void *args) __asm__("Deci2Call");
 void func_0010B638_x0010B638(char *s) __asm__("func_0010B638");
 void func_0010B638_x0010B638(char *s)

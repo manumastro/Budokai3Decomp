@@ -783,8 +783,40 @@ s32 func_00115EC8_x00115EC8(f32 fparg0) __asm__("func_00115EC8");
 s32 func_00115EC8_x00115EC8(f32 fparg0) {
     return func_00121288_x00115EC8(1.47456e8f / fparg0);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115F00);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115F50);
+typedef struct N7D68_x00115F00 { struct N7D68_x00115F00 *next; int p[3]; } N7D68_x00115F00;
+extern N7D68_x00115F00 D_004E96C0_x00115F00[] __asm__("D_00478300");
+extern N7D68_x00115F00 *D_004E9AC0_x00115F00 __asm__("D_00478700");
+int func_00115F00_x00115F00(void) __asm__("func_00115F00");
+/* _InitAlarm: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_117D68.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00115F00_x00115F00(void)
+{
+    int i;
+    D_004E9AC0_x00115F00 = D_004E96C0_x00115F00;
+    for (i = 0x3F; i >= 0; i--) D_004E96C0_x00115F00[i].next = &D_004E96C0_x00115F00[i + 1];
+    D_004E96C0_x00115F00[0x3F].next = 0;
+    return 0;
+}
+typedef struct N7D68_x00115F50 { struct N7D68_x00115F50 *next; int p[3]; } N7D68_x00115F50;
+extern N7D68_x00115F50 *D_004E9AC0_x00115F50 __asm__("D_00478700");
+typedef struct N7DB8_x00115F50 {
+    struct N7DB8_x00115F50 *next;
+    volatile int id;
+    int (*func)(int, int, int, void *);
+    void *arg;
+} N7DB8_x00115F50;
+int func_00115F50_x00115F50(int id, int b, int c, N7DB8_x00115F50 *n) __asm__("func_00115F50");
+/* AlarmHandler: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_117D68.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00115F50_x00115F50(int id, int b, int c, N7DB8_x00115F50 *n)
+{
+    int ret = n->func(((int)n << 4) | (id & 0xFE) | 1, b, c, n->arg);
+    if (ret == 0) {
+        n->next = (*(N7DB8_x00115F50 * volatile*)&D_004E9AC0_x00115F50);
+        (*(N7DB8_x00115F50 * volatile*)&D_004E9AC0_x00115F50) = n;
+        n->id = 0;
+        return -1;
+    }
+    return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115FB0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001160E0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001161D0);

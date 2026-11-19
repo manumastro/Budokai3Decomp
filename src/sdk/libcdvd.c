@@ -13,7 +13,24 @@ extern s32 func_00118628;
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_001180F0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118158);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_001181F8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118368);
+extern char D_004878D8_x00118368[] __asm__("D_003EDDE0");
+extern void _sceCd_cd_callback_x00118368(char *) __asm__("func_00118158");
+typedef struct {int n,m;unsigned char *a,*b;unsigned char x[64],y[64];} Req_x00118368;
+void func_00118368_x00118368(Req_x00118368 *p) __asm__("func_00118368");
+/* _sceCd_cd_read_intr: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libcdvd/func_00118660.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00118368_x00118368(Req_x00118368 *p){
+ int i;
+ p=(Req_x00118368 *)((unsigned)p|0x20000000);
+ if(p->n>0){
+  unsigned char *dest=p->a,*uncached=(unsigned char *)((unsigned)dest|0x20000000);
+  for(i=0;i<p->n;i++) {unsigned char c=p->x[i];uncached[i]=c;dest[i]=c;}
+ }
+ if(p->m>0){
+  unsigned char *dest=p->b,*uncached=(unsigned char *)((unsigned)dest|0x20000000);
+  for(i=0;i<p->m;i++) {unsigned char c=p->y[i];uncached[i]=c;dest[i]=c;}
+ }
+ _sceCd_cd_callback_x00118368(D_004878D8_x00118368);
+}
 extern char D_0045E1A8_x00118420[] __asm__("D_0045DBB8");
 extern char D_0045E1B8_x00118420[] __asm__("D_0045DBC8");
 extern char D_0045E1C8_x00118420[] __asm__("D_0045DBD8");
@@ -321,7 +338,35 @@ int func_00118D18_x00118D18(int cmd)
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118E70);
+extern int D_004878A8_x00118E70 __asm__("D_003EDDA8");
+extern volatile int D_004878AC_x00118E70 __asm__("D_003EDDAC");
+extern char D_00487900_x00118E70[] __asm__("D_003EDE00");
+extern char D_00487980_x00118E70[0x1000] __asm__("D_003EDE80");
+extern char D_00488A50_x00118E70[] __asm__("D_003EEF50");
+extern char D_00488A80_x00118E70[] __asm__("D_003EEF80");
+extern char D_00488EC0_x00118E70[] __asm__("D_003EF3C0");
+extern char D_00489400_x00118E70[] __asm__("D_003EF900");
+int func_00118E70_x00118E70(int cmd,int *out) __asm__("func_00118E70");
+/* _sceCdSC: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libcdvd/func_00119180.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00118E70_x00118E70(int cmd,int *out){
+ int v;
+ if(cmd!=0x8001){
+  if(cmd!=0x8003){
+   if(cmd!=0x8002){
+    if(cmd!=0x8004){
+     if(cmd!=0x8011){
+      if(cmd!=0x8013){
+       if(cmd!=0x8012){
+        if(cmd==0x8014)v=(int)D_00489400_x00118E70; else v=0;
+       }else v=(int)D_00488EC0_x00118E70;
+      }else v=(int)D_00488A80_x00118E70;
+     }else { v=D_004878AC_x00118E70; *out=v; goto done; }
+    }else v=(int)D_00488A50_x00118E70;
+   }else v=(int)((char*)D_00487980_x00118E70);
+  }else v=(int)D_00487900_x00118E70;
+ }else v=D_004878A8_x00118E70;
+ *out=v; done: return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118F20);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00119208);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00119420);

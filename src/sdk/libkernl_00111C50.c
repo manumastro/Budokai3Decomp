@@ -707,7 +707,41 @@ int func_001136E0_x001136E0(int addr, void *src, unsigned int width)
         return 0xfffeffff;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001137C0);
+typedef struct { unsigned long psize:8; unsigned long dsize:24; int dest; unsigned int cmd; int opt; int length,mode; char args[80]; } ResetPacket5618_x001137C0;
+typedef struct { void *src; unsigned int dest; int size,attr; } Dma5618_x001137C0;
+extern ResetPacket5618_x001137C0 D_004E6400_x001137C0 __asm__("D_00475040");
+extern int sceSifExecNotifyHandler_x001137C0(int,int) __asm__("func_001164A8");
+extern void sceSifStopDma_x001137C0(void) __asm__("sceSifStopDma");
+extern unsigned int sceSifGetReg_x001137C0(unsigned int) __asm__("sceSifGetReg");
+extern void sceSifWriteBackDCache_x001137C0(void *,int) __asm__("func_0010D770");
+extern int sceSifSetReg_x001137C0(unsigned int,unsigned int) __asm__("sceSifSetReg");
+extern int sceSifSetDma_x001137C0(Dma5618_x001137C0 *,int) __asm__("sceSifSetDma");
+int func_001137C0_x001137C0(char *args,int mode) __asm__("func_001137C0");
+/* sceSifResetIop: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_115448.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001137C0_x001137C0(char *args,int mode)
+{
+ Dma5618_x001137C0 dma;
+ int n;
+ unsigned int dest;
+ sceSifExecNotifyHandler_x001137C0(0,0);sceSifExecNotifyHandler_x001137C0(1,0);
+ sceSifStopDma_x001137C0();dest=sceSifGetReg_x001137C0(0x80000000);
+ D_004E6400_x001137C0.mode=mode;
+ for(n=0;args[n];n++)D_004E6400_x001137C0.args[n]=args[n];
+ D_004E6400_x001137C0.dest=0;
+ D_004E6400_x001137C0.length=n;
+ D_004E6400_x001137C0.cmd=0x80000003;
+ D_004E6400_x001137C0.dsize=0;
+ D_004E6400_x001137C0.psize=0x68;
+ dma.src=&D_004E6400_x001137C0;dma.dest=dest;dma.size=0x68;dma.attr=0x44;
+ sceSifWriteBackDCache_x001137C0(&D_004E6400_x001137C0,0x68);
+ sceSifSetReg_x001137C0(4,0x40000);
+ if(sceSifSetDma_x001137C0(&dma,1)){
+  sceSifSetReg_x001137C0(4,0x10000);sceSifSetReg_x001137C0(4,0x20000);
+  sceSifSetReg_x001137C0(0x80000002,0);sceSifSetReg_x001137C0(0x80000000,0);
+  return 1;
+ }
+ return 0;
+}
 unsigned int sceSifGetReg_x00113918(unsigned int reg) __asm__("sceSifGetReg");
 int func_00113918_x00113918(void) __asm__("func_00113918");
 /* sceSifIsAliveIop: from https://github.com/nathanialf/ico-pc (sce/libkernl/iopreset.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */

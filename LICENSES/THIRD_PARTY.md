@@ -33,6 +33,7 @@ file's first comment) to the instructions of this executable.
 | https://github.com/Subarasheese/pes6decomp (src/cri/) | none stated for its own code (remove with `git grep -n pes6decomp src`) | - |
 | https://github.com/Megami-Decomps/dds-decomp | none stated by the repository (remove with `git grep -n dds-decomp src`) | - |
 | https://github.com/Megami-Decomps/smt3-decomp | none stated by the repository (remove with `git grep -n smt3-decomp src`) | - |
+| https://github.com/zm2283145/syphon-filter-omega-strain-decomp | none stated by the repository (remove with `git grep -n syphon-filter-omega-strain-decomp src`) | - |
 
 newlib: each function taken from it carries its origin file's notice where that file has one. Files without a notice
 of their own are covered by newlib's COPYING.NEWLIB section for Cygnus/Red Hat code:

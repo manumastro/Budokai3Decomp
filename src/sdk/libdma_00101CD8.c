@@ -102,7 +102,24 @@ void func_00101E48_x00101E48(u8 *arg0)
   arg0--;
   *((s32 *) (((u8 *) arg0) + 0)) = (s32) (((((*((s32 *) (((u8 *) arg0) + 0))) & (~0xC)) | 4) & (~1)) | 0x100);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101E90);
+typedef struct { volatile int chcr; int p0[3]; volatile unsigned int madr; int p1[3]; volatile unsigned int qwc; int p2[3]; volatile unsigned int tadr; } DmaChan_x00101E90;
+extern void WaitDma_x00101E90(DmaChan_x00101E90 *) __asm__("func_00101868");
+extern unsigned int CheckAddress_x00101E90(void *) __asm__("func_00101960");
+void func_00101E90_x00101E90(DmaChan_x00101E90 *d, void *addr, int qwc) __asm__("func_00101E90");
+/* sceDmaRecvN: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libgraph/libgraph_104070.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00101E90_x00101E90(DmaChan_x00101E90 *d, void *addr, int qwc)
+{
+    unsigned int a = CheckAddress_x00101E90(addr);
+    int c;
+    WaitDma_x00101E90(d);
+    if (d->madr != 0xFFFFFFFF) d->madr = a;
+    c = d->chcr;
+    d->qwc = qwc;
+    c &= ~0xC;
+    c &= ~1;
+    c |= 0x100;
+    d->chcr = c;
+}
 typedef unsigned int u32_x00101F10;
 typedef u32_x00101F10 addr_t_x00101F10;
 typedef struct sceDmaChan_x00101F10 {
