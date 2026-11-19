@@ -1,6 +1,8 @@
 /* Taken from https://github.com/Voicedrew11/kfiv-decomp (src/sce/libc/stdlib/mprec.c, MIT); compiled with ee-gcc 2.96 -O2 -G0.
  * Data and strings are the executable's own: see the extern declarations. */
 /* ext-include: kfiv:src/sce/libc */
+/* mprec.o was assembled without delay-slot filling (ratio shows it):
+   as-flags: -O1 */
 #include "common.h"
 
 /* libc.a member mprec.o */
@@ -868,7 +870,31 @@ func_001267D8_x001267D8(struct _reent_x001267D8 * ptr ,
     }
   return b;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc/kfiv_mprec", func_00126960);
+union double_union_x00126960 { double d; unsigned int i[2]; };
+/* _b2d under a name this file does not define: a call to a function compiled earlier in the same file changes
+   ee-gcc's code (it marks the call nothrow) */
+double b2d_x00126960 (_Bigint *a, int *e) __asm__("_b2d");
+double ratio_x00126960 (_Bigint *a, _Bigint *b) __asm__("func_00126960");
+/* ratio: newlib's libc/stdlib/mprec.c (Pack_32, little endian); ee-gcc 2.96 -O2 -G0.
+   Copyright (c) 1991 by AT&T (David M. Gay; newlib, see LICENSES/THIRD_PARTY.md) */
+double
+ratio_x00126960 (_Bigint *a, _Bigint *b)
+{
+  union double_union_x00126960 da, db;
+  int k, ka, kb;
+
+  da.d = b2d_x00126960 (a, &ka);
+  db.d = b2d_x00126960 (b, &kb);
+  k = ka - kb + 32 * (a->_wds - b->_wds);
+  if (k > 0)
+    da.i[1] += k * 0x100000;
+  else
+    {
+      k = -k;
+      db.i[1] += k * 0x100000;
+    }
+  return da.d / db.d;
+}
 
 
 double _mprec_log10(int dig)

@@ -135,7 +135,22 @@ void *_calloc_r_x00122220(Reent_x00122220 *rptr, unsigned int n, unsigned int el
         return mem;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc", _close_r);
+struct _reent_x001222D8 { int _errno; };
+extern int errno_x001222D8 __asm__("errno");
+int close_x001222D8 (int) __asm__("close");
+int _close_r_x001222D8 (struct _reent_x001222D8 *ptr, int fd) __asm__("_close_r");
+/* _close_r: newlib's libc/reent/closer.c (SCE3010 build: calls close, errno a global); ee-gcc 2.96 -O2 -G0.
+   Copyright (c) 1994, 1997 Cygnus Solutions (newlib, see LICENSES/THIRD_PARTY.md) */
+int
+_close_r_x001222D8 (struct _reent_x001222D8 *ptr, int fd)
+{
+  int ret;
+
+  errno_x001222D8 = 0;
+  if ((ret = close_x001222D8 (fd)) == -1 && errno_x001222D8 != 0)
+    ptr->_errno = errno_x001222D8;
+  return ret;
+}
 struct _Bigint_x00122330 {
     struct _Bigint_x00122330 *_next;
     int _k;

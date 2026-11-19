@@ -472,4 +472,19 @@ int __srefill_x00127228(Fil_x00127228 *fp)
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc_00126B70", _sbrk_r);
+struct _reent_x001273A8 { int _errno; };
+extern int errno_x001273A8 __asm__("errno");
+void *sbrk_x001273A8 (int) __asm__("sbrk");
+void *_sbrk_r_x001273A8 (struct _reent_x001273A8 *ptr, int incr) __asm__("_sbrk_r");
+/* _sbrk_r: newlib's libc/reent/sbrkr.c (SCE3010 build: calls sbrk, errno a global); ee-gcc 2.96 -O2 -G0.
+   Copyright (c) 1994, 1997 Cygnus Solutions (newlib, see LICENSES/THIRD_PARTY.md) */
+void *
+_sbrk_r_x001273A8 (struct _reent_x001273A8 *ptr, int incr)
+{
+  char *ret;
+
+  errno_x001273A8 = 0;
+  if ((ret = (char *)(sbrk_x001273A8 (incr))) == (void *) -1 && errno_x001273A8 != 0)
+    ptr->_errno = errno_x001273A8;
+  return ret;
+}
