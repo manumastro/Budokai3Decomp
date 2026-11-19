@@ -207,7 +207,8 @@ def isolate(item, pad=0):
 
 _KNOWN = None
 PADS = int(os.environ.get("B3_PADS", "32"))  # apply(): renaming-suffix lengths tried
-CSE_PADS = int(os.environ.get("B3_CSE_PADS", "3"))  # apply(): most padding identifiers tried (see cse_pad)
+CSE_PADS = int(os.environ.get("B3_CSE_PADS", "3"))
+FAST = os.environ.get("B3_INSERT_FAST", "1") != "0"  # apply(): all of a file's items at once first (one compile)  # apply(): most padding identifiers tried (see cse_pad)
 
 
 def cse_pad(addr, k8, k16, k32):
@@ -254,6 +255,11 @@ def known_symbols():
 def check(rel, name):
     """(ok, message): the function compiles in its file to the original's words, size included, and every symbol
     the object needs from outside is one the link knows."""
+    return check_many(rel, [name])[name]
+
+
+def check_many(rel, names):
+    """{name: (ok, message)} for several functions of one file from a single compile (see check())."""
     import shutil
     import gccmatch
     sys.path.insert(0, str(ROOT))
@@ -267,30 +273,41 @@ def check(rel, name):
     obj = objs[(version, flags)]
     try:
         if not isinstance(obj, Path):
-            return False, str(obj)[-200:]
+            return {n: (False, str(obj)[-200:]) for n in names}
         fns = gccmatch.objects_functions(obj)
-        if name not in fns:
-            return False, "not compiled"
-        words, masks = fns[name]
-        m = re.fullmatch(r"func_([0-9A-F]{8})", name)
-        addr = int(m.group(1), 16) if m else _cached("syms", gccmatch.symbol_addresses).get(name)
-        diffs, _ = gccmatch.compare(words, masks, addr, _cached("rom", gccmatch.ROM.read_bytes))
-        size = _cached("sizes", gccmatch.function_sizes).get(addr)
-        if diffs or (size is not None and size != 4 * len(words)):
-            return False, f"{len(diffs)} differ, size {4 * len(words):#x}/{size:#x}" if size else "differs"
+        res = {}
+        for name in names:
+            if name not in fns:
+                res[name] = (False, "not compiled")
+                continue
+            words, masks = fns[name]
+            m = re.fullmatch(r"func_([0-9A-F]{8})", name)
+            addr = int(m.group(1), 16) if m else _cached("syms", gccmatch.symbol_addresses).get(name)
+            diffs, _ = gccmatch.compare(words, masks, addr, _cached("rom", gccmatch.ROM.read_bytes))
+            size = _cached("sizes", gccmatch.function_sizes).get(addr)
+            if diffs or (size is not None and size != 4 * len(words)):
+                res[name] = (False, f"{len(diffs)} differ, size {4 * len(words):#x}/{size:#x}" if size
+                             else "differs")
+        if len(res) == len(names):
+            return res
         with open(obj, "rb") as f:
             und = {s.name for s in ELFFile(f).get_section_by_name(".symtab").iter_symbols()
                    if s.name and s["st_shndx"] == "SHN_UNDEF"}
         bad = sorted(n for n in und - known_symbols() if not n.startswith(".") and n != "_gp")
-        if bad:
-            return False, "undefined: " + " ".join(bad[:5])
         with open(obj, "rb") as f:
             # the libraries' data is all in the data segments: data an object keeps would shift the link
             data = [f"{s.name} {s['sh_size']:#x}" for s in ELFFile(f).iter_sections()
                     if s.name in (".rodata", ".data", ".bss", ".sdata", ".sbss", ".lit4", ".lit8") and s["sh_size"]]
-        if data:
-            return False, "the object keeps data: " + ", ".join(data)
-        return True, "OK"
+        for name in names:
+            if name in res:
+                continue
+            if bad:
+                res[name] = (False, "undefined: " + " ".join(bad[:5]))
+            elif data:
+                res[name] = (False, "the object keeps data: " + ", ".join(data))
+            else:
+                res[name] = (True, "OK")
+        return res
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
@@ -347,7 +364,58 @@ def apply(items, jobs=12, log=None, dry=False, real=False):
         path = ROOT / rel
         text = path.read_text()
         ok, msgs = [], []
-        for it in sorted(segs[seg], key=lambda i: i["addr"]):
+        todo = sorted(segs[seg], key=lambda i: i["addr"])
+        if FAST and len(todo) > 1:
+            # fast path: a group of items in at once with pad 0, one compile for all of them and (real) one
+            # build-mode compile of the file; an item that fails its own check leaves the group, a group whose
+            # build-mode compile moves another function is split in two (bisection); only what is left goes through
+            # the one-at-a-time search below (pads, rebind, cse_pad)
+            def try_group(base, group):
+                new = base
+                for it in group:
+                    pat = re.compile(r'^INCLUDE_ASM\("[^"]+", ' + re.escape(it["name"]) + r'\);[ \t]*$', re.M)
+                    rep = isolate(it, 0) + tail_pad(seg, it["name"])
+                    new = pat.sub(lambda _: rep, new, count=1)
+                path.write_text(new)
+                res = check_many(rel, [it["name"] for it in group])
+                own = [it for it in group if res[it["name"]][0]]
+                if len(own) < len(group):
+                    return None, own
+                if real:
+                    import lib_filecheck
+                    if lib_filecheck.check(rel):
+                        return None, own
+                return new, own
+
+            def fast(base, group):
+                """(text, accepted items) after inserting as much of group as the bisection can prove."""
+                if not group:
+                    return base, []
+                new, own = try_group(base, group)
+                if new is not None:
+                    return new, group
+                if len(own) < len(group):
+                    group = own
+                    if not group:
+                        return base, []
+                    new, own2 = try_group(base, group)
+                    if new is not None:
+                        return new, group
+                if len(group) == 1:
+                    return base, []
+                h = len(group) // 2
+                b1, acc1 = fast(base, group[:h])
+                b2, acc2 = fast(b1, group[h:])
+                return b2, acc1 + acc2
+
+            cur = [it for it in todo if re.search(r'^INCLUDE_ASM\("[^"]+", ' + re.escape(it["name"]) + r'\);[ \t]*$',
+                                                  text, re.M)]
+            if len(cur) > 1:
+                text, acc = fast(text, cur)
+                ok += acc
+                todo = [it for it in todo if it not in acc]
+            path.write_text(text)
+        for it in todo:
             pat = re.compile(r'^INCLUDE_ASM\("[^"]+", ' + re.escape(it["name"]) + r'\);[ \t]*$', re.M)
             if not pat.search(text):
                 continue
