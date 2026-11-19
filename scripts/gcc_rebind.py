@@ -359,6 +359,17 @@ def rebind(text, extra=(), log=sys.stderr):
                                 f"{ind}{op}\t{m.group(2)},%lo(0x{base:08X})($1)\n{ind}.set\tpop")
                     continue
                 lines[i] = re.sub(r"(?<![\w.$])" + re.escape(label) + r"(?![\w.$])", f"0x{base:08X}", lines[i])
+                # `la` of an absolute address: gas would build it with lui/ori; with the symbol it was lui/addiu
+                # (+ addu of the index register), which %hi/%lo give back (atan's &atanhi[id], func_0011E548)
+                m = re.match(r"^(\s+)la\s+(\$\w+)\s*,\s*(0x[0-9A-Fa-f]+(?:\s*[+-]\s*\d+)?)\s*(?:\((\$\w+)\))?\s*$",
+                             lines[i].split("#", 1)[0])
+                if m:
+                    ind, rd, a, rs = m.groups()
+                    if rs:
+                        lines[i] = (f"{ind}.set\tpush\n{ind}.set\tnoat\n{ind}lui\t$1,%hi({a})\n"
+                                    f"{ind}addiu\t$1,$1,%lo({a})\n{ind}addu\t{rd},$1,{rs}\n{ind}.set\tpop")
+                    else:
+                        lines[i] = f"{ind}lui\t{rd},%hi({a})\n{ind}addiu\t{rd},{rd},%lo({a})"
                 drop.add(label)
                 if re.fullmatch(r"\$L\d+", label):
                     jlabels[label] = base
