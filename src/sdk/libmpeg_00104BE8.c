@@ -17,10 +17,142 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00105678);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00105750);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00105820);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00105940);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00105A58);
+int DIntr_x00105A58(void) __asm__("DI");
+int EIntr_x00105A58(void) __asm__("EI");
+void func_00105A58_x00105A58(unsigned int addr, int size) __asm__("func_00105A58");
+/* func_0039FDD8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00399d70.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00105A58_x00105A58(unsigned int addr, int size) {
+    int oldstat;
+    oldstat = DIntr_x00105A58();
+    if ((addr >> 28) == 7) {
+        addr &= 0x0FFFFFFFU;
+        addr |= 0x80000000U;
+    } else {
+        addr &= 0x0FFFFFFFU;
+    }
+    *(volatile unsigned int *)0x1000B010 = addr;
+    *(volatile unsigned int *)0x1000B020 = size >> 4;
+    *(volatile unsigned int *)0x1000B000 = 0x100;
+    if (oldstat != 0) EIntr_x00105A58();
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00105AF8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00105C98);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00105FB0);
+int DIntr_x00105FB0(void) __asm__("DI");
+int EIntr_x00105FB0(void) __asm__("EI");
+extern void _initSeq_x00105FB0(int h) __asm__("func_00105C98");
+extern int func_0039EAA8_x00105FB0(void *v, int n) __asm__("func_00104728");
+extern void _sceMpegError_x00105FB0(void *v, char *msg) __asm__("func_00109738");
+extern void func_003A0DE8_x00105FB0(void *v) __asm__("func_00106A68");
+extern void func_0039AB20_x00105FB0(int h, void *req) __asm__("func_00107DE0");
+extern void func_003A0C18_x00105FB0(void *v) __asm__("func_00106898");
+extern char D_0045E7F8_x00105FB0[] __asm__("D_0045CFB0");
+extern unsigned char D_003FA280_x00105FB0[] __asm__("D_003EC4C0");
+extern unsigned char D_003FA2C0_x00105FB0[] __asm__("D_003EC500");
+typedef struct {
+	int cmd;
+	long a;
+	long b;
+} MpegCb_x00105FB0;
+typedef struct {
+	char _pad0[0xE8];
+	int first_picture_structure;		 
+	char _pad1[0x48];
+	int horizontal_size;			 
+	int vertical_size;			 
+	char _pad2[0x8];
+	int bit_rate;				 
+	int vbv_buffer_size;			 
+	char _pad3[0x6DC];
+	int ipu_busy;				 
+	unsigned int ipu_cmd;			 
+	char _pad4[0x20];
+	int load_intra_quantiser_matrix;	 
+	int load_non_intra_quantiser_matrix;	 
+	char _pad5[0x10];
+	int cb;					 
+} Mpeg_x00105FB0;
+void func_00105FB0_x00105FB0(Mpeg_x00105FB0 *v) __asm__("func_00105FB0");
+/* func_003A0330: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003a0330.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00105FB0_x00105FB0(Mpeg_x00105FB0 *v)
+{
+	MpegCb_x00105FB0 req;
+	unsigned int n;
+	int vsize;
+	int r;
+
+	v->first_picture_structure = 0;
+	n = func_0039EAA8_x00105FB0(v, 32);
+	vsize = (n >> 8) & 0xFFF;
+	v->horizontal_size = n >> 20;
+	v->vertical_size = vsize;
+	if (vsize > 2800)
+		_sceMpegError_x00105FB0(v, D_0045E7F8_x00105FB0);
+
+	n = func_0039EAA8_x00105FB0(v, 30);
+	v->bit_rate = n >> 12;
+	v->vbv_buffer_size = (n >> 1) & 0x3FF;
+
+	v->load_intra_quantiser_matrix = func_0039EAA8_x00105FB0(v, 1);
+	if (v->load_intra_quantiser_matrix) {
+		func_003A0DE8_x00105FB0(v);
+		(*(volatile unsigned int *)0x10002000) = 0x50000000;
+		v->ipu_cmd = 0x50000000;
+		v->ipu_busy = 1;
+		func_003A0DE8_x00105FB0(v);
+	} else {
+		unsigned int p = (unsigned int)D_003FA280_x00105FB0;
+		unsigned int cmd = 0x50000000;
+		req.cmd = 2;
+		func_0039AB20_x00105FB0(v->cb, &req);
+		func_003A0DE8_x00105FB0(v);
+		(*(volatile unsigned int *)0x10002000) = 0;
+		func_003A0DE8_x00105FB0(v);
+		r = DIntr_x00105FB0();
+		(*(volatile unsigned int *)0x1000B410) = p & 0x0FFFFFFF;
+		(*(volatile unsigned int *)0x1000B420) = 4;
+		(*(volatile unsigned int *)0x1000B400) = 0x101;
+		if (r != 0)
+			EIntr_x00105FB0();
+		(*(volatile unsigned int *)0x10002000) = cmd;
+		v->ipu_cmd = 0x50000000;
+		v->ipu_busy = 1;
+		func_003A0DE8_x00105FB0(v);
+		req.cmd = 3;
+		func_0039AB20_x00105FB0(v->cb, &req);
+	}
+
+	v->load_non_intra_quantiser_matrix = func_0039EAA8_x00105FB0(v, 1);
+	if (v->load_non_intra_quantiser_matrix) {
+		func_003A0DE8_x00105FB0(v);
+		(*(volatile unsigned int *)0x10002000) = 0x58000000;
+		v->ipu_cmd = 0x50000000;
+		v->ipu_busy = 1;
+		func_003A0DE8_x00105FB0(v);
+	} else {
+		unsigned int p = (unsigned int)D_003FA2C0_x00105FB0;
+		unsigned int cmd = 0x58000000;
+		req.cmd = 2;
+		func_0039AB20_x00105FB0(v->cb, &req);
+		func_003A0DE8_x00105FB0(v);
+		(*(volatile unsigned int *)0x10002000) = 0;
+		func_003A0DE8_x00105FB0(v);
+		r = DIntr_x00105FB0();
+		(*(volatile unsigned int *)0x1000B410) = p & 0x0FFFFFFF;
+		(*(volatile unsigned int *)0x1000B420) = 4;
+		(*(volatile unsigned int *)0x1000B400) = 0x101;
+		if (r != 0)
+			EIntr_x00105FB0();
+		(*(volatile unsigned int *)0x10002000) = cmd;
+		v->ipu_cmd = 0x50000000;
+		v->ipu_busy = 1;
+		func_003A0DE8_x00105FB0(v);
+		req.cmd = 3;
+		func_0039AB20_x00105FB0(v->cb, &req);
+	}
+
+	func_003A0C18_x00105FB0(v);
+	_initSeq_x00105FB0(v->cb);
+}
 s32 func_00104728_x00106260() __asm__("func_00104728");
 s32 func_00106898_x00106260() __asm__("func_00106898");
 void func_00106260_x00106260(u8 *arg0) __asm__("func_00106260");
@@ -120,8 +252,96 @@ void func_00106300_x00106300(u8 *arg0)
   *((s32 *) (((u8 *) arg0) + 0x860)) = (s32) ((temp_v0 < temp_a0) ? (temp_a0) : (*((s32 *) (((u8 *) arg0) + 0x860))));
   return;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00106448);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00106588);
+extern int func_0039EAA8_x00106448(void *v, int n) __asm__("func_00104728");
+extern void _sceMpegError_x00106448(void *v, char *msg) __asm__("func_00109738");
+extern char D_0045E810_x00106448[] __asm__("D_0045CFC8");
+extern char D_0045E838_x00106448[] __asm__("D_0045CFF0");
+typedef struct {
+	char _pad0[0x134];
+	int horizontal_size;		 
+	int vertical_size;		 
+	char _pad1[0x8];
+	int bit_rate;			 
+	int vbv_buffer_size;		 
+	int progressive_sequence;	 
+	int chroma_format;		 
+	char _pad2[0x704];
+	int is_mpeg2;			 
+} Mpeg_x00106448;
+void func_00106448_x00106448(Mpeg_x00106448 *v) __asm__("func_00106448");
+/* func_003A07C8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003a07c8.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00106448_x00106448(Mpeg_x00106448 *v)
+{
+	unsigned int n;
+	unsigned int m;
+	int profile_and_level_indication;
+	int chroma_format;
+	int horizontal_size_extension;
+	int vertical_size_extension;
+	int bit_rate_extension;
+	int vbv_buffer_size_extension;
+
+	v->is_mpeg2 = 1;
+	(*(volatile unsigned int *)0x10002010) = (*(volatile unsigned int *)0x10002010) & 0xFF7FFFFF;
+	n = func_0039EAA8_x00106448(v, 28);
+	bit_rate_extension = (n >> 1) & 0xFFF;
+	vertical_size_extension = (n >> 13) & 3;
+	horizontal_size_extension = (n >> 15) & 3;
+	chroma_format = (n >> 17) & 3;
+	v->chroma_format = chroma_format;
+	if (chroma_format != 1)
+		_sceMpegError_x00106448(v, D_0045E810_x00106448);
+	v->progressive_sequence = (n >> 19) & 1;
+	profile_and_level_indication = n >> 20;
+	m = func_0039EAA8_x00106448(v, 16);
+	vbv_buffer_size_extension = m >> 8;
+	if (profile_and_level_indication != 0x48 &&
+	    profile_and_level_indication != 0x58 &&
+	    profile_and_level_indication != 0x44)
+		_sceMpegError_x00106448(v, D_0045E838_x00106448);
+	v->horizontal_size = (horizontal_size_extension << 12) | (v->horizontal_size & 0xFFF);
+	v->vertical_size = (vertical_size_extension << 12) | (v->vertical_size & 0xFFF);
+	v->bit_rate += bit_rate_extension << 18;
+	v->vbv_buffer_size += vbv_buffer_size_extension << 10;
+}
+extern int func_0039EAA8_x00106588(void *v, int n) __asm__("func_00104728");
+extern void func_003A0DE8_x00106588(void *v) __asm__("func_00106A68");
+extern void _sceMpegError_x00106588(void *v, char *msg) __asm__("func_00109738");
+extern char D_0045E858_x00106588[] __asm__("D_0045D010");
+extern char D_0045E880_x00106588[] __asm__("D_0045D038");
+typedef struct {
+	char _pad0[0x828];
+	int ipu_busy;			 
+	unsigned int ipu_cmd;		 
+	char _pad1[0x20];
+	int load_intra_quantiser_matrix;	 
+	int load_non_intra_quantiser_matrix;	 
+} Mpeg_x00106588;
+void func_00106588_x00106588(Mpeg_x00106588 *v) __asm__("func_00106588");
+/* func_003A0908: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003a0908.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00106588_x00106588(Mpeg_x00106588 *v)
+{
+	v->load_intra_quantiser_matrix = func_0039EAA8_x00106588(v, 1);
+	if (v->load_intra_quantiser_matrix) {
+		func_003A0DE8_x00106588(v);
+		(*(volatile unsigned int *)0x10002000) = 0x50000000;
+		v->ipu_cmd = 0x50000000;
+		v->ipu_busy = 1;
+		func_003A0DE8_x00106588(v);
+	}
+	v->load_non_intra_quantiser_matrix = func_0039EAA8_x00106588(v, 1);
+	if (v->load_non_intra_quantiser_matrix) {
+		func_003A0DE8_x00106588(v);
+		(*(volatile unsigned int *)0x10002000) = 0x58000000;
+		v->ipu_cmd = 0x50000000;
+		v->ipu_busy = 1;
+		func_003A0DE8_x00106588(v);
+	}
+	if (func_0039EAA8_x00106588(v, 1))
+		_sceMpegError_x00106588(v, D_0045E858_x00106588);
+	if (func_0039EAA8_x00106588(v, 1))
+		_sceMpegError_x00106588(v, D_0045E880_x00106588);
+}
 s32 func_00109738_x00106670() __asm__("func_00109738");
 extern s32 D_0045D068_x00106670 __asm__("D_0045D068");
 void func_00106670_x00106670(s32 arg0) __asm__("func_00106670");
@@ -134,7 +354,58 @@ void func_00106680_x00106680(s32 arg0) __asm__("func_00106680");
 void func_00106680_x00106680(s32 arg0) {
     func_00109738_x00106680(arg0, &D_0045D098_x00106680);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00106690);
+extern int func_0039EAA8_x00106690(void *v, int n) __asm__("func_00104728");
+typedef struct {
+	char _pad0[0xE8];
+	int first_picture_structure;	 
+	char _pad1[0x88];
+	int f_code00;			 
+	int f_code01;			 
+	int f_code10;			 
+	int f_code11;			 
+	int picture_structure;		 
+	int top_field_first;		 
+	int frame_pred_frame_dct;	 
+	int concealment_motion_vectors;	 
+	int repeat_first_field;		 
+	int progressive_frame;		 
+} Mpeg_x00106690;
+int func_00106690_x00106690(Mpeg_x00106690 *v) __asm__("func_00106690");
+/* func_003A0A10: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003a0a10.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00106690_x00106690(Mpeg_x00106690 *v)
+{
+	int t;
+
+	v->f_code00 = func_0039EAA8_x00106690(v, 4);
+	v->f_code01 = func_0039EAA8_x00106690(v, 4);
+	v->f_code10 = func_0039EAA8_x00106690(v, 4);
+	v->f_code11 = func_0039EAA8_x00106690(v, 4);
+	t = func_0039EAA8_x00106690(v, 2);			 
+	(*(volatile unsigned int *)0x10002010) = ((*(volatile unsigned int *)0x10002010) & 0xFFFCFFFF) | (t << 16);
+	t = func_0039EAA8_x00106690(v, 2);			 
+	v->picture_structure = t;
+	if (v->first_picture_structure == 0)
+		v->first_picture_structure = t;
+	v->top_field_first = func_0039EAA8_x00106690(v, 1);
+	v->frame_pred_frame_dct = func_0039EAA8_x00106690(v, 1);
+	v->concealment_motion_vectors = func_0039EAA8_x00106690(v, 1);
+	t = func_0039EAA8_x00106690(v, 1);			 
+	(*(volatile unsigned int *)0x10002010) = ((*(volatile unsigned int *)0x10002010) & 0xFFBFFFFF) | (t << 22);
+	t = func_0039EAA8_x00106690(v, 1);			 
+	(*(volatile unsigned int *)0x10002010) = ((*(volatile unsigned int *)0x10002010) & 0xFFDFFFFF) | (t << 21);
+	t = func_0039EAA8_x00106690(v, 1);			 
+	(*(volatile unsigned int *)0x10002010) = ((*(volatile unsigned int *)0x10002010) & 0xFFEFFFFF) | (t << 20);
+	v->repeat_first_field = func_0039EAA8_x00106690(v, 1);
+	func_0039EAA8_x00106690(v, 1);				 
+	v->progressive_frame = func_0039EAA8_x00106690(v, 1);
+	if (func_0039EAA8_x00106690(v, 1)) {			 
+		func_0039EAA8_x00106690(v, 1);			 
+		func_0039EAA8_x00106690(v, 3);			 
+		func_0039EAA8_x00106690(v, 1);			 
+		func_0039EAA8_x00106690(v, 7);			 
+		return func_0039EAA8_x00106690(v, 8);		 
+	}
+}
 s32 func_00109738_x00106878() __asm__("func_00109738");
 extern s32 D_0045D0B0_x00106878 __asm__("D_0045D0B0");
 void func_00106878_x00106878(s32 arg0) __asm__("func_00106878");
@@ -188,8 +459,75 @@ s32 func_00106CE8_x00106CE8(s32 arg0) {
     func_00104728_x00106CE8(arg0, 1);
     return func_00104728_x00106CE8(arg0, 0x16);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00106D80);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00106E78);
+extern int func_0039EAA8_x00106D80(void *v, int n) __asm__("func_00104728");
+typedef struct {
+	char _pad0[0x14C];
+	int progressive_sequence;		 
+	char _pad1[0x34];
+	int picture_structure;			 
+	int top_field_first;			 
+	char _pad2[0x8];
+	int repeat_first_field;			 
+	char _pad3[0x4];
+	int frame_centre_horizontal_offset[3];	 
+	int frame_centre_vertical_offset[3];	 
+} Mpeg_x00106D80;
+void func_00106D80_x00106D80(Mpeg_x00106D80 *v) __asm__("func_00106D80");
+/* func_003A1100: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003a1100.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00106D80_x00106D80(Mpeg_x00106D80 *v)
+{
+	int n;
+	int i;
+
+	if (v->progressive_sequence) {
+		if (v->repeat_first_field)
+			n = v->top_field_first ? 3 : 2;
+		else
+			n = 1;
+	} else if (v->picture_structure != 3) {
+		n = 1;
+	} else {
+		n = v->repeat_first_field ? 3 : 2;
+	}
+	for (i = 0; i < n; i++) {
+		v->frame_centre_horizontal_offset[i] = func_0039EAA8_x00106D80(v, 16);
+		func_0039EAA8_x00106D80(v, 1);	 
+		v->frame_centre_vertical_offset[i] = func_0039EAA8_x00106D80(v, 16);
+		func_0039EAA8_x00106D80(v, 1);	 
+	}
+}
+extern unsigned char D_0045E400_x00106E78[] __asm__("D_0045D150");
+extern void _sceMpegError_x00106E78(void *, void *) __asm__("func_00109738");
+void func_00106E78_x00106E78(void *m) __asm__("func_00106E78");
+/* _clearOnce: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00399d70.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00106E78_x00106E78(void *m) {
+    int mode;
+    *(volatile unsigned int *)0x10002010 =
+        (*(volatile unsigned int *)0x10002010 & 0xFF7FFFFFU) | 0x800000;
+    mode = *(int *)((char *)m + 0x87C);
+    if (mode == 0) {
+        int spr = 0x70000000;
+        *(int *)((char *)m + 0x830) = 0x70003600;
+        *(int *)((char *)m + 0x5A0) = spr;
+        *(int *)((char *)m + 0x5A4) = 0x70001800;
+        *(int *)((char *)m + 0x6E0) = 0x70001B00;
+        *(int *)((char *)m + 0x6E4) = 0x70003300;
+        *(int *)((char *)m + 0x820) = 0;
+        return;
+    }
+    if (mode == 1) {
+        *(int *)((char *)m + 0x830) = (int)((char *)m + 0xE80);
+        *(int *)((char *)m + 0x5A4) =
+            (int)((((unsigned int)((char *)m + 0x880)) & 0x0FFFFFFFU) | 0x30000000U);
+        *(int *)((char *)m + 0x6E4) =
+            (int)((((unsigned int)((char *)m + 0xB80)) & 0x0FFFFFFFU) | 0x30000000U);
+        *(int *)((char *)m + 0x5A0) = 0;
+        *(int *)((char *)m + 0x6E0) = 0;
+        *(int *)((char *)m + 0x820) = 0;
+        return;
+    }
+    _sceMpegError_x00106E78(m, D_0045E400_x00106E78);
+}
 typedef struct {
     int width, height, frameCount;
     long pts, dts;
@@ -288,7 +626,28 @@ int func_00106F48_x00106F48(sceMpeg_x00106F48 *mp, unsigned char *work, int size
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107180);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107280);
+int DIntr_x00107280(void) __asm__("DI");
+int EIntr_x00107280(void) __asm__("EI");
+extern void func_003BACA0_x00107280(int, int) __asm__("func_00109AF8");
+void func_00107280_x00107280(void *m) __asm__("func_00107280");
+/* _clearEach: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00399d70.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00107280_x00107280(void *m) {
+    int oldstat;
+    *(int *)((char *)m + 0x828) = 1;
+    *(int *)((char *)m + 0x1C0) = 0;
+    oldstat = DIntr_x00107280();
+    *(volatile unsigned int *)0x1000F590 = *(volatile unsigned int *)0x1000F520 | 0x10000;
+    *(volatile unsigned int *)0x1000B000 = 0;
+    *(volatile unsigned int *)0x1000B400 = 0;
+    *(volatile unsigned int *)0x1000D400 = 0;
+    *(volatile unsigned int *)0x1000F590 = *(volatile unsigned int *)0x1000F520 & 0xFFFEFFFFU;
+    if (oldstat != 0) EIntr_x00107280();
+    *(volatile unsigned int *)0x1000B020 = 0;
+    *(volatile unsigned int *)0x1000B420 = 0;
+    *(volatile unsigned int *)0x1000D420 = 0;
+    *(volatile unsigned int *)0x10002010 = 0x40000000;
+    func_003BACA0_x00107280(0, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107348);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107500);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_001077B8);

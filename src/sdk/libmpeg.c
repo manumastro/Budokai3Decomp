@@ -1,10 +1,80 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001020B0);
+void func_001020B0_x001020B0(void *pic, int DMV[][2], int *dmvector, int mvx, int mvy) __asm__("func_001020B0");
+/* _dualPrimeVector: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00399d70.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_001020B0_x001020B0(void *pic, int DMV[][2], int *dmvector, int mvx, int mvy) {
+    if (*(int *)((char *)pic + 0x184) == 3) {
+        if (*(int *)((char *)pic + 0x188)) {
+            DMV[0][0] = ((mvx   + (mvx > 0)) >> 1) + dmvector[0];
+            DMV[0][1] = ((mvy   + (mvy > 0)) >> 1) + dmvector[1] - 1;
+            DMV[1][0] = ((3*mvx + (mvx > 0)) >> 1) + dmvector[0];
+            DMV[1][1] = ((3*mvy + (mvy > 0)) >> 1) + dmvector[1] + 1;
+        } else {
+            DMV[0][0] = ((3*mvx + (mvx > 0)) >> 1) + dmvector[0];
+            DMV[0][1] = ((3*mvy + (mvy > 0)) >> 1) + dmvector[1] - 1;
+            DMV[1][0] = ((mvx   + (mvx > 0)) >> 1) + dmvector[0];
+            DMV[1][1] = ((mvy   + (mvy > 0)) >> 1) + dmvector[1] + 1;
+        }
+    } else {
+        DMV[0][0] = ((mvx + (mvx > 0)) >> 1) + dmvector[0];
+        DMV[0][1] = ((mvy + (mvy > 0)) >> 1) + dmvector[1];
+        if (*(int *)((char *)pic + 0x184) == 1)
+            DMV[0][1]--;
+        else
+            DMV[0][1]++;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00102238);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00102940);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00102B90);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103018);
+int _sceMpegError_x00103018(int m, int msg) __asm__("func_00109738");
+typedef struct MpegMcSet_x00103018 {
+    int unk00;
+    void *residual;                      
+    char unk08[0x20];
+    void (*predA[4])(void *arg);         
+    void (*predB[4])(void *arg);         
+    char argA[4][0x1C];                  
+    char argB[4][0x1C];                  
+    void *dst;                           
+    int num;                             
+    int intra;                           
+    int unk134;
+    int predict;                         
+    int skipped;                         
+} MpegMcSet_x00103018;
+typedef struct MpegMcState_x00103018 {
+    char unk000[0x5A0];
+    MpegMcSet_x00103018 mc[2];                     
+    char unk820[0x10];
+    void *pred;                          
+} MpegMcState_x00103018;
+extern char D_0045E6C8_x00103018[] __asm__("D_0045CE80");
+void func_0039EEA8_x00103018(void *dst, void *src) __asm__("func_00104B28");
+void func_0039EDB8_x00103018(void *dst, void *pred, void *residual) __asm__("func_00104A38");
+void func_00103018_x00103018(MpegMcState_x00103018 *s, int f) __asm__("func_00103018");
+/* _doMC: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0039d398.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00103018_x00103018(MpegMcState_x00103018 *s, int f)
+{
+    int i;
+
+    if (s->mc[f].predict) {
+        for (i = 0; i < s->mc[f].num; i++) {
+            s->mc[f].predA[i](s->mc[f].argA[i]);
+            s->mc[f].predB[i](s->mc[f].argB[i]);
+        }
+    }
+    if (s->mc[f].intra && s->mc[f].skipped) {
+        _sceMpegError_x00103018((int)s, (int)D_0045E6C8_x00103018);
+    }
+    if (s->mc[f].intra) {
+        func_0039EEA8_x00103018(s->mc[f].dst, s->mc[f].residual);
+    } else if (s->mc[f].skipped) {
+        func_0039EEA8_x00103018(s->mc[f].dst, s->pred);
+    } else {
+        func_0039EDB8_x00103018(s->mc[f].dst, s->pred, s->mc[f].residual);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103238);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103478);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001037A8);
@@ -381,5 +451,37 @@ void func_00104970_x00104970(s32 arg0, s32 arg1) __asm__("func_00104970");
 void func_00104970_x00104970(s32 arg0, s32 arg1) {
     func_001048A0_x00104970(arg0, arg1);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104978);
+extern char D_0045E720_x00104978[] __asm__("D_0045CED8");
+extern void _sceMpegError_x00104978(void *s, char *msg) __asm__("func_00109738");
+int func_00104978_x00104978(void *s, int *b, int *p2, int *p3, int *p4) __asm__("func_00104978");
+/* func_0039ECF8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0039e648.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00104978_x00104978(void *s, int *b, int *p2, int *p3, int *p4)
+{
+    int ret;
+    int flag;
+
+    ret = 1;
+    *(int *)((char *)s + *(int *)((char *)s + 0x820) * 0x140 + 0x6DC) = 1;
+    *(int *)((char *)s + 0x1C0) = 1;
+    if (*(int *)((char *)s + 0x160) == 2) {
+        b[5] = 0;
+        b[4] = 0;
+        b[1] = 0;
+        b[0] = 0;
+    }
+    if (*(int *)((char *)s + 0x184) == 3) {
+        *p2 = 2;
+    } else {
+        *p2 = 1;
+        flag = (*(int *)((char *)s + 0x184) == 2);
+        p3[1] = flag;
+        p3[0] = flag;
+    }
+    if (*(int *)((char *)s + 0x160) == 1) {
+        _sceMpegError_x00104978(s, D_0045E720_x00104978);
+        ret = 0;
+    }
+    *p4 = *p4 & -2;
+    return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104A38);
