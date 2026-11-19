@@ -660,7 +660,427 @@ int vfprintf_x00129A28(char *fp, char *fmt0, void *ap)
     } while (0);
     return _vfiprintf_r_x00129A28(*(Reent_x00129A28 **)(fp + 0x54), (Fil_x00129A28 *)fp, fmt0, ap);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc_00129428", _vfprintf_r);
+typedef unsigned int size_t_x00129AA0;
+typedef int wchar_t_x00129AA0;
+typedef __builtin_va_list va_list_x00129AA0;
+typedef unsigned long u_long_x00129AA0;
+typedef unsigned short u_short_x00129AA0;
+typedef unsigned int u_int_x00129AA0;
+struct _reent_x00129AA0 {
+    char pad[0x38];
+    int __sdidinit;
+    void (*__cleanup)(struct _reent_x00129AA0 *);
+};
+struct __siov_x00129AA0 { void *iov_base; size_t_x00129AA0 iov_len; };
+struct __suio_x00129AA0 { struct __siov_x00129AA0 *uio_iov; int uio_iovcnt; int uio_resid; };
+struct __sbuf_x00129AA0 { unsigned char *_base; int _size; };
+typedef struct __sFILE_x00129AA0 {
+    unsigned char *_p; int _r; int _w; short _flags; short _file; struct __sbuf_x00129AA0 _bf; int _lbfsize;
+    void *_cookie; int (*_read)(); int (*_write)(); int (*_seek)(); int (*_close)();
+    struct __sbuf_x00129AA0 _ub; unsigned char *_up; int _ur; unsigned char _ubuf[3]; unsigned char _nbuf[1];
+    struct __sbuf_x00129AA0 _lb; int _blksize; int _offset; struct _reent_x00129AA0 *_data;
+} FILE_x00129AA0;
+extern struct _reent_x00129AA0 *D_00489738_x00129AA0 __asm__("_impure_ptr");
+extern int D_00489740_x00129AA0 __asm__("D_003EFC50");
+extern int __swsetup_x00129AA0(FILE_x00129AA0 *) __asm__("__swsetup");
+extern int _mbtowc_r_x00129AA0(struct _reent_x00129AA0 *, wchar_t_x00129AA0 *, const char *, size_t_x00129AA0, int *) __asm__("func_00125590");
+extern void *Libc_Memchr_x00129AA0(const void *, int, size_t_x00129AA0) __asm__("func_001255C8");
+extern size_t_x00129AA0 strlen_x00129AA0(const char *) __asm__("func_00127BA0");
+struct lconv_x00129AA0 { char *decimal_point; };
+extern struct lconv_x00129AA0 *localeconv_x00129AA0(void) __asm__("func_00124768");
+extern int func_00120F38_x00129AA0(double) __asm__("func_0011EC60");
+extern int Double_IsNaN_x00129AA0(double) __asm__("func_0011ECA8");
+char *Newlib_Cvt_x00129AA0(struct _reent_x00129AA0 *, double, int, int, char *, int *, int, int *) __asm__("func_0012B110");
+int Newlib_Exponent_x00129AA0(char *, int, int) __asm__("func_0012B2D0");
+int
+Newlib_Sprint_void_2_x00129AA0(FILE_x00129AA0 *fp, register struct __suio_x00129AA0 *uio) __asm__("__sprint");
+int
+Newlib_Sbprintf_void_2_x00129AA0(register FILE_x00129AA0 *fp, const char *fmt, va_list_x00129AA0 ap) __asm__("func_00129970");
+char *
+Newlib_Cvt_x00129AA0(struct _reent_x00129AA0 *data, double value, int ndigits, int flags, char *sign, int *decpt, int ch, int *length) __asm__("func_0012B110");
+int
+Newlib_Exponent_x00129AA0(char *p0, int exp, int fmtch) __asm__("func_0012B2D0");
+int
+Newlib_Sprint_void_2_x00129AA0(FILE_x00129AA0 *fp, register struct __suio_x00129AA0 *uio) __attribute__((weak, section(".b3stub")));
+int
+Newlib_Sprint_void_2_x00129AA0(FILE_x00129AA0 *fp, register struct __suio_x00129AA0 *uio) {}
+int
+Newlib_Sbprintf_void_2_x00129AA0(register FILE_x00129AA0 *fp, const char *fmt, va_list_x00129AA0 ap) __attribute__((weak, section(".b3stub")));
+int
+Newlib_Sbprintf_void_2_x00129AA0(register FILE_x00129AA0 *fp, const char *fmt, va_list_x00129AA0 ap) {}
+int
+_vfprintf_r_x00129AA0(struct _reent_x00129AA0 *data, FILE_x00129AA0 * fp, const char *fmt0, va_list_x00129AA0 ap) __asm__("_vfprintf_r");
+/* _vfprintf_r_x00129AA0: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/vfprintf/vfprintf.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+int
+_vfprintf_r_x00129AA0(struct _reent_x00129AA0 *data, FILE_x00129AA0 * fp, const char *fmt0, va_list_x00129AA0 ap)
+{
+        register char *fmt;
+        register int ch;
+        register int n, m;
+        register char *cp;
+        register struct __siov_x00129AA0 *iovp;
+        register int flags;
+        int ret;
+        int width;
+        int prec;
+        char sign;
+        wchar_t_x00129AA0 wc;
+        char *decimal_point = localeconv_x00129AA0()->decimal_point;
+        char softsign;
+        double _double;
+        int expt;
+        int expsize;
+        int ndig;
+        char expstr[7];
+        u_long_x00129AA0 _uquad;
+        enum { OCT, DEC, HEX } base;
+        int dprec;
+        int realsz;
+        int size;
+        char *xdigs;
+        struct __suio_x00129AA0 uio;
+        struct __siov_x00129AA0 iov[8];
+        char buf[(308+39+1)];
+        char ox[2];
+        int state = 0;
+        static const char blanks[16] =
+         {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};
+        static const char zeroes[16] =
+         {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
+        if (((((fp)->_flags & 0x0008) == 0 || (fp)->_bf._base == 0) && __swsetup_x00129AA0(fp)))
+                return ((-1));
+        if ((fp->_flags & (0x0002|0x0008|0x0010)) == (0x0002|0x0008) &&
+            fp->_file >= 0)
+                return (Newlib_Sbprintf_void_2_x00129AA0(fp, fmt0, ap));
+        fmt = (char *)fmt0;
+        uio.uio_iov = iovp = iov;
+        uio.uio_resid = 0;
+        uio.uio_iovcnt = 0;
+        ret = 0;
+        for (;;) {
+                cp = fmt;
+                while ((n = _mbtowc_r_x00129AA0(D_00489738_x00129AA0, &wc, fmt, D_00489740_x00129AA0, &state)) > 0) {
+                        fmt += n;
+                        if (wc == '%') {
+                                fmt--;
+                                break;
+                        }
+                }
+                if ((m = fmt - cp) != 0) {
+                        { iovp->iov_base = (cp); iovp->iov_len = (m); uio.uio_resid += (m); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                        ret += m;
+                }
+                if (n <= 0)
+                        goto done;
+                fmt++;
+                flags = 0;
+                dprec = 0;
+                width = 0;
+                prec = -1;
+                sign = '\0';
+rflag: ch = *fmt++;
+reswitch: switch (ch) {
+                case ' ':
+                        if (!sign)
+                                sign = ' ';
+                        goto rflag;
+                case '#':
+                        flags |= 0x001;
+                        goto rflag;
+                case '*':
+                        if ((width = __builtin_va_arg(ap, int)) >= 0)
+                                goto rflag;
+                        width = -width;
+                case '-':
+                        flags |= 0x004;
+                        goto rflag;
+                case '+':
+                        sign = '+';
+                        goto rflag;
+                case '.':
+                        if ((ch = *fmt++) == '*') {
+                                n = __builtin_va_arg(ap, int);
+                                prec = n < 0 ? -1 : n;
+                                goto rflag;
+                        }
+                        n = 0;
+                        while (((unsigned)((ch) - '0') <= 9)) {
+                                n = 10 * n + ((ch) - '0');
+                                ch = *fmt++;
+                        }
+                        prec = n < 0 ? -1 : n;
+                        goto reswitch;
+                case '0':
+                        flags |= 0x080;
+                        goto rflag;
+                case '1': case '2': case '3': case '4':
+                case '5': case '6': case '7': case '8': case '9':
+                        n = 0;
+                        do {
+                                n = 10 * n + ((ch) - '0');
+                                ch = *fmt++;
+                        } while (((unsigned)((ch) - '0') <= 9));
+                        width = n;
+                        goto reswitch;
+                case 'L':
+                        flags |= 0x008;
+                        goto rflag;
+                case 'h':
+                        flags |= 0x040;
+                        goto rflag;
+                case 'l':
+                        if (*fmt == 'l') {
+                                fmt++;
+                                flags |= 0x020;
+                        } else {
+                                flags |= 0x010;
+                        }
+                        goto rflag;
+                case 'q':
+                        flags |= 0x020;
+                        goto rflag;
+                case 'c':
+                        *(cp = buf) = __builtin_va_arg(ap, int);
+                        size = 1;
+                        sign = '\0';
+                        break;
+                case 'D':
+                        flags |= 0x010;
+                case 'd':
+                case 'i':
+                        _uquad = (flags&0x010 ? __builtin_va_arg(ap, long) : flags&0x040 ? (long)(short)__builtin_va_arg(ap, int) : (long)__builtin_va_arg(ap, int));
+                        if ((long) _uquad < 0)
+                        {
+                                _uquad = -_uquad;
+                                sign = '-';
+                        }
+                        base = DEC;
+                        goto number;
+                case 'e':
+                case 'E':
+                case 'f':
+                case 'g':
+                case 'G':
+                        if (prec == -1) {
+                                prec = 6;
+                        } else if ((ch == 'g' || ch == 'G') && prec == 0) {
+                                prec = 1;
+                        }
+                        if (flags & 0x008) {
+                                _double = (double) __builtin_va_arg(ap, long double);
+                        } else {
+                                _double = __builtin_va_arg(ap, double);
+                        }
+                        if (func_00120F38_x00129AA0(_double)) {
+                                if (_double < 0)
+                                        sign = '-';
+                                cp = "Inf";
+                                size = 3;
+                                break;
+                        }
+                        if (Double_IsNaN_x00129AA0(_double)) {
+                                cp = "NaN";
+                                size = 3;
+                                break;
+                        }
+                        flags |= 0x100;
+                        cp = Newlib_Cvt_x00129AA0(data, _double, prec, flags, &softsign,
+                                &expt, ch, &ndig);
+                        if (ch == 'g' || ch == 'G') {
+                                if (expt <= -4 || expt > prec)
+                                        ch = (ch == 'g') ? 'e' : 'E';
+                                else
+                                        ch = 'g';
+                        }
+                        if (ch <= 'e') {
+                                --expt;
+                                expsize = Newlib_Exponent_x00129AA0(expstr, expt, ch);
+                                size = expsize + ndig;
+                                if (ndig > 1 || flags & 0x001)
+                                        ++size;
+                        } else if (ch == 'f') {
+                                if (expt > 0) {
+                                        size = expt;
+                                        if (prec || flags & 0x001)
+                                                size += prec + 1;
+                                } else
+                                        size = prec + 2;
+                        } else if (expt >= ndig) {
+                                size = expt;
+                                if (flags & 0x001)
+                                        ++size;
+                        } else
+                                size = ndig + (expt > 0 ?
+                                        1 : 2 - expt);
+                        if (softsign)
+                                sign = '-';
+                        break;
+                case 'n':
+                        if (flags & 0x010)
+                                *__builtin_va_arg(ap, long *) = ret;
+                        else if (flags & 0x040)
+                                *__builtin_va_arg(ap, short *) = ret;
+                        else
+                                *__builtin_va_arg(ap, int *) = ret;
+                        continue;
+                case 'O':
+                        flags |= 0x010;
+                case 'o':
+                        _uquad = (flags&0x010 ? __builtin_va_arg(ap, u_long_x00129AA0) : flags&0x040 ? (u_long_x00129AA0)(u_short_x00129AA0)__builtin_va_arg(ap, int) : (u_long_x00129AA0)__builtin_va_arg(ap, u_int_x00129AA0));
+                        base = OCT;
+                        goto nosign;
+                case 'p':
+                        _uquad = (u_long_x00129AA0)__builtin_va_arg(ap, void *);
+                        base = HEX;
+                        xdigs = "0123456789abcdef";
+                        flags |= 0x002;
+                        ch = 'x';
+                        goto nosign;
+                case 's':
+                        if ((cp = __builtin_va_arg(ap, char *)) == 0)
+                                cp = "(null)";
+                        if (prec >= 0) {
+                                char *p = Libc_Memchr_x00129AA0(cp, 0, prec);
+                                if (p != 0) {
+                                        size = p - cp;
+                                        if (size > prec)
+                                                size = prec;
+                                } else
+                                        size = prec;
+                        } else
+                                size = strlen_x00129AA0(cp);
+                        sign = '\0';
+                        break;
+                case 'U':
+                        flags |= 0x010;
+                case 'u':
+                        _uquad = (flags&0x010 ? __builtin_va_arg(ap, u_long_x00129AA0) : flags&0x040 ? (u_long_x00129AA0)(u_short_x00129AA0)__builtin_va_arg(ap, int) : (u_long_x00129AA0)__builtin_va_arg(ap, u_int_x00129AA0));
+                        base = DEC;
+                        goto nosign;
+                case 'X':
+                        xdigs = "0123456789ABCDEF";
+                        goto hex;
+                case 'x':
+                        xdigs = "0123456789abcdef";
+hex: _uquad = (flags&0x010 ? __builtin_va_arg(ap, u_long_x00129AA0) : flags&0x040 ? (u_long_x00129AA0)(u_short_x00129AA0)__builtin_va_arg(ap, int) : (u_long_x00129AA0)__builtin_va_arg(ap, u_int_x00129AA0));
+                        base = HEX;
+                        if (flags & 0x001 && _uquad != 0)
+                                flags |= 0x002;
+nosign: sign = '\0';
+number: if ((dprec = prec) >= 0)
+                                flags &= ~0x080;
+                        cp = buf + (308+39+1);
+                        if (_uquad != 0 || prec != 0) {
+                                switch (base) {
+                                case OCT:
+                                        do {
+                                                *--cp = ((_uquad & 7) + '0');
+                                                _uquad >>= 3;
+                                        } while (_uquad);
+                                        if (flags & 0x001 && *cp != '0')
+                                                *--cp = '0';
+                                        break;
+                                case DEC:
+                                        while (_uquad >= 10) {
+                                                *--cp = ((_uquad % 10) + '0');
+                                                _uquad /= 10;
+                                        }
+                                        *--cp = ((_uquad) + '0');
+                                        break;
+                                case HEX:
+                                        do {
+                                                *--cp = xdigs[_uquad & 15];
+                                                _uquad >>= 4;
+                                        } while (_uquad);
+                                        break;
+                                default:
+                                        cp = "bug in vfprintf: bad base";
+                                        size = strlen_x00129AA0(cp);
+                                        goto skipsize;
+                                }
+                        }
+                        size = buf + (308+39+1) - cp;
+                skipsize:
+                        break;
+                default:
+                        if (ch == '\0')
+                                goto done;
+                        cp = buf;
+                        *cp = ch;
+                        size = 1;
+                        sign = '\0';
+                        break;
+                }
+                realsz = dprec > size ? dprec : size;
+                if (sign)
+                        realsz++;
+                else if (flags & 0x002)
+                        realsz+= 2;
+                if ((flags & (0x004|0x080)) == 0)
+                        { if ((n = (width - realsz)) > 0) { while (n > 16) { { iovp->iov_base = (blanks); iovp->iov_len = (16); uio.uio_resid += (16); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; n -= 16; } { iovp->iov_base = (blanks); iovp->iov_len = (n); uio.uio_resid += (n); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; } };
+                if (sign) {
+                        { iovp->iov_base = (&sign); iovp->iov_len = (1); uio.uio_resid += (1); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                } else if (flags & 0x002) {
+                        ox[0] = '0';
+                        ox[1] = ch;
+                        { iovp->iov_base = (ox); iovp->iov_len = (2); uio.uio_resid += (2); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                }
+                if ((flags & (0x004|0x080)) == 0x080)
+                        { if ((n = (width - realsz)) > 0) { while (n > 16) { { iovp->iov_base = (zeroes); iovp->iov_len = (16); uio.uio_resid += (16); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; n -= 16; } { iovp->iov_base = (zeroes); iovp->iov_len = (n); uio.uio_resid += (n); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; } };
+                { if ((n = (dprec - size)) > 0) { while (n > 16) { { iovp->iov_base = (zeroes); iovp->iov_len = (16); uio.uio_resid += (16); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; n -= 16; } { iovp->iov_base = (zeroes); iovp->iov_len = (n); uio.uio_resid += (n); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; } };
+                if ((flags & 0x100) == 0) {
+                        { iovp->iov_base = (cp); iovp->iov_len = (size); uio.uio_resid += (size); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                } else {
+                        if (ch >= 'f') {
+                                if (_double == 0) {
+                                        { iovp->iov_base = ("0"); iovp->iov_len = (1); uio.uio_resid += (1); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                        if (expt < ndig || (flags & 0x001) != 0) {
+                                                { iovp->iov_base = (decimal_point); iovp->iov_len = (1); uio.uio_resid += (1); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                                { if ((n = (ndig - 1)) > 0) { while (n > 16) { { iovp->iov_base = (zeroes); iovp->iov_len = (16); uio.uio_resid += (16); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; n -= 16; } { iovp->iov_base = (zeroes); iovp->iov_len = (n); uio.uio_resid += (n); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; } };
+                                        }
+                                } else if (expt <= 0) {
+                                        { iovp->iov_base = ("0"); iovp->iov_len = (1); uio.uio_resid += (1); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                        if(expt || ndig) {
+                                                { iovp->iov_base = (decimal_point); iovp->iov_len = (1); uio.uio_resid += (1); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                                { if ((n = (-expt)) > 0) { while (n > 16) { { iovp->iov_base = (zeroes); iovp->iov_len = (16); uio.uio_resid += (16); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; n -= 16; } { iovp->iov_base = (zeroes); iovp->iov_len = (n); uio.uio_resid += (n); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; } };
+                                                { iovp->iov_base = (cp); iovp->iov_len = (ndig); uio.uio_resid += (ndig); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                        }
+                                } else if (expt >= ndig) {
+                                        { iovp->iov_base = (cp); iovp->iov_len = (ndig); uio.uio_resid += (ndig); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                        { if ((n = (expt - ndig)) > 0) { while (n > 16) { { iovp->iov_base = (zeroes); iovp->iov_len = (16); uio.uio_resid += (16); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; n -= 16; } { iovp->iov_base = (zeroes); iovp->iov_len = (n); uio.uio_resid += (n); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; } };
+                                        if (flags & 0x001)
+                                                { iovp->iov_base = ("."); iovp->iov_len = (1); uio.uio_resid += (1); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                } else {
+                                        { iovp->iov_base = (cp); iovp->iov_len = (expt); uio.uio_resid += (expt); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                        cp += expt;
+                                        { iovp->iov_base = ("."); iovp->iov_len = (1); uio.uio_resid += (1); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                        { iovp->iov_base = (cp); iovp->iov_len = (ndig-expt); uio.uio_resid += (ndig-expt); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                }
+                        } else {
+                                if (ndig > 1 || flags & 0x001) {
+                                        ox[0] = *cp++;
+                                        ox[1] = '.';
+                                        { iovp->iov_base = (ox); iovp->iov_len = (2); uio.uio_resid += (2); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                       if (_double) {
+                                                { iovp->iov_base = (cp); iovp->iov_len = (ndig-1); uio.uio_resid += (ndig-1); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                        } else
+                                                { if ((n = (ndig - 1)) > 0) { while (n > 16) { { iovp->iov_base = (zeroes); iovp->iov_len = (16); uio.uio_resid += (16); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; n -= 16; } { iovp->iov_base = (zeroes); iovp->iov_len = (n); uio.uio_resid += (n); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; } };
+                                } else
+                                        { iovp->iov_base = (cp); iovp->iov_len = (1); uio.uio_resid += (1); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                                { iovp->iov_base = (expstr); iovp->iov_len = (expsize); uio.uio_resid += (expsize); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } };
+                        }
+                }
+                if (flags & 0x004)
+                        { if ((n = (width - realsz)) > 0) { while (n > 16) { { iovp->iov_base = (blanks); iovp->iov_len = (16); uio.uio_resid += (16); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; n -= 16; } { iovp->iov_base = (blanks); iovp->iov_len = (n); uio.uio_resid += (n); iovp++; if (++uio.uio_iovcnt >= 8) { if (Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; iovp = iov; } }; } };
+                ret += width > realsz ? width : realsz;
+                { if (uio.uio_resid && Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; uio.uio_iovcnt = 0; iovp = iov; };
+        }
+done:
+        { if (uio.uio_resid && Newlib_Sprint_void_2_x00129AA0(fp, &uio)) goto error; uio.uio_iovcnt = 0; iovp = iov; };
+error:
+        return ((((fp)->_flags & 0x0040) != 0) ? (-1) : ret);
+}
+__asm__("# rebind _vfprintf_r 0x00129AA0");
 struct _reent_x0012B110 {
     char pad[0x38];
     int __sdidinit;

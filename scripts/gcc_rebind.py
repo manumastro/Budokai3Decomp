@@ -98,8 +98,16 @@ def ref_events(lines, first, last, data_labels):
         if cur != ".text":
             continue
         code = ln.split("#", 1)[0]
-        if re.match(r"^\s+li\.d\s+\$f?\d+\s*,", code):
-            out.append((i, "<li.d>", "HL"))  # gas puts the double in the object's .rodata (lui + ld / lwc1 x2)
+        m = re.match(r"^\s+li\.d\s+\$(f?)\d+\s*,\s*(\S+)", code)
+        if m:
+            # gas puts the double in the object's .rodata (lui + ld / lwc1 x2), except into a 64-bit general
+            # register when its low word is 0 (1.0, 0.5, 2^32...): then it builds it with lui/dsll, no relocation
+            try:
+                low = struct.unpack("<II", struct.pack("<d", float(m.group(2))))[0]
+            except ValueError:
+                low = 1
+            if m.group(1) or low:
+                out.append((i, "<li.d>", "HL"))
             continue
         if not re.match(r"^\s+[a-z]", code) or code.strip().startswith("."):
             continue

@@ -297,7 +297,8 @@ def compile_matrix(src, versions, flagsets, how, defines=(), include_dirs=("incl
             import gcc_rebind
             t = asm.read_text(errors="replace")
             if "rebind" in t or ".b3stub" in t:
-                t2 = gcc_rebind.rebind(t, [f"-I{ROOT / d}" for d in include_dirs], log=open(os.devnull, "w"))
+                t2 = gcc_rebind.rebind(t, [f"-I{ROOT / d}" for d in include_dirs] + file_as_flags(src),
+                                       log=open(os.devnull, "w"))
                 if t2 != t:
                     asm = asm.with_name(asm.stem + "_rb.s")  # ee-gcc's container owns its output file
                     asm.write_text(t2)
