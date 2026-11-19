@@ -1,3 +1,4 @@
+/* newlib objects were assembled without delay-slot filling: as-flags: -O1 */
 #include "common.h"
 
 extern s32 _impure_ptr;

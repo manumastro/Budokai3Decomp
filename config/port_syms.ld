@@ -39,3 +39,4 @@ dpsub = 0x00121988;
 dpcmp = 0x00121ED8;
 dptoul = 0x00122108;
 fptodp = 0x001214F8;
+__fixdfdi = 0x00121210;

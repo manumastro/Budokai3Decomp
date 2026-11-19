@@ -231,10 +231,22 @@ def show(words, orig, addr, bad):
         print(f"  {addr + 4 * i:08X} {left:44} {mark} {right}")
 
 
-def assemble(asm, obj, version, how, include_dirs):
-    """Assembles ee-gcc output; returns an error text or None."""
+def file_as_flags(src):
+    """Extra assembler flags a C file asks for in its first comment (`as-flags: -O1`, as configure.py reads them),
+    plus B3_AS_EXTRA from the environment (for trying other assembler settings on any file)."""
+    flags = os.environ.get("B3_AS_EXTRA", "").split()
+    try:
+        head = (ROOT / src).read_text(errors="replace")[:1500]
+    except OSError:
+        return flags
+    m = re.search(r"as-flags:[ \t]*([^\n*]+)", head)
+    return (m.group(1).split() if m else []) + flags
+
+
+def assemble(asm, obj, version, how, include_dirs, extra=()):
+    """Assembles ee-gcc output (extra: more gas flags); returns an error text or None."""
     if how == "gas":
-        r = subprocess.run([f"{BINUTILS}as", *GAS_FLAGS, "-G0", *[f"-I{d}" for d in include_dirs], str(PRELUDE),
+        r = subprocess.run([f"{BINUTILS}as", *GAS_FLAGS, "-G0", *extra, *[f"-I{d}" for d in include_dirs], str(PRELUDE),
                             str(asm), "-o", str(obj)], capture_output=True, text=True, cwd=ROOT)
         return None if r.returncode == 0 else r.stderr
     v = version if eegcc.kind(version) == "linux" else SONY_AS_FOR_WINDOWS
@@ -289,7 +301,7 @@ def compile_matrix(src, versions, flagsets, how, defines=(), include_dirs=("incl
                 if t2 != t:
                     asm = asm.with_name(asm.stem + "_rb.s")  # ee-gcc's container owns its output file
                     asm.write_text(t2)
-        err = assemble(asm, obj, v, how, include_dirs)
+        err = assemble(asm, obj, v, how, include_dirs, file_as_flags(src))
         out[(v, flags)] = obj if err is None else "assemble error: " + err.strip().splitlines()[-1]
     return out, work
 

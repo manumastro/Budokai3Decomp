@@ -1,3 +1,4 @@
+/* newlib objects were assembled without delay-slot filling: as-flags: -O1 */
 #include "common.h"
 
 s32 func_00129458(s32, s32, s32, s32);          /* extern */
@@ -660,7 +661,57 @@ int vfprintf_x00129A28(char *fp, char *fmt0, void *ap)
     return _vfiprintf_r_x00129A28(*(Reent_x00129A28 **)(fp + 0x54), (Fil_x00129A28 *)fp, fmt0, ap);
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libc_00129428", _vfprintf_r);
-INCLUDE_ASM("asm/nonmatchings/sdk/libc_00129428", func_0012B110);
+struct _reent_x0012B110 {
+    char pad[0x38];
+    int __sdidinit;
+    void (*__cleanup)(struct _reent_x0012B110 *);
+};
+extern double SoftFloat_DoubleSub_x0012B110(double, double) __asm__("func_00121988");
+extern int SoftFloat_UnpackAndCompare_x0012B110(double, double) __asm__("func_00121ED8");
+extern char *_dtoa_r_x0012B110(struct _reent_x0012B110 *, double, int, int, int *, int *, char **) __asm__("func_00122560");
+union double_union_x0012B110 {
+        double d;
+        unsigned int i[2];
+};
+char *
+func_0012B110_x0012B110(struct _reent_x0012B110 *data, double value, int ndigits, int flags, char *sign, int *decpt, int ch, int *length) __asm__("func_0012B110");
+/* Newlib_Cvt: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/vfprintf/vfprintf.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+char *
+func_0012B110_x0012B110(struct _reent_x0012B110 *data, double value, int ndigits, int flags, char *sign, int *decpt, int ch, int *length)
+{
+        int mode, dsgn;
+        char *digits, *bp, *rve;
+        union double_union_x0012B110 tmp;
+        if (ch == 'f') {
+                mode = 3;
+        } else {
+                if (ch == 'e' || ch == 'E') {
+                        ndigits++;
+                }
+                mode = 2;
+        }
+        tmp.d = value;
+        if ((tmp.i[1]) & 0x80000000) {
+                value = SoftFloat_DoubleSub_x0012B110(0, value);
+                *sign = '-';
+        } else
+                *sign = '\000';
+        digits = _dtoa_r_x0012B110(data, value, mode, ndigits, decpt, &dsgn, &rve);
+        if ((ch != 'g' && ch != 'G') || flags & 0x001) {
+                bp = digits + ndigits;
+                if (ch == 'f') {
+                        if (*digits == '0' && SoftFloat_UnpackAndCompare_x0012B110(value, 0) != 0)
+                                *decpt = -ndigits + 1;
+                        bp += *decpt;
+                }
+                if (SoftFloat_UnpackAndCompare_x0012B110(value, 0) == 0)
+                        rve = bp;
+                while (rve < bp)
+                        *rve++ = '0';
+        }
+        *length = rve - digits;
+        return (digits);
+}
 int func_0012B2D0_x0012B2D0(char *p0, int exp, int fmtch) __asm__("func_0012B2D0");
 /* exponent: from https://github.com/new-coke/rez-decomp (src/libc/stdio/vfprintf.c, MIT); ee-gcc 2.96 -O2 -G0 */
 int func_0012B2D0_x0012B2D0(char *p0, int exp, int fmtch)
