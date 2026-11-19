@@ -242,9 +242,16 @@ def run(a):
     out.mkdir(parents=True, exist_ok=True)
     WORK.mkdir(parents=True, exist_ok=True)
     cands = candidates(a)
-    print(f"{len(cands)} drafts, budget {a.budget}s, {a.cpus} at a time", flush=True)
     rows, matches = [], []
     csvp = out / "perm_report.csv"
+    if a.resume and csvp.exists():
+        # keep an earlier pass's rows and matches in the same --out, and skip the drafts it already ran
+        rows = list(csv.DictReader(open(csvp)))
+        if (out / "perm_matches.json").exists():
+            matches = json.load(open(out / "perm_matches.json"))
+        done = {r["name"] for r in rows}
+        cands = [e for e in cands if e["name"] not in done]
+    print(f"{len(cands)} drafts, budget {a.budget}s, {a.cpus} at a time", flush=True)
     import multiprocessing
     t0 = time.time()
     # spawn (no inherited state), a heartbeat line every minute, and the whole pass ends after --deadline seconds
@@ -313,6 +320,8 @@ def main():
             s.add_argument("--names")
             s.add_argument("--limit", type=int)
             s.add_argument("--deadline", type=int, default=0, help="seconds for the whole pass (0: none)")
+            s.add_argument("--resume", action="store_true",
+                           help="keep --out's earlier report and matches, skip the drafts already in its report")
         else:
             s.add_argument("names_list", nargs="+")
     a = ap.parse_args()
