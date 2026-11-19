@@ -754,7 +754,43 @@ s32 func_00195C50_x00195C50(s32 a0, s32 a1, u8 *a2) {
     func_001953E8_x00195C50(*(s32 *)(a2 + 0x1C70) + 0x1038);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00195C78);
+s32 func_00107C88_x00195C78(s32) __asm__("func_00107C88");
+s32 func_00195700_x00195C78(s32) __asm__("func_00195700");
+s32 func_001957B8_x00195C78() __asm__("func_001957B8");
+s32 func_00195D00_x00195C78(void *) __asm__("func_00195D00");
+s32 func_00197EB8_x00195C78() __asm__("func_00197EB8");
+s32 sceMpegDelete_x00195C78(s32) __asm__("sceMpegDelete");
+void func_00195C78_x00195C78(u8 *arg0) __asm__("func_00195C78");
+void func_00195C78_x00195C78(u8 *arg0)
+{
+  s32 temp_a0;
+  s32 temp_s0;
+  if (func_001957B8_x00195C78() == 0)
+  {
+    goto block_6;
+  }
+  temp_s0 = *((s32 *) (((u8 *) arg0) + 0x1C70));
+  temp_a0 = temp_s0 + 0x1038;
+  func_00195700_x00195C78(temp_a0);
+  ;
+  if (1)
+  {
+    if (1 == func_00197EB8_x00195C78())
+    {
+      goto block_4;
+    }
+    sceMpegDelete_x00195C78(temp_s0 + 0xFF0);
+    return;
+    block_4:
+    func_00107C88_x00195C78(temp_s0 + 0xFF0);
+
+    func_00195D00_x00195C78(arg0);
+    return;
+    block_6:
+    return;
+
+  }
+}
 void func_00195D00(u8 *arg0) {
     func_00178C68(&D_004929F8, *(s32 *)((u8 *)arg0 + 0x1C70) + 0xFF0, 0x48);
 }
@@ -15354,7 +15390,20 @@ void func_00199478(u8 *arg0, s32 arg1) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001994D8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001995C8);
+s32 func_001995C8_x001995C8(s32 arg0) __asm__("func_001995C8");
+s32 func_001995C8_x001995C8(s32 arg0)
+{
+  int new_var3;
+  s32 temp_v0;
+  int new_var2;
+  u8 *new_var;
+  u8 *temp_a1;
+  temp_a1 = arg0 + 0x1BE0;
+  new_var = (u8 *) (temp_a1 + ((*((s32 *) (((u8 *) (arg0 + (new_var2 = (*((s32 *) (((u8 *) temp_a1) + 0x14))) * 0x74))) + 0x12D0))) * 0x44));
+  temp_v0 = *((s32 *) (new_var + 0x20));
+  new_var3 = 1;
+  return (temp_v0 < 0) ? (-new_var3) : (temp_v0);
+}
 s32 func_0017EE78_x00199610(s32, s32, s32) __asm__("func_0017EE78");
 unsigned long long func_00199610_x00199610(u8 *arg0) __asm__("func_00199610");
 unsigned long long func_00199610_x00199610(u8 *arg0)
