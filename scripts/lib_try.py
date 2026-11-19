@@ -161,6 +161,11 @@ def try_snippet(name, snippet_text, quiet=False):
     addr, _, seg, kind = find_item(name)
     decls, func = split_snippet(snippet_text, name)
     item = {"addr": addr, "name": name, "decls": decls, "func": func}
+    # markers a snippet may carry in a comment: B3:noswap (its object was assembled with gas -O1: gcc_rebind.no_swap),
+    # B3:rebind (its own constants / jump tables bound to the executable's copy: gcc_rebind.py)
+    for k in ("noswap", "rebind"):
+        if re.search(rf"\bB3:{k}\b", snippet_text):
+            item[k] = True
     text = FI.isolate(item)
     tmp_rel = f"src/{seg}_lhtmp_{name}.c"
     tmp = ROOT / tmp_rel
