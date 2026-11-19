@@ -21993,7 +21993,17 @@ s32 func_0019A2C0_x0019A2C0(u8 *a0, u8 *a1, s32 a2)
     p = a0 + 0x4C;
     return *(s32 *)p == 4;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019A2E8);
+typedef struct { int pad[0x29C / 4]; int stream_pos; int pad2a0[(0x2C4 - 0x2A0) / 4]; int chg_base; int pad2c8[2]; int decoded_pos; } SfdTim_x0019A2E8;
+int func_001999E0_x0019A2E8(void *hn, int cond) __asm__("func_001999E0");
+void func_0019A2E8_x0019A2E8(void *hn, SfdTim_x0019A2E8 *tim) __asm__("func_0019A2E8");
+void func_0019A2E8_x0019A2E8(void *hn, SfdTim_x0019A2E8 *tim)
+{
+    if (func_001999E0_x0019A2E8(hn, 71) == 1) {
+        tim->chg_base = *(volatile int *)&tim->stream_pos;
+    } else {
+        tim->chg_base = *(volatile int *)&tim->decoded_pos;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019A330);
 s32 func_0018D650_x0019A3C8(s32, s32) __asm__("func_0018D650");
 s32 func_0019A408_x0019A3C8() __asm__("func_0019A408");
@@ -25232,7 +25242,34 @@ int func_0019A738_x0019A738(SfdPly_x0019A738 *hn, int *time, int *unit)
     }
     return SFTIM_GetNowTime_x0019A738(hn, time, unit);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019A7B0);
+typedef struct MovieModuleState_x0019A7B0 MovieModuleState_x0019A7B0;
+typedef s32 (*MovieCallback_x0019A7B0)(MovieModuleState_x0019A7B0 *, s32 *, s32 *);
+struct MovieModuleState_x0019A7B0 { u8 padding_000[0xcc0]; MovieCallback_x0019A7B0 callbacks[1]; u8 padding_001[0x244]; s32 state; s32 value; };
+extern s32 func_001999E0_x0019A7B0(MovieModuleState_x0019A7B0 *, s32) __asm__("func_001999E0");
+extern s32 func_0018D920_x0019A7B0(s32 *) __asm__("func_0018D920");
+extern s32 func_0019A848_x0019A7B0(MovieModuleState_x0019A7B0 *, s32 *, s32 *) __asm__("func_0019A848");
+extern void func_0018D908_x0019A7B0(s32 *) __asm__("func_0018D908");
+s32 func_0019A7B0_x0019A7B0(MovieModuleState_x0019A7B0 *movie, s32 *result, s32 *flag) __asm__("func_0019A7B0");
+s32 func_0019A7B0_x0019A7B0(MovieModuleState_x0019A7B0 *movie, s32 *result, s32 *flag)
+{
+  s32 local[4];
+  MovieCallback_x0019A7B0 *p;
+  s32 new_var;
+  MovieCallback_x0019A7B0 cb;
+  func_0018D908_x0019A7B0(local);
+  p = movie->callbacks;
+  p += func_001999E0_x0019A7B0(movie, 15);
+  cb = *p;
+  new_var = 0;
+  if (cb == new_var)
+  {
+    cb = func_0019A848_x0019A7B0;
+  }
+  p = (MovieCallback_x0019A7B0 *) cb(movie, result, flag);
+  new_var = (s32) p;
+  func_0018D920_x0019A7B0(local);
+  return new_var;
+}
 s32 func_0019AA08_x0019A848() __asm__("func_0019AA08");
 s32 func_0019A848_x0019A848(s32 arg0, s32 *arg1, s32 *arg2) __asm__("func_0019A848");
 s32 func_0019A848_x0019A848(s32 arg0, s32 *arg1, s32 *arg2)
@@ -26662,6 +26699,8 @@ void func_0019AE00_x0019AE00(s32 arg0, s32 arg1, s32 arg2)
 }
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3m9e081_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3ma2e81_000000;
 typedef unsigned char Uint8_x0019AE10;
 typedef signed char Sint8_x0019AE10;
 typedef signed short Sint16_x0019AE10;
@@ -27893,6 +27932,8 @@ Sint32_x0019B320 func_0019B320_x0019B320(SFD_x0019B320 sfd, Sint32_x0019B320 *fp
         *fps = SFTIM_prate_x0019B320[sfd->picrate];
         return 0;
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int ma7b010;
 s32 func_0017EE78_x0019B398(s32, s32, s32) __asm__("func_0017EE78");
 s32 func_0018D650_x0019B398(s32, s32) __asm__("func_0018D650");
 s32 func_0018D870_x0019B398() __asm__("func_0018D870");
