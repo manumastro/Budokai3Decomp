@@ -60,7 +60,67 @@ s32 func_00113B98_x00113B98(s32 *arg0, s32 *arg1, u32 arg2) {
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113BD0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113BE0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113BF0);
+typedef unsigned char u8_x00113BF0;
+typedef signed int s32_x00113BF0;
+typedef unsigned int u32_x00113BF0;
+typedef struct SdfKernelThreadParam_x00113BF0 {
+    s32_x00113BF0 status;              
+    void (*entry_x00113BF0)(void);     
+    void *stack_x00113BF0;             
+    s32_x00113BF0 stackSize_x00113BF0;           
+    void *gp_x00113BF0;                
+    s32_x00113BF0 priority_x00113BF0;            
+    u8_x00113BF0 opaque18_x00113BF0[0x18];       
+} SdfKernelThreadParam_x00113BF0;
+typedef char SdfKernelThreadParam_size_must_be_0x30[
+    (sizeof(SdfKernelThreadParam_x00113BF0) == 0x30) ? 1 : -1];
+typedef char SdfKernelThreadParam_entry_offset_must_be_0x04[
+    ((u32_x00113BF0)&((SdfKernelThreadParam_x00113BF0 *)0)->entry_x00113BF0 == 0x04) ? 1 : -1];
+typedef char SdfKernelThreadParam_stack_offset_must_be_0x08[
+    ((u32_x00113BF0)&((SdfKernelThreadParam_x00113BF0 *)0)->stack_x00113BF0 == 0x08) ? 1 : -1];
+typedef char SdfKernelThreadParam_stackSize_offset_must_be_0x0C[
+    ((u32_x00113BF0)&((SdfKernelThreadParam_x00113BF0 *)0)->stackSize_x00113BF0 == 0x0C) ? 1 : -1];
+typedef char SdfKernelThreadParam_gp_offset_must_be_0x10[
+    ((u32_x00113BF0)&((SdfKernelThreadParam_x00113BF0 *)0)->gp_x00113BF0 == 0x10) ? 1 : -1];
+typedef char SdfKernelThreadParam_priority_offset_must_be_0x14[
+    ((u32_x00113BF0)&((SdfKernelThreadParam_x00113BF0 *)0)->priority_x00113BF0 == 0x14) ? 1 : -1];
+typedef char SdfKernelThreadParam_opaque18_offset_must_be_0x18[
+    ((u32_x00113BF0)&((SdfKernelThreadParam_x00113BF0 *)0)->opaque18_x00113BF0 == 0x18) ? 1 : -1];
+void FlushCache_x00113BF0(s32_x00113BF0 mode) __asm__("FlushCache");
+extern void FlushCache_x00113BF0(s32_x00113BF0 mode) __asm__("FlushCache");
+typedef struct {
+    u32_x00113BF0 index;
+    void (*entry_x00113BF0)(void);
+} kernelEntryPair_t_x00113BF0;
+extern void FlushCache_x00113BF0(s32_x00113BF0 mode) __asm__("FlushCache");
+extern void *execArgumentBlock_x00113BF0 __asm__("D_003ECA60");
+extern kernelEntryPair_t_x00113BF0 tlbEntryPairs_x00113BF0[8] __asm__("D_003ECA68");
+extern void *execArgumentBlock_x00113BF0 __asm__("D_003ECA60");
+extern const u8_x00113BF0 TLBFunctionsImage_x00113BF0[0x330] __asm__("D_003EC6E8");
+extern s32_x00113BF0 Copy_2_x00113BF0(void *destination, const void *source, u32_x00113BF0 size) __asm__("func_00113B88");
+extern void *GetEntryAddress_1_x00113BF0(u32_x00113BF0 index) __asm__("func_00113BD0");
+extern void setup_0_x00113BF0(u32_x00113BF0 index, void *entry_x00113BF0) __asm__("func_00113BE0");
+void func_00113BF0_x00113BF0(void) __asm__("func_00113BF0");
+/* InitTLBFunctions: from https://github.com/Megami-Decomps/dds-decomp (src/dds1/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00113BF0_x00113BF0(void)
+{
+    u32_x00113BF0 index;
+    u32_x00113BF0 i;
+    void *entry_x00113BF0;
+
+    setup_0_x00113BF0(tlbEntryPairs_x00113BF0[0].index, tlbEntryPairs_x00113BF0[0].entry_x00113BF0);
+    Copy_2_x00113BF0((void *)0x80075000, TLBFunctionsImage_x00113BF0, 0x330);
+    FlushCache_x00113BF0(0);
+    FlushCache_x00113BF0(2);
+    setup_0_x00113BF0(tlbEntryPairs_x00113BF0[1].index, tlbEntryPairs_x00113BF0[1].entry_x00113BF0);
+    setup_0_x00113BF0(tlbEntryPairs_x00113BF0[2].index, tlbEntryPairs_x00113BF0[2].entry_x00113BF0);
+    for (i = 3; i < 8; i++) {
+        index = tlbEntryPairs_x00113BF0[i].index;
+        entry_x00113BF0 = GetEntryAddress_1_x00113BF0(index);
+        setup_0_x00113BF0(tlbEntryPairs_x00113BF0[i].index, entry_x00113BF0);
+    }
+    execArgumentBlock_x00113BF0 = GetEntryAddress_1_x00113BF0(3);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113CB8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113CC8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113CD8);
@@ -314,12 +374,49 @@ void func_00114918(void) {
     func_00113D78();
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114920);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114990);
+typedef signed int s32_x00114990;
+typedef struct execArgumentBlock_t_x00114990 {
+    char *arguments[16];
+    char strings[1];
+} execArgumentBlock_t_x00114990;
+extern void *execArgumentBlock_x00114990 __asm__("D_003ECA60");
+char *SetArg_x00114990(const char *path, s32_x00114990 count, const char *const *arguments) __asm__("func_00114800");
+void TerminateLibrary_x00114990(void) __asm__("func_00114918");
+extern void libc_2DBAE0_x00114990(const char *path, s32_x00114990 count, char **arguments) __asm__("LoadExecPS2");
+extern void *execArgumentBlock_x00114990 __asm__("D_003ECA60");
+void func_00114990_x00114990(const char *path, s32_x00114990 count, char **arguments) __asm__("func_00114990");
+/* LoadExecPS2: from https://github.com/Megami-Decomps/dds-decomp (src/dds1/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00114990_x00114990(const char *path, s32_x00114990 count, char **arguments)
+{
+    char *packedPath = SetArg_x00114990(path, count, (const char *const *)arguments);
+    TerminateLibrary_x00114990();
+    libc_2DBAE0_x00114990(packedPath, count,
+                  &((execArgumentBlock_t_x00114990 *)execArgumentBlock_x00114990)->arguments[1]);
+}
 void Exit_001149D8(s32 arg0) {
     func_00114918();
     Exit(arg0);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114A00);
+typedef signed int s32_x00114A00;
+typedef struct execArgumentBlock_t_x00114A00 {
+    char *arguments[16];
+    char strings[1];
+} execArgumentBlock_t_x00114A00;
+extern void *execArgumentBlock_x00114A00 __asm__("D_003ECA60");
+char *SetArg_x00114A00(const char *path, s32_x00114A00 count, const char *const *arguments) __asm__("func_00114800");
+void TerminateLibrary_x00114A00(void) __asm__("func_00114918");
+extern const char execDefaultPath_x00114A00[] __asm__("D_0045D9F0");
+extern void _ExecOSD_x00114A00(s32_x00114A00 count, char **arguments) __asm__("ExecOSD");
+extern void *execArgumentBlock_x00114A00 __asm__("D_003ECA60");
+extern const char execDefaultPath_x00114A00[8] __asm__("D_0045D9F0");
+void func_00114A00_x00114A00(s32_x00114A00 count, const char *const *arguments) __asm__("func_00114A00");
+/* ExecOSD: from https://github.com/Megami-Decomps/dds-decomp (src/dds1/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00114A00_x00114A00(s32_x00114A00 count, const char *const *arguments)
+{
+    SetArg_x00114A00(execDefaultPath_x00114A00, count, arguments);
+    TerminateLibrary_x00114A00();
+    _ExecOSD_x00114A00(count, &((execArgumentBlock_t_x00114A00 *)execArgumentBlock_x00114A00)->arguments[1]);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114A50);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114A60);
 s32 func_00114A70_x00114A70(s32 *arg0, s32 *arg1, u32 arg2) __asm__("func_00114A70");

@@ -31,6 +31,7 @@ file's first comment) to the instructions of this executable.
 | https://github.com/reshaped/sonic-adventure (sdk/sofdec/, modules/movie/sdk/) | none stated by the repository (same) | - |
 | https://github.com/Raikaru/Persona4-Decompilation (src/cri/) | none stated by the repository (used at the maintainer request) (remove with `git grep -n Persona4-Decompilation src`) | - |
 | https://github.com/Subarasheese/pes6decomp (src/cri/) | none stated for its own code (remove with `git grep -n pes6decomp src`) | - |
+| https://github.com/Megami-Decomps/dds-decomp | none stated by the repository (remove with `git grep -n dds-decomp src`) | - |
 
 newlib: each function taken from it carries its origin file's notice where that file has one. Files without a notice
 of their own are covered by newlib's COPYING.NEWLIB section for Cygnus/Red Hat code:

@@ -39,7 +39,30 @@ int func_00112510_x00112510(void) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112598);
+typedef unsigned char u8_x00112598;
+typedef signed int s32_x00112598;
+typedef unsigned int u32_x00112598;
+typedef u32_x00112598 addr_t_x00112598;
+extern s32_x00112598 sceSifCallRpc_x00112598(void *client, s32_x00112598 function, s32_x00112598 mode, void *send, s32_x00112598 sendBytes, void *receive, s32_x00112598 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+extern s32_x00112598 iopHeapStatus_x00112598 __asm__("D_003EC6D8");
+extern u8_x00112598 iopHeapRpcClient_x00112598[0x40] __asm__("D_00474C40");
+extern s32_x00112598 iopHeapResult_x00112598 __asm__("D_00474C80");
+extern addr_t_x00112598 iopHeapArgs_x00112598[16] __asm__("D_00474CC0");
+extern s32_x00112598 sceSifCallRpc_x00112598(void *client, s32_x00112598 function, s32_x00112598 mode, void *send, s32_x00112598 sendBytes, void *receive, s32_x00112598 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+s32_x00112598 func_00112598_x00112598(s32_x00112598 size) __asm__("func_00112598");
+/* sceSifAllocIopHeap: from https://github.com/Megami-Decomps/dds-decomp (src/dds1/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+s32_x00112598 func_00112598_x00112598(s32_x00112598 size)
+{
+    if (iopHeapStatus_x00112598 < 0) {
+        return 0;
+    }
+    iopHeapArgs_x00112598[0] = size;
+    if (sceSifCallRpc_x00112598(iopHeapRpcClient_x00112598, 1, 0, iopHeapArgs_x00112598, 4,
+                      &iopHeapResult_x00112598, 4, ((void *)0), ((void *)0)) >= 0) {
+        return iopHeapResult_x00112598;
+    }
+    return 0;
+}
 typedef struct RpcPkt_x00112608 {
     void *cur_pkt;               
     int cur_pkt_id;
@@ -76,7 +99,30 @@ int func_00112608_x00112608(int type, int size, int addr)
         return 0;
     return sif_iopheap_rbuf_x00112608[0];
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112688);
+typedef unsigned char u8_x00112688;
+typedef signed int s32_x00112688;
+typedef unsigned int u32_x00112688;
+typedef u32_x00112688 addr_t_x00112688;
+extern s32_x00112688 sceSifCallRpc_x00112688(void *client, s32_x00112688 function, s32_x00112688 mode, void *send, s32_x00112688 sendBytes, void *receive, s32_x00112688 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+extern s32_x00112688 iopHeapStatus_x00112688 __asm__("D_003EC6D8");
+extern u8_x00112688 iopHeapRpcClient_x00112688[0x40] __asm__("D_00474C40");
+extern s32_x00112688 iopHeapResult_x00112688 __asm__("D_00474C80");
+extern addr_t_x00112688 iopHeapArgs_x00112688[16] __asm__("D_00474CC0");
+extern s32_x00112688 sceSifCallRpc_x00112688(void *client, s32_x00112688 function, s32_x00112688 mode, void *send, s32_x00112688 sendBytes, void *receive, s32_x00112688 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+s32_x00112688 func_00112688_x00112688(void *address) __asm__("func_00112688");
+/* sceSifFreeSysMemory: from https://github.com/Megami-Decomps/dds-decomp (src/dds1/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+s32_x00112688 func_00112688_x00112688(void *address)
+{
+    if (iopHeapStatus_x00112688 < 0) {
+        return 0;
+    }
+    iopHeapArgs_x00112688[0] = ((u32_x00112688)(address));
+    if (sceSifCallRpc_x00112688(iopHeapRpcClient_x00112688, 2, 0, iopHeapArgs_x00112688, 4,
+                      &iopHeapResult_x00112688, 4, ((void *)0), ((void *)0)) >= 0) {
+        return iopHeapResult_x00112688;
+    }
+    return -1;
+}
 s32 func_00112688_x00112700() __asm__("func_00112688");
 s32 func_00112700_x00112700(s32 arg0) __asm__("func_00112700");
 s32 func_00112700_x00112700(s32 arg0) {
@@ -131,11 +177,117 @@ int func_00112720_x00112720(const char *name, int addr)
         return -1;
     return sif_iopheap_rbuf_x00112720[0];
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112810);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112880);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001128F0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112960);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_001129E0);
+typedef unsigned char u8_x00112810;
+typedef signed int s32_x00112810;
+typedef unsigned int u32_x00112810;
+extern s32_x00112810 sceSifCallRpc_x00112810(void *client, s32_x00112810 function, s32_x00112810 mode, void *send, s32_x00112810 sendBytes, void *receive, s32_x00112810 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+extern s32_x00112810 iopHeapStatus_x00112810 __asm__("D_003EC6D8");
+extern u8_x00112810 iopHeapRpcClient_x00112810[0x40] __asm__("D_00474C40");
+extern s32_x00112810 iopHeapResult_x00112810 __asm__("D_00474C80");
+extern s32_x00112810 sceSifCallRpc_x00112810(void *client, s32_x00112810 function, s32_x00112810 mode, void *send, s32_x00112810 sendBytes, void *receive, s32_x00112810 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+u32_x00112810 func_00112810_x00112810(void) __asm__("func_00112810");
+/* sceSifQueryMemSize: from https://github.com/Megami-Decomps/dds-decomp (src/dds1/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+u32_x00112810 func_00112810_x00112810(void)
+{
+    if (iopHeapStatus_x00112810 < 0) {
+        return 0;
+    }
+    if (sceSifCallRpc_x00112810(iopHeapRpcClient_x00112810, 5, 0, ((void *)0), 0,
+                      &iopHeapResult_x00112810, 4, ((void *)0), ((void *)0)) < 0) {
+        return 0xFFFFFFFF;
+    }
+    return iopHeapResult_x00112810;
+}
+typedef unsigned char u8_x00112880;
+typedef signed int s32_x00112880;
+typedef unsigned int u32_x00112880;
+extern s32_x00112880 sceSifCallRpc_x00112880(void *client, s32_x00112880 function, s32_x00112880 mode, void *send, s32_x00112880 sendBytes, void *receive, s32_x00112880 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+extern s32_x00112880 iopHeapStatus_x00112880 __asm__("D_003EC6D8");
+extern u8_x00112880 iopHeapRpcClient_x00112880[0x40] __asm__("D_00474C40");
+extern s32_x00112880 iopHeapResult_x00112880 __asm__("D_00474C80");
+extern s32_x00112880 sceSifCallRpc_x00112880(void *client, s32_x00112880 function, s32_x00112880 mode, void *send, s32_x00112880 sendBytes, void *receive, s32_x00112880 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+u32_x00112880 func_00112880_x00112880(void) __asm__("func_00112880");
+/* sceSifQueryMaxFreeMemSize: from https://github.com/Megami-Decomps/dds-decomp (src/dds1/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+u32_x00112880 func_00112880_x00112880(void)
+{
+    if (iopHeapStatus_x00112880 < 0) {
+        return 0;
+    }
+    if (sceSifCallRpc_x00112880(iopHeapRpcClient_x00112880, 6, 0, ((void *)0), 0,
+                      &iopHeapResult_x00112880, 4, ((void *)0), ((void *)0)) < 0) {
+        return 0xFFFFFFFF;
+    }
+    return iopHeapResult_x00112880;
+}
+typedef unsigned char u8_x001128F0;
+typedef signed int s32_x001128F0;
+typedef unsigned int u32_x001128F0;
+extern s32_x001128F0 sceSifCallRpc_x001128F0(void *client, s32_x001128F0 function, s32_x001128F0 mode, void *send, s32_x001128F0 sendBytes, void *receive, s32_x001128F0 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+extern s32_x001128F0 iopHeapStatus_x001128F0 __asm__("D_003EC6D8");
+extern u8_x001128F0 iopHeapRpcClient_x001128F0[0x40] __asm__("D_00474C40");
+extern s32_x001128F0 iopHeapResult_x001128F0 __asm__("D_00474C80");
+extern s32_x001128F0 sceSifCallRpc_x001128F0(void *client, s32_x001128F0 function, s32_x001128F0 mode, void *send, s32_x001128F0 sendBytes, void *receive, s32_x001128F0 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+u32_x001128F0 func_001128F0_x001128F0(void) __asm__("func_001128F0");
+/* sceSifQueryTotalFreeMemSize: from https://github.com/Megami-Decomps/dds-decomp (src/dds1/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+u32_x001128F0 func_001128F0_x001128F0(void)
+{
+    if (iopHeapStatus_x001128F0 < 0) {
+        return 0;
+    }
+    if (sceSifCallRpc_x001128F0(iopHeapRpcClient_x001128F0, 7, 0, ((void *)0), 0,
+                      &iopHeapResult_x001128F0, 4, ((void *)0), ((void *)0)) < 0) {
+        return 0xFFFFFFFF;
+    }
+    return iopHeapResult_x001128F0;
+}
+typedef unsigned char u8_x00112960;
+typedef signed int s32_x00112960;
+typedef unsigned int u32_x00112960;
+typedef u32_x00112960 addr_t_x00112960;
+extern s32_x00112960 sceSifCallRpc_x00112960(void *client, s32_x00112960 function, s32_x00112960 mode, void *send, s32_x00112960 sendBytes, void *receive, s32_x00112960 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+extern s32_x00112960 iopHeapStatus_x00112960 __asm__("D_003EC6D8");
+extern u8_x00112960 iopHeapRpcClient_x00112960[0x40] __asm__("D_00474C40");
+extern s32_x00112960 iopHeapResult_x00112960 __asm__("D_00474C80");
+extern addr_t_x00112960 iopHeapArgs_x00112960[16] __asm__("D_00474CC0");
+extern s32_x00112960 sceSifCallRpc_x00112960(void *client, s32_x00112960 function, s32_x00112960 mode, void *send, s32_x00112960 sendBytes, void *receive, s32_x00112960 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+u32_x00112960 func_00112960_x00112960(u32_x00112960 block) __asm__("func_00112960");
+/* sceSifQueryBlockTopAddress: from https://github.com/Megami-Decomps/dds-decomp (src/dds1/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+u32_x00112960 func_00112960_x00112960(u32_x00112960 block)
+{
+    if (iopHeapStatus_x00112960 < 0) {
+        return 0;
+    }
+    iopHeapArgs_x00112960[0] = block;
+    if (sceSifCallRpc_x00112960(iopHeapRpcClient_x00112960, 8, 0, iopHeapArgs_x00112960, 4,
+                      &iopHeapResult_x00112960, 4, ((void *)0), ((void *)0)) < 0) {
+        return 0xFFFFFFFF;
+    }
+    return iopHeapResult_x00112960;
+}
+typedef unsigned char u8_x001129E0;
+typedef signed int s32_x001129E0;
+typedef unsigned int u32_x001129E0;
+typedef u32_x001129E0 addr_t_x001129E0;
+extern s32_x001129E0 sceSifCallRpc_x001129E0(void *client, s32_x001129E0 function, s32_x001129E0 mode, void *send, s32_x001129E0 sendBytes, void *receive, s32_x001129E0 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+extern s32_x001129E0 iopHeapStatus_x001129E0 __asm__("D_003EC6D8");
+extern u8_x001129E0 iopHeapRpcClient_x001129E0[0x40] __asm__("D_00474C40");
+extern s32_x001129E0 iopHeapResult_x001129E0 __asm__("D_00474C80");
+extern addr_t_x001129E0 iopHeapArgs_x001129E0[16] __asm__("D_00474CC0");
+extern s32_x001129E0 sceSifCallRpc_x001129E0(void *client, s32_x001129E0 function, s32_x001129E0 mode, void *send, s32_x001129E0 sendBytes, void *receive, s32_x001129E0 receiveBytes, void *endFunction, void *endParameter) __asm__("sceSifCallRpc");
+u32_x001129E0 func_001129E0_x001129E0(u32_x001129E0 block) __asm__("func_001129E0");
+/* sceSifQueryBlockSize: from https://github.com/Megami-Decomps/dds-decomp (src/dds1/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+u32_x001129E0 func_001129E0_x001129E0(u32_x001129E0 block)
+{
+    if (iopHeapStatus_x001129E0 < 0) {
+        return 0;
+    }
+    iopHeapArgs_x001129E0[0] = block;
+    if (sceSifCallRpc_x001129E0(iopHeapRpcClient_x001129E0, 9, 0, iopHeapArgs_x001129E0, 4,
+                      &iopHeapResult_x001129E0, 4, ((void *)0), ((void *)0)) < 0) {
+        return 0xFFFFFFFF;
+    }
+    return iopHeapResult_x001129E0;
+}
 typedef struct RpcPkt_x00112A60 {
     void *cur_pkt;               
     int cur_pkt_id;
