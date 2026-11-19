@@ -303,7 +303,68 @@ long long func_00121988_x00121988(long arg_a, long arg_b)
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", dpmul);
 INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121C78);
-INCLUDE_ASM("asm/nonmatchings/sdk/libgcc_0011F758", func_00121DB8);
+typedef enum {
+    CLASS_SNAN_x00121DB8,
+    CLASS_QNAN_x00121DB8,
+    CLASS_ZERO_x00121DB8,
+    CLASS_NUMBER_x00121DB8,
+    CLASS_INFINITY_x00121DB8
+} fp_class_type_x00121DB8;
+typedef unsigned long fractype_x00121DB8;
+typedef struct {
+    fp_class_type_x00121DB8 class;
+    unsigned int sign;
+    int normal_exp;
+    union {
+        fractype_x00121DB8 ll;
+        unsigned int l[2];
+    } fraction;
+} fp_number_type_x00121DB8;
+static __inline__ int fp_isnan_x00121DB8(fp_number_type_x00121DB8 *x)
+{
+    return x->class == CLASS_SNAN_x00121DB8 || x->class == CLASS_QNAN_x00121DB8;
+}
+static __inline__ int fp_isinf_x00121DB8(fp_number_type_x00121DB8 *x)
+{
+    return x->class == CLASS_INFINITY_x00121DB8;
+}
+static __inline__ int fp_iszero_x00121DB8(fp_number_type_x00121DB8 *x)
+{
+    return x->class == CLASS_ZERO_x00121DB8;
+}
+int func_00121DB8_x00121DB8(fp_number_type_x00121DB8 *a, fp_number_type_x00121DB8 *b) __asm__("func_00121DB8");
+/* __fpcmp_parts_d: from https://github.com/new-coke/rez-decomp (src/libc/libgcc/dp-bit.c, MIT); ee-gcc 2.96 -O2 -G0 */
+int func_00121DB8_x00121DB8(fp_number_type_x00121DB8 *a, fp_number_type_x00121DB8 *b)
+{
+    if (fp_isnan_x00121DB8(a) || fp_isnan_x00121DB8(b))
+        return 1;
+    if (fp_isinf_x00121DB8(a) && fp_isinf_x00121DB8(b))
+        return b->sign - a->sign;
+    if (fp_isinf_x00121DB8(a))
+        return a->sign ? -1 : 1;
+    if (fp_isinf_x00121DB8(b))
+        return b->sign ? 1 : -1;
+    if (fp_iszero_x00121DB8(a) && fp_iszero_x00121DB8(b))
+        return 0;
+    if (fp_iszero_x00121DB8(a)) {
+        if (b->sign)
+            return 1;
+        return -1;
+    }
+    if (fp_iszero_x00121DB8(b))
+        return a->sign ? -1 : 1;
+    if (a->sign != b->sign)
+        return a->sign ? -1 : 1;
+    if (a->normal_exp > b->normal_exp)
+        return a->sign ? -1 : 1;
+    if (a->normal_exp < b->normal_exp)
+        return a->sign ? 1 : -1;
+    if (a->fraction.ll > b->fraction.ll)
+        return a->sign ? -1 : 1;
+    if (a->fraction.ll < b->fraction.ll)
+        return a->sign ? 1 : -1;
+    return 0;
+}
 void __unpack_d_x00121ED8(void *in, void *out) __asm__("func_00121610");
 typedef struct {
     unsigned int class;
