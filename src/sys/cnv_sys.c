@@ -35,9 +35,27 @@ void func_002A09A0(s32 arg0, s32 arg1) {
     *(s32 *)((u8 *)(*(s32 *)((u8 *)D_004708CC + 0x58) + (arg0 * 0x30)) + 0x14) = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A09C0);
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A09F0);
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0A30);
+extern void func_0022E0B0(void *);
+void func_002A09C0(u8 *arg0) {
+    if ((u32)*(u32 *)((u8 *)arg0 + 0x14) <= (u32)arg0) {
+        func_0022E0B0(arg0);
+    }
+}
+
+void func_002A09F0(s32 arg0, s32 arg1, u8 *arg2) {
+    u8 *temp_v1;
+    temp_v1 = (unsigned char *)(*(u8 **)(*(s32 *)((u8 *)D_004708CC + 0x48) + arg0 * 4) + (arg1 << 5));
+    *(f32 *)((u8 *)temp_v1 + 4) = (f32)*(f32 *)((u8 *)arg2 + 0);
+    *(f32 *)((u8 *)temp_v1 + 0xC) = (f32)*(f32 *)((u8 *)arg2 + 4);
+    *(f32 *)((u8 *)temp_v1 + 8) = (f32)*(f32 *)((u8 *)arg2 + 8);
+    *(s32 *)((u8 *)temp_v1 + 0x10) = 0;
+    *(s32 *)((u8 *)temp_v1 + 0x14) = 0;
+}
+
+void func_002A0A30(s32 arg0, s32 arg1, s32 arg2) {
+    *(s32 *)(*(u8 **)(*(s32 *)((u8 *)D_004708CC + 0x48) + arg0 * 4) + (arg1 << 5)) = arg2;
+}
+
 INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0A60);
 void func_002A0AD0(s32 arg0, s32 arg1, u8 *arg2) {
     u8 *temp_v1;
@@ -196,7 +214,10 @@ s32 func_002A1390(void) {
     return *(s32 *)((u8 *)D_004708CC + 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A13A0);
+s32 func_002A13A0(void) {
+    return *(s32 *)D_004708CC;
+}
+
 s32 func_002A13B0(void) {
     return *(s32 *)((u8 *)D_004708CC + 0x30);
 }

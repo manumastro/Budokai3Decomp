@@ -3592,42 +3592,51 @@ void func_002185E0(void);
 void Sp_KillTasks(void);
 void func_00247410(void);
 
-#if 0
-void func_00215B20(void) {
-    u8 *p;
-    void (*f)(void *);
-
-    p = *(u8 **)D_00568B90;
-    if (p != D_00568C10) {
-        do {
-            if (*(s16 *)(p + 0x1E) != 0) {
-                *(s32 *)(p + 0x8) = -1;
-                f = *(void (**)(void *))(p + 0xC);
-                if ((s32)f > 0) {
-                    f(p);
-                }
-            }
-            p = *(u8 **)p;
-        } while (p != D_00568C10);
+void func_00215B20(void)
+{
+  s32 temp_v0;
+  u8 *var_s0;
+  u8 *var_s0_2;
+  var_s0 = (unsigned char *) (*((s32 *) D_00568B90));
+  if (var_s0 != D_00568C10)
+  {
+    do
+    {
+      if ((((u64) (((s64) (*((s16 *) (((u8 *) var_s0) + 0x1E)))) << 0x20)) >> 0x20) != 0)
+      {
+        *((s32 *) (((u8 *) var_s0) + 8)) = -1;
+        temp_v0 = *((s32 *) (((u8 *) var_s0) + 0xC));
+        if (temp_v0 > 0)
+        {
+          ((s32 (*)(u8 *)) temp_v0)(var_s0);
+        }
+      }
+      var_s0 = *((u8 **) (((u8 *) var_s0) + 0));
     }
-    p = *(u8 **)D_00568B90;
-    if (p != D_00568C10) {
-        do {
-            if (*(s32 *)(p + 0x8) == -1) {
-                func_0020CB90(p);
-            }
-            p = *(u8 **)p;
-        } while (p != D_00568C10);
+    while (var_s0 != D_00568C10);
+  }
+  var_s0_2 = (unsigned char *) (*((s32 *) D_00568B90));
+  if (var_s0_2 != D_00568C10)
+  {
+    do
+    {
+      if ((*((s32 *) (((u8 *) var_s0_2) + 8))) == (-1))
+      {
+        func_0020CB90(var_s0_2);
+      }
+      var_s0_2 = *((u8 **) (((u8 *) var_s0_2) + 0));
     }
-    func_0020F700(-1);
-    func_0020A7F0(-1);
-    func_002185E0();
-    Sp_KillTasks();
-    func_00247410();
+    while (var_s0_2 != D_00568C10);
+  }
+  func_0020F700(-1);
+  func_0020A7F0(-1);
+  func_002185E0();
+  Sp_KillTasks();
+  func_00247410();
 }
-// differs: 0xE8 against 0xF0: the 16-bit flag test is loaded with lh and zero-extended with dsll32 / dsrl32 in the original, here it is lhu or a plain lh with bnez; the second loop's label is not padded the same way
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215B20);
+
+
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00215C10);
 extern u8 *gWave;
 extern u8 D_00568B90[];

@@ -431,6 +431,7 @@ def apply_function(path, name, add, ctext, filter_known=True):
     path = Path(path)
     src = path.read_text()
     old = src
+    add = list(dict.fromkeys(add))  # the draft's own declarations and the context's can be the same line
     m = asm_info(name, src)[3]
     head = src[:m.start()]
     park = re.search(r"#if 0\n(?:(?!#if 0).)*?#endif\n(?://[^\n]*\n)*\Z", head, re.S)
@@ -461,6 +462,57 @@ ARRAY_RE = re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+illegal (?
 PROTOMISMATCH_RE = re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+function call does not match prototype")
 NONFUNC_RE =re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+call of non-function")
 VOIDPLUS_RE =re.compile(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+illegal operands 'void \*' \+ 'int'")
+
+
+
+
+def fix_arity(ctext, cerr):
+    """`function call 'f(...)' does not match 'f(T1, T2)'`: every call of f in the draft gets the prototype's number of
+    arguments (missing ones as 0, extra ones dropped). The prototype may contain function-pointer types, so the
+    parameters are counted at the top level of the parentheses."""
+    msg = re.sub(r"\r?\n#\s{0,3}", " ", cerr)
+    for m in re.finditer(r"function call '(\w+)\(", msg):
+        callee = m.group(1)
+        km = re.compile(rf"does\s+not\s+match\s*'{re.escape(callee)}\(").search(msg, m.end())
+        if not km:
+            continue
+        i = km.end()
+        depth, j = 1, i
+        while j < len(msg) and depth:
+            depth += {"(": 1, ")": -1}.get(msg[j], 0)
+            j += 1
+        params = [p for p in split_top(msg[i:j - 1]) if p.strip() and p.strip() != "void"]
+        if any("..." in p for p in params):
+            continue
+        out, pos = [], 0
+        for cm in re.finditer(rf"\b{re.escape(callee)}\(", ctext):
+            if cm.start() < pos:
+                continue
+            depth, e = 1, cm.end()
+            while e < len(ctext) and depth:
+                depth += {"(": 1, ")": -1}.get(ctext[e], 0)
+                e += 1
+            inner = ctext[cm.end():e - 1]
+            args = [a.strip() for a in split_top(inner)] if inner.strip() else []
+            args = (args + ["0"] * len(params))[:len(params)]
+            out.append(ctext[pos:cm.end()] + ", ".join(args) + ")")
+            pos = e
+        new = "".join(out) + ctext[pos:]
+        if new != ctext:
+            return new
+    # a function name passed where a function pointer of another type is expected: cast it to that type
+    for m in re.finditer(r"#\s+\d+:\s?(.*?)\r?\n#\s+Error:\s+\^+\r?\n#\s+illegal implicit conversion from '[^']*\(\)' to\s*"
+                         r"(?:\r?\n#\s+)?'([^']*\(\*\)\([^']*\))'", cerr):
+        srcline, to = m.group(1).strip(), m.group(2)
+        lines = ctext.split("\n")
+        for i, l in enumerate(lines):
+            if srcline in l:
+                new = re.sub(r"(?<![\w)*])\b(func_[0-9A-F]{8}|[A-Za-z]\w*_\w+)\b(?!\s*\()(?=\s*[,)])",
+                             lambda mm: f"({to}){mm.group(1)}", l)
+                if new != l:
+                    lines[i] = new
+                    return "\n".join(lines)
+    return ctext
 
 
 def split_top(s, sep=","):
@@ -683,6 +735,12 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
         names = [w for w in re.findall(r"[A-Za-z_]\w*", line) if w not in TYPE_WORDS and w != name]
         if any(known(ctext, w) and not known(head_vis, w) for w in names) and not any(known(a, names[0]) for a in add if names):
             add.append(line)
+    # a function defined further down only: without a prototype above, a call makes it an implicit `int f()` that the
+    # definition then contradicts
+    for dm in re.finditer(r"^((?:static\s+)?[A-Za-z_][\w \*]*?)\b(\w+)\(([^;{}()]*)\)\s*\{", tail_vis, re.M):
+        fn = dm.group(2)
+        if fn != name and fn not in ("if", "while", "for", "switch") and known(ctext, fn) and not known(head_vis, fn)                 and not any(known(a, fn) for a in add):
+            add.append(f"{dm.group(1).strip()} {fn}({dm.group(3).strip() or 'void'});")
     for l in pre:
         s = norm_decl(l)
         sm = re.search(r"(\w+)\s*(?:\[[^\]]*\])?\s*(?:\(.*)?;\s*$", s)
@@ -719,6 +777,7 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
             if notes and new == ctext:
                 new = ctext + " "  # only the declarations changed
             new = repair(new, cerr, decls, before) if new == ctext else new
+            new = fix_arity(new, cerr) if new == ctext else new
             for sym in UNDEF_RE.findall(cerr):
                 # a symbol m2c used but nobody declared (a callee whose address is taken, a global of another type)
                 if re.match(r"(func_|D_|g[A-Z])", sym) and not known("\n".join(add), sym):
