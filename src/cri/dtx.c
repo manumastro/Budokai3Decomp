@@ -420,7 +420,27 @@ intptr_t_x00165FB8 func_00165FB8_x00165FB8(Uint32_x00165FB8 call_id, intptr_t_x0
     SVM_Unlock_x00165FB8();
     return dtx_rpc_rcv_buf_x00165FB8[0];
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_001660C0);
+s32 func_00165CF0_x001660C0(s8 *) __asm__("func_00165CF0");
+void func_0016DAD8_x001660C0() __asm__("func_0016DAD8");
+s32 func_0016DAF0_x001660C0() __asm__("func_0016DAF0");
+extern s8 D_00411E40_x001660C0 __asm__("D_00411E40");
+void func_001660C0_x001660C0(void) __asm__("func_001660C0");
+void func_001660C0_x001660C0(void) {
+    s32 var_s1;
+    s8 *var_s0;
+
+    var_s1 = 0xF;
+    func_0016DAD8_x001660C0();
+    var_s0 = &D_00411E40_x001660C0;
+    do {
+        if (*var_s0 == 1) {
+            func_00165CF0_x001660C0(var_s0);
+        }
+        var_s1 -= 1;
+        var_s0 += 0x44;
+    } while (var_s1 >= 0);
+    func_0016DAF0_x001660C0();
+}
 typedef signed int Sint32_x00166120;
 typedef char Char8_x00166120;
 extern int* sceCdCallback_x00166120(void (*func)(int)) __asm__("sceCdCallback");

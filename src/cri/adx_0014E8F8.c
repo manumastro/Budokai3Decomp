@@ -48,12 +48,24 @@ void func_0014EC40(u8 *arg0, f32 fparg0) {
 f32 func_0014EC48(u8 *arg0) {
     return *(f32 *)((u8 *)arg0 + 0x28);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014E8F8", func_0014EC50);
+extern void (*D_00400E60_x0014EC50)(int) __asm__("D_00400E60");
+void func_0014EC50_x0014EC50(int *a0) __asm__("func_0014EC50");
+void func_0014EC50_x0014EC50(int *a0) {
+    if (a0[0x30]) {
+        D_00400E60_x0014EC50(a0[0x30]);
+    }
+}
 void func_0014EC80(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0xC4) = arg1;
     *(s32 *)((u8 *)arg0 + 0xC8) = (s32) (arg1 / 1536);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014E8F8", func_0014ECA0);
+extern void (*D_00400E64_x0014ECA0)(int) __asm__("D_00400E64");
+void func_0014ECA0_x0014ECA0(int *a0) __asm__("func_0014ECA0");
+void func_0014ECA0_x0014ECA0(int *a0) {
+    if (a0[0x30]) {
+        D_00400E64_x0014ECA0(a0[0x30]);
+    }
+}
 extern void (*D_003E9D20_x0014ECD0)(void) __asm__("D_00400E68");
 void func_0014ECD0_x0014ECD0(int *a0) __asm__("func_0014ECD0");
 /* func_0033C2C0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0031f4e0.c, MIT); ee-gcc 2.96 -O2 -G0 */

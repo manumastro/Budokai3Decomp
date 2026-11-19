@@ -2169,8 +2169,22 @@ void func_00156A90_x00156A90(Sint32_x00156A90 tid, Sint32_x00156A90 priority) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00156B68);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00156B90);
+s32 func_00156A90_x00156B68(s32, s32) __asm__("func_00156A90");
+extern volatile s32 D_00405D4C_x00156B68 __asm__("D_00405D4C");
+extern s32 D_00405CC8_x00156B68 __asm__("D_00405CC8");
+s32 func_00156B68_x00156B68(void) __asm__("func_00156B68");
+s32 func_00156B68_x00156B68(void)
+{
+    return func_00156A90_x00156B68(D_00405D4C_x00156B68, D_00405CC8_x00156B68);
+}
+s32 func_00156A90_x00156B90(s32, s32) __asm__("func_00156A90");
+extern volatile s32 D_00405D50_x00156B90 __asm__("D_00405D50");
+extern s32 D_00405CCC_x00156B90 __asm__("D_00405CCC");
+s32 func_00156B90_x00156B90(void) __asm__("func_00156B90");
+s32 func_00156B90_x00156B90(void)
+{
+    return func_00156A90_x00156B90(D_00405D50_x00156B90, D_00405CCC_x00156B90);
+}
 void func_00156BB8(void) {
     D_00405D00 += 1;
 }

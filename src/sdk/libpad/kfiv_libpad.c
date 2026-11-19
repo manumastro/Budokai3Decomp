@@ -454,7 +454,17 @@ int scePadPortClose(int port, int slot)
     return padRpcBuf[3];
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116C18);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116D70);
+typedef struct { s32 pad0[4]; s32 f10; s32 pad14[2]; } PadSlot_x00116D70;
+void *func_00116C18_x00116D70(s32, s32, s32) __asm__("func_00116C18");
+extern PadSlot_x00116D70 D_00478990_x00116D70[][4] __asm__("D_00478990");
+s32 func_00116D70_x00116D70(s32 arg0, s32 arg1) __asm__("func_00116D70");
+s32 func_00116D70_x00116D70(s32 arg0, s32 arg1)
+{
+    if (D_00478990_x00116D70[arg0][arg1].f10 == 0) {
+        return 0;
+    }
+    return *(s32 *)((u8 *)func_00116C18_x00116D70(arg0, arg1, 0) + 0x58);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116DC8);
 typedef struct PadData_x00116E40 {
     unsigned char data[0x50];            

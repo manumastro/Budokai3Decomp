@@ -1,10 +1,82 @@
 #include "common.h"
 
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010AD30", func_0010AD30);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010AD30", func_0010AD40);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010AD30", func_0010ADA8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010AD30", DisableDmac);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010AD30", func_0010AE78);
+int DI_x0010AD40(void) __asm__("DI");
+int EI_x0010AD40(void) __asm__("EI");
+int _DisableIntc_x0010AD40(int) __asm__("_DisableIntc");
+int func_0010AD40_x0010AD40(int ch) __asm__("func_0010AD40");
+int func_0010AD40_x0010AD40(int ch)
+{
+    int eie, ret;
+    __asm__ volatile ("mfc0 %0, $12" : "=r"(eie));
+    eie &= 0x10000;
+    if (eie) {
+        DI_x0010AD40();
+    }
+    ret = _DisableIntc_x0010AD40(ch);
+    __asm__ volatile ("sync");
+    if (eie) {
+        EI_x0010AD40();
+    }
+    return ret;
+}
+int DI_x0010ADA8(void) __asm__("DI");
+int EI_x0010ADA8(void) __asm__("EI");
+int _EnableIntc_x0010ADA8(int) __asm__("_EnableIntc");
+int func_0010ADA8_x0010ADA8(int ch) __asm__("func_0010ADA8");
+int func_0010ADA8_x0010ADA8(int ch)
+{
+    int eie, ret;
+    __asm__ volatile ("mfc0 %0, $12" : "=r"(eie));
+    eie &= 0x10000;
+    if (eie) {
+        DI_x0010ADA8();
+    }
+    ret = _EnableIntc_x0010ADA8(ch);
+    __asm__ volatile ("sync");
+    if (eie) {
+        EI_x0010ADA8();
+    }
+    return ret;
+}
+int DI_x0010AE10(void) __asm__("DI");
+int EI_x0010AE10(void) __asm__("EI");
+int _DisableDmac_x0010AE10(int) __asm__("_DisableDmac");
+int DisableDmac_x0010AE10(int ch) __asm__("DisableDmac");
+int DisableDmac_x0010AE10(int ch)
+{
+    int eie, ret;
+    __asm__ volatile ("mfc0 %0, $12" : "=r"(eie));
+    eie &= 0x10000;
+    if (eie) {
+        DI_x0010AE10();
+    }
+    ret = _DisableDmac_x0010AE10(ch);
+    __asm__ volatile ("sync");
+    if (eie) {
+        EI_x0010AE10();
+    }
+    return ret;
+}
+int DI_x0010AE78(void) __asm__("DI");
+int EI_x0010AE78(void) __asm__("EI");
+int _EnableDmac_x0010AE78(int) __asm__("_EnableDmac");
+int func_0010AE78_x0010AE78(int ch) __asm__("func_0010AE78");
+int func_0010AE78_x0010AE78(int ch)
+{
+    int eie, ret;
+    __asm__ volatile ("mfc0 %0, $12" : "=r"(eie));
+    eie &= 0x10000;
+    if (eie) {
+        DI_x0010AE78();
+    }
+    ret = _EnableDmac_x0010AE78(ch);
+    __asm__ volatile ("sync");
+    if (eie) {
+        EI_x0010AE78();
+    }
+    return ret;
+}
 s32 _iEnableIntc_x0010AEE0() __asm__("_iEnableIntc");
 void func_0010AEE0_x0010AEE0(void) __asm__("func_0010AEE0");
 void func_0010AEE0_x0010AEE0(void) {

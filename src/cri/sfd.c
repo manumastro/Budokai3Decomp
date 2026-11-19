@@ -4156,10 +4156,56 @@ void func_00189B10_x00189B10(s32 arg0) {
     func_0018D650_x00189B10(arg0, 0xFF000C03);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189B30);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189BC0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189BF0);
+s32 func_00189BC0_x00189BC0(u8 *p) __asm__("func_00189BC0");
+s32 func_00189BC0_x00189BC0(u8 *p)
+{
+    s32 v = *(s32 *)(p + 0x31E8);
+    u8 *q = *(u8 **)(p + 0x1CB4);
+    if (v == 0) {
+        return 0;
+    }
+    if (*(s32 *)(q + 0x40) > 0) {
+        return 0;
+    }
+    return v + 0xD00;
+}
+s32 func_0018D650_x00189BF0(s32, s32) __asm__("func_0018D650");
+s32 func_0018D870_x00189BF0() __asm__("func_0018D870");
+s32 func_001999E0_x00189BF0(void *, s32) __asm__("func_001999E0");
+void func_00189BF0_x00189BF0(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_00189BF0");
+void func_00189BF0_x00189BF0(u8 *arg0, s32 arg1, s32 arg2) {
+    s32 p;
+    s32 fn;
+
+    if (func_0018D870_x00189BF0(arg0) != 0) {
+        func_0018D650_x00189BF0(0, 0xFF0001A1);
+        return;
+    }
+    if (func_001999E0_x00189BF0(arg0, 6) != 0) {
+        p = *(s32 *)(arg0 + 0x1DC4);
+        fn = *(s32 *)(p + 4);
+        ((void (*)(u8 *, s32, s32))fn)(arg0, arg1, arg2);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189C80);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189CF8);
+s32 func_0018D650_x00189CF8(s32, s32) __asm__("func_0018D650");
+s32 func_0018D870_x00189CF8() __asm__("func_0018D870");
+s32 func_001999E0_x00189CF8(void *, s32) __asm__("func_001999E0");
+void func_00189CF8_x00189CF8(u8 *arg0, s32 arg1) __asm__("func_00189CF8");
+void func_00189CF8_x00189CF8(u8 *arg0, s32 arg1) {
+    s32 p;
+    s32 fn;
+
+    if (func_0018D870_x00189CF8(arg0) != 0) {
+        func_0018D650_x00189CF8(0, 0xFF0001A3);
+        return;
+    }
+    if (func_001999E0_x00189CF8(arg0, 6) != 0) {
+        p = *(s32 *)(arg0 + 0x1DC4);
+        fn = *(s32 *)(p + 0xC);
+        ((void (*)(u8 *, s32))fn)(arg0, arg1);
+    }
+}
 s32 func_0018D650_x00189D78(s32, s32) __asm__("func_0018D650");
 s32 func_0018D870_x00189D78() __asm__("func_0018D870");
 s32 func_001999E0_x00189D78(void *, s32) __asm__("func_001999E0");
@@ -6035,7 +6081,14 @@ s32 func_0018B770_x0018B770(s32 arg0, s32 arg1)
   new_var = (s32 *) (((u8 *) (arg0 + (arg1 * 0x74))) + 0x128C);
   return *new_var;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B790);
+s32 func_0018AA80_x0018B790(s32, s32, s32 *) __asm__("func_0018AA80");
+s32 func_0018B790_x0018B790(s32 a0, s32 a1) __asm__("func_0018B790");
+s32 func_0018B790_x0018B790(s32 a0, s32 a1)
+{
+    s32 buf[8];
+    func_0018AA80_x0018B790(a0, a1, buf);
+    return buf[1] + buf[3];
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B7B8);
 s32 func_0018B7E0(s32 arg0) {
     if (func_0018D870() != 0) {
@@ -22014,7 +22067,47 @@ block_5:
 block_8:
     return;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FA58);
+s32 func_0017EB00_x0018FA58(s32, s32, s32) __asm__("func_0017EB00");
+u32 func_0018FA58_x0018FA58(u8 *arg0, s32 arg1, u32 arg2) __asm__("func_0018FA58");
+u32 func_0018FA58_x0018FA58(u8 *arg0, s32 arg1, u32 arg2)
+{
+  s32 temp_a2;
+  s32 temp_s3;
+  s32 var_a1;
+  s32 var_s1;
+  u32 temp_s0;
+  s32 var_s2;
+  u32 temp_s0_2;
+
+  temp_s3 = *(*((s32 **) (((u8 *) arg0) + 0x1C70)));
+  if (temp_s3 == 0)
+  {
+    return 0;
+  }
+  temp_s0 = 2;
+  temp_s0 = arg2 >> temp_s0;
+  temp_s0_2 = (temp_s0 >= 0x11U) ? (0x10U) : (temp_s0);
+  var_s2 = 0;
+  if (temp_s0_2 != 0)
+  {
+    var_s1 = arg1;
+    var_a1 = 0;
+    do
+    {
+      var_a1 = var_s2;
+      var_s2 += 1;
+      do
+      {
+        temp_a2 = var_s1;
+      }
+      while (0);
+      var_s1 += 4;
+      func_0017EB00_x0018FA58(temp_s3, var_a1, temp_a2);
+    }
+    while (var_s2 < ((s32) temp_s0_2));
+  }
+  return temp_s0_2;
+}
 s32 func_0017E9E8_x0018FAE0(s32, s32, s32) __asm__("func_0017E9E8");
 void func_0018FAE0_x0018FAE0(u8 *arg0, s32 *arg1, s32 arg2) __asm__("func_0018FAE0");
 void func_0018FAE0_x0018FAE0(u8 *arg0, s32 *arg1, s32 arg2) {
@@ -26227,7 +26320,47 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00192DE0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193060);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193360);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193478);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193520);
+s32 func_0017EE78_x00193520() __asm__("func_0017EE78");
+s32 func_001957B8_x00193520() __asm__("func_001957B8");
+extern s32 D_00467730_x00193520 __asm__("D_00467730");
+void func_00193520_x00193520(u8 *arg0, u8 *arg1) __asm__("func_00193520");
+void func_00193520_x00193520(u8 *arg0, u8 *arg1)
+{
+  s32 temp_a2;
+  s32 temp_v0;
+  s32 temp_v0_2;
+  s32 temp_v1;
+  s32 temp_v1_2;
+  s32 new_var;
+  u8 *temp_a1;
+  u8 *temp_s1;
+  temp_s1 = arg0 + 0xCC0;
+  temp_a1 = arg1 + 0xC;
+  do
+  {
+    *((s32 *) (((u8 *) arg1) + 0x3C)) = (s32) (*((s32 *) (((u8 *) temp_a1) + 0x28)));
+    temp_a2 = *((s32 *) (((u8 *) arg0) + 0xDFC));
+    new_var = (s32) (((*((s32 *) (((u8 *) temp_a1) + 0x24))) - temp_a2) + (*((s32 *) (((u8 *) temp_s1) + 0x158))));
+    *((s32 *) (((u8 *) arg1) + 0x38)) = new_var;
+    ;
+    *((s32 *) (((u8 *) arg1) + 0x4C)) = *((s32 *) (((u8 *) temp_a1) + 0x24));
+  }
+  while (0);
+  *((s32 *) (((u8 *) arg1) + 0x50)) = (s32) ((*((s32 *) (((u8 *) temp_a1) + 0x24))) + (*((s32 *) (((u8 *) temp_s1) + 0x158))));
+  if (func_001957B8_x00193520(arg0, temp_a1, temp_a2) != 0)
+  {
+    temp_v0 = func_0017EE78_x00193520(*((s32 *) (((u8 *) arg1) + 0x3C)), ((*((s32 *) (((u8 *) arg1) + 0xD8))) - (*((s32 *) (((u8 *) temp_s1) + 0x154)))) * 0x3E8, *((s32 *) (((u8 *) &D_00467730_x00193520) + ((*((s32 *) (((u8 *) arg1) + 0x68))) * 4))));
+    *((s32 *) (((u8 *) arg1) + 0x4C)) = temp_v0;
+    *((s32 *) (((u8 *) arg1) + 0x50)) = (temp_v0_2 = temp_v0 + (*((s32 *) (((u8 *) temp_s1) + 0x158))));
+    *((s32 *) (((u8 *) arg1) + 0x38)) = temp_v0_2;
+  }
+  temp_v1_2 = *((s32 *) (((u8 *) arg1) + 0x38));
+  if ((*((s32 *) (((u8 *) temp_s1) + 0x278))) < temp_v1_2)
+  {
+    *((s32 *) (((u8 *) temp_s1) + 0x278)) = temp_v1_2;
+    *((s32 *) (((u8 *) temp_s1) + 0x27C)) = (s32) (*((s32 *) (((u8 *) arg1) + 0x3C)));
+  }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193608);
 typedef struct SfdSj_x001936B0 SfdSj_x001936B0;
 typedef struct SfdSjChunk_x001936B0 {
@@ -26470,7 +26603,19 @@ s32 func_001943F0_x001943F0(s32 a0, s32 a1) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001943F8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194468);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194560);
+s32 func_00194560_x00194560(u8 *p) __asm__("func_00194560");
+s32 func_00194560_x00194560(u8 *p)
+{
+    s32 v = *(s32 *)(p + 0x31E8);
+    u8 *q = *(u8 **)(p + 0x1C70);
+    if (v == 0) {
+        return 0;
+    }
+    if (*(s32 *)(q + 0x88) > 0) {
+        return 0;
+    }
+    return v + 0xAC4;
+}
 s32 func_0018D650_x00194590(void *, s32) __asm__("func_0018D650");
 s32 func_0018D870_x00194590() __asm__("func_0018D870");
 void *func_001946D8_x00194590(void *, s32) __asm__("func_001946D8");
@@ -26776,7 +26921,50 @@ void func_00194940_x00194940(SfdSlot_x00194940 *slot) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194968);
+s32 func_0018D908_x00194968(void *) __asm__("func_0018D908");
+s32 func_0018D920_x00194968(void *) __asm__("func_0018D920");
+s32 func_00194C08_x00194968(s32 *, s32 *) __asm__("func_00194C08");
+s32 * func_00194968_x00194968(u8 *arg0, s32 *arg1) __asm__("func_00194968");
+s32 * func_00194968_x00194968(u8 *arg0, s32 *arg1) {
+    u8 sp[8];
+    u8 *var_s0;
+    s32 *var_s2;
+    s32 temp_v0;
+    s32 temp_v0_2;
+    s32 var_s1;
+    s32 var_s4;
+    u8 *temp_s3;
+
+    var_s2 = NULL;
+    var_s4 = 0;
+    func_0018D908_x00194968(sp);
+    temp_s3 = *(u8 **)((u8 *)arg0 + 0x1C70);
+    temp_v0 = *(s32 *)((u8 *)temp_s3 + 0x168);
+    var_s0 = temp_s3 + 0x16C;
+    *arg1 = 0;
+    if (temp_v0 > 0) {
+        var_s1 = temp_v0;
+        do {
+            temp_v0_2 = *(s32 *)var_s0;
+            if (temp_v0_2 != 2) {
+                if (temp_v0_2 == 4) {
+                    goto block_5;
+                }
+            } else {
+block_5:
+                var_s4 += 1;
+                var_s2 = (func_00194C08_x00194968(var_s2, (s32 *)var_s0) != 0) ? (s32 *)var_s0 : var_s2;
+            }
+            var_s1 -= 1;
+            var_s0 += 0xDC;
+        } while (var_s1 != 0);
+    }
+    if ((var_s4 == 1) && (*(s32 *)((u8 *)temp_s3 + 0x7C) != 0)) {
+        *arg1 = var_s4;
+    }
+    func_0018D920_x00194968(sp);
+    return var_s2;
+}
 typedef struct SfdSj_x00194A50 SfdSj_x00194A50;
 typedef struct SfdSjChunk_x00194A50 {
     char *data;

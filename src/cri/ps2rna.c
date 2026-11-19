@@ -1492,7 +1492,15 @@ void func_0016C730_x0016C730(void *arg0)
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C788);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C7E8);
+s32 func_00165FB8_x0016C7E8(s32, s32, s32, s32, s32) __asm__("func_00165FB8");
+extern s32 D_0041A0D0_x0016C7E8 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016C7E8 __asm__("D_0041A0D8");
+void func_0016C7E8_x0016C7E8(void) __asm__("func_0016C7E8");
+void func_0016C7E8_x0016C7E8(void) {
+    if ((D_0041A0D8_x0016C7E8 != 1) || (D_0041A0D0_x0016C7E8 > 0)) {
+        func_00165FB8_x0016C7E8(0xD, 0, 0, 0, 0);
+    }
+}
 int DTX_CallUrpc_x0016C838(int fno, int *send, int nsend, int *recv, int nrecv) __asm__("func_00165FB8");
 enum {
     PS2RNA_RPC_CREATE_x0016C838 = 8,
@@ -2319,10 +2327,49 @@ int PS2RNA_SetBitPerSmpl_x0016D700(long handle, long bitsPerSample) {
         func_003260C8_x0016D700(D_004557C8_x0016D700, bitsPerSample);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", PS2RNA_GetStartSmpl);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D798);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D7C8);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D7F8);
+s32 scePrintf_x0016D750() __asm__("scePrintf");
+extern s32 D_0041A0D0_x0016D750 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D750 __asm__("D_0041A0D8");
+extern s32 D_00464C30_x0016D750 __asm__("D_00464C30");
+s32 PS2RNA_GetStartSmpl_x0016D750(void) __asm__("PS2RNA_GetStartSmpl");
+s32 PS2RNA_GetStartSmpl_x0016D750(void)
+{
+    if (D_0041A0D8_x0016D750 == 1 && D_0041A0D0_x0016D750 <= 0) {
+        return 0;
+    }
+    scePrintf_x0016D750(&D_00464C30_x0016D750);
+    return 0;
+}
+extern s32 D_0041A0D0_x0016D798 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D798 __asm__("D_0041A0D8");
+s32 func_0016D798_x0016D798(u8 *arg0) __asm__("func_0016D798");
+s32 func_0016D798_x0016D798(u8 *arg0)
+{
+    if (D_0041A0D8_x0016D798 == 1 && D_0041A0D0_x0016D798 <= 0) {
+        return 0;
+    }
+    return *(s32 *)(arg0 + 0x34);
+}
+extern s32 D_0041A0D0_x0016D7C8 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D7C8 __asm__("D_0041A0D8");
+s32 func_0016D7C8_x0016D7C8(u8 *arg0) __asm__("func_0016D7C8");
+s32 func_0016D7C8_x0016D7C8(u8 *arg0)
+{
+    if (D_0041A0D8_x0016D7C8 == 1 && D_0041A0D0_x0016D7C8 <= 0) {
+        return 0;
+    }
+    return *(s32 *)(arg0 + 0x3C);
+}
+extern s32 D_0041A0D0_x0016D7F8 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D7F8 __asm__("D_0041A0D8");
+s32 func_0016D7F8_x0016D7F8(u8 *arg0, s32 arg1) __asm__("func_0016D7F8");
+s32 func_0016D7F8_x0016D7F8(u8 *arg0, s32 arg1)
+{
+    if (D_0041A0D8_x0016D7F8 == 1 && D_0041A0D0_x0016D7F8 <= 0) {
+        return 0;
+    }
+    return ((s32 *)(arg0 + 0x44))[arg1];
+}
 extern s32 D_0041A0D0_x0016D830 __asm__("D_0041A0D0");
 extern s32 D_0041A0D8_x0016D830 __asm__("D_0041A0D8");
 s32 func_0016D830_x0016D830(u8 *arg0) __asm__("func_0016D830");
@@ -2353,7 +2400,19 @@ int func_0016D860_x0016D860(void)
     }
     return 16;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", PS2RNA_IsOverflow);
+s32 scePrintf_x0016D888() __asm__("scePrintf");
+extern s32 D_0041A0D0_x0016D888 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D888 __asm__("D_0041A0D8");
+extern s32 D_00464C58_x0016D888 __asm__("D_00464C58");
+s32 PS2RNA_IsOverflow_x0016D888(void) __asm__("PS2RNA_IsOverflow");
+s32 PS2RNA_IsOverflow_x0016D888(void)
+{
+    if (D_0041A0D8_x0016D888 == 1 && D_0041A0D0_x0016D888 <= 0) {
+        return 0;
+    }
+    scePrintf_x0016D888(&D_00464C58_x0016D888);
+    return 0;
+}
 void PS2RNA_ClearOverflow(void) {
     if ((D_0041A0D8 != 1) || (D_0041A0D0 > 0)) {
         scePrintf(&D_00464C80);
@@ -2362,10 +2421,34 @@ void PS2RNA_ClearOverflow(void) {
 void func_0016D918(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", PS2RNA_DiscardData);
+s32 scePrintf_x0016D920() __asm__("scePrintf");
+extern s32 D_0041A0D0_x0016D920 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D920 __asm__("D_0041A0D8");
+extern s32 D_00464CA8_x0016D920 __asm__("D_00464CA8");
+s32 PS2RNA_DiscardData_x0016D920(void) __asm__("PS2RNA_DiscardData");
+s32 PS2RNA_DiscardData_x0016D920(void)
+{
+    if (D_0041A0D8_x0016D920 == 1 && D_0041A0D0_x0016D920 <= 0) {
+        return 0;
+    }
+    scePrintf_x0016D920(&D_00464CA8_x0016D920);
+    return 0;
+}
 void PS2RNA_SetTotalNumSmpl(void) {
     if ((D_0041A0D8 != 1) || (D_0041A0D0 > 0)) {
         scePrintf(&D_00464CD0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", PS2RNA_SetStmHdInfo);
+s32 scePrintf_x0016D9B0() __asm__("scePrintf");
+extern s32 D_0041A0D0_x0016D9B0 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016D9B0 __asm__("D_0041A0D8");
+extern s32 D_00464D00_x0016D9B0 __asm__("D_00464D00");
+s32 PS2RNA_SetStmHdInfo_x0016D9B0(void) __asm__("PS2RNA_SetStmHdInfo");
+s32 PS2RNA_SetStmHdInfo_x0016D9B0(void)
+{
+    if (D_0041A0D8_x0016D9B0 == 1 && D_0041A0D0_x0016D9B0 <= 0) {
+        return 0;
+    }
+    scePrintf_x0016D9B0(&D_00464D00_x0016D9B0);
+    return 0;
+}

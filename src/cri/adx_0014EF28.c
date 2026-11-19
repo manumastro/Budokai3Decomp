@@ -5093,8 +5093,20 @@ int func_00154690_x00154690(int ptid, const char *fname, void *dir, AdxfPtInfo_x
     }
     return result;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154710);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154738);
+s32 func_001547B0_x00154710(s32, s32, s32, s32, s32, s32) __asm__("func_001547B0");
+extern u8 D_00402B20_x00154710[] __asm__("D_00402B20");
+s32 func_00154710_x00154710(s32 a0, s32 a1, s32 a2, s32 a3) __asm__("func_00154710");
+s32 func_00154710_x00154710(s32 a0, s32 a1, s32 a2, s32 a3)
+{
+    return func_001547B0_x00154710(a0, a1, a2, a3, (s32)D_00402B20_x00154710 & ~0x3F, 0x800);
+}
+s32 func_001547F8_x00154738(s32, s32, s32, s32, s32, s32) __asm__("func_001547F8");
+extern u8 D_00402B20_x00154738[] __asm__("D_00402B20");
+s32 func_00154738_x00154738(s32 a0, s32 a1, s32 a2, s32 a3) __asm__("func_00154738");
+s32 func_00154738_x00154738(s32 a0, s32 a1, s32 a2, s32 a3)
+{
+    return func_001547F8_x00154738(a0, a1, a2, a3, (s32)D_00402B20_x00154738 & ~0x3F, 0x800);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154760);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154788);
 typedef char Sint8_x001547B0;

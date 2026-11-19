@@ -2443,7 +2443,33 @@ void func_0016F788_x0016F788(void* obj, void* arg1, Sint32_x0016F788 arg2) {
     SJCRS_Unlock_x0016F788();
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F828);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F938);
+s32 func_0016DAD8_x0016F938() __asm__("func_0016DAD8");
+s32 func_0016DAF0_x0016F938() __asm__("func_0016DAF0");
+void func_0016F938_x0016F938(s32 arg0, u8 *arg1) __asm__("func_0016F938");
+void func_0016F938_x0016F938(s32 arg0, u8 *arg1) {
+    u8 *var_s0;
+    s32 var_s1;
+    u8 **temp_a0;
+
+    var_s0 = arg1;
+    if (var_s0 == NULL) {
+loop_1:
+        goto loop_1;
+    }
+    var_s1 = *(s32 *)var_s0;
+    func_0016DAD8_x0016F938();
+    if (var_s1 > 0) {
+        do {
+            if (*(s8 *)((u8 *)var_s0 + 0x10) == 0) {
+                temp_a0 = *(u8 ***)((u8 *)(*(u8 **)((u8 *)var_s0 + 0x14)) + 4);
+                (*(s32 (**)(u8 **, s32, u8 *))((u8 *)(*temp_a0) + 0x20))(temp_a0, 1, var_s0 + 0x18);
+            }
+            var_s1 -= 1;
+            var_s0 += 0x10;
+        } while (var_s1 != 0);
+    }
+    func_0016DAF0_x0016F938();
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F9C8);
 void func_0016FAD8(void) {
     func_001660C0();
