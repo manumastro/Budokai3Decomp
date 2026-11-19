@@ -18151,75 +18151,7 @@ void func_00198C30_x00198C30(u8 *arg0) {
     func_00198C78_x00198C30();
     func_001994D8_x00198C30(arg0);
 }
-s32 func_00198DE0_x00198C78(u8 *, s32 *, s32 *) __asm__("func_00198DE0");
-s32 func_00198E60_x00198C78(u8 *, s32 *, s32 *) __asm__("func_00198E60");
-s32 func_00198EE0_x00198C78(u8 *) __asm__("func_00198EE0");
-s32 func_0017EE78_x00198C78(s32, s32, s32) __asm__("func_0017EE78");
-s32 func_0018D3C0_x00198C78(u8 *) __asm__("func_0018D3C0");
-s32 func_00199610_x00198C78(u8 *) __asm__("func_00199610");
-void func_00198C78_x00198C78(u8 *ply) __asm__("func_00198C78");
-void func_00198C78_x00198C78(u8 *ply)
-{
-    s32 st[2];
-    s32 *w;
-    s32 *a;
-    s32 *b;
-    s32 *c;
-    s32 *d;
-    s32 x;
-    s32 y;
-    s32 t;
-    s32 d0, d1;
-
-    w = *(s32 **)(ply + 0x31E8);
-    a = w + 3;
-    b = w + 0x228;
-    c = w + 0x2B1;
-    d = w + 0x340;
-    if (w[0] != 0) {
-        return;
-    }
-    if (func_00198DE0_x00198C78(ply, d, &st[0])) {
-        return;
-    }
-    if (func_00198E60_x00198C78(ply, c, &st[1])) {
-        return;
-    }
-    if (func_00198EE0_x00198C78(ply)) {
-        b[0] = 1;
-        if (a[0] == 0) {
-            x = b[1];
-        } else {
-            t = a[3];
-            if (t > 0) {
-                d0 = w[0x36D];
-                d1 = a[13];
-                if (d0 > 0 && d1 > 0) {
-                    x = func_0017EE78_x00198C78(d0, 1000, d1);
-                } else {
-                    x = t;
-                }
-            } else if (func_0018D3C0_x00198C78(ply) < 0x6C) {
-                x = (b[1] << 11) / 2018;
-            } else {
-                x = b[1];
-            }
-        }
-        y = b[2];
-    } else if (st[1]) {
-        x = c[1];
-        y = c[2];
-    } else if (st[0]) {
-        x = d[1];
-        y = d[2];
-    } else {
-        return;
-    }
-    w[1] = x;
-    w[2] = y;
-    w[0] = 1;
-    func_00199610_x00198C78(ply);
-}
+INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198C78);
 extern int Obj35C0_IsIndexedSet_1F3C_C380_x00198DE0(int, int) __asm__("func_0019C188");
 extern int GetArrayElemA0C_35A1C8_x00198DE0(int, int) __asm__("func_001999E0");
 int func_00198DE0_x00198DE0(int a0, int a1, int a2) __asm__("func_00198DE0");
@@ -26491,8 +26423,6 @@ s32 func_0019AD18_x0019AD18(s32 arg0)
   }
  do { return 0; } while (0);
 }
-/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
-extern int b3mpad_8c781_00000000000000000;
 typedef struct { u8 pad[0x280]; s32 x; s32 y; } SfdCC0_x0019AD80_x0019AD80;
 void func_0019A7B0_x0019AD80(s32, s32 *, s32 *) __asm__("func_0019A7B0");
 void func_0019A2E8_x0019AD80(s32, SfdCC0_x0019AD80_x0019AD80 *) __asm__("func_0019A2E8");
@@ -26517,15 +26447,6 @@ void func_0019AE00_x0019AE00(s32 arg0, s32 arg1, s32 arg2)
   new_var = arg0 + (arg2 * 4);
   *((s32 *) (((u8 *) new_var) + 0xCC0)) = arg1;
 }
-/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
-extern int m8c7820;
-extern int m8c7821;
-extern int m8c7822;
-extern int b3m8c782_000000;
-extern int b3m8c782_000001;
-extern int b3m8c782_000002;
-extern int b3mpad_8c782_00000000000000000;
-extern int b3mpad_8c782_00000000000000001;
 typedef unsigned char Uint8_x0019AE10;
 typedef signed char Sint8_x0019AE10;
 typedef signed short Sint16_x0019AE10;
@@ -27203,8 +27124,6 @@ void func_0019B290_x0019B290(u8 *a0)
 }
 /* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
 extern int b3cse_pad32_0019B290_0_xxxx;
-/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
-extern int b3m8c783_000000;
 typedef unsigned char u8_x0019B2E0;
 typedef struct SfdPlaybackSettings_x0019B2E0 {
     u8_x0019B2E0 unknown_00[0x14];
