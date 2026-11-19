@@ -261,7 +261,10 @@ def rebind(text, extra=(), log=sys.stderr):
                 if label == "<li.d>":
                     m = re.match(r"^(\s+)li\.d\s+(\$f?\d+)\s*,", lines[i])
                     op = "l.d" if m.group(2).startswith("$f") else "ld"
-                    lines[i] = f"{m.group(1)}{op}\t{m.group(2)},0x{base:08X}"
+                    # as gas expands li.d: the address's high half in $at (a plain `ld reg,ADDR` would use reg)
+                    ind = m.group(1)
+                    lines[i] = (f"{ind}.set\tpush\n{ind}.set\tnoat\n{ind}lui\t$1,%hi(0x{base:08X})\n"
+                                f"{ind}{op}\t{m.group(2)},%lo(0x{base:08X})($1)\n{ind}.set\tpop")
                     continue
                 lines[i] = re.sub(r"(?<![\w.$])" + re.escape(label) + r"(?![\w.$])", f"0x{base:08X}", lines[i])
                 drop.add(label)
