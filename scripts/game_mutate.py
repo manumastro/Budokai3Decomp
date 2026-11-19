@@ -10,6 +10,7 @@ parsed with pycparser and walked by a hill climb: every single mutation of the c
 strictly better one is kept, until a match, no improvement, or the budget. The mutations are the shapes that the
 near misses of this compiler showed (most 1-3 instruction diffs are one of them):
   commute    swap the operands of + * & | ^ == != (and < > <= >= with the mirrored operator)
+  addcast    a + b -> (u8 *)(a) + (s32)(b) and (u8 *)(b) + (s32)(a) (the addu operand order of an address sum)
   signed     (s8 *) <-> (u8 *), (s16 *) <-> (u16 *), (s32 *) <-> (u32 *) in a cast, and the same for local types
   gderef     *D_x / D_x[i] through a cast to every integer pointer type (the file's type of the global is a guess)
   nocast     drop a cast to an arithmetic type ((s32)(x) -> x)
@@ -181,7 +182,7 @@ def ptr_base_name(tn):
     return None
 
 
-PRIORITY = ["gderef", "ptrload", "bderef", "compound", "commute", "decltype", "declfirst", "nomask", "shift",
+PRIORITY = ["gderef", "ptrload", "bderef", "compound", "commute", "addcast", "decltype", "declfirst", "nomask", "shift",
             "signed", "nonull", "ifswap", "nocast", "stmtswap"]
 
 
@@ -212,6 +213,17 @@ def _mutations(fd):
             y.left, y.right = y.right, y.left
             y.op = MIRROR.get(y.op, y.op)
             yield f"commute{i}", c
+        if isinstance(x, c_ast.BinaryOp) and x.op == "+" and not isinstance(x.left, c_ast.Constant) and \
+                not isinstance(x.right, c_ast.Constant):
+            # `(u8 *)(i * 4) + (s32)p`: the operand order of an address sum's addu follows the cast form
+            for k, (a, b) in enumerate((("left", "right"), ("right", "left"))):
+                c, y = at(i)
+                l, r = getattr(y, a), getattr(y, b)
+                y.left = c_ast.Cast(c_ast.Typename(None, [], None, c_ast.PtrDecl([], c_ast.TypeDecl(
+                    None, [], None, c_ast.IdentifierType(["u8"])))), l)
+                y.right = c_ast.Cast(c_ast.Typename(None, [], None, c_ast.TypeDecl(
+                    None, [], None, c_ast.IdentifierType(["s32"]))), r)
+                yield f"addcast{i}_{k}", c
         if isinstance(x, c_ast.Cast):
             it = ptr_base_name(x.to_type)
             pa = pmap.get(id(x))
