@@ -5154,6 +5154,7 @@ void func_001588E0(void) {
     func_0016D1C8();
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", ADXRNA_GetStat);
+INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00158930);
 void func_00158948(void) {
     PS2RNA_SetStartSmpl();
 }

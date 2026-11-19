@@ -3287,7 +3287,66 @@ void func_00151840_x00151840(void) {
         var_s0 += 122;
     } while (var_s1 >= 0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001518A0);
+typedef struct AdxbSpsdHeader_x001518A0 {
+    char pad0[7];
+    unsigned char hdr_units;
+    unsigned char codec;
+    unsigned char chmask;
+    char pad10[2];
+    int data_size;
+    char pad16[26];
+    unsigned short sfreq;
+} AdxbSpsdHeader_x001518A0;
+int func_001518A0_x001518A0(AdxbSpsdHeader_x001518A0 *hdr, int size, short *hdrlen, signed char *type, signed char *bits,
+                     signed char *blklen, signed char *nch, int *sfreq, int *nsmpl, int *blksmpl,
+                     short *pcm_fmt) __asm__("func_001518A0");
+/* ADX_DecodeInfoSpsd: from https://github.com/crashbashash/DW4_Decomp (src/cri/adxspsd.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_001518A0_x001518A0(AdxbSpsdHeader_x001518A0 *hdr, int size, short *hdrlen, signed char *type, signed char *bits,
+                     signed char *blklen, signed char *nch, int *sfreq, int *nsmpl, int *blksmpl,
+                     short *pcm_fmt)
+{
+    *hdrlen = hdr->hdr_units << 4;
+    *nch = (hdr->chmask & 3) + 1;
+    *sfreq = hdr->sfreq;
+    switch (hdr->codec) {
+    case 0:
+        *bits = 16;
+        *blklen = *nch * 2;
+        *blksmpl = 1;
+        *pcm_fmt = 0;
+        *nsmpl = hdr->data_size / 2;
+        break;
+    case 1:
+        *bits = 8;
+        {
+            int ch = *nch;
+            *blklen = ch;
+        }
+        *blksmpl = 1;
+        *pcm_fmt = 1;
+        *nsmpl = hdr->data_size;
+        break;
+    case 2:
+    case 3:
+        *bits = 4;
+        {
+            int ch = *nch;
+            *blklen = ch;
+        }
+        *blksmpl = 2;
+        *pcm_fmt = 2;
+        *nsmpl = hdr->data_size * 2;
+        break;
+    }
+    *blklen = 2;
+    *blksmpl = 1;
+    *nsmpl = hdr->data_size / 2;
+    *bits = 16;
+    *type = -1;
+    return 0;
+}
+__asm__("# rebind func_001518A0 0x001518A0");
+
 typedef unsigned char Uint8_x001519C0;
 typedef signed char Sint8_x001519C0;
 typedef signed short Sint16_x001519C0;
@@ -3810,7 +3869,137 @@ s32 func_00152438_x00152438(s32 arg0) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001524A0);
+typedef struct AdxPdObj_x001524A0 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x001524A0;
+typedef struct AdxDecPara_x001524A0 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x001524A0;
+struct Pl2Enc_x001524A0;
+typedef struct AdxbObj_x001524A0 AdxbObj_x001524A0;
+typedef short *(*AdxbGetWrFunc_x001524A0)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x001524A0)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x001524A0 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x001524A0 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x001524A0 dp;
+    AdxbGetWrFunc_x001524A0 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x001524A0 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x001524A0 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+extern void ADXB_EntryDecFunc_x001524A0(AdxbObj_x001524A0 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+enum AdxbPcmFmt_x001524A0 {
+    ADXB_PCM_16_x001524A0 = 0,
+    ADXB_PCM_8_x001524A0 = 1,
+    ADXB_PCM_4_x001524A0 = 2
+};
+void ADXB_ExecOneWav16_x001524A0(AdxbObj_x001524A0 *obj) __asm__("func_00151F88");
+void ADXB_ExecOneWav8_x001524A0(AdxbObj_x001524A0 *obj) __asm__("func_00152100");
+void ADXB_ExecOneWav4_x001524A0(AdxbObj_x001524A0 *obj) __asm__("func_00152298");
+void ADXB_ExecOneWav16_x001524A0(AdxbObj_x001524A0 *obj) __attribute__((weak, section(".b3stub")));
+void ADXB_ExecOneWav16_x001524A0(AdxbObj_x001524A0 *obj) {}
+void ADXB_ExecOneWav8_x001524A0(AdxbObj_x001524A0 *obj) __attribute__((weak, section(".b3stub")));
+void ADXB_ExecOneWav8_x001524A0(AdxbObj_x001524A0 *obj) {}
+void ADXB_ExecOneWav4_x001524A0(AdxbObj_x001524A0 *obj) __attribute__((weak, section(".b3stub")));
+void ADXB_ExecOneWav4_x001524A0(AdxbObj_x001524A0 *obj) {}
+void func_001524A0_x001524A0(AdxbObj_x001524A0 *obj) __asm__("func_001524A0");
+/* ADXB_ExecOneWav: from https://github.com/crashbashash/DW4_Decomp (src/cri/adxwav.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001524A0_x001524A0(AdxbObj_x001524A0 *obj)
+{
+    if (obj->cdctype == ADXB_PCM_4_x001524A0) {
+        ADXB_ExecOneWav4_x001524A0(obj);
+    } else if (obj->cdctype == ADXB_PCM_8_x001524A0) {
+        ADXB_ExecOneWav8_x001524A0(obj);
+    } else if (obj->cdctype == ADXB_PCM_16_x001524A0) {
+        ADXB_ExecOneWav16_x001524A0(obj);
+    }
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3c001524A0_0;
+extern int b3c001524A0_1;
 void func_001524F8(void) {
     D_00401FF0 = 0;
 }

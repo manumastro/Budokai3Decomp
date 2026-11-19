@@ -15,6 +15,7 @@ declaration", "conflicting types", "too many arguments"). A segment still in ass
 INCLUDE_ASM lines first (asm2c.py). Each insertion is kept only when gccdiff.py says the function matches in its
 file; the whole build (configure.py && ninja, CHECK) must still be run after, as for any change of the libraries."""
 import argparse
+import itertools
 import os
 import threading
 import json
@@ -206,6 +207,23 @@ def isolate(item, pad=0):
 
 _KNOWN = None
 PADS = int(os.environ.get("B3_PADS", "32"))  # apply(): renaming-suffix lengths tried
+CSE_PADS = int(os.environ.get("B3_CSE_PADS", "3"))  # apply(): most padding identifiers tried (see cse_pad)
+
+
+def cse_pad(addr, k8, k16, k32):
+    """Dummy extern declarations placed after an inserted function: k8 / k16 / k32 identifiers whose names fall in
+    the 8-, 16- and 32-byte classes of ee-gcc 2.96's string allocator. Its CSE hashes a SYMBOL_REF by the address of
+    the name string (low bits), so the names an insertion allocates move the buckets of every later function of the
+    file (a function after it then compiles differently: "build-mode compile: func_X: N words differ"); a few more
+    strings of the right classes put them back. Unique per insertion (a repeated declaration allocates nothing)."""
+    a = f"{addr:08X}"
+    names = [f"q{(addr >> 3) & 0xFFFFF:05x}{i}" for i in range(k8)]  # 7 chars
+    names += [f"b3c{a}_{i}" for i in range(k16)]  # 13 chars
+    names += [f"b3cse_pad32_{a}_{i}_xxxx" for i in range(k32)]  # 27 chars
+    return "\n/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */" + \
+        "".join(f"\nextern int {n};" for n in names)
+
+
 _CACHE = {}
 
 
@@ -350,6 +368,21 @@ def apply(items, jobs=12, log=None, dry=False, real=False):
                         good, msg = False, "build-mode compile: " + "; ".join(bad)[:160]
                 if good or not re.search(r"differ", msg):
                     break
+            if not good and real and msg.startswith("build-mode compile") and "differ" in msg:
+                # another function of the file moved: padding identifiers (cse_pad), fewest first
+                combos = sorted((c for c in itertools.product(range(CSE_PADS), repeat=3) if any(c)), key=sum)
+                for c in combos:
+                    rep = isolate(it, 0) + tail_pad(seg, it["name"]) + cse_pad(it["addr"], *c)
+                    new = pat.sub(lambda _: rep, text, count=1)
+                    path.write_text(new)
+                    good, msg = check(rel, it["name"])
+                    if good:
+                        import lib_filecheck
+                        bad = lib_filecheck.check(rel)
+                        if bad:
+                            good, msg = False, "build-mode compile: " + "; ".join(bad)[:160]
+                    if good:
+                        break
             if good:
                 text = new
                 ok.append(it)

@@ -246,6 +246,9 @@ def closure(items, func_item, own, local=()):
                 out.append(("inline", it.name, t))
                 continue
             h = re.sub(r"\b(static|extern)\b\s*", "", cparse.strip_attr(it.head)).strip()
+            if cparse.kr_head(cparse._strip_comments(h)):
+                # a K&R definition (`int f(a) T a;`): declared without a prototype, as its callers saw it
+                h = re.sub(r"\(.*$", "()", cparse._strip_comments(h), flags=re.S).strip()
             out.append(("func", it.name, h + ";"))
             if k < items.index(func_item) and it.name in identifiers(func_item.text):
                 # the origin compiles this callee before the function: ee-gcc 2.96 then marks the calls to it
