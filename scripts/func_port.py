@@ -131,6 +131,7 @@ def scan_hits(repo, min_words):
     files = (d / "files.txt").read_text().split()
     fmap = {f.replace("/", "_"): f for f in files}
     out = {}
+    amb = {}
     for p in sorted(d.glob("2.*.txt")):
         b = p.name[:-4]
         v = b.split("_")[0]
@@ -141,6 +142,16 @@ def scan_hits(repo, min_words):
             m = re.match(r"(\S+):(\S+)\s+(\d+)w\s+(0x[0-9a-f]+)$", line.strip())
             if m and int(m.group(3)) >= min_words:
                 out.setdefault(f, {})[m.group(2)] = int(m.group(4), 16)
+            m = re.match(r"(\S+):(\S+)\s+(\d+)w\s+((?:0x[0-9a-f]+ ?){2,})$", line.strip())
+            if m and int(m.group(3)) >= min_words:
+                amb.setdefault(tuple(int(a, 16) for a in m.group(4).split()), set()).add((f, m.group(2)))
+    # identical functions (scePrintf / kprintf): as many of the origin's as of ours, all named by their address in
+    # the origin (func_003B1F28): paired in address order
+    for addrs, fns in amb.items():
+        own = [(re.search(r"([0-9A-Fa-f]{6,8})$", n), f, n) for f, n in fns]
+        if len(fns) == len(addrs) and all(o[0] for o in own):
+            for (_, f, n), a in zip(sorted(own, key=lambda o: int(o[0].group(1), 16)), sorted(addrs)):
+                out.setdefault(f, {})[n] = a
     return out
 
 
@@ -337,6 +348,10 @@ def in_asm(text, pos):
 
 def make_item(u, ext_name, addr, our_name, syms, new_syms):
     """The func_insert.py item for one function, or (None, reason)."""
+    if ext_name not in u.addr and addr in u.an.cands.get(ext_name, ()):
+        # identical functions (scePrintf / kprintf): the address scan_hits paired it with
+        u.addr[ext_name] = addr
+        u.status[ext_name] = u.an.bind({ext_name: addr})[1][ext_name]
     if u.status.get(ext_name) is not None:
         return None, f"bind: {u.status[ext_name]}"
     if u.addr.get(ext_name) != addr:

@@ -88,5 +88,37 @@ void func_0010CED8_x0010CED8(int a, int b)
         EI_x0010CED8();
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010BE70", scePrintf);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010BE70", kprintf);
+int DIntr_x0010CF48(void) __asm__("DI");
+int EIntr_x0010CF48(void) __asm__("EI");
+extern int func_003B1E40_x0010CF48() __asm__("func_0010CDB8");
+extern void _sceSnprintf_x0010CF48() __asm__("func_0010C048");
+void scePrintf_x0010CF48(char *fmt, ...) __asm__("scePrintf");
+/* func_003B1F28: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003b1f28.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void scePrintf_x0010CF48(char *fmt, ...) {
+    int ctx;
+    int intr;
+    ctx = 0;
+    intr = DIntr_x0010CF48();
+    _sceSnprintf_x0010CF48(func_003B1E40_x0010CF48, &ctx, 0xFFFFFFFFU, fmt, (char *)__builtin_next_arg(fmt) - 0x38);
+    if (intr) {
+        EIntr_x0010CF48();
+    }
+}
+__asm__("# noswap scePrintf");
+int DIntr_x0010CFC8(void) __asm__("DI");
+int EIntr_x0010CFC8(void) __asm__("EI");
+extern int func_003B1E68_x0010CFC8() __asm__("func_0010CDE0");
+extern void _sceSnprintf_x0010CFC8() __asm__("func_0010C048");
+void kprintf_x0010CFC8(char *fmt, ...) __asm__("kprintf");
+/* func_003B1FA8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003b1fa8.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void kprintf_x0010CFC8(char *fmt, ...) {
+    int ctx;
+    int intr;
+    ctx = 0;
+    intr = DIntr_x0010CFC8();
+    _sceSnprintf_x0010CFC8(func_003B1E68_x0010CFC8, &ctx, 0xFFFFFFFFU, fmt, (char *)__builtin_next_arg(fmt) - 0x38);
+    if (intr) {
+        EIntr_x0010CFC8();
+    }
+}
+__asm__("# noswap kprintf");
