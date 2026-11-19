@@ -53,3 +53,4 @@ __sprint = 0x00129928; // type:func // guess
 // newlib's reent pointer and errno (srand / rand and the _r wrappers use them).
 _impure_ptr = 0x003EFC48; // size:0x4
 errno = 0x005D0090; // size:0x4
+func_00100230 = 0x00100230; // type:func
