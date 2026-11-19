@@ -435,7 +435,35 @@ _Bigint *__mdiff(Reent *ptr, _Bigint *a, _Bigint *b)
     c->_wds = wa;
     return c;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc/kfiv_mprec", func_00126570);
+union double_union_x00126570 { double d; unsigned int i[2]; };
+double func_00126570_x00126570(double _x) __asm__("func_00126570");
+/* Newlib_Ulp: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libc/libc_126BD8.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+double func_00126570_x00126570(double _x)
+{
+    int L;
+    union double_union_x00126570 x, a;
+    x.d = _x;
+    L = ((x.i[1]) & 0x7ff00000) - (53 - 1) * 0x100000;
+    if (L > 0) {
+        (a.i[1]) = L;
+        (a.i[0]) = 0;
+    } else {
+        L = -L >> 20;
+        if (L < 20) {
+            (a.i[1]) = 0x80000 >> L;
+            (a.i[0]) = 0;
+        } else {
+            (a.i[1]) = 0;
+            L -= 20;
+            (a.i[0]) = L >= 31 ? 1 : 1 << (31 - L);
+        }
+    }
+    {
+        register double r __asm__("$2") = a.d;
+        __asm__ __volatile__("1:" : "+r"(r));
+        return r;
+    }
+}
 
 
 double _b2d(_Bigint *a, int *e)

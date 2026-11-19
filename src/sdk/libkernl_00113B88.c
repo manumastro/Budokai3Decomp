@@ -1053,8 +1053,72 @@ u8 *func_00115198_x00115198(u8 *arg0)
   return temp_v1;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001151D0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115478);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001154C8);
+typedef struct Alarm_x00115478 { struct Alarm_x00115478 *next; struct Alarm_x00115478 *prev; int id; unsigned int flags; unsigned long x10; unsigned long x18; unsigned long x20; unsigned long (*handler)(int,unsigned long,unsigned long,void *,void *); void *gp; void *arg; } Alarm_x00115478;
+typedef struct { volatile unsigned long a; int id; int seq; int cnt; Alarm_x00115478 *free; Alarm_x00115478 *head; int cur; } TimCtl_x00115478;
+extern TimCtl_x00115478 D_00487848_x00115478 __asm__("D_003EDCC8");
+typedef struct { unsigned long long a; int id; volatile int seq; volatile int cnt; void *free; void *head; volatile int cur; } TimCtl_001172E0_x00115478;
+unsigned long func_00115478_x00115478(void) __asm__("func_00115478");
+/* iGetTimerSystemTime: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_117040.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+unsigned long func_00115478_x00115478(void)
+{
+    unsigned long t;
+     
+    __asm__ volatile(
+        ".set push\n\t.set noreorder\n\t"
+        "lwu %0, 0(%1)\n\t"
+        "lw $8, 0x10(%1)\n\t"
+        "ld $10, %2\n\t"
+        "andi $9, $8, 0x800\n\t"
+        "beqz $9, 1f\n\t"
+        "addiu $9, $0, 2\n\t"
+        "lwu %0, 0(%1)\n\t"
+        "daddiu $10, $10, 1\n"
+        "1:\n\t"
+        "andi $8, $8, 3\n\t"
+        "dsll $10, $10, 16\n\t"
+        "movz $9, $0, $8\n\t"
+        "or %0, %0, $10\n\t"
+        "dsllv $9, $9, $8\n\t"
+        "dsllv %0, %0, $9\n\t"
+        ".set pop"
+        : "=&r"(t) : "r"(0x10001000), "m"((*(TimCtl_001172E0_x00115478*)&D_00487848_x00115478).a) : "$8", "$9", "$10");
+    return t;
+}
+typedef struct Alarm_x001154C8 { struct Alarm_x001154C8 *next; struct Alarm_x001154C8 *prev; int id; unsigned int flags; unsigned long x10; unsigned long x18; unsigned long x20; unsigned long (*handler)(int,unsigned long,unsigned long,void *,void *); void *gp; void *arg; } Alarm_x001154C8;
+typedef struct { volatile unsigned long a; int id; int seq; int cnt; Alarm_x001154C8 *free; Alarm_x001154C8 *head; int cur; } TimCtl_x001154C8;
+extern TimCtl_x001154C8 D_00487848_x001154C8 __asm__("D_003EDCC8");
+typedef struct { unsigned long long a; int id; volatile int seq; volatile int cnt; void *free; void *head; volatile int cur; } TimCtl_00117330_x001154C8;
+extern int DIntr_x001154C8(void) __asm__("DI");
+extern int EIntr_x001154C8(void) __asm__("EI");
+unsigned long func_001154C8_x001154C8(void) __asm__("func_001154C8");
+/* GetTimerSystemTime: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_117040.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+unsigned long func_001154C8_x001154C8(void)
+{
+    unsigned long t;
+    int s = DIntr_x001154C8();
+     
+    __asm__ volatile(
+        ".set push\n\t.set noreorder\n\t"
+        "lwu %0, 0(%1)\n\t"
+        "lw $8, 0x10(%1)\n\t"
+        "ld $10, %2\n\t"
+        "andi $9, $8, 0x800\n\t"
+        "beqz $9, 1f\n\t"
+        "addiu $9, $0, 2\n\t"
+        "lwu %0, 0(%1)\n\t"
+        "daddiu $10, $10, 1\n"
+        "1:\n\t"
+        "andi $8, $8, 3\n\t"
+        "dsll $10, $10, 16\n\t"
+        "movz $9, $0, $8\n\t"
+        "or %0, %0, $10\n\t"
+        "dsllv $9, $9, $8\n\t"
+        "dsllv %0, %0, $9\n\t"
+        ".set pop"
+        : "=&r"(t) : "r"(0x10001000), "m"((*(TimCtl_00117330_x001154C8*)&D_00487848_x001154C8).a) : "$8", "$9", "$10");
+    if (s) EIntr_x001154C8();
+    return t;
+}
 extern int AddIntcHandler_x00115548(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
 typedef unsigned long u_long_x00115548;
 typedef u_long_x00115548 (*TimerHandler_x00115548)(int id, u_long_x00115548 schedule, u_long_x00115548 actual, void *arg, void *addr);
@@ -1471,7 +1535,34 @@ s32 func_00115B90(s32 arg0) {
     }
     return temp_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115BE0);
+typedef struct Alarm_x00115BE0 { struct Alarm_x00115BE0 *next; struct Alarm_x00115BE0 *prev; volatile int id; unsigned int flags; long long x10; long long x18; long long x20; void *h; int gp; void *arg; } Alarm_x00115BE0;
+typedef struct { unsigned long long a; int id; volatile int seq; volatile int cnt; Alarm_x00115BE0 *free; Alarm_x00115BE0 *head; volatile int cur; } TimCtl_x00115BE0;
+extern TimCtl_x00115BE0 D_00487848_x00115BE0 __asm__("D_003EDCC8");
+extern void UnlinkAlarm_x00115BE0(Alarm_x00115BE0 *) __asm__("func_00115198");
+extern long long iGetTimerSystemTime_x00115BE0(void) __asm__("func_00115478");
+extern void SetNextComp_x00115BE0(long long) __asm__("func_00114F80");
+extern void InsertAlarm_x00115BE0(Alarm_x00115BE0 *) __asm__("func_00115110");
+int func_00115BE0_x00115BE0(int id, long long t, void *h, void *arg) __asm__("func_00115BE0");
+/* iSetTimerHandler: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_1179F8.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00115BE0_x00115BE0(int id, long long t, void *h, void *arg)
+{
+    Alarm_x00115BE0 *a = (Alarm_x00115BE0 *)(((unsigned int)id >> 10) << 6);
+    if (id < 0 || (id & 0x3FF) != a->id) return 0x80008002;
+    if (D_00487848_x00115BE0.cur == id) return 0x80000010;
+    if (a->flags & 2) UnlinkAlarm_x00115BE0(a);
+    a->h = h;
+    if (h == 0) {
+        a->flags &= ~2;
+    } else {
+        a->flags |= 2;
+        a->x20 = t;
+        __asm__ volatile ("sw $gp, %0" : "=m" (a->gp) : : "memory");
+        a->arg = arg;
+        if (a->flags & 1) InsertAlarm_x00115BE0(a);
+    }
+    SetNextComp_x00115BE0(iGetTimerSystemTime_x00115BE0());
+    return 0;
+}
 s32 func_00115CD8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 temp_s0;
     s32 temp_s4;

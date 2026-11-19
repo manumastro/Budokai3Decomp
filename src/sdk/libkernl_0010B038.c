@@ -1,7 +1,32 @@
 #include "common.h"
 
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B038", func_0010B038);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B038", iWakeupThread);
+extern int D_004E2400_x0010B128 __asm__("D_00471040");
+extern int D_00486198_x0010B128 __asm__("D_003EC618");
+extern int D_004E2408_x0010B128[2] __asm__("D_00471048");
+typedef struct { unsigned char a; unsigned char b; } EE010_x0010B128;
+typedef struct { int x0; int x4; EE010_x0010B128 e[0x200]; } QE010_x0010B128;
+extern void iSignalSema_x0010B128(int) __asm__("iSignalSema");
+extern int _iWakeupThread_x0010B128(int) __asm__("_iWakeupThread");
+int iWakeupThread_x0010B128(int tid) __asm__("iWakeupThread");
+/* iWakeupThread_x0010B128: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_10DE60.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int iWakeupThread_x0010B128(int tid)
+{
+    register int v0 __asm__("$2");
+    unsigned int t;
+    int i;
+     
+    __asm__ volatile("li $3, -0x2F\n\tsyscall" : "=r"(v0) : : "$3");
+    t = v0;
+    if (t != tid) return _iWakeupThread_x0010B128(tid);
+    if (t >= 0x100 || D_00486198_x0010B128 == 0) return -1;
+    i = (*(QE010_x0010B128*)&D_004E2408_x0010B128).x4 & 0x1FF;
+    (*(QE010_x0010B128*)&D_004E2408_x0010B128).x4 = i + 1;
+    (*(QE010_x0010B128*)&D_004E2408_x0010B128).e[i].a = 0;
+    (*(QE010_x0010B128*)&D_004E2408_x0010B128).e[i].b = t;
+    iSignalSema_x0010B128(D_004E2400_x0010B128);
+    return t;
+}
 typedef struct DeferCmd_x0010B1C0 {
     unsigned char type;      
     unsigned char arg;       
@@ -33,7 +58,41 @@ int func_0010B1C0_x0010B1C0(int prio)
     iSignalSema_x0010B1C0(libkernl_defer_sema_x0010B1C0);
     return prio;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B038", func_0010B240);
+extern int D_004E2400_x0010B240 __asm__("D_00471040");
+extern int D_00486198_x0010B240 __asm__("D_003EC618");
+extern int D_004E2408_x0010B240[2] __asm__("D_00471048");
+extern void iSignalSema_x0010B240(int) __asm__("iSignalSema");
+typedef struct { unsigned char a; unsigned char b; } EE128_x0010B240;
+typedef struct { int x0; int x4; EE128_x0010B240 e[0x200]; } QE128_x0010B240;
+extern int _iSuspendThread_x0010B240(int) __asm__("_iSuspendThread");
+int func_0010B240_x0010B240(int tid) __asm__("func_0010B240");
+/* iSuspendThread_2: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_10DE60.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_0010B240_x0010B240(int tid)
+{
+    register int v0 __asm__("$2");
+    unsigned int t;
+    int i;
+     
+    __asm__ volatile("li $3, -0x2F\n\tsyscall" : "=r"(v0) : : "$3");
+    t = v0;
+    if (t != tid) return _iSuspendThread_x0010B240(tid);
+    if (t >= 0x100 || D_00486198_x0010B240 == 0) return -1;
+    i = (*(QE128_x0010B240*)&D_004E2408_x0010B240).x4 & 0x1FF;
+    (*(QE128_x0010B240*)&D_004E2408_x0010B240).x4 = i + 1;
+    (*(QE128_x0010B240*)&D_004E2408_x0010B240).e[i].a = 2;
+    (*(QE128_x0010B240*)&D_004E2408_x0010B240).e[i].b = t;
+    iSignalSema_x0010B240(D_004E2400_x0010B240);
+    return t;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B038", func_0010B2D8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B038", func_0010B3A0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B038", func_0010B518);
+extern void iSignalSema_x0010B518(int a) __asm__("iSignalSema");
+int func_0010B518_x0010B518(int a, int b, int c, int d) __asm__("func_0010B518");
+/* _DelayThreadHandler: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_10E288.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_0010B518_x0010B518(int a, int b, int c, int d)
+{
+    iSignalSema_x0010B518(d);
+    __asm__ __volatile__("sync");
+    __asm__ __volatile__("ei");
+    return 0;
+}

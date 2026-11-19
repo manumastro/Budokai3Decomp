@@ -290,5 +290,68 @@ void func_00108EC8_x00108EC8(D_x00108EC8 *d, P_x00108EC8 *p)
     cb.type = 3;
     _sceMpegDispatchMpegCallback_x00108EC8(d->mp, &cb);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001081F8", func_001093A0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001081F8", func_001094E8);
+typedef struct {
+    volatile int cnt;
+    int done;
+    int rem;
+    unsigned int addr;
+    int total;
+} DmaState_x001093A0;
+int func_001093A0_x001093A0(int ch, DmaState_x001093A0 *s) __asm__("func_001093A0");
+/* _ch3dmaCSC: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libmpeg/func_001098B0.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001093A0_x001093A0(int ch, DmaState_x001093A0 *s)
+{
+    int last;
+
+    (*(volatile unsigned int *)(0x1000E010)) = 8;
+    s->cnt++;
+    if ((*(volatile unsigned int *)(0x1000B020)) != 0 || ((*(volatile unsigned int *)(0x1000B000)) & 0x100)) {
+        s->done = 1;
+        __asm__ volatile("sync\n\tei");
+        return 0;
+    }
+    last = s->total - 1;
+    if (s->cnt < last) {
+        (*(volatile unsigned int *)(0x1000B010)) = s->addr;
+        (*(volatile unsigned int *)(0x1000B020)) = 0xFFC0;
+        (*(volatile unsigned int *)(0x1000B000)) = 0x100;
+        (*(volatile unsigned int *)(0x10002000)) = 0x700003FF;
+        s->addr = (s->addr + 0xFFC00) & 0x0FFFFFFF;
+    } else if (s->cnt == last) {
+        s->rem -= s->cnt * 1023;
+        (*(volatile unsigned int *)(0x1000B010)) = s->addr;
+        (*(volatile unsigned int *)(0x1000B020)) = s->rem << 6;
+        (*(volatile unsigned int *)(0x1000B000)) = 0x100;
+        (*(volatile unsigned int *)(0x10002000)) = s->rem | 0x70000000;
+    }
+    __asm__ volatile("sync\n\tei");
+    return 0;
+}
+typedef struct {
+    unsigned int cnt;
+    unsigned int addr;
+} DmaChunk_x001094E8;
+int func_001094E8_x001094E8(int ch, DmaChunk_x001094E8 *s) __asm__("func_001094E8");
+/* _ch4dma: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libmpeg/func_00109BB8.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001094E8_x001094E8(int ch, DmaChunk_x001094E8 *s)
+{
+    (*(volatile unsigned int *)(0x1000E010)) = 0x10;
+    if (s->cnt == 0) {
+        __asm__ volatile("sync\n\tei");
+        return 1;
+    }
+    if (s->cnt > 0xFFFF) {
+        (*(volatile unsigned int *)(0x1000B410)) = s->addr;
+        (*(volatile unsigned int *)(0x1000B420)) = 0xFFFF;
+        (*(volatile unsigned int *)(0x1000B400)) = 0x101;
+        s->addr = (s->addr + 0xFFFF0) & 0x0FFFFFFF;
+        s->cnt -= 0xFFFF;
+    } else {
+        (*(volatile unsigned int *)(0x1000B410)) = s->addr;
+        (*(volatile unsigned int *)(0x1000B420)) = s->cnt;
+        (*(volatile unsigned int *)(0x1000B400)) = 0x101;
+        s->cnt = 0;
+    }
+    __asm__ volatile("sync\n\tei");
+    return 0;
+}

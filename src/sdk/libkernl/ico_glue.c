@@ -96,7 +96,35 @@ s32 lseek_x0010A958(void) __asm__("lseek");
 s32 lseek_x0010A958(void) {
     return -1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/ico_glue", sbrk);
+extern unsigned int D_00486194_x0010A960 __asm__("D_003EC614");
+extern unsigned int EndOfHeap_x0010A960(void) __asm__("EndOfHeap");
+extern int *Newlib_Errno_x0010A960(void) __asm__("func_001237C8");
+unsigned int sbrk_x0010A960(int incr) __asm__("sbrk");
+/* Libc_Sbrk: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_10D860.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+unsigned int sbrk_x0010A960(int incr)
+{
+    int s, v;
+    unsigned int n, old;
+    __asm__ volatile("mfc0 %0, $12" : "=r"(s));
+    s &= 0x10000;
+    if (s) {
+        do {
+            __asm__ volatile("di");
+            __asm__ volatile("sync.p");
+            __asm__ volatile("mfc0 %0, $12" : "=r"(v));
+        } while (v & 0x10000);
+    }
+    n = D_00486194_x0010A960 + incr;
+    if (EndOfHeap_x0010A960() < n) {
+        *Newlib_Errno_x0010A960() = 12;
+        if (s) __asm__ volatile("ei");
+        return -1;
+    }
+    old = D_00486194_x0010A960;
+    D_00486194_x0010A960 = n;
+    if (s) __asm__ volatile("ei");
+    return old;
+}
 
 
 int isatty(int fd)

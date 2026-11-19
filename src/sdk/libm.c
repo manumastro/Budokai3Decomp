@@ -310,5 +310,18 @@ float func_0011E1B8_x0011E1B8(float x, float y, int iy)
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011E2C0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011E548);
-INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011EA10);
+typedef union { double value; struct { unsigned int lsw; unsigned int msw; } parts; } ieee_double_shape_type_x0011EA10;
+double func_0011EA10_x0011EA10(double x) __asm__("func_0011EA10");
+/* Libc_Fabs: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libgcc/libgcc_3.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+double func_0011EA10_x0011EA10(double x)
+{
+    unsigned int high;
+    do { ieee_double_shape_type_x0011EA10 gh_u; gh_u.value = (x); (high) = gh_u.parts.msw; } while (0);
+    do { ieee_double_shape_type_x0011EA10 sh_u; sh_u.value = (x); sh_u.parts.msw = (high & 0x7fffffff); (x) = sh_u.value; } while (0);
+    {
+        register double r __asm__("$2") = x;
+        __asm__ __volatile__("1:" : "+r"(r));
+        return r;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011EA48);
