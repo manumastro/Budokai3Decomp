@@ -28036,7 +28036,101 @@ void func_00192D68_x00192D68(s32 a0)
         *d = *s;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00192DE0);
+typedef struct { s32 w[12]; } Ck_2DE0_x00192DE0;
+s32 func_00193060_x00192DE0(u8 *, u8 *, Ck_2DE0_x00192DE0 *, u8 **) __asm__("func_00193060");
+void func_00193828_x00192DE0(s32, u8 *) __asm__("func_00193828");
+void func_00193360_x00192DE0(u8 *) __asm__("func_00193360");
+s64 func_001A1630_x00192DE0(void) __asm__("func_001A1630");
+s32 func_0016E858_x00192DE0(s32, s32, s32) __asm__("func_0016E858");
+s32 func_00195F98_x00192DE0(s32, s32, Ck_2DE0_x00192DE0 *, u8 *) __asm__("func_00195F98");
+void func_0019B968_x00192DE0(u8 *, s64) __asm__("func_0019B968");
+s32 func_00191260_x00192DE0(u8 *, s32, s32, s32) __asm__("func_00191260");
+void func_001911E0_x00192DE0(u8 *, s32) __asm__("func_001911E0");
+void func_001948D8_x00192DE0(u8 *) __asm__("func_001948D8");
+void func_00194788_x00192DE0(u8 *, s32) __asm__("func_00194788");
+void func_00193478_x00192DE0(u8 *, u8 *) __asm__("func_00193478");
+void func_00193608_x00192DE0(u8 *, u8 *, s32) __asm__("func_00193608");
+void func_00194900_x00192DE0(u8 *) __asm__("func_00194900");
+void func_001948E8_x00192DE0(u8 *) __asm__("func_001948E8");
+void func_0017E950_x00192DE0(s32, u8 *, u8 *) __asm__("func_0017E950");
+void func_00197B80_x00192DE0(u8 *, s32, s32) __asm__("func_00197B80");
+s32 func_00192DE0_x00192DE0(u8 *ply, s32 pic) __asm__("func_00192DE0");
+s32 func_00192DE0_x00192DE0(u8 *ply, s32 pic)
+{
+    Ck_2DE0_x00192DE0 ck;
+    u8 *frm;
+    u8 *q;
+    u8 *s;
+    u8 *w;
+    u8 *f;
+    s32 sj;
+    s64 t0;
+    s32 a;
+    s32 b;
+    s32 n;
+    s32 r;
+    s32 mode;
+    s32 t;
+
+    q = ply + 0x94C;
+    s = ply + 0x98C;
+    w = *(u8 **)(ply + 0x1C70);
+    f = w + 0x8C;
+    sj = *(s32 *)w;
+    if (func_00193060_x00192DE0(ply, f, &ck, &frm)) {
+        return 0;
+    }
+    func_00193828_x00192DE0(*(s32 *)(frm + 0x54), w + 0xF38);
+    func_00193360_x00192DE0(ply);
+    t0 = func_001A1630_x00192DE0();
+    a = func_0016E858_x00192DE0(pic, 0, 1);
+    b = func_00195F98_x00192DE0(sj, pic, &ck, ply);
+    n = func_0016E858_x00192DE0(pic, 0, 1) - a;
+    func_0019B968_x00192DE0(ply + *(s32 *)(f + 0x18) * 32 + 0x31F8, func_001A1630_x00192DE0() - t0);
+    *(s32 *)(s + 0xC) += ck.w[10];
+    *(s32 *)(s + 0x10) += ck.w[11];
+    r = func_00191260_x00192DE0(ply, b, n, 0xFF000F06);
+    func_001911E0_x00192DE0(ply, n);
+    if (r) {
+        func_001948D8_x00192DE0(frm);
+        return r;
+    }
+    if (n > 0) {
+    func_00194788_x00192DE0(ply, 0);
+    func_00193478_x00192DE0(ply, frm);
+    func_00193608_x00192DE0(ply, frm, pic);
+    t = *(s32 *)(w + 0x88);
+    mode = *(s32 *)(f + 0x38);
+    *(s32 *)(frm + 0x48) = t;
+    *(s32 *)(frm + 0x40) = ck.w[10];
+    *(s32 *)(frm + 0x44) = ck.w[11];
+    if (mode == 3) {
+        goto zero;
+    }
+    if (*(u8 **)(w + 0x160) == 0) {
+        *(u8 **)(w + 0x160) = frm;
+    } else {
+zero:
+        *(u8 **)(w + 0x160) = 0;
+    }
+    *(s32 *)(w + 0x164) = 0;
+    if (*(u8 **)(w + 0x160) == 0) {
+        if (*(s32 *)(ply + 0x38) == 3 && (u32)(*(s32 *)(f + 0x18) - 1) < 2) {
+            func_00194900_x00192DE0(frm);
+        } else {
+            func_001948E8_x00192DE0(frm);
+        }
+        func_0017E950_x00192DE0(sj, q + 8, q + 0xC);
+        *(s32 *)(w + 0x84) = 0;
+    }
+    func_00197B80_x00192DE0(ply, 1, *(s32 *)(f + 0x18));
+    return 0;
+    }
+    if (*(s32 *)(w + 0x160) == 0) {
+        func_001948D8_x00192DE0(frm);
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193060);
 typedef struct { s32 w[8]; } B32_x00193360;
 s32 func_00192800_x00193360(void *, s32) __asm__("func_00192800");
@@ -28145,6 +28239,8 @@ void func_00193608_x00193608(s32 a0, SfdEnt_x00193608_x00193608 *a1, s32 a2)
 }
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int m130010;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m2de010;
 typedef struct SfdSj_x001936B0 SfdSj_x001936B0;
 typedef struct SfdSjChunk_x001936B0 {
     char *data;
