@@ -1081,7 +1081,45 @@ void func_001A0330_x001A0330(Sfx_r3001A0330_x001A0330 *a0, s32 a1, s32 a2, s32 a
     }
     a0->fn(a0->x, a0->y, b, a3);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A03B8);
+typedef struct { unsigned char pad[0x3C]; float zmin; float zmax; } SfxZHn_x001A03B8;
+int func_001A0898_x001A03B8(void) __asm__("func_001A0898");
+void func_001A03B8_x001A03B8(SfxZHn_x001A03B8 *zhn, unsigned int *src, short *dst) __asm__("func_001A03B8");
+void func_001A03B8_x001A03B8(SfxZHn_x001A03B8 *zhn, unsigned int *src, short *dst) {
+    float zmin;
+    float zmax;
+    double dmin;
+    double dmax;
+    double inv;
+    double a;
+    double b;
+    unsigned int v;
+    short *d;
+    int i;
+
+    zmin = zhn->zmin;
+    zmax = zhn->zmax;
+    if (func_001A0898_x001A03B8() == 1) {
+        for (i = 0; i < 256; i++) {
+            dst[i] = src[i] >> 15;
+        }
+        return;
+    }
+    d = dst;
+    dmin = zmin;
+    dmax = zmax;
+    inv = 1.0 / (dmax - dmin);
+    a = dmax * 65535.0 * inv;
+    b = inv * 65535.0 * dmin * dmax;
+    for (i = 0; i < 256; i++) {
+        if (*src == 0)
+            *src = 1;
+        v = *src;
+        *d = (unsigned int)(a - b / (dmax * v / 2147483647.0));
+        src++;
+        d++;
+    }
+}
+__asm__("# rebind func_001A03B8 0x001A03B8");
 void func_0019FFF0_x001A0588(s32, s32, s32 *, s32 *) __asm__("func_0019FFF0");
 void func_001A05D8_x001A0588(s32, s32, s32, s32 *) __asm__("func_001A05D8");
 void func_001A0588_x001A0588(s32 a0, s32 a1, s32 *out) __asm__("func_001A0588");
@@ -1505,6 +1543,8 @@ s32 func_001A1488_x001A1488(s32 arg0) __asm__("func_001A1488");
 s32 func_001A1488_x001A1488(s32 arg0) {
     return (arg0 == 0) ? 0 : 0x23;
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3m03b81_000000;
 typedef struct { s64 d; s16 h; s16 pad[3]; } SfxQ_x001A1498;
 extern volatile s32 D_00427334_x001A1498 __asm__("D_00427334");
 extern s32 D_00427338_x001A1498 __asm__("D_00427338");
