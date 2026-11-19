@@ -100,7 +100,7 @@ segments:
       - [0x00BCC0, c, sdk/libkernl/ico_kprintf]
       - [0x00BE70, c, sdk/libkernl_0010BE70]
       - [0x00D048, c, sdk/libkernl/kfiv_sifcmd]
-      - [0x00D628, asm, sdk/libkernl_0010D628]
+      - [0x00D628, c, sdk/libkernl_0010D628]
       - [0x00D9C0, c, sdk/libkernl/kfiv_sifrpc]
       - [0x00E8D8, c, sdk/libkernl_0010E8D8]
       - [0x00E9C8, c, sdk/libkernl/kfiv_filestub]

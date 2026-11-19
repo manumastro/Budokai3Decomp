@@ -75,9 +75,275 @@ void func_00103018_x00103018(MpegMcState_x00103018 *s, int f)
         func_0039EDB8_x00103018(s->mc[f].dst, s->pred, s->mc[f].residual);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103238);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103478);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001037A8);
+extern char D_0045E6E0_x00103238[] __asm__("D_0045CE98");
+extern void _waitIpuIdle_x00103238(void *s) __asm__("func_00104938");
+extern void func_0039AB98_x00103238(int h) __asm__("func_00107E58");
+extern void _sceMpegStopIpuDma_x00103238(void) __asm__("func_001095D0");
+extern void _sceMpegErrorBdec_x00103238(void *s) __asm__("func_00109670");
+extern void _doMC_x00103238(void *s, int f) __asm__("func_00103018");
+extern void _sceMpegError_x00103238(void *s, char *msg) __asm__("func_00109738");
+int _slice0_x00103238() __asm__("func_00103478");
+int func_00103238_x00103238(char *s) __asm__("func_00103238");
+/* func_0039D5B8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0039d5b8.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00103238_x00103238(char *s)
+{
+    long long top;
+    unsigned int bp;
+    unsigned int k;
+    int n;
+    int r;
+    int ok;
+    int res;
+    unsigned int v;
+
+    *(int *)(s + 0x820) = 0;
+    *(int *)(s + 0x824) = 0;
+    n = *(int *)(s + 0x13C) * *(int *)(s + 0x140);
+    if (*(int *)(s + 0x184) != 3)
+        n = n >> 1;
+    do {
+        r = _slice0_x00103238(s, n);
+    } while (r == 1 || r == 3);
+    ok = 1;
+    _waitIpuIdle_x00103238(s);
+    _waitIpuIdle_x00103238(s);
+    if ((*(volatile unsigned int *)0x1000B020) != 0 && ((*(volatile unsigned int *)0x10002010) & 0x4000) == 0) {
+        do {
+            if ((*(volatile unsigned int *)0x1000B420) == 0 && ((*(volatile unsigned int *)0x1000B400) & 0x100) == 0)
+                func_0039AB98_x00103238(*(int *)(s + 0x868));
+            if (*(int *)(s + 0x878) != 0) {
+                _sceMpegStopIpuDma_x00103238();
+                res = 0;
+                goto skip;
+            }
+        } while ((*(volatile unsigned int *)0x1000B020) != 0 && ((*(volatile unsigned int *)0x10002010) & 0x4000) == 0);
+    }
+    bp = (*(volatile unsigned int *)0x10002020);
+    top = (*(volatile long long *)0x10002030);
+    *(int *)(s + 0x848) = (int)top;
+    if (top < 0) {
+        k = bp & 0x1F;
+        if (k != 0)
+            v = 0x20 - k;
+        else
+            v = 0;
+    } else {
+        v = 0x20;
+    }
+    *(int *)(s + 0x84C) = v;
+    if (((*(volatile unsigned int *)0x10002010) & 0x4000) != 0) {
+        _sceMpegErrorBdec_x00103238(s);
+        ok = 0;
+    }
+    res = ok;
+skip:
+    if (res == 0) {
+        if (*(int *)(s + 0x878) != 0)
+            return 4;
+        r = 2;
+    }
+    while ((((*(volatile unsigned int *)0x1000D400) >> 8) & 1) != 0)
+        ;
+    if (r == 0)
+        _doMC_x00103238(s, *(int *)(s + 0x820) == 0);
+    if ((unsigned int)(r - 1) < 2)
+        _sceMpegError_x00103238(s, D_0045E6E0_x00103238);
+    return (unsigned int)r < 1;
+}
+__asm__("# noswap func_00103238");
+typedef struct Blk_x00103478 {
+    int f00, f04, f08, f0C, f10, f14, f18, f1C;
+} Blk_x00103478;
+extern char D_0045E700_x00103478[] __asm__("D_0045CEB8");
+extern void _waitIpuIdle_x00103478(void *s) __asm__("func_00104938");
+extern void func_0039AB98_x00103478(int h) __asm__("func_00107E58");
+extern void _sceMpegStopIpuDma_x00103478(void) __asm__("func_001095D0");
+extern void _sceMpegErrorBdec_x00103478(void *s) __asm__("func_00109670");
+extern void _doMC_x00103478(void *s, int f) __asm__("func_00103018");
+extern void _sceMpegError_x00103478(void *s, char *msg) __asm__("func_00109738");
+int _decMB0_x00103478() __asm__("func_00103D70");
+int func_0039CCC0_x00103478() __asm__("func_00102940");
+int func_0039E648_x00103478() __asm__("func_001042C8");
+int func_0039EB90_x00103478() __asm__("func_00104810");
+int func_0039ECF8_x00103478() __asm__("func_00104978");
+int func_0039FE78_x00103478() __asm__("func_00105AF8");
+int func_00103478_x00103478(char *s, int nmb) __asm__("func_00103478");
+/* _slice0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0039d7f8.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00103478_x00103478(char *s, int nmb)
+{
+    Blk_x00103478 b;
+    int p1[4];
+    int p2[4];
+    int mba;
+    int ninc;
+    int v48;
+    int v4C;
+    int v50;
+    long long top;
+    unsigned int bp;
+    unsigned int k;
+    unsigned int v;
+    int r;
+    int ok;
+    int res;
+    int rc;
+
+    mba = 0;
+    ninc = 0;
+    r = func_0039FE78_x00103478(s, nmb, &mba, &ninc, &b);
+    if (r != 0)
+        return r;
+    *(int *)(s + 0x12C) = 0;
+    for (;;) {
+        if (mba >= nmb)
+            return 0;
+        ok = 1;
+        *(int *)(s + *(int *)(s + 0x820) * 0x140 + 0x6DC) = 0;
+        _waitIpuIdle_x00103478(s);
+        while ((*(volatile unsigned int *)0x1000B020) != 0 && ((*(volatile unsigned int *)0x10002010) & 0x4000) == 0) {
+
+                if ((*(volatile unsigned int *)0x1000B420) == 0 && ((*(volatile unsigned int *)0x1000B400) & 0x100) == 0)
+                    func_0039AB98_x00103478(*(int *)(s + 0x868));
+                if (*(int *)(s + 0x878) != 0) {
+                    _sceMpegStopIpuDma_x00103478();
+                    res = 0;
+                    goto skip;
+                }
+
+        }
+        bp = (*(volatile unsigned int *)0x10002020);
+        top = (*(volatile long long *)0x10002030);
+        *(int *)(s + 0x848) = (int)top;
+        if (top < 0) {
+            k = bp & 0x1F;
+            if (k != 0)
+                v = 0x20 - k;
+            else
+                v = 0;
+        } else {
+            v = 0x20;
+        }
+        *(int *)(s + 0x84C) = v;
+        if (((*(volatile unsigned int *)0x10002010) & 0x4000) != 0) {
+            _sceMpegErrorBdec_x00103478(s);
+            ok = 0;
+        }
+        res = ok;
+    skip:
+        if (res == 0) {
+            if (*(int *)(s + 0x878) == 0)
+                rc = 2;
+            else
+                rc = 4;
+            return rc;
+        }
+        if (ninc == 0) {
+            if (func_0039EB90_x00103478(s, 0x17) == 0 || *(int *)(s + 0x12C) != 0) {
+                *(int *)(s + 0x12C) = 0;
+                return 3;
+            }
+            ninc = func_0039E648_x00103478(s);
+            if (*(int *)(s + 0x12C) != 0) {
+                *(int *)(s + 0x12C) = 0;
+                return 1;
+            }
+        }
+        if (mba >= nmb) {
+            _sceMpegError_x00103478(s, D_0045E700_x00103478);
+            return 2;
+        }
+        if (ninc == 1) {
+            if (_decMB0_x00103478(s, &v48, &v4C, &v50, &b, p1, p2) == 0) {
+                *(int *)(s + 0x12C) = 0;
+                return 1;
+            }
+        } else {
+            if (func_0039ECF8_x00103478(s, &b, &v4C, p1, &v48) == 0) {
+                *(int *)(s + 0x12C) = 0;
+                return 2;
+            }
+        }
+        if (func_0039CCC0_x00103478(s, mba, ninc, v48, v4C, &b, p1, p2) == 0) {
+            *(int *)(s + 0x12C) = 0;
+            return 2;
+        }
+        if (mba != 0)
+            _doMC_x00103478(s, *(int *)(s + 0x820) ^ 1);
+        mba = mba + 1;
+        *(int *)(s + 0x820) = *(int *)(s + 0x820) ^ 1;
+        ninc = ninc - 1;
+    }
+}
+__asm__("# noswap func_00103478");
+extern void _waitIpuIdle_x001037A8(void *s) __asm__("func_00104938");
+extern long long _sceMpegWaitIpuIdle64_x001037A8(void *s) __asm__("func_001045A8");
+int func_0039EAA8_x001037A8() __asm__("func_00104728");
+void func_001037A8_x001037A8(char *s, int *PMV, int *dmvector, int h_r_size, int v_r_size,
+                   int dmv, int mvscale, int full_pel_vector) __asm__("func_001037A8");
+/* _motionVector: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0039db28.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_001037A8_x001037A8(char *s, int *PMV, int *dmvector, int h_r_size, int v_r_size,
+                   int dmv, int mvscale, int full_pel_vector)
+{
+    int motion_code;
+    int motion_residual;
+
+     {                                                                           long long v_;                                                           long long top_;                                                         unsigned int bp_;                                                       _waitIpuIdle_x001037A8(s);                                                        *(volatile unsigned int *)0x10002000 = (0x38000000);                           *(int *)(s + 0x828) = 0;                                                *(int *)(s + 0x82C) = 0x30000000;                                       v_ = _sceMpegWaitIpuIdle64_x001037A8(s);                                          bp_ = *(volatile unsigned int *)0x10002020;                             top_ = *(volatile long long *)0x10002030;                               *(int *)(s + 0x848) = (int)top_;                                        if (top_ < 0)                                                               *(int *)(s + 0x84C) = (0 - (bp_ & 0x1F)) & 0x1F;                    else                                                                        *(int *)(s + 0x84C) = 0x20;                                         *(int *)(s + 0x12C) = ((int)v_ == 0);                                   ( motion_code) = (short)v_;                                                  }
+    if (h_r_size != 0 && motion_code != 0)
+        motion_residual = func_0039EAA8_x001037A8(s, h_r_size);
+    else
+        motion_residual = 0;
+    {
+        int *p;
+        int lim;
+        int vec;
+        p = &PMV[0];
+        lim = 16 << h_r_size;
+        vec = full_pel_vector ? (*p >> 1) : *p;
+        if (motion_code > 0) {
+            vec += ((motion_code - 1) << h_r_size) + motion_residual + 1;
+            if (vec >= lim)
+                vec -= lim + lim;
+        } else if (motion_code < 0) {
+            vec -= ((-motion_code - 1) << h_r_size) + motion_residual + 1;
+            if (vec < -lim)
+                vec += lim + lim;
+        }
+        *p = full_pel_vector ? (vec << 1) : vec;
+    }
+    if (dmv)
+         {                                                                           long long v_;                                                           long long top_;                                                         unsigned int bp_;                                                       _waitIpuIdle_x001037A8(s);                                                        *(volatile unsigned int *)0x10002000 = (0x3C000000);                           *(int *)(s + 0x828) = 0;                                                *(int *)(s + 0x82C) = 0x30000000;                                       v_ = _sceMpegWaitIpuIdle64_x001037A8(s);                                          bp_ = *(volatile unsigned int *)0x10002020;                             top_ = *(volatile long long *)0x10002030;                               *(int *)(s + 0x848) = (int)top_;                                        if (top_ < 0)                                                               *(int *)(s + 0x84C) = (0 - (bp_ & 0x1F)) & 0x1F;                    else                                                                        *(int *)(s + 0x84C) = 0x20;                                         *(int *)(s + 0x12C) = ((int)v_ == 0);                                   ( dmvector[0]) = (short)v_;                                                  }
+
+     {                                                                           long long v_;                                                           long long top_;                                                         unsigned int bp_;                                                       _waitIpuIdle_x001037A8(s);                                                        *(volatile unsigned int *)0x10002000 = (0x38000000);                           *(int *)(s + 0x828) = 0;                                                *(int *)(s + 0x82C) = 0x30000000;                                       v_ = _sceMpegWaitIpuIdle64_x001037A8(s);                                          bp_ = *(volatile unsigned int *)0x10002020;                             top_ = *(volatile long long *)0x10002030;                               *(int *)(s + 0x848) = (int)top_;                                        if (top_ < 0)                                                               *(int *)(s + 0x84C) = (0 - (bp_ & 0x1F)) & 0x1F;                    else                                                                        *(int *)(s + 0x84C) = 0x20;                                         *(int *)(s + 0x12C) = ((int)v_ == 0);                                   ( motion_code) = (short)v_;                                                  }
+    if (v_r_size != 0 && motion_code != 0)
+        motion_residual = func_0039EAA8_x001037A8(s, v_r_size);
+    else
+        motion_residual = 0;
+    if (mvscale)
+        PMV[1] >>= 1;
+    {
+        int *p;
+        int lim;
+        int vec;
+        p = &PMV[1];
+        lim = 16 << v_r_size;
+        vec = full_pel_vector ? (*p >> 1) : *p;
+        if (motion_code > 0) {
+            vec += ((motion_code - 1) << v_r_size) + motion_residual + 1;
+            if (vec >= lim)
+                vec -= lim + lim;
+        } else if (motion_code < 0) {
+            vec -= ((-motion_code - 1) << v_r_size) + motion_residual + 1;
+            if (vec < -lim)
+                vec += lim + lim;
+        }
+        *p = full_pel_vector ? (vec << 1) : vec;
+    }
+    if (mvscale)
+        PMV[1] <<= 1;
+    if (dmv)
+         {                                                                           long long v_;                                                           long long top_;                                                         unsigned int bp_;                                                       _waitIpuIdle_x001037A8(s);                                                        *(volatile unsigned int *)0x10002000 = (0x3C000000);                           *(int *)(s + 0x828) = 0;                                                *(int *)(s + 0x82C) = 0x30000000;                                       v_ = _sceMpegWaitIpuIdle64_x001037A8(s);                                          bp_ = *(volatile unsigned int *)0x10002020;                             top_ = *(volatile long long *)0x10002030;                               *(int *)(s + 0x848) = (int)top_;                                        if (top_ < 0)                                                               *(int *)(s + 0x84C) = (0 - (bp_ & 0x1F)) & 0x1F;                    else                                                                        *(int *)(s + 0x84C) = 0x20;                                         *(int *)(s + 0x12C) = ((int)v_ == 0);                                   ( dmvector[1]) = (short)v_;                                                  }
+}
+__asm__("# noswap func_001037A8");
 typedef struct sceIpuDmaEnv_x00103BD0 {
     unsigned int d4madr;
     unsigned int d4tadr;
@@ -317,7 +583,164 @@ void func_00103BD0_x00103BD0(_sceMpegDecoder_x00103BD0 *dec, int PMV[2][2][2], i
         _motionVector_x00103BD0(dec, PMV[1][s], dmvector, h_r_size, v_r_size, dmv, mvscale, 0);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103D70);
+extern char D_0045E750_x00103D70[] __asm__("D_0045CF08");
+extern void _waitIpuIdle_x00103D70(void *s) __asm__("func_00104938");
+extern long long _sceMpegWaitIpuIdle64_x00103D70(void *s) __asm__("func_001045A8");
+extern void _sceMpegError_x00103D70(void *s, char *msg) __asm__("func_00109738");
+extern void func_0039ECF0_x00103D70(void *s, int n) __asm__("func_00104970");
+extern void func_0039FDD8_x00103D70(int a, int b) __asm__("func_00105A58");
+extern void func_0039DF50_x00103D70(void *s, int *PMV, int *dmv, int *mvfs, int idx, int mvcount, int mvformat, int hr, int vr, int dmvf, int mvscale) __asm__("func_00103BD0");
+extern void _motionVector_x00103D70(void *s, int *PMV, int *dmv, int hr, int vr, int dmvf, int mvscale, int fullpel) __asm__("func_001037A8");
+int func_0039EAA8_x00103D70() __asm__("func_00104728");
+int func_00103D70_x00103D70(char *s, int *mbtypep, int *motion_typep, int *dct_typep,
+                  int *PMV, int *mvfs, int *dmvector) __asm__("func_00103D70");
+/* _decMB0: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0039e0f0.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00103D70_x00103D70(char *s, int *mbtypep, int *motion_typep, int *dct_typep,
+                  int *PMV, int *mvfs, int *dmvector)
+{
+    long long v;
+    long long top;
+    unsigned int bp;
+    unsigned int cmd;
+    unsigned int q;
+    int mbtype;
+    int mt;
+    int ps;
+    int mvcount;
+    int two;
+    int mvformat;
+    int dmv;
+    int mvscale;
+    int dct_type;
+
+    (*(volatile unsigned int *)0x10002010) = ((*(volatile unsigned int *)0x10002010) & 0xF8FFFFFF) | (*(int *)(s + 0x160) << 24);
+    _waitIpuIdle_x00103D70(s);
+    *(volatile unsigned int *)0x10002000 = 0x34000000;
+    *(int *)(s + 0x828) = 0;
+    *(int *)(s + 0x82C) = 0x30000000;
+    v = _sceMpegWaitIpuIdle64_x00103D70(s);
+    bp = *(volatile unsigned int *)0x10002020;
+    top = *(volatile long long *)0x10002030;
+    *(int *)(s + 0x848) = (int)top;
+    if (top < 0)
+        *(int *)(s + 0x84C) = (0 - (bp & 0x1F)) & 0x1F;
+    else
+        *(int *)(s + 0x84C) = 0x20;
+    *(int *)(s + 0x12C) = ((int)v == 0);
+    mbtype = (short)v;
+    *mbtypep = mbtype;
+    if (mbtype == 0) {
+        _sceMpegError_x00103D70(s, D_0045E750_x00103D70);
+        *(int *)(s + 0x12C) = 1;
+        return 0;
+    }
+    if ((mbtype & 0xC) != 0) {
+        if (*(int *)(s + 0x184) == 3 && *(int *)(s + 0x18C) != 0)
+            *motion_typep = 2;
+        else
+            *motion_typep = func_0039EAA8_x00103D70(s, 2);
+    } else if ((mbtype & 1) != 0) {
+        if (*(int *)(s + 0x190) != 0)
+            do { *motion_typep = (*(int *)(s + 0x184) == 3) ? 2 : 1; } while (0);
+    }
+    ps = *(int *)(s + 0x184);
+    mt = *motion_typep;
+    if (ps == 3) {
+        mvcount = (mt == 1) ? 2 : 1;
+        mvformat = (mt == 2);
+    } else {
+        two = 2;
+        do { } while (0);
+        mvcount = 1;
+        do { } while (0);
+        mvformat = 0;
+        do { } while (0);
+        if (mt == 2)
+            mvcount = two;
+    }
+    dmv = (mt == 3);
+    mvscale = (mvformat == 0 && ps == 3);
+    if (ps == 3 && *(int *)(s + 0x18C) == 0 && (*mbtypep & 3) != 0)
+        dct_type = func_0039EAA8_x00103D70(s, 1);
+    else
+        dct_type = 0;
+    *dct_typep = dct_type;
+    if ((*mbtypep & 0x10) != 0)
+        *(int *)(s + 0x1C4) = func_0039EAA8_x00103D70(s, 5);
+    if ((*mbtypep & 8) != 0
+        || ((*mbtypep & 1) != 0 && *(int *)(s + 0x190) != 0)) {
+        if (*(int *)(s + 0x858) != 0)
+            func_0039DF50_x00103D70(s, PMV, dmvector, mvfs, 0, mvcount, mvformat,
+                          *(int *)(s + 0x174) - 1, *(int *)(s + 0x178) - 1,
+                          dmv, mvscale);
+        else
+            _motionVector_x00103D70(s, PMV, dmvector, *(int *)(s + 0x168) - 1,
+                          *(int *)(s + 0x168) - 1, 0, 0, *(int *)(s + 0x164));
+    }
+    if (*(int *)(s + 0x12C) != 0)
+        return 0;
+    if ((*mbtypep & 4) != 0) {
+        if (*(int *)(s + 0x858) != 0)
+            func_0039DF50_x00103D70(s, PMV, dmvector, mvfs, 1, mvcount, mvformat,
+                          *(int *)(s + 0x17C) - 1, *(int *)(s + 0x180) - 1,
+                          0, mvscale);
+        else
+            _motionVector_x00103D70(s, PMV + 2, dmvector, *(int *)(s + 0x170) - 1,
+                          *(int *)(s + 0x170) - 1, 0, 0, *(int *)(s + 0x16C));
+    }
+    if (*(int *)(s + 0x12C) != 0)
+        return 0;
+    if ((*mbtypep & 1) != 0 && *(int *)(s + 0x190) != 0)
+        func_0039ECF0_x00103D70(s, 1);
+    if ((*mbtypep & 3) != 0) {
+        func_0039FDD8_x00103D70(*(int *)(s + *(int *)(s + 0x820) * 0x140 + 0x5A4), 0x300);
+        _waitIpuIdle_x00103D70(s);
+        q = (*(int *)(s + 0x1C4) << 16) | 0x20000000;
+        cmd = (((*mbtypep & 1) << 27)
+               | ((*dct_typep << 25) | (*(int *)(s + 0x1C0) << 26))) | q;
+        *(volatile unsigned int *)0x10002000 = cmd;
+        *(int *)(s + 0x82C) = cmd & 0xF0000000;
+        if (*(int *)(s + 0x82C) == 0x20000000
+            || *(int *)(s + 0x82C) == 0x30000000
+            || *(int *)(s + 0x82C) == 0x40000000)
+            *(int *)(s + 0x828) = 0;
+        else
+            *(int *)(s + 0x828) = 1;
+    } else {
+        *(int *)(s + *(int *)(s + 0x820) * 0x140 + 0x6DC) = 1;
+    }
+    *(int *)(s + 0x1C0) = 0;
+    if (*(int *)(s + 0x12C) != 0)
+        return 0;
+    if ((*mbtypep & 1) == 0)
+        *(int *)(s + 0x1C0) = 1;
+    if ((*mbtypep & 1) != 0 && *(int *)(s + 0x190) == 0) {
+        PMV[5] = 0;
+        PMV[4] = 0;
+        PMV[1] = 0;
+        PMV[0] = 0;
+        PMV[7] = 0;
+        PMV[6] = 0;
+        PMV[3] = 0;
+        PMV[2] = 0;
+    }
+    if (*(int *)(s + 0x160) != 2)
+        return 1;
+    if ((*mbtypep & 9) != 0)
+        return 1;
+    PMV[5] = 0;
+    PMV[4] = 0;
+    PMV[1] = 0;
+    PMV[0] = 0;
+    if (*(int *)(s + 0x184) == 3) {
+        *motion_typep = 2;
+    } else {
+        *motion_typep = 1;
+        *mvfs = (*(int *)(s + 0x184) == 2);
+    }
+    return 1;
+}
+__asm__("# noswap func_00103D70");
 extern char D_0045E770_x001042C8[] __asm__("D_0045CF28");
 extern void _waitIpuIdle_x001042C8(void *s) __asm__("func_00104938");
 extern long long _sceMpegWaitIpuIdle64_x001042C8(void *s) __asm__("func_001045A8");

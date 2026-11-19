@@ -307,7 +307,101 @@ s32 func_00118680(void) {
     D_003EDDC8 = 1;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_001186F8);
+typedef struct { unsigned int lsn; unsigned int size; char name[0x1C]; } sceCdlFILE_x001186F8;
+typedef struct { char b[0x24]; } fileblk_x001186F8;
+struct sfdata_x001186F8 {
+    unsigned char file[0x24];    
+    char          name[0x100];   
+    void         *addr;          
+    int           layer;         
+};
+extern volatile int D_003F8668_x001186F8 __asm__("D_003EDDA8");
+extern char D_003F8640_x001186F8[] __asm__("D_003EDD80");
+extern int D_003F865C_x001186F8 __asm__("D_003EDD9C");
+extern int D_003F868C_x001186F8 __asm__("D_003EDDCC");
+extern struct sfdata_x001186F8 D_0077C440_x001186F8 __asm__("D_00478D80");
+extern char D_0077C464_x001186F8[] __asm__("D_00478DA4");
+extern int D_0077C580_x001186F8[] __asm__("D_00478EC0");
+extern int D_0077C5C0_x001186F8[] __asm__("D_00478F00");
+extern char D_0045E1F0_x001186F8[] __asm__("D_0045DC00");
+extern char D_0045E210_x001186F8[] __asm__("D_0045DC20");
+extern char D_0045E228_x001186F8[] __asm__("D_0045DC38");
+extern char D_0045E238_x001186F8[] __asm__("D_0045DC48");
+extern char D_0045E248_x001186F8[] __asm__("D_0045DC58");
+extern void cmd_sem_init_x001186F8(void) __asm__("func_00118420");
+extern int PollSema_x001186F8(int sema) __asm__("PollSema");
+extern int SignalSema_x001186F8(int sema) __asm__("SignalSema");
+extern void sceSifInitRpc_x001186F8(int mode) __asm__("sceSifInitRpc");
+extern void func_003B1F28_x001186F8() __asm__("scePrintf");
+extern int func_00398DA0_x001186F8(int mode) __asm__("func_00118C08");
+extern int func_003B2F48_x001186F8(void *cd, unsigned int sid, int mode) __asm__("sceSifBindRpc");
+extern void func_003B2850_x001186F8(void *p, int size) __asm__("func_0010D770");
+int func_003B3128_x001186F8() __asm__("sceSifCallRpc");
+int func_001186F8_x001186F8(sceCdlFILE_x001186F8 *fp, const char *name, int layer) __asm__("func_001186F8");
+/* sceCdLayerSearchFile: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00398890.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001186F8_x001186F8(sceCdlFILE_x001186F8 *fp, const char *name, int layer)
+{
+    int i;
+    int n;
+    int r;
+    int b;
+
+    cmd_sem_init_x001186F8();
+    r = PollSema_x001186F8(D_003F8668_x001186F8);
+    if (D_003F8668_x001186F8 != r)
+        return 0;
+    D_003F865C_x001186F8 = 1;
+    if (func_00398DA0_x001186F8(1)) {
+        SignalSema_x001186F8(D_003F8668_x001186F8);
+        return 0;
+    }
+    do {
+        sceSifInitRpc_x001186F8(0);
+        b = D_003F868C_x001186F8;
+    } while (0);
+    if (b < 0) {
+        while (1) {
+            if (func_003B2F48_x001186F8(D_0077C5C0_x001186F8, 0x80000597, 0) < 0) {
+                if (*(int *)(D_003F8640_x001186F8 + 0x10) > 0)
+                    func_003B1F28_x001186F8(D_0045E1F0_x001186F8);
+                for (i = 0x100000; i != -1; i--)
+                    ;
+                continue;
+            }
+            if (D_0077C5C0_x001186F8[9] != 0)
+                break;
+            for (i = 0x100000; i != -1; i--)
+                ;
+        }
+        D_003F868C_x001186F8 = 0;
+    }
+    for (n = 0; n < 0x100; n++) {
+        if ((D_0077C440_x001186F8.name[n] = name[n]) == 0)
+            break;
+    }
+    if (n == 0x100)
+        D_0077C440_x001186F8.name[0xFF] = 0;
+    if (*(int *)(D_003F8640_x001186F8 + 0x10) > 0)
+        func_003B1F28_x001186F8(D_0045E210_x001186F8, D_0077C464_x001186F8);
+    D_0077C440_x001186F8.layer = layer;
+    D_0077C440_x001186F8.addr = &D_0077C440_x001186F8;
+    func_003B2850_x001186F8(&D_0077C440_x001186F8, 0x12C);
+    if (func_003B3128_x001186F8(D_0077C5C0_x001186F8, 0, 0, &D_0077C440_x001186F8, 0x12C, D_0077C580_x001186F8, 4, 0, 0) < 0) {
+        SignalSema_x001186F8(D_003F8668_x001186F8);
+        return 0;
+    }
+    *(fileblk_x001186F8 *)fp = *(fileblk_x001186F8 *)(((unsigned int)&D_0077C440_x001186F8) | 0x20000000);
+    if (*(int *)(D_003F8640_x001186F8 + 0x10) > 0)
+        func_003B1F28_x001186F8(D_0045E228_x001186F8, fp->name);
+    if (*(int *)(D_003F8640_x001186F8 + 0x10) > 0)
+        func_003B1F28_x001186F8(D_0045E238_x001186F8, fp->size);
+    if (*(int *)(D_003F8640_x001186F8 + 0x10) > 0)
+        func_003B1F28_x001186F8(D_0045E248_x001186F8, fp->lsn);
+    r = *(int *)(((unsigned int)D_0077C580_x001186F8) | 0x20000000);
+    SignalSema_x001186F8(D_003F8668_x001186F8);
+    return r;
+}
+__asm__("# noswap func_001186F8");
 int sceCdLayerSearchFile_x001189F8(int a0, int a1, int a2) __asm__("func_001186F8");
 int func_001189F8_x001189F8(int a0, int a1) __asm__("func_001189F8");
 /* func_00398B90: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00150078.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
@@ -647,8 +741,163 @@ int func_00118F20_x00118F20(int mode)
     return r;
 }
 __asm__("# rebind func_00118F20 0x00118F20");
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00119208);
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00119420);
+int DIntr_x00119208(void) __asm__("DI");
+int EIntr_x00119208(void) __asm__("EI");
+typedef unsigned int u_int_x00119208;
+extern char D_003F8640_x00119208[] __asm__("D_003EDD80");
+extern int D_003F8680_x00119208 __asm__("D_003EDDC0");
+extern int D_003F8690_x00119208 __asm__("D_003EDDD0");
+extern volatile int D_003F866C_x00119208 __asm__("D_003EDDAC");
+extern int D_0077C610_x00119208[] __asm__("D_00478F50");
+extern int D_0077C650_x00119208[] __asm__("D_00478F90");
+extern int D_003F9840_x00119208[] __asm__("D_003EEF80");
+extern char D_0045E330_x00119208[] __asm__("D_0045DD40");
+extern char D_0045E348_x00119208[] __asm__("D_0045DD58");
+extern char D_0045E368_x00119208[] __asm__("D_0045DD78");
+extern void func_003B1F28_x00119208() __asm__("scePrintf");
+extern void cmd_sem_init_x00119208(void) __asm__("func_00118420");
+extern int PollSema_x00119208(int sema) __asm__("PollSema");
+extern int SignalSema_x00119208(int sema) __asm__("SignalSema");
+extern int sceCdSyncS_x00119208(int mode) __asm__("func_00118CA8");
+extern void sceSifInitRpc_x00119208(int mode) __asm__("sceSifInitRpc");
+extern int func_003B2F48_x00119208(void *cd, unsigned int sid, int mode) __asm__("sceSifBindRpc");
+extern void func_003B2850_x00119208(void *p, int size) __asm__("func_0010D770");
+int func_003B3128_x00119208() __asm__("sceSifCallRpc");
+int func_00119208_x00119208(int mode) __asm__("func_00119208");
+/* sceCdDiskReady_old: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003992f0.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00119208_x00119208(int mode)
+{
+    int i;
+    int r;
+    int b;
+
+    if (*(int *)(D_003F8640_x00119208 + 0x10) > 0)
+        func_003B1F28_x00119208(D_0045E330_x00119208);
+    i = DIntr_x00119208();
+    D_003F8680_x00119208 = 1;
+    if (i)
+        EIntr_x00119208();
+    cmd_sem_init_x00119208();
+    r = PollSema_x00119208(D_003F866C_x00119208);
+    if (D_003F866C_x00119208 != r)
+        return 6;
+    if (sceCdSyncS_x00119208(1)) {
+        SignalSema_x00119208(D_003F866C_x00119208);
+        return (mode != 8) ? 6 : -1;
+    }
+    do {
+        sceSifInitRpc_x00119208(0);
+        b = D_003F8690_x00119208;
+    } while (0);
+    if (b < 0) {
+        while (1) {
+            if (func_003B2F48_x00119208(D_0077C610_x00119208, 0x8000059A, 0) < 0) {
+                if (*(int *)(D_003F8640_x00119208 + 0x10) > 0)
+                    func_003B1F28_x00119208(D_0045E348_x00119208);
+                for (i = 0x100000; i != -1; i--)
+                    ;
+                continue;
+            }
+            if (D_0077C610_x00119208[9] != 0)
+                break;
+            for (i = 0x100000; i != -1; i--)
+                ;
+        }
+        D_003F8690_x00119208 = 0;
+    }
+    D_0077C650_x00119208[0] = mode;
+    func_003B2850_x00119208(D_0077C650_x00119208, 4);
+    if (func_003B3128_x00119208(D_0077C610_x00119208, 0, 0, D_0077C650_x00119208, 4, D_003F9840_x00119208, 4, 0, 0) < 0) {
+        SignalSema_x00119208(D_003F866C_x00119208);
+        return (mode != 8) ? 6 : -1;
+    }
+    if (*(int *)(D_003F8640_x00119208 + 0x10) > 0)
+        func_003B1F28_x00119208(D_0045E368_x00119208);
+    r = *(int *)((u_int_x00119208)D_003F9840_x00119208 | 0x20000000);
+    SignalSema_x00119208(D_003F866C_x00119208);
+    return r;
+}
+__asm__("# noswap func_00119208");
+int DIntr_x00119420(void) __asm__("DI");
+int EIntr_x00119420(void) __asm__("EI");
+typedef unsigned int u_int_x00119420;
+extern char D_003F8640_x00119420[] __asm__("D_003EDD80");
+extern int D_003F8680_x00119420 __asm__("D_003EDDC0");
+extern int D_003F8690_x00119420 __asm__("D_003EDDD0");
+extern volatile int D_003F8670_x00119420 __asm__("D_003EDDB0");
+extern int D_0077C610_x00119420[] __asm__("D_00478F50");
+extern int D_0077C650_x00119420[] __asm__("D_00478F90");
+extern int D_003FA0C0_x00119420[] __asm__("D_003EF800");
+extern char D_0045E348_x00119420[] __asm__("D_0045DD58");
+extern char D_0045E368_x00119420[] __asm__("D_0045DD78");
+extern char D_0045E380_x00119420[] __asm__("D_0045DD90");
+extern void func_003B1F28_x00119420() __asm__("scePrintf");
+extern void cmd_sem_init_x00119420(void) __asm__("func_00118420");
+extern int PollSema_x00119420(int sema) __asm__("PollSema");
+extern int SignalSema_x00119420(int sema) __asm__("SignalSema");
+extern void sceSifInitRpc_x00119420(int mode) __asm__("sceSifInitRpc");
+extern int sceCdDiskReady_old_x00119420(int mode) __asm__("func_00119208");
+extern int func_003B2F48_x00119420(void *cd, unsigned int sid, int mode) __asm__("sceSifBindRpc");
+extern void func_003B2850_x00119420(void *p, int size) __asm__("func_0010D770");
+int func_003B3128_x00119420() __asm__("sceSifCallRpc");
+int func_00119420_x00119420(int mode) __asm__("func_00119420");
+/* sceCdDiskReady: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/00399508.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00119420_x00119420(int mode)
+{
+    int i;
+    int n;
+    int r;
+    int m;
+
+    if (*(int *)(D_003F8640_x00119420 + 0x10) > 0)
+        func_003B1F28_x00119420(D_0045E380_x00119420);
+    cmd_sem_init_x00119420();
+    r = PollSema_x00119420(D_003F8670_x00119420);
+    if (D_003F8670_x00119420 != r)
+        return (mode != 8) ? 6 : -1;
+    sceSifInitRpc_x00119420(0);
+    n = 0;
+    if (D_003F8690_x00119420 < 0) {
+        D_003F8690_x00119420++;    
+        D_003F8690_x00119420--;
+        while (1) {
+            if (func_003B2F48_x00119420(D_0077C610_x00119420, 0x8000059C, 0) < 0) {
+                if (*(int *)(D_003F8640_x00119420 + 0x10) > 0)
+                    func_003B1F28_x00119420(D_0045E348_x00119420);
+                for (i = 0x100000; i != -1; i--)
+                    ;
+                continue;
+            }
+            if (D_0077C610_x00119420[9] != 0)
+                break;
+            if (n >= 0x11) {
+                SignalSema_x00119420(D_003F8670_x00119420);
+                return sceCdDiskReady_old_x00119420(mode);
+            }
+            m = n + 1;
+            for (i = 0x100000; i != -1; i--)
+                ;
+            n = m;
+        }
+        D_003F8690_x00119420 = 0;
+    }
+    i = DIntr_x00119420();
+    D_003F8680_x00119420 = 0;
+    if (i)
+        EIntr_x00119420();
+    D_0077C650_x00119420[0] = mode;
+    func_003B2850_x00119420(D_0077C650_x00119420, 4);
+    if (func_003B3128_x00119420(D_0077C610_x00119420, 0, 0, D_0077C650_x00119420, 4, D_003FA0C0_x00119420, 4, 0, 0) < 0) {
+        SignalSema_x00119420(D_003F8670_x00119420);
+        return (mode != 8) ? 6 : -1;
+    }
+    if (*(int *)(D_003F8640_x00119420 + 0x10) > 0)
+        func_003B1F28_x00119420(D_0045E368_x00119420);
+    r = *(int *)((u_int_x00119420)D_003FA0C0_x00119420 | 0x20000000);
+    SignalSema_x00119420(D_003F8670_x00119420);
+    return r;
+}
+__asm__("# noswap func_00119420");
 int SignalSema_x00119640(int sema) __asm__("SignalSema");
 void scePrintf_x00119640(char *fmt, ...) __asm__("scePrintf");
 typedef void (*sceSifEndFunc_x00119640)(void *param);

@@ -2,7 +2,7 @@
 iWakeupThread = 0x0010B128; // type:func
 sceSifExitCmd = 0x0010D340; // type:func
 sceSifSendCmd = 0x0010D5A8; // type:func
-sceSifWriteBackDCache = 0x0010D770; // type:func
+sceSifWriteBackDCache = 0x0010D770; // type:func size:0xB0
 sceSifExitRpc = 0x0010D9C0; // type:func
 _sceRpcGetPacket = 0x0010D9E8; // type:func
 _sceRpcFreePacket = 0x0010DA90; // type:func

@@ -408,6 +408,13 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
     dl = [t for t in dl if not re.search(r"\b" + re.escape(our_name) + r"\s*\(", t)]
     if our_name != ext_name:
         bind.pop(ext_name, None)
+    # a callee the origin calls with no declaration in scope (C89's implicit `int f()`): declared so, so that
+    # func_insert.py can bind it to the executable's function like any other
+    declared = set(re.findall(r"\b(\w+)\s*(?:\)\s*)?\(", "\n".join(dl))) | set(re.findall(r"\b(\w+)\s*(?:\[|;|,|=)",
+                                                                                            "\n".join(dl)))
+    for n in sorted(bind):
+        if n not in declared and n != our_name and re.search(r"\b" + re.escape(n) + r"\s*\(", func):
+            dl.append(f"int {n}();")
     url, lic = LICENSES.get(u.repo, ("", ""))
     origin = u.src.split(f"build/ext/{u.repo}/", 1)[-1]
     head = f"/* {ext_name}: from {url} ({origin}, {lic}); ee-gcc {u.version} {u.flags} */\n"
