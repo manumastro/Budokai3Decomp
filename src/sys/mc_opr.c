@@ -8,7 +8,21 @@ INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288AF0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288BF0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288E70);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00289210);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00289380);
+extern s32 D_00470894;
+s32 amMc_GetInfo(s32, s32, s32);
+extern s32 D_0047084C;
+extern s32 func_0028DDF0();
+extern void func_00289210(void);
+void func_00289380(u8 *arg0) {
+    s32 (*var_v1)();
+
+    if (amMc_GetInfo(D_0047084C, 0, 0) == 0) {
+        func_00288870(0x20);
+        var_v1 = (func_0028DDF0 == NULL) ? NULL : func_0028DDF0;
+        *(s32 (**)())((u8 *)arg0 + 0x1C) = var_v1;
+        D_00470894 = (int)(&func_00289210);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002893F0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002898F0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00289BE0);
