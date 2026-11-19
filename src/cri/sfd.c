@@ -15125,7 +15125,38 @@ void func_0018DA08_x0018DA08(s32 arg0) {
 s32 func_0018DA28(void) {
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018DA30);
+typedef signed char s8_x0018DA30;
+typedef signed short s16_x0018DA30;
+typedef signed int s32_x0018DA30;
+typedef signed long long s64_x0018DA30;
+typedef unsigned char u8_x0018DA30;
+typedef unsigned short u16_x0018DA30;
+typedef unsigned int u32_x0018DA30;
+typedef unsigned long long u64_x0018DA30;
+typedef float f32_x0018DA30;
+typedef double f64_x0018DA30;
+typedef int BOOL_x0018DA30;
+typedef unsigned int size_t_x0018DA30;
+typedef struct MovieTable_x0018DA30 { u8_x0018DA30 pad_0000[0x144]; void *arg3; void *arg4; } MovieTable_x0018DA30;
+typedef struct MovieModule_x0018DA30 { u8_x0018DA30 pad_0000[0x1aec]; MovieTable_x0018DA30 *movie_table; } MovieModule_x0018DA30;
+extern int func_0018D870_x0018DA30(void *module) __asm__("func_0018D870");
+typedef struct MovieTable2_x0018DA30 { u8_x0018DA30 pad_0000[0x34]; int tbl[(0x144 - 0x34) / 4]; void *arg3; void *arg4; } MovieTable2_x0018DA30;
+typedef struct MovieModule2_x0018DA30 { u8_x0018DA30 pad_0000[0x1c2c]; MovieTable2_x0018DA30 *movie_table; } MovieModule2_x0018DA30;
+extern int func_0018D650_x0018DA30(int arg0, int arg1) __asm__("func_0018D650");
+int func_0018DA30_x0018DA30(MovieModule2_x0018DA30 *module, int index, int value, int arg3, int arg4) __asm__("func_0018DA30");
+int func_0018DA30_x0018DA30(MovieModule2_x0018DA30 *module, int index, int value, int arg3, int arg4) {
+    MovieTable2_x0018DA30 *table;
+    if (func_0018D870_x0018DA30(module) != 0) {
+        return func_0018D650_x0018DA30(0, (int)0xff000171);
+    }
+    if ((u32_x0018DA30)(index - 0xbc) < 0x44) {
+        table = module->movie_table;
+        table->tbl[index - 0xbc] = value;
+        table->arg4 = (void *)arg4;
+        table->arg3 = (void *)arg3;
+    }
+    return 0;
+}
 s32 func_0017AE98_x0018DAE0(s32, s32 *) __asm__("func_0017AE98");
 s32 func_0018D650_x0018DAE0(s32, s32) __asm__("func_0018D650");
 s32 func_0018DB50_x0018DAE0() __asm__("func_0018DB50");
@@ -28031,6 +28062,8 @@ void func_00191C40_x00191C40(u8 *a0, unsigned int a1, s32 a2, s32 a3)
     s[12] = s[32];
   }
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mda301_000000;
 typedef struct { int rate; int drop; int hour; int minute; int second; int frame; int pad18; short pad1c; short field; } SfdTC_x00191D38;
 extern int D_00467730_x00191D38[] __asm__("D_00467730");
 extern int D_004674D8_x00191D38[] __asm__("D_004674D8");
@@ -28099,6 +28132,8 @@ void func_00191D38_x00191D38(long long pts, int prate, int drop, int tmpref, Sfd
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int mb39010;
 extern int b3mb3901_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mda302_000000;
 typedef struct SfdTimeCode_x00191F48 { int rate; int drop; int hour; int minute; int second; int frame; int add; short repeat; short field; } SfdTimeCode_x00191F48;
 extern int D_004674D8_x00191F48[] __asm__("D_004674D8");
 void func_00191F48_x00191F48(SfdTimeCode_x00191F48 *src, SfdTimeCode_x00191F48 *dst) __asm__("func_00191F48");
