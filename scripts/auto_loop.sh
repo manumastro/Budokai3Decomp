@@ -113,6 +113,7 @@ EOF
       log "  SHIP FAILED: $(tail -3 build/auto/step_ship.log | tr '\n' ' ')"
       git reset -q --hard origin/main
       log "  reset to origin/main; stopping"
+      alert "B3 auto_loop: SHIP FAILED (whole build not byte-identical) in pass $pass; loop stopped"
       exit 1
     fi
   fi
