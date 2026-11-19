@@ -229,39 +229,36 @@ void func_002C5EB0(Dst2C41C0 *d, Src2C41C0 *s) {
         d->f2C = b + (d->f6C << 4) + 0x650;
     }
 }
-#if 0
-// differs: the fighter value is held in a0 instead of a1: the register choice of the local is not reproduced (all 6 declaration orders of k/sb/w give the same 4 diffs, round 5 permp)
-s32 func_002C5FC0(Task2C41C0 *t) {
-    s32 k;
+s32 func_002C5FC0(Task2C41C0 *t, s32 k) {
     Sub2C41C0 *sb = (Sub2C41C0 *)((char *)t + 0x20);
-    EffWork *w;
+    s16 temp_v1;
 
-    k = ((t->f58 & 0x80) != 0) ? 0 : sb->f14->f1350;
-    w = gEffWork;
-    if (w->f4D86 & 0x8000) {
+    if (t->f58 & 0x80) {
+        k = 0;
+    } else {
+        k = sb->f14->f1350;
+    }
+    temp_v1 = *(s16 *)((u8 *)gEffWork + 0x4D86);
+    if (temp_v1 & 0x8000) {
         func_002152E0();
         return 1;
     }
-    if (k == 0 && (w->f4D86 & 0x2000)) {
+    if (k == 0 && (temp_v1 & 0x2000)) {
         func_002152E0();
-        w = gEffWork;
-        if (w->f4D84 == 0) {
-            w->f4D86 &= ~0x2000;
+        if (*(s16 *)((u8 *)gEffWork + 0x4D84) == 0) {
+            *(s16 *)((u8 *)gEffWork + 0x4D86) = (s16) (*(s16 *)((u8 *)gEffWork + 0x4D86) & ~0x2000);
         }
         return 1;
     }
-    if (k == 1 && (gEffWork->f4D86 & 0x1000)) {
+    if (k == 1 && (temp_v1 & 0x1000)) {
         func_002152E0();
-        w = gEffWork;
-        if (w->f4D84 == 0) {
-            w->f4D86 &= ~0x1000;
+        if (*(s16 *)((u8 *)gEffWork + 0x4D84) == 0) {
+            *(s16 *)((u8 *)gEffWork + 0x4D86) = (s16) (*(s16 *)((u8 *)gEffWork + 0x4D86) & ~0x1000);
         }
         return 1;
     }
     return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C5FC0);
 #if 0
 // differs: 17 of 57 with the adda.s/madd.s tail in inline asm (the asm acts as a scheduling barrier, the p[] loads move); the plain tail gave 11 of 57
 typedef struct Bin2C41C0 {
