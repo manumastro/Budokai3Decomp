@@ -29,6 +29,7 @@ file's first comment) to the instructions of this executable.
 | https://github.com/RexxColder/BT2-Recomp (src/cri/) | CC0-1.0 | LICENSES/BT2-Recomp-CC0.txt |
 | https://github.com/dev-camo/shadow-decomp (src/CRI/) | none stated by the repository (used at the maintainer's request; remove with `git grep -n shadow-decomp src`) | - |
 | https://github.com/reshaped/sonic-adventure (sdk/sofdec/, modules/movie/sdk/) | none stated by the repository (same) | - |
+| https://github.com/Raikaru/Persona4-Decompilation (src/cri/) | none stated by the repository (used at the maintainer request) (remove with `git grep -n Persona4-Decompilation src`) | - |
 
 newlib: each function taken from it carries its origin file's notice where that file has one. Files without a notice
 of their own are covered by newlib's COPYING.NEWLIB section for Cygnus/Red Hat code:
@@ -47,6 +48,6 @@ AGPL-3.0; the rest of the code keeps its own licence (MIT for the code written h
 combined with it as both licences' section 13 allows. No GPL-2.0-only code is used, since it cannot be
 combined with AGPL-3.0 code.
 
-Not used: sources with no licence (Persona4-Decompilation; pes6decomp, whose own code has no licence: its
-LICENSES/GPL-2.0.txt covers only its libgcc files; the other repositories without one) and GPL-2.0-only sources
-(crashwoc, ...).
+Sources with no licence were first left out; since 2026-11-19 they are used at the maintainer's request and are
+listed in the table above (each function names its origin, so `git grep -n <repository> src` finds them).
+GPL-2.0-only sources (crashwoc, ...) are still not used.

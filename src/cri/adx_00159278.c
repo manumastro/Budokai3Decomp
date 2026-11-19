@@ -333,7 +333,158 @@ void func_001595E0_x001595E0(ADXSJD_x001595E0 sjd) {
     sjd->trap_dt_len += dec_dt_len;
     ADXB_Reset_x001595E0(adxb);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_001597A8);
+typedef unsigned char Uint8_x001597A8;
+typedef signed char Sint8_x001597A8;
+typedef signed short Sint16_x001597A8;
+typedef signed int Sint32_x001597A8;
+typedef char Char8_x001597A8;
+typedef struct SJ_OBJ_x001597A8 *SJ_x001597A8;
+typedef struct {
+        Uint8_x001597A8 *data;
+        Sint32_x001597A8 len;
+} SJCK_x001597A8;
+typedef struct {
+        Uint8_x001597A8 data[16];
+} SJUUID_x001597A8;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x001597A8 sj);
+        const SJUUID_x001597A8 *(*GetUuid)(SJ_x001597A8 sj);
+        void (*Reset)(SJ_x001597A8 sj);
+        void (*GetChunk)(SJ_x001597A8 sj, Sint32_x001597A8 id, Sint32_x001597A8 nbyte, SJCK_x001597A8 *ck);
+        void (*UngetChunk)(SJ_x001597A8 sj, Sint32_x001597A8 id, SJCK_x001597A8 *ck);
+        void (*PutChunk)(SJ_x001597A8 sj, Sint32_x001597A8 id, SJCK_x001597A8 *ck);
+        Sint32_x001597A8 (*GetNumData)(SJ_x001597A8 sj, Sint32_x001597A8 id);
+        Sint32_x001597A8 (*IsGetChunk)(SJ_x001597A8 sj, Sint32_x001597A8 id, Sint32_x001597A8 nbyte, Sint32_x001597A8 *rbyte);
+        void (*EntryErrFunc)(SJ_x001597A8 sj, void (*func)(void *obj, Char8_x001597A8 *msg), void *obj);
+} SJ_IF_x001597A8;
+struct SJ_OBJ_x001597A8 {
+        SJ_IF_x001597A8 *vtbl;
+};
+typedef struct ADXPD_OBJ *ADXPD_x001597A8;
+typedef struct {
+        Sint16_x001597A8 used;
+        Sint16_x001597A8 x02;
+        Sint32_x001597A8 stat;
+        ADXPD_x001597A8 pd;
+        Sint8_x001597A8 x0c;
+        Sint8_x001597A8 bps;
+        Sint8_x001597A8 nch;
+        Sint8_x001597A8 x0f;
+        Sint32_x001597A8 fmt;
+        Sint32_x001597A8 sfreq;
+        Sint32_x001597A8 total_nsmpl;
+        Sint16_x001597A8 x1c;
+        Uint8_x001597A8 pad1e[2];
+        Sint32_x001597A8 x20;
+        Sint16_x001597A8 x24;
+        Sint16_x001597A8 x26;
+        Sint32_x001597A8 x28;
+        Sint32_x001597A8 x2c;
+        Sint32_x001597A8 x30;
+        Sint32_x001597A8 x34;
+        Sint32_x001597A8 x38;
+        Sint32_x001597A8 x3c;
+        Sint32_x001597A8 x40;
+        Sint32_x001597A8 x44;
+        Sint16_x001597A8 *inbuf;
+        Sint32_x001597A8 inbuf_nsmpl;
+        Sint32_x001597A8 out_nch;
+        Sint32_x001597A8 x54;
+        Sint32_x001597A8 out_fmt;
+        Sint16_x001597A8 *pcmbuf;
+        Sint32_x001597A8 pcmbuf_nsmpl;
+        Sint32_x001597A8 pcmbuf_chofst;
+        Sint32_x001597A8 wr_pos;
+        Sint32_x001597A8 wr_nsmpl;
+        Sint32_x001597A8 wr_x70;
+        Sint32_x001597A8 x74;
+        void (*getwr_func)(void *obj, Sint32_x001597A8 *pos, Sint32_x001597A8 *nsmpl, Sint32_x001597A8 *x70);
+        void *getwr_obj;
+        void (*addwr_func)(void *obj, Sint32_x001597A8 nbyte, Sint32_x001597A8 nsmpl);
+        void *addwr_obj;
+        Sint32_x001597A8 x88;
+        Sint32_x001597A8 x8c;
+        Sint32_x001597A8 dec_nsmpl;
+        Sint32_x001597A8 dec_nbyte;
+        Sint16_x001597A8 x98;
+        Sint16_x001597A8 x9a;
+        Sint16_x001597A8 x9c;
+        Uint8_x001597A8 pad9e[2];
+        Sint16_x001597A8 key[3];
+        Sint16_x001597A8 extprm[3];
+        Sint16_x001597A8 dly[2][2];
+        void *ahx;
+        Sint32_x001597A8 nsmpl;
+        Sint32_x001597A8 nsmpl96;
+        Uint8_x001597A8 padc0[0xCC - 0xC0];
+        Sint32_x001597A8 ainf_len;
+        Uint8_x001597A8 ainf[16];
+        Sint16_x001597A8 def_outvol;
+        Sint16_x001597A8 def_pan[2];
+        Uint8_x001597A8 padda[2];
+        void *xdc;
+        Uint8_x001597A8 pade0[8];
+        Sint32_x001597A8 cb_nbyte;
+        Sint32_x001597A8 xec;
+        void (*cb_func)(void *obj, Sint32_x001597A8 nbyte, Sint32_x001597A8 nsmpl);
+        void *cb_obj;
+} ADXB_OBJ_x001597A8;
+typedef ADXB_OBJ_x001597A8 *ADXB_x001597A8;
+typedef struct {
+        Sint8_x001597A8 used;
+        Sint8_x001597A8 stat;
+        Sint8_x001597A8 nch;
+        Sint8_x001597A8 spsd;
+        ADXB_x001597A8 adxb;
+        SJ_x001597A8 sji;
+        SJ_x001597A8 sjo[2];
+        SJCK_x001597A8 inck;
+        SJCK_x001597A8 outck[2];
+        Sint32_x001597A8 dec_nsmpl;
+        Sint32_x001597A8 dec_nbyte;
+        Sint32_x001597A8 decpos;
+        Sint32_x001597A8 maxdecsmpl;
+        Sint32_x001597A8 trap_nsmpl;
+        Sint32_x001597A8 trap_cnt;
+        Sint32_x001597A8 trap_dtlen;
+        void (*trapfn)(void *obj);
+        void *trapobj;
+        void (*outfn)(void *obj, Sint32_x001597A8 ch, Uint8_x001597A8 *data, Sint32_x001597A8 len);
+        void *outobj;
+        Uint8_x001597A8 spsdinf[0x40];
+        Sint32_x001597A8 hdrlen;
+        Sint32_x001597A8 lnksw;
+        Sint32_x001597A8 pad_nsmpl;
+        Sint32_x001597A8 skip_nsmpl;
+} ADXSJD_OBJ_x001597A8;
+typedef ADXSJD_OBJ_x001597A8 *ADXSJD_x001597A8;
+extern Sint32_x001597A8 ADXB_GetTotalNumSmpl_x001597A8(ADXB_x001597A8 adxb) __asm__("func_00150E10");
+extern Sint32_x001597A8 ADXB_GetDecNumSmpl_x001597A8(ADXB_x001597A8 adxb) __asm__("func_001511F0");
+extern Sint32_x001597A8 ADXB_GetDecDtLen_x001597A8(ADXB_x001597A8 adxb) __asm__("func_001511E8");
+extern void (*pl2setsfreqfunc_x001597A8)(ADXB_x001597A8 adxb, Sint32_x001597A8 sfreq) __asm__("pl2setsfreqfunc");
+void func_001597A8_x001597A8(ADXSJD_x001597A8 sjd) __asm__("func_001597A8");
+/* adxsjd_rawexec_end: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_sjd.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_001597A8_x001597A8(ADXSJD_x001597A8 sjd)
+{
+        ADXB_x001597A8 adxb;
+        Sint32_x001597A8 rem;
+        Sint32_x001597A8 nbyte;
+        Sint32_x001597A8 nsmpl;
+        adxb = sjd->adxb;
+        rem = ADXB_GetTotalNumSmpl_x001597A8(adxb);
+        nbyte = ADXB_GetDecDtLen_x001597A8(adxb);
+        nsmpl = ADXB_GetDecNumSmpl_x001597A8(adxb);
+        rem -= sjd->decpos;
+        if (nsmpl < rem) {
+                rem = nsmpl;
+        }
+        sjd->dec_nsmpl += rem;
+        sjd->dec_nbyte += nbyte;
+        sjd->decpos += rem;
+}
 void func_00159838(u8 *arg0) {
     s16 temp_a0;
     u8 *temp_s0;
@@ -1108,7 +1259,36 @@ INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A570);
 void func_0015A730(void) {
     memset(&D_0040F848, 0, 0xC0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A758);
+typedef signed char Sint8_x0015A758;
+typedef signed short Sint16_x0015A758;
+typedef signed int Sint32_x0015A758;
+typedef char Char8_x0015A758;
+typedef struct {
+        Sint8_x0015A758 used;
+        Sint8_x0015A758 x01;
+        Sint16_x0015A758 x02;
+        Sint16_x0015A758 c1;
+        Sint16_x0015A758 c2;
+        Sint16_x0015A758 h1;
+        Sint16_x0015A758 h2;
+} ADXSJE_IIRFLT_x0015A758;
+extern const Char8_x0015A758 *(*adxsje_build_fn_x0015A758)(void) __asm__("adxsje_build_fn");
+extern const Char8_x0015A758 *(*adxsje_version_fn_x0015A758)(void) __asm__("adxsje_version_fn");
+extern ADXSJE_IIRFLT_x0015A758 adxsje_iirflt_obj_x0015A758[16] __asm__("D_0040F848");
+ADXSJE_IIRFLT_x0015A758 *func_0015A758_x0015A758(void) __asm__("func_0015A758");
+/* adxsje_iirflt_create: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_sje.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+ADXSJE_IIRFLT_x0015A758 *func_0015A758_x0015A758(void)
+{
+        ADXSJE_IIRFLT_x0015A758 *iir;
+        Sint32_x0015A758 i;
+        for (i = 0; i < 16; i++) {
+                iir = &adxsje_iirflt_obj_x0015A758[i];
+                if (iir->used == 0) {
+                        break;
+                }
+        }
+        return (i < 16) ? iir : 0;
+}
 s32 memset_x0015A7B8() __asm__("memset");
 void func_0015A7B8_x0015A7B8(s8 *arg0) __asm__("func_0015A7B8");
 void func_0015A7B8_x0015A7B8(s8 *arg0) {
@@ -1241,12 +1421,333 @@ void func_0015BE38(void) {
     func_0015A100();
     memset(&D_0040E088, 0, 0x17C0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015BE68);
+typedef unsigned char Uint8_x0015BE68;
+typedef signed char Sint8_x0015BE68;
+typedef signed short Sint16_x0015BE68;
+typedef signed int Sint32_x0015BE68;
+typedef double Float64_x0015BE68;
+typedef char Char8_x0015BE68;
+typedef struct SJ_OBJ_x0015BE68 *SJ_x0015BE68;
+typedef struct {
+        Uint8_x0015BE68 *data;
+        Sint32_x0015BE68 len;
+} SJCK_x0015BE68;
+typedef struct {
+        Uint8_x0015BE68 data[16];
+} SJUUID_x0015BE68;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0015BE68 sj);
+        const SJUUID_x0015BE68 *(*GetUuid)(SJ_x0015BE68 sj);
+        void (*Reset)(SJ_x0015BE68 sj);
+        void (*GetChunk)(SJ_x0015BE68 sj, Sint32_x0015BE68 id, Sint32_x0015BE68 nbyte, SJCK_x0015BE68 *ck);
+        void (*UngetChunk)(SJ_x0015BE68 sj, Sint32_x0015BE68 id, SJCK_x0015BE68 *ck);
+        void (*PutChunk)(SJ_x0015BE68 sj, Sint32_x0015BE68 id, SJCK_x0015BE68 *ck);
+        Sint32_x0015BE68 (*GetNumData)(SJ_x0015BE68 sj, Sint32_x0015BE68 id);
+        Sint32_x0015BE68 (*IsGetChunk)(SJ_x0015BE68 sj, Sint32_x0015BE68 id, Sint32_x0015BE68 nbyte, Sint32_x0015BE68 *rbyte);
+        void (*EntryErrFunc)(SJ_x0015BE68 sj, void (*func)(void *obj, Char8_x0015BE68 *msg), void *obj);
+} SJ_IF_x0015BE68;
+struct SJ_OBJ_x0015BE68 {
+        SJ_IF_x0015BE68 *vtbl;
+};
+extern Sint32_x0015BE68 ADX_CalcHdrInfoLen_x0015BE68(Sint32_x0015BE68 loop, Sint32_x0015BE68 infolen, Sint32_x0015BE68 ofst, Sint32_x0015BE68 align) __asm__("func_00152FD0");
+typedef struct {
+        Sint8_x0015BE68 used;
+        Sint8_x0015BE68 x01;
+        Sint16_x0015BE68 x02;
+        Sint16_x0015BE68 c1;
+        Sint16_x0015BE68 c2;
+        Sint16_x0015BE68 h1;
+        Sint16_x0015BE68 h2;
+} ADXSJE_IIRFLT_x0015BE68;
+typedef struct {
+        Sint8_x0015BE68 used;
+        Sint8_x0015BE68 x01;
+        Sint16_x0015BE68 x02;
+        Sint16_x0015BE68 c1;
+        Sint16_x0015BE68 c2;
+        Sint16_x0015BE68 h1;
+        Sint16_x0015BE68 h2;
+        Sint32_x0015BE68 x0c;
+        Sint32_x0015BE68 x10;
+        Sint32_x0015BE68 nsmpl;
+        Sint16_x0015BE68 buf[32];
+        Sint8_x0015BE68 q[32];
+        Sint32_x0015BE68 maxabs;
+        Sint16_x0015BE68 scale;
+        Float64_x0015BE68 invscale;
+        ADXSJE_IIRFLT_x0015BE68 *iir;
+        Sint32_x0015BE68 x8c;
+} ADXSJE_PRDFLT_x0015BE68;
+typedef struct {
+        Sint8_x0015BE68 used;
+        Sint8_x0015BE68 stat;
+        Sint8_x0015BE68 nch;
+        Sint8_x0015BE68 stopflg;
+        SJ_x0015BE68 sji[2];
+        SJ_x0015BE68 sjo;
+        Sint32_x0015BE68 x10[6];
+        Sint32_x0015BE68 x28;
+        Sint32_x0015BE68 nbyte;
+        Sint32_x0015BE68 nsmpl;
+        Sint32_x0015BE68 x34;
+        Sint32_x0015BE68 x38;
+        Sint32_x0015BE68 total;
+        Sint32_x0015BE68 x40;
+        Sint32_x0015BE68 blksmpl;
+        Sint32_x0015BE68 hdrlen;
+        Sint32_x0015BE68 fmt;
+        Sint32_x0015BE68 blksz;
+        Sint32_x0015BE68 bps;
+        Sint32_x0015BE68 nch32;
+        Sint32_x0015BE68 sfreq;
+        Sint32_x0015BE68 x60;
+        Sint32_x0015BE68 cutoff;
+        Sint32_x0015BE68 x68;
+        Sint32_x0015BE68 nloop;
+        Sint32_x0015BE68 lptype;
+        Sint32_x0015BE68 lpstart;
+        Sint32_x0015BE68 lpstartbyte;
+        Sint32_x0015BE68 lpend;
+        ADXSJE_PRDFLT_x0015BE68 *prd[2];
+        Sint16_x0015BE68 hist1[2];
+        Sint16_x0015BE68 hist2[2];
+        Sint16_x0015BE68 pcm[2][32];
+        Sint16_x0015BE68 res[2][32];
+        Sint16_x0015BE68 scl[2][32];
+        Sint16_x0015BE68 deq[2][32];
+        Sint16_x0015BE68 scale[2];
+        Sint16_x0015BE68 pad294[2];
+        Float64_x0015BE68 invscale[2];
+        Uint8_x0015BE68 data[2][16];
+        Sint16_x0015BE68 first[2];
+        Sint16_x0015BE68 first2[2];
+        Sint16_x0015BE68 key;
+        Sint16_x0015BE68 keymul;
+        Sint16_x0015BE68 keyadd;
+        Sint8_x0015BE68 ainf_flg;
+        Uint8_x0015BE68 ainf_id[16];
+        Sint8_x0015BE68 pad2e7;
+        Sint16_x0015BE68 ainf_vol;
+        Sint16_x0015BE68 ainf_pan[2];
+        Sint8_x0015BE68 cinf_flg;
+        Sint8_x0015BE68 pad2ef;
+        void *cinf;
+        Sint32_x0015BE68 cinf_len;
+} ADXSJE_OBJ_x0015BE68;
+typedef ADXSJE_OBJ_x0015BE68 *ADXSJE_x0015BE68;
+extern const Char8_x0015BE68 *(*adxsje_build_fn_x0015BE68)(void) __asm__("adxsje_build_fn");
+extern const Char8_x0015BE68 *(*adxsje_version_fn_x0015BE68)(void) __asm__("adxsje_version_fn");
+extern void (*skg_err_func_x0015BE68)(void *obj, const Char8_x0015BE68 *msg) __asm__("skg_err_func");
+extern ADXSJE_OBJ_x0015BE68 adxsje_obj_x0015BE68[8] __asm__("D_0040E088");
+ADXSJE_PRDFLT_x0015BE68 *adxsje_prdflt_create_x0015BE68(Sint32_x0015BE68 nsmpl) __asm__("func_0015A8A0");
+ADXSJE_x0015BE68 func_0015BE68_x0015BE68(Sint32_x0015BE68 nch, SJ_x0015BE68 *sji, SJ_x0015BE68 sjo) __asm__("func_0015BE68");
+/* ADXSJE_Create: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_sje.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+ADXSJE_x0015BE68 func_0015BE68_x0015BE68(Sint32_x0015BE68 nch, SJ_x0015BE68 *sji, SJ_x0015BE68 sjo)
+{
+        ADXSJE_x0015BE68 sje;
+        Sint32_x0015BE68 i, j;
+        for (i = 0; i < 8; i++) {
+                if (adxsje_obj_x0015BE68[i].used == 0) {
+                        break;
+                }
+        }
+        if (i == 8) {
+                return 0;
+        }
+        sje = &adxsje_obj_x0015BE68[i];
+        sje->nch = nch;
+        for (j = 0; j < nch; j++) {
+                sje->sji[j] = sji[j];
+        }
+        sje->sjo = sjo;
+        sje->stat = 0;
+        sje->x28 = 0;
+        sje->nbyte = 0;
+        sje->nsmpl = 0;
+        sje->x34 = 0x7FFF0000;
+        sje->hdrlen = ADX_CalcHdrInfoLen_x0015BE68(0, 0, 4, 4);
+        sje->fmt = 3;
+        sje->nch32 = nch;
+        sje->sfreq = 44100;
+        sje->bps = 4;
+        sje->blksz = 18;
+        sje->blksmpl = (sje->blksz - 2) * 8 / sje->bps;
+        sje->x60 = 0x7FFF0000;
+        sje->cutoff = 500;
+        sje->x68 = 0;
+        sje->nloop = 0;
+        sje->lptype = 0;
+        sje->lpstart = 0;
+        sje->lpstartbyte = 0;
+        sje->lpend = 0;
+        sje->x38 = 0;
+        sje->total = 0;
+        sje->x40 = ((sje->x60 - 1) / sje->blksmpl + 1) * sje->blksmpl;
+        sje->prd[0] = adxsje_prdflt_create_x0015BE68(sje->blksmpl);
+        sje->prd[1] = adxsje_prdflt_create_x0015BE68(sje->blksmpl);
+        sje->first[0] = sje->first2[0] = 0;
+        sje->first[1] = sje->first2[1] = 0;
+        sje->ainf_flg = 0;
+        sje->ainf_vol = 0;
+        sje->ainf_pan[0] = -128;
+        sje->ainf_pan[1] = -128;
+        memset(sje->ainf_id, 0, 16);
+        sje->used = 1;
+        return sje;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C038);
 s8 func_0015C0A0(u8 *arg0) {
     return *(s8 *)((u8 *)arg0 + 1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C0A8);
+typedef unsigned char Uint8_x0015C0A8;
+typedef signed char Sint8_x0015C0A8;
+typedef signed short Sint16_x0015C0A8;
+typedef signed int Sint32_x0015C0A8;
+typedef double Float64_x0015C0A8;
+typedef char Char8_x0015C0A8;
+typedef struct SJ_OBJ_x0015C0A8 *SJ_x0015C0A8;
+typedef struct {
+        Uint8_x0015C0A8 *data;
+        Sint32_x0015C0A8 len;
+} SJCK_x0015C0A8;
+typedef struct {
+        Uint8_x0015C0A8 data[16];
+} SJUUID_x0015C0A8;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0015C0A8 sj);
+        const SJUUID_x0015C0A8 *(*GetUuid)(SJ_x0015C0A8 sj);
+        void (*Reset)(SJ_x0015C0A8 sj);
+        void (*GetChunk)(SJ_x0015C0A8 sj, Sint32_x0015C0A8 id, Sint32_x0015C0A8 nbyte, SJCK_x0015C0A8 *ck);
+        void (*UngetChunk)(SJ_x0015C0A8 sj, Sint32_x0015C0A8 id, SJCK_x0015C0A8 *ck);
+        void (*PutChunk)(SJ_x0015C0A8 sj, Sint32_x0015C0A8 id, SJCK_x0015C0A8 *ck);
+        Sint32_x0015C0A8 (*GetNumData)(SJ_x0015C0A8 sj, Sint32_x0015C0A8 id);
+        Sint32_x0015C0A8 (*IsGetChunk)(SJ_x0015C0A8 sj, Sint32_x0015C0A8 id, Sint32_x0015C0A8 nbyte, Sint32_x0015C0A8 *rbyte);
+        void (*EntryErrFunc)(SJ_x0015C0A8 sj, void (*func)(void *obj, Char8_x0015C0A8 *msg), void *obj);
+} SJ_IF_x0015C0A8;
+struct SJ_OBJ_x0015C0A8 {
+        SJ_IF_x0015C0A8 *vtbl;
+};
+typedef struct {
+        Sint8_x0015C0A8 used;
+        Sint8_x0015C0A8 x01;
+        Sint16_x0015C0A8 x02;
+        Sint16_x0015C0A8 c1;
+        Sint16_x0015C0A8 c2;
+        Sint16_x0015C0A8 h1;
+        Sint16_x0015C0A8 h2;
+} ADXSJE_IIRFLT_x0015C0A8;
+typedef struct {
+        Sint8_x0015C0A8 used;
+        Sint8_x0015C0A8 x01;
+        Sint16_x0015C0A8 x02;
+        Sint16_x0015C0A8 c1;
+        Sint16_x0015C0A8 c2;
+        Sint16_x0015C0A8 h1;
+        Sint16_x0015C0A8 h2;
+        Sint32_x0015C0A8 x0c;
+        Sint32_x0015C0A8 x10;
+        Sint32_x0015C0A8 nsmpl;
+        Sint16_x0015C0A8 buf[32];
+        Sint8_x0015C0A8 q[32];
+        Sint32_x0015C0A8 maxabs;
+        Sint16_x0015C0A8 scale;
+        Float64_x0015C0A8 invscale;
+        ADXSJE_IIRFLT_x0015C0A8 *iir;
+        Sint32_x0015C0A8 x8c;
+} ADXSJE_PRDFLT_x0015C0A8;
+typedef struct {
+        Sint8_x0015C0A8 used;
+        Sint8_x0015C0A8 stat;
+        Sint8_x0015C0A8 nch;
+        Sint8_x0015C0A8 stopflg;
+        SJ_x0015C0A8 sji[2];
+        SJ_x0015C0A8 sjo;
+        Sint32_x0015C0A8 x10[6];
+        Sint32_x0015C0A8 x28;
+        Sint32_x0015C0A8 nbyte;
+        Sint32_x0015C0A8 nsmpl;
+        Sint32_x0015C0A8 x34;
+        Sint32_x0015C0A8 x38;
+        Sint32_x0015C0A8 total;
+        Sint32_x0015C0A8 x40;
+        Sint32_x0015C0A8 blksmpl;
+        Sint32_x0015C0A8 hdrlen;
+        Sint32_x0015C0A8 fmt;
+        Sint32_x0015C0A8 blksz;
+        Sint32_x0015C0A8 bps;
+        Sint32_x0015C0A8 nch32;
+        Sint32_x0015C0A8 sfreq;
+        Sint32_x0015C0A8 x60;
+        Sint32_x0015C0A8 cutoff;
+        Sint32_x0015C0A8 x68;
+        Sint32_x0015C0A8 nloop;
+        Sint32_x0015C0A8 lptype;
+        Sint32_x0015C0A8 lpstart;
+        Sint32_x0015C0A8 lpstartbyte;
+        Sint32_x0015C0A8 lpend;
+        ADXSJE_PRDFLT_x0015C0A8 *prd[2];
+        Sint16_x0015C0A8 hist1[2];
+        Sint16_x0015C0A8 hist2[2];
+        Sint16_x0015C0A8 pcm[2][32];
+        Sint16_x0015C0A8 res[2][32];
+        Sint16_x0015C0A8 scl[2][32];
+        Sint16_x0015C0A8 deq[2][32];
+        Sint16_x0015C0A8 scale[2];
+        Sint16_x0015C0A8 pad294[2];
+        Float64_x0015C0A8 invscale[2];
+        Uint8_x0015C0A8 data[2][16];
+        Sint16_x0015C0A8 first[2];
+        Sint16_x0015C0A8 first2[2];
+        Sint16_x0015C0A8 key;
+        Sint16_x0015C0A8 keymul;
+        Sint16_x0015C0A8 keyadd;
+        Sint8_x0015C0A8 ainf_flg;
+        Uint8_x0015C0A8 ainf_id[16];
+        Sint8_x0015C0A8 pad2e7;
+        Sint16_x0015C0A8 ainf_vol;
+        Sint16_x0015C0A8 ainf_pan[2];
+        Sint8_x0015C0A8 cinf_flg;
+        Sint8_x0015C0A8 pad2ef;
+        void *cinf;
+        Sint32_x0015C0A8 cinf_len;
+} ADXSJE_OBJ_x0015C0A8;
+typedef ADXSJE_OBJ_x0015C0A8 *ADXSJE_x0015C0A8;
+extern const Char8_x0015C0A8 *(*adxsje_build_fn_x0015C0A8)(void) __asm__("adxsje_build_fn");
+extern const Char8_x0015C0A8 *(*adxsje_version_fn_x0015C0A8)(void) __asm__("adxsje_version_fn");
+extern void (*skg_err_func_x0015C0A8)(void *obj, const Char8_x0015C0A8 *msg) __asm__("skg_err_func");
+void func_0015C0A8_x0015C0A8(ADXSJE_x0015C0A8 sje) __asm__("func_0015C0A8");
+/* ADXSJE_Start: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_sje.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_0015C0A8_x0015C0A8(ADXSJE_x0015C0A8 sje)
+{
+        Sint32_x0015C0A8 ch;
+        Sint32_x0015C0A8 n;
+        SJCK_x0015C0A8 ck;
+        for (ch = 0; ch < sje->nch32; ch++) {
+                n = sje->x68 << 1;
+                if (n <= 0) {
+                        continue;
+                }
+                (*(sje->sji[ch])->vtbl->GetChunk)(sje->sji[ch], 0, n, &ck);
+                if (ck.len != n) {
+                        (*(sje->sji[ch])->vtbl->UngetChunk)(sje->sji[ch], 0, &ck);
+                        for (;;) {
+                        }
+                }
+                memset(ck.data, 0, ck.len);
+                (*(sje->sji[ch])->vtbl->PutChunk)(sje->sji[ch], 1, &ck);
+        }
+        sje->x28 = 0;
+        sje->nbyte = 0;
+        sje->nsmpl = 0;
+        sje->stopflg = 0;
+        sje->stat = 1;
+}
 void func_0015C1D0(u8 *arg0) {
     *(s8 *)((u8 *)arg0 + 3) = 1;
 }
@@ -8082,8 +8583,253 @@ void func_0015E408_x0015E408(ADXT_x0015E408 adxt, SJ_x0015E408 sj) {
         ADXAMP_Start_x0015E408(adxt->amp);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015E4F8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", ADXT_StartSj);
+typedef unsigned char Uint8_x0015E4F8;
+typedef signed char Sint8_x0015E4F8;
+typedef signed short Sint16_x0015E4F8;
+typedef unsigned int Uint32_x0015E4F8;
+typedef signed int Sint32_x0015E4F8;
+typedef char Char8_x0015E4F8;
+typedef struct SJ_OBJ_x0015E4F8 *SJ_x0015E4F8;
+typedef struct {
+        Uint8_x0015E4F8 *data;
+        Sint32_x0015E4F8 len;
+} SJCK_x0015E4F8;
+typedef struct {
+        Uint8_x0015E4F8 data[16];
+} SJUUID_x0015E4F8;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0015E4F8 sj);
+        const SJUUID_x0015E4F8 *(*GetUuid)(SJ_x0015E4F8 sj);
+        void (*Reset)(SJ_x0015E4F8 sj);
+        void (*GetChunk)(SJ_x0015E4F8 sj, Sint32_x0015E4F8 id, Sint32_x0015E4F8 nbyte, SJCK_x0015E4F8 *ck);
+        void (*UngetChunk)(SJ_x0015E4F8 sj, Sint32_x0015E4F8 id, SJCK_x0015E4F8 *ck);
+        void (*PutChunk)(SJ_x0015E4F8 sj, Sint32_x0015E4F8 id, SJCK_x0015E4F8 *ck);
+        Sint32_x0015E4F8 (*GetNumData)(SJ_x0015E4F8 sj, Sint32_x0015E4F8 id);
+        Sint32_x0015E4F8 (*IsGetChunk)(SJ_x0015E4F8 sj, Sint32_x0015E4F8 id, Sint32_x0015E4F8 nbyte, Sint32_x0015E4F8 *rbyte);
+        void (*EntryErrFunc)(SJ_x0015E4F8 sj, void (*func)(void *obj, Char8_x0015E4F8 *msg), void *obj);
+} SJ_IF_x0015E4F8;
+struct SJ_OBJ_x0015E4F8 {
+        SJ_IF_x0015E4F8 *vtbl;
+};
+typedef struct {
+        Sint8_x0015E4F8 used;
+        Sint8_x0015E4F8 stat;
+        Sint8_x0015E4F8 mode;
+        Sint8_x0015E4F8 maxnch;
+        void *sjd;
+        void *stm;
+        void *rna;
+        SJ_x0015E4F8 sjf;
+        SJ_x0015E4F8 sji;
+        SJ_x0015E4F8 sjo[2];
+        Uint8_x0015E4F8 *ibuf;
+        Sint32_x0015E4F8 ibufsize;
+        Sint32_x0015E4F8 ibufxsize;
+        Uint8_x0015E4F8 *obuf;
+        Sint32_x0015E4F8 obufsize;
+        Sint32_x0015E4F8 obufstride;
+        Sint32_x0015E4F8 svrfreq;
+        Sint16_x0015E4F8 ibuf_nsct;
+        Sint16_x0015E4F8 reload_nsct;
+        Sint16_x0015E4F8 outvol;
+        Sint16_x0015E4F8 outpan[2];
+        Sint16_x0015E4F8 outbal;
+        Sint32_x0015E4F8 maxdecsmpl;
+        Sint32_x0015E4F8 lpcnt;
+        Sint32_x0015E4F8 lpendmod;
+        Sint32_x0015E4F8 x54;
+        Sint32_x0015E4F8 x58;
+        Sint32_x0015E4F8 x5c;
+        Sint16_x0015E4F8 errcode;
+        Sint16_x0015E4F8 x62;
+        Sint32_x0015E4F8 x64;
+        Sint16_x0015E4F8 x68;
+        Sint16_x0015E4F8 x6a;
+        Sint8_x0015E4F8 lpsw;
+        Sint8_x0015E4F8 autorcvr;
+        Sint8_x0015E4F8 x6e;
+        Sint8_x0015E4F8 x6f;
+        Sint8_x0015E4F8 pausesw;
+        Sint8_x0015E4F8 x71;
+        Sint8_x0015E4F8 x72;
+        Sint8_x0015E4F8 x73;
+        void *amp;
+        SJ_x0015E4F8 sjx[2];
+        SJ_x0015E4F8 sjy[2];
+        Sint32_x0015E4F8 timeofst;
+        Sint32_x0015E4F8 lpendsct;
+        Sint32_x0015E4F8 trapnsmpl;
+        void *lsc;
+        Sint8_x0015E4F8 lnksw;
+        Uint8_x0015E4F8 pad99[0x9C - 0x99];
+        Uint32_x0015E4F8 x9c;
+        Sint32_x0015E4F8 startvsync;
+        Sint32_x0015E4F8 decsmpl;
+        Sint32_x0015E4F8 flush_nsmpl;
+        Sint8_x0015E4F8 stmstart;
+        Sint8_x0015E4F8 ainf_sw;
+        Sint16_x0015E4F8 rsv4;
+        Uint8_x0015E4F8 *wkend;
+        void *stm_fname;
+        void *stm_dir;
+        Sint32_x0015E4F8 stm_ofst;
+        Sint32_x0015E4F8 stm_nsct;
+        Uint8_x0015E4F8 padC4[0xC8 - 0xC4];
+} ADXT_OBJ_x0015E4F8;
+typedef ADXT_OBJ_x0015E4F8 *ADXT_x0015E4F8;
+typedef struct ADXSTM_OBJ *ADXSTM_x0015E4F8;
+Sint32_x0015E4F8 ADXSTM_SetBufSize_x0015E4F8(ADXSTM_x0015E4F8 stm, Sint32_x0015E4F8 min_nsct, Sint32_x0015E4F8 max_nsct) __asm__("func_0015D4A8");
+void ADXSTM_SetEos_x0015E4F8(ADXSTM_x0015E4F8 stm, Sint32_x0015E4F8 nsct) __asm__("func_0015CE98");
+void ADXSTM_StopNw_x0015E4F8(ADXSTM_x0015E4F8 stm) __asm__("func_0015CDD0");
+Sint32_x0015E4F8 ADXSTM_Start_x0015E4F8(ADXSTM_x0015E4F8 stm) __asm__("func_0015CD48");
+Sint32_x0015E4F8 ADXSTM_Seek_x0015E4F8(ADXSTM_x0015E4F8 stm, Sint32_x0015E4F8 pos) __asm__("func_0015CCD8");
+void ADXSTM_ReleaseFileNw_x0015E4F8(ADXSTM_x0015E4F8 stm) __asm__("func_0015CC38");
+void ADXSTM_BindFileNw_x0015E4F8(ADXSTM_x0015E4F8 stm, const Char8_x0015E4F8 *fname, void *dir, Sint32_x0015E4F8 ofst, Sint32_x0015E4F8 nsct) __asm__("func_0015CB88");
+extern void ADXSTM_EntryEosFunc_x0015E4F8(ADXSTM_x0015E4F8 stm, void (*fn)(ADXT_x0015E4F8 adxt), void *obj) __asm__("func_0015CE88");
+extern void (*pl2detachfunc_x0015E4F8)(ADXT_x0015E4F8 adxt) __asm__("pl2detachfunc");
+extern void (*ahxdetachfunc_x0015E4F8)(ADXT_x0015E4F8 adxt) __asm__("ahxdetachfunc");
+extern Sint32_x0015E4F8 adxstm_seteos_sct_x0015E4F8 __asm__("D_00411158");
+void adxt_start_sjd_x0015E4F8(ADXT_x0015E4F8 adxt, SJ_x0015E4F8 sj) __asm__("func_0015E408");
+void func_0015E4F8_x0015E4F8(ADXT_x0015E4F8 adxt, void *fname, void *dir, Sint32_x0015E4F8 ofst, Sint32_x0015E4F8 nsct) __asm__("func_0015E4F8");
+/* adxt_start_stm: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_tlk.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_0015E4F8_x0015E4F8(ADXT_x0015E4F8 adxt, void *fname, void *dir, Sint32_x0015E4F8 ofst, Sint32_x0015E4F8 nsct)
+{
+        ADXSTM_SetBufSize_x0015E4F8(adxt->stm, adxt->reload_nsct << 11, adxt->ibuf_nsct << 11);
+        ADXSTM_SetEos_x0015E4F8(adxt->stm, adxstm_seteos_sct_x0015E4F8);
+        ADXSTM_EntryEosFunc_x0015E4F8(adxt->stm, 0, 0);
+        ADXSTM_Seek_x0015E4F8(adxt->stm, 0);
+        ADXSTM_StopNw_x0015E4F8(adxt->stm);
+        ADXSTM_ReleaseFileNw_x0015E4F8(adxt->stm);
+        ADXSTM_BindFileNw_x0015E4F8(adxt->stm, fname, dir, ofst, nsct);
+        ADXSTM_Start_x0015E4F8(adxt->stm);
+        adxt_start_sjd_x0015E4F8(adxt, adxt->sjf);
+}
+typedef unsigned char Uint8_x0015E5C8;
+typedef signed char Sint8_x0015E5C8;
+typedef signed short Sint16_x0015E5C8;
+typedef unsigned int Uint32_x0015E5C8;
+typedef signed int Sint32_x0015E5C8;
+typedef char Char8_x0015E5C8;
+typedef struct SJ_OBJ_x0015E5C8 *SJ_x0015E5C8;
+typedef struct {
+        Uint8_x0015E5C8 *data;
+        Sint32_x0015E5C8 len;
+} SJCK_x0015E5C8;
+typedef struct {
+        Uint8_x0015E5C8 data[16];
+} SJUUID_x0015E5C8;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0015E5C8 sj);
+        const SJUUID_x0015E5C8 *(*GetUuid)(SJ_x0015E5C8 sj);
+        void (*Reset)(SJ_x0015E5C8 sj);
+        void (*GetChunk)(SJ_x0015E5C8 sj, Sint32_x0015E5C8 id, Sint32_x0015E5C8 nbyte, SJCK_x0015E5C8 *ck);
+        void (*UngetChunk)(SJ_x0015E5C8 sj, Sint32_x0015E5C8 id, SJCK_x0015E5C8 *ck);
+        void (*PutChunk)(SJ_x0015E5C8 sj, Sint32_x0015E5C8 id, SJCK_x0015E5C8 *ck);
+        Sint32_x0015E5C8 (*GetNumData)(SJ_x0015E5C8 sj, Sint32_x0015E5C8 id);
+        Sint32_x0015E5C8 (*IsGetChunk)(SJ_x0015E5C8 sj, Sint32_x0015E5C8 id, Sint32_x0015E5C8 nbyte, Sint32_x0015E5C8 *rbyte);
+        void (*EntryErrFunc)(SJ_x0015E5C8 sj, void (*func)(void *obj, Char8_x0015E5C8 *msg), void *obj);
+} SJ_IF_x0015E5C8;
+struct SJ_OBJ_x0015E5C8 {
+        SJ_IF_x0015E5C8 *vtbl;
+};
+typedef struct {
+        Sint8_x0015E5C8 used;
+        Sint8_x0015E5C8 stat;
+        Sint8_x0015E5C8 mode;
+        Sint8_x0015E5C8 maxnch;
+        void *sjd;
+        void *stm;
+        void *rna;
+        SJ_x0015E5C8 sjf;
+        SJ_x0015E5C8 sji;
+        SJ_x0015E5C8 sjo[2];
+        Uint8_x0015E5C8 *ibuf;
+        Sint32_x0015E5C8 ibufsize;
+        Sint32_x0015E5C8 ibufxsize;
+        Uint8_x0015E5C8 *obuf;
+        Sint32_x0015E5C8 obufsize;
+        Sint32_x0015E5C8 obufstride;
+        Sint32_x0015E5C8 svrfreq;
+        Sint16_x0015E5C8 ibuf_nsct;
+        Sint16_x0015E5C8 reload_nsct;
+        Sint16_x0015E5C8 outvol;
+        Sint16_x0015E5C8 outpan[2];
+        Sint16_x0015E5C8 outbal;
+        Sint32_x0015E5C8 maxdecsmpl;
+        Sint32_x0015E5C8 lpcnt;
+        Sint32_x0015E5C8 lpendmod;
+        Sint32_x0015E5C8 x54;
+        Sint32_x0015E5C8 x58;
+        Sint32_x0015E5C8 x5c;
+        Sint16_x0015E5C8 errcode;
+        Sint16_x0015E5C8 x62;
+        Sint32_x0015E5C8 x64;
+        Sint16_x0015E5C8 x68;
+        Sint16_x0015E5C8 x6a;
+        Sint8_x0015E5C8 lpsw;
+        Sint8_x0015E5C8 autorcvr;
+        Sint8_x0015E5C8 x6e;
+        Sint8_x0015E5C8 x6f;
+        Sint8_x0015E5C8 pausesw;
+        Sint8_x0015E5C8 x71;
+        Sint8_x0015E5C8 x72;
+        Sint8_x0015E5C8 x73;
+        void *amp;
+        SJ_x0015E5C8 sjx[2];
+        SJ_x0015E5C8 sjy[2];
+        Sint32_x0015E5C8 timeofst;
+        Sint32_x0015E5C8 lpendsct;
+        Sint32_x0015E5C8 trapnsmpl;
+        void *lsc;
+        Sint8_x0015E5C8 lnksw;
+        Uint8_x0015E5C8 pad99[0x9C - 0x99];
+        Uint32_x0015E5C8 x9c;
+        Sint32_x0015E5C8 startvsync;
+        Sint32_x0015E5C8 decsmpl;
+        Sint32_x0015E5C8 flush_nsmpl;
+        Sint8_x0015E5C8 stmstart;
+        Sint8_x0015E5C8 ainf_sw;
+        Sint16_x0015E5C8 rsv4;
+        Uint8_x0015E5C8 *wkend;
+        void *stm_fname;
+        void *stm_dir;
+        Sint32_x0015E5C8 stm_ofst;
+        Sint32_x0015E5C8 stm_nsct;
+        Uint8_x0015E5C8 padC4[0xC8 - 0xC4];
+} ADXT_OBJ_x0015E5C8;
+typedef ADXT_OBJ_x0015E5C8 *ADXT_x0015E5C8;
+extern void ADXERR_CallErrFunc1_x0015E5C8(Char8_x0015E5C8 *msg) __asm__("ADXERR_CallErrFunc1");
+extern void ADXCRS_Lock_x0015E5C8(void) __asm__("func_00152508");
+extern void ADXCRS_Unlock_x0015E5C8(void) __asm__("func_00152520");
+extern void (*pl2detachfunc_x0015E5C8)(ADXT_x0015E5C8 adxt) __asm__("pl2detachfunc");
+extern void (*ahxdetachfunc_x0015E5C8)(ADXT_x0015E5C8 adxt) __asm__("ahxdetachfunc");
+void ADXT_SetLnkSw_x0015E5C8(ADXT_x0015E5C8 adxt, Sint32_x0015E5C8 sw) __asm__("func_0015FB70");
+void ADXT_Stop_x0015E5C8(ADXT_x0015E5C8 adxt) __asm__("ADXT_Stop");
+void adxt_start_sjd_x0015E5C8(ADXT_x0015E5C8 adxt, SJ_x0015E5C8 sj) __asm__("func_0015E408");
+void ADXT_Stop_x0015E5C8(ADXT_x0015E5C8 adxt) __asm__("ADXT_Stop");
+void ADXT_SetLnkSw_x0015E5C8(ADXT_x0015E5C8 adxt, Sint32_x0015E5C8 sw) __asm__("func_0015FB70");
+extern char ext_str0_x0015E5C8[] __asm__("D_004618E8");
+void ADXT_StartSj_x0015E5C8(ADXT_x0015E5C8 adxt, SJ_x0015E5C8 sj) __asm__("ADXT_StartSj");
+/* ADXT_StartSj_x0015E5C8: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_tlk.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void ADXT_StartSj_x0015E5C8(ADXT_x0015E5C8 adxt, SJ_x0015E5C8 sj)
+{
+        if (adxt == 0 || sj == 0) {
+                ADXERR_CallErrFunc1_x0015E5C8(ext_str0_x0015E5C8);
+                return;
+        }
+        ADXT_Stop_x0015E5C8(adxt);
+        ADXCRS_Lock_x0015E5C8();
+        adxt_start_sjd_x0015E5C8(adxt, sj);
+        adxt->mode = 3;
+        ADXT_SetLnkSw_x0015E5C8(adxt, 1);
+        ADXCRS_Unlock_x0015E5C8();
+}
 typedef int s32_x0015E650;
 typedef s32_x0015E650 ptrdiff_t_x0015E650;
 typedef unsigned char Uint8_x0015E650;

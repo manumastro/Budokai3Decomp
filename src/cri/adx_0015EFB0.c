@@ -748,7 +748,131 @@ void func_0015FA40(void) {
 void func_0015FA48(void) {
     func_001540F8();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", func_0015FA60);
+typedef unsigned char Uint8_x0015FA60;
+typedef signed char Sint8_x0015FA60;
+typedef signed short Sint16_x0015FA60;
+typedef unsigned int Uint32_x0015FA60;
+typedef signed int Sint32_x0015FA60;
+typedef float Float32_x0015FA60;
+typedef char Char8_x0015FA60;
+typedef struct SJ_OBJ_x0015FA60 *SJ_x0015FA60;
+typedef struct {
+        Uint8_x0015FA60 *data;
+        Sint32_x0015FA60 len;
+} SJCK_x0015FA60;
+typedef struct {
+        Uint8_x0015FA60 data[16];
+} SJUUID_x0015FA60;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0015FA60 sj);
+        const SJUUID_x0015FA60 *(*GetUuid)(SJ_x0015FA60 sj);
+        void (*Reset)(SJ_x0015FA60 sj);
+        void (*GetChunk)(SJ_x0015FA60 sj, Sint32_x0015FA60 id, Sint32_x0015FA60 nbyte, SJCK_x0015FA60 *ck);
+        void (*UngetChunk)(SJ_x0015FA60 sj, Sint32_x0015FA60 id, SJCK_x0015FA60 *ck);
+        void (*PutChunk)(SJ_x0015FA60 sj, Sint32_x0015FA60 id, SJCK_x0015FA60 *ck);
+        Sint32_x0015FA60 (*GetNumData)(SJ_x0015FA60 sj, Sint32_x0015FA60 id);
+        Sint32_x0015FA60 (*IsGetChunk)(SJ_x0015FA60 sj, Sint32_x0015FA60 id, Sint32_x0015FA60 nbyte, Sint32_x0015FA60 *rbyte);
+        void (*EntryErrFunc)(SJ_x0015FA60 sj, void (*func)(void *obj, Char8_x0015FA60 *msg), void *obj);
+} SJ_IF_x0015FA60;
+struct SJ_OBJ_x0015FA60 {
+        SJ_IF_x0015FA60 *vtbl;
+};
+typedef struct {
+        Sint8_x0015FA60 used;
+        Sint8_x0015FA60 stat;
+        Sint8_x0015FA60 mode;
+        Sint8_x0015FA60 maxnch;
+        void *sjd;
+        void *stm;
+        void *rna;
+        SJ_x0015FA60 sjf;
+        SJ_x0015FA60 sji;
+        SJ_x0015FA60 sjo[2];
+        Uint8_x0015FA60 *ibuf;
+        Sint32_x0015FA60 ibufsize;
+        Sint32_x0015FA60 ibufxsize;
+        Uint8_x0015FA60 *obuf;
+        Sint32_x0015FA60 obufsize;
+        Sint32_x0015FA60 obufstride;
+        Sint32_x0015FA60 svrfreq;
+        Sint16_x0015FA60 ibuf_nsct;
+        Sint16_x0015FA60 reload_nsct;
+        Sint16_x0015FA60 outvol;
+        Sint16_x0015FA60 outpan[2];
+        Sint16_x0015FA60 outbal;
+        Sint32_x0015FA60 maxdecsmpl;
+        Sint32_x0015FA60 lpcnt;
+        Sint32_x0015FA60 lpendmod;
+        Sint32_x0015FA60 x54;
+        Sint32_x0015FA60 x58;
+        Sint32_x0015FA60 x5c;
+        Sint16_x0015FA60 errcode;
+        Sint16_x0015FA60 x62;
+        Sint32_x0015FA60 x64;
+        Sint16_x0015FA60 x68;
+        Sint16_x0015FA60 x6a;
+        Sint8_x0015FA60 lpsw;
+        Sint8_x0015FA60 autorcvr;
+        Sint8_x0015FA60 x6e;
+        Sint8_x0015FA60 x6f;
+        Sint8_x0015FA60 pausesw;
+        Sint8_x0015FA60 x71;
+        Sint8_x0015FA60 x72;
+        Sint8_x0015FA60 x73;
+        void *amp;
+        SJ_x0015FA60 sjx[2];
+        SJ_x0015FA60 sjy[2];
+        Sint32_x0015FA60 timeofst;
+        Sint32_x0015FA60 lpendsct;
+        Sint32_x0015FA60 trapnsmpl;
+        void *lsc;
+        Sint8_x0015FA60 lnksw;
+        Uint8_x0015FA60 pad99[0x9C - 0x99];
+        Uint32_x0015FA60 x9c;
+        Sint32_x0015FA60 startvsync;
+        Sint32_x0015FA60 decsmpl;
+        Sint32_x0015FA60 flush_nsmpl;
+        Sint8_x0015FA60 stmstart;
+        Sint8_x0015FA60 ainf_sw;
+        Sint16_x0015FA60 rsv4;
+        Uint8_x0015FA60 *wkend;
+        void *stm_fname;
+        void *stm_dir;
+        Sint32_x0015FA60 stm_ofst;
+        Sint32_x0015FA60 stm_nsct;
+        Uint8_x0015FA60 padC4[0xC8 - 0xC4];
+} ADXT_OBJ_x0015FA60;
+typedef ADXT_OBJ_x0015FA60 *ADXT_x0015FA60;
+extern Sint32_x0015FA60 adxt_vsync_cnt_x0015FA60 __asm__("D_00404C14");
+extern Sint32_x0015FA60 func_004cd8f0_x0015FA60(void *rna, Sint32_x0015FA60 nsmpl) __asm__("func_00158A68");
+extern void func_004d5b30_x0015FA60(void) __asm__("func_0015F5F0");
+extern void adxt_GetTime_x0015FA60(ADXT_x0015FA60 adxt, Sint32_x0015FA60 *ncount, Sint32_x0015FA60 *tscale) __asm__("ADXT_GetTime");
+extern Sint32_x0015FA60 adxt_time_mode_x0015FA60 __asm__("D_0041115C");
+extern Sint32_x0015FA60 adxt_time_unit_x0015FA60 __asm__("D_004111A8");
+Sint32_x0015FA60 func_0015FA60_x0015FA60(ADXT_x0015FA60 adxt, Sint32_x0015FA60 nsmpl) __asm__("func_0015FA60");
+/* func_004d63e8: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_tlk_6388.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0015FA60 func_0015FA60_x0015FA60(ADXT_x0015FA60 adxt, Sint32_x0015FA60 nsmpl)
+{
+        Sint32_x0015FA60 n;
+        Sint32_x0015FA60 mode;
+        Sint32_x0015FA60 ncount;
+        Sint32_x0015FA60 tscale;
+        if (adxt->x72 == 0) {
+                return 0;
+        }
+        n = func_004cd8f0_x0015FA60(adxt->rna, nsmpl);
+        func_004d5b30_x0015FA60();
+        mode = adxt_time_mode_x0015FA60;
+        adxt_time_mode_x0015FA60 = 0;
+        adxt_GetTime_x0015FA60(adxt, &ncount, &tscale);
+        adxt_time_mode_x0015FA60 = mode;
+        adxt->x9c = (Uint32_x0015FA60)(((Float32_x0015FA60)ncount / (Float32_x0015FA60)tscale) * (Float32_x0015FA60)adxt_time_unit_x0015FA60);
+        adxt->startvsync = adxt_vsync_cnt_x0015FA60;
+        return n;
+}
 s32 func_0015FB48(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x88);
 }
@@ -780,7 +904,37 @@ s32 ADXT_GetDecNumSmpl(u8 *arg0) {
     }
     return func_00159C78(*(s32 *)((u8 *)arg0 + 4));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", func_0015FC00);
+typedef unsigned char Uint8_x0015FC00;
+typedef signed char Sint8_x0015FC00;
+typedef unsigned short Uint16_x0015FC00;
+typedef signed short Sint16_x0015FC00;
+typedef signed int Sint32_x0015FC00;
+typedef Sint32_x0015FC00 Bool_x0015FC00;
+extern Sint32_x0015FC00 ADX_DecodeInfo_x0015FC00(Uint8_x0015FC00 *data, Sint32_x0015FC00 len, Sint16_x0015FC00 *hdrlen, Sint8_x0015FC00 *fmt, Sint8_x0015FC00 *bps, Sint8_x0015FC00 *blksiz, Sint8_x0015FC00 *nch, Sint32_x0015FC00 *sfreq, Sint32_x0015FC00 *nsmpl, Sint32_x0015FC00 *blksmpl) __asm__("func_001527C0");
+Bool_x0015FC00 func_0015FC00_x0015FC00(Uint8_x0015FC00 *data, Sint32_x0015FC00 size, Sint32_x0015FC00 *hdrsiz) __asm__("func_0015FC00");
+/* ADXT_IsHeader: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_tlk.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Bool_x0015FC00 func_0015FC00_x0015FC00(Uint8_x0015FC00 *data, Sint32_x0015FC00 size, Sint32_x0015FC00 *hdrsiz)
+{
+        Sint16_x0015FC00 hdrlen;
+        Sint8_x0015FC00 fmt;
+        Sint8_x0015FC00 bps;
+        Sint8_x0015FC00 blksiz;
+        Sint8_x0015FC00 nch;
+        Sint32_x0015FC00 sfreq;
+        Sint32_x0015FC00 nsmpl;
+        Sint32_x0015FC00 blksmpl;
+        if (size < 2) {
+                return 0;
+        }
+        if (((Uint16_x0015FC00)(((*(Uint16_x0015FC00 *)(data)) >> 8) | ((*(Uint16_x0015FC00 *)(data)) << 8))) != 0x8000) {
+                return 0;
+        }
+        if (ADX_DecodeInfo_x0015FC00(data, size, &hdrlen, &fmt, &bps, &blksiz, &nch, &sfreq, &nsmpl, &blksmpl) < 0) {
+                return 0;
+        }
+        *hdrsiz = hdrlen;
+        return 1;
+}
 typedef unsigned short Uint16_x0015FC98;
 typedef signed char Sint8_x0015FC98;
 typedef signed int Sint32_x0015FC98;

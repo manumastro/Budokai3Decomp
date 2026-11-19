@@ -1387,7 +1387,19 @@ end:
     head->count = j;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C460);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C730);
+typedef signed int Sint32_x0016C730;
+extern Sint32_x0016C730 D_0073A748_x0016C730 __asm__("D_0041A0D8");
+extern Sint32_x0016C730 D_0073A740_x0016C730 __asm__("D_0041A0D0");
+extern Sint32_x0016C730 func_004e58a0_x0016C730() __asm__("func_00165FB8");
+void func_0016C730_x0016C730(void *arg0) __asm__("func_0016C730");
+/* func_004ebed0: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/ps2_rna_bed0.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_0016C730_x0016C730(void *arg0)
+{
+    if (D_0073A748_x0016C730 != 1 || D_0073A740_x0016C730 > 0) {
+        void *tmp = arg0;
+        func_004e58a0_x0016C730(0xb, &tmp, 1, 0, 0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C788);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C7E8);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C838);
@@ -1477,7 +1489,19 @@ void func_0016D000(s32 arg0) {
         D_0041A104 = arg0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D030);
+typedef signed int Sint32_x0016D030;
+extern Sint32_x0016D030 D_0073A740_x0016D030 __asm__("D_0041A0D0");
+extern Sint32_x0016D030 D_0073A748_x0016D030 __asm__("D_0041A0D8");
+extern void *D_0073A774_x0016D030 __asm__("D_0041A104");
+void *func_0016D030_x0016D030(void) __asm__("func_0016D030");
+/* func_004eca10: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/ps2_rna_buffer_c9e0.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void *func_0016D030_x0016D030(void)
+{
+        if (D_0073A748_x0016D030 == 1 && D_0073A740_x0016D030 <= 0) {
+                return 0;
+        }
+        return D_0073A774_x0016D030;
+}
 extern s32 D_0041A0D0_x0016D068 __asm__("D_0041A0D0");
 extern s32 D_0041A0D8_x0016D068 __asm__("D_0041A0D8");
 void func_0016D068_x0016D068(u8 *arg0, unsigned int arg1) __asm__("func_0016D068");

@@ -159,7 +159,18 @@ s32 func_00187E78(void) {
 s32 func_00187E80(void) {
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00187E88);
+typedef signed int Sint32_x00187E88;
+typedef struct ADXSTM_OBJ *ADXSTM_x00187E88;
+extern Sint32_x00187E88 func_004d2c98_x00187E88(ADXSTM_x00187E88 stm, Sint32_x00187E88 nsct) __asm__("func_0015D4B8");
+Sint32_x00187E88 func_00187E88_x00187E88(ADXSTM_x00187E88 stm, Sint32_x00187E88 nsct) __asm__("func_00187E88");
+/* func_00511f98: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwstm_11f98.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00187E88 func_00187E88_x00187E88(ADXSTM_x00187E88 stm, Sint32_x00187E88 nsct)
+{
+        if (stm == 0)
+                return 0;
+        func_004d2c98_x00187E88(stm, nsct);
+        return 0;
+}
 s32 func_00187EB0(void) {
     return 0;
 }
@@ -237,7 +248,20 @@ void func_00188028_x00188028(s32 a0) {
 void func_00188040(void) {
     func_0015CB30();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188058);
+typedef signed int Sint32_x00188058;
+typedef char Char8_x00188058;
+typedef struct ADXSTM_OBJ *ADXSTM_x00188058;
+extern void func_004d1f00_x00188058(ADXSTM_x00188058 stm) __asm__("func_0015CC38");
+extern void func_004d1d70_x00188058(ADXSTM_x00188058 stm, const Char8_x00188058 *fname, void *dir, Sint32_x00188058 ofst, Sint32_x00188058 nsct) __asm__("func_0015CB88");
+extern void func_004d23a8_x00188058(ADXSTM_x00188058 stm, Sint32_x00188058 nsct) __asm__("func_0015CE98");
+void func_00188058_x00188058(ADXSTM_x00188058 stm, const Char8_x00188058 *fname) __asm__("func_00188058");
+/* func_00512168: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwstm_12150.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_00188058_x00188058(ADXSTM_x00188058 stm, const Char8_x00188058 *fname)
+{
+        func_004d1f00_x00188058(stm);
+        func_004d1d70_x00188058(stm, fname, 0, 0, 0xFFFFF);
+        func_004d23a8_x00188058(stm, 0xFFFFF);
+}
 typedef unsigned int u32_x001880B0;
 extern u32_x001880B0 fn_8004AC04_x001880B0(u32_x001880B0, u32_x001880B0) __asm__("func_0015CE98");
 extern u32_x001880B0 fn_8004B180_x001880B0(u32_x001880B0, u32_x001880B0, u32_x001880B0, u32_x001880B0, u32_x001880B0) __asm__("func_0015CB88");
@@ -278,7 +302,30 @@ void func_001882A8(u8 *arg0) {
     ADXT_GetOutVol(**(s32 **)((u8 *)arg0 + 0x1CB4));
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001882C8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188380);
+typedef unsigned int Uint32_x00188380;
+typedef signed int Sint32_x00188380;
+typedef struct {
+        Sint32_x00188380 bsize;
+        Sint32_x00188380 xsize;
+        void *buf;
+        Sint32_x00188380 maxnch;
+        Sint32_x00188380 x10;
+        Sint32_x00188380 worksize;
+        void *work;
+} SFADXT_PARA_x00188380;
+extern SFADXT_PARA_x00188380 sfadxt_para_x00188380 __asm__("D_0048CFD0");
+void func_00188380_x00188380(SFADXT_PARA_x00188380 *para) __asm__("func_00188380");
+/* SFD_SetAdxtPara: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_adxt.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_00188380_x00188380(SFADXT_PARA_x00188380 *para)
+{
+        sfadxt_para_x00188380.bsize = para->bsize;
+        sfadxt_para_x00188380.xsize = para->xsize;
+        sfadxt_para_x00188380.buf = (void *)(((Uint32_x00188380)para->buf + 31) & ~31);
+        sfadxt_para_x00188380.maxnch = para->maxnch;
+        sfadxt_para_x00188380.x10 = para->x10;
+        sfadxt_para_x00188380.worksize = para->worksize;
+        sfadxt_para_x00188380.work = (void *)(((Uint32_x00188380)para->work + 31) & ~31);
+}
 s32 func_001883D8(void) {
     func_00156210();
     func_00158AF0();
@@ -750,7 +797,63 @@ void func_0018A770(u8 *arg0) {
     } while (var_v0 >= 0);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A7A0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A848);
+typedef unsigned char Uint8_x0018A848;
+typedef unsigned int Uint32_x0018A848;
+typedef signed int Sint32_x0018A848;
+typedef char Char8_x0018A848;
+typedef struct SJ_OBJ_x0018A848 *SJ_x0018A848;
+typedef struct {
+        Uint8_x0018A848 *data;
+        Sint32_x0018A848 len;
+} SJCK_x0018A848;
+typedef struct {
+        Uint8_x0018A848 data[16];
+} SJUUID_x0018A848;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0018A848 sj);
+        const SJUUID_x0018A848 *(*GetUuid)(SJ_x0018A848 sj);
+        void (*Reset)(SJ_x0018A848 sj);
+        void (*GetChunk)(SJ_x0018A848 sj, Sint32_x0018A848 id, Sint32_x0018A848 nbyte, SJCK_x0018A848 *ck);
+        void (*UngetChunk)(SJ_x0018A848 sj, Sint32_x0018A848 id, SJCK_x0018A848 *ck);
+        void (*PutChunk)(SJ_x0018A848 sj, Sint32_x0018A848 id, SJCK_x0018A848 *ck);
+        Sint32_x0018A848 (*GetNumData)(SJ_x0018A848 sj, Sint32_x0018A848 id);
+        Sint32_x0018A848 (*IsGetChunk)(SJ_x0018A848 sj, Sint32_x0018A848 id, Sint32_x0018A848 nbyte, Sint32_x0018A848 *rbyte);
+        void (*EntryErrFunc)(SJ_x0018A848 sj, void (*func)(void *obj, Char8_x0018A848 *msg), void *obj);
+} SJ_IF_x0018A848;
+struct SJ_OBJ_x0018A848 {
+        SJ_IF_x0018A848 *vtbl;
+};
+typedef struct {
+        Sint32_x0018A848 kind;
+        SJ_x0018A848 sj;
+        Uint32_x0018A848 ofst;
+        Sint32_x0018A848 size;
+        Sint32_x0018A848 xsize;
+        Sint32_x0018A848 x14;
+} SFBUF_SUP_x0018A848;
+Sint32_x0018A848 func_0018A848_x0018A848(SFBUF_SUP_x0018A848 *sup) __asm__("func_0018A848");
+/* sfbuf_CheckSup: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_buf.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0018A848 func_0018A848_x0018A848(SFBUF_SUP_x0018A848 *sup)
+{
+        if (sup->sj == 0) {
+                return -1;
+        }
+        if (sup->kind == 0) {
+                if (sup->ofst == 0) {
+                        return -1;
+                }
+                if (sup->size <= 0) {
+                        return -1;
+                }
+                if (sup->x14 > 0) {
+                        return -1;
+                }
+        }
+        return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A890);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A900);
 void func_0018A9A0_x0018A9A0(u8 *arg0) __asm__("func_0018A9A0");
@@ -1014,7 +1117,59 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B8F0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B970);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018BA20);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018BAE0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018BC30);
+typedef unsigned char Uint8_x0018BC30;
+typedef signed char Sint8_x0018BC30;
+typedef signed int Sint32_x0018BC30;
+typedef struct {
+        Sint32_x0018BC30 (*Init)();
+        Sint32_x0018BC30 (*Finish)();
+        Sint32_x0018BC30 (*ExecServer)();
+        Sint32_x0018BC30 (*Create)();
+        Sint32_x0018BC30 (*Destroy)();
+        Sint32_x0018BC30 (*Standby)();
+        Sint32_x0018BC30 (*Start)();
+        Sint32_x0018BC30 (*Stop)();
+        Sint32_x0018BC30 (*Pause)();
+        Sint32_x0018BC30 (*GetWrite)();
+        Sint32_x0018BC30 (*AddWrite)();
+        Sint32_x0018BC30 (*GetRead)();
+        Sint32_x0018BC30 (*AddRead)();
+        Sint32_x0018BC30 (*Seek)();
+} SFD_TR_IF_x0018BC30;
+typedef struct {
+        Sint8_x0018BC30 creatable;
+        Sint8_x0018BC30 avail;
+        const SFD_TR_IF_x0018BC30 *strif;
+        const SFD_TR_IF_x0018BC30 *vtrif;
+        const SFD_TR_IF_x0018BC30 *atrif;
+        Sint32_x0018BC30 packsiz;
+        Sint32_x0018BC30 picw;
+        Sint32_x0018BC30 pich;
+        Sint32_x0018BC30 bitrate;
+        Sint32_x0018BC30 picrate;
+        Sint32_x0018BC30 vbvsiz;
+        Sint8_x0018BC30 ach;
+        Sint32_x0018BC30 afreq;
+        Sint32_x0018BC30 rsv[4];
+} SFD_CREINF_x0018BC30;
+void SFLIB_LockCs_x0018BC30(Sint32_x0018BC30 *cs) __asm__("func_0018D908");
+void SFLIB_UnlockCs_x0018BC30(Sint32_x0018BC30 *cs) __asm__("func_0018D920");
+void sfcre_AnalyCreInf_x0018BC30(Uint8_x0018BC30 *data, Sint32_x0018BC30 size, SFD_CREINF_x0018BC30 *inf) __asm__("func_0018BCD0");
+void func_0018BC30_x0018BC30(void *data, Sint32_x0018BC30 size, SFD_CREINF_x0018BC30 *inf) __asm__("func_0018BC30");
+/* SFD_AnalyCreInf: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_cre.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_0018BC30_x0018BC30(void *data, Sint32_x0018BC30 size, SFD_CREINF_x0018BC30 *inf)
+{
+        Sint32_x0018BC30 cs;
+        SFLIB_LockCs_x0018BC30(&cs);
+        sfcre_AnalyCreInf_x0018BC30(data, size, inf);
+        if (inf->vtrif != 0 || inf->atrif != 0 || inf->packsiz == -1) {
+                inf->creatable = 1;
+        }
+        if (inf->vtrif != 0 || inf->atrif != 0) {
+                inf->avail = 1;
+        }
+        SFLIB_UnlockCs_x0018BC30(&cs);
+}
 s32 func_0018BD80_x0018BCD0(s32) __asm__("func_0018BD80");
 s32 func_0018BDE0_x0018BCD0(s32, s32, s32) __asm__("func_0018BDE0");
 s32 func_0018BDE8_x0018BCD0(s32, s32, s32) __asm__("func_0018BDE8");
@@ -1060,7 +1215,23 @@ void func_0018C0D8_x0018C0D8(s32 arg0, s32 arg1, u8 *arg2) {
     func_0018CD70_x0018C0D8(arg2);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C128);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C230);
+typedef unsigned char Uint8_x0018C230;
+typedef unsigned int Uint32_x0018C230;
+typedef signed int Sint32_x0018C230;
+Uint32_x0018C230 MPS_CheckDelim_x0018C230(Uint8_x0018C230 *p) __asm__("func_0017AAF0");
+Uint8_x0018C230 *func_0018C230_x0018C230(Uint8_x0018C230 *p, Sint32_x0018C230 n, Uint32_x0018C230 code) __asm__("func_0018C230");
+/* sfcre_SearchDelim: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_cre.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Uint8_x0018C230 *func_0018C230_x0018C230(Uint8_x0018C230 *p, Sint32_x0018C230 n, Uint32_x0018C230 code)
+{
+        while (n >= 4) {
+                if (MPS_CheckDelim_x0018C230(p) == code) {
+                        return p;
+                }
+                p++;
+                n--;
+        }
+        return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018C298);
 s32 func_0018C3B0_x0018C318() __asm__("func_0018C3B0");
 s32 func_0018C318_x0018C318(s32 arg0, s32 arg1, s32 arg2) __asm__("func_0018C318");

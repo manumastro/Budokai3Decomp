@@ -510,7 +510,118 @@ INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", ADXB_DecodeHeaderAdx);
 void func_00150B20(u8 *arg0) {
     *(s16 *)((u8 *)arg0 + 0x9A) = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150B28);
+typedef unsigned char Uint8_x00150B28;
+typedef signed char Sint8_x00150B28;
+typedef signed short Sint16_x00150B28;
+typedef signed int Sint32_x00150B28;
+typedef struct ADXPD_OBJ_x00150B28 *ADXPD_x00150B28;
+typedef struct {
+        Sint16_x00150B28 used;
+        Sint16_x00150B28 x02;
+        Sint32_x00150B28 stat;
+        ADXPD_x00150B28 pd;
+        Sint8_x00150B28 x0c;
+        Sint8_x00150B28 bps;
+        Sint8_x00150B28 nch;
+        Sint8_x00150B28 x0f;
+        Sint32_x00150B28 fmt;
+        Sint32_x00150B28 sfreq;
+        Sint32_x00150B28 total_nsmpl;
+        Sint16_x00150B28 x1c;
+        Uint8_x00150B28 pad1e[2];
+        Sint32_x00150B28 x20;
+        Sint16_x00150B28 x24;
+        Sint16_x00150B28 x26;
+        Sint32_x00150B28 x28;
+        Sint32_x00150B28 x2c;
+        Sint32_x00150B28 x30;
+        Sint32_x00150B28 x34;
+        Sint32_x00150B28 x38;
+        Sint32_x00150B28 x3c;
+        Sint32_x00150B28 x40;
+        Sint32_x00150B28 x44;
+        Sint16_x00150B28 *inbuf;
+        Sint32_x00150B28 inbuf_nsmpl;
+        Sint32_x00150B28 out_nch;
+        Sint32_x00150B28 x54;
+        Sint32_x00150B28 out_fmt;
+        Sint16_x00150B28 *pcmbuf;
+        Sint32_x00150B28 pcmbuf_nsmpl;
+        Sint32_x00150B28 pcmbuf_chofst;
+        Sint32_x00150B28 wr_pos;
+        Sint32_x00150B28 wr_nsmpl;
+        Sint32_x00150B28 wr_x70;
+        Sint32_x00150B28 x74;
+        void (*getwr_func)(void *obj, Sint32_x00150B28 *pos, Sint32_x00150B28 *nsmpl, Sint32_x00150B28 *x70);
+        void *getwr_obj;
+        void (*addwr_func)(void *obj, Sint32_x00150B28 nbyte, Sint32_x00150B28 nsmpl);
+        void *addwr_obj;
+        Sint32_x00150B28 x88;
+        Sint32_x00150B28 x8c;
+        Sint32_x00150B28 dec_nsmpl;
+        Sint32_x00150B28 dec_nbyte;
+        Sint16_x00150B28 x98;
+        Sint16_x00150B28 x9a;
+        Sint16_x00150B28 x9c;
+        Uint8_x00150B28 pad9e[2];
+        Sint16_x00150B28 key[3];
+        Sint16_x00150B28 extprm[3];
+        Sint16_x00150B28 dly[2][2];
+        void *ahx;
+        Sint32_x00150B28 nsmpl;
+        Sint32_x00150B28 nsmpl96;
+        Uint8_x00150B28 padc0[0xCC - 0xC0];
+        Sint32_x00150B28 ainf_len;
+        Uint8_x00150B28 ainf[16];
+        Sint16_x00150B28 def_outvol;
+        Sint16_x00150B28 def_pan[2];
+        Uint8_x00150B28 padda[2];
+        void *xdc;
+        Uint8_x00150B28 pade0[8];
+        Sint32_x00150B28 cb_nbyte;
+        Sint32_x00150B28 xec;
+        void (*cb_func)(void *obj, Sint32_x00150B28 nbyte, Sint32_x00150B28 nsmpl);
+        void *cb_obj;
+} ADXB_OBJ_x00150B28;
+typedef ADXB_OBJ_x00150B28 *ADXB_x00150B28;
+typedef struct ADXPD_OBJ_x00150B28 {
+        Uint8_x00150B28 pad0[0x10];
+        Sint32_x00150B28 nblk;
+        Uint8_x00150B28 pad14[0x20 - 0x14];
+        Sint16_x00150B28 *out0;
+        Sint16_x00150B28 *out1;
+} ADXPD_OBJ_x00150B28;
+extern void (*ahxsetextfunc_x00150B28)(void *ahx, Sint16_x00150B28 *key) __asm__("ahxsetextfunc");
+extern void (*pl2resetfunc_x00150B28)(ADXB_x00150B28 adxb) __asm__("pl2resetfunc");
+void func_00150B28_x00150B28(ADXB_x00150B28 adxb) __asm__("func_00150B28");
+/* ADXB_SetDefPrm: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_bsc.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_00150B28_x00150B28(ADXB_x00150B28 adxb)
+{
+        adxb->x02 = 1;
+        adxb->sfreq = 48000;
+        adxb->nch = 2;
+        adxb->bps = 16;
+        adxb->total_nsmpl = 0x7FFFFFFF;
+        adxb->x0f = 127;
+        adxb->fmt = 1024;
+        adxb->x98 = adxb->x9a;
+        adxb->out_nch = adxb->nch;
+        adxb->x54 = adxb->x0f;
+        adxb->out_fmt = adxb->fmt;
+        adxb->pcmbuf = (Sint16_x00150B28 *)adxb->x3c;
+        adxb->pcmbuf_nsmpl = adxb->x40;
+        adxb->pcmbuf_chofst = adxb->x44;
+        adxb->x8c = 0;
+        adxb->x1c = 0;
+        adxb->x24 = 0;
+        adxb->x26 = 0;
+        adxb->x20 = 0;
+        adxb->x28 = 0;
+        adxb->x2c = 0;
+        adxb->x30 = 0;
+        adxb->x34 = 0;
+        adxb->x88 = 0;
+}
 typedef int s32_x00150BC8;
 typedef s32_x00150BC8 ptrdiff_t_x00150BC8;
 typedef char Sint8_x00150BC8;
@@ -678,7 +789,98 @@ s16 func_00150D58(u8 *arg0) {
 s32 func_00150D60(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x14);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", fn_80045588);
+typedef unsigned char Uint8_x00150D68;
+typedef signed char Sint8_x00150D68;
+typedef signed short Sint16_x00150D68;
+typedef signed int Sint32_x00150D68;
+typedef struct ADXPD_OBJ_x00150D68 *ADXPD_x00150D68;
+typedef struct {
+        Sint16_x00150D68 used;
+        Sint16_x00150D68 x02;
+        Sint32_x00150D68 stat;
+        ADXPD_x00150D68 pd;
+        Sint8_x00150D68 x0c;
+        Sint8_x00150D68 bps;
+        Sint8_x00150D68 nch;
+        Sint8_x00150D68 x0f;
+        Sint32_x00150D68 fmt;
+        Sint32_x00150D68 sfreq;
+        Sint32_x00150D68 total_nsmpl;
+        Sint16_x00150D68 x1c;
+        Uint8_x00150D68 pad1e[2];
+        Sint32_x00150D68 x20;
+        Sint16_x00150D68 x24;
+        Sint16_x00150D68 x26;
+        Sint32_x00150D68 x28;
+        Sint32_x00150D68 x2c;
+        Sint32_x00150D68 x30;
+        Sint32_x00150D68 x34;
+        Sint32_x00150D68 x38;
+        Sint32_x00150D68 x3c;
+        Sint32_x00150D68 x40;
+        Sint32_x00150D68 x44;
+        Sint16_x00150D68 *inbuf;
+        Sint32_x00150D68 inbuf_nsmpl;
+        Sint32_x00150D68 out_nch;
+        Sint32_x00150D68 x54;
+        Sint32_x00150D68 out_fmt;
+        Sint16_x00150D68 *pcmbuf;
+        Sint32_x00150D68 pcmbuf_nsmpl;
+        Sint32_x00150D68 pcmbuf_chofst;
+        Sint32_x00150D68 wr_pos;
+        Sint32_x00150D68 wr_nsmpl;
+        Sint32_x00150D68 wr_x70;
+        Sint32_x00150D68 x74;
+        void (*getwr_func)(void *obj, Sint32_x00150D68 *pos, Sint32_x00150D68 *nsmpl, Sint32_x00150D68 *x70);
+        void *getwr_obj;
+        void (*addwr_func)(void *obj, Sint32_x00150D68 nbyte, Sint32_x00150D68 nsmpl);
+        void *addwr_obj;
+        Sint32_x00150D68 x88;
+        Sint32_x00150D68 x8c;
+        Sint32_x00150D68 dec_nsmpl;
+        Sint32_x00150D68 dec_nbyte;
+        Sint16_x00150D68 x98;
+        Sint16_x00150D68 x9a;
+        Sint16_x00150D68 x9c;
+        Uint8_x00150D68 pad9e[2];
+        Sint16_x00150D68 key[3];
+        Sint16_x00150D68 extprm[3];
+        Sint16_x00150D68 dly[2][2];
+        void *ahx;
+        Sint32_x00150D68 nsmpl;
+        Sint32_x00150D68 nsmpl96;
+        Uint8_x00150D68 padc0[0xCC - 0xC0];
+        Sint32_x00150D68 ainf_len;
+        Uint8_x00150D68 ainf[16];
+        Sint16_x00150D68 def_outvol;
+        Sint16_x00150D68 def_pan[2];
+        Uint8_x00150D68 padda[2];
+        void *xdc;
+        Uint8_x00150D68 pade0[8];
+        Sint32_x00150D68 cb_nbyte;
+        Sint32_x00150D68 xec;
+        void (*cb_func)(void *obj, Sint32_x00150D68 nbyte, Sint32_x00150D68 nsmpl);
+        void *cb_obj;
+} ADXB_OBJ_x00150D68;
+typedef ADXB_OBJ_x00150D68 *ADXB_x00150D68;
+typedef struct ADXPD_OBJ_x00150D68 {
+        Uint8_x00150D68 pad0[0x10];
+        Sint32_x00150D68 nblk;
+        Uint8_x00150D68 pad14[0x20 - 0x14];
+        Sint16_x00150D68 *out0;
+        Sint16_x00150D68 *out1;
+} ADXPD_OBJ_x00150D68;
+extern void (*ahxsetextfunc_x00150D68)(void *ahx, Sint16_x00150D68 *key) __asm__("ahxsetextfunc");
+extern void (*pl2resetfunc_x00150D68)(ADXB_x00150D68 adxb) __asm__("pl2resetfunc");
+Sint32_x00150D68 fn_80045588_x00150D68(ADXB_x00150D68 adxb) __asm__("fn_80045588");
+/* ADXB_GetNumChan: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_bsc.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00150D68 fn_80045588_x00150D68(ADXB_x00150D68 adxb)
+{
+        if (adxb->nch == 1 && adxb->xdc != 0) {
+                return 2;
+        }
+        return adxb->nch;
+}
 s8 func_00150D98(u8 *arg0) {
     return *(s8 *)((u8 *)arg0 + 0xD);
 }
@@ -914,7 +1116,100 @@ void func_00151148(u8 *arg0) {
         *(s32 *)((u8 *)arg0 + 4) = 1;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151160);
+typedef unsigned char Uint8_x00151160;
+typedef signed char Sint8_x00151160;
+typedef signed short Sint16_x00151160;
+typedef signed int Sint32_x00151160;
+typedef struct ADXPD_OBJ_x00151160 *ADXPD_x00151160;
+typedef struct {
+        Sint16_x00151160 used;
+        Sint16_x00151160 x02;
+        Sint32_x00151160 stat;
+        ADXPD_x00151160 pd;
+        Sint8_x00151160 x0c;
+        Sint8_x00151160 bps;
+        Sint8_x00151160 nch;
+        Sint8_x00151160 x0f;
+        Sint32_x00151160 fmt;
+        Sint32_x00151160 sfreq;
+        Sint32_x00151160 total_nsmpl;
+        Sint16_x00151160 x1c;
+        Uint8_x00151160 pad1e[2];
+        Sint32_x00151160 x20;
+        Sint16_x00151160 x24;
+        Sint16_x00151160 x26;
+        Sint32_x00151160 x28;
+        Sint32_x00151160 x2c;
+        Sint32_x00151160 x30;
+        Sint32_x00151160 x34;
+        Sint32_x00151160 x38;
+        Sint32_x00151160 x3c;
+        Sint32_x00151160 x40;
+        Sint32_x00151160 x44;
+        Sint16_x00151160 *inbuf;
+        Sint32_x00151160 inbuf_nsmpl;
+        Sint32_x00151160 out_nch;
+        Sint32_x00151160 x54;
+        Sint32_x00151160 out_fmt;
+        Sint16_x00151160 *pcmbuf;
+        Sint32_x00151160 pcmbuf_nsmpl;
+        Sint32_x00151160 pcmbuf_chofst;
+        Sint32_x00151160 wr_pos;
+        Sint32_x00151160 wr_nsmpl;
+        Sint32_x00151160 wr_x70;
+        Sint32_x00151160 x74;
+        void (*getwr_func)(void *obj, Sint32_x00151160 *pos, Sint32_x00151160 *nsmpl, Sint32_x00151160 *x70);
+        void *getwr_obj;
+        void (*addwr_func)(void *obj, Sint32_x00151160 nbyte, Sint32_x00151160 nsmpl);
+        void *addwr_obj;
+        Sint32_x00151160 x88;
+        Sint32_x00151160 x8c;
+        Sint32_x00151160 dec_nsmpl;
+        Sint32_x00151160 dec_nbyte;
+        Sint16_x00151160 x98;
+        Sint16_x00151160 x9a;
+        Sint16_x00151160 x9c;
+        Uint8_x00151160 pad9e[2];
+        Sint16_x00151160 key[3];
+        Sint16_x00151160 extprm[3];
+        Sint16_x00151160 dly[2][2];
+        void *ahx;
+        Sint32_x00151160 nsmpl;
+        Sint32_x00151160 nsmpl96;
+        Uint8_x00151160 padc0[0xCC - 0xC0];
+        Sint32_x00151160 ainf_len;
+        Uint8_x00151160 ainf[16];
+        Sint16_x00151160 def_outvol;
+        Sint16_x00151160 def_pan[2];
+        Uint8_x00151160 padda[2];
+        void *xdc;
+        Uint8_x00151160 pade0[8];
+        Sint32_x00151160 cb_nbyte;
+        Sint32_x00151160 xec;
+        void (*cb_func)(void *obj, Sint32_x00151160 nbyte, Sint32_x00151160 nsmpl);
+        void *cb_obj;
+} ADXB_OBJ_x00151160;
+typedef ADXB_OBJ_x00151160 *ADXB_x00151160;
+extern void ADXPD_Stop_x00151160(ADXPD_x00151160 pd) __asm__("func_00161B40");
+typedef struct ADXPD_OBJ_x00151160 {
+        Uint8_x00151160 pad0[0x10];
+        Sint32_x00151160 nblk;
+        Uint8_x00151160 pad14[0x20 - 0x14];
+        Sint16_x00151160 *out0;
+        Sint16_x00151160 *out1;
+} ADXPD_OBJ_x00151160;
+extern void (*ahxsetextfunc_x00151160)(void *ahx, Sint16_x00151160 *key) __asm__("ahxsetextfunc");
+extern void (*pl2resetfunc_x00151160)(ADXB_x00151160 adxb) __asm__("D_00401098");
+void func_00151160_x00151160(ADXB_x00151160 adxb) __asm__("func_00151160");
+/* ADXB_Stop: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_bsc.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_00151160_x00151160(ADXB_x00151160 adxb)
+{
+        if (adxb->xdc != 0) {
+                pl2resetfunc_x00151160(adxb);
+        }
+        ADXPD_Stop_x00151160(adxb->pd);
+        adxb->stat = 0;
+}
 void func_001511A8(u8 *arg0) {
     if (*(s32 *)((u8 *)arg0 + 4) == 3) {
         func_00161B68(*(s32 *)((u8 *)arg0 + 8));
@@ -1294,7 +1589,112 @@ void func_00151840_x00151840(void) {
     } while (var_s1 >= 0);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001518A0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001519C0);
+typedef unsigned char Uint8_x001519C0;
+typedef signed char Sint8_x001519C0;
+typedef signed short Sint16_x001519C0;
+typedef signed int Sint32_x001519C0;
+typedef struct ADXPD_OBJ *ADXPD_x001519C0;
+typedef struct {
+        Sint16_x001519C0 used;
+        Sint16_x001519C0 x02;
+        Sint32_x001519C0 stat;
+        ADXPD_x001519C0 pd;
+        Sint8_x001519C0 x0c;
+        Sint8_x001519C0 bps;
+        Sint8_x001519C0 nch;
+        Sint8_x001519C0 x0f;
+        Sint32_x001519C0 fmt;
+        Sint32_x001519C0 sfreq;
+        Sint32_x001519C0 total_nsmpl;
+        Sint16_x001519C0 x1c;
+        Uint8_x001519C0 pad1e[2];
+        Sint32_x001519C0 x20;
+        Sint16_x001519C0 x24;
+        Sint16_x001519C0 x26;
+        Sint32_x001519C0 x28;
+        Sint32_x001519C0 x2c;
+        Sint32_x001519C0 x30;
+        Sint32_x001519C0 x34;
+        Sint32_x001519C0 x38;
+        Sint32_x001519C0 x3c;
+        Sint32_x001519C0 x40;
+        Sint32_x001519C0 x44;
+        Sint16_x001519C0 *inbuf;
+        Sint32_x001519C0 inbuf_nsmpl;
+        Sint32_x001519C0 out_nch;
+        Sint32_x001519C0 x54;
+        Sint32_x001519C0 out_fmt;
+        Sint16_x001519C0 *pcmbuf;
+        Sint32_x001519C0 pcmbuf_nsmpl;
+        Sint32_x001519C0 pcmbuf_chofst;
+        Sint32_x001519C0 wr_pos;
+        Sint32_x001519C0 wr_nsmpl;
+        Sint32_x001519C0 wr_x70;
+        Sint32_x001519C0 x74;
+        void (*getwr_func)(void *obj, Sint32_x001519C0 *pos, Sint32_x001519C0 *nsmpl, Sint32_x001519C0 *x70);
+        void *getwr_obj;
+        void (*addwr_func)(void *obj, Sint32_x001519C0 nbyte, Sint32_x001519C0 nsmpl);
+        void *addwr_obj;
+        Sint32_x001519C0 x88;
+        Sint32_x001519C0 x8c;
+        Sint32_x001519C0 dec_nsmpl;
+        Sint32_x001519C0 dec_nbyte;
+        Sint16_x001519C0 x98;
+        Sint16_x001519C0 x9a;
+        Sint16_x001519C0 x9c;
+        Uint8_x001519C0 pad9e[2];
+        Sint16_x001519C0 key[3];
+        Sint16_x001519C0 extprm[3];
+        Sint16_x001519C0 dly[2][2];
+        void *ahx;
+        Sint32_x001519C0 nsmpl;
+        Sint32_x001519C0 nsmpl96;
+        Uint8_x001519C0 padc0[0xCC - 0xC0];
+        Sint32_x001519C0 ainf_len;
+        Uint8_x001519C0 ainf[16];
+        Sint16_x001519C0 def_outvol;
+        Sint16_x001519C0 def_pan[2];
+        Uint8_x001519C0 padda[2];
+        void *xdc;
+        Uint8_x001519C0 pade0[8];
+        Sint32_x001519C0 cb_nbyte;
+        Sint32_x001519C0 xec;
+        void (*cb_func)(void *obj, Sint32_x001519C0 nbyte, Sint32_x001519C0 nsmpl);
+        void *cb_obj;
+} ADXB_OBJ_x001519C0;
+typedef ADXB_OBJ_x001519C0 *ADXB_x001519C0;
+Sint32_x001519C0 ADX_DecodeInfoSpsd_x001519C0(Uint8_x001519C0 *buf, Sint32_x001519C0 bsize, Sint16_x001519C0 *hdrlen, Sint8_x001519C0 *x0c, Sint8_x001519C0 *bps, Sint8_x001519C0 *x0f, Sint8_x001519C0 *nch, Sint32_x001519C0 *sfreq, Sint32_x001519C0 *nsmpl, Sint32_x001519C0 *fmt, Sint16_x001519C0 *x9c) __asm__("func_001518A0");
+Sint32_x001519C0 ADX_DecodeInfoSpsd_x001519C0(Uint8_x001519C0 *buf, Sint32_x001519C0 bsize, Sint16_x001519C0 *hdrlen, Sint8_x001519C0 *x0c, Sint8_x001519C0 *bps, Sint8_x001519C0 *x0f,
+                          Sint8_x001519C0 *nch, Sint32_x001519C0 *sfreq, Sint32_x001519C0 *nsmpl, Sint32_x001519C0 *fmt, Sint16_x001519C0 *x9c) __asm__("func_001518A0");
+Sint32_x001519C0 func_001519C0_x001519C0(ADXB_x001519C0 adxb, void *buf, Sint32_x001519C0 bsize) __asm__("func_001519C0");
+/* ADXB_DecodeHeaderSpsd: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_bsps.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x001519C0 func_001519C0_x001519C0(ADXB_x001519C0 adxb, void *buf, Sint32_x001519C0 bsize)
+{
+        Sint16_x001519C0 hdrlen;
+        adxb->x02 = 1;
+        if (ADX_DecodeInfoSpsd_x001519C0(buf, bsize, &hdrlen, &adxb->x0c, &adxb->bps, &adxb->x0f, &adxb->nch,
+                               &adxb->sfreq, &adxb->total_nsmpl, &adxb->fmt, &adxb->x9c) < 0) {
+                return 0;
+        }
+        adxb->x1c = 0;
+        adxb->x26 = 0;
+        adxb->x24 = 0;
+        adxb->x34 = 0;
+        adxb->x30 = 0;
+        adxb->x2c = 0;
+        adxb->x28 = 0;
+        adxb->x20 = 0;
+        adxb->out_nch = adxb->nch;
+        adxb->x54 = adxb->x0f;
+        adxb->out_fmt = adxb->fmt;
+        adxb->pcmbuf = (Sint16_x001519C0 *)adxb->x3c;
+        adxb->pcmbuf_nsmpl = adxb->x40;
+        adxb->pcmbuf_chofst = adxb->x44;
+        adxb->x8c = 0;
+        adxb->x88 = 0;
+        adxb->x98 = 2;
+        return hdrlen;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151AB8);
 s32 memcmp_x00151C30() __asm__("memcmp");
 extern s32 D_004604A8_x00151C30 __asm__("D_004604A8");
@@ -1303,7 +1703,112 @@ s32 func_00151C30_x00151C30(s32 arg0) {
     return memcmp_x00151C30(arg0, &D_004604A8_x00151C30, 4) == 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151C58);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151E88);
+typedef unsigned char Uint8_x00151E88;
+typedef signed char Sint8_x00151E88;
+typedef signed short Sint16_x00151E88;
+typedef signed int Sint32_x00151E88;
+typedef struct ADXPD_OBJ *ADXPD_x00151E88;
+typedef struct {
+        Sint16_x00151E88 used;
+        Sint16_x00151E88 x02;
+        Sint32_x00151E88 stat;
+        ADXPD_x00151E88 pd;
+        Sint8_x00151E88 x0c;
+        Sint8_x00151E88 bps;
+        Sint8_x00151E88 nch;
+        Sint8_x00151E88 x0f;
+        Sint32_x00151E88 fmt;
+        Sint32_x00151E88 sfreq;
+        Sint32_x00151E88 total_nsmpl;
+        Sint16_x00151E88 x1c;
+        Uint8_x00151E88 pad1e[2];
+        Sint32_x00151E88 x20;
+        Sint16_x00151E88 x24;
+        Sint16_x00151E88 x26;
+        Sint32_x00151E88 x28;
+        Sint32_x00151E88 x2c;
+        Sint32_x00151E88 x30;
+        Sint32_x00151E88 x34;
+        Sint32_x00151E88 x38;
+        Sint32_x00151E88 x3c;
+        Sint32_x00151E88 x40;
+        Sint32_x00151E88 x44;
+        Sint16_x00151E88 *inbuf;
+        Sint32_x00151E88 inbuf_nsmpl;
+        Sint32_x00151E88 out_nch;
+        Sint32_x00151E88 x54;
+        Sint32_x00151E88 out_fmt;
+        Sint16_x00151E88 *pcmbuf;
+        Sint32_x00151E88 pcmbuf_nsmpl;
+        Sint32_x00151E88 pcmbuf_chofst;
+        Sint32_x00151E88 wr_pos;
+        Sint32_x00151E88 wr_nsmpl;
+        Sint32_x00151E88 wr_x70;
+        Sint32_x00151E88 x74;
+        void (*getwr_func)(void *obj, Sint32_x00151E88 *pos, Sint32_x00151E88 *nsmpl, Sint32_x00151E88 *x70);
+        void *getwr_obj;
+        void (*addwr_func)(void *obj, Sint32_x00151E88 nbyte, Sint32_x00151E88 nsmpl);
+        void *addwr_obj;
+        Sint32_x00151E88 x88;
+        Sint32_x00151E88 x8c;
+        Sint32_x00151E88 dec_nsmpl;
+        Sint32_x00151E88 dec_nbyte;
+        Sint16_x00151E88 x98;
+        Sint16_x00151E88 x9a;
+        Sint16_x00151E88 x9c;
+        Uint8_x00151E88 pad9e[2];
+        Sint16_x00151E88 key[3];
+        Sint16_x00151E88 extprm[3];
+        Sint16_x00151E88 dly[2][2];
+        void *ahx;
+        Sint32_x00151E88 nsmpl;
+        Sint32_x00151E88 nsmpl96;
+        Uint8_x00151E88 padc0[0xCC - 0xC0];
+        Sint32_x00151E88 ainf_len;
+        Uint8_x00151E88 ainf[16];
+        Sint16_x00151E88 def_outvol;
+        Sint16_x00151E88 def_pan[2];
+        Uint8_x00151E88 padda[2];
+        void *xdc;
+        Uint8_x00151E88 pade0[8];
+        Sint32_x00151E88 cb_nbyte;
+        Sint32_x00151E88 xec;
+        void (*cb_func)(void *obj, Sint32_x00151E88 nbyte, Sint32_x00151E88 nsmpl);
+        void *cb_obj;
+} ADXB_OBJ_x00151E88;
+typedef ADXB_OBJ_x00151E88 *ADXB_x00151E88;
+Sint32_x00151E88 ADX_DecodeInfoWav_x00151E88(Uint8_x00151E88 *buf, Sint32_x00151E88 bsize, Sint16_x00151E88 *hdrlen, Sint8_x00151E88 *x0c, Sint8_x00151E88 *bps, Sint8_x00151E88 *x0f, Sint8_x00151E88 *nch, Sint32_x00151E88 *sfreq, Sint32_x00151E88 *nsmpl, Sint32_x00151E88 *fmt, Sint16_x00151E88 *x9c) __asm__("func_00151C58");
+Sint32_x00151E88 ADX_DecodeInfoWav_x00151E88(Uint8_x00151E88 *buf, Sint32_x00151E88 bsize, Sint16_x00151E88 *hdrlen, Sint8_x00151E88 *x0c, Sint8_x00151E88 *bps, Sint8_x00151E88 *x0f,
+                         Sint8_x00151E88 *nch, Sint32_x00151E88 *sfreq, Sint32_x00151E88 *nsmpl, Sint32_x00151E88 *fmt, Sint16_x00151E88 *x9c) __asm__("func_00151C58");
+Sint32_x00151E88 func_00151E88_x00151E88(ADXB_x00151E88 adxb, void *buf, Sint32_x00151E88 bsize) __asm__("func_00151E88");
+/* ADXB_DecodeHeaderWav: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_bwav.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00151E88 func_00151E88_x00151E88(ADXB_x00151E88 adxb, void *buf, Sint32_x00151E88 bsize)
+{
+        Sint16_x00151E88 hdrlen;
+        adxb->x02 = 1;
+        if (ADX_DecodeInfoWav_x00151E88(buf, bsize, &hdrlen, &adxb->x0c, &adxb->bps, &adxb->x0f, &adxb->nch,
+                              &adxb->sfreq, &adxb->total_nsmpl, &adxb->fmt, &adxb->x9c) < 0) {
+                return 0;
+        }
+        adxb->x1c = 0;
+        adxb->x26 = 0;
+        adxb->x24 = 0;
+        adxb->x34 = 0;
+        adxb->x30 = 0;
+        adxb->x2c = 0;
+        adxb->x28 = 0;
+        adxb->x20 = 0;
+        adxb->out_nch = adxb->nch;
+        adxb->x54 = adxb->x0f;
+        adxb->out_fmt = adxb->fmt;
+        adxb->pcmbuf = (Sint16_x00151E88 *)adxb->x3c;
+        adxb->pcmbuf_nsmpl = adxb->x40;
+        adxb->pcmbuf_chofst = adxb->x44;
+        adxb->x8c = 0;
+        adxb->x88 = 0;
+        adxb->x98 = 1;
+        return hdrlen;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151F88);
 typedef signed char Sint8_x00152100;
 typedef unsigned char Uint8_x00152100;

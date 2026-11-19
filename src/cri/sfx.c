@@ -101,7 +101,24 @@ void func_0019F0F0(u8 *arg0, u8 *arg1) {
 void func_0019F110(u8 *arg0) {
     func_0019F128(*(s32 *)((u8 *)arg0 + 0x3C));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F128);
+typedef unsigned char Uint8_x0019F128;
+typedef signed int Sint32_x0019F128;
+typedef float Float32_x0019F128;
+void func_0019F128_x0019F128(Uint8_x0019F128 *tbl) __asm__("func_0019F128");
+/* sfxcnv_MakeLumiTbl: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfx_cnv.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_0019F128_x0019F128(Uint8_x0019F128 *tbl)
+{
+        Sint32_x0019F128 i;
+        for (i = 0; i <= 15; i++) {
+                tbl[i] = 0;
+        }
+        for (i = 16; i <= 235; i++) {
+                tbl[i] = (Uint8_x0019F128)(0.582f * (Float32_x0019F128)(i - 16));
+        }
+        for (i = 236; i <= 255; i++) {
+                tbl[i] = 0x80;
+        }
+}
 void func_0019F1E0(u8 *arg0, u8 *arg1) {
     func_0019EC78(*(s32 *)((u8 *)arg0 + 0x30), *(s32 *)((u8 *)arg1 + 0x4C), *(s32 *)((u8 *)arg0 + 0x3C));
 }
@@ -157,7 +174,93 @@ void func_0019F680(u8 *arg0) {
         D_00426C20 -= 1;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F6D0);
+typedef unsigned char Uint8_x0019F6D0;
+typedef signed int Sint32_x0019F6D0;
+typedef char Char8_x0019F6D0;
+typedef struct SFXZ_OBJ_x0019F6D0 SFXZ_OBJ_x0019F6D0;
+typedef struct SFXA_OBJ_x0019F6D0 SFXA_OBJ_x0019F6D0;
+typedef struct SFX_OBJ_x0019F6D0 {
+        Sint32_x0019F6D0 used;
+        Sint32_x0019F6D0 compo;
+        Sint32_x0019F6D0 fxtype;
+        Sint32_x0019F6D0 outbuf_width;
+        Sint32_x0019F6D0 outbuf_height;
+        Sint32_x0019F6D0 unit_width;
+        Sint32_x0019F6D0 taginf_flg;
+        Sint32_x0019F6D0 tag_a;
+        Sint32_x0019F6D0 tag_b;
+        SFXZ_OBJ_x0019F6D0 *sfxz;
+        Sint32_x0019F6D0 x2c;
+        Sint32_x0019F6D0 x30;
+        SFXA_OBJ_x0019F6D0 *sfxa;
+        void *coladj;
+        Sint32_x0019F6D0 tbl_type;
+        Uint8_x0019F6D0 *buf[4];
+        Sint32_x0019F6D0 pad50[2];
+        void *work;
+        Sint32_x0019F6D0 wsize;
+        Sint32_x0019F6D0 pad60[2];
+        Sint32_x0019F6D0 x68;
+        Sint32_x0019F6D0 pad6c[2];
+        Sint32_x0019F6D0 x74;
+} SFX_OBJ_x0019F6D0;
+typedef struct {
+        Sint32_x0019F6D0 hn_cnt;
+        Sint32_x0019F6D0 max_hn;
+        void (*errfn)(void *obj, const Char8_x0019F6D0 *msg);
+        void *errobj;
+        Sint32_x0019F6D0 err_cnt;
+        Sint32_x0019F6D0 ccir_fx;
+        SFX_OBJ_x0019F6D0 hn[8];
+        Sint32_x0019F6D0 pad3d8[4];
+} SFX_LIBWORK_x0019F6D0;
+extern SFX_LIBWORK_x0019F6D0 sfx_libwork_x0019F6D0 __asm__("D_00426C20");
+typedef struct {
+        Uint8_x0019F6D0 *buf;
+        Sint32_x0019F6D0 width;
+        Sint32_x0019F6D0 height;
+        Sint32_x0019F6D0 pitch;
+} SFX_PLN_x0019F6D0;
+typedef struct {
+        Sint32_x0019F6D0 frmfmt;
+        SFX_PLN_x0019F6D0 pln[3];
+        Uint8_x0019F6D0 pad34[0x44 - 0x34];
+        Sint32_x0019F6D0 width;
+        Sint32_x0019F6D0 height;
+        void *tblsrc;
+        Sint32_x0019F6D0 tag_a;
+        Sint32_x0019F6D0 tag_b;
+        Sint32_x0019F6D0 x58;
+        Sint32_x0019F6D0 x5c;
+        Sint32_x0019F6D0 pic_struct;
+        Sint32_x0019F6D0 chroma_format;
+        Sint32_x0019F6D0 x68;
+        Sint32_x0019F6D0 x6c;
+        Sint32_x0019F6D0 x70;
+        Sint32_x0019F6D0 chromapos_h;
+        Sint32_x0019F6D0 chromapos_v;
+        Uint8_x0019F6D0 pad7c[0x88 - 0x7C];
+} SFX_FRM_x0019F6D0;
+extern SFX_LIBWORK_x0019F6D0 sfx_libwork_x0019F6D0 __asm__("D_00426C20");
+typedef struct {
+        void (*errfn)(void *obj, const Char8_x0019F6D0 *msg);
+        void *errobj;
+        Sint32_x0019F6D0 err_cnt;
+} SFX_ERRAREA_x0019F6D0;
+void func_0019F6D0_x0019F6D0(SFX_OBJ_x0019F6D0 *sfx, SFX_FRM_x0019F6D0 *frm, const Char8_x0019F6D0 *msg) __asm__("func_0019F6D0");
+/* SFXLIB_Error: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfx_lib.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_0019F6D0_x0019F6D0(SFX_OBJ_x0019F6D0 *sfx, SFX_FRM_x0019F6D0 *frm, const Char8_x0019F6D0 *msg)
+{
+        void (*fn)(void *obj, const Char8_x0019F6D0 *msg);
+        void *obj;
+        SFX_ERRAREA_x0019F6D0 *e = (SFX_ERRAREA_x0019F6D0 *)&sfx_libwork_x0019F6D0.errfn;
+        fn = e->errfn;
+        obj = e->errobj;
+        e->err_cnt++;
+        if (fn != 0) {
+                fn(obj, msg);
+        }
+}
 extern s32 D_00426C34_x0019F710 __asm__("D_00426C34");
 void func_0019F710_x0019F710(s32 arg0) __asm__("func_0019F710");
 void func_0019F710_x0019F710(s32 arg0) {

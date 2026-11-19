@@ -350,7 +350,23 @@ s8 func_001649A0(void) {
 s32 func_001649B0(void) {
     return D_004115CC;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_001649C0);
+typedef unsigned int u32_x001649C0;
+typedef signed int s32_x001649C0;
+extern s32_x001649C0 D_00731C3C_x001649C0 __asm__("D_004115D4");
+extern volatile u32_x001649C0 D_00731C50_x001649C0 __asm__("D_004115E8");
+extern const char D_0075ABC8_x001649C0[] __asm__("D_00462FE8");
+extern void func_004244c8_x001649C0(const char *, ...) __asm__("scePrintf");
+void func_001649C0_x001649C0(void) __asm__("func_001649C0");
+/* func_004e42a0: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/libadxe/cri_srd_control.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_001649C0_x001649C0(void) {
+    D_00731C50_x001649C0 = 0;
+    while (D_00731C3C_x001649C0 == 1) {
+        if (++D_00731C50_x001649C0 > 0x19640000u) {
+            func_004244c8_x001649C0(D_0075ABC8_x001649C0);
+            break;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164A28);
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164A60);
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164A98);
@@ -366,7 +382,40 @@ s32 func_00164B18(void) {
     func_00164D38(0x2301);
     return temp_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164B58);
+typedef unsigned char u8_x00164B58;
+typedef signed char s8_x00164B58;
+typedef signed int s32_x00164B58;
+extern void func_004e4618_x00164B58(s32_x00164B58) __asm__("func_00164D38");
+extern s8_x00164B58 D_00731C00_x00164B58[] __asm__("D_00411598");
+extern void func_004f0608_x00164B58(void) __asm__("func_0016FF40");
+extern void func_004f0620_x00164B58(void) __asm__("func_0016FF58");
+extern s32_x00164B58 func_004e48b0_x00164B58(s32_x00164B58, s32_x00164B58, s32_x00164B58 *) __asm__("func_00164FD0");
+typedef struct {
+    s8_x00164B58 used, devtype, stat, pad;
+    u8_x00164B58 rest[0x2c];
+    s32_x00164B58 fd;
+} SRD_x00164B58;
+s32_x00164B58 func_00164B58_x00164B58(void) __asm__("func_00164B58");
+/* func_004e4438: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/libadxe/cri_srd_control.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+s32_x00164B58 func_00164B58_x00164B58(void) {
+    s32_x00164B58 done;
+    SRD_x00164B58 *srd = (SRD_x00164B58 *)D_00731C00_x00164B58;
+    if (srd->stat == 2) {
+        func_004f0608_x00164B58();
+        func_004e4618_x00164B58(0x2400);
+        if (func_004e48b0_x00164B58(srd->fd, 1, &done) < 0) {
+            func_004e4618_x00164B58(0x2401);
+        } else {
+            func_004e4618_x00164B58(0x2402);
+            if (done) {
+                func_004f0620_x00164B58();
+                return 1;
+            }
+        }
+        func_004f0620_x00164B58();
+    }
+    return 0;
+}
 s32 func_00164B18_x00164BF8(s8) __asm__("func_00164B18");
 s32 func_00164B58_x00164BF8(s8) __asm__("func_00164B58");
 extern s8 D_00411599_x00164BF8 __asm__("D_00411599");
@@ -387,7 +436,42 @@ s32 func_00164BF8_x00164BF8(void)
   __asm__ __volatile__ ("" : "+r" (x));
   return func_00164B58_x00164BF8(x);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164C48);
+typedef unsigned char u8_x00164C48;
+typedef signed char s8_x00164C48;
+typedef signed int s32_x00164C48;
+extern s32_x00164C48 D_00731C3C_x00164C48 __asm__("D_004115D4");
+extern volatile s32_x00164C48 D_00731C54_x00164C48 __asm__("D_004115EC");
+extern const char D_0075ABF8_x00164C48[] __asm__("D_00463018");
+extern const char D_0075AC08_x00164C48[] __asm__("D_00463028");
+extern const char D_0075AC28_x00164C48[] __asm__("D_00463048");
+extern const char D_0075AC48_x00164C48[] __asm__("D_00463068");
+extern const char D_0075AC68_x00164C48[] __asm__("D_00463088");
+extern const char D_0075AC88_x00164C48[] __asm__("D_004630A8");
+extern const char D_0075ACA8_x00164C48[] __asm__("D_004630C8");
+extern void func_004244c8_x00164C48(const char *, ...) __asm__("scePrintf");
+extern s8_x00164C48 D_00731C00_x00164C48[] __asm__("D_00411598");
+typedef struct {
+    s8_x00164C48 used, devtype, stat, pad;
+    u8_x00164C48 rest[0x2c];
+    s32_x00164C48 fd;
+} SRD_x00164C48;
+s32_x00164C48 func_004e44d8_x00164C48(void) __asm__("func_00164BF8");
+s32_x00164C48 func_00164C48_x00164C48(void) __asm__("func_00164C48");
+/* func_004e4528: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/libadxe/cri_srd_control.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+s32_x00164C48 func_00164C48_x00164C48(void) {
+    SRD_x00164C48 *srd;
+    const char *fmt;
+    func_004244c8_x00164C48(D_0075ABF8_x00164C48);
+    func_004244c8_x00164C48(D_0075AC08_x00164C48, D_00731C3C_x00164C48);
+    func_004244c8_x00164C48(D_0075AC28_x00164C48, D_00731C54_x00164C48);
+    fmt = D_0075AC48_x00164C48;
+    srd = (SRD_x00164C48 *)D_00731C00_x00164C48;
+    func_004244c8_x00164C48(fmt, srd->stat);
+    if (srd->devtype == 1) func_004244c8_x00164C48(D_0075AC68_x00164C48);
+    if (srd->devtype == 2) func_004244c8_x00164C48(D_0075AC88_x00164C48);
+    func_004244c8_x00164C48(D_0075ACA8_x00164C48, func_004e44d8_x00164C48());
+    return 0;
+}
 extern volatile s32 D_004115F4_x00164D18 __asm__("D_004115F4");
 s32 func_00164D18_x00164D18(void) __asm__("func_00164D18");
 s32 func_00164D18_x00164D18(void) {

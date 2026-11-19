@@ -274,7 +274,34 @@ s32 func_0017F240(void) {
     return 0x100;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_0017F248);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_0017F300);
+typedef signed int Sint32_x0017F300;
+typedef Sint32_x0017F300 Bool_x0017F300;
+typedef struct {
+        Sint32_x0017F300 mode;
+        Sint32_x0017F300 max_bps;
+        Sint32_x0017F300 max_width;
+        Sint32_x0017F300 max_height;
+        Sint32_x0017F300 max_skip;
+        Sint32_x0017F300 nsec;
+        void *work;
+        Sint32_x0017F300 wksize;
+        Sint32_x0017F300 compo;
+        Sint32_x0017F300 buffmt;
+        Sint32_x0017F300 x28;
+        Sint32_x0017F300 x2c;
+} MWSFD_CRPRM_x0017F300;
+extern Sint32_x0017F300 MWSFSFX_CalcHnWorkSiz_x0017F300(Sint32_x0017F300 width, Sint32_x0017F300 height) __asm__("func_00184798");
+extern Bool_x0017F300 MWSFTAG_IsUseAinfSj_x0017F300(MWSFD_CRPRM_x0017F300 *prm) __asm__("func_001851F0");
+Sint32_x0017F300 func_0017F300_x0017F300(MWSFD_CRPRM_x0017F300 *cprm) __asm__("func_0017F300");
+/* mwsfcre_CalcWorkSfx: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwsfdcre.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0017F300 func_0017F300_x0017F300(MWSFD_CRPRM_x0017F300 *cprm)
+{
+        Sint32_x0017F300 size = MWSFSFX_CalcHnWorkSiz_x0017F300(cprm->max_width, cprm->max_height);
+        if (MWSFTAG_IsUseAinfSj_x0017F300(cprm) == 1) {
+                size += 0x20000;
+        }
+        return size;
+}
 s32 mwPlyCalcWorkCprmSfd(s32 arg0) {
     s32 temp_s0;
 
@@ -306,7 +333,255 @@ void func_00180268(u8 *arg0) {
     func_0016E120(*(s32 *)((u8 *)arg0 + 0x1D8), *(s32 *)((u8 *)arg0 + 0x1DC), *(s32 *)((u8 *)arg0 + 0x1E0));
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180290);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180620);
+typedef unsigned char Uint8_x00180620;
+typedef signed char Sint8_x00180620;
+typedef unsigned int Uint32_x00180620;
+typedef signed int Sint32_x00180620;
+typedef float Float32_x00180620;
+typedef char Char8_x00180620;
+typedef struct SJ_OBJ_x00180620 *SJ_x00180620;
+typedef struct {
+        Uint8_x00180620 *data;
+        Sint32_x00180620 len;
+} SJCK_x00180620;
+typedef struct {
+        Uint8_x00180620 data[16];
+} SJUUID_x00180620;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00180620 sj);
+        const SJUUID_x00180620 *(*GetUuid)(SJ_x00180620 sj);
+        void (*Reset)(SJ_x00180620 sj);
+        void (*GetChunk)(SJ_x00180620 sj, Sint32_x00180620 id, Sint32_x00180620 nbyte, SJCK_x00180620 *ck);
+        void (*UngetChunk)(SJ_x00180620 sj, Sint32_x00180620 id, SJCK_x00180620 *ck);
+        void (*PutChunk)(SJ_x00180620 sj, Sint32_x00180620 id, SJCK_x00180620 *ck);
+        Sint32_x00180620 (*GetNumData)(SJ_x00180620 sj, Sint32_x00180620 id);
+        Sint32_x00180620 (*IsGetChunk)(SJ_x00180620 sj, Sint32_x00180620 id, Sint32_x00180620 nbyte, Sint32_x00180620 *rbyte);
+        void (*EntryErrFunc)(SJ_x00180620 sj, void (*func)(void *obj, Char8_x00180620 *msg), void *obj);
+} SJ_IF_x00180620;
+struct SJ_OBJ_x00180620 {
+        SJ_IF_x00180620 *vtbl;
+};
+extern void LSC_EntryErrFunc_x00180620(void (*func)(void *obj, Char8_x00180620 *msg), void *obj) __asm__("LSC_EntryErrFunc");
+typedef struct SFXZ_OBJ_x00180620 SFXZ_OBJ_x00180620;
+typedef struct SFXA_OBJ_x00180620 SFXA_OBJ_x00180620;
+typedef struct SFX_OBJ_x00180620 {
+        Sint32_x00180620 used;
+        Sint32_x00180620 compo;
+        Sint32_x00180620 fxtype;
+        Sint32_x00180620 outbuf_width;
+        Sint32_x00180620 outbuf_height;
+        Sint32_x00180620 unit_width;
+        Sint32_x00180620 taginf_flg;
+        Sint32_x00180620 tag_a;
+        Sint32_x00180620 tag_b;
+        SFXZ_OBJ_x00180620 *sfxz;
+        Sint32_x00180620 x2c;
+        Sint32_x00180620 x30;
+        SFXA_OBJ_x00180620 *sfxa;
+        void *coladj;
+        Sint32_x00180620 tbl_type;
+        Uint8_x00180620 *buf[4];
+        Sint32_x00180620 pad50[2];
+        void *work;
+        Sint32_x00180620 wsize;
+        Sint32_x00180620 pad60[2];
+        Sint32_x00180620 x68;
+        Sint32_x00180620 pad6c[2];
+        Sint32_x00180620 x74;
+} SFX_OBJ_x00180620;
+typedef struct MWPLY_OBJ_x00180620 MWPLY_OBJ_x00180620;
+typedef MWPLY_OBJ_x00180620 *MWPLY_x00180620;
+typedef struct MWSST_OBJ_x00180620 {
+        Sint32_x00180620 used;
+        Sint32_x00180620 x04;
+        Sint32_x00180620 x08;
+        SJ_x00180620 sj;
+        void *buf;
+        struct MWSST_OBJ_x00180620 *hn;
+} MWSST_OBJ_x00180620;
+typedef struct {
+        Sint32_x00180620 mode;
+        Sint32_x00180620 max_bps;
+        Sint32_x00180620 max_width;
+        Sint32_x00180620 max_height;
+        Sint32_x00180620 max_skip;
+        Sint32_x00180620 nsec;
+        void *work;
+        Sint32_x00180620 wksize;
+        Sint32_x00180620 compo;
+        Sint32_x00180620 buffmt;
+        Sint32_x00180620 x28;
+        Sint32_x00180620 x2c;
+} MWSFD_CRPRM_x00180620;
+typedef struct {
+        void *buf;
+        Sint32_x00180620 bsize;
+        Sint32_x00180620 usize;
+} MWSFD_PICUSR_x00180620;
+typedef struct {
+        void *x00;
+        void *x04;
+        void *x08;
+        void (*Vsync)(void);
+        Sint32_x00180620 (*ExecSvrHndl)(MWPLY_x00180620 mwply);
+        void (*Destroy)(MWPLY_x00180620 mwply);
+        void (*StartFname)(MWPLY_x00180620 mwply, const Char8_x00180620 *fname);
+        void (*Stop)(MWPLY_x00180620 mwply);
+        Sint32_x00180620 (*GetStat)(MWPLY_x00180620 mwply);
+        void (*GetTime)(MWPLY_x00180620 mwply, Sint32_x00180620 *ncount, Sint32_x00180620 *tscale);
+        void (*Pause)(MWPLY_x00180620 mwply, Sint32_x00180620 sw);
+        void (*SetOutVol)(MWPLY_x00180620 mwply, Sint32_x00180620 vol);
+        Sint32_x00180620 (*GetOutVol)(MWPLY_x00180620 mwply);
+        void (*SetOutPan)(MWPLY_x00180620 mwply, Sint32_x00180620 ch, Sint32_x00180620 pan);
+        Sint32_x00180620 (*GetOutPan)(MWPLY_x00180620 mwply, Sint32_x00180620 ch);
+        void (*StartSj)(MWPLY_x00180620 mwply, SJ_x00180620 sj);
+        void (*StartMem)(MWPLY_x00180620 mwply, void *buf, Sint32_x00180620 size);
+} MWPLY_IF_x00180620;
+typedef struct {
+        Sint32_x00180620 valid;
+        Sint32_x00180620 no;
+        Sint32_x00180620 ccs;
+        Sint32_x00180620 maxfrm;
+        Sint32_x00180620 fxtype;
+} MWSFFRM_SFHINF_x00180620;
+struct MWPLY_OBJ_x00180620 {
+        MWPLY_IF_x00180620 *ifc;
+        Sint32_x00180620 stat;
+        Sint32_x00180620 used;
+        MWSFD_CRPRM_x00180620 prm;
+        void *sfd;
+        void *stm;
+        Sint32_x00180620 x48;
+        void *lsc;
+        Sint32_x00180620 compo_fix;
+        Sint32_x00180620 compo;
+        Sint32_x00180620 noskip;
+        Sint32_x00180620 x5c;
+        Sint32_x00180620 sleep_bdr;
+        Sint32_x00180620 mwply_svr_flg;
+        Sint32_x00180620 sfd_svr_flg;
+        Sint32_x00180620 dec_svr_flg;
+        Sint32_x00180620 x70;
+        Sint8_x00180620 linkstm;
+        Sint8_x00180620 linkstm_req;
+        Sint8_x00180620 pause_flg;
+        Sint8_x00180620 pad77;
+        Sint32_x00180620 x78;
+        void *curfrm;
+        Sint32_x00180620 ngetfrm;
+        Sint32_x00180620 nrelfrm;
+        Sint32_x00180620 nskipdisp;
+        Sint32_x00180620 pic_struct;
+        Sint32_x00180620 chroma_format;
+        Sint32_x00180620 chromapos_h;
+        Sint32_x00180620 chromapos_v;
+        SFX_OBJ_x00180620 *sfx;
+        void *sfx_wk;
+        Sint32_x00180620 sfx_wksiz;
+        Sint32_x00180620 sfh_cnt;
+        Sint32_x00180620 sfh_cur;
+        Sint32_x00180620 sfh_wr;
+        MWSFFRM_SFHINF_x00180620 sfhinf[8];
+        MWSFD_PICUSR_x00180620 picusr;
+        Uint8_x00180620 pad170[0x17C - 0x170];
+        MWSFD_PICUSR_x00180620 *picusr_ptr;
+        void *picusr_buf;
+        Sint32_x00180620 picusr_bsize;
+        void *picusr_dat;
+        Sint32_x00180620 picusr_len;
+        SJ_x00180620 ainf_sj;
+        void *ainf_buf;
+        Sint32_x00180620 ainf_bsize;
+        void *addinf_buf;
+        Sint32_x00180620 x1a0;
+        Sint32_x00180620 tag_x1a4;
+        Sint32_x00180620 tag_flg;
+        void *tag_ptr;
+        Sint32_x00180620 tag_size;
+        Sint32_x00180620 x1b4;
+        const Char8_x00180620 *fname;
+        Sint32_x00180620 x1bc;
+        Sint32_x00180620 stm_start_req;
+        void *dir;
+        Sint32_x00180620 ofst;
+        Sint32_x00180620 nsct;
+        SJ_x00180620 sji;
+        SJ_x00180620 file_sj;
+        Sint32_x00180620 x1d8;
+        Sint32_x00180620 flow_nsct;
+        Sint32_x00180620 x1e0;
+        Sint32_x00180620 x1e4;
+        Sint32_x00180620 x1e8;
+        Sint32_x00180620 x1ec;
+        Sint32_x00180620 x1f0;
+        SJ_x00180620 mem_sj;
+        void *mem_buf;
+        Sint32_x00180620 mem_size;
+        void *cwk_buf;
+        Uint32_x00180620 cwk_size;
+        Uint8_x00180620 *cwk_ptr;
+        Uint32_x00180620 cwk_used;
+        Sint32_x00180620 cwk_cnt;
+        void *cwk_tbl[32];
+        MWSST_OBJ_x00180620 sst;
+        Sint32_x00180620 x2ac;
+        Sint32_x00180620 x2b0;
+        Sint32_x00180620 x2b4;
+        Sint32_x00180620 x3c;
+        Sint32_x00180620 x94;
+        Sint32_x00180620 x98;
+        Sint32_x00180620 x9c;
+        Sint32_x00180620 xa8;
+};
+typedef struct {
+        Sint32_x00180620 x00;
+        Float32_x00180620 vfreq;
+        Sint32_x00180620 x08;
+        Sint32_x00180620 nfrm_pool;
+        Sint32_x00180620 x10;
+        Uint8_x00180620 pad14[0x24 - 0x14];
+        Sint32_x00180620 svr_bdr;
+        void *(*malloc_fn)(void *obj, Uint32_x00180620 size);
+        void (*free_fn)(void *obj, void *ptr);
+        void *mem_obj;
+        Sint32_x00180620 x34;
+        Sint32_x00180620 use_picusr;
+        Sint32_x00180620 pause_bdr;
+        Sint32_x00180620 (*pre_func)(void *obj);
+        void *pre_obj;
+        Sint32_x00180620 (*post_func)(void *obj);
+        void *post_obj;
+        Sint32_x00180620 (*idle_func)(void *obj);
+        void *idle_obj;
+        Sint32_x00180620 svr_flg;
+        Sint32_x00180620 x5c;
+        Uint8_x00180620 pad60[0x68 - 0x60];
+        Sint32_x00180620 errcode;
+        MWPLY_OBJ_x00180620 hn[8];
+} MWSFD_LIBWORK_x00180620;
+MWSFD_LIBWORK_x00180620 *MWSFLIB_GetLibWorkPtr_x00180620(void) __asm__("func_00181FA8");
+extern void MWSFSVM_EntryIdVfunc_x00180620(Sint32_x00180620 id, Sint32_x00180620 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdVfunc");
+extern void MWSFSVM_EntryMainFunc_x00180620(Sint32_x00180620 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryMainFunc");
+extern void MWSFSVM_EntryIdleFunc_x00180620(Sint32_x00180620 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdleFunc");
+Sint32_x00180620 func_00180620_x00180620(MWSFD_CRPRM_x00180620 *cprm) __asm__("func_00180620");
+/* mwsfcre_ChkMallocFn: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwsfdcre.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00180620 func_00180620_x00180620(MWSFD_CRPRM_x00180620 *cprm)
+{
+        MWSFD_LIBWORK_x00180620 *lw = MWSFLIB_GetLibWorkPtr_x00180620();
+        Sint32_x00180620 ret = 0;
+        if (cprm->work == 0) {
+                if (lw->malloc_fn == 0) {
+                        ret = -1;
+                }
+                if (lw->free_fn == 0) {
+                        ret = -1;
+                }
+        }
+        return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180670);
 s32 func_001806C8(u8 *arg0) {
     s32 var_a0;
@@ -387,7 +662,58 @@ void func_00180900(s32 arg0) {
     D_00425214 = arg0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180910);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180AB8);
+typedef signed char Sint8_x00180AB8;
+typedef signed int Sint32_x00180AB8;
+typedef struct {
+        Sint32_x00180AB8 (*Init)();
+        Sint32_x00180AB8 (*Finish)();
+        Sint32_x00180AB8 (*ExecServer)();
+        Sint32_x00180AB8 (*Create)();
+        Sint32_x00180AB8 (*Destroy)();
+        Sint32_x00180AB8 (*Standby)();
+        Sint32_x00180AB8 (*Start)();
+        Sint32_x00180AB8 (*Stop)();
+        Sint32_x00180AB8 (*Pause)();
+        Sint32_x00180AB8 (*GetWrite)();
+        Sint32_x00180AB8 (*AddWrite)();
+        Sint32_x00180AB8 (*GetRead)();
+        Sint32_x00180AB8 (*AddRead)();
+        Sint32_x00180AB8 (*Seek)();
+} SFD_TR_IF_x00180AB8;
+typedef struct {
+        Sint8_x00180AB8 creatable;
+        Sint8_x00180AB8 avail;
+        const SFD_TR_IF_x00180AB8 *strif;
+        const SFD_TR_IF_x00180AB8 *vtrif;
+        const SFD_TR_IF_x00180AB8 *atrif;
+        Sint32_x00180AB8 packsiz;
+        Sint32_x00180AB8 picw;
+        Sint32_x00180AB8 pich;
+        Sint32_x00180AB8 bitrate;
+        Sint32_x00180AB8 picrate;
+        Sint32_x00180AB8 vbvsiz;
+        Sint8_x00180AB8 ach;
+        Sint32_x00180AB8 afreq;
+        Sint32_x00180AB8 rsv[4];
+} SFD_CREINF_x00180AB8;
+Sint32_x00180AB8 func_00180AB8_x00180AB8(SFD_CREINF_x00180AB8 *inf) __asm__("func_00180AB8");
+/* mwsfcre_GetFtype: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwsfdcre.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00180AB8 func_00180AB8_x00180AB8(SFD_CREINF_x00180AB8 *inf)
+{
+        Sint32_x00180AB8 ftype = 0;
+        if (inf->strif == 0) {
+                if (inf->vtrif != 0 && inf->atrif == 0) {
+                        ftype = 2;
+                }
+        } else {
+                if (inf->atrif == 0) {
+                        ftype = 3;
+                } else {
+                        ftype = 1;
+                }
+        }
+        return ftype;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180B08);
 void *func_00181FA8_x00180BA0() __asm__("func_00181FA8");
 void func_00180BA0_x00180BA0(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00180BA0");
@@ -1298,7 +1624,227 @@ s32 mwSfdGetOutVol_x001840E0(s32 arg0) {
     }
     return func_001831D0_x001840E0(arg0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwSfdSetOutPan);
+typedef unsigned char Uint8_x00184130;
+typedef signed char Sint8_x00184130;
+typedef unsigned int Uint32_x00184130;
+typedef signed int Sint32_x00184130;
+typedef char Char8_x00184130;
+typedef Sint32_x00184130 Bool_x00184130;
+typedef struct SJ_OBJ_x00184130 *SJ_x00184130;
+typedef struct {
+        Uint8_x00184130 *data;
+        Sint32_x00184130 len;
+} SJCK_x00184130;
+typedef struct {
+        Uint8_x00184130 data[16];
+} SJUUID_x00184130;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00184130 sj);
+        const SJUUID_x00184130 *(*GetUuid)(SJ_x00184130 sj);
+        void (*Reset)(SJ_x00184130 sj);
+        void (*GetChunk)(SJ_x00184130 sj, Sint32_x00184130 id, Sint32_x00184130 nbyte, SJCK_x00184130 *ck);
+        void (*UngetChunk)(SJ_x00184130 sj, Sint32_x00184130 id, SJCK_x00184130 *ck);
+        void (*PutChunk)(SJ_x00184130 sj, Sint32_x00184130 id, SJCK_x00184130 *ck);
+        Sint32_x00184130 (*GetNumData)(SJ_x00184130 sj, Sint32_x00184130 id);
+        Sint32_x00184130 (*IsGetChunk)(SJ_x00184130 sj, Sint32_x00184130 id, Sint32_x00184130 nbyte, Sint32_x00184130 *rbyte);
+        void (*EntryErrFunc)(SJ_x00184130 sj, void (*func)(void *obj, Char8_x00184130 *msg), void *obj);
+} SJ_IF_x00184130;
+struct SJ_OBJ_x00184130 {
+        SJ_IF_x00184130 *vtbl;
+};
+typedef struct SFXZ_OBJ_x00184130 SFXZ_OBJ_x00184130;
+typedef struct SFXA_OBJ_x00184130 SFXA_OBJ_x00184130;
+typedef struct SFX_OBJ_x00184130 {
+        Sint32_x00184130 used;
+        Sint32_x00184130 compo;
+        Sint32_x00184130 fxtype;
+        Sint32_x00184130 outbuf_width;
+        Sint32_x00184130 outbuf_height;
+        Sint32_x00184130 unit_width;
+        Sint32_x00184130 taginf_flg;
+        Sint32_x00184130 tag_a;
+        Sint32_x00184130 tag_b;
+        SFXZ_OBJ_x00184130 *sfxz;
+        Sint32_x00184130 x2c;
+        Sint32_x00184130 x30;
+        SFXA_OBJ_x00184130 *sfxa;
+        void *coladj;
+        Sint32_x00184130 tbl_type;
+        Uint8_x00184130 *buf[4];
+        Sint32_x00184130 pad50[2];
+        void *work;
+        Sint32_x00184130 wsize;
+        Sint32_x00184130 pad60[2];
+        Sint32_x00184130 x68;
+        Sint32_x00184130 pad6c[2];
+        Sint32_x00184130 x74;
+} SFX_OBJ_x00184130;
+typedef struct MWPLY_OBJ_x00184130 MWPLY_OBJ_x00184130;
+typedef MWPLY_OBJ_x00184130 *MWPLY_x00184130;
+typedef struct MWSST_OBJ_x00184130 {
+        Sint32_x00184130 used;
+        Sint32_x00184130 x04;
+        Sint32_x00184130 x08;
+        SJ_x00184130 sj;
+        void *buf;
+        struct MWSST_OBJ_x00184130 *hn;
+} MWSST_OBJ_x00184130;
+typedef struct {
+        Sint32_x00184130 mode;
+        Sint32_x00184130 max_bps;
+        Sint32_x00184130 max_width;
+        Sint32_x00184130 max_height;
+        Sint32_x00184130 max_skip;
+        Sint32_x00184130 nsec;
+        void *work;
+        Sint32_x00184130 wksize;
+        Sint32_x00184130 compo;
+        Sint32_x00184130 buffmt;
+        Sint32_x00184130 x28;
+        Sint32_x00184130 x2c;
+} MWSFD_CRPRM_x00184130;
+typedef struct {
+        void *buf;
+        Sint32_x00184130 bsize;
+        Sint32_x00184130 usize;
+} MWSFD_PICUSR_x00184130;
+typedef struct {
+        void *x00;
+        void *x04;
+        void *x08;
+        void (*Vsync)(void);
+        Sint32_x00184130 (*ExecSvrHndl)(MWPLY_x00184130 mwply);
+        void (*Destroy)(MWPLY_x00184130 mwply);
+        void (*StartFname)(MWPLY_x00184130 mwply, const Char8_x00184130 *fname);
+        void (*Stop)(MWPLY_x00184130 mwply);
+        Sint32_x00184130 (*GetStat)(MWPLY_x00184130 mwply);
+        void (*GetTime)(MWPLY_x00184130 mwply, Sint32_x00184130 *ncount, Sint32_x00184130 *tscale);
+        void (*Pause)(MWPLY_x00184130 mwply, Sint32_x00184130 sw);
+        void (*SetOutVol)(MWPLY_x00184130 mwply, Sint32_x00184130 vol);
+        Sint32_x00184130 (*GetOutVol)(MWPLY_x00184130 mwply);
+        void (*SetOutPan)(MWPLY_x00184130 mwply, Sint32_x00184130 ch, Sint32_x00184130 pan);
+        Sint32_x00184130 (*GetOutPan)(MWPLY_x00184130 mwply, Sint32_x00184130 ch);
+        void (*StartSj)(MWPLY_x00184130 mwply, SJ_x00184130 sj);
+        void (*StartMem)(MWPLY_x00184130 mwply, void *buf, Sint32_x00184130 size);
+} MWPLY_IF_x00184130;
+typedef struct {
+        Sint32_x00184130 valid;
+        Sint32_x00184130 no;
+        Sint32_x00184130 ccs;
+        Sint32_x00184130 maxfrm;
+        Sint32_x00184130 fxtype;
+} MWSFFRM_SFHINF_x00184130;
+struct MWPLY_OBJ_x00184130 {
+        MWPLY_IF_x00184130 *ifc;
+        Sint32_x00184130 stat;
+        Sint32_x00184130 used;
+        MWSFD_CRPRM_x00184130 prm;
+        void *sfd;
+        void *stm;
+        Sint32_x00184130 x48;
+        void *lsc;
+        Sint32_x00184130 compo_fix;
+        Sint32_x00184130 compo;
+        Sint32_x00184130 noskip;
+        Sint32_x00184130 x5c;
+        Sint32_x00184130 sleep_bdr;
+        Sint32_x00184130 mwply_svr_flg;
+        Sint32_x00184130 sfd_svr_flg;
+        Sint32_x00184130 dec_svr_flg;
+        Sint32_x00184130 x70;
+        Sint8_x00184130 linkstm;
+        Sint8_x00184130 linkstm_req;
+        Sint8_x00184130 pause_flg;
+        Sint8_x00184130 pad77;
+        Sint32_x00184130 x78;
+        void *curfrm;
+        Sint32_x00184130 ngetfrm;
+        Sint32_x00184130 nrelfrm;
+        Sint32_x00184130 nskipdisp;
+        Sint32_x00184130 pic_struct;
+        Sint32_x00184130 chroma_format;
+        Sint32_x00184130 chromapos_h;
+        Sint32_x00184130 chromapos_v;
+        SFX_OBJ_x00184130 *sfx;
+        void *sfx_wk;
+        Sint32_x00184130 sfx_wksiz;
+        Sint32_x00184130 sfh_cnt;
+        Sint32_x00184130 sfh_cur;
+        Sint32_x00184130 sfh_wr;
+        MWSFFRM_SFHINF_x00184130 sfhinf[8];
+        MWSFD_PICUSR_x00184130 picusr;
+        Uint8_x00184130 pad170[0x17C - 0x170];
+        MWSFD_PICUSR_x00184130 *picusr_ptr;
+        void *picusr_buf;
+        Sint32_x00184130 picusr_bsize;
+        void *picusr_dat;
+        Sint32_x00184130 picusr_len;
+        SJ_x00184130 ainf_sj;
+        void *ainf_buf;
+        Sint32_x00184130 ainf_bsize;
+        void *addinf_buf;
+        Sint32_x00184130 x1a0;
+        Sint32_x00184130 tag_x1a4;
+        Sint32_x00184130 tag_flg;
+        void *tag_ptr;
+        Sint32_x00184130 tag_size;
+        Sint32_x00184130 x1b4;
+        const Char8_x00184130 *fname;
+        Sint32_x00184130 x1bc;
+        Sint32_x00184130 stm_start_req;
+        void *dir;
+        Sint32_x00184130 ofst;
+        Sint32_x00184130 nsct;
+        SJ_x00184130 sji;
+        SJ_x00184130 file_sj;
+        Sint32_x00184130 x1d8;
+        Sint32_x00184130 flow_nsct;
+        Sint32_x00184130 x1e0;
+        Sint32_x00184130 x1e4;
+        Sint32_x00184130 x1e8;
+        Sint32_x00184130 x1ec;
+        Sint32_x00184130 x1f0;
+        SJ_x00184130 mem_sj;
+        void *mem_buf;
+        Sint32_x00184130 mem_size;
+        void *cwk_buf;
+        Uint32_x00184130 cwk_size;
+        Uint8_x00184130 *cwk_ptr;
+        Uint32_x00184130 cwk_used;
+        Sint32_x00184130 cwk_cnt;
+        void *cwk_tbl[32];
+        MWSST_OBJ_x00184130 sst;
+        Sint32_x00184130 x2ac;
+        Sint32_x00184130 x2b0;
+        Sint32_x00184130 x2b4;
+        Sint32_x00184130 x3c;
+        Sint32_x00184130 x94;
+        Sint32_x00184130 x98;
+        Sint32_x00184130 x9c;
+        Sint32_x00184130 xa8;
+};
+Bool_x00184130 MWSFD_IsEnableHndl_x00184130(MWPLY_OBJ_x00184130 *mwply) __asm__("func_00183B38");
+void MWSFSVM_Error_x00184130(const Char8_x00184130 *fmt, ...) __asm__("func_001870E8");
+extern void MWSFSVM_EntryIdVfunc_x00184130(Sint32_x00184130 id, Sint32_x00184130 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdVfunc");
+extern void MWSFSVM_EntryMainFunc_x00184130(Sint32_x00184130 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryMainFunc");
+extern void MWSFSVM_EntryIdleFunc_x00184130(Sint32_x00184130 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdleFunc");
+void MWSFRNA_SetOutPan_x00184130(MWPLY_OBJ_x00184130 *mwply, Sint32_x00184130 ch, Sint32_x00184130 pan) __asm__("func_001831E8");
+extern void LSC_EntryErrFunc_x00184130(void (*func)(void *obj, Char8_x00184130 *msg), void *obj) __asm__("LSC_EntryErrFunc");
+Bool_x00184130 MWSFD_IsEnableHndl_x00184130(MWPLY_x00184130 mwply) __asm__("func_00183B38");
+extern char ext_str0_x00184130[] __asm__("D_004665A8");
+void mwSfdSetOutPan_x00184130(MWPLY_x00184130 mwply, Sint32_x00184130 ch, Sint32_x00184130 pan) __asm__("mwSfdSetOutPan");
+/* mwSfdSetOutPan_x00184130: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwsfdset.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void mwSfdSetOutPan_x00184130(MWPLY_x00184130 mwply, Sint32_x00184130 ch, Sint32_x00184130 pan)
+{
+        if (!MWSFD_IsEnableHndl_x00184130(mwply)) {
+                MWSFSVM_Error_x00184130(ext_str0_x00184130);
+                return;
+        }
+        MWSFRNA_SetOutPan_x00184130(mwply, ch, pan);
+}
 s32 func_00183200_x001841A0(s32, s32) __asm__("func_00183200");
 s32 func_00183B38_x001841A0() __asm__("func_00183B38");
 s32 func_001870E8_x001841A0(s32 *, s32) __asm__("func_001870E8");
@@ -2215,7 +2761,76 @@ void func_00186840(s32 arg0) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186888);
+typedef unsigned char Uint8_x00186888;
+typedef signed int Sint32_x00186888;
+typedef char Char8_x00186888;
+typedef Sint32_x00186888 Bool_x00186888;
+typedef struct SJ_OBJ_x00186888 *SJ_x00186888;
+typedef struct {
+        Uint8_x00186888 *data;
+        Sint32_x00186888 len;
+} SJCK_x00186888;
+typedef struct {
+        Uint8_x00186888 data[16];
+} SJUUID_x00186888;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00186888 sj);
+        const SJUUID_x00186888 *(*GetUuid)(SJ_x00186888 sj);
+        void (*Reset)(SJ_x00186888 sj);
+        void (*GetChunk)(SJ_x00186888 sj, Sint32_x00186888 id, Sint32_x00186888 nbyte, SJCK_x00186888 *ck);
+        void (*UngetChunk)(SJ_x00186888 sj, Sint32_x00186888 id, SJCK_x00186888 *ck);
+        void (*PutChunk)(SJ_x00186888 sj, Sint32_x00186888 id, SJCK_x00186888 *ck);
+        Sint32_x00186888 (*GetNumData)(SJ_x00186888 sj, Sint32_x00186888 id);
+        Sint32_x00186888 (*IsGetChunk)(SJ_x00186888 sj, Sint32_x00186888 id, Sint32_x00186888 nbyte, Sint32_x00186888 *rbyte);
+        void (*EntryErrFunc)(SJ_x00186888 sj, void (*func)(void *obj, Char8_x00186888 *msg), void *obj);
+} SJ_IF_x00186888;
+struct SJ_OBJ_x00186888 {
+        SJ_IF_x00186888 *vtbl;
+};
+typedef struct MWSST_OBJ_x00186888 {
+        Sint32_x00186888 used;
+        Sint32_x00186888 x04;
+        Sint32_x00186888 x08;
+        SJ_x00186888 sj;
+        void *buf;
+        struct MWSST_OBJ_x00186888 *hn;
+} MWSST_OBJ_x00186888;
+typedef MWSST_OBJ_x00186888 *MWSST_x00186888;
+typedef struct {
+        void *x00;
+        void (*Finish)(void);
+        void *x08;
+        void *x0c;
+        void (*Destroy)(MWSST_x00186888 hn);
+        void (*StartSj)(MWSST_x00186888 hn, SJ_x00186888 sj);
+        void (*Stop)(MWSST_x00186888 hn);
+        Sint32_x00186888 (*GetOutVol)(MWSST_x00186888 hn);
+        void *x20;
+        void (*Pause)(MWSST_x00186888 hn, Sint32_x00186888 sw);
+        void (*SetOutVol)(MWSST_x00186888 hn, Sint32_x00186888 vol);
+        Sint32_x00186888 (*GetStat)(MWSST_x00186888 hn);
+} MWSST_IF_x00186888;
+extern void MWSFSVM_EntryIdVfunc_x00186888(Sint32_x00186888 id, Sint32_x00186888 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdVfunc");
+extern void MWSFSVM_EntryMainFunc_x00186888(Sint32_x00186888 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryMainFunc");
+extern void MWSFSVM_EntryIdleFunc_x00186888(Sint32_x00186888 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdleFunc");
+extern MWSST_IF_x00186888 *func_00510e40_x00186888(void) __asm__("func_00186DB8");
+Bool_x00186888 mwsst_IsValid_x00186888(MWSST_x00186888 sst) __asm__("func_00186DD8");
+void func_00186888_x00186888(MWSST_x00186888 sst) __asm__("func_00186888");
+/* MWSST_StartSj: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwsfdsst.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_00186888_x00186888(MWSST_x00186888 sst)
+{
+        if (mwsst_IsValid_x00186888(sst) == 1) {
+                MWSST_IF_x00186888 *ifc = func_00510e40_x00186888();
+                MWSST_x00186888 hn = sst->hn;
+                SJ_x00186888 sj = sst->sj;
+                if (ifc != 0 && ifc->StartSj != 0) {
+                        ifc->StartSj(hn, sj);
+                }
+        }
+}
 void *func_00186DB8_x001868E0() __asm__("func_00186DB8");
 s32 func_00186DD8_x001868E0() __asm__("func_00186DD8");
 void func_001868E0_x001868E0(u8 *arg0) __asm__("func_001868E0");
@@ -2242,7 +2857,80 @@ void func_001868E0_x001868E0(u8 *arg0)
     }
   }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186938);
+typedef unsigned char Uint8_x00186938;
+typedef signed int Sint32_x00186938;
+typedef char Char8_x00186938;
+typedef Sint32_x00186938 Bool_x00186938;
+typedef struct SJ_OBJ_x00186938 *SJ_x00186938;
+typedef struct {
+        Uint8_x00186938 *data;
+        Sint32_x00186938 len;
+} SJCK_x00186938;
+typedef struct {
+        Uint8_x00186938 data[16];
+} SJUUID_x00186938;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00186938 sj);
+        const SJUUID_x00186938 *(*GetUuid)(SJ_x00186938 sj);
+        void (*Reset)(SJ_x00186938 sj);
+        void (*GetChunk)(SJ_x00186938 sj, Sint32_x00186938 id, Sint32_x00186938 nbyte, SJCK_x00186938 *ck);
+        void (*UngetChunk)(SJ_x00186938 sj, Sint32_x00186938 id, SJCK_x00186938 *ck);
+        void (*PutChunk)(SJ_x00186938 sj, Sint32_x00186938 id, SJCK_x00186938 *ck);
+        Sint32_x00186938 (*GetNumData)(SJ_x00186938 sj, Sint32_x00186938 id);
+        Sint32_x00186938 (*IsGetChunk)(SJ_x00186938 sj, Sint32_x00186938 id, Sint32_x00186938 nbyte, Sint32_x00186938 *rbyte);
+        void (*EntryErrFunc)(SJ_x00186938 sj, void (*func)(void *obj, Char8_x00186938 *msg), void *obj);
+} SJ_IF_x00186938;
+struct SJ_OBJ_x00186938 {
+        SJ_IF_x00186938 *vtbl;
+};
+typedef struct MWSST_OBJ_x00186938 {
+        Sint32_x00186938 used;
+        Sint32_x00186938 x04;
+        Sint32_x00186938 x08;
+        SJ_x00186938 sj;
+        void *buf;
+        struct MWSST_OBJ_x00186938 *hn;
+} MWSST_OBJ_x00186938;
+typedef MWSST_OBJ_x00186938 *MWSST_x00186938;
+typedef struct {
+        void *x00;
+        void (*Finish)(void);
+        void *x08;
+        void *x0c;
+        void (*Destroy)(MWSST_x00186938 hn);
+        void (*StartSj)(MWSST_x00186938 hn, SJ_x00186938 sj);
+        void (*Stop)(MWSST_x00186938 hn);
+        Sint32_x00186938 (*GetOutVol)(MWSST_x00186938 hn);
+        void *x20;
+        void (*Pause)(MWSST_x00186938 hn, Sint32_x00186938 sw);
+        void (*SetOutVol)(MWSST_x00186938 hn, Sint32_x00186938 vol);
+        Sint32_x00186938 (*GetStat)(MWSST_x00186938 hn);
+} MWSST_IF_x00186938;
+extern void MWSFSVM_EntryIdVfunc_x00186938(Sint32_x00186938 id, Sint32_x00186938 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdVfunc");
+extern void MWSFSVM_EntryMainFunc_x00186938(Sint32_x00186938 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryMainFunc");
+extern void MWSFSVM_EntryIdleFunc_x00186938(Sint32_x00186938 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdleFunc");
+extern MWSST_IF_x00186938 *func_00510e40_x00186938(void) __asm__("func_00186DB8");
+Bool_x00186938 mwsst_IsValid_x00186938(MWSST_x00186938 sst) __asm__("func_00186DD8");
+Sint32_x00186938 func_00186938_x00186938(MWSST_x00186938 sst) __asm__("func_00186938");
+/* MWSST_GetOutVol: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwsfdsst.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00186938 func_00186938_x00186938(MWSST_x00186938 sst)
+{
+        Sint32_x00186938 vol = 0;
+        MWSST_x00186938 hn;
+        MWSST_IF_x00186938 *ifc;
+        if (mwsst_IsValid_x00186938(sst) != 1) {
+                return 0;
+        }
+        ifc = func_00510e40_x00186938();
+        hn = sst->hn;
+        if (ifc != 0 && ifc->GetOutVol != 0) {
+                vol = ifc->GetOutVol(hn);
+        }
+        return vol;
+}
 void *func_00186DB8_x001869A0() __asm__("func_00186DB8");
 s32 func_00186DD8_x001869A0() __asm__("func_00186DD8");
 void func_001869A0_x001869A0(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_001869A0");
@@ -2313,7 +3001,80 @@ void func_00186A70_x00186A70(u8 *arg0, s32 arg1)
     }
   }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186AD0);
+typedef unsigned char Uint8_x00186AD0;
+typedef signed int Sint32_x00186AD0;
+typedef char Char8_x00186AD0;
+typedef Sint32_x00186AD0 Bool_x00186AD0;
+typedef struct SJ_OBJ_x00186AD0 *SJ_x00186AD0;
+typedef struct {
+        Uint8_x00186AD0 *data;
+        Sint32_x00186AD0 len;
+} SJCK_x00186AD0;
+typedef struct {
+        Uint8_x00186AD0 data[16];
+} SJUUID_x00186AD0;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00186AD0 sj);
+        const SJUUID_x00186AD0 *(*GetUuid)(SJ_x00186AD0 sj);
+        void (*Reset)(SJ_x00186AD0 sj);
+        void (*GetChunk)(SJ_x00186AD0 sj, Sint32_x00186AD0 id, Sint32_x00186AD0 nbyte, SJCK_x00186AD0 *ck);
+        void (*UngetChunk)(SJ_x00186AD0 sj, Sint32_x00186AD0 id, SJCK_x00186AD0 *ck);
+        void (*PutChunk)(SJ_x00186AD0 sj, Sint32_x00186AD0 id, SJCK_x00186AD0 *ck);
+        Sint32_x00186AD0 (*GetNumData)(SJ_x00186AD0 sj, Sint32_x00186AD0 id);
+        Sint32_x00186AD0 (*IsGetChunk)(SJ_x00186AD0 sj, Sint32_x00186AD0 id, Sint32_x00186AD0 nbyte, Sint32_x00186AD0 *rbyte);
+        void (*EntryErrFunc)(SJ_x00186AD0 sj, void (*func)(void *obj, Char8_x00186AD0 *msg), void *obj);
+} SJ_IF_x00186AD0;
+struct SJ_OBJ_x00186AD0 {
+        SJ_IF_x00186AD0 *vtbl;
+};
+typedef struct MWSST_OBJ_x00186AD0 {
+        Sint32_x00186AD0 used;
+        Sint32_x00186AD0 x04;
+        Sint32_x00186AD0 x08;
+        SJ_x00186AD0 sj;
+        void *buf;
+        struct MWSST_OBJ_x00186AD0 *hn;
+} MWSST_OBJ_x00186AD0;
+typedef MWSST_OBJ_x00186AD0 *MWSST_x00186AD0;
+typedef struct {
+        void *x00;
+        void (*Finish)(void);
+        void *x08;
+        void *x0c;
+        void (*Destroy)(MWSST_x00186AD0 hn);
+        void (*StartSj)(MWSST_x00186AD0 hn, SJ_x00186AD0 sj);
+        void (*Stop)(MWSST_x00186AD0 hn);
+        Sint32_x00186AD0 (*GetOutVol)(MWSST_x00186AD0 hn);
+        void *x20;
+        void (*Pause)(MWSST_x00186AD0 hn, Sint32_x00186AD0 sw);
+        void (*SetOutVol)(MWSST_x00186AD0 hn, Sint32_x00186AD0 vol);
+        Sint32_x00186AD0 (*GetStat)(MWSST_x00186AD0 hn);
+} MWSST_IF_x00186AD0;
+extern void MWSFSVM_EntryIdVfunc_x00186AD0(Sint32_x00186AD0 id, Sint32_x00186AD0 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdVfunc");
+extern void MWSFSVM_EntryMainFunc_x00186AD0(Sint32_x00186AD0 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryMainFunc");
+extern void MWSFSVM_EntryIdleFunc_x00186AD0(Sint32_x00186AD0 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdleFunc");
+extern MWSST_IF_x00186AD0 *func_00510e40_x00186AD0(void) __asm__("func_00186DB8");
+Bool_x00186AD0 mwsst_IsValid_x00186AD0(MWSST_x00186AD0 sst) __asm__("func_00186DD8");
+Sint32_x00186AD0 func_00186AD0_x00186AD0(MWSST_x00186AD0 sst) __asm__("func_00186AD0");
+/* MWSST_GetStat: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwsfdsst.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00186AD0 func_00186AD0_x00186AD0(MWSST_x00186AD0 sst)
+{
+        Sint32_x00186AD0 stat = 0;
+        MWSST_x00186AD0 hn;
+        MWSST_IF_x00186AD0 *ifc;
+        if (mwsst_IsValid_x00186AD0(sst) != 1) {
+                return 0;
+        }
+        ifc = func_00510e40_x00186AD0();
+        hn = sst->hn;
+        if (ifc != 0 && ifc->GetStat != 0) {
+                stat = ifc->GetStat(hn);
+        }
+        return stat;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", MWSST_Create);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186C58);
 void func_00186D08(u8 *arg0) {
@@ -2346,8 +3107,93 @@ s32 func_00186DB8(void) {
 void func_00186DC8(s32 arg0) {
     D_004268A8 = arg0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186DD8);
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00186E18);
+typedef unsigned char Uint8_x00186DD8;
+typedef signed int Sint32_x00186DD8;
+typedef char Char8_x00186DD8;
+typedef Sint32_x00186DD8 Bool_x00186DD8;
+typedef struct SJ_OBJ_x00186DD8 *SJ_x00186DD8;
+typedef struct {
+        Uint8_x00186DD8 *data;
+        Sint32_x00186DD8 len;
+} SJCK_x00186DD8;
+typedef struct {
+        Uint8_x00186DD8 data[16];
+} SJUUID_x00186DD8;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00186DD8 sj);
+        const SJUUID_x00186DD8 *(*GetUuid)(SJ_x00186DD8 sj);
+        void (*Reset)(SJ_x00186DD8 sj);
+        void (*GetChunk)(SJ_x00186DD8 sj, Sint32_x00186DD8 id, Sint32_x00186DD8 nbyte, SJCK_x00186DD8 *ck);
+        void (*UngetChunk)(SJ_x00186DD8 sj, Sint32_x00186DD8 id, SJCK_x00186DD8 *ck);
+        void (*PutChunk)(SJ_x00186DD8 sj, Sint32_x00186DD8 id, SJCK_x00186DD8 *ck);
+        Sint32_x00186DD8 (*GetNumData)(SJ_x00186DD8 sj, Sint32_x00186DD8 id);
+        Sint32_x00186DD8 (*IsGetChunk)(SJ_x00186DD8 sj, Sint32_x00186DD8 id, Sint32_x00186DD8 nbyte, Sint32_x00186DD8 *rbyte);
+        void (*EntryErrFunc)(SJ_x00186DD8 sj, void (*func)(void *obj, Char8_x00186DD8 *msg), void *obj);
+} SJ_IF_x00186DD8;
+struct SJ_OBJ_x00186DD8 {
+        SJ_IF_x00186DD8 *vtbl;
+};
+typedef struct MWSST_OBJ_x00186DD8 {
+        Sint32_x00186DD8 used;
+        Sint32_x00186DD8 x04;
+        Sint32_x00186DD8 x08;
+        SJ_x00186DD8 sj;
+        void *buf;
+        struct MWSST_OBJ_x00186DD8 *hn;
+} MWSST_OBJ_x00186DD8;
+typedef MWSST_OBJ_x00186DD8 *MWSST_x00186DD8;
+typedef struct {
+        void *x00;
+        void (*Finish)(void);
+        void *x08;
+        void *x0c;
+        void (*Destroy)(MWSST_x00186DD8 hn);
+        void (*StartSj)(MWSST_x00186DD8 hn, SJ_x00186DD8 sj);
+        void (*Stop)(MWSST_x00186DD8 hn);
+        Sint32_x00186DD8 (*GetOutVol)(MWSST_x00186DD8 hn);
+        void *x20;
+        void (*Pause)(MWSST_x00186DD8 hn, Sint32_x00186DD8 sw);
+        void (*SetOutVol)(MWSST_x00186DD8 hn, Sint32_x00186DD8 vol);
+        Sint32_x00186DD8 (*GetStat)(MWSST_x00186DD8 hn);
+} MWSST_IF_x00186DD8;
+extern void MWSFSVM_EntryIdVfunc_x00186DD8(Sint32_x00186DD8 id, Sint32_x00186DD8 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdVfunc");
+extern void MWSFSVM_EntryMainFunc_x00186DD8(Sint32_x00186DD8 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryMainFunc");
+extern void MWSFSVM_EntryIdleFunc_x00186DD8(Sint32_x00186DD8 (*func)(void *obj), void *obj) __asm__("MWSFSVM_EntryIdleFunc");
+extern MWSST_IF_x00186DD8 *func_00510e40_x00186DD8(void) __asm__("func_00186DB8");
+Bool_x00186DD8 func_00186DD8_x00186DD8(MWSST_x00186DD8 sst) __asm__("func_00186DD8");
+/* mwsst_IsValid: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwsfdsst.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Bool_x00186DD8 func_00186DD8_x00186DD8(MWSST_x00186DD8 sst)
+{
+        if (func_00510e40_x00186DD8() == 0) {
+                return 0;
+        }
+        if (sst->used != 1) {
+                return 0;
+        }
+        if (sst->hn == 0) {
+                return 0;
+        }
+        return 1;
+}
+typedef signed int Sint32_x00186E18;
+extern void SVM_Init_x00186E18(void) __asm__("func_00170968");
+extern Sint32_x00186E18 mwg_main_fid_x00186E18 __asm__("D_0048CFCC");
+extern Sint32_x00186E18 mwg_idle_fid_x00186E18 __asm__("D_0048CFC8");
+extern Sint32_x00186E18 mwg_vsync_fid_x00186E18 __asm__("D_0048CFC4");
+extern Sint32_x00186E18 mwg_vbin_fid_x00186E18 __asm__("D_0048CFC0");
+void func_00186E18_x00186E18(void) __asm__("func_00186E18");
+/* MWSFSVM_Init: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mwsfdsvm.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_00186E18_x00186E18(void)
+{
+        SVM_Init_x00186E18();
+        mwg_vbin_fid_x00186E18 = 0;
+        mwg_vsync_fid_x00186E18 = 0;
+        mwg_idle_fid_x00186E18 = 0;
+        mwg_main_fid_x00186E18 = 0;
+}
 void func_00186E58(void) {
     func_001709A8();
 }

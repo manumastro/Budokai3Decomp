@@ -234,7 +234,546 @@ s32 func_00196300(u8 *arg0) {
     }
     return *(s32 *)((u8 *)arg0 + 0x50);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00196350);
+typedef unsigned char Uint8_x00196350;
+typedef signed char Sint8_x00196350;
+typedef signed short Sint16_x00196350;
+typedef unsigned int Uint32_x00196350;
+typedef signed int Sint32_x00196350;
+typedef signed long long Sint64_x00196350;
+typedef char Char8_x00196350;
+typedef struct SJ_OBJ_x00196350 *SJ_x00196350;
+typedef struct {
+        Uint8_x00196350 *data;
+        Sint32_x00196350 len;
+} SJCK_x00196350;
+typedef struct {
+        Uint8_x00196350 data[16];
+} SJUUID_x00196350;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00196350 sj);
+        const SJUUID_x00196350 *(*GetUuid)(SJ_x00196350 sj);
+        void (*Reset)(SJ_x00196350 sj);
+        void (*GetChunk)(SJ_x00196350 sj, Sint32_x00196350 id, Sint32_x00196350 nbyte, SJCK_x00196350 *ck);
+        void (*UngetChunk)(SJ_x00196350 sj, Sint32_x00196350 id, SJCK_x00196350 *ck);
+        void (*PutChunk)(SJ_x00196350 sj, Sint32_x00196350 id, SJCK_x00196350 *ck);
+        Sint32_x00196350 (*GetNumData)(SJ_x00196350 sj, Sint32_x00196350 id);
+        Sint32_x00196350 (*IsGetChunk)(SJ_x00196350 sj, Sint32_x00196350 id, Sint32_x00196350 nbyte, Sint32_x00196350 *rbyte);
+        void (*EntryErrFunc)(SJ_x00196350 sj, void (*func)(void *obj, Char8_x00196350 *msg), void *obj);
+} SJ_IF_x00196350;
+struct SJ_OBJ_x00196350 {
+        SJ_IF_x00196350 *vtbl;
+};
+typedef struct SFD_OBJ_x00196350 *SFD_x00196350;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x00196350 rsv1;
+        Sint32_x00196350 rsv2;
+} SFUO_CH_x00196350;
+typedef struct {
+        Sint32_x00196350 nch;
+        SFUO_CH_x00196350 ch[3];
+} SFUO_x00196350;
+typedef struct {
+        Sint32_x00196350 x00;
+        Sint32_x00196350 (*SetOutPan)(SFD_x00196350 sfd, Sint32_x00196350 ch, Sint32_x00196350 pan);
+        Sint32_x00196350 (*GetOutPan)(SFD_x00196350 sfd, Sint32_x00196350 ch);
+        Sint32_x00196350 (*SetOutVol)(SFD_x00196350 sfd, Sint32_x00196350 vol);
+        Sint32_x00196350 (*GetOutVol)(SFD_x00196350 sfd);
+        void (*SetSpeed)(SFD_x00196350 sfd, Sint32_x00196350 speed);
+        Sint32_x00196350 x18;
+} SFAOAP_x00196350;
+typedef struct {
+        Uint8_x00196350 pad0[0xB8];
+        Sint32_x00196350 tottime;
+        Sint32_x00196350 tunit;
+        Uint8_x00196350 padc0[0x150 - 0xC0];
+        Sint64_x00196350 scr_base;
+        Sint64_x00196350 scr_ofst;
+        Sint32_x00196350 pad160;
+        Sint32_x00196350 ctime;
+        Sint32_x00196350 ctime_idx;
+        Sint32_x00196350 ctime_que[32];
+        Sint32_x00196350 tot_last;
+        Sint32_x00196350 pad1F0;
+        Sint32_x00196350 que_wr;
+        Sint32_x00196350 que_rd;
+        Sint32_x00196350 tot_que[32];
+} SFCON_x00196350;
+typedef struct {
+        Sint32_x00196350 type;
+        Sint32_x00196350 drop;
+        Sint32_x00196350 hour;
+        Sint32_x00196350 min;
+        Sint32_x00196350 sec;
+        Sint32_x00196350 frm;
+        Sint32_x00196350 frm2;
+        Sint16_x00196350 x1c;
+        Sint16_x00196350 field;
+} SFTIM_TC_x00196350;
+typedef struct {
+        Sint32_x00196350 valid;
+        SFTIM_TC_x00196350 tc;
+        Sint32_x00196350 val;
+        Sint32_x00196350 unit;
+} SFTIM_TTU_x00196350;
+typedef struct {
+        Sint64_x00196350 pts;
+        Uint32_x00196350 pos;
+        Uint32_x00196350 len;
+} SFPTS_ENT_x00196350;
+typedef struct {
+        SFPTS_ENT_x00196350 *ent;
+        Sint32_x00196350 num;
+        Sint32_x00196350 cnt;
+        Sint32_x00196350 wr;
+        Sint32_x00196350 rd;
+} SFPTS_QUE_x00196350;
+typedef struct {
+        Sint32_x00196350 raw[0x20];
+} SFD_VFRM_INF_x00196350;
+typedef struct {
+        void *frm;
+        Sint32_x00196350 x04;
+        SFD_VFRM_INF_x00196350 inf;
+} SFD_VFRM_x00196350;
+typedef struct {
+        Sint32_x00196350 kind;
+        SJ_x00196350 sj;
+        Uint32_x00196350 ofst;
+        Sint32_x00196350 size;
+        Sint32_x00196350 xsize;
+        Sint32_x00196350 x14;
+} SFBUF_SUP_x00196350;
+typedef struct {
+        SFBUF_SUP_x00196350 sup;
+        Uint8_x00196350 *dlm_pos;
+        Sint32_x00196350 dlm_len;
+        Sint32_x00196350 wtot;
+        Sint32_x00196350 rtot;
+        SFPTS_QUE_x00196350 ptsque;
+} SFBUF_RING_x00196350;
+typedef struct {
+        Sint32_x00196350 mode;
+        Sint32_x00196350 used;
+        Sint32_x00196350 prepflg;
+        Sint32_x00196350 termflg;
+        union {
+                SFBUF_RING_x00196350 ring;
+                struct {
+                        Uint32_x00196350 adr;
+                        Sint32_x00196350 size;
+                        Sint32_x00196350 x18;
+                        Sint32_x00196350 x1c;
+                        SFD_VFRM_x00196350 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x00196350 adr;
+                        Sint32_x00196350 size;
+                        Sint32_x00196350 rsv[7];
+                        Sint32_x00196350 rsv2[3];
+                } aout;
+                SFUO_CH_x00196350 uoch[3];
+        } u;
+        Sint32_x00196350 in_tr;
+        Sint32_x00196350 out_tr;
+        Sint32_x00196350 rsv[8];
+} SFBUF_WORK_x00196350;
+typedef Sint32_x00196350 (*SFD_TR_FUNC_x00196350)();
+typedef struct {
+        Sint32_x00196350 prepflg;
+        Sint32_x00196350 termflg;
+        void *hn;
+        SFD_TR_FUNC_x00196350 *trif;
+        Sint32_x00196350 bufin;
+        Sint32_x00196350 bufout;
+        Sint32_x00196350 bufout2;
+        Sint32_x00196350 bufout3;
+        Sint32_x00196350 x20;
+        Uint8_x00196350 pad24[0x44 - 0x24];
+} SFD_TR_x00196350;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x00196350 cwidth;
+        Sint16_x00196350 ywidth;
+} SFMPV_PLANE_x00196350;
+typedef struct {
+        void *buf;
+        Sint32_x00196350 len;
+} SFMPV_PICUSR_x00196350;
+typedef struct {
+        Sint32_x00196350 stat;
+        Sint32_x00196350 lock;
+        void *buf;
+        SFTIM_TTU_x00196350 ttu;
+        Sint32_x00196350 ftime;
+        Sint32_x00196350 tunit;
+        Sint32_x00196350 ndct;
+        Sint32_x00196350 nbyte;
+        Sint32_x00196350 gopno;
+        Sint32_x00196350 x4c;
+        Sint32_x00196350 x50;
+        SFMPV_PICUSR_x00196350 *picusr;
+        Sint32_x00196350 pa_width;
+        Sint32_x00196350 pa_height;
+        Sint32_x00196350 pa_mb_width;
+        Sint32_x00196350 pa_mb_height;
+        Sint32_x00196350 pa_frame_rate;
+        Sint32_x00196350 tmpref;
+        Sint32_x00196350 pa_pic_type;
+        Sint32_x00196350 pa_tc_drop;
+        Sint32_x00196350 pa_tc_hour;
+        Sint32_x00196350 pa_tc_min;
+        Sint32_x00196350 pa_tc_sec;
+        Sint32_x00196350 pa_tc_pic;
+        Sint32_x00196350 x88;
+        Sint32_x00196350 x8c;
+        Sint32_x00196350 pa_x90[3];
+        Sint32_x00196350 pa_x9c[3];
+        Sint16_x00196350 pa_xa8;
+        Sint16_x00196350 pa_xaa;
+        Sint8_x00196350 pa_xac;
+        Sint8_x00196350 pa_xad;
+        Sint8_x00196350 pa_xae;
+        Sint8_x00196350 pa_xaf;
+        Sint8_x00196350 pa_xb0;
+        Sint8_x00196350 pa_xb1;
+        Sint8_x00196350 pa_xb2;
+        Sint8_x00196350 pa_xb3;
+        Sint8_x00196350 pa_xb4;
+        Sint8_x00196350 pa_xb5;
+        Sint8_x00196350 pa_xb6;
+        Sint8_x00196350 pa_xb7;
+        Sint8_x00196350 pa_xb8;
+        Sint8_x00196350 pa_xb9;
+        Sint8_x00196350 pa_xba;
+        Sint8_x00196350 pa_xbb;
+        Sint8_x00196350 pa_xbc;
+        Uint8_x00196350 padbd[0xD8 - 0xBD];
+        Sint64_x00196350 pts;
+} SFMPV_FRM_x00196350;
+typedef struct {
+        Sint32_x00196350 cwidth;
+        Sint32_x00196350 cheight;
+        Sint32_x00196350 width;
+        Sint32_x00196350 height;
+        Sint32_x00196350 x10;
+        Sint32_x00196350 max_width;
+        Sint32_x00196350 max_height;
+        Sint32_x00196350 nfrm;
+        Sint32_x00196350 x20;
+} SFMPV_PARA_x00196350;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x00196350 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x00196350 *curfrm;
+        Sint32_x00196350 picstat;
+        Sint32_x00196350 dlmmask;
+        Sint32_x00196350 termflg;
+        Sint32_x00196350 gopstat;
+        Sint32_x00196350 nskip;
+        Sint32_x00196350 nconcat;
+        Uint8_x00196350 picatr[0x80];
+        Sint32_x00196350 last_ngop;
+        Sint32_x00196350 newgop;
+        Sint32_x00196350 vbvsiz;
+        Sint32_x00196350 pts_tmpref;
+        Sint32_x00196350 pts_ofst;
+        Sint32_x00196350 pts_max;
+        Sint32_x00196350 pad124;
+        SFPTS_ENT_x00196350 ptsent;
+        Sint32_x00196350 refidx[2];
+        SFMPV_PLANE_x00196350 rfbuf[2];
+        SFMPV_FRM_x00196350 *ref[2];
+        SFMPV_FRM_x00196350 *pendfrm;
+        Sint32_x00196350 skipret;
+        Sint32_x00196350 dlmwait;
+        Sint32_x00196350 tmpref_adj;
+        Sint32_x00196350 nfrm;
+        Sint32_x00196350 pad17c;
+        SFMPV_FRM_x00196350 frm[16];
+        void *picusr_buf;
+        Sint32_x00196350 picusr_num;
+        Sint32_x00196350 picusr_siz;
+        Uint8_x00196350 *picusr_dat;
+        Sint32_x00196350 picusr_len;
+        SFMPV_PICUSR_x00196350 picusr[16];
+        Sint32_x00196350 pad1014;
+        Sint64_x00196350 pts;
+} SFMPV_WORK_x00196350;
+typedef struct {
+        Sint32_x00196350 raw[0x2A];
+} SFD_PLYINF_x00196350 __attribute__((aligned(8)));
+typedef struct {
+        void (*fn)(void *obj, Sint32_x00196350 code);
+        void *obj;
+        Sint32_x00196350 code;
+        Sint32_x00196350 x0c;
+        Sint32_x00196350 x10;
+} SFLIB_ERRINF_x00196350;
+typedef struct {
+        Sint32_x00196350 codec;
+        Sint32_x00196350 layer;
+        Sint32_x00196350 chnum;
+        Sint32_x00196350 smphz;
+} SFHDS_AUD_x00196350;
+typedef struct {
+        Sint32_x00196350 codec;
+        Sint32_x00196350 bitrate;
+        Sint32_x00196350 picw;
+        Sint32_x00196350 pich;
+        Sint32_x00196350 picrate;
+        Sint32_x00196350 ftr_eff;
+        Sint32_x00196350 ftr_coltype;
+        Sint32_x00196350 ftr_pictype;
+        Sint32_x00196350 ftr_fixflg;
+        Sint32_x00196350 ftr_shcfixflg;
+        Sint32_x00196350 ftr_expand;
+        Sint32_x00196350 ftr_gopn;
+        Sint32_x00196350 ftr_gopm;
+} SFHDS_VID_x00196350;
+typedef struct {
+        Sint32_x00196350 valid;
+        Sint32_x00196350 ver_major;
+        Sint32_x00196350 ver_minor;
+        Sint32_x00196350 byterate;
+        Sint32_x00196350 hdrsiz;
+        Sint32_x00196350 packtype;
+        Sint32_x00196350 pketsizlen;
+        Sint32_x00196350 packsiz;
+        Sint32_x00196350 numelem_tot;
+        Sint32_x00196350 numelem_aud;
+        Sint32_x00196350 numelem_vid;
+        Sint32_x00196350 numelem_prv;
+        Sint32_x00196350 maxplylen_aud;
+        Sint32_x00196350 maxplylen_vid;
+        Sint32_x00196350 maxfrmnum;
+        Sint32_x00196350 stmid_prv1;
+        Sint32_x00196350 stmid_prv2;
+        Sint32_x00196350 stmid_aud;
+        Sint32_x00196350 stmid_vid;
+        SFHDS_AUD_x00196350 aud;
+        SFHDS_VID_x00196350 vid;
+        Sint32_x00196350 rawsiz;
+        Uint8_x00196350 raw[0x800];
+} SFHDS_FHD_x00196350;
+typedef struct {
+        Uint8_x00196350 data[2][0xB0];
+        Sint32_x00196350 len[2];
+} SFSEE_SYSHD_x00196350;
+typedef struct {
+        Sint32_x00196350 analyzed;
+        Sint32_x00196350 ncount;
+        Sint32_x00196350 tscale;
+        Sint32_x00196350 nvid;
+        Sint32_x00196350 naud;
+        Sint32_x00196350 pad14;
+        Sint64_x00196350 scr_base;
+        Sint64_x00196350 pts_min;
+        Sint32_x00196350 stmid_vid;
+        Sint32_x00196350 stmid_aud;
+        SFSEE_SYSHD_x00196350 syshd;
+} SFSEE_SHDR_x00196350;
+typedef struct {
+        Sint32_x00196350 analyzed;
+        Sint32_x00196350 ncount;
+        Sint32_x00196350 tscale;
+        SFHDS_FHD_x00196350 fhd;
+        SFSEE_SHDR_x00196350 shdr;
+        Uint8_x00196350 pada38[0xAD0 - 0xA38];
+        Sint32_x00196350 a1hdr;
+        Sint32_x00196350 a1ncount;
+        Sint32_x00196350 a1tscale;
+        Uint8_x00196350 padadc[0xD0C - 0xADC];
+        Sint32_x00196350 a2hdr;
+        Sint32_x00196350 a2ncount;
+        Sint32_x00196350 a2tscale;
+        Uint8_x00196350 padd18[0xDA8 - 0xD18];
+        Sint32_x00196350 rate;
+        Sint32_x00196350 fsize_est;
+        Sint32_x00196350 tot_est;
+        Sint32_x00196350 tunit_est;
+        Sint32_x00196350 av_a;
+        Sint32_x00196350 av_b;
+        Sint32_x00196350 paddc0;
+        Sint32_x00196350 fsize;
+        Sint32_x00196350 tottime;
+        Sint32_x00196350 tunit;
+        Sint32_x00196350 byterate;
+        Sint32_x00196350 seekpos;
+} SFSEE_WORK_x00196350;
+typedef struct {
+        Sint32_x00196350 x00;
+        Sint32_x00196350 pos;
+        Sint32_x00196350 x08;
+} SFSEE_REQ_x00196350;
+typedef struct {
+        Sint32_x00196350 bsize;
+        Sint32_x00196350 xsize;
+        void *buf;
+        Sint32_x00196350 maxnch;
+        Sint32_x00196350 x10;
+        Sint32_x00196350 worksize;
+        void *work;
+} SFADXT_PARA_x00196350;
+typedef struct {
+        void *adxt;
+        SJ_x00196350 sj;
+        SFADXT_PARA_x00196350 para;
+        Sint32_x00196350 tcount;
+        Sint32_x00196350 tunit;
+        Sint32_x00196350 pause;
+        Sint32_x00196350 discard;
+        Sint32_x00196350 seekflg;
+        Sint32_x00196350 smplofst;
+        void (*func)(SFD_x00196350 sfd, Uint8_x00196350 *data, Sint32_x00196350 len, Sint32_x00196350 *nbyte);
+        Sint32_x00196350 x40;
+        Sint32_x00196350 svrfreq;
+        Sint32_x00196350 totbyte;
+        Sint32_x00196350 x4c;
+} SFADXT_WORK_x00196350;
+typedef struct {
+        SFSEE_WORK_x00196350 *wk;
+        SFSEE_REQ_x00196350 req;
+} SFSEE_HN_x00196350;
+typedef struct {
+        Sint32_x00196350 x00;
+        Uint32_x00196350 adr;
+        Sint32_x00196350 size[7];
+        Sint32_x00196350 x24;
+        Sint32_x00196350 unit;
+        Sint32_x00196350 x2c;
+        Sint32_x00196350 x30;
+        Sint32_x00196350 x34;
+        Sint32_x00196350 x38;
+        void *hnwork;
+        Sint32_x00196350 hnwksiz;
+} SFD_CREPRM_x00196350;
+typedef struct {
+        void *x00;
+        Sint32_x00196350 x04;
+        Sint32_x00196350 x08;
+} SFPLY_PTSM_x00196350;
+typedef struct {
+        Sint64_x00196350 sum;
+        Sint64_x00196350 min;
+        Sint64_x00196350 max;
+        Sint32_x00196350 cnt;
+} SFTMR_TSUM_x00196350;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x00196350 nvid;
+        Sint32_x00196350 naud;
+        Sint32_x00196350 x0c;
+        Sint64_x00196350 pts_min;
+        Sint64_x00196350 pts_min2;
+        Sint32_x00196350 concat_cnt;
+        Sint32_x00196350 last_vid;
+        Sint32_x00196350 last_aud;
+        Sint32_x00196350 first_vid;
+        Sint32_x00196350 first_aud;
+        Sint32_x00196350 cur_vid;
+        Sint32_x00196350 cur_aud;
+        Sint32_x00196350 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x00196350 stmid);
+        void *outobj;
+        Sint32_x00196350 skip;
+        Sint32_x00196350 x15c;
+        Sint32_x00196350 x160;
+        Sint32_x00196350 x164;
+} SFMPS_WORK_x00196350;
+typedef struct SFD_OBJ_x00196350 {
+        SFD_CREPRM_x00196350 prm;
+        Sint32_x00196350 chg_flg;
+        Sint32_x00196350 stat;
+        Sint32_x00196350 req;
+        Sint32_x00196350 pause_sw;
+        Sint32_x00196350 pause_cnt;
+        Uint8_x00196350 pad58[0x74 - 0x58];
+        Sint32_x00196350 pad74;
+        SFHDS_FHD_x00196350 fhd;
+        Sint32_x00196350 x90c;
+        Sint32_x00196350 x910;
+        Sint32_x00196350 x914;
+        Sint32_x00196350 x918;
+        Sint32_x00196350 x91c;
+        Sint32_x00196350 picrate;
+        Sint32_x00196350 x924;
+        Sint32_x00196350 x928;
+        Sint32_x00196350 x92c;
+        Sint32_x00196350 numelem_aud;
+        Sint32_x00196350 numelem_vid;
+        Sint32_x00196350 numelem_prv;
+        Sint32_x00196350 x93c;
+        Sint32_x00196350 x940;
+        Sint32_x00196350 x944;
+        Sint32_x00196350 x948;
+        Sint32_x00196350 x94c;
+        SFD_PLYINF_x00196350 plyinf;
+        SFLIB_ERRINF_x00196350 err;
+        Sint32_x00196350 cond[100];
+        Sint32_x00196350 cond_def[100];
+        Uint8_x00196350 padD24[4];
+        SFCON_x00196350 con;
+        Uint8_x00196350 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x00196350))];
+        Uint8_x00196350 tst[0x1C0];
+        Uint8_x00196350 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x00196350 ptsm;
+        Uint8_x00196350 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x00196350 buf[8];
+        SFD_VFRM_x00196350 vfrm[16];
+        SFD_TR_x00196350 tr[9];
+        Sint32_x00196350 pad218c;
+        SFMPS_WORK_x00196350 mps;
+        Uint8_x00196350 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x00196350 mpv;
+        SFADXT_WORK_x00196350 adxt;
+        Uint8_x00196350 pad3410[0x3474 - 0x3410];
+        SFAOAP_x00196350 aoap;
+        SFUO_x00196350 uo_tbl;
+        Sint32_x00196350 pad34c4;
+        SFSEE_HN_x00196350 see;
+        SFTMR_TSUM_x00196350 tsum[6];
+} SFD_OBJ_x00196350;
+Sint32_x00196350 SFLIB_SetErr_x00196350(SFD_x00196350 sfd, Sint32_x00196350 code) __asm__("func_0018D650");
+Sint32_x00196350 SFLIB_CheckHn_x00196350(SFD_x00196350 sfd) __asm__("func_0018D870");
+Sint32_x00196350 SFPL2_Pause_x00196350(SFD_x00196350 sfd, Sint32_x00196350 sw) __asm__("func_001963E0");
+Sint32_x00196350 func_00196350_x00196350(SFD_x00196350 sfd, Sint32_x00196350 sw) __asm__("func_00196350");
+/* SFD_Pause: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_pl2.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00196350 func_00196350_x00196350(SFD_x00196350 sfd, Sint32_x00196350 sw)
+{
+        Sint32_x00196350 psw;
+        Sint32_x00196350 mode;
+        Sint32_x00196350 ret;
+        if (SFLIB_CheckHn_x00196350(sfd) != 0) {
+                return SFLIB_SetErr_x00196350(0, 0xFF000142);
+        }
+        psw = sfd->pause_sw;
+        if (sw == 0) {
+                if (psw == 0) {
+                        return 0;
+                }
+                mode = 0;
+        } else {
+                if (psw == 0) {
+                        mode = 1;
+                } else {
+                        mode = 2;
+                }
+        }
+        sfd->pause_sw = sw;
+        ret = SFPL2_Pause_x00196350(sfd, mode);
+        sfd->chg_flg = 1;
+        return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001963E0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00196470);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001964D8);
@@ -420,7 +959,546 @@ int func_001969F0_x001969F0(int *a0) {
     }
     return ret;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00196AB0);
+typedef unsigned char Uint8_x00196AB0;
+typedef signed char Sint8_x00196AB0;
+typedef signed short Sint16_x00196AB0;
+typedef unsigned int Uint32_x00196AB0;
+typedef signed int Sint32_x00196AB0;
+typedef signed long long Sint64_x00196AB0;
+typedef char Char8_x00196AB0;
+typedef Sint32_x00196AB0 Bool_x00196AB0;
+typedef struct SJ_OBJ_x00196AB0 *SJ_x00196AB0;
+typedef struct {
+        Uint8_x00196AB0 *data;
+        Sint32_x00196AB0 len;
+} SJCK_x00196AB0;
+typedef struct {
+        Uint8_x00196AB0 data[16];
+} SJUUID_x00196AB0;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00196AB0 sj);
+        const SJUUID_x00196AB0 *(*GetUuid)(SJ_x00196AB0 sj);
+        void (*Reset)(SJ_x00196AB0 sj);
+        void (*GetChunk)(SJ_x00196AB0 sj, Sint32_x00196AB0 id, Sint32_x00196AB0 nbyte, SJCK_x00196AB0 *ck);
+        void (*UngetChunk)(SJ_x00196AB0 sj, Sint32_x00196AB0 id, SJCK_x00196AB0 *ck);
+        void (*PutChunk)(SJ_x00196AB0 sj, Sint32_x00196AB0 id, SJCK_x00196AB0 *ck);
+        Sint32_x00196AB0 (*GetNumData)(SJ_x00196AB0 sj, Sint32_x00196AB0 id);
+        Sint32_x00196AB0 (*IsGetChunk)(SJ_x00196AB0 sj, Sint32_x00196AB0 id, Sint32_x00196AB0 nbyte, Sint32_x00196AB0 *rbyte);
+        void (*EntryErrFunc)(SJ_x00196AB0 sj, void (*func)(void *obj, Char8_x00196AB0 *msg), void *obj);
+} SJ_IF_x00196AB0;
+struct SJ_OBJ_x00196AB0 {
+        SJ_IF_x00196AB0 *vtbl;
+};
+typedef struct SFD_OBJ_x00196AB0 *SFD_x00196AB0;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x00196AB0 rsv1;
+        Sint32_x00196AB0 rsv2;
+} SFUO_CH_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 nch;
+        SFUO_CH_x00196AB0 ch[3];
+} SFUO_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 x00;
+        Sint32_x00196AB0 (*SetOutPan)(SFD_x00196AB0 sfd, Sint32_x00196AB0 ch, Sint32_x00196AB0 pan);
+        Sint32_x00196AB0 (*GetOutPan)(SFD_x00196AB0 sfd, Sint32_x00196AB0 ch);
+        Sint32_x00196AB0 (*SetOutVol)(SFD_x00196AB0 sfd, Sint32_x00196AB0 vol);
+        Sint32_x00196AB0 (*GetOutVol)(SFD_x00196AB0 sfd);
+        void (*SetSpeed)(SFD_x00196AB0 sfd, Sint32_x00196AB0 speed);
+        Sint32_x00196AB0 x18;
+} SFAOAP_x00196AB0;
+typedef struct {
+        Uint8_x00196AB0 pad0[0xB8];
+        Sint32_x00196AB0 tottime;
+        Sint32_x00196AB0 tunit;
+        Uint8_x00196AB0 padc0[0x150 - 0xC0];
+        Sint64_x00196AB0 scr_base;
+        Sint64_x00196AB0 scr_ofst;
+        Sint32_x00196AB0 pad160;
+        Sint32_x00196AB0 ctime;
+        Sint32_x00196AB0 ctime_idx;
+        Sint32_x00196AB0 ctime_que[32];
+        Sint32_x00196AB0 tot_last;
+        Sint32_x00196AB0 pad1F0;
+        Sint32_x00196AB0 que_wr;
+        Sint32_x00196AB0 que_rd;
+        Sint32_x00196AB0 tot_que[32];
+} SFCON_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 type;
+        Sint32_x00196AB0 drop;
+        Sint32_x00196AB0 hour;
+        Sint32_x00196AB0 min;
+        Sint32_x00196AB0 sec;
+        Sint32_x00196AB0 frm;
+        Sint32_x00196AB0 frm2;
+        Sint16_x00196AB0 x1c;
+        Sint16_x00196AB0 field;
+} SFTIM_TC_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 valid;
+        SFTIM_TC_x00196AB0 tc;
+        Sint32_x00196AB0 val;
+        Sint32_x00196AB0 unit;
+} SFTIM_TTU_x00196AB0;
+typedef struct {
+        Sint64_x00196AB0 pts;
+        Uint32_x00196AB0 pos;
+        Uint32_x00196AB0 len;
+} SFPTS_ENT_x00196AB0;
+typedef struct {
+        SFPTS_ENT_x00196AB0 *ent;
+        Sint32_x00196AB0 num;
+        Sint32_x00196AB0 cnt;
+        Sint32_x00196AB0 wr;
+        Sint32_x00196AB0 rd;
+} SFPTS_QUE_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 raw[0x20];
+} SFD_VFRM_INF_x00196AB0;
+typedef struct {
+        void *frm;
+        Sint32_x00196AB0 x04;
+        SFD_VFRM_INF_x00196AB0 inf;
+} SFD_VFRM_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 kind;
+        SJ_x00196AB0 sj;
+        Uint32_x00196AB0 ofst;
+        Sint32_x00196AB0 size;
+        Sint32_x00196AB0 xsize;
+        Sint32_x00196AB0 x14;
+} SFBUF_SUP_x00196AB0;
+typedef struct {
+        SFBUF_SUP_x00196AB0 sup;
+        Uint8_x00196AB0 *dlm_pos;
+        Sint32_x00196AB0 dlm_len;
+        Sint32_x00196AB0 wtot;
+        Sint32_x00196AB0 rtot;
+        SFPTS_QUE_x00196AB0 ptsque;
+} SFBUF_RING_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 mode;
+        Sint32_x00196AB0 used;
+        Sint32_x00196AB0 prepflg;
+        Sint32_x00196AB0 termflg;
+        union {
+                SFBUF_RING_x00196AB0 ring;
+                struct {
+                        Uint32_x00196AB0 adr;
+                        Sint32_x00196AB0 size;
+                        Sint32_x00196AB0 x18;
+                        Sint32_x00196AB0 x1c;
+                        SFD_VFRM_x00196AB0 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x00196AB0 adr;
+                        Sint32_x00196AB0 size;
+                        Sint32_x00196AB0 rsv[7];
+                        Sint32_x00196AB0 rsv2[3];
+                } aout;
+                SFUO_CH_x00196AB0 uoch[3];
+        } u;
+        Sint32_x00196AB0 in_tr;
+        Sint32_x00196AB0 out_tr;
+        Sint32_x00196AB0 rsv[8];
+} SFBUF_WORK_x00196AB0;
+typedef Sint32_x00196AB0 (*SFD_TR_FUNC_x00196AB0)();
+typedef struct {
+        Sint32_x00196AB0 prepflg;
+        Sint32_x00196AB0 termflg;
+        void *hn;
+        SFD_TR_FUNC_x00196AB0 *trif;
+        Sint32_x00196AB0 bufin;
+        Sint32_x00196AB0 bufout;
+        Sint32_x00196AB0 bufout2;
+        Sint32_x00196AB0 bufout3;
+        Sint32_x00196AB0 x20;
+        Uint8_x00196AB0 pad24[0x44 - 0x24];
+} SFD_TR_x00196AB0;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x00196AB0 cwidth;
+        Sint16_x00196AB0 ywidth;
+} SFMPV_PLANE_x00196AB0;
+typedef struct {
+        void *buf;
+        Sint32_x00196AB0 len;
+} SFMPV_PICUSR_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 stat;
+        Sint32_x00196AB0 lock;
+        void *buf;
+        SFTIM_TTU_x00196AB0 ttu;
+        Sint32_x00196AB0 ftime;
+        Sint32_x00196AB0 tunit;
+        Sint32_x00196AB0 ndct;
+        Sint32_x00196AB0 nbyte;
+        Sint32_x00196AB0 gopno;
+        Sint32_x00196AB0 x4c;
+        Sint32_x00196AB0 x50;
+        SFMPV_PICUSR_x00196AB0 *picusr;
+        Sint32_x00196AB0 pa_width;
+        Sint32_x00196AB0 pa_height;
+        Sint32_x00196AB0 pa_mb_width;
+        Sint32_x00196AB0 pa_mb_height;
+        Sint32_x00196AB0 pa_frame_rate;
+        Sint32_x00196AB0 tmpref;
+        Sint32_x00196AB0 pa_pic_type;
+        Sint32_x00196AB0 pa_tc_drop;
+        Sint32_x00196AB0 pa_tc_hour;
+        Sint32_x00196AB0 pa_tc_min;
+        Sint32_x00196AB0 pa_tc_sec;
+        Sint32_x00196AB0 pa_tc_pic;
+        Sint32_x00196AB0 x88;
+        Sint32_x00196AB0 x8c;
+        Sint32_x00196AB0 pa_x90[3];
+        Sint32_x00196AB0 pa_x9c[3];
+        Sint16_x00196AB0 pa_xa8;
+        Sint16_x00196AB0 pa_xaa;
+        Sint8_x00196AB0 pa_xac;
+        Sint8_x00196AB0 pa_xad;
+        Sint8_x00196AB0 pa_xae;
+        Sint8_x00196AB0 pa_xaf;
+        Sint8_x00196AB0 pa_xb0;
+        Sint8_x00196AB0 pa_xb1;
+        Sint8_x00196AB0 pa_xb2;
+        Sint8_x00196AB0 pa_xb3;
+        Sint8_x00196AB0 pa_xb4;
+        Sint8_x00196AB0 pa_xb5;
+        Sint8_x00196AB0 pa_xb6;
+        Sint8_x00196AB0 pa_xb7;
+        Sint8_x00196AB0 pa_xb8;
+        Sint8_x00196AB0 pa_xb9;
+        Sint8_x00196AB0 pa_xba;
+        Sint8_x00196AB0 pa_xbb;
+        Sint8_x00196AB0 pa_xbc;
+        Uint8_x00196AB0 padbd[0xD8 - 0xBD];
+        Sint64_x00196AB0 pts;
+} SFMPV_FRM_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 cwidth;
+        Sint32_x00196AB0 cheight;
+        Sint32_x00196AB0 width;
+        Sint32_x00196AB0 height;
+        Sint32_x00196AB0 x10;
+        Sint32_x00196AB0 max_width;
+        Sint32_x00196AB0 max_height;
+        Sint32_x00196AB0 nfrm;
+        Sint32_x00196AB0 x20;
+} SFMPV_PARA_x00196AB0;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x00196AB0 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x00196AB0 *curfrm;
+        Sint32_x00196AB0 picstat;
+        Sint32_x00196AB0 dlmmask;
+        Sint32_x00196AB0 termflg;
+        Sint32_x00196AB0 gopstat;
+        Sint32_x00196AB0 nskip;
+        Sint32_x00196AB0 nconcat;
+        Uint8_x00196AB0 picatr[0x80];
+        Sint32_x00196AB0 last_ngop;
+        Sint32_x00196AB0 newgop;
+        Sint32_x00196AB0 vbvsiz;
+        Sint32_x00196AB0 pts_tmpref;
+        Sint32_x00196AB0 pts_ofst;
+        Sint32_x00196AB0 pts_max;
+        Sint32_x00196AB0 pad124;
+        SFPTS_ENT_x00196AB0 ptsent;
+        Sint32_x00196AB0 refidx[2];
+        SFMPV_PLANE_x00196AB0 rfbuf[2];
+        SFMPV_FRM_x00196AB0 *ref[2];
+        SFMPV_FRM_x00196AB0 *pendfrm;
+        Sint32_x00196AB0 skipret;
+        Sint32_x00196AB0 dlmwait;
+        Sint32_x00196AB0 tmpref_adj;
+        Sint32_x00196AB0 nfrm;
+        Sint32_x00196AB0 pad17c;
+        SFMPV_FRM_x00196AB0 frm[16];
+        void *picusr_buf;
+        Sint32_x00196AB0 picusr_num;
+        Sint32_x00196AB0 picusr_siz;
+        Uint8_x00196AB0 *picusr_dat;
+        Sint32_x00196AB0 picusr_len;
+        SFMPV_PICUSR_x00196AB0 picusr[16];
+        Sint32_x00196AB0 pad1014;
+        Sint64_x00196AB0 pts;
+} SFMPV_WORK_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 raw[0x2A];
+} SFD_PLYINF_x00196AB0 __attribute__((aligned(8)));
+typedef struct {
+        void (*fn)(void *obj, Sint32_x00196AB0 code);
+        void *obj;
+        Sint32_x00196AB0 code;
+        Sint32_x00196AB0 x0c;
+        Sint32_x00196AB0 x10;
+} SFLIB_ERRINF_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 codec;
+        Sint32_x00196AB0 layer;
+        Sint32_x00196AB0 chnum;
+        Sint32_x00196AB0 smphz;
+} SFHDS_AUD_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 codec;
+        Sint32_x00196AB0 bitrate;
+        Sint32_x00196AB0 picw;
+        Sint32_x00196AB0 pich;
+        Sint32_x00196AB0 picrate;
+        Sint32_x00196AB0 ftr_eff;
+        Sint32_x00196AB0 ftr_coltype;
+        Sint32_x00196AB0 ftr_pictype;
+        Sint32_x00196AB0 ftr_fixflg;
+        Sint32_x00196AB0 ftr_shcfixflg;
+        Sint32_x00196AB0 ftr_expand;
+        Sint32_x00196AB0 ftr_gopn;
+        Sint32_x00196AB0 ftr_gopm;
+} SFHDS_VID_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 valid;
+        Sint32_x00196AB0 ver_major;
+        Sint32_x00196AB0 ver_minor;
+        Sint32_x00196AB0 byterate;
+        Sint32_x00196AB0 hdrsiz;
+        Sint32_x00196AB0 packtype;
+        Sint32_x00196AB0 pketsizlen;
+        Sint32_x00196AB0 packsiz;
+        Sint32_x00196AB0 numelem_tot;
+        Sint32_x00196AB0 numelem_aud;
+        Sint32_x00196AB0 numelem_vid;
+        Sint32_x00196AB0 numelem_prv;
+        Sint32_x00196AB0 maxplylen_aud;
+        Sint32_x00196AB0 maxplylen_vid;
+        Sint32_x00196AB0 maxfrmnum;
+        Sint32_x00196AB0 stmid_prv1;
+        Sint32_x00196AB0 stmid_prv2;
+        Sint32_x00196AB0 stmid_aud;
+        Sint32_x00196AB0 stmid_vid;
+        SFHDS_AUD_x00196AB0 aud;
+        SFHDS_VID_x00196AB0 vid;
+        Sint32_x00196AB0 rawsiz;
+        Uint8_x00196AB0 raw[0x800];
+} SFHDS_FHD_x00196AB0;
+typedef struct {
+        Uint8_x00196AB0 data[2][0xB0];
+        Sint32_x00196AB0 len[2];
+} SFSEE_SYSHD_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 analyzed;
+        Sint32_x00196AB0 ncount;
+        Sint32_x00196AB0 tscale;
+        Sint32_x00196AB0 nvid;
+        Sint32_x00196AB0 naud;
+        Sint32_x00196AB0 pad14;
+        Sint64_x00196AB0 scr_base;
+        Sint64_x00196AB0 pts_min;
+        Sint32_x00196AB0 stmid_vid;
+        Sint32_x00196AB0 stmid_aud;
+        SFSEE_SYSHD_x00196AB0 syshd;
+} SFSEE_SHDR_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 analyzed;
+        Sint32_x00196AB0 ncount;
+        Sint32_x00196AB0 tscale;
+        SFHDS_FHD_x00196AB0 fhd;
+        SFSEE_SHDR_x00196AB0 shdr;
+        Uint8_x00196AB0 pada38[0xAD0 - 0xA38];
+        Sint32_x00196AB0 a1hdr;
+        Sint32_x00196AB0 a1ncount;
+        Sint32_x00196AB0 a1tscale;
+        Uint8_x00196AB0 padadc[0xD0C - 0xADC];
+        Sint32_x00196AB0 a2hdr;
+        Sint32_x00196AB0 a2ncount;
+        Sint32_x00196AB0 a2tscale;
+        Uint8_x00196AB0 padd18[0xDA8 - 0xD18];
+        Sint32_x00196AB0 rate;
+        Sint32_x00196AB0 fsize_est;
+        Sint32_x00196AB0 tot_est;
+        Sint32_x00196AB0 tunit_est;
+        Sint32_x00196AB0 av_a;
+        Sint32_x00196AB0 av_b;
+        Sint32_x00196AB0 paddc0;
+        Sint32_x00196AB0 fsize;
+        Sint32_x00196AB0 tottime;
+        Sint32_x00196AB0 tunit;
+        Sint32_x00196AB0 byterate;
+        Sint32_x00196AB0 seekpos;
+} SFSEE_WORK_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 x00;
+        Sint32_x00196AB0 pos;
+        Sint32_x00196AB0 x08;
+} SFSEE_REQ_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 bsize;
+        Sint32_x00196AB0 xsize;
+        void *buf;
+        Sint32_x00196AB0 maxnch;
+        Sint32_x00196AB0 x10;
+        Sint32_x00196AB0 worksize;
+        void *work;
+} SFADXT_PARA_x00196AB0;
+typedef struct {
+        void *adxt;
+        SJ_x00196AB0 sj;
+        SFADXT_PARA_x00196AB0 para;
+        Sint32_x00196AB0 tcount;
+        Sint32_x00196AB0 tunit;
+        Sint32_x00196AB0 pause;
+        Sint32_x00196AB0 discard;
+        Sint32_x00196AB0 seekflg;
+        Sint32_x00196AB0 smplofst;
+        void (*func)(SFD_x00196AB0 sfd, Uint8_x00196AB0 *data, Sint32_x00196AB0 len, Sint32_x00196AB0 *nbyte);
+        Sint32_x00196AB0 x40;
+        Sint32_x00196AB0 svrfreq;
+        Sint32_x00196AB0 totbyte;
+        Sint32_x00196AB0 x4c;
+} SFADXT_WORK_x00196AB0;
+typedef struct {
+        SFSEE_WORK_x00196AB0 *wk;
+        SFSEE_REQ_x00196AB0 req;
+} SFSEE_HN_x00196AB0;
+typedef struct {
+        Sint32_x00196AB0 x00;
+        Uint32_x00196AB0 adr;
+        Sint32_x00196AB0 size[7];
+        Sint32_x00196AB0 x24;
+        Sint32_x00196AB0 unit;
+        Sint32_x00196AB0 x2c;
+        Sint32_x00196AB0 x30;
+        Sint32_x00196AB0 x34;
+        Sint32_x00196AB0 x38;
+        void *hnwork;
+        Sint32_x00196AB0 hnwksiz;
+} SFD_CREPRM_x00196AB0;
+typedef struct {
+        void *x00;
+        Sint32_x00196AB0 x04;
+        Sint32_x00196AB0 x08;
+} SFPLY_PTSM_x00196AB0;
+typedef struct {
+        Sint64_x00196AB0 sum;
+        Sint64_x00196AB0 min;
+        Sint64_x00196AB0 max;
+        Sint32_x00196AB0 cnt;
+} SFTMR_TSUM_x00196AB0;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x00196AB0 nvid;
+        Sint32_x00196AB0 naud;
+        Sint32_x00196AB0 x0c;
+        Sint64_x00196AB0 pts_min;
+        Sint64_x00196AB0 pts_min2;
+        Sint32_x00196AB0 concat_cnt;
+        Sint32_x00196AB0 last_vid;
+        Sint32_x00196AB0 last_aud;
+        Sint32_x00196AB0 first_vid;
+        Sint32_x00196AB0 first_aud;
+        Sint32_x00196AB0 cur_vid;
+        Sint32_x00196AB0 cur_aud;
+        Sint32_x00196AB0 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x00196AB0 stmid);
+        void *outobj;
+        Sint32_x00196AB0 skip;
+        Sint32_x00196AB0 x15c;
+        Sint32_x00196AB0 x160;
+        Sint32_x00196AB0 x164;
+} SFMPS_WORK_x00196AB0;
+typedef struct SFD_OBJ_x00196AB0 {
+        SFD_CREPRM_x00196AB0 prm;
+        Sint32_x00196AB0 chg_flg;
+        Sint32_x00196AB0 stat;
+        Sint32_x00196AB0 req;
+        Sint32_x00196AB0 pause_sw;
+        Sint32_x00196AB0 pause_cnt;
+        Uint8_x00196AB0 pad58[0x74 - 0x58];
+        Sint32_x00196AB0 pad74;
+        SFHDS_FHD_x00196AB0 fhd;
+        Sint32_x00196AB0 x90c;
+        Sint32_x00196AB0 x910;
+        Sint32_x00196AB0 x914;
+        Sint32_x00196AB0 x918;
+        Sint32_x00196AB0 x91c;
+        Sint32_x00196AB0 picrate;
+        Sint32_x00196AB0 x924;
+        Sint32_x00196AB0 x928;
+        Sint32_x00196AB0 x92c;
+        Sint32_x00196AB0 numelem_aud;
+        Sint32_x00196AB0 numelem_vid;
+        Sint32_x00196AB0 numelem_prv;
+        Sint32_x00196AB0 x93c;
+        Sint32_x00196AB0 x940;
+        Sint32_x00196AB0 x944;
+        Sint32_x00196AB0 x948;
+        Sint32_x00196AB0 x94c;
+        SFD_PLYINF_x00196AB0 plyinf;
+        SFLIB_ERRINF_x00196AB0 err;
+        Sint32_x00196AB0 cond[100];
+        Sint32_x00196AB0 cond_def[100];
+        Uint8_x00196AB0 padD24[4];
+        SFCON_x00196AB0 con;
+        Uint8_x00196AB0 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x00196AB0))];
+        Uint8_x00196AB0 tst[0x1C0];
+        Uint8_x00196AB0 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x00196AB0 ptsm;
+        Uint8_x00196AB0 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x00196AB0 buf[8];
+        SFD_VFRM_x00196AB0 vfrm[16];
+        SFD_TR_x00196AB0 tr[9];
+        Sint32_x00196AB0 pad218c;
+        SFMPS_WORK_x00196AB0 mps;
+        Uint8_x00196AB0 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x00196AB0 mpv;
+        SFADXT_WORK_x00196AB0 adxt;
+        Uint8_x00196AB0 pad3410[0x3474 - 0x3410];
+        SFAOAP_x00196AB0 aoap;
+        SFUO_x00196AB0 uo_tbl;
+        Sint32_x00196AB0 pad34c4;
+        SFSEE_HN_x00196AB0 see;
+        SFTMR_TSUM_x00196AB0 tsum[6];
+} SFD_OBJ_x00196AB0;
+Sint32_x00196AB0 SFSET_GetCond_x00196AB0(SFD_x00196AB0 sfd, Sint32_x00196AB0 id) __asm__("func_001999E0");
+Sint32_x00196AB0 SFTRN_GetTermFlg_x00196AB0(SFD_x00196AB0 sfd, Sint32_x00196AB0 id) __asm__("func_0019C170");
+Sint32_x00196AB0 SFTRN_GetPrepFlg_x00196AB0(SFD_x00196AB0 sfd, Sint32_x00196AB0 id) __asm__("func_0019C140");
+extern Sint32_x00196AB0 SFTRN_GetPrepFlg_x00196AB0(SFD_x00196AB0 sfd, Sint32_x00196AB0 id) __asm__("func_0019C140");
+extern void (*SFPLY_recordgetfrm_x00196AB0)(SFD_x00196AB0 sfd, void *frm) __asm__("SFPLY_recordgetfrm");
+extern void (*SFPLY_SetPtsInfo_x00196AB0)(SFPLY_PTSM_x00196AB0 *ptsm) __asm__("SFPLY_SetPtsInfo");
+extern void (*SFPLY_ResetPtsm_x00196AB0)(SFPLY_PTSM_x00196AB0 *ptsm) __asm__("SFPLY_ResetPtsm");
+Bool_x00196AB0 func_00196AB0_x00196AB0(SFD_x00196AB0 sfd) __asm__("func_00196AB0");
+/* sfply_IsPrepared: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_ply.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Bool_x00196AB0 func_00196AB0_x00196AB0(SFD_x00196AB0 sfd)
+{
+        Bool_x00196AB0 vprep;
+        Bool_x00196AB0 aprep;
+        if (SFSET_GetCond_x00196AB0(sfd, 5) == 0) {
+                vprep = 1;
+        } else {
+                vprep = SFTRN_GetPrepFlg_x00196AB0(sfd, 6);
+                vprep |= SFTRN_GetTermFlg_x00196AB0(sfd, 6);
+        }
+        if (SFSET_GetCond_x00196AB0(sfd, 6) == 0) {
+                aprep = 1;
+        } else {
+                aprep = SFTRN_GetPrepFlg_x00196AB0(sfd, 7);
+                aprep |= SFTRN_GetTermFlg_x00196AB0(sfd, 7);
+        }
+        if (vprep == 0 || aprep == 0) {
+                return 0;
+        }
+        return 1;
+}
 void func_00196B60(s32 arg0) {
     func_00196B90();
     func_00196C38(arg0);
@@ -500,7 +1578,540 @@ s32 func_00196F08_x00196F08(s32 arg0)
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00196FB8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197138);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197218);
+typedef unsigned char Uint8_x00197218;
+typedef signed char Sint8_x00197218;
+typedef signed short Sint16_x00197218;
+typedef unsigned int Uint32_x00197218;
+typedef signed int Sint32_x00197218;
+typedef signed long long Sint64_x00197218;
+typedef char Char8_x00197218;
+typedef Sint32_x00197218 Bool_x00197218;
+typedef struct SJ_OBJ_x00197218 *SJ_x00197218;
+typedef struct {
+        Uint8_x00197218 *data;
+        Sint32_x00197218 len;
+} SJCK_x00197218;
+typedef struct {
+        Uint8_x00197218 data[16];
+} SJUUID_x00197218;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00197218 sj);
+        const SJUUID_x00197218 *(*GetUuid)(SJ_x00197218 sj);
+        void (*Reset)(SJ_x00197218 sj);
+        void (*GetChunk)(SJ_x00197218 sj, Sint32_x00197218 id, Sint32_x00197218 nbyte, SJCK_x00197218 *ck);
+        void (*UngetChunk)(SJ_x00197218 sj, Sint32_x00197218 id, SJCK_x00197218 *ck);
+        void (*PutChunk)(SJ_x00197218 sj, Sint32_x00197218 id, SJCK_x00197218 *ck);
+        Sint32_x00197218 (*GetNumData)(SJ_x00197218 sj, Sint32_x00197218 id);
+        Sint32_x00197218 (*IsGetChunk)(SJ_x00197218 sj, Sint32_x00197218 id, Sint32_x00197218 nbyte, Sint32_x00197218 *rbyte);
+        void (*EntryErrFunc)(SJ_x00197218 sj, void (*func)(void *obj, Char8_x00197218 *msg), void *obj);
+} SJ_IF_x00197218;
+struct SJ_OBJ_x00197218 {
+        SJ_IF_x00197218 *vtbl;
+};
+typedef struct SFD_OBJ_x00197218 *SFD_x00197218;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x00197218 rsv1;
+        Sint32_x00197218 rsv2;
+} SFUO_CH_x00197218;
+typedef struct {
+        Sint32_x00197218 nch;
+        SFUO_CH_x00197218 ch[3];
+} SFUO_x00197218;
+typedef struct {
+        Sint32_x00197218 x00;
+        Sint32_x00197218 (*SetOutPan)(SFD_x00197218 sfd, Sint32_x00197218 ch, Sint32_x00197218 pan);
+        Sint32_x00197218 (*GetOutPan)(SFD_x00197218 sfd, Sint32_x00197218 ch);
+        Sint32_x00197218 (*SetOutVol)(SFD_x00197218 sfd, Sint32_x00197218 vol);
+        Sint32_x00197218 (*GetOutVol)(SFD_x00197218 sfd);
+        void (*SetSpeed)(SFD_x00197218 sfd, Sint32_x00197218 speed);
+        Sint32_x00197218 x18;
+} SFAOAP_x00197218;
+typedef struct {
+        Uint8_x00197218 pad0[0xB8];
+        Sint32_x00197218 tottime;
+        Sint32_x00197218 tunit;
+        Uint8_x00197218 padc0[0x150 - 0xC0];
+        Sint64_x00197218 scr_base;
+        Sint64_x00197218 scr_ofst;
+        Sint32_x00197218 pad160;
+        Sint32_x00197218 ctime;
+        Sint32_x00197218 ctime_idx;
+        Sint32_x00197218 ctime_que[32];
+        Sint32_x00197218 tot_last;
+        Sint32_x00197218 pad1F0;
+        Sint32_x00197218 que_wr;
+        Sint32_x00197218 que_rd;
+        Sint32_x00197218 tot_que[32];
+} SFCON_x00197218;
+typedef struct {
+        Sint32_x00197218 type;
+        Sint32_x00197218 drop;
+        Sint32_x00197218 hour;
+        Sint32_x00197218 min;
+        Sint32_x00197218 sec;
+        Sint32_x00197218 frm;
+        Sint32_x00197218 frm2;
+        Sint16_x00197218 x1c;
+        Sint16_x00197218 field;
+} SFTIM_TC_x00197218;
+typedef struct {
+        Sint32_x00197218 valid;
+        SFTIM_TC_x00197218 tc;
+        Sint32_x00197218 val;
+        Sint32_x00197218 unit;
+} SFTIM_TTU_x00197218;
+typedef struct {
+        Sint64_x00197218 pts;
+        Uint32_x00197218 pos;
+        Uint32_x00197218 len;
+} SFPTS_ENT_x00197218;
+typedef struct {
+        SFPTS_ENT_x00197218 *ent;
+        Sint32_x00197218 num;
+        Sint32_x00197218 cnt;
+        Sint32_x00197218 wr;
+        Sint32_x00197218 rd;
+} SFPTS_QUE_x00197218;
+typedef struct {
+        Sint32_x00197218 raw[0x20];
+} SFD_VFRM_INF_x00197218;
+typedef struct {
+        void *frm;
+        Sint32_x00197218 x04;
+        SFD_VFRM_INF_x00197218 inf;
+} SFD_VFRM_x00197218;
+typedef struct {
+        Sint32_x00197218 kind;
+        SJ_x00197218 sj;
+        Uint32_x00197218 ofst;
+        Sint32_x00197218 size;
+        Sint32_x00197218 xsize;
+        Sint32_x00197218 x14;
+} SFBUF_SUP_x00197218;
+typedef struct {
+        SFBUF_SUP_x00197218 sup;
+        Uint8_x00197218 *dlm_pos;
+        Sint32_x00197218 dlm_len;
+        Sint32_x00197218 wtot;
+        Sint32_x00197218 rtot;
+        SFPTS_QUE_x00197218 ptsque;
+} SFBUF_RING_x00197218;
+typedef struct {
+        Sint32_x00197218 mode;
+        Sint32_x00197218 used;
+        Sint32_x00197218 prepflg;
+        Sint32_x00197218 termflg;
+        union {
+                SFBUF_RING_x00197218 ring;
+                struct {
+                        Uint32_x00197218 adr;
+                        Sint32_x00197218 size;
+                        Sint32_x00197218 x18;
+                        Sint32_x00197218 x1c;
+                        SFD_VFRM_x00197218 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x00197218 adr;
+                        Sint32_x00197218 size;
+                        Sint32_x00197218 rsv[7];
+                        Sint32_x00197218 rsv2[3];
+                } aout;
+                SFUO_CH_x00197218 uoch[3];
+        } u;
+        Sint32_x00197218 in_tr;
+        Sint32_x00197218 out_tr;
+        Sint32_x00197218 rsv[8];
+} SFBUF_WORK_x00197218;
+typedef Sint32_x00197218 (*SFD_TR_FUNC_x00197218)();
+typedef struct {
+        Sint32_x00197218 prepflg;
+        Sint32_x00197218 termflg;
+        void *hn;
+        SFD_TR_FUNC_x00197218 *trif;
+        Sint32_x00197218 bufin;
+        Sint32_x00197218 bufout;
+        Sint32_x00197218 bufout2;
+        Sint32_x00197218 bufout3;
+        Sint32_x00197218 x20;
+        Uint8_x00197218 pad24[0x44 - 0x24];
+} SFD_TR_x00197218;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x00197218 cwidth;
+        Sint16_x00197218 ywidth;
+} SFMPV_PLANE_x00197218;
+typedef struct {
+        void *buf;
+        Sint32_x00197218 len;
+} SFMPV_PICUSR_x00197218;
+typedef struct {
+        Sint32_x00197218 stat;
+        Sint32_x00197218 lock;
+        void *buf;
+        SFTIM_TTU_x00197218 ttu;
+        Sint32_x00197218 ftime;
+        Sint32_x00197218 tunit;
+        Sint32_x00197218 ndct;
+        Sint32_x00197218 nbyte;
+        Sint32_x00197218 gopno;
+        Sint32_x00197218 x4c;
+        Sint32_x00197218 x50;
+        SFMPV_PICUSR_x00197218 *picusr;
+        Sint32_x00197218 pa_width;
+        Sint32_x00197218 pa_height;
+        Sint32_x00197218 pa_mb_width;
+        Sint32_x00197218 pa_mb_height;
+        Sint32_x00197218 pa_frame_rate;
+        Sint32_x00197218 tmpref;
+        Sint32_x00197218 pa_pic_type;
+        Sint32_x00197218 pa_tc_drop;
+        Sint32_x00197218 pa_tc_hour;
+        Sint32_x00197218 pa_tc_min;
+        Sint32_x00197218 pa_tc_sec;
+        Sint32_x00197218 pa_tc_pic;
+        Sint32_x00197218 x88;
+        Sint32_x00197218 x8c;
+        Sint32_x00197218 pa_x90[3];
+        Sint32_x00197218 pa_x9c[3];
+        Sint16_x00197218 pa_xa8;
+        Sint16_x00197218 pa_xaa;
+        Sint8_x00197218 pa_xac;
+        Sint8_x00197218 pa_xad;
+        Sint8_x00197218 pa_xae;
+        Sint8_x00197218 pa_xaf;
+        Sint8_x00197218 pa_xb0;
+        Sint8_x00197218 pa_xb1;
+        Sint8_x00197218 pa_xb2;
+        Sint8_x00197218 pa_xb3;
+        Sint8_x00197218 pa_xb4;
+        Sint8_x00197218 pa_xb5;
+        Sint8_x00197218 pa_xb6;
+        Sint8_x00197218 pa_xb7;
+        Sint8_x00197218 pa_xb8;
+        Sint8_x00197218 pa_xb9;
+        Sint8_x00197218 pa_xba;
+        Sint8_x00197218 pa_xbb;
+        Sint8_x00197218 pa_xbc;
+        Uint8_x00197218 padbd[0xD8 - 0xBD];
+        Sint64_x00197218 pts;
+} SFMPV_FRM_x00197218;
+typedef struct {
+        Sint32_x00197218 cwidth;
+        Sint32_x00197218 cheight;
+        Sint32_x00197218 width;
+        Sint32_x00197218 height;
+        Sint32_x00197218 x10;
+        Sint32_x00197218 max_width;
+        Sint32_x00197218 max_height;
+        Sint32_x00197218 nfrm;
+        Sint32_x00197218 x20;
+} SFMPV_PARA_x00197218;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x00197218 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x00197218 *curfrm;
+        Sint32_x00197218 picstat;
+        Sint32_x00197218 dlmmask;
+        Sint32_x00197218 termflg;
+        Sint32_x00197218 gopstat;
+        Sint32_x00197218 nskip;
+        Sint32_x00197218 nconcat;
+        Uint8_x00197218 picatr[0x80];
+        Sint32_x00197218 last_ngop;
+        Sint32_x00197218 newgop;
+        Sint32_x00197218 vbvsiz;
+        Sint32_x00197218 pts_tmpref;
+        Sint32_x00197218 pts_ofst;
+        Sint32_x00197218 pts_max;
+        Sint32_x00197218 pad124;
+        SFPTS_ENT_x00197218 ptsent;
+        Sint32_x00197218 refidx[2];
+        SFMPV_PLANE_x00197218 rfbuf[2];
+        SFMPV_FRM_x00197218 *ref[2];
+        SFMPV_FRM_x00197218 *pendfrm;
+        Sint32_x00197218 skipret;
+        Sint32_x00197218 dlmwait;
+        Sint32_x00197218 tmpref_adj;
+        Sint32_x00197218 nfrm;
+        Sint32_x00197218 pad17c;
+        SFMPV_FRM_x00197218 frm[16];
+        void *picusr_buf;
+        Sint32_x00197218 picusr_num;
+        Sint32_x00197218 picusr_siz;
+        Uint8_x00197218 *picusr_dat;
+        Sint32_x00197218 picusr_len;
+        SFMPV_PICUSR_x00197218 picusr[16];
+        Sint32_x00197218 pad1014;
+        Sint64_x00197218 pts;
+} SFMPV_WORK_x00197218;
+typedef struct {
+        Sint32_x00197218 raw[0x2A];
+} SFD_PLYINF_x00197218 __attribute__((aligned(8)));
+typedef struct {
+        void (*fn)(void *obj, Sint32_x00197218 code);
+        void *obj;
+        Sint32_x00197218 code;
+        Sint32_x00197218 x0c;
+        Sint32_x00197218 x10;
+} SFLIB_ERRINF_x00197218;
+typedef struct {
+        Sint32_x00197218 codec;
+        Sint32_x00197218 layer;
+        Sint32_x00197218 chnum;
+        Sint32_x00197218 smphz;
+} SFHDS_AUD_x00197218;
+typedef struct {
+        Sint32_x00197218 codec;
+        Sint32_x00197218 bitrate;
+        Sint32_x00197218 picw;
+        Sint32_x00197218 pich;
+        Sint32_x00197218 picrate;
+        Sint32_x00197218 ftr_eff;
+        Sint32_x00197218 ftr_coltype;
+        Sint32_x00197218 ftr_pictype;
+        Sint32_x00197218 ftr_fixflg;
+        Sint32_x00197218 ftr_shcfixflg;
+        Sint32_x00197218 ftr_expand;
+        Sint32_x00197218 ftr_gopn;
+        Sint32_x00197218 ftr_gopm;
+} SFHDS_VID_x00197218;
+typedef struct {
+        Sint32_x00197218 valid;
+        Sint32_x00197218 ver_major;
+        Sint32_x00197218 ver_minor;
+        Sint32_x00197218 byterate;
+        Sint32_x00197218 hdrsiz;
+        Sint32_x00197218 packtype;
+        Sint32_x00197218 pketsizlen;
+        Sint32_x00197218 packsiz;
+        Sint32_x00197218 numelem_tot;
+        Sint32_x00197218 numelem_aud;
+        Sint32_x00197218 numelem_vid;
+        Sint32_x00197218 numelem_prv;
+        Sint32_x00197218 maxplylen_aud;
+        Sint32_x00197218 maxplylen_vid;
+        Sint32_x00197218 maxfrmnum;
+        Sint32_x00197218 stmid_prv1;
+        Sint32_x00197218 stmid_prv2;
+        Sint32_x00197218 stmid_aud;
+        Sint32_x00197218 stmid_vid;
+        SFHDS_AUD_x00197218 aud;
+        SFHDS_VID_x00197218 vid;
+        Sint32_x00197218 rawsiz;
+        Uint8_x00197218 raw[0x800];
+} SFHDS_FHD_x00197218;
+typedef struct {
+        Uint8_x00197218 data[2][0xB0];
+        Sint32_x00197218 len[2];
+} SFSEE_SYSHD_x00197218;
+typedef struct {
+        Sint32_x00197218 analyzed;
+        Sint32_x00197218 ncount;
+        Sint32_x00197218 tscale;
+        Sint32_x00197218 nvid;
+        Sint32_x00197218 naud;
+        Sint32_x00197218 pad14;
+        Sint64_x00197218 scr_base;
+        Sint64_x00197218 pts_min;
+        Sint32_x00197218 stmid_vid;
+        Sint32_x00197218 stmid_aud;
+        SFSEE_SYSHD_x00197218 syshd;
+} SFSEE_SHDR_x00197218;
+typedef struct {
+        Sint32_x00197218 analyzed;
+        Sint32_x00197218 ncount;
+        Sint32_x00197218 tscale;
+        SFHDS_FHD_x00197218 fhd;
+        SFSEE_SHDR_x00197218 shdr;
+        Uint8_x00197218 pada38[0xAD0 - 0xA38];
+        Sint32_x00197218 a1hdr;
+        Sint32_x00197218 a1ncount;
+        Sint32_x00197218 a1tscale;
+        Uint8_x00197218 padadc[0xD0C - 0xADC];
+        Sint32_x00197218 a2hdr;
+        Sint32_x00197218 a2ncount;
+        Sint32_x00197218 a2tscale;
+        Uint8_x00197218 padd18[0xDA8 - 0xD18];
+        Sint32_x00197218 rate;
+        Sint32_x00197218 fsize_est;
+        Sint32_x00197218 tot_est;
+        Sint32_x00197218 tunit_est;
+        Sint32_x00197218 av_a;
+        Sint32_x00197218 av_b;
+        Sint32_x00197218 paddc0;
+        Sint32_x00197218 fsize;
+        Sint32_x00197218 tottime;
+        Sint32_x00197218 tunit;
+        Sint32_x00197218 byterate;
+        Sint32_x00197218 seekpos;
+} SFSEE_WORK_x00197218;
+typedef struct {
+        Sint32_x00197218 x00;
+        Sint32_x00197218 pos;
+        Sint32_x00197218 x08;
+} SFSEE_REQ_x00197218;
+typedef struct {
+        Sint32_x00197218 bsize;
+        Sint32_x00197218 xsize;
+        void *buf;
+        Sint32_x00197218 maxnch;
+        Sint32_x00197218 x10;
+        Sint32_x00197218 worksize;
+        void *work;
+} SFADXT_PARA_x00197218;
+typedef struct {
+        void *adxt;
+        SJ_x00197218 sj;
+        SFADXT_PARA_x00197218 para;
+        Sint32_x00197218 tcount;
+        Sint32_x00197218 tunit;
+        Sint32_x00197218 pause;
+        Sint32_x00197218 discard;
+        Sint32_x00197218 seekflg;
+        Sint32_x00197218 smplofst;
+        void (*func)(SFD_x00197218 sfd, Uint8_x00197218 *data, Sint32_x00197218 len, Sint32_x00197218 *nbyte);
+        Sint32_x00197218 x40;
+        Sint32_x00197218 svrfreq;
+        Sint32_x00197218 totbyte;
+        Sint32_x00197218 x4c;
+} SFADXT_WORK_x00197218;
+typedef struct {
+        SFSEE_WORK_x00197218 *wk;
+        SFSEE_REQ_x00197218 req;
+} SFSEE_HN_x00197218;
+typedef struct {
+        Sint32_x00197218 x00;
+        Uint32_x00197218 adr;
+        Sint32_x00197218 size[7];
+        Sint32_x00197218 x24;
+        Sint32_x00197218 unit;
+        Sint32_x00197218 x2c;
+        Sint32_x00197218 x30;
+        Sint32_x00197218 x34;
+        Sint32_x00197218 x38;
+        void *hnwork;
+        Sint32_x00197218 hnwksiz;
+} SFD_CREPRM_x00197218;
+typedef struct {
+        void *x00;
+        Sint32_x00197218 x04;
+        Sint32_x00197218 x08;
+} SFPLY_PTSM_x00197218;
+typedef struct {
+        Sint64_x00197218 sum;
+        Sint64_x00197218 min;
+        Sint64_x00197218 max;
+        Sint32_x00197218 cnt;
+} SFTMR_TSUM_x00197218;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x00197218 nvid;
+        Sint32_x00197218 naud;
+        Sint32_x00197218 x0c;
+        Sint64_x00197218 pts_min;
+        Sint64_x00197218 pts_min2;
+        Sint32_x00197218 concat_cnt;
+        Sint32_x00197218 last_vid;
+        Sint32_x00197218 last_aud;
+        Sint32_x00197218 first_vid;
+        Sint32_x00197218 first_aud;
+        Sint32_x00197218 cur_vid;
+        Sint32_x00197218 cur_aud;
+        Sint32_x00197218 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x00197218 stmid);
+        void *outobj;
+        Sint32_x00197218 skip;
+        Sint32_x00197218 x15c;
+        Sint32_x00197218 x160;
+        Sint32_x00197218 x164;
+} SFMPS_WORK_x00197218;
+typedef struct SFD_OBJ_x00197218 {
+        SFD_CREPRM_x00197218 prm;
+        Sint32_x00197218 chg_flg;
+        Sint32_x00197218 stat;
+        Sint32_x00197218 req;
+        Sint32_x00197218 pause_sw;
+        Sint32_x00197218 pause_cnt;
+        Uint8_x00197218 pad58[0x74 - 0x58];
+        Sint32_x00197218 pad74;
+        SFHDS_FHD_x00197218 fhd;
+        Sint32_x00197218 x90c;
+        Sint32_x00197218 x910;
+        Sint32_x00197218 x914;
+        Sint32_x00197218 x918;
+        Sint32_x00197218 x91c;
+        Sint32_x00197218 picrate;
+        Sint32_x00197218 x924;
+        Sint32_x00197218 x928;
+        Sint32_x00197218 x92c;
+        Sint32_x00197218 numelem_aud;
+        Sint32_x00197218 numelem_vid;
+        Sint32_x00197218 numelem_prv;
+        Sint32_x00197218 x93c;
+        Sint32_x00197218 x940;
+        Sint32_x00197218 x944;
+        Sint32_x00197218 x948;
+        Sint32_x00197218 x94c;
+        SFD_PLYINF_x00197218 plyinf;
+        SFLIB_ERRINF_x00197218 err;
+        Sint32_x00197218 cond[100];
+        Sint32_x00197218 cond_def[100];
+        Uint8_x00197218 padD24[4];
+        SFCON_x00197218 con;
+        Uint8_x00197218 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x00197218))];
+        Uint8_x00197218 tst[0x1C0];
+        Uint8_x00197218 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x00197218 ptsm;
+        Uint8_x00197218 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x00197218 buf[8];
+        SFD_VFRM_x00197218 vfrm[16];
+        SFD_TR_x00197218 tr[9];
+        Sint32_x00197218 pad218c;
+        SFMPS_WORK_x00197218 mps;
+        Uint8_x00197218 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x00197218 mpv;
+        SFADXT_WORK_x00197218 adxt;
+        Uint8_x00197218 pad3410[0x3474 - 0x3410];
+        SFAOAP_x00197218 aoap;
+        SFUO_x00197218 uo_tbl;
+        Sint32_x00197218 pad34c4;
+        SFSEE_HN_x00197218 see;
+        SFTMR_TSUM_x00197218 tsum[6];
+} SFD_OBJ_x00197218;
+Sint32_x00197218 SFSET_GetCond_x00197218(SFD_x00197218 sfd, Sint32_x00197218 id) __asm__("func_001999E0");
+Sint32_x00197218 SFTRN_GetTermFlg_x00197218(SFD_x00197218 sfd, Sint32_x00197218 id) __asm__("func_0019C170");
+Sint32_x00197218 SFBUF_GetTermFlg_x00197218(SFD_x00197218 sfd, Sint32_x00197218 buf) __asm__("func_0018B770");
+extern void (*SFPLY_recordgetfrm_x00197218)(SFD_x00197218 sfd, void *frm) __asm__("SFPLY_recordgetfrm");
+extern void (*SFPLY_SetPtsInfo_x00197218)(SFPLY_PTSM_x00197218 *ptsm) __asm__("SFPLY_SetPtsInfo");
+extern void (*SFPLY_ResetPtsm_x00197218)(SFPLY_PTSM_x00197218 *ptsm) __asm__("SFPLY_ResetPtsm");
+Bool_x00197218 func_00197218_x00197218(SFD_x00197218 sfd) __asm__("func_00197218");
+/* sfply_IsTermAny: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_ply.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Bool_x00197218 func_00197218_x00197218(SFD_x00197218 sfd)
+{
+        Uint32_x00197218 i;
+        if (SFSET_GetCond_x00197218(sfd, 5) && SFTRN_GetTermFlg_x00197218(sfd, 6)) {
+                return 1;
+        }
+        if (SFSET_GetCond_x00197218(sfd, 6) && SFTRN_GetTermFlg_x00197218(sfd, 7)) {
+                return 1;
+        }
+        for (i = 0; i < 8; i++) {
+                if (SFBUF_GetTermFlg_x00197218(sfd, i)) {
+                        return 1;
+                }
+        }
+        return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001972B8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197370);
 s32 func_00197460_x001973F0() __asm__("func_00197460");
@@ -532,7 +2143,531 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197460);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001974D0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197598);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001975F0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197680);
+typedef unsigned char Uint8_x00197680;
+typedef signed char Sint8_x00197680;
+typedef signed short Sint16_x00197680;
+typedef unsigned int Uint32_x00197680;
+typedef signed int Sint32_x00197680;
+typedef signed long long Sint64_x00197680;
+typedef char Char8_x00197680;
+typedef struct SJ_OBJ_x00197680 *SJ_x00197680;
+typedef struct {
+        Uint8_x00197680 *data;
+        Sint32_x00197680 len;
+} SJCK_x00197680;
+typedef struct {
+        Uint8_x00197680 data[16];
+} SJUUID_x00197680;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00197680 sj);
+        const SJUUID_x00197680 *(*GetUuid)(SJ_x00197680 sj);
+        void (*Reset)(SJ_x00197680 sj);
+        void (*GetChunk)(SJ_x00197680 sj, Sint32_x00197680 id, Sint32_x00197680 nbyte, SJCK_x00197680 *ck);
+        void (*UngetChunk)(SJ_x00197680 sj, Sint32_x00197680 id, SJCK_x00197680 *ck);
+        void (*PutChunk)(SJ_x00197680 sj, Sint32_x00197680 id, SJCK_x00197680 *ck);
+        Sint32_x00197680 (*GetNumData)(SJ_x00197680 sj, Sint32_x00197680 id);
+        Sint32_x00197680 (*IsGetChunk)(SJ_x00197680 sj, Sint32_x00197680 id, Sint32_x00197680 nbyte, Sint32_x00197680 *rbyte);
+        void (*EntryErrFunc)(SJ_x00197680 sj, void (*func)(void *obj, Char8_x00197680 *msg), void *obj);
+} SJ_IF_x00197680;
+struct SJ_OBJ_x00197680 {
+        SJ_IF_x00197680 *vtbl;
+};
+typedef struct SFD_OBJ_x00197680 *SFD_x00197680;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x00197680 rsv1;
+        Sint32_x00197680 rsv2;
+} SFUO_CH_x00197680;
+typedef struct {
+        Sint32_x00197680 nch;
+        SFUO_CH_x00197680 ch[3];
+} SFUO_x00197680;
+typedef struct {
+        Sint32_x00197680 x00;
+        Sint32_x00197680 (*SetOutPan)(SFD_x00197680 sfd, Sint32_x00197680 ch, Sint32_x00197680 pan);
+        Sint32_x00197680 (*GetOutPan)(SFD_x00197680 sfd, Sint32_x00197680 ch);
+        Sint32_x00197680 (*SetOutVol)(SFD_x00197680 sfd, Sint32_x00197680 vol);
+        Sint32_x00197680 (*GetOutVol)(SFD_x00197680 sfd);
+        void (*SetSpeed)(SFD_x00197680 sfd, Sint32_x00197680 speed);
+        Sint32_x00197680 x18;
+} SFAOAP_x00197680;
+typedef struct {
+        Uint8_x00197680 pad0[0xB8];
+        Sint32_x00197680 tottime;
+        Sint32_x00197680 tunit;
+        Uint8_x00197680 padc0[0x150 - 0xC0];
+        Sint64_x00197680 scr_base;
+        Sint64_x00197680 scr_ofst;
+        Sint32_x00197680 pad160;
+        Sint32_x00197680 ctime;
+        Sint32_x00197680 ctime_idx;
+        Sint32_x00197680 ctime_que[32];
+        Sint32_x00197680 tot_last;
+        Sint32_x00197680 pad1F0;
+        Sint32_x00197680 que_wr;
+        Sint32_x00197680 que_rd;
+        Sint32_x00197680 tot_que[32];
+} SFCON_x00197680;
+typedef struct {
+        Sint32_x00197680 type;
+        Sint32_x00197680 drop;
+        Sint32_x00197680 hour;
+        Sint32_x00197680 min;
+        Sint32_x00197680 sec;
+        Sint32_x00197680 frm;
+        Sint32_x00197680 frm2;
+        Sint16_x00197680 x1c;
+        Sint16_x00197680 field;
+} SFTIM_TC_x00197680;
+typedef struct {
+        Sint32_x00197680 valid;
+        SFTIM_TC_x00197680 tc;
+        Sint32_x00197680 val;
+        Sint32_x00197680 unit;
+} SFTIM_TTU_x00197680;
+typedef struct {
+        Sint64_x00197680 pts;
+        Uint32_x00197680 pos;
+        Uint32_x00197680 len;
+} SFPTS_ENT_x00197680;
+typedef struct {
+        SFPTS_ENT_x00197680 *ent;
+        Sint32_x00197680 num;
+        Sint32_x00197680 cnt;
+        Sint32_x00197680 wr;
+        Sint32_x00197680 rd;
+} SFPTS_QUE_x00197680;
+typedef struct {
+        Sint32_x00197680 raw[0x20];
+} SFD_VFRM_INF_x00197680;
+typedef struct {
+        void *frm;
+        Sint32_x00197680 x04;
+        SFD_VFRM_INF_x00197680 inf;
+} SFD_VFRM_x00197680;
+typedef struct {
+        Sint32_x00197680 kind;
+        SJ_x00197680 sj;
+        Uint32_x00197680 ofst;
+        Sint32_x00197680 size;
+        Sint32_x00197680 xsize;
+        Sint32_x00197680 x14;
+} SFBUF_SUP_x00197680;
+typedef struct {
+        SFBUF_SUP_x00197680 sup;
+        Uint8_x00197680 *dlm_pos;
+        Sint32_x00197680 dlm_len;
+        Sint32_x00197680 wtot;
+        Sint32_x00197680 rtot;
+        SFPTS_QUE_x00197680 ptsque;
+} SFBUF_RING_x00197680;
+typedef struct {
+        Sint32_x00197680 mode;
+        Sint32_x00197680 used;
+        Sint32_x00197680 prepflg;
+        Sint32_x00197680 termflg;
+        union {
+                SFBUF_RING_x00197680 ring;
+                struct {
+                        Uint32_x00197680 adr;
+                        Sint32_x00197680 size;
+                        Sint32_x00197680 x18;
+                        Sint32_x00197680 x1c;
+                        SFD_VFRM_x00197680 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x00197680 adr;
+                        Sint32_x00197680 size;
+                        Sint32_x00197680 rsv[7];
+                        Sint32_x00197680 rsv2[3];
+                } aout;
+                SFUO_CH_x00197680 uoch[3];
+        } u;
+        Sint32_x00197680 in_tr;
+        Sint32_x00197680 out_tr;
+        Sint32_x00197680 rsv[8];
+} SFBUF_WORK_x00197680;
+typedef Sint32_x00197680 (*SFD_TR_FUNC_x00197680)();
+typedef struct {
+        Sint32_x00197680 prepflg;
+        Sint32_x00197680 termflg;
+        void *hn;
+        SFD_TR_FUNC_x00197680 *trif;
+        Sint32_x00197680 bufin;
+        Sint32_x00197680 bufout;
+        Sint32_x00197680 bufout2;
+        Sint32_x00197680 bufout3;
+        Sint32_x00197680 x20;
+        Uint8_x00197680 pad24[0x44 - 0x24];
+} SFD_TR_x00197680;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x00197680 cwidth;
+        Sint16_x00197680 ywidth;
+} SFMPV_PLANE_x00197680;
+typedef struct {
+        void *buf;
+        Sint32_x00197680 len;
+} SFMPV_PICUSR_x00197680;
+typedef struct {
+        Sint32_x00197680 stat;
+        Sint32_x00197680 lock;
+        void *buf;
+        SFTIM_TTU_x00197680 ttu;
+        Sint32_x00197680 ftime;
+        Sint32_x00197680 tunit;
+        Sint32_x00197680 ndct;
+        Sint32_x00197680 nbyte;
+        Sint32_x00197680 gopno;
+        Sint32_x00197680 x4c;
+        Sint32_x00197680 x50;
+        SFMPV_PICUSR_x00197680 *picusr;
+        Sint32_x00197680 pa_width;
+        Sint32_x00197680 pa_height;
+        Sint32_x00197680 pa_mb_width;
+        Sint32_x00197680 pa_mb_height;
+        Sint32_x00197680 pa_frame_rate;
+        Sint32_x00197680 tmpref;
+        Sint32_x00197680 pa_pic_type;
+        Sint32_x00197680 pa_tc_drop;
+        Sint32_x00197680 pa_tc_hour;
+        Sint32_x00197680 pa_tc_min;
+        Sint32_x00197680 pa_tc_sec;
+        Sint32_x00197680 pa_tc_pic;
+        Sint32_x00197680 x88;
+        Sint32_x00197680 x8c;
+        Sint32_x00197680 pa_x90[3];
+        Sint32_x00197680 pa_x9c[3];
+        Sint16_x00197680 pa_xa8;
+        Sint16_x00197680 pa_xaa;
+        Sint8_x00197680 pa_xac;
+        Sint8_x00197680 pa_xad;
+        Sint8_x00197680 pa_xae;
+        Sint8_x00197680 pa_xaf;
+        Sint8_x00197680 pa_xb0;
+        Sint8_x00197680 pa_xb1;
+        Sint8_x00197680 pa_xb2;
+        Sint8_x00197680 pa_xb3;
+        Sint8_x00197680 pa_xb4;
+        Sint8_x00197680 pa_xb5;
+        Sint8_x00197680 pa_xb6;
+        Sint8_x00197680 pa_xb7;
+        Sint8_x00197680 pa_xb8;
+        Sint8_x00197680 pa_xb9;
+        Sint8_x00197680 pa_xba;
+        Sint8_x00197680 pa_xbb;
+        Sint8_x00197680 pa_xbc;
+        Uint8_x00197680 padbd[0xD8 - 0xBD];
+        Sint64_x00197680 pts;
+} SFMPV_FRM_x00197680;
+typedef struct {
+        Sint32_x00197680 cwidth;
+        Sint32_x00197680 cheight;
+        Sint32_x00197680 width;
+        Sint32_x00197680 height;
+        Sint32_x00197680 x10;
+        Sint32_x00197680 max_width;
+        Sint32_x00197680 max_height;
+        Sint32_x00197680 nfrm;
+        Sint32_x00197680 x20;
+} SFMPV_PARA_x00197680;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x00197680 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x00197680 *curfrm;
+        Sint32_x00197680 picstat;
+        Sint32_x00197680 dlmmask;
+        Sint32_x00197680 termflg;
+        Sint32_x00197680 gopstat;
+        Sint32_x00197680 nskip;
+        Sint32_x00197680 nconcat;
+        Uint8_x00197680 picatr[0x80];
+        Sint32_x00197680 last_ngop;
+        Sint32_x00197680 newgop;
+        Sint32_x00197680 vbvsiz;
+        Sint32_x00197680 pts_tmpref;
+        Sint32_x00197680 pts_ofst;
+        Sint32_x00197680 pts_max;
+        Sint32_x00197680 pad124;
+        SFPTS_ENT_x00197680 ptsent;
+        Sint32_x00197680 refidx[2];
+        SFMPV_PLANE_x00197680 rfbuf[2];
+        SFMPV_FRM_x00197680 *ref[2];
+        SFMPV_FRM_x00197680 *pendfrm;
+        Sint32_x00197680 skipret;
+        Sint32_x00197680 dlmwait;
+        Sint32_x00197680 tmpref_adj;
+        Sint32_x00197680 nfrm;
+        Sint32_x00197680 pad17c;
+        SFMPV_FRM_x00197680 frm[16];
+        void *picusr_buf;
+        Sint32_x00197680 picusr_num;
+        Sint32_x00197680 picusr_siz;
+        Uint8_x00197680 *picusr_dat;
+        Sint32_x00197680 picusr_len;
+        SFMPV_PICUSR_x00197680 picusr[16];
+        Sint32_x00197680 pad1014;
+        Sint64_x00197680 pts;
+} SFMPV_WORK_x00197680;
+typedef struct {
+        Sint32_x00197680 raw[0x2A];
+} SFD_PLYINF_x00197680 __attribute__((aligned(8)));
+typedef struct {
+        void (*fn)(void *obj, Sint32_x00197680 code);
+        void *obj;
+        Sint32_x00197680 code;
+        Sint32_x00197680 x0c;
+        Sint32_x00197680 x10;
+} SFLIB_ERRINF_x00197680;
+typedef struct {
+        Sint32_x00197680 codec;
+        Sint32_x00197680 layer;
+        Sint32_x00197680 chnum;
+        Sint32_x00197680 smphz;
+} SFHDS_AUD_x00197680;
+typedef struct {
+        Sint32_x00197680 codec;
+        Sint32_x00197680 bitrate;
+        Sint32_x00197680 picw;
+        Sint32_x00197680 pich;
+        Sint32_x00197680 picrate;
+        Sint32_x00197680 ftr_eff;
+        Sint32_x00197680 ftr_coltype;
+        Sint32_x00197680 ftr_pictype;
+        Sint32_x00197680 ftr_fixflg;
+        Sint32_x00197680 ftr_shcfixflg;
+        Sint32_x00197680 ftr_expand;
+        Sint32_x00197680 ftr_gopn;
+        Sint32_x00197680 ftr_gopm;
+} SFHDS_VID_x00197680;
+typedef struct {
+        Sint32_x00197680 valid;
+        Sint32_x00197680 ver_major;
+        Sint32_x00197680 ver_minor;
+        Sint32_x00197680 byterate;
+        Sint32_x00197680 hdrsiz;
+        Sint32_x00197680 packtype;
+        Sint32_x00197680 pketsizlen;
+        Sint32_x00197680 packsiz;
+        Sint32_x00197680 numelem_tot;
+        Sint32_x00197680 numelem_aud;
+        Sint32_x00197680 numelem_vid;
+        Sint32_x00197680 numelem_prv;
+        Sint32_x00197680 maxplylen_aud;
+        Sint32_x00197680 maxplylen_vid;
+        Sint32_x00197680 maxfrmnum;
+        Sint32_x00197680 stmid_prv1;
+        Sint32_x00197680 stmid_prv2;
+        Sint32_x00197680 stmid_aud;
+        Sint32_x00197680 stmid_vid;
+        SFHDS_AUD_x00197680 aud;
+        SFHDS_VID_x00197680 vid;
+        Sint32_x00197680 rawsiz;
+        Uint8_x00197680 raw[0x800];
+} SFHDS_FHD_x00197680;
+typedef struct {
+        Uint8_x00197680 data[2][0xB0];
+        Sint32_x00197680 len[2];
+} SFSEE_SYSHD_x00197680;
+typedef struct {
+        Sint32_x00197680 analyzed;
+        Sint32_x00197680 ncount;
+        Sint32_x00197680 tscale;
+        Sint32_x00197680 nvid;
+        Sint32_x00197680 naud;
+        Sint32_x00197680 pad14;
+        Sint64_x00197680 scr_base;
+        Sint64_x00197680 pts_min;
+        Sint32_x00197680 stmid_vid;
+        Sint32_x00197680 stmid_aud;
+        SFSEE_SYSHD_x00197680 syshd;
+} SFSEE_SHDR_x00197680;
+typedef struct {
+        Sint32_x00197680 analyzed;
+        Sint32_x00197680 ncount;
+        Sint32_x00197680 tscale;
+        SFHDS_FHD_x00197680 fhd;
+        SFSEE_SHDR_x00197680 shdr;
+        Uint8_x00197680 pada38[0xAD0 - 0xA38];
+        Sint32_x00197680 a1hdr;
+        Sint32_x00197680 a1ncount;
+        Sint32_x00197680 a1tscale;
+        Uint8_x00197680 padadc[0xD0C - 0xADC];
+        Sint32_x00197680 a2hdr;
+        Sint32_x00197680 a2ncount;
+        Sint32_x00197680 a2tscale;
+        Uint8_x00197680 padd18[0xDA8 - 0xD18];
+        Sint32_x00197680 rate;
+        Sint32_x00197680 fsize_est;
+        Sint32_x00197680 tot_est;
+        Sint32_x00197680 tunit_est;
+        Sint32_x00197680 av_a;
+        Sint32_x00197680 av_b;
+        Sint32_x00197680 paddc0;
+        Sint32_x00197680 fsize;
+        Sint32_x00197680 tottime;
+        Sint32_x00197680 tunit;
+        Sint32_x00197680 byterate;
+        Sint32_x00197680 seekpos;
+} SFSEE_WORK_x00197680;
+typedef struct {
+        Sint32_x00197680 x00;
+        Sint32_x00197680 pos;
+        Sint32_x00197680 x08;
+} SFSEE_REQ_x00197680;
+typedef struct {
+        Sint32_x00197680 bsize;
+        Sint32_x00197680 xsize;
+        void *buf;
+        Sint32_x00197680 maxnch;
+        Sint32_x00197680 x10;
+        Sint32_x00197680 worksize;
+        void *work;
+} SFADXT_PARA_x00197680;
+typedef struct {
+        void *adxt;
+        SJ_x00197680 sj;
+        SFADXT_PARA_x00197680 para;
+        Sint32_x00197680 tcount;
+        Sint32_x00197680 tunit;
+        Sint32_x00197680 pause;
+        Sint32_x00197680 discard;
+        Sint32_x00197680 seekflg;
+        Sint32_x00197680 smplofst;
+        void (*func)(SFD_x00197680 sfd, Uint8_x00197680 *data, Sint32_x00197680 len, Sint32_x00197680 *nbyte);
+        Sint32_x00197680 x40;
+        Sint32_x00197680 svrfreq;
+        Sint32_x00197680 totbyte;
+        Sint32_x00197680 x4c;
+} SFADXT_WORK_x00197680;
+typedef struct {
+        SFSEE_WORK_x00197680 *wk;
+        SFSEE_REQ_x00197680 req;
+} SFSEE_HN_x00197680;
+typedef struct {
+        Sint32_x00197680 x00;
+        Uint32_x00197680 adr;
+        Sint32_x00197680 size[7];
+        Sint32_x00197680 x24;
+        Sint32_x00197680 unit;
+        Sint32_x00197680 x2c;
+        Sint32_x00197680 x30;
+        Sint32_x00197680 x34;
+        Sint32_x00197680 x38;
+        void *hnwork;
+        Sint32_x00197680 hnwksiz;
+} SFD_CREPRM_x00197680;
+typedef struct {
+        void *x00;
+        Sint32_x00197680 x04;
+        Sint32_x00197680 x08;
+} SFPLY_PTSM_x00197680;
+typedef struct {
+        Sint64_x00197680 sum;
+        Sint64_x00197680 min;
+        Sint64_x00197680 max;
+        Sint32_x00197680 cnt;
+} SFTMR_TSUM_x00197680;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x00197680 nvid;
+        Sint32_x00197680 naud;
+        Sint32_x00197680 x0c;
+        Sint64_x00197680 pts_min;
+        Sint64_x00197680 pts_min2;
+        Sint32_x00197680 concat_cnt;
+        Sint32_x00197680 last_vid;
+        Sint32_x00197680 last_aud;
+        Sint32_x00197680 first_vid;
+        Sint32_x00197680 first_aud;
+        Sint32_x00197680 cur_vid;
+        Sint32_x00197680 cur_aud;
+        Sint32_x00197680 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x00197680 stmid);
+        void *outobj;
+        Sint32_x00197680 skip;
+        Sint32_x00197680 x15c;
+        Sint32_x00197680 x160;
+        Sint32_x00197680 x164;
+} SFMPS_WORK_x00197680;
+typedef struct SFD_OBJ_x00197680 {
+        SFD_CREPRM_x00197680 prm;
+        Sint32_x00197680 chg_flg;
+        Sint32_x00197680 stat;
+        Sint32_x00197680 req;
+        Sint32_x00197680 pause_sw;
+        Sint32_x00197680 pause_cnt;
+        Uint8_x00197680 pad58[0x74 - 0x58];
+        Sint32_x00197680 pad74;
+        SFHDS_FHD_x00197680 fhd;
+        Sint32_x00197680 x90c;
+        Sint32_x00197680 x910;
+        Sint32_x00197680 x914;
+        Sint32_x00197680 x918;
+        Sint32_x00197680 x91c;
+        Sint32_x00197680 picrate;
+        Sint32_x00197680 x924;
+        Sint32_x00197680 x928;
+        Sint32_x00197680 x92c;
+        Sint32_x00197680 numelem_aud;
+        Sint32_x00197680 numelem_vid;
+        Sint32_x00197680 numelem_prv;
+        Sint32_x00197680 x93c;
+        Sint32_x00197680 x940;
+        Sint32_x00197680 x944;
+        Sint32_x00197680 x948;
+        Sint32_x00197680 x94c;
+        SFD_PLYINF_x00197680 plyinf;
+        SFLIB_ERRINF_x00197680 err;
+        Sint32_x00197680 cond[100];
+        Sint32_x00197680 cond_def[100];
+        Uint8_x00197680 padD24[4];
+        SFCON_x00197680 con;
+        Uint8_x00197680 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x00197680))];
+        Uint8_x00197680 tst[0x1C0];
+        Uint8_x00197680 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x00197680 ptsm;
+        Uint8_x00197680 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x00197680 buf[8];
+        SFD_VFRM_x00197680 vfrm[16];
+        SFD_TR_x00197680 tr[9];
+        Sint32_x00197680 pad218c;
+        SFMPS_WORK_x00197680 mps;
+        Uint8_x00197680 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x00197680 mpv;
+        SFADXT_WORK_x00197680 adxt;
+        Uint8_x00197680 pad3410[0x3474 - 0x3410];
+        SFAOAP_x00197680 aoap;
+        SFUO_x00197680 uo_tbl;
+        Sint32_x00197680 pad34c4;
+        SFSEE_HN_x00197680 see;
+        SFTMR_TSUM_x00197680 tsum[6];
+} SFD_OBJ_x00197680;
+extern void (*SFPLY_recordgetfrm_x00197680)(SFD_x00197680 sfd, void *frm) __asm__("SFPLY_recordgetfrm");
+extern void (*SFPLY_SetPtsInfo_x00197680)(SFPLY_PTSM_x00197680 *ptsm) __asm__("SFPLY_SetPtsInfo");
+extern void (*SFPLY_ResetPtsm_x00197680)(SFPLY_PTSM_x00197680 *ptsm) __asm__("SFPLY_ResetPtsm");
+Sint32_x00197680 sfply_StopTr_x00197680(SFD_x00197680 sfd) __asm__("func_00197EC8");
+Sint32_x00197680 func_00197680_x00197680(SFD_x00197680 sfd) __asm__("func_00197680");
+/* sfply_StopPlay: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_ply.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00197680 func_00197680_x00197680(SFD_x00197680 sfd)
+{
+        Sint32_x00197680 ret;
+        ret = sfply_StopTr_x00197680(sfd);
+        if (ret != 0) {
+                return ret;
+        }
+        sfd->req = 6;
+        return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001976B8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197778);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197810);
@@ -660,7 +2795,533 @@ s32 func_00197DB0(u8 *arg0) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197DC0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197DE8);
+typedef unsigned char Uint8_x00197DE8;
+typedef signed char Sint8_x00197DE8;
+typedef signed short Sint16_x00197DE8;
+typedef unsigned int Uint32_x00197DE8;
+typedef signed int Sint32_x00197DE8;
+typedef signed long long Sint64_x00197DE8;
+typedef char Char8_x00197DE8;
+typedef struct SJ_OBJ_x00197DE8 *SJ_x00197DE8;
+typedef struct {
+        Uint8_x00197DE8 *data;
+        Sint32_x00197DE8 len;
+} SJCK_x00197DE8;
+typedef struct {
+        Uint8_x00197DE8 data[16];
+} SJUUID_x00197DE8;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00197DE8 sj);
+        const SJUUID_x00197DE8 *(*GetUuid)(SJ_x00197DE8 sj);
+        void (*Reset)(SJ_x00197DE8 sj);
+        void (*GetChunk)(SJ_x00197DE8 sj, Sint32_x00197DE8 id, Sint32_x00197DE8 nbyte, SJCK_x00197DE8 *ck);
+        void (*UngetChunk)(SJ_x00197DE8 sj, Sint32_x00197DE8 id, SJCK_x00197DE8 *ck);
+        void (*PutChunk)(SJ_x00197DE8 sj, Sint32_x00197DE8 id, SJCK_x00197DE8 *ck);
+        Sint32_x00197DE8 (*GetNumData)(SJ_x00197DE8 sj, Sint32_x00197DE8 id);
+        Sint32_x00197DE8 (*IsGetChunk)(SJ_x00197DE8 sj, Sint32_x00197DE8 id, Sint32_x00197DE8 nbyte, Sint32_x00197DE8 *rbyte);
+        void (*EntryErrFunc)(SJ_x00197DE8 sj, void (*func)(void *obj, Char8_x00197DE8 *msg), void *obj);
+} SJ_IF_x00197DE8;
+struct SJ_OBJ_x00197DE8 {
+        SJ_IF_x00197DE8 *vtbl;
+};
+typedef struct SFD_OBJ_x00197DE8 *SFD_x00197DE8;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x00197DE8 rsv1;
+        Sint32_x00197DE8 rsv2;
+} SFUO_CH_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 nch;
+        SFUO_CH_x00197DE8 ch[3];
+} SFUO_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 x00;
+        Sint32_x00197DE8 (*SetOutPan)(SFD_x00197DE8 sfd, Sint32_x00197DE8 ch, Sint32_x00197DE8 pan);
+        Sint32_x00197DE8 (*GetOutPan)(SFD_x00197DE8 sfd, Sint32_x00197DE8 ch);
+        Sint32_x00197DE8 (*SetOutVol)(SFD_x00197DE8 sfd, Sint32_x00197DE8 vol);
+        Sint32_x00197DE8 (*GetOutVol)(SFD_x00197DE8 sfd);
+        void (*SetSpeed)(SFD_x00197DE8 sfd, Sint32_x00197DE8 speed);
+        Sint32_x00197DE8 x18;
+} SFAOAP_x00197DE8;
+typedef struct {
+        Uint8_x00197DE8 pad0[0xB8];
+        Sint32_x00197DE8 tottime;
+        Sint32_x00197DE8 tunit;
+        Uint8_x00197DE8 padc0[0x150 - 0xC0];
+        Sint64_x00197DE8 scr_base;
+        Sint64_x00197DE8 scr_ofst;
+        Sint32_x00197DE8 pad160;
+        Sint32_x00197DE8 ctime;
+        Sint32_x00197DE8 ctime_idx;
+        Sint32_x00197DE8 ctime_que[32];
+        Sint32_x00197DE8 tot_last;
+        Sint32_x00197DE8 pad1F0;
+        Sint32_x00197DE8 que_wr;
+        Sint32_x00197DE8 que_rd;
+        Sint32_x00197DE8 tot_que[32];
+} SFCON_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 type;
+        Sint32_x00197DE8 drop;
+        Sint32_x00197DE8 hour;
+        Sint32_x00197DE8 min;
+        Sint32_x00197DE8 sec;
+        Sint32_x00197DE8 frm;
+        Sint32_x00197DE8 frm2;
+        Sint16_x00197DE8 x1c;
+        Sint16_x00197DE8 field;
+} SFTIM_TC_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 valid;
+        SFTIM_TC_x00197DE8 tc;
+        Sint32_x00197DE8 val;
+        Sint32_x00197DE8 unit;
+} SFTIM_TTU_x00197DE8;
+typedef struct {
+        Sint64_x00197DE8 pts;
+        Uint32_x00197DE8 pos;
+        Uint32_x00197DE8 len;
+} SFPTS_ENT_x00197DE8;
+typedef struct {
+        SFPTS_ENT_x00197DE8 *ent;
+        Sint32_x00197DE8 num;
+        Sint32_x00197DE8 cnt;
+        Sint32_x00197DE8 wr;
+        Sint32_x00197DE8 rd;
+} SFPTS_QUE_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 raw[0x20];
+} SFD_VFRM_INF_x00197DE8;
+typedef struct {
+        void *frm;
+        Sint32_x00197DE8 x04;
+        SFD_VFRM_INF_x00197DE8 inf;
+} SFD_VFRM_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 kind;
+        SJ_x00197DE8 sj;
+        Uint32_x00197DE8 ofst;
+        Sint32_x00197DE8 size;
+        Sint32_x00197DE8 xsize;
+        Sint32_x00197DE8 x14;
+} SFBUF_SUP_x00197DE8;
+typedef struct {
+        SFBUF_SUP_x00197DE8 sup;
+        Uint8_x00197DE8 *dlm_pos;
+        Sint32_x00197DE8 dlm_len;
+        Sint32_x00197DE8 wtot;
+        Sint32_x00197DE8 rtot;
+        SFPTS_QUE_x00197DE8 ptsque;
+} SFBUF_RING_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 mode;
+        Sint32_x00197DE8 used;
+        Sint32_x00197DE8 prepflg;
+        Sint32_x00197DE8 termflg;
+        union {
+                SFBUF_RING_x00197DE8 ring;
+                struct {
+                        Uint32_x00197DE8 adr;
+                        Sint32_x00197DE8 size;
+                        Sint32_x00197DE8 x18;
+                        Sint32_x00197DE8 x1c;
+                        SFD_VFRM_x00197DE8 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x00197DE8 adr;
+                        Sint32_x00197DE8 size;
+                        Sint32_x00197DE8 rsv[7];
+                        Sint32_x00197DE8 rsv2[3];
+                } aout;
+                SFUO_CH_x00197DE8 uoch[3];
+        } u;
+        Sint32_x00197DE8 in_tr;
+        Sint32_x00197DE8 out_tr;
+        Sint32_x00197DE8 rsv[8];
+} SFBUF_WORK_x00197DE8;
+typedef Sint32_x00197DE8 (*SFD_TR_FUNC_x00197DE8)();
+typedef struct {
+        Sint32_x00197DE8 prepflg;
+        Sint32_x00197DE8 termflg;
+        void *hn;
+        SFD_TR_FUNC_x00197DE8 *trif;
+        Sint32_x00197DE8 bufin;
+        Sint32_x00197DE8 bufout;
+        Sint32_x00197DE8 bufout2;
+        Sint32_x00197DE8 bufout3;
+        Sint32_x00197DE8 x20;
+        Uint8_x00197DE8 pad24[0x44 - 0x24];
+} SFD_TR_x00197DE8;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x00197DE8 cwidth;
+        Sint16_x00197DE8 ywidth;
+} SFMPV_PLANE_x00197DE8;
+typedef struct {
+        void *buf;
+        Sint32_x00197DE8 len;
+} SFMPV_PICUSR_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 stat;
+        Sint32_x00197DE8 lock;
+        void *buf;
+        SFTIM_TTU_x00197DE8 ttu;
+        Sint32_x00197DE8 ftime;
+        Sint32_x00197DE8 tunit;
+        Sint32_x00197DE8 ndct;
+        Sint32_x00197DE8 nbyte;
+        Sint32_x00197DE8 gopno;
+        Sint32_x00197DE8 x4c;
+        Sint32_x00197DE8 x50;
+        SFMPV_PICUSR_x00197DE8 *picusr;
+        Sint32_x00197DE8 pa_width;
+        Sint32_x00197DE8 pa_height;
+        Sint32_x00197DE8 pa_mb_width;
+        Sint32_x00197DE8 pa_mb_height;
+        Sint32_x00197DE8 pa_frame_rate;
+        Sint32_x00197DE8 tmpref;
+        Sint32_x00197DE8 pa_pic_type;
+        Sint32_x00197DE8 pa_tc_drop;
+        Sint32_x00197DE8 pa_tc_hour;
+        Sint32_x00197DE8 pa_tc_min;
+        Sint32_x00197DE8 pa_tc_sec;
+        Sint32_x00197DE8 pa_tc_pic;
+        Sint32_x00197DE8 x88;
+        Sint32_x00197DE8 x8c;
+        Sint32_x00197DE8 pa_x90[3];
+        Sint32_x00197DE8 pa_x9c[3];
+        Sint16_x00197DE8 pa_xa8;
+        Sint16_x00197DE8 pa_xaa;
+        Sint8_x00197DE8 pa_xac;
+        Sint8_x00197DE8 pa_xad;
+        Sint8_x00197DE8 pa_xae;
+        Sint8_x00197DE8 pa_xaf;
+        Sint8_x00197DE8 pa_xb0;
+        Sint8_x00197DE8 pa_xb1;
+        Sint8_x00197DE8 pa_xb2;
+        Sint8_x00197DE8 pa_xb3;
+        Sint8_x00197DE8 pa_xb4;
+        Sint8_x00197DE8 pa_xb5;
+        Sint8_x00197DE8 pa_xb6;
+        Sint8_x00197DE8 pa_xb7;
+        Sint8_x00197DE8 pa_xb8;
+        Sint8_x00197DE8 pa_xb9;
+        Sint8_x00197DE8 pa_xba;
+        Sint8_x00197DE8 pa_xbb;
+        Sint8_x00197DE8 pa_xbc;
+        Uint8_x00197DE8 padbd[0xD8 - 0xBD];
+        Sint64_x00197DE8 pts;
+} SFMPV_FRM_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 cwidth;
+        Sint32_x00197DE8 cheight;
+        Sint32_x00197DE8 width;
+        Sint32_x00197DE8 height;
+        Sint32_x00197DE8 x10;
+        Sint32_x00197DE8 max_width;
+        Sint32_x00197DE8 max_height;
+        Sint32_x00197DE8 nfrm;
+        Sint32_x00197DE8 x20;
+} SFMPV_PARA_x00197DE8;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x00197DE8 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x00197DE8 *curfrm;
+        Sint32_x00197DE8 picstat;
+        Sint32_x00197DE8 dlmmask;
+        Sint32_x00197DE8 termflg;
+        Sint32_x00197DE8 gopstat;
+        Sint32_x00197DE8 nskip;
+        Sint32_x00197DE8 nconcat;
+        Uint8_x00197DE8 picatr[0x80];
+        Sint32_x00197DE8 last_ngop;
+        Sint32_x00197DE8 newgop;
+        Sint32_x00197DE8 vbvsiz;
+        Sint32_x00197DE8 pts_tmpref;
+        Sint32_x00197DE8 pts_ofst;
+        Sint32_x00197DE8 pts_max;
+        Sint32_x00197DE8 pad124;
+        SFPTS_ENT_x00197DE8 ptsent;
+        Sint32_x00197DE8 refidx[2];
+        SFMPV_PLANE_x00197DE8 rfbuf[2];
+        SFMPV_FRM_x00197DE8 *ref[2];
+        SFMPV_FRM_x00197DE8 *pendfrm;
+        Sint32_x00197DE8 skipret;
+        Sint32_x00197DE8 dlmwait;
+        Sint32_x00197DE8 tmpref_adj;
+        Sint32_x00197DE8 nfrm;
+        Sint32_x00197DE8 pad17c;
+        SFMPV_FRM_x00197DE8 frm[16];
+        void *picusr_buf;
+        Sint32_x00197DE8 picusr_num;
+        Sint32_x00197DE8 picusr_siz;
+        Uint8_x00197DE8 *picusr_dat;
+        Sint32_x00197DE8 picusr_len;
+        SFMPV_PICUSR_x00197DE8 picusr[16];
+        Sint32_x00197DE8 pad1014;
+        Sint64_x00197DE8 pts;
+} SFMPV_WORK_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 raw[0x2A];
+} SFD_PLYINF_x00197DE8 __attribute__((aligned(8)));
+typedef struct {
+        void (*fn)(void *obj, Sint32_x00197DE8 code);
+        void *obj;
+        Sint32_x00197DE8 code;
+        Sint32_x00197DE8 x0c;
+        Sint32_x00197DE8 x10;
+} SFLIB_ERRINF_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 codec;
+        Sint32_x00197DE8 layer;
+        Sint32_x00197DE8 chnum;
+        Sint32_x00197DE8 smphz;
+} SFHDS_AUD_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 codec;
+        Sint32_x00197DE8 bitrate;
+        Sint32_x00197DE8 picw;
+        Sint32_x00197DE8 pich;
+        Sint32_x00197DE8 picrate;
+        Sint32_x00197DE8 ftr_eff;
+        Sint32_x00197DE8 ftr_coltype;
+        Sint32_x00197DE8 ftr_pictype;
+        Sint32_x00197DE8 ftr_fixflg;
+        Sint32_x00197DE8 ftr_shcfixflg;
+        Sint32_x00197DE8 ftr_expand;
+        Sint32_x00197DE8 ftr_gopn;
+        Sint32_x00197DE8 ftr_gopm;
+} SFHDS_VID_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 valid;
+        Sint32_x00197DE8 ver_major;
+        Sint32_x00197DE8 ver_minor;
+        Sint32_x00197DE8 byterate;
+        Sint32_x00197DE8 hdrsiz;
+        Sint32_x00197DE8 packtype;
+        Sint32_x00197DE8 pketsizlen;
+        Sint32_x00197DE8 packsiz;
+        Sint32_x00197DE8 numelem_tot;
+        Sint32_x00197DE8 numelem_aud;
+        Sint32_x00197DE8 numelem_vid;
+        Sint32_x00197DE8 numelem_prv;
+        Sint32_x00197DE8 maxplylen_aud;
+        Sint32_x00197DE8 maxplylen_vid;
+        Sint32_x00197DE8 maxfrmnum;
+        Sint32_x00197DE8 stmid_prv1;
+        Sint32_x00197DE8 stmid_prv2;
+        Sint32_x00197DE8 stmid_aud;
+        Sint32_x00197DE8 stmid_vid;
+        SFHDS_AUD_x00197DE8 aud;
+        SFHDS_VID_x00197DE8 vid;
+        Sint32_x00197DE8 rawsiz;
+        Uint8_x00197DE8 raw[0x800];
+} SFHDS_FHD_x00197DE8;
+typedef struct {
+        Uint8_x00197DE8 data[2][0xB0];
+        Sint32_x00197DE8 len[2];
+} SFSEE_SYSHD_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 analyzed;
+        Sint32_x00197DE8 ncount;
+        Sint32_x00197DE8 tscale;
+        Sint32_x00197DE8 nvid;
+        Sint32_x00197DE8 naud;
+        Sint32_x00197DE8 pad14;
+        Sint64_x00197DE8 scr_base;
+        Sint64_x00197DE8 pts_min;
+        Sint32_x00197DE8 stmid_vid;
+        Sint32_x00197DE8 stmid_aud;
+        SFSEE_SYSHD_x00197DE8 syshd;
+} SFSEE_SHDR_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 analyzed;
+        Sint32_x00197DE8 ncount;
+        Sint32_x00197DE8 tscale;
+        SFHDS_FHD_x00197DE8 fhd;
+        SFSEE_SHDR_x00197DE8 shdr;
+        Uint8_x00197DE8 pada38[0xAD0 - 0xA38];
+        Sint32_x00197DE8 a1hdr;
+        Sint32_x00197DE8 a1ncount;
+        Sint32_x00197DE8 a1tscale;
+        Uint8_x00197DE8 padadc[0xD0C - 0xADC];
+        Sint32_x00197DE8 a2hdr;
+        Sint32_x00197DE8 a2ncount;
+        Sint32_x00197DE8 a2tscale;
+        Uint8_x00197DE8 padd18[0xDA8 - 0xD18];
+        Sint32_x00197DE8 rate;
+        Sint32_x00197DE8 fsize_est;
+        Sint32_x00197DE8 tot_est;
+        Sint32_x00197DE8 tunit_est;
+        Sint32_x00197DE8 av_a;
+        Sint32_x00197DE8 av_b;
+        Sint32_x00197DE8 paddc0;
+        Sint32_x00197DE8 fsize;
+        Sint32_x00197DE8 tottime;
+        Sint32_x00197DE8 tunit;
+        Sint32_x00197DE8 byterate;
+        Sint32_x00197DE8 seekpos;
+} SFSEE_WORK_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 x00;
+        Sint32_x00197DE8 pos;
+        Sint32_x00197DE8 x08;
+} SFSEE_REQ_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 bsize;
+        Sint32_x00197DE8 xsize;
+        void *buf;
+        Sint32_x00197DE8 maxnch;
+        Sint32_x00197DE8 x10;
+        Sint32_x00197DE8 worksize;
+        void *work;
+} SFADXT_PARA_x00197DE8;
+typedef struct {
+        void *adxt;
+        SJ_x00197DE8 sj;
+        SFADXT_PARA_x00197DE8 para;
+        Sint32_x00197DE8 tcount;
+        Sint32_x00197DE8 tunit;
+        Sint32_x00197DE8 pause;
+        Sint32_x00197DE8 discard;
+        Sint32_x00197DE8 seekflg;
+        Sint32_x00197DE8 smplofst;
+        void (*func)(SFD_x00197DE8 sfd, Uint8_x00197DE8 *data, Sint32_x00197DE8 len, Sint32_x00197DE8 *nbyte);
+        Sint32_x00197DE8 x40;
+        Sint32_x00197DE8 svrfreq;
+        Sint32_x00197DE8 totbyte;
+        Sint32_x00197DE8 x4c;
+} SFADXT_WORK_x00197DE8;
+typedef struct {
+        SFSEE_WORK_x00197DE8 *wk;
+        SFSEE_REQ_x00197DE8 req;
+} SFSEE_HN_x00197DE8;
+typedef struct {
+        Sint32_x00197DE8 x00;
+        Uint32_x00197DE8 adr;
+        Sint32_x00197DE8 size[7];
+        Sint32_x00197DE8 x24;
+        Sint32_x00197DE8 unit;
+        Sint32_x00197DE8 x2c;
+        Sint32_x00197DE8 x30;
+        Sint32_x00197DE8 x34;
+        Sint32_x00197DE8 x38;
+        void *hnwork;
+        Sint32_x00197DE8 hnwksiz;
+} SFD_CREPRM_x00197DE8;
+typedef struct {
+        void *x00;
+        Sint32_x00197DE8 x04;
+        Sint32_x00197DE8 x08;
+} SFPLY_PTSM_x00197DE8;
+typedef struct {
+        Sint64_x00197DE8 sum;
+        Sint64_x00197DE8 min;
+        Sint64_x00197DE8 max;
+        Sint32_x00197DE8 cnt;
+} SFTMR_TSUM_x00197DE8;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x00197DE8 nvid;
+        Sint32_x00197DE8 naud;
+        Sint32_x00197DE8 x0c;
+        Sint64_x00197DE8 pts_min;
+        Sint64_x00197DE8 pts_min2;
+        Sint32_x00197DE8 concat_cnt;
+        Sint32_x00197DE8 last_vid;
+        Sint32_x00197DE8 last_aud;
+        Sint32_x00197DE8 first_vid;
+        Sint32_x00197DE8 first_aud;
+        Sint32_x00197DE8 cur_vid;
+        Sint32_x00197DE8 cur_aud;
+        Sint32_x00197DE8 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x00197DE8 stmid);
+        void *outobj;
+        Sint32_x00197DE8 skip;
+        Sint32_x00197DE8 x15c;
+        Sint32_x00197DE8 x160;
+        Sint32_x00197DE8 x164;
+} SFMPS_WORK_x00197DE8;
+typedef struct SFD_OBJ_x00197DE8 {
+        SFD_CREPRM_x00197DE8 prm;
+        Sint32_x00197DE8 chg_flg;
+        Sint32_x00197DE8 stat;
+        Sint32_x00197DE8 req;
+        Sint32_x00197DE8 pause_sw;
+        Sint32_x00197DE8 pause_cnt;
+        Uint8_x00197DE8 pad58[0x74 - 0x58];
+        Sint32_x00197DE8 pad74;
+        SFHDS_FHD_x00197DE8 fhd;
+        Sint32_x00197DE8 x90c;
+        Sint32_x00197DE8 x910;
+        Sint32_x00197DE8 x914;
+        Sint32_x00197DE8 x918;
+        Sint32_x00197DE8 x91c;
+        Sint32_x00197DE8 picrate;
+        Sint32_x00197DE8 x924;
+        Sint32_x00197DE8 x928;
+        Sint32_x00197DE8 x92c;
+        Sint32_x00197DE8 numelem_aud;
+        Sint32_x00197DE8 numelem_vid;
+        Sint32_x00197DE8 numelem_prv;
+        Sint32_x00197DE8 x93c;
+        Sint32_x00197DE8 x940;
+        Sint32_x00197DE8 x944;
+        Sint32_x00197DE8 x948;
+        Sint32_x00197DE8 x94c;
+        SFD_PLYINF_x00197DE8 plyinf;
+        SFLIB_ERRINF_x00197DE8 err;
+        Sint32_x00197DE8 cond[100];
+        Sint32_x00197DE8 cond_def[100];
+        Uint8_x00197DE8 padD24[4];
+        SFCON_x00197DE8 con;
+        Uint8_x00197DE8 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x00197DE8))];
+        Uint8_x00197DE8 tst[0x1C0];
+        Uint8_x00197DE8 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x00197DE8 ptsm;
+        Uint8_x00197DE8 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x00197DE8 buf[8];
+        SFD_VFRM_x00197DE8 vfrm[16];
+        SFD_TR_x00197DE8 tr[9];
+        Sint32_x00197DE8 pad218c;
+        SFMPS_WORK_x00197DE8 mps;
+        Uint8_x00197DE8 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x00197DE8 mpv;
+        SFADXT_WORK_x00197DE8 adxt;
+        Uint8_x00197DE8 pad3410[0x3474 - 0x3410];
+        SFAOAP_x00197DE8 aoap;
+        SFUO_x00197DE8 uo_tbl;
+        Sint32_x00197DE8 pad34c4;
+        SFSEE_HN_x00197DE8 see;
+        SFTMR_TSUM_x00197DE8 tsum[6];
+} SFD_OBJ_x00197DE8;
+Sint32_x00197DE8 SFLIB_SetErr_x00197DE8(SFD_x00197DE8 sfd, Sint32_x00197DE8 code) __asm__("func_0018D650");
+Sint32_x00197DE8 SFLIB_CheckHn_x00197DE8(SFD_x00197DE8 sfd) __asm__("func_0018D870");
+extern void (*SFPLY_recordgetfrm_x00197DE8)(SFD_x00197DE8 sfd, void *frm) __asm__("SFPLY_recordgetfrm");
+extern void (*SFPLY_SetPtsInfo_x00197DE8)(SFPLY_PTSM_x00197DE8 *ptsm) __asm__("SFPLY_SetPtsInfo");
+extern void (*SFPLY_ResetPtsm_x00197DE8)(SFPLY_PTSM_x00197DE8 *ptsm) __asm__("SFPLY_ResetPtsm");
+Sint32_x00197DE8 sfply_StopHn_x00197DE8(SFD_x00197DE8 sfd) __asm__("func_00197E40");
+Sint32_x00197DE8 func_00197DE8_x00197DE8(SFD_x00197DE8 sfd) __asm__("func_00197DE8");
+/* SFD_Stop: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_ply.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00197DE8 func_00197DE8_x00197DE8(SFD_x00197DE8 sfd)
+{
+        Sint32_x00197DE8 ret;
+        if (SFLIB_CheckHn_x00197DE8(sfd) != 0) {
+                return SFLIB_SetErr_x00197DE8(0, 0xFF000133);
+        }
+        ret = sfply_StopHn_x00197DE8(sfd);
+        sfd->chg_flg = 1;
+        return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197E40);
 void func_00197EA8(s32 arg0) {
     D_00426ADC = arg0;
@@ -668,9 +3329,1064 @@ void func_00197EA8(s32 arg0) {
 s32 func_00197EB8(void) {
     return D_00426ADC;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197EC8);
+typedef unsigned char Uint8_x00197EC8;
+typedef signed char Sint8_x00197EC8;
+typedef signed short Sint16_x00197EC8;
+typedef unsigned int Uint32_x00197EC8;
+typedef signed int Sint32_x00197EC8;
+typedef signed long long Sint64_x00197EC8;
+typedef char Char8_x00197EC8;
+typedef struct SJ_OBJ_x00197EC8 *SJ_x00197EC8;
+typedef struct {
+        Uint8_x00197EC8 *data;
+        Sint32_x00197EC8 len;
+} SJCK_x00197EC8;
+typedef struct {
+        Uint8_x00197EC8 data[16];
+} SJUUID_x00197EC8;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00197EC8 sj);
+        const SJUUID_x00197EC8 *(*GetUuid)(SJ_x00197EC8 sj);
+        void (*Reset)(SJ_x00197EC8 sj);
+        void (*GetChunk)(SJ_x00197EC8 sj, Sint32_x00197EC8 id, Sint32_x00197EC8 nbyte, SJCK_x00197EC8 *ck);
+        void (*UngetChunk)(SJ_x00197EC8 sj, Sint32_x00197EC8 id, SJCK_x00197EC8 *ck);
+        void (*PutChunk)(SJ_x00197EC8 sj, Sint32_x00197EC8 id, SJCK_x00197EC8 *ck);
+        Sint32_x00197EC8 (*GetNumData)(SJ_x00197EC8 sj, Sint32_x00197EC8 id);
+        Sint32_x00197EC8 (*IsGetChunk)(SJ_x00197EC8 sj, Sint32_x00197EC8 id, Sint32_x00197EC8 nbyte, Sint32_x00197EC8 *rbyte);
+        void (*EntryErrFunc)(SJ_x00197EC8 sj, void (*func)(void *obj, Char8_x00197EC8 *msg), void *obj);
+} SJ_IF_x00197EC8;
+struct SJ_OBJ_x00197EC8 {
+        SJ_IF_x00197EC8 *vtbl;
+};
+typedef struct SFD_OBJ_x00197EC8 *SFD_x00197EC8;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x00197EC8 rsv1;
+        Sint32_x00197EC8 rsv2;
+} SFUO_CH_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 nch;
+        SFUO_CH_x00197EC8 ch[3];
+} SFUO_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 x00;
+        Sint32_x00197EC8 (*SetOutPan)(SFD_x00197EC8 sfd, Sint32_x00197EC8 ch, Sint32_x00197EC8 pan);
+        Sint32_x00197EC8 (*GetOutPan)(SFD_x00197EC8 sfd, Sint32_x00197EC8 ch);
+        Sint32_x00197EC8 (*SetOutVol)(SFD_x00197EC8 sfd, Sint32_x00197EC8 vol);
+        Sint32_x00197EC8 (*GetOutVol)(SFD_x00197EC8 sfd);
+        void (*SetSpeed)(SFD_x00197EC8 sfd, Sint32_x00197EC8 speed);
+        Sint32_x00197EC8 x18;
+} SFAOAP_x00197EC8;
+typedef struct {
+        Uint8_x00197EC8 pad0[0xB8];
+        Sint32_x00197EC8 tottime;
+        Sint32_x00197EC8 tunit;
+        Uint8_x00197EC8 padc0[0x150 - 0xC0];
+        Sint64_x00197EC8 scr_base;
+        Sint64_x00197EC8 scr_ofst;
+        Sint32_x00197EC8 pad160;
+        Sint32_x00197EC8 ctime;
+        Sint32_x00197EC8 ctime_idx;
+        Sint32_x00197EC8 ctime_que[32];
+        Sint32_x00197EC8 tot_last;
+        Sint32_x00197EC8 pad1F0;
+        Sint32_x00197EC8 que_wr;
+        Sint32_x00197EC8 que_rd;
+        Sint32_x00197EC8 tot_que[32];
+} SFCON_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 type;
+        Sint32_x00197EC8 drop;
+        Sint32_x00197EC8 hour;
+        Sint32_x00197EC8 min;
+        Sint32_x00197EC8 sec;
+        Sint32_x00197EC8 frm;
+        Sint32_x00197EC8 frm2;
+        Sint16_x00197EC8 x1c;
+        Sint16_x00197EC8 field;
+} SFTIM_TC_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 valid;
+        SFTIM_TC_x00197EC8 tc;
+        Sint32_x00197EC8 val;
+        Sint32_x00197EC8 unit;
+} SFTIM_TTU_x00197EC8;
+typedef struct {
+        Sint64_x00197EC8 pts;
+        Uint32_x00197EC8 pos;
+        Uint32_x00197EC8 len;
+} SFPTS_ENT_x00197EC8;
+typedef struct {
+        SFPTS_ENT_x00197EC8 *ent;
+        Sint32_x00197EC8 num;
+        Sint32_x00197EC8 cnt;
+        Sint32_x00197EC8 wr;
+        Sint32_x00197EC8 rd;
+} SFPTS_QUE_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 raw[0x20];
+} SFD_VFRM_INF_x00197EC8;
+typedef struct {
+        void *frm;
+        Sint32_x00197EC8 x04;
+        SFD_VFRM_INF_x00197EC8 inf;
+} SFD_VFRM_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 kind;
+        SJ_x00197EC8 sj;
+        Uint32_x00197EC8 ofst;
+        Sint32_x00197EC8 size;
+        Sint32_x00197EC8 xsize;
+        Sint32_x00197EC8 x14;
+} SFBUF_SUP_x00197EC8;
+typedef struct {
+        SFBUF_SUP_x00197EC8 sup;
+        Uint8_x00197EC8 *dlm_pos;
+        Sint32_x00197EC8 dlm_len;
+        Sint32_x00197EC8 wtot;
+        Sint32_x00197EC8 rtot;
+        SFPTS_QUE_x00197EC8 ptsque;
+} SFBUF_RING_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 mode;
+        Sint32_x00197EC8 used;
+        Sint32_x00197EC8 prepflg;
+        Sint32_x00197EC8 termflg;
+        union {
+                SFBUF_RING_x00197EC8 ring;
+                struct {
+                        Uint32_x00197EC8 adr;
+                        Sint32_x00197EC8 size;
+                        Sint32_x00197EC8 x18;
+                        Sint32_x00197EC8 x1c;
+                        SFD_VFRM_x00197EC8 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x00197EC8 adr;
+                        Sint32_x00197EC8 size;
+                        Sint32_x00197EC8 rsv[7];
+                        Sint32_x00197EC8 rsv2[3];
+                } aout;
+                SFUO_CH_x00197EC8 uoch[3];
+        } u;
+        Sint32_x00197EC8 in_tr;
+        Sint32_x00197EC8 out_tr;
+        Sint32_x00197EC8 rsv[8];
+} SFBUF_WORK_x00197EC8;
+typedef Sint32_x00197EC8 (*SFD_TR_FUNC_x00197EC8)();
+typedef struct {
+        Sint32_x00197EC8 prepflg;
+        Sint32_x00197EC8 termflg;
+        void *hn;
+        SFD_TR_FUNC_x00197EC8 *trif;
+        Sint32_x00197EC8 bufin;
+        Sint32_x00197EC8 bufout;
+        Sint32_x00197EC8 bufout2;
+        Sint32_x00197EC8 bufout3;
+        Sint32_x00197EC8 x20;
+        Uint8_x00197EC8 pad24[0x44 - 0x24];
+} SFD_TR_x00197EC8;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x00197EC8 cwidth;
+        Sint16_x00197EC8 ywidth;
+} SFMPV_PLANE_x00197EC8;
+typedef struct {
+        void *buf;
+        Sint32_x00197EC8 len;
+} SFMPV_PICUSR_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 stat;
+        Sint32_x00197EC8 lock;
+        void *buf;
+        SFTIM_TTU_x00197EC8 ttu;
+        Sint32_x00197EC8 ftime;
+        Sint32_x00197EC8 tunit;
+        Sint32_x00197EC8 ndct;
+        Sint32_x00197EC8 nbyte;
+        Sint32_x00197EC8 gopno;
+        Sint32_x00197EC8 x4c;
+        Sint32_x00197EC8 x50;
+        SFMPV_PICUSR_x00197EC8 *picusr;
+        Sint32_x00197EC8 pa_width;
+        Sint32_x00197EC8 pa_height;
+        Sint32_x00197EC8 pa_mb_width;
+        Sint32_x00197EC8 pa_mb_height;
+        Sint32_x00197EC8 pa_frame_rate;
+        Sint32_x00197EC8 tmpref;
+        Sint32_x00197EC8 pa_pic_type;
+        Sint32_x00197EC8 pa_tc_drop;
+        Sint32_x00197EC8 pa_tc_hour;
+        Sint32_x00197EC8 pa_tc_min;
+        Sint32_x00197EC8 pa_tc_sec;
+        Sint32_x00197EC8 pa_tc_pic;
+        Sint32_x00197EC8 x88;
+        Sint32_x00197EC8 x8c;
+        Sint32_x00197EC8 pa_x90[3];
+        Sint32_x00197EC8 pa_x9c[3];
+        Sint16_x00197EC8 pa_xa8;
+        Sint16_x00197EC8 pa_xaa;
+        Sint8_x00197EC8 pa_xac;
+        Sint8_x00197EC8 pa_xad;
+        Sint8_x00197EC8 pa_xae;
+        Sint8_x00197EC8 pa_xaf;
+        Sint8_x00197EC8 pa_xb0;
+        Sint8_x00197EC8 pa_xb1;
+        Sint8_x00197EC8 pa_xb2;
+        Sint8_x00197EC8 pa_xb3;
+        Sint8_x00197EC8 pa_xb4;
+        Sint8_x00197EC8 pa_xb5;
+        Sint8_x00197EC8 pa_xb6;
+        Sint8_x00197EC8 pa_xb7;
+        Sint8_x00197EC8 pa_xb8;
+        Sint8_x00197EC8 pa_xb9;
+        Sint8_x00197EC8 pa_xba;
+        Sint8_x00197EC8 pa_xbb;
+        Sint8_x00197EC8 pa_xbc;
+        Uint8_x00197EC8 padbd[0xD8 - 0xBD];
+        Sint64_x00197EC8 pts;
+} SFMPV_FRM_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 cwidth;
+        Sint32_x00197EC8 cheight;
+        Sint32_x00197EC8 width;
+        Sint32_x00197EC8 height;
+        Sint32_x00197EC8 x10;
+        Sint32_x00197EC8 max_width;
+        Sint32_x00197EC8 max_height;
+        Sint32_x00197EC8 nfrm;
+        Sint32_x00197EC8 x20;
+} SFMPV_PARA_x00197EC8;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x00197EC8 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x00197EC8 *curfrm;
+        Sint32_x00197EC8 picstat;
+        Sint32_x00197EC8 dlmmask;
+        Sint32_x00197EC8 termflg;
+        Sint32_x00197EC8 gopstat;
+        Sint32_x00197EC8 nskip;
+        Sint32_x00197EC8 nconcat;
+        Uint8_x00197EC8 picatr[0x80];
+        Sint32_x00197EC8 last_ngop;
+        Sint32_x00197EC8 newgop;
+        Sint32_x00197EC8 vbvsiz;
+        Sint32_x00197EC8 pts_tmpref;
+        Sint32_x00197EC8 pts_ofst;
+        Sint32_x00197EC8 pts_max;
+        Sint32_x00197EC8 pad124;
+        SFPTS_ENT_x00197EC8 ptsent;
+        Sint32_x00197EC8 refidx[2];
+        SFMPV_PLANE_x00197EC8 rfbuf[2];
+        SFMPV_FRM_x00197EC8 *ref[2];
+        SFMPV_FRM_x00197EC8 *pendfrm;
+        Sint32_x00197EC8 skipret;
+        Sint32_x00197EC8 dlmwait;
+        Sint32_x00197EC8 tmpref_adj;
+        Sint32_x00197EC8 nfrm;
+        Sint32_x00197EC8 pad17c;
+        SFMPV_FRM_x00197EC8 frm[16];
+        void *picusr_buf;
+        Sint32_x00197EC8 picusr_num;
+        Sint32_x00197EC8 picusr_siz;
+        Uint8_x00197EC8 *picusr_dat;
+        Sint32_x00197EC8 picusr_len;
+        SFMPV_PICUSR_x00197EC8 picusr[16];
+        Sint32_x00197EC8 pad1014;
+        Sint64_x00197EC8 pts;
+} SFMPV_WORK_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 raw[0x2A];
+} SFD_PLYINF_x00197EC8 __attribute__((aligned(8)));
+typedef struct {
+        void (*fn)(void *obj, Sint32_x00197EC8 code);
+        void *obj;
+        Sint32_x00197EC8 code;
+        Sint32_x00197EC8 x0c;
+        Sint32_x00197EC8 x10;
+} SFLIB_ERRINF_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 codec;
+        Sint32_x00197EC8 layer;
+        Sint32_x00197EC8 chnum;
+        Sint32_x00197EC8 smphz;
+} SFHDS_AUD_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 codec;
+        Sint32_x00197EC8 bitrate;
+        Sint32_x00197EC8 picw;
+        Sint32_x00197EC8 pich;
+        Sint32_x00197EC8 picrate;
+        Sint32_x00197EC8 ftr_eff;
+        Sint32_x00197EC8 ftr_coltype;
+        Sint32_x00197EC8 ftr_pictype;
+        Sint32_x00197EC8 ftr_fixflg;
+        Sint32_x00197EC8 ftr_shcfixflg;
+        Sint32_x00197EC8 ftr_expand;
+        Sint32_x00197EC8 ftr_gopn;
+        Sint32_x00197EC8 ftr_gopm;
+} SFHDS_VID_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 valid;
+        Sint32_x00197EC8 ver_major;
+        Sint32_x00197EC8 ver_minor;
+        Sint32_x00197EC8 byterate;
+        Sint32_x00197EC8 hdrsiz;
+        Sint32_x00197EC8 packtype;
+        Sint32_x00197EC8 pketsizlen;
+        Sint32_x00197EC8 packsiz;
+        Sint32_x00197EC8 numelem_tot;
+        Sint32_x00197EC8 numelem_aud;
+        Sint32_x00197EC8 numelem_vid;
+        Sint32_x00197EC8 numelem_prv;
+        Sint32_x00197EC8 maxplylen_aud;
+        Sint32_x00197EC8 maxplylen_vid;
+        Sint32_x00197EC8 maxfrmnum;
+        Sint32_x00197EC8 stmid_prv1;
+        Sint32_x00197EC8 stmid_prv2;
+        Sint32_x00197EC8 stmid_aud;
+        Sint32_x00197EC8 stmid_vid;
+        SFHDS_AUD_x00197EC8 aud;
+        SFHDS_VID_x00197EC8 vid;
+        Sint32_x00197EC8 rawsiz;
+        Uint8_x00197EC8 raw[0x800];
+} SFHDS_FHD_x00197EC8;
+typedef struct {
+        Uint8_x00197EC8 data[2][0xB0];
+        Sint32_x00197EC8 len[2];
+} SFSEE_SYSHD_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 analyzed;
+        Sint32_x00197EC8 ncount;
+        Sint32_x00197EC8 tscale;
+        Sint32_x00197EC8 nvid;
+        Sint32_x00197EC8 naud;
+        Sint32_x00197EC8 pad14;
+        Sint64_x00197EC8 scr_base;
+        Sint64_x00197EC8 pts_min;
+        Sint32_x00197EC8 stmid_vid;
+        Sint32_x00197EC8 stmid_aud;
+        SFSEE_SYSHD_x00197EC8 syshd;
+} SFSEE_SHDR_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 analyzed;
+        Sint32_x00197EC8 ncount;
+        Sint32_x00197EC8 tscale;
+        SFHDS_FHD_x00197EC8 fhd;
+        SFSEE_SHDR_x00197EC8 shdr;
+        Uint8_x00197EC8 pada38[0xAD0 - 0xA38];
+        Sint32_x00197EC8 a1hdr;
+        Sint32_x00197EC8 a1ncount;
+        Sint32_x00197EC8 a1tscale;
+        Uint8_x00197EC8 padadc[0xD0C - 0xADC];
+        Sint32_x00197EC8 a2hdr;
+        Sint32_x00197EC8 a2ncount;
+        Sint32_x00197EC8 a2tscale;
+        Uint8_x00197EC8 padd18[0xDA8 - 0xD18];
+        Sint32_x00197EC8 rate;
+        Sint32_x00197EC8 fsize_est;
+        Sint32_x00197EC8 tot_est;
+        Sint32_x00197EC8 tunit_est;
+        Sint32_x00197EC8 av_a;
+        Sint32_x00197EC8 av_b;
+        Sint32_x00197EC8 paddc0;
+        Sint32_x00197EC8 fsize;
+        Sint32_x00197EC8 tottime;
+        Sint32_x00197EC8 tunit;
+        Sint32_x00197EC8 byterate;
+        Sint32_x00197EC8 seekpos;
+} SFSEE_WORK_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 x00;
+        Sint32_x00197EC8 pos;
+        Sint32_x00197EC8 x08;
+} SFSEE_REQ_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 bsize;
+        Sint32_x00197EC8 xsize;
+        void *buf;
+        Sint32_x00197EC8 maxnch;
+        Sint32_x00197EC8 x10;
+        Sint32_x00197EC8 worksize;
+        void *work;
+} SFADXT_PARA_x00197EC8;
+typedef struct {
+        void *adxt;
+        SJ_x00197EC8 sj;
+        SFADXT_PARA_x00197EC8 para;
+        Sint32_x00197EC8 tcount;
+        Sint32_x00197EC8 tunit;
+        Sint32_x00197EC8 pause;
+        Sint32_x00197EC8 discard;
+        Sint32_x00197EC8 seekflg;
+        Sint32_x00197EC8 smplofst;
+        void (*func)(SFD_x00197EC8 sfd, Uint8_x00197EC8 *data, Sint32_x00197EC8 len, Sint32_x00197EC8 *nbyte);
+        Sint32_x00197EC8 x40;
+        Sint32_x00197EC8 svrfreq;
+        Sint32_x00197EC8 totbyte;
+        Sint32_x00197EC8 x4c;
+} SFADXT_WORK_x00197EC8;
+typedef struct {
+        SFSEE_WORK_x00197EC8 *wk;
+        SFSEE_REQ_x00197EC8 req;
+} SFSEE_HN_x00197EC8;
+typedef struct {
+        Sint32_x00197EC8 x00;
+        Uint32_x00197EC8 adr;
+        Sint32_x00197EC8 size[7];
+        Sint32_x00197EC8 x24;
+        Sint32_x00197EC8 unit;
+        Sint32_x00197EC8 x2c;
+        Sint32_x00197EC8 x30;
+        Sint32_x00197EC8 x34;
+        Sint32_x00197EC8 x38;
+        void *hnwork;
+        Sint32_x00197EC8 hnwksiz;
+} SFD_CREPRM_x00197EC8;
+typedef struct {
+        void *x00;
+        Sint32_x00197EC8 x04;
+        Sint32_x00197EC8 x08;
+} SFPLY_PTSM_x00197EC8;
+typedef struct {
+        Sint64_x00197EC8 sum;
+        Sint64_x00197EC8 min;
+        Sint64_x00197EC8 max;
+        Sint32_x00197EC8 cnt;
+} SFTMR_TSUM_x00197EC8;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x00197EC8 nvid;
+        Sint32_x00197EC8 naud;
+        Sint32_x00197EC8 x0c;
+        Sint64_x00197EC8 pts_min;
+        Sint64_x00197EC8 pts_min2;
+        Sint32_x00197EC8 concat_cnt;
+        Sint32_x00197EC8 last_vid;
+        Sint32_x00197EC8 last_aud;
+        Sint32_x00197EC8 first_vid;
+        Sint32_x00197EC8 first_aud;
+        Sint32_x00197EC8 cur_vid;
+        Sint32_x00197EC8 cur_aud;
+        Sint32_x00197EC8 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x00197EC8 stmid);
+        void *outobj;
+        Sint32_x00197EC8 skip;
+        Sint32_x00197EC8 x15c;
+        Sint32_x00197EC8 x160;
+        Sint32_x00197EC8 x164;
+} SFMPS_WORK_x00197EC8;
+typedef struct SFD_OBJ_x00197EC8 {
+        SFD_CREPRM_x00197EC8 prm;
+        Sint32_x00197EC8 chg_flg;
+        Sint32_x00197EC8 stat;
+        Sint32_x00197EC8 req;
+        Sint32_x00197EC8 pause_sw;
+        Sint32_x00197EC8 pause_cnt;
+        Uint8_x00197EC8 pad58[0x74 - 0x58];
+        Sint32_x00197EC8 pad74;
+        SFHDS_FHD_x00197EC8 fhd;
+        Sint32_x00197EC8 x90c;
+        Sint32_x00197EC8 x910;
+        Sint32_x00197EC8 x914;
+        Sint32_x00197EC8 x918;
+        Sint32_x00197EC8 x91c;
+        Sint32_x00197EC8 picrate;
+        Sint32_x00197EC8 x924;
+        Sint32_x00197EC8 x928;
+        Sint32_x00197EC8 x92c;
+        Sint32_x00197EC8 numelem_aud;
+        Sint32_x00197EC8 numelem_vid;
+        Sint32_x00197EC8 numelem_prv;
+        Sint32_x00197EC8 x93c;
+        Sint32_x00197EC8 x940;
+        Sint32_x00197EC8 x944;
+        Sint32_x00197EC8 x948;
+        Sint32_x00197EC8 x94c;
+        SFD_PLYINF_x00197EC8 plyinf;
+        SFLIB_ERRINF_x00197EC8 err;
+        Sint32_x00197EC8 cond[100];
+        Sint32_x00197EC8 cond_def[100];
+        Uint8_x00197EC8 padD24[4];
+        SFCON_x00197EC8 con;
+        Uint8_x00197EC8 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x00197EC8))];
+        Uint8_x00197EC8 tst[0x1C0];
+        Uint8_x00197EC8 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x00197EC8 ptsm;
+        Uint8_x00197EC8 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x00197EC8 buf[8];
+        SFD_VFRM_x00197EC8 vfrm[16];
+        SFD_TR_x00197EC8 tr[9];
+        Sint32_x00197EC8 pad218c;
+        SFMPS_WORK_x00197EC8 mps;
+        Uint8_x00197EC8 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x00197EC8 mpv;
+        SFADXT_WORK_x00197EC8 adxt;
+        Uint8_x00197EC8 pad3410[0x3474 - 0x3410];
+        SFAOAP_x00197EC8 aoap;
+        SFUO_x00197EC8 uo_tbl;
+        Sint32_x00197EC8 pad34c4;
+        SFSEE_HN_x00197EC8 see;
+        SFTMR_TSUM_x00197EC8 tsum[6];
+} SFD_OBJ_x00197EC8;
+Sint32_x00197EC8 SFTRN_CallTrtTrif_x00197EC8(SFD_x00197EC8 sfd, Sint32_x00197EC8 a, Sint32_x00197EC8 b, Sint32_x00197EC8 c, Sint32_x00197EC8 d) __asm__("func_0019C0D8");
+extern void (*SFPLY_recordgetfrm_x00197EC8)(SFD_x00197EC8 sfd, void *frm) __asm__("SFPLY_recordgetfrm");
+extern void (*SFPLY_SetPtsInfo_x00197EC8)(SFPLY_PTSM_x00197EC8 *ptsm) __asm__("SFPLY_SetPtsInfo");
+extern void (*SFPLY_ResetPtsm_x00197EC8)(SFPLY_PTSM_x00197EC8 *ptsm) __asm__("SFPLY_ResetPtsm");
+Sint32_x00197EC8 func_00197EC8_x00197EC8(SFD_x00197EC8 sfd) __asm__("func_00197EC8");
+/* sfply_StopTr: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_ply.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00197EC8 func_00197EC8_x00197EC8(SFD_x00197EC8 sfd)
+{
+        Sint32_x00197EC8 ret;
+        if (sfd->stat == 4) {
+                ret = SFTRN_CallTrtTrif_x00197EC8(sfd, 7, 7, 0, 0);
+                if (ret != 0) {
+                        return ret;
+                }
+        }
+        sfd->stat = 1;
+        sfd->req = 1;
+        return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197F28);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198128);
+typedef unsigned char Uint8_x00198128;
+typedef signed char Sint8_x00198128;
+typedef signed short Sint16_x00198128;
+typedef unsigned int Uint32_x00198128;
+typedef signed int Sint32_x00198128;
+typedef signed long long Sint64_x00198128;
+typedef char Char8_x00198128;
+typedef struct SJ_OBJ_x00198128 *SJ_x00198128;
+typedef struct {
+        Uint8_x00198128 *data;
+        Sint32_x00198128 len;
+} SJCK_x00198128;
+typedef struct {
+        Uint8_x00198128 data[16];
+} SJUUID_x00198128;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00198128 sj);
+        const SJUUID_x00198128 *(*GetUuid)(SJ_x00198128 sj);
+        void (*Reset)(SJ_x00198128 sj);
+        void (*GetChunk)(SJ_x00198128 sj, Sint32_x00198128 id, Sint32_x00198128 nbyte, SJCK_x00198128 *ck);
+        void (*UngetChunk)(SJ_x00198128 sj, Sint32_x00198128 id, SJCK_x00198128 *ck);
+        void (*PutChunk)(SJ_x00198128 sj, Sint32_x00198128 id, SJCK_x00198128 *ck);
+        Sint32_x00198128 (*GetNumData)(SJ_x00198128 sj, Sint32_x00198128 id);
+        Sint32_x00198128 (*IsGetChunk)(SJ_x00198128 sj, Sint32_x00198128 id, Sint32_x00198128 nbyte, Sint32_x00198128 *rbyte);
+        void (*EntryErrFunc)(SJ_x00198128 sj, void (*func)(void *obj, Char8_x00198128 *msg), void *obj);
+} SJ_IF_x00198128;
+struct SJ_OBJ_x00198128 {
+        SJ_IF_x00198128 *vtbl;
+};
+typedef struct SFD_OBJ_x00198128 *SFD_x00198128;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x00198128 rsv1;
+        Sint32_x00198128 rsv2;
+} SFUO_CH_x00198128;
+typedef struct {
+        Sint32_x00198128 nch;
+        SFUO_CH_x00198128 ch[3];
+} SFUO_x00198128;
+typedef struct {
+        Sint32_x00198128 x00;
+        Sint32_x00198128 (*SetOutPan)(SFD_x00198128 sfd, Sint32_x00198128 ch, Sint32_x00198128 pan);
+        Sint32_x00198128 (*GetOutPan)(SFD_x00198128 sfd, Sint32_x00198128 ch);
+        Sint32_x00198128 (*SetOutVol)(SFD_x00198128 sfd, Sint32_x00198128 vol);
+        Sint32_x00198128 (*GetOutVol)(SFD_x00198128 sfd);
+        void (*SetSpeed)(SFD_x00198128 sfd, Sint32_x00198128 speed);
+        Sint32_x00198128 x18;
+} SFAOAP_x00198128;
+typedef struct {
+        Uint8_x00198128 pad0[0xB8];
+        Sint32_x00198128 tottime;
+        Sint32_x00198128 tunit;
+        Uint8_x00198128 padc0[0x150 - 0xC0];
+        Sint64_x00198128 scr_base;
+        Sint64_x00198128 scr_ofst;
+        Sint32_x00198128 pad160;
+        Sint32_x00198128 ctime;
+        Sint32_x00198128 ctime_idx;
+        Sint32_x00198128 ctime_que[32];
+        Sint32_x00198128 tot_last;
+        Sint32_x00198128 pad1F0;
+        Sint32_x00198128 que_wr;
+        Sint32_x00198128 que_rd;
+        Sint32_x00198128 tot_que[32];
+} SFCON_x00198128;
+typedef struct {
+        Sint32_x00198128 type;
+        Sint32_x00198128 drop;
+        Sint32_x00198128 hour;
+        Sint32_x00198128 min;
+        Sint32_x00198128 sec;
+        Sint32_x00198128 frm;
+        Sint32_x00198128 frm2;
+        Sint16_x00198128 x1c;
+        Sint16_x00198128 field;
+} SFTIM_TC_x00198128;
+typedef struct {
+        Sint32_x00198128 valid;
+        SFTIM_TC_x00198128 tc;
+        Sint32_x00198128 val;
+        Sint32_x00198128 unit;
+} SFTIM_TTU_x00198128;
+typedef struct {
+        Sint64_x00198128 pts;
+        Uint32_x00198128 pos;
+        Uint32_x00198128 len;
+} SFPTS_ENT_x00198128;
+typedef struct {
+        SFPTS_ENT_x00198128 *ent;
+        Sint32_x00198128 num;
+        Sint32_x00198128 cnt;
+        Sint32_x00198128 wr;
+        Sint32_x00198128 rd;
+} SFPTS_QUE_x00198128;
+typedef struct {
+        Sint32_x00198128 raw[0x20];
+} SFD_VFRM_INF_x00198128;
+typedef struct {
+        void *frm;
+        Sint32_x00198128 x04;
+        SFD_VFRM_INF_x00198128 inf;
+} SFD_VFRM_x00198128;
+typedef struct {
+        Sint32_x00198128 kind;
+        SJ_x00198128 sj;
+        Uint32_x00198128 ofst;
+        Sint32_x00198128 size;
+        Sint32_x00198128 xsize;
+        Sint32_x00198128 x14;
+} SFBUF_SUP_x00198128;
+typedef struct {
+        SFBUF_SUP_x00198128 sup;
+        Uint8_x00198128 *dlm_pos;
+        Sint32_x00198128 dlm_len;
+        Sint32_x00198128 wtot;
+        Sint32_x00198128 rtot;
+        SFPTS_QUE_x00198128 ptsque;
+} SFBUF_RING_x00198128;
+typedef struct {
+        Sint32_x00198128 mode;
+        Sint32_x00198128 used;
+        Sint32_x00198128 prepflg;
+        Sint32_x00198128 termflg;
+        union {
+                SFBUF_RING_x00198128 ring;
+                struct {
+                        Uint32_x00198128 adr;
+                        Sint32_x00198128 size;
+                        Sint32_x00198128 x18;
+                        Sint32_x00198128 x1c;
+                        SFD_VFRM_x00198128 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x00198128 adr;
+                        Sint32_x00198128 size;
+                        Sint32_x00198128 rsv[7];
+                        Sint32_x00198128 rsv2[3];
+                } aout;
+                SFUO_CH_x00198128 uoch[3];
+        } u;
+        Sint32_x00198128 in_tr;
+        Sint32_x00198128 out_tr;
+        Sint32_x00198128 rsv[8];
+} SFBUF_WORK_x00198128;
+typedef Sint32_x00198128 (*SFD_TR_FUNC_x00198128)();
+typedef struct {
+        Sint32_x00198128 prepflg;
+        Sint32_x00198128 termflg;
+        void *hn;
+        SFD_TR_FUNC_x00198128 *trif;
+        Sint32_x00198128 bufin;
+        Sint32_x00198128 bufout;
+        Sint32_x00198128 bufout2;
+        Sint32_x00198128 bufout3;
+        Sint32_x00198128 x20;
+        Uint8_x00198128 pad24[0x44 - 0x24];
+} SFD_TR_x00198128;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x00198128 cwidth;
+        Sint16_x00198128 ywidth;
+} SFMPV_PLANE_x00198128;
+typedef struct {
+        void *buf;
+        Sint32_x00198128 len;
+} SFMPV_PICUSR_x00198128;
+typedef struct {
+        Sint32_x00198128 stat;
+        Sint32_x00198128 lock;
+        void *buf;
+        SFTIM_TTU_x00198128 ttu;
+        Sint32_x00198128 ftime;
+        Sint32_x00198128 tunit;
+        Sint32_x00198128 ndct;
+        Sint32_x00198128 nbyte;
+        Sint32_x00198128 gopno;
+        Sint32_x00198128 x4c;
+        Sint32_x00198128 x50;
+        SFMPV_PICUSR_x00198128 *picusr;
+        Sint32_x00198128 pa_width;
+        Sint32_x00198128 pa_height;
+        Sint32_x00198128 pa_mb_width;
+        Sint32_x00198128 pa_mb_height;
+        Sint32_x00198128 pa_frame_rate;
+        Sint32_x00198128 tmpref;
+        Sint32_x00198128 pa_pic_type;
+        Sint32_x00198128 pa_tc_drop;
+        Sint32_x00198128 pa_tc_hour;
+        Sint32_x00198128 pa_tc_min;
+        Sint32_x00198128 pa_tc_sec;
+        Sint32_x00198128 pa_tc_pic;
+        Sint32_x00198128 x88;
+        Sint32_x00198128 x8c;
+        Sint32_x00198128 pa_x90[3];
+        Sint32_x00198128 pa_x9c[3];
+        Sint16_x00198128 pa_xa8;
+        Sint16_x00198128 pa_xaa;
+        Sint8_x00198128 pa_xac;
+        Sint8_x00198128 pa_xad;
+        Sint8_x00198128 pa_xae;
+        Sint8_x00198128 pa_xaf;
+        Sint8_x00198128 pa_xb0;
+        Sint8_x00198128 pa_xb1;
+        Sint8_x00198128 pa_xb2;
+        Sint8_x00198128 pa_xb3;
+        Sint8_x00198128 pa_xb4;
+        Sint8_x00198128 pa_xb5;
+        Sint8_x00198128 pa_xb6;
+        Sint8_x00198128 pa_xb7;
+        Sint8_x00198128 pa_xb8;
+        Sint8_x00198128 pa_xb9;
+        Sint8_x00198128 pa_xba;
+        Sint8_x00198128 pa_xbb;
+        Sint8_x00198128 pa_xbc;
+        Uint8_x00198128 padbd[0xD8 - 0xBD];
+        Sint64_x00198128 pts;
+} SFMPV_FRM_x00198128;
+typedef struct {
+        Sint32_x00198128 cwidth;
+        Sint32_x00198128 cheight;
+        Sint32_x00198128 width;
+        Sint32_x00198128 height;
+        Sint32_x00198128 x10;
+        Sint32_x00198128 max_width;
+        Sint32_x00198128 max_height;
+        Sint32_x00198128 nfrm;
+        Sint32_x00198128 x20;
+} SFMPV_PARA_x00198128;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x00198128 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x00198128 *curfrm;
+        Sint32_x00198128 picstat;
+        Sint32_x00198128 dlmmask;
+        Sint32_x00198128 termflg;
+        Sint32_x00198128 gopstat;
+        Sint32_x00198128 nskip;
+        Sint32_x00198128 nconcat;
+        Uint8_x00198128 picatr[0x80];
+        Sint32_x00198128 last_ngop;
+        Sint32_x00198128 newgop;
+        Sint32_x00198128 vbvsiz;
+        Sint32_x00198128 pts_tmpref;
+        Sint32_x00198128 pts_ofst;
+        Sint32_x00198128 pts_max;
+        Sint32_x00198128 pad124;
+        SFPTS_ENT_x00198128 ptsent;
+        Sint32_x00198128 refidx[2];
+        SFMPV_PLANE_x00198128 rfbuf[2];
+        SFMPV_FRM_x00198128 *ref[2];
+        SFMPV_FRM_x00198128 *pendfrm;
+        Sint32_x00198128 skipret;
+        Sint32_x00198128 dlmwait;
+        Sint32_x00198128 tmpref_adj;
+        Sint32_x00198128 nfrm;
+        Sint32_x00198128 pad17c;
+        SFMPV_FRM_x00198128 frm[16];
+        void *picusr_buf;
+        Sint32_x00198128 picusr_num;
+        Sint32_x00198128 picusr_siz;
+        Uint8_x00198128 *picusr_dat;
+        Sint32_x00198128 picusr_len;
+        SFMPV_PICUSR_x00198128 picusr[16];
+        Sint32_x00198128 pad1014;
+        Sint64_x00198128 pts;
+} SFMPV_WORK_x00198128;
+typedef struct {
+        Sint32_x00198128 raw[0x2A];
+} SFD_PLYINF_x00198128 __attribute__((aligned(8)));
+typedef struct {
+        void (*fn)(void *obj, Sint32_x00198128 code);
+        void *obj;
+        Sint32_x00198128 code;
+        Sint32_x00198128 x0c;
+        Sint32_x00198128 x10;
+} SFLIB_ERRINF_x00198128;
+typedef struct {
+        Sint32_x00198128 codec;
+        Sint32_x00198128 layer;
+        Sint32_x00198128 chnum;
+        Sint32_x00198128 smphz;
+} SFHDS_AUD_x00198128;
+typedef struct {
+        Sint32_x00198128 codec;
+        Sint32_x00198128 bitrate;
+        Sint32_x00198128 picw;
+        Sint32_x00198128 pich;
+        Sint32_x00198128 picrate;
+        Sint32_x00198128 ftr_eff;
+        Sint32_x00198128 ftr_coltype;
+        Sint32_x00198128 ftr_pictype;
+        Sint32_x00198128 ftr_fixflg;
+        Sint32_x00198128 ftr_shcfixflg;
+        Sint32_x00198128 ftr_expand;
+        Sint32_x00198128 ftr_gopn;
+        Sint32_x00198128 ftr_gopm;
+} SFHDS_VID_x00198128;
+typedef struct {
+        Sint32_x00198128 valid;
+        Sint32_x00198128 ver_major;
+        Sint32_x00198128 ver_minor;
+        Sint32_x00198128 byterate;
+        Sint32_x00198128 hdrsiz;
+        Sint32_x00198128 packtype;
+        Sint32_x00198128 pketsizlen;
+        Sint32_x00198128 packsiz;
+        Sint32_x00198128 numelem_tot;
+        Sint32_x00198128 numelem_aud;
+        Sint32_x00198128 numelem_vid;
+        Sint32_x00198128 numelem_prv;
+        Sint32_x00198128 maxplylen_aud;
+        Sint32_x00198128 maxplylen_vid;
+        Sint32_x00198128 maxfrmnum;
+        Sint32_x00198128 stmid_prv1;
+        Sint32_x00198128 stmid_prv2;
+        Sint32_x00198128 stmid_aud;
+        Sint32_x00198128 stmid_vid;
+        SFHDS_AUD_x00198128 aud;
+        SFHDS_VID_x00198128 vid;
+        Sint32_x00198128 rawsiz;
+        Uint8_x00198128 raw[0x800];
+} SFHDS_FHD_x00198128;
+typedef struct {
+        Uint8_x00198128 data[2][0xB0];
+        Sint32_x00198128 len[2];
+} SFSEE_SYSHD_x00198128;
+typedef struct {
+        Sint32_x00198128 analyzed;
+        Sint32_x00198128 ncount;
+        Sint32_x00198128 tscale;
+        Sint32_x00198128 nvid;
+        Sint32_x00198128 naud;
+        Sint32_x00198128 pad14;
+        Sint64_x00198128 scr_base;
+        Sint64_x00198128 pts_min;
+        Sint32_x00198128 stmid_vid;
+        Sint32_x00198128 stmid_aud;
+        SFSEE_SYSHD_x00198128 syshd;
+} SFSEE_SHDR_x00198128;
+typedef struct {
+        Sint32_x00198128 analyzed;
+        Sint32_x00198128 ncount;
+        Sint32_x00198128 tscale;
+        SFHDS_FHD_x00198128 fhd;
+        SFSEE_SHDR_x00198128 shdr;
+        Uint8_x00198128 pada38[0xAD0 - 0xA38];
+        Sint32_x00198128 a1hdr;
+        Sint32_x00198128 a1ncount;
+        Sint32_x00198128 a1tscale;
+        Uint8_x00198128 padadc[0xD0C - 0xADC];
+        Sint32_x00198128 a2hdr;
+        Sint32_x00198128 a2ncount;
+        Sint32_x00198128 a2tscale;
+        Uint8_x00198128 padd18[0xDA8 - 0xD18];
+        Sint32_x00198128 rate;
+        Sint32_x00198128 fsize_est;
+        Sint32_x00198128 tot_est;
+        Sint32_x00198128 tunit_est;
+        Sint32_x00198128 av_a;
+        Sint32_x00198128 av_b;
+        Sint32_x00198128 paddc0;
+        Sint32_x00198128 fsize;
+        Sint32_x00198128 tottime;
+        Sint32_x00198128 tunit;
+        Sint32_x00198128 byterate;
+        Sint32_x00198128 seekpos;
+} SFSEE_WORK_x00198128;
+typedef struct {
+        Sint32_x00198128 x00;
+        Sint32_x00198128 pos;
+        Sint32_x00198128 x08;
+} SFSEE_REQ_x00198128;
+typedef struct {
+        Sint32_x00198128 bsize;
+        Sint32_x00198128 xsize;
+        void *buf;
+        Sint32_x00198128 maxnch;
+        Sint32_x00198128 x10;
+        Sint32_x00198128 worksize;
+        void *work;
+} SFADXT_PARA_x00198128;
+typedef struct {
+        void *adxt;
+        SJ_x00198128 sj;
+        SFADXT_PARA_x00198128 para;
+        Sint32_x00198128 tcount;
+        Sint32_x00198128 tunit;
+        Sint32_x00198128 pause;
+        Sint32_x00198128 discard;
+        Sint32_x00198128 seekflg;
+        Sint32_x00198128 smplofst;
+        void (*func)(SFD_x00198128 sfd, Uint8_x00198128 *data, Sint32_x00198128 len, Sint32_x00198128 *nbyte);
+        Sint32_x00198128 x40;
+        Sint32_x00198128 svrfreq;
+        Sint32_x00198128 totbyte;
+        Sint32_x00198128 x4c;
+} SFADXT_WORK_x00198128;
+typedef struct {
+        SFSEE_WORK_x00198128 *wk;
+        SFSEE_REQ_x00198128 req;
+} SFSEE_HN_x00198128;
+typedef struct {
+        Sint32_x00198128 x00;
+        Uint32_x00198128 adr;
+        Sint32_x00198128 size[7];
+        Sint32_x00198128 x24;
+        Sint32_x00198128 unit;
+        Sint32_x00198128 x2c;
+        Sint32_x00198128 x30;
+        Sint32_x00198128 x34;
+        Sint32_x00198128 x38;
+        void *hnwork;
+        Sint32_x00198128 hnwksiz;
+} SFD_CREPRM_x00198128;
+typedef struct {
+        void *x00;
+        Sint32_x00198128 x04;
+        Sint32_x00198128 x08;
+} SFPLY_PTSM_x00198128;
+typedef struct {
+        Sint64_x00198128 sum;
+        Sint64_x00198128 min;
+        Sint64_x00198128 max;
+        Sint32_x00198128 cnt;
+} SFTMR_TSUM_x00198128;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x00198128 nvid;
+        Sint32_x00198128 naud;
+        Sint32_x00198128 x0c;
+        Sint64_x00198128 pts_min;
+        Sint64_x00198128 pts_min2;
+        Sint32_x00198128 concat_cnt;
+        Sint32_x00198128 last_vid;
+        Sint32_x00198128 last_aud;
+        Sint32_x00198128 first_vid;
+        Sint32_x00198128 first_aud;
+        Sint32_x00198128 cur_vid;
+        Sint32_x00198128 cur_aud;
+        Sint32_x00198128 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x00198128 stmid);
+        void *outobj;
+        Sint32_x00198128 skip;
+        Sint32_x00198128 x15c;
+        Sint32_x00198128 x160;
+        Sint32_x00198128 x164;
+} SFMPS_WORK_x00198128;
+typedef struct SFD_OBJ_x00198128 {
+        SFD_CREPRM_x00198128 prm;
+        Sint32_x00198128 chg_flg;
+        Sint32_x00198128 stat;
+        Sint32_x00198128 req;
+        Sint32_x00198128 pause_sw;
+        Sint32_x00198128 pause_cnt;
+        Uint8_x00198128 pad58[0x74 - 0x58];
+        Sint32_x00198128 pad74;
+        SFHDS_FHD_x00198128 fhd;
+        Sint32_x00198128 x90c;
+        Sint32_x00198128 x910;
+        Sint32_x00198128 x914;
+        Sint32_x00198128 x918;
+        Sint32_x00198128 x91c;
+        Sint32_x00198128 picrate;
+        Sint32_x00198128 x924;
+        Sint32_x00198128 x928;
+        Sint32_x00198128 x92c;
+        Sint32_x00198128 numelem_aud;
+        Sint32_x00198128 numelem_vid;
+        Sint32_x00198128 numelem_prv;
+        Sint32_x00198128 x93c;
+        Sint32_x00198128 x940;
+        Sint32_x00198128 x944;
+        Sint32_x00198128 x948;
+        Sint32_x00198128 x94c;
+        SFD_PLYINF_x00198128 plyinf;
+        SFLIB_ERRINF_x00198128 err;
+        Sint32_x00198128 cond[100];
+        Sint32_x00198128 cond_def[100];
+        Uint8_x00198128 padD24[4];
+        SFCON_x00198128 con;
+        Uint8_x00198128 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x00198128))];
+        Uint8_x00198128 tst[0x1C0];
+        Uint8_x00198128 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x00198128 ptsm;
+        Uint8_x00198128 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x00198128 buf[8];
+        SFD_VFRM_x00198128 vfrm[16];
+        SFD_TR_x00198128 tr[9];
+        Sint32_x00198128 pad218c;
+        SFMPS_WORK_x00198128 mps;
+        Uint8_x00198128 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x00198128 mpv;
+        SFADXT_WORK_x00198128 adxt;
+        Uint8_x00198128 pad3410[0x3474 - 0x3410];
+        SFAOAP_x00198128 aoap;
+        SFUO_x00198128 uo_tbl;
+        Sint32_x00198128 pad34c4;
+        SFSEE_HN_x00198128 see;
+        SFTMR_TSUM_x00198128 tsum[6];
+} SFD_OBJ_x00198128;
+Sint32_x00198128 SFLIB_SetErr_x00198128(SFD_x00198128 sfd, Sint32_x00198128 code) __asm__("func_0018D650");
+Sint32_x00198128 SFLIB_CheckHn_x00198128(SFD_x00198128 sfd) __asm__("func_0018D870");
+Sint32_x00198128 SFTRN_CallTrtTrif_x00198128(SFD_x00198128 sfd, Sint32_x00198128 a, Sint32_x00198128 b, Sint32_x00198128 c, Sint32_x00198128 d) __asm__("func_0019C0D8");
+typedef struct {
+        SJCK_x00198128 ck1;
+        SJCK_x00198128 ck2;
+        Sint32_x00198128 rsv[3];
+} SFBUF_RINF_x00198128;
+extern void (*SFPLY_recordgetfrm_x00198128)(SFD_x00198128 sfd, void *frm) __asm__("SFPLY_recordgetfrm");
+extern void (*SFPLY_SetPtsInfo_x00198128)(SFPLY_PTSM_x00198128 *ptsm) __asm__("SFPLY_SetPtsInfo");
+extern void (*SFPLY_ResetPtsm_x00198128)(SFPLY_PTSM_x00198128 *ptsm) __asm__("SFPLY_ResetPtsm");
+Sint32_x00198128 func_00198128_x00198128(SFD_x00198128 sfd, SFBUF_RINF_x00198128 *inf) __asm__("func_00198128");
+/* SFD_GetSupplyInf: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_ply.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00198128 func_00198128_x00198128(SFD_x00198128 sfd, SFBUF_RINF_x00198128 *inf)
+{
+        if (SFLIB_CheckHn_x00198128(sfd) != 0) {
+                return SFLIB_SetErr_x00198128(0, 0xFF000134);
+        }
+        return SFTRN_CallTrtTrif_x00198128(sfd, 0, 9, (Sint32_x00198128)inf, 0);
+}
 extern int Obj34D8_SetGlobalEE0B8_IfField48_x00198198(void *hn) __asm__("func_0018D870");
 extern void func_0034DD70_x00198198(void *a0, unsigned int err) __asm__("func_0018D650");
 extern void func_0035C2D0_x00198198(void *hn, int a1, int a2, void *a3, int a4) __asm__("func_0019C0D8");
@@ -1128,7 +4844,567 @@ int func_001998B8_x001998B8(char *a0, int a1, int a2)
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00199940);
+typedef unsigned char Uint8_x00199940;
+typedef signed char Sint8_x00199940;
+typedef signed short Sint16_x00199940;
+typedef unsigned int Uint32_x00199940;
+typedef signed int Sint32_x00199940;
+typedef signed long long Sint64_x00199940;
+typedef char Char8_x00199940;
+typedef struct SJ_OBJ_x00199940 *SJ_x00199940;
+typedef struct {
+        Uint8_x00199940 *data;
+        Sint32_x00199940 len;
+} SJCK_x00199940;
+typedef struct {
+        Uint8_x00199940 data[16];
+} SJUUID_x00199940;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x00199940 sj);
+        const SJUUID_x00199940 *(*GetUuid)(SJ_x00199940 sj);
+        void (*Reset)(SJ_x00199940 sj);
+        void (*GetChunk)(SJ_x00199940 sj, Sint32_x00199940 id, Sint32_x00199940 nbyte, SJCK_x00199940 *ck);
+        void (*UngetChunk)(SJ_x00199940 sj, Sint32_x00199940 id, SJCK_x00199940 *ck);
+        void (*PutChunk)(SJ_x00199940 sj, Sint32_x00199940 id, SJCK_x00199940 *ck);
+        Sint32_x00199940 (*GetNumData)(SJ_x00199940 sj, Sint32_x00199940 id);
+        Sint32_x00199940 (*IsGetChunk)(SJ_x00199940 sj, Sint32_x00199940 id, Sint32_x00199940 nbyte, Sint32_x00199940 *rbyte);
+        void (*EntryErrFunc)(SJ_x00199940 sj, void (*func)(void *obj, Char8_x00199940 *msg), void *obj);
+} SJ_IF_x00199940;
+struct SJ_OBJ_x00199940 {
+        SJ_IF_x00199940 *vtbl;
+};
+typedef struct SFD_OBJ_x00199940 *SFD_x00199940;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x00199940 rsv1;
+        Sint32_x00199940 rsv2;
+} SFUO_CH_x00199940;
+typedef struct {
+        Sint32_x00199940 nch;
+        SFUO_CH_x00199940 ch[3];
+} SFUO_x00199940;
+typedef struct {
+        Sint32_x00199940 x00;
+        Sint32_x00199940 (*SetOutPan)(SFD_x00199940 sfd, Sint32_x00199940 ch, Sint32_x00199940 pan);
+        Sint32_x00199940 (*GetOutPan)(SFD_x00199940 sfd, Sint32_x00199940 ch);
+        Sint32_x00199940 (*SetOutVol)(SFD_x00199940 sfd, Sint32_x00199940 vol);
+        Sint32_x00199940 (*GetOutVol)(SFD_x00199940 sfd);
+        void (*SetSpeed)(SFD_x00199940 sfd, Sint32_x00199940 speed);
+        Sint32_x00199940 x18;
+} SFAOAP_x00199940;
+typedef struct {
+        Uint8_x00199940 pad0[0xB8];
+        Sint32_x00199940 tottime;
+        Sint32_x00199940 tunit;
+        Uint8_x00199940 padc0[0x150 - 0xC0];
+        Sint64_x00199940 scr_base;
+        Sint64_x00199940 scr_ofst;
+        Sint32_x00199940 pad160;
+        Sint32_x00199940 ctime;
+        Sint32_x00199940 ctime_idx;
+        Sint32_x00199940 ctime_que[32];
+        Sint32_x00199940 tot_last;
+        Sint32_x00199940 pad1F0;
+        Sint32_x00199940 que_wr;
+        Sint32_x00199940 que_rd;
+        Sint32_x00199940 tot_que[32];
+} SFCON_x00199940;
+typedef struct {
+        Sint32_x00199940 type;
+        Sint32_x00199940 drop;
+        Sint32_x00199940 hour;
+        Sint32_x00199940 min;
+        Sint32_x00199940 sec;
+        Sint32_x00199940 frm;
+        Sint32_x00199940 frm2;
+        Sint16_x00199940 x1c;
+        Sint16_x00199940 field;
+} SFTIM_TC_x00199940;
+typedef struct {
+        Sint32_x00199940 valid;
+        SFTIM_TC_x00199940 tc;
+        Sint32_x00199940 val;
+        Sint32_x00199940 unit;
+} SFTIM_TTU_x00199940;
+typedef struct {
+        Sint64_x00199940 pts;
+        Uint32_x00199940 pos;
+        Uint32_x00199940 len;
+} SFPTS_ENT_x00199940;
+typedef struct {
+        SFPTS_ENT_x00199940 *ent;
+        Sint32_x00199940 num;
+        Sint32_x00199940 cnt;
+        Sint32_x00199940 wr;
+        Sint32_x00199940 rd;
+} SFPTS_QUE_x00199940;
+typedef struct {
+        Sint32_x00199940 raw[0x20];
+} SFD_VFRM_INF_x00199940;
+typedef struct {
+        void *frm;
+        Sint32_x00199940 x04;
+        SFD_VFRM_INF_x00199940 inf;
+} SFD_VFRM_x00199940;
+typedef struct {
+        Sint32_x00199940 kind;
+        SJ_x00199940 sj;
+        Uint32_x00199940 ofst;
+        Sint32_x00199940 size;
+        Sint32_x00199940 xsize;
+        Sint32_x00199940 x14;
+} SFBUF_SUP_x00199940;
+typedef struct {
+        SFBUF_SUP_x00199940 sup;
+        Uint8_x00199940 *dlm_pos;
+        Sint32_x00199940 dlm_len;
+        Sint32_x00199940 wtot;
+        Sint32_x00199940 rtot;
+        SFPTS_QUE_x00199940 ptsque;
+} SFBUF_RING_x00199940;
+typedef struct {
+        Sint32_x00199940 mode;
+        Sint32_x00199940 used;
+        Sint32_x00199940 prepflg;
+        Sint32_x00199940 termflg;
+        union {
+                SFBUF_RING_x00199940 ring;
+                struct {
+                        Uint32_x00199940 adr;
+                        Sint32_x00199940 size;
+                        Sint32_x00199940 x18;
+                        Sint32_x00199940 x1c;
+                        SFD_VFRM_x00199940 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x00199940 adr;
+                        Sint32_x00199940 size;
+                        Sint32_x00199940 rsv[7];
+                        Sint32_x00199940 rsv2[3];
+                } aout;
+                SFUO_CH_x00199940 uoch[3];
+        } u;
+        Sint32_x00199940 in_tr;
+        Sint32_x00199940 out_tr;
+        Sint32_x00199940 rsv[8];
+} SFBUF_WORK_x00199940;
+typedef struct {
+        Sint32_x00199940 (*Init)();
+        Sint32_x00199940 (*Finish)();
+        Sint32_x00199940 (*ExecServer)();
+        Sint32_x00199940 (*Create)();
+        Sint32_x00199940 (*Destroy)();
+        Sint32_x00199940 (*Standby)();
+        Sint32_x00199940 (*Start)();
+        Sint32_x00199940 (*Stop)();
+        Sint32_x00199940 (*Pause)();
+        Sint32_x00199940 (*GetWrite)();
+        Sint32_x00199940 (*AddWrite)();
+        Sint32_x00199940 (*GetRead)();
+        Sint32_x00199940 (*AddRead)();
+        Sint32_x00199940 (*Seek)();
+} SFD_TR_IF_x00199940;
+typedef Sint32_x00199940 (*SFD_TR_FUNC_x00199940)();
+typedef struct {
+        Sint32_x00199940 prepflg;
+        Sint32_x00199940 termflg;
+        void *hn;
+        SFD_TR_FUNC_x00199940 *trif;
+        Sint32_x00199940 bufin;
+        Sint32_x00199940 bufout;
+        Sint32_x00199940 bufout2;
+        Sint32_x00199940 bufout3;
+        Sint32_x00199940 x20;
+        Uint8_x00199940 pad24[0x44 - 0x24];
+} SFD_TR_x00199940;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x00199940 cwidth;
+        Sint16_x00199940 ywidth;
+} SFMPV_PLANE_x00199940;
+typedef struct {
+        void *buf;
+        Sint32_x00199940 len;
+} SFMPV_PICUSR_x00199940;
+typedef struct {
+        Sint32_x00199940 stat;
+        Sint32_x00199940 lock;
+        void *buf;
+        SFTIM_TTU_x00199940 ttu;
+        Sint32_x00199940 ftime;
+        Sint32_x00199940 tunit;
+        Sint32_x00199940 ndct;
+        Sint32_x00199940 nbyte;
+        Sint32_x00199940 gopno;
+        Sint32_x00199940 x4c;
+        Sint32_x00199940 x50;
+        SFMPV_PICUSR_x00199940 *picusr;
+        Sint32_x00199940 pa_width;
+        Sint32_x00199940 pa_height;
+        Sint32_x00199940 pa_mb_width;
+        Sint32_x00199940 pa_mb_height;
+        Sint32_x00199940 pa_frame_rate;
+        Sint32_x00199940 tmpref;
+        Sint32_x00199940 pa_pic_type;
+        Sint32_x00199940 pa_tc_drop;
+        Sint32_x00199940 pa_tc_hour;
+        Sint32_x00199940 pa_tc_min;
+        Sint32_x00199940 pa_tc_sec;
+        Sint32_x00199940 pa_tc_pic;
+        Sint32_x00199940 x88;
+        Sint32_x00199940 x8c;
+        Sint32_x00199940 pa_x90[3];
+        Sint32_x00199940 pa_x9c[3];
+        Sint16_x00199940 pa_xa8;
+        Sint16_x00199940 pa_xaa;
+        Sint8_x00199940 pa_xac;
+        Sint8_x00199940 pa_xad;
+        Sint8_x00199940 pa_xae;
+        Sint8_x00199940 pa_xaf;
+        Sint8_x00199940 pa_xb0;
+        Sint8_x00199940 pa_xb1;
+        Sint8_x00199940 pa_xb2;
+        Sint8_x00199940 pa_xb3;
+        Sint8_x00199940 pa_xb4;
+        Sint8_x00199940 pa_xb5;
+        Sint8_x00199940 pa_xb6;
+        Sint8_x00199940 pa_xb7;
+        Sint8_x00199940 pa_xb8;
+        Sint8_x00199940 pa_xb9;
+        Sint8_x00199940 pa_xba;
+        Sint8_x00199940 pa_xbb;
+        Sint8_x00199940 pa_xbc;
+        Uint8_x00199940 padbd[0xD8 - 0xBD];
+        Sint64_x00199940 pts;
+} SFMPV_FRM_x00199940;
+typedef struct {
+        Sint32_x00199940 cwidth;
+        Sint32_x00199940 cheight;
+        Sint32_x00199940 width;
+        Sint32_x00199940 height;
+        Sint32_x00199940 x10;
+        Sint32_x00199940 max_width;
+        Sint32_x00199940 max_height;
+        Sint32_x00199940 nfrm;
+        Sint32_x00199940 x20;
+} SFMPV_PARA_x00199940;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x00199940 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x00199940 *curfrm;
+        Sint32_x00199940 picstat;
+        Sint32_x00199940 dlmmask;
+        Sint32_x00199940 termflg;
+        Sint32_x00199940 gopstat;
+        Sint32_x00199940 nskip;
+        Sint32_x00199940 nconcat;
+        Uint8_x00199940 picatr[0x80];
+        Sint32_x00199940 last_ngop;
+        Sint32_x00199940 newgop;
+        Sint32_x00199940 vbvsiz;
+        Sint32_x00199940 pts_tmpref;
+        Sint32_x00199940 pts_ofst;
+        Sint32_x00199940 pts_max;
+        Sint32_x00199940 pad124;
+        SFPTS_ENT_x00199940 ptsent;
+        Sint32_x00199940 refidx[2];
+        SFMPV_PLANE_x00199940 rfbuf[2];
+        SFMPV_FRM_x00199940 *ref[2];
+        SFMPV_FRM_x00199940 *pendfrm;
+        Sint32_x00199940 skipret;
+        Sint32_x00199940 dlmwait;
+        Sint32_x00199940 tmpref_adj;
+        Sint32_x00199940 nfrm;
+        Sint32_x00199940 pad17c;
+        SFMPV_FRM_x00199940 frm[16];
+        void *picusr_buf;
+        Sint32_x00199940 picusr_num;
+        Sint32_x00199940 picusr_siz;
+        Uint8_x00199940 *picusr_dat;
+        Sint32_x00199940 picusr_len;
+        SFMPV_PICUSR_x00199940 picusr[16];
+        Sint32_x00199940 pad1014;
+        Sint64_x00199940 pts;
+} SFMPV_WORK_x00199940;
+typedef struct {
+        Sint32_x00199940 raw[0x2A];
+} SFD_PLYINF_x00199940 __attribute__((aligned(8)));
+typedef struct {
+        SFD_TR_IF_x00199940 *tbl[15];
+} SFTRN_TRIF_TBL_x00199940;
+typedef struct {
+        void (*fn)(void *obj, Sint32_x00199940 code);
+        void *obj;
+        Sint32_x00199940 code;
+        Sint32_x00199940 x0c;
+        Sint32_x00199940 x10;
+} SFLIB_ERRINF_x00199940;
+typedef struct {
+        Sint32_x00199940 codec;
+        Sint32_x00199940 layer;
+        Sint32_x00199940 chnum;
+        Sint32_x00199940 smphz;
+} SFHDS_AUD_x00199940;
+typedef struct {
+        Sint32_x00199940 codec;
+        Sint32_x00199940 bitrate;
+        Sint32_x00199940 picw;
+        Sint32_x00199940 pich;
+        Sint32_x00199940 picrate;
+        Sint32_x00199940 ftr_eff;
+        Sint32_x00199940 ftr_coltype;
+        Sint32_x00199940 ftr_pictype;
+        Sint32_x00199940 ftr_fixflg;
+        Sint32_x00199940 ftr_shcfixflg;
+        Sint32_x00199940 ftr_expand;
+        Sint32_x00199940 ftr_gopn;
+        Sint32_x00199940 ftr_gopm;
+} SFHDS_VID_x00199940;
+typedef struct {
+        Sint32_x00199940 valid;
+        Sint32_x00199940 ver_major;
+        Sint32_x00199940 ver_minor;
+        Sint32_x00199940 byterate;
+        Sint32_x00199940 hdrsiz;
+        Sint32_x00199940 packtype;
+        Sint32_x00199940 pketsizlen;
+        Sint32_x00199940 packsiz;
+        Sint32_x00199940 numelem_tot;
+        Sint32_x00199940 numelem_aud;
+        Sint32_x00199940 numelem_vid;
+        Sint32_x00199940 numelem_prv;
+        Sint32_x00199940 maxplylen_aud;
+        Sint32_x00199940 maxplylen_vid;
+        Sint32_x00199940 maxfrmnum;
+        Sint32_x00199940 stmid_prv1;
+        Sint32_x00199940 stmid_prv2;
+        Sint32_x00199940 stmid_aud;
+        Sint32_x00199940 stmid_vid;
+        SFHDS_AUD_x00199940 aud;
+        SFHDS_VID_x00199940 vid;
+        Sint32_x00199940 rawsiz;
+        Uint8_x00199940 raw[0x800];
+} SFHDS_FHD_x00199940;
+typedef struct {
+        Uint8_x00199940 data[2][0xB0];
+        Sint32_x00199940 len[2];
+} SFSEE_SYSHD_x00199940;
+typedef struct {
+        Sint32_x00199940 analyzed;
+        Sint32_x00199940 ncount;
+        Sint32_x00199940 tscale;
+        Sint32_x00199940 nvid;
+        Sint32_x00199940 naud;
+        Sint32_x00199940 pad14;
+        Sint64_x00199940 scr_base;
+        Sint64_x00199940 pts_min;
+        Sint32_x00199940 stmid_vid;
+        Sint32_x00199940 stmid_aud;
+        SFSEE_SYSHD_x00199940 syshd;
+} SFSEE_SHDR_x00199940;
+typedef struct {
+        Sint32_x00199940 analyzed;
+        Sint32_x00199940 ncount;
+        Sint32_x00199940 tscale;
+        SFHDS_FHD_x00199940 fhd;
+        SFSEE_SHDR_x00199940 shdr;
+        Uint8_x00199940 pada38[0xAD0 - 0xA38];
+        Sint32_x00199940 a1hdr;
+        Sint32_x00199940 a1ncount;
+        Sint32_x00199940 a1tscale;
+        Uint8_x00199940 padadc[0xD0C - 0xADC];
+        Sint32_x00199940 a2hdr;
+        Sint32_x00199940 a2ncount;
+        Sint32_x00199940 a2tscale;
+        Uint8_x00199940 padd18[0xDA8 - 0xD18];
+        Sint32_x00199940 rate;
+        Sint32_x00199940 fsize_est;
+        Sint32_x00199940 tot_est;
+        Sint32_x00199940 tunit_est;
+        Sint32_x00199940 av_a;
+        Sint32_x00199940 av_b;
+        Sint32_x00199940 paddc0;
+        Sint32_x00199940 fsize;
+        Sint32_x00199940 tottime;
+        Sint32_x00199940 tunit;
+        Sint32_x00199940 byterate;
+        Sint32_x00199940 seekpos;
+} SFSEE_WORK_x00199940;
+typedef struct {
+        Sint32_x00199940 x00;
+        Sint32_x00199940 pos;
+        Sint32_x00199940 x08;
+} SFSEE_REQ_x00199940;
+typedef struct {
+        Sint32_x00199940 bsize;
+        Sint32_x00199940 xsize;
+        void *buf;
+        Sint32_x00199940 maxnch;
+        Sint32_x00199940 x10;
+        Sint32_x00199940 worksize;
+        void *work;
+} SFADXT_PARA_x00199940;
+typedef struct {
+        void *adxt;
+        SJ_x00199940 sj;
+        SFADXT_PARA_x00199940 para;
+        Sint32_x00199940 tcount;
+        Sint32_x00199940 tunit;
+        Sint32_x00199940 pause;
+        Sint32_x00199940 discard;
+        Sint32_x00199940 seekflg;
+        Sint32_x00199940 smplofst;
+        void (*func)(SFD_x00199940 sfd, Uint8_x00199940 *data, Sint32_x00199940 len, Sint32_x00199940 *nbyte);
+        Sint32_x00199940 x40;
+        Sint32_x00199940 svrfreq;
+        Sint32_x00199940 totbyte;
+        Sint32_x00199940 x4c;
+} SFADXT_WORK_x00199940;
+typedef struct {
+        SFSEE_WORK_x00199940 *wk;
+        SFSEE_REQ_x00199940 req;
+} SFSEE_HN_x00199940;
+typedef struct {
+        Sint32_x00199940 x00;
+        Uint32_x00199940 adr;
+        Sint32_x00199940 size[7];
+        Sint32_x00199940 x24;
+        Sint32_x00199940 unit;
+        Sint32_x00199940 x2c;
+        Sint32_x00199940 x30;
+        Sint32_x00199940 x34;
+        Sint32_x00199940 x38;
+        void *hnwork;
+        Sint32_x00199940 hnwksiz;
+} SFD_CREPRM_x00199940;
+typedef struct {
+        void *x00;
+        Sint32_x00199940 x04;
+        Sint32_x00199940 x08;
+} SFPLY_PTSM_x00199940;
+typedef struct {
+        Sint64_x00199940 sum;
+        Sint64_x00199940 min;
+        Sint64_x00199940 max;
+        Sint32_x00199940 cnt;
+} SFTMR_TSUM_x00199940;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x00199940 nvid;
+        Sint32_x00199940 naud;
+        Sint32_x00199940 x0c;
+        Sint64_x00199940 pts_min;
+        Sint64_x00199940 pts_min2;
+        Sint32_x00199940 concat_cnt;
+        Sint32_x00199940 last_vid;
+        Sint32_x00199940 last_aud;
+        Sint32_x00199940 first_vid;
+        Sint32_x00199940 first_aud;
+        Sint32_x00199940 cur_vid;
+        Sint32_x00199940 cur_aud;
+        Sint32_x00199940 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x00199940 stmid);
+        void *outobj;
+        Sint32_x00199940 skip;
+        Sint32_x00199940 x15c;
+        Sint32_x00199940 x160;
+        Sint32_x00199940 x164;
+} SFMPS_WORK_x00199940;
+typedef struct SFD_OBJ_x00199940 {
+        SFD_CREPRM_x00199940 prm;
+        Sint32_x00199940 chg_flg;
+        Sint32_x00199940 stat;
+        Sint32_x00199940 req;
+        Sint32_x00199940 pause_sw;
+        Sint32_x00199940 pause_cnt;
+        Uint8_x00199940 pad58[0x74 - 0x58];
+        Sint32_x00199940 pad74;
+        SFHDS_FHD_x00199940 fhd;
+        Sint32_x00199940 x90c;
+        Sint32_x00199940 x910;
+        Sint32_x00199940 x914;
+        Sint32_x00199940 x918;
+        Sint32_x00199940 x91c;
+        Sint32_x00199940 picrate;
+        Sint32_x00199940 x924;
+        Sint32_x00199940 x928;
+        Sint32_x00199940 x92c;
+        Sint32_x00199940 numelem_aud;
+        Sint32_x00199940 numelem_vid;
+        Sint32_x00199940 numelem_prv;
+        Sint32_x00199940 x93c;
+        Sint32_x00199940 x940;
+        Sint32_x00199940 x944;
+        Sint32_x00199940 x948;
+        Sint32_x00199940 x94c;
+        SFD_PLYINF_x00199940 plyinf;
+        SFLIB_ERRINF_x00199940 err;
+        Sint32_x00199940 cond[100];
+        Sint32_x00199940 cond_def[100];
+        Uint8_x00199940 padD24[4];
+        SFCON_x00199940 con;
+        Uint8_x00199940 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x00199940))];
+        Uint8_x00199940 tst[0x1C0];
+        Uint8_x00199940 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x00199940 ptsm;
+        Uint8_x00199940 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x00199940 buf[8];
+        SFD_VFRM_x00199940 vfrm[16];
+        SFD_TR_x00199940 tr[9];
+        Sint32_x00199940 pad218c;
+        SFMPS_WORK_x00199940 mps;
+        Uint8_x00199940 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x00199940 mpv;
+        SFADXT_WORK_x00199940 adxt;
+        Uint8_x00199940 pad3410[0x3474 - 0x3410];
+        SFAOAP_x00199940 aoap;
+        SFUO_x00199940 uo_tbl;
+        Sint32_x00199940 pad34c4;
+        SFSEE_HN_x00199940 see;
+        SFTMR_TSUM_x00199940 tsum[6];
+} SFD_OBJ_x00199940;
+typedef struct {
+        Sint32_x00199940 cond[100];
+        SFTRN_TRIF_TBL_x00199940 *trif_tbl;
+        Sint32_x00199940 prm1;
+        Sint32_x00199940 x198;
+        SFLIB_ERRINF_x00199940 err;
+        Uint8_x00199940 tim[0xC];
+        Sint32_x00199940 buf;
+        SFTRN_TRIF_TBL_x00199940 trif;
+        Sint32_x00199940 x1fc;
+        Sint32_x00199940 x200;
+        SFD_x00199940 hn[8];
+        Sint32_x00199940 x224;
+} SFLIB_WORK_x00199940;
+extern SFLIB_WORK_x00199940 SFLIB_libwork_x00199940 __asm__("D_004268E0");
+Sint32_x00199940 SFLIB_SetErr_x00199940(SFD_x00199940 sfd, Sint32_x00199940 code) __asm__("func_0018D650");
+Sint32_x00199940 SFLIB_CheckHn_x00199940(SFD_x00199940 sfd) __asm__("func_0018D870");
+Sint32_x00199940 SFSET_GetCond_x00199940(SFD_x00199940 sfd, Sint32_x00199940 id) __asm__("func_001999E0");
+Sint32_x00199940 SFSET_GetCond_x00199940(SFD_x00199940 sfd, Sint32_x00199940 id) __asm__("func_001999E0");
+Sint32_x00199940 func_00199940_x00199940(SFD_x00199940 sfd, Sint32_x00199940 id, Sint32_x00199940 *val) __asm__("func_00199940");
+/* SFD_GetCond: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_set.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00199940 func_00199940_x00199940(SFD_x00199940 sfd, Sint32_x00199940 id, Sint32_x00199940 *val)
+{
+        if (sfd == 0) {
+                *val = SFLIB_libwork_x00199940.cond[id];
+        } else {
+                if (SFLIB_CheckHn_x00199940(sfd) != 0) {
+                        return SFLIB_SetErr_x00199940(0, 0xFF000113);
+                }
+                *val = SFSET_GetCond_x00199940(sfd, id);
+        }
+        return 0;
+}
 s32 func_001999E0(s32 arg0, s32 arg1) {
     return *(s32 *)((u8 *)((arg1 * 4) + arg0) + 0x9A0);
 }
@@ -1282,7 +5558,527 @@ void func_0019A550_x0019A550(u8 *arg0, s32 arg1, s32 arg2)
   new_var2 = ((u8 *) new_var) + 0x144;
   *((s32 *) new_var2) = arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019A560);
+typedef unsigned char Uint8_x0019A560;
+typedef signed char Sint8_x0019A560;
+typedef signed short Sint16_x0019A560;
+typedef unsigned int Uint32_x0019A560;
+typedef signed int Sint32_x0019A560;
+typedef signed long long Sint64_x0019A560;
+typedef char Char8_x0019A560;
+typedef struct SJ_OBJ_x0019A560 *SJ_x0019A560;
+typedef struct {
+        Uint8_x0019A560 *data;
+        Sint32_x0019A560 len;
+} SJCK_x0019A560;
+typedef struct {
+        Uint8_x0019A560 data[16];
+} SJUUID_x0019A560;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0019A560 sj);
+        const SJUUID_x0019A560 *(*GetUuid)(SJ_x0019A560 sj);
+        void (*Reset)(SJ_x0019A560 sj);
+        void (*GetChunk)(SJ_x0019A560 sj, Sint32_x0019A560 id, Sint32_x0019A560 nbyte, SJCK_x0019A560 *ck);
+        void (*UngetChunk)(SJ_x0019A560 sj, Sint32_x0019A560 id, SJCK_x0019A560 *ck);
+        void (*PutChunk)(SJ_x0019A560 sj, Sint32_x0019A560 id, SJCK_x0019A560 *ck);
+        Sint32_x0019A560 (*GetNumData)(SJ_x0019A560 sj, Sint32_x0019A560 id);
+        Sint32_x0019A560 (*IsGetChunk)(SJ_x0019A560 sj, Sint32_x0019A560 id, Sint32_x0019A560 nbyte, Sint32_x0019A560 *rbyte);
+        void (*EntryErrFunc)(SJ_x0019A560 sj, void (*func)(void *obj, Char8_x0019A560 *msg), void *obj);
+} SJ_IF_x0019A560;
+struct SJ_OBJ_x0019A560 {
+        SJ_IF_x0019A560 *vtbl;
+};
+typedef struct SFD_OBJ_x0019A560 *SFD_x0019A560;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x0019A560 rsv1;
+        Sint32_x0019A560 rsv2;
+} SFUO_CH_x0019A560;
+typedef struct {
+        Sint32_x0019A560 nch;
+        SFUO_CH_x0019A560 ch[3];
+} SFUO_x0019A560;
+typedef struct {
+        Sint32_x0019A560 x00;
+        Sint32_x0019A560 (*SetOutPan)(SFD_x0019A560 sfd, Sint32_x0019A560 ch, Sint32_x0019A560 pan);
+        Sint32_x0019A560 (*GetOutPan)(SFD_x0019A560 sfd, Sint32_x0019A560 ch);
+        Sint32_x0019A560 (*SetOutVol)(SFD_x0019A560 sfd, Sint32_x0019A560 vol);
+        Sint32_x0019A560 (*GetOutVol)(SFD_x0019A560 sfd);
+        void (*SetSpeed)(SFD_x0019A560 sfd, Sint32_x0019A560 speed);
+        Sint32_x0019A560 x18;
+} SFAOAP_x0019A560;
+typedef struct {
+        Uint8_x0019A560 pad0[0xB8];
+        Sint32_x0019A560 tottime;
+        Sint32_x0019A560 tunit;
+        Uint8_x0019A560 padc0[0x150 - 0xC0];
+        Sint64_x0019A560 scr_base;
+        Sint64_x0019A560 scr_ofst;
+        Sint32_x0019A560 pad160;
+        Sint32_x0019A560 ctime;
+        Sint32_x0019A560 ctime_idx;
+        Sint32_x0019A560 ctime_que[32];
+        Sint32_x0019A560 tot_last;
+        Sint32_x0019A560 pad1F0;
+        Sint32_x0019A560 que_wr;
+        Sint32_x0019A560 que_rd;
+        Sint32_x0019A560 tot_que[32];
+} SFCON_x0019A560;
+typedef struct {
+        Sint32_x0019A560 type;
+        Sint32_x0019A560 drop;
+        Sint32_x0019A560 hour;
+        Sint32_x0019A560 min;
+        Sint32_x0019A560 sec;
+        Sint32_x0019A560 frm;
+        Sint32_x0019A560 frm2;
+        Sint16_x0019A560 x1c;
+        Sint16_x0019A560 field;
+} SFTIM_TC_x0019A560;
+typedef struct {
+        Sint32_x0019A560 valid;
+        SFTIM_TC_x0019A560 tc;
+        Sint32_x0019A560 val;
+        Sint32_x0019A560 unit;
+} SFTIM_TTU_x0019A560;
+typedef struct {
+        Sint64_x0019A560 pts;
+        Uint32_x0019A560 pos;
+        Uint32_x0019A560 len;
+} SFPTS_ENT_x0019A560;
+typedef struct {
+        SFPTS_ENT_x0019A560 *ent;
+        Sint32_x0019A560 num;
+        Sint32_x0019A560 cnt;
+        Sint32_x0019A560 wr;
+        Sint32_x0019A560 rd;
+} SFPTS_QUE_x0019A560;
+typedef struct {
+        Sint32_x0019A560 raw[0x20];
+} SFD_VFRM_INF_x0019A560;
+typedef struct {
+        void *frm;
+        Sint32_x0019A560 x04;
+        SFD_VFRM_INF_x0019A560 inf;
+} SFD_VFRM_x0019A560;
+typedef struct {
+        Sint32_x0019A560 kind;
+        SJ_x0019A560 sj;
+        Uint32_x0019A560 ofst;
+        Sint32_x0019A560 size;
+        Sint32_x0019A560 xsize;
+        Sint32_x0019A560 x14;
+} SFBUF_SUP_x0019A560;
+typedef struct {
+        SFBUF_SUP_x0019A560 sup;
+        Uint8_x0019A560 *dlm_pos;
+        Sint32_x0019A560 dlm_len;
+        Sint32_x0019A560 wtot;
+        Sint32_x0019A560 rtot;
+        SFPTS_QUE_x0019A560 ptsque;
+} SFBUF_RING_x0019A560;
+typedef struct {
+        Sint32_x0019A560 mode;
+        Sint32_x0019A560 used;
+        Sint32_x0019A560 prepflg;
+        Sint32_x0019A560 termflg;
+        union {
+                SFBUF_RING_x0019A560 ring;
+                struct {
+                        Uint32_x0019A560 adr;
+                        Sint32_x0019A560 size;
+                        Sint32_x0019A560 x18;
+                        Sint32_x0019A560 x1c;
+                        SFD_VFRM_x0019A560 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x0019A560 adr;
+                        Sint32_x0019A560 size;
+                        Sint32_x0019A560 rsv[7];
+                        Sint32_x0019A560 rsv2[3];
+                } aout;
+                SFUO_CH_x0019A560 uoch[3];
+        } u;
+        Sint32_x0019A560 in_tr;
+        Sint32_x0019A560 out_tr;
+        Sint32_x0019A560 rsv[8];
+} SFBUF_WORK_x0019A560;
+typedef Sint32_x0019A560 (*SFD_TR_FUNC_x0019A560)();
+typedef struct {
+        Sint32_x0019A560 prepflg;
+        Sint32_x0019A560 termflg;
+        void *hn;
+        SFD_TR_FUNC_x0019A560 *trif;
+        Sint32_x0019A560 bufin;
+        Sint32_x0019A560 bufout;
+        Sint32_x0019A560 bufout2;
+        Sint32_x0019A560 bufout3;
+        Sint32_x0019A560 x20;
+        Uint8_x0019A560 pad24[0x44 - 0x24];
+} SFD_TR_x0019A560;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x0019A560 cwidth;
+        Sint16_x0019A560 ywidth;
+} SFMPV_PLANE_x0019A560;
+typedef struct {
+        void *buf;
+        Sint32_x0019A560 len;
+} SFMPV_PICUSR_x0019A560;
+typedef struct {
+        Sint32_x0019A560 stat;
+        Sint32_x0019A560 lock;
+        void *buf;
+        SFTIM_TTU_x0019A560 ttu;
+        Sint32_x0019A560 ftime;
+        Sint32_x0019A560 tunit;
+        Sint32_x0019A560 ndct;
+        Sint32_x0019A560 nbyte;
+        Sint32_x0019A560 gopno;
+        Sint32_x0019A560 x4c;
+        Sint32_x0019A560 x50;
+        SFMPV_PICUSR_x0019A560 *picusr;
+        Sint32_x0019A560 pa_width;
+        Sint32_x0019A560 pa_height;
+        Sint32_x0019A560 pa_mb_width;
+        Sint32_x0019A560 pa_mb_height;
+        Sint32_x0019A560 pa_frame_rate;
+        Sint32_x0019A560 tmpref;
+        Sint32_x0019A560 pa_pic_type;
+        Sint32_x0019A560 pa_tc_drop;
+        Sint32_x0019A560 pa_tc_hour;
+        Sint32_x0019A560 pa_tc_min;
+        Sint32_x0019A560 pa_tc_sec;
+        Sint32_x0019A560 pa_tc_pic;
+        Sint32_x0019A560 x88;
+        Sint32_x0019A560 x8c;
+        Sint32_x0019A560 pa_x90[3];
+        Sint32_x0019A560 pa_x9c[3];
+        Sint16_x0019A560 pa_xa8;
+        Sint16_x0019A560 pa_xaa;
+        Sint8_x0019A560 pa_xac;
+        Sint8_x0019A560 pa_xad;
+        Sint8_x0019A560 pa_xae;
+        Sint8_x0019A560 pa_xaf;
+        Sint8_x0019A560 pa_xb0;
+        Sint8_x0019A560 pa_xb1;
+        Sint8_x0019A560 pa_xb2;
+        Sint8_x0019A560 pa_xb3;
+        Sint8_x0019A560 pa_xb4;
+        Sint8_x0019A560 pa_xb5;
+        Sint8_x0019A560 pa_xb6;
+        Sint8_x0019A560 pa_xb7;
+        Sint8_x0019A560 pa_xb8;
+        Sint8_x0019A560 pa_xb9;
+        Sint8_x0019A560 pa_xba;
+        Sint8_x0019A560 pa_xbb;
+        Sint8_x0019A560 pa_xbc;
+        Uint8_x0019A560 padbd[0xD8 - 0xBD];
+        Sint64_x0019A560 pts;
+} SFMPV_FRM_x0019A560;
+typedef struct {
+        Sint32_x0019A560 cwidth;
+        Sint32_x0019A560 cheight;
+        Sint32_x0019A560 width;
+        Sint32_x0019A560 height;
+        Sint32_x0019A560 x10;
+        Sint32_x0019A560 max_width;
+        Sint32_x0019A560 max_height;
+        Sint32_x0019A560 nfrm;
+        Sint32_x0019A560 x20;
+} SFMPV_PARA_x0019A560;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x0019A560 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x0019A560 *curfrm;
+        Sint32_x0019A560 picstat;
+        Sint32_x0019A560 dlmmask;
+        Sint32_x0019A560 termflg;
+        Sint32_x0019A560 gopstat;
+        Sint32_x0019A560 nskip;
+        Sint32_x0019A560 nconcat;
+        Uint8_x0019A560 picatr[0x80];
+        Sint32_x0019A560 last_ngop;
+        Sint32_x0019A560 newgop;
+        Sint32_x0019A560 vbvsiz;
+        Sint32_x0019A560 pts_tmpref;
+        Sint32_x0019A560 pts_ofst;
+        Sint32_x0019A560 pts_max;
+        Sint32_x0019A560 pad124;
+        SFPTS_ENT_x0019A560 ptsent;
+        Sint32_x0019A560 refidx[2];
+        SFMPV_PLANE_x0019A560 rfbuf[2];
+        SFMPV_FRM_x0019A560 *ref[2];
+        SFMPV_FRM_x0019A560 *pendfrm;
+        Sint32_x0019A560 skipret;
+        Sint32_x0019A560 dlmwait;
+        Sint32_x0019A560 tmpref_adj;
+        Sint32_x0019A560 nfrm;
+        Sint32_x0019A560 pad17c;
+        SFMPV_FRM_x0019A560 frm[16];
+        void *picusr_buf;
+        Sint32_x0019A560 picusr_num;
+        Sint32_x0019A560 picusr_siz;
+        Uint8_x0019A560 *picusr_dat;
+        Sint32_x0019A560 picusr_len;
+        SFMPV_PICUSR_x0019A560 picusr[16];
+        Sint32_x0019A560 pad1014;
+        Sint64_x0019A560 pts;
+} SFMPV_WORK_x0019A560;
+typedef struct {
+        Sint32_x0019A560 raw[0x2A];
+} SFD_PLYINF_x0019A560 __attribute__((aligned(8)));
+typedef struct {
+        void (*fn)(void *obj, Sint32_x0019A560 code);
+        void *obj;
+        Sint32_x0019A560 code;
+        Sint32_x0019A560 x0c;
+        Sint32_x0019A560 x10;
+} SFLIB_ERRINF_x0019A560;
+typedef struct {
+        Sint32_x0019A560 codec;
+        Sint32_x0019A560 layer;
+        Sint32_x0019A560 chnum;
+        Sint32_x0019A560 smphz;
+} SFHDS_AUD_x0019A560;
+typedef struct {
+        Sint32_x0019A560 codec;
+        Sint32_x0019A560 bitrate;
+        Sint32_x0019A560 picw;
+        Sint32_x0019A560 pich;
+        Sint32_x0019A560 picrate;
+        Sint32_x0019A560 ftr_eff;
+        Sint32_x0019A560 ftr_coltype;
+        Sint32_x0019A560 ftr_pictype;
+        Sint32_x0019A560 ftr_fixflg;
+        Sint32_x0019A560 ftr_shcfixflg;
+        Sint32_x0019A560 ftr_expand;
+        Sint32_x0019A560 ftr_gopn;
+        Sint32_x0019A560 ftr_gopm;
+} SFHDS_VID_x0019A560;
+typedef struct {
+        Sint32_x0019A560 valid;
+        Sint32_x0019A560 ver_major;
+        Sint32_x0019A560 ver_minor;
+        Sint32_x0019A560 byterate;
+        Sint32_x0019A560 hdrsiz;
+        Sint32_x0019A560 packtype;
+        Sint32_x0019A560 pketsizlen;
+        Sint32_x0019A560 packsiz;
+        Sint32_x0019A560 numelem_tot;
+        Sint32_x0019A560 numelem_aud;
+        Sint32_x0019A560 numelem_vid;
+        Sint32_x0019A560 numelem_prv;
+        Sint32_x0019A560 maxplylen_aud;
+        Sint32_x0019A560 maxplylen_vid;
+        Sint32_x0019A560 maxfrmnum;
+        Sint32_x0019A560 stmid_prv1;
+        Sint32_x0019A560 stmid_prv2;
+        Sint32_x0019A560 stmid_aud;
+        Sint32_x0019A560 stmid_vid;
+        SFHDS_AUD_x0019A560 aud;
+        SFHDS_VID_x0019A560 vid;
+        Sint32_x0019A560 rawsiz;
+        Uint8_x0019A560 raw[0x800];
+} SFHDS_FHD_x0019A560;
+typedef struct {
+        Uint8_x0019A560 data[2][0xB0];
+        Sint32_x0019A560 len[2];
+} SFSEE_SYSHD_x0019A560;
+typedef struct {
+        Sint32_x0019A560 analyzed;
+        Sint32_x0019A560 ncount;
+        Sint32_x0019A560 tscale;
+        Sint32_x0019A560 nvid;
+        Sint32_x0019A560 naud;
+        Sint32_x0019A560 pad14;
+        Sint64_x0019A560 scr_base;
+        Sint64_x0019A560 pts_min;
+        Sint32_x0019A560 stmid_vid;
+        Sint32_x0019A560 stmid_aud;
+        SFSEE_SYSHD_x0019A560 syshd;
+} SFSEE_SHDR_x0019A560;
+typedef struct {
+        Sint32_x0019A560 analyzed;
+        Sint32_x0019A560 ncount;
+        Sint32_x0019A560 tscale;
+        SFHDS_FHD_x0019A560 fhd;
+        SFSEE_SHDR_x0019A560 shdr;
+        Uint8_x0019A560 pada38[0xAD0 - 0xA38];
+        Sint32_x0019A560 a1hdr;
+        Sint32_x0019A560 a1ncount;
+        Sint32_x0019A560 a1tscale;
+        Uint8_x0019A560 padadc[0xD0C - 0xADC];
+        Sint32_x0019A560 a2hdr;
+        Sint32_x0019A560 a2ncount;
+        Sint32_x0019A560 a2tscale;
+        Uint8_x0019A560 padd18[0xDA8 - 0xD18];
+        Sint32_x0019A560 rate;
+        Sint32_x0019A560 fsize_est;
+        Sint32_x0019A560 tot_est;
+        Sint32_x0019A560 tunit_est;
+        Sint32_x0019A560 av_a;
+        Sint32_x0019A560 av_b;
+        Sint32_x0019A560 paddc0;
+        Sint32_x0019A560 fsize;
+        Sint32_x0019A560 tottime;
+        Sint32_x0019A560 tunit;
+        Sint32_x0019A560 byterate;
+        Sint32_x0019A560 seekpos;
+} SFSEE_WORK_x0019A560;
+typedef struct {
+        Sint32_x0019A560 x00;
+        Sint32_x0019A560 pos;
+        Sint32_x0019A560 x08;
+} SFSEE_REQ_x0019A560;
+typedef struct {
+        Sint32_x0019A560 bsize;
+        Sint32_x0019A560 xsize;
+        void *buf;
+        Sint32_x0019A560 maxnch;
+        Sint32_x0019A560 x10;
+        Sint32_x0019A560 worksize;
+        void *work;
+} SFADXT_PARA_x0019A560;
+typedef struct {
+        void *adxt;
+        SJ_x0019A560 sj;
+        SFADXT_PARA_x0019A560 para;
+        Sint32_x0019A560 tcount;
+        Sint32_x0019A560 tunit;
+        Sint32_x0019A560 pause;
+        Sint32_x0019A560 discard;
+        Sint32_x0019A560 seekflg;
+        Sint32_x0019A560 smplofst;
+        void (*func)(SFD_x0019A560 sfd, Uint8_x0019A560 *data, Sint32_x0019A560 len, Sint32_x0019A560 *nbyte);
+        Sint32_x0019A560 x40;
+        Sint32_x0019A560 svrfreq;
+        Sint32_x0019A560 totbyte;
+        Sint32_x0019A560 x4c;
+} SFADXT_WORK_x0019A560;
+typedef struct {
+        SFSEE_WORK_x0019A560 *wk;
+        SFSEE_REQ_x0019A560 req;
+} SFSEE_HN_x0019A560;
+typedef struct {
+        Sint32_x0019A560 x00;
+        Uint32_x0019A560 adr;
+        Sint32_x0019A560 size[7];
+        Sint32_x0019A560 x24;
+        Sint32_x0019A560 unit;
+        Sint32_x0019A560 x2c;
+        Sint32_x0019A560 x30;
+        Sint32_x0019A560 x34;
+        Sint32_x0019A560 x38;
+        void *hnwork;
+        Sint32_x0019A560 hnwksiz;
+} SFD_CREPRM_x0019A560;
+typedef struct {
+        void *x00;
+        Sint32_x0019A560 x04;
+        Sint32_x0019A560 x08;
+} SFPLY_PTSM_x0019A560;
+typedef struct {
+        Sint64_x0019A560 sum;
+        Sint64_x0019A560 min;
+        Sint64_x0019A560 max;
+        Sint32_x0019A560 cnt;
+} SFTMR_TSUM_x0019A560;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x0019A560 nvid;
+        Sint32_x0019A560 naud;
+        Sint32_x0019A560 x0c;
+        Sint64_x0019A560 pts_min;
+        Sint64_x0019A560 pts_min2;
+        Sint32_x0019A560 concat_cnt;
+        Sint32_x0019A560 last_vid;
+        Sint32_x0019A560 last_aud;
+        Sint32_x0019A560 first_vid;
+        Sint32_x0019A560 first_aud;
+        Sint32_x0019A560 cur_vid;
+        Sint32_x0019A560 cur_aud;
+        Sint32_x0019A560 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x0019A560 stmid);
+        void *outobj;
+        Sint32_x0019A560 skip;
+        Sint32_x0019A560 x15c;
+        Sint32_x0019A560 x160;
+        Sint32_x0019A560 x164;
+} SFMPS_WORK_x0019A560;
+typedef struct SFD_OBJ_x0019A560 {
+        SFD_CREPRM_x0019A560 prm;
+        Sint32_x0019A560 chg_flg;
+        Sint32_x0019A560 stat;
+        Sint32_x0019A560 req;
+        Sint32_x0019A560 pause_sw;
+        Sint32_x0019A560 pause_cnt;
+        Uint8_x0019A560 pad58[0x74 - 0x58];
+        Sint32_x0019A560 pad74;
+        SFHDS_FHD_x0019A560 fhd;
+        Sint32_x0019A560 x90c;
+        Sint32_x0019A560 x910;
+        Sint32_x0019A560 x914;
+        Sint32_x0019A560 x918;
+        Sint32_x0019A560 x91c;
+        Sint32_x0019A560 picrate;
+        Sint32_x0019A560 x924;
+        Sint32_x0019A560 x928;
+        Sint32_x0019A560 x92c;
+        Sint32_x0019A560 numelem_aud;
+        Sint32_x0019A560 numelem_vid;
+        Sint32_x0019A560 numelem_prv;
+        Sint32_x0019A560 x93c;
+        Sint32_x0019A560 x940;
+        Sint32_x0019A560 x944;
+        Sint32_x0019A560 x948;
+        Sint32_x0019A560 x94c;
+        SFD_PLYINF_x0019A560 plyinf;
+        SFLIB_ERRINF_x0019A560 err;
+        Sint32_x0019A560 cond[100];
+        Sint32_x0019A560 cond_def[100];
+        Uint8_x0019A560 padD24[4];
+        SFCON_x0019A560 con;
+        Uint8_x0019A560 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x0019A560))];
+        Uint8_x0019A560 tst[0x1C0];
+        Uint8_x0019A560 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x0019A560 ptsm;
+        Uint8_x0019A560 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x0019A560 buf[8];
+        SFD_VFRM_x0019A560 vfrm[16];
+        SFD_TR_x0019A560 tr[9];
+        Sint32_x0019A560 pad218c;
+        SFMPS_WORK_x0019A560 mps;
+        Uint8_x0019A560 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x0019A560 mpv;
+        SFADXT_WORK_x0019A560 adxt;
+        Uint8_x0019A560 pad3410[0x3474 - 0x3410];
+        SFAOAP_x0019A560 aoap;
+        SFUO_x0019A560 uo_tbl;
+        Sint32_x0019A560 pad34c4;
+        SFSEE_HN_x0019A560 see;
+        SFTMR_TSUM_x0019A560 tsum[6];
+} SFD_OBJ_x0019A560;
+Sint32_x0019A560 SFLIB_SetErr_x0019A560(SFD_x0019A560 sfd, Sint32_x0019A560 code) __asm__("func_0018D650");
+Sint32_x0019A560 SFLIB_CheckHn_x0019A560(SFD_x0019A560 sfd) __asm__("func_0018D870");
+Sint32_x0019A560 SFTIM_GetTimeSub_x0019A560(SFD_x0019A560 sfd, Sint32_x0019A560 *ncount, Sint32_x0019A560 *tscale) __asm__("func_0019A5D8");
+Sint32_x0019A560 func_0019A560_x0019A560(SFD_x0019A560 sfd, Sint32_x0019A560 *ncount, Sint32_x0019A560 *tscale) __asm__("func_0019A560");
+/* SFD_GetTime: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_tim.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0019A560 func_0019A560_x0019A560(SFD_x0019A560 sfd, Sint32_x0019A560 *ncount, Sint32_x0019A560 *tscale)
+{
+        if (SFLIB_CheckHn_x0019A560(sfd) != 0) {
+                return SFLIB_SetErr_x0019A560(0, 0xFF000121);
+        }
+        return SFTIM_GetTimeSub_x0019A560(sfd, ncount, tscale);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019A5D8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019A688);
 void func_0019A700(void) {
@@ -1400,7 +6196,536 @@ void func_0019AE00_x0019AE00(s32 arg0, s32 arg1, s32 arg2)
   new_var = arg0 + (arg2 * 4);
   *((s32 *) (((u8 *) new_var) + 0xCC0)) = arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019AE10);
+typedef unsigned char Uint8_x0019AE10;
+typedef signed char Sint8_x0019AE10;
+typedef signed short Sint16_x0019AE10;
+typedef unsigned int Uint32_x0019AE10;
+typedef signed int Sint32_x0019AE10;
+typedef signed long long Sint64_x0019AE10;
+typedef char Char8_x0019AE10;
+typedef struct SJ_OBJ_x0019AE10 *SJ_x0019AE10;
+typedef struct {
+        Uint8_x0019AE10 *data;
+        Sint32_x0019AE10 len;
+} SJCK_x0019AE10;
+typedef struct {
+        Uint8_x0019AE10 data[16];
+} SJUUID_x0019AE10;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0019AE10 sj);
+        const SJUUID_x0019AE10 *(*GetUuid)(SJ_x0019AE10 sj);
+        void (*Reset)(SJ_x0019AE10 sj);
+        void (*GetChunk)(SJ_x0019AE10 sj, Sint32_x0019AE10 id, Sint32_x0019AE10 nbyte, SJCK_x0019AE10 *ck);
+        void (*UngetChunk)(SJ_x0019AE10 sj, Sint32_x0019AE10 id, SJCK_x0019AE10 *ck);
+        void (*PutChunk)(SJ_x0019AE10 sj, Sint32_x0019AE10 id, SJCK_x0019AE10 *ck);
+        Sint32_x0019AE10 (*GetNumData)(SJ_x0019AE10 sj, Sint32_x0019AE10 id);
+        Sint32_x0019AE10 (*IsGetChunk)(SJ_x0019AE10 sj, Sint32_x0019AE10 id, Sint32_x0019AE10 nbyte, Sint32_x0019AE10 *rbyte);
+        void (*EntryErrFunc)(SJ_x0019AE10 sj, void (*func)(void *obj, Char8_x0019AE10 *msg), void *obj);
+} SJ_IF_x0019AE10;
+struct SJ_OBJ_x0019AE10 {
+        SJ_IF_x0019AE10 *vtbl;
+};
+typedef struct SFD_OBJ_x0019AE10 *SFD_x0019AE10;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x0019AE10 rsv1;
+        Sint32_x0019AE10 rsv2;
+} SFUO_CH_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 nch;
+        SFUO_CH_x0019AE10 ch[3];
+} SFUO_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 x00;
+        Sint32_x0019AE10 (*SetOutPan)(SFD_x0019AE10 sfd, Sint32_x0019AE10 ch, Sint32_x0019AE10 pan);
+        Sint32_x0019AE10 (*GetOutPan)(SFD_x0019AE10 sfd, Sint32_x0019AE10 ch);
+        Sint32_x0019AE10 (*SetOutVol)(SFD_x0019AE10 sfd, Sint32_x0019AE10 vol);
+        Sint32_x0019AE10 (*GetOutVol)(SFD_x0019AE10 sfd);
+        void (*SetSpeed)(SFD_x0019AE10 sfd, Sint32_x0019AE10 speed);
+        Sint32_x0019AE10 x18;
+} SFAOAP_x0019AE10;
+typedef struct {
+        Uint8_x0019AE10 pad0[0xB8];
+        Sint32_x0019AE10 tottime;
+        Sint32_x0019AE10 tunit;
+        Uint8_x0019AE10 padc0[0x150 - 0xC0];
+        Sint64_x0019AE10 scr_base;
+        Sint64_x0019AE10 scr_ofst;
+        Sint32_x0019AE10 pad160;
+        Sint32_x0019AE10 ctime;
+        Sint32_x0019AE10 ctime_idx;
+        Sint32_x0019AE10 ctime_que[32];
+        Sint32_x0019AE10 tot_last;
+        Sint32_x0019AE10 pad1F0;
+        Sint32_x0019AE10 que_wr;
+        Sint32_x0019AE10 que_rd;
+        Sint32_x0019AE10 tot_que[32];
+} SFCON_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 type;
+        Sint32_x0019AE10 drop;
+        Sint32_x0019AE10 hour;
+        Sint32_x0019AE10 min;
+        Sint32_x0019AE10 sec;
+        Sint32_x0019AE10 frm;
+        Sint32_x0019AE10 frm2;
+        Sint16_x0019AE10 x1c;
+        Sint16_x0019AE10 field;
+} SFTIM_TC_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 valid;
+        SFTIM_TC_x0019AE10 tc;
+        Sint32_x0019AE10 val;
+        Sint32_x0019AE10 unit;
+} SFTIM_TTU_x0019AE10;
+extern const Sint32_x0019AE10 SFTIM_prate_x0019AE10[9] __asm__("D_00467730");
+typedef struct {
+        Sint64_x0019AE10 pts;
+        Uint32_x0019AE10 pos;
+        Uint32_x0019AE10 len;
+} SFPTS_ENT_x0019AE10;
+typedef struct {
+        SFPTS_ENT_x0019AE10 *ent;
+        Sint32_x0019AE10 num;
+        Sint32_x0019AE10 cnt;
+        Sint32_x0019AE10 wr;
+        Sint32_x0019AE10 rd;
+} SFPTS_QUE_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 raw[0x20];
+} SFD_VFRM_INF_x0019AE10;
+typedef struct {
+        void *frm;
+        Sint32_x0019AE10 x04;
+        SFD_VFRM_INF_x0019AE10 inf;
+} SFD_VFRM_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 kind;
+        SJ_x0019AE10 sj;
+        Uint32_x0019AE10 ofst;
+        Sint32_x0019AE10 size;
+        Sint32_x0019AE10 xsize;
+        Sint32_x0019AE10 x14;
+} SFBUF_SUP_x0019AE10;
+typedef struct {
+        SFBUF_SUP_x0019AE10 sup;
+        Uint8_x0019AE10 *dlm_pos;
+        Sint32_x0019AE10 dlm_len;
+        Sint32_x0019AE10 wtot;
+        Sint32_x0019AE10 rtot;
+        SFPTS_QUE_x0019AE10 ptsque;
+} SFBUF_RING_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 mode;
+        Sint32_x0019AE10 used;
+        Sint32_x0019AE10 prepflg;
+        Sint32_x0019AE10 termflg;
+        union {
+                SFBUF_RING_x0019AE10 ring;
+                struct {
+                        Uint32_x0019AE10 adr;
+                        Sint32_x0019AE10 size;
+                        Sint32_x0019AE10 x18;
+                        Sint32_x0019AE10 x1c;
+                        SFD_VFRM_x0019AE10 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x0019AE10 adr;
+                        Sint32_x0019AE10 size;
+                        Sint32_x0019AE10 rsv[7];
+                        Sint32_x0019AE10 rsv2[3];
+                } aout;
+                SFUO_CH_x0019AE10 uoch[3];
+        } u;
+        Sint32_x0019AE10 in_tr;
+        Sint32_x0019AE10 out_tr;
+        Sint32_x0019AE10 rsv[8];
+} SFBUF_WORK_x0019AE10;
+typedef Sint32_x0019AE10 (*SFD_TR_FUNC_x0019AE10)();
+typedef struct {
+        Sint32_x0019AE10 prepflg;
+        Sint32_x0019AE10 termflg;
+        void *hn;
+        SFD_TR_FUNC_x0019AE10 *trif;
+        Sint32_x0019AE10 bufin;
+        Sint32_x0019AE10 bufout;
+        Sint32_x0019AE10 bufout2;
+        Sint32_x0019AE10 bufout3;
+        Sint32_x0019AE10 x20;
+        Uint8_x0019AE10 pad24[0x44 - 0x24];
+} SFD_TR_x0019AE10;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x0019AE10 cwidth;
+        Sint16_x0019AE10 ywidth;
+} SFMPV_PLANE_x0019AE10;
+typedef struct {
+        void *buf;
+        Sint32_x0019AE10 len;
+} SFMPV_PICUSR_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 stat;
+        Sint32_x0019AE10 lock;
+        void *buf;
+        SFTIM_TTU_x0019AE10 ttu;
+        Sint32_x0019AE10 ftime;
+        Sint32_x0019AE10 tunit;
+        Sint32_x0019AE10 ndct;
+        Sint32_x0019AE10 nbyte;
+        Sint32_x0019AE10 gopno;
+        Sint32_x0019AE10 x4c;
+        Sint32_x0019AE10 x50;
+        SFMPV_PICUSR_x0019AE10 *picusr;
+        Sint32_x0019AE10 pa_width;
+        Sint32_x0019AE10 pa_height;
+        Sint32_x0019AE10 pa_mb_width;
+        Sint32_x0019AE10 pa_mb_height;
+        Sint32_x0019AE10 pa_frame_rate;
+        Sint32_x0019AE10 tmpref;
+        Sint32_x0019AE10 pa_pic_type;
+        Sint32_x0019AE10 pa_tc_drop;
+        Sint32_x0019AE10 pa_tc_hour;
+        Sint32_x0019AE10 pa_tc_min;
+        Sint32_x0019AE10 pa_tc_sec;
+        Sint32_x0019AE10 pa_tc_pic;
+        Sint32_x0019AE10 x88;
+        Sint32_x0019AE10 x8c;
+        Sint32_x0019AE10 pa_x90[3];
+        Sint32_x0019AE10 pa_x9c[3];
+        Sint16_x0019AE10 pa_xa8;
+        Sint16_x0019AE10 pa_xaa;
+        Sint8_x0019AE10 pa_xac;
+        Sint8_x0019AE10 pa_xad;
+        Sint8_x0019AE10 pa_xae;
+        Sint8_x0019AE10 pa_xaf;
+        Sint8_x0019AE10 pa_xb0;
+        Sint8_x0019AE10 pa_xb1;
+        Sint8_x0019AE10 pa_xb2;
+        Sint8_x0019AE10 pa_xb3;
+        Sint8_x0019AE10 pa_xb4;
+        Sint8_x0019AE10 pa_xb5;
+        Sint8_x0019AE10 pa_xb6;
+        Sint8_x0019AE10 pa_xb7;
+        Sint8_x0019AE10 pa_xb8;
+        Sint8_x0019AE10 pa_xb9;
+        Sint8_x0019AE10 pa_xba;
+        Sint8_x0019AE10 pa_xbb;
+        Sint8_x0019AE10 pa_xbc;
+        Uint8_x0019AE10 padbd[0xD8 - 0xBD];
+        Sint64_x0019AE10 pts;
+} SFMPV_FRM_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 cwidth;
+        Sint32_x0019AE10 cheight;
+        Sint32_x0019AE10 width;
+        Sint32_x0019AE10 height;
+        Sint32_x0019AE10 x10;
+        Sint32_x0019AE10 max_width;
+        Sint32_x0019AE10 max_height;
+        Sint32_x0019AE10 nfrm;
+        Sint32_x0019AE10 x20;
+} SFMPV_PARA_x0019AE10;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x0019AE10 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x0019AE10 *curfrm;
+        Sint32_x0019AE10 picstat;
+        Sint32_x0019AE10 dlmmask;
+        Sint32_x0019AE10 termflg;
+        Sint32_x0019AE10 gopstat;
+        Sint32_x0019AE10 nskip;
+        Sint32_x0019AE10 nconcat;
+        Uint8_x0019AE10 picatr[0x80];
+        Sint32_x0019AE10 last_ngop;
+        Sint32_x0019AE10 newgop;
+        Sint32_x0019AE10 vbvsiz;
+        Sint32_x0019AE10 pts_tmpref;
+        Sint32_x0019AE10 pts_ofst;
+        Sint32_x0019AE10 pts_max;
+        Sint32_x0019AE10 pad124;
+        SFPTS_ENT_x0019AE10 ptsent;
+        Sint32_x0019AE10 refidx[2];
+        SFMPV_PLANE_x0019AE10 rfbuf[2];
+        SFMPV_FRM_x0019AE10 *ref[2];
+        SFMPV_FRM_x0019AE10 *pendfrm;
+        Sint32_x0019AE10 skipret;
+        Sint32_x0019AE10 dlmwait;
+        Sint32_x0019AE10 tmpref_adj;
+        Sint32_x0019AE10 nfrm;
+        Sint32_x0019AE10 pad17c;
+        SFMPV_FRM_x0019AE10 frm[16];
+        void *picusr_buf;
+        Sint32_x0019AE10 picusr_num;
+        Sint32_x0019AE10 picusr_siz;
+        Uint8_x0019AE10 *picusr_dat;
+        Sint32_x0019AE10 picusr_len;
+        SFMPV_PICUSR_x0019AE10 picusr[16];
+        Sint32_x0019AE10 pad1014;
+        Sint64_x0019AE10 pts;
+} SFMPV_WORK_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 raw[0x2A];
+} SFD_PLYINF_x0019AE10 __attribute__((aligned(8)));
+typedef struct {
+        void (*fn)(void *obj, Sint32_x0019AE10 code);
+        void *obj;
+        Sint32_x0019AE10 code;
+        Sint32_x0019AE10 x0c;
+        Sint32_x0019AE10 x10;
+} SFLIB_ERRINF_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 codec;
+        Sint32_x0019AE10 layer;
+        Sint32_x0019AE10 chnum;
+        Sint32_x0019AE10 smphz;
+} SFHDS_AUD_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 codec;
+        Sint32_x0019AE10 bitrate;
+        Sint32_x0019AE10 picw;
+        Sint32_x0019AE10 pich;
+        Sint32_x0019AE10 picrate;
+        Sint32_x0019AE10 ftr_eff;
+        Sint32_x0019AE10 ftr_coltype;
+        Sint32_x0019AE10 ftr_pictype;
+        Sint32_x0019AE10 ftr_fixflg;
+        Sint32_x0019AE10 ftr_shcfixflg;
+        Sint32_x0019AE10 ftr_expand;
+        Sint32_x0019AE10 ftr_gopn;
+        Sint32_x0019AE10 ftr_gopm;
+} SFHDS_VID_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 valid;
+        Sint32_x0019AE10 ver_major;
+        Sint32_x0019AE10 ver_minor;
+        Sint32_x0019AE10 byterate;
+        Sint32_x0019AE10 hdrsiz;
+        Sint32_x0019AE10 packtype;
+        Sint32_x0019AE10 pketsizlen;
+        Sint32_x0019AE10 packsiz;
+        Sint32_x0019AE10 numelem_tot;
+        Sint32_x0019AE10 numelem_aud;
+        Sint32_x0019AE10 numelem_vid;
+        Sint32_x0019AE10 numelem_prv;
+        Sint32_x0019AE10 maxplylen_aud;
+        Sint32_x0019AE10 maxplylen_vid;
+        Sint32_x0019AE10 maxfrmnum;
+        Sint32_x0019AE10 stmid_prv1;
+        Sint32_x0019AE10 stmid_prv2;
+        Sint32_x0019AE10 stmid_aud;
+        Sint32_x0019AE10 stmid_vid;
+        SFHDS_AUD_x0019AE10 aud;
+        SFHDS_VID_x0019AE10 vid;
+        Sint32_x0019AE10 rawsiz;
+        Uint8_x0019AE10 raw[0x800];
+} SFHDS_FHD_x0019AE10;
+typedef struct {
+        Uint8_x0019AE10 data[2][0xB0];
+        Sint32_x0019AE10 len[2];
+} SFSEE_SYSHD_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 analyzed;
+        Sint32_x0019AE10 ncount;
+        Sint32_x0019AE10 tscale;
+        Sint32_x0019AE10 nvid;
+        Sint32_x0019AE10 naud;
+        Sint32_x0019AE10 pad14;
+        Sint64_x0019AE10 scr_base;
+        Sint64_x0019AE10 pts_min;
+        Sint32_x0019AE10 stmid_vid;
+        Sint32_x0019AE10 stmid_aud;
+        SFSEE_SYSHD_x0019AE10 syshd;
+} SFSEE_SHDR_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 analyzed;
+        Sint32_x0019AE10 ncount;
+        Sint32_x0019AE10 tscale;
+        SFHDS_FHD_x0019AE10 fhd;
+        SFSEE_SHDR_x0019AE10 shdr;
+        Uint8_x0019AE10 pada38[0xAD0 - 0xA38];
+        Sint32_x0019AE10 a1hdr;
+        Sint32_x0019AE10 a1ncount;
+        Sint32_x0019AE10 a1tscale;
+        Uint8_x0019AE10 padadc[0xD0C - 0xADC];
+        Sint32_x0019AE10 a2hdr;
+        Sint32_x0019AE10 a2ncount;
+        Sint32_x0019AE10 a2tscale;
+        Uint8_x0019AE10 padd18[0xDA8 - 0xD18];
+        Sint32_x0019AE10 rate;
+        Sint32_x0019AE10 fsize_est;
+        Sint32_x0019AE10 tot_est;
+        Sint32_x0019AE10 tunit_est;
+        Sint32_x0019AE10 av_a;
+        Sint32_x0019AE10 av_b;
+        Sint32_x0019AE10 paddc0;
+        Sint32_x0019AE10 fsize;
+        Sint32_x0019AE10 tottime;
+        Sint32_x0019AE10 tunit;
+        Sint32_x0019AE10 byterate;
+        Sint32_x0019AE10 seekpos;
+} SFSEE_WORK_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 x00;
+        Sint32_x0019AE10 pos;
+        Sint32_x0019AE10 x08;
+} SFSEE_REQ_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 bsize;
+        Sint32_x0019AE10 xsize;
+        void *buf;
+        Sint32_x0019AE10 maxnch;
+        Sint32_x0019AE10 x10;
+        Sint32_x0019AE10 worksize;
+        void *work;
+} SFADXT_PARA_x0019AE10;
+typedef struct {
+        void *adxt;
+        SJ_x0019AE10 sj;
+        SFADXT_PARA_x0019AE10 para;
+        Sint32_x0019AE10 tcount;
+        Sint32_x0019AE10 tunit;
+        Sint32_x0019AE10 pause;
+        Sint32_x0019AE10 discard;
+        Sint32_x0019AE10 seekflg;
+        Sint32_x0019AE10 smplofst;
+        void (*func)(SFD_x0019AE10 sfd, Uint8_x0019AE10 *data, Sint32_x0019AE10 len, Sint32_x0019AE10 *nbyte);
+        Sint32_x0019AE10 x40;
+        Sint32_x0019AE10 svrfreq;
+        Sint32_x0019AE10 totbyte;
+        Sint32_x0019AE10 x4c;
+} SFADXT_WORK_x0019AE10;
+typedef struct {
+        SFSEE_WORK_x0019AE10 *wk;
+        SFSEE_REQ_x0019AE10 req;
+} SFSEE_HN_x0019AE10;
+typedef struct {
+        Sint32_x0019AE10 x00;
+        Uint32_x0019AE10 adr;
+        Sint32_x0019AE10 size[7];
+        Sint32_x0019AE10 x24;
+        Sint32_x0019AE10 unit;
+        Sint32_x0019AE10 x2c;
+        Sint32_x0019AE10 x30;
+        Sint32_x0019AE10 x34;
+        Sint32_x0019AE10 x38;
+        void *hnwork;
+        Sint32_x0019AE10 hnwksiz;
+} SFD_CREPRM_x0019AE10;
+typedef struct {
+        void *x00;
+        Sint32_x0019AE10 x04;
+        Sint32_x0019AE10 x08;
+} SFPLY_PTSM_x0019AE10;
+typedef struct {
+        Sint64_x0019AE10 sum;
+        Sint64_x0019AE10 min;
+        Sint64_x0019AE10 max;
+        Sint32_x0019AE10 cnt;
+} SFTMR_TSUM_x0019AE10;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x0019AE10 nvid;
+        Sint32_x0019AE10 naud;
+        Sint32_x0019AE10 x0c;
+        Sint64_x0019AE10 pts_min;
+        Sint64_x0019AE10 pts_min2;
+        Sint32_x0019AE10 concat_cnt;
+        Sint32_x0019AE10 last_vid;
+        Sint32_x0019AE10 last_aud;
+        Sint32_x0019AE10 first_vid;
+        Sint32_x0019AE10 first_aud;
+        Sint32_x0019AE10 cur_vid;
+        Sint32_x0019AE10 cur_aud;
+        Sint32_x0019AE10 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x0019AE10 stmid);
+        void *outobj;
+        Sint32_x0019AE10 skip;
+        Sint32_x0019AE10 x15c;
+        Sint32_x0019AE10 x160;
+        Sint32_x0019AE10 x164;
+} SFMPS_WORK_x0019AE10;
+typedef struct SFD_OBJ_x0019AE10 {
+        SFD_CREPRM_x0019AE10 prm;
+        Sint32_x0019AE10 chg_flg;
+        Sint32_x0019AE10 stat;
+        Sint32_x0019AE10 req;
+        Sint32_x0019AE10 pause_sw;
+        Sint32_x0019AE10 pause_cnt;
+        Uint8_x0019AE10 pad58[0x74 - 0x58];
+        Sint32_x0019AE10 pad74;
+        SFHDS_FHD_x0019AE10 fhd;
+        Sint32_x0019AE10 x90c;
+        Sint32_x0019AE10 x910;
+        Sint32_x0019AE10 x914;
+        Sint32_x0019AE10 x918;
+        Sint32_x0019AE10 x91c;
+        Sint32_x0019AE10 picrate;
+        Sint32_x0019AE10 x924;
+        Sint32_x0019AE10 x928;
+        Sint32_x0019AE10 x92c;
+        Sint32_x0019AE10 numelem_aud;
+        Sint32_x0019AE10 numelem_vid;
+        Sint32_x0019AE10 numelem_prv;
+        Sint32_x0019AE10 x93c;
+        Sint32_x0019AE10 x940;
+        Sint32_x0019AE10 x944;
+        Sint32_x0019AE10 x948;
+        Sint32_x0019AE10 x94c;
+        SFD_PLYINF_x0019AE10 plyinf;
+        SFLIB_ERRINF_x0019AE10 err;
+        Sint32_x0019AE10 cond[100];
+        Sint32_x0019AE10 cond_def[100];
+        Uint8_x0019AE10 padD24[4];
+        SFCON_x0019AE10 con;
+        Uint8_x0019AE10 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x0019AE10))];
+        Uint8_x0019AE10 tst[0x1C0];
+        Uint8_x0019AE10 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x0019AE10 ptsm;
+        Uint8_x0019AE10 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x0019AE10 buf[8];
+        SFD_VFRM_x0019AE10 vfrm[16];
+        SFD_TR_x0019AE10 tr[9];
+        Sint32_x0019AE10 pad218c;
+        SFMPS_WORK_x0019AE10 mps;
+        Uint8_x0019AE10 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x0019AE10 mpv;
+        SFADXT_WORK_x0019AE10 adxt;
+        Uint8_x0019AE10 pad3410[0x3474 - 0x3410];
+        SFAOAP_x0019AE10 aoap;
+        SFUO_x0019AE10 uo_tbl;
+        Sint32_x0019AE10 pad34c4;
+        SFSEE_HN_x0019AE10 see;
+        SFTMR_TSUM_x0019AE10 tsum[6];
+} SFD_OBJ_x0019AE10;
+Sint32_x0019AE10 SFLIB_SetErr_x0019AE10(SFD_x0019AE10 sfd, Sint32_x0019AE10 code) __asm__("func_0018D650");
+typedef void (*SFTIM_TC2TIME_FN_x0019AE10)(Sint32_x0019AE10 prate, SFTIM_TC_x0019AE10 *tc, Sint32_x0019AE10 *ncount, Sint32_x0019AE10 *tscale);
+extern const Sint32_x0019AE10 SFTIM_prate_x0019AE10[9] __asm__("D_00467730");
+extern const SFTIM_TC2TIME_FN_x0019AE10 sftim_tc2time_x0019AE10[9][2] __asm__("D_00467758");
+void func_0019AE10_x0019AE10(SFTIM_TC_x0019AE10 *tc, Sint32_x0019AE10 *ncount, Sint32_x0019AE10 *tscale) __asm__("func_0019AE10");
+/* SFTIM_Tc2Time: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_tim.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_0019AE10_x0019AE10(SFTIM_TC_x0019AE10 *tc, Sint32_x0019AE10 *ncount, Sint32_x0019AE10 *tscale)
+{
+        SFTIM_TC2TIME_FN_x0019AE10 fn;
+        Sint32_x0019AE10 prate;
+        prate = SFTIM_prate_x0019AE10[tc->type];
+        fn = sftim_tc2time_x0019AE10[tc->type][tc->drop];
+        if (fn == 0) {
+                SFLIB_SetErr_x0019AE10(0, 0xFF000221);
+                *ncount = 0;
+                *tscale = 1;
+                return;
+        }
+        fn(prate, tc, ncount, tscale);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019AEB0);
 s32 func_0019AEB0_x0019AF40(s32) __asm__("func_0019AEB0");
 void func_0019AF40_x0019AF40(s32 arg0, s32 arg1, s32 arg2, s32 *arg3) __asm__("func_0019AF40");
@@ -1466,7 +6791,533 @@ void func_0019B2E0_x0019B2E0(SfdHandle_x0019B2E0 *handle, int *value, int *scale
         *scale = lbl_12_rodata_E10_x0019B2E0[code];
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B320);
+typedef unsigned char Uint8_x0019B320;
+typedef signed char Sint8_x0019B320;
+typedef signed short Sint16_x0019B320;
+typedef unsigned int Uint32_x0019B320;
+typedef signed int Sint32_x0019B320;
+typedef signed long long Sint64_x0019B320;
+typedef char Char8_x0019B320;
+typedef struct SJ_OBJ_x0019B320 *SJ_x0019B320;
+typedef struct {
+        Uint8_x0019B320 *data;
+        Sint32_x0019B320 len;
+} SJCK_x0019B320;
+typedef struct {
+        Uint8_x0019B320 data[16];
+} SJUUID_x0019B320;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0019B320 sj);
+        const SJUUID_x0019B320 *(*GetUuid)(SJ_x0019B320 sj);
+        void (*Reset)(SJ_x0019B320 sj);
+        void (*GetChunk)(SJ_x0019B320 sj, Sint32_x0019B320 id, Sint32_x0019B320 nbyte, SJCK_x0019B320 *ck);
+        void (*UngetChunk)(SJ_x0019B320 sj, Sint32_x0019B320 id, SJCK_x0019B320 *ck);
+        void (*PutChunk)(SJ_x0019B320 sj, Sint32_x0019B320 id, SJCK_x0019B320 *ck);
+        Sint32_x0019B320 (*GetNumData)(SJ_x0019B320 sj, Sint32_x0019B320 id);
+        Sint32_x0019B320 (*IsGetChunk)(SJ_x0019B320 sj, Sint32_x0019B320 id, Sint32_x0019B320 nbyte, Sint32_x0019B320 *rbyte);
+        void (*EntryErrFunc)(SJ_x0019B320 sj, void (*func)(void *obj, Char8_x0019B320 *msg), void *obj);
+} SJ_IF_x0019B320;
+struct SJ_OBJ_x0019B320 {
+        SJ_IF_x0019B320 *vtbl;
+};
+typedef struct SFD_OBJ_x0019B320 *SFD_x0019B320;
+typedef struct {
+        void *sj;
+        void *prm;
+        Sint32_x0019B320 rsv1;
+        Sint32_x0019B320 rsv2;
+} SFUO_CH_x0019B320;
+typedef struct {
+        Sint32_x0019B320 nch;
+        SFUO_CH_x0019B320 ch[3];
+} SFUO_x0019B320;
+typedef struct {
+        Sint32_x0019B320 x00;
+        Sint32_x0019B320 (*SetOutPan)(SFD_x0019B320 sfd, Sint32_x0019B320 ch, Sint32_x0019B320 pan);
+        Sint32_x0019B320 (*GetOutPan)(SFD_x0019B320 sfd, Sint32_x0019B320 ch);
+        Sint32_x0019B320 (*SetOutVol)(SFD_x0019B320 sfd, Sint32_x0019B320 vol);
+        Sint32_x0019B320 (*GetOutVol)(SFD_x0019B320 sfd);
+        void (*SetSpeed)(SFD_x0019B320 sfd, Sint32_x0019B320 speed);
+        Sint32_x0019B320 x18;
+} SFAOAP_x0019B320;
+typedef struct {
+        Uint8_x0019B320 pad0[0xB8];
+        Sint32_x0019B320 tottime;
+        Sint32_x0019B320 tunit;
+        Uint8_x0019B320 padc0[0x150 - 0xC0];
+        Sint64_x0019B320 scr_base;
+        Sint64_x0019B320 scr_ofst;
+        Sint32_x0019B320 pad160;
+        Sint32_x0019B320 ctime;
+        Sint32_x0019B320 ctime_idx;
+        Sint32_x0019B320 ctime_que[32];
+        Sint32_x0019B320 tot_last;
+        Sint32_x0019B320 pad1F0;
+        Sint32_x0019B320 que_wr;
+        Sint32_x0019B320 que_rd;
+        Sint32_x0019B320 tot_que[32];
+} SFCON_x0019B320;
+typedef struct {
+        Sint32_x0019B320 type;
+        Sint32_x0019B320 drop;
+        Sint32_x0019B320 hour;
+        Sint32_x0019B320 min;
+        Sint32_x0019B320 sec;
+        Sint32_x0019B320 frm;
+        Sint32_x0019B320 frm2;
+        Sint16_x0019B320 x1c;
+        Sint16_x0019B320 field;
+} SFTIM_TC_x0019B320;
+typedef struct {
+        Sint32_x0019B320 valid;
+        SFTIM_TC_x0019B320 tc;
+        Sint32_x0019B320 val;
+        Sint32_x0019B320 unit;
+} SFTIM_TTU_x0019B320;
+extern const Sint32_x0019B320 SFTIM_prate_x0019B320[9] __asm__("D_00467730");
+typedef struct {
+        Sint64_x0019B320 pts;
+        Uint32_x0019B320 pos;
+        Uint32_x0019B320 len;
+} SFPTS_ENT_x0019B320;
+typedef struct {
+        SFPTS_ENT_x0019B320 *ent;
+        Sint32_x0019B320 num;
+        Sint32_x0019B320 cnt;
+        Sint32_x0019B320 wr;
+        Sint32_x0019B320 rd;
+} SFPTS_QUE_x0019B320;
+typedef struct {
+        Sint32_x0019B320 raw[0x20];
+} SFD_VFRM_INF_x0019B320;
+typedef struct {
+        void *frm;
+        Sint32_x0019B320 x04;
+        SFD_VFRM_INF_x0019B320 inf;
+} SFD_VFRM_x0019B320;
+typedef struct {
+        Sint32_x0019B320 kind;
+        SJ_x0019B320 sj;
+        Uint32_x0019B320 ofst;
+        Sint32_x0019B320 size;
+        Sint32_x0019B320 xsize;
+        Sint32_x0019B320 x14;
+} SFBUF_SUP_x0019B320;
+typedef struct {
+        SFBUF_SUP_x0019B320 sup;
+        Uint8_x0019B320 *dlm_pos;
+        Sint32_x0019B320 dlm_len;
+        Sint32_x0019B320 wtot;
+        Sint32_x0019B320 rtot;
+        SFPTS_QUE_x0019B320 ptsque;
+} SFBUF_RING_x0019B320;
+typedef struct {
+        Sint32_x0019B320 mode;
+        Sint32_x0019B320 used;
+        Sint32_x0019B320 prepflg;
+        Sint32_x0019B320 termflg;
+        union {
+                SFBUF_RING_x0019B320 ring;
+                struct {
+                        Uint32_x0019B320 adr;
+                        Sint32_x0019B320 size;
+                        Sint32_x0019B320 x18;
+                        Sint32_x0019B320 x1c;
+                        SFD_VFRM_x0019B320 *vfrm;
+                } vfrm;
+                struct {
+                        Uint32_x0019B320 adr;
+                        Sint32_x0019B320 size;
+                        Sint32_x0019B320 rsv[7];
+                        Sint32_x0019B320 rsv2[3];
+                } aout;
+                SFUO_CH_x0019B320 uoch[3];
+        } u;
+        Sint32_x0019B320 in_tr;
+        Sint32_x0019B320 out_tr;
+        Sint32_x0019B320 rsv[8];
+} SFBUF_WORK_x0019B320;
+typedef Sint32_x0019B320 (*SFD_TR_FUNC_x0019B320)();
+typedef struct {
+        Sint32_x0019B320 prepflg;
+        Sint32_x0019B320 termflg;
+        void *hn;
+        SFD_TR_FUNC_x0019B320 *trif;
+        Sint32_x0019B320 bufin;
+        Sint32_x0019B320 bufout;
+        Sint32_x0019B320 bufout2;
+        Sint32_x0019B320 bufout3;
+        Sint32_x0019B320 x20;
+        Uint8_x0019B320 pad24[0x44 - 0x24];
+} SFD_TR_x0019B320;
+typedef struct {
+        void *cb;
+        void *cr;
+        void *y;
+        Sint16_x0019B320 cwidth;
+        Sint16_x0019B320 ywidth;
+} SFMPV_PLANE_x0019B320;
+typedef struct {
+        void *buf;
+        Sint32_x0019B320 len;
+} SFMPV_PICUSR_x0019B320;
+typedef struct {
+        Sint32_x0019B320 stat;
+        Sint32_x0019B320 lock;
+        void *buf;
+        SFTIM_TTU_x0019B320 ttu;
+        Sint32_x0019B320 ftime;
+        Sint32_x0019B320 tunit;
+        Sint32_x0019B320 ndct;
+        Sint32_x0019B320 nbyte;
+        Sint32_x0019B320 gopno;
+        Sint32_x0019B320 x4c;
+        Sint32_x0019B320 x50;
+        SFMPV_PICUSR_x0019B320 *picusr;
+        Sint32_x0019B320 pa_width;
+        Sint32_x0019B320 pa_height;
+        Sint32_x0019B320 pa_mb_width;
+        Sint32_x0019B320 pa_mb_height;
+        Sint32_x0019B320 pa_frame_rate;
+        Sint32_x0019B320 tmpref;
+        Sint32_x0019B320 pa_pic_type;
+        Sint32_x0019B320 pa_tc_drop;
+        Sint32_x0019B320 pa_tc_hour;
+        Sint32_x0019B320 pa_tc_min;
+        Sint32_x0019B320 pa_tc_sec;
+        Sint32_x0019B320 pa_tc_pic;
+        Sint32_x0019B320 x88;
+        Sint32_x0019B320 x8c;
+        Sint32_x0019B320 pa_x90[3];
+        Sint32_x0019B320 pa_x9c[3];
+        Sint16_x0019B320 pa_xa8;
+        Sint16_x0019B320 pa_xaa;
+        Sint8_x0019B320 pa_xac;
+        Sint8_x0019B320 pa_xad;
+        Sint8_x0019B320 pa_xae;
+        Sint8_x0019B320 pa_xaf;
+        Sint8_x0019B320 pa_xb0;
+        Sint8_x0019B320 pa_xb1;
+        Sint8_x0019B320 pa_xb2;
+        Sint8_x0019B320 pa_xb3;
+        Sint8_x0019B320 pa_xb4;
+        Sint8_x0019B320 pa_xb5;
+        Sint8_x0019B320 pa_xb6;
+        Sint8_x0019B320 pa_xb7;
+        Sint8_x0019B320 pa_xb8;
+        Sint8_x0019B320 pa_xb9;
+        Sint8_x0019B320 pa_xba;
+        Sint8_x0019B320 pa_xbb;
+        Sint8_x0019B320 pa_xbc;
+        Uint8_x0019B320 padbd[0xD8 - 0xBD];
+        Sint64_x0019B320 pts;
+} SFMPV_FRM_x0019B320;
+typedef struct {
+        Sint32_x0019B320 cwidth;
+        Sint32_x0019B320 cheight;
+        Sint32_x0019B320 width;
+        Sint32_x0019B320 height;
+        Sint32_x0019B320 x10;
+        Sint32_x0019B320 max_width;
+        Sint32_x0019B320 max_height;
+        Sint32_x0019B320 nfrm;
+        Sint32_x0019B320 x20;
+} SFMPV_PARA_x0019B320;
+typedef struct {
+        struct MPV_OBJ *mpv;
+        SFMPV_PARA_x0019B320 para;
+        void *rfb_adr[2];
+        void *ta_adr[16];
+        SFMPV_FRM_x0019B320 *curfrm;
+        Sint32_x0019B320 picstat;
+        Sint32_x0019B320 dlmmask;
+        Sint32_x0019B320 termflg;
+        Sint32_x0019B320 gopstat;
+        Sint32_x0019B320 nskip;
+        Sint32_x0019B320 nconcat;
+        Uint8_x0019B320 picatr[0x80];
+        Sint32_x0019B320 last_ngop;
+        Sint32_x0019B320 newgop;
+        Sint32_x0019B320 vbvsiz;
+        Sint32_x0019B320 pts_tmpref;
+        Sint32_x0019B320 pts_ofst;
+        Sint32_x0019B320 pts_max;
+        Sint32_x0019B320 pad124;
+        SFPTS_ENT_x0019B320 ptsent;
+        Sint32_x0019B320 refidx[2];
+        SFMPV_PLANE_x0019B320 rfbuf[2];
+        SFMPV_FRM_x0019B320 *ref[2];
+        SFMPV_FRM_x0019B320 *pendfrm;
+        Sint32_x0019B320 skipret;
+        Sint32_x0019B320 dlmwait;
+        Sint32_x0019B320 tmpref_adj;
+        Sint32_x0019B320 nfrm;
+        Sint32_x0019B320 pad17c;
+        SFMPV_FRM_x0019B320 frm[16];
+        void *picusr_buf;
+        Sint32_x0019B320 picusr_num;
+        Sint32_x0019B320 picusr_siz;
+        Uint8_x0019B320 *picusr_dat;
+        Sint32_x0019B320 picusr_len;
+        SFMPV_PICUSR_x0019B320 picusr[16];
+        Sint32_x0019B320 pad1014;
+        Sint64_x0019B320 pts;
+} SFMPV_WORK_x0019B320;
+typedef struct {
+        Sint32_x0019B320 raw[0x2A];
+} SFD_PLYINF_x0019B320 __attribute__((aligned(8)));
+typedef struct {
+        void (*fn)(void *obj, Sint32_x0019B320 code);
+        void *obj;
+        Sint32_x0019B320 code;
+        Sint32_x0019B320 x0c;
+        Sint32_x0019B320 x10;
+} SFLIB_ERRINF_x0019B320;
+typedef struct {
+        Sint32_x0019B320 codec;
+        Sint32_x0019B320 layer;
+        Sint32_x0019B320 chnum;
+        Sint32_x0019B320 smphz;
+} SFHDS_AUD_x0019B320;
+typedef struct {
+        Sint32_x0019B320 codec;
+        Sint32_x0019B320 bitrate;
+        Sint32_x0019B320 picw;
+        Sint32_x0019B320 pich;
+        Sint32_x0019B320 picrate;
+        Sint32_x0019B320 ftr_eff;
+        Sint32_x0019B320 ftr_coltype;
+        Sint32_x0019B320 ftr_pictype;
+        Sint32_x0019B320 ftr_fixflg;
+        Sint32_x0019B320 ftr_shcfixflg;
+        Sint32_x0019B320 ftr_expand;
+        Sint32_x0019B320 ftr_gopn;
+        Sint32_x0019B320 ftr_gopm;
+} SFHDS_VID_x0019B320;
+typedef struct {
+        Sint32_x0019B320 valid;
+        Sint32_x0019B320 ver_major;
+        Sint32_x0019B320 ver_minor;
+        Sint32_x0019B320 byterate;
+        Sint32_x0019B320 hdrsiz;
+        Sint32_x0019B320 packtype;
+        Sint32_x0019B320 pketsizlen;
+        Sint32_x0019B320 packsiz;
+        Sint32_x0019B320 numelem_tot;
+        Sint32_x0019B320 numelem_aud;
+        Sint32_x0019B320 numelem_vid;
+        Sint32_x0019B320 numelem_prv;
+        Sint32_x0019B320 maxplylen_aud;
+        Sint32_x0019B320 maxplylen_vid;
+        Sint32_x0019B320 maxfrmnum;
+        Sint32_x0019B320 stmid_prv1;
+        Sint32_x0019B320 stmid_prv2;
+        Sint32_x0019B320 stmid_aud;
+        Sint32_x0019B320 stmid_vid;
+        SFHDS_AUD_x0019B320 aud;
+        SFHDS_VID_x0019B320 vid;
+        Sint32_x0019B320 rawsiz;
+        Uint8_x0019B320 raw[0x800];
+} SFHDS_FHD_x0019B320;
+typedef struct {
+        Uint8_x0019B320 data[2][0xB0];
+        Sint32_x0019B320 len[2];
+} SFSEE_SYSHD_x0019B320;
+typedef struct {
+        Sint32_x0019B320 analyzed;
+        Sint32_x0019B320 ncount;
+        Sint32_x0019B320 tscale;
+        Sint32_x0019B320 nvid;
+        Sint32_x0019B320 naud;
+        Sint32_x0019B320 pad14;
+        Sint64_x0019B320 scr_base;
+        Sint64_x0019B320 pts_min;
+        Sint32_x0019B320 stmid_vid;
+        Sint32_x0019B320 stmid_aud;
+        SFSEE_SYSHD_x0019B320 syshd;
+} SFSEE_SHDR_x0019B320;
+typedef struct {
+        Sint32_x0019B320 analyzed;
+        Sint32_x0019B320 ncount;
+        Sint32_x0019B320 tscale;
+        SFHDS_FHD_x0019B320 fhd;
+        SFSEE_SHDR_x0019B320 shdr;
+        Uint8_x0019B320 pada38[0xAD0 - 0xA38];
+        Sint32_x0019B320 a1hdr;
+        Sint32_x0019B320 a1ncount;
+        Sint32_x0019B320 a1tscale;
+        Uint8_x0019B320 padadc[0xD0C - 0xADC];
+        Sint32_x0019B320 a2hdr;
+        Sint32_x0019B320 a2ncount;
+        Sint32_x0019B320 a2tscale;
+        Uint8_x0019B320 padd18[0xDA8 - 0xD18];
+        Sint32_x0019B320 rate;
+        Sint32_x0019B320 fsize_est;
+        Sint32_x0019B320 tot_est;
+        Sint32_x0019B320 tunit_est;
+        Sint32_x0019B320 av_a;
+        Sint32_x0019B320 av_b;
+        Sint32_x0019B320 paddc0;
+        Sint32_x0019B320 fsize;
+        Sint32_x0019B320 tottime;
+        Sint32_x0019B320 tunit;
+        Sint32_x0019B320 byterate;
+        Sint32_x0019B320 seekpos;
+} SFSEE_WORK_x0019B320;
+typedef struct {
+        Sint32_x0019B320 x00;
+        Sint32_x0019B320 pos;
+        Sint32_x0019B320 x08;
+} SFSEE_REQ_x0019B320;
+typedef struct {
+        Sint32_x0019B320 bsize;
+        Sint32_x0019B320 xsize;
+        void *buf;
+        Sint32_x0019B320 maxnch;
+        Sint32_x0019B320 x10;
+        Sint32_x0019B320 worksize;
+        void *work;
+} SFADXT_PARA_x0019B320;
+typedef struct {
+        void *adxt;
+        SJ_x0019B320 sj;
+        SFADXT_PARA_x0019B320 para;
+        Sint32_x0019B320 tcount;
+        Sint32_x0019B320 tunit;
+        Sint32_x0019B320 pause;
+        Sint32_x0019B320 discard;
+        Sint32_x0019B320 seekflg;
+        Sint32_x0019B320 smplofst;
+        void (*func)(SFD_x0019B320 sfd, Uint8_x0019B320 *data, Sint32_x0019B320 len, Sint32_x0019B320 *nbyte);
+        Sint32_x0019B320 x40;
+        Sint32_x0019B320 svrfreq;
+        Sint32_x0019B320 totbyte;
+        Sint32_x0019B320 x4c;
+} SFADXT_WORK_x0019B320;
+typedef struct {
+        SFSEE_WORK_x0019B320 *wk;
+        SFSEE_REQ_x0019B320 req;
+} SFSEE_HN_x0019B320;
+typedef struct {
+        Sint32_x0019B320 x00;
+        Uint32_x0019B320 adr;
+        Sint32_x0019B320 size[7];
+        Sint32_x0019B320 x24;
+        Sint32_x0019B320 unit;
+        Sint32_x0019B320 x2c;
+        Sint32_x0019B320 x30;
+        Sint32_x0019B320 x34;
+        Sint32_x0019B320 x38;
+        void *hnwork;
+        Sint32_x0019B320 hnwksiz;
+} SFD_CREPRM_x0019B320;
+typedef struct {
+        void *x00;
+        Sint32_x0019B320 x04;
+        Sint32_x0019B320 x08;
+} SFPLY_PTSM_x0019B320;
+typedef struct {
+        Sint64_x0019B320 sum;
+        Sint64_x0019B320 min;
+        Sint64_x0019B320 max;
+        Sint32_x0019B320 cnt;
+} SFTMR_TSUM_x0019B320;
+typedef struct {
+        struct MPS_OBJ *mps;
+        Sint32_x0019B320 nvid;
+        Sint32_x0019B320 naud;
+        Sint32_x0019B320 x0c;
+        Sint64_x0019B320 pts_min;
+        Sint64_x0019B320 pts_min2;
+        Sint32_x0019B320 concat_cnt;
+        Sint32_x0019B320 last_vid;
+        Sint32_x0019B320 last_aud;
+        Sint32_x0019B320 first_vid;
+        Sint32_x0019B320 first_aud;
+        Sint32_x0019B320 cur_vid;
+        Sint32_x0019B320 cur_aud;
+        Sint32_x0019B320 endcode;
+        void *outsj[(0xFF - 0xBC + 1)];
+        void (*outfn)(void *obj, Sint32_x0019B320 stmid);
+        void *outobj;
+        Sint32_x0019B320 skip;
+        Sint32_x0019B320 x15c;
+        Sint32_x0019B320 x160;
+        Sint32_x0019B320 x164;
+} SFMPS_WORK_x0019B320;
+typedef struct SFD_OBJ_x0019B320 {
+        SFD_CREPRM_x0019B320 prm;
+        Sint32_x0019B320 chg_flg;
+        Sint32_x0019B320 stat;
+        Sint32_x0019B320 req;
+        Sint32_x0019B320 pause_sw;
+        Sint32_x0019B320 pause_cnt;
+        Uint8_x0019B320 pad58[0x74 - 0x58];
+        Sint32_x0019B320 pad74;
+        SFHDS_FHD_x0019B320 fhd;
+        Sint32_x0019B320 x90c;
+        Sint32_x0019B320 x910;
+        Sint32_x0019B320 x914;
+        Sint32_x0019B320 x918;
+        Sint32_x0019B320 x91c;
+        Sint32_x0019B320 picrate;
+        Sint32_x0019B320 x924;
+        Sint32_x0019B320 x928;
+        Sint32_x0019B320 x92c;
+        Sint32_x0019B320 numelem_aud;
+        Sint32_x0019B320 numelem_vid;
+        Sint32_x0019B320 numelem_prv;
+        Sint32_x0019B320 x93c;
+        Sint32_x0019B320 x940;
+        Sint32_x0019B320 x944;
+        Sint32_x0019B320 x948;
+        Sint32_x0019B320 x94c;
+        SFD_PLYINF_x0019B320 plyinf;
+        SFLIB_ERRINF_x0019B320 err;
+        Sint32_x0019B320 cond[100];
+        Sint32_x0019B320 cond_def[100];
+        Uint8_x0019B320 padD24[4];
+        SFCON_x0019B320 con;
+        Uint8_x0019B320 padFA4[(int)(0x1020 - 0xD30 - sizeof(SFCON_x0019B320))];
+        Uint8_x0019B320 tst[0x1C0];
+        Uint8_x0019B320 pad11D8[0x12D8 - 0x11D8];
+        SFPLY_PTSM_x0019B320 ptsm;
+        Uint8_x0019B320 pad12E4[0x1308 - 0x12E4];
+        SFBUF_WORK_x0019B320 buf[8];
+        SFD_VFRM_x0019B320 vfrm[16];
+        SFD_TR_x0019B320 tr[9];
+        Sint32_x0019B320 pad218c;
+        SFMPS_WORK_x0019B320 mps;
+        Uint8_x0019B320 pad22F8[0x23A0 - 0x22F8];
+        SFMPV_WORK_x0019B320 mpv;
+        SFADXT_WORK_x0019B320 adxt;
+        Uint8_x0019B320 pad3410[0x3474 - 0x3410];
+        SFAOAP_x0019B320 aoap;
+        SFUO_x0019B320 uo_tbl;
+        Sint32_x0019B320 pad34c4;
+        SFSEE_HN_x0019B320 see;
+        SFTMR_TSUM_x0019B320 tsum[6];
+} SFD_OBJ_x0019B320;
+Sint32_x0019B320 SFLIB_SetErr_x0019B320(SFD_x0019B320 sfd, Sint32_x0019B320 code) __asm__("func_0018D650");
+Sint32_x0019B320 SFLIB_CheckHn_x0019B320(SFD_x0019B320 sfd) __asm__("func_0018D870");
+extern const Sint32_x0019B320 SFTIM_prate_x0019B320[9] __asm__("D_00467730");
+Sint32_x0019B320 func_0019B320_x0019B320(SFD_x0019B320 sfd, Sint32_x0019B320 *fps) __asm__("func_0019B320");
+/* SFD_GetFps: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfd_tim.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0019B320 func_0019B320_x0019B320(SFD_x0019B320 sfd, Sint32_x0019B320 *fps)
+{
+        *fps = -1;
+        if (SFLIB_CheckHn_x0019B320(sfd) != 0) {
+                return SFLIB_SetErr_x0019B320(0, 0xFF00011B);
+        }
+        if (sfd->picrate == 0) {
+                return 0;
+        }
+        *fps = SFTIM_prate_x0019B320[sfd->picrate];
+        return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B398);
 typedef unsigned char u8_x0019B428;
 typedef signed int s32_x0019B428;
@@ -2488,10 +8339,144 @@ s32 func_0019D780(u8 *arg0) {
     }
     return var_v0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019D7C8);
+typedef unsigned char Uint8_x0019D7C8;
+typedef signed int Sint32_x0019D7C8;
+typedef Sint32_x0019D7C8 Bool_x0019D7C8;
+typedef struct SFH_OBJ_x0019D7C8 *SFH_x0019D7C8;
+typedef struct SFH_OBJ_x0019D7C8 {
+        Sint32_x0019D7C8 stat;
+        Uint8_x0019D7C8 *hdr;
+        Sint32_x0019D7C8 size;
+        Sint32_x0019D7C8 ver;
+} SFH_OBJ_x0019D7C8;
+Bool_x0019D7C8 func_0019D7C8_x0019D7C8(SFH_x0019D7C8 sfh) __asm__("func_0019D7C8");
+/* sfh_IsValid: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfh_main.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Bool_x0019D7C8 func_0019D7C8_x0019D7C8(SFH_x0019D7C8 sfh)
+{
+        Bool_x0019D7C8 ret;
+        switch (sfh->stat) {
+        case (-1):
+        case 0:
+        case 1:
+                ret = 0;
+                break;
+        default:
+                ret = 1;
+                break;
+        }
+        return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019D7F0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019D8E0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019D950);
+typedef unsigned char Uint8_x0019D8E0;
+typedef unsigned int Uint32_x0019D8E0;
+typedef signed int Sint32_x0019D8E0;
+typedef Sint32_x0019D8E0 Bool_x0019D8E0;
+typedef struct SFH_OBJ_x0019D8E0 *SFH_x0019D8E0;
+typedef struct SFH_OBJ_x0019D8E0 {
+        Sint32_x0019D8E0 stat;
+        Uint8_x0019D8E0 *hdr;
+        Sint32_x0019D8E0 size;
+        Sint32_x0019D8E0 ver;
+} SFH_OBJ_x0019D8E0;
+typedef struct {
+        Uint8_x0019D8E0 pad0[0x18];
+        Uint8_x0019D8E0 id;
+        Uint8_x0019D8E0 codec;
+        Uint8_x0019D8E0 aud_layer;
+        Uint8_x0019D8E0 aud_chnum;
+        Uint8_x0019D8E0 aud_smphz[4];
+        Uint8_x0019D8E0 ftr_flag;
+        Uint8_x0019D8E0 ftr_coltype;
+        Uint8_x0019D8E0 ftr_pictype;
+        Uint8_x0019D8E0 ftr_fixflg;
+        Uint8_x0019D8E0 ftr_expand;
+        Uint8_x0019D8E0 ftr_gopn;
+        Uint8_x0019D8E0 ftr_gopm;
+        Uint8_x0019D8E0 ftr_fxtype;
+        Uint8_x0019D8E0 pad28[0x18];
+} SFH_ELEM_x0019D8E0;
+Bool_x0019D8E0 sfh_IsAnlyOk_x0019D8E0(SFH_x0019D8E0 sfh) __asm__("func_0019D780");
+SFH_ELEM_x0019D8E0 *sfh_SearchElem_x0019D8E0(Uint8_x0019D8E0 *hdr, Uint32_x0019D8E0 id) __asm__("func_0019DA20");
+Bool_x0019D8E0 func_0019D8E0_x0019D8E0(SFH_x0019D8E0 sfh, Uint8_x0019D8E0 id, Sint32_x0019D8E0 *flag) __asm__("func_0019D8E0");
+/* SFH_IsExistStmId: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfh_main.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Bool_x0019D8E0 func_0019D8E0_x0019D8E0(SFH_x0019D8E0 sfh, Uint8_x0019D8E0 id, Sint32_x0019D8E0 *flag)
+{
+        Uint8_x0019D8E0 *hdr;
+        *flag = 0;
+        hdr = sfh->hdr;
+        if (!sfh_IsAnlyOk_x0019D8E0(sfh)) {
+                return 0;
+        }
+        if (sfh_SearchElem_x0019D8E0(hdr, id) != 0) {
+                *flag = 1;
+        } else {
+                *flag = 0;
+        }
+        return 1;
+}
+typedef unsigned char Uint8_x0019D950;
+typedef unsigned int Uint32_x0019D950;
+typedef signed int Sint32_x0019D950;
+typedef Sint32_x0019D950 Bool_x0019D950;
+typedef struct SFH_OBJ_x0019D950 *SFH_x0019D950;
+typedef struct SFH_OBJ_x0019D950 {
+        Sint32_x0019D950 stat;
+        Uint8_x0019D950 *hdr;
+        Sint32_x0019D950 size;
+        Sint32_x0019D950 ver;
+} SFH_OBJ_x0019D950;
+typedef struct {
+        Uint8_x0019D950 pad0[0x18];
+        Uint8_x0019D950 id;
+        Uint8_x0019D950 codec;
+        Uint8_x0019D950 aud_layer;
+        Uint8_x0019D950 aud_chnum;
+        Uint8_x0019D950 aud_smphz[4];
+        Uint8_x0019D950 ftr_flag;
+        Uint8_x0019D950 ftr_coltype;
+        Uint8_x0019D950 ftr_pictype;
+        Uint8_x0019D950 ftr_fixflg;
+        Uint8_x0019D950 ftr_expand;
+        Uint8_x0019D950 ftr_gopn;
+        Uint8_x0019D950 ftr_gopm;
+        Uint8_x0019D950 ftr_fxtype;
+        Uint8_x0019D950 pad28[0x18];
+} SFH_ELEM_x0019D950;
+SFH_ELEM_x0019D950 *sfh_GetElem_x0019D950(SFH_x0019D950 sfh, Uint32_x0019D950 id) __asm__("func_0019E240");
+Uint32_x0019D950 sfh_GetStmType_x0019D950(Uint32_x0019D950 id) __asm__("func_0019EAC0");
+Bool_x0019D950 sfh_IsEffFtrAud_x0019D950(Uint32_x0019D950 id, SFH_ELEM_x0019D950 *elem) __asm__("func_0019EA40");
+Bool_x0019D950 sfh_IsEffFtrVid_x0019D950(Uint32_x0019D950 id, SFH_ELEM_x0019D950 *elem) __asm__("func_0019EA80");
+Bool_x0019D950 func_0019D950_x0019D950(SFH_x0019D950 sfh, Uint8_x0019D950 id, Sint32_x0019D950 *flag) __asm__("func_0019D950");
+/* SFH_IsEffFtrInf: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfh_main.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Bool_x0019D950 func_0019D950_x0019D950(SFH_x0019D950 sfh, Uint8_x0019D950 id, Sint32_x0019D950 *flag)
+{
+        SFH_ELEM_x0019D950 *elem;
+        Sint32_x0019D950 ver = sfh->ver;
+        Uint32_x0019D950 sid;
+        if (ver < 110) {
+                return 0;
+        }
+        sid = id;
+        switch (sfh_GetStmType_x0019D950(sid)) {
+        case 0xC0:
+                elem = sfh_GetElem_x0019D950(sfh, sid);
+                if (elem == 0) {
+                        return 0;
+                }
+                *flag = sfh_IsEffFtrAud_x0019D950(sid, elem);
+                break;
+        case 0xE0:
+                elem = sfh_GetElem_x0019D950(sfh, sid);
+                if (elem == 0) {
+                        return 0;
+                }
+                *flag = sfh_IsEffFtrVid_x0019D950(sid, elem);
+                break;
+        default:
+                return 0;
+        }
+        return 1;
+}
 u8 *func_0019DA20_x0019DA20(s32 arg0, s32 arg1) __asm__("func_0019DA20");
 u8 *func_0019DA20_x0019DA20(s32 arg0, s32 arg1) {
     s32 var_a2;
@@ -2923,8 +8908,82 @@ u8 *func_0019E858_x0019E858(s32 arg0, s32 arg1, s32 *arg2)
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E8D0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E948);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E9D0);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019EA40);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019EA80);
+typedef unsigned char Uint8_x0019EA40;
+typedef unsigned int Uint32_x0019EA40;
+typedef signed int Sint32_x0019EA40;
+typedef Sint32_x0019EA40 Bool_x0019EA40;
+typedef struct {
+        Uint8_x0019EA40 pad0[0x18];
+        Uint8_x0019EA40 id;
+        Uint8_x0019EA40 codec;
+        Uint8_x0019EA40 aud_layer;
+        Uint8_x0019EA40 aud_chnum;
+        Uint8_x0019EA40 aud_smphz[4];
+        Uint8_x0019EA40 ftr_flag;
+        Uint8_x0019EA40 ftr_coltype;
+        Uint8_x0019EA40 ftr_pictype;
+        Uint8_x0019EA40 ftr_fixflg;
+        Uint8_x0019EA40 ftr_expand;
+        Uint8_x0019EA40 ftr_gopn;
+        Uint8_x0019EA40 ftr_gopm;
+        Uint8_x0019EA40 ftr_fxtype;
+        Uint8_x0019EA40 pad28[0x18];
+} SFH_ELEM_x0019EA40;
+Uint32_x0019EA40 sfh_GetStmType_x0019EA40(Uint32_x0019EA40 id) __asm__("func_0019EAC0");
+Bool_x0019EA40 func_0019EA40_x0019EA40(Uint32_x0019EA40 id, SFH_ELEM_x0019EA40 *elem) __asm__("func_0019EA40");
+/* sfh_IsEffFtrAud: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfh_main.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Bool_x0019EA40 func_0019EA40_x0019EA40(Uint32_x0019EA40 id, SFH_ELEM_x0019EA40 *elem)
+{
+        Uint32_x0019EA40 flg;
+        if (sfh_GetStmType_x0019EA40(id) != 0xC0) {
+                return 0;
+        }
+        flg = elem->ftr_flag;
+        if (flg > 1) {
+                return 0;
+        } else if (flg == 0) {
+                return 0;
+        }
+        return 1;
+}
+typedef unsigned char Uint8_x0019EA80;
+typedef unsigned int Uint32_x0019EA80;
+typedef signed int Sint32_x0019EA80;
+typedef Sint32_x0019EA80 Bool_x0019EA80;
+typedef struct {
+        Uint8_x0019EA80 pad0[0x18];
+        Uint8_x0019EA80 id;
+        Uint8_x0019EA80 codec;
+        Uint8_x0019EA80 aud_layer;
+        Uint8_x0019EA80 aud_chnum;
+        Uint8_x0019EA80 aud_smphz[4];
+        Uint8_x0019EA80 ftr_flag;
+        Uint8_x0019EA80 ftr_coltype;
+        Uint8_x0019EA80 ftr_pictype;
+        Uint8_x0019EA80 ftr_fixflg;
+        Uint8_x0019EA80 ftr_expand;
+        Uint8_x0019EA80 ftr_gopn;
+        Uint8_x0019EA80 ftr_gopm;
+        Uint8_x0019EA80 ftr_fxtype;
+        Uint8_x0019EA80 pad28[0x18];
+} SFH_ELEM_x0019EA80;
+Uint32_x0019EA80 sfh_GetStmType_x0019EA80(Uint32_x0019EA80 id) __asm__("func_0019EAC0");
+Bool_x0019EA80 func_0019EA80_x0019EA80(Uint32_x0019EA80 id, SFH_ELEM_x0019EA80 *elem) __asm__("func_0019EA80");
+/* sfh_IsEffFtrVid: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/sfh_main.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Bool_x0019EA80 func_0019EA80_x0019EA80(Uint32_x0019EA80 id, SFH_ELEM_x0019EA80 *elem)
+{
+        Uint32_x0019EA80 flg;
+        if (sfh_GetStmType_x0019EA80(id) != 0xE0) {
+                return 0;
+        }
+        flg = elem->ftr_flag;
+        if (flg > 1) {
+                return 0;
+        } else if (flg == 0) {
+                return 0;
+        }
+        return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019EAC0);
 void func_0019EB08(void) {
     func_0019EB20();

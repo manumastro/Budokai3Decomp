@@ -55,6 +55,8 @@ LICENSES = {
     "BT2-Recomp": ("https://github.com/RexxColder/BT2-Recomp", "CC0-1.0"),
     "shadow-decomp": ("https://github.com/dev-camo/shadow-decomp", "no licence stated by the repository"),
     "sonic-adventure": ("https://github.com/reshaped/sonic-adventure", "no licence stated by the repository"),
+    "p4cri": ("https://github.com/Raikaru/Persona4-Decompilation", "no licence stated by the repository"),
+    "pes6cri": ("https://github.com/Subarasheese/pes6decomp", "no licence stated for its own code"),
 }
 DATA_SECS = (".data", ".rodata", ".bss", ".sdata", ".sbss", ".lit4", ".lit8")
 PORT_LD = ROOT / "config" / "port_syms.ld"
@@ -223,6 +225,8 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
             end = d.find(b"\0", key[2])
             lits[d[key[2]:end]] = label(a, "data")
     func = fi.text
+    if re.search(r"\bswitch\b", func):
+        return None, "switch (a jump table would add .rodata the executable has elsewhere)"
     if re.search(r"\b(static|const)\b[^;{}()]*=", func[func.index("{"):]):
         return None, "local static or const data"
     extra = []
@@ -259,6 +263,7 @@ def main():
     ap.add_argument("--jobs", type=int, default=8)
     ap.add_argument("--out", required=True)
     ap.add_argument("--apply", action="store_true")
+    ap.add_argument("--real", action="store_true", help="apply: also check each file compiled as the build does")
     a = ap.parse_args()
     import configure
     exe = lp.Exe()
@@ -310,10 +315,10 @@ def main():
     Path(a.out).write_text(json.dumps(dict(items=results, new_syms={f"{k:08X}": v for k, v in new_syms.items()}),
                                       indent=0))
     if a.apply:
-        apply_items([r for r in results if r["status"] == "match"], new_syms, a.jobs, f"{a.out}.log")
+        apply_items([r for r in results if r["status"] == "match"], new_syms, a.jobs, f"{a.out}.log", real=a.real)
 
 
-def apply_items(items, new_syms, jobs, log):
+def apply_items(items, new_syms, jobs, log, real=False):
     import func_insert as FI
     lines = PORT_LD.read_text().splitlines() if PORT_LD.exists() else [
         "/* Symbols that functions taken from other decompilations refer to (scripts/func_port.py). */"]
@@ -330,7 +335,7 @@ def apply_items(items, new_syms, jobs, log):
     PORT_LD.write_text("\n".join(lines) + "\n")
     for it in items:
         it["func"] = it["note"] + it["func"]
-    return FI.apply(items, jobs, log)
+    return FI.apply(items, jobs, log, real=real)
 
 
 if __name__ == "__main__":

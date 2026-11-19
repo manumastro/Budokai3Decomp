@@ -412,5 +412,194 @@ void func_001605E0_x001605E0(ADXT_x001605E0 adxt) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001605E0", func_001607A8);
+typedef unsigned char Uint8_x001607A8;
+typedef signed char Sint8_x001607A8;
+typedef signed short Sint16_x001607A8;
+typedef unsigned int Uint32_x001607A8;
+typedef signed int Sint32_x001607A8;
+typedef char Char8_x001607A8;
+typedef struct SJ_OBJ_x001607A8 *SJ_x001607A8;
+typedef struct {
+        Uint8_x001607A8 *data;
+        Sint32_x001607A8 len;
+} SJCK_x001607A8;
+typedef struct {
+        Uint8_x001607A8 data[16];
+} SJUUID_x001607A8;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x001607A8 sj);
+        const SJUUID_x001607A8 *(*GetUuid)(SJ_x001607A8 sj);
+        void (*Reset)(SJ_x001607A8 sj);
+        void (*GetChunk)(SJ_x001607A8 sj, Sint32_x001607A8 id, Sint32_x001607A8 nbyte, SJCK_x001607A8 *ck);
+        void (*UngetChunk)(SJ_x001607A8 sj, Sint32_x001607A8 id, SJCK_x001607A8 *ck);
+        void (*PutChunk)(SJ_x001607A8 sj, Sint32_x001607A8 id, SJCK_x001607A8 *ck);
+        Sint32_x001607A8 (*GetNumData)(SJ_x001607A8 sj, Sint32_x001607A8 id);
+        Sint32_x001607A8 (*IsGetChunk)(SJ_x001607A8 sj, Sint32_x001607A8 id, Sint32_x001607A8 nbyte, Sint32_x001607A8 *rbyte);
+        void (*EntryErrFunc)(SJ_x001607A8 sj, void (*func)(void *obj, Char8_x001607A8 *msg), void *obj);
+} SJ_IF_x001607A8;
+struct SJ_OBJ_x001607A8 {
+        SJ_IF_x001607A8 *vtbl;
+};
+void SJ_SplitChunk_x001607A8(SJCK_x001607A8 *src, Sint32_x001607A8 n, SJCK_x001607A8 *a, SJCK_x001607A8 *b) __asm__("func_0016F050");
+typedef struct {
+        Sint8_x001607A8 used;
+        Sint8_x001607A8 stat;
+        Sint8_x001607A8 mode;
+        Sint8_x001607A8 maxnch;
+        void *sjd;
+        void *stm;
+        void *rna;
+        SJ_x001607A8 sjf;
+        SJ_x001607A8 sji;
+        SJ_x001607A8 sjo[2];
+        Uint8_x001607A8 *ibuf;
+        Sint32_x001607A8 ibufsize;
+        Sint32_x001607A8 ibufxsize;
+        Uint8_x001607A8 *obuf;
+        Sint32_x001607A8 obufsize;
+        Sint32_x001607A8 obufstride;
+        Sint32_x001607A8 svrfreq;
+        Sint16_x001607A8 ibuf_nsct;
+        Sint16_x001607A8 reload_nsct;
+        Sint16_x001607A8 outvol;
+        Sint16_x001607A8 outpan[2];
+        Sint16_x001607A8 outbal;
+        Sint32_x001607A8 maxdecsmpl;
+        Sint32_x001607A8 lpcnt;
+        Sint32_x001607A8 lpendmod;
+        Sint32_x001607A8 x54;
+        Sint32_x001607A8 x58;
+        Sint32_x001607A8 x5c;
+        Sint16_x001607A8 errcode;
+        Sint16_x001607A8 x62;
+        Sint32_x001607A8 x64;
+        Sint16_x001607A8 x68;
+        Sint16_x001607A8 x6a;
+        Sint8_x001607A8 lpsw;
+        Sint8_x001607A8 autorcvr;
+        Sint8_x001607A8 x6e;
+        Sint8_x001607A8 x6f;
+        Sint8_x001607A8 pausesw;
+        Sint8_x001607A8 x71;
+        Sint8_x001607A8 x72;
+        Sint8_x001607A8 x73;
+        void *amp;
+        SJ_x001607A8 sjx[2];
+        SJ_x001607A8 sjy[2];
+        Sint32_x001607A8 timeofst;
+        Sint32_x001607A8 lpendsct;
+        Sint32_x001607A8 trapnsmpl;
+        void *lsc;
+        Sint8_x001607A8 lnksw;
+        Uint8_x001607A8 pad99[0x9C - 0x99];
+        Uint32_x001607A8 x9c;
+        Sint32_x001607A8 startvsync;
+        Sint32_x001607A8 decsmpl;
+        Sint32_x001607A8 flush_nsmpl;
+        Sint8_x001607A8 stmstart;
+        Sint8_x001607A8 ainf_sw;
+        Sint16_x001607A8 rsv4;
+        Uint8_x001607A8 *wkend;
+        void *stm_fname;
+        void *stm_dir;
+        Sint32_x001607A8 stm_ofst;
+        Sint32_x001607A8 stm_nsct;
+        Uint8_x001607A8 padC4[0xC8 - 0xC4];
+} ADXT_OBJ_x001607A8;
+typedef ADXT_OBJ_x001607A8 *ADXT_x001607A8;
+extern Sint32_x001607A8 ADXSJD_GetStat_x001607A8(void *sjd) __asm__("func_00158D98");
+extern void ADXSJD_SetMaxDecSmpl_x001607A8(void *sjd, Sint32_x001607A8 nsmpl) __asm__("func_00158DF0");
+extern void ADXSJD_SetTrapNumSmpl_x001607A8(void *sjd, Sint32_x001607A8 nsmpl) __asm__("func_00159D68");
+extern void ADXSJD_SetTrapDtLen_x001607A8(void *sjd, Sint32_x001607A8 len) __asm__("func_00159D88");
+extern void ADXSJD_SetTrapCnt_x001607A8(void *sjd, Sint32_x001607A8 cnt) __asm__("func_00159D78");
+extern Sint32_x001607A8 ADXSJD_GetTotalNumSmpl_x001607A8(void *sjd) __asm__("func_00159E28");
+extern Sint32_x001607A8 ADXSJD_GetDecNumSmpl_x001607A8(void *sjd) __asm__("func_00159C78");
+extern void ADXSJD_Stop_x001607A8(void *sjd) __asm__("func_00158E90");
+extern void ADXSJD_Start_x001607A8(void *sjd) __asm__("func_00158E60");
+extern void func_004ce858_x001607A8(void *sjd) __asm__("func_001598E8");
+extern Sint32_x001607A8 ADX_DecodeFooter_x001607A8(Uint8_x001607A8 *data, Sint32_x001607A8 len, Sint16_x001607A8 *ofst) __asm__("func_00152F70");
+extern Sint32_x001607A8 ADX_ScanInfoCode_x001607A8(Uint8_x001607A8 *data, Sint32_x001607A8 len, Sint16_x001607A8 *ofst) __asm__("func_00152698");
+extern void ADXT_SetLnkSw_x001607A8(ADXT_x001607A8 adxt, Sint32_x001607A8 sw) __asm__("func_0015FB70");
+extern void (*adxt_enddecinfo_cbfn_x001607A8)(ADXT_x001607A8 adxt, Sint32_x001607A8 sfreq, Sint32_x001607A8 nch, Sint32_x001607A8 nsmpl) __asm__("adxt_enddecinfo_cbfn");
+void func_001607A8_x001607A8(void *obj) __asm__("func_001607A8");
+/* adxt_nlp_trap_entry: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/adx_tsvr.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_001607A8_x001607A8(void *obj)
+{
+        ADXT_x001607A8 p;
+        void *sjd;
+        SJ_x001607A8 sji;
+        SJCK_x001607A8 ck;
+        SJCK_x001607A8 ck3;
+        SJCK_x001607A8 ck2;
+        SJCK_x001607A8 ck4;
+        Sint16_x001607A8 ofst;
+        Sint16_x001607A8 ofst2;
+        Sint32_x001607A8 ofst1;
+        Sint32_x001607A8 n1;
+        Sint32_x001607A8 n2;
+        Sint32_x001607A8 ofst2v;
+        register Sint32_x001607A8 t;
+        Sint32_x001607A8 z;
+        p = obj;
+        sjd = p->sjd;
+        sji = p->sji;
+        if (p->lnksw == 0) {
+                return;
+        }
+        ofst2 = 0;
+        (*(sji)->vtbl->GetChunk)(sji, 1, 0x7FFFFFFF, &ck);
+        (*(sji)->vtbl->GetChunk)(sji, 1, 0x7FFFFFFF, &ck2);
+        if (ADX_DecodeFooter_x001607A8(ck.data, ck.len, &ofst) != 0) {
+                ADXT_SetLnkSw_x001607A8(p, 0);
+                (*(sji)->vtbl->UngetChunk)(sji, 1, &ck2);
+                (*(sji)->vtbl->UngetChunk)(sji, 1, &ck);
+                return;
+        }
+        ofst1 = ofst;
+        n1 = ADX_ScanInfoCode_x001607A8(ck.data + ofst1, ck.len - ofst1, &ofst);
+        if (n1 == 0) {
+                n2 = -1;
+        } else {
+                n2 = ADX_ScanInfoCode_x001607A8(ck2.data, ck2.len, &ofst2);
+        }
+        t = ofst;
+        z = 0;
+        if (z != 0) {
+                ofst1 = t + 4;
+        }
+        ofst1 += t;
+        ofst2v = ofst2;
+        if (n1 != 0 && n2 != 0) {
+                (*(sji)->vtbl->UngetChunk)(sji, 1, &ck2);
+                (*(sji)->vtbl->UngetChunk)(sji, 1, &ck);
+                ADXT_SetLnkSw_x001607A8(p, 0);
+                return;
+        }
+        if (n1 == 0) {
+                (*(sji)->vtbl->UngetChunk)(sji, 1, &ck2);
+                SJ_SplitChunk_x001607A8(&ck, ofst1, &ck, &ck3);
+                (*(sji)->vtbl->PutChunk)(sji, 0, &ck);
+                (*(sji)->vtbl->UngetChunk)(sji, 1, &ck3);
+        } else {
+                (*(sji)->vtbl->PutChunk)(sji, 0, &ck);
+                SJ_SplitChunk_x001607A8(&ck2, ofst2v, &ck2, &ck4);
+                (*(sji)->vtbl->PutChunk)(sji, 0, &ck2);
+                (*(sji)->vtbl->UngetChunk)(sji, 1, &ck4);
+        }
+        p->decsmpl += ADXSJD_GetDecNumSmpl_x001607A8(sjd);
+        ADXSJD_Stop_x001607A8(sjd);
+        ADXSJD_Start_x001607A8(sjd);
+        func_004ce858_x001607A8(sjd);
+        if (ADXSJD_GetStat_x001607A8(sjd) != 2) {
+                ADXT_SetLnkSw_x001607A8(p, 0);
+                return;
+        }
+        ADXSJD_SetMaxDecSmpl_x001607A8(sjd, p->maxdecsmpl);
+        ADXSJD_SetTrapNumSmpl_x001607A8(sjd, ADXSJD_GetTotalNumSmpl_x001607A8(sjd));
+        ADXSJD_SetTrapDtLen_x001607A8(sjd, 0);
+        ADXSJD_SetTrapCnt_x001607A8(sjd, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001605E0", adxt_stat_decinfo);

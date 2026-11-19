@@ -292,7 +292,26 @@ void func_001727A8_x001727A8(u8 *arg0)
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172858);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172968);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172A40);
+typedef signed int Sint32_x00172A40;
+typedef signed long long Sint64_x00172A40;
+typedef Sint32_x00172A40 Bool_x00172A40;
+Bool_x00172A40 func_00172A40_x00172A40(Sint32_x00172A40 cnt1, Sint32_x00172A40 tscl1, Sint32_x00172A40 cnt2, Sint32_x00172A40 tscl2) __asm__("func_00172A40");
+/* UTY_CmpTime: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/cmptime.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Bool_x00172A40 func_00172A40_x00172A40(Sint32_x00172A40 cnt1, Sint32_x00172A40 tscl1, Sint32_x00172A40 cnt2, Sint32_x00172A40 tscl2)
+{
+        Bool_x00172A40 ret;
+        Sint32_x00172A40 sz = sizeof(Sint64_x00172A40);
+        if (sz < 8) {
+                for (;;) {
+                }
+        }
+        if ((Sint64_x00172A40)cnt1 * tscl2 <= (Sint64_x00172A40)cnt2 * tscl1) {
+                ret = 1;
+        } else {
+                ret = 0;
+        }
+        return ret;
+}
 s32 func_00172A88(void) {
     return D_00424BC8;
 }
@@ -1079,7 +1098,43 @@ volatile int func_0017B3D0_x0017B3D0(s32 *arg0)
   }
   *arg0 = 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B420);
+typedef unsigned char Uint8_x0017B420;
+typedef signed int Sint32_x0017B420;
+Sint32_x0017B420 func_0017B420_x0017B420(void *ptr) __asm__("func_0017B420");
+/* MPV_CheckDelim: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mpv_deli.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0017B420 func_0017B420_x0017B420(void *ptr)
+{
+        Uint8_x0017B420 *p = ptr;
+        Sint32_x0017B420 code;
+        Sint32_x0017B420 ret;
+        code = p[0];
+        code <<= 8;
+        code |= p[1];
+        code <<= 8;
+        code |= p[2];
+        code <<= 8;
+        code |= p[3];
+        if (code == 0x100) {
+                ret = 0x04;
+        } else if (code == 0x101) {
+                ret = 0x03;
+        } else if (code > 0x101 && code <= 0x1AF) {
+                ret = 0x01;
+        } else if (code == 0x1B2) {
+                ret = 0x20;
+        } else if (code == 0x1B3) {
+                ret = 0x40;
+        } else if (code == 0x1B5) {
+                ret = 0x10;
+        } else if (code == 0x1B7) {
+                ret = 0x80;
+        } else if (code == 0x1B8) {
+                ret = 0x08;
+        } else {
+                ret = 0;
+        }
+        return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B4B8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B5B8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B6C0);
@@ -1116,7 +1171,24 @@ void func_0017C1F0_x0017C1F0(u8 *arg0, s32 arg1, s32 arg2)
   *((s32 *) (((u8 *) arg0) + 0x250)) = arg1;
   *((s32 *) (((u8 *) new_var2) + 4)) = arg2;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C260);
+typedef unsigned char Uint8_x0017C260;
+typedef unsigned int Uint32_x0017C260;
+typedef signed int Sint32_x0017C260;
+typedef struct {
+        Uint32_x0017C260 words[5];
+} MPV_DLM_STATE_x0017C260;
+extern Sint32_x0017C260 func_00507480_x0017C260(void *hn) __asm__("func_0017EB90");
+extern Sint32_x0017C260 func_00504b18_x0017C260(Sint32_x0017C260 hn, Uint32_x0017C260 code) __asm__("func_0017C2E0");
+Sint32_x0017C260 func_0017C260_x0017C260(Uint8_x0017C260 *hn, MPV_DLM_STATE_x0017C260 *out) __asm__("func_0017C260");
+/* func_00504a98: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mpv_deli_get_4a98.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0017C260 func_0017C260_x0017C260(Uint8_x0017C260 *hn, MPV_DLM_STATE_x0017C260 *out)
+{
+        if (func_00507480_x0017C260(hn) != 0) {
+                return func_00504b18_x0017C260(0, 0xFF030204);
+        }
+        *out = *(MPV_DLM_STATE_x0017C260 *)(hn + 0x250);
+        return 0;
+}
 s32 func_0017C2E0(s32 arg0, s32 arg1) {
     if (arg0 == 0) {
         func_0017C330(&D_00424C88);
@@ -1171,7 +1243,241 @@ INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C7C0);
 void func_0017C838(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C840);
+typedef unsigned char Uint8_x0017C840;
+typedef signed char Sint8_x0017C840;
+typedef unsigned short Uint16_x0017C840;
+typedef signed short Sint16_x0017C840;
+typedef unsigned int Uint32_x0017C840;
+typedef signed int Sint32_x0017C840;
+typedef double Float64_x0017C840;
+typedef char Char8_x0017C840;
+typedef struct SJ_OBJ_x0017C840 *SJ_x0017C840;
+typedef struct {
+        Uint8_x0017C840 *data;
+        Sint32_x0017C840 len;
+} SJCK_x0017C840;
+typedef struct {
+        Uint8_x0017C840 data[16];
+} SJUUID_x0017C840;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0017C840 sj);
+        const SJUUID_x0017C840 *(*GetUuid)(SJ_x0017C840 sj);
+        void (*Reset)(SJ_x0017C840 sj);
+        void (*GetChunk)(SJ_x0017C840 sj, Sint32_x0017C840 id, Sint32_x0017C840 nbyte, SJCK_x0017C840 *ck);
+        void (*UngetChunk)(SJ_x0017C840 sj, Sint32_x0017C840 id, SJCK_x0017C840 *ck);
+        void (*PutChunk)(SJ_x0017C840 sj, Sint32_x0017C840 id, SJCK_x0017C840 *ck);
+        Sint32_x0017C840 (*GetNumData)(SJ_x0017C840 sj, Sint32_x0017C840 id);
+        Sint32_x0017C840 (*IsGetChunk)(SJ_x0017C840 sj, Sint32_x0017C840 id, Sint32_x0017C840 nbyte, Sint32_x0017C840 *rbyte);
+        void (*EntryErrFunc)(SJ_x0017C840 sj, void (*func)(void *obj, Char8_x0017C840 *msg), void *obj);
+} SJ_IF_x0017C840;
+struct SJ_OBJ_x0017C840 {
+        SJ_IF_x0017C840 *vtbl;
+};
+typedef struct {
+        void *p;
+        Sint32_x0017C840 n;
+} MPVCMC_REF_x0017C840;
+typedef struct {
+        void (*func)(void *obj, Sint32_x0017C840 code);
+        void *obj;
+        Sint32_x0017C840 code;
+} MPVERR_INF_x0017C840;
+typedef struct {
+        Sint32_x0017C840 width;
+        Sint32_x0017C840 height;
+        Sint32_x0017C840 mb_width;
+        Sint32_x0017C840 mb_height;
+        Sint32_x0017C840 frame_rate;
+        Sint32_x0017C840 temp_ref;
+        Sint32_x0017C840 pic_type;
+        Sint32_x0017C840 tc_drop;
+        Sint32_x0017C840 tc_hour;
+        Sint32_x0017C840 tc_min;
+        Sint32_x0017C840 tc_sec;
+        Sint32_x0017C840 tc_pic;
+        Sint32_x0017C840 ngop;
+        Sint32_x0017C840 nseq;
+        Sint32_x0017C840 x38;
+        Sint32_x0017C840 x3c, x40, x44;
+        Sint32_x0017C840 bitrate;
+        Sint32_x0017C840 vbv_size;
+        Sint16_x0017C840 x50, x52;
+        Sint8_x0017C840 x54;
+        Sint8_x0017C840 x55, x56, x57;
+        Sint8_x0017C840 x58;
+        Uint8_x0017C840 aspect;
+        Uint8_x0017C840 constrained;
+        Uint8_x0017C840 x5b, x5c;
+        Uint8_x0017C840 x5d;
+        Sint8_x0017C840 x5e, x5f, x60;
+        Uint8_x0017C840 x61;
+        Uint8_x0017C840 x62, x63, x64;
+        Uint8_x0017C840 pad65[0x80 - 0x65];
+} MPV_PICATR_x0017C840;
+typedef struct {
+        Uint8_x0017C840 pad0[0x1C];
+        Sint16_x0017C840 width;
+        Sint16_x0017C840 height;
+        Uint8_x0017C840 pad20[4];
+        MPV_PICATR_x0017C840 *picatr;
+        Sint32_x0017C840 nfrm;
+        Sint32_x0017C840 nbyte;
+} MPV_FRM_x0017C840;
+typedef struct {
+        Uint32_x0017C840 *tbl;
+        Sint32_x0017C840 bits;
+} MPV_RUNLEVEL_x0017C840;
+typedef struct MPV_OBJ_x0017C840 *MPV_x0017C840;
+typedef struct MPVMC_x0017C840 {
+        void (*oneref08[4])(struct MPVMC_x0017C840 *mc);
+        Uint8_x0017C840 pad10[8];
+        Uint32_x0017C840 *dst;
+        Uint8_x0017C840 pad1C[4];
+        Sint32_x0017C840 stride;
+        Uint8_x0017C840 *src;
+        Uint8_x0017C840 *src2;
+        Uint8_x0017C840 pad2C[8];
+        void (*oneref16[4])(struct MPVMC_x0017C840 *mc);
+        Uint8_x0017C840 pad44[0x54 - 0x44];
+} MPVMC_x0017C840;
+typedef struct {
+        Sint32_x0017C840 run;
+        Sint32_x0017C840 level;
+        Sint32_x0017C840 sign;
+        Sint32_x0017C840 len;
+        Sint32_x0017C840 idx0;
+        Sint32_x0017C840 idx;
+        Sint32_x0017C840 pad18;
+        Float64_x0017C840 *dst;
+        Uint8_x0017C840 *iqm;
+        Sint32_x0017C840 qscale;
+        Sint32_x0017C840 *dcpred;
+        void *dctbl;
+        Sint32_x0017C840 nintra;
+} MPV_BLKPRM_x0017C840;
+typedef Sint32_x0017C840 (*MPV_BLKDEC_FUNC_x0017C840)(MPV_x0017C840 mpv, MPV_BLKPRM_x0017C840 *prm);
+typedef struct {
+        Sint32_x0017C840 full_pel;
+        Sint32_x0017C840 r_size;
+        Sint32_x0017C840 shift;
+        Sint32_x0017C840 f;
+        Sint32_x0017C840 pred[2];
+        Sint32_x0017C840 vec[2];
+        Sint32_x0017C840 pad;
+} MPV_MV_x0017C840;
+typedef struct {
+        SJ_x0017C840 sj;
+        void (*func)(void *obj, Sint32_x0017C840 id);
+        void *obj;
+} MPV_USRSJ_x0017C840;
+typedef struct MPV_OBJ_x0017C840 {
+        Uint32_x0017C840 bbuf;
+        Uint32_x0017C840 nbuf;
+        Sint32_x0017C840 bitpos;
+        Uint32_x0017C840 *bitptr;
+        Uint32_x0017C840 *rl_8;
+        Uint32_x0017C840 *rl_4;
+        Uint32_x0017C840 *rl_2;
+        Uint32_x0017C840 *rl_1;
+        Uint32_x0017C840 *rl_0a;
+        Uint32_x0017C840 *rl_0b;
+        Uint32_x0017C840 *rl_0c;
+        Sint8_x0017C840 *zigzag_tbl;
+        Uint16_x0017C840 *bitmsk_tbl;
+        Uint8_x0017C840 *scale_tbl;
+        Uint8_x0017C840 *group_tbl_p;
+        void *rl_p;
+        Uint8_x0017C840 *clip_base;
+        MPV_BLKPRM_x0017C840 blkprm;
+        Sint8_x0017C840 cbp[6];
+        Uint8_x0017C840 pad7E[0xA0 - 0x7E];
+        Sint32_x0017C840 cbp_msk;
+        Uint8_x0017C840 padA4[0xCC - 0xA4];
+        MPVMC_x0017C840 mc;
+        Sint32_x0017C840 ccnt_rt;
+        MPVCMC_REF_x0017C840 oi_rt[6];
+        Sint32_x0017C840 ccnt;
+        MPVCMC_REF_x0017C840 oi[6];
+        Sint32_x0017C840 stat;
+        Sint32_x0017C840 x18c;
+        Sint32_x0017C840 cond[16];
+        MPV_PICATR_x0017C840 picatr;
+        MPVERR_INF_x0017C840 errinf;
+        Sint32_x0017C840 nfrm_dec;
+        Sint32_x0017C840 nbyte_dec;
+        MPV_FRM_x0017C840 frm;
+        Uint8_x0017C840 pad294[0x2A4 - 0x294];
+        Sint32_x0017C840 aspect;
+        Sint32_x0017C840 bitrate;
+        Sint32_x0017C840 vbv_size;
+        Sint32_x0017C840 constrained;
+        Sint32_x0017C840 linkflg1;
+        Sint32_x0017C840 linkflg2;
+        Sint32_x0017C840 vbv_delay;
+        Sint32_x0017C840 (*dec_mbs_func_x0017C840)(MPV_x0017C840 mpv, SJ_x0017C840 sj);
+        void (*skip_func_x0017C840)(MPV_x0017C840 mpv);
+        Sint32_x0017C840 (*intra_blocks)(MPV_x0017C840 mpv);
+        Sint32_x0017C840 (*nintra_blocks)(MPV_x0017C840 mpv);
+        void (*mc_intra_func_x0017C840)(MPV_x0017C840 mpv);
+        void (*mc_func[4])(MPV_x0017C840 mpv);
+        Sint32_x0017C840 x2e4;
+        Sint32_x0017C840 qscale;
+        MPV_MV_x0017C840 fwd;
+        MPV_MV_x0017C840 bwd;
+        Sint32_x0017C840 mb_addr;
+        Sint32_x0017C840 mb_y;
+        Sint32_x0017C840 mb_x;
+        Sint32_x0017C840 mb_last;
+        Sint32_x0017C840 mbtype;
+        Sint32_x0017C840 cbp_code;
+        Sint32_x0017C840 dcpred[3];
+        Sint32_x0017C840 m2v_mode;
+        Sint32_x0017C840 stc[3];
+        Uint8_x0017C840 *tbl368[6];
+        Uint8_x0017C840 *mcbuf;
+        Float64_x0017C840 (*blk)[32];
+        Uint8_x0017C840 *intra_iqm;
+        Uint8_x0017C840 *nintra_iqm;
+        Uint8_x0017C840 *work;
+        Uint16_x0017C840 *bitmsk;
+        Sint8_x0017C840 *zigzag;
+        Uint8_x0017C840 *group_tbl;
+        MPV_RUNLEVEL_x0017C840 *rl;
+        Sint32_x0017C840 x1324;
+        void *dctbl_y;
+        void *dctbl_c;
+        void *m2v;
+        Sint32_x0017C840 hdrtype;
+        MPV_USRSJ_x0017C840 usr[4];
+        Uint8_x0017C840 *picusr_buf;
+        Sint32_x0017C840 picusr_bufsiz;
+        Sint32_x0017C840 picusr_len;
+        Sint32_x0017C840 pic_done;
+        Sint32_x0017C840 npic;
+        SJCK_x0017C840 ck;
+        Sint32_x0017C840 bitofs;
+        Sint32_x0017C840 dcprec;
+        MPV_BLKDEC_FUNC_x0017C840 intra_func;
+        MPV_BLKDEC_FUNC_x0017C840 nintra_func;
+        Sint32_x0017C840 pad414;
+        Uint8_x0017C840 pad418[0x420 - 0x418];
+} MPV_OBJ_x0017C840;
+typedef void (*MPV_MCFUNC_x0017C840)(MPV_x0017C840 mpv);
+extern Sint32_x0017C840 (*const dec_mbs_func_x0017C840[5])() __asm__("dec_mbs_func");
+extern MPV_MCFUNC_x0017C840 mc_intra_func_x0017C840[2][2][5] __asm__("mc_intra_func");
+extern MPV_MCFUNC_x0017C840 skip_func_x0017C840[2][5] __asm__("skip_func");
+void func_0017C840_x0017C840(MPV_x0017C840 mpv, Sint32_x0017C840 id, SJ_x0017C840 sj, void (*func)(void *obj, Sint32_x0017C840 id), void *obj) __asm__("func_0017C840");
+/* MPV_SetUsrSj: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mpv_hdec.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_0017C840_x0017C840(MPV_x0017C840 mpv, Sint32_x0017C840 id, SJ_x0017C840 sj, void (*func)(void *obj, Sint32_x0017C840 id), void *obj)
+{
+        MPV_USRSJ_x0017C840 *usr = &mpv->usr[id];
+        usr->sj = sj;
+        usr->func = func;
+        usr->obj = obj;
+}
 void func_0017C868(u8 *arg0, s32 arg1, s32 arg2) {
     u8 *temp_a0;
 
@@ -1260,7 +1566,290 @@ s32 func_0017DB18_x0017DB18(u8 *arg0, u8 **arg1)
   return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DBD8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DCC8);
+typedef unsigned char Uint8_x0017DCC8;
+typedef signed char Sint8_x0017DCC8;
+typedef unsigned short Uint16_x0017DCC8;
+typedef signed short Sint16_x0017DCC8;
+typedef unsigned int Uint32_x0017DCC8;
+typedef signed int Sint32_x0017DCC8;
+typedef double Float64_x0017DCC8;
+typedef char Char8_x0017DCC8;
+typedef struct SJ_OBJ_x0017DCC8 *SJ_x0017DCC8;
+typedef struct {
+        Uint8_x0017DCC8 *data;
+        Sint32_x0017DCC8 len;
+} SJCK_x0017DCC8;
+typedef struct {
+        Uint8_x0017DCC8 data[16];
+} SJUUID_x0017DCC8;
+typedef struct {
+        void *QueryInterface;
+        void *AddRef;
+        void *Release;
+        void (*Destroy)(SJ_x0017DCC8 sj);
+        const SJUUID_x0017DCC8 *(*GetUuid)(SJ_x0017DCC8 sj);
+        void (*Reset)(SJ_x0017DCC8 sj);
+        void (*GetChunk)(SJ_x0017DCC8 sj, Sint32_x0017DCC8 id, Sint32_x0017DCC8 nbyte, SJCK_x0017DCC8 *ck);
+        void (*UngetChunk)(SJ_x0017DCC8 sj, Sint32_x0017DCC8 id, SJCK_x0017DCC8 *ck);
+        void (*PutChunk)(SJ_x0017DCC8 sj, Sint32_x0017DCC8 id, SJCK_x0017DCC8 *ck);
+        Sint32_x0017DCC8 (*GetNumData)(SJ_x0017DCC8 sj, Sint32_x0017DCC8 id);
+        Sint32_x0017DCC8 (*IsGetChunk)(SJ_x0017DCC8 sj, Sint32_x0017DCC8 id, Sint32_x0017DCC8 nbyte, Sint32_x0017DCC8 *rbyte);
+        void (*EntryErrFunc)(SJ_x0017DCC8 sj, void (*func)(void *obj, Char8_x0017DCC8 *msg), void *obj);
+} SJ_IF_x0017DCC8;
+struct SJ_OBJ_x0017DCC8 {
+        SJ_IF_x0017DCC8 *vtbl;
+};
+typedef struct {
+        void *p;
+        Sint32_x0017DCC8 n;
+} MPVCMC_REF_x0017DCC8;
+typedef struct {
+        void (*func)(void *obj, Sint32_x0017DCC8 code);
+        void *obj;
+        Sint32_x0017DCC8 code;
+} MPVERR_INF_x0017DCC8;
+typedef struct {
+        Sint32_x0017DCC8 width;
+        Sint32_x0017DCC8 height;
+        Sint32_x0017DCC8 mb_width;
+        Sint32_x0017DCC8 mb_height;
+        Sint32_x0017DCC8 frame_rate;
+        Sint32_x0017DCC8 temp_ref;
+        Sint32_x0017DCC8 pic_type;
+        Sint32_x0017DCC8 tc_drop;
+        Sint32_x0017DCC8 tc_hour;
+        Sint32_x0017DCC8 tc_min;
+        Sint32_x0017DCC8 tc_sec;
+        Sint32_x0017DCC8 tc_pic;
+        Sint32_x0017DCC8 ngop;
+        Sint32_x0017DCC8 nseq;
+        Sint32_x0017DCC8 x38;
+        Sint32_x0017DCC8 x3c, x40, x44;
+        Sint32_x0017DCC8 bitrate;
+        Sint32_x0017DCC8 vbv_size;
+        Sint16_x0017DCC8 x50, x52;
+        Sint8_x0017DCC8 x54;
+        Sint8_x0017DCC8 x55, x56, x57;
+        Sint8_x0017DCC8 x58;
+        Uint8_x0017DCC8 aspect;
+        Uint8_x0017DCC8 constrained;
+        Uint8_x0017DCC8 x5b, x5c;
+        Uint8_x0017DCC8 x5d;
+        Sint8_x0017DCC8 x5e, x5f, x60;
+        Uint8_x0017DCC8 x61;
+        Uint8_x0017DCC8 x62, x63, x64;
+        Uint8_x0017DCC8 pad65[0x80 - 0x65];
+} MPV_PICATR_x0017DCC8;
+typedef struct {
+        Uint8_x0017DCC8 pad0[0x1C];
+        Sint16_x0017DCC8 width;
+        Sint16_x0017DCC8 height;
+        Uint8_x0017DCC8 pad20[4];
+        MPV_PICATR_x0017DCC8 *picatr;
+        Sint32_x0017DCC8 nfrm;
+        Sint32_x0017DCC8 nbyte;
+} MPV_FRM_x0017DCC8;
+typedef struct {
+        Uint32_x0017DCC8 *tbl;
+        Sint32_x0017DCC8 bits;
+} MPV_RUNLEVEL_x0017DCC8;
+typedef struct MPV_OBJ_x0017DCC8 *MPV_x0017DCC8;
+typedef struct MPVMC_x0017DCC8 {
+        void (*oneref08[4])(struct MPVMC_x0017DCC8 *mc);
+        Uint8_x0017DCC8 pad10[8];
+        Uint32_x0017DCC8 *dst;
+        Uint8_x0017DCC8 pad1C[4];
+        Sint32_x0017DCC8 stride;
+        Uint8_x0017DCC8 *src;
+        Uint8_x0017DCC8 *src2;
+        Uint8_x0017DCC8 pad2C[8];
+        void (*oneref16[4])(struct MPVMC_x0017DCC8 *mc);
+        Uint8_x0017DCC8 pad44[0x54 - 0x44];
+} MPVMC_x0017DCC8;
+typedef struct {
+        Sint32_x0017DCC8 run;
+        Sint32_x0017DCC8 level;
+        Sint32_x0017DCC8 sign;
+        Sint32_x0017DCC8 len;
+        Sint32_x0017DCC8 idx0;
+        Sint32_x0017DCC8 idx;
+        Sint32_x0017DCC8 pad18;
+        Float64_x0017DCC8 *dst;
+        Uint8_x0017DCC8 *iqm;
+        Sint32_x0017DCC8 qscale;
+        Sint32_x0017DCC8 *dcpred;
+        void *dctbl;
+        Sint32_x0017DCC8 nintra;
+} MPV_BLKPRM_x0017DCC8;
+typedef Sint32_x0017DCC8 (*MPV_BLKDEC_FUNC_x0017DCC8)(MPV_x0017DCC8 mpv, MPV_BLKPRM_x0017DCC8 *prm);
+typedef struct {
+        Sint32_x0017DCC8 full_pel;
+        Sint32_x0017DCC8 r_size;
+        Sint32_x0017DCC8 shift;
+        Sint32_x0017DCC8 f;
+        Sint32_x0017DCC8 pred[2];
+        Sint32_x0017DCC8 vec[2];
+        Sint32_x0017DCC8 pad;
+} MPV_MV_x0017DCC8;
+typedef struct {
+        SJ_x0017DCC8 sj;
+        void (*func)(void *obj, Sint32_x0017DCC8 id);
+        void *obj;
+} MPV_USRSJ_x0017DCC8;
+typedef struct MPV_OBJ_x0017DCC8 {
+        Uint32_x0017DCC8 bbuf;
+        Uint32_x0017DCC8 nbuf;
+        Sint32_x0017DCC8 bitpos;
+        Uint32_x0017DCC8 *bitptr;
+        Uint32_x0017DCC8 *rl_8;
+        Uint32_x0017DCC8 *rl_4;
+        Uint32_x0017DCC8 *rl_2;
+        Uint32_x0017DCC8 *rl_1;
+        Uint32_x0017DCC8 *rl_0a;
+        Uint32_x0017DCC8 *rl_0b;
+        Uint32_x0017DCC8 *rl_0c;
+        Sint8_x0017DCC8 *zigzag_tbl;
+        Uint16_x0017DCC8 *bitmsk_tbl;
+        Uint8_x0017DCC8 *scale_tbl;
+        Uint8_x0017DCC8 *group_tbl_p;
+        void *rl_p;
+        Uint8_x0017DCC8 *clip_base;
+        MPV_BLKPRM_x0017DCC8 blkprm;
+        Sint8_x0017DCC8 cbp[6];
+        Uint8_x0017DCC8 pad7E[0xA0 - 0x7E];
+        Sint32_x0017DCC8 cbp_msk;
+        Uint8_x0017DCC8 padA4[0xCC - 0xA4];
+        MPVMC_x0017DCC8 mc;
+        Sint32_x0017DCC8 ccnt_rt;
+        MPVCMC_REF_x0017DCC8 oi_rt[6];
+        Sint32_x0017DCC8 ccnt;
+        MPVCMC_REF_x0017DCC8 oi[6];
+        Sint32_x0017DCC8 stat;
+        Sint32_x0017DCC8 x18c;
+        Sint32_x0017DCC8 cond[16];
+        MPV_PICATR_x0017DCC8 picatr;
+        MPVERR_INF_x0017DCC8 errinf;
+        Sint32_x0017DCC8 nfrm_dec;
+        Sint32_x0017DCC8 nbyte_dec;
+        MPV_FRM_x0017DCC8 frm;
+        Uint8_x0017DCC8 pad294[0x2A4 - 0x294];
+        Sint32_x0017DCC8 aspect;
+        Sint32_x0017DCC8 bitrate;
+        Sint32_x0017DCC8 vbv_size;
+        Sint32_x0017DCC8 constrained;
+        Sint32_x0017DCC8 linkflg1;
+        Sint32_x0017DCC8 linkflg2;
+        Sint32_x0017DCC8 vbv_delay;
+        Sint32_x0017DCC8 (*dec_mbs_func_x0017DCC8)(MPV_x0017DCC8 mpv, SJ_x0017DCC8 sj);
+        void (*skip_func_x0017DCC8)(MPV_x0017DCC8 mpv);
+        Sint32_x0017DCC8 (*intra_blocks)(MPV_x0017DCC8 mpv);
+        Sint32_x0017DCC8 (*nintra_blocks)(MPV_x0017DCC8 mpv);
+        void (*mc_intra_func_x0017DCC8)(MPV_x0017DCC8 mpv);
+        void (*mc_func[4])(MPV_x0017DCC8 mpv);
+        Sint32_x0017DCC8 x2e4;
+        Sint32_x0017DCC8 qscale;
+        MPV_MV_x0017DCC8 fwd;
+        MPV_MV_x0017DCC8 bwd;
+        Sint32_x0017DCC8 mb_addr;
+        Sint32_x0017DCC8 mb_y;
+        Sint32_x0017DCC8 mb_x;
+        Sint32_x0017DCC8 mb_last;
+        Sint32_x0017DCC8 mbtype;
+        Sint32_x0017DCC8 cbp_code;
+        Sint32_x0017DCC8 dcpred[3];
+        Sint32_x0017DCC8 m2v_mode;
+        Sint32_x0017DCC8 stc[3];
+        Uint8_x0017DCC8 *tbl368[6];
+        Uint8_x0017DCC8 *mcbuf;
+        Float64_x0017DCC8 (*blk)[32];
+        Uint8_x0017DCC8 *intra_iqm;
+        Uint8_x0017DCC8 *nintra_iqm;
+        Uint8_x0017DCC8 *work;
+        Uint16_x0017DCC8 *bitmsk;
+        Sint8_x0017DCC8 *zigzag;
+        Uint8_x0017DCC8 *group_tbl;
+        MPV_RUNLEVEL_x0017DCC8 *rl;
+        Sint32_x0017DCC8 x1324;
+        void *dctbl_y;
+        void *dctbl_c;
+        void *m2v;
+        Sint32_x0017DCC8 hdrtype;
+        MPV_USRSJ_x0017DCC8 usr[4];
+        Uint8_x0017DCC8 *picusr_buf;
+        Sint32_x0017DCC8 picusr_bufsiz;
+        Sint32_x0017DCC8 picusr_len;
+        Sint32_x0017DCC8 pic_done;
+        Sint32_x0017DCC8 npic;
+        SJCK_x0017DCC8 ck;
+        Sint32_x0017DCC8 bitofs;
+        Sint32_x0017DCC8 dcprec;
+        MPV_BLKDEC_FUNC_x0017DCC8 intra_func;
+        MPV_BLKDEC_FUNC_x0017DCC8 nintra_func;
+        Sint32_x0017DCC8 pad414;
+        Uint8_x0017DCC8 pad418[0x420 - 0x418];
+} MPV_OBJ_x0017DCC8;
+Sint32_x0017DCC8 MPV_CheckDelim_x0017DCC8(void *ptr) __asm__("func_0017B420");
+typedef void (*MPV_MCFUNC_x0017DCC8)(MPV_x0017DCC8 mpv);
+extern void *memcpy_x0017DCC8(void *dst, const void *src, Uint32_x0017DCC8 n) __asm__("func_00125740");
+extern Sint32_x0017DCC8 (*const dec_mbs_func_x0017DCC8[5])() __asm__("dec_mbs_func");
+extern MPV_MCFUNC_x0017DCC8 mc_intra_func_x0017DCC8[2][2][5] __asm__("mc_intra_func");
+extern MPV_MCFUNC_x0017DCC8 skip_func_x0017DCC8[2][5] __asm__("skip_func");
+Sint32_x0017DCC8 mpvhdec_DecSeqUdsc_x0017DCC8(MPV_x0017DCC8 mpv, Char8_x0017DCC8 *buf, Sint32_x0017DCC8 len) __asm__("func_0017DE90");
+Sint32_x0017DCC8 func_0017DCC8_x0017DCC8(MPV_x0017DCC8 mpv, Uint8_x0017DCC8 *buf, Sint32_x0017DCC8 len) __asm__("func_0017DCC8");
+/* mpvhdec_AnalyUd: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mpv_hdec.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0017DCC8 func_0017DCC8_x0017DCC8(MPV_x0017DCC8 mpv, Uint8_x0017DCC8 *buf, Sint32_x0017DCC8 len)
+{
+        SJCK_x0017DCC8 ck;
+        SJCK_x0017DCC8 ck2;
+        Sint32_x0017DCC8 ret;
+        Sint32_x0017DCC8 ret2;
+        Sint32_x0017DCC8 type;
+        Sint32_x0017DCC8 n;
+        SJ_x0017DCC8 sj;
+        Sint32_x0017DCC8 siz;
+        int i;
+        ret2 = 0;
+        ret = 0;
+        type = mpv->hdrtype;
+        for (i = 4; i < len - 3; i++) {
+                if (MPV_CheckDelim_x0017DCC8(buf + i) != 0) {
+                        break;
+                }
+        }
+        if (i == len - 3) {
+                ret = -1;
+        }
+        n = i;
+        if (type == 1) {
+                ret2 = mpvhdec_DecSeqUdsc_x0017DCC8(mpv, (Char8_x0017DCC8 *)buf, i);
+        }
+        sj = mpv->usr[type].sj;
+        if (sj != 0) {
+                (*(sj)->vtbl->GetChunk)(sj, 0, n, &ck);
+                memcpy_x0017DCC8(ck.data, buf, ck.len);
+                (*(sj)->vtbl->PutChunk)(sj, 1, &ck);
+                if (ck.len < n) {
+                        (*(sj)->vtbl->GetChunk)(sj, 0, n - ck.len, &ck2);
+                        memcpy_x0017DCC8(ck2.data, buf + ck.len, ck2.len);
+                        (*(sj)->vtbl->PutChunk)(sj, 1, &ck2);
+                }
+                if (mpv->usr[type].func != 0) {
+                        mpv->usr[type].func(mpv->usr[type].obj, type);
+                }
+        }
+        if (type == 3 && mpv->picusr_buf != 0) {
+                siz = mpv->picusr_bufsiz;
+                if (n < siz) {
+                        siz = n;
+                }
+                mpv->picusr_len = siz;
+                memcpy_x0017DCC8(mpv->picusr_buf, buf, mpv->picusr_len);
+        }
+        if (ret2 != 0) {
+                return ret2;
+        }
+        return ret;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DE90);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DF98);
 typedef unsigned char u8_x0017E040;
@@ -1499,7 +2088,113 @@ s32 func_0017EB00_x0017EB00(s32 arg0, s32 arg1, s32 *arg2)
     *arg2 = p[arg1];
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EB90);
+typedef unsigned char Uint8_x0017EB90;
+typedef signed char Sint8_x0017EB90;
+typedef unsigned short Uint16_x0017EB90;
+typedef signed short Sint16_x0017EB90;
+typedef unsigned int Uint32_x0017EB90;
+typedef signed int Sint32_x0017EB90;
+typedef double Float64_x0017EB90;
+typedef struct {
+        void (*func)(void *obj, Sint32_x0017EB90 code);
+        void *obj;
+        Sint32_x0017EB90 code;
+        Sint32_x0017EB90 reserved[2];
+} MPVERR_INF_x0017EB90;
+typedef struct {
+        Uint8_x0017EB90 pad0[0x18];
+        Sint32_x0017EB90 cnt0;
+        Sint32_x0017EB90 cnt1;
+        Uint8_x0017EB90 pad20[0x2C - 0x20];
+        Float64_x0017EB90 *blk;
+        void *tbl;
+        Uint8_x0017EB90 pad34[0x48 - 0x34];
+        Uint8_x0017EB90 *work;
+} DCT_PA_x0017EB90;
+typedef struct {
+        Sint32_x0017EB90 x00, x04, x08, x0c, x10, x14, x18, x1c, x20, x24, x28, x2c, x30, x34;
+        Sint32_x0017EB90 x38;
+        Sint32_x0017EB90 x3c, x40, x44;
+        Sint32_x0017EB90 x48, x4c;
+        Sint16_x0017EB90 x50, x52;
+        Uint8_x0017EB90 x54;
+        Sint8_x0017EB90 x55, x56, x57;
+        Uint8_x0017EB90 x58, x59, x5a, x5b, x5c;
+        Uint8_x0017EB90 x5d;
+        Sint8_x0017EB90 x5e, x5f, x60;
+        Uint8_x0017EB90 x61;
+        Uint8_x0017EB90 x62, x63, x64;
+        Uint8_x0017EB90 pad65[0x80 - 0x65];
+} MPV_PICATR_x0017EB90;
+typedef struct MPV_OBJ_x0017EB90 {
+        Uint8_x0017EB90 pad0[0x10];
+        Uint32_x0017EB90 *rl_8;
+        Uint32_x0017EB90 *rl_4;
+        Uint32_x0017EB90 *rl_2;
+        Uint32_x0017EB90 *rl_1;
+        Uint32_x0017EB90 *rl_0a;
+        Uint32_x0017EB90 *rl_0b;
+        Uint32_x0017EB90 *rl_0c;
+        Sint8_x0017EB90 *zigzag;
+        Uint16_x0017EB90 *bitmsk;
+        Uint8_x0017EB90 *scale;
+        Uint8_x0017EB90 *group_tbl;
+        void *rl;
+        Uint8_x0017EB90 *clip_base;
+        Uint8_x0017EB90 pad44[0x78 - 0x44];
+        DCT_PA_x0017EB90 dctpa;
+        Uint8_x0017EB90 padC4[0x110 - 0xC4];
+        Uint8_x0017EB90 *mc_clip;
+        Uint8_x0017EB90 *mc_buf0;
+        Uint8_x0017EB90 *mc_work;
+        Uint8_x0017EB90 *mc_work2;
+        Uint8_x0017EB90 pad120[0x188 - 0x120];
+        Sint32_x0017EB90 stat;
+        Sint32_x0017EB90 x18c;
+        Sint32_x0017EB90 cond[16];
+        MPV_PICATR_x0017EB90 picatr;
+        MPVERR_INF_x0017EB90 errinf;
+        Uint8_x0017EB90 pad264[0x2E4 - 0x264];
+        Sint32_x0017EB90 x2e4;
+        Uint8_x0017EB90 pad2E8[0x358 - 0x2E8];
+        Sint32_x0017EB90 x358;
+        Sint32_x0017EB90 x35c;
+        Sint32_x0017EB90 x360;
+        Sint32_x0017EB90 x364;
+        Uint8_x0017EB90 *tbl368[6];
+        Uint8_x0017EB90 mcbuf[0x680 - 0x380];
+        Float64_x0017EB90 blk[6][32];
+        Uint8_x0017EB90 intra_iqm[64];
+        Uint8_x0017EB90 nintra_iqm[64];
+        Uint8_x0017EB90 work[0x1300 - 0xD00];
+        Sint32_x0017EB90 x1300;
+        Sint32_x0017EB90 x1304;
+        Uint8_x0017EB90 pad1308[0x1314 - 0x1308];
+        Sint32_x0017EB90 x1314;
+        void *intra_func;
+        void *nintra_func;
+        Sint32_x0017EB90 pad1320;
+        Sint32_x0017EB90 x1324;
+        void *dctbl_y;
+        void *dctbl_c;
+        void *m2v;
+        Uint8_x0017EB90 pad1334[0x1380 - 0x1334];
+} MPV_OBJ_x0017EB90;
+typedef MPV_OBJ_x0017EB90 *MPV_x0017EB90;
+extern MPV_x0017EB90 mpvlib_mpvobj_x0017EB90 __asm__("D_0048154C");
+Sint32_x0017EB90 func_0017EB90_x0017EB90(MPV_x0017EB90 mpv) __asm__("func_0017EB90");
+/* MPVLIB_CheckHn: from https://github.com/Raikaru/Persona4-Decompilation (src/cri/re4/mpv_lib.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+Sint32_x0017EB90 func_0017EB90_x0017EB90(MPV_x0017EB90 mpv)
+{
+        mpvlib_mpvobj_x0017EB90 = mpv;
+        if (mpv == 0) {
+                return -1;
+        }
+        if (mpv->stat != 2) {
+                return -1;
+        }
+        return 0;
+}
 void func_0017EBB8(void) {
     func_00172A88();
 }
