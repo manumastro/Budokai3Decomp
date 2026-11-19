@@ -136,7 +136,8 @@ def compile_one(src, rel, keep, build_mode=False):
     if "rebind" in t or ".b3stub" in t or "noswap" in t or "fphazard" in t:
         import gcc_rebind
         import os
-        t2 = gcc_rebind.rebind(t, [f"-I{ROOT / d}" for d in inc], log=open(os.devnull, "w"))
+        # the file's own as-flags too (libm.c: -O1): pass 1 must lay the code out as the build does
+        t2 = gcc_rebind.rebind(t, [f"-I{ROOT / d}" for d in inc] + G.file_as_flags(rel), log=open(os.devnull, "w"))
         if t2 != t:
             asm = work / "out_rb.s"  # ee-gcc's container owns its output file
             asm.write_text(t2)
