@@ -143,7 +143,76 @@ void func_002E18D0(void)
   func_002DE910(0x100, 2, p408, p404);
 }
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option_2", func_002E1A40);
+extern void amDisp_SetOffset(s32, s32);
+s32 amAdx_SetVolume(s8 *, f32);
+s32 func_001446E0(s32);
+s32 func_00148310(f32);
+s32 func_001A38B0(s32, s32, s8);
+s32 memcpy(s8 *, s8 *, s32);
+extern s8 D_00456B20[];
+extern void Fade_SetRequest();
+extern void func_0015FE80(s32);
+extern char D_004B4B40[];
+
+/* the settings block with the volume at 0x3C too (local view, same layout as OptionConfig) */
+typedef struct OptCfgL {
+    char pad0[0x1E];
+    s16 f1E;
+    s16 f20;
+    char pad22[0x30 - 0x22];
+    s32 f30;
+    f32 f34;
+    f32 f38;
+    f32 f3C;
+} OptCfgL;
+
+void func_002E1A40(s32 arg0)
+{
+    s8 *p;
+    s32 i;
+    s32 save;
+    s8 *d;
+    s8 temp;
+    OptCfgL *c;
+    s32 j;
+
+    save = arg0;
+    p = (s8 *)D_004E05DC;
+    i = 0;
+    d = (s8 *)D_004B4B40;
+    do {
+        temp = p[6];
+        if (temp != 2) {
+            memcpy(d + 0x2BA88, (s8 *)D_00456B20 + temp * 8, 8);
+        } else {
+            memcpy(d + 0x2BA88, p + 8, 8);
+        }
+        func_001A38B0(i, 1, p[7]);
+        i += 1;
+        p += 0xA;
+        d += 0xA;
+    } while (i < 2);
+    func_00148310((f32)D_004E0608[0]);
+    {
+        u8 *q = (u8 *)D_004E05DC;
+        amDisp_SetOffset(*(s16 *)(q + 0x1E), *(s16 *)(q + 0x20));
+    }
+    c = (OptCfgL *)D_004E05DC;
+    amAdx_SetVolume(NULL, c->f34);
+    j = 1;
+    do {
+        amAdx_SetVolume((s8 *)j, c->f3C);
+        j += 1;
+    } while (j < 4);
+    if (c->f30 == 0) {
+        func_0015FE80(1);
+        func_001446E0(0);
+    } else {
+        func_0015FE80(0);
+        func_001446E0(1);
+    }
+    Fade_SetRequest(-1, save, 0);
+}
 
 extern void amDisp_SetOffset(s32, s32);
 
