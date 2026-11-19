@@ -1653,7 +1653,84 @@ void func_00173A00_x00173A00(s32 *p)
 void func_00173A70(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173A78);
+typedef struct { int sequence_header_code; int horizontal_size_value; int vertical_size_value; int aspect_ratio_information; int frame_rate_code; int bit_rate_value; int marker_bit; int vbv_buffer_size_value; int constrained_parameters_flag; int load_intra_quantiser_matrix; int load_non_intra_quantiser_matrix; char p2C[0x8C]; int group_start_code; int drop_frame_flag; int time_code_hours; int time_code_minutes; int time_code_seconds; int time_code_pictures; int closed_gop; int broken_link; int picture_start_code; int temporal_reference; int picture_coding_type; int vbv_delay; int full_pel_forward_vector; int forward_f_code; int full_pel_backward_vector; int backward_f_code; int extra_bit_picture; int extra_information_picture; char p100[0x1C4]; int horizontal_size; int vertical_size; char p2CC[0x5C]; int ext_state; int expected_ext_id; char p330[0x1AC]; int header_level; char p4E0[0x8]; int shc_count; char p4EC[0xC]; int gsc_count; int psc_count; int picture_count[4]; char p510[0x40]; int error_count; int warning_count; } Ext_3A78_x00173A78;
+void func_00173740_x00173A78(Ext_3A78_x00173A78 *) __asm__("func_00173740");
+void func_00173748_x00173A78(Ext_3A78_x00173A78 *) __asm__("func_00173748");
+void func_00173810_x00173A78(Ext_3A78_x00173A78 *) __asm__("func_00173810");
+void func_00173A70_x00173A78(Ext_3A78_x00173A78 *) __asm__("func_00173A70");
+char *func_00173A78_x00173A78(char *ctx, char *buf) __asm__("func_00173A78");
+char *func_00173A78_x00173A78(char *ctx, char *buf)
+{
+    int i2;
+    Ext_3A78_x00173A78 *h = (Ext_3A78_x00173A78 *)(ctx + 0x158);
+    char *p;
+    int cnt;
+    unsigned int acc, nxt;
+
+    h->header_level = 1;
+    h->shc_count++;
+    if ((h->ext_state != 0 && h->ext_state != 64) || h->expected_ext_id != 0) {
+        h->error_count++;
+    }
+    func_00173740_x00173A78(h);
+    p = (char *)((unsigned int)buf & ~3);
+    cnt = (buf - p) << 3;
+    { (acc) = *p++; (acc) <<= 8; (acc) |= *p++ & 255; (acc) <<= 8; (acc) |= *p++ & 255; (acc) <<= 8; (acc) |= *p++ & 255; }
+    { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; }
+    acc <<= cnt;
+    if (cnt != 0) {
+        h->sequence_header_code = acc | (nxt >> (32 - cnt));
+        acc = nxt << cnt;
+    } else {
+        h->sequence_header_code = acc;
+        acc = nxt;
+    }
+    { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; }
+    { if (cnt >= 32 - (12)) { cnt -= 32 - (12); if (cnt != 0) { acc |= nxt >> ((12) - cnt); (h->horizontal_size_value) = acc >> (32 - (12)); acc = nxt << cnt; } else { (h->horizontal_size_value) = acc >> (32 - (12)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->horizontal_size_value) = acc >> (32 - (12)); acc <<= (12); cnt += (12); } }
+    { if (cnt >= 32 - (12)) { cnt -= 32 - (12); if (cnt != 0) { acc |= nxt >> ((12) - cnt); (h->vertical_size_value) = acc >> (32 - (12)); acc = nxt << cnt; } else { (h->vertical_size_value) = acc >> (32 - (12)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->vertical_size_value) = acc >> (32 - (12)); acc <<= (12); cnt += (12); } }
+    { if (cnt >= 32 - (4)) { cnt -= 32 - (4); if (cnt != 0) { acc |= nxt >> ((4) - cnt); (h->aspect_ratio_information) = acc >> (32 - (4)); acc = nxt << cnt; } else { (h->aspect_ratio_information) = acc >> (32 - (4)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->aspect_ratio_information) = acc >> (32 - (4)); acc <<= (4); cnt += (4); } }
+    { if (cnt >= 32 - (4)) { cnt -= 32 - (4); if (cnt != 0) { acc |= nxt >> ((4) - cnt); (h->frame_rate_code) = acc >> (32 - (4)); acc = nxt << cnt; } else { (h->frame_rate_code) = acc >> (32 - (4)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->frame_rate_code) = acc >> (32 - (4)); acc <<= (4); cnt += (4); } }
+    { if (cnt >= 32 - (18)) { cnt -= 32 - (18); if (cnt != 0) { acc |= nxt >> ((18) - cnt); (h->bit_rate_value) = acc >> (32 - (18)); acc = nxt << cnt; } else { (h->bit_rate_value) = acc >> (32 - (18)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->bit_rate_value) = acc >> (32 - (18)); acc <<= (18); cnt += (18); } }
+    { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->marker_bit) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->marker_bit) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->marker_bit) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+    { if (cnt >= 32 - (10)) { cnt -= 32 - (10); if (cnt != 0) { acc |= nxt >> ((10) - cnt); (h->vbv_buffer_size_value) = acc >> (32 - (10)); acc = nxt << cnt; } else { (h->vbv_buffer_size_value) = acc >> (32 - (10)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->vbv_buffer_size_value) = acc >> (32 - (10)); acc <<= (10); cnt += (10); } }
+    { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->constrained_parameters_flag) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->constrained_parameters_flag) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->constrained_parameters_flag) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+    { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->load_intra_quantiser_matrix) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->load_intra_quantiser_matrix) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->load_intra_quantiser_matrix) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+    if (h->load_intra_quantiser_matrix)
+        { int i; for (i = 0; i < 64; i++) { cnt += 8; if (cnt >= 32) { cnt -= 32; acc = nxt << cnt; { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { acc <<= 8; } } }
+    { if (cnt >= 32 - (1)) { cnt -= 32 - (1); if (cnt != 0) { acc |= nxt >> ((1) - cnt); (h->load_non_intra_quantiser_matrix) = acc >> (32 - (1)); acc = nxt << cnt; } else { (h->load_non_intra_quantiser_matrix) = acc >> (32 - (1)); acc = nxt; } { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { (h->load_non_intra_quantiser_matrix) = acc >> (32 - (1)); acc <<= (1); cnt += (1); } }
+    i2 = 63; if (h->load_non_intra_quantiser_matrix)
+        { skp:  cnt += 8; if (cnt >= 32) { cnt -= 32; acc = nxt << cnt; { (nxt) = *p++; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; (nxt) <<= 8; (nxt) |= *p++ & 255; } } else { acc <<= 8; } if (--i2 >= 0) goto skp;  }
+    func_00173748_x00173A78(h);
+    func_00173810_x00173A78(h);
+    func_00173A70_x00173A78(h);
+    if (h->horizontal_size == 0) {
+        h->error_count++;
+    }
+    if (h->horizontal_size & 15) {
+        h->warning_count++;
+    }
+    if (h->vertical_size == 0) {
+        h->error_count++;
+    }
+    if (h->vertical_size & 15) {
+        h->warning_count++;
+    }
+    if (h->aspect_ratio_information < 1 || h->aspect_ratio_information > 4) {
+        h->error_count++;
+    }
+    if (h->frame_rate_code < 1 || h->frame_rate_code > 8) {
+        h->error_count++;
+    }
+    if (h->marker_bit == 0) {
+        h->error_count++;
+    }
+    if (h->constrained_parameters_flag != 0) {
+        h->error_count++;
+    }
+    h->ext_state = 16;
+    h->expected_ext_id = 1;
+    return buf + ((cnt + (p - buf) * 8 - 57) / 8);
+}
 typedef struct { char pad0[0x2C]; unsigned int f2C; char pad30[0x328 - 0x30]; int f328; int f32C; char pad330[0x4DC - 0x330]; int f4DC; char pad4E0[0x4EC - 0x4E0]; int f4EC; char pad4F0[0x550 - 0x4F0]; int f550; } St_42A8_x001742A8;
 char *func_001742A8_x001742A8(char *m, char *buf) __asm__("func_001742A8");
 char *func_001742A8_x001742A8(char *m, char *buf)
