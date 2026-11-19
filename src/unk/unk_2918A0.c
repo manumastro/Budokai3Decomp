@@ -193,33 +193,34 @@ void func_00292780(Work2918A0 *o) {
     func_00139620(0x900, (char *)o + 0x30, -1, 0x44, 0, 0.0f);
     func_00133780(0, 0);
 }
-#if 0
-// differs: compiled 0xD8 bytes, original 0xE0; the original computes w+0x30 into a saved register at the top and keeps w in another one for the last call (a local s gives 0xD4)
-void func_002927E0(Work2918A0 *w) {
-    f32 f;
+void func_002927E0(Work2918A0 *arg0) {
+    f32 temp_f0;
+    f32 temp_f1;
+    f32 temp_f4;
+    u8 *temp_s0;
 
-    f = w->f40 - gFrameDelta;
-    w->f40 = f;
-    if (f < 0.0f) {
-        ((Sub2918A0 *)((char *)w + 0x30))->f10 = 0.0f;
-        amTask_Kill(w);
+    temp_s0 = (u8 *)arg0 + 0x30;
+    temp_f1 = *(f32 *)((u8 *)arg0 + 0x40) - gFrameDelta;
+    *(f32 *)((u8 *)arg0 + 0x40) = temp_f1;
+    if (temp_f1 < 0.0f) {
+        *(f32 *)(temp_s0 + 0x10) = 0.0f;
+        amTask_Kill((s32)arg0);
         D_005AA5A4[0] = 0;
     }
-    if (((Sub2918A0 *)((char *)w + 0x30))->f10 <= 0.0f) {
-        ((Sub2918A0 *)((char *)w + 0x30))->fC = 0.0f;
+    temp_f4 = *(f32 *)(temp_s0 + 0x10);
+    if (temp_f4 <= 0.0f) {
+        *(f32 *)(temp_s0 + 0xC) = 0.0f;
     } else {
-        f = ((Sub2918A0 *)((char *)w + 0x30))->fC - (0.75f * gFrameDelta) / ((Sub2918A0 *)((char *)w + 0x30))->f10;
-        ((Sub2918A0 *)((char *)w + 0x30))->fC = f;
-        if (f < 0.0f) {
-            ((Sub2918A0 *)((char *)w + 0x30))->fC = 0.0f;
+        *(f32 *)(temp_s0 + 0xC) -= (0.75f * gFrameDelta) / temp_f4;
+        temp_f0 = *(f32 *)(temp_s0 + 0xC);
+        if (temp_f0 < 0.0f) {
+            *(f32 *)(temp_s0 + 0xC) = 0.0f;
         }
     }
     func_00133780(0, 1);
-    func_00139620(0x900, (char *)w + 0x30, -1, 0x44, 0, 0.0f);
+    func_00139620(0x900, (void *)((s32)arg0 + 0x30), -1, 0x44, 0, 0.0f);
     func_00133780(0, 0);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002927E0);
 #if 0
 // differs: 24 of 55; the original keeps w in s0 and computes w+0x30 after the f40 store (s is a second saved register here); the earlier draft wrongly zeroed f40 on the f < 0 path
 void func_002928C0(Work2918A0 *w) {
