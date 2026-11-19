@@ -223,7 +223,22 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libc", func_00122560);
 s32 __errno(void) {
     return _impure_ptr;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc", func_001237D8);
+typedef struct A00123330_x001237D8 { struct A00123330_x001237D8 *_next; int _ind; void (*_fns[32])(void); } A00123330_x001237D8;
+typedef struct { char p[0x3C]; void (*__cleanup)(void *); char q[0x108]; A00123330_x001237D8 *_atexit; } R00123330_x001237D8;
+extern R00123330_x001237D8 *D_00489738_x001237D8 __asm__("_impure_ptr");
+extern void Newlib_SysExit_Thunk_x001237D8(int) __asm__("func_00100218");
+void func_001237D8_x001237D8(int code) __asm__("func_001237D8");
+/* Libc_Exit: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libc/libc_123330.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+void func_001237D8_x001237D8(int code)
+{
+    A00123330_x001237D8 *p;
+    int n;
+    for (p = D_00489738_x001237D8->_atexit; p; p = p->_next)
+        for (n = p->_ind; --n >= 0;)
+            (*p->_fns[n])();
+    if (D_00489738_x001237D8->__cleanup) (*D_00489738_x001237D8->__cleanup)(D_00489738_x001237D8);
+    Newlib_SysExit_Thunk_x001237D8(code);
+}
 typedef unsigned int __uint32_t_x00123888;
 typedef unsigned int size_t_x00123888;
 typedef __uint32_t_x00123888 __ULong_x00123888;
