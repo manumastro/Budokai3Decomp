@@ -64,7 +64,23 @@ void func_0028DDB0(u8 *arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DDF0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DE30);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DEA0);
+extern s32 func_0028D810();
+void func_0028DEA0(u8 *arg0) {
+    s32 (*var_v0)();
+
+    D_00470884 = D_00470884 + 0.05f;
+    if (!(D_00470884 < 1.0f)) {
+        var_v0 = func_0028D810;
+        D_00470884 = 1.0f;
+        if (func_0028D810 == NULL) {
+            var_v0 = NULL;
+        }
+        *(s32 (**)())((u8 *)arg0 + 0x1C) = var_v0;
+        func_0028D810();
+        return;
+    }
+    func_00288500();
+}
 
 void func_0028DF10(void) {
 }
