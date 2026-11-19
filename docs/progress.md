@@ -4,17 +4,23 @@ Functions written in C that compile to the original bytes (the whole build stays
 functions of each part of the code. Function counts are splat's; sizes are the functions' own (without the padding
 between them). Regenerate with `.venv/bin/python scripts/progress.py --write` after a successful `ninja`.
 
+"Done" also counts **functions whose original source was assembly**: code the original authors wrote in assembly
+(not compiler output) is kept as a hand-written assembly source under `src/` (`src/<segment>.s`, assembled by the
+build in place of splat's `asm/<segment>.s`, byte-identical), the way decompilations keep e.g. VU microcode or a
+crt0 in `.s` files. Today: libkernl's 138 system call stubs (`src/sdk/libkernl_syscalls.s`, Sony's SDK wrote them
+in assembly: `addiu $v1, $zero, N; syscall; jr $ra; nop`).
+
 <!-- progress table -->
 
 Measured 2026-11-19 (scripts/progress.py).
 
-| Part | Functions in C | All | % | Bytes in C | All bytes | % |
+| Part | Functions done | All | % | Bytes done | All bytes | % |
 |---|---|---|---|---|---|---|
-| Sony SDK + C library (gcc) | 543 | 858 | 63.29 | 97,908 | 179,380 | 54.58 |
+| Sony SDK + C library (gcc) | 701 | 858 | 81.70 | 113,108 | 179,380 | 63.05 |
 | Metrowerks, linked before CRI (am* layer, main) | 342 | 411 | 83.21 | 66,892 | 137,476 | 48.66 |
-| CRI ADX / Sofdec, libmtap (gcc) | 2,302 | 2,797 | 82.30 | 202,072 | 337,028 | 59.96 |
-| Metrowerks, linked after CRI (the game) | 2,775 | 4,229 | 65.62 | 427,204 | 1,476,380 | 28.94 |
-| All | 5,962 | 8,295 | 71.87 | 794,076 | 2,130,264 | 37.28 |
+| CRI ADX / Sofdec, libmtap (gcc) | 2,366 | 2,797 | 84.59 | 221,852 | 337,028 | 65.83 |
+| Metrowerks, linked after CRI (the game) | 2,787 | 4,229 | 65.90 | 430,260 | 1,476,380 | 29.14 |
+| All | 6,196 | 8,295 | 74.70 | 832,112 | 2,130,264 | 39.06 |
 
 <!-- end of progress table -->
 

@@ -265,6 +265,11 @@ def write_ninja():
     objs = []
     for src in sources("asm", ".s"):
         obj = Path("build") / src.with_suffix(".o")
+        # code whose original source was assembly (e.g. libkernl's syscall stubs): the hand-written src/<seg>.s
+        # replaces splat's output for the same segment (scripts/progress.py counts it as done)
+        hand = Path("src") / src.relative_to("asm")
+        if (ROOT / hand).exists():
+            src = hand
         out.append(f"build {obj}: as {src} | include/macro.inc")
         objs.append(obj)
     for src in sources("assets", ".bin"):

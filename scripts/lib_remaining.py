@@ -34,7 +34,7 @@ def remaining(all_regions=False):
         kind, seg = m.group(2), m.group(3)
         if kind == "asm":
             p = ROOT / "asm" / f"{seg}.s"
-            if p.exists():
+            if p.exists() and not (ROOT / "src" / f"{seg}.s").exists():  # src/<seg>.s: original assembly, done
                 for a, n in funcs_in_asm(p):
                     res.append((a, n, seg, "asm"))
         elif kind == "c":

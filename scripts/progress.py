@@ -6,7 +6,9 @@
 
 Run after a successful ninja (the counts come from the objects in build/src). A function counts as matched when
 it is defined in a C file's object and is not an INCLUDE_ASM (mwccgap marks those with a NAME.NON_MATCHING
-symbol); everything else in asm/ counts as not yet decompiled.
+symbol). A segment whose original source was assembly (libkernl's syscall stubs) is a hand-written src/<seg>.s
+that the build assembles in place of splat's asm/<seg>.s: its functions count as done too ("original assembly").
+Everything else in asm/ counts as not yet decompiled.
 """
 
 import datetime
@@ -28,11 +30,18 @@ DOC = ROOT / "docs" / "progress.md"
 BEGIN, END = "<!-- progress table -->", "<!-- end of progress table -->"
 
 
-def asm_functions():
-    """{address: (name, size)} of every function still in assembly (whole files and INCLUDE_ASM files)."""
+def hand_asm(path):
+    """True when asm/<seg>.s is replaced by a hand-written src/<seg>.s (code whose original source is assembly)."""
+    rel = Path(path).relative_to(ROOT / "asm")
+    return (ROOT / "src" / rel).exists()
+
+
+def asm_functions(hand=False):
+    """{address: (name, size)} of every function still in assembly (whole files and INCLUDE_ASM files); with
+    hand=True, those of the segments whose original source is assembly instead."""
     out = {}
     for path in glob.glob(str(ROOT / "asm/**/*.s"), recursive=True):
-        if "/data/" in path:
+        if "/data/" in path or hand_asm(path) != hand:
             continue
         name = None
         for line in open(path):
@@ -73,7 +82,7 @@ def c_functions():
 
 def table():
     asm = asm_functions()
-    c = c_functions()
+    c = {**c_functions(), **asm_functions(hand=True)}  # C, or the original's own assembly
     rows = []
     tot = [0, 0, 0, 0]
     for label, lo, hi in PARTS:
@@ -85,7 +94,7 @@ def table():
         for i, v in enumerate((n_c, n_all, b_c, b_all)):
             tot[i] += v
     rows.append(("All", *tot))
-    out = ["| Part | Functions in C | All | % | Bytes in C | All bytes | % |", "|---|---|---|---|---|---|---|"]
+    out = ["| Part | Functions done | All | % | Bytes done | All bytes | % |", "|---|---|---|---|---|---|---|"]
     for label, n_c, n_all, b_c, b_all in rows:
         out.append(f"| {label} | {n_c:,} | {n_all:,} | {100 * n_c / max(n_all, 1):.2f} | {b_c:,} | {b_all:,} | "
                    f"{100 * b_c / max(b_all, 1):.2f} |")
