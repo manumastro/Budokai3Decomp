@@ -27742,7 +27742,45 @@ void func_00191C40_x00191C40(u8 *a0, unsigned int a1, s32 a2, s32 a3)
   }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00191D38);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00191F48);
+typedef struct SfdTimeCode_x00191F48 { int rate; int drop; int hour; int minute; int second; int frame; int add; short repeat; short field; } SfdTimeCode_x00191F48;
+extern int D_004674D8_x00191F48[] __asm__("D_004674D8");
+void func_00191F48_x00191F48(SfdTimeCode_x00191F48 *src, SfdTimeCode_x00191F48 *dst) __asm__("func_00191F48");
+void func_00191F48_x00191F48(SfdTimeCode_x00191F48 *src, SfdTimeCode_x00191F48 *dst) {
+    int rate;
+    int round;
+    int fields;
+    int frame;
+    int hour;
+    int minute;
+    int second;
+    rate = src->rate;
+    round = D_004674D8_x00191F48[rate];
+    fields = src->repeat + src->field;
+    frame = src->frame + src->add + 1;
+    frame += fields / 2;
+    fields %= 2;
+    hour = src->hour;
+    minute = src->minute;
+    second = src->second;
+    second += frame / round;
+    frame %= round;
+    minute += second / 60;
+    second %= 60;
+    hour += minute / 60;
+    minute %= 60;
+    if (src->drop != 0 && second == 0 && minute % 10 != 0 && (frame == 0 || frame == 1)) {
+        frame = 2;
+    }
+    dst->rate = rate;
+    dst->drop = src->drop;
+    dst->hour = hour;
+    dst->minute = minute;
+    dst->second = second;
+    dst->frame = frame;
+    dst->field = fields;
+}
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mpad_1f481_00000000000000000;
 typedef struct { s32 w[8]; } B32_x00192040;
 void func_0019AE10_x00192040(void *, s32 *, s32 *) __asm__("func_0019AE10");
 void func_00192040_x00192040(u8 *a0) __asm__("func_00192040");
@@ -28036,6 +28074,8 @@ void func_00192D68_x00192D68(s32 a0)
         *d = *s;
     }
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m1f4820;
 typedef struct { s32 w[12]; } Ck_2DE0_x00192DE0;
 s32 func_00193060_x00192DE0(u8 *, u8 *, Ck_2DE0_x00192DE0 *, u8 **) __asm__("func_00193060");
 void func_00193828_x00192DE0(s32, u8 *) __asm__("func_00193828");

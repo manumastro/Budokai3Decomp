@@ -1249,7 +1249,51 @@ INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00163698);
 s32 func_00163758(void) {
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00163760);
+typedef struct { char pad[0x60]; int (*opt_fn1)(void *, int, int, int); } Vt_CV_x00163760;
+typedef struct { void *prm[5]; } Prm_CV_x00163760;
+void func_00161D20_x00163760(char *) __asm__("func_00161D20");
+Vt_CV_x00163760 *func_00162080_x00163760(const char *) __asm__("func_00162080");
+void *memset_x00163760(void *, int, unsigned int) __asm__("memset");
+extern char D_00462BE0_x00163760[] __asm__("D_00462BE0");
+extern char D_00462C08_x00163760[] __asm__("D_00462C08");
+extern char D_00462C30_x00163760[] __asm__("D_00462C30");
+extern char D_00462C58_x00163760[] __asm__("D_00462C58");
+int func_00163760_x00163760(const char *devname, const char *volume, void *image, int option) __asm__("func_00163760");
+int func_00163760_x00163760(const char *devname, const char *volume, void *image, int option)
+{
+  Prm_CV_x00163760 arg;
+  Vt_CV_x00163760 *vtbl;
+  if (devname == 0)
+  {
+    func_00161D20_x00163760(D_00462BE0_x00163760);
+    return -1;
+  }
+  if (volume == 0)
+  {
+    func_00161D20_x00163760(D_00462C08_x00163760);
+    return -1;
+  }
+  if (image == 0)
+  {
+    func_00161D20_x00163760(D_00462C30_x00163760);
+    return -1;
+  }
+  vtbl = func_00162080_x00163760(devname);
+  if (vtbl == 0)
+  {
+    func_00161D20_x00163760(D_00462C58_x00163760);
+    return -1;
+  }
+  memset_x00163760(&arg, 0, sizeof(arg));
+ do { arg.prm[0] = image; arg.prm[1] = (void *) volume; } while (0);
+  arg.prm[2] = (void *) option;
+  if (vtbl->opt_fn1 != 0)
+  {
+    return vtbl->opt_fn1(&arg, 2, 0, 0);
+  }
+  return -1;
+}
+__asm__("# noswap func_00163760");
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00163868);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00163928);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_001639F8);
