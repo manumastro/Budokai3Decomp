@@ -61,7 +61,110 @@ int func_00100DE0_x00100DE0(int mode)
     }
     return (int)c;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", sceGsSyncPath);
+typedef unsigned short u16_x00100E78;
+typedef signed int s32_x00100E78;
+typedef unsigned int u32_x00100E78;
+extern void scePrintf_x00100E78(const char *fmt, ...) __asm__("scePrintf");
+extern void scePrintf_x00100E78(const char *fmt, ...) __asm__("scePrintf");
+extern const char sceGsSyncPathDma1Msg_x00100E78[] __asm__("D_0045CBF8");
+extern const char sceGsDumpD1ChcrFmt_x00100E78[] __asm__("D_0045CC28");
+extern const char sceGsDumpD1TadrFmt_x00100E78[] __asm__("D_0045CC38");
+extern const char sceGsDumpD1MadrFmt_x00100E78[] __asm__("D_0045CC48");
+extern const char sceGsDumpD1QwcFmt_x00100E78[] __asm__("D_0045CC58");
+extern const char sceGsDumpD2ChcrFmt_x00100E78[] __asm__("D_0045CC68");
+extern const char sceGsDumpD2TadrFmt_x00100E78[] __asm__("D_0045CC78");
+extern const char sceGsDumpD2MadrFmt_x00100E78[] __asm__("D_0045CC88");
+extern const char sceGsDumpD2QwcFmt_x00100E78[] __asm__("D_0045CC98");
+extern const char sceGsDumpVif1StatFmt_x00100E78[] __asm__("D_0045CCA8");
+extern const char sceGsDumpGifStatFmt_x00100E78[] __asm__("D_0045CCC0");
+extern const char sceGsSyncPathDma2Msg_x00100E78[] __asm__("D_0045CCD8");
+extern const char sceGsSyncPathVif1Msg_x00100E78[] __asm__("D_0045CD08");
+extern const char sceGsSyncPathVu1Msg_x00100E78[] __asm__("D_0045CD38");
+extern const char sceGsSyncPathGifMsg_x00100E78[] __asm__("D_0045CD60");
+extern const char sceGsSyncPathDma1Msg_x00100E78[48] __asm__("D_0045CBF8");
+extern const char sceGsDumpD1ChcrFmt_x00100E78[16] __asm__("D_0045CC28");
+extern const char sceGsDumpD1TadrFmt_x00100E78[16] __asm__("D_0045CC38");
+extern const char sceGsDumpD1MadrFmt_x00100E78[16] __asm__("D_0045CC48");
+extern const char sceGsDumpD1QwcFmt_x00100E78[16] __asm__("D_0045CC58");
+extern const char sceGsDumpD2ChcrFmt_x00100E78[16] __asm__("D_0045CC68");
+extern const char sceGsDumpD2TadrFmt_x00100E78[16] __asm__("D_0045CC78");
+extern const char sceGsDumpD2MadrFmt_x00100E78[16] __asm__("D_0045CC88");
+extern const char sceGsDumpD2QwcFmt_x00100E78[16] __asm__("D_0045CC98");
+extern const char sceGsDumpVif1StatFmt_x00100E78[24] __asm__("D_0045CCA8");
+extern const char sceGsDumpGifStatFmt_x00100E78[24] __asm__("D_0045CCC0");
+extern const char sceGsSyncPathDma2Msg_x00100E78[48] __asm__("D_0045CCD8");
+extern const char sceGsSyncPathVif1Msg_x00100E78[48] __asm__("D_0045CD08");
+extern const char sceGsSyncPathVu1Msg_x00100E78[40] __asm__("D_0045CD38");
+extern const char sceGsSyncPathGifMsg_x00100E78[48] __asm__("D_0045CD60");
+s32_x00100E78 sceGsSyncPath_x00100E78(s32_x00100E78 mode, u16_x00100E78 timeout) __asm__("sceGsSyncPath");
+/* sceGsSyncPath_x00100E78: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libgraph.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+s32_x00100E78 sceGsSyncPath_x00100E78(s32_x00100E78 mode, u16_x00100E78 timeout)
+{
+    u32_x00100E78 stat;
+    u32_x00100E78 i = 0;
+
+    if (mode == 0) {
+        while ((*(volatile u32_x00100E78 *)0x10009000) & 0x100) {
+            if (i++ > 0x1000000) {
+                scePrintf_x00100E78(sceGsSyncPathDma1Msg_x00100E78);
+                scePrintf_x00100E78(sceGsDumpD1ChcrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009000));                scePrintf_x00100E78(sceGsDumpD1TadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009030));                scePrintf_x00100E78(sceGsDumpD1MadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009010));                scePrintf_x00100E78(sceGsDumpD1QwcFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009020));                scePrintf_x00100E78(sceGsDumpD2ChcrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A000));                scePrintf_x00100E78(sceGsDumpD2TadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A030));                scePrintf_x00100E78(sceGsDumpD2MadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A010));                scePrintf_x00100E78(sceGsDumpD2QwcFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A020));                scePrintf_x00100E78(sceGsDumpVif1StatFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10003C00));                scePrintf_x00100E78(sceGsDumpGifStatFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10003020));
+                return -1;
+            }
+        }
+        while ((*(volatile u32_x00100E78 *)0x1000A000) & 0x100) {
+            if (i++ > 0x1000000) {
+                scePrintf_x00100E78(sceGsSyncPathDma2Msg_x00100E78);
+                scePrintf_x00100E78(sceGsDumpD1ChcrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009000));                scePrintf_x00100E78(sceGsDumpD1TadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009030));                scePrintf_x00100E78(sceGsDumpD1MadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009010));                scePrintf_x00100E78(sceGsDumpD1QwcFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009020));                scePrintf_x00100E78(sceGsDumpD2ChcrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A000));                scePrintf_x00100E78(sceGsDumpD2TadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A030));                scePrintf_x00100E78(sceGsDumpD2MadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A010));                scePrintf_x00100E78(sceGsDumpD2QwcFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A020));                scePrintf_x00100E78(sceGsDumpVif1StatFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10003C00));                scePrintf_x00100E78(sceGsDumpGifStatFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10003020));
+                return -1;
+            }
+        }
+        while ((*(volatile u32_x00100E78 *)0x10003C00) & 0x1F000003) {
+            if (i++ > 0x1000000) {
+                scePrintf_x00100E78(sceGsSyncPathVif1Msg_x00100E78);
+                scePrintf_x00100E78(sceGsDumpD1ChcrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009000));                scePrintf_x00100E78(sceGsDumpD1TadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009030));                scePrintf_x00100E78(sceGsDumpD1MadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009010));                scePrintf_x00100E78(sceGsDumpD1QwcFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009020));                scePrintf_x00100E78(sceGsDumpD2ChcrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A000));                scePrintf_x00100E78(sceGsDumpD2TadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A030));                scePrintf_x00100E78(sceGsDumpD2MadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A010));                scePrintf_x00100E78(sceGsDumpD2QwcFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A020));                scePrintf_x00100E78(sceGsDumpVif1StatFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10003C00));                scePrintf_x00100E78(sceGsDumpGifStatFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10003020));
+                return -1;
+            }
+        }
+        __asm__ volatile (     ".set noreorder\n\tcfc2.ni %0, $vi29\n\t.set reorder" : "=r" (stat));
+        while (stat & 0x100) {
+            if (i++ > 0x1000000) {
+                scePrintf_x00100E78(sceGsSyncPathVu1Msg_x00100E78);
+                scePrintf_x00100E78(sceGsDumpD1ChcrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009000));                scePrintf_x00100E78(sceGsDumpD1TadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009030));                scePrintf_x00100E78(sceGsDumpD1MadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009010));                scePrintf_x00100E78(sceGsDumpD1QwcFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009020));                scePrintf_x00100E78(sceGsDumpD2ChcrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A000));                scePrintf_x00100E78(sceGsDumpD2TadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A030));                scePrintf_x00100E78(sceGsDumpD2MadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A010));                scePrintf_x00100E78(sceGsDumpD2QwcFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A020));                scePrintf_x00100E78(sceGsDumpVif1StatFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10003C00));                scePrintf_x00100E78(sceGsDumpGifStatFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10003020));
+                return -1;
+            }
+            __asm__ volatile (     ".set noreorder\n\tcfc2.ni %0, $vi29\n\t.set reorder" : "=r" (stat));
+        }
+        while ((*(volatile u32_x00100E78 *)0x10003020) & 0xC00) {
+            if (i++ > 0x1000000) {
+                scePrintf_x00100E78(sceGsSyncPathGifMsg_x00100E78);
+                scePrintf_x00100E78(sceGsDumpD1ChcrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009000));                scePrintf_x00100E78(sceGsDumpD1TadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009030));                scePrintf_x00100E78(sceGsDumpD1MadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009010));                scePrintf_x00100E78(sceGsDumpD1QwcFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10009020));                scePrintf_x00100E78(sceGsDumpD2ChcrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A000));                scePrintf_x00100E78(sceGsDumpD2TadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A030));                scePrintf_x00100E78(sceGsDumpD2MadrFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A010));                scePrintf_x00100E78(sceGsDumpD2QwcFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x1000A020));                scePrintf_x00100E78(sceGsDumpVif1StatFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10003C00));                scePrintf_x00100E78(sceGsDumpGifStatFmt_x00100E78, *(volatile u32_x00100E78 *)( 0x10003020));
+                return -1;
+            }
+        }
+        return 0;
+    } else {
+        s32_x00100E78 result = 0;
+
+
+        if ((*(volatile u32_x00100E78 *)0x10009000) & 0x100) {
+            result |= 1;
+        }
+        if ((*(volatile u32_x00100E78 *)0x1000A000) & 0x100) {
+            result |= 2;
+        }
+        if ((*(volatile u32_x00100E78 *)0x10003C00) & 0x1F000003) {
+            result |= 4;
+        }
+        __asm__ volatile (     ".set noreorder\n\tcfc2.ni %0, $vi29\n\t.set reorder" : "=r" (stat));
+        if (stat & 0x100) {
+            result |= 8;
+        }
+        if ((*(volatile u32_x00100E78 *)0x10003020) & 0xC00) {
+            result |= 16;
+        }
+        return result;
+    }
+}
 s32 AddIntcHandler_x00101190(s32, s32, s32) __asm__("AddIntcHandler");
 s32 RemoveIntcHandler_x00101190(s32, s32) __asm__("RemoveIntcHandler");
 s32 func_0010AD40_x00101190(s32) __asm__("func_0010AD40");
