@@ -228,7 +228,32 @@ void func_0027E880(u8 *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027E9C0);
+extern void memset(void *, s32, s32);
+extern void *A2d_AllocObj(s32, f32);
+extern f32 D_0047042C;
+extern f32 D_00470430;
+void func_0027E9C0(u8 *arg0) {
+    u8 *temp_s0;
+
+    *(u8 **)((u8 *)arg0 + 0x38) = temp_s0 = A2d_AllocObj(0, 0.0f);
+    memset(temp_s0, 0, 0x60);
+    *(s32 *)((u8 *)temp_s0 + 4) = 1;
+    *(s32 *)((u8 *)temp_s0 + 0x14) = -1;
+    *(s16 *)((u8 *)temp_s0 + 0x18) = -1;
+    *(s32 *)((u8 *)temp_s0 + 0x20) = 0;
+    *(s32 *)((u8 *)temp_s0 + 0x24) = 0;
+    *(s32 *)((u8 *)temp_s0 + 0x28) = 0;
+    *(s32 *)((u8 *)temp_s0 + 0x2C) = 0x3F800000;
+    *(s32 *)((u8 *)temp_s0 + 0x34) = 0;
+    *(f32 *)((u8 *)temp_s0 + 0x3C) = D_00470430;
+    *(s32 *)((u8 *)temp_s0 + 0x30) = 0;
+    *(f32 *)((u8 *)temp_s0 + 0x38) = D_0047042C;
+    *(s32 *)((u8 *)temp_s0 + 0x50) = 0;
+    *(s32 *)((u8 *)temp_s0 + 0x54) = 0;
+    *(s32 *)((u8 *)temp_s0 + 0x58) = 0;
+    *(s32 *)((u8 *)temp_s0 + 0x5C) = 0;
+    *(s32 *)((u8 *)temp_s0 + 8) = 1;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027EA60);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027EC10);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027EE70);
