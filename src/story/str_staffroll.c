@@ -632,51 +632,80 @@ void StaffRoll_Load(s32 *a0) {
 void StaffRoll_Clear(void) {
     D_00470998 = 0;
 }
-#if 0
-// func_0030F0E0: the middle and inner pointers take the other saved registers (s3/s1 against s0/s2 in the original); 5 orders tried
-void func_0030F0E0(void) {
-    s32 *s0 = (s32 *)D_00470998;
-    s32 *s3;
-    s32 *s1;
-    s32 *s2;
-    if (s0 != 0) {
-        s3 = (s32 *)((s32 *)s0[0x8 / 4])[0x30 / 4];
-        s1 = (s32 *)s3[0x8 / 4];
-        if (s1 != 0) {
-            if (s1[0x38 / 4] != 0) {
-                func_0022D0E0(s1[0x38 / 4], 1);
-            }
-            amTask_Kill((Task *)s1);
-        }
-        s1 = (s32 *)s3[0xC / 4];
-        if (s1 != 0) {
-            s2 = s1 + 0x30 / 4;
-            if (s1[0x30 / 4] >= 0) {
-                amSofdec_Stop(s1[0x30 / 4]);
-                amSofdec_Destroy(s2[0]);
-            }
-            amTask_Kill((Task *)s1);
-        }
-        if (s3[0x10 / 4] != 0) {
-            amTask_Kill((Task *)s3[0x10 / 4]);
-        }
-        if (s3[0x4 / 4] != 0) {
-            amHeap_Free((void *)s3[0x4 / 4]);
-        }
-        if (s3[0x0 / 4] != 0) {
-            amHeap_Free((void *)s3[0x0 / 4]);
-        }
-        amHeap_Free((void *)s3);
-        amTask_Kill((Task *)s0[0x8 / 4]);
-        if (s0[0x0 / 4] != 0) {
-            amCdFs_Close(s0[0x0 / 4], 0);
-        }
-        if (s0[0x4 / 4] != 0) {
-            amCdFs_Close(s0[0x4 / 4], 0);
-        }
-        amHeap_Free((void *)s0);
-        D_00470998 = 0;
+extern void amHeap_Free(void *);
+typedef struct StfRoot {
+    u8 *f0;
+    u8 *f4;
+    Task *f8;
+} StfRoot;
+void func_0030F0E0(void)
+{
+  u8 *temp_s3;
+  Task *temp_s1;
+  s32 *temp_s2;
+  Task *temp_s1_2;
+  Task *temp_a0_3;
+  s32 temp_a0;
+  s32 temp_a0_2;
+  StfRoot *temp_s0;
+  u8 *temp_a0_4;
+  u8 *temp_a0_5;
+  u8 *temp_a0_6;
+  u8 *temp_a0_7;
+  temp_s0 = (StfRoot *) D_00470998;
+  if (temp_s0 != 0)
+  {
+    temp_s3 = *((u8 **) (((u8 *) temp_s0->f8) + 0x30));
+    temp_s1 = *((Task **) (((u8 *) temp_s3) + 8));
+    if (temp_s1 != NULL)
+    {
+      temp_a0 = *((s32 *) (((u8 *) temp_s1) + 0x38));
+      if (temp_a0 != 0)
+      {
+        func_0022D0E0(temp_a0, 1);
+      }
+      amTask_Kill(temp_s1);
     }
+    temp_s1_2 = *((Task **) (((u8 *) temp_s3) + 0xC));
+    if (temp_s1_2 != NULL)
+    {
+      temp_s2 = (s32 *) (((u8 *) temp_s1_2) + 0x30);
+      temp_a0_2 = *temp_s2;
+      if (temp_a0_2 >= 0)
+      {
+        amSofdec_Stop(temp_a0_2);
+        amSofdec_Destroy(*temp_s2);
+      }
+      amTask_Kill(temp_s1_2);
+    }
+    temp_a0_3 = *((Task **) (((u8 *) temp_s3) + 0x10));
+    if (temp_a0_3 != NULL)
+    {
+      amTask_Kill(temp_a0_3);
+    }
+    temp_a0_4 = *((u8 **) (((u8 *) temp_s3) + 4));
+    if (temp_a0_4 != NULL)
+    {
+      amHeap_Free(temp_a0_4);
+    }
+    temp_a0_5 = *((u8 **) (((u8 *) temp_s3) + 0));
+    if (temp_a0_5 != NULL)
+    {
+      amHeap_Free(temp_a0_5);
+    }
+    amHeap_Free(temp_s3);
+    amTask_Kill(temp_s0->f8);
+    temp_a0_6 = temp_s0->f0;
+    if (temp_a0_6 != NULL)
+    {
+      amCdFs_Close(temp_a0_6, 0);
+    }
+    temp_a0_7 = temp_s0->f4;
+    if (temp_a0_7 != NULL)
+    {
+      amCdFs_Close(temp_a0_7, 0);
+    }
+    amHeap_Free((u8 *) temp_s0);
+    D_00470998 = 0;
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030F0E0);
