@@ -216,7 +216,7 @@ def disasm_words(words, addr):
     tmp = ROOT / "build" / "gccmatch" / f"dis_{os.getpid()}.bin"
     tmp.parent.mkdir(parents=True, exist_ok=True)
     tmp.write_bytes(struct.pack(f"<{len(words)}I", *words))
-    r = subprocess.run([f"{BINUTILS}objdump", "-D", "-b", "binary", "-m", "mips:5900", "-EL",
+    r = subprocess.run([f"{BINUTILS}objdump", "-D", "-z", "-b", "binary", "-m", "mips:5900", "-EL",
                         f"--adjust-vma={addr:#x}", str(tmp)], capture_output=True, text=True)
     tmp.unlink()
     return [line.split("\t", 2)[-1] for line in r.stdout.splitlines() if line.startswith("  ")]
