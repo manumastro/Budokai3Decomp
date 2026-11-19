@@ -11057,8 +11057,24 @@ void func_0015D9B0(void) {
 void func_0015D9C8(void) {
     func_00167BB0();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015D9E0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015DA30);
+s32 ADXT_StartFname_x0015D9E0() __asm__("ADXT_StartFname");
+s32 sprintf_x0015D9E0() __asm__("sprintf");
+extern s32 D_004617F0_x0015D9E0 __asm__("D_004617F0");
+void func_0015D9E0_x0015D9E0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) __asm__("func_0015D9E0");
+void func_0015D9E0_x0015D9E0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+    u8 sp[24];
+    sprintf_x0015D9E0(sp, &D_004617F0_x0015D9E0, arg1, (u32) (arg2 + 0x7FF) >> 0xB, arg4, arg5, arg6, arg7);
+    ADXT_StartFname_x0015D9E0(arg0, sp);
+}
+s32 ADXT_StartFnameLp_x0015DA30() __asm__("ADXT_StartFnameLp");
+s32 sprintf_x0015DA30() __asm__("sprintf");
+extern s32 D_004617F0_x0015DA30 __asm__("D_004617F0");
+void func_0015DA30_x0015DA30(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) __asm__("func_0015DA30");
+void func_0015DA30_x0015DA30(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+    u8 sp[24];
+    sprintf_x0015DA30(sp, &D_004617F0_x0015DA30, arg1, (u32) (arg2 + 0x7FF) >> 0xB, arg4, arg5, arg6, arg7);
+    ADXT_StartFnameLp_x0015DA30(arg0, sp);
+}
 int sprintf_x0015DA80(char *, const char *, ...) __asm__("func_00127488");
 typedef struct SfdSj_x0015DA80 SfdSj_x0015DA80;
 typedef struct SfdSjChunk_x0015DA80 {
