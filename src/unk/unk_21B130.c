@@ -471,76 +471,93 @@ void func_0021BEA0(u8 *a0, s32 a1) {
     }
 }
 u8 *func_0021C250(u8 *, u8 *);
-#if 0
 // differs: 11 of 116 (round 5). Recursive tree walk: the copies and the flag tests match; left: the sibling walk at the end (a2&1 block) takes the saved registers the other way round (original: the sibling goes into s2, the node pointer register reused after its last read). Reusing the parameter (a0 = sibling) changes the flag registers and the prologue (26 to 30 differ); declaration permutations tried, none better
-void func_0021C080(u8 *a0, u8 *a1, s32 a2) {
-    u8 *dst;
-    u8 *s6;
-    u8 *s2;
-    u8 *s3;
-    dst = *(u8 **)(a0 + 0x30);
-    *(f32 *)(dst + 0x50) = *(f32 *)a1;
-    *(f32 *)(dst + 0x54) = *(f32 *)(a1 + 4);
-    *(f32 *)(dst + 0x58) = *(f32 *)(a1 + 8);
-    if ((a2 & 4) != 0) {
-        *(f32 *)(dst + 0x5C) = *(f32 *)(a1 + 0xC);
-    }
-    *(u8 *)(dst + 0x1C) = *(u8 *)(a1 + 0x10);
-    *(u8 *)(dst + 0x1D) = *(u8 *)(a1 + 0x11);
-    *(u8 *)(dst + 0x1E) = *(u8 *)(a1 + 0x12);
-    *(u8 *)(dst + 0x1F) = *(u8 *)(a1 + 0x13);
-    *(s32 *)(dst + 8) = *(s32 *)(a1 + 0x14);
-    if ((a2 & 2) != 0) {
-        s3 = *(u8 **)(a0 + 0x28);
-        if (s3 != 0) {
-            s6 = *(u8 **)(s3 + 0x30);
-            *(f32 *)(s6 + 0x50) = *(f32 *)a1;
-            *(f32 *)(s6 + 0x54) = *(f32 *)(a1 + 4);
-            *(f32 *)(s6 + 0x58) = *(f32 *)(a1 + 8);
-            if ((a2 & 4) != 0) {
-                *(f32 *)(s6 + 0x5C) = *(f32 *)(a1 + 0xC);
-            }
-            func_0021C250(s6 + 0x1C, a1 + 0x10);
-            *(s32 *)(s6 + 8) = *(s32 *)(a1 + 0x14);
-            if ((a2 & 2) != 0) {
-                if (*(u8 **)(s3 + 0x28) != 0) {
-                    func_0021C080(*(u8 **)(s3 + 0x28), a1, a2);
-                }
-            }
-            if ((a2 & 1) != 0) {
-                if (*(u8 **)(s3 + 0x2C) != 0) {
-                    func_0021C080(*(u8 **)(s3 + 0x2C), a1, a2);
-                }
-            }
+void func_0021C080(u8 *a0, u8 *a1, s32 a2)
+{
+  u8 *dst;
+  u8 *s6;
+  u8 *new_var;
+  u8 *s2;
+  u8 *s3;
+  dst = *((u8 **) (a0 + 0x30));
+  s2 = dst;
+  *((f32 *) (s2 + 0x50)) = *((f32 *) a1);
+  *((f32 *) (s2 + 0x54)) = *((f32 *) (a1 + 4));
+  *((f32 *) (dst + 0x58)) = *((f32 *) (a1 + 8));
+  if ((a2 & 4) != 0)
+  {
+    *((f32 *) (s2 + 0x5C)) = *((f32 *) (a1 + 0xC));
+  }
+  *((u8 *) (dst + 0x1C)) = *((u8 *) (a1 + 0x10));
+  *((u8 *) (dst + 0x1D)) = *((u8 *) (a1 + 0x11));
+  *((u8 *) (dst + 0x1E)) = *((u8 *) (a1 + 0x12));
+  *((u8 *) (s2 + 0x1F)) = *((u8 *) (a1 + 0x13));
+  *((s32 *) (s2 + 8)) = *((s32 *) (a1 + 0x14));
+  if ((a2 & 2) != 0)
+  {
+    s3 = *((u8 **) (a0 + 0x28));
+    if (s3 != 0)
+    {
+      new_var = *((u8 **) (s3 + 0x30));
+      s6 = new_var;
+      *((f32 *) (s6 + 0x50)) = *((f32 *) a1);
+      *((f32 *) (s6 + 0x54)) = *((f32 *) (a1 + 4));
+      *((f32 *) (s6 + 0x58)) = *((f32 *) (a1 + 8));
+      if ((a2 & 4) != 0)
+      {
+        *((f32 *) (s6 + 0x5C)) = *((f32 *) (a1 + 0xC));
+      }
+      func_0021C250(s6 + 0x1C, a1 + 0x10);
+      *((s32 *) (s6 + 8)) = *((s32 *) (a1 + 0x14));
+      if ((a2 & 2) != 0)
+      {
+        if ((*((u8 **) (s3 + 0x28))) != 0)
+        {
+          func_0021C080(*((u8 **) (s3 + 0x28)), a1, a2);
         }
-    }
-    if ((a2 & 1) != 0) {
-        s2 = *(u8 **)(a0 + 0x2C);
-        if (s2 != 0) {
-            s6 = *(u8 **)(s2 + 0x30);
-            *(f32 *)(s6 + 0x50) = *(f32 *)a1;
-            *(f32 *)(s6 + 0x54) = *(f32 *)(a1 + 4);
-            *(f32 *)(s6 + 0x58) = *(f32 *)(a1 + 8);
-            if ((a2 & 4) != 0) {
-                *(f32 *)(s6 + 0x5C) = *(f32 *)(a1 + 0xC);
-            }
-            func_0021C250(s6 + 0x1C, a1 + 0x10);
-            *(s32 *)(s6 + 8) = *(s32 *)(a1 + 0x14);
-            if ((a2 & 2) != 0) {
-                if (*(u8 **)(s2 + 0x28) != 0) {
-                    func_0021C080(*(u8 **)(s2 + 0x28), a1, a2);
-                }
-            }
-            if ((a2 & 1) != 0) {
-                if (*(u8 **)(s2 + 0x2C) != 0) {
-                    func_0021C080(*(u8 **)(s2 + 0x2C), a1, a2);
-                }
-            }
+      }
+      if ((a2 & 1) != 0)
+      {
+        if ((*((u8 **) (s3 + 0x2C))) != 0)
+        {
+          func_0021C080(*((u8 **) (s3 + 0x2C)), a1, a2);
         }
+      }
     }
+  }
+  if ((a2 & 1) != 0)
+  {
+    s2 = *((u8 **) (a0 + 0x2C));
+    if (s2 != 0)
+    {
+      s6 = *((u8 **) (s2 + 0x30));
+      *((f32 *) (s6 + 0x50)) = *((f32 *) a1);
+      *((f32 *) (s6 + 0x54)) = *((f32 *) (a1 + 4));
+      *((f32 *) (s6 + 0x58)) = *((f32 *) (a1 + 8));
+      if ((a2 & 4) != 0)
+      {
+        *((f32 *) (s6 + 0x5C)) = *((f32 *) (a1 + 0xC));
+      }
+      func_0021C250(s6 + 0x1C, a1 + 0x10);
+      *((s32 *) (s6 + 8)) = *((s32 *) (a1 + 0x14));
+      if ((a2 & 2) != 0)
+      {
+        if ((*((u8 **) (s2 + 0x28))) != 0)
+        {
+          func_0021C080(*((u8 **) (s2 + 0x28)), a1, a2);
+        }
+      }
+      if ((a2 & 1) != 0)
+      {
+        if ((*((u8 **) (s2 + 0x2C))) != 0)
+        {
+          func_0021C080(*((u8 **) (s2 + 0x2C)), a1, a2);
+        }
+      }
+    }
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021C080);
+
 u8 *func_0021C250(u8 *d, u8 *s) {
     d[0] = s[0];
     d[1] = s[1];

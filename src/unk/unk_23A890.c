@@ -978,61 +978,61 @@ void func_00241AC0(s32 i) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241AC0);
 extern s32 D_00452100[];
-#if 0
-void func_00241C10(s32 a) {
-    u8 *s3 = D_0046FE44 + a * 0x80;
-    u8 *r0 = func_00240F40(a, 0);
-    u8 *r1 = func_00240F40(a, 1);
-    u8 *r2 = func_00240F40(a, 2);
-    u8 *r3 = func_00240F40(a, 3);
-    s32 k;
-    s32 t0;
-    s32 i;
-    s32 e1;
-    s32 e2;
-    s32 *tb;
-    u8 *w0;
-    u8 *w3;
-
-    k = a * 257;
-    w3 = r3;
-    t0 = *(s32 *)(gBattle + k * 0x20 + 0x1B84) + 0xCD0;
-    *(s32 *)(s3 + 0x20) = t0;
-    *(s32 *)(r3 + 0x6C) = t0;
-    *(s32 *)(r2 + 0x6C) = t0;
-    *(s32 *)(r1 + 0x6C) = t0;
-    *(s32 *)(r0 + 0x6C) = t0;
-    *(s32 *)(r3 + 0x70) = 5;
-    *(s32 *)(r2 + 0x70) = 5;
-    *(s32 *)(r1 + 0x70) = 5;
-    *(s32 *)(r0 + 0x70) = 5;
-    if (0 < *(s32 *)(r0 + 0x70)) {
-        i = 0;
-        w0 = r0;
-        tb = D_00452100;
-        do {
-            e1 = t0 + (tb[0] << 4);
-            i++;
-            *(s32 *)(w3 + 0x74) = e1;
-            *(s32 *)(r2 + 0x74) = e1;
-            *(s32 *)(r1 + 0x74) = e1;
-            *(s32 *)(w0 + 0x74) = e1;
-            e2 = t0 + (tb[1] << 4);
-            tb += 2;
-            *(s32 *)(w3 + 0x94) = e2;
-            *(s32 *)(r2 + 0x94) = e2;
-            *(s32 *)(r1 + 0x94) = e2;
-            *(s32 *)(w0 + 0x94) = e2;
-            w3 += 4;
-            r2 += 4;
-            r1 += 4;
-            w0 += 4;
-        } while (i < *(s32 *)(r0 + 0x70));
+void func_00241C10(s32 a)
+{
+  u8 *s3 = D_0046FE44 + (a * 0x80);
+  u8 *r0 = func_00240F40(a, 0);
+  u8 *r1 = func_00240F40(a, 1);
+  u8 *r2 = func_00240F40(a, 2);
+  u8 *r3 = func_00240F40(a, 3);
+  s32 k;
+  s32 t0;
+  s32 i;
+  s32 e1;
+  s32 e2;
+  s32 *tb;
+  u8 *w0;
+  u8 *w3;
+  k = a * 257;
+  w3 = r3;
+  t0 = (*((s32 *) ((gBattle + (k * 0x20)) + 0x1B84))) + 0xCD0;
+  *((s32 *) (s3 + 0x20)) = t0;
+  *((s32 *) (r3 + 0x6C)) = t0;
+  *((s32 *) (r2 + 0x6C)) = t0;
+  *((s32 *) (r1 + 0x6C)) = t0;
+  *((s32 *) (r0 + 0x6C)) = t0;
+  *((s32 *) (r3 + 0x70)) = 5;
+  *((s32 *) (r2 + 0x70)) = 5;
+  i = 0;
+  *((s32 *) (r1 + 0x70)) = 5;
+  *((s32 *) (r0 + 0x70)) = 5;
+  if (0 < (*((s32 *) (r0 + 0x70))))
+  {
+    w0 = r0;
+    tb = D_00452100;
+    do
+    {
+      e1 = t0 + (tb[0] << 4);
+      i++;
+      *((s32 *) (w3 + 0x74)) = e1;
+      *((s32 *) (r2 + 0x74)) = e1;
+      *((s32 *) (r1 + 0x74)) = e1;
+      *((s32 *) (w0 + 0x74)) = e1;
+      e2 = t0 + (tb[1] << 4);
+      tb += 2;
+      *((s32 *) (w3 + 0x94)) = e2;
+      *((s32 *) (r2 + 0x94)) = e2;
+      *((s32 *) (r1 + 0x94)) = e2;
+      *((s32 *) (w0 + 0x94)) = e2;
+      w3 += 4;
+      r2 += 4;
+      r1 += 4;
+      w0 += 4;
     }
+    while (i < (*((s32 *) (r0 + 0x70))));
+  }
 }
-// differs: round 5 (u23f): 20 of 82 differ. Structure matches (in-place pointer walks r1/r2 += 4, copies w3=r3 and w0=r0, count stored as constant 5, loop reloads 0x70 of r0). Open: the copy move v1,v0 is scheduled after the stores (original: before the gBattle shift), and the loop head order (move a3 / lui a2 / move a1,s2 / addiu a2)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241C10);
+
 #if 0
 void func_00241D60(s32 i) {
     u8 *s4 = gBattle + i * 0x2020 + 0x830;
