@@ -13291,7 +13291,54 @@ int func_00197830_x00197830(void) {
     }
     return -1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197870);
+typedef struct { s32 v[15]; u8 *buf; u32 size; } SfdCond_7870_x00197870;
+extern u8 D_004268E0_x00197870[] __asm__("D_004268E0");
+void func_00179018_x00197870(void *, s32, u32) __asm__("func_00179018");
+void func_0018C950_x00197870(void *) __asm__("func_0018C950");
+void func_00197A60_x00197870(void *) __asm__("func_00197A60");
+void func_00197AC8_x00197870(void *) __asm__("func_00197AC8");
+void func_00197B20_x00197870(void *) __asm__("func_00197B20");
+void func_0018D638_x00197870(void *) __asm__("func_0018D638");
+void func_00178BA8_x00197870(void *, void *, s32) __asm__("func_00178BA8");
+void func_00199E08_x00197870(void *, void *) __asm__("func_00199E08");
+s32 func_0018A1B8_x00197870(void *, void *, SfdCond_7870_x00197870 *) __asm__("func_0018A1B8");
+void func_0019BAD8_x00197870(void *, void *, SfdCond_7870_x00197870 *, s32) __asm__("func_0019BAD8");
+void func_001988D0_x00197870(void *) __asm__("func_001988D0");
+s32 func_00197C50_x00197870(void *) __asm__("func_00197C50");
+u8 *func_00197870_x00197870(SfdCond_7870_x00197870 *c, s32 a1) __asm__("func_00197870");
+u8 *func_00197870_x00197870(SfdCond_7870_x00197870 *c, s32 a1)
+{
+    u8 *w;
+    u8 *buf;
+
+    buf = c->buf;
+    func_00179018_x00197870(buf, 0, c->size >> 2);
+    c->v[1] = (c->v[1] + 0x1F) & ~0x1F;
+    w = (u8 *)((u32)(buf + 0x1F) & ~0x1F);
+    *(s32 *)(w + 0x4C) = 0;
+    *(s32 *)(w + 0x48) = 0;
+    *(SfdCond_7870_x00197870 *)w = *c;
+    *(s32 *)(w + 0x50) = 0;
+    *(s32 *)(w + 0x44) = 1;
+    *(s32 *)(w + 0x54) = 0;
+    func_0018C950_x00197870(w + 0x78);
+    func_00197A60_x00197870(w + 0x90C);
+    func_00197AC8_x00197870(w + 0x94C);
+    func_00197B20_x00197870(w + 0x31F8);
+    func_0018D638_x00197870(w + 0x98C);
+    func_00178BA8_x00197870(w + 0x9A0, D_004268E0_x00197870, 0x190);
+    func_00178BA8_x00197870(w + 0xB30, D_004268E0_x00197870, 0x190);
+    func_00199E08_x00197870(w, w + 0xCC0);
+    if (func_0018A1B8_x00197870(w, w + 0x1280, c) != 0) return 0;
+    func_0019BAD8_x00197870(w, w + 0x1BE0, c, a1);
+    func_001988D0_x00197870(w + 0x31E8);
+    if (func_00197C50_x00197870(w) != 0) return 0;
+    *(s32 *)(w + 0x4C) = 1;
+    *(s32 *)(w + 0x48) = 1;
+    return w;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3p32_065e1c_0_x __asm__("b3cse_asmpad_065e1c_0_xx");
 typedef struct SfdMvInf_x00197A60 {
     int width;
     int height;
@@ -26911,7 +26958,20 @@ void func_0019B088_x0019B088(int rate, SfdTimeCode_x0019B088 *tc, int *ticks, in
     *ticks = (days + secs + rest) * 1000 + tc->field * 500;
     *out_rate = rate;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B120);
+typedef struct SfdTimeCode_x0019B120 { int rate; int drop; int hour; int minute; int second; int frame; int add; short repeat; short field; } SfdTimeCode_x0019B120;
+void func_0019B120_x0019B120(int rate, SfdTimeCode_x0019B120 *tc, int *ticks, int *out_rate) __asm__("func_0019B120");
+void func_0019B120_x0019B120(int rate, SfdTimeCode_x0019B120 *tc, int *ticks, int *out_rate)
+{
+    int frames = tc->frame + tc->add;
+    int minute = tc->minute;
+    int second = tc->second;
+    int hour = tc->hour;
+    int field = tc->field;
+    int fromSeconds = (second * 30 + minute / 10) * 2;
+    int fromHoursMinutes = hour * 215892 + minute * 3598;
+    *ticks = (fromSeconds + fromHoursMinutes + frames) * 1000 + field * 500;
+    *out_rate = rate;
+}
 extern void func_0035B5B8_x0019B1C8(void *, int *, int *) __asm__("func_0019B2E0");
 extern void func_0035B500_x0019B1C8(void *, int, int) __asm__("func_0019B228");
 extern void func_0035B568_x0019B1C8(void *, int, int) __asm__("func_0019B290");

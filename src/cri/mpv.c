@@ -1551,7 +1551,58 @@ void func_001733B0(s32 arg0, s32 arg1) {
     func_00173418(arg0);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173418);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173580);
+typedef struct { char *data; int len; } Ck_3580_x00173580;
+struct Sj_3580_x00173580;
+typedef struct { char pad[0x18]; void (*getck)(struct Sj_3580_x00173580 *, int, int, Ck_3580_x00173580 *); void (*ungetck)(struct Sj_3580_x00173580 *, int, Ck_3580_x00173580 *); void (*putck)(struct Sj_3580_x00173580 *, int, Ck_3580_x00173580 *); } Vt_3580_x00173580;
+typedef struct Sj_3580_x00173580 { Vt_3580_x00173580 *vt; } Sj_3580_x00173580;
+unsigned int func_0017E040_x00173580(Sj_3580_x00173580 *) __asm__("func_0017E040");
+int func_00173A78_x00173580(void *, char *) __asm__("func_00173A78");
+int func_001742A8_x00173580(void *, char *) __asm__("func_001742A8");
+int func_001743C8_x00173580(void *, char *) __asm__("func_001743C8");
+int func_00174798_x00173580(void *, char *) __asm__("func_00174798");
+int func_001777F0_x00173580(void *, char *) __asm__("func_001777F0");
+int func_00177D48_x00173580(void *, char *) __asm__("func_00177D48");
+void func_0016F050_x00173580(Ck_3580_x00173580 *, int, Ck_3580_x00173580 *, Ck_3580_x00173580 *) __asm__("func_0016F050");
+void func_00173580_x00173580(void *m, Sj_3580_x00173580 *sj) __asm__("func_00173580");
+void func_00173580_x00173580(void *m, Sj_3580_x00173580 *sj)
+{
+    Ck_3580_x00173580 ck;
+    Ck_3580_x00173580 rest;
+    unsigned int type;
+    int end;
+
+    while ((type = func_0017E040_x00173580(sj)) != 0) {
+        sj->vt->getck(sj, 1, 0x7FFFFFFF, &ck);
+        end = 0;
+        switch (type) {
+        case 0x40:
+            end = func_00173A78_x00173580(m, ck.data);
+            break;
+        case 0x80:
+            end = func_001742A8_x00173580(m, ck.data);
+            break;
+        case 0x20:
+            end = func_001743C8_x00173580(m, ck.data);
+            break;
+        case 0x10:
+            end = func_00174798_x00173580(m, ck.data);
+            break;
+        case 0x8:
+            end = func_001777F0_x00173580(m, ck.data);
+            break;
+        case 0x4:
+            end = func_00177D48_x00173580(m, ck.data);
+            break;
+        }
+        if (end == 0) {
+            sj->vt->ungetck(sj, 1, &ck);
+            return;
+        }
+        func_0016F050_x00173580(&ck, end - (int)ck.data, &ck, &rest);
+        sj->vt->putck(sj, 0, &ck);
+        sj->vt->ungetck(sj, 1, &rest);
+    }
+}
 void func_00173740(void) {
 
 }

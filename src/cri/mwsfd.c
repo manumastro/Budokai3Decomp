@@ -1156,7 +1156,222 @@ int func_0017F5E8_x0017F5E8(MwsfdPly_x0017F5E8 *ply, MwsfdCreInf_x0017F5E8 *cprm
     }
     return ret;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_0017F750);
+typedef struct SfdSj_x0017F750 SfdSj_x0017F750;
+typedef struct SfdSjChunk_x0017F750 { char *data; int len; } SfdSjChunk_x0017F750;
+typedef struct SfdSjVtbl_x0017F750 { void *queryInterface; void *addRef; void *release; void (*destroy)(SfdSj_x0017F750 *sj); int (*getUuid)(SfdSj_x0017F750 *sj); void (*reset)(SfdSj_x0017F750 *sj); void (*getChunk)(SfdSj_x0017F750 *sj, int id, int n, SfdSjChunk_x0017F750 *ck); void (*ungetChunk)(SfdSj_x0017F750 *sj, int id, SfdSjChunk_x0017F750 *ck); void (*putChunk)(SfdSj_x0017F750 *sj, int id, SfdSjChunk_x0017F750 *ck); int (*getNumData)(SfdSj_x0017F750 *sj, int id); } SfdSjVtbl_x0017F750;
+struct SfdSj_x0017F750 { SfdSjVtbl_x0017F750 *vtbl; };
+typedef struct MwsfdPly_x0017F750 MwsfdPly_x0017F750;
+typedef struct MwsfdPlyVtbl_x0017F750 { void *reserved0[3]; void (*vsyncProc)(void); int (*execSvrHndl)(MwsfdPly_x0017F750 *ply); void (*destroy)(MwsfdPly_x0017F750 *ply); void (*startFname)(MwsfdPly_x0017F750 *ply, char *fname); void (*stop)(MwsfdPly_x0017F750 *ply); int (*getStat)(MwsfdPly_x0017F750 *ply); void (*getTime)(MwsfdPly_x0017F750 *ply, int *count, int *unit); void (*pause)(MwsfdPly_x0017F750 *ply, int sw); void (*setOutVol)(MwsfdPly_x0017F750 *ply, int vol); int (*getOutVol)(MwsfdPly_x0017F750 *ply); void (*setOutPan)(MwsfdPly_x0017F750 *ply, int channel, int pan); int (*getOutPan)(MwsfdPly_x0017F750 *ply, int channel); void (*setSj)(MwsfdPly_x0017F750 *ply, SfdSj_x0017F750 *sj); void (*startMem)(MwsfdPly_x0017F750 *ply, char *buf, int size); } MwsfdPlyVtbl_x0017F750;
+typedef struct MwsfdCreInf_x0017F750 { int type; int maxBps; int maxWidth; int maxHeight; int nfrmPoolWk; int nfrm; char *work; int workSize; int addInfMode; int bufFmt; int rsv[2]; } MwsfdCreInf_x0017F750;
+typedef struct MwsfdMemPool_x0017F750 { char *base; int size; char *cur; int used; } MwsfdMemPool_x0017F750;
+typedef enum MwsfdChromaPos_x0017F750 { MWSFD_CHROMA_POS_0_x0017F750, MWSFD_CHROMA_POS_1_x0017F750 } MwsfdChromaPos_x0017F750;
+typedef struct MwsfdPicInf_x0017F750 { unsigned int pictureStructure; unsigned int chromaFormat; int progressiveFrame; int topFieldFirst; int repeatFirstField; MwsfdChromaPos_x0017F750 chromaPosH; MwsfdChromaPos_x0017F750 chromaPosV; int rsv; } MwsfdPicInf_x0017F750;
+typedef struct MwsfdPicLog_x0017F750 { int valid; int picNo; int itemTypeThree; int hdrInfo; int compoMode; } MwsfdPicLog_x0017F750;
+typedef struct MwsfdPicUsrBuf_x0017F750 { char *addr; int size; int unit; } MwsfdPicUsrBuf_x0017F750;
+typedef struct MwsfdUsrBuf_x0017F750 { char *buf; int size; int concatCnt; } MwsfdUsrBuf_x0017F750;
+typedef struct MwsfdAddInf_x0017F750 { int valid; char *addr; int size; } MwsfdAddInf_x0017F750;
+typedef struct MwsfdSst_x0017F750 { int created; char *work; int workSize; SfdSj_x0017F750 *sj; int stmNo; int extHn; } MwsfdSst_x0017F750;
+typedef enum MwsfdStat_x0017F750 { MWSFD_STAT_STOP_x0017F750 = 0, MWSFD_STAT_PREP_x0017F750 = 1, MWSFD_STAT_PLAYING_x0017F750 = 2, MWSFD_STAT_PLAYEND_x0017F750 = 3, MWSFD_STAT_ERROR_x0017F750 = 4 } MwsfdStat_x0017F750;
+struct MwsfdPly_x0017F750 { MwsfdPlyVtbl_x0017F750 *vtbl; int used; MwsfdStat_x0017F750 stat; MwsfdCreInf_x0017F750 cre; int rsvMade; void *sfd; void *stm; void *adxt; struct LscObj_x0017F750 *lsc; int compoSet; int compoMode; int frmSync; int sjbSize; int waitingSvr; int svrBusy; int inSfdExec; int execFlg; int rsvMade2; signed char linkReq; signed char linkPrev; signed char pause; char pad119; int nEntry; void *curFrm; int limit; int count; int numSkipDisp; MwsfdPicInf_x0017F750 pic; void *sfx; char *sfxWork; int sfxWorkSize; int picCount; int logPos; int logWrite; MwsfdPicLog_x0017F750 log[8]; MwsfdPicUsrBuf_x0017F750 sysPicUsrBuf; MwsfdPicUsrBuf_x0017F750 attPicUsrBuf; MwsfdPicUsrBuf_x0017F750 *picUsrBuf; char *udbuf; int udbufsize; char *ud; int udsize; SfdSj_x0017F750 *addInfSj; char *addInfBase; int addInfSize; MwsfdUsrBuf_x0017F750 usrBuf; MwsfdAddInf_x0017F750 addInf; char pad436[4]; char *fname; int fnameMax; int stmReq; void *stmDir; int stmOfst; int stmNsct; SfdSj_x0017F750 *sj; SfdSj_x0017F750 *defSj; char *inputBuf; int inputBufSize; int inputXSize; int srcType; unsigned int srcBuf; int srcSize; int srcXSize; SfdSj_x0017F750 *memSj; char *memBuf; int memSize; MwsfdMemPool_x0017F750 pool; int mallocCnt; void *mallocBlk[32]; MwsfdSst_x0017F750 sst; char pad684[8]; int rsv; };
+struct LscObj_x0017F750;
+int func_00182420_x0017F750(int code) __asm__("func_00182420");
+void func_00182538_x0017F750(void *obj, int code) __asm__("func_00182538");
+void func_001870E8_x0017F750(const char *format, ...) __asm__("func_001870E8");
+struct SfdSj_x0017F750;
+struct SfdMpvCond_x0017F750;
+typedef void (*SfdErrFn_x0017F750)(void *obj, int code);
+typedef enum SfdBufFmt_x0017F750 { SFD_BUFFMT_0_x0017F750 = 0 } SfdBufFmt_x0017F750;
+typedef struct SfdCrePrm_x0017F750 { struct SfdTrnConfig_x0017F750 *trnConfig; char *bufWork; int bufSize[8]; int unit; int nfrm; int width; int height; SfdBufFmt_x0017F750 bufFmt; char *work; unsigned int workSize; } SfdCrePrm_x0017F750;
+typedef int (*SfdTrnFn_x0017F750)();
+typedef struct SfdTrnConfig_x0017F750 { SfdTrnFn_x0017F750 *fns[9]; } SfdTrnConfig_x0017F750;
+typedef struct SfdAdxCfg_x0017F750 { int bsize; int xsize; char *buf; int maxnch; int rsv; int worksize; char *work; } SfdAdxCfg_x0017F750;
+void func_00188380_x0017F750(struct SfdAdxCfg_x0017F750 *cfg) __asm__("func_00188380");
+int func_0018D700_x0017F750(void *sfd, SfdErrFn_x0017F750 func, void *obj) __asm__("func_0018D700");
+void *func_00197778_x0017F750(struct SfdCrePrm_x0017F750 *prm, int arg) __asm__("func_00197778");
+void func_0018F780_x0017F750(struct SfdMpvCond_x0017F750 *cond, int *work, int *bufs) __asm__("func_0018F780");
+void func_001957A8_x0017F750(int enable) __asm__("func_001957A8");
+typedef struct LscStm_x0017F750 { int id; const char *fname; int fname_sum; void *dir; int ofst; int nsct; int stat; int rdsct; } LscStm_x0017F750;
+typedef struct LscObj_x0017F750 { signed char used; signed char stat; signed char reading; signed char loop; signed char pause; char rsv1; short rsv2; SfdSj_x0017F750 *sj; SfdSjChunk_x0017F750 ck; int flow_min; int flow_max; int wpos; int rpos; int nstm; void *stm; int stm_size; int reqsct; int errcnt; LscStm_x0017F750 stms[16]; } LscObj_x0017F750;
+typedef struct M2vErrInf_x0017F750 { int (*func)(void *obj); void *obj; int code; int reserved[2]; } M2vErrInf_x0017F750;
+typedef struct Mpeg2Ext_x0017F750 { int sequence_header_code; int horizontal_size_value; int vertical_size_value; int aspect_ratio_information; int frame_rate_code; int bit_rate_value; int marker_bit; int vbv_buffer_size_value; int constrained_parameters_flag; int load_intra_quantiser_matrix; int load_non_intra_quantiser_matrix; int sec_start_code; int udsc_start_code; int start_code; int number_of_frame_centre_offsets; char pad3[4]; int extension_id; int profile_and_level_indication; int progressive_sequence; int chroma_format; int horizontal_size_extension; int vertical_size_extension; int bit_rate_extension; int vbv_buffer_size_extension; int low_delay; int frame_rate_extension_n; int frame_rate_extension_d; int video_format; int colour_description; int colour_primaries; int transfer_characteristics; int matrix_coefficients; int display_horizontal_size; int display_vertical_size; int scalable_mode; int layer_id; int lower_layer_prediction_horizontal_size; int lower_layer_prediction_vertical_size; int horizontal_subsampling_factor_m; int horizontal_subsampling_factor_n; int vertical_subsampling_factor_m; int vertical_subsampling_factor_n; int picture_mux_enable; int mux_to_progressive_sequence; int picture_mux_order; int picture_mux_factor; int group_start_code; int drop_frame_flag; int time_code_hours; int time_code_minutes; int time_code_seconds; int time_code_pictures; int closed_gop; int broken_link; int picture_start_code; int temporal_reference; int picture_coding_type; int vbv_delay; int full_pel_forward_vector; int forward_f_code; int full_pel_backward_vector; int backward_f_code; int extra_bit_picture; int extra_information_picture; char pad4b[4]; int f_code00; int f_code01; int f_code10; int f_code11; int intra_dc_precision; int picture_structure; int top_field_first; int frame_pred_frame_dct; int concealment_motion_vectors; int q_scale_type; int intra_vlc_format; int alternate_scan; int repeat_first_field; int chroma_420_type; int progressive_frame; int composite_display_flag; int v_axis; int field_sequence; int sub_carrier; int burst_amplitude; int sub_carrier_phase; int load_chroma_intra_quantiser_matrix; int load_chroma_non_intra_quantiser_matrix; int frame_centre_horizontal_offset[3]; int frame_centre_vertical_offset[3]; int reference_select_code; int forward_temporal_reference; int backward_temporal_reference; int lower_layer_temporal_reference; int lower_layer_horizontal_offset; int lower_layer_vertical_offset; int spatial_temporal_weight_code_table_index; int lower_layer_progressive_frame; int lower_layer_deinterlaced_field_select; int copyright_flag; int copyright_identifier; int original_or_copy; int copyright_reserved; int copyright_number_1; int copyright_number_2; int copyright_number_3; char pad5[268]; int horizontal_size; int vertical_size; int mb_width; int mb_height; int bit_rate; int vbv_buffer_size; char pad6[44]; int ext_state; int expected_ext_id; int scalable_seen; int spatial_scalable_seen; int blocks_per_macroblock; char pad796[4]; int dc_dct_pred_reset; char pad804[12]; int intra_dc_mult; char pad820[128]; int padded_width; int padded_height; int half_width; int half_height; int second_field; int field_parity; char pad8[164]; int rsv1[5]; int header_level; int f1160; int rsv2; int shc_count; int sec_count; int udsc_count; int call_count; int gsc_count; int psc_count; int picture_count[4]; char pad10[64]; int error_count; int warning_count; char pad1280[12]; int rsv3; char pad1296[8]; } Mpeg2Ext_x0017F750;
+typedef enum M2vFrameRate_x0017F750 { M2V_FRAME_RATE_FORBIDDEN_x0017F750 = 0 } M2vFrameRate_x0017F750;
+typedef enum M2vPicType_x0017F750 { M2V_PICTYPE_I_x0017F750 = 1, M2V_PICTYPE_P_x0017F750 = 2, M2V_PICTYPE_B_x0017F750 = 3, M2V_PICTYPE_D_x0017F750 = 4 } M2vPicType_x0017F750;
+typedef enum M2vPicStruct_x0017F750 { M2V_PICSTRUCT_TOP_FIELD_x0017F750 = 1, M2V_PICSTRUCT_BOTTOM_FIELD_x0017F750 = 2, M2V_PICSTRUCT_FRAME_x0017F750 = 3 } M2vPicStruct_x0017F750;
+typedef enum M2vChromaPos_x0017F750 { M2V_CHROMAPOS_COSITED_x0017F750 = 0, M2V_CHROMAPOS_CENTRE_x0017F750 = 1 } M2vChromaPos_x0017F750;
+typedef struct M2vPicAtr_x0017F750 { int horizontal_size; int vertical_size; int mb_width; int mb_height; M2vFrameRate_x0017F750 frame_rate_code; int temporal_reference; M2vPicType_x0017F750 picture_coding_type; int drop_frame_flag; int time_code_hours; int time_code_minutes; int time_code_seconds; int time_code_pictures; int gsc_count; int shc_count; M2vPicStruct_x0017F750 picture_structure; int chroma_format; M2vChromaPos_x0017F750 chroma_pos_h; int chroma_pos_v; int bit_rate; int vbv_buffer_size; unsigned short display_horizontal_size; unsigned short display_vertical_size; unsigned char field_count; unsigned char progressive_frame; unsigned char top_field_first; signed char repeat_first_field; signed char second_field; unsigned char aspect_ratio_information; unsigned char constrained_parameters_flag; unsigned char frame_rate_extension_n; unsigned char frame_rate_extension_d; unsigned char profile_and_level_indication; unsigned char progressive_sequence; unsigned char low_delay; unsigned char video_format; unsigned char colour_description; unsigned char colour_primaries; unsigned char transfer_characteristics; unsigned char matrix_coefficients; char pad101[27]; } M2vPicAtr_x0017F750;
+typedef void (*M2vUsrDatFn_x0017F750)(void *obj, int level);
+typedef struct M2vUsrSj_x0017F750 { struct SfdSj_x0017F750 *sj; M2vUsrDatFn_x0017F750 fn; void *obj; } M2vUsrSj_x0017F750;
+typedef struct M2vPicUsr_x0017F750 { char *buf; int size; int len; } M2vPicUsr_x0017F750;
+typedef void (*M2vCondFn_x0017F750)();
+typedef struct M2vObj_x0017F750 { int stat; M2vErrInf_x0017F750 err; M2vCondFn_x0017F750 cond[16]; M2vPicAtr_x0017F750 picatr; char pad216[64]; M2vUsrSj_x0017F750 usrsj[4]; M2vPicUsr_x0017F750 picusr; char pad340[12]; Mpeg2Ext_x0017F750 ext; char pad1656[8]; } M2vObj_x0017F750;
+extern void M2V_SetErrFunc_x0017F750(M2vObj_x0017F750 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef struct SfdMpvCond_x0017F750 { int rfb_width; int rfb_height; int max_width; int max_height; char *rfb_adr; int frm_width; int frm_height; int count; char *ta_adr; } SfdMpvCond_x0017F750;
+typedef struct MwsfdFrmBufs_x0017F750 { void *frm; void *dec; } MwsfdFrmBufs_x0017F750;
+extern int D_00425214_x0017F750 __asm__("D_00425214");
+extern char D_00465570_x0017F750[] __asm__("D_00465570");
+extern char D_00465590_x0017F750[] __asm__("D_00465590");
+extern char D_004655B0_x0017F750[] __asm__("D_004655B0");
+extern char D_004655E0_x0017F750[] __asm__("D_004655E0");
+extern unsigned int D_00484D90_x0017F750 __asm__("D_00484D90");
+extern int D_00484D94_x0017F750 __asm__("D_00484D94");
+extern int D_00484D98_x0017F750 __asm__("D_00484D98");
+extern int D_00484D9C_x0017F750 __asm__("D_00484D9C");
+extern int D_00484DA0_x0017F750 __asm__("D_00484DA0");
+extern int D_00484DA4_x0017F750 __asm__("D_00484DA4");
+extern int D_00484DA8_x0017F750 __asm__("D_00484DA8");
+extern int D_00484DAC_x0017F750 __asm__("D_00484DAC");
+extern int D_00484DB0_x0017F750 __asm__("D_00484DB0");
+extern SfdCrePrm_x0017F750 D_004250F8_x0017F750 __asm__("D_004250F8");
+extern SfdCrePrm_x0017F750 D_00425140_x0017F750 __asm__("D_00425140");
+extern SfdCrePrm_x0017F750 D_00425188_x0017F750 __asm__("D_00425188");
+extern SfdMpvCond_x0017F750 D_004251D0_x0017F750 __asm__("D_004251D0");
+extern SfdAdxCfg_x0017F750 D_004251F8_x0017F750 __asm__("D_004251F8");
+int func_0017FE68_x0017F750(unsigned int format) __asm__("func_0017FE68");
+void func_0017FEA0_x0017F750(MwsfdPly_x0017F750 *ply, char *buf, int bufsize, int offset) __asm__("func_0017FEA0");
+int MwsfdCrePrm_x0017F750(int format) __asm__("MwsfdCrePrm");
+void *MWSFD_Malloc_x0017F750(MwsfdPly_x0017F750 *ply, int size) __asm__("MWSFD_Malloc");
+void func_00180D88_x0017F750(MwsfdPly_x0017F750 *ply) __asm__("func_00180D88");
+void func_0017EF98_x0017F750(MwsfdCreInf_x0017F750 *cprm, int *inBuf, int *f1, int *xBuf, int *mpv0, int *mpv1, int *mpv2) __asm__("func_0017EF98");
+void func_0017F080_x0017F750(MwsfdCreInf_x0017F750 *cprm, int *width, int *height, int *halfWidth, int *halfHeight) __asm__("func_0017F080");
+void func_0017F0D0_x0017F750(MwsfdCreInf_x0017F750 *cprm, int *frmSize, int *picBufSize) __asm__("func_0017F0D0");
+int func_0017F220_x0017F750(MwsfdCreInf_x0017F750 *cprm, int *size_a, int *size_b) __asm__("func_0017F220");
+int func_0017F240_x0017F750(void) __asm__("func_0017F240");
+int func_0017F4D8_x0017F750(MwsfdPly_x0017F750 *ply, MwsfdCreInf_x0017F750 *cprm, MwsfdFrmBufs_x0017F750 *bufs) __asm__("func_0017F4D8");
+int func_0017F5E8_x0017F750(MwsfdPly_x0017F750 *ply, MwsfdCreInf_x0017F750 *cprm, void **frm) __asm__("func_0017F5E8");
+void *func_0017F750_x0017F750(MwsfdPly_x0017F750 *ply, MwsfdCreInf_x0017F750 *cprm) __asm__("func_0017F750");
+void *func_0017F750_x0017F750(MwsfdPly_x0017F750 *ply, MwsfdCreInf_x0017F750 *cprm) {
+    void *cwk1;
+    void *picusr_p;
+    int mode = cprm->type;
+    void *adxibuf_p;
+    void *adxwk_p;
+    int nfrm = cprm->nfrmPoolWk;
+    int width = cprm->maxWidth;
+    int height = cprm->maxHeight;
+    SfdCrePrm_x0017F750 crepara;
+    MwsfdFrmBufs_x0017F750 rfbbuf;
+    void *frmtbl[16];
+    int hnwksiz;
+    int buf700siz;
+    int rfbWidth;
+    int rfbHeight;
+    int cwidth;
+    int cheight;
+    void *cwk2;
+    int rfbret;
+    int frmret;
+    void *hnwork_p;
+    void *buf700_p;
+    int fnamesiz;
+    void *fname_p;
+    int fmt;
+    void *sfd;
+    func_0017EF98_x0017F750(cprm, &D_00484D94_x0017F750, &D_00484D98_x0017F750, &D_00484D9C_x0017F750, &D_00484DA0_x0017F750, &D_00484DB0_x0017F750, &D_00484DAC_x0017F750);
+    func_0017F0D0_x0017F750(cprm, &D_00484DA4_x0017F750, &D_00484DA8_x0017F750);
+    func_0017F220_x0017F750(cprm, &hnwksiz, &buf700siz);
+    fnamesiz = func_0017F240_x0017F750();
+    cwk1 = MWSFD_Malloc_x0017F750(ply, D_00484D98_x0017F750 + (D_00484D9C_x0017F750 + D_00484DA0_x0017F750 + 64));
+    cwk2 = MWSFD_Malloc_x0017F750(ply, D_00484D94_x0017F750 + 64);
+    rfbret = func_0017F4D8_x0017F750(ply, cprm, &rfbbuf);
+    frmret = func_0017F5E8_x0017F750(ply, cprm, frmtbl);
+    if (func_0017FE68_x0017F750(mode) == 1) {
+        adxibuf_p = MWSFD_Malloc_x0017F750(ply, D_00484DB0_x0017F750);
+        adxwk_p = MWSFD_Malloc_x0017F750(ply, D_00484DAC_x0017F750);
+    } else {
+        adxibuf_p = 0;
+        adxwk_p = 0;
+    }
+    picusr_p = MWSFD_Malloc_x0017F750(ply, 2048);
+    hnwork_p = MWSFD_Malloc_x0017F750(ply, hnwksiz);
+    buf700_p = MWSFD_Malloc_x0017F750(ply, buf700siz);
+    fname_p = MWSFD_Malloc_x0017F750(ply, fnamesiz);
+    if (cwk1 == 0 || cwk2 == 0 || rfbret != 0 || frmret != 0 || picusr_p == 0 || hnwork_p == 0 || fname_p == 0 ||
+        buf700_p == 0) {
+        func_001870E8_x0017F750(D_00465570_x0017F750);
+        func_00180D88_x0017F750(ply);
+        return 0;
+    }
+    if (func_0017FE68_x0017F750(mode) == 1) {
+        if (adxibuf_p == 0 || adxwk_p == 0) {
+            func_001870E8_x0017F750(D_00465590_x0017F750);
+            func_00180D88_x0017F750(ply);
+            return 0;
+        }
+    }
+    D_00484D90_x0017F750 = ((unsigned int)cwk2 + 63) & ~63;
+    func_0017F080_x0017F750(cprm, &rfbWidth, &rfbHeight, &cwidth, &cheight);
+    D_004251D0_x0017F750.rfb_width = cwidth;
+    D_004251D0_x0017F750.rfb_height = cheight;
+    D_004251D0_x0017F750.max_width = rfbWidth;
+    D_004251D0_x0017F750.max_height = rfbHeight;
+    D_004251D0_x0017F750.rfb_adr = 0;
+    D_004251D0_x0017F750.frm_width = rfbWidth;
+    D_004251D0_x0017F750.frm_height = rfbHeight;
+    D_004251D0_x0017F750.count = nfrm;
+    D_004251D0_x0017F750.ta_adr = 0;
+    D_004251F8_x0017F750.buf = (char *)adxibuf_p;
+    D_004251F8_x0017F750.work = (char *)adxwk_p;
+    switch (mode) {
+    case 1:
+        crepara = D_004250F8_x0017F750;
+        ply->inputBuf = (char *)D_00484D90_x0017F750;
+        ply->inputBufSize = D_00484D94_x0017F750 - D_00425214_x0017F750;
+        ply->inputXSize = D_00425214_x0017F750;
+        break;
+    case 2:
+        crepara = D_00425140_x0017F750;
+        ply->inputBuf = (char *)D_00484D90_x0017F750;
+        ply->inputBufSize = D_00484D94_x0017F750 - 2048;
+        ply->inputXSize = 2048;
+        break;
+    case 3:
+        crepara = D_00425188_x0017F750;
+        ply->inputBuf = (char *)D_00484D90_x0017F750;
+        ply->inputBufSize = D_00484D94_x0017F750 - D_00425214_x0017F750;
+        ply->inputXSize = D_00425214_x0017F750;
+        break;
+    default:
+        break;
+    }
+    crepara.unit = D_00425214_x0017F750;
+    if (D_00484D98_x0017F750 != 0) {
+        D_00484D98_x0017F750 = D_00484D98_x0017F750 - D_00484D98_x0017F750 % D_00425214_x0017F750;
+    }
+    fmt = MwsfdCrePrm_x0017F750(cprm->bufFmt);
+    crepara.bufWork = (char *)cwk1;
+    crepara.bufSize[0] = D_00484D98_x0017F750;
+    crepara.bufSize[1] = D_00484D9C_x0017F750;
+    crepara.bufSize[2] = D_00484DA0_x0017F750;
+    crepara.nfrm = nfrm;
+    crepara.width = width;
+    crepara.height = height;
+    crepara.bufFmt = (SfdBufFmt_x0017F750)fmt;
+    crepara.work = (char *)hnwork_p;
+    crepara.workSize = hnwksiz;
+    func_0018F780_x0017F750(&D_004251D0_x0017F750, (int *)&rfbbuf, (int *)frmtbl);
+    switch (mode) {
+    case 1:
+        func_00188380_x0017F750(&D_004251F8_x0017F750);
+        break;
+    }
+    func_001957A8_x0017F750(1);
+    sfd = func_00197778_x0017F750(&crepara, 0);
+    if (sfd == 0) {
+        func_00182420_x0017F750(-305);
+        func_001870E8_x0017F750(D_004655B0_x0017F750);
+        return 0;
+    }
+    if (func_0018D700_x0017F750(sfd, func_00182538_x0017F750, ply) != 0) {
+        func_00182420_x0017F750(-303);
+        func_001870E8_x0017F750(D_004655E0_x0017F750);
+        return 0;
+    }
+    ply->fname = fname_p;
+    ply->fnameMax = fnamesiz;
+    func_0017FEA0_x0017F750(ply, picusr_p, 2048, 64);
+    return sfd;
+}
+__asm__("# rebind func_0017F750 0x0017F750");
 int func_0017FE68_x0017FE68(unsigned int format) __asm__("func_0017FE68");
 /* mwsfcre_IsOutFmtDirect: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfcre.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
 int func_0017FE68_x0017FE68(unsigned int format) {

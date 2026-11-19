@@ -28112,7 +28112,57 @@ void func_00193960_x00193960(u8 *arg0, s32 arg1) {
     __asm__ __volatile__("");
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193980);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00193B18);
+typedef struct { s32 v[9]; } SfdC24_3b18_x00193B18;
+typedef struct { s32 v[2]; } SfdC8_3b18_x00193B18;
+typedef struct { s32 v[16]; } SfdC40_3b18_x00193B18;
+typedef struct { u8 pad[0x54]; void *p; u8 pad2[0x84]; } SfdEnt_3b18_x00193B18;
+typedef struct { s32 a, b; } SfdPair_3b18_x00193B18;
+extern SfdC24_3b18_x00193B18 D_00492988_x00193B18 __asm__("D_00492988");
+extern SfdC8_3b18_x00193B18 D_004929B0_x00193B18 __asm__("D_004929B0");
+extern SfdC40_3b18_x00193B18 D_004929B8_x00193B18 __asm__("D_004929B8");
+s32 func_00193D18_x00193B18(void *, u8 *) __asm__("func_00193D18");
+s32 func_0018D650_x00193B18(void *, s32) __asm__("func_0018D650");
+void func_00193DE0_x00193B18(void *, void *, s32) __asm__("func_00193DE0");
+void func_00193E80_x00193B18(void *) __asm__("func_00193E80");
+void func_00191588_x00193B18(void *) __asm__("func_00191588");
+void func_00193EA0_x00193B18(void *) __asm__("func_00193EA0");
+s32 func_00193B18_x00193B18(void *a0, u8 *w) __asm__("func_00193B18");
+s32 func_00193B18_x00193B18(void *a0, u8 *w)
+{
+    s32 i;
+
+    if (func_00193D18_x00193B18(a0, w) != 0) {
+        return func_0018D650_x00193B18(a0, 0xFF000F15);
+    }
+    *(SfdC24_3b18_x00193B18 *)(w + 0x4) = D_00492988_x00193B18;
+    *(SfdC8_3b18_x00193B18 *)(w + 0x28) = D_004929B0_x00193B18;
+    *(SfdC40_3b18_x00193B18 *)(w + 0x30) = D_004929B8_x00193B18;
+    *(s32 *)(w + 0x74) = 5;
+    *(s32 *)(w + 0x78) = 0xC0;
+    *(s32 *)(w + 0x134) = 1;
+    *(s32 *)(w + 0x0) = 0;
+    *(s32 *)(w + 0x70) = 0;
+    *(s32 *)(w + 0x130) = 0;
+    *(s32 *)(w + 0x7C) = 0;
+    *(s32 *)(w + 0x80) = 0;
+    *(s32 *)(w + 0x158) = 0;
+    *(s32 *)(w + 0x15C) = 0;
+    *(s32 *)(w + 0x160) = 0;
+    *(s32 *)(w + 0x164) = 0;
+    func_00193DE0_x00193B18(w + 0x16C, w + 0x30, 0x10);
+    *(s32 *)(w + 0x84) = 0;
+    *(s32 *)(w + 0x88) = 0;
+    func_00193E80_x00193B18(w + 0x8C);
+    *(s32 *)(w + 0x10C) = -1;
+    *(s32 *)(w + 0x110) = 0;
+    *(s32 *)(w + 0x114) = 0x7FFFFFFF;
+    func_00191588_x00193B18(w + 0x118);
+    func_00193EA0_x00193B18(w + 0xF2C);
+    for (i = 0; i < 16; i++) {
+        ((SfdEnt_3b18_x00193B18 *)(w + 0x16C))[i].p = &((SfdPair_3b18_x00193B18 *)(w + 0xF48))[i];
+    }
+    return 0;
+}
 struct SfdMpvCond_x00193D18;
 typedef struct SfdMpvCond_x00193D18 {
     int rfb_width;

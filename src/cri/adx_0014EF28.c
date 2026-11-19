@@ -860,7 +860,43 @@ s32 func_00150380(void) {
     D_00401084 -= 1;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001503A0);
+extern int D_00401084_x001503A0 __asm__("D_00401084");
+extern short D_0045FC50_x001503A0[] __asm__("D_0045FC50");
+void func_00150360_x001503A0(void) __asm__("func_00150360");
+int func_001503A0_x001503A0(signed char *key, int len, short *k0, short *k1, short *k2) __asm__("func_001503A0");
+int func_001503A0_x001503A0(signed char *key, int len, short *k0, short *k1, short *k2)
+{
+    int i;
+    int a;
+    int b;
+    int c;
+
+    if (D_00401084_x001503A0 == 0) {
+        func_00150360_x001503A0();
+    }
+    *k0 = 0;
+    *k1 = 0;
+    *k2 = 0;
+    if (key == 0 && len <= 0) {
+        return 0;
+    }
+    a = D_0045FC50_x001503A0[0x100];
+    for (i = 0; i < len; i++) {
+        a = D_0045FC50_x001503A0[(a * D_0045FC50_x001503A0[key[i] + 0x80]) % 1024];
+    }
+    b = D_0045FC50_x001503A0[0x200];
+    for (i = 0; i < len; i++) {
+        b = D_0045FC50_x001503A0[(b * D_0045FC50_x001503A0[key[i] + 0x80]) % 1024];
+    }
+    c = D_0045FC50_x001503A0[0x300];
+    for (i = 0; i < len; i++) {
+        c = D_0045FC50_x001503A0[(c * D_0045FC50_x001503A0[key[i] + 0x80]) % 1024];
+    }
+    *k0 = a;
+    *k1 = b;
+    *k2 = c;
+    return 0;
+}
 extern s32 D_00401084_x00150558 __asm__("D_00401084");
 extern u8 D_00460450_x00150558[] __asm__("D_00460450");
 void func_00150360_x00150558(void) __asm__("func_00150360");
@@ -3878,7 +3914,52 @@ Sint32_x00151E88 func_00151E88_x00151E88(ADXB_x00151E88 adxb, void *buf, Sint32_
         adxb->x98 = 1;
         return hdrlen;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151F88);
+typedef struct { short *in; int f4; char pad8[0x14 - 8]; short *out; int f18; int f1C; int f20; int f24; } Inf_1F88_x00151F88;
+typedef struct { int pad0; int stat; void *pd; char padC[0xE - 0xC]; signed char nch; char padF[0x48 - 0xF]; Inf_1F88_x00151F88 inf; char pad70[0x68 - 0x70 + 0x8]; int f70; int pad74; int (*cb1)(void *, int *, int *, int *); void *cb1obj; void (*cb2)(void *, int, int); void *cb2obj; char pad88[0x90 - 0x88]; int f90, f94; } Obj_1F88_x00151F88;
+int func_00161A88_x00151F88(void *) __asm__("func_00161A88");
+void func_00151F88_x00151F88(Obj_1F88_x00151F88 *o) __asm__("func_00151F88");
+void func_00151F88_x00151F88(Obj_1F88_x00151F88 *o)
+{
+    Inf_1F88_x00151F88 *inf = &o->inf;
+    short *in = inf->in;
+    short *out;
+    short *out2;
+    short *p;
+    int n;
+    int i;
+
+    if (o->stat == 1) {
+        if (func_00161A88_x00151F88(o->pd) == 0) {
+            o->cb1(o->cb1obj, (int *)((char *)o + 0x68), (int *)((char *)o + 0x6C), &o->f70);
+            n = inf->f18 - inf->f20;
+            if (inf->f24 < n) {
+                n = inf->f24;
+            }
+            if (inf->f4 < n) {
+                n = inf->f4;
+            }
+            out = inf->out + inf->f20;
+            if (o->nch == 2) {
+                out2 = inf->out + (inf->f1C + inf->f20);
+                for (i = 0; i < n; i++) {
+                    out[i] = in[i * 2];
+                    out2[i] = in[i * 2 + 1];
+                }
+            } else {
+                for (i = 0; i < n; i++) {
+                    out[i] = in[i];
+                }
+            }
+            o->stat = 2;
+            o->f90 = n;
+            o->f94 = n * o->nch * 2;
+        }
+    }
+    if (o->stat == 2) {
+        o->cb2(o->cb2obj, o->f94, o->f90);
+        o->stat = 3;
+    }
+}
 typedef signed char Sint8_x00152100;
 typedef unsigned char Uint8_x00152100;
 typedef short Sint16_x00152100;

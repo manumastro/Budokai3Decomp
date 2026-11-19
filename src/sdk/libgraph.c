@@ -46,7 +46,20 @@ void func_00100250_x00100250(short reset, short interlace, short mode, short fie
 s32 *sceGsGetGParam(void) {
     return &D_003EC410;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libgraph", func_001003F0);
+typedef unsigned int U128_03F0_x001003F0 __attribute__((mode(TI)));
+extern U128_03F0_x001003F0 D_003EC420_x001003F0[2] __asm__("D_003EC420");
+void func_001003F0_x001003F0(void) __asm__("func_001003F0");
+void func_001003F0_x001003F0(void)
+{
+    register int vi __asm__("$4") = 0;
+
+    *(volatile int *)0x10003C10 = 1;
+    *(volatile int *)0x10003C20 = 2;
+    __asm__ volatile(".set noreorder\n\tsync.l\n\tcfc2.ni %0, $vi28\n\tori %0, %0, 0x200\n\tctc2.ni %0, $vi28\n\tsync.p\n\t.set reorder" : "+r"(vi));
+    *(volatile U128_03F0_x001003F0 *)0x10005000 = D_003EC420_x001003F0[0];
+    *(volatile U128_03F0_x001003F0 *)0x10005000 = D_003EC420_x001003F0[1];
+    *(volatile int *)0x10003000 = 1;
+}
 extern char D_0045DF50_x00100458[] __asm__("D_0045CB80");
 extern int func_003B4220_x00100458(const char *path, int flag) __asm__("func_0010F5E8");
 extern int func_003B4868_x00100458(int fd, void *buf, int nbyte) __asm__("func_0010FC30");

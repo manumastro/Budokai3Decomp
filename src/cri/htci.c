@@ -845,7 +845,71 @@ Sint32_x00168F08 func_00168F08_x00168F08(const Char8_x00168F08* flist, Sint8_x00
     SRD_SetHistory_x00168F08(0x6401);
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00169068);
+typedef struct { char *base; unsigned int num; int f8; int fC; } Tbl_9068_x00169068;
+extern Tbl_9068_x00169068 D_00413D00_x00169068 __asm__("D_00413D00");
+extern int D_00413D10_x00169068 __asm__("D_00413D10");
+extern int D_00413D14_x00169068 __asm__("D_00413D14");
+extern char D_00463BB8_x00169068[] __asm__("D_00463BB8");
+extern char D_00463BE0_x00169068[] __asm__("D_00463BE0");
+extern char D_00463C00_x00169068[] __asm__("D_00463C00");
+extern char D_00463C18_x00169068[] __asm__("D_00463C18");
+void *memset_x00169068(void *, int, unsigned int) __asm__("memset");
+void func_00168B48_x00169068(char *, char *) __asm__("func_00168B48");
+void func_00164D38_x00169068(int) __asm__("func_00164D38");
+int func_00165048_x00169068(char *, int) __asm__("func_00165048");
+int func_001650B0_x00169068(int) __asm__("func_001650B0");
+long func_001681F0_x00169068(int) __asm__("func_001681F0");
+int scePrintf_x00169068(const char *, ...) __asm__("scePrintf");
+int func_00169068_x00169068(char *base, int n) __asm__("func_00169068");
+int func_00169068_x00169068(char *base, int n)
+{
+    char path[256];
+    char *ent;
+    int i;
+    int fd;
+    int cnt = 0;
+    int err = 0;
+
+    memset_x00169068(path, 0, 256);
+    if (n >= 14) {
+        n = 13;
+    }
+    for (i = 0; i < n; i++) {
+        ent = base + (D_00413D00_x00169068.f8 * 8 + i * (D_00413D00_x00169068.fC + 1));
+        func_00168B48_x00169068(ent, path);
+        if (*ent != 0) {
+            func_00164D38_x00169068(0x6600);
+            fd = func_00165048_x00169068(path, 1);
+            func_00164D38_x00169068(0x6601);
+            if (fd < 0) {
+                if (D_00413D14_x00169068 == 0) {
+                    scePrintf_x00169068(D_00463BB8_x00169068, path);
+                }
+                err++;
+            } else {
+                ((int *)base)[i * 2] = fd;
+                cnt++;
+                ((int *)base)[i * 2 + 1] = func_001681F0_x00169068(fd);
+                if (D_00413D14_x00169068 == 0) {
+                    scePrintf_x00169068(D_00463BE0_x00169068, ent);
+                }
+                func_00164D38_x00169068(0x6800);
+                func_001650B0_x00169068(fd);
+                func_00164D38_x00169068(0x6801);
+                func_00164D38_x00169068(0x6700);
+                func_00165048_x00169068(path, D_00413D10_x00169068);
+                func_00164D38_x00169068(0x6701);
+            }
+        }
+    }
+    if (D_00413D14_x00169068 == 0) {
+        scePrintf_x00169068(D_00463C00_x00169068, cnt);
+    }
+    if (err > 0 && D_00413D14_x00169068 != 2) {
+        scePrintf_x00169068(D_00463C18_x00169068, 10);
+    }
+    return cnt;
+}
 typedef struct { char *base; unsigned int num; int f8; int fC; } Tbl_9258_x00169258;
 extern Tbl_9258_x00169258 D_00413D00_x00169258 __asm__("D_00413D00");
 extern int D_00413D14_x00169258 __asm__("D_00413D14");
