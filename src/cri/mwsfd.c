@@ -10303,7 +10303,20 @@ int mwPlyGetNumDecPool_x00183EB0(MwsfdPly_x00183EB0 *ply) {
     }
     return num;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetNumTotalDec);
+extern s32 D_004664B8_x00183F18 __asm__("D_004664B8");
+void func_00183A00_x00183F18(s32, s32 *) __asm__("func_00183A00");
+s32 mwPlyGetNumTotalDec_x00183F18(s32 arg0) __asm__("mwPlyGetNumTotalDec");
+s32 mwPlyGetNumTotalDec_x00183F18(s32 arg0)
+{
+    s32 buf[16];
+
+    if (func_00183B38(arg0) == 0) {
+        func_001870E8(&D_004664B8_x00183F18);
+        return 0;
+    }
+    func_00183A00_x00183F18(arg0, buf);
+    return buf[0];
+}
 typedef struct SfdSj_x00183F70 SfdSj_x00183F70;
 typedef struct SfdSjChunk_x00183F70 {
     char *data;
