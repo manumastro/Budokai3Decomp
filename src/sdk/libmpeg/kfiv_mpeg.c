@@ -228,8 +228,54 @@ s32 func_00107DD0_x00107DD0(u8 *arg0) __asm__("func_00107DD0");
 s32 func_00107DD0_x00107DD0(u8 *arg0) {
     return *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x40)) + 0x87C);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00107DE0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00107E58);
+typedef struct { int type; } sceMpegCbData_x00107DE0;
+typedef int (*sceMpegCallback_x00107DE0)(void *mp, sceMpegCbData_x00107DE0 *cbd, void *data);
+typedef struct { sceMpegCallback_x00107DE0 func; void *data; void *gp; } CB_x00107DE0;
+typedef struct { int x0, x4, x8; CB_x00107DE0 cb[8]; } CBT_x00107DE0;
+typedef struct { char p0[0x40]; CBT_x00107DE0 *cb; } sceMpeg_x00107DE0;
+static inline void *SetGp_x00107DE0(void *gp)
+{
+    void *old;
+    __asm__ volatile("move %0, $28\n\tmove $28, %1" : "=&r"(old) : "r"(gp) : "memory");
+    return old;
+}
+int func_00107DE0_x00107DE0(sceMpeg_x00107DE0 *mp, sceMpegCbData_x00107DE0 *cbd) __asm__("func_00107DE0");
+/* _sceMpegDispatchMpegCallback: from https://github.com/Komasia/sly2-decomp (src/lib/_sceMpegDispatchMpegCallback.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00107DE0_x00107DE0(sceMpeg_x00107DE0 *mp, sceMpegCbData_x00107DE0 *cbd)
+{
+    int ret = 0; CBT_x00107DE0 *t; sceMpegCallback_x00107DE0 f;
+    if (mp && (t = mp->cb) && (f = t->cb[cbd->type].func)) {
+        void *old = SetGp_x00107DE0(t->cb[cbd->type].gp);
+        ret = f(mp, cbd, t->cb[cbd->type].data);
+        SetGp_x00107DE0(old);
+    }
+    return ret;
+}
+typedef struct { int type; int pad[7]; } sceMpegCbData_x00107E58;
+typedef int (*sceMpegCallback_x00107E58)(void *mp, sceMpegCbData_x00107E58 *cbd, void *data);
+typedef struct { sceMpegCallback_x00107E58 func; void *data; void *gp; } CB_x00107E58;
+typedef struct { char p0[0x40]; CB_x00107E58 *cb; } sceMpeg_x00107E58;
+static inline void *SetGp_x00107E58(void *gp)
+{
+    void *old;
+    __asm__ volatile("move %0, $28\n\tmove $28, %1" : "=&r"(old) : "r"(gp) : "memory");
+    return old;
+}
+int func_00107E58_x00107E58(sceMpeg_x00107E58 *mp) __asm__("func_00107E58");
+/* _sceMpegDispatchMpegCbNodata: from https://github.com/Komasia/sly2-decomp (src/lib/_sceMpegDispatchMpegCbNodata.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00107E58_x00107E58(sceMpeg_x00107E58 *mp)
+{
+    sceMpegCbData_x00107E58 cbd;
+    CB_x00107E58 *t;
+    sceMpegCallback_x00107E58 f;
+    cbd.type = 1;
+    if (mp && (t = mp->cb) && (f = (t + cbd.type)[1].func)) {
+        void *old = SetGp_x00107E58(((void **)(t + cbd.type))[5]);
+        f(mp, &cbd, (t + cbd.type)[1].data);
+        SetGp_x00107E58(old);
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00107ED0);
 s32 func_00107F18_x00107F18(u8 *arg0) __asm__("func_00107F18");
 s32 func_00107F18_x00107F18(u8 *arg0) {

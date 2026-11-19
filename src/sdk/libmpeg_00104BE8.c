@@ -650,8 +650,160 @@ void func_00107280_x00107280(void *m) {
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107348);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107500);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_001077B8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107928);
+typedef struct { int type; int pad[7]; } sceMpegCbData_x001077B8;
+typedef int (*sceMpegCallback_x001077B8)(void *mp, sceMpegCbData_x001077B8 *cbd, void *data);
+typedef struct { sceMpegCallback_x001077B8 func; void *data; void *gp; } CB_x001077B8;
+typedef struct {
+    int x0; int x4; int x8; char pC[0xC0 - 0xC]; int xC0;
+    char pC4[0x128 - 0xC4]; int x128; char p12C[0x130 - 0x12C]; int second_field;
+    char p134[0x184 - 0x134]; int picture_structure;
+    char p188[0x878 - 0x188]; int stop;
+} D_x001077B8;
+typedef struct { int x0, x4, x8; char p0[0x40 - 0xC]; void *sys; } sceMpeg_x001077B8;
+static inline void *SetGp_x001077B8(void *gp)
+{
+    void *old;
+    __asm__ volatile("move %0, $28\n\tmove $28, %1" : "=&r"(old) : "r"(gp) : "memory");
+    return old;
+}
+static inline int _sceMpegDispatchMpegCbNodata_x001077B8(sceMpeg_x001077B8 *mp)
+{
+    sceMpegCbData_x001077B8 cbd;
+    CB_x001077B8 *t;
+    sceMpegCallback_x001077B8 f;
+    cbd.type = 1;
+    if (mp && (t = ((CB_x001077B8 **)mp)[16]) && (f = (t + cbd.type)[1].func)) {
+        void *old = SetGp_x001077B8(((void **)(t + cbd.type))[5]);
+        f(mp, &cbd, (t + cbd.type)[1].data);
+        SetGp_x001077B8(old);
+    }
+    return 1;
+}
+int _updateRefImage_x001077B8(D_x001077B8 *d, int second) __asm__("func_00107500");
+int _decPicture_x001077B8(D_x001077B8 *d) __asm__("func_00108068");
+void _sceMpegOutputFrame_x001077B8(D_x001077B8 *d, int a, int b) __asm__("func_00108C78");
+static inline int _decodeFrame_x001077B8(D_x001077B8 *d)
+{
+    int t, u = _updateRefImage_x001077B8(d, 0);
+    t = 0;
+    if (u) t = _decPicture_x001077B8(d) != 0;
+    return t;
+}
+int func_001077B8_x001077B8(sceMpeg_x001077B8 *mp, int n, int limit) __asm__("func_001077B8");
+/* _decodeOrSkipFrame: from https://github.com/Komasia/sly2-decomp (src/lib/_decodeOrSkipFrame.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001077B8_x001077B8(sceMpeg_x001077B8 *mp, int n, int limit)
+{
+    D_x001077B8 *d = mp->sys;
+    int skipped = 0;
+    int r;
+
+    if (limit == -1 || n < limit) {
+        if (d->x8 == 0) {
+            mp->x8 = 0;
+            d->x8 = 1;
+        }
+        r = _decodeFrame_x001077B8(d);
+    } else {
+        r = _updateRefImage_x001077B8(d, 0);
+        _sceMpegDispatchMpegCbNodata_x001077B8(mp);
+        skipped = 1;
+    }
+    if (d->stop)
+        return 0;
+    _sceMpegOutputFrame_x001077B8(d, d->x128, d->x4);
+    if (d->picture_structure != 3 && !skipped)
+        d->second_field = !d->second_field;
+    mp->x8 = d->x128 - d->xC0;
+    if (!d->second_field) {
+        d->x128++;
+        d->x4++;
+    }
+    return r;
+}
+typedef struct { int type; int pad[7]; } sceMpegCbData_x00107928;
+typedef int (*sceMpegCallback_x00107928)(void *mp, sceMpegCbData_x00107928 *cbd, void *data);
+typedef struct { sceMpegCallback_x00107928 func; void *data; void *gp; } CB_x00107928;
+typedef struct {
+    int x0; int x4; int x8; char pC[0xC0 - 0xC]; int xC0; char pC4[0xE8 - 0xC4]; int xE8;
+    char pEC[0x128 - 0xEC]; int x128; char p12C[0x130 - 0x12C]; int second_field;
+    char p134[0x184 - 0x134]; int picture_structure;
+    char p188[0x878 - 0x188]; int stop;
+} D_x00107928;
+typedef struct { int x0, x4, x8; char p0[0x40 - 0xC]; D_x00107928 *sys; } sceMpeg_x00107928;
+static inline void *SetGp_x00107928(void *gp)
+{
+    void *old;
+    __asm__ volatile("move %0, $28\n\tmove $28, %1" : "=&r"(old) : "r"(gp) : "memory");
+    return old;
+}
+static inline int _sceMpegDispatchMpegCbNodata_x00107928(sceMpeg_x00107928 *mp)
+{
+    sceMpegCbData_x00107928 cbd;
+    CB_x00107928 *t;
+    sceMpegCallback_x00107928 f;
+    cbd.type = 1;
+    if (mp && (t = ((CB_x00107928 **)mp)[16]) && (f = (t + cbd.type)[1].func)) {
+        void *old = SetGp_x00107928(((void **)(t + cbd.type))[5]);
+        f(mp, &cbd, (t + cbd.type)[1].data);
+        SetGp_x00107928(old);
+    }
+    return 1;
+}
+int _updateRefImage_x00107928(D_x00107928 *d, int second) __asm__("func_00107500");
+int _decPicture_x00107928(D_x00107928 *d) __asm__("func_00108068");
+void _sceMpegOutputFrame_x00107928(D_x00107928 *d, int a, int b) __asm__("func_00108C78");
+int _sceMpegNextHeader_x00107928(D_x00107928 *d) __asm__("func_00106AA8");
+void func_0024C360_x00107928(sceMpeg_x00107928 *mp) __asm__("func_00108BB8");
+int func_00107928_x00107928(sceMpeg_x00107928 *mp, int n, int limit) __asm__("func_00107928");
+/* _decodeOrSkipField: from https://github.com/Komasia/sly2-decomp (src/lib/_decodeOrSkipField.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00107928_x00107928(sceMpeg_x00107928 *mp, int n, int limit)
+{
+    D_x00107928 *d = mp->sys;
+    int decode = 0;
+    int r, ok, one, exp;
+
+    d->second_field = 0;
+    if (limit == -1 || n < limit)
+        decode = 1;
+    if (d->x8 == 0) {
+        mp->x8 = 0;
+        d->x8 = 1;
+    }
+    if (_updateRefImage_x00107928(d, 0) && decode)
+        _decPicture_x00107928(d);
+    if (d->stop)
+        return 0;
+    one = 1;
+    d->second_field = one;
+    if (!_sceMpegNextHeader_x00107928(d)) {
+        func_0024C360_x00107928(mp);
+        d->x0 = one;
+        return 0;
+    }
+    exp = 2;
+    if (d->xE8 ^ 1)
+        exp = one;
+    if (d->picture_structure != exp)
+        return -1;
+    ok = 0;
+    if (_updateRefImage_x00107928(d, 1))
+        ok = one;
+    r = 0;
+    if (ok && decode) {
+        if (_decPicture_x00107928(d))
+            r = one;
+    }
+    if (d->stop)
+        return 0;
+    _sceMpegOutputFrame_x00107928(d, d->x128, d->x4);
+    d->second_field = 0;
+    mp->x8 = d->x128 - d->xC0;
+    d->x128++;
+    d->x4++;
+    if (!decode)
+        _sceMpegDispatchMpegCbNodata_x00107928(mp);
+    return r;
+}
 void sceIpuInit_x00107AF0(void) __asm__("func_00109BD8");
 int DIntr_x00107AF0(void) __asm__("DI");
 int EIntr_x00107AF0(void) __asm__("EI");
