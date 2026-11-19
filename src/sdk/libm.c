@@ -105,7 +105,65 @@ double func_0011B4E8_x0011B4E8(double y, double x)
 }
 __asm__("# rebind func_0011B4E8 0x0011B4E8");
 __asm__("# noswap func_0011B4E8");
-INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011B828);
+typedef int i32_B828_x0011B828;
+typedef unsigned int u32_B828_x0011B828;
+typedef union { double value; struct { u32_B828_x0011B828 lsw; u32_B828_x0011B828 msw; } parts; } shape_B828_x0011B828;
+double func_0011B828_x0011B828(double x) __asm__("func_0011B828");
+double func_0011B828_x0011B828(double x)
+{
+    double hfsq, f, s, z, R, w, t1, t2, dk;
+    i32_B828_x0011B828 k, hx, i, j;
+    u32_B828_x0011B828 lx;
+
+    do { shape_B828_x0011B828 ew_u; ew_u.value = (x); (hx) = ew_u.parts.msw; (lx) = ew_u.parts.lsw; } while (0);
+
+    k = 0;
+    if (hx < 0x00100000) {
+        if (((hx & 0x7fffffff) | lx) == 0)
+            return -1.79769313486231570815e+308; /* -two54/zero as the original compiler folded it (-DBL_MAX) */
+        if (hx < 0) return (x - x) / 0.0;
+        k -= 54; x *= 1.80143985094819840000e+16;
+        do { shape_B828_x0011B828 gh_u; gh_u.value = (x); (hx) = gh_u.parts.msw; } while (0);
+    }
+    if (hx >= 0x7ff00000) return x + x;
+    k += (hx >> 20) - 1023;
+    hx &= 0x000fffff;
+    i = (hx + 0x95f64) & 0x100000;
+    do { shape_B828_x0011B828 sh_u; sh_u.value = (x); sh_u.parts.msw = (hx | (i ^ 0x3ff00000)); (x) = sh_u.value; } while (0);
+    k += (i >> 20);
+    f = x - 1.0;
+    if ((0x000fffff & (2 + hx)) < 3) {
+        if (f == 0.0) {
+            if (k == 0) return 0.0;
+            else { dk = (double)k; return dk * 6.93147180369123816490e-01 + dk * 1.90821492927058770002e-10; }
+        }
+        R = f * f * (0.5 - 0.33333333333333333 * f);
+        if (k == 0) return f - R;
+        else { dk = (double)k;
+            return dk * 6.93147180369123816490e-01 - ((R - dk * 1.90821492927058770002e-10) - f); }
+    }
+    s = f / (2.0 + f);
+    dk = (double)k;
+    z = s * s;
+    i = hx - 0x6147a;
+    w = z * z;
+    j = 0x6b851 - hx;
+    t1 = w * (3.999999999940941908e-01 + w * (2.222219843214978396e-01 + w * 1.531383769920937332e-01));
+    t2 = z * (6.666666666666735130e-01 + w * (2.857142874366239149e-01 + w * (1.818357216161805012e-01 + w * 1.479819860511658591e-01)));
+    i |= j;
+    R = t2 + t1;
+    if (i > 0) {
+        hfsq = 0.5 * f * f;
+        if (k == 0) return f - (hfsq - s * (hfsq + R));
+        else
+            return dk * 6.93147180369123816490e-01 - ((hfsq - (s * (hfsq + R) + dk * 1.90821492927058770002e-10)) - f);
+    } else {
+        if (k == 0) return f - s * (f - R);
+        else
+            return dk * 6.93147180369123816490e-01 - ((s * (f - R) - dk * 1.90821492927058770002e-10) - f);
+    }
+}
+__asm__("# rebind func_0011B828 0x0011B828");
 typedef union {
     float value;
     unsigned int word;
