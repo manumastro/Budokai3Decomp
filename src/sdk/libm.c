@@ -404,7 +404,113 @@ float func_0011CBA0_x0011CBA0(float x, float y)
         else do { ieee_float_shape_type_x0011CBA0 sf_u; sf_u.word = (j); (z) = sf_u.value; } while (0);
         return s*z;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011D380);
+typedef union { float value; unsigned int word; } ieee_float_shape_type_x0011D380;
+extern const int two_over_pi_x0011D380[198] __asm__("D_0045E118");
+static const int npio2_hw[32] = {
+        0x3FC90F00, 0x40490F00, 0x4096CB00, 0x40C90F00, 0x40FB5300, 0x4116CB00, 0x412FED00, 0x41490F00,
+        0x41623100, 0x417B5300, 0x418A3A00, 0x4196CB00, 0x41A35C00, 0x41AFED00, 0x41BC7E00, 0x41C90F00,
+        0x41D5A000, 0x41E23100, 0x41EEC200, 0x41FB5300, 0x4203F200, 0x420A3A00, 0x42108300, 0x4216CB00,
+        0x421D1400, 0x42235C00, 0x4229A500, 0x422FED00, 0x42363600, 0x423C7E00, 0x4242C700, 0x42490F00,
+};
+extern float Libc_Fabsf_x0011D380(float x) __asm__("func_0011F2F8");
+extern int Math_RemPio2Kernel_x0011D380(float *x, float *y, int e0, int nx, int prec, const int *ipio2) __asm__("func_0011D950");
+int func_0011D380_x0011D380(float x, float *y) __asm__("func_0011D380");
+/* Math_RemPio2: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libgcc/libgcc_11E950.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+int func_0011D380_x0011D380(float x, float *y)
+{
+        const float
+        zero = 0.0000000000e+00,
+        half = 5.0000000000e-01,
+        two8 = 2.5600000000e+02,
+        invpio2 = 6.3661980629e-01,
+        pio2_1 = 1.5707855225e+00,
+        pio2_1t = 1.0804334124e-05,
+        pio2_2 = 1.0804273188e-05,
+        pio2_2t = 6.0770999344e-11,
+        pio2_3 = 6.0770943833e-11,
+        pio2_3t = 6.1232342629e-17;
+        float z,w,t,r,fn;
+        float tx[3];
+        int i,j,n,ix,hx;
+        int e0,nx;
+        do { ieee_float_shape_type_x0011D380 gf_u; gf_u.value = (x); (hx) = gf_u.word; } while (0);
+        ix = hx&0x7fffffff;
+        if(ix<=0x3f490fd8)
+            {y[0] = x; y[1] = 0; return 0;}
+        if(ix<0x4016cbe4) {
+            if(hx>0) {
+                z = x - pio2_1;
+                if((ix&0xfffffff0)!=0x3fc90fd0) {
+                    y[0] = z - pio2_1t;
+                    y[1] = (z-y[0])-pio2_1t;
+                } else {
+                    z -= pio2_2;
+                    y[0] = z - pio2_2t;
+                    y[1] = (z-y[0])-pio2_2t;
+                }
+                return 1;
+            } else {
+                z = x + pio2_1;
+                if((ix&0xfffffff0)!=0x3fc90fd0) {
+                    y[0] = z + pio2_1t;
+                    y[1] = (z-y[0])+pio2_1t;
+                } else {
+                    z += pio2_2;
+                    y[0] = z + pio2_2t;
+                    y[1] = (z-y[0])+pio2_2t;
+                }
+                return -1;
+            }
+        }
+        if(ix<=0x43490f80) {
+            t = Libc_Fabsf_x0011D380(x);
+            n = (int) (t*invpio2+half);
+            fn = (float)n;
+            r = t-fn*pio2_1;
+            w = fn*pio2_1t;
+            if(n<32&&(ix&0xffffff00)!=npio2_hw[n-1]) {
+                y[0] = r-w;
+            } else {
+                unsigned int high;
+                j = ix>>23;
+                y[0] = r-w;
+                do { ieee_float_shape_type_x0011D380 gf_u; gf_u.value = (y[0]); (high) = gf_u.word; } while (0);
+                i = j-((high>>23)&0xff);
+                if(i>8) {
+                    t = r;
+                    w = fn*pio2_2;
+                    r = t-w;
+                    w = fn*pio2_2t-((t-r)-w);
+                    y[0] = r-w;
+                    do { ieee_float_shape_type_x0011D380 gf_u; gf_u.value = (y[0]); (high) = gf_u.word; } while (0);
+                    i = j-((high>>23)&0xff);
+                    if(i>25) {
+                        t = r;
+                        w = fn*pio2_3;
+                        r = t-w;
+                        w = fn*pio2_3t-((t-r)-w);
+                        y[0] = r-w;
+                    }
+                }
+            }
+            y[1] = (r-y[0])-w;
+            if(hx<0) {y[0] = -y[0]; y[1] = -y[1]; return -n;}
+            else return n;
+        }
+        e0 = (int)((ix>>23)-134);
+        do { ieee_float_shape_type_x0011D380 sf_u; sf_u.word = (ix - ((int)e0<<23)); (z) = sf_u.value; } while (0);
+        for(i=0;i<2;i++) {
+                tx[i] = (float)((int)(z));
+                z = (z-tx[i])*two8;
+        }
+        tx[2] = z;
+        nx = 3;
+        while(tx[nx-1]==zero) nx--;
+        n = Math_RemPio2Kernel_x0011D380(tx,y,e0,nx,2,two_over_pi_x0011D380);
+        if(hx<0) {y[0] = -y[0]; y[1] = -y[1]; return -n;}
+        return n;
+}
+__asm__("# rebind func_0011D380 0x0011D380");
 typedef union {
     float value;
     unsigned int word;

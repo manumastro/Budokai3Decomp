@@ -101,12 +101,13 @@ def ref_events(lines, first, last, data_labels):
         m = re.match(r"^\s+li\.d\s+\$(f?)\d+\s*,\s*(\S+)", code)
         if m:
             # gas puts the double in the object's .rodata (lui + ld / lwc1 x2), except into a 64-bit general
-            # register when its low word is 0 (1.0, 0.5, 2^32...): then it builds it with lui/dsll, no relocation
+            # register when one lui makes it (low word 0, high word's low half 0: 1.0, 0.5, 2^32...): then it builds
+            # it with lui/dsll32, no relocation
             try:
-                low = struct.unpack("<II", struct.pack("<d", float(m.group(2))))[0]
+                low, high = struct.unpack("<II", struct.pack("<d", float(m.group(2))))
             except ValueError:
-                low = 1
-            if m.group(1) or low:
+                low, high = 1, 1
+            if m.group(1) or low or high & 0xFFFF:
                 out.append((i, "<li.d>", "HL"))
             continue
         if not re.match(r"^\s+[a-z]", code) or code.strip().startswith("."):
@@ -181,6 +182,35 @@ def strip_stubs(text):
         if not inside:
             out.append(ln)
     return "\n".join(out)
+
+
+def orphans(lines, drop):
+    """Local data labels ($LCn) referenced only from inside the definitions of dropped data labels."""
+    refs = {}
+    cur = ".text"
+    owner = None
+    for ln in lines:
+        cur = section_of(ln, cur)
+        m = LABEL.match(ln)
+        if cur != ".text" and m:
+            owner = m.group(1)
+            continue
+        code = ln.split("#", 1)[0]
+        if re.match(r"^\s*\.(type|size)\b", code):
+            continue
+        for r in re.findall(r"\$LC\d+(?![\w.$])", code):
+            refs.setdefault(r, set()).add(owner if cur != ".text" else None)
+    out = set()
+    changed = True
+    while changed:
+        changed = False
+        for lab, owners in refs.items():
+            if lab in drop or lab in out:
+                continue
+            if owners and all(o is not None and o != lab and (o in drop or o in out) for o in owners):
+                out.add(lab)
+                changed = True
+    return out
 
 
 def rebind(text, extra=(), log=sys.stderr):
@@ -270,6 +300,9 @@ def rebind(text, extra=(), log=sys.stderr):
                 drop.add(label)
                 if re.fullmatch(r"\$L\d+", label):
                     jlabels[label] = base
+        # data only the dropped data pointed at (the strings of a rebound table of string pointers) goes too
+        if drop:
+            drop |= orphans(lines, drop)
         # the rewritten labels' definitions go; a jump table's entries become the executable's .L labels
         defs = []
         if drop:
