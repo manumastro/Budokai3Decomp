@@ -748,7 +748,7 @@ extern void Forward33B658_33E678_x001598E8(void) __asm__("func_00152508");
 extern void Forward33B670_33E690_x001598E8(void) __asm__("func_00152520");
 extern void func_00327418_x001598E8(void *a) __asm__("func_00159990");
 extern void func_003272C0_x001598E8(void *a) __asm__("func_00159838");
-extern void func_00326890_x001598E8(void *a) __asm__("ADXB_DecodeHeader");
+extern void func_00326890_x001598E8(void *a) __asm__("adxsjd_decode_prep");
 extern void func_00327568_x001598E8(void *a) __asm__("func_00159AD8");
 void func_003272C0_x001598E8(void *a0) __asm__("func_00159838");
 void func_001598E8_x001598E8(void *a0) __asm__("func_001598E8");

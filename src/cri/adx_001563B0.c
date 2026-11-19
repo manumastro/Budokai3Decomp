@@ -6064,4 +6064,234 @@ void func_00158E90(u8 *arg0) {
     func_00151160(*(s32 *)((u8 *)arg0 + 4));
     *(s8 *)((u8 *)arg0 + 1) = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", ADXB_DecodeHeader);
+typedef struct AdxPdObj_x00158EC0 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x00158EC0;
+typedef struct SfdSj_x00158EC0 SfdSj_x00158EC0;
+typedef struct SfdSjChunk_x00158EC0 {
+    char *data;
+    int len;
+} SfdSjChunk_x00158EC0;
+typedef struct SfdSjVtbl_x00158EC0 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x00158EC0 *sj);
+    int (*getUuid)(SfdSj_x00158EC0 *sj);
+    void (*reset)(SfdSj_x00158EC0 *sj);
+    void (*getChunk)(SfdSj_x00158EC0 *sj, int id, int n, SfdSjChunk_x00158EC0 *ck);
+    void (*ungetChunk)(SfdSj_x00158EC0 *sj, int id, SfdSjChunk_x00158EC0 *ck);
+    void (*putChunk)(SfdSj_x00158EC0 *sj, int id, SfdSjChunk_x00158EC0 *ck);
+    int (*getNumData)(SfdSj_x00158EC0 *sj, int id);
+} SfdSjVtbl_x00158EC0;
+struct SfdSj_x00158EC0 {
+    SfdSjVtbl_x00158EC0 *vtbl;
+};
+void SJ_SplitChunk_x00158EC0(SfdSjChunk_x00158EC0 *ck, int nbyte, SfdSjChunk_x00158EC0 *head, SfdSjChunk_x00158EC0 *rest) __asm__("func_0016F050");
+typedef struct AdxDecPara_x00158EC0 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x00158EC0;
+struct Pl2Enc_x00158EC0;
+typedef struct AdxbObj_x00158EC0 AdxbObj_x00158EC0;
+typedef short *(*AdxbGetWrFunc_x00158EC0)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x00158EC0)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x00158EC0 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x00158EC0 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x00158EC0 dp;
+    AdxbGetWrFunc_x00158EC0 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x00158EC0 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x00158EC0 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+void ADXB_SetDefPrm_x00158EC0(AdxbObj_x00158EC0 *adxb) __asm__("func_00150B28");
+int ADXB_DecodeHeader_x00158EC0(AdxbObj_x00158EC0 *adxb, unsigned char *hdr, int size) __asm__("func_00150BC8");
+int ADXB_GetFormat_x00158EC0(AdxbObj_x00158EC0 *adxb) __asm__("func_00150D58");
+extern void ADXB_EntryDecFunc_x00158EC0(AdxbObj_x00158EC0 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+enum AdxSjdStat_x00158EC0 {
+    ADXSJD_STAT_STOP_x00158EC0 = 0,
+    ADXSJD_STAT_DECHDR_x00158EC0 = 1,
+    ADXSJD_STAT_DECODE_x00158EC0 = 2,
+    ADXSJD_STAT_DECEND_x00158EC0 = 3,
+    ADXSJD_STAT_ERROR_x00158EC0 = 4
+};
+typedef struct AdxSjdObj_x00158EC0 {
+    signed char used;
+    signed char stat;
+    signed char maxnch;
+    signed char empty_end;
+    AdxbObj_x00158EC0 *adxb;
+    SfdSj_x00158EC0 *sji;
+    SfdSj_x00158EC0 *sjo[2];
+    SfdSjChunk_x00158EC0 cki;
+    SfdSjChunk_x00158EC0 cko[2];
+    int total_decsmpl;
+    int total_decdtlen;
+    int decpos;
+    int maxdecsmpl;
+    int dtrpsmpl;
+    int dtrpcnt;
+    int dtrpdtlen;
+    void (*dtrpfunc)(void *context);
+    void *dtrpobj;
+    void (*dfltfunc)(void *context, int ch, char *data, int len);
+    void *dfltobj;
+    char hdr[64];
+    int hdrlen;
+    int lnksw;
+    int fill;
+    int skip;
+} AdxSjdObj_x00158EC0;
+extern void (*adxsjd_header_hook_x00158EC0)(AdxbObj_x00158EC0 *adxb, int rate) __asm__("D_0040D5E8");
+extern void ADXSJD_EntryFltFunc_x00158EC0(AdxSjdObj_x00158EC0 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x00158EC0(AdxSjdObj_x00158EC0 *sjd, void (*func)(void *obj), void *obj) __asm__("ADXSJD_EntryTrapFunc");
+typedef unsigned int size_t_x00158EC0;
+void *memcpy_x00158EC0(void *, const void *, size_t_x00158EC0) __asm__("func_00125740");
+void ADXERR_CallErrFunc2_x00158EC0(const char *code, const char *msg) __asm__("func_00154178");
+extern void (*adxsjd_header_hook_x00158EC0)(AdxbObj_x00158EC0 *adxb, int rate) __asm__("D_0040D5E8");
+void ADXSJD_EntryFltFunc_x00158EC0(AdxSjdObj_x00158EC0 *sjd, void (*func)(void *context, int ch, char *data, int len), void *context) __asm__("ADXSJD_EntryFltFunc");
+void ADXSJD_EntryTrapFunc_x00158EC0(AdxSjdObj_x00158EC0 *sjd, void (*func)(void *context), void *context) __asm__("ADXSJD_EntryTrapFunc");
+void adxsjd_decode_prep_x00158EC0(AdxSjdObj_x00158EC0 *sjd) __asm__("adxsjd_decode_prep");
+/* adxsjd_decode_prep_x00158EC0: from https://github.com/crashbashash/DW4_Decomp (src/cri/adxsjd.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void adxsjd_decode_prep_x00158EC0(AdxSjdObj_x00158EC0 *sjd)
+{
+    SfdSj_x00158EC0 *sji;
+    AdxbObj_x00158EC0 *adxb;
+    SfdSjChunk_x00158EC0 ck;
+    SfdSjChunk_x00158EC0 part;
+    int i;
+    int hdrlen;
+    int type;
+    sji = sjd->sji;
+    adxb = sjd->adxb;
+    sji->vtbl->getChunk(sji, 1, 0xc800, &ck);
+    for (i = 0; i < ck.len; i++) {
+        if (ck.data[i] != 0) {
+            break;
+        }
+    }
+    SJ_SplitChunk_x00158EC0(&ck, i, &part, &ck);
+    sji->vtbl->putChunk(sji, 0, &part);
+    if (ck.len < 16) {
+        sji->vtbl->ungetChunk(sji, 1, &ck);
+        return;
+    }
+    hdrlen = ADXB_DecodeHeader_x00158EC0(adxb, ck.data, ck.len);
+    if (hdrlen == 0 || ck.len < hdrlen) {
+        sji->vtbl->ungetChunk(sji, 1, &ck);
+        return;
+    }
+    if (hdrlen < 0) {
+        if ((short)adxb->def_fmttype != 0) {
+            ADXB_SetDefPrm_x00158EC0(adxb);
+            hdrlen = 0;
+        } else {
+            sji->vtbl->ungetChunk(sji, 1, &ck);
+            ADXERR_CallErrFunc2_x00158EC0("E03010901 ADXB_DecodeHeader_x00158EC0: ", "Can not decode this file format.");
+            sjd->stat = ADXSJD_STAT_ERROR_x00158EC0;
+            return;
+        }
+    }
+    sjd->hdrlen = hdrlen;
+    if (ADXB_GetFormat_x00158EC0(adxb) == 4) {
+        sjd->empty_end = 1;
+    }
+    if (ADXB_GetFormat_x00158EC0(adxb) == 2) {
+        memcpy_x00158EC0(sjd->hdr, ck.data, ck.len > 64 ? 64 : ck.len);
+    }
+    type = ADXB_GetFormat_x00158EC0(adxb);
+    if (type == 10 || type == 11 || type == 12 || type == 20 || type == 15) {
+        sji->vtbl->ungetChunk(sji, 1, &ck);
+    } else {
+        SJ_SplitChunk_x00158EC0(&ck, hdrlen, &ck, &part);
+        sji->vtbl->putChunk(sji, 0, &ck);
+        sji->vtbl->ungetChunk(sji, 1, &part);
+    }
+    if (adxb->pl2 != 0 && adxsjd_header_hook_x00158EC0 != 0) {
+        adxsjd_header_hook_x00158EC0(adxb, adxb->sfreq);
+    }
+    sjd->stat = ADXSJD_STAT_DECODE_x00158EC0;
+}
+__asm__("# rebind adxsjd_decode_prep 0x00158EC0");

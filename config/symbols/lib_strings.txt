@@ -30,7 +30,8 @@ ADXT_GetNumFiles = 0x00156920; // type:func
 ADXT_ResetEntry = 0x00156958; // type:func
 ADXRNA_GetStat = 0x001588F8; // type:func size:0x34
 func_00158930 = 0x00158930; // type:func
-ADXB_DecodeHeader = 0x00158EC0; // type:func
+// its "ADXB_DecodeHeader" error string names the function it calls (func_00150BC8); this one is adxsjd.c's
+adxsjd_decode_prep = 0x00158EC0; // type:func
 adxstmf_stat_exec = 0x0015D208; // type:func
 ADXT_Create = 0x0015DDD8; // type:func
 ADXT_Destroy = 0x0015E1B8; // type:func
