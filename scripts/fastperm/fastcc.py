@@ -307,6 +307,27 @@ class FastGcc:
                     pass
 
 
+class FastMwcc:
+    """compile(c_path, o_path): a Metrowerks folder's compile.sh (wibo + mwccps2) without bash and realpath."""
+
+    def __init__(self, cfg):
+        self.argv, self.cwd = cfg["argv"], cfg.get("cwd", str(ROOT))
+        self.env = dict(os.environ, **cfg.get("env", {}))
+
+    def compile(self, c_path, o_path, show_errors=False):
+        q = None if show_errors else subprocess.DEVNULL
+        r = subprocess.run(fill(self.argv, **{"in": os.path.realpath(c_path), "out": os.path.realpath(o_path)}),
+                           cwd=self.cwd, env=self.env, stdin=subprocess.DEVNULL, stdout=q, stderr=q)
+        return r.returncode == 0 and os.path.exists(o_path) and os.path.getsize(o_path) > 0
+
+
+def fast_compiler(cfg):
+    """The fast compiler of a folder's fast.json, or None."""
+    if not cfg:
+        return None
+    return {"gcc": FastGcc, "mwcc": FastMwcc}.get(cfg.get("kind"), lambda c: None)(cfg)
+
+
 class FastObjdump:
     """objdump_text(o_path) -> the text `objdump_command o_path` prints."""
 
@@ -555,7 +576,7 @@ def check_dirs(dirs):
         c.write_text((d / "base.c").read_text())
         q = dict(stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         r1 = subprocess.run(["bash", str(d / "compile.sh"), str(c), "-o", str(tmp / "a.o")], **q).returncode
-        ok2 = FastGcc(cfg).compile(str(c), str(tmp / "b.o"))
+        ok2 = fast_compiler(cfg).compile(str(c), str(tmp / "b.o"))
         rows = [simplified(subprocess.run([*dump_cmd, str(tmp / o)], capture_output=True, text=True).stdout, sd)
                 for o in ("a.o", "b.o") for sd in (True, False)] if r1 == 0 and ok2 else None
         same = (r1 != 0 and not ok2) or (rows is not None and rows[0] == rows[2] and rows[1] == rows[3])

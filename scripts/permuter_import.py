@@ -196,6 +196,12 @@ cd "$ROOT"
 MWCIncludes="$ROOT/include" "$ROOT/tools/wibo" "$ROOT/tools/mwcps2/{configure.MWCC_VERSION}/mwccps2.exe" -c {flags} "$IN" -o "$OUT"
 """)
     (out / "compile.sh").chmod(0o755)
+    # fast.json: scripts/fastperm/perm.py runs the same call without bash (wibo is static: no zygote for it)
+    import json
+    (out / "fast.json").write_text(json.dumps({
+        "kind": "mwcc", "cwd": str(ROOT), "env": {"MWCIncludes": str(ROOT / "include")},
+        "argv": [str(ROOT / "tools/wibo"), str(ROOT / "tools/mwcps2" / configure.MWCC_VERSION / "mwccps2.exe"), "-c",
+                 *shlex.split(flags), "{in}", "-o", "{out}"]}))
     objdump = ROOT / "tools/binutils/mips-ps2-decompals-objdump"
     (out / "settings.toml").write_text(f'func_name = "{args.name}"\ncompiler_type = "mwcc"\n'
                                        f'objdump_command = "{objdump} -drz -m mips:5900"\n')

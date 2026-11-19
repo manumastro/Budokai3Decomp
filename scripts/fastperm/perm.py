@@ -40,7 +40,7 @@ class FastCompiler(_OrigCompiler):
     def __init__(self, compile_cmd, *, show_errors, debug_mode):
         super().__init__(compile_cmd, show_errors=show_errors, debug_mode=debug_mode)
         cfg = fastcc.load_cfg(os.path.dirname(compile_cmd)) if ENABLED else None
-        self.fast = fastcc.FastGcc(cfg) if cfg and cfg.get("kind") == "gcc" else None
+        self.fast = fastcc.fast_compiler(cfg)
 
     def compile(self, source, *, show_errors=False):
         if self.fast is None or self.debug_mode:
