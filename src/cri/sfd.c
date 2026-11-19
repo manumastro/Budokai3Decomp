@@ -28031,7 +28031,71 @@ void func_00191C40_x00191C40(u8 *a0, unsigned int a1, s32 a2, s32 a3)
     s[12] = s[32];
   }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00191D38);
+typedef struct { int rate; int drop; int hour; int minute; int second; int frame; int pad18; short pad1c; short field; } SfdTC_x00191D38;
+extern int D_00467730_x00191D38[] __asm__("D_00467730");
+extern int D_004674D8_x00191D38[] __asm__("D_004674D8");
+extern int D_00467500_x00191D38[] __asm__("D_00467500");
+extern int D_00467520_x00191D38[] __asm__("D_00467520");
+int func_0017EEE8_x00191D38(long long, int, int) __asm__("func_0017EEE8");
+void func_00191D38_x00191D38(long long pts, int prate, int drop, int tmpref, SfdTC_x00191D38 *tc) __asm__("func_00191D38");
+void func_00191D38_x00191D38(long long pts, int prate, int drop, int tmpref, SfdTC_x00191D38 *tc)
+{
+    int rate = D_00467730_x00191D38[prate];
+    int rnd = D_004674D8_x00191D38[prate];
+    const int *tbl;
+    int fno;
+    int hour;
+    int ten;
+    int min;
+    int sec;
+    int frm;
+    int sec_tot;
+    int total_minutes_cnt;
+
+    fno = func_0017EEE8_x00191D38(pts, rate * 2, 22500000);
+    tc->field = fno & 1;
+    fno >>= 1;
+    fno -= tmpref;
+    fno = (fno > 0) ? fno : 0;
+    tc->rate = prate;
+    tc->drop = drop;
+    if (drop != 0 && (rate == 29970 || rate == 59940)) {
+        tbl = (rate == 29970) ? D_00467500_x00191D38 : D_00467520_x00191D38;
+        hour = fno / tbl[0];
+        fno = fno % tbl[0];
+        ten = fno / tbl[1];
+        fno = fno % tbl[1];
+        if (fno < tbl[2]) {
+            min = 0;
+            sec = fno / tbl[5];
+            frm = fno % tbl[5];
+        } else {
+            fno -= tbl[2];
+            min = fno / tbl[3] + 1;
+            fno = fno % tbl[3];
+            if (fno < tbl[4]) {
+                sec = 0;
+                frm = fno + tbl[7];
+            } else {
+                fno -= tbl[4];
+                sec = fno / tbl[5] + 1;
+                frm = fno % tbl[5];
+            }
+        }
+        min += tbl[6] * ten;
+    } else {
+        sec_tot = fno / rnd;
+        frm = fno % rnd;
+        total_minutes_cnt = sec_tot / 60;
+        sec = sec_tot % 60;
+        hour = total_minutes_cnt / 60;
+        min = total_minutes_cnt % 60;
+    }
+    tc->hour = hour;
+    tc->minute = min;
+    tc->second = sec;
+    tc->frame = frm;
+}
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int mb39010;
 extern int b3mb3901_000000;
@@ -28411,6 +28475,8 @@ void func_00192D68_x00192D68(s32 a0)
 }
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int m1f4820;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m1d3810;
 typedef struct { s32 w[12]; } Ck_2DE0_x00192DE0;
 s32 func_00193060_x00192DE0(u8 *, u8 *, Ck_2DE0_x00192DE0 *, u8 **) __asm__("func_00193060");
 void func_00193828_x00192DE0(s32, u8 *) __asm__("func_00193828");
