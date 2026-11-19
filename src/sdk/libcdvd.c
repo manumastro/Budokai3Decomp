@@ -33,7 +33,36 @@ void *func_001180F0_x001180F0(void (*func)(int))
 		EIntr_x001180F0();
 	return old;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118158);
+extern volatile int D_003EDDE0_x00118158[] __asm__("D_003EDDE0");
+extern volatile int D_003EDDE4_x00118158[] __asm__("D_003EDDE4");
+extern volatile int D_003EDDA8_x00118158[] __asm__("D_003EDDA8");
+extern int D_003EDD94_x00118158[] __asm__("D_003EDD94");
+extern void (*D_00478D00_x00118158[])(int) __asm__("D_00478D00");
+extern volatile int D_003EDDA0_x00118158[] __asm__("D_003EDDA0");
+extern volatile int D_003EDDB4_x00118158[] __asm__("D_003EDDB4");
+extern int iSignalSema_x00118158(int sema) __asm__("iSignalSema");
+void func_00118158_x00118158(int *data) __asm__("func_00118158");
+void func_00118158_x00118158(int *data)
+{
+    D_003EDDE0_x00118158[0] = *data;
+    D_003EDDE4_x00118158[0] = D_003EDDE0_x00118158[0];
+    if (D_003EDDE0_x00118158[0] == 11) {
+        D_003EDDE0_x00118158[0] = 0;
+        D_003EDDB4_x00118158[0] = 0;
+        return;
+    }
+    {
+        int x = D_003EDDA8_x00118158[0];
+        __asm__ volatile("1:");
+        iSignalSema_x00118158(x);
+    }
+    if (D_003EDD94_x00118158[0] && D_00478D00_x00118158[0]) {
+        iSignalSema_x00118158(D_003EDDA0_x00118158[0]);
+    } else {
+        D_003EDDB4_x00118158[0] = 0;
+    }
+    D_003EDDE0_x00118158[0] = 0;
+}
 register int gp_x001181F8 asm("$28");
 extern int D_004878A0_x001181F8 __asm__("D_003EDDA0");
 extern int D_004878D8_x001181F8 __asm__("D_003EDDE0");

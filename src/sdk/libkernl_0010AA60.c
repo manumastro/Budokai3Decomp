@@ -69,4 +69,21 @@ void _sceSDC_x0010AAB0(u32_x0010AAB0 start, u32_x0010AAB0 end) {
         "	.set	reorder\n"
        );
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010AA60", func_0010AB58);
+int DI_x0010AB58(void) __asm__("DI");
+int EI_x0010AB58(void) __asm__("EI");
+void _sceSDC_x0010AB58(u32, u32) __asm__("_sceSDC");
+void func_0010AB58_x0010AB58(u32 start, u32 end) __asm__("func_0010AB58");
+void func_0010AB58_x0010AB58(u32 start, u32 end)
+{
+    u32 s;
+
+    __asm__ volatile("mfc0 %0, $12" : "=r"(s));
+    s &= 0x10000;
+    if (s) {
+        DI_x0010AB58();
+    }
+    _sceSDC_x0010AB58(start & 0xFFFFFFC0, end & 0xFFFFFFC0);
+    if (s) {
+        EI_x0010AB58();
+    }
+}

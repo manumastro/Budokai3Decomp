@@ -52,7 +52,24 @@ void func_00161A80(u8 *arg0, s32 arg1) {
 s32 func_00161A88(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0xC);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001619A0", func_00161A90);
+typedef struct { u8 pad_0[0xC]; u32 unk_C; } A_func_00161A90_x00161A90;
+s32 func_00161A90_x00161A90(A_func_00161A90_x00161A90 *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) __asm__("func_00161A90");
+s32 func_00161A90_x00161A90(A_func_00161A90_x00161A90 *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
+{
+    u32 v0;
+    v0 = (u32)arg0;
+    if ((s32)arg0->unk_C == 0) {
+    *(u32 *)((u8 *)v0 + 20) = 1;
+    *(u32 *)((u8 *)v0 + 24) = arg1;
+    *(u32 *)((u8 *)v0 + 28) = arg2;
+    *(u32 *)((u8 *)v0 + 32) = arg3;
+    *(u32 *)((u8 *)v0 + 36) = arg4;
+    v0 = 1;
+    return v0;
+    }
+    v0 = 0;
+    return v0;
+}
 typedef unsigned char u8_x00161AC0;
 typedef signed int s32_x00161AC0;
 typedef unsigned int u32_x00161AC0;
@@ -77,7 +94,24 @@ s32_x00161AC0 func_00161AC0_x00161AC0(struct fn_8004E204_Arg0_x00161AC0 *arg0, u
     v0 = 0;
     return v0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001619A0", func_00161AF0);
+typedef struct { u8 pad_0[0xC]; u32 unk_C; } A_func_00161AF0_x00161AF0;
+s32 func_00161AF0_x00161AF0(A_func_00161AF0_x00161AF0 *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) __asm__("func_00161AF0");
+s32 func_00161AF0_x00161AF0(A_func_00161AF0_x00161AF0 *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
+{
+    u32 v0;
+    v0 = (u32)arg0;
+    if ((s32)arg0->unk_C == 0) {
+    *(u32 *)((u8 *)v0 + 20) = 1;
+    *(u32 *)((u8 *)v0 + 24) = arg1;
+    *(u32 *)((u8 *)v0 + 28) = arg2;
+    *(u32 *)((u8 *)v0 + 32) = arg3;
+    *(u32 *)((u8 *)v0 + 36) = arg4;
+    v0 = 1;
+    return v0;
+    }
+    v0 = 0;
+    return v0;
+}
 void func_00161B20(u8 *arg0) {
     if (*(s32 *)((u8 *)arg0 + 0xC) == 0) {
         *(s32 *)((u8 *)arg0 + 0x10) = 0;

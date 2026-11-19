@@ -75,7 +75,24 @@ void _sceIDC_x0010ABF0(u32_x0010ABF0 start, u32_x0010ABF0 end) {
         "	.set	reorder\n"
        );
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/ico_cache", func_0010AC98);
+int DI_x0010AC98(void) __asm__("DI");
+int EI_x0010AC98(void) __asm__("EI");
+void _sceIDC_x0010AC98(u32, u32) __asm__("_sceIDC");
+void func_0010AC98_x0010AC98(u32 start, u32 end) __asm__("func_0010AC98");
+void func_0010AC98_x0010AC98(u32 start, u32 end)
+{
+    u32 s;
+
+    __asm__ volatile("mfc0 %0, $12" : "=r"(s));
+    s &= 0x10000;
+    if (s) {
+        DI_x0010AC98();
+    }
+    _sceIDC_x0010AC98(start & 0xFFFFFFC0, end & 0xFFFFFFC0);
+    if (s) {
+        EI_x0010AC98();
+    }
+}
 
 
 void iInvalidDCache(int start, int end)

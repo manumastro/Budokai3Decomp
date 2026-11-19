@@ -1,6 +1,13 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010AD30", func_0010AD30);
+int func_0010AD30_x0010AD30(void) __asm__("func_0010AD30");
+int func_0010AD30_x0010AD30(void)
+{
+    int s;
+
+    __asm__ volatile(".set noreorder\n\tmfc0 %0, $12\n\txori %0, %0, 1\n\t.set reorder" : "=r"(s));
+    return s & 1;
+}
 int DI_x0010AD40(void) __asm__("DI");
 int EI_x0010AD40(void) __asm__("EI");
 int _DisableIntc_x0010AD40(int) __asm__("_DisableIntc");

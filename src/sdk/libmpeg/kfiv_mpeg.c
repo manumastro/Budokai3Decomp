@@ -276,7 +276,18 @@ int func_00107E58_x00107E58(sceMpeg_x00107E58 *mp)
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00107ED0);
+typedef struct { char p0[0x184]; int f184; } MpegSys_ED0_x00107ED0;
+typedef struct { char p0[0x40]; MpegSys_ED0_x00107ED0 *sys; } Mpeg_ED0_x00107ED0;
+int func_00107928_x00107ED0(Mpeg_ED0_x00107ED0 *, int, int) __asm__("func_00107928");
+int func_001077B8_x00107ED0(Mpeg_ED0_x00107ED0 *, int, int) __asm__("func_001077B8");
+int func_00107ED0_x00107ED0(Mpeg_ED0_x00107ED0 *mp, int a1, int a2) __asm__("func_00107ED0");
+int func_00107ED0_x00107ED0(Mpeg_ED0_x00107ED0 *mp, int a1, int a2)
+{
+    if (mp->sys->f184 != 3) {
+        return func_00107928_x00107ED0(mp, a1, a2);
+    }
+    return func_001077B8_x00107ED0(mp, a1, a2);
+}
 s32 func_00107F18_x00107F18(u8 *arg0) __asm__("func_00107F18");
 s32 func_00107F18_x00107F18(u8 *arg0) {
     u8 *temp_v0;
@@ -314,7 +325,21 @@ s32 func_00107F18_x00107F18(u8 *arg0) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg/kfiv_mpeg", func_00107F70);
+typedef struct { char p0[0xC4]; int fC4; char p1[0xEC - 0xC8]; unsigned int fEC; int fF0; int fF4; int fF8; } MpegSys_F70_x00107F70;
+typedef struct { char p0[0x40]; MpegSys_F70_x00107F70 *sys; } Mpeg_F70_x00107F70;
+int func_00107348_x00107F70(Mpeg_F70_x00107F70 *) __asm__("func_00107348");
+int func_00107F70_x00107F70(Mpeg_F70_x00107F70 *mp, unsigned int buf, int mbw, int mbh) __asm__("func_00107F70");
+int func_00107F70_x00107F70(Mpeg_F70_x00107F70 *mp, unsigned int buf, int mbw, int mbh)
+{
+    MpegSys_F70_x00107F70 *sys = mp->sys;
+
+    sys->fEC = (buf & 0x0FFFFFFF) | 0x20000000;
+    sys->fF4 = mbh * 16;
+    sys->fF8 = mbw * mbh;
+    sys->fF0 = mbw * 16;
+    sys->fC4 = 0;
+    return func_00107348_x00107F70(mp);
+}
 s32 func_00107FC0_x00107FC0(u8 *arg0, s64 arg1) __asm__("func_00107FC0");
 s32 func_00107FC0_x00107FC0(u8 *arg0, s64 arg1)
 {
