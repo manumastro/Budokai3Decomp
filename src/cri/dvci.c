@@ -815,7 +815,39 @@ s32 func_00166CB8(void) {
 void func_00166CC0(void) {
     func_00166BE0();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166CD8);
+s32 func_00166C88_x00166CD8() __asm__("func_00166C88");
+s32 func_00166C98_x00166CD8() __asm__("func_00166C98");
+s32 func_00166CB8_x00166CD8() __asm__("func_00166CB8");
+s32 func_00166CC0_x00166CD8() __asm__("func_00166CC0");
+s32 func_00166CD8_x00166CD8(s32 a0, s32 a1) __asm__("func_00166CD8");
+s32 func_00166CD8_x00166CD8(s32 a0, s32 a1)
+{
+    s32 r = 0;
+
+    if (a0 == 0) {
+        return 0;
+    }
+    switch (a1) {
+    case 0xC8:
+        r = func_00166C88_x00166CD8();
+        break;
+    case 0xC9:
+        r = func_00166C98_x00166CD8();
+        break;
+    case 0xCA:
+    case 0xCC:
+        r = func_00166CB8_x00166CD8();
+        break;
+    case 0xCB:
+    case 0xCD:
+        r = func_00166CC0_x00166CD8();
+        break;
+    case 0x12B:
+        r = 1;
+        break;
+    }
+    return r;
+}
 void func_00166DA0(s8 *arg0, s32 arg1) {
     s8 temp_v1;
 
@@ -850,7 +882,25 @@ s32 func_00166E80_x00166E80(s8 arg0, s8 arg1) {
     temp_s0 = func_00166E48_x00166E80(arg0);
     return ((temp_s0 ^ func_00166E48_x00166E80(arg1)) != 0) ? -1 : 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00166ED8);
+s32 strlen_x00166ED8(const char *) __asm__("strlen");
+s32 func_00166E80_x00166ED8(s32, s32) __asm__("func_00166E80");
+s32 func_00166ED8_x00166ED8(char *a, char *b) __asm__("func_00166ED8");
+s32 func_00166ED8_x00166ED8(char *a, char *b)
+{
+    s32 n;
+    s32 i;
+
+    n = strlen_x00166ED8(a);
+    if (n != strlen_x00166ED8(b)) {
+        return -1;
+    }
+    for (i = 0; i < n; i++) {
+        if (func_00166E80_x00166ED8(a[i], b[i]) != 0) {
+            return -1;
+        }
+    }
+    return 0;
+}
 typedef void (*CvFsErrFn_x00166F70)(void *obj, const char *msg, int code);
 typedef void (*CvFsEntryErrFuncFn_x00166F70)(CvFsErrFn_x00166F70 func, void *obj);
 typedef int (*CvFsPathFn_x00166F70)(const char *path);

@@ -1483,7 +1483,21 @@ s32 func_0015A100(void) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A120);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015A2D8);
+extern s32 D_0040E070_x0015A2D8 __asm__("D_0040E070");
+extern s32 D_00461738_x0015A2D8 __asm__("D_00461738");
+void func_0015A0E0_x0015A2D8(void) __asm__("func_0015A0E0");
+void func_0015A120_x0015A2D8(s32 *, s32, s32, s32, s32) __asm__("func_0015A120");
+s32 func_0015A2D8_x0015A2D8(s32 a0, s32 a1, s32 a2) __asm__("func_0015A2D8");
+s32 func_0015A2D8_x0015A2D8(s32 a0, s32 a1, s32 a2)
+{
+    if (D_0040E070_x0015A2D8 == 0) {
+        func_0015A0E0_x0015A2D8();
+    }
+    func_0015A120_x0015A2D8(&D_00461738_x0015A2D8, 6, a0, a1, a2);
+    return 0;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3cse_pad32_0015A2D8_0_xxxx;
 s32 func_0015A348(u16 *arg0, u16 *arg1, u16 *arg2) {
     *arg0 = *arg2 + (*arg0 * *arg1);
     return 0;

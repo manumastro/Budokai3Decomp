@@ -197,7 +197,20 @@ s32 func_00101190_x00101190(s32 arg0)
   }
   return temp_s2;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", func_00101230);
+typedef struct { unsigned long SCAX0 : 11; unsigned long pad11 : 5; unsigned long SCAX1 : 11; unsigned long pad27 : 5; unsigned long SCAY0 : 11; unsigned long pad43 : 5; unsigned long SCAY1 : 11; unsigned long pad59 : 5; } Scissor_r3_x00101230;
+typedef struct { u8 pad[0x20]; unsigned long xyoffset; u8 pad2[8]; Scissor_r3_x00101230 scissor; } DrawEnv_r3_x00101230;
+void func_00101230_x00101230(DrawEnv_r3_x00101230 *draw, short cx, short cy, short half) __asm__("func_00101230");
+void func_00101230_x00101230(DrawEnv_r3_x00101230 *draw, short cx, short cy, short half)
+{
+    long y = ((long)cy - (long)((draw->scissor.SCAY1 + 1) >> 1)) << 4;
+    long x = ((long)cx - (long)((draw->scissor.SCAX1 + 1) >> 1)) << 4;
+
+    if (half) {
+        draw->xyoffset = (unsigned long)x | ((unsigned long)(y + 8) << 32);
+    } else {
+        draw->xyoffset = (unsigned long)x | ((unsigned long)y << 32);
+    }
+}
 typedef unsigned long u_long_x001012B8;
 typedef struct {
     u_long_x001012B8 AC : 1;
@@ -266,7 +279,20 @@ int func_001012B8_x001012B8(sceGsDrawEnv2_x001012B8 *draw, short psm, short w, s
     __asm__ volatile ("sync");
     return sizeof(sceGsDrawEnv2_x001012B8) / 16;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", func_00101498);
+typedef struct { unsigned long SCAX0 : 11; unsigned long pad11 : 5; unsigned long SCAX1 : 11; unsigned long pad27 : 5; unsigned long SCAY0 : 11; unsigned long pad43 : 5; unsigned long SCAY1 : 11; unsigned long pad59 : 5; } Scissor_r3_x00101498;
+typedef struct { u8 pad[0x20]; unsigned long xyoffset; u8 pad2[8]; Scissor_r3_x00101498 scissor; } DrawEnv_r3_x00101498;
+void func_00101498_x00101498(DrawEnv_r3_x00101498 *draw, short cx, short cy, short half) __asm__("func_00101498");
+void func_00101498_x00101498(DrawEnv_r3_x00101498 *draw, short cx, short cy, short half)
+{
+    long y = ((long)cy - (long)((draw->scissor.SCAY1 + 1) >> 1)) << 4;
+    long x = ((long)cx - (long)((draw->scissor.SCAX1 + 1) >> 1)) << 4;
+
+    if (half) {
+        draw->xyoffset = (unsigned long)x | ((unsigned long)(y + 8) << 32);
+    } else {
+        draw->xyoffset = (unsigned long)x | ((unsigned long)y << 32);
+    }
+}
 typedef int u_int128_x00101520 __attribute__((mode(TI)));
 typedef struct {     
     short inter;     

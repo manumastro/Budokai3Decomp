@@ -467,7 +467,39 @@ s64 func_00168968_x00168968(void) {
     return func_00168900_x00168968() >> 0x20;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168988);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001689B8);
+s32 func_00168918_x001689B8() __asm__("func_00168918");
+s32 func_00168938_x001689B8() __asm__("func_00168938");
+s32 func_00168968_x001689B8() __asm__("func_00168968");
+s32 func_00168988_x001689B8() __asm__("func_00168988");
+s32 func_001689B8_x001689B8(s32 a0, s32 a1) __asm__("func_001689B8");
+s32 func_001689B8_x001689B8(s32 a0, s32 a1)
+{
+    s32 r = 0;
+
+    if (a0 == 0) {
+        return 0;
+    }
+    switch (a1) {
+    case 0xC8:
+        r = func_00168918_x001689B8();
+        break;
+    case 0xC9:
+        r = func_00168938_x001689B8();
+        break;
+    case 0xCA:
+    case 0xCC:
+        r = func_00168968_x001689B8();
+        break;
+    case 0xCB:
+    case 0xCD:
+        r = func_00168988_x001689B8();
+        break;
+    case 0x12B:
+        r = 1;
+        break;
+    }
+    return r;
+}
 typedef unsigned int size_t_x00168A80;
 typedef signed int Sint32_x00168A80;
 typedef char Char8_x00168A80;
@@ -558,7 +590,25 @@ s32 func_00168C78_x00168C78(s8 arg0, s8 arg1) {
     temp_s0 = func_00168C60_x00168C78(arg0);
     return ((temp_s0 ^ func_00168C60_x00168C78(arg1)) != 0) ? -1 : 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168CD0);
+s32 strlen_x00168CD0(const char *) __asm__("strlen");
+s32 func_00168C78_x00168CD0(s32, s32) __asm__("func_00168C78");
+s32 func_00168CD0_x00168CD0(char *a, char *b) __asm__("func_00168CD0");
+s32 func_00168CD0_x00168CD0(char *a, char *b)
+{
+    s32 n;
+    s32 i;
+
+    n = strlen_x00168CD0(a);
+    if (n != strlen_x00168CD0(b)) {
+        return -1;
+    }
+    for (i = 0; i < n; i++) {
+        if (func_00168C78_x00168CD0(a[i], b[i]) != 0) {
+            return -1;
+        }
+    }
+    return 0;
+}
 typedef void (*CvFsErrFn_x00168D68)(void *obj, const char *msg, int code);
 typedef void (*CvFsEntryErrFuncFn_x00168D68)(CvFsErrFn_x00168D68 func, void *obj);
 typedef int (*CvFsPathFn_x00168D68)(const char *path);

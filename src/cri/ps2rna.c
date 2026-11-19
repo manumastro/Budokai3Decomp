@@ -1729,7 +1729,29 @@ block_4:
     func_0016CFD0_x0016CED8(arg0, 0);
     return;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CF38);
+typedef struct { u8 pad[0x10]; s32 h[8]; u8 pad30[2]; s8 n; u8 pad33[0x29]; u8 b5C; u8 b5D; } Rna_x0016CF38_x0016CF38;
+extern s32 D_0041A0D8_x0016CF38 __asm__("D_0041A0D8");
+extern s32 D_0041A0D0_x0016CF38 __asm__("D_0041A0D0");
+void func_00165760_x0016CF38(s32) __asm__("func_00165760");
+void func_0016CF38_x0016CF38(Rna_x0016CF38_x0016CF38 *a0, s32 a1) __asm__("func_0016CF38");
+void func_0016CF38_x0016CF38(Rna_x0016CF38_x0016CF38 *a0, s32 a1)
+{
+    s32 n = a0->n;
+    s32 i;
+
+    if (D_0041A0D8_x0016CF38 == 1 && D_0041A0D0_x0016CF38 <= 0) {
+        return;
+    }
+    a0->b5C = a1;
+    if (a1 == 1) {
+        return;
+    }
+    for (i = 0; i < n; i++) {
+        func_00165760_x0016CF38(a0->h[i]);
+        a0->b5D = 1;
+        a0->b5C = 0;
+    }
+}
 extern s32 D_0041A0D0_x0016CFD0 __asm__("D_0041A0D0");
 extern s32 D_0041A0D8_x0016CFD0 __asm__("D_0041A0D8");
 void func_0016CFD0_x0016CFD0(u8 *arg0, unsigned int arg1) __asm__("func_0016CFD0");

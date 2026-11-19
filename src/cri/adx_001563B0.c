@@ -3062,8 +3062,56 @@ void func_001572E0_x001572E0(void *stack, int stackSize) {
     _StartThread_x001572E0(adxm_usrvsync_thid_x001572E0, 0);
     ChangeThreadPriority_x001572E0(adxm_usrvsync_thid_x001572E0, adxm_tprm_x001572E0.usrVsyncPrio);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157398);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157420);
+struct ThreadParam_r3157398_x00157398 { int status; void (*entry)(void *); void *stack; int stackSize; void *gpReg; int initPriority; int currentPriority; unsigned int attr; unsigned int option; int waitType; int waitId; int wakeupCount; };
+int CreateThread_x00157398(struct ThreadParam_r3157398_x00157398 *) __asm__("CreateThread");
+int func_0010B3A0_x00157398(int, void *) __asm__("func_0010B3A0");
+int ChangeThreadPriority_x00157398(int, int) __asm__("ChangeThreadPriority");
+void func_00156CC0_x00157398(void *) __asm__("func_00156CC0");
+extern s32 D_004075D0_x00157398[0x400] __asm__("D_004075D0");
+extern s32 D_0040D5D8_x00157398 __asm__("D_0040D5D8");
+extern void *D_00477CF0_x00157398 __asm__("D_00477CF0");
+extern volatile s32 D_00405D40_x00157398 __asm__("D_00405D40");
+extern s32 D_00405CBC_x00157398 __asm__("D_00405CBC");
+void func_00157398_x00157398(void) __asm__("func_00157398");
+void func_00157398_x00157398(void)
+{
+    struct ThreadParam_r3157398_x00157398 param;
+
+    param.entry = func_00156CC0_x00157398;
+    param.stack = D_004075D0_x00157398;
+    param.stackSize = sizeof(D_004075D0_x00157398);
+    param.initPriority = D_0040D5D8_x00157398;
+    param.gpReg = &D_00477CF0_x00157398;
+    D_00405D40_x00157398 = CreateThread_x00157398(&param);
+    D_00405D40_x00157398;
+    func_0010B3A0_x00157398(D_00405D40_x00157398, 0);
+    ChangeThreadPriority_x00157398(D_00405D40_x00157398, D_00405CBC_x00157398);
+}
+struct ThreadParam_r3157420_x00157420 { int status; void (*entry)(void *); void *stack; int stackSize; void *gpReg; int initPriority; int currentPriority; unsigned int attr; unsigned int option; int waitType; int waitId; int wakeupCount; };
+int CreateThread_x00157420(struct ThreadParam_r3157420_x00157420 *) __asm__("CreateThread");
+int func_0010B3A0_x00157420(int, void *) __asm__("func_0010B3A0");
+int ChangeThreadPriority_x00157420(int, int) __asm__("ChangeThreadPriority");
+void func_00156DC8_x00157420(void *) __asm__("func_00156DC8");
+extern s32 D_004085D0_x00157420[0x400] __asm__("D_004085D0");
+extern s32 D_0040D5D8_x00157420 __asm__("D_0040D5D8");
+extern void *D_00477CF0_x00157420 __asm__("D_00477CF0");
+extern volatile s32 D_00405D44_x00157420 __asm__("D_00405D44");
+extern s32 D_00405CC0_x00157420 __asm__("D_00405CC0");
+void func_00157420_x00157420(void) __asm__("func_00157420");
+void func_00157420_x00157420(void)
+{
+    struct ThreadParam_r3157420_x00157420 param;
+
+    param.entry = func_00156DC8_x00157420;
+    param.stack = D_004085D0_x00157420;
+    param.stackSize = sizeof(D_004085D0_x00157420);
+    param.initPriority = D_0040D5D8_x00157420;
+    param.gpReg = &D_00477CF0_x00157420;
+    D_00405D44_x00157420 = CreateThread_x00157420(&param);
+    D_00405D44_x00157420;
+    func_0010B3A0_x00157420(D_00405D44_x00157420, 0);
+    ChangeThreadPriority_x00157420(D_00405D44_x00157420, D_00405CC0_x00157420);
+}
 typedef unsigned int u_int_x001574A8;
 typedef signed int Sint32_x001574A8;
 extern Sint32_x001574A8 SVM_SetCbSvr_x001574A8(Sint32_x001574A8, Sint32_x001574A8 (*)(void*), void*) __asm__("SVM_SetCbSvr");
