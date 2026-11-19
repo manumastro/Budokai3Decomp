@@ -10,6 +10,14 @@ with the lui that pairs with them, minus the fzgx addend), majority vote per sym
 with its own headers, becomes a snippet: those symbols renamed to ours (func_XXXXXXXX / D_XXXXXXXX or the build's
 name at that address), the function renamed to ours. scripts/lib_try.py scores it. Snippets in build/fz/drafts/
 FUNC__FZFN.c, results in build/fz/drafts.csv (function, fz function, status, differing instructions, words).
+
+Also for a PS2 source of the same library (DW4_Decomp's CRI code, many functions per file): the other function
+definitions before the target become prototypes, initialised file data becomes extern, and FZ_PS2=1 keeps `long`.
+    printf -- "-I$D/include -I$D/src -I$PWD/build/dw4stub\\n" > build/ext/fz_inc.txt   (D = the DW4_Decomp checkout;
+        build/dw4stub holds a minimal stddef.h / string.h: the tree includes them)
+    fz_map.py compile --src $D/src/cri --inc-file build/ext/fz_inc.txt
+    fz_map.py map --range 0x180000-0x1A1E80 --out build/fz/map_dw4.csv
+    FZ_PS2=1 fz_draft.py --map build/fz/map_dw4.csv --order build/fz/none.csv --top 2
 """
 import argparse
 import csv
@@ -210,6 +218,40 @@ def preprocess(path):
     return r.stdout if r.returncode == 0 else None
 
 
+def strip_bodies(text):
+    """The text before the snippet's function with every other function definition turned into its prototype
+    (a source file with many functions, e.g. DW4_Decomp's; lib_try takes only declarations before the function).
+    A top-level `{` right after a `)` opens a function body; static data definitions are dropped too."""
+    out, depth, i, start = [], 0, 0, 0
+    while i < len(text):
+        c = text[i]
+        if c == "{":
+            if depth == 0 and text[:i].rstrip().endswith(")"):
+                out.append(text[start:i].rstrip() + ";\n")
+                d, j = 0, i
+                while j < len(text):
+                    if text[j] == "{":
+                        d += 1
+                    elif text[j] == "}":
+                        d -= 1
+                        if d == 0:
+                            break
+                    j += 1
+                i = start = j + 1
+                continue
+            depth += 1
+        elif c == "}":
+            depth -= 1
+        i += 1
+    out.append(text[start:])
+    t = "".join(out)
+    # `static` prototypes of functions defined elsewhere in the file would stay undefined: plain prototypes
+    t = re.sub(r"^static\s+(?=[^\n=;]*\()", "", t, flags=re.M)
+    # initialised file-scope data (tables, strings) would define data: keep an extern declaration
+    t = re.sub(r"^(?!typedef)([A-Za-z_][^\n;(]*?)\s*=\s*[^;]*;", lambda mm: "extern " + mm.group(1).replace("static ", "") + ";", t, flags=re.M | re.S)
+    return t
+
+
 def make_snippet(fz_file, fz_fn, our_name, smap, fz_fn_names, offmap=None):
     src = preprocess(fz_file)
     if src is None:
@@ -238,7 +280,12 @@ def make_snippet(fz_file, fz_fn, our_name, smap, fz_fn_names, offmap=None):
         pat = re.compile(r"\b(" + "|".join(map(re.escape, sorted(ren, key=len, reverse=True))) + r")\b")
         src = pat.sub(lambda m: ren[m.group(1)], src)
     # the snippet ends with the function: drop what follows it (other functions after it in the file)
-    m = re.search(rf"^[^\n;{{}}]*\b{our_name}\s*\([^;{{}}]*\)\s*\{{", src, re.M)
+    # the definition at file scope (a call inside an earlier function's `if (...) {` looks the same)
+    m = None
+    for mm in re.finditer(rf"^[^\n;{{}}]*\b{our_name}\s*\([^;{{}}]*\)\s*\{{", src, re.M):
+        if src.count("{", 0, mm.start()) == src.count("}", 0, mm.start()):
+            m = mm
+            break
     if not m:
         return None
     depth, i = 0, m.end() - 1
@@ -250,9 +297,12 @@ def make_snippet(fz_file, fz_fn, our_name, smap, fz_fn_names, offmap=None):
             if depth == 0:
                 break
         i += 1
-    src = re.sub(r"^\s*#\s*pragma.*\n", "", src[:i + 1], flags=re.M) + "\n"
-    # GameCube `long` is 32 bits, ee-gcc's is 64: s32/u32/size_t typedefs and plain longs become int
-    src = re.sub(r"(?<!long )\blong\b(?! long)", "int", src)
+    src = strip_bodies(src[:m.start()]) + src[m.start():i + 1]
+    src = re.sub(r"^\s*#\s*pragma.*\n", "", src, flags=re.M) + "\n"
+    # GameCube `long` is 32 bits, ee-gcc's is 64: s32/u32/size_t typedefs and plain longs become int (a PS2
+    # source, e.g. DW4_Decomp's CRI code: FZ_PS2=1 keeps them)
+    if not os.environ.get("FZ_PS2"):
+        src = re.sub(r"(?<!long )\blong\b(?! long)", "int", src)
     src = re.sub(r"\b__cntlzw\b", "__builtin_clz", src)
     head = f"/* draft from fzgx {Path(fz_file).name} ({fz_fn}); symbols read off the aligned code: " + \
            ", ".join(f"{k}={v}" for k, v in sorted(ren.items()) if k != fz_fn) + " */\n"
