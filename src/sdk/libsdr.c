@@ -49,5 +49,29 @@ s32 func_00117CC0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libsdr", func_00117D48);
+extern __inline__ void *GetGp_x00117D48(void) __asm__("GetGp");
+static __inline__ void *GetGp_x00117D48(void)
+{
+        void *gp;
+        __asm__ volatile (
+                "move           %0, $28\n"
+                : "=r"(gp)
+                :
+                : "memory"
+        );
+        return(gp);
+}
+typedef void (*sceSifEndFunc_x00117D48)(void *param);
+extern sceSifEndFunc_x00117D48 sceSdEndFunc_x00117D48 __asm__("D_003EDD40");
+extern void *sceSdEndGp_x00117D48 __asm__("D_003EDD44");
+sceSifEndFunc_x00117D48 func_00117D48_x00117D48(sceSifEndFunc_x00117D48 func) __asm__("func_00117D48");
+/* sceSdCallBack: from https://github.com/crashbashash/DW4_Decomp (src/sony/libsdr/sdr_main.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+sceSifEndFunc_x00117D48 func_00117D48_x00117D48(sceSifEndFunc_x00117D48 func)
+{
+    sceSifEndFunc_x00117D48 prev = sceSdEndFunc_x00117D48;
+
+    sceSdEndFunc_x00117D48 = func;
+    sceSdEndGp_x00117D48 = GetGp_x00117D48();
+    return prev;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libsdr", func_00117D68);
