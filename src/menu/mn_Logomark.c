@@ -430,32 +430,38 @@ void Logomark_StopMovie(u8 *a0) {
         *(void **)(s0 + 0x1C) = ((void *)Logomark_EndMovie == 0) ? 0 : (void *)Logomark_EndMovie;
     }
 }
-#if 0
 // differs: 37 of 57 differ: the first branch order is inverted (original beqz on the flag test, mine bnez), the flag test loads are in other registers, and the sofdec call sites need the same reordering
-void func_002E8190(u8 *a0) {
-    u8 *s1;
-    u8 *s0;
-    s32 v;
-    f32 f1;
-
-    s1 = a0;
-    s0 = s1 + 0x30;
-    func_002E7400(s0, 1.0f);
-    f1 = *(f32 *)(s0 + 4) - gFrameDelta;
-    *(f32 *)(s0 + 4) = f1;
-    if (((D_00492FCE[0] | D_00493086[0]) & 8) == 0) {
-        v = amSofdec_GetStat(*(void **)(s0 + 0xC));
-        if (v == 3 || *(f32 *)(s0 + 4) <= 0.0f) {
-            *(void **)(s1 + 0x1C) = ((void *)Logomark_StopMovie == 0) ? 0 : (void *)Logomark_StopMovie;
-        }
-    } else {
-        *(f32 *)(s0 + 4) = 50.0f;
-        *(s32 *)(s0 + 8) = 1;
-        *(void **)(s1 + 0x1C) = ((void *)Logomark_StopMovie == 0) ? 0 : (void *)Logomark_StopMovie;
+void func_002E8190(u8 *a0)
+{
+  u8 *new_var;
+  u16 *new_var2;
+  u8 *s1;
+  u8 *s0;
+  s32 v;
+  f32 f1;
+  s1 = a0;
+  s0 = s1 + 0x30;
+  func_002E7400(s0, 1.0f);
+  f1 = (*((f32 *) (s0 + 4))) - gFrameDelta;
+  new_var2 = D_00492FCE;
+  *((f32 *) (s0 + 4)) = f1;
+  if (!(((new_var2[0] | D_00493086[0]) & 8) == 0))
+  {
+    *((f32 *) (s0 + 4)) = 50.0f;
+    new_var = s0 + 8;
+    *((s32 *) new_var) = 1;
+    *((void **) (s1 + 0x1C)) = (((void *) Logomark_StopMovie) == 0) ? (0) : ((void *) Logomark_StopMovie);
+  }
+  else
+  {
+    v = amSofdec_GetStat(*((void **) (s0 + 0xC)));
+    if ((v == 3) || ((*((f32 *) (s0 + 4))) <= 0.0f))
+    {
+      *((void **) (s1 + 0x1C)) = (((void *) Logomark_StopMovie) == 0) ? (0) : ((void *) Logomark_StopMovie);
     }
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E8190);
+
 void func_002E8270(u8 *a0) {
     u8 *s1;
     u8 *s0;

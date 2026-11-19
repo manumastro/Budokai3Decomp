@@ -802,49 +802,54 @@ void func_00237E00(u8 *a0) {
 
 
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237EC0);
-// differs: 5 of 68 (10 forms): all calls/stores match; the original fills the slot of the D_0047072C beqz with lw a0,0xC(s0) and builds the D_0058BEB0 index as lui/sll/addiu (ours nop slot, lui/addiu/sll, plus one nop pair); tried nested ifs, index local, pointer-add forms, tsweep
-#if 0
 extern s32 func_00228430(s32);
 extern s32 func_002284D0(s32);
 extern s32 func_0022C060(void *, f32);
 extern s32 func_002535B0(s32, void *);
 extern void func_00228410(void);
-void func_002380F0(LObjA *o) {
-    char *sys = (char *)gBtlSys;
-    s32 e;
-    f32 t;
-    u8 **p;
-    o->t = o->t + D_00470710;
-    if (o->sub != 0) {
-        e = *(s32 *)(sys + 0xE84);
-        D_00470704 = e;
-        D_0047070C = 0x4010000;
-        D_00470708 = 0;
-        amModel_SetCurrent(e, 0x4010000);
-        D_00470238 = 0;
-        func_00228430(0);
-        func_002284D0(0);
-        func_0022C060(o->sub, 1.0f);
-        func_00228410();
-        func_002535B0(o->f28, &o->sub->f30->a);
-        if (o->type == 0x1C) {
-            t = o->sub->f30->a;
-            o->sub->f30->a = o->sub->f30->b;
-            o->sub->f30->b = t;
-        }
-        if (o->sub->f8 == 0xFF) {
-            if (D_0047072C != 0) {
-                p = &D_0058BEB0[o->type];
-                if (*p != 0) {
-                    amTask_Kill(*p);
-                    *p = 0;
-                }
-            }
-        }
+void func_002380F0(LObjA *o)
+{
+  char *sys = (char *) gBtlSys;
+  s32 e;
+  f32 t;
+  u8 **p;
+  s32 new_var;
+  o->t = o->t + D_00470710;
+  if (o->sub != 0)
+  {
+    e = *((s32 *) (sys + 0xE84));
+    D_00470704 = e;
+    D_0047070C = 0x4010000;
+    D_00470708 = 0;
+    amModel_SetCurrent(e, 0x4010000);
+    D_00470238 = 0;
+    func_00228430(0);
+    func_002284D0(0);
+    func_0022C060(o->sub, 1.0f);
+    func_00228410();
+    func_002535B0(o->f28, &o->sub->f30->a);
+    if (o->type == 0x1C)
+    {
+      t = o->sub->f30->a;
+      o->sub->f30->a = o->sub->f30->b;
+      o->sub->f30->b = t;
     }
+    if (o->sub->f8 == 0xFF)
+    {
+      new_var = o->type;
+      if (D_0047072C != 0)
+      {
+        p = &D_0058BEB0[new_var];
+        if ((*p) != 0)
+        {
+          amTask_Kill(*p);
+          *p = 0;
+        }
+      }
+    }
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_002380F0);
+
 extern u8 D_0046A982[];
 extern void (*D_0046AB70[])(void *);
 extern s32 func_0021C280(s32);

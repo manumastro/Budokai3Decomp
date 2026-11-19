@@ -124,22 +124,22 @@ extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern void Scene_SetReady();
 extern void func_0030AA40();
 
-#if 0
 // differs: same as func_00308980: task pointer kept in a variable, callback address lui/addiu
-void func_0030B020(void) {
-    u8 *t;
-    u8 *m;
-    u8 *s0;
-    s0 = D_00470990;
-    *(void **)(s0 + 12) = t = amTask_Create(func_0030AA40, 0, 0x2000, 8, 2, D_0046FB40);
-    *(s32 *)(t + 0x34) = 0xA;
-    s0 = t + 0x30;
-    *(void **)s0 = m = amHeap_Alloc(40, 0, D_0046FB60, 149);
-    memset(m, 0, 40);
-    Scene_SetReady();
+void func_0030B020(void)
+{
+  u8 *t;
+  u8 *m;
+  u8 *s0;
+  s0 = D_00470990;
+  *((void **) (s0 + 12)) = (t = amTask_Create(func_0030AA40, 0, 0x2000, 8, 2, D_0046FB40));
+  m = t + 0x30;
+  *((s32 *) (t + 0x34)) = 0xA;
+  s0 = m;
+  *((void **) s0) = (m = amHeap_Alloc(40, 0, D_0046FB60, 149));
+  memset(m, 0, 40);
+  Scene_SetReady();
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030B020);
+
 extern char D_0046FB60[];
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern void *amHeap_Alloc(s32, s32, char *, s32);

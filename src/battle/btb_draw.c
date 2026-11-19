@@ -6241,8 +6241,6 @@ void func_001F47C0(s32 p0, char *p1, s32 p2, s32 flags) {
         rb->f0 = flags & 2;
     }
 }
-// differs: func_001F4910: mnemonics equal, 14 of 111 differ: idx/flags/slot saved registers rotated (ours idx s5, slot s3, flags s4; original idx s4, slot s5, flags s3). Round 7: s7 assigned before the compare (fills the bc1f slot), u8/u16 param types, declaration sweeps of slot,fb,s7,tb,s1,s0 and of copy variables: no match.
-#if 0
 typedef struct BtbSlot16 {
     s16 used;
     char pad2[14];
@@ -6268,54 +6266,56 @@ extern void BtbObj_ReleaseF40Copy(BtbObj *);
 extern void *amObject_Create(void *, s32);
 extern void func_00208D60(s32);
 extern void memset(void *, s32, s32);
-
-void func_001F4910(s32 idx, s32 a1, s32 a2, s32 flags) {
-    BtbSlot16 *slot;
-    char *fb;
-    f32 lim;
-    f32 d;
-    char *s7;
-    char *tb;
-    s32 k;
-    char *s1;
-    char *s0;
-    char *r;
-    BtbRecD *rr;
-
-    slot = &D_0051CD46[idx];
-    if (slot->used == 0) {
-        fb = (char *)gBattle + idx * 0x2020;
-        s7 = fb + 0x830;
-        lim = 5.0f + *(f32 *)(fb + 0x2074);
-        d = *(f32 *)(fb + 0x874) - *(f32 *)(*(char **)(fb + 0x13E4) + 0xC);
-        if (d <= lim) {
-            tb = D_0051CD0C[0];
-            k = 6;
-            if (flags & 4) {
-                k += 0x100;
-            }
-            k += D_0051CD20[0] << 7;
-            s1 = func_001A50F0(tb, k);
-            s0 = func_001A50F0(tb, 0x204);
-            if (s1 != NULL && s0 != NULL) {
-                r = func_001F5FD0(0x85000000, D_004697D8, 0, (void *)func_001F1AB0, (void *)BtbObj_ReleaseF40Copy);
-                *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) & -0x1801;
-                *(s32 *)(r + 0x20) = *(s32 *)(r + 0x20) | 0x1800;
-                memset(r + 0x30, 0, 0x80);
-                rr = (BtbRecD *)(r + 0x30);
-                rr->f8 = func_001A50F0(tb, 0x280);
-                rr->fC = (s32)amObject_Create(s0, 0);
-                func_00208D60(rr->fC);
-                rr->f10 = func_00209540(s1, (1 << idx) | 0x2000008, 0);
-                rr->f4 = s7 + 0xC0;
-                rr->f0 = flags & 2;
-                slot->used = 1;
-            }
-        }
+void func_001F4910(s32 idx, s32 a1, s32 a2, s32 flags)
+{
+  BtbSlot16 *slot;
+  char *fb;
+  f32 lim;
+  f32 d;
+  char *s7;
+  char *tb;
+  s32 k;
+  char *s1;
+  char *s0;
+  char *r;
+  BtbRecD *rr;
+  slot = &D_0051CD46[idx];
+  if (slot->used == 0)
+  {
+    fb = ((char *) gBattle) + (idx * 0x2020);
+    s7 = fb + 0x830;
+    lim = 5.0f + (*((f32 *) (fb + 0x2074)));
+    d = (*((f32 *) (fb + 0x874))) - (*((f32 *) ((*((char **) (fb + 0x13E4))) + 0xC)));
+    if (d <= lim)
+    {
+      tb = D_0051CD0C[0];
+      k = 6;
+      if (flags & 4)
+      {
+        k += 0x100;
+      }
+      k += D_0051CD20[0] << 7;
+      s1 = func_001A50F0(tb, k);
+      s0 = func_001A50F0(tb, 0x204);
+      if ((s1 != ((void *) 0)) && (s0 != ((void *) 0)))
+      {
+        r = func_001F5FD0(0x85000000, D_004697D8, 0, (void *) func_001F1AB0, (void *) BtbObj_ReleaseF40Copy);
+        *((s32 *) (r + 0x20)) = (*((s32 *) (r + 0x20))) & (-0x1801);
+        *((s32 *) (r + 0x20)) = (*((s32 *) (r + 0x20))) | 0x1800;
+        memset(r + 0x30, 0, 0x80);
+        rr = (BtbRecD *) (r + 0x30);
+        rr->f8 = func_001A50F0(tb, 0x280);
+        rr->fC = (s32) amObject_Create(s0, 0);
+        func_00208D60(rr->fC);
+        rr->f10 = func_00209540(s1, (1 << idx) | 0x2000008, 0);
+        rr->f4 = s7 + 0xC0;
+        rr->f0 = flags & 2;
+        (&D_0051CD46[idx])->used = 1;
+      }
     }
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4910);
+
 typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbVecX;
 extern BtbVecX D_0044B5F0;
 extern char *D_0051CD0C[];
