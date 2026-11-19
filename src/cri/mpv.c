@@ -678,7 +678,21 @@ s32 func_00172EF8(s32 arg0, s32 arg1) {
     }
     return arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172F48);
+typedef s32 (*CbFn_x00172F48)(s32);
+typedef struct { CbFn_x00172F48 fn; s32 arg; s32 val; } CbObj_x00172F48;
+s32 func_00172F48_x00172F48(CbObj_x00172F48 *o, s32 v) __asm__("func_00172F48");
+s32 func_00172F48_x00172F48(CbObj_x00172F48 *o, s32 v)
+{
+    s32 r = v;
+    o->val = r;
+    if (r != 0) {
+        r = (s32)o->fn;
+        if (r != 0) {
+            r = ((CbFn_x00172F48)r)(o->arg);
+        }
+    }
+    return r;
+}
 s32 func_00172EF8_x00172F80(s32, s32) __asm__("func_00172EF8");
 s32 func_00178B80_x00172F80() __asm__("func_00178B80");
 s32 func_0017E040_x00172F80(s32) __asm__("func_0017E040");
@@ -2855,7 +2869,17 @@ void func_00178820_x00178820(M2vPicAtr_x00178820 *picatr)
 void func_001788D0(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001788D8);
+s32 func_00178910_x001788D8() __asm__("func_00178910");
+s32 func_00178960_x001788D8(s32) __asm__("func_00178960");
+s32 func_001788D8_x001788D8(void) __asm__("func_001788D8");
+s32 func_001788D8_x001788D8(void)
+{
+    s32 h = func_00178910_x001788D8();
+    if (h == 0) {
+        return 0;
+    }
+    return func_00178960_x001788D8(h);
+}
 typedef struct { u8 pad[0x40]; s32 n; u8 *p; } Lib_x00178910;
 extern Lib_x00178910 D_00481490_x00178910 __asm__("D_00481490");
 s32 *func_00178910_x00178910(void) __asm__("func_00178910");
@@ -3589,7 +3613,21 @@ s32 func_0017B048(s32 arg0, s32 arg1) {
     }
     return arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B098);
+typedef s32 (*CbFn_x0017B098)(s32);
+typedef struct { CbFn_x0017B098 fn; s32 arg; s32 val; } CbObj_x0017B098;
+s32 func_0017B098_x0017B098(CbObj_x0017B098 *o, s32 v) __asm__("func_0017B098");
+s32 func_0017B098_x0017B098(CbObj_x0017B098 *o, s32 v)
+{
+    s32 r = v;
+    o->val = r;
+    if (r != 0) {
+        r = (s32)o->fn;
+        if (r != 0) {
+            r = ((CbFn_x0017B098)r)(o->arg);
+        }
+    }
+    return r;
+}
 s32 func_0017B048_x0017B0D0() __asm__("func_0017B048");
 s32 func_0017B168_x0017B0D0() __asm__("func_0017B168");
 s32 func_0017B218_x0017B0D0() __asm__("func_0017B218");
@@ -3737,7 +3775,17 @@ s32 func_0017B218_x0017B218(s32 *arg0)
     while (0);
   }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B240);
+s32 func_0017B278_x0017B240() __asm__("func_0017B278");
+s32 func_0017B2D0_x0017B240(s32) __asm__("func_0017B2D0");
+s32 func_0017B240_x0017B240(void) __asm__("func_0017B240");
+s32 func_0017B240_x0017B240(void)
+{
+    s32 h = func_0017B278_x0017B240();
+    if (h == 0) {
+        return 0;
+    }
+    return func_0017B2D0_x0017B240(h);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B278);
 s32 func_00179018_x0017B2D0() __asm__("func_00179018");
 s32 func_0017B038_x0017B2D0() __asm__("func_0017B038");
@@ -4211,7 +4259,21 @@ s32 func_0017C2E0(s32 arg0, s32 arg1) {
     }
     return arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C330);
+typedef s32 (*CbFn_x0017C330)(s32);
+typedef struct { CbFn_x0017C330 fn; s32 arg; s32 val; } CbObj_x0017C330;
+s32 func_0017C330_x0017C330(CbObj_x0017C330 *o, s32 v) __asm__("func_0017C330");
+s32 func_0017C330_x0017C330(CbObj_x0017C330 *o, s32 v)
+{
+    s32 r = v;
+    o->val = r;
+    if (r != 0) {
+        r = (s32)o->fn;
+        if (r != 0) {
+            r = ((CbFn_x0017C330)r)(o->arg);
+        }
+    }
+    return r;
+}
 typedef struct SfdSj_x0017C368 SfdSj_x0017C368;
 typedef struct SfdSjChunk_x0017C368 {
     char *data;
