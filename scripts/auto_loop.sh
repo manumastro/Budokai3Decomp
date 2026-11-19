@@ -41,6 +41,18 @@ step() {
 # functions in C = all (8,295) minus the INCLUDE_ASM lines and asm-segment functions left (no build needed)
 count() { echo $((8295 - $($PY scripts/lib_remaining.py --all 2>/dev/null | wc -l))); }
 
+alert() { mkdir -p ~/.stallcheck; echo "$(date '+%F %T') $*" >> ~/.stallcheck/alerts; }
+# rebase on origin/main; local edits identical to origin/main's version of the file are dropped first
+sync_main() {
+  git fetch -q origin || return 1
+  local f
+  for f in $(git diff --name-only); do
+    git diff --quiet origin/main -- "$f" && git checkout -q -- "$f"
+  done
+  git rebase -q origin/main 2>/dev/null && return 0
+  git rebase --abort 2>/dev/null; return 1
+}
+
 perm_running() { pgrep -f "lib_permute.py run --input build/auto/perm_in.json" > /dev/null; }
 
 log "auto_loop start, max $MAX passes, $(count) functions in C"
@@ -50,7 +62,13 @@ while [ $pass -lt "$MAX" ]; do
   P=build/auto/p$pass; mkdir -p $P
   start=$(count)
   log "pass $pass: start $start"
-  git fetch -q origin && git rebase -q origin/main 2>/dev/null || git rebase --abort 2>/dev/null
+  # stay on origin/main: a pass on an old checkout redoes merged work and misses new tools. A failed sync stops the
+  # loop loudly (log line + ~/.stallcheck/alerts, which the supervisor's stall check reports) instead of going on.
+  if ! sync_main; then
+    log "SYNC FAILED: cannot rebase on origin/main ($(git status --short | head -3 | tr '\n' ' ')); stopping"
+    alert "B3 auto_loop: cannot rebase .wt/auto2 on origin/main; loop stopped"
+    exit 2
+  fi
 
   # 1. sibling clones
   step sim_find 1800 $PY scripts/sim_find.py --out build/sim/siblings.json
