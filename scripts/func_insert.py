@@ -349,6 +349,69 @@ def tail_pad(seg, name):
     return f"\nINCLUDE_PAD({total - size});"
 
 
+MOVED_PADS = int(os.environ.get("B3_MOVED_PADS", "4"))
+
+
+def _block_start(text, name, addr):
+    """Offset of the first file-scope line of NAME's block: its first `_x<ADDR>` declaration, else the first
+    column-0 line naming it."""
+    m = re.search(r"^[A-Za-z_].*_x%08X\b.*$" % addr, text, re.M) if addr is not None else None
+    if not m:
+        m = re.search(r"^[A-Za-z_].*\b" + re.escape(name) + r"\b.*$", text, re.M)
+    return m.start() if m else None
+
+
+def moved_pad(text, rel, bad, tag):
+    """A build-mode compile moved later functions of the file (ee-gcc 2.96 keys some of its choices on the
+    addresses of symbol names, which every allocation before them shifts): put dummy extern declarations right
+    before the block of each moved function, first moved function first, until none moves. Returns the new text or
+    None. Measured: one 32-byte-class name before func_001936B0 undid the 60 words that 7 inserted sfd.c functions
+    moved, where pads after the inserted function (cse_pad) did nothing."""
+    import gccmatch
+    import lib_filecheck
+    syms = _cached("syms", gccmatch.symbol_addresses)
+    path = ROOT / rel
+    combos = sorted((c for c in itertools.product(range(MOVED_PADS), range(MOVED_PADS), range(3)) if any(c)),
+                    key=lambda c: (sum(c), c[::-1]))
+    done = set()
+    for _ in range(8):
+        moved = []
+        for b in bad:
+            m = re.match(r"(\w+): \d+ words differ", b)
+            if not m:
+                return None
+            n = m.group(1)
+            a = int(n[5:], 16) if re.fullmatch(r"func_[0-9A-F]{8}", n) else syms.get(n)
+            moved.append((a if a is not None else 1 << 32, n))
+        a, n = min(moved)
+        if n in done:
+            return None
+        done.add(n)
+        pos = _block_start(text, n, a if a < 1 << 32 else None)
+        if pos is None:
+            return None
+        found = None
+        for k8, k16, k32 in combos:
+            t = f"{tag}{len(done)}"
+            names = [f"m{t[-5:]}{i}" for i in range(k8)]  # 7 chars: 8-byte class
+            names += [f"b3m{t[-5:]}_{i:06d}" for i in range(k16)]  # 15 chars: 16-byte class
+            names += [f"b3mpad_{t[-5:]}_{i:017d}" for i in range(k32)]  # 31 chars: 32-byte class
+            pad = ("/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */\n" +
+                   "".join(f"extern int {x};\n" for x in names))
+            new = text[:pos] + pad + text[pos:]
+            path.write_text(new)
+            nb = lib_filecheck.check(rel)
+            if not nb:
+                return new
+            if not any(x.startswith(n + ":") for x in nb) and all(x.split(":")[0] not in done for x in nb):
+                found = (new, nb)
+                break
+        if not found:
+            return None
+        text, bad = found
+    return None
+
+
 def apply(items, jobs=12, log=None, dry=False, real=False):
     rem = {r[0]: r for r in LR.remaining(True)}
     byseg = {}
@@ -469,6 +532,16 @@ def apply(items, jobs=12, log=None, dry=False, real=False):
                     bad = lib_filecheck.check(rel)
                     if bad:
                         good, msg = False, "build-mode compile: " + "; ".join(bad)[:160]
+            if not good and real and msg.startswith("build-mode compile") and "differ" in msg:
+                # another function of the file moved: dummy declarations before the moved functions (moved_pad)
+                rep = isolate(it, 0) + tail_pad(seg, it["name"])
+                base = pat.sub(lambda _: rep, text, count=1)
+                path.write_text(base)
+                import lib_filecheck
+                if check(rel, it["name"])[0]:
+                    mp = moved_pad(base, rel, lib_filecheck.check(rel), f"{it['addr'] & 0xFFFFF:05x}")
+                    if mp is not None:
+                        new, good, msg = mp, True, "OK"
             if not good and real and msg.startswith("build-mode compile") and "differ" in msg:
                 # another function of the file moved: padding identifiers (cse_pad), fewest first
                 combos = [(0, 0, 0) + c for c in sorted(itertools.product(range(ASM_PADS), repeat=3), key=sum) if any(c)]
