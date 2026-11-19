@@ -846,24 +846,37 @@ s32 Scr_CmdObjVecCall(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-/* differs: the paused test and the out-of-line return 0 (39 of 51 with the helper form) */
-#if 0
 s32 func_0025EE10(TimedEE10 *o) {
-    if (gBattle != NULL && gBattle->f88EC != 0) {
-        return 0;
+    f32 temp_f1;
+    f32 var_f1;
+    s32 var_v0;
+
+    var_v0 = 0;
+    if (gBattle != NULL) {
+        var_v0 = gBattle->f88EC;
     }
-    if (o->f30 != -1.0f) {
-        o->f2C = o->f2C + Scr_GetSpeed();
-        if (o->f2C >= o->f30) {
-            o->f10 = 0;
-            return 1;
+    if (var_v0 == 0) {
+        if (o->f30 != -1.0f) {
+            if (gBattle != NULL) {
+                var_f1 = gBattle->f88F0;
+            } else {
+                var_f1 = (D_004703F4 != 3) ? 1.0f : 1.2f;
+            }
+            temp_f1 = o->f2C + var_f1;
+            o->f2C = temp_f1;
+            if (!(temp_f1 < o->f30)) {
+                o->f10 = 0;
+                return 1;
+            }
+            goto block_11;
         }
+block_11:
+        func_0020EE10(o->f2A, 1);
+        goto block_12;
     }
-    func_0020EE10(o->f2A, 1);
+block_12:
     return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025EE10);
 extern s32 func_0025EE10(TimedEE10 *o);
 s32 func_0025EEE0(TimedEE10 *o, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
