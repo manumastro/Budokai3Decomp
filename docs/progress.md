@@ -12,9 +12,9 @@ Measured 2026-11-19 (scripts/progress.py).
 |---|---|---|---|---|---|---|
 | Sony SDK + C library (gcc) | 543 | 858 | 63.29 | 97,908 | 179,380 | 54.58 |
 | Metrowerks, linked before CRI (am* layer, main) | 342 | 411 | 83.21 | 66,892 | 137,476 | 48.66 |
-| CRI ADX / Sofdec, libmtap (gcc) | 2,297 | 2,797 | 82.12 | 201,448 | 337,028 | 59.77 |
+| CRI ADX / Sofdec, libmtap (gcc) | 2,299 | 2,797 | 82.20 | 201,680 | 337,028 | 59.84 |
 | Metrowerks, linked after CRI (the game) | 2,749 | 4,229 | 65.00 | 421,740 | 1,476,380 | 28.57 |
-| All | 5,931 | 8,295 | 71.50 | 787,988 | 2,130,264 | 36.99 |
+| All | 5,933 | 8,295 | 71.53 | 788,220 | 2,130,264 | 37.00 |
 
 <!-- end of progress table -->
 
