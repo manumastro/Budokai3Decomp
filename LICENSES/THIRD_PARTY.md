@@ -19,6 +19,7 @@ file's first comment) to the instructions of this executable.
 | https://github.com/AshfordFamily/recvx-decomp | MIT | LICENSES/recvx-decomp-MIT.txt |
 | https://github.com/Dorgengoa/RGDecomp (src/main/sdk/) | CC0-1.0 | LICENSES/RGDecomp-CC0.txt |
 | newlib 1.10.0 (https://sourceware.org/newlib/) | per-file notices (BSD-style) | below |
+| GCC 2.96 libgcc2.c (https://gcc.gnu.org/) | GPL-2.0-or-later with the libgcc linking exception (notice in src/sdk/libgcc_00120F68.c) | - |
 | https://github.com/LucasPicoli/god-hand-decomp | MIT | LICENSES/god-hand-decomp-MIT.txt |
 | https://github.com/new-coke/rez-decomp | MIT | LICENSES/rez-decomp-MIT.txt |
 | https://github.com/TheRealestNwah/sotc-decomp | CC0-1.0 | LICENSES/sotc-decomp-CC0.txt |

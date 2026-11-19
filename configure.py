@@ -86,6 +86,14 @@ def gcc_extra_includes(src):
     return " ".join(flags)
 
 
+def gcc_as_flags(src):
+    """Extra assembler flags of a library file, from its first comment (`as-flags: -O1`): e.g. libgcc2.c's objects
+    were assembled without delay-slot filling."""
+    head = (ROOT / src).read_text(errors="replace")[:1500]
+    m = re.search(r"as-flags:[ \t]*([^\n*]+)", head)
+    return m.group(1).strip() if m else ""
+
+
 def include_asm_files(src):
     """The assembly files a C file pulls in with INCLUDE_ASM (implicit inputs of its object)."""
     text = (ROOT / src).read_text()
@@ -241,7 +249,7 @@ def write_ninja():
         f"  command = {py} scripts/eegcc/eegcc.py $gcc_version $gcc_flags -Iinclude -Isrc $gcc_inc -S $in -o $out.s && "
         # library data a ported function defines itself is bound to the executable's (REBIND_DATA, gcc_rebind.py)
         f"{py} scripts/gcc_rebind.py $out.s $out.rb.s -Iinclude && "
-        f"$as {GCC_AS_FLAGS} include/gcc_prelude.inc $out.rb.s -o $out && {py} scripts/set_eabi64.py $out",
+        f"$as {GCC_AS_FLAGS} $gcc_asflags include/gcc_prelude.inc $out.rb.s -o $out && {py} scripts/set_eabi64.py $out",
         "  description = GCC $in",
         "",
         "rule ld",
@@ -290,6 +298,7 @@ def write_ninja():
             out.append(f"  gcc_version = {group[0]}")
             out.append(f"  gcc_flags = {group[1]}")
             out.append(f"  gcc_inc = {gcc_extra_includes(src)}")
+            out.append(f"  gcc_asflags = {gcc_as_flags(src)}")
         objs.append(obj)
     write_c_labels(linked)
     scripts = [f"build/{NAME}.ld", "build/undefined_funcs_auto.txt", "build/undefined_syms_auto.txt",

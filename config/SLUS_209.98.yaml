@@ -120,6 +120,8 @@ segments:
       - [0x01F620, c, sdk/libgcc]            # __muldi3 (0x11F6E0), 64-bit division, soft double (dp-bit)
       - [0x01F6E0, c, sdk/libgcc/ico__muldi3]
       - [0x01F758, c, sdk/libgcc_0011F758]
+      - [0x020F68, c, sdk/libgcc_00120F68]  # libgcc2.c conversions (GCC 2.96 source)
+      - [0x0213B0, c, sdk/libgcc_001213B0]
       - [0x0221A8, c, sdk/libc]              # newlib: _close_r, rand, vfprintf, ...
       - [0x023A00, c, sdk/libc/kfiv_findfp]
       - [0x023B90, c, sdk/libc_00123B90]
