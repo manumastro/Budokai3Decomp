@@ -3103,7 +3103,62 @@ void func_001891A0_x001891A0(u8 *arg0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189208);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189360);
+typedef struct { s32 w[7]; } W7_9360_x00189360;
+typedef struct { s64 v; s64 d; } T_9360_x00189360;
+extern W7_9360_x00189360 D_0048CFD0_x00189360 __asm__("D_0048CFD0");
+s32 func_0018D650_x00189360(void *, s32) __asm__("func_0018D650");
+s32 func_001999E0_x00189360(void *, s32) __asm__("func_001999E0");
+void func_0019C1A8_x00189360(void *) __asm__("func_0019C1A8");
+void func_0019C2C8_x00189360(void *, s32) __asm__("func_0019C2C8");
+void func_0019C2D0_x00189360(void *, T_9360_x00189360 *) __asm__("func_0019C2D0");
+void func_0019C2E8_x00189360(void *, T_9360_x00189360 *) __asm__("func_0019C2E8");
+void func_0019C300_x00189360(void *, T_9360_x00189360 *) __asm__("func_0019C300");
+void func_0019C318_x00189360(void *, T_9360_x00189360 *) __asm__("func_0019C318");
+void func_0019C330_x00189360(void *, s32) __asm__("func_0019C330");
+void func_001A1498_x00189360(s32) __asm__("func_001A1498");
+void func_001886A8_x00189360() __asm__("func_001886A8");
+s32 func_00189360_x00189360(void *ply, s32 *p) __asm__("func_00189360");
+s32 func_00189360_x00189360(void *ply, s32 *p)
+{
+  T_9360_x00189360 t[4];
+  void *m;
+  if ((D_0048CFD0_x00189360.w[2] == 0) || (D_0048CFD0_x00189360.w[6] == 0))
+  {
+    return func_0018D650_x00189360(ply, 0xFF000C06);
+  }
+  *((W7_9360_x00189360 *) (p + 2)) = D_0048CFD0_x00189360;
+  p[0] = 0;
+  p[1] = 0;
+  p[9] = -1;
+  p[10] = 1;
+  p[11] = 0;
+  p[12] = 0;
+  p[13] = 0;
+  p[14] = 0;
+  p[15] = (s32) func_001886A8_x00189360;
+  p[16] = 0;
+  p[17] = -1;
+  p[18] = 0;
+  p[19] = 0;
+  m = (u8 *)ply + 0xFA0;
+  t[0].v = func_001999E0_x00189360(ply, 0x3F);
+  t[0].d = 1000000;
+  t[1].v = func_001999E0_x00189360(ply, 0x40);
+  t[1].d = 1000000;
+  t[2].v = func_001999E0_x00189360(ply, 0x41);
+  t[2].d = 1000000;
+  t[3].v = func_001999E0_x00189360(ply, 0x42);
+  t[3].d = 1000000;
+  func_0019C1A8_x00189360(m);
+  func_0019C2C8_x00189360(m, func_001999E0_x00189360(ply, 0x48));
+  func_0019C2D0_x00189360(m, &t[0]);
+  func_0019C2E8_x00189360(m, &t[1]);
+  func_0019C300_x00189360(m, &t[2]);
+  func_0019C318_x00189360(m, &t[3]);
+  func_0019C330_x00189360(m, func_001999E0_x00189360(ply, 0x3E));
+  func_001A1498_x00189360(func_001999E0_x00189360(ply, 0x3D));
+  return 0;
+}
 s32 func_00189518(u8 *arg0) {
     s32 var_v0;
     s32 var_v0_2;
@@ -28281,6 +28336,8 @@ void func_00193608_x00193608(s32 a0, SfdEnt_x00193608_x00193608 *a1, s32 a2)
 extern int m130010;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int m2de010;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3m93601_000000;
 typedef struct SfdSj_x001936B0 SfdSj_x001936B0;
 typedef struct SfdSjChunk_x001936B0 {
     char *data;
