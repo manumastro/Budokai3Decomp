@@ -13,7 +13,95 @@ extern s32 _impure_ptr;
 
 extern s32 D_0045EC10;
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libc_001246A0", func_001246A0);
+typedef unsigned char u8_x001246A0;
+typedef signed short s16_x001246A0;
+typedef signed int s32_x001246A0;
+typedef unsigned int u32_x001246A0;
+typedef struct _reent_x001246A0 _reent_x001246A0;
+typedef struct __sbuf_x001246A0 {
+    u8_x001246A0 *_base;
+    s32_x001246A0 _size;
+} __sbuf_x001246A0;
+typedef struct __sFILE_x001246A0 {
+    u8_x001246A0 *_p;
+    s32_x001246A0 _r;
+    s32_x001246A0 _w;
+    s16_x001246A0 _flags;
+    s16_x001246A0 _file;
+    __sbuf_x001246A0 _bf;
+    s32_x001246A0 _lbfsize;
+    void *_cookie;
+    s32_x001246A0 (*_read)(void *cookie, char *buf, s32_x001246A0 n);
+    s32_x001246A0 (*_write)(void *cookie, const char *buf, s32_x001246A0 n);
+    long (*_seek)(void *cookie, s32_x001246A0 offset, s32_x001246A0 whence);
+    s32_x001246A0 (*_close)(void *cookie);
+    __sbuf_x001246A0 _ub;
+    u8_x001246A0 *_up;
+    s32_x001246A0 _ur;
+    u8_x001246A0 _ubuf[3];
+    u8_x001246A0 _nbuf[1];
+    __sbuf_x001246A0 _lb;
+    s32_x001246A0 _blksize;
+    s32_x001246A0 _offset;
+    _reent_x001246A0 *_data;
+} FILE_x001246A0;
+typedef struct _Bigint_x001246A0 {
+    struct _Bigint_x001246A0 *next;
+    s32_x001246A0 k;
+    s32_x001246A0 maxwds;
+    s32_x001246A0 sign;
+    s32_x001246A0 wds;
+    u32_x001246A0 x[1];
+} _Bigint_x001246A0;
+typedef struct _glue_x001246A0 {
+    struct _glue_x001246A0 *next;
+    s32_x001246A0 niobs;
+    FILE_x001246A0 *iobs;
+} _glue_x001246A0;
+typedef struct _atexit_x001246A0 {
+    struct _atexit_x001246A0 *_next;
+    s32_x001246A0 _ind;
+    void (*_fns[32])(void);
+} _atexit_x001246A0;
+struct _reent_x001246A0 {
+    s32_x001246A0 _errno;
+    FILE_x001246A0 *_stdin;
+    FILE_x001246A0 *_stdout;
+    FILE_x001246A0 *_stderr;
+    s32_x001246A0 _inc;
+    char _emergency[25];
+    s32_x001246A0 _current_category;
+    const char *_current_locale;
+    s32_x001246A0 __sdidinit;
+    void (*__cleanup)(struct _reent_x001246A0 *r);
+    _Bigint_x001246A0 *_result;
+    s32_x001246A0 _result_k;
+    _Bigint_x001246A0 *_p5s;
+    _Bigint_x001246A0 **_freelist;
+    u8_x001246A0 _unused[0xF8];
+    _atexit_x001246A0 *_atexit_x001246A0;
+    _atexit_x001246A0 _atexit0;
+    void (**_sig_func)(s32_x001246A0 sig);
+    struct _glue_x001246A0 __sglue;
+    FILE_x001246A0 __sf[3];
+};
+extern const char localeEmptyStr_x001246A0[] __asm__("D_0045EC40");
+extern const char localeCName_x001246A0[] __asm__("D_0045EC50");
+extern s32_x001246A0 strcmp_x001246A0(const char *left, const char *right) __asm__("func_00127940");
+extern const char localeEmptyStr_x001246A0[8] __asm__("D_0045EC40");
+extern const char localeCName_x001246A0[4] __asm__("D_0045EC50");
+char *func_001246A0_x001246A0(_reent_x001246A0 *r, s32_x001246A0 category, const char *locale) __asm__("func_001246A0");
+/* _setlocale_r: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libc.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+char *func_001246A0_x001246A0(_reent_x001246A0 *r, s32_x001246A0 category, const char *locale)
+{
+    if (locale != ((void *)0)) {
+        if (strcmp_x001246A0(locale, localeCName_x001246A0) != 0 && strcmp_x001246A0(locale, localeEmptyStr_x001246A0) != 0)
+            return ((void *)0);
+        r->_current_category = category;
+        r->_current_locale = locale;
+    }
+    return localeCName_x001246A0;
+}
 s32 *func_00124730(void) {
     return &D_0045EC10;
 }

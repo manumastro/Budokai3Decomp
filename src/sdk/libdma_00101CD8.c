@@ -34,8 +34,64 @@ void func_00101CF0_x00101CF0(struct DmaChannelRegs_x00101CF0 *channel, s32_x0010
     channel->qwc = 0;
     channel->chcr = (s32_x00101CF0)((channel->chcr & ~0xC) | 0x105);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101D58);
-INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101DD0);
+typedef unsigned int u32_x00101D58;
+typedef u32_x00101D58 addr_t_x00101D58;
+typedef struct sceDmaChan_x00101D58 {
+    u32_x00101D58 chcr; u32_x00101D58 pad00[3];
+    u32_x00101D58 madr; u32_x00101D58 pad10[3];
+    u32_x00101D58 qwc;  u32_x00101D58 pad20[3];
+    u32_x00101D58 tadr; u32_x00101D58 pad30[3];
+    u32_x00101D58 asr0; u32_x00101D58 pad40[3];
+    u32_x00101D58 asr1; u32_x00101D58 pad50[3];
+    u32_x00101D58 pad60[8];
+    u32_x00101D58 sadr;
+} sceDmaChan_x00101D58;
+void WaitDma_x00101D58(sceDmaChan_x00101D58 *chan) __asm__("func_00101868");
+u32_x00101D58 CheckAddress_x00101D58(addr_t_x00101D58 addr) __asm__("func_00101960");
+void WaitDma_x00101D58(sceDmaChan_x00101D58 *chan) __asm__("func_00101868");
+u32_x00101D58 CheckAddress_x00101D58(addr_t_x00101D58 addr) __asm__("func_00101960");
+void func_00101D58_x00101D58(sceDmaChan_x00101D58 *chan, void *data, u32_x00101D58 qwc) __asm__("func_00101D58");
+/* sceDmaSendN: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libdma.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00101D58_x00101D58(sceDmaChan_x00101D58 *chan, void *data, u32_x00101D58 qwc)
+{
+    u32_x00101D58 addr = CheckAddress_x00101D58(((u32_x00101D58)(data)));
+
+    WaitDma_x00101D58(chan);
+    if (chan->madr != 0xFFFFFFFF) {
+        chan->madr = addr;
+    }
+    chan->qwc = qwc;
+    chan->chcr = ((int)chan->chcr & ~0xC) | 0x101;
+}
+typedef unsigned int u32_x00101DD0;
+typedef u32_x00101DD0 addr_t_x00101DD0;
+typedef struct sceDmaChan_x00101DD0 {
+    u32_x00101DD0 chcr; u32_x00101DD0 pad00[3];
+    u32_x00101DD0 madr; u32_x00101DD0 pad10[3];
+    u32_x00101DD0 qwc;  u32_x00101DD0 pad20[3];
+    u32_x00101DD0 tadr; u32_x00101DD0 pad30[3];
+    u32_x00101DD0 asr0; u32_x00101DD0 pad40[3];
+    u32_x00101DD0 asr1; u32_x00101DD0 pad50[3];
+    u32_x00101DD0 pad60[8];
+    u32_x00101DD0 sadr;
+} sceDmaChan_x00101DD0;
+void WaitDma_x00101DD0(sceDmaChan_x00101DD0 *chan) __asm__("func_00101868");
+u32_x00101DD0 CheckAddress_x00101DD0(addr_t_x00101DD0 addr) __asm__("func_00101960");
+void WaitDma_x00101DD0(sceDmaChan_x00101DD0 *chan) __asm__("func_00101868");
+u32_x00101DD0 CheckAddress_x00101DD0(addr_t_x00101DD0 addr) __asm__("func_00101960");
+void func_00101DD0_x00101DD0(sceDmaChan_x00101DD0 *chan, void *data, u32_x00101DD0 qwc) __asm__("func_00101DD0");
+/* sceDmaSendI: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libdma.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00101DD0_x00101DD0(sceDmaChan_x00101DD0 *chan, void *data, u32_x00101DD0 qwc)
+{
+    u32_x00101DD0 addr = CheckAddress_x00101DD0(((u32_x00101DD0)(data)));
+
+    WaitDma_x00101DD0(chan);
+    if (chan->madr != 0xFFFFFFFF) {
+        chan->madr = addr;
+    }
+    chan->qwc = qwc;
+    chan->chcr = ((int)chan->chcr & ~0xC) | 0x109;
+}
 s32 func_00101868_x00101E48() __asm__("func_00101868");
 void func_00101E48_x00101E48(u8 *arg0) __asm__("func_00101E48");
 void func_00101E48_x00101E48(u8 *arg0)
@@ -47,7 +103,35 @@ void func_00101E48_x00101E48(u8 *arg0)
   *((s32 *) (((u8 *) arg0) + 0)) = (s32) (((((*((s32 *) (((u8 *) arg0) + 0))) & (~0xC)) | 4) & (~1)) | 0x100);
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101E90);
-INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101F10);
+typedef unsigned int u32_x00101F10;
+typedef u32_x00101F10 addr_t_x00101F10;
+typedef struct sceDmaChan_x00101F10 {
+    u32_x00101F10 chcr; u32_x00101F10 pad00[3];
+    u32_x00101F10 madr; u32_x00101F10 pad10[3];
+    u32_x00101F10 qwc;  u32_x00101F10 pad20[3];
+    u32_x00101F10 tadr; u32_x00101F10 pad30[3];
+    u32_x00101F10 asr0; u32_x00101F10 pad40[3];
+    u32_x00101F10 asr1; u32_x00101F10 pad50[3];
+    u32_x00101F10 pad60[8];
+    u32_x00101F10 sadr;
+} sceDmaChan_x00101F10;
+void WaitDma_x00101F10(sceDmaChan_x00101F10 *chan) __asm__("func_00101868");
+u32_x00101F10 CheckAddress_x00101F10(addr_t_x00101F10 addr) __asm__("func_00101960");
+void WaitDma_x00101F10(sceDmaChan_x00101F10 *chan) __asm__("func_00101868");
+u32_x00101F10 CheckAddress_x00101F10(addr_t_x00101F10 addr) __asm__("func_00101960");
+void func_00101F10_x00101F10(sceDmaChan_x00101F10 *chan, void *data, u32_x00101F10 qwc) __asm__("func_00101F10");
+/* sceDmaRecvI: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libdma.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00101F10_x00101F10(sceDmaChan_x00101F10 *chan, void *data, u32_x00101F10 qwc)
+{
+    u32_x00101F10 addr = CheckAddress_x00101F10(((u32_x00101F10)(data)));
+
+    WaitDma_x00101F10(chan);
+    if (chan->madr != 0xFFFFFFFF) {
+        chan->madr = addr;
+    }
+    chan->qwc = qwc;
+    chan->chcr = ((((int)chan->chcr & ~0xC) | 0x8) & ~1) | 0x100;
+}
 s32 func_00101868_x00101F90() __asm__("func_00101868");
 s32 func_00101F90_x00101F90(u32 *arg0, s32 arg1) __asm__("func_00101F90");
 s32 func_00101F90_x00101F90(u32 *arg0, s32 arg1) {

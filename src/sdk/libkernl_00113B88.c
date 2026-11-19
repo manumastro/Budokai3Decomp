@@ -346,7 +346,44 @@ s32_x00114698 func_00114698_x00114698(void) {
     SetOsdConfigParam_x00114698(&cfg);
     return ((cfg.f.b >> 13) & 7) == 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114700);
+typedef unsigned char u8_x00114700;
+typedef signed int s32_x00114700;
+typedef unsigned int u32_x00114700;
+extern void FlushCache_x00114700(s32_x00114700 mode) __asm__("FlushCache");
+typedef struct {
+    u32_x00114700 index;
+    void (*entry)(void);
+} kernelEntryPair_t_x00114700;
+s32_x00114700 PatchIsNeeded_0_x00114700(void) __asm__("func_00114698");
+extern void FlushCache_x00114700(s32_x00114700 mode) __asm__("FlushCache");
+extern kernelEntryPair_t_x00114700 execEntryPairs_x00114700[3] __asm__("D_003ED500");
+extern const u8_x00114700 execPs2Payload_x00114700[0x7A8] __asm__("D_003ECD58");
+extern s32_x00114700 PatchIsNeeded_0_x00114700(void) __asm__("func_00114698");
+extern void gcc2_compiled__15_x00114700(u32_x00114700 index, void *entry) __asm__("func_00114630");
+extern s32_x00114700 Copy_0_x00114700(void *destination, const void *source, u32_x00114700 size) __asm__("func_00114640");
+extern void *GetEntryAddress_x00114700(u32_x00114700 index) __asm__("func_00114688");
+void func_00114700_x00114700(void) __asm__("func_00114700");
+/* InitExecPS2: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00114700_x00114700(void)
+{
+    u32_x00114700 index;
+    u32_x00114700 i;
+    void *entry;
+
+    if (PatchIsNeeded_0_x00114700() == 0) {
+        return;
+    }
+    gcc2_compiled__15_x00114700(execEntryPairs_x00114700[0].index, execEntryPairs_x00114700[0].entry);
+    Copy_0_x00114700((void *)0x80074000, execPs2Payload_x00114700, 0x7A8);
+    FlushCache_x00114700(0);
+    FlushCache_x00114700(2);
+    gcc2_compiled__15_x00114700(execEntryPairs_x00114700[1].index, execEntryPairs_x00114700[1].entry);
+    for (i = 2; i < 3; i++) {
+        index = execEntryPairs_x00114700[i].index;
+        entry = GetEntryAddress_x00114700(index);
+        gcc2_compiled__15_x00114700(execEntryPairs_x00114700[i].index, entry);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001147B0);
 s32 func_001147C0(u8 *arg0, u8 *arg1, u32 arg2) {
     u32 var_a3;
@@ -373,7 +410,27 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114800);
 void func_00114918(void) {
     func_00113D78();
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114920);
+typedef signed int s32_x00114920;
+typedef struct execArgumentBlock_t_x00114920 {
+    char *arguments[16];
+    char strings[1];
+} execArgumentBlock_t_x00114920;
+extern void *execArgumentBlock_x00114920 __asm__("D_003ECA60");
+char *SetArg_x00114920(const char *path, s32_x00114920 count, const char *const *arguments) __asm__("func_00114800");
+void TerminateLibrary_x00114920(void) __asm__("func_00114918");
+extern const char execDefaultPath_x00114920[] __asm__("D_0045D9F0");
+extern s32_x00114920 _ExecPS2_x00114920(void *entry, void *gp, s32_x00114920 count, char **arguments) __asm__("ExecPS2");
+extern void *execArgumentBlock_x00114920 __asm__("D_003ECA60");
+extern const char execDefaultPath_x00114920[8] __asm__("D_0045D9F0");
+s32_x00114920 func_00114920_x00114920(void *entry, void *gp, s32_x00114920 count, const char *const *arguments) __asm__("func_00114920");
+/* ExecPS2: from https://github.com/Megami-Decomps/smt3-decomp (src/smt3/sdk/libkernl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+s32_x00114920 func_00114920_x00114920(void *entry, void *gp, s32_x00114920 count, const char *const *arguments)
+{
+    SetArg_x00114920(execDefaultPath_x00114920, count, arguments);
+    TerminateLibrary_x00114920();
+    return _ExecPS2_x00114920(entry, gp, count,
+                    &((execArgumentBlock_t_x00114920 *)execArgumentBlock_x00114920)->arguments[1]);
+}
 typedef signed int s32_x00114990;
 typedef struct execArgumentBlock_t_x00114990 {
     char *arguments[16];
