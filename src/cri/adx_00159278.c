@@ -778,8 +778,70 @@ void func_001598E8_x001598E8(void *a0) {
     func_00327568_x001598E8(s0);
     Forward33B670_33E690_x001598E8();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159990);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_00159AD8);
+typedef struct { int ptr; int len; } Ck_9990_x00159990;
+struct Sj_9990_x00159990;
+typedef struct { char pad[0x18]; void (*getck)(struct Sj_9990_x00159990 *, int, int, Ck_9990_x00159990 *); void (*putck)(struct Sj_9990_x00159990 *, int, Ck_9990_x00159990 *); void (*ungetck)(struct Sj_9990_x00159990 *, int, Ck_9990_x00159990 *); } Vt_9990_x00159990;
+typedef struct Sj_9990_x00159990 { Vt_9990_x00159990 *vt; } Sj_9990_x00159990;
+typedef struct { signed char f0, f1, nch, f3; int pad4, pad8; Sj_9990_x00159990 *sj[2]; char pad14[0xA0 - 0x14]; int fA4; } Obj_9990_x00159990;
+void *memset_x00159990(void *, int, unsigned int) __asm__("memset");
+void func_00159990_x00159990(Obj_9990_x00159990 *o) __asm__("func_00159990");
+void func_00159990_x00159990(Obj_9990_x00159990 *o)
+{
+    Ck_9990_x00159990 ck;
+    int i;
+    int min;
+    int half;
+
+    min = o->fA4 * 2;
+    for (i = 0; i < o->nch; i++) {
+        o->sj[i]->vt->getck(o->sj[i], 0, 0x7FFFFFFF, &ck);
+        if (ck.len <= min) {
+            min = ck.len;
+        }
+        o->sj[i]->vt->putck(o->sj[i], 0, &ck);
+    }
+    half = (unsigned int)min >> 1;
+    min = half * 2;
+    if (min > 0) {
+        for (i = 0; i < o->nch; i++) {
+            o->sj[i]->vt->getck(o->sj[i], 0, min, &ck);
+            memset_x00159990((void *)ck.ptr, 0, min);
+            o->sj[i]->vt->ungetck(o->sj[i], 1, &ck);
+        }
+        o->fA4 -= half;
+    }
+}
+typedef struct { int ptr; int len; } Ck_9AD8_x00159AD8;
+struct Sj_9AD8_x00159AD8;
+typedef struct { char pad[0x18]; void (*getck)(struct Sj_9AD8_x00159AD8 *, int, int, Ck_9AD8_x00159AD8 *); void (*putck)(struct Sj_9AD8_x00159AD8 *, int, Ck_9AD8_x00159AD8 *); void (*ungetck)(struct Sj_9AD8_x00159AD8 *, int, Ck_9AD8_x00159AD8 *); } Vt_9AD8_x00159AD8;
+typedef struct Sj_9AD8_x00159AD8 { Vt_9AD8_x00159AD8 *vt; } Sj_9AD8_x00159AD8;
+typedef struct { signed char f0, f1, nch, f3; int pad4, pad8; Sj_9AD8_x00159AD8 *sj[2]; char pad14[0xA4 - 0x14]; int fA4; } Obj_9AD8_x00159AD8;
+void func_00159AD8_x00159AD8(Obj_9AD8_x00159AD8 *o) __asm__("func_00159AD8");
+void func_00159AD8_x00159AD8(Obj_9AD8_x00159AD8 *o)
+{
+    Ck_9AD8_x00159AD8 ck;
+    int i;
+    int min;
+    int half;
+
+    min = o->fA4 * 2;
+    for (i = 0; i < o->nch; i++) {
+        o->sj[i]->vt->getck(o->sj[i], 1, 0x7FFFFFFF, &ck);
+        if (ck.len <= min) {
+            min = ck.len;
+        }
+        o->sj[i]->vt->putck(o->sj[i], 1, &ck);
+    }
+    half = (unsigned int)min >> 1;
+    min = half * 2;
+    if (min > 0) {
+        for (i = 0; i < o->nch; i++) {
+            o->sj[i]->vt->getck(o->sj[i], 1, min, &ck);
+            o->sj[i]->vt->ungetck(o->sj[i], 0, &ck);
+        }
+        o->fA4 -= half;
+    }
+}
 void func_00159C10(void) {
     s32 var_s1;
     s8 *var_s0;
