@@ -45,7 +45,7 @@ def job(args):
                     detail=(r.stderr or r.stdout).strip().splitlines()[-1][:120] if (r.stderr or r.stdout).strip() else "")
     try:
         p = subprocess.run(["timeout", str(budget), PY, str(ROOT / "tools/permuter/permuter.py"), str(d), "-j", str(threads),
-                            "--stop-on-zero"], capture_output=True, text=True, cwd=ROOT / "tools/permuter")
+                            "--stop-on-zero", "--stack-diffs"], capture_output=True, text=True, cwd=ROOT / "tools/permuter")
         out = p.stdout
     except Exception as e:
         return dict(function=name, file=rel, base=-1, best=-1, seconds=round(time.time() - t0), status="error", detail=str(e)[:100])

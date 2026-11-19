@@ -93,11 +93,76 @@ def function_sizes():
     return sizes
 
 
-def objects_functions(obj):
+_LINKED = None
+
+
+def linked_symbols():
+    """{name: address} of the global symbols of the last build's ELF (build/SLUS_209.98.elf), or {} without one."""
+    global _LINKED
+    if _LINKED is None:
+        _LINKED = {}
+        elf_path = ROOT / "build" / "SLUS_209.98.elf"
+        if elf_path.exists() and not os.environ.get("B3_NO_RESOLVE"):
+            with open(elf_path, "rb") as f:
+                for s in ELFFile(f).get_section_by_name(".symtab").iter_symbols():
+                    if s.name and s["st_shndx"] != "SHN_UNDEF" and s["st_info"]["bind"] != "STB_LOCAL" \
+                            and s["st_info"]["type"] in ("STT_FUNC", "STT_OBJECT", "STT_NOTYPE"):
+                        _LINKED.setdefault(s.name, s["st_value"])
+    return _LINKED
+
+
+def _sext16(v):
+    return v - 0x10000 if v & 0x8000 else v
+
+
+def resolve_relocations(text, relocs):
+    """Applies the relocations of .text whose symbol the last build's ELF knows (a global name: an extern variable,
+    a called function), as the linker would. Returns (patched text bytes, {offset: mask}) where the masks are left
+    only for the fields that could not be resolved (section-relative: local labels, the file's own static data).
+
+    Without this the compared words held 0 in every relocated field (`jal 0x0`, `lui a0,0x0`, `addiu a0,a0,0`):
+    the comparison masked those fields, so a wrong global or a wrong offset into the right one passed, and the
+    side-by-side diffs showed address 0 where the original has the real one."""
+    known = linked_symbols()
+    buf = bytearray(text)
+    masks = {}
+
+    def word(o):
+        return struct.unpack_from("<I", buf, o)[0]
+
+    def put(o, v):
+        struct.pack_into("<I", buf, o, v & 0xFFFFFFFF)
+
+    # REL: a HI16's addend is completed by the low half of its LO16, the next LO16 of the same symbol in the
+    # relocation table (gas puts each HI16 right before the LO16 it pairs with)
+    todo = list(relocs)
+    for k, (off, t, name) in enumerate(todo):
+        s = known.get(name) if name else None
+        if s is None or t not in ("R_MIPS_26", "R_MIPS_HI16", "R_MIPS_LO16"):
+            masks[off] = masks.get(off, 0) | RELOC_MASK.get(t, 0xFFFFFFFF)
+            continue
+        w = word(off)
+        if t == "R_MIPS_26":
+            a = (w & 0x03FFFFFF) << 2
+            put(off, (w & 0xFC000000) | (((s + a) >> 2) & 0x03FFFFFF))
+        elif t == "R_MIPS_LO16":
+            put(off, (w & 0xFFFF0000) | ((s + _sext16(w & 0xFFFF)) & 0xFFFF))
+        else:
+            lo = next((o2 for (o2, t2, n2) in todo[k + 1:] if t2 == "R_MIPS_LO16" and n2 == name), None)
+            if lo is None:
+                masks[off] = masks.get(off, 0) | 0xFFFF
+                continue
+            ahl = ((w & 0xFFFF) << 16) + _sext16(struct.unpack_from("<I", text, lo)[0] & 0xFFFF)
+            put(off, (w & 0xFFFF0000) | (((s + ahl + 0x8000) >> 16) & 0xFFFF))
+    return bytes(buf), masks
+
+
+def objects_functions(obj, resolve=True):
     """{name: (words, {word index: mask})} for the functions of the object's .text.
 
-    Sizes come from the symbol table; a zero size (no `.size` / `.end`) is replaced by the distance to the next
-    function symbol or the end of .text."""
+    Relocated fields against a global the last build knows are filled with the linked value (resolve_relocations);
+    the others are masked. Sizes come from the symbol table; a zero size (no `.size` / `.end`) is replaced by the
+    distance to the next function symbol or the end of .text."""
     with open(obj, "rb") as f:
         elf = ELFFile(f)
         text_idx = None
@@ -107,12 +172,23 @@ def objects_functions(obj):
                 text = s.data()
         if text_idx is None:
             return {}
-        masks = {}
+        relocs = []
+        symtab = elf.get_section_by_name(".symtab")
         for s in elf.iter_sections():
             if isinstance(s, RelocationSection) and s["sh_info"] == text_idx:
                 for r in s.iter_relocations():
                     t = describe_reloc_type(r["r_info_type"], elf)
-                    masks[r["r_offset"]] = masks.get(r["r_offset"], 0) | RELOC_MASK.get(t, 0xFFFFFFFF)
+                    sym = symtab.get_symbol(r["r_info_sym"])
+                    # only a global symbol resolves by name; a section symbol or a local label stays masked
+                    name = sym.name if sym.name and sym["st_info"]["bind"] != "STB_LOCAL" \
+                        and sym["st_info"]["type"] != "STT_SECTION" else None
+                    relocs.append((r["r_offset"], t, name))
+        if resolve:
+            text, masks = resolve_relocations(text, relocs)
+        else:
+            masks = {}
+            for off, t, _ in relocs:
+                masks[off] = masks.get(off, 0) | RELOC_MASK.get(t, 0xFFFFFFFF)
         syms = []
         for sym in elf.get_section_by_name(".symtab").iter_symbols():
             if sym["st_info"]["type"] == "STT_FUNC" and sym["st_shndx"] == text_idx:

@@ -13,7 +13,8 @@ closest first. For each: a permuter folder build/permute/NAME holding
   compile.sh    ee-gcc (native: the 32-bit builds run in WSL; no docker) with the draft's flags, then the build's
                 assembler call (gcc_prelude.inc) -> the .o the permuter scores
   settings.toml func_name, compiler_type "gcc", the r5900 objdump
-then tools/permuter/permuter.py -j1 --stop-on-zero for --budget seconds, --cpus functions at a time.
+then tools/permuter/permuter.py -j1 --stop-on-zero --stack-diffs for --budget seconds, --cpus functions at a time
+(--stack-diffs: without it the permuter does not count stack offsets, so a frame of the wrong size scored 0).
 Every score-0 output is re-checked with gccmatch (same compile + word compare as lib_m2c.py: every word equal,
 same size, no data). Outputs under --out (default ~/b3-scan/perm, or $B3_SCAN/perm):
   perm_matches.json   [{addr, name, decls, func, status: "match", flags, version, source: "permuter"}]
@@ -178,7 +179,7 @@ def job(args):
             row["seconds"] = round(time.time() - t0)
             return row, None
         p = subprocess.run(["timeout", "-k", "30", str(budget), PY, str(ROOT / "tools/permuter/permuter.py"), str(d), "-j", "1",
-                            "--stop-on-zero"], capture_output=True, text=True, cwd=ROOT / "tools/permuter")
+                            "--stop-on-zero", "--stack-diffs"], capture_output=True, text=True, cwd=ROOT / "tools/permuter")
         txt = p.stdout
         base = re.findall(r"base score = (\d+)", txt)
         news = [int(x) for x in re.findall(r"new best score! \((\d+) vs", txt)]
@@ -285,7 +286,7 @@ def check(a):
             print(n, "SETUP FAIL", err)
             continue
         p = subprocess.run(["timeout", "20", PY, str(ROOT / "tools/permuter/permuter.py"), str(d), "-j", "1",
-                            "--stop-on-zero"], capture_output=True, text=True, cwd=ROOT / "tools/permuter")
+                            "--stop-on-zero", "--stack-diffs"], capture_output=True, text=True, cwd=ROOT / "tools/permuter")
         print(n, e["status"], e.get("diff"), re.findall(r"base score = (\d+)", p.stdout) or p.stdout[-200:])
 
 
