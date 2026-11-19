@@ -1606,7 +1606,28 @@ void func_00173580_x00173580(void *m, Sj_3580_x00173580 *sj)
 void func_00173740(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173748);
+typedef struct { int pad0; unsigned int f4, f8; char padC[0x48 - 0xC]; int f48, f4C; unsigned int f50, f54; char pad58[0x118 - 0x58]; int f118; char pad11C[0x2C4 - 0x11C]; unsigned int width, height, mbw, mbh; char pad2D4[0x410 - 0x2D4]; int w, h, w2, h2; } Mpv3748_x00173748;
+void func_00173748_x00173748(Mpv3748_x00173748 *m) __asm__("func_00173748");
+void func_00173748_x00173748(Mpv3748_x00173748 *m)
+{
+    int width = (m->f50 << 12) | m->f4;
+    int height = (m->f54 << 12) | m->f8;
+
+    m->mbw = (unsigned int)(width + 15) >> 4;
+    m->width = width;
+    m->height = height;
+    if (m->f48 == 1) {
+        m->mbh = (unsigned int)(height + 15) >> 4;
+    } else if (m->f118 == 3) {
+        m->mbh = ((unsigned int)(height + 31) >> 5) * 2;
+    } else {
+        m->mbh = (unsigned int)(height + 31) >> 5;
+    }
+    m->w = m->mbw * 16;
+    m->h = m->mbh * 16;
+    m->w2 = (m->f4C != 3) ? m->w >> 1 : m->w;
+    m->h2 = (m->f4C == 1) ? m->h >> 1 : m->h;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173810);
 typedef struct SndObj_x001739B0 {
     char unk000[0x38];
