@@ -460,13 +460,45 @@ s64 func_00168918_x00168918(u8 *arg0)
   temp_v0 = ((s64) (*((s32 *) (((u8 *) arg0) + 0x28)))) << 0xB;
   return ((s64) (((*new_var) < temp_v0) ? (*new_var) : (temp_v0))) >> 0x20;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168938);
+typedef struct SrdObj_x00168938 SrdObj_x00168938;
+typedef struct HtCiFile_x00168938 {
+    signed char used;
+    signed char cached;
+    signed char state;
+    signed char rsv;
+    long long size;
+    int nsct;
+    int end_fg;
+    int fd;
+    int pos;
+    char *buf;
+    int req;
+    int done;
+    SrdObj_x00168938 *stm;
+} HtCiFile_x00168938;
+int func_00168938_x00168938() __asm__("func_00168938");
+/* htci_getnumtr_lower: from https://github.com/crashbashash/DW4_Decomp (src/cri/htci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00168938_x00168938(h)
+    HtCiFile_x00168938 *h;
+{
+    unsigned long long size = (long long)h->done << 11;
+    return (int)((h->size < size ? h->size : size) & 0xFFFFFFFF);
+}
 s64 func_00168900_x00168968() __asm__("func_00168900");
 s64 func_00168968_x00168968(void) __asm__("func_00168968");
 s64 func_00168968_x00168968(void) {
     return func_00168900_x00168968() >> 0x20;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168988);
+long htci_get_filesize64_x00168988(const char *fname) __asm__("func_00168900");
+long htci_get_filesize64_x00168988(const char *fname) __attribute__((weak, section(".b3stub")));
+long htci_get_filesize64_x00168988(const char *fname) {}
+int func_00168988_x00168988() __asm__("func_00168988");
+/* htci_filesize_lower: from https://github.com/crashbashash/DW4_Decomp (src/cri/htci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00168988_x00168988(fname)
+    const char *fname;
+{
+    return (int)(htci_get_filesize64_x00168988(fname) & 0xFFFFFFFF);
+}
 s32 func_00168918_x001689B8() __asm__("func_00168918");
 s32 func_00168938_x001689B8() __asm__("func_00168938");
 s32 func_00168968_x001689B8() __asm__("func_00168968");

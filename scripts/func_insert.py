@@ -196,6 +196,10 @@ def isolate(item, pad=0):
     func = pat.sub(lambda m: ren[m.group(1)], item["func"].rstrip("\n"))
     head = strip_comments(func[:func.index("{")])
     head = re.sub(r"^static\s+", "", head)
+    import cparse
+    if cparse.kr_head(head):
+        # a K&R definition: its labelled declaration has no parameter list (`int f() __asm__("f");`)
+        head = re.sub(r"\(.*$", "()", head.strip(), flags=re.S)
     func = re.sub(r"^((?:/\*.*?\*/\s*)*)static\s+", r"\1", func, flags=re.S)
     out.append(f'{head} __asm__("{name}");')
     tail = ""
