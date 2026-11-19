@@ -84,7 +84,37 @@ int func_0010B240_x0010B240(int tid)
     iSignalSema_x0010B240(D_004E2400_x0010B240);
     return t;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B038", func_0010B2D8);
+extern int WaitSema_x0010B2D8(int) __asm__("WaitSema");
+typedef struct { int count; int max_count; int init_count; int wait_threads; unsigned int attr; unsigned int option; } SemaParamDF38_x0010B2D8;
+extern int CreateSema_x0010B2D8(SemaParamDF38_x0010B2D8 *) __asm__("CreateSema");
+extern int DeleteSema_x0010B2D8(int) __asm__("DeleteSema");
+typedef struct { int count; int max_count; int init_count; int wait_threads; unsigned int attr; void *option; } SemaParamE1C0_x0010B2D8;
+extern int TimerUSec2BusClock_x0010B2D8(int, int) __asm__("func_00115E00");
+extern int SetTimerAlarm_x0010B2D8(int, int (*)(int, int, int, int), int) __asm__("func_00115FB0");
+extern int _DelayThreadHandler_x0010B2D8(int, int, int, int) __asm__("func_0010B518");
+extern char ext_str0_x0010B2D8[] __asm__("D_0045D3D0");
+int func_0010B2D8_x0010B2D8(int a) __asm__("func_0010B2D8");
+/* DelayThread: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_10DE60.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_0010B2D8_x0010B2D8(int a)
+{
+    SemaParamE1C0_x0010B2D8 sp;
+    int s, sema, r;
+    __asm__ volatile("mfc0 %0, $12" : "=r"(s));
+    if (!(s & 0x10000)) return 0x80008008;
+    sp.max_count = 1;
+    sp.option = ext_str0_x0010B2D8;
+    sp.init_count = 0;
+    sema = (CreateSema_x0010B2D8((SemaParamDF38_x0010B2D8 *)(&sp)));
+    if (sema < 0) return 0x80008003;
+    r = SetTimerAlarm_x0010B2D8(TimerUSec2BusClock_x0010B2D8(0, a), _DelayThreadHandler_x0010B2D8, sema);
+    if (r < 0) {
+        DeleteSema_x0010B2D8(sema);
+        return r;
+    }
+    WaitSema_x0010B2D8(sema);
+    DeleteSema_x0010B2D8(sema);
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B038", func_0010B3A0);
 extern void iSignalSema_x0010B518(int a) __asm__("iSignalSema");
 int func_0010B518_x0010B518(int a, int b, int c, int d) __asm__("func_0010B518");
