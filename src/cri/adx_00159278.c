@@ -2852,7 +2852,36 @@ s8 func_0015AB90(s32 arg0, s32 arg1) {
 void func_0015ABA8(s32 arg0, s32 arg1, s8 arg2) {
     *(s8 *)((u8 *)(arg1 + arg0) + 0x58) = arg2;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015ABB8);
+typedef struct { char *data; int len; } Ck_ABB8_x0015ABB8;
+struct Sj_ABB8_x0015ABB8;
+typedef struct { char pad[0x18]; void (*getck)(struct Sj_ABB8_x0015ABB8 *, int, int, Ck_ABB8_x0015ABB8 *); void *pad1C; void (*ungetck)(struct Sj_ABB8_x0015ABB8 *, int, Ck_ABB8_x0015ABB8 *); unsigned int (*getnum)(struct Sj_ABB8_x0015ABB8 *, int); } Vt_ABB8_x0015ABB8;
+typedef struct Sj_ABB8_x0015ABB8 { Vt_ABB8_x0015ABB8 *vt; } Sj_ABB8_x0015ABB8;
+typedef struct { int pad0; Sj_ABB8_x0015ABB8 *sj[21]; int nch; } Obj_ABB8_x0015ABB8;
+void *memcpy_x0015ABB8(void *, const void *, unsigned int) __asm__("memcpy");
+int func_0015ABB8_x0015ABB8(Obj_ABB8_x0015ABB8 *o, int unused, int n, int *dst) __asm__("func_0015ABB8");
+int func_0015ABB8_x0015ABB8(Obj_ABB8_x0015ABB8 *o, int unused, int n, int *dst)
+{
+    Ck_ABB8_x0015ABB8 ck;
+    Sj_ABB8_x0015ABB8 **sjp = o->sj;
+    int i;
+    int got = 0;
+
+    for (i = 0; i < o->nch; i++) {
+        got = sjp[i]->vt->getnum(sjp[i], 1) >> 1;
+        if (got < n) {
+            return 0;
+        }
+    }
+    for (i = 0; i < o->nch; i++) {
+        for (got = 0; got < n;) {
+            sjp[i]->vt->getck(sjp[i], 1, n * 2, &ck);
+            { int p = dst[i]; memcpy_x0015ABB8((void *)(got * 2 + p), ck.data, ck.len); }
+            got += (short)(ck.len >> 1);
+            sjp[i]->vt->ungetck(sjp[i], 0, &ck);
+        }
+    }
+    return got;
+}
 typedef struct SfdSj_x0015AD28 SfdSj_x0015AD28;
 typedef struct SfdSjChunk_x0015AD28 {
     char *data;
