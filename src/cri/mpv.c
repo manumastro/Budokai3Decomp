@@ -225,7 +225,71 @@ void func_001726E8(void) {
 
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001726F0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001727A8);
+void func_001727A8_x001727A8(u8 *arg0) __asm__("func_001727A8");
+void func_001727A8_x001727A8(u8 *arg0)
+{
+    s32 temp_v1;
+    s32 temp_a1;
+    s32 rows;
+    s32 cols;
+    s32 var_a0;
+    s32 var_t1;
+    s32 var_t2;
+    s32 var_a2;
+    s8 *var_t0;
+    u8 *var_a3;
+    u8 temp_v0;
+
+    temp_v1 = *((s32 *) (arg0 + 4));
+    temp_a1 = *((s32 *) (arg0 + 8));
+    if (temp_v1 < 0)
+    {
+        temp_v1 += 15;
+    }
+    if (temp_a1 < 0)
+    {
+        temp_a1 += 31;
+    }
+    rows = temp_v1 >> 4;
+    cols = temp_a1 >> 5;
+    var_a0 = *((s32 *) (arg0 + 0));
+    if (rows > 0)
+    {
+        do
+        {
+            var_t0 = (s8 *) (var_a0 + 3);
+            var_t2 = 0;
+            var_a3 = (u8 *) var_t0 + (cols << 10) - 1;
+            if (cols > 0)
+            {
+                do
+                {
+                    var_t1 = 0;
+                    do
+                    {
+                        var_a2 = 15;
+                        do
+                        {
+                            temp_v0 = *var_a3;
+                            var_a3 += 4;
+                            var_a2 -= 1;
+                            *var_t0 = (temp_v0 >> 1) + 1;
+                            var_t0 += 4;
+                        }
+                        while (var_a2 >= 0);
+                        var_t1 += 1;
+                    }
+                    while (var_t1 < 16);
+                    var_t2 += 1;
+                }
+                while (var_t2 < cols);
+            }
+            rows -= 1;
+            var_a0 += cols << 11;
+        }
+        while (rows != 0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172858);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172968);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172A40);
@@ -1347,7 +1411,53 @@ void func_0017E658(void) {
 
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E660);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E708);
+void func_0017E708_x0017E708(u8 *arg0) __asm__("func_0017E708");
+void func_0017E708_x0017E708(u8 *arg0)
+{
+    s32 one = 1;
+    s32 neg = -1;
+    s32 three = 3;
+    s32 zero = 0;
+    *((volatile s8 *)(arg0 + 0x59)) = one;
+    *((volatile s32 *)(arg0 + 0x38)) = three;
+    *((volatile s32 *)(arg0 + 0x0)) = zero;
+    *((volatile s32 *)(arg0 + 0x4)) = zero;
+    *((volatile s32 *)(arg0 + 0x8)) = zero;
+    *((volatile s32 *)(arg0 + 0xC)) = zero;
+    *((volatile s32 *)(arg0 + 0x10)) = zero;
+    *((volatile s32 *)(arg0 + 0x14)) = zero;
+    *((volatile s32 *)(arg0 + 0x18)) = zero;
+    *((volatile s32 *)(arg0 + 0x1C)) = zero;
+    *((volatile s32 *)(arg0 + 0x20)) = zero;
+    *((volatile s32 *)(arg0 + 0x24)) = zero;
+    *((volatile s32 *)(arg0 + 0x28)) = zero;
+    *((volatile s32 *)(arg0 + 0x2C)) = zero;
+    *((volatile s32 *)(arg0 + 0x30)) = zero;
+    *((volatile s32 *)(arg0 + 0x34)) = zero;
+    *((volatile s32 *)(arg0 + 0x3C)) = one;
+    *((volatile s32 *)(arg0 + 0x40)) = one;
+    *((volatile s32 *)(arg0 + 0x44)) = one;
+    *((volatile s32 *)(arg0 + 0x48)) = zero;
+    *((volatile s32 *)(arg0 + 0x4C)) = zero;
+    *((volatile s16 *)(arg0 + 0x50)) = neg;
+    *((volatile s16 *)(arg0 + 0x52)) = neg;
+    *((volatile s8 *)(arg0 + 0x54)) = zero;
+    *((volatile s8 *)(arg0 + 0x55)) = neg;
+    *((volatile s8 *)(arg0 + 0x56)) = neg;
+    *((volatile s8 *)(arg0 + 0x57)) = neg;
+    *((volatile s8 *)(arg0 + 0x58)) = zero;
+    *((volatile s8 *)(arg0 + 0x5A)) = zero;
+    *((volatile s8 *)(arg0 + 0x5B)) = zero;
+    *((volatile s8 *)(arg0 + 0x5C)) = zero;
+    *((volatile s8 *)(arg0 + 0x5D)) = neg;
+    *((volatile s8 *)(arg0 + 0x5E)) = neg;
+    *((volatile s8 *)(arg0 + 0x5F)) = neg;
+    *((volatile s8 *)(arg0 + 0x64)) = neg;
+    *((volatile s8 *)(arg0 + 0x60)) = neg;
+    *((volatile s8 *)(arg0 + 0x61)) = zero;
+    *((volatile s8 *)(arg0 + 0x62)) = neg;
+    *((volatile s8 *)(arg0 + 0x63)) = neg;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E7B8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E7E0);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E838);

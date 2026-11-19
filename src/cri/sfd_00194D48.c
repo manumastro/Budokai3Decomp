@@ -968,9 +968,53 @@ void func_00199208_x00199208(s32 arg0, s32 arg1, s32 *arg2, s32 *arg3) {
     *arg3 = 0x3E8;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00199218);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00199310);
+s32 func_0018D870_x00199310() __asm__("func_0018D870");
+s32 func_0018D650_x00199310() __asm__("func_0018D650");
+s32 func_00199610_x00199310(void *) __asm__("func_00199610");
+s32 func_00199310_x00199310(u8 *arg0, s32 arg1) __asm__("func_00199310");
+s32 func_00199310_x00199310(u8 *arg0, s32 arg1)
+{
+  s32 r;
+  u8 *p;
+  r = func_0018D870_x00199310(arg0, arg1);
+  if (r != 0)
+  {
+    return func_0018D650_x00199310(0, 0xFF000159);
+  }
+  p = *((u8 **) (arg0 + 0x31E8));
+  if (p == 0)
+  {
+    return r;
+  }
+  *((s32 *) (p + 0xDB4)) = arg1;
+  func_00199610_x00199310(arg0);
+  r = 0;
+  return r;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00199380);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00199408);
+s32 func_0018D870_x00199408() __asm__("func_0018D870");
+s32 func_0018D650_x00199408() __asm__("func_0018D650");
+s32 func_00199610_x00199408(void *) __asm__("func_00199610");
+s32 func_00199408_x00199408(u8 *arg0, s32 arg1) __asm__("func_00199408");
+s32 func_00199408_x00199408(u8 *arg0, s32 arg1)
+{
+  s32 r;
+  u8 *p;
+  r = func_0018D870_x00199408(arg0, arg1);
+  if (r != 0)
+  {
+    return func_0018D650_x00199408(0, 0xFF00015B);
+  }
+  p = *((u8 **) (arg0 + 0x31E8));
+  if (p == 0)
+  {
+    return r;
+  }
+  *((s32 *) (p + 0xDC0)) = arg1;
+  func_00199610_x00199408(arg0);
+  r = 0;
+  return r;
+}
 void func_00199478(u8 *arg0, s32 arg1) {
     u8 *temp_a0;
 
@@ -2694,7 +2738,27 @@ s32 func_0019E4B8_x0019E4B8(s32 arg0, s32 arg1, s32 *arg2)
     return 1;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E528);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019E5D0);
+s32 func_0019E240_x0019E5D0(s32, s32) __asm__("func_0019E240");
+s32 func_0019EAC0_x0019E5D0(s32) __asm__("func_0019EAC0");
+s32 func_0019E9D0_x0019E5D0(s32) __asm__("func_0019E9D0");
+s32 func_0019E5D0_x0019E5D0(s32 arg0, s32 arg1, s32 *arg2) __asm__("func_0019E5D0");
+s32 func_0019E5D0_x0019E5D0(s32 arg0, s32 arg1, s32 *arg2)
+{
+  u8 *p;
+  u8 b;
+  b = arg1;
+  p = (u8 *) func_0019E240_x0019E5D0(arg0, b);
+  if (p == 0)
+  {
+    return 0;
+  }
+  if (func_0019EAC0_x0019E5D0(b) != 0xE0)
+  {
+    return 0;
+  }
+  *arg2 = func_0019E9D0_x0019E5D0(p[0x1F]);
+  return 1;
+}
 void * func_0019E240_x0019E640() __asm__("func_0019E240");
 void * func_0019EA80_x0019E640() __asm__("func_0019EA80");
 u8 *func_0019E640_x0019E640(s32 arg0, s32 arg1, s32 *arg2) __asm__("func_0019E640");
