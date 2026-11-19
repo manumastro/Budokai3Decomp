@@ -34,7 +34,7 @@ s32 func_001162F0();                            /* extern */
 
 extern s32 D_003ECD54;
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113B88);
+SYSCALL_STUB(func_00113B88, 90);
 s32 func_00113B98_x00113B98(s32 *arg0, s32 *arg1, u32 arg2) __asm__("func_00113B98");
 s32 func_00113B98_x00113B98(s32 *arg0, s32 *arg1, u32 arg2) {
     s32 *var_a0;
@@ -58,8 +58,8 @@ s32 func_00113B98_x00113B98(s32 *arg0, s32 *arg1, u32 arg2) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113BD0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113BE0);
+SYSCALL_STUB(func_00113BD0, 91);
+SYSCALL_STUB(func_00113BE0, 116);
 typedef unsigned char u8_x00113BF0;
 typedef signed int s32_x00113BF0;
 typedef unsigned int u32_x00113BF0;
@@ -121,9 +121,9 @@ void func_00113BF0_x00113BF0(void)
     }
     execArgumentBlock_x00113BF0 = GetEntryAddress_1_x00113BF0(3);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113CB8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113CC8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113CD8);
+SYSCALL_STUB(func_00113CB8, 85);
+SYSCALL_STUB(func_00113CC8, -85);
+SYSCALL_STUB(func_00113CD8, 86);
 s32 func_00113CD8_x00113CE8() __asm__("func_00113CD8");
 s32 func_00113CE8_x00113CE8(s32 arg0) __asm__("func_00113CE8");
 s32 func_00113CE8_x00113CE8(s32 arg0)
@@ -141,12 +141,12 @@ s32 func_00113CE8_x00113CE8(s32 arg0)
     return func_00113CD8_x00113CE8();
   }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D18);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D28);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D38);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D48);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D58);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113D68);
+SYSCALL_STUB(func_00113D18, -86);
+SYSCALL_STUB(func_00113D28, 87);
+SYSCALL_STUB(func_00113D38, -87);
+SYSCALL_STUB(func_00113D48, 88);
+SYSCALL_STUB(func_00113D58, -88);
+SYSCALL_STUB(func_00113D68, 89);
 typedef signed int         s32_x00113D78;
 extern s32_x00113D78 GetMemorySize_x00113D78() __asm__("GetMemorySize");
 extern s32_x00113D78 _InitTLB_x00113D78() __asm__("func_0010A6D0");
@@ -307,7 +307,7 @@ void func_00114388_x00114388(void)
 s32 func_001143E8(void) {
     return D_003ECD54;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001143F8);
+SYSCALL_STUB(func_001143F8, 90);
 s32 func_00114408_x00114408(s32 *arg0, s32 *arg1, u32 arg2) __asm__("func_00114408");
 s32 func_00114408_x00114408(s32 *arg0, s32 *arg1, u32 arg2) {
     s32 *var_a0;
@@ -348,7 +348,7 @@ u32_x00114440 *func_00114440_x00114440(u32_x00114440 *addr, u32_x00114440 *end, 
     }
     return (addr < end) ? addr : 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114480);
+SYSCALL_STUB(func_00114480, 131);
 extern int *_SyscallEntry_x00114490 __asm__("D_003ECD38");
 int Copy_x00114490(void *dst, void *src, int size) __asm__("func_001143F8");
 void *func_00114490_x00114490(int number) __asm__("func_00114490");
@@ -400,7 +400,7 @@ void func_001144C8_x001144C8(void)
   }
   D_003ECD38_x001144C8 = var_s1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001145C8);
+SYSCALL_STUB(func_001145C8, 116);
 void func_001145D8(void) {
     func_00114388();
     func_001144C8();
@@ -412,8 +412,8 @@ void func_001145D8(void) {
     func_00113BF0();
     func_001162F0();
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114630);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114640);
+SYSCALL_STUB(func_00114630, 116);
+SYSCALL_STUB(func_00114640, 90);
 s32 func_00114650_x00114650(s32 *arg0, s32 *arg1, u32 arg2) __asm__("func_00114650");
 s32 func_00114650_x00114650(s32 *arg0, s32 *arg1, u32 arg2) {
     s32 *var_a0;
@@ -437,7 +437,7 @@ s32 func_00114650_x00114650(s32 *arg0, s32 *arg1, u32 arg2) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114688);
+SYSCALL_STUB(func_00114688, 91);
 typedef unsigned char      u8_x00114698;
 typedef signed int         s32_x00114698;
 typedef unsigned int       u32_x00114698;
@@ -500,7 +500,7 @@ void func_00114700_x00114700(void)
         gcc2_compiled__15_x00114700(execEntryPairs_x00114700[i].index, entry);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001147B0);
+SYSCALL_STUB(func_001147B0, 90);
 s32 func_001147C0(u8 *arg0, u8 *arg1, u32 arg2) {
     u32 var_a3;
     u8 *var_a0;
@@ -521,7 +521,7 @@ s32 func_001147C0(u8 *arg0, u8 *arg1, u32 arg2) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001147F0);
+SYSCALL_STUB(func_001147F0, 116);
 typedef struct {
     int number;
     void *handler;
@@ -624,8 +624,8 @@ void func_00114A00_x00114A00(s32_x00114A00 count, const char *const *arguments)
     TerminateLibrary_x00114A00();
     _ExecOSD_x00114A00(count, &((execArgumentBlock_t_x00114A00 *)execArgumentBlock_x00114A00)->arguments[1]);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114A50);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114A60);
+SYSCALL_STUB(func_00114A50, 116);
+SYSCALL_STUB(func_00114A60, 90);
 s32 func_00114A70_x00114A70(s32 *arg0, s32 *arg1, u32 arg2) __asm__("func_00114A70");
 s32 func_00114A70_x00114A70(s32 *arg0, s32 *arg1, u32 arg2) {
     s32 *var_a0;
@@ -649,7 +649,7 @@ s32 func_00114A70_x00114A70(s32 *arg0, s32 *arg1, u32 arg2) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114AA8);
+SYSCALL_STUB(func_00114AA8, 91);
 void RFU090_x00114AB8(void *dst, void *src, int size) __asm__("func_00114A60");
 void *RFU091_x00114AB8(int num) __asm__("func_00114AA8");
 void RFU116_SetSyscall_x00114AB8(int num, void *func) __asm__("func_00114A50");

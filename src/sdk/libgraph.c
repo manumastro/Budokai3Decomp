@@ -74,7 +74,7 @@ int func_00100458_x00100458(void)
     func_003B44B0_x00100458(fd);
     return func_003A7C48_x00100458(&buf[i - 9]) > 0x1315670;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libgraph", func_001004F8);
+SYSCALL_STUB(func_001004F8, 128);
 typedef struct {
     short sceGsInterMode;
     short sceGsOutMode;

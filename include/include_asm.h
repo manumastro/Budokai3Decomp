@@ -8,6 +8,7 @@
 #define INCLUDE_ASM(FOLDER, NAME)
 #define INCLUDE_RODATA(FOLDER, NAME)
 #define INCLUDE_PAD(BYTES)
+#define SYSCALL_STUB(NAME, NUM)
 
 #elif defined(NO_INCLUDE_ASM)
 
@@ -15,6 +16,7 @@
 #define INCLUDE_ASM(FOLDER, NAME)
 #define INCLUDE_RODATA(FOLDER, NAME)
 #define INCLUDE_PAD(BYTES)
+#define SYSCALL_STUB(NAME, NUM)
 
 #else
 
@@ -38,6 +40,26 @@
     )
 /* The alignment bytes that end a library object (ld pads between objects only to the next one's alignment). */
 #define INCLUDE_PAD(BYTES) __asm__(".section .text\n    .space " #BYTES)
+/* A system call stub inside a C file's object: Sony wrote these in assembly (`addiu $v1, $zero, N; syscall; jr $ra;
+ * nop`, as src/sdk/libkernl_syscalls.s), so this is their source, not C; scripts/progress.py counts them as done
+ * ("functions whose original source was assembly", docs/progress.md). */
+#define SYSCALL_STUB(NAME, NUM) \
+    __asm__( \
+        ".section .text\n" \
+        "    .align 3\n" \
+        "    .set noat\n" \
+        "    .set noreorder\n" \
+        "    .globl " #NAME "\n" \
+        "    .type " #NAME ", @function\n" \
+        #NAME ":\n" \
+        "    addiu $v1, $zero, " #NUM "\n" \
+        "    syscall 0\n" \
+        "    jr $ra\n" \
+        "    nop\n" \
+        "    .size " #NAME ", 16\n" \
+        "    .set reorder\n" \
+        "    .set at\n" \
+    )
 __asm__(".include \"macro.inc\"\n");
 
 #endif
