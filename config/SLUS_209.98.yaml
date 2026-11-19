@@ -138,7 +138,7 @@ segments:
       - [0x027518, c, sdk/libc_00127518]
       - [0x027520, c, sdk/libc/ico_sscanf]
       - [0x0275C8, c, sdk/libc/kfiv_stdio]
-      - [0x027738, asm, sdk/libc_00127738]
+      - [0x027738, c, sdk/libc_00127738]
       - [0x028200, c, sdk/libc/ico_strstr]
       - [0x028288, c, sdk/libc_00128288]
       - [0x0291F0, c, sdk/libc/kfiv_strtol]

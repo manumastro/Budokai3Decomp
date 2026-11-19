@@ -163,7 +163,85 @@ s32_x00113D78 func_00113D78_x00113D78(void) {
     }
     return tlb_init_result;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113DB8);
+typedef unsigned int u_int_x00113DB8;
+struct TLBEntry_x00113DB8 {
+	u_int_x00113DB8 PageMask;
+	u_int_x00113DB8 EntryHi;
+	u_int_x00113DB8 EntryLo0;
+	u_int_x00113DB8 EntryLo1;
+};
+struct TLBInfo_x00113DB8 {
+	int NumKernelTLBEntries;
+	int NumDefaultTLBEntries;
+	int NumExtendedTLBEntries;
+	int NumWiredEntries;
+	struct TLBEntry_x00113DB8 *kernelTLB_x00113DB8;
+	struct TLBEntry_x00113DB8 *defaultTLB_x00113DB8;
+	struct TLBEntry_x00113DB8 *extendedTLB;
+};
+extern int kprintf_x00113DB8(const char *fmt, ...) __asm__("func_0010CFC8");
+extern void Exit_x00113DB8(int status) __asm__("func_001149D8");
+extern struct TLBEntry_x00113DB8 kernelTLB_x00113DB8[13] __asm__("kernelTLB");
+extern struct TLBEntry_x00113DB8 defaultTLB_x00113DB8[18] __asm__("defaultTLB");
+extern struct TLBInfo_x00113DB8 TLBInfo_x00113DB8 __asm__("D_003ECD18");
+int _SetTLBEntry_x00113DB8(u_int_x00113DB8 index, u_int_x00113DB8 PageMask, u_int_x00113DB8 EntryHi, u_int_x00113DB8 EntryLo0, u_int_x00113DB8 EntryLo1) __asm__("func_00113CD8");
+extern char ext_str0_x00113DB8[] __asm__("D_0045D9B8");
+extern char ext_str1_x00113DB8[] __asm__("D_0045D9A0");
+extern char ext_str2_x00113DB8[] __asm__("D_0045D988");
+extern char ext_str3_x00113DB8[] __asm__("D_0045D950");
+int func_00113DB8_x00113DB8(void) __asm__("func_00113DB8");
+/* InitTLB32MB: from https://github.com/DabDavis/socom2-decomp (src/lib/sdk/tlbfunc.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00113DB8_x00113DB8(void)
+{
+	register int i asm ("$25");
+	int n, end;
+	u_int_x00113DB8 value;
+	struct TLBEntry_x00113DB8 *e;
+
+	kprintf_x00113DB8(ext_str3_x00113DB8,
+	        TLBInfo_x00113DB8.NumKernelTLBEntries - 1, TLBInfo_x00113DB8.NumKernelTLBEntries,
+	        TLBInfo_x00113DB8.NumKernelTLBEntries + TLBInfo_x00113DB8.NumDefaultTLBEntries - 1,
+	        TLBInfo_x00113DB8.NumKernelTLBEntries + TLBInfo_x00113DB8.NumDefaultTLBEntries,
+	        TLBInfo_x00113DB8.NumKernelTLBEntries + TLBInfo_x00113DB8.NumDefaultTLBEntries + TLBInfo_x00113DB8.NumExtendedTLBEntries - 1);
+	asm volatile ("mtc0 $0, $6\n\tsync.p");
+	i = 0;
+	end = TLBInfo_x00113DB8.NumKernelTLBEntries;
+	if (end > 48) {
+		kprintf_x00113DB8(ext_str2_x00113DB8);
+		Exit_x00113DB8(1);
+	}
+	for (e = TLBInfo_x00113DB8.kernelTLB_x00113DB8; i < end; i++, e++)
+		_SetTLBEntry_x00113DB8(i, e->PageMask, e->EntryHi, e->EntryLo0, e->EntryLo1);
+	end = i + TLBInfo_x00113DB8.NumDefaultTLBEntries;
+	if (end > 48) {
+		kprintf_x00113DB8(ext_str1_x00113DB8);
+		Exit_x00113DB8(1);
+	}
+	for (e = TLBInfo_x00113DB8.defaultTLB_x00113DB8; i < end; i++, e++)
+		_SetTLBEntry_x00113DB8(i, e->PageMask, e->EntryHi, e->EntryLo0, e->EntryLo1);
+	TLBInfo_x00113DB8.NumWiredEntries = i;
+	asm volatile ("mtc0 %0, $6\n\tsync.p" : : "r" (i));
+	if (TLBInfo_x00113DB8.NumExtendedTLBEntries > 0) {
+		end = i + TLBInfo_x00113DB8.NumExtendedTLBEntries;
+		if (end > 48) {
+			kprintf_x00113DB8(ext_str0_x00113DB8);
+			Exit_x00113DB8(1);
+		}
+		for (e = TLBInfo_x00113DB8.extendedTLB; i < end; i++, e++)
+			_SetTLBEntry_x00113DB8(i, e->PageMask, e->EntryHi, e->EntryLo0, e->EntryLo1);
+	}
+	n = i;
+	i <<= 13;
+	if (n < 48) {
+		value = 0xE0000000 + i;
+		do {
+			_SetTLBEntry_x00113DB8(n, 0, value, 0, 0);
+			n++;
+			value += 0x2000;
+		} while (n < 48);
+	}
+	return i;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", _kTLBException);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", _kDebugException);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", DI);

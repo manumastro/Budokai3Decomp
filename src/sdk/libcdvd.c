@@ -10,7 +10,29 @@ extern s32 D_003EDDA4;
 extern s32 D_003EDDC8;
 extern s32 func_00118628;
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_001180F0);
+extern int DIntr_x001180F0(void) __asm__("DI");
+extern int EIntr_x001180F0(void) __asm__("EI");
+extern int sceCdSync_x001180F0(int mode) __asm__("func_00118C08");
+extern void (*sceCdCbfunc_x001180F0)(int) __asm__("D_00478D00");
+extern int data_001D5F84_x001180F0 __asm__("D_00478D04");
+int sceCdSync_x001180F0(int mode) __asm__("func_00118C08");
+void *func_001180F0_x001180F0(void (*func)(int)) __asm__("func_001180F0");
+/* sceCdCallback: from https://github.com/DabDavis/socom2-decomp (src/lib/sdk/libcdvd.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void *func_001180F0_x001180F0(void (*func)(int))
+{
+	void *old;
+	int oldi;
+
+	if (sceCdSync_x001180F0(1) != 0)
+		return 0;
+	oldi = DIntr_x001180F0();
+	old = sceCdCbfunc_x001180F0;
+	sceCdCbfunc_x001180F0 = func;
+	__asm__ volatile ("sw $28, %0" : "=m" (data_001D5F84_x001180F0));
+	if (oldi)
+		EIntr_x001180F0();
+	return old;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118158);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_001181F8);
 extern char D_004878D8_x00118368[] __asm__("D_003EDDE0");
@@ -116,8 +138,48 @@ void func_00118508_x00118508(void)
     if (oldstat)
         EIntr_x00118508();
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_001185A8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118628);
+extern int DIntr_x001185A8(void) __asm__("DI");
+extern int EIntr_x001185A8(void) __asm__("EI");
+extern int _icmd_bind_x001185A8 __asm__("D_003EDDC8");
+extern void (*data_001D5F88_x001185A8)(void *) __asm__("D_00478D08");
+extern int data_001D5F8C_x001185A8 __asm__("D_00478D0C");
+extern void *data_001D5F90_x001185A8 __asm__("D_00478D10");
+int PowerOffCB_x001185A8(void) __asm__("func_00118680");
+int PowerOffCB_x001185A8(void) __asm__("func_00118680");
+void *func_001185A8_x001185A8(void (*func)(void *), void *addr) __asm__("func_001185A8");
+/* sceCdPOffCallback: from https://github.com/DabDavis/socom2-decomp (src/lib/sdk/libcdvd.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void *func_001185A8_x001185A8(void (*func)(void *), void *addr)
+{
+	void *old;
+	int oldi;
+
+	if (_icmd_bind_x001185A8 < 0)
+		PowerOffCB_x001185A8();
+	oldi = DIntr_x001185A8();
+	old = data_001D5F88_x001185A8;
+	data_001D5F90_x001185A8 = addr;
+	data_001D5F88_x001185A8 = func;
+	__asm__ volatile ("sw $28, %0" : "=m" (data_001D5F8C_x001185A8));
+	if (oldi)
+		EIntr_x001185A8();
+	return old;
+}
+extern volatile int Init_seq_x00118628 __asm__("D_003EDDA4");
+extern void (*data_001D5F88_x00118628)(void *) __asm__("D_00478D08");
+extern int data_001D5F8C_x00118628 __asm__("D_00478D0C");
+extern void *data_001D5F90_x00118628 __asm__("D_00478D10");
+void func_00118628_x00118628(void *data) __asm__("func_00118628");
+/* _sceCd_Poff_Intr: from https://github.com/DabDavis/socom2-decomp (src/lib/sdk/libcdvd.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00118628_x00118628(void *data)
+{
+	int old_gp;
+
+	if (data_001D5F88_x00118628 != 0 && Init_seq_x00118628 == 0) {
+		__asm__ volatile ("move %0, $28\n\tlw $28, %1" : "=r" (old_gp) : "m" (data_001D5F8C_x00118628));
+		data_001D5F88_x00118628(data_001D5F90_x00118628);
+		__asm__ volatile ("move $28, %0" : : "r" (old_gp));
+	}
+}
 s32 func_00118680(void) {
     s32 temp_s0;
 
