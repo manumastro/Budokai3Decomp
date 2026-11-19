@@ -241,6 +241,13 @@ class Analysis:
                     changed = True
         return addr
 
+    def exe_string_at(self, t):
+        """True when the executable holds a printable NUL-terminated string at t (loose_strings: a literal of the
+        source whose text differs, e.g. another version's message, is bound to the executable's own string)."""
+        rom = self.exe.rom[t - VRAM:t - VRAM + 512]
+        end = rom.find(b"\0")
+        return end > 0 and all(32 <= c < 127 or c in (9, 10, 13) for c in rom[:end])
+
     def bind(self, addr):
         """Walk the relocations of every matched function. Returns (bindings, per-function status).
 
@@ -284,7 +291,8 @@ class Analysis:
                                 why = f"non-string constant in {sec}+{off:#x}"
                                 break
                             rom = self.exe.rom[t - VRAM:t - VRAM + len(lit) + 1]
-                            if rom != lit + b"\0":
+                            if rom != lit + b"\0" and not (getattr(self, "loose_strings", False)
+                                                           and self.exe_string_at(t)):
                                 why = f"string at {t:#x} differs"
                                 break
                             key, val = ("lit", sec, off), t

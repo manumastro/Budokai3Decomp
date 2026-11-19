@@ -202,9 +202,11 @@ def closure(items, func_item, own):
         it = items[k]
         if it.kind == "func":
             if re.search(r"\binline\b|__inline", it.head):
+                t = cparse._strip_comments(it.text).strip()
                 if not re.search(r"\bstatic\b", it.head):
-                    return None, f"needs the non-static inline function {it.name}"
-                out.append(("inline", it.name, cparse._strip_comments(it.text).strip()))
+                    # a plain (or extern) inline also emits an out-of-line copy: as static it only inlines
+                    t = "static " + re.sub(r"^\s*extern\s+", "", t)
+                out.append(("inline", it.name, t))
                 continue
             h = re.sub(r"\b(static|extern)\b\s*", "", cparse.strip_attr(it.head)).strip()
             out.append(("func", it.name, h + ";"))
@@ -240,6 +242,8 @@ class Unit:
             return
         self.ob = lp.Obj(obj)
         self.an = lp.Analysis(self.ob, exe)
+        # the literals become externs of the executable's own strings, so their text in the origin may differ
+        self.an.loose_strings = True
         self.addr = self.an.resolve()
         _, self.status = self.an.bind(self.addr)
         pre = Path(self.work) / "pre.c"
