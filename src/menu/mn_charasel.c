@@ -5,7 +5,21 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027AC90);
 void func_0027B7D0(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027B7E0);
+s32 func_0027A4C0(void *);
+extern f32 gFrameDelta;
+void func_0027B7E0(u8 *arg0) {
+    f32 temp_f1;
+    u8 *temp_s0;
+
+    temp_s0 = *(u8 **)((u8 *)arg0 + 0x30);
+    func_0027A4C0(temp_s0);
+    temp_f1 = *(f32 *)((u8 *)temp_s0 + 0x54) - gFrameDelta;
+    *(f32 *)((u8 *)temp_s0 + 0x54) = temp_f1;
+    if (temp_f1 <= 0.0f) {
+        *(s8 *)((u8 *)temp_s0 + 0) = 7;
+        *(void (**)())((u8 *)arg0 + 0x1C) = (func_0027B7D0 == NULL) ? NULL : func_0027B7D0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027B860);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027BDF0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027C140);
