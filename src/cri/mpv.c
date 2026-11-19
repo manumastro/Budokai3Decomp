@@ -3412,7 +3412,41 @@ void func_00179148_x00179148(MpvO_x00179148 *o, s32 a1, s32 a2, s32 *p3, s32 *p4
     }
     o->fn(o, a1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001791F0);
+typedef struct { int w0, w1, f8, fC, w4, w5, w6, w7; } Pic_91F0_x001791F0;
+typedef struct { char pad0[0x20]; Pic_91F0_x001791F0 cur; Pic_91F0_x001791F0 slot[3]; } Mpv_91F0_x001791F0;
+int func_00179310_x001791F0(Mpv_91F0_x001791F0 *, unsigned char *, int, int *, int *) __asm__("func_00179310");
+int func_001791F0_x001791F0(Mpv_91F0_x001791F0 *m, unsigned char *buf, int len, int *consumed, int *flags) __asm__("func_001791F0");
+int func_001791F0_x001791F0(Mpv_91F0_x001791F0 *m, unsigned char *buf, int len, int *consumed, int *flags)
+{
+    int n, fl;
+    int idx;
+
+    while (len >= 4) {
+        int r = func_00179310_x001791F0(m, buf, len, &n, &fl);
+        {
+            int f = *flags;
+            buf += n;
+            len -= n;
+            *consumed += n;
+            *flags = f | fl;
+        }
+        if (r == 0) {
+            break;
+        }
+    }
+    if (*flags & 0x20000) {
+        Pic_91F0_x001791F0 *p = &m->cur;
+        if (p->f8 != 0) {
+            idx = 0;
+        } else if (p->fC != 0) {
+            idx = 1;
+        } else {
+            idx = 2;
+        }
+        m->slot[idx] = *p;
+    }
+    return 0;
+}
 u32 func_0017AAF0_x00179310(s32) __asm__("func_0017AAF0");
 void func_00179400_x00179310(u8 *, s32, s32 *) __asm__("func_00179400");
 void func_00179860_x00179310(u8 *, s32, s32 *) __asm__("func_00179860");

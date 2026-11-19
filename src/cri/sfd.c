@@ -2858,7 +2858,40 @@ char *func_00188B20_x00188B20(SfdPly_x00188B20 *h, char *buf, int size) {
     }
     return base;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00188C40);
+extern u8 D_00467220_x00188C40[] __asm__("D_00467220");
+s32 func_0018D3C0_x00188C40(void *) __asm__("func_0018D3C0");
+void func_00188A68_x00188C40() __asm__("func_00188A68");
+s32 func_00188D48_x00188C40(void *, s32 *, s32 *) __asm__("func_00188D48");
+int memcmp_x00188C40(const void *, const void *, unsigned int) __asm__("memcmp");
+void func_00188C40_x00188C40(u8 *a0, u8 *buf, s32 len, s32 *out) __asm__("func_00188C40");
+void func_00188C40_x00188C40(u8 *a0, u8 *buf, s32 len, s32 *out)
+{
+    u8 *w;
+    s32 i;
+    s32 v[2];
+
+    w = *(u8 **)(a0 + 0x1CB4);
+    *out = 0;
+    if (func_0018D3C0_x00188C40(a0) >= 0x6C) {
+        *(void **)(w + 0x3C) = func_00188A68_x00188C40;
+        return;
+    }
+    for (i = 0; i < len - 0x12; i += 0x12) {
+        if (memcmp_x00188C40(buf, D_00467220_x00188C40, 0x12) != 0) {
+            *(void **)(w + 0x3C) = func_00188A68_x00188C40;
+            break;
+        }
+        buf += 0x12;
+    }
+    *out = i;
+    if (func_00188D48_x00188C40(a0, &v[0], &v[1]) == 0) {
+        *(s32 *)(w + 0x38) += (i / (v[0] * 18)) * 32;
+    }
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3c00188C40_0;
+extern int b3c00188C40_1;
+extern int b3cse_pad32_00188C40_0_xxxx;
 void *func_0034B618_x00188D48(char *self) __asm__("func_00189BC0");
 int func_00188D48_x00188D48(int a0, int *a1, int *a2) __asm__("func_00188D48");
 /* func_0034A6F8: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0032f938.c, MIT); ee-gcc 2.96 -O2 -G0 */

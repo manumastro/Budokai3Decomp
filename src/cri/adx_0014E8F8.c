@@ -7,7 +7,98 @@ s32 func_0014E900();                            /* extern */
 void func_0014E8F8(u8 *arg0) {
     *(s8 *)((u8 *)arg0 + 1) = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014E8F8", func_0014E900);
+typedef struct SfdSj_x0014E900 SfdSj_x0014E900;
+typedef struct SfdSjChunk_x0014E900 { char *data; int len; } SfdSjChunk_x0014E900;
+typedef struct SfdSjVtbl_x0014E900 { void *queryInterface; void *addRef; void *release; void (*destroy)(SfdSj_x0014E900 *sj); int (*getUuid)(SfdSj_x0014E900 *sj); void (*reset)(SfdSj_x0014E900 *sj); void (*getChunk)(SfdSj_x0014E900 *sj, int id, int n, SfdSjChunk_x0014E900 *ck); void (*ungetChunk)(SfdSj_x0014E900 *sj, int id, SfdSjChunk_x0014E900 *ck); void (*putChunk)(SfdSj_x0014E900 *sj, int id, SfdSjChunk_x0014E900 *ck); int (*getNumData)(SfdSj_x0014E900 *sj, int id); } SfdSjVtbl_x0014E900;
+struct SfdSj_x0014E900 { SfdSjVtbl_x0014E900 *vtbl; };
+typedef struct AdxPdObj_x0014E900 { int used; int id; int mode; int stat; int nblk_decoded; int channels; unsigned char *ibuf; int nblk; short *obufl; short *obufr; short dly[2][2]; short k0; short k1; short seed; short mul; short add; } AdxPdObj_x0014E900;
+typedef struct AdxDecPara_x0014E900 { char *ibuf; int niblk; int nch; int blksize; int blknsmpl; short *pcmbuf; int pcmbsize; int pcmbdist; int wpos; int nroom; int lp_nsmpl; int ndecsmpl; } AdxDecPara_x0014E900;
+struct Pl2Enc_x0014E900;
+typedef struct AdxbObj_x0014E900 AdxbObj_x0014E900;
+typedef short *(*AdxbGetWrFunc_x0014E900)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x0014E900)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x0014E900 { short used; short hdcdflag; int stat; AdxPdObj_x0014E900 *xpd; signed char code; signed char bps; signed char nch; signed char blklen; int blknsmpl; int sfreq; int total_nsmpl; short cof; short rsv1; int lp_ins_nsmpl; short nloop; short lp_type; int lp_spos; int lp_sofst; int lp_epos; int lp_eofst; int maxnch; short *pcmbuf; int pcmbsize; int pcmbdist; AdxDecPara_x0014E900 dp; AdxbGetWrFunc_x0014E900 getwrfunc; void *getwrobj; AdxbAddWrFunc_x0014E900 addwrfunc; void *addwrobj; int total_ndecsmpl; int curwpos; int ndecsmpl; int ndeclen; short fmttype; unsigned short def_fmttype; short cdctype; short f158; short k0; short km; short ka; unsigned short xp_key; unsigned short xp_km; unsigned short xp_ka; unsigned short dly1[2]; unsigned short dly2[2]; void *ahx; int ahx_dec_nsmpl; int ahx_dec_nfrm; void *ac3; int ac3_dec_nsmpl; int ac3_dec_nfrm; int ainf_len; char dataid[16]; short def_outvol; short def_pan[2]; char pad230[2]; struct Pl2Enc_x0014E900 *pl2; int pl2_x; int pl2_y; int cb_ndeclen; int f248; void (*decfunc)(void *context, int count, int bytes); void *decobj; };
+extern void ADXB_EntryDecFunc_x0014E900(AdxbObj_x0014E900 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+typedef struct AdxSjdObj_x0014E900 { signed char used; signed char stat; signed char maxnch; signed char empty_end; AdxbObj_x0014E900 *adxb; SfdSj_x0014E900 *sji; SfdSj_x0014E900 *sjo[2]; SfdSjChunk_x0014E900 cki; SfdSjChunk_x0014E900 cko[2]; int total_decsmpl; int total_decdtlen; int decpos; int maxdecsmpl; int dtrpsmpl; int dtrpcnt; int dtrpdtlen; void (*dtrpfunc)(void *context); void *dtrpobj; void (*dfltfunc)(void *context, int ch, char *data, int len); void *dfltobj; char hdr[64]; int hdrlen; int lnksw; int fill; int skip; } AdxSjdObj_x0014E900;
+extern void ADXSJD_EntryFltFunc_x0014E900(AdxSjdObj_x0014E900 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x0014E900(AdxSjdObj_x0014E900 *sjd, void (*func)(void *obj), void *obj) __asm__("ADXSJD_EntryTrapFunc");
+typedef void (*CvFsErrFn_x0014E900)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0014E900)(CvFsErrFn_x0014E900 func, void *obj);
+typedef int (*CvFsPathFn_x0014E900)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0014E900)(void);
+typedef int (*CvFsOpenFn_x0014E900)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0014E900)(int fd);
+typedef int (*CvFsFdIntFn_x0014E900)(int fd);
+typedef int (*CvFsSeekFn_x0014E900)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0014E900)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0014E900)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0014E900)(void);
+typedef int (*CvFsLoadDirInfoFn_x0014E900)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0014E900)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0014E900)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0014E900 { void (*exec_server)(void); CvFsEntryErrFuncFn_x0014E900 entry_err_func; CvFsPathFn_x0014E900 get_file_size; CvFsGetFreeSizeFn_x0014E900 get_free_size; CvFsOpenFn_x0014E900 open; CvFsFdFn_x0014E900 close; CvFsSeekFn_x0014E900 seek; CvFsFdIntFn_x0014E900 tell; CvFsXferFn_x0014E900 req_rd; CvFsXferFn_x0014E900 req_wr; CvFsFdFn_x0014E900 stop_tr; CvFsFdIntFn_x0014E900 get_stat; CvFsFdIntFn_x0014E900 get_sct_len; CvFsSetSctLenFn_x0014E900 set_sct_len; CvFsFdIntFn_x0014E900 get_num_tr; CvFsPathFn_x0014E900 change_dir; CvFsPathFn_x0014E900 is_exist_file; CvFsGetNumFilesFn_x0014E900 get_num_files; CvFsLoadDirInfoFn_x0014E900 load_dir_info; CvFsFdIntFn_x0014E900 get_max_byte_rate; CvFsPathFn_x0014E900 make_dir; CvFsPathFn_x0014E900 remove_dir; CvFsPathFn_x0014E900 delete_file; CvFsGetFileSizeExFn_x0014E900 get_file_size_ex; int (*opt_fn1)(); CvFsOptFn2_x0014E900 opt_fn2; } CvFsVtbl_x0014E900;
+typedef struct CvFsHandle_x0014E900 { CvFsVtbl_x0014E900 *vtbl; int fd; } CvFsHandle_x0014E900;
+extern CvFsVtbl_x0014E900 *addDevice_x0014E900(char *devname, CvFsVtbl_x0014E900 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0014E900 { signed char used; signed char stat; signed char rdflg; signed char rtrycnt; SfdSj_x0014E900 *sj; CvFsHandle_x0014E900 *fd; int fofst; int fsize; int fsctsz; int maxrdsz; int minrdsz; int rdsct; SfdSjChunk_x0014E900 rdck; int reqrdsct; int eos; int rdbyte; void (*eosfunc)(void *obj); void *eosobj; int buflen; signed char pause; signed char open_req; signed char close_req; signed char start_req; signed char stop_req; signed char opened; signed char nrmlflg; char f75[5]; const char *fname; void *dir; int curpos; int maxsct; } AdxStmObj_x0014E900;
+extern void ADXSTM_EntryEosFunc_x0014E900(AdxStmObj_x0014E900 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+typedef struct AdxAmpObj_x0014E900 AdxAmpObj_x0014E900;
+typedef struct AdxAmpObj_x0014E900 { signed char used; signed char stat; signed char maxnch; char rsrv; SfdSj_x0014E900 *sji[2]; SfdSj_x0014E900 *sjo[2]; int nsmpl[2]; int nch; int sfreq; float frmlen; float frmprd; int nfrm; } AdxAmpObj_x0014E900;
+void func_0014E900_x0014E900(AdxAmpObj_x0014E900 *amp) __asm__("func_0014E900");
+void func_0014E900_x0014E900(AdxAmpObj_x0014E900 *amp)
+{
+    SfdSjChunk_x0014E900 ck;
+    SfdSjChunk_x0014E900 rec;
+    short *sample;
+    int *out;
+    int ch;
+    int frm;
+    int navail;
+    int nroom;
+    int n;
+    int got;
+    int count;
+    int peak;
+    int value;
+    int i;
+    int k;
+    frm = (int)(amp->sfreq * amp->frmlen);
+    for (ch = 0; ch < amp->nch; ch++) {
+        navail = amp->sji[ch]->vtbl->getNumData(amp->sji[ch], 1) / 2 / frm;
+        nroom = amp->sjo[ch]->vtbl->getNumData(amp->sjo[ch], 0) / 16;
+        n = navail < nroom ? navail : nroom;
+        for (i = 0; i < n; i++) {
+            peak = 0;
+            for (got = 0; got < frm; got += count) {
+                amp->sji[ch]->vtbl->getChunk(amp->sji[ch], 1, (frm - got) * 2, &ck);
+                count = ck.len / 2;
+                for (sample = (short *)ck.data, k = 0; k < count; k++, sample++) {
+                    value = *sample;
+                    if (value < 0) {
+                        value = -value;
+                    }
+                    if (peak < value) {
+                        peak = value;
+                    }
+                }
+                amp->sji[ch]->vtbl->putChunk(amp->sji[ch], 0, &ck);
+            }
+            amp->sjo[ch]->vtbl->getChunk(amp->sjo[ch], 0, 16, &rec);
+            if (rec.len == 0) {
+                for (;;) {
+                }
+            }
+            out = (int *)rec.data;
+            out[0] = peak;
+            out[1] = amp->nsmpl[ch];
+            out[2] = amp->sfreq;
+            out[3] = frm;
+            amp->sjo[ch]->vtbl->putChunk(amp->sjo[ch], 1, &rec);
+            amp->nsmpl[ch] += frm;
+            amp->nfrm++;
+        }
+    }
+}
+__asm__("# noswap func_0014E900");
 void func_0014EB90(u8 *arg0) {
     if (*(s8 *)((u8 *)arg0 + 1) == 2) {
         func_0014E900();

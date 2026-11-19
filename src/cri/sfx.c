@@ -1169,7 +1169,36 @@ void func_001A08E8_x001A08E8(u32_x001A08E8 arg0, u32_x001A08E8 arg1, u32_x001A08
 void func_001A08E8_x001A08E8(u32_x001A08E8 arg0, u32_x001A08E8 arg1, u32_x001A08E8 arg2) {
     fn_12_C60_x001A08E8(arg0, arg1, 0x20, arg2);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0908);
+extern char D_00467E20_x001A0908[] __asm__("D_00467E20");
+extern char D_00467E28_x001A0908[] __asm__("D_00467E28");
+extern char D_00467E58_x001A0908[] __asm__("D_00467E58");
+s32 func_0019F320_x001A0908(s32 *, char *) __asm__("func_0019F320");
+s32 func_001A0858_x001A0908(s32) __asm__("func_001A0858");
+void func_0019F6D0_x001A0908(void *, s32 *, char *) __asm__("func_0019F6D0");
+void func_001A0BC8_x001A0908(void *, s32 *, s32, s32) __asm__("func_001A0BC8");
+void func_001A0A38_x001A0908(void *, s32 *, s32, s32) __asm__("func_001A0A38");
+void func_001A0908_x001A0908(u8 *a0, s32 *a1, s32 a2, s32 a3) __asm__("func_001A0908");
+void func_001A0908_x001A0908(u8 *a0, s32 *a1, s32 a2, s32 a3)
+{
+    if (*(s32 *)(a0 + 4) == 0) {
+        *(s32 *)(a0 + 4) = func_0019F320_x001A0908(a1, D_00467E20_x001A0908);
+    }
+    if (func_001A0858_x001A0908(*(s32 *)(a0 + 0x24)) != 1) {
+        func_0019F6D0_x001A0908(a0, a1, D_00467E28_x001A0908);
+        return;
+    }
+    switch ((u32)*a1) {
+    case 3:
+        func_001A0A38_x001A0908(a0, a1, a2, a3);
+        return;
+    case 2:
+        func_001A0BC8_x001A0908(a0, a1, a2, a3);
+        return;
+    case 1:
+        break;
+    }
+    func_0019F6D0_x001A0908(a0, a1, D_00467E58_x001A0908);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0A38);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0BC8);
 s32 sfxcnv_CnvZbitToCft(u32 arg0) {
@@ -1427,7 +1456,42 @@ s32 func_001A1488_x001A1488(s32 arg0) __asm__("func_001A1488");
 s32 func_001A1488_x001A1488(s32 arg0) {
     return (arg0 == 0) ? 0 : 0x23;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1498);
+typedef struct { s64 d; s16 h; s16 pad[3]; } SfxQ_x001A1498;
+extern volatile s32 D_00427334_x001A1498 __asm__("D_00427334");
+extern s32 D_00427338_x001A1498 __asm__("D_00427338");
+extern s32 D_0042733C_x001A1498 __asm__("D_0042733C");
+extern volatile u32 *D_00467F70_x001A1498[] __asm__("D_00467F70");
+extern volatile s32 *D_00467F80_x001A1498[] __asm__("D_00467F80");
+extern volatile SfxQ_x001A1498 D_00492A78_x001A1498 __asm__("D_00492A78");
+extern volatile SfxQ_x001A1498 D_00492A88_x001A1498 __asm__("D_00492A88");
+extern volatile SfxQ_x001A1498 *volatile D_00492A98_x001A1498 __asm__("D_00492A98");
+extern volatile s32 D_00492A9C_x001A1498 __asm__("D_00492A9C");
+void func_001A18C8_x001A1498(s32) __asm__("func_001A18C8");
+void func_001A1498_x001A1498(s32 a0) __asm__("func_001A1498");
+void func_001A1498_x001A1498(s32 a0)
+{
+    volatile u32 *e;
+    u32 v;
+
+    D_00427334_x001A1498++;
+    if (D_00427334_x001A1498 >= 2 && D_00427338_x001A1498 == a0) return;
+    D_00427338_x001A1498 = a0;
+    if (a0 == -1) {
+        func_001A18C8_x001A1498(1);
+        return;
+    }
+    func_001A18C8_x001A1498(0x8CA00);
+    D_0042733C_x001A1498 = v = *(e = D_00467F70_x001A1498[a0]);
+    if ((v & 0xC7) != 0x82) {
+        *D_00467F80_x001A1498[a0] = 0;
+        *e = 0x82;
+    }
+    D_00492A78_x001A1498.h = *D_00467F80_x001A1498[a0];
+    D_00492A78_x001A1498.d = 0;
+    D_00492A88_x001A1498 = D_00492A78_x001A1498;
+    D_00492A98_x001A1498 = &D_00492A78_x001A1498;
+    D_00492A9C_x001A1498 = 0;
+}
 extern volatile int D_003EEA78_x001A15C0 __asm__("D_00427334");
 extern int D_003EEA7C_x001A15C0 __asm__("D_00427338");
 extern unsigned int D_003EEA80_x001A15C0 __asm__("D_0042733C");

@@ -2306,7 +2306,29 @@ void func_0016D4D8_x0016D4D8(u8 *arg0, unsigned int arg1)
     }
   }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D508);
+typedef struct { char pad[0x34]; int rate; } Rna_D508_x0016D508;
+extern int D_0041A0D8_x0016D508 __asm__("D_0041A0D8");
+extern int D_0041A0D0_x0016D508 __asm__("D_0041A0D0");
+extern char D_00464BE0_x0016D508[] __asm__("D_00464BE0");
+int scePrintf_x0016D508(const char *, ...) __asm__("scePrintf");
+void func_0016D508_x0016D508(Rna_D508_x0016D508 *r, int rate) __asm__("func_0016D508");
+void func_0016D508_x0016D508(Rna_D508_x0016D508 *r, int rate)
+{
+    if (D_0041A0D8_x0016D508 == 1 && D_0041A0D0_x0016D508 <= 0) {
+        return;
+    }
+    if (48000 % rate != 0) {
+        scePrintf_x0016D508(D_00464BE0_x0016D508, rate);
+        while (1);
+    }
+    if (rate != 48000) {
+        if ((48000 / rate) & 1) {
+            scePrintf_x0016D508(D_00464BE0_x0016D508, rate);
+            while (1);
+        }
+    }
+    r->rate = rate;
+}
 extern s32 D_0041A0D0_x0016D5E0 __asm__("D_0041A0D0");
 extern s32 D_0041A0D8_x0016D5E0 __asm__("D_0041A0D8");
 void func_0016D5E0_x0016D5E0(u8 *arg0, s32 arg1) __asm__("func_0016D5E0");
