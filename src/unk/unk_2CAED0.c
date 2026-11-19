@@ -246,28 +246,23 @@ s32 func_002CB1D0(void) {
 }
 /* differs: the original keeps the f32 pair at &t->f20 in $a1 and the chr in $a0 (the loads/stores use those bases); the
    C above takes the pair from the TutWork base, and the return tests come out with the bc1t/bc1f order reversed */
-#if 0
 s32 func_002CB250(void) {
-    TutWork *t = gTutWork;
-    TutChr *c = t->chr;
-    f32 *f = (f32 *)&t->f20;
+    f32 *a0;
+    TutChr *c;
 
+    c = gTutWork->chr;
+    a0 = (f32 *)((u8 *)gTutWork + 0x20);
     if (c->fCAC == 9) {
-        f[0] = f[0] + *(f32 *)(gBattle + 0x88F0);
+        a0[0] = a0[0] + *(f32 *)((u8 *)gBattle + 0x88F0);
     }
     if (c->fCAC == 0xB) {
-        f[1] = f[1] + *(f32 *)(gBattle + 0x88F0);
+        a0[1] = a0[1] + *(f32 *)((u8 *)gBattle + 0x88F0);
     }
-    if (f[0] < 30.0f) {
-        return 0;
+    if (!(a0[0] < 30.0f) && !(a0[1] < 30.0f)) {
+        return 1;
     }
-    if (f[1] < 30.0f) {
-        return 0;
-    }
-    return 1;
+    return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CAED0", func_002CB250);
 s32 func_002CB300(void) {
     TutWork *t = gTutWork;
     s32 *p = &t->f20;
