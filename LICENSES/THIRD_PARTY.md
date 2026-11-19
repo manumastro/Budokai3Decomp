@@ -37,6 +37,7 @@ file's first comment) to the instructions of this executable.
 | https://github.com/gekoii/grandia_xtreme | none stated by the repository (remove with `git grep -n grandia_xtreme src`) | - |
 | https://github.com/crashbashash/DW4_Decomp (src/sony/, src/cri/, src/newlib/, src/libgcc/) | decompiled src/: no licence granted by the repository (its tools are CC0-1.0) (remove with `git grep -n DW4_Decomp src`) | - |
 | https://github.com/OpenRAC/rac5-sm-decomp | GPL-3.0 (remove with `git grep -n rac5-sm-decomp src`) | - |
+| https://github.com/kira-502/dotr-decomp (src/sdk/) | CC0-1.0 (remove with `git grep -n dotr-decomp src`) | - |
 
 newlib: each function taken from it carries its origin file's notice where that file has one. Files without a notice
 of their own are covered by newlib's COPYING.NEWLIB section for Cygnus/Red Hat code:

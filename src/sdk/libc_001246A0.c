@@ -337,7 +337,77 @@ s32 func_00124940(s32 arg0, s32 arg1) {
     __malloc_unlock(_impure_ptr);
     return temp_s1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc_001246A0", func_001249A8);
+typedef signed int s32_x001249A8;
+typedef unsigned int u32_x001249A8;
+typedef signed long long s64_x001249A8;
+typedef float f32_x001249A8;
+extern s32_x001249A8 AddDmacHandler2_x001249A8(s32_x001249A8 channel, s32_x001249A8 (*handler)(s32_x001249A8, void *), s32_x001249A8 arg, u32_x001249A8 *arg3) __asm__("AddDmacHandler2");
+extern s32_x001249A8 RhBase_SetVSyncCallback_x001249A8(void (*callback)(void)) __asm__("RhBase_SetVSyncCallback");
+extern s32_x001249A8 SzMsg_DrawRatioX_Pipe_x001249A8(s32_x001249A8 packet, s32_x001249A8 slot, s64_x001249A8 x, s64_x001249A8 y, f32_x001249A8 scaleX, f32_x001249A8 scaleY, s32_x001249A8 color, void (*draw)(void)) __asm__("SzMsg_DrawRatioX_Pipe");
+void _free_r_x001249A8(s32_x001249A8 self, void *mem) __asm__("func_00123D60");
+void *_malloc_r_x001249A8(s32_x001249A8 reent_ptr, s32_x001249A8 bytes) __asm__("func_00124E68");
+extern s32_x001249A8 func_00190A90_x001249A8(void (*arg0)(void)) __asm__("func_00190A90");
+void func_00198A08_x001249A8(s32_x001249A8 r) __asm__("func_001259B8");
+s32_x001249A8 func_00198A88_x001249A8(s32_x001249A8 r) __asm__("func_00125A38");
+extern void func_00199BC0_x001249A8(s32_x001249A8 arg0, u32_x001249A8 n, u32_x001249A8 es, void (*arg3)(void)) __asm__("func_00199BC0");
+typedef struct ma_chunk_x001249A8 {
+    u32_x001249A8 prev_size;
+    u32_x001249A8 size;
+    struct ma_chunk_x001249A8 *fd;
+    struct ma_chunk_x001249A8 *bk;
+} ma_chunk_x001249A8;
+void *_malloc_r_x001249A8(s32_x001249A8 reent_ptr, s32_x001249A8 bytes) __asm__("func_00124E68");
+void func_00198A08_x001249A8(s32_x001249A8 r) __asm__("func_001259B8");
+s32_x001249A8 func_00198A88_x001249A8(s32_x001249A8 r) __asm__("func_00125A38");
+void func_00199BC0_x001249A8(s32_x001249A8 arg0, u32_x001249A8 n, u32_x001249A8 es, void (*arg3)(void)) __asm__("func_00199BC0");
+void *func_001249A8_x001249A8(s32_x001249A8 reent_ptr, s32_x001249A8 alignmentIn, s32_x001249A8 bytesIn) __asm__("func_001249A8");
+/* _memalign_r: from https://github.com/kira-502/dotr-decomp (src/sdk/newlib_2.c, CC0-1.0); ee-gcc 2.96 -O2 -G0 */
+void *func_001249A8_x001249A8(s32_x001249A8 reent_ptr, s32_x001249A8 alignmentIn, s32_x001249A8 bytesIn) {
+    u32_x001249A8 alignment = alignmentIn;
+    u32_x001249A8 bytes = bytesIn;
+    u32_x001249A8 nb;
+    char *m;
+    ma_chunk_x001249A8 *p;
+    char *brk;
+    ma_chunk_x001249A8 *newp;
+    u32_x001249A8 newsize;
+    u32_x001249A8 leadsize;
+    ma_chunk_x001249A8 *remainder;
+    long remainder_size;
+    if (alignment <= 16)
+        return (void *)_malloc_r_x001249A8(reent_ptr, bytes);
+    if (alignment < 16)
+        alignment = 16;
+    nb = (((unsigned long)((bytes) + (4 + 15)) < (unsigned long)(16 + 15)) ? 16 : (((bytes) + (4 + 15)) & ~(15)));
+    m = (char *)_malloc_r_x001249A8(reent_ptr, nb + alignment + 16);
+    if (m == 0)
+        return 0;
+    func_00198A08_x001249A8(reent_ptr);
+    p = ((ma_chunk_x001249A8 *)((char *)(m) - 8));
+    if ((((unsigned long)(m)) % alignment) == 0) {
+    } else {
+        brk = (char *)((ma_chunk_x001249A8 *)((char *)(((unsigned long)(m + alignment - 1)) & -alignment) - 8));
+        if ((long)(brk - (char *)(p)) < (long)16)
+            brk = brk + alignment;
+        newp = (ma_chunk_x001249A8 *)brk;
+        leadsize = brk - (char *)(p);
+        newsize = ((p)->size & ~(0x1 | 0x2)) - leadsize;
+        ((newp)->size = (newsize | 0x1));
+        (((ma_chunk_x001249A8 *)(((char *)(newp)) + (newsize)))->size |= 0x1);
+        ((p)->size = (((p)->size & 0x1) | (leadsize)));
+        _free_r_x001249A8(reent_ptr, (s32_x001249A8)((void *)((char *)(p) + 8)));
+        p = newp;
+    }
+    remainder_size = (sizeof(long) > sizeof(u32_x001249A8) && ((p)->size & ~(0x1 | 0x2)) < nb ? -(long)(nb - ((p)->size & ~(0x1 | 0x2))) : (long)(((p)->size & ~(0x1 | 0x2)) - nb));
+    if (remainder_size >= (long)16) {
+        remainder = ((ma_chunk_x001249A8 *)(((char *)(p)) + (nb)));
+        ((remainder)->size = (remainder_size | 0x1));
+        ((p)->size = (((p)->size & 0x1) | (nb)));
+        _free_r_x001249A8(reent_ptr, (s32_x001249A8)((void *)((char *)(remainder) + 8)));
+    }
+    func_00198A88_x001249A8(reent_ptr);
+    return ((void *)((char *)(p) + 8));
+}
 s32 func_00124B70(s32 arg0) {
     s32 temp_s1;
 
