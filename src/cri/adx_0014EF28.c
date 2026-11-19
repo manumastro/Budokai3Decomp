@@ -52,7 +52,16 @@ s32 func_0014F548();                            /* extern */
 s32 func_0014F6E0();                            /* extern */
 
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014EF28);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_0014F2B8);
+s32 memcmp_x0014F2B8(s32 *, s32 *, s32) __asm__("memcmp");
+extern s32 D_0045FC00_x0014F2B8 __asm__("D_0045FC00");
+extern s32 D_0045FC08_x0014F2B8 __asm__("D_0045FC08");
+s32 func_0014F2B8_x0014F2B8(s32 arg0) __asm__("func_0014F2B8");
+s32 func_0014F2B8_x0014F2B8(s32 arg0) {
+    if ((memcmp_x0014F2B8(arg0, &D_0045FC00_x0014F2B8, (s32 *)4) == 0) && (memcmp_x0014F2B8(arg0 + 8, &D_0045FC08_x0014F2B8, 4) == 0)) {
+        return 1;
+    }
+    return 0;
+}
 typedef signed char Sint8_x0014F320;
 typedef signed short Sint16_x0014F320;
 typedef signed int Sint32_x0014F320;
@@ -1267,11 +1276,32 @@ void func_00151790_x00151790(ADXB_x00151790 adxb) {
         ADXB_ExecOneAc3_x00151790(adxb);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151840);
+s32 func_00151790_x00151840(s16 *) __asm__("func_00151790");
+extern s16 D_004010A8_x00151840 __asm__("D_004010A8");
+void func_00151840_x00151840(void) __asm__("func_00151840");
+void func_00151840_x00151840(void) {
+    s16 *var_s0;
+    s32 var_s1;
+
+    var_s0 = &D_004010A8_x00151840;
+    var_s1 = 0xF;
+    do {
+        if (*var_s0 == 1) {
+            func_00151790_x00151840(var_s0);
+        }
+        var_s1 -= 1;
+        var_s0 += 122;
+    } while (var_s1 >= 0);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001518A0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001519C0);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151AB8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151C30);
+s32 memcmp_x00151C30() __asm__("memcmp");
+extern s32 D_004604A8_x00151C30 __asm__("D_004604A8");
+s32 func_00151C30_x00151C30(s32 arg0) __asm__("func_00151C30");
+s32 func_00151C30_x00151C30(s32 arg0) {
+    return memcmp_x00151C30(arg0, &D_004604A8_x00151C30, 4) == 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151C58);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151E88);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151F88);
@@ -1483,7 +1513,16 @@ void func_00152298_x00152298(ADXB_x00152298 adxb)
         adxb->stat = 3;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00152438);
+s32 memcmp_x00152438(s32 *, s32 *, s32) __asm__("memcmp");
+extern s32 D_004604C0_x00152438 __asm__("D_004604C0");
+extern s32 D_004604C8_x00152438 __asm__("D_004604C8");
+s32 func_00152438_x00152438(s32 arg0) __asm__("func_00152438");
+s32 func_00152438_x00152438(s32 arg0) {
+    if ((memcmp_x00152438(arg0, &D_004604C0_x00152438, (s32 *)4) == 0) && (memcmp_x00152438(arg0 + 8, &D_004604C8_x00152438, 4) == 0)) {
+        return 1;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001524A0);
 void func_001524F8(void) {
     D_00401FF0 = 0;
@@ -2355,7 +2394,11 @@ Sint32_x00154628 adxf_ChkPrmPt_x00154628(Sint32_x00154628 ptid, void *ptinfo) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154670);
+s32 func_00154690_x00154670() __asm__("func_00154690");
+void func_00154670_x00154670(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00154670");
+void func_00154670_x00154670(s32 arg0, s32 arg1, s32 arg2) {
+    func_00154690_x00154670(arg0, arg1, 0, arg2);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154690);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154710);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154738);

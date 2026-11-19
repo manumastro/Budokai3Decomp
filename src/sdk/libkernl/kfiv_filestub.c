@@ -293,7 +293,12 @@ int _sceFsWaitS(int arg)
     return 0;
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010EFF0);
+s32 SignalSema_x0010EFF0(s32) __asm__("SignalSema");
+extern s32 D_003EC6C4_x0010EFF0 __asm__("D_003EC6C4");
+void func_0010EFF0_x0010EFF0(void) __asm__("func_0010EFF0");
+void func_0010EFF0_x0010EFF0(void) {
+    SignalSema_x0010EFF0(D_003EC6C4_x0010EFF0);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F000);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F0A0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F0E8);

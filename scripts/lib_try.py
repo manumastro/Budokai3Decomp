@@ -62,10 +62,15 @@ RECIPES = """- The compiler is ee-gcc (2.96 for CRI and libc/libm/libgcc, 2.9-99
   report "no match: hand-written" unless the draft already compiles to it."""
 
 
+_REM = None
+
+
 def find_item(name):
-    for r in LR.remaining(True):
-        if r[1] == name:
-            return r
+    global _REM
+    if _REM is None:
+        _REM = {r[1]: r for r in LR.remaining(True)}
+    if name in _REM:
+        return _REM[name]
     sys.exit(f"{name}: not a function still in assembly (scripts/lib_remaining.py)")
 
 
@@ -147,16 +152,23 @@ def try_snippet(name, snippet_text, quiet=False):
         orig = (ROOT / "src" / f"{seg}.c").read_text()
         pat = re.compile(r'^INCLUDE_ASM\("[^"]+", ' + re.escape(name) + r'\);[ \t]*$', re.M)
         body = pat.sub(lambda _: text.replace("\\", "\\\\"), orig, count=1)
-        # data of the file without the function, to tell what the function adds
-        base = ROOT / f"src/{seg}_lhbase_{name}.c"
-        base.write_text(orig)
-        try:
-            o, _, w = compile_one(base, f"src/{seg}_lhbase_{name}.c", f"build/lh/w_{name}_base")
-            if o:
-                base_secs = sections(o)[0]
-            shutil.rmtree(w, ignore_errors=True)
-        finally:
-            base.unlink(missing_ok=True)
+        # data of the file without the function, to tell what the function adds (cached per file content)
+        import hashlib
+        cache = ROOT / "build" / "lh" / "base_secs" / (hashlib.md5(orig.encode()).hexdigest() + ".json")
+        if cache.exists():
+            base_secs = json.loads(cache.read_text())
+        else:
+            base = ROOT / f"src/{seg}_lhbase_{name}.c"
+            base.write_text(orig)
+            try:
+                o, _, w = compile_one(base, f"src/{seg}_lhbase_{name}.c", f"build/lh/w_{name}_base")
+                if o:
+                    base_secs = sections(o)[0]
+                    cache.parent.mkdir(parents=True, exist_ok=True)
+                    cache.write_text(json.dumps(base_secs))
+                shutil.rmtree(w, ignore_errors=True)
+            finally:
+                base.unlink(missing_ok=True)
     else:
         head = (ROOT / "src" / f"{seg}.c").read_text()[:800] if (ROOT / "src" / f"{seg}.c").exists() else ""
         body = '#include "common.h"\n\n' + text

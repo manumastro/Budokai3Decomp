@@ -129,7 +129,25 @@ rand_x00126B88(void)
      _impure_ptr_x00126B88->_new._reent_x00126B88._rand_next * __extension__ 6364136223846793005LL + 1;
   return (int)((_impure_ptr_x00126B88->_new._reent_x00126B88._rand_next >> 32) & 0x7fffffff);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libc_00126B70", _read_r);
+s32 read_x00126BF0(s32, s32, s32) __asm__("read");
+extern s32 errno_x00126BF0 __asm__("errno");
+volatile unsigned long _read_r_x00126BF0(s32 *arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("_read_r");
+volatile unsigned long _read_r_x00126BF0(s32 *arg0, s32 arg1, s32 arg2, s32 arg3)
+{
+  s32 temp_v0;
+  unsigned long new_var;
+  errno_x00126BF0 = 0;
+  temp_v0 = read_x00126BF0(arg1, arg2, arg3);
+  new_var = -1;
+  if ((temp_v0 == new_var) && (errno_x00126BF0 != 0))
+  {
+    *arg0 = errno_x00126BF0;
+  }
+  if (1)
+  {
+  }
+  return temp_v0;
+}
 void *memcpy_x00126C50( void *dst, const void *src, unsigned int n) __asm__("func_00125740");
 typedef struct {
     unsigned char *base;

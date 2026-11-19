@@ -240,7 +240,32 @@ void func_001659B0_x001659B0(void* arg0) {
 void func_00165A00(void) {
     D_00411E30 += 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_00165A18);
+s32 sprintf_x00165A18() __asm__("sprintf");
+extern s32 D_00411E34_x00165A18 __asm__("D_00411E34");
+extern s32 D_00463370_x00165A18 __asm__("D_00463370");
+void func_00165A18_x00165A18(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) __asm__("func_00165A18");
+void func_00165A18_x00165A18(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7)
+{
+  s32 var_a1;
+  s32 var_a3;
+  s8 *temp_v1;
+  var_a3 = arg3;
+  var_a1 = 0;
+  if (arg2 > 0)
+  {
+    do
+    {
+      var_a3 = -0x56;
+      temp_v1 = arg1 + var_a1;
+      var_a1 += 1;
+      *temp_v1 = -0x56;
+    }
+    while (var_a1 < arg2);
+  }
+  temp_v1 = &D_00463370_x00165A18;
+  sprintf_x00165A18(arg1, temp_v1, D_00411E34_x00165A18, var_a3, arg4, arg5, arg6, arg7);
+  D_00411E34_x00165A18 += 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_00165A88);
 void func_00165AB8_x00165AB8(u8 *arg0) __asm__("func_00165AB8");
 void func_00165AB8_x00165AB8(u8 *arg0)

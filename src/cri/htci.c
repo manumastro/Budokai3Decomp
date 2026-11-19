@@ -24,9 +24,34 @@ extern s32 D_00413D14;
 extern s32 D_00463AF8;
 
 INCLUDE_ASM("asm/nonmatchings/cri/htci", htCiGetFileSize);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001681F0);
+s32 func_00164D38_x001681F0(s32) __asm__("func_00164D38");
+s32 func_00164F18_x001681F0(s32, s32, s32) __asm__("func_00164F18");
+s32 func_001681F0_x001681F0(s32 arg0) __asm__("func_001681F0");
+s32 func_001681F0_x001681F0(s32 arg0)
+{
+  s32 temp_s0;
+  s32 new_var;
+  s32 temp_s0_2;
+  s32 var_v0;
+  func_00164D38_x001681F0(0x4700);
+  temp_s0 = func_00164F18_x001681F0(arg0, 0, 0);
+  func_00164D38_x001681F0(0x4701);
+  var_v0 = 0;
+  if (temp_s0 >= 0)
+  {
+    func_00164D38_x001681F0(0x4800);
+    temp_s0_2 = func_00164F18_x001681F0(arg0, 0, 2);
+    func_00164D38_x001681F0(0x4801);
+    var_v0 = ((new_var = temp_s0_2) >= 0) ? (temp_s0_2) : (0);
+  }
+  return var_v0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168278);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001682B0);
+s32 memset_x001682B0() __asm__("memset");
+void func_001682B0_x001682B0(s32 arg0) __asm__("func_001682B0");
+void func_001682B0_x001682B0(s32 arg0) {
+    memset_x001682B0(arg0, 0, 0x30);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/htci", htCiOpen);
 void func_00168458(u8 *arg0) {
     s32 temp_s0;
@@ -48,10 +73,28 @@ void func_00168458(u8 *arg0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168508);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001685A0);
+s32 func_00167C90_x001685A0() __asm__("func_00167C90");
+extern s32 D_00463B10_x001685A0 __asm__("D_00463B10");
+s32 func_001685A0_x001685A0(u8 *arg0) __asm__("func_001685A0");
+s32 func_001685A0_x001685A0(u8 *arg0) {
+    if (arg0 == NULL) {
+        func_00167C90_x001685A0(arg0, &D_00463B10_x001685A0);
+        return 0;
+    }
+    return *(s32 *)((u8 *)arg0 + 0x1C);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/htci", htCiReqRd);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168768);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168870);
+s32 func_00167C90_x00168870() __asm__("func_00167C90");
+extern s32 D_00463B10_x00168870 __asm__("D_00463B10");
+s8 func_00168870_x00168870(u8 *arg0) __asm__("func_00168870");
+s8 func_00168870_x00168870(u8 *arg0) {
+    if (arg0 == NULL) {
+        func_00167C90_x00168870(arg0, &D_00463B10_x00168870);
+        return 0;
+    }
+    return *(s8 *)((u8 *)arg0 + 2);
+}
 s32 func_001688A8(void) {
     return 0x800;
 }
@@ -59,7 +102,17 @@ INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001688B0);
 void func_00168900(void) {
     htCiGetFileSize();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168918);
+s64 func_00168918_x00168918(u8 *arg0) __asm__("func_00168918");
+s64 func_00168918_x00168918(u8 *arg0)
+{
+  u64 temp_a1;
+  u64 *new_var;
+  u64 temp_v0;
+  new_var = (u64 *) (((u8 *) arg0) - -8);
+  ;
+  temp_v0 = ((s64) (*((s32 *) (((u8 *) arg0) + 0x28)))) << 0xB;
+  return ((s64) (((*new_var) < temp_v0) ? (*new_var) : (temp_v0))) >> 0x20;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168938);
 s64 func_00168900_x00168968() __asm__("func_00168900");
 s64 func_00168968_x00168968(void) __asm__("func_00168968");
@@ -177,7 +230,43 @@ Sint32_x00168F08 func_00168F08_x00168F08(const Char8_x00168F08* flist, Sint8_x00
 }
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00169068);
 INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00169258);
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001693C0);
+s32 func_00168CD0_x001693C0(s32, s32) __asm__("func_00168CD0");
+extern s32 D_00413D00_x001693C0 __asm__("D_00413D00");
+void func_001693C0_x001693C0(u8 *arg0, s32 arg1, u8 *arg2, s32 arg3) __asm__("func_001693C0");
+void func_001693C0_x001693C0(u8 *arg0, s32 arg1, u8 *arg2, s32 arg3)
+{
+  s32 temp_v0;
+  u8 *new_var2;
+  s32 var_s0;
+  u8 *var_s1;
+  u8 *new_var;
+  var_s0 = 0;
+  if (arg3 > 0)
+  {
+    var_s1 = arg2;
+    new_var = (u8 *) (&D_00413D00_x001693C0);
+    loop_2:
+    temp_v0 = ((*((s32 *) (new_var + 0xC))) * var_s0) + var_s0;
+
+    var_s0 += 1;
+    if (func_00168CD0_x001693C0(arg1, arg2 + (((*((s32 *) (new_var + 8))) * 8) + temp_v0)) == 0)
+    {
+      *((s32 *) (((u8 *) arg0) + 0)) = (s32) (*((s32 *) (((u8 *) var_s1) + 0)));
+      *((s32 *) (((u8 *) arg0) + 4)) = (s32) (*((s32 *) (((u8 *) var_s1) + 4)));
+      return;
+    }
+    var_s1 += 8;
+    if (var_s0 >= arg3)
+    {
+      goto block_6;
+    }
+    goto loop_2;
+  }
+  block_6:
+  *((s32 *) (new_var2 = ((u8 *) arg0) + 4)) = 0;
+
+ do { *((s32 *) (((u8 *) arg0) + 0)) = 0; } while (0);
+}
 void func_00169488(void) {
     memset(&D_00413D00, 0, 0x10);
 }

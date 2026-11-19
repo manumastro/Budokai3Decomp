@@ -78,7 +78,9 @@ segments:
       - [0x001868, c, sdk/libdma]            # "libdma: sync timeout"
       - [0x0019C0, c, sdk/libdma/kfiv_libdma]
       - [0x001CD8, c, sdk/libdma_00101CD8]
-      - [0x0020B0, asm, sdk/libmpeg]           # MPEG decoder strings; calls sceIpuInit
+      - [0x0020B0, c, sdk/libmpeg]           # MPEG decoder strings; calls sceIpuInit
+      - [0x004B28, asm, sdk/libmpeg_00104B28]           # hand-written MMI code with an inline data table
+      - [0x004BE8, c, sdk/libmpeg_00104BE8]
       - [0x007BA0, c, sdk/libmpeg/kfiv_mpeg]
       - [0x0081F8, c, sdk/libmpeg_001081F8]
       - [0x0095C0, c, sdk/libmpeg/ico_init]
@@ -89,7 +91,7 @@ segments:
       - [0x00A828, c, sdk/libkernl/ico_glue]
       - [0x00AA60, c, sdk/libkernl_0010AA60]
       - [0x00ABD8, c, sdk/libkernl/ico_cache]
-      - [0x00AD30, asm, sdk/libkernl_0010AD30]
+      - [0x00AD30, c, sdk/libkernl_0010AD30]
       - [0x00AF60, c, sdk/libkernl/ico_thread]
       - [0x00B038, c, sdk/libkernl_0010B038]
       - [0x00B540, c, sdk/libkernl/ico_deci2]

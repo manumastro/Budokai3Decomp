@@ -84,7 +84,11 @@ void func_00170030(void) {
 void func_00170048(void) {
     func_0016FEB0(0x3E8);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/svm", func_00170060);
+extern volatile s32 D_004232FC_x00170060 __asm__("D_004232FC");
+s32 func_00170060_x00170060(void) __asm__("func_00170060");
+s32 func_00170060_x00170060(void) {
+    return D_004232FC_x00170060;
+}
 typedef unsigned int size_t_x00170070;
 typedef signed int Sint32_x00170070;
 typedef char Char8_x00170070;

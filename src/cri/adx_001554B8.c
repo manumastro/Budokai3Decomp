@@ -800,12 +800,24 @@ void func_00156048_x00156048() {
 void func_001560E8(void) {
     func_00156048();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", func_00156100);
+extern volatile s32 D_00404BE0_x00156100 __asm__("D_00404BE0");
+s32 func_00156100_x00156100(void) __asm__("func_00156100");
+s32 func_00156100_x00156100(void) {
+    return D_00404BE0_x00156100 != 0;
+}
 void func_00156118(s32 arg0) {
     D_00404C0C = arg0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", func_00156128);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", func_00156140);
+s32 ADXERR_CallErrFunc1_x00156128(s32) __asm__("ADXERR_CallErrFunc1");
+void func_00156128_x00156128(s32 arg0, s32 arg1) __asm__("func_00156128");
+void func_00156128_x00156128(s32 arg0, s32 arg1) {
+    ADXERR_CallErrFunc1_x00156128(arg1);
+}
+s32 ADXERR_CallErrFunc1_x00156140(s32) __asm__("ADXERR_CallErrFunc1");
+void func_00156140_x00156140(s32 arg0, s32 arg1) __asm__("func_00156140");
+void func_00156140_x00156140(s32 arg0, s32 arg1) {
+    ADXERR_CallErrFunc1_x00156140(arg1);
+}
 void func_00156158(void) {
     D_00404C14 += 1;
     func_0015F5F0();

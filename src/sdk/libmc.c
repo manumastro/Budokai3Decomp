@@ -15,7 +15,12 @@ s32 func_00119ED8(void) {
     }
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_00119F30);
+s32 iSignalSema_x00119F30(s32) __asm__("iSignalSema");
+extern s32 D_003EF950_x00119F30 __asm__("D_003EF950");
+void func_00119F30_x00119F30(void) __asm__("func_00119F30");
+void func_00119F30_x00119F30(void) {
+    iSignalSema_x00119F30(D_003EF950_x00119F30);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_00119F40);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A000);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A0C0);

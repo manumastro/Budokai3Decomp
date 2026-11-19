@@ -57,7 +57,15 @@ s32 func_00101F90_x00101F90(u32 *arg0, s32 arg1) {
     func_00101868_x00101F90();
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libdma_00101CD8", func_00101FC8);
+s32 func_001018D8_x00101FC8() __asm__("func_001018D8");
+s32 func_00101FC8_x00101FC8(u8 *arg0, u32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) __asm__("func_00101FC8");
+s32 func_00101FC8_x00101FC8(u8 *arg0, u32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+    if (arg2 == 1) {
+        return (u32) *(u32 *)((u8 *)arg0 + 0x10) < arg1;
+    }
+    func_001018D8_x00101FC8(arg0, arg1, arg3, arg3, arg4, arg5, arg6, arg7);
+    return 0;
+}
 int DIntr_x00102000(void) __asm__("DI");
 int EIntr_x00102000(void) __asm__("EI");
 typedef struct {

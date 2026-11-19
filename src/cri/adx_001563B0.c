@@ -1964,7 +1964,36 @@ void func_00156EA8_x00156EA8(void)
     D_003C81A0_x00156EA8 = 1;
     ExitDeleteThread_x00156EA8();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00156FE0);
+s32 ExitDeleteThread_x00156FE0() __asm__("ExitDeleteThread");
+s32 func_00157158_x00156FE0() __asm__("func_00157158");
+s32 func_001708A8_x00156FE0() __asm__("func_001708A8");
+extern volatile s32 D_00405CE4_x00156FE0 __asm__("D_00405CE4");
+extern volatile s32 D_00405CF8_x00156FE0 __asm__("D_00405CF8");
+extern volatile s64 D_00405D28_x00156FE0 __asm__("D_00405D28");
+extern volatile s64 D_00405DA8_x00156FE0 __asm__("D_00405DA8");
+extern volatile s64 D_00405DB0_x00156FE0 __asm__("D_00405DB0");
+void func_00156FE0_x00156FE0(void) __asm__("func_00156FE0");
+void func_00156FE0_x00156FE0(void) {
+    s32 temp_v0;
+
+    if (D_00405DA8_x00156FE0 == 0) {
+        do {
+            D_00405D28_x00156FE0 += 1;
+            D_00405CF8_x00156FE0 = 1;
+            temp_v0 = func_001708A8_x00156FE0();
+            D_00405CF8_x00156FE0 = 0;
+            if (D_00405CE4_x00156FE0 == 1) {
+                D_00405CE4_x00156FE0 = 0;
+                func_00157158_x00156FE0();
+            }
+            if (temp_v0 == 0) {
+                func_00157158_x00156FE0();
+            }
+        } while (D_00405DA8_x00156FE0 == 0);
+    }
+    D_00405DB0_x00156FE0 = 1;
+    ExitDeleteThread_x00156FE0();
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_001570B8);
 INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157108);
 void func_00157158(void) {
@@ -2239,12 +2268,126 @@ void func_001578F8_x001578F8() {
         SVM_Finish_x001578F8();
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157990);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157A60);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157B30);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157C00);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157CD0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157DA0);
+s32 ChangeThreadPriority_x00157990(s32, s32) __asm__("ChangeThreadPriority");
+s32 WakeupThread_x00157990(s32) __asm__("WakeupThread");
+s32 func_00157170_x00157990(s32) __asm__("func_00157170");
+extern volatile s32 D_00405D50_x00157990 __asm__("D_00405D50");
+extern volatile s64 D_00405DA8_x00157990 __asm__("D_00405DA8");
+extern volatile s64 D_00405DB0_x00157990 __asm__("D_00405DB0");
+void func_00157990_x00157990(void) __asm__("func_00157990");
+void func_00157990_x00157990(void) {
+    if (D_00405DB0_x00157990 == 0) {
+        do {
+            D_00405DA8_x00157990 = 1;
+            ChangeThreadPriority_x00157990(D_00405D50_x00157990, 1);
+            WakeupThread_x00157990(D_00405D50_x00157990);
+            func_00157170_x00157990(D_00405D50_x00157990);
+        } while (D_00405DB0_x00157990 == 0);
+    }
+    D_00405DB0_x00157990 = 0;
+    D_00405DA8_x00157990 = 0;
+    D_00405D50_x00157990 = 0;
+}
+s32 ChangeThreadPriority_x00157A60(s32, s32) __asm__("ChangeThreadPriority");
+s32 WakeupThread_x00157A60(s32) __asm__("WakeupThread");
+s32 func_00157170_x00157A60(s32) __asm__("func_00157170");
+extern volatile s32 D_00405D4C_x00157A60 __asm__("D_00405D4C");
+extern volatile s64 D_00405D98_x00157A60 __asm__("D_00405D98");
+extern volatile s64 D_00405DA0_x00157A60 __asm__("D_00405DA0");
+void func_00157A60_x00157A60(void) __asm__("func_00157A60");
+void func_00157A60_x00157A60(void) {
+    if (D_00405DA0_x00157A60 == 0) {
+        do {
+            D_00405D98_x00157A60 = 1;
+            ChangeThreadPriority_x00157A60(D_00405D4C_x00157A60, 1);
+            WakeupThread_x00157A60(D_00405D4C_x00157A60);
+            func_00157170_x00157A60(D_00405D4C_x00157A60);
+        } while (D_00405DA0_x00157A60 == 0);
+    }
+    D_00405DA0_x00157A60 = 0;
+    D_00405D98_x00157A60 = 0;
+    D_00405D4C_x00157A60 = 0;
+}
+s32 ChangeThreadPriority_x00157B30(s32, s32) __asm__("ChangeThreadPriority");
+s32 WakeupThread_x00157B30(s32) __asm__("WakeupThread");
+s32 func_00157170_x00157B30(s32) __asm__("func_00157170");
+extern volatile s32 D_00405D40_x00157B30 __asm__("D_00405D40");
+extern volatile s64 D_00405D78_x00157B30 __asm__("D_00405D78");
+extern volatile s64 D_00405D80_x00157B30 __asm__("D_00405D80");
+void func_00157B30_x00157B30(void) __asm__("func_00157B30");
+void func_00157B30_x00157B30(void) {
+    if (D_00405D80_x00157B30 == 0) {
+        do {
+            D_00405D78_x00157B30 = 1;
+            ChangeThreadPriority_x00157B30(D_00405D40_x00157B30, 1);
+            WakeupThread_x00157B30(D_00405D40_x00157B30);
+            func_00157170_x00157B30(D_00405D40_x00157B30);
+        } while (D_00405D80_x00157B30 == 0);
+    }
+    D_00405D80_x00157B30 = 0;
+    D_00405D78_x00157B30 = 0;
+    D_00405D40_x00157B30 = 0;
+}
+s32 ChangeThreadPriority_x00157C00(s32, s32) __asm__("ChangeThreadPriority");
+s32 WakeupThread_x00157C00(s32) __asm__("WakeupThread");
+s32 func_00157170_x00157C00(s32) __asm__("func_00157170");
+extern volatile s32 D_00405D44_x00157C00 __asm__("D_00405D44");
+extern volatile s64 D_00405D88_x00157C00 __asm__("D_00405D88");
+extern volatile s64 D_00405D90_x00157C00 __asm__("D_00405D90");
+void func_00157C00_x00157C00(void) __asm__("func_00157C00");
+void func_00157C00_x00157C00(void) {
+    if (D_00405D90_x00157C00 == 0) {
+        do {
+            D_00405D88_x00157C00 = 1;
+            ChangeThreadPriority_x00157C00(D_00405D44_x00157C00, 1);
+            WakeupThread_x00157C00(D_00405D44_x00157C00);
+            func_00157170_x00157C00(D_00405D44_x00157C00);
+        } while (D_00405D90_x00157C00 == 0);
+    }
+    D_00405D90_x00157C00 = 0;
+    D_00405D88_x00157C00 = 0;
+    D_00405D44_x00157C00 = 0;
+}
+s32 ChangeThreadPriority_x00157CD0(s32, s32) __asm__("ChangeThreadPriority");
+s32 WakeupThread_x00157CD0(s32) __asm__("WakeupThread");
+s32 func_00157170_x00157CD0(s32) __asm__("func_00157170");
+extern volatile s32 D_00405D3C_x00157CD0 __asm__("D_00405D3C");
+extern volatile s64 D_00405D68_x00157CD0 __asm__("D_00405D68");
+extern volatile s64 D_00405D70_x00157CD0 __asm__("D_00405D70");
+void func_00157CD0_x00157CD0(void) __asm__("func_00157CD0");
+void func_00157CD0_x00157CD0(void) {
+    if (D_00405D70_x00157CD0 == 0) {
+        do {
+            D_00405D68_x00157CD0 = 1;
+            ChangeThreadPriority_x00157CD0(D_00405D3C_x00157CD0, 1);
+            WakeupThread_x00157CD0(D_00405D3C_x00157CD0);
+            func_00157170_x00157CD0(D_00405D3C_x00157CD0);
+        } while (D_00405D70_x00157CD0 == 0);
+    }
+    D_00405D70_x00157CD0 = 0;
+    D_00405D68_x00157CD0 = 0;
+    D_00405D3C_x00157CD0 = 0;
+}
+s32 ChangeThreadPriority_x00157DA0(s32, s32) __asm__("ChangeThreadPriority");
+s32 WakeupThread_x00157DA0(s32) __asm__("WakeupThread");
+s32 func_00157170_x00157DA0(s32) __asm__("func_00157170");
+extern volatile s32 D_00405D38_x00157DA0 __asm__("D_00405D38");
+extern volatile s64 D_00405D58_x00157DA0 __asm__("D_00405D58");
+extern volatile s64 D_00405D60_x00157DA0 __asm__("D_00405D60");
+void func_00157DA0_x00157DA0(void) __asm__("func_00157DA0");
+void func_00157DA0_x00157DA0(void) {
+    if (D_00405D60_x00157DA0 == 0) {
+        do {
+            D_00405D58_x00157DA0 = 1;
+            ChangeThreadPriority_x00157DA0(D_00405D38_x00157DA0, 1);
+            WakeupThread_x00157DA0(D_00405D38_x00157DA0);
+            func_00157170_x00157DA0(D_00405D38_x00157DA0);
+        } while (D_00405D60_x00157DA0 == 0);
+    }
+    D_00405D60_x00157DA0 = 0;
+    D_00405D58_x00157DA0 = 0;
+    D_00405D38_x00157DA0 = 0;
+}
 void func_00157E70(void) {
     func_0016FF40();
 }
@@ -2366,7 +2509,13 @@ void func_00158090_x00158090() {
     }
     adxm_waiting_main_th_flag_x00158090 = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00158110);
+s32 func_00157158_x00158110() __asm__("func_00157158");
+extern volatile s32 D_00405CFC_x00158110 __asm__("D_00405CFC");
+void func_00158110_x00158110(void) __asm__("func_00158110");
+void func_00158110_x00158110(void) {
+    D_00405CFC_x00158110 = 1;
+    func_00157158_x00158110();
+}
 void func_00158138(void) {
     func_00158008();
     func_00158600();
@@ -2452,7 +2601,22 @@ void func_00158598(s32 arg0, s32 arg1) {
 void func_001585C0(void) {
     func_001705E0(7);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_001585D8);
+extern s32 D_0047E970_x001585D8 __asm__("D_0047E970");
+extern s32 D_0047E978_x001585D8 __asm__("D_0047E978");
+void func_001585D8_x001585D8(s32 arg0, int arg1, s32 arg2, int arg3) __asm__("func_001585D8");
+void func_001585D8_x001585D8(s32 arg0, int arg1, s32 arg2, int arg3)
+{
+  u8 *new_var;
+  *((s32 *) (((u8 *) (&D_0047E970_x001585D8)) + 0)) = arg0;
+  *((s32 *) (((u8 *) (&D_0047E970_x001585D8)) + 4)) = arg1;
+  new_var = (u8 *) (&D_0047E978_x001585D8);
+  *((s32 *) (new_var + 4)) = arg3;
+ if (1) { do {
+    }
+    while (0);
+  }
+  *((s32 *) (((u8 *) (&D_0047E978_x001585D8)) + 0)) = arg2;
+}
 extern s32 D_0047E970_x00158600 __asm__("D_0047E970");
 void func_00158600_x00158600(void) __asm__("func_00158600");
 void func_00158600_x00158600(void) {

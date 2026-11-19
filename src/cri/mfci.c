@@ -82,8 +82,29 @@ loop_2:
     }
     return var_a3;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016A9E0);
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AA00);
+s32 memset_x0016A9E0() __asm__("memset");
+void func_0016A9E0_x0016A9E0(s32 arg0) __asm__("func_0016A9E0");
+void func_0016A9E0_x0016A9E0(s32 arg0) {
+    memset_x0016A9E0(arg0, 0, 0x38);
+}
+s32 func_0016A968_x0016AA00(s32) __asm__("func_0016A968");
+void func_0016AA00_x0016AA00(u8 *arg0) __asm__("func_0016AA00");
+void func_0016AA00_x0016AA00(u8 *arg0)
+{
+  s32 temp_v0;
+  s32 temp_v1;
+  *((s32 *) (((u8 *) arg0) + 4)) = 0x800;
+  temp_v0 = func_0016A968_x0016AA00(arg0 + 0x1C);
+  temp_v1 = *((s32 *) (((u8 *) arg0) + 4));
+  *((s32 *) (((u8 *) arg0) + 8)) = temp_v0;
+  *((s32 *) (((u8 *) arg0) + 0xC)) = (s32) (((s32) ((temp_v0 + temp_v1) - 1)) / temp_v1);
+  *((s8 *) (((u8 *) arg0) + 0)) = 1;
+  *((s32 *) (((u8 *) arg0) + 0x10)) = 0;
+  *((s32 *) (((u8 *) arg0) + 0x18)) = 0;
+  *((s32 *) (((u8 *) arg0) + 0x14)) = 0;
+  *((s8 *) (((u8 *) arg0) + 1)) = 0;
+  *((s8 *) (((u8 *) arg0) + 0)) = 1;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", mfCiOpen);
 s32 func_0016A9E0_x0016AB10(s8 *) __asm__("func_0016A9E0");
 s32 func_0016ADD8_x0016AB10() __asm__("func_0016ADD8");
@@ -101,14 +122,115 @@ void func_0016AB10_x0016AB10(s8 *arg0) {
 block_3:
     return;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AB58);
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AC18);
+s32 func_0016A768_x0016AB58() __asm__("func_0016A768");
+s32 func_0016A780_x0016AB58() __asm__("func_0016A780");
+s32 func_0016A7B0_x0016AB58() __asm__("func_0016A7B0");
+extern s32 D_00464048_x0016AB58 __asm__("D_00464048");
+s32 func_0016AB58_x0016AB58(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_0016AB58");
+s32 func_0016AB58_x0016AB58(u8 *arg0, s32 arg1, s32 arg2)
+{
+  s32 temp_a0;
+  s32 temp_v0;
+  s32 temp_v0_2;
+  if (arg0 != ((void *) 0))
+  {
+    goto block_2;
+  }
+  func_0016A7B0_x0016AB58(arg0, &D_00464048_x0016AB58);
+  return 0;
+  block_2:
+  func_0016A768_x0016AB58();
+
+  if (arg2 != 0)
+  {
+    goto block_4;
+  }
+  *((s32 *) (((u8 *) arg0) + 0x10)) = arg1;
+  goto block_8;
+  block_4:
+  if (arg2 != 2)
+  {
+    goto block_6;
+  }
+
+  *((s32 *) (((u8 *) arg0) + 0x10)) = (s32) ((*((s32 *) (((u8 *) arg0) + 0xC))) + arg1);
+  goto block_9;
+  block_6:
+  if (arg2 != 1)
+  {
+    goto block_9;
+  }
+
+  *((s32 *) (((u8 *) arg0) + 0x10)) = (s32) ((*((s32 *) (((u8 *) arg0) + 0x10))) + arg1);
+  goto block_9;
+  block_8:
+  block_9:
+  temp_v0 = *((s32 *) (((u8 *) arg0) + 0x10));
+
+
+  temp_v0_2 = (temp_v0 >= (*((s32 *) (((u8 *) arg0) + 0xC)))) ? (*((s32 *) (((u8 *) arg0) + 0xC))) : (temp_v0);
+  temp_a0 = 0;
+  temp_a0 = temp_v0_2 < temp_a0;
+  *((s32 *) (((u8 *) arg0) + 0x10)) = (s32) (((float) (temp_a0 != 0)) ? (0) : (temp_v0_2));
+  func_0016A780_x0016AB58(temp_a0);
+  return *((s32 *) (((u8 *) arg0) + 0x10));
+}
+s32 func_0016A7B0_x0016AC18() __asm__("func_0016A7B0");
+extern s32 D_00464068_x0016AC18 __asm__("D_00464068");
+s32 func_0016AC18_x0016AC18(u8 *arg0) __asm__("func_0016AC18");
+s32 func_0016AC18_x0016AC18(u8 *arg0) {
+    if (arg0 == NULL) {
+        func_0016A7B0_x0016AC18(arg0, &D_00464068_x0016AC18);
+        return 0;
+    }
+    return *(s32 *)((u8 *)arg0 + 0x10);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", mfCiReqRd);
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016ADD8);
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AE28);
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AE60);
+s32 func_0016A768_x0016ADD8() __asm__("func_0016A768");
+s32 func_0016A780_x0016ADD8() __asm__("func_0016A780");
+s32 func_0016A7B0_x0016ADD8() __asm__("func_0016A7B0");
+extern s32 D_004640F0_x0016ADD8 __asm__("D_004640F0");
+void func_0016ADD8_x0016ADD8(u8 *arg0) __asm__("func_0016ADD8");
+void func_0016ADD8_x0016ADD8(u8 *arg0) {
+    if (arg0 == NULL) {
+        func_0016A7B0_x0016ADD8(arg0, &D_004640F0_x0016ADD8);
+        return;
+    }
+    func_0016A768_x0016ADD8();
+    *(s8 *)((u8 *)arg0 + 1) = 0;
+    func_0016A780_x0016ADD8();
+}
+s32 func_0016A7B0_x0016AE28() __asm__("func_0016A7B0");
+extern s32 D_004640F0_x0016AE28 __asm__("D_004640F0");
+s8 func_0016AE28_x0016AE28(u8 *arg0) __asm__("func_0016AE28");
+s8 func_0016AE28_x0016AE28(u8 *arg0) {
+    if (arg0 == NULL) {
+        func_0016A7B0_x0016AE28(arg0, &D_004640F0_x0016AE28);
+        return 0;
+    }
+    return *(s8 *)((u8 *)arg0 + 1);
+}
+s32 func_0016A7B0_x0016AE60() __asm__("func_0016A7B0");
+extern s32 D_00464108_x0016AE60 __asm__("D_00464108");
+s32 func_0016AE60_x0016AE60(u8 *arg0) __asm__("func_0016AE60");
+s32 func_0016AE60_x0016AE60(u8 *arg0) {
+    if (arg0 == NULL) {
+        func_0016A7B0_x0016AE60(arg0, &D_00464108_x0016AE60);
+        return 0;
+    }
+    return *(s32 *)((u8 *)arg0 + 4);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AE98);
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016AF18);
+s32 func_0016A7B0_x0016AF18() __asm__("func_0016A7B0");
+extern s32 D_004640F0_x0016AF18 __asm__("D_004640F0");
+s32 func_0016AF18_x0016AF18(u8 *arg0) __asm__("func_0016AF18");
+s32 func_0016AF18_x0016AF18(u8 *arg0) {
+    if (arg0 == NULL) {
+        func_0016A7B0_x0016AF18(arg0, &D_004640F0_x0016AF18);
+        return 0;
+    }
+    return *(s32 *)((u8 *)arg0 + 0x14);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mfci", mfCiOpenEntry);
 void func_0016AFD8(void) {
     func_0016FF40();
@@ -177,7 +299,11 @@ void func_0016B290(s32 arg0) {
     func_0016B2C0(arg0);
     func_0016AFF0();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016B2C0);
+s32 memset_x0016B2C0() __asm__("memset");
+void func_0016B2C0_x0016B2C0(s32 arg0) __asm__("func_0016B2C0");
+void func_0016B2C0_x0016B2C0(s32 arg0) {
+    memset_x0016B2C0(arg0, 0, 0x2C);
+}
 void func_0016B2E0(s32 arg0) {
     func_0016AFD8();
     func_0016B310(arg0);
@@ -274,4 +400,8 @@ void func_0016BBB0_x0016BBB0(u8 *arg0) __asm__("func_0016BBB0");
 void func_0016BBB0_x0016BBB0(u8 *arg0) {
     func_0016B820_x0016BBB0(*(s32 *)((u8 *)arg0 + 0xE8));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016BBC8);
+s32 ADXERR_CallErrFunc1_x0016BBC8(s32) __asm__("ADXERR_CallErrFunc1");
+void func_0016BBC8_x0016BBC8(s32 arg0, s32 arg1) __asm__("func_0016BBC8");
+void func_0016BBC8_x0016BBC8(s32 arg0, s32 arg1) {
+    ADXERR_CallErrFunc1_x0016BBC8(arg1);
+}
