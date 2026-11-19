@@ -771,53 +771,50 @@ extern void func_0022CD00(s32);
 // (`move a0,zero` of func_00228430(0)) into the delay slot of the bltz that guards it; the original leaves that slot a nop and puts the move
 // in the jal slot. Micro tests (scratch file, same flags) that did NOT change it: K&R/varargs/pointer/s16 prototypes of the callee, return type,
 // the mode kept in a0 or a separate local, switch instead of the if chain, do/while(0), `if (x < 0) {} else`, `x > -1`, a local for the field,
-// `#pragma peephole/scheduling off`, optimization_level 3, an inline helper (changes the frame). The permuter (900 s) reached 6 of 8 only.
-#if 0
-void func_0029F350(u8 *s1, u8 *s0) {
-    s32 s2;
-    s32 a18;
-    s32 a1c;
-    s32 mode;
-
-    mode = *(s32 *)(s1 + 0x18);
-    if (mode == 2) {
-    } else if (mode == 1) {
-    } else if (mode == 0) {
-        return;
-    }
-    if (*(s32 *)(s1 + 4) >= 0) {
-        func_00228430(0);
-        func_00227A30(s0);
-        s2 = *(s32 *)(s0 + 0x20);
-        a1c = *(s32 *)(s0 + 0x1C);
-        a18 = *(s32 *)(s0 + 0x18);
-        D_00470704 = a18;
-        D_0047070C = a1c;
-        D_00470708 = s2;
-        amModel_SetCurrent(a18, a1c);
-        D_00470238 = s2;
-        func_0022C060(1.0f, *(s32 *)(s0 + 0x10));
-        func_00228410();
-        func_0022CD00(*(s32 *)(s0 + 0x10));
-    }
-    if (*(s32 *)s1 >= 0) {
-        func_00228430(0);
-        func_00227A30(s0);
-        s2 = *(s32 *)(s0 + 0x20);
-        a1c = *(s32 *)(s0 + 0x1C);
-        a18 = *(s32 *)(s0 + 0x18);
-        D_00470704 = a18;
-        D_0047070C = a1c;
-        D_00470708 = s2;
-        amModel_SetCurrent(a18, a1c);
-        D_00470238 = s2;
-        func_0022C060(1.0f, *(s32 *)(s1 + 0x1C));
-        func_00228410();
-        func_0022CD00(*(s32 *)(s1 + 0x1C));
+void func_0029F350(u8 *arg0, u8 *arg1) {
+    s32 temp_a0;
+    s32 temp_a1;
+    s32 temp_s2;
+    temp_a0 = *(s32 *)((u8 *)arg0 + 0x18);
+    switch (temp_a0) {
+        case 0:
+            break;
+        case 1:
+        default:
+        case 2:
+            if (*(s32 *)((u8 *)arg0 + 4) >= 0) {
+                func_00228430(0);
+                func_00227A30(arg1);
+                temp_s2 = *(s32 *)((u8 *)arg1 + 0x20);
+                temp_a1 = *(s32 *)((u8 *)arg1 + 0x1C);
+                temp_a0 = *(s32 *)((u8 *)arg1 + 0x18);
+                D_00470704 = temp_a0;
+                D_0047070C = temp_a1;
+                D_00470708 = temp_s2;
+                amModel_SetCurrent(temp_a0, temp_a1);
+                D_00470238 = temp_s2;
+                func_0022C060(1.0f, *(s32 *)((u8 *)arg1 + 0x10));
+                func_00228410();
+                func_0022CD00(*(s32 *)((s32)arg1 + 0x10));
+            }
+            if (*(s32 *)((u8 *)arg0 + 0) >= 0) {
+                func_00228430(0);
+                func_00227A30(arg1);
+                temp_s2 = *(s32 *)((u8 *)arg1 + 0x20);
+                temp_a1 = *(s32 *)((u8 *)arg1 + 0x1C);
+                temp_a0 = *(s32 *)((u8 *)arg1 + 0x18);
+                D_00470704 = temp_a0;
+                D_0047070C = temp_a1;
+                D_00470708 = temp_s2;
+                amModel_SetCurrent(temp_a0, temp_a1);
+                D_00470238 = temp_s2;
+                func_0022C060(1.0f, *(s32 *)((u8 *)arg0 + 0x1C));
+                func_00228410();
+                func_0022CD00(*(s32 *)((s32)arg0 + 0x1C));
+            }
+            break;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_disp", func_0029F350);
 extern void amAdx_Stop(s32);
 extern void amAdx_SetVolume(s32, f32);
 extern void amAdx_Pause(s32, s32);
