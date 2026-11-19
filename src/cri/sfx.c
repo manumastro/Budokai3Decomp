@@ -928,10 +928,28 @@ void func_001A01A0_x001A01A0(SfxZHn_x001A01A0 *zhn, int lo, int hi, unsigned int
     for (i = 240; i < 256; i++)
         tbl[i] = 0x7FFFFFFF;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A02E0);
+void func_0019FFF0_x001A02E0(s32, s32, s32 *, s32 *) __asm__("func_0019FFF0");
+void func_001A0330_x001A02E0(s32, s32, s32, s16 *) __asm__("func_001A0330");
+void func_001A02E0_x001A02E0(s32 a0, s32 a1, s16 *out) __asm__("func_001A02E0");
+void func_001A02E0_x001A02E0(s32 a0, s32 a1, s16 *out)
+{
+    s32 x, y;
+    *out = 0;
+    func_0019FFF0_x001A02E0(a0, a1, &x, &y);
+    func_001A0330_x001A02E0(a0, x, y, out);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0330);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A03B8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0588);
+void func_0019FFF0_x001A0588(s32, s32, s32 *, s32 *) __asm__("func_0019FFF0");
+void func_001A05D8_x001A0588(s32, s32, s32, s32 *) __asm__("func_001A05D8");
+void func_001A0588_x001A0588(s32 a0, s32 a1, s32 *out) __asm__("func_001A0588");
+void func_001A0588_x001A0588(s32 a0, s32 a1, s32 *out)
+{
+    s32 x, y;
+    *out = 0;
+    func_0019FFF0_x001A0588(a0, a1, &x, &y);
+    func_001A05D8_x001A0588(a0, x, y, out);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A05D8);
 typedef struct SfxChunk_x001A0660 {
     int valid;

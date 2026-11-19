@@ -1544,7 +1544,26 @@ void func_001739B0_x001739B0(SndObj_x001739B0 *o)
         o->state = 2;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173A00);
+extern s32 D_00465240_x00173A00[] __asm__("D_00465240");
+extern s32 D_00465250_x00173A00[] __asm__("D_00465250");
+void func_00173A00_x00173A00(s32 *p) __asm__("func_00173A00");
+void func_00173A00_x00173A00(s32 *p)
+{
+    s32 v;
+    s32 idx;
+
+    if (p[70] == 3) {
+        p[265] = 0;
+        p[264] = 0;
+    } else {
+        v = p[265];
+        p[265] = v + 1;
+        p[264] = v - (v / 2) * 2;
+    }
+    idx = p[69];
+    p[219] = D_00465240_x00173A00[idx];
+    p[223] = D_00465250_x00173A00[idx];
+}
 void func_00173A70(void) {
 
 }
@@ -2837,7 +2856,23 @@ void func_001788D0(void) {
 
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001788D8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178910);
+typedef struct { u8 pad[0x40]; s32 n; u8 *p; } Lib_x00178910;
+extern Lib_x00178910 D_00481490_x00178910 __asm__("D_00481490");
+s32 *func_00178910_x00178910(void) __asm__("func_00178910");
+s32 *func_00178910_x00178910(void)
+{
+    s32 i;
+    Lib_x00178910 *l = &D_00481490_x00178910;
+    s32 n = l->n;
+    u8 *p = l->p;
+    for (i = 0; i < n; i++) {
+        if (*(s32 *)p == 1) {
+            return (s32 *)p;
+        }
+        p += 0x6E0;
+    }
+    return 0;
+}
 struct SfdSj_x00178960;
 typedef struct M2vErrInf_x00178960 {
     int (*func)(void *obj);
@@ -11276,7 +11311,19 @@ int func_0017E198_x0017E198(MpvHn_x0017E198 *mpv, int mask, SfdSj_x0017E198 *sj)
     } while (MPV_MoveChunk_x0017E198(sj, 1, 4) == 4);
     return result;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E268);
+typedef s32 (*CriVFunc_x0017E268)();
+typedef struct CriObj_x0017E268 { CriVFunc_x0017E268 *vtbl; } CriObj_x0017E268;
+s32 func_0017E268_x0017E268(CriObj_x0017E268 *obj, s32 a1, s32 a2) __asm__("func_0017E268");
+s32 func_0017E268_x0017E268(CriObj_x0017E268 *obj, s32 a1, s32 a2)
+{
+    s32 buf[2];
+    s32 flag;
+
+    flag = (a1 == 0);
+    obj->vtbl[6](obj, a1, a2, buf);
+    obj->vtbl[8](obj, flag, buf);
+    return buf[1];
+}
 s32 *func_0017E2C0(void) {
     return &D_00465390;
 }

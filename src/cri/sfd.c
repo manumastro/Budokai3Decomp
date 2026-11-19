@@ -5994,7 +5994,19 @@ Sint32_x0018AD50 func_0018AD50_x0018AD50(SJ_x0018AD50 sj, Sint32_x0018AD50 type,
     ((sj)->vtbl->UngetChunk((sj), (type), (ck1)));
     return ndata;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018AE48);
+typedef s32 (*CriVFn_x0018AE48)(void *self, s32 a1, s32 a2, s32 *out);
+typedef s32 (*CriVFn3_x0018AE48)(void *self, s32 a1, s32 *out);
+typedef struct CriObj_x0018AE48 { CriVFn_x0018AE48 *vtbl; } CriObj_x0018AE48;
+s32 func_0018AE48_x0018AE48(CriObj_x0018AE48 *obj, s32 a1, s32 a2) __asm__("func_0018AE48");
+s32 func_0018AE48_x0018AE48(CriObj_x0018AE48 *obj, s32 a1, s32 a2) {
+    s32 buf[4];
+    s32 flag;
+
+    flag = a1 == 0;
+    obj->vtbl[6](obj, a1, a2, buf);
+    ((CriVFn3_x0018AE48)obj->vtbl[8])(obj, flag, buf);
+    return buf[1];
+}
 s32 func_0018D908_x0018AEA0(void *) __asm__("func_0018D908");
 s32 func_0018D920_x0018AEA0(void *) __asm__("func_0018D920");
 void func_0018AEA0_x0018AEA0(s32 arg0, s32 arg1, s32 *arg2, s32 *arg3) __asm__("func_0018AEA0");
@@ -22175,7 +22187,18 @@ int func_0018FB58_x0018FB58(void *arg0, int *arg1) {
     *arg1 = fn_12_2ABF0_x0018FB58(arg0);
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FBC8);
+s32 func_0018D870_x0018FBC8(s32) __asm__("func_0018D870");
+void func_0018D650_x0018FBC8(s32, s32) __asm__("func_0018D650");
+s32 func_00194AB0_x0018FBC8(s32) __asm__("func_00194AB0");
+s32 func_0018FBC8_x0018FBC8(s32 a0) __asm__("func_0018FBC8");
+s32 func_0018FBC8_x0018FBC8(s32 a0)
+{
+    if (func_0018D870_x0018FBC8(a0) != 0) {
+        func_0018D650_x0018FBC8(0, 0xFF000183);
+        return 0;
+    }
+    return func_00194AB0_x0018FBC8(a0);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FC18);
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FCC0);
 s32 func_0017E368_x0018FE00(s32, s32 *) __asm__("func_0017E368");

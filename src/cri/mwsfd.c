@@ -4286,7 +4286,32 @@ s32 func_00181330_x00181330(unsigned int arg0)
   }
   return var_v1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwl_convPtypeFromSFD);
+void func_001870E8_x00181370(s32 *) __asm__("func_001870E8");
+extern s32 D_00465AC0_x00181370 __asm__("D_00465AC0");
+s32 mwl_convPtypeFromSFD_x00181370(u32 t) __asm__("mwl_convPtypeFromSFD");
+s32 mwl_convPtypeFromSFD_x00181370(u32 t)
+{
+    s32 r;
+    switch (t) {
+    case 1:
+        r = 1;
+        break;
+    case 2:
+        r = 2;
+        break;
+    case 3:
+        r = 3;
+        break;
+    case 4:
+        r = 4;
+        break;
+    default:
+        func_001870E8_x00181370(&D_00465AC0_x00181370);
+        r = 1;
+        break;
+    }
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001813D8);
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181480);
 typedef struct SfdSj_x001814C8 SfdSj_x001814C8;
@@ -4635,7 +4660,32 @@ s32 func_001816F0_x001816F0(u32 a)
     }
     return r;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwl_convPtypeToSFD);
+void func_001870E8_x00181730____(s32 *) __asm__("func_001870E8");
+extern s32 D_00465B20_x00181730____ __asm__("D_00465B20");
+s32 mwl_convPtypeToSFD_x00181730____(u32 t) __asm__("mwl_convPtypeToSFD");
+s32 mwl_convPtypeToSFD_x00181730____(u32 t)
+{
+    s32 r;
+    switch (t) {
+    case 1:
+        r = 1;
+        break;
+    case 2:
+        r = 2;
+        break;
+    case 3:
+        r = 3;
+        break;
+    case 4:
+        r = 4;
+        break;
+    default:
+        func_001870E8_x00181730____(&D_00465B20_x00181730____);
+        r = 1;
+        break;
+    }
+    return r;
+}
 struct SfdPlanes_x00181798;
 typedef struct SfdPlanes_x00181798 {
     char *luma;
