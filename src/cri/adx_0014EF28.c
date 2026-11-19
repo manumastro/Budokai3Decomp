@@ -5107,7 +5107,12 @@ s32 func_00154738_x00154738(s32 a0, s32 a1, s32 a2, s32 a3)
 {
     return func_001547F8_x00154738(a0, a1, a2, a3, (s32)D_00402B20_x00154738 & ~0x3F, 0x800);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154760);
+s32 func_00154830_x00154760(s32, s32, s32, s32, s32, s32) __asm__("func_00154830");
+extern u8 D_00402B20_x00154760[] __asm__("D_00402B20");
+s32 func_00154760_x00154760(s32 a0, s32 a1, s32 a2, s32 a3) __asm__("func_00154760");
+s32 func_00154760_x00154760(s32 a0, s32 a1, s32 a2, s32 a3) {
+    return func_00154830_x00154760(a0, a1, a2, a3, (s32)D_00402B20_x00154760 & ~0x3F, 0x800);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00154788);
 typedef char Sint8_x001547B0;
 typedef unsigned short Uint16_x001547B0;

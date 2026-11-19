@@ -1551,7 +1551,23 @@ void func_0016C8A8_x0016C8A8(void)
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C910);
+extern s32 D_0041A0D0_x0016C910 __asm__("D_0041A0D0");
+extern s32 D_0041A0D8_x0016C910 __asm__("D_0041A0D8");
+extern s32 D_0041A100_x0016C910 __asm__("D_0041A100");
+void func_0016C910_x0016C910(u8 *arg0, int arg1) __asm__("func_0016C910");
+void func_0016C910_x0016C910(u8 *arg0, int arg1)
+{
+  s32 v;
+
+  if (D_0041A0D8_x0016C910 == 1 && D_0041A0D0_x0016C910 <= 0)
+    return;
+  v = *(s32 *) (arg0 + 0x54);
+  if (v == arg1)
+    return;
+  if (D_0041A100_x0016C910 == 0 && arg1 == 1)
+    return;
+  *(s32 *) (arg0 + 0x54) = (s8) arg1;
+}
 extern int D_003E0710_x0016C968 __asm__("D_0041A0D8");
 extern int D_003E0708_x0016C968 __asm__("D_0041A0D0");
 extern int D_003E0754_x0016C968 __asm__("D_0041A10C");

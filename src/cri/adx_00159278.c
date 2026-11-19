@@ -17409,7 +17409,23 @@ s32 ADXT_GetNumSmpl_x0015ED68(u8 *arg0)
   return func_00159E28_x0015ED68(*new_var2);
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", ADXT_GetSfreq);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", ADXT_GetNumChan);
+s32 ADXERR_CallErrFunc1_x0015EE08(s32 *) __asm__("ADXERR_CallErrFunc1");
+s32 func_00159DC8_x0015EE08(s32) __asm__("func_00159DC8");
+extern s32 D_004619E8_x0015EE08 __asm__("D_004619E8");
+s32 ADXT_GetNumChan_x0015EE08(u8 *arg0) __asm__("ADXT_GetNumChan");
+s32 ADXT_GetNumChan_x0015EE08(u8 *arg0)
+{
+  if (arg0 == ((void *) 0))
+  {
+    ADXERR_CallErrFunc1_x0015EE08(&D_004619E8_x0015EE08);
+    return -1;
+  }
+  if ((*((s8 *) (((u8 *) arg0) + 1))) >= 2)
+  {
+    return func_00159DC8_x0015EE08(*((s32 *) (((u8 *) arg0) + 4)));
+  }
+  return 0;
+}
 s32 ADXERR_CallErrFunc1_x0015EE58(s32 *) __asm__("ADXERR_CallErrFunc1");
 s32 func_0015A030_x0015EE58(s32) __asm__("func_0015A030");
 extern s32 D_00461A18_x0015EE58 __asm__("D_00461A18");

@@ -419,7 +419,13 @@ void func_00106888_x00106888(s32 arg0) {
     func_00109738_x00106888(arg0, &D_0045D0E8_x00106888);
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00106898);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00106A68);
+s32 func_00104440_x00106A68(s32) __asm__("func_00104440");
+void func_00106A68_x00106A68(s32 a0) __asm__("func_00106A68");
+void func_00106A68_x00106A68(s32 a0) {
+    if ((*(volatile u32 *)0x10002010 & 0x80004000) == 0x80000000) {
+        func_00104440_x00106A68(a0);
+    }
+}
 s32 func_001048A0_x00106AA0() __asm__("func_001048A0");
 void func_00106AA0_x00106AA0(s32 arg0, s32 arg1) __asm__("func_00106AA0");
 void func_00106AA0_x00106AA0(s32 arg0, s32 arg1) {
@@ -490,7 +496,18 @@ void func_00106C00_x00106C00(s32 a0) __asm__("func_00106C00");
 void func_00106C00_x00106C00(s32 a0) {
     func_00106AA0_x00106C00(a0, 32);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00106C08);
+void func_00106A68_x00106C08(s32) __asm__("func_00106A68");
+void func_00106AA0_x00106C08(s32, s32) __asm__("func_00106AA0");
+void func_00106C08_x00106C08(s32 a0) __asm__("func_00106C08");
+void func_00106C08_x00106C08(s32 a0)
+{
+    s32 n;
+    func_00106A68_x00106C08(a0);
+    n = -(*(volatile u32 *)0x10002020 & 7) & 7;
+    if (n != 0) {
+        func_00106AA0_x00106C08(a0, n);
+    }
+}
 s32 func_00104728_x00106C58() __asm__("func_00104728");
 void func_00106C58_x00106C58(u8 *arg0) __asm__("func_00106C58");
 void func_00106C58_x00106C58(u8 *arg0) {

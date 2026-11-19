@@ -50,7 +50,15 @@ int func_0010CE08_x0010CE08(void *cb, void *state, int *pn, int fmt, ...) {
     *pn = *pn - n;
     return n;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010BE70", func_0010CE58);
+s32 func_0010C048_x0010CE58(void *, void *, s32, s32, s32) __asm__("func_0010C048");
+void func_0010CD60_x0010CE58() __asm__("func_0010CD60");
+s32 func_0010CE58_x0010CE58(s32 a0, s32 a1, s32 a2, s32 a3) __asm__("func_0010CE58");
+s32 func_0010CE58_x0010CE58(s32 a0, s32 a1, s32 a2, s32 a3)
+{
+    s32 buf[4];
+    buf[0] = a0;
+    return func_0010C048_x0010CE58(func_0010CD60_x0010CE58, buf, a1, a2, a3);
+}
 extern int _sceSnprintf_x0010CE90(void *cb, void *state, int a, int b, void *ap) __asm__("func_0010C048");
 extern int func_003B1DE8_x0010CE90() __asm__("func_0010CD60");
 typedef void *va_list_x0010CE90;

@@ -508,7 +508,14 @@ void func_001048A0_x001048A0(D_x001048A0 *d, unsigned int n)
     d->x848 = _sceMpegWaitIpuIdle64_x001048A0(d);
     d->x84C = 32;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104938);
+void func_00104440_x00104938(s32) __asm__("func_00104440");
+void func_00104938_x00104938(s32 a0) __asm__("func_00104938");
+void func_00104938_x00104938(s32 a0)
+{
+    if ((*(volatile u32 *)0x10002010 & 0x80004000) == 0x80000000) {
+        func_00104440_x00104938(a0);
+    }
+}
 s32 func_001048A0_x00104970() __asm__("func_001048A0");
 void func_00104970_x00104970(s32 arg0, s32 arg1) __asm__("func_00104970");
 void func_00104970_x00104970(s32 arg0, s32 arg1) {

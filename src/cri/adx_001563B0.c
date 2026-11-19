@@ -2615,8 +2615,38 @@ void func_00156FE0_x00156FE0(void) {
     D_00405DB0_x00156FE0 = 1;
     ExitDeleteThread_x00156FE0();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_001570B8);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001563B0", func_00157108);
+typedef signed int s32_x001570B8;
+s32_x001570B8 iReferThreadStatus_x001570B8(s32_x001570B8 id, s32_x001570B8 *status) __asm__("iReferThreadStatus");
+s32_x001570B8 iWakeupThread_x001570B8(s32_x001570B8 id) __asm__("iWakeupThread");
+void func_001570B8_x001570B8(s32_x001570B8 a0) __asm__("func_001570B8");
+void func_001570B8_x001570B8(s32_x001570B8 a0)
+{
+    s32_x001570B8 status[12];
+
+    if (a0 == 0) {
+        return;
+    }
+    iReferThreadStatus_x001570B8(a0, status);
+    if (status[0] == 4 || status[0] == 12) {
+        iWakeupThread_x001570B8(a0);
+    }
+}
+typedef signed int s32_x00157108;
+s32_x00157108 ReferThreadStatus_x00157108(s32_x00157108 id, s32_x00157108 *status) __asm__("ReferThreadStatus");
+s32_x00157108 WakeupThread_x00157108(s32_x00157108 id) __asm__("WakeupThread");
+void func_00157108_x00157108(s32_x00157108 a0) __asm__("func_00157108");
+void func_00157108_x00157108(s32_x00157108 a0)
+{
+    s32_x00157108 status[12];
+
+    if (a0 == 0) {
+        return;
+    }
+    ReferThreadStatus_x00157108(a0, status);
+    if (status[0] == 4 || status[0] == 12) {
+        WakeupThread_x00157108(a0);
+    }
+}
 void func_00157158(void) {
     SleepThread();
 }

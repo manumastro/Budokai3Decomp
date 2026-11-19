@@ -4615,7 +4615,26 @@ void func_00181628_x00181628(SfdFrmInf_x00181628 *src, MwsfdFrmInf_x00181628 *ds
     dst->f40 = (void *)src->f60;
     dst->f44 = (void *)src->f44;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001816F0);
+s32 func_001816F0_x001816F0(u32 a) __asm__("func_001816F0");
+s32 func_001816F0_x001816F0(u32 a)
+{
+    s32 r;
+    switch (a) {
+    case 1:
+        r = 1;
+        break;
+    case 2:
+        r = 2;
+        break;
+    case 3:
+        r = 3;
+        break;
+    default:
+        r = 3;
+        break;
+    }
+    return r;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwl_convPtypeToSFD);
 struct SfdPlanes_x00181798;
 typedef struct SfdPlanes_x00181798 {
@@ -7861,7 +7880,18 @@ void func_00183308_x00183308(void) {
     func_00183500_x00183308(8);
     func_00183500_x00183308(9);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00183328);
+extern s32 D_004268A4_x00183328 __asm__("D_004268A4");
+void func_001833A0_x00183328(void) __asm__("func_001833A0");
+void func_00183368_x00183328(void) __asm__("func_00183368");
+void func_00183328_x00183328(void) __asm__("func_00183328");
+void func_00183328_x00183328(void)
+{
+    if (D_004268A4_x00183328 == 0) {
+        func_001833A0_x00183328(); __asm__ volatile("");
+    } else {
+        func_00183368_x00183328(); __asm__ volatile("");
+    }
+}
 s32 func_00183368(s32 arg0, s32 arg1, s32 arg2) {
     memcpy(arg2, arg0 + 0x70000000, arg1);
     return 0;
@@ -7879,7 +7909,18 @@ s32 func_001833A0_x001833A0(s32 arg0, s32 arg1, s32 arg2)
   func_00101E90_x001833A0(temp_v0, arg2, new_var >> 4);
   return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00183408);
+extern s32 D_004268A4_x00183408 __asm__("D_004268A4");
+void func_00183478_x00183408(void) __asm__("func_00183478");
+void func_00183448_x00183408(void) __asm__("func_00183448");
+void func_00183408_x00183408(void) __asm__("func_00183408");
+void func_00183408_x00183408(void)
+{
+    if (D_004268A4_x00183408 == 0) {
+        func_00183478_x00183408(); __asm__ volatile("");
+    } else {
+        func_00183448_x00183408(); __asm__ volatile("");
+    }
+}
 s32 func_00183448(s32 arg0, s32 arg1, s32 arg2) {
     memcpy(arg2 + 0x70000000, arg0, arg1);
     return 0;

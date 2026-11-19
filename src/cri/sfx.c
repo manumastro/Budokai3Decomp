@@ -405,7 +405,19 @@ void func_0019F810_x0019F810(TagHn_x0019F810 *hn, Sint8_x0019F810 *data, Sint32_
         SFXZ_SetTagInf_x0019F810(sfxz, tag.data, tag.len);
     rec->set = 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F8A8);
+void func_0019F8A8_x0019F8A8(s32 *a0, s32 *a1, s32 *a2) __asm__("func_0019F8A8");
+void func_0019F8A8_x0019F8A8(s32 *a0, s32 *a1, s32 *a2) {
+    s32 t;
+    a0 += 5;
+    if (a0[0] != 1) {
+        *a1 = 0;
+        *a2 = 0;
+        return;
+    }
+    t = a0[1];
+    *a2 = a0[2];
+    *a1 = t;
+}
 void func_0019F8D8(u8 *arg0, s32 arg1) {
     *(s32 *)((u8 *)arg0 + 0x28) = arg1;
 }
