@@ -216,10 +216,11 @@ def isolate(item, pad=0):
 _KNOWN = None
 PADS = int(os.environ.get("B3_PADS", "32"))  # apply(): renaming-suffix lengths tried
 CSE_PADS = int(os.environ.get("B3_CSE_PADS", "3"))
+ASM_PADS = int(os.environ.get("B3_ASM_PADS", "5"))  # cse_pad: 0..ASM_PADS-1 asm-label pads of each class
 FAST = os.environ.get("B3_INSERT_FAST", "1") != "0"  # apply(): all of a file's items at once first (one compile)  # apply(): most padding identifiers tried (see cse_pad)
 
 
-def cse_pad(addr, k8, k16, k32):
+def cse_pad(addr, k8, k16, k32, a8=0, a16=0, a32=0):
     """Dummy extern declarations placed after an inserted function: k8 / k16 / k32 identifiers whose names fall in
     the 8-, 16- and 32-byte classes of ee-gcc 2.96's string allocator. Its CSE hashes a SYMBOL_REF by the address of
     the name string (low bits), so the names an insertion allocates move the buckets of every later function of the
@@ -229,8 +230,19 @@ def cse_pad(addr, k8, k16, k32):
     names = [f"q{(addr >> 3) & 0xFFFFF:05x}{i}" for i in range(k8)]  # 7 chars
     names += [f"b3c{a}_{i}" for i in range(k16)]  # 13 chars
     names += [f"b3cse_pad32_{a}_{i}_xxxx" for i in range(k32)]  # 27 chars
+    # a8 / a16 / a32: declarations with an asm label of 7 / 11 / 24 characters (8-, 16-, 32-byte strings). A
+    # declaration with an asm label allocates its assembler name where it is declared, and those are the strings
+    # the SYMBOL_REF hash sees, so these pads move the buckets back where the plain ones do not: func_001886A8 and
+    # func_0018BAE0 in sfd.c (they moved func_0018C5B8 / func_00193520 / func_0018C488 / func_001936B0) went in
+    # with them (build/lh1/padsearch.py in the hand agent's tree measured it: the right combination looks random,
+    # about one in 16-60, so the search below tries all of 0..3 each).
+    u = f"{(addr >> 2) & 0xFFFFFF:06x}"
+    asm = [(f"b3p8_{u}_{i}_x", f"p{u[1:]}{i}") for i in range(a8)]  # label: 7 chars
+    asm += [(f"b3p16_{u}_{i}_x", f"b3a{u}_{i}") for i in range(a16)]  # label: 11 chars
+    asm += [(f"b3p32_{u}_{i}_x", f"b3cse_asmpad_{u}_{i}_xx") for i in range(a32)]  # label: 24 chars
     return "\n/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */" + \
-        "".join(f"\nextern int {n};" for n in names)
+        "".join(f"\nextern int {n};" for n in names) + \
+        "".join(f'\nextern int {n} __asm__("{s}");' for n, s in asm)
 
 
 _CACHE = {}
@@ -442,8 +454,8 @@ def apply(items, jobs=12, log=None, dry=False, real=False):
                     bad = lib_filecheck.check(rel)
                     if bad:
                         good, msg = False, "build-mode compile: " + "; ".join(bad)[:160]
-                if good or not re.search(r"differ", msg):
-                    break
+                if good or not re.search(r"differ", msg) or msg.startswith("build-mode compile"):
+                    break  # another function moved: the cse_pad search below handles it
             if not good and msg.startswith("the object keeps data") and not it.get("rebind"):
                 # a constant the pairing did not see (e.g. a float gcc folded into a literal): bind the function's
                 # own data to the executable's (gcc_rebind.py) and try again
@@ -459,7 +471,9 @@ def apply(items, jobs=12, log=None, dry=False, real=False):
                         good, msg = False, "build-mode compile: " + "; ".join(bad)[:160]
             if not good and real and msg.startswith("build-mode compile") and "differ" in msg:
                 # another function of the file moved: padding identifiers (cse_pad), fewest first
-                combos = sorted((c for c in itertools.product(range(CSE_PADS), repeat=3) if any(c)), key=sum)
+                combos = [(0, 0, 0) + c for c in sorted(itertools.product(range(ASM_PADS), repeat=3), key=sum) if any(c)]
+                # asm-label pads first (see cse_pad), then the plain ones
+                combos += sorted((c for c in itertools.product(range(CSE_PADS), repeat=3) if any(c)), key=sum)
                 for c in combos:
                     rep = isolate(it, 0) + tail_pad(seg, it["name"]) + cse_pad(it["addr"], *c)
                     new = pat.sub(lambda _: rep, text, count=1)
