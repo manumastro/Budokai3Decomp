@@ -252,36 +252,42 @@ s32 func_0030E290(s32 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E290);
-#if 0
-// func_0030E330: the saved registers come out in another order (the copy of a0, the block pointer and the state value); three variants tried
-void func_0030E330(s32 *a0) {
-    s32 *p = a0;
-    s32 *s0 = p + 0x30 / 4;
-    s32 v = a0[0x38 / 4];
-    f32 f;
-    D_00470704 = a0[0x34 / 4];
-    D_0047070C = 0x3000;
-    D_00470708 = 0;
-    amModel_SetCurrent(a0[0x34 / 4], 0x3000);
-    D_00470238 = 0;
-    if (v != 0) {
-        func_0022C060(v, 1.0f);
-        func_0022C560(v);
+void func_0030E330(u8 *arg0)
+{
+  u8 *p;
+  u8 *blk;
+  s32 st;
+  s32 tmp;
+  f32 f;
+
+  p = arg0;
+  blk = p + 0x30;
+  st = *(s32 *)(p + 0x38);
+  tmp = *(s32 *)(arg0 + 0x34);
+  D_00470704 = tmp;
+  D_0047070C = 0x3000;
+  D_00470708 = 0;
+  amModel_SetCurrent(tmp, 0x3000);
+  D_00470238 = 0;
+  if (st != 0)
+  {
+    func_0022C060(st, 1.0f);
+    func_0022C560(st);
+  }
+  f = *(f32 *)(blk + 0xC) + gFrameDelta;
+  *(f32 *)(blk + 0xC) = f;
+  if (!(f < 14116.0f))
+  {
+    tmp = *(s32 *)(blk + 8);
+    if (tmp != 0)
+    {
+      func_0022D0E0(tmp, 1);
+      *(s32 *)(blk + 8) = 0;
     }
-    f = *(f32 *)&s0[0xC / 4] + gFrameDelta;
-    *(f32 *)&s0[0xC / 4] = f;
-    if (f < 14116.0f) {
-        return;
-    }
-    if (s0[0x8 / 4] != 0) {
-        s0[0x8 / 4] = 0;
-        func_0022D0E0(s0[0x8 / 4], 1);
-    }
-    p[0x1C / 4] = 0;
+    *(s32 *)(p + 0x1C) = 0;
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E330);
-extern void func_0030E330(void);
+extern void func_0030E330(u8 *);
 
 void func_0030E3F0(s32 *a0) {
     s32 *s0 = (s32 *)((char *)a0 + 0x30);
