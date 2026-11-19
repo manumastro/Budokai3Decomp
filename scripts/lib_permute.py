@@ -84,7 +84,7 @@ def setup(e):
     # base.c: the preprocessed draft
     (d / "_src.c").write_text(source_text(e))
     r = subprocess.run([*native_cmd(e["version"]), "-E", "-P", "-D__attribute__(x)=", *EE_DEFS, str(d / "_src.c")],
-                       capture_output=True, text=True, cwd=ROOT)
+                       capture_output=True, text=True, cwd=ROOT, timeout=300)
     if r.returncode:
         return None, "cpp: " + r.stderr.strip()[-120:]
     pieces = pi.chunks(r.stdout)
@@ -101,7 +101,7 @@ def setup(e):
     # target.o
     (d / "target.s").write_text('.include "macro.inc"\n.set noat\n.set noreorder\n' + ent[1])
     r = subprocess.run([str(g.BINUTILS) + "as", *g.GAS_FLAGS, "-G0", "-Iinclude", str(g.PRELUDE), str(d / "target.s"), "-o",
-                        str(d / "target.o")], capture_output=True, text=True, cwd=ROOT)
+                        str(d / "target.o")], capture_output=True, text=True, cwd=ROOT, timeout=300)
     if r.returncode:
         return None, "target as: " + r.stderr.strip()[-120:]
     # compile.sh
@@ -121,7 +121,7 @@ cd {shlex_quote(str(ROOT))}
     (d / "settings.toml").write_text(f'func_name = "{name}"\ncompiler_type = "gcc"\nobjdump_command = "{objdump}"\n')
     (d / "function.txt").write_text(name + "\n")
     r = subprocess.run(["bash", str(d / "compile.sh"), str(d / "base.c"), "-o", str(d / "base.o")],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, timeout=300)
     if r.returncode or not (d / "base.o").exists():
         return None, "base.c does not compile: " + (r.stderr.strip().splitlines() or [""])[-1][:120]
     return d, None
@@ -177,7 +177,7 @@ def job(args):
             row.update(status="nocompile", detail=err)
             row["seconds"] = round(time.time() - t0)
             return row, None
-        p = subprocess.run(["timeout", str(budget), PY, str(ROOT / "tools/permuter/permuter.py"), str(d), "-j", "1",
+        p = subprocess.run(["timeout", "-k", "30", str(budget), PY, str(ROOT / "tools/permuter/permuter.py"), str(d), "-j", "1",
                             "--stop-on-zero"], capture_output=True, text=True, cwd=ROOT / "tools/permuter")
         txt = p.stdout
         base = re.findall(r"base score = (\d+)", txt)
@@ -208,7 +208,7 @@ def job(args):
                     + "\n".join(dict.fromkeys(e["decls"])) + "\n\n" + func)
         else:
             row["status"] = "same"
-    except Exception as ex:  # noqa: BLE001
+    except BaseException as ex:  # noqa: BLE001  (SystemExit too: a pool worker dying on it hangs imap_unordered)
         row.update(status="error", detail=repr(ex)[:160])
     row["seconds"] = round(time.time() - t0)
     shutil.rmtree(WORK / name, ignore_errors=True) if row["status"] in ("same", "nocompile") else None
@@ -236,8 +236,24 @@ def run(a):
     print(f"{len(cands)} drafts, budget {a.budget}s, {a.cpus} at a time", flush=True)
     rows, matches = [], []
     csvp = out / "perm_report.csv"
-    with Pool(a.cpus) as pool:
-        for row, res in pool.imap_unordered(job, [(e, a.budget, out) for e in cands]):
+    import multiprocessing
+    t0 = time.time()
+    # spawn (no inherited state), a heartbeat line every minute, and the whole pass ends after --deadline seconds
+    with multiprocessing.get_context("spawn").Pool(a.cpus, maxtasksperchild=20) as pool:
+        it = pool.imap_unordered(job, [(e, a.budget, out) for e in cands])
+        while True:
+            try:
+                row, res = it.next(timeout=60)
+            except StopIteration:
+                break
+            except multiprocessing.TimeoutError:
+                print(f"[lib_permute] {len(rows)}/{len(cands)} done, {len(matches)} zero, {time.time() - t0:.0f} s",
+                      flush=True)
+                if a.deadline and time.time() - t0 > a.deadline:
+                    print("[lib_permute] deadline reached, stopping", flush=True)
+                    pool.terminate()
+                    break
+                continue
             rows.append(row)
             if res:
                 matches.append(res)
@@ -287,6 +303,7 @@ def main():
             s.add_argument("--max-size", type=int, default=8)
             s.add_argument("--names")
             s.add_argument("--limit", type=int)
+            s.add_argument("--deadline", type=int, default=0, help="seconds for the whole pass (0: none)")
         else:
             s.add_argument("names_list", nargs="+")
     a = ap.parse_args()
