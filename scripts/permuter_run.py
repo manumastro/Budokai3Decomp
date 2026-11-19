@@ -87,7 +87,10 @@ def apply_one(rel, name, cfile=None):
         return False
     import m2c_draft
     path = ROOT / rel
-    new_fn = fn[0] + "\n"
+    # helpers the permuter wrote (`inline int inline_fn(...)`) go in front of the function
+    helpers = [c for c in pi.chunks(srcs[0].read_text()) if pi.is_function_def(c)
+               and re.match(r"inline_fn\d*$", pi.function_name(c) or "") and pi.function_name(c) in fn[0]]
+    new_fn = "".join(re.sub(r"^inline\b", "static inline", h.strip()) + "\n" for h in helpers) + fn[0] + "\n"
     if cfile:
         # a draft: the declarations it needs come with it
         add, _ = m2c_draft.split_draft(Path(cfile).read_text(), name)
@@ -100,8 +103,8 @@ def apply_one(rel, name, cfile=None):
         span = top_level_function(block.group(1), name) if block else None
         helpers = block.group(1)[:span[0]].strip("\n") if span else ""
         old = m2c_draft.apply_function(path, name, [helpers] if helpers else [], new_fn, filter_known=False)
-    r = subprocess.run([PY, "scripts/fdiff.py", rel, name], capture_output=True, text=True, cwd=ROOT)
-    if f"{name}: OK" in r.stdout:
+    import apply_drafts
+    if apply_drafts.file_ok(rel, name, old):
         return True
     path.write_text(old)
     return False

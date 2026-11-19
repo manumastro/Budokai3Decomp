@@ -91,6 +91,9 @@ def main():
     ap.add_argument("funcs", nargs="*")
     ap.add_argument("-v", action="store_true")
     ap.add_argument("-q", action="store_true")
+    ap.add_argument("--allow-data", action="store_true",
+                    help="compare the functions even when the object defines data (a file whose matched switch tables "
+                         "are in C already; the caller compares the data with the file's previous state)")
     args = ap.parse_args()
     version, flags = game_compiler(args.src)
     rom = mwmatch.ROM.read_bytes()
@@ -107,7 +110,8 @@ def main():
         # A string literal, a float constant, a switch table or a static variable: the object would add data the
         # original keeps in the assembly data files, and the linked image would shift (docs/decomp_guide.md).
         print(f"{args.src}: defines data ({', '.join(data)}); use the D_XXXXXXXX symbols instead")
-        sys.exit(1)
+        if not args.allow_data:
+            sys.exit(1)
     starts = function_starts()
     # Functions already in C have no assembly left: add the file's own C functions as starts too.
     for name in fns:

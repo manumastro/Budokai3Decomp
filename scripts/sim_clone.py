@@ -419,14 +419,12 @@ def main():
                     continue
                 add, ctext = m2c_draft.split_draft(again["c"], r["name"])
                 old = m2c_draft.apply_function(ROOT / r["file"], r["name"], add, ctext)
-                import subprocess
-                out = subprocess.run([sys.executable, "scripts/fdiff.py", r["file"]], capture_output=True, text=True,
-                                     cwd=ROOT).stdout
-                if f"{r['name']}: OK" in out and " 0 differ" in out:
+                import apply_drafts
+                if apply_drafts.file_ok(r["file"], r["name"], old):
                     print("applied", r["name"], r["file"])
                 else:
                     (ROOT / r["file"]).write_text(old)
-                    print("undone", r["name"], out.strip().splitlines()[-1:] if out.strip() else "")
+                    print("undone", r["name"])
 
 
 if __name__ == "__main__":

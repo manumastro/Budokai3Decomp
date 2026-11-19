@@ -191,7 +191,9 @@ def asm_info(name, src):
         return None
     txt = path.read_text()
     size = int(re.search(r"nonmatching \w+, (0x[0-9A-Fa-f]+)", txt).group(1), 16)
-    addr = int(re.search(r"/\* [0-9A-F]+ ([0-9A-F]{8}) ", txt).group(1), 16)
+    # the function's first instruction (a switch table moved into the file by splat comes before it)
+    g = txt.find(f"glabel {name}")
+    addr = int(re.search(r"/\* [0-9A-F]+ ([0-9A-F]{8}) ", txt[max(g, 0):]).group(1), 16)
     return path, size, addr, m
 
 
@@ -220,11 +222,50 @@ def jump_tables():
     return out
 
 
-def run_m2c(asm, name, decls, extra=()):
+_RICH = {}
+
+
+def rich_context(srcpath, name, decls):
+    """M2C_RICH=1: the context is the C file itself after the preprocessor (its struct types, typed globals and
+    prototypes, the headers it includes) without the function bodies, then the primitive declarations of the other
+    files for the symbols it does not declare. m2c then writes `p->field` for the types the file already knows."""
+    key = str(srcpath)
+    if key not in _RICH:
+        try:
+            import permuter_import as pi
+            chs = [c.strip() for c in pi.chunks(pi.preprocess(Path(srcpath))) if c.strip()]
+        except BaseException:  # noqa: BLE001
+            _RICH[key] = None
+            return None
+        keep, names = [], set()
+        for c in chs:
+            flat = re.sub(r"\s+", " ", c)
+            if flat.endswith("}") and "{" in flat and not re.match(r"^(typedef\b|(struct|union|enum)\b)", flat):
+                continue  # a function definition
+            if flat.startswith("asm ") or "__asm__" in flat or flat.startswith("#"):
+                continue
+            keep.append(c)
+            m = re.search(r"\b(\w+)\s*(?:\([^()]*\))?\s*(?:\[[^\]]*\])*\s*;$", flat)
+            fm = re.search(r"\b(\w+)\s*\(", flat)
+            for g in (m, fm):
+                if g:
+                    names.add(g.group(1))
+        _RICH[key] = (keep, names)
+    if _RICH[key] is None:
+        return None
+    keep, names = _RICH[key]
+    own = re.compile(rf"\b{re.escape(name)}\s*\(")
+    body = [c for c in keep if not (own.search(c) and not c.lstrip().startswith(("typedef", "struct", "union")))]
+    extra = [d for s, d in decls.items() if s != name and s not in names]
+    return "\n".join(body) + "\n" + "\n".join(extra) + "\n"
+
+
+def run_m2c(asm, name, decls, extra=(), srcpath=None):
     # the context without the function itself: its own (often guessed) prototype would hide its arguments
     with tempfile.TemporaryDirectory() as td:
         ctx = Path(td) / "ctx.h"
-        ctx.write_text(ctx_text(decls, skip=name))
+        rich = rich_context(srcpath, name, decls) if srcpath is not None and os.environ.get("M2C_RICH") else None
+        ctx.write_text(rich if rich else ctx_text(decls, skip=name))
         files = [str(asm)]
         used = sorted(set(re.findall(r"\bjtbl_\w+", Path(asm).read_text())))
         if used:
@@ -576,6 +617,22 @@ def repair(ctext, cerr, decls, filetext=""):
 
 
 _MEMO = {}
+_BASE = {}
+
+
+def baseline_data(srcpath, version, flags, incs):
+    """The data sections the C file defines as it is (cached per file and content)."""
+    text = Path(srcpath).read_text()
+    key = (str(srcpath), hash(text))
+    if key not in _BASE:
+        with tempfile.TemporaryDirectory() as td:
+            (Path(td) / "m2c_macros.h").write_text(MACROS)
+            sc = Path(td) / Path(srcpath).name
+            sc.write_text(text)
+            obj = Path(td) / "base.o"
+            err = compile_scratch(sc, version, flags, obj, [td, Path(srcpath).resolve().parent])
+            _BASE[key] = [] if err else data_sections(obj)
+    return _BASE[key]
 
 
 def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_override=None):
@@ -596,7 +653,7 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
     decls = dict(decls)
     decls.update(parse_decls(src[:m.start()] + src[m.end():]))
     if c_override is None:
-        rc, out, err = run_m2c(asm, name, decls, extra_m2c)
+        rc, out, err = run_m2c(asm, name, decls, extra_m2c, srcpath=srcpath)
         if rc != 0 or not out.strip():
             res["detail"] = first_error(err or out)
             return res
@@ -690,6 +747,16 @@ def draft(srcpath, name, keep=None, verbose=False, decls=None, extra_m2c=(), c_o
         res["total"] = len(words)
         res["words"] = words  # (for scripts/size_causes.py)
         data = data_sections(obj)
+        if data:
+            # data the file defines already (switch tables of functions matched in C) is not the draft's
+            base = list(baseline_data(srcpath, version, flags, incs))
+            rest = []
+            for x in data:
+                if x in base:
+                    base.remove(x)
+                else:
+                    rest.append(x)
+            data = rest
     rom = mwmatch.ROM.read_bytes()
     n = len(words)
     diffs, orig = mwmatch.compare(words, relocs, addr, rom)

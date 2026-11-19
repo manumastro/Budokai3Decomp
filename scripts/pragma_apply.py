@@ -33,8 +33,9 @@ def main():
         prag = "".join(f"#pragma {p}\n" for p in r["best_pragma"].split("+"))
         ctext = f"// compiled with {r['best_pragma']} (the rest of the file is not)\n#pragma push\n{prag}{ctext.rstrip()}\n#pragma pop\n"
         old = m2c_draft.apply_function(ROOT / rel, name, add, ctext)
-        out = subprocess.run([sys.executable, "scripts/fdiff.py", rel], capture_output=True, text=True, cwd=ROOT).stdout
-        if f"{name}: OK" in out and " 0 differ" in out:
+        import apply_drafts
+        out = ""
+        if apply_drafts.file_ok(rel, name, old):
             print(name, "applied", r["best_pragma"])
         else:
             print(out); (ROOT / rel).write_text(old)

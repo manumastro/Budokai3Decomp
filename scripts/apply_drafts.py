@@ -19,6 +19,31 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import m2c_draft  # noqa: E402
 
 
+def _fdiff(rel):
+    out = subprocess.run([sys.executable, "scripts/fdiff.py", rel, "--allow-data"], capture_output=True, text=True,
+                         cwd=ROOT).stdout
+    note = "\n".join(l for l in out.splitlines() if "defines data" in l)
+    return out, note
+
+
+def file_ok(rel, name, old_text):
+    """True when scripts/fdiff.py says every function of the file is OK with `name` among them, and the file defines
+    no more data than it did as old_text (a file whose matched switches already have their tables in C)."""
+    out, note = _fdiff(rel)
+    if not (f"{name}: OK" in out and " 0 differ" in out):
+        return False
+    if not note:
+        return True
+    path = ROOT / rel
+    new = path.read_text()
+    path.write_text(old_text)
+    try:
+        _, old_note = _fdiff(rel)
+    finally:
+        path.write_text(new)
+    return note == old_note
+
+
 def apply_one(rel, name, ctext_full):
     path = ROOT / rel
     if not m2c_draft.asm_info(name, path.read_text()):
@@ -28,8 +53,7 @@ def apply_one(rel, name, ctext_full):
         return f"now {r['status']}"
     add, ctext = m2c_draft.split_draft(r["c"], name)
     old = m2c_draft.apply_function(path, name, add, ctext)
-    out = subprocess.run([sys.executable, "scripts/fdiff.py", rel], capture_output=True, text=True, cwd=ROOT).stdout
-    if f"{name}: OK" in out and " 0 differ" in out:
+    if file_ok(rel, name, old):
         return "applied"
     path.write_text(old)
     return "undone"

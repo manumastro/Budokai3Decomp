@@ -1455,33 +1455,35 @@ s32 func_00260210(ScrCtx *ctx, ScrCmd *cmd) {
     return 3;
 }
 /* differs: the record call goes into the branch delay slot in the original (10 of 42) */
-#if 0
-s32 func_00260270(ObjF28 *o, ScrCmd *cmd) {
-    ScrArg *a = cmd->args;
-    s32 s2 = a[1].i;
-    s32 s1 = a[0].i;
-    f32 f;
-    ScrObj *p;
-    s32 k;
-    s32 r;
-
-    p = func_0020A720(s2);
-    o->f28 = s2;
-    o->f10 = (void *)func_00260210;
-    f = (f32)s1;
-    *(f32 *)((char *)p + 0xE0) = f;
-    *(f32 *)((char *)p + 0xE4) = f;
-    k = o->f0->fC;
-    r = func_0020A5F0(o->f28);
-    if (k != 3 && r != 0) {
-        o->f10 = NULL;
-        return 1;
-    }
-    func_0020A4D0(o->f28);
-    return 3;
+s32 func_00260270(u8 *arg0, u8 *arg1)
+{
+  u8 *new_var;
+  f32 temp_f0;
+  s32 temp_s1;
+  s32 temp_s2;
+  s32 new_var2;
+  u8 *temp_v0;
+  u8 *temp_v0_2;
+  temp_v0 = *((u8 **) (((u8 *) arg1) + 0x2C));
+  temp_s2 = *((s32 *) (((u8 *) temp_v0) + 4));
+  new_var2 = *((s32 *) (((u8 *) temp_v0) + 0));
+  temp_s1 = new_var2;
+  temp_v0_2 = (unsigned char *) func_0020A720(temp_s2);
+  *((s8 *) (((u8 *) arg0) + 0x28)) = (s8) temp_s2;
+  temp_f0 = (f32) temp_s1;
+  *((f32 *) (((u8 *) temp_v0_2) + 0xE0)) = temp_f0;
+  new_var = (u8 *) arg0;
+  *((f32 *) (((u8 *) temp_v0_2) + 0xE4)) = temp_f0;
+  *((s32 **) (new_var + 0x10)) = (int *) (&func_00260210);
+  if (((*((s32 *) (((u8 *) (*((u8 **) (new_var + 0)))) + 0xC))) != 3) && (func_0020A5F0(*((s8 *) (new_var + 0x28))) != 0))
+  {
+    *((s32 **) (new_var + 0x10)) = (void *) 0;
+    return 1;
+  }
+  func_0020A4D0(*((s8 *) (new_var + 0x28)));
+  return 3;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_00260270);
+
 
 s32 func_00260320(ScrCtx *ctx, ScrCmd *cmd) {
     if (ctx->f0->fC != 3) {
