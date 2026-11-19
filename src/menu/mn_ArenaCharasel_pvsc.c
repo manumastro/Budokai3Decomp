@@ -63,39 +63,34 @@ void func_00307CF0(u8 *a0) {
 }
 void func_00307D40(void) {
 }
-#if 0
-// differs: 23 of 61 instr differ: the obj/global register roles and the float tail still differ
-void func_00307D50(u8 *task) {
+void func_00307D50(u8 *arg0)
+{
     u8 *s1;
     u8 *s0;
-    f32 f1;
-    f32 f2;
-
-    s0 = *(u8 **)(task + 0x30);
-    f2 = *(f32 *)(s0 + 0x44);
+    u8 *v;
+    f32 f;
+    s0 = *(u8 **)(arg0 + 0x30);
     s1 = D_00470988;
-    if (f2 < 1.0f) {
-        *(f32 *)(s0 + 0x44) = f2 + 0.05f * gFrameDelta;
+    if (*(f32 *)(s0 + 0x44) < 1.0f) {
+        *(f32 *)(s0 + 0x44) = *(f32 *)(s0 + 0x44) + 0.05f * gFrameDelta;
     }
-    f1 = *(f32 *)(s0 + 0x44);
-    if (f1 > 1.0f) {
+    if (!(*(f32 *)(s0 + 0x44) <= 1.0f)) {
         *(f32 *)(s0 + 0x44) = 1.0f;
     }
-    f1 = *(f32 *)(s0 + 0x44);
-    if (f1 < 1.0f) {
+    if (*(f32 *)(s0 + 0x44) < 1.0f) {
         func_003077E0(s0);
-        *(void **)(*(u8 **)(s1 + 0x10) + 0x30) = 0;
-        *(s32 *)(*(u8 **)(s1 + 0x10) + 0x34) = 0;
-        *(s32 *)(*(u8 **)(s1 + 0x10) + 0x38) = 0;
-        *(f32 *)(*(u8 **)(s1 + 0x10) + 0x3C) = *(f32 *)(s0 + 0x44);
-    } else {
-        ArenaStageSel_Start(D_004B4B56[0]);
-        func_002D1C50();
-        ArenaList_Free();
+        f = *(f32 *)(s0 + 0x44);
+        v = *(u8 **)(s1 + 0x10);
+        *(s32 *)(v + 0x30) = 0;
+        *(s32 *)(v + 0x34) = 0;
+        *(s32 *)(v + 0x38) = 0;
+        *(f32 *)(v + 0x3C) = f;
+        return;
     }
+    ArenaStageSel_Start(D_004B4B56[0]);
+    func_002D1C50();
+    ArenaList_Free();
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsc", func_00307D50);
 #if 0
 // differs: compiled 0xC4 vs 0xD0: 3 instructions short (the movz select / order of the func_0027E2D0 arguments)
 void func_00307E40(u8 *task) {
