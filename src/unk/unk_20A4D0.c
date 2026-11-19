@@ -505,47 +505,52 @@ extern u8 D_005684C0[];
 extern u8 D_005685C0[];
 s32 func_002096D0(s32, s32, s32);
 void func_0020A7F0(s32);
-#if 0
-void func_0020AA20(s32 idx, u8 *src) {
-    u8 *s0;
-    u8 *s1;
-    s32 type;
-
-    func_0020A7F0(idx);
-    s0 = D_005684C0 + idx * 0x40;
-    memset(s0, 0, 0x40);
-    s1 = D_005685C0 + idx * 0x80;
-    memset(s1, 0, 0x80);
-    *(s32 *)(s0 + 0x4) = 0x10005;
-    *(s32 *)(s1 + 0x4) = 0x20005;
-    *(u8 **)(s0 + 0x24) = s1;
-    *(f32 *)(s0 + 0x30) = *(f32 *)(src + 0x10);
-    *(f32 *)(s0 + 0x34) = *(f32 *)(src + 0x8);
-    *(f32 *)(s0 + 0x38) = *(f32 *)(src + 0xC);
-    *(s32 *)(s1 + 0x8) = (*(s32 *)(src + 0x4) << 16) + *(s32 *)src;
-    *(Copy16A *)(s1 + 0x30) = *(Copy16A *)(src + 0x20);
-    *(Copy16A *)(s1 + 0x40) = *(Copy16A *)(src + 0x20);
-    *(f32 *)(s1 + 0x50) = *(f32 *)(src + 0x14);
-    *(f32 *)(s1 + 0x54) = *(f32 *)(src + 0x18);
-    *(s32 *)(s1 + 0x7C) = *(s32 *)(src + 0x1C);
-    type = *(s32 *)src;
-    if (type == 1) {
-        *(f32 *)(s1 + 0x68) = *(f32 *)(src + 0x30);
-        *(f32 *)(s1 + 0x6C) = *(f32 *)(src + 0x34);
-        *(f32 *)(s1 + 0x70) = *(f32 *)(src + 0x38);
-        *(f32 *)(s1 + 0x74) = *(f32 *)(src + 0x3C);
-        *(f32 *)(s1 + 0x78) = *(f32 *)(src + 0x40);
-    } else if (type == 0) {
-        *(f32 *)(s1 + 0x58) = *(f32 *)(src + 0x30);
-        *(f32 *)(s1 + 0x5C) = *(f32 *)(src + 0x34);
-        *(f32 *)(s1 + 0x60) = *(f32 *)(src + 0x38);
-        *(f32 *)(s1 + 0x64) = *(f32 *)(src + 0x3C);
-    }
-    D_005687C0[idx] = func_002096D0((s32)s0, 0x10002, 0);
-}
+#ifndef S128_DEFINED
+#define S128_DEFINED
+typedef __int128 s128;
 #endif
-// differs: 65 of 118 differ: the pointer of the 0x40 table lands in s1 here (the original keeps it in s0), the function is 0x17C against 0x190 long
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020AA20);
+void func_0020AA20(s32 arg0, u8 *arg1) {
+    u8 *temp_s1;
+    s32 temp_v1;
+    u8 *temp_s0;
+    func_0020A7F0(arg0);
+    temp_s0 = D_005684C0 + (arg0 << 6);
+    temp_s1 = D_005685C0 + (arg0 << 7);
+    memset(temp_s0, 0, 0x40);
+    memset(temp_s1, 0, 0x80);
+    *(s32 *)((u8 *)temp_s0 + 4) = 0x10005;
+    *(s32 *)((u8 *)temp_s1 + 4) = 0x20005;
+    *(u8 **)((u8 *)temp_s0 + 0x24) = temp_s1;
+    *(f32 *)((u8 *)temp_s0 + 0x30) = (f32)*(f32 *)((u8 *)arg1 + 0x10);
+    *(f32 *)((u8 *)temp_s0 + 0x34) = (f32)*(f32 *)((u8 *)arg1 + 8);
+    *(f32 *)((u8 *)temp_s0 + 0x38) = (f32)*(f32 *)((u8 *)arg1 + 0xC);
+    *(s32 *)((u8 *)temp_s1 + 8) = (s32)((*(s32 *)((u8 *)arg1 + 4) << 0x10) + *(s32 *)((u8 *)arg1 + 0));
+    *(s128 *)((u8 *)temp_s1 + 0x30) = (s128)*(s128 *)((u8 *)arg1 + 0x20);
+    *(s128 *)((u8 *)temp_s1 + 0x40) = (s128)*(s128 *)((u8 *)arg1 + 0x20);
+    *(f32 *)((u8 *)temp_s1 + 0x50) = (f32)*(f32 *)((u8 *)arg1 + 0x14);
+    *(f32 *)((u8 *)temp_s1 + 0x54) = (f32)*(f32 *)((u8 *)arg1 + 0x18);
+    *(s32 *)((u8 *)temp_s1 + 0x7C) = (s32)*(s32 *)((u8 *)arg1 + 0x1C);
+    temp_v1 = *(s32 *)((u8 *)arg1 + 0);
+    switch (temp_v1) {
+        case 0:
+            *(f32 *)((u8 *)temp_s1 + 0x58) = (f32)*(f32 *)((u8 *)arg1 + 0x30);
+            *(f32 *)((u8 *)temp_s1 + 0x5C) = (f32)*(f32 *)((u8 *)arg1 + 0x34);
+            *(f32 *)((u8 *)temp_s1 + 0x60) = (f32)*(f32 *)((u8 *)arg1 + 0x38);
+            *(f32 *)((u8 *)temp_s1 + 0x64) = (f32)*(f32 *)((u8 *)arg1 + 0x3C);
+            break;
+
+        case 1:
+            *(f32 *)((u8 *)temp_s1 + 0x68) = (f32)*(f32 *)((u8 *)arg1 + 0x30);
+            *(f32 *)((u8 *)temp_s1 + 0x6C) = (f32)*(f32 *)((u8 *)arg1 + 0x34);
+            *(f32 *)((u8 *)temp_s1 + 0x70) = (f32)*(f32 *)((u8 *)arg1 + 0x38);
+            *(f32 *)((u8 *)temp_s1 + 0x74) = (f32)*(f32 *)((u8 *)arg1 + 0x3C);
+            *(f32 *)((u8 *)temp_s1 + 0x78) = (f32)*(f32 *)((u8 *)arg1 + 0x40);
+            break;
+    }
+
+    D_005687C0[arg0] = func_002096D0((s32)temp_s0, 0x10002, 0);
+}
+
 void func_0020ABB0(void) {
     D_005687CC[0] = 0;
     D_005687C8[0] = 0;
