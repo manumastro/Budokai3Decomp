@@ -598,67 +598,77 @@ extern s32 D_0044FC20[];
 u8 *func_0021C3E0(s32);
 s32 SkillFile_Load(s32);
 s32 amCdFs_ReadFileId(s32, s32, s32);
-#if 0
-// differs: the loop structure matches (the search and the four stores) but the register allocation of the loop variables and the order of the sentinel tests differ; 8 instructions short
 s32 func_002408C0(void) {
-    s32 s6;
-    u8 *sys = gBtlSys;
-    u8 *s0;
-    s32 i;
-    s32 s1;
-    s32 s2;
-    s32 s3;
-    s32 key;
-    u8 *a1;
-    u8 *entry;
-    u8 *ptr;
-
-    s6 = 0;
+    s32 *var_s5;
+    s32 var_s4;
+    u8 *var_a1;
+    s32 temp_a0;
+    s32 temp_v0_2;
+    s32 temp_v0_3;
+    s32 temp_v1_2;
+    s32 var_s1;
+    s32 var_s2;
+    s32 var_s3;
+    s32 var_s6;
+    u8 *temp_v0;
+    s32 *var_s0;
+    u8 *temp_v1;
+    var_s5 = (s32 *)gBtlSys;
+    var_s6 = 0;
     memset(D_0058BF70, 0, 0x640);
-    if (0 < *(s32 *)(gBattle + 0x88D8)) {
-        i = 0;
-        s0 = D_0058BF50;
+    var_s4 = 0;
+    if (0 < *(s32 *)((u8 *)gBattle + 0x88D8)) {
+        var_s0 = (s32 *)D_0058BF50;
         do {
-            s2 = -1;
-            s3 = 0;
-            s1 = -1;
-            ptr = func_0021C3E0(i);
-            if (D_0044FC20[0] != -1) {
-                key = *(s16 *)(ptr + 0x10);
-                a1 = (u8 *)D_0044FC20;
-                do {
-                    if (key == *(s32 *)a1) {
-                        entry = (u8 *)D_0044FC20 + s3 * 0x10;
-                        if (*(s32 *)(entry + 8) != -1) {
-                            s2 = (*(s32 *)(entry + 4) << 16) | *(s32 *)(entry + 8);
-                        }
-                        s1 = *(s32 *)(entry + 0xC);
-                        break;
+            var_s2 = -1;
+            var_s1 = 0;
+            var_s3 = -1;
+            temp_v0 = func_0021C3E0(var_s4);
+            if (*D_0044FC20 != -1) {
+                var_a1 = (u8 *)D_0044FC20;
+                loop_4:
+                if (*(s16 *)((u8 *)temp_v0 + 0x10) == *(s32 *)var_a1) {
+                    temp_v1 = (u8 *)D_0044FC20 + var_s1 * 0x10;
+                    temp_a0 = *(s32 *)((u8 *)temp_v1 + 8);
+                    if (temp_a0 != -1) {
+                        var_s2 = *(s32 *)((u8 *)temp_v1 + 4) << 0x10 | temp_a0;
                     }
-                    a1 += 0x10;
-                    s3++;
-                } while (*(s32 *)a1 != -1);
+                    temp_v1_2 = *(s32 *)((u8 *)temp_v1 + 0xC);
+                    if (temp_v1_2 != -1) {
+                        var_s3 = temp_v1_2;
+                    }
+                } else {
+                    var_a1 += 0x10;
+                    var_s1 += 1;
+                    if (*(s32 *)var_a1 != -1) {
+                        goto loop_4;
+                    }
+                }
             }
-            if (s1 != -1) {
-                *(s32 *)(sys + i * 4 + 0xEC0) = SkillFile_Load(s1);
+            if (var_s3 == -1) {
+                temp_v0_2 = var_s5[0x3B0] = SkillFile_Load(0);
             } else {
-                *(s32 *)(sys + i * 4 + 0xEC0) = SkillFile_Load(0);
+                temp_v0_2 = var_s5[0x3B0] = SkillFile_Load(var_s3);
             }
-            if (*(s32 *)(sys + i * 4 + 0xEC0) != 0) {
-                s6 = *(s32 *)(*(s32 *)(*(s32 *)(sys + i * 4 + 0xEC0) + 8) + 0x10);
+            temp_v0_2 = var_s5[0x3B0];
+            if (temp_v0_2 != 0) {
+                var_s6 = *(s32 *)((u8 *)*(u8 **)((u8 *)temp_v0_2 + 8) + 0x10);
             }
-            if (s2 != -1) {
-                *(s32 *)s0 = amCdFs_ReadFileId(s2, 0, 1);
+            if (var_s2 != -1) {
+                *var_s0 = amCdFs_ReadFileId(var_s2, 0, 1);
             }
-            s6 = *(s32 *)s0;
-            i++;
-            s0 += 4;
-        } while (i < *(s32 *)(gBattle + 0x88D8));
+            temp_v0_3 = *var_s0;
+            if (temp_v0_3 != 0) {
+                var_s6 = temp_v0_3;
+            }
+            var_s4 += 1;
+            var_s5 += 1;
+            var_s0 += 1;
+        }
+        while (var_s4 < *(s32 *)((u8 *)gBattle + 0x88D8));
     }
-    return s6;
+    return var_s6;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002408C0);
 void func_002433F0(void);
 void func_002BF3B0(void);
 void func_00208F70(s32);
