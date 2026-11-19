@@ -784,7 +784,12 @@ void ADXF_SetReqRdSct(u8 *arg0, s32 arg1) {
     }
     *(s32 *)((u8 *)arg0 + 0x2C) = arg1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", func_00155FF8);
+typedef unsigned char u8_x00155FF8;
+typedef signed int s32_x00155FF8;
+s32_x00155FF8 func_00164660_x00155FF8(s32_x00155FF8) __asm__("func_0015D678");
+s32_x00155FF8 func_00155FF8_x00155FF8(s32_x00155FF8 *p) __asm__("func_00155FF8");
+/* func_0015E2E8: from https://github.com/Subarasheese/pes6decomp (src/middleware/cri/adx_fs/func_0015E2E8.c, no licence stated for its own code); ee-gcc 2.96 -O2 -G0 */
+s32_x00155FF8 func_00155FF8_x00155FF8(s32_x00155FF8 *p) { s32_x00155FF8 v; if (p == 0) return 0; v = *(s32_x00155FF8 *)((u8_x00155FF8 *)p + 4); if (v == 0) return 0; return func_00164660_x00155FF8(v); }
 void func_00156030(void) {
     func_00162AD8();
 }

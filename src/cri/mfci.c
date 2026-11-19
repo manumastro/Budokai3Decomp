@@ -864,7 +864,25 @@ void func_0016B2E0(s32 arg0) {
     func_0016B310(arg0);
     func_0016AFF0();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016B310);
+struct Table_x0016B310 {
+    unsigned char pad0[0x8];
+    int *a;
+    int *b;
+    unsigned char pad10[0x4];
+    int used;
+    int size;
+};
+void func_0016B310_x0016B310(struct Table_x0016B310 *t) __asm__("func_0016B310");
+/* func_001739F0: from https://github.com/Subarasheese/pes6decomp (src/middleware/cri/pl2enc/func_001739F0.c, no licence stated for its own code); ee-gcc 2.96 -O2 -G0 */
+void func_0016B310_x0016B310(struct Table_x0016B310 *t) {
+    int i;
+    for (i = 0; i < 0x60; i++) {
+        t->a[i] = 0;
+        t->b[i] = 0;
+    }
+    t->used = 0;
+    t->size = 0x40;
+}
 void func_0016B350(s32 arg0, s16 arg1, s32 arg2, s32 arg3) {
     func_0016AFD8();
     func_0016B3B0(arg0, arg1, arg2, arg3);

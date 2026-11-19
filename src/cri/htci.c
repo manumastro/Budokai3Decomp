@@ -98,7 +98,60 @@ s8 func_00168870_x00168870(u8 *arg0) {
 s32 func_001688A8(void) {
     return 0x800;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_001688B0);
+extern char D_003CAC00_x001688B0[] __asm__("D_00463B10");
+typedef unsigned char u_char_x001688B0;
+typedef unsigned int u_int_x001688B0;
+typedef char Sint8_x001688B0;
+typedef signed int Sint32_x001688B0;
+typedef char Char8_x001688B0;
+typedef struct {
+    u_char_x001688B0 trycount;
+    u_char_x001688B0 spindlctrl;
+    u_char_x001688B0 datapattern;
+    u_char_x001688B0 pad;
+} sceCdRMode_x001688B0;
+typedef struct {
+    u_int_x001688B0 lsn;
+    u_int_x001688B0 size;
+    char name[16];
+    u_char_x001688B0 date[8];
+    u_int_x001688B0 flag;
+} sceCdlFILE_x001688B0;
+extern int* sceCdCallback_x001688B0(void (*func)(int)) __asm__("sceCdCallback");
+typedef void* SRD_x001688B0;
+typedef struct {
+               Sint8_x001688B0 used;
+               Sint8_x001688B0 unk1;
+               Sint8_x001688B0 stat;
+               Sint8_x001688B0 unk3;
+               Sint32_x001688B0 unk4;
+               Sint32_x001688B0 unk8;
+               Sint32_x001688B0 unkC;
+               Sint32_x001688B0 unk10;
+               Sint32_x001688B0 unk14;
+               void* unk18;
+               SRD_x001688B0 srd;
+               sceCdlFILE_x001688B0 unk20;
+               sceCdRMode_x001688B0 cdrmode;
+} DVG_CI_OBJ_x001688B0;
+typedef DVG_CI_OBJ_x001688B0* DVG_CI_x001688B0;
+extern Sint32_x001688B0 SVM_SetCbSvr_x001688B0(Sint32_x001688B0, Sint32_x001688B0 (*)(void*), void*) __asm__("SVM_SetCbSvr");
+extern void SVM_SetCbSvrId_x001688B0(Sint32_x001688B0, Sint32_x001688B0, Sint32_x001688B0 (*)(void*), void*) __asm__("SVM_SetCbSvrId");
+extern void D_001705C0_x001688B0(void (*func)(void*, const Char8_x001688B0*, void*), void* obj) __asm__("D_001705C0");
+void func_00170400_x001688B0(void* obj, const Char8_x001688B0* msg) __asm__("func_00167C90");
+extern void D_001705C0_x001688B0(void (*func)(void*, const Char8_x001688B0*, void*), void* obj) __asm__("D_001705C0");
+Sint32_x001688B0 func_001688B0_x001688B0(DVG_CI_x001688B0 handl) __asm__("func_001688B0");
+/* func_00170FB0: from https://github.com/Subarasheese/pes6decomp (src/middleware/cri/dvci/func_00170FB0.c, no licence stated for its own code); ee-gcc 2.96 -O2 -G0 */
+Sint32_x001688B0 func_001688B0_x001688B0(DVG_CI_x001688B0 handl) {
+    if (handl == 0) {
+        func_00170400_x001688B0(handl, D_003CAC00_x001688B0);
+        return 0;
+    }
+    if (handl->stat == 1) {
+        return *(Sint32_x001688B0 *)((Char8_x001688B0 *)handl + 0x28) << 11;
+    }
+    return 0;
+}
 void func_00168900(void) {
     htCiGetFileSize();
 }

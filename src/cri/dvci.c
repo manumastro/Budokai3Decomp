@@ -847,7 +847,15 @@ void func_00167468_x00167468(u8 *arg0, s32 arg1, u8 *arg2, s32 arg3)
 void func_00167530(void) {
     memset(&D_00413740, 0, 0x10);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167558);
+unsigned int func_001C80F0_x00167558(const char *) __asm__("func_00127BA0");
+int func_00167558_x00167558(char *name) __asm__("func_00167558");
+/* func_0016FD58: from https://github.com/Subarasheese/pes6decomp (src/middleware/cri/dvci/func_0016FD58.c, no licence stated for its own code); ee-gcc 2.96 -O2 -G0 */
+int func_00167558_x00167558(char *name) {
+    if (func_001C80F0_x00167558(name) != 17) {
+        return 0;
+    }
+    return name[8] == '.';
+}
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167598);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167688);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", dvCiLoadDirInfo);

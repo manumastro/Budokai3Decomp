@@ -10304,7 +10304,15 @@ void ADXT_GetTime_x0015EA20(ADX_TALK_x0015EA20* adxt, Sint32_x0015EA20* ncount, 
     *ncount += adxt->time_ofst;
     *tscale = adxt_time_unit_x0015EA20;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015ED18);
+void func_00165E28_x0015ED18(int, int *, int *) __asm__("ADXT_GetTime");
+int func_0015ED18_x0015ED18(int handle) __asm__("func_0015ED18");
+/* func_00166158: from https://github.com/Subarasheese/pes6decomp (src/middleware/cri/adx_tlk/func_00166158.c, no licence stated for its own code); ee-gcc 2.96 -O2 -G0 */
+int func_0015ED18_x0015ED18(int handle) {
+    int done;
+    int total;
+    func_00165E28_x0015ED18(handle, &done, &total);
+    return (float)done / (float)total * 100.0f;
+}
 s32 ADXERR_CallErrFunc1_x0015ED68(s32 *) __asm__("ADXERR_CallErrFunc1");
 s32 func_00159E28_x0015ED68(s32) __asm__("func_00159E28");
 extern s32 D_00461988_x0015ED68 __asm__("D_00461988");

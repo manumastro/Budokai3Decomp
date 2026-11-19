@@ -1369,7 +1369,146 @@ void func_00160098_x00160098(ADXT_x00160098 adxt, void* adxdat) __asm__("func_00
 void func_00160098_x00160098(ADXT_x00160098 adxt, void* adxdat) {
     ADXT_StartMem2_x00160098(adxt, adxdat, 0x40000000);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", func_001600B0);
+extern char D_003C90D8_x001600B0[] __asm__("D_00462020");
+extern char D_003C9108_x001600B0[] __asm__("D_00462050");
+void func_00159E88_x001600B0() __asm__("func_00152508");
+void func_00159EA0_x001600B0() __asm__("func_00152520");
+typedef unsigned char Uint8_x001600B0;
+typedef char Sint8_x001600B0;
+typedef unsigned short Uint16_x001600B0;
+typedef signed short Sint16_x001600B0;
+typedef unsigned int Uint32_x001600B0;
+typedef signed int Sint32_x001600B0;
+typedef Sint32_x001600B0 Bool_x001600B0;
+typedef char Char8_x001600B0;
+void func_0015B478_x001600B0(Sint8_x001600B0*) __asm__("ADXERR_CallErrFunc1");
+typedef struct _UUID_x001600B0 {
+    Uint32_x001600B0 Data1;
+    Uint16_x001600B0 Data2;
+    Uint16_x001600B0 Data3;
+    Uint8_x001600B0 Data4[8];
+} UUID_x001600B0;
+typedef struct {
+        Sint8_x001600B0 *data;
+        Sint32_x001600B0 len;
+} SJCK_x001600B0;
+typedef struct {
+        struct _sj_vtbl_x001600B0 *vtbl;
+} SJ_OBJ_x001600B0;
+typedef SJ_OBJ_x001600B0 *SJ_x001600B0;
+typedef struct _sj_vtbl_x001600B0 {
+        void (*QueryInterface)();
+        void (*AddRef)();
+        void (*Release)();
+        void (*Destroy)(SJ_x001600B0 sj);
+        UUID_x001600B0 *(*GetUuid)(SJ_x001600B0 sj);
+        void (*Reset)(SJ_x001600B0 sj);
+        void (*GetChunk)(SJ_x001600B0 sj, Sint32_x001600B0 id, Sint32_x001600B0 nbyte, SJCK_x001600B0 *ck);
+        void (*UngetChunk)(SJ_x001600B0 sj, Sint32_x001600B0 id, SJCK_x001600B0 *ck);
+        void (*PutChunk)(SJ_x001600B0 sj, Sint32_x001600B0 id, SJCK_x001600B0 *ck);
+        Sint32_x001600B0 (*GetNumData)(SJ_x001600B0 sj, Sint32_x001600B0 id);
+        Sint32_x001600B0 (*IsGetChunk)(SJ_x001600B0 sj, Sint32_x001600B0 id, Sint32_x001600B0 nbyte, Sint32_x001600B0 *rbyte);
+        void (*EntryErrFunc)(SJ_x001600B0 sj,
+                                        void (*func)(void *obj, Sint32_x001600B0 ecode), void *obj);
+} SJ_IF_x001600B0;
+SJ_x001600B0 func_001765A8_x001600B0(Sint8_x001600B0 *data, Sint32_x001600B0 bsize) __asm__("func_0016DBE0");
+typedef void *ADXSTM_x001600B0;
+typedef void *ADXSJD_x001600B0;
+typedef void *ADXRNA_x001600B0;
+typedef struct _adx_talk_x001600B0 {
+                   Sint8_x001600B0 used;
+                   Sint8_x001600B0 stat;
+                   Sint8_x001600B0 pmode;
+                   Sint8_x001600B0 maxnch;
+                   ADXSJD_x001600B0 sjd;
+                   ADXSTM_x001600B0 stm;
+                   ADXRNA_x001600B0 rna;
+                   SJ_x001600B0 sjf;
+                   SJ_x001600B0 sji;
+                   SJ_x001600B0 sjo[(2)];
+                   Sint8_x001600B0 *ibuf;
+                   Sint32_x001600B0 ibuflen;
+                   Sint32_x001600B0 ibufxlen;
+                   Sint16_x001600B0 *obuf;
+                   Sint32_x001600B0 obufsize;
+                   Sint32_x001600B0 obufdist;
+                   Sint32_x001600B0 svrfreq;
+                   Sint16_x001600B0 maxsct;
+                   Sint16_x001600B0 minsct;
+                   Sint16_x001600B0 outvol;
+                   Sint16_x001600B0 outpan[(2)];
+                   Sint16_x001600B0 unk46;
+                   Sint32_x001600B0 maxdecsmpl;
+                   Sint32_x001600B0 lpcnt;
+                   Sint32_x001600B0 lp_skiplen;
+                   Sint32_x001600B0 trp;
+                   Sint32_x001600B0 wpos;
+                   Sint32_x001600B0 mofst;
+                   Sint16_x001600B0 ercode;
+                   Sint32_x001600B0 edecpos;
+                   Sint16_x001600B0 edeccnt;
+                   Sint16_x001600B0 eshrtcnt;
+                   Sint8_x001600B0 lpflg;
+                   Sint8_x001600B0 autorcvr;
+                   Sint8_x001600B0 fltmode;
+                   Sint8_x001600B0 execflag;
+                   Sint8_x001600B0 pstwait_flag;
+                   Sint8_x001600B0 pstready_flag;
+                   Sint8_x001600B0 pause_flag;
+                   void *amp;
+                   SJ_x001600B0 ampsji[(2)];
+                   SJ_x001600B0 ampsjo[(2)];
+                   Sint32_x001600B0 time_ofst;
+                   Sint32_x001600B0 lesct;
+                   Sint32_x001600B0 trpnsmpl;
+                   void *lsc;
+                   Sint8_x001600B0 lnkflg;
+                   Sint8_x001600B0 rsv;
+                   Sint16_x001600B0 rsv2;
+                   Uint32_x001600B0 tvofst;
+                   Uint32_x001600B0 svcnt;
+                   Uint32_x001600B0 decofst;
+                   Sint32_x001600B0 flush_nsmpl;
+                   Sint8_x001600B0 unkAC;
+                   Sint8_x001600B0 padAD[1];
+               Char8_x001600B0* unkB0;
+               Sint32_x001600B0 padB4;
+               Sint32_x001600B0 padB8;
+               Sint32_x001600B0 padBC;
+               Sint32_x001600B0 padC0;
+} ADX_TALK_x001600B0;
+typedef ADX_TALK_x001600B0 *ADXT_x001600B0;
+void func_00165968_x001600B0(ADXT_x001600B0 adxt) __asm__("ADXT_Stop");
+extern void ADXT_EntryErrFunc_x001600B0(void (*func)(void *obj, Sint8_x001600B0 *msg), void *obj) __asm__("ADXT_EntryErrFunc");
+extern void ADXT_EntryFltFunc_x001600B0(ADXT_x001600B0 adxt,
+                void (*f)(void *obj, Sint32_x001600B0 ch, void *data, Sint32_x001600B0 dtlen), void *obj) __asm__("ADXT_EntryFltFunc");
+void func_00167C18_x001600B0(ADXT_x001600B0 adxt, Sint32_x001600B0 sw) __asm__("func_0015FB70");
+extern void ADXM_SetCbUsrVsync_x001600B0(Bool_x001600B0 (*func)(void *obj), void *obj) __asm__("ADXM_SetCbUsrVsync");
+extern void ADXM_SetCbUsrIdle_x001600B0(Bool_x001600B0 (*func)(void *obj), void *obj) __asm__("ADXM_SetCbUsrIdle");
+extern void ADXM_SetCbErr_x001600B0(void (*fn)(void *obj, Char8_x001600B0 *emsg), void *obj) __asm__("ADXM_SetCbErr");
+extern void ADXM_SetCbSleepMwIdle_x001600B0(void (*fn)(void *), void *obj) __asm__("ADXM_SetCbSleepMwIdle");
+void func_00165608_x001600B0(ADXT_x001600B0 adxt, SJ_x001600B0 sj) __asm__("func_0015E408");
+void func_001600B0_x001600B0(ADXT_x001600B0 adxt, void* adxdat, Sint32_x001600B0 datlen) __asm__("func_001600B0");
+/* ADXT_StartMem2: from https://github.com/Subarasheese/pes6decomp (src/middleware/cri/adx_tlk/ADXT_StartMem2.c, no licence stated for its own code); ee-gcc 2.96 -O2 -G0 */
+void func_001600B0_x001600B0(ADXT_x001600B0 adxt, void* adxdat, Sint32_x001600B0 datlen) {
+    SJ_x001600B0 sj;
+    if ((adxt == 0) || (adxdat == 0) || (datlen < 0)) {
+        func_0015B478_x001600B0(D_003C90D8_x001600B0);
+        return;
+    }
+    func_00165968_x001600B0(adxt);
+    func_00159E88_x001600B0();
+    sj = func_001765A8_x001600B0((Sint8_x001600B0*)adxdat, datlen);
+    if (sj == 0) {
+        func_00159EA0_x001600B0();
+        func_0015B478_x001600B0(D_003C9108_x001600B0);
+        return;
+    }
+    func_00165608_x001600B0(adxt, sj);
+    adxt->pmode = (2);
+    func_00167C18_x001600B0(adxt, 0);
+    func_00159EA0_x001600B0();
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0015EFB0", ADXT_StartMemIdx);
 void func_00160300(u8 *arg0) {
     s32 temp_s0;

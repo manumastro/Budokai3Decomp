@@ -982,7 +982,16 @@ void func_00150EC8(u8 *arg0) {
     func_00161A18(*(s32 *)((u8 *)arg0 + 8), *(s16 *)((u8 *)arg0 + 0xA6), *(s16 *)((u8 *)arg0 + 0xA8), *(s16 *)((u8 *)arg0 + 0xAA));
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150F08);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150F70);
+typedef unsigned char u8_x00150F70;
+typedef signed int s32_x00150F70;
+extern u8_x00150F70 D_0037701C_x00150F70[] __asm__("D_0040109C");
+extern u8_x00150F70 D_0037701E_x00150F70[] __asm__("D_0040109E");
+extern u8_x00150F70 D_00377020_x00150F70[] __asm__("D_004010A0");
+s32_x00150F70 func_001C80F0_x00150F70(s32_x00150F70) __asm__("func_00127BA0");
+void func_00157B98_x00150F70(s32_x00150F70, s32_x00150F70, void *, void *, void *) __asm__("func_001503A0");
+void func_00150F70_x00150F70(s32_x00150F70 a) __asm__("func_00150F70");
+/* func_001587B8: from https://github.com/Subarasheese/pes6decomp (src/middleware/cri/adx_bsc/func_001587B8.c, no licence stated for its own code); ee-gcc 2.96 -O2 -G0 */
+void func_00150F70_x00150F70(s32_x00150F70 a) { s32_x00150F70 v = func_001C80F0_x00150F70(a); func_00157B98_x00150F70(a, v, D_0037701C_x00150F70, D_0037701E_x00150F70, D_00377020_x00150F70); }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00150FB8);
 s32 func_001510B8(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 4);
@@ -1226,7 +1235,13 @@ s32 func_001511F0(u8 *arg0) {
 s32 func_001511F8(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 8);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00151200);
+typedef unsigned char u8_x00151200;
+typedef signed int s32_x00151200;
+void func_0016A078_x00151200(s32_x00151200, s32_x00151200, s32_x00151200, s32_x00151200, s32_x00151200) __asm__("func_00161A90");
+void func_0016A108_x00151200(s32_x00151200) __asm__("func_00161B20");
+void func_00151200_x00151200(s32_x00151200 *p, s32_x00151200 v) __asm__("func_00151200");
+/* func_00158A80: from https://github.com/Subarasheese/pes6decomp (src/middleware/cri/adx_bsc/func_00158A80.c, no licence stated for its own code); ee-gcc 2.96 -O2 -G0 */
+void func_00151200_x00151200(s32_x00151200 *p, s32_x00151200 v) { s32_x00151200 *q = (s32_x00151200 *)((u8_x00151200 *)p + 0x48); s32_x00151200 s = *(s32_x00151200 *)((u8_x00151200 *)p + 8); func_0016A078_x00151200(s, q[0], v, q[5] + (q[8] << 1), 0); func_0016A108_x00151200(s); }
 typedef int s32_x00151250;
 typedef s32_x00151250 ptrdiff_t_x00151250;
 typedef char Sint8_x00151250;
@@ -1348,7 +1363,13 @@ void func_00151250_x00151250(ADXB_x00151250 adxb, Sint32_x00151250 arg1) {
     ADXPD_EntrySte_x00151250(adxpd, unk->unk0, arg1 * 2, a3, t0);
     ADXPD_Start_x00151250(adxpd);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_001512A8);
+typedef unsigned char u8_x001512A8;
+typedef signed int s32_x001512A8;
+void func_0016A0D8_x001512A8(s32_x001512A8, s32_x001512A8, s32_x001512A8, s32_x001512A8, s32_x001512A8) __asm__("func_00161AF0");
+void func_0016A108_x001512A8(s32_x001512A8) __asm__("func_00161B20");
+void func_001512A8_x001512A8(s32_x001512A8 *p, s32_x001512A8 v) __asm__("func_001512A8");
+/* func_00158B28: from https://github.com/Subarasheese/pes6decomp (src/middleware/cri/adx_bsc/func_00158B28.c, no licence stated for its own code); ee-gcc 2.96 -O2 -G0 */
+void func_001512A8_x001512A8(s32_x001512A8 *p, s32_x001512A8 v) { s32_x001512A8 *q = (s32_x001512A8 *)((u8_x001512A8 *)p + 0x48); s32_x001512A8 s = *(s32_x001512A8 *)((u8_x001512A8 *)p + 8); s32_x001512A8 a3 = q[5] + (q[8] << 1); func_0016A0D8_x001512A8(s, q[0], v, a3, a3 + (q[7] << 1)); func_0016A108_x001512A8(s); }
 typedef struct AdxbIn_x00151300 {
     int unk0;
     int nbyte;
