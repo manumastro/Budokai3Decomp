@@ -1605,7 +1605,43 @@ void func_00173A70(void) {
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173A78);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001742A8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001743C8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001745E0);
+typedef struct { char *data; int len; } Ck_45E0_x001745E0;
+struct Sj_45E0_x001745E0;
+typedef struct { char pad[0x18]; void (*getck)(struct Sj_45E0_x001745E0 *, int, int, Ck_45E0_x001745E0 *); void *pad1C; void (*putck)(struct Sj_45E0_x001745E0 *, int, Ck_45E0_x001745E0 *); } Vt_45E0_x001745E0;
+typedef struct Sj_45E0_x001745E0 { Vt_45E0_x001745E0 *vt; } Sj_45E0_x001745E0;
+typedef struct { Sj_45E0_x001745E0 *sj; void (*cb)(void *, int); void *cbobj; } Ent_45E0_x001745E0;
+typedef struct { char pad0[0x118]; Ent_45E0_x001745E0 ent[4]; char pad148[0x148 - 0x148]; int f148; char pad14C[0x578 - 0x14C]; int f578; char pad57C[0x634 - 0x57C]; int idx; } Mpv_45E0_x001745E0;
+extern char D_00465238_x001745E0[] __asm__("D_00465238");
+void *memcpy_x001745E0(void *, const void *, unsigned int) __asm__("memcpy");
+void func_00174758_x001745E0(Mpv_45E0_x001745E0 *, char *, int) __asm__("func_00174758");
+void func_001745E0_x001745E0(Mpv_45E0_x001745E0 *m, char *src, int len) __asm__("func_001745E0");
+void func_001745E0_x001745E0(Mpv_45E0_x001745E0 *m, char *src, int len)
+{
+    Ck_45E0_x001745E0 ck;
+    Ck_45E0_x001745E0 ck2;
+    int idx = m->idx;
+    Sj_45E0_x001745E0 *sj = m->ent[idx].sj;
+
+    if (sj != 0) {
+        sj->vt->getck(sj, 0, len, &ck);
+        memcpy_x001745E0(ck.data, src, ck.len);
+        sj->vt->putck(sj, 1, &ck);
+        if (ck.len < len) {
+            sj->vt->getck(sj, 0, len - ck.len, &ck2);
+            memcpy_x001745E0(ck2.data, src + ck.len, ck2.len);
+            sj->vt->putck(sj, 1, &ck2);
+        }
+        if (m->ent[idx].cb != 0) {
+            m->ent[idx].cb(m->ent[idx].cbobj, idx);
+        }
+    }
+    if (idx == 3 && m->f148 != 0) {
+        if (m->f578 != 0) {
+            func_00174758_x001745E0(m, D_00465238_x001745E0, 8);
+        }
+        func_00174758_x001745E0(m, src, len);
+    }
+}
 struct SfdSj_x00174758;
 typedef struct M2vErrInf_x00174758 {
     int (*func)(void *obj);
