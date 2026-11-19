@@ -3803,7 +3803,6 @@ void memset(void *, s32, s32);
 void func_00215EB0(void);
 void func_00212650(u8 *p);
 
-#if 0
 void func_002163D0(u8 *a) {
     u8 *p;
     s32 idx;
@@ -3813,25 +3812,21 @@ void func_002163D0(u8 *a) {
     p = func_00215320(0, 0x400);
     idx = *(s16 *)(a + 0x20);
     if (p != 0) {
-        q = p + 0x20;
-        *(void **)(p + 0x8) = (void *)func_00215EB0;
-        *(void **)(p + 0xC) = (void *)func_00212650;
+        *(s32 *)(p + 0x8) = (s32)func_00215EB0;
+        *(s32 *)(p + 0xC) = (s32)func_00212650;
         *(s32 *)(p + 0x18) = 0x442F0000;
+        q = p + 0x20;
         memset(q, 0, 0x50);
         e = *(s32 *)(D_0046FDD0 + idx * 4);
         if (e != 0) {
             *(s32 *)(p + 0x10) = func_00209540(e, 0x4000040, 0);
         }
         if (*(s32 *)(p + 0x10) != 0) {
-            idx = *(s16 *)(a + 0x22);
-            *(s32 *)(q + 0x20) = *(s32 *)(D_0046FDD0 + idx * 4);
-            *(s32 *)(q + 0x28) = (idx << 5) + 0x03001000;
+            *(s32 *)(q + 0x20) = *(s32 *)(D_0046FDD0 + *(s16 *)(a + 0x22) * 4);
+            *(s32 *)(q + 0x28) = (*(s16 *)(a + 0x22) << 5) + 0x03001000;
         }
     }
 }
-// differs: the stores of the two function addresses and of 0x442F0000 are scheduled in another order in this build; the second table lookup and its sll are also placed later (size 0xEC against 0x100)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002163D0);
 void func_00212050();
 
 void func_00212050();
