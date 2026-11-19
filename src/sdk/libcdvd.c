@@ -429,7 +429,110 @@ int func_00118E70_x00118E70(int cmd,int *out){
  }else v=D_004878A8_x00118E70;
  *out=v; done: return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00118F20);
+typedef struct { int pad[9]; void *serve; int pad2[6]; } sceSifClientData_x00118F20;
+extern int D_002C6750_x00118F20 __asm__("D_003EDD90");
+extern volatile int D_002C6760_x00118F20 __asm__("D_003EDDA0");
+extern volatile int D_002C6764_x00118F20 __asm__("D_003EDDA4");
+extern volatile int D_002C6768_x00118F20 __asm__("D_003EDDA8");
+extern volatile int D_002C676C_x00118F20 __asm__("D_003EDDAC");
+extern int D_002C6778_x00118F20 __asm__("D_003EDDB8");
+extern int D_002C677C_x00118F20 __asm__("D_003EDDBC");
+extern int D_002C6784_x00118F20 __asm__("D_003EDDC4");
+extern int D_002C6788_x00118F20 __asm__("D_003EDDC8");
+extern int D_002C678C_x00118F20 __asm__("D_003EDDCC");
+extern int D_002C6790_x00118F20 __asm__("D_003EDDD0");
+extern int D_002C6794_x00118F20 __asm__("D_003EDDD4");
+extern int D_002C6798_x00118F20 __asm__("D_003EDDD8");
+extern int D_002C679C_x00118F20 __asm__("D_003EDDDC");
+extern sceSifClientData_x00118F20 D_004504E8_x00118F20 __asm__("D_00478F28");
+extern int D_00450540_x00118F20[] __asm__("D_00478F80");
+extern int D_002C7940_x00118F20[] __asm__("D_003EEF80");
+extern char D_002AB570_x00118F20[] __asm__("D_0045DD10");
+extern char D_002AB590_x00118F20[] __asm__("D_0045DD30");
+int func_00236960_x00118F20(const char *, ...) __asm__("scePrintf");
+int sceCdSyncS_x00118F20(int) __asm__("func_00118CA8");
+void sceSifInitRpc_x00118F20(unsigned int) __asm__("sceSifInitRpc");
+int sceSifBindRpc_x00118F20(sceSifClientData_x00118F20 *, unsigned int, unsigned int) __asm__("sceSifBindRpc");
+void sceSifWriteBackDCache_x00118F20(void *, int) __asm__("func_0010D770");
+int sceSifCallRpc_x00118F20(sceSifClientData_x00118F20 *, int, unsigned int, void *, int, void *, int, void *, void *) __asm__("sceSifCallRpc");
+void cdvd_exit_x00118F20(void) __asm__("func_00118508");
+void cmd_sem_init_x00118F20(void) __asm__("func_00118420");
+int PowerOffCB_x00118F20(void) __asm__("func_00118680");
+static __inline__ void nopdelay_x00118F20(void)
+{
+    int i = 0x100000;
+    while (i--) ;
+}
+int func_00118F20_x00118F20(int mode) __asm__("func_00118F20");
+/* sceCdInit: from https://github.com/Komasia/sly2-decomp (src/lib/sceCdInit.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00118F20_x00118F20(int mode)
+{
+    int r;
+    int *p;
+    if (sceCdSyncS_x00118F20(1)) return 0;
+    sceSifInitRpc_x00118F20(0);
+    D_002C678C_x00118F20 = -1;
+    D_002C677C_x00118F20 = -1;
+    D_002C6794_x00118F20 = -1;
+    D_002C6790_x00118F20 = -1;
+    D_002C6798_x00118F20 = -1;
+    D_002C6788_x00118F20 = -1;
+    D_002C6764_x00118F20 = 1;
+    D_002C6778_x00118F20 = 0;
+    *(volatile int *)&D_002C679C_x00118F20 = D_002C679C_x00118F20 + 1;
+    while (1) {
+        int b = sceSifBindRpc_x00118F20(&D_004504E8_x00118F20, 0x80000592, 0);
+        if (b < 0) {
+            if (D_002C6750_x00118F20 > 0) func_00236960_x00118F20(D_002AB570_x00118F20, b, D_002C679C_x00118F20);
+            nopdelay_x00118F20();
+            continue;
+        }
+        if (D_004504E8_x00118F20.serve != 0) {
+            D_002C6798_x00118F20 = 0;
+            D_00450540_x00118F20[0] = mode;
+            sceSifWriteBackDCache_x00118F20(D_00450540_x00118F20, 4);
+            p = D_002C7940_x00118F20;
+            if (sceSifCallRpc_x00118F20(&D_004504E8_x00118F20, 0, 0, D_00450540_x00118F20, 4, p, 0x10, 0, 0) < 0) {
+                D_002C6764_x00118F20 = 0;
+                return 0;
+            }
+            break;
+        }
+        nopdelay_x00118F20();
+    }
+    {
+         
+        int b = *(int *)((unsigned int)&p[1] | 0x20000000);
+        int c = *(int *)((unsigned int)&p[2] | 0x20000000);
+        int a = *(int *)((unsigned int)&p[3] | 0x20000000);
+        r = 1;
+        if (a == 0xFF) {
+        } else if (a == 0xFE) {
+            D_002C6750_x00118F20 = 1;
+        } else if (b / 256 < 2 || c / 256 < 2) {
+            r = 2;
+        }
+    }
+    D_002C6764_x00118F20 = 0;
+    switch (mode) {
+    case 5:
+        if (D_002C6750_x00118F20 > 0) func_00236960_x00118F20(D_002AB590_x00118F20);
+        cdvd_exit_x00118F20();
+        D_002C6768_x00118F20 = -1;
+        D_002C676C_x00118F20 = -1;
+        D_002C6760_x00118F20 = -1;
+        D_002C6784_x00118F20 = 0;
+        break;
+    case 0: case 1:
+    default:
+        cmd_sem_init_x00118F20();
+        PowerOffCB_x00118F20();
+        D_002C6784_x00118F20 = 1;
+        break;
+    }
+    return r;
+}
+__asm__("# rebind func_00118F20 0x00118F20");
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00119208);
 INCLUDE_ASM("asm/nonmatchings/sdk/libcdvd", func_00119420);
 int SignalSema_x00119640(int sema) __asm__("SignalSema");

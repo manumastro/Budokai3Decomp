@@ -367,8 +367,66 @@ s32 func_00112BF0(void) {
     memset(&D_00475028, 0, 4);
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112C28);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00112E30);
+typedef struct { char pad[0x24]; int serve; char pad2[0x18]; } RpcCd_x00112C28;
+typedef struct { char d[0xFC]; } Blk252_x00112C28;
+typedef struct { int ret; int size; char name[0xFC]; char data[0xFC]; } RpcBuf_x00112C28;
+extern RpcCd_x00112C28 D_004E63C0_x00112C28 __asm__("D_00475000");
+extern RpcBuf_x00112C28 D_004E61C0_x00112C28 __asm__("D_00474E00");
+extern int sceSifCallRpc_x00112C28(void *cd, int fno, int mode, void *send, int ssize, void *recv, int rsize, void *endf, void *endp) __asm__("sceSifCallRpc");
+extern int _lf_bind_x00112C28(void) __asm__("func_00112A60");
+extern int _lf_version_x00112C28(void) __asm__("func_00112B60");
+extern void *memcpy_x00112C28(void *, const void *, unsigned int) __asm__("func_00125740");
+int func_00112C28_x00112C28(int id, int size, void *data, int *out) __asm__("func_00112C28");
+/* _sceSifLoadModuleBuffer: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_114A80.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00112C28_x00112C28(int id, int size, void *data, int *out)
+{
+    if (_lf_bind_x00112C28() < 0) return -0x10000;
+    if (_lf_version_x00112C28() != 0) return -0x10004;
+    D_004E61C0_x00112C28.ret = id;
+    if (data != 0) {
+        if (size > 0xFC) {
+            *(Blk252_x00112C28 *)D_004E61C0_x00112C28.data = *(Blk252_x00112C28 *)data;
+            D_004E61C0_x00112C28.size = 0xFC;
+        } else {
+            memcpy_x00112C28(D_004E61C0_x00112C28.data, data, size);
+            D_004E61C0_x00112C28.size = size;
+        }
+    } else {
+        D_004E61C0_x00112C28.size = 0;
+    }
+    if (sceSifCallRpc_x00112C28(&D_004E63C0_x00112C28, 6, 0, &D_004E61C0_x00112C28, 0x200, &D_004E61C0_x00112C28, 8, 0, 0) < 0) return -0x10001;
+    { int r = D_004E61C0_x00112C28.ret; *out = D_004E61C0_x00112C28.size; return r; }
+}
+typedef struct { char pad[0x24]; int serve; char pad2[0x18]; } RpcCd_x00112E30;
+typedef struct { char d[0xFC]; } Blk252_x00112E30;
+typedef struct { int ret; int size; char name[0xFC]; char data[0xFC]; } RpcBuf_x00112E30;
+extern RpcCd_x00112E30 D_004E63C0_x00112E30 __asm__("D_00475000");
+extern RpcBuf_x00112E30 D_004E61C0_x00112E30 __asm__("D_00474E00");
+extern int sceSifCallRpc_x00112E30(void *cd, int fno, int mode, void *send, int ssize, void *recv, int rsize, void *endf, void *endp) __asm__("sceSifCallRpc");
+extern int _lf_bind_x00112E30(void) __asm__("func_00112A60");
+extern int _lf_version_x00112E30(void) __asm__("func_00112B60");
+extern void *memcpy_x00112E30(void *, const void *, unsigned int) __asm__("func_00125740");
+int func_00112E30_x00112E30(int id, int size, void *data, int *out) __asm__("func_00112E30");
+/* sceSifStopModule: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_114A80.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00112E30_x00112E30(int id, int size, void *data, int *out)
+{
+    if (_lf_bind_x00112E30() < 0) return -0x10000;
+    if (_lf_version_x00112E30() != 0) return -0x10004;
+    D_004E61C0_x00112E30.ret = id;
+    if (data != 0) {
+        if (size > 0xFC) {
+            *(Blk252_x00112E30 *)D_004E61C0_x00112E30.data = *(Blk252_x00112E30 *)data;
+            D_004E61C0_x00112E30.size = 0xFC;
+        } else {
+            memcpy_x00112E30(D_004E61C0_x00112E30.data, data, size);
+            D_004E61C0_x00112E30.size = size;
+        }
+    } else {
+        D_004E61C0_x00112E30.size = 0;
+    }
+    if (sceSifCallRpc_x00112E30(&D_004E63C0_x00112E30, 7, 0, &D_004E61C0_x00112E30, 0x200, &D_004E61C0_x00112E30, 8, 0, 0) < 0) return -0x10001;
+    { int r = D_004E61C0_x00112E30.ret; *out = D_004E61C0_x00112E30.size; return r; }
+}
 typedef struct RpcPkt_x00113038 {
     void *cur_pkt;               
     int cur_pkt_id;
@@ -511,7 +569,39 @@ s32 func_00113218_x00113218(s32 arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("fun
 s32 func_00113218_x00113218(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return func_00112C28_x00113218(arg0, arg1, arg2, arg3);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00111C50", func_00113238);
+typedef struct { char pad[0x24]; int serve; char pad2[0x18]; } RpcCd_x00113238;
+typedef struct { char d[0xFC]; } Blk252_x00113238;
+typedef struct { int ret; int size; char name[0xFC]; char data[0xFC]; } RpcBuf_x00113238;
+extern RpcCd_x00113238 D_004E63C0_x00113238 __asm__("D_00475000");
+extern RpcBuf_x00113238 D_004E61C0_x00113238 __asm__("D_00474E00");
+extern int sceSifCallRpc_x00113238(void *cd, int fno, int mode, void *send, int ssize, void *recv, int rsize, void *endf, void *endp) __asm__("sceSifCallRpc");
+extern int _lf_bind_x00113238(void) __asm__("func_00112A60");
+extern int _lf_version_x00113238(void) __asm__("func_00112B60");
+extern void *memcpy_x00113238(void *, const void *, unsigned int) __asm__("func_00125740");
+extern char *strncpy_x00113238(char *, const char *, unsigned int) __asm__("func_00128040");
+int func_00113238_x00113238(const char *name, int size, void *data, int *out, int fno) __asm__("func_00113238");
+/* _sceSifLoadModule: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_115090.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00113238_x00113238(const char *name, int size, void *data, int *out, int fno)
+{
+    if (_lf_bind_x00113238() < 0) return -0x10000;
+    if (_lf_version_x00113238() != 0) return -0x10004;
+    strncpy_x00113238(D_004E61C0_x00113238.name, name, 0xFC);
+    D_004E61C0_x00113238.name[0xFB] = 0;
+    if (data != 0) {
+        if (size > 0xFC) {
+            *(Blk252_x00113238 *)D_004E61C0_x00113238.data = *(Blk252_x00113238 *)data;
+            D_004E61C0_x00113238.ret = 0xFC;
+        } else {
+            memcpy_x00113238(D_004E61C0_x00113238.data, data, size);
+            D_004E61C0_x00113238.ret = size;
+        }
+    } else {
+        D_004E61C0_x00113238.data[0] = 0;
+        D_004E61C0_x00113238.ret = 0;
+    }
+    if (sceSifCallRpc_x00113238(&D_004E63C0_x00113238, fno, 0, &D_004E61C0_x00113238, 0x200, &D_004E61C0_x00113238, 8, 0, 0) < 0) return -0x10001;
+    { int r = D_004E61C0_x00113238.ret; *out = D_004E61C0_x00113238.size; return r; }
+}
 int _sceSifLoadModule_x00113460(void *name, int arglen, int args, int ret, int rpcno) __asm__("func_00113238");
 int _sceSifLoadModule_x00113460(void *name, int arglen, int args, int ret, int rpcno) __asm__("func_00113238");
 int func_00113460_x00113460(void *name, int arglen, int args) __asm__("func_00113460");

@@ -28,7 +28,58 @@ extern s32 D_00411598;
 s32 func_00118C08(s32);                     /* extern */
 s32 func_00164D38(s32);                     /* extern */
 
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00163EE8);
+void scePrintf_x00163EE8(const char *format, ...) __asm__("scePrintf");
+struct stat_x00163EE8;
+typedef struct {
+    unsigned char trycount;
+    unsigned char spindlctrl;
+    unsigned char datapattern;
+    unsigned char pad;
+} sceCdRMode_x00163EE8;
+void SVM_LockVar_x00163EE8(void) __asm__("func_0016FF70");
+void SVM_UnlockVar_x00163EE8(void) __asm__("func_0016FFE8");
+typedef struct SrdObj_x00163EE8 SrdObj_x00163EE8;
+struct SrdObj_x00163EE8 {
+    signed char used;
+    signed char devtype;
+    signed char stat_x00163EE8;
+    signed char mode;
+    int abort_request;
+    int lsn;
+    int sectors;
+    void *buf;
+    sceCdRMode_x00163EE8 rmode;
+    void *host_buf;
+    int pad1c;
+    long long host_size;
+    long long host_sector;
+    int fd;
+    int error;
+};
+extern SrdObj_x00163EE8 srd_obj_x00163EE8 __asm__("D_00411598");
+extern int srd_destroy_cnt_x00163EE8 __asm__("D_004115FC");
+void srd_reset_obj_x00163EE8(void) __asm__("func_00163E30");
+extern char ext_str0_x00163EE8[] __asm__("D_00462EC0");
+extern char ext_str1_x00163EE8[] __asm__("D_00462E80");
+void srd_reset_obj_x00163EE8(void) __attribute__((weak, section(".b3stub")));
+void srd_reset_obj_x00163EE8(void) {}
+void func_00163EE8_x00163EE8(SrdObj_x00163EE8 *h) __asm__("func_00163EE8");
+/* SRD_Destroy: from https://github.com/crashbashash/DW4_Decomp (src/cri/srd.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00163EE8_x00163EE8(SrdObj_x00163EE8 *h)
+{
+    SVM_LockVar_x00163EE8();
+    if (h != &srd_obj_x00163EE8) {
+        scePrintf_x00163EE8(ext_str1_x00163EE8, h, &srd_obj_x00163EE8);
+    } else {
+        if (h->stat_x00163EE8 != 0 && h->stat_x00163EE8 != 3 && h->stat_x00163EE8 != 9) {
+            scePrintf_x00163EE8(ext_str0_x00163EE8);
+        }
+        srd_reset_obj_x00163EE8();
+        srd_obj_x00163EE8.used = 0;
+        srd_destroy_cnt_x00163EE8++;
+    }
+    SVM_UnlockVar_x00163EE8();
+}
 typedef unsigned char u_char_x00163F88;
 typedef int s32_x00163F88;
 typedef char Sint8_x00163F88;
@@ -398,8 +449,216 @@ int func_001643F0_x001643F0(SrdObj_x001643F0 *h)
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164500);
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_001646D0);
+typedef unsigned char u_char_x00164500;
+typedef unsigned int u_int_x00164500;
+typedef char Sint8_x00164500;
+typedef signed int Sint32_x00164500;
+typedef signed long Sint64_x00164500;
+extern Sint32_x00164500 SVM_SetCbSvr_x00164500(Sint32_x00164500, Sint32_x00164500 (*)(void*), void*) __asm__("SVM_SetCbSvr");
+extern void SVM_SetCbSvrId_x00164500(Sint32_x00164500, Sint32_x00164500, Sint32_x00164500 (*)(void*), void*) __asm__("SVM_SetCbSvrId");
+extern int AddIntcHandler_x00164500(int, int (*)(int), int) __asm__("AddIntcHandler");
+extern int AddDmacHandler_x00164500(int, int (*)(int), int) __asm__("AddDmacHandler");
+void scePrintf_x00164500(const char* fmt, ...) __asm__("scePrintf");
+typedef struct {
+    u_char_x00164500 trycount;
+    u_char_x00164500 spindlctrl;
+    u_char_x00164500 datapattern;
+    u_char_x00164500 pad;
+} sceCdRMode_x00164500;
+int sceCdRead_x00164500(u_int_x00164500 lbn, u_int_x00164500 sectors, void* buf, sceCdRMode_x00164500* mode) __asm__("func_00119640");
+extern int* sceCdCallback_x00164500(void (*func)(int)) __asm__("sceCdCallback");
+int sceCdSync_x00164500(int mode) __asm__("func_00118C08");
+int sceCdBreak_x00164500(void) __asm__("func_00119A40");
+typedef struct {
+               Sint8_x00164500 unk0;
+               Sint8_x00164500 unk1;
+               Sint8_x00164500 stat;
+               Sint8_x00164500 unk3;
+               Sint32_x00164500 unk4;
+               Sint32_x00164500 unk8;
+               Sint32_x00164500 unkC;
+               void* unk10;
+               sceCdRMode_x00164500 unk14;
+               void* unk18;
+               Sint32_x00164500 unk1C;
+               Sint32_x00164500 unk20;
+               Sint32_x00164500 unk24;
+               Sint64_x00164500 unk28;
+               Sint32_x00164500 fd;
+               Sint32_x00164500 unk34;
+} SRD_OBJ_x00164500;
+typedef SRD_OBJ_x00164500* SRD_x00164500;
+extern Sint32_x00164500 volatile srd_debug_geterror_x00164500 __asm__("D_004115EC");
+extern Sint32_x00164500 volatile srd_debug_rdbg_cnt_x00164500 __asm__("D_004115F0");
+extern Sint32_x00164500 volatile srd_debug_rded_cnt_x00164500 __asm__("D_004115F4");
+void SRD_SetHistory_x00164500(Sint32_x00164500 arg0) __asm__("func_00164D38");
+Sint32_x00164500 srd_check_dvd_error_x00164500(SRD_x00164500 srd) __asm__("func_001643F0");
+void SRD_SetHistory_x00164500(Sint32_x00164500 arg0) __asm__("func_00164D38");
+Sint32_x00164500 srd_check_dvd_error_x00164500(SRD_x00164500 srd) __attribute__((weak, section(".b3stub")));
+Sint32_x00164500 srd_check_dvd_error_x00164500(SRD_x00164500 srd) {}
+void func_00164500_x00164500(SRD_x00164500 srd) __asm__("func_00164500");
+/* srd_exec_dvd: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/cri_srd.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+void func_00164500_x00164500(SRD_x00164500 srd) {
+    Sint32_x00164500 err;
+    Sint32_x00164500 dvd_err;
+    if (srd->unk4 == 1) {
+        switch (srd->stat) {
+        case 2:
+            SRD_SetHistory_x00164500(0x1600);
+            err = sceCdBreak_x00164500();
+            SRD_SetHistory_x00164500(0x1601);
+            if (err == 0) {
+                scePrintf_x00164500("SRD_x00164500: sceCdBreak_x00164500 is fail. %d\n", srd_debug_geterror_x00164500);
+            }
+            SRD_SetHistory_x00164500(0x1700);
+            sceCdSync_x00164500(0);
+            SRD_SetHistory_x00164500(0x1701);
+            srd->stat = 0;
+            srd_debug_rded_cnt_x00164500 += 1;
+            break;
+        case 1:
+        case 3:
+        case 9:
+            srd->stat = 0;
+            break;
+        case 0:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            break;
+        }
+        srd->unk4 = 0;
+    }
+    switch (srd->stat) {
+    case 1:
+        SRD_SetHistory_x00164500(0x1800);
+        err = sceCdRead_x00164500(srd->unk8, srd->unkC, srd->unk10, &srd->unk14);
+        SRD_SetHistory_x00164500(0x1801);
+        if (err == 1) {
+            srd_debug_rdbg_cnt_x00164500 += 1;
+            srd->stat = 2;
+        } else {
+            srd->stat = 9;
+            srd->unk34 = -1;
+        }
+        break;
+    }
+    switch (srd->stat) {
+    case 2:
+        SRD_SetHistory_x00164500(0x1900);
+        err = sceCdSync_x00164500(1);
+        SRD_SetHistory_x00164500(0x1901);
+        dvd_err = srd_check_dvd_error_x00164500(srd);
+        if (err == 0) {
+            srd->stat = (dvd_err == 1) ? 9 : 3;
+            srd_debug_rded_cnt_x00164500 += 1;
+        }
+        break;
+    }
+}
+__asm__("# rebind func_00164500 0x00164500");
+struct stat_x001646D0;
+typedef struct {
+    unsigned char trycount;
+    unsigned char spindlctrl;
+    unsigned char datapattern;
+    unsigned char pad;
+} sceCdRMode_x001646D0;
+typedef struct SrdObj_x001646D0 SrdObj_x001646D0;
+void SRD_SetHistory_x001646D0(int value) __asm__("func_00164D38");
+long long SRD_SceLseek_x001646D0(int fd, long long offset, int whence) __asm__("func_00164F18");
+int SRD_SceIoctl_x001646D0(int fd, int cmd, int *result) __asm__("func_00164FD0");
+int SRD_SceRead_x001646D0(int fd, void *buf, int size) __asm__("func_00165108");
+struct SrdObj_x001646D0 {
+    signed char used;
+    signed char devtype;
+    signed char stat_x001646D0;
+    signed char mode;
+    int abort_request;
+    int lsn;
+    int sectors;
+    void *buf;
+    sceCdRMode_x001646D0 rmode;
+    void *host_buf;
+    int pad1c;
+    long long host_size;
+    long long host_sector;
+    int fd;
+    int error;
+};
+extern volatile int srd_debug_rdbg_cnt_x001646D0 __asm__("D_004115F0");
+extern volatile int srd_debug_rded_cnt_x001646D0 __asm__("D_004115F4");
+void srd_wait_hst_x001646D0(SrdObj_x001646D0 *f) __asm__("func_00164188");
+void SRD_SetHistory_x001646D0(int value) __asm__("func_00164D38");
+long long SRD_SceLseek_x001646D0(int fd, long long offset, int whence) __asm__("func_00164F18");
+int SRD_SceIoctl_x001646D0(int fd, int cmd, int *result) __asm__("func_00164FD0");
+int SRD_SceRead_x001646D0(int fd, void *buf, int size) __asm__("func_00165108");
+void srd_wait_hst_x001646D0(SrdObj_x001646D0 *f) __attribute__((weak, section(".b3stub")));
+void srd_wait_hst_x001646D0(SrdObj_x001646D0 *f) {}
+void func_001646D0_x001646D0(SrdObj_x001646D0 *srd) __asm__("func_001646D0");
+/* srd_exec_hst: from https://github.com/crashbashash/DW4_Decomp (src/cri/srd.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001646D0_x001646D0(SrdObj_x001646D0 *srd)
+{
+    long ret;
+    int busy;
+    if (srd->abort_request == 1) {
+        switch (srd->stat_x001646D0) {
+        case 2:
+            srd_wait_hst_x001646D0(srd);
+            srd->stat_x001646D0 = 0;
+            srd_debug_rded_cnt_x001646D0++;
+        case 1:
+        case 3:
+        case 9:
+            srd->stat_x001646D0 = 0;
+            break;
+        case 0:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            break;
+        }
+        srd->abort_request = 0;
+    }
+    if (srd->stat_x001646D0 == 1) {
+        SRD_SetHistory_x001646D0(0x2000);
+        ret = SRD_SceLseek_x001646D0(srd->fd, srd->host_sector << 11, 0);
+        SRD_SetHistory_x001646D0(0x2001);
+        if (ret < 0) {
+            srd->stat_x001646D0 = 9;
+            srd->error = (int) ret;
+        }
+        SRD_SetHistory_x001646D0(0x2100);
+        ret = SRD_SceRead_x001646D0(srd->fd, srd->host_buf, srd->host_size);
+        SRD_SetHistory_x001646D0(0x2101);
+        if (ret >= 0) {
+            srd->stat_x001646D0 = 2;
+            srd_debug_rdbg_cnt_x001646D0++;
+        } else {
+            srd->stat_x001646D0 = 9;
+            srd->error = (int) ret;
+        }
+    }
+    if (srd->stat_x001646D0 == 2) {
+        SRD_SetHistory_x001646D0(0x2200);
+        if (SRD_SceIoctl_x001646D0(srd->fd, 1, &busy) < 0) {
+            SRD_SetHistory_x001646D0(0x2201);
+            srd->stat_x001646D0 = 9;
+            srd->error = -1;
+        } else {
+            SRD_SetHistory_x001646D0(0x2202);
+            if (busy == 0) {
+                srd->stat_x001646D0 = 3;
+                srd_debug_rded_cnt_x001646D0++;
+            }
+        }
+    }
+}
+__asm__("# rebind func_001646D0 0x001646D0");
 s32 func_001648A0(void) {
     return D_004115D4;
 }

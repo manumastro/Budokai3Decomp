@@ -1614,7 +1614,13 @@ u_long_x00115E00 func_00115E00_x00115E00(unsigned int sec, unsigned int usec)
 {
     return (u_long_x00115E00)sec * 147456000 + (u_long_x00115E00)usec * 147456000 / 1000000;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115E70);
+typedef unsigned long u_long_x00115E70;
+float func_00115E70_x00115E70(u_long_x00115E70 clocks) __asm__("func_00115E70");
+/* sceTimerBusClock2Freq: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+float func_00115E70_x00115E70(u_long_x00115E70 clocks)
+{
+    return 147456000.0f / clocks;
+}
 s32 func_00121288_x00115EC8(f32) __asm__("func_00121288");
 s32 func_00115EC8_x00115EC8(f32 fparg0) __asm__("func_00115EC8");
 s32 func_00115EC8_x00115EC8(f32 fparg0) {

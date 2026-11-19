@@ -115,17 +115,40 @@ def is_func_def(st):
     return st.endswith("}") and "(" in st[:st.find("{")] if "{" in st else False
 
 
-def isolate(item):
+def take_attributes(p):
+    """(p without its __attribute__((...)) groups, [the groups]) with balanced parentheses."""
+    attrs = []
+    while True:
+        m = re.search(r"\s*__attribute__\s*\(", p)
+        if not m:
+            return p, attrs
+        depth, j = 0, m.end() - 1
+        while j < len(p):
+            depth += p[j] == "("
+            depth -= p[j] == ")"
+            j += 1
+            if depth == 0:
+                break
+        attrs.append(" " + p[m.start():j].strip())
+        p = p[:m.start()] + p[j:]
+
+
+def isolate(item, pad=0):
     """The text that replaces the INCLUDE_ASM line: renamed declarations, then the renamed function."""
-    tag = f"_x{item['addr']:08X}"
+    tag = f"_x{item['addr']:08X}" + "_" * pad  # pad: see apply()
     name = item["name"]
     bind = item.get("bind", {})
     decls = [strip_comments(d) for d in item["decls"] if strip_comments(d)]
+    stubs = [d[len("B3STUB:"):] for d in decls if d.startswith("B3STUB:")]
+    decls = [d for d in decls if not d.startswith("B3STUB:")]
+    # B3LOCAL: a static object of the function's own (func_port.py): renamed, defined here, never bound
+    local = {k for k, d in enumerate(decls) if d.startswith("B3LOCAL:")}
+    decls = [d[len("B3LOCAL:"):] if k in local else d for k, d in enumerate(decls)]
     ren, labels = {}, {}
-    for st in decls:
+    for k, st in enumerate(decls):
         for n in decl_names(st):
             ren[n] = n + tag
-            if not is_type_decl(st) and not is_func_def(st):
+            if not is_type_decl(st) and not is_func_def(st) and k not in local:
                 labels[n] = bind.get(n, n)
         if is_func_def(st):
             # a static inline helper copied whole (func_port.py): renamed, never bound to a symbol
@@ -154,18 +177,31 @@ def isolate(item):
                 eq = p.find("=")
                 if eq >= 0 and p.find("{") < 0 or (eq >= 0 and eq < p.find("{")):
                     p = p[:eq].rstrip()
-                d = f'{p} __asm__("{labels[n]}");'
+                # gcc wants the asm label before any attribute of the declarator
+                p, attrs = take_attributes(p)
+                d = f'{p} __asm__("{labels[n]}"){"".join(attrs)};'
                 if not d.startswith("extern ") and not re.search(r"\b" + re.escape(n + tag) + r"\s*\(", d):
                     d = "extern " + d
                 fixed.append(d)
             new = "\n".join(fixed)
         out.append(new)
+    for st in stubs:
+        # the origin defines this callee before the function (func_port.py): an empty weak definition in .b3stub,
+        # a section the link drops, so ee-gcc compiles the calls as it did there; the real one is linked
+        st = pat.sub(lambda m: ren[m.group(1)], st).rstrip(";").strip()
+        if re.search(r"\(\s*\)\s*$", st):
+            continue  # an old-style head: nothing to define the same way
+        out.append(f'{st} __attribute__((weak, section(".b3stub")));\n{st} {{}}')
     func = pat.sub(lambda m: ren[m.group(1)], item["func"].rstrip("\n"))
     head = strip_comments(func[:func.index("{")])
     head = re.sub(r"^static\s+", "", head)
     func = re.sub(r"^((?:/\*.*?\*/\s*)*)static\s+", r"\1", func, flags=re.S)
     out.append(f'{head} __asm__("{name}");')
-    return "\n".join(out) + "\n" + func
+    tail = ""
+    if item.get("rebind"):
+        # its jump tables / static data / constants are the executable's (scripts/gcc_rebind.py)
+        tail = f'\n__asm__("# rebind {name} 0x{item["addr"]:08X}");'
+    return "\n".join(out) + "\n" + func + tail
 
 
 _KNOWN = None
@@ -229,6 +265,12 @@ def check(rel, name):
         bad = sorted(n for n in und - known_symbols() if not n.startswith(".") and n != "_gp")
         if bad:
             return False, "undefined: " + " ".join(bad[:5])
+        with open(obj, "rb") as f:
+            # the libraries' data is all in the data segments: data an object keeps would shift the link
+            data = [f"{s.name} {s['sh_size']:#x}" for s in ELFFile(f).iter_sections()
+                    if s.name in (".rodata", ".data", ".bss", ".sdata", ".sbss", ".lit4", ".lit8") and s["sh_size"]]
+        if data:
+            return False, "the object keeps data: " + ", ".join(data)
         return True, "OK"
     finally:
         shutil.rmtree(work, ignore_errors=True)

@@ -117,6 +117,9 @@ LICENSES = {
     "MioPan": ("https://github.com/Mikompilation/MioPan", "AGPL-3.0"),
     "recvx-enhanced-port": ("https://github.com/aikatore/recvx-enhanced-port", "MIT"),
     "crashwoc-nuworld": ("https://github.com/denzi-gh/crashwoc-nuworld", "GPL-3.0"),
+    "re4-to-android": ("https://github.com/MDCIrony/re4-to-android", "licence file not recognised (NOASSERTION)"),
+    "3s-decomp-ogxb": ("https://github.com/Manya3084/3s-decomp-ogxb", "MIT"),
+    "recvx-gc-decomp": ("https://github.com/fmil95/recvx-gc-decomp", "CC0-1.0"),
 }
 DATA_SECS = (".data", ".rodata", ".bss", ".sdata", ".sbss", ".lit4", ".lit8")
 PORT_LD = ROOT / "config" / "port_syms.ld"
@@ -161,7 +164,7 @@ def identifiers(text):
     return set(re.findall(r"[A-Za-z_]\w*", text))
 
 
-def closure(items, func_item, own):
+def closure(items, func_item, own, local=()):
     """The declarations (in source order) the function needs, functions as prototypes, data as extern."""
     import func_insert as FI
     by_name = {}
@@ -210,6 +213,17 @@ def closure(items, func_item, own):
                 continue
             h = re.sub(r"\b(static|extern)\b\s*", "", cparse.strip_attr(it.head)).strip()
             out.append(("func", it.name, h + ";"))
+            if k < items.index(func_item) and it.name in identifiers(func_item.text):
+                # the origin compiles this callee before the function: ee-gcc 2.96 then marks the calls to it
+                # (REG_EH_REGION 0), which changes the blocks and the delay slots it fills; an empty weak stub in
+                # a section the link drops (.b3stub) gives the same context without code (func_insert.py)
+                out.append(("stub", it.name, "B3STUB:" + h))
+        elif it.kind == "data" and it.name in local:
+            # an object the pairing found at two addresses: kept as the function's own static, each reference
+            # then bound to the executable's address by gcc_rebind.py
+            t = cparse._strip_comments(it.text).strip()
+            t = t if re.match(r"^static\b", t) else "static " + re.sub(r"^\s*extern\s+", "", t)
+            out.append(("local", it.name, "B3LOCAL:" + t))
         elif it.kind == "data":
             h = re.sub(r"\b(static|extern|const)\b\s*", lambda m: "const " if m.group(1) == "const" else "",
                        cparse.strip_attr(it.head)).strip()
@@ -284,7 +298,7 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
     fi = next((it for it in u.items if it.kind == "func" and it.name == ext_name), None)
     if fi is None:
         return None, "no function text"
-    decls, why = closure(u.items, fi, ext_name)
+    decls, why = closure(u.items, fi, ext_name, getattr(u.an, "rebind_data", set()))
     if decls is None:
         return None, why
     bind_all, _ = u.an.bind({ext_name: addr})
@@ -309,19 +323,24 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
             d = lp.section_bytes(u.ob.path, key[1])
             end = d.find(b"\0", key[2])
             lits[d[key[2]:end]] = label(a, "data")
+    # calls the compiler makes by itself (libgcc: __divdi3, __floatdisf, dptoli ...): their names go to
+    # config/port_syms.ld at the executable's address when the build does not define them
+    used = identifiers(fi.text)
+    known = {n for ns in syms.values() for n in ns}
+    aliases = {k[1]: a for k, a in bind_all.items() if k[0] == "sym" and k[1] not in used and k[1] not in known}
     func = fi.text
-    if re.search(r"\bswitch\b", func):
-        return None, "switch (a jump table would add .rodata the executable has elsewhere)"
-    if re.search(r"\b(static|const)\b[^;{}()]*=", func[func.index("{"):]):
-        return None, "local static or const data"
+    # a jump table, a local static/const or a non-string constant: the function's own data is bound to the
+    # executable's copy, reference by reference, when the file is assembled (scripts/gcc_rebind.py)
+    rebind = bool(re.search(r"\bswitch\b", func) or ext_name in getattr(u.an, "rebind", ())
+                  or re.search(r"\bstatic\b", func[func.index("{"):]))
     extra = []
     k = 0
-    for s, e, tok in reversed(cparse.string_tokens(func)):
-        if in_asm(func, s):
-            continue  # an __asm__ template or constraint, not a literal of the object's data
+    toks = [(s, e, tok) for s, e, tok in reversed(cparse.string_tokens(func)) if not in_asm(func, s)]
+    if any(cparse.c_string_value(tok) not in lits for _, _, tok in toks):
+        rebind = True  # a literal the pairing could not tie to one string: bound per reference instead
+    # a rebound function keeps its literals: gcc_rebind.py points each reference at the executable's string
+    for s, e, tok in ([] if rebind else toks):
         v = cparse.c_string_value(tok)
-        if v is None or v not in lits:
-            return None, "a string that is not the executable's"
         nm = f"ext_str{k}"
         k += 1
         func = func[:s] + nm + func[e:]
@@ -340,7 +359,7 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
     notice = re.match(r"\s*(/\*.*?\*/)", (ROOT / u.src).read_text(errors="replace"), re.S)
     if notice and re.search(r"copyright|permission|licen[cs]e", notice.group(1), re.I):
         head = notice.group(1) + "\n" + head  # the source's own notice goes with the function
-    return dict(addr=addr, name=our_name, decls=dl + extra, func=func, note=head, bind=bind, repo=u.repo, src=origin, ext_name=ext_name, status="match"), None
+    return dict(addr=addr, name=our_name, decls=dl + extra, func=func, note=head, bind=bind, repo=u.repo, src=origin, ext_name=ext_name, status="match", rebind=rebind, aliases=aliases), None
 
 
 def main():
@@ -419,6 +438,12 @@ def apply_items(items, new_syms, jobs, log, real=False):
         if n in used and ln not in have:
             lines.append(ln)
             have.add(ln)
+    for it in items:
+        for n, a in sorted(it.get("aliases", {}).items()):
+            ln = f"{n} = 0x{a:08X};"
+            if ln not in have and not any(x.startswith(f"{n} = ") for x in have):
+                lines.append(ln)
+                have.add(ln)
     PORT_LD.write_text("\n".join(lines) + "\n")
     for it in items:
         it["func"] = it["note"] + it["func"]

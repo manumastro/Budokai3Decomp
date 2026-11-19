@@ -239,7 +239,9 @@ def write_ninja():
         # C through ee-gcc (the libraries): compile to assembly, assemble with gas and the prelude, retag the ABI.
         "rule gcc",
         f"  command = {py} scripts/eegcc/eegcc.py $gcc_version $gcc_flags -Iinclude -Isrc $gcc_inc -S $in -o $out.s && "
-        f"$as {GCC_AS_FLAGS} include/gcc_prelude.inc $out.s -o $out && {py} scripts/set_eabi64.py $out",
+        # library data a ported function defines itself is bound to the executable's (REBIND_DATA, gcc_rebind.py)
+        f"{py} scripts/gcc_rebind.py $out.s $out.rb.s -Iinclude && "
+        f"$as {GCC_AS_FLAGS} include/gcc_prelude.inc $out.rb.s -o $out && {py} scripts/set_eabi64.py $out",
         "  description = GCC $in",
         "",
         "rule ld",

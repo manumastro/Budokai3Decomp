@@ -176,7 +176,45 @@ void func_001702E8_x001702E8(unsigned long first, unsigned long second, char *bu
     strncat_x001702E8(buf, ext_str0_x001702E8, n - strlen_x001702E8(buf) - 1);
     svm_ltoa_x001702E8(second, buf + strlen_x001702E8(buf), 4 - strlen_x001702E8(buf));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/svm", func_00170380);
+typedef int (*SvmSvrFunc_x00170380)(void *obj);
+void SVM_Lock_x00170380(void) __asm__("func_0016FF40");
+void SVM_Unlock_x00170380(void) __asm__("func_0016FF58");
+void SVM_CallErr1_x00170380(const char *msg) __asm__("func_00170118");
+typedef struct SvmSvr_x00170380 {
+    SvmSvrFunc_x00170380 func;
+    void *obj;
+} SvmSvr_x00170380;
+extern SvmSvr_x00170380 svm_svr_x00170380[8][6] __asm__("D_004812A0");
+extern char SVM_SetCbSvr_too_many_server_function_x00170380[] __asm__("D_00464EE8");
+void SVM_Lock_x00170380(void) __asm__("func_0016FF40");
+void SVM_Unlock_x00170380(void) __asm__("func_0016FF58");
+void SVM_CallErr1_x00170380(const char *msg) __asm__("func_00170118");
+void SVM_Lock_x00170380(void) __attribute__((weak, section(".b3stub")));
+void SVM_Lock_x00170380(void) {}
+void SVM_Unlock_x00170380(void) __attribute__((weak, section(".b3stub")));
+void SVM_Unlock_x00170380(void) {}
+void SVM_CallErr1_x00170380(const char *msg) __attribute__((weak, section(".b3stub")));
+void SVM_CallErr1_x00170380(const char *msg) {}
+int func_00170380_x00170380(int svtype, SvmSvrFunc_x00170380 func, void *obj) __asm__("func_00170380");
+/* SVM_SetCbSvr: from https://github.com/crashbashash/DW4_Decomp (src/cri/svm.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00170380_x00170380(int svtype, SvmSvrFunc_x00170380 func, void *obj)
+{
+    int id;
+    SVM_Lock_x00170380();
+    for (id = 0; id < 6; id++) {
+        SvmSvr_x00170380 *svr = &svm_svr_x00170380[svtype][id];
+        if (svr->func == 0) {
+            svr->func = func;
+            svr->obj = obj;
+            break;
+        }
+    }
+    if (id == 6) {
+        SVM_CallErr1_x00170380(SVM_SetCbSvr_too_many_server_function_x00170380);
+    }
+    SVM_Unlock_x00170380();
+    return id == 6 ? -1 : id;
+}
 typedef unsigned int Uint32_x00170450;
 typedef signed int Sint32_x00170450;
 typedef char Char8_x00170450;

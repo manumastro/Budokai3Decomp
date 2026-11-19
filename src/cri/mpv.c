@@ -153,7 +153,30 @@ void func_00170968_x00170968(void)
     }
     svm_init_level_x00170968++;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001709A8);
+typedef unsigned int size_t_x001709A8;
+void *memset_x001709A8(void *, int, size_t_x001709A8) __asm__("memset");
+typedef void (*SvmErrFunc_x001709A8)(void *obj, char *msg);
+typedef unsigned int size_t_x001709A8;
+typedef struct SvmErrCb_x001709A8 {
+    SvmErrFunc_x001709A8 func;
+    void *obj;
+} SvmErrCb_x001709A8;
+extern volatile int svm_init_cnt_x001709A8 __asm__("D_004232F4");
+extern SvmErrCb_x001709A8 svm_cberr_x001709A8 __asm__("D_00481470");
+void svm_reset_variable_x001709A8(void) __asm__("func_001708E8");
+void svm_reset_variable_x001709A8(void) __asm__("func_001708E8");
+void svm_reset_variable_x001709A8(void) __attribute__((weak, section(".b3stub")));
+void svm_reset_variable_x001709A8(void) {}
+void func_001709A8_x001709A8(void) __asm__("func_001709A8");
+/* SVM_Finish: from https://github.com/crashbashash/DW4_Decomp (src/cri/svm.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001709A8_x001709A8(void)
+{
+    svm_init_cnt_x001709A8--;
+    if (svm_init_cnt_x001709A8 == 0) {
+        svm_reset_variable_x001709A8();
+        memset_x001709A8(&svm_cberr_x001709A8, 0, sizeof(svm_cberr_x001709A8));
+    }
+}
 s32 func_00170A00(s32 *arg0) {
     s32 temp_v0;
     s32 var_s0;
@@ -3259,7 +3282,22 @@ INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179310);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179400);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179860);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179EA0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017AAF0);
+int func_0017AAF0_x0017AAF0(unsigned char *p) __asm__("func_0017AAF0");
+/* MPS_GetStartCodeKind: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpsdmx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017AAF0_x0017AAF0(unsigned char *p) {
+    unsigned char code;
+    if (p[0] == 0 && p[1] == 0 && p[2] == 1) {
+        code = p[3];
+        switch (code) {
+        case 0xBA: return 0x10000;
+        case 0xBB: return 0x20000;
+        case 0xB9: return 0x80000;
+        }
+        if (code >= 0xBC) return 0x40000;
+    }
+    return 0;
+}
+__asm__("# rebind func_0017AAF0 0x0017AAF0");
 unsigned char *mpsdmx_SearchStartCode_x0017AB60(unsigned char *p, int size, unsigned char code) __asm__("func_0017ABC0");
 unsigned char *mpsdmx_SearchStartCode_x0017AB60(unsigned char *p, int size, unsigned char code) __asm__("func_0017ABC0");
 int func_0017AB60_x0017AB60(unsigned char *buf, int size) __asm__("func_0017AB60");
@@ -3728,10 +3766,171 @@ Sint32_x0017B420 func_0017B420_x0017B420(void *ptr)
         }
         return ret;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B4B8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B5B8);
+int MPV_CheckDelim_x0017B4B8(const unsigned char *p) __asm__("func_0017B420");
+int MPV_CheckDelim_x0017B4B8(const unsigned char *p) __asm__("func_0017B420");
+int MPV_CheckDelim_x0017B4B8(const unsigned char *p) __attribute__((weak, section(".b3stub")));
+int MPV_CheckDelim_x0017B4B8(const unsigned char *p) {}
+char *func_0017B4B8_x0017B4B8(char *end, int len, int mask) __asm__("func_0017B4B8");
+/* MPV_BsearchDelim: from https://github.com/crashbashash/DW4_Decomp (src/cri/startcode.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+char *func_0017B4B8_x0017B4B8(char *end, int len, int mask)
+{
+    char c;
+    unsigned int state = 0;
+    char *p = end;
+    char *start = end - len;
+    while (start < p) {
+        p--;
+        c = *p;
+        switch (state) {
+        case 0:
+            state = 1;
+            break;
+        case 1:
+            if (c == 1)
+                state = 2;
+            break;
+        case 2:
+            if (c == 0)
+                state = 3;
+            else if (c != 1)
+                state = 1;
+            break;
+        case 3:
+            if (c == 0) {
+                if (mask & MPV_CheckDelim_x0017B4B8((const unsigned char *)p))
+                    return p;
+                state = 0;
+            } else
+                state = c != 1 ? 1 : 2;
+            break;
+        }
+    }
+    return 0;
+}
+__asm__("# rebind func_0017B4B8 0x0017B4B8");
+int MPV_CheckDelim_x0017B5B8(const unsigned char *p) __asm__("func_0017B420");
+int MPV_CheckDelim_x0017B5B8(const unsigned char *p) __asm__("func_0017B420");
+int MPV_CheckDelim_x0017B5B8(const unsigned char *p) __attribute__((weak, section(".b3stub")));
+int MPV_CheckDelim_x0017B5B8(const unsigned char *p) {}
+char *func_0017B5B8_x0017B5B8(char *buf, int len, int mask) __asm__("func_0017B5B8");
+/* MPV_SearchDelim: from https://github.com/crashbashash/DW4_Decomp (src/cri/startcode.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+char *func_0017B5B8_x0017B5B8(char *buf, int len, int mask)
+{
+    char *p = buf;
+    char *end = buf + len;
+    unsigned int state = 0;
+    char c;
+    char *hit;
+    while (p < end) {
+        c = *p++;
+        switch (state) {
+        case 0:
+            if (c == 0)
+                state = 1;
+            break;
+        case 1:
+            state = c != 0 ? 0 : 2;
+            break;
+        case 2:
+            if (c == 1)
+                state = 3;
+            else if (c != 0)
+                state = 0;
+            break;
+        case 3:
+            hit = p - 4;
+            if (mask & MPV_CheckDelim_x0017B5B8((const unsigned char *)hit))
+                return hit;
+            state = 0;
+            break;
+        }
+    }
+    return 0;
+}
+__asm__("# rebind func_0017B5B8 0x0017B5B8");
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B6C0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B7D0);
+extern short mpvsc_mbaddr_incr_vlc_x0017B7D0[] __asm__("D_00424C40");
+int func_0017B7D0_x0017B7D0(unsigned char *buf, int nbyte, int nmb) __asm__("func_0017B7D0");
+/* MPV_IsEmptyBpic: from https://github.com/crashbashash/DW4_Decomp (src/cri/startcode.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017B7D0_x0017B7D0(unsigned char *buf, int nbyte, int nmb) {
+    int bit;
+    char *rp;
+    unsigned int cur, nxt;
+    int cnt;
+    unsigned int val;
+    int code;
+    int len;
+    int pos;
+    char *q;
+    { (rp) = (char *)((int)(buf) & ~3); (bit) = ((char *)(buf) - (rp)) << 3; { (cur) = *(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; }; (cur) <<= (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) != 0) { (val) = (cur) | ((nxt) >> (32 - (bit))); (cur) = (nxt) << (bit); } else { (val) = (cur); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    if (val != 0x101) {
+        return 0;
+    }
+    { if ((bit) >= 32 - (5)) { (bit) -= 32 - (5); if ((bit) != 0) { (cur) |= (nxt) >> ((5) - (bit)); (val) = (cur) >> (32 - (5)); (cur) = (nxt) << (bit); } else { (val) = (cur) >> (32 - (5)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (val) = (cur) >> (32 - (5)); (bit) += (5); (cur) <<= (5); } };
+    { (val) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    if (val != 0) {
+        return 0;
+    }
+    { (val) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    if (val == 0) {
+        return 0;
+    }
+    do { (val) = (cur) >> (32 - (6)); if ((bit) > 32 - (6)) { (val) |= (nxt) >> (64 - (6) - (bit)); } } while (0);
+    switch (val) {
+    case 0x16:
+    case 0x17:
+        { (bit) += (5); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (5); } };
+        break;
+    case 0x0B:
+        { (bit) += (6); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (6); } };
+        break;
+    default:
+        return 0;
+    }
+    cnt = nmb - 1;
+    for (;;) {
+        do { (val) = (cur) >> (32 - (11)); if ((bit) > 32 - (11)) { (val) |= (nxt) >> (64 - (11) - (bit)); } } while (0);
+        if (val != 8) {
+            break;
+        }
+        { (bit) += (11); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (11); } };
+        cnt -= 33;
+        if (cnt <= 33) {
+            break;
+        }
+    }
+    if (cnt <= 0 || cnt > 33) {
+        return 0;
+    }
+    code = mpvsc_mbaddr_incr_vlc_x0017B7D0[cnt];
+    len = code & 0xFF;
+    { if ((bit) >= 32 - (len)) { (bit) -= 32 - (len); if ((bit) != 0) { (cur) |= (nxt) >> ((len) - (bit)); (val) = (cur) >> (32 - (len)); (cur) = (nxt) << (bit); } else { (val) = (cur) >> (32 - (len)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (val) = (cur) >> (32 - (len)); (bit) += (len); (cur) <<= (len); } };
+    if (val != code >> 8) {
+        return 0;
+    }
+    do { (val) = (cur) >> (32 - (6)); if ((bit) > 32 - (6)) { (val) |= (nxt) >> (64 - (6) - (bit)); } } while (0);
+    switch (val) {
+    case 0x16:
+    case 0x17:
+        { (bit) += (5); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (5); } };
+        break;
+    case 0x0B:
+        { (bit) += (6); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (6); } };
+        break;
+    default:
+        return 0;
+    }
+    q = rp;
+    q += (bit + 7) >> 3;
+    q -= 8;
+    pos = q - (char *)buf;
+    if (pos > nbyte) {
+        return 0;
+    }
+    return 1;
+}
+__asm__("# rebind func_0017B7D0 0x0017B7D0");
 int MPV_CheckDelim_x0017BC78(const unsigned char *p) __asm__("func_0017B420");
 char *MPV_SearchDelim_x0017BC78(char *buf, int len, int mask) __asm__("func_0017B5B8");
 extern short mpvsc_mbaddr_incr_vlc_x0017BC78[] __asm__("D_00424C40");
@@ -15394,7 +15593,14 @@ INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017ED20);
 void func_0017EE60(void) {
     func_0017EE78();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EE78);
+int func_0017EE78_x0017EE78(int a, int b, int c) __asm__("func_0017EE78");
+/* UTY_MulDiv: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017EE78_x0017EE78(int a, int b, int c) {
+    if (c == 0) {
+        return ((a ^ b) < 0) ? (int)0x80000000 : 0x7FFFFFFF;
+    }
+    return (long)a * b / c;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EEE8);
 typedef struct MwsfdCreInf_x0017EF98 {
     int type;

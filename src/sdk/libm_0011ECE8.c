@@ -1,7 +1,61 @@
 #include "common.h"
 
 INCLUDE_ASM("asm/nonmatchings/sdk/libm_0011ECE8", func_0011ECE8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libm_0011ECE8", func_0011EE78);
+extern const double D_00499BE0_x0011EE78 __asm__("D_00499BE0");
+typedef union { float value; unsigned int word; } ieee_float_shape_type_x0011EE78;
+static const float atanhi[] = {
+  4.6364760399e-01,
+  7.8539812565e-01,
+  9.8279368877e-01,
+  1.5707962513e+00,
+};
+extern const float atanlo_x0011EE78[] __asm__("D_0045E648");
+extern const float aT_x0011EE78[] __asm__("D_0045E658");
+extern float Libc_Fabsf_x0011EE78(float x) __asm__("func_0011F2F8");
+float Libc_Fabsf_x0011EE78(float x) __asm__("func_0011F2F8");
+float func_0011EE78_x0011EE78(float x) __asm__("func_0011EE78");
+/* Libc_Atanf: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libgcc/libgcc_3.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+float func_0011EE78_x0011EE78(float x)
+{
+        const float one = 1.0, D_00499BE0_x0011EE78 = 1.0e30;
+        float w,s1,s2,z;
+        int ix,hx,id;
+        do { ieee_float_shape_type_x0011EE78 gf_u; gf_u.value = (x); (hx) = gf_u.word; } while (0);
+        ix = hx&0x7fffffff;
+        if(ix>=0x50800000) {
+            if(hx>0) return atanhi[3]+atanlo_x0011EE78[3];
+            else return -atanhi[3]-atanlo_x0011EE78[3];
+        } if (ix < 0x3ee00000) {
+            if (ix < 0x31000000) {
+                if(D_00499BE0_x0011EE78+x>one) return x;
+            }
+            id = -1;
+        } else {
+        x = Libc_Fabsf_x0011EE78(x);
+        if (ix < 0x3f980000) {
+            if (ix < 0x3f300000) {
+                id = 0; x = ((float)2.0*x-one)/((float)2.0+x);
+            } else {
+                id = 1; x = (x-one)/(x+one);
+            }
+        } else {
+            if (ix < 0x401c0000) {
+                id = 2; x = (x-(float)1.5)/(one+(float)1.5*x);
+            } else {
+                id = 3; x = -(float)1.0/x;
+            }
+        }}
+        z = x*x;
+        w = z*z;
+        s1 = z*(aT_x0011EE78[0]+w*(aT_x0011EE78[2]+w*(aT_x0011EE78[4]+w*(aT_x0011EE78[6]+w*(aT_x0011EE78[8]+w*aT_x0011EE78[10])))));
+        s2 = w*(aT_x0011EE78[1]+w*(aT_x0011EE78[3]+w*(aT_x0011EE78[5]+w*(aT_x0011EE78[7]+w*aT_x0011EE78[9]))));
+        if (id<0) return x - x*(s1+s2);
+        else {
+            z = atanhi[id] - ((x*(s1+s2) - atanlo_x0011EE78[id]) - x);
+            return (hx<0)? -z:z;
+        }
+}
+__asm__("# rebind func_0011EE78 0x0011EE78");
 typedef int __int32_t_x0011F108;
 typedef unsigned int __uint32_t_x0011F108;
 typedef union {

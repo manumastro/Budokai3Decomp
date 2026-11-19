@@ -33,7 +33,89 @@ extern s8 D_004186F8;
 extern s32 D_00418684;
 extern s32 D_00418688;
 
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", mfci_get_adr_size);
+typedef void (*CvFsErrFn_x0016A7F8)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0016A7F8)(CvFsErrFn_x0016A7F8 func, void *obj);
+typedef int (*CvFsPathFn_x0016A7F8)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0016A7F8)(void);
+typedef int (*CvFsOpenFn_x0016A7F8)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0016A7F8)(int fd);
+typedef int (*CvFsFdIntFn_x0016A7F8)(int fd);
+typedef int (*CvFsSeekFn_x0016A7F8)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0016A7F8)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0016A7F8)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0016A7F8)(void);
+typedef int (*CvFsLoadDirInfoFn_x0016A7F8)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0016A7F8)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0016A7F8)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0016A7F8 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0016A7F8 entry_err_func;
+    CvFsPathFn_x0016A7F8 get_file_size;
+    CvFsGetFreeSizeFn_x0016A7F8 get_free_size;
+    CvFsOpenFn_x0016A7F8 open;
+    CvFsFdFn_x0016A7F8 close;
+    CvFsSeekFn_x0016A7F8 seek;
+    CvFsFdIntFn_x0016A7F8 tell;
+    CvFsXferFn_x0016A7F8 req_rd;
+    CvFsXferFn_x0016A7F8 req_wr;
+    CvFsFdFn_x0016A7F8 stop_tr;
+    CvFsFdIntFn_x0016A7F8 get_stat;
+    CvFsFdIntFn_x0016A7F8 get_sct_len;
+    CvFsSetSctLenFn_x0016A7F8 set_sct_len;
+    CvFsFdIntFn_x0016A7F8 get_num_tr;
+    CvFsPathFn_x0016A7F8 change_dir;
+    CvFsPathFn_x0016A7F8 is_exist_file;
+    CvFsGetNumFilesFn_x0016A7F8 get_num_files;
+    CvFsLoadDirInfoFn_x0016A7F8 load_dir_info;
+    CvFsFdIntFn_x0016A7F8 get_max_byte_rate;
+    CvFsPathFn_x0016A7F8 make_dir;
+    CvFsPathFn_x0016A7F8 remove_dir;
+    CvFsPathFn_x0016A7F8 delete_file;
+    CvFsGetFileSizeExFn_x0016A7F8 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0016A7F8 opt_fn2;
+} CvFsVtbl_x0016A7F8;
+extern CvFsVtbl_x0016A7F8 *addDevice_x0016A7F8(char *devname, CvFsVtbl_x0016A7F8 *(*get_if)(void)) __asm__("addDevice");
+typedef unsigned int size_t_x0016A7F8;
+int sprintf_x0016A7F8(char *, const char *, ...) __asm__("func_00127488");
+extern void qsort_x0016A7F8(void *, size_t_x0016A7F8, size_t_x0016A7F8, int (*)(const void *, const void *)) __asm__("qsort");
+size_t_x0016A7F8 strlen_x0016A7F8(const char *) __asm__("func_00127BA0");
+extern void mfCiEntryErrFunc_x0016A7F8(void (*func)(void *context, const char *message, void *detail), void *context) __asm__("mfCiEntryErrFunc");
+extern void (*mfci_err_func_x0016A7F8)(void *context, const char *message, void *detail) __asm__("mfci_err_func");
+extern char mfci_msg_x0016A7F8[304] __asm__("D_00418FB8");
+void mfci_call_errfn_x0016A7F8(void *detail, const char *message) __asm__("func_0016A7B0");
+unsigned long mfci_strtoul_x0016A7F8(const char *s, char **end, int base) __asm__("func_0016A7E0");
+void mfCiEntryErrFunc_x0016A7F8(void (*func)(void *context, const char *message, void *detail), void *context) __asm__("mfCiEntryErrFunc");
+extern char ext_str0_x0016A7F8[] __asm__("D_00463F88");
+extern char ext_str1_x0016A7F8[] __asm__("D_00463F48");
+void mfci_call_errfn_x0016A7F8(void *detail, const char *message) __attribute__((weak, section(".b3stub")));
+void mfci_call_errfn_x0016A7F8(void *detail, const char *message) {}
+unsigned long mfci_strtoul_x0016A7F8(const char *s, char **end, int base) __attribute__((weak, section(".b3stub")));
+unsigned long mfci_strtoul_x0016A7F8(const char *s, char **end, int base) {}
+char *mfci_get_adr_size_x0016A7F8(char *name, int *size) __asm__("mfci_get_adr_size");
+/* mfci_get_adr_size_x0016A7F8: from https://github.com/crashbashash/DW4_Decomp (src/cri/mfci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+char *mfci_get_adr_size_x0016A7F8(char *name, int *size)
+{
+    char *p;
+    char *data;
+    if (strlen_x0016A7F8(name) != 17) {
+        sprintf_x0016A7F8(mfci_msg_x0016A7F8, ext_str1_x0016A7F8, name);
+        mfci_call_errfn_x0016A7F8(0, mfci_msg_x0016A7F8);
+    }
+    if (name[8] != '.') {
+        sprintf_x0016A7F8(mfci_msg_x0016A7F8, ext_str0_x0016A7F8, name);
+        mfci_call_errfn_x0016A7F8(0, mfci_msg_x0016A7F8);
+    }
+    p = name;
+    data = (char *)mfci_strtoul_x0016A7F8(p, &p, 16);
+    if (*p != 0) {
+        p++;
+    }
+    if (size != 0) {
+        *size = mfci_strtoul_x0016A7F8(p, &p, 16);
+    }
+    return data;
+}
 void func_0016A8F0(void) {
 
 }
@@ -1238,7 +1320,67 @@ s32 func_0016B148(s32 arg0, s32 arg1) {
     func_0016AFF0();
     return temp_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mfci", func_0016B190);
+typedef struct Pl2Enc_x0016B190 {
+    void *work;
+    int wksize;
+    int *dly_l;
+    int *dly_r;
+    int sfreq;
+    int dly_pos;
+    int dly_len;
+    int gain_l;
+    int gain_r;
+    int gain_c;
+    int gain_s;
+} Pl2Enc_x0016B190;
+typedef unsigned int size_t_x0016B190;
+void *memset_x0016B190(void *, int, size_t_x0016B190) __asm__("memset");
+extern volatile char pl2enc_ver_str_x0016B190[45] __asm__("D_004190E8");
+extern char E03090101_NULL_pointer_is_specified_x0016B190[] __asm__("D_004645C8");
+extern char E03090102_Work_size_is_too_short_x0016B190[] __asm__("D_004645F0");
+extern char E03091001_Work_size_is_too_short_x0016B190[] __asm__("D_00464618");
+void pl2enc_Reset_x0016B190(Pl2Enc_x0016B190 *pl2) __asm__("func_0016B310");
+void pl2enc_CallErr_x0016B190(const char *message) __asm__("func_0016B060");
+void pl2enc_CallErr_x0016B190(const char *message) __asm__("func_0016B060");
+void pl2enc_Reset_x0016B190(Pl2Enc_x0016B190 *pl2) __asm__("func_0016B310");
+void pl2enc_CallErr_x0016B190(const char *message) __attribute__((weak, section(".b3stub")));
+void pl2enc_CallErr_x0016B190(const char *message) {}
+Pl2Enc_x0016B190 *func_0016B190_x0016B190(void *work, int wksize) __asm__("func_0016B190");
+/* pl2enc_Create: from https://github.com/crashbashash/DW4_Decomp (src/cri/pl2enc.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+Pl2Enc_x0016B190 *func_0016B190_x0016B190(void *work, int wksize)
+{
+    Pl2Enc_x0016B190 *pl2;
+    unsigned int p;
+    pl2enc_ver_str_x0016B190;
+    if (work == 0) {
+        pl2enc_CallErr_x0016B190(E03090101_NULL_pointer_is_specified_x0016B190);
+        return 0;
+    }
+    if (wksize < 1024) {
+        pl2enc_CallErr_x0016B190(E03090102_Work_size_is_too_short_x0016B190);
+        return 0;
+    }
+    p = (unsigned int)work;
+    if (p & 3) {
+        p = p - (p & 3) + 4;
+    }
+    pl2 = (Pl2Enc_x0016B190 *)p;
+    memset_x0016B190(pl2, 0, sizeof(*pl2));
+    pl2->work = work;
+    pl2->wksize = wksize;
+    p = (unsigned int)(pl2 + 1);
+    if (p & 3) {
+        p = p - (p & 3) + 4;
+    }
+    pl2->dly_l = (int *)p;
+    pl2->dly_r = (int *)(p + 96 * sizeof(int));
+    pl2enc_Reset_x0016B190(pl2);
+    if (p + 2 * 96 * sizeof(int) > (unsigned int)work + wksize) {
+        pl2enc_CallErr_x0016B190(E03091001_Work_size_is_too_short_x0016B190);
+        return 0;
+    }
+    return pl2;
+}
 void func_0016B290(s32 arg0) {
     func_0016AFD8();
     func_0016B2C0(arg0);

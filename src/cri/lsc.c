@@ -1764,9 +1764,520 @@ void LSC_ExecServer_x0016A3A0(LscObj_x0016A3A0 *lsc)
     lsc->reading = 1;
     stm->stat = LSC_STM_STAT_READ_x0016A3A0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A4C8);
-INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A590);
-INCLUDE_ASM("asm/nonmatchings/cri/lsc", func_0016A698);
+typedef struct SfdSj_x0016A4C8 SfdSj_x0016A4C8;
+typedef struct SfdSjChunk_x0016A4C8 {
+    char *data;
+    int len;
+} SfdSjChunk_x0016A4C8;
+typedef struct SfdSjVtbl_x0016A4C8 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0016A4C8 *sj);
+    int (*getUuid)(SfdSj_x0016A4C8 *sj);
+    void (*reset)(SfdSj_x0016A4C8 *sj);
+    void (*getChunk)(SfdSj_x0016A4C8 *sj, int id, int n, SfdSjChunk_x0016A4C8 *ck);
+    void (*ungetChunk)(SfdSj_x0016A4C8 *sj, int id, SfdSjChunk_x0016A4C8 *ck);
+    void (*putChunk)(SfdSj_x0016A4C8 *sj, int id, SfdSjChunk_x0016A4C8 *ck);
+    int (*getNumData)(SfdSj_x0016A4C8 *sj, int id);
+} SfdSjVtbl_x0016A4C8;
+struct SfdSj_x0016A4C8 {
+    SfdSjVtbl_x0016A4C8 *vtbl;
+};
+enum LscStat_x0016A4C8 {
+    LSC_STAT_STOP_x0016A4C8 = 0,
+    LSC_STAT_WAIT_x0016A4C8 = 1,
+    LSC_STAT_EXEC_x0016A4C8 = 2,
+    LSC_STAT_ERROR_x0016A4C8 = 3
+};
+typedef struct LscStm_x0016A4C8 {
+    int id;
+    const char *fname;
+    int fname_sum;
+    void *dir;
+    int ofst;
+    int nsct;
+    int stat;
+    int rdsct;
+} LscStm_x0016A4C8;
+typedef struct LscObj_x0016A4C8 {
+    signed char used;
+    signed char stat;
+    signed char reading;
+    signed char loop;
+    signed char pause;
+    char rsv1;
+    short rsv2;
+    SfdSj_x0016A4C8 *sj;
+    SfdSjChunk_x0016A4C8 ck;
+    int flow_min;
+    int flow_max;
+    int wpos;
+    int rpos;
+    int nstm;
+    void *stm;
+    int stm_size;
+    int reqsct;
+    int errcnt;
+    LscStm_x0016A4C8 stms[16];
+} LscObj_x0016A4C8;
+void LSC_CallErrFunc_x0016A4C8(const char *format, ...) __asm__("func_0016A1C0");
+typedef void (*CvFsErrFn_x0016A4C8)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0016A4C8)(CvFsErrFn_x0016A4C8 func, void *obj);
+typedef int (*CvFsPathFn_x0016A4C8)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0016A4C8)(void);
+typedef int (*CvFsOpenFn_x0016A4C8)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0016A4C8)(int fd);
+typedef int (*CvFsFdIntFn_x0016A4C8)(int fd);
+typedef int (*CvFsSeekFn_x0016A4C8)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0016A4C8)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0016A4C8)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0016A4C8)(void);
+typedef int (*CvFsLoadDirInfoFn_x0016A4C8)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0016A4C8)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0016A4C8)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0016A4C8 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0016A4C8 entry_err_func;
+    CvFsPathFn_x0016A4C8 get_file_size;
+    CvFsGetFreeSizeFn_x0016A4C8 get_free_size;
+    CvFsOpenFn_x0016A4C8 open;
+    CvFsFdFn_x0016A4C8 close;
+    CvFsSeekFn_x0016A4C8 seek;
+    CvFsFdIntFn_x0016A4C8 tell;
+    CvFsXferFn_x0016A4C8 req_rd;
+    CvFsXferFn_x0016A4C8 req_wr;
+    CvFsFdFn_x0016A4C8 stop_tr;
+    CvFsFdIntFn_x0016A4C8 get_stat;
+    CvFsFdIntFn_x0016A4C8 get_sct_len;
+    CvFsSetSctLenFn_x0016A4C8 set_sct_len;
+    CvFsFdIntFn_x0016A4C8 get_num_tr;
+    CvFsPathFn_x0016A4C8 change_dir;
+    CvFsPathFn_x0016A4C8 is_exist_file;
+    CvFsGetNumFilesFn_x0016A4C8 get_num_files;
+    CvFsLoadDirInfoFn_x0016A4C8 load_dir_info;
+    CvFsFdIntFn_x0016A4C8 get_max_byte_rate;
+    CvFsPathFn_x0016A4C8 make_dir;
+    CvFsPathFn_x0016A4C8 remove_dir;
+    CvFsPathFn_x0016A4C8 delete_file;
+    CvFsGetFileSizeExFn_x0016A4C8 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0016A4C8 opt_fn2;
+} CvFsVtbl_x0016A4C8;
+typedef struct CvFsHandle_x0016A4C8 {
+    CvFsVtbl_x0016A4C8 *vtbl;
+    int fd;
+} CvFsHandle_x0016A4C8;
+extern CvFsVtbl_x0016A4C8 *addDevice_x0016A4C8(char *devname, CvFsVtbl_x0016A4C8 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0016A4C8 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0016A4C8 *sj;
+    CvFsHandle_x0016A4C8 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0016A4C8 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0016A4C8;
+int ADXSTM_GetStat_x0016A4C8(AdxStmObj_x0016A4C8 *stm) __asm__("func_0015CCD0");
+int ADXSTM_Tell_x0016A4C8(AdxStmObj_x0016A4C8 *stm) __asm__("func_0015CCF8");
+extern void ADXSTM_EntryEosFunc_x0016A4C8(AdxStmObj_x0016A4C8 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+enum LscStmStat_x0016A4C8 {
+    LSC_STM_STAT_WAIT_x0016A4C8 = 0,
+    LSC_STM_STAT_READ_x0016A4C8 = 1,
+    LSC_STM_STAT_END_x0016A4C8 = 2
+};
+void LSC_CallErrFunc_x0016A4C8(const char *format, ...) __asm__("func_0016A1C0");
+void LSC_CallErrFunc_x0016A4C8(const char *format, ...) __attribute__((weak, section(".b3stub")));
+void LSC_CallErrFunc_x0016A4C8(const char *format, ...) {}
+void func_0016A4C8_x0016A4C8(LscObj_x0016A4C8 *lsc) __asm__("func_0016A4C8");
+/* lsc_StatRead: from https://github.com/crashbashash/DW4_Decomp (src/cri/lsc.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0016A4C8_x0016A4C8(LscObj_x0016A4C8 *lsc)
+{
+    LscStm_x0016A4C8 *stm;
+    if (lsc->stm == 0) {
+        LSC_CallErrFunc_x0016A4C8("E0007: lsc->fp=NULL\n");
+        return;
+    }
+    stm = &lsc->stms[lsc->rpos];
+    switch (ADXSTM_GetStat_x0016A4C8(lsc->stm)) {
+    case 2:
+        stm->rdsct = ADXSTM_Tell_x0016A4C8(lsc->stm);
+        break;
+    case 3:
+        stm->rdsct = lsc->stm_size;
+        stm->stat = LSC_STM_STAT_END_x0016A4C8;
+        break;
+    case 4:
+        lsc->stat = LSC_STAT_ERROR_x0016A4C8;
+        break;
+    }
+}
+__asm__("# rebind func_0016A4C8 0x0016A4C8");
+typedef struct SfdSj_x0016A590 SfdSj_x0016A590;
+typedef struct SfdSjChunk_x0016A590 {
+    char *data;
+    int len;
+} SfdSjChunk_x0016A590;
+typedef struct SfdSjVtbl_x0016A590 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0016A590 *sj);
+    int (*getUuid)(SfdSj_x0016A590 *sj);
+    void (*reset)(SfdSj_x0016A590 *sj);
+    void (*getChunk)(SfdSj_x0016A590 *sj, int id, int n, SfdSjChunk_x0016A590 *ck);
+    void (*ungetChunk)(SfdSj_x0016A590 *sj, int id, SfdSjChunk_x0016A590 *ck);
+    void (*putChunk)(SfdSj_x0016A590 *sj, int id, SfdSjChunk_x0016A590 *ck);
+    int (*getNumData)(SfdSj_x0016A590 *sj, int id);
+} SfdSjVtbl_x0016A590;
+struct SfdSj_x0016A590 {
+    SfdSjVtbl_x0016A590 *vtbl;
+};
+enum LscStat_x0016A590 {
+    LSC_STAT_STOP_x0016A590 = 0,
+    LSC_STAT_WAIT_x0016A590 = 1,
+    LSC_STAT_EXEC_x0016A590 = 2,
+    LSC_STAT_ERROR_x0016A590 = 3
+};
+typedef struct LscStm_x0016A590 {
+    int id;
+    const char *fname;
+    int fname_sum;
+    void *dir;
+    int ofst;
+    int nsct;
+    int stat;
+    int rdsct;
+} LscStm_x0016A590;
+typedef struct LscObj_x0016A590 {
+    signed char used;
+    signed char stat;
+    signed char reading;
+    signed char loop;
+    signed char pause;
+    char rsv1;
+    short rsv2;
+    SfdSj_x0016A590 *sj;
+    SfdSjChunk_x0016A590 ck;
+    int flow_min;
+    int flow_max;
+    int wpos;
+    int rpos;
+    int nstm;
+    void *stm;
+    int stm_size;
+    int reqsct;
+    int errcnt;
+    LscStm_x0016A590 stms[16];
+} LscObj_x0016A590;
+int LSC_EntryFileRange_x0016A590(LscObj_x0016A590 *lsc, const char *fname, void *dir, int ofst, int nsct) __asm__("func_00169A00");
+typedef void (*CvFsErrFn_x0016A590)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0016A590)(CvFsErrFn_x0016A590 func, void *obj);
+typedef int (*CvFsPathFn_x0016A590)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0016A590)(void);
+typedef int (*CvFsOpenFn_x0016A590)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0016A590)(int fd);
+typedef int (*CvFsFdIntFn_x0016A590)(int fd);
+typedef int (*CvFsSeekFn_x0016A590)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0016A590)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0016A590)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0016A590)(void);
+typedef int (*CvFsLoadDirInfoFn_x0016A590)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0016A590)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0016A590)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0016A590 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0016A590 entry_err_func;
+    CvFsPathFn_x0016A590 get_file_size;
+    CvFsGetFreeSizeFn_x0016A590 get_free_size;
+    CvFsOpenFn_x0016A590 open;
+    CvFsFdFn_x0016A590 close;
+    CvFsSeekFn_x0016A590 seek;
+    CvFsFdIntFn_x0016A590 tell;
+    CvFsXferFn_x0016A590 req_rd;
+    CvFsXferFn_x0016A590 req_wr;
+    CvFsFdFn_x0016A590 stop_tr;
+    CvFsFdIntFn_x0016A590 get_stat;
+    CvFsFdIntFn_x0016A590 get_sct_len;
+    CvFsSetSctLenFn_x0016A590 set_sct_len;
+    CvFsFdIntFn_x0016A590 get_num_tr;
+    CvFsPathFn_x0016A590 change_dir;
+    CvFsPathFn_x0016A590 is_exist_file;
+    CvFsGetNumFilesFn_x0016A590 get_num_files;
+    CvFsLoadDirInfoFn_x0016A590 load_dir_info;
+    CvFsFdIntFn_x0016A590 get_max_byte_rate;
+    CvFsPathFn_x0016A590 make_dir;
+    CvFsPathFn_x0016A590 remove_dir;
+    CvFsPathFn_x0016A590 delete_file;
+    CvFsGetFileSizeExFn_x0016A590 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0016A590 opt_fn2;
+} CvFsVtbl_x0016A590;
+typedef struct CvFsHandle_x0016A590 {
+    CvFsVtbl_x0016A590 *vtbl;
+    int fd;
+} CvFsHandle_x0016A590;
+extern CvFsVtbl_x0016A590 *addDevice_x0016A590(char *devname, CvFsVtbl_x0016A590 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0016A590 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0016A590 *sj;
+    CvFsHandle_x0016A590 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0016A590 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0016A590;
+extern void ADXSTM_EntryEosFunc_x0016A590(AdxStmObj_x0016A590 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+int LSC_EntryFileRange_x0016A590(LscObj_x0016A590 *lsc, const char *fname, void *dir, int ofst, int nsct) __asm__("func_00169A00");
+void LSC_CallStatFunc_x0016A590(void) __asm__("func_0016A0F8");
+int LSC_EntryFileRange_x0016A590(LscObj_x0016A590 *lsc, const char *fname, void *dir, int ofst, int nsct) __attribute__((weak, section(".b3stub")));
+int LSC_EntryFileRange_x0016A590(LscObj_x0016A590 *lsc, const char *fname, void *dir, int ofst, int nsct) {}
+void LSC_CallStatFunc_x0016A590(void) __attribute__((weak, section(".b3stub")));
+void LSC_CallStatFunc_x0016A590(void) {}
+void func_0016A590_x0016A590(LscObj_x0016A590 *lsc) __asm__("func_0016A590");
+/* lsc_EndStm: from https://github.com/crashbashash/DW4_Decomp (src/cri/lsc.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0016A590_x0016A590(LscObj_x0016A590 *lsc)
+{
+    const char *fname = 0;
+    void *dir = 0;
+    int ofst = 0;
+    int nsct = 0;
+    LscStm_x0016A590 *stm;
+    if (lsc->stm == 0) {
+        return;
+    }
+    if (lsc->loop == 1) {
+        stm = &lsc->stms[lsc->rpos];
+        fname = stm->fname;
+        dir = stm->dir;
+        ofst = stm->ofst;
+        nsct = stm->nsct;
+    }
+    lsc->rpos = (lsc->rpos + 1) % 16;
+    if (--lsc->nstm <= 0) {
+        LSC_CallStatFunc_x0016A590();
+        lsc->stat = LSC_STAT_WAIT_x0016A590;
+    }
+    if (lsc->loop == 1) {
+        LSC_EntryFileRange_x0016A590(lsc, fname, dir, ofst, nsct);
+    }
+}
+typedef struct SfdSj_x0016A698 SfdSj_x0016A698;
+typedef struct SfdSjChunk_x0016A698 {
+    char *data;
+    int len;
+} SfdSjChunk_x0016A698;
+typedef struct SfdSjVtbl_x0016A698 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0016A698 *sj);
+    int (*getUuid)(SfdSj_x0016A698 *sj);
+    void (*reset)(SfdSj_x0016A698 *sj);
+    void (*getChunk)(SfdSj_x0016A698 *sj, int id, int n, SfdSjChunk_x0016A698 *ck);
+    void (*ungetChunk)(SfdSj_x0016A698 *sj, int id, SfdSjChunk_x0016A698 *ck);
+    void (*putChunk)(SfdSj_x0016A698 *sj, int id, SfdSjChunk_x0016A698 *ck);
+    int (*getNumData)(SfdSj_x0016A698 *sj, int id);
+} SfdSjVtbl_x0016A698;
+struct SfdSj_x0016A698 {
+    SfdSjVtbl_x0016A698 *vtbl;
+};
+enum LscStat_x0016A698 {
+    LSC_STAT_STOP_x0016A698 = 0,
+    LSC_STAT_WAIT_x0016A698 = 1,
+    LSC_STAT_EXEC_x0016A698 = 2,
+    LSC_STAT_ERROR_x0016A698 = 3
+};
+typedef struct LscStm_x0016A698 {
+    int id;
+    const char *fname;
+    int fname_sum;
+    void *dir;
+    int ofst;
+    int nsct;
+    int stat;
+    int rdsct;
+} LscStm_x0016A698;
+typedef struct LscObj_x0016A698 {
+    signed char used;
+    signed char stat;
+    signed char reading;
+    signed char loop;
+    signed char pause;
+    char rsv1;
+    short rsv2;
+    SfdSj_x0016A698 *sj;
+    SfdSjChunk_x0016A698 ck;
+    int flow_min;
+    int flow_max;
+    int wpos;
+    int rpos;
+    int nstm;
+    void *stm;
+    int stm_size;
+    int reqsct;
+    int errcnt;
+    LscStm_x0016A698 stms[16];
+} LscObj_x0016A698;
+typedef void (*CvFsErrFn_x0016A698)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0016A698)(CvFsErrFn_x0016A698 func, void *obj);
+typedef int (*CvFsPathFn_x0016A698)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0016A698)(void);
+typedef int (*CvFsOpenFn_x0016A698)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0016A698)(int fd);
+typedef int (*CvFsFdIntFn_x0016A698)(int fd);
+typedef int (*CvFsSeekFn_x0016A698)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0016A698)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0016A698)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0016A698)(void);
+typedef int (*CvFsLoadDirInfoFn_x0016A698)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0016A698)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0016A698)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0016A698 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0016A698 entry_err_func;
+    CvFsPathFn_x0016A698 get_file_size;
+    CvFsGetFreeSizeFn_x0016A698 get_free_size;
+    CvFsOpenFn_x0016A698 open;
+    CvFsFdFn_x0016A698 close;
+    CvFsSeekFn_x0016A698 seek;
+    CvFsFdIntFn_x0016A698 tell;
+    CvFsXferFn_x0016A698 req_rd;
+    CvFsXferFn_x0016A698 req_wr;
+    CvFsFdFn_x0016A698 stop_tr;
+    CvFsFdIntFn_x0016A698 get_stat;
+    CvFsFdIntFn_x0016A698 get_sct_len;
+    CvFsSetSctLenFn_x0016A698 set_sct_len;
+    CvFsFdIntFn_x0016A698 get_num_tr;
+    CvFsPathFn_x0016A698 change_dir;
+    CvFsPathFn_x0016A698 is_exist_file;
+    CvFsGetNumFilesFn_x0016A698 get_num_files;
+    CvFsLoadDirInfoFn_x0016A698 load_dir_info;
+    CvFsFdIntFn_x0016A698 get_max_byte_rate;
+    CvFsPathFn_x0016A698 make_dir;
+    CvFsPathFn_x0016A698 remove_dir;
+    CvFsPathFn_x0016A698 delete_file;
+    CvFsGetFileSizeExFn_x0016A698 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0016A698 opt_fn2;
+} CvFsVtbl_x0016A698;
+typedef struct CvFsHandle_x0016A698 {
+    CvFsVtbl_x0016A698 *vtbl;
+    int fd;
+} CvFsHandle_x0016A698;
+extern CvFsVtbl_x0016A698 *addDevice_x0016A698(char *devname, CvFsVtbl_x0016A698 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0016A698 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0016A698 *sj;
+    CvFsHandle_x0016A698 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0016A698 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0016A698;
+extern void ADXSTM_EntryEosFunc_x0016A698(AdxStmObj_x0016A698 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+enum LscStmStat_x0016A698 {
+    LSC_STM_STAT_WAIT_x0016A698 = 0,
+    LSC_STM_STAT_READ_x0016A698 = 1,
+    LSC_STM_STAT_END_x0016A698 = 2
+};
+void lsc_StatWait_x0016A698(LscObj_x0016A698 *lsc) __asm__("LSC_ExecServer");
+void lsc_StatRead_x0016A698(LscObj_x0016A698 *lsc) __asm__("func_0016A4C8");
+void lsc_EndStm_x0016A698(LscObj_x0016A698 *lsc) __asm__("func_0016A590");
+void lsc_StatWait_x0016A698(LscObj_x0016A698 *lsc) __attribute__((weak, section(".b3stub")));
+void lsc_StatWait_x0016A698(LscObj_x0016A698 *lsc) {}
+void lsc_StatRead_x0016A698(LscObj_x0016A698 *lsc) __attribute__((weak, section(".b3stub")));
+void lsc_StatRead_x0016A698(LscObj_x0016A698 *lsc) {}
+void lsc_EndStm_x0016A698(LscObj_x0016A698 *lsc) __attribute__((weak, section(".b3stub")));
+void lsc_EndStm_x0016A698(LscObj_x0016A698 *lsc) {}
+void func_0016A698_x0016A698(LscObj_x0016A698 *lsc) __asm__("func_0016A698");
+/* lsc_ExecHndl: from https://github.com/crashbashash/DW4_Decomp (src/cri/lsc.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0016A698_x0016A698(LscObj_x0016A698 *lsc)
+{
+    if (lsc->pause != 1 && lsc->stat == LSC_STAT_EXEC_x0016A698 && lsc->nstm > 0) {
+        if (lsc->stms[lsc->rpos].stat == LSC_STM_STAT_READ_x0016A698) {
+            lsc_StatRead_x0016A698(lsc);
+        }
+        if (lsc->stms[lsc->rpos].stat == LSC_STM_STAT_END_x0016A698) {
+            lsc_EndStm_x0016A698(lsc);
+        }
+        if (lsc->stms[lsc->rpos].stat == LSC_STM_STAT_WAIT_x0016A698) {
+            lsc_StatWait_x0016A698(lsc);
+        }
+    }
+}
 s32 func_0016FF40_x0016A768() __asm__("func_0016FF40");
 void func_0016A768_x0016A768(void) __asm__("func_0016A768");
 void func_0016A768_x0016A768(void) {

@@ -425,7 +425,66 @@ void func_00106AA0_x00106AA0(s32 arg0, s32 arg1) __asm__("func_00106AA0");
 void func_00106AA0_x00106AA0(s32 arg0, s32 arg1) {
     func_001048A0_x00106AA0(arg0, arg1);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00106AA8);
+extern void flushByteBoundary_x00106AA8(void *v) __asm__("func_00106C08");
+extern int func_0039EAA8_x00106AA8(void *v, int n) __asm__("func_00104728");
+extern int func_0039EB90_x00106AA8(void *v, int n) __asm__("func_00104810");
+extern int func_003A0E20_x00106AA8(void *v, int n) __asm__("func_00106AA0");
+extern void func_003A0330_x00106AA8(void *v) __asm__("func_00105FB0");
+extern void func_003A05E0_x00106AA8(void *v) __asm__("func_00106260");
+extern void func_003A0680_x00106AA8(void *v) __asm__("func_00106300");
+extern void func_0039AB20_x00106AA8(int h, void *req) __asm__("func_00107DE0");
+typedef struct {
+	int cmd;			 
+	long pts;			 
+	long dts;			 
+} MpegCb_x00106AA8;
+typedef struct {
+	char _pad0[0x160];
+	int picture_coding_type;	 
+	char _pad1[0x6D4];
+	long pts;			 
+	long dts;			 
+	char _pad2[0x20];
+	int cb;				 
+	char _pad3[0xC];
+	int stop;			 
+} Mpeg_x00106AA8;
+int func_00106AA8_x00106AA8(Mpeg_x00106AA8 *v) __asm__("func_00106AA8");
+/* func_003A0E28: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/003a0e28.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00106AA8_x00106AA8(Mpeg_x00106AA8 *v)
+{
+	MpegCb_x00106AA8 req;
+	unsigned int code;
+
+	for (;;) {
+		if (v->stop != 0)
+			return -1;
+		flushByteBoundary_x00106AA8(v);
+		while (func_0039EB90_x00106AA8(v, 24) != 1 && v->stop == 0)
+			func_003A0E20_x00106AA8(v, 8);
+		code = func_0039EAA8_x00106AA8(v, 32);
+		switch (code) {
+		case 0x1B3:
+			func_003A0330_x00106AA8(v);
+			break;
+		case 0x1B8:
+			func_003A05E0_x00106AA8(v);
+			break;
+		case 0x100:
+			func_003A0680_x00106AA8(v);
+			req.cmd = 5;
+			req.pts = -1;
+			req.dts = -1;
+			func_0039AB20_x00106AA8(v->cb, &req);
+			v->dts = req.dts;
+			v->pts = req.pts;
+			return v->picture_coding_type;
+		case 0x1B7:
+			return 0;
+		}
+	}
+}
+__asm__("# rebind func_00106AA8 0x00106AA8");
 s32 func_00106AA0_x00106C00() __asm__("func_00106AA0");
 void func_00106C00_x00106C00(s32 a0) __asm__("func_00106C00");
 void func_00106C00_x00106C00(s32 a0) {

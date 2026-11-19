@@ -317,7 +317,177 @@ _Bigint *_multiply(Reent *ptr, _Bigint *a, _Bigint *b)
     return c;
 }
 INCLUDE_PAD(4);
-INCLUDE_ASM("asm/nonmatchings/sdk/libc/kfiv_mprec", func_00126120);
+typedef unsigned int __ULong_x00126120;
+struct _glue_x00126120
+{
+  struct _glue_x00126120 *_next;
+  int _niobs;
+  struct __sFILE_x00126120 *_iobs;
+};
+struct _Bigint_x00126120
+{
+  struct _Bigint_x00126120 *_next;
+  int _k, _maxwds, _sign, _wds;
+  __ULong_x00126120 _x[1];
+};
+struct __tm_x00126120
+{
+  int __tm_sec;
+  int __tm_min;
+  int __tm_hour;
+  int __tm_mday;
+  int __tm_mon;
+  int __tm_year;
+  int __tm_wday;
+  int __tm_yday;
+  int __tm_isdst;
+};
+struct _atexit_x00126120 {
+        struct _atexit_x00126120 *_next;
+        int _ind;
+        void (*_fns[32])(void);
+};
+struct __sbuf_x00126120 {
+        unsigned char *_base;
+        int _size;
+};
+typedef long _fpos_t_x00126120;
+struct __sFILE_x00126120 {
+  unsigned char *_p;
+  int _r;
+  int _w;
+  short _flags;
+  short _file;
+  struct __sbuf_x00126120 _bf;
+  int _lbfsize;
+  void * _cookie;
+  int (*_read) (void * _cookie, char *_buf, int _n);
+  int (*_write) (void * _cookie, const char *_buf,
+                                            int _n);
+  _fpos_t_x00126120 (*_seek) (void * _cookie, _fpos_t_x00126120 _offset, int _whence);
+  int (*_close) (void * _cookie);
+  struct __sbuf_x00126120 _ub;
+  unsigned char *_up;
+  int _ur;
+  unsigned char _ubuf[3];
+  unsigned char _nbuf[1];
+  struct __sbuf_x00126120 _lb;
+  int _blksize;
+  int _offset;
+  struct _reent_x00126120 *_data;
+};
+struct _rand48_x00126120 {
+  unsigned short _seed[3];
+  unsigned short _mult[3];
+  unsigned short _add;
+};
+struct _reent_x00126120
+{
+  int _errno;
+  struct __sFILE_x00126120 *_stdin, *_stdout, *_stderr;
+  int _inc;
+  char _emergency[25];
+  int _current_category;
+  const char *_current_locale;
+  int __sdidinit;
+  void (*__cleanup) (struct _reent_x00126120 *);
+  struct _Bigint_x00126120 *_result;
+  int _result_k;
+  struct _Bigint_x00126120 *_p5s;
+  struct _Bigint_x00126120 **_freelist;
+  int _cvtlen;
+  char *_cvtbuf;
+  union
+    {
+      struct
+        {
+          unsigned int _unused_rand;
+          char * _strtok_last;
+          char _asctime_buf[26];
+          struct __tm_x00126120 _localtime_buf;
+          int _gamma_signgam;
+          __extension__ unsigned long long _rand_next;
+          struct _rand48_x00126120 _r48;
+        } _reent_x00126120;
+      struct
+        {
+          unsigned char * _nextf[30];
+          unsigned int _nmalloc[30];
+        } _unused;
+    } _new;
+  struct _atexit_x00126120 *_atexit_x00126120;
+  struct _atexit_x00126120 _atexit0;
+  void (**(_sig_func))(int);
+  struct _glue_x00126120 __sglue;
+  struct __sFILE_x00126120 __sf[3];
+};
+typedef struct _Bigint_x00126120 _Bigint_x00126120;
+void _Bfree_x00126120(struct _reent_x00126120 *, _Bigint_x00126120 *) __asm__("func_00125B30");
+_Bigint_x00126120 *_multadd_x00126120(struct _reent_x00126120 *, _Bigint_x00126120 *, int, int) __asm__("func_00125B60");
+_Bigint_x00126120 *_i2b_x00126120(struct _reent_x00126120 *, int) __asm__("func_00125ED8");
+_Bigint_x00126120 *_multiply_x00126120(struct _reent_x00126120 *, _Bigint_x00126120 *, _Bigint_x00126120 *) __asm__("func_00125F10");
+void
+_Bfree_x00126120(struct _reent_x00126120 *ptr, _Bigint_x00126120 * v) __asm__("func_00125B30");
+_Bigint_x00126120 *
+_multadd_x00126120(struct _reent_x00126120 *ptr, _Bigint_x00126120 * b, int m, int a) __asm__("func_00125B60");
+_Bigint_x00126120 *
+_i2b_x00126120(struct _reent_x00126120 * ptr, int i) __asm__("func_00125ED8");
+_Bigint_x00126120 *
+_multiply_x00126120(struct _reent_x00126120 * ptr, _Bigint_x00126120 * a, _Bigint_x00126120 * b) __asm__("func_00125F10");
+void
+_Bfree_x00126120(struct _reent_x00126120 *ptr, _Bigint_x00126120 * v) __attribute__((weak, section(".b3stub")));
+void
+_Bfree_x00126120(struct _reent_x00126120 *ptr, _Bigint_x00126120 * v) {}
+_Bigint_x00126120 *
+_multadd_x00126120(struct _reent_x00126120 *ptr, _Bigint_x00126120 * b, int m, int a) __attribute__((weak, section(".b3stub")));
+_Bigint_x00126120 *
+_multadd_x00126120(struct _reent_x00126120 *ptr, _Bigint_x00126120 * b, int m, int a) {}
+_Bigint_x00126120 *
+_i2b_x00126120(struct _reent_x00126120 * ptr, int i) __attribute__((weak, section(".b3stub")));
+_Bigint_x00126120 *
+_i2b_x00126120(struct _reent_x00126120 * ptr, int i) {}
+_Bigint_x00126120 *
+_multiply_x00126120(struct _reent_x00126120 * ptr, _Bigint_x00126120 * a, _Bigint_x00126120 * b) __attribute__((weak, section(".b3stub")));
+_Bigint_x00126120 *
+_multiply_x00126120(struct _reent_x00126120 * ptr, _Bigint_x00126120 * a, _Bigint_x00126120 * b) {}
+_Bigint_x00126120 *
+func_00126120_x00126120(struct _reent_x00126120 * ptr, _Bigint_x00126120 * b, int k) __asm__("func_00126120");
+/* _pow5mult: from https://github.com/crashbashash/DW4_Decomp (src/newlib/mprec.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+_Bigint_x00126120 *
+func_00126120_x00126120(struct _reent_x00126120 * ptr, _Bigint_x00126120 * b, int k)
+{
+  _Bigint_x00126120 *b1, *p5, *p51;
+  int i;
+  static const int p05[3] = {5, 25, 125};
+  if ((i = k & 3) != 0)
+    b = _multadd_x00126120 (ptr, b, p05[i - 1], 0);
+  if (!(k >>= 2))
+    return b;
+  if (!(p5 = ptr->_p5s))
+    {
+      p5 = ptr->_p5s = _i2b_x00126120 (ptr, 625);
+      p5->_next = 0;
+    }
+  for (;;)
+    {
+      if (k & 1)
+        {
+          b1 = _multiply_x00126120 (ptr, b, p5);
+          _Bfree_x00126120 (ptr, b);
+          b = b1;
+        }
+      if (!(k >>= 1))
+        break;
+      if (!(p51 = p5->_next))
+        {
+          p51 = p5->_next = _multiply_x00126120 (ptr, p5, p5);
+          p51->_next = 0;
+        }
+      p5 = p51;
+    }
+  return b;
+}
+__asm__("# rebind func_00126120 0x00126120");
 
 
 _Bigint *_lshift(Reent *ptr, _Bigint *b, int k)

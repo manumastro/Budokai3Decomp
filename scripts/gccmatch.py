@@ -249,11 +249,18 @@ def compile_matrix(src, versions, flagsets, how, defines=(), include_dirs=("incl
     shutil.rmtree(work, ignore_errors=True)
     work.mkdir(parents=True)
     jobs, keys = [], []
+    # the source named as the build names it (relative to the checkout): ee-gcc 2.96's CSE hashes a symbol by the
+    # address of its name's string, and the file name is allocated before them, so its length can change the code
+    src_arg = str(src)
+    try:
+        src_arg = Path(os.path.abspath(src)).relative_to(ROOT).as_posix()
+    except ValueError:
+        pass
     for v in versions:
         for k, flags in enumerate(flagsets):
             asm = work / f"{v}_{k}.s"
             args = [*flags.split(), *[f"-I{ROOT / d}" for d in include_dirs], *[f"-D{d}" for d in defines],
-                    "-S", str(src), "-o", str(asm)]
+                    "-S", src_arg, "-o", str(asm)]
             jobs.append((v, args))
             keys.append((v, flags, asm))
     results = eegcc.run_many(jobs, cwd=ROOT)
@@ -264,6 +271,15 @@ def compile_matrix(src, versions, flagsets, how, defines=(), include_dirs=("incl
             out[(v, flags)] = "compile error: " + (lines[-1] if lines else f"exit {rc}")
             continue
         obj = asm.with_suffix(".o")
+        if how == "gas":
+            # as the build does: a REBIND_DATA function's own data bound to the executable's (gcc_rebind.py)
+            import gcc_rebind
+            t = asm.read_text(errors="replace")
+            if "rebind" in t or ".b3stub" in t:
+                t2 = gcc_rebind.rebind(t, [f"-I{ROOT / d}" for d in include_dirs], log=open(os.devnull, "w"))
+                if t2 != t:
+                    asm = asm.with_name(asm.stem + "_rb.s")  # ee-gcc's container owns its output file
+                    asm.write_text(t2)
         err = assemble(asm, obj, v, how, include_dirs)
         out[(v, flags)] = obj if err is None else "assemble error: " + err.strip().splitlines()[-1]
     return out, work

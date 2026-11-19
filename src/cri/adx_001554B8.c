@@ -999,7 +999,118 @@ s32 ADXF_Tell(u8 *arg0) {
     }
     return *(s32 *)((u8 *)arg0 + 0x14);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001554B8", ADXF_GetFsizeSct);
+typedef unsigned char Uint8_x00155C58;
+typedef char Sint8_x00155C58;
+typedef unsigned short Uint16_x00155C58;
+typedef unsigned int Uint32_x00155C58;
+typedef signed int Sint32_x00155C58;
+typedef char Char8_x00155C58;
+typedef struct _UUID_x00155C58 {
+    Uint32_x00155C58 Data1;
+    Uint16_x00155C58 Data2;
+    Uint16_x00155C58 Data3;
+    Uint8_x00155C58 Data4[8];
+} UUID_x00155C58;
+typedef struct {
+        Sint8_x00155C58 *data;
+        Sint32_x00155C58 len;
+} SJCK_x00155C58;
+typedef struct {
+        struct _sj_vtbl_x00155C58 *vtbl;
+} SJ_OBJ_x00155C58;
+typedef SJ_OBJ_x00155C58 *SJ_x00155C58;
+typedef struct _sj_vtbl_x00155C58 {
+        void (*QueryInterface)();
+        void (*AddRef)();
+        void (*Release)();
+        void (*Destroy)(SJ_x00155C58 sj);
+        UUID_x00155C58 *(*GetUuid)(SJ_x00155C58 sj);
+        void (*Reset)(SJ_x00155C58 sj);
+        void (*GetChunk)(SJ_x00155C58 sj, Sint32_x00155C58 id, Sint32_x00155C58 nbyte, SJCK_x00155C58 *ck);
+        void (*UngetChunk)(SJ_x00155C58 sj, Sint32_x00155C58 id, SJCK_x00155C58 *ck);
+        void (*PutChunk)(SJ_x00155C58 sj, Sint32_x00155C58 id, SJCK_x00155C58 *ck);
+        Sint32_x00155C58 (*GetNumData)(SJ_x00155C58 sj, Sint32_x00155C58 id);
+        Sint32_x00155C58 (*IsGetChunk)(SJ_x00155C58 sj, Sint32_x00155C58 id, Sint32_x00155C58 nbyte, Sint32_x00155C58 *rbyte);
+        void (*EntryErrFunc)(SJ_x00155C58 sj,
+                                        void (*func)(void *obj, Sint32_x00155C58 ecode), void *obj);
+} SJ_IF_x00155C58;
+extern int* sceCdCallback_x00155C58(void (*func)(int)) __asm__("sceCdCallback");
+typedef struct {
+    Sint8_x00155C58 unk0;
+    Sint8_x00155C58 stat;
+    Sint8_x00155C58 read_flg;
+    Sint8_x00155C58 unk3;
+    SJ_x00155C58 sj;
+    void* cvfs;
+    Sint32_x00155C58 unkC;
+    Sint32_x00155C58 file_len;
+    Sint32_x00155C58 file_sct;
+    Sint32_x00155C58 unk18;
+    Sint32_x00155C58 unk1C;
+    Sint32_x00155C58 unk20;
+    SJCK_x00155C58 unk24;
+    Sint32_x00155C58 req_rd_size;
+    Sint32_x00155C58 eos;
+    Uint32_x00155C58 unk34;
+    void (*eos_callback)(void*);
+    void* eos_callback_context;
+    Sint32_x00155C58 unk40;
+    Sint8_x00155C58 pause;
+    Sint8_x00155C58 unk45;
+    Sint8_x00155C58 unk46;
+    Sint8_x00155C58 unk47;
+    Sint8_x00155C58 unk48;
+    Sint8_x00155C58 unk49;
+    char pad4A[6];
+    const Char8_x00155C58* fname;
+    void* dir;
+    Sint32_x00155C58 cur_ofst;
+    Uint32_x00155C58 unk5C;
+} ADXSTM_OBJ_x00155C58;
+typedef ADXSTM_OBJ_x00155C58* ADXSTM_x00155C58;
+void ADXERR_CallErrFunc1_x00155C58(Sint8_x00155C58*) __asm__("ADXERR_CallErrFunc1");
+typedef struct _adx_fs_x00155C58 {
+    Sint8_x00155C58 used;
+    Sint8_x00155C58 stat;
+    Sint8_x00155C58 sjflag;
+    Sint8_x00155C58 stopnw_flg;
+    ADXSTM_x00155C58 stm;
+    SJ_x00155C58 sj;
+    Sint32_x00155C58 fnsct;
+    Sint32_x00155C58 fsize;
+    Sint32_x00155C58 skpos;
+    Sint32_x00155C58 rdstpos;
+    Sint32_x00155C58 rqsct;
+    Sint32_x00155C58 rdsct;
+    Sint8_x00155C58 *buf;
+    Sint32_x00155C58 bsize;
+    Sint32_x00155C58 rqrdsct;
+    Sint32_x00155C58 ofst;
+    void *dir;
+    const Char8_x00155C58 *unk38;
+    Sint32_x00155C58 unk3C;
+    Sint32_x00155C58 unk40;
+} ADX_FS_x00155C58;
+typedef ADX_FS_x00155C58 *ADXF_x00155C58;
+Sint32_x00155C58 ADXSTM_GetFileSct_x00155C58(ADXSTM_x00155C58 stm) __asm__("func_0015D4D8");
+void ADXSTM_OpenCvfs_x00155C58(ADXSTM_x00155C58 stm) __asm__("func_0015D680");
+Sint32_x00155C58 ADXSTM_GetStat_x00155C58(ADXSTM_x00155C58 stm) __asm__("func_0015CCD0");
+Sint32_x00155C58 ADXF_GetFsizeSct_x00155C58(ADXF_x00155C58 adxf) __asm__("ADXF_GetFsizeSct");
+/* ADXF_GetFsizeSct_x00155C58: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/adx_fs.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00155C58 ADXF_GetFsizeSct_x00155C58(ADXF_x00155C58 adxf) {
+    if (adxf == 0) {
+        ADXERR_CallErrFunc1_x00155C58("E9040828:'adxf' is NULL.(ADXF_GetFsizeSct_x00155C58)\0\0");
+        return (-3);
+    }
+    if (adxf->fnsct > 0xFFFFE) {
+        ADXSTM_OpenCvfs_x00155C58(adxf->stm);
+        if (ADXSTM_GetStat_x00155C58(adxf->stm) == 4) {
+            return (-5);
+        }
+    }
+    return adxf->fnsct = ADXSTM_GetFileSct_x00155C58(adxf->stm);
+}
+__asm__("# rebind ADXF_GetFsizeSct 0x00155C58");
 s32 func_00155CD0(void) {
     return ADXF_GetFsizeSct() << 0xB;
 }

@@ -194,7 +194,117 @@ void func_00166588_x00166588(DVG_CI_x00166588 dvg_ci) __asm__("func_00166588");
 void func_00166588_x00166588(DVG_CI_x00166588 dvg_ci) {
     memset_x00166588(dvg_ci, 0, sizeof(DVG_CI_OBJ_x00166588));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", dvCiOpen);
+typedef unsigned char u_char_x001665A8;
+typedef unsigned int u_int_x001665A8;
+typedef char Sint8_x001665A8;
+typedef signed int Sint32_x001665A8;
+typedef char Char8_x001665A8;
+typedef struct {
+    u_char_x001665A8 trycount;
+    u_char_x001665A8 spindlctrl;
+    u_char_x001665A8 datapattern;
+    u_char_x001665A8 pad;
+} sceCdRMode_x001665A8;
+typedef struct {
+    u_int_x001665A8 lsn;
+    u_int_x001665A8 size;
+    char name[16];
+    u_char_x001665A8 date[8];
+    u_int_x001665A8 flag;
+} sceCdlFILE_x001665A8;
+extern int* sceCdCallback_x001665A8(void (*func)(int)) __asm__("sceCdCallback");
+int sceCdSync_x001665A8(int mode) __asm__("func_00118C08");
+typedef void* SRD_x001665A8;
+typedef struct {
+               Sint8_x001665A8 used;
+               Sint8_x001665A8 unk1;
+               Sint8_x001665A8 stat;
+               Sint8_x001665A8 unk3;
+               Sint32_x001665A8 unk4;
+               Sint32_x001665A8 unk8;
+               Sint32_x001665A8 unkC;
+               Sint32_x001665A8 unk10;
+               Sint32_x001665A8 unk14;
+               void* unk18;
+               SRD_x001665A8 srd;
+               sceCdlFILE_x001665A8 unk20;
+               sceCdRMode_x001665A8 cdrmode;
+} DVG_CI_OBJ_x001665A8;
+typedef DVG_CI_OBJ_x001665A8* DVG_CI_x001665A8;
+void SRD_SetHistory_x001665A8(Sint32_x001665A8 arg0) __asm__("func_00164D38");
+extern Sint32_x001665A8 dvg_ci_dbg_out_lv_x001665A8 __asm__("D_00413758");
+void dvci_conv_fname_x001665A8(const Char8_x001665A8* fname, Char8_x001665A8* path) __asm__("func_00166DA0");
+Sint32_x001665A8 dvci_get_fstate_x001665A8(const Char8_x001665A8* fname, sceCdlFILE_x001665A8* fp) __asm__("func_00167688");
+extern Sint32_x001665A8 SVM_SetCbSvr_x001665A8(Sint32_x001665A8, Sint32_x001665A8 (*)(void*), void*) __asm__("SVM_SetCbSvr");
+extern void SVM_SetCbSvrId_x001665A8(Sint32_x001665A8, Sint32_x001665A8, Sint32_x001665A8 (*)(void*), void*) __asm__("SVM_SetCbSvrId");
+extern int AddIntcHandler_x001665A8(int, int (*)(int), int) __asm__("AddIntcHandler");
+extern int AddDmacHandler_x001665A8(int, int (*)(int), int) __asm__("AddDmacHandler");
+void scePrintf_x001665A8(const char* fmt, ...) __asm__("scePrintf");
+extern void dvCiEntryErrFunc_x001665A8(void (*func)(void*, const Char8_x001665A8*, void*), void* obj) __asm__("dvCiEntryErrFunc");
+extern void (*dvg_ci_err_func_x001665A8)(void*, const Char8_x001665A8*, void*) __asm__("dvg_ci_err_func");
+extern Char8_x001665A8 dvg_ci_fname_x001665A8[297] __asm__("D_00413610");
+void dvci_call_errfn_x001665A8(void* obj, const Char8_x001665A8* msg) __asm__("func_00166150");
+Sint32_x001665A8 dvCiCdSearchFile_x001665A8(sceCdlFILE_x001665A8* fp, const Char8_x001665A8* fname) __asm__("func_00166180");
+void dvCiEntryErrFunc_x001665A8(void (*func)(void*, const Char8_x001665A8*, void*), void* obj) __asm__("dvCiEntryErrFunc");
+DVG_CI_x001665A8 dvci_alloc_x001665A8() __asm__("func_00166550");
+void dvci_free_x001665A8(DVG_CI_x001665A8 dvg_ci) __asm__("func_00166588");
+void dvci_call_errfn_x001665A8(void* obj, const Char8_x001665A8* msg) __attribute__((weak, section(".b3stub")));
+void dvci_call_errfn_x001665A8(void* obj, const Char8_x001665A8* msg) {}
+Sint32_x001665A8 dvCiCdSearchFile_x001665A8(sceCdlFILE_x001665A8* fp, const Char8_x001665A8* fname) __attribute__((weak, section(".b3stub")));
+Sint32_x001665A8 dvCiCdSearchFile_x001665A8(sceCdlFILE_x001665A8* fp, const Char8_x001665A8* fname) {}
+void dvci_free_x001665A8(DVG_CI_x001665A8 dvg_ci) __attribute__((weak, section(".b3stub")));
+void dvci_free_x001665A8(DVG_CI_x001665A8 dvg_ci) {}
+DVG_CI_x001665A8 dvCiOpen_x001665A8(Char8_x001665A8* fname, void* arg1, Sint32_x001665A8 rw) __asm__("dvCiOpen");
+/* dvCiOpen_x001665A8: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/dvci.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+DVG_CI_x001665A8 dvCiOpen_x001665A8(Char8_x001665A8* fname, void* arg1, Sint32_x001665A8 rw) {
+    DVG_CI_x001665A8 dvg_ci;
+    Sint32_x001665A8 fstate;
+    if (fname == 0) {
+        dvci_call_errfn_x001665A8(fname, "E0092908:fname is null.(dvCiOpen_x001665A8)");
+        return 0;
+    }
+    if (rw != 0) {
+        dvci_call_errfn_x001665A8(0, "E0092909:rw is illigal.(dvCiOpen_x001665A8)");
+        return 0;
+    }
+    dvg_ci = dvci_alloc_x001665A8();
+    if (dvg_ci == 0) {
+        dvci_call_errfn_x001665A8(0, "E0092910:not enough handle resource.(dvCiOpen_x001665A8)");
+        return 0;
+    }
+    fstate = dvci_get_fstate_x001665A8(fname, &dvg_ci->unk20);
+    if (dvg_ci->unk20.size == 0) {
+        dvci_conv_fname_x001665A8(fname, dvg_ci_fname_x001665A8);
+        if (dvg_ci_dbg_out_lv_x001665A8 != 2) {
+            scePrintf_x001665A8("DVCI: File cache was not hit. \"%s\"\n", dvg_ci_fname_x001665A8);
+        }
+        SRD_SetHistory_x001665A8(0x8300);
+        sceCdSync_x001665A8(0);
+        SRD_SetHistory_x001665A8(0x8301);
+        if (dvCiCdSearchFile_x001665A8(&dvg_ci->unk20, dvg_ci_fname_x001665A8) == 0) {
+            dvci_call_errfn_x001665A8(0, "E0092911:sceCdSearchFile fail.(dvCiOpen_x001665A8)\0\0\0\0");
+            dvci_free_x001665A8(dvg_ci);
+            return 0;
+        }
+        dvg_ci->unk1 = 0;
+    } else {
+        dvg_ci->unk1 = 1;
+    }
+    dvg_ci->unk8 = (dvg_ci->unk20.size + 2048 - 1) / 2048;
+    dvg_ci->used = 1;
+    dvg_ci->unk4 = dvg_ci->unk20.size;
+    dvg_ci->unkC = 0;
+    dvg_ci->unk18 = 0;
+    dvg_ci->unk10 = 0;
+    dvg_ci->unk14 = 0;
+    dvg_ci->stat = 0;
+    dvg_ci->srd = 0;
+    if (fstate == 1) {
+        dvg_ci->unk8 = 0x7FFFFFFF;
+    }
+    return dvg_ci;
+}
+__asm__("# rebind dvCiOpen 0x001665A8");
 void func_00166730(u8 *arg0) {
     if (arg0 != NULL) {
         if ((u8) *(u8 *)((u8 *)arg0 + 2) >= 2U) {
@@ -943,7 +1053,79 @@ int func_00167558_x00167558(char *name) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167598);
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167688);
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", dvCiLoadDirInfo);
+typedef unsigned int size_t_x00167778;
+typedef unsigned int u32_x00167778;
+typedef u32_x00167778 uintptr_t_x00167778;
+typedef char Sint8_x00167778;
+typedef unsigned int Uint32_x00167778;
+typedef signed int Sint32_x00167778;
+typedef char Char8_x00167778;
+extern int* sceCdCallback_x00167778(void (*func)(int)) __asm__("sceCdCallback");
+typedef struct {
+    uintptr_t_x00167778 unk0;
+    Sint32_x00167778 unk4;
+    Sint32_x00167778 unk8;
+    Sint32_x00167778 unkC;
+} DVG_FLIST_TBL_x00167778;
+void dvci_call_errfn_x00167778(void* obj, const Char8_x00167778* msg) __asm__("func_00166150");
+extern Sint32_x00167778 dvg_ci_dbg_out_lv_x00167778 __asm__("D_00413758");
+extern int AddIntcHandler_x00167778(int, int (*)(int), int) __asm__("AddIntcHandler");
+extern int AddDmacHandler_x00167778(int, int (*)(int), int) __asm__("AddDmacHandler");
+void scePrintf_x00167778(const char* fmt, ...) __asm__("scePrintf");
+void* memset_x00167778(void* s, int c, size_t_x00167778 n) __asm__("memset");
+extern DVG_FLIST_TBL_x00167778 dvg_flist_tbl_x00167778 __asm__("D_00413740");
+extern Sint32_x00167778 dvg_ci_dbg_out_lv_x00167778 __asm__("D_00413758");
+extern Sint8_x00167778 D_006BE100_x00167778[0x1000] __asm__("D_0047F040");
+Sint32_x00167778 analysis_flist_003DC6A0_x00167778(Sint8_x00167778*, Sint8_x00167778*, Sint32_x00167778, Sint32_x00167778, Sint32_x00167778) __asm__("func_00166F70");
+Sint32_x00167778 load_flist_x00167778(Char8_x00167778* flist, Sint8_x00167778* buf) __asm__("func_00167108");
+Sint32_x00167778 search_fstate_x00167778(Sint8_x00167778* arg0, Sint32_x00167778 arg1) __asm__("func_00167290");
+void dvci_init_flist_x00167778() __asm__("func_00167530");
+extern Char8_x00167778 D_0055D340_x00167778[] __asm__("D_00463790");
+extern Char8_x00167778 D_0055D370_x00167778[] __asm__("D_004637C0");
+Sint32_x00167778 load_flist_x00167778(Char8_x00167778* flist, Sint8_x00167778* buf) __attribute__((weak, section(".b3stub")));
+Sint32_x00167778 load_flist_x00167778(Char8_x00167778* flist, Sint8_x00167778* buf) {}
+Sint32_x00167778 search_fstate_x00167778(Sint8_x00167778* arg0, Sint32_x00167778 arg1) __attribute__((weak, section(".b3stub")));
+Sint32_x00167778 search_fstate_x00167778(Sint8_x00167778* arg0, Sint32_x00167778 arg1) {}
+Sint32_x00167778 dvCiLoadDirInfo_x00167778(Char8_x00167778* flist, Sint8_x00167778* fcbuf, Sint32_x00167778 fcsize, Sint32_x00167778 maxflen) __asm__("dvCiLoadDirInfo");
+/* dvCiLoadFcache: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/dvci_sub.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+Sint32_x00167778 dvCiLoadDirInfo_x00167778(Char8_x00167778* flist, Sint8_x00167778* fcbuf, Sint32_x00167778 fcsize, Sint32_x00167778 maxflen) {
+    Uint32_x00167778 temp_lo;
+    Sint32_x00167778 temp;
+    memset_x00167778(D_006BE100_x00167778, 0, sizeof(D_006BE100_x00167778));
+    if (dvg_flist_tbl_x00167778.unk0 != 0) {
+        dvci_init_flist_x00167778();
+    }
+    if ((flist == 0) || (fcbuf == 0) || (fcsize == 0)) {
+        dvci_init_flist_x00167778();
+    }
+    if (flist == 0) {
+        return 0;
+    }
+    if (fcbuf == 0) {
+        if (dvg_ci_dbg_out_lv_x00167778 == 0) {
+            scePrintf_x00167778(D_0055D340_x00167778, fcbuf);
+        }
+        return 0;
+    }
+    if (fcsize == 0) {
+        if (dvg_ci_dbg_out_lv_x00167778 == 0) {
+            scePrintf_x00167778(D_0055D370_x00167778, fcsize);
+        }
+        return 0;
+    }
+    memset_x00167778(fcbuf, 0, fcsize);
+    if (load_flist_x00167778(flist, D_006BE100_x00167778) == 0) {
+        if (dvg_ci_dbg_out_lv_x00167778 == 0) {
+            scePrintf_x00167778("DVCI: Can't read filelist file.(%s)\n", flist);
+        }
+        dvci_call_errfn_x00167778(0, "E0111501:can't read filelist.(dvCiLoadDirInfo_x00167778)\0\0\0\0\0\0\0\0");
+        return 0;
+    }
+    temp_lo = (Uint32_x00167778)fcsize / (maxflen + 9);
+    temp = analysis_flist_003DC6A0_x00167778(fcbuf, D_006BE100_x00167778, 0x1000, temp_lo, maxflen);
+    return (((Uint32_x00167778)fcsize / (maxflen + 9)) * 8) + search_fstate_x00167778(fcbuf, temp) * (maxflen + 1);
+}
+__asm__("# rebind dvCiLoadDirInfo 0x00167778");
 INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167928);
 typedef struct {
     unsigned int lsn;
@@ -1150,7 +1332,101 @@ void func_00167D78_x00167D78(HtCiFile_x00167D78 *h, int nsct)
         memset_x00167D78(h->buf + (h->req << 11) - n, 0, n);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dvci", func_00167DD8);
+typedef void (*CvFsErrFn_x00167DD8)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00167DD8)(CvFsErrFn_x00167DD8 func, void *obj);
+typedef int (*CvFsPathFn_x00167DD8)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00167DD8)(void);
+typedef int (*CvFsOpenFn_x00167DD8)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00167DD8)(int fd);
+typedef int (*CvFsFdIntFn_x00167DD8)(int fd);
+typedef int (*CvFsSeekFn_x00167DD8)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00167DD8)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00167DD8)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00167DD8)(void);
+typedef int (*CvFsLoadDirInfoFn_x00167DD8)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00167DD8)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00167DD8)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00167DD8 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00167DD8 entry_err_func;
+    CvFsPathFn_x00167DD8 get_file_size;
+    CvFsGetFreeSizeFn_x00167DD8 get_free_size;
+    CvFsOpenFn_x00167DD8 open;
+    CvFsFdFn_x00167DD8 close_x00167DD8;
+    CvFsSeekFn_x00167DD8 seek;
+    CvFsFdIntFn_x00167DD8 tell;
+    CvFsXferFn_x00167DD8 req_rd;
+    CvFsXferFn_x00167DD8 req_wr;
+    CvFsFdFn_x00167DD8 stop_tr;
+    CvFsFdIntFn_x00167DD8 get_stat;
+    CvFsFdIntFn_x00167DD8 get_sct_len;
+    CvFsSetSctLenFn_x00167DD8 set_sct_len;
+    CvFsFdIntFn_x00167DD8 get_num_tr;
+    CvFsPathFn_x00167DD8 change_dir;
+    CvFsPathFn_x00167DD8 is_exist_file;
+    CvFsGetNumFilesFn_x00167DD8 get_num_files;
+    CvFsLoadDirInfoFn_x00167DD8 load_dir_info;
+    CvFsFdIntFn_x00167DD8 get_max_byte_rate;
+    CvFsPathFn_x00167DD8 make_dir;
+    CvFsPathFn_x00167DD8 remove_dir;
+    CvFsPathFn_x00167DD8 delete_file;
+    CvFsGetFileSizeExFn_x00167DD8 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00167DD8 opt_fn2;
+} CvFsVtbl_x00167DD8;
+extern CvFsVtbl_x00167DD8 *addDevice_x00167DD8(char *devname, CvFsVtbl_x00167DD8 *(*get_if)(void)) __asm__("addDevice");
+void SVM_LockVar_x00167DD8(void) __asm__("func_0016FF70");
+void SVM_UnlockVar_x00167DD8(void) __asm__("func_0016FFE8");
+int close_x00167DD8(int fd) __asm__("close");
+typedef struct SrdObj_x00167DD8 SrdObj_x00167DD8;
+void SRD_Destroy_x00167DD8(SrdObj_x00167DD8 *srd) __asm__("func_00163EE8");
+char SRD_GetStat_x00167DD8(SrdObj_x00167DD8 *srd) __asm__("func_00164128");
+typedef struct HtCiFile_x00167DD8 {
+    signed char used;
+    signed char cached;
+    signed char state;
+    signed char rsv;
+    long long size;
+    int nsct;
+    int end_fg;
+    int fd;
+    int pos;
+    char *buf;
+    int req;
+    int done;
+    SrdObj_x00167DD8 *stm;
+} HtCiFile_x00167DD8;
+void func_00167DD8_x00167DD8(HtCiFile_x00167DD8 *h) __asm__("func_00167DD8");
+/* htCiExecHndl: from https://github.com/crashbashash/DW4_Decomp (src/cri/htci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00167DD8_x00167DD8(HtCiFile_x00167DD8 *h)
+{
+    if (h->stm == 0)
+        return;
+    SVM_LockVar_x00167DD8();
+    switch (SRD_GetStat_x00167DD8(h->stm)) {
+    case 9:
+        h->state = 3;
+        SRD_Destroy_x00167DD8(h->stm);
+        h->stm = 0;
+        break;
+    case 3:
+        h->done = h->req;
+        h->pos += h->req;
+        h->state = 1;
+        SRD_Destroy_x00167DD8(h->stm);
+        h->stm = 0;
+        break;
+    case 0:
+        h->state = 0;
+        SRD_Destroy_x00167DD8(h->stm);
+        h->stm = 0;
+        break;
+    case 1: case 2: case 4: case 5: case 6: case 7: case 8:
+        break;
+    }
+    SVM_UnlockVar_x00167DD8();
+}
+__asm__("# rebind func_00167DD8 0x00167DD8");
 s32 func_00167DD8_x00167EA0(s8 *) __asm__("func_00167DD8");
 s32 func_00170A00_x00167EA0(s32 *) __asm__("func_00170A00");
 extern s32 D_004138F4_x00167EA0 __asm__("D_004138F4");

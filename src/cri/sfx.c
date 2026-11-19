@@ -818,7 +818,55 @@ void func_0019FFC0_x0019FFC0(SfxZHn_x0019FFC0 *zhn, char **data, int *size) {
     *size = value8;
     *data = value4;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FFF0);
+typedef struct SfxChunk_x0019FFF0 {
+    int valid;
+    char *data;
+    int size;
+} SfxChunk_x0019FFF0;
+typedef void (*SfxZCbFn_x0019FFF0)(unsigned int *, unsigned int *, float, float);
+typedef struct SfxZHn_x0019FFF0 {
+    int used;
+    int zbit;
+    SfxChunk_x0019FFF0 info;
+    int pad20;
+    SfxChunk_x0019FFF0 hdr;
+    int pad36;
+    SfxChunk_x0019FFF0 vfrm;
+    int pad52[2];
+    float zmin;
+    float zmax;
+    SfxZCbFn_x0019FFF0 cbfn;
+    int cbarg;
+} SfxZHn_x0019FFF0;
+int sscanf_x0019FFF0(const char *, const char *, ...) __asm__("func_00127520");
+long long __muldi3_x0019FFF0(long long u, long long v) __asm__("__muldi3");
+void sfxzmv_GetZfrmInf_x0019FFF0(SfxZHn_x0019FFF0 *zhn, char *tag, char *endtag, char **data, int *size) __asm__("func_001A0108");
+void func_0019FFF0_x0019FFF0(SfxZHn_x0019FFF0 *zhn, int frame, int *first, int *second) __asm__("func_0019FFF0");
+/* SFXZ_GetZfrmRange: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfxz.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0019FFF0_x0019FFF0(SfxZHn_x0019FFF0 *zhn, int frame, int *first, int *second) {
+    char *p;
+    int len;
+    long long n;
+    long long x, y, z;
+    char *str;
+    sfxzmv_GetZfrmInf_x0019FFF0(zhn, "ZMFSIZE", "SFXINFE", &p, &len);
+    if (p == 0) {
+        *first = 0;
+        *second = 0x7FFFFFFF;
+        return;
+    }
+    sscanf_x0019FFF0(p, "%lx", &n);
+    sfxzmv_GetZfrmInf_x0019FFF0(zhn, "ZMFDATA", "SFXINFE", &p, &len);
+    str = p;
+    if (str == 0) {
+        *first = 0x7FFFFFFF;
+        return;
+    }
+    sscanf_x0019FFF0(str + (int)__muldi3_x0019FFF0(n, frame), "%lx %lx %lx", &x, &y, &z);
+    *first = y;
+    *second = z;
+}
+__asm__("# rebind func_0019FFF0 0x0019FFF0");
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0108);
 void func_001A0188(void) {
     func_001A01A0();

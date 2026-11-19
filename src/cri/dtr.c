@@ -316,7 +316,67 @@ void func_00165760_x00165760(DTR_x00165760 dtr) {
     dtr->unk14.len = 0;
     dtr->unk3C += dtr->unkC.len;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_00165810);
+typedef struct DtxObj_x00165810 DtxObj_x00165810;
+typedef void (*DtxCbf_x00165810)(void *obj, void *buf, int size);
+DtxObj_x00165810 *DTX_Create_x00165810(unsigned int id, char *eewk, int iopwk, int wklen) __asm__("DTX_Create");
+void DTX_Destroy_x00165810(DtxObj_x00165810 *dtx) __asm__("func_00165C68");
+typedef struct {
+    unsigned int data;
+    unsigned int addr;
+    unsigned int size;
+    unsigned int mode;
+} sceSifDmaData_x00165810;
+typedef struct DtxPeer_x00165810 {
+    char pad0[60];
+    int count;
+} DtxPeer_x00165810;
+struct DtxObj_x00165810 {
+    signed char used;
+    signed char state;
+    signed char flag;
+    char rsv;
+    int server;
+    int count;
+    char *eewk;
+    int size;
+    DtxPeer_x00165810 *peer;
+    int iopwk;
+    int wklen;
+    DtxCbf_x00165810 recv;
+    void *recv_obj;
+    DtxCbf_x00165810 send;
+    void *send_obj;
+    sceSifDmaData_x00165810 dma;
+    unsigned int dmaid;
+};
+extern void (*dtx_urpc_fn_x00165810[64])(int object, int *data, unsigned int words) __asm__("D_00412850");
+extern int dtx_urpc_obj_x00165810[64] __asm__("D_00412950");
+DtxObj_x00165810 *DTX_Create_x00165810(unsigned int id, char *eewk, int iopwk, int wklen) __asm__("DTX_Create");
+void DTX_Destroy_x00165810(DtxObj_x00165810 *dtx) __asm__("func_00165C68");
+void *func_00165810_x00165810(unsigned int command, void *buf, int size) __asm__("func_00165810");
+/* dtx_rpc_func: from https://github.com/crashbashash/DW4_Decomp (src/cri/dtx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void *func_00165810_x00165810(unsigned int command, void *buf, int size)
+{
+    int *data = buf;
+    switch (command) {
+    case 0:
+    case 1:
+        break;
+    case 2:
+        data[0] = (int)DTX_Create_x00165810(data[0], (char *)data[1], data[2], data[3]);
+        break;
+    case 3:
+        DTX_Destroy_x00165810((DtxObj_x00165810 *)data[0]);
+        break;
+    default:
+        if (command - 0x400 < 64 && dtx_urpc_fn_x00165810[command - 0x400] != 0) {
+            dtx_urpc_fn_x00165810[command - 0x400](dtx_urpc_obj_x00165810[command - 0x400], data, (unsigned int)size / 4);
+        }
+        break;
+    }
+    return data;
+}
+__asm__("# rebind func_00165810 0x00165810");
 extern int AddIntcHandler_x001658C0(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
 int GetThreadId_x001658C0(void) __asm__("GetThreadId");
 typedef void *(*sceSifRpcFunc_x001658C0)(unsigned int fno, void *data, int size);

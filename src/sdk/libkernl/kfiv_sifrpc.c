@@ -192,7 +192,148 @@ err:
 elem:
     return rd->client_table + rid * 64;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_sifrpc", func_0010DB20);
+typedef struct {
+    unsigned int psize : 8;  
+    unsigned int dsize : 24;  
+    unsigned int dest;  
+    int cid;
+    unsigned int opt;
+} sceSifCmdHdr_x0010DB20;
+typedef void *(*sceSifRpcFunc_x0010DB20)(unsigned int fno, void *data, int size);
+typedef void (*sceSifEndFunc_x0010DB20)(void *param);
+struct _sif_serve_data_x0010DB20;
+struct _sif_queue_data_x0010DB20;
+typedef struct {
+    void *paddr;  
+    unsigned int pid;
+    int tid;  
+    unsigned int mode;
+} sceSifRpcData_x0010DB20;
+typedef struct _sif_client_data_x0010DB20 {
+    sceSifRpcData_x0010DB20 rpcd;
+    unsigned int command;
+    void *buff;
+    void *gp;  
+    sceSifEndFunc_x0010DB20 func;
+    void *para;
+    struct _sif_serve_data_x0010DB20 *serve;
+} sceSifClientData_x0010DB20;
+typedef struct _sif_serve_data_x0010DB20 {
+    unsigned int command;
+    sceSifRpcFunc_x0010DB20 func;
+    char *buff;
+    int size;
+    sceSifRpcFunc_x0010DB20 cfunc;
+    char *cbuff;
+    int csize;
+    sceSifClientData_x0010DB20 *client;
+    unsigned int paddr;  
+    unsigned int fno;
+    unsigned int receive;  
+    int rsize;
+    int rmode;
+    unsigned int rid;
+    void *link;  
+    void *next;  
+    struct _sif_queue_data_x0010DB20 *base;
+} sceSifServeData_x0010DB20;
+typedef struct _sif_queue_data_x0010DB20 {
+    int key;  
+    int active;
+    void *link;  
+    sceSifServeData_x0010DB20 *start;
+    void *end;  
+    struct _sif_queue_data_x0010DB20 *next;
+} sceSifQueueData_x0010DB20;
+typedef struct {
+    sceSifCmdHdr_x0010DB20 hdr;
+    unsigned int rec_id;  
+    void *pkt_addr;
+    unsigned int rpc_id;
+} sceSifRpcPktHeader_x0010DB20;
+typedef struct {
+    sceSifCmdHdr_x0010DB20 hdr;
+    unsigned int rec_id;
+    unsigned int pkt_addr;  
+    unsigned int rpc_id;
+    unsigned int client;  
+    unsigned int cid;
+    union {
+        struct {
+            sceSifServeData_x0010DB20 *serve;
+            void *buff;
+        } bind;
+        struct {
+            unsigned int src;
+            unsigned int dest;
+            int size;
+        } rdata;
+    } req;
+    char pad[64 - 48];
+} sceSifRpcRendPkt_x0010DB20;
+typedef struct {
+    unsigned int pid;  
+    void *pkt_table;
+    int pkt_table_len;
+    int unused1;
+    int unused2;
+    sceSifRpcRendPkt_x0010DB20 *rdata_table;
+    int rdata_table_len;
+    sceSifRpcRendPkt_x0010DB20 *client_table;
+    int client_table_len;
+    int rdata_table_idx;
+    sceSifQueueData_x0010DB20 *active_queue;
+} sceSifRpcState_x0010DB20;
+int iSignalSema_x0010DB20(int sema) __asm__("iSignalSema");
+extern int AddIntcHandler_x0010DB20(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+extern __inline__ void *SetGp_x0010DB20(void *newgp) __asm__("SetGp");
+static __inline__ void *SetGp_x0010DB20(void *newgp)
+{
+        void *oldgp;
+        __asm__ volatile (
+                "move           %0, $28\n"
+                "move           $28, %1\n"
+                : "=&r"(oldgp)
+                : "r"(newgp)
+                : "memory"
+        );
+        return(oldgp);
+}
+void _sceRpcFreePacket_x0010DB20(sceSifRpcPktHeader_x0010DB20 *packet) __asm__("func_0010DA90");
+void _sceRpcFreePacket_x0010DB20(sceSifRpcPktHeader_x0010DB20 *packet) __attribute__((weak, section(".b3stub")));
+void _sceRpcFreePacket_x0010DB20(sceSifRpcPktHeader_x0010DB20 *packet) {}
+void func_0010DB20_x0010DB20(sceSifRpcRendPkt_x0010DB20 *rend, sceSifRpcState_x0010DB20 *state) __asm__("func_0010DB20");
+/* _request_end: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/sifrpc.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_0010DB20_x0010DB20(sceSifRpcRendPkt_x0010DB20 *rend, sceSifRpcState_x0010DB20 *state)
+{
+    sceSifClientData_x0010DB20 *client;
+    void *gp;
+
+    switch (rend->cid) {
+    case 0x8000000a:
+        client = (sceSifClientData_x0010DB20 *)rend->client;
+        if (client->func) {
+            gp = SetGp_x0010DB20(client->gp);
+            client->func(client->para);
+            SetGp_x0010DB20(gp);
+        }
+        break;
+    case 0x80000009:
+        client = (sceSifClientData_x0010DB20 *)rend->client;
+        client->serve = rend->req.bind.serve;
+        client->buff = rend->req.bind.buff;
+        break;
+    case 0x8000000b:  
+        break;
+    }
+    client = (sceSifClientData_x0010DB20 *)rend->client;
+    if (client->rpcd.tid >= 0) {
+        iSignalSema_x0010DB20(client->rpcd.tid);
+    }
+    _sceRpcFreePacket_x0010DB20(client->rpcd.paddr);
+    client->rpcd.paddr = 0;
+}
+__asm__("# rebind func_0010DB20 0x0010DB20");
 typedef struct _sif_rpc_rpkt_x0010DBF0 {
     unsigned char  pad00[0x24];
     void          *src;       

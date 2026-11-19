@@ -56,8 +56,116 @@ float func_0011BE30_x0011BE30(float x)
         return (float)2.0 * (df + w);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011C258);
-INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011C5F8);
+typedef union { float value; unsigned int word; } ieee_float_shape_type_x0011C258;
+extern float Math_Sqrtf_x0011C258(float x) __asm__("func_0011D730");
+extern float Libc_Fabsf_x0011C258(float x) __asm__("func_0011F2F8");
+float func_0011C258_x0011C258(float x) __asm__("func_0011C258");
+/* Math_AsinfImpl: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libgcc/libgcc_2.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+float func_0011C258_x0011C258(float x)
+{
+        const float
+        one = 1.0000000000e+00,
+        huge = 1.000e+30,
+        pio2_hi = 1.5707962513e+00,
+        pio2_lo = 7.5497894159e-08,
+        pio4_hi = 7.8539818525e-01,
+        pS0 = 1.6666667163e-01,
+        pS1 = -3.2556581497e-01,
+        pS2 = 2.0121252537e-01,
+        pS3 = -4.0055535734e-02,
+        pS4 = 7.9153501429e-04,
+        pS5 = 3.4793309169e-05,
+        qS1 = -2.4033949375e+00,
+        qS2 = 2.0209457874e+00,
+        qS3 = -6.8828397989e-01,
+        qS4 = 7.7038154006e-02;
+        float t,w,p,q,c,r,s;
+        int hx,ix;
+        do { ieee_float_shape_type_x0011C258 gf_u; gf_u.value = (x); (hx) = gf_u.word; } while (0);
+        ix = hx&0x7fffffff;
+        if(ix==0x3f800000) {
+            return x*pio2_hi+x*pio2_lo;
+        } else if(ix> 0x3f800000) {
+            return (x-x)/(x-x);
+        } else if (ix<0x3f000000) {
+            if(ix<0x32000000) {
+                if(huge+x>one) return x;
+            } else {
+                t = x*x;
+                p = t*(pS0+t*(pS1+t*(pS2+t*(pS3+t*(pS4+t*pS5)))));
+                q = one+t*(qS1+t*(qS2+t*(qS3+t*qS4)));
+                w = p/q;
+                return x+x*w;
+            }
+        }
+        w = one-Libc_Fabsf_x0011C258(x);
+        t = w*(float)0.5;
+        p = t*(pS0+t*(pS1+t*(pS2+t*(pS3+t*(pS4+t*pS5)))));
+        q = one+t*(qS1+t*(qS2+t*(qS3+t*qS4)));
+        s = Math_Sqrtf_x0011C258(t);
+        if(ix>=0x3F79999A) {
+            w = p/q;
+            t = pio2_hi-((float)2.0*(s+s*w)-pio2_lo);
+        } else {
+            int iw;
+            w = s;
+            do { ieee_float_shape_type_x0011C258 gf_u; gf_u.value = (w); (iw) = gf_u.word; } while (0);
+            do { ieee_float_shape_type_x0011C258 sf_u; sf_u.word = (iw&0xfffff000); (w) = sf_u.value; } while (0);
+            c = (t-w*w)/(s+w);
+            r = p/q;
+            p = (float)2.0*s*r-(pio2_lo-(float)2.0*c);
+            q = pio4_hi-(float)2.0*w;
+            t = pio4_hi-(p-q);
+        }
+        if(hx>0) return t; else return -t;
+}
+typedef union { float value; unsigned int word; } ieee_float_shape_type_x0011C5F8;
+extern float Libc_Fabsf_x0011C5F8(float x) __asm__("func_0011F2F8");
+extern float Libc_Atanf_x0011C5F8(float x) __asm__("func_0011EE78");
+float func_0011C5F8_x0011C5F8(float y, float x) __asm__("func_0011C5F8");
+/* Math_Atan2Kernel: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libgcc/libgcc_2.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+float func_0011C5F8_x0011C5F8(float y, float x)
+{
+        const float
+        tiny = 1.0e-30,
+        pi_o_2 = 1.5707963705e+00,
+        pi = 3.1415925026e+00,
+        pi_lo = 1.5099578832e-07;
+        float z;
+        int k,m,hx,hy,ix,iy;
+        do { ieee_float_shape_type_x0011C5F8 gf_u; gf_u.value = (x); (hx) = gf_u.word; } while (0);
+        ix = hx&0x7fffffff;
+        do { ieee_float_shape_type_x0011C5F8 gf_u; gf_u.value = (y); (hy) = gf_u.word; } while (0);
+        iy = hy&0x7fffffff;
+        if(hx==0x3f800000) return Libc_Atanf_x0011C5F8(y);
+        m = ((hy>>31)&1)|((hx>>30)&2);
+        if(iy < 0x00800000L) {
+            switch(m) {
+                case 0:
+                case 1: return y;
+                case 2: return pi+tiny;
+                case 3: return -pi-tiny;
+            }
+        }
+        if(ix < 0x00800000L) return (hy<0)? -pi_o_2-tiny: pi_o_2+tiny;
+        k = (iy-ix)>>23;
+        if(k > 60) z=pi_o_2+(float)0.5*pi_lo;
+        else if(hx<0&&k<-60) z=0.0;
+        else z=Libc_Atanf_x0011C5F8(Libc_Fabsf_x0011C5F8(y/x));
+        switch (m) {
+            case 0: return z ;
+            case 1: {
+                      unsigned int zh;
+                      do { ieee_float_shape_type_x0011C5F8 gf_u; gf_u.value = (z); (zh) = gf_u.word; } while (0);
+                      do { ieee_float_shape_type_x0011C5F8 sf_u; sf_u.word = (zh ^ 0x80000000); (z) = sf_u.value; } while (0);
+                    }
+                    return z ;
+            case 2: return pi-(z-pi_lo);
+            default:
+                    return (z-pi_lo)-pi;
+        }
+}
+__asm__("# rebind func_0011C5F8 0x0011C5F8");
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011C7D8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011CAB8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011CBA0);
@@ -308,7 +416,60 @@ float func_0011E1B8_x0011E1B8(float x, float y, int iy)
         if(iy==0) return x+v*(((float)-1.6666667163e-01)+z*r);
         else return x-((z*(((float)5.0000000000e-01)*y-v*r)-y)-v*((float)-1.6666667163e-01));
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011E2C0);
+typedef union { float value; unsigned int word; } ieee_float_shape_type_x0011E2C0;
+extern const float T_x0011E2C0[] __asm__("D_0045E538");
+extern float Libc_Fabsf_x0011E2C0(float x) __asm__("func_0011F2F8");
+float func_0011E2C0_x0011E2C0(float x, float y, int iy) __asm__("func_0011E2C0");
+/* Math_TanKernel: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libgcc/libgcc_11FBF8.c, no licence stated by the repository); ee-gcc 2.96 -O2 -G0 */
+float func_0011E2C0_x0011E2C0(float x, float y, int iy)
+{
+        const float
+        one = 1.0000000000e+00,
+        pio4 = 7.8539812565e-01,
+        pio4lo= 3.7748947079e-08;
+        float z,r,v,w,s;
+        int ix,hx;
+        do { ieee_float_shape_type_x0011E2C0 gf_u; gf_u.value = (x); (hx) = gf_u.word; } while (0);
+        ix = hx&0x7fffffff;
+        if(ix<0x31800000)
+            {if((int)x==0) {
+                if((ix|(iy+1))==0) return one/Libc_Fabsf_x0011E2C0(x);
+                else return (iy==1)? x: -one/x;
+            }
+            }
+        if(ix>=0x3f2ca140) {
+            if(hx<0) {x = -x; y = -y;}
+            z = pio4-x;
+            w = pio4lo-y;
+            x = z+w; y = 0.0;
+        }
+        z = x*x;
+        w = z*z;
+        r = T_x0011E2C0[1]+w*(T_x0011E2C0[3]+w*(T_x0011E2C0[5]+w*(T_x0011E2C0[7]+w*(T_x0011E2C0[9]+w*T_x0011E2C0[11]))));
+        v = z*(T_x0011E2C0[2]+w*(T_x0011E2C0[4]+w*(T_x0011E2C0[6]+w*(T_x0011E2C0[8]+w*(T_x0011E2C0[10]+w*T_x0011E2C0[12])))));
+        s = z*x;
+        r = y + z*(s*(r+v)+y);
+        r += T_x0011E2C0[0]*s;
+        w = x+r;
+        if(ix>=0x3f2ca140) {
+            v = (float)iy;
+            return (float)(1-((hx>>30)&2))*(v-(float)2.0*(x-(w*w/(w+v)-r)));
+        }
+        if(iy==1) return w;
+        else {
+            float a,t;
+            int i;
+            z = w;
+            do { ieee_float_shape_type_x0011E2C0 gf_u; gf_u.value = (z); (i) = gf_u.word; } while (0);
+            do { ieee_float_shape_type_x0011E2C0 sf_u; sf_u.word = (i&0xfffff000); (z) = sf_u.value; } while (0);
+            v = r-(z - x);
+            t = a = -(float)1.0/w;
+            do { ieee_float_shape_type_x0011E2C0 gf_u; gf_u.value = (t); (i) = gf_u.word; } while (0);
+            do { ieee_float_shape_type_x0011E2C0 sf_u; sf_u.word = (i&0xfffff000); (t) = sf_u.value; } while (0);
+            s = (float)1.0+t*z;
+            return t+a*(s+t*v);
+        }
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libm", func_0011E548);
 typedef union { double value; struct { unsigned int lsw; unsigned int msw; } parts; } ieee_double_shape_type_x0011EA10;
 double func_0011EA10_x0011EA10(double x) __asm__("func_0011EA10");

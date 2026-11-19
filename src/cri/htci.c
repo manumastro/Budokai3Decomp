@@ -502,7 +502,50 @@ int func_00168AF0_x00168AF0(const char *path)
     head[5] = 0;
     return strcmp_x00168AF0(head, ext_str0_x00168AF0) == 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/htci", func_00168B48);
+typedef unsigned int size_t_x00168B48;
+typedef int s32_x00168B48;
+typedef s32_x00168B48 strlen_t_x00168B48;
+typedef signed int Sint32_x00168B48;
+typedef char Char8_x00168B48;
+extern int* sceCdCallback_x00168B48(void (*func)(int)) __asm__("sceCdCallback");
+size_t_x00168B48 strlen_x00168B48(const char* s) __asm__("func_00127BA0");
+char* strcpy_x00168B48(char* dest, const char* src) __asm__("func_00127A88");
+char* strcat_x00168B48(char* dest, const char* src) __asm__("func_00127810");
+extern Char8_x00168B48 htg_ci_root_dir_x00168B48[257] __asm__("D_00413D18");
+extern Char8_x00168B48 htg_ci_head_name_x00168B48[33] __asm__("D_00413E20");
+Sint32_x00168B48 htci_is_inc_colon_x00168B48(const Char8_x00168B48* str) __asm__("func_00168A80");
+Sint32_x00168B48 htci_is_bgn_host_x00168B48(const Char8_x00168B48* str) __asm__("func_00168AF0");
+extern Char8_x00168B48 D_0055D760_x00168B48[] __asm__("D_00463BB0");
+Sint32_x00168B48 htci_is_inc_colon_x00168B48(const Char8_x00168B48* str) __attribute__((weak, section(".b3stub")));
+Sint32_x00168B48 htci_is_inc_colon_x00168B48(const Char8_x00168B48* str) {}
+Sint32_x00168B48 htci_is_bgn_host_x00168B48(const Char8_x00168B48* str) __attribute__((weak, section(".b3stub")));
+Sint32_x00168B48 htci_is_bgn_host_x00168B48(const Char8_x00168B48* str) {}
+void func_00168B48_x00168B48(const Char8_x00168B48* flist, Char8_x00168B48* fname) __asm__("func_00168B48");
+/* htci_conv_fname: from https://github.com/crowded-street/3s-decomp (src/anniversary/cri/libadxe/htci_sub.c, AGPL-3.0-only); ee-gcc 2.96 -O2 -G0 */
+void func_00168B48_x00168B48(const Char8_x00168B48* flist, Char8_x00168B48* fname) {
+    strlen_t_x00168B48 len;
+    Sint32_x00168B48 i;
+    Char8_x00168B48 root_dir_last_char;
+    fname[0] = '\0';
+    if (htci_is_inc_colon_x00168B48(flist) == 0) {
+        strcpy_x00168B48(fname, htg_ci_head_name_x00168B48);
+    }
+    if (htci_is_bgn_host_x00168B48(fname) == 1) {
+        strcat_x00168B48(fname, htg_ci_root_dir_x00168B48);
+        root_dir_last_char = htg_ci_root_dir_x00168B48[strlen_x00168B48(htg_ci_root_dir_x00168B48) - 1];
+        if ((root_dir_last_char != '\\') && (root_dir_last_char != '/') && (root_dir_last_char != '\0') &&
+            (flist[0] != '\\') && (flist[0] != '/')) {
+            strcat_x00168B48(fname, D_0055D760_x00168B48);
+        }
+    }
+    strcat_x00168B48(fname, flist);
+    len = strlen_x00168B48(fname);
+    for (i = 0; i < len; i++) {
+        if (fname[i] == '\\') {
+            fname[i] = '/';
+        }
+    }
+}
 s8 func_00168C60_x00168C60(s8 arg0) __asm__("func_00168C60");
 s8 func_00168C60_x00168C60(s8 arg0) {
     return ((arg0 ^ 0x5C) != 0) ? arg0 : 0x2F;

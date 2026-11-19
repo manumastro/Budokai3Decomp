@@ -5,7 +5,61 @@ extern s32 D_0047ECD0;
 extern s32 (*D_0041158C)(s32);
 extern s32 D_00411590;
 
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_00161B98);
+enum AdxPdStat_x00161B98 {
+    ADXPD_STAT_STOP_x00161B98 = 0,
+    ADXPD_STAT_DECODE_QUEUED_x00161B98 = 1,
+    ADXPD_STAT_DECODING_x00161B98 = 2,
+    ADXPD_STAT_DECEND_x00161B98 = 3
+};
+enum AdxPdChannels_x00161B98 {
+    ADXPD_CH_MONO_x00161B98 = 1,
+    ADXPD_CH_STEREO_x00161B98 = 2
+};
+typedef struct AdxPdObj_x00161B98 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x00161B98;
+int ADX_DecodeMono4_x00161B98(unsigned char *ibuf, int nblk, short *obuf, short *dly, short k0, short k1, unsigned short *seed, short mul, short add) __asm__("func_00153728");
+int ADX_DecodeSte4_x00161B98(unsigned char *ibuf, int nblk, short *obufl, short *dlyl, short *obufr, short *dlyr, short k0, short k1, unsigned short *seed, short mul, short add) __asm__("func_00154018");
+void adxpd_error_x00161B98(void) __asm__("func_00161B88");
+void adxpd_error_x00161B98(void) __attribute__((weak, section(".b3stub")));
+void adxpd_error_x00161B98(void) {}
+void func_00161B98_x00161B98(AdxPdObj_x00161B98 *pd) __asm__("func_00161B98");
+/* ADXPD_ExecHndl: from https://github.com/crashbashash/DW4_Decomp (src/cri/convjobs.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00161B98_x00161B98(AdxPdObj_x00161B98 *pd)
+{
+    if (pd->stat == ADXPD_STAT_DECODE_QUEUED_x00161B98) {
+        pd->stat = ADXPD_STAT_DECODING_x00161B98;
+    }
+    if (pd->stat != ADXPD_STAT_DECODING_x00161B98) {
+        return;
+    }
+    if (pd->channels == ADXPD_CH_MONO_x00161B98) {
+        pd->nblk_decoded = ADX_DecodeMono4_x00161B98(pd->ibuf, pd->nblk, pd->obufl, pd->dly[0], pd->k0,
+                                           pd->k1, &pd->seed, pd->mul, pd->add);
+    } else {
+        pd->nblk_decoded = ADX_DecodeSte4_x00161B98(pd->ibuf, pd->nblk, pd->obufl, pd->dly[0], pd->obufr,
+                                          pd->dly[1], pd->k0, pd->k1, &pd->seed, pd->mul, pd->add);
+        if (pd->nblk_decoded % 2 == 1) {
+            adxpd_error_x00161B98();
+        }
+    }
+    pd->stat = ADXPD_STAT_DECEND_x00161B98;
+}
 typedef signed short Sint16_x00161C90;
 typedef signed int Sint32_x00161C90;
 extern int* sceCdCallback_x00161C90(void (*func)(int)) __asm__("sceCdCallback");
@@ -801,7 +855,87 @@ void func_001625E0_x001625E0(u8 *arg0)
   *((s32 *) (((u8 *) arg0) + 4)) = 0;
   *((s32 *) (((u8 *) arg0) + 0)) = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00161B98", func_001625F0);
+typedef void (*CvFsErrFn_x001625F0)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x001625F0)(CvFsErrFn_x001625F0 func, void *obj);
+typedef int (*CvFsPathFn_x001625F0)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x001625F0)(void);
+typedef int (*CvFsOpenFn_x001625F0)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x001625F0)(int fd);
+typedef int (*CvFsFdIntFn_x001625F0)(int fd);
+typedef int (*CvFsSeekFn_x001625F0)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x001625F0)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x001625F0)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x001625F0)(void);
+typedef int (*CvFsLoadDirInfoFn_x001625F0)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x001625F0)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x001625F0)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x001625F0 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x001625F0 entry_err_func;
+    CvFsPathFn_x001625F0 get_file_size;
+    CvFsGetFreeSizeFn_x001625F0 get_free_size;
+    CvFsOpenFn_x001625F0 open;
+    CvFsFdFn_x001625F0 close;
+    CvFsSeekFn_x001625F0 seek;
+    CvFsFdIntFn_x001625F0 tell;
+    CvFsXferFn_x001625F0 req_rd;
+    CvFsXferFn_x001625F0 req_wr;
+    CvFsFdFn_x001625F0 stop_tr;
+    CvFsFdIntFn_x001625F0 get_stat;
+    CvFsFdIntFn_x001625F0 get_sct_len;
+    CvFsSetSctLenFn_x001625F0 set_sct_len;
+    CvFsFdIntFn_x001625F0 get_num_tr;
+    CvFsPathFn_x001625F0 change_dir;
+    CvFsPathFn_x001625F0 is_exist_file;
+    CvFsGetNumFilesFn_x001625F0 get_num_files;
+    CvFsLoadDirInfoFn_x001625F0 load_dir_info;
+    CvFsFdIntFn_x001625F0 get_max_byte_rate;
+    CvFsPathFn_x001625F0 make_dir;
+    CvFsPathFn_x001625F0 remove_dir;
+    CvFsPathFn_x001625F0 delete_file;
+    CvFsGetFileSizeExFn_x001625F0 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x001625F0 opt_fn2;
+} CvFsVtbl_x001625F0;
+extern CvFsVtbl_x001625F0 *addDevice_x001625F0(char *devname, CvFsVtbl_x001625F0 *(*get_if)(void)) __asm__("addDevice");
+void toUpperStr_x001625F0(char *str) __asm__("func_00162118");
+typedef unsigned int size_t_x001625F0;
+void *memcpy_x001625F0(void *, const void *, size_t_x001625F0) __asm__("func_00125740");
+size_t_x001625F0 strlen_x001625F0(const char *) __asm__("func_00127BA0");
+CvFsVtbl_x001625F0 *addDevice_x001625F0(char *devname, CvFsVtbl_x001625F0 *(*get_if)(void)) __asm__("addDevice");
+void toUpperStr_x001625F0(char *str) __asm__("func_00162118");
+void toUpperStr_x001625F0(char *str) __attribute__((weak, section(".b3stub")));
+void toUpperStr_x001625F0(char *str) {}
+void func_001625F0_x001625F0(char *devname, char *fname, const char *path) __asm__("func_001625F0");
+/* getDevName: from https://github.com/crashbashash/DW4_Decomp (src/cri/cvfs.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001625F0_x001625F0(char *devname, char *fname, const char *path)
+{
+    int i;
+    int j;
+    if (path == 0) {
+        return;
+    }
+    for (i = 0; i < 304 - 7 && path[i] != ':' && path[i] != 0; i++) {
+        devname[i] = path[i];
+    }
+    if (path[i] == 0) {
+        devname[i] = 0;
+        memcpy_x001625F0(fname, devname, strlen_x001625F0(devname) + 1);
+        devname[0] = 0;
+        return;
+    }
+    devname[i] = 0;
+    i++;
+    if (i == 2) {
+        devname[0] = 0;
+        i = 0;
+    }
+    for (j = i; j < 304 - 7 && path[j] != 0; j++) {
+        fname[j - i] = path[j];
+    }
+    fname[j - i] = 0;
+    toUpperStr_x001625F0(devname);
+}
 typedef void (*CvFsErrFn_x00162738)(void *obj, const char *msg, int code);
 typedef void (*CvFsEntryErrFuncFn_x00162738)(CvFsErrFn_x00162738 func, void *obj);
 typedef int (*CvFsPathFn_x00162738)(const char *path);

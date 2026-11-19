@@ -258,8 +258,21 @@ class Analysis:
         for name, a in addr.items():
             start, size = self.funcs[name]
             why = None
-            for idx, typ, tgt in self.obj.reloc_targets(start, size):
+            rts = list(self.obj.reloc_targets(start, size))
+            for j, (idx, typ, tgt) in enumerate(rts):
                 t = self.exe.target_of(a + 4 * idx)
+                if t is None and typ in ("R_MIPS_HI16", "R_MIPS_LO16"):
+                    # the split left a lui whose %lo it could not pair (raw `lui $a1, (0x470000 >> 16)`): pair it
+                    # here, with the object's own HI16/LO16 order, and read both halves from the executable
+                    if typ == "R_MIPS_HI16":
+                        pr = next((r for r in rts[j + 1:] if r[1] == "R_MIPS_LO16" and r[2] == tgt), None)
+                        hi_i, lo_i = idx, (pr[0] if pr else None)
+                    else:
+                        pr = next((r for r in reversed(rts[:j]) if r[1] == "R_MIPS_HI16" and r[2] == tgt), None)
+                        hi_i, lo_i = (pr[0] if pr else None), idx
+                    if hi_i is not None and lo_i is not None:
+                        lo16 = self.exe.word(a + 4 * lo_i) & 0xFFFF
+                        t = ((self.exe.word(a + 4 * hi_i) & 0xFFFF) << 16) + (lo16 - 0x10000 if lo16 & 0x8000 else lo16)
                 if t is None:
                     why = f"no symbol at {a + 4 * idx:#x}"
                     break
@@ -288,14 +301,26 @@ class Analysis:
                             end = data.find(b"\0", off)
                             lit = data[off:end] if end > off else None
                             if lit is None or not all(32 <= c < 127 or c in (9, 10, 13) for c in lit):
-                                why = f"non-string constant in {sec}+{off:#x}"
-                                break
+                                # a constant (jump table, float, table): bound per reference by gcc_rebind.py
+                                self.rebind = getattr(self, "rebind", set()) | {name}
+                                continue
                             rom = self.exe.rom[t - VRAM:t - VRAM + len(lit) + 1]
                             if rom != lit + b"\0" and not (getattr(self, "loose_strings", False)
                                                            and self.exe_string_at(t)):
-                                why = f"string at {t:#x} differs"
-                                break
+                                # another text at that address: bound per reference by gcc_rebind.py
+                                self.rebind = getattr(self, "rebind", set()) | {name}
+                                continue
                             key, val = ("lit", sec, off), t
+                            if key in b and b[key] != val:
+                                # the object merged two literals the executable keeps apart: per reference too
+                                self.rebind = getattr(self, "rebind", set()) | {name}
+                                continue
+                if key in b and b[key] != val and key[0] == "data":
+                    # two addresses for one static object (the executable lays it out otherwise): the function
+                    # keeps the object as a static of its own and gcc_rebind.py binds each reference
+                    self.rebind = getattr(self, "rebind", set()) | {name}
+                    self.rebind_data = getattr(self, "rebind_data", set()) | {key[1]}
+                    continue
                 if key in b and b[key] != val:
                     why = f"{key} bound to {b[key]:#x} and {val:#x}"
                     break

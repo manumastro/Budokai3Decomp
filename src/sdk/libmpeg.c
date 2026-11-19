@@ -318,7 +318,70 @@ void func_00103BD0_x00103BD0(_sceMpegDecoder_x00103BD0 *dec, int PMV[2][2][2], i
     }
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103D70);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001042C8);
+extern char D_0045E770_x001042C8[] __asm__("D_0045CF28");
+extern void _waitIpuIdle_x001042C8(void *s) __asm__("func_00104938");
+extern long long _sceMpegWaitIpuIdle64_x001042C8(void *s) __asm__("func_001045A8");
+extern unsigned int func_0039EB90_x001042C8(void *s, int n) __asm__("func_00104810");
+extern void func_0039ECF0_x001042C8(void *s, int n) __asm__("func_00104970");
+extern void func_0039C3E8_x001042C8(void *s, char *msg, int a) __asm__("func_00109790");
+int func_001042C8_x001042C8(void *s) __asm__("func_001042C8");
+/* func_0039E648: from https://github.com/LucasPicoli/god-hand-decomp (src/cod/0039e648.c, MIT); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001042C8_x001042C8(void *s)
+{
+    long long v;
+    long long top;
+    unsigned int bp;
+    unsigned int r;
+    int code;
+    int total;
+    int again;
+    unsigned int cmd;
+
+    total = 0;
+    do {
+        _waitIpuIdle_x001042C8(s);
+        cmd = 0x30000000;
+        *(volatile unsigned int *)0x10002000 = cmd;
+        *(int *)((char *)s + 0x82C) = cmd;
+        *(int *)((char *)s + 0x828) = 0;
+        v = _sceMpegWaitIpuIdle64_x001042C8(s);
+        bp = *(volatile unsigned int *)0x10002020;
+        top = *(volatile long long *)0x10002030;
+        *(int *)((char *)s + 0x848) = (int)top;
+        if (top < 0) {
+            *(int *)((char *)s + 0x84C) = (0x20 - (bp & 0x1F)) & 0x1F;
+        } else {
+            *(int *)((char *)s + 0x84C) = 0x20;
+        }
+        *(int *)((char *)s + 0x12C) = ((int)v == 0);
+        code = (short)v;
+        switch ((unsigned int)code) {
+        case 0x22:
+            again = 1;
+            break;
+        case 0x23:
+            again = 1;
+            total += 0x21;
+            break;
+        case 0:
+            r = func_0039EB90_x001042C8(s, 0xB);
+            if (*(int *)((char *)s + 0x858) != 0 && r == 0xF) {
+                func_0039ECF0_x001042C8(s, 0xB);
+                again = 1;
+                break;
+            }
+            func_0039C3E8_x001042C8(s, D_0045E770_x001042C8, code);
+            *(int *)((char *)s + 0x12C) = 1;
+            return 1;
+        default:
+            total += code;
+            again = 0;
+            break;
+        }
+    } while (again);
+    return total;
+}
+__asm__("# rebind func_001042C8 0x001042C8");
 typedef struct {
     char p0[0x82C]; unsigned int cmd;
     char p830[0x868 - 0x830]; void *mp;

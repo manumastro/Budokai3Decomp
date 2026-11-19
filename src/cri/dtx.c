@@ -98,7 +98,55 @@ DtxObj_x00165AD0 *DTX_Create_x00165AD0(unsigned int id, char *eewk, int iopwk, i
     dtx->used = 1;
     return dtx;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00165C68);
+typedef unsigned int size_t_x00165C68;
+void *memset_x00165C68(void *, int, size_t_x00165C68) __asm__("memset");
+typedef struct DtxObj_x00165C68 DtxObj_x00165C68;
+typedef void (*DtxCbf_x00165C68)(void *obj, void *buf, int size);
+void DTX_ExecServer_x00165C68(void) __asm__("func_001660C0");
+typedef struct {
+    unsigned int data;
+    unsigned int addr;
+    unsigned int size;
+    unsigned int mode;
+} sceSifDmaData_x00165C68;
+typedef struct DtxPeer_x00165C68 {
+    char pad0[60];
+    int count;
+} DtxPeer_x00165C68;
+struct DtxObj_x00165C68 {
+    signed char used;
+    signed char state;
+    signed char flag;
+    char rsv;
+    int server;
+    int count;
+    char *eewk;
+    int size;
+    DtxPeer_x00165C68 *peer;
+    int iopwk;
+    int wklen;
+    DtxCbf_x00165C68 recv;
+    void *recv_obj;
+    DtxCbf_x00165C68 send;
+    void *send_obj;
+    sceSifDmaData_x00165C68 dma;
+    unsigned int dmaid;
+};
+void dtx_destroy_rmt_x00165C68(int server) __asm__("func_001659B0");
+void DTX_ExecServer_x00165C68(void) __asm__("func_001660C0");
+void dtx_destroy_rmt_x00165C68(int server) __attribute__((weak, section(".b3stub")));
+void dtx_destroy_rmt_x00165C68(int server) {}
+void func_00165C68_x00165C68(DtxObj_x00165C68 *dtx) __asm__("func_00165C68");
+/* DTX_Destroy: from https://github.com/crashbashash/DW4_Decomp (src/cri/dtx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00165C68_x00165C68(DtxObj_x00165C68 *dtx)
+{
+    dtx->flag = 0;
+    while (dtx->state == 1) {
+        DTX_ExecServer_x00165C68();
+    }
+    dtx_destroy_rmt_x00165C68(dtx->server);
+    memset_x00165C68(dtx, 0, sizeof(DtxObj_x00165C68));
+}
 int func_00165CD0_x00165CD0(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_00165CD0");
 int func_00165CD0_x00165CD0(u8 *arg0, s32 arg1, s32 arg2)
 {
@@ -544,7 +592,116 @@ int func_001661D8_x001661D8(void)
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00166228);
+typedef void (*CvFsErrFn_x00166228)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00166228)(CvFsErrFn_x00166228 func, void *obj);
+typedef int (*CvFsPathFn_x00166228)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00166228)(void);
+typedef int (*CvFsOpenFn_x00166228)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00166228)(int fd);
+typedef int (*CvFsFdIntFn_x00166228)(int fd);
+typedef int (*CvFsSeekFn_x00166228)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00166228)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00166228)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00166228)(void);
+typedef int (*CvFsLoadDirInfoFn_x00166228)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00166228)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00166228)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00166228 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00166228 entry_err_func;
+    CvFsPathFn_x00166228 get_file_size;
+    CvFsGetFreeSizeFn_x00166228 get_free_size;
+    CvFsOpenFn_x00166228 open;
+    CvFsFdFn_x00166228 close_x00166228;
+    CvFsSeekFn_x00166228 seek;
+    CvFsFdIntFn_x00166228 tell;
+    CvFsXferFn_x00166228 req_rd;
+    CvFsXferFn_x00166228 req_wr;
+    CvFsFdFn_x00166228 stop_tr;
+    CvFsFdIntFn_x00166228 get_stat;
+    CvFsFdIntFn_x00166228 get_sct_len;
+    CvFsSetSctLenFn_x00166228 set_sct_len;
+    CvFsFdIntFn_x00166228 get_num_tr;
+    CvFsPathFn_x00166228 change_dir;
+    CvFsPathFn_x00166228 is_exist_file;
+    CvFsGetNumFilesFn_x00166228 get_num_files;
+    CvFsLoadDirInfoFn_x00166228 load_dir_info;
+    CvFsFdIntFn_x00166228 get_max_byte_rate;
+    CvFsPathFn_x00166228 make_dir;
+    CvFsPathFn_x00166228 remove_dir;
+    CvFsPathFn_x00166228 delete_file;
+    CvFsGetFileSizeExFn_x00166228 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00166228 opt_fn2;
+} CvFsVtbl_x00166228;
+extern CvFsVtbl_x00166228 *addDevice_x00166228(char *devname, CvFsVtbl_x00166228 *(*get_if)(void)) __asm__("addDevice");
+typedef unsigned int size_t_x00166228;
+extern void qsort_x00166228(void *, size_t_x00166228, size_t_x00166228, int (*)(const void *, const void *)) __asm__("qsort");
+void SVM_LockVar_x00166228(void) __asm__("func_0016FF70");
+void SVM_UnlockVar_x00166228(void) __asm__("func_0016FFE8");
+int close_x00166228(int fd) __asm__("close");
+typedef struct {
+    unsigned int lsn;
+    unsigned int size;
+    char name[16];
+    unsigned char date[8];
+    unsigned int flag;
+} sceCdlFILE_x00166228;
+typedef struct {
+    unsigned char trycount;
+    unsigned char spindlctrl;
+    unsigned char datapattern;
+    unsigned char pad;
+} sceCdRMode_x00166228;
+typedef struct SrdObj_x00166228 SrdObj_x00166228;
+void SRD_Destroy_x00166228(SrdObj_x00166228 *srd) __asm__("func_00163EE8");
+char SRD_GetStat_x00166228(SrdObj_x00166228 *srd) __asm__("func_00164128");
+typedef struct DvCiFile_x00166228 {
+    signed char used;
+    signed char cached;
+    signed char state;
+    signed char instat;
+    unsigned int size;
+    int nsct;
+    int pos;
+    int req;
+    int done;
+    char *buf;
+    SrdObj_x00166228 *stm;
+    sceCdlFILE_x00166228 fp;
+    sceCdRMode_x00166228 rmode;
+} DvCiFile_x00166228;
+void func_00166228_x00166228(DvCiFile_x00166228 *h) __asm__("func_00166228");
+/* dvCiExecHndl: from https://github.com/crashbashash/DW4_Decomp (src/cri/dvci.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00166228_x00166228(DvCiFile_x00166228 *h)
+{
+    if (h->stm == 0)
+        return;
+    SVM_LockVar_x00166228();
+    switch (SRD_GetStat_x00166228(h->stm)) {
+    case 9:
+        h->state = 3;
+        SRD_Destroy_x00166228(h->stm);
+        h->stm = 0;
+        break;
+    case 3:
+        h->done = h->req;
+        h->pos += h->req;
+        h->state = 1;
+        SRD_Destroy_x00166228(h->stm);
+        h->stm = 0;
+        break;
+    case 0:
+        h->state = 0;
+        SRD_Destroy_x00166228(h->stm);
+        h->stm = 0;
+        break;
+    case 1: case 2: case 4: case 5: case 6: case 7: case 8:
+        break;
+    }
+    SVM_UnlockVar_x00166228();
+}
+__asm__("# rebind func_00166228 0x00166228");
 typedef unsigned char u_char_x001662F0;
 typedef unsigned int u_int_x001662F0;
 typedef char Sint8_x001662F0;
