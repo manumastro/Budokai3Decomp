@@ -1,6 +1,89 @@
+/* libkernl's DECI2 console (tty.c) and what follows it, assembled without delay-slot filling by gas (as libc's
+   objects: sceTtyWrite's poll loop keeps its call's argument load out of the delay slot only so).
+   as-flags: -O1 */
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B9B8", sceTtyWrite);
+typedef unsigned int u_int_x0010B9B8;
+typedef unsigned char u_char_x0010B9B8;
+typedef struct {
+    unsigned short len;
+    unsigned short rsvd;
+    unsigned short proto;
+    unsigned char source;
+    unsigned char destination;
+} sceDeci2Hdr_x0010B9B8;
+typedef struct {
+    sceDeci2Hdr_x0010B9B8 hdr;
+    u_int_x0010B9B8 reserved;
+    char data[256];
+} TtyPacket_x0010B9B8;
+typedef struct {
+    volatile int s;
+    volatile u_int_x0010B9B8 wlen;
+    volatile u_int_x0010B9B8 rlen;
+    volatile int writing;
+    u_char_x0010B9B8 *wptr;
+    u_char_x0010B9B8 *rptr;
+    void *queue;
+} TtyInfo_x0010B9B8;
+extern TtyInfo_x0010B9B8 tinfo_x0010B9B8 __asm__("D_00471590");
+extern u_char_x0010B9B8 wbuf_x0010B9B8[320] __asm__("D_004715C0");
+extern int DIntr_x0010B9B8(void) __asm__("DI");
+extern int EIntr_x0010B9B8(void) __asm__("EI");
+extern int sceDeci2ReqSend_x0010B9B8(int, char) __asm__("sceDeci2ReqSend");
+extern int sceDeci2Poll_x0010B9B8(int) __asm__("sceDeci2Poll");
+int sceTtyWrite_x0010B9B8(char *buf, int n) __asm__("sceTtyWrite");
+/* sceTtyWrite: after https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/tty.c, decompiled src/: no licence
+   granted by the repository (its tools are CC0-1.0)); the empty asm after the poll call is ours (the scheduling) */
+int sceTtyWrite_x0010B9B8(char *buf, int n)
+{
+    int written = 0;
+    int datalen = 0;
+    int intr;
+    TtyPacket_x0010B9B8 *packet;
+    char *data;
+
+    if (tinfo_x0010B9B8.writing) {
+        return -1;
+    }
+    intr = DIntr_x0010B9B8();
+    tinfo_x0010B9B8.writing = 1;
+    tinfo_x0010B9B8.wptr = (u_char_x0010B9B8 *)((u_int_x0010B9B8)wbuf_x0010B9B8 | 0x20000000);
+    packet = (TtyPacket_x0010B9B8 *)tinfo_x0010B9B8.wptr;
+    data = packet->data;
+    while (n--) {
+        if (*buf == '\n') {
+            *data++ = '\r';
+            datalen++;
+            if (datalen >= 256) {
+                break;
+            }
+        }
+        *data++ = *buf++;
+        datalen++;
+        written++;
+        if (datalen >= 256) {
+            break;
+        }
+    }
+    tinfo_x0010B9B8.wlen = sizeof(sceDeci2Hdr_x0010B9B8) + sizeof(u_int_x0010B9B8) + datalen;
+    packet->hdr.len = tinfo_x0010B9B8.wlen;
+    if (sceDeci2ReqSend_x0010B9B8(tinfo_x0010B9B8.s, packet->hdr.destination) < 0) {
+        tinfo_x0010B9B8.writing = 0;
+        if (intr) {
+            EIntr_x0010B9B8();
+        }
+        return -1;
+    }
+    while (tinfo_x0010B9B8.writing) {
+        sceDeci2Poll_x0010B9B8(tinfo_x0010B9B8.s);
+        __asm__ volatile("");
+    }
+    if (intr) {
+        EIntr_x0010B9B8();
+    }
+    return written;
+}
 typedef unsigned int u_int_x0010BB30;
 typedef unsigned char u_char_x0010BB30;
 typedef struct {
