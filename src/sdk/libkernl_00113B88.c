@@ -167,7 +167,17 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00113DB8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", _kTLBException);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", _kDebugException);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", DI);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", EI);
+int EI_x00114370(void) __asm__("EI");
+/* EIntr: from https://github.com/denzi-gh/crashwoc-decomp-ps2 (src/sdk/sce/diei.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+int EI_x00114370(void)
+{
+    int eie;
+
+    __asm__ volatile ("mfc0 %0, $12" : "=r"(eie));
+    eie &= 0x10000;
+    __asm__ volatile ("ei");
+    return eie != 0;
+}
 extern int CreateSema_x00114388(struct SemaParam_x00114388 *p) __asm__("CreateSema");
 extern char D_00460370_x00114388[] __asm__("D_0045D9D0");
 extern char D_00460380_x00114388[] __asm__("D_0045D9E0");

@@ -95,7 +95,74 @@ s32 func_00101190_x00101190(s32 arg0)
   return temp_s2;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", func_00101230);
-INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", func_001012B8);
+typedef unsigned long u_long_x001012B8;
+typedef struct {
+    u_long_x001012B8 AC : 1;
+    u_long_x001012B8 pad01 : 63;
+} sceGsPrmodecont_x001012B8;
+typedef struct {
+    u_long_x001012B8 CLAMP : 1;
+    u_long_x001012B8 pad01 : 63;
+} sceGsColclamp_x001012B8;
+typedef struct {
+    u_long_x001012B8 DTHE : 1;
+    u_long_x001012B8 pad01 : 63;
+} sceGsDthe_x001012B8;
+typedef struct {
+    u_long_x001012B8 frame2;
+    long frame2addr;
+    u_long_x001012B8 zbuf2;
+    long zbuf2addr;
+    u_long_x001012B8 xyoffset2;
+    long xyoffset2addr;
+    u_long_x001012B8 scissor2;
+    long scissor2addr;
+    sceGsPrmodecont_x001012B8 prmodecont;
+    long prmodecontaddr;
+    sceGsColclamp_x001012B8 colclamp;
+    long colclampaddr;
+    sceGsDthe_x001012B8 dthe;
+    long dtheaddr;
+    u_long_x001012B8 test2;
+    long test2addr;
+} sceGsDrawEnv2_x001012B8;
+short sceGszbufaddr_x001012B8(short psm, short w, short h) __asm__("func_00100940");
+int func_001012B8_x001012B8(sceGsDrawEnv2_x001012B8 *draw, short psm, short w, short h, short ztest, short zpsm) __asm__("func_001012B8");
+/* sceGsSetDefDrawEnv2: from https://github.com/denzi-gh/crashwoc-decomp-ps2 (src/sdk/sce/graphdev_142.c, GPL-3.0); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001012B8_x001012B8(sceGsDrawEnv2_x001012B8 *draw, short psm, short w, short h, short ztest, short zpsm)
+{
+    draw->frame2addr = 0x4d;
+    draw->frame2 = ((u_long_x001012B8)(0) | ((u_long_x001012B8)( (w >> 6) & 0x3f) << 16) | ((u_long_x001012B8)( psm & 0xf) << 24) | ((u_long_x001012B8)( 0) << 32));
+    draw->zbuf2addr = 0x4f;
+    if (ztest == 0) {
+        draw->zbuf2 = ((u_long_x001012B8)(sceGszbufaddr_x001012B8(psm, w, h)) | ((u_long_x001012B8)( zpsm & 0xf) << 24) | ((u_long_x001012B8)( 1) << 32));
+    } else {
+        draw->zbuf2 = ((u_long_x001012B8)(sceGszbufaddr_x001012B8(psm, w, h)) | ((u_long_x001012B8)( zpsm & 0xf) << 24) | ((u_long_x001012B8)( 0) << 32));
+    }
+    draw->xyoffset2addr = 0x19;
+    draw->xyoffset2 = ((u_long_x001012B8)((2048L - (w >> 1)) << 4) | ((u_long_x001012B8)(
+                                          (2048L - (h >> 1)) << 4) << 32));
+    draw->scissor2addr = 0x41;
+    draw->scissor2 = ((u_long_x001012B8)(0) | ((u_long_x001012B8)( w - 1) << 16) | ((u_long_x001012B8)( 0) << 32) | ((u_long_x001012B8)( h - 1) << 48));
+    draw->prmodecontaddr = 0x1a;
+    draw->prmodecont.AC = 1;
+    draw->colclampaddr = 0x46;
+    draw->colclamp.CLAMP = 1;
+    draw->dtheaddr = 0x45;
+    if (psm & 2) {
+        draw->dthe.DTHE = 1;
+    } else {
+        draw->dthe.DTHE = 0;
+    }
+    draw->test2addr = 0x48;
+    if (ztest) {
+        draw->test2 = ((u_long_x001012B8)(0) | ((u_long_x001012B8)( 0) << 1) | ((u_long_x001012B8)( 0) << 4) |     ((u_long_x001012B8)( 0) << 12) | ((u_long_x001012B8)( 0) << 14) | ((u_long_x001012B8)( 0) << 15) |     ((u_long_x001012B8)( 1) << 16) | ((u_long_x001012B8)( ztest & 3) << 17));
+    } else {
+        draw->test2 = ((u_long_x001012B8)(0) | ((u_long_x001012B8)( 0) << 1) | ((u_long_x001012B8)( 0) << 4) |     ((u_long_x001012B8)( 0) << 12) | ((u_long_x001012B8)( 0) << 14) | ((u_long_x001012B8)( 0) << 15) |     ((u_long_x001012B8)( 1) << 16) | ((u_long_x001012B8)( 1) << 17));
+    }
+    __asm__ volatile ("sync");
+    return sizeof(sceGsDrawEnv2_x001012B8) / 16;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libgraph_00100CF8", func_00101498);
 typedef int u_int128_x00101520 __attribute__((mode(TI)));
 typedef struct {     
