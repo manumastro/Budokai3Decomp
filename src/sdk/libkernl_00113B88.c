@@ -242,6 +242,7 @@ int func_00113DB8_x00113DB8(void)
 	}
 	return i;
 }
+INCLUDE_PAD(20);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", _kTLBException);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", _kDebugException);
 int DI_x00114320(void) __asm__("DI");

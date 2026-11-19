@@ -234,6 +234,23 @@ def check(rel, name):
         shutil.rmtree(work, ignore_errors=True)
 
 
+def tail_pad(seg, name):
+    """The INCLUDE_PAD line a C function needs when its assembly file ends with more alignment words than gcc's own
+    8-byte alignment of the next function would give (e.g. a 64-byte aligned exception handler follows it)."""
+    p = ROOT / "asm" / "nonmatchings" / seg / f"{name}.s"
+    if not p.exists():
+        return ""
+    t = p.read_text()
+    m = re.search(r"^nonmatching \S+, 0x([0-9A-Fa-f]+)", t, re.M)
+    if not m:
+        return ""
+    size = int(m.group(1), 16)
+    total = 4 * len(re.findall(r"/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/", t))
+    if total <= (size + 7) // 8 * 8:
+        return ""
+    return f"\nINCLUDE_PAD({total - size});"
+
+
 def apply(items, jobs=12, log=None, dry=False, real=False):
     rem = {r[0]: r for r in LR.remaining(True)}
     byseg = {}
@@ -273,7 +290,8 @@ def apply(items, jobs=12, log=None, dry=False, real=False):
             pat = re.compile(r'^INCLUDE_ASM\("[^"]+", ' + re.escape(it["name"]) + r'\);[ \t]*$', re.M)
             if not pat.search(text):
                 continue
-            new = pat.sub(lambda _: isolate(it), text, count=1)  # a function replacement is taken literally
+            rep = isolate(it) + tail_pad(seg, it["name"])
+            new = pat.sub(lambda _: rep, text, count=1)  # a function replacement is taken literally
             path.write_text(new)
             good, msg = check(rel, it["name"])
             if good and real:
