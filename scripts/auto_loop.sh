@@ -60,8 +60,6 @@ pass=0
 while [ $pass -lt "$MAX" ]; do
   pass=$((pass + 1))
   P=build/auto/p$pass; mkdir -p $P
-  start=$(count)
-  log "pass $pass: start $start"
   # stay on origin/main: a pass on an old checkout redoes merged work and misses new tools. A failed sync stops the
   # loop loudly (log line + ~/.stallcheck/alerts, which the supervisor's stall check reports) instead of going on.
   if ! sync_main; then
@@ -69,6 +67,9 @@ while [ $pass -lt "$MAX" ]; do
     alert "B3 auto_loop: cannot rebase .wt/auto2 on origin/main; loop stopped"
     exit 2
   fi
+  # count only after the sync: what other agents pushed meanwhile is not this pass's work
+  start=$(count)
+  log "pass $pass: start $start"
 
   # 1. sibling clones
   step sim_find 1800 $PY scripts/sim_find.py --out build/sim/siblings.json
