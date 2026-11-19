@@ -197,4 +197,24 @@ INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107348);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107500);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_001077B8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107928);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_00104BE8", func_00107AF0);
+void sceIpuInit_x00107AF0(void) __asm__("func_00109BD8");
+int DIntr_x00107AF0(void) __asm__("DI");
+int EIntr_x00107AF0(void) __asm__("EI");
+int func_00107AF0_x00107AF0(void) __asm__("func_00107AF0");
+/* sceMpegInit: from https://github.com/crashbashash/DW4_Decomp (src/sony/libmpeg/mpeg.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00107AF0_x00107AF0(void)
+{
+    int intr = DIntr_x00107AF0();
+
+    *(volatile unsigned int *)0x1000F590 = *(volatile unsigned int *)0x1000F520 | 0x10000;
+    *(volatile unsigned int *)0x1000B000 &= ~0x100;     
+    *(volatile unsigned int *)0x1000B400 &= ~0x100;     
+    *(volatile unsigned int *)0x1000F590 = *(volatile unsigned int *)0x1000F520 & ~0x10000;
+    if (intr) {
+        EIntr_x00107AF0();
+    }
+    *(volatile unsigned int *)0x1000B020 = 0;              
+    *(volatile unsigned int *)0x1000B420 = 0;              
+    sceIpuInit_x00107AF0();
+    return 1;
+}

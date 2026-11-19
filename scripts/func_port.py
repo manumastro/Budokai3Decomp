@@ -65,7 +65,7 @@ LICENSES = {
     "guilty-gear-x-plus": ("https://github.com/devin-thomas/guilty-gear-x-plus", "CC0-1.0"),
     "dotr-decomp": ("https://github.com/kira-502/dotr-decomp", "CC0-1.0"),
     "Timesplitters": ("https://github.com/GTTeancum/Timesplitters", "no licence stated by the repository"),
-    "DW4_Decomp": ("https://github.com/crashbashash/DW4_Decomp", "licence file not recognised (NOASSERTION)"),
+    "DW4_Decomp": ("https://github.com/crashbashash/DW4_Decomp", "decompiled src/: no licence granted by the repository (its tools are CC0-1.0)"),
     "re4": ("https://github.com/adonis-singh/re4", "licence file not recognised (NOASSERTION)"),
     "P3FES-Decompilation": ("https://github.com/C-GBL/P3FES-Decompilation", "no licence stated by the repository"),
     "grandia_xtreme": ("https://github.com/gekoii/grandia_xtreme", "no licence stated by the repository"),

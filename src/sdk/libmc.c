@@ -83,11 +83,55 @@ s32 func_0011A700_x0011A700(s32 arg0, s32 *arg1, s32 *arg2)
   }
   return temp_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A7C8);
+int iSignalSema_x0011A7C8(int sema) __asm__("iSignalSema");
+typedef struct McInfoApdx_x0011A7C8 {
+    int type;
+    int free;
+    int reserved[34];
+    int format;
+} McInfoApdx_x0011A7C8;
+extern int semaid_timerfunc_x0011A7C8 __asm__("D_003EF950");
+extern int *typeAddr_x0011A7C8 __asm__("D_00478FE8");
+extern int *freeAddr_x0011A7C8 __asm__("D_00478FEC");
+extern int *formAddr_x0011A7C8 __asm__("D_00478FF0");
+void func_0011A7C8_x0011A7C8(void *apdx) __asm__("func_0011A7C8");
+/* mceGetInfoApdx: from https://github.com/crashbashash/DW4_Decomp (src/sony/libmc/libmc.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_0011A7C8_x0011A7C8(void *apdx)
+{
+    McInfoApdx_x0011A7C8 *info;
+
+    info = (McInfoApdx_x0011A7C8 *)((unsigned int)apdx | 0x20000000);
+    if (typeAddr_x0011A7C8) *typeAddr_x0011A7C8 = info->type;
+    if (freeAddr_x0011A7C8) *freeAddr_x0011A7C8 = info->free;
+    if (formAddr_x0011A7C8) *formAddr_x0011A7C8 = info->format;
+    iSignalSema_x0011A7C8(semaid_timerfunc_x0011A7C8);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A820);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011A9A0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011AA10);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011AB60);
+int iSignalSema_x0011AB60(int sema) __asm__("iSignalSema");
+typedef unsigned int size_t_x0011AB60;
+void *memcpy_x0011AB60(void *, const void *, size_t_x0011AB60) __asm__("func_00125740");
+size_t_x0011AB60 strlen_x0011AB60(const char *) __asm__("func_00127BA0");
+extern int semaid_timerfunc_x0011AB60 __asm__("D_003EF950");
+extern char currentDir_x0011AB60[4096] __asm__("D_00479580");
+void func_0011AB60_x0011AB60(char *dir) __asm__("func_0011AB60");
+/* mceStorePwd: from https://github.com/crashbashash/DW4_Decomp (src/sony/libmc/libmc.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_0011AB60_x0011AB60(char *dir)
+{
+    unsigned int length;
+
+    if (dir) {
+        if (strlen_x0011AB60((char *)((unsigned int)currentDir_x0011AB60 | 0x20000000)) < 1024) {
+            length = strlen_x0011AB60((char *)((unsigned int)currentDir_x0011AB60 | 0x20000000));
+        } else {
+            length = 1023;
+        }
+        memcpy_x0011AB60(dir, (char *)((unsigned int)currentDir_x0011AB60 | 0x20000000), length);
+        dir[length] = 0;
+    }
+    iSignalSema_x0011AB60(semaid_timerfunc_x0011AB60);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011ABF0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011AD30);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011AE00);

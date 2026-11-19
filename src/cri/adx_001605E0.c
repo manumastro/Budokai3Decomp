@@ -602,4 +602,545 @@ void func_001607A8_x001607A8(void *obj)
         ADXSJD_SetTrapDtLen_x001607A8(sjd, 0);
         ADXSJD_SetTrapCnt_x001607A8(sjd, 0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_001605E0", adxt_stat_decinfo);
+typedef struct SfdSj_x00160A90 SfdSj_x00160A90;
+typedef struct SfdSjChunk_x00160A90 {
+    char *data;
+    int len;
+} SfdSjChunk_x00160A90;
+typedef struct SfdSjVtbl_x00160A90 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x00160A90 *sj);
+    int (*getUuid)(SfdSj_x00160A90 *sj);
+    void (*reset)(SfdSj_x00160A90 *sj);
+    void (*getChunk)(SfdSj_x00160A90 *sj, int id, int n, SfdSjChunk_x00160A90 *ck);
+    void (*ungetChunk)(SfdSj_x00160A90 *sj, int id, SfdSjChunk_x00160A90 *ck);
+    void (*putChunk)(SfdSj_x00160A90 *sj, int id, SfdSjChunk_x00160A90 *ck);
+    int (*getNumData)(SfdSj_x00160A90 *sj, int id);
+} SfdSjVtbl_x00160A90;
+struct SfdSj_x00160A90 {
+    SfdSjVtbl_x00160A90 *vtbl;
+};
+typedef struct SjxObj_x00160A90 SjxObj_x00160A90;
+typedef struct LscStm_x00160A90 {
+    int id;
+    const char *fname;
+    int fname_sum;
+    void *dir;
+    int ofst;
+    int nsct;
+    int stat;
+    int rdsct;
+} LscStm_x00160A90;
+typedef struct LscObj_x00160A90 {
+    signed char used;
+    signed char stat;
+    signed char reading;
+    signed char loop;
+    signed char pause;
+    char rsv1;
+    short rsv2;
+    SfdSj_x00160A90 *sj;
+    SfdSjChunk_x00160A90 ck;
+    int flow_min;
+    int flow_max;
+    int wpos;
+    int rpos;
+    int nstm;
+    void *stm;
+    int stm_size;
+    int reqsct;
+    int errcnt;
+    LscStm_x00160A90 stms[16];
+} LscObj_x00160A90;
+typedef struct AdxPdObj_x00160A90 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x00160A90;
+typedef struct AdxDecPara_x00160A90 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x00160A90;
+enum {
+    ADXB_FORMAT_ADX_x00160A90 = 0,
+    ADXB_FORMAT_WAV_x00160A90 = 1,
+    ADXB_FORMAT_SPSD_x00160A90 = 2,
+    ADXB_FORMAT_AIFF_x00160A90 = 3,
+    ADXB_FORMAT_AU_x00160A90 = 4,
+    ADXB_FORMAT_AHX_x00160A90 = 10,
+    ADXB_FORMAT_AC3_x00160A90 = 15
+};
+struct Pl2Enc_x00160A90;
+typedef struct AdxbObj_x00160A90 AdxbObj_x00160A90;
+typedef short *(*AdxbGetWrFunc_x00160A90)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x00160A90)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x00160A90 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x00160A90 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x00160A90 dp;
+    AdxbGetWrFunc_x00160A90 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x00160A90 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x00160A90 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+extern void ADXB_EntryDecFunc_x00160A90(AdxbObj_x00160A90 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+enum AdxSjdStat_x00160A90 {
+    ADXSJD_STAT_STOP_x00160A90 = 0,
+    ADXSJD_STAT_DECHDR_x00160A90 = 1,
+    ADXSJD_STAT_DECODE_x00160A90 = 2,
+    ADXSJD_STAT_DECEND_x00160A90 = 3,
+    ADXSJD_STAT_ERROR_x00160A90 = 4
+};
+typedef struct AdxSjdObj_x00160A90 {
+    signed char used;
+    signed char stat;
+    signed char maxnch;
+    signed char empty_end;
+    AdxbObj_x00160A90 *adxb;
+    SfdSj_x00160A90 *sji;
+    SfdSj_x00160A90 *sjo[2];
+    SfdSjChunk_x00160A90 cki;
+    SfdSjChunk_x00160A90 cko[2];
+    int total_decsmpl;
+    int total_decdtlen;
+    int decpos;
+    int maxdecsmpl;
+    int dtrpsmpl;
+    int dtrpcnt;
+    int dtrpdtlen;
+    void (*dtrpfunc)(void *context);
+    void *dtrpobj;
+    void (*dfltfunc)(void *context, int ch, char *data, int len);
+    void *dfltobj;
+    char hdr[64];
+    int hdrlen;
+    int lnksw;
+    int fill;
+    int skip;
+} AdxSjdObj_x00160A90;
+char ADXSJD_GetStat_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00158D98");
+void ADXSJD_SetMaxDecSmpl_x00160A90(AdxSjdObj_x00160A90 *sjd, int nsmpl) __asm__("func_00158DF0");
+extern void ADXSJD_EntryFltFunc_x00160A90(AdxSjdObj_x00160A90 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x00160A90(AdxSjdObj_x00160A90 *sjd, void (*func)(void *obj), void *obj) __asm__("func_00159D58");
+void ADXSJD_SetTrapNumSmpl_x00160A90(AdxSjdObj_x00160A90 *sjd, int nsmpl) __asm__("func_00159D68");
+void ADXSJD_SetTrapCnt_x00160A90(AdxSjdObj_x00160A90 *sjd, int cnt) __asm__("func_00159D78");
+void ADXSJD_SetTrapDtLen_x00160A90(AdxSjdObj_x00160A90 *sjd, int len) __asm__("func_00159D88");
+int ADXSJD_GetFormat_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00159D98");
+int ADXSJD_GetSfreq_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("ADXSJD_GetSfreq");
+int ADXSJD_GetNumChan_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00159DC8");
+int ADXSJD_GetOutBps_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00159DE0");
+int ADXSJD_GetBlkSmpl_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00159DF8");
+int ADXSJD_GetTotalNumSmpl_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00159E28");
+int ADXSJD_GetNumLoop_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00159E58");
+int ADXSJD_GetLpStartPos_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00159E88");
+int ADXSJD_GetLpEndPos_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00159ED0");
+int ADXSJD_GetLpEndOfst_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00159EE8");
+short ADXSJD_GetDefOutVol_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_00159F18");
+char *ADXSJD_GetSpsdInfo_x00160A90(AdxSjdObj_x00160A90 *sjd) __asm__("func_0015A050");
+typedef void (*CvFsErrFn_x00160A90)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00160A90)(CvFsErrFn_x00160A90 func, void *obj);
+typedef int (*CvFsPathFn_x00160A90)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00160A90)(void);
+typedef int (*CvFsOpenFn_x00160A90)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00160A90)(int fd);
+typedef int (*CvFsFdIntFn_x00160A90)(int fd);
+typedef int (*CvFsSeekFn_x00160A90)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00160A90)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00160A90)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00160A90)(void);
+typedef int (*CvFsLoadDirInfoFn_x00160A90)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00160A90)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00160A90)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00160A90 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00160A90 entry_err_func;
+    CvFsPathFn_x00160A90 get_file_size;
+    CvFsGetFreeSizeFn_x00160A90 get_free_size;
+    CvFsOpenFn_x00160A90 open;
+    CvFsFdFn_x00160A90 close;
+    CvFsSeekFn_x00160A90 seek;
+    CvFsFdIntFn_x00160A90 tell;
+    CvFsXferFn_x00160A90 req_rd;
+    CvFsXferFn_x00160A90 req_wr;
+    CvFsFdFn_x00160A90 stop_tr;
+    CvFsFdIntFn_x00160A90 get_stat;
+    CvFsFdIntFn_x00160A90 get_sct_len;
+    CvFsSetSctLenFn_x00160A90 set_sct_len;
+    CvFsFdIntFn_x00160A90 get_num_tr;
+    CvFsPathFn_x00160A90 change_dir;
+    CvFsPathFn_x00160A90 is_exist_file;
+    CvFsGetNumFilesFn_x00160A90 get_num_files;
+    CvFsLoadDirInfoFn_x00160A90 load_dir_info;
+    CvFsFdIntFn_x00160A90 get_max_byte_rate;
+    CvFsPathFn_x00160A90 make_dir;
+    CvFsPathFn_x00160A90 remove_dir;
+    CvFsPathFn_x00160A90 delete_file;
+    CvFsGetFileSizeExFn_x00160A90 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00160A90 opt_fn2;
+} CvFsVtbl_x00160A90;
+typedef struct CvFsHandle_x00160A90 {
+    CvFsVtbl_x00160A90 *vtbl;
+    int fd;
+} CvFsHandle_x00160A90;
+extern CvFsVtbl_x00160A90 *addDevice_x00160A90(char *devname, CvFsVtbl_x00160A90 *(*get_if)(void)) __asm__("addDevice");
+enum AdxStmStat_x00160A90 {
+    ADXSTM_STAT_STOP_x00160A90 = 1,
+    ADXSTM_STAT_READ_x00160A90 = 2,
+    ADXSTM_STAT_READEND_x00160A90 = 3,
+    ADXSTM_STAT_ERROR_x00160A90 = 4
+};
+typedef struct AdxStmObj_x00160A90 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x00160A90 *sj;
+    CvFsHandle_x00160A90 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x00160A90 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x00160A90;
+int ADXSTM_GetStat_x00160A90(AdxStmObj_x00160A90 *stm) __asm__("func_0015CCD0");
+extern void ADXSTM_EntryEosFunc_x00160A90(AdxStmObj_x00160A90 *stm, void (*func)(void *obj), void *obj) __asm__("func_0015CE88");
+void ADXSTM_SetEos_x00160A90(AdxStmObj_x00160A90 *stm, int eos) __asm__("func_0015CE98");
+typedef struct AdxAmpObj_x00160A90 AdxAmpObj_x00160A90;
+void ADXAMP_SetSfreq_x00160A90(AdxAmpObj_x00160A90 *amp, int sfreq) __asm__("func_0014EC20");
+typedef struct DtrObj_x00160A90 DtrObj_x00160A90;
+typedef struct Ps2RnaPsj_x00160A90 {
+    char used;
+    void *sjrmt;
+    SfdSj_x00160A90 *sjuni;
+    SjxObj_x00160A90 *sjx;
+    SfdSjChunk_x00160A90 ck;
+} Ps2RnaPsj_x00160A90;
+typedef struct Ps2Rna_x00160A90 {
+    signed char used;
+    int maxnch;
+    Ps2RnaPsj_x00160A90 *psj[2];
+    DtrObj_x00160A90 *dtr[2];
+    SfdSj_x00160A90 *sjo[2];
+    void *id;
+    int pad36;
+    int ring_size;
+    int psj_bufsize;
+    int sfreq;
+    int sent_sfreq;
+    int outvol;
+    int sent_outvol;
+    int outpan[2];
+    int sent_outpan[2];
+    signed char playsw;
+    signed char sent_playsw;
+    signed char nch;
+    signed char sent_nch;
+    signed char auxsw;
+    signed char sent_auxsw;
+    signed char dualsw;
+    signed char sent_dualsw;
+    signed char transsw;
+    signed char trans_stopped;
+    signed char sent_stopflag;
+    signed char stopflag;
+    int outbalance;
+    int sent_outbalance;
+} Ps2Rna_x00160A90;
+enum AdxtStat_x00160A90 {
+    ADXT_STAT_STOP_x00160A90 = 0,
+    ADXT_STAT_DECINFO_x00160A90 = 1,
+    ADXT_STAT_PREP_x00160A90 = 2,
+    ADXT_STAT_PLAYING_x00160A90 = 3,
+    ADXT_STAT_DECEND_x00160A90 = 4,
+    ADXT_STAT_PLAYEND_x00160A90 = 5,
+    ADXT_STAT_ERROR_x00160A90 = 6
+};
+enum AdxtPmode_x00160A90 {
+    ADXT_PMODE_FNAME_x00160A90 = 0,
+    ADXT_PMODE_AFS_x00160A90 = 1,
+    ADXT_PMODE_MEM_x00160A90 = 2,
+    ADXT_PMODE_SJ_x00160A90 = 3,
+    ADXT_PMODE_SLFILE_x00160A90 = 4
+};
+typedef struct AdxtObj_x00160A90 {
+    signed char used;
+    signed char stat;
+    signed char pmode;
+    signed char maxnch;
+    AdxSjdObj_x00160A90 *sjd;
+    AdxStmObj_x00160A90 *stm;
+    Ps2Rna_x00160A90 *rna;
+    SfdSj_x00160A90 *sjf;
+    SfdSj_x00160A90 *sji;
+    SfdSj_x00160A90 *sjo[2];
+    char *ibuf;
+    int ibufbsize;
+    int ibufxsize;
+    char *obuf;
+    int obufsize;
+    int obufdist;
+    int svrfreq;
+    short maxsct;
+    short minsct;
+    short outvol;
+    short outpan[2];
+    short outbalance;
+    int maxdecsmpl;
+    int lpcnt;
+    int lp_skiplen;
+    int trp;
+    int wpos;
+    int mofst;
+    short ercode;
+    int edecpos;
+    short edeccnt;
+    short eshrtcnt;
+    signed char lpflg;
+    signed char autorcvr;
+    signed char fltmode;
+    signed char execflag;
+    signed char pstwait_flag;
+    signed char pstready_flag;
+    signed char pause_flag;
+    AdxAmpObj_x00160A90 *amp;
+    SfdSj_x00160A90 *ampsji[2];
+    SfdSj_x00160A90 *ampsjo[2];
+    int time_ofst;
+    int lesct;
+    int trpnsmpl;
+    LscObj_x00160A90 *lsc;
+    signed char lnkflg;
+    unsigned int vtime;
+    int vbase;
+    int decofst;
+    int pad_nsmpl;
+    signed char stm_req;
+    char *fnbuf;
+    char *fname;
+    void *dir;
+    int ofst;
+    int nsct;
+} AdxtObj_x00160A90;
+typedef void (*AdxtDecInfoFunc_x00160A90)(AdxtObj_x00160A90 *adxt, int sfreq, int nch, int total_nsmpl);
+void adxt_start_stm_x00160A90(AdxtObj_x00160A90 *adxt, char *fname, void *dir, int ofst, int nsct) __asm__("func_0015E4F8");
+void ADXT_Stop_x00160A90(AdxtObj_x00160A90 *adxt) __asm__("ADXT_Stop");
+void ADXT_SetTranspose_x00160A90(AdxtObj_x00160A90 *adxt, int fxch, int fxlev) __asm__("func_0015F9E8");
+void ADXT_GetTranspose_x00160A90(AdxtObj_x00160A90 *adxt, int *fxch, int *fxlev) __asm__("func_0015F9F0");
+void ADXERR_CallErrFunc2_x00160A90(const char *code, const char *msg) __asm__("func_00154178");
+void ADXERR_ItoA2_x00160A90(int value, int extra, char *text, int size) __asm__("func_001542F0");
+void ADXRNA_SetTransSw_x00160A90(Ps2Rna_x00160A90 *rna, int sw) __asm__("func_00158880");
+void ADXRNA_SetNumChan_x00160A90(Ps2Rna_x00160A90 *rna, int nch) __asm__("func_00158960");
+void ADXRNA_SetSfreq_x00160A90(Ps2Rna_x00160A90 *rna, int sfreq) __asm__("func_00158978");
+void ADXRNA_SetOutVol_x00160A90(Ps2Rna_x00160A90 *rna, int vol) __asm__("func_00158990");
+void ADXRNA_SetBitPerSmpl_x00160A90(Ps2Rna_x00160A90 *rna, int bps) __asm__("func_001589D8");
+void ADXRNA_SetTotalNumSmpl_x00160A90(Ps2Rna_x00160A90 *rna, int nsmpl) __asm__("func_00158AC0");
+int ADXRNA_SetStmHdInfo_x00160A90(Ps2Rna_x00160A90 *rna, char *info) __asm__("func_00158AD0");
+extern AdxtDecInfoFunc_x00160A90 adxt_decinfo_func_x00160A90 __asm__("lbl_801A66E8");
+void adxt_trap_entry_lps_x00160A90(void *obj) __asm__("func_00160300");
+void adxt_eos_entry_x00160A90(void *obj) __asm__("func_00160550");
+void adxt_set_outpan_x00160A90(AdxtObj_x00160A90 *adxt) __asm__("func_001605E0");
+void adxt_nlp_trap_entry_x00160A90(void *obj) __asm__("func_001607A8");
+extern char ext_str0_x00160A90[] __asm__("D_00462110");
+void adxt_stat_decinfo_x00160A90(AdxtObj_x00160A90 *adxt) __asm__("adxt_stat_decinfo");
+/* adxt_stat_decinfo_x00160A90: from https://github.com/crashbashash/DW4_Decomp (src/cri/adxtsvr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void adxt_stat_decinfo_x00160A90(AdxtObj_x00160A90 *adxt)
+{
+    char nchstr[32];
+    AdxSjdObj_x00160A90 *sjd;
+    int sctlen;
+    int fxch;
+    int fxlev;
+    int sfreq;
+    int nch;
+    int total_nsmpl;
+    int nloop;
+    int lpeofst;
+    int blkbytes;
+    sctlen = 2048;
+    fxch = 0;
+    sjd = adxt->sjd;
+    fxlev = 0;
+    adxt->pad_nsmpl = 0;
+    if ((adxt->pmode == ADXT_PMODE_FNAME_x00160A90 || adxt->pmode == ADXT_PMODE_AFS_x00160A90) && adxt->stm_req == 1) {
+        if (ADXSTM_GetStat_x00160A90(adxt->stm) == ADXSTM_STAT_READ_x00160A90) {
+            return;
+        }
+        if (adxt->sjf != 0) {
+            adxt->sjf->vtbl->reset(adxt->sjf);
+        }
+        adxt_start_stm_x00160A90(adxt, adxt->fname, adxt->dir, adxt->ofst, adxt->nsct);
+        adxt->stm_req = 0;
+    }
+    if (ADXSJD_GetStat_x00160A90(sjd) != ADXSJD_STAT_DECODE_x00160A90) {
+        return;
+    }
+    nch = ADXSJD_GetNumChan_x00160A90(sjd);
+    if (adxt->maxnch < nch) {
+        ADXERR_ItoA2_x00160A90(nch, adxt->maxnch, nchstr, 16);
+        ADXERR_CallErrFunc2_x00160A90(ext_str0_x00160A90, nchstr);
+        ADXT_Stop_x00160A90(adxt);
+        return;
+    }
+    sfreq = ADXSJD_GetSfreq_x00160A90(sjd);
+    nloop = ADXSJD_GetNumLoop_x00160A90(sjd);
+    if (nloop > 0) {
+        adxt->maxdecsmpl = (sfreq / adxt->svrfreq) * 3;
+    } else {
+        adxt->maxdecsmpl = (sfreq / adxt->svrfreq) * 3 / 2;
+    }
+    blkbytes = ADXSJD_GetBlkSmpl_x00160A90(sjd) * 2;
+    adxt->maxdecsmpl = ((adxt->maxdecsmpl + blkbytes) / blkbytes) * blkbytes;
+    ADXSJD_SetMaxDecSmpl_x00160A90(sjd, adxt->maxdecsmpl);
+    if (nloop > 0) {
+        if (adxt->pmode == ADXT_PMODE_MEM_x00160A90) {
+            adxt->lp_skiplen = 0;
+        } else {
+            lpeofst = ADXSJD_GetLpEndOfst_x00160A90(sjd);
+            adxt->lp_skiplen = sctlen - lpeofst % sctlen;
+            adxt->lp_skiplen = adxt->lp_skiplen % sctlen;
+            adxt->lesct = (lpeofst + sctlen - 1) / sctlen;
+            ADXSTM_SetEos_x00160A90(adxt->stm, adxt->lesct);
+            ADXSTM_EntryEosFunc_x00160A90(adxt->stm, adxt_eos_entry_x00160A90, adxt);
+        }
+        ADXSJD_GetLpEndPos_x00160A90(sjd);
+        adxt->trpnsmpl = ADXSJD_GetLpStartPos_x00160A90(sjd);
+        ADXSJD_SetTrapNumSmpl_x00160A90(sjd, adxt->trpnsmpl);
+        ADXSJD_SetTrapDtLen_x00160A90(sjd, 0);
+        ADXSJD_SetTrapCnt_x00160A90(sjd, 0);
+        ADXSJD_EntryTrapFunc_x00160A90(sjd, adxt_trap_entry_lps_x00160A90, adxt);
+    } else {
+        if (adxt->stm != 0) {
+            ADXSTM_SetEos_x00160A90(adxt->stm, 0x7fffffff);
+        }
+        ADXSJD_SetTrapNumSmpl_x00160A90(sjd, ADXSJD_GetTotalNumSmpl_x00160A90(sjd));
+        ADXSJD_SetTrapDtLen_x00160A90(sjd, 0);
+        ADXSJD_SetTrapCnt_x00160A90(sjd, 0);
+        ADXSJD_EntryTrapFunc_x00160A90(sjd, adxt_nlp_trap_entry_x00160A90, adxt);
+    }
+    sfreq = ADXSJD_GetSfreq_x00160A90(sjd);
+    nch = ADXSJD_GetNumChan_x00160A90(sjd);
+    total_nsmpl = ADXSJD_GetTotalNumSmpl_x00160A90(sjd);
+    ADXRNA_SetBitPerSmpl_x00160A90(adxt->rna, ADXSJD_GetOutBps_x00160A90(sjd));
+    ADXRNA_SetSfreq_x00160A90(adxt->rna, sfreq);
+    ADXRNA_SetNumChan_x00160A90(adxt->rna, nch);
+    ADXRNA_SetTotalNumSmpl_x00160A90(adxt->rna, total_nsmpl);
+    ADXRNA_SetOutVol_x00160A90(adxt->rna, adxt->outvol + ADXSJD_GetDefOutVol_x00160A90(adxt->sjd));
+    ADXT_GetTranspose_x00160A90(adxt, &fxch, &fxlev);
+    if (fxch != 0 || fxlev != 0) {
+        ADXT_SetTranspose_x00160A90(adxt, fxch, fxlev);
+    }
+    adxt_set_outpan_x00160A90(adxt);
+    if (adxt->amp != 0) {
+        ADXAMP_SetSfreq_x00160A90(adxt->amp, sfreq);
+    }
+    if (ADXSJD_GetFormat_x00160A90(sjd) == ADXB_FORMAT_SPSD_x00160A90) {
+        ADXRNA_SetStmHdInfo_x00160A90(adxt->rna, ADXSJD_GetSpsdInfo_x00160A90(sjd));
+    }
+    ADXRNA_SetTransSw_x00160A90(adxt->rna, 1);
+    if (adxt_decinfo_func_x00160A90 != 0) {
+        adxt_decinfo_func_x00160A90(adxt, sfreq, nch, total_nsmpl);
+    }
+    adxt->stat = ADXT_STAT_PREP_x00160A90;
+}

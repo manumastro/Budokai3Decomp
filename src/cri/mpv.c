@@ -93,7 +93,18 @@ void func_00170890(void) {
 void func_001708A8(void) {
     func_00170690(7);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001708C0);
+extern int svm_exec_cnt_x001708C0[8] __asm__("D_00423300");
+int func_001708C0_x001708C0(int svtype) __asm__("func_001708C0");
+/* SVM_GetExecCount: from https://github.com/crashbashash/DW4_Decomp (src/cri/svm.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_001708C0_x001708C0(int svtype)
+{
+    int ok = (unsigned int)svtype < 7;
+    int *p = &svm_exec_cnt_x001708C0[svtype];
+    if (ok) {
+        return *p;
+    }
+    return 0;
+}
 typedef unsigned int size_t_x001708E8;
 typedef signed int Sint32_x001708E8;
 typedef char Char8_x001708E8;
@@ -614,7 +625,333 @@ INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00174758);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00174798);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001777F0);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00177D48);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00178440);
+struct SfdSj_x00178440;
+typedef struct M2vErrInf_x00178440 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x00178440;
+typedef struct Mpeg2Ext_x00178440 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x00178440;
+typedef enum M2vFrameRate_x00178440 {
+    M2V_FRAME_RATE_FORBIDDEN_x00178440 = 0
+} M2vFrameRate_x00178440;
+typedef enum M2vPicType_x00178440 {
+    M2V_PICTYPE_I_x00178440 = 1,
+    M2V_PICTYPE_P_x00178440 = 2,
+    M2V_PICTYPE_B_x00178440 = 3,
+    M2V_PICTYPE_D_x00178440 = 4
+} M2vPicType_x00178440;
+typedef enum M2vPicStruct_x00178440 {
+    M2V_PICSTRUCT_TOP_FIELD_x00178440 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x00178440 = 2,
+    M2V_PICSTRUCT_FRAME_x00178440 = 3
+} M2vPicStruct_x00178440;
+typedef enum M2vPicAtrF64_x00178440 {
+    M2V_PICATR_F64_0_x00178440 = 0
+} M2vPicAtrF64_x00178440;
+typedef struct M2vPicAtr_x00178440 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x00178440 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x00178440 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x00178440 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x00178440 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x00178440;
+typedef void (*M2vUsrDatFn_x00178440)(void *obj, int level);
+typedef struct M2vUsrSj_x00178440 {
+    struct SfdSj_x00178440 *sj;
+    M2vUsrDatFn_x00178440 fn;
+    void *obj;
+} M2vUsrSj_x00178440;
+typedef struct M2vPicUsr_x00178440 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x00178440;
+typedef void (*M2vCondFn_x00178440)();
+typedef struct M2vObj_x00178440 {
+    int stat;
+    M2vErrInf_x00178440 err;
+    M2vCondFn_x00178440 cond[16];
+    M2vPicAtr_x00178440 picatr;
+    char pad216[64];
+    M2vUsrSj_x00178440 usrsj[4];
+    M2vPicUsr_x00178440 picusr;
+    char pad340[12];
+    Mpeg2Ext_x00178440 ext;
+    char pad1656[8];
+} M2vObj_x00178440;
+void M2V_Init_x00178440(int nobj, char *work, unsigned int size) __asm__("func_001786A8");
+void M2V_Finish_x00178440(void) __asm__("func_001788D0");
+char *M2V_GetVersionStr_x00178440(void) __asm__("func_001785E8");
+int M2V_IsConformable_x00178440(char *buf, int size) __asm__("func_001785F8");
+M2vObj_x00178440 *M2V_Create_x00178440(void) __asm__("func_001788D8");
+void M2V_Destroy_x00178440(M2vObj_x00178440 *hn) __asm__("func_00178A20");
+void M2V_MbCbFn_x00178440(void) __asm__("func_00178A70");
+void M2V_SetCond_x00178440(M2vObj_x00178440 *hn, int no, M2vCondFn_x00178440 fn) __asm__("func_00178A78");
+void M2V_SetUsrSj_x00178440(M2vObj_x00178440 *hn, int no, struct SfdSj_x00178440 *sj, M2vUsrDatFn_x00178440 fn, void *obj) __asm__("func_00173350");
+void M2V_SetPicUsrBuf_x00178440(M2vObj_x00178440 *hn, char *buf, int size) __asm__("func_00173378");
+void M2V_GetPicUsr_x00178440(M2vObj_x00178440 *hn, char **buf, int *size) __asm__("func_00173388");
+extern void M2V_SetErrFunc_x00178440(M2vObj_x00178440 *hn, int (*func)(void *obj), void *obj) __asm__("func_00172E08");
+void M2V_GetErrInf_x00178440(M2vObj_x00178440 *hn, M2vErrInf_x00178440 *inf) __asm__("func_00172E78");
+void M2V_SkipFrm_x00178440(M2vObj_x00178440 *hn, struct SfdSj_x00178440 *sj) __asm__("func_00172F80");
+void M2V_DecodeFrm_x00178440(void) __asm__("func_00173038");
+void M2V_GetPicAtr_x00178440(M2vObj_x00178440 *hn, M2vPicAtr_x00178440 *picatr) __asm__("func_00173040");
+void M2V_GetBitRate_x00178440(M2vObj_x00178440 *hn, int *bit_rate) __asm__("func_00173140");
+void M2V_GetVbvBufSiz_x00178440(M2vObj_x00178440 *hn, int *vbv_size, int *vbv_delay, int *reserved) __asm__("func_001731A0");
+void M2V_GetLinkFlg_x00178440(M2vObj_x00178440 *hn, int *closed_gop, int *broken_link) __asm__("func_00173230");
+int M2V_DecodePicAtr_x00178440(M2vObj_x00178440 *hn, struct SfdSj_x00178440 *sj) __asm__("func_001733B0");
+typedef struct SfdSj_x00178440 SfdSj_x00178440;
+typedef struct SfdSjChunk_x00178440 {
+    char *data;
+    int len;
+} SfdSjChunk_x00178440;
+typedef struct SfdSjVtbl_x00178440 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x00178440 *sj);
+    int (*getUuid)(SfdSj_x00178440 *sj);
+    void (*reset)(SfdSj_x00178440 *sj);
+    void (*getChunk)(SfdSj_x00178440 *sj, int id, int n, SfdSjChunk_x00178440 *ck);
+    void (*ungetChunk)(SfdSj_x00178440 *sj, int id, SfdSjChunk_x00178440 *ck);
+    void (*putChunk)(SfdSj_x00178440 *sj, int id, SfdSjChunk_x00178440 *ck);
+    int (*getNumData)(SfdSj_x00178440 *sj, int id);
+} SfdSjVtbl_x00178440;
+struct SfdSj_x00178440 {
+    SfdSjVtbl_x00178440 *vtbl;
+};
+extern void mpvhook_SetErrFunc_x00178440(M2vObj_x00178440 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+extern int mpvhook_installed_x00178440 __asm__("D_00424BC8");
+extern char *(*mpvhook_fn_GetVersionStr_x00178440)(void) __asm__("D_00424BCC");
+extern int (*mpvhook_fn_IsConformable_x00178440)(char *buf, int size) __asm__("D_00424BD0");
+extern void (*mpvhook_fn_Init_x00178440)(int nobj, char *work, unsigned int size) __asm__("D_00424BD4");
+extern void (*mpvhook_fn_Finish_x00178440)(void) __asm__("D_00424BD8");
+extern M2vObj_x00178440 *(*mpvhook_fn_Create_x00178440)(void) __asm__("D_00424BDC");
+extern void (*mpvhook_fn_Destroy_x00178440)(M2vObj_x00178440 *hn) __asm__("D_00424BE0");
+extern void (*mpvhook_fn_SetCond_x00178440)(M2vObj_x00178440 *hn, int no, M2vCondFn_x00178440 fn) __asm__("D_00424BE4");
+extern void (*mpvhook_fn_MbCbFn_x00178440)(void) __asm__("D_00424BE8");
+extern void (*mpvhook_fn_SetErrFunc_x00178440)(M2vObj_x00178440 *hn, int (*func)(void *obj), void *obj) __asm__("D_00424BEC");
+extern void (*mpvhook_fn_GetErrInf_x00178440)(M2vObj_x00178440 *hn, M2vErrInf_x00178440 *inf) __asm__("D_00424BF0");
+extern void (*mpvhook_fn_DecodeFrm_x00178440)(void) __asm__("D_00424BF4");
+extern void (*mpvhook_fn_SkipFrm_x00178440)(M2vObj_x00178440 *hn, struct SfdSj_x00178440 *sj) __asm__("D_00424BF8");
+extern void (*mpvhook_fn_SetUsrSj_x00178440)(M2vObj_x00178440 *hn, int no, struct SfdSj_x00178440 *sj, M2vUsrDatFn_x00178440 fn, void *obj) __asm__("D_00424BFC");
+extern void (*mpvhook_fn_SetPicUsrBuf_x00178440)(M2vObj_x00178440 *hn, char *buf, int size) __asm__("D_00424C00");
+extern void (*mpvhook_fn_GetPicUsr_x00178440)(M2vObj_x00178440 *hn, char **buf, int *size) __asm__("D_00424C04");
+extern int (*mpvhook_fn_DecodePicAtr_x00178440)(M2vObj_x00178440 *hn, struct SfdSj_x00178440 *sj) __asm__("D_00424C08");
+extern void (*mpvhook_fn_GetPicAtr_x00178440)(M2vObj_x00178440 *hn, M2vPicAtr_x00178440 *picatr) __asm__("D_00424C0C");
+extern void (*mpvhook_fn_GetBitRate_x00178440)(M2vObj_x00178440 *hn, int *bit_rate) __asm__("D_00424C10");
+extern void (*mpvhook_fn_GetVbvBufSiz_x00178440)(M2vObj_x00178440 *hn, int *vbv_size, int *vbv_delay, int *reserved) __asm__("D_00424C14");
+extern void (*mpvhook_fn_GetLinkFlg_x00178440)(M2vObj_x00178440 *hn, int *closed_gop, int *broken_link) __asm__("D_00424C18");
+void func_00178440_x00178440(void) __asm__("func_00178440");
+/* mpv_InstallHooks: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvinst.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00178440_x00178440(void) {
+    mpvhook_fn_GetVersionStr_x00178440 = M2V_GetVersionStr_x00178440;
+    mpvhook_fn_IsConformable_x00178440 = M2V_IsConformable_x00178440;
+    mpvhook_fn_Init_x00178440 = M2V_Init_x00178440;
+    mpvhook_fn_Finish_x00178440 = M2V_Finish_x00178440;
+    mpvhook_fn_Create_x00178440 = M2V_Create_x00178440;
+    mpvhook_fn_Destroy_x00178440 = M2V_Destroy_x00178440;
+    mpvhook_fn_SetCond_x00178440 = M2V_SetCond_x00178440;
+    mpvhook_fn_MbCbFn_x00178440 = M2V_MbCbFn_x00178440;
+    mpvhook_fn_SetErrFunc_x00178440 = M2V_SetErrFunc_x00178440;
+    mpvhook_fn_GetErrInf_x00178440 = M2V_GetErrInf_x00178440;
+    mpvhook_fn_DecodeFrm_x00178440 = M2V_DecodeFrm_x00178440;
+    mpvhook_fn_SkipFrm_x00178440 = M2V_SkipFrm_x00178440;
+    mpvhook_fn_SetUsrSj_x00178440 = M2V_SetUsrSj_x00178440;
+    mpvhook_fn_SetPicUsrBuf_x00178440 = M2V_SetPicUsrBuf_x00178440;
+    mpvhook_fn_GetPicUsr_x00178440 = M2V_GetPicUsr_x00178440;
+    mpvhook_fn_DecodePicAtr_x00178440 = M2V_DecodePicAtr_x00178440;
+    mpvhook_fn_GetPicAtr_x00178440 = M2V_GetPicAtr_x00178440;
+    mpvhook_fn_GetBitRate_x00178440 = M2V_GetBitRate_x00178440;
+    mpvhook_fn_GetVbvBufSiz_x00178440 = M2V_GetVbvBufSiz_x00178440;
+    mpvhook_fn_GetLinkFlg_x00178440 = M2V_GetLinkFlg_x00178440;
+    mpvhook_installed_x00178440 = 1;
+}
 s32 *func_001785E8(void) {
     return &D_00465288;
 }
@@ -789,8 +1126,33 @@ INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179400);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179860);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00179EA0);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017AAF0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017AB60);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017ABC0);
+unsigned char *mpsdmx_SearchStartCode_x0017AB60(unsigned char *p, int size, unsigned char code) __asm__("func_0017ABC0");
+unsigned char *mpsdmx_SearchStartCode_x0017AB60(unsigned char *p, int size, unsigned char code) __asm__("func_0017ABC0");
+int func_0017AB60_x0017AB60(unsigned char *buf, int size) __asm__("func_0017AB60");
+/* MPS_IsMpeg1: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpsdmx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017AB60_x0017AB60(unsigned char *buf, int size) {
+    unsigned char *p = mpsdmx_SearchStartCode_x0017AB60(buf, size, 0xBA);
+    if (p == 0) {
+        return 0;
+    }
+    p += 4;
+    size -= p - buf;
+    if (size <= 0) {
+        return 0;
+    }
+    return (*p >> 6) == 0;
+}
+unsigned char *func_0017ABC0_x0017ABC0(unsigned char *p, int size, unsigned char code) __asm__("func_0017ABC0");
+/* mpsdmx_SearchStartCode: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpsdmx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+unsigned char *func_0017ABC0_x0017ABC0(unsigned char *p, int size, unsigned char code) {
+    int i;
+    for (i = 0; i + 3 < size; i++, p++) {
+        if (p[0] == 0 && p[1] == 0 && p[2] == 1 && p[3] == code) {
+            return p;
+        }
+    }
+    return 0;
+}
 void func_0017AC28(void) {
 
 }
@@ -1008,7 +1370,104 @@ void func_0017B168_x0017B168(u8 *arg0, s32 arg1, s32 arg2)
   *((s32 *) (((u8 *) arg0) + 4)) = arg2;
  do { new_var = (u8 *) arg0; *((s32 *) (new_var + 0)) = arg1; } while (0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B178);
+typedef int (*MpsErrFn_x0017B178)(void *obj);
+typedef struct MpsErr_x0017B178 {
+    MpsErrFn_x0017B178 fn;
+    void *obj;
+    int code;
+} MpsErr_x0017B178;
+typedef struct MpsPackHd_x0017B178 {
+    long long scr;
+    int isMpeg1;
+    int muxRate;
+} MpsPackHd_x0017B178;
+typedef struct MpsSysHd_x0017B178 {
+    int headerLength;
+    int rateBound;
+    int audioBound;
+    int videoBound;
+    int fixedFlag;
+    int cspsFlag;
+    int audioLockFlag;
+    int videoLockFlag;
+} MpsSysHd_x0017B178;
+typedef struct MpsSysHdStream_x0017B178 {
+    unsigned char streamId;
+    unsigned char bufferBoundScale;
+    unsigned short bufferSizeBound;
+} MpsSysHdStream_x0017B178;
+typedef struct MpsSysHdInf_x0017B178 {
+    int rateBound;
+    unsigned char audioBound;
+    unsigned char fixedFlag;
+    unsigned char cspsFlag;
+    unsigned char audioLockFlag;
+    unsigned char videoLockFlag;
+    unsigned char videoBound;
+    unsigned char packetRateRestrictionFlag;
+    unsigned char reserved;
+    int streamCount;
+    MpsSysHdStream_x0017B178 stream[48];
+} MpsSysHdInf_x0017B178;
+typedef struct MpsPesInf_x0017B178 {
+    long long pts;
+    long long dts;
+    int streamId;
+    int streamKind;
+    int streamNo;
+    int packetLength;
+    int stdBufferSize;
+    int dataSize;
+} MpsPesInf_x0017B178;
+typedef struct MpsHn_x0017B178 MpsHn_x0017B178;
+typedef int (*MpsDecodeFn_x0017B178)(MpsHn_x0017B178 *mps, unsigned char *pos, int n, int *len, int *flags);
+typedef void (*MpsCbFn_x0017B178)(void *obj, int arg);
+typedef void (*MpsSysHdFn_x0017B178)(void *obj, MpsSysHdInf_x0017B178 *inf);
+struct MpsHn_x0017B178 {
+    int stat;
+    MpsErr_x0017B178 err;
+    int pesSw;
+    int f20;
+    MpsPackHd_x0017B178 pack;
+    MpsSysHd_x0017B178 sysHd;
+    MpsSysHd_x0017B178 sysHdKind[3];
+    MpsPesInf_x0017B178 pes;
+    int f208;
+    MpsDecodeFn_x0017B178 decode;
+    int f216;
+    int f220;
+    int f224;
+    MpsSysHdFn_x0017B178 sysHdFn;
+    void *sysHdObj;
+    MpsCbFn_x0017B178 auxFn;
+    void *auxObj;
+    MpsCbFn_x0017B178 pesFn;
+    void *pesObj;
+    int f252;
+};
+typedef struct MpsWork_x0017B178 {
+    MpsErr_x0017B178 err;
+    int nhn;
+    MpsHn_x0017B178 hn[1];
+} MpsWork_x0017B178;
+int MPSLIB_CheckHn_x0017B178(MpsHn_x0017B178 *mps) __asm__("func_0017B218");
+int MPSLIB_SetErr_x0017B178(MpsHn_x0017B178 *mps, int code) __asm__("func_0017B048");
+extern MpsWork_x0017B178 *mps_work_x0017B178 __asm__("D_00424C38");
+int MPSLIB_SetErr_x0017B178(MpsHn_x0017B178 *mps, int code) __asm__("func_0017B048");
+int MPSLIB_CheckHn_x0017B178(MpsHn_x0017B178 *mps) __asm__("func_0017B218");
+int func_0017B178_x0017B178(MpsHn_x0017B178 *mps, MpsErr_x0017B178 *out) __asm__("func_0017B178");
+/* MPS_GetErrInf: from https://github.com/crashbashash/DW4_Decomp (src/cri/mps.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017B178_x0017B178(MpsHn_x0017B178 *mps, MpsErr_x0017B178 *out) {
+    if (mps == 0) {
+        *out = mps_work_x0017B178->err;
+    } else {
+        if (MPSLIB_CheckHn_x0017B178(mps) != 0) {
+            return MPSLIB_SetErr_x0017B178(0, 0xFF020102);
+        }
+        *out = mps->err;
+    }
+    return 0;
+}
 extern s32 *D_004814E4_x0017B218 __asm__("D_004814E4");
 s32 func_0017B218_x0017B218(s32 *arg0) __asm__("func_0017B218");
 s32 func_0017B218_x0017B218(s32 *arg0)
@@ -1139,7 +1598,115 @@ INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B4B8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B5B8);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B6C0);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017B7D0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017BC78);
+int MPV_CheckDelim_x0017BC78(const unsigned char *p) __asm__("func_0017B420");
+char *MPV_SearchDelim_x0017BC78(char *buf, int len, int mask) __asm__("func_0017B5B8");
+extern short mpvsc_mbaddr_incr_vlc_x0017BC78[] __asm__("D_00424C40");
+int MPV_CheckDelim_x0017BC78(const unsigned char *p) __asm__("func_0017B420");
+char *MPV_SearchDelim_x0017BC78(char *buf, int len, int mask) __asm__("func_0017B5B8");
+int func_0017BC78_x0017BC78(unsigned char *buf, int nbyte, int nmb) __asm__("func_0017BC78");
+/* MPV_IsEmptyPpic: from https://github.com/crashbashash/DW4_Decomp (src/cri/startcode.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017BC78_x0017BC78(unsigned char *buf, int nbyte, int nmb) {
+    int bit;
+    char *rp;
+    unsigned int cur, nxt;
+    int cnt;
+    unsigned int val;
+    int code;
+    int len;
+    int pos;
+    char *q;
+    char *p;
+    int flg;
+    { (rp) = (char *)((int)(buf) & ~3); (bit) = ((char *)(buf) - (rp)) << 3; { (cur) = *(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; }; (cur) <<= (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) != 0) { (val) = (cur) | ((nxt) >> (32 - (bit))); (cur) = (nxt) << (bit); } else { (val) = (cur); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    if (val != 0x101) {
+        return 0;
+    }
+    { if ((bit) >= 32 - (5)) { (bit) -= 32 - (5); if ((bit) != 0) { (cur) |= (nxt) >> ((5) - (bit)); (val) = (cur) >> (32 - (5)); (cur) = (nxt) << (bit); } else { (val) = (cur) >> (32 - (5)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (val) = (cur) >> (32 - (5)); (bit) += (5); (cur) <<= (5); } };
+    { (val) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    if (val != 0) {
+        return 0;
+    }
+    { (val) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    if (val == 0) {
+        return 0;
+    }
+    do { (val) = (cur) >> (32 - (5)); if ((bit) > 32 - (5)) { (val) |= (nxt) >> (64 - (5) - (bit)); } } while (0);
+    if (val != 7) {
+        return 0;
+    }
+    { (bit) += (5); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (5); } };
+    cnt = nmb - 1;
+    for (;;) {
+        do { (val) = (cur) >> (32 - (11)); if ((bit) > 32 - (11)) { (val) |= (nxt) >> (64 - (11) - (bit)); } } while (0);
+        if (val != 8) {
+            break;
+        }
+        { (bit) += (11); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (11); } };
+        cnt -= 33;
+        if (cnt <= 33) {
+            break;
+        }
+    }
+    if (cnt <= 0 || cnt > 33) {
+        return 0;
+    }
+    code = mpvsc_mbaddr_incr_vlc_x0017BC78[cnt];
+    len = code & 0xFF;
+    { if ((bit) >= 32 - (len)) { (bit) -= 32 - (len); if ((bit) != 0) { (cur) |= (nxt) >> ((len) - (bit)); (val) = (cur) >> (32 - (len)); (cur) = (nxt) << (bit); } else { (val) = (cur) >> (32 - (len)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (val) = (cur) >> (32 - (len)); (bit) += (len); (cur) <<= (len); } };
+    if (val != code >> 8) {
+        return 0;
+    }
+    do { (val) = (cur) >> (32 - (5)); if ((bit) > 32 - (5)) { (val) |= (nxt) >> (64 - (5) - (bit)); } } while (0);
+    if (val != 7) {
+        return 0;
+    }
+    { (bit) += (5); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (5); } };
+    q = rp + ((bit + 7) >> 3) - 8;
+    pos = q - (char *)buf;
+    if (pos > nbyte) {
+        return 0;
+    }
+    for (;;) {
+        p = MPV_SearchDelim_x0017BC78(q, nbyte - pos, 0xCC);
+        if (p == 0) {
+            return 0;
+        }
+        flg = MPV_CheckDelim_x0017BC78((unsigned char *)p);
+        if (flg & 0x04) {
+            if ((((p[5] & 3) << 1) | ((unsigned int)p[6] >> 31)) != 3) {
+                return 0;
+            }
+            q = p + 1;
+            pos = p + 1 - (char *)buf;
+            continue;
+        }
+        if (flg & 0x40) {
+            q = p + 1;
+            pos = p + 1 - (char *)buf;
+            continue;
+        }
+        if (flg & 0x80) {
+            pos = p + 4 - (char *)buf;
+            if (pos > nbyte) {
+                return 0;
+            }
+            break;
+        }
+        if (flg & 0x08) {
+            if (p[7] & 0x40) {
+                pos = p + 7 - (char *)buf;
+                if (pos > nbyte) {
+                    return 0;
+                }
+                break;
+            }
+            return 0;
+        }
+        return 0;
+    }
+    return 1;
+}
 void func_0017C1B8(void) {
     func_0017C1D8(&D_00424C88);
 }
@@ -1198,8 +1765,727 @@ s32 func_0017C2E0(s32 arg0, s32 arg1) {
     return arg1;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C330);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C368);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C418);
+typedef struct SfdSj_x0017C368 SfdSj_x0017C368;
+typedef struct SfdSjChunk_x0017C368 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017C368;
+typedef struct SfdSjVtbl_x0017C368 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017C368 *sj);
+    int (*getUuid)(SfdSj_x0017C368 *sj);
+    void (*reset)(SfdSj_x0017C368 *sj);
+    void (*getChunk)(SfdSj_x0017C368 *sj, int id, int n, SfdSjChunk_x0017C368 *ck);
+    void (*ungetChunk)(SfdSj_x0017C368 *sj, int id, SfdSjChunk_x0017C368 *ck);
+    void (*putChunk)(SfdSj_x0017C368 *sj, int id, SfdSjChunk_x0017C368 *ck);
+    int (*getNumData)(SfdSj_x0017C368 *sj, int id);
+} SfdSjVtbl_x0017C368;
+struct SfdSj_x0017C368 {
+    SfdSjVtbl_x0017C368 *vtbl;
+};
+SfdSj_x0017C368 *SJMEM_Create_x0017C368(char *buf, int bsize) __asm__("func_0016DBE0");
+struct SfdSj_x0017C368;
+typedef struct M2vErrInf_x0017C368 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017C368;
+typedef struct Mpeg2Ext_x0017C368 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017C368;
+typedef enum M2vFrameRate_x0017C368 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017C368 = 0
+} M2vFrameRate_x0017C368;
+typedef enum M2vPicType_x0017C368 {
+    M2V_PICTYPE_I_x0017C368 = 1,
+    M2V_PICTYPE_P_x0017C368 = 2,
+    M2V_PICTYPE_B_x0017C368 = 3,
+    M2V_PICTYPE_D_x0017C368 = 4
+} M2vPicType_x0017C368;
+typedef enum M2vPicStruct_x0017C368 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017C368 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017C368 = 2,
+    M2V_PICSTRUCT_FRAME_x0017C368 = 3
+} M2vPicStruct_x0017C368;
+typedef enum M2vPicAtrF64_x0017C368 {
+    M2V_PICATR_F64_0_x0017C368 = 0
+} M2vPicAtrF64_x0017C368;
+typedef struct M2vPicAtr_x0017C368 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017C368 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017C368 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017C368 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017C368 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017C368;
+typedef void (*M2vUsrDatFn_x0017C368)(void *obj, int level);
+typedef struct M2vUsrSj_x0017C368 {
+    struct SfdSj_x0017C368 *sj;
+    M2vUsrDatFn_x0017C368 fn;
+    void *obj;
+} M2vUsrSj_x0017C368;
+typedef struct M2vPicUsr_x0017C368 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017C368;
+typedef void (*M2vCondFn_x0017C368)();
+typedef struct M2vObj_x0017C368 {
+    int stat;
+    M2vErrInf_x0017C368 err;
+    M2vCondFn_x0017C368 cond[16];
+    M2vPicAtr_x0017C368 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017C368 usrsj[4];
+    M2vPicUsr_x0017C368 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017C368 ext;
+    char pad1656[8];
+} M2vObj_x0017C368;
+extern void M2V_SetErrFunc_x0017C368(M2vObj_x0017C368 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017C368 {
+    MPV_UDLVL_SEQ_x0017C368 = 1,
+    MPV_UDLVL_GOP_x0017C368 = 2,
+    MPV_UDLVL_PIC_x0017C368 = 3
+} MpvUdLevel_x0017C368;
+typedef struct MpvSeqInf_x0017C368 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017C368;
+typedef struct MpvMotionRange_x0017C368 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017C368;
+typedef struct MpvErrObj_x0017C368 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017C368;
+typedef struct MpvHn_x0017C368 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017C368 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017C368 picInf;
+    MpvErrObj_x0017C368 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017C368 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017C368 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017C368 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017C368 *lower;
+    MpvUdLevel_x0017C368 usrDatLevel;
+    M2vUsrSj_x0017C368 bufEnt[4];
+    M2vPicUsr_x0017C368 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017C368;
+struct SfdFrmPara_x0017C368;
+int MPV_DecPicSj_x0017C368(MpvHn_x0017C368 *mpv, SfdSj_x0017C368 *sj, struct SfdFrmPara_x0017C368 *para) __asm__("func_0017C4D0");
+extern void mpvhook_SetErrFunc_x0017C368(M2vObj_x0017C368 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+int MPV_DecPicSj_x0017C368(MpvHn_x0017C368 *mpv, SfdSj_x0017C368 *sj, struct SfdFrmPara_x0017C368 *para) __asm__("func_0017C4D0");
+int func_0017C368_x0017C368(MpvHn_x0017C368 *mpv, SfdSjChunk_x0017C368 *buf, int *used, struct SfdFrmPara_x0017C368 *para) __asm__("func_0017C368");
+/* MPV_DecodeFrm: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvapi.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017C368_x0017C368(MpvHn_x0017C368 *mpv, SfdSjChunk_x0017C368 *buf, int *used, struct SfdFrmPara_x0017C368 *para) {
+    SfdSj_x0017C368 *sj = SJMEM_Create_x0017C368(buf->data, buf->len);
+    int result;
+    if (sj == 0) {
+        return -1;
+    }
+    result = MPV_DecPicSj_x0017C368(mpv, sj, para);
+    *used = buf->len - sj->vtbl->getNumData(sj, 1);
+    sj->vtbl->destroy(sj);
+    return result;
+}
+typedef struct SfdSj_x0017C418 SfdSj_x0017C418;
+typedef struct SfdSjChunk_x0017C418 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017C418;
+typedef struct SfdSjVtbl_x0017C418 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017C418 *sj);
+    int (*getUuid)(SfdSj_x0017C418 *sj);
+    void (*reset)(SfdSj_x0017C418 *sj);
+    void (*getChunk)(SfdSj_x0017C418 *sj, int id, int n, SfdSjChunk_x0017C418 *ck);
+    void (*ungetChunk)(SfdSj_x0017C418 *sj, int id, SfdSjChunk_x0017C418 *ck);
+    void (*putChunk)(SfdSj_x0017C418 *sj, int id, SfdSjChunk_x0017C418 *ck);
+    int (*getNumData)(SfdSj_x0017C418 *sj, int id);
+} SfdSjVtbl_x0017C418;
+struct SfdSj_x0017C418 {
+    SfdSjVtbl_x0017C418 *vtbl;
+};
+struct SfdSj_x0017C418;
+typedef struct M2vErrInf_x0017C418 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017C418;
+typedef struct Mpeg2Ext_x0017C418 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017C418;
+typedef enum M2vFrameRate_x0017C418 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017C418 = 0
+} M2vFrameRate_x0017C418;
+typedef enum M2vPicType_x0017C418 {
+    M2V_PICTYPE_I_x0017C418 = 1,
+    M2V_PICTYPE_P_x0017C418 = 2,
+    M2V_PICTYPE_B_x0017C418 = 3,
+    M2V_PICTYPE_D_x0017C418 = 4
+} M2vPicType_x0017C418;
+typedef enum M2vPicStruct_x0017C418 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017C418 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017C418 = 2,
+    M2V_PICSTRUCT_FRAME_x0017C418 = 3
+} M2vPicStruct_x0017C418;
+typedef enum M2vPicAtrF64_x0017C418 {
+    M2V_PICATR_F64_0_x0017C418 = 0
+} M2vPicAtrF64_x0017C418;
+typedef struct M2vPicAtr_x0017C418 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017C418 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017C418 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017C418 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017C418 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017C418;
+typedef void (*M2vUsrDatFn_x0017C418)(void *obj, int level);
+typedef struct M2vUsrSj_x0017C418 {
+    struct SfdSj_x0017C418 *sj;
+    M2vUsrDatFn_x0017C418 fn;
+    void *obj;
+} M2vUsrSj_x0017C418;
+typedef struct M2vPicUsr_x0017C418 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017C418;
+typedef void (*M2vCondFn_x0017C418)();
+typedef struct M2vObj_x0017C418 {
+    int stat;
+    M2vErrInf_x0017C418 err;
+    M2vCondFn_x0017C418 cond[16];
+    M2vPicAtr_x0017C418 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017C418 usrsj[4];
+    M2vPicUsr_x0017C418 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017C418 ext;
+    char pad1656[8];
+} M2vObj_x0017C418;
+extern void M2V_SetErrFunc_x0017C418(M2vObj_x0017C418 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017C418 {
+    MPV_UDLVL_SEQ_x0017C418 = 1,
+    MPV_UDLVL_GOP_x0017C418 = 2,
+    MPV_UDLVL_PIC_x0017C418 = 3
+} MpvUdLevel_x0017C418;
+typedef struct MpvSeqInf_x0017C418 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017C418;
+typedef struct MpvMotionRange_x0017C418 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017C418;
+typedef struct MpvErrObj_x0017C418 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017C418;
+typedef struct MpvHn_x0017C418 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017C418 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017C418 picInf;
+    MpvErrObj_x0017C418 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017C418 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017C418 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017C418 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017C418 *lower;
+    MpvUdLevel_x0017C418 usrDatLevel;
+    M2vUsrSj_x0017C418 bufEnt[4];
+    M2vPicUsr_x0017C418 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017C418;
+int MPVLIB_CheckHn_x0017C418(MpvHn_x0017C418 *hn) __asm__("func_0017EB90");
+int mpv_ReportError_x0017C418(MpvHn_x0017C418 *mpv, int code) __asm__("func_0017C2E0");
+char *MPV_SearchDelim_x0017C418(char *buf, int len, int mask) __asm__("func_0017B5B8");
+extern void mpvhook_SetErrFunc_x0017C418(M2vObj_x0017C418 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+int mpv_ReportError_x0017C418(MpvHn_x0017C418 *mpv, int code) __asm__("func_0017C2E0");
+int func_0017C418_x0017C418(MpvHn_x0017C418 *mpv, SfdSjChunk_x0017C418 *buf, int *ofst) __asm__("func_0017C418");
+/* MPV_SkipFrm: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvapi.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017C418_x0017C418(MpvHn_x0017C418 *mpv, SfdSjChunk_x0017C418 *buf, int *ofst) {
+    char *data;
+    int len;
+    char *hit;
+    int code;
+    if (MPVLIB_CheckHn_x0017C418(mpv) != 0) {
+        return mpv_ReportError_x0017C418(0, 0xFF03020A);
+    }
+    data = buf->data;
+    len = buf->len;
+    hit = MPV_SearchDelim_x0017C418(data, len, 0xCC);
+    code = 0xFF030305;
+    if (hit == 0) {
+        *ofst = len;
+    } else {
+        *ofst = hit - data;
+        code = 0;
+    }
+    return mpv_ReportError_x0017C418(mpv, code);
+}
 void func_0017C4C8(void) {
 
 }
@@ -1225,7 +2511,356 @@ void func_0017C4D8_x0017C4D8(s32 arg0, s32 arg1)
  do { loop_4: temp_v0 = func_0017E040_x0017C4D8(arg1); if (temp_v0 != 0) { new_var = temp_v0 & 0xCC; if (new_var) { var_s1 = 0; } else if (func_0017E268_x0017C4D8(arg1, 1, 4) == 4) { goto loop_4; } } } while (0);
   func_0017C2E0_x0017C4D8(arg0, var_s1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C590);
+typedef struct SfdSj_x0017C590 SfdSj_x0017C590;
+typedef struct SfdSjChunk_x0017C590 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017C590;
+typedef struct SfdSjVtbl_x0017C590 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017C590 *sj);
+    int (*getUuid)(SfdSj_x0017C590 *sj);
+    void (*reset)(SfdSj_x0017C590 *sj);
+    void (*getChunk)(SfdSj_x0017C590 *sj, int id, int n, SfdSjChunk_x0017C590 *ck);
+    void (*ungetChunk)(SfdSj_x0017C590 *sj, int id, SfdSjChunk_x0017C590 *ck);
+    void (*putChunk)(SfdSj_x0017C590 *sj, int id, SfdSjChunk_x0017C590 *ck);
+    int (*getNumData)(SfdSj_x0017C590 *sj, int id);
+} SfdSjVtbl_x0017C590;
+struct SfdSj_x0017C590 {
+    SfdSjVtbl_x0017C590 *vtbl;
+};
+struct SfdSj_x0017C590;
+typedef struct M2vErrInf_x0017C590 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017C590;
+typedef struct Mpeg2Ext_x0017C590 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017C590;
+typedef enum M2vFrameRate_x0017C590 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017C590 = 0
+} M2vFrameRate_x0017C590;
+typedef enum M2vPicType_x0017C590 {
+    M2V_PICTYPE_I_x0017C590 = 1,
+    M2V_PICTYPE_P_x0017C590 = 2,
+    M2V_PICTYPE_B_x0017C590 = 3,
+    M2V_PICTYPE_D_x0017C590 = 4
+} M2vPicType_x0017C590;
+typedef enum M2vPicStruct_x0017C590 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017C590 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017C590 = 2,
+    M2V_PICSTRUCT_FRAME_x0017C590 = 3
+} M2vPicStruct_x0017C590;
+typedef enum M2vPicAtrF64_x0017C590 {
+    M2V_PICATR_F64_0_x0017C590 = 0
+} M2vPicAtrF64_x0017C590;
+typedef struct M2vPicAtr_x0017C590 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017C590 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017C590 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017C590 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017C590 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017C590;
+typedef void (*M2vUsrDatFn_x0017C590)(void *obj, int level);
+typedef struct M2vUsrSj_x0017C590 {
+    struct SfdSj_x0017C590 *sj;
+    M2vUsrDatFn_x0017C590 fn;
+    void *obj;
+} M2vUsrSj_x0017C590;
+typedef struct M2vPicUsr_x0017C590 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017C590;
+typedef void (*M2vCondFn_x0017C590)();
+typedef struct M2vObj_x0017C590 {
+    int stat;
+    M2vErrInf_x0017C590 err;
+    M2vCondFn_x0017C590 cond[16];
+    M2vPicAtr_x0017C590 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017C590 usrsj[4];
+    M2vPicUsr_x0017C590 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017C590 ext;
+    char pad1656[8];
+} M2vObj_x0017C590;
+extern void M2V_SetErrFunc_x0017C590(M2vObj_x0017C590 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017C590 {
+    MPV_UDLVL_SEQ_x0017C590 = 1,
+    MPV_UDLVL_GOP_x0017C590 = 2,
+    MPV_UDLVL_PIC_x0017C590 = 3
+} MpvUdLevel_x0017C590;
+typedef struct MpvSeqInf_x0017C590 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017C590;
+typedef struct MpvMotionRange_x0017C590 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017C590;
+typedef struct MpvErrObj_x0017C590 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017C590;
+typedef struct MpvHn_x0017C590 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017C590 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017C590 picInf;
+    MpvErrObj_x0017C590 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017C590 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017C590 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017C590 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017C590 *lower;
+    MpvUdLevel_x0017C590 usrDatLevel;
+    M2vUsrSj_x0017C590 bufEnt[4];
+    M2vPicUsr_x0017C590 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017C590;
+int MPVLIB_CheckHn_x0017C590(MpvHn_x0017C590 *hn) __asm__("func_0017EB90");
+int mpv_ReportError_x0017C590(MpvHn_x0017C590 *mpv, int code) __asm__("func_0017C2E0");
+extern void mpvhook_SetErrFunc_x0017C590(M2vObj_x0017C590 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+int mpv_ReportError_x0017C590(MpvHn_x0017C590 *mpv, int code) __asm__("func_0017C2E0");
+int func_0017C590_x0017C590(MpvHn_x0017C590 *mpv, M2vPicAtr_x0017C590 *out) __asm__("func_0017C590");
+/* MPV_GetPicInf: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvapi.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017C590_x0017C590(MpvHn_x0017C590 *mpv, M2vPicAtr_x0017C590 *out) {
+    if (MPVLIB_CheckHn_x0017C590(mpv) != 0)
+        return mpv_ReportError_x0017C590(0, 0xFF03020C);
+    *out = mpv->picInf;
+    return 0;
+}
 s32 func_0017C2E0_x0017C698(s32, s32) __asm__("func_0017C2E0");
 s32 func_0017EB90_x0017C698() __asm__("func_0017EB90");
 short func_0017C698_x0017C698(u8 *arg0, s32 *arg1) __asm__("func_0017C698");
@@ -1238,8 +2873,715 @@ short func_0017C698_x0017C698(u8 *arg0, s32 *arg1)
   }
   *arg1 = *((s32 *) (((u8 *) arg0) + 0x2A8));
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C6F8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C7C0);
+typedef struct SfdSj_x0017C6F8 SfdSj_x0017C6F8;
+typedef struct SfdSjChunk_x0017C6F8 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017C6F8;
+typedef struct SfdSjVtbl_x0017C6F8 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017C6F8 *sj);
+    int (*getUuid)(SfdSj_x0017C6F8 *sj);
+    void (*reset)(SfdSj_x0017C6F8 *sj);
+    void (*getChunk)(SfdSj_x0017C6F8 *sj, int id, int n, SfdSjChunk_x0017C6F8 *ck);
+    void (*ungetChunk)(SfdSj_x0017C6F8 *sj, int id, SfdSjChunk_x0017C6F8 *ck);
+    void (*putChunk)(SfdSj_x0017C6F8 *sj, int id, SfdSjChunk_x0017C6F8 *ck);
+    int (*getNumData)(SfdSj_x0017C6F8 *sj, int id);
+} SfdSjVtbl_x0017C6F8;
+struct SfdSj_x0017C6F8 {
+    SfdSjVtbl_x0017C6F8 *vtbl;
+};
+struct SfdSj_x0017C6F8;
+typedef struct M2vErrInf_x0017C6F8 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017C6F8;
+typedef struct Mpeg2Ext_x0017C6F8 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017C6F8;
+typedef enum M2vFrameRate_x0017C6F8 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017C6F8 = 0
+} M2vFrameRate_x0017C6F8;
+typedef enum M2vPicType_x0017C6F8 {
+    M2V_PICTYPE_I_x0017C6F8 = 1,
+    M2V_PICTYPE_P_x0017C6F8 = 2,
+    M2V_PICTYPE_B_x0017C6F8 = 3,
+    M2V_PICTYPE_D_x0017C6F8 = 4
+} M2vPicType_x0017C6F8;
+typedef enum M2vPicStruct_x0017C6F8 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017C6F8 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017C6F8 = 2,
+    M2V_PICSTRUCT_FRAME_x0017C6F8 = 3
+} M2vPicStruct_x0017C6F8;
+typedef enum M2vPicAtrF64_x0017C6F8 {
+    M2V_PICATR_F64_0_x0017C6F8 = 0
+} M2vPicAtrF64_x0017C6F8;
+typedef struct M2vPicAtr_x0017C6F8 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017C6F8 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017C6F8 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017C6F8 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017C6F8 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017C6F8;
+typedef void (*M2vUsrDatFn_x0017C6F8)(void *obj, int level);
+typedef struct M2vUsrSj_x0017C6F8 {
+    struct SfdSj_x0017C6F8 *sj;
+    M2vUsrDatFn_x0017C6F8 fn;
+    void *obj;
+} M2vUsrSj_x0017C6F8;
+typedef struct M2vPicUsr_x0017C6F8 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017C6F8;
+typedef void (*M2vCondFn_x0017C6F8)();
+typedef struct M2vObj_x0017C6F8 {
+    int stat;
+    M2vErrInf_x0017C6F8 err;
+    M2vCondFn_x0017C6F8 cond[16];
+    M2vPicAtr_x0017C6F8 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017C6F8 usrsj[4];
+    M2vPicUsr_x0017C6F8 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017C6F8 ext;
+    char pad1656[8];
+} M2vObj_x0017C6F8;
+extern void M2V_SetErrFunc_x0017C6F8(M2vObj_x0017C6F8 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017C6F8 {
+    MPV_UDLVL_SEQ_x0017C6F8 = 1,
+    MPV_UDLVL_GOP_x0017C6F8 = 2,
+    MPV_UDLVL_PIC_x0017C6F8 = 3
+} MpvUdLevel_x0017C6F8;
+typedef struct MpvSeqInf_x0017C6F8 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017C6F8;
+typedef struct MpvMotionRange_x0017C6F8 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017C6F8;
+typedef struct MpvErrObj_x0017C6F8 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017C6F8;
+typedef struct MpvHn_x0017C6F8 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017C6F8 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017C6F8 picInf;
+    MpvErrObj_x0017C6F8 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017C6F8 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017C6F8 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017C6F8 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017C6F8 *lower;
+    MpvUdLevel_x0017C6F8 usrDatLevel;
+    M2vUsrSj_x0017C6F8 bufEnt[4];
+    M2vPicUsr_x0017C6F8 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017C6F8;
+int MPVLIB_CheckHn_x0017C6F8(MpvHn_x0017C6F8 *hn) __asm__("func_0017EB90");
+int mpv_ReportError_x0017C6F8(MpvHn_x0017C6F8 *mpv, int code) __asm__("func_0017C2E0");
+extern void mpvhook_SetErrFunc_x0017C6F8(M2vObj_x0017C6F8 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+int mpv_ReportError_x0017C6F8(MpvHn_x0017C6F8 *mpv, int code) __asm__("func_0017C2E0");
+int func_0017C6F8_x0017C6F8(MpvHn_x0017C6F8 *mpv, int *size, int *delay, int *bytes) __asm__("func_0017C6F8");
+/* MPV_GetVbvBufSiz: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvapi.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017C6F8_x0017C6F8(MpvHn_x0017C6F8 *mpv, int *size, int *delay, int *bytes) {
+    if (MPVLIB_CheckHn_x0017C6F8(mpv) != 0) {
+        return mpv_ReportError_x0017C6F8(0, 0xFF03020F);
+    }
+    *size = mpv->vbvBufferSize << 11;
+    *delay = mpv->vbvDelay;
+    if (mpv->bitRate == 0x3FFFF) {
+        *bytes = -1;
+    } else {
+        *bytes = mpv->vbvDelay * mpv->bitRate / 1800;
+    }
+    return 0;
+}
+typedef struct SfdSj_x0017C7C0 SfdSj_x0017C7C0;
+typedef struct SfdSjChunk_x0017C7C0 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017C7C0;
+typedef struct SfdSjVtbl_x0017C7C0 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017C7C0 *sj);
+    int (*getUuid)(SfdSj_x0017C7C0 *sj);
+    void (*reset)(SfdSj_x0017C7C0 *sj);
+    void (*getChunk)(SfdSj_x0017C7C0 *sj, int id, int n, SfdSjChunk_x0017C7C0 *ck);
+    void (*ungetChunk)(SfdSj_x0017C7C0 *sj, int id, SfdSjChunk_x0017C7C0 *ck);
+    void (*putChunk)(SfdSj_x0017C7C0 *sj, int id, SfdSjChunk_x0017C7C0 *ck);
+    int (*getNumData)(SfdSj_x0017C7C0 *sj, int id);
+} SfdSjVtbl_x0017C7C0;
+struct SfdSj_x0017C7C0 {
+    SfdSjVtbl_x0017C7C0 *vtbl;
+};
+struct SfdSj_x0017C7C0;
+typedef struct M2vErrInf_x0017C7C0 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017C7C0;
+typedef struct Mpeg2Ext_x0017C7C0 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017C7C0;
+typedef enum M2vFrameRate_x0017C7C0 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017C7C0 = 0
+} M2vFrameRate_x0017C7C0;
+typedef enum M2vPicType_x0017C7C0 {
+    M2V_PICTYPE_I_x0017C7C0 = 1,
+    M2V_PICTYPE_P_x0017C7C0 = 2,
+    M2V_PICTYPE_B_x0017C7C0 = 3,
+    M2V_PICTYPE_D_x0017C7C0 = 4
+} M2vPicType_x0017C7C0;
+typedef enum M2vPicStruct_x0017C7C0 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017C7C0 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017C7C0 = 2,
+    M2V_PICSTRUCT_FRAME_x0017C7C0 = 3
+} M2vPicStruct_x0017C7C0;
+typedef enum M2vPicAtrF64_x0017C7C0 {
+    M2V_PICATR_F64_0_x0017C7C0 = 0
+} M2vPicAtrF64_x0017C7C0;
+typedef struct M2vPicAtr_x0017C7C0 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017C7C0 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017C7C0 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017C7C0 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017C7C0 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017C7C0;
+typedef void (*M2vUsrDatFn_x0017C7C0)(void *obj, int level);
+typedef struct M2vUsrSj_x0017C7C0 {
+    struct SfdSj_x0017C7C0 *sj;
+    M2vUsrDatFn_x0017C7C0 fn;
+    void *obj;
+} M2vUsrSj_x0017C7C0;
+typedef struct M2vPicUsr_x0017C7C0 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017C7C0;
+typedef void (*M2vCondFn_x0017C7C0)();
+typedef struct M2vObj_x0017C7C0 {
+    int stat;
+    M2vErrInf_x0017C7C0 err;
+    M2vCondFn_x0017C7C0 cond[16];
+    M2vPicAtr_x0017C7C0 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017C7C0 usrsj[4];
+    M2vPicUsr_x0017C7C0 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017C7C0 ext;
+    char pad1656[8];
+} M2vObj_x0017C7C0;
+extern void M2V_SetErrFunc_x0017C7C0(M2vObj_x0017C7C0 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017C7C0 {
+    MPV_UDLVL_SEQ_x0017C7C0 = 1,
+    MPV_UDLVL_GOP_x0017C7C0 = 2,
+    MPV_UDLVL_PIC_x0017C7C0 = 3
+} MpvUdLevel_x0017C7C0;
+typedef struct MpvSeqInf_x0017C7C0 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017C7C0;
+typedef struct MpvMotionRange_x0017C7C0 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017C7C0;
+typedef struct MpvErrObj_x0017C7C0 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017C7C0;
+typedef struct MpvHn_x0017C7C0 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017C7C0 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017C7C0 picInf;
+    MpvErrObj_x0017C7C0 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017C7C0 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017C7C0 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017C7C0 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017C7C0 *lower;
+    MpvUdLevel_x0017C7C0 usrDatLevel;
+    M2vUsrSj_x0017C7C0 bufEnt[4];
+    M2vPicUsr_x0017C7C0 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017C7C0;
+int MPVLIB_CheckHn_x0017C7C0(MpvHn_x0017C7C0 *hn) __asm__("func_0017EB90");
+int mpv_ReportError_x0017C7C0(MpvHn_x0017C7C0 *mpv, int code) __asm__("func_0017C2E0");
+extern void mpvhook_SetErrFunc_x0017C7C0(M2vObj_x0017C7C0 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+int mpv_ReportError_x0017C7C0(MpvHn_x0017C7C0 *mpv, int code) __asm__("func_0017C2E0");
+int func_0017C7C0_x0017C7C0(MpvHn_x0017C7C0 *mpv, int *inf3, int *inf4) __asm__("func_0017C7C0");
+/* MPV_GetLinkFlg: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvapi.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017C7C0_x0017C7C0(MpvHn_x0017C7C0 *mpv, int *inf3, int *inf4) {
+    if (MPVLIB_CheckHn_x0017C7C0(mpv) != 0) {
+        return mpv_ReportError_x0017C7C0(0, 0xFF03020E);
+    }
+    *inf3 = mpv->closedGop;
+    *inf4 = mpv->brokenLink;
+    return 0;
+}
 void func_0017C838(void) {
 
 }
@@ -1504,7 +3846,494 @@ void func_0017C880_x0017C880(u8 *arg0, s32 *arg1, s32 *arg2)
   }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017C8A8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017CA98);
+typedef struct SfdSj_x0017CA98 SfdSj_x0017CA98;
+typedef struct SfdSjChunk_x0017CA98 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017CA98;
+typedef struct SfdSjVtbl_x0017CA98 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017CA98 *sj);
+    int (*getUuid)(SfdSj_x0017CA98 *sj);
+    void (*reset)(SfdSj_x0017CA98 *sj);
+    void (*getChunk)(SfdSj_x0017CA98 *sj, int id, int n, SfdSjChunk_x0017CA98 *ck);
+    void (*ungetChunk)(SfdSj_x0017CA98 *sj, int id, SfdSjChunk_x0017CA98 *ck);
+    void (*putChunk)(SfdSj_x0017CA98 *sj, int id, SfdSjChunk_x0017CA98 *ck);
+    int (*getNumData)(SfdSj_x0017CA98 *sj, int id);
+} SfdSjVtbl_x0017CA98;
+struct SfdSj_x0017CA98 {
+    SfdSjVtbl_x0017CA98 *vtbl;
+};
+struct SfdSj_x0017CA98;
+typedef struct M2vErrInf_x0017CA98 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017CA98;
+typedef struct Mpeg2Ext_x0017CA98 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017CA98;
+typedef enum M2vFrameRate_x0017CA98 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017CA98 = 0
+} M2vFrameRate_x0017CA98;
+typedef enum M2vPicType_x0017CA98 {
+    M2V_PICTYPE_I_x0017CA98 = 1,
+    M2V_PICTYPE_P_x0017CA98 = 2,
+    M2V_PICTYPE_B_x0017CA98 = 3,
+    M2V_PICTYPE_D_x0017CA98 = 4
+} M2vPicType_x0017CA98;
+typedef enum M2vPicStruct_x0017CA98 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017CA98 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017CA98 = 2,
+    M2V_PICSTRUCT_FRAME_x0017CA98 = 3
+} M2vPicStruct_x0017CA98;
+typedef enum M2vPicAtrF64_x0017CA98 {
+    M2V_PICATR_F64_0_x0017CA98 = 0
+} M2vPicAtrF64_x0017CA98;
+typedef struct M2vPicAtr_x0017CA98 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017CA98 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017CA98 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017CA98 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017CA98 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017CA98;
+typedef void (*M2vUsrDatFn_x0017CA98)(void *obj, int level);
+typedef struct M2vUsrSj_x0017CA98 {
+    struct SfdSj_x0017CA98 *sj;
+    M2vUsrDatFn_x0017CA98 fn;
+    void *obj;
+} M2vUsrSj_x0017CA98;
+typedef struct M2vPicUsr_x0017CA98 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017CA98;
+typedef void (*M2vCondFn_x0017CA98)();
+typedef struct M2vObj_x0017CA98 {
+    int stat;
+    M2vErrInf_x0017CA98 err;
+    M2vCondFn_x0017CA98 cond[16];
+    M2vPicAtr_x0017CA98 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017CA98 usrsj[4];
+    M2vPicUsr_x0017CA98 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017CA98 ext;
+    char pad1656[8];
+} M2vObj_x0017CA98;
+extern void M2V_SetErrFunc_x0017CA98(M2vObj_x0017CA98 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+int MPV_CheckDelim_x0017CA98(const unsigned char *p) __asm__("func_0017B420");
+extern void mpvhook_SetErrFunc_x0017CA98(M2vObj_x0017CA98 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+typedef unsigned int size_t_x0017CA98;
+typedef struct AdxPdObj_x0017CA98 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x0017CA98;
+typedef struct AdxDecPara_x0017CA98 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x0017CA98;
+struct Pl2Enc_x0017CA98;
+typedef struct AdxbObj_x0017CA98 AdxbObj_x0017CA98;
+typedef short *(*AdxbGetWrFunc_x0017CA98)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x0017CA98)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x0017CA98 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x0017CA98 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x0017CA98 dp;
+    AdxbGetWrFunc_x0017CA98 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x0017CA98 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x0017CA98 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+extern void ADXB_EntryDecFunc_x0017CA98(AdxbObj_x0017CA98 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+typedef struct AdxSjdObj_x0017CA98 {
+    signed char used;
+    signed char stat;
+    signed char maxnch;
+    signed char empty_end;
+    AdxbObj_x0017CA98 *adxb;
+    SfdSj_x0017CA98 *sji;
+    SfdSj_x0017CA98 *sjo[2];
+    SfdSjChunk_x0017CA98 cki;
+    SfdSjChunk_x0017CA98 cko[2];
+    int total_decsmpl;
+    int total_decdtlen;
+    int decpos;
+    int maxdecsmpl;
+    int dtrpsmpl;
+    int dtrpcnt;
+    int dtrpdtlen;
+    void (*dtrpfunc)(void *context);
+    void *dtrpobj;
+    void (*dfltfunc)(void *context, int ch, char *data, int len);
+    void *dfltobj;
+    char hdr[64];
+    int hdrlen;
+    int lnksw;
+    int fill;
+    int skip;
+} AdxSjdObj_x0017CA98;
+extern void ADXSJD_EntryFltFunc_x0017CA98(AdxSjdObj_x0017CA98 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x0017CA98(AdxSjdObj_x0017CA98 *sjd, void (*func)(void *obj), void *obj) __asm__("ADXSJD_EntryTrapFunc");
+typedef void (*CvFsErrFn_x0017CA98)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0017CA98)(CvFsErrFn_x0017CA98 func, void *obj);
+typedef int (*CvFsPathFn_x0017CA98)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0017CA98)(void);
+typedef int (*CvFsOpenFn_x0017CA98)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0017CA98)(int fd);
+typedef int (*CvFsFdIntFn_x0017CA98)(int fd);
+typedef int (*CvFsSeekFn_x0017CA98)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0017CA98)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0017CA98)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0017CA98)(void);
+typedef int (*CvFsLoadDirInfoFn_x0017CA98)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0017CA98)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0017CA98)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0017CA98 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0017CA98 entry_err_func;
+    CvFsPathFn_x0017CA98 get_file_size;
+    CvFsGetFreeSizeFn_x0017CA98 get_free_size;
+    CvFsOpenFn_x0017CA98 open;
+    CvFsFdFn_x0017CA98 close;
+    CvFsSeekFn_x0017CA98 seek;
+    CvFsFdIntFn_x0017CA98 tell;
+    CvFsXferFn_x0017CA98 req_rd;
+    CvFsXferFn_x0017CA98 req_wr;
+    CvFsFdFn_x0017CA98 stop_tr;
+    CvFsFdIntFn_x0017CA98 get_stat;
+    CvFsFdIntFn_x0017CA98 get_sct_len;
+    CvFsSetSctLenFn_x0017CA98 set_sct_len;
+    CvFsFdIntFn_x0017CA98 get_num_tr;
+    CvFsPathFn_x0017CA98 change_dir;
+    CvFsPathFn_x0017CA98 is_exist_file;
+    CvFsGetNumFilesFn_x0017CA98 get_num_files;
+    CvFsLoadDirInfoFn_x0017CA98 load_dir_info;
+    CvFsFdIntFn_x0017CA98 get_max_byte_rate;
+    CvFsPathFn_x0017CA98 make_dir;
+    CvFsPathFn_x0017CA98 remove_dir;
+    CvFsPathFn_x0017CA98 delete_file;
+    CvFsGetFileSizeExFn_x0017CA98 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0017CA98 opt_fn2;
+} CvFsVtbl_x0017CA98;
+typedef struct CvFsHandle_x0017CA98 {
+    CvFsVtbl_x0017CA98 *vtbl;
+    int fd;
+} CvFsHandle_x0017CA98;
+extern CvFsVtbl_x0017CA98 *addDevice_x0017CA98(char *devname, CvFsVtbl_x0017CA98 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0017CA98 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0017CA98 *sj;
+    CvFsHandle_x0017CA98 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0017CA98 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0017CA98;
+extern void ADXSTM_EntryEosFunc_x0017CA98(AdxStmObj_x0017CA98 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+extern void qsort_x0017CA98(void *, size_t_x0017CA98, size_t_x0017CA98, int (*)(const void *, const void *)) __asm__("qsort");
+int func_0017CA98_x0017CA98(SfdSj_x0017CA98 *sj) __asm__("func_0017CA98");
+/* mpvhdec_GetCurDelim: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvhdr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017CA98_x0017CA98(SfdSj_x0017CA98 *sj) {
+    SfdSjChunk_x0017CA98 ck;
+    sj->vtbl->getChunk(sj, 1, 0x7FFFFFFF, &ck);
+    sj->vtbl->ungetChunk(sj, 1, &ck);
+    if (ck.len < 4) {
+        return 0;
+    }
+    return MPV_CheckDelim_x0017CA98((unsigned char *)ck.data);
+}
 typedef unsigned char u8_x0017CB08;
 typedef signed int s32_x0017CB08;
 typedef unsigned int u32_x0017CB08;
@@ -1540,10 +4369,2392 @@ s32_x0017CB08 func_0017CB08_x0017CB08(void *arg0, MovieArgs_x0017CB08 *args, s32
     movie->vtable->method_000c(movie);
     return status;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017CBA8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017CC50);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017D308);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017D578);
+typedef struct SfdSj_x0017CBA8 SfdSj_x0017CBA8;
+typedef struct SfdSjChunk_x0017CBA8 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017CBA8;
+typedef struct SfdSjVtbl_x0017CBA8 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017CBA8 *sj);
+    int (*getUuid)(SfdSj_x0017CBA8 *sj);
+    void (*reset)(SfdSj_x0017CBA8 *sj);
+    void (*getChunk)(SfdSj_x0017CBA8 *sj, int id, int n, SfdSjChunk_x0017CBA8 *ck);
+    void (*ungetChunk)(SfdSj_x0017CBA8 *sj, int id, SfdSjChunk_x0017CBA8 *ck);
+    void (*putChunk)(SfdSj_x0017CBA8 *sj, int id, SfdSjChunk_x0017CBA8 *ck);
+    int (*getNumData)(SfdSj_x0017CBA8 *sj, int id);
+} SfdSjVtbl_x0017CBA8;
+struct SfdSj_x0017CBA8 {
+    SfdSjVtbl_x0017CBA8 *vtbl;
+};
+struct SfdSj_x0017CBA8;
+typedef struct M2vErrInf_x0017CBA8 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017CBA8;
+typedef struct Mpeg2Ext_x0017CBA8 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017CBA8;
+typedef enum M2vFrameRate_x0017CBA8 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017CBA8 = 0
+} M2vFrameRate_x0017CBA8;
+typedef enum M2vPicType_x0017CBA8 {
+    M2V_PICTYPE_I_x0017CBA8 = 1,
+    M2V_PICTYPE_P_x0017CBA8 = 2,
+    M2V_PICTYPE_B_x0017CBA8 = 3,
+    M2V_PICTYPE_D_x0017CBA8 = 4
+} M2vPicType_x0017CBA8;
+typedef enum M2vPicStruct_x0017CBA8 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017CBA8 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017CBA8 = 2,
+    M2V_PICSTRUCT_FRAME_x0017CBA8 = 3
+} M2vPicStruct_x0017CBA8;
+typedef enum M2vPicAtrF64_x0017CBA8 {
+    M2V_PICATR_F64_0_x0017CBA8 = 0
+} M2vPicAtrF64_x0017CBA8;
+typedef struct M2vPicAtr_x0017CBA8 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017CBA8 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017CBA8 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017CBA8 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017CBA8 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017CBA8;
+typedef void (*M2vUsrDatFn_x0017CBA8)(void *obj, int level);
+typedef struct M2vUsrSj_x0017CBA8 {
+    struct SfdSj_x0017CBA8 *sj;
+    M2vUsrDatFn_x0017CBA8 fn;
+    void *obj;
+} M2vUsrSj_x0017CBA8;
+typedef struct M2vPicUsr_x0017CBA8 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017CBA8;
+typedef void (*M2vCondFn_x0017CBA8)();
+typedef struct M2vObj_x0017CBA8 {
+    int stat;
+    M2vErrInf_x0017CBA8 err;
+    M2vCondFn_x0017CBA8 cond[16];
+    M2vPicAtr_x0017CBA8 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017CBA8 usrsj[4];
+    M2vPicUsr_x0017CBA8 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017CBA8 ext;
+    char pad1656[8];
+} M2vObj_x0017CBA8;
+extern void M2V_SetErrFunc_x0017CBA8(M2vObj_x0017CBA8 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017CBA8 {
+    MPV_UDLVL_SEQ_x0017CBA8 = 1,
+    MPV_UDLVL_GOP_x0017CBA8 = 2,
+    MPV_UDLVL_PIC_x0017CBA8 = 3
+} MpvUdLevel_x0017CBA8;
+typedef struct MpvSeqInf_x0017CBA8 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017CBA8;
+typedef struct MpvMotionRange_x0017CBA8 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017CBA8;
+typedef struct MpvErrObj_x0017CBA8 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017CBA8;
+typedef struct MpvHn_x0017CBA8 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017CBA8 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017CBA8 picInf;
+    MpvErrObj_x0017CBA8 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017CBA8 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017CBA8 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017CBA8 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017CBA8 *lower;
+    MpvUdLevel_x0017CBA8 usrDatLevel;
+    M2vUsrSj_x0017CBA8 bufEnt[4];
+    M2vPicUsr_x0017CBA8 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017CBA8;
+int MPV_CheckDelim_x0017CBA8(const unsigned char *p) __asm__("func_0017B420");
+char *MPV_SearchDelim_x0017CBA8(char *buf, int len, int mask) __asm__("func_0017B5B8");
+extern void mpvhook_SetErrFunc_x0017CBA8(M2vObj_x0017CBA8 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+typedef unsigned int size_t_x0017CBA8;
+typedef struct AdxPdObj_x0017CBA8 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x0017CBA8;
+typedef struct AdxDecPara_x0017CBA8 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x0017CBA8;
+struct Pl2Enc_x0017CBA8;
+typedef struct AdxbObj_x0017CBA8 AdxbObj_x0017CBA8;
+typedef short *(*AdxbGetWrFunc_x0017CBA8)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x0017CBA8)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x0017CBA8 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x0017CBA8 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x0017CBA8 dp;
+    AdxbGetWrFunc_x0017CBA8 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x0017CBA8 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x0017CBA8 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+extern void ADXB_EntryDecFunc_x0017CBA8(AdxbObj_x0017CBA8 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+typedef struct AdxSjdObj_x0017CBA8 {
+    signed char used;
+    signed char stat;
+    signed char maxnch;
+    signed char empty_end;
+    AdxbObj_x0017CBA8 *adxb;
+    SfdSj_x0017CBA8 *sji;
+    SfdSj_x0017CBA8 *sjo[2];
+    SfdSjChunk_x0017CBA8 cki;
+    SfdSjChunk_x0017CBA8 cko[2];
+    int total_decsmpl;
+    int total_decdtlen;
+    int decpos;
+    int maxdecsmpl;
+    int dtrpsmpl;
+    int dtrpcnt;
+    int dtrpdtlen;
+    void (*dtrpfunc)(void *context);
+    void *dtrpobj;
+    void (*dfltfunc)(void *context, int ch, char *data, int len);
+    void *dfltobj;
+    char hdr[64];
+    int hdrlen;
+    int lnksw;
+    int fill;
+    int skip;
+} AdxSjdObj_x0017CBA8;
+extern void ADXSJD_EntryFltFunc_x0017CBA8(AdxSjdObj_x0017CBA8 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x0017CBA8(AdxSjdObj_x0017CBA8 *sjd, void (*func)(void *obj), void *obj) __asm__("ADXSJD_EntryTrapFunc");
+typedef void (*CvFsErrFn_x0017CBA8)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0017CBA8)(CvFsErrFn_x0017CBA8 func, void *obj);
+typedef int (*CvFsPathFn_x0017CBA8)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0017CBA8)(void);
+typedef int (*CvFsOpenFn_x0017CBA8)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0017CBA8)(int fd);
+typedef int (*CvFsFdIntFn_x0017CBA8)(int fd);
+typedef int (*CvFsSeekFn_x0017CBA8)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0017CBA8)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0017CBA8)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0017CBA8)(void);
+typedef int (*CvFsLoadDirInfoFn_x0017CBA8)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0017CBA8)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0017CBA8)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0017CBA8 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0017CBA8 entry_err_func;
+    CvFsPathFn_x0017CBA8 get_file_size;
+    CvFsGetFreeSizeFn_x0017CBA8 get_free_size;
+    CvFsOpenFn_x0017CBA8 open;
+    CvFsFdFn_x0017CBA8 close;
+    CvFsSeekFn_x0017CBA8 seek;
+    CvFsFdIntFn_x0017CBA8 tell;
+    CvFsXferFn_x0017CBA8 req_rd;
+    CvFsXferFn_x0017CBA8 req_wr;
+    CvFsFdFn_x0017CBA8 stop_tr;
+    CvFsFdIntFn_x0017CBA8 get_stat;
+    CvFsFdIntFn_x0017CBA8 get_sct_len;
+    CvFsSetSctLenFn_x0017CBA8 set_sct_len;
+    CvFsFdIntFn_x0017CBA8 get_num_tr;
+    CvFsPathFn_x0017CBA8 change_dir;
+    CvFsPathFn_x0017CBA8 is_exist_file;
+    CvFsGetNumFilesFn_x0017CBA8 get_num_files;
+    CvFsLoadDirInfoFn_x0017CBA8 load_dir_info;
+    CvFsFdIntFn_x0017CBA8 get_max_byte_rate;
+    CvFsPathFn_x0017CBA8 make_dir;
+    CvFsPathFn_x0017CBA8 remove_dir;
+    CvFsPathFn_x0017CBA8 delete_file;
+    CvFsGetFileSizeExFn_x0017CBA8 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0017CBA8 opt_fn2;
+} CvFsVtbl_x0017CBA8;
+typedef struct CvFsHandle_x0017CBA8 {
+    CvFsVtbl_x0017CBA8 *vtbl;
+    int fd;
+} CvFsHandle_x0017CBA8;
+extern CvFsVtbl_x0017CBA8 *addDevice_x0017CBA8(char *devname, CvFsVtbl_x0017CBA8 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0017CBA8 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0017CBA8 *sj;
+    CvFsHandle_x0017CBA8 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0017CBA8 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0017CBA8;
+extern void ADXSTM_EntryEosFunc_x0017CBA8(AdxStmObj_x0017CBA8 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+extern void qsort_x0017CBA8(void *, size_t_x0017CBA8, size_t_x0017CBA8, int (*)(const void *, const void *)) __asm__("qsort");
+int func_0017CBA8_x0017CBA8(MpvHn_x0017CBA8 *mpv, SfdSjChunk_x0017CBA8 *buf) __asm__("func_0017CBA8");
+/* mpvhdec_GetCodec: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvhdr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017CBA8_x0017CBA8(MpvHn_x0017CBA8 *mpv, SfdSjChunk_x0017CBA8 *buf) {
+    char *p;
+    int kind;
+    if (mpv->strmType != 0) {
+        return mpv->strmType;
+    }
+    p = MPV_SearchDelim_x0017CBA8(buf->data, buf->len, 64);
+    if (p == 0) {
+        return mpv->strmType;
+    }
+    p += 4;
+    p = MPV_SearchDelim_x0017CBA8(p, buf->len - (p - buf->data), -1);
+    if (p == 0) {
+        return mpv->strmType;
+    }
+    kind = MPV_CheckDelim_x0017CBA8((unsigned char *)p);
+    if (kind & 0x10) {
+        mpv->strmType = 2;
+    } else if (kind != 0) {
+        mpv->strmType = 1;
+    }
+    return mpv->strmType;
+}
+typedef struct SfdSj_x0017CC50 SfdSj_x0017CC50;
+typedef struct SfdSjChunk_x0017CC50 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017CC50;
+typedef struct SfdSjVtbl_x0017CC50 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017CC50 *sj);
+    int (*getUuid)(SfdSj_x0017CC50 *sj);
+    void (*reset)(SfdSj_x0017CC50 *sj);
+    void (*getChunk)(SfdSj_x0017CC50 *sj, int id, int n, SfdSjChunk_x0017CC50 *ck);
+    void (*ungetChunk)(SfdSj_x0017CC50 *sj, int id, SfdSjChunk_x0017CC50 *ck);
+    void (*putChunk)(SfdSj_x0017CC50 *sj, int id, SfdSjChunk_x0017CC50 *ck);
+    int (*getNumData)(SfdSj_x0017CC50 *sj, int id);
+} SfdSjVtbl_x0017CC50;
+struct SfdSj_x0017CC50 {
+    SfdSjVtbl_x0017CC50 *vtbl;
+};
+void SJ_SplitChunk_x0017CC50(SfdSjChunk_x0017CC50 *ck, int nbyte, SfdSjChunk_x0017CC50 *head, SfdSjChunk_x0017CC50 *rest) __asm__("func_0016F050");
+struct SfdSj_x0017CC50;
+typedef struct M2vErrInf_x0017CC50 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017CC50;
+typedef struct Mpeg2Ext_x0017CC50 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017CC50;
+typedef enum M2vFrameRate_x0017CC50 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017CC50 = 0
+} M2vFrameRate_x0017CC50;
+typedef enum M2vPicType_x0017CC50 {
+    M2V_PICTYPE_I_x0017CC50 = 1,
+    M2V_PICTYPE_P_x0017CC50 = 2,
+    M2V_PICTYPE_B_x0017CC50 = 3,
+    M2V_PICTYPE_D_x0017CC50 = 4
+} M2vPicType_x0017CC50;
+typedef enum M2vPicStruct_x0017CC50 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017CC50 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017CC50 = 2,
+    M2V_PICSTRUCT_FRAME_x0017CC50 = 3
+} M2vPicStruct_x0017CC50;
+typedef enum M2vPicAtrF64_x0017CC50 {
+    M2V_PICATR_F64_0_x0017CC50 = 0
+} M2vPicAtrF64_x0017CC50;
+typedef struct M2vPicAtr_x0017CC50 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017CC50 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017CC50 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017CC50 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017CC50 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017CC50;
+typedef void (*M2vUsrDatFn_x0017CC50)(void *obj, int level);
+typedef struct M2vUsrSj_x0017CC50 {
+    struct SfdSj_x0017CC50 *sj;
+    M2vUsrDatFn_x0017CC50 fn;
+    void *obj;
+} M2vUsrSj_x0017CC50;
+typedef struct M2vPicUsr_x0017CC50 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017CC50;
+typedef void (*M2vCondFn_x0017CC50)();
+typedef struct M2vObj_x0017CC50 {
+    int stat;
+    M2vErrInf_x0017CC50 err;
+    M2vCondFn_x0017CC50 cond[16];
+    M2vPicAtr_x0017CC50 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017CC50 usrsj[4];
+    M2vPicUsr_x0017CC50 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017CC50 ext;
+    char pad1656[8];
+} M2vObj_x0017CC50;
+extern void M2V_SetErrFunc_x0017CC50(M2vObj_x0017CC50 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017CC50 {
+    MPV_UDLVL_SEQ_x0017CC50 = 1,
+    MPV_UDLVL_GOP_x0017CC50 = 2,
+    MPV_UDLVL_PIC_x0017CC50 = 3
+} MpvUdLevel_x0017CC50;
+typedef struct MpvSeqInf_x0017CC50 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017CC50;
+typedef struct MpvMotionRange_x0017CC50 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017CC50;
+typedef struct MpvErrObj_x0017CC50 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017CC50;
+typedef struct MpvHn_x0017CC50 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017CC50 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017CC50 picInf;
+    MpvErrObj_x0017CC50 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017CC50 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017CC50 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017CC50 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017CC50 *lower;
+    MpvUdLevel_x0017CC50 usrDatLevel;
+    M2vUsrSj_x0017CC50 bufEnt[4];
+    M2vPicUsr_x0017CC50 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017CC50;
+extern void mpvhook_SetErrFunc_x0017CC50(M2vObj_x0017CC50 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+typedef unsigned int size_t_x0017CC50;
+typedef struct AdxPdObj_x0017CC50 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x0017CC50;
+typedef struct AdxDecPara_x0017CC50 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x0017CC50;
+struct Pl2Enc_x0017CC50;
+typedef struct AdxbObj_x0017CC50 AdxbObj_x0017CC50;
+typedef short *(*AdxbGetWrFunc_x0017CC50)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x0017CC50)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x0017CC50 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x0017CC50 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x0017CC50 dp;
+    AdxbGetWrFunc_x0017CC50 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x0017CC50 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x0017CC50 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+extern void ADXB_EntryDecFunc_x0017CC50(AdxbObj_x0017CC50 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+typedef struct AdxSjdObj_x0017CC50 {
+    signed char used;
+    signed char stat;
+    signed char maxnch;
+    signed char empty_end;
+    AdxbObj_x0017CC50 *adxb;
+    SfdSj_x0017CC50 *sji;
+    SfdSj_x0017CC50 *sjo[2];
+    SfdSjChunk_x0017CC50 cki;
+    SfdSjChunk_x0017CC50 cko[2];
+    int total_decsmpl;
+    int total_decdtlen;
+    int decpos;
+    int maxdecsmpl;
+    int dtrpsmpl;
+    int dtrpcnt;
+    int dtrpdtlen;
+    void (*dtrpfunc)(void *context);
+    void *dtrpobj;
+    void (*dfltfunc)(void *context, int ch, char *data, int len);
+    void *dfltobj;
+    char hdr[64];
+    int hdrlen;
+    int lnksw;
+    int fill;
+    int skip;
+} AdxSjdObj_x0017CC50;
+extern void ADXSJD_EntryFltFunc_x0017CC50(AdxSjdObj_x0017CC50 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x0017CC50(AdxSjdObj_x0017CC50 *sjd, void (*func)(void *obj), void *obj) __asm__("ADXSJD_EntryTrapFunc");
+typedef void (*CvFsErrFn_x0017CC50)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0017CC50)(CvFsErrFn_x0017CC50 func, void *obj);
+typedef int (*CvFsPathFn_x0017CC50)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0017CC50)(void);
+typedef int (*CvFsOpenFn_x0017CC50)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0017CC50)(int fd);
+typedef int (*CvFsFdIntFn_x0017CC50)(int fd);
+typedef int (*CvFsSeekFn_x0017CC50)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0017CC50)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0017CC50)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0017CC50)(void);
+typedef int (*CvFsLoadDirInfoFn_x0017CC50)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0017CC50)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0017CC50)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0017CC50 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0017CC50 entry_err_func;
+    CvFsPathFn_x0017CC50 get_file_size;
+    CvFsGetFreeSizeFn_x0017CC50 get_free_size;
+    CvFsOpenFn_x0017CC50 open;
+    CvFsFdFn_x0017CC50 close;
+    CvFsSeekFn_x0017CC50 seek;
+    CvFsFdIntFn_x0017CC50 tell;
+    CvFsXferFn_x0017CC50 req_rd;
+    CvFsXferFn_x0017CC50 req_wr;
+    CvFsFdFn_x0017CC50 stop_tr;
+    CvFsFdIntFn_x0017CC50 get_stat;
+    CvFsFdIntFn_x0017CC50 get_sct_len;
+    CvFsSetSctLenFn_x0017CC50 set_sct_len;
+    CvFsFdIntFn_x0017CC50 get_num_tr;
+    CvFsPathFn_x0017CC50 change_dir;
+    CvFsPathFn_x0017CC50 is_exist_file;
+    CvFsGetNumFilesFn_x0017CC50 get_num_files;
+    CvFsLoadDirInfoFn_x0017CC50 load_dir_info;
+    CvFsFdIntFn_x0017CC50 get_max_byte_rate;
+    CvFsPathFn_x0017CC50 make_dir;
+    CvFsPathFn_x0017CC50 remove_dir;
+    CvFsPathFn_x0017CC50 delete_file;
+    CvFsGetFileSizeExFn_x0017CC50 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0017CC50 opt_fn2;
+} CvFsVtbl_x0017CC50;
+typedef struct CvFsHandle_x0017CC50 {
+    CvFsVtbl_x0017CC50 *vtbl;
+    int fd;
+} CvFsHandle_x0017CC50;
+extern CvFsVtbl_x0017CC50 *addDevice_x0017CC50(char *devname, CvFsVtbl_x0017CC50 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0017CC50 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0017CC50 *sj;
+    CvFsHandle_x0017CC50 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0017CC50 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0017CC50;
+extern void ADXSTM_EntryEosFunc_x0017CC50(AdxStmObj_x0017CC50 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+extern void qsort_x0017CC50(void *, size_t_x0017CC50, size_t_x0017CC50, int (*)(const void *, const void *)) __asm__("qsort");
+int func_0017CC50_x0017CC50(MpvHn_x0017CC50 *mpv, SfdSj_x0017CC50 *sj) __asm__("func_0017CC50");
+/* mpv_DecSeqHdr: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvhdr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017CC50_x0017CC50(MpvHn_x0017CC50 *mpv, SfdSj_x0017CC50 *sj) {
+    M2vPicAtr_x0017CC50 *inf = &mpv->picInf;
+    SfdSjChunk_x0017CC50 *ck = &mpv->chunk;
+    SfdSjChunk_x0017CC50 rest;
+    unsigned int cur, nxt;
+    unsigned int val;
+    int bit;
+    char *rp;
+    char *end;
+    int i;
+    mpv->usrDatLevel = MPV_UDLVL_SEQ_x0017CC50;
+    inf->shc_count++;
+    sj->vtbl->getChunk(sj, 1, 0x7FFFFFFF, ck);
+    { (rp) = (char *)((int)(ck->data) & ~3); (bit) = ((char *)(ck->data) - (rp)) << 3; { (cur) = *(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; }; (cur) <<= (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) != 0) { (val) = (cur) | ((nxt) >> (32 - (bit))); (cur) = (nxt) << (bit); } else { (val) = (cur); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) >= 32 - (12)) { (bit) -= 32 - (12); if ((bit) != 0) { (cur) |= (nxt) >> ((12) - (bit)); (inf->horizontal_size) = (cur) >> (32 - (12)); (cur) = (nxt) << (bit); } else { (inf->horizontal_size) = (cur) >> (32 - (12)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (inf->horizontal_size) = (cur) >> (32 - (12)); (bit) += (12); (cur) <<= (12); } };
+    { if ((bit) >= 32 - (12)) { (bit) -= 32 - (12); if ((bit) != 0) { (cur) |= (nxt) >> ((12) - (bit)); (inf->vertical_size) = (cur) >> (32 - (12)); (cur) = (nxt) << (bit); } else { (inf->vertical_size) = (cur) >> (32 - (12)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (inf->vertical_size) = (cur) >> (32 - (12)); (bit) += (12); (cur) <<= (12); } };
+    { if ((bit) >= 32 - (4)) { (bit) -= 32 - (4); if ((bit) != 0) { (cur) |= (nxt) >> ((4) - (bit)); (mpv->pelAspectRatio) = (cur) >> (32 - (4)); (cur) = (nxt) << (bit); } else { (mpv->pelAspectRatio) = (cur) >> (32 - (4)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (mpv->pelAspectRatio) = (cur) >> (32 - (4)); (bit) += (4); (cur) <<= (4); } };
+    { if ((bit) >= 32 - (4)) { (bit) -= 32 - (4); if ((bit) != 0) { (cur) |= (nxt) >> ((4) - (bit)); (val) = (cur) >> (32 - (4)); (cur) = (nxt) << (bit); } else { (val) = (cur) >> (32 - (4)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (val) = (cur) >> (32 - (4)); (bit) += (4); (cur) <<= (4); } };
+    inf->frame_rate_code = val;
+    { if ((bit) >= 32 - (18)) { (bit) -= 32 - (18); if ((bit) != 0) { (cur) |= (nxt) >> ((18) - (bit)); (mpv->bitRate) = (cur) >> (32 - (18)); (cur) = (nxt) << (bit); } else { (mpv->bitRate) = (cur) >> (32 - (18)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (mpv->bitRate) = (cur) >> (32 - (18)); (bit) += (18); (cur) <<= (18); } };
+    { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+    { if ((bit) >= 32 - (10)) { (bit) -= 32 - (10); if ((bit) != 0) { (cur) |= (nxt) >> ((10) - (bit)); (mpv->vbvBufferSize) = (cur) >> (32 - (10)); (cur) = (nxt) << (bit); } else { (mpv->vbvBufferSize) = (cur) >> (32 - (10)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (mpv->vbvBufferSize) = (cur) >> (32 - (10)); (bit) += (10); (cur) <<= (10); } };
+    { (mpv->constrainedParams) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    { (val) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    if (val != 0) {
+        for (i = 0; i < 64; i++) {
+            { if ((bit) >= 32 - (8)) { (bit) -= 32 - (8); if ((bit) != 0) { (cur) |= (nxt) >> ((8) - (bit)); (val) = (cur) >> (32 - (8)); (cur) = (nxt) << (bit); } else { (val) = (cur) >> (32 - (8)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (val) = (cur) >> (32 - (8)); (bit) += (8); (cur) <<= (8); } };
+        }
+    }
+    { (val) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    if (val != 0) {
+        for (i = 0; i < 64; i++) {
+            { if ((bit) >= 32 - (8)) { (bit) -= 32 - (8); if ((bit) != 0) { (cur) |= (nxt) >> ((8) - (bit)); (val) = (cur) >> (32 - (8)); (cur) = (nxt) << (bit); } else { (val) = (cur) >> (32 - (8)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (val) = (cur) >> (32 - (8)); (bit) += (8); (cur) <<= (8); } };
+        }
+    }
+    inf->mb_width = (inf->horizontal_size + 15) >> 4;
+    inf->mb_height = (inf->vertical_size + 15) >> 4;
+    mpv->lastMbAddr = inf->mb_height * inf->mb_width - 1;
+    inf->bit_rate = mpv->bitRate;
+    inf->vbv_buffer_size = mpv->vbvBufferSize;
+    inf->aspect_ratio_information = mpv->pelAspectRatio;
+    inf->constrained_parameters_flag = mpv->constrainedParams;
+    end = rp + ((bit + 7) >> 3);
+    end -= 8;
+    SJ_SplitChunk_x0017CC50(ck, end - mpv->chunk.data, ck, &rest);
+    sj->vtbl->putChunk(sj, 0, ck);
+    sj->vtbl->ungetChunk(sj, 1, &rest);
+    return 0;
+}
+typedef struct SfdSj_x0017D308 SfdSj_x0017D308;
+typedef struct SfdSjChunk_x0017D308 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017D308;
+typedef struct SfdSjVtbl_x0017D308 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017D308 *sj);
+    int (*getUuid)(SfdSj_x0017D308 *sj);
+    void (*reset)(SfdSj_x0017D308 *sj);
+    void (*getChunk)(SfdSj_x0017D308 *sj, int id, int n, SfdSjChunk_x0017D308 *ck);
+    void (*ungetChunk)(SfdSj_x0017D308 *sj, int id, SfdSjChunk_x0017D308 *ck);
+    void (*putChunk)(SfdSj_x0017D308 *sj, int id, SfdSjChunk_x0017D308 *ck);
+    int (*getNumData)(SfdSj_x0017D308 *sj, int id);
+} SfdSjVtbl_x0017D308;
+struct SfdSj_x0017D308 {
+    SfdSjVtbl_x0017D308 *vtbl;
+};
+void SJ_SplitChunk_x0017D308(SfdSjChunk_x0017D308 *ck, int nbyte, SfdSjChunk_x0017D308 *head, SfdSjChunk_x0017D308 *rest) __asm__("func_0016F050");
+struct SfdSj_x0017D308;
+typedef struct M2vErrInf_x0017D308 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017D308;
+typedef struct Mpeg2Ext_x0017D308 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017D308;
+typedef enum M2vFrameRate_x0017D308 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017D308 = 0
+} M2vFrameRate_x0017D308;
+typedef enum M2vPicType_x0017D308 {
+    M2V_PICTYPE_I_x0017D308 = 1,
+    M2V_PICTYPE_P_x0017D308 = 2,
+    M2V_PICTYPE_B_x0017D308 = 3,
+    M2V_PICTYPE_D_x0017D308 = 4
+} M2vPicType_x0017D308;
+typedef enum M2vPicStruct_x0017D308 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017D308 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017D308 = 2,
+    M2V_PICSTRUCT_FRAME_x0017D308 = 3
+} M2vPicStruct_x0017D308;
+typedef enum M2vPicAtrF64_x0017D308 {
+    M2V_PICATR_F64_0_x0017D308 = 0
+} M2vPicAtrF64_x0017D308;
+typedef struct M2vPicAtr_x0017D308 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017D308 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017D308 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017D308 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017D308 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017D308;
+typedef void (*M2vUsrDatFn_x0017D308)(void *obj, int level);
+typedef struct M2vUsrSj_x0017D308 {
+    struct SfdSj_x0017D308 *sj;
+    M2vUsrDatFn_x0017D308 fn;
+    void *obj;
+} M2vUsrSj_x0017D308;
+typedef struct M2vPicUsr_x0017D308 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017D308;
+typedef void (*M2vCondFn_x0017D308)();
+typedef struct M2vObj_x0017D308 {
+    int stat;
+    M2vErrInf_x0017D308 err;
+    M2vCondFn_x0017D308 cond[16];
+    M2vPicAtr_x0017D308 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017D308 usrsj[4];
+    M2vPicUsr_x0017D308 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017D308 ext;
+    char pad1656[8];
+} M2vObj_x0017D308;
+extern void M2V_SetErrFunc_x0017D308(M2vObj_x0017D308 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017D308 {
+    MPV_UDLVL_SEQ_x0017D308 = 1,
+    MPV_UDLVL_GOP_x0017D308 = 2,
+    MPV_UDLVL_PIC_x0017D308 = 3
+} MpvUdLevel_x0017D308;
+typedef struct MpvSeqInf_x0017D308 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017D308;
+typedef struct MpvMotionRange_x0017D308 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017D308;
+typedef struct MpvErrObj_x0017D308 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017D308;
+typedef struct MpvHn_x0017D308 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017D308 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017D308 picInf;
+    MpvErrObj_x0017D308 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017D308 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017D308 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017D308 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017D308 *lower;
+    MpvUdLevel_x0017D308 usrDatLevel;
+    M2vUsrSj_x0017D308 bufEnt[4];
+    M2vPicUsr_x0017D308 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017D308;
+extern void mpvhook_SetErrFunc_x0017D308(M2vObj_x0017D308 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+typedef unsigned int size_t_x0017D308;
+typedef struct AdxPdObj_x0017D308 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x0017D308;
+typedef struct AdxDecPara_x0017D308 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x0017D308;
+struct Pl2Enc_x0017D308;
+typedef struct AdxbObj_x0017D308 AdxbObj_x0017D308;
+typedef short *(*AdxbGetWrFunc_x0017D308)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x0017D308)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x0017D308 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x0017D308 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x0017D308 dp;
+    AdxbGetWrFunc_x0017D308 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x0017D308 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x0017D308 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+extern void ADXB_EntryDecFunc_x0017D308(AdxbObj_x0017D308 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+typedef struct AdxSjdObj_x0017D308 {
+    signed char used;
+    signed char stat;
+    signed char maxnch;
+    signed char empty_end;
+    AdxbObj_x0017D308 *adxb;
+    SfdSj_x0017D308 *sji;
+    SfdSj_x0017D308 *sjo[2];
+    SfdSjChunk_x0017D308 cki;
+    SfdSjChunk_x0017D308 cko[2];
+    int total_decsmpl;
+    int total_decdtlen;
+    int decpos;
+    int maxdecsmpl;
+    int dtrpsmpl;
+    int dtrpcnt;
+    int dtrpdtlen;
+    void (*dtrpfunc)(void *context);
+    void *dtrpobj;
+    void (*dfltfunc)(void *context, int ch, char *data, int len);
+    void *dfltobj;
+    char hdr[64];
+    int hdrlen;
+    int lnksw;
+    int fill;
+    int skip;
+} AdxSjdObj_x0017D308;
+extern void ADXSJD_EntryFltFunc_x0017D308(AdxSjdObj_x0017D308 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x0017D308(AdxSjdObj_x0017D308 *sjd, void (*func)(void *obj), void *obj) __asm__("ADXSJD_EntryTrapFunc");
+typedef void (*CvFsErrFn_x0017D308)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0017D308)(CvFsErrFn_x0017D308 func, void *obj);
+typedef int (*CvFsPathFn_x0017D308)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0017D308)(void);
+typedef int (*CvFsOpenFn_x0017D308)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0017D308)(int fd);
+typedef int (*CvFsFdIntFn_x0017D308)(int fd);
+typedef int (*CvFsSeekFn_x0017D308)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0017D308)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0017D308)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0017D308)(void);
+typedef int (*CvFsLoadDirInfoFn_x0017D308)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0017D308)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0017D308)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0017D308 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0017D308 entry_err_func;
+    CvFsPathFn_x0017D308 get_file_size;
+    CvFsGetFreeSizeFn_x0017D308 get_free_size;
+    CvFsOpenFn_x0017D308 open;
+    CvFsFdFn_x0017D308 close;
+    CvFsSeekFn_x0017D308 seek;
+    CvFsFdIntFn_x0017D308 tell;
+    CvFsXferFn_x0017D308 req_rd;
+    CvFsXferFn_x0017D308 req_wr;
+    CvFsFdFn_x0017D308 stop_tr;
+    CvFsFdIntFn_x0017D308 get_stat;
+    CvFsFdIntFn_x0017D308 get_sct_len;
+    CvFsSetSctLenFn_x0017D308 set_sct_len;
+    CvFsFdIntFn_x0017D308 get_num_tr;
+    CvFsPathFn_x0017D308 change_dir;
+    CvFsPathFn_x0017D308 is_exist_file;
+    CvFsGetNumFilesFn_x0017D308 get_num_files;
+    CvFsLoadDirInfoFn_x0017D308 load_dir_info;
+    CvFsFdIntFn_x0017D308 get_max_byte_rate;
+    CvFsPathFn_x0017D308 make_dir;
+    CvFsPathFn_x0017D308 remove_dir;
+    CvFsPathFn_x0017D308 delete_file;
+    CvFsGetFileSizeExFn_x0017D308 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0017D308 opt_fn2;
+} CvFsVtbl_x0017D308;
+typedef struct CvFsHandle_x0017D308 {
+    CvFsVtbl_x0017D308 *vtbl;
+    int fd;
+} CvFsHandle_x0017D308;
+extern CvFsVtbl_x0017D308 *addDevice_x0017D308(char *devname, CvFsVtbl_x0017D308 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0017D308 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0017D308 *sj;
+    CvFsHandle_x0017D308 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0017D308 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0017D308;
+extern void ADXSTM_EntryEosFunc_x0017D308(AdxStmObj_x0017D308 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+extern void qsort_x0017D308(void *, size_t_x0017D308, size_t_x0017D308, int (*)(const void *, const void *)) __asm__("qsort");
+int func_0017D308_x0017D308(MpvHn_x0017D308 *mpv, SfdSj_x0017D308 *sj) __asm__("func_0017D308");
+/* mpvhdec_DecGscSj: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvhdr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017D308_x0017D308(MpvHn_x0017D308 *mpv, SfdSj_x0017D308 *sj) {
+    M2vPicAtr_x0017D308 *inf = &mpv->picInf;
+    SfdSjChunk_x0017D308 *ck = &mpv->chunk;
+    SfdSjChunk_x0017D308 rest;
+    unsigned int cur, nxt;
+    unsigned int val;
+    int bit;
+    char *rp;
+    char *end;
+    mpv->usrDatLevel = MPV_UDLVL_GOP_x0017D308;
+    inf->gsc_count++;
+    sj->vtbl->getChunk(sj, 1, 0x7FFFFFFF, ck);
+    { (rp) = (char *)((int)(ck->data) & ~3); (bit) = ((char *)(ck->data) - (rp)) << 3; { (cur) = *(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; }; (cur) <<= (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) != 0) { (val) = (cur) | ((nxt) >> (32 - (bit))); (cur) = (nxt) << (bit); } else { (val) = (cur); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) >= 32 - (25)) { (bit) -= 32 - (25); if ((bit) != 0) { (cur) |= (nxt) >> ((25) - (bit)); (val) = (cur) >> (32 - (25)); (cur) = (nxt) << (bit); } else { (val) = (cur) >> (32 - (25)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (val) = (cur) >> (32 - (25)); (bit) += (25); (cur) <<= (25); } };
+    inf->time_code_pictures = val & 0x3F;
+    val >>= 6;
+    inf->time_code_seconds = val & 0x3F;
+    val >>= 7;
+    inf->time_code_minutes = val & 0x3F;
+    val >>= 6;
+    inf->time_code_hours = val & 0x1F;
+    inf->drop_frame_flag = val >> 5;
+    { (mpv->closedGop) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    { (mpv->brokenLink) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+    end = rp + ((bit + 7) >> 3) - 8;
+    SJ_SplitChunk_x0017D308(ck, end - mpv->chunk.data, ck, &rest);
+    sj->vtbl->putChunk(sj, 0, ck);
+    sj->vtbl->ungetChunk(sj, 1, &rest);
+    return 0;
+}
+typedef struct SfdSj_x0017D578 SfdSj_x0017D578;
+typedef struct SfdSjChunk_x0017D578 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017D578;
+typedef struct SfdSjVtbl_x0017D578 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017D578 *sj);
+    int (*getUuid)(SfdSj_x0017D578 *sj);
+    void (*reset)(SfdSj_x0017D578 *sj);
+    void (*getChunk)(SfdSj_x0017D578 *sj, int id, int n, SfdSjChunk_x0017D578 *ck);
+    void (*ungetChunk)(SfdSj_x0017D578 *sj, int id, SfdSjChunk_x0017D578 *ck);
+    void (*putChunk)(SfdSj_x0017D578 *sj, int id, SfdSjChunk_x0017D578 *ck);
+    int (*getNumData)(SfdSj_x0017D578 *sj, int id);
+} SfdSjVtbl_x0017D578;
+struct SfdSj_x0017D578 {
+    SfdSjVtbl_x0017D578 *vtbl;
+};
+void SJ_SplitChunk_x0017D578(SfdSjChunk_x0017D578 *ck, int nbyte, SfdSjChunk_x0017D578 *head, SfdSjChunk_x0017D578 *rest) __asm__("func_0016F050");
+struct SfdSj_x0017D578;
+typedef struct M2vErrInf_x0017D578 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017D578;
+typedef struct Mpeg2Ext_x0017D578 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017D578;
+typedef enum M2vFrameRate_x0017D578 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017D578 = 0
+} M2vFrameRate_x0017D578;
+typedef enum M2vPicType_x0017D578 {
+    M2V_PICTYPE_I_x0017D578 = 1,
+    M2V_PICTYPE_P_x0017D578 = 2,
+    M2V_PICTYPE_B_x0017D578 = 3,
+    M2V_PICTYPE_D_x0017D578 = 4
+} M2vPicType_x0017D578;
+typedef enum M2vPicStruct_x0017D578 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017D578 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017D578 = 2,
+    M2V_PICSTRUCT_FRAME_x0017D578 = 3
+} M2vPicStruct_x0017D578;
+typedef enum M2vPicAtrF64_x0017D578 {
+    M2V_PICATR_F64_0_x0017D578 = 0
+} M2vPicAtrF64_x0017D578;
+typedef struct M2vPicAtr_x0017D578 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017D578 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017D578 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017D578 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017D578 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017D578;
+typedef void (*M2vUsrDatFn_x0017D578)(void *obj, int level);
+typedef struct M2vUsrSj_x0017D578 {
+    struct SfdSj_x0017D578 *sj;
+    M2vUsrDatFn_x0017D578 fn;
+    void *obj;
+} M2vUsrSj_x0017D578;
+typedef struct M2vPicUsr_x0017D578 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017D578;
+typedef void (*M2vCondFn_x0017D578)();
+typedef struct M2vObj_x0017D578 {
+    int stat;
+    M2vErrInf_x0017D578 err;
+    M2vCondFn_x0017D578 cond[16];
+    M2vPicAtr_x0017D578 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017D578 usrsj[4];
+    M2vPicUsr_x0017D578 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017D578 ext;
+    char pad1656[8];
+} M2vObj_x0017D578;
+extern void M2V_SetErrFunc_x0017D578(M2vObj_x0017D578 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017D578 {
+    MPV_UDLVL_SEQ_x0017D578 = 1,
+    MPV_UDLVL_GOP_x0017D578 = 2,
+    MPV_UDLVL_PIC_x0017D578 = 3
+} MpvUdLevel_x0017D578;
+typedef struct MpvSeqInf_x0017D578 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017D578;
+typedef struct MpvMotionRange_x0017D578 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017D578;
+typedef struct MpvErrObj_x0017D578 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017D578;
+typedef struct MpvHn_x0017D578 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017D578 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017D578 picInf;
+    MpvErrObj_x0017D578 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017D578 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017D578 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017D578 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017D578 *lower;
+    MpvUdLevel_x0017D578 usrDatLevel;
+    M2vUsrSj_x0017D578 bufEnt[4];
+    M2vPicUsr_x0017D578 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017D578;
+extern void mpvhook_SetErrFunc_x0017D578(M2vObj_x0017D578 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+typedef unsigned int size_t_x0017D578;
+typedef struct AdxPdObj_x0017D578 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x0017D578;
+typedef struct AdxDecPara_x0017D578 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x0017D578;
+struct Pl2Enc_x0017D578;
+typedef struct AdxbObj_x0017D578 AdxbObj_x0017D578;
+typedef short *(*AdxbGetWrFunc_x0017D578)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x0017D578)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x0017D578 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x0017D578 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x0017D578 dp;
+    AdxbGetWrFunc_x0017D578 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x0017D578 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x0017D578 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+extern void ADXB_EntryDecFunc_x0017D578(AdxbObj_x0017D578 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+typedef struct AdxSjdObj_x0017D578 {
+    signed char used;
+    signed char stat;
+    signed char maxnch;
+    signed char empty_end;
+    AdxbObj_x0017D578 *adxb;
+    SfdSj_x0017D578 *sji;
+    SfdSj_x0017D578 *sjo[2];
+    SfdSjChunk_x0017D578 cki;
+    SfdSjChunk_x0017D578 cko[2];
+    int total_decsmpl;
+    int total_decdtlen;
+    int decpos;
+    int maxdecsmpl;
+    int dtrpsmpl;
+    int dtrpcnt;
+    int dtrpdtlen;
+    void (*dtrpfunc)(void *context);
+    void *dtrpobj;
+    void (*dfltfunc)(void *context, int ch, char *data, int len);
+    void *dfltobj;
+    char hdr[64];
+    int hdrlen;
+    int lnksw;
+    int fill;
+    int skip;
+} AdxSjdObj_x0017D578;
+extern void ADXSJD_EntryFltFunc_x0017D578(AdxSjdObj_x0017D578 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x0017D578(AdxSjdObj_x0017D578 *sjd, void (*func)(void *obj), void *obj) __asm__("ADXSJD_EntryTrapFunc");
+typedef void (*CvFsErrFn_x0017D578)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0017D578)(CvFsErrFn_x0017D578 func, void *obj);
+typedef int (*CvFsPathFn_x0017D578)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0017D578)(void);
+typedef int (*CvFsOpenFn_x0017D578)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0017D578)(int fd);
+typedef int (*CvFsFdIntFn_x0017D578)(int fd);
+typedef int (*CvFsSeekFn_x0017D578)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0017D578)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0017D578)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0017D578)(void);
+typedef int (*CvFsLoadDirInfoFn_x0017D578)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0017D578)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0017D578)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0017D578 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0017D578 entry_err_func;
+    CvFsPathFn_x0017D578 get_file_size;
+    CvFsGetFreeSizeFn_x0017D578 get_free_size;
+    CvFsOpenFn_x0017D578 open;
+    CvFsFdFn_x0017D578 close;
+    CvFsSeekFn_x0017D578 seek;
+    CvFsFdIntFn_x0017D578 tell;
+    CvFsXferFn_x0017D578 req_rd;
+    CvFsXferFn_x0017D578 req_wr;
+    CvFsFdFn_x0017D578 stop_tr;
+    CvFsFdIntFn_x0017D578 get_stat;
+    CvFsFdIntFn_x0017D578 get_sct_len;
+    CvFsSetSctLenFn_x0017D578 set_sct_len;
+    CvFsFdIntFn_x0017D578 get_num_tr;
+    CvFsPathFn_x0017D578 change_dir;
+    CvFsPathFn_x0017D578 is_exist_file;
+    CvFsGetNumFilesFn_x0017D578 get_num_files;
+    CvFsLoadDirInfoFn_x0017D578 load_dir_info;
+    CvFsFdIntFn_x0017D578 get_max_byte_rate;
+    CvFsPathFn_x0017D578 make_dir;
+    CvFsPathFn_x0017D578 remove_dir;
+    CvFsPathFn_x0017D578 delete_file;
+    CvFsGetFileSizeExFn_x0017D578 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0017D578 opt_fn2;
+} CvFsVtbl_x0017D578;
+typedef struct CvFsHandle_x0017D578 {
+    CvFsVtbl_x0017D578 *vtbl;
+    int fd;
+} CvFsHandle_x0017D578;
+extern CvFsVtbl_x0017D578 *addDevice_x0017D578(char *devname, CvFsVtbl_x0017D578 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0017D578 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0017D578 *sj;
+    CvFsHandle_x0017D578 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0017D578 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0017D578;
+extern void ADXSTM_EntryEosFunc_x0017D578(AdxStmObj_x0017D578 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+extern void qsort_x0017D578(void *, size_t_x0017D578, size_t_x0017D578, int (*)(const void *, const void *)) __asm__("qsort");
+int func_0017D578_x0017D578(MpvHn_x0017D578 *mpv, SfdSj_x0017D578 *sj) __asm__("func_0017D578");
+/* mpv_DecPicHdr: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvhdr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017D578_x0017D578(MpvHn_x0017D578 *mpv, SfdSj_x0017D578 *sj) {
+    M2vPicAtr_x0017D578 *inf = &mpv->picInf;
+    SfdSjChunk_x0017D578 *ck = &mpv->chunk;
+    SfdSjChunk_x0017D578 rest;
+    unsigned int cur, nxt;
+    unsigned int val;
+    int bit;
+    char *rp;
+    int type;
+    int rSize;
+    MpvMotionRange_x0017D578 *range;
+    char *q;
+    char *end;
+    mpv->usrDatLevel = MPV_UDLVL_PIC_x0017D578;
+    sj->vtbl->getChunk(sj, 1, 0x7FFFFFFF, ck);
+    { (rp) = (char *)((int)(ck->data) & ~3); (bit) = ((char *)(ck->data) - (rp)) << 3; { (cur) = *(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; (cur) <<= 8; (cur) |= (unsigned char)*(rp)++; }; (cur) <<= (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) != 0) { (val) = (cur) | ((nxt) >> (32 - (bit))); (cur) = (nxt) << (bit); } else { (val) = (cur); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; };
+    { if ((bit) >= 32 - (10)) { (bit) -= 32 - (10); if ((bit) != 0) { (cur) |= (nxt) >> ((10) - (bit)); (inf->temporal_reference) = (cur) >> (32 - (10)); (cur) = (nxt) << (bit); } else { (inf->temporal_reference) = (cur) >> (32 - (10)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (inf->temporal_reference) = (cur) >> (32 - (10)); (bit) += (10); (cur) <<= (10); } };
+    { if ((bit) >= 32 - (3)) { (bit) -= 32 - (3); if ((bit) != 0) { (cur) |= (nxt) >> ((3) - (bit)); (val) = (cur) >> (32 - (3)); (cur) = (nxt) << (bit); } else { (val) = (cur) >> (32 - (3)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (val) = (cur) >> (32 - (3)); (bit) += (3); (cur) <<= (3); } };
+    inf->picture_coding_type = val;
+    { if ((bit) >= 32 - (16)) { (bit) -= 32 - (16); if ((bit) != 0) { (cur) |= (nxt) >> ((16) - (bit)); (mpv->vbvDelay) = (cur) >> (32 - (16)); (cur) = (nxt) << (bit); } else { (mpv->vbvDelay) = (cur) >> (32 - (16)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (mpv->vbvDelay) = (cur) >> (32 - (16)); (bit) += (16); (cur) <<= (16); } };
+    type = inf->picture_coding_type;
+    if (type == 2 || type == 3) {
+        range = &mpv->fwd;
+        { (range->fullPel) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+        { if ((bit) >= 32 - (3)) { (bit) -= 32 - (3); if ((bit) != 0) { (cur) |= (nxt) >> ((3) - (bit)); (rSize) = (cur) >> (32 - (3)); (cur) = (nxt) << (bit); } else { (rSize) = (cur) >> (32 - (3)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (rSize) = (cur) >> (32 - (3)); (bit) += (3); (cur) <<= (3); } };
+        range->rSize = --rSize;
+        range->shift = 27 - rSize;
+        range->f = 1 << rSize;
+    }
+    if (type == 3) {
+        range = &mpv->bwd;
+        { (range->fullPel) = (cur) >> 31; if ((bit) == 31) { (cur) = (nxt); (bit) = 0; { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (bit) += 1; (cur) <<= 1; } };
+        { if ((bit) >= 32 - (3)) { (bit) -= 32 - (3); if ((bit) != 0) { (cur) |= (nxt) >> ((3) - (bit)); (rSize) = (cur) >> (32 - (3)); (cur) = (nxt) << (bit); } else { (rSize) = (cur) >> (32 - (3)); (cur) = (nxt); } { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (rSize) = (cur) >> (32 - (3)); (bit) += (3); (cur) <<= (3); } };
+        range->rSize = --rSize;
+        range->shift = 27 - rSize;
+        range->f = 1 << rSize;
+    }
+    mpv->f724 = mpv->f732;
+    for (;;) {
+        val = cur >> 31;
+        if (val == 0) {
+            { (bit) += (1); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (1); } };
+            break;
+        }
+        { (bit) += (9); if ((bit) >= 32) { (bit) -= 32; (cur) = (nxt) << (bit); { (nxt) = *(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; (nxt) <<= 8; (nxt) |= (unsigned char)*(rp)++; }; } else { (cur) <<= (9); } };
+        q = rp + ((bit + 7) >> 3) - 8;
+        if (mpv->chunk.len <= q - mpv->chunk.data) {
+            return -3;
+        }
+    }
+    end = rp + ((bit + 7) >> 3) - 8;
+    SJ_SplitChunk_x0017D578(ck, end - mpv->chunk.data, ck, &rest);
+    sj->vtbl->putChunk(sj, 0, ck);
+    sj->vtbl->ungetChunk(sj, 1, &rest);
+    return 0;
+}
 s32 func_0016F050_x0017DB18(s32, s32, s32, void *) __asm__("func_0016F050");
 s32 func_0017E040_x0017DB18(void **) __asm__("func_0017E040");
 s32 func_0017DB18_x0017DB18(u8 *arg0, u8 **arg1) __asm__("func_0017DB18");
@@ -1565,7 +6776,585 @@ s32 func_0017DB18_x0017DB18(u8 *arg0, u8 **arg1)
   func_0017E040_x0017DB18(arg1);
   return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DBD8);
+typedef struct SfdSj_x0017DBD8 SfdSj_x0017DBD8;
+typedef struct SfdSjChunk_x0017DBD8 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017DBD8;
+typedef struct SfdSjVtbl_x0017DBD8 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017DBD8 *sj);
+    int (*getUuid)(SfdSj_x0017DBD8 *sj);
+    void (*reset)(SfdSj_x0017DBD8 *sj);
+    void (*getChunk)(SfdSj_x0017DBD8 *sj, int id, int n, SfdSjChunk_x0017DBD8 *ck);
+    void (*ungetChunk)(SfdSj_x0017DBD8 *sj, int id, SfdSjChunk_x0017DBD8 *ck);
+    void (*putChunk)(SfdSj_x0017DBD8 *sj, int id, SfdSjChunk_x0017DBD8 *ck);
+    int (*getNumData)(SfdSj_x0017DBD8 *sj, int id);
+} SfdSjVtbl_x0017DBD8;
+struct SfdSj_x0017DBD8 {
+    SfdSjVtbl_x0017DBD8 *vtbl;
+};
+void SJ_SplitChunk_x0017DBD8(SfdSjChunk_x0017DBD8 *ck, int nbyte, SfdSjChunk_x0017DBD8 *head, SfdSjChunk_x0017DBD8 *rest) __asm__("func_0016F050");
+struct SfdSj_x0017DBD8;
+typedef struct M2vErrInf_x0017DBD8 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017DBD8;
+typedef struct Mpeg2Ext_x0017DBD8 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017DBD8;
+typedef enum M2vFrameRate_x0017DBD8 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017DBD8 = 0
+} M2vFrameRate_x0017DBD8;
+typedef enum M2vPicType_x0017DBD8 {
+    M2V_PICTYPE_I_x0017DBD8 = 1,
+    M2V_PICTYPE_P_x0017DBD8 = 2,
+    M2V_PICTYPE_B_x0017DBD8 = 3,
+    M2V_PICTYPE_D_x0017DBD8 = 4
+} M2vPicType_x0017DBD8;
+typedef enum M2vPicStruct_x0017DBD8 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017DBD8 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017DBD8 = 2,
+    M2V_PICSTRUCT_FRAME_x0017DBD8 = 3
+} M2vPicStruct_x0017DBD8;
+typedef enum M2vPicAtrF64_x0017DBD8 {
+    M2V_PICATR_F64_0_x0017DBD8 = 0
+} M2vPicAtrF64_x0017DBD8;
+typedef struct M2vPicAtr_x0017DBD8 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017DBD8 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017DBD8 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017DBD8 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017DBD8 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017DBD8;
+typedef void (*M2vUsrDatFn_x0017DBD8)(void *obj, int level);
+typedef struct M2vUsrSj_x0017DBD8 {
+    struct SfdSj_x0017DBD8 *sj;
+    M2vUsrDatFn_x0017DBD8 fn;
+    void *obj;
+} M2vUsrSj_x0017DBD8;
+typedef struct M2vPicUsr_x0017DBD8 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017DBD8;
+typedef void (*M2vCondFn_x0017DBD8)();
+typedef struct M2vObj_x0017DBD8 {
+    int stat;
+    M2vErrInf_x0017DBD8 err;
+    M2vCondFn_x0017DBD8 cond[16];
+    M2vPicAtr_x0017DBD8 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017DBD8 usrsj[4];
+    M2vPicUsr_x0017DBD8 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017DBD8 ext;
+    char pad1656[8];
+} M2vObj_x0017DBD8;
+extern void M2V_SetErrFunc_x0017DBD8(M2vObj_x0017DBD8 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017DBD8 {
+    MPV_UDLVL_SEQ_x0017DBD8 = 1,
+    MPV_UDLVL_GOP_x0017DBD8 = 2,
+    MPV_UDLVL_PIC_x0017DBD8 = 3
+} MpvUdLevel_x0017DBD8;
+typedef struct MpvSeqInf_x0017DBD8 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017DBD8;
+typedef struct MpvMotionRange_x0017DBD8 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017DBD8;
+typedef struct MpvErrObj_x0017DBD8 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017DBD8;
+typedef struct MpvHn_x0017DBD8 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017DBD8 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017DBD8 picInf;
+    MpvErrObj_x0017DBD8 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017DBD8 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017DBD8 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017DBD8 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017DBD8 *lower;
+    MpvUdLevel_x0017DBD8 usrDatLevel;
+    M2vUsrSj_x0017DBD8 bufEnt[4];
+    M2vPicUsr_x0017DBD8 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017DBD8;
+int MPV_GoNextDelimSj_x0017DBD8(SfdSj_x0017DBD8 *sj) __asm__("func_0017E040");
+extern void mpvhook_SetErrFunc_x0017DBD8(M2vObj_x0017DBD8 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+typedef unsigned int size_t_x0017DBD8;
+typedef struct AdxPdObj_x0017DBD8 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x0017DBD8;
+typedef struct AdxDecPara_x0017DBD8 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x0017DBD8;
+struct Pl2Enc_x0017DBD8;
+typedef struct AdxbObj_x0017DBD8 AdxbObj_x0017DBD8;
+typedef short *(*AdxbGetWrFunc_x0017DBD8)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x0017DBD8)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x0017DBD8 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x0017DBD8 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x0017DBD8 dp;
+    AdxbGetWrFunc_x0017DBD8 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x0017DBD8 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x0017DBD8 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+extern void ADXB_EntryDecFunc_x0017DBD8(AdxbObj_x0017DBD8 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+typedef struct AdxSjdObj_x0017DBD8 {
+    signed char used;
+    signed char stat;
+    signed char maxnch;
+    signed char empty_end;
+    AdxbObj_x0017DBD8 *adxb;
+    SfdSj_x0017DBD8 *sji;
+    SfdSj_x0017DBD8 *sjo[2];
+    SfdSjChunk_x0017DBD8 cki;
+    SfdSjChunk_x0017DBD8 cko[2];
+    int total_decsmpl;
+    int total_decdtlen;
+    int decpos;
+    int maxdecsmpl;
+    int dtrpsmpl;
+    int dtrpcnt;
+    int dtrpdtlen;
+    void (*dtrpfunc)(void *context);
+    void *dtrpobj;
+    void (*dfltfunc)(void *context, int ch, char *data, int len);
+    void *dfltobj;
+    char hdr[64];
+    int hdrlen;
+    int lnksw;
+    int fill;
+    int skip;
+} AdxSjdObj_x0017DBD8;
+extern void ADXSJD_EntryFltFunc_x0017DBD8(AdxSjdObj_x0017DBD8 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x0017DBD8(AdxSjdObj_x0017DBD8 *sjd, void (*func)(void *obj), void *obj) __asm__("ADXSJD_EntryTrapFunc");
+typedef void (*CvFsErrFn_x0017DBD8)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0017DBD8)(CvFsErrFn_x0017DBD8 func, void *obj);
+typedef int (*CvFsPathFn_x0017DBD8)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0017DBD8)(void);
+typedef int (*CvFsOpenFn_x0017DBD8)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0017DBD8)(int fd);
+typedef int (*CvFsFdIntFn_x0017DBD8)(int fd);
+typedef int (*CvFsSeekFn_x0017DBD8)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0017DBD8)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0017DBD8)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0017DBD8)(void);
+typedef int (*CvFsLoadDirInfoFn_x0017DBD8)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0017DBD8)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0017DBD8)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0017DBD8 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0017DBD8 entry_err_func;
+    CvFsPathFn_x0017DBD8 get_file_size;
+    CvFsGetFreeSizeFn_x0017DBD8 get_free_size;
+    CvFsOpenFn_x0017DBD8 open;
+    CvFsFdFn_x0017DBD8 close;
+    CvFsSeekFn_x0017DBD8 seek;
+    CvFsFdIntFn_x0017DBD8 tell;
+    CvFsXferFn_x0017DBD8 req_rd;
+    CvFsXferFn_x0017DBD8 req_wr;
+    CvFsFdFn_x0017DBD8 stop_tr;
+    CvFsFdIntFn_x0017DBD8 get_stat;
+    CvFsFdIntFn_x0017DBD8 get_sct_len;
+    CvFsSetSctLenFn_x0017DBD8 set_sct_len;
+    CvFsFdIntFn_x0017DBD8 get_num_tr;
+    CvFsPathFn_x0017DBD8 change_dir;
+    CvFsPathFn_x0017DBD8 is_exist_file;
+    CvFsGetNumFilesFn_x0017DBD8 get_num_files;
+    CvFsLoadDirInfoFn_x0017DBD8 load_dir_info;
+    CvFsFdIntFn_x0017DBD8 get_max_byte_rate;
+    CvFsPathFn_x0017DBD8 make_dir;
+    CvFsPathFn_x0017DBD8 remove_dir;
+    CvFsPathFn_x0017DBD8 delete_file;
+    CvFsGetFileSizeExFn_x0017DBD8 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0017DBD8 opt_fn2;
+} CvFsVtbl_x0017DBD8;
+typedef struct CvFsHandle_x0017DBD8 {
+    CvFsVtbl_x0017DBD8 *vtbl;
+    int fd;
+} CvFsHandle_x0017DBD8;
+extern CvFsVtbl_x0017DBD8 *addDevice_x0017DBD8(char *devname, CvFsVtbl_x0017DBD8 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0017DBD8 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0017DBD8 *sj;
+    CvFsHandle_x0017DBD8 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0017DBD8 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0017DBD8;
+extern void ADXSTM_EntryEosFunc_x0017DBD8(AdxStmObj_x0017DBD8 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+extern void qsort_x0017DBD8(void *, size_t_x0017DBD8, size_t_x0017DBD8, int (*)(const void *, const void *)) __asm__("qsort");
+int mpvhdec_AnalyUd_x0017DBD8(MpvHn_x0017DBD8 *mpv, char *data, int len) __asm__("func_0017DCC8");
+int mpvhdec_AnalyUd_x0017DBD8(MpvHn_x0017DBD8 *mpv, char *data, int len) __asm__("func_0017DCC8");
+int MPV_GoNextDelimSj_x0017DBD8(SfdSj_x0017DBD8 *sj) __asm__("func_0017E040");
+int func_0017DBD8_x0017DBD8(MpvHn_x0017DBD8 *mpv, SfdSj_x0017DBD8 *sj, int type) __asm__("func_0017DBD8");
+/* mpvhdec_DecUdscSj: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvhdr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017DBD8_x0017DBD8(MpvHn_x0017DBD8 *mpv, SfdSj_x0017DBD8 *sj, int type) {
+    SfdSjChunk_x0017DBD8 *ck = &mpv->chunk;
+    SfdSjChunk_x0017DBD8 rest;
+    char *base;
+    int bits;
+    int ret;
+    sj->vtbl->getChunk(sj, 1, 0x7FFFFFFF, ck);
+    base = (char *)((int)ck->data & ~3);
+    bits = (ck->data - base) * 8;
+    ret = mpvhdec_AnalyUd_x0017DBD8(mpv, ck->data, mpv->chunk.len);
+    base += 8;
+    base += bits >> 3;
+    base -= 4;
+    SJ_SplitChunk_x0017DBD8(ck, base - ck->data, ck, &rest);
+    sj->vtbl->putChunk(sj, 0, ck);
+    sj->vtbl->ungetChunk(sj, 1, &rest);
+    MPV_GoNextDelimSj_x0017DBD8(sj);
+    return ret;
+}
 typedef unsigned char Uint8_x0017DCC8;
 typedef signed char Sint8_x0017DCC8;
 typedef unsigned short Uint16_x0017DCC8;
@@ -1850,8 +7639,607 @@ Sint32_x0017DCC8 func_0017DCC8_x0017DCC8(MPV_x0017DCC8 mpv, Uint8_x0017DCC8 *buf
         }
         return ret;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DE90);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017DF98);
+typedef struct SfdSj_x0017DE90 SfdSj_x0017DE90;
+typedef struct SfdSjChunk_x0017DE90 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017DE90;
+typedef struct SfdSjVtbl_x0017DE90 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017DE90 *sj);
+    int (*getUuid)(SfdSj_x0017DE90 *sj);
+    void (*reset)(SfdSj_x0017DE90 *sj);
+    void (*getChunk)(SfdSj_x0017DE90 *sj, int id, int n, SfdSjChunk_x0017DE90 *ck);
+    void (*ungetChunk)(SfdSj_x0017DE90 *sj, int id, SfdSjChunk_x0017DE90 *ck);
+    void (*putChunk)(SfdSj_x0017DE90 *sj, int id, SfdSjChunk_x0017DE90 *ck);
+    int (*getNumData)(SfdSj_x0017DE90 *sj, int id);
+} SfdSjVtbl_x0017DE90;
+struct SfdSj_x0017DE90 {
+    SfdSjVtbl_x0017DE90 *vtbl;
+};
+struct SfdSj_x0017DE90;
+typedef struct M2vErrInf_x0017DE90 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017DE90;
+typedef struct Mpeg2Ext_x0017DE90 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017DE90;
+typedef enum M2vFrameRate_x0017DE90 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017DE90 = 0
+} M2vFrameRate_x0017DE90;
+typedef enum M2vPicType_x0017DE90 {
+    M2V_PICTYPE_I_x0017DE90 = 1,
+    M2V_PICTYPE_P_x0017DE90 = 2,
+    M2V_PICTYPE_B_x0017DE90 = 3,
+    M2V_PICTYPE_D_x0017DE90 = 4
+} M2vPicType_x0017DE90;
+typedef enum M2vPicStruct_x0017DE90 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017DE90 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017DE90 = 2,
+    M2V_PICSTRUCT_FRAME_x0017DE90 = 3
+} M2vPicStruct_x0017DE90;
+typedef enum M2vPicAtrF64_x0017DE90 {
+    M2V_PICATR_F64_0_x0017DE90 = 0
+} M2vPicAtrF64_x0017DE90;
+typedef struct M2vPicAtr_x0017DE90 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017DE90 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017DE90 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017DE90 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017DE90 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017DE90;
+typedef void (*M2vUsrDatFn_x0017DE90)(void *obj, int level);
+typedef struct M2vUsrSj_x0017DE90 {
+    struct SfdSj_x0017DE90 *sj;
+    M2vUsrDatFn_x0017DE90 fn;
+    void *obj;
+} M2vUsrSj_x0017DE90;
+typedef struct M2vPicUsr_x0017DE90 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017DE90;
+typedef void (*M2vCondFn_x0017DE90)();
+typedef struct M2vObj_x0017DE90 {
+    int stat;
+    M2vErrInf_x0017DE90 err;
+    M2vCondFn_x0017DE90 cond[16];
+    M2vPicAtr_x0017DE90 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017DE90 usrsj[4];
+    M2vPicUsr_x0017DE90 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017DE90 ext;
+    char pad1656[8];
+} M2vObj_x0017DE90;
+extern void M2V_SetErrFunc_x0017DE90(M2vObj_x0017DE90 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017DE90 {
+    MPV_UDLVL_SEQ_x0017DE90 = 1,
+    MPV_UDLVL_GOP_x0017DE90 = 2,
+    MPV_UDLVL_PIC_x0017DE90 = 3
+} MpvUdLevel_x0017DE90;
+typedef struct MpvSeqInf_x0017DE90 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017DE90;
+typedef struct MpvMotionRange_x0017DE90 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017DE90;
+typedef struct MpvErrObj_x0017DE90 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017DE90;
+typedef struct MpvHn_x0017DE90 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017DE90 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017DE90 picInf;
+    MpvErrObj_x0017DE90 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017DE90 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017DE90 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017DE90 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017DE90 *lower;
+    MpvUdLevel_x0017DE90 usrDatLevel;
+    M2vUsrSj_x0017DE90 bufEnt[4];
+    M2vPicUsr_x0017DE90 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017DE90;
+int MPV_CheckDelim_x0017DE90(const unsigned char *p) __asm__("func_0017B420");
+extern void mpvhook_SetErrFunc_x0017DE90(M2vObj_x0017DE90 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+typedef unsigned int size_t_x0017DE90;
+int strncmp_x0017DE90(const char *, const char *, size_t_x0017DE90) __asm__("func_00127E88");
+typedef struct AdxPdObj_x0017DE90 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x0017DE90;
+typedef struct AdxDecPara_x0017DE90 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x0017DE90;
+struct Pl2Enc_x0017DE90;
+typedef struct AdxbObj_x0017DE90 AdxbObj_x0017DE90;
+typedef short *(*AdxbGetWrFunc_x0017DE90)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x0017DE90)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x0017DE90 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x0017DE90 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x0017DE90 dp;
+    AdxbGetWrFunc_x0017DE90 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x0017DE90 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x0017DE90 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+extern void ADXB_EntryDecFunc_x0017DE90(AdxbObj_x0017DE90 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+typedef struct AdxSjdObj_x0017DE90 {
+    signed char used;
+    signed char stat;
+    signed char maxnch;
+    signed char empty_end;
+    AdxbObj_x0017DE90 *adxb;
+    SfdSj_x0017DE90 *sji;
+    SfdSj_x0017DE90 *sjo[2];
+    SfdSjChunk_x0017DE90 cki;
+    SfdSjChunk_x0017DE90 cko[2];
+    int total_decsmpl;
+    int total_decdtlen;
+    int decpos;
+    int maxdecsmpl;
+    int dtrpsmpl;
+    int dtrpcnt;
+    int dtrpdtlen;
+    void (*dtrpfunc)(void *context);
+    void *dtrpobj;
+    void (*dfltfunc)(void *context, int ch, char *data, int len);
+    void *dfltobj;
+    char hdr[64];
+    int hdrlen;
+    int lnksw;
+    int fill;
+    int skip;
+} AdxSjdObj_x0017DE90;
+extern void ADXSJD_EntryFltFunc_x0017DE90(AdxSjdObj_x0017DE90 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x0017DE90(AdxSjdObj_x0017DE90 *sjd, void (*func)(void *obj), void *obj) __asm__("ADXSJD_EntryTrapFunc");
+typedef void (*CvFsErrFn_x0017DE90)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0017DE90)(CvFsErrFn_x0017DE90 func, void *obj);
+typedef int (*CvFsPathFn_x0017DE90)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0017DE90)(void);
+typedef int (*CvFsOpenFn_x0017DE90)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0017DE90)(int fd);
+typedef int (*CvFsFdIntFn_x0017DE90)(int fd);
+typedef int (*CvFsSeekFn_x0017DE90)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0017DE90)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0017DE90)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0017DE90)(void);
+typedef int (*CvFsLoadDirInfoFn_x0017DE90)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0017DE90)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0017DE90)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0017DE90 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0017DE90 entry_err_func;
+    CvFsPathFn_x0017DE90 get_file_size;
+    CvFsGetFreeSizeFn_x0017DE90 get_free_size;
+    CvFsOpenFn_x0017DE90 open;
+    CvFsFdFn_x0017DE90 close;
+    CvFsSeekFn_x0017DE90 seek;
+    CvFsFdIntFn_x0017DE90 tell;
+    CvFsXferFn_x0017DE90 req_rd;
+    CvFsXferFn_x0017DE90 req_wr;
+    CvFsFdFn_x0017DE90 stop_tr;
+    CvFsFdIntFn_x0017DE90 get_stat;
+    CvFsFdIntFn_x0017DE90 get_sct_len;
+    CvFsSetSctLenFn_x0017DE90 set_sct_len;
+    CvFsFdIntFn_x0017DE90 get_num_tr;
+    CvFsPathFn_x0017DE90 change_dir;
+    CvFsPathFn_x0017DE90 is_exist_file;
+    CvFsGetNumFilesFn_x0017DE90 get_num_files;
+    CvFsLoadDirInfoFn_x0017DE90 load_dir_info;
+    CvFsFdIntFn_x0017DE90 get_max_byte_rate;
+    CvFsPathFn_x0017DE90 make_dir;
+    CvFsPathFn_x0017DE90 remove_dir;
+    CvFsPathFn_x0017DE90 delete_file;
+    CvFsGetFileSizeExFn_x0017DE90 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0017DE90 opt_fn2;
+} CvFsVtbl_x0017DE90;
+typedef struct CvFsHandle_x0017DE90 {
+    CvFsVtbl_x0017DE90 *vtbl;
+    int fd;
+} CvFsHandle_x0017DE90;
+extern CvFsVtbl_x0017DE90 *addDevice_x0017DE90(char *devname, CvFsVtbl_x0017DE90 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0017DE90 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0017DE90 *sj;
+    CvFsHandle_x0017DE90 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0017DE90 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0017DE90;
+extern void ADXSTM_EntryEosFunc_x0017DE90(AdxStmObj_x0017DE90 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+int atoi_x0017DE90(const char *) __asm__("func_001221D8");
+extern void qsort_x0017DE90(void *, size_t_x0017DE90, size_t_x0017DE90, int (*)(const void *, const void *)) __asm__("qsort");
+extern char mpv_tag_idcprec_x0017DE90[] __asm__("D_00465380");
+extern char mpv_tag_stccode_x0017DE90[] __asm__("D_00465388");
+int func_0017DE90_x0017DE90(MpvHn_x0017DE90 *mpv, char *buf, int size) __asm__("func_0017DE90");
+/* mpv_ScanUsrTags: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvhdr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017DE90_x0017DE90(MpvHn_x0017DE90 *mpv, char *buf, int size) {
+    int n = size - 4;
+    char *base = buf + 4;
+    int i;
+    char *p;
+    for (i = 0; i < n; ) {
+        p = base + i;
+        i++;
+        if (strncmp_x0017DE90(p, mpv_tag_idcprec_x0017DE90, 7) == 0)
+            mpv->idcPrec = atoi_x0017DE90(p + 16) != 0 ? 3 : 0;
+        if (strncmp_x0017DE90(p, mpv_tag_stccode_x0017DE90, 7) == 0) {
+            mpv->f860 = atoi_x0017DE90(p + 16);
+            mpv->f864 = atoi_x0017DE90(p + 24);
+            mpv->f868 = atoi_x0017DE90(p + 32);
+        }
+        if (MPV_CheckDelim_x0017DE90((unsigned char *)p) != 0)
+            break;
+    }
+    return 0;
+}
+int MPV_CheckDelim_x0017DF98(const unsigned char *p) __asm__("func_0017B420");
+char *MPV_SearchDelim_x0017DF98(char *buf, int len, int mask) __asm__("func_0017B5B8");
+int func_0017DF98_x0017DF98(char **data, int *remaining, int *offset) __asm__("func_0017DF98");
+/* MPVHDEC_GoNextDelim: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvhdr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017DF98_x0017DF98(char **data, int *remaining, int *offset) {
+    char *found;
+    int skip;
+    int kind;
+    found = MPV_SearchDelim_x0017DF98(*data, *remaining, -1);
+    kind = 0;
+    if (found == 0) {
+        skip = *remaining;
+    } else {
+        kind = MPV_CheckDelim_x0017DF98((unsigned char *)found);
+        skip = found - *data;
+    }
+    *remaining -= skip;
+    *data += skip;
+    *offset += skip;
+    return kind;
+}
 typedef unsigned char u8_x0017E040;
 typedef struct SJCK_x0017E040 {
     unsigned char *data;
@@ -1907,14 +8295,1380 @@ int func_0017E040_x0017E040(SJ_x0017E040 *stream) {
     }
     return delimiter_type;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E198);
+typedef struct SfdSj_x0017E198 SfdSj_x0017E198;
+typedef struct SfdSjChunk_x0017E198 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E198;
+typedef struct SfdSjVtbl_x0017E198 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E198 *sj);
+    int (*getUuid)(SfdSj_x0017E198 *sj);
+    void (*reset)(SfdSj_x0017E198 *sj);
+    void (*getChunk)(SfdSj_x0017E198 *sj, int id, int n, SfdSjChunk_x0017E198 *ck);
+    void (*ungetChunk)(SfdSj_x0017E198 *sj, int id, SfdSjChunk_x0017E198 *ck);
+    void (*putChunk)(SfdSj_x0017E198 *sj, int id, SfdSjChunk_x0017E198 *ck);
+    int (*getNumData)(SfdSj_x0017E198 *sj, int id);
+} SfdSjVtbl_x0017E198;
+struct SfdSj_x0017E198 {
+    SfdSjVtbl_x0017E198 *vtbl;
+};
+struct SfdSj_x0017E198;
+typedef struct M2vErrInf_x0017E198 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E198;
+typedef struct Mpeg2Ext_x0017E198 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E198;
+typedef enum M2vFrameRate_x0017E198 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E198 = 0
+} M2vFrameRate_x0017E198;
+typedef enum M2vPicType_x0017E198 {
+    M2V_PICTYPE_I_x0017E198 = 1,
+    M2V_PICTYPE_P_x0017E198 = 2,
+    M2V_PICTYPE_B_x0017E198 = 3,
+    M2V_PICTYPE_D_x0017E198 = 4
+} M2vPicType_x0017E198;
+typedef enum M2vPicStruct_x0017E198 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E198 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E198 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E198 = 3
+} M2vPicStruct_x0017E198;
+typedef enum M2vPicAtrF64_x0017E198 {
+    M2V_PICATR_F64_0_x0017E198 = 0
+} M2vPicAtrF64_x0017E198;
+typedef struct M2vPicAtr_x0017E198 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E198 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E198 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E198 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E198 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E198;
+typedef void (*M2vUsrDatFn_x0017E198)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E198 {
+    struct SfdSj_x0017E198 *sj;
+    M2vUsrDatFn_x0017E198 fn;
+    void *obj;
+} M2vUsrSj_x0017E198;
+typedef struct M2vPicUsr_x0017E198 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E198;
+typedef void (*M2vCondFn_x0017E198)();
+typedef struct M2vObj_x0017E198 {
+    int stat;
+    M2vErrInf_x0017E198 err;
+    M2vCondFn_x0017E198 cond[16];
+    M2vPicAtr_x0017E198 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E198 usrsj[4];
+    M2vPicUsr_x0017E198 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E198 ext;
+    char pad1656[8];
+} M2vObj_x0017E198;
+extern void M2V_SetErrFunc_x0017E198(M2vObj_x0017E198 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E198 {
+    MPV_UDLVL_SEQ_x0017E198 = 1,
+    MPV_UDLVL_GOP_x0017E198 = 2,
+    MPV_UDLVL_PIC_x0017E198 = 3
+} MpvUdLevel_x0017E198;
+typedef struct MpvSeqInf_x0017E198 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E198;
+typedef struct MpvMotionRange_x0017E198 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E198;
+typedef struct MpvErrObj_x0017E198 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E198;
+typedef struct MpvHn_x0017E198 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E198 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E198 picInf;
+    MpvErrObj_x0017E198 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E198 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E198 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E198 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E198 *lower;
+    MpvUdLevel_x0017E198 usrDatLevel;
+    M2vUsrSj_x0017E198 bufEnt[4];
+    M2vPicUsr_x0017E198 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E198;
+int MPV_GoNextDelimSj_x0017E198(SfdSj_x0017E198 *sj) __asm__("func_0017E040");
+int MPV_MoveChunk_x0017E198(SfdSj_x0017E198 *sj, int id, int n) __asm__("func_0017E268");
+extern void mpvhook_SetErrFunc_x0017E198(M2vObj_x0017E198 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+typedef unsigned int size_t_x0017E198;
+typedef struct AdxPdObj_x0017E198 {
+    int used;
+    int id;
+    int mode;
+    int stat;
+    int nblk_decoded;
+    int channels;
+    unsigned char *ibuf;
+    int nblk;
+    short *obufl;
+    short *obufr;
+    short dly[2][2];
+    short k0;
+    short k1;
+    short seed;
+    short mul;
+    short add;
+} AdxPdObj_x0017E198;
+typedef struct AdxDecPara_x0017E198 {
+    char *ibuf;
+    int niblk;
+    int nch;
+    int blksize;
+    int blknsmpl;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    int wpos;
+    int nroom;
+    int lp_nsmpl;
+    int ndecsmpl;
+} AdxDecPara_x0017E198;
+struct Pl2Enc_x0017E198;
+typedef struct AdxbObj_x0017E198 AdxbObj_x0017E198;
+typedef short *(*AdxbGetWrFunc_x0017E198)(void *obj, int *wpos, int *room, int *rest);
+typedef void (*AdxbAddWrFunc_x0017E198)(void *obj, int nbyte, int nsmpl);
+struct AdxbObj_x0017E198 {
+    short used;
+    short hdcdflag;
+    int stat;
+    AdxPdObj_x0017E198 *xpd;
+    signed char code;
+    signed char bps;
+    signed char nch;
+    signed char blklen;
+    int blknsmpl;
+    int sfreq;
+    int total_nsmpl;
+    short cof;
+    short rsv1;
+    int lp_ins_nsmpl;
+    short nloop;
+    short lp_type;
+    int lp_spos;
+    int lp_sofst;
+    int lp_epos;
+    int lp_eofst;
+    int maxnch;
+    short *pcmbuf;
+    int pcmbsize;
+    int pcmbdist;
+    AdxDecPara_x0017E198 dp;
+    AdxbGetWrFunc_x0017E198 getwrfunc;
+    void *getwrobj;
+    AdxbAddWrFunc_x0017E198 addwrfunc;
+    void *addwrobj;
+    int total_ndecsmpl;
+    int curwpos;
+    int ndecsmpl;
+    int ndeclen;
+    short fmttype;
+    unsigned short def_fmttype;
+    short cdctype;
+    short f158;
+    short k0;
+    short km;
+    short ka;
+    unsigned short xp_key;
+    unsigned short xp_km;
+    unsigned short xp_ka;
+    unsigned short dly1[2];
+    unsigned short dly2[2];
+    void *ahx;
+    int ahx_dec_nsmpl;
+    int ahx_dec_nfrm;
+    void *ac3;
+    int ac3_dec_nsmpl;
+    int ac3_dec_nfrm;
+    int ainf_len;
+    char dataid[16];
+    short def_outvol;
+    short def_pan[2];
+    char pad230[2];
+    struct Pl2Enc_x0017E198 *pl2;
+    int pl2_x;
+    int pl2_y;
+    int cb_ndeclen;
+    int f248;
+    void (*decfunc)(void *context, int count, int bytes);
+    void *decobj;
+};
+extern void ADXB_EntryDecFunc_x0017E198(AdxbObj_x0017E198 *adxb, void (*func)(void *obj, int nsmpl, int nbyte), void *obj) __asm__("ADXB_EntryDecFunc");
+typedef struct AdxSjdObj_x0017E198 {
+    signed char used;
+    signed char stat;
+    signed char maxnch;
+    signed char empty_end;
+    AdxbObj_x0017E198 *adxb;
+    SfdSj_x0017E198 *sji;
+    SfdSj_x0017E198 *sjo[2];
+    SfdSjChunk_x0017E198 cki;
+    SfdSjChunk_x0017E198 cko[2];
+    int total_decsmpl;
+    int total_decdtlen;
+    int decpos;
+    int maxdecsmpl;
+    int dtrpsmpl;
+    int dtrpcnt;
+    int dtrpdtlen;
+    void (*dtrpfunc)(void *context);
+    void *dtrpobj;
+    void (*dfltfunc)(void *context, int ch, char *data, int len);
+    void *dfltobj;
+    char hdr[64];
+    int hdrlen;
+    int lnksw;
+    int fill;
+    int skip;
+} AdxSjdObj_x0017E198;
+extern void ADXSJD_EntryFltFunc_x0017E198(AdxSjdObj_x0017E198 *sjd, void (*func)(void *obj, int ch, char *data, int len), void *obj) __asm__("ADXSJD_EntryFltFunc");
+extern void ADXSJD_EntryTrapFunc_x0017E198(AdxSjdObj_x0017E198 *sjd, void (*func)(void *obj), void *obj) __asm__("ADXSJD_EntryTrapFunc");
+typedef void (*CvFsErrFn_x0017E198)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x0017E198)(CvFsErrFn_x0017E198 func, void *obj);
+typedef int (*CvFsPathFn_x0017E198)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x0017E198)(void);
+typedef int (*CvFsOpenFn_x0017E198)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x0017E198)(int fd);
+typedef int (*CvFsFdIntFn_x0017E198)(int fd);
+typedef int (*CvFsSeekFn_x0017E198)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x0017E198)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x0017E198)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x0017E198)(void);
+typedef int (*CvFsLoadDirInfoFn_x0017E198)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x0017E198)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x0017E198)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x0017E198 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x0017E198 entry_err_func;
+    CvFsPathFn_x0017E198 get_file_size;
+    CvFsGetFreeSizeFn_x0017E198 get_free_size;
+    CvFsOpenFn_x0017E198 open;
+    CvFsFdFn_x0017E198 close;
+    CvFsSeekFn_x0017E198 seek;
+    CvFsFdIntFn_x0017E198 tell;
+    CvFsXferFn_x0017E198 req_rd;
+    CvFsXferFn_x0017E198 req_wr;
+    CvFsFdFn_x0017E198 stop_tr;
+    CvFsFdIntFn_x0017E198 get_stat;
+    CvFsFdIntFn_x0017E198 get_sct_len;
+    CvFsSetSctLenFn_x0017E198 set_sct_len;
+    CvFsFdIntFn_x0017E198 get_num_tr;
+    CvFsPathFn_x0017E198 change_dir;
+    CvFsPathFn_x0017E198 is_exist_file;
+    CvFsGetNumFilesFn_x0017E198 get_num_files;
+    CvFsLoadDirInfoFn_x0017E198 load_dir_info;
+    CvFsFdIntFn_x0017E198 get_max_byte_rate;
+    CvFsPathFn_x0017E198 make_dir;
+    CvFsPathFn_x0017E198 remove_dir;
+    CvFsPathFn_x0017E198 delete_file;
+    CvFsGetFileSizeExFn_x0017E198 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x0017E198 opt_fn2;
+} CvFsVtbl_x0017E198;
+typedef struct CvFsHandle_x0017E198 {
+    CvFsVtbl_x0017E198 *vtbl;
+    int fd;
+} CvFsHandle_x0017E198;
+extern CvFsVtbl_x0017E198 *addDevice_x0017E198(char *devname, CvFsVtbl_x0017E198 *(*get_if)(void)) __asm__("addDevice");
+typedef struct AdxStmObj_x0017E198 {
+    signed char used;
+    signed char stat;
+    signed char rdflg;
+    signed char rtrycnt;
+    SfdSj_x0017E198 *sj;
+    CvFsHandle_x0017E198 *fd;
+    int fofst;
+    int fsize;
+    int fsctsz;
+    int maxrdsz;
+    int minrdsz;
+    int rdsct;
+    SfdSjChunk_x0017E198 rdck;
+    int reqrdsct;
+    int eos;
+    int rdbyte;
+    void (*eosfunc)(void *obj);
+    void *eosobj;
+    int buflen;
+    signed char pause;
+    signed char open_req;
+    signed char close_req;
+    signed char start_req;
+    signed char stop_req;
+    signed char opened;
+    signed char nrmlflg;
+    char f75[5];
+    const char *fname;
+    void *dir;
+    int curpos;
+    int maxsct;
+} AdxStmObj_x0017E198;
+extern void ADXSTM_EntryEosFunc_x0017E198(AdxStmObj_x0017E198 *stm, void (*func)(void *obj), void *obj) __asm__("ADXSTM_EntryEosFunc");
+extern void qsort_x0017E198(void *, size_t_x0017E198, size_t_x0017E198, int (*)(const void *, const void *)) __asm__("qsort");
+int MPV_GoNextDelimSj_x0017E198(SfdSj_x0017E198 *sj) __asm__("func_0017E040");
+int MPV_MoveChunk_x0017E198(SfdSj_x0017E198 *sj, int id, int n) __asm__("func_0017E268");
+int func_0017E198_x0017E198(MpvHn_x0017E198 *mpv, int mask, SfdSj_x0017E198 *sj) __asm__("func_0017E198");
+/* mpvhdec_RecoverSj: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpvhdr.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017E198_x0017E198(MpvHn_x0017E198 *mpv, int mask, SfdSj_x0017E198 *sj) {
+    MpvErrObj_x0017E198 *err = &mpv->err;
+    int has = mpv->cond[1];
+    int result;
+    int kind;
+    if (mpv->skipReq != 0) {
+        mpv->skipReq = 0;
+        mpv->skipCnt += 1;
+        err->skipReqCnt += 1;
+        if (has == 0) {
+            return -2;
+        }
+        err->skipPicCnt += 1;
+    }
+    result = (has == 0) ? -2 : -3;
+    do {
+        kind = MPV_GoNextDelimSj_x0017E198(sj);
+        if (kind == 0) {
+            break;
+        }
+        if (kind & mask) {
+            result = 0;
+            break;
+        }
+    } while (MPV_MoveChunk_x0017E198(sj, 1, 4) == 4);
+    return result;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E268);
 s32 *func_0017E2C0(void) {
     return &D_00465390;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E2D0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E368);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E440);
+int MPV_CheckDelim_x0017E2D0(const unsigned char *p) __asm__("func_0017B420");
+char *MPV_SearchDelim_x0017E2D0(char *buf, int len, int mask) __asm__("func_0017B5B8");
+int mpv_IsLowerReady_x0017E2D0(void) __asm__("func_0017EBB8");
+int mpv_IsLowerReady_x0017E2D0(void) __asm__("func_0017EBB8");
+int func_0017E2D0_x0017E2D0(unsigned char *data, int size) __asm__("func_0017E2D0");
+/* MPV_IsConformable: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017E2D0_x0017E2D0(unsigned char *data, int size) {
+    unsigned char *p = MPV_SearchDelim_x0017E2D0(data, size, 64);
+    if (p == 0) {
+        return 0;
+    }
+    if (mpv_IsLowerReady_x0017E2D0() != 0) {
+        return 1;
+    }
+    p += 4;
+    size -= p - data;
+    if (size <= 0) {
+        return 0;
+    }
+    p = MPV_SearchDelim_x0017E2D0(p, size, -1);
+    if (p == 0) {
+        return 0;
+    }
+    if (MPV_CheckDelim_x0017E2D0(p) & 0x10) {
+        return 0;
+    }
+    return 1;
+}
+typedef struct SfdSj_x0017E368 SfdSj_x0017E368;
+typedef struct SfdSjChunk_x0017E368 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E368;
+typedef struct SfdSjVtbl_x0017E368 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E368 *sj);
+    int (*getUuid)(SfdSj_x0017E368 *sj);
+    void (*reset)(SfdSj_x0017E368 *sj);
+    void (*getChunk)(SfdSj_x0017E368 *sj, int id, int n, SfdSjChunk_x0017E368 *ck);
+    void (*ungetChunk)(SfdSj_x0017E368 *sj, int id, SfdSjChunk_x0017E368 *ck);
+    void (*putChunk)(SfdSj_x0017E368 *sj, int id, SfdSjChunk_x0017E368 *ck);
+    int (*getNumData)(SfdSj_x0017E368 *sj, int id);
+} SfdSjVtbl_x0017E368;
+struct SfdSj_x0017E368 {
+    SfdSjVtbl_x0017E368 *vtbl;
+};
+struct SfdSj_x0017E368;
+typedef struct M2vErrInf_x0017E368 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E368;
+typedef struct Mpeg2Ext_x0017E368 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E368;
+typedef enum M2vFrameRate_x0017E368 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E368 = 0
+} M2vFrameRate_x0017E368;
+typedef enum M2vPicType_x0017E368 {
+    M2V_PICTYPE_I_x0017E368 = 1,
+    M2V_PICTYPE_P_x0017E368 = 2,
+    M2V_PICTYPE_B_x0017E368 = 3,
+    M2V_PICTYPE_D_x0017E368 = 4
+} M2vPicType_x0017E368;
+typedef enum M2vPicStruct_x0017E368 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E368 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E368 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E368 = 3
+} M2vPicStruct_x0017E368;
+typedef enum M2vPicAtrF64_x0017E368 {
+    M2V_PICATR_F64_0_x0017E368 = 0
+} M2vPicAtrF64_x0017E368;
+typedef struct M2vPicAtr_x0017E368 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E368 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E368 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E368 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E368 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E368;
+typedef void (*M2vUsrDatFn_x0017E368)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E368 {
+    struct SfdSj_x0017E368 *sj;
+    M2vUsrDatFn_x0017E368 fn;
+    void *obj;
+} M2vUsrSj_x0017E368;
+typedef struct M2vPicUsr_x0017E368 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E368;
+typedef void (*M2vCondFn_x0017E368)();
+typedef struct M2vObj_x0017E368 {
+    int stat;
+    M2vErrInf_x0017E368 err;
+    M2vCondFn_x0017E368 cond[16];
+    M2vPicAtr_x0017E368 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E368 usrsj[4];
+    M2vPicUsr_x0017E368 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E368 ext;
+    char pad1656[8];
+} M2vObj_x0017E368;
+extern void M2V_SetErrFunc_x0017E368(M2vObj_x0017E368 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E368 {
+    MPV_UDLVL_SEQ_x0017E368 = 1,
+    MPV_UDLVL_GOP_x0017E368 = 2,
+    MPV_UDLVL_PIC_x0017E368 = 3
+} MpvUdLevel_x0017E368;
+typedef struct MpvSeqInf_x0017E368 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E368;
+typedef struct MpvMotionRange_x0017E368 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E368;
+typedef struct MpvErrObj_x0017E368 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E368;
+typedef struct MpvHn_x0017E368 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E368 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E368 picInf;
+    MpvErrObj_x0017E368 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E368 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E368 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E368 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E368 *lower;
+    MpvUdLevel_x0017E368 usrDatLevel;
+    M2vUsrSj_x0017E368 bufEnt[4];
+    M2vPicUsr_x0017E368 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E368;
+typedef struct MpvLib_x0017E368 {
+    int cond[16];
+    int optionFlag;
+    int initFlag;
+    char pad72[4];
+    char *tables;
+    char *pool;
+    int nhn;
+    MpvHn_x0017E368 *hn;
+} MpvLib_x0017E368;
+void mpv_InitLibErr_x0017E368(void) __asm__("func_0017C1B8");
+void mpvapi_Init_x0017E368(void) __asm__("func_0017C838");
+extern void mpvhook_SetErrFunc_x0017E368(M2vObj_x0017E368 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+extern char cri_mpv_version_x0017E368[] __asm__("D_00465390");
+extern char *volatile mpv_version_ptr_x0017E368 __asm__("D_004814E8");
+extern MpvLib_x0017E368 mpv_lib_x0017E368 __asm__("D_004814F0");
+void mpv_InitLower_x0017E368(void) __asm__("func_0017EBD0");
+int MPVLIB_ConvOix_x0017E368(int flags) __asm__("func_0017E4E0");
+void mpvlib_ChkCacheMode_x0017E368(void) __asm__("func_0017E4B8");
+void mpv_InitClampTable_x0017E368(unsigned char *copy) __asm__("func_0017E500");
+void mpvlib_InitObjTbl_x0017E368(void) __asm__("func_0017E5D8");
+void mpv_InitHw_x0017E368(MpvLib_x0017E368 *pool) __asm__("func_0017E658");
+void mpvlib_InitWork_x0017E368(int nhn, char *work) __asm__("func_0017E660");
+int mpvlib_ChkFatal_x0017E368(void) __asm__("func_0017E440");
+int mpvlib_ChkFatal_x0017E368(void) __asm__("func_0017E440");
+void mpvlib_ChkCacheMode_x0017E368(void) __asm__("func_0017E4B8");
+int MPVLIB_ConvOix_x0017E368(int flags) __asm__("func_0017E4E0");
+void mpv_InitClampTable_x0017E368(unsigned char *copy) __asm__("func_0017E500");
+void mpvlib_InitObjTbl_x0017E368(void) __asm__("func_0017E5D8");
+void mpv_InitHw_x0017E368(MpvLib_x0017E368 *pool) __asm__("func_0017E658");
+void mpvlib_InitWork_x0017E368(int nhn, char *work) __asm__("func_0017E660");
+void mpv_InitLower_x0017E368(void) __asm__("func_0017EBD0");
+int func_0017E368_x0017E368(int count, void *work) __asm__("func_0017E368");
+/* MPV_Init: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017E368_x0017E368(int count, void *work) {
+    int result;
+    char *pool;
+    mpv_version_ptr_x0017E368 = cri_mpv_version_x0017E368;
+    result = mpvlib_ChkFatal_x0017E368();
+    if (result != 0) {
+        if (result != 0xFF03FF05) {
+            for (;;) {
+            }
+        }
+        return result;
+    }
+    mpvlib_ChkCacheMode_x0017E368();
+    mpvlib_InitWork_x0017E368(count, (char *)MPVLIB_ConvOix_x0017E368((int)work));
+    pool = mpv_lib_x0017E368.pool;
+    mpv_InitLibErr_x0017E368();
+    mpvapi_Init_x0017E368();
+    mpv_InitClampTable_x0017E368((unsigned char *)pool + 6112);
+    mpvlib_InitObjTbl_x0017E368();
+    mpv_InitHw_x0017E368((MpvLib_x0017E368 *)pool);
+    mpv_InitLower_x0017E368();
+    return 0;
+}
+typedef struct SfdSj_x0017E440 SfdSj_x0017E440;
+typedef struct SfdSjChunk_x0017E440 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E440;
+typedef struct SfdSjVtbl_x0017E440 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E440 *sj);
+    int (*getUuid)(SfdSj_x0017E440 *sj);
+    void (*reset)(SfdSj_x0017E440 *sj);
+    void (*getChunk)(SfdSj_x0017E440 *sj, int id, int n, SfdSjChunk_x0017E440 *ck);
+    void (*ungetChunk)(SfdSj_x0017E440 *sj, int id, SfdSjChunk_x0017E440 *ck);
+    void (*putChunk)(SfdSj_x0017E440 *sj, int id, SfdSjChunk_x0017E440 *ck);
+    int (*getNumData)(SfdSj_x0017E440 *sj, int id);
+} SfdSjVtbl_x0017E440;
+struct SfdSj_x0017E440 {
+    SfdSjVtbl_x0017E440 *vtbl;
+};
+struct SfdSj_x0017E440;
+typedef struct M2vErrInf_x0017E440 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E440;
+typedef struct Mpeg2Ext_x0017E440 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E440;
+typedef enum M2vFrameRate_x0017E440 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E440 = 0
+} M2vFrameRate_x0017E440;
+typedef enum M2vPicType_x0017E440 {
+    M2V_PICTYPE_I_x0017E440 = 1,
+    M2V_PICTYPE_P_x0017E440 = 2,
+    M2V_PICTYPE_B_x0017E440 = 3,
+    M2V_PICTYPE_D_x0017E440 = 4
+} M2vPicType_x0017E440;
+typedef enum M2vPicStruct_x0017E440 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E440 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E440 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E440 = 3
+} M2vPicStruct_x0017E440;
+typedef enum M2vPicAtrF64_x0017E440 {
+    M2V_PICATR_F64_0_x0017E440 = 0
+} M2vPicAtrF64_x0017E440;
+typedef struct M2vPicAtr_x0017E440 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E440 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E440 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E440 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E440 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E440;
+typedef void (*M2vUsrDatFn_x0017E440)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E440 {
+    struct SfdSj_x0017E440 *sj;
+    M2vUsrDatFn_x0017E440 fn;
+    void *obj;
+} M2vUsrSj_x0017E440;
+typedef struct M2vPicUsr_x0017E440 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E440;
+typedef void (*M2vCondFn_x0017E440)();
+typedef struct M2vObj_x0017E440 {
+    int stat;
+    M2vErrInf_x0017E440 err;
+    M2vCondFn_x0017E440 cond[16];
+    M2vPicAtr_x0017E440 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E440 usrsj[4];
+    M2vPicUsr_x0017E440 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E440 ext;
+    char pad1656[8];
+} M2vObj_x0017E440;
+extern void M2V_SetErrFunc_x0017E440(M2vObj_x0017E440 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E440 {
+    MPV_UDLVL_SEQ_x0017E440 = 1,
+    MPV_UDLVL_GOP_x0017E440 = 2,
+    MPV_UDLVL_PIC_x0017E440 = 3
+} MpvUdLevel_x0017E440;
+typedef struct MpvSeqInf_x0017E440 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E440;
+typedef struct MpvMotionRange_x0017E440 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E440;
+typedef struct MpvErrObj_x0017E440 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E440;
+typedef struct MpvHn_x0017E440 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E440 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E440 picInf;
+    MpvErrObj_x0017E440 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E440 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E440 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E440 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E440 *lower;
+    MpvUdLevel_x0017E440 usrDatLevel;
+    M2vUsrSj_x0017E440 bufEnt[4];
+    M2vPicUsr_x0017E440 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E440;
+typedef struct MpvBuildInf_x0017E440 {
+    int magic;
+    int libSize;
+    int hnSize;
+    int poolSize;
+} MpvBuildInf_x0017E440;
+int mpv_ReportError_x0017E440(MpvHn_x0017E440 *mpv, int code) __asm__("func_0017C2E0");
+extern void mpvhook_SetErrFunc_x0017E440(M2vObj_x0017E440 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+extern MpvBuildInf_x0017E440 mpv_build_inf_x0017E440 __asm__("D_00465420");
+extern unsigned char mpv_endian_mark_x0017E440[4] __asm__("D_00465430");
+int func_0017E440_x0017E440(void) __asm__("func_0017E440");
+/* mpvlib_ChkFatal: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017E440_x0017E440(void) {
+    if (mpv_build_inf_x0017E440.magic != 0x5a5a5a5a) {
+        return mpv_ReportError_x0017E440(0, 0xff03ff02);
+    }
+    if (mpv_endian_mark_x0017E440[0] != 4) {
+        for (;;) {
+            ((void (*)(void))-1)();
+        }
+    }
+    return 0;
+}
 void func_0017E4B8(void) {
 
 }
@@ -1995,11 +9749,742 @@ void func_0017E5D8_x0017E5D8(void)
     while (var_v0 != 0);
   }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E620);
+typedef struct SfdSj_x0017E620 SfdSj_x0017E620;
+typedef struct SfdSjChunk_x0017E620 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E620;
+typedef struct SfdSjVtbl_x0017E620 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E620 *sj);
+    int (*getUuid)(SfdSj_x0017E620 *sj);
+    void (*reset)(SfdSj_x0017E620 *sj);
+    void (*getChunk)(SfdSj_x0017E620 *sj, int id, int n, SfdSjChunk_x0017E620 *ck);
+    void (*ungetChunk)(SfdSj_x0017E620 *sj, int id, SfdSjChunk_x0017E620 *ck);
+    void (*putChunk)(SfdSj_x0017E620 *sj, int id, SfdSjChunk_x0017E620 *ck);
+    int (*getNumData)(SfdSj_x0017E620 *sj, int id);
+} SfdSjVtbl_x0017E620;
+struct SfdSj_x0017E620 {
+    SfdSjVtbl_x0017E620 *vtbl;
+};
+struct SfdSj_x0017E620;
+typedef struct M2vErrInf_x0017E620 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E620;
+typedef struct Mpeg2Ext_x0017E620 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E620;
+typedef enum M2vFrameRate_x0017E620 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E620 = 0
+} M2vFrameRate_x0017E620;
+typedef enum M2vPicType_x0017E620 {
+    M2V_PICTYPE_I_x0017E620 = 1,
+    M2V_PICTYPE_P_x0017E620 = 2,
+    M2V_PICTYPE_B_x0017E620 = 3,
+    M2V_PICTYPE_D_x0017E620 = 4
+} M2vPicType_x0017E620;
+typedef enum M2vPicStruct_x0017E620 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E620 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E620 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E620 = 3
+} M2vPicStruct_x0017E620;
+typedef enum M2vPicAtrF64_x0017E620 {
+    M2V_PICATR_F64_0_x0017E620 = 0
+} M2vPicAtrF64_x0017E620;
+typedef struct M2vPicAtr_x0017E620 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E620 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E620 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E620 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E620 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E620;
+typedef void (*M2vUsrDatFn_x0017E620)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E620 {
+    struct SfdSj_x0017E620 *sj;
+    M2vUsrDatFn_x0017E620 fn;
+    void *obj;
+} M2vUsrSj_x0017E620;
+typedef struct M2vPicUsr_x0017E620 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E620;
+typedef void (*M2vCondFn_x0017E620)();
+typedef struct M2vObj_x0017E620 {
+    int stat;
+    M2vErrInf_x0017E620 err;
+    M2vCondFn_x0017E620 cond[16];
+    M2vPicAtr_x0017E620 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E620 usrsj[4];
+    M2vPicUsr_x0017E620 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E620 ext;
+    char pad1656[8];
+} M2vObj_x0017E620;
+extern void M2V_SetErrFunc_x0017E620(M2vObj_x0017E620 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E620 {
+    MPV_UDLVL_SEQ_x0017E620 = 1,
+    MPV_UDLVL_GOP_x0017E620 = 2,
+    MPV_UDLVL_PIC_x0017E620 = 3
+} MpvUdLevel_x0017E620;
+typedef struct MpvSeqInf_x0017E620 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E620;
+typedef struct MpvMotionRange_x0017E620 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E620;
+typedef struct MpvErrObj_x0017E620 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E620;
+typedef struct MpvHn_x0017E620 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E620 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E620 picInf;
+    MpvErrObj_x0017E620 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E620 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E620 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E620 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E620 *lower;
+    MpvUdLevel_x0017E620 usrDatLevel;
+    M2vUsrSj_x0017E620 bufEnt[4];
+    M2vPicUsr_x0017E620 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E620;
+typedef struct MpvLib_x0017E620 {
+    int cond[16];
+    int optionFlag;
+    int initFlag;
+    char pad72[4];
+    char *tables;
+    char *pool;
+    int nhn;
+    MpvHn_x0017E620 *hn;
+} MpvLib_x0017E620;
+extern void mpvhook_SetErrFunc_x0017E620(M2vObj_x0017E620 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+extern MpvLib_x0017E620 mpv_lib_x0017E620 __asm__("D_004814F0");
+extern unsigned char *mpv_clamp_x0017E620 __asm__("D_00424CA4");
+void func_0017E620_x0017E620(MpvHn_x0017E620 *hn) __asm__("func_0017E620");
+/* mpv_BindHnBuffers: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0017E620_x0017E620(MpvHn_x0017E620 *hn) {
+    char *pool = mpv_lib_x0017E620.pool;
+    hn->mbBuf = pool + 4384;
+    hn->blkBuf = pool + 4352;
+    hn->dctBuf = pool + 4448;
+    hn->clampY = mpv_clamp_x0017E620;
+    hn->clampC = mpv_clamp_x0017E620;
+}
 void func_0017E658(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E660);
+typedef struct SfdSj_x0017E660 SfdSj_x0017E660;
+typedef struct SfdSjChunk_x0017E660 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E660;
+typedef struct SfdSjVtbl_x0017E660 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E660 *sj);
+    int (*getUuid)(SfdSj_x0017E660 *sj);
+    void (*reset)(SfdSj_x0017E660 *sj);
+    void (*getChunk)(SfdSj_x0017E660 *sj, int id, int n, SfdSjChunk_x0017E660 *ck);
+    void (*ungetChunk)(SfdSj_x0017E660 *sj, int id, SfdSjChunk_x0017E660 *ck);
+    void (*putChunk)(SfdSj_x0017E660 *sj, int id, SfdSjChunk_x0017E660 *ck);
+    int (*getNumData)(SfdSj_x0017E660 *sj, int id);
+} SfdSjVtbl_x0017E660;
+struct SfdSj_x0017E660 {
+    SfdSjVtbl_x0017E660 *vtbl;
+};
+struct SfdSj_x0017E660;
+typedef struct M2vErrInf_x0017E660 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E660;
+typedef struct Mpeg2Ext_x0017E660 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E660;
+typedef enum M2vFrameRate_x0017E660 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E660 = 0
+} M2vFrameRate_x0017E660;
+typedef enum M2vPicType_x0017E660 {
+    M2V_PICTYPE_I_x0017E660 = 1,
+    M2V_PICTYPE_P_x0017E660 = 2,
+    M2V_PICTYPE_B_x0017E660 = 3,
+    M2V_PICTYPE_D_x0017E660 = 4
+} M2vPicType_x0017E660;
+typedef enum M2vPicStruct_x0017E660 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E660 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E660 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E660 = 3
+} M2vPicStruct_x0017E660;
+typedef enum M2vPicAtrF64_x0017E660 {
+    M2V_PICATR_F64_0_x0017E660 = 0
+} M2vPicAtrF64_x0017E660;
+typedef struct M2vPicAtr_x0017E660 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E660 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E660 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E660 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E660 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E660;
+typedef void (*M2vUsrDatFn_x0017E660)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E660 {
+    struct SfdSj_x0017E660 *sj;
+    M2vUsrDatFn_x0017E660 fn;
+    void *obj;
+} M2vUsrSj_x0017E660;
+typedef struct M2vPicUsr_x0017E660 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E660;
+typedef void (*M2vCondFn_x0017E660)();
+typedef struct M2vObj_x0017E660 {
+    int stat;
+    M2vErrInf_x0017E660 err;
+    M2vCondFn_x0017E660 cond[16];
+    M2vPicAtr_x0017E660 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E660 usrsj[4];
+    M2vPicUsr_x0017E660 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E660 ext;
+    char pad1656[8];
+} M2vObj_x0017E660;
+extern void M2V_SetErrFunc_x0017E660(M2vObj_x0017E660 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E660 {
+    MPV_UDLVL_SEQ_x0017E660 = 1,
+    MPV_UDLVL_GOP_x0017E660 = 2,
+    MPV_UDLVL_PIC_x0017E660 = 3
+} MpvUdLevel_x0017E660;
+typedef struct MpvSeqInf_x0017E660 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E660;
+typedef struct MpvMotionRange_x0017E660 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E660;
+typedef struct MpvErrObj_x0017E660 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E660;
+typedef struct MpvHn_x0017E660 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E660 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E660 picInf;
+    MpvErrObj_x0017E660 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E660 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E660 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E660 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E660 *lower;
+    MpvUdLevel_x0017E660 usrDatLevel;
+    M2vUsrSj_x0017E660 bufEnt[4];
+    M2vPicUsr_x0017E660 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E660;
+typedef struct MpvLib_x0017E660 {
+    int cond[16];
+    int optionFlag;
+    int initFlag;
+    char pad72[4];
+    char *tables;
+    char *pool;
+    int nhn;
+    MpvHn_x0017E660 *hn;
+} MpvLib_x0017E660;
+extern void mpvhook_SetErrFunc_x0017E660(M2vObj_x0017E660 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+void UTY_MemcpyDword_x0017E660(void *dst, void *src, unsigned int n) __asm__("func_00178E38");
+void UTY_MemsetDword_x0017E660(void *dst, int value, unsigned int count) __asm__("func_00179018");
+extern int mpv_default_cond_x0017E660[16] __asm__("D_004653E0");
+extern MpvLib_x0017E660 mpv_lib_x0017E660 __asm__("D_004814F0");
+void mpvlib_AllocLc_x0017E660(void *p, int size) __asm__("func_0017E9D0");
+void mpvlib_AllocLc_x0017E660(void *p, int size) __asm__("func_0017E9D0");
+void func_0017E660_x0017E660(int nhn, char *work) __asm__("func_0017E660");
+/* mpvlib_InitWork: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0017E660_x0017E660(int nhn, char *work) {
+    char *base;
+    char *tables;
+    char *pool;
+    base = (char *)(((int)work + 63) & ~63);
+    UTY_MemsetDword_x0017E660(base, 0, (nhn << 8) + 0x800);
+    tables = base + (nhn << 10);
+    pool = tables + 0x420;
+    mpvlib_AllocLc_x0017E660(pool, 7136);
+    UTY_MemcpyDword_x0017E660(&mpv_lib_x0017E660, mpv_default_cond_x0017E660, 16);
+    mpv_lib_x0017E660.tables = tables;
+    mpv_lib_x0017E660.pool = pool;
+    mpv_lib_x0017E660.nhn = nhn;
+    mpv_lib_x0017E660.hn = (MpvHn_x0017E660 *)base;
+}
 void func_0017E708_x0017E708(u8 *arg0) __asm__("func_0017E708");
 void func_0017E708_x0017E708(u8 *arg0)
 {
@@ -2047,10 +10532,1471 @@ void func_0017E708_x0017E708(u8 *arg0)
     *((volatile s8 *)(arg0 + 0x62)) = neg;
     *((volatile s8 *)(arg0 + 0x63)) = neg;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E7B8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E7E0);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E838);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E888);
+typedef struct SfdSj_x0017E7B8 SfdSj_x0017E7B8;
+typedef struct SfdSjChunk_x0017E7B8 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E7B8;
+typedef struct SfdSjVtbl_x0017E7B8 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E7B8 *sj);
+    int (*getUuid)(SfdSj_x0017E7B8 *sj);
+    void (*reset)(SfdSj_x0017E7B8 *sj);
+    void (*getChunk)(SfdSj_x0017E7B8 *sj, int id, int n, SfdSjChunk_x0017E7B8 *ck);
+    void (*ungetChunk)(SfdSj_x0017E7B8 *sj, int id, SfdSjChunk_x0017E7B8 *ck);
+    void (*putChunk)(SfdSj_x0017E7B8 *sj, int id, SfdSjChunk_x0017E7B8 *ck);
+    int (*getNumData)(SfdSj_x0017E7B8 *sj, int id);
+} SfdSjVtbl_x0017E7B8;
+struct SfdSj_x0017E7B8 {
+    SfdSjVtbl_x0017E7B8 *vtbl;
+};
+struct SfdSj_x0017E7B8;
+typedef struct M2vErrInf_x0017E7B8 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E7B8;
+typedef struct Mpeg2Ext_x0017E7B8 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E7B8;
+typedef enum M2vFrameRate_x0017E7B8 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E7B8 = 0
+} M2vFrameRate_x0017E7B8;
+typedef enum M2vPicType_x0017E7B8 {
+    M2V_PICTYPE_I_x0017E7B8 = 1,
+    M2V_PICTYPE_P_x0017E7B8 = 2,
+    M2V_PICTYPE_B_x0017E7B8 = 3,
+    M2V_PICTYPE_D_x0017E7B8 = 4
+} M2vPicType_x0017E7B8;
+typedef enum M2vPicStruct_x0017E7B8 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E7B8 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E7B8 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E7B8 = 3
+} M2vPicStruct_x0017E7B8;
+typedef enum M2vPicAtrF64_x0017E7B8 {
+    M2V_PICATR_F64_0_x0017E7B8 = 0
+} M2vPicAtrF64_x0017E7B8;
+typedef struct M2vPicAtr_x0017E7B8 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E7B8 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E7B8 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E7B8 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E7B8 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E7B8;
+typedef void (*M2vUsrDatFn_x0017E7B8)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E7B8 {
+    struct SfdSj_x0017E7B8 *sj;
+    M2vUsrDatFn_x0017E7B8 fn;
+    void *obj;
+} M2vUsrSj_x0017E7B8;
+typedef struct M2vPicUsr_x0017E7B8 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E7B8;
+typedef void (*M2vCondFn_x0017E7B8)();
+typedef struct M2vObj_x0017E7B8 {
+    int stat;
+    M2vErrInf_x0017E7B8 err;
+    M2vCondFn_x0017E7B8 cond[16];
+    M2vPicAtr_x0017E7B8 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E7B8 usrsj[4];
+    M2vPicUsr_x0017E7B8 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E7B8 ext;
+    char pad1656[8];
+} M2vObj_x0017E7B8;
+extern void M2V_SetErrFunc_x0017E7B8(M2vObj_x0017E7B8 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E7B8 {
+    MPV_UDLVL_SEQ_x0017E7B8 = 1,
+    MPV_UDLVL_GOP_x0017E7B8 = 2,
+    MPV_UDLVL_PIC_x0017E7B8 = 3
+} MpvUdLevel_x0017E7B8;
+typedef struct MpvSeqInf_x0017E7B8 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E7B8;
+typedef struct MpvMotionRange_x0017E7B8 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E7B8;
+typedef struct MpvErrObj_x0017E7B8 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E7B8;
+typedef struct MpvHn_x0017E7B8 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E7B8 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E7B8 picInf;
+    MpvErrObj_x0017E7B8 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E7B8 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E7B8 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E7B8 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E7B8 *lower;
+    MpvUdLevel_x0017E7B8 usrDatLevel;
+    M2vUsrSj_x0017E7B8 bufEnt[4];
+    M2vPicUsr_x0017E7B8 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E7B8;
+typedef struct MpvLib_x0017E7B8 {
+    int cond[16];
+    int optionFlag;
+    int initFlag;
+    char pad72[4];
+    char *tables;
+    char *pool;
+    int nhn;
+    MpvHn_x0017E7B8 *hn;
+} MpvLib_x0017E7B8;
+extern void mpvhook_SetErrFunc_x0017E7B8(M2vObj_x0017E7B8 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+extern MpvLib_x0017E7B8 mpv_lib_x0017E7B8 __asm__("D_004814F0");
+void mpv_FinishLower_x0017E7B8(void) __asm__("func_0017EC00");
+void mpvlib_FreeLc_x0017E7B8(void *p, int size) __asm__("func_0017E9D8");
+void mpvlib_FreeLc_x0017E7B8(void *p, int size) __asm__("func_0017E9D8");
+void mpv_FinishLower_x0017E7B8(void) __asm__("func_0017EC00");
+void func_0017E7B8_x0017E7B8(void) __asm__("func_0017E7B8");
+/* MPV_Finish: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0017E7B8_x0017E7B8(void) {
+    mpv_FinishLower_x0017E7B8();
+    mpvlib_FreeLc_x0017E7B8(mpv_lib_x0017E7B8.pool, 7136);
+}
+typedef struct SfdSj_x0017E7E0 SfdSj_x0017E7E0;
+typedef struct SfdSjChunk_x0017E7E0 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E7E0;
+typedef struct SfdSjVtbl_x0017E7E0 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E7E0 *sj);
+    int (*getUuid)(SfdSj_x0017E7E0 *sj);
+    void (*reset)(SfdSj_x0017E7E0 *sj);
+    void (*getChunk)(SfdSj_x0017E7E0 *sj, int id, int n, SfdSjChunk_x0017E7E0 *ck);
+    void (*ungetChunk)(SfdSj_x0017E7E0 *sj, int id, SfdSjChunk_x0017E7E0 *ck);
+    void (*putChunk)(SfdSj_x0017E7E0 *sj, int id, SfdSjChunk_x0017E7E0 *ck);
+    int (*getNumData)(SfdSj_x0017E7E0 *sj, int id);
+} SfdSjVtbl_x0017E7E0;
+struct SfdSj_x0017E7E0 {
+    SfdSjVtbl_x0017E7E0 *vtbl;
+};
+struct SfdSj_x0017E7E0;
+typedef struct M2vErrInf_x0017E7E0 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E7E0;
+typedef struct Mpeg2Ext_x0017E7E0 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E7E0;
+typedef enum M2vFrameRate_x0017E7E0 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E7E0 = 0
+} M2vFrameRate_x0017E7E0;
+typedef enum M2vPicType_x0017E7E0 {
+    M2V_PICTYPE_I_x0017E7E0 = 1,
+    M2V_PICTYPE_P_x0017E7E0 = 2,
+    M2V_PICTYPE_B_x0017E7E0 = 3,
+    M2V_PICTYPE_D_x0017E7E0 = 4
+} M2vPicType_x0017E7E0;
+typedef enum M2vPicStruct_x0017E7E0 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E7E0 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E7E0 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E7E0 = 3
+} M2vPicStruct_x0017E7E0;
+typedef enum M2vPicAtrF64_x0017E7E0 {
+    M2V_PICATR_F64_0_x0017E7E0 = 0
+} M2vPicAtrF64_x0017E7E0;
+typedef struct M2vPicAtr_x0017E7E0 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E7E0 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E7E0 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E7E0 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E7E0 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E7E0;
+typedef void (*M2vUsrDatFn_x0017E7E0)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E7E0 {
+    struct SfdSj_x0017E7E0 *sj;
+    M2vUsrDatFn_x0017E7E0 fn;
+    void *obj;
+} M2vUsrSj_x0017E7E0;
+typedef struct M2vPicUsr_x0017E7E0 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E7E0;
+typedef void (*M2vCondFn_x0017E7E0)();
+typedef struct M2vObj_x0017E7E0 {
+    int stat;
+    M2vErrInf_x0017E7E0 err;
+    M2vCondFn_x0017E7E0 cond[16];
+    M2vPicAtr_x0017E7E0 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E7E0 usrsj[4];
+    M2vPicUsr_x0017E7E0 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E7E0 ext;
+    char pad1656[8];
+} M2vObj_x0017E7E0;
+extern void M2V_SetErrFunc_x0017E7E0(M2vObj_x0017E7E0 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E7E0 {
+    MPV_UDLVL_SEQ_x0017E7E0 = 1,
+    MPV_UDLVL_GOP_x0017E7E0 = 2,
+    MPV_UDLVL_PIC_x0017E7E0 = 3
+} MpvUdLevel_x0017E7E0;
+typedef struct MpvSeqInf_x0017E7E0 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E7E0;
+typedef struct MpvMotionRange_x0017E7E0 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E7E0;
+typedef struct MpvErrObj_x0017E7E0 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E7E0;
+typedef struct MpvHn_x0017E7E0 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E7E0 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E7E0 picInf;
+    MpvErrObj_x0017E7E0 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E7E0 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E7E0 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E7E0 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E7E0 *lower;
+    MpvUdLevel_x0017E7E0 usrDatLevel;
+    M2vUsrSj_x0017E7E0 bufEnt[4];
+    M2vPicUsr_x0017E7E0 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E7E0;
+extern void mpvhook_SetErrFunc_x0017E7E0(M2vObj_x0017E7E0 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+void mpvlib_AllocLc_x0017E7E0(void *p, int size) __asm__("func_0017E9D0");
+MpvHn_x0017E7E0 *mpvlib_SearchFreeHn_x0017E7E0(void) __asm__("func_0017E838");
+MpvHn_x0017E7E0 *mpvlib_InitHn_x0017E7E0(MpvHn_x0017E7E0 *hn) __asm__("func_0017E888");
+M2vObj_x0017E7E0 *mpvcmc_OneMakeMbTa_x0017E7E0(MpvHn_x0017E7E0 *hn) __asm__("func_0017EC18");
+MpvHn_x0017E7E0 *mpvlib_SearchFreeHn_x0017E7E0(void) __asm__("func_0017E838");
+MpvHn_x0017E7E0 *mpvlib_InitHn_x0017E7E0(MpvHn_x0017E7E0 *hn) __asm__("func_0017E888");
+void mpvlib_AllocLc_x0017E7E0(void *p, int size) __asm__("func_0017E9D0");
+M2vObj_x0017E7E0 *mpvcmc_OneMakeMbTa_x0017E7E0(MpvHn_x0017E7E0 *hn) __asm__("func_0017EC18");
+MpvHn_x0017E7E0 *func_0017E7E0_x0017E7E0(void) __asm__("func_0017E7E0");
+/* MPV_Create: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+MpvHn_x0017E7E0 *func_0017E7E0_x0017E7E0(void) {
+    MpvHn_x0017E7E0 *hn;
+    hn = mpvlib_SearchFreeHn_x0017E7E0();
+    if (hn == 0) {
+        return 0;
+    }
+    mpvlib_AllocLc_x0017E7E0(hn, 1016);
+    hn = mpvlib_InitHn_x0017E7E0(hn);
+    hn->lower = mpvcmc_OneMakeMbTa_x0017E7E0(hn);
+    return hn;
+}
+typedef struct SfdSj_x0017E838 SfdSj_x0017E838;
+typedef struct SfdSjChunk_x0017E838 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E838;
+typedef struct SfdSjVtbl_x0017E838 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E838 *sj);
+    int (*getUuid)(SfdSj_x0017E838 *sj);
+    void (*reset)(SfdSj_x0017E838 *sj);
+    void (*getChunk)(SfdSj_x0017E838 *sj, int id, int n, SfdSjChunk_x0017E838 *ck);
+    void (*ungetChunk)(SfdSj_x0017E838 *sj, int id, SfdSjChunk_x0017E838 *ck);
+    void (*putChunk)(SfdSj_x0017E838 *sj, int id, SfdSjChunk_x0017E838 *ck);
+    int (*getNumData)(SfdSj_x0017E838 *sj, int id);
+} SfdSjVtbl_x0017E838;
+struct SfdSj_x0017E838 {
+    SfdSjVtbl_x0017E838 *vtbl;
+};
+struct SfdSj_x0017E838;
+typedef struct M2vErrInf_x0017E838 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E838;
+typedef struct Mpeg2Ext_x0017E838 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E838;
+typedef enum M2vFrameRate_x0017E838 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E838 = 0
+} M2vFrameRate_x0017E838;
+typedef enum M2vPicType_x0017E838 {
+    M2V_PICTYPE_I_x0017E838 = 1,
+    M2V_PICTYPE_P_x0017E838 = 2,
+    M2V_PICTYPE_B_x0017E838 = 3,
+    M2V_PICTYPE_D_x0017E838 = 4
+} M2vPicType_x0017E838;
+typedef enum M2vPicStruct_x0017E838 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E838 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E838 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E838 = 3
+} M2vPicStruct_x0017E838;
+typedef enum M2vPicAtrF64_x0017E838 {
+    M2V_PICATR_F64_0_x0017E838 = 0
+} M2vPicAtrF64_x0017E838;
+typedef struct M2vPicAtr_x0017E838 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E838 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E838 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E838 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E838 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E838;
+typedef void (*M2vUsrDatFn_x0017E838)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E838 {
+    struct SfdSj_x0017E838 *sj;
+    M2vUsrDatFn_x0017E838 fn;
+    void *obj;
+} M2vUsrSj_x0017E838;
+typedef struct M2vPicUsr_x0017E838 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E838;
+typedef void (*M2vCondFn_x0017E838)();
+typedef struct M2vObj_x0017E838 {
+    int stat;
+    M2vErrInf_x0017E838 err;
+    M2vCondFn_x0017E838 cond[16];
+    M2vPicAtr_x0017E838 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E838 usrsj[4];
+    M2vPicUsr_x0017E838 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E838 ext;
+    char pad1656[8];
+} M2vObj_x0017E838;
+extern void M2V_SetErrFunc_x0017E838(M2vObj_x0017E838 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E838 {
+    MPV_UDLVL_SEQ_x0017E838 = 1,
+    MPV_UDLVL_GOP_x0017E838 = 2,
+    MPV_UDLVL_PIC_x0017E838 = 3
+} MpvUdLevel_x0017E838;
+typedef struct MpvSeqInf_x0017E838 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E838;
+typedef struct MpvMotionRange_x0017E838 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E838;
+typedef struct MpvErrObj_x0017E838 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E838;
+typedef struct MpvHn_x0017E838 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E838 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E838 picInf;
+    MpvErrObj_x0017E838 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E838 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E838 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E838 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E838 *lower;
+    MpvUdLevel_x0017E838 usrDatLevel;
+    M2vUsrSj_x0017E838 bufEnt[4];
+    M2vPicUsr_x0017E838 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E838;
+typedef struct MpvLib_x0017E838 {
+    int cond[16];
+    int optionFlag;
+    int initFlag;
+    char pad72[4];
+    char *tables;
+    char *pool;
+    int nhn;
+    MpvHn_x0017E838 *hn;
+} MpvLib_x0017E838;
+extern void mpvhook_SetErrFunc_x0017E838(M2vObj_x0017E838 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+extern MpvLib_x0017E838 mpv_lib_x0017E838 __asm__("D_004814F0");
+MpvHn_x0017E838 *func_0017E838_x0017E838(void) __asm__("func_0017E838");
+/* mpvlib_SearchFreeHn: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+MpvHn_x0017E838 *func_0017E838_x0017E838(void) {
+    MpvHn_x0017E838 *hn = mpv_lib_x0017E838.hn;
+    int nhn = mpv_lib_x0017E838.nhn;
+    int i;
+    for (i = 0; i < nhn; i++, hn++) {
+        if (hn->stat == 1) {
+            return hn;
+        }
+    }
+    return 0;
+}
+typedef struct SfdSj_x0017E888 SfdSj_x0017E888;
+typedef struct SfdSjChunk_x0017E888 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E888;
+typedef struct SfdSjVtbl_x0017E888 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E888 *sj);
+    int (*getUuid)(SfdSj_x0017E888 *sj);
+    void (*reset)(SfdSj_x0017E888 *sj);
+    void (*getChunk)(SfdSj_x0017E888 *sj, int id, int n, SfdSjChunk_x0017E888 *ck);
+    void (*ungetChunk)(SfdSj_x0017E888 *sj, int id, SfdSjChunk_x0017E888 *ck);
+    void (*putChunk)(SfdSj_x0017E888 *sj, int id, SfdSjChunk_x0017E888 *ck);
+    int (*getNumData)(SfdSj_x0017E888 *sj, int id);
+} SfdSjVtbl_x0017E888;
+struct SfdSj_x0017E888 {
+    SfdSjVtbl_x0017E888 *vtbl;
+};
+struct SfdSj_x0017E888;
+typedef struct M2vErrInf_x0017E888 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E888;
+typedef struct Mpeg2Ext_x0017E888 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E888;
+typedef enum M2vFrameRate_x0017E888 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E888 = 0
+} M2vFrameRate_x0017E888;
+typedef enum M2vPicType_x0017E888 {
+    M2V_PICTYPE_I_x0017E888 = 1,
+    M2V_PICTYPE_P_x0017E888 = 2,
+    M2V_PICTYPE_B_x0017E888 = 3,
+    M2V_PICTYPE_D_x0017E888 = 4
+} M2vPicType_x0017E888;
+typedef enum M2vPicStruct_x0017E888 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E888 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E888 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E888 = 3
+} M2vPicStruct_x0017E888;
+typedef enum M2vPicAtrF64_x0017E888 {
+    M2V_PICATR_F64_0_x0017E888 = 0
+} M2vPicAtrF64_x0017E888;
+typedef struct M2vPicAtr_x0017E888 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E888 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E888 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E888 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E888 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E888;
+typedef void (*M2vUsrDatFn_x0017E888)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E888 {
+    struct SfdSj_x0017E888 *sj;
+    M2vUsrDatFn_x0017E888 fn;
+    void *obj;
+} M2vUsrSj_x0017E888;
+typedef struct M2vPicUsr_x0017E888 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E888;
+typedef void (*M2vCondFn_x0017E888)();
+typedef struct M2vObj_x0017E888 {
+    int stat;
+    M2vErrInf_x0017E888 err;
+    M2vCondFn_x0017E888 cond[16];
+    M2vPicAtr_x0017E888 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E888 usrsj[4];
+    M2vPicUsr_x0017E888 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E888 ext;
+    char pad1656[8];
+} M2vObj_x0017E888;
+extern void M2V_SetErrFunc_x0017E888(M2vObj_x0017E888 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E888 {
+    MPV_UDLVL_SEQ_x0017E888 = 1,
+    MPV_UDLVL_GOP_x0017E888 = 2,
+    MPV_UDLVL_PIC_x0017E888 = 3
+} MpvUdLevel_x0017E888;
+typedef struct MpvSeqInf_x0017E888 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E888;
+typedef struct MpvMotionRange_x0017E888 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E888;
+typedef struct MpvErrObj_x0017E888 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E888;
+typedef struct MpvHn_x0017E888 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E888 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E888 picInf;
+    MpvErrObj_x0017E888 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E888 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E888 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E888 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E888 *lower;
+    MpvUdLevel_x0017E888 usrDatLevel;
+    M2vUsrSj_x0017E888 bufEnt[4];
+    M2vPicUsr_x0017E888 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E888;
+typedef struct MpvLib_x0017E888 {
+    int cond[16];
+    int optionFlag;
+    int initFlag;
+    char pad72[4];
+    char *tables;
+    char *pool;
+    int nhn;
+    MpvHn_x0017E888 *hn;
+} MpvLib_x0017E888;
+void mpv_ResetErr_x0017E888(MpvErrObj_x0017E888 *err) __asm__("func_0017C1D8");
+void MPV_SetUsrSj_x0017E888(MpvHn_x0017E888 *mpv, int index, SfdSj_x0017E888 *sj, M2vUsrDatFn_x0017E888 fn, void *obj) __asm__("func_0017C840");
+void MPV_SetPicUsrBuf_x0017E888(MpvHn_x0017E888 *mpv, char *buf, int size) __asm__("func_0017C868");
+extern void mpvhook_SetErrFunc_x0017E888(M2vObj_x0017E888 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+void UTY_MemcpyDword_x0017E888(void *dst, void *src, unsigned int n) __asm__("func_00178E38");
+extern MpvLib_x0017E888 mpv_lib_x0017E888 __asm__("D_004814F0");
+void mpv_BindHnBuffers_x0017E888(MpvHn_x0017E888 *hn) __asm__("func_0017E620");
+void mpv_ResetPicInf_x0017E888(M2vPicAtr_x0017E888 *inf) __asm__("func_0017E708");
+void mpv_BindHnBuffers_x0017E888(MpvHn_x0017E888 *hn) __asm__("func_0017E620");
+void mpv_ResetPicInf_x0017E888(M2vPicAtr_x0017E888 *inf) __asm__("func_0017E708");
+MpvHn_x0017E888 *func_0017E888_x0017E888(MpvHn_x0017E888 *hn) __asm__("func_0017E888");
+/* mpvlib_InitHn: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+MpvHn_x0017E888 *func_0017E888_x0017E888(MpvHn_x0017E888 *hn) {
+    int i;
+    mpv_BindHnBuffers_x0017E888(hn);
+    hn->f396 = 0;
+    UTY_MemcpyDword_x0017E888(hn->cond, mpv_lib_x0017E888.cond, 16);
+    mpv_ResetErr_x0017E888(&hn->err);
+    mpv_ResetPicInf_x0017E888(&hn->picInf);
+    hn->skipReq = 0;
+    hn->skipCnt = 0;
+    hn->maxCount = hn->cond[7];
+    hn->strmType = 0;
+    hn->f860 = 0;
+    hn->f864 = 0;
+    hn->f868 = 0;
+    hn->idcPrec = 0;
+    for (i = 0; i < 4; i++) {
+        MPV_SetUsrSj_x0017E888(hn, i, 0, 0, 0);
+    }
+    MPV_SetPicUsrBuf_x0017E888(hn, 0, 0);
+    hn->stat = 2;
+    return hn;
+}
 void func_0017E950(s32 arg0, s32 *arg1, s32 *arg2) {
     u8 *temp_a0;
 
@@ -2058,7 +12004,363 @@ void func_0017E950(s32 arg0, s32 *arg1, s32 *arg2) {
     *arg1 = *(s32 *)((u8 *)temp_a0 + 0x18);
     *arg2 = *(s32 *)((u8 *)temp_a0 + 0x1C);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E968);
+typedef struct SfdSj_x0017E968 SfdSj_x0017E968;
+typedef struct SfdSjChunk_x0017E968 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E968;
+typedef struct SfdSjVtbl_x0017E968 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E968 *sj);
+    int (*getUuid)(SfdSj_x0017E968 *sj);
+    void (*reset)(SfdSj_x0017E968 *sj);
+    void (*getChunk)(SfdSj_x0017E968 *sj, int id, int n, SfdSjChunk_x0017E968 *ck);
+    void (*ungetChunk)(SfdSj_x0017E968 *sj, int id, SfdSjChunk_x0017E968 *ck);
+    void (*putChunk)(SfdSj_x0017E968 *sj, int id, SfdSjChunk_x0017E968 *ck);
+    int (*getNumData)(SfdSj_x0017E968 *sj, int id);
+} SfdSjVtbl_x0017E968;
+struct SfdSj_x0017E968 {
+    SfdSjVtbl_x0017E968 *vtbl;
+};
+struct SfdSj_x0017E968;
+typedef struct M2vErrInf_x0017E968 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E968;
+typedef struct Mpeg2Ext_x0017E968 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E968;
+typedef enum M2vFrameRate_x0017E968 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E968 = 0
+} M2vFrameRate_x0017E968;
+typedef enum M2vPicType_x0017E968 {
+    M2V_PICTYPE_I_x0017E968 = 1,
+    M2V_PICTYPE_P_x0017E968 = 2,
+    M2V_PICTYPE_B_x0017E968 = 3,
+    M2V_PICTYPE_D_x0017E968 = 4
+} M2vPicType_x0017E968;
+typedef enum M2vPicStruct_x0017E968 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E968 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E968 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E968 = 3
+} M2vPicStruct_x0017E968;
+typedef enum M2vPicAtrF64_x0017E968 {
+    M2V_PICATR_F64_0_x0017E968 = 0
+} M2vPicAtrF64_x0017E968;
+typedef struct M2vPicAtr_x0017E968 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E968 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E968 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E968 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E968 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E968;
+typedef void (*M2vUsrDatFn_x0017E968)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E968 {
+    struct SfdSj_x0017E968 *sj;
+    M2vUsrDatFn_x0017E968 fn;
+    void *obj;
+} M2vUsrSj_x0017E968;
+typedef struct M2vPicUsr_x0017E968 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E968;
+typedef void (*M2vCondFn_x0017E968)();
+typedef struct M2vObj_x0017E968 {
+    int stat;
+    M2vErrInf_x0017E968 err;
+    M2vCondFn_x0017E968 cond[16];
+    M2vPicAtr_x0017E968 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E968 usrsj[4];
+    M2vPicUsr_x0017E968 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E968 ext;
+    char pad1656[8];
+} M2vObj_x0017E968;
+extern void M2V_SetErrFunc_x0017E968(M2vObj_x0017E968 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E968 {
+    MPV_UDLVL_SEQ_x0017E968 = 1,
+    MPV_UDLVL_GOP_x0017E968 = 2,
+    MPV_UDLVL_PIC_x0017E968 = 3
+} MpvUdLevel_x0017E968;
+typedef struct MpvSeqInf_x0017E968 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E968;
+typedef struct MpvMotionRange_x0017E968 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E968;
+typedef struct MpvErrObj_x0017E968 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E968;
+typedef struct MpvHn_x0017E968 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E968 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E968 picInf;
+    MpvErrObj_x0017E968 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E968 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E968 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E968 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E968 *lower;
+    MpvUdLevel_x0017E968 usrDatLevel;
+    M2vUsrSj_x0017E968 bufEnt[4];
+    M2vPicUsr_x0017E968 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E968;
+int MPVLIB_CheckHn_x0017E968(MpvHn_x0017E968 *hn) __asm__("func_0017EB90");
+int mpv_ReportError_x0017E968(MpvHn_x0017E968 *mpv, int code) __asm__("func_0017C2E0");
+extern void mpvhook_SetErrFunc_x0017E968(M2vObj_x0017E968 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+void mpvlib_FreeLc_x0017E968(void *p, int size) __asm__("func_0017E9D8");
+void mpvcmc_BiMakeMbTa_x0017E968(MpvHn_x0017E968 *hn) __asm__("func_0017EC30");
+void mpvlib_FreeLc_x0017E968(void *p, int size) __asm__("func_0017E9D8");
+int MPVLIB_CheckHn_x0017E968(MpvHn_x0017E968 *hn) __asm__("func_0017EB90");
+void mpvcmc_BiMakeMbTa_x0017E968(MpvHn_x0017E968 *hn) __asm__("func_0017EC30");
+int func_0017E968_x0017E968(MpvHn_x0017E968 *hn) __asm__("func_0017E968");
+/* MPV_Destroy: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017E968_x0017E968(MpvHn_x0017E968 *hn) {
+    if (MPVLIB_CheckHn_x0017E968(hn) != 0) {
+        return mpv_ReportError_x0017E968(0, 0xFF030201);
+    }
+    mpvcmc_BiMakeMbTa_x0017E968(hn);
+    mpvlib_FreeLc_x0017E968(hn, 1016);
+    hn->stat = 1;
+    return 0;
+}
 void func_0017E9D0(void) {
 
 }
@@ -2068,8 +12370,747 @@ void func_0017E9D8(void) {
 void func_0017E9E0(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017E9E8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EAB0);
+typedef struct SfdSj_x0017E9E8 SfdSj_x0017E9E8;
+typedef struct SfdSjChunk_x0017E9E8 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017E9E8;
+typedef struct SfdSjVtbl_x0017E9E8 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017E9E8 *sj);
+    int (*getUuid)(SfdSj_x0017E9E8 *sj);
+    void (*reset)(SfdSj_x0017E9E8 *sj);
+    void (*getChunk)(SfdSj_x0017E9E8 *sj, int id, int n, SfdSjChunk_x0017E9E8 *ck);
+    void (*ungetChunk)(SfdSj_x0017E9E8 *sj, int id, SfdSjChunk_x0017E9E8 *ck);
+    void (*putChunk)(SfdSj_x0017E9E8 *sj, int id, SfdSjChunk_x0017E9E8 *ck);
+    int (*getNumData)(SfdSj_x0017E9E8 *sj, int id);
+} SfdSjVtbl_x0017E9E8;
+struct SfdSj_x0017E9E8 {
+    SfdSjVtbl_x0017E9E8 *vtbl;
+};
+struct SfdSj_x0017E9E8;
+typedef struct M2vErrInf_x0017E9E8 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017E9E8;
+typedef struct Mpeg2Ext_x0017E9E8 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017E9E8;
+typedef enum M2vFrameRate_x0017E9E8 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017E9E8 = 0
+} M2vFrameRate_x0017E9E8;
+typedef enum M2vPicType_x0017E9E8 {
+    M2V_PICTYPE_I_x0017E9E8 = 1,
+    M2V_PICTYPE_P_x0017E9E8 = 2,
+    M2V_PICTYPE_B_x0017E9E8 = 3,
+    M2V_PICTYPE_D_x0017E9E8 = 4
+} M2vPicType_x0017E9E8;
+typedef enum M2vPicStruct_x0017E9E8 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017E9E8 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017E9E8 = 2,
+    M2V_PICSTRUCT_FRAME_x0017E9E8 = 3
+} M2vPicStruct_x0017E9E8;
+typedef enum M2vPicAtrF64_x0017E9E8 {
+    M2V_PICATR_F64_0_x0017E9E8 = 0
+} M2vPicAtrF64_x0017E9E8;
+typedef struct M2vPicAtr_x0017E9E8 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017E9E8 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017E9E8 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017E9E8 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017E9E8 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017E9E8;
+typedef void (*M2vUsrDatFn_x0017E9E8)(void *obj, int level);
+typedef struct M2vUsrSj_x0017E9E8 {
+    struct SfdSj_x0017E9E8 *sj;
+    M2vUsrDatFn_x0017E9E8 fn;
+    void *obj;
+} M2vUsrSj_x0017E9E8;
+typedef struct M2vPicUsr_x0017E9E8 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017E9E8;
+typedef void (*M2vCondFn_x0017E9E8)();
+typedef struct M2vObj_x0017E9E8 {
+    int stat;
+    M2vErrInf_x0017E9E8 err;
+    M2vCondFn_x0017E9E8 cond[16];
+    M2vPicAtr_x0017E9E8 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017E9E8 usrsj[4];
+    M2vPicUsr_x0017E9E8 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017E9E8 ext;
+    char pad1656[8];
+} M2vObj_x0017E9E8;
+extern void M2V_SetErrFunc_x0017E9E8(M2vObj_x0017E9E8 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017E9E8 {
+    MPV_UDLVL_SEQ_x0017E9E8 = 1,
+    MPV_UDLVL_GOP_x0017E9E8 = 2,
+    MPV_UDLVL_PIC_x0017E9E8 = 3
+} MpvUdLevel_x0017E9E8;
+typedef struct MpvSeqInf_x0017E9E8 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017E9E8;
+typedef struct MpvMotionRange_x0017E9E8 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017E9E8;
+typedef struct MpvErrObj_x0017E9E8 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017E9E8;
+typedef struct MpvHn_x0017E9E8 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017E9E8 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017E9E8 picInf;
+    MpvErrObj_x0017E9E8 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017E9E8 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017E9E8 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017E9E8 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017E9E8 *lower;
+    MpvUdLevel_x0017E9E8 usrDatLevel;
+    M2vUsrSj_x0017E9E8 bufEnt[4];
+    M2vPicUsr_x0017E9E8 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017E9E8;
+typedef struct MpvLib_x0017E9E8 {
+    int cond[16];
+    int optionFlag;
+    int initFlag;
+    char pad72[4];
+    char *tables;
+    char *pool;
+    int nhn;
+    MpvHn_x0017E9E8 *hn;
+} MpvLib_x0017E9E8;
+int MPVLIB_CheckHn_x0017E9E8(MpvHn_x0017E9E8 *hn) __asm__("func_0017EB90");
+int mpv_ReportError_x0017E9E8(MpvHn_x0017E9E8 *mpv, int code) __asm__("func_0017C2E0");
+extern void mpvhook_SetErrFunc_x0017E9E8(M2vObj_x0017E9E8 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+extern MpvLib_x0017E9E8 mpv_lib_x0017E9E8 __asm__("D_004814F0");
+void MPV_MbCbFn_x0017E9E8(void) __asm__("func_0017E9E0");
+void mpvlib_SetCondAll_x0017E9E8(int no, int value) __asm__("func_0017EAB0");
+void mpv_SetLowerCond_x0017E9E8(MpvHn_x0017E9E8 *hn, int no, int value) __asm__("func_0017EC48");
+void MPV_MbCbFn_x0017E9E8(void) __asm__("func_0017E9E0");
+void mpvlib_SetCondAll_x0017E9E8(int no, int value) __asm__("func_0017EAB0");
+int MPVLIB_CheckHn_x0017E9E8(MpvHn_x0017E9E8 *hn) __asm__("func_0017EB90");
+void mpv_SetLowerCond_x0017E9E8(MpvHn_x0017E9E8 *hn, int no, int value) __asm__("func_0017EC48");
+int func_0017E9E8_x0017E9E8(MpvHn_x0017E9E8 *hn, int no, int value) __asm__("func_0017E9E8");
+/* MPV_SetCond: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0017E9E8_x0017E9E8(MpvHn_x0017E9E8 *hn, int no, int value) {
+    int *cond;
+    if (no == 8 && value == 0) {
+        value = (int)MPV_MbCbFn_x0017E9E8;
+    }
+    if (hn == 0) {
+        mpvlib_SetCondAll_x0017E9E8(no, value);
+        cond = mpv_lib_x0017E9E8.cond;
+    } else {
+        if (MPVLIB_CheckHn_x0017E9E8(hn) != 0) {
+            return mpv_ReportError_x0017E9E8(0, 0xFF030202);
+        }
+        cond = hn->cond;
+    }
+    cond[no] = value;
+    mpv_SetLowerCond_x0017E9E8(hn, no, value);
+    return 0;
+}
+typedef struct SfdSj_x0017EAB0 SfdSj_x0017EAB0;
+typedef struct SfdSjChunk_x0017EAB0 {
+    char *data;
+    int len;
+} SfdSjChunk_x0017EAB0;
+typedef struct SfdSjVtbl_x0017EAB0 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0017EAB0 *sj);
+    int (*getUuid)(SfdSj_x0017EAB0 *sj);
+    void (*reset)(SfdSj_x0017EAB0 *sj);
+    void (*getChunk)(SfdSj_x0017EAB0 *sj, int id, int n, SfdSjChunk_x0017EAB0 *ck);
+    void (*ungetChunk)(SfdSj_x0017EAB0 *sj, int id, SfdSjChunk_x0017EAB0 *ck);
+    void (*putChunk)(SfdSj_x0017EAB0 *sj, int id, SfdSjChunk_x0017EAB0 *ck);
+    int (*getNumData)(SfdSj_x0017EAB0 *sj, int id);
+} SfdSjVtbl_x0017EAB0;
+struct SfdSj_x0017EAB0 {
+    SfdSjVtbl_x0017EAB0 *vtbl;
+};
+struct SfdSj_x0017EAB0;
+typedef struct M2vErrInf_x0017EAB0 {
+    int (*func)(void *obj);
+    void *obj;
+    int code;
+    int reserved[2];
+} M2vErrInf_x0017EAB0;
+typedef struct Mpeg2Ext_x0017EAB0 {
+    int sequence_header_code;
+    int horizontal_size_value;
+    int vertical_size_value;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_value;
+    int marker_bit;
+    int vbv_buffer_size_value;
+    int constrained_parameters_flag;
+    int load_intra_quantiser_matrix;
+    int load_non_intra_quantiser_matrix;
+    int sec_start_code;
+    int udsc_start_code;
+    int start_code;
+    int number_of_frame_centre_offsets;
+    char pad3[4];
+    int extension_id;
+    int profile_and_level_indication;
+    int progressive_sequence;
+    int chroma_format;
+    int horizontal_size_extension;
+    int vertical_size_extension;
+    int bit_rate_extension;
+    int vbv_buffer_size_extension;
+    int low_delay;
+    int frame_rate_extension_n;
+    int frame_rate_extension_d;
+    int video_format;
+    int colour_description;
+    int colour_primaries;
+    int transfer_characteristics;
+    int matrix_coefficients;
+    int display_horizontal_size;
+    int display_vertical_size;
+    int scalable_mode;
+    int layer_id;
+    int lower_layer_prediction_horizontal_size;
+    int lower_layer_prediction_vertical_size;
+    int horizontal_subsampling_factor_m;
+    int horizontal_subsampling_factor_n;
+    int vertical_subsampling_factor_m;
+    int vertical_subsampling_factor_n;
+    int picture_mux_enable;
+    int mux_to_progressive_sequence;
+    int picture_mux_order;
+    int picture_mux_factor;
+    int group_start_code;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int closed_gop;
+    int broken_link;
+    int picture_start_code;
+    int temporal_reference;
+    int picture_coding_type;
+    int vbv_delay;
+    int full_pel_forward_vector;
+    int forward_f_code;
+    int full_pel_backward_vector;
+    int backward_f_code;
+    int extra_bit_picture;
+    int extra_information_picture;
+    char pad4b[4];
+    int f_code00;
+    int f_code01;
+    int f_code10;
+    int f_code11;
+    int intra_dc_precision;
+    int picture_structure;
+    int top_field_first;
+    int frame_pred_frame_dct;
+    int concealment_motion_vectors;
+    int q_scale_type;
+    int intra_vlc_format;
+    int alternate_scan;
+    int repeat_first_field;
+    int chroma_420_type;
+    int progressive_frame;
+    int composite_display_flag;
+    int v_axis;
+    int field_sequence;
+    int sub_carrier;
+    int burst_amplitude;
+    int sub_carrier_phase;
+    int load_chroma_intra_quantiser_matrix;
+    int load_chroma_non_intra_quantiser_matrix;
+    int frame_centre_horizontal_offset[3];
+    int frame_centre_vertical_offset[3];
+    int reference_select_code;
+    int forward_temporal_reference;
+    int backward_temporal_reference;
+    int lower_layer_temporal_reference;
+    int lower_layer_horizontal_offset;
+    int lower_layer_vertical_offset;
+    int spatial_temporal_weight_code_table_index;
+    int lower_layer_progressive_frame;
+    int lower_layer_deinterlaced_field_select;
+    int copyright_flag;
+    int copyright_identifier;
+    int original_or_copy;
+    int copyright_reserved;
+    int copyright_number_1;
+    int copyright_number_2;
+    int copyright_number_3;
+    char pad5[268];
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    int bit_rate;
+    int vbv_buffer_size;
+    char pad6[44];
+    int ext_state;
+    int expected_ext_id;
+    int scalable_seen;
+    int spatial_scalable_seen;
+    int blocks_per_macroblock;
+    char pad796[4];
+    int dc_dct_pred_reset;
+    char pad804[12];
+    int intra_dc_mult;
+    char pad820[128];
+    int padded_width;
+    int padded_height;
+    int half_width;
+    int half_height;
+    int field_964;
+    int field_968;
+    char pad8[164];
+    int f1136[5];
+    int header_level;
+    int f1160;
+    int f1164;
+    int shc_count;
+    int sec_count;
+    int udsc_count;
+    int call_count;
+    int gsc_count;
+    int psc_count;
+    int picture_count[4];
+    char pad10[64];
+    int error_count;
+    int warning_count;
+    char pad1280[12];
+    int field_1292;
+    char pad1296[8];
+} Mpeg2Ext_x0017EAB0;
+typedef enum M2vFrameRate_x0017EAB0 {
+    M2V_FRAME_RATE_FORBIDDEN_x0017EAB0 = 0
+} M2vFrameRate_x0017EAB0;
+typedef enum M2vPicType_x0017EAB0 {
+    M2V_PICTYPE_I_x0017EAB0 = 1,
+    M2V_PICTYPE_P_x0017EAB0 = 2,
+    M2V_PICTYPE_B_x0017EAB0 = 3,
+    M2V_PICTYPE_D_x0017EAB0 = 4
+} M2vPicType_x0017EAB0;
+typedef enum M2vPicStruct_x0017EAB0 {
+    M2V_PICSTRUCT_TOP_FIELD_x0017EAB0 = 1,
+    M2V_PICSTRUCT_BOTTOM_FIELD_x0017EAB0 = 2,
+    M2V_PICSTRUCT_FRAME_x0017EAB0 = 3
+} M2vPicStruct_x0017EAB0;
+typedef enum M2vPicAtrF64_x0017EAB0 {
+    M2V_PICATR_F64_0_x0017EAB0 = 0
+} M2vPicAtrF64_x0017EAB0;
+typedef struct M2vPicAtr_x0017EAB0 {
+    int horizontal_size;
+    int vertical_size;
+    int mb_width;
+    int mb_height;
+    M2vFrameRate_x0017EAB0 frame_rate_code;
+    int temporal_reference;
+    M2vPicType_x0017EAB0 picture_coding_type;
+    int drop_frame_flag;
+    int time_code_hours;
+    int time_code_minutes;
+    int time_code_seconds;
+    int time_code_pictures;
+    int gsc_count;
+    int shc_count;
+    M2vPicStruct_x0017EAB0 picture_structure;
+    int chroma_format;
+    M2vPicAtrF64_x0017EAB0 f64;
+    int f68;
+    int bit_rate;
+    int vbv_buffer_size;
+    unsigned short display_horizontal_size;
+    unsigned short display_vertical_size;
+    unsigned char field_count;
+    unsigned char progressive_frame;
+    unsigned char top_field_first;
+    signed char repeat_first_field;
+    signed char field_964;
+    unsigned char aspect_ratio_information;
+    unsigned char constrained_parameters_flag;
+    unsigned char frame_rate_extension_n;
+    unsigned char frame_rate_extension_d;
+    unsigned char profile_and_level_indication;
+    unsigned char progressive_sequence;
+    unsigned char low_delay;
+    unsigned char video_format;
+    unsigned char colour_description;
+    unsigned char colour_primaries;
+    unsigned char transfer_characteristics;
+    unsigned char matrix_coefficients;
+    char pad101[27];
+} M2vPicAtr_x0017EAB0;
+typedef void (*M2vUsrDatFn_x0017EAB0)(void *obj, int level);
+typedef struct M2vUsrSj_x0017EAB0 {
+    struct SfdSj_x0017EAB0 *sj;
+    M2vUsrDatFn_x0017EAB0 fn;
+    void *obj;
+} M2vUsrSj_x0017EAB0;
+typedef struct M2vPicUsr_x0017EAB0 {
+    char *buf;
+    int size;
+    int len;
+} M2vPicUsr_x0017EAB0;
+typedef void (*M2vCondFn_x0017EAB0)();
+typedef struct M2vObj_x0017EAB0 {
+    int stat;
+    M2vErrInf_x0017EAB0 err;
+    M2vCondFn_x0017EAB0 cond[16];
+    M2vPicAtr_x0017EAB0 picatr;
+    char pad216[64];
+    M2vUsrSj_x0017EAB0 usrsj[4];
+    M2vPicUsr_x0017EAB0 picusr;
+    char pad340[12];
+    Mpeg2Ext_x0017EAB0 ext;
+    char pad1656[8];
+} M2vObj_x0017EAB0;
+extern void M2V_SetErrFunc_x0017EAB0(M2vObj_x0017EAB0 *hn, int (*func)(void *obj), void *obj) __asm__("M2V_SetErrFunc");
+typedef enum MpvUdLevel_x0017EAB0 {
+    MPV_UDLVL_SEQ_x0017EAB0 = 1,
+    MPV_UDLVL_GOP_x0017EAB0 = 2,
+    MPV_UDLVL_PIC_x0017EAB0 = 3
+} MpvUdLevel_x0017EAB0;
+typedef struct MpvSeqInf_x0017EAB0 {
+    char pad0[24];
+    int width;
+    int height;
+} MpvSeqInf_x0017EAB0;
+typedef struct MpvMotionRange_x0017EAB0 {
+    int fullPel;
+    int rSize;
+    int shift;
+    int f;
+} MpvMotionRange_x0017EAB0;
+typedef struct MpvErrObj_x0017EAB0 {
+    int (*fn)(void *arg);
+    void *arg;
+    int code;
+    int skipReqCnt;
+    int skipPicCnt;
+} MpvErrObj_x0017EAB0;
+typedef struct MpvHn_x0017EAB0 {
+    char pad0[44];
+    char *mbBuf;
+    char *blkBuf;
+    char *dctBuf;
+    char pad56[8];
+    unsigned char *clampY;
+    char pad68[52];
+    MpvSeqInf_x0017EAB0 seq;
+    char pad152[120];
+    unsigned char *clampC;
+    char pad276[116];
+    int stat;
+    int f396;
+    int cond[16];
+    M2vPicAtr_x0017EAB0 picInf;
+    MpvErrObj_x0017EAB0 err;
+    char pad612[64];
+    int pelAspectRatio;
+    int bitRate;
+    int vbvBufferSize;
+    int constrainedParams;
+    int closedGop;
+    int brokenLink;
+    int vbvDelay;
+    char pad704[20];
+    int f724;
+    char pad728[4];
+    int f732;
+    char pad736[12];
+    MpvMotionRange_x0017EAB0 fwd;
+    char pad764[20];
+    MpvMotionRange_x0017EAB0 bwd;
+    char pad800[32];
+    int lastMbAddr;
+    char pad836[20];
+    int strmType;
+    int f860, f864, f868;
+    char pad872[24];
+    int skipReq;
+    int skipCnt;
+    SfdSjChunk_x0017EAB0 chunk;
+    char pad912[4];
+    int idcPrec;
+    char pad920[12];
+    int maxCount;
+    char pad936[8];
+    M2vObj_x0017EAB0 *lower;
+    MpvUdLevel_x0017EAB0 usrDatLevel;
+    M2vUsrSj_x0017EAB0 bufEnt[4];
+    M2vPicUsr_x0017EAB0 picusr;
+    char pad1012[1016 - 1012];
+    char pad1016[1024 - 1016];
+} MpvHn_x0017EAB0;
+typedef struct MpvLib_x0017EAB0 {
+    int cond[16];
+    int optionFlag;
+    int initFlag;
+    char pad72[4];
+    char *tables;
+    char *pool;
+    int nhn;
+    MpvHn_x0017EAB0 *hn;
+} MpvLib_x0017EAB0;
+extern void mpvhook_SetErrFunc_x0017EAB0(M2vObj_x0017EAB0 *lower, int (*func)(void *obj), void *obj) __asm__("mpvhook_SetErrFunc");
+extern MpvLib_x0017EAB0 mpv_lib_x0017EAB0 __asm__("D_004814F0");
+void func_0017EAB0_x0017EAB0(int no, int value) __asm__("func_0017EAB0");
+/* mpvlib_SetCondAll: from https://github.com/crashbashash/DW4_Decomp (src/cri/mpv.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0017EAB0_x0017EAB0(int no, int value) {
+    MpvHn_x0017EAB0 *hn = mpv_lib_x0017EAB0.hn;
+    int nhn = mpv_lib_x0017EAB0.nhn;
+    int i;
+    for (i = 0; i < nhn; i++, hn++) {
+        if (hn->stat == 2) {
+            hn->cond[no] = value;
+        }
+    }
+}
 s32 func_0017C2E0_x0017EB00(s32, s32) __asm__("func_0017C2E0");
 s32 func_0017EB90_x0017EB00(void) __asm__("func_0017EB90");
 extern s32 D_004814F0_x0017EB00 __asm__("D_004814F0");
@@ -2221,6 +13262,122 @@ void func_0017EE60(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EE78);
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EEE8);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017EF98);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017F080);
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_0017F0D0);
+typedef struct MwsfdCreInf_x0017EF98 {
+    int type;
+    int maxBps;
+    int maxWidth;
+    int maxHeight;
+    int nfrmPoolWk;
+    int nfrm;
+    char *work;
+    int workSize;
+    int addInfMode;
+    int bufFmt;
+    int f40;
+    int f44;
+} MwsfdCreInf_x0017EF98;
+void func_0017EF98_x0017EF98(MwsfdCreInf_x0017EF98 *cprm, int *inBuf, int *f1, int *xBuf, int *mpv0, int *mpv1,
+                              int *mpv2) __asm__("func_0017EF98");
+/* mwsfcre_CalcWorkStmBuf: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfcre.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0017EF98_x0017EF98(MwsfdCreInf_x0017EF98 *cprm, int *inBuf, int *f1, int *xBuf, int *mpv0, int *mpv1,
+                              int *mpv2) {
+    int nfrm = cprm->nfrm;
+    int maxBps;
+    if (nfrm <= 0)
+        nfrm = 1;
+    maxBps = cprm->maxBps;
+    if (cprm->type == 2) {
+        *inBuf = maxBps / 16384 * nfrm * 2048;
+        *f1 = 0;
+        *xBuf = 0;
+        *mpv0 = 0;
+        *mpv1 = 0;
+        *mpv2 = 0;
+    } else if (cprm->type == 3) {
+        *inBuf = maxBps / 16384 * nfrm * 2048;
+        *f1 = 0;
+        *xBuf = maxBps / 16384 * 1024 + 2048;
+        *mpv0 = 0;
+        *mpv1 = 0;
+        *mpv2 = 0;
+    } else {
+        *inBuf = maxBps / 16384 * nfrm * 2048;
+        *f1 = 0;
+        *xBuf = maxBps / 16384 * 1024 + 2048;
+        *mpv0 = 24012;
+        *mpv1 = 24332;
+        *mpv2 = 33216;
+    }
+}
+typedef struct MwsfdCreInf_x0017F080 {
+    int type;
+    int maxBps;
+    int maxWidth;
+    int maxHeight;
+    int nfrmPoolWk;
+    int nfrm;
+    char *work;
+    int workSize;
+    int addInfMode;
+    int bufFmt;
+    int f40;
+    int f44;
+} MwsfdCreInf_x0017F080;
+void func_0017F080_x0017F080(MwsfdCreInf_x0017F080 *cprm, int *width, int *height, int *halfWidth, int *halfHeight) __asm__("func_0017F080");
+/* mwsfcre_CalcFrmRes: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfcre.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0017F080_x0017F080(MwsfdCreInf_x0017F080 *cprm, int *width, int *height, int *halfWidth, int *halfHeight) {
+    int w = cprm->maxWidth;
+    int h = cprm->maxHeight;
+    *halfWidth = (w / 2 + 31) / 32 * 32;
+    *halfHeight = h / 2;
+    *width = w;
+    *height = h;
+}
+typedef struct MwsfdCreInf_x0017F0D0 {
+    int type;
+    int maxBps;
+    int maxWidth;
+    int maxHeight;
+    int nfrmPoolWk;
+    int nfrm;
+    char *work;
+    int workSize;
+    int addInfMode;
+    int bufFmt;
+    int f40;
+    int f44;
+} MwsfdCreInf_x0017F0D0;
+extern int mpv_frm_buf_num_x0017F0D0 __asm__("D_00425218");
+int mwsfcre_ConvBufFmtFromMwsfd_x0017F0D0(int format) __asm__("MwsfdCrePrm");
+void mwsfcre_CalcFrmRes_x0017F0D0(MwsfdCreInf_x0017F0D0 *cprm, int *width, int *height, int *halfWidth, int *halfHeight) __asm__("func_0017F080");
+int mwsfcre_ConvBufFmtFromMwsfd_x0017F0D0(int format) __asm__("MwsfdCrePrm");
+void func_0017F0D0_x0017F0D0(MwsfdCreInf_x0017F0D0 *cprm, int *frmSize, int *picBufSize) __asm__("func_0017F0D0");
+/* mwsfcre_CalcWorkFrmBuf: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfcre.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0017F0D0_x0017F0D0(MwsfdCreInf_x0017F0D0 *cprm, int *frmSize, int *picBufSize) {
+    int width;
+    int height;
+    int halfWidth;
+    int halfHeight;
+    int nfrm;
+    int fmt;
+    int mbWidth;
+    int mbHeight;
+    int size;
+    if (mpv_frm_buf_num_x0017F0D0 != 0) {
+        *frmSize = 0;
+        *picBufSize = 0;
+        return;
+    }
+    nfrm = cprm->nfrmPoolWk;
+    mwsfcre_CalcFrmRes_x0017F0D0(cprm, &width, &height, &halfWidth, &halfHeight);
+    fmt = mwsfcre_ConvBufFmtFromMwsfd_x0017F0D0(cprm->bufFmt);
+    *frmSize = width * height * 9 / 2 + 551184;
+    mbWidth = width / 16;
+    mbHeight = height / 16;
+    if (fmt == 2) {
+        size = nfrm * (mbWidth * mbHeight * 1024 + 64);
+    } else {
+        size = nfrm * (mbWidth * mbHeight * 384 + 64);
+    }
+    *picBufSize = size;
+}

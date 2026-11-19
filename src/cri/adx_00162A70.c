@@ -232,7 +232,81 @@ int func_00162EC8_x00162EC8(CvFsHn_x00162EC8 *hn)
     return ret;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00162F30);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00162FF0);
+typedef void (*CvFsErrFn_x00162FF0)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00162FF0)(CvFsErrFn_x00162FF0 func, void *obj);
+typedef int (*CvFsPathFn_x00162FF0)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00162FF0)(void);
+typedef int (*CvFsOpenFn_x00162FF0)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00162FF0)(int fd);
+typedef int (*CvFsFdIntFn_x00162FF0)(int fd);
+typedef int (*CvFsSeekFn_x00162FF0)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00162FF0)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00162FF0)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00162FF0)(void);
+typedef int (*CvFsLoadDirInfoFn_x00162FF0)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00162FF0)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00162FF0)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00162FF0 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00162FF0 entry_err_func;
+    CvFsPathFn_x00162FF0 get_file_size;
+    CvFsGetFreeSizeFn_x00162FF0 get_free_size;
+    CvFsOpenFn_x00162FF0 open;
+    CvFsFdFn_x00162FF0 close;
+    CvFsSeekFn_x00162FF0 seek;
+    CvFsFdIntFn_x00162FF0 tell;
+    CvFsXferFn_x00162FF0 req_rd;
+    CvFsXferFn_x00162FF0 req_wr;
+    CvFsFdFn_x00162FF0 stop_tr;
+    CvFsFdIntFn_x00162FF0 get_stat;
+    CvFsFdIntFn_x00162FF0 get_sct_len;
+    CvFsSetSctLenFn_x00162FF0 set_sct_len;
+    CvFsFdIntFn_x00162FF0 get_num_tr;
+    CvFsPathFn_x00162FF0 change_dir;
+    CvFsPathFn_x00162FF0 is_exist_file;
+    CvFsGetNumFilesFn_x00162FF0 get_num_files;
+    CvFsLoadDirInfoFn_x00162FF0 load_dir_info;
+    CvFsFdIntFn_x00162FF0 get_max_byte_rate;
+    CvFsPathFn_x00162FF0 make_dir;
+    CvFsPathFn_x00162FF0 remove_dir;
+    CvFsPathFn_x00162FF0 delete_file;
+    CvFsGetFileSizeExFn_x00162FF0 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00162FF0 opt_fn2;
+} CvFsVtbl_x00162FF0;
+void cvFsError_x00162FF0(const char *msg) __asm__("func_00161D20");
+extern CvFsVtbl_x00162FF0 *addDevice_x00162FF0(char *devname, CvFsVtbl_x00162FF0 *(*get_if)(void)) __asm__("addDevice");
+CvFsVtbl_x00162FF0 *variousProc_x00162FF0(char *devname, char *fname, const char *path) __asm__("func_001623A8");
+void getDevName_x00162FF0(char *devname, char *fname, const char *path) __asm__("func_001625F0");
+extern char cvFsIsExistFile_1_illegal_file_name_x00162FF0[] __asm__("D_00462818");
+extern char cvFsIsExistFile_3_device_not_found_x00162FF0[] __asm__("D_00462868");
+extern char cvFsIsExistFile_4_vtbl_error_x00162FF0[] __asm__("D_00462890");
+void cvFsError_x00162FF0(const char *msg) __asm__("func_00161D20");
+CvFsVtbl_x00162FF0 *addDevice_x00162FF0(char *devname, CvFsVtbl_x00162FF0 *(*get_if)(void)) __asm__("addDevice");
+CvFsVtbl_x00162FF0 *variousProc_x00162FF0(char *devname, char *fname, const char *path) __asm__("func_001623A8");
+void getDevName_x00162FF0(char *devname, char *fname, const char *path) __asm__("func_001625F0");
+int func_00162FF0_x00162FF0(const char *path) __asm__("func_00162FF0");
+/* cvFsIsExistFile: from https://github.com/crashbashash/DW4_Decomp (src/cri/cvfs.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00162FF0_x00162FF0(const char *path)
+{
+    char devname[304];
+    char fname[304];
+    CvFsVtbl_x00162FF0 *vtbl;
+    getDevName_x00162FF0(devname, fname, path);
+    if (fname[0] == 0) {
+        cvFsError_x00162FF0(cvFsIsExistFile_1_illegal_file_name_x00162FF0);
+        return 0;
+    }
+    vtbl = variousProc_x00162FF0(devname, fname, path);
+    if (vtbl == 0) {
+        cvFsError_x00162FF0(cvFsIsExistFile_3_device_not_found_x00162FF0);
+    }
+    if (vtbl->is_exist_file != 0) {
+        return vtbl->is_exist_file(fname);
+    }
+    cvFsError_x00162FF0(cvFsIsExistFile_4_vtbl_error_x00162FF0);
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00163098);
 typedef int (*CvFsFn_x001631A8)();
 typedef struct {
@@ -620,9 +694,259 @@ void func_00163B08(s32 arg0, s32 arg1) {
 s32 func_00163BA0(void) {
     return func_00162080() != 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00163BC0);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00163C58);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00162A70", func_00163D10);
+enum CvFsOptCode_x00163BC0 {
+    CVFS_OPT_SET_CUR_VOLUME_x00163BC0 = 1,
+    CVFS_OPT_ADD_VOLUME_x00163BC0 = 2,
+    CVFS_OPT_DEL_VOLUME_x00163BC0 = 3,
+    CVFS_OPT_GET_NUM_FILES_x00163BC0 = 4,
+    CVFS_OPT_GET_VOLUME_INFO_x00163BC0 = 5,
+    CVFS_OPT_SET_DEF_VOL_x00163BC0 = 6,
+    CVFS_OPT_IS_FULL_PATH_x00163BC0 = 100,
+    CVFS_OPT_NUM_TR64_HIGH_x00163BC0 = 200,
+    CVFS_OPT_NUM_TR64_LOW_x00163BC0 = 201,
+    CVFS_OPT_FILE_SIZE64_HIGH_x00163BC0 = 202,
+    CVFS_OPT_FILE_SIZE64_LOW_x00163BC0 = 203,
+    CVFS_OPT_FILE_SIZE_EX64_HIGH_x00163BC0 = 204,
+    CVFS_OPT_FILE_SIZE_EX64_LOW_x00163BC0 = 205,
+    CVFS_OPT_FSYS64_INFO_x00163BC0 = 299,
+    CVFS_OPT_FILE_SIZE_BY_HNDL_x00163BC0 = 300
+};
+typedef void (*CvFsErrFn_x00163BC0)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00163BC0)(CvFsErrFn_x00163BC0 func, void *obj);
+typedef int (*CvFsPathFn_x00163BC0)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00163BC0)(void);
+typedef int (*CvFsOpenFn_x00163BC0)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00163BC0)(int fd);
+typedef int (*CvFsFdIntFn_x00163BC0)(int fd);
+typedef int (*CvFsSeekFn_x00163BC0)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00163BC0)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00163BC0)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00163BC0)(void);
+typedef int (*CvFsLoadDirInfoFn_x00163BC0)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00163BC0)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00163BC0)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00163BC0 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00163BC0 entry_err_func;
+    CvFsPathFn_x00163BC0 get_file_size;
+    CvFsGetFreeSizeFn_x00163BC0 get_free_size;
+    CvFsOpenFn_x00163BC0 open;
+    CvFsFdFn_x00163BC0 close;
+    CvFsSeekFn_x00163BC0 seek;
+    CvFsFdIntFn_x00163BC0 tell;
+    CvFsXferFn_x00163BC0 req_rd;
+    CvFsXferFn_x00163BC0 req_wr;
+    CvFsFdFn_x00163BC0 stop_tr;
+    CvFsFdIntFn_x00163BC0 get_stat;
+    CvFsFdIntFn_x00163BC0 get_sct_len;
+    CvFsSetSctLenFn_x00163BC0 set_sct_len;
+    CvFsFdIntFn_x00163BC0 get_num_tr;
+    CvFsPathFn_x00163BC0 change_dir;
+    CvFsPathFn_x00163BC0 is_exist_file;
+    CvFsGetNumFilesFn_x00163BC0 get_num_files;
+    CvFsLoadDirInfoFn_x00163BC0 load_dir_info;
+    CvFsFdIntFn_x00163BC0 get_max_byte_rate;
+    CvFsPathFn_x00163BC0 make_dir;
+    CvFsPathFn_x00163BC0 remove_dir;
+    CvFsPathFn_x00163BC0 delete_file;
+    CvFsGetFileSizeExFn_x00163BC0 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00163BC0 opt_fn2;
+} CvFsVtbl_x00163BC0;
+typedef struct CvFsHandle_x00163BC0 {
+    CvFsVtbl_x00163BC0 *vtbl;
+    int fd;
+} CvFsHandle_x00163BC0;
+void cvFsError_x00163BC0(const char *msg) __asm__("func_00161D20");
+extern CvFsVtbl_x00163BC0 *addDevice_x00163BC0(char *devname, CvFsVtbl_x00163BC0 *(*get_if)(void)) __asm__("addDevice");
+extern char cvFsGetNumTr64_1_handle_error_x00163BC0[] __asm__("D_00462E00");
+void cvFsError_x00163BC0(const char *msg) __asm__("func_00161D20");
+CvFsVtbl_x00163BC0 *addDevice_x00163BC0(char *devname, CvFsVtbl_x00163BC0 *(*get_if)(void)) __asm__("addDevice");
+long long func_00163BC0_x00163BC0(CvFsHandle_x00163BC0 *hdl) __asm__("func_00163BC0");
+/* cvFsGetNumTr64: from https://github.com/crashbashash/DW4_Decomp (src/cri/cvfs.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+long long func_00163BC0_x00163BC0(CvFsHandle_x00163BC0 *hdl)
+{
+    long long ntr = 0;
+    if (hdl == 0) {
+        cvFsError_x00163BC0(cvFsGetNumTr64_1_handle_error_x00163BC0);
+        return 0;
+    }
+    if (hdl->vtbl->opt_fn1 != 0) {
+        ntr = ((long long)hdl->vtbl->opt_fn1(hdl->fd, CVFS_OPT_NUM_TR64_HIGH_x00163BC0, 0, 0) << 32)
+            + (unsigned int)hdl->vtbl->opt_fn1(hdl->fd, CVFS_OPT_NUM_TR64_LOW_x00163BC0, 0, 0);
+    }
+    return ntr;
+}
+enum CvFsOptCode_x00163C58 {
+    CVFS_OPT_SET_CUR_VOLUME_x00163C58 = 1,
+    CVFS_OPT_ADD_VOLUME_x00163C58 = 2,
+    CVFS_OPT_DEL_VOLUME_x00163C58 = 3,
+    CVFS_OPT_GET_NUM_FILES_x00163C58 = 4,
+    CVFS_OPT_GET_VOLUME_INFO_x00163C58 = 5,
+    CVFS_OPT_SET_DEF_VOL_x00163C58 = 6,
+    CVFS_OPT_IS_FULL_PATH_x00163C58 = 100,
+    CVFS_OPT_NUM_TR64_HIGH_x00163C58 = 200,
+    CVFS_OPT_NUM_TR64_LOW_x00163C58 = 201,
+    CVFS_OPT_FILE_SIZE64_HIGH_x00163C58 = 202,
+    CVFS_OPT_FILE_SIZE64_LOW_x00163C58 = 203,
+    CVFS_OPT_FILE_SIZE_EX64_HIGH_x00163C58 = 204,
+    CVFS_OPT_FILE_SIZE_EX64_LOW_x00163C58 = 205,
+    CVFS_OPT_FSYS64_INFO_x00163C58 = 299,
+    CVFS_OPT_FILE_SIZE_BY_HNDL_x00163C58 = 300
+};
+typedef void (*CvFsErrFn_x00163C58)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00163C58)(CvFsErrFn_x00163C58 func, void *obj);
+typedef int (*CvFsPathFn_x00163C58)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00163C58)(void);
+typedef int (*CvFsOpenFn_x00163C58)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00163C58)(int fd);
+typedef int (*CvFsFdIntFn_x00163C58)(int fd);
+typedef int (*CvFsSeekFn_x00163C58)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00163C58)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00163C58)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00163C58)(void);
+typedef int (*CvFsLoadDirInfoFn_x00163C58)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00163C58)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00163C58)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00163C58 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00163C58 entry_err_func;
+    CvFsPathFn_x00163C58 get_file_size;
+    CvFsGetFreeSizeFn_x00163C58 get_free_size;
+    CvFsOpenFn_x00163C58 open;
+    CvFsFdFn_x00163C58 close;
+    CvFsSeekFn_x00163C58 seek;
+    CvFsFdIntFn_x00163C58 tell;
+    CvFsXferFn_x00163C58 req_rd;
+    CvFsXferFn_x00163C58 req_wr;
+    CvFsFdFn_x00163C58 stop_tr;
+    CvFsFdIntFn_x00163C58 get_stat;
+    CvFsFdIntFn_x00163C58 get_sct_len;
+    CvFsSetSctLenFn_x00163C58 set_sct_len;
+    CvFsFdIntFn_x00163C58 get_num_tr;
+    CvFsPathFn_x00163C58 change_dir;
+    CvFsPathFn_x00163C58 is_exist_file;
+    CvFsGetNumFilesFn_x00163C58 get_num_files;
+    CvFsLoadDirInfoFn_x00163C58 load_dir_info;
+    CvFsFdIntFn_x00163C58 get_max_byte_rate;
+    CvFsPathFn_x00163C58 make_dir;
+    CvFsPathFn_x00163C58 remove_dir;
+    CvFsPathFn_x00163C58 delete_file;
+    CvFsGetFileSizeExFn_x00163C58 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00163C58 opt_fn2;
+} CvFsVtbl_x00163C58;
+extern CvFsVtbl_x00163C58 *addDevice_x00163C58(char *devname, CvFsVtbl_x00163C58 *(*get_if)(void)) __asm__("addDevice");
+CvFsVtbl_x00163C58 *variousProc_x00163C58(char *devname, char *fname, const char *path) __asm__("func_001623A8");
+void getDevName_x00163C58(char *devname, char *fname, const char *path) __asm__("func_001625F0");
+CvFsVtbl_x00163C58 *addDevice_x00163C58(char *devname, CvFsVtbl_x00163C58 *(*get_if)(void)) __asm__("addDevice");
+CvFsVtbl_x00163C58 *variousProc_x00163C58(char *devname, char *fname, const char *path) __asm__("func_001623A8");
+void getDevName_x00163C58(char *devname, char *fname, const char *path) __asm__("func_001625F0");
+long long func_00163C58_x00163C58(const char *path) __asm__("func_00163C58");
+/* cvFsGetFileSize64: from https://github.com/crashbashash/DW4_Decomp (src/cri/cvfs.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+long long func_00163C58_x00163C58(const char *path)
+{
+    char devname[304];
+    char fname[304];
+    CvFsVtbl_x00163C58 *vtbl;
+    long long size = 0;
+    int high;
+    getDevName_x00163C58(devname, fname, path);
+    vtbl = variousProc_x00163C58(devname, fname, path);
+    if (vtbl->opt_fn1 != 0) {
+        high = vtbl->opt_fn1(path, CVFS_OPT_FILE_SIZE64_HIGH_x00163C58, fname, 0);
+        size = ((long long)high << 32)
+             + (unsigned int)vtbl->opt_fn1(path, CVFS_OPT_FILE_SIZE64_LOW_x00163C58, fname, 0);
+    }
+    return size;
+}
+enum CvFsOptCode_x00163D10 {
+    CVFS_OPT_SET_CUR_VOLUME_x00163D10 = 1,
+    CVFS_OPT_ADD_VOLUME_x00163D10 = 2,
+    CVFS_OPT_DEL_VOLUME_x00163D10 = 3,
+    CVFS_OPT_GET_NUM_FILES_x00163D10 = 4,
+    CVFS_OPT_GET_VOLUME_INFO_x00163D10 = 5,
+    CVFS_OPT_SET_DEF_VOL_x00163D10 = 6,
+    CVFS_OPT_IS_FULL_PATH_x00163D10 = 100,
+    CVFS_OPT_NUM_TR64_HIGH_x00163D10 = 200,
+    CVFS_OPT_NUM_TR64_LOW_x00163D10 = 201,
+    CVFS_OPT_FILE_SIZE64_HIGH_x00163D10 = 202,
+    CVFS_OPT_FILE_SIZE64_LOW_x00163D10 = 203,
+    CVFS_OPT_FILE_SIZE_EX64_HIGH_x00163D10 = 204,
+    CVFS_OPT_FILE_SIZE_EX64_LOW_x00163D10 = 205,
+    CVFS_OPT_FSYS64_INFO_x00163D10 = 299,
+    CVFS_OPT_FILE_SIZE_BY_HNDL_x00163D10 = 300
+};
+typedef void (*CvFsErrFn_x00163D10)(void *obj, const char *msg, int code);
+typedef void (*CvFsEntryErrFuncFn_x00163D10)(CvFsErrFn_x00163D10 func, void *obj);
+typedef int (*CvFsPathFn_x00163D10)(const char *path);
+typedef int (*CvFsGetFreeSizeFn_x00163D10)(void);
+typedef int (*CvFsOpenFn_x00163D10)(const char *fname, void *atr, int rw);
+typedef void (*CvFsFdFn_x00163D10)(int fd);
+typedef int (*CvFsFdIntFn_x00163D10)(int fd);
+typedef int (*CvFsSeekFn_x00163D10)(int fd, int offset, int origin);
+typedef int (*CvFsXferFn_x00163D10)(int fd, int nsct, void *buf);
+typedef void (*CvFsSetSctLenFn_x00163D10)(int fd, int len);
+typedef int (*CvFsGetNumFilesFn_x00163D10)(void);
+typedef int (*CvFsLoadDirInfoFn_x00163D10)(const char *path, void *work, int nfile);
+typedef int (*CvFsGetFileSizeExFn_x00163D10)(const char *path, int arg);
+typedef int (*CvFsOptFn2_x00163D10)(int fd, int code, int arg);
+typedef struct CvFsVtbl_x00163D10 {
+    void (*exec_server)(void);
+    CvFsEntryErrFuncFn_x00163D10 entry_err_func;
+    CvFsPathFn_x00163D10 get_file_size;
+    CvFsGetFreeSizeFn_x00163D10 get_free_size;
+    CvFsOpenFn_x00163D10 open;
+    CvFsFdFn_x00163D10 close;
+    CvFsSeekFn_x00163D10 seek;
+    CvFsFdIntFn_x00163D10 tell;
+    CvFsXferFn_x00163D10 req_rd;
+    CvFsXferFn_x00163D10 req_wr;
+    CvFsFdFn_x00163D10 stop_tr;
+    CvFsFdIntFn_x00163D10 get_stat;
+    CvFsFdIntFn_x00163D10 get_sct_len;
+    CvFsSetSctLenFn_x00163D10 set_sct_len;
+    CvFsFdIntFn_x00163D10 get_num_tr;
+    CvFsPathFn_x00163D10 change_dir;
+    CvFsPathFn_x00163D10 is_exist_file;
+    CvFsGetNumFilesFn_x00163D10 get_num_files;
+    CvFsLoadDirInfoFn_x00163D10 load_dir_info;
+    CvFsFdIntFn_x00163D10 get_max_byte_rate;
+    CvFsPathFn_x00163D10 make_dir;
+    CvFsPathFn_x00163D10 remove_dir;
+    CvFsPathFn_x00163D10 delete_file;
+    CvFsGetFileSizeExFn_x00163D10 get_file_size_ex;
+    int (*opt_fn1)();
+    CvFsOptFn2_x00163D10 opt_fn2;
+} CvFsVtbl_x00163D10;
+extern CvFsVtbl_x00163D10 *addDevice_x00163D10(char *devname, CvFsVtbl_x00163D10 *(*get_if)(void)) __asm__("addDevice");
+CvFsVtbl_x00163D10 *getDevice_x00163D10(const char *devname) __asm__("func_00162080");
+void getDevName_x00163D10(char *devname, char *fname, const char *path) __asm__("func_001625F0");
+CvFsVtbl_x00163D10 *addDevice_x00163D10(char *devname, CvFsVtbl_x00163D10 *(*get_if)(void)) __asm__("addDevice");
+CvFsVtbl_x00163D10 *getDevice_x00163D10(const char *devname) __asm__("func_00162080");
+void getDevName_x00163D10(char *devname, char *fname, const char *path) __asm__("func_001625F0");
+long long func_00163D10_x00163D10(const char *path, int arg) __asm__("func_00163D10");
+/* cvFsGetFileSizeEx64: from https://github.com/crashbashash/DW4_Decomp (src/cri/cvfs.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+long long func_00163D10_x00163D10(const char *path, int arg)
+{
+    char devname[304];
+    char fname[304];
+    CvFsVtbl_x00163D10 *vtbl;
+    long long size;
+    int high;
+    vtbl = getDevice_x00163D10(devname);
+    if (vtbl == 0) {
+        return 0;
+    }
+    getDevName_x00163D10(devname, fname, path);
+    size = 0;
+    if (vtbl->opt_fn1 != 0) {
+        high = vtbl->opt_fn1(path, CVFS_OPT_FILE_SIZE_EX64_HIGH_x00163D10, fname, arg);
+        size = ((long long)high << 32)
+             + (unsigned int)vtbl->opt_fn1(path, CVFS_OPT_FILE_SIZE_EX64_LOW_x00163D10, fname, arg);
+    }
+    return size;
+}
 s32 func_00163DD0(u8 *arg0) {
     s32 (*temp_v0)(s32, s32, s32, s32);
     s32 var_v1;

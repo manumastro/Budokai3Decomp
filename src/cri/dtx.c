@@ -3,7 +3,101 @@
 extern s32 D_00412A54;
 extern s32 D_00412A58;
 
-INCLUDE_ASM("asm/nonmatchings/cri/dtx", DTX_Create);
+typedef unsigned int size_t_x00165AD0;
+void *memset_x00165AD0(void *, int, size_t_x00165AD0) __asm__("memset");
+typedef struct DtxObj_x00165AD0 DtxObj_x00165AD0;
+typedef void (*DtxCbf_x00165AD0)(void *obj, void *buf, int size);
+void ADXMSG_PrintErr_x00165AD0(const char *format, ...) __asm__("scePrintf");
+void SyncDCache_x00165AD0(void *start, void *end) __asm__("func_0010AB58");
+void InvalidDCache_x00165AD0(void *start, void *end) __asm__("func_0010AC98");
+typedef struct {
+    unsigned int data;
+    unsigned int addr;
+    unsigned int size;
+    unsigned int mode;
+} sceSifDmaData_x00165AD0;
+typedef struct DtxPeer_x00165AD0 {
+    char pad0[60];
+    int count;
+} DtxPeer_x00165AD0;
+struct DtxObj_x00165AD0 {
+    signed char used;
+    signed char state;
+    signed char flag;
+    char rsv;
+    int server;
+    int count;
+    char *eewk;
+    int size;
+    DtxPeer_x00165AD0 *peer;
+    int iopwk;
+    int wklen;
+    DtxCbf_x00165AD0 recv;
+    void *recv_obj;
+    DtxCbf_x00165AD0 send;
+    void *send_obj;
+    sceSifDmaData_x00165AD0 dma;
+    unsigned int dmaid;
+};
+extern DtxObj_x00165AD0 dtx_clnt_x00165AD0[16] __asm__("D_00411E40");
+extern char eewk_is_not_alignment_64_byte_x00165AD0[] __asm__("D_00463388");
+extern char iopwk_is_not_alignment_32_byte_x00165AD0[] __asm__("D_004633A8");
+extern char wklen_d_is_not_64_N_x00165AD0[] __asm__("D_004633C8");
+extern char illeagal_ID_d_x00165AD0[] __asm__("D_004633E0");
+extern char DTX_Create_can_t_create_DTX_of_server_x00165AD0[] __asm__("D_004633F8");
+int dtx_create_rmt_x00165AD0(unsigned int id, char *eewk, int iopwk, int wklen) __asm__("func_00165940");
+void dtx_def_rcvcbf_x00165AD0(void *obj, void *buf, int size) __asm__("func_00165A00");
+void dtx_def_sndcbf_x00165AD0(void *obj, void *buf, int size) __asm__("func_00165A18");
+DtxObj_x00165AD0 *DTX_Create_x00165AD0(unsigned int id, char *eewk, int iopwk, int wklen) __asm__("DTX_Create");
+/* DTX_Create_x00165AD0: from https://github.com/crashbashash/DW4_Decomp (src/cri/dtx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+DtxObj_x00165AD0 *DTX_Create_x00165AD0(unsigned int id, char *eewk, int iopwk, int wklen)
+{
+    DtxObj_x00165AD0 *dtx;
+    int size;
+    if ((int)eewk & 63) {
+        ADXMSG_PrintErr_x00165AD0(eewk_is_not_alignment_64_byte_x00165AD0);
+        return 0;
+    }
+    if (iopwk & 31) {
+        ADXMSG_PrintErr_x00165AD0(iopwk_is_not_alignment_32_byte_x00165AD0);
+        return 0;
+    }
+    if (wklen & 63) {
+        ADXMSG_PrintErr_x00165AD0(wklen_d_is_not_64_N_x00165AD0, wklen);
+        return 0;
+    }
+    if (id >= 16) {
+        ADXMSG_PrintErr_x00165AD0(illeagal_ID_d_x00165AD0, id);
+        return 0;
+    }
+    dtx = &dtx_clnt_x00165AD0[id];
+    if (dtx->used != 0) {
+        return 0;
+    }
+    dtx->server = dtx_create_rmt_x00165AD0(id, eewk, iopwk, wklen);
+    if (dtx->server == 0) {
+        ADXMSG_PrintErr_x00165AD0(DTX_Create_can_t_create_DTX_of_server_x00165AD0);
+        return 0;
+    }
+    size = wklen - 64;
+    dtx->size = size;
+    dtx->wklen = wklen;
+    dtx->iopwk = iopwk;
+    dtx->peer = (DtxPeer_x00165AD0 *)((int)(eewk + size) | 0x20000000);
+    dtx->count = 0;
+    dtx->eewk = eewk;
+    dtx->state = 0;
+    memset_x00165AD0(eewk, 0, size);
+    SyncDCache_x00165AD0(dtx->eewk, dtx->eewk + dtx->size + 63);
+    InvalidDCache_x00165AD0(dtx->eewk, dtx->eewk + dtx->size + 63);
+    dtx->recv = dtx_def_rcvcbf_x00165AD0;
+    dtx->send = dtx_def_sndcbf_x00165AD0;
+    dtx->recv_obj = 0;
+    dtx->send_obj = 0;
+    dtx->flag = 1;
+    dtx->used = 1;
+    return dtx;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00165C68);
 int func_00165CD0_x00165CD0(u8 *arg0, s32 arg1, s32 arg2) __asm__("func_00165CD0");
 int func_00165CD0_x00165CD0(u8 *arg0, s32 arg1, s32 arg2)
@@ -20,7 +114,71 @@ void func_00165CE0_x00165CE0(u8 *arg0, s32 arg1, s32 arg2)
   *((s32 *) (((u8 *) arg0) + 0x28)) = arg1;
   *((s32 *) (((u8 *) arg0) + 0x2C)) = arg2;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtx", func_00165CF0);
+typedef struct DtxObj_x00165CF0 DtxObj_x00165CF0;
+typedef void (*DtxCbf_x00165CF0)(void *obj, void *buf, int size);
+extern int dtx_send_sw_x00165CF0 __asm__("D_00411E2C");
+void SyncDCache_x00165CF0(void *start, void *end) __asm__("func_0010AB58");
+void InvalidDCache_x00165CF0(void *start, void *end) __asm__("func_0010AC98");
+typedef struct {
+    unsigned int data;
+    unsigned int addr;
+    unsigned int size;
+    unsigned int mode;
+} sceSifDmaData_x00165CF0;
+unsigned int sceSifSetDma_x00165CF0(sceSifDmaData_x00165CF0 *sdd, int len) __asm__("sceSifSetDma");
+typedef struct DtxPeer_x00165CF0 {
+    char pad0[60];
+    int count;
+} DtxPeer_x00165CF0;
+struct DtxObj_x00165CF0 {
+    signed char used;
+    signed char state;
+    signed char flag;
+    char rsv;
+    int server;
+    int count;
+    char *eewk;
+    int size;
+    DtxPeer_x00165CF0 *peer;
+    int iopwk;
+    int wklen;
+    DtxCbf_x00165CF0 recv;
+    void *recv_obj;
+    DtxCbf_x00165CF0 send;
+    void *send_obj;
+    sceSifDmaData_x00165CF0 dma;
+    unsigned int dmaid;
+};
+extern int dtx_exechndl_cnt_x00165CF0 __asm__("D_00411E38");
+void func_00165CF0_x00165CF0(DtxObj_x00165CF0 *dtx) __asm__("func_00165CF0");
+/* DTX_ExecHndl: from https://github.com/crashbashash/DW4_Decomp (src/cri/dtx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00165CF0_x00165CF0(DtxObj_x00165CF0 *dtx)
+{
+    dtx_exechndl_cnt_x00165CF0++;
+    if (dtx->state == 1) {
+        if (dtx->count < dtx->peer->count) {
+            InvalidDCache_x00165CF0(dtx->eewk, dtx->eewk + dtx->size - 1);
+            dtx->recv(dtx->recv_obj, dtx->eewk, dtx->size);
+            dtx->count = dtx->peer->count;
+            dtx->state = 0;
+        }
+    }
+    if (dtx->state == 0 && dtx->flag == 1) {
+        if (dtx_send_sw_x00165CF0 == 1) {
+            dtx->send(dtx->send_obj, dtx->eewk, dtx->size);
+            dtx->count++;
+            dtx->peer->count = dtx->count;
+            SyncDCache_x00165CF0(dtx->eewk, dtx->eewk + dtx->size - 1);
+            InvalidDCache_x00165CF0(dtx->eewk, dtx->eewk + dtx->size + 63);
+            dtx->dma.data = (unsigned int)dtx->eewk & 0x0fffffff;
+            dtx->dma.addr = dtx->iopwk;
+            dtx->dma.size = dtx->wklen;
+            dtx->dma.mode = 0;
+            dtx->dmaid = sceSifSetDma_x00165CF0(&dtx->dma, 1);
+            dtx->state = 1;
+        }
+    }
+}
 typedef signed int Sint32_x00165E50;
 extern int* sceCdCallback_x00165E50(void (*func)(int)) __asm__("sceCdCallback");
 extern Sint32_x00165E50 SVM_SetCbSvr_x00165E50(Sint32_x00165E50, Sint32_x00165E50 (*)(void*), void*) __asm__("SVM_SetCbSvr");

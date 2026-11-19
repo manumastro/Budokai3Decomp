@@ -121,7 +121,73 @@ void func_00165760_x00165760(DTR_x00165760 dtr) {
     dtr->unk3C += dtr->unkC.len;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_00165810);
-INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_001658C0);
+extern int AddIntcHandler_x001658C0(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+int GetThreadId_x001658C0(void) __asm__("GetThreadId");
+typedef void *(*sceSifRpcFunc_x001658C0)(unsigned int fno, void *data, int size);
+typedef void (*sceSifEndFunc_x001658C0)(void *param);
+struct _sif_serve_data_x001658C0;
+struct _sif_queue_data_x001658C0;
+typedef struct {
+    void *paddr;
+    unsigned int pid;
+    int tid;
+    unsigned int mode;
+} sceSifRpcData_x001658C0;
+typedef struct _sif_client_data_x001658C0 {
+    sceSifRpcData_x001658C0 rpcd;
+    unsigned int command;
+    void *buff;
+    void *gp;
+    sceSifEndFunc_x001658C0 func;
+    void *para;
+    struct _sif_serve_data_x001658C0 *serve;
+} sceSifClientData_x001658C0;
+typedef struct _sif_serve_data_x001658C0 {
+    unsigned int command;
+    sceSifRpcFunc_x001658C0 func;
+    char *buff;
+    int size;
+    sceSifRpcFunc_x001658C0 cfunc;
+    char *cbuff;
+    int csize;
+    sceSifClientData_x001658C0 *client;
+    unsigned int paddr;
+    unsigned int fno;
+    unsigned int receive;
+    int rsize;
+    int rmode;
+    unsigned int rid;
+    void *link;
+    void *next;
+    struct _sif_queue_data_x001658C0 *base;
+} sceSifServeData_x001658C0;
+typedef struct _sif_queue_data_x001658C0 {
+    int key;
+    int active;
+    void *link;
+    sceSifServeData_x001658C0 *start;
+    void *end;
+    struct _sif_queue_data_x001658C0 *next;
+} sceSifQueueData_x001658C0;
+void sceSifSetRpcQueue_x001658C0(sceSifQueueData_x001658C0 *queue, int key) __asm__("func_0010E3E8");
+void sceSifRegisterRpc_x001658C0(sceSifServeData_x001658C0 *serve, unsigned int command, sceSifRpcFunc_x001658C0 func, void *buff, sceSifRpcFunc_x001658C0 cfunc, void *cbuff, sceSifQueueData_x001658C0 *queue) __asm__("func_0010E480");
+void sceSifRpcLoop_x001658C0(sceSifQueueData_x001658C0 *queue) __asm__("func_0010E898");
+extern volatile int dtx_proc_init_flag_x001658C0 __asm__("D_00411E28");
+extern int dtx_rpc_id_x001658C0 __asm__("D_00411E24");
+extern sceSifServeData_x001658C0 dtx_sd_x001658C0 __asm__("D_004126E8");
+extern sceSifQueueData_x001658C0 dtx_qd_x001658C0 __asm__("D_00412730");
+extern char dtx_svrbuf_x001658C0[] __asm__("D_00412750");
+void *dtx_rpc_func_x001658C0(unsigned int command, void *buf, int size) __asm__("func_00165810");
+int func_001658C0_x001658C0(void) __asm__("func_001658C0");
+/* dtx_svr_proc: from https://github.com/crashbashash/DW4_Decomp (src/cri/dtx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_001658C0_x001658C0(void)
+{
+    sceSifSetRpcQueue_x001658C0(&dtx_qd_x001658C0, GetThreadId_x001658C0());
+    sceSifRegisterRpc_x001658C0(&dtx_sd_x001658C0, dtx_rpc_id_x001658C0, dtx_rpc_func_x001658C0, dtx_svrbuf_x001658C0, 0, 0, &dtx_qd_x001658C0);
+    dtx_proc_init_flag_x001658C0 = 1;
+    sceSifRpcLoop_x001658C0(&dtx_qd_x001658C0);
+    return 0;
+}
 typedef int s32_x00165940;
 typedef s32_x00165940 intptr_t_x00165940;
 typedef signed int Sint32_x00165940;
@@ -281,7 +347,47 @@ void func_00165A18_x00165A18(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s
   sprintf_x00165A18(arg1, temp_v1, D_00411E34_x00165A18, var_a3, arg4, arg5, arg6, arg7);
   D_00411E34_x00165A18 += 1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/dtr", func_00165A88);
+typedef struct DtxObj_x00165A88 DtxObj_x00165A88;
+typedef void (*DtxCbf_x00165A88)(void *obj, void *buf, int size);
+typedef struct {
+    unsigned int data;
+    unsigned int addr;
+    unsigned int size;
+    unsigned int mode;
+} sceSifDmaData_x00165A88;
+typedef struct DtxPeer_x00165A88 {
+    char pad0[60];
+    int count;
+} DtxPeer_x00165A88;
+struct DtxObj_x00165A88 {
+    signed char used;
+    signed char state;
+    signed char flag;
+    char rsv;
+    int server;
+    int count;
+    char *eewk;
+    int size;
+    DtxPeer_x00165A88 *peer;
+    int iopwk;
+    int wklen;
+    DtxCbf_x00165A88 recv;
+    void *recv_obj;
+    DtxCbf_x00165A88 send;
+    void *send_obj;
+    sceSifDmaData_x00165A88 dma;
+    unsigned int dmaid;
+};
+extern DtxObj_x00165A88 dtx_clnt_x00165A88[16] __asm__("D_00411E40");
+DtxObj_x00165A88 *func_00165A88_x00165A88(unsigned int id) __asm__("func_00165A88");
+/* DTX_Open: from https://github.com/crashbashash/DW4_Decomp (src/cri/dtx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+DtxObj_x00165A88 *func_00165A88_x00165A88(unsigned int id)
+{
+    if (id >= 16) {
+        return 0;
+    }
+    return &dtx_clnt_x00165A88[id];
+}
 void func_00165AB8_x00165AB8(u8 *arg0) __asm__("func_00165AB8");
 void func_00165AB8_x00165AB8(u8 *arg0)
 {

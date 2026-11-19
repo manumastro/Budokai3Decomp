@@ -55,7 +55,19 @@ void func_00109790_x00109790(int a0, int a1, int a2)
     func_003B1EE0_x00109790(buf, 0x100, a1, a2);
     _sceMpegError_x00109790(a0, buf);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001095D0", func_001097D0);
+int DIntr_x001097D0(void) __asm__("DI");
+int EIntr_x001097D0(void) __asm__("EI");
+void func_001097D0_x001097D0(unsigned int chcr) __asm__("func_001097D0");
+/* setD3_CHCR: from https://github.com/crashbashash/DW4_Decomp (src/sony/libipu/libipu.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_001097D0_x001097D0(unsigned int chcr)
+{
+    int intr = DIntr_x001097D0();
+
+    (*(volatile unsigned int *)0x1000f590) = (*(volatile unsigned int *)0x1000f520) | 0x10000;
+    (*(volatile unsigned int *)0x1000b000) = chcr;
+    (*(volatile unsigned int *)0x1000f590) = (*(volatile unsigned int *)0x1000f520) & ~0x10000;
+    if (intr) EIntr_x001097D0();
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001095D0", func_00109848);
 typedef struct {  
     unsigned int d4madr;

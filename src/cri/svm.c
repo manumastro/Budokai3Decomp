@@ -350,4 +350,32 @@ int func_00170690_x00170690(int server_type)
     svm_exec_cnt_x00170690[server_type]++;
     return result;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/svm", func_00170758);
+typedef int (*SvmSvrFunc_x00170758)(void *obj);
+void SVM_CallErr1_x00170758(const char *msg) __asm__("func_00170118");
+typedef struct SvmSvr_x00170758 {
+    SvmSvrFunc_x00170758 func;
+    void *obj;
+} SvmSvr_x00170758;
+extern SvmSvr_x00170758 svm_svr_x00170758[8][6] __asm__("D_004812A0");
+extern char SVM_ExecSvrFuncId_illegal_id_x00170758[] __asm__("D_00464FC0");
+extern char SVM_ExecSvrFuncId_illegal_svtype_x00170758[] __asm__("D_00464FE8");
+void SVM_CallErr1_x00170758(const char *msg) __asm__("func_00170118");
+int func_00170758_x00170758(int svtype, unsigned int id) __asm__("func_00170758");
+/* SVM_ExecSvrFuncId: from https://github.com/crashbashash/DW4_Decomp (src/cri/svm.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_00170758_x00170758(int svtype, unsigned int id)
+{
+    SvmSvr_x00170758 *svr;
+    int busy;
+    busy = 0;
+    if (id >= 6) {
+        SVM_CallErr1_x00170758(SVM_ExecSvrFuncId_illegal_id_x00170758);
+    }
+    if (svtype < 0 || (int)id >= 8) {
+        SVM_CallErr1_x00170758(SVM_ExecSvrFuncId_illegal_svtype_x00170758);
+    }
+    svr = &svm_svr_x00170758[svtype][id];
+    if (svr->func != 0) {
+        busy = svr->func(svr->obj);
+    }
+    return busy;
+}

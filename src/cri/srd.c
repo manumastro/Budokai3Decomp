@@ -236,7 +236,73 @@ void func_00164188_x00164188(SRD_x00164188 srd) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164258);
+struct stat_x00164258;
+typedef struct {
+    unsigned char trycount;
+    unsigned char spindlctrl;
+    unsigned char datapattern;
+    unsigned char pad;
+} sceCdRMode_x00164258;
+void SVM_Lock_x00164258(void) __asm__("func_0016FF40");
+void SVM_Unlock_x00164258(void) __asm__("func_0016FF58");
+typedef struct SrdObj_x00164258 SrdObj_x00164258;
+struct SrdObj_x00164258 {
+    signed char used;
+    signed char devtype;
+    signed char stat_x00164258;
+    signed char mode;
+    int abort_request;
+    int lsn;
+    int sectors;
+    void *buf;
+    sceCdRMode_x00164258 rmode;
+    void *host_buf;
+    int pad1c;
+    long long host_size;
+    long long host_sector;
+    int fd;
+    int error;
+};
+extern SrdObj_x00164258 srd_obj_x00164258 __asm__("D_00411598");
+extern int srd_enter_fg_x00164258 __asm__("D_004115D4");
+extern volatile int srd_debug_rded_cnt_x00164258 __asm__("D_004115F4");
+void srd_wait_x00164258(void) __asm__("func_00164130");
+void srd_wait_dvd_x00164258(SrdObj_x00164258 *srd) __asm__("func_00164160");
+void srd_wait_hst_x00164258(SrdObj_x00164258 *f) __asm__("func_00164188");
+void func_00164258_x00164258(SrdObj_x00164258 *h) __asm__("func_00164258");
+/* SRD_WaitComplete: from https://github.com/crashbashash/DW4_Decomp (src/cri/srd.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_00164258_x00164258(SrdObj_x00164258 *h)
+{
+    short i;
+    int stat_x00164258;
+    SrdObj_x00164258 *srd;
+    for (i = 0; i < 1000; i++) {
+        SVM_Lock_x00164258();
+        if (srd_enter_fg_x00164258 == 1) {
+            SVM_Unlock_x00164258();
+            srd_wait_x00164258();
+            continue;
+        }
+        srd_enter_fg_x00164258 = 1;
+        SVM_Unlock_x00164258();
+        break;
+    }
+    stat_x00164258 = h->stat_x00164258;
+    if (stat_x00164258 == 2) {
+        srd = &srd_obj_x00164258;
+        if (srd->devtype == 1) {
+            srd_wait_dvd_x00164258(h);
+        }
+        if (srd->devtype == stat_x00164258) {
+            srd_wait_hst_x00164258(h);
+        }
+        if (h->stat_x00164258 != 9) {
+            h->stat_x00164258 = 3;
+            srd_debug_rded_cnt_x00164258++;
+        }
+    }
+    srd_enter_fg_x00164258 = 0;
+}
 void func_00164368(void) {
     func_00164258(&D_00411598);
 }
@@ -264,7 +330,74 @@ void func_00164388_x00164388(u8 *arg0)
   }
   func_0016FFE8_x00164388();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/srd", func_001643F0);
+void scePrintf_x001643F0(const char *format, ...) __asm__("scePrintf");
+struct stat_x001643F0;
+typedef struct {
+    unsigned char trycount;
+    unsigned char spindlctrl;
+    unsigned char datapattern;
+    unsigned char pad;
+} sceCdRMode_x001643F0;
+int sceCdGetError_x001643F0(void) __asm__("func_001198F0");
+void SVM_LockDev_x001643F0(void) __asm__("func_0016FFA0");
+void SVM_UnlockDev_x001643F0(void) __asm__("func_00170018");
+typedef struct SrdObj_x001643F0 SrdObj_x001643F0;
+void SRD_SetHistory_x001643F0(int value) __asm__("func_00164D38");
+struct SrdObj_x001643F0 {
+    signed char used;
+    signed char devtype;
+    signed char stat_x001643F0;
+    signed char mode;
+    int abort_request;
+    int lsn;
+    int sectors;
+    void *buf;
+    sceCdRMode_x001643F0 rmode;
+    void *host_buf;
+    int pad1c;
+    long long host_size;
+    long long host_sector;
+    int fd;
+    int error;
+};
+extern volatile int srd_geterror_locked_x001643F0 __asm__("D_004115E0");
+extern volatile int srd_geterror_call_x001643F0 __asm__("D_004115E4");
+extern volatile int srd_debug_geterror_x001643F0 __asm__("D_004115EC");
+void SRD_SetHistory_x001643F0(int value) __asm__("func_00164D38");
+extern char ext_str0_x001643F0[] __asm__("D_00462F38");
+int func_001643F0_x001643F0(SrdObj_x001643F0 *h) __asm__("func_001643F0");
+/* srd_check_dvd_error: from https://github.com/crashbashash/DW4_Decomp (src/cri/srd.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_001643F0_x001643F0(SrdObj_x001643F0 *h)
+{
+    int err;
+    if (srd_geterror_call_x001643F0 == 0) {
+        return 0;
+    }
+    if (h->stat_x001643F0 != 2) {
+        return 0;
+    }
+    srd_debug_geterror_x001643F0 = 1;
+    if (srd_geterror_locked_x001643F0 == 1) {
+        SVM_LockDev_x001643F0();
+        SRD_SetHistory_x001643F0(0x1400);
+        err = sceCdGetError_x001643F0();
+        SRD_SetHistory_x001643F0(0x1401);
+        SVM_UnlockDev_x001643F0();
+    } else {
+        SRD_SetHistory_x001643F0(0x1500);
+        err = sceCdGetError_x001643F0();
+        SRD_SetHistory_x001643F0(0x1501);
+    }
+    srd_debug_geterror_x001643F0 = 0;
+    if (err != 0 && err != -1) {
+        if (err != 32) {
+            h->error = err;
+            scePrintf_x001643F0(ext_str0_x001643F0, err);
+            return 1;
+        }
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_00164500);
 INCLUDE_ASM("asm/nonmatchings/cri/srd", func_001646D0);
 s32 func_001648A0(void) {

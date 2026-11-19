@@ -190,8 +190,226 @@ int scePadInit(int a0)
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116690);
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", scePadInit2);
 INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_001167D0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116860);
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad/kfiv_libpad", func_00116978);
+typedef struct {
+    unsigned int data;
+    unsigned int addr;
+    unsigned int size;
+    unsigned int mode;
+} sceSifDmaData_x00116860;
+unsigned int sceSifSetDma_x00116860(sceSifDmaData_x00116860 *sdd, int len) __asm__("sceSifSetDma");
+int sceSifDmaStat_x00116860(unsigned int id) __asm__("sceSifDmaStat");
+void SyncDCache_x00116860(void *start, void *end) __asm__("func_0010AB58");
+void scePrintf_x00116860(const char *format, ...) __asm__("scePrintf");
+typedef struct PadDmaData_x00116860 {
+    unsigned char data[32];
+    unsigned int actDirData[2];
+    unsigned int actAlignData[2];
+    unsigned char combData[4][4];
+    unsigned char actData[4][4];
+    unsigned short modeTable[4];
+    int frame;
+    int findPadRetries;
+    int length;
+    unsigned char modeConfig;
+    unsigned char modeCurId;
+    unsigned char model;
+    unsigned char buttonDataReady;
+    unsigned char nrOfModes;
+    unsigned char modeCurOffs;
+    unsigned char nrOfCombs;
+    unsigned char nrOfActuators;
+    unsigned char reserved[4];
+    unsigned char state;
+    unsigned char reqState;
+    unsigned char currentTask;
+    unsigned char reserved2[6];
+    unsigned char buttonMask[4];
+    unsigned char reserved3[3];
+} PadDmaData_x00116860;
+typedef struct PadIopCommand_x00116860 {
+    int count;
+    int command;
+    int size;
+    unsigned char data[20];
+} PadIopCommand_x00116860;
+typedef struct PadPortState_x00116860 {
+    PadDmaData_x00116860 *padData;
+    PadIopCommand_x00116860 *command;
+    PadIopCommand_x00116860 *iopCommand;
+    int dmaId;
+    int open;
+    int reserved[2];
+} PadPortState_x00116860;
+extern PadPortState_x00116860 padState_x00116860[2][4] __asm__("D_00478990");
+extern char sifSetDmaFailedMessage_x00116860[] __asm__("D_0045DA70");
+extern int padDebugPrint_x00116860 __asm__("D_003EDD04");
+int func_00116860_x00116860(int port, int slot) __asm__("func_00116860");
+/* _send_to_iop: from https://github.com/crashbashash/DW4_Decomp (src/sony/libpad/libpad.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00116860_x00116860(int port, int slot)
+{
+    sceSifDmaData_x00116860 dma[16];
+    PadIopCommand_x00116860 *command;
+    PadIopCommand_x00116860 *dst;
+    unsigned int id;
+    int count;
+
+    command = padState_x00116860[port][slot].command;
+    if (padState_x00116860[port][slot].dmaId != 0) {
+        if (sceSifDmaStat_x00116860(padState_x00116860[port][slot].dmaId) >= 0) {
+            if (padDebugPrint_x00116860) scePrintf_x00116860(sifSetDmaFailedMessage_x00116860);
+            return 0;
+        }
+    }
+    count = command->count + 1;
+    dst = padState_x00116860[port][slot].iopCommand + (count & 1);
+    command->count = count;
+    SyncDCache_x00116860(command, (char *)&command[1] - 1);
+    dma[0].addr = (unsigned int)dst;
+    dma[0].data = (unsigned int)command;
+    dma[0].size = 32;
+    dma[0].mode = 0;
+    id = sceSifSetDma_x00116860(dma, 1);
+    if (id == 0) {
+        if (padDebugPrint_x00116860) scePrintf_x00116860(sifSetDmaFailedMessage_x00116860);
+        return 0;
+    }
+    padState_x00116860[port][slot].dmaId = id;
+    return 1;
+}
+typedef void *(*sceSifRpcFunc_x00116978)(unsigned int fno, void *data, int size);
+typedef void (*sceSifEndFunc_x00116978)(void *param);
+struct _sif_serve_data_x00116978;
+struct _sif_queue_data_x00116978;
+typedef struct {
+    void *paddr;  
+    unsigned int pid;
+    int tid;  
+    unsigned int mode;
+} sceSifRpcData_x00116978;
+typedef struct _sif_client_data_x00116978 {
+    sceSifRpcData_x00116978 rpcd;
+    unsigned int command;
+    void *buff;
+    void *gp;  
+    sceSifEndFunc_x00116978 func;
+    void *para;
+    struct _sif_serve_data_x00116978 *serve;
+} sceSifClientData_x00116978;
+typedef struct _sif_serve_data_x00116978 {
+    unsigned int command;
+    sceSifRpcFunc_x00116978 func;
+    char *buff;
+    int size;
+    sceSifRpcFunc_x00116978 cfunc;
+    char *cbuff;
+    int csize;
+    sceSifClientData_x00116978 *client;
+    unsigned int paddr;  
+    unsigned int fno;
+    unsigned int receive;  
+    int rsize;
+    int rmode;
+    unsigned int rid;
+    void *link;  
+    void *next;  
+    struct _sif_queue_data_x00116978 *base;
+} sceSifServeData_x00116978;
+typedef struct _sif_queue_data_x00116978 {
+    int key;  
+    int active;
+    void *link;  
+    sceSifServeData_x00116978 *start;
+    void *end;  
+    struct _sif_queue_data_x00116978 *next;
+} sceSifQueueData_x00116978;
+int sceSifCallRpc_x00116978(sceSifClientData_x00116978 *client, unsigned int fno, unsigned int mode, void *send, int ssize, void *receive, int rsize, sceSifEndFunc_x00116978 func, void *para) __asm__("sceSifCallRpc");
+void scePrintf_x00116978(const char *format, ...) __asm__("scePrintf");
+typedef unsigned int size_t_x00116978;
+void *memset_x00116978(void *, int, size_t_x00116978) __asm__("memset");
+typedef struct PadDmaData_x00116978 {
+    unsigned char data[32];
+    unsigned int actDirData[2];
+    unsigned int actAlignData[2];
+    unsigned char combData[4][4];
+    unsigned char actData[4][4];
+    unsigned short modeTable[4];
+    int frame;
+    int findPadRetries;
+    int length;
+    unsigned char modeConfig;
+    unsigned char modeCurId;
+    unsigned char model;
+    unsigned char buttonDataReady;
+    unsigned char nrOfModes;
+    unsigned char modeCurOffs;
+    unsigned char nrOfCombs;
+    unsigned char nrOfActuators;
+    unsigned char reserved[4];
+    unsigned char state;
+    unsigned char reqState;
+    unsigned char currentTask;
+    unsigned char reserved2[6];
+    unsigned char buttonMask[4];
+    unsigned char reserved3[3];
+} PadDmaData_x00116978;
+typedef struct PadIopCommand_x00116978 {
+    int count;
+    int command;
+    int size;
+    unsigned char data[20];
+} PadIopCommand_x00116978;
+typedef struct PadPortState_x00116978 {
+    PadDmaData_x00116978 *padData;
+    PadIopCommand_x00116978 *command;
+    PadIopCommand_x00116978 *iopCommand;
+    int dmaId;
+    int open;
+    int reserved[2];
+} PadPortState_x00116978;
+extern sceSifClientData_x00116978 padClient_x00116978[2] __asm__("D_00478940");
+extern PadPortState_x00116978 padState_x00116978[2][4] __asm__("D_00478990");
+extern PadIopCommand_x00116978 padCommand_x00116978[2][4] __asm__("D_00478A80");
+extern int padRpcBuffer_x00116978[32] __asm__("D_00478B80");
+extern int padDebugPrint_x00116978 __asm__("D_003EDD04");
+extern char ext_str0_x00116978[] __asm__("D_0045DAC0");
+extern char ext_str1_x00116978[] __asm__("D_0045DA90");
+int func_00116978_x00116978(int port, int slot, void *area) __asm__("func_00116978");
+/* scePadPortOpen: from https://github.com/crashbashash/DW4_Decomp (src/sony/libpad/libpad.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00116978_x00116978(int port, int slot, void *area)
+{
+    PadDmaData_x00116978 *pad;
+    int i;
+
+    if ((unsigned int)area & 0x3f) {
+        if (padDebugPrint_x00116978) scePrintf_x00116978(ext_str1_x00116978, area);
+        return 0;
+    }
+    if (padState_x00116978[port][slot].open == 1) {
+        if (padDebugPrint_x00116978) scePrintf_x00116978(ext_str0_x00116978, port, slot);
+        return 0;
+    }
+    pad = area;
+    for (i = 0; i < 2; i++, pad++) {
+        pad->frame = 0;
+        pad->state = 5;
+        pad->reqState = 2;
+        pad->buttonDataReady = 0;
+        memset_x00116978(pad->data, 0xff, 32);
+        pad->length = 0;
+    }
+    padRpcBuffer_x00116978[0] = 1;
+    padRpcBuffer_x00116978[1] = port;
+    padRpcBuffer_x00116978[2] = slot;
+    padRpcBuffer_x00116978[4] = (int)area;
+    if (sceSifCallRpc_x00116978(&padClient_x00116978[0], 1, 0, padRpcBuffer_x00116978, 128, padRpcBuffer_x00116978, 128, 0, 0) < 0) return 0;
+    padState_x00116978[port][slot].open = 1;
+    padState_x00116978[port][slot].padData = area;
+    padState_x00116978[port][slot].iopCommand = *(PadIopCommand_x00116978 **)&padRpcBuffer_x00116978[5];
+    padState_x00116978[port][slot].command = &padCommand_x00116978[port][slot];
+    padState_x00116978[port][slot].command->count = 0;
+    padState_x00116978[port][slot].dmaId = 0;
+    return padRpcBuffer_x00116978[3];
+}
 
 
 int scePadPortClose(int port, int slot)

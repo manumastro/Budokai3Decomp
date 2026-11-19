@@ -35,6 +35,7 @@ file's first comment) to the instructions of this executable.
 | https://github.com/Megami-Decomps/smt3-decomp | none stated by the repository (remove with `git grep -n smt3-decomp src`) | - |
 | https://github.com/zm2283145/syphon-filter-omega-strain-decomp | none stated by the repository (remove with `git grep -n syphon-filter-omega-strain-decomp src`) | - |
 | https://github.com/gekoii/grandia_xtreme | none stated by the repository (remove with `git grep -n grandia_xtreme src`) | - |
+| https://github.com/crashbashash/DW4_Decomp (src/sony/, src/cri/, src/newlib/, src/libgcc/) | decompiled src/: no licence granted by the repository (its tools are CC0-1.0) (remove with `git grep -n DW4_Decomp src`) | - |
 
 newlib: each function taken from it carries its origin file's notice where that file has one. Files without a notice
 of their own are covered by newlib's COPYING.NEWLIB section for Cygnus/Red Hat code:

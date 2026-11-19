@@ -136,7 +136,32 @@ INCLUDE_ASM("asm/nonmatchings/cri/sfx", SFX_MakeTblZ32);
 s32 func_0019F320(void) {
     return 0x11;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F328);
+void SFXA_Init_x0019F328(void) __asm__("func_0019EB08");
+void SFXZ_Init_x0019F328(void) __asm__("func_0019FD70");
+extern int sfx_init_cnt_x0019F328 __asm__("D_00426C18");
+extern int sfxcnv_forcesplit_x0019F328 __asm__("D_00426C1C");
+extern char *volatile sfx_version_ptr_x0019F328 __asm__("D_00492A68");
+char *sfx_GetVersionStr_x0019F328(void) __asm__("func_0019F398");
+void sfx_InitLibWork_x0019F328(void) __asm__("func_0019F3A8");
+void SFXSUD_Init_x0019F328(void) __asm__("func_0019FBE0");
+char *sfx_GetVersionStr_x0019F328(void) __asm__("func_0019F398");
+void sfx_InitLibWork_x0019F328(void) __asm__("func_0019F3A8");
+void SFXSUD_Init_x0019F328(void) __asm__("func_0019FBE0");
+void func_0019F328_x0019F328(void) __asm__("func_0019F328");
+/* SFX_Init: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0019F328_x0019F328(void) {
+    int *initialised = &sfx_init_cnt_x0019F328;
+    if (*initialised > 0) {
+        return;
+    }
+    sfx_version_ptr_x0019F328 = sfx_GetVersionStr_x0019F328();
+    sfx_InitLibWork_x0019F328();
+    SFXSUD_Init_x0019F328();
+    SFXZ_Init_x0019F328();
+    SFXA_Init_x0019F328();
+    sfxcnv_forcesplit_x0019F328 = 0;
+    (*initialised)++;
+}
 s32 *func_0019F398(void) {
     return &D_00467CE8;
 }
@@ -147,7 +172,23 @@ void func_0019F3A8(void) {
     func_00170AA8();
     func_00170B40();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F3F8);
+void CFT_Finish_x0019F3F8(void) __asm__("func_00170AE0");
+void SFXA_Finish_x0019F3F8(void) __asm__("func_0019EB60");
+void SFXZ_Finish_x0019F3F8(void) __asm__("func_0019FDC8");
+extern int sfx_init_cnt_x0019F3F8 __asm__("D_00426C18");
+void SFXSUD_Finish_x0019F3F8(void) __asm__("func_0019FBF8");
+void SFXSUD_Finish_x0019F3F8(void) __asm__("func_0019FBF8");
+void func_0019F3F8_x0019F3F8(void) __asm__("func_0019F3F8");
+/* SFX_Finish: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0019F3F8_x0019F3F8(void) {
+    if (sfx_init_cnt_x0019F3F8 > 0) {
+        SFXZ_Finish_x0019F3F8();
+        SFXA_Finish_x0019F3F8();
+        SFXSUD_Finish_x0019F3F8();
+        CFT_Finish_x0019F3F8();
+        sfx_init_cnt_x0019F3F8--;
+    }
+}
 extern s32 D_00426C28_x0019F450 __asm__("D_00426C28");
 void func_0019F450_x0019F450(s32 arg0, s32 arg1) __asm__("func_0019F450");
 void func_0019F450_x0019F450(s32 arg0, s32 arg1)
@@ -423,7 +464,51 @@ void func_0019FA00(u8 *arg0, s32 arg1) {
 s32 func_0019FA08(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x70);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FA10);
+typedef struct SfxPlane_x0019FA10 {
+    int addr;
+    int pitch;
+    int height;
+    int f12;
+} SfxPlane_x0019FA10;
+typedef enum SfxChromaFmt_x0019FA10 {
+    SFX_CHROMA_FMT_0_x0019FA10,
+    SFX_CHROMA_FMT_1_x0019FA10,
+    SFX_CHROMA_FMT_2_x0019FA10,
+    SFX_CHROMA_FMT_3_x0019FA10
+} SfxChromaFmt_x0019FA10;
+typedef struct SfxPicFmt_x0019FA10 {
+    int pictureStructure;
+    SfxChromaFmt_x0019FA10 chromaFormat;
+    int f8;
+    int f12;
+    int f16;
+    int chromaPosH;
+    int chromaPosV;
+} SfxPicFmt_x0019FA10;
+typedef struct SfxFrame_x0019FA10 {
+    unsigned int frmfmt;
+    SfxPlane_x0019FA10 plane[3];
+    int f52[4];
+    int width;
+    int height;
+    int fno;
+    int f80;
+    int f84;
+    int f88;
+    int f92;
+    SfxPicFmt_x0019FA10 fmt;
+    int f120[5];
+} SfxFrame_x0019FA10;
+void sfxset_ShiftBufInfByLine_x0019FA10(SfxPlane_x0019FA10 *plane, int lines) __asm__("func_0019FA70");
+void sfxset_ShiftBufInfByLine_x0019FA10(SfxPlane_x0019FA10 *plane, int lines) __asm__("func_0019FA70");
+void func_0019FA10_x0019FA10(SfxFrame_x0019FA10 *frm, int lines) __asm__("func_0019FA10");
+/* SFX_ShiftYccPtrByLine: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfx.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0019FA10_x0019FA10(SfxFrame_x0019FA10 *frm, int lines) {
+    lines = lines / 2 * 2;
+    sfxset_ShiftBufInfByLine_x0019FA10(&frm->plane[0], lines);
+    sfxset_ShiftBufInfByLine_x0019FA10(&frm->plane[1], lines >> 1);
+    sfxset_ShiftBufInfByLine_x0019FA10(&frm->plane[2], lines >> 1);
+}
 void func_0019FA70_x0019FA70(u8 *arg0, s32 arg1) __asm__("func_0019FA70");
 void func_0019FA70_x0019FA70(u8 *arg0, s32 arg1)
 {
@@ -697,19 +782,138 @@ void func_0019FED8_x0019FED8(SfxZmvTagState_x0019FED8 *state)
     frame->ck.data = found.data;
     frame->ck.len = found.len;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FFC0);
+typedef struct SfxChunk_x0019FFC0 {
+    int valid;
+    char *data;
+    int size;
+} SfxChunk_x0019FFC0;
+typedef void (*SfxZCbFn_x0019FFC0)(unsigned int *, unsigned int *, float, float);
+typedef struct SfxZHn_x0019FFC0 {
+    int used;
+    int zbit;
+    SfxChunk_x0019FFC0 info;
+    int pad20;
+    SfxChunk_x0019FFC0 hdr;
+    int pad36;
+    SfxChunk_x0019FFC0 vfrm;
+    int pad52[2];
+    float zmin;
+    float zmax;
+    SfxZCbFn_x0019FFC0 cbfn;
+    int cbarg;
+} SfxZHn_x0019FFC0;
+void func_0019FFC0_x0019FFC0(SfxZHn_x0019FFC0 *zhn, char **data, int *size) __asm__("func_0019FFC0");
+/* SFXZ_GetTagInf: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfxz.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0019FFC0_x0019FFC0(SfxZHn_x0019FFC0 *zhn, char **data, int *size) {
+    SfxChunk_x0019FFC0 *info = &zhn->info;
+    char *value4;
+    int value8;
+    if (info->valid != 1) {
+        *data = 0;
+        *size = 0;
+        return;
+    }
+    value4 = info->data;
+    value8 = info->size;
+    *size = value8;
+    *data = value4;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019FFF0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0108);
 void func_001A0188(void) {
     func_001A01A0();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A01A0);
+typedef struct SfxChunk_x001A01A0 {
+    int valid;
+    char *data;
+    int size;
+} SfxChunk_x001A01A0;
+typedef void (*SfxZCbFn_x001A01A0)(unsigned int *, unsigned int *, float, float);
+typedef struct SfxZHn_x001A01A0 {
+    int used;
+    int zbit;
+    SfxChunk_x001A01A0 info;
+    int pad20;
+    SfxChunk_x001A01A0 hdr;
+    int pad36;
+    SfxChunk_x001A01A0 vfrm;
+    int pad52[2];
+    float zmin;
+    float zmax;
+    SfxZCbFn_x001A01A0 cbfn;
+    int cbarg;
+} SfxZHn_x001A01A0;
+void func_001A01A0_x001A01A0(SfxZHn_x001A01A0 *zhn, int lo, int hi, unsigned int *tbl) __asm__("func_001A01A0");
+/* sfxzmv_MakeOrgZ32Tbl: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfxz.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001A01A0_x001A01A0(SfxZHn_x001A01A0 *zhn, int lo, int hi, unsigned int *tbl)
+{
+    int i;
+    if (hi == (int)0x80000000)
+        hi = 0x7FFFFFFF;
+    if (lo == (int)0x80000000)
+        lo = 0x7FFFFFFF;
+    for (i = 8; i >= 0; i--)
+        tbl[i] = 0;
+    for (i = 9; i < 17; i++)
+        tbl[i] = lo;
+    if (lo == hi) {
+        for (i = 17; i < 224; i++)
+            tbl[i] = lo;
+    } else {
+        for (i = 17; i < 224; i++)
+            tbl[i] = (unsigned int)(hi - lo) / 207 * (i - 17) + lo;
+    }
+    for (i = 224; i < 240; i++)
+        tbl[i] = hi;
+    for (i = 240; i < 256; i++)
+        tbl[i] = 0x7FFFFFFF;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A02E0);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0330);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A03B8);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0588);
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A05D8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0660);
+typedef struct SfxChunk_x001A0660 {
+    int valid;
+    char *data;
+    int size;
+} SfxChunk_x001A0660;
+typedef void (*SfxZCbFn_x001A0660)(unsigned int *, unsigned int *, float, float);
+typedef struct SfxZHn_x001A0660 {
+    int used;
+    int zbit;
+    SfxChunk_x001A0660 info;
+    int pad20;
+    SfxChunk_x001A0660 hdr;
+    int pad36;
+    SfxChunk_x001A0660 vfrm;
+    int pad52[2];
+    float zmin;
+    float zmax;
+    SfxZCbFn_x001A0660 cbfn;
+    int cbarg;
+} SfxZHn_x001A0660;
+int SFXZ_GetZbufType_x001A0660(void) __asm__("func_001A0898");
+int SFXZ_GetZbufType_x001A0660(void) __asm__("func_001A0898");
+void func_001A0660_x001A0660(SfxZHn_x001A0660 *zhn, unsigned int *src, unsigned int *dst) __asm__("func_001A0660");
+/* sfxzmv_MakeZ32TblFromOrgZ32: from https://github.com/crashbashash/DW4_Decomp (src/cri/sfxz.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001A0660_x001A0660(SfxZHn_x001A0660 *zhn, unsigned int *src, unsigned int *dst)
+{
+    float scale = zhn->zmax;
+    int i;
+    unsigned int v;
+    if (SFXZ_GetZbufType_x001A0660() == 1) {
+        for (i = 0; i < 256; i++)
+            dst[i] = (src[i] & 0x7FFFFF80) * 2;
+        return;
+    }
+    for (i = 0; i < 256; i++) {
+        if (src[i] == 0)
+            src[i] = 1;
+        v = src[i];
+        dst[i] = 16777215.0f / (scale * v / 2147483520.0f);
+    }
+}
 s32 func_0019F6D0_x001A07A8(s32, s32, s32 *) __asm__("func_0019F6D0");
 s32 func_001A0810_x001A07A8() __asm__("func_001A0810");
 extern s32 D_00467DF0_x001A07A8 __asm__("D_00467DF0");
@@ -825,9 +1029,45 @@ void func_001A0D98_x001A0D98(void) {
         D_00427318_x001A0D98 -= 1;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0DB8);
+typedef unsigned int size_t_x001A0DB8;
+int sprintf_x001A0DB8(char *, const char *, ...) __asm__("func_00127488");
+extern void qsort_x001A0DB8(void *, size_t_x001A0DB8, size_t_x001A0DB8, int (*)(const void *, const void *)) __asm__("qsort");
+char *strncpy_x001A0DB8(char *, const char *, size_t_x001A0DB8) __asm__("func_00128040");
+char *strcat_x001A0DB8(char *, const char *) __asm__("func_00127810");
+void SUD_SetFmtTypeToBuf_x001A0DB8(char *dst, int *flags) __asm__("func_001A0E48");
+void SUD_SetFmtTypeToBuf_x001A0DB8(char *dst, int *flags) __asm__("func_001A0E48");
+extern char ext_str0_x001A0DB8[] __asm__("D_00467F18");
+extern char ext_str1_x001A0DB8[] __asm__("D_00467F10");
+extern char ext_str2_x001A0DB8[] __asm__("D_00467F08");
+extern char ext_str3_x001A0DB8[] __asm__("D_00467EF8");
+void func_001A0DB8_x001A0DB8(char *out, int unused, int *flags) __asm__("func_001A0DB8");
+/* SUD_MakePicUsrDat: from https://github.com/crashbashash/DW4_Decomp (src/cri/sud.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_001A0DB8_x001A0DB8(char *out, int unused, int *flags) {
+    char number[16];
+    char *field;
+    strncpy_x001A0DB8(out, ext_str3_x001A0DB8, 8);
+    sprintf_x001A0DB8(number, ext_str2_x001A0DB8, 19);
+    field = out + 16;
+    strcat_x001A0DB8(out, number);
+    strncpy_x001A0DB8(field, ext_str1_x001A0DB8, 2);
+    SUD_SetFmtTypeToBuf_x001A0DB8(field, flags);
+    strcat_x001A0DB8(field, ext_str0_x001A0DB8);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0E48);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0F28);
+int atoi_x001A0F28(const char *) __asm__("func_001221D8");
+typedef struct SudChars2_x001A0F28 {
+    char c[2];
+} SudChars2_x001A0F28;
+unsigned int func_001A0F28_x001A0F28(char *header, int index) __asm__("func_001A0F28");
+/* SUD_AnalyVersion: from https://github.com/crashbashash/DW4_Decomp (src/cri/sud.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+unsigned int func_001A0F28_x001A0F28(char *header, int index) {
+    SudChars2_x001A0F28 digits;
+    if (header == 0 || index < 0) {
+        return 0;
+    }
+    digits = *(SudChars2_x001A0F28 *)(header + 16);
+    return atoi_x001A0F28(digits.c);
+}
 s32 func_001A0F70(s32 arg0, s32 arg1) {
     if ((arg0 == 0) || (arg1 < 0)) {
         return 0;
@@ -856,8 +1096,47 @@ s32 func_001A0FF0_x001A0FF0(s32 arg0, s32 arg1) {
     }
     return var_v0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1050);
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A10E0);
+typedef unsigned int size_t_x001A1050;
+int strncmp_x001A1050(const char *, const char *, size_t_x001A1050) __asm__("func_00127E88");
+unsigned int SUD_AnalyVersion_x001A1050(char *header, int index) __asm__("func_001A0F28");
+unsigned int SUD_AnalyVersion_x001A1050(char *header, int index) __asm__("func_001A0F28");
+extern char ext_str0_x001A1050[] __asm__("D_00467F58");
+extern char ext_str1_x001A1050[] __asm__("D_00467F50");
+int func_001A1050_x001A1050(char *header, int index) __asm__("func_001A1050");
+/* FUN_002b5400: from https://github.com/crashbashash/DW4_Decomp (src/cri/sud.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_001A1050_x001A1050(char *header, int index) {
+    char *field;
+    int kind;
+    if (header == 0 || index < 0) {
+        return 0;
+    }
+    if (SUD_AnalyVersion_x001A1050(header, index) < 2) {
+        return 0;
+    }
+    field = header + 21;
+    if (strncmp_x001A1050(field, ext_str1_x001A1050, 1) == 0) {
+        kind = 1;
+    } else {
+        kind = strncmp_x001A1050(field, ext_str0_x001A1050, 1) != 0 ? 0 : 2;
+    }
+    return kind;
+}
+typedef unsigned int size_t_x001A10E0;
+int strncmp_x001A10E0(const char *, const char *, size_t_x001A10E0) __asm__("func_00127E88");
+unsigned int SUD_AnalyVersion_x001A10E0(char *header, int index) __asm__("func_001A0F28");
+unsigned int SUD_AnalyVersion_x001A10E0(char *header, int index) __asm__("func_001A0F28");
+extern char ext_str0_x001A10E0[] __asm__("D_00467F20");
+int func_001A10E0_x001A10E0(char *header, int index) __asm__("func_001A10E0");
+/* FUN_002b5490: from https://github.com/crashbashash/DW4_Decomp (src/cri/sud.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_001A10E0_x001A10E0(char *header, int index) {
+    if (header == 0 || index < 0) {
+        return 0;
+    }
+    if (SUD_AnalyVersion_x001A10E0(header, index) < 2) {
+        return 0;
+    }
+    return strncmp_x001A10E0(header + 22, ext_str0_x001A10E0, 1) != 0;
+}
 s32 func_001A1148(s32 arg0, s32 arg1) {
     if ((arg0 == 0) || (arg1 < 0)) {
         return 0;
@@ -894,7 +1173,22 @@ s32 func_001A12C8(s32 arg0, s32 arg1) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1348);
+typedef struct SudChars3_x001A1348 {
+    char c[3];
+} SudChars3_x001A1348;
+unsigned long FUN_002b5758_x001A1348(char *text, char **end, int radix) __asm__("func_001A13A8");
+unsigned long FUN_002b5758_x001A1348(char *text, char **end, int radix) __asm__("func_001A13A8");
+int func_001A1348_x001A1348(char *base, int index, int offset) __asm__("func_001A1348");
+/* FUN_002b56f8: from https://github.com/crashbashash/DW4_Decomp (src/cri/sud.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_001A1348_x001A1348(char *base, int index, int offset) {
+    SudChars3_x001A1348 digits;
+    char *end;
+    if (base == 0 || index < 0) {
+        return 0;
+    }
+    digits = *(SudChars3_x001A1348 *)(base + offset);
+    return FUN_002b5758_x001A1348(digits.c, &end, 16);
+}
 void func_001A13A8(void) {
     func_00129688();
 }
@@ -947,7 +1241,48 @@ void func_001A15C0_x001A15C0(void)
     if (D_003EEA78_x001A15C0 < 0)
         D_003EEA78_x001A15C0 = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A1630);
+typedef unsigned int size_t_x001A1630;
+extern void qsort_x001A1630(void *, size_t_x001A1630, size_t_x001A1630, int (*)(const void *, const void *)) __asm__("qsort");
+typedef struct SudClock_x001A1630 {
+    long long base;
+    unsigned short last;
+} SudClock_x001A1630;
+extern volatile int utytmr_init_cnt_x001A1630 __asm__("D_00427334");
+extern int utytmr_ch_x001A1630 __asm__("D_00427338");
+extern volatile SudClock_x001A1630 DAT_005856b0_x001A1630 __asm__("D_00492A78");
+extern volatile SudClock_x001A1630 DAT_005856c0_x001A1630 __asm__("D_00492A88");
+extern volatile SudClock_x001A1630 *volatile DAT_005856d0_x001A1630 __asm__("D_00492A98");
+extern volatile int DAT_005856d4_x001A1630 __asm__("D_00492A9C");
+extern volatile unsigned int *const sud_tmr_count_x001A1630[] __asm__("D_00467F80");
+long long func_001A1630_x001A1630(void) __asm__("func_001A1630");
+/* UTY_GetTmr: from https://github.com/crashbashash/DW4_Decomp (src/cri/sud.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+long long func_001A1630_x001A1630(void) {
+    unsigned int count;
+    long long now;
+    if (utytmr_init_cnt_x001A1630 <= 0 || utytmr_ch_x001A1630 == -1) {
+        return 0;
+    }
+    DAT_005856d4_x001A1630++;
+    if (DAT_005856d4_x001A1630 == 1) {
+        DAT_005856c0_x001A1630 = DAT_005856b0_x001A1630;
+        DAT_005856d0_x001A1630 = &DAT_005856c0_x001A1630;
+        count = *sud_tmr_count_x001A1630[utytmr_ch_x001A1630] & 0xFFFF;
+        if (count < DAT_005856b0_x001A1630.last) {
+            DAT_005856b0_x001A1630.base += 0x10000;
+        }
+        DAT_005856b0_x001A1630.last = count;
+        now = count + DAT_005856b0_x001A1630.base;
+        DAT_005856d0_x001A1630 = &DAT_005856b0_x001A1630;
+    } else {
+        count = *sud_tmr_count_x001A1630[utytmr_ch_x001A1630] & 0xFFFF;
+        now = count + DAT_005856d0_x001A1630->base;
+        if (count < DAT_005856d0_x001A1630->last) {
+            now += 0x10000;
+        }
+    }
+    DAT_005856d4_x001A1630--;
+    return now;
+}
 s32 func_001A1758(void) {
     func_001A1630();
     return D_00427320 == 1;

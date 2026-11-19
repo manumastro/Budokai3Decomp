@@ -1386,7 +1386,98 @@ void func_0016C158_x0016C158(void* object, void* arg1, Sint32_x0016C158 arg2) {
 end:
     head->count = j;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C460);
+void SJRMT_Init_x0016C460(void) __asm__("func_0016F6F8");
+void SJX_Init_x0016C460(void) __asm__("func_0016FAF0");
+typedef struct DtxObj_x0016C460 DtxObj_x0016C460;
+typedef void (*DtxCbf_x0016C460)(void *obj, void *buf, int size);
+DtxObj_x0016C460 *DTX_Create_x0016C460(unsigned int id, char *eewk, int iopwk, int wklen) __asm__("DTX_Create");
+void DTX_SetRcvCbf_x0016C460(DtxObj_x0016C460 *dtx, DtxCbf_x0016C460 func, void *obj) __asm__("func_00165CD0");
+void DTX_SetSndCbf_x0016C460(DtxObj_x0016C460 *dtx, DtxCbf_x0016C460 func, void *obj) __asm__("func_00165CE0");
+void DTX_Init_x0016C460(void) __asm__("func_00165E50");
+int DTX_CallUrpc_x0016C460(int fno, int *send, int nsend, int *recv, int nrecv) __asm__("func_00165FB8");
+void ADXMSG_PrintErr_x0016C460(const char *format, ...) __asm__("scePrintf");
+typedef unsigned int size_t_x0016C460;
+void *memset_x0016C460(void *, int, size_t_x0016C460) __asm__("memset");
+void *sceSifAllocIopHeap_x0016C460(unsigned int size) __asm__("func_00112598");
+extern int ps2rna_nvoice_x0016C460 __asm__("D_0041A0D0");
+extern int ps2rna_setup_voice_x0016C460 __asm__("D_0041A0D8");
+extern void *ps2rna_rna_heap_x0016C460 __asm__("D_0041A0EC");
+extern int ps2rna_init_cnt_x0016C460 __asm__("D_0041A10C");
+extern void *ps2rna_dtx_heap_x0016C460 __asm__("D_0041A114");
+extern DtxObj_x0016C460 *ps2rna_dtx_x0016C460 __asm__("D_0041CB60");
+extern char *volatile ps2rna_ver_ptr_x0016C460 __asm__("D_00419128");
+extern int ps2rna_rna_heap_size_x0016C460 __asm__("D_0041A0E8");
+extern int ps2rna_rna_work_x0016C460 __asm__("D_0041A0F0");
+extern int ps2rna_rna_nvoice_x0016C460 __asm__("D_0041A0F4");
+extern int ps2rna_dtx_eewk_x0016C460 __asm__("D_0041A110");
+extern int ps2rna_dtx_iopwk_x0016C460 __asm__("D_0041A118");
+extern int ps2rna_dtx_bsize_x0016C460 __asm__("D_0041CB64");
+extern char ps2rna_dtx_eebuf_x0016C460[] __asm__("D_0041CB68");
+extern char PS2RNA_E01112902_Failed_sceSifAllocIopHeap_d_in_PS2RNA_Init_x0016C460[] __asm__("D_00464A20");
+extern char E0100302_PS2RNA_Init_can_t_create_DTX_x0016C460[] __asm__("D_00464A68");
+extern char E02041101_Failed_sceSifAllocIopHeap_d_in_PS2RNA_Init_x0016C460[] __asm__("D_00464A90");
+void ps2rna_sndcbf_x0016C460(void *obj, void *buf, int size) __asm__("func_0016C158");
+void ps2rna_init_port_x0016C460(void) __asm__("func_0016C788");
+extern char PS2RNA_sceSifAllocIopHeap_d_ret_0x_08x_x0016C460[] __asm__("D_004648E8");
+void ps2rna_init_psj_x0016C460(void) __asm__("ps2rna_init_psj");
+void ps2rna_rcvcbf_x0016C460(void *obj, void *buf, int size) __asm__("func_0016C0F8");
+void ps2rna_sndcbf_x0016C460(void *obj, void *data, int size) __asm__("func_0016C158");
+void ps2rna_init_port_x0016C460(void) __asm__("func_0016C788");
+void func_0016C460_x0016C460(void) __asm__("func_0016C460");
+/* PS2RNA_Init: from https://github.com/crashbashash/DW4_Decomp (src/cri/ps2rna.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0016C460_x0016C460(void)
+{
+    int prm[3];
+    ps2rna_ver_ptr_x0016C460;
+    if ((ps2rna_setup_voice_x0016C460 == 1 && ps2rna_nvoice_x0016C460 <= 0)) {
+        return;
+    }
+    if (ps2rna_init_cnt_x0016C460 == 0) {
+        SJRMT_Init_x0016C460();
+        SJX_Init_x0016C460();
+        DTX_Init_x0016C460();
+        ps2rna_init_port_x0016C460();
+        ps2rna_init_psj_x0016C460();
+        memset_x0016C460(ps2rna_dtx_eebuf_x0016C460, 0, 2256);
+        ps2rna_dtx_bsize_x0016C460 = 2176;
+        ps2rna_dtx_eewk_x0016C460 = ((int)ps2rna_dtx_eebuf_x0016C460 + 64) & ~63;
+        if (ps2rna_dtx_heap_x0016C460 == 0) {
+            ps2rna_dtx_heap_x0016C460 = sceSifAllocIopHeap_x0016C460(2256);
+            if (ps2rna_dtx_heap_x0016C460 == 0) {
+                ADXMSG_PrintErr_x0016C460(PS2RNA_E01112902_Failed_sceSifAllocIopHeap_d_in_PS2RNA_Init_x0016C460, 2256);
+                for (;;) {
+                }
+            }
+        }
+        ADXMSG_PrintErr_x0016C460(PS2RNA_sceSifAllocIopHeap_d_ret_0x_08x_x0016C460, 2256, ps2rna_dtx_heap_x0016C460);
+        ps2rna_dtx_iopwk_x0016C460 = ((int)ps2rna_dtx_heap_x0016C460 + 64) & ~63;
+        ps2rna_dtx_x0016C460 = DTX_Create_x0016C460(1, (char *)ps2rna_dtx_eewk_x0016C460, ps2rna_dtx_iopwk_x0016C460, ps2rna_dtx_bsize_x0016C460);
+        if (ps2rna_dtx_x0016C460 == 0) {
+            ADXMSG_PrintErr_x0016C460(E0100302_PS2RNA_Init_can_t_create_DTX_x0016C460);
+            for (;;) {
+            }
+        }
+        DTX_SetRcvCbf_x0016C460(ps2rna_dtx_x0016C460, ps2rna_rcvcbf_x0016C460, 0);
+        DTX_SetSndCbf_x0016C460(ps2rna_dtx_x0016C460, ps2rna_sndcbf_x0016C460, 0);
+        if (ps2rna_rna_heap_x0016C460 == 0) {
+            ps2rna_rna_nvoice_x0016C460 = ps2rna_nvoice_x0016C460;
+            ps2rna_rna_heap_size_x0016C460 = ps2rna_nvoice_x0016C460 * 1024 + 64;
+            ps2rna_rna_heap_x0016C460 = sceSifAllocIopHeap_x0016C460(ps2rna_rna_heap_size_x0016C460);
+            if (ps2rna_rna_heap_x0016C460 == 0) {
+                ADXMSG_PrintErr_x0016C460(E02041101_Failed_sceSifAllocIopHeap_d_in_PS2RNA_Init_x0016C460, ps2rna_rna_heap_size_x0016C460);
+                for (;;) {
+                }
+            }
+            ADXMSG_PrintErr_x0016C460(PS2RNA_sceSifAllocIopHeap_d_ret_0x_08x_x0016C460, ps2rna_rna_heap_size_x0016C460, ps2rna_rna_heap_x0016C460);
+        }
+        ps2rna_rna_work_x0016C460 = ((int)ps2rna_rna_heap_x0016C460 + 63) & ~63;
+        prm[0] = ps2rna_rna_nvoice_x0016C460;
+        prm[1] = ps2rna_rna_work_x0016C460;
+        prm[2] = ps2rna_rna_heap_size_x0016C460;
+        DTX_CallUrpc_x0016C460(10, prm, 3, 0, 0);
+    }
+    ps2rna_init_cnt_x0016C460++;
+}
 typedef signed int Sint32_x0016C730;
 extern Sint32_x0016C730 D_0073A748_x0016C730 __asm__("D_0041A0D8");
 extern Sint32_x0016C730 D_0073A740_x0016C730 __asm__("D_0041A0D0");
@@ -1402,8 +1493,56 @@ void func_0016C730_x0016C730(void *arg0)
 }
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C788);
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C7E8);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C838);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C8A8);
+int DTX_CallUrpc_x0016C838(int fno, int *send, int nsend, int *recv, int nrecv) __asm__("func_00165FB8");
+enum {
+    PS2RNA_RPC_CREATE_x0016C838 = 8,
+    PS2RNA_RPC_DESTROY_x0016C838 = 9,
+    PS2RNA_RPC_OUTMODE_x0016C838 = 11,
+    PS2RNA_RPC_INIT_PORT_x0016C838 = 12,
+    PS2RNA_RPC_FINISH_PORT_x0016C838 = 13,
+    PS2RNA_RPC_START_AUX_x0016C838 = 14,
+    PS2RNA_RPC_STOP_AUX_x0016C838 = 15,
+    PS2RNA_RPC_OPEN_PORT_x0016C838 = 16,
+    PS2RNA_RPC_CLOSE_PORT_x0016C838 = 17
+};
+extern int ps2rna_nvoice_x0016C838 __asm__("D_0041A0D0");
+extern int ps2rna_setup_voice_x0016C838 __asm__("D_0041A0D8");
+extern int ps2rna_aux_on_x0016C838 __asm__("D_0041A100");
+void func_0016C838_x0016C838(void) __asm__("func_0016C838");
+/* PS2RNA_StartAux: from https://github.com/crashbashash/DW4_Decomp (src/cri/ps2rna.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0016C838_x0016C838(void)
+{
+    if ((ps2rna_setup_voice_x0016C838 != 1 || ps2rna_nvoice_x0016C838 > 0) && ps2rna_aux_on_x0016C838 != 1) {
+        DTX_CallUrpc_x0016C838(PS2RNA_RPC_START_AUX_x0016C838, 0, 0, 0, 0);
+        ps2rna_aux_on_x0016C838 = 1;
+    }
+}
+int DTX_CallUrpc_x0016C8A8(int fno, int *send, int nsend, int *recv, int nrecv) __asm__("func_00165FB8");
+enum {
+    PS2RNA_RPC_CREATE_x0016C8A8 = 8,
+    PS2RNA_RPC_DESTROY_x0016C8A8 = 9,
+    PS2RNA_RPC_OUTMODE_x0016C8A8 = 11,
+    PS2RNA_RPC_INIT_PORT_x0016C8A8 = 12,
+    PS2RNA_RPC_FINISH_PORT_x0016C8A8 = 13,
+    PS2RNA_RPC_START_AUX_x0016C8A8 = 14,
+    PS2RNA_RPC_STOP_AUX_x0016C8A8 = 15,
+    PS2RNA_RPC_OPEN_PORT_x0016C8A8 = 16,
+    PS2RNA_RPC_CLOSE_PORT_x0016C8A8 = 17
+};
+extern int ps2rna_nvoice_x0016C8A8 __asm__("D_0041A0D0");
+extern int ps2rna_setup_voice_x0016C8A8 __asm__("D_0041A0D8");
+extern int ps2rna_aux_on_x0016C8A8 __asm__("D_0041A100");
+void func_0016C8A8_x0016C8A8(void) __asm__("func_0016C8A8");
+/* PS2RNA_StopAux: from https://github.com/crashbashash/DW4_Decomp (src/cri/ps2rna.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0016C8A8_x0016C8A8(void)
+{
+    if (ps2rna_setup_voice_x0016C8A8 != 1 || ps2rna_nvoice_x0016C8A8 > 0) {
+        if (ps2rna_aux_on_x0016C8A8 != 0) {
+            DTX_CallUrpc_x0016C8A8(PS2RNA_RPC_STOP_AUX_x0016C8A8, 0, 0, 0, 0);
+            ps2rna_aux_on_x0016C8A8 = 0;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016C910);
 extern int D_003E0710_x0016C968 __asm__("D_0041A0D8");
 extern int D_003E0708_x0016C968 __asm__("D_0041A0D0");
@@ -1444,7 +1583,104 @@ void func_0016C968_x0016C968(void) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CA28);
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016CDA8);
+typedef struct SfdSj_x0016CDA8 SfdSj_x0016CDA8;
+typedef struct SfdSjChunk_x0016CDA8 {
+    char *data;
+    int len;
+} SfdSjChunk_x0016CDA8;
+typedef struct SfdSjVtbl_x0016CDA8 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0016CDA8 *sj);
+    int (*getUuid)(SfdSj_x0016CDA8 *sj);
+    void (*reset)(SfdSj_x0016CDA8 *sj);
+    void (*getChunk)(SfdSj_x0016CDA8 *sj, int id, int n, SfdSjChunk_x0016CDA8 *ck);
+    void (*ungetChunk)(SfdSj_x0016CDA8 *sj, int id, SfdSjChunk_x0016CDA8 *ck);
+    void (*putChunk)(SfdSj_x0016CDA8 *sj, int id, SfdSjChunk_x0016CDA8 *ck);
+    int (*getNumData)(SfdSj_x0016CDA8 *sj, int id);
+} SfdSjVtbl_x0016CDA8;
+struct SfdSj_x0016CDA8 {
+    SfdSjVtbl_x0016CDA8 *vtbl;
+};
+typedef struct SjxObj_x0016CDA8 SjxObj_x0016CDA8;
+typedef struct DtrObj_x0016CDA8 DtrObj_x0016CDA8;
+void DTR_Destroy_x0016CDA8(DtrObj_x0016CDA8 *dtr) __asm__("func_00165728");
+typedef struct Ps2RnaPsj_x0016CDA8 {
+    char used;
+    void *sjrmt;
+    SfdSj_x0016CDA8 *sjuni;
+    SjxObj_x0016CDA8 *sjx;
+    SfdSjChunk_x0016CDA8 ck;
+} Ps2RnaPsj_x0016CDA8;
+typedef struct Ps2Rna_x0016CDA8 {
+    signed char used;
+    int maxnch;
+    Ps2RnaPsj_x0016CDA8 *psj[2];
+    DtrObj_x0016CDA8 *dtr[2];
+    SfdSj_x0016CDA8 *sjo[2];
+    void *id;
+    int pad36;
+    int ring_size;
+    int psj_bufsize;
+    int sfreq;
+    int sent_sfreq;
+    int outvol;
+    int sent_outvol;
+    int outpan[2];
+    int sent_outpan[2];
+    signed char playsw;
+    signed char sent_playsw;
+    signed char nch;
+    signed char sent_nch;
+    signed char auxsw;
+    signed char sent_auxsw;
+    signed char dualsw;
+    signed char sent_dualsw;
+    signed char transsw;
+    signed char trans_stopped;
+    signed char sent_stopflag;
+    signed char stopflag;
+    int outbalance;
+    int sent_outbalance;
+} Ps2Rna_x0016CDA8;
+int DTX_CallUrpc_x0016CDA8(int fno, int *send, int nsend, int *recv, int nrecv) __asm__("func_00165FB8");
+enum {
+    PS2RNA_RPC_CREATE_x0016CDA8 = 8,
+    PS2RNA_RPC_DESTROY_x0016CDA8 = 9,
+    PS2RNA_RPC_OUTMODE_x0016CDA8 = 11,
+    PS2RNA_RPC_INIT_PORT_x0016CDA8 = 12,
+    PS2RNA_RPC_FINISH_PORT_x0016CDA8 = 13,
+    PS2RNA_RPC_START_AUX_x0016CDA8 = 14,
+    PS2RNA_RPC_STOP_AUX_x0016CDA8 = 15,
+    PS2RNA_RPC_OPEN_PORT_x0016CDA8 = 16,
+    PS2RNA_RPC_CLOSE_PORT_x0016CDA8 = 17
+};
+extern int ps2rna_nvoice_x0016CDA8 __asm__("D_0041A0D0");
+extern int ps2rna_setup_voice_x0016CDA8 __asm__("D_0041A0D8");
+void ps2rna_release_psj_x0016CDA8(Ps2RnaPsj_x0016CDA8 *psj) __asm__("func_0016C0F0");
+void func_0016CDA8_x0016CDA8(Ps2Rna_x0016CDA8 *rna) __asm__("func_0016CDA8");
+/* PS2RNA_Destroy: from https://github.com/crashbashash/DW4_Decomp (src/cri/ps2rna.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0016CDA8_x0016CDA8(Ps2Rna_x0016CDA8 *rna)
+{
+    int arg[4];
+    int i;
+    if (ps2rna_setup_voice_x0016CDA8 != 1 || ps2rna_nvoice_x0016CDA8 > 0) {
+        for (i = 0; i < rna->maxnch; i++) {
+            if (rna->dtr[i] != 0) {
+                DTR_Destroy_x0016CDA8(rna->dtr[i]);
+            }
+        }
+        arg[0] = (int)rna->id;
+        DTX_CallUrpc_x0016CDA8(PS2RNA_RPC_DESTROY_x0016CDA8, arg, 1, 0, 0);
+        for (i = 0; i < rna->maxnch; i++) {
+            if (rna->psj[i] != 0) {
+                ps2rna_release_psj_x0016CDA8(rna->psj[i]);
+            }
+        }
+    }
+    rna->used = 0;
+}
 void PS2RNA_Start(void) {
     if ((D_0041A0D8 != 1) || (D_0041A0D0 > 0)) {
         scePrintf(&D_00464B48);
@@ -2106,7 +2342,17 @@ s32 func_0016D830_x0016D830(u8 *arg0)
   {
   }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", func_0016D860);
+extern int ps2rna_nvoice_x0016D860 __asm__("D_0041A0D0");
+extern int ps2rna_setup_voice_x0016D860 __asm__("D_0041A0D8");
+int func_0016D860_x0016D860(void) __asm__("func_0016D860");
+/* PS2RNA_GetBitPerSmpl: from https://github.com/crashbashash/DW4_Decomp (src/cri/ps2rna.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0016D860_x0016D860(void)
+{
+    if ((ps2rna_setup_voice_x0016D860 == 1 && ps2rna_nvoice_x0016D860 <= 0)) {
+        return 16;
+    }
+    return 16;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/ps2rna", PS2RNA_IsOverflow);
 void PS2RNA_ClearOverflow(void) {
     if ((D_0041A0D8 != 1) || (D_0041A0D0 > 0)) {

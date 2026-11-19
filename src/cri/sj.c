@@ -34,8 +34,148 @@ s32 func_0016FF40();                            /* extern */
 
 extern s32 D_0041D438;
 
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016D9F8);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016DA38);
+typedef struct SfdSj_x0016D9F8 SfdSj_x0016D9F8;
+typedef struct SfdSjChunk_x0016D9F8 {
+    char *data;
+    int len;
+} SfdSjChunk_x0016D9F8;
+typedef struct SfdSjVtbl_x0016D9F8 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0016D9F8 *sj);
+    int (*getUuid)(SfdSj_x0016D9F8 *sj);
+    void (*reset)(SfdSj_x0016D9F8 *sj);
+    void (*getChunk)(SfdSj_x0016D9F8 *sj, int id, int n, SfdSjChunk_x0016D9F8 *ck);
+    void (*ungetChunk)(SfdSj_x0016D9F8 *sj, int id, SfdSjChunk_x0016D9F8 *ck);
+    void (*putChunk)(SfdSj_x0016D9F8 *sj, int id, SfdSjChunk_x0016D9F8 *ck);
+    int (*getNumData)(SfdSj_x0016D9F8 *sj, int id);
+} SfdSjVtbl_x0016D9F8;
+struct SfdSj_x0016D9F8 {
+    SfdSjVtbl_x0016D9F8 *vtbl;
+};
+typedef struct SjxObj_x0016D9F8 SjxObj_x0016D9F8;
+typedef struct DtrObj_x0016D9F8 DtrObj_x0016D9F8;
+typedef struct Ps2RnaPsj_x0016D9F8 {
+    char used;
+    void *sjrmt;
+    SfdSj_x0016D9F8 *sjuni;
+    SjxObj_x0016D9F8 *sjx;
+    SfdSjChunk_x0016D9F8 ck;
+} Ps2RnaPsj_x0016D9F8;
+typedef struct Ps2Rna_x0016D9F8 {
+    signed char used;
+    int maxnch;
+    Ps2RnaPsj_x0016D9F8 *psj[2];
+    DtrObj_x0016D9F8 *dtr[2];
+    SfdSj_x0016D9F8 *sjo[2];
+    void *id;
+    int pad36;
+    int ring_size;
+    int psj_bufsize;
+    int sfreq;
+    int sent_sfreq;
+    int outvol;
+    int sent_outvol;
+    int outpan[2];
+    int sent_outpan[2];
+    signed char playsw;
+    signed char sent_playsw;
+    signed char nch;
+    signed char sent_nch;
+    signed char auxsw;
+    signed char sent_auxsw;
+    signed char dualsw;
+    signed char sent_dualsw;
+    signed char transsw;
+    signed char trans_stopped;
+    signed char sent_stopflag;
+    signed char stopflag;
+    int outbalance;
+    int sent_outbalance;
+} Ps2Rna_x0016D9F8;
+extern int ps2rna_nvoice_x0016D9F8 __asm__("D_0041A0D0");
+extern int ps2rna_setup_voice_x0016D9F8 __asm__("D_0041A0D8");
+SfdSj_x0016D9F8 *func_0016D9F8_x0016D9F8(Ps2Rna_x0016D9F8 *rna, int ch) __asm__("func_0016D9F8");
+/* PS2RNA_GetSjUni: from https://github.com/crashbashash/DW4_Decomp (src/cri/ps2rna.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+SfdSj_x0016D9F8 *func_0016D9F8_x0016D9F8(Ps2Rna_x0016D9F8 *rna, int ch)
+{
+    if ((ps2rna_setup_voice_x0016D9F8 == 1 && ps2rna_nvoice_x0016D9F8 <= 0)) {
+        return 0;
+    }
+    return rna->psj[ch]->sjuni;
+}
+typedef struct SfdSj_x0016DA38 SfdSj_x0016DA38;
+typedef struct SfdSjChunk_x0016DA38 {
+    char *data;
+    int len;
+} SfdSjChunk_x0016DA38;
+typedef struct SfdSjVtbl_x0016DA38 {
+    void *queryInterface;
+    void *addRef;
+    void *release;
+    void (*destroy)(SfdSj_x0016DA38 *sj);
+    int (*getUuid)(SfdSj_x0016DA38 *sj);
+    void (*reset)(SfdSj_x0016DA38 *sj);
+    void (*getChunk)(SfdSj_x0016DA38 *sj, int id, int n, SfdSjChunk_x0016DA38 *ck);
+    void (*ungetChunk)(SfdSj_x0016DA38 *sj, int id, SfdSjChunk_x0016DA38 *ck);
+    void (*putChunk)(SfdSj_x0016DA38 *sj, int id, SfdSjChunk_x0016DA38 *ck);
+    int (*getNumData)(SfdSj_x0016DA38 *sj, int id);
+} SfdSjVtbl_x0016DA38;
+struct SfdSj_x0016DA38 {
+    SfdSjVtbl_x0016DA38 *vtbl;
+};
+typedef struct SjxObj_x0016DA38 SjxObj_x0016DA38;
+typedef struct DtrObj_x0016DA38 DtrObj_x0016DA38;
+typedef struct Ps2RnaPsj_x0016DA38 {
+    char used;
+    void *sjrmt;
+    SfdSj_x0016DA38 *sjuni;
+    SjxObj_x0016DA38 *sjx;
+    SfdSjChunk_x0016DA38 ck;
+} Ps2RnaPsj_x0016DA38;
+typedef struct Ps2Rna_x0016DA38 {
+    signed char used;
+    int maxnch;
+    Ps2RnaPsj_x0016DA38 *psj[2];
+    DtrObj_x0016DA38 *dtr[2];
+    SfdSj_x0016DA38 *sjo[2];
+    void *id;
+    int pad36;
+    int ring_size;
+    int psj_bufsize;
+    int sfreq;
+    int sent_sfreq;
+    int outvol;
+    int sent_outvol;
+    int outpan[2];
+    int sent_outpan[2];
+    signed char playsw;
+    signed char sent_playsw;
+    signed char nch;
+    signed char sent_nch;
+    signed char auxsw;
+    signed char sent_auxsw;
+    signed char dualsw;
+    signed char sent_dualsw;
+    signed char transsw;
+    signed char trans_stopped;
+    signed char sent_stopflag;
+    signed char stopflag;
+    int outbalance;
+    int sent_outbalance;
+} Ps2Rna_x0016DA38;
+extern int ps2rna_nvoice_x0016DA38 __asm__("D_0041A0D0");
+extern int ps2rna_setup_voice_x0016DA38 __asm__("D_0041A0D8");
+void *func_0016DA38_x0016DA38(Ps2Rna_x0016DA38 *rna, int ch) __asm__("func_0016DA38");
+/* PS2RNA_GetSjRmt: from https://github.com/crashbashash/DW4_Decomp (src/cri/ps2rna.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void *func_0016DA38_x0016DA38(Ps2Rna_x0016DA38 *rna, int ch)
+{
+    if ((ps2rna_setup_voice_x0016DA38 == 1 && ps2rna_nvoice_x0016DA38 <= 0)) {
+        return 0;
+    }
+    return rna->psj[ch]->sjrmt;
+}
 void func_0016DA78(void) {
     D_0041D438 = 0;
 }
@@ -1965,8 +2105,40 @@ void func_0016F050_x0016F050(SJCK_x0016F050* ck, Sint32_x0016F050 nbyte, SJCK_x0
         ck2->data = ck1->data + ck1->len;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F0B0);
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F148);
+extern char sj_hex_digit_x0016F0B0[] __asm__("D_004225A0");
+void func_0016F0B0_x0016F0B0(int value, char *text) __asm__("func_0016F0B0");
+/* sj_val_to_hexstr: from https://github.com/crashbashash/DW4_Decomp (src/cri/sjutl.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+void func_0016F0B0_x0016F0B0(int value, char *text)
+{
+    text[6] = sj_hex_digit_x0016F0B0[value & 15];
+    value >>= 4;
+    text[5] = sj_hex_digit_x0016F0B0[value & 15];
+    value >>= 4;
+    text[4] = sj_hex_digit_x0016F0B0[value & 15];
+    value >>= 4;
+    text[3] = sj_hex_digit_x0016F0B0[value & 15];
+    value >>= 4;
+    text[2] = sj_hex_digit_x0016F0B0[value & 15];
+    value >>= 4;
+    text[1] = sj_hex_digit_x0016F0B0[value & 15];
+    value >>= 4;
+    text[0] = sj_hex_digit_x0016F0B0[value & 15];
+}
+extern int sj_hex_value_x0016F148[112] __asm__("D_004225B8");
+int func_0016F148_x0016F148(signed char *text) __asm__("func_0016F148");
+/* sj_hexstr_to_val: from https://github.com/crashbashash/DW4_Decomp (src/cri/sjutl.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+int func_0016F148_x0016F148(signed char *text)
+{
+    int value;
+    value = sj_hex_value_x0016F148[text[0]];
+    value = value * 16 + sj_hex_value_x0016F148[text[1]];
+    value = value * 16 + sj_hex_value_x0016F148[text[2]];
+    value = value * 16 + sj_hex_value_x0016F148[text[3]];
+    value = value * 16 + sj_hex_value_x0016F148[text[4]];
+    value = value * 16 + sj_hex_value_x0016F148[text[5]];
+    value = value * 16 + sj_hex_value_x0016F148[text[6]];
+    return value;
+}
 void func_0016F1F8(u8 *arg0, s32 arg1) {
     memset(*(s32 *)((u8 *)arg0 + 0), 0, *(s32 *)((u8 *)arg0 + 4));
     func_00128040(*(s32 *)((u8 *)arg0 + 0), arg1, 7);
@@ -1976,7 +2148,38 @@ void func_0016F258(s32 arg0, u8 *arg1) {
     *(s32 *)((u8 *)arg1 + 0) = (s32) (arg0 + 0x10);
     *(s32 *)((u8 *)arg1 + 4) = func_0016F148(arg0 + 8);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sj", func_0016F290);
+typedef struct SfdSjChunk_x0016F290 {
+    char *data;
+    int len;
+} SfdSjChunk_x0016F290;
+void SJ_GetTagContent_x0016F290(char *tag, SfdSjChunk_x0016F290 *content) __asm__("func_0016F258");
+typedef unsigned int size_t_x0016F290;
+int strncmp_x0016F290(const char *, const char *, size_t_x0016F290) __asm__("func_00127E88");
+int sj_hexstr_to_val_x0016F290(signed char *text) __asm__("func_0016F148");
+void SJ_GetTagContent_x0016F290(char *tag, SfdSjChunk_x0016F290 *content) __asm__("func_0016F258");
+char *func_0016F290_x0016F290(SfdSjChunk_x0016F290 *ck, const char *id, const char *endid, SfdSjChunk_x0016F290 *content) __asm__("func_0016F290");
+/* SJ_SearchTag: from https://github.com/crashbashash/DW4_Decomp (src/cri/sjutl.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
+char *func_0016F290_x0016F290(SfdSjChunk_x0016F290 *ck, const char *id, const char *endid, SfdSjChunk_x0016F290 *content)
+{
+    char *tag;
+    char *end;
+    content->data = 0;
+    content->len = 0;
+    end = ck->data + ck->len;
+    for (tag = ck->data; tag < end; tag += sj_hexstr_to_val_x0016F290((signed char *)tag + 8) + 16) {
+        if (strncmp_x0016F290(tag, id, 7) == 0) {
+            SJ_GetTagContent_x0016F290(tag, content);
+            break;
+        }
+        if (endid != 0 && strncmp_x0016F290(tag, endid, 7) == 0) {
+            return 0;
+        }
+    }
+    if (tag < end) {
+        return tag;
+    }
+    return 0;
+}
 extern int sjrmt_rpc_rbuf_x0016F360[] __asm__("D_00481180");
 extern int sjrmt_rpc_sbuf_x0016F360[] __asm__("D_00481080");
 int dtx_call_iop_x0016F360(int fno, int *in, int nin, int *out, int nout) __asm__("func_00165FB8");

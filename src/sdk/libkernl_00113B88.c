@@ -545,9 +545,179 @@ void func_00114C20_x00114C20(s32 arg0) __asm__("func_00114C20");
 void func_00114C20_x00114C20(s32 arg0) {
     func_00114B90_x00114C20(0xB0001020, arg0);
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114C30);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114D88);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114E40);
+extern int AddIntcHandler_x00114C30(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+int DIntr_x00114C30(void) __asm__("DI");
+int EIntr_x00114C30(void) __asm__("EI");
+int EnableIntc_x00114C30(int cause) __asm__("func_0010ADA8");
+int _sceTimerAlarmInit_x00114C30(void) __asm__("func_00115F00");
+typedef unsigned int size_t_x00114C30;
+void *memset_x00114C30(void *, int, size_t_x00114C30) __asm__("memset");
+typedef unsigned long u_long_x00114C30;
+typedef u_long_x00114C30 (*TimerHandler_x00114C30)(int id, u_long_x00114C30 schedule, u_long_x00114C30 actual, void *arg, void *addr);
+typedef struct Counter_x00114C30 {
+    struct Counter_x00114C30 *next;
+    struct Counter_x00114C30 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x00114C30 base;
+    u_long_x00114C30 count;
+    u_long_x00114C30 schedule;
+    TimerHandler_x00114C30 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x00114C30;
+typedef struct {
+    volatile u_long_x00114C30 overflows;
+    int intcHandler;
+    volatile unsigned int uniqueKey;
+    volatile int usedCounters;
+    Counter_x00114C30 *freeList;
+    Counter_x00114C30 *alarms;
+    volatile int current;
+} TimerState_x00114C30;
+extern int AddIntcHandler2_x00114C30(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+int cbTimerHandler_x00114C30(int cause, void *arg, void *addr) __asm__("func_001151D0");
+extern TimerState_x00114C30 g_Timer_x00114C30 __asm__("D_003EDCC8");
+extern Counter_x00114C30 timerCounters_x00114C30[128] __asm__("D_00476300");
+void SetT2_COUNT_x00114C30(unsigned int count) __asm__("func_00114C00");
+void SetT2_MODE_x00114C30(unsigned int mode) __asm__("func_00114C10");
+void SetT2_COMP_x00114C30(unsigned int comp) __asm__("func_00114C20");
+int cbTimerHandler_x00114C30(int cause, void *arg, void *addr) __asm__("func_001151D0");
+int func_00114C30_x00114C30(int clock) __asm__("func_00114C30");
+/* InitTimer: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00114C30_x00114C30(int clock)
+{
+    int i;
+    int handler;
+    int intr;
+    int mode;
+    if (g_Timer_x00114C30.intcHandler >= 0) {
+        return 0x80008001;
+    }
+    g_Timer_x00114C30.overflows = 0;
+    g_Timer_x00114C30.usedCounters = 0;
+    memset_x00114C30(timerCounters_x00114C30, 0, sizeof(timerCounters_x00114C30));
+    g_Timer_x00114C30.freeList = timerCounters_x00114C30;
+    for (i = 128 - 1; i >= 0; i--) {
+        timerCounters_x00114C30[i].next = &timerCounters_x00114C30[i + 1];
+    }
+    timerCounters_x00114C30[128 - 1].next = 0;
+    _sceTimerAlarmInit_x00114C30();
+    handler = AddIntcHandler2_x00114C30(11, (int (*)(int))cbTimerHandler_x00114C30, 0, 0);
+    if (handler < 0) {
+        return 0x80009021;
+    }
+    g_Timer_x00114C30.intcHandler = handler;
+    intr = DIntr_x00114C30();
+    mode = (*(volatile unsigned int *)0x10001010);
+    mode = (mode & ~0x3U) | clock;
+    mode |= 0x200U | 0x100U;
+    if (!(mode & 0x80U)) {
+        mode |= 0x800U | 0x400U | 0x80U;
+        SetT2_COUNT_x00114C30(0);
+        SetT2_COMP_x00114C30(0xffff);
+    }
+    SetT2_MODE_x00114C30(mode);
+    EnableIntc_x00114C30(11);
+    if (intr) {
+        EIntr_x00114C30();
+    }
+    return 0;
+}
+extern int AddIntcHandler_x00114D88(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+int RemoveIntcHandler_x00114D88(int cause, int id) __asm__("RemoveIntcHandler");
+int DIntr_x00114D88(void) __asm__("DI");
+int EIntr_x00114D88(void) __asm__("EI");
+int DisableIntc_x00114D88(int cause) __asm__("func_0010AD40");
+typedef unsigned long u_long_x00114D88;
+typedef u_long_x00114D88 (*TimerHandler_x00114D88)(int id, u_long_x00114D88 schedule, u_long_x00114D88 actual, void *arg, void *addr);
+typedef struct Counter_x00114D88 {
+    struct Counter_x00114D88 *next;
+    struct Counter_x00114D88 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x00114D88 base;
+    u_long_x00114D88 count;
+    u_long_x00114D88 schedule;
+    TimerHandler_x00114D88 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x00114D88;
+typedef struct {
+    volatile u_long_x00114D88 overflows;
+    int intcHandler;
+    volatile unsigned int uniqueKey;
+    volatile int usedCounters;
+    Counter_x00114D88 *freeList;
+    Counter_x00114D88 *alarms;
+    volatile int current;
+} TimerState_x00114D88;
+extern int AddIntcHandler2_x00114D88(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+extern TimerState_x00114D88 g_Timer_x00114D88 __asm__("D_003EDCC8");
+void SetT2_COUNT_x00114D88(unsigned int count) __asm__("func_00114C00");
+void SetT2_MODE_x00114D88(unsigned int mode) __asm__("func_00114C10");
+int func_00114D88_x00114D88(void) __asm__("func_00114D88");
+/* EndTimer: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00114D88_x00114D88(void)
+{
+    int intr;
+    if (g_Timer_x00114D88.intcHandler < 0) {
+        return 0x80008001;
+    }
+    if (g_Timer_x00114D88.usedCounters != 0) {
+        return 0x80000010;
+    }
+    intr = DIntr_x00114D88();
+    if (RemoveIntcHandler_x00114D88(11, g_Timer_x00114D88.intcHandler) == 0) {
+        DisableIntc_x00114D88(11);
+        SetT2_MODE_x00114D88(0x800U | 0x400U);
+        SetT2_COUNT_x00114D88(0);
+    }
+    g_Timer_x00114D88.overflows = 0;
+    g_Timer_x00114D88.intcHandler = -1;
+    if (intr) {
+        EIntr_x00114D88();
+    }
+    return 0;
+}
+extern int AddIntcHandler_x00114E40(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+typedef unsigned long u_long_x00114E40;
+typedef u_long_x00114E40 (*TimerHandler_x00114E40)(int id, u_long_x00114E40 schedule, u_long_x00114E40 actual, void *arg, void *addr);
+typedef struct Counter_x00114E40 {
+    struct Counter_x00114E40 *next;
+    struct Counter_x00114E40 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x00114E40 base;
+    u_long_x00114E40 count;
+    u_long_x00114E40 schedule;
+    TimerHandler_x00114E40 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x00114E40;
+typedef struct {
+    volatile u_long_x00114E40 overflows;
+    int intcHandler;
+    volatile unsigned int uniqueKey;
+    volatile int usedCounters;
+    Counter_x00114E40 *freeList;
+    Counter_x00114E40 *alarms;
+    volatile int current;
+} TimerState_x00114E40;
+extern int AddIntcHandler2_x00114E40(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+extern TimerState_x00114E40 g_Timer_x00114E40 __asm__("D_003EDCC8");
+int func_00114E40_x00114E40(void) __asm__("func_00114E40");
+/* GetTimerPreScaleFactor: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00114E40_x00114E40(void)
+{
+    if (g_Timer_x00114E40.intcHandler < 0) {
+        return 0x80008001;
+    }
+    return (*(volatile unsigned int *)0x10001010) & 0x3U;
+}
 int DIntr_x00114E70(void) __asm__("DI");
 int EIntr_x00114E70(void) __asm__("EI");
 extern void SetT2_B0001010_3B6A10_x00114E70(int mode) __asm__("func_00114C10");
@@ -575,8 +745,95 @@ int func_00114E70_x00114E70(void)
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114F00);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00114F80);
+int DIntr_x00114F00(void) __asm__("DI");
+int EIntr_x00114F00(void) __asm__("EI");
+void SetT2_MODE_x00114F00(unsigned int mode) __asm__("func_00114C10");
+int func_00114F00_x00114F00(void) __asm__("func_00114F00");
+/* StopTimerSystemTime: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00114F00_x00114F00(void)
+{
+    int intr = DIntr_x00114F00();
+    int mode = (*(volatile unsigned int *)0x10001010);
+    if (!(mode & 0x80U)) {
+        if (intr) {
+            EIntr_x00114F00();
+        }
+        return 0;
+    }
+    SetT2_MODE_x00114F00(mode & ~(0x800U | 0x400U | 0x80U));
+    if (intr) {
+        EIntr_x00114F00();
+    }
+    return 1;
+}
+extern int AddIntcHandler_x00114F80(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+typedef unsigned long u_long_x00114F80;
+typedef u_long_x00114F80 (*TimerHandler_x00114F80)(int id, u_long_x00114F80 schedule, u_long_x00114F80 actual, void *arg, void *addr);
+typedef struct Counter_x00114F80 {
+    struct Counter_x00114F80 *next;
+    struct Counter_x00114F80 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x00114F80 base;
+    u_long_x00114F80 count;
+    u_long_x00114F80 schedule;
+    TimerHandler_x00114F80 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x00114F80;
+typedef struct {
+    volatile u_long_x00114F80 overflows;
+    int intcHandler;
+    volatile unsigned int uniqueKey;
+    volatile int usedCounters;
+    Counter_x00114F80 *freeList;
+    Counter_x00114F80 *alarms;
+    volatile int current;
+} TimerState_x00114F80;
+extern int AddIntcHandler2_x00114F80(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+extern TimerState_x00114F80 g_Timer_x00114F80 __asm__("D_003EDCC8");
+void SetT2_MODE_x00114F80(unsigned int mode) __asm__("func_00114C10");
+void SetT2_COMP_x00114F80(unsigned int comp) __asm__("func_00114C20");
+void func_00114F80_x00114F80(u_long_x00114F80 now) __asm__("func_00114F80");
+/* SetNextComp: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00114F80_x00114F80(u_long_x00114F80 now)
+{
+    u_long_x00114F80 first, next;
+    long left;
+    unsigned int mode;
+    Counter_x00114F80 *alarm = g_Timer_x00114F80.alarms;
+
+    if (g_Timer_x00114F80.current >= 0) {
+        return;
+    }
+    mode = (*(volatile unsigned int *)0x10001010);
+    if (alarm == 0) {
+        SetT2_COMP_x00114F80(0);
+        SetT2_MODE_x00114F80(mode & ~0x800U);
+        return;
+    }
+    first = alarm->schedule + alarm->base - alarm->count;
+    alarm = alarm->next;
+    while (alarm) {
+        next = alarm->schedule + alarm->base - alarm->count;
+        if (next < first + (147456000 * 200UL / 1000000)) {
+            first = next;
+        } else {
+            break;
+        }
+        alarm = alarm->next;
+    }
+    left = first - now;
+    if (left < (long)(147456000 * 200UL / 1000000)) {
+        SetT2_COMP_x00114F80((*(volatile unsigned int *)0x10001000) + (((147456000 * 200UL / 1000000)) >> ((( mode) & 0x3U) << 2)));
+        SetT2_MODE_x00114F80(mode & ~0x800U);
+    } else {
+        SetT2_MODE_x00114F80(mode & ~0x800U);
+        SetT2_COMP_x00114F80(((first) >> ((( mode) & 0x3U) << 2)));
+    }
+    return;
+}
 typedef struct _timer_alarm_x00115110 sceTimerAlarm_x00115110;
 struct _timer_alarm_x00115110 {
     sceTimerAlarm_x00115110 *next;       
@@ -649,7 +906,50 @@ u8 *func_00115198_x00115198(u8 *arg0)
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001151D0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115478);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001154C8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115548);
+extern int AddIntcHandler_x00115548(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+typedef unsigned long u_long_x00115548;
+typedef u_long_x00115548 (*TimerHandler_x00115548)(int id, u_long_x00115548 schedule, u_long_x00115548 actual, void *arg, void *addr);
+typedef struct Counter_x00115548 {
+    struct Counter_x00115548 *next;
+    struct Counter_x00115548 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x00115548 base;
+    u_long_x00115548 count;
+    u_long_x00115548 schedule;
+    TimerHandler_x00115548 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x00115548;
+typedef struct {
+    volatile u_long_x00115548 overflows;
+    int intcHandler;
+    volatile unsigned int uniqueKey;
+    volatile int usedCounters;
+    Counter_x00115548 *freeList;
+    Counter_x00115548 *alarms;
+    volatile int current;
+} TimerState_x00115548;
+extern int AddIntcHandler2_x00115548(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+extern TimerState_x00115548 g_Timer_x00115548 __asm__("D_003EDCC8");
+int func_00115548_x00115548(void) __asm__("func_00115548");
+/* iAllocTimerCounter: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00115548_x00115548(void)
+{
+    Counter_x00115548 *c = g_Timer_x00115548.freeList;
+    if (c == 0) {
+        return 0x80008005;
+    }
+    g_Timer_x00115548.usedCounters++;
+    g_Timer_x00115548.freeList = c->next;
+    c->handler = 0;
+    c->flags = 0;
+    c->count = 0;
+    g_Timer_x00115548.uniqueKey++;
+    c->key = ((g_Timer_x00115548.uniqueKey << 1) & 0x3fe) | 1;
+    return (((int)(c) << 4) | (c)->key);
+}
 s32 func_001155B8(void) {
     s32 temp_s0;
     s32 temp_s1;
@@ -661,7 +961,49 @@ s32 func_001155B8(void) {
     }
     return temp_s1;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115600);
+extern int AddIntcHandler_x00115600(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+typedef unsigned long u_long_x00115600;
+typedef u_long_x00115600 (*TimerHandler_x00115600)(int id, u_long_x00115600 schedule, u_long_x00115600 actual, void *arg, void *addr);
+typedef struct Counter_x00115600 {
+    struct Counter_x00115600 *next;
+    struct Counter_x00115600 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x00115600 base;
+    u_long_x00115600 count;
+    u_long_x00115600 schedule;
+    TimerHandler_x00115600 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x00115600;
+typedef struct {
+    volatile u_long_x00115600 overflows;
+    int intcHandler;
+    volatile unsigned int uniqueKey;
+    volatile int usedCounters;
+    Counter_x00115600 *freeList;
+    Counter_x00115600 *alarms;
+    volatile int current;
+} TimerState_x00115600;
+extern int AddIntcHandler2_x00115600(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+extern TimerState_x00115600 g_Timer_x00115600 __asm__("D_003EDCC8");
+Counter_x00115600 *UnlinkAlarm_x00115600(Counter_x00115600 *alarm) __asm__("func_00115198");
+int func_00115600_x00115600(int id) __asm__("func_00115600");
+/* iFreeTimerCounter: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00115600_x00115600(int id)
+{
+    Counter_x00115600 *c = ((Counter_x00115600 *)(((unsigned int)(id) >> 10) << 6));
+    if (id < 0 || (id & 0x3ff) != c->key) return 0x80008002;
+    if (g_Timer_x00115600.current == id) return 0x80000010;
+    if (c->flags & 2) UnlinkAlarm_x00115600(c);
+    c->key = 0;
+    c->flags = 0;
+    c->next = g_Timer_x00115600.freeList;
+    g_Timer_x00115600.freeList = c;
+    g_Timer_x00115600.usedCounters--;
+    return 0;
+}
 s32 func_001156A0(s32 arg0) {
     s32 temp_s0;
     s32 temp_s1;
@@ -673,7 +1015,42 @@ s32 func_001156A0(s32 arg0) {
     }
     return temp_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001156F0);
+extern int AddIntcHandler_x001156F0(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+typedef unsigned long u_long_x001156F0;
+typedef u_long_x001156F0 (*TimerHandler_x001156F0)(int id, u_long_x001156F0 schedule, u_long_x001156F0 actual, void *arg, void *addr);
+typedef struct Counter_x001156F0 {
+    struct Counter_x001156F0 *next;
+    struct Counter_x001156F0 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x001156F0 base;
+    u_long_x001156F0 count;
+    u_long_x001156F0 schedule;
+    TimerHandler_x001156F0 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x001156F0;
+typedef struct {
+    volatile u_long_x001156F0 overflows;
+    int intcHandler;
+    volatile unsigned int uniqueKey;
+    volatile int usedCounters;
+    Counter_x001156F0 *freeList;
+    Counter_x001156F0 *alarms;
+    volatile int current;
+} TimerState_x001156F0;
+extern int AddIntcHandler2_x001156F0(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+extern TimerState_x001156F0 g_Timer_x001156F0 __asm__("D_003EDCC8");
+int func_001156F0_x001156F0(int *used, int *unused) __asm__("func_001156F0");
+/* iGetTimerUsedUnusedCounters: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001156F0_x001156F0(int *used, int *unused)
+{
+    if (g_Timer_x001156F0.intcHandler < 0) return 0x80008001;
+    if (used) *used = g_Timer_x001156F0.usedCounters;
+    if (unused) *unused = 128 - g_Timer_x001156F0.usedCounters;
+    return 0;
+}
 s32 func_00115740(s32 arg0, s32 arg1) {
     s32 temp_s0;
     s32 temp_s2;
@@ -685,7 +1062,56 @@ s32 func_00115740(s32 arg0, s32 arg1) {
     }
     return temp_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001157A0);
+extern int AddIntcHandler_x001157A0(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+typedef unsigned long u_long_x001157A0;
+typedef u_long_x001157A0 (*TimerHandler_x001157A0)(int id, u_long_x001157A0 schedule, u_long_x001157A0 actual, void *arg, void *addr);
+typedef struct Counter_x001157A0 {
+    struct Counter_x001157A0 *next;
+    struct Counter_x001157A0 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x001157A0 base;
+    u_long_x001157A0 count;
+    u_long_x001157A0 schedule;
+    TimerHandler_x001157A0 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x001157A0;
+typedef struct {
+    volatile u_long_x001157A0 overflows;
+    int intcHandler;
+    volatile unsigned int uniqueKey;
+    volatile int usedCounters;
+    Counter_x001157A0 *freeList;
+    Counter_x001157A0 *alarms;
+    volatile int current;
+} TimerState_x001157A0;
+extern int AddIntcHandler2_x001157A0(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+extern TimerState_x001157A0 g_Timer_x001157A0 __asm__("D_003EDCC8");
+u_long_x001157A0 iGetTimerSystemTime_x001157A0(void) __asm__("func_00115478");
+void SetNextComp_x001157A0(u_long_x001157A0 now) __asm__("func_00114F80");
+void SetNextComp_x001157A0(u_long_x001157A0 now) __asm__("func_00114F80");
+void InsertAlarm_x001157A0(Counter_x001157A0 *alarm) __asm__("func_00115110");
+u_long_x001157A0 iGetTimerSystemTime_x001157A0(void) __asm__("func_00115478");
+int func_001157A0_x001157A0(int id) __asm__("func_001157A0");
+/* iStartTimerCounter: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001157A0_x001157A0(int id)
+{
+    Counter_x001157A0 *c = ((Counter_x001157A0 *)(((unsigned int)(id) >> 10) << 6));
+    u_long_x001157A0 now;
+    if (id < 0 || (id & 0x3ff) != c->key) return 0x80008002;
+    if (g_Timer_x001157A0.current == id) return 0x80000010;
+    if (c->flags & 1) return 1;
+    now = iGetTimerSystemTime_x001157A0();
+    c->base = now;
+    c->flags |= 1;
+    if (c->flags & 2) {
+        InsertAlarm_x001157A0(c);
+        SetNextComp_x001157A0(now);
+    }
+    return 0;
+}
 s32 func_00115850(s32 arg0) {
     s32 temp_s0;
     s32 temp_s1;
@@ -697,7 +1123,56 @@ s32 func_00115850(s32 arg0) {
     }
     return temp_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001158A0);
+extern int AddIntcHandler_x001158A0(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+typedef unsigned long u_long_x001158A0;
+typedef u_long_x001158A0 (*TimerHandler_x001158A0)(int id, u_long_x001158A0 schedule, u_long_x001158A0 actual, void *arg, void *addr);
+typedef struct Counter_x001158A0 {
+    struct Counter_x001158A0 *next;
+    struct Counter_x001158A0 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x001158A0 base;
+    u_long_x001158A0 count;
+    u_long_x001158A0 schedule;
+    TimerHandler_x001158A0 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x001158A0;
+typedef struct {
+    volatile u_long_x001158A0 overflows;
+    int intcHandler;
+    volatile unsigned int uniqueKey;
+    volatile int usedCounters;
+    Counter_x001158A0 *freeList;
+    Counter_x001158A0 *alarms;
+    volatile int current;
+} TimerState_x001158A0;
+extern int AddIntcHandler2_x001158A0(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+extern TimerState_x001158A0 g_Timer_x001158A0 __asm__("D_003EDCC8");
+u_long_x001158A0 iGetTimerSystemTime_x001158A0(void) __asm__("func_00115478");
+void SetNextComp_x001158A0(u_long_x001158A0 now) __asm__("func_00114F80");
+void SetNextComp_x001158A0(u_long_x001158A0 now) __asm__("func_00114F80");
+Counter_x001158A0 *UnlinkAlarm_x001158A0(Counter_x001158A0 *alarm) __asm__("func_00115198");
+u_long_x001158A0 iGetTimerSystemTime_x001158A0(void) __asm__("func_00115478");
+int func_001158A0_x001158A0(int id) __asm__("func_001158A0");
+/* iStopTimerCounter: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001158A0_x001158A0(int id)
+{
+    Counter_x001158A0 *c = ((Counter_x001158A0 *)(((unsigned int)(id) >> 10) << 6));
+    u_long_x001158A0 now;
+    if (id < 0 || (id & 0x3ff) != c->key) return 0x80008002;
+    if (g_Timer_x001158A0.current == id) return 0x80000010;
+    if (!(c->flags & 1)) return 0;
+    now = iGetTimerSystemTime_x001158A0();
+    c->count += now - c->base;
+    c->flags &= ~1;
+    if (c->flags & 2) {
+        UnlinkAlarm_x001158A0(c);
+        SetNextComp_x001158A0(now);
+    }
+    return 1;
+}
 s32 func_00115968(s32 arg0) {
     s32 temp_s0;
     s32 temp_s1;
@@ -709,7 +1184,62 @@ s32 func_00115968(s32 arg0) {
     }
     return temp_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001159B8);
+extern int AddIntcHandler_x001159B8(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+int DIntr_x001159B8(void) __asm__("DI");
+int EIntr_x001159B8(void) __asm__("EI");
+typedef unsigned long u_long_x001159B8;
+typedef u_long_x001159B8 (*TimerHandler_x001159B8)(int id, u_long_x001159B8 schedule, u_long_x001159B8 actual, void *arg, void *addr);
+typedef struct Counter_x001159B8 {
+    struct Counter_x001159B8 *next;
+    struct Counter_x001159B8 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x001159B8 base;
+    u_long_x001159B8 count;
+    u_long_x001159B8 schedule;
+    TimerHandler_x001159B8 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x001159B8;
+typedef struct {
+    volatile u_long_x001159B8 overflows;
+    int intcHandler;
+    volatile unsigned int uniqueKey;
+    volatile int usedCounters;
+    Counter_x001159B8 *freeList;
+    Counter_x001159B8 *alarms;
+    volatile int current;
+} TimerState_x001159B8;
+extern int AddIntcHandler2_x001159B8(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+extern TimerState_x001159B8 g_Timer_x001159B8 __asm__("D_003EDCC8");
+u_long_x001159B8 iGetTimerSystemTime_x001159B8(void) __asm__("func_00115478");
+u_long_x001159B8 iGetTimerSystemTime_x001159B8(void) __asm__("func_00115478");
+u_long_x001159B8 func_001159B8_x001159B8(int id, u_long_x001159B8 count) __asm__("func_001159B8");
+/* SetTimerCount: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+u_long_x001159B8 func_001159B8_x001159B8(int id, u_long_x001159B8 count)
+{
+    Counter_x001159B8 *c = ((Counter_x001159B8 *)(((unsigned int)(id) >> 10) << 6));
+    int intr;
+    u_long_x001159B8 old;
+    u_long_x001159B8 now;
+    intr = DIntr_x001159B8();
+    if (id < 0 || (id & 0x3ff) != c->key || g_Timer_x001159B8.current == id) {
+        if (intr) EIntr_x001159B8();
+        return -1;
+    }
+    old = c->count;
+    if (c->flags & 1) {
+        now = iGetTimerSystemTime_x001159B8();
+        old += now - c->base;
+        c->base = now;
+        c->count = count;
+    } else {
+        c->count = count;
+    }
+    if (intr) EIntr_x001159B8();
+    return old;
+}
 long long func_00115A88_x00115A88(u32 arg0) __asm__("func_00115A88");
 long long func_00115A88_x00115A88(u32 arg0)
 {
@@ -751,7 +1281,36 @@ s32 func_00115AD0(s32 arg0) {
     }
     return temp_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115B20);
+extern int AddIntcHandler_x00115B20(int cause, int (*handler)(int cause), int next) __asm__("AddIntcHandler");
+typedef unsigned long u_long_x00115B20;
+typedef u_long_x00115B20 (*TimerHandler_x00115B20)(int id, u_long_x00115B20 schedule, u_long_x00115B20 actual, void *arg, void *addr);
+typedef struct Counter_x00115B20 {
+    struct Counter_x00115B20 *next;
+    struct Counter_x00115B20 *prev;
+    volatile int key;
+    unsigned int flags;
+    u_long_x00115B20 base;
+    u_long_x00115B20 count;
+    u_long_x00115B20 schedule;
+    TimerHandler_x00115B20 handler;
+    void *gp;
+    void *arg;
+    int pad[3];
+} Counter_x00115B20;
+extern int AddIntcHandler2_x00115B20(int cause, int (*handler)(int), int next, void *arg) __asm__("AddIntcHandler2");
+u_long_x00115B20 iGetTimerSystemTime_x00115B20(void) __asm__("func_00115478");
+u_long_x00115B20 iGetTimerSystemTime_x00115B20(void) __asm__("func_00115478");
+u_long_x00115B20 func_00115B20_x00115B20(int id) __asm__("func_00115B20");
+/* iGetTimerCount: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+u_long_x00115B20 func_00115B20_x00115B20(int id)
+{
+    Counter_x00115B20 *c = ((Counter_x00115B20 *)(((unsigned int)(id) >> 10) << 6));
+    u_long_x00115B20 count;
+    if (id < 0 || (id & 0x3ff) != c->key) return -1;
+    count = c->count;
+    if (c->flags & 1) count += iGetTimerSystemTime_x00115B20() - c->base;
+    return count;
+}
 s32 func_00115B90(s32 arg0) {
     s32 temp_s0;
     s32 temp_s1;
@@ -775,8 +1334,23 @@ s32 func_00115CD8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
     return temp_s0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115D58);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115E00);
+typedef unsigned long u_long_x00115D58;
+void func_00115D58_x00115D58(u_long_x00115D58 clocks, unsigned int *sec, unsigned int *usec) __asm__("func_00115D58");
+/* sceTimerBusClock2USec: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00115D58_x00115D58(u_long_x00115D58 clocks, unsigned int *sec, unsigned int *usec)
+{
+    unsigned int s;
+    s = clocks / 147456000;
+    if (sec) *sec = s;
+    if (usec) *usec = (clocks - (u_long_x00115D58)s * 147456000) * 1000000 / 147456000;
+}
+typedef unsigned long u_long_x00115E00;
+u_long_x00115E00 func_00115E00_x00115E00(unsigned int sec, unsigned int usec) __asm__("func_00115E00");
+/* sceTimerUSec2BusClock: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timer.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+u_long_x00115E00 func_00115E00_x00115E00(unsigned int sec, unsigned int usec)
+{
+    return (u_long_x00115E00)sec * 147456000 + (u_long_x00115E00)usec * 147456000 / 1000000;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115E70);
 s32 func_00121288_x00115EC8(f32) __asm__("func_00121288");
 s32 func_00115EC8_x00115EC8(f32 fparg0) __asm__("func_00115EC8");
@@ -817,8 +1391,95 @@ int func_00115F50_x00115F50(int id, int b, int c, N7DB8_x00115F50 *n)
     }
     return ret;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00115FB0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001160E0);
+typedef int (*AlarmCallback_x00115FB0)(int id, int schedule, int actual, void *arg);
+int DIntr_x00115FB0(void) __asm__("DI");
+int EIntr_x00115FB0(void) __asm__("EI");
+int AllocTimerCounter_x00115FB0(void) __asm__("func_001155B8");
+int StartTimerCounter_x00115FB0(int id) __asm__("func_00115850");
+typedef unsigned long u_long_x00115FB0;
+typedef struct Alarm_x00115FB0 {
+    struct Alarm_x00115FB0 *next;
+    volatile int counter;
+    AlarmCallback_x00115FB0 callback;
+    void *arg;
+} Alarm_x00115FB0;
+extern int SetTimerHandler_x00115FB0(int id, u_long_x00115FB0 schedule, int (*handler)(int, int, int, Alarm_x00115FB0 *), Alarm_x00115FB0 *arg) __asm__("func_00115CD8");
+extern int iSetTimerHandler_x00115FB0(int id, u_long_x00115FB0 schedule, int (*handler)(int, int, int, Alarm_x00115FB0 *), Alarm_x00115FB0 *arg) __asm__("iSetTimerHandler");
+extern Alarm_x00115FB0 *freeAlarms_x00115FB0 __asm__("D_00478700");
+int AlarmHandler_x00115FB0(int counter, int schedule, int actual, Alarm_x00115FB0 *alarm) __asm__("func_00115F50");
+int func_00115FB0_x00115FB0(u_long_x00115FB0 clocks, AlarmCallback_x00115FB0 callback, void *arg) __asm__("func_00115FB0");
+/* SetTimerAlarm: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timeralarm.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00115FB0_x00115FB0(u_long_x00115FB0 clocks, AlarmCallback_x00115FB0 callback, void *arg)
+{
+    Alarm_x00115FB0 *alarm;
+    Alarm_x00115FB0 *head;
+    int counter;
+    int intr;
+    if (callback == 0) return 0x80000016;
+    intr = DIntr_x00115FB0();
+    head = freeAlarms_x00115FB0;
+    if (head) freeAlarms_x00115FB0 = head->next;
+    alarm = head;
+    if (alarm == 0) {
+        if (intr) EIntr_x00115FB0();
+        return 0x80008005;
+    }
+    counter = AllocTimerCounter_x00115FB0();
+    if (counter < 0) {
+        alarm->next = freeAlarms_x00115FB0;
+        freeAlarms_x00115FB0 = alarm;
+        alarm->counter = 0;
+        if (intr) EIntr_x00115FB0();
+        return counter;
+    }
+    alarm->callback = callback;
+    alarm->arg = arg;
+    alarm->counter = counter;
+    SetTimerHandler_x00115FB0(counter, clocks, AlarmHandler_x00115FB0, alarm);
+    StartTimerCounter_x00115FB0(counter);
+    if (intr) EIntr_x00115FB0();
+    return (((int)(alarm) << 4) | (( counter) & 0xfe) | 1);
+}
+typedef int (*AlarmCallback_x001160E0)(int id, int schedule, int actual, void *arg);
+int iAllocTimerCounter_x001160E0(void) __asm__("func_00115548");
+int iStartTimerCounter_x001160E0(int id) __asm__("func_001157A0");
+typedef unsigned long u_long_x001160E0;
+typedef struct Alarm_x001160E0 {
+    struct Alarm_x001160E0 *next;
+    volatile int counter;
+    AlarmCallback_x001160E0 callback;
+    void *arg;
+} Alarm_x001160E0;
+extern int SetTimerHandler_x001160E0(int id, u_long_x001160E0 schedule, int (*handler)(int, int, int, Alarm_x001160E0 *), Alarm_x001160E0 *arg) __asm__("SetTimerHandler");
+extern int iSetTimerHandler_x001160E0(int id, u_long_x001160E0 schedule, int (*handler)(int, int, int, Alarm_x001160E0 *), Alarm_x001160E0 *arg) __asm__("func_00115BE0");
+extern Alarm_x001160E0 *freeAlarms_x001160E0 __asm__("D_00478700");
+int AlarmHandler_x001160E0(int counter, int schedule, int actual, Alarm_x001160E0 *alarm) __asm__("func_00115F50");
+int func_001160E0_x001160E0(u_long_x001160E0 clocks, AlarmCallback_x001160E0 callback, void *arg) __asm__("func_001160E0");
+/* iSetTimerAlarm: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/timeralarm.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_001160E0_x001160E0(u_long_x001160E0 clocks, AlarmCallback_x001160E0 callback, void *arg)
+{
+    Alarm_x001160E0 *alarm;
+    Alarm_x001160E0 *head;
+    int counter;
+    if (callback == 0) return 0x80000016;
+    head = freeAlarms_x001160E0;
+    if (head) freeAlarms_x001160E0 = head->next;
+    alarm = head;
+    if (alarm == 0) return 0x80008005;
+    counter = iAllocTimerCounter_x001160E0();
+    if (counter < 0) {
+        alarm->next = freeAlarms_x001160E0;
+        freeAlarms_x001160E0 = alarm;
+        alarm->counter = 0;
+        return counter;
+    }
+    alarm->callback = callback;
+    alarm->arg = arg;
+    alarm->counter = counter;
+    iSetTimerHandler_x001160E0(counter, clocks, AlarmHandler_x001160E0, alarm);
+    iStartTimerCounter_x001160E0(counter);
+    return (((int)(alarm) << 4) | (( counter) & 0xfe) | 1);
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001161D0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00116278);
 s32 memset_x001162F0(s32 *, s32, s32) __asm__("memset");
@@ -855,5 +1516,32 @@ s32 func_00116318_x00116318(s32 arg0, s32 arg1)
   return temp_s3;
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00116398);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_00116450);
+typedef void (*NotifyHandler_x00116450)(void *arg, void *data);
+typedef struct {
+    NotifyHandler_x00116450 func;
+    void *data;
+    void *gp;
+    int pad;
+} NotifyEntry_x00116450;
+extern NotifyEntry_x00116450 *rebootNotifyTable_x00116450 __asm__("D_003EDCE8");
+extern unsigned int rebootNotifyCount_x00116450 __asm__("D_003EDCEC");
+extern NotifyEntry_x00116450 rebootNotifySysTable_x00116450[32] __asm__("D_00478708");
+int func_00116450_x00116450(unsigned int index) __asm__("func_00116450");
+/* sceSifRemoveRebootNotifyHandler: from https://github.com/crashbashash/DW4_Decomp (src/sony/libkernl/iopnotify.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00116450_x00116450(unsigned int index)
+{
+    NotifyEntry_x00116450 *table;
+    unsigned int count;
+    if ((int)index < 0) {
+        index &= ~0x80000000;
+        table = rebootNotifySysTable_x00116450;
+        count = 32;
+    } else {
+        table = rebootNotifyTable_x00116450;
+        count = rebootNotifyCount_x00116450;
+    }
+    if (index >= count) return -105;
+    table[index].func = 0;
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_00113B88", func_001164A8);
