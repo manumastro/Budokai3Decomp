@@ -54,6 +54,22 @@ Library versions (**verified**, from their version strings):
 - CRI, built 2004-04-12 / 15: ADXT 9.19, ADXF 7.14, ADXPS2 2.52, ADXRT 3010, SJ 6.23, SVM 1.53, CVFS 2.35, DVCI 2.70,
   HTCI 2.68, MFCI 1.07, LSC 2.16, PS2RNA 1.26, SRD 2.19, DTR 1.06, DTX 1.07, MWSFD 3.13, SFD 1.903, MPV 1.902,
   M2V 1.902, SFX 2.00, SFH 1.16, CFT 1.51, SUD 0.05.
+- C library and compiler runtime: Sony's newlib build, tagged `Append: GCC2096 SCE3010` (ee-gcc 2.96, SDK 3.0.1). The
+  Metrowerks code calls it and libgcc; no Metrowerks MSL or C++ runtime is linked. The ELF's `.comment` reads
+  `MW MIPS C Compiler (2.4.1.01)` / `PlayStation2`, written by the Metrowerks linker (Digimon World 4, Tales of
+  Legendia and Saint Seiya: The Hades carry the same text with other compiler builds).
+
+Other games with the same pieces (checked 2026-11-19, for code or names to reuse):
+
+- The same CRI ADX build to the second (12 Apr 2004) and the same `SCE3010` C library: Tales of Legendia (Namco,
+  Metrowerks too); only a static-recompilation project exists for it, no C. Digimon World 4's decompilation
+  (crashbashash/DW4_Decomp) has the closest CRI and Sofdec C (Oct 2004 builds) and is the main source of the CRI code
+  here.
+- Dimps' earlier engine: Budokai 2 (PAL, SLES-51839) has the same `am*` files (plus `amZlib.c`) and, compared
+  function by function (relocations masked), 305 of the 402 `am*` functions here and 325 of the 3,926 game functions
+  are identical in it; it uses older libraries (SDK 2.8, CRI Jul 2003). No public symbols exist for Budokai 1/2,
+  Infinite World, Shin Budokai or Saint Seiya (the public Budokai 2 and Saint Seiya projects carry only library names
+  or guesses), so no game function can be named from a sister game yet.
 - IOP modules on the disc (`MODULES/`): `IOPRP300.IMG`, `SIO2MAN`, `PADMAN`, `MTAPMAN`, `MCMAN`, `MCSERV`, `LIBSD`,
   `SDRDRV`, `CRI_ADXI`, `MODHSYN`, `MODMIDI`, `MODSEIN`, `MODSESQ`, `AMSOUND` (Dimps' sound driver; the `.snd` / AIFF
   strings in the first Metrowerks part talk to it).

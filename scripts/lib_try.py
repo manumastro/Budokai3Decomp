@@ -151,7 +151,7 @@ def try_snippet(name, snippet_text, quiet=False):
     if kind == "c":
         orig = (ROOT / "src" / f"{seg}.c").read_text()
         pat = re.compile(r'^INCLUDE_ASM\("[^"]+", ' + re.escape(name) + r'\);[ \t]*$', re.M)
-        body = pat.sub(lambda _: text.replace("\\", "\\\\"), orig, count=1)
+        body = pat.sub(lambda _: text, orig, count=1)  # a function replacement is taken literally
         # data of the file without the function, to tell what the function adds (cached per file content)
         import hashlib
         cache = ROOT / "build" / "lh" / "base_secs" / (hashlib.md5(orig.encode()).hexdigest() + ".json")

@@ -254,6 +254,23 @@ class Unit:
         self.rodata = {s: lp.section_bytes(self.ob.path, s) for s in (".rodata", ".data", ".rodata.str1.4")}
 
 
+def in_asm(text, pos):
+    """True when text[pos] lies inside the parentheses of an asm statement (__asm__, asm, __asm)."""
+    best = None
+    for m in re.finditer(r"\b(?:__asm__|__asm|asm)\b(?:\s*(?:volatile|__volatile__))?\s*\(", text[:pos]):
+        best = m
+    if best is None:
+        return False
+    depth = 0
+    seg = re.sub(r'"(\\.|[^"\\])*"', '""', cparse._strip_comments(text[best.end() - 1:pos]))
+    for ch in seg:
+        depth += ch == "("
+        depth -= ch == ")"
+        if depth == 0:
+            return False  # that asm statement closed before pos
+    return depth > 0
+
+
 def make_item(u, ext_name, addr, our_name, syms, new_syms):
     """The func_insert.py item for one function, or (None, reason)."""
     if u.status.get(ext_name) is not None:
@@ -296,6 +313,8 @@ def make_item(u, ext_name, addr, our_name, syms, new_syms):
     extra = []
     k = 0
     for s, e, tok in reversed(cparse.string_tokens(func)):
+        if in_asm(func, s):
+            continue  # an __asm__ template or constraint, not a literal of the object's data
         v = cparse.c_string_value(tok)
         if v is None or v not in lits:
             return None, "a string that is not the executable's"

@@ -273,7 +273,7 @@ def apply(items, jobs=12, log=None, dry=False, real=False):
             pat = re.compile(r'^INCLUDE_ASM\("[^"]+", ' + re.escape(it["name"]) + r'\);[ \t]*$', re.M)
             if not pat.search(text):
                 continue
-            new = pat.sub(lambda _: isolate(it).replace("\\", "\\\\"), text, count=1)
+            new = pat.sub(lambda _: isolate(it), text, count=1)  # a function replacement is taken literally
             path.write_text(new)
             good, msg = check(rel, it["name"])
             if good and real:
