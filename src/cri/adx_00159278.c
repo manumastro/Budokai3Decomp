@@ -7585,8 +7585,52 @@ void func_0015C840_x0015C840(AdxStmObj_x0015C840 *stm, CvFsHandle_x0015C840 *fd,
     stm->pause = 0;
     ADXCRS_Unlock_x0015C840();
 }
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015C948);
-INCLUDE_ASM("asm/nonmatchings/cri/adx_00159278", func_0015CA18);
+typedef struct { s8 used; u8 pad[0x5F]; } AdxObj60_x0015C948;
+extern s32 D_00410208_x0015C948 __asm__("D_00410208");
+extern s32 D_0041020C_x0015C948 __asm__("D_0041020C");
+extern AdxObj60_x0015C948 D_00410228_x0015C948[] __asm__("D_00410228");
+void func_0015C840_x0015C948(AdxObj60_x0015C948 *, s32, s32, s32, s32) __asm__("func_0015C840");
+AdxObj60_x0015C948 *func_0015C948_x0015C948(s32 a0, s32 a1, s32 a2, s32 a3) __asm__("func_0015C948");
+AdxObj60_x0015C948 *func_0015C948_x0015C948(s32 a0, s32 a1, s32 a2, s32 a3)
+{
+    AdxObj60_x0015C948 *e = 0;
+    s32 i;
+
+    for (i = 0; i < D_0041020C_x0015C948; i++) {
+        e = &D_00410228_x0015C948[D_00410208_x0015C948 + i];
+        if (e->used == 0) {
+            break;
+        }
+    }
+    if (i == D_0041020C_x0015C948) {
+        return 0;
+    }
+    func_0015C840_x0015C948(e, a0, a1, a2, a3);
+    return e;
+}
+typedef struct { s8 used; u8 pad[0x5F]; } AdxObj60_x0015CA18;
+extern s32 D_00410210_x0015CA18 __asm__("D_00410210");
+extern s32 D_00410214_x0015CA18 __asm__("D_00410214");
+extern AdxObj60_x0015CA18 D_00410228_x0015CA18[] __asm__("D_00410228");
+void func_0015C840_x0015CA18(AdxObj60_x0015CA18 *, s32, s32, s32, s32) __asm__("func_0015C840");
+AdxObj60_x0015CA18 *func_0015CA18_x0015CA18(s32 a0, s32 a1, s32 a2, s32 a3) __asm__("func_0015CA18");
+AdxObj60_x0015CA18 *func_0015CA18_x0015CA18(s32 a0, s32 a1, s32 a2, s32 a3)
+{
+    AdxObj60_x0015CA18 *e = 0;
+    s32 i;
+
+    for (i = 0; i < D_00410214_x0015CA18; i++) {
+        e = &D_00410228_x0015CA18[D_00410210_x0015CA18 + i];
+        if (e->used == 0) {
+            break;
+        }
+    }
+    if (i == D_00410214_x0015CA18) {
+        return 0;
+    }
+    func_0015C840_x0015CA18(e, a0, a1, a2, a3);
+    return e;
+}
 typedef int s32_x0015CAE8;
 typedef s32_x0015CAE8 ptrdiff_t_x0015CAE8;
 typedef unsigned char Uint8_x0015CAE8;
