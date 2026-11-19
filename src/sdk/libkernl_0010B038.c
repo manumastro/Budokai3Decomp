@@ -159,7 +159,51 @@ int func_0010B2D8_x0010B2D8(int a)
     DeleteSema_x0010B2D8(sema);
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl_0010B038", func_0010B3A0);
+struct ThreadParam_B3A0_x0010B3A0 { int status; void *entry; void *stack; int stackSize; void *gpReg; int initPriority; int currentPriority; unsigned int attr; unsigned int option; int waitType; int waitId; int wakeupCount; };
+int func_0010AD30_x0010B3A0(void) __asm__("func_0010AD30");
+int DI_x0010B3A0(void) __asm__("DI");
+int EI_x0010B3A0(void) __asm__("EI");
+int ReferThreadStatus_x0010B3A0(int, struct ThreadParam_B3A0_x0010B3A0 *) __asm__("ReferThreadStatus");
+int StartThread_x0010B3A0(int, void *) __asm__("StartThread");
+int func_0010B3A0_x0010B3A0(int thid, void *arg) __asm__("func_0010B3A0");
+int func_0010B3A0_x0010B3A0(int thid, void *arg)
+{
+    struct ThreadParam_B3A0_x0010B3A0 info;
+    int ret;
+    char *p;
+
+    if (func_0010AD30_x0010B3A0() != 0) return -1;
+    if (DI_x0010B3A0() == 0) return -1;
+    ret = ReferThreadStatus_x0010B3A0(thid, &info);
+    if (ret < 0) {
+        EI_x0010B3A0();
+        return ret;
+    }
+    if (info.status != 0x10) {
+        EI_x0010B3A0();
+        return -1;
+    }
+            p = (char *)info.stack + info.stackSize - 0x2A0;
+            __asm__ volatile(
+                "sq $0, 0x0(%0)\n\tsq $0, 0x10(%0)\n\tsq $0, 0x20(%0)\n\tsq $0, 0x30(%0)\n\t"
+                "sq $0, 0x40(%0)\n\tsq $0, 0x50(%0)\n\tsq $0, 0x60(%0)\n\tsq $0, 0x70(%0)\n\t"
+                "sq $0, 0x80(%0)\n\tsq $0, 0x90(%0)\n\tsq $0, 0xA0(%0)\n\tsq $0, 0xB0(%0)\n\t"
+                "sq $0, 0xC0(%0)\n\tsq $0, 0xD0(%0)\n\tsq $0, 0xE0(%0)\n\tsq $0, 0xF0(%0)\n\t"
+                "sq $0, 0x100(%0)\n\tsq $0, 0x110(%0)\n\tsq $0, 0x120(%0)\n\tsq $0, 0x130(%0)\n\t"
+                "sq $0, 0x140(%0)\n\tsq $0, 0x150(%0)\n\tsq $0, 0x160(%0)\n\tsq $0, 0x170(%0)\n\t"
+                "sq $0, 0x180(%0)\n\tsq $0, 0x190(%0)\n\tsq $0, 0x1A0(%0)\n\tsq $0, 0x1B0(%0)\n\t"
+                "sq $0, 0x200(%0)\n\tsq $0, 0x210(%0)\n\tsq $0, 0x220(%0)\n\tsq $0, 0x230(%0)\n\t"
+                "sq $0, 0x240(%0)\n\tsq $0, 0x250(%0)\n\tsq $0, 0x260(%0)\n\tsq $0, 0x270(%0)\n\t"
+                "sll $8, %1, 0\n\tsd $8, 0x40(%0)\n\t"
+                "lw $8, 0x1C0(%0)\n\tsd $8, 0x1C0(%0)\n\tsd $0, 0x1C8(%0)\n\t"
+                "lw $8, 0x1D0(%0)\n\tsd $8, 0x1D0(%0)\n\tsd $0, 0x1D8(%0)\n\t"
+                "lw $8, 0x1E0(%0)\n\tsd $8, 0x1E0(%0)\n\tsd $0, 0x1E8(%0)\n\t"
+                "lw $8, 0x1F0(%0)\n\tsd $8, 0x1F0(%0)\n\tsd $0, 0x1F8(%0)
+1:"
+                : : "r"(p), "r"(arg) : "$8", "memory");
+            EI_x0010B3A0();
+            return StartThread_x0010B3A0(thid, arg);
+}
 extern void iSignalSema_x0010B518(int a) __asm__("iSignalSema");
 int func_0010B518_x0010B518(int a, int b, int c, int d) __asm__("func_0010B518");
 /* _DelayThreadHandler: from https://github.com/zm2283145/syphon-filter-omega-strain-decomp (src/lib/libkernl/libkernl_10E288.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
