@@ -18382,7 +18382,32 @@ void func_00198F70_x00198F70(s32 a0, s32 *out)
 /* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
 extern int b3p16_0663dc_0_x __asm__("b3a0663dc_0");
 extern int b3p32_0663dc_0_x __asm__("b3cse_asmpad_0663dc_0_xx");
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00198FE0);
+typedef struct SfdRec_8FE0_x00198FE0 SfdRec_8FE0_x00198FE0;
+typedef struct { unsigned char pad[0x31E8]; SfdRec_8FE0_x00198FE0 *rec; } SfdPly_8FE0_x00198FE0;
+int func_0018D870_x00198FE0(SfdPly_8FE0_x00198FE0 *hn) __asm__("func_0018D870");
+int func_0018D650_x00198FE0(int zero, int code) __asm__("func_0018D650");
+void func_00198F70_x00198FE0(SfdRec_8FE0_x00198FE0 *rec, int *ready) __asm__("func_00198F70");
+void func_00199080_x00198FE0(SfdRec_8FE0_x00198FE0 *rec, int scale, int divisor, int *out) __asm__("func_00199080");
+int func_00198FE0_x00198FE0(SfdPly_8FE0_x00198FE0 *hn, int scale, int divisor, int *out) __asm__("func_00198FE0");
+int func_00198FE0_x00198FE0(SfdPly_8FE0_x00198FE0 *hn, int scale, int divisor, int *out)
+{
+    SfdRec_8FE0_x00198FE0 **timing;
+    int ready;
+    *out = 0;
+    if (func_0018D870_x00198FE0(hn) != 0) {
+        return func_0018D650_x00198FE0(0, 0xFF000156);
+    }
+    timing = &hn->rec;
+    func_00198F70_x00198FE0(*timing, &ready);
+    if (ready == 0) {
+        return 0;
+    }
+    func_00199080_x00198FE0(*timing, scale, divisor, out);
+    return 0;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3p8_0663f8_0_x __asm__("p663f80");
+extern int b3p16_0663f8_0_x __asm__("b3a0663f8_0");
 s32 func_0017EE78_x00199080() __asm__("func_0017EE78");
 s32 func_001990D0_x00199080() __asm__("func_001990D0");
 void func_00199080_x00199080(u8 *arg0, s32 arg1, s32 arg2, s32 *arg3) __asm__("func_00199080");
@@ -18400,7 +18425,30 @@ void func_001990D0_x001990D0(s32 a0, s32 a1, s32 a2, s32 *a3) __asm__("func_0019
 void func_001990D0_x001990D0(s32 a0, s32 a1, s32 a2, s32 *a3) {
     *a3 = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001990D8);
+typedef struct SfdRec_90D8_x001990D8 SfdRec_90D8_x001990D8;
+typedef struct { unsigned char pad[0x31E8]; SfdRec_90D8_x001990D8 *rec; } SfdPly_90D8_x001990D8;
+int func_0018D870_x001990D8(SfdPly_90D8_x001990D8 *hn) __asm__("func_0018D870");
+int func_0018D650_x001990D8(int zero, int code) __asm__("func_0018D650");
+void func_00198F70_x001990D8(SfdRec_90D8_x001990D8 *rec, int *ready) __asm__("func_00198F70");
+void func_00199180_x001990D8(SfdRec_90D8_x001990D8 *rec, int value, int *out, int *pending) __asm__("func_00199180");
+int func_001990D8_x001990D8(SfdPly_90D8_x001990D8 *hn, int value, int *out, int *pending) __asm__("func_001990D8");
+int func_001990D8_x001990D8(SfdPly_90D8_x001990D8 *hn, int value, int *out, int *pending)
+{
+    SfdRec_90D8_x001990D8 **timing;
+    int ready;
+    *out = 0;
+    *pending = 1;
+    if (func_0018D870_x001990D8(hn) != 0) {
+        return func_0018D650_x001990D8(0, 0xFF000157);
+    }
+    timing = &hn->rec;
+    func_00198F70_x001990D8(*timing, &ready);
+    if (ready == 0) {
+        return 0;
+    }
+    func_00199180_x001990D8(*timing, value, out, pending);
+    return 0;
+}
 void func_00199208_x00199180(s32, s32, s32 *, s32 *) __asm__("func_00199208");
 s32 func_0017EE78_x00199180(s32, s32, s32) __asm__("func_0017EE78");
 void func_00199180_x00199180(s32 a0, s32 a1, s32 *a2, s32 *a3) __asm__("func_00199180");
@@ -27989,7 +28037,25 @@ s32 func_0019B460_x0019B460(u8 *p, s32 a1, s32 a2)
     func_0019B5E8_x0019B460(p, a1, a2, buf, *(s32 *)(q + 0xB0));
     return buf[0];
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019B498);
+typedef struct { unsigned char pad[0x2A4]; int disp_sync_cnt; int disp_sync_time; int disp_sync_unit; } SfdTim_B498_x0019B498;
+typedef struct { unsigned char pad0[0x44]; int pending; unsigned char pad1[0xCC0 - 0x48]; SfdTim_B498_x0019B498 tim; } SfdPly_B498_x0019B498;
+int func_0018D870_x0019B498(SfdPly_B498_x0019B498 *hn) __asm__("func_0018D870");
+int func_0018D650_x0019B498(int zero, int code) __asm__("func_0018D650");
+int func_0019B498_x0019B498(SfdPly_B498_x0019B498 *hn, int a, int b) __asm__("func_0019B498");
+int func_0019B498_x0019B498(SfdPly_B498_x0019B498 *hn, int a, int b)
+{
+    SfdTim_B498_x0019B498 *tim;
+    int r = func_0018D870_x0019B498(hn);
+    if (r != 0) {
+        return func_0018D650_x0019B498(0, 0xFF000125);
+    }
+    tim = &hn->tim;
+    tim->disp_sync_unit = b;
+    tim->disp_sync_time = a;
+    tim->disp_sync_cnt++;
+    hn->pending = 1;
+    return r;
+}
 typedef struct { u8 pad[0x38]; s32 f38; u8 pad2[0x78]; s32 fB4; } Sfd9A0_x0019B520_x0019B520;
 void func_0019B5E8_x0019B520(s32, s32, s32, s32 *, s32) __asm__("func_0019B5E8");
 s32 func_0019B520_x0019B520(s32 a0, s32 a1, s32 a2, s32 *a3) __asm__("func_0019B520");

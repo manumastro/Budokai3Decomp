@@ -5092,7 +5092,119 @@ int func_001531A8_x001531A8(signed char *ibuf, int nblk, short *obuf_l, short *d
 /* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
 extern int b3p16_054c6a_0_x __asm__("b3a054c6a_0");
 extern int b3p16_054c6a_1_x __asm__("b3a054c6a_1");
-INCLUDE_ASM("asm/nonmatchings/cri/adx_0014EF28", func_00153440);
+extern const float D_00460EC8_x00153440[256] __asm__("D_00460EC8");
+extern const float D_004612C8_x00153440[256] __asm__("D_004612C8");
+int func_00153440_x00153440(signed char *ibuf, int nblk, short *obuf_l, short *dly_l, short *obuf_r, short *dly_r, short k0, short k1) __asm__("func_00153440");
+int func_00153440_x00153440(signed char *ibuf, int nblk, short *obuf_l, short *dly_l, short *obuf_r, short *dly_r, short k0, short k1) 
+{
+	int qsigzzzzzzzz;
+	int qsig_rzzzzzzzz;
+	int dt16zzzzzzzz;
+	float gainzzzzzzzz;
+	float gain_rzzzzzzzz;
+	float kf0zzzzzzzz;
+	float kf1zzzzzzzz;
+	float d0_lzzzzzzzz;
+	float d1_lzzzzzzzz;
+	float d0_rzzzzzzzz;
+	float d1_rzzzzzzzz;
+	float qsigfzzzzzzzz;
+	float qsigf_rzzzzzzzz;
+	int snozzzzzzzz;
+	int blkno2zzzzzzzz;
+	unsigned char *ibufdtzzzzzzzz;
+	unsigned char *ibufdt_rzzzzzzzz;
+	short codezzzzzzzz;
+    float dt_lzzzzzzzz;
+    float dt_rzzzzzzzz;
+
+    d0_lzzzzzzzz = dly_l[0] * 65536;
+    d1_lzzzzzzzz = dly_l[1] * 65536;
+    
+    d0_rzzzzzzzz = dly_r[0] * 65536;
+    d1_rzzzzzzzz = dly_r[1] * 65536;
+    
+    kf0zzzzzzzz = (k0 * 16) / 65536.0f;
+    kf1zzzzzzzz = (k1 * 16) / 65536.0f;
+    
+    ibufdt_rzzzzzzzz = (unsigned char*)ibuf;
+    
+    for (blkno2zzzzzzzz = 0; blkno2zzzzzzzz < (nblk / 2); blkno2zzzzzzzz++) 
+    {
+        ibufdtzzzzzzzz = ibufdt_rzzzzzzzz;
+        
+        ibufdt_rzzzzzzzz += 18;
+        
+        codezzzzzzzz = (unsigned short)(((*(unsigned short *)ibufdtzzzzzzzz << 8) & 0xFF00) | ibufdtzzzzzzzz[1]);
+        
+        if ((codezzzzzzzz & 0x8000)) 
+        {
+            return blkno2zzzzzzzz * 2;
+        }
+        
+        gainzzzzzzzz = (codezzzzzzzz & 0x1FFF) + 1;
+        
+        codezzzzzzzz = (unsigned short)(((*(unsigned short *)ibufdt_rzzzzzzzz << 8) & 0xFF00) | ibufdt_rzzzzzzzz[1]);
+        
+        if ((codezzzzzzzz & 0x8000))
+        {
+            return blkno2zzzzzzzz * 2;
+        }
+
+        gain_rzzzzzzzz = (codezzzzzzzz & 0x1FFF) + 1;
+        
+        ibufdtzzzzzzzz += 2;
+        ibufdt_rzzzzzzzz += 2;
+        
+        for (snozzzzzzzz = 0; snozzzzzzzz < 32; snozzzzzzzz += 2)
+        {
+            qsigzzzzzzzz = *ibufdtzzzzzzzz++;
+            qsigfzzzzzzzz = D_00460EC8_x00153440[qsigzzzzzzzz];
+            
+            qsig_rzzzzzzzz = *ibufdt_rzzzzzzzz++;
+            qsigf_rzzzzzzzz = D_00460EC8_x00153440[qsig_rzzzzzzzz];
+
+            dt_lzzzzzzzz = (kf0zzzzzzzz * d0_lzzzzzzzz) + (kf1zzzzzzzz * d1_lzzzzzzzz) + (qsigfzzzzzzzz * gainzzzzzzzz);
+            
+            d1_lzzzzzzzz = d0_lzzzzzzzz;
+            d0_lzzzzzzzz = dt_lzzzzzzzz;
+            
+            dt_rzzzzzzzz = (kf0zzzzzzzz * d0_rzzzzzzzz) + (kf1zzzzzzzz * d1_rzzzzzzzz) + (qsigf_rzzzzzzzz * gain_rzzzzzzzz);
+            
+            d1_rzzzzzzzz = d0_rzzzzzzzz;
+            d0_rzzzzzzzz = dt_rzzzzzzzz;
+            
+            dt16zzzzzzzz = (int)((d0_lzzzzzzzz + d0_rzzzzzzzz) * 0.7f) >> 16;
+            
+            *obuf_l++ = *obuf_r++ = dt16zzzzzzzz;
+            
+            qsigfzzzzzzzz = D_004612C8_x00153440[qsigzzzzzzzz];
+            qsigf_rzzzzzzzz = D_004612C8_x00153440[qsig_rzzzzzzzz];
+            
+            dt_lzzzzzzzz = (kf0zzzzzzzz * d0_lzzzzzzzz) + (kf1zzzzzzzz * d1_lzzzzzzzz) + (qsigfzzzzzzzz * gainzzzzzzzz);
+            
+            d1_lzzzzzzzz = d0_lzzzzzzzz;
+            d0_lzzzzzzzz = dt_lzzzzzzzz;
+            
+            dt_rzzzzzzzz = (kf0zzzzzzzz * d0_rzzzzzzzz) + (kf1zzzzzzzz * d1_rzzzzzzzz) + (qsigf_rzzzzzzzz * gain_rzzzzzzzz);
+            
+            d1_rzzzzzzzz = d0_rzzzzzzzz;
+            d0_rzzzzzzzz = dt_rzzzzzzzz;
+            
+            dt16zzzzzzzz = (int)((d0_lzzzzzzzz + d0_rzzzzzzzz) * 0.7f) >> 16;
+            
+            *obuf_l++ = *obuf_r++ = dt16zzzzzzzz;
+        }
+    }
+    
+    dly_l[0] = (int)d0_lzzzzzzzz >> 16;
+    dly_l[1] = (int)d1_lzzzzzzzz >> 16;
+    
+    dly_r[0] = (int)d0_rzzzzzzzz >> 16;
+    dly_r[1] = (int)d1_rzzzzzzzz >> 16;
+    
+    return nblk;
+}
 extern int adxd_mono_flag_x001536E0 __asm__("D_00401FF8");
 int adxd_decode_stereo_pair_x001536E0(unsigned char *src, int n, short *dstl, short *histl, short *dstr, short *histr,
                  int coef1_q12, int coef2_q12) __asm__("func_001531A8");
