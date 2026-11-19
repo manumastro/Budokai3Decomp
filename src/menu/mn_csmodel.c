@@ -375,65 +375,29 @@ extern u8 D_004B4B59[];
 extern void VsCharasel_Start(s8, s8);
 extern void PracMode_Exit();
 
-#if 0
-// differs: the prologue matches; the if body differs in register use (the original keeps 4, 1 and 2 in v0/v1 and loads the byte twice, lbu then lb)
-void func_002B8C70(u8 *a0) {
-    u8 *s0;
-    s32 v;
-    s0 = *(u8 **)(a0 + 0x30);
-    v = *(s32 *)((u8 *)gPracMode + 0xC);
-    D_00470704 = v;
-    D_0047070C = 0x1000;
-    D_00470708 = 0;
-    amModel_SetCurrent(v, 0x1000);
-    D_00470238 = 0;
-    func_002B7690(s0);
-    A2d_FlushList();
-    *(f32 *)(s0 + 0x68) = *(f32 *)(s0 + 0x68) - gFrameDelta;
-    if (*(f32 *)(s0 + 0x68) <= 0.0f) {
-        D_004B4B41[0] = 4;
-        D_004B4B59[0] = (*(u8 *)(s0 + 0x63) != 0) ? 2 : 1;
-        VsCharasel_Start(1, *(s8 *)(s0 + 0x63));
-        PracMode_Exit();
-    }
-}
-#endif
-#if 0
-// differs: 21 of 44 differ: the value 1/2 select is a beqz branch in mine, the original uses movn; join padding differs too
-void func_002B8C70(u8 *task) {
-    u8 *s0;
-    u8 *a0;
-    s32 v0;
-    s32 v1;
-    u8 a1;
-    f32 f1;
+void func_002B8C70(u8 *arg0) {
+    f32 temp_f1;
+    s32 temp_a0;
+    u8 *temp_s0;
 
-    s0 = *(u8 **)(task + 0x30);
-    a0 = *(u8 **)((u8 *)gPracMode + 0xC);
-    D_00470704 = (s32)a0;
+    temp_s0 = *(u8 **)((u8 *)arg0 + 0x30);
+    temp_a0 = *(s32 *)((u8 *)gPracMode + 0xC);
+    D_00470704 = temp_a0;
     D_0047070C = 0x1000;
     D_00470708 = 0;
-    amModel_SetCurrent((s32)a0, 0x1000);
+    amModel_SetCurrent(temp_a0, 0x1000);
     D_00470238 = 0;
-    func_002B7690(s0);
+    func_002B7690(temp_s0);
     A2d_FlushList();
-    f1 = *(f32 *)(s0 + 0x68) - gFrameDelta;
-    if (f1 <= 0.0f) {
-        *(f32 *)(s0 + 0x68) = f1;
-        D_004B4B41[0] = 4;
-        v1 = 1;
-        a1 = *(u8 *)(s0 + 0x63);
-        v0 = 2;
-        if (a1 != 0) {
-            v1 = v0;
-        }
-        D_004B4B59[0] = v1;
-        VsCharasel_Start(1, *(s8 *)(s0 + 0x63));
+    temp_f1 = *(f32 *)((u8 *)temp_s0 + 0x68) - gFrameDelta;
+    *(f32 *)((u8 *)temp_s0 + 0x68) = temp_f1;
+    if (temp_f1 <= 0.0f) {
+        *D_004B4B41 = 4;
+        *D_004B4B59 = (*(u8 *)((u8 *)temp_s0 + 0x63) == 0) ? 1U : 2U;
+        VsCharasel_Start(1, (s8) *(u8 *)((u8 *)temp_s0 + 0x63));
         PracMode_Exit();
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8C70);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B8D20);
 void func_002B91F0(u8 *task) {
     u8 *s1;
