@@ -49,8 +49,9 @@ RECIPES = """- The compiler is ee-gcc (2.96 for CRI and libc/libm/libgcc, 2.9-99
 - Globals: `lui/addiu` or `lui + lw %lo` = an extern variable: declare `extern s32 D_XXXXXXXX;` or an array
   `extern u8 D_XXXXXXXX[];` (the name is in the assembly). Calls: declare `s32 func_XXXXXXXX();` (unprototyped) or
   with its real argument types.
-- No string literals, no float constants loaded from memory, no switch with a jump table (they would define data):
-  use `extern char D_XXXXXXXX[];` for a string. If the original needs a jump table, report "no match: jump table".
+- No string literals: use `extern char D_XXXXXXXX[];` for a string. Float/double constants (`1000.0`, which gcc
+  writes as `li.d` = `lui $at,%hi(D)` + `ld`), switch jump tables and statics are fine once the code matches: the
+  check retries with the B3:rebind marker, which binds them to the executable's own copy (scripts/gcc_rebind.py).
 - `volatile` or an empty `__asm__ __volatile__("")` can keep a load/store in place; `register s32 x asm("s0")` is
   allowed only as a last resort.
 - Tail calls: `j func` at the end with the stack popped in its delay slot is gcc's normal sibling call
@@ -159,6 +160,19 @@ def sections(obj):
 
 
 def try_snippet(name, snippet_text, quiet=False):
+    """_try_snippet; a snippet whose code matches but which defines data (the literal-pool double of an `li.d`, a
+    `$LC` constant, a jump table, a static) is tried again marked B3:rebind, as func_insert.py does: gcc_rebind.py
+    then binds those references to the executable's own copy (`lui $at,%hi(D)` + `ld/l.d reg,%lo(D)($at)` for an
+    li.d) and drops the object's copy, so the C object defines no data."""
+    ok, item = _try_snippet(name, snippet_text, quiet)
+    if not ok and item.get("data_only") and not item.get("rebind"):
+        print("retrying with B3:rebind")
+        ok, item = _try_snippet(name, "/* B3:rebind */\n" + snippet_text, quiet)
+    item.pop("data_only", None)
+    return ok, item
+
+
+def _try_snippet(name, snippet_text, quiet=False):
     addr, _, seg, kind = find_item(name)
     decls, func = split_snippet(snippet_text, name)
     item = {"addr": addr, "name": name, "decls": decls, "func": func}
@@ -246,6 +260,7 @@ def try_snippet(name, snippet_text, quiet=False):
     added = {s: n - base_secs.get(s, 0) for s, n in secs.items() if n - base_secs.get(s, 0) > 0}
     if ok and added:
         ok = False
+        item["data_only"] = True
         print(f"DATA: the code matches but it defines data {added} (a string literal, float constant or switch "
               "table): use the original's extern symbols instead")
     if ok:
