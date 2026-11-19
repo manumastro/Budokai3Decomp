@@ -1513,13 +1513,11 @@ void func_002C2470(s32 *a0)
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C2560);
 extern void func_002C2560(void);
 
-#if 0
-// func_002C27B0: the tail (pointer, byte, float) and the sub-object: the original has a 0x40 frame (s0-s2), ours 0x50 (an extra saved register); 8 variants tried
 void func_002C27B0(s32 *a0) {
     s32 *s0 = (s32 *)a0[0x30 / 4];
     s32 *s2;
-    void *f;
     s32 v;
+
     v = s0[1];
     D_00470704 = v;
     D_0047070C = 0x2000;
@@ -1541,13 +1539,11 @@ void func_002C27B0(s32 *a0) {
     A2d_FlushList();
     func_00133B50(0, 0);
     SeReady_Start();
-    *(u8 *)((char *)s0 + 0xAC) = *(u8 *)((char *)s0 + 0xAC) + 1;
-    *(s32 *)((char *)s0 + 0xC4) = 0x41F00000;
-    *(u8 *)((char *)s0 + 0xAF) = 9;
-    a0[7] = (s32)((f == 0) ? 0 : f);
+    *(u8 *)((u8 *)s0 + 0xAC) = *(u8 *)((u8 *)s0 + 0xAC) + 1;
+    *(s32 *)((u8 *)s0 + 0xC4) = 0x41F00000;
+    *(u8 *)((u8 *)s0 + 0xAF) = 9;
+    a0[0x1C / 4] = (s32)((((void *)func_002C2560) == 0) ? (0) : ((void *)func_002C2560));
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C27B0);
 
 
 extern void func_002C1720(s32 *);
