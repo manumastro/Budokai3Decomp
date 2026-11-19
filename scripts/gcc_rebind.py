@@ -89,9 +89,8 @@ def ref_events(lines, first, last, data_labels):
     out = []
     cur = ".text"
     names = sorted(data_labels, key=len, reverse=True)
-    if not names:
-        return out
-    pat = re.compile(r"(%hi|%lo)?\(?(" + "|".join(re.escape(n) for n in names) + r")(?![\w.$])")
+    # with no data label at all the li.d constants (gas's own literals) are still events
+    pat = re.compile(r"(%hi|%lo)?\(?(" + "|".join(re.escape(n) for n in names) + r")(?![\w.$])") if names else None
     for i in range(first, last + 1):
         ln = lines[i]
         cur = section_of(ln, cur)
@@ -110,7 +109,7 @@ def ref_events(lines, first, last, data_labels):
             if m.group(1) or low or high & 0xFFFF:
                 out.append((i, "<li.d>", "HL"))
             continue
-        if not re.match(r"^\s+[a-z]", code) or code.strip().startswith("."):
+        if pat is None or not re.match(r"^\s+[a-z]", code) or code.strip().startswith("."):
             continue
         ms = list(pat.finditer(code))
         if not ms:
