@@ -44,7 +44,25 @@ void func_00109670_x00109670(void *m)
         EIntr_x00109670();
     *(volatile u_int_x00109670 *)0x1000B020 = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg_001095D0", func_00109738);
+typedef struct { int type; int code; } CBERR_x00109738;
+typedef struct { char pad[0xC]; int cb; } CBS_x00109738;
+typedef struct { char pad[0x868]; void *mp; } DEC_x00109738;
+int _sceMpegDispatchMpegCallback_x00109738(void *, void *) __asm__("func_00107DE0");
+void func_0024F8C0_x00109738(int) __asm__("func_001095C0");
+void func_00109738_x00109738(DEC_x00109738 *d, int code) __asm__("func_00109738");
+/* _sceMpegError: from https://github.com/Komasia/sly2-decomp (src/lib/_sceMpegError.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00109738_x00109738(DEC_x00109738 *d, int code)
+{
+    void *mp = d->mp;
+    if (mp && d && ((CBS_x00109738 *)d)->cb) {
+        CBERR_x00109738 e;
+        e.code = code;
+        e.type = 0;
+        _sceMpegDispatchMpegCallback_x00109738(mp, &e);
+    } else {
+        func_0024F8C0_x00109738(code);
+    }
+}
 extern void func_003B1EE0_x00109790(void *buf, int size, int a, int b) __asm__("func_0010CE90");
 extern void _sceMpegError_x00109790(int a0, void *buf) __asm__("func_00109738");
 void func_00109790_x00109790(int a0, int a1, int a2) __asm__("func_00109790");

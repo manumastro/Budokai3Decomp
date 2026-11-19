@@ -249,11 +249,132 @@ void func_00103BD0_x00103BD0(_sceMpegDecoder_x00103BD0 *dec, int PMV[2][2][2], i
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00103D70);
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001042C8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104440);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001045A8);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104728);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104810);
-INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_001048A0);
+typedef struct {
+    char p0[0x82C]; unsigned int cmd;
+    char p830[0x868 - 0x830]; void *mp;
+    char p86C[0x878 - 0x86C]; int stop;
+} D_x00104440;
+int func_0024B6E8_x00104440(void *mp) __asm__("func_00107E58");
+void func_0024F8D0_x00104440(void) __asm__("func_001095D0");
+void func_00104440_x00104440(D_x00104440 *d) __asm__("func_00104440");
+/* _sceMpegWaitIpuIdle: from https://github.com/Komasia/sly2-decomp (src/lib/_sceMpegWaitIpuIdle.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_00104440_x00104440(D_x00104440 *d)
+{
+    int cnt = 0;
+
+    while (((*(volatile unsigned int *)(0x10002010)) & 0x80004000) == 0x80000000) {
+        unsigned int bp = (*(volatile unsigned int *)(0x10002020));
+        unsigned int cmd = d->cmd;
+        unsigned int n = ((bp & 0xFF00) >> 1) + ((bp & 0x30000) >> 9) - (bp & 0x7F);
+        if ((cmd == 0x20000000 || cmd == 0x30000000 || cmd == 0x40000000) && n < 0x20 && (*(volatile unsigned int *)(0x1000B420)) == 0) {
+            func_0024B6E8_x00104440(d->mp);
+            if (d->stop) { func_0024F8D0_x00104440(); break; }
+            cnt = 0;
+        }
+        if (cnt++ > 5000) {
+            func_0024B6E8_x00104440(d->mp);
+            if (d->stop) { func_0024F8D0_x00104440(); break; }
+            cnt = 0;
+        }
+    }
+    d->cmd = 0;
+}
+typedef struct {
+    char p0[0x82C]; unsigned int cmd;
+    char p830[0x868 - 0x830]; void *mp;
+    char p86C[0x878 - 0x86C]; int stop;
+} D_x001045A8;
+int func_0024B6E8_x001045A8(void *mp) __asm__("func_00107E58");
+void func_0024F8D0_x001045A8(void) __asm__("func_001095D0");
+long func_001045A8_x001045A8(D_x001045A8 *d) __asm__("func_001045A8");
+/* _sceMpegWaitIpuIdle64: from https://github.com/Komasia/sly2-decomp (src/lib/_sceMpegWaitIpuIdle64.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+long func_001045A8_x001045A8(D_x001045A8 *d)
+{
+    int cnt = 0;
+    long r;
+
+    while ((r = *(volatile long *)0x10002000) < 0 && !((*(volatile unsigned int *)(0x10002010)) & 0x4000)) {
+        unsigned int bp = (*(volatile unsigned int *)(0x10002020));
+        unsigned int cmd = d->cmd;
+        unsigned int n = ((bp & 0xFF00) >> 1) + ((bp & 0x30000) >> 9) - (bp & 0x7F);
+        if ((cmd == 0x20000000 || cmd == 0x30000000 || cmd == 0x40000000) && n < 0x20 && (*(volatile unsigned int *)(0x1000B420)) == 0) {
+            func_0024B6E8_x001045A8(d->mp);
+            if (d->stop) { func_0024F8D0_x001045A8(); break; }
+            cnt = 0;
+        }
+        if (cnt++ > 500) {
+            func_0024B6E8_x001045A8(d->mp);
+            if (d->stop) { func_0024F8D0_x001045A8(); break; }
+            cnt = 0;
+        }
+    }
+    d->cmd = 0;
+    return r;
+}
+typedef struct { char p0[0x828]; int x828; unsigned int x82C; char p1[0x848 - 0x830]; unsigned int x848; int x84C; } D_x00104728;
+void _waitIpuIdle_x00104728(D_x00104728 *d) __asm__("func_00104938");
+long _sceMpegWaitIpuIdle64_x00104728(D_x00104728 *d) __asm__("func_001045A8");
+unsigned int func_00104728_x00104728(D_x00104728 *d, int n) __asm__("func_00104728");
+/* _sceMpegNextBit: from https://github.com/Komasia/sly2-decomp (src/lib/_sceMpegNextBit.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+unsigned int func_00104728_x00104728(D_x00104728 *d, int n)
+{
+    unsigned int r, c, m;
+    _waitIpuIdle_x00104728(d);
+    if (d->x828 || d->x84C < n) {
+        *(volatile unsigned int *)0x10002000 = 0x40000000;
+        d->x828 = 0;
+        d->x82C = 0x40000000;
+        d->x848 = _sceMpegWaitIpuIdle64_x00104728(d);
+    }
+    r = d->x848 >> (32 - n);
+    d->x84C = 32;
+    c = n | 0x40000000;
+    *(volatile unsigned int *)0x10002000 = c;
+    m = c & 0xF0000000;
+    d->x82C = m;
+    if (m == 0x20000000 || m == 0x30000000 || m == 0x40000000)
+        d->x828 = 0;
+    else
+        d->x828 = 1;
+    d->x848 = _sceMpegWaitIpuIdle64_x00104728(d);
+    return r;
+}
+typedef struct { char p0[0x828]; int x828; unsigned int x82C; char p1[0x848 - 0x830]; unsigned int x848; int x84C; } D_x00104810;
+void _waitIpuIdle_x00104810(D_x00104810 *d) __asm__("func_00104938");
+long _sceMpegWaitIpuIdle64_x00104810(D_x00104810 *d) __asm__("func_001045A8");
+unsigned int func_00104810_x00104810(D_x00104810 *d, int n) __asm__("func_00104810");
+/* _sceMpegPeepBit: from https://github.com/Komasia/sly2-decomp (src/lib/_sceMpegPeepBit.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+unsigned int func_00104810_x00104810(D_x00104810 *d, int n)
+{
+    if (d->x828 || d->x84C < n) {
+        _waitIpuIdle_x00104810(d);
+        *(volatile unsigned int *)0x10002000 = 0x40000000;
+        d->x828 = 0;
+        d->x82C = 0x40000000;
+        d->x848 = _sceMpegWaitIpuIdle64_x00104810(d);
+        d->x84C = 32;
+    }
+    return d->x848 >> (32 - n);
+}
+typedef struct { char p0[0x828]; int x828; unsigned int x82C; char p1[0x848 - 0x830]; int x848; int x84C; } D_x001048A0;
+void _waitIpuIdle_x001048A0(D_x001048A0 *d) __asm__("func_00104938");
+long _sceMpegWaitIpuIdle64_x001048A0(D_x001048A0 *d) __asm__("func_001045A8");
+void func_001048A0_x001048A0(D_x001048A0 *d, unsigned int n) __asm__("func_001048A0");
+/* _sceMpegFlushBuf: from https://github.com/Komasia/sly2-decomp (src/lib/_sceMpegFlushBuf.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void func_001048A0_x001048A0(D_x001048A0 *d, unsigned int n)
+{
+    _waitIpuIdle_x001048A0(d);
+    n |= 0x40000000;
+    *(volatile unsigned int *)0x10002000 = n;
+    n &= 0xF0000000;
+    d->x82C = n;
+    if (n == 0x20000000 || n == 0x30000000 || n == 0x40000000)
+        d->x828 = 0;
+    else
+        d->x828 = 1;
+    d->x848 = _sceMpegWaitIpuIdle64_x001048A0(d);
+    d->x84C = 32;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libmpeg", func_00104938);
 s32 func_001048A0_x00104970() __asm__("func_001048A0");
 void func_00104970_x00104970(s32 arg0, s32 arg1) __asm__("func_00104970");

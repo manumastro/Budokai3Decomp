@@ -263,7 +263,27 @@ void *new_iob(void)
     SignalSema(iob_sema);
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010EA50);
+int func_00237288_x0010EA50(void *cd, int rpc, int mode, void *send, int ssize, void *recv, int rsize, void *end, void *earg) __asm__("sceSifCallRpc");
+int func_00235518_x0010EA50(int) __asm__("func_0010B2D8");
+int func_0010EA50_x0010EA50(void *cd, int rpc, int mode, void *send, int ssize, void *recv, int rsize, void *end, void *earg, int nowait) __asm__("func_0010EA50");
+/* sceFsSifCallRpc: from https://github.com/Komasia/sly2-decomp (src/lib/sceFsSifCallRpc.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_0010EA50_x0010EA50(void *cd, int rpc, int mode, void *send, int ssize, void *recv, int rsize, void *end, void *earg, int nowait)
+{
+    int r;
+    unsigned int delay = 1;
+    int i = 0;
+
+    do {
+        r = func_00237288_x0010EA50(cd, rpc, mode, send, ssize, recv, rsize, end, earg) < 0;
+        if (!r || nowait)
+            break;
+        func_00235518_x0010EA50(delay * 1000);
+        if ((int)delay < 0x7F)
+            delay *= 2;
+        i++;
+    } while (i < 101);
+    return r;
+}
 
 
 void *get_iob(unsigned int i)
@@ -283,7 +303,22 @@ ok:
 }
 INCLUDE_PAD(4);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010EBB0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", _sceFsSemInit);
+struct SemaParam_x0010EF68 { int currentCount; int maxCount; int initCount; int numWaitThreads; unsigned int attr; unsigned int option; };
+extern int D_002C4A84_x0010EF68 __asm__("D_003EC6C4");
+extern char D_002AAA98_x0010EF68[] __asm__("D_0045D6E8");
+int func_00234A20_x0010EF68(struct SemaParam_x0010EF68 *) __asm__("CreateSema");
+void _sceFsSemInit_x0010EF68(void) __asm__("_sceFsSemInit");
+/* _sceFsSemInit_x0010EF68: from https://github.com/Komasia/sly2-decomp (src/lib/_sceFsSemInit_x0010EF68.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+void _sceFsSemInit_x0010EF68(void)
+{
+    struct SemaParam_x0010EF68 p;
+    if (D_002C4A84_x0010EF68 == -1) {
+        p.option = (unsigned int)D_002AAA98_x0010EF68;
+        p.initCount = 1;
+        p.maxCount = 1;
+        D_002C4A84_x0010EF68 = func_00234A20_x0010EF68(&p);
+    }
+}
 
 
 int _sceFsWaitS(int arg)
@@ -527,8 +562,224 @@ int func_0010F878_x0010F878(unsigned int fd) {
 }
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F9F0);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010FC30);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010FEA0);
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_00110160);
+struct iob_x0010FEA0 { int fd, flags, x8, xC; };
+struct SemaParam_x0010FEA0 {
+    int currentCount;
+    int maxCount;
+    int initCount;
+    int numWaitThreads;
+    unsigned int attr;
+    unsigned int option;
+};
+typedef struct { int sema; int *res; int rsize; int fd; void *buf; int size; int nhead; char head[16]; int idx; } WriteArg_x0010FEA0;
+extern int D_002C4A7C_x0010FEA0 __asm__("D_003EC6BC");
+extern int D_002C4A8C_x0010FEA0 __asm__("D_003EC6CC");
+extern int D_002C49F8_x0010FEA0[32] __asm__("D_003EC638");
+extern WriteArg_x0010FEA0 D_0044A680_x0010FEA0 __asm__("D_00473440");
+extern struct iob_x0010FEA0 D_0044BB80_x0010FEA0[] __asm__("D_00474940");
+extern char D_0044BD80_x0010FEA0[] __asm__("D_00474B40");
+extern int D_0044B2C0_x0010FEA0[] __asm__("D_00474080");
+extern char D_002AAB10_x0010FEA0[] __asm__("D_0045D760");
+struct iob_x0010FEA0 *func_002376D0_x0010FEA0(int) __asm__("func_0010EB40");
+int func_00237B50_x0010FEA0(int) __asm__("func_0010EFC0");
+void func_00237B80_x0010FEA0(void) __asm__("func_0010EFF0");
+void func_0023B170_x0010FEA0(void *, int) __asm__("func_0010D770");
+int func_00234A20_x0010FEA0(struct SemaParam_x0010FEA0 *) __asm__("CreateSema");
+int func_00234A30_x0010FEA0(int) __asm__("DeleteSema");
+int func_00234A40_x0010FEA0(int) __asm__("SignalSema");
+int func_00234A60_x0010FEA0(int) __asm__("WaitSema");
+int func_002375E0_x0010FEA0(void *, int, int, void *, int, void *, int, void *, void *, int) __asm__("func_0010EA50");
+int func_0010FEA0_x0010FEA0(int fd, const void *buf, int size) __asm__("func_0010FEA0");
+/* sceWrite: from https://github.com/Komasia/sly2-decomp (src/lib/sceWrite.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_0010FEA0_x0010FEA0(int fd, const void *buf, int size)
+{
+    struct SemaParam_x0010FEA0 sp;
+    int res;
+    struct iob_x0010FEA0 *io;
+    WriteArg_x0010FEA0 *arg;
+    int sema, r, flags, nowait, i, n, j;
+
+    arg = &D_0044A680_x0010FEA0;
+    io = func_002376D0_x0010FEA0(fd);
+    func_00237B50_x0010FEA0(3);
+    if (D_002C4A7C_x0010FEA0 == 0 || io == 0 || (flags = io->flags) == 0) {
+        func_00237B80_x0010FEA0();
+        return -9;
+    }
+    arg->fd = io->fd;
+    arg->idx = io - D_0044BB80_x0010FEA0;
+    sp.maxCount = 1;
+    sp.option = (unsigned int)D_002AAB10_x0010FEA0;
+    arg->size = size;
+    arg->buf = (void *)buf;
+    sp.initCount = 0;
+    sema = func_00234A20_x0010FEA0(&sp);
+    arg->res = &res;
+    arg->rsize = 4;
+    D_0044A680_x0010FEA0.sema = sema;
+    if (flags & 0x8000) {
+        func_00234A60_x0010FEA0(D_002C4A8C_x0010FEA0);
+        r = (int)D_002C49F8_x0010FEA0;
+        i = 0;
+        do { do { nowait = flags & 0x8000; } while (0); } while (0);
+        for (; i < 32; i++) {
+            if (D_002C49F8_x0010FEA0[i] == -1) {
+                D_002C49F8_x0010FEA0[i] = arg->sema;
+                arg->sema = -arg->sema;
+                break;
+            }
+        }
+        func_00234A40_x0010FEA0(D_002C4A8C_x0010FEA0);
+    } else {
+        n = (unsigned int)buf & 0xF;
+        nowait = 0;
+    }
+    if (((unsigned int)buf & 0xF) == 0)
+        n = 0;
+    else
+        n = (unsigned int)buf / 16 * 16 + 16 - (unsigned int)buf;
+    if (size < n)
+        n = size;
+    if (!(flags & 0x20000000))
+        func_0023B170_x0010FEA0((void *)buf, size);
+    buf = (void *)((unsigned int)buf | 0x20000000);
+    arg->nhead = n;
+    for (j = 0; j < n; j++)
+        arg->head[j] = ((const char *)buf)[j];
+    if (func_002375E0_x0010FEA0(D_0044BD80_x0010FEA0, 3, 0, &D_0044A680_x0010FEA0, 0x30, D_0044B2C0_x0010FEA0, 4, 0, 0, nowait) < 0) {
+        func_00234A30_x0010FEA0(sema);
+        func_00237B80_x0010FEA0();
+        return -11;
+    }
+    r = *(volatile int *)((unsigned int)D_0044B2C0_x0010FEA0 | 0x20000000);
+    func_00237B80_x0010FEA0();
+    if (r == 0) {
+        func_00234A30_x0010FEA0(sema);
+        return -11;
+    }
+    if (nowait) {
+        func_00234A30_x0010FEA0(sema);
+        return 0;
+    }
+    func_00234A60_x0010FEA0(sema);
+    func_00234A30_x0010FEA0(sema);
+    return res;
+}
+struct iob_x00110160 { int fd, flags, x8, xC; };
+struct SemaParam_x00110160 {
+    int currentCount;
+    int maxCount;
+    int initCount;
+    int numWaitThreads;
+    unsigned int attr;
+    unsigned int option;
+};
+typedef struct { char b[0x400]; } IoctlData_x00110160;
+typedef struct { int sema; int *res; int rsize; int fd; int req; IoctlData_x00110160 data; int x414; int x418; int size; } IoctlArg_x00110160;
+typedef struct { char b[0x440]; } FsStat_x00110160;
+extern int D_002C4A7C_x00110160 __asm__("D_003EC6BC");
+extern int D_002C4A78_x00110160 __asm__("D_003EC6B8");
+extern int D_002C4A8C_x00110160 __asm__("D_003EC6CC");
+extern volatile int D_002C49F8_x00110160[32] __asm__("D_003EC638");
+extern void *D_0044A648_x00110160 __asm__("D_00473408");
+extern IoctlArg_x00110160 D_0044A680_x00110160 __asm__("D_00473440");
+extern FsStat_x00110160 D_0044B310_x00110160[] __asm__("D_004740D0");
+extern char D_0044BD80_x00110160[] __asm__("D_00474B40");
+extern int D_0044B2C0_x00110160[] __asm__("D_00474080");
+extern char D_002AAB28_x00110160[] __asm__("D_0045D778");
+struct iob_x00110160 *func_002376D0_x00110160(int) __asm__("func_0010EB40");
+int func_00237B50_x00110160(int) __asm__("func_0010EFC0");
+void func_00237B80_x00110160(void) __asm__("func_0010EFF0");
+void func_00237BD8_x00110160(void) __asm__("func_0010F0E8");
+void func_0023B170_x00110160(void *, int) __asm__("func_0010D770");
+int func_00234A20_x00110160(struct SemaParam_x00110160 *) __asm__("CreateSema");
+int func_00234A30_x00110160(int) __asm__("DeleteSema");
+int func_00234A40_x00110160(int) __asm__("SignalSema");
+int func_00234A60_x00110160(int) __asm__("WaitSema");
+int func_002375E0_x00110160(void *, int, int, void *, int, void *, int, void *, void *, int) __asm__("func_0010EA50");
+int func_00110160_x00110160(int fd, int req, void *data) __asm__("func_00110160");
+/* sceIoctl: from https://github.com/Komasia/sly2-decomp (src/lib/sceIoctl.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_00110160_x00110160(int fd, int req, void *data)
+{
+    struct SemaParam_x00110160 sp;
+    int res;
+    struct iob_x00110160 *io;
+    IoctlArg_x00110160 *arg;
+    int sema, r, i;
+    int one = 1;     
+
+    arg = &D_0044A680_x00110160;
+    io = func_002376D0_x00110160(fd);
+    func_00237B50_x00110160(5);
+    D_0044A648_x00110160 = data;
+    if (D_002C4A7C_x00110160 == 0)
+        func_00237BD8_x00110160();
+    if (io == 0 || io->flags == 0) {
+        func_00237B80_x00110160();
+        return -9;
+    }
+    arg->x414 = 0;
+    arg->x418 = 0;
+    if (req == 2) goto c2;
+    if (req < 3) { if (req == one) goto c1; goto dflt; }
+    if (req == 3) goto c3;
+    goto dflt;
+    c1: {
+        func_00234A60_x00110160(D_002C4A8C_x00110160);
+        for (i = 0; i < 32; i++) {
+            if (D_002C49F8_x00110160[i] != -1)
+                break;
+        }
+        if (i == 32)
+            *(int *)D_0044A648_x00110160 = 0;
+        else
+            *(int *)D_0044A648_x00110160 = 1;
+        func_00234A40_x00110160(D_002C4A8C_x00110160);
+        func_00237B80_x00110160();
+        return 0;
+    }
+    c2: {
+        *(int *)data = *(int *)((unsigned int)&D_0044B310_x00110160[D_002C4A78_x00110160] | 0x20000000);
+        func_00237B80_x00110160();
+        return 0;
+    }
+    c3: {
+        *(long *)data = *(long *)((unsigned int)&D_0044B310_x00110160[D_002C4A78_x00110160] | 0x20000000);
+        func_00237B80_x00110160();
+        return 0;
+    }
+    dflt:
+    arg->fd = io->fd;
+    arg->req = req;
+    if (data == 0) {
+        arg->size = 0;
+    } else {
+        arg->size = 0x400;
+        arg->data = *(IoctlData_x00110160 *)data;
+    }
+    sp.maxCount = 1;
+    sp.option = (unsigned int)D_002AAB28_x00110160;
+    sp.initCount = 0;
+    sema = func_00234A20_x00110160(&sp);
+    arg->sema = sema;
+    arg->res = &res;
+    arg->rsize = 4;
+    func_0023B170_x00110160(&D_0044A680_x00110160, 0x420);
+    if (func_002375E0_x00110160(D_0044BD80_x00110160, 5, 0, &D_0044A680_x00110160, 0x420, D_0044B2C0_x00110160, 4, 0, 0, 0) < 0) {
+        func_00234A30_x00110160(sema);
+        func_00237B80_x00110160();
+        return -11;
+    }
+    r = *(volatile int *)((unsigned int)D_0044B2C0_x00110160 | 0x20000000);
+    func_00237B80_x00110160();
+    if (r == 0) {
+        func_00234A30_x00110160(sema);
+        return -11;
+    }
+    func_00234A60_x00110160(sema);
+    func_00234A30_x00110160(sema);
+    return res;
+}
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_001104E8);
 INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", _sceCallCode);
 

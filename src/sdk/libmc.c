@@ -759,4 +759,38 @@ int func_0011B308_x0011B308(int port, int slot) {
     MC_STATUS_x0011B308 = 0x11;
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libmc", func_0011B3D8);
+typedef struct { char p[0x24]; int server; } RpcCD_x0011B3D8;
+typedef struct { int port; int slot; int flags; int size; int offset; char name[0x400]; } McSend_x0011B3D8;
+extern RpcCD_x0011B3D8 D_00450880_x0011B3D8 __asm__("D_00478FC0");
+extern McSend_x0011B3D8 D_00450930_x0011B3D8 __asm__("D_00479070");
+extern int D_00451E40_x0011B3D8[] __asm__("D_0047A580");
+extern int D_002C8354_x0011B3D8 __asm__("D_003EF94C");
+extern int D_002C8350_x0011B3D8 __asm__("D_003EF948");
+void func_00243ED8_x0011B3D8(void *) __asm__("func_00119F30");
+int func_00234A70_x0011B3D8(int) __asm__("PollSema");
+int func_00234A40_x0011B3D8(int) __asm__("SignalSema");
+char *func_00233638_x0011B3D8(char *, const char *, unsigned int) __asm__("func_00128040");
+int func_00237288_x0011B3D8(void *cd, int fno, unsigned int mode, void *send, int ssize, void *recv, int rsize, void *end, void *earg) __asm__("sceSifCallRpc");
+int func_0011B3D8_x0011B3D8(int port, int slot, const char *path) __asm__("func_0011B3D8");
+/* sceMcGetEntSpace: from https://github.com/Komasia/sly2-decomp (src/lib/sceMcGetEntSpace.c, no licence stated by the repository); ee-gcc 2.9-991111-01 -O2 -G0 */
+int func_0011B3D8_x0011B3D8(int port, int slot, const char *path)
+{
+    if (D_00450880_x0011B3D8.server == 0)
+        return -100;
+    if (func_00234A70_x0011B3D8(D_002C8354_x0011B3D8) < 0)
+        return -200;
+    if (path == 0 || path[0] == 0) {
+        func_00234A40_x0011B3D8(D_002C8354_x0011B3D8);
+        return -210;
+    }
+    D_00450930_x0011B3D8.port = port;
+    D_00450930_x0011B3D8.slot = slot;
+    func_00233638_x0011B3D8(D_00450930_x0011B3D8.name, path, 0x3FF);
+    D_00450930_x0011B3D8.name[0x3FF] = 0;
+    if (func_00237288_x0011B3D8(&D_00450880_x0011B3D8, 0x12, 1, &D_00450930_x0011B3D8, 0x414, D_00451E40_x0011B3D8, 4, func_00243ED8_x0011B3D8, 0) != 0) {
+        func_00234A40_x0011B3D8(D_002C8354_x0011B3D8);
+        return -91;
+    }
+    D_002C8350_x0011B3D8 = 0x12;
+    return 0;
+}
