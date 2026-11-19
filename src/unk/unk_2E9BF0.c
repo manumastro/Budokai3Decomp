@@ -69,31 +69,34 @@ extern void Save_Exit(void);
 extern void Option_Free(void);
 extern void amTask_Kill(Task *);
 
-/* The case tests come out as 4, 2, 1, 0, 3; the original tests 2, 1, 0, 4, 3 with the same bodies. */
-#if 0
 void func_002E9BF0(void) {
-    switch (func_002E0C70()) {
+    s32 temp_v0;
+
+    temp_v0 = func_002E0C70();
+    switch (temp_v0) {
     case 3:
         return;
+    case 4:
+        goto lbl_case4;
     case 0:
         Option_Load();
-        break;
+        return;
     case 1:
     case 2:
-        if (func_002E0D10() == 1) {
-            ChangeProgress_Start();
+        if (func_002E0D10() != 1) {
+            goto lbl_end;
         }
-        break;
+        ChangeProgress_Start();
+        return;
     default:
         return;
-    case 4:
-        Scene_MarkDone();
-        D_00470950->func = NULL;
-        break;
     }
+lbl_case4:
+    Scene_MarkDone();
+    D_00470950->func = NULL;
+lbl_end:
+    ;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E9BF0", func_002E9BF0);
 
 void func_002E9BF0(void);
 
