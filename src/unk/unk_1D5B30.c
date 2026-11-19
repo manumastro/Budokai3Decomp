@@ -1753,19 +1753,20 @@ s32 func_001DBFC0(u8 *arg0) {
     return 1;
 }
 
-#if 0
+// differs: the table base is kept in a1 and the struct pointer in v1 in the original (register order of the two reads differs)
 s32 func_001DC080(Fighter *c) {
     Fighter *p;
-    char *e;
     char *base;
     s16 *q;
     f32 f;
     s32 i;
+    s32 r;
+    char *a;
 
     p = c->f1354;
     base = (char *)p + 0x1360;
-    e = base + p->f175C * 16;
-    q = *(s16 **)(e + 0x204);
+    base = (char *)(((u32)p->f175C << 4) + (u32)base);
+    q = *(s16 **)(base + 0x204);
     if (q[1] != 5) {
         return 0;
     }
@@ -1780,16 +1781,14 @@ s32 func_001DC080(Fighter *c) {
         f = c->f1788;
         break;
     }
-    for (i = 0; i < 3; i++) {
-        if (f > *(f32 *)((char *)c + 0x1780 + i * 4)) {
+    for (i = 0, a = (char *)c; i < 3; i++, a += 4) {
+        r = f > *(f32 *)(a + 0x1780);
+        if ((r ^ 1) == 0) {
             return 0;
         }
     }
     return f < 10.0f;
 }
-#endif
-// differs: the table base is kept in a1 and the struct pointer in v1 in the original (register order of the two reads differs)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DC080);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DC150);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DC3E0);
 void func_001DCB60(Fighter *c) {
