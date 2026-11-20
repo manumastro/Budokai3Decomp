@@ -11754,7 +11754,22 @@ void func_001842C0_x001842C0(u8 *arg0, unsigned int arg1)
     func_001996F0_x001842C0(new_var2, 0x25, arg1);
   }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetNumSkipEmptyB);
+typedef struct { int w[4]; int numSkipEmptyB; int rest[11]; } SfdPlyInf_42F8_x001842F8;
+int func_00183B38_x001842F8(void *ply) __asm__("func_00183B38");
+void func_001870E8_x001842F8(const char *fmt, ...) __asm__("func_001870E8");
+void func_00183A00_x001842F8(void *ply, SfdPlyInf_42F8_x001842F8 *inf) __asm__("func_00183A00");
+extern char D_00466608_x001842F8[] __asm__("D_00466608");
+int mwPlyGetNumSkipEmptyB_x001842F8(void *ply) __asm__("mwPlyGetNumSkipEmptyB");
+int mwPlyGetNumSkipEmptyB_x001842F8(void *ply) {
+    SfdPlyInf_42F8_x001842F8 inf;
+
+    if (func_00183B38_x001842F8(ply) == 0) {
+        func_001870E8_x001842F8(D_00466608_x001842F8);
+        return 0;
+    }
+    func_00183A00_x001842F8(ply, &inf);
+    return inf.numSkipEmptyB;
+}
 s32 func_00183B38_x00184350() __asm__("func_00183B38");
 s32 func_001870E8_x00184350(s32 *) __asm__("func_001870E8");
 s32 func_001996F0_x00184350(s32, s32, s32) __asm__("func_001996F0");
@@ -18322,6 +18337,11 @@ extern int m029011;
 extern int m029012;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mpad_45f01_00000000000000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m42f810;
+extern int m42f811;
+extern int b3mpad_42f81_00000000000000000;
+extern int b3mpad_42f81_00000000000000001;
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo) __asm__("MWSST_Create");
 /* MWSST_Create_x00186B38____: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfsst.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo)

@@ -6669,7 +6669,76 @@ void func_0018B0B8(s32 arg0, s32 arg1, s32 arg2) {
         *(s32 *)((u8 *)temp_a0 + 0x24) = (s32) (temp_v0 + arg2);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018B0F0);
+typedef struct SfdBufSup_B0F0_x0018B0F0 { char *data; void *sj; char *buf; int size; int xsize; char *p0; } SfdBufSup_B0F0_x0018B0F0;
+typedef struct SfdBufCur_B0F0_x0018B0F0 { char *pos; int len; } SfdBufCur_B0F0_x0018B0F0;
+typedef struct SfdBufAring_B0F0_x0018B0F0 { SfdBufSup_B0F0_x0018B0F0 sup; SfdBufCur_B0F0_x0018B0F0 ch1; int wpos; int rpos; int wtot; int rtot; } SfdBufAring_B0F0_x0018B0F0;
+typedef struct SfdBufEnt_B0F0_x0018B0F0 { int mode; int used; int prepFlg; int termFlg; SfdBufAring_B0F0_x0018B0F0 aring; unsigned char rest[0x74 - 0x40]; } SfdBufEnt_B0F0_x0018B0F0;
+typedef struct SfdPly_B0F0_x0018B0F0 { unsigned char pad[0x1280]; SfdBufEnt_B0F0_x0018B0F0 buf[8]; } SfdPly_B0F0_x0018B0F0;
+typedef struct SfdBufAringInf_B0F0_x0018B0F0 { char *buf; int size; int xsize; int len[2]; char *ptr[2][2]; int wtot; int rtot; } SfdBufAringInf_B0F0_x0018B0F0;
+int func_0018D650_x0018B0F0(void *h, int code) __asm__("func_0018D650");
+void func_0018D908_x0018B0F0(int *lock) __asm__("func_0018D908");
+void func_0018D920_x0018B0F0(int *lock) __asm__("func_0018D920");
+int func_0018B0F0_x0018B0F0(SfdPly_B0F0_x0018B0F0 *h, int index, SfdBufAringInf_B0F0_x0018B0F0 *ar) __asm__("func_0018B0F0");
+int func_0018B0F0_x0018B0F0(SfdPly_B0F0_x0018B0F0 *h, int index, SfdBufAringInf_B0F0_x0018B0F0 *ar) {
+    SfdBufEnt_B0F0_x0018B0F0 *ents = h->buf;
+    SfdBufEnt_B0F0_x0018B0F0 *ent = &ents[index];
+    SfdBufAring_B0F0_x0018B0F0 *body;
+    int lock;
+    char *buf;
+    char *ch0;
+    char *ch1;
+    int size;
+    int xsize;
+    int len;
+    int wpos;
+    int rpos;
+    int wtot;
+    int rtot;
+    if (ent->used == 0) {
+        return func_0018D650_x0018B0F0(h, 0xFF000401);
+    }
+    body = &ent->aring;
+    func_0018D908_x0018B0F0(&lock);
+    buf = body->sup.buf;
+    size = body->sup.size;
+    xsize = body->sup.xsize;
+    ch0 = body->sup.p0;
+    ch1 = body->ch1.pos;
+    len = body->ch1.len;
+    wpos = body->wpos;
+    rpos = body->rpos;
+    wtot = body->wtot;
+    rtot = body->rtot;
+    func_0018D920_x0018B0F0(&lock);
+    ar->buf = buf;
+    ar->size = size;
+    ar->xsize = xsize;
+    ar->wtot = wtot;
+    ar->rtot = rtot;
+    if (wtot >= rtot + len) {
+        ar->len[0] = 0;
+        ar->ptr[0][0] = 0;
+        ar->ptr[0][1] = 0;
+        ar->len[1] = 0;
+        ar->ptr[1][0] = 0;
+        ar->ptr[1][1] = 0;
+    } else if (wpos < rpos) {
+        ar->len[0] = rpos - wpos;
+        ar->ptr[0][0] = (size < 9) ? ch0 + wpos : ch0 + wpos * 2;
+        ar->ptr[0][1] = (size < 9) ? ch1 + wpos : ch1 + wpos * 2;
+        ar->len[1] = 0;
+        ar->ptr[1][0] = 0;
+        ar->ptr[1][1] = 0;
+    } else {
+        ar->len[0] = len - wpos;
+        ar->ptr[0][0] = (size < 9) ? ch0 + wpos : ch0 + wpos * 2;
+        ar->ptr[0][1] = (size < 9) ? ch1 + wpos : ch1 + wpos * 2;
+        ar->len[1] = rpos;
+        ar->ptr[1][0] = ch0;
+        ar->ptr[1][1] = ch1;
+    }
+    return 0;
+}
 typedef struct { s32 kind; s32 f4; u8 pad[0x8]; s32 s[0x19]; } SfdEnt74_x0018B298;
 s32 func_0018D650_x0018B298(u8 *, s32) __asm__("func_0018D650");
 void func_0018D908_x0018B298(void *) __asm__("func_0018D908");
@@ -15107,7 +15176,24 @@ void func_0018D798_x0018D798(u8 *arg0, s32 arg1, s32 arg2)
   *((s32 *) new_var) = arg1;
   *((s32 *) (((u8 *) arg0) + 4)) = arg2;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018D7A8);
+typedef struct SfdErrInf_D7A8_x0018D7A8 { void *func; void *obj; int code; int errcnt; int rcvcnt; } SfdErrInf_D7A8_x0018D7A8;
+typedef struct SfdLib_D7A8_x0018D7A8 { unsigned char pad[0x19C]; SfdErrInf_D7A8_x0018D7A8 err; } SfdLib_D7A8_x0018D7A8;
+typedef struct SfdPly_D7A8_x0018D7A8 { unsigned char pad[0x98C]; SfdErrInf_D7A8_x0018D7A8 err; } SfdPly_D7A8_x0018D7A8;
+extern SfdLib_D7A8_x0018D7A8 D_004268E0_x0018D7A8 __asm__("D_004268E0");
+int func_0018D870_x0018D7A8(void *sfd) __asm__("func_0018D870");
+int func_0018D650_x0018D7A8(void *h, int code) __asm__("func_0018D650");
+int func_0018D7A8_x0018D7A8(SfdPly_D7A8_x0018D7A8 *hn, SfdErrInf_D7A8_x0018D7A8 *out) __asm__("func_0018D7A8");
+int func_0018D7A8_x0018D7A8(SfdPly_D7A8_x0018D7A8 *hn, SfdErrInf_D7A8_x0018D7A8 *out) {
+    if (hn == 0) {
+        *out = D_004268E0_x0018D7A8.err;
+    } else {
+        if (func_0018D870_x0018D7A8(hn) != 0) {
+            return func_0018D650_x0018D7A8(0, 0xFF000102);
+        }
+        *out = hn->err;
+    }
+    return 0;
+}
 extern void *D_004268D8_x0018D870 __asm__("D_004268D8");
 s32 func_0018D870_x0018D870(u8 *arg0) __asm__("func_0018D870");
 s32 func_0018D870_x0018D870(u8 *arg0)
@@ -23639,7 +23725,49 @@ s32 func_0018FC18_x0018FC18(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4)
 }
 /* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
 extern int b3p32_063f06_0_x __asm__("b3cse_asmpad_063f06_0_xx");
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018FCC0);
+typedef struct SfdSlot_FCC0_x0018FCC0 { void *data; int len; } SfdSlot_FCC0_x0018FCC0;
+typedef struct SfdPool_FCC0_x0018FCC0 { char *base; int count; int size; SfdSlot_FCC0_x0018FCC0 slot[18]; } SfdPool_FCC0_x0018FCC0;
+typedef struct SfdMpv_FCC0_x0018FCC0 { unsigned char pad[0xF2C]; SfdPool_FCC0_x0018FCC0 pool; } SfdMpv_FCC0_x0018FCC0;
+typedef struct SfdPly_FCC0_x0018FCC0 { unsigned char pad0[0x2C]; int nfrm; unsigned char pad1[0x1C70 - 0x30]; SfdMpv_FCC0_x0018FCC0 *mpv; } SfdPly_FCC0_x0018FCC0;
+int func_0018D870_x0018FCC0(SfdPly_FCC0_x0018FCC0 *player, char *base, int count, int size) __asm__("func_0018D870");
+int func_0018D650_x0018FCC0(void *hn, int code) __asm__("func_0018D650");
+void func_00193EA0_x0018FCC0(SfdPool_FCC0_x0018FCC0 *pool) __asm__("func_00193EA0");
+int func_0018FCC0_x0018FCC0(SfdPly_FCC0_x0018FCC0 *player, char *base, int count, int size) __asm__("func_0018FCC0");
+int func_0018FCC0_x0018FCC0(SfdPly_FCC0_x0018FCC0 *player, char *base, int count, int size) {
+    SfdMpv_FCC0_x0018FCC0 *mpv;
+    SfdPool_FCC0_x0018FCC0 *pool;
+    int i;
+
+    if (func_0018D870_x0018FCC0(player, base, count, size) != 0) {
+        return func_0018D650_x0018FCC0(0, 0xFF000185);
+    }
+    mpv = player->mpv;
+    pool = &mpv->pool;
+    if (base == 0 || count == 0 || size == 0) {
+        func_00193EA0_x0018FCC0(pool);
+        return 0;
+    }
+    if (count < player->nfrm + 4) {
+        return func_0018D650_x0018FCC0(player, 0xFF000F1D);
+    }
+    pool->base = base;
+    i = 0;
+    pool->slot[0].data = base;
+    base += size;
+    pool->count = count;
+    count -= 2;
+    pool->slot[1].data = base;
+    base += size;
+    pool->size = size;
+    pool->slot[0].len = 0;
+    pool->slot[1].len = 0;
+    for (; i < (count < 17 ? count : 16); i++) {
+        pool->slot[i + 2].len = 0;
+        pool->slot[i + 2].data = base;
+        base += size;
+    }
+    return 0;
+}
 s32 func_0017E368_x0018FE00(s32, s32 *) __asm__("func_0017E368");
 s32 func_0018D650_x0018FE00(s32, s32) __asm__("func_0018D650");
 s32 func_0018FEE0_x0018FE00() __asm__("func_0018FEE0");
@@ -28190,6 +28318,11 @@ extern int b3ma8901_000001;
 extern int mab7020;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int mf5d010;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3md7a81_000000;
+extern int b3md7a81_000001;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mfcc01_000000;
 typedef struct { int rate; int drop; int hour; int minute; int second; int frame; int pad18; short pad1c; short field; } SfdTC_x00191D38;
 extern int D_00467730_x00191D38[] __asm__("D_00467730");
 extern int D_004674D8_x00191D38[] __asm__("D_004674D8");
@@ -28267,6 +28400,8 @@ extern int mab7030;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int mf5d020;
 extern int b3mf5d02_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int mfcc020;
 typedef struct SfdTimeCode_x00191F48 { int rate; int drop; int hour; int minute; int second; int frame; int add; short repeat; short field; } SfdTimeCode_x00191F48;
 extern int D_004674D8_x00191F48[] __asm__("D_004674D8");
 void func_00191F48_x00191F48(SfdTimeCode_x00191F48 *src, SfdTimeCode_x00191F48 *dst) __asm__("func_00191F48");
@@ -28306,6 +28441,8 @@ void func_00191F48_x00191F48(SfdTimeCode_x00191F48 *src, SfdTimeCode_x00191F48 *
 }
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mpad_1f481_00000000000000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int md7a820;
 typedef struct { s32 w[8]; } B32_x00192040;
 void func_0019AE10_x00192040(void *, s32 *, s32 *) __asm__("func_0019AE10");
 void func_00192040_x00192040(u8 *a0) __asm__("func_00192040");
@@ -28647,6 +28784,8 @@ extern int m1f4820;
 extern int m1d3810;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int mf5d030;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int mb0f010;
 typedef struct { s32 w[12]; } Ck_2DE0_x00192DE0;
 s32 func_00193060_x00192DE0(u8 *, u8 *, Ck_2DE0_x00192DE0 *, u8 **) __asm__("func_00193060");
 void func_00193828_x00192DE0(s32, u8 *) __asm__("func_00193828");
@@ -28878,6 +29017,11 @@ extern int b3m06102_000001;
 extern int m013840;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3ma8903_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int mb0f020;
+extern int b3mb0f02_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mfcc03_000000;
 typedef struct SfdSj_x001936B0 SfdSj_x001936B0;
 typedef struct SfdSjChunk_x001936B0 {
     char *data;
