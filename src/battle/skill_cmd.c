@@ -1933,47 +1933,50 @@ void func_002528E0(s32 a0, s32 a1) {
         break;
     }
 }
-// GIVEN UP: the -1 test of the first store and the loop head are scheduled in other registers (3 forms tried)
-#if 0
-static inline s32 SkillEntry_Match(u8 *e, s32 v) {
-    if (*(s16 *)(e + 0x16) != 0) {
-        return *(s16 *)(e + 0x16) == v;
-    }
-    if (v < *(s16 *)(e + 0xDC)) {
-        return 0;
-    }
-    if (*(s16 *)(e + 0xDE) < v) {
-        return 0;
-    }
-    return 1;
-}
+typedef struct SkillTableGroup {
+    u8 *entries[2];
+    s32 count[2];
+} SkillTableGroup;
 
 s32 func_002529B0(s32 a0, u8 *a1, s32 a2) {
     s32 side;
     u8 *p;
-    s32 i;
-    s32 off;
     s32 s0;
-    s32 v;
+    s32 s2;
+    s32 s1;
     u8 *e;
+    s16 v0;
 
     side = *(s32 *)(a1 + 0x1350);
-    p = (u8 *)D_0046FE4C + side * 0x480;
-    if (*(s32 *)(p + 0x24) == -1) {
-        *(s32 *)(p + 0x24) = *(s32 *)(a1 + 0xB70);
+    p = (u8 *)D_0046FE4C + side * 0x480 + 0x10;
+    if (*(s32 *)(p + 0x14) == -1) {
+        *(s32 *)(p + 0x14) = *(s32 *)(a1 + 0xB70);
     }
     s0 = side << 2;
-    for (i = 0, off = 0; i < *(s32 *)((u8 *)D_0046FE54 + s0 + 8); i++, off += 0xF0) {
-        e = *(u8 **)((u8 *)D_0046FE54 + s0) + off;
-        v = *(s32 *)(a1 + 0xBA4);
-        if (SkillEntry_Match(e, v) && *(s16 *)(e + 0x12) == a0 && *(s16 *)(e + 0x10) != 0xB) {
-            func_002525A0(a1, e, a2);
-        }
+    s2 = 0;
+    if (0 < *(s32 *)(s0 + (s32)D_0046FE54 + 8)) {
+        s1 = 0;
+        do {
+            e = ((SkillTableGroup *)D_0046FE54)->entries[side];
+            e = e + s1;
+            v0 = *(s16 *)(e + 0x16);
+            if (v0 != 0) {
+                if (((s64)v0 << 48 >> 48) != *(s32 *)(a1 + 0xBA4)) {
+                    goto next;
+                }
+            } else if (*(s16 *)(e + 0xDC) > *(s32 *)(a1 + 0xBA4) || *(s16 *)(e + 0xDE) < *(s32 *)(a1 + 0xBA4)) {
+                goto next;
+            }
+            if (a0 == *(s16 *)(e + 0x12) && *(s16 *)(e + 0x10) != 0xB) {
+                func_002525A0(a1, e, a2);
+            }
+        next:
+            s2++;
+            s1 += 0xF0;
+        } while (s2 < ((SkillTableGroup *)D_0046FE54)->count[side]);
     }
     return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002529B0);
 void func_00252B00(void) {
     memset(D_0046FE54, 0, 0x68);
 }
