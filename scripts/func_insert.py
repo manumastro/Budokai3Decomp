@@ -513,6 +513,14 @@ def apply(items, jobs=12, log=None, dry=False, real=False):
                 new = pat.sub(lambda _: rep, text, count=1)  # a function replacement is taken literally
                 path.write_text(new)
                 good, msg = check(rel, it["name"])
+                if not good and real and re.fullmatch(r"\d+ differ, size (0x[0-9a-f]+)/\1", msg):
+                    # check() compiles without the INCLUDE_ASM blocks, which moves the symbol names in memory that
+                    # ee-gcc 2.96's CSE keys on: a function can differ there and still match in the file as the
+                    # build compiles it (func_001849A8): the build's compile decides (the whole build CHECK
+                    # still runs after the insert)
+                    import lib_filecheck
+                    if not lib_filecheck.check(rel):
+                        good, msg = True, "OK (build-mode compile)"
                 if good and real:
                     # the build compiles the file with its INCLUDE_ASM blocks in: gcc can then compile another
                     # function of the file differently (scripts/lib_filecheck.py)
