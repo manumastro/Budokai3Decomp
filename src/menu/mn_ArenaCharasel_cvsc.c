@@ -73,9 +73,103 @@ void func_00309E40(u8 *a0) {
         func_002D1C50();
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_00309FA0);
+extern s16 ArenaList_GetF0(void *);
+extern void Help_TaskKill(void *);
+extern s32 func_0027E2D0();
+extern s8 func_0027DAB0(void *);
+extern void func_0027E120(void *);
+extern void *ArenaRegCharList_Start(s32, s32, s32);
+extern u8 D_005C4128[];
+extern u8 D_005C412C[];
+extern s16 D_005C4124[];
+extern void func_0030A120();
+
+void func_00309FA0(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x30);
+    void *p[1] = {0};
+    s32 i;
+    s32 m;
+    void *q;
+
+    p[0] = *(void **)(s + 0x1C);
+    D_00470704 = m = *(s32 *)(s + 0x4);
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x2000);
+    D_00470238 = 0;
+    for (i = 0; i < 1; i++) {
+        q = p[i];
+        if (q != 0) {
+            func_0022C060(q, 1.0f);
+            func_0022CD00(q);
+        }
+    }
+    if (*(u8 *)(s + 0x1A) != 0) {
+        if (ArenaList_GetF0(*(void **)(s + 0x14)) != 7) {
+            return;
+        }
+        Help_TaskKill(*(void **)(s + 0x14));
+        *(void **)(s + 0x14) = 0;
+        *(s32 *)(s + 0xC) = func_0027E2D0(5, 7, 0, -1, D_005C4128[0], D_005C412C[0], 0, 3);
+        *(u8 *)(s + 0x1A) = 0;
+    } else {
+        if (func_0027DAB0(*(void **)(s + 0xC)) < 7) {
+            return;
+        }
+        func_0027E120(*(void **)(s + 0xC));
+        *(void **)(s + 0xC) = 0;
+        *(void **)(s + 0x14) = ArenaRegCharList_Start(5, 1, 0xFF);
+        *(u8 *)(s + 0x1A) = 1;
+    }
+    D_005C4124[0] = *(u8 *)(s + 0x1A);
+    *(void **)(a0 + 0x1C) = ((void *)func_0030A120 == 0) ? 0 : (void *)func_0030A120;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A120);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A3C0);
+extern u8 D_005C4126[];
+extern u8 D_005C412A[];
+extern s16 D_005C4122[];
+extern void func_0030A5E0();
+
+void func_0030A3C0(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x30);
+    void *p[1] = {0};
+    s32 i;
+    s32 m;
+    void *q;
+
+    p[0] = *(void **)(s + 0x1C);
+    D_00470704 = m = *(s32 *)(s + 0x4);
+    D_0047070C = 0x2000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x2000);
+    D_00470238 = 0;
+    for (i = 0; i < 1; i++) {
+        q = p[i];
+        if (q != 0) {
+            func_0022C060(q, 1.0f);
+            func_0022CD00(q);
+        }
+    }
+    if (*(u8 *)(s + 0x19) != 0) {
+        if (ArenaList_GetF0(*(void **)(s + 0x10)) != 7) {
+            return;
+        }
+        Help_TaskKill(*(void **)(s + 0x10));
+        *(void **)(s + 0x10) = 0;
+        *(s32 *)(s + 0x8) = func_0027E2D0(5, 6, 0, -1, D_005C4126[0], D_005C412A[0], 0, 3);
+        *(u8 *)(s + 0x19) = 0;
+    } else {
+        if (func_0027DAB0(*(void **)(s + 0x8)) < 7) {
+            return;
+        }
+        func_0027E120(*(void **)(s + 0x8));
+        *(void **)(s + 0x8) = 0;
+        *(void **)(s + 0x10) = ArenaRegCharList_Start(5, 0, 0xFF);
+        *(u8 *)(s + 0x19) = 1;
+    }
+    D_005C4122[0] = *(u8 *)(s + 0x19);
+    *(void **)(a0 + 0x1C) = ((void *)func_0030A5E0 == 0) ? 0 : (void *)func_0030A5E0;
+}
 void func_0030A540(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x30);
     void *p[1] = {0};
