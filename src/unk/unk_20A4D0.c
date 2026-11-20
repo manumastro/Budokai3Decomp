@@ -2121,7 +2121,26 @@ void func_0020F4D0(u8 *a) {
 }
 // differs: the table lookup after the store of 0x10000 and the 1.0 constants: the original keeps the index in a0 and orders the low half after it; the two orders did not match
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F4D0);
+void func_0020F4D0(u8 *a) {
+    s32 t = *(s16 *)(a + 0x90) * 133;
+    u8 *v = *(u8 **)(a + 0x6C);
+    u8 *s0;
+    f32 one = 1.0f;
+    f32 m;
+    u32 k;
+
+    s0 = D_00568C90 + (t << 6);
+    *(s32 *)(s0 + 0x90) = func_0020B020(*(u8 **)(v + 0x1350), *(s16 *)(a + 0x9C), *(s16 *)(a + 0xA8));
+    amMotSet_Init(s0 + 0xA0, *(s32 *)(s0 + 0x94));
+    amMotSet_Bind(s0 + 0xA0, 0, *(s32 *)(s0 + 0x90));
+    *(s32 *)(s0 + 0x2114) = 0x10000;
+    *(s32 *)(s0 + 0x2110) = 0x3F800000;
+    m = -one;
+    *(f32 *)(s0 + 0x2104) = m;
+    *(f32 *)(s0 + 0x2108) = m;
+    k = *(s32 *)(s0 + 0x2114);
+    *(f32 *)(s0 + 0x210C) = (f32)*(s32 *)((k & 0xFFFF) * 0x10 + *(s32 *)(*(u8 **)((u8 *)((((s32)k >> 0x10) - 1) * 4) + (s32)s0 + 0xA4) + 0x14) + 8);
+}
 extern u8 D_00568C90[];
 s32 func_0020B020(u8 *, s32, s32);
 s32 amMotion_CreateFr(void *, s32, s32);
