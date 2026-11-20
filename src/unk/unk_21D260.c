@@ -634,7 +634,98 @@ void func_00224480(char *p) {
         break;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00224680);
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3(s32, s32, s32, s32);
+extern f32 D_004E0614[];
+extern s32 D_0058BB3C[];
+extern s32 func_0021C360(s32);
+extern u8 *func_0021C3E0(s32);
+extern u8 D_00492FC0[];
+
+void func_00224680(void *arg) {
+    Work21D260 *bs = gBtlSys;
+    Sub4_21D260 *s = (Sub4_21D260 *)arg;
+    s32 slot;
+    s32 found;
+    s32 i;
+    u8 *p;
+    s16 a2;
+
+    if (*(s16 *)((char *)bs + 0xE46) != 0) {
+        bs->fE30 &= ~2;
+        return;
+    }
+    memset(D_0058BB30, 0, 8);
+    slot = *(s16 *)((char *)bs + 0xE40);
+    if (slot != -1) {
+        if (*(s32 *)(D_00492FC0 + slot * 184) == 3) {
+            if (!(bs->fE30 & 2)) {
+                return;
+            }
+            if (s->f28 == 2) {
+                return;
+            }
+            s->f28 = 2;
+            s->f2C = 0.0f;
+            SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+            if (D_004E0614[0] <= 0.0f) {
+                return;
+            }
+            SoundRpc_Send3(0, 0, 0x16, 0);
+            return;
+        }
+        if (!(bs->fE30 & 2)) {
+            s->f28 = 0;
+            s->f2C = 0.0f;
+            SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+            if (!(D_004E0614[0] <= 0.0f)) {
+                SoundRpc_Send3(0, 0, 0x15, 0);
+            }
+        }
+        D_0058BB3C[0] = func_0021C360(*(s16 *)((char *)bs + 0xE42));
+        D_0058BB38[0] = 1;
+        bs->fE30 |= 2;
+        return;
+    }
+
+    found = 0;
+    for (i = 0; i < *(s32 *)((char *)gBattle + 0x88D8); i++) {
+        p = func_0021C3E0(i);
+        a2 = *(s16 *)(p + 0x1A);
+        if (a2 != -1 && *(s32 *)(D_00492FC0 + a2 * 184) != 3) {
+            if (!found) {
+                D_0058BB3C[0] = i;
+            }
+            found = 1;
+        }
+    }
+    if (!found) {
+        if (!(bs->fE30 & 2)) {
+            return;
+        }
+        if (s->f28 == 2) {
+            return;
+        }
+        s->f28 = 2;
+        s->f2C = 0.0f;
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] <= 0.0f) {
+            return;
+        }
+        SoundRpc_Send3(0, 0, 0x16, 0);
+        return;
+    }
+    if (!(bs->fE30 & 2)) {
+        s->f28 = 0;
+        s->f2C = 0.0f;
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (!(D_004E0614[0] <= 0.0f)) {
+            SoundRpc_Send3(0, 0, 0x15, 0);
+        }
+    }
+    D_0058BB38[0] = 1;
+    bs->fE30 |= 2;
+}
 extern u8 *func_0021C3E0(s32);
 extern u8 D_00492FC0[];
 extern u8 D_00492FD2[];
