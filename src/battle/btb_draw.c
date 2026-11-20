@@ -6367,8 +6367,119 @@ void func_001F4AD0(s32 p0, char *p1, s32 p2, s32 flags) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4C20);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F4E70);
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5040);
+typedef struct { u8 b[16]; } __attribute__((aligned(16))) BtbV16;
+extern BtbV16 D_0044B5B0;
+extern BtbV16 D_0044B5C0;
+extern char D_00469818[];
+extern void func_00146F30(void *);
+extern void func_00209950(char *, void *, s32);
+void func_001F4E70(s32 p0, char *p1, s32 p2, s32 flags) {
+    s32 a1;
+    BtbV16 va;
+    BtbV16 vb;
+    char *s4;
+    BtbV16 tmp;
+    char *q;
+    BtbRecC *rb;
+    s32 s3;
+    s32 s2;
+    char *ptr;
+    char *s1;
+    char *s0;
+    BtbV16 m;
+    s2 = (s32)D_0051CD0C[0];
+    s4 = p1;
+    s0 = (char *)p2;
+    s3 = flags;
+    a1 = 8;
+    if (flags & 4) {
+        a1 += 0x100;
+    }
+    a1 += D_0051CD20[0] << 7;
+    s1 = NULL;
+    ptr = func_001A50F0((char *)s2, a1);
+    if (ptr != NULL) {
+        s1 = func_00209540(ptr, 0x2000001, 0);
+    }
+    if (s1 != NULL) {
+        func_00209B50(s1, s4, 0);
+        va = D_0044B5B0;
+        vb = D_0044B5C0;
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(s0), "r"(&tmp) : "memory");
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; vsub.xyz $vf1, $vf0, $vf1 ; sqc2 $vf1, 0(%0)" : : "r"(&tmp) : "memory");
+        *(f32 *)&tmp.b[4] = 0.0f;
+        func_00146F30(&tmp);
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(&tmp), "r"(&va) : "memory");
+        func_00146F30(&tmp);
+        __asm__ volatile("sqc2 $vf0, 0(%0)" : : "r"(&m) : "memory");
+        func_00141C30(&m, &vb, &tmp);
+        func_00209950(s1, &m, 0);
+        s0 = (char *)func_001F5FD0(0x85000000, D_00469818, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) & -0x801;
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) | 0x800;
+        memset(s0 + 0x30, 0, 0x80);
+        *(s32 *)(s0 + 0x38) = (s32)s1;
+        rb = (BtbRecC *)(s0 + 0x30);
+        q = func_001A50F0((char *)s2, 0x280);
+        rb->f4 = q;
+        rb->f0 = s3 & 2;
+    }
+}
+extern BtbV16 D_0044B590;
+extern BtbV16 D_0044B5A0;
+extern char D_00469828[];
+void func_001F5040(s32 p0, char *p1, s32 p2, s32 flags) {
+    s32 a1;
+    BtbV16 va;
+    BtbV16 vb;
+    char *s4;
+    BtbV16 tmp;
+    char *q;
+    BtbRecC *rb;
+    s32 s3;
+    s32 s2;
+    char *ptr;
+    char *s1;
+    char *s0;
+    BtbV16 m;
+    s2 = (s32)D_0051CD0C[0];
+    s4 = p1;
+    s0 = (char *)p2;
+    s3 = flags;
+    a1 = 5;
+    if (flags & 4) {
+        a1 += 0x100;
+    }
+    a1 += D_0051CD20[0] << 7;
+    s1 = NULL;
+    ptr = func_001A50F0((char *)s2, a1);
+    if (ptr != NULL) {
+        s1 = func_00209540(ptr, 0x2000001, 0);
+    }
+    if (s1 != NULL) {
+        func_00209B50(s1, s4, 0);
+        va = D_0044B590;
+        vb = D_0044B5A0;
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(s0), "r"(&tmp) : "memory");
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; vsub.xyz $vf1, $vf0, $vf1 ; sqc2 $vf1, 0(%0)" : : "r"(&tmp) : "memory");
+        *(f32 *)&tmp.b[4] = 0.0f;
+        func_00146F30(&tmp);
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(&tmp), "r"(&va) : "memory");
+        func_00146F30(&tmp);
+        __asm__ volatile("sqc2 $vf0, 0(%0)" : : "r"(&m) : "memory");
+        func_00141C30(&m, &vb, &tmp);
+        func_00209950(s1, &m, 0);
+        s0 = (char *)func_001F5FD0(0x85000000, D_00469828, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) & -0x801;
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) | 0x800;
+        memset(s0 + 0x30, 0, 0x80);
+        *(s32 *)(s0 + 0x38) = (s32)s1;
+        rb = (BtbRecC *)(s0 + 0x30);
+        q = func_001A50F0((char *)s2, 0x280);
+        rb->f4 = q;
+        rb->f0 = s3 & 2;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5210);
 
 
@@ -6430,7 +6541,60 @@ void func_001F5540(s32 p0, char *p1, s32 p2, s32 flags) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F5660);
+extern BtbV16 D_0044B550;
+extern BtbV16 D_0044B560;
+void func_001F5660(s32 p0, char *p1, s32 p2, s32 flags) {
+    s32 a1;
+    BtbV16 va;
+    BtbV16 vb;
+    char *s4;
+    BtbV16 tmp;
+    char *q;
+    BtbRecC *rb;
+    s32 s3;
+    s32 s2;
+    char *ptr;
+    char *s1;
+    char *s0;
+    BtbV16 m;
+    s2 = (s32)D_0051CD0C[0];
+    s4 = p1;
+    s0 = (char *)p2;
+    s3 = flags;
+    a1 = 2;
+    if (flags & 4) {
+        a1 += 0x100;
+    }
+    a1 += D_0051CD20[0] << 7;
+    s1 = NULL;
+    ptr = func_001A50F0((char *)s2, a1);
+    if (ptr != NULL) {
+        s1 = func_00209540(ptr, 0x2000001, 0);
+    }
+    if (s1 != NULL) {
+        func_00209B50(s1, s4, 0);
+        va = D_0044B550;
+        vb = D_0044B560;
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(s0), "r"(&tmp) : "memory");
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; vsub.xyz $vf1, $vf0, $vf1 ; sqc2 $vf1, 0(%0)" : : "r"(&tmp) : "memory");
+        *(f32 *)&tmp.b[4] = 0.0f;
+        func_00146F30(&tmp);
+        __asm__ volatile("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(&tmp), "r"(&va) : "memory");
+        func_00146F30(&tmp);
+        __asm__ volatile("sqc2 $vf0, 0(%0)" : : "r"(&m) : "memory");
+        func_00141C30(&m, &vb, &tmp);
+        func_00209950(s1, &m, 0);
+        s0 = (char *)func_001F5FD0(0x85000000, D_00469818, 0, (void *)func_001F2150, (void *)BtbObj_ReleaseSub38);
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) & -0x801;
+        *(s32 *)(s0 + 0x20) = *(s32 *)(s0 + 0x20) | 0x800;
+        memset(s0 + 0x30, 0, 0x80);
+        *(s32 *)(s0 + 0x38) = (s32)s1;
+        rb = (BtbRecC *)(s0 + 0x30);
+        q = func_001A50F0((char *)s2, 0x280);
+        rb->f4 = q;
+        rb->f0 = s3 & 2;
+    }
+}
 extern char *func_001A50F0(char *, s32);
 extern char *func_00209540(char *, s32, s32);
 extern void func_00209B50(char *, char *, s32);
