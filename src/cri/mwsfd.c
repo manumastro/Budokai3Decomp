@@ -4223,7 +4223,67 @@ s32 func_00180EB8_x00180EB8(u8 *arg0) __asm__("func_00180EB8");
 s32 func_00180EB8_x00180EB8(u8 *arg0) {
     return *(s32 *)((u8 *)arg0 + 0x58);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", mwPlyGetCurFrm);
+typedef struct MwsfdFrm_0EC0_x00180EC0 { void *bufadr; unsigned char p4[0x28]; int concat_cnt; unsigned char p30[0x18]; int frmType; } MwsfdFrm_0EC0_x00180EC0;
+typedef struct MwsfdPly_0EC0_x00180EC0 { unsigned char p0[0x1C]; int skipMax; unsigned char p1[0x58 - 0x20]; int frmSync; unsigned char p2[0x7C - 0x5C]; void *curFrm; int limit; unsigned char p3[0x88 - 0x84]; int numSkipDisp; unsigned char p4[0xBC - 0x8C]; int logPos; } MwsfdPly_0EC0_x00180EC0;
+extern int b3v_qq_x00180EC0 __asm__("b3v_qq");
+extern char D_00465A70_x00180EC0[] __asm__("D_00465A70");
+int func_00183B38_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply) __asm__("func_00183B38");
+void func_001870E8_x00180EC0(char *msg) __asm__("func_001870E8");
+void *mwPlyGetSfdHn_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply) __asm__("mwPlyGetSfdHn");
+int func_001982C8_x00180EC0(void *sfd, void **frm) __asm__("func_001982C8");
+int func_00198380_x00180EC0(void *sfd, int frm) __asm__("func_00198380");
+int mwPlyIsNextFrmReady_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply) __asm__("mwPlyIsNextFrmReady");
+void func_00181480_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply, void *frm) __asm__("func_00181480");
+void func_001810E8_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply, void *frm, MwsfdFrm_0EC0_x00180EC0 *out) __asm__("func_001810E8");
+void func_001814C8_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply, void *frm) __asm__("func_001814C8");
+void func_00181020_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply, MwsfdFrm_0EC0_x00180EC0 *out) __asm__("func_00181020");
+void func_00181070_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply) __asm__("func_00181070");
+int func_001813D8_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply, void *frm) __asm__("func_001813D8");
+void mwPlyGetCurFrm_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply, MwsfdFrm_0EC0_x00180EC0 *out) __asm__("mwPlyGetCurFrm");
+void mwPlyGetCurFrm_x00180EC0(MwsfdPly_0EC0_x00180EC0 *ply, MwsfdFrm_0EC0_x00180EC0 *out) {
+    void *sfd;
+    void *frm;
+    int i;
+    int skip;
+    if (func_00183B38_x00180EC0(ply) == 0) {
+        func_001870E8_x00180EC0(D_00465A70_x00180EC0);
+        out->bufadr = 0;
+        return;
+    }
+    sfd = mwPlyGetSfdHn_x00180EC0(ply);
+    func_001982C8_x00180EC0(sfd, &frm);
+    if (frm != 0) {
+        if (ply->frmSync == 0) {
+            i = 0;
+            skip = ply->skipMax;
+            do {
+                if (i >= skip) {
+                    break;
+                }
+                i++;
+                if (mwPlyIsNextFrmReady_x00180EC0(ply) != 1) {
+                    break;
+                }
+                func_00198380_x00180EC0(sfd, (int)frm);
+                ply->numSkipDisp += 1;
+                func_001982C8_x00180EC0(sfd, &frm);
+            } while (1);
+        }
+        if (frm != 0) {
+            ply->limit++;
+            ply->curFrm = frm;
+            func_00181480_x00180EC0(ply, frm);
+            func_001810E8_x00180EC0(ply, frm, out);
+            func_001814C8_x00180EC0(ply, frm);
+            func_00181020_x00180EC0(ply, out);
+            func_00181070_x00180EC0(ply);
+            out->frmType = func_001813D8_x00180EC0(ply, frm);
+            ply->logPos = out->concat_cnt;
+            return;
+        }
+    }
+    out->bufadr = 0;
+}
 s32 func_001853B0_x00181020() __asm__("func_001853B0");
 void func_00181020_x00181020(u8 *arg0, u8 *arg1) __asm__("func_00181020");
 void func_00181020_x00181020(u8 *arg0, u8 *arg1) {
@@ -4431,7 +4491,61 @@ void func_00181070_x00181070(MwsfdPly_x00181070 *ply)
     }
     MWSFD_SetColAdj_x00181070(ply, flag);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_001810E8);
+typedef struct SfdFrm_10E8_x001810E8 { int width; int height; int x_mb; int y_mb; unsigned int picType; int f20; int unit; unsigned int bufFmt; unsigned char *buf; int errcnt; int rcvcnt; int concat_cnt; int time_per_file; int cat_time; } SfdFrm_10E8_x001810E8;
+typedef struct MwsfdPly_10E8_x001810E8 { unsigned char p0[0x40]; void *sfd; } MwsfdPly_10E8_x001810E8;
+typedef struct MwsfdFrm_10E8_x001810E8 { unsigned char *bufadr; int buffmt; int width; int height; int x_mb; int y_mb; int ptype; int fps; int fno; int time; int tunit; int concat_cnt; int fno_per_file; int time_per_file; int errcnt; int rcvcnt; } MwsfdFrm_10E8_x001810E8;
+extern int b3v_qqqqqqqqqqq_x001810E8 __asm__("b3v_qqqqqqqqqqq");
+extern char D_00465AA0_x001810E8[] __asm__("D_00465AA0");
+int func_00181330_x001810E8(unsigned int ptype) __asm__("func_00181330");
+int mwl_convPtypeFromSFD_x001810E8(unsigned int ptype) __asm__("mwl_convPtypeFromSFD");
+int func_0019B320_x001810E8(void *sfd, int *fps) __asm__("func_0019B320");
+void func_001870E8_x001810E8(char *msg) __asm__("func_001870E8");
+int func_00181300_x001810E8(int time, int fps, int tunit) __asm__("func_00181300");
+void func_00181268_x001810E8(MwsfdPly_10E8_x001810E8 *ply, SfdFrm_10E8_x001810E8 *frm, MwsfdFrm_10E8_x001810E8 *out) __asm__("func_00181268");
+void func_001810E8_x001810E8(MwsfdPly_10E8_x001810E8 *ply, SfdFrm_10E8_x001810E8 *frm, MwsfdFrm_10E8_x001810E8 *out) __asm__("func_001810E8");
+void func_001810E8_x001810E8(MwsfdPly_10E8_x001810E8 *ply, SfdFrm_10E8_x001810E8 *frm, MwsfdFrm_10E8_x001810E8 *out)
+{
+    void *sfd = ply->sfd;
+    unsigned char *bufadr = frm->buf;
+    int buffmt = func_00181330_x001810E8(frm->bufFmt);
+    int width = frm->width;
+    int height = frm->height;
+    int x_mb = frm->x_mb;
+    int y_mb = frm->y_mb;
+    int ptype = mwl_convPtypeFromSFD_x001810E8(frm->picType);
+    int tunit = frm->unit;
+    int time = frm->cat_time;
+    int time_per_file = frm->time_per_file;
+    int concat_cnt = frm->concat_cnt;
+    int errcnt = frm->errcnt;
+    int rcvcnt = frm->rcvcnt;
+    int fps;
+    int fno;
+    int fno_per_file;
+
+    if (func_0019B320_x001810E8(sfd, &fps) != 0) {
+        func_001870E8_x001810E8(D_00465AA0_x001810E8);
+    }
+    fno = func_00181300_x001810E8(time, fps, tunit);
+    fno_per_file = func_00181300_x001810E8(time_per_file, fps, tunit);
+    out->bufadr = bufadr;
+    out->buffmt = buffmt;
+    out->width = width;
+    out->height = height;
+    out->x_mb = x_mb;
+    out->y_mb = y_mb;
+    out->ptype = ptype;
+    out->fps = fps;
+    out->fno = fno;
+    out->time = time;
+    out->tunit = tunit;
+    out->concat_cnt = concat_cnt;
+    out->time_per_file = time_per_file;
+    out->fno_per_file = fno_per_file;
+    out->errcnt = errcnt;
+    out->rcvcnt = rcvcnt;
+    func_00181268_x001810E8(ply, frm, out);
+}
 typedef struct SfdSj_x00181268 SfdSj_x00181268;
 typedef struct SfdSjChunk_x00181268 {
     char *data;
@@ -8197,6 +8311,8 @@ s32 func_00182518(void) {
 }
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int m1e2010;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m10e810;
 extern int D_00426894_x00182538 __asm__("D_00426894");
 extern int D_00426898_x00182538 __asm__("D_00426898");
 extern int D_00484E00_x00182538 __asm__("D_00484E00");
@@ -9701,6 +9817,11 @@ extern int m007811;
 extern int b3mpad_00781_00000000000000000;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int m148010;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m10e820;
+extern int m10e821;
+extern int b3mpad_10e82_00000000000000000;
+extern int b3mpad_10e82_00000000000000001;
 typedef struct SfdSj_x001830D8 SfdSj_x001830D8;
 typedef struct SfdSjChunk_x001830D8 {
     char *data;
@@ -17579,6 +17700,8 @@ void func_001857C0_x001857C0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("fu
 void func_001857C0_x001857C0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_0019F948_x001857C0(func_001847D0_x001857C0(arg0), arg1, arg2, arg3 == 1);
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mpad_10e83_00000000000000000;
 typedef struct SfdSj_x00185810 SfdSj_x00185810;
 typedef struct SfdSjChunk_x00185810 { char *data; int len; } SfdSjChunk_x00185810;
 typedef struct SfdSjVtbl_x00185810 { void *queryInterface; void *addRef; void *release; void (*destroy)(SfdSj_x00185810 *sj); int (*getUuid)(SfdSj_x00185810 *sj); void (*reset)(SfdSj_x00185810 *sj); void (*getChunk)(SfdSj_x00185810 *sj, int id, int n, SfdSjChunk_x00185810 *ck); void (*ungetChunk)(SfdSj_x00185810 *sj, int id, SfdSjChunk_x00185810 *ck); void (*putChunk)(SfdSj_x00185810 *sj, int id, SfdSjChunk_x00185810 *ck); int (*getNumData)(SfdSj_x00185810 *sj, int id); } SfdSjVtbl_x00185810;

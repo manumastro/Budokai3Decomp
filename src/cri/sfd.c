@@ -32451,7 +32451,41 @@ s32 func_00191300_x00191300(u8 *a0, s32 a1, s32 a2, s32 a3)
     func_00192120_x00191300(a0, q);
     return func_001922B8_x00191300(a0, h, q, a1);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001914C8);
+typedef struct { char *data; int len; } SfdSjChunk_14C8_x001914C8;
+typedef struct { int pos; int pad4; unsigned int addr; unsigned int size; } SfdItem_14C8_x001914C8;
+typedef struct SfdTim_14C8_x001914C8 SfdTim_14C8_x001914C8;
+typedef struct SfdPtsComp_14C8_x001914C8 SfdPtsComp_14C8_x001914C8;
+typedef struct M2vPicAtr_14C8_x001914C8 M2vPicAtr_14C8_x001914C8;
+struct SfdPtsComp_14C8_x001914C8 { int tmpref; };
+typedef struct SfdMpv_14C8_x001914C8 { unsigned char pad[0x118]; SfdPtsComp_14C8_x001914C8 ptscomp; } SfdMpv_14C8_x001914C8;
+typedef enum { SFD_BUF_NONE_14C8_x001914C8 = 8 } SfdBufId_14C8_x001914C8;
+typedef struct { int prepFlg; int termFlg; union { void *obj; struct SfdMpv_14C8_x001914C8 *mpv; } hn; void *fns; SfdBufId_14C8_x001914C8 bufIn; int bufOut[3]; int readTot; char pad36[32]; } SfdTrnSlot_14C8_x001914C8;
+struct SfdTim_14C8_x001914C8 { int x; };
+typedef struct SfdPly_14C8_x001914C8 { unsigned char pad0[0xCC0]; SfdTim_14C8_x001914C8 tim; unsigned char padcc4[0x1BE0 - 0xCC4]; SfdTrnSlot_14C8_x001914C8 trn[3]; } SfdPly_14C8_x001914C8;
+char *func_0017B5B8_x001914C8(char *buf, int len, int mask) __asm__("func_0017B5B8");
+int func_001986A0_x001914C8(struct SfdPly_14C8_x001914C8 *h, int index, unsigned int pos, SfdItem_14C8_x001914C8 *out) __asm__("func_001986A0");
+int func_001915B0_x001914C8(SfdTim_14C8_x001914C8 *timer, SfdPtsComp_14C8_x001914C8 *comp, M2vPicAtr_14C8_x001914C8 *pic, SfdItem_14C8_x001914C8 *entry, int newGop) __asm__("func_001915B0");
+void func_001914C8_x001914C8(SfdPly_14C8_x001914C8 *player, M2vPicAtr_14C8_x001914C8 *pic, SfdSjChunk_14C8_x001914C8 *chunk, int *time, int newGop) __asm__("func_001914C8");
+void func_001914C8_x001914C8(SfdPly_14C8_x001914C8 *player, M2vPicAtr_14C8_x001914C8 *pic, SfdSjChunk_14C8_x001914C8 *chunk, int *time, int newGop) {
+    SfdTrnSlot_14C8_x001914C8 *slot = &player->trn[2];
+    SfdMpv_14C8_x001914C8 *mpv;
+    int index;
+    char *pos;
+    SfdItem_14C8_x001914C8 entry;
+
+    mpv = slot->hn.mpv;
+    index = slot->bufIn;
+    *time = -1;
+    pos = func_0017B5B8_x001914C8(chunk->data, chunk->len, 4);
+    if (pos == 0) {
+        return;
+    }
+    func_001986A0_x001914C8(player, index, (unsigned int)pos, &entry);
+    if (entry.pos < 0) {
+        return;
+    }
+    *time = func_001915B0_x001914C8(&player->tim, &mpv->ptscomp, pic, &entry, newGop);
+}
 void func_00191588_x00191588(u8 *arg0) __asm__("func_00191588");
 void func_00191588_x00191588(u8 *arg0)
 {
@@ -32470,6 +32504,9 @@ void func_00191588_x00191588(u8 *arg0)
   while (0);
   *((s32 *) (((u8 *) arg0) + 0xC)) = -1;
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m14c810;
+extern int b3m14c81_000000;
 typedef struct { int pos; unsigned int addr; unsigned int size; } SfdItem_15B0_x001915B0;
 typedef struct { int tmpref; int ofst; int max; SfdItem_15B0_x001915B0 ptsent; } SfdPtsComp_15B0_x001915B0;
 typedef struct { unsigned char pad[0x14C]; int baseTime; } SfdTim_15B0_x001915B0;
@@ -39006,6 +39043,8 @@ extern int mb05811;
 extern int m0e4020;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mpad_dd583_00000000000000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m14c820;
 typedef struct { s32 w[12]; } Ck_2DE0_x00192DE0;
 s32 func_00193060_x00192DE0(u8 *, u8 *, Ck_2DE0_x00192DE0 *, u8 **) __asm__("func_00193060");
 void func_00193828_x00192DE0(s32, u8 *) __asm__("func_00193828");
@@ -40010,6 +40049,9 @@ extern int b3m8a681_000002;
 extern int m03d010;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int m920830;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3m14c83_000000;
+extern int b3m14c83_000001;
 s32 func_0017EE78_x00193520() __asm__("func_0017EE78");
 s32 func_001957B8_x00193520() __asm__("func_001957B8");
 extern s32 D_00467730_x00193520 __asm__("D_00467730");
