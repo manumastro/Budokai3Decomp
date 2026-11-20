@@ -550,10 +550,47 @@ void func_0028BDB0(u8 *arg0) {
     D_00470894 = (s32)func_0028C580;
 }
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028BEB0);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028C0F0);
+extern s32 D_00470048;
+extern s32 D_00470898;
+extern char D_0046BA10[];
+extern u8 D_005AA3C0[];
+extern char D_0046B8F0[];
+extern s32 D_00470860;
+void func_0028AE60(u8 *arg0);
+void func_0028AD20(u8 *arg0);
+void func_0028C0F0(u8 *arg0) {
+    switch (gMcState) {
+    case 2:
+        break;
+    case 3:
+        MC_SETFUNC(arg0, func_0028BDB0);
+        D_00470898 = 0;
+        return;
+    default:
+        return;
+    }
+    if (D_00470048 == 0) {
+        D_00470860 = 0;
+        func_00288870(0x11);
+        if (amMc_GetDir(D_0047084C, 0, D_0046BA10, D_005AA3C0, 6) == 0) {
+            MC_SETFUNC(arg0, func_0028AE60);
+        } else if (amMc_GetDir(D_0047084C, 0, D_0046BA10, D_005AA3C0, 6) == 0) {
+            MC_SETFUNC(arg0, func_0028AD20);
+        } else {
+            return;
+        }
+    } else {
+        if (amMc_Save(D_0047084C, 0, D_0046B8F0, D_00470870, 0xD680) != 0) {
+            MC_SETFUNC(arg0, func_0028BDB0);
+            D_00470898 = 0;
+        } else {
+            MC_SETFUNC(arg0, func_0028BEB0);
+        }
+    }
+}
 extern s32 D_0047087C;
 extern char D_0046B920[];
-extern void func_0028C0F0(void);
+extern void func_0028C0F0(u8 *arg0);
 void func_0028C250(u8 *arg0) {
     switch (gMcState) {
     case 2:
