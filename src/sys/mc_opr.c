@@ -220,7 +220,7 @@ INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002893F0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002898F0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00289BE0);
 extern s32 D_00470838;
-extern void func_00289BE0(void);
+extern void func_00289BE0(u8 *arg0);
 void func_00289DF0(u8 *arg0) {
     if (((s32 *)&D_00470838)[D_0047084C] & 0x8000) {
         D_0047084C ^= 1;
@@ -683,7 +683,80 @@ void func_0028BDB0(u8 *arg0) {
     D_00470858 = 3;
     D_00470894 = (s32)func_0028C580;
 }
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028BEB0);
+extern s32 D_00470874;
+extern char D_004B4BC0[];
+extern s32 D_00470870;
+extern s32 func_001EF510(s32, s32);
+extern void func_001EF930(u8 *, s32);
+extern void func_001EF730(s32);
+extern s8 D_004B4B64[];
+extern s8 D_004B4B65[];
+extern s32 D_00470048;
+extern s32 D_00470850;
+extern s32 D_00470830;
+extern void func_0028AAA0(u8 *arg0);
+extern void func_0028C4C0(u8 *arg0);
+extern void func_0028DF10(void);
+s32 memcmp(const void *, const void *, u32);
+
+void func_0028BEB0(u8 *arg0) {
+    switch (gMcState) {
+    case 2:
+        break;
+    case 3:
+        MC_SETFUNC(arg0, func_0028BDB0);
+        D_00470898 = 0;
+        return;
+    default:
+        return;
+    }
+
+    if (D_00470874 != 0 && memcmp(D_004B4BC0, (void *)D_00470874, 0x24) == 0) {
+        func_001EF510(D_00470870, 0xD680);
+        func_001EF930(D_004B4B40, D_00470870);
+        func_001EF730(D_00470870);
+    }
+
+    D_004B4B65[0] = 0;
+    D_004B4B64[0] = D_0047084C;
+
+    switch (D_00470048) {
+    case 0:
+        func_001EF510(D_00470870, 0xD680);
+        func_001EF930(D_004B4B40, D_00470870);
+        func_001EF730(D_00470870);
+        func_00288870(0x12);
+        MC_SETFUNC(arg0, func_0028DDF0);
+        D_00470850 = 0x78;
+        D_00470894 = (s32)func_0028AAA0;
+        return;
+    case 4:
+    case 5:
+    case 2:
+        D_00470858 = 1;
+        func_00288870(0x1B);
+        MC_SETFUNC(arg0, func_0028DDF0);
+        D_00470858 = 1;
+        D_00470850 = 0x78;
+        D_00470894 = (s32)func_0028C4C0;
+        return;
+    case 8:
+    case 9:
+        D_00470830 = 1;
+        MC_SETFUNC(arg0, func_0028DF10);
+        return;
+    case 10:
+        func_00288870(-1);
+        D_00470894 = (s32)func_0028DDA0;
+        D_00470858 = 1;
+        MC_SETFUNC(arg0, func_0028DDB0);
+        return;
+    default:
+        D_00470830 = 1;
+        MC_SETFUNC(arg0, func_0028DF10);
+        return;
+    }
+}
 extern s32 D_00470048;
 extern s32 D_00470898;
 extern char D_0046BA10[];
