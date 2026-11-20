@@ -506,7 +506,34 @@ void func_002400E0(void) {
 // differs: the three locals (the table pointer, the sys pointer and the counter) do not take the registers of the original under any declaration order tried
 // round 5: the count as a BtlCnt view (struct field at 0x88D8, the lui 1 / -0x7728 split of the original) and the table address through (u8 *)(void *)D_0058BF50 (kept in a register) fix two of the three differences; the best of the six declaration orders is 13 of 46 differing
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002400E0);
+void amCdFs_ReleaseCache(s32);
+void func_00254100(s32);
+extern u8 *gBattle;
+extern u8 *gBtlSys;
+extern u8 D_0058BF50[];
+
+void func_002400E0(void) {
+    u8 *sys = gBtlSys;
+    u8 *table;
+    s32 i = 0;
+
+    if (0 < *(s32 *)(gBattle + 0x88D8)) {
+        table = D_0058BF50;
+        do {
+            if (*(s32 *)(table + 0x10) != 0) {
+                amCdFs_ReleaseCache(*(s32 *)(table + 0x10));
+            }
+            *(s32 *)(table + 0x10) = 0;
+            *(s32 *)(sys + 0xE8C) = 0;
+            if (*(s32 *)(sys + 0xEC0) != 0) {
+                func_00254100(*(s32 *)(sys + 0xEC0));
+            }
+            i++;
+            table += 4;
+            sys += 4;
+        } while (i < *(s32 *)(gBattle + 0x88D8));
+    }
+}
 void func_0022D4B0(s32, s32);
 #if 0
 // differs: 16 of 122 instructions differ after a 60-order declaration search: the pointer copies and the loop counters take the wrong registers (s2/s4 swapped with the counter)
