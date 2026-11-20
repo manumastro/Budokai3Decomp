@@ -4429,7 +4429,118 @@ void func_001B75A0(Fighter *f) {
     }
     FT_FIELD(f, f32, 0x17BC) = (FT_FIELD(f, f32, 0xCB8) < 3.0f) ? 0.4f : 0.0f;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B7620);
+extern f32 func_0011F4C0(f32);
+extern void func_00146F10(void *, void *, f32);
+void func_001B7620(Fighter *f) {
+    Copy16 tmp;
+    f32 s;
+    f32 t;
+    f32 u;
+    s32 m;
+    s32 ok;
+    s32 st;
+    f32 d;
+    s = BW_FIELD(gBattle, f32, 0x88F0) * FT_FIELD(f, f32, 0xC9C);
+    u = 0.0f;
+    t = 1.0f - FT_FIELD(f, f32, 0xCB8) / FT_FIELD(f, f32, 0x180C);
+    u = (u > t) ? u : t;
+    if (u > 0.0f) {
+        u = func_0011F4C0(1.5707964f * u);
+        u = u * u;
+    }
+    func_00146F10(&tmp, (u8 *)f + 0xD0, u * s);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"((u8 *)f + 0x40), "r"(&tmp));
+    Fighter_ResetMotion(f, 0);
+    switch (FT_FIELD(f, s16, 0xCB4)) {
+    case 1:
+        FT_FIELD(f, f32, 0xC58) = (f32)FT_FIELD(f, s32, 0xC5C) * (FT_FIELD(f, f32, 0xCB8) / FT_FIELD(f, f32, 0x180C));
+        break;
+    default:
+        if (FT_FIELD(f, f32, 0xCB8) < 10.0f) {
+            FT_FIELD(f, f32, 0xC58) = 10.0f * func_0011F4C0(1.5707964f * (FT_FIELD(f, f32, 0xCB8) / 10.0f));
+        }
+        break;
+    }
+    d = (f32)FT_FIELD(f, s32, 0xC5C) - FT_FIELD(f, f32, 0xC58);
+    FT_FIELD(f, f32, 0xC60) = d;
+    if (d <= 15.0f || (FT_FIELD(FT_FIELD(f, void *, 0x1354), f32, 0xC60) < d && FT_FIELD(FT_FIELD(f, void *, 0x1354), f32, 0xC60) <= 8.0f)) {
+        st = 0;
+        if (st == -1) {
+            st = FT_FIELD(f, s16, 0xCAC);
+        }
+        switch (st) {
+        case 0:
+            FT_FIELD(f, u16, 0xCB2) = 1;
+            break;
+        case 1:
+            FT_FIELD(f, u16, 0xCB2) = 2;
+            break;
+        case 4:
+            FT_FIELD(f, u16, 0xCB2) = 4;
+            break;
+        case 5:
+            FT_FIELD(f, u16, 0xCB2) = 8;
+            break;
+        case 6:
+            FT_FIELD(f, u16, 0xCB2) = 0x10;
+            break;
+        case 7:
+        case 8:
+            FT_FIELD(f, u16, 0xCB2) = 0x20;
+            break;
+        case 9:
+            FT_FIELD(f, u16, 0xCB2) = 0x40;
+            break;
+        case 11:
+            FT_FIELD(f, u16, 0xCB2) = 0x80;
+            break;
+        default:
+            FT_FIELD(f, u16, 0xCB2) = 0;
+            break;
+        }
+        if (FT_FIELD(f, s8, 0x2010) != 0) {
+            FT_FIELD(f, u16, 0xCB2) |= 0x8000;
+        }
+        if (FT_FIELD(f, s8, 0x2011) != 0) {
+            FT_FIELD(f, u16, 0xCB2) |= 0x4000;
+        }
+        if (!(FT_FIELD(f, f32, 0xC58) < 15.0f)) {
+            FT_FIELD(f, s8, 0x1FFD) = 0;
+        }
+    }
+    if (FT_FIELD(f, s32, 0xC64) != 0 || !(FT_FIELD(f, f32, 0xCB8) < FT_FIELD(f, f32, 0x1804))) {
+        FT_FIELD(f, s32, 0x1864) = 1;
+        if (FT_FIELD(f, s8, 0x1FF9) != 0) {
+            ok = (FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC) - FT_FIELD(f, f32, 0x1844) <= 0.0f) ? 1 : 0;
+            if (ok) {
+                FT_FIELD(f, s8, 0x1FF9) = 0;
+                FT_FIELD(f, s32, 0x1864) |= 8;
+                FT_FIELD(f, s32, 0xCA4) = 0;
+                FT_FIELD(f, s32, 0xCA8) = 0x3DCCCCCD;
+            }
+        }
+        if (FT_FIELD(f, s16, 0x13A4) > -1) {
+            m = func_001C2B10(f);
+        } else {
+            m = func_001E94C0(f);
+        }
+        func_001E5040(f);
+        if (m == 0) {
+            FT_FIELD(f, s16, 0xCB4) = 1;
+        } else {
+            FT_FIELD(f, s16, 0xCB4) = 0;
+        }
+        FT_FIELD(f, s8, 0x2004) = 1;
+        FT_FIELD(f, s8, 0x1FFB) = 1;
+        if (m != 0xF) {
+            FT_FIELD(f, s16, 0xCB6) = 0;
+        }
+        FT_FIELD(f, s8, 0x2006) = 0;
+        D_00468460[m](f);
+        func_002CBFF0(1, f);
+        FT_FIELD(f, s32, 0x1808) = 0x41F00000;
+    }
+}
 extern void func_001E5040(void *);
 extern void func_001C37F0(Fighter *f, void *p);
 extern void func_00146ED0(f32 *a, f32 *b, f32 scale);
@@ -4531,7 +4642,116 @@ void func_001B7C50(Fighter *f) {
         FT_FIELD(f, s32, 0x17BC) = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B7CF0);
+extern f32 func_0011F4C0(f32);
+extern void func_00146F10(void *, void *, f32);
+void func_001B7CF0(Fighter *f) {
+    Copy16 tmp;
+    f32 s;
+    f32 t;
+    f32 u;
+    s32 m;
+    s32 ok;
+    s32 st;
+    s = BW_FIELD(gBattle, f32, 0x88F0) * FT_FIELD(f, f32, 0xC9C);
+    u = 0.0f;
+    t = 1.0f - FT_FIELD(f, f32, 0xCB8) / FT_FIELD(f, f32, 0x180C);
+    u = (u > t) ? u : t;
+    if (u > 0.0f) {
+        u = func_0011F4C0(1.5707964f * u);
+        u = u * u;
+    }
+    func_00146F10(&tmp, (u8 *)f + 0xD0, u * s);
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"((u8 *)f + 0x40), "r"(&tmp));
+    Fighter_ResetMotion(f, 0);
+    if (FT_FIELD(f, f32, 0xCB8) < 10.0f) {
+        FT_FIELD(f, f32, 0xC58) = 10.0f * func_0011F4C0(1.5707964f * (FT_FIELD(f, f32, 0xCB8) / 10.0f));
+        FT_FIELD(f, f32, 0xC60) = (f32)FT_FIELD(f, s32, 0xC5C) - FT_FIELD(f, f32, 0xC58);
+    }
+    if (FT_FIELD(f, f32, 0xC60) <= 15.0f) {
+        st = 0;
+        if (st == -1) {
+            st = FT_FIELD(f, s16, 0xCAC);
+        }
+        switch (st) {
+        case 0:
+            FT_FIELD(f, u16, 0xCB2) = 1;
+            break;
+        case 1:
+            FT_FIELD(f, u16, 0xCB2) = 2;
+            break;
+        case 4:
+            FT_FIELD(f, u16, 0xCB2) = 4;
+            break;
+        case 5:
+            FT_FIELD(f, u16, 0xCB2) = 8;
+            break;
+        case 6:
+            FT_FIELD(f, u16, 0xCB2) = 0x10;
+            break;
+        case 7:
+        case 8:
+            FT_FIELD(f, u16, 0xCB2) = 0x20;
+            break;
+        case 9:
+            FT_FIELD(f, u16, 0xCB2) = 0x40;
+            break;
+        case 11:
+            FT_FIELD(f, u16, 0xCB2) = 0x80;
+            break;
+        default:
+            FT_FIELD(f, u16, 0xCB2) = 0;
+            break;
+        }
+        if (FT_FIELD(f, s8, 0x2010) != 0) {
+            FT_FIELD(f, u16, 0xCB2) |= 0x8000;
+        }
+        if (FT_FIELD(f, s8, 0x2011) != 0) {
+            FT_FIELD(f, u16, 0xCB2) |= 0x4000;
+        }
+    }
+    if (FT_FIELD(f, s32, 0xC64) != 0 || !(FT_FIELD(f, f32, 0xCB8) < FT_FIELD(f, f32, 0x1804))) {
+        m = FT_FIELD(FT_FIELD(f, void *, 0xB74), s32, 0x10);
+        FT_FIELD(f, s32, 0x1864) = 1;
+        if (!(m & 3) && FT_FIELD(f, s8, 0x1FF9) != 0) {
+            ok = (FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC) - FT_FIELD(f, f32, 0x1844) <= 0.0f) ? 1 : 0;
+            if (ok) {
+                FT_FIELD(f, s8, 0x1FF9) = 0;
+                FT_FIELD(f, s32, 0x1864) |= 8;
+            }
+        }
+        func_001E5040(f);
+        FT_FIELD(f, s16, 0xCB4) = 0;
+        func_001DD680(f, 0);
+        if (m & 1) {
+            FT_FIELD(f, s16, 0xCB4) = 0;
+            m = 0x12;
+            func_001ABD30((Fighter *)((u8 *)f + 0x1360));
+        } else if (m & 2) {
+            FT_FIELD(f, s16, 0xCB4) = 1;
+            m = 0x12;
+            func_001ABD30((Fighter *)((u8 *)f + 0x1360));
+        } else {
+            if (FT_FIELD(f, s16, 0x13A4) > -1) {
+                m = func_001C2B10(f);
+            } else {
+                m = func_001E94C0(f);
+            }
+            if (m == 0) {
+                FT_FIELD(f, s16, 0xCB4) = 1;
+            } else {
+                FT_FIELD(f, s16, 0xCB4) = 0;
+            }
+        }
+        FT_FIELD(f, s8, 0x2004) = 1;
+        FT_FIELD(f, s8, 0x1FFB) = 1;
+        if (m != 0xF) {
+            FT_FIELD(f, s16, 0xCB6) = 0;
+        }
+        FT_FIELD(f, s8, 0x2006) = 0;
+        D_00468460[m](f);
+        func_002CBFF0(1, f);
+    }
+}
 extern void func_001E5040(void *);
 extern void func_001C37F0(Fighter *f, void *p);
 extern void func_00146ED0(f32 *a, f32 *b, f32 scale);
