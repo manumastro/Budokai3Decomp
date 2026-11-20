@@ -227,44 +227,35 @@ void func_00309000(u8 *a0) {
         *(void **)(s0 + 0x1C) = ((void *)func_00308EB0 == 0) ? 0 : (void *)func_00308EB0;
     }
 }
-#if 0
-// differs: 19 of 38: the head (lw a0 / beqz / li v0,4) matches; the original's loop head sits unpadded at 0x30906C and its branch has two nops before it, mine pads the head to 8 and branches with a delay nop; the if-join is 2 instructions earlier in mine
 extern void amModel_SetCurrent(s32, s32);
 extern s32 D_00470704;
 extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
-extern void func_0022C060(s32, f32);
-extern void func_0022CD00(s32);
+extern void func_0022C060(void *, f32);
+extern void func_0022CD00(void *);
 
 void func_00309050(u8 *a0) {
-    u8 *p;
-    u32 n;
-    s32 x;
-    s32 s0;
-    a0 = *(u8 **)(a0 + 0x30);
-    n = 4;
-    p = (u8 *)&x;
-    if (p != 0) {
-        do {
-            *p++ = 0;
-        } while (--n != 0);
-    }
-    x = *(s32 *)(a0 + 0x14);
-    a0 = *(u8 **)(a0 + 4);
-    D_00470704 = (s32)a0;
+    u8 *s = *(u8 **)(a0 + 0x30);
+    void *p[1] = {0};
+    s32 i;
+    s32 v;
+    void *q;
+
+    p[0] = *(void **)(s + 0x14);
+    D_00470704 = v = *(s32 *)(s + 0x4);
     D_0047070C = 0x2000;
-    amModel_SetCurrent((s32)a0, 0x2000);
     D_00470708 = 0;
+    amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
-    s0 = x;
-    if (s0 != 0) {
-        func_0022C060(s0, 1.0f);
-        func_0022CD00(s0);
+    for (i = 0; i < 1; i++) {
+        q = p[i];
+        if (q != 0) {
+            func_0022C060(q, 1.0f);
+            func_0022CD00(q);
+        }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309050);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_003090F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00309250);
 #if 0

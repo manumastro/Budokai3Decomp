@@ -24,40 +24,27 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_00309E40);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_00309FA0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A120);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A3C0);
-#if 0
-// differs: the zeroing loop head is padded with a nop (the original's is not), so its join lands at 0x30A580 instead of 0x30A578
 void func_0030A540(u8 *a0) {
-    u8 *s;
-    u8 *p;
-    s32 buf;
-    u32 n;
+    u8 *s = *(u8 **)(a0 + 0x30);
+    void *p[1] = {0};
+    s32 i;
     s32 v;
-    void *s0;
+    void *q;
 
-    p = (u8 *)&buf;
-    s = *(u8 **)(a0 + 0x30);
-    n = 4;
-    if (p != 0) {
-        do {
-            *p = 0;
-            p++;
-            n--;
-        } while (n != 0);
-    }
-    buf = *(s32 *)(s + 0x1C);
+    p[0] = *(void **)(s + 0x1C);
     D_00470704 = v = *(s32 *)(s + 0x4);
     D_0047070C = 0x2000;
     D_00470708 = 0;
     amModel_SetCurrent(v, 0x2000);
     D_00470238 = 0;
-    s0 = (void *)buf;
-    if (s0 != 0) {
-        func_0022C060(s0, 1.0f);
-        func_0022CD00(s0);
+    for (i = 0; i < 1; i++) {
+        q = p[i];
+        if (q != 0) {
+            func_0022C060(q, 1.0f);
+            func_0022CD00(q);
+        }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A540);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_cvsc", func_0030A5E0);
 #if 0
 // differs: 31 of 60 instructions: the byte-clear loop of the local (sb / addiu / addiu) is laid out with two nops before its bnez in the original, mine has none (0xE0 vs 0xF0 bytes with the other loop spellings); the same loop as func_00309050
