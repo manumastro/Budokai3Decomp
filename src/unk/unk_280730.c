@@ -323,4 +323,44 @@ void func_00281CC0(Wrap280 *w) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281D20);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00281E40);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00282620);
+typedef struct Pair282 {
+    s16 v[2];
+} Pair282;
+
+extern u8 *gCsSubStat;
+extern Pair282 D_00470038;
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern void *func_0022D860(void *, f32);
+void func_00281E40();
+
+void func_00282620(Wrap280 *w) {
+    u8 *o = (u8 *)w->f30;
+    u8 *g;
+    Pair282 t;
+    s16 k;
+    s32 a0;
+    f32 d;
+
+    func_002811D0(o);
+    d = *(f32 *)(o + 0xC) - gFrameDelta;
+    *(f32 *)(o + 0xC) = d;
+    if (d <= 0.0f) {
+        o[2] = 2;
+        o[8] = 2;
+        g = gCsSubStat;
+        t = D_00470038;
+        k = *(s8 *)(o + 4);
+        a0 = *(s32 *)(g + 0xC);
+        D_00470704 = a0;
+        D_0047070C = 0x6000;
+        D_00470708 = 0;
+        amModel_SetCurrent(a0, 0x6000);
+        D_00470238 = 0;
+        *(void **)(o + 0x38) = func_0022D860(*(void **)(*(u8 **)(*(u8 **)(g + 8) + 0x14) + t.v[k] * 4), 0.0f);
+        *(void **)((u8 *)w + 0x1C) = ((void *)func_00281E40 == 0) ? 0 : (void *)func_00281E40;
+    }
+}
