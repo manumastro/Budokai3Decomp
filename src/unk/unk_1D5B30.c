@@ -3999,11 +3999,11 @@ typedef struct P66 {
 
 extern void func_001C8480(s32, s32);
 
-#if 0
 void func_001E66E0(Fighter *c) {
     P66 *s1;
     s32 s0;
     f32 f20;
+    f32 x;
     struct {
         f32 a;
         s32 b;
@@ -4019,26 +4019,25 @@ void func_001E66E0(Fighter *c) {
         s1->f4 = s1->f4 + gBattle->f88F0 * *(f32 *)((char *)a1 + 0x64C);
     }
     if (s1->f8 == 0) {
-        f20 = s1->f4 / 5.0f;
+        x = s1->f4;
+        f20 = x / 5.0f;
     } else {
-        f20 = (15.0f - s1->f4) / 15.0f;
+        x = s1->f4;
+        f20 = (15.0f - x) / 15.0f;
     }
-    if (f20 > 1.0f) {
-        f20 = 1.0f;
-    } else if (f20 < 0.0f) {
-        f20 = 0.0f;
-    }
-    if (s1->f4 > 15.0f) {
-        if (s1->f8 == 1) {
-            amTask_Kill(c);
-            return;
-        }
-        if (s1->f8 == 0) {
+    f20 = (f20 > 1.0f) ? 1.0f : ((f20 < 0.0f) ? 0.0f : f20);
+    if (!(x <= 15.0f)) {
+        switch (s1->f8) {
+        case 0:
             func_001C8480(s0, s1->fC);
             func_001E2190((Fighter *)s0, s1->fC);
             func_001E9B00((void *)1, 0x15, 0, 0, 0.0f, 1.0f);
             s1->f4 = 0.0f;
             s1->f8 = 1;
+            break;
+        case 1:
+            amTask_Kill(c);
+            return;
         }
     }
     buf.a = f20;
@@ -4047,15 +4046,12 @@ void func_001E66E0(Fighter *c) {
     buf.d = 0xFFFFFF;
     func_001E11E0(s0, &buf);
 }
-#endif
-// differs: size 0x198 vs 0x1B0 (6 instructions short), unchanged by the comparison forms (x > 15 written three ways, the clamp as if/else-if or nested) tried on the live function; the original's join reloads the 15.0f constant and the kill arm is out of line
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E66E0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6890);
-#if 0
 void func_001E6CE0(Fighter *c) {
     P66 *s1;
     s32 s0;
     f32 f20;
+    f32 x;
     struct {
         f32 a;
         s32 b;
@@ -4071,26 +4067,25 @@ void func_001E6CE0(Fighter *c) {
         s1->f4 = s1->f4 + gBattle->f88F0 * *(f32 *)((char *)a1 + 0x64C);
     }
     if (s1->f8 == 0) {
-        f20 = s1->f4 / 5.0f;
+        x = s1->f4;
+        f20 = x / 5.0f;
     } else {
-        f20 = (15.0f - s1->f4) / 15.0f;
+        x = s1->f4;
+        f20 = (15.0f - x) / 15.0f;
     }
-    if (f20 > 1.0f) {
-        f20 = 1.0f;
-    } else if (f20 < 0.0f) {
-        f20 = 0.0f;
-    }
-    if (s1->f4 > 15.0f) {
-        if (s1->f8 == 1) {
-            amTask_Kill(c);
-            return;
-        }
-        if (s1->f8 == 0) {
+    f20 = (f20 > 1.0f) ? 1.0f : ((f20 < 0.0f) ? 0.0f : f20);
+    if (!(x <= 15.0f)) {
+        switch (s1->f8) {
+        case 0:
             func_001C8480(s0, s1->fC);
             func_001E2190((Fighter *)s0, s1->fC);
             func_001E9B00((void *)1, 0x14, 0, 0, 0.0f, 1.0f);
             s1->f4 = 0.0f;
             s1->f8 = 1;
+            break;
+        case 1:
+            amTask_Kill(c);
+            return;
         }
     }
     buf.a = f20;
@@ -4099,9 +4094,6 @@ void func_001E6CE0(Fighter *c) {
     buf.d = 0xFFFFFF;
     func_001E11E0(s0, &buf);
 }
-#endif
-// differs: size 0x198 vs 0x1B0, same gap as its sibling 1E66E0: the clamp-to-1 arm jumps to the nop before c.le.s (the 15.0f reload is skipped), the original compares with f0 = 1.0 on that path
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6CE0);
 extern void func_001E57C0();
 void func_001E6E90(char *c, s32 sel) {
     s32 buf[12];
