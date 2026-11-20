@@ -345,7 +345,46 @@ void func_0028AFB0(u8 *arg0) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028B270);
+extern s32 gMcState;
+extern s32 gMcResult;
+extern s32 D_0047084C;
+extern s32 D_00470854;
+extern s32 D_00470858;
+extern s32 D_00470860;
+extern s32 D_00470894;
+extern void func_00288870(s32);
+extern void func_0028DDF0(u8 *);
+extern void func_0028AFB0(u8 *);
+extern void func_0028C580(u8 *);
+void func_0028B270(u8 *arg0) {
+    switch (gMcState) {
+    case 2:
+        break;
+    case 3:
+        gMcResult = -5;
+        break;
+    default:
+        return;
+    }
+    D_00470860 = 0;
+    switch (gMcResult) {
+    case 0:
+    case -1:
+    case -2:
+        func_00288870(D_0047084C + 0xB);
+        MC_SETFUNC(arg0, func_0028DDF0);
+        D_00470894 = (s32)func_0028AFB0;
+        D_00470854 = 1;
+        break;
+    case -5:
+    default:
+        func_00288870(4);
+        MC_SETFUNC(arg0, func_0028DDF0);
+        D_00470858 = 3;
+        D_00470894 = (s32)func_0028C580;
+        D_00470854 = 1;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028B380);
 extern u16 D_00492FCE[];
 extern u16 D_00493086[];
