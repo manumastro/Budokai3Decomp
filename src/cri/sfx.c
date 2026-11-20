@@ -86,7 +86,29 @@ s32 func_001A02E0(s32, s32, s32);               /* extern */
 
 s32 sfxcnv_MakeTable();                         /* extern */
 
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", sfxcnv_IsCnvUpHalf);
+typedef struct { int pad0; int format; } SfxCnvHn_UH_x0019EDD0;
+extern char D_00467A80_x0019EDD0[] __asm__("D_00467A80");
+void func_0019F6D0_x0019EDD0(void *obj, void *info, char *msg) __asm__("func_0019F6D0");
+int sfxcnv_IsCnvUpHalf_x0019EDD0(SfxCnvHn_UH_x0019EDD0 *hn) __asm__("sfxcnv_IsCnvUpHalf");
+int sfxcnv_IsCnvUpHalf_x0019EDD0(SfxCnvHn_UH_x0019EDD0 *hn)
+{
+    switch (hn->format) {
+    case 4097:
+        return 0;
+    case 33:
+    case 257:
+        return 1;
+    case 17:
+    case 49:
+    case 65:
+    case 241:
+        break;
+    default:
+        func_0019F6D0_x0019EDD0(0, 0, D_00467A80_x0019EDD0);
+        break;
+    }
+    return 0;
+}
 void func_0019EE88(void) {
     sfxcnv_MakeTable();
 }
@@ -553,7 +575,30 @@ SfxHn_x0019F580 *func_0019F580_x0019F580(void) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F5D0);
+typedef struct { int a0; int z4; int z8; int zC; unsigned char p10[0x28 - 0x10]; int a28; int z2C; unsigned char p30[0x38 - 0x30]; int z38; int tbl0; int tbl1; int tbl2; int tbl3; unsigned char p4C[0x54 - 0x4C]; int work; int wksize; unsigned char p5C[0x64 - 0x5C]; int splitField; unsigned char p68[0x70 - 0x68]; int z70; unsigned char p74[0x90 - 0x74]; } SfxHn_F5D0_x0019F5D0;
+void *memset_x0019F5D0(void *s, int c, unsigned int n) __asm__("memset");
+void func_0019F5D0_x0019F5D0(SfxHn_F5D0_x0019F5D0 *hn, int work, int wksize) __asm__("func_0019F5D0");
+void func_0019F5D0_x0019F5D0(SfxHn_F5D0_x0019F5D0 *hn, int work, int wksize)
+{
+    int base;
+    memset_x0019F5D0(hn, 0, 0x90);
+    base = (work + 31) & ~31;
+    hn->z8 = 0;
+    hn->zC = 0;
+    hn->a28 = 1;
+    hn->a0 = 1;
+    hn->z2C = 0;
+    hn->z38 = 0;
+    hn->tbl0 = base;
+    hn->tbl1 = base + 0x400;
+    hn->tbl2 = base + 0x800;
+    hn->tbl3 = base + 0xC00;
+    hn->work = work;
+    hn->wksize = wksize;
+    hn->splitField = -1;
+    hn->z70 = 0;
+    hn->z4 = 0;
+}
 s32 func_0019F670(s32 arg0) {
     return arg0 >= 0x181F;
 }
@@ -1760,7 +1805,60 @@ void func_001A0908_x001A0908(u8 *a0, s32 *a1, s32 a2, s32 a3)
     }
     func_0019F6D0_x001A0908(a0, a1, D_00467E58_x001A0908);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0A38);
+typedef struct { int addr; int pitch; int height; int pad; } SfxPlane_0A38_x001A0A38;
+typedef struct { int pad0; SfxPlane_0A38_x001A0A38 plane[3]; } SfxFrame_0A38_x001A0A38;
+typedef struct { int used; int compo; int width; int height; unsigned char pad10[0x3C - 0x10]; int tbl[4]; } SfxHn_0A38_x001A0A38;
+typedef struct { char *y; char *u; char *v; int ypitch; int upitch; int vpitch; void *rsv; } CftYccPln_0A38_x001A0A38;
+typedef struct { int zfmt; int *base; int stride; int lines; int height; int width; } CftImage_0A38_x001A0A38;
+int sfxcnv_CnvZbitToCft_x001A0A38(int zbit) __asm__("sfxcnv_CnvZbitToCft");
+void func_0019EE88_x001A0A38(SfxHn_0A38_x001A0A38 *hn, SfxFrame_0A38_x001A0A38 *frm, int ptn) __asm__("func_0019EE88");
+void func_00170B80_x001A0A38(CftYccPln_0A38_x001A0A38 *src, CftImage_0A38_x001A0A38 *dst, int *tbl) __asm__("func_00170B80");
+void func_00170B88_x001A0A38(CftYccPln_0A38_x001A0A38 *src, CftImage_0A38_x001A0A38 *dst, int *tbl) __asm__("func_00170B88");
+void func_001A0A38_x001A0A38(SfxHn_0A38_x001A0A38 *hn, SfxFrame_0A38_x001A0A38 *frm, int zbit, int arg) __asm__("func_001A0A38");
+void func_001A0A38_x001A0A38(SfxHn_0A38_x001A0A38 *hn, SfxFrame_0A38_x001A0A38 *frm, int zbit, int arg)
+{
+    SfxPlane_0A38_x001A0A38 *py = &frm->plane[0];
+    SfxPlane_0A38_x001A0A38 *pu = &frm->plane[1];
+    SfxPlane_0A38_x001A0A38 *pv = &frm->plane[2];
+    CftYccPln_0A38_x001A0A38 src;
+    CftImage_0A38_x001A0A38 dst;
+    int pitch;
+    int height;
+    int ofs;
+
+    src.rsv = 0;
+    ofs = py->pitch * py->height / 2;
+    src.y = (char *)py->addr + ofs;
+    src.u = (char *)pu->addr + ofs / 2;
+    src.v = (char *)pv->addr + ofs / 2;
+    src.ypitch = py->pitch;
+    src.upitch = pu->pitch;
+    src.vpitch = pv->pitch;
+    if (hn->width == 0)
+        pitch = py->pitch;
+    else
+        pitch = hn->width;
+    if (hn->height == 0)
+        height = py->height / 2;
+    else
+        height = hn->height;
+    dst.zfmt = sfxcnv_CnvZbitToCft_x001A0A38(zbit);
+    dst.base = (int *)arg;
+    dst.stride = pitch;
+    dst.lines = height;
+    dst.height = py->pitch;
+    dst.width = py->height / 2;
+    switch (zbit) {
+    case 16:
+        func_0019EE88_x001A0A38(hn, frm, 11);
+        func_00170B80_x001A0A38(&src, &dst, (int *)hn->tbl[0]);
+        break;
+    case 32:
+        func_0019EE88_x001A0A38(hn, frm, 13);
+        func_00170B88_x001A0A38(&src, &dst, (int *)hn->tbl[0]);
+        break;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_001A0BC8);
 s32 sfxcnv_CnvZbitToCft(u32 arg0) {
     s32 var_v1;
