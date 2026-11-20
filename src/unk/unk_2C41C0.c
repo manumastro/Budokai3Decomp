@@ -311,7 +311,42 @@ f32 func_002C60B0(Bin2C41C0 *s, f32 t) {
     return f0;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C60B0);
+typedef struct Spline2C41C0 {
+    f32 x[4];
+    f32 y[4];
+    f32 b[4];
+    f32 c[4];
+    f32 d[4];
+    s32 flags;
+} Spline2C41C0;
+
+extern void func_002C61A0(Spline2C41C0 *);
+
+f32 func_002C60B0(Spline2C41C0 *sp, f32 x) {
+    s32 low;
+    s32 high;
+    s32 mid;
+    f32 dx;
+
+    if (!(sp->flags & 0x100)) {
+        func_002C61A0(sp);
+    }
+    low = 0;
+    high = 3;
+    do {
+        mid = (low + high) / 2;
+        if (sp->x[mid] < x) {
+            low = mid + 1;
+        } else {
+            high = mid;
+        }
+    } while (low < high);
+    if (low > 0) {
+        low--;
+    }
+    dx = x - sp->x[low];
+    return (sp->y[low] + sp->b[low] * dx) + sp->c[low] * dx * dx + sp->d[low] * dx * dx * dx;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C61A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C63C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6700);
