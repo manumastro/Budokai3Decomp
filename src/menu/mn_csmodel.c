@@ -200,7 +200,54 @@ void func_002B7930(u8 *s4) {
     }
     *(void **)(s4 + 0x4C) = func_0022D860(*(void **)(*(u8 **)(*(u8 **)(s3 + 0x8) + 0x14) + 0x20), 0.0f);
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B7A60);
+
+void func_002B7A60(u8 *a0) {
+    u8 *g;
+    s32 m;
+    g = (u8 *)gPracMode;
+    m = *(s32 *)(g + 0xC);
+    D_00470704 = m;
+    D_0047070C = 0x1000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x1000);
+    D_00470238 = 0;
+    if (*(void * *)(a0 + 0x0) != 0) {
+        func_0022D0E0(*(void * *)(a0 + 0x0), 1);
+    }
+    *(void * *)(a0 + 0x0) = func_0022D670(*(void * *)(*(u8 **)(*(u8 **)(g + 0x8) + 0x1C) + 0x8), 0.0f);
+    if (*(void * *)(a0 + 0x4) != 0) {
+        func_0022D0E0(*(void * *)(a0 + 0x4), 1);
+    }
+    *(void * *)(a0 + 0x4) = func_0022D670(*(void * *)(*(u8 **)(*(u8 **)(g + 0x8) + 0x1C) + 0x14), 0.0f);
+    if (*(void * *)(a0 + 0x8) != 0) {
+        func_0022D0E0(*(void * *)(a0 + 0x8), 1);
+    }
+    *(void * *)(a0 + 0x8) = func_0022D670(*(void * *)(*(u8 **)(*(u8 **)(g + 0x8) + 0x1C) + 0x20), 0.0f);
+    if (*(void * *)(a0 + 0xC) != 0) {
+        func_0022D0E0(*(void * *)(a0 + 0xC), 1);
+    }
+    *(void * *)(a0 + 0xC) = func_0022D670(*(void * *)(*(u8 **)(*(u8 **)(g + 0x8) + 0x1C) + 0xAC), 0.0f);
+    if (*(void * *)(a0 + 0x40) != 0) {
+        func_0022D0E0(*(void * *)(a0 + 0x40), 1);
+    }
+    *(void * *)(a0 + 0x40) = func_0022D670(*(void * *)(*(u8 **)(*(u8 **)(g + 0x8) + 0x1C) + 0x2C), 0.0f);
+    if (*(void * *)(a0 + 0x44) != 0) {
+        func_0022D0E0(*(void * *)(a0 + 0x44), 1);
+    }
+    *(void * *)(a0 + 0x44) = func_0022D670(*(void * *)(*(u8 **)(*(u8 **)(g + 0x8) + 0x1C) + 0x38), 0.0f);
+    if (*(void * *)(a0 + 0x48) != 0) {
+        func_0022D0E0(*(void * *)(a0 + 0x48), 1);
+    }
+    *(void * *)(a0 + 0x48) = func_0022D860(*(void * *)(*(u8 **)(*(u8 **)(g + 0x8) + 0x14) + 0x10), 0.0f);
+    if (*(void * *)(a0 + 0x4C) != 0) {
+        func_0022D0E0(*(void * *)(a0 + 0x4C), 1);
+        *(void * *)(a0 + 0x4C) = 0;
+    }
+    if (*(void * *)(a0 + 0x50) != 0) {
+        func_0022D0E0(*(void * *)(a0 + 0x50), 1);
+    }
+    *(void * *)(a0 + 0x50) = func_0022D670(*(void * *)(*(u8 **)(*(u8 **)(g + 0x8) + 0x1C) + 0x9C), 0.0f);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_csmodel", func_002B7C40);
 void func_002B7DC0(u8 *s0) {
     s32 s2;

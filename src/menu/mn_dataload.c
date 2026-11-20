@@ -235,8 +235,130 @@ void func_002667D0(u8 *a0) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002667D0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_002668F0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266AC0);
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern s32 func_0022D670(s32, f32);
+extern s32 func_0022D0E0(s32, s32);
+
+void func_002668F0(u8 *a0) {
+    s32 m;
+    m = *(s32 *)(a0 + 0x4);
+    D_00470704 = m;
+    D_0047070C = 0x1000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x1000);
+    D_00470238 = 0;
+    if (*(s32 *)(a0 + 0x54) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x54), 1);
+    }
+    *(s32 *)(a0 + 0x54) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0xF8), 0.0f);
+    if (*(s32 *)(a0 + 0x58) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x58), 1);
+    }
+    *(s32 *)(a0 + 0x58) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0x11C), 0.0f);
+    if (*(s32 *)(a0 + 0x88) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x88), 1);
+    }
+    *(s32 *)(a0 + 0x88) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0x144), 0.0f);
+    m = *(s32 *)(a0 + 0x4);
+    D_00470704 = m;
+    D_0047070C = 0x1000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x1000);
+    D_00470238 = 0;
+    if (*(s32 *)(a0 + 0x80) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x80), 1);
+    }
+    *(s32 *)(a0 + 0x80) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0x104), 0.0f);
+    if (*(s32 *)(a0 + 0x84) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x84), 1);
+    }
+    *(s32 *)(a0 + 0x84) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0x110), 0.0f);
+    m = *(s32 *)(a0 + 0x4);
+    D_00470704 = m;
+    D_0047070C = 0x1000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x1000);
+    D_00470238 = 0;
+    if (*(s32 *)(a0 + 0x4C) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x4C), 1);
+    }
+    *(s32 *)(a0 + 0x4C) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0xAC), 0.0f);
+    if (*(s32 *)(a0 + 0x50) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x50), 1);
+    }
+    *(s32 *)(a0 + 0x50) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0xB8), 0.0f);
+    *(s32 *)(a0 + 0x9C) = 0;
+    *(s16 *)(a0 + 0x94) = 5;
+}
+extern s32 D_00470704;
+extern s32 D_0047070C;
+extern s32 D_00470708;
+extern s32 D_00470238;
+extern void amModel_SetCurrent(s32, s32);
+extern s32 func_0022D670(s32, f32);
+extern s32 func_0022D0E0(s32, s32);
+
+void func_00266AC0(u8 *a0) {
+    s32 m;
+    m = *(s32 *)(a0 + 0x4);
+    D_00470704 = m;
+    D_0047070C = 0x1000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x1000);
+    D_00470238 = 0;
+    if (*(s32 *)(a0 + 0x54) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x54), 1);
+    }
+    *(s32 *)(a0 + 0x54) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0xF8), 0.0f);
+    if (*(s32 *)(a0 + 0x58) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x58), 1);
+    }
+    *(s32 *)(a0 + 0x58) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0x11C), 0.0f);
+    if (*(s32 *)(a0 + 0x7C) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x7C), 1);
+    }
+    *(s32 *)(a0 + 0x7C) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0xEC), 0.0f);
+    if (*(s32 *)(a0 + 0x88) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x88), 1);
+    }
+    *(s32 *)(a0 + 0x88) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0x144), 0.0f);
+    m = *(s32 *)(a0 + 0x4);
+    D_00470704 = m;
+    D_0047070C = 0x1000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x1000);
+    D_00470238 = 0;
+    if (*(s32 *)(a0 + 0x80) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x80), 1);
+    }
+    *(s32 *)(a0 + 0x80) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0x104), 0.0f);
+    if (*(s32 *)(a0 + 0x84) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x84), 1);
+    }
+    *(s32 *)(a0 + 0x84) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0x110), 0.0f);
+    m = *(s32 *)(a0 + 0x4);
+    D_00470704 = m;
+    D_0047070C = 0x1000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x1000);
+    D_00470238 = 0;
+    if (*(s32 *)(a0 + 0x4C) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x4C), 1);
+    }
+    *(s32 *)(a0 + 0x4C) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0xAC), 0.0f);
+    if (*(s32 *)(a0 + 0x50) != 0) {
+        func_0022D0E0(*(s32 *)(a0 + 0x50), 1);
+    }
+    *(s32 *)(a0 + 0x50) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0xB8), 0.0f);
+    *(s32 *)(a0 + 0x9C) = 0;
+    *(s16 *)(a0 + 0x94) = 4;
+    Scene_Request(4, 1);
+    Scene_FadeTo(10, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_dataload", func_00266CD0);
 void func_00266EC0(u8 *arg0) {
     s32 temp_a0;
