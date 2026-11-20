@@ -109,6 +109,7 @@ def main():
     print("cluster sizes:", dict(sorted(hist.items())))
     out = [[dict(name=F[x][0], addr=f"0x{x:08X}", size=F[x][1]) for x in v] for v in cl]
     p = ROOT / a.out
+    p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(out, indent=1))
     for v in cl[:12]:
         print(len(v), " ".join(f"{F[x][0]}({F[x][1]:#x})" for x in v[:8]))
