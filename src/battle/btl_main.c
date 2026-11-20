@@ -9469,7 +9469,48 @@ s32 func_001C8780(Fighter *f, s32 i) {
     return r;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C8780);
+extern s32 func_001CAA30(s32);
+
+typedef struct ItemSlot_001C8780 {
+    s32 unk0;
+    u8 pad4[0x14 - 4];
+    void *obj;
+} ItemSlot_001C8780;
+
+typedef struct ObjSub_001C8780 {
+    u8 pad0[4];
+    s16 kind;
+} ObjSub_001C8780;
+
+s32 func_001C8780(Fighter *f, s32 i) {
+    s32 a0;
+    s32 r;
+    ItemSlot_001C8780 *slot;
+    ObjSub_001C8780 *obj;
+
+    a0 = *(s32 *)((u8 *)(i * 4) + (u32)f + 0x1DB8);
+    if (a0 == 0) {
+        a0 = 1;
+    } else {
+        a0 = func_001CAA30(a0) ? 2 : 0;
+    }
+    if (a0 == 0) {
+        return 0;
+    }
+
+    slot = (ItemSlot_001C8780 *)((u8 *)f + i * 28 + 0x1DF8);
+    if (slot->unk0 == 0 && (obj = (ObjSub_001C8780 *)slot->obj) != NULL) {
+        r = (obj->kind == 3) ? 2 : 0;
+    } else {
+        r = 1;
+    }
+
+    if (r == 0) {
+        return 0;
+    }
+
+    return (r < a0) ? a0 : r;
+}
 #if 0
 // differs: 82 of 83 differ: frame 0x60 against 0x50 and the registers of f, i and the slot pointer are permuted (the original keeps the slot pointer in s0 and the index in s3)
 s32 func_001C8860(Fighter *f, s32 i) {
