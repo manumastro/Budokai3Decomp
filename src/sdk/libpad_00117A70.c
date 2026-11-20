@@ -51,7 +51,43 @@ int func_00117A70_x00117A70(int param)
         return 0;
     return rpc->slot;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libpad_00117A70", func_00117AD8);
+extern u32 D_00478B80_x00117AD8[] __asm__("D_00478B80");
+extern u8 D_00478940_x00117AD8[] __asm__("D_00478940");
+extern void *D_003EDD08_x00117AD8 __asm__("D_003EDD08");
+extern int D_00478C00_x00117AD8 __asm__("D_00478C00");
+int DI_x00117AD8(void) __asm__("DI");
+int EI_x00117AD8(void) __asm__("EI");
+int sceSifCallRpc_x00117AD8(void *, unsigned int, unsigned int, void *, int, void *, int, void *, void *) __asm__("sceSifCallRpc");
+void *func_00117AD8_x00117AD8(void *cb) __asm__("func_00117AD8");
+void *func_00117AD8_x00117AD8(void *cb)
+{
+    void *old;
+    u32 *p;
+    int intr;
+
+    old = D_003EDD08_x00117AD8;
+    if (cb == 0) {
+        p = D_00478B80_x00117AD8;
+        p[0] = 0x18;
+        D_003EDD08_x00117AD8 = 0;
+        p[1] = 0;
+        while (sceSifCallRpc_x00117AD8(D_00478940_x00117AD8, 1, 0, p, 0x80, p, 0x80, 0, 0) < 0);
+        return old;
+    }
+    if (old == 0) {
+        p = D_00478B80_x00117AD8;
+        p[0] = 0x18;
+        p[1] = 1;
+        while (sceSifCallRpc_x00117AD8(D_00478940_x00117AD8, 1, 0, p, 0x80, p, 0x80, 0, 0) < 0);
+    }
+    intr = DI_x00117AD8();
+    __asm__ volatile("sw $28, %0" : "=m"(D_00478C00_x00117AD8));
+    D_003EDD08_x00117AD8 = cb;
+    if (intr == 1) {
+        EI_x00117AD8();
+    }
+    return old;
+}
 s32 func_00117C00(s32 arg0) {
     D_003EDD0C = arg0;
     return 1;
