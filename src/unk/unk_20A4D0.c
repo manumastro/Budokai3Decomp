@@ -3464,6 +3464,137 @@ void func_00212730(u8 *s) {
         }
     }
 }
+// gc-park func_002129B0
+#if 0
+// differs: s16 extension of k doubled at the second func_00215320 call after the VU0 asm copy
+void func_002114A0(u8 *a);
+void func_00211AF0(u8 *a);
+void func_00212600(u8 *p);
+void func_0020F870(s32);
+void func_0020D290(u8 *o, u8 *b, s32 mode, f32 f);
+void func_002129B0(u8 *s) {
+    s32 k = *(s32 *)(*(u8 **)(s + 0x6C) + 0x1350);
+    u8 *v = func_00215320((s16)k, *(s16 *)(s + 0x50));
+    u8 *q;
+    u8 *s1;
+    u8 *m;
+
+    if (v == 0) {
+        return;
+    }
+    *(void **)(v + 0x8) = (void *)func_002114A0;
+    *(s32 *)(v + 0xC) = 0;
+    if (*(f32 *)(s + 0x84)) {
+        *(f32 *)(v + 0x18) = *(f32 *)(s + 0x84);
+    } else {
+        *(f32 *)(v + 0x18) = 100.0f;
+    }
+    q = v + 0x20;
+    memset(q, 0, 0x50);
+    s1 = D_00568C90 + *(s16 *)(s + 0x90) * 0x2140;
+    func_0020F870(*(s16 *)(s + 0x90));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(s1 + 0x10), "r"(s));
+    *(s32 *)(q + 0x3C) = *(s32 *)(s + 0x78);
+    *(s16 *)(q + 0x46) = *(s16 *)(s + 0x90);
+    *(s16 *)(q + 0x48) = *(s16 *)(s + 0x5A);
+    *(s16 *)(q + 0x4A) = *(s16 *)(s + 0x5C);
+    *(s32 *)(q + 0x2C) = *(s32 *)(s + 0x74);
+    v = func_00215320((s16)k, *(s16 *)(s + 0x50));
+    if (v != 0) {
+        s16 kind;
+        s32 r;
+        s32 f;
+
+        *(void **)(v + 0x8) = (void *)func_00211AF0;
+        *(void **)(v + 0xC) = (void *)func_00212600;
+        q = v + 0x20;
+        *(f32 *)(v + 0x18) = *(f32 *)(s + 0x84);
+        memset(q, 0, 0x50);
+        kind = *(s16 *)(s + 0x50);
+        m = *(u8 **)(*(u8 **)(s + 0x6C) + 0x1350);
+        r = func_0020B020(m, *(s16 *)(s + 0x96), *(s16 *)(s + 0xA2));
+        if (r != 0) {
+            switch (kind) {
+            case 1:
+                if (m != 0) {
+                    f = 0x4000020;
+                } else {
+                    f = 0x4000010;
+                }
+                break;
+            case 2:
+                if (m != 0) {
+                    f = 0x4000008;
+                } else {
+                    f = 0x4000004;
+                }
+                break;
+            case 4:
+                if (m != 0) {
+                    f = 0x400020;
+                } else {
+                    f = 0x400010;
+                }
+                break;
+            case 8:
+                f = 0x400008;
+                break;
+            case 0x10:
+                f = 0x4000002;
+                break;
+            case 0x400:
+                f = 0x4000040;
+                break;
+            case 0x800:
+                if (m != 0) {
+                    f = 0x4000100;
+                } else {
+                    f = 0x4000080;
+                }
+                break;
+            default:
+                f = 0;
+                break;
+            }
+            *(s32 *)(v + 0x10) = func_00209540(r, f, 0);
+        }
+        m = *(u8 **)(*(u8 **)(s + 0x6C) + 0x1350);
+        *(s32 *)(q + 0x20) = func_0020B020(m, *(s16 *)(s + 0x94), *(s16 *)(s + 0xA0));
+        *(s32 *)(q + 0x28) = func_0020AD30((s32)m, *(s16 *)(s + 0x94), *(s16 *)(s + 0xA0));
+        if (*(s16 *)(s + 0xA4) > 0) {
+            *(s32 *)(q + 0x24) = func_0020AE80(m, *(s16 *)(s + 0x98), *(s16 *)(s + 0xA4));
+        } else {
+            *(s32 *)(q + 0x24) = 0;
+        }
+        if (*(s32 *)(v + 0x10) != 0) {
+            if (*(s32 *)(s + 0x74) & 0x40) {
+                func_0020D290(s1, *(u8 **)(*(u8 **)(s + 0x6C) + 0x1354), *(s32 *)(s + 0x78), *(f32 *)(s1 + 0x18));
+            } else {
+                func_0020D290(s1, *(u8 **)(s + 0x6C), *(s32 *)(s + 0x78), *(f32 *)(s1 + 0x18));
+            }
+            m = D_00568C90 + *(s16 *)(s + 0x90) * 0x2140 + 0x40;
+            func_0013B160(m);
+            __asm__ volatile (
+                "lqc2 $vf31, 0(%1)\n"
+                "sqc2 $vf28, 0(%0)\n"
+                "sqc2 $vf29, 0x10(%0)\n"
+                "sqc2 $vf30, 0x20(%0)\n"
+                "sqc2 $vf31, 0x30(%0)\n"
+                "vmove.xyzw $vf28, $vf24\n"
+                "vmove.xyzw $vf29, $vf25\n"
+                "vmove.xyzw $vf30, $vf26\n"
+                "vmove.xyzw $vf31, $vf27\n"
+                : : "r"(m), "r"(s1) : "memory");
+            func_00141CF0(s1 + 0x40, s + 0x40, s1);
+            *(s16 *)(q + 0x46) = *(s16 *)(s + 0x90);
+            *(s16 *)(q + 0x48) = *(s16 *)(s + 0x5A);
+            *(s16 *)(q + 0x4A) = *(s16 *)(s + 0x5C);
+            *(s32 *)(q + 0x34) = *(s32 *)(s + 0x70);
+            *(s16 *)(q + 0x44) = *(s32 *)(s + 0x68);
+        }
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002129B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212DA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00213180);

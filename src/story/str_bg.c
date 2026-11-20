@@ -164,7 +164,8 @@ void func_0028EC10(char *a0, char *a1, s32 a2, s32 a3) {
     *(s32 *)(a0 + 0x40) = Q[5];
     *(u16 *)(a0 + 0x30) = (*(u16 *)(a0 + 0x30) & -3) | (a3 & 2);
 }
-void func_0028EC50(void *p, s32 a1, s32 a2, s32 a3, s32 t0, s32 t1) {
+/* Sets up a background item (also expanded inline in func_0028EC80 and func_0028EE90). */
+static inline void StrBg_InitItem(void *p, s32 a1, s32 a2, s32 a3, s32 t0, s32 t1) {
     *(u16 *)((char *)p + 0x30) = t0;
     *(s32 *)((char *)p + 0x34) = a2;
     *(s32 *)((char *)p + 0x38) = a3;
@@ -175,6 +176,49 @@ void func_0028EC50(void *p, s32 a1, s32 a2, s32 a3, s32 t0, s32 t1) {
     *(s32 *)((char *)p + 0x4C) = 0x3F800000;
     *(s32 *)((char *)p + 0x50) = 0;
 }
+void func_0028EC50(void *p, s32 a1, s32 a2, s32 a3, s32 t0, s32 t1) {
+    StrBg_InitItem(p, a1, a2, a3, t0, t1);
+}
+// gc-park func_0028EC80
+#if 0
+// differs: 35 of 132: base/f14 saved registers swapped (s7/s8), the -1 compare register and the tail load order
+extern void *amTask_Create(void *func, void *func2, s32 prio, s32 f10, s32 f14, char *name);
+extern void func_0028E790(void);
+extern char D_0046BAC0[];
+void func_0028EC80(u8 **tasks, u8 **res, s32 *tbl, s32 *objs, s8 *p, s32 prio, s32 f14, u8 *base) {
+    u8 *t;
+    u8 **slot;
+    s32 v;
+    s32 old;
+    s8 i;
+
+    while ((i = p[0]) != -1) {
+        slot = &tasks[i];
+        t = *slot;
+        if (t == NULL) {
+            t = amTask_Create(func_0028E790, NULL, prio + i, 2, f14, D_0046BAC0);
+            *slot = t;
+        } else {
+            t = *slot;
+        }
+        if (objs[*(s16 *)(p + 2)] != 0) {
+            func_0022D0E0(objs[*(s16 *)(p + 2)], 1);
+        }
+        v = *(s16 *)(p + 4);
+        if (v & 0x8000) {
+            objs[*(s16 *)(p + 2)] = func_0022D860(((s32 *)*(s32 *)(res[p[1]] + 0x14))[v & 0x7FFF], 0.0f);
+        } else {
+            objs[*(s16 *)(p + 2)] = func_0022D670(((s32 *)*(s32 *)(res[p[1]] + 0x1C))[v], 0.0f);
+        }
+        old = *(s32 *)(t + 0x40);
+        StrBg_InitItem(t, (s32)&objs[*(s16 *)(p + 2)], tbl[p[1]], (s32)(base + (p[1] << 16)), *(u16 *)(t + 0x30), *(s32 *)(t + 0x44));
+        *(s32 *)(t + 0x40) = old;
+        *(u8 **)(t + 0x48) = res[p[1]];
+        *(s16 *)(t + 0x32) = *(s16 *)(p + 6);
+        p += 8;
+    }
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EC80);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028EE90);
 INCLUDE_ASM("asm/nonmatchings/story/str_bg", func_0028F090);

@@ -454,15 +454,15 @@ s32 Scr_CmdObjVecCall4(ScrCtx *ctx, ScrCmd *cmd) {
     func_0020E620(id, &v, n);
     return 1;
 }
-/* differs: 16 of 76: the timer part matches; the dispatch keeps p->f18 in $a3 and the base in $a1 (the original: $a2 and $a0). */
-#if 0
 extern void func_0020E730(s32, void *, s32);
 
 void func_0025DCA0(void *task) {
     Obj30 *p = (Obj30 *)((u8 *)task + 0x30);
+    u32 k;
     f32 d;
     s32 busy = gBattle != NULL ? gBattle->f88EC : 0;
     s32 base;
+    u8 *row;
 
     if (busy != 0) {
         return;
@@ -475,14 +475,14 @@ void func_0025DCA0(void *task) {
         }
     }
     base = (s32)gBattle->f8934[p->f10];
+    k = (p->f18 * 3) << 2;
+    row = (u8 *)base + (k + p->f18) * 128 + 0x650;
     if (p->f18 == 1) {
-        func_0020E730(p->f0, (u8 *)base + ((((p->f18 * 3) << 2) + p->f18)) * 128 + 0x650, p->f14);
+        func_0020E730(p->f0, row, p->f14);
     } else {
         func_0020E7D0(p->f0, (void *)base, p->f14);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025DCA0);
 extern void func_0025DCA0();
 extern void func_0025DF20();
 
