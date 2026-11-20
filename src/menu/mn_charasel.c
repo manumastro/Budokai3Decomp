@@ -312,10 +312,200 @@ void func_0027EE70(u8 *a0) {
     }
     *(s32 *)(a0 + 0x34) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)(g + 0x8) + 0x14) + 0x10), 0.0f);
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027F070);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027F290);
+extern u16 D_00492FCE[];
+extern u16 D_00493086[];
+extern f32 D_004E0614[];
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3();
+extern void func_0027DB20(u8 *);
+extern void VsMode_Load(void);
+extern void PracMode_Load(void);
+extern void func_0027F8B0(u8 *);
+
+void func_0027F070(u8 *a0) {
+    s32 i;
+    u8 *s2;
+    u8 *s4;
+    u8 *s3;
+    s8 r;
+    u8 *s1;
+    u16 pad;
+
+    s1 = a0;
+    s2 = *(u8 **)(a0 + 0x38);
+    pad = D_00492FCE[0] | D_00493086[0];
+    r = func_0027DAB0(*(u8 **)s2);
+    if (r == 4 && (pad & 0x1000)) {
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 5, 0);
+        }
+        i = 0;
+        s3 = s2;
+        do {
+            func_0027DB20(*(u8 **)s3);
+            i++;
+            s3 += 4;
+        } while (i < 2);
+        s4 = s1 + 0x30;
+        s3 = *(u8 **)(s4 + 8);
+        func_0027E9C0(s3);
+        *(f32 *)(s3 + 0x40) = 60.0f;
+        switch (*(s8 *)(s4 + 4)) {
+        case 0:
+            VsMode_Load();
+            break;
+        case 1:
+            PracMode_Load();
+            break;
+        }
+        *(void **)(s1 + 0x1C) = ((void *)func_0027F8B0 == 0) ? 0 : (void *)func_0027F8B0;
+    }
+    if (func_0027DAA0(*(u8 **)s2) == 1) {
+        s1 = *(u8 **)(*(u8 **)(s2 + 4) + 0x30);
+        if (s1[6] & 8) {
+            s1[6] &= 0xF7;
+            func_0027DAC0(*(u8 **)(s2 + 4), 4);
+        }
+        if (func_0027DAB0(*(u8 **)(s2 + 4)) == 4 && (pad & 0x1000)) {
+            SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+            if (D_004E0614[0] > 0.0f) {
+                SoundRpc_Send3(0, 0, 5, 0);
+            }
+            s1[6] |= 8;
+            func_0027DAC0(*(u8 **)s2, 4);
+        }
+    }
+}
+extern u16 D_00493086[];
+extern f32 D_004E0614[];
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3();
+extern void func_0027DB20(u8 *);
+extern void VsMode_Load(void);
+extern void PracMode_Load(void);
+extern void func_0027F8B0(u8 *);
+
+void func_0027F290(u8 *a0) {
+    s32 i;
+    u8 *s2;
+    u8 *s4;
+    u8 *s3;
+    s8 r;
+    u8 *s1;
+    u16 pad;
+
+    s1 = a0;
+    s2 = *(u8 **)(a0 + 0x38);
+    r = func_0027DAB0(*(u8 **)(s2 + 4));
+    pad = D_00493086[0];
+    if (r == 4 && (pad & 0x1000)) {
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 5, 0);
+        }
+        i = 0;
+        s3 = s2;
+        do {
+            func_0027DB20(*(u8 **)s3);
+            i++;
+            s3 += 4;
+        } while (i < 2);
+        s4 = s1 + 0x30;
+        s3 = *(u8 **)(s4 + 8);
+        func_0027E9C0(s3);
+        *(f32 *)(s3 + 0x40) = 60.0f;
+        switch (*(s8 *)(s4 + 4)) {
+        case 0:
+            VsMode_Load();
+            break;
+        case 1:
+            PracMode_Load();
+            break;
+        }
+        *(void **)(s1 + 0x1C) = ((void *)func_0027F8B0 == 0) ? 0 : (void *)func_0027F8B0;
+    }
+    if (func_0027DAA0(*(u8 **)(s2 + 4)) == 1) {
+        s1 = *(u8 **)(*(u8 **)s2 + 0x30);
+        if (s1[6] & 8) {
+            s1[6] &= 0xF7;
+            func_0027DAC0(*(u8 **)s2, 4);
+        }
+        if (func_0027DAB0(*(u8 **)s2) == 4 && (pad & 0x1000)) {
+            SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+            if (D_004E0614[0] > 0.0f) {
+                SoundRpc_Send3(0, 0, 5, 0);
+            }
+            s1[6] |= 8;
+            func_0027DAC0(*(u8 **)(s2 + 4), 4);
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027F4A0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027F680);
+extern u16 D_00492FCE[];
+extern f32 D_004E0614[];
+extern void SoundRpc_SetVolume(s32, s32, f32);
+extern void SoundRpc_Send3();
+extern void func_0027DB20(u8 *);
+extern void VsMode_Load(void);
+extern void PracMode_Load(void);
+extern void func_0027F8B0(u8 *);
+
+void func_0027F680(u8 *a0) {
+    s32 i;
+    u8 *s2;
+    u8 *s4;
+    u8 *s3;
+    s8 r;
+    u8 *s1;
+    u16 pad;
+
+    s1 = a0;
+    s2 = *(u8 **)(a0 + 0x38);
+    r = func_0027DAB0(*(u8 **)s2);
+    pad = D_00492FCE[0];
+    if (r == 4 && (pad & 0x1000)) {
+        SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+        if (D_004E0614[0] > 0.0f) {
+            SoundRpc_Send3(0, 0, 5, 0);
+        }
+        i = 0;
+        s3 = s2;
+        do {
+            func_0027DB20(*(u8 **)s3);
+            i++;
+            s3 += 4;
+        } while (i < 2);
+        s4 = s1 + 0x30;
+        s3 = *(u8 **)(s4 + 8);
+        func_0027E9C0(s3);
+        *(f32 *)(s3 + 0x40) = 60.0f;
+        switch (*(s8 *)(s4 + 4)) {
+        case 0:
+            VsMode_Load();
+            break;
+        case 1:
+            PracMode_Load();
+            break;
+        }
+        *(void **)(s1 + 0x1C) = ((void *)func_0027F8B0 == 0) ? 0 : (void *)func_0027F8B0;
+    }
+    if (func_0027DAA0(*(u8 **)s2) == 1) {
+        s1 = *(u8 **)(*(u8 **)(s2 + 4) + 0x30);
+        if (s1[6] & 8) {
+            s1[6] &= 0xF7;
+            func_0027DAC0(*(u8 **)(s2 + 4), 4);
+        }
+        if (func_0027DAB0(*(u8 **)(s2 + 4)) == 4 && (pad & 0x1000)) {
+            SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+            if (D_004E0614[0] > 0.0f) {
+                SoundRpc_Send3(0, 0, 5, 0);
+            }
+            s1[6] |= 8;
+            func_0027DAC0(*(u8 **)s2, 4);
+        }
+    }
+}
 extern void A2d_FlushList(void);
 extern void amCamera_Init(void *);
 extern void amCdFs_ReleaseCache(void *);
