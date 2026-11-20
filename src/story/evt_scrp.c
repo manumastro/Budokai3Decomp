@@ -2421,8 +2421,6 @@ void func_002A7400(struct Task *a0) {
         *(s32 *)((char *)a0 + 0x1C) = (fn == 0) ? 0 : (s32)fn;
     }
 }
-#if 0
-// func_002A75C0: 60 of 71 differ on registers: the original keeps the Task in s1, gEvtWork in s0 and the value in s2; ours puts the Task in s2 and gEvtWork in s1 (declaration orders tried, none changed it); the float field is reloaded after the call as the original does
 extern void func_00133B50(s32, s32);
 extern void A2d_SetMode(s32);
 extern s16 D_004E05F8[];
@@ -2436,41 +2434,38 @@ extern void func_0022C060(s32, f32);
 extern void func_0022CD00(s32);
 extern void A2d_FlushList(void);
 extern f32 func_002B06A0(void);
-extern void func_0022BC30(s32, f32);
-extern void func_002A7400(void);
-void func_002A75C0(Task *a0) {
-    s32 *s0 = gEvtWork;
-    s32 s2;
-    f32 g;
-    char *p1;
-    char *p2;
+extern s32 func_0022BC30(s32, f32);
+
+void func_002A75C0(Task *arg0) {
+    u8 *w = (u8 *)gEvtWork;
+    s32 m;
+
     func_00133B50(0, 0);
     A2d_SetMode(D_004E05F8[0]);
-    D_00470704 = s0[0x78 / 4];
-    D_0047070C = 0x890100;
-    amModel_SetCurrent(s0[0x78 / 4], 0x890100);
-    D_00470708 = 0;
+    {
+        s32 mdl = *(s32 *)(w + 0x78);
+        s32 fl = 0x890100;
+        D_00470704 = mdl;
+        D_0047070C = fl;
+        D_00470708 = 0;
+        amModel_SetCurrent(mdl, fl);
+    }
     D_00470238 = 0;
-    s2 = s0[0x80 / 4];
+    m = *(s32 *)(w + 0x80);
     func_00228430(0);
     func_00228430(0);
-    func_0022C060(s2, 1.0f);
+    func_0022C060(m, 1.0f);
     func_00228410();
-    func_0022CD00(s2);
+    func_0022CD00(m);
     func_00228410();
     A2d_FlushList();
-    g = func_002B06A0();
-    *(f32 *)((char *)s0 + 0x98) = *(f32 *)((char *)s0 + 0x98) + g;
-    p1 = (char *)*(s32 *)((char *)s0 + 0x74);
-    p2 = (char *)*(s32 *)(p1 + 0x1C);
-    func_0022BC30(*(s32 *)(p2 + (s0[0x90 / 4] << 2)), *(f32 *)((char *)s0 + 0x98));
-    if (!(*(f32 *)((char *)s0 + 0x98) < 30.0f)) {
-        s0[0x98 / 4] = 0;
-        TASK_SET_FUNC(a0, func_002A7400);
+    *(f32 *)(w + 0x98) = *(f32 *)(w + 0x98) + func_002B06A0();
+    func_0022BC30(((s32 *)*(s32 *)(*(u8 **)(w + 0x74) + 0x1C))[*(s32 *)(w + 0x90)], *(f32 *)(w + 0x98));
+    if (!(*(f32 *)(w + 0x98) < 30.0f)) {
+        *(f32 *)(w + 0x98) = 0.0f;
+        TASK_SET_FUNC(arg0, func_002A7400);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A75C0);
 extern s32 D_00470704;
 extern s32 D_00470708;
 extern s32 D_0047070C;
@@ -2547,48 +2542,42 @@ extern void A2d_FlushList(void);
 extern s32 Save_GetState(void);
 extern void Option_ProcessTable(void);
 extern void func_002A76E0(void);
-#if 0
-// func_002A7820: 0x100 bytes against 0x120: the Save_GetState tests and the function-address store (lui/addiu/bnez/move) are laid out differently, the Option_ProcessTable block sits elsewhere; goto and if forms tried
-void func_002A7820(Task *a0) {
-    s32 *s0 = gEvtWork;
-    s32 s2;
-    s32 st;
+void func_002A7820(Task *arg0) {
+    u8 *w = (u8 *)gEvtWork;
+    s32 m;
+
     func_00133B50(0, 0);
     A2d_SetMode(D_004E05F8[0]);
-    st = s0[0x78 / 4];
-    D_00470704 = st;
-    D_0047070C = 0x890000;
-    amModel_SetCurrent(st, 0x890000);
-    D_00470708 = 0;
+    {
+        s32 mdl = *(s32 *)(w + 0x78);
+        s32 fl = 0x890000;
+        D_00470704 = mdl;
+        D_0047070C = fl;
+        D_00470708 = 0;
+        amModel_SetCurrent(mdl, fl);
+    }
     D_00470238 = 0;
-    s2 = s0[0x80 / 4];
+    m = *(s32 *)(w + 0x80);
     func_00228430(0);
     func_00228430(0);
-    func_0022C060(s2, 1.0f);
+    func_0022C060(m, 1.0f);
     func_00228410();
-    func_0022CD00(s2);
+    func_0022CD00(m);
     func_00228410();
     A2d_FlushList();
-    st = Save_GetState();
-    if (st == 3) {
-        goto L900;
-    }
-    if (st == 5) {
-        goto L900;
-    }
-    if (st != 4) {
+    switch (Save_GetState()) {
+    case 4:
+        Option_ProcessTable();
+        break;
+    case 5:
+    case 3:
+        break;
+    default:
         return;
     }
-    Option_ProcessTable();
-L900:
-    {
-        void *f = (void *)func_002A76E0;
-        ((s32 *)a0)[0x1C / 4] = (s32)((f == 0) ? 0 : f);
-    }
-    s0[0x98 / 4] = 0;
+    TASK_SET_FUNC(arg0, func_002A76E0);
+    *(s32 *)(w + 0x98) = 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7820);
 INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A7940);
 extern s32 D_004700A0;
 extern s8 D_004708D4;
