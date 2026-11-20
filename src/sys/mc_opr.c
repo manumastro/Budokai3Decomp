@@ -162,8 +162,49 @@ s32 func_00288AF0(u8 *arg0, s32 arg1, char *arg2) {
 }
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288BF0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288E70);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00289210);
-extern void func_00289210(void);
+extern char D_0046B9A0[];
+extern u8 D_005AA3C0[];
+extern s32 D_00470838;
+s32 amMc_CheckFile(s32, s32, void *, void *, s32);
+void func_00289380(u8 *arg0);
+void func_00288E70(u8 *arg0);
+void func_00288BF0(u8 *arg0);
+
+void func_00289210(u8 *arg0) {
+    switch (gMcState) {
+    case 2:
+        break;
+    case 3:
+        gMcResult = -5;
+        break;
+    default:
+        return;
+    }
+
+    switch (gMcResult) {
+    case 0:
+        if (((s32 *)&D_00470838)[D_0047084C] != 0) {
+            break;
+        }
+    case -1:
+    case -2:
+        if (amMc_CheckFile(D_0047084C, 0, D_0046B9A0, D_005AA3C0, 6) != 0) {
+            break;
+        }
+        ((s32 *)&D_00470838)[D_0047084C] = 2;
+        MC_SETFUNC(arg0, func_00288E70);
+        return;
+    case -5:
+    default:
+        ((s32 *)&D_00470838)[D_0047084C] = 1;
+        func_00288870(5);
+        MC_SETFUNC(arg0, func_0028DDF0);
+        D_00470894 = (s32)func_00288BF0;
+        D_00470854 = 1;
+        return;
+    }
+    MC_SETFUNC(arg0, func_00289380);
+}
 void func_00289380(u8 *arg0) {
     void (*var_v1)(u8 *);
 
