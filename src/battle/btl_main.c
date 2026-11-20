@@ -739,7 +739,40 @@ s32 func_001AC990(void) {
     return 0;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC990);
+typedef struct BattleAC990 {
+    u8 unk0000[0x88D8];
+    s32 count;
+    u8 pad88DC[0x88FC - 0x88DC];
+    s32 unk88FC;
+    s32 unk8900;
+    s32 unk8904;
+} BattleAC990;
+
+s32 func_001AC990(void) {
+    BattleAC990 *bw;
+    u8 *base;
+    s32 i;
+    u8 *p;
+
+    bw = (BattleAC990 *)gBattle;
+    base = (u8 *)bw + 0x830;
+    i = 0;
+    if (0 < bw->count) {
+        p = base;
+        do {
+            func_001D9480(p);
+            i++;
+            p += 0x2020;
+        } while (i < bw->count);
+    }
+    if (func_002CC4A0() == 4) {
+        bw->unk88FC = 5;
+        bw->unk8900 = 0;
+        bw->unk8904 = *(s16 *)((u8 *)(bw->unk8900 * 0x2020) + (u32)base + 0x13A4);
+        return 1;
+    }
+    return 0;
+}
 extern void func_001D9480(void *);
 /* The battle work as a view: the fields at 0x88D8 and up read in place (no CSE of their addresses). */
 typedef struct BattleView2 {
