@@ -25446,7 +25446,42 @@ s32 func_0019A8F0(void) {
     func_0019AA08();
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_0019A910);
+typedef struct { unsigned char p[0x2C8]; int (*clock_get)(void *ctx, int *now, int *rate); volatile int clock_last; volatile int decoded_pos; volatile int rate; int clock_wrap; void *clock_ctx; } Tim_A910_x0019A910;
+typedef struct { unsigned char pad0[0xCC0]; Tim_A910_x0019A910 tim; } Ply_A910_x0019A910;
+int func_0019AA08_x0019A910(void *h, int *time, int *unit) __asm__("func_0019AA08");
+int func_0019A288_x0019A910(void *h) __asm__("func_0019A288");
+int func_0019A910_x0019A910(void *sfd, int *time, int *unit) __asm__("func_0019A910");
+int func_0019A910_x0019A910(void *sfd, int *time, int *unit)
+{
+    Ply_A910_x0019A910 *hn = sfd;
+    Tim_A910_x0019A910 *tim;
+    int ret;
+    int now;
+    int rate;
+    int d;
+    if (func_0019AA08_x0019A910(hn, time, unit) == 0) {
+        return 0;
+    }
+    tim = &hn->tim;
+    if (tim->clock_get == 0) {
+        *time = -2;
+        *unit = 1;
+        return 0;
+    }
+    ret = tim->clock_get(tim->clock_ctx, &now, &rate);
+    if (func_0019A288_x0019A910(hn) != 0 && tim->clock_last != -5) {
+        d = now - tim->clock_last;
+        if (d < 0) {
+            d += tim->clock_wrap + 1;
+        }
+        tim->decoded_pos += d;
+    }
+    tim->clock_last = now;
+    tim->rate = rate;
+    *time = tim->decoded_pos;
+    *unit = tim->rate;
+    return ret;
+}
 s32 func_0019AA08(u8 *arg0, s32 *arg1, s32 *arg2) {
     s32 temp_v1;
 

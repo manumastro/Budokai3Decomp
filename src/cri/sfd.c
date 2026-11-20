@@ -4859,7 +4859,37 @@ void func_0018A318_x0018A318(char **areas, int *sizes, char *base) {
         base += sizes[i];
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018A358);
+typedef struct SfdBufEnt_A358_x0018A358 { unsigned char b[0x74]; } SfdBufEnt_A358_x0018A358;
+typedef struct SfdBufInf_A358_x0018A358 { unsigned char b[0x20]; } SfdBufInf_A358_x0018A358;
+int func_0018A420_x0018A358(SfdBufInf_A358_x0018A358 *inf, char *data, int size, int extra) __asm__("func_0018A420");
+void func_0018A900_x0018A358(unsigned char *body, SfdBufInf_A358_x0018A358 *inf, SfdBufEnt_A358_x0018A358 *ent, int n) __asm__("func_0018A900");
+void func_0018A750_x0018A358(SfdBufEnt_A358_x0018A358 *ent, int state, int flag) __asm__("func_0018A750");
+int func_0018A358_x0018A358(SfdBufEnt_A358_x0018A358 *ents, char **areas, int *sizes, int index, int extra) __asm__("func_0018A358");
+int func_0018A358_x0018A358(SfdBufEnt_A358_x0018A358 *ents, char **areas, int *sizes, int index, int extra) {
+    SfdBufInf_A358_x0018A358 inf;
+    SfdBufEnt_A358_x0018A358 *ent = &ents[index];
+    unsigned char *body = ent->b + 0x10;
+    int size;
+    int state;
+    int flag;
+
+    sizes += index;
+    areas += index;
+    size = *sizes;
+    if (size == 0) {
+        flag = 0;
+        state = 4;
+    } else {
+        flag = 1;
+        state = 5;
+        if (func_0018A420_x0018A358(&inf, *areas, size, extra) == 0) {
+            return -1;
+        }
+        func_0018A900_x0018A358(body, &inf, ent, 1);
+    }
+    func_0018A750_x0018A358(ent, state, flag);
+    return 0;
+}
 s32 func_0016E120_x0018A420(s32, s32, s32) __asm__("func_0016E120");
 s32 func_0018A420_x0018A420(u8 *arg0, s32 arg1, s32 arg2, s32 arg3) __asm__("func_0018A420");
 s32 func_0018A420_x0018A420(u8 *arg0, s32 arg1, s32 arg2, s32 arg3)
@@ -7371,7 +7401,28 @@ int func_0018BEA0_x0018BEA0(unsigned char *buf, int size, int *muxRate) {
     sfcre_AnalyMuxRate_x0018BEA0(first, rest, muxRate);
     return gap;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018BF88);
+typedef struct MpsPackHd_BF88_x0018BF88 { int u0; int u1; int muxRate; } MpsPackHd_BF88_x0018BF88;
+void *func_0017B240_x0018BF88(void) __asm__("func_0017B240");
+int func_00179148_x0018BF88(void *mps, unsigned char *data, int len, int *consumed, int *flags) __asm__("func_00179148");
+void func_0017AC38_x0018BF88(void *mps, MpsPackHd_BF88_x0018BF88 *hd) __asm__("func_0017AC38");
+int func_0017B3D0_x0018BF88(void *mps) __asm__("func_0017B3D0");
+void func_0018BF88_x0018BF88(unsigned char *pack, int size, int *muxRate) __asm__("func_0018BF88");
+void func_0018BF88_x0018BF88(unsigned char *pack, int size, int *muxRate) {
+    MpsPackHd_BF88_x0018BF88 hd;
+    int consumed;
+    int flags;
+    void *mps;
+
+    mps = func_0017B240_x0018BF88();
+    if (mps != 0) {
+        func_00179148_x0018BF88(mps, pack, size, &consumed, &flags);
+        if (flags & 0x10000) {
+            func_0017AC38_x0018BF88(mps, &hd);
+            func_0017B3D0_x0018BF88(mps);
+            *muxRate = hd.muxRate;
+        }
+    }
+}
 extern s32 D_0048D7F0_x0018C020[] __asm__("D_0048D7F0");
 s32 func_0018CA88_x0018C020(s32, s32) __asm__("func_0018CA88");
 void func_0018C0D8_x0018C020(s32, s32, s32 *) __asm__("func_0018C0D8");
@@ -7940,6 +7991,8 @@ extern int m900810;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mab701_000000;
 extern int b3mab701_000001;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int ma35810;
 typedef struct SfdMpaHdr_x0018C500 {
     unsigned char layer;
     unsigned char protection;
@@ -12318,7 +12371,29 @@ s32 func_0018D430_x0018D430(s32 arg0, s32 arg1) __asm__("func_0018D430");
 s32 func_0018D430_x0018D430(s32 arg0, s32 arg1) {
     return arg1 == 0x32B8;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018D440);
+extern char *volatile D_0048E290_x0018D440 __asm__("D_0048E290");
+extern int D_00426B04_x0018D440 __asm__("D_00426B04");
+extern char D_004673D0_x0018D440[] __asm__("D_004673D0");
+void func_0018D890_x0018D440(int size) __asm__("func_0018D890");
+int func_0018D4A8_x0018D440(void *prm) __asm__("func_0018D4A8");
+void func_0018D8C0_x0018D440(void) __asm__("func_0018D8C0");
+void func_0018D8F8_x0018D440(void) __asm__("func_0018D8F8");
+int func_0018D440_x0018D440(void *prm) __asm__("func_0018D440");
+int func_0018D440_x0018D440(void *prm) {
+    int ret;
+
+    D_0048E290_x0018D440 = D_004673D0_x0018D440;
+    D_00426B04_x0018D440 = 0x32B8;
+    do { } while (0);
+    func_0018D890_x0018D440(D_00426B04_x0018D440);
+    ret = func_0018D4A8_x0018D440(prm);
+    if (ret != 0) {
+        return ret;
+    }
+    func_0018D8C0_x0018D440();
+    func_0018D8F8_x0018D440();
+    return 0;
+}
 void MEM_Copy_x0018D4A8(void *dst, void *src, int n) __asm__("func_00178BA8");
 void UTY_MemsetDword_x0018D4A8(void *dst, int value, unsigned int count) __asm__("func_00179018");
 struct SfdSj_x0018D4A8;
@@ -28433,6 +28508,8 @@ extern int b3md7a81_000001;
 extern int b3mfcc01_000000;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3m98981_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3ma3582_000000;
 typedef struct { int rate; int drop; int hour; int minute; int second; int frame; int pad18; short pad1c; short field; } SfdTC_x00191D38;
 extern int D_00467730_x00191D38[] __asm__("D_00467730");
 extern int D_004674D8_x00191D38[] __asm__("D_004674D8");
@@ -28557,6 +28634,8 @@ extern int b3mpad_1f481_00000000000000000;
 extern int md7a820;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mpad_e7002_00000000000000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mpad_a3583_00000000000000000;
 typedef struct { s32 w[8]; } B32_x00192040;
 void func_0019AE10_x00192040(void *, s32 *, s32 *) __asm__("func_0019AE10");
 void func_00192040_x00192040(u8 *a0) __asm__("func_00192040");
@@ -29004,6 +29083,8 @@ extern int b3mpad_25401_00000000000000000;
 extern int m900840;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mpad_a8902_00000000000000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mpad_d4401_00000000000000000;
 typedef struct { s32 w[8]; } B32_x00193360;
 s32 func_00192800_x00193360(void *, s32) __asm__("func_00192800");
 s32 func_001929B8_x00193360(void *, s32) __asm__("func_001929B8");
@@ -29062,6 +29143,10 @@ extern int mab7040;
 extern int me70040;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mf2101_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int ma35840;
+extern int b3ma3584_000000;
+extern int b3ma3584_000001;
 s32 func_0017EE78_x00193520() __asm__("func_0017EE78");
 s32 func_001957B8_x00193520() __asm__("func_001957B8");
 extern s32 D_00467730_x00193520 __asm__("D_00467730");
