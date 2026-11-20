@@ -4414,7 +4414,7 @@ void func_00152508(void) {
 void func_00152520(void) {
     func_0016FF58();
 }
-__asm__(".set sqrtf, func_0011F6C8");
+extern float sqrtf(float); /* func_0011F6C8: config/port_syms.ld */
 float func_0011F220_x00152538(float) __asm__("func_0011F220");
 void fn_80046D94_x00152538(int highpass_frequency, int sample_rate, short *coef1_ptr, short *coef2_ptr) __asm__("fn_80046D94");
 void fn_80046D94_x00152538(int highpass_frequency, int sample_rate, short *coef1_ptr, short *coef2_ptr) {
