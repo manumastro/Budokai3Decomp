@@ -1440,7 +1440,37 @@ s32 func_001D9B30(Fighter *c) {
 }
 #endif
 // differs: 1 instruction differs: the tail wrap's delay slot takes the head read on one path only (the original repeats the read after the join)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D9B30);
+s32 func_001D9B30(Fighter *c) {
+    s32 i;
+    s32 key;
+    s32 t;
+    s32 h;
+    s32 r;
+    s8 v;
+
+    r = 0;
+    h = (s8)c->f1964;
+    t = (s8)c->f1965;
+    i = h;
+    if (h != t) {
+        key = c->f17F4;
+        do {
+            if (*(s32 *)((char *)c + 0x18E4 + i * 4) == key) {
+                r = 1;
+                break;
+            }
+            i = (i + 1) % 32;
+        } while (i != t);
+    }
+    t = (t + 1) % 32;
+    v = (s8)h;
+    if (v == t) {
+        c->f1964 = (v + 1) % 32;
+    }
+    ((s32 *)((char *)c + 0x18E4))[(s8)c->f1965] = c->f17F4;
+    c->f1965 = t;
+    return r;
+}
 void func_001D9BF0(Fighter *c) {
     c->f1964 = 0;
     c->f1965 = 0;
