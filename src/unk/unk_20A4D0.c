@@ -2174,7 +2174,30 @@ void func_0020F5A0(u8 *a) {
 }
 // differs: 1 of 59 differ at the end: the low half of the index value is computed before the table index in this build, the original does the table index first (the same as func_0020F4D0)
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020F5A0);
+s32 amMotion_CreateFromObj(void *, s32, s32);
+void func_0020F5A0(u8 *a) {
+    s32 t = *(s16 *)(a + 0x90) * 133;
+    u8 *v = *(u8 **)(a + 0x6C);
+    u8 *s0 = D_00568C90 + (t << 6);
+    f32 one;
+    f32 m;
+    u32 k;
+    s32 hi;
+
+    *(s32 *)(s0 + 0x8C) = func_0020B020(*(u8 **)(v + 0x1350), *(s16 *)(a + 0x9A), *(s16 *)(a + 0xA6));
+    *(s32 *)(s0 + 0x9C) = amMotion_CreateFromObj(*(void **)(s0 + 0x94), 0, 0);
+    amMotion_BindAnim(*(void **)(s0 + 0x9C), 0, *(s32 *)(s0 + 0x8C));
+    k = *(s16 *)(a + 0xAC) | 0x10000;
+    *(s32 *)(s0 + 0x2100) = k;
+    *(s32 *)(s0 + 0x20FC) = 0x3F800000;
+    one = 1.0f;
+    m = -one;
+    *(f32 *)(s0 + 0x20F0) = m;
+    *(f32 *)(s0 + 0x20F4) = m;
+    k = *(s32 *)(s0 + 0x2100);
+    hi = ((s32)k >> 0x10) - 1;
+    *(f32 *)(s0 + 0x20F8) = (f32)(*(F300C **)(s0 + 0x9C))->d[hi]->e[k & 0xFFFF].v;
+}
 s32 func_0020F690(void) {
     s32 old;
 
