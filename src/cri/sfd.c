@@ -3950,7 +3950,51 @@ s32 func_00189870(u8 *arg0) {
     ADXT_Stop(**(s32 **)((u8 *)arg0 + 0x1CB4));
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00189898);
+typedef struct SfdAdxCtx_9898_x00189898 { void *adxt; unsigned char pad[0x30 - 4]; int carry; } SfdAdxCtx_9898_x00189898;
+typedef struct SfdRatio_9898_x00189898 { long num; long den; } SfdRatio_9898_x00189898;
+typedef struct SfdPly_9898_x00189898 { unsigned char pad0[0xFA0]; void *tst; unsigned char pad1[0x1CB4 - 0xFA4]; SfdAdxCtx_9898_x00189898 *ctx; } SfdPly_9898_x00189898;
+void func_001899D8_x00189898(SfdPly_9898_x00189898 *h, int mode) __asm__("func_001899D8");
+int func_00189178_x00189898(void *adxt) __asm__("func_00189178");
+int ADXT_GetSfreq_x00189898(void *adxt) __asm__("ADXT_GetSfreq");
+void func_00189A60_x00189898(SfdPly_9898_x00189898 *h, int *pos, int size) __asm__("func_00189A60");
+int func_0015FA60_x00189898(void *adxt, int at) __asm__("func_0015FA60");
+void func_0019C350_x00189898(void *tst, SfdRatio_9898_x00189898 *pair) __asm__("func_0019C350");
+int func_00189898_x00189898(SfdPly_9898_x00189898 *h, unsigned int mode) __asm__("func_00189898");
+int func_00189898_x00189898(SfdPly_9898_x00189898 *h, unsigned int mode) {
+    SfdAdxCtx_9898_x00189898 *ctx;
+    void *adxt;
+    int size;
+    int pos;
+    int at;
+    int carry;
+    SfdRatio_9898_x00189898 pair;
+
+    ctx = h->ctx;
+    adxt = ctx->adxt;
+    switch (mode) {
+    case 0:
+        ctx->carry = 0;
+        func_001899D8_x00189898(h, 0);
+        break;
+    case 1:
+        func_001899D8_x00189898(h, 1);
+        break;
+    case 2:
+        if (func_00189178_x00189898(adxt) == 0) {
+            break;
+        }
+        size = ADXT_GetSfreq_x00189898(adxt);
+        func_00189A60_x00189898(h, &pos, size);
+        at = pos + ctx->carry;
+        carry = at - func_0015FA60_x00189898(adxt, at);
+        pair.num = pos;
+        pair.den = size;
+        ctx->carry = carry;
+        func_0019C350_x00189898(&h->tst, &pair);
+        break;
+    }
+    return 0;
+}
 s32 func_00189A20_x00189988(s32, s32, s32, s32) __asm__("func_00189A20");
 void func_00189988_x00189988(u8 *arg0, s32 arg1) __asm__("func_00189988");
 void func_00189988_x00189988(u8 *arg0, s32 arg1)
@@ -28387,6 +28431,8 @@ extern int b3md7a81_000000;
 extern int b3md7a81_000001;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mfcc01_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3m98981_000000;
 typedef struct { int rate; int drop; int hour; int minute; int second; int frame; int pad18; short pad1c; short field; } SfdTC_x00191D38;
 extern int D_00467730_x00191D38[] __asm__("D_00467730");
 extern int D_004674D8_x00191D38[] __asm__("D_004674D8");

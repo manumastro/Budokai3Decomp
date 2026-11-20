@@ -6073,15 +6073,45 @@ int func_00181DB8_x00181DB8(SfhHn_x00181DB8 *hdr)
     }
     return v[1] == 3;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181E20);
+typedef struct LogEnt_E20_x00181E20 { int valid; int itemTypeThree; int hdrInfo; int compoMode; int x; } LogEnt_E20_x00181E20;
+typedef struct MwsfdPly_E20_x00181E20 { unsigned char p0[0xBC]; int logPos; unsigned char p1[0x4]; LogEnt_E20_x00181E20 log[8]; } MwsfdPly_E20_x00181E20;
+int func_00181E88_x00181E20(MwsfdPly_E20_x00181E20 *ply, int slot) __asm__("func_00181E88");
+int func_00181E20_x00181E20(MwsfdPly_E20_x00181E20 *ply) __asm__("func_00181E20");
+int func_00181E20_x00181E20(MwsfdPly_E20_x00181E20 *ply) {
+    int slot = ply->logPos % 8;
+    if (ply->log[slot].valid == 0) {
+        return 0;
+    }
+    return func_00181E88_x00181E20(ply, slot);
+}
 s32 func_00181E88(s32 arg0, s32 arg1) {
     return *(s32 *)((u8 *)((arg1 * 0x14) + arg0) + 0xCC);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181EA0);
+typedef struct LogEnt_EA0_x00181EA0 { int valid; int itemTypeThree; int hdrInfo; int compoMode; int x; } LogEnt_EA0_x00181EA0;
+typedef struct MwsfdPly_EA0_x00181EA0 { unsigned char p0[0xBC]; int logPos; unsigned char p1[0x4]; LogEnt_EA0_x00181EA0 log[8]; } MwsfdPly_EA0_x00181EA0;
+int func_00181F08_x00181EA0(MwsfdPly_EA0_x00181EA0 *ply, int slot) __asm__("func_00181F08");
+int func_00181EA0_x00181EA0(MwsfdPly_EA0_x00181EA0 *ply) __asm__("func_00181EA0");
+int func_00181EA0_x00181EA0(MwsfdPly_EA0_x00181EA0 *ply) {
+    int slot = ply->logPos % 8;
+    if (ply->log[slot].valid == 0) {
+        return 0;
+    }
+    return func_00181F08_x00181EA0(ply, slot);
+}
 s32 func_00181F08(s32 arg0, s32 arg1) {
     return *(s32 *)((u8 *)((arg1 * 0x14) + arg0) + 0xD0);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181F20);
+typedef struct LogEnt_F20_x00181F20 { int valid; int itemTypeThree; int hdrInfo; int compoMode; int x; } LogEnt_F20_x00181F20;
+typedef struct MwsfdPly_F20_x00181F20 { unsigned char p0[0xBC]; int logPos; unsigned char p1[0x4]; LogEnt_F20_x00181F20 log[8]; } MwsfdPly_F20_x00181F20;
+int func_00181F88_x00181F20(MwsfdPly_F20_x00181F20 *ply, int slot) __asm__("func_00181F88");
+int func_00181F20_x00181F20(MwsfdPly_F20_x00181F20 *ply) __asm__("func_00181F20");
+int func_00181F20_x00181F20(MwsfdPly_F20_x00181F20 *ply) {
+    int slot = ply->logPos % 8;
+    if (ply->log[slot].valid == 0) {
+        return 0;
+    }
+    return func_00181F88_x00181F20(ply, slot);
+}
 s32 func_00181F88(s32 arg0, s32 arg1) {
     return *(s32 *)((u8 *)((arg1 * 0x14) + arg0) + 0xD4);
 }
@@ -6782,6 +6812,8 @@ s32 func_00182518(void) {
     func_0018D578();
     return 0;
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m1e2010;
 extern int D_00426894_x00182538 __asm__("D_00426894");
 extern int D_00426898_x00182538 __asm__("D_00426898");
 extern int D_00484E00_x00182538 __asm__("D_00484E00");
@@ -18342,6 +18374,12 @@ extern int m42f810;
 extern int m42f811;
 extern int b3mpad_42f81_00000000000000000;
 extern int b3mpad_42f81_00000000000000001;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m1e2020;
+extern int b3mpad_1e202_00000000000000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m1f2010;
+extern int b3mpad_1f201_00000000000000000;
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo) __asm__("MWSST_Create");
 /* MWSST_Create_x00186B38____: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfsst.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo)
