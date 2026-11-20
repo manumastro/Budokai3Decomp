@@ -501,16 +501,422 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00202FA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00203250);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002034F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002038F0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00203F10);
+typedef struct Fx20 { f32 dur; f32 uv[4]; } Fx20;
+typedef struct FxAnim { s32 pad; s32 count; Fx20 fr[1]; } FxAnim;
+extern u8 D_0051D9A8[];
+extern void func_00208530(u8 *, u8 *);
+extern void func_00141C80(void *, u8 *, f32);
+s32 func_00203F10(u8 *a) {
+    f32 tmp[4] __attribute__((aligned(16)));
+    f32 q[4] __attribute__((aligned(16)));
+    u8 *def = *(u8 **)(a + 0x14);
+    u8 *p = *(u8 **)(a + 0x3C);
+    f32 t;
+    f32 life;
+    f32 du;
+    f32 dv;
+    f32 sw;
+    u8 *tb;
+    u8 *e;
+    u8 *end;
+
+    end = a + 0x44;
+    while (p != end) {
+        *(f32 *)(p + 0x8) = *(f32 *)(p + 0x8) + *(f32 *)D_0051D9A8;
+        *(s32 *)(p + 0xC) &= ~1;
+        life = *(f32 *)(def + 0x50);
+        t = *(f32 *)(p + 0x8) / life;
+        if (*(f32 *)(p + 0x8) <= 0.0f) {
+            *(s32 *)(p + 0xC) |= 1;
+        } else {
+            func_00146F10(tmp, p + 0x20, *(f32 *)D_0051D9AC);
+            __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(p + 0x10), "r"(tmp) : "memory");
+            if (!(life < 0.0f) && !(*(f32 *)(p + 0x8) < life)) {
+                if (*(s32 *)(a + 0x1C) != 0) {
+                    func_00208530(a, p);
+                }
+                *(u8 **)(*(u8 **)(p + 4)) = *(u8 **)p;
+                *(u8 **)(*(u8 **)p + 4) = *(u8 **)(p + 4);
+                *(s32 *)(a + 0x4C) = *(s32 *)(a + 0x4C) - 1;
+                D_00526440[D_0047066C] = (s32)p;
+                D_0047066C = D_0047066C + 1;
+                if (D_0047066C >= 0x800) {
+                    D_0047066C = 0;
+                }
+            } else {
+                if (*(s32 *)(def + 0x8) & 0x4) {
+                    func_00141C80(q, p + 0x40, *(f32 *)(p + 0x4C) * *(f32 *)D_0051D9AC);
+                    func_00142080(p + 0x30, p + 0x30, (u8 *)q);
+                }
+                if (*(s32 *)(def + 0x8) & 0x8) {
+                    *(f32 *)(p + 0x74) = *(f32 *)(def + 0x68) * (1.0f - t) + *(f32 *)(def + 0x6C) * t;
+                }
+                if (*(s32 *)(def + 0x8) & 0x10) {
+                    s32 bits;
+                    __asm__ volatile ("lqc2 $vf1, 0(%2) ; lqc2 $vf2, 0(%3) ; mfc1 %0, %4 ; qmtc2.ni %0, $vf3 ; vsub.xyzw $vf2, $vf2, $vf1 ; vaddax.xyzw ACC, $vf1, $vf0x ; vmaddx.xyzw $vf2, $vf2, $vf3x ; sqc2 $vf2, 0(%1)" : "=r"(bits) : "r"(p + 0x50), "r"(def + 0x80), "r"(def + 0x90), "f"(t) : "memory");
+                }
+                if (*(s32 *)(def + 0x8) & 0x8000) {
+                    tb = def + 0xC0;
+                    if (!(*(s32 *)(p + 0xC) & 0x2)) {
+                        *(f32 *)(p + 0x78) = *(f32 *)(p + 0x78) + *(f32 *)D_0051D9A8;
+                        if (!(*(f32 *)(p + 0x78) < ((Fx20 *)(tb + 0x8))[*(s32 *)(p + 0x7C)].dur)) {
+                            *(f32 *)(p + 0x78) = 0.0f;
+                            *(s32 *)(p + 0x7C) = *(s32 *)(p + 0x7C) + 1;
+                            if (*(s32 *)(p + 0x7C) == *(s32 *)(tb + 0x4)) {
+                                if (*(s32 *)(def + 0x8) & 0x10000) {
+                                    *(s32 *)(p + 0x7C) = 0;
+                                } else {
+                                    *(s32 *)(p + 0x7C) = *(s32 *)(tb + 0x4) - 1;
+                                    *(s32 *)(p + 0xC) |= 0x2;
+                                }
+                            }
+                        }
+                    }
+                    e = tb + *(s32 *)(p + 0x7C) * 20;
+                    *(f32 *)(p + 0x60) = *(f32 *)(e + 0xC);
+                    *(f32 *)(p + 0x64) = *(f32 *)(e + 0x10);
+                    *(f32 *)(p + 0x68) = *(f32 *)(e + 0x14);
+                    *(f32 *)(p + 0x6C) = *(f32 *)(e + 0x18);
+                    if (*(s32 *)(p + 0xC) & 0x8) {
+                        sw = *(f32 *)(p + 0x60);
+                        *(f32 *)(p + 0x60) = *(f32 *)(p + 0x68);
+                        *(f32 *)(p + 0x68) = sw;
+                    }
+                    if (*(s32 *)(p + 0xC) & 0x10) {
+                        sw = *(f32 *)(p + 0x64);
+                        *(f32 *)(p + 0x64) = *(f32 *)(p + 0x6C);
+                        *(f32 *)(p + 0x6C) = sw;
+                    }
+                } else if (*(s32 *)(def + 0x8) & 0x4000) {
+                    du = *(f32 *)(def + 0xB8) * *(f32 *)D_0051D9AC;
+                    dv = *(f32 *)(def + 0xBC) * *(f32 *)D_0051D9AC;
+                    if (*(s32 *)(p + 0xC) & 0x8) {
+                        du = -du;
+                    }
+                    if (*(s32 *)(p + 0xC) & 0x10) {
+                        dv = -dv;
+                    }
+                    *(f32 *)(p + 0x60) = *(f32 *)(p + 0x60) + du;
+                    *(f32 *)(p + 0x64) = *(f32 *)(p + 0x64) + dv;
+                    *(f32 *)(p + 0x68) = *(f32 *)(p + 0x68) + du;
+                    *(f32 *)(p + 0x6C) = *(f32 *)(p + 0x6C) + dv;
+                }
+            }
+        }
+        p = *(u8 **)p;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00204300);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002048B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00204ED0);
+s32 func_00204ED0(u8 *a) {
+    f32 tmp[4] __attribute__((aligned(16)));
+    u8 *def = *(u8 **)(a + 0x14);
+    u8 *p = *(u8 **)(a + 0x3C);
+    f32 t;
+    f32 life;
+    f32 du;
+    f32 dv;
+    f32 sw;
+    u8 *tb;
+    u8 *e;
+    u8 *end;
+
+    end = a + 0x44;
+    while (p != end) {
+        *(f32 *)(p + 0x8) = *(f32 *)(p + 0x8) + *(f32 *)D_0051D9A8;
+        *(s32 *)(p + 0xC) &= ~1;
+        life = *(f32 *)(def + 0x50);
+        t = *(f32 *)(p + 0x8) / life;
+        if (*(f32 *)(p + 0x8) <= 0.0f) {
+            *(s32 *)(p + 0xC) |= 1;
+        } else {
+            func_00146F10(tmp, p + 0x20, *(f32 *)D_0051D9AC);
+            __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(p + 0x10), "r"(tmp) : "memory");
+            if (!(life < 0.0f) && !(*(f32 *)(p + 0x8) < life)) {
+                if (*(s32 *)(a + 0x1C) != 0) {
+                    func_00208530(a, p);
+                }
+                *(u8 **)(*(u8 **)(p + 4)) = *(u8 **)p;
+                *(u8 **)(*(u8 **)p + 4) = *(u8 **)(p + 4);
+                *(s32 *)(a + 0x4C) = *(s32 *)(a + 0x4C) - 1;
+                D_00526440[D_0047066C] = (s32)p;
+                D_0047066C = D_0047066C + 1;
+                if (D_0047066C >= 0x800) {
+                    D_0047066C = 0;
+                }
+            } else {
+                if (*(s32 *)(def + 0x8) & 0x4) {
+                    *(f32 *)(p + 0x60) = *(f32 *)(def + 0x5C) * (1.0f - t) + *(f32 *)(def + 0x60) * t;
+                }
+                if (*(s32 *)(def + 0x8) & 0x8) {
+                    *(f32 *)(p + 0x64) = *(f32 *)(def + 0x64) * (1.0f - t) + *(f32 *)(def + 0x68) * t;
+                    *(f32 *)(p + 0x68) = *(f32 *)(def + 0x6C) * (1.0f - t) + *(f32 *)(def + 0x70) * t;
+                }
+                if (*(s32 *)(def + 0x8) & 0x10) {
+                    s32 bits;
+                    __asm__ volatile ("lqc2 $vf1, 0(%2) ; lqc2 $vf2, 0(%3) ; mfc1 %0, %4 ; qmtc2.ni %0, $vf3 ; vsub.xyzw $vf2, $vf2, $vf1 ; vaddax.xyzw ACC, $vf1, $vf0x ; vmaddx.xyzw $vf2, $vf2, $vf3x ; sqc2 $vf2, 0(%1)" : "=r"(bits) : "r"(p + 0x30), "r"(def + 0x80), "r"(def + 0x90), "f"(t) : "memory");
+                    __asm__ volatile ("lqc2 $vf1, 0(%2) ; lqc2 $vf2, 0(%3) ; mfc1 %0, %4 ; qmtc2.ni %0, $vf3 ; vsub.xyzw $vf2, $vf2, $vf1 ; vaddax.xyzw ACC, $vf1, $vf0x ; vmaddx.xyzw $vf2, $vf2, $vf3x ; sqc2 $vf2, 0(%1)" : "=r"(bits) : "r"(p + 0x40), "r"(def + 0xA0), "r"(def + 0xB0), "f"(t) : "memory");
+                }
+                if (*(s32 *)(def + 0x8) & 0x8000) {
+                    tb = def + 0xE0;
+                    if (!(*(s32 *)(p + 0xC) & 0x2)) {
+                        *(f32 *)(p + 0x6C) = *(f32 *)(p + 0x6C) + *(f32 *)D_0051D9A8;
+                        if (!(*(f32 *)(p + 0x6C) < ((Fx20 *)(tb + 0x8))[*(s32 *)(p + 0x70)].dur)) {
+                            *(f32 *)(p + 0x6C) = 0.0f;
+                            *(s32 *)(p + 0x70) = *(s32 *)(p + 0x70) + 1;
+                            if (*(s32 *)(p + 0x70) == *(s32 *)(tb + 0x4)) {
+                                if (*(s32 *)(def + 0x8) & 0x10000) {
+                                    *(s32 *)(p + 0x70) = 0;
+                                } else {
+                                    *(s32 *)(p + 0x70) = *(s32 *)(tb + 0x4) - 1;
+                                    *(s32 *)(p + 0xC) |= 0x2;
+                                }
+                            }
+                        }
+                    }
+                    e = tb + *(s32 *)(p + 0x70) * 20;
+                    *(f32 *)(p + 0x50) = *(f32 *)(e + 0xC);
+                    *(f32 *)(p + 0x54) = *(f32 *)(e + 0x10);
+                    *(f32 *)(p + 0x58) = *(f32 *)(e + 0x14);
+                    *(f32 *)(p + 0x5C) = *(f32 *)(e + 0x18);
+                    if (*(s32 *)(p + 0xC) & 0x8) {
+                        sw = *(f32 *)(p + 0x50);
+                        *(f32 *)(p + 0x50) = *(f32 *)(p + 0x58);
+                        *(f32 *)(p + 0x58) = sw;
+                    }
+                    if (*(s32 *)(p + 0xC) & 0x10) {
+                        sw = *(f32 *)(p + 0x54);
+                        *(f32 *)(p + 0x54) = *(f32 *)(p + 0x5C);
+                        *(f32 *)(p + 0x5C) = sw;
+                    }
+                } else if (*(s32 *)(def + 0x8) & 0x4000) {
+                    du = *(f32 *)(def + 0xD8) * *(f32 *)D_0051D9AC;
+                    dv = *(f32 *)(def + 0xDC) * *(f32 *)D_0051D9AC;
+                    if (*(s32 *)(p + 0xC) & 0x8) {
+                        du = -du;
+                    }
+                    if (*(s32 *)(p + 0xC) & 0x10) {
+                        dv = -dv;
+                    }
+                    *(f32 *)(p + 0x50) = *(f32 *)(p + 0x50) + du;
+                    *(f32 *)(p + 0x54) = *(f32 *)(p + 0x54) + dv;
+                    *(f32 *)(p + 0x58) = *(f32 *)(p + 0x58) + du;
+                    *(f32 *)(p + 0x5C) = *(f32 *)(p + 0x5C) + dv;
+                }
+            }
+        }
+        p = *(u8 **)p;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002052F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00205550);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00205BC0);
+s32 func_00205BC0(u8 *a) {
+    f32 tmp[4] __attribute__((aligned(16)));
+    u8 *def = *(u8 **)(a + 0x14);
+    u8 *p = *(u8 **)(a + 0x3C);
+    f32 t;
+    f32 life;
+    f32 s;
+    f32 du;
+    f32 dv;
+    f32 sw;
+    u8 *tb;
+    u8 *e;
+    u8 *end;
+
+    end = a + 0x44;
+    while (p != end) {
+        *(f32 *)(p + 0x8) = *(f32 *)(p + 0x8) + *(f32 *)D_0051D9A8;
+        *(s32 *)(p + 0xC) &= ~1;
+        life = *(f32 *)(def + 0x50);
+        t = *(f32 *)(p + 0x8) / life;
+        if (*(f32 *)(p + 0x8) <= 0.0f) {
+            *(s32 *)(p + 0xC) |= 1;
+        } else {
+            func_00146F10(tmp, p + 0x20, *(f32 *)D_0051D9AC);
+            __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(p + 0x10), "r"(tmp) : "memory");
+            if (!(life < 0.0f) && !(*(f32 *)(p + 0x8) < life)) {
+                if (*(s32 *)(a + 0x1C) != 0) {
+                    func_00208530(a, p);
+                }
+                *(u8 **)(*(u8 **)(p + 4)) = *(u8 **)p;
+                *(u8 **)(*(u8 **)p + 4) = *(u8 **)(p + 4);
+                *(s32 *)(a + 0x4C) = *(s32 *)(a + 0x4C) - 1;
+                D_00526440[D_0047066C] = (s32)p;
+                D_0047066C = D_0047066C + 1;
+                if (D_0047066C >= 0x800) {
+                    D_0047066C = 0;
+                }
+            } else {
+                if (*(s32 *)(def + 0x8) & 0x4) {
+                    *(f32 *)(p + 0x54) = *(f32 *)(def + 0x68) * (1.0f - t) + *(f32 *)(def + 0x6C) * t;
+                }
+                if (*(s32 *)(def + 0x8) & 0x8) {
+                    if (*(s32 *)(p + 0xC) & 0x4) {
+                        *(f32 *)(p + 0x58) = *(f32 *)(p + 0x58) - *(f32 *)(def + 0x7C) * *(f32 *)D_0051D9AC;
+                    } else {
+                        *(f32 *)(p + 0x58) = *(f32 *)(p + 0x58) + *(f32 *)(def + 0x7C) * *(f32 *)D_0051D9AC;
+                    }
+                }
+                if (*(s32 *)(def + 0x8) & 0x10) {
+                    s32 bits;
+                    __asm__ volatile ("lqc2 $vf1, 0(%2) ; lqc2 $vf2, 0(%3) ; mfc1 %0, %4 ; qmtc2.ni %0, $vf3 ; vsub.xyzw $vf2, $vf2, $vf1 ; vaddax.xyzw ACC, $vf1, $vf0x ; vmaddx.xyzw $vf2, $vf2, $vf3x ; sqc2 $vf2, 0(%1)" : "=r"(bits) : "r"(p + 0x30), "r"(def + 0x80), "r"(def + 0x90), "f"(t) : "memory");
+                }
+                if (*(s32 *)(def + 0x8) & 0x8000) {
+                    tb = def + 0xC0;
+                    if (!(*(s32 *)(p + 0xC) & 0x2)) {
+                        *(f32 *)(p + 0x5C) = *(f32 *)(p + 0x5C) + *(f32 *)D_0051D9A8;
+                        if (!(*(f32 *)(p + 0x5C) < ((Fx20 *)(tb + 0x8))[*(s32 *)(p + 0x60)].dur)) {
+                            *(f32 *)(p + 0x5C) = 0.0f;
+                            *(s32 *)(p + 0x60) = *(s32 *)(p + 0x60) + 1;
+                            if (*(s32 *)(p + 0x60) == *(s32 *)(tb + 0x4)) {
+                                if (*(s32 *)(def + 0x8) & 0x10000) {
+                                    *(s32 *)(p + 0x60) = 0;
+                                } else {
+                                    *(s32 *)(p + 0x60) = *(s32 *)(tb + 0x4) - 1;
+                                    *(s32 *)(p + 0xC) |= 0x2;
+                                }
+                            }
+                        }
+                    }
+                    e = tb + *(s32 *)(p + 0x60) * 20;
+                    *(f32 *)(p + 0x40) = *(f32 *)(e + 0xC);
+                    *(f32 *)(p + 0x44) = *(f32 *)(e + 0x10);
+                    *(f32 *)(p + 0x48) = *(f32 *)(e + 0x14);
+                    *(f32 *)(p + 0x4C) = *(f32 *)(e + 0x18);
+                    if (*(s32 *)(p + 0xC) & 0x8) {
+                        sw = *(f32 *)(p + 0x40);
+                        *(f32 *)(p + 0x40) = *(f32 *)(p + 0x48);
+                        *(f32 *)(p + 0x48) = sw;
+                    }
+                    if (*(s32 *)(p + 0xC) & 0x10) {
+                        sw = *(f32 *)(p + 0x44);
+                        *(f32 *)(p + 0x44) = *(f32 *)(p + 0x4C);
+                        *(f32 *)(p + 0x4C) = sw;
+                    }
+                } else if (*(s32 *)(def + 0x8) & 0x4000) {
+                    du = *(f32 *)(def + 0xB8) * *(f32 *)D_0051D9AC;
+                    dv = *(f32 *)(def + 0xBC) * *(f32 *)D_0051D9AC;
+                    if (*(s32 *)(p + 0xC) & 0x8) {
+                        du = -du;
+                    }
+                    if (*(s32 *)(p + 0xC) & 0x10) {
+                        dv = -dv;
+                    }
+                    *(f32 *)(p + 0x40) = *(f32 *)(p + 0x40) + du;
+                    *(f32 *)(p + 0x44) = *(f32 *)(p + 0x44) + dv;
+                    *(f32 *)(p + 0x48) = *(f32 *)(p + 0x48) + du;
+                    *(f32 *)(p + 0x4C) = *(f32 *)(p + 0x4C) + dv;
+                }
+            }
+        }
+        p = *(u8 **)p;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00205FD0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00206310);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002065F0);
+s32 func_002065F0(u8 *a) {
+    f32 tmp[4] __attribute__((aligned(16)));
+    u8 *def = *(u8 **)(a + 0x14);
+    u8 *p = *(u8 **)(a + 0x3C);
+    f32 t;
+    f32 life;
+    f32 s;
+    f32 du;
+    f32 dv;
+    f32 sw;
+    u8 *tb;
+    u8 *e;
+    u8 *end;
+
+    end = a + 0x44;
+    while (p != end) {
+        *(f32 *)(p + 0x8) = *(f32 *)(p + 0x8) + *(f32 *)D_0051D9A8;
+        *(s32 *)(p + 0xC) &= ~1;
+        life = *(f32 *)(def + 0x50);
+        t = *(f32 *)(p + 0x8) / life;
+        if (*(f32 *)(p + 0x8) <= 0.0f) {
+            *(s32 *)(p + 0xC) |= 1;
+        } else {
+            func_00146F10(tmp, p + 0x20, *(f32 *)D_0051D9AC);
+            __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(p + 0x10), "r"(tmp) : "memory");
+            if (!(life < 0.0f) && !(*(f32 *)(p + 0x8) < life)) {
+                if (*(s32 *)(a + 0x1C) != 0) {
+                    func_00208530(a, p);
+                }
+                *(u8 **)(*(u8 **)(p + 4)) = *(u8 **)p;
+                *(u8 **)(*(u8 **)p + 4) = *(u8 **)(p + 4);
+                *(s32 *)(a + 0x4C) = *(s32 *)(a + 0x4C) - 1;
+                D_00526440[D_0047066C] = (s32)p;
+                D_0047066C = D_0047066C + 1;
+                if (D_0047066C >= 0x800) {
+                    D_0047066C = 0;
+                }
+            } else {
+                if (*(s32 *)(def + 0x8) & 0x4) {
+                    s = *(f32 *)(def + 0x68) * (1.0f - t) + *(f32 *)(def + 0x6C) * t;
+                    *(f32 *)(p + 0x50) = *(f32 *)(p + 0x58) * s;
+                    *(f32 *)(p + 0x54) = *(f32 *)(p + 0x5C) * s;
+                }
+                if (*(s32 *)(def + 0x8) & 0x10) {
+                    s32 bits;
+                    __asm__ volatile ("lqc2 $vf1, 0(%2) ; lqc2 $vf2, 0(%3) ; mfc1 %0, %4 ; qmtc2.ni %0, $vf3 ; vsub.xyzw $vf2, $vf2, $vf1 ; vaddax.xyzw ACC, $vf1, $vf0x ; vmaddx.xyzw $vf2, $vf2, $vf3x ; sqc2 $vf2, 0(%1)" : "=r"(bits) : "r"(p + 0x30), "r"(def + 0x80), "r"(def + 0x90), "f"(t) : "memory");
+                }
+                if (*(s32 *)(def + 0x8) & 0x8000) {
+                    tb = def + 0xC0;
+                    if (!(*(s32 *)(p + 0xC) & 0x2)) {
+                        *(f32 *)(p + 0x60) = *(f32 *)(p + 0x60) + *(f32 *)D_0051D9A8;
+                        if (!(*(f32 *)(p + 0x60) < ((Fx20 *)(tb + 0x8))[*(s32 *)(p + 0x64)].dur)) {
+                            *(f32 *)(p + 0x60) = 0.0f;
+                            *(s32 *)(p + 0x64) = *(s32 *)(p + 0x64) + 1;
+                            if (*(s32 *)(p + 0x64) == *(s32 *)(tb + 0x4)) {
+                                if (*(s32 *)(def + 0x8) & 0x10000) {
+                                    *(s32 *)(p + 0x64) = 0;
+                                } else {
+                                    *(s32 *)(p + 0x64) = *(s32 *)(tb + 0x4) - 1;
+                                    *(s32 *)(p + 0xC) |= 0x2;
+                                }
+                            }
+                        }
+                    }
+                    e = tb + *(s32 *)(p + 0x64) * 20;
+                    *(f32 *)(p + 0x40) = *(f32 *)(e + 0xC);
+                    *(f32 *)(p + 0x44) = *(f32 *)(e + 0x10);
+                    *(f32 *)(p + 0x48) = *(f32 *)(e + 0x14);
+                    *(f32 *)(p + 0x4C) = *(f32 *)(e + 0x18);
+                    if (*(s32 *)(p + 0xC) & 0x8) {
+                        sw = *(f32 *)(p + 0x40);
+                        *(f32 *)(p + 0x40) = *(f32 *)(p + 0x48);
+                        *(f32 *)(p + 0x48) = sw;
+                    }
+                    if (*(s32 *)(p + 0xC) & 0x10) {
+                        sw = *(f32 *)(p + 0x44);
+                        *(f32 *)(p + 0x44) = *(f32 *)(p + 0x4C);
+                        *(f32 *)(p + 0x4C) = sw;
+                    }
+                } else if (*(s32 *)(def + 0x8) & 0x4000) {
+                    du = *(f32 *)(def + 0xB8) * *(f32 *)D_0051D9AC;
+                    dv = *(f32 *)(def + 0xBC) * *(f32 *)D_0051D9AC;
+                    if (*(s32 *)(p + 0xC) & 0x8) {
+                        du = -du;
+                    }
+                    if (*(s32 *)(p + 0xC) & 0x10) {
+                        dv = -dv;
+                    }
+                    *(f32 *)(p + 0x40) = *(f32 *)(p + 0x40) + du;
+                    *(f32 *)(p + 0x44) = *(f32 *)(p + 0x44) + dv;
+                    *(f32 *)(p + 0x48) = *(f32 *)(p + 0x48) + du;
+                    *(f32 *)(p + 0x4C) = *(f32 *)(p + 0x4C) + dv;
+                }
+            }
+        }
+        p = *(u8 **)p;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002069B0);
 void func_00206C80(void) {
 }
