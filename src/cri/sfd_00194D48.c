@@ -10298,7 +10298,22 @@ Bool_x00197218 func_00197218_x00197218(SFD_x00197218 sfd)
         }
         return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001972B8);
+typedef struct { void *f[9]; int (*getNumData)(void *sj, int n); } Vt_72B8_x001972B8;
+typedef struct { Vt_72B8_x001972B8 *vtbl; } Sj_72B8_x001972B8;
+typedef struct { int pad0; void *sj; int pad1; int size; unsigned char rest[116 - 16]; } Buf_72B8_x001972B8;
+typedef struct { unsigned char pad0[0x1290]; Buf_72B8_x001972B8 buf[8]; unsigned char pad1[0x1C78 - 0x1290 - 8 * 116]; int bufIn; } Ply_72B8_x001972B8;
+int func_001999E0_x001972B8(void *h, int id) __asm__("func_001999E0");
+int func_001972B8_x001972B8(Ply_72B8_x001972B8 *h) __asm__("func_001972B8");
+int func_001972B8_x001972B8(Ply_72B8_x001972B8 *h)
+{
+    Buf_72B8_x001972B8 *e = &h->buf[h->bufIn];
+    Sj_72B8_x001972B8 *sj = e->sj;
+    int v = sj->vtbl->getNumData(sj, 1);
+    if (v < e->size * 80 / 100 && v < func_001999E0_x001972B8(h, 70)) {
+        return 0;
+    }
+    return 1;
+}
 s32 func_00197370_x00197370(u8 *arg0) __asm__("func_00197370");
 s32 func_00197370_x00197370(u8 *arg0) {
     u8 **temp_a0;
@@ -10358,9 +10373,62 @@ s32 func_00197460_x00197460(s32 a0)
     }
     return func_00172A40_x00197460(x, y, a, b) == 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001974D0);
+typedef struct { unsigned char pad[0x9A0]; int cond[16]; } Ply_74D0_x001974D0;
+int func_001999E0_x001974D0(void *h, int id) __asm__("func_001999E0");
+int func_0019C170_x001974D0(void *h, int n) __asm__("func_0019C170");
+int func_001974D0_x001974D0(Ply_74D0_x001974D0 *h) __asm__("func_001974D0");
+int func_001974D0_x001974D0(Ply_74D0_x001974D0 *h)
+{
+    int *c = h->cond;
+    int check6;
+    int check7;
+    unsigned int mode;
+    int result;
+    if (c[6] == 0 && c[5] == 0) {
+        return 1;
+    }
+    check6 = func_0019C170_x001974D0(h, 6);
+    check7 = func_0019C170_x001974D0(h, 7);
+    mode = func_001999E0_x001974D0(h, 25);
+    result = 0;
+    switch (mode) {
+    case 0:
+        result = check7 & check6;
+        break;
+    case 1:
+        result = check7;
+        break;
+    case 2:
+        result = check6;
+        break;
+    case 3:
+        result = check7 | check6;
+        break;
+    }
+    return result;
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00197598);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001975F0);
+typedef struct { int numTotalDec; unsigned char p1[0x1C - 4]; int bpaActive; } PlyInf_75F0_x001975F0;
+typedef struct { unsigned char pad0[0x48]; int stat; unsigned char pad1[4]; int pause; unsigned char pad2[0x94C - 0x54]; PlyInf_75F0_x001975F0 plyInf; } Ply_75F0_x001975F0;
+int func_001999E0_x001975F0(void *h, int id) __asm__("func_001999E0");
+int func_0019A5D8_x001975F0(void *h, int *a, int *b) __asm__("func_0019A5D8");
+int func_0019AB10_x001975F0(int a, int b, int c, int d) __asm__("func_0019AB10");
+int func_001975F0_x001975F0(Ply_75F0_x001975F0 *h) __asm__("func_001975F0");
+int func_001975F0_x001975F0(Ply_75F0_x001975F0 *h)
+{
+    PlyInf_75F0_x001975F0 *t = &h->plyInf;
+    int v[2];
+    if (h->stat != 4 || h->pause == 1 || t->bpaActive == 1) {
+        return 0;
+    }
+    if (func_0019A5D8_x001975F0(h, &v[0], &v[1]) != 0) {
+        return 0;
+    }
+    if (v[0] < 0) {
+        return 0;
+    }
+    return func_0019AB10_x001975F0(func_001999E0_x001975F0(h, 54), 1000, v[0], v[1]) != 0;
+}
 typedef unsigned char Uint8_x00197680;
 typedef signed char Sint8_x00197680;
 typedef signed short Sint16_x00197680;
@@ -17883,7 +17951,32 @@ s32 func_00198568_x00198568(u8 *arg0, s32 arg1, s32 *arg2, s32 *arg3)
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001985F8);
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_001986A0);
+typedef struct { int pos; int w[3]; } SfdItem_86A0_x001986A0;
+typedef struct { void *x0; int x4; int buf; unsigned int size; } SfdBufInf_86A0_x001986A0;
+typedef struct { SfdItem_86A0_x001986A0 *items; int size; int count; int wr; int rd; } SfdRing_86A0_x001986A0;
+typedef struct { unsigned char pad0[0x10]; SfdBufInf_86A0_x001986A0 sup; unsigned char pad20[0x18]; SfdRing_86A0_x001986A0 ptsque; unsigned char pad4C[0x28]; } SfdBufEnt_86A0_x001986A0;
+typedef struct { unsigned char pad[0x1280]; SfdBufEnt_86A0_x001986A0 buf[8]; } SfdPly_86A0_x001986A0;
+void func_00198718_x001986A0(SfdRing_86A0_x001986A0 *ring, unsigned int pos, SfdItem_86A0_x001986A0 *out, unsigned int base, unsigned int span) __asm__("func_00198718");
+int func_001986A0_x001986A0(SfdPly_86A0_x001986A0 *h, int index, unsigned int pos, SfdItem_86A0_x001986A0 *out) __asm__("func_001986A0");
+int func_001986A0_x001986A0(SfdPly_86A0_x001986A0 *h, int index, unsigned int pos, SfdItem_86A0_x001986A0 *out) {
+    SfdBufEnt_86A0_x001986A0 *entries = h->buf;
+    SfdBufEnt_86A0_x001986A0 *entry;
+    SfdRing_86A0_x001986A0 *ring;
+    SfdBufInf_86A0_x001986A0 *info;
+    unsigned int span;
+    unsigned int base;
+    out->pos = -1;
+    entry = &entries[index];
+    ring = &entry->ptsque;
+    info = &entry->sup;
+    span = info->size;
+    base = (unsigned int)info->buf;
+    if (ring->items == 0) {
+        return 0;
+    }
+    func_00198718_x001986A0(ring, pos < base + span ? pos : pos - span, out, base, span);
+    return 0;
+}
 typedef struct { s32 w[3]; } SfdE12_x00198718;
 typedef struct { SfdE12_x00198718 *base; s32 size; s32 cnt; s32 fC; s32 pos; } SfdRing_x00198718;
 s32 func_001987C0_x00198718(SfdRing_x00198718 *, s32, s32, s32) __asm__("func_001987C0");
@@ -26721,6 +26814,8 @@ s32 func_0019AD18_x0019AD18(s32 arg0)
   }
  do { return 0; } while (0);
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mpad_74d01_00000000000000000;
 typedef struct { u8 pad[0x280]; s32 x; s32 y; } SfdCC0_x0019AD80_x0019AD80;
 void func_0019A7B0_x0019AD80(s32, s32 *, s32 *) __asm__("func_0019A7B0");
 void func_0019A2E8_x0019AD80(s32, SfdCC0_x0019AD80_x0019AD80 *) __asm__("func_0019A2E8");

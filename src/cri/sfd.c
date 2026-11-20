@@ -20514,7 +20514,39 @@ int func_0018E660_x0018E660(SfdPly_x0018E660 *hn, int id, unsigned char *data, i
     }
     return sfmps_PutUoch_x0018E660(hn, id, data, len);
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018E700);
+typedef struct SfdUoch_E700_x0018E700 { void *sj; void (*begin)(void *hn, int id); void (*end)(void *arg, int id); void *arg; } SfdUoch_E700_x0018E700;
+typedef struct SfdPly_E700_x0018E700 { unsigned char pad[0x1C40]; int userch; } SfdPly_E700_x0018E700;
+void func_0018A9F8_x0018E700(SfdPly_E700_x0018E700 *hn, int ch, int id, SfdUoch_E700_x0018E700 *uoch) __asm__("func_0018A9F8");
+int func_0018E7D8_x0018E700(void *sj, unsigned char *data, int len) __asm__("func_0018E7D8");
+int func_0018E700_x0018E700(SfdPly_E700_x0018E700 *hn, int id, unsigned char *data, int len) __asm__("func_0018E700");
+int func_0018E700_x0018E700(SfdPly_E700_x0018E700 *hn, int id, unsigned char *data, int len) {
+    SfdUoch_E700_x0018E700 uoch;
+    int ret;
+    void (*begin)(void *hn, int id);
+    void (*end)(void *arg, int id);
+    void *arg;
+
+    if (hn->userch == 8) {
+        return 1;
+    }
+    func_0018A9F8_x0018E700(hn, hn->userch, id, &uoch);
+    begin = uoch.begin;
+    end = uoch.end;
+    arg = uoch.arg;
+    if (uoch.sj == 0) {
+        return 1;
+    }
+    ret = func_0018E7D8_x0018E700(uoch.sj, data, len);
+    if (ret == 1) {
+        if (begin != 0) {
+            begin(hn, id);
+        }
+        if (end != 0) {
+            end(arg, id);
+        }
+    }
+    return ret;
+}
 typedef struct SfdSj_x0018E7D8 SfdSj_x0018E7D8;
 typedef struct SfdSjChunk_x0018E7D8 {
     char *data;
@@ -23339,7 +23371,39 @@ void func_0018F150_x0018F150(s32 a0)
 void func_0018F208(void) {
 
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F210);
+typedef struct SfdSysHd_F210_x0018F210 { char data[2][176]; int len[2]; } SfdSysHd_F210_x0018F210;
+typedef struct SfdRecSys_F210_x0018F210 { int valid; unsigned char pad[0x24 - 4]; SfdSysHd_F210_x0018F210 syshd; } SfdRecSys_F210_x0018F210;
+typedef struct MpsSys_F210_x0018F210 { int u0; int u1; int audioBound; int videoBound; int tail[4]; } MpsSys_F210_x0018F210;
+typedef struct SfdPly_F210_x0018F210 { int dummy; } SfdPly_F210_x0018F210;
+SfdRecSys_F210_x0018F210 *func_0018F670_x0018F210(SfdPly_F210_x0018F210 *hn) __asm__("func_0018F670");
+void func_0017AD58_x0018F210(void *mps, MpsSys_F210_x0018F210 *sys) __asm__("func_0017AD58");
+void func_00178BA8_x0018F210(void *dst, void *src, int n) __asm__("func_00178BA8");
+void func_0018F210_x0018F210(SfdPly_F210_x0018F210 *hn, void *mps, unsigned char *data, int len) __asm__("func_0018F210");
+void func_0018F210_x0018F210(SfdPly_F210_x0018F210 *hn, void *mps, unsigned char *data, int len) {
+    SfdRecSys_F210_x0018F210 *rec;
+    SfdSysHd_F210_x0018F210 *txt;
+    char *dst;
+    MpsSys_F210_x0018F210 sys;
+    int n;
+
+    rec = func_0018F670_x0018F210(hn);
+    if (rec == 0 || rec->valid != 0) {
+        return;
+    }
+    func_0017AD58_x0018F210(mps, &sys);
+    n = len > 176 ? 176 : len;
+    txt = &rec->syshd;
+    if (sys.videoBound > 0) {
+        txt->len[0] = n;
+        dst = txt->data[0];
+    } else if (sys.audioBound > 0) {
+        txt->len[1] = n;
+        dst = txt->data[1];
+    } else {
+        return;
+    }
+    func_00178BA8_x0018F210(dst, (char *)data, n);
+}
 INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_0018F2C8);
 void func_0018F390_x0018F390(s32 *a0) __asm__("func_0018F390");
 void func_0018F390_x0018F390(s32 *a0)
@@ -28402,6 +28466,8 @@ extern int mf5d020;
 extern int b3mf5d02_000000;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int mfcc020;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int me70010;
 typedef struct SfdTimeCode_x00191F48 { int rate; int drop; int hour; int minute; int second; int frame; int add; short repeat; short field; } SfdTimeCode_x00191F48;
 extern int D_004674D8_x00191F48[] __asm__("D_004674D8");
 void func_00191F48_x00191F48(SfdTimeCode_x00191F48 *src, SfdTimeCode_x00191F48 *dst) __asm__("func_00191F48");
@@ -28443,6 +28509,8 @@ void func_00191F48_x00191F48(SfdTimeCode_x00191F48 *src, SfdTimeCode_x00191F48 *
 extern int b3mpad_1f481_00000000000000000;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int md7a820;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mpad_e7002_00000000000000000;
 typedef struct { s32 w[8]; } B32_x00192040;
 void func_0019AE10_x00192040(void *, s32 *, s32 *) __asm__("func_0019AE10");
 void func_00192040_x00192040(u8 *a0) __asm__("func_00192040");
@@ -28786,6 +28854,8 @@ extern int m1d3810;
 extern int mf5d030;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int mb0f010;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int me70030;
 typedef struct { s32 w[12]; } Ck_2DE0_x00192DE0;
 s32 func_00193060_x00192DE0(u8 *, u8 *, Ck_2DE0_x00192DE0 *, u8 **) __asm__("func_00193060");
 void func_00193828_x00192DE0(s32, u8 *) __asm__("func_00193828");
@@ -28942,6 +29012,10 @@ extern int m900850;
 extern int m013830;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int mab7040;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int me70040;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mf2101_000000;
 s32 func_0017EE78_x00193520() __asm__("func_0017EE78");
 s32 func_001957B8_x00193520() __asm__("func_001957B8");
 extern s32 D_00467730_x00193520 __asm__("D_00467730");
@@ -29022,6 +29096,8 @@ extern int mb0f020;
 extern int b3mb0f02_000000;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mfcc03_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int mf21020;
 typedef struct SfdSj_x001936B0 SfdSj_x001936B0;
 typedef struct SfdSjChunk_x001936B0 {
     char *data;
@@ -29441,7 +29517,36 @@ int func_001943F8_x001943F8(SfdPly_43F8_x001943F8 *player) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_00194468);
+typedef struct { int w[11]; } SfdTimState_4468_x00194468;
+typedef struct { int valid; int pad4[2]; SfdTimState_4468_x00194468 stamp; unsigned char user[0x200]; int size; } SfdRecVideo_4468_x00194468;
+typedef struct { void *data; int len; } SfdSjChunk_4468_x00194468;
+typedef struct { void *handle; } SfdMpv_4468_x00194468;
+typedef struct { unsigned char pad[0xCFC]; SfdTimState_4468_x00194468 state; } SfdPly_4468_x00194468;
+SfdRecVideo_4468_x00194468 *func_00194560_x00194468(SfdPly_4468_x00194468 *player) __asm__("func_00194560");
+int func_0017CB08_x00194468(void *handle, SfdSjChunk_4468_x00194468 *chunk, int *out) __asm__("func_0017CB08");
+int func_0018D650_x00194468(SfdPly_4468_x00194468 *player, int code) __asm__("func_0018D650");
+int func_00194468_x00194468(SfdPly_4468_x00194468 *player, SfdMpv_4468_x00194468 *mpv, int *ok) __asm__("func_00194468");
+int func_00194468_x00194468(SfdPly_4468_x00194468 *player, SfdMpv_4468_x00194468 *mpv, int *ok)
+{
+    SfdRecVideo_4468_x00194468 *picture;
+    SfdSjChunk_4468_x00194468 chunk;
+    unsigned char *user;
+    int out[4];
+    *ok = 0;
+    picture = func_00194560_x00194468(player);
+    if (picture == 0)
+        return 0;
+    if (picture->valid == 0)
+        return 0;
+    player->state = picture->stamp;
+    user = picture->user;
+    chunk.data = user;
+    chunk.len = *(int *)(user + 0x200);
+    if (func_0017CB08_x00194468(mpv->handle, &chunk, out) != 0)
+        return func_0018D650_x00194468(player, 0xFF000F1B);
+    *ok = 1;
+    return 0;
+}
 s32 func_00194560_x00194560(u8 *p) __asm__("func_00194560");
 s32 func_00194560_x00194560(u8 *p)
 {
