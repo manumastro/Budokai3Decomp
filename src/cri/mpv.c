@@ -361,7 +361,52 @@ void func_00172110_x00172110(int mode, int lo, int hi, E_2110_x00172110 *t)
     }
 }
 __asm__("# rebind func_00172110 0x00172110");
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001723E0);
+typedef struct { short v[4]; } E_23E0_x001723E0;
+void func_001723E0_x001723E0(E_23E0_x001723E0 *t, unsigned char a, unsigned char b, unsigned char cc) __asm__("func_001723E0");
+void func_001723E0_x001723E0(E_23E0_x001723E0 *t, unsigned char a, unsigned char b, unsigned char cc)
+{
+    int i;
+    double c;
+    double d;
+    short y;
+    E_23E0_x001723E0 *u = t + 256;
+    E_23E0_x001723E0 *w = t + 512;
+
+    for (i = 0; i < 256; i++) {
+        c = i - 128;
+        u[i].v[2] = (int)(c * 129.088 + 0.5);
+        u[i].v[1] = (int)(c * -25.087999999999997 + 0.5);
+        u[i].v[0] = 0;
+        u[i].v[3] = 0;
+        w[i].v[2] = 0;
+        w[i].v[1] = (int)(c * -52.032 + 0.5);
+        w[i].v[0] = (int)(c * 102.14399999999999 + 0.5);
+        w[i].v[3] = 0;
+    }
+    for (i = 0; i < 9; i++) {
+        t[i].v[2] = 0;
+        t[i].v[1] = 0;
+        t[i].v[0] = 0;
+        t[i].v[3] = a;
+    }
+    for (i = 9; i < 0x86; i++) {
+        d = (double)i - 16.0;
+        y = (d < 0.0) ? 0 : (d > 255.0) ? -27703 : (int)(d * 64.0 * 2.318181818181818 + 0.5);
+        t[i].v[3] = b << 6;
+        t[i].v[2] = y;
+        t[i].v[1] = y;
+        t[i].v[0] = y;
+    }
+    for (i = 0x86; i < 256; i++) {
+        d = 251.0 - (double)i;
+        y = (d < 0.0) ? 0 : (d > 255.0) ? -27703 : (int)(d * 64.0 * 2.318181818181818 + 0.5);
+        t[i].v[3] = cc << 6;
+        t[i].v[2] = y;
+        t[i].v[1] = y;
+        t[i].v[0] = y;
+    }
+}
+__asm__("# rebind func_001723E0 0x001723E0");
 void func_001726E8(void) {
 
 }
@@ -1733,7 +1778,23 @@ void func_00173748_x00173748(Mpv3748_x00173748 *m)
     m->w2 = (m->f4C != 3) ? m->w >> 1 : m->w;
     m->h2 = (m->f4C == 1) ? m->h >> 1 : m->h;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00173810);
+typedef struct { char pad0[0xC]; int fC; char pad10[0x80 - 0x10]; unsigned int f80; unsigned int f84; char pad88[0x2C4 - 0x88]; unsigned int f2C4; unsigned int f2C8; char pad2CC[0x2D8 - 0x2CC]; double f2D8; double f2E0; } M_3810_x00173810;
+extern double D_004651B0_x00173810[] __asm__("D_004651B0");
+void func_00173810_x00173810(M_3810_x00173810 *m) __asm__("func_00173810");
+void func_00173810_x00173810(M_3810_x00173810 *m)
+{
+    if (m->fC == 1) {
+        m->f2D8 = (double)m->f2C4 / m->f2C8;
+        m->f2E0 = 1.0;
+    } else {
+        m->f2D8 = D_004651B0_x00173810[m->fC];
+        if (m->f80 != 0 && m->f84 != 0) {
+            m->f2E0 = (m->f2D8 * m->f80) / m->f84;
+        } else {
+            m->f2E0 = (m->f2D8 * m->f2C4) / m->f2C8;
+        }
+    }
+}
 typedef struct SndObj_x001739B0 {
     char unk000[0x38];
     int state;
@@ -1756,6 +1817,8 @@ void func_001739B0_x001739B0(SndObj_x001739B0 *o)
         o->state = 2;
     }
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3m38101_000000;
 extern s32 D_00465240_x00173A00[] __asm__("D_00465240");
 extern s32 D_00465250_x00173A00[] __asm__("D_00465250");
 void func_00173A00_x00173A00(s32 *p) __asm__("func_00173A00");

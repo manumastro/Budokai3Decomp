@@ -32422,7 +32422,58 @@ void func_00191588_x00191588(u8 *arg0)
   while (0);
   *((s32 *) (((u8 *) arg0) + 0xC)) = -1;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001915B0);
+typedef struct { int pos; unsigned int addr; unsigned int size; } SfdItem_15B0_x001915B0;
+typedef struct { int tmpref; int ofst; int max; SfdItem_15B0_x001915B0 ptsent; } SfdPtsComp_15B0_x001915B0;
+typedef struct { unsigned char pad[0x14C]; int baseTime; } SfdTim_15B0_x001915B0;
+typedef struct { int horizontal_size, vertical_size, mb_width, mb_height; int frame_rate_code; int temporal_reference; int picture_coding_type; } M2vPicAtr_15B0_x001915B0;
+extern int D_00467730_x001915B0[] __asm__("D_00467730");
+int func_00191728_x001915B0(int count, int rate) __asm__("func_00191728");
+int memcmp_x001915B0(const void *a, const void *b, unsigned int n) __asm__("memcmp");
+int func_001915B0_x001915B0(SfdTim_15B0_x001915B0 *timer, SfdPtsComp_15B0_x001915B0 *comp, M2vPicAtr_15B0_x001915B0 *pic, SfdItem_15B0_x001915B0 *entry, int newGop) __asm__("func_001915B0");
+int func_001915B0_x001915B0(SfdTim_15B0_x001915B0 *timer, SfdPtsComp_15B0_x001915B0 *comp, M2vPicAtr_15B0_x001915B0 *pic, SfdItem_15B0_x001915B0 *entry, int newGop) {
+    int rate = D_00467730_x001915B0[pic->frame_rate_code];
+    int number = pic->temporal_reference;
+    int origin;
+    int time;
+    int distance;
+
+    if (timer->baseTime < 0) {
+        origin = entry->pos - func_00191728_x001915B0(number, rate);
+        if (origin < 0) {
+            origin = 0;
+        }
+        timer->baseTime = origin;
+    }
+    time = entry->pos - timer->baseTime;
+    if (time < 0) {
+        time = 0;
+    }
+    if (memcmp_x001915B0(&comp->ptsent, entry, 4) != 0) {
+        int type = pic->picture_coding_type;
+
+        comp->ptsent = *entry;
+        comp->tmpref = number;
+        comp->ofst = 0;
+        if (type == 3) {
+            comp->max = 1;
+        } else {
+            comp->max = 0;
+        }
+    } else {
+        if (newGop) {
+            comp->ofst += comp->max + 1;
+            comp->max = 0;
+            comp->tmpref = 0;
+        }
+        distance = number - comp->tmpref;
+        comp->max = (comp->max > distance) ? comp->max : distance;
+        time += func_00191728_x001915B0(comp->ofst + distance, rate);
+        if (time < 0) {
+            time = 0;
+        }
+    }
+    return time;
+}
 s32 func_0017EE78_x00191728() __asm__("func_0017EE78");
 void func_00191728_x00191728(s32 arg0, s32 arg1) __asm__("func_00191728");
 void func_00191728_x00191728(s32 arg0, s32 arg1) {
@@ -38514,6 +38565,9 @@ extern int b3m92084_000000;
 extern int b3m92084_000001;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3m30601_000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3m15b01_000000;
+extern int b3m15b01_000001;
 typedef struct SfdSj_x001936B0 SfdSj_x001936B0;
 typedef struct SfdSjChunk_x001936B0 {
     char *data;

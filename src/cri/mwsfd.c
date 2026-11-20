@@ -2099,7 +2099,36 @@ void MWSFCRE_DestroySfd(void) {
         func_001870E8(&D_004656D8);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180078);
+typedef struct { unsigned char pad[0x40]; void *sfd; } MwsfdPly_0078_x00180078;
+int func_001996F0_x00180078(void *sfd, int index, int value) __asm__("func_001996F0");
+void func_0018F9A0_x00180078(void *sfd, int mode, int value) __asm__("func_0018F9A0");
+void func_00180078_x00180078(MwsfdPly_0078_x00180078 *ply, void *cprm, int dispCycle, int dispLatency) __asm__("func_00180078");
+void func_00180078_x00180078(MwsfdPly_0078_x00180078 *ply, void *cprm, int dispCycle, int dispLatency)
+{
+    void *sfd = ply->sfd;
+    double exact;
+    int rounded;
+    int nearest;
+
+    func_001996F0_x00180078(sfd, 8, 0);
+    func_001996F0_x00180078(sfd, 1, 1);
+    func_001996F0_x00180078(sfd, 0, 0);
+    func_001996F0_x00180078(sfd, 23, 4);
+    exact = (double)(dispCycle * dispLatency * 1000) + 0.5;
+    rounded = (int)exact;
+    nearest = rounded;
+    if ((double)rounded > exact) {
+        nearest = rounded - 1;
+    }
+    func_001996F0_x00180078(sfd, 45, nearest);
+    func_001996F0_x00180078(sfd, 44, nearest);
+    func_001996F0_x00180078(sfd, 42, nearest);
+    func_001996F0_x00180078(sfd, 15, 2);
+    func_001996F0_x00180078(sfd, 51, 0);
+    func_001996F0_x00180078(sfd, 14, 0);
+    func_001996F0_x00180078(sfd, 28, 0);
+    func_0018F9A0_x00180078(sfd, 5, 0);
+}
 typedef struct SfdSj_x001801D8 SfdSj_x001801D8;
 typedef struct SfdSjChunk_x001801D8 {
     char *data;
@@ -5466,7 +5495,31 @@ int func_001813D8_x001813D8(MwsfdPly_x001813D8 *ply, SfdFrameInfo_x001813D8 *frm
         ret = 2;
     return ret;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00181480);
+typedef struct { unsigned int pictureStructure; unsigned int chromaFormat; int progressiveFrame; int topFieldFirst; int repeatFirstField; int chromaPosH; int chromaPosV; int rsv; } MwsfdPicInf_1480_x00181480;
+typedef struct { char pad[0x8C]; MwsfdPicInf_1480_x00181480 pic; } MwsfdPly_1480_x00181480;
+typedef struct { char pad[0x3C]; int picture_structure; int chroma_format; int progressive_frame; int top_field_first; int repeat_first_field; int chromaPosH; int chromaPosV; } SfdFrameInfo_1480_x00181480;
+void func_00181480_x00181480(MwsfdPly_1480_x00181480 *ply, SfdFrameInfo_1480_x00181480 *frm) __asm__("func_00181480");
+void func_00181480_x00181480(MwsfdPly_1480_x00181480 *ply, SfdFrameInfo_1480_x00181480 *frm)
+{
+    MwsfdPicInf_1480_x00181480 *pic = &ply->pic;
+    int pf, ch, tf, cv, ps, rf, cf;
+
+    pf = frm->progressive_frame;
+    ch = frm->chromaPosH;
+    pic->progressiveFrame = pf;
+    pic->chromaPosH = ch;
+    tf = frm->top_field_first;
+    cv = frm->chromaPosV;
+    pic->topFieldFirst = tf;
+    rf = frm->repeat_first_field;
+    cf = frm->chroma_format;
+    ps = frm->picture_structure;
+    pic->pictureStructure = ps;
+    pic->chromaFormat = cf;
+    pic->repeatFirstField = rf;
+    pic->chromaPosV = cv;
+    pic->rsv = 0;
+}
 typedef struct SfdSj_x001814C8 SfdSj_x001814C8;
 typedef struct SfdSjChunk_x001814C8 {
     char *data;
@@ -9050,6 +9103,12 @@ void func_00183098_x00183098(u8 *arg0, s32 arg1)
 }
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int b3mpad_0b081_00000000000000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m007810;
+extern int m007811;
+extern int b3mpad_00781_00000000000000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m148010;
 typedef struct SfdSj_x001830D8 SfdSj_x001830D8;
 typedef struct SfdSjChunk_x001830D8 {
     char *data;
@@ -19797,6 +19856,9 @@ extern int m0b0820;
 extern int m581010;
 extern int m581011;
 extern int b3mpad_58101_00000000000000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mpad_00782_00000000000000000;
+extern int b3mpad_00782_00000000000000001;
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo) __asm__("MWSST_Create");
 /* MWSST_Create_x00186B38____: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfsst.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo)
