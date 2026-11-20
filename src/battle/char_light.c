@@ -801,6 +801,88 @@ void func_00237E00(u8 *a0) {
 }
 
 
+#if 0
+extern u8 D_0058BF24[];
+extern s32 func_00228430(s32);
+extern s32 func_002284D0(s32);
+extern void func_00228410(void);
+extern s32 func_002535B0(s32, void *);
+extern void func_0022C7D0(s32, s32, f32);
+extern void func_0022ACF0(s32);
+extern void func_00253690(s32, s32, void *);
+extern u8 *func_00259CC0(s32, s32);
+typedef struct LAnimRef { u8 *tbl; s32 f4; s16 idx; } LAnimRef;
+void func_00237EC0(u8 *a0) {
+    u8 *s0;
+    f32 t;
+    f32 f20;
+    f32 m;
+    u8 **slot;
+    s32 k;
+    s32 e;
+    s32 off;
+    f32 *fp;
+    u8 *h;
+    u8 *q;
+    LAnimRef ref;
+
+    s0 = (u8 *)gBtlSys;
+    t = *(f32 *)a0 + D_00470710;
+    *(f32 *)a0 = t;
+    if (!(t < 85.0f)) {
+        k = *(s32 *)(a0 + 0xC);
+        if (D_0047072C != 0) {
+            slot = &D_0058BEB0[k];
+            if (*slot != 0) {
+                amTask_Kill(*slot);
+                *slot = 0;
+            }
+        }
+        return;
+    }
+    if (*(s32 *)(a0 + 0x8) == 1 && *(u8 **)D_0058BF24 != 0) {
+        fp = (f32 *)(*(u8 **)D_0058BF24 + 0x30);
+        if (t >= 8.0f) {
+            if (*fp < 8.0f) {
+                *(f32 *)a0 = 8.0f;
+            } else {
+                *(f32 *)a0 = 8.0f;
+                *fp = 8.0f;
+                *(s32 *)(a0 + 0x8) = 0;
+            }
+        } else if (!(*fp < 8.0f)) {
+            *fp = 8.0f;
+        }
+    }
+    if (*(s32 *)(a0 + 0x10) != 0) {
+        e = *(s32 *)(s0 + 0xE84);
+        D_00470704 = e;
+        D_0047070C = 0x4010000;
+        D_00470708 = 0;
+        amModel_SetCurrent(e, 0x4010000);
+        D_00470238 = 0;
+        func_00228430(0);
+        func_002284D0(0);
+        func_0022C7D0(*(s32 *)(a0 + 0x10), 1, *(f32 *)a0);
+        func_0022ACF0(*(s32 *)(a0 + 0x10));
+        func_00228410();
+        func_002535B0(*(s32 *)(a0 + 0x28), *(u8 **)(*(u8 **)(a0 + 0x10) + 0x30) + 0x40);
+    }
+    off = *(s32 *)(a0 + 0x20) * 4;
+    func_00253690(*(s32 *)(off + (s32)s0 + 0xEC0), *(s32 *)(a0 + 0x24), &ref);
+    h = ref.tbl + *(s32 *)(*(s32 *)(ref.tbl + 0x14) + (s32)ref.tbl + (ref.idx - *(s32 *)(ref.tbl + 0x18)) * 4);
+    f20 = *(s16 *)(h + 0x10);
+    fp = (f32 *)(*(u8 **)(func_00259CC0(*(s32 *)(a0 + 0x10), 0x84) + 0x30) + 0x38);
+    if (*fp > f20) {
+        *fp = f20;
+    }
+    fp = (f32 *)(*(u8 **)(func_00259CC0(*(s32 *)(a0 + 0x10), 0x85) + 0x30) + 0x20);
+    if (*fp > 36.0f + f20) {
+        *fp = 36.0f + f20;
+    }
+}
+// differs: 9 of 138: register swaps only (the table index subtraction operands v0/v1, the second clamp pointer v1/a0); ternary/local/cast forms tried
+#endif
 INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237EC0);
 extern s32 func_00228430(s32);
 extern s32 func_002284D0(s32);
