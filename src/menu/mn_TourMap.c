@@ -311,8 +311,80 @@ void func_00305C20(void) {
     amAdx_Stop(2);
     amAdx_Stop(3);
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305CB0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_TourMap", func_00305E90);
+extern void func_002A92B0(s32);
+extern void func_002AA3D0(s32, s32, void *, s32);
+extern void func_002AA340(s32, s32, void *, s32);
+extern void func_002AA330(s32, s32, s32, void *, s32);
+extern void func_002AA260(s32, s32, s32, void *, s32);
+extern void ScrCamSlot_Load(s32, s32, void *, s32);
+extern void func_002AA0F0(s32, s32, void *, s32);
+extern void func_002A98A0(s32, s32, void *, s32, s32);
+extern void func_002A9810(s32, s32, void *, s32, s32);
+extern void func_002A9780(s32, s32, void *, s32, s32);
+extern void *amObject_Create(s32, s32);
+extern void SoundSlot_SetParams(s32, void *, s32, s32);
+extern void SoundSlot_Create(s32, s32, s32);
+extern void func_00264140(s32, s32);
+extern void Scr_Start(s32, s32);
+
+#define TM_P(o) (*(u8 **)(s0 + (o)))
+#define TM_A(fn, a, o) fn(*(s32 *)(s0 + 4), a, TM_P(o), *(s32 *)(TM_P(o) + 0x50))
+#define TM_B(fn, a, o) fn(*(s32 *)(s0 + 4), a, 0, TM_P(o), *(s32 *)(TM_P(o) + 0x50))
+#define TM_C(fn, a, o) fn(*(s32 *)(s0 + 4), a, TM_P(o), *(s32 *)(TM_P(o) + 0x50), *(s32 *)(TM_P(o) + 0x44))
+
+void func_00305CB0(void) {
+    u8 *s0;
+
+    s0 = (u8 *)D_0047097C;
+    TM_A(func_002AA3D0, 0, 0x6C);
+    TM_A(func_002AA340, 0, 0x70);
+    TM_B(func_002AA330, 0, 0x74);
+    TM_A(func_002AA3D0, 1, 0x54);
+    TM_A(func_002AA340, 1, 0x58);
+    TM_B(func_002AA330, 1, 0x5C);
+    TM_A(ScrCamSlot_Load, 0, 0x30);
+    TM_A(func_002AA0F0, 0, 0x3C);
+    TM_A(func_002AA0F0, 1, 0x40);
+    TM_C(func_002A98A0, 0, 0xD0);
+    TM_C(func_002A9810, 15, 0xCC);
+    TM_C(func_002A9780, 15, 0xC8);
+    TM_A(func_002AA3D0, 2, 0x88);
+    TM_A(func_002AA340, 2, 0x8C);
+    TM_B(func_002AA330, 2, 0x90);
+    TM_B(func_002AA260, 2, 0x94);
+    TM_A(func_002AA3D0, 3, 0x98);
+    TM_A(func_002AA340, 3, 0x9C);
+    TM_B(func_002AA330, 3, 0xA0);
+    TM_B(func_002AA260, 3, 0xA4);
+    Scr_Start(*(s32 *)(s0 + 4), 0);
+}
+void func_00305E90(void) {
+    u8 *s0;
+
+    s0 = (u8 *)D_0047097C;
+    func_002A92B0(*(s32 *)(s0 + 4));
+    TM_A(func_002AA3D0, 0, 0x60);
+    TM_A(func_002AA340, 0, 0x64);
+    TM_B(func_002AA330, 0, 0x68);
+    TM_A(func_002AA3D0, 1, 0x48);
+    TM_A(func_002AA340, 1, 0x4C);
+    TM_B(func_002AA330, 1, 0x50);
+    TM_A(ScrCamSlot_Load, 0, 0x2C);
+    TM_A(func_002AA0F0, 0, 0x34);
+    TM_A(func_002AA0F0, 1, 0x38);
+    TM_A(func_002AA3D0, 2, 0x78);
+    TM_A(func_002AA340, 2, 0x7C);
+    TM_B(func_002AA330, 2, 0x80);
+    TM_B(func_002AA260, 2, 0x84);
+    TM_C(func_002A98A0, 0, 0xC4);
+    TM_C(func_002A9810, 15, 0xC0);
+    TM_C(func_002A9780, 15, 0xBC);
+    D_00470980 = amObject_Create(*(s32 *)(s0 + 0x150), 0);
+    SoundSlot_SetParams(*(s32 *)(s0 + 0x154), D_00470980, 0x100, 0);
+    SoundSlot_Create(*(s32 *)(s0 + 0x158), 0, 0);
+    func_00264140(-1, 0);
+    Scr_Start(*(s32 *)(s0 + 4), 0);
+}
 void func_00306060(void) {
     s32 var_s1;
     u8 *temp_a0;

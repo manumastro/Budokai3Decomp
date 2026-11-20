@@ -198,7 +198,76 @@ void func_002F0B00(u8 *task) {
     *(f32 *)(s0 + 0x58) = 1.0f;
     *(f32 *)(s0 + 0x5C) = 1.0f;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0BC0);
+typedef struct IpCol {
+    f32 r, g, b, a;
+} IpCol;
+
+typedef struct IpVec {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) IpVec;
+
+extern IpVec D_00458050;
+extern void func_002284D0(void *);
+extern void func_00228430(s32);
+extern void func_00227A30(void *);
+extern void func_00228410(void);
+extern void func_00228240(void *);
+extern void func_0022C060(void *, f32);
+extern void func_0022CD00(void *);
+extern void func_002F0960(u8 *);
+
+void func_002F0BC0(u8 *task) {
+    f32 m[20];
+    IpVec v;
+    f32 c[8];
+    u8 *o;
+    u8 *nm;
+    u8 *s;
+    s32 k;
+
+    o = *(u8 **)task;
+    nm = (u8 *)gInputName;
+    if (o != NULL) {
+        func_0022C060(o, 1.0f);
+        func_0022CD00(o);
+    }
+    if (task[0x170] == 3) {
+        s = *(u8 **)(task + 0x94);
+        if (*(u16 *)(task + 0x124) != 0xFFFF) {
+            *(s16 *)(s + 0x18) = 3;
+            func_0022CF70(s);
+        }
+    } else if (task[0x170] == 2) {
+        func_002F0960(task);
+    }
+    o = *(u8 **)(task + 0x98);
+    if (o != NULL) {
+        func_002284D0(m);
+        func_00228430(0);
+        v = D_00458050;
+        v.x = 60.0f + *(f32 *)(task + 0x11C);
+        v.y = 49.0f + *(f32 *)(task + 0x120);
+        func_00227A30(&v);
+        func_0022C060(o, 1.0f);
+        func_0022CD00(o);
+        func_00228410();
+    }
+    o = *(u8 **)(task + 0x9C);
+    if (o != NULL) {
+        k = *(u16 *)(task + 0x126) + 0xF;
+        func_002284D0(m);
+        func_00228430(0);
+        func_00229800(*(void **)(*(s32 *)(*(u8 **)(nm + 0xC) + 0x1C) + k * 4), c, -1, *(f32 *)(o + 0x10));
+        m[0] = c[0];
+        m[1] = c[1];
+        m[2] = c[2];
+        m[3] = c[3];
+        func_00228240(m);
+        func_0022C060(o, 1.0f);
+        func_0022CD00(o);
+        func_00228410();
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F0D70);
 void func_002F0FD0(u8 *task) {
     u8 *s0;
@@ -877,7 +946,60 @@ void func_002F2C90(u8 *task) {
     *(f32 *)(s0 + 0x58) = 1.0f;
     *(f32 *)(s0 + 0x5C) = 1.0f;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F2D50);
+extern IpVec D_00458060;
+extern void func_002F2AF0(u8 *);
+void func_002F2D50(u8 *task) {
+    f32 m[20];
+    IpVec v;
+    f32 c[8];
+    u8 *o;
+    u8 *nm;
+    u8 *s;
+    s32 k;
+
+    o = *(u8 **)task;
+    nm = (u8 *)gInputName;
+    if (o != NULL) {
+        func_0022C060(o, 1.0f);
+        func_0022CD00(o);
+    }
+    if (task[0x60] == 3) {
+        s = *(u8 **)(task + 0x24);
+        if (*(u16 *)(task + 0x4C) != 0xFFFF) {
+            *(s16 *)(s + 0x18) = 3;
+            func_0022CF70(s);
+        }
+    } else if (task[0x60] == 2) {
+        func_002F2AF0(task);
+    }
+    o = *(u8 **)(task + 0x28);
+    if (o != NULL) {
+        func_002284D0(m);
+        func_00228430(0);
+        v = D_00458060;
+        v.x = 60.0f + *(f32 *)(task + 0x44);
+        v.y = 49.0f + *(f32 *)(task + 0x48);
+        func_00227A30(&v);
+        func_0022C060(o, 1.0f);
+        func_0022CD00(o);
+        func_00228410();
+    }
+    o = *(u8 **)(task + 0x2C);
+    if (o != NULL) {
+        k = *(u16 *)(task + 0x4E) + 0x33;
+        func_002284D0(m);
+        func_00228430(0);
+        func_00229800(*(void **)(*(s32 *)(*(u8 **)(nm + 0xC) + 0x1C) + k * 4), c, -1, *(f32 *)(o + 0x10));
+        m[0] = c[0];
+        m[1] = c[1];
+        m[2] = c[2];
+        m[3] = c[3];
+        func_00228240(m);
+        func_0022C060(o, 1.0f);
+        func_0022CD00(o);
+        func_00228410();
+    }
+}
 void func_002F2F00(u8 *task) {
     u8 *s0;
     u8 *s1;
