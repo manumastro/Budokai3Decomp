@@ -1392,7 +1392,29 @@ end:
 }
 // differs: same instructions and constants (exact float literals), 0x158 bytes against 0x170: the original gives each clamp arm its own store and b to the clamp label, and the zero arm is laid out separately; 6 instructions short here
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243280);
+void func_00243280(s32 i) {
+    u8 *p;
+    f32 v;
+
+    p = D_0046FE44 + i * 0x80;
+    v = *(f32 *)(p + 0x24);
+    if (v >= 0.43f) {
+        if (*(s16 *)(p + 0x34) != 0 || *(s16 *)(p + 0x36) == 0x28 || *(s16 *)(p + 0x36) >= 0x40) {
+            *(f32 *)(p + 0x28) = 0.5f + (v - 0.43f);
+        } else if (v <= 0.57f) {
+            *(f32 *)(p + 0x28) = 4.0f * (v - 0.43f);
+        } else {
+            *(f32 *)(p + 0x28) = 0.56f + 1.5f * (v - 0.57f);
+        }
+    } else if (*(s16 *)(p + 0x34) != 0 || *(s16 *)(p + 0x36) == 0x28 || *(s16 *)(p + 0x36) >= 0x40) {
+        *(f32 *)(p + 0x28) = 0.5f * (v / 0.43f);
+    } else {
+        *(f32 *)(p + 0x28) = 0.0f;
+    }
+    if (*(f32 *)(p + 0x28) > 1.0f) {
+        *(f32 *)(p + 0x28) = 1.0f;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_002433F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243600);
 void func_002439E0(u8 *o) {
