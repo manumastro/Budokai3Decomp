@@ -110,7 +110,55 @@ void func_00286840(u8 *a0) {
     *(s32 *)(a0 + 0x3C) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x1C) + 0x70), 0.0f);
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286A30);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286C50);
+typedef struct SsEnt {
+    s32 p;
+    s32 f4;
+    s16 f8;
+} SsEnt;
+
+typedef struct SsWork {
+    u8 *f0;
+    char pad4[0x40];
+    SsEnt ent[13];
+    char padE0[0x242 - 0xE0];
+    s16 f242[13];
+    s16 f25C;
+    char pad25E[2];
+    s8 f260;
+    u8 f261;
+    char pad262[0x26C - 0x262];
+    s32 f26C;
+} SsWork;
+
+void func_00286C50(SsWork *w) {
+    s32 i;
+    s16 sel;
+    SsEnt *f;
+    SsEnt *e;
+    s32 step;
+    s32 a;
+
+    sel = 0;
+    step = 0x10000 / w->f261;
+    for (i = 0; i < 13; i++) {
+        e = &w->ent[i];
+        if (e->p != 0) {
+            func_0022D0E0(e->p, 1);
+            e->p = 0;
+        }
+    }
+    for (a = 0; a < w->f261; a++) {
+        f = &w->ent[a];
+        f->p = func_0022D670(*(s32 *)(*(u8 **)(w->f0 + 0x1C) + 0x30), 0.0f);
+        f->f4 = a * step;
+        f->f8 = w->f242[a];
+        if (f->f8 == w->f25C) {
+            sel = a;
+        }
+    }
+    w->f260 = sel;
+    w->f26C = *(u16 *)&w->ent[sel].f4;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286DA0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286E70);
 extern void *amSofdec_Create(void *);

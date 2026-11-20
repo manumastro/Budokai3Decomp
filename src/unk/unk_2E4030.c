@@ -288,7 +288,7 @@ extern s32 func_0022D860(s32, f32);
 extern void amModel_SetCurrent(s32, s32);
 extern f32 gFrameDelta;
 extern void func_002E5C20();
-extern void func_002E5260(u8 *);
+extern void func_002E5260();
 void func_002E5040(u8 *a0) {
     s32 f4;
 
@@ -336,52 +336,54 @@ void func_002E5170(u8 *a0) {
     *(s32 *)(a0 + 0x24) = func_0022D860(*(s32 *)(*(u8 **)(*(u8 **)a0 + 0x14) + 0x24), 0.0f);
     func_002E5260(a0);
 }
-/* differs: compiled 0x144 against 0x150: the original keeps one more value live across the calls (it saves s7 as well:
-   step), ours keeps seven saved registers; the walking pointer variant (e260_c) gave 0x13C. */
-#if 0
-void func_002E5260(u8 *a0) {
-    u8 *base;
-    s32 step;
-    s32 i;
-    s32 n;
-    s32 idx;
-    s32 off;
-    u8 *q;
-    s32 v;
+typedef struct SsEnt2 {
+    s32 p;
+    s32 f4;
+    s16 f8;
+} SsEnt2;
 
-    base = a0;
-    step = 0x10000 / a0[0xF3];
+typedef struct SsWork2 {
+    u8 *f0;
+    char pad4[0x2C];
+    SsEnt2 ent[13];
+    char padCC[0xD6 - 0xCC];
+    s16 f242[13];
+    s16 f25C;
+    s8 f260;
+    u8 f261;
+    char padF4[4];
+    s32 f26C;
+} SsWork2;
+
+void func_002E5260(SsWork2 *w) {
+    s32 i;
+    s16 sel;
+    SsEnt2 *f;
+    SsEnt2 *e;
+    s32 step;
+    s32 a;
+
+    sel = 0;
+    step = 0x10000 / w->f261;
     for (i = 0; i < 13; i++) {
-        q = base + 0x30 + i * 12;
-        if (*(s32 *)q != 0) {
-            func_0022D0E0(*(s32 *)q, 0);
-            *(s32 *)q = 0;
+        e = &w->ent[i];
+        if (e->p != 0) {
+            func_0022D0E0(e->p, 0);
+            e->p = 0;
         }
     }
-    if (a0[0xF3] > 0) {
-        n = 0;
-        idx = 0;
-        off = 0;
-        q = base;
-        while (n < a0[0xF3]) {
-            v = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)base + 0x1C) + 0x130), 0.0f);
-            *(s32 *)(q + 0x30) = v;
-            *(s32 *)(q + 0x34) = off;
-            *(s16 *)(q + 0x38) = *(s16 *)(base + 0xD6 + n * 2);
-            if (*(s16 *)(q + 0x38) == *(s16 *)(base + 0xF0)) {
-                idx = (s16)n;
-            }
-            n++;
-            q += 12;
-            off += step;
+    for (a = 0; a < w->f261; a++) {
+        f = &w->ent[a];
+        f->p = func_0022D670(*(s32 *)(*(u8 **)(w->f0 + 0x1C) + 0x130), 0.0f);
+        f->f4 = a * step;
+        f->f8 = w->f242[a];
+        if (f->f8 == w->f25C) {
+            sel = a;
         }
     }
-    a0[0xF2] = (u8)idx;
-    *(s32 *)(base + 0xF8) = *(u16 *)(base + (s16)idx * 12 + 0x34);
+    w->f260 = sel;
+    w->f26C = *(u16 *)&w->ent[sel].f4;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5260);
-extern void func_002E5260(u8 *);
 
 void func_002E53B0(u8 *a0, s16 a1) {
     u8 *obj;
@@ -405,7 +407,7 @@ void func_002E53B0(u8 *a0, s16 a1) {
     obj[0xF3] = n;
     *(s32 *)(obj + 0x104) = 0x10000 / (obj[0xF3] * 12);
     if (obj[0xF4] == 2) {
-        func_002E5260(obj);
+        func_002E5260((void *)obj);
     }
 }
 extern void A2d_FlushList(void);
