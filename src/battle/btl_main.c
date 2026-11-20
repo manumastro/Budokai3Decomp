@@ -5987,7 +5987,126 @@ void func_001BDAA0(Fighter *f) {
         FIGHTER_FIELD(f, s32, 0x17BC) = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BDB20);
+extern void Fighter_ResetMotion(void *, s32);
+extern void func_001E5040(void *);
+extern s32 func_001E94C0(void *);
+extern s32 func_001C2B10(void *);
+extern void func_001E3200(void *);
+extern void (*D_00468460[])(void *);
+extern void func_002CBFF0(s32, void *);
+void func_001BDB20(u8 *arg0)
+{
+  u8 *new_var;
+  s32 r;
+  f32 k;
+  u8 *q;
+  r = -1;
+  new_var = arg0;
+  k = BW_FIELD(gBattle, f32, 0x88F0) * (*((f32 *) (arg0 + 0xC9C)));
+  if ((!((*((u16 *) (arg0 + 0xCB2))) & 0x80)) && ((*((f32 *) (new_var + 0xC60))) <= 10.0f))
+  {
+    *((u16 *) (new_var + 0xCB2)) = 1;
+    if ((*((s8 *) (new_var + 0x2010))) != 0)
+    {
+      *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+    }
+    if ((*((s8 *) (new_var + 0x2011))) != 0)
+    {
+      *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+    }
+  }
+  else
+  {
+    func_001ABD30((Fighter *) (new_var + 0x1360));
+  }
+  Fighter_ResetMotion(new_var, 0);
+  if ((*((u16 *) (new_var + 0xCB2))) & 0x80)
+  {
+    if ((*((s16 *) (new_var + 0x13A4))) > -1)
+    {
+      r = func_001C2B10(new_var);
+      q = new_var + 0x1360;
+      if ((((s16 *) (q + 0x64))[(*((s32 *) (q + 0x58))) * 2] >= 0) || (!((*((f32 *) (new_var + 0xCB8))) < (15.0f * k))))
+      {
+        *((u16 *) (new_var + 0xCB2)) = 0x10;
+        if ((*((s8 *) (new_var + 0x2010))) != 0)
+        {
+          *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+        }
+        if ((*((s8 *) (new_var + 0x2011))) != 0)
+        {
+          *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+        }
+        *((s8 *) (new_var + 0x1FFD)) = 1;
+        func_001E3200(new_var);
+      }
+    }
+    else
+    {
+      r = func_001E94C0(new_var);
+      if ((r != 3) || (!((*((f32 *) (new_var + 0xCB8))) < (15.0f * k))))
+      {
+        *((u16 *) (new_var + 0xCB2)) = 0x10;
+        if ((*((s8 *) (new_var + 0x2010))) != 0)
+        {
+          *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+        }
+        if ((*((s8 *) (new_var + 0x2011))) != 0)
+        {
+          *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+        }
+        *((s8 *) (new_var + 0x1FFD)) = 1;
+        func_001E3200(new_var);
+      }
+    }
+  }
+  if (((*((s32 *) (new_var + 0xC64))) != 0) || (r == 11))
+  {
+    if (r < 0)
+    {
+      if ((*((s16 *) (new_var + 0x13A4))) > -1)
+      {
+        r = func_001C2B10(new_var);
+      }
+      else
+      {
+        r = func_001E94C0(new_var);
+      }
+      if (r == 11)
+      {
+        r = 3;
+      }
+    }
+    *((s32 *) (new_var + 0x1864)) = 1;
+    if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+    {
+      u8 *p = *((u8 **) (new_var + 0xBB4));
+      if ((((*((f32 *) (new_var + 0x44))) - (*((f32 *) (p + 0xC)))) - (*((f32 *) (new_var + 0x1844)))) <= 0.0f)
+      {
+        *((s8 *) (new_var + 0x1FF9)) = 0;
+        *((s32 *) (new_var + 0x1864)) = (*((s32 *) (new_var + 0x1864))) | 8;
+      }
+    }
+    func_001E5040(new_var);
+    if (r == 0)
+    {
+      *((s16 *) (new_var + 0xCB4)) = 1;
+    }
+    else
+    {
+      *((s16 *) (new_var + 0xCB4)) = 0;
+    }
+    *((s8 *) (new_var + 0x2004)) = 1;
+    *((s8 *) (new_var + 0x1FFB)) = 1;
+    if (r != 0xF)
+    {
+      *((s16 *) (new_var + 0xCB6)) = 0;
+    }
+    *((s8 *) (new_var + 0x2006)) = 0;
+    D_00468460[r](new_var);
+    func_002CBFF0(1, new_var);
+  }
+}
 void func_001BDE30(Fighter *f) {
     FighterV *fv = (FighterV *)f;
 
@@ -6028,7 +6147,124 @@ void func_001BDF20(Fighter *f) {
         FIGHTER_FIELD(f, s32, 0x17BC) = 0x3E4CCCCD;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BDF80);
+extern void Fighter_ResetMotion(void *, s32);
+extern void func_001E5040(void *);
+extern s32 func_001E94C0(void *);
+extern s32 func_001C2B10(void *);
+extern void func_001E3200(void *);
+extern void (*D_00468460[])(void *);
+extern void func_002CBFF0(s32, void *);
+void func_001BDF80(u8 *arg0)
+{
+  u8 *new_var;
+  s32 r;
+  f32 k;
+  u8 *q;
+  r = -1;
+  new_var = arg0;
+  k = BW_FIELD(gBattle, f32, 0x88F0) * (*((f32 *) (arg0 + 0xC9C)));
+  if ((!((*((u16 *) (arg0 + 0xCB2))) & 0x40)) && ((*((f32 *) (new_var + 0xC60))) <= 10.0f))
+  {
+    *((u16 *) (new_var + 0xCB2)) = 1;
+    if ((*((s8 *) (new_var + 0x2010))) != 0)
+    {
+      *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+    }
+    if ((*((s8 *) (new_var + 0x2011))) != 0)
+    {
+      *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+    }
+  }
+  else
+  {
+    func_001ABD30((Fighter *) (new_var + 0x1360));
+  }
+  Fighter_ResetMotion(new_var, 0);
+  if ((*((u16 *) (new_var + 0xCB2))) & 0x40)
+  {
+    if ((*((s16 *) (new_var + 0x13A4))) > -1)
+    {
+      r = func_001C2B10(new_var);
+      q = new_var + 0x1360;
+      if ((((s16 *) (q + 0x64))[(*((s32 *) (q + 0x58))) * 2] <= 0) || (!((*((f32 *) (new_var + 0xCB8))) < (15.0f * k))))
+      {
+        *((u16 *) (new_var + 0xCB2)) = 8;
+        if ((*((s8 *) (new_var + 0x2010))) != 0)
+        {
+          *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+        }
+        if ((*((s8 *) (new_var + 0x2011))) != 0)
+        {
+          *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+        }
+        *((s8 *) (new_var + 0x1FFD)) = 1;
+      }
+    }
+    else
+    {
+      r = func_001E94C0(new_var);
+      if ((r != 2) || (!((*((f32 *) (new_var + 0xCB8))) < (15.0f * k))))
+      {
+        *((u16 *) (new_var + 0xCB2)) = 8;
+        if ((*((s8 *) (new_var + 0x2010))) != 0)
+        {
+          *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+        }
+        if ((*((s8 *) (new_var + 0x2011))) != 0)
+        {
+          *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+        }
+        *((s8 *) (new_var + 0x1FFD)) = 1;
+      }
+    }
+  }
+  if (((*((s32 *) (new_var + 0xC64))) != 0) || (r == 9))
+  {
+    if (r < 0)
+    {
+      if ((*((s16 *) (new_var + 0x13A4))) > -1)
+      {
+        r = func_001C2B10(new_var);
+      }
+      else
+      {
+        r = func_001E94C0(new_var);
+      }
+      if (r == 9)
+      {
+        r = 2;
+      }
+    }
+    *((s32 *) (new_var + 0x1864)) = 1;
+    if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+    {
+      u8 *p = *((u8 **) (new_var + 0xBB4));
+      if ((((*((f32 *) (new_var + 0x44))) - (*((f32 *) (p + 0xC)))) - (*((f32 *) (new_var + 0x1844)))) <= 0.0f)
+      {
+        *((s8 *) (new_var + 0x1FF9)) = 0;
+        *((s32 *) (new_var + 0x1864)) = (*((s32 *) (new_var + 0x1864))) | 8;
+      }
+    }
+    func_001E5040(new_var);
+    if (r == 0)
+    {
+      *((s16 *) (new_var + 0xCB4)) = 1;
+    }
+    else
+    {
+      *((s16 *) (new_var + 0xCB4)) = 0;
+    }
+    *((s8 *) (new_var + 0x2004)) = 1;
+    *((s8 *) (new_var + 0x1FFB)) = 1;
+    if (r != 0xF)
+    {
+      *((s16 *) (new_var + 0xCB6)) = 0;
+    }
+    *((s8 *) (new_var + 0x2006)) = 0;
+    D_00468460[r](new_var);
+    func_002CBFF0(1, new_var);
+  }
+}
 void func_001BE280(Fighter *f) {
     FighterV *fv = (FighterV *)f;
 
