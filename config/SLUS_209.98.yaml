@@ -360,6 +360,10 @@ segments:
       # initializer (code, 0x46FC80) and a pointer to it (0x46FCC0), as Metrowerks emits for a global whose
       # initial value is computed.
       - [0x35CB80, rodata, rodata/rodata_a]
+      # sys/script owns 0x35F640 to 0x35F6F0: the switch tables of Scr_TaskMain, Scr_ReadInt, Scr_ReadFloat,
+      # Scr_IntOperand and Scr_FloatOperand
+      - [0x35F640, .rodata, sys/script]
+      - [0x35F6F0, rodata, rodata/rodata_a0b]
       # btl_main owns 0x368730 to 0x368F40: the switch tables of its functions (func_001B1A10 to func_001BF570); splat moves the tables
       # of the INCLUDE_ASM functions between them into their asm files (configure.py drops the "nonmatching" line there)
       - [0x368730, .rodata, battle/btl_main]

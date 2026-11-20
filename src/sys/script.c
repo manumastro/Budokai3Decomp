@@ -895,10 +895,178 @@ void Scr_Copy4(s8 *dst, s8 *src) {
     dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; dst[3] = src[3];
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/script", Scr_ReadInt);
-INCLUDE_ASM("asm/nonmatchings/sys/script", Scr_ReadFloat);
-INCLUDE_ASM("asm/nonmatchings/sys/script", Scr_IntOperand);
-INCLUDE_ASM("asm/nonmatchings/sys/script", Scr_FloatOperand);
+s32 Scr_ReadInt(ScrCtx *ctx, u8 **pc) {
+    s32 c;
+    u8 *p;
+    s32 o;
+
+    c = **pc;
+    *pc += 1;
+    switch (c >> 4) {
+    case 0:
+        return ctx->r[c & 0xF];
+    case 1:
+        p = *pc;
+        *pc += 1;
+        return *(s8 *)p;
+    case 2:
+        p = *pc;
+        *pc += 2;
+        return (((s8 *)p)[0] & 0xFF) | (((s8 *)p)[1] << 8);
+    case 3:
+        p = *pc;
+        *pc += 4;
+        break;
+    case 4:
+        p = (u8 *)ctx->r[c & 0xF];
+        break;
+    case 5:
+        o = *(s8 *)*pc;
+        *pc += 1;
+        p = (u8 *)ctx->r[c & 0xF] + o;
+        break;
+    case 6:
+        p = *pc;
+        *pc += 2;
+        o = (((s8 *)p)[0] & 0xFF) | (((s8 *)p)[1] << 8);
+        p = (u8 *)ctx->r[c & 0xF] + o;
+        break;
+    case 7:
+        o = ctx->r[(*(s8 *)*pc >> 4) & 0xF];
+        *pc += 1;
+        p = (u8 *)ctx->r[c & 0xF] + o;
+        break;
+    }
+    return (p[3] << 24) | ((p[2] << 16) | (p[0] | (p[1] << 8)));
+}
+f32 Scr_ReadFloat(ScrCtx *ctx, u8 **pc) {
+    s32 c;
+    u8 *p;
+    s32 o;
+    s32 v;
+
+    c = **pc;
+    *pc += 1;
+    switch (c >> 4) {
+    case 0:
+        return ((f32 *)((u8 *)ctx + 0x40))[c & 0xF];
+    case 1:
+        p = *pc;
+        *pc += 1;
+        v = *(s8 *)p;
+        return *(f32 *)&v;
+    case 2:
+        p = *pc;
+        *pc += 2;
+        v = (((s8 *)p)[0] & 0xFF) | (((s8 *)p)[1] << 8);
+        return *(f32 *)&v;
+    case 3:
+        p = *pc;
+        *pc += 4;
+        break;
+    case 4:
+        p = (u8 *)ctx->r[c & 0xF];
+        break;
+    case 5:
+        o = *(s8 *)*pc;
+        *pc += 1;
+        p = (u8 *)ctx->r[c & 0xF] + o;
+        break;
+    case 6:
+        p = *pc;
+        *pc += 2;
+        o = (((s8 *)p)[0] & 0xFF) | (((s8 *)p)[1] << 8);
+        p = (u8 *)ctx->r[c & 0xF] + o;
+        break;
+    case 7:
+        o = ctx->r[(*(s8 *)*pc >> 4) & 0xF];
+        *pc += 1;
+        p = (u8 *)ctx->r[c & 0xF] + o;
+        break;
+    }
+    v = (p[3] << 24) | ((p[2] << 16) | (p[0] | (p[1] << 8)));
+    return *(f32 *)&v;
+}
+u8 *Scr_IntOperand(ScrCtx *ctx, u8 **pc) {
+    s32 c;
+    u8 *t;
+    s32 o;
+
+    c = **pc;
+    *pc += 1;
+    switch (c >> 4) {
+    case 0:
+        return (u8 *)&ctx->r[c & 0xF];
+    case 1:
+        t = *pc;
+        *pc += 1;
+        return (u8 *)(s32) * (s8 *)t;
+    case 2:
+        t = *pc;
+        *pc += 2;
+        return (u8 *)((((s8 *)t)[0] & 0xFF) | (((s8 *)t)[1] << 8));
+    case 3:
+        t = *pc;
+        *pc += 4;
+        return (u8 *)((t[3] << 24) | ((t[2] << 16) | (t[0] | (t[1] << 8))));
+    case 4:
+        return (u8 *)ctx->r[c & 0xF];
+    case 5:
+        o = *(s8 *)*pc;
+        *pc += 1;
+        return (u8 *)ctx->r[c & 0xF] + o;
+    case 6:
+        t = *pc;
+        *pc += 2;
+        o = (((s8 *)t)[0] & 0xFF) | (((s8 *)t)[1] << 8);
+        return (u8 *)ctx->r[c & 0xF] + o;
+    case 7:
+        o = ctx->r[(*(s8 *)*pc >> 4) & 0xF];
+        *pc += 1;
+        return (u8 *)ctx->r[c & 0xF] + o;
+    }
+    return 0;
+}
+u8 *Scr_FloatOperand(ScrCtx *ctx, u8 **pc) {
+    s32 c;
+    u8 *t;
+    s32 o;
+
+    c = **pc;
+    *pc += 1;
+    switch (c >> 4) {
+    case 0:
+        return (u8 *)&ctx->r[c & 0xF] + 0x40;
+    case 1:
+        t = *pc;
+        *pc += 1;
+        return (u8 *)(s32) * (s8 *)t;
+    case 2:
+        t = *pc;
+        *pc += 2;
+        return (u8 *)((((s8 *)t)[0] & 0xFF) | (((s8 *)t)[1] << 8));
+    case 3:
+        t = *pc;
+        *pc += 4;
+        return (u8 *)((t[3] << 24) | ((t[2] << 16) | (t[0] | (t[1] << 8))));
+    case 4:
+        return (u8 *)ctx->r[c & 0xF];
+    case 5:
+        o = *(s8 *)*pc;
+        *pc += 1;
+        return (u8 *)ctx->r[c & 0xF] + o;
+    case 6:
+        t = *pc;
+        *pc += 2;
+        o = (((s8 *)t)[0] & 0xFF) | (((s8 *)t)[1] << 8);
+        return (u8 *)ctx->r[c & 0xF] + o;
+    case 7:
+        o = ctx->r[(*(s8 *)*pc >> 4) & 0xF];
+        *pc += 1;
+        return (u8 *)ctx->r[c & 0xF] + o;
+    }
+    return 0;
+}
 ScrTask *Scr_CreateTask(ScrMachine *m, u8 *pc, s32 prio) {
     ScrTask *task;
     s32 slot;
