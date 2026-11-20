@@ -2724,7 +2724,95 @@ void func_001B3660(Fighter *f)
   }
 }
 
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B3720);
+extern void func_001E1460(void *, int);
+s32 func_001E2070(void *);
+extern void func_001D7CC0(void *, int);
+extern s32 func_001E1850(void *, s32);
+void func_001B3720(u8 *arg0)
+{
+  u8 *new_var;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0x2B;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  switch (*((s16 *) (new_var + 0xCAC)))
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  *((s32 *) (new_var + 0xB70)) = 0x3A;
+  if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+  {
+    *((s32 *) (new_var + 0xB70)) = (s32) ((*((s32 *) (new_var + 0xB70))) + 0x100);
+  }
+  func_001E3460(new_var);
+  *((s32 *) (new_var + 0xCA4)) = 0;
+  *((s32 *) (new_var + 0xCA8)) = 0x3DCCCCCD;
+  *((s32 *) (new_var + 0xCB8)) = 0;
+  *((s8 *) (new_var + 0x2003)) = 1;
+  *((s8 *) (new_var + 0x1FFD)) = 1;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s32 *) (new_var + 0xCA0)) = 0;
+  *((s16 *) (new_var + 0xCB4)) = 0;
+  *((f32 *) (new_var + 0x18A8)) = 120.0f + 120.0f * (*((f32 *) (new_var + 0x17E4)) / *((f32 *) (new_var + 0x17E8)));
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((f32 *) (new_var + 0x18A8)) += 60.0f;
+  }
+  if (func_001E1850(new_var, *((s32 *) (new_var + 0xBA4))) != 0)
+  {
+    *((f32 *) (new_var + 0x18A8)) += 60.0f;
+  }
+  func_001E1460(new_var, 0);
+  if ((*((s8 *) (new_var + 0x200F))) > 0)
+  {
+    *((s8 *) (new_var + 0x200F)) = 2;
+  }
+  func_001E2070(new_var);
+  func_001D7CC0(new_var, 3);
+  func_001ABD30((Fighter *) (new_var + 0x1360));
+}
 void Fighter_ResetSpeed1B3960(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
@@ -2972,7 +3060,102 @@ void func_001B3EA0(Fighter *f) {
     D_0046849C[0](f);
     func_002CBFF0(1, f);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B3FE0);
+s32 func_001E3100();
+extern void func_001D9C00(void *a);
+extern s32 func_0012EAE0(s32);
+void func_001B3FE0(u8 *arg0)
+{
+  u8 *new_var;
+  s32 s;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0x28;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  s = -1;
+  if (s == -1)
+    s = *((s16 *) (new_var + 0xCAC));
+  switch (s)
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  {
+    B3Loc loc;
+    loc.side = *((s32 *) (new_var + 0x1350));
+    loc.flag = 0;
+    func_00218440(0xD, loc.v);
+  }
+  *((s32 *) (new_var + 0xB70)) = 0x100;
+  switch (*((s16 *) (new_var + 0xCB4)))
+  {
+    case 2:
+      *((s16 *) (new_var + 0xCB4)) = 0xF4;
+      break;
+    case 3:
+      *((s16 *) (new_var + 0xCB4)) = 0xF6;
+      break;
+    default:
+      *((s16 *) (new_var + 0xCB4)) = ((*((f32 *) (new_var + 0x1390)) - *((f32 *) (new_var + 0x1398))) > 0.0f) ? 0xF8 : 0xFA;
+      break;
+  }
+  *((s16 *) (new_var + 0xCB4)) = *((s16 *) (new_var + 0xCB4)) + (s16) (((u32) func_0012EAE0(0x20) / 10) & 1);
+  func_001E3460(new_var);
+  *((s8 *) (new_var + 0x1FF9)) = 1;
+  __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(new_var + 0x40), "r"(new_var + 0x100) : "memory");
+  *((f32 *) (new_var + 0xCA4)) = 1.0f;
+  *((f32 *) (new_var + 0xCA8)) = 0.0f;
+  *((f32 *) (new_var + 0xCB8)) = 0.0f;
+  *((s8 *) (new_var + 0x2003)) = 0;
+  *((s8 *) (new_var + 0x1FFD)) = 0;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s8 *) (new_var + 0xCBD)) = 1;
+  *((s8 *) (new_var + 0x2004)) = 0;
+  func_001E3100(new_var);
+  func_001D9C00(new_var);
+  func_001ABD30((Fighter *) (new_var + 0x1360));
+  func_001D9900(new_var, 0xC, 1);
+}
 void Fighter_ResetSpeedOne1B4280(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
@@ -3443,7 +3626,84 @@ void func_001B5DB0(Fighter *f) {
         func_002CBFF0(1, f);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B5E70);
+extern f32 func_0011F680(f32, f32);
+void func_001B5E70(u8 *arg0)
+{
+  u8 *new_var;
+  s32 s;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0x21;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  s = -1;
+  if (s == -1)
+    s = *((s16 *) (new_var + 0xCAC));
+  switch (s)
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  *((s32 *) (new_var + 0x17A4)) = (s32) (65536.0f * (func_0011F680(*((f32 *) (new_var + 0x110)), *((f32 *) (new_var + 0x118))) / 6.2831855f));
+  if ((*((s16 *) (new_var + 0xCB4))) != 0)
+  {
+    *((s32 *) (new_var + 0x17A4)) = (*((s32 *) (new_var + 0x17A4)) + 0x8000) & 0xFFFF;
+  }
+  __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(new_var + 0x40), "r"(new_var + 0x100) : "memory");
+  __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(new_var + 0x40), "r"(new_var + 0x650) : "memory");
+  func_001E4FA0(new_var, -1);
+  __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(new_var + 0x100), "r"(new_var + 0x40) : "memory");
+  *((s32 *) (new_var + 0xB70)) = (*((s16 *) (new_var + 0xCB4))) ? 0x86 : 0x90;
+  func_001E3460(new_var);
+  *((f32 *) (new_var + 0xCA4)) = 1.0f;
+  *((f32 *) (new_var + 0xCA8)) = 0.0f;
+  *((f32 *) (new_var + 0xCB8)) = 0.0f;
+  *((s8 *) (new_var + 0x2003)) = 0;
+  *((s8 *) (new_var + 0x1FFD)) = 0;
+  __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(new_var + 0xD0) : "memory");
+  *((s8 *) (new_var + 0x1FFC)) = 1;
+  func_001A8770(2, 0);
+}
 void func_001B60E0(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
@@ -3842,7 +4102,110 @@ void func_001B6960(Fighter *f) {
     func_001E4E20(f, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B6980);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B6C50);
+extern void func_001DF420(void *, s32, s32);
+s32 func_001E2C50(void *);
+void func_001B6C50(u8 *arg0)
+{
+  u8 *new_var;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0x1D;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  switch (*((s16 *) (new_var + 0xCAC)))
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  if ((*((s16 *) (new_var + 0xCB4))) != 0)
+  {
+    if ((*((s16 *) ((*((u8 **) (new_var + 0x17A0))) + 0x1A))) > 0)
+    {
+      *((s32 *) (new_var + 0xB70)) = ((s16 *) ((*((u8 **) (new_var + 0x17A0))) + 0x18))[(*((s8 *) (new_var + 0x1FF9))) != 0];
+    }
+    else
+    {
+      *((s32 *) (new_var + 0xB70)) = *((s16 *) ((*((u8 **) (new_var + 0x17A0))) + 0x18));
+    }
+    *((s16 *) (new_var + 0x1A58)) = *((s16 *) ((*((u8 **) (new_var + 0x17A0))) + 0x10));
+    *((s16 *) (new_var + 0x1A5A)) = 0;
+    func_001E3460(new_var);
+    func_001DF420(new_var, *((s16 *) ((*((u8 **) (new_var + 0x17A0))) + 0x10)), 0);
+  }
+  func_001ABD30((Fighter *) (new_var + 0x1360));
+  *((s16 *) (new_var + 0xAE4)) = 0;
+  *((s32 *) (new_var + 0xADC)) = 0xBF800000;
+  *((s32 *) (new_var + 0xAD4)) = 0x3F800000;
+  *((s32 *) (new_var + 0xAD8)) = 0;
+  *((s8 *) (new_var + 0xACE)) = 0;
+  *((s8 *) (new_var + 0xACF)) = 0;
+  *((s8 *) (new_var + 0xAD0)) = 0;
+  *((s8 *) (new_var + 0xAC8)) = 0;
+  *((s32 *) (new_var + 0xAC0)) = 0;
+  *((u8 **) (new_var + 0xAA0)) = new_var + 0x920;
+  *((u8 **) (new_var + 0xAA4)) = new_var + 0x950;
+  *((u8 **) (new_var + 0xAA8)) = new_var + 0x980;
+  *((u8 **) (new_var + 0xAAC)) = new_var + 0x9B0;
+  *((u8 **) (new_var + 0xAB0)) = new_var + 0x9E0;
+  *((u8 **) (new_var + 0xAB4)) = new_var + 0xA10;
+  *((u8 **) (new_var + 0xAB8)) = new_var + 0xA40;
+  *((u8 **) (new_var + 0xABC)) = new_var + 0xA70;
+  *((s8 *) (new_var + 0xAC9)) = 0;
+  *((s8 *) (new_var + 0xACA)) = 0;
+  *((s8 *) (new_var + 0xACB)) = 0;
+  *((s8 *) (new_var + 0xACC)) = 0;
+  *((s8 *) (new_var + 0xACD)) = 0;
+  *((s32 *) (new_var + 0xB64)) = 0;
+  *((s32 *) (new_var + 0xADC)) = 0x461C4000;
+  *((s32 *) (new_var + 0xCB8)) = 0;
+  *((s8 *) (new_var + 0x2003)) = 0;
+  *((s8 *) (new_var + 0x1FFD)) = 0;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s16 *) (new_var + 0xCB4)) = 0;
+  *((s8 *) (new_var + 0x2017)) = 0;
+  *((s8 *) (new_var + 0x2018)) = 0;
+  func_001E2C50(new_var);
+}
 void func_001B6EC0(Fighter *f) {
     FT_FIELD(f, f32, 0x17BC) = 0.4f;
     func_001E4E20(f, 0);
@@ -4753,7 +5116,98 @@ void func_001B9330(Fighter *f) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B93A0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9800);
+extern void func_001E5040(void *);
+s32 func_001E2070(void *);
+void func_001B9800(u8 *arg0)
+{
+  u8 *new_var;
+  s32 s;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0x14;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  s = -1;
+  if (s == -1)
+    s = *((s16 *) (new_var + 0xCAC));
+  switch (s)
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  *((s32 *) (new_var + 0xB70)) = (*((s8 *) (new_var + 0x183C))) + 0x9A;
+  func_001E3460(new_var);
+  if ((*((s8 *) (new_var + 0x183C))) == 5)
+  {
+    *((s32 *) (new_var + 0x17A4)) = (*((s32 *) (new_var + 0x17A4)) + *((s32 *) (new_var + 0x17AC))) & 0xFFFF;
+  }
+  if (*((f32 *) (new_var + 0xD4)) > 0.5f)
+    *((s8 *) (new_var + 0x183D)) = 1;
+  else if (*((f32 *) (new_var + 0xD4)) < 0.5f)
+    *((s8 *) (new_var + 0x183D)) = 2;
+  else
+    *((s8 *) (new_var + 0x183D)) = 0;
+  if (((*((s8 *) (new_var + 0x1FF9))) == 0) && ((*((s16 *) (new_var + 0xCAE))) == 0x14))
+  {
+    *((s8 *) (new_var + 0x1FF9)) = 1;
+  }
+  *((s32 *) (new_var + 0x1864)) = 3;
+  func_001E5040(new_var);
+  *((s32 *) (new_var + 0x1830)) = 0;
+  *((f32 *) (new_var + 0x182C)) = *((f32 *) (new_var + 0x1828)) / 3.0f;
+  *((f32 *) (new_var + 0x1824)) = *((f32 *) (new_var + 0x1820)) = *((f32 *) (new_var + 0x654)) - *((f32 *) (new_var + 0x1844));
+  __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(new_var + 0xF0), "r"(new_var + 0x650) : "memory");
+  *((f32 *) (new_var + 0xCA4)) = 1.0f;
+  *((f32 *) (new_var + 0xCA8)) = 0.0f;
+  *((f32 *) (new_var + 0xCB8)) = 0.0f;
+  *((s8 *) (new_var + 0x2003)) = 0;
+  *((s8 *) (new_var + 0x1FFD)) = 0;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s8 *) (new_var + 0xCBD)) = 0;
+  *((s8 *) ((*((u8 **) (new_var + 0x1354))) + 0x2017)) = 1;
+  func_001E2070(new_var);
+  func_001ABD30((Fighter *) (new_var + 0x1360));
+}
 void func_001B9A80(Fighter *f) {
     f32 t;
 
