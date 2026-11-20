@@ -58,7 +58,19 @@ void func_00289380(u8 *arg0) {
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002893F0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002898F0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00289BE0);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00289DF0);
+extern s32 D_00470838;
+extern void func_00289BE0(void);
+void func_00289DF0(u8 *arg0) {
+    if (((s32 *)&D_00470838)[D_0047084C] & 0x8000) {
+        D_0047084C ^= 1;
+        return;
+    }
+    if (amMc_GetInfo(D_0047084C, 0, 0) != 0) {
+        D_0047084C ^= 1;
+        return;
+    }
+    MC_SETFUNC(arg0, func_00289BE0);
+}
 extern u16 D_00492FCE[];
 extern u16 D_00493086[];
 extern s32 D_00470850;
