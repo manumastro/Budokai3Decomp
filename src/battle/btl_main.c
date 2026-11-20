@@ -2542,62 +2542,77 @@ void func_001B3140(Fighter *f) {
     }
     FT_FIELD(f, f32, 0x17BC) = 0.0f;
 }
-#if 0
-// differs: 74 of 104. The 0xCB2 read-modify-write (both the 0x2010 and the 0x2011 block) shares one hoisted `addiu v1,s0,0xCB2` in a delay slot, and the 0x1FF9 store does the same; the original uses displacements (lhu/sh 0xCB2(s0)).
-void func_001B3190(Fighter *f) {
-    s32 r;
-    void *p;
-    u16 v;
-    if (FT_FIELD(f, f32, 0xC60) <= 10.0f) {
-        ((FighterCB2 *)f)->unkCB2 = 1;
-        if (FT_FIELD(f, s8, 0x2010) != 0) {
-            v = ((FighterCB2 *)f)->unkCB2;
-            ((FighterCB2 *)f)->unkCB2 = v | 0x8000;
-        }
-        if (FT_FIELD(f, s8, 0x2011) != 0) {
-            v = ((FighterCB2 *)f)->unkCB2;
-            ((FighterCB2 *)f)->unkCB2 = v | 0x4000;
-        }
-    } else {
-        func_001ABD30((Fighter *)((u8 *)f + 0x1360));
+extern void Fighter_ResetMotion(void *, s32);
+extern void func_001E5040(void *);
+extern s32 func_001E94C0(void *);
+extern s32 func_001C2B10(void *);
+extern void (*D_00468460[])(void *);
+extern void func_002CBFF0(s32, void *);
+void func_001B3190(u8 *arg0)
+{
+  u8 *new_var;
+  s32 r;
+  new_var = arg0;
+  if ((*((f32 *) (new_var + 0xC60))) <= 10.0f)
+  {
+    *((u16 *) (new_var + 0xCB2)) = 1;
+    if ((*((s8 *) (new_var + 0x2010))) != 0)
+    {
+      *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
     }
-    Fighter_ResetMotion(f, 0);
-    if (FT_FIELD(f, s32, 0xC64) != 0) {
-        FT_FIELD(f, s32, 0x1864) = 1;
-        if (FT_FIELD(f, s8, 0x1FF9) != 0) {
-            p = FT_FIELD(f, void *, 0xBB4);
-            if (((FT_FIELD(f, f32, 0x44) - FT_FIELD(p, f32, 0xC)) - FT_FIELD(f, f32, 0x1844)) <= 0.0f) {
-                FT_FIELD(f, s8, 0x1FF9) = 0;
-                r = FT_FIELD(f, s32, 0x1864);
-                FT_FIELD(f, s32, 0x1864) = r | 8;
-                FT_FIELD(f, u32, 0xCA4) = 0x3F000000;
-                FT_FIELD(f, u32, 0xCA8) = 0x3E4CCCCD;
-            }
-        }
-        func_001E5040(f);
-        if (FT_FIELD(f, s16, 0x13A4) < 0) {
-            r = func_001E94C0(f);
-        } else {
-            r = func_001C2B10(f);
-        }
-        if (r == 0) {
-            FT_FIELD(f, s16, 0xCB4) = 1;
-        } else {
-            FT_FIELD(f, s16, 0xCB4) = 0;
-        }
-        FT_FIELD(f, s8, 0x2004) = 1;
-        FT_FIELD(f, s8, 0x1FFB) = 1;
-        if (r != 0xF) {
-            FT_FIELD(f, s16, 0xCB6) = 0;
-        }
-        FT_FIELD(f, s8, 0x2006) = 0;
-        D_00468460[r](f);
-        func_002CBFF0(1, f);
-        ((void (*)(void *, s32))func_001DD680)(f, 0);
+    if ((*((s8 *) (new_var + 0x2011))) != 0)
+    {
+      *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
     }
+  }
+  else
+  {
+    func_001ABD30((Fighter *) (new_var + 0x1360));
+  }
+  Fighter_ResetMotion(new_var, 0);
+  if ((*((s32 *) (new_var + 0xC64))) != 0)
+  {
+    *((s32 *) (new_var + 0x1864)) = 1;
+    if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+    {
+      u8 *p = *((u8 **) (new_var + 0xBB4));
+      if ((((*((f32 *) (new_var + 0x44))) - (*((f32 *) (p + 0xC)))) - (*((f32 *) (new_var + 0x1844)))) <= 0.0f)
+      {
+        *((s8 *) (new_var + 0x1FF9)) = 0;
+        *((s32 *) (new_var + 0x1864)) = (*((s32 *) (new_var + 0x1864))) | 8;
+        *((s32 *) (new_var + 0xCA4)) = 0x3F000000;
+        *((s32 *) (new_var + 0xCA8)) = 0x3E4CCCCD;
+      }
+    }
+    func_001E5040(new_var);
+    if ((*((s16 *) (new_var + 0x13A4))) > -1)
+    {
+      r = func_001C2B10(new_var);
+    }
+    else
+    {
+      r = func_001E94C0(new_var);
+    }
+    if (r == 0)
+    {
+      *((s16 *) (new_var + 0xCB4)) = 1;
+    }
+    else
+    {
+      *((s16 *) (new_var + 0xCB4)) = 0;
+    }
+    *((s8 *) (new_var + 0x2004)) = 1;
+    *((s8 *) (new_var + 0x1FFB)) = 1;
+    if (r != 0xF)
+    {
+      *((s16 *) (new_var + 0xCB6)) = 0;
+    }
+    *((s8 *) (new_var + 0x2006)) = 0;
+    D_00468460[r](new_var);
+    func_002CBFF0(1, new_var);
+    func_001DD680(new_var, 0);
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B3190);
 s32 func_001D97D0(void *);
 void func_001B3320(u8 *arg0)
 {
@@ -3059,49 +3074,49 @@ void func_001B51D0(Fighter *f) {
         func_002CBFF0(1, f);
     }
 }
-#if 0
-// differs: frame and copies of the parameter: the original keeps the fighter in s0 and folds the 0xCAC/0xCAE field addresses; not reproduced
-void func_001B5320(Fighter *f) {
-    s32 ret;
-    FT_FIELD(f, s16, 0xCAE) = FT_FIELD(f, s16, 0xCAC);
-    FT_FIELD(f, s16, 0xCAC) = 0x25;
-    if (FT_FIELD(f, s16, 0xCAE) == FT_FIELD(f, s16, 0xCAC)) {
-        FT_FIELD(f, s16, 0xCB0) = FT_FIELD(f, s16, 0xCB0) + 1;
-    } else {
-        FT_FIELD(f, s16, 0xCB0) = 0;
-    }
-    FT_FIELD(f, s16, 0xCB2) = 0;
-    if (FT_FIELD(f, s8, 0x2010) != 0) {
-        ((FighterCB2 *)f)->unkCB2 |= 0x8000;
-    }
-    if (FT_FIELD(f, s8, 0x2011) != 0) {
-        ((FighterCB2 *)f)->unkCB2 |= 0x4000;
-    }
-    FT_FIELD(f, s32, 0xB70) = (FT_FIELD(f, s16, 0xCB4) == 0) ? 0x2F : 0x29;
-    if (FT_FIELD(f, s8, 0x1FF9) != 0) {
-        FT_FIELD(f, s32, 0xB70) = FT_FIELD(f, s32, 0xB70) + 0x100;
-    }
-    ret = func_001E3D60(FT_FIELD(f, s32, 0x17AC), 180.0f);
-    if (ret == 0) {
-        func_001E4820(1.0f, f, 0);
-    } else {
-        func_001E4820(-1.0f, f, 0);
-    }
-    func_001E3460(f);
-    FT_FIELD(f, f32, 0xCA4) = 0.1f;
-    FT_FIELD(f, f32, 0xCA8) = 0.1f;
-    FT_FIELD(f, s32, 0xCB8) = 0;
-    FT_FIELD(f, s8, 0x2003) = 0;
-    FT_FIELD(f, s8, 0x1FFD) = 1;
-    FT_FIELD(f, s16, 0x181C) = 0;
-    func_001DD680(f);
-    FT_FIELD(f, s8, 0x2004) = 0;
-    if (FT_FIELD(f, s16, 0xCAE) != 0x12 || FT_FIELD(f, s8, 0x1FFA) != 1) {
-        func_001D9900(f, 0x12, 1);
-    }
+void func_001B5320(u8 *arg0)
+{
+  u8 *new_var;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0x25;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  *((u16 *) (new_var + 0xCB2)) = 0;
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  *((s32 *) (new_var + 0xB70)) = ((*((s16 *) (new_var + 0xCB4))) != 0) ? 0x29 : 0x2F;
+  if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+  {
+    *((s32 *) (new_var + 0xB70)) = (s32) ((*((s32 *) (new_var + 0xB70))) + 0x100);
+  }
+  func_001E4820((func_001E3D60(*((s32 *) (new_var + 0x17AC)), 180.0f) != 0) ? -1.0f : 1.0f, new_var, 0);
+  func_001E3460(new_var);
+  *((s32 *) (new_var + 0xCA4)) = 0x3DCCCCCD;
+  *((s32 *) (new_var + 0xCA8)) = 0x3DCCCCCD;
+  *((s32 *) (new_var + 0xCB8)) = 0;
+  *((s8 *) (new_var + 0x2003)) = 0;
+  *((s8 *) (new_var + 0x1FFD)) = 1;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s8 *) (new_var + 0x2004)) = 0;
+  func_001DD680(new_var, 0);
+  if (((*((s16 *) (new_var + 0xCAE))) != 0x12) || ((*((s8 *) (new_var + 0x1FFA))) != 1))
+  {
+    func_001D9900(new_var, 0x12, 1);
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B5320);
 void func_001B5490(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
@@ -3147,47 +3162,49 @@ void func_001B54E0(Fighter *f) {
         func_002CBFF0(1, f);
     }
 }
-#if 0
-// differs: 95 of 97: the parameter is kept in s1 (the original keeps it in s0 and only saves it after the first compares), so every access differs in register
-void func_001B5630(Fighter *f) {
-    FT_FIELD(f, s16, 0xCAE) = FT_FIELD(f, s16, 0xCAC);
-    FT_FIELD(f, s16, 0xCAC) = 0x24;
-    if (FT_FIELD(f, s16, 0xCAE) == FT_FIELD(f, s16, 0xCAC)) {
-        FT_FIELD(f, s16, 0xCB0) = FT_FIELD(f, s16, 0xCB0) + 1;
-    } else {
-        FT_FIELD(f, s16, 0xCB0) = 0;
-    }
-    FT_FIELD(f, s16, 0xCB2) = 0;
-    if (FT_FIELD(f, s8, 0x2010) != 0) {
-        ((FighterCB2 *)f)->unkCB2 |= 0x8000;
-    }
-    if (FT_FIELD(f, s8, 0x2011) != 0) {
-        ((FighterCB2 *)f)->unkCB2 |= 0x4000;
-    }
-    FT_FIELD(f, s32, 0xB70) = (FT_FIELD(f, s16, 0xCB4) == 0) ? 0x2E : 0x28;
-    if (FT_FIELD(f, s8, 0x1FF9) != 0) {
-        FT_FIELD(f, s32, 0xB70) = FT_FIELD(f, s32, 0xB70) + 0x100;
-    }
-    if (func_001E3D60(FT_FIELD(f, s32, 0x17AC), 180.0f) == 0) {
-        func_001E4820(1.0f, f, 0);
-    } else {
-        func_001E4820(-1.0f, f, 0);
-    }
-    func_001E3460(f);
-    FT_FIELD(f, s32, 0xCA4) = 0x3DCCCCCD;
-    FT_FIELD(f, s32, 0xCA8) = 0x3DCCCCCD;
-    FT_FIELD(f, s32, 0xCB8) = 0;
-    FT_FIELD(f, s8, 0x2003) = 0;
-    FT_FIELD(f, s8, 0x1FFD) = 1;
-    FT_FIELD(f, s16, 0x181C) = 0;
-    FT_FIELD(f, s8, 0x2004) = 0;
-    func_001DD680(f);
-    if (FT_FIELD(f, s16, 0xCAE) != 0x12 || FT_FIELD(f, s8, 0x1FFA) != 1) {
-        func_001D9900(f, 0x12, 1);
-    }
+void func_001B5630(u8 *arg0)
+{
+  u8 *new_var;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0x24;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  *((u16 *) (new_var + 0xCB2)) = 0;
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  *((s32 *) (new_var + 0xB70)) = ((*((s16 *) (new_var + 0xCB4))) != 0) ? 0x28 : 0x2E;
+  if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+  {
+    *((s32 *) (new_var + 0xB70)) = (s32) ((*((s32 *) (new_var + 0xB70))) + 0x100);
+  }
+  func_001E4820((func_001E3D60(*((s32 *) (new_var + 0x17AC)), 180.0f) != 0) ? -1.0f : 1.0f, new_var, 0);
+  func_001E3460(new_var);
+  *((s32 *) (new_var + 0xCA4)) = 0x3DCCCCCD;
+  *((s32 *) (new_var + 0xCA8)) = 0x3DCCCCCD;
+  *((s32 *) (new_var + 0xCB8)) = 0;
+  *((s8 *) (new_var + 0x2003)) = 0;
+  *((s8 *) (new_var + 0x1FFD)) = 1;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s8 *) (new_var + 0x2004)) = 0;
+  func_001DD680(new_var, 0);
+  if (((*((s16 *) (new_var + 0xCAE))) != 0x12) || ((*((s8 *) (new_var + 0x1FFA))) != 1))
+  {
+    func_001D9900(new_var, 0x12, 1);
+  }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B5630);
 void func_001B57A0(Fighter *f) {
     func_001E4E20(f, 0);
     if (FT_FIELD(f, s8, 0x1FF9) == 0) {
@@ -3434,7 +3451,76 @@ void func_001B60E0(Fighter *f) {
     }
     FT_FIELD(f, f32, 0x17BC) = 0.0f;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B6130);
+extern void Fighter_ResetMotion(void *, s32);
+extern void func_001E5040(void *);
+extern s32 func_001E94C0(void *);
+extern s32 func_001C2B10(void *);
+extern void (*D_00468460[])(void *);
+extern void func_002CBFF0(s32, void *);
+void func_001B6130(u8 *arg0)
+{
+  u8 *new_var;
+  s32 r;
+  new_var = arg0;
+  if ((*((f32 *) (new_var + 0xC60))) <= 10.0f)
+  {
+    *((u16 *) (new_var + 0xCB2)) = 1;
+    if ((*((s8 *) (new_var + 0x2010))) != 0)
+    {
+      *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+    }
+    if ((*((s8 *) (new_var + 0x2011))) != 0)
+    {
+      *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+    }
+  }
+  else
+  {
+    func_001ABD30((Fighter *) (new_var + 0x1360));
+  }
+  Fighter_ResetMotion(new_var, 0);
+  if ((*((s32 *) (new_var + 0xC64))) != 0)
+  {
+    *((s32 *) (new_var + 0x1864)) = 1;
+    if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+    {
+      u8 *p = *((u8 **) (new_var + 0xBB4));
+      if ((((*((f32 *) (new_var + 0x44))) - (*((f32 *) (p + 0xC)))) - (*((f32 *) (new_var + 0x1844)))) <= 0.0f)
+      {
+        *((s8 *) (new_var + 0x1FF9)) = 0;
+        *((s32 *) (new_var + 0x1864)) = (*((s32 *) (new_var + 0x1864))) | 8;
+        *((f32 *) (new_var + 0xCA4)) = 0.0f;
+        *((s32 *) (new_var + 0xCA8)) = 0x3DCCCCCD;
+      }
+    }
+    if ((*((s16 *) (new_var + 0x13A4))) > -1)
+    {
+      r = func_001C2B10(new_var);
+    }
+    else
+    {
+      r = func_001E94C0(new_var);
+    }
+    func_001E5040(new_var);
+    if (r == 0)
+    {
+      *((s16 *) (new_var + 0xCB4)) = 1;
+    }
+    else
+    {
+      *((s16 *) (new_var + 0xCB4)) = 0;
+    }
+    *((s8 *) (new_var + 0x2004)) = 1;
+    *((s8 *) (new_var + 0x1FFB)) = 1;
+    if (r != 0xF)
+    {
+      *((s16 *) (new_var + 0xCB6)) = 0;
+    }
+    *((s8 *) (new_var + 0x2006)) = 0;
+    D_00468460[r](new_var);
+    func_002CBFF0(1, new_var);
+  }
+}
 void func_001B62D0(u8 *arg0)
 {
   s16 temp_v0;
