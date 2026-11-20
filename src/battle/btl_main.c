@@ -1000,14 +1000,13 @@ typedef struct AE5Flags {
     s16 e[4];
 } AE5Flags;
 #if 0
-// differs: frame 0x150 against 0x160 and the flags block at sp+0x20 (original 0x80): local layout not found; the battle count read keeps its address in a2
+// differs: 41 of 86 words (shift after the loop): frame and locals now right (fl, loc, t20 declared in that order); the loop hoists the 0x88D8 count address (li at,0x88d8 / a2) where the original re-reads it through lui at each pass; tried for/do-while, BattleCount cast, pointer walks
 void func_001AE5C0(void) {
-    BattleWork *bw;
-    s32 t20;
-    u8 loc[0x50];
     AE5Flags fl;
+    u8 loc[0x50];
+    s32 t20[4];
+    BattleWork *bw;
     s32 i;
-    s16 *p;
     bw = gBattle;
     BW_FIELD(bw, s32, 0x88F8) = 4;
     BW_FIELD(bw, s32, 0x890C) = 0;
@@ -1022,20 +1021,14 @@ void func_001AE5C0(void) {
     *(s32 *)(loc + 0x30) = 0;
     func_001A8770(1, loc);
     fl.flags = 0;
-    if (0 < ((BattleCount *)bw)->count) {
-        i = 0;
-        p = (s16 *)((u8 *)&fl + 8);
-        do {
-            fl.flags = fl.flags | (1 << i);
-            *p = 2;
-            i++;
-            p++;
-        } while (i < ((BattleCount *)bw)->count);
+    for (i = 0; i < BW_FIELD(bw, s32, 0x88D8); i++) {
+        fl.flags = fl.flags | (1 << i);
+        fl.e[i] = 2;
     }
     func_001C8020(0, &fl);
     if (BW_FIELD(bw, s16, 0x7E2) != 4) {
-        t20 = 1;
-        A2d_CallHandler(0x27, &t20);
+        t20[0] = 1;
+        A2d_CallHandler(0x27, t20);
         A2d_CallHandler(0x14, 0);
         func_00218CD0(1, BW_FIELD(bw, s8, 0x8AB7));
     }
