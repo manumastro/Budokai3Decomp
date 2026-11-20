@@ -123,9 +123,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221110);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002214B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221950);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221E10);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00222280);
-#if 0
-// differs: the state switch (f28 == 2 out of line, the beqz to the else block) is laid out in another order: 40 of 72 instructions differ
 typedef struct Sub4_21D260 {
     s32 f0;
     s32 f4;
@@ -144,25 +141,28 @@ void func_00222280(Task2_21D260 *o) {
     Work21D260 *bs = gBtlSys;
     Sub4_21D260 *s = (Sub4_21D260 *)((char *)o + 0x30);
     f32 f;
-    s32 st;
+    Work21D260 *g;
 
     func_00224680(s);
     if ((bs->fE30 & 2) != 0) {
-        st = s->f28;
-        if (st != 2) {
-            if (st == 0) {
-                f = s->f2C + D_00470710;
-                s->f2C = f;
-                if (!(f < 8.0f)) {
-                    s->f28 = 1;
-                }
-            }
-        } else {
+        g = gBtlSys;
+        switch (s->f28) {
+        case 0:
             f = s->f2C + D_00470710;
             s->f2C = f;
             if (!(f < 8.0f)) {
-                gBtlSys->fE30 = gBtlSys->fE30 & -3;
+                s->f28 = 1;
             }
+            break;
+        case 1:
+            break;
+        case 2:
+            f = s->f2C + D_00470710;
+            s->f2C = f;
+            if (!(f < 8.0f)) {
+                g->fE30 = g->fE30 & -3;
+            }
+            break;
         }
         s->f20 = s->f20 + D_00470710;
     } else {
@@ -184,13 +184,13 @@ void func_00222280(Task2_21D260 *o) {
         s->f1C = 0.0f;
         s->fA = 0;
         o->f1C = (func_00222BF0 == 0) ? 0 : func_00222BF0;
-        ((Task2_21D260 *)s->f0)->f1C = (func_0021F3A0 == 0) ? 0 : (void (*)(void))func_0021F3A0;
+        {
+            Task2_21D260 *n = (Task2_21D260 *)s->f0;
+            n->f1C = (func_0021F3A0 == 0) ? 0 : (void (*)(void))func_0021F3A0;
+        }
     }
 }
-#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00222440);
-#if 0
-// differs: compiled 0x198 bytes, original 0x1A0; the state blocks (f28 == 2, == 0) and the shared tail are laid out in another order (a switch gives 37 of 104)
 typedef struct Sub3_21D260 {
     s32 f0;
     s32 f4;
@@ -206,22 +206,28 @@ void func_002228F0(Task2_21D260 *o) {
     Work21D260 *bs = gBtlSys;
     Sub3_21D260 *s = (Sub3_21D260 *)((char *)o + 0x30);
     f32 f;
+    Work21D260 *g;
 
     func_00224680(s);
     if ((bs->fE30 & 2) != 0) {
-        if (s->f28 == 2) {
-            f = s->f2C + D_00470710;
-            s->f2C = f;
-            if (!(f < 8.0f)) {
-                gBtlSys->fE30 = gBtlSys->fE30 & -3;
-            }
-        } else if (s->f28 == 1) {
-        } else if (s->f28 == 0) {
+        g = gBtlSys;
+        switch (s->f28) {
+        case 0:
             f = s->f2C + D_00470710;
             s->f2C = f;
             if (!(f < 8.0f)) {
                 s->f28 = 1;
             }
+            break;
+        case 1:
+            break;
+        case 2:
+            f = s->f2C + D_00470710;
+            s->f2C = f;
+            if (!(f < 8.0f)) {
+                g->fE30 = g->fE30 & -3;
+            }
+            break;
         }
         s->f20 = s->f20 + D_00470710;
     } else {
@@ -244,8 +250,6 @@ void func_002228F0(Task2_21D260 *o) {
         o->f1C = (func_00222440 == 0) ? 0 : func_00222440;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002228F0);
 void func_00222A90(u8 *arg0) {
     Task21D260 *temp_v1;
     Work21D260 *temp_s0_2;
