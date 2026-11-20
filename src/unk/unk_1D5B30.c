@@ -3833,16 +3833,15 @@ void func_001E53B0(Fighter *c, s32 idx) {
 #endif
 // differs: same leaf shape; 77 of 86 instructions differ only in the registers (the table pointers and the flags take other registers than in the original; declaration orders tried)
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E53B0);
-#if 0
 void func_001E5500(s32 idx, void *arg) {
     Game *g;
-    Slot *e;
     Slot *base;
     s32 i;
     s32 n;
+    Slot *e;
 
     g = gBattle;
-    base = g->f268;
+    base = (Slot *)((char *)g + 0x268);
     if (idx == -1) {
         i = 0;
         n = g->f88D8 * 2 + 1;
@@ -3850,15 +3849,21 @@ void func_001E5500(s32 idx, void *arg) {
         i = idx;
         n = idx + 1;
     }
-    e = &base[i];
-    for (; i < n; i++) {
-        func_002376F0(e->a, arg);
-        e++;
+
+    goto loop_entry;
+loop_body:
+    func_002376F0(e->a, arg);
+    e++;
+    i++;
+loop_test:
+    if (i < n) {
+        goto loop_body;
     }
+    return;
+loop_entry:
+    e = &base[i];
+    goto loop_test;
 }
-#endif
-// differs: 0x9C against 0xC0 bytes: the original joins the two branches before the loop's pointer setup (extra jumps to a shared block), not reproduced
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E5500);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E55C0);
 extern void *const jtbl_00469600[];
 void func_001E57C0(s32 i, s32 a, s32 b) {
@@ -4619,25 +4624,6 @@ block_4:
     return 0;
 }
 
-#if 0
-s32 func_001E8A30(Fighter *c) {
-    s32 buf[4];
-
-    if (gBattle->f8944 != 0) {
-        if (*(s16 *)((char *)c + 0x1AD0) != 0) {
-            if (gBattle->f7E2 != 3 || gBattle->f8977 == 3) {
-                buf[0] = (c->f1350 == gBattle->f894A);
-                buf[1] = *(s16 *)((char *)c + 0x1AD2);
-                buf[2] = *(s16 *)((char *)c->f1354 + 0x1ACE);
-                buf[3] = 0xF;
-                return func_00233B20(c, buf, gBattle->f894A) & 0xF;
-            }
-        }
-    }
-    return 0;
-}
-#endif
-// differs: 30 of 45: gBattle sits in a3 here and a2 in the original (the gp load register), the early-return branches are laid out differently; the field offsets (f8944, f1AD0, f7E2, f8977, f894A) and the func_00233B20 call with &buf match
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E8A30);
 s32 func_001E8AF0(Fighter *c) {
     Game *g;
