@@ -5438,58 +5438,58 @@ void func_001B9A80(Fighter *f) {
     t = FIGHTER_FIELD(f, f32, 0xCB8) * 0.01f;
     FIGHTER_FIELD(f, f32, 0x17BC) = (0.2f < t) ? 0.2f : t;
 }
-#if 0
-// differs: size 0x17C against 0x1A0: the prologue saves s0 after s1 in the original (s0 = 0 in the jal delay slot) and the 6/7/8/11 test is a compare chain; 89 of 104 differ
-void func_001B9B00(Fighter *f) {
-    s32 v = 0;
-    Fighter_ResetMotion(f, 0);
-    if (FT_FIELD(f, f32, 0xC60) <= 20.0f) {
-        FT_FIELD(f, u16, 0xCB2) = 1;
-        if (FT_FIELD(f, s8, 0x2010) != 0) {
-            ((FighterCB2 *)f)->unkCB2 = ((FighterCB2 *)f)->unkCB2 | 0x8000;
+extern void func_001D9BF0(void *);
+void func_001B9B00(u8 *arg0) {
+    s32 r;
+    u8 *new_var;
+    r = 0;
+    Fighter_ResetMotion(arg0, 0);
+    new_var = arg0;
+    if (*((f32 *) (new_var + 0xC60)) <= 20.0f) {
+        *((u16 *) (new_var + 0xCB2)) = 1;
+        if (*((s8 *) (new_var + 0x2010)) != 0) {
+            *((u16 *) (new_var + 0xCB2)) |= 0x8000;
         }
-        if (FT_FIELD(f, s8, 0x2011) != 0) {
-            ((FighterCB2 *)f)->unkCB2 = ((FighterCB2 *)f)->unkCB2 | 0x4000;
+        if (*((s8 *) (new_var + 0x2011)) != 0) {
+            *((u16 *) (new_var + 0xCB2)) |= 0x4000;
+        }
+        *((s8 *) (new_var + 0x1FFD)) = 0;
+        if (*((s16 *) (new_var + 0x13A4)) > -1) {
+            r = func_001C2B10(new_var);
+        } else {
+            r = func_001E94C0(new_var);
+        }
+        switch (r) {
+        case 6:
+        case 0xB:
+        case 7:
+        case 8:
+            break;
+        default:
+            r = 0;
+            break;
         }
     }
-    FT_FIELD(f, s8, 0x1FFD) = 0;
-    if (FT_FIELD(f, s16, 0x13A4) > -1) {
-        v = func_001C2B10(f);
-    } else {
-        v = func_001E94C0(f);
-    }
-    if (v != 8) {
-        if (v != 7) {
-            if (v != 0xB) {
-                if (v != 6) {
-                    v = 0;
-                }
-            }
+    if (*((s32 *) (new_var + 0xC64)) != 0 || r != 0) {
+        func_001D9BF0(new_var);
+        *((s32 *) (new_var + 0x1864)) = 1;
+        func_001E5040(new_var);
+        if (r == 0) {
+            *((s16 *) (new_var + 0xCB4)) = 1;
+        } else {
+            *((s16 *) (new_var + 0xCB4)) = 0;
         }
+        *((s8 *) (new_var + 0x2004)) = 1;
+        *((s8 *) (new_var + 0x1FFB)) = 1;
+        if (r != 0xF) {
+            *((s16 *) (new_var + 0xCB6)) = 0;
+        }
+        *((s8 *) (new_var + 0x2006)) = 0;
+        D_00468460[r](new_var);
+        func_002CBFF0(1, new_var);
+        func_001ABD30((Fighter *) (new_var + 0x1360));
     }
-    if (FT_FIELD(f, s32, 0xC64) == 0 && v == 0) {
-        return;
-    }
-    func_001D9BF0(f);
-    FT_FIELD(f, s32, 0x1864) = 1;
-    func_001E5040(f);
-    if (v == 0) {
-        FT_FIELD(f, s16, 0xCB4) = 1;
-    } else {
-        FT_FIELD(f, s16, 0xCB4) = 0;
-    }
-    FT_FIELD(f, s8, 0x2004) = 1;
-    FT_FIELD(f, s8, 0x1FFB) = 1;
-    if (v != 0xF) {
-        FT_FIELD(f, s16, 0xCB6) = 0;
-    }
-    FT_FIELD(f, s8, 0x2006) = 0;
-    D_00468460[v](f);
-    func_002CBFF0(1, f);
-    func_001ABD30((Fighter *)((u8 *)f + 0x1360));
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9B00);
 void func_001B9CA0(u8 *arg0)
 {
   u8 *new_var;
