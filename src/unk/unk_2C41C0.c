@@ -201,7 +201,7 @@ extern EffWork *gEffWork;
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C41C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C4C90);
-void func_002C5EB0(Dst2C41C0 *d, Src2C41C0 *s) {
+static void func_002C5EB0(Dst2C41C0 *d, Src2C41C0 *s) {
     char *b = s->f10;
 
     if (s->f0 != 0) {
@@ -854,7 +854,37 @@ void func_002CA2F0(EffReq *r) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002CA2F0);
+void func_002CA2F0(EffReq *r) {
+    EffFile *f;
+    EffEnt *e;
+    s32 n;
+    s32 i;
+    s32 st;
+
+    n = 0;
+    if (r->f2C & 0x2000) {
+        f = D_005BD154[r->f2A];
+    } else {
+        f = func_0020B020(r->f10->f1350, r->f28, r->f2A);
+    }
+    if (func_00127E88(f, D_0046EF90, 4) == 0) {
+        n = f->f8;
+        e = (EffEnt *)((char *)f + f->fC);
+    }
+    if (0 < n) {
+        i = 0;
+        st = 0;
+        do {
+            e = (EffEnt *)((char *)e + st);
+            func_002C5EB0((Dst2C41C0 *)e, (Src2C41C0 *)r);
+            if (e->f30 > 0.0f) {
+                func_002C9EF0(e, r);
+            }
+            i++;
+            st += 0xB0;
+        } while (i < n);
+    }
+}
 
 extern void memset(void *, s32, s32);
 extern s32 D_005BD270[];
