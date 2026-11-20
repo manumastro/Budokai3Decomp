@@ -843,7 +843,29 @@ s32 func_00241010(s32 a0) {
 }
 // differs: round 6 (u23e): 0xB8 bytes against 0xC0 (two instructions short). The original keeps the base pointer base+0x830 in a2 for the 0xB9C load and ends with sltu v0,zero,a1 / xori (a1 flag, one exit); the returns form and a2 form both give other layouts (34 to 38 of 48 differ)
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241010);
+s32 func_00241010(s32 i) {
+    u8 *c;
+    u8 *q;
+    u8 *e;
+    u8 *p;
+    s32 v;
+    s32 r;
+
+    c = gBattle + i * 0x2020;
+    v = *(s32 *)(c + 0x252C);
+    q = c + 0x830;
+    r = 0;
+    if (v == 0x28 || v == 0x29 || v == 0x12 || v == 5 || v == 0x14 || v == 0x15 || v == 0x23 ||
+        *(s32 *)(q + 0xB9C) == 0x46 || *(s32 *)(q + 0xB9C) == 0x47 ||
+        *(s32 *)(q + 0xB9C) == 0x5C) {
+        e = (u8 *)D_0046FE4C + i * 0x480;
+        p = e + 0x10;
+        if (*(s32 *)(e + 0x24) != -1 && *(s32 *)(e + 0x24) != *(s32 *)(p + 0x38)) {
+            r = 1;
+        }
+    }
+    return !(r != 0);
+}
 extern s8 D_004703F4;
 typedef struct B7Q {
     u8 v[0x10];
