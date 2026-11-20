@@ -38,7 +38,46 @@ extern McTask *D_0047088C;
 
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002880B0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288500);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288870);
+extern s32 D_00470888;
+extern f32 D_005AA540[];
+extern void *D_00470890;
+extern f32 D_00470884;
+extern void func_0028DE30(u8 *);
+extern s32 func_0028D810();
+extern void func_0028DEA0(u8 *);
+void func_00288870(s32 arg0) {
+    D_00470888 = arg0;
+    if (arg0 != -1) {
+        switch (arg0) {
+        case 9:
+        case 0xE:
+        case 0x13:
+        case 0x1C:
+        case 0x14:
+        case 0x16:
+        case 0x17:
+        case 0x18:
+            D_005AA540[0] = 0.75f;
+            D_005AA540[1] = 0.25f;
+            D_005AA540[2] = 0.25f;
+            D_005AA540[3] = 0.5f;
+            break;
+        default:
+            D_005AA540[0] = 0.0f;
+            D_005AA540[1] = 0.75f;
+            D_005AA540[2] = 0.25f;
+            D_005AA540[3] = 0.5f;
+            break;
+        }
+    }
+    if (arg0 < 0) {
+        { McTask *t = D_00470890; MC_SETFUNC(t, func_0028DE30); }
+    } else if (D_00470884 == 1.0f) {
+        { McTask *t = D_00470890; MC_SETFUNC(t, func_0028D810); }
+    } else {
+        { McTask *t = D_00470890; MC_SETFUNC(t, func_0028DEA0); }
+    }
+}
 typedef struct McSlotInfo {
     u8 pad0[8];
     s32 free; /* 0x8 */
