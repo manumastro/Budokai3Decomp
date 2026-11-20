@@ -202,7 +202,58 @@ void func_00289E80(void) {
         D_00470894 = (s32)func_0028DDA0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00289F30);
+extern s32 D_00470558;
+extern void *D_0047054C;
+extern void *D_004708A0;
+extern u8 D_004B4B48[];
+extern u8 D_004B4B50[];
+extern u8 D_004B4B40[];
+extern s8 D_004B4B64[];
+extern s8 D_004B4B65[];
+extern s32 func_001EF510(s32, s32);
+extern void func_001EF930(u8 *, s32);
+extern void amHeap_Free(void *);
+void func_0028A9E0(u8 *arg0);
+void func_00289F30(u8 *arg0) {
+    switch (gMcState) {
+    case 2:
+        if (D_00470558 == 0xD680) {
+            break;
+        }
+    case 3:
+        func_00288870(9);
+        MC_SETFUNC(arg0, func_0028DDF0);
+        D_00470894 = (s32)func_00289E80;
+        if (D_0047054C != 0) {
+            amHeap_Free(D_0047054C);
+            D_0047054C = 0;
+        }
+        return;
+    default:
+        return;
+    }
+    D_004708A0 = D_0047054C;
+    D_0047054C = 0;
+    if (func_001EF510((s32)D_004708A0, 0xD680) != 0) {
+        func_00288870(9);
+        MC_SETFUNC(arg0, func_0028DDF0);
+        D_00470894 = (s32)func_00289E80;
+        amHeap_Free(D_004708A0);
+        D_004708A0 = 0;
+        return;
+    }
+    *(s64 *)D_004B4B48 = 1;
+    *(s32 *)D_004B4B50 = 1;
+    func_001EF930(D_004B4B40, (s32)D_004708A0);
+    amHeap_Free(D_004708A0);
+    D_004B4B65[0] = 0;
+    D_004708A0 = 0;
+    D_004B4B64[0] = (s8)D_0047084C;
+    func_00288870(0xA);
+    MC_SETFUNC(arg0, func_0028DDF0);
+    D_00470894 = (s32)func_0028A9E0;
+    D_00470850 = 0x78;
+}
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028A0A0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028A300);
 extern u16 D_00492FCE[];
@@ -260,7 +311,7 @@ extern s32 D_00470870;
 extern u8 D_004B4B40[];
 extern s32 D_004B4BE0[];
 extern s8 D_004B4B64[];
-extern void func_001EF510(s32, s32);
+extern s32 func_001EF510(s32, s32);
 extern void func_001EF930(u8 *, s32);
 extern void func_001EF730(s32);
 void func_0028A9E0(u8 *arg0);
