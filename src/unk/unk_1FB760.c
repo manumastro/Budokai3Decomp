@@ -70,7 +70,84 @@ u8 *func_001FB7E0(u8 *s1) {
     *(s32 *)(s0 + 0xF4) = *(s32 *)(s1 + 0x58);
     return s0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FB880);
+extern f32 func_00146E90(f32 *);
+extern void func_00146F10(void *, void *, f32);
+extern f32 func_00146F90(void *, void *);
+extern f32 func_00146E30(void *, void *);
+
+f32 func_001FB880(u8 *a0, u8 *a1, u8 *a2) {
+    f32 p0[4];
+    f32 p1[4];
+    f32 p2[4];
+    f32 v40[4];
+    f32 v30[4];
+    f32 proj[4];
+    s32 cnt;
+    f32 dot;
+    f32 dist;
+    f32 d1;
+    f32 d2;
+
+    if (D_0051CD28[0] == 0) {
+        return 0.0f;
+    }
+
+    VU_LOAD_STORE(a0, p0);
+    p0[1] = 0.0f;
+    VU_LOAD_STORE(a1, p1);
+    p1[1] = 0.0f;
+    VU_LOAD_STORE(a2, p2);
+    p2[1] = 0.0f;
+
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(v40), "r"(p2), "r"(p1) : "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(v30), "r"(p0), "r"(p1) : "memory");
+
+    dot = func_00146F90(v30, v40);
+    dist = func_00146E30(p1, p2);
+    func_00146F10(proj, v40, dot / dist);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(proj), "r"(p1) : "memory");
+
+    cnt = 0;
+    if (p1[0] < p2[0]) {
+        if (!(proj[0] < p1[0])) {
+            if (proj[0] <= p2[0]) {
+                cnt++;
+            }
+        }
+    } else {
+        if (proj[0] <= p1[0]) {
+            if (!(proj[0] < p2[0])) {
+                cnt++;
+            }
+        }
+    }
+
+    if (p1[2] < p2[2]) {
+        if (!(proj[2] < p1[2])) {
+            if (proj[2] <= p2[2]) {
+                cnt++;
+            }
+        }
+    } else {
+        if (proj[2] <= p1[2]) {
+            if (!(proj[2] < p2[2])) {
+                cnt++;
+            }
+        }
+    }
+
+    if (cnt < 2) {
+        d1 = func_00146E30(p0, p1);
+        d2 = func_00146E30(p0, p2);
+        if (d1 < d2) {
+            return d1;
+        }
+        return d2;
+    }
+
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(proj), "r"(p0) : "memory");
+    return func_00146E90(proj);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FBAA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FBDE0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FC220);
