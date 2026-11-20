@@ -199,6 +199,12 @@ extern char *gBattle;
 
 extern EffWork *gEffWork;
 
+typedef struct Copy16D_2C41C0 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Copy16D_2C41C0;
+
+extern struct EffFile *func_0020B020(s32, s32, s32);
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C41C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C4C90);
 static void func_002C5EB0(Dst2C41C0 *d, Src2C41C0 *s) {
@@ -347,9 +353,122 @@ f32 func_002C60B0(Spline2C41C0 *sp, f32 x) {
     dx = x - sp->x[low];
     return (sp->y[low] + sp->b[low] * dx) + sp->c[low] * dx * dx + sp->d[low] * dx * dx * dx;
 }
+#if 0
+void func_002C61A0(Spline2C41C0 *sp) {
+    f32 h[4];
+    f32 alpha[4];
+    f32 l[4];
+    f32 mu[4];
+    f32 z[4];
+    s32 i;
+    s32 j;
+
+    h[0] = sp->x[1] - sp->x[0];
+    h[1] = sp->x[2] - sp->x[1];
+    h[2] = sp->x[3] - sp->x[2];
+
+    alpha[1] = (3.0f * (sp->y[2] - sp->y[1])) / h[1] - (3.0f * (sp->y[1] - sp->y[0])) / h[0];
+    alpha[2] = (3.0f * (sp->y[3] - sp->y[2])) / h[2] - (3.0f * (sp->y[2] - sp->y[1])) / h[1];
+
+    l[3] = 1.0f;
+    l[0] = 1.0f;
+    z[3] = 0.0f;
+    z[0] = 0.0f;
+    mu[0] = 0.0f;
+
+    for (i = 1; i < 3; i++) {
+        l[i] = 2.0f * (sp->x[i + 1] - sp->x[i - 1]) - h[i - 1] * mu[i - 1];
+        mu[i] = h[i] / l[i];
+        z[i] = (alpha[i] - h[i - 1] * z[i - 1]) / l[i];
+    }
+
+    sp->c[3] = 0.0f;
+
+    for (j = 2; j >= 0; j--) {
+        sp->c[j] = z[j] - mu[j] * sp->c[j + 1];
+        sp->b[j] = (sp->y[j + 1] - sp->y[j]) / h[j] - (h[j] * (sp->c[j + 1] + 2.0f * sp->c[j])) / 3.0f;
+        sp->d[j] = (sp->c[j + 1] - sp->c[j]) / (3.0f * h[j]);
+    }
+
+    sp->flags |= 0x100;
+}
+#endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C61A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C63C0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6700);
+
+extern Copy16D_2C41C0 D_00456490;
+extern void amDraw_FlushPacket(void);
+extern void amModel_SetCurrent(s32, s32);
+extern s32 func_00133780(s32, s32);
+extern s32 func_001351F0(s32, s32, s32, void *, s32, s64, s32);
+extern s32 func_00136130(void *, void *, void *);
+extern void func_002C63C0(void *, void *, void *, void *);
+
+void func_002C6700(char *arg0) {
+    Copy16D_2C41C0 sp90;
+    Copy16D_2C41C0 sp80;
+    f32 sp70[4];
+    f32 f20;
+    f32 k;
+    f32 temp_f0;
+    s32 s4;
+    char *s2;
+    char *s1;
+    char *s0;
+    char *v1;
+    char *s3 = arg0;
+
+    v1 = (char *)gEffWork + *(s16 *)(s3 + 0x3E) * 3968;
+    s1 = *(char **)s3;
+    s0 = *(char **)(v1 + 0xF78);
+    s2 = v1 + 0xF00;
+
+    if (*(char **)(s0 + 0x38) == s2) {
+        return;
+    }
+    if (*(f32 *)(s3 + 0x20) <= 0.0f) {
+        return;
+    }
+
+    sp90 = D_00456490;
+    f20 = 1.0f;
+    sp80 = *(Copy16D_2C41C0 *)(s1 + 0x10);
+
+    k = (gBattle != 0) ? *(f32 *)(gBattle + 0x88F0) : ((D_004703F4 != 3) ? f20 : 1.2f);
+
+    if (*(f32 *)(s3 + 0x20) < *(f32 *)(s3 + 0x28) * k) {
+        k = (gBattle != 0) ? *(f32 *)(gBattle + 0x88F0) : ((D_004703F4 != 3) ? 1.0f : 1.2f);
+        f20 = *(f32 *)(s3 + 0x20) / (*(f32 *)(s3 + 0x28) * k);
+        f20 = f20 * f20;
+    }
+
+    *(f32 *)(s3 + 0x2C) = f20;
+    *(f32 *)((char *)&sp80 + 0xC) = *(f32 *)(s1 + 0x50) * f20;
+
+    s4 = (s32)func_0020B020(0, *(s16 *)(s1 + 0x88), *(s16 *)(s1 + 0x8A));
+    amModel_SetCurrent(s4, func_0020AD30(0, *(s16 *)(s1 + 0x88), *(s16 *)(s1 + 0x8A)));
+    func_00133780(0, 1);
+
+    temp_f0 = *(f32 *)(s1 + 0x44) * f20;
+    *(s32 *)&sp70[2] = 0;
+    *(s32 *)&sp70[3] = 0;
+    sp70[1] = temp_f0;
+    sp70[0] = temp_f0;
+
+    func_001351F0(1, 0xC23, 0, &sp90, *(s32 *)(s3 + 0x4C), *(s64 *)(s3 + 0x30), 0);
+    func_00136130(s0, sp70, &sp80);
+
+    s0 = *(char **)(s0 + 0x38);
+    if (s0 != s2) {
+        do {
+            func_002C63C0(s0, s3, &sp80, sp70);
+            s0 = *(char **)(s0 + 0x38);
+        } while (s0 != s2);
+    }
+
+    amDraw_FlushPacket();
+    func_00133780(0, 0);
+}
 #if 0
 // differs: compiled 0x200 bytes, original 0x230; the pool pointers take the other saved registers and the d load is scheduled late (106 instructions differ; 120 declaration orders tried). Sibling func_002C8670 has the same body.
 #define W32_2C41C0(p, o) (*(s32 *)((char *)(p) + (o)))
@@ -522,9 +641,6 @@ void func_002C6D40(s32 a0, s32 a1, s32 a2) {
     }
 }
 #endif
-typedef struct Copy16D_2C41C0 {
-    s32 a, b, c, d;
-} __attribute__((aligned(16))) Copy16D_2C41C0;
 typedef struct Vec4D_2C41C0 {
     f32 x, y, z, w;
 } Vec4D_2C41C0;
