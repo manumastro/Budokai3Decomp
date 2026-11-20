@@ -2640,7 +2640,29 @@ void func_00248360(void) {
 }
 // differs: round 6 (u23e): 0xA0 bytes, the original 0xA8 (the mwcc prologue and the six calls match). The original branches on D_0051CD20 to the block with beqz and jumps out through a b (a trampoline to the epilogue); return inside the block gives b at its end, the if/else shapes give bnez straight to the epilogue
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00248360);
+void func_00248360(void) {
+    s32 sel;
+    s32 q;
+    s32 *p;
+
+    func_001F7DB0();
+    func_001F7BF0();
+    func_001F7820();
+    func_001F7690();
+    func_001F6E50();
+    func_001F6D60();
+    sel = D_0051CD0C[0];
+    switch (D_0051CD20[0]) {
+    case 0:
+        p = (s32 *)func_001F5EF0(3, 1);
+        q = func_001A50F0(sel, 0x27F);
+        *(s32 *)(*(s32 *)((u8 *)p + 0x10)) = q;
+        *(s16 *)(*(s32 *)((u8 *)p + 0x10) + 0xE) = 1;
+        func_001F5B70((s32)p);
+        func_001F7470(0);
+        break;
+    }
+}
 typedef struct { s32 pad[2]; void *a; void *b; } B3N;
 typedef struct { u8 pad[0x30]; B3N sub; } B3O;
 void func_00248410(void) {
