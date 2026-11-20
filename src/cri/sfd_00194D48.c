@@ -11282,7 +11282,64 @@ s32 func_00196F08_x00196F08(s32 arg0)
   func_0018D920_x00196F08(sp);
   return var_s2;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd_00194D48", func_00196FB8);
+typedef struct { int numTotalDec; unsigned char qp1dh[0x1C - 4]; int bpaActive; unsigned char qp2hpomyf[0x24 - 0x20]; int vidShort; } PlyInf_6FB8_x00196FB8;
+typedef struct { unsigned char p[0x278]; int dec_time; int dec_unit; } Tim_6FB8_x00196FB8;
+typedef struct { unsigned char qpad0hjo[0x48]; int stat; unsigned char qpad1smgowikp[4]; int pause; unsigned char qpad2dgcbazapk[0x94C - 0x54]; PlyInf_6FB8_x00196FB8 plyInf; unsigned char qpad3msjgmfyuezaame[0x2C]; int cond[16]; unsigned char qpad4vrbsmiecoujabr[0x2E0]; Tim_6FB8_x00196FB8 tim; } Ply_6FB8_x00196FB8;
+int func_001999E0_x00196FB8(void *h, int id) __asm__("func_001999E0");
+int func_00197218_x00196FB8(void *h) __asm__("func_00197218");
+int func_0018B790_x00196FB8(void *h, int n) __asm__("func_0018B790");
+int func_0019C188_x00196FB8(void *h, int n) __asm__("func_0019C188");
+int func_001972B8_x00196FB8(void *h) __asm__("func_001972B8");
+int func_0019A718_x00196FB8(void *h, int *uamkuiiuu, int *ubhbs) __asm__("func_0019A718");
+int func_0017EE78_x00196FB8(int uamkuiiuu, int ubhbs, int c) __asm__("func_0017EE78");
+int func_0019AB10_x00196FB8(int uamkuiiuu, int ubhbs, int c, int lduexivgv) __asm__("func_0019AB10");
+int func_00196FB8_x00196FB8(Ply_6FB8_x00196FB8 *h) __asm__("func_00196FB8");
+int func_00196FB8_x00196FB8(Ply_6FB8_x00196FB8 *h)
+{
+    PlyInf_6FB8_x00196FB8 *ltebiydncg = &h->plyInf;
+    int lv[2];
+    Tim_6FB8_x00196FB8 *lduexivgv;
+    int uamkuiiuu, ubhbs;
+    if (func_001999E0_x00196FB8(h, 67) == 0) {
+        return 0;
+    }
+    if (func_001999E0_x00196FB8(h, 15) == 0) {
+        return 0;
+    }
+    if (h->pause != 0) {
+        return 0;
+    }
+    if (h->stat != 4) {
+        return 0;
+    }
+    if (func_00197218_x00196FB8(h) != 0) {
+        return 0;
+    }
+    if (func_001999E0_x00196FB8(h, 5) == 1 && ltebiydncg->vidShort == 0) {
+        return 0;
+    }
+    if (func_001999E0_x00196FB8(h, 6) == 1 && func_0018B790_x00196FB8(h, 2) > 0) {
+        return 0;
+    }
+    if (func_0019C188_x00196FB8(h, 1) != 0 && func_0018B790_x00196FB8(h, 0) > 0) {
+        return 0;
+    }
+    if (func_001999E0_x00196FB8(h, 5) == 1 && func_001972B8_x00196FB8(h) != 0) {
+        return 0;
+    }
+    func_0019A718_x00196FB8(h, &lv[0], &lv[1]);
+    lduexivgv = &h->tim;
+    uamkuiiuu = lduexivgv->dec_unit;
+    ubhbs = lduexivgv->dec_time;
+    ubhbs -= func_0017EE78_x00196FB8(func_001999E0_x00196FB8(h, 68), uamkuiiuu, 1000000);
+    if (lv[0] <= 0 || ubhbs <= 0) {
+        return 0;
+    }
+    return func_0019AB10_x00196FB8(lv[0], lv[1], ubhbs, uamkuiiuu) == 0;
+}
+/* padding for ee-gcc's CSE (scripts/func_insert.py, cse_pad) */
+extern int b3p32_065bee_0_x __asm__("b3cse_asmpad_065bee_0_xx");
+extern int b3p32_065bee_1_x __asm__("b3cse_asmpad_065bee_1_xx");
 typedef struct { unsigned char p[0x278]; int dec_time; int dec_unit; } Tim_7138_x00197138;
 typedef struct { unsigned char pad0[0x9A0]; int cond[16]; unsigned char pad1[0xCC0 - 0x9E0]; Tim_7138_x00197138 tim; } Ply_7138_x00197138;
 int func_001999E0_x00197138(void *h, int id) __asm__("func_001999E0");
