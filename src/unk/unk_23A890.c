@@ -1672,7 +1672,42 @@ void func_00244190(u8 *a0) {
 }
 // differs: round 6 (u23e): 0xD0 bytes against 0xF0. Frame, saved registers and the table loop match; the original keeps a dead reload after the table call (sw then lw v0 and move v0,zero joined at the loop end: an assignment-value form gives the same size), so 8 instructions are missing
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244190);
+s32 amCdFs_ReadFileId(s32, s32, s32);
+extern u8 *D_0046FE48;
+extern u8 *D_0046FE44;
+extern s32 D_00452130[];
+
+s32 func_00244190(u8 *a0) {
+    u8 *t = a0;
+    s32 i;
+    u8 *p;
+    s32 off;
+    s32 v;
+    s32 res;
+
+    *(s32 *)(D_0046FE48 + 0x3C8) = amCdFs_ReadFileId(0xC, 0, 1);
+    res = *(s32 *)(D_0046FE48 + 0x3C8);
+    *(s16 *)(D_0046FE44 + 0x102) = 2;
+    if (0 < *(s16 *)(D_0046FE44 + 0x102)) {
+        i = 0;
+        off = 0;
+        do {
+            p = D_0046FE48 + off;
+            v = D_00452130[*(s16 *)(t + 0x20)];
+            if (v != -1) {
+                *(s32 *)p = amCdFs_ReadFileId(v, 0, 1);
+                res = *(s32 *)p;
+            } else {
+                res = 0;
+            }
+            i++;
+            t += 0x50;
+            off += 0x1A4;
+        } while (i < *(s16 *)(D_0046FE44 + 0x102));
+    }
+    *(s16 *)(D_0046FE44 + 0x100) = 0;
+    return res;
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244280);
 #if 0
 void func_00244410(u8 *o, s32 kind) {
