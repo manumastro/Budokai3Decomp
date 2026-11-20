@@ -128,7 +128,7 @@ extern f32 amMath_SinI(s32);
 extern void amDraw_FlushPacket(void);
 extern void amVram_Apply(s32);
 
-void func_002E40D0(void) {
+void func_002E40D0(u8 *a0) {
     Vec4r pos;
     Vec4r uv;
     Vec4r col;
@@ -177,7 +177,74 @@ void func_002E40D0(void) {
     } while ((f32)i < 16.0f);
     amVram_Apply(2);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E44A0);
+extern u8 D_003F0800[];
+extern void func_0013B0B0(void *);
+extern void func_0013BC00(f32, f32, f32);
+extern void func_0013B500(s32);
+extern void func_0013B110(s32);
+extern s32 amSofdec_Draw(s32);
+void func_002E4AC0(u8 *a0, s16 a1);
+
+void func_002E44A0(u8 *d) {
+    Vec4r v;
+    s32 h;
+    s32 st;
+    s32 r;
+
+    if (d[0xF4] == 2) {
+        h = *(s32 *)(*(u8 **)(d + 0x114) + 0x30);
+        if (h < 0) {
+            return;
+        }
+        st = 4;
+        if (h >= 0) {
+            st = amSofdec_GetStat(h);
+        }
+        if (st != 2) {
+            return;
+        }
+        r = amSofdec_Draw(h);
+        switch (r) {
+        case 1:
+            if (d[0xCE] < 2) {
+                d[0xCE] += 1;
+                return;
+            }
+            break;
+        case 2:
+            if (d[0xCE] <= 0) {
+                return;
+            }
+            if (d[0xCE] == 1) {
+                d[0xCE] = 2;
+                return;
+            }
+            break;
+        default:
+            return;
+        }
+        if (d[0xCE] < 5) {
+            d[0xCE] += 1;
+            return;
+        }
+        func_0013B0B0(D_003F0800);
+        func_0013BC00(0.0f, 460.0f, -4000.0f);
+        func_0013B500(0x1600);
+        func_0013BC00(0.0f, 0.0f, 1360.0f);
+        __asm__ volatile ("sqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+        v.z += 4000.0f;
+        v.z *= 2.0f;
+        v.z -= 3992.0f;
+        __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)" : : "r"(D_003F0800) : "memory");
+        __asm__ volatile ("lqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+        func_002E40D0(d);
+        v.z += 1.0f;
+        __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)" : : "r"(D_003F0800) : "memory");
+        __asm__ volatile ("lqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+        func_002E4AC0(d, 0);
+        func_0013B110(1);
+    }
+}
 extern Vec4r D_00456E50;
 extern Vec4r D_00456E60;
 extern Vec4r D_00456E70;
@@ -247,7 +314,7 @@ extern void func_00134690(s32, s32, void *, s32, s32, s32);
 extern void func_00135F10(Vec4a *, Vec4a *);
 extern void amDraw_FlushPacket(void);
 
-void func_002E4AC0(u8 *a0) {
+void func_002E4AC0(u8 *a0, s16 a1) {
     Vec4a p50;
     Vec4a q40;
     Vec4a r30;
@@ -275,7 +342,50 @@ void func_002E4AC0(u8 *a0) {
     func_00135F10(&p50, &q40);
     amDraw_FlushPacket();
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4BF0);
+typedef struct Ent2E4 {
+    void *p;
+    s32 f4;
+    s16 f8;
+} Ent2E4;
+
+typedef struct Ov2E4 {
+    char pad0[0x30];
+    Ent2E4 ent[1];
+} Ov2E4;
+
+extern Vec4r D_00456E10;
+extern void func_0013B620(s32);
+extern u8 D_003F0800[];
+extern void func_0013B0B0(void *);
+extern void func_0013BC00(f32, f32, f32);
+extern void func_0013B500(s32);
+extern void func_0013B110(s32);
+
+void func_002E4BF0(u8 *d, s16 a1) {
+    Vec4r v;
+    Vec4r t;
+    Ent2E4 *e;
+
+    e = &((Ov2E4 *)d)->ent[a1];
+    t = D_00456E10;
+    func_0013B0B0(D_003F0800);
+    func_0013BC00(0.0f, 460.0f, -4000.0f);
+    func_0013B500(0x1600);
+    func_0013B620(e->f4 - *(s32 *)(d + 0xF8));
+    func_0013BC00(0.0f, 0.0f, 1360.0f);
+    __asm__ volatile ("sqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+    v.z += 4000.0f;
+    v.z *= 2.0f;
+    v.z -= 4000.0f;
+    __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)" : : "r"(D_003F0800) : "memory");
+    __asm__ volatile ("lqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+    func_002E46A0(d, e->f8);
+    v.z += 1.0f;
+    __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)" : : "r"(D_003F0800) : "memory");
+    __asm__ volatile ("lqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+    func_002E4AC0(d, e->f8);
+    func_0013B110(1);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E4D60);
 extern s32 D_00470704;
 extern s32 D_0047070C;

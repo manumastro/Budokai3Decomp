@@ -123,7 +123,60 @@ void func_00284F10(Disp *d) {
         }
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_284AA0", func_00285330);
+extern u8 D_003F0800[];
+extern void func_0013B0B0(void *);
+extern void func_0013BC00(f32, f32, f32);
+extern void func_0013B500(s32);
+extern void func_0013B110(s32);
+void func_00285950(Disp *o, s16 n);
+
+void func_00285330(Disp *d) {
+    DispEnt *e;
+    Vec4f v;
+    s32 r;
+
+    if (*((u8 *)d + 0x262) == 2 && *(s32 *)(*(u8 **)((u8 *)d + 0x230) + 0x30) >= 0) {
+        r = amSofdec_Draw(*(s32 *)(*(u8 **)((u8 *)d + 0x230) + 0x30));
+        switch (r) {
+        case 1:
+            if (*((u8 *)d + 0x263) < 2) {
+                *((u8 *)d + 0x263) += 1;
+                return;
+            }
+            break;
+        case 2:
+            if (*((u8 *)d + 0x263) <= 0) {
+                return;
+            }
+            if (*((u8 *)d + 0x263) == 1) {
+                *((u8 *)d + 0x263) = 2;
+                return;
+            }
+            break;
+        default:
+            return;
+        }
+        amVram_Apply(2);
+        e = &d->ent[*((u8 *)d + 0x260)];
+        func_0013B0B0(D_003F0800);
+        func_0013BC00(0.0f, 460.0f, -4000.0f);
+        func_0013B500(0x1600);
+        func_0013BC00(0.0f, 0.0f, 1360.0f);
+        __asm__ volatile ("sqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+        v.z += 4000.0f;
+        v.z *= 2.0f;
+        v.z -= 3992.0f;
+        __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)" : : "r"(D_003F0800) : "memory");
+        __asm__ volatile ("lqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+        func_00285950(d, e->f8);
+        v.z += 3992.0f;
+        v.z -= 3990.0f;
+        __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)" : : "r"(D_003F0800) : "memory");
+        __asm__ volatile ("lqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+        func_00284F10(d);
+        func_0013B110(1);
+    }
+}
 extern Vec4f D_00453540;
 extern Vec4f D_00453550;
 extern Vec4f D_00453560;
@@ -180,14 +233,14 @@ void func_00285530(Disp *d, s16 a1) {
         i++;
     } while ((f32)i < 16.0f);
 }
-void func_00285950(Disp *o, s32 n) {
+void func_00285950(Disp *o, s16 n) {
     Vec4f pos = D_00453510;
     Vec4f uv = D_00453520;
     Vec4f col = D_00453530;
 
     col.w = o->f284;
     amModel_SetCurrent(o->f4, 0x7000);
-    func_00134690(1, 0x101924, &col, D_0046B841[(s16)n * 2], 0x44, 5);
+    func_00134690(1, 0x101924, &col, D_0046B841[n * 2], 0x44, 5);
     pos.x = 250.0f;
     pos.y = 250.0f;
     uv.x = 0.005859375f;
@@ -206,7 +259,34 @@ void func_00285950(Disp *o, s32 n) {
     func_00135F10(&pos, &uv);
     amDraw_FlushPacket();
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_284AA0", func_00285AA0);
+extern Vec4f D_00453500;
+extern void func_0013B620(s32);
+
+void func_00285AA0(Disp *d, s16 a1) {
+    Vec4f v;
+    Vec4f t;
+    DispEnt *e;
+
+    e = &d->ent[a1];
+    t = D_00453500;
+    func_0013B0B0(D_003F0800);
+    func_0013BC00(0.0f, 460.0f, -4000.0f);
+    func_0013B500(0x1600);
+    func_0013B620(e->f4 - *(s32 *)((u8 *)d + 0x26C));
+    func_0013BC00(0.0f, 0.0f, 1360.0f);
+    __asm__ volatile ("sqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+    v.z += 4000.0f;
+    v.z *= 2.0f;
+    v.z -= 4000.0f;
+    __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)" : : "r"(D_003F0800) : "memory");
+    __asm__ volatile ("lqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+    func_00285950(d, e->f8);
+    v.z += 1.0f;
+    __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)" : : "r"(D_003F0800) : "memory");
+    __asm__ volatile ("lqc2 $vf31, 0x0(%0)" : : "r"(&v) : "memory");
+    func_00285530(d, e->f8);
+    func_0013B110(1);
+}
 void func_00285C10(Disp *o) {
     DispEnt *e;
     s32 i;
