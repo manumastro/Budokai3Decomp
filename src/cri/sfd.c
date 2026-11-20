@@ -40514,7 +40514,53 @@ s32 func_00194120_x00194120(s32 arg0, u8 **arg1) {
     *(s32 *)((u8 *)temp_s2 + 0x274) = (s32) *(s32 *)((u8 *)temp_v1 + 0x18);
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/sfd", func_001941C0);
+typedef enum { PT_I_41C0_x001941C0 = 1 } M2vPicType_41C0_x001941C0;
+typedef enum { PS_F_41C0_x001941C0 = 3 } M2vPicStruct_41C0_x001941C0;
+typedef enum { CP_C_41C0_x001941C0 = 0 } M2vChromaPos_41C0_x001941C0;
+typedef enum { SPT_41C0_x001941C0 = 1 } SfdPicType_41C0_x001941C0;
+typedef enum { SBF_41C0_x001941C0 = 0 } SfdBufFmt_41C0_x001941C0;
+typedef enum { SCP_41C0_x001941C0 = 0 } SfdChromaPos_41C0_x001941C0;
+typedef struct SfdSjChunk_41C0_x001941C0 SfdSjChunk_41C0_x001941C0;
+typedef struct { int horizontal_size; int vertical_size; int mb_width; int mb_height; int frame_rate_code; int temporal_reference; M2vPicType_41C0_x001941C0 picture_coding_type; int pad1c[7]; M2vPicStruct_41C0_x001941C0 chroma_pos_h; int chroma_pos_v; M2vChromaPos_41C0_x001941C0 bit_rate; M2vPicStruct_41C0_x001941C0 vbv_buffer_size; unsigned char pad48[13]; signed char progressive_frame; signed char top_field_first; signed char repeat_first_field; } M2vPicAtr_41C0_x001941C0;
+typedef struct { int pad0[2]; void *buf; int padc[11]; int ftime; int tunit; int errcnt; int rcvcnt; int concat_cnt; int time_per_file; int cat_time; SfdSjChunk_41C0_x001941C0 *blob; M2vPicAtr_41C0_x001941C0 info; } SfdSlot_41C0_x001941C0;
+typedef struct { int width, height, x_mb, y_mb; SfdPicType_41C0_x001941C0 picType; int time, unit; SfdBufFmt_41C0_x001941C0 bufFmt; void *buf; int errcnt, rcvcnt, concat_cnt, time_per_file, cat_time; SfdSjChunk_41C0_x001941C0 *picUsr; SfdChromaPos_41C0_x001941C0 chromaPosH; int chromaPosV; SfdPicType_41C0_x001941C0 progressive_frame, top_field_first, repeat_first_field; SfdChromaPos_41C0_x001941C0 bit_rate; int vbv_buffer_size; } SfdFrameInfo_41C0_x001941C0;
+typedef struct { int used; SfdFrameInfo_41C0_x001941C0 inf; } SfdVfrm_41C0_x001941C0;
+typedef struct { unsigned char pad[0x70]; SfdSlot_41C0_x001941C0 *current; } SfdMpv_41C0_x001941C0;
+typedef struct { unsigned char pad0[0x38]; SfdBufFmt_41C0_x001941C0 bufFmt; unsigned char pad3c[0x1C70 - 0x3C]; SfdMpv_41C0_x001941C0 *mpv; } SfdPly_41C0_x001941C0;
+SfdVfrm_41C0_x001941C0 *func_00194720_x001941C0(SfdPly_41C0_x001941C0 *player, SfdSlot_41C0_x001941C0 *slot) __asm__("func_00194720");
+void func_001941C0_x001941C0(SfdPly_41C0_x001941C0 *player, SfdSlot_41C0_x001941C0 *slot, SfdFrameInfo_41C0_x001941C0 **out) __asm__("func_001941C0");
+void func_001941C0_x001941C0(SfdPly_41C0_x001941C0 *player, SfdSlot_41C0_x001941C0 *slot, SfdFrameInfo_41C0_x001941C0 **out) {
+    SfdMpv_41C0_x001941C0 *mpv = player->mpv;
+    M2vPicAtr_41C0_x001941C0 *pic = &slot->info;
+    SfdVfrm_41C0_x001941C0 *record;
+
+    record = func_00194720_x001941C0(player, slot);
+    *out = &record->inf;
+    record->used = 1;
+    mpv->current = slot;
+    (*out)->width = pic->horizontal_size;
+    (*out)->height = pic->vertical_size;
+    (*out)->x_mb = pic->mb_width;
+    (*out)->y_mb = pic->mb_height;
+    (*out)->picType = pic->picture_coding_type;
+    (*out)->time = slot->ftime;
+    (*out)->unit = slot->tunit;
+    (*out)->bufFmt = player->bufFmt;
+    (*out)->buf = slot->buf;
+    (*out)->errcnt = slot->errcnt;
+    (*out)->rcvcnt = slot->rcvcnt;
+    (*out)->concat_cnt = slot->concat_cnt;
+    (*out)->time_per_file = slot->time_per_file;
+    (*out)->cat_time = slot->cat_time;
+    (*out)->picUsr = slot->blob;
+    (*out)->chromaPosH = pic->chroma_pos_h;
+    (*out)->chromaPosV = pic->chroma_pos_v;
+    (*out)->progressive_frame = pic->progressive_frame;
+    (*out)->top_field_first = pic->top_field_first;
+    (*out)->repeat_first_field = pic->repeat_first_field;
+    (*out)->bit_rate = pic->bit_rate;
+    (*out)->vbv_buffer_size = pic->vbv_buffer_size;
+}
 s32 func_0018D908_x001942D0(void *) __asm__("func_0018D908");
 s32 func_0018D920_x001942D0(void *) __asm__("func_0018D920");
 s32 func_00194320_x001942D0(s32, s32) __asm__("func_00194320");
