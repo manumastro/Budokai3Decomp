@@ -269,12 +269,12 @@ u8 *func_001FD230(u8 *a0, f32 f12, f32 f13) {
     }
     return NULL;
 }
-#if 0
 extern u8 gBtbBg[];
 extern s16 D_0051CD30[];
 extern void func_001F9CD0(s32, s32, u8 *, u8 *, s32);
 extern void func_001F9BB0(s32, s32);
 extern void func_001F9B60(s32, s32, u8 *);
+
 void func_001FD300(u8 *o, s32 f, s32 flags) {
     s32 off;
     s32 s3;
@@ -283,6 +283,8 @@ void func_001FD300(u8 *o, s32 f, s32 flags) {
     s32 d;
     u8 *e;
     s16 *cnt;
+    u8 *bg;
+
     switch (*(s32 *)(o + 0x28)) {
     case 0:
         off = 0;
@@ -302,16 +304,19 @@ void func_001FD300(u8 *o, s32 f, s32 flags) {
     default:
         return;
     }
+
     s3 = *(s32 *)(*(u8 **)(o + 0x24) + 0x1350);
-    if (D_0051CD30[s3] > 0) {
-        e = gBtbBg + s3 * 16;
-        cnt = D_0051CD30 + s3;
-        for (i = 0; i < *cnt; i++, e += 2) {
+    i = 0;
+    if (0 < D_0051CD30[s3]) {
+        bg = gBtbBg;
+        e = bg + s3 * 16;
+        cnt = (s16 *)(bg + s3 * 2 + 0x50);
+        do {
             m = *(s16 *)(e + 0x58) % 1000;
             if (m >= 0) {
                 d = m - off;
                 if (d < 0 || d >= 0x10) {
-                    continue;
+                    goto next;
                 }
                 if (f) {
                     flags |= 4;
@@ -321,7 +326,7 @@ void func_001FD300(u8 *o, s32 f, s32 flags) {
             } else {
                 d = off - *(s16 *)(e + 0x58);
                 if (d < 0 || d >= 0x10) {
-                    continue;
+                    goto next;
                 }
                 func_001F9BB0(s3, d);
             }
@@ -333,15 +338,16 @@ void func_001FD300(u8 *o, s32 f, s32 flags) {
             if (d >= 0) {
                 func_001F9B60(s3, d, o);
             }
-        }
+next:
+            e += 2;
+            i++;
+        } while (i < *cnt);
     }
     d = *(s16 *)(o + 0x2C) - off;
     if (d >= 0 && d < 0x10) {
         func_001F9CD0(s3, d, o, o + 0x10, 0);
     }
-// differs: 16 of 136 instructions: s7/s8 (the flag argument and the count pointer) are swapped and the count test is blez here, where the original computes the count address from gBtbBg+0x50 inside the guard and tests `0 < D_0051CD30[s3]` (slt/beqz); tried cnt from gBtbBg, the `0 <` form, i = 0 before the if (all worse, 80+ differ); tsweep order, 201 variants, no gain
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FD300);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FD520);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FD800);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FDD40);
