@@ -569,7 +569,14 @@ typedef struct SkObjC {
     /* 0x4C */ void *unk4C;
     /* 0x50 */ u8 pad50[0x04];
     /* 0x54 */ void *unk54;
+    /* 0x58 */ void *unk58;
+    /* 0x5C */ void *unk5C;
 } SkObjC;
+typedef struct SkTbl {
+    /* 0x000 */ u8 pad0[0x24];
+    /* 0x024 */ s32 f24;
+    /* 0x028 */ u8 pad28[0x480 - 0x28];
+} SkTbl;
 typedef struct SkEaParam {
     /* 0x00 */ u8 pos[0x10];
     /* 0x10 */ u8 dir[0x10];
@@ -815,7 +822,131 @@ void SkillKill_Kind07(s32 *p) {
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024D060);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024D4C0);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024DB10);
+typedef struct SkFxReq {
+    /* 0x00 */ void *pos;
+    /* 0x04 */ void *dir;
+    /* 0x08 */ u8 pad08[0x18];
+    /* 0x20 */ s16 f20;
+    /* 0x22 */ s16 f22;
+    /* 0x24 */ u8 pad24[4];
+    /* 0x28 */ f32 f28;
+} SkFxReq;
+extern f32 func_00146E30(void *, void *);
+extern void func_002183F0(s32, SkFxReq *);
+s32 func_0024DB10(SkObjC *ob) {
+    SkEaParam prm;
+    u8 tmp[16] __attribute__((aligned(16)));
+    SkFxReq req;
+    u8 v[16] __attribute__((aligned(16)));
+    u8 *s3 = ob->unk0C;
+    u8 *s2 = ob->unk08;
+    u8 *s1;
+    u8 *s0;
+    f32 d;
+    s16 fl;
+
+    s1 = D_0046FE4C + *(s32 *)(s2 + 0x1350) * 0x480 + 0x10;
+    s0 = D_0046FE4C + *(s32 *)(*(u8 **)(s2 + 0x1354) + 0x1350) * 0x480 + 0x10;
+    if (ob->unk04 & 0x8000) {
+        return 1;
+    }
+    if (*(s32 *)(s2 + 0x1350) != *(s16 *)((u8 *)D_0046FE54 + 0x64)) {
+        fl = *(s16 *)((u8 *)D_0046FE54 + 0x60);
+        if ((fl & 0x10) || (fl & 0x20)) {
+            return 1;
+        }
+    }
+    if (!(ob->unk04 & 0x4000) && (ob->unk00 <= 12.0f || (ob->unk04 & 0x2000) || *(s32 *)((u8 *)(*(s32 *)(s2 + 0x1350) * 0x480) + (s32)D_0046FE4C + 0x24) == -1)) {
+        func_001D9280((s32)ob->unk08);
+        if (ob->unk58 != NULL) {
+            func_00209390(ob->unk58);
+        }
+        ob->unk00 = 12.0f;
+        ob->unk04 |= 0x4000;
+    }
+    if (!(*(s16 *)((u8 *)D_0046FE54 + 0x60) & 0x80)) {
+        ob->unk00 = ob->unk00 - SkillObj_Scale();
+        if (ob->unk00 < 0.0f) {
+            ob->unk00 = 0.0f;
+            ob->unk04 |= 0x8000;
+        }
+    }
+    if (ob->unk04 & 0x800) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.pos), "r"(ob->unk20));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.dir), "r"(ob->unk20), "r"(ob->unk30));
+        prm.f36 = ob->unk06;
+        prm.f38 = (ob->unk04 & 0x400) ? 1 : 0;
+        if (*(s16 *)((u8 *)D_0046FE54 + 0x60) & 0x100) {
+            prm.f20 = 2.0f * *(f32 *)(s3 + 0xCC);
+            prm.f36 = ob->unk06 + *(s16 *)(s0 + 0x34);
+            prm.f38 |= 8;
+            prm.f38 |= 0x10;
+        } else {
+            prm.f20 = *(f32 *)(s3 + 0xCC);
+        }
+        if ((*(s16 *)((u8 *)D_0046FE54 + 0x60) & 0x80) && *(f32 *)(s1 + 0x10) >= 1.0f) {
+            prm.f20 = 10.0f * *(f32 *)(s3 + 0xCC);
+        }
+        prm.fn = (void *)func_00251F30;
+        prm.ob = ob;
+        prm.f30 = *(s32 *)(s3 + 0xD4);
+        prm.f32_ = 0;
+        prm.f34 = *(s32 *)(*(u8 **)(s2 + 0x1354) + 0x1350);
+        prm.f35 = *(s32 *)(s2 + 0x1350);
+        func_001EA240(&prm);
+        ob->unk04 &= ~0x400;
+    }
+    if (*(s16 *)((u8 *)D_0046FE54 + 0x60) & 0x80) {
+        {
+            s32 bits;
+            __asm__ volatile ("lqc2 $vf1, 0(%2) ; lqc2 $vf2, 0(%3) ; mfc1 %0, %4 ; qmtc2.ni %0, $vf3 ; vsub.xyz $vf2, $vf2, $vf1 ; vaddax.xyz ACC, $vf1, $vf0x ; vmaddx.xyz $vf1, $vf2, $vf3x ; sqc2 $vf1, 0(%1)" : "=r"(bits) : "r"(ob->unk20), "r"(s1), "r"(s0), "f"(*(f32 *)(s1 + 0x10)));
+        }
+        d = func_00146E30(*(void **)((u8 *)gBattle + 0x264), ob->unk20);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(tmp), "r"(ob->unk30));
+        func_00146F30((s32 *)tmp);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vsub.xyz $vf1, $vf0, $vf1 ; sqc2 $vf1, 0x0(%0)" : : "r"(tmp));
+        func_00146F10((s32 *)tmp, (s32 *)tmp, 0.01f * d);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(ob->unk20), "r"(tmp));
+        if ((u8)func_0012EAE0(8) / 255.0f < 0.2f) {
+            memset(&req, 0, 0x2C);
+            __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(v), "r"(ob->unk30));
+            req.pos = ob->unk20;
+            req.dir = v;
+            req.f28 = 0.0f;
+            req.f20 = 5;
+            req.f22 = 0;
+            func_002183F0(2, &req);
+        }
+    } else if (ob->unk04 & 0x1000) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(ob->unk20), "r"(ob->unk30));
+    }
+    *(f32 *)&ob->unk54 = *(f32 *)&ob->unk54 + *(f32 *)(s3 + 0x50);
+    if (*(f32 *)&ob->unk54 > 1.0f) {
+        *(f32 *)&ob->unk54 = *(f32 *)&ob->unk54 - 1.0f;
+    }
+    if (*(f32 *)&ob->unk54 < 0.0f) {
+        *(f32 *)&ob->unk54 = *(f32 *)&ob->unk54 + 1.0f;
+    }
+    if (ob->unk58 != NULL) {
+        func_00208F70(ob->unk58);
+        if (*(s32 *)((u8 *)ob->unk58 + 0x38) < 0) {
+            ob->unk58 = NULL;
+        }
+    }
+    if (ob->unk5C != NULL) {
+        func_00208F70(ob->unk5C);
+        if (*(s32 *)((u8 *)ob->unk5C + 0x38) < 0) {
+            ob->unk5C = NULL;
+        }
+    }
+    if (*(void **)((u8 *)D_0046FE54 + 0x5C) != NULL && *(s16 *)((u8 *)D_0046FE54 + 0x62) == *(s32 *)(s2 + 0x1350)) {
+        func_00208F70(*(void **)((u8 *)D_0046FE54 + 0x5C));
+        if (*(s32 *)(*(u8 **)((u8 *)D_0046FE54 + 0x5C) + 0x38) < 0) {
+            *(void **)((u8 *)D_0046FE54 + 0x5C) = NULL;
+        }
+    }
+    return 0;
+}
 void SkillKill_Kind06(s32 *p) {
     func_001D9280(p[2]);
     if (p[22] != 0) {
@@ -1296,7 +1427,121 @@ void func_0024FC50(u8 *ob) {
         func_00209C50();
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024FEA0);
+s32 func_0024FEA0(SkObjC *ob) {
+    SkEaParam prm;
+    u8 tmp[16] __attribute__((aligned(16)));
+    SkFxReq req;
+    u8 v[16] __attribute__((aligned(16)));
+    u8 *s3 = ob->unk0C;
+    u8 *s2 = ob->unk08;
+    u8 *s1;
+    u8 *s0;
+    f32 d;
+    s16 fl;
+
+    s1 = D_0046FE4C + *(s32 *)(s2 + 0x1350) * 0x480 + 0x10;
+    s0 = D_0046FE4C + *(s32 *)(*(u8 **)(s2 + 0x1354) + 0x1350) * 0x480 + 0x10;
+    if (ob->unk04 & 0x8000) {
+        return 1;
+    }
+    if (*(s32 *)(s2 + 0x1350) != *(s16 *)((u8 *)D_0046FE54 + 0x64)) {
+        fl = *(s16 *)((u8 *)D_0046FE54 + 0x60);
+        if ((fl & 0x10) || (fl & 0x20)) {
+            return 1;
+        }
+    }
+    if (!(ob->unk04 & 0x4000) && (ob->unk00 <= 12.0f || (ob->unk04 & 0x2000))) {
+        func_001D9280((s32)ob->unk08);
+        if (ob->unk44 != NULL) {
+            Obj_ResetF38((s32)ob->unk44);
+            ob->unk44 = NULL;
+        }
+        if (ob->unk48 != NULL) {
+            Obj_ResetF38((s32)ob->unk48);
+            ob->unk48 = NULL;
+        }
+        ob->unk00 = 12.0f;
+        ob->unk04 |= 0x4000;
+    }
+    if (!(*(s16 *)((u8 *)D_0046FE54 + 0x60) & 0x80)) {
+        ob->unk00 = ob->unk00 - SkillObj_Scale();
+        if (ob->unk00 < 0.0f) {
+            ob->unk00 = 0.0f;
+            ob->unk04 |= 0x8000;
+        }
+    }
+    if (ob->unk04 & 0x800) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.pos), "r"(ob->unk20));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.dir), "r"(ob->unk20), "r"(ob->unk30));
+        prm.f36 = ob->unk06;
+        prm.f38 = (ob->unk04 & 0x400) ? 1 : 0;
+        if (*(s32 *)(s2 + 0xB9C) == 0x10 || *(s32 *)(s2 + 0xB9C) == 0x4C || *(s32 *)(s2 + 0x1CFC) == 0x11 || *(s32 *)(s2 + 0x1CFC) == 0x29) {
+            prm.f38 |= 4;
+        }
+        if (*(s16 *)((u8 *)D_0046FE54 + 0x60) & 0x100) {
+            prm.f20 = 2.0f * *(f32 *)(s3 + 0xCC);
+            prm.f36 = ob->unk06 + *(s16 *)(s0 + 0x34);
+            prm.f38 |= 8;
+            prm.f38 |= 0x10;
+        } else {
+            prm.f20 = *(f32 *)(s3 + 0xCC);
+        }
+        if ((*(s16 *)((u8 *)D_0046FE54 + 0x60) & 0x80) && *(f32 *)(s1 + 0x10) >= 1.0f) {
+            prm.f20 = 10.0f * *(f32 *)(s3 + 0xCC);
+        }
+        prm.fn = (void *)func_00251F30;
+        prm.ob = ob;
+        prm.f30 = *(s32 *)(s3 + 0xD4);
+        prm.f32_ = 0;
+        prm.f34 = *(s32 *)(*(u8 **)(s2 + 0x1354) + 0x1350);
+        prm.f35 = *(s32 *)(s2 + 0x1350);
+        func_001EA240(&prm);
+        ob->unk04 &= ~0x400;
+    }
+    if (*(s16 *)((u8 *)D_0046FE54 + 0x60) & 0x80) {
+        {
+            s32 bits;
+            __asm__ volatile ("lqc2 $vf1, 0(%2) ; lqc2 $vf2, 0(%3) ; mfc1 %0, %4 ; qmtc2.ni %0, $vf3 ; vsub.xyz $vf2, $vf2, $vf1 ; vaddax.xyz ACC, $vf1, $vf0x ; vmaddx.xyz $vf1, $vf2, $vf3x ; sqc2 $vf1, 0(%1)" : "=r"(bits) : "r"(ob->unk20), "r"(s1), "r"(s0), "f"(*(f32 *)(s1 + 0x10)));
+        }
+        d = func_00146E30(*(void **)((u8 *)gBattle + 0x264), ob->unk20);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(tmp), "r"(ob->unk30));
+        func_00146F30((s32 *)tmp);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vsub.xyz $vf1, $vf0, $vf1 ; sqc2 $vf1, 0x0(%0)" : : "r"(tmp));
+        func_00146F10((s32 *)tmp, (s32 *)tmp, 0.01f * d);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(ob->unk20), "r"(tmp));
+        if ((u8)func_0012EAE0(8) / 255.0f < 0.05f) {
+            memset(&req, 0, 0x2C);
+            __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(v), "r"(ob->unk30));
+            req.pos = ob->unk20;
+            req.dir = v;
+            req.f28 = 0.0f;
+            req.f20 = 5;
+            req.f22 = 0;
+            func_002183F0(2, &req);
+        }
+    } else if (ob->unk04 & 0x1000) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(ob->unk20), "r"(ob->unk30));
+    }
+    if (ob->unk44 != NULL) {
+        func_00208F70(ob->unk44);
+        if (*(s32 *)((u8 *)ob->unk44 + 0x38) < 0) {
+            ob->unk44 = NULL;
+        }
+    }
+    if (ob->unk48 != NULL) {
+        func_00208F70(ob->unk48);
+        if (*(s32 *)((u8 *)ob->unk48 + 0x38) < 0) {
+            ob->unk48 = NULL;
+        }
+    }
+    if (*(void **)((u8 *)D_0046FE54 + 0x5C) != NULL && *(s16 *)((u8 *)D_0046FE54 + 0x62) == *(s32 *)(s2 + 0x1350)) {
+        func_00208F70(*(void **)((u8 *)D_0046FE54 + 0x5C));
+        if (*(s32 *)(*(u8 **)((u8 *)D_0046FE54 + 0x5C) + 0x38) < 0) {
+            *(void **)((u8 *)D_0046FE54 + 0x5C) = NULL;
+        }
+    }
+    return 0;
+}
 void SkillKill_Kind01(s32 *p) {
     if (p[17] != 0) {
         Obj_ResetF38(p[17]);
