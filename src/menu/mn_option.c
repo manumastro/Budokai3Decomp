@@ -145,12 +145,9 @@ void Option_Nop1(void) {
 void func_002DEFE0(void) {
 }
 
-#if 0
-// differs: 16 bytes short (0x100 vs 0x110): the original saves a second register (s1 for the heap block of case 4) and lays the function-pointer store of case 3/5 out with bnez/move; the switch order (3,5 before 4) matches the test order
 extern void func_002DFBC0();
 extern s32 Save_GetState();
 extern void *amHeap_Alloc(s32, s32, char *, s32);
-extern void func_00125740(void *, void *, s32);
 extern void func_001EF510(void *, s32);
 extern void Scene_Request(s32, s32);
 extern void Scene_FadeTo(s32, s32);
@@ -159,38 +156,35 @@ extern void func_002D9DE0();
 extern char D_0046F3C8[];
 extern s8 D_004B4B63[];
 extern s8 D_0058F680[];
+extern void amHeap_Free(void *);
+extern void *memcpy(void *, const void *, u32);
 
 void func_002DEFF0(u8 *a0) {
-    u8 *s0;
     u8 *s1;
     u8 *w;
-    s32 st;
-    void *fp;
-    s0 = a0;
+
     func_002DFBC0();
-    st = Save_GetState();
-    switch (st) {
-    case 3:
-    case 5:
-        fp = (void *)func_002DEA00;
-        *(void **)(s0 + 0x1C) = (fp == 0) ? 0 : fp;
-        w = (u8 *)gOptionWork;
-        *(void **)(w + 0x34C) = (void *)func_002D9DE0;
-        *(s32 *)(w + 0x388) = 0;
-        *(s32 *)(w + 0x38C) = 0;
-        Scene_Request(5, 0);
-        Scene_FadeTo(0xA, 0);
-        break;
+    switch (Save_GetState()) {
     case 4:
         s1 = (u8 *)amHeap_Alloc(0xD680, 0, D_0046F3C8, 0x733);
-        func_00125740(s1, D_0058F680 + D_004B4B63[0] * 0xD680, 0xD680);
+        memcpy(s1, D_0058F680 + D_004B4B63[0] * 0xD680, 0xD680);
         func_001EF510(s1, 0xD680);
         amHeap_Free(s1);
         break;
+    case 5:
+    case 3:
+        break;
+    default:
+        return;
     }
+    *(void **)(a0 + 0x1C) = ((void *)func_002DEA00 == 0) ? 0 : (void *)func_002DEA00;
+    w = gOptionWork;
+    *(void **)(w + 0x34C) = (void *)func_002D9DE0;
+    *(s32 *)(w + 0x388) = 0;
+    *(s32 *)(w + 0x38C) = 0;
+    Scene_Request(5, 0);
+    Scene_FadeTo(10, 0);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DEFF0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF100);
 extern s8 D_004B4B40[];
 extern s8 D_00456B20[];
@@ -269,13 +263,10 @@ void func_002DF4E0(void) {
     *(s32 *)(a2 + 0x3E0) = 5;
     *(s32 *)(a2 + 0x3E4) = 5;
 }
-#if 0
-// differs: 16 bytes short (0x100 vs 0x110): the original saves a second register (s1, holding the heap block of case 4) and loads gOptionWork into s0 before Save_GetState; the same frame problem as func_002DEFF0
 extern void *amHeap_Alloc(s32, s32, char *, s32);
 extern char D_0046F3C8[];
 extern s8 D_0058F680[];
 extern s8 D_004B4B63[];
-extern void func_00125740(void *, void *, s32);
 extern void func_001EF510(void *, s32);
 extern void amHeap_Free(void *);
 extern void amTask_Kill(void *);
@@ -288,32 +279,33 @@ extern void amDisp_SetOffset(s32, s32);
 void func_002DF5D0(void) {
     u8 *s1;
     u8 *s0;
-    s32 st;
-    s0 = (u8 *)gOptionWork;
-    st = Save_GetState();
-    switch (st) {
+    u8 *d;
+
+    s0 = gOptionWork;
+    switch (Save_GetState()) {
     case 4:
         s1 = (u8 *)amHeap_Alloc(0xD680, 0, D_0046F3C8, 0x733);
-        func_00125740(s1, D_0058F680 + D_004B4B63[0] * 0xD680, 0xD680);
+        memcpy(s1, D_0058F680 + D_004B4B63[0] * 0xD680, 0xD680);
         func_001EF510(s1, 0xD680);
         amHeap_Free(s1);
         break;
-    case 3:
     case 5:
-        Save_ClearBusy();
-        if (*(void **)(s0 + 0x324) != 0) {
-            amTask_Kill(*(void **)(s0 + 0x324));
-            *(s32 *)(s0 + 0x324) = 0;
-        }
-        func_002DF100();
-        func_002DE910();
-        amDisp_SetOffset(*(s16 *)((u8 *)D_004E05DC + 0x1E), *(s16 *)((u8 *)D_004E05DC + 0x20));
-        *(void **)(s0 + 0x344) = (void *)func_002DD2B0;
+    case 3:
         break;
+    default:
+        return;
     }
+    Save_ClearBusy();
+    if (*(void **)(s0 + 0x324) != 0) {
+        amTask_Kill(*(void **)(s0 + 0x324));
+        *(s32 *)(s0 + 0x324) = 0;
+    }
+    func_002DF100();
+    func_002DE910();
+    d = (u8 *)D_004E05DC;
+    amDisp_SetOffset(*(s16 *)(d + 0x1E), *(s16 *)(d + 0x20));
+    *(void **)(s0 + 0x344) = (void *)func_002DD2B0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF5D0);
 extern void A2d_SetMode(s32);
 extern void A2d_FlushList(void);
 
