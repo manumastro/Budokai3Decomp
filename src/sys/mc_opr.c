@@ -40,7 +40,41 @@ INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002880B0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288500);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288870);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002889C0);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288AF0);
+extern s32 func_00127940(void *, void *);
+extern u8 D_004535E0[];
+s32 func_00288AF0(u8 *arg0, s32 arg1, char *arg2) {
+    s32 k;
+    s32 count;
+    u8 *found;
+    u8 *e;
+
+    found = NULL;
+    if (arg1 != 5) {
+        return 0;
+    }
+    count = 0;
+    while (arg1 > 0) {
+        e = (arg2 != 0) ? (u8 *)arg2 : D_004535E0;
+        for (k = 0; k < 3; k++) {
+            if (*(s32 *)(arg0 + 0x10) == *(s32 *)e) {
+                if (func_00127940(arg0 + 0x20, e + 4) == 0) {
+                    count++;
+                    if (k == 2) {
+                        found = arg0;
+                    }
+                    break;
+                }
+            }
+            e += 0x24;
+        }
+        arg1--;
+        arg0 += 0x40;
+    }
+    if (count != 3) {
+        found = NULL;
+    }
+    return (s32)found;
+}
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288BF0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288E70);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00289210);
