@@ -296,7 +296,86 @@ void func_00289F30(u8 *arg0) {
     D_00470894 = (s32)func_0028A9E0;
     D_00470850 = 0x78;
 }
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028A0A0);
+typedef struct McDateTime {
+    u8 resv2;
+    u8 sec;
+    u8 min;
+    u8 hour;
+    u8 day;
+    u8 month;
+    u16 year;
+} McDateTime;
+
+typedef struct McName {
+    u8 name[32];
+} McName;
+
+typedef struct McDirEnt {
+    McDateTime create;
+    McDateTime modify;
+    u32 size;
+    u16 attr;
+    u16 resv1;
+    u32 resv2;
+    u32 pdaAplNo;
+    McName name;
+} McDirEnt;
+
+extern McDirEnt D_005AA380;
+extern char D_0046B8F0[];
+extern u8 D_005AA3C0[];
+s32 amMc_Load(s32, s32, char *, void *, McDirEnt *, u32);
+
+void func_0028A0A0(u8 *arg0) {
+    McDirEnt *ent;
+
+    switch (gMcState) {
+    case 2:
+    case 3:
+        break;
+    default:
+        return;
+    }
+
+    ent = (McDirEnt *)func_00288AF0(D_005AA3C0, gMcResult, NULL);
+    if (ent != NULL) {
+        D_005AA380.create = ent->create;
+        D_005AA380.modify = ent->modify;
+        D_005AA380.size = ent->size;
+        D_005AA380.attr = ent->attr;
+        D_005AA380.resv1 = ent->resv1;
+        D_005AA380.resv2 = ent->resv2;
+        D_005AA380.pdaAplNo = ent->pdaAplNo;
+        D_005AA380.name = ent->name;
+
+        if (amMc_Load(D_0047084C, 0, D_0046B8F0, NULL, &D_005AA380, 0) != 0) {
+            func_00288870(9);
+            MC_SETFUNC(arg0, func_0028DDF0);
+            D_00470894 = (s32)func_00289E80;
+        } else {
+            func_00288870(8);
+            MC_SETFUNC(arg0, func_0028DDF0);
+            D_00470894 = (s32)func_00289F30;
+        }
+    } else {
+        switch (gMcResult) {
+        case -4:
+        case -5:
+        case -2:
+        case -6:
+        case 0:
+            func_00288870(7);
+            MC_SETFUNC(arg0, func_0028DDF0);
+            D_00470894 = (s32)func_00289E80;
+            break;
+        default:
+            func_00288870(9);
+            MC_SETFUNC(arg0, func_0028DDF0);
+            D_00470894 = (s32)func_00289E80;
+            break;
+        }
+    }
+}
 extern char D_0046B9A0[];
 extern u8 D_005AA3C0[];
 extern void func_00289E80(void);
