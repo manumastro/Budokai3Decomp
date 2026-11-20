@@ -1717,8 +1717,141 @@ void SkillKill_Kind00(s32 *p) {
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002514B0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002518B0);
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00251A60);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00251C20);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00251DA0);
+typedef struct SkEff {
+    /* 0x00 */ u8 pad00[0x40];
+    /* 0x40 */ u8 f40[0x10];
+    /* 0x50 */ s16 f50;
+    /* 0x52 */ s16 f52;
+    /* 0x54 */ s16 f54;
+    /* 0x56 */ s16 f56;
+    /* 0x58 */ s16 f58;
+    /* 0x5A */ u8 pad5A[0x12];
+    /* 0x6C */ s32 f6C;
+    /* 0x70 */ u8 pad70[0x8];
+    /* 0x78 */ s32 f78;
+    /* 0x7C */ u8 pad7C[0x4];
+    /* 0x80 */ f32 f80;
+    /* 0x84 */ u8 pad84[0xC];
+    /* 0x90 */ s16 f90;
+    /* 0x92 */ s16 pad92;
+    /* 0x94 */ s16 f94;
+    /* 0x96 */ s16 f96;
+    /* 0x98 */ s16 f98;
+    /* 0x9A */ s16 pad9A[2];
+    /* 0x9E */ s16 f9E;
+    /* 0xA0 */ s16 fA0;
+    /* 0xA2 */ s16 fA2;
+    /* 0xA4 */ s16 fA4;
+    /* 0xA6 */ s16 padA6[2];
+    /* 0xAA */ s16 fAA;
+    /* 0xAC */ u8 padAC[4];
+} __attribute__((aligned(16))) SkEff;
+typedef struct SkSnd {
+    /* 0x00 */ u8 pad00[0x10];
+    /* 0x10 */ s32 f10;
+    /* 0x14 */ s16 f14;
+    /* 0x16 */ s16 f16;
+    /* 0x18 */ u8 pad18[8];
+} __attribute__((aligned(16))) SkSnd;
+extern s16 func_0020F690(void);
+extern void func_00214DD0(SkEff *);
+extern void func_00214F80(s32, SkEff *);
+extern void func_0025BD40(SkSnd *);
+void func_00251C20(SkObjC *ob) {
+    f32 v110[4] __attribute__((aligned(16)));
+    f32 v100[4] __attribute__((aligned(16)));
+    SkEff e;
+    SkSnd sn;
+    u8 *s0 = ob->unk0C;
+
+    if (ob->unk04 & 0x200) {
+        return;
+    }
+    if (*(s16 *)(s0 + 0x96) != 0) {
+        memset(&e, 0, 0xB0);
+        e.f50 = 0x400;
+        e.f52 = *(s16 *)(s0 + 0x9C);
+        e.f54 = *(s16 *)(s0 + 0x9E);
+        e.f56 = *(s16 *)(s0 + 0xA0);
+        e.f58 = *(s16 *)(s0 + 0xA2);
+        if (e.f56 == 9 || e.f58 == 5) {
+            v110[1] = 1.0f;
+            v110[3] = 1.0f;
+            v110[0] = 0.0f;
+            v110[2] = 0.0f;
+            func_00146F60(v100, (s32 *)ob->unk30);
+            func_00141C30((f32 *)e.f40, v110, v100);
+        }
+        e.f94 = *(s16 *)(s0 + 0x8C);
+        e.f96 = *(s16 *)(s0 + 0x8E);
+        e.f98 = *(s16 *)(s0 + 0x90);
+        e.f9E = *(s16 *)(s0 + 0x92);
+        e.fA0 = *(s16 *)(s0 + 0x94);
+        e.fA2 = *(s16 *)(s0 + 0x96);
+        e.fA4 = *(s16 *)(s0 + 0x98);
+        e.fAA = *(s16 *)(s0 + 0x9A);
+        e.f6C = (s32)ob->unk08;
+        e.f90 = func_0020F690();
+        e.f80 = *(f32 *)(s0 + 0xA4);
+        e.f78 = *(s32 *)(s0 + 0xA8);
+        func_00214DD0(&e);
+        func_00214F80(*(s16 *)(s0 + 0x9C), &e);
+    }
+    if (*(s16 *)(s0 + 0x9A) != 0) {
+        sn.f10 = (s32)ob->unk08;
+        sn.f14 = *(s16 *)(s0 + 0x92);
+        sn.f16 = *(s16 *)(s0 + 0x9A);
+        func_0025BD40(&sn);
+    }
+}
+typedef struct SkV16 { f32 v[4]; } __attribute__((aligned(16))) SkV16;
+extern SkV16 D_00450290;
+void func_00251DA0(SkObjC *ob) {
+    SkV16 v110;
+    f32 v100[4] __attribute__((aligned(16)));
+    SkEff e;
+    SkSnd sn;
+    u8 *s0 = ob->unk0C;
+
+    v110 = D_00450290;
+
+    if (ob->unk04 & 0x200) {
+        return;
+    }
+    if (*(s16 *)(s0 + 0x7A) != 0) {
+        memset(&e, 0, 0xB0);
+        e.f50 = 0x400;
+        e.f52 = *(s16 *)(s0 + 0x82);
+        e.f54 = 0;
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(e.pad00 + 0x10), "r"(ob->unk20));
+        e.f56 = *(s16 *)(s0 + 0x84);
+        e.f58 = *(s16 *)(s0 + 0x86);
+        if (e.f56 == 9 || e.f58 == 5) {
+            func_00146F60(v100, (s32 *)ob->unk30);
+            func_00141C30((f32 *)e.f40, (f32 *)&v110, v100);
+        }
+        e.f94 = *(s16 *)(s0 + 0x70);
+        e.f96 = *(s16 *)(s0 + 0x72);
+        e.f98 = *(s16 *)(s0 + 0x74);
+        e.f9E = *(s16 *)(s0 + 0x76);
+        e.fA0 = *(s16 *)(s0 + 0x78);
+        e.fA2 = *(s16 *)(s0 + 0x7A);
+        e.fA4 = *(s16 *)(s0 + 0x7C);
+        e.fAA = *(s16 *)(s0 + 0x7E);
+        e.f6C = (s32)ob->unk08;
+        e.f90 = func_0020F690();
+        e.f80 = *(f32 *)(s0 + 0x88);
+        e.f78 = *(s32 *)(s0 + 0x2C);
+        func_00214DD0(&e);
+        func_00214F80(*(s16 *)(s0 + 0x82), &e);
+    }
+    if (*(s16 *)(s0 + 0x7E) != 0) {
+        sn.f10 = (s32)ob->unk08;
+        sn.f14 = *(s16 *)(s0 + 0x76);
+        sn.f16 = *(s16 *)(s0 + 0x7E);
+        func_0025BD40(&sn);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00251F30);
 extern s32 D_00450250[];
 void func_002523B0(s32 *a0) {
