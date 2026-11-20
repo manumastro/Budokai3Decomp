@@ -44,6 +44,19 @@ typedef struct Task2_21D260 {
     f32 f50;
 } Task2_21D260;
 
+typedef struct Sub4_21D260 {
+    s32 f0;
+    s32 f4;
+    s16 f8;
+    s16 fA;
+    char padC[0x10];
+    f32 f1C;
+    f32 f20;
+    char pad24[0x4];
+    s32 f28;
+    f32 f2C;
+} Sub4_21D260;
+
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021D260);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021D6C0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021DCF0);
@@ -116,25 +129,93 @@ void func_0021E250(char *p) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021E420);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021E740);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021F0E0);
+typedef struct V16_21D260 {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} __attribute__((aligned(16))) V16_21D260;
+
+extern V16_21D260 D_0044FA50;
+extern f32 D_0044F768[];
+extern s32 D_0058BB40[];
+extern void func_002CFC50(void);
+extern void func_0021D6C0(s32, f32, f32);
+extern void func_0021F740(void *);
+extern void func_0021DCF0(void *);
+extern void func_0021E740(void *);
+extern void func_00139620(s32, void *, s32, s32, s32, f32);
+
+static inline void spawn_v(V16_21D260 *v, f32 scale) {
+    *v = D_0044FA50;
+    v->w *= scale;
+    func_00139620(0x902, v, -1, 0x44, 0, 0.0f);
+}
+
+void func_0021F0E0(Task2_21D260 *o) {
+    Work21D260 *bs;
+    Sub4_21D260 *s;
+    f32 f20;
+    f32 f;
+    V16_21D260 v4;
+    V16_21D260 v3;
+    V16_21D260 v2;
+    V16_21D260 v1;
+
+    s = (Sub4_21D260 *)o->f30;
+    f20 = D_0044F768[0];
+    bs = gBtlSys;
+    if (*(s8 *)((char *)gBattle + 0x8975) == 1) {
+        func_002CFC50();
+    }
+    if (D_0058BB38[0] == 0 || D_0058BB40[0] != 0) {
+        if (!(s->f20 < 18000.0f)) {
+            f = (s->f20 - 18000.0f) / 8.0f;
+            v4 = D_0044FA50;
+            if (f < 0.0f) {
+                f = 0.0f;
+            }
+            if (f > 1.0f) {
+                f = 1.0f;
+            }
+            v4.w *= f;
+            func_00139620(0x902, &v4, -1, 0x44, 0, 0.0f);
+        }
+        return;
+    }
+    if (s->f8 == 10 || s->f8 == 9) {
+        func_0021D6C0(0, f20, 340.0f);
+        func_0021F740(s);
+        if (!(bs->fE30 & 2)) {
+            spawn_v(&v3, 1.0f);
+        }
+        func_0021DCF0(s);
+    }
+    if (s->f8 == 8) {
+        if (!(bs->fE30 & 2)) {
+            spawn_v(&v2, 1.0f);
+        }
+        func_0021E740(s);
+    }
+    if (!(s->f20 < 18000.0f)) {
+        f = (s->f20 - 18000.0f) / 8.0f;
+        v1 = D_0044FA50;
+        if (f < 0.0f) {
+            f = 0.0f;
+        }
+        if (f > 1.0f) {
+            f = 1.0f;
+        }
+        v1.w *= f;
+        func_00139620(0x902, &v1, -1, 0x44, 0, 0.0f);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021F3A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021F740);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221110);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002214B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221950);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221E10);
-typedef struct Sub4_21D260 {
-    s32 f0;
-    s32 f4;
-    char pad8[0x2];
-    s16 fA;
-    char padC[0x10];
-    f32 f1C;
-    f32 f20;
-    char pad24[0x4];
-    s32 f28;
-    f32 f2C;
-} Sub4_21D260;
 extern void func_00222BF0(void);
 extern void func_0021F3A0(void);
 void func_00222280(Task2_21D260 *o) {
@@ -311,7 +392,7 @@ extern void func_00224680(void *);
 extern void func_00224BB0(void *);
 extern s32 func_002249B0(void);
 extern void func_002228F0(Task2_21D260 *);
-extern void func_0021F0E0(void);
+extern void func_0021F0E0();
 extern void func_00222BF0(void);
 extern f32 D_00470710;
 extern char D_0058BB30[];
