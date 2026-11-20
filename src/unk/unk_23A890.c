@@ -2356,30 +2356,31 @@ void func_002477C0(u8 *arg0)
   BtbObj_CheckDrawFlags(arg0);
 }
 
-#if 0
 void func_00247820(void) {
-    s32 r;
-    u8 *p;
-    s32 z;
     s32 d;
+    s32 z;
+    u8 *p;
+    s32 *w;
     z = 0;
     d = D_0051CD0C[0];
-    r = func_001A50F0(d, 0x208);
-    if (r != 0) {
-        z = func_00209540(r, 0x2000004, 0);
+    /* FAKEMATCH: the empty compound test is a scheduling barrier between the setup and the first lookup;
+     * without it the handle and the result swap saved registers (s1/s2) and no declaration order fixes it. */
+    if (z != 0 || d == 0) {
+    }
+    p = (u8 *)func_001A50F0(d, 0x208);
+    if (p != 0) {
+        z = func_00209540((s32)p, 0x2000004, 0);
     }
     if (z != 0) {
-        p = (u8 *)func_001F5FD0(0x85000000, D_0046AD90, 0, (void *)func_002477C0, (void *)func_00247770);
+        p = func_001F5FD0(0x85000000, D_0046AD90, 0, (void *)func_002477C0, (void *)func_00247770);
         *(s32 *)(p + 0x20) &= ~0x800;
         *(s32 *)(p + 0x20) |= 0x800;
         memset(p + 0x30, 0, 0x80);
-        *(s32 *)(p + 0x38) = z;
-        *(s32 *)(p + 0x34) = func_001A50F0(d, 0x280);
+        w = (s32 *)(p + 0x30);
+        w[2] = z;
+        w[1] = func_001A50F0(d, 0x280);
     }
 }
-// differs: round 6 (u23e): 10 of 54 differ (the calls and stores match). The original keeps D_0051CD0C in s2, the zero/result in s1 and the pointer in s0; declaration orders give 10 or 14 differing (no order gives the register set)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00247820);
 void func_00247900(void) {
     s32 v;
     s32 r;

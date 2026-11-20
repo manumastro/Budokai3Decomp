@@ -151,29 +151,31 @@ void func_002CDA30(u8 *p)
   BtbObj_CheckDrawFlags(p);
 }
 
-#if 0
 void func_002CDA90(void) {
-    s32 s1 = 0;
-    s32 s2 = D_0051CD0C[0];
-    u8 *s0;
-    s32 a0 = func_001A50F0(s2, 0xFF);
-    if (a0 != 0) {
-        s1 = func_00209540(a0, 0x2000004, 0);
-        if (s1 != 0) {
-            u8 *p = func_001F5FD0(0x85000000, D_0046F218, 0, func_002CDA30, func_002CD9E0);
-            *(s32 *)(p + 0x20) &= ~0x800;
-            *(s32 *)(p + 0x20) |= 0x800;
-            s0 = p;
-            memset(s0 + 0x30, 0, 0x80);
-            *(s32 *)(s0 + 0x38) = s1;
-            s0 += 0x30;
-            *(s32 *)(s0 + 4) = func_001A50F0(s2, 0x280);
-        }
+    s32 d;
+    s32 z;
+    u8 *p;
+    s32 *w;
+    z = 0;
+    d = D_0051CD0C[0];
+    /* FAKEMATCH: the empty compound test is a scheduling barrier between the setup and the first lookup;
+     * without it the handle and the result swap saved registers (s1/s2) and no declaration order fixes it. */
+    if (z != 0 || d == 0) {
+    }
+    p = (u8 *)func_001A50F0(d, 0xFF);
+    if (p != 0) {
+        z = func_00209540((s32)p, 0x2000004, 0);
+    }
+    if (z != 0) {
+        p = func_001F5FD0(0x85000000, D_0046F218, 0, (void *)func_002CDA30, (void *)func_002CD9E0);
+        *(s32 *)(p + 0x20) &= ~0x800;
+        *(s32 *)(p + 0x20) |= 0x800;
+        memset(p + 0x30, 0, 0x80);
+        w = (s32 *)(p + 0x30);
+        w[2] = z;
+        w[1] = func_001A50F0(d, 0x280);
     }
 }
-// differs: the driver value lands in s0 and the node in s1 (the original: driver s2, result s1, node s0); the declaration orders tried did not change the allocation
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDA90);
 void func_002CDB70(u8 *p) {
     func_00208F70(*(void **)(p + 0x34));
 }
@@ -246,28 +248,31 @@ void func_002CDD50(u8 *p)
   BtbObj_CheckDrawFlags(p);
 }
 
-#if 0
 void func_002CDDB0(void) {
-    s32 s2 = D_0051CD0C[0];
-    s32 s1 = 0;
-    u8 *s0;
-    s32 a0 = func_001A50F0(s2, 0x212);
-    if (a0 != 0) {
-        s1 = func_00209540(a0, 0x2000004, 0);
-        if (s1 != 0) {
-            s0 = func_001F5FD0(0x85000000, D_0046F230, 0, func_002CDD50, func_002CDD00);
-            *(s32 *)(s0 + 0x20) &= ~0x800;
-            *(s32 *)(s0 + 0x20) |= 0x800;
-            memset(s0 + 0x30, 0, 0x80);
-            *(s32 *)(s0 + 0x38) = s1;
-            s0 += 0x30;
-            *(s32 *)(s0 + 4) = func_001A50F0(s2, 0x280);
-        }
+    s32 d;
+    s32 z;
+    u8 *p;
+    s32 *w;
+    z = 0;
+    d = D_0051CD0C[0];
+    /* FAKEMATCH: the empty compound test is a scheduling barrier between the setup and the first lookup;
+     * without it the handle and the result swap saved registers (s1/s2) and no declaration order fixes it. */
+    if (z != 0 || d == 0) {
+    }
+    p = (u8 *)func_001A50F0(d, 0x212);
+    if (p != 0) {
+        z = func_00209540((s32)p, 0x2000004, 0);
+    }
+    if (z != 0) {
+        p = func_001F5FD0(0x85000000, D_0046F230, 0, (void *)func_002CDD50, (void *)func_002CDD00);
+        *(s32 *)(p + 0x20) &= ~0x800;
+        *(s32 *)(p + 0x20) |= 0x800;
+        memset(p + 0x30, 0, 0x80);
+        w = (s32 *)(p + 0x30);
+        w[2] = z;
+        w[1] = func_001A50F0(d, 0x280);
     }
 }
-// differs: the same allocation pattern as func_002CDA90: the driver value, the result and the node take other saved registers, and the frame is 0xD0 against 0xE0; the declaration orders (6 of them) give the same 0xD0 size, the driver lands in s0 and the node in s1 (original: driver s2, result s1, node s0)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CDDB0);
 void func_002CDE90(void) {
     u8 *v;
     func_001F7DB0();
