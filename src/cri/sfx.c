@@ -162,7 +162,37 @@ void sfxcnv_MakeTable_x0019EEA0(u8 *cnv, s32 tbl, s32 type)
     }
 }
 __asm__("# rebind sfxcnv_MakeTable 0x0019EEA0");
-INCLUDE_ASM("asm/nonmatchings/cri/sfx", func_0019F018);
+typedef struct { unsigned char pad[0x30]; void *ahn; int pad34; unsigned int compo; } SfxCnvTbl_F018_x0019F018;
+int func_0019ECE0_x0019F018(void *ahn) __asm__("func_0019ECE0");
+int func_0019F018_x0019F018(SfxCnvTbl_F018_x0019F018 *tbl, unsigned int compo) __asm__("func_0019F018");
+int func_0019F018_x0019F018(SfxCnvTbl_F018_x0019F018 *tbl, unsigned int compo)
+{
+    int ret = 1;
+    if (tbl->compo == 100)
+        return 0;
+    if (tbl->compo == compo) {
+        switch (compo) {
+        case 2:
+            if (func_0019ECE0_x0019F018(tbl->ahn) == 1)
+                break;
+        case 1:
+        case 3:
+        case 21:
+        case 22:
+            ret = 0;
+            break;
+        case 0:
+            break;
+        case 11 ... 13:
+            ret = 1;
+            break;
+        case 1000: /* far case: keeps the compare tree instead of a jump table */
+        default:
+            break;
+        }
+    }
+    return ret;
+}
 void func_0019F0D0(u8 *arg0, u8 *arg1) {
     func_001A02E0(*(s32 *)((u8 *)arg0 + 0x24), *(s32 *)((u8 *)arg1 + 0x4C), *(s32 *)((u8 *)arg0 + 0x3C));
 }

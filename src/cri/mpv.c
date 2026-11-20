@@ -308,7 +308,59 @@ void func_00170B98_x00170B98(unsigned char **src, CftImage_x00170B98 *img, int *
         column += 16;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_00172110);
+typedef struct { short v[4]; } E_2110_x00172110;
+int func_00170B20_x00172110(void) __asm__("func_00170B20");
+void func_00172110_x00172110(int mode, int lo, int hi, E_2110_x00172110 *t) __asm__("func_00172110");
+void func_00172110_x00172110(int mode, int lo, int hi, E_2110_x00172110 *t)
+{
+    int i;
+    int k;
+    short y;
+    double c;
+    double sc;
+    int range;
+    E_2110_x00172110 *u = t + 256;
+    E_2110_x00172110 *w = t + 512;
+
+    k = func_00170B20_x00172110();
+    for (i = 0; i < 256; i++) {
+        y = (int)((i - 16) * 74.496 + 0.5);
+        t[i].v[2] = y;
+        t[i].v[1] = y;
+        t[i].v[0] = y;
+        c = i - 128;
+        u[i].v[2] = (int)(c * 129.088 + 0.5);
+        u[i].v[1] = (int)(c * -25.087999999999997 + 0.5);
+        u[i].v[0] = 0;
+        u[i].v[3] = 0;
+        w[i].v[2] = 0;
+        w[i].v[1] = (int)(c * -52.032 + 0.5);
+        w[i].v[0] = (int)(c * 102.14399999999999 + 0.5);
+        w[i].v[3] = 0;
+    }
+    range = hi - lo;
+    sc = (double)k / (double)range;
+    if (mode == 1) {
+        for (i = 0; i < 256; i++) {
+            if (i < lo)
+                t[i].v[3] = k << 6;
+            else if (hi < i)
+                t[i].v[3] = 0;
+            else
+                t[i].v[3] = (int)((range - (i - lo)) * sc) << 6;
+        }
+    } else {
+        for (i = 0; i < 256; i++) {
+            if (i < lo)
+                t[i].v[3] = 0;
+            else if (hi < i)
+                t[i].v[3] = k << 6;
+            else
+                t[i].v[3] = (int)((i - lo) * sc) << 6;
+        }
+    }
+}
+__asm__("# rebind func_00172110 0x00172110");
 INCLUDE_ASM("asm/nonmatchings/cri/mpv", func_001723E0);
 void func_001726E8(void) {
 
@@ -5764,6 +5816,8 @@ int func_0017B7D0_x0017B7D0(unsigned char *buf, int nbyte, int nmb) {
     return 1;
 }
 __asm__("# rebind func_0017B7D0 0x0017B7D0");
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m211010;
 int MPV_CheckDelim_x0017BC78(const unsigned char *p) __asm__("func_0017B420");
 char *MPV_SearchDelim_x0017BC78(char *buf, int len, int mask) __asm__("func_0017B5B8");
 extern short mpvsc_mbaddr_incr_vlc_x0017BC78[] __asm__("D_00424C40");
