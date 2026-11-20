@@ -790,7 +790,89 @@ int func_0010F878_x0010F878(unsigned int fd) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/sdk/libkernl/kfiv_filestub", func_0010F9F0);
+struct iob_x0010F9F0 { int fd, flags, x8, xC; };
+struct SemaParam_x0010F9F0 { int currentCount; int maxCount; int initCount; int numWaitThreads; unsigned int attr; unsigned int option; };
+typedef struct { int sema; int *res; int rsize; int fd; int offset; int whence; int idx; } SeekArg_x0010F9F0;
+extern int D_003EC6BC_x0010F9F0 __asm__("D_003EC6BC");
+extern int D_003EC6CC_x0010F9F0 __asm__("D_003EC6CC");
+extern int D_003EC638_x0010F9F0[32] __asm__("D_003EC638");
+extern SeekArg_x0010F9F0 D_00473440_x0010F9F0 __asm__("D_00473440");
+extern struct iob_x0010F9F0 D_00474940_x0010F9F0[] __asm__("D_00474940");
+extern char D_00474B40_x0010F9F0[] __asm__("D_00474B40");
+extern int D_00474080_x0010F9F0[] __asm__("D_00474080");
+extern char D_0045D730_x0010F9F0[] __asm__("D_0045D730");
+struct iob_x0010F9F0 *get_iob_x0010F9F0(int) __asm__("get_iob");
+int _sceFsWaitS_x0010F9F0(int) __asm__("_sceFsWaitS");
+void func_0010EFF0_x0010F9F0(void) __asm__("func_0010EFF0");
+int CreateSema_x0010F9F0(struct SemaParam_x0010F9F0 *) __asm__("CreateSema");
+int DeleteSema_x0010F9F0(int) __asm__("DeleteSema");
+int SignalSema_x0010F9F0(int) __asm__("SignalSema");
+int WaitSema_x0010F9F0(int) __asm__("WaitSema");
+int func_0010EA50_x0010F9F0(void *, int, int, void *, int, void *, int, void *, void *, int) __asm__("func_0010EA50");
+int func_0010F9F0_x0010F9F0(int fd, int offset, int whence) __asm__("func_0010F9F0");
+int func_0010F9F0_x0010F9F0(int fd, int offset, int whence)
+{
+    struct SemaParam_x0010F9F0 sp;
+    int res;
+    struct iob_x0010F9F0 *io;
+    SeekArg_x0010F9F0 *arg;
+    int sema, r, flags, nowait, i;
+
+    arg = &D_00473440_x0010F9F0;
+    io = get_iob_x0010F9F0(fd);
+    _sceFsWaitS_x0010F9F0(4);
+    if (D_003EC6BC_x0010F9F0 == 0 || io == 0 || (flags = io->flags) == 0) {
+        func_0010EFF0_x0010F9F0();
+        return -9;
+    }
+    arg->fd = io->fd;
+    arg->offset = offset;
+    arg->whence = whence;
+    arg->idx = io - D_00474940_x0010F9F0;
+    sp.maxCount = 1;
+    sp.option = (unsigned int)D_0045D730_x0010F9F0;
+    sp.initCount = 0;
+    sema = CreateSema_x0010F9F0(&sp);
+    arg->res = &res;
+    arg->rsize = 4;
+    D_00473440_x0010F9F0.sema = sema;
+    if (flags & 0x8000) {
+        WaitSema_x0010F9F0(D_003EC6CC_x0010F9F0);
+        r = (int)D_003EC638_x0010F9F0;
+        i = 0;
+        do { do { nowait = flags & 0x8000; } while (0); } while (0);
+        for (; i < 32; i++) {
+            if (D_003EC638_x0010F9F0[i] == -1) {
+                D_003EC638_x0010F9F0[i] = arg->sema;
+                arg->sema = -arg->sema;
+                break;
+            }
+        }
+        SignalSema_x0010F9F0(D_003EC6CC_x0010F9F0);
+    } else {
+        r = (int)D_00474B40_x0010F9F0;
+        i = (int)D_00474080_x0010F9F0;
+        nowait = 0;
+    }
+    if (func_0010EA50_x0010F9F0(D_00474B40_x0010F9F0, 4, 0, &D_00473440_x0010F9F0, 0x1C, D_00474080_x0010F9F0, 4, 0, 0, nowait) < 0) {
+        DeleteSema_x0010F9F0(sema);
+        func_0010EFF0_x0010F9F0();
+        return -11;
+    }
+    r = *(int *)((unsigned int)D_00474080_x0010F9F0 | 0x20000000);
+    func_0010EFF0_x0010F9F0();
+    if (r == 0) {
+        DeleteSema_x0010F9F0(sema);
+        return -11;
+    }
+    if (nowait) {
+        DeleteSema_x0010F9F0(sema);
+        return 0;
+    }
+    WaitSema_x0010F9F0(sema);
+    DeleteSema_x0010F9F0(sema);
+    return res;
+}
 struct iob_x0010FC30 { int fd, flags, x8, xC; };
 struct SemaParam_x0010FC30 {
     int currentCount;
