@@ -4730,7 +4730,79 @@ void func_001B9B00(Fighter *f) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9B00);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9CA0);
+void func_001B9CA0(u8 *arg0)
+{
+  u8 *new_var;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0x13;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (((u8 *) arg0) + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  switch (*((s16 *) (new_var + 0xCAC)))
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  *((s32 *) (new_var + 0xB70)) = ((*((s16 *) (new_var + 0xCB4))) != 0) ? 0x25 : 0x2B;
+  if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+  {
+    *((s32 *) (new_var + 0xB70)) = (s32) ((*((s32 *) (new_var + 0xB70))) + 0x100);
+  }
+  func_001E3460(arg0);
+  *((s32 *) (new_var + 0xCA4)) = 0x3F800000;
+  *((s32 *) (new_var + 0xCA8)) = 0;
+  *((s32 *) (new_var + 0xCB8)) = 0;
+  *((s8 *) (new_var + 0x2003)) = 0;
+  *((s8 *) (new_var + 0x1FFD)) = 1;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s8 *) (new_var + 0x2004)) = 0;
+  func_001ABD30((Fighter *) (new_var + 0x1360));
+  if (BW_FIELD(gBattle, s16, 0x8944) == 0)
+  {
+    func_001DD680(arg0, 0);
+  }
+  *((s32 *) (new_var + 0x1808)) = 0;
+}
 extern s32 func_001E9290(Fighter *c);
 #if 0
 // differs: 98 of 132 differ: the first gBattle product block is scheduled differently (the original loads gBattle once per block with lui/addu at); the rest (sub-object counters, the abs table tests, the clamp) matches in shape; 2 forms of the first statement tried
@@ -4788,14 +4860,195 @@ void func_001B9E70(Fighter *f) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B9E70);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BA070);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BA570);
+extern void func_00146F10(void *, void *, f32);
+void func_001BA570(u8 *arg0)
+{
+  u8 *new_var;
+  s32 s;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0x12;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  s = -1;
+  if (s == -1)
+    s = *((s16 *) (new_var + 0xCAC));
+  switch (s)
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  {
+    s32 t;
+    if ((*((s16 *) (new_var + 0xCB4))) != 0)
+    {
+      t = 0x24;
+    }
+    else
+    {
+      t = 0x2A;
+    }
+    *((s32 *) (new_var + 0xB70)) = t;
+  }
+  if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+  {
+    *((s32 *) (new_var + 0xB70)) = (s32) ((*((s32 *) (new_var + 0xB70))) + 0x100);
+  }
+  func_001E3460(new_var);
+  if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+  {
+    *((s32 *) (new_var + 0xCA4)) = 0x3A83126F;
+    *((s32 *) (new_var + 0xCA8)) = 0x3AC49BA6;
+    if ((*((s16 *) (new_var + 0xCAE))) == 0x10)
+    {
+      func_00146F10(new_var + 0xD0, new_var + 0xD0, 0.35f);
+    }
+    else
+    {
+      __asm__ volatile ("sqc2 $vf0, 0x0(%0)" : : "r"(new_var + 0xD0) : "memory");
+    }
+    *((s8 *) (new_var + 0x1FFA)) = 1;
+  }
+  else
+  {
+    *((s32 *) (new_var + 0xCA4)) = 0x3F800000;
+    *((s32 *) (new_var + 0xCA8)) = 0;
+    *((s8 *) (new_var + 0x1FFA)) = 0;
+  }
+  *((s32 *) (new_var + 0xCB8)) = 0;
+  *((s8 *) (new_var + 0x2003)) = 0;
+  *((s8 *) (new_var + 0x1FFD)) = 0;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s32 *) (new_var + 0x18A4)) = 0x42F00000;
+  if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+  {
+    if ((*((s8 *) (new_var + 0x2013))) == 1)
+    {
+      *((s8 *) (new_var + 0x2004)) = 0;
+    }
+  }
+}
 void func_001BA7B0(Fighter *f) {
     FIGHTER_FIELD(f, s32, 0x17BC) = 0;
     func_001E4E20(f, 0);
     FIGHTER_FIELD(f, f32, 0x44) = FIGHTER_FIELD(f, f32, 0x1844);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BA7F0);
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BAB10);
+extern void func_001A8770(s32 a, void *b);
+void func_001BAB10(u8 *arg0)
+{
+  u8 *new_var;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0x11;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  switch (*((s16 *) (new_var + 0xCAC)))
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  *((s8 *) (new_var + 0x1FF9)) = 0;
+  *((s32 *) (new_var + 0xB70)) = ((*((s16 *) (new_var + 0xCB4))) != 0) ? 0x83 : 0x8D;
+  func_001E3460(new_var);
+  *((s32 *) (new_var + 0xCA4)) = 0x3F800000;
+  *((s32 *) (new_var + 0xCA8)) = 0;
+  *((s32 *) (new_var + 0xCB8)) = 0;
+  *((s8 *) (new_var + 0x2003)) = 0;
+  *((s8 *) (new_var + 0x1FFD)) = 0;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s8 *) (new_var + 0x1FFA)) = 1;
+  if (((*((s16 *) (new_var + 0xCAE))) == 0x14) && ((*((s8 *) (new_var + 0x183E))) != 0))
+  {
+    *((s8 *) (new_var + 0x1FFA)) = -1;
+  }
+  *((s32 *) (new_var + 0xD4)) = 0;
+  if ((*((s8 *) (new_var + 0x2013))) == 1)
+  {
+    *((s8 *) (new_var + 0x2004)) = 0;
+  }
+  func_001A8770(2, 0);
+}
 #if 0
 // differs: 38 of 76 differ: float scheduling (the original loads the 2.5 and 5.0 constants and the field before the call-free arithmetic in a different order; the cvt.s.w and sub.s registers differ)
 void func_001BACE0(Fighter *f) {
@@ -5438,7 +5691,73 @@ void func_001BD490(Fighter *f) {
 void func_001BD520(Fighter *f) {
     func_001BD760(f);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BD530);
+void func_001BD530(u8 *arg0)
+{
+  u8 *new_var;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 8;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  switch (*((s16 *) (new_var + 0xCAC)))
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  *((s32 *) (new_var + 0xB70)) = 8;
+  if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+  {
+    *((s32 *) (new_var + 0xB70)) = (s32) ((*((s32 *) (new_var + 0xB70))) + 0x100);
+  }
+  func_001E3460(new_var);
+  *((s32 *) (new_var + 0xCA4)) = 0x3DCCCCCD;
+  *((s32 *) (new_var + 0xCA8)) = 0x3DCCCCCD;
+  *((s32 *) (new_var + 0xCB8)) = 0;
+  *((s8 *) (new_var + 0x2003)) = 1;
+  *((s8 *) (new_var + 0x1FFD)) = 1;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s16 *) (new_var + 0xCB4)) = func_001E3D60(*((s32 *) (new_var + 0x17AC)), 120.0f) != 0;
+}
 void func_001BD6D0(Fighter *f) {
     f32 t;
 
@@ -5504,7 +5823,73 @@ void func_001BD760(Fighter *f) {
     D_00468460[v](f);
     func_002CBFF0(1, f);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BD900);
+void func_001BD900(u8 *arg0)
+{
+  u8 *new_var;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 7;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (new_var + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  switch (*((s16 *) (new_var + 0xCAC)))
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  *((s32 *) (new_var + 0xB70)) = 7;
+  if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+  {
+    *((s32 *) (new_var + 0xB70)) = (s32) ((*((s32 *) (new_var + 0xB70))) + 0x100);
+  }
+  func_001E3460(new_var);
+  *((s32 *) (new_var + 0xCA4)) = 0x3DCCCCCD;
+  *((s32 *) (new_var + 0xCA8)) = 0x3DCCCCCD;
+  *((s32 *) (new_var + 0xCB8)) = 0;
+  *((s8 *) (new_var + 0x2003)) = 1;
+  *((s8 *) (new_var + 0x1FFD)) = 1;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  *((s16 *) (new_var + 0xCB4)) = func_001E3D60(*((s32 *) (new_var + 0x17AC)), 120.0f) != 0;
+}
 void func_001BDAA0(Fighter *f) {
     func_001E4E20(f, 0);
     if (FIGHTER_FIELD(f, s8, 0x1FF9) == 0) {
@@ -6221,7 +6606,81 @@ void func_001BF450(Fighter *f) {
     D_00468460[v](f);
     func_002CBFF0(1, f);
 }
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BF570);
+void func_001BF570(u8 *arg0)
+{
+  u8 *new_var;
+  *((s16 *) (((u8 *) arg0) + 0xCAE)) = (s16) (*((s16 *) (((u8 *) arg0) + 0xCAC)));
+  new_var = (u8 *) arg0;
+  *((s16 *) (((u8 *) arg0) + 0xCAC)) = 0;
+  if ((*((s16 *) (((u8 *) arg0) + 0xCAE))) == (*((s16 *) (new_var + 0xCAC))))
+  {
+    *((s16 *) (((u8 *) arg0) + 0xCB0)) = (s16) ((*((s16 *) (new_var + 0xCB0))) + 1);
+  }
+  else
+  {
+    *((s16 *) (new_var + 0xCB0)) = 0;
+  }
+  switch (*((s16 *) (new_var + 0xCAC)))
+  {
+    case 0:
+      *((u16 *) (new_var + 0xCB2)) = 1U;
+      break;
+    case 1:
+      *((u16 *) (new_var + 0xCB2)) = 2U;
+      break;
+    case 4:
+      *((u16 *) (new_var + 0xCB2)) = 4U;
+      break;
+    case 5:
+      *((u16 *) (new_var + 0xCB2)) = 8U;
+      break;
+    case 6:
+      *((u16 *) (new_var + 0xCB2)) = 0x10U;
+      break;
+    case 7:
+    case 8:
+      *((u16 *) (new_var + 0xCB2)) = 0x20U;
+      break;
+    case 9:
+      *((u16 *) (new_var + 0xCB2)) = 0x40U;
+      break;
+    case 11:
+      *((u16 *) (new_var + 0xCB2)) = 0x80U;
+      break;
+    default:
+      *((u16 *) (new_var + 0xCB2)) = 0U;
+      break;
+  }
+  if ((*((s8 *) (new_var + 0x2010))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x8000);
+  }
+  if ((*((s8 *) (new_var + 0x2011))) != 0)
+  {
+    *((u16 *) (new_var + 0xCB2)) = (u16) ((*((u16 *) (new_var + 0xCB2))) | 0x4000);
+  }
+  *((s32 *) (new_var + 0xB70)) = 0;
+  if ((*((s8 *) (new_var + 0x1FF9))) != 0)
+  {
+    *((s32 *) (new_var + 0xB70)) = (s32) ((*((s32 *) (new_var + 0xB70))) + 0x100);
+  }
+  func_001E3460(arg0);
+  if ((*((s16 *) (new_var + 0xCB4))) == 0)
+  {
+    *((s32 *) (new_var + 0xCA4)) = 0x3BA3D70A;
+    *((s32 *) (new_var + 0xCA8)) = 0x3CF5C28F;
+  }
+  else
+  {
+    *((s32 *) (new_var + 0xCA4)) = 0x3BA3D70A;
+    *((s32 *) (new_var + 0xCA8)) = 0x3C23D70A;
+  }
+  *((s32 *) (new_var + 0xCB8)) = 0;
+  *((s8 *) (new_var + 0x2003)) = 0;
+  *((s8 *) (new_var + 0x1FFD)) = 0;
+  *((s16 *) (new_var + 0x181C)) = 0;
+  func_001DD680(arg0, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BF730);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001BFD60);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C0130);
