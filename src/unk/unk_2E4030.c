@@ -114,9 +114,127 @@ void ArenaStageSel_CreateObj(Ctx2E4 *c) {
     o->f5C = 0;
     o->f8 = 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E40D0);
+typedef struct Vec4r {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec4r;
+
+extern Vec4r D_00456E80;
+extern Vec4r D_00456E90;
+extern Vec4r D_00456EA0;
+extern void func_00134690(s32, s32, void *, s32, s32, s32);
+extern void func_00135D40(void *, void *, void *);
+extern f32 amMath_CosI(s32);
+extern f32 amMath_SinI(s32);
+extern void amDraw_FlushPacket(void);
+extern void amVram_Apply(s32);
+
+void func_002E40D0(void) {
+    Vec4r pos;
+    Vec4r uv;
+    Vec4r col;
+    s32 a;
+    s32 b;
+    s32 i;
+
+    pos = D_00456E80;
+    uv = D_00456E90;
+    col = D_00456EA0;
+    i = 0;
+    do {
+        func_00134690(1, 0x100C36, 0, -1, 0x44, 5);
+        a = (f32)(i << 16) / 16.0f;
+        b = (f32)((i + 1) << 16) / 16.0f;
+        pos.x = 0.0f;
+        pos.y = 0.0f;
+        uv.x = 0.43554688f;
+        uv.y = 0.43554688f;
+        col.w = 1.0f;
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 160.0f * amMath_CosI(b);
+        pos.y = 160.0f * amMath_SinI(b);
+        uv.x = 0.43554688f + 0.30298912525177f * amMath_CosI(b + 0x8000);
+        uv.y = 0.43554688f + 0.30298912525177f * amMath_SinI(b + 0x8000);
+        col.w = 1.0f;
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 160.0f * amMath_CosI(a);
+        pos.y = 160.0f * amMath_SinI(a);
+        uv.x = 0.43554688f + 0.30298912525177f * amMath_CosI(a + 0x8000);
+        uv.y = 0.43554688f + 0.30298912525177f * amMath_SinI(a + 0x8000);
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 230.0f * amMath_CosI(b);
+        pos.y = 230.0f * amMath_SinI(b);
+        uv.x = 0.43554688f + 0.43554688f * amMath_CosI(b + 0x8000);
+        uv.y = 0.43554688f + 0.43554688f * amMath_SinI(b + 0x8000);
+        col.w = 1.0f;
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 230.0f * amMath_CosI(a);
+        pos.y = 230.0f * amMath_SinI(a);
+        uv.x = 0.43554688f + 0.43554688f * amMath_CosI(a + 0x8000);
+        uv.y = 0.43554688f + 0.43554688f * amMath_SinI(a + 0x8000);
+        func_00135D40(&pos, &col, &uv);
+        amDraw_FlushPacket();
+        i++;
+    } while ((f32)i < 16.0f);
+    amVram_Apply(2);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E44A0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E46A0);
+extern Vec4r D_00456E50;
+extern Vec4r D_00456E60;
+extern Vec4r D_00456E70;
+extern u8 D_0046F4A8[];
+extern void amModel_SetCurrent(s32, s32);
+
+void func_002E46A0(u8 *a0, s16 a1) {
+    Vec4r pos;
+    Vec4r uv;
+    Vec4r col;
+    s32 a;
+    s32 b;
+    s32 i;
+    u8 *p;
+
+    pos = D_00456E50;
+    uv = D_00456E60;
+    col = D_00456E70;
+    amModel_SetCurrent(*(s32 *)(a0 + 4), 0x7000);
+    i = 0;
+    p = &D_0046F4A8[a1];
+    do {
+        func_00134690(1, 0x100C36, 0, *p, 0x44, 5);
+        a = (f32)(i << 16) / 16.0f;
+        b = (f32)((i + 1) << 16) / 16.0f;
+        pos.x = 0.0f;
+        pos.y = 0.0f;
+        uv.x = 0.2900390625f;
+        uv.y = 0.2900390625f;
+        col.w = 1.0f;
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 160.0f * amMath_CosI(b);
+        pos.y = 160.0f * amMath_SinI(b);
+        uv.x = 0.2900390625f + 0.20176631212234497f * amMath_CosI(b + 0x8000);
+        uv.y = 0.2900390625f + 0.20176631212234497f * amMath_SinI(b + 0x8000);
+        col.w = 1.0f;
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 160.0f * amMath_CosI(a);
+        pos.y = 160.0f * amMath_SinI(a);
+        uv.x = 0.2900390625f + 0.20176631212234497f * amMath_CosI(a + 0x8000);
+        uv.y = 0.2900390625f + 0.20176631212234497f * amMath_SinI(a + 0x8000);
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 230.0f * amMath_CosI(b);
+        pos.y = 230.0f * amMath_SinI(b);
+        uv.x = 0.2900390625f + 0.2900390625f * amMath_CosI(b + 0x8000);
+        uv.y = 0.2900390625f + 0.2900390625f * amMath_SinI(b + 0x8000);
+        col.w = 1.0f;
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 230.0f * amMath_CosI(a);
+        pos.y = 230.0f * amMath_SinI(a);
+        uv.x = 0.2900390625f + 0.2900390625f * amMath_CosI(a + 0x8000);
+        uv.y = 0.2900390625f + 0.2900390625f * amMath_SinI(a + 0x8000);
+        func_00135D40(&pos, &col, &uv);
+        amDraw_FlushPacket();
+        i++;
+    } while ((f32)i < 16.0f);
+}
 typedef struct Vec4a {
     f32 x, y, z, w;
 } __attribute__((aligned(16))) Vec4a;

@@ -54,9 +54,132 @@ extern void func_0022CD00(void *);
 
 INCLUDE_ASM("asm/nonmatchings/unk/unk_284AA0", func_00284AA0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_284AA0", func_00284CB0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_284AA0", func_00284F10);
+extern Vec4f D_00453570;
+extern Vec4f D_00453580;
+extern Vec4f D_00453590;
+extern s32 amSofdec_Draw(s32);
+extern void func_00135D40(void *, void *, void *);
+extern f32 amMath_CosI(s32);
+extern f32 amMath_SinI(s32);
+extern void amVram_Apply(s32);
+
+void func_00284F10(Disp *d) {
+    Vec4f pos;
+    Vec4f uv;
+    Vec4f col;
+    s32 a;
+    s32 b;
+    s32 i;
+    s32 r;
+
+    pos = D_00453570;
+    uv = D_00453580;
+    col = D_00453590;
+    if (*(s32 *)(*(u8 **)((u8 *)d + 0x230) + 0x30) >= 0) {
+        r = amSofdec_Draw(*(s32 *)(*(u8 **)((u8 *)d + 0x230) + 0x30));
+        switch (r) {
+        default:
+            return;
+        case 1:
+        case 2:
+            i = 0;
+            do {
+                func_00134690(1, 0x100C36, 0, -1, 0x44, 5);
+                a = (f32)(i << 16) / 16.0f;
+                b = (f32)((i + 1) << 16) / 16.0f;
+                pos.x = 0.0f;
+                pos.y = 0.0f;
+                uv.x = 0.43554688f;
+                uv.y = 0.43554688f;
+                col.w = d->f284;
+                func_00135D40(&pos, &col, &uv);
+                pos.x = 160.0f * amMath_CosI(b);
+                pos.y = 160.0f * amMath_SinI(b);
+                uv.x = 0.43554688f + 0.2903645932674408f * amMath_CosI(b + 0x8000);
+                uv.y = 0.43554688f + 0.2903645932674408f * amMath_SinI(b + 0x8000);
+                col.w = 0.6f * d->f284;
+                func_00135D40(&pos, &col, &uv);
+                pos.x = 160.0f * amMath_CosI(a);
+                pos.y = 160.0f * amMath_SinI(a);
+                uv.x = 0.43554688f + 0.2903645932674408f * amMath_CosI(a + 0x8000);
+                uv.y = 0.43554688f + 0.2903645932674408f * amMath_SinI(a + 0x8000);
+                func_00135D40(&pos, &col, &uv);
+                pos.x = 240.0f * amMath_CosI(b);
+                pos.y = 240.0f * amMath_SinI(b);
+                uv.x = 0.43554688f + 0.43554688f * amMath_CosI(b + 0x8000);
+                uv.y = 0.43554688f + 0.43554688f * amMath_SinI(b + 0x8000);
+                col.w = 0.0f;
+                func_00135D40(&pos, &col, &uv);
+                pos.x = 240.0f * amMath_CosI(a);
+                pos.y = 240.0f * amMath_SinI(a);
+                uv.x = 0.43554688f + 0.43554688f * amMath_CosI(a + 0x8000);
+                uv.y = 0.43554688f + 0.43554688f * amMath_SinI(a + 0x8000);
+                func_00135D40(&pos, &col, &uv);
+                amDraw_FlushPacket();
+                i++;
+            } while ((f32)i < 16.0f);
+            amVram_Apply(2);
+            break;
+        }
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_284AA0", func_00285330);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_284AA0", func_00285530);
+extern Vec4f D_00453540;
+extern Vec4f D_00453550;
+extern Vec4f D_00453560;
+extern u8 D_0046B840[];
+
+void func_00285530(Disp *d, s16 a1) {
+    Vec4f pos;
+    Vec4f uv;
+    Vec4f col;
+    s32 a;
+    s32 b;
+    s32 i;
+    u8 *p;
+
+    pos = D_00453540;
+    uv = D_00453550;
+    col = D_00453560;
+    amModel_SetCurrent(d->f4, 0x7000);
+    i = 0;
+    p = &D_0046B840[a1 * 2];
+    do {
+        func_00134690(1, 0x100C36, 0, *p, 0x44, 5);
+        a = (f32)(i << 16) / 16.0f;
+        b = (f32)((i + 1) << 16) / 16.0f;
+        pos.x = 0.0f;
+        pos.y = 0.0f;
+        uv.x = 0.2900390625f;
+        uv.y = 0.2900390625f;
+        col.w = d->f284;
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 160.0f * amMath_CosI(b);
+        pos.y = 160.0f * amMath_SinI(b);
+        uv.x = 0.2900390625f + 0.193359375f * amMath_CosI(b + 0x8000);
+        uv.y = 0.2900390625f + 0.193359375f * amMath_SinI(b + 0x8000);
+        col.w = 0.6f * d->f284;
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 160.0f * amMath_CosI(a);
+        pos.y = 160.0f * amMath_SinI(a);
+        uv.x = 0.2900390625f + 0.193359375f * amMath_CosI(a + 0x8000);
+        uv.y = 0.2900390625f + 0.193359375f * amMath_SinI(a + 0x8000);
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 240.0f * amMath_CosI(b);
+        pos.y = 240.0f * amMath_SinI(b);
+        uv.x = 0.2900390625f + 0.2900390625f * amMath_CosI(b + 0x8000);
+        uv.y = 0.2900390625f + 0.2900390625f * amMath_SinI(b + 0x8000);
+        col.w = 0.0f;
+        func_00135D40(&pos, &col, &uv);
+        pos.x = 240.0f * amMath_CosI(a);
+        pos.y = 240.0f * amMath_SinI(a);
+        uv.x = 0.2900390625f + 0.2900390625f * amMath_CosI(a + 0x8000);
+        uv.y = 0.2900390625f + 0.2900390625f * amMath_SinI(a + 0x8000);
+        func_00135D40(&pos, &col, &uv);
+        amDraw_FlushPacket();
+        i++;
+    } while ((f32)i < 16.0f);
+}
 void func_00285950(Disp *o, s32 n) {
     Vec4f pos = D_00453510;
     Vec4f uv = D_00453520;
