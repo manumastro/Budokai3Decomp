@@ -5810,31 +5810,35 @@ void func_001BAB10(u8 *arg0)
   func_001A8770(2, 0);
 }
 #if 0
-// differs: 38 of 76 differ: float scheduling (the original loads the 2.5 and 5.0 constants and the field before the call-free arithmetic in a different order; the cvt.s.w and sub.s registers differ)
-void func_001BACE0(Fighter *f) {
-    s32 a3 = FT_FIELD(f, s32, 0xC54);
-    void *e = FT_FIELD((u8 *)FT_FIELD(f, void *, 0xB88) + ((a3 >> 16) - 1) * 4, void *, 0x46C);
-    u8 *b = FT_FIELD(e, u8 *, 0x14);
+// differs: 13 of 76: float register coloring only (5.0f/0.2f constants and the D4 chain land in other FPRs); raw-pointer form; tried statement splits and orders
+void func_001BACE0(u8 *arg0) {
+    s32 a3;
+    u8 *b;
     f32 f1;
     f32 f2;
-
-    f2 = (2.5f - FT_FIELD(f, f32, 0xD4)) / 5.0f - 0.2f;
-    f1 = (f32)FT_FIELD(b + ((a3 & 0xFFFF) << 4), s32, 0x8);
-    FT_FIELD(f, f32, 0xC58) = f1 * f2;
-    if (FT_FIELD(f, f32, 0xC58) > f1) {
-        FT_FIELD(f, f32, 0xC58) = f1 - 1.0f;
+    f32 t;
+    u8 *new_var;
+    new_var = arg0;
+    a3 = *((s32 *) (arg0 + 0xC54));
+    f2 = (2.5f - *((f32 *) (arg0 + 0xD4))) / 5.0f - 0.2f;
+    b = *((u8 **) ((*((u8 **) (((a3 >> 16) - 1) * 4 + (*((u8 **) (arg0 + 0xB88))) + 0x46C))) + 0x14));
+    f1 = (f32) *((s32 *) (((a3 & 0xFFFF) << 4) + b + 0x8));
+    t = f1 * f2;
+    *((f32 *) (arg0 + 0xC58)) = t;
+    if (t > f1) {
+        *((f32 *) (new_var + 0xC58)) = f1 - 1.0f;
     }
-    if (FT_FIELD(f, f32, 0xC58) < 0.0f) {
-        FT_FIELD(f, f32, 0xC58) = 0.0f;
+    if (*((f32 *) (new_var + 0xC58)) < 0.0f) {
+        *((f32 *) (new_var + 0xC58)) = 0.0f;
     }
-    if (FT_FIELD(f, s16, 0xCB4) == 0 && FT_FIELD(f, f32, 0xCB8) <= 2.0f) {
-        if (func_001E3D60(FT_FIELD(f, s32, 0x17AC), 180.0f) == 0) {
-            FT_FIELD(f, s32, 0x17BC) = 0x3E99999A;
+    if (*((s16 *) (new_var + 0xCB4)) == 0 && *((f32 *) (new_var + 0xCB8)) <= 2.0f) {
+        if (func_001E3D60(*((s32 *) (new_var + 0x17AC)), 180.0f) != 0) {
+            *((s32 *) (new_var + 0x17BC)) = 0xBE99999A;
         } else {
-            FT_FIELD(f, s32, 0x17BC) = 0xBE99999A;
+            *((s32 *) (new_var + 0x17BC)) = 0x3E99999A;
         }
     } else {
-        FT_FIELD(f, s32, 0x17BC) = 0;
+        *((s32 *) (new_var + 0x17BC)) = 0;
     }
 }
 #endif
