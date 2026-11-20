@@ -127,7 +127,71 @@ void func_0021E250(char *p) {
     func_00228410();
     func_0022C6B0(buf);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021E420);
+void func_0021E420(char *p) {
+    char *sys;
+    s32 s1;
+    s32 s0;
+    f32 f20;
+    f32 buf[24];
+    char *w;
+    s32 e;
+    s32 rem;
+
+    s0 = *(s32 *)(p + 0x14) + *(s16 *)(p + 0xA);
+    s1 = *(s32 *)(p + 0x18);
+    sys = (char *)gBtlSys;
+    if (s0 >= s1) {
+        s0 -= s1;
+    }
+    if (s1 > 0) {
+        s0++;
+    }
+    e = *(s32 *)(sys + 0xED8);
+    D_00470704 = e;
+    D_0047070C = 0x4040000;
+    D_00470708 = 0;
+    amModel_SetCurrent(e, 0x4040000);
+    D_00470238 = 0;
+    func_00228430(0);
+    w = *(char **)(*(char **)(sys + 0xEDC) + 0x1C);
+    func_0022B900(*(s32 *)(w + 0x60), 0.0f, buf);
+    func_00228410();
+    func_0022C6B0(buf);
+    func_00228430(0);
+    w = *(char **)(*(char **)(sys + 0xEDC) + 0x1C);
+    func_0022B900(*(s32 *)(w + 0x64), 0.0f, buf);
+    func_00228410();
+    f20 = buf[8];
+    while (s1 != 0) {
+        rem = s1 % 10;
+        buf[8] = f20;
+        buf[16] = (f32)(rem % 5) * 16.0f;
+        buf[18] = buf[16] + 16.0f;
+        buf[17] = (f32)(rem / 5) * 20.0f;
+        buf[19] = buf[17] + 20.0f;
+        func_0022C6B0(buf);
+        f20 -= buf[14] - buf[12];
+        s1 /= 10;
+    }
+    func_00228430(0);
+    w = *(char **)(*(char **)(sys + 0xEDC) + 0x1C);
+    func_0022B900(*(s32 *)(w + 0x68), 0.0f, buf);
+    func_00228410();
+    buf[8] = f20;
+    f20 -= buf[14] - buf[12];
+    func_0022C6B0(buf);
+    while (s0 != 0) {
+        rem = s0 % 10;
+        buf[8] = f20;
+        buf[16] = (f32)(rem % 5) * 16.0f;
+        buf[18] = buf[16] + 16.0f;
+        buf[17] = (f32)(rem / 5) * 20.0f;
+        buf[19] = buf[17] + 20.0f;
+        func_0022C6B0(buf);
+        f20 -= buf[14] - buf[12];
+        s0 /= 10;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021E740);
 typedef struct V16_21D260 {
     f32 x;
