@@ -921,25 +921,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002069B0);
 void func_00206C80(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00206C90);
-#if 0
 void func_00207200(u8 *a) {
+    u8 *s2 = a;
     u8 *s1 = *(u8 **)(a + 0x8);
     u8 *s0 = *(u8 **)(a + 0xC);
+    u8 *v1;
     *(f32 *)(s0 + 0x8) = -*(f32 *)(s1 + 0x54);
     *(s32 *)(s0 + 0xC) = 0;
-    {
-        u8 *p10 = *(u8 **)(a + 0x10);
-        u8 *p18 = *(u8 **)(a + 0x18);
-        __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%2)" : : "r"(p18), "r"(p10), "r"(s0 + 0x10) : "memory");
-    }
+    v1 = *(u8 **)(a + 0x10);
+    a = *(u8 **)(a + 0x18);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%2)" : : "r"(a), "r"(v1), "r"(s0 + 0x10) : "memory");
     __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(s0 + 0x10), "r"(s1 + 0x30) : "memory");
-    func_00146F10(s0 + 0x20, *(u8 **)(a + 0x1C), *(f32 *)(s1 + 0x58));
-    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%0) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%1)" : : "r"(*(u8 **)(a + 0x14)), "r"(s0 + 0x20) : "memory");
+    func_00146F10(s0 + 0x20, *(u8 **)(s2 + 0x1C), *(f32 *)(s1 + 0x58));
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%0) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%1)" : : "r"(*(u8 **)(s2 + 0x14)), "r"(s0 + 0x20) : "memory");
     __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(s0 + 0x30), "r"(s1 + 0x40) : "memory");
 }
-// differs: the first VU block loads a->0x10 into v1 and a->0x18 into a0 in the original; the operand registers come out a1 / v1 here (tried operand order, clobbers, locals)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_00207200);
 void func_002072C0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_002072D0);
