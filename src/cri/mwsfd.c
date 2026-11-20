@@ -3388,7 +3388,21 @@ Sint32_x00180AB8 func_00180AB8_x00180AB8(SFD_CREINF_x00180AB8 *inf)
         }
         return ftype;
 }
-INCLUDE_ASM("asm/nonmatchings/cri/mwsfd", func_00180B08);
+typedef struct { int pad0; int type; int w; int h; int pad1; int audioFreq; } MwsfdHdrInf_0B08_x00180B08;
+int func_00180B08_x00180B08(MwsfdHdrInf_0B08_x00180B08 *hdr) __asm__("func_00180B08");
+int func_00180B08_x00180B08(MwsfdHdrInf_0B08_x00180B08 *hdr)
+{
+    if (hdr->type == 0) return 0;
+    if (hdr->w * hdr->h > 0x65400) return 0;
+    if (hdr->type == 2) return 0;
+    if (hdr->type == 1) {
+        switch (hdr->audioFreq) {
+        case 0: case 6000: case 12000: case 24000: case 48000: break;
+        default: return 0;
+        }
+    }
+    return 1;
+}
 void *func_00181FA8_x00180BA0() __asm__("func_00181FA8");
 void func_00180BA0_x00180BA0(s32 arg0, s32 arg1, s32 arg2) __asm__("func_00180BA0");
 void func_00180BA0_x00180BA0(s32 arg0, s32 arg1, s32 arg2)
@@ -9034,6 +9048,8 @@ void func_00183098_x00183098(u8 *arg0, s32 arg1)
   *((s32 *) (((u8 *) arg0) + 0x1C4)) = 0;
   *((s32 *) (((u8 *) arg0) + 0x1C8)) = 0;
 }
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int b3mpad_0b081_00000000000000000;
 typedef struct SfdSj_x001830D8 SfdSj_x001830D8;
 typedef struct SfdSjChunk_x001830D8 {
     char *data;
@@ -19104,6 +19120,8 @@ extern int b3mpad_1e202_00000000000000000;
 /* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
 extern int m1f2010;
 extern int b3mpad_1f201_00000000000000000;
+/* padding for ee-gcc (scripts/func_insert.py, moved_pad) */
+extern int m0b0820;
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo) __asm__("MWSST_Create");
 /* MWSST_Create_x00186B38____: from https://github.com/crashbashash/DW4_Decomp (src/cri/mwsfsst.c, decompiled src/: no licence granted by the repository (its tools are CC0-1.0)); ee-gcc 2.96 -O2 -G0 */
 int MWSST_Create_x00186B38____(MwsfdPly_x00186B38____ *ply, char *work, int size, int stmNo)
