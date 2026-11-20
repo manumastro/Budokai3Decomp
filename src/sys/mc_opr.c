@@ -79,7 +79,8 @@ void func_00288870(s32 arg0) {
     }
 }
 typedef struct McSlotInfo {
-    u8 pad0[8];
+    s32 type;
+    s32 format;
     s32 free; /* 0x8 */
     u8 pad1[0x34];
 } McSlotInfo;
@@ -296,7 +297,49 @@ void func_00289F30(u8 *arg0) {
     D_00470850 = 0x78;
 }
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028A0A0);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028A300);
+extern char D_0046B9A0[];
+extern u8 D_005AA3C0[];
+extern void func_00289E80(void);
+extern void func_0028A0A0(u8 *arg0);
+s32 amMc_GetDir(s32, s32, char *, u8 *, s32);
+
+void func_0028A300(u8 *arg0) {
+    switch (gMcState) {
+    case 2:
+        break;
+    case 3:
+        gMcResult = -5;
+        break;
+    default:
+        return;
+    }
+
+    switch (gMcResult) {
+    case 0:
+    case -1:
+    case -2:
+        if (gMcInfo[D_0047084C].format != 0) {
+            if (amMc_GetDir(D_0047084C, 0, D_0046B9A0, D_005AA3C0, 6) != 0) {
+                func_00288870(4);
+                MC_SETFUNC(arg0, func_0028DDF0);
+                D_00470894 = (s32)func_00289E80;
+            } else {
+                MC_SETFUNC(arg0, func_0028A0A0);
+            }
+        } else {
+            func_00288870(0x19);
+            MC_SETFUNC(arg0, func_0028DDF0);
+            D_00470894 = (s32)func_00289E80;
+        }
+        break;
+    case -5:
+    default:
+        func_00288870(4);
+        MC_SETFUNC(arg0, func_0028DDF0);
+        D_00470894 = (s32)func_00289E80;
+        break;
+    }
+}
 extern u16 D_00492FCE[];
 extern u16 D_00493086[];
 extern u16 D_00492FD2[];
@@ -304,7 +347,6 @@ extern u16 D_00493032[];
 extern u16 D_0049308A[];
 extern u16 D_004930EA[];
 extern void func_00289E80(void);
-extern void func_0028A300(void);
 void func_0028A480(u8 *arg0) {
     s32 btn;
 
