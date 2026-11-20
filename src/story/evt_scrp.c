@@ -47,42 +47,42 @@ void EvtZenie_TaskMain(s32 *a0) {
         Zenie_SetStep(0x98967F);
     }
 }
-#if 0
-// func_002A1700: 32 of 49 differ: the blk stores of 1.0 (the original stores 48, 52, 56, 60 in order, then the division into 60 from the jal delay slot; ours reuses an address register for 60, or stores descending with a chained assignment) and the early-exit layout of the func_002A1020 test (`bnez` to the epilogue, the task store after a nop pair)
+typedef struct EvtV4 {
+    f32 x, y, z, w;
+} EvtV4;
 extern f32 func_002B06A0(void);
 extern void func_002A1510(s32);
-void func_002A1700(s32 *a0) {
-    s32 *s0 = gEvtWork;
-    f32 blk[4];
-    f32 t;
-    blk[0] = blk[1] = blk[2] = blk[3] = 1.0f;
-    blk[3] = *(f32 *)&s0[0x5C / 4] / *(f32 *)&s0[0x60 / 4];
-    t = func_002B06A0();
-    *(f32 *)&s0[0x5C / 4] = *(f32 *)&s0[0x5C / 4] - t;
-    func_002A1510((s32)blk);
+void func_002A1700(u8 *arg0) {
+    u8 *w = (u8 *)gEvtWork;
+    EvtV4 c;
+
+    c.x = 1.0f;
+    c.y = 1.0f;
+    c.z = 1.0f;
+    c.w = 1.0f;
+    ((f32 *)&c)[3] = *(f32 *)(w + 0x5C) / *(f32 *)(w + 0x60);
+    *(f32 *)(w + 0x5C) = *(f32 *)(w + 0x5C) - func_002B06A0();
+    func_002A1510((s32)&c);
     Zenie_Update();
     Zenie_Draw();
-    if (*(f32 *)&s0[0x5C / 4] < 0.0f || func_002A1020(4) == 0) {
-        void *f = EvtZenie_TaskMain;
-        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+    if (*(f32 *)(w + 0x5C) < 0.0f || func_002A1020(4) == 0) {
+        TASK_SET_FUNC((Task *)arg0, (TaskFunc)EvtZenie_TaskMain);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1700);
 #if 0
 // func_002A17D0: the Zenie step: the branch end and the clamp arm are laid out differently (the original ends 8 bytes later); the a1 clamp loads come in another order; 2 forms tried
 extern f32 func_002B06A0(void);
 extern void func_002A1510(s32);
 extern void func_002A1700(void);
 extern void Zenie_SetValue(s32, s32);
-extern s32 D_00511448;
+extern s32 D_00511448[];
 extern s8 D_004E6560[];
 
 extern f32 func_002B06A0(void);
 extern void func_002A1510(s32);
 extern void func_002A1700(void);
 extern void Zenie_SetValue(s32, s32);
-extern s32 D_00511448;
+extern s32 D_00511448[];
 extern s8 D_004E6560[];
 
 void func_002A17D0(s32 *a0) {
@@ -100,7 +100,7 @@ void func_002A17D0(s32 *a0) {
         s0[0x60 / 4] = 0x41200000;
         f = (void *)func_002A1700;
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
-        a1 = D_00511448 + s0[0xF4 / 4];
+        a1 = D_00511448[0] + s0[0xF4 / 4];
         if (a1 >= 0xF1B31) {
             a1 = 0xF1B30;
         }
@@ -113,46 +113,37 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A17D0);
 extern f32 func_002B06A0(void);
 extern void func_002A1510(s32);
 extern void func_0029AC30(void);
-extern s32 D_00511448;
+extern s32 D_00511448[];
 extern void Zenie_SetValue(s32, s32);
 extern void func_002A17D0(void);
 
 extern f32 func_002B06A0(void);
 extern void func_002A1510(s32);
 extern void func_0029AC30(void);
-extern s32 D_00511448;
+extern s32 D_00511448[];
 extern void Zenie_SetValue(s32, s32);
 extern void func_002A17D0(void);
 
-#if 0
-// func_002A18A0: the parameter copy and gEvtWork swap saved registers (move s0,a0 in ours; s1 in the original); 2 declaration orders tried
-void func_002A18A0(s32 *a0) {
-    s32 *s1 = a0;
-    s32 *s0 = (s32 *)gEvtWork;
-    s32 blk[4];
-    f32 t;
-    void *f;
-    blk[0] = 0x3F800000;
-    blk[1] = 0x3F800000;
-    blk[2] = 0x3F800000;
-    blk[3] = 0x3F800000;
-    t = *(f32 *)&s0[0x5C / 4] / *(f32 *)&s0[0x60 / 4];
-    *(f32 *)&blk[3] = t;
-    t = func_002B06A0();
-    *(f32 *)&s0[0x5C / 4] = *(f32 *)&s0[0x5C / 4] + t;
-    func_002A1510((s32)blk);
-    if (!(*(f32 *)&s0[0x5C / 4] <= *(f32 *)&s0[0x60 / 4]) || func_002A1020(3) == 0) {
+void func_002A18A0(u8 *arg0) {
+    u8 *w = (u8 *)gEvtWork;
+    EvtV4 c;
+
+    c.x = 1.0f;
+    c.y = 1.0f;
+    c.z = 1.0f;
+    c.w = 1.0f;
+    ((f32 *)&c)[3] = *(f32 *)(w + 0x5C) / *(f32 *)(w + 0x60);
+    *(f32 *)(w + 0x5C) = *(f32 *)(w + 0x5C) + func_002B06A0();
+    func_002A1510((s32)&c);
+    if (!(*(f32 *)(w + 0x5C) <= *(f32 *)(w + 0x60)) || func_002A1020(3) == 0) {
         func_0029AC30();
-        Zenie_SetValue(D_00511448, D_00511448);
-        s0[0x5C / 4] = 0;
-        s0[0x60 / 4] = 0x42F00000;
-        f = (void *)func_002A17D0;
-        s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        Zenie_SetValue(D_00511448[0], D_00511448[0]);
+        *(f32 *)(w + 0x5C) = 0.0f;
+        *(f32 *)(w + 0x60) = 120.0f;
+        TASK_SET_FUNC((Task *)arg0, (TaskFunc)func_002A17D0);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A18A0);
-extern void func_002A18A0(s32 *);
+extern void func_002A18A0(u8 *);
 
 void func_002A1980(s32 *a0) {
     s32 *g = gEvtWork;
