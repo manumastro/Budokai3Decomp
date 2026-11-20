@@ -522,7 +522,62 @@ void func_002C6D40(s32 a0, s32 a1, s32 a2) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C6D40);
+typedef struct Copy16D_2C41C0 {
+    s32 a, b, c, d;
+} __attribute__((aligned(16))) Copy16D_2C41C0;
+typedef struct Vec4D_2C41C0 {
+    f32 x, y, z, w;
+} Vec4D_2C41C0;
+extern char D_00456400[];
+extern char D_00456410[];
+extern char *func_00215320(s16, s32);
+extern void func_00212480(void);
+extern void func_00212650(void);
+extern s32 func_00209540(s32, s32, s32);
+extern void func_0020D500(void *, void *, s32, s32);
+extern void func_00141C30(void *, void *, void *);
+extern void func_00209950(s32, void *, s32);
+extern s32 func_0020AD30(s32, s32, s32);
+extern void func_00146F30(void *);
+
+void func_002C6D40(s32 a0, s32 a1, s32 a2) {
+    Vec4D_2C41C0 vA;
+    Vec4D_2C41C0 vB;
+    Vec4D_2C41C0 vC;
+    Vec4D_2C41C0 vD;
+    void *res;
+    s32 s2;
+    char *s1;
+    char *s0;
+
+    s2 = *(s32 *)(a0 + 0x1350);
+    s1 = func_00215320((s16)s2, 2);
+    if (s1 != 0) {
+        *(void (**)(void))(s1 + 0x8) = func_00212480;
+        *(void (**)(void))(s1 + 0xC) = func_00212650;
+        s0 = s1 + 0x20;
+        memset(s0, 0, 0x50);
+        res = func_0020B020(s2, 1, a2);
+        if (res != 0) {
+            *(s32 *)(s1 + 0x10) = func_00209540((s32)res, (s2 != 0) ? 0x4000008 : 0x4000004, 0);
+        }
+        if (*(s32 *)(s1 + 0x10) != 0) {
+            func_0020D500(&vA, D_00456400, a0, 15);
+            func_0020D500(&vB, D_00456410, a0, 15);
+            VecCopy(s0, &vA);
+            asm volatile("lqc2 $vf1, 0(%1)\n\tlqc2 $vf2, 0(%2)\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, 0(%0)" : : "r"(&vA), "r"(&vB), "r"(&vA) : "memory");
+            func_00146F30(&vA);
+            vD.y = 1.0f;
+            vD.w = 1.0f;
+            vD.x = 0.0f;
+            vD.z = 0.0f;
+            func_00141C30(&vC, &vD, &vA);
+            func_00209950(*(s32 *)(s1 + 0x10), &vC, 0);
+            *(s32 *)(s0 + 0x20) = (s32)func_0020B020(s2, 1, a1);
+            *(s32 *)(s0 + 0x28) = func_0020AD30(s2, 1, a1);
+        }
+    }
+}
 typedef struct Sub2C6EF0 {
     char pad0[0x54];
     f32 f54;
