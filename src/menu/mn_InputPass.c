@@ -477,17 +477,13 @@ void func_002F1300(Task *a0) {
         }
     }
 }
-#if 0
-// differs: 8 bytes short (0x148 vs 0x150): the original branch layout of the final if differs
 void func_002F1500(u8 *task) {
-    u8 *s0;
-    u8 *s1;
-    u8 *s3;
     u8 *s4;
+    u8 *s3;
+    u8 *s0;
     s32 s2;
+    u8 *s1;
     s32 a0;
-    s32 a1;
-    void *v;
 
     s3 = *(u8 **)(task + 0x30);
     s0 = (u8 *)gInputName;
@@ -499,8 +495,8 @@ void func_002F1500(u8 *task) {
     D_0047070C = 0x5000;
     D_00470708 = 0;
     amModel_SetCurrent(a0, 0x5000);
-    func_002F0BC0(s3);
     D_00470238 = 0;
+    func_002F0BC0(s3);
     if (*(u8 *)(s3 + 0x170) < 5) {
         s2 = 0;
         s1 = s3;
@@ -517,17 +513,12 @@ void func_002F1500(u8 *task) {
     A2d_FlushList();
     func_00133B50(0, 0);
     a0 = *(s32 *)((u8 *)gStrStatus + 0x27C);
-    if (a0 == 2) {
-        a1 = D_004B4B63[0];
-        if (*(u16 *)((u8 *)D_00492FCE + a1 * 184) & 0x4000) {
-            *(s32 *)(s3 + 0x110) = IpSysWnd_Start(4);
-            v = ((void *)func_002F1300 == 0) ? 0 : (void *)func_002F1300;
-            *(void **)(s4 + 0x1C) = v;
-        }
+    if (a0 != 2 || !(*(u16 *)((u8 *)D_00492FCE + D_004B4B63[0] * 184) & 0x4000)) {
+        return;
     }
+    *(s32 *)(s3 + 0x110) = IpSysWnd_Start(4);
+    *(void **)(s4 + 0x1C) = ((void *)func_002F1300 == 0) ? 0 : (void *)func_002F1300;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1500);
 #if 0
 // differs: register roles differ (obj/counter/walk swapped; no declaration order matches), 14 of 70 instr
 void func_002F1650(u8 *task) {

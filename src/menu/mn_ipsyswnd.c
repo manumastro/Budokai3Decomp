@@ -259,7 +259,58 @@ void func_002F4E40(u8 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4F70);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F5120);
+extern void func_002F4F70();
+
+void func_002F5120(u8 *task) {
+    u8 *s3;
+    u8 *s0;
+    s32 s2;
+    u8 *s1;
+    s32 m;
+    s32 o;
+    f32 f;
+
+    s3 = *(u8 **)(task + 0x30);
+    s0 = gOutputPass;
+    func_00133B50(0, 0);
+    m = *(s32 *)(s0 + 0xC);
+    D_00470704 = m;
+    D_0047070C = 0x6000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x6000);
+    D_00470238 = 0;
+    m = *(s32 *)(gOutputPass + 0xC);
+    D_00470704 = m;
+    D_0047070C = 0x6000;
+    D_00470708 = 0;
+    amModel_SetCurrent(m, 0x6000);
+    D_00470238 = 0;
+    o = *(s32 *)s3;
+    if (o != 0) {
+        func_0022C060(o, 1.0f);
+        func_0022CD00(o);
+    }
+    if (*(s16 *)(s3 + 0xC0) == 2) {
+        s2 = 0;
+        s1 = s3;
+        s0 = s3;
+        do {
+            if (*(u16 *)(s1 + 0xC2) != 0xFFFF) {
+                func_0022CF70(*(s32 *)(s0 + 0x4));
+            }
+            s2++;
+            s1 += 2;
+            s0 += 4;
+        } while (s2 < 0x24);
+    }
+    A2d_FlushList();
+    f = *(f32 *)(s3 + 0xBC) - gFrameDelta;
+    *(f32 *)(s3 + 0xBC) = f;
+    if (f <= 0.0f) {
+        *(s16 *)(s3 + 0xC0) = 2;
+        *(void **)(task + 0x1C) = ((void *)func_002F4F70 == 0) ? 0 : (void *)func_002F4F70;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F5260);
 extern u8 *gOutputPass;
 
