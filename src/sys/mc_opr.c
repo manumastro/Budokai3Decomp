@@ -13,13 +13,13 @@ extern s32 D_00470894;
 extern s32 D_00470898;
 s32 amMc_GetInfo(s32, s32, s32);
 s32 amMc_Save(s32, s32, void *, s32, s32);
-extern void func_0028BDB0(void);
+void func_0028BDB0(u8 *arg0);
 extern void func_002880B0(s32);
 extern void func_00288500();
 extern void func_00288870(s32);
 void func_0028DDA0(void);
 void func_0028DDB0(u8 *arg0);
-s32 func_0028DDF0();
+void func_0028DDF0(u8 *arg0);
 
 /* A scheduler task: the function it runs from the next frame on is at 0x1C. */
 typedef struct McTask {
@@ -46,12 +46,12 @@ INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288E70);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00289210);
 extern void func_00289210(void);
 void func_00289380(u8 *arg0) {
-    s32 (*var_v1)();
+    void (*var_v1)(u8 *);
 
     if (amMc_GetInfo(D_0047084C, 0, 0) == 0) {
         func_00288870(0x20);
         var_v1 = (func_0028DDF0 == NULL) ? NULL : func_0028DDF0;
-        *(s32 (**)())((u8 *)arg0 + 0x1C) = var_v1;
+        *(void (**)(u8 *))((u8 *)arg0 + 0x1C) = var_v1;
         D_00470894 = (int)(&func_00289210);
     }
 }
@@ -352,7 +352,33 @@ void func_0028B720(u8 *arg0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028B9B0);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028BDB0);
+extern char *D_00453740[];
+s32 amMc_Unformat(s32, s32, void *);
+void func_0028BDB0(u8 *arg0) {
+    do {
+        if (!(D_00470898 & 1)) {
+            if (amMc_Unformat(D_0047084C, 0, D_00453740[D_00470898 >> 1]) != 0) {
+                D_00470898 += 2;
+            } else {
+                D_00470898 += 1;
+                return;
+            }
+        } else {
+            switch (gMcState) {
+            case 2:
+            case 3:
+                D_00470898 += 1;
+                break;
+            default:
+                return;
+            }
+        }
+    } while (D_00470898 < 2);
+    func_00288870(0x13);
+    MC_SETFUNC(arg0, func_0028DDF0);
+    D_00470858 = 3;
+    D_00470894 = (s32)func_0028C580;
+}
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028BEB0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028C0F0);
 extern s32 D_0047087C;
@@ -586,7 +612,12 @@ void func_0028D1E0(u8 *arg0) {
 }
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028D4D0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028D810);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DDA0);
+extern s32 D_00470830;
+void func_0028DF20(void);
+void func_0028DDA0(void) {
+    D_00470830 = D_00470858;
+    func_0028DF20();
+}
 extern f32 D_00470884;
 extern s32 D_00470894;
 void func_0028DDB0(u8 *arg0) {
@@ -601,8 +632,22 @@ void func_0028DDB0(u8 *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DDF0);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_0028DE30);
+extern f32 D_00470884;
+void func_0028DDF0(u8 *arg0) {
+    if (D_00470884 == 1.0f) {
+        ((McTask *)arg0)->func = (D_00470894 == 0) ? NULL : (void *)D_00470894;
+    }
+}
+void func_0028DF10(void);
+void func_0028DE30(u8 *arg0) {
+    D_00470884 = D_00470884 - 0.05f;
+    if (D_00470884 <= 0.0f) {
+        D_00470884 = 0.0f;
+        MC_SETFUNC(arg0, func_0028DF10);
+    } else {
+        func_00288500();
+    }
+}
 extern s32 func_0028D810();
 void func_0028DEA0(u8 *arg0) {
     s32 (*var_v0)();
