@@ -4,111 +4,182 @@ extern void func_002E7400(u8 *, f32);
 extern void amSofdec_Stop(s32);
 #include "menu/menu.h"
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6BE0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6DC0);
-#if 0
-// differs: 14 of 80 (copy temporaries: the original loads the first D_ copy into a3, ours into t0; permutations of the copies and declarations give 14 at best)
-typedef struct {
-    u32 w[4];
-} __attribute__((aligned(16))) Lm16B;
-extern Lm16B D_00456F40;
-extern Lm16B D_00456F50;
-extern Lm16B D_00456F60;
-extern void func_0013B0B0(s32);
+typedef struct Vec4L {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec4L;
+
+extern Vec4L D_00456FA0;
+extern Vec4L D_00456FB0;
+extern Vec4L D_00456FC0;
+extern u8 D_003F0800[];
+extern void func_0013B0B0(void *);
 extern void amModel_SetCurrent(s32, s32);
 extern void func_00136E80(s32, void *, s32, s32, s32);
 extern void func_00137560(void *, void *);
 extern void amDraw_FlushPacket(void);
 extern void func_0013B110(s32);
+
+void func_002E6BE0(f32 f, void *a0) {
+    Vec4L pos;
+    Vec4L uv;
+    Vec4L col;
+    u8 *t1;
+    u8 *s2;
+
+    pos = D_00456FA0;
+    uv = D_00456FB0;
+    col = D_00456FC0;
+    col.w = f;
+    func_0013B0B0(D_003F0800);
+    amModel_SetCurrent(*(s32 *)a0, 0x1000);
+    t1 = *(u8 **)a0;
+    s2 = t1 + *(s32 *)((u8 *)(*(s32 *)(t1 + 0x14) + (s32)t1) + ((6 - *(s32 *)(t1 + 0x18)) << 2));
+    func_00136E80(0x40000E24, &col, 6, 0x44, 5);
+    pos.x = 300.0f - (f32)*(s16 *)(s2 + 0x10) / 2.0f;
+    pos.y = 225.0f - (f32)*(s16 *)(s2 + 0x12) / 2.0f;
+    uv.x = 0.5f;
+    uv.y = 0.5f;
+    func_00137560(&pos, &uv);
+    pos.x = 300.0f + (f32)*(s16 *)(s2 + 0x10) / 2.0f;
+    pos.y = 225.0f + (f32)*(s16 *)(s2 + 0x12) / 2.0f;
+    uv.x = (f32)*(s16 *)(s2 + 0x10) - 0.5f;
+    uv.y = (f32)*(s16 *)(s2 + 0x12) - 0.5f;
+    func_00137560(&pos, &uv);
+    amDraw_FlushPacket();
+    func_0013B110(1);
+}
+extern Vec4L D_00456F70;
+extern Vec4L D_00456F80;
+extern Vec4L D_00456F90;
+
+void func_002E6DC0(f32 f, void *a0) {
+    Vec4L pos;
+    Vec4L uv;
+    Vec4L col;
+    u8 *t1;
+    u8 *s2;
+
+    pos = D_00456F70;
+    uv = D_00456F80;
+    col = D_00456F90;
+    col.w = f;
+    func_0013B0B0(D_003F0800);
+    amModel_SetCurrent(*(s32 *)a0, 0x1000);
+    t1 = *(u8 **)a0;
+    s2 = t1 + *(s32 *)((u8 *)(*(s32 *)(t1 + 0x14) + (s32)t1) + ((3 - *(s32 *)(t1 + 0x18)) << 2));
+    func_00136E80(0x40000E24, &col, 3, 0x44, 5);
+    pos.x = 300.0f - (f32)*(s16 *)(s2 + 0x10) / 2.0f;
+    pos.y = 225.0f - (f32)*(s16 *)(s2 + 0x12) / 2.0f;
+    uv.x = 0.5f;
+    uv.y = 0.5f;
+    func_00137560(&pos, &uv);
+    pos.x = 300.0f + (f32)*(s16 *)(s2 + 0x10) / 2.0f;
+    pos.y = 225.0f + (f32)*(s16 *)(s2 + 0x12) / 2.0f;
+    uv.x = (f32)*(s16 *)(s2 + 0x10) - 0.5f;
+    uv.y = (f32)*(s16 *)(s2 + 0x12) - 0.5f;
+    func_00137560(&pos, &uv);
+    amDraw_FlushPacket();
+    func_0013B110(1);
+}
+extern Vec4L D_00456F40;
+extern Vec4L D_00456F50;
+extern Vec4L D_00456F60;
 
 void func_002E6FA0(f32 f, void *a0) {
-    u8 *s0;
-    u8 *s2;
+    Vec4L pos;
+    Vec4L uv;
+    Vec4L col;
     u8 *t1;
-    Lm16B c60;
-    Lm16B c50;
-    Lm16B c40;
+    u8 *s2;
 
-    s0 = (u8 *)a0;
-    c60 = D_00456F40;
-    c50 = D_00456F50;
-    c40 = D_00456F60;
-    *(f32 *)&c40.w[3] = f;
-    func_0013B0B0(0x3F0800);
-    amModel_SetCurrent(*(s32 *)s0, 0x1000);
-    t1 = *(u8 **)s0;
-    {
-        u8 *p = (u8 *)(*(s32 *)(t1 + 0x14) + (s32)t1);
-        s2 = t1 + *(s32 *)(p + ((2 - *(s32 *)(t1 + 0x18)) << 2));
-    }
-    func_00136E80(0x40000E24, &c40, 2, 0x44, 5);
-    c60.w[0] = 0;
-    c60.w[1] = 0;
-    c50.w[0] = 0;
-    c50.w[1] = 0;
-    func_00137560(&c60, &c50);
-    c60.w[0] = 0x44160000;
-    c60.w[1] = 0x43E10000;
-    *(f32 *)&c50.w[0] = (f32)*(s16 *)(s2 + 0x10);
-    *(f32 *)&c50.w[1] = (f32)*(s16 *)(s2 + 0x12);
-    func_00137560(&c60, &c50);
+    pos = D_00456F40;
+    uv = D_00456F50;
+    col = D_00456F60;
+    col.w = f;
+    func_0013B0B0(D_003F0800);
+    amModel_SetCurrent(*(s32 *)a0, 0x1000);
+    t1 = *(u8 **)a0;
+    s2 = t1 + *(s32 *)((u8 *)(*(s32 *)(t1 + 0x14) + (s32)t1) + ((2 - *(s32 *)(t1 + 0x18)) << 2));
+    func_00136E80(0x40000E24, &col, 2, 0x44, 5);
+    pos.x = 0.0f;
+    pos.y = 0.0f;
+    uv.x = 0.0f;
+    uv.y = 0.0f;
+    func_00137560(&pos, &uv);
+    pos.x = 600.0f;
+    pos.y = 450.0f;
+    uv.x = (f32)*(s16 *)(s2 + 0x10);
+    uv.y = (f32)*(s16 *)(s2 + 0x12);
+    func_00137560(&pos, &uv);
     amDraw_FlushPacket();
     func_0013B110(1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E6FA0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E70E0);
-#if 0
-// differs: vector copies: the original loads D_00456EE0 into a3 and orders the 16-byte copies differently; the float param is stored in the delay slot of the first call (f12 kept), frame 0x70 vs 0x80 here; 64 of 81 differ
-typedef struct {
-    u32 w[4];
-} __attribute__((aligned(16))) Lm16;
-extern Lm16 D_00456EE0;
-extern Lm16 D_00456EF0;
-extern Lm16 D_00456F00;
-extern void func_0013B0B0(s32);
-extern void amModel_SetCurrent(s32, s32);
-extern void func_00136E80(s32, void *, s32, s32, s32);
-extern void func_00137560(void *, void *);
-extern void amDraw_FlushPacket(void);
-extern void func_0013B110(s32);
+extern Vec4L D_00456F10;
+extern Vec4L D_00456F20;
+extern Vec4L D_00456F30;
+
+void func_002E70E0(f32 f, void *a0) {
+    Vec4L pos;
+    Vec4L uv;
+    Vec4L col;
+    u8 *t1;
+    u8 *s2;
+
+    pos = D_00456F10;
+    uv = D_00456F20;
+    col = D_00456F30;
+    col.w = f;
+    func_0013B0B0(D_003F0800);
+    amModel_SetCurrent(*(s32 *)a0, 0x1000);
+    t1 = *(u8 **)a0;
+    s2 = t1 + *(s32 *)((u8 *)(*(s32 *)(t1 + 0x14) + (s32)t1) + ((4 - *(s32 *)(t1 + 0x18)) << 2));
+    func_00136E80(0x40000E24, &col, 4, 0x44, 5);
+    pos.x = 300.0f - (f32)*(s16 *)(s2 + 0x10) / 2.0f;
+    pos.y = 225.0f - (f32)*(s16 *)(s2 + 0x12) / 2.0f;
+    uv.x = 0.5f;
+    uv.y = 0.5f;
+    func_00137560(&pos, &uv);
+    pos.x = 300.0f + (f32)*(s16 *)(s2 + 0x10) / 2.0f;
+    pos.y = 225.0f + (f32)*(s16 *)(s2 + 0x12) / 2.0f;
+    uv.x = (f32)*(s16 *)(s2 + 0x10) - 0.5f;
+    uv.y = (f32)*(s16 *)(s2 + 0x12) - 0.5f;
+    func_00137560(&pos, &uv);
+    amDraw_FlushPacket();
+    func_0013B110(1);
+}
+extern Vec4L D_00456EE0;
+extern Vec4L D_00456EF0;
+extern Vec4L D_00456F00;
 
 void func_002E72C0(f32 f, void *a0) {
-    u8 *s2;
-    u32 *s1;
-    u8 *s0;
-    Lm16 c60;
-    Lm16 c50;
-    Lm16 c40;
+    Vec4L pos;
+    Vec4L uv;
+    Vec4L col;
     u8 *t1;
+    u8 *s2;
 
-    s0 = (u8 *)a0;
-    c60 = D_00456EE0;
-    c50 = D_00456EF0;
-    c40 = D_00456F00;
-    *(f32 *)&c40.w[3] = f;
-    func_0013B0B0(0x3F0800);
-    amModel_SetCurrent(*(s32 *)s0, 0x1000);
-    t1 = *(u8 **)s0;
-    func_00136E80(0x40000E24, &c40, 1, 0x44, 5);
-    s2 = t1 + *(s32 *)(t1 + *(s32 *)(t1 + 0x14) + ((1 - *(s32 *)(t1 + 0x18)) << 2));
-    c60.w[0] = 0;
-    s1 = &c60.w[1];
-    *s1 = 0;
-    s0 = (u8 *)&c50.w[1];
-    c50.w[0] = 0;
-    *(u32 *)s0 = 0;
-    func_00137560(&c60, &c50);
-    c60.w[0] = 0x44160000;
-    *s1 = 0x43E10000;
-    *(f32 *)&c50.w[0] = (f32)*(s16 *)(s2 + 0x10);
-    *(f32 *)s0 = (f32)*(s16 *)(s2 + 0x12);
-    func_00137560(&c60, &c50);
+    pos = D_00456EE0;
+    uv = D_00456EF0;
+    col = D_00456F00;
+    col.w = f;
+    func_0013B0B0(D_003F0800);
+    amModel_SetCurrent(*(s32 *)a0, 0x1000);
+    t1 = *(u8 **)a0;
+    s2 = t1 + *(s32 *)((u8 *)(*(s32 *)(t1 + 0x14) + (s32)t1) + ((1 - *(s32 *)(t1 + 0x18)) << 2));
+    func_00136E80(0x40000E24, &col, 1, 0x44, 5);
+    pos.x = 0.0f;
+    pos.y = 0.0f;
+    uv.x = 0.0f;
+    uv.y = 0.0f;
+    func_00137560(&pos, &uv);
+    pos.x = 600.0f;
+    pos.y = 450.0f;
+    uv.x = (f32)*(s16 *)(s2 + 0x10);
+    uv.y = (f32)*(s16 *)(s2 + 0x12);
+    func_00137560(&pos, &uv);
     amDraw_FlushPacket();
     func_0013B110(1);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E72C0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_Logomark", func_002E7400);
 extern void Scene_Request(s32, s32);
 extern void func_001F07E0(s32, s32);
