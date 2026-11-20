@@ -2242,44 +2242,44 @@ void Fighter_ResetSpeed1B2490(Fighter *f) {
     FT_FIELD(f, f32, 0x17BC) = 0.0f;
 }
 extern void func_001DDD50(void *);
-#if 0
-// differs: 60 of 74: the compiler folds the 0x1FF9 and 0x1864 field addresses into pointer registers (addiu a0 / v1) where the original stores with the offset, and the epilogue is 8 bytes shorter
-void func_001B24E0(Fighter *f) {
-    s32 v;
-    Fighter_ResetMotion(f, 0);
-    if (FT_FIELD(f, s32, 0xC64) != 0) {
-        func_001DDD50(f);
-        ((FighterMain2 *)f)->unk1864 = 1;
-        if (((FighterMain2 *)f)->unk1FF9 != 0) {
-            if (FT_FIELD(f, f32, 0x44) - FT_FIELD(FT_FIELD(f, void *, 0xBB4), f32, 0xC) - FT_FIELD(f, f32, 0x1844) <= 0.0f) {
-                ((FighterMain2 *)f)->unk1FF9 = 0;
-                ((FighterMain2 *)f)->unk1864 = ((FighterMain2 *)f)->unk1864 | 8;
+void func_001B24E0(u8 *arg0) {
+    s32 r;
+    void *p;
+    u8 *new_var;
+    Fighter_ResetMotion(arg0, 0);
+    new_var = arg0;
+    if ((*((s32 *) (new_var + 0xC64))) != 0) {
+        func_001DDD50(new_var);
+        (*((s32 *) (new_var + 0x1864))) = 1;
+        if ((*((s8 *) (new_var + 0x1FF9))) != 0) {
+            p = (*((void **) (new_var + 0xBB4)));
+            if ((*((f32 *) (new_var + 0x44))) - (*((f32 *) ((u8 *) p + 0xC))) - (*((f32 *) (new_var + 0x1844))) <= 0.0f) {
+                (*((s8 *) (new_var + 0x1FF9))) = 0;
+                (*((s32 *) (new_var + 0x1864))) |= 8;
             }
         }
-        func_001E5040(f);
-        if (FT_FIELD(f, s16, 0x13A4) < 0) {
-            v = func_001E94C0(f);
+        func_001E5040(new_var);
+        if ((*((s16 *) (new_var + 0x13A4))) > -1) {
+            r = func_001C2B10(new_var);
         } else {
-            v = func_001C2B10(f);
+            r = func_001E94C0(new_var);
         }
-        if (v != 0) {
-            FT_FIELD(f, s16, 0xCB4) = 0;
+        if (r == 0) {
+            (*((s16 *) (new_var + 0xCB4))) = 1;
         } else {
-            FT_FIELD(f, s16, 0xCB4) = 1;
+            (*((s16 *) (new_var + 0xCB4))) = 0;
         }
-        FT_FIELD(f, s8, 0x2004) = 1;
-        FT_FIELD(f, s8, 0x1FFB) = 1;
-        if (v != 0xF) {
-            FT_FIELD(f, s16, 0xCB6) = 0;
+        (*((s8 *) (new_var + 0x2004))) = 1;
+        (*((s8 *) (new_var + 0x1FFB))) = 1;
+        if (r != 0xF) {
+            (*((s16 *) (new_var + 0xCB6))) = 0;
         }
-        FT_FIELD(f, s8, 0x2006) = 0;
-        D_00468460[v](f);
-        func_002CBFF0(1, f);
-        func_001ABD30((Fighter *)((u8 *)f + 0x1360));
+        (*((s8 *) (new_var + 0x2006))) = 0;
+        D_00468460[r](new_var);
+        func_002CBFF0(1, new_var);
+        func_001ABD30((Fighter *) (new_var + 0x1360));
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B24E0);
 extern void func_001DE490();
 extern void func_001D9960();
 extern void func_001E9B00(s32, s32, s32, s32, f32, f32);
