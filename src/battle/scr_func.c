@@ -271,7 +271,76 @@ void func_002A9C00(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     e->f2094 = 0;
     e->f208C = 0;
 }
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9D30);
+typedef struct ScrLtE2 {
+    /* 0x0000 */ s32 f0;
+    /* 0x0004 */ s32 f4;
+    /* 0x0008 */ s32 f8;
+    union {
+        s32 res[16];
+        struct {
+            s32 pad[4];
+            s32 f1C;
+            s32 f20;
+            s32 pad2;
+            s32 id[16];
+        } s;
+        struct {
+            s32 pad3[11];
+            s32 f38;
+            s32 f3C;
+        } m;
+    } u;
+    /* 0x0068 */ u8 pad68[0x208C - 0x68];
+    /* 0x208C */ s32 f208C;
+    /* 0x2090 */ s32 f2090;
+    /* 0x2094 */ s32 f2094;
+    /* 0x2098 */ u8 pad2098[8];
+    /* 0x20A0 */ s8 f20A0;
+} ScrLtE2;
+
+extern void amHeap_Free(void *);
+
+void func_002A9D30(s32 a0, s32 a1, s32 a2, s32 a3) {
+    ScrLtE2 *e = (ScrLtE2 *)&D_005ABA80[a0][a1];
+    s32 i;
+
+    if (e->f4 != 0) {
+        amCdFs_ReleaseCache(e->f4);
+    }
+    if (e->f0 != 0) {
+        amCdFs_ReleaseCache(e->f0);
+        e->f0 = 0;
+        e->u.s.f1C = 0;
+    }
+    if (e->u.m.f38 != 0) {
+        amHeap_Free((void *)e->u.m.f38);
+        e->u.m.f38 = 0;
+    }
+    if (e->u.m.f3C != 0) {
+        amHeap_Free((void *)e->u.m.f3C);
+        e->u.m.f3C = 0;
+    }
+    e->f4 = a2;
+    e->u.s.f20 = a3;
+    amFile_Load(a3);
+
+    for (i = 0; i < 16; i++) {
+        if (e->u.res[i] != 0) {
+            break;
+        }
+    }
+    if (i != 16) {
+        e->u.m.f3C = (s32)amMotion_Create(a3, 0, 0);
+        for (a3 = 0; a3 < 16; a3++) {
+            if (e->u.s.id[a3] != 0) {
+                amMotion_BindAnim(e->u.m.f3C, a3, e->u.s.id[a3]);
+            }
+        }
+        e->f20A0 = 0;
+        e->f208C = 0;
+    }
+    e->f2094 = 0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002A9EA0);
 void func_002AA050(s32 a0, s32 a1, s32 a2, s32 a3) {
     s32 *s2 = (s32 *)(D_005BCD20 + a0 * 160 + a1 * 40);
