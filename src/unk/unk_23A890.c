@@ -1364,7 +1364,48 @@ void func_00242A10(void) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242A10);
+extern u8 *gBattle;
+extern u8 *D_0046FE44;
+extern u8 *D_0046FE48;
+extern s32 D_00470238;
+
+void func_0013B160(s32);
+void func_00142100(void *, void *);
+void amModel_SetCurrent(s32, s32);
+void func_00208D70(s32);
+
+void func_00242A10(void) {
+    u8 *s2;
+    u8 *s1;
+    s32 i;
+    u8 *q;
+    u8 *b;
+
+    if (*(s8 *)(gBattle + 0x8975) == 1) {
+        return;
+    }
+    i = 0;
+    while (i < *(s16 *)(D_0046FE44 + 0x102)) {
+        s2 = D_0046FE44 + i * 0x80;
+        q = gBattle + i * 0x2020;
+        s1 = D_0046FE48 + i * 420;
+        b = q + 0x830;
+        if (*(s8 *)(q + 0x14ED) == 0 && *(s32 *)(b + 0xB9C) == 0xE) {
+            func_0013B160(0);
+            func_00142100(s2 + 0x50, s2 + 0x60);
+            D_00470238 = 0;
+            amModel_SetCurrent(*(s32 *)(s1 + 0x1A0), 0x3003000);
+            if (*(s32 *)(s2 + 0x70) != 0) {
+                func_00208D70(*(s32 *)(s2 + 0x70));
+            }
+            if (*(s32 *)(s2 + 0x74) != 0) {
+                func_00208D70(*(s32 *)(s2 + 0x74));
+            }
+            __asm__ volatile ("vmove.xyzw $vf28, $vf24 ; vmove.xyzw $vf29, $vf25 ; vmove.xyzw $vf30, $vf26 ; vmove.xyzw $vf31, $vf27");
+        }
+        i++;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242B40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00242E10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00243020);
