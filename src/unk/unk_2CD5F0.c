@@ -749,70 +749,46 @@ s32 func_002CF3A0(void) {
 }
 extern u8 D_005C2064[];
 extern u32 func_0012EAE0(s32);
-#if 0
 s32 func_002CF3B0(u8 *p) {
-    s32 k = *(s32 *)p;
-    s32 *e = (s32 *)(D_005C2064 + k * 40);
+    s32 *e = (s32 *)(D_005C2064 + *(s32 *)p * 40);
     u32 r;
-    f32 f;
+    f32 f20;
     f32 g;
-    f32 f2;
     if (e[0] != 0) {
         return 0;
     }
     e[0] = e[0] + 1;
     r = func_0012EAE0(0x20) % 10 + 1;
-    f = (f32)r / 20.0f;
-    f2 = f / 0.1f;
-    k = *(s32 *)p;
-    *(s32 *)(D_005C2074 + k * 40) = 0;
+    f20 = (f32)r / 20.0f + 0.1f;
+    *(s32 *)(D_005C2074 + *(s32 *)p * 40) = 0;
     ((s32 *)p)[2] = 1;
     ((s32 *)p)[3] = 0;
     ((s32 *)p)[4] = 0;
-    g = func_00146E30(*(s32 *)(gBattle + 0x264), ((s32 *)p)[1]);
-    f2 = f2 + g;
-    g = D_00470154 / g;
-    if (g > 1.0f) {
-        g = 1.0f;
-    }
-    ((f32 *)p)[5] = f2 * g;
+    g = D_00470154 / func_00146E30(*(s32 *)(gBattle + 0x264), ((s32 *)p)[1]);
+    g = (g > 1.0f) ? 1.0f : g;
+    ((f32 *)p)[5] = f20 * g;
     return 1;
 }
-// differs: same shape as func_002CF180 (table of 0x28 entries, a random value divided by 20 and a 0.1f division); the 0.1f constant is loaded before the k reload in the original and the division sits in the delay slot of the call: 39 of 87 differ with the division placed after the first stores (62 with it before).
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF3B0);
-#if 0
 s32 func_002CF500(u8 *p) {
-    s32 k = *(s32 *)p;
-    s32 *e = (s32 *)(D_005C2060 + k * 40);
+    s32 *e = (s32 *)(D_005C2060 + *(s32 *)p * 40);
     u32 r;
-    f32 f;
+    f32 f20;
     f32 g;
-    f32 f2;
     if (e[0] != 0) {
         return 0;
     }
     e[0] = e[0] + 1;
     r = func_0012EAE0(0x20) % 10 + 1;
-    f = (f32)r / 20.0f;
-    f2 = f / 0.1f;
-    k = *(s32 *)p;
-    *(s32 *)(D_005C2074 + k * 40) = 0;
+    f20 = (f32)r / 20.0f + 0.1f;
+    *(s32 *)(D_005C2074 + *(s32 *)p * 40) = 0;
     ((s32 *)p)[2] = D_0051CD20[0] << 4;
     ((s32 *)p)[3] = 0;
     ((s32 *)p)[4] = 0;
-    g = func_00146E30(*(s32 *)(gBattle + 0x264), ((s32 *)p)[1]);
-    f2 = f2 + g;
-    g = D_00470154 / g;
-    if (g > 1.0f) {
-        g = 1.0f;
-    }
-    ((f32 *)p)[5] = f2 * g;
+    g = D_00470154 / func_00146E30(*(s32 *)(gBattle + 0x264), ((s32 *)p)[1]);
+    g = (g > 1.0f) ? 1.0f : g;
+    ((f32 *)p)[5] = f20 * g;
     return 1;
 }
-// differs: same shape as func_002CF180 (table of 0x28 entries, a random value divided by 20 and a 0.1f division); the 0.1f constant is loaded before the k reload in the original and the division sits in the delay slot of the call: 39 of 87 differ with the division placed after the first stores (62 with it before).
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2CD5F0", func_002CF500);
 void func_002CF650(s32 flag) {
     s32 i;
     u8 *p = D_005C2060;
