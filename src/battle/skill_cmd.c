@@ -554,7 +554,96 @@ void func_0024BE30(u8 *ob) {
     func_0013B110(1);
     func_00209C50();
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024BFA0);
+typedef struct SkObjC {
+    /* 0x00 */ f32 unk00;
+    /* 0x04 */ s16 unk04;
+    /* 0x06 */ s16 unk06;
+    /* 0x08 */ u8 *unk08;
+    /* 0x0C */ u8 *unk0C;
+    /* 0x10 */ u8 pad10[0x10];
+    /* 0x20 */ u8 unk20[0x10];
+    /* 0x30 */ u8 unk30[0x10];
+    /* 0x40 */ s32 unk40;
+    /* 0x44 */ void *unk44;
+    /* 0x48 */ void *unk48;
+    /* 0x4C */ void *unk4C;
+    /* 0x50 */ u8 pad50[0x04];
+    /* 0x54 */ void *unk54;
+} SkObjC;
+typedef struct SkEaParam {
+    /* 0x00 */ u8 pos[0x10];
+    /* 0x10 */ u8 dir[0x10];
+    /* 0x20 */ f32 f20;
+    /* 0x24 */ s32 f24;
+    /* 0x28 */ void *fn;
+    /* 0x2C */ void *ob;
+    /* 0x30 */ s16 f30;
+    /* 0x32 */ s16 f32_;
+    /* 0x34 */ s8 f34;
+    /* 0x35 */ s8 f35;
+    /* 0x36 */ s16 f36;
+    /* 0x38 */ s32 f38;
+    /* 0x3C */ s32 f3C;
+} __attribute__((aligned(16))) SkEaParam;
+extern void func_001EA240(SkEaParam *);
+extern s32 func_00251F30();
+s32 func_0024BFA0(SkObjC *ob) {
+    u8 *s1 = ob->unk0C;
+    u8 *s0 = ob->unk08;
+    SkEaParam prm;
+
+    if (ob->unk04 & 0x8000) {
+        return 1;
+    }
+    if (!(ob->unk04 & 0x4000) && (ob->unk00 <= 12.0f || (ob->unk04 & 0x2000))) {
+        func_001D9280((s32)ob->unk08);
+        if (ob->unk48 != NULL) {
+            func_00209390(ob->unk48);
+        }
+        if (ob->unk4C != NULL) {
+            func_00209390(ob->unk4C);
+        }
+        ob->unk00 = 12.0f;
+        ob->unk04 |= 0x4000;
+    }
+    ob->unk00 = ob->unk00 - SkillObj_Scale();
+    if (ob->unk00 < 0.0f) {
+        ob->unk00 = 0.0f;
+        ob->unk04 |= 0x8000;
+    }
+    if (ob->unk04 & 0x800) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.pos), "r"(ob->unk20));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.dir), "r"(ob->unk20), "r"(ob->unk30));
+        prm.f36 = ob->unk06;
+        prm.f20 = *(f32 *)(s1 + 0xCC);
+        prm.fn = (void *)func_00251F30;
+        prm.ob = ob;
+        prm.f30 = *(s32 *)(s1 + 0xD4);
+        prm.f32_ = 0;
+        prm.f34 = *(s32 *)(*(u8 **)(s0 + 0x1354) + 0x1350);
+        prm.f35 = *(s32 *)(s0 + 0x1350);
+        prm.f38 = (ob->unk04 & 0x400) ? 1 : 0;
+        prm.f38 |= 4;
+        func_001EA240(&prm);
+        ob->unk04 &= ~0x400;
+    }
+    if (ob->unk04 & 0x1000) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(ob->unk20), "r"(ob->unk30));
+    }
+    if (ob->unk48 != NULL) {
+        func_00208F70(ob->unk48);
+        if (*(s32 *)((u8 *)ob->unk48 + 0x38) < 0) {
+            ob->unk48 = NULL;
+        }
+    }
+    if (ob->unk4C != NULL) {
+        func_00208F70(ob->unk4C);
+        if (*(s32 *)((u8 *)ob->unk4C + 0x38) < 0) {
+            ob->unk4C = NULL;
+        }
+    }
+    return 0;
+}
 void SkillKill_Kind09(s32 *p) {
     if (p[18] != 0) {
         Obj_ResetF38(p[18]);
@@ -767,7 +856,56 @@ void func_0024E440(s32 *a0) {
         func_00209C50();
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E4D0);
+extern f32 D_0051D9AC[];
+s32 func_0024E4D0(SkObjC *ob) {
+    u8 *s1 = ob->unk0C;
+    u8 *s0 = ob->unk08;
+    SkEaParam prm;
+
+    if (ob->unk04 & 0x8000) {
+        return 1;
+    }
+    if (!(ob->unk04 & 0x4000) && (ob->unk00 <= 12.0f || (ob->unk04 & 0x2000))) {
+        if (ob->unk54 != NULL) {
+            func_00209390(ob->unk54);
+        }
+        ob->unk00 = 12.0f;
+        ob->unk04 |= 0x4000;
+    }
+    if (ob->unk04 & 0x1000) {
+        *(f32 *)(ob->unk30 + 4) = *(f32 *)(ob->unk30 + 4) + -24.0f * D_0051D9AC[0];
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(ob->unk20), "r"(ob->unk30));
+    }
+    ob->unk00 = ob->unk00 - SkillObj_Scale();
+    if (ob->unk00 < 0.0f) {
+        ob->unk00 = 0.0f;
+        ob->unk04 |= 0x8000;
+    }
+    if (ob->unk04 & 0x800) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.pos), "r"(ob->unk20));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.dir), "r"(ob->unk20), "r"(ob->unk30));
+        prm.f36 = ob->unk06;
+        prm.f20 = *(f32 *)(s1 + 0xCC);
+        prm.fn = (void *)func_00251F30;
+        prm.ob = ob;
+        prm.f30 = *(s32 *)(s1 + 0xD4);
+        prm.f32_ = 0;
+        prm.f34 = *(s32 *)(*(u8 **)(s0 + 0x1354) + 0x1350);
+        prm.f35 = *(s32 *)(s0 + 0x1350);
+        prm.f38 = (ob->unk04 & 0x400) ? 1 : 0;
+        prm.f38 |= 4;
+        func_001EA240(&prm);
+        ob->unk04 &= ~0x400;
+    }
+    if (ob->unk54 != NULL) {
+        func_00209B50((s32)ob->unk54, (s32)ob->unk20, 0);
+        func_00208F70(ob->unk54);
+        if (*(s32 *)((u8 *)ob->unk54 + 0x38) < 0) {
+            ob->unk54 = NULL;
+        }
+    }
+    return 0;
+}
 void SkillKill_Kind05(s32 *p) {
     if (p[21] != 0) {
         Obj_ResetF38(p[21]);
@@ -810,7 +948,54 @@ void func_0024E7B0(s32 a0) {
     func_00209B50(*(s32 *)(a0 + 0x54), a0 + 0x20, 0);
 }
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024E910);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024ECE0);
+s32 func_0024ECE0(SkObjC *ob) {
+    u8 *s1 = ob->unk0C;
+    u8 *s0 = ob->unk08;
+    SkEaParam prm;
+
+    if (ob->unk04 & 0x8000) {
+        return 1;
+    }
+    if (!(ob->unk04 & 0x4000) && (ob->unk00 <= 12.0f || (ob->unk04 & 0x2000))) {
+        func_001D9280((s32)ob->unk08);
+        if (ob->unk44 != NULL) {
+            func_00209390(ob->unk44);
+        }
+        ob->unk00 = 12.0f;
+        ob->unk04 |= 0x4000;
+    }
+    ob->unk00 = ob->unk00 - SkillObj_Scale();
+    if (ob->unk00 < 0.0f) {
+        ob->unk00 = 0.0f;
+        ob->unk04 |= 0x8000;
+    }
+    if (ob->unk04 & 0x800) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.pos), "r"(ob->unk20));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.dir), "r"(ob->unk20), "r"(ob->unk30));
+        prm.f36 = ob->unk06;
+        prm.f20 = *(f32 *)(s1 + 0xCC);
+        prm.fn = (void *)func_00251F30;
+        prm.ob = ob;
+        prm.f30 = *(s32 *)(s1 + 0xD4);
+        prm.f32_ = 0;
+        prm.f34 = *(s32 *)(*(u8 **)(s0 + 0x1354) + 0x1350);
+        prm.f35 = *(s32 *)(s0 + 0x1350);
+        prm.f38 = (ob->unk04 & 0x400) ? 1 : 0;
+        prm.f38 |= 4;
+        func_001EA240(&prm);
+        ob->unk04 &= ~0x400;
+    }
+    if (ob->unk04 & 0x1000) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(ob->unk20), "r"(ob->unk30));
+    }
+    if (ob->unk44 != NULL) {
+        func_00208F70(ob->unk44);
+        if (*(s32 *)((u8 *)ob->unk44 + 0x38) < 0) {
+            ob->unk44 = NULL;
+        }
+    }
+    return 0;
+}
 void SkillKill_Kind04(s32 *p) {
     if (p[17] != 0) {
         Obj_ResetF38(p[17]);
@@ -894,7 +1079,55 @@ void func_0024F150(s32 *a0) {
         func_00209C50();
     }
 }
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024F260);
+s32 func_0024F260(SkObjC *ob) {
+    u8 *s1 = ob->unk0C;
+    u8 *s0 = ob->unk08;
+    SkEaParam prm;
+
+    if (ob->unk04 & 0x8000) {
+        return 1;
+    }
+    if (!(ob->unk04 & 0x4000) && (ob->unk00 <= 12.0f || (ob->unk04 & 0x2000))) {
+        func_001D9280((s32)ob->unk08);
+        if (ob->unk54 != NULL) {
+            Obj_ResetF38((s32)ob->unk54);
+            ob->unk54 = NULL;
+        }
+        ob->unk00 = 12.0f;
+        ob->unk04 |= 0x4000;
+    }
+    ob->unk00 = ob->unk00 - SkillObj_Scale();
+    if (ob->unk00 < 0.0f) {
+        ob->unk00 = 0.0f;
+        ob->unk04 |= 0x8000;
+    }
+    if (ob->unk04 & 0x800) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.pos), "r"(ob->unk20));
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(prm.dir), "r"(ob->unk20), "r"(ob->unk30));
+        prm.f36 = ob->unk06;
+        prm.f20 = *(f32 *)(s1 + 0xCC);
+        prm.fn = (void *)func_00251F30;
+        prm.ob = ob;
+        prm.f30 = *(s32 *)(s1 + 0xD4);
+        prm.f32_ = 0;
+        prm.f34 = *(s32 *)(*(u8 **)(s0 + 0x1354) + 0x1350);
+        prm.f35 = *(s32 *)(s0 + 0x1350);
+        prm.f38 = (ob->unk04 & 0x400) ? 1 : 0;
+        func_001EA240(&prm);
+        ob->unk04 &= ~0x400;
+    }
+    if (ob->unk04 & 0x1000) {
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"(ob->unk20), "r"(ob->unk30));
+    }
+    if (ob->unk54 != NULL) {
+        func_00209B50((s32)ob->unk54, (s32)ob->unk20, 0);
+        func_00208F70(ob->unk54);
+        if (*(s32 *)((u8 *)ob->unk54 + 0x38) < 0) {
+            ob->unk54 = NULL;
+        }
+    }
+    return 0;
+}
 void SkillKill_Kind03(s32 *p) {
     if (p[21] != 0) {
         Obj_ResetF38(p[21]);
