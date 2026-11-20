@@ -245,8 +245,169 @@ void func_002F0FD0(u8 *task) {
         *(s32 *)(task + 0x1C) = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F10F0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1300);
+extern void *func_0022D860(f32, void *);
+extern s32 func_002F4A70();
+extern s32 InputName_Start();
+extern void StrStatus_Free();
+extern void func_002BFD90();
+extern s16 InputPass_GetPhase(Task *t);
+extern void InputPass_CopyBuf(Task *t, void *dst);
+extern void InputPass_TaskFree(u8 *task);
+extern void func_002F1300();
+
+void func_002F10F0(Task *a0) {
+    u8 *s4;
+    u8 *s3;
+    s32 s2;
+    u16 *s1;
+    u8 *s0;
+    u8 *s5;
+    s32 v;
+
+    s4 = (u8 *)a0;
+    s3 = *(u8 **)((u8 *)a0 + 0x30);
+    s0 = (u8 *)gInputName;
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    v = *(s32 *)(s0 + 0x10);
+    D_00470704 = v;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x5000);
+    D_00470238 = 0;
+    func_002F0BC0(s3);
+    if (*(u8 *)(s3 + 0x170) < 5) {
+        s2 = 0;
+        s1 = (u16 *)s3;
+        s0 = s3;
+        do {
+            if (*(u16 *)((u8 *)s1 + 0x128) != 0xFFFF) {
+                func_0022CF70(*(s32 *)(s0 + 0x4));
+            }
+            s2++;
+            s1 = s1 + 1;
+            s0 = s0 + 4;
+        } while (s2 < 0x24);
+    }
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    switch (InputPass_GetPhase(*(Task **)(s3 + 0x114))) {
+    case 6:
+        InputPass_CopyBuf(*(Task **)(s3 + 0x114), s3 + 0xCC);
+        s0 = (u8 *)gInputName;
+        s5 = *(u8 **)(s4 + 0x30);
+        v = *(s32 *)(s0 + 0x10);
+        D_00470704 = v;
+        D_0047070C = 0x5000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, 0x5000);
+        D_00470238 = 0;
+        if (*(void **)s5 != 0) {
+            func_0022D0E0(*(void **)s5, 1);
+        }
+        *(void **)s5 = func_0022D860(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x14) + 0x4));
+        if (*(void **)(s5 + 0x98) != 0) {
+            func_0022D0E0(*(void **)(s5 + 0x98), 1);
+            *(void **)(s5 + 0x98) = 0;
+        }
+        if (*(void **)(s5 + 0x9C) != 0) {
+            func_0022D0E0(*(void **)(s5 + 0x9C), 1);
+            *(void **)(s5 + 0x9C) = 0;
+        }
+        StrStatus_Free();
+        func_002BFD90();
+        *(void **)(s4 + 0x1C) = ((void *)func_002F0FD0 == 0) ? 0 : (void *)func_002F0FD0;
+        break;
+    case 7:
+        *(s32 *)(s3 + 0x110) = IpSysWnd_Start(4);
+        *(void **)(s4 + 0x1C) = ((void *)func_002F1300 == 0) ? 0 : (void *)func_002F1300;
+        break;
+    default:
+        return;
+    }
+    InputPass_TaskFree(*(u8 **)(s3 + 0x114));
+    *(s32 *)(s3 + 0x114) = 0;
+}
+extern void *func_0022D860(f32, void *);
+extern s32 func_002F4A70();
+extern s32 InputName_Start();
+extern void StrStatus_Free();
+extern void func_002BFD90();
+extern void func_002F10F0(Task *);
+
+void func_002F1300(Task *a0) {
+    u8 *s4;
+    u8 *s3;
+    s32 s2;
+    u16 *s1;
+    u8 *s0;
+    u8 *s5;
+    s32 v;
+
+    s4 = (u8 *)a0;
+    s3 = *(u8 **)((u8 *)a0 + 0x30);
+    s0 = (u8 *)gInputName;
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    v = *(s32 *)(s0 + 0x10);
+    D_00470704 = v;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x5000);
+    D_00470238 = 0;
+    func_002F0BC0(s3);
+    if (*(u8 *)(s3 + 0x170) < 5) {
+        s2 = 0;
+        s1 = (u16 *)s3;
+        s0 = s3;
+        do {
+            if (*(u16 *)((u8 *)s1 + 0x128) != 0xFFFF) {
+                func_0022CF70(*(s32 *)(s0 + 0x4));
+            }
+            s2++;
+            s1 = s1 + 1;
+            s0 = s0 + 4;
+        } while (s2 < 0x24);
+    }
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    if (func_002F4A80(*(s32 *)(s3 + 0x110)) == 4) {
+        *(f32 *)(s3 + 0x118) = 20.0f;
+        *(u8 *)(s3 + 0x172) = !(func_002F4A70(*(s32 *)(s3 + 0x110)) != 0);
+        *(u8 *)(s3 + 0x170) = 5;
+        func_002F4A90(*(s32 *)(s3 + 0x110));
+        *(s32 *)(s3 + 0x110) = 0;
+        if (*(u8 *)(s3 + 0x172)) {
+            s0 = *(u8 **)(s4 + 0x30);
+            *(s32 *)(s0 + 0x114) = InputName_Start();
+            *(void **)(s4 + 0x1C) = ((void *)func_002F10F0 == 0) ? 0 : (void *)func_002F10F0;
+        } else {
+            s0 = (u8 *)gInputName;
+            s5 = *(u8 **)(s4 + 0x30);
+            v = *(s32 *)(s0 + 0x10);
+            D_00470704 = v;
+            D_0047070C = 0x5000;
+            D_00470708 = 0;
+            amModel_SetCurrent(v, 0x5000);
+            D_00470238 = 0;
+            if (*(void **)s5 != 0) {
+                func_0022D0E0(*(void **)s5, 1);
+            }
+            *(void **)s5 = func_0022D860(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x14) + 0x4));
+            if (*(void **)(s5 + 0x98) != 0) {
+                func_0022D0E0(*(void **)(s5 + 0x98), 1);
+                *(void **)(s5 + 0x98) = 0;
+            }
+            if (*(void **)(s5 + 0x9C) != 0) {
+                func_0022D0E0(*(void **)(s5 + 0x9C), 1);
+                *(void **)(s5 + 0x9C) = 0;
+            }
+            StrStatus_Free();
+            func_002BFD90();
+            *(void **)(s4 + 0x1C) = ((void *)func_002F0FD0 == 0) ? 0 : (void *)func_002F0FD0;
+        }
+    }
+}
 #if 0
 // differs: 8 bytes short (0x148 vs 0x150): the original branch layout of the final if differs
 void func_002F1500(u8 *task) {
@@ -762,7 +923,75 @@ void func_002F2F00(u8 *task) {
         *(s32 *)(task + 0x1C) = 0;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3020);
+extern s32 func_002F4A70();
+
+void func_002F3020(Task *a0) {
+    u8 *s4;
+    u8 *s3;
+    s32 s2;
+    u16 *s1;
+    u8 *s0;
+    s32 v;
+
+    s4 = (u8 *)a0;
+    s3 = *(u8 **)((u8 *)a0 + 0x30);
+    s0 = (u8 *)gInputName;
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    v = *(s32 *)(s0 + 0x10);
+    D_00470704 = v;
+    D_0047070C = 0x5000;
+    D_00470708 = 0;
+    amModel_SetCurrent(v, 0x5000);
+    D_00470238 = 0;
+    func_002F2D50(s3);
+    if (*(u8 *)(s3 + 0x60) < 5) {
+        s2 = 0;
+        s1 = (u16 *)s3;
+        s0 = s3;
+        do {
+            if (*(s16 *)((u8 *)s1 + 0x50) != 0xFFFF) {
+                func_0022CF70(*(s32 *)(s0 + 0x4));
+            }
+            s2++;
+            s1 = s1 + 1;
+            s0 = s0 + 4;
+        } while (s2 < 0x8);
+    }
+    A2d_FlushList();
+    func_00133B50(0, 0);
+    if (func_002F4A80(*(s32 *)(s3 + 0x3C)) == 4) {
+        if (func_002F4A70(*(s32 *)(s3 + 0x3C)) != 0) {
+            *(void **)(s4 + 0x1C) = ((void *)func_002F3210 == 0) ? 0 : (void *)func_002F3210;
+        } else {
+            *(u8 *)(s3 + 0x61) = 1;
+            *(f32 *)(s3 + 0x40) = 20.0f;
+            *(u8 *)(s3 + 0x60) = 5;
+            s0 = (u8 *)gInputName;
+            v = *(s32 *)(s0 + 0x10);
+            D_00470704 = v;
+            D_0047070C = 0x5000;
+            D_00470708 = 0;
+            amModel_SetCurrent(v, 0x5000);
+            D_00470238 = 0;
+            if (*(void **)s3 != 0) {
+                func_0022D0E0(*(void **)s3, 1);
+            }
+            *(void **)s3 = func_0022D860(0.0f, *(void **)(*(u8 **)(*(u8 **)(s0 + 0xC) + 0x14) + 0xC));
+            if (*(void **)(s3 + 0x28) != 0) {
+                func_0022D0E0(*(void **)(s3 + 0x28), 1);
+                *(void **)(s3 + 0x28) = 0;
+            }
+            if (*(void **)(s3 + 0x2C) != 0) {
+                func_0022D0E0(*(void **)(s3 + 0x2C), 1);
+                *(void **)(s3 + 0x2C) = 0;
+            }
+            *(void **)(s4 + 0x1C) = ((void *)func_002F2F00 == 0) ? 0 : (void *)func_002F2F00;
+        }
+        func_002F4A90(*(s32 *)(s3 + 0x3C));
+        *(s32 *)(s3 + 0x3C) = 0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F3210);
 extern void func_002F3210(Task *);
 extern void *func_0022D670(f32, void *);
@@ -884,8 +1113,8 @@ void InputPass_CopyBuf(Task *t, void *dst) {
     }
 }
 /* The byte at 0x60 of the task's work area, 0 without a task. */
-u8 InputPass_GetPhase(Task *t) {
-    u8 k;
+s16 InputPass_GetPhase(Task *t) {
+    s16 k;
 
     if (t == 0) {
         k = 0;
