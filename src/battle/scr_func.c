@@ -778,7 +778,53 @@ s32 func_002AB4F0(s32 *a0, s32 *a1) {
     return 1;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB4F0);
+s32 func_002AB4F0(ScriptThread *t, ScriptCtx *ctx) {
+    s32 *p = ctx->args;
+    s32 i = t->obj->id;
+    s32 p3 = p[3];
+    s32 p2 = p[2];
+    s32 p1 = p[1];
+    s32 p0 = p[0];
+    u8 *e = (u8 *)D_005BC9E0 + i * 416 + p3 * 208;
+    u8 *tbl;
+    u8 *base;
+    u8 *rec;
+
+    tbl = *(u8 **)(e + 4);
+    base = tbl + *(s32 *)(tbl + 0x14);
+    rec = tbl + *(s32 *)(base + p2 * 4);
+    *(s32 *)(e + 8) = p2;
+    *(s32 *)(e + 0xC) = p1;
+    *(f32 *)(e + 0x50) = (f32)*(s16 *)(rec + 0x10);
+    *(f32 *)(e + 0x54) = (f32)*(s16 *)(rec + 0x12);
+    *(s32 *)(e + 0x30) = 0;
+    *(s32 *)(e + 0x34) = 0;
+    *(f32 *)(e + 0x38) = 1.0f;
+    *(f32 *)(e + 0x3C) = 1.0f;
+    if (p0 == 1) {
+        *(f32 *)(e + 0x40) = *(f32 *)(e + 0x50);
+    } else {
+        *(f32 *)(e + 0x40) = *(f32 *)(e + 0x50) - 0.5f;
+    }
+    *(f32 *)(e + 0x44) = *(f32 *)(e + 0x54);
+    *(f32 *)(e + 0x48) = 1.0f;
+    *(f32 *)(e + 0x4C) = 1.0f;
+    if (*(s32 *)(e + 0x14) & 1) {
+        f32 h = 0.5f * *(f32 *)(e + 0x50);
+        *(f32 *)(e + 0x60) = *(f32 *)(e + 0x80) - h;
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x80) + h;
+    } else {
+        *(f32 *)(e + 0x70) = *(f32 *)(e + 0x60) + *(f32 *)(e + 0x50);
+    }
+    if (*(s32 *)(e + 0x14) & 2) {
+        f32 h = 0.5f * *(f32 *)(e + 0x54);
+        *(f32 *)(e + 0x64) = *(f32 *)(e + 0x84) - h;
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x84) + h;
+    } else {
+        *(f32 *)(e + 0x74) = *(f32 *)(e + 0x64) + *(f32 *)(e + 0x54);
+    }
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002AB690);
 s32 func_002AB9C0(ScriptThread *t, ScriptCtx *ctx) {
     s32 *a = ctx->args;
