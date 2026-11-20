@@ -228,7 +228,84 @@ INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273330);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002735D0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_002737C0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273AF0);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00273E20);
+extern void *A2d_AllocObj(s32, f32);
+extern void func_0022C430(s32, f32);
+extern u8 *func_0022D860(s32, f32);
+extern void func_0022C560(u8 *);
+extern void func_0022C6B0(u8 *);
+extern void func_0022D4B0(u8 *, s32);
+extern void func_0022D0E0(u8 *, s32);
+extern void func_00227A30(void *);
+extern void amModel_SetCurrent();
+extern void *D_00470704;
+extern s32 D_00470238, D_00470708, D_0047070C;
+extern f32 gFrameDelta;
+extern void func_00228410(void);
+s32 func_00133780(s32, s32);
+s32 func_00228430(s32);
+s32 func_002284D0(s32);
+
+#define ESH_ITEM(l, i) *(s32 *)(*(s32 *)(s2 + (l)) + *(s32 *)((u8 *)gEssShop + (i)) * 4)
+#define ESH_TIME(t) (f32)*(s32 *)((u8 *)gEssShop + (t)) * gFrameDelta
+
+void func_00273E20(void) {
+    u8 *s0;
+    u8 *s2;
+    u8 *s1;
+    u8 *temp_a0;
+    f32 a;
+
+    s0 = *(u8 **)((u8 *)gEssShop + 0x20) + 0x30;
+    temp_a0 = *(u8 **)((u8 *)gEssShop + 0x2C);
+    D_00470704 = temp_a0;
+    D_0047070C = 0x11401200;
+    D_00470708 = 0;
+    amModel_SetCurrent(temp_a0, 0x11401200);
+    D_00470238 = 0;
+    func_00133780(0, 1);
+    s2 = *(u8 **)((u8 *)gEssShop + 0x28);
+    func_00228430(0);
+    func_002284D0(0);
+    func_0022C430(ESH_ITEM(0x1C, 0x2FC), ESH_TIME(0x2F4));
+    if (*(s32 *)(s0 + 8) != 0) {
+        func_0022C430(ESH_ITEM(0x1C, 0x31C), ESH_TIME(0x324));
+        s1 = A2d_AllocObj(ESH_ITEM(0x1C, 0x34C), ESH_TIME(0x354));
+        func_00228430(0);
+        func_00227A30(s1 + 0x20);
+        s0 = func_0022D860(ESH_ITEM(0x14, 0x37C), ESH_TIME(0x384));
+        *(f32 *)(*(u8 **)(s0 + 0x30) + 0x5C) *= *(f32 *)(s1 + 0x5C);
+        *(f32 *)(*(u8 **)(*(u8 **)(s0 + 0x2C) + 0x30) + 0x5C) *= *(f32 *)(s1 + 0x5C);
+        func_00228410();
+        func_0022C560(s0);
+        a = *(f32 *)(s1 + 0x5C);
+        *(f32 *)(s1 + 0x50) = 1.0f;
+        *(f32 *)(s1 + 0x54) = 1.0f;
+        *(f32 *)(s1 + 0x58) = 1.0f;
+        *(f32 *)(s1 + 0x5C) = a;
+        func_0022C6B0(s1);
+    } else {
+        s1 = A2d_AllocObj(ESH_ITEM(0x1C, 0x31C), ESH_TIME(0x324));
+        func_0022C430(ESH_ITEM(0x1C, 0x34C), ESH_TIME(0x354));
+        func_00228430(0);
+        func_00227A30(s1 + 0x20);
+        s0 = func_0022D860(ESH_ITEM(0x14, 0x37C), ESH_TIME(0x384));
+        *(f32 *)(*(u8 **)(s0 + 0x30) + 0x5C) *= *(f32 *)(s1 + 0x5C);
+        *(f32 *)(*(u8 **)(*(u8 **)(s0 + 0x2C) + 0x30) + 0x5C) *= *(f32 *)(s1 + 0x5C);
+        func_00228410();
+        func_0022C560(s0);
+        a = *(f32 *)(s1 + 0x5C);
+        *(f32 *)(s1 + 0x50) = 1.0f;
+        *(f32 *)(s1 + 0x54) = 1.0f;
+        *(f32 *)(s1 + 0x58) = 1.0f;
+        *(f32 *)(s1 + 0x5C) = a;
+        func_0022C6B0(s1);
+    }
+    func_0022D4B0(s1, 1);
+    func_0022D0E0(s0, 1);
+    func_0022C430(ESH_ITEM(0x1C, 0x300), ESH_TIME(0x2F4));
+    func_00228410();
+    func_00133780(0, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00274120);
 #if 0
 // differs: 36 of 85: the counter preamble and the flag test match; the store order of the gEssShop fields and the argument registers of func_0026D570 differ, and the function-pointer tail is laid out differently
@@ -666,5 +743,83 @@ void func_00276CE0(u8 *a0, s32 a1) {
     func_0026E000(s1, 0xF0);
 }
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00276DC0);
-INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00277010);
+extern s32 gEssTrade;
+extern void *A2d_AllocObj(s32, f32);
+extern void func_0022C430(s32, f32);
+extern u8 *func_0022D860(s32, f32);
+extern void func_0022C560(u8 *);
+extern void func_0022C6B0(u8 *);
+extern void func_0022D4B0(u8 *, s32);
+extern void func_0022D0E0(u8 *, s32);
+extern void func_00227A30(void *);
+extern void amModel_SetCurrent();
+extern void *D_00470704;
+extern s32 D_00470238, D_00470708, D_0047070C;
+extern f32 gFrameDelta;
+extern void func_00228410(void);
+s32 func_00133780(s32, s32);
+s32 func_00228430(s32);
+s32 func_002284D0(s32);
+
+#define EST_ITEM(l, i) *(s32 *)(*(s32 *)(s2 + (l)) + *(s32 *)((u8 *)gEssTrade + (i)) * 4)
+#define EST_TIME(t) (f32)*(s32 *)((u8 *)gEssTrade + (t)) * gFrameDelta
+
+void func_00277010(void) {
+    u8 *s0;
+    u8 *s2;
+    u8 *s1;
+    u8 *temp_a0;
+    f32 a;
+
+    s0 = *(u8 **)((u8 *)gEssTrade + 0x20) + 0x30;
+    temp_a0 = *(u8 **)((u8 *)gEssTrade + 0x2C);
+    D_00470704 = temp_a0;
+    D_0047070C = 0x11401400;
+    D_00470708 = 0;
+    amModel_SetCurrent(temp_a0, 0x11401400);
+    D_00470238 = 0;
+    func_00133780(0, 1);
+    s2 = *(u8 **)((u8 *)gEssTrade + 0x28);
+    func_00228430(0);
+    func_002284D0(0);
+    func_0022C430(EST_ITEM(0x1C, 0x1C8), EST_TIME(0x1C0));
+    if (*(s32 *)(s0 + 8) != 0) {
+        func_0022C430(EST_ITEM(0x1C, 0x218), EST_TIME(0x220));
+        s1 = A2d_AllocObj(EST_ITEM(0x1C, 0x248), EST_TIME(0x250));
+        func_00228430(0);
+        func_00227A30(s1 + 0x20);
+        s0 = func_0022D860(EST_ITEM(0x14, 0x1E8), EST_TIME(0x1F0));
+        *(f32 *)(*(u8 **)(s0 + 0x30) + 0x5C) *= *(f32 *)(s1 + 0x5C);
+        *(f32 *)(*(u8 **)(*(u8 **)(s0 + 0x2C) + 0x30) + 0x5C) *= *(f32 *)(s1 + 0x5C);
+        func_00228410();
+        func_0022C560(s0);
+        a = *(f32 *)(s1 + 0x5C);
+        *(f32 *)(s1 + 0x50) = 1.0f;
+        *(f32 *)(s1 + 0x54) = 1.0f;
+        *(f32 *)(s1 + 0x58) = 1.0f;
+        *(f32 *)(s1 + 0x5C) = a;
+        func_0022C6B0(s1);
+    } else {
+        s1 = A2d_AllocObj(EST_ITEM(0x1C, 0x218), EST_TIME(0x220));
+        func_0022C430(EST_ITEM(0x1C, 0x248), EST_TIME(0x250));
+        func_00228430(0);
+        func_00227A30(s1 + 0x20);
+        s0 = func_0022D860(EST_ITEM(0x14, 0x1E8), EST_TIME(0x1F0));
+        *(f32 *)(*(u8 **)(s0 + 0x30) + 0x5C) *= *(f32 *)(s1 + 0x5C);
+        *(f32 *)(*(u8 **)(*(u8 **)(s0 + 0x2C) + 0x30) + 0x5C) *= *(f32 *)(s1 + 0x5C);
+        func_00228410();
+        func_0022C560(s0);
+        a = *(f32 *)(s1 + 0x5C);
+        *(f32 *)(s1 + 0x50) = 1.0f;
+        *(f32 *)(s1 + 0x54) = 1.0f;
+        *(f32 *)(s1 + 0x58) = 1.0f;
+        *(f32 *)(s1 + 0x5C) = a;
+        func_0022C6B0(s1);
+    }
+    func_0022D4B0(s1, 1);
+    func_0022D0E0(s0, 1);
+    func_0022C430(EST_ITEM(0x1C, 0x1CC), EST_TIME(0x1C0));
+    func_00228410();
+    func_00133780(0, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/ess_shop", func_00277310);
