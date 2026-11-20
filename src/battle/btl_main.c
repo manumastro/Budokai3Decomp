@@ -5065,7 +5065,34 @@ void func_001B8500(Fighter *f) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001B8500);
+extern void (*D_004684C0[])(void *);
+extern void func_00146F10(void *, void *, f32);
+
+void func_001B8500(Fighter *f) {
+    Copy16 tmp;
+    f32 s;
+    f32 diff;
+    s32 lim;
+
+    s = BW_FIELD(gBattle, f32, 0x88F0) * FT_FIELD(f, f32, 0xC9C);
+    Fighter_ResetMotion(f, 0);
+    diff = FT_FIELD(f, f32, 0x182C) - FT_FIELD(f, f32, 0x1830);
+    lim = FT_FIELD(f, s32, 0xC5C);
+    if (FT_FIELD(f, s32, 0xC64) != 0 && diff < (f32)lim) {
+        FT_FIELD(f, s8, 0x2004) = 1;
+        FT_FIELD(f, s8, 0x1FFB) = 1;
+        FT_FIELD(f, s16, 0xCB6) = 0;
+        FT_FIELD(f, s8, 0x2006) = 0;
+        D_004684C0[0](f);
+        func_002CBFF0(1, f);
+    } else {
+        func_00146F10(&tmp, (u8 *)f + 0xD0, s);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%0)" : : "r"((u8 *)f + 0x40), "r"(&tmp));
+        func_001E4E20(f, 0);
+        FT_FIELD(f, f32, 0x44) = FT_FIELD(f, f32, 0x1844);
+        FT_FIELD(f, f32, 0x1830) = FT_FIELD(f, f32, 0x1830) + s;
+    }
+}
 void func_001B8600(u8 *arg0)
 {
   u8 *new_var;
