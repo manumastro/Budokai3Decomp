@@ -692,7 +692,30 @@ void func_002C99E0(EffReq2C41C0 *s) {
     }
     s->f50 = D_004563E0[e->f40];
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2C41C0", func_002C9AF0);
+extern void (*jtbl_004563B0[])(EffSubB2C41C0 *);
+extern void *D_0047011C;
+extern void func_0013B0B0(void *);
+extern void func_0013B110(s32);
+
+void func_002C9AF0(char *a0) {
+    EffSubB2C41C0 *s = (EffSubB2C41C0 *)(a0 + 0x20);
+    jtbl_004563B0[s->f0->f84](s);
+}
+
+void func_002C9B20(EffTask2C41C0 *t) {
+    EffSubB2C41C0 *s = t->f30;
+    void (*fn)(EffSubB2C41C0 *);
+
+    fn = D_004563D0[s->f0->f84];
+    if (s->f3A != 0) {
+        func_0013B0B0(*(void **)((u8 *)D_0047011C + 0x1A0));
+        fn(s);
+        func_0013B110(1);
+    }
+    s->f3A = 0;
+    gEffWork->f4D86 &= ~0x800;
+    gEffWork->f4D86 &= ~0x400;
+}
 void func_002C9BC0(EffTask2C41C0 *t) {
     EffSubB2C41C0 *s = t->f30;
     void (*fn)(EffSubB2C41C0 *);
