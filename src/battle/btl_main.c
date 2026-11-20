@@ -9232,7 +9232,64 @@ void func_001C80E0(Fighter *f, s32 a1) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001C80E0);
+extern void func_001E7070(void *p, s32 a);
+extern void func_001E8290(void *p);
+extern void Character_Release(void *p);
+
+typedef struct SubObj_1C80E0 {
+    u8 pad0[0x14];
+    s16 unk14;
+    s16 unk16;
+} SubObj_1C80E0;
+
+typedef struct Fighter_1C80E0 {
+    u8 pad0[0x650];
+    u8 unk650[0xB7C - 0x650];
+    s32 unkB7C;
+    u8 padB80[0xBA4 - 0xB80];
+    s32 unkBA4;
+    u8 padBA8[0xCD0 - 0xBA8];
+    u8 unkCD0[0x11FC - 0xCD0];
+    s32 unk11FC;
+    u8 pad1200[0x1CF4 - 0x1200];
+    SubObj_1C80E0 *unk1CF4;
+    u8 pad1CF8[0x1CFC - 0x1CF8];
+    s32 unk1CFC;
+    u8 pad1D00[0x1DB8 - 0x1D00];
+    s32 slot0;
+} Fighter_1C80E0;
+
+void func_001C80E0(Fighter *f_arg, s32 a1_arg) {
+    Fighter_1C80E0 *f;
+    s32 a1;
+    s32 i;
+    Fighter_1C80E0 *w;
+
+    f = (Fighter_1C80E0 *)f_arg;
+    a1 = a1_arg;
+    if (f->unk1CFC != 0x2A) {
+        i = 0;
+        w = f;
+        do {
+            if (i != f->unkBA4 && i != f->unk1CF4->unk14 && i != f->unk1CF4->unk16 && i != a1) {
+                if (w->slot0 != 0) {
+                    if (f->unkB7C == w->slot0) {
+                        func_001E7070(f->unk650, -1);
+                        func_001E8290(f->unk650);
+                    }
+                    if (f->unk11FC == w->slot0) {
+                        func_001E7070(f->unkCD0, -1);
+                        func_001E8290(f->unkCD0);
+                    }
+                    Character_Release((void *)w->slot0);
+                    w->slot0 = 0;
+                }
+            }
+            i++;
+            w = (Fighter_1C80E0 *)((u8 *)w + 4);
+        } while (i < 8);
+    }
+}
 void func_001C81D0(Fighter *f, s32 i) {
     func_001C80E0(f, i);
     func_001C8050(f, i);
