@@ -862,7 +862,31 @@ s32 func_002ABE50(s32 *a0, s32 *a1) {
     return 1;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/scr_func", func_002ABE50);
+extern s32 amSound_LoadStream(void *);
+
+s32 func_002ABE50(ScriptThread *t, ScriptCtx *ctx) {
+    s32 *args = ctx->args;
+    s32 j = *args;
+    s32 i = t->obj->id;
+    s32 *e = (s32 *)((u8 *)D_005BC560 + i * 576 + j * 36);
+    s32 *x = e + 3;
+    s32 *v = e + 6;
+    s32 loc[5];
+
+    if (e[4] != 0 && v[1] != 0) {
+        loc[0] = j;
+        loc[1] = x[2];
+        loc[2] = v[2];
+        loc[3] = x[1];
+        loc[4] = v[1];
+        if (amSound_LoadStream(loc) != 0) {
+            t->wait = func_002ABE50;
+            return 3;
+        }
+    }
+    t->wait = NULL;
+    return 1;
+}
 extern s32 amSound_LoadBank2(void *, void *);
 extern s32 func_002ABF20(s32 *, s32 *);
 s32 func_002ABF20(s32 *a0, s32 *a1) {
