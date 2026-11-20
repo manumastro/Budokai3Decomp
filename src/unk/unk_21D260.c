@@ -24,7 +24,7 @@ extern void func_00224680(void *);
 extern void func_00224BB0(void *);
 extern s32 func_002249B0(void);
 extern char *gBattle;
-extern void func_00223660(void);
+extern void func_00223660();
 extern void func_00224F90(void);
 
 typedef struct Sub2_21D260 {
@@ -305,7 +305,108 @@ void func_00222A90(u8 *arg0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00222BF0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00223660);
+extern void *BtlSys_GetSlot(s32);
+extern s32 func_0021C2E0(s32);
+extern void func_00224680(void *);
+extern void func_00224BB0(void *);
+extern s32 func_002249B0(void);
+extern void func_002228F0(Task2_21D260 *);
+extern void func_0021F0E0(void);
+extern void func_00222BF0(void);
+extern f32 D_00470710;
+extern char D_0058BB30[];
+extern s8 D_0058BB36[];
+extern s32 D_0058BB38[];
+
+typedef struct Sub_223660 {
+    s32 f0;
+    s32 f4;
+    s16 f8;
+    s16 fA;
+    char padC[0x8];
+    s32 f14;
+    char pad18[0x4];
+    f32 f1C;
+    f32 f20;
+    char pad24[0x4];
+    s32 f28;
+    f32 f2C;
+    s32 f30;
+    s32 f34;
+} Sub_223660;
+
+void func_00223660(Task2_21D260 *o) {
+    Work21D260 *bs = gBtlSys;
+    Sub_223660 *s = (Sub_223660 *)((char *)o + 0x30);
+    s32 slot;
+    void *slot_ptr;
+    Work21D260 *g;
+    f32 f;
+
+    slot = *(s16 *)((char *)bs + 0xE42);
+    if (slot == -1) {
+        slot = func_0021C2E0(*(s16 *)((char *)bs + 0xE40));
+    }
+    if (slot == -1) {
+        slot_ptr = NULL;
+    } else {
+        slot_ptr = BtlSys_GetSlot(slot);
+    }
+    func_00224680(s);
+    if ((bs->fE30 & 2) != 0) {
+        g = gBtlSys;
+        switch (s->f28) {
+        case 0:
+            f = s->f2C + D_00470710;
+            s->f2C = f;
+            if (!(f < 8.0f)) {
+                s->f28 = 1;
+            }
+            break;
+        case 1:
+            break;
+        case 2:
+            f = s->f2C + D_00470710;
+            s->f2C = f;
+            if (!(f < 8.0f)) {
+                g->fE30 = g->fE30 & -3;
+            }
+            break;
+        }
+        s->f20 = s->f20 + D_00470710;
+    } else {
+        func_00224BB0(D_0058BB30);
+        func_002249B0();
+        if (D_0058BB38[0] == 0) {
+            if (D_0058BB36[0] != 0) {
+                s->f20 = s->f20 + D_00470710;
+            } else {
+                s->f20 = 0.0f;
+            }
+            return;
+        }
+    }
+    if (slot_ptr != NULL && *(s16 *)((char *)slot_ptr + 0x4E) != -2) {
+        s->f8 = 8;
+        s->f4 = 3;
+        s->fA = 0;
+        s->f14 = *(s32 *)((char *)slot_ptr + 0x1C);
+        s->f30 = 0;
+        s->f34 = 0;
+        o->f1C = (func_002228F0 == 0) ? 0 : (void (*)(void))func_002228F0;
+        {
+            Task2_21D260 *n = (Task2_21D260 *)s->f0;
+            n->f1C = (func_0021F0E0 == 0) ? 0 : (void (*)(void))func_0021F0E0;
+        }
+    }
+    f = s->f1C + D_00470710;
+    s->f1C = f;
+    if (!(f < 8.0f)) {
+        s->f4 = 1;
+        s->f1C = 0.0f;
+        o->f1C = (func_00222BF0 == 0) ? 0 : func_00222BF0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002238B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00223DA0);
 extern s32 D_0058BB3C[];
