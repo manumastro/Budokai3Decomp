@@ -39,7 +39,53 @@ extern McTask *D_0047088C;
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002880B0);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288500);
 INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_00288870);
-INCLUDE_ASM("asm/nonmatchings/sys/mc_opr", func_002889C0);
+typedef struct McSlotInfo {
+    u8 pad0[8];
+    s32 free; /* 0x8 */
+    u8 pad1[0x34];
+} McSlotInfo;
+
+extern s32 D_0047084C;
+extern s32 D_00470858;
+extern s32 D_00470894;
+extern McSlotInfo gMcInfo[];
+extern char D_0046B960[];
+extern s32 amMc_Delete(s32, s32, char *);
+extern void func_00288870(s32);
+extern void func_0028DDF0(u8 *);
+extern void func_0028C580(u8 *);
+extern void func_0028C3E0(u8 *);
+void func_002889C0(u8 *arg0, u8 *arg1, s32 arg2) {
+    s32 i;
+    s32 avail;
+    u32 sz;
+
+    avail = 0x6B;
+    for (i = 0; i < arg2; i++) {
+        sz = (*(u32 *)(arg1 + 0x10) + 0x3FF) >> 10;
+        avail -= sz;
+        if (*(u16 *)(arg1 + 0x14) & 0x20) {
+            avail--;
+        }
+        arg1 += 0x40;
+    }
+    if (gMcInfo[D_0047084C].free >= avail) {
+        if (amMc_Delete(D_0047084C, 0, D_0046B960) != 0) {
+            func_00288870(0x13);
+            MC_SETFUNC(arg0, func_0028DDF0);
+            D_00470858 = 3;
+            D_00470894 = (s32)func_0028C580;
+        } else {
+            func_00288870(0x11);
+            MC_SETFUNC(arg0, func_0028DDF0);
+            D_00470894 = (s32)func_0028C3E0;
+        }
+    } else {
+        func_00288870(0xF);
+        MC_SETFUNC(arg0, func_0028DDF0);
+        D_00470894 = (s32)func_0028C580;
+    }
+}
 extern s32 func_00127940(void *, void *);
 extern u8 D_004535E0[];
 s32 func_00288AF0(u8 *arg0, s32 arg1, char *arg2) {
