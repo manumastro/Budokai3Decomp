@@ -493,7 +493,29 @@ void func_001AC400(void *p0) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC400);
+void func_001AC400(void *p0) {
+    u8 *t1;
+    s32 t0;
+    s32 a3;
+    u32 *a2;
+    s32 a1;
+    u8 *p = p0;
+    *(s32 *)(p + 0x8) += (s32)p;
+    t1 = *(u8 **)(p + 0x8);
+    for (t0 = 0; t0 < *(s32 *)(p + 0x4); t0++) {
+        a1 = *(s16 *)(t1 + 0xE);
+        if (0 < a1) {
+            a3 = 0;
+            a2 = (u32 *)t1;
+            do {
+                *(s32 *)((u8 *)a2 + 0x40) += (s32)p;
+                a3++;
+                a2++;
+            } while (a3 < (a1 = *(s16 *)(t1 + 0xE)));
+        }
+        t1 = (u8 *)((s32)t1 + 0x44) + (a1 - 1) * 4;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AC490);
 #if 0
 // differs: size 0x134 against 0x150: the original's loops and the else branch have 7 more instructions (layout of the if/else-if around the two loops not found)
