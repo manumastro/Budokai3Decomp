@@ -21,8 +21,6 @@ void func_002F4460(u8 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F44E0);
-#if 0
-// differs: 20 of 64: the branch layout of the three-way gate and the table lookup match the shape; the register roles of task/object/global stay wrong for every declaration order tried
 extern f32 gFrameDelta;
 extern s32 D_00470704;
 extern s32 D_0047070C;
@@ -36,38 +34,37 @@ extern void func_002F4330();
 extern void func_002F44E0();
 
 void func_002F4780(u8 *a0) {
-    u8 *t;
     u8 *g;
     u8 *o;
     f32 f;
-    void *fp;
-    s16 k;
-    t = a0;
+    s32 m;
+
     o = *(u8 **)(a0 + 0x30);
     func_002F4330(o);
     f = *(f32 *)(o + 0x14) - gFrameDelta;
     *(f32 *)(o + 0x14) = f;
     if (f <= 0.0f) {
         *(s16 *)(o + 0xE) = 2;
-        k = *(s16 *)(o + 0xC);
         g = (u8 *)gInputName;
-        if (k == 6 || k == 4 || k == 0) {
-            D_00470704 = *(s32 *)(g + 0x10);
+        switch (*(s16 *)(o + 0xC)) {
+        case 0:
+        case 4:
+        case 6:
+            m = *(s32 *)(g + 0x10);
+            D_00470704 = m;
             D_0047070C = 0x5000;
-            amModel_SetCurrent(*(s32 *)(g + 0x10), 0x5000);
             D_00470708 = 0;
+            amModel_SetCurrent(m, 0x5000);
             D_00470238 = 0;
             if (*(s32 *)(o + 0x8) != 0) {
                 func_0022D0E0(*(void **)(o + 0x8), 1);
             }
-            *(s32 *)(o + 0x8) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)(g + 0xC) + 0x1C) + ((*(s16 *)(o + 0x10) + 0x40) << 2)), 0.0f);
+            *(s32 *)(o + 0x8) = func_0022D670(*(s32 *)(*(u8 **)(*(u8 **)(g + 0xC) + 0x1C) + (*(s16 *)(o + 0x10) + 0x40) * 4), 0.0f);
+            break;
         }
-        fp = (void *)func_002F44E0;
-        *(void **)(t + 0x1C) = (fp == 0) ? 0 : fp;
+        *(void **)(a0 + 0x1C) = ((void *)func_002F44E0 == 0) ? 0 : (void *)func_002F44E0;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4780);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_ipsyswnd", func_002F4880);
 s16 func_002F4A70(u8 *a0) {
     return *(s16 *)(*(u8 **)(a0 + 0x30) + 0x10);

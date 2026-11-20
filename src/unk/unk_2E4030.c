@@ -717,24 +717,25 @@ void func_002E5840(Outer57 *a0) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5840);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5980);
-/* differs: 0xFC against 0x110 bytes: the only mismatch is the tail: the original stores func_002E5C20 through a register (lui/addiu, bnez over a zero, then sw at 0x1C); the one-line store here is a plain sw of the constant. Tried: ?: with NULL (35 of 67 differ). */
-#if 0
 void func_002E5B10(u8 *a0) {
     u8 *s0;
     f32 f;
+    s32 m;
 
     s0 = *(u8 **)(a0 + 0x30);
     *(s32 *)(s0 + 0xF8) = *(s32 *)(s0 + 0xF8) + *(s32 *)(s0 + 0x100);
+    *(s32 *)(s0 + 0xF8) = *(u16 *)(s0 + 0xF8);
     func_002E4D60((Sub57 *)s0);
     f = *(f32 *)(s0 + 0x108) - gFrameDelta;
     *(f32 *)(s0 + 0x108) = f;
     if (f <= 0.0f) {
         *(s16 *)(*(u8 **)(s0 + 0x114) + 0x34) = *(s16 *)(s0 + 0xF0);
         *(u8 *)(s0 + 0xCE) = 0;
-        D_00470704 = *(s32 *)(s0 + 4);
+        m = *(s32 *)(s0 + 4);
+        D_00470704 = m;
         D_0047070C = 0x7000;
         D_00470708 = 0;
-        amModel_SetCurrent(*(s32 *)(s0 + 4), 0x7000);
+        amModel_SetCurrent(m, 0x7000);
         D_00470238 = 0;
         if (*(s32 *)(s0 + 0x20) != 0) {
             func_0022D0E0(*(s32 *)(s0 + 0x20), 0);
@@ -742,9 +743,7 @@ void func_002E5B10(u8 *a0) {
         *(s32 *)(s0 + 0x20) = func_0022D670(((s32 *)(*(u8 **)(*(u8 **)s0 + 0x1C)))[D_0046F4B8[*(s16 *)(s0 + 0xF0)]], 0.0f);
         *(u8 *)(s0 + 0xF4) = 2;
         *(s32 *)(s0 + 0xF8) = *(s32 *)(s0 + 0xFC);
-        *(void **)(a0 + 0x1C) = (void *)func_002E5C20;
+        *(void **)(a0 + 0x1C) = ((void *)func_002E5C20 == 0) ? 0 : (void *)func_002E5C20;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5B10);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E4030", func_002E5C20);
