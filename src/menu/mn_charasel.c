@@ -584,7 +584,31 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027F8B0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027F9F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027FAE0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027FCA0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027FE10);
+extern void func_0027EA60(void *);
+extern void func_00288000(void);
+extern void func_0027DDC0(s32);
+extern void func_0027EC10(void *);
+extern void func_0027FCA0(void);
+
+void func_0027FE10(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+    f32 f1;
+
+    s1 = a0;
+    s0 = *(u8 **)(a0 + 0x38);
+    func_0027EA60(s0);
+    f1 = *(f32 *)(s0 + 0x40) - gFrameDelta;
+    *(f32 *)(s0 + 0x40) = f1;
+    if (f1 <= 0.0f) {
+        func_00288000();
+        func_0027DDC0(*(s32 *)(s0 + 0));
+        func_0027DDC0(*(s32 *)(s0 + 4));
+        func_0027EC10(s0);
+        *(f32 *)(s0 + 0x40) = 60.0f;
+        *(void **)(s1 + 0x1C) = (func_0027FCA0 == NULL) ? NULL : (void *)func_0027FCA0;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027FEB0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_002800F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_002802E0);
