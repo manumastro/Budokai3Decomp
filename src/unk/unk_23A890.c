@@ -7,7 +7,7 @@ void func_00252B10(void);
 void func_0025BE30(void);
 void func_002CA440(void);
 
-extern u8 *D_0058D3CC;
+extern u8 D_0058D3CC[];
 extern u8 *D_0046FE4C;
 void Obj_ResetF38(s32);
 
@@ -1914,7 +1914,54 @@ void func_00244410(u8 *o, s32 kind) {
 }
 // differs: the original keeps the entry pointer, the table pointers and the object in fewer saved registers (frame 0x50 here, 0x90 in the C form tried); the register roles do not match
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00244410);
+void func_00244410(u8 *o, s32 kind) {
+    s32 x = *(s32 *)(o + 0x1350);
+    u8 *sys = D_0046FE4C + x * 0x480;
+    u8 *s0 = sys + 0x10;
+    u8 *base;
+    u8 *p;
+    u8 *q;
+    u8 *r;
+
+    if (*(s32 *)(sys + 0x40) != 0) {
+        Obj_ResetF38(*(s32 *)(sys + 0x40));
+        *(s32 *)(s0 + 0x30) = 0;
+    }
+    base = *(u8 **)D_0058D3CC;
+    p = base + *(s32 *)(base + 0xC);
+    q = *(u8 **)(p + 0x24);
+    r = *(u8 **)(q + 0x28);
+    *(s32 *)(q + 0xA4) = *(s32 *)(o + 0xBA4) * 2 + 0x1A;
+    *(s32 *)(r + 0xA4) = *(s32 *)(o + 0xBA4) * 2 + 0x1A;
+    switch (kind) {
+    case 0x22:
+    case 0x21:
+        *(s32 *)(q + 0x5C) = 0x41700000;
+        *(s32 *)(q + 0xA0) = 0;
+        *(s32 *)(r + 0x5C) = 0x40E00000;
+        *(s32 *)(r + 0xA0) = 1;
+        break;
+    case 0x23:
+        *(s32 *)(q + 0x5C) = 0x41B00000;
+        *(s32 *)(q + 0xA0) = 0;
+        *(s32 *)(r + 0x5C) = 0x41800000;
+        *(s32 *)(r + 0xA0) = 1;
+        break;
+    case 0x24:
+        *(s32 *)(q + 0x5C) = 0x41A00000;
+        *(s32 *)(q + 0xA0) = 0;
+        *(s32 *)(r + 0x5C) = 0x41400000;
+        *(s32 *)(r + 0xA0) = 2;
+        break;
+    default:
+        *(s32 *)(q + 0x5C) = 0;
+        *(s32 *)(q + 0xA0) = 0;
+        *(s32 *)(r + 0x5C) = 0;
+        *(s32 *)(r + 0xA0) = 1;
+        break;
+    }
+    *(s32 *)(s0 + 0x30) = func_00209540((s32)base, (x != 0) ? 0x4000020 : 0x4000010, 0);
+}
 #if 0
 void func_00244580(s32 x, s32 y, s32 z) {
     u8 buf[0xB0];
