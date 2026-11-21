@@ -1752,14 +1752,62 @@ typedef struct SkSnd {
     /* 0x18 */ u8 pad18[8];
 } __attribute__((aligned(16))) SkSnd;
 typedef struct SkV16 { f32 v[4]; } __attribute__((aligned(16))) SkV16;
+extern SkV16 D_004502B0;
 extern SkV16 D_004502A0;
 extern SkV16 D_00450290;
+extern void func_0020D780(void *);
 extern s16 func_0020F690(void);
 extern void func_00214DD0(SkEff *);
 extern void func_00214F80(s32, SkEff *);
 extern void func_0025BD40(SkSnd *);
 extern void func_001F9CD0(s32, s32, s32, s32, s32);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_002518B0);
+void func_002518B0(SkObjC *ob) {
+    SkFxReq req;
+    SkSnd sn;
+    f32 dir[4] __attribute__((aligned(16)));
+    f32 v50[4] __attribute__((aligned(16)));
+    SkV16 v110;
+    f32 v30[4] __attribute__((aligned(16)));
+    s32 s0;
+    s32 task;
+
+    v110 = D_004502B0;
+    s0 = *(s32 *)(ob->unk08 + 0x1350);
+
+    if (((SkillBuf *)D_0046FE54)->unk60 & 0x20) {
+        memset(&req, 0, sizeof(req));
+        func_0020D780(dir);
+        req.pos = ob->unk20;
+        req.dir = dir;
+        req.f22 = 0;
+        req.f20 = 0x18;
+        func_002183F0(1, &req);
+        return;
+    }
+
+    if (!(((SkillBuf *)D_0046FE54)->unk60 & 0x40)) {
+        ((SkillBuf *)D_0046FE54)->unk62 = s0;
+        memset(&req, 0, sizeof(req));
+        func_0020D780(dir);
+        req.dir = dir;
+        req.f22 = 0;
+        req.f20 = 0x18;
+        req.pos = D_0046FE4C;
+        func_002183F0(1, &req);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; sqc2 $vf1, 0x0(%1)" : : "r"(D_0046FE4C), "r"(&sn));
+        sn.f10 = (s32)ob->unk08;
+        sn.f14 = 7;
+        sn.f16 = 0x1A;
+        func_0025BD40(&sn);
+        task = func_0020B020(s0, 7, 0x19);
+        ((SkillBuf *)D_0046FE54)->unk5C = func_00209540(task, s0 != 0 ? 0x4000020 : 0x4000010, 0);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%1) ; sqc2 $vf1, 0x0(%0)" : : "r"(v50), "r"(ob->unk30));
+        func_00146F30((s32 *)v50);
+        func_00141C30(v30, (f32 *)&v110, v50);
+        func_00209850(((SkillBuf *)D_0046FE54)->unk5C, v30);
+        ((SkillBuf *)D_0046FE54)->unk60 |= 0x40;
+    }
+}
 void func_00251A60(SkObjC *ob) {
     SkV16 v110;
     f32 v100[4] __attribute__((aligned(16)));
