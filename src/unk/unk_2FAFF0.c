@@ -139,7 +139,65 @@ extern s32 func_002FFD20(s32);
 void TourMap_TaskSlide(struct Task2FAFF0 *);
 void TourMap_TaskSlideF10(Task2FAFF0 *t);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FAFF0);
+typedef struct Pv28 {
+    f32 f0, f4, f8, fC, f10, f14, f18;
+} Pv28;
+
+typedef struct V16_2FAFF0 {
+    s32 v[4];
+} __attribute__((aligned(16))) V16_2FAFF0;
+
+extern s16 D_0046B5B0[];
+extern Pv28 D_00455920[];
+extern f32 D_0046FD80;
+extern u8 D_003F0800[];
+
+extern void func_0013B0B0(void *);
+extern void func_00131B90(void *);
+extern void func_00131F00(void *, f32, f32);
+extern void func_00132DF0(s32);
+extern void func_00133D10(s32);
+extern void func_0029D6C0(void *);
+extern void func_0029D740(void *);
+extern void func_0029D8B0(s32, s32);
+extern void func_0013BC00(f32, f32, f32);
+extern void func_0029DB00(void *, f32);
+extern void func_0013B110(s32);
+extern void func_00133B50(s32, s32);
+
+void func_002FAFF0(Task2FAFF0 *t) {
+    V16_2FAFF0 buf[6];
+
+    if (!t) {
+        return;
+    }
+    func_0013B0B0(D_003F0800);
+    func_00131B90(buf);
+    func_00131F00(buf, 0.0f, 0.0f);
+    func_00132DF0(0);
+    func_00133D10(0);
+    {
+        Pv28 *s1 = &D_00455920[D_0046B5B0[*(s32 *)(*(char **)t + 0xC)]];
+        Vec4_2FAFF0 vec = {0};
+        Vec4_2FAFF0 v2;
+
+        vec.x = s1->f10;
+        vec.y = s1->f14;
+        vec.z = s1->f18;
+        func_0029D6C0(&vec);
+        v2.x = 0.0f;
+        v2.y = 0.0f;
+        v2.z = 1.0f;
+        v2.w = 1.0f;
+        func_0029D740(&v2);
+        D_0046FD80 = s1->fC;
+        func_0029D8B0(-1, 4);
+        func_0013BC00(0.0f, 0.0f, D_00455920[D_0046B5B0[*(s32 *)(*(char **)t + 0xC)]].f8);
+        func_0029DB00(t, 1.0f);
+        func_0013B110(1);
+        func_00133B50(0, 0);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FB170);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FB4C0);
 void TourMap_TaskSaveWait(Task2FAFF0 *t) {
