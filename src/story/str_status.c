@@ -504,7 +504,45 @@ void func_002BEEE0(void *a0) {
         __asm__ volatile ("lqc2 $vf1, 0(%0) ; sqc2 $vf1, 0(%1)" : : "r"(a0), "r"(p) : "memory");
     }
 }
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BEF00);
+extern void func_00133780(s32, s32);
+extern s32 func_0013B0B0();
+extern void func_0013B110(s32);
+extern void func_00209E50(s32);
+extern void func_00208D70(s32);
+extern s32 amGs_SetReg32(s32, s32);
+extern s32 D_0046FD18;
+
+void func_002BEF00(u8 *arg0) {
+    s32 s1;
+    s32 i;
+    s32 *p = (s32 *)(arg0 + 0x30);
+
+    s1 = D_0046FD18;
+    func_00133780(2, 1);
+    func_0013B0B0(*p + 0x1A0);
+    D_00470238 = 0;
+    if (D_0047011C[0xD0 / 4] != 0) {
+        amModel_SetCurrent(D_0047011C[0xD0 / 4], D_0047011C[0xD8 / 4]);
+    }
+    for (i = 0; i < 8; i++) {
+        func_0013B0B0(0);
+        if (D_0047011C[0x160 / 4 + i] != 0) {
+            __asm__ volatile (
+                "lqc2 $vf1, 0x0(%0)\n"
+                "vmulax.xyzw ACC, $vf28, $vf1x\n"
+                "vmadday.xyzw ACC, $vf29, $vf1y\n"
+                "vmaddaz.xyzw ACC, $vf30, $vf1z\n"
+                "vmaddw.xyzw $vf31, $vf31, $vf0w"
+                : : "r"((u8 *)D_0047011C + 0xE0 + i * 16));
+            func_00209E50(0);
+            func_00208D70(D_0047011C[0x160 / 4 + i]);
+        }
+        func_0013B110(1);
+    }
+    func_0013B110(1);
+    func_00133780(2, 0);
+    amGs_SetReg32(0, s1);
+}
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002BF000);
 
 void func_002BF310(void) {
