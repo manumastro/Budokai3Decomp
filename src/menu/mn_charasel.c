@@ -26,7 +26,57 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027C140);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027C2F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027CB20);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027CF80);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027D1D0);
+#include "menu/mn_cssubstat.h"
+
+extern void *D_00470810;
+extern void func_0027CF80(void);
+extern s32 amCdFs_Close(s32, s32);
+extern void func_0022E0B0(void *);
+extern void amFile_Load(void *);
+extern void func_0027AAE0(void *);
+extern s32 func_002F95E0(s8, s8, u64, s8, s32, s32, s16, void *, void *);
+extern void func_00229800(s32, void *, s32, f32);
+extern void func_002F9500(s32, f32, f32);
+
+void func_0027D1D0(u8 *a0) {
+    f32 loc[8];
+    u8 *v1;
+    u8 *s2;
+    u8 *s1;
+    u8 *s0;
+
+    s0 = D_00470810;
+    s1 = *(u8 **)(a0 + 0x30);
+    s2 = a0;
+    if (*(void **)(s0 + 0xC) == NULL) {
+        if (*(s16 *)(*(u8 **)(s0 + 4) + 4) != 3) {
+            return;
+        }
+        *(void **)(s0 + 8) = *(void **)(*(u8 **)(s0 + 0) + 0x54);
+        *(void **)(*(u8 **)(s0 + 0) + 0x54) = NULL;
+        amCdFs_Close(*(s32 *)(s0 + 0), 0);
+        *(void **)(s0 + 0) = NULL;
+        *(void **)(s0 + 0xC) = *(void **)(*(u8 **)(s0 + 4) + 0x54);
+        *(void **)(*(u8 **)(s0 + 4) + 0x54) = NULL;
+        amCdFs_Close(*(s32 *)(s0 + 4), 0);
+        *(void **)(s0 + 4) = NULL;
+        func_0022E0B0(*(void **)(s0 + 8));
+        amFile_Load(*(void **)(s0 + 0xC));
+    }
+    func_0027AAE0(s1);
+    *(s32 *)(s1 + 0x28) = func_002F95E0(*(s8 *)(s1 + 0xA) + 0, *(u8 *)(s1 + 7) ? CSSUB_ON : CSSUB_OFF, *(u64 *)(s1 + 0x10), *(s8 *)(s1 + 4) + 0, *(s32 *)(s1 + 0x78), 0x2900, 0x3000, *(void **)(s0 + 8), *(void **)(s0 + 0xC));
+    v1 = *(u8 **)(s1 + 0x38);
+    if (v1 != NULL) {
+        func_00229800(*(s32 *)v1, loc, -1, *(f32 *)(v1 + 0x10));
+        if (*(s32 *)(s1 + 0x28) != 0) {
+            func_002F9500(*(s32 *)(s1 + 0x28), loc[0], 0.0f);
+        }
+    }
+    *(s8 *)s1 = 3;
+    *(f32 *)(s1 + 0x54) = 60.0f;
+    *(s32 *)(s1 + 0x68) = 0;
+    *(void **)(s2 + 0x1C) = (func_0027CF80 == NULL) ? NULL : (void *)func_0027CF80;
+}
 extern s16 D_0046B5B0[];
 
 void func_0027D330(u8 *arg0, u64 arg1) {
