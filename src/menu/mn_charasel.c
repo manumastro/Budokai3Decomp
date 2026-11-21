@@ -79,7 +79,10 @@ s8 func_0027DAE0(u8 *arg0) {
     return *(s8 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027DAF0);
+s32 func_0027DAF0(u8 *arg0, void *arg1) {
+    memcpy(arg1, *(u8 **)(arg0 + 0x30) + 0x6C, 0xC);
+    return 1;
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027DB20);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027DDC0);
 extern void *D_00470810;
