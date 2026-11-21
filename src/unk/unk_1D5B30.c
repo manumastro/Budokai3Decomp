@@ -364,7 +364,44 @@ extern u8 *func_0021C660(s32 i);
 extern void func_00246E20(void *o);
 extern void func_001E73E0(void *p, s32 a, s32 b);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5B30);
+extern char D_003F0800[];
+extern void func_0013B0B0(void *);
+extern void func_0013B960(void *);
+extern void func_0013B110(s32);
+extern s32 func_00132D20(s32, void *, f32);
+extern void func_00133DD0(void *, void *, void *, void *);
+
+void func_001D5B30(Fighter *c) {
+    s32 pair[4];
+    Fighter *s2;
+    u8 *s1;
+    s32 s0;
+
+    s2 = c;
+    s0 = 1;
+    s1 = func_0021C660(c->f1350) + 0x100;
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(s1), "r"((char *)s2 + 0x7E0) : "memory");
+    *(f32 *)(s1 + 4) += 2.5f;
+    func_0013B0B0(D_003F0800);
+    func_0013B960((char *)gBattle + 0x60);
+    __asm__ volatile ("lqc2 $vf1, 0(%0)
+	vmulax.xyzw ACC, $vf28, $vf1x
+	vmadday.xyzw ACC, $vf29, $vf1y
+	vmaddaz.xyzw ACC, $vf30, $vf1z
+	vmaddw.xyzw $vf1, $vf31, $vf0w
+	sqc2 $vf1, 0(%0)" : : "r"(s1) : "memory");
+    func_0013B110(1);
+    *(f32 *)(s1 + 4) = -*(f32 *)(s1 + 4);
+    *(f32 *)(s1 + 8) = -*(f32 *)(s1 + 8);
+    if (func_00132D20(0, s1, 0.0f) != 0) {
+        s0 = 0;
+    }
+    func_00133DD0(s1, s1, s1 + 4, s1 + 8);
+    *(f32 *)(s1 + 4) -= 16.0f;
+    pair[0] = s2->f1350;
+    pair[1] = s0;
+    A2d_CallHandler(0x33, pair);
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D5C40);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D6170);
 #if 0
