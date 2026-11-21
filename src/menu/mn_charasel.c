@@ -27,7 +27,25 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027C2F0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027CB20);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027CF80);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027D1D0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027D330);
+extern s16 D_0046B5B0[];
+
+void func_0027D330(u8 *arg0, u64 arg1) {
+    if (arg0 != NULL) {
+        u8 *sub = *(u8 **)(arg0 + 0x30);
+        u64 mask = 0;
+        s32 i;
+
+        for (i = 0; i < 44; i++) {
+            if (arg1 & (1ULL << i)) {
+                s16 val = D_0046B5B0[i];
+                if (val != -1) {
+                    mask |= 1ULL << val;
+                }
+            }
+        }
+        *(u64 *)(sub + 0x18) |= mask & *(u64 *)(sub + 0x20);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027D3B0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027D820);
 s32 CsModel_Ease(s32, f32, f32);
