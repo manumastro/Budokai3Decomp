@@ -115,14 +115,7 @@ extern void func_002A1510(s32);
 extern void func_0029AC30(void);
 extern s32 D_00511448[];
 extern void Zenie_SetValue(s32, s32);
-extern void func_002A17D0(void);
-
-extern f32 func_002B06A0(void);
-extern void func_002A1510(s32);
-extern void func_0029AC30(void);
-extern s32 D_00511448[];
-extern void Zenie_SetValue(s32, s32);
-extern void func_002A17D0(void);
+extern void func_002A17D0();
 
 void func_002A18A0(u8 *arg0) {
     u8 *w = (u8 *)gEvtWork;
@@ -203,17 +196,16 @@ INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A19B0);
 extern u32 func_0012EAE0(s32);
 extern s8 D_004E6560[];
 
-#if 0
-// func_002A1B30: the free-slot pick: the loop index and count take the other saved registers, the frame is 0x60 in the original (ours 0x50); 4 forms tried
 s32 func_002A1B30(void) {
     s32 list[8];
-    s32 cnt = 0;
     s32 k;
-    s32 base;
     s32 mask;
-    s32 idx;
-    s32 bit;
-    s8 *tb = D_004E6560;
+    s8 *tb;
+    s32 cnt;
+    s32 base;
+
+    tb = D_004E6560;
+    cnt = 0;
     base = (s32)D_00511450[0] * 4624;
     mask = ((s8 *)D_004E77C4)[base] & 0x7F;
     for (k = 0; k < 7; k++) {
@@ -222,13 +214,10 @@ s32 func_002A1B30(void) {
             cnt++;
         }
     }
-    idx = (s32)(func_0012EAE0(3) % (u32)cnt);
-    bit = (s8)(1 << list[idx]);
-    tb[base + 0x1264] = (s8)(tb[base + 0x1264] | bit);
-    return list[idx];
+    mask = (s32)(func_0012EAE0(3) % (u32)cnt);
+    tb[base + 0x1264] |= (s8)(1 << list[mask]);
+    return list[mask];
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A1B30);
 extern void SklSheet_Free(void);
 extern void func_00283D00(s32, s32, s32, s32);
 extern void SklSheet_SetIndex(s32);
