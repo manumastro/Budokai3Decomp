@@ -852,7 +852,46 @@ s32 func_001ACA80(void) {
     return 0;
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001ACA80);
+typedef struct BattleACA80 {
+    u8 unk0000[0x88D8];
+    s32 count;
+    u8 pad88DC[0x88FC - 0x88DC];
+    s32 unk88FC;
+    s32 unk8900;
+    s32 unk8904;
+    u8 pad8908[0x8AB1 - 0x8908];
+    s8 unk8AB1;
+} BattleACA80;
+
+extern void func_001D9480(void *);
+
+s32 func_001ACA80(void) {
+    BattleACA80 *bw;
+    u8 *base;
+    s32 i;
+    u8 *p;
+
+    bw = (BattleACA80 *)gBattle;
+    base = (u8 *)bw + 0x830;
+    i = 0;
+    if (0 < bw->count) {
+        p = base;
+        do {
+            func_001D9480(p);
+            i++;
+            p += 0x2020;
+        } while (i < bw->count);
+    }
+    if (bw->unk8AB1 > 0) {
+        bw->unk88FC = 4;
+        bw->unk8900 = bw->unk8AB1 - 1;
+        bw->unk8904 = *(s16 *)((u8 *)(bw->unk8900 * 0x2020) + (u32)base + 0x13A4);
+        *(s32 *)((u8 *)((1 - bw->unk8900) * 0x2020) + (u32)base + 0x1AC4) = 0;
+        bw->unk8AB1 = -bw->unk8AB1;
+        return 1;
+    }
+    return 0;
+}
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001ACBC0);
 void func_001ACFD0(void) {
     BW_FIELD(gBattle, f32, 0x8910) = BW_FIELD(gBattle, f32, 0x890C);
