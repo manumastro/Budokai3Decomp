@@ -76,7 +76,7 @@ extern void (*jtbl_00469CC4[])(void *);
 extern u8 D_0044BA90[];
 extern void amAdx_Pause(s32, s32);
 void func_0020D780(void *);
-void func_002194C0(u8 *);
+void func_002194C0();
 extern u8 *gBattle;
 void amAdx_SetVolume(s32, f32);
 s32 Hm_IsBusy(void);
@@ -5358,25 +5358,22 @@ extern s32 *D_0044F2F0[];
 s32 amAdx_PlayAfs(s32, s32, s32);
 void amAdx_Pause(s32, s32);
 
-#if 0
 void func_002194C0(u8 *p, s32 x, s32 y, s32 z) {
-    if (x >= 0 && x < 0x79) {
-        if (y >= 0 && y < D_0044F4E0[x]) {
-            if (D_0044F2F0[x][y] != -1) {
-                *(s32 *)(p + 0x10) |= 1;
-                *(s16 *)(p + 0x14) = x;
-                *(s16 *)(p + 0x16) = y;
-                *(s32 *)(p + 0x8) = amAdx_PlayAfs(z, D_0044F2F0[x][y] | 0x20000, 0);
-                amAdx_Pause(*(s32 *)(p + 0x8), 1);
-                *(s32 *)(p + 0xC) = 2;
-                *(f32 *)(p + 0x18) = *(f32 *)(gBattle + 0x8908);
-            }
-        }
-    }
+    s32 off1;
+    s32 off2;
+
+    if (x < 0 || x >= 0x79) return;
+    if (y < 0 || (off1 = x * 4, y >= *(s32 *)((u8 *)D_0044F4E0 + off1))) return;
+    off2 = y * 4;
+    if (*(s32 *)((u8 *)*(s32 **)((u8 *)D_0044F2F0 + off1) + off2) == -1) return;
+    *(s32 *)(p + 0x10) |= 1;
+    *(s16 *)(p + 0x14) = x;
+    *(s16 *)(p + 0x16) = y;
+    *(s32 *)(p + 0x8) = amAdx_PlayAfs(z, *(s32 *)((u8 *)*(s32 **)((u8 *)D_0044F2F0 + off1) + off2) | 0x20000, 0);
+    amAdx_Pause(*(s32 *)(p + 0x8), 1);
+    *(s32 *)(p + 0xC) = 2;
+    *(f32 *)(p + 0x18) = *(f32 *)(gBattle + 0x8908);
 }
-// differs: the early exits: the original leaves a b to the end for each range test, this build branches to the end directly; the else forms gave more differences
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002194C0);
 extern u8 *gBattle;
 void amAdx_Pause(s32, s32);
 
