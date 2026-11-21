@@ -1850,7 +1850,26 @@ void func_001DCB70(Fighter *c) {
 }
 #endif
 // differs: 0x100 against 0x110 bytes: the guards return through a shared 'b' block, which the nested ifs do not reproduce
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001DCB70);
+void func_001DCB70(Fighter *c) {
+    f32 f;
+    u32 r;
+
+    if ((s8)c->f2000 != 0) {
+        if (c->fB88 == NULL || *(s16 *)((char *)c->fB8C + 0x26) < 0 || *(s32 *)(*(s32 *)(*(s32 *)c->fB88) + 0x20) < 2) {
+            return;
+        }
+        {
+                    f = *(f32 *)&c->f18DC + *(f32 *)&c->fC9C * gBattle->f88F0;
+                    *(f32 *)&c->f18DC = f;
+                    if (f > 10.0f) {
+                        r = func_0012EAE0(0x20) % 300;
+                        f = (f32)r;
+                        *(f32 *)&c->f18DC = -f;
+                    }
+                    c->f18E0 = *(f32 *)&c->f18DC > 0.0f;
+        }
+    }
+}
 void func_001DCC80(Fighter *c) {
     c->f1FFF = 0;
     c->f18C0 = 0;
