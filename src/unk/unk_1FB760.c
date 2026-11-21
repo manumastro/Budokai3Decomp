@@ -1988,4 +1988,74 @@ void func_0020A150(void) {
         s0 = *(u8 **)s0;
     } while (s0 != D_00568480);
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_0020A230);
+extern s32 D_0047064C;
+extern u8 D_0051D9A8[];
+extern u8 *D_00568484[];
+
+typedef struct Obj40 { u8 data[0x40]; } Obj40;
+typedef struct Obj10 { u8 data[0x10]; } Obj10;
+typedef struct Obj50 { u8 data[0x50]; } Obj50;
+typedef struct Obj80 { u8 data[0x80]; } Obj80;
+
+extern Obj40 D_0051DA40[128];
+extern Obj10 D_0051FC40[256];
+extern Obj50 D_00521040[256];
+extern Obj80 D_00528440[2048];
+
+s32 func_0020A230(void) {
+    memset(D_0051D9A0, 0, 0x70);
+    D_0051D9A0[0] = 1;
+    D_0051D9A4[0] = 1;
+    *(f32 *)D_0051D9A8 = 1.0f;
+    *(s32 *)D_0051D9AC = 0x3C888889;
+
+    D_00470648 = NULL;
+    D_0047064C = 0;
+    memset(D_0051DA40, 0, 0x2000);
+    memset(D_0051FC40, 0, 0x1000);
+    memset(D_00521040, 0, 0x5000);
+    memset(D_00528440, 0, 0x40000);
+
+    D_00470650 = 0;
+    D_00470654 = 0;
+    memset(D_00568440, 0, 0x40);
+    memset(D_00568480, 0, 0x40);
+    D_00568440[0] = D_00568480;
+    D_00568484[0] = (u8 *)D_00568440;
+
+    {
+        s32 i;
+        for (i = 127; i >= 0; i--) {
+            D_0051FA40[i] = (u8 *)&D_0051DA40[i];
+        }
+    }
+
+    D_00470658 = 0;
+    D_0047065C = 0;
+    {
+        s32 i;
+        for (i = 255; i >= 0; i--) {
+            D_00520C40[i] = (u8 *)&D_0051FC40[i];
+        }
+    }
+
+    D_00470660 = 0;
+    D_00470664 = 0;
+    {
+        s32 i;
+        for (i = 255; i >= 0; i--) {
+            D_00526040[i] = (u8 *)&D_00521040[i];
+        }
+    }
+
+    D_00470668 = 0;
+    D_0047066C = 0;
+    {
+        s32 i;
+        for (i = 2047; i >= 0; i--) {
+            D_00526440[i] = (s32)&D_00528440[i];
+        }
+    }
+
+    return 0;
+}
