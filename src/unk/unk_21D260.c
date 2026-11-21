@@ -274,7 +274,95 @@ void func_0021F0E0(Task2_21D260 *o) {
         func_00139620(0x902, &v1, -1, 0x44, 0, 0.0f);
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021F3A0);
+extern f32 D_0044F760[];
+
+void func_0021F3A0(o)
+Task2_21D260 *o;
+{
+    Work21D260 *bs;
+    f32 *d;
+    Sub4_21D260 *s;
+    f32 f21;
+    f32 f20;
+    f32 f22;
+    f32 f;
+    V16_21D260 v1;
+    V16_21D260 v2;
+    V16_21D260 v3;
+    V16_21D260 v4;
+    V16_21D260 v5;
+
+    s = (Sub4_21D260 *)o->f30;
+    d = D_0044F760;
+    bs = gBtlSys;
+    if (*(s8 *)((char *)gBattle + 0x8975) == 1) {
+        func_002CFC50();
+    }
+    if (D_0058BB38[0] == 0) {
+        if (!(s->f20 < 18000.0f)) {
+            f = (s->f20 - 18000.0f) / 8.0f;
+            v1 = D_0044FA50;
+            if (f < 0.0f) {
+                f = 0.0f;
+            }
+            if (f > 1.0f) {
+                f = 1.0f;
+            }
+            v1.w *= f;
+            func_00139620(0x902, &v1, -1, 0x44, 0, 0.0f);
+        }
+        return;
+    }
+    f20 = 340.0f;
+    f21 = d[2];
+    switch (s->f4) {
+    case 1:
+        if (!(bs->fE30 & 2)) {
+            spawn_v(&v2, 1.0f);
+        }
+        func_0021D6C0(0, f21, 340.0f);
+        func_0021F740(s);
+        if (bs->fE30 & 2) {
+            spawn_v(&v3, 1.0f);
+            func_00224480(s);
+        }
+        break;
+    default:
+        if (s->f4 == 0) {
+            f22 = s->f1C / 8.0f;
+        } else {
+            f22 = (8.0f - s->f1C) / 8.0f;
+        }
+        if (!(bs->fE30 & 2)) {
+            f = f22;
+            v4 = D_0044FA50;
+            if (f < 0.0f) {
+                f = 0.0f;
+            }
+            if (f > 1.0f) {
+                f = 1.0f;
+            }
+            v4.w *= f;
+            func_00139620(0x902, &v4, -1, 0x44, 0, 0.0f);
+        }
+        f21 *= f22;
+        f20 *= f22;
+        func_0021D6C0(0, f21, f20);
+        break;
+    }
+    if (!(s->f20 < 18000.0f)) {
+        f = (s->f20 - 18000.0f) / 8.0f;
+        v5 = D_0044FA50;
+        if (f < 0.0f) {
+            f = 0.0f;
+        }
+        if (f > 1.0f) {
+            f = 1.0f;
+        }
+        v5.w *= f;
+        func_00139620(0x902, &v5, -1, 0x44, 0, 0.0f);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_0021F740);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_00221110);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21D260", func_002214B0);
