@@ -2379,7 +2379,37 @@ void func_00246680(s32 a0, u8 *a1) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00246680);
+s32 func_001DFA90(void *, s32);
+void func_00245DA0(s32, u8 *);
+void func_00246680(s32 a0, u8 *a1) {
+    u8 *s1;
+    u8 *s0;
+
+    if ((a0 >= 200 && a0 < 300) || (a0 >= 400 && a0 < 500)) {
+        s1 = *(u8 **)(*(u8 **)a1 + 0x1354);
+        s0 = D_0046FE4C + (*(s32 *)(s1 + 0x1350) * 0x480) + 0x10;
+    } else {
+        s1 = *(u8 **)a1;
+        s0 = D_0046FE4C + (*(s32 *)(s1 + 0x1350) * 0x480) + 0x10;
+    }
+    if (*(s32 *)(s0 + 0x14) == -1) {
+        *(s32 *)(s0 + 0x14) = *(s32 *)(s1 + 0xB70);
+        if (a0 == 0x12C || a0 == 0x12D || a0 == 0x12E || a0 == 0x12F) {
+            *(s32 *)(s0 + 0x38) = *(s32 *)(s1 + 0xB70);
+        }
+        *(s16 *)(s0 + 0x2A) = func_001DFA90(s1, *(s16 *)(s1 + 0x1A58)) - 1;
+        if (*(s16 *)(s0 + 0x2A) < 0) {
+            *(s16 *)(s0 + 0x2A) = 0;
+        }
+    }
+    if (a0 < 4 || a0 >= 0x15E) {
+        func_002529B0(a0, s1, 0);
+    } else if (a0 >= 4 && a0 < 0x12C) {
+        func_00248910(a0, s1);
+    } else {
+        func_00245DA0(a0, a1);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00246800);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00246AB0);
 u8 *func_00246CA0(s32 i, s32 j) {
