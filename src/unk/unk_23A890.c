@@ -1025,7 +1025,47 @@ void func_00241AC0(s32 i) {
     func_00243280(i);
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241AC0);
+void func_00241AC0(s32 i) {
+    u8 *q = gBattle + i * 0x2020 + 0x830;
+    u8 *o = D_0046FE44 + i * 0x80;
+    u8 *v;
+    f32 zero;
+    f32 f2;
+    f32 f1;
+    f32 f0;
+
+    if ((*(s32 *)(o + 0x2C) & 0x80) != 0) {
+        v = *(u8 **)(q + 0x1354);
+        zero = 0.0f;
+        f0 = *(f32 *)(v + 0x1A40);
+        f2 = (f0 > zero) ? *(f32 *)(v + 0x17D4) : *(f32 *)(v + 0x17D0);
+        f1 = *(f32 *)(v + 0x17D4);
+    } else {
+        zero = 0.0f;
+        f0 = *(f32 *)(q + 0x1A40);
+        f2 = (f0 > zero) ? *(f32 *)(q + 0x17D4) : *(f32 *)(q + 0x17D0);
+        f1 = *(f32 *)(q + 0x17D4);
+    }
+    f0 = *(f32 *)(q + 0x17C0);
+    if (f0 <= zero) {
+        if (gBattle != NULL) {
+            f2 = *(f32 *)(gBattle + 0x88F0);
+        } else {
+            f2 = (D_004703F4 != 3) ? 1.0f : 1.2f;
+        }
+        f1 = 0.005f;
+        *(f32 *)(o + 0x24) = *(f32 *)(o + 0x24) - f1 * f2;
+    } else {
+        *(f32 *)(o + 0x24) = f2 / f1;
+    }
+    if (*(f32 *)(o + 0x24) > 1.0f) {
+        *(f32 *)(o + 0x24) = 1.0f;
+    }
+    if (*(f32 *)(o + 0x24) <= zero) {
+        *(f32 *)(o + 0x24) = zero;
+    }
+    func_00243280(i);
+}
 extern s32 D_00452100[];
 void func_00241C10(s32 a)
 {
