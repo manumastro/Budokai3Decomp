@@ -580,7 +580,44 @@ void func_0027F890(void) {
 void func_0027F8A0(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027F8B0);
+extern void func_0027EA60(void *);
+extern void func_0022CF70(void *);
+extern void func_00269820(s32, s32);
+extern void PracMode_Start(s32, s32);
+extern void func_0027E120(void *);
+extern void func_002804A0(void);
+
+void func_0027F8B0(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+
+    s0 = *(u8 **)(a0 + 0x38);
+    s1 = a0 + 0x30;
+    if (*(f32 *)(s0 + 0x40) > 0.0f) {
+        *(f32 *)(s0 + 0x40) -= gFrameDelta;
+        func_0027EA60(s0);
+        *(f32 *)(*(u8 **)(s0 + 0x38) + 0x5C) = (60.0f - *(f32 *)(s0 + 0x40)) / 60.0f;
+        func_0022CF70(*(void **)(s0 + 0x38));
+    } else if (func_0027DAB0(*(u8 **)s0) == 7 && func_0027DAB0(*(u8 **)(s0 + 4)) == 7) {
+        switch (*(s8 *)(s1 + 4)) {
+        case 0:
+            func_00269820(0, *(s8 *)(s1 + 5));
+            break;
+        case 1:
+            PracMode_Start(0, 0);
+            break;
+        }
+        if (*(void **)s0 != NULL) {
+            func_0027E120(*(void **)s0);
+            *(void **)s0 = NULL;
+        }
+        if (*(void **)(s0 + 4) != NULL) {
+            func_0027E120(*(void **)(s0 + 4));
+            *(void **)(s0 + 4) = NULL;
+        }
+        func_002804A0();
+    }
+}
 extern void func_0027EA60(void *);
 extern void func_0022CF70(void *);
 extern void func_00287C60(void);
