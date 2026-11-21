@@ -1138,7 +1138,57 @@ void func_00241D60(s32 i) {
 }
 // differs: round 5 (u23f): 44 of 84 differ (36 with a declaration order search). Same pointer-walk structure as 241C10 (r1/p1 and qp0 walk in place, count 5 stored). Open: saved-register allocation: the original copies i into s0 before the calls and reuses s0 for the call-3 result; the gBattle pointer (s4) is computed before the first call in the original
 #endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_23A890", func_00241D60);
+void func_00241D60(s32 a) {
+    s32 k = a * 257;
+    u8 *s4 = gBattle + (k * 0x20) + 0x830;
+    u8 *s3 = D_0046FE44 + (a * 0x80);
+    u8 *r0 = func_00240F40(a, 0);
+    u8 *r1 = func_00240F40(a, 1);
+    u8 *r2 = func_00240F40(a, 2);
+    u8 *r3 = func_00240F40(a, 3);
+    s32 i;
+    s32 t0;
+    s32 e1;
+    s32 e2;
+    s32 *tb;
+    u8 *w0;
+    u8 *w3;
+
+    t0 = (s32)(s4 + 0x650);
+    *(s32 *)(s3 + 0x20) = t0;
+    w3 = r3;
+    *(s32 *)(r3 + 0x6C) = t0;
+    *(s32 *)(r2 + 0x6C) = t0;
+    *(s32 *)(r1 + 0x6C) = t0;
+    *(s32 *)(r0 + 0x6C) = t0;
+    *(s32 *)(r3 + 0x70) = 5;
+    *(s32 *)(r2 + 0x70) = 5;
+    *(s32 *)(r1 + 0x70) = 5;
+    *(s32 *)(r0 + 0x70) = 5;
+    i = 0;
+    if (0 < *(s32 *)(r0 + 0x70)) {
+        w0 = r0;
+        tb = D_00452100;
+        do {
+            e1 = (s32)(s4 + (tb[0] << 4) + 0x650);
+            i++;
+            *(s32 *)(w3 + 0x74) = e1;
+            *(s32 *)(r2 + 0x74) = e1;
+            *(s32 *)(r1 + 0x74) = e1;
+            *(s32 *)(w0 + 0x74) = e1;
+            e2 = (s32)(s4 + (tb[1] << 4) + 0x650);
+            tb += 2;
+            *(s32 *)(w3 + 0x94) = e2;
+            *(s32 *)(r2 + 0x94) = e2;
+            w3 += 4;
+            *(s32 *)(r1 + 0x94) = e2;
+            r2 += 4;
+            *(s32 *)(w0 + 0x94) = e2;
+            r1 += 4;
+            w0 += 4;
+        } while (i < *(s32 *)(r0 + 0x70));
+    }
+}
 void func_00241EB0(s32 a0, s32 a1) {
     u8 *q = gBattle + a0 * 0x2020 + 0x830;
     u8 *o = D_0046FE44 + a0 * 0x80;
