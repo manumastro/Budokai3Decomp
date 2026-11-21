@@ -190,7 +190,77 @@ s32 func_001FCCC0(u8 *o0, u8 *o1, u8 *p, s32 a3, u8 *q) {
     *(f32 *)(o0 + 4) = *(f32 *)(q + 0x20) - e;
     return 1;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1FB760", func_001FCE20);
+extern void func_00146F30(f32 *);
+
+s32 func_001FCE20(u8 *a0, u8 *a1, u8 *a2, u8 *a3, u8 *a4) {
+    f32 sp70[4];
+    f32 sp60[4];
+    f32 sp50[4];
+    f32 f1;
+    f32 f0;
+    s32 count;
+
+    if (D_0051CD28[0] == 0) {
+        return 0;
+    }
+
+    __asm__ volatile ("addiu $v0, %1, 0x10 ; lqc2 $vf1, 0($v0) ; lqc2 $vf2, 0(%1) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(sp70), "r"(a4) : "v0", "memory");
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(sp60), "r"(a2), "r"(a4) : "memory");
+
+    f0 = func_00146F90(sp60, sp70);
+    f1 = *(f32 *)(a4 + 0x20);
+    f1 = f1 * f1;
+    func_00146F10(sp50, sp70, f0 / f1);
+    __asm__ volatile ("lqc2 $vf1, 0(%0) ; lqc2 $vf2, 0(%1) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(sp50), "r"(a4) : "memory");
+
+    if (!(func_00146E30(sp50, a2) <= *(f32 *)(a2 + 0x10) + *(f32 *)(a4 + 0x24))) {
+        return 0;
+    }
+
+    count = 0;
+    if (*(f32 *)(a4 + 0x0) < *(f32 *)(a4 + 0x10)) {
+        if (!(sp50[0] < *(f32 *)(a4 + 0x0)) && sp50[0] <= *(f32 *)(a4 + 0x10)) {
+            count++;
+        }
+    } else {
+        if (sp50[0] <= *(f32 *)(a4 + 0x0) && !(sp50[0] < *(f32 *)(a4 + 0x10))) {
+            count++;
+        }
+    }
+
+    if (*(f32 *)(a4 + 0x4) < *(f32 *)(a4 + 0x14)) {
+        if (!(sp50[1] < *(f32 *)(a4 + 0x4)) && sp50[1] <= *(f32 *)(a4 + 0x14)) {
+            count++;
+        }
+    } else {
+        if (sp50[1] <= *(f32 *)(a4 + 0x4) && !(sp50[1] < *(f32 *)(a4 + 0x14))) {
+            count++;
+        }
+    }
+
+    if (*(f32 *)(a4 + 0x8) < *(f32 *)(a4 + 0x18)) {
+        if (!(sp50[2] < *(f32 *)(a4 + 0x8)) && sp50[2] <= *(f32 *)(a4 + 0x18)) {
+            count++;
+        }
+    } else {
+        if (sp50[2] <= *(f32 *)(a4 + 0x8) && !(sp50[2] < *(f32 *)(a4 + 0x18))) {
+            count++;
+        }
+    }
+
+    if (count < 3) {
+        return 0;
+    }
+
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(sp70), "r"(a2), "r"(sp50) : "memory");
+    func_00146F30(sp70);
+    f0 = *(f32 *)(a4 + 0x24);
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; sqc2 $vf1, 0(%0)" : : "r"(a1), "r"(sp70) : "memory");
+    func_00146F10(sp70, sp70, f0);
+    __asm__ volatile ("lqc2 $vf1, 0(%1) ; lqc2 $vf2, 0(%2) ; vadd.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0(%0)" : : "r"(a0), "r"(sp70), "r"(sp50) : "memory");
+
+    return 1;
+}
 extern f32 func_00146EB0(f32 *);
 extern void func_00146F30(f32 *);
 extern void func_00146F10(void *, void *, f32);
