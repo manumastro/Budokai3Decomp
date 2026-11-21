@@ -3107,14 +3107,11 @@ void func_001E2290(Fighter *c) {
 #endif
 // differs: 40 of 159 instructions differ (about 6 of them relocations): the clamp arm keeps 0.0 in $f1 where the original moves it through $f0; the original reloads gBattle after the call in the second part (C reload makes it worse, 76); the loop pointer and the counter swap $a1/$a2 and declaration orders (48 tried) do not change it. Each store is in the original delay slot
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2290);
-#if 0
 void func_001E2510(Fighter *c) {
+    s32 pr[4];
+    s32 arr[4];
     char buf[0x30];
-    s32 pr[2];
-    s32 arr[3];
     f32 f;
-    s32 k;
-    void *bp;
 
     if (*(s32 *)((char *)c + 0x1CFC) != 0x2A) {
         return;
@@ -3128,9 +3125,7 @@ void func_001E2510(Fighter *c) {
         if (*(s16 *)*(void **)((char *)c + 0xBB0) != 0 && func_001DF8F0(0, 0x1B) > 0) {
             f = 0.0f;
         } else {
-            k = c->fBA4;
-            bp = c->f1CF8;
-            f = (f32)(((s8 *)((char *)bp + 0xDD))[k * 20] * 1000);
+            f = (f32)(((s8 *)((char *)c->f1CF8 + 0xDD))[c->fBA4 * 20] * 1000);
         }
         arr[2] = (s32)f;
         A2d_CallHandler(8, arr);
@@ -3143,9 +3138,6 @@ void func_001E2510(Fighter *c) {
     pr[1] = 0;
     A2d_CallHandler(0x33, pr);
 }
-#endif
-// differs: 5 to 7 of 72: the element read and the calls match; the frame is 0x70 in the original with the pair at 0x60 and the array at 0x50, and the local layout here differs by 8 bytes
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2510);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2630);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E28F0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E2B00);
