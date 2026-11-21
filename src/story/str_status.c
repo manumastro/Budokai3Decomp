@@ -1308,8 +1308,6 @@ void StrStatus_TaskRequestScene(s32 *a0) {
 extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_002C2470(s32 *);
 
-#if 0
-// func_002C1BC0: 1 instruction differs: the table byte address is added as v0+s0 in the original (addu v0,v0,s0); three operand orders tried
 void func_002C1BC0(s32 *a0) {
     s32 *s0 = (s32 *)a0[0x30 / 4];
     s32 r;
@@ -1319,6 +1317,8 @@ void func_002C1BC0(s32 *a0) {
     s32 nv;
     s32 s0v;
     s32 s2;
+    u32 off;
+
     s0v = s0[0x4 / 4];
     D_00470704 = s0v;
     D_0047070C = 0x2000;
@@ -1344,7 +1344,8 @@ void func_002C1BC0(s32 *a0) {
         func_0027E120(s0[0xA0 / 4]);
         s0[0xA0 / 4] = 0;
         bb = *(u8 *)((char *)s0 + 0xB2);
-        bt = *(u8 *)(2 * bb + (char *)s0 + 0xB4);
+        off = bb * 2;
+        bt = *(u8 *)(off + (u32)s0 + 0xB4);
         nv = (bb + 1) & 0xFF;
         s0[0xA0 / 4] = func_0027E2D0(3, 6, nv, (s8)bb, bt, 0, 0, 3);
         *(s32 *)((char *)s0 + 0xC4) = 0x42700000;
@@ -1352,8 +1353,6 @@ void func_002C1BC0(s32 *a0) {
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1BC0);
 extern s32 func_0027DAB0(s32);
 extern void func_0027E120(s32);
 extern void func_002C0750(s32 *);
