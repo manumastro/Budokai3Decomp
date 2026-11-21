@@ -5091,18 +5091,13 @@ s32 AdxSlot_IsPlaying(s32 *a) {
 extern s8 D_0046A3A0[];
 s32 func_0012EAE0(s32);
 
-#if 0
 s32 func_00218990(s32 x) {
     s32 r;
     s32 n;
     s8 *s0;
     s8 *p;
 
-    if (x > 11) {
-        x = 11;
-    } else if (x < 0) {
-        x = 0;
-    }
+    x = (x > 11) ? 11 : ((x < 0) ? 0 : x);
     n = 0;
     s0 = D_0046A3A0 + x * 2;
     p = s0;
@@ -5119,9 +5114,6 @@ s32 func_00218990(s32 x) {
     }
     return r;
 }
-// differs: 4 of 51 differ: the clamp of x ends with a b the original has after its x < 0 arm, and the counter's move comes before the pointer's addu; the reorderings tried moved the branches
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218990);
 #if 0
 s32 func_00218A60(s32 a0, s32 a1) {
     u8 *s1;
