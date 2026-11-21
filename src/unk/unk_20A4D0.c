@@ -1407,31 +1407,34 @@ void func_0020E210(s32 i, u8 *src) {
         : : "r"(&tmp) : "memory");
     func_0020D5C0(s1 + 0x40, 0, &tmp, src);
 }
-#if 0
+extern u8 D_00568C90[];
+extern u8 D_0058A090[];
+void func_0013B160(void *p);
+
 void func_0020E290(s32 i, u8 *x, s32 j) {
     u8 *s1;
 
-    if (j != 1) {
-        if (j == 0) {
-            s1 = D_00568C90 + i * 0x2140;
-            func_0013B160(s1 + 0x40);
-            __asm__ volatile (
-                "lqc2 $vf1, 0(%0)\n"
-                "vmulx.xyz $vf28, $vf28, $vf1x\n"
-                "vmuly.xyz $vf29, $vf29, $vf1y\n"
-                "vmulz.xyz $vf30, $vf30, $vf1z\n"
-                "addiu $v1, %1, 0x40\n"
-                "sqc2 $vf28, 0($v1)\n"
-                "sqc2 $vf29, 0x10($v1)\n"
-                "sqc2 $vf30, 0x20($v1)\n"
-                "sqc2 $vf31, 0x30($v1)\n"
-                "vmove.xyzw $vf28, $vf24\n"
-                "vmove.xyzw $vf29, $vf25\n"
-                "vmove.xyzw $vf30, $vf26\n"
-                "vmove.xyzw $vf31, $vf27\n"
-                : : "r"(x), "r"(s1) : "memory");
-        }
-    } else {
+    switch (j) {
+    case 0:
+        s1 = D_00568C90 + i * 0x2140;
+        func_0013B160(s1 + 0x40);
+        __asm__ volatile (
+            "lqc2 $vf1, 0(%0)\n"
+            "vmulx.xyz $vf28, $vf28, $vf1x\n"
+            "vmuly.xyz $vf29, $vf29, $vf1y\n"
+            "vmulz.xyz $vf30, $vf30, $vf1z\n"
+            "addiu $v1, %1, 0x40\n"
+            "sqc2 $vf28, 0($v1)\n"
+            "sqc2 $vf29, 0x10($v1)\n"
+            "sqc2 $vf30, 0x20($v1)\n"
+            "sqc2 $vf31, 0x30($v1)\n"
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : "r"(x), "r"(s1) : "memory");
+        break;
+    case 1:
         s1 = D_0058A090 + i * 3 * 64;
         func_0013B160(s1 + 0x50);
         __asm__ volatile (
@@ -1449,11 +1452,9 @@ void func_0020E290(s32 i, u8 *x, s32 j) {
             "vmove.xyzw $vf30, $vf26\n"
             "vmove.xyzw $vf31, $vf27\n"
             : : "r"(x), "r"(s1) : "memory");
+        break;
     }
 }
-// differs: same mode layout as func_0020E530: the j == 0 block is laid out out of line after a b, the nested form keeps it inline; the VU0 part matches
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E290);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E390);
 void func_0013B2B0(u8 *x);
 
@@ -5154,20 +5155,18 @@ extern s8 D_0046A3A0[];
 s32 func_0012EAE0(s32);
 
 #if 0
-s32 func_00218B60(s32 x, s32 flag) {
+extern s8 D_0046A330[];
+s32 func_00218B60(s32 x, u32 flag) {
     s32 r;
-    s32 n;
-    s8 *s0;
+    s8 *s1;
     s8 *p;
+    s32 n;
 
-    if (x > 16) {
-        x = 16;
-    } else if (x < 0) {
-        x = 0;
-    }
-    s0 = D_0046A3A0 + (flag != 0) * 34 + x * 2;
-    p = s0;
+    x = (x > 16) ? 16 : ((x < 0) ? 0 : x);
     n = 0;
+    x = x * 2;
+    s1 = &D_0046A330[(flag > 0) * 34 + x];
+    p = s1;
     while (n < 4 && *p >= 0) {
         p++;
         n++;
@@ -5175,13 +5174,12 @@ s32 func_00218B60(s32 x, s32 flag) {
     if (n <= 0) {
         r = -1;
     } else if (n == 1) {
-        r = *s0;
+        r = *s1;
     } else {
-        r = s0[(u32)func_0012EAE0(0x20) % (u32)n];
+        r = s1[(u32)func_0012EAE0(0x20) % (u32)n];
     }
     return r;
 }
-// differs: the clamp of x leaves a b after its x < 0 arm (as func_00218990) and the flag term is in another register; 12 of 55 differ
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00218B60);
 #if 0
