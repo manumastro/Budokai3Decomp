@@ -396,53 +396,50 @@ extern s32 func_002A2020();
 void func_002A21E0(void) {
     func_002A2020();
 }
-#if 0
-// func_002A21F0: the signature (f32 *, f32 x) matches the caller in 2A51E0 (the float in f12); 46 of 56 differ with the stores interleaved, 49 with the loads hoisted to locals (frame 0xA0 against 0x80): the 16-byte stack vectors need the loads in the original order without locals
+
 extern f32 D_0047043C;
 extern f32 D_00470440;
 extern void func_00136E80(s32, s32, s32, s32, s32);
-extern void func_001377E0(s32 *, s32 *);
+extern void func_001377E0(void *, void *);
 extern void amDraw_FlushPacket(void);
+
+typedef struct {
+    f32 x, y, z, w;
+} Vec4_21F0;
+
 void func_002A21F0(f32 *a0, f32 x) {
-    s32 st[8];
-    f32 buf[8];
+    Vec4_21F0 v0[2];
+    Vec4_21F0 v1[2];
+    s32 i;
     f32 q0 = a0[0];
+    Vec4_21F0 *p1 = v1;
     f32 q1 = a0[1];
     f32 q2 = a0[2];
     f32 q3 = a0[3];
-    f32 c1 = D_0047043C;
-    f32 c0 = D_00470440;
-    s32 k;
-    s32 *p0;
-    s32 *p1;
-    st[0] = 0;
-    st[4] = *(s32 *)&c1;
-    st[1] = 0;
-    st[5] = *(s32 *)&c0;
-    *(f32 *)&st[2] = x;
-    *(f32 *)&st[6] = x;
-    buf[0] = q0;
-    buf[4] = q0;
-    buf[1] = q1;
-    buf[5] = q1;
-    buf[2] = q2;
-    buf[6] = q2;
-    buf[3] = q3;
+
+    v0[0].x = 0.0f;
+    v0[1].x = D_0047043C;
+    v0[0].y = 0.0f;
+    v0[1].y = D_00470440;
+    v0[0].z = x;
+    v0[1].z = x;
+
+    v1[0].x = q0;
+    v1[1].x = q0;
+    v1[0].y = q1;
+    v1[1].y = q1;
+    v1[0].z = q2;
+    v1[1].z = q2;
+    v1[0].w = q3;
+    v1[1].w = q3;
+
     func_00136E80(0x20001800, 0, -1, 0x44, 0);
-    buf[7] = q3;
-    k = 0;
-    p0 = st;
-    p1 = (s32 *)buf;
-    do {
-        func_001377E0(p0, p1);
-        k++;
-        p0 += 4;
-        p1 += 4;
-    } while (k < 2);
+
+    for (i = 0; i < 2; i++) {
+        func_001377E0(&v0[i], &p1[i]);
+    }
     amDraw_FlushPacket();
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A21F0);
 extern void func_002A5B00(void);
 extern void func_0029A9F0(void);
 
