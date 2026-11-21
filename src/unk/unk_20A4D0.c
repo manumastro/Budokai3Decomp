@@ -1749,42 +1749,46 @@ void func_00146F10(void *a, void *b, f32 s);
 
 void func_00146F10(void *a, void *b, f32 s);
 
+extern u8 D_00568C90[];
+extern u8 *gBattle;
+void func_00146F30(void *a);
 void func_00146F10(void *a, void *b, f32 s);
+void func_0013B160(void *p);
 
-void func_00146F10(void *a, void *b, f32 s);
-
-#if 0
 void func_0020EA70(s32 i) {
-    Copy16A t20;
-    Copy16A t30;
     Copy16A t40;
+    Copy16A t30;
+    Copy16A t20;
     u8 *s0;
+    u8 *b;
 
     s0 = D_00568C90 + i * 0x2140;
+    b = *(u8 **)(gBattle + 0x264);
     __asm__ volatile (
-        "lqc2 $vf1, 0x10(%0)\n"
-        "lqc2 $vf2, 0(%0)\n"
+        "addiu $v0, %1, 0x10\n"
+        "lqc2 $vf1, 0($v0)\n"
+        "lqc2 $vf2, 0(%1)\n"
         "vsub.xyz $vf1, $vf1, $vf2\n"
-        "sqc2 $vf1, 0(%1)\n"
-        : : "r"(*(u8 **)(gBattle + 0x264)), "r"(&t20) : "memory");
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(&t20), "r"(b) : "memory");
     __asm__ volatile (
-        "lqc2 $vf1, 0(%0)\n"
-        "sqc2 $vf1, 0(%1)\n"
-        : : "r"(&t20), "r"(&t40) : "memory");
+        "lqc2 $vf1, 0(%1)\n"
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(&t40), "r"(&t20) : "memory");
     func_00146F30(&t40);
     func_00146F10(&t40, &t40, *(f32 *)(s0 + 0x2138));
     __asm__ volatile (
-        "lqc2 $vf1, 0(%0)\n"
-        "lqc2 $vf2, 0(%1)\n"
-        "vadd.xyz $vf1, $vf1, $vf2\n"
-        "sqc2 $vf1, 0(%2)\n"
-        : : "r"(*(u8 **)(gBattle + 0x264)), "r"(&t40), "r"(&t30) : "memory");
-    __asm__ volatile (
-        "lqc2 $vf1, 0(%0)\n"
+        "lqc2 $vf1, 0(%2)\n"
         "lqc2 $vf2, 0(%1)\n"
         "vadd.xyz $vf1, $vf1, $vf2\n"
         "sqc2 $vf1, 0(%0)\n"
-        : : "r"(&t30), "r"(s0 + 0x10) : "memory");
+        : : "r"(&t30), "r"(&t40), "r"(*(u8 **)(gBattle + 0x264)) : "memory");
+    __asm__ volatile (
+        "lqc2 $vf1, 0(%1)\n"
+        "lqc2 $vf2, 0(%2)\n"
+        "vadd.xyz $vf1, $vf1, $vf2\n"
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(&t30), "r"(&t30), "r"(s0 + 0x10) : "memory");
     __asm__ volatile (
         "lqc2 $vf1, 0(%0)\n"
         "sqc2 $vf1, 0(%1)\n"
@@ -1803,9 +1807,6 @@ void func_0020EA70(s32 i) {
         "vmove.xyzw $vf31, $vf27\n"
         : : "r"(&t30), "r"(s0) : "memory");
 }
-// differs: the stack slots of the three 16-byte temporaries and the base register differ (best of 24 declaration orders: 51 instructions differ); the VU0 chain (vsub, the two func_00146F30 / func_00146F10 calls, the vadd chain, the state block) is the same
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020EA70);
 void func_0013B160(void *p);
 
 void func_0013B160(void *p);
