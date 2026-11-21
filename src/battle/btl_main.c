@@ -1029,12 +1029,13 @@ void func_001ADB80(void) {
 }
 #endif
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001ADB80);
-#if 0
-// differs: the battle counter at 0x88F8 is written by a struct access (frame now matches); the tail branch layout (slti at / bnez) differs, 8 bytes short
-extern u8 D_00431300[];
-extern u8 D_00431320[];
+
+typedef struct { s32 x[6]; } S24;
 extern void func_00218E50(void);
 extern s32 func_00218CD0(s32 a, s32 b);
+extern S24 D_00431300;
+extern S24 D_00431320;
+
 typedef struct BWX {
     u8 a[0x88F8];
     s32 f88F8;
@@ -1044,47 +1045,42 @@ typedef struct BWX {
     s32 f890C;
     s32 f8910;
 } BWX;
+
 void func_001ADD90(void) {
     BWX *bx;
-    s32 tA[6];
-    s32 tB[6];
+    S24 tA;
+    S24 tB;
     s32 a1;
     u8 *f;
-    s32 id;
     u8 *fp;
+    s32 id;
+
     bx = (BWX *)gBattle;
     bx->f88F8 = 5;
     bx->f890C = 0;
     bx->f8910 = 0;
-    *(Copy16 *)tA = *(Copy16 *)D_00431300;
-    *(s64 *)((u8 *)tA + 16) = *(s64 *)(D_00431300 + 16);
-    A2d_CallHandler(tA[bx->f88FC], 0);
-    *(Copy16 *)tB = *(Copy16 *)D_00431320;
-    *(s64 *)((u8 *)tB + 16) = *(s64 *)(D_00431320 + 16);
-    if (tB[bx->f88FC] >= 0) {
+    tA = D_00431300;
+    A2d_CallHandler(tA.x[bx->f88FC], 0);
+    tB = D_00431320;
+    if (tB.x[bx->f88FC] >= 0) {
         a1 = 0;
         if (bx->f8900 >= 0) {
             f = (u8 *)bx + bx->f8900 * 0x2020;
             id = *(s16 *)(f + 0x1BD4);
             fp = FT_FIELD(f, u8 *, 0x1B84);
-            if (id >= 0) {
-                if (*(s16 *)(fp + 0x13A4) < 0) {
-                    a1 = 1;
-                }
-            } else {
-                if (*(s16 *)(fp + 0x13A4) >= 0) {
-                    a1 = 2;
-                }
+            if (id > -1 && *(s16 *)(fp + 0x13A4) <= -1) {
+                a1 = 1;
+            }
+            if (id <= -1 && *(s16 *)(fp + 0x13A4) > -1) {
+                a1 = 2;
             }
         }
-        func_00218CD0(tB[bx->f88FC], a1);
+        func_00218CD0(tB.x[bx->f88FC], a1);
         if (bx->f88FC == 5) {
             func_00218E50();
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001ADD90);
 INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001ADEE0);
 extern void func_001A8770(s32 a, void *b);
 extern void func_00219270(s32 a);
