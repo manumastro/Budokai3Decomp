@@ -164,8 +164,6 @@ void func_002FBD90(Task2FAFF0 *t) {
         t->f1C = (func_002FBAE0 == 0) ? 0 : func_002FBAE0;
     }
 }
-#if 0
-// differs: 10 of 70 (aligned, same size): gTourMap kept in v1 instead of a0 (the original loads 0x294 and 0x40 before the sw, which goes in the jal slot, so the pointer lives in a0), v0/v1 swapped in D_004DFAE8[0] + f58; tried a local w, w first, no local, operand order, tsweep of the 3 locals; a SubN view (s32 f8 at t+0x38) fixed the task/save-work split
 extern u16 D_00492FCE[];
 extern u16 D_00493086[];
 extern s32 D_004DFAE8[];
@@ -175,6 +173,7 @@ typedef struct SubN2FAFF0 {
     char pad0[0x8];
     s32 f8;
 } SubN2FAFF0;
+
 void func_002FBE20(Task2FAFF0 *t) {
     SubN2FAFF0 *s = (SubN2FAFF0 *)((char *)t + 0x30);
     SaveWork2FAFF0 *w;
@@ -182,20 +181,18 @@ void func_002FBE20(Task2FAFF0 *t) {
 
     *(s32 *)&t->f38 = *(s32 *)&t->f38 + 1;
     w = gTourMap;
-    w->f294 = w->f294 + 1;
     a = (Anim2FAFF0 *)(w->f40 + 0x30);
+    w->f294 = w->f294 + 1;
     Zenie_Update();
     func_00208F70(a->f8);
     if (((D_00492FCE[0] | D_00493086[0]) & 0x4008) != 0 || (f32)s->f8 * gFrameDelta > 120.0f) {
         a->f0 = a->f0 + 1;
         s->f8 = 0;
-        Zenie_SetTarget(D_004DFAE8[0] + gTourMap->f58);
+        Zenie_SetTarget((u32)D_004DFAE8[0] + gTourMap->f58);
         Zenie_SetStep(gTourMap->f58 / 100);
         t->f1C = (func_002FBD90 == 0) ? 0 : func_002FBD90;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2FAFF0", func_002FBE20);
 void func_002FBF40(Task2FAFF0 *t) {
     SaveWork2FAFF0 *w = gTourMap;
     Anim2FAFF0 *a;
