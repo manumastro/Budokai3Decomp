@@ -465,27 +465,21 @@ void *func_002A2310(void) {
 void *func_002A2340(void) {
     return NULL;
 }
-#if 0
-// func_002A2350 (r7p: 5 more forms, same output; the original keeps &bits in a0 for the sd and indexes via sp, lb is hoisted before the args load): the 64-bit local is copied through a pointer and the table index load comes after the args load in the original; ours keeps the index load early; five forms tried
+typedef struct {
+    u64 val;
+} BitsU64;
+
 s32 func_002A2350(void *a0, char *a1) {
-    u64 bits;
-    u64 *pb = &bits;
-    u32 *w;
-    s32 *args;
-    u16 row;
-    *pb = D_004700D8;
-    w = (u32 *)pb;
-    args = *(s32 **)(a1 + 0x2C);
-    row = *(u16 *)(D_00492FCE + D_004B4B63[0] * 0xB8);
-    if ((row & w[args[0]]) != 0) {
+    BitsU64 bits = *(BitsU64 *)&D_004700D8;
+    s32 *args = *(s32 **)(a1 + 0x2C);
+    u16 row = *(u16 *)(D_00492FCE + D_004B4B63[0] * 0xB8);
+    if ((row & ((u32 *)&bits)[args[0]]) != 0) {
         *(s32 *)a1 = 1;
     } else {
         *(s32 *)a1 = 0;
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2350);
 extern void func_002987E0(s32, s32);
 extern void Scene_SetReady(void);
 
