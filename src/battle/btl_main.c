@@ -1420,7 +1420,49 @@ void func_001AF840(void *f) {
     }
 }
 #endif
-INCLUDE_ASM("asm/nonmatchings/battle/btl_main", func_001AF840);
+extern void amTask_Kill(void *);
+extern char D_00468390[];
+void Btl_TaskInit(Fighter *f);
+
+
+void func_001AF840(void *f) {
+    s32 *q;
+    u8 *bw;
+    s32 (**pf)(void *);
+    s32 (*fn)(void *);
+    s32 ret;
+
+    q = (s32 *)((u8 *)f + 0x30);
+    switch (*D_004B4B40) {
+    default:
+        return;
+    case 3:
+    case 9:
+    case 0xF:
+    case 0x12:
+    case 0x14:
+    case 0x15:
+    case 0x19:
+        *q = *q - 1;
+        if (*q < 0) {
+            func_001CA460(2, 0);
+            bw = (u8 *)gBattle;
+            pf = D_00468240;
+            fn = *pf;
+            while (fn != NULL) {
+                ret = fn(bw + 0x690);
+                if (ret != 0) {
+                    *(s32 *)(bw + 0x8970) = ret;
+                }
+                pf++;
+                fn = *pf;
+            }
+            amTask_Kill(f);
+            amTask_Create((void (*)(void *))Btl_TaskInit, 0, 0x4000, 0x20, (s32)0x80000000, D_00468390);
+        }
+        break;
+    }
+}
 void Btl_ToggleF8975(void) {
     s8 *p = (s8 *)((u8 *)gBattle + 0x8975);
     *p = 1 - *p;
