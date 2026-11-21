@@ -943,52 +943,39 @@ Task *func_002C0630(s32 a0, s32 a1, StrQ16 *a2) {
     *(s32 *)(w + 0x14) = -1;
     return t;
 }
-#if 0
-// func_002C0750: the byte-clear loop is unrolled or laid out differently and the table sits at another frame offset (the original keeps a0 in s1); six forms tried
-void func_002C0750(char *a0) {
-    char *s1;
-    s32 i;
-    s32 j;
+void func_002C0750(s32 *a0) {
     s32 k;
-    s32 tbl[4];
-    {
-        char *p = (char *)tbl;
-        if (p != 0) {
-            s32 n = 16;
-            do {
-                *p = 0;
-                p++;
-                n--;
-            } while (n > 0);
-        }
-    }
-    tbl[0] = (s32)(a0 + 0xC);
-    tbl[1] = (s32)(a0 + 0x10);
-    tbl[2] = (s32)(a0 + 0x2C);
-    tbl[3] = (s32)(a0 + 0x14);
+    s32 j;
+    s32 i;
+    u8 *s0;
+    u8 *s1;
+    s32 *tbl[4] = {
+        (s32 *)((u8 *)a0 + 0xC),
+        (s32 *)((u8 *)a0 + 0x10),
+        (s32 *)((u8 *)a0 + 0x2C),
+        (s32 *)((u8 *)a0 + 0x14)
+    };
+
     for (i = 0; i < 4; i++) {
-        s32 *e = (s32 *)tbl[i];
-        if (*e != 0) {
-            func_0022D0E0(*e, 1);
+        if (*tbl[i] != 0) {
+            func_0022D0E0(*tbl[i], 1);
+            *tbl[i] = 0;
         }
-        *e = 0;
     }
-    s1 = a0;
+    s1 = (u8 *)a0;
     for (k = 0; k < 8; k++) {
-        char *s0 = s1;
-        for (j = 0; j < 3; j++) {
-            s32 *e = (s32 *)(s0 + 0x3C);
-            if (*e != 0) {
-                func_0022D0E0(*e, 1);
+        j = 0;
+        s0 = s1;
+        for (; j < 3; j++) {
+            if (*(s32 *)(s0 + 0x3C) != 0) {
+                func_0022D0E0(*(s32 *)(s0 + 0x3C), 1);
+                *(s32 *)(s0 + 0x3C) = 0;
             }
-            *e = 0;
             s0 += 4;
         }
         s1 += 0xC;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0750);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C0860);
 // func_002C0FC0: frame 0x50 with s0-s3 in the original, ours 0x60 with s0-s4 (the parameter copy and the loop pointer and index take five registers); 4 layouts tried, the table-read loop is the same shape
 void func_002C0FC0(s32 *a0)
