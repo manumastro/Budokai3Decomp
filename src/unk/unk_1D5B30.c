@@ -106,7 +106,8 @@ typedef struct Fighter {
     s16 f1966[0x40];
     u8 f19E6;
     u8 f19E7;
-    char pad19E8[0x4A];
+    char pad19E8[0x48];
+    s16 f1A30;
     s16 f1A32;
     char pad1A34[0x6];
     s16 f1A3A;
@@ -3512,35 +3513,31 @@ void func_001E39F0(Fighter *c) {
         }
     }
 }
-#if 0
 void func_001E3AA0(Fighter *c) {
     u32 m;
 
-    if (((ObjA1A30 *)c)->f1A32 < -1) {
-        ((ObjA1A30 *)c)->f1A32 = ((ObjA1A30 *)c->f1354)->f1A32;
-        if (((ObjA1A30 *)c)->f1A32 >= 6) {
-            ((ObjA1A30 *)c)->f1A32 = ((ObjA1A30 *)c)->f1A32 - 6;
+    if (c->f1A32 < -1) {
+        c->f1A32 = c->f1354->f1A32;
+        if (c->f1A32 >= 6) {
+            c->f1A32 -= 6;
         }
-        ((ObjA1A30 *)c)->fB70 = ((ObjA1A30 *)c)->f1A32 + 0xE4;
-    } else if (((ObjA1A30 *)c)->f1A32 < 0) {
-        ((ObjA1A30 *)c)->f1A32 = ((ObjA1A30 *)c->f1354)->f1A32;
-        if (((ObjA1A30 *)c)->f1A32 >= 6) {
-            ((ObjA1A30 *)c)->f1A32 = ((ObjA1A30 *)c)->f1A32 - 6;
+        c->fB70 = c->f1A32 + 0xE4;
+    } else if (c->f1A32 < 0) {
+        c->f1A32 = c->f1354->f1A32;
+        if (c->f1A32 >= 6) {
+            c->f1A32 -= 6;
         }
-        ((ObjA1A30 *)c)->fB70 = ((ObjA1A30 *)c)->f1A32 + 0xDE;
+        c->fB70 = c->f1A32 + 0xDE;
     } else {
-        m = func_0012EAE0(0x20) % 3;
-        ((ObjA1A30 *)c)->f1A32 = m + (func_0012EAE0(0x20) & 1) * 6;
-        ((ObjA1A30 *)c)->fB70 = ((ObjA1A30 *)c)->f1A32 + 0xD2;
+        m = (u32)func_0012EAE0(0x20) % 3;
+        c->f1A32 = m + (func_0012EAE0(0x20) & 1) * 6;
+        c->fB70 = c->f1A32 + 0xD2;
     }
-    if (((ObjA1A30 *)c)->f1A30 != 0) {
-        ((ObjA1A30 *)c)->fB70 = ((ObjA1A30 *)c)->fB70 + 3;
+    if (c->f1A30 != 0) {
+        c->fB70 += 3;
     }
-    ((ObjA1A30 *)c)->f1A30 = 1 - ((ObjA1A30 *)c)->f1A30;
+    c->f1A30 = 1 - c->f1A30;
 }
-#endif
-// differs: 75 of 76: the original keeps the object in s0 and uses only two saved registers (frame 0x30); the C saves it in s2 and an address in s0 (frame 0x40), the field struct view did not help
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E3AA0);
 extern void func_00146ED0(void *, void *, f32);
 
 #if 0
