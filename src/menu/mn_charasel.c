@@ -581,7 +581,37 @@ void func_0027F8A0(void) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027F8B0);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027F9F0);
+extern void func_0027EA60(void *);
+extern void func_0022CF70(void *);
+extern void func_00287C60(void);
+extern void func_002804A0(void);
+extern void Scene_Request(s32, s32);
+extern void func_001F07E0(s32, s32);
+
+void func_0027F9F0(u8 *a0) {
+    u8 *s1;
+    u8 *s0;
+
+    s1 = a0 + 0x30;
+    s0 = *(u8 **)(a0 + 0x38);
+    func_0027EA60(s0);
+    *(f32 *)(*(u8 **)(s0 + 0x38) + 0x5C) += 0.05f * gFrameDelta;
+    func_0022CF70(*(void **)(s0 + 0x38));
+    if (*(f32 *)(*(u8 **)(s0 + 0x38) + 0x5C) < 1.0f) {
+        return;
+    }
+    if (*(s32 *)(s0 + 8) != 0) {
+        func_00287C60();
+        *(s32 *)(s0 + 8) = 0;
+    }
+    func_002804A0();
+    if (*(s8 *)(s1 + 4) == 0) {
+        Scene_Request(0xF, 0);
+    } else if (*(s8 *)(s1 + 4) == 1) {
+        Scene_Request(0x14, 0);
+    }
+    func_001F07E0(0xA, 0);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027FAE0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_charasel", func_0027FCA0);
 extern void func_0027EA60(void *);
