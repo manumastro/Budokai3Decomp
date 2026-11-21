@@ -1459,32 +1459,32 @@ void func_0013B2B0(u8 *x);
 
 void func_0013B2B0(u8 *x);
 
+extern u8 D_00568C90[];
+extern u8 D_0058A090[];
+void func_0013B160(void *p);
 void func_0013B2B0(u8 *x);
 
-void func_0013B2B0(u8 *x);
-
-#if 0
 void func_0020E530(s32 i, u8 *x, s32 j) {
     u8 *s1;
 
-    if (j != 1) {
-        if (j == 0) {
-            s1 = D_00568C90 + i * 0x2140;
-            func_0013B160(s1 + 0x40);
-            func_0013B2B0(x);
-            __asm__ volatile (
-                "addiu $v1, %0, 0x40\n"
-                "sqc2 $vf28, 0($v1)\n"
-                "sqc2 $vf29, 0x10($v1)\n"
-                "sqc2 $vf30, 0x20($v1)\n"
-                "sqc2 $vf31, 0x30($v1)\n"
-                "vmove.xyzw $vf28, $vf24\n"
-                "vmove.xyzw $vf29, $vf25\n"
-                "vmove.xyzw $vf30, $vf26\n"
-                "vmove.xyzw $vf31, $vf27\n"
-                : : "r"(s1) : "memory");
-        }
-    } else {
+    switch (j) {
+    case 0:
+        s1 = D_00568C90 + i * 0x2140;
+        func_0013B160(s1 + 0x40);
+        func_0013B2B0(x);
+        __asm__ volatile (
+            "addiu $v1, %0, 0x40\n"
+            "sqc2 $vf28, 0($v1)\n"
+            "sqc2 $vf29, 0x10($v1)\n"
+            "sqc2 $vf30, 0x20($v1)\n"
+            "sqc2 $vf31, 0x30($v1)\n"
+            "vmove.xyzw $vf28, $vf24\n"
+            "vmove.xyzw $vf29, $vf25\n"
+            "vmove.xyzw $vf30, $vf26\n"
+            "vmove.xyzw $vf31, $vf27\n"
+            : : "r"(s1) : "memory");
+        break;
+    case 1:
         s1 = D_0058A090 + i * 3 * 64;
         func_0013B160(s1 + 0x50);
         func_0013B2B0(x);
@@ -1499,11 +1499,9 @@ void func_0020E530(s32 i, u8 *x, s32 j) {
             "vmove.xyzw $vf30, $vf26\n"
             "vmove.xyzw $vf31, $vf27\n"
             : : "r"(s1) : "memory");
+        break;
     }
 }
-// differs: the mode test is laid out as beq j,1 (out of line block) then beqz j with the j==0 block after the return: a nested if or a switch give other layouts; the stores and the calls match
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E530);
 #if 0
 void func_0020E620(s32 i, u8 *src, s32 j) {
     u8 *s1;
