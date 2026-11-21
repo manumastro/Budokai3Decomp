@@ -1138,43 +1138,43 @@ void func_002C15E0(s32 *a0) {
 }
 extern s32 func_0022D670(s32, f32);
 
-#if 0
-// func_002C1720: the parameter is copied to a saved register first in the original (move s0,a0); ours uses a0 directly, 74 of 80 differ; 1 form tried
 void func_002C1720(s32 *a0) {
-    u8 *b = (u8 *)a0;
-    s32 *s0 = a0;
-    D_00470704 = s0[1];
+    u8 *s0 = (u8 *)a0;
+    s32 m;
+    s32 idx;
+
+    m = a0[1];
+    D_00470704 = m;
     D_0047070C = 0x2000;
     D_00470708 = 0;
-    amModel_SetCurrent(s0[1], 0x2000);
+    amModel_SetCurrent(m, 0x2000);
     D_00470238 = 0;
-    if (s0[0x24 / 4] != 0) {
-        func_0022D0E0(s0[0x24 / 4], 1);
+    if (*(s32 *)(s0 + 0x24) != 0) {
+        func_0022D0E0(*(s32 *)(s0 + 0x24), 1);
     }
-    s0[0x24 / 4] = func_0022D670(((s32 *)((s32 *)s0[0])[0x1C / 4])[b[0xAB] + 0x2A], 0.0f);
-    if (s0[0x28 / 4] != 0) {
-        func_0022D0E0(s0[0x28 / 4], 1);
-        s0[0x28 / 4] = 0;
+    idx = s0[0xAB] + 0x2A;
+    *(s32 *)(s0 + 0x24) = func_0022D670(((s32 *)*(s32 *)(*(s32 *)s0 + 0x1C))[idx], 0.0f);
+    if (*(s32 *)(s0 + 0x28) != 0) {
+        func_0022D0E0(*(s32 *)(s0 + 0x28), 1);
+        *(s32 *)(s0 + 0x28) = 0;
     }
-    if (s0[0x34 / 4] != 0) {
-        func_0022D0E0(s0[0x34 / 4], 1);
+    if (*(s32 *)(s0 + 0x34) != 0) {
+        func_0022D0E0(*(s32 *)(s0 + 0x34), 1);
     }
-    if (b[0xAB] != 0) {
-        s0[0x34 / 4] = func_0022D670(((s32 *)((s32 *)s0[0])[0x1C / 4])[0x68 / 4], 0.0f);
+    if (s0[0xAB] != 0) {
+        *(s32 *)(s0 + 0x34) = func_0022D670(*(s32 *)(*(s32 *)(*(s32 *)s0 + 0x1C) + 0x68), 0.0f);
     } else {
-        s0[0x34 / 4] = 0;
+        *(s32 *)(s0 + 0x34) = 0;
     }
-    if (s0[0x38 / 4] != 0) {
-        func_0022D0E0(s0[0x38 / 4], 1);
+    if (*(s32 *)(s0 + 0x38) != 0) {
+        func_0022D0E0(*(s32 *)(s0 + 0x38), 1);
     }
-    if (b[0xAB] < b[0xAD] || b[0xAB] < 2) {
-        s0[0x38 / 4] = func_0022D670(((s32 *)((s32 *)s0[0])[0x1C / 4])[0x6C / 4], 0.0f);
+    if (s0[0xAB] < s0[0xAD] || s0[0xAB] < 2) {
+        *(s32 *)(s0 + 0x38) = func_0022D670(*(s32 *)(*(s32 *)(*(s32 *)s0 + 0x1C) + 0x6C), 0.0f);
     } else {
-        s0[0x38 / 4] = 0;
+        *(s32 *)(s0 + 0x38) = 0;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1720);
 void func_002C1860(u8 *arg0)
 {
   u8 temp_a0_2;
