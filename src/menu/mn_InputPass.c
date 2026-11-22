@@ -519,16 +519,14 @@ void func_002F1500(u8 *task) {
     *(s32 *)(s3 + 0x110) = IpSysWnd_Start(4);
     *(void **)(s4 + 0x1C) = ((void *)func_002F1300 == 0) ? 0 : (void *)func_002F1300;
 }
-#if 0
-// differs: register roles differ (obj/counter/walk swapped; no declaration order matches), 14 of 70 instr
 void func_002F1650(u8 *task) {
     u8 *s0;
-    u8 *s1;
-    u8 *s3;
     u8 *s4;
+    void *v;
+    u8 *s3;
     s32 s2;
     s32 a0;
-    void *v;
+    u8 *s1;
 
     s3 = *(u8 **)(task + 0x30);
     s0 = (u8 *)gInputName;
@@ -540,8 +538,8 @@ void func_002F1650(u8 *task) {
     D_0047070C = 0x5000;
     D_00470708 = 0;
     amModel_SetCurrent(a0, 0x5000);
-    func_002F0BC0(s3);
     D_00470238 = 0;
+    func_002F0BC0(s3);
     if (*(u8 *)(s3 + 0x170) < 5) {
         s2 = 0;
         s1 = s3;
@@ -565,8 +563,6 @@ void func_002F1650(u8 *task) {
         *(void **)(s4 + 0x1C) = v;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1650);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_InputPass", func_002F1770);
 extern void *func_0022D670(f32, void *);
 

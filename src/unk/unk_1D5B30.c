@@ -4202,19 +4202,18 @@ void func_001E6E90(char *c, s32 sel) {
     }
     *(s32 *)(c + 0x5F0) = 0x100 << s0;
 }
-#if 0
 extern char D_00469640[];
 extern void func_001E6890();
 extern void func_001E6CE0();
 extern void func_001E66E0();
 void func_001E6F70(Fighter *c, s32 a1) {
+    void *fp;
     char *t;
     char *base;
     s32 idx;
-    void *fp;
     char *a0p;
 
-    *(s32 *)((char *)c + 0x558) = a1;
+    *(s32 *)((u8 *)c + 0x558) = a1;
     t = (char *)amTask_Create(0, 0, 0x5380, 0x20, 0x40000010, D_00469640);
     *(void **)(t + 0x30) = c;
     *(s32 *)(t + 0x34) = 0;
@@ -4225,7 +4224,7 @@ void func_001E6F70(Fighter *c, s32 a1) {
     if (*(s32 *)(t + 0x40) > 0) {
         idx = *(s32 *)(a0p + 0xC);
         base = *(char **)(*(char **)((char *)c + 0x568) + 0x1CF8);
-        if ((*(s8 *)(base + idx * 20 + 0xDB) & 1) != 0) {
+        if ((*(s8 *)(((u8 *)(idx * 20) + (s32)(base)) + 0xDB) & 1) != 0) {
             fp = (void *)func_001E6890;
             *(void **)(t + 0x1C) = (fp == 0) ? 0 : fp;
         } else {
@@ -4237,9 +4236,6 @@ void func_001E6F70(Fighter *c, s32 a1) {
         *(void **)(t + 0x1C) = (fp == 0) ? 0 : fp;
     }
 }
-#endif
-// differs: 6 of 63 by fdiff: five are relocation placeholders (D_00469640, amTask_Create, the three function addresses); the real one is the register order of the index and the table base in the entry lookup (index in $a0 in the original, $a1 here; declaration orders tried). The extern of func_001E6F70 is now unprototyped (called with one and two arguments).
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E6F70);
 void func_001E7070(char *c, s32 a1) {
     char *q;
     char *t4;

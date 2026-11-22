@@ -332,7 +332,7 @@ segments:
       - [0x1F4090, c, menu/mn_InputName]
       - [0x1F4330, c, menu/mn_ipsyswnd]
       - [0x1F5690, c, menu/mn_OutputPass]
-      - [0x1F57DC, asm, menu/mn_CharSelChip]
+      - [0x1F57E0, c, menu/mn_CharSelChip]
       - [0x1FAFF0, c, unk/unk_2FAFF0]
       - [0x201530, c, unk/unk_301530]
       - [0x204970, c, menu/mn_TourMap]

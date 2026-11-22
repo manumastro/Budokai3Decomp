@@ -3239,7 +3239,6 @@ void func_00212160(u8 *a) {
 // differs: 16 of 77 instructions differ: the original copies the parameter to s1 at entry (before the first test), this build copies it after the test; the VU0 part and the calls match
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212160);
-#if 0
 void func_002122A0(u8 *p) {
     u8 *s1;
     u8 *s0;
@@ -3247,9 +3246,9 @@ void func_002122A0(u8 *p) {
     s32 k;
     s32 w;
     s32 idx;
+    u8 *g264;
     u8 *slot;
     u8 *base;
-    u8 *g264;
     Copy16A t50;
     Copy16A t40;
 
@@ -3328,8 +3327,6 @@ void func_002122A0(u8 *p) {
     func_0013B110(1);
 }
 // differs: 4 of 118 differ, all in the no-flag path (w & 1 clear): the table value goes to a1 and the slot address to v0 in the original; the register choice here follows the operand order (tried: operand orders, a slot pointer, a base pointer, the gBattle pointer as a local). The flag path matches
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002122A0);
 void func_0013B060(s32);
 void func_00209D70(void *);
 

@@ -431,8 +431,6 @@ void Shenron_Start(void) {
     s0 = (s32 *)D_0047097C;
     *s0 = amTask_Create((void *)Shenron_SetupBgScript, 0, 0x3100, 0x4000, 2, D_0046F9E8);
 }
-#if 0
-// func_003071C0: the copy loop: the original counts with v1 and keeps the source in a1 (lui a1 first); ours takes the other registers, unrolled or swapped; 8 variants tried
 typedef struct Copy16Sh {
     s32 a, b, c, d;
 } __attribute__((aligned(16))) Copy16Sh;
@@ -441,32 +439,29 @@ extern void Help_Load(void);
 extern void SoundSlot_ClearAll(void);
 extern s32 amCdFs_ReadFileId(s32, s32, s32);
 extern s32 D_00458E70[];
-
 void func_003071C0(void) {
-    s32 ids[44];
+    Copy16Sh *sq;
     s32 *s0;
-    s32 i;
+    s32 ids[44];
     s32 k;
     Copy16Sh *dq;
-    Copy16Sh *sq;
+    s32 i;
     Shenron_Create();
     func_00306140();
     Help_Load();
     SoundSlot_ClearAll();
     s0 = (s32 *)D_0047097C;
-    dq = (Copy16Sh *)ids;
     sq = (Copy16Sh *)D_00458E70;
+    dq = (Copy16Sh *)ids;
     i = 0xB;
     do {
         *dq = *sq;
         sq++;
-        dq++;
         i--;
+        dq++;
     } while (i > 0);
     for (k = 0; k < 0x2C; k++) {
         s0[0x24 / 4] = amCdFs_ReadFileId(ids[k], 0, 1);
         s0++;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_shenron", func_003071C0);

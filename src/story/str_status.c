@@ -1428,8 +1428,6 @@ extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
 
 extern s32 func_0027E2D0(s32, s32, s32, s32, s32, s32, s32, s32);
 
-#if 0
-// func_002C1E10: the saved registers: ours keeps the parameter and the sub-object in s2/s1 and needs an extra s3 (frame 0x50 against 0x40); the tail (table byte, call with 8 arguments, float and pointer) matches in shape; 2 forms tried
 void func_002C1E10(s32 *a0) {
     s32 *s0 = (s32 *)a0[0x30 / 4];
     s32 r;
@@ -1464,15 +1462,15 @@ void func_002C1E10(s32 *a0) {
     if ((s8)r >= 7) {
         func_0027E120(s0[0xA0 / 4]);
         s0[0xA0 / 4] = 0;
-        *(u8 *)((char *)s0 + 0xB2) = (u8)(*(u8 *)((char *)s0 + 0xB2) - 1);
+        *(u8 *)(((u8 *)(0xB2) + (s32)((char *)s0))) = (u8)(*(u8 *)((char *)s0 + 0xB2) - 1);
         bb = *(u8 *)((char *)s0 + 0xB2);
-        q = (s32 *)((char *)s0 + bb * 12 + 0x44);
+        q = (s32 *)(((u8 *)(bb * 12) + (s32)((char *)s0)) + 0x44);
         if (q[0] != 0) {
             func_0022D0E0(q[0], 1);
             q[0] = 0;
         }
-        bb = *(u8 *)((char *)s0 + 0xB2);
-        bt = *(u8 *)(2 * bb + (char *)s0 + 0xB4);
+        bb = *(u8 *)((((u8 *)((s32)((char *)s0)) + (s32)((u8 *)(0xB2)))));
+        bt = *(u8 *)(((u8 *)(0xB4) + (s32)((((u8 *)((u8 *)(2 * bb)) + (s32)((s32)((char *)s0)))))));
         nv = (bb + 1) & 0xFF;
         s0[0xA0 / 4] = func_0027E2D0(3, 6, nv, (s8)bb, bt, 0, 0, 3);
         *(u8 *)((char *)s0 + 0xAF) = 0xB;
@@ -1481,8 +1479,6 @@ void func_002C1E10(s32 *a0) {
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1E10);
 INCLUDE_ASM("asm/nonmatchings/story/str_status", func_002C1F90);
 // func_002C2470: 7 of 58 differ: the tail (the 0xB byte and the function pointer) takes a0 and v1 the other way round; pointer as void*, s32, direct store tried
 extern f32 gFrameDelta;

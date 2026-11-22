@@ -163,9 +163,6 @@ static inline f32 SkillObj_Scale(void) {
 }
 
 // r7b: 19 of 167. The original keeps off=side<<4 in a0 and the D_0046FE54 base in v1 and re-adds them per test (so the bc1t slot stays empty: a0 is live across the move a0,s1); mwcc CSEs base+off whatever the form (local base, static inline field reader, side*16 all tried).
-#if 0
-/* differs: the table offset is computed in $v1 (the original keeps it in $a0), and the call's
- * `move a0, s1` fills the delay slot of the first bc1t in the original. */
 s32 func_0024A0B0(SkillObj *ob) {
     s32 side = ob->unk08->unk1350;
     f32 t;
@@ -179,7 +176,7 @@ s32 func_0024A0B0(SkillObj *ob) {
         if (ob->unk54 != NULL) {
             func_00209390(ob->unk54);
         }
-        if (ob->unk58 != NULL) {
+        if (NULL != ob->unk58) {
             func_00209390(ob->unk58);
         }
         ob->unk00 = 12.0f;
@@ -193,20 +190,20 @@ s32 func_0024A0B0(SkillObj *ob) {
     }
     ob->unk5C = ob->unk5C + SkillObj_Scale();
     off = side << 4;
-    if (*(s32 *)(off + (u8 *)D_0046FE54 + 0x38) == 0 && ob->unk5C > 5.0f) {
+    if (*(s32 *)(off + ((u8 *)(0x38) + (s32)((s8 *)D_0046FE54))) == 0 && ob->unk5C > 5.0f) {
         func_00249D50(ob, 1);
-    } else if (*(s32 *)(off + (u8 *)D_0046FE54 + 0x3C) == 0 && ob->unk5C > 10.0f) {
+    } else if (*(s32 *)(off + ((u8 *)(0x3C) + (s32)((s8 *)D_0046FE54))) == 0 && ob->unk5C > 10.0f) {
         func_00249D50(ob, 2);
-    } else if (*(s32 *)(off + (u8 *)D_0046FE54 + 0x40) == 0 && ob->unk5C > 15.0f) {
+    } else if (*(s32 *)(((u8 *)(off) + (s32)((s8 *)D_0046FE54)) + 0x40) == 0 && ob->unk5C > 15.0f) {
         func_00249D50(ob, 3);
     }
-    if (ob->unk54 != NULL) {
+    if (ob->unk54) {
         func_00208F70(ob->unk54);
         if (*(s32 *)((u8 *)ob->unk54 + 0x38) < 0) {
             ob->unk54 = NULL;
         }
     }
-    if (ob->unk58 != NULL) {
+    if (ob->unk58) {
         func_00208F70(ob->unk58);
         if (*(s32 *)((u8 *)ob->unk58 + 0x38) < 0) {
             ob->unk58 = NULL;
@@ -214,8 +211,6 @@ s32 func_0024A0B0(SkillObj *ob) {
     }
     return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024A0B0);
 
 void SkillKill_Kind14(s32 *a0) {
     s32 s0;
@@ -420,25 +415,20 @@ void func_0024B6A0(u8 *ob) {
     func_0013B110(1);
     func_00209C50();
 }
-#if 0
-/* differs: 0x284 bytes against 0x2A0. The original keeps the table offset (side << 4) in $a0 across the whole
- * else-if chain, so the `move a0, s1` of each call block is not hoisted into the bc1t delay slot and the
- * chain's join lands 8 bytes later. Tried: offset as an expression, as a local, declared first or last. */
 typedef struct SkillObjB {
-    /* 0x00 */ f32 unk00;
-    /* 0x04 */ s16 unk04;
-    /* 0x08 */ Fighter *unk08;
-    /* 0x0C */ u8 unk0C[0x44 - 0x0C];
-    /* 0x44 */ void *unk44;
-    /* 0x48 */ void *unk48;
-    /* 0x4C */ u8 unk4C[0x50 - 0x4C];
-    /* 0x50 */ f32 unk50;
+     f32 unk00;
+     s16 unk04;
+     Fighter *unk08;
+     u8 unk0C[0x44 - 0x0C];
+     void *unk44;
+     void *unk48;
+     u8 unk4C[0x50 - 0x4C];
+     f32 unk50;
 } SkillObjB;
-
 s32 func_0024B810(SkillObjB *ob) {
     s32 off;
-    s32 side;
     f32 t;
+    s32 side;
 
     side = ob->unk08->unk1350;
     if (ob->unk04 & 0x8000) {
@@ -463,11 +453,11 @@ s32 func_0024B810(SkillObjB *ob) {
     }
     ob->unk50 = ob->unk50 + SkillObj_Scale();
     off = side << 4;
-    if (*(s32 *)(off + (u8 *)D_0046FE54 + 0x38) == 0 && ob->unk50 > 5.0f) {
+    if (*(s32 *)(((u8 *)(off) + (s32)((u8 *)D_0046FE54)) + 0x38) == 0 && ob->unk50 > 5.0f) {
         func_00249D50((SkillObj *)ob, 1);
-    } else if (*(s32 *)(off + (u8 *)D_0046FE54 + 0x3C) == 0 && ob->unk50 > 10.0f) {
+    } else if (*(s32 *)(off + ((u8 *)(0x3C) + (s32)((u8 *)D_0046FE54))) == 0 && ob->unk50 > 10.0f) {
         func_00249D50((SkillObj *)ob, 2);
-    } else if (*(s32 *)(off + (u8 *)D_0046FE54 + 0x40) == 0 && ob->unk50 > 15.0f) {
+    } else if (0 == *(s32 *)(off + ((u8 *)(0x40) + (s32)((u8 *)D_0046FE54))) && ob->unk50 > 15.0f) {
         func_00249D50((SkillObj *)ob, 3);
     }
     if (ob->unk44 != NULL) {
@@ -484,8 +474,6 @@ s32 func_0024B810(SkillObjB *ob) {
     }
     return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_0024B810);
 void SkillKill_Kind10(s32 *a0) {
     s32 s0;
     s32 i;

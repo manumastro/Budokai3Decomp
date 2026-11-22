@@ -13,15 +13,15 @@ of libkernl and libgraph objects, written there as `SYSCALL_STUB(name, N)` (incl
 
 <!-- progress table -->
 
-Measured 2026-11-19 (scripts/progress.py).
+Measured 2026-11-22 (scripts/progress.py).
 
 | Part | Functions done | All | % | Bytes done | All bytes | % |
 |---|---|---|---|---|---|---|
-| Sony SDK + C library (gcc) | 756 | 858 | 88.11 | 135,356 | 179,380 | 75.46 |
-| Metrowerks, linked before CRI (am* layer, main) | 342 | 411 | 83.21 | 66,892 | 137,476 | 48.66 |
-| CRI ADX / Sofdec, libmtap (gcc) | 2,515 | 2,798 | 89.89 | 238,296 | 337,024 | 70.71 |
-| Metrowerks, linked after CRI (the game) | 2,792 | 4,229 | 66.02 | 431,468 | 1,476,380 | 29.22 |
-| All | 6,405 | 8,296 | 77.21 | 872,012 | 2,130,260 | 40.93 |
+| Sony SDK + C library (gcc) | 855 | 861 | 99.30 | 176,996 | 179,352 | 98.69 |
+| Metrowerks, linked before CRI (am* layer, main) | 346 | 411 | 84.18 | 68,688 | 137,476 | 49.96 |
+| CRI ADX / Sofdec, libmtap (gcc) | 2,788 | 2,798 | 99.64 | 333,720 | 337,024 | 99.02 |
+| Metrowerks, linked after CRI (the game) | 3,053 | 4,230 | 72.17 | 540,580 | 1,476,564 | 36.61 |
+| All | 7,042 | 8,300 | 84.84 | 1,119,984 | 2,130,416 | 52.57 |
 
 <!-- end of progress table -->
 

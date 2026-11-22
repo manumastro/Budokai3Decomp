@@ -231,15 +231,13 @@ void func_001D15C0(AcsrCloth *c)
   }
 }
 
-#if 0
-/* Does not match yet: 9 of 114 instructions differ. */
 void func_001D16F0(AcsrCloth *c) {
     s32 w;
     s32 h;
     s32 n;
-    s32 k;
-    s32 i;
     s32 j;
+    s32 i;
+    s32 k;
     s32 mode;
     s32 color;
     ClothPt *p;
@@ -276,6 +274,4 @@ void func_001D16F0(AcsrCloth *c) {
         func_0013B110(1);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_acsr", func_001D16F0);
 INCLUDE_ASM("asm/nonmatchings/battle/char_acsr", func_001D18C0);
