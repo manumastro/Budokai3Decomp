@@ -3775,8 +3775,8 @@ void func_001F16B0(char *a0) {
 extern f32 D_0051CD24[];
 
 // differs: func_001F1770: 10 of 71 (5 are relocations): the 64-byte VU0 copy takes the destination in $a0 (original $a1) and the table base in $a1 (original $v1); declaration orders and operand order tried; the loop break now takes the return (the trampoline) as in the original.
-#if 0
-void func_001F1770(char *a0) {
+void func_001F1770(char *a0)
+{
     char *s0;
     char *s1;
     char *p1;
@@ -3786,17 +3786,20 @@ void func_001F1770(char *a0) {
     s32 i;
     f32 f;
     BtbObj *o;
-
-    f = *(f32 *)(a0 + 0x84) + D_0051CD24[0];
-    *(f32 *)(a0 + 0x84) = f;
-    s0 = a0 + 0x30;
-    if (!(f < *(f32 *)(a0 + 0x80))) {
-        q = *(char **)(s0 + 0x8);
-        s1 = *(char **)(a0 + 0x10);
-        if (*(s32 *)(q + 0x38) < 0) {
-            o = (BtbObj *)a0;
-            for (i = 0; i < 0x100; i++) {
-                if (D_0051C770[i] == o) {
+    f = (*((f32 *)((a0 + 0x84))) + D_0051CD24[0]);
+    *((f32 *)((a0 + 0x84))) = f;
+    s0 = (a0 + 0x30);
+    if (!((f < *((f32 *)((a0 + 0x80))))))
+    {
+        q = *((char **)((s0 + 0x8)));
+        s1 = *((char **)((a0 + 0x10)));
+        if ((*((s32 *)((q + 0x38))) < 0))
+        {
+            o = ((BtbObj *)a0);
+            for (i = 0; (i < 0x100); i++)
+            {
+                if ((i[D_0051C770] == o))
+                {
                     o->prev->next = o->next;
                     o->next->prev = o->prev;
                     D_0051C770[i] = NULL;
@@ -3805,28 +3808,19 @@ void func_001F1770(char *a0) {
                 }
             }
             return;
-        } else {
-            func_00208F70(*(BtbObj **)(s0 + 0x8));
-            if (*(char **)(s1 + 0x8) != NULL) {
-                p1 = *(char **)(*(char **)(s1 + 0x8));
-                base = *(char **)(p1 + 0x408);
-                src = base + ((s32)*(s32 *)(s0 + 0xC) << 6);
-                __asm__ volatile(
-                    "lqc2 $vf1, 0(%1)\n\t"
-                    "lqc2 $vf2, 16(%1)\n\t"
-                    "lqc2 $vf3, 32(%1)\n\t"
-                    "lqc2 $vf4, 48(%1)\n\t"
-                    "sqc2 $vf1, 0(%0)\n\t"
-                    "sqc2 $vf2, 16(%0)\n\t"
-                    "sqc2 $vf3, 32(%0)\n\t"
-                    "sqc2 $vf4, 48(%0)\n\t"
-                    : : "r"(s0 + 0x10), "r"(src) : "memory");
+        }
+        else
+        {
+            func_00208F70(*((BtbObj **)((s0 + 0x8))));
+            if ((*((char **)((s1 + 0x8))) != NULL))
+            {
+                p1 = *((char **)(*((char **)((s1 + 0x8)))));
+                src = ((*((char **)((p1 + 0x408)))) + ((((s32)*((s32 *)((s0 + 0xC)))) << 6)));
+                __asm__ volatile( "lqc2 $vf1, 0(%1)\n\t" "lqc2 $vf2, 16(%1)\n\t" "lqc2 $vf3, 32(%1)\n\t" "lqc2 $vf4, 48(%1)\n\t" "sqc2 $vf1, 0(%0)\n\t" "sqc2 $vf2, 16(%0)\n\t" "sqc2 $vf3, 32(%0)\n\t" "sqc2 $vf4, 48(%0)\n\t" : : "r"( s0 + 0x10), "r"( src) : "memory");
             }
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1770);
 INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001F1890);
 
 extern BtbObj *D_0051C770[];

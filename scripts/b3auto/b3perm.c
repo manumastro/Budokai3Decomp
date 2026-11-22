@@ -995,19 +995,308 @@ static char *mut_subscript_flip(const char *s, unsigned int *rng) {
     return out.data;
 }
 
+/* Mutation 8: Compound assignments, ++/--, and mul/div <-> shift */
+static char *mut_compound_assign(const char *s, unsigned int *rng) {
+    int ob, cb;
+    if (find_body(s, &ob, &cb) != 0) return NULL;
+    static const char *swaps[][2] = {
+        {" * 2", " << 1"}, {" << 1", " * 2"},
+        {" * 4", " << 2"}, {" << 2", " * 4"},
+        {" * 8", " << 3"}, {" << 3", " * 8"},
+        {" * 16", " << 4"}, {" << 4", " * 16"},
+        {" * 0x10", " << 4"}, {" / 2", " >> 1"},
+        {" >> 1", " / 2"}, {" / 4", " >> 2"},
+        {" >> 2", " / 4"}, {" += 1;", "++;"},
+        {" -= 1;", "--;"}, {"++;", " += 1;"},
+        {"--;", " -= 1;"},
+    };
+    int nsw = (int)(sizeof(swaps) / sizeof(swaps[0]));
+    int hpos[256], hsw[256], nh = 0;
+    for (int k = 0; k < nsw && nh < 256; k++) {
+        const char *p = s + ob;
+        size_t fl = strlen(swaps[k][0]);
+        while ((p = strstr(p, swaps[k][0])) != NULL && (p - s) < cb && nh < 256) {
+            hpos[nh] = (int)(p - s);
+            hsw[nh] = k;
+            nh++;
+            p += fl;
+        }
+    }
+    /* Also detect `var += expr;` -> `var = var + (expr);` or `var = (expr) + var;` */
+    if (nh == 0 || (rand_r(rng) % 3 == 0)) {
+        const char *p = s + ob;
+        int apos[64], na = 0;
+        while ((p = strstr(p, " += ")) != NULL && (p - s) < cb && na < 64) {
+            apos[na++] = (int)(p - s);
+            p += 4;
+        }
+        if (na > 0) {
+            int pos = apos[rand_r(rng) % (unsigned)na];
+            int ls = pos - 1;
+            while (ls > ob && s[ls] != '\n' && s[ls] != ';') ls--;
+            ls++;
+            while (ls < pos && isspace((unsigned char)s[ls])) ls++;
+            int re = pos + 4;
+            while (re < cb && s[re] != ';') re++;
+            if (re < cb && pos > ls && is_clean_expr(s + ls, s + pos) && is_clean_expr(s + pos + 4, s + re)) {
+                SBuf out;
+                sb_init(&out, strlen(s) + 64);
+                sb_append(&out, s, (size_t)ls);
+                sb_append(&out, s + ls, (size_t)(pos - ls));
+                sb_puts(&out, " = ");
+                if (rand_r(rng) & 1) {
+                    sb_append(&out, s + ls, (size_t)(pos - ls));
+                    sb_puts(&out, " + (");
+                    sb_append(&out, s + pos + 4, (size_t)(re - (pos + 4)));
+                    sb_puts(&out, ")");
+                } else {
+                    sb_puts(&out, "(");
+                    sb_append(&out, s + pos + 4, (size_t)(re - (pos + 4)));
+                    sb_puts(&out, ") + ");
+                    sb_append(&out, s + ls, (size_t)(pos - ls));
+                }
+                sb_puts(&out, s + re);
+                return out.data;
+            }
+        }
+    }
+    if (nh == 0) return NULL;
+    int pick = (int)(rand_r(rng) % (unsigned)nh);
+    int pos = hpos[pick], k = hsw[pick];
+    SBuf out;
+    sb_init(&out, strlen(s) + 16);
+    sb_append(&out, s, (size_t)pos);
+    sb_puts(&out, swaps[k][1]);
+    sb_puts(&out, s + pos + strlen(swaps[k][0]));
+    return out.data;
+}
+
+/* Mutation 9: Reorder/reverse `case X: ... break;` blocks inside a switch */
+static char *mut_switch_reorder(const char *s, unsigned int *rng) {
+    int ob, cb;
+    if (find_body(s, &ob, &cb) != 0) return NULL;
+    const char *sw = strstr(s + ob, "switch");
+    if (!sw || (sw - s) >= cb) return NULL;
+    const char *sob = strchr(sw, '{');
+    if (!sob || (sob - s) >= cb) return NULL;
+    int depth = 1;
+    const char *q = sob + 1;
+    while (*q && depth > 0) {
+        if (*q == '{') depth++;
+        else if (*q == '}') depth--;
+        q++;
+    }
+    if (depth != 0) return NULL;
+    int scb = (int)(q - 1 - s);
+
+    /* Collect top-level `case ...:` blocks ending in `break;` or `return` */
+    Span cases[64];
+    int nc = 0;
+    const char *p = sob + 1;
+    while (p < s + scb && nc < 64) {
+        const char *c = strstr(p, "case ");
+        if (!c || c >= s + scb) break;
+        /* Ensure we are at switch body brace depth 0 */
+        int d = 0;
+        for (const char *t = sob + 1; t < c; t++) {
+            if (*t == '{') d++; else if (*t == '}') d--;
+        }
+        if (d != 0) { p = c + 5; continue; }
+        /* Find start of line */
+        const char *cs = c;
+        while (cs > sob + 1 && cs[-1] != '\n') cs--;
+        /* Find next top-level `case ` or `default:` or `}` */
+        const char *nx = c + 5;
+        d = 0;
+        const char *ce = s + scb;
+        while (nx < s + scb) {
+            if (*nx == '{') d++;
+            else if (*nx == '}') { if (d == 0) { ce = nx; break; } d--; }
+            else if (d == 0 && (strncmp(nx, "case ", 5) == 0 || strncmp(nx, "default:", 8) == 0)) {
+                ce = nx;
+                while (ce > cs && ce[-1] != '\n') ce--;
+                break;
+            }
+            nx++;
+        }
+        /* Only include cases that explicitly terminate (break; or return) so no fallthrough breaks */
+        size_t clen = (size_t)(ce - cs);
+        if (clen > 10 && (memmem(cs, clen, "break;", 6) || memmem(cs, clen, "return", 6))) {
+            cases[nc].start = (int)(cs - s);
+            cases[nc].end = (int)(ce - s);
+            nc++;
+        }
+        p = ce;
+    }
+    if (nc < 2) return NULL;
+    /* Either swap two random cases, or reverse the entire contiguous run of cases */
+    SBuf out;
+    sb_init(&out, strlen(s) + 32);
+    if (rand_r(rng) % 3 == 0 && nc >= 2) {
+        /* Reverse all cases if contiguous */
+        int contig = 1;
+        for (int i = 0; i + 1 < nc; i++) if (cases[i].end != cases[i + 1].start) contig = 0;
+        if (contig) {
+            sb_append(&out, s, (size_t)cases[0].start);
+            for (int i = nc - 1; i >= 0; i--)
+                sb_append(&out, s + cases[i].start, (size_t)(cases[i].end - cases[i].start));
+            sb_puts(&out, s + cases[nc - 1].end);
+            return out.data;
+        }
+    }
+    int i = (int)(rand_r(rng) % (unsigned)nc);
+    int j = (int)(rand_r(rng) % (unsigned)nc);
+    if (i == j) j = (i + 1) % nc;
+    if (i > j) { int t = i; i = j; j = t; }
+    sb_append(&out, s, (size_t)cases[i].start);
+    sb_append(&out, s + cases[j].start, (size_t)(cases[j].end - cases[j].start));
+    sb_append(&out, s + cases[i].end, (size_t)(cases[j].start - cases[i].end));
+    sb_append(&out, s + cases[i].start, (size_t)(cases[i].end - cases[i].start));
+    sb_puts(&out, s + cases[j].end);
+    return out.data;
+}
+
+/* Mutation 10: Loop shape toggle: `while (C) { B }` <-> `if (C) { do { B } while (C); }` */
+static char *mut_loop_shape(const char *s, unsigned int *rng) {
+    int ob, cb;
+    if (find_body(s, &ob, &cb) != 0) return NULL;
+    /* Find `while (` not preceded by `}` (i.e. not a do-while tail) */
+    typedef struct { int ws, cs, ce, bs, be; } WhHit;
+    WhHit hits[32];
+    int nh = 0;
+    const char *p = s + ob;
+    while ((p = strstr(p, "while (")) != NULL && (p - s) < cb && nh < 32) {
+        const char *back = p - 1;
+        while (back > s + ob && isspace((unsigned char)*back)) back--;
+        if (*back == '}') { p += 7; continue; } /* do-while */
+        const char *cs = p + 7;
+        int par = 1;
+        const char *q = cs;
+        while (*q && par > 0) { if (*q == '(') par++; else if (*q == ')') par--; q++; }
+        if (par != 0) { p += 7; continue; }
+        const char *ce = q - 1;
+        while (*q && isspace((unsigned char)*q)) q++;
+        if (*q != '{') { p += 7; continue; }
+        const char *bs = q;
+        int br = 1; q++;
+        while (*q && br > 0) { if (*q == '{') br++; else if (*q == '}') br--; q++; }
+        if (br != 0) { p += 7; continue; }
+        hits[nh].ws = (int)(p - s); hits[nh].cs = (int)(cs - s); hits[nh].ce = (int)(ce - s);
+        hits[nh].bs = (int)(bs - s); hits[nh].be = (int)(q - s);
+        nh++;
+        p += 7;
+    }
+    if (nh == 0) return NULL;
+    WhHit h = hits[rand_r(rng) % (unsigned)nh];
+    SBuf out;
+    sb_init(&out, strlen(s) + 64);
+    sb_append(&out, s, (size_t)h.ws);
+    sb_puts(&out, "if (");
+    sb_append(&out, s + h.cs, (size_t)(h.ce - h.cs));
+    sb_puts(&out, ") { do ");
+    sb_append(&out, s + h.bs, (size_t)(h.be - h.bs));
+    sb_puts(&out, " while (");
+    sb_append(&out, s + h.cs, (size_t)(h.ce - h.cs));
+    sb_puts(&out, "); }");
+    sb_puts(&out, s + h.be);
+    return out.data;
+}
+
+/* Mutation 11: Multi-declaration shuffle (3-way rotation to jump out of regalloc local minima) */
+static char *mut_decl_multi(const char *s, unsigned int *rng) {
+    char *a = mut_decl_order(s, rng);
+    if (!a) return NULL;
+    char *b = mut_decl_order(a, rng);
+    if (b) { free(a); a = b; }
+    char *c = mut_decl_order(a, rng);
+    if (c) { free(a); a = c; }
+    return a;
+}
+
+/* Mutation 12: Ternary <-> if/else for single assignment `if (c) { v = A; } else { v = B; }` */
+static char *mut_ternary_if(const char *s, unsigned int *rng) {
+    int ob, cb;
+    if (find_body(s, &ob, &cb) != 0) return NULL;
+    /* Look for `v = (C) ? A : B;` or `if (C) { v = A; } else { v = B; }` */
+    const char *p = s + ob;
+    typedef struct { int s0, s1, cs, ce, vs, ve, as, ae, bs, be; } THit;
+    THit hits[32];
+    int nh = 0;
+    while ((p = strstr(p, "if (")) != NULL && (p - s) < cb && nh < 32) {
+        if (p > s && (isalnum((unsigned char)p[-1]) || p[-1] == '_')) { p += 4; continue; }
+        const char *cs = p + 4;
+        int par = 1; const char *q = cs;
+        while (*q && par > 0) { if (*q == '(') par++; else if (*q == ')') par--; q++; }
+        if (par != 0) { p += 4; continue; }
+        const char *ce = q - 1;
+        while (*q && isspace((unsigned char)*q)) q++;
+        if (*q != '{') { p += 4; continue; }
+        const char *a0 = q + 1;
+        const char *a1 = strchr(a0, '}');
+        if (!a1 || strchr(a0, '{') < a1) { p += 4; continue; }
+        const char *eq1 = strstr(a0, " = ");
+        const char *sc1 = strchr(a0, ';');
+        if (!eq1 || !sc1 || eq1 >= sc1 || sc1 >= a1) { p += 4; continue; }
+        q = a1 + 1;
+        while (*q && isspace((unsigned char)*q)) q++;
+        if (strncmp(q, "else", 4) != 0) { p += 4; continue; }
+        q += 4;
+        while (*q && isspace((unsigned char)*q)) q++;
+        if (*q != '{') { p += 4; continue; }
+        const char *b0 = q + 1;
+        const char *b1 = strchr(b0, '}');
+        if (!b1 || strchr(b0, '{') < b1) { p += 4; continue; }
+        const char *eq2 = strstr(b0, " = ");
+        const char *sc2 = strchr(b0, ';');
+        if (!eq2 || !sc2 || eq2 >= sc2 || sc2 >= b1) { p += 4; continue; }
+        /* Check LHS matches */
+        while (a0 < eq1 && isspace((unsigned char)*a0)) a0++;
+        while (b0 < eq2 && isspace((unsigned char)*b0)) b0++;
+        if ((eq1 - a0) == (eq2 - b0) && memcmp(a0, b0, (size_t)(eq1 - a0)) == 0) {
+            hits[nh].s0 = (int)(p - s); hits[nh].s1 = (int)(b1 + 1 - s);
+            hits[nh].cs = (int)(cs - s); hits[nh].ce = (int)(ce - s);
+            hits[nh].vs = (int)(a0 - s); hits[nh].ve = (int)(eq1 - s);
+            hits[nh].as = (int)(eq1 + 3 - s); hits[nh].ae = (int)(sc1 - s);
+            hits[nh].bs = (int)(eq2 + 3 - s); hits[nh].be = (int)(sc2 - s);
+            nh++;
+        }
+        p += 4;
+    }
+    if (nh == 0) return NULL;
+    THit h = hits[rand_r(rng) % (unsigned)nh];
+    SBuf out;
+    sb_init(&out, strlen(s) + 32);
+    sb_append(&out, s, (size_t)h.s0);
+    sb_append(&out, s + h.vs, (size_t)(h.ve - h.vs));
+    sb_puts(&out, " = (");
+    sb_append(&out, s + h.cs, (size_t)(h.ce - h.cs));
+    sb_puts(&out, ") ? (");
+    sb_append(&out, s + h.as, (size_t)(h.ae - h.as));
+    sb_puts(&out, ") : (");
+    sb_append(&out, s + h.bs, (size_t)(h.be - h.bs));
+    sb_puts(&out, ");");
+    sb_puts(&out, s + h.s1);
+    return out.data;
+}
+
 static char *apply_random_mutation(const char *src, unsigned int *rng, int steps) {
     char *cur = strdup(src);
     for (int st = 0; st < steps; st++) {
         char *nxt = NULL;
-        for (int tries = 0; tries < 6 && !nxt; tries++) {
+        for (int tries = 0; tries < 8 && !nxt; tries++) {
             int op = (int)(rand_r(rng) % 100);
-            if (op < 30)      nxt = mut_decl_order(cur, rng);
-            else if (op < 48) nxt = mut_int_type(cur, rng);
-            else if (op < 70) nxt = mut_commute(cur, rng);
-            else if (op < 80) nxt = mut_subscript_flip(cur, rng);
-            else if (op < 90) nxt = mut_stmt_swap(cur, rng);
-            else if (op < 96) nxt = mut_expr_idiom(cur, rng);
-            else              nxt = mut_if_else_swap(cur, rng);
+            if (op < 22)      nxt = mut_decl_order(cur, rng);
+            else if (op < 30) nxt = mut_decl_multi(cur, rng);
+            else if (op < 44) nxt = mut_int_type(cur, rng);
+            else if (op < 62) nxt = mut_commute(cur, rng);
+            else if (op < 70) nxt = mut_subscript_flip(cur, rng);
+            else if (op < 78) nxt = mut_stmt_swap(cur, rng);
+            else if (op < 85) nxt = mut_compound_assign(cur, rng);
+            else if (op < 90) nxt = mut_expr_idiom(cur, rng);
+            else if (op < 94) nxt = mut_if_else_swap(cur, rng);
+            else if (op < 96) nxt = mut_switch_reorder(cur, rng);
+            else if (op < 98) nxt = mut_loop_shape(cur, rng);
+            else              nxt = mut_ternary_if(cur, rng);
         }
         if (nxt) {
             free(cur);
@@ -1196,7 +1485,9 @@ int main(int argc, char **argv) {
                 if (r < 55) parent_idx = 0;
                 else parent_idx = (int)(rand_r(&rng) % (unsigned)nbeam);
             }
-            int steps = (stale_rounds >= 3) ? (1 + (int)(rand_r(&rng) % 3)) : (1 + (int)(rand_r(&rng) % 2));
+            int steps = (stale_rounds >= 5) ? (2 + (int)(rand_r(&rng) % 4))
+                      : (stale_rounds >= 3) ? (1 + (int)(rand_r(&rng) % 3))
+                      : (1 + (int)(rand_r(&rng) % 2));
             char *cand = apply_random_mutation(beam[parent_idx].src, &rng, steps);
             if (!cand) continue;
             uint64_t h = fnv1a(cand, strlen(cand));

@@ -34,7 +34,9 @@ import m2c_fix  # noqa: E402
 import mwmatch  # noqa: E402
 import sweep_parked  # noqa: E402
 
-B3PERM = ROOT / "build" / "b3auto" / "b3perm"
+B3PERM = ROOT / "build" / "b3auto" / "b3ast"
+if not B3PERM.exists():
+    B3PERM = ROOT / "build" / "b3auto" / "b3perm"
 M2C = ROOT / "tools" / "m2c" / "m2c.py"
 ROM = ROOT / "disc" / "SLUS_209.98.rom"
 WIBO = ROOT / "tools" / "wibo"
