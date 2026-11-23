@@ -151,6 +151,33 @@ def build_jobs(pool, budget, seconds, batch, max_draft_diff=20):
                     jobs.append((path, fn, addr, sz, f"draft_{st}_{df}", ep, fc, get_pre(path), budget, seconds, batch, None))
                     seen.add(fn)
 
+    # Pool 3b: drafts/INDEX.md `cerr` and `uncompiled` drafts (repaired via fix_known_sigs + m2c_fix!)
+    if pool == "cerr":
+        idx_path = ROOT / "drafts" / "INDEX.md"
+        if idx_path.exists():
+            for ln in idx_path.read_text(errors="ignore").splitlines():
+                if not ln.startswith("| ") or ln.startswith("| Function") or ln.startswith("|---"):
+                    continue
+                p = [x.strip() for x in ln.strip().strip("|").split("|")]
+                if len(p) < 7:
+                    continue
+                fn, st, df = p[0], p[4], p[5]
+                if fn not in active or fn in seen:
+                    continue
+                if st not in ("cerr", "uncompiled"):
+                    continue
+                m = re.search(r"\(([^)]+)\)", p[6])
+                if not m:
+                    continue
+                dpath = ROOT / "drafts" / m.group(1)
+                if not dpath.exists():
+                    continue
+                ep, fc = sweep_parked.split_externs_and_func(dpath.read_text(errors="ignore"), fn)
+                if fc and "{" in fc:
+                    path, addr, sz = active[fn]
+                    jobs.append((path, fn, addr, sz, f"draft_{st}", ep, fc, get_pre(path), budget, seconds, batch, None))
+                    seen.add(fn)
+
     # Pool 4: Compilable VU0 lifted functions from build/b3auto/vu0/work/
     if pool in ("all", "vu0"):
         vwork = ROOT / "build" / "b3auto" / "vu0" / "work"
@@ -252,7 +279,7 @@ def run_one(item):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--pool", default="all", choices=["all", "parked", "size", "clones", "vu0"])
+    ap.add_argument("--pool", default="all", choices=["all", "parked", "size", "clones", "vu0", "cerr"])
     ap.add_argument("--jobs", type=int, default=20)
     ap.add_argument("--budget", type=int, default=5000)
     ap.add_argument("--seconds", type=int, default=20)

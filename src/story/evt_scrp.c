@@ -337,36 +337,48 @@ extern s16 D_005AB5A8[];
 extern s16 D_005AB55E[];
 extern s16 D_005AB5AE[];
 
-#if 0
-// func_002A2020: the constant stores (1.0f in v0, 1 in v1, 8 in a0, -1) take other registers than in the original; 23 of 112 differ; 2 forms tried
-s32 func_002A2020(s32 a0, s32 a1, s32 a2, s32 a3) {
-    s32 *s0;
-    if (a1 < 0 || a1 >= 2) {
-        a1 = 0;
+void func_002A2020(s32 arg0, s32 arg1, u8 *arg2, u8 *arg3) {
+    s32 var_a1;
+    u8 *temp_a0;
+    u8 *temp_a3;
+    u8 *temp_a3_2;
+    u8 *temp_s0;
+
+    var_a1 = arg1;
+    if (var_a1 >= 0) {
+        if (var_a1 >= 2) {
+            goto block_3;
+        }
+    } else {
+block_3:
+        var_a1 = 0;
     }
-    s0 = (s32 *)(D_005AB3C0 + a0 * 104 + a1 * 52);
-    if (s0[0] != 0) {
-        amCdFs_ReleaseCache(s0[0]);
-        s0[0] = 0;
+    temp_s0 = (u8 *)((var_a1 * 0x34) + (D_005AB3C0 + (arg0 * 0x68)));
+    temp_a0 = *(u8 **)(temp_s0 + 0);
+    if (temp_a0 != NULL) {
+        amCdFs_ReleaseCache((s32)temp_a0);
+        *(u8 **)(temp_s0 + 0) = NULL;
     }
-    s0[0] = a2;
-    s0[1] = a3;
-    s0[2] = (s32)((char *)s0[1] + *(s8 *)((char *)s0[1] + 4));
-    s0[3] = (s32)((char *)s0[1] + *(s8 *)((char *)s0[1] + 8));
-    s0[4] = *(s32 *)s0[2];
-    s0[5] = s0[3];
-    s0[6] = s0[3] + 0x98;
-    s0[7] = s0[3] + 0x130;
-    s0[8] = s0[3] + 0x1C8;
-    s0[9] = s0[3] + 0x260;
-    s0[10] = s0[3] + 0x2F8;
-    s0[11] = s0[3] + 0x390;
-    s0[12] = s0[3] + 0x428;
+    *(u8 **)(temp_s0 + 0) = arg2;
+    *(u8 **)(temp_s0 + 4) = arg3;
+    temp_a3 = *(u8 **)(temp_s0 + 4);
+    *(s32 **)(temp_s0 + 8) = (s32 *)(temp_a3 + *(s8 *)(temp_a3 + 4));
+    temp_a3_2 = *(u8 **)(temp_s0 + 4);
+    *(u8 **)(temp_s0 + 0xC) = (u8 *)(temp_a3_2 + *(s8 *)(temp_a3_2 + 8));
+    *(s32 *)(temp_s0 + 0x10) = **(s32 **)(temp_s0 + 8);
+    *(u8 **)(temp_s0 + 0x14) = *(u8 **)(temp_s0 + 0xC);
+    *(u8 **)(temp_s0 + 0x18) = *(u8 **)(temp_s0 + 0xC) + 0x98;
+    *(u8 **)(temp_s0 + 0x1C) = *(u8 **)(temp_s0 + 0xC) + 0x130;
+    *(u8 **)(temp_s0 + 0x20) = *(u8 **)(temp_s0 + 0xC) + 0x1C8;
+    *(u8 **)(temp_s0 + 0x24) = *(u8 **)(temp_s0 + 0xC) + 0x260;
+    *(u8 **)(temp_s0 + 0x28) = *(u8 **)(temp_s0 + 0xC) + 0x2F8;
+    *(u8 **)(temp_s0 + 0x2C) = *(u8 **)(temp_s0 + 0xC) + 0x390;
+    *(u8 **)(temp_s0 + 0x30) = *(u8 **)(temp_s0 + 0xC) + 0x428;
     D_005AB49C[0] = 0x3F800000;
     D_005AB490[0] = 0;
     D_005AB494[0] = 0;
     D_005AB498[0] = 0;
-    memset(D_005AB490, 0, 0x180);
+    memset(&D_005AB490, 0, 0x180);
     D_005AB5E6[0] = -1;
     D_005AB4B8[0] = 8;
     D_005AB4BE[0] = 1;
@@ -376,14 +388,10 @@ s32 func_002A2020(s32 a0, s32 a1, s32 a2, s32 a3) {
     D_005AB5A8[0] = 8;
     D_005AB55E[0] = 1;
     D_005AB5AE[0] = 1;
-    return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/evt_scrp", func_002A2020);
-extern s32 func_002A2020();
 
-void func_002A21E0(void) {
-    func_002A2020();
+void func_002A21E0(s32 arg0, s32 arg1, u8 *arg2, u8 *arg3) {
+    func_002A2020(arg0, arg1, arg2, arg3);
 }
 
 extern f32 D_0047043C;
@@ -845,7 +853,7 @@ s32 func_002A3910(s32 *a0, char *a1) {
         return 3;
     }
     q = (s32 *)s0[0x40 / 4];
-    func_002A2020(*(s32 *)a2, (i + 1) & 1, (s32)q, q[0x50 / 4]);
+    func_002A2020(*(s32 *)a2, (i + 1) & 1, (u8 *)q, (u8 *)q[0x50 / 4]);
     s0[0x40 / 4] = 0;
     amCdFs_Close((s32)s0, 0);
     if (s1[0x18 / 4] != 0) {
