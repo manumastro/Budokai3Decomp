@@ -40,7 +40,7 @@ MATCH_DIR = ROOT / "build" / "b3auto" / "sweep" / "matches"
 INC_RE = re.compile(r'INCLUDE_ASM\("([^"]+)",\s*([A-Za-z0-9_]+)\)')
 
 
-def collect_targets(max_size, include_mega):
+def collect_targets(min_size, max_size, include_mega):
     syms = fdiff.symbol_addresses()
     starts = fdiff.function_starts()
     mega_work = ROOT / "build" / "b3auto" / "mega" / "work"
@@ -58,7 +58,7 @@ def collect_targets(max_size, include_mega):
                 if pos >= len(starts):
                     continue
                 sz = starts[pos] - addr
-                if not (0 < sz <= max_size):
+                if not (min_size <= sz <= max_size):
                     continue
                 if not include_mega and (mega_work / fn / "in.c").exists():
                     continue
@@ -147,6 +147,7 @@ def run_one(item):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--min-size", type=lambda x: int(x, 0), default=4)
     ap.add_argument("--max-size", type=lambda x: int(x, 0), default=0x200)
     ap.add_argument("--include-mega", action="store_true")
     ap.add_argument("--jobs", type=int, default=16)
@@ -156,8 +157,8 @@ def main():
     args = ap.parse_args()
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    targets = collect_targets(args.max_size, args.include_mega)
-    print(f"FRESH M2C + B3AST SWEEP: {len(targets)} untapped targets (<=0x{args.max_size:X}, {args.jobs} workers)...", flush=True)
+    targets = collect_targets(args.min_size, args.max_size, args.include_mega)
+    print(f"FRESH M2C + B3AST SWEEP: {len(targets)} untapped targets (0x{args.min_size:X}..0x{args.max_size:X}, {args.jobs} workers)...", flush=True)
     items = [(sz, p, fn, addr, args.budget, args.seconds, args.batch) for sz, p, fn, addr in targets]
     t0 = time.time()
     counts = {}
