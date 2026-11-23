@@ -279,6 +279,54 @@ def isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos):
     return "\n".join(out_types + out_decls) + "\n" + body, out_types, out_decls, body
 
 
+def adapt_signature_to_target(func, name, ttext):
+    """If the target file already declares `name` with different parameter pointer types (e.g. `u8 *` vs `Task *`),
+    adapt the clone's signature to match and cast parameters to their original types at the top of the body."""
+    m_proto = re.search(rf"^(?:extern\s+)?([A-Za-z_][\w \*]*?)\b{re.escape(name)}\s*\(([^;{{}}]*)\)\s*;", ttext, re.M)
+    if not m_proto:
+        return func
+    p_ret = m_proto.group(1).strip()
+    p_args_raw = m_proto.group(2).strip()
+    if not p_args_raw or p_args_raw == "void" or "..." in p_args_raw:
+        return func
+    m_def = re.match(rf"^([A-Za-z_][^\n;{{}}]*?)\b{re.escape(name)}\s*\(([^;{{}}]*)\)\s*\{{", func)
+    if not m_def:
+        return func
+    d_args_raw = m_def.group(2).strip()
+    if not d_args_raw or d_args_raw == "void":
+        return func
+    p_args = [x.strip() for x in p_args_raw.split(",")]
+    d_args = [x.strip() for x in d_args_raw.split(",")]
+    if len(p_args) != len(d_args):
+        return func
+    new_params = []
+    casts = []
+    changed = False
+    for idx, (pa, da) in enumerate(zip(p_args, d_args)):
+        # Extract parameter name from clone definition
+        dm = re.search(r"([A-Za-z_]\w*)\s*$", da)
+        if not dm:
+            return func
+        dname = dm.group(1)
+        dtype = da[:dm.start()].strip()
+        # Strip optional parameter name from target prototype
+        words_p = re.findall(r"[A-Za-z_]\w*", pa)
+        ptype = pa
+        if len(words_p) > 1 and not pa.endswith("*") and words_p[-1] not in (
+                "int", "s32", "u32", "s16", "u16", "s8", "u8", "s64", "u64", "f32", "char", "float", "void", "long", "short"):
+            ptype = pa[:pa.rfind(words_p[-1])].strip()
+        if re.sub(r"\s+", "", ptype) != re.sub(r"\s+", "", dtype):
+            changed = True
+            new_params.append(f"{ptype} _a{idx}")
+            casts.append(f"    {dtype} {dname} = ({dtype})_a{idx};")
+        else:
+            new_params.append(da)
+    if not changed:
+        return func
+    head = f"{p_ret} {name}({', '.join(new_params)}) {{\n" + "\n".join(casts) + "\n"
+    return head + func[m_def.end():]
+
+
 def clone(job):
     name, info = job
     max_diff_len = info.get("_max_diff_len", 0)
@@ -403,11 +451,23 @@ def clone(job):
     body = "\n".join(keep) + "\n" + func
     r = m2c_draft.draft(ROOT / tfile, name, c_override=body)
     how = "plain"
+    if r["status"] == "cerr" and "redeclared" in r.get("detail", ""):
+        func_ad = adapt_signature_to_target(func, name, ttext)
+        if func_ad != func:
+            body_ad = "\n".join(keep) + "\n" + func_ad
+            r_ad = m2c_draft.draft(ROOT / tfile, name, c_override=body_ad)
+            if m2c_draft.RANK.get(r_ad["status"], 9) < m2c_draft.RANK.get(r["status"], 9) or r_ad["status"] == "match":
+                r, body, func, how = r_ad, body_ad, func_ad, "adapted"
     if r["status"] != "match":
         # second form: the types copied under names of their own, the target's globals reached through casts
         try:
             body2 = isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos)[0]
             r2 = m2c_draft.draft(ROOT / tfile, name, c_override=body2)
+            if r2["status"] == "cerr" and "redeclared" in r2.get("detail", ""):
+                func_ad2 = adapt_signature_to_target(func, name, ttext)
+                if func_ad2 != func:
+                    body2 = isolated_body(sfile, sname, name, t_addr, ren, func_ad2, tfile, ttext, mpos)[0]
+                    r2 = m2c_draft.draft(ROOT / tfile, name, c_override=body2)
             if m2c_draft.RANK.get(r2["status"], 9) < m2c_draft.RANK.get(r["status"], 9) or r2["status"] == "match":
                 r, body, how = r2, body2, "isolated"
         except Exception as e:

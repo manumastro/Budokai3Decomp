@@ -775,57 +775,66 @@ s32 func_001D7E10(u8 *arg0)
 
 }
 
-#if 0
-s32 func_001D7E50(Fighter *c, s32 a1, u16 a2) {
+s32 func_001D7E50(Fighter *c, s32 a1, u16 a2)
+{
     Game *g;
     s32 v;
     s32 v1;
     s32 flag;
     s16 cac;
-
     g = gBattle;
-    v = (g != NULL) ? (g->f8AA8 & 0x8) : 0;
-    if (v != 0) {
+    v = (((g != NULL)) ? ((g->f8AA8 & 0x8)) : 0);
+    if ((v != 0))
+    {
         return 0;
     }
-    if (*(s8 *)((char *)c + 0x1FF8) != 2) {
+    if ((*((s8 *)((((char *)c) + 0x1FF8))) != 2))
+    {
         return 0;
     }
-    if (*(s8 *)((char *)c + 0x2013) != 0) {
+    if ((*((s8 *)((((char *)c) + 0x2013))) != 0))
+    {
         return 0;
     }
-    if (a2 & 0x80) {
+    if ((a2 & 0x80))
+    {
         return 0;
     }
     v1 = c->fB9C;
-    if (((u32)(v1 - 14) < 2) || v1 == 0x11) {
+    if (((((v1 == 14) || (v1 == 15))) || (v1 == 0x11)))
+    {
         flag = 1;
-    } else {
+    }
+    else
+    {
         flag = 0;
     }
-    if (flag == 1) {
-        if (a1 == 0) {
+    if ((flag == 1))
+    {
+        if ((a1 == 0))
+        {
             return 0;
         }
         cac = c->fCAC;
-        if (cac == 0x10) {
+        if ((cac == 0x10))
+        {
             return 0;
         }
-        if (*(s16 *)((char *)c + 0xAE4) & 0x40) {
+        if ((*((s16 *)((((char *)c) + 0xAE4))) & 0x40))
+        {
             return 0;
         }
-        if (cac == 0x14) {
+        if ((cac == 0x14))
+        {
             return 0;
         }
-        if (cac == 0x15) {
+        if ((cac == 0x15))
+        {
             return 0;
         }
     }
-    return func_001DFE60(c, 10, 3000.0f) != 0;
+    return (func_001DFE60(c, 10, 3000.0f) != 0);
 }
-#endif
-// differs: 2 of 85: the range test of the state field is compiled into v0 where the original uses $at (sltiu at, v0, 2 then bnez at); the rest matches (the calls, the returns and the flag); four shapes of the test tried
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001D7E50);
 s32 func_001D7FB0(Fighter *c, s32 a1, s32 a2, u16 a3) {
     s32 v;
 

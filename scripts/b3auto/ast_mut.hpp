@@ -999,10 +999,11 @@ inline bool mut_ast_add_reassoc_cast(FuncAST &f, unsigned int &rng, double focus
     Expr *inner = outer->lhs.get();
     while (inner->kind == ExprKind::Paren && inner->lhs) inner = inner->lhs.get();
     if (inner->kind != ExprKind::Binary || inner->text != "+") return false;
-    // Strip outer (s32) casts on inner operands if present so (u8 *)(A + C) compiles cleanly
+    // Strip outer (s32)/(u8 *) casts on inner operands if present so (u8 *)(A + C) compiles cleanly
     auto unwrap_s32 = [](ExprPtr p) -> ExprPtr {
         while (p && p->kind == ExprKind::Paren && p->lhs) p = std::move(p->lhs);
-        if (p && p->kind == ExprKind::Cast && (p->text == "s32" || p->text == "u32" || p->text == "int") && p->lhs)
+        if (p && p->kind == ExprKind::Cast &&
+            (p->text == "s32" || p->text == "u32" || p->text == "int" || p->text == "u8 *" || p->text == "char *") && p->lhs)
             return std::move(p->lhs);
         return p;
     };
@@ -1206,9 +1207,55 @@ inline bool mut_ast_hoist_if_head(FuncAST &f, unsigned int &rng) {
     return true;
 }
 
+// Op 30: Expand unsigned range check `(u32)(x - K) < 2` -> `(x == K || x == (K + 1))` (changes MWCC sltiu v0 vs at!)
+inline bool mut_ast_range_to_eq_or(FuncAST &f, unsigned int &rng, double focus_ratio) {
+    auto exprs = collect_weighted_exprs(f, focus_ratio);
+    std::vector<std::pair<Expr *, int>> cands;
+    for (const auto &we : exprs) {
+        Expr *e = we.node;
+        if (e->kind == ExprKind::Binary && e->text == "<" && e->lhs && e->rhs &&
+            e->rhs->kind == ExprKind::Num && (e->rhs->text == "2" || e->rhs->text == "3")) {
+            Expr *l = e->lhs.get();
+            while (l->kind == ExprKind::Paren && l->lhs) l = l->lhs.get();
+            if (l->kind == ExprKind::Cast && (l->text == "u32" || l->text == "unsigned int") && l->lhs) {
+                Expr *sub = l->lhs.get();
+                while (sub->kind == ExprKind::Paren && sub->lhs) sub = sub->lhs.get();
+                if (sub->kind == ExprKind::Binary && sub->text == "-" && sub->lhs && sub->rhs && sub->rhs->kind == ExprKind::Num) {
+                    cands.push_back({e, we.weight});
+                }
+            }
+        }
+    }
+    Expr *e = pick_weighted(cands, rng);
+    if (!e) return false;
+    int cnt = std::stoi(e->rhs->text);
+    Expr *l = e->lhs.get();
+    while (l->kind == ExprKind::Paren && l->lhs) l = l->lhs.get();
+    Expr *sub = l->lhs.get();
+    while (sub->kind == ExprKind::Paren && sub->lhs) sub = sub->lhs.get();
+    long long k = 0;
+    try { k = std::stoll(sub->rhs->text, nullptr, 0); } catch (...) { return false; }
+    ExprPtr x = std::move(sub->lhs);
+    auto mk_eq = [&](long long val) {
+        auto eq = std::make_unique<Expr>(ExprKind::Binary, "==");
+        eq->lhs = x->clone();
+        eq->rhs = std::make_unique<Expr>(ExprKind::Num, std::to_string(val));
+        return eq;
+    };
+    ExprPtr res = mk_eq(k);
+    for (int i = 1; i < cnt; i++) {
+        auto lor = std::make_unique<Expr>(ExprKind::Binary, "||");
+        lor->lhs = std::move(res);
+        lor->rhs = mk_eq(k + i);
+        res = std::move(lor);
+    }
+    *e = std::move(*res);
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 30;
+static constexpr int NUM_AST_OPS = 31;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -1220,7 +1267,7 @@ struct OpBandit {
         static const double base_w[NUM_AST_OPS] = {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 6.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
-            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0
+            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1280,6 +1327,7 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 27: return mut_ast_if_ret_fold(cur, rng);
         case 28: return mut_ast_sink_if_tail(cur, rng);
         case 29: return mut_ast_hoist_if_head(cur, rng);
+        case 30: return mut_ast_range_to_eq_or(cur, rng, focus_ratio);
         default: return false;
     }
 }
