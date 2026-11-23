@@ -329,7 +329,88 @@ void func_002DF6E0(void) {
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF740);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF930);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DFBC0);
+extern void func_002DAB30(void);
+extern void func_002DAE10(void);
+extern void func_002DB0E0(void);
+extern void func_002DB3B0(void);
+
+typedef struct OptWork {
+    u8 pad0[0x344];
+    void (*fn0)(void);
+    void (*fn1)(void);
+    void (*fn2)(void);
+    void (*fn3)(void);
+    void (*fn4)(void);
+    void (*fn5)(void);
+    void (*fn6)(void);
+    void (*fn7)(void);
+    void (*fn8)(void);
+    void (*fn9)(void);
+    void (*fn10)(void);
+    u8 pad370[0x34];
+    f32 f3A4;
+    u8 pad3A8[0x14];
+    f32 f3BC;
+    u8 pad3C0[0xC];
+    f32 f3CC;
+} OptWork;
+
+void func_002DFBC0(void) {
+    OptWork *w = (OptWork *)gOptionWork;
+    f32 dt;
+    A2d_SetMode(*(s16 *)D_004E05F8);
+    if (w->fn0 != NULL) {
+        w->fn0();
+    }
+    if (w->fn0 == func_002DB3B0 || w->fn0 == func_002DB0E0 || w->fn0 == func_002DAB30 || w->fn0 == func_002DAE10) {
+        A2d_FlushList();
+        return;
+    }
+    if (w->fn1 != NULL) {
+        w->fn1();
+    }
+    if (w->fn2 != NULL) {
+        w->fn2();
+    }
+    if (w->fn3 != NULL) {
+        w->fn3();
+    }
+    if (w->fn4 != NULL) {
+        w->fn4();
+    }
+    if (w->fn5 != NULL) {
+        w->fn5();
+    }
+    if (w->fn6 != NULL) {
+        w->fn6();
+    }
+    dt = (D_004703F4 != 3) ? 1.0f : 1.2f;
+    w->f3A4 += dt;
+    if (w->f3A4 > 35.0f) {
+        w->f3CC = 1.0f;
+        w->f3BC = 1.0f;
+    } else if (w->f3A4 > 25.0f) {
+        f32 t = (w->f3A4 - 25.0f) / 10.0f;
+        w->f3CC = t;
+        w->f3BC = t;
+    } else {
+        w->f3CC = 0.0f;
+        w->f3BC = 0.0f;
+    }
+    if (w->fn7 != NULL) {
+        w->fn7();
+    }
+    if (w->fn8 != NULL) {
+        w->fn8();
+    }
+    if (w->fn9 != NULL) {
+        w->fn9();
+    }
+    if (w->fn10 != NULL) {
+        w->fn10();
+    }
+    A2d_FlushList();
+}
 /* Reads the sound status (channel 0), then runs func_002DFBC0. */
 void Option_ReadSound(void) {
     amAdx_GetStat(0);

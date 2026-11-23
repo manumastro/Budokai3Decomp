@@ -1284,23 +1284,17 @@ typedef struct ScrOb98 {
     s32 f20E8;
 } ScrOb98;
 
-/* differs: 31 of 108: the switch body matches (ascending case order, out-of-line bodies); the locals get the
-   wrong saved registers (kind in $s1, a[1] in $s2; the original $s2 and $s1) for every declaration order, and the
-   store p->f98 takes base $v0 (the original: base $s0 after a copy in the delay slot). Tried: r = p = ..., s16 kind. */
-#if 0
 s32 func_0025FD50(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
-    ScrChara *c = (ScrChara *)gBattle->f8934[a[3].i];
-    s32 s1 = a[1].i;
     s32 kind = a[2].i;
+    s32 s1 = a[1].i;
     s32 s0 = a[0].i;
+    ScrChara *c = (ScrChara *)gBattle->f8934[a[3].i];
     ScrOb98 *p;
-    s32 r;
     s32 flags;
 
-    func_0020F6D0(a[4].i);
-    p = (ScrOb98 *)(r = func_0020B020(c->f1350, s1, s0));
-    p->f98 = r;
+    p = (ScrOb98 *)func_0020F6D0(a[4].i);
+    p->f98 = func_0020B020(c->f1350, s1, s0);
     if (p->f98 != 0) {
         flags = c->f1350;
         switch ((s16)kind) {
@@ -1349,8 +1343,6 @@ s32 func_0025FD50(ScrCtx *ctx, ScrCmd *cmd) {
     }
     return 1;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025FD50);
 s32 Scr_CmdPlyPartSet(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
     s32 s1 = a[1].i;
