@@ -808,40 +808,46 @@ void func_002D7BF0(void) {
         func_002D7AA0(&s->f3C0, &s->f3C0);
     }
 }
-#if 0
-/* differs: 3 of 125; the 12-byte table copy is ordered ld/sd before lwc1 (original: lwc1 first) */
 typedef struct Vec3_2D2530 {
     f32 x, y, z;
 } Vec3_2D2530;
 extern f32 D_00456BC8[];
-void func_002D7DC0(void) {
-    f32 w[3];
+
+void func_002D7DC0(void)
+{
     Vec4 v;
+    f32 w[3];
+    Vec3_2D2530 *_b3t7;
     Obj2D2530 *s = gOptionWork;
     s32 idx;
     f32 t;
     Vec3_2D2530 *src;
+    f32 _hr8;
     Vec3_2D2530 *dst;
-
-    src = (Vec3_2D2530 *)D_00456BC8;
-    dst = (Vec3_2D2530 *)w;
-    *(s64 *)dst = *(s64 *)src;
-    dst->z = src->z;
+    s64 _hr9;
+    _b3t7 = ((Vec3_2D2530 *)D_00456BC8);
+    src = _b3t7;
+    dst = ((Vec3_2D2530 *)w);
+    _hr9 = *((s64 *)src);
+    _hr8 = src->z;
+    *((s64 *)dst) = _hr9;
+    dst->z = _hr8;
     idx = s->f37C;
-    if (idx != 3) {
-        asm volatile("sqc2 $vf0, 0(%0)" : : "r"(&v));
-        v.y = 40.0f * idx;
-        if (*(&s->f3D0)[idx] != s->f3DC[idx] - 1) {
-            DrawModel(gOptionWork, (Model2D2530 *)s->f98, &v, 0);
+    if ((3 != idx))
+    {
+        asm volatile( "sqc2 $vf0, 0(%0)" : : "r"( & v));
+        v.y = (40.0f * idx);
+        if ((*(&s->f3D0)[idx] != (s->f3DC[idx] - 1)))
+        {
+            DrawModel(gOptionWork, ((Model2D2530 *)s->f98), &v, 0);
         }
         v.x = w[idx];
-        if (*(&s->f3D0)[idx] != 0) {
-            DrawModel(gOptionWork, (Model2D2530 *)s->f94, &v, 0);
+        if (*(&s->f3D0)[idx])
+        {
+            DrawModel(gOptionWork, ((Model2D2530 *)s->f94), &v, 0);
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2D2530", func_002D7DC0);
 void func_002D7FC0(void) {
     Vec4 v;
     Obj2D2530 *s = gOptionWork;

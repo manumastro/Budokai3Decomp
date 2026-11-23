@@ -1260,9 +1260,87 @@ inline bool mut_ast_range_to_eq_or(FuncAST &f, unsigned int &rng, double focus_r
     return true;
 }
 
+// Op 31: Hoist RHS of `S1; lhs = rhs;` into a temp BEFORE S1 (`_h = rhs; S1; lhs = _h;`)
+// Reschedules loads ahead of stores/copies (e.g. `lwc1` before `ld/sd` in struct copies).
+inline bool mut_ast_hoist_assign_rhs(FuncAST &f, unsigned int &rng) {
+    if (!f.body || f.body->decls.size() > 36) return false;
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    std::vector<std::pair<Stmt *, size_t>> cands;
+    for (Stmt *b : blocks) {
+        for (size_t i = 1; i < b->stmts.size(); i++) {
+            Stmt *s0 = b->stmts[i - 1].get();
+            Stmt *s1 = b->stmts[i].get();
+            if (s0->kind == StmtKind::ExprStmt && s1->kind == StmtKind::ExprStmt &&
+                s1->expr && s1->expr->kind == ExprKind::Assign && s1->expr->text == "=" &&
+                s1->expr->rhs && s1->expr->rhs->kind != ExprKind::Ident && s1->expr->rhs->kind != ExprKind::Num) {
+                cands.push_back({b, i});
+            }
+        }
+    }
+    if (cands.empty()) return false;
+    auto [b, idx] = cands[rand_r(&rng) % cands.size()];
+    Expr *asg = b->stmts[idx]->expr.get();
+    std::string hname = "_hr" + std::to_string(f.body->decls.size());
+    std::string rtxt = asg->rhs->print();
+    bool is_flt = (rtxt.find("f32") != std::string::npos || rtxt.find("float") != std::string::npos ||
+                   rtxt.find(".0f") != std::string::npos || rtxt.find("->x") != std::string::npos ||
+                   rtxt.find("->y") != std::string::npos || rtxt.find("->z") != std::string::npos ||
+                   rtxt.find("->w") != std::string::npos);
+    bool is_64 = (rtxt.find("s64") != std::string::npos || rtxt.find("u64") != std::string::npos);
+    LocalDecl d;
+    d.type_str = is_64 ? "s64" : (is_flt ? "f32" : ((rand_r(&rng) % 3 == 0) ? "f32" : "s32"));
+    d.name = hname;
+    f.body->decls.push_back(std::move(d));
+    auto pre_asg = std::make_unique<Expr>(ExprKind::Assign, "=");
+    pre_asg->lhs = std::make_unique<Expr>(ExprKind::Ident, hname);
+    pre_asg->rhs = std::move(asg->rhs);
+    asg->rhs = std::make_unique<Expr>(ExprKind::Ident, hname);
+    auto pre_st = std::make_unique<Stmt>(StmtKind::ExprStmt);
+    pre_st->expr = std::move(pre_asg);
+    b->stmts.insert(b->stmts.begin() + (ptrdiff_t)(idx - 1), std::move(pre_st));
+    return true;
+}
+
+// Op 32: Toggle zero store between int and float (`*(f32 *)(P) = 0.0f` <-> `*(s32 *)(P) = 0`)
+inline bool mut_ast_zero_float_int(FuncAST &f, unsigned int &rng, double focus_ratio) {
+    auto exprs = collect_weighted_exprs(f, focus_ratio);
+    std::vector<std::pair<Expr *, int>> cands;
+    for (const auto &we : exprs) {
+        Expr *e = we.node;
+        if (e->kind == ExprKind::Assign && e->text == "=" && e->lhs && e->rhs &&
+            e->rhs->kind == ExprKind::Num &&
+            (e->rhs->text == "0" || e->rhs->text == "0.0f" || e->rhs->text == "0.0")) {
+            Expr *l = e->lhs.get();
+            while (l->kind == ExprKind::Paren && l->lhs) l = l->lhs.get();
+            if (l->kind == ExprKind::Unary && l->text == "*" && l->lhs) {
+                Expr *c = l->lhs.get();
+                while (c->kind == ExprKind::Paren && c->lhs) c = c->lhs.get();
+                if (c->kind == ExprKind::Cast && (c->text == "f32 *" || c->text == "s32 *" || c->text == "u32 *")) {
+                    cands.push_back({e, we.weight});
+                }
+            }
+        }
+    }
+    Expr *e = pick_weighted(cands, rng);
+    if (!e) return false;
+    Expr *l = e->lhs.get();
+    while (l->kind == ExprKind::Paren && l->lhs) l = l->lhs.get();
+    Expr *c = l->lhs.get();
+    while (c->kind == ExprKind::Paren && c->lhs) c = c->lhs.get();
+    if (c->text == "f32 *") {
+        c->text = "s32 *";
+        e->rhs->text = "0";
+    } else {
+        c->text = "f32 *";
+        e->rhs->text = "0.0f";
+    }
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 31;
+static constexpr int NUM_AST_OPS = 33;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -1274,7 +1352,7 @@ struct OpBandit {
         static const double base_w[NUM_AST_OPS] = {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 6.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
-            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0
+            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1335,6 +1413,8 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 28: return mut_ast_sink_if_tail(cur, rng);
         case 29: return mut_ast_hoist_if_head(cur, rng);
         case 30: return mut_ast_range_to_eq_or(cur, rng, focus_ratio);
+        case 31: return mut_ast_hoist_assign_rhs(cur, rng);
+        case 32: return mut_ast_zero_float_int(cur, rng, focus_ratio);
         default: return false;
     }
 }
