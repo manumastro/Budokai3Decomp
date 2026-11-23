@@ -240,6 +240,10 @@ def sanitize_draft_c(fc):
     fc = re.sub(r"&(func_[0-9A-Fa-f]{8})\s*([+-])", r"(u8 *)\1 \2", fc)
     # 3. Fix illegal explicit conversion from float to pointer: ((u8 *)(*(f32 *)...)) -> ((u8 *)(*(s32 *)...))
     fc = re.sub(r"\(\s*(u8|s8|void|char)\s*\*\s*\)\s*\(\s*\*\s*\(\s*f32\s*\*\s*\)", r"(\1 *)(*(s32 *)", fc)
+    # 4. Simplify m2c function-pointer casts & local decls so b3ast's C parser handles them cleanly
+    fc = re.sub(r"\bvoid\s*\(\s*\*\s*([A-Za-z_]\w*)\s*\)\s*\(\s*\)\s*;", r"void *\1;", fc)
+    fc = re.sub(r"\(\s*void\s*\(\s*\*\*\s*\)\s*\(\s*\)\s*\)", "(void **)", fc)
+    fc = re.sub(r"\(\s*void\s*\(\s*\*\s*\)\s*\(\s*\)\s*\)", "(void *)", fc)
     return fc
 
 
@@ -281,28 +285,37 @@ def run_one(item):
     r = subprocess.run(cmd, capture_output=True, text=True)
     line = (r.stdout.strip().splitlines() or ["STATUS=ERR"])[-1]
     if "NOCOMPILE" in line or "STATUS=ERR" in line:
-        # Auto-repair compile errors with m2c_fix (up to 4 passes) and retry b3ast once
+        # Auto-repair compile errors with m2c_fix (up to 12 passes) and retry b3ast once
         try:
             cur_pre = pre_txt
             cur_fc = fc_fixed
+            cur_ep = [l for l in (ep_clean or "").splitlines() if l.strip()]
             repaired = False
             with tempfile.TemporaryDirectory(dir="/dev/shm") as td:
                 tc = Path(td) / "t.c"
                 to = Path(td) / "t.o"
-                for _ in range(4):
+                for _ in range(12):
                     scratch = cur_pre + "\n" + cur_fc
                     tc.write_text(scratch)
                     cerr = mwmatch.compile_c(configure.MWCC_VERSION, flags, tc, to)
                     if not cerr:
                         repaired = True
                         break
-                    new_fc, _, notes = m2c_fix.fix(cur_fc, [], scratch, cerr, fn)
-                    if not notes or new_fc == cur_fc:
+                    new_fc, new_ep, notes = m2c_fix.fix(cur_fc, cur_ep, scratch, cerr, fn)
+                    if not notes or (new_fc == cur_fc and new_ep == cur_ep):
                         break
-                    cur_fc = new_fc
+                    cur_fc = sanitize_draft_c(new_fc)
+                    if new_ep != cur_ep:
+                        # Update trailing ep lines in cur_pre if possible
+                        if ep_clean and ep_clean in cur_pre:
+                            new_ep_txt = "\n".join(new_ep) + "\n"
+                            cur_pre = cur_pre.replace(ep_clean, new_ep_txt, 1)
+                            ep_clean = new_ep_txt
+                        cur_ep = new_ep
             if repaired:
                 cur_pre, cur_fc, _ = fix_externs.fix_gp_externs(cur_pre, cur_fc)
                 cur_pre, _ = fix_externs.fix_known_sigs(cur_pre, cur_fc, ROOT)
+                cur_fc = sanitize_draft_c(cur_fc)
                 pre_f.write_text(cur_pre)
                 in_f.write_text(cur_fc)
                 r = subprocess.run(cmd, capture_output=True, text=True)

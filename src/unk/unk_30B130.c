@@ -189,5 +189,44 @@ void func_0030C870(Ac30C *s) {
         s->f1C = (func_0030C860 == NULL) ? NULL : (void *)func_0030C860;
     }
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030C8F0);
+extern s32 func_0022D860(s32, f32);
+extern s32 D_00470238;
+extern s32 D_00470708;
+extern s32 D_0047070C;
+extern void *D_00470704;
+extern void amModel_SetCurrent(u8 *, void *);
+extern void func_0030C9C0(void);
+
+void func_0030C8F0(u8 *arg0) {
+    s32 *var_v1;
+    s32 temp_a0_2;
+    u8 *temp_a0;
+    u8 *temp_s0;
+    u8 *temp_s2;
+    temp_s0 = *(u8 **)((u8 *)arg0 + 0x30);
+    func_0030BFC0((Part30C *)temp_s0);
+    func_0030B2E0((Part30C *)temp_s0);
+    if (*(s16 *)((u8 *)temp_s0 + 0) != 5) {
+        *(s16 *)((u8 *)temp_s0 + 2) = -1;
+        *(s16 *)((u8 *)temp_s0 + 0) = 4;
+        *(s16 *)((u8 *)temp_s0 + 4) = 2;
+        temp_s2 = (u8 *)gArenaRegCharList;
+        temp_a0 = *(u8 **)((u8 *)temp_s2 + 0xC);
+        D_00470704 = temp_a0;
+        D_0047070C = 0x4000;
+        D_00470708 = 0;
+        amModel_SetCurrent((u8 *)temp_a0, (void *)0x4000);
+        D_00470238 = 0;
+        temp_a0_2 = *(s32 *)((s32)0x64 + (s32)(u8 *)temp_s0);
+        if (temp_a0_2 != 0) {
+            func_0022D0E0(temp_a0_2, 1);
+        }
+        *(s32 *)(0x64 + (u8 *)temp_s0) = func_0022D860(**(s32 **)((u8 *)*(u8 **)((u8 *)temp_s2 + 8) + 0x14), 0.0f);
+        var_v1 = (int *)&func_0030C9C0;
+        if (&func_0030C9C0 == NULL) {
+            var_v1 = NULL;
+        }
+        *(s32 **)((u8 *)arg0 + 0x1C) = var_v1;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/unk/unk_30B130", func_0030C9C0);

@@ -470,7 +470,41 @@ f32 func_002B06A0(void) {
     return D_004708F8;
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B06B0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B0A40);
+extern s32 amDraw_SetScissor(s32, s32);
+extern s32 amVram_Apply(s32);
+extern void func_00131F00(void *, f32, f32);
+extern s8 D_004703F4;
+extern s32 D_005BC440[4];
+extern s32 D_005BC560[4];
+extern s32 D_005BC9E0[4];
+extern s32 D_005BCF20[4];
+extern s32 gScrTimers;
+extern void func_00131B90(void *);
+extern void func_00132DF0(void *);
+extern void amDraw3d_Sync(void);
+extern void func_0013AFA0(void *);
+
+void func_002B0A40(s32 arg0) {
+    f32 var_f0;
+    gScrTimers = 0;
+    memset((s32 *)((u8 *)&D_005ABA80 + (arg0 * 0x8380)), 0, 0x8380);
+    memset(&D_005BC9E0[0] + (arg0 * 104), 0, 0x1A0);
+    memset((s32 *)((u8 *)&D_005BC180 + (arg0 * 0x160)), 0, 0x160);
+    memset(&D_005BC440[0] + (arg0 * 36), 0, 0x90);
+    memset(&D_005BC560[0] + (arg0 * 144), 0, 0x240);
+    memset((s32 *)((u8 *)&D_005BCD20 + (arg0 * 0xA0)), 0, 0xA0);
+    func_0013AFA0(NULL);
+    memset(&D_005BCF20[0], 0, 0x60);
+    func_00131B90(&D_005BCF20[0]);
+    func_00131F00(&D_005BCF20[0], 0.0f, 0.0f);
+    func_00132DF0(NULL);
+    amDraw_SetScissor(0, 0);
+    var_f0 = (D_004703F4 != 3) ? 1.0f : 1.2f;
+    D_004708F8 = var_f0;
+    amDraw3d_Sync();
+    amVram_Apply(2);
+    amCdFs_SetHeap(0);
+}
 extern s8 D_004B4B41[];
 extern s8 D_004B4B57[];
 s32 func_002B0BF0(s32 i) {

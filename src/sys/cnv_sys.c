@@ -16,7 +16,16 @@ void func_002A0700(s32 arg0, s32 arg1, u8 *arg2) {
     *(s32 *)((u8 *)temp_v1 + 0x18) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0750);
+void func_002A0750(s32 a0, s32 a1, s32 a2, s32 a3) {
+    u8 *t1 = D_004708CC;
+    s32 i;
+    for (i = 0; i < *(s32 *)t1; i++) {
+        u8 *v1 = *(u8 **)(t1 + 0x58) + a0 * 0x30;
+        *(s32 *)(v1 + 0x18) = a1;
+        *(s32 *)(v1 + 0x1C) = a2;
+        *(s32 *)(v1 + 0x20) = a3;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A07A0);
 void func_002A07D0(s32 arg0, s32 arg1, f32 fparg0) {
     u8 *temp_a0;
@@ -125,7 +134,14 @@ void func_002A0D20(s32 arg0, s32 arg1, s32 arg2) {
     *(s32 *)(*(s32 *)(*(s32 *)((u8 *)D_004708CC + 0x44) + (arg0 * 4)) + (arg1 * 0xE0)) = arg2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0D50);
+void func_002A0D50(s32 a0) {
+    u8 *p = D_004708CC;
+    if (a0 == 0) {
+        *(s32 *)(p + 0x40) = a0;
+    } else {
+        *(s32 *)(p + 0x40) = -1;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0D70);
 s32 func_002A1020(s32 arg0) {
     if (D_004708CC != NULL) {

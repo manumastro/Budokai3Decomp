@@ -127,5 +127,17 @@ def fix_known_sigs(preamble: str, func_code: str, root: Path = None):
                         out.append(full_ext)
                         n_fix += 1
                         continue
+        # Also upgrade non-extern/extern prototypes missing f32/f64 args when verified sig has float args & same arity
+        m2 = re.match(r"^\s*(?:extern\s+)?[^(;]+\b([A-Za-z_][A-Za-z0-9_]*)\s*\(([^()]+)\)\s*;\s*$", ln)
+        if m2 and m2.group(1) in sigs:
+            fn = m2.group(1)
+            cur_params = m2.group(2)
+            nargs, full_ext = sigs[fn]
+            if ("f32" in full_ext or "f64" in full_ext or "float" in full_ext) and ("f32" not in cur_params and "float" not in cur_params):
+                cur_n = len([x for x in cur_params.split(",") if x.strip()])
+                if cur_n == nargs and re.search(rf"\b{re.escape(fn)}\s*\(", func_code):
+                    out.append(full_ext)
+                    n_fix += 1
+                    continue
         out.append(ln)
     return "\n".join(out) + ("\n" if preamble.endswith("\n") else ""), n_fix
