@@ -16,6 +16,7 @@ INCLUDE_ASM line (the whole build must still be run). Library (gcc) pairs are li
 """
 import argparse
 import bisect
+import difflib
 import json
 import re
 import struct
@@ -162,14 +163,25 @@ def chunk_names(c):
 
 
 def decl_type(decl, nm):
-    """The type of an object declaration without its name: `extern Task *gX;` -> `Task *` (None for arrays and
-    functions)."""
+    """The type of an object declaration without its name: `extern Task *gX;` -> `('scalar', 'Task *')`,
+    `extern UnkSlot D_X[][4];` -> `('arr', 'UnkSlot (*)[4]')`, `extern s32 D_X[];` -> `('arr', 's32 *')`."""
     d = re.sub(r"^\s*(extern|static)\s+", "", re.sub(r"\s+", " ", decl)).rstrip(";").strip()
     d = re.sub(r"__asm__\s*\(\s*\"[^\"]*\"\s*\)", "", d).strip()
-    if "[" in d or "(" in d:
+    if "(" in d:
+        return None
+    m_arr = re.match(rf"^(.*?)\b{re.escape(nm)}\s*(\[[^\]]*\])((?:\[[^\]]*\])*)\s*$", d)
+    if m_arr:
+        base = m_arr.group(1).strip()
+        rest = m_arr.group(3).strip()
+        if not base:
+            return None
+        if rest:
+            return ("arr", f"{base} (*){rest}")
+        return ("arr", f"{base} *")
+    if "[" in d:
         return None
     t = re.sub(rf"\b{re.escape(nm)}\s*$", "", d).strip()
-    return t or None
+    return ("scalar", t) if t else None
 
 
 def isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos):
@@ -213,10 +225,15 @@ def isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos):
             chosen.add(t)
             need |= set(re.findall(r"[A-Za-z_]\w*", types[t]))
     # a type the target sees with the same definition (types.h, a shared header) is used as it is
+    tpp_decls = set()
     if tfile:
         tpp = pp_chunks(tfile)
         tset = {re.sub(r"\s+", " ", c) for c in tpp}
         chosen = {t for t in chosen if re.sub(r"\s+", " ", types[t]) not in tset}
+        for tc in tpp:
+            tkind, tnames = chunk_names(tc)
+            if tkind in ("decl", "func"):
+                tpp_decls.update(tnames)
     def tren(text):
         for t in sorted(chosen, key=len, reverse=True):
             text = re.sub(rf"(?<![\w.>]){re.escape(t)}\b", t + suf, text)
@@ -236,8 +253,8 @@ def isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos):
         for o, nw in ren.items():
             sd = re.sub(rf"\b{re.escape(o)}\b", nw, sd)
         sd = tren(re.sub(r"\s*__asm__\s*\(\s*\"[^\"]*\"\s*\)", "", sd))
-        if re.search(rf"\b{re.escape(n)}\b", whole):
-            # the target declares it (maybe with another type): use the sibling's type through a cast
+        if n in tpp_decls or re.search(rf"\b{re.escape(n)}\b", whole):
+            # the target (or its headers) declares it (maybe with another type): use the sibling's type through a cast
             kind = "func" if re.search(rf"\b{re.escape(n)}\s*\(", sd) and not re.search(rf"\(\s*\*\s*{re.escape(n)}", sd) else "obj"
             if kind == "func":
                 m = re.match(rf"^(?:extern\s+)?(.*?)\b{re.escape(n)}\s*\((.*)\)\s*;$", re.sub(r"\s+", " ", sd))
@@ -245,10 +262,14 @@ def isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos):
                     fptr = f"(({m.group(1).strip()} (*)({m.group(2)})){n})"
                     body = re.sub(rf"(?<![\w.>]){re.escape(n)}(?=\s*\()", fptr.replace("\\", "\\\\"), body)
             else:
-                t = decl_type(sd, n)
-                if t:
-                    body = re.sub(rf"(?<![\w.>&]){re.escape(n)}\b", f"(*({t} *)&{n})", body)
-            if not re.search(rf"\b{re.escape(n)}\b", above):
+                dt = decl_type(sd, n)
+                if dt:
+                    dkind, t = dt
+                    if dkind == "arr":
+                        body = re.sub(rf"(?<![\w.>&]){re.escape(n)}\b", f"(({t}){n})", body)
+                    else:
+                        body = re.sub(rf"(?<![\w.>&]){re.escape(n)}\b", f"(*({t} *)&{n})", body)
+            if n not in tpp_decls and not re.search(rf"\b{re.escape(n)}\b", above):
                 # declared only further down: that declaration is needed above the function too
                 m = re.search(rf"^(?:extern\s+)?[A-Za-z_][\w \*]*\b{re.escape(n)}\b[^\n;{{}}=]*;", whole, re.M)
                 if m and not m.group(0).lstrip().startswith(("return", "if", "INCLUDE_")):
@@ -260,25 +281,41 @@ def isolated_body(sfile, sname, name, t_addr, ren, func, tfile, ttext, mpos):
 
 def clone(job):
     name, info = job
+    max_diff_len = info.get("_max_diff_len", 0)
     rom = ROM.read_bytes()
     if SYMS is None:
         load_syms()
     sfile, sname = info["sibling_file"], info["sibling"]
     t_addr, s_addr = int(info["addr"], 16), int(info["sibling_addr"], 16)
-    n = min(info["size"], info["sibling_size"]) // 4
     tw, sw = words(rom, t_addr, info["size"] // 4), words(rom, s_addr, info["sibling_size"] // 4)
     while tw and tw[-1] == 0:
         tw.pop()
     while sw and sw[-1] == 0:
         sw.pop()
-    if len(tw) != len(sw):
+    if abs(len(tw) - len(sw)) > max_diff_len:
         return dict(name=name, status="skip", why="different length")
     tr, sr = references(tw, t_addr), references(sw, s_addr)
     ren, lits = {}, {}
-    for i in range(len(tw)):
-        if tw[i] == sw[i]:
+    if len(tw) == len(sw):
+        pairs = [(i, i) for i in range(len(tw))]
+    else:
+        # Align by MIPS opcode (+ funct for SPECIAL) so call/addr/imm renames work across +-N insn differences
+        def sig(w):
+            op = w >> 26
+            return (op, w & 0x3F) if op == 0 else (op, 0)
+        sm = difflib.SequenceMatcher(None, [sig(w) for w in sw], [sig(w) for w in tw], autojunk=False)
+        pairs = []
+        for tag, i1, i2, j1, j2 in sm.get_opcodes():
+            if tag == "equal":
+                for k in range(i2 - i1):
+                    pairs.append((i1 + k, j1 + k))
+            elif tag == "replace" and (i2 - i1) == (j2 - j1):
+                for k in range(i2 - i1):
+                    pairs.append((i1 + k, j1 + k))
+    for si, ti in pairs:
+        if tw[ti] == sw[si]:
             continue
-        a, b = sr.get(i), tr.get(i)
+        a, b = sr.get(si), tr.get(ti)
         if not a or not b or a[0] != b[0]:
             continue
         if a[0] == "call":
@@ -304,8 +341,8 @@ def clone(job):
     for line in m2c_draft.strip_if0(sfull.splitlines()):
         s = line.strip()
         if re.match(r"^(extern\b|[A-Za-z_][\w \*]*\b\w+\([^;{}]*\)\s*;)", s) and s.endswith(";"):
-            ids = set(re.findall(r"[A-Za-z_]\w*", s))
-            if ids & used and sname not in ids:
+            _, dnames = chunk_names(s)
+            if dnames and (set(dnames) & used) and sname not in dnames:
                 decls.append(s)
     # typedefs (struct types) of the sibling's file that the function uses
     alltypes = []
@@ -422,11 +459,21 @@ def main():
     ap.add_argument("--gcc-items", help="also write the library (gcc) pairs as scripts/func_insert.py items to this json")
     ap.add_argument("--timeout", type=int, default=600, help="seconds per pair (default 600)")
     ap.add_argument("--deadline", type=int, default=7200, help="seconds for the whole run (default 7200)")
+    ap.add_argument("--allow-diff-len", type=int, default=0,
+                    help="allow up to N instruction length difference via opcode alignment (default 0)")
     a = ap.parse_args()
     ITEM_TIMEOUT = a.timeout
     sim = json.loads((ROOT / a.sim).read_text())
-    jobs = [(n, i) for n, i in sim.items() if (i["part"] == "mw" or a.gcc_items) and i["same_length"]
-            and i["score"] >= a.min and i["sibling_file"] and n != i["sibling"]]
+    jobs = []
+    for n, i in sim.items():
+        if not ((i["part"] == "mw" or a.gcc_items) and i["score"] >= a.min and i["sibling_file"] and n != i["sibling"]):
+            continue
+        if not i["same_length"]:
+            if a.allow_diff_len <= 0 or abs(i["size"] - i["sibling_size"]) // 4 > a.allow_diff_len:
+                continue
+        info2 = dict(i)
+        info2["_max_diff_len"] = a.allow_diff_len
+        jobs.append((n, info2))
     print(f"{len(jobs)} pairs", file=sys.stderr)
     res = []
     # spawn, not fork (no inherited locks or pipes); a heartbeat line every minute so a stall is visible; the

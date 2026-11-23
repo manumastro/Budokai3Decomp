@@ -16,6 +16,7 @@ import json
 import re
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -28,6 +29,8 @@ import configure  # noqa: E402
 import fdiff  # noqa: E402
 import fix_externs  # noqa: E402
 import m2c_draft  # noqa: E402
+import m2c_fix  # noqa: E402
+import mwmatch  # noqa: E402
 import sweep_parked  # noqa: E402
 
 B3PERM = ROOT / "build" / "b3auto" / "b3ast"
@@ -186,6 +189,7 @@ def run_one(item):
         pre_clean = re.sub(r"#ifndef M2C_BITWISE.*?#endif\s*", "", pre_clean, flags=re.S)
         pre_txt = pre_clean + "\n" + m2c_draft.MACROS + "\n" + ep_clean + "\n"
     pre_txt, fc_fixed, n_gp = fix_externs.fix_gp_externs(pre_txt, fc)
+    pre_txt, _ = fix_externs.fix_known_sigs(pre_txt, fc_fixed, ROOT)
     if n_gp > 0 and ep_clean:
         ep_clean, _, _ = fix_externs.fix_gp_externs(ep_clean, "")
     pre_f.write_text(pre_txt)
@@ -202,6 +206,35 @@ def run_one(item):
     ]
     r = subprocess.run(cmd, capture_output=True, text=True)
     line = (r.stdout.strip().splitlines() or ["STATUS=ERR"])[-1]
+    if "NOCOMPILE" in line or "STATUS=ERR" in line:
+        # Auto-repair compile errors with m2c_fix (up to 4 passes) and retry b3ast once
+        try:
+            cur_pre = pre_txt
+            cur_fc = fc_fixed
+            repaired = False
+            with tempfile.TemporaryDirectory(dir="/dev/shm") as td:
+                tc = Path(td) / "t.c"
+                to = Path(td) / "t.o"
+                for _ in range(4):
+                    scratch = cur_pre + "\n" + cur_fc
+                    tc.write_text(scratch)
+                    cerr = mwmatch.compile_c(configure.MWCC_VERSION, flags, tc, to)
+                    if not cerr:
+                        repaired = True
+                        break
+                    new_fc, _, notes = m2c_fix.fix(cur_fc, [], scratch, cerr, fn)
+                    if not notes or new_fc == cur_fc:
+                        break
+                    cur_fc = new_fc
+            if repaired:
+                cur_pre, cur_fc, _ = fix_externs.fix_gp_externs(cur_pre, cur_fc)
+                cur_pre, _ = fix_externs.fix_known_sigs(cur_pre, cur_fc, ROOT)
+                pre_f.write_text(cur_pre)
+                in_f.write_text(cur_fc)
+                r = subprocess.run(cmd, capture_output=True, text=True)
+                line = (r.stdout.strip().splitlines() or ["STATUS=ERR"])[-1]
+        except Exception:
+            pass
     matched = "STATUS=MATCH" in line and out_f.exists()
     if matched:
         MATCH_DIR.mkdir(parents=True, exist_ok=True)

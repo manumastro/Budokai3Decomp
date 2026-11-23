@@ -159,7 +159,31 @@ void func_00286C50(SsWork *w) {
     w->f260 = sel;
     w->f26C = *(u16 *)&w->ent[sel].f4;
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286DA0);
+void func_00286DA0(u8 *a0, s16 a1) {
+    u8 *obj;
+    s32 n;
+    s32 i;
+    u8 *p;
+    obj = a0;
+    *(s16 *)(obj + 0x23E) = a1;
+    n = 0;
+    *(s16 *)(obj + 0x240) = a1;
+    memset(obj + 0x242, -1, 0x1A);
+    i = 0;
+    p = obj;
+    for (; i < 0xD; i++) {
+        if (*(u16 *)(obj + 0x23E) & (1 << i)) {
+            *(s16 *)(p + 0x242) = i;
+            n++;
+            p += 2;
+        }
+    }
+    obj[0x261] = n;
+    *(s32 *)(obj + 0x278) = 0x10000 / (obj[0x261] * 12);
+    if (obj[0x262] == 2) {
+        func_00286C50((void *)obj);
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00286E70);
 extern void *amSofdec_Create(void *);
 extern void func_00286E70(void);

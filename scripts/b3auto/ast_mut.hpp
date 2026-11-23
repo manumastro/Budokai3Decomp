@@ -184,13 +184,23 @@ inline bool mut_ast_commute_or_addu(FuncAST &f, unsigned int &rng, double focus_
     }
     Expr *b = pick_weighted(cands, rng);
     if (!b) return false;
-    if (b->text == "+" && (rand_r(&rng) % 4 == 0)) {
-        // Only apply (u8 *)(A) + (s32)(B) when one operand is already a pointer cast (safe in MWCC)
+    if (b->text == "+" && (rand_r(&rng) % 3 == 0)) {
         bool has_ptr_cast = (b->lhs->kind == ExprKind::Cast && b->lhs->text.find('*') != std::string::npos) ||
                             (b->rhs->kind == ExprKind::Cast && b->rhs->text.find('*') != std::string::npos);
-        if (has_ptr_cast) {
+        unsigned mode = rand_r(&rng) % 3;
+        if (has_ptr_cast && mode == 0) {
             std::swap(b->lhs, b->rhs);
             auto cl = std::make_unique<Expr>(ExprKind::Cast, "u8 *");
+            cl->lhs = std::move(b->lhs);
+            auto cr = std::make_unique<Expr>(ExprKind::Cast, "s32");
+            cr->lhs = std::move(b->rhs);
+            b->lhs = std::move(cl);
+            b->rhs = std::move(cr);
+            return true;
+        } else if (has_ptr_cast && mode >= 1) {
+            // Force integer addition (s32)(B) + (s32)(A) to flip MWCC addu rs/rt inside *(T *)(...)
+            if (mode == 1) std::swap(b->lhs, b->rhs);
+            auto cl = std::make_unique<Expr>(ExprKind::Cast, "s32");
             cl->lhs = std::move(b->lhs);
             auto cr = std::make_unique<Expr>(ExprKind::Cast, "s32");
             cr->lhs = std::move(b->rhs);
@@ -908,9 +918,66 @@ inline bool mut_ast_loop_bound_hoist(FuncAST &f, unsigned int &rng) {
     return true;
 }
 
+// Op 23: Change or add pointer type cast on dereference `*(X)` <-> `*(s32 *)(X)` / `*(u32 *)(X)` / `*(s16 *)(X)` / ...
+inline bool mut_ast_deref_cast(FuncAST &f, unsigned int &rng, double focus_ratio) {
+    auto exprs = collect_weighted_exprs(f, focus_ratio);
+    std::vector<std::pair<Expr *, int>> cands;
+    for (const auto &we : exprs) {
+        if (we.node->kind == ExprKind::Unary && we.node->text == "*" && we.node->lhs)
+            cands.push_back({we.node, we.weight});
+    }
+    Expr *u = pick_weighted(cands, rng);
+    if (!u || !u->lhs) return false;
+    static const char *ptypes[] = {"s32 *", "u32 *", "s16 *", "u16 *", "s8 *", "u8 *", "f32 *"};
+    const char *nt = ptypes[rand_r(&rng) % 7];
+    Expr *inner = u->lhs.get();
+    while (inner->kind == ExprKind::Paren && inner->lhs) inner = inner->lhs.get();
+    if (inner->kind == ExprKind::Cast && inner->text.find('*') != std::string::npos) {
+        if (inner->text == nt) return false;
+        inner->text = nt;
+        return true;
+    }
+    auto c = std::make_unique<Expr>(ExprKind::Cast, nt);
+    c->lhs = std::move(u->lhs);
+    u->lhs = std::move(c);
+    return true;
+}
+
+// Op 24: Fix double-scaled pointer arithmetic `ptr + (idx * 4)` <-> `ptr + idx` or `(u8 *)ptr + (idx * 4)`
+inline bool mut_ast_ptr_scale_fix(FuncAST &f, unsigned int &rng, double focus_ratio) {
+    auto exprs = collect_weighted_exprs(f, focus_ratio);
+    std::vector<std::pair<Expr *, int>> cands;
+    for (const auto &we : exprs) {
+        if (we.node->kind == ExprKind::Binary && we.node->text == "+" && we.node->lhs && we.node->rhs) {
+            Expr *r = we.node->rhs.get();
+            while (r->kind == ExprKind::Paren && r->lhs) r = r->lhs.get();
+            if (r->kind == ExprKind::Binary && (r->text == "*" || r->text == "<<") &&
+                r->rhs && r->rhs->kind == ExprKind::Num &&
+                (r->rhs->text == "4" || r->rhs->text == "2" || r->rhs->text == "8")) {
+                cands.push_back({we.node, we.weight});
+            }
+        }
+    }
+    Expr *b = pick_weighted(cands, rng);
+    if (!b) return false;
+    if (rand_r(&rng) & 1) {
+        // Strip the *4 / *2 scaling factor on rhs
+        Expr *r = b->rhs.get();
+        while (r->kind == ExprKind::Paren && r->lhs) r = r->lhs.get();
+        ExprPtr base_idx = std::move(r->lhs);
+        b->rhs = std::move(base_idx);
+    } else {
+        // Cast lhs to (u8 *) so *4 is byte-scaled
+        auto c = std::make_unique<Expr>(ExprKind::Cast, "u8 *");
+        c->lhs = std::move(b->lhs);
+        b->lhs = std::move(c);
+    }
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 23;
+static constexpr int NUM_AST_OPS = 25;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -922,7 +989,7 @@ struct OpBandit {
         static const double base_w[NUM_AST_OPS] = {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 5.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
-            6.0, 4.0, 4.0, 4.0
+            6.0, 4.0, 4.0, 4.0, 6.0, 4.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -975,6 +1042,8 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 20: return mut_ast_cond_flip(cur, rng);
         case 21: return mut_ast_call_arg_hoist(cur, rng);
         case 22: return mut_ast_loop_bound_hoist(cur, rng);
+        case 23: return mut_ast_deref_cast(cur, rng, focus_ratio);
+        case 24: return mut_ast_ptr_scale_fix(cur, rng, focus_ratio);
         default: return false;
     }
 }
