@@ -225,33 +225,29 @@ void StaffRoll_TaskEnding(s32 *a0) {
         a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
-#if 0
-// func_0030E290: the original frame is 0x60 (ours 0x50: a second local block of 16 bytes is missing) and the stores are scheduled in another order; two forms tried
-s32 func_0030E290(s32 *a0) {
-    s32 arg[8];
-    s16 h;
-    s32 *s0;
-    arg[1] = 1;
-    arg[2] = 0x600000;
-    arg[0] = 0;
-    s0 = a0 + 0x30 / 4;
-    arg[3] = 0x400;
-    h = 0;
-    arg[4] = 0x200;
-    arg[5] = 3;
-    arg[6] = -1;
-    arg[7] = D_0046FD5C;
-    s0[0] = amSofdec_Create(arg);
-    s0[2] = 0;
-    s0[3] = 0;
-    {
-        void *f = StaffRoll_TaskEnding;
-        a0[0x1C / 4] = (s32)((f == 0) ? 0 : f);
-    }
-    return 1;
+void func_0030E290(s32 *_a0) {
+    u8 *a0 = (u8 *)_a0;
+    u8 *s1;
+    u8 *s0;
+    u8 blk[0x24];
+    void *fp;
+    s1 = a0;
+    *(s32 *)(blk + 4) = 1;
+    s0 = s1 + 0x30;
+    *(s32 *)(blk + 8) = 0x600000;
+    *(s32 *)(blk + 0xC) = 0x400;
+    *(s32 *)(blk + 0x10) = 0x200;
+    *(s32 *)blk = 0;
+    *(s16 *)(blk + 0x20) = 0;
+    *(s32 *)(blk + 0x14) = 3;
+    *(s32 *)(blk + 0x18) = -1;
+    *(s32 *)(blk + 0x1C) = D_0046FD5C;
+    *(void **)(s0 + 0) = (void *)amSofdec_Create((s32 *)blk);
+    *(s32 *)(s0 + 8) = 0;
+    *(s32 *)(s0 + 0xC) = 0;
+    fp = (void *)StaffRoll_TaskEnding;
+    *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_staffroll", func_0030E290);
 void func_0030E330(u8 *arg0)
 {
   u8 *p;

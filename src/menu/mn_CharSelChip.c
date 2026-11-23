@@ -58,7 +58,15 @@ void func_002F69E0(u8 *arg0, u8 *arg1) {
     *(u8 *)((u8 *)arg0 + 0x1A) = (u8) ((*(s16 *)((u8 *)arg1 + 0x64) << 6) & 0xC0);
     *(u8 *)((u8 *)arg0 + 0x1A) = (u8) (*(u8 *)((u8 *)arg0 + 0x1A) | (*(s16 *)((u8 *)arg1 + 0x66) & 0x3F));
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F6E00);
+extern void func_002F66E0(u8 *);
+extern void func_002F57E0(s32, u8 *);
+
+void func_002F6E00(s32 arg0) {
+    u8 sp20[0x20];
+    func_002F69E0(sp20, (u8 *)arg0);
+    func_002F66E0(sp20);
+    func_002F57E0(arg0, sp20);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F6E40);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F72A0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F75A0);
