@@ -126,14 +126,26 @@ def strip_func_bodies(c_text):
 
 
 def dedup_externs(preamble, extra_pre):
-    """If extra_pre declares `extern ... SYM`, drop conflicting `extern ... SYM` lines from preamble."""
+    """Deduplicate extern/prototype lines between preamble (file's real decls) and extra_pre (draft decls).
+    - For function prototypes already declared in preamble, drop the conflicting draft prototype from extra_pre.
+    - For data externs in extra_pre, drop conflicting externs from preamble."""
     if not extra_pre:
         return preamble, ""
     # Strip any stray #if/#endif lines inside extra_pre
     ep_lines = [l for l in extra_pre.splitlines(keepends=True) if not re.match(r"^\s*#(if|else|elif|endif)\b", l)]
-    extra_clean = "".join(ep_lines)
-    # Find symbol names declared in extra_clean
+    # Collect function names already declared in preamble
+    pre_funcs = set(re.findall(r"(?m)^\s*(?:extern\s+)?[A-Za-z_][\w\s\*]*?\b([A-Za-z_]\w*)\s*\([^;{}]*\)\s*;", preamble))
+    # Filter extra_pre: drop function prototypes already in preamble (especially M2C_UNK protos)
+    filt_ep = []
+    for l in ep_lines:
+        mf = re.match(r"^\s*(?:extern\s+)?[A-Za-z_][\w\s\*]*?\b([A-Za-z_]\w*)\s*\([^;{}]*\)\s*;\s*$", l)
+        if mf and mf.group(1) in pre_funcs:
+            continue
+        filt_ep.append(l)
+    extra_clean = "".join(filt_ep)
+    # Find remaining symbol names declared in extra_clean (data + new funcs)
     extra_syms = set(re.findall(r"\bextern\b[^;]*?\b([A-Za-z_]\w*)\s*(?:\[|\(|;)", extra_clean))
+    extra_syms |= set(re.findall(r"(?m)^\s*(?:M2C_UNK\w*|void|s32|u32|s16|u16|s8|u8|f32|f64|int|char|short|float)\s*\*?\s*([A-Za-z_]\w*)\s*\(", extra_clean))
     if not extra_syms:
         return preamble, extra_clean
     kept = []
@@ -171,7 +183,18 @@ def split_externs_and_func(block, fn_name):
         extra_pre.append(ln)
     if fn_start is None:
         return None, None
-    return "".join(extra_pre), "".join(lines[fn_start:])
+    # Slice only up to the matching closing brace of fn_name (ignore trailing #if 0 / other funcs)
+    fn_lines = []
+    brace = 0
+    seen_open = False
+    for ln in lines[fn_start:]:
+        fn_lines.append(ln)
+        if "{" in ln:
+            seen_open = True
+        brace += ln.count("{") - ln.count("}")
+        if seen_open and brace <= 0:
+            break
+    return "".join(extra_pre), "".join(fn_lines)
 
 
 def extract_targets(only_diff=False):

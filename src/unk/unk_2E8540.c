@@ -509,15 +509,11 @@ void func_002E97E0(void) {
 void func_002E98E0(void) {
     memset(D_005C9F10, 0, 0x6C);
 }
-/* differs: 1 of 26: r = 1 then r = 0 on a < fC gives the right result, but the join after the `move` is a bare branch
-   target to the jr; the original's bc1f lands on a nop before the jr. The else form and the direct returns give xori. */
-#if 0
 s32 func_002E9900(void) {
     Cur99 *p = (Cur99 *)D_005C9F6C[0];
     Ent99 *e;
     s32 *row;
     s32 idx;
-    s32 r;
     f32 a;
 
     if (p == NULL) {
@@ -527,14 +523,11 @@ s32 func_002E9900(void) {
     a = p->f10;
     row = &D_004573C0[idx];
     e = (Ent99 *)(*row + D_005C9F64[0] * 16);
-    r = 1;
-    if (a < e->fC) {
-        r = 0;
+    if (a >= e->fC) {
+        return 1;
     }
-    return r;
+    return 0;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9900);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9970);
 void func_002E9B10(s16 *a, s16 *b) {
     s32 i = 0;

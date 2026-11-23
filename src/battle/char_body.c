@@ -210,16 +210,14 @@ s32 func_001CA130(CharFace *f) {
     }
     return 0;
 }
-#if 0
-/* Does not match yet: 21 of 124 instructions differ. */
 CharFace *func_001CA180(s32 chara, s32 costume, s32 color, s32 key) {
-    CharFace *f;
+    SizeQuery2 q1;
     CharFace *p;
     CharFaceEntry *e;
     s32 size0;
-    s32 size;
-    SizeQuery2 q1;
     SizeQuery q0;
+    s32 size;
+    CharFace *f;
     e = FACE_INDEX(chara, costume, color) >= 0 ? &D_00447440[chara].faces[FACE_INDEX(chara, costume, color)] : 0;
     if (e == 0) {
         return 0;
@@ -233,11 +231,11 @@ CharFace *func_001CA180(s32 chara, s32 costume, s32 color, s32 key) {
     q1.count = 0x10;
     q0.count = 0x10;
     size0 = (amObject_GetSize(&q1) + 15) & ~15;
-    size = ((amMotion_CalcSize(&q0, 0) + 15) & ~15) + (size0 + 0xB0);
+    size = (s32)((u8 *)((amMotion_CalcSize(&q0, 0) + 15) & ~15) + (size0 + 0xB0));
     f = Character_CreateWork(2, size);
     memset(f, 0, size);
     f->unk18 = (s32)((u8 *)f + 0xB0);
-    f->model = (Model *)((u8 *)f + size0 + 0xB0);
+    f->model = (Model *)(((u8 *)(size0) + (s32)((u8 *)f)) + 0xB0);
     f->entry = e;
     f->unk94 = 0;
     f->unk98 = 0;
@@ -254,8 +252,6 @@ CharFace *func_001CA180(s32 chara, s32 costume, s32 color, s32 key) {
     }
     return f;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_body", func_001CA180);
 CharFile *CharBody_Load(s32 heap, s32 a, s32 b, s32 c) {
     CharFile *r;
     s32 old;

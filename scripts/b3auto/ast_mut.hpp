@@ -1418,9 +1418,113 @@ inline bool mut_ast_ptr_step_fix(FuncAST &f, unsigned int &rng, double focus_rat
     return true;
 }
 
+// Op 36: `r = K1; if (cond) { r = K2; } return r;` <-> `if (!cond) return K1; return K2;`
+// Fixes MWCC epilogue branch-target diff (`bc1f jr` vs `bc1f nop; jr`) on float/int guards.
+inline bool mut_ast_ret_var_to_if_ret(FuncAST &f, unsigned int &rng) {
+    if (!f.body) return false;
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    std::vector<std::pair<Stmt *, size_t>> cands;
+    for (Stmt *b : blocks) {
+        if (b->stmts.size() < 3) continue;
+        for (size_t i = 0; i + 2 < b->stmts.size(); i++) {
+            Stmt *s0 = b->stmts[i].get();
+            Stmt *s1 = b->stmts[i + 1].get();
+            Stmt *s2 = b->stmts[i + 2].get();
+            if (s0->kind == StmtKind::ExprStmt && s0->expr &&
+                s0->expr->kind == ExprKind::Assign && s0->expr->text == "=" &&
+                s0->expr->lhs && s0->expr->lhs->kind == ExprKind::Ident &&
+                s1->kind == StmtKind::If && s1->expr && s1->then_br && !s1->else_br &&
+                s2->kind == StmtKind::Return && s2->expr && s2->expr->kind == ExprKind::Ident &&
+                s2->expr->text == s0->expr->lhs->text) {
+                Stmt *tb = s1->then_br.get();
+                Stmt *inner = (tb->kind == StmtKind::Block && tb->stmts.size() == 1) ? tb->stmts[0].get() : tb;
+                if (inner && inner->kind == StmtKind::ExprStmt && inner->expr &&
+                    inner->expr->kind == ExprKind::Assign && inner->expr->text == "=" &&
+                    inner->expr->lhs && inner->expr->lhs->kind == ExprKind::Ident &&
+                    inner->expr->lhs->text == s0->expr->lhs->text) {
+                    cands.push_back({b, i});
+                }
+            }
+        }
+    }
+    if (cands.empty()) return false;
+    auto [b, idx] = cands[rand_r(&rng) % cands.size()];
+    ExprPtr k1 = b->stmts[idx]->expr->rhs->clone();
+    Stmt *s1 = b->stmts[idx + 1].get();
+    Stmt *tb = s1->then_br.get();
+    Stmt *inner = (tb->kind == StmtKind::Block && tb->stmts.size() == 1) ? tb->stmts[0].get() : tb;
+    ExprPtr k2 = inner->expr->rhs->clone();
+    ExprPtr cond = s1->expr->clone();
+    bool flip = (rand_r(&rng) & 1) != 0;
+    auto new_if = std::make_unique<Stmt>(StmtKind::If);
+    new_if->expr = flip ? negate_cond(std::move(cond)) : std::move(cond);
+    auto r_then = std::make_unique<Stmt>(StmtKind::Return);
+    r_then->expr = flip ? std::move(k1) : std::move(k2);
+    auto blk = std::make_unique<Stmt>(StmtKind::Block);
+    blk->stmts.push_back(std::move(r_then));
+    new_if->then_br = std::move(blk);
+    auto r_fall = std::make_unique<Stmt>(StmtKind::Return);
+    r_fall->expr = flip ? std::move(k2) : std::move(k1);
+    b->stmts[idx] = std::move(new_if);
+    b->stmts[idx + 1] = std::move(r_fall);
+    b->stmts.erase(b->stmts.begin() + (long)(idx + 2));
+    return true;
+}
+
+// Op 37: Flip MWCC `addu rs, rt` operand order on `A + B` by casting LHS to `(u8 *)` or
+// stripping pointer-ness of LHS via `(char *)(B + (s32)(A))` / `(s32)((u8 *)(A) + B)`.
+inline bool mut_ast_add_ptr_int_flip(FuncAST &f, unsigned int &rng, double focus_ratio) {
+    auto exprs = collect_weighted_exprs(f, focus_ratio);
+    std::vector<std::pair<Expr *, int>> cands;
+    for (const auto &we : exprs) {
+        Expr *e = we.node;
+        if (e->kind == ExprKind::Binary && e->text == "+" && e->lhs && e->rhs) {
+            if (e->lhs->kind != ExprKind::Num && e->rhs->kind != ExprKind::Num) {
+                cands.push_back({e, we.weight});
+            }
+        }
+    }
+    Expr *b = pick_weighted(cands, rng);
+    if (!b) return false;
+    unsigned mode = rand_r(&rng) % 2;
+    if (mode == 0) {
+        // A + B -> (s32)((u8 *)(A) + (B))
+        auto add = std::make_unique<Expr>(ExprKind::Binary, "+");
+        auto uc = std::make_unique<Expr>(ExprKind::Cast, "u8 *");
+        auto pa = std::make_unique<Expr>(ExprKind::Paren);
+        pa->lhs = std::move(b->lhs);
+        uc->lhs = std::move(pa);
+        add->lhs = std::move(uc);
+        add->rhs = std::move(b->rhs);
+        auto pout = std::make_unique<Expr>(ExprKind::Paren);
+        pout->lhs = std::move(add);
+        b->kind = ExprKind::Cast;
+        b->text = "s32";
+        b->lhs = std::move(pout);
+        b->rhs.reset();
+    } else {
+        // A + B -> (char *)((B) + (s32)(A))
+        auto add = std::make_unique<Expr>(ExprKind::Binary, "+");
+        auto sc = std::make_unique<Expr>(ExprKind::Cast, "s32");
+        auto pa = std::make_unique<Expr>(ExprKind::Paren);
+        pa->lhs = std::move(b->lhs);
+        sc->lhs = std::move(pa);
+        add->lhs = std::move(b->rhs);
+        add->rhs = std::move(sc);
+        auto pout = std::make_unique<Expr>(ExprKind::Paren);
+        pout->lhs = std::move(add);
+        b->kind = ExprKind::Cast;
+        b->text = "char *";
+        b->lhs = std::move(pout);
+        b->rhs.reset();
+    }
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 36;
+static constexpr int NUM_AST_OPS = 38;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -1432,7 +1536,8 @@ struct OpBandit {
         static const double base_w[NUM_AST_OPS] = {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 6.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
-            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.5, 5.0, 5.0
+            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.5, 5.0, 5.0,
+            4.5, 5.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1498,6 +1603,8 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 33: return mut_ast_return_const_flip(cur, rng);
         case 34: return mut_ast_cmp_off_by_one(cur, rng, focus_ratio);
         case 35: return mut_ast_ptr_step_fix(cur, rng, focus_ratio);
+        case 36: return mut_ast_ret_var_to_if_ret(cur, rng);
+        case 37: return mut_ast_add_ptr_int_flip(cur, rng, focus_ratio);
         default: return false;
     }
 }

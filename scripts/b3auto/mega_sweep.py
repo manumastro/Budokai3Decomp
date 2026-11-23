@@ -197,6 +197,52 @@ def build_jobs(pool, budget, seconds, batch, max_draft_diff=20):
     return jobs
 
 
+def _expand_macro_call(code, macro_name, n_args, repl_fn):
+    """Expand macro_name(a, b, ...) with balanced parentheses, including nested occurrences."""
+    pat = re.compile(rf"\b{macro_name}\s*\(")
+    for _ in range(16):
+        m = pat.search(code)
+        if not m:
+            break
+        i = m.end()
+        depth = 1
+        args = []
+        cur = []
+        while i < len(code) and depth > 0:
+            ch = code[i]
+            if ch == "(":
+                depth += 1
+                cur.append(ch)
+            elif ch == ")":
+                depth -= 1
+                if depth == 0:
+                    args.append("".join(cur).strip())
+                else:
+                    cur.append(ch)
+            elif ch == "," and depth == 1:
+                args.append("".join(cur).strip())
+                cur = []
+            else:
+                cur.append(ch)
+            i += 1
+        if depth != 0 or len(args) != n_args:
+            break
+        code = code[:m.start()] + repl_fn(*args) + code[i:]
+    return code
+
+
+def sanitize_draft_c(fc):
+    """Deterministic syntax/macro cleanups so both mwcc and b3ast parse m2c drafts cleanly."""
+    # 1. Expand M2C_FIELD(expr, type_ptr, off) and M2C_BITWISE(type, expr) so b3ast's C parser sees pure C
+    fc = _expand_macro_call(fc, "M2C_FIELD", 3, lambda e, t, o: f"(*({t})((u8 *)({e}) + ({o})))")
+    fc = _expand_macro_call(fc, "M2C_BITWISE", 2, lambda t, e: f"(({t})({e}))")
+    # 2. Fix illegal function-pointer arithmetic: (&func_XXXXXXXX + 0xNN) -> ((u8 *)func_XXXXXXXX + 0xNN)
+    fc = re.sub(r"&(func_[0-9A-Fa-f]{8})\s*([+-])", r"(u8 *)\1 \2", fc)
+    # 3. Fix illegal explicit conversion from float to pointer: ((u8 *)(*(f32 *)...)) -> ((u8 *)(*(s32 *)...))
+    fc = re.sub(r"\(\s*(u8|s8|void|char)\s*\*\s*\)\s*\(\s*\*\s*\(\s*f32\s*\*\s*\)", r"(\1 *)(*(s32 *)", fc)
+    return fc
+
+
 def run_one(item):
     src_path, fn, addr, orig_size, kind, ep, fc, preamble_text, budget, seconds, batch, pre_override = item
     rel = src_path.resolve().relative_to(ROOT)
@@ -208,6 +254,7 @@ def run_one(item):
     in_f = work / "in.c"
     out_f = work / "best.c"
 
+    fc = sanitize_draft_c(fc)
     if pre_override is not None:
         pre_txt = pre_override.read_text()
         ep_clean = ""
