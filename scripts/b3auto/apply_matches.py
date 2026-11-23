@@ -69,16 +69,35 @@ def apply_one(meta_path):
             if ep and ep.strip() and ep.strip() not in code:
                 extra_pre = ep.strip() + "\n"
 
-    # Deduplicate extra_pre extern lines against existing file text outside replace_start..inc_line
-    file_outside = "".join(lines[:replace_start] + lines[inc_line + 1:])
-    existing_syms = set(re.findall(r"(?m)^\s*extern\b[^;]*?\b([A-Za-z_]\w*)\s*(?:\[|\(|;)", file_outside))
+    # Deduplicate leading externs in both extra_pre and code ONLY against declarations BEFORE replace_start + headers
+    file_before = "".join(lines[:replace_start])
+    existing_syms = set(re.findall(r"(?m)^\s*(?:extern\s+)?[A-Za-z_][\w\s\*]*?\b([A-Za-z_]\w*)\s*(?:\[|\(|;)", file_before))
+    # Also scan included local headers so we don't redeclare header prototypes
+    for hm in re.finditer(r'#include\s+"([^"]+)"', file_before):
+        hp = ROOT / "include" / hm.group(1)
+        if hp.exists():
+            htxt = hp.read_text(errors="ignore")
+            existing_syms |= set(re.findall(r"(?m)^\s*(?:extern\s+)?[A-Za-z_][\w\s\*]*?\b([A-Za-z_]\w*)\s*(?:\[|\(|;)", htxt))
+
+    code_ep, code_body = sweep_parked.split_externs_and_func(code, fn)
+    if code_body:
+        combined_ep = extra_pre + (code_ep or "")
+        body_only = code_body
+    else:
+        combined_ep = extra_pre
+        body_only = code
+
     ep_filtered = []
-    for ln in extra_pre.splitlines(keepends=True):
+    seen_ep = set()
+    for ln in combined_ep.splitlines(keepends=True):
         mm = re.search(r"\b([A-Za-z_]\w*)\s*(?:\[|\(|;)", ln)
-        if mm and mm.group(1) in existing_syms:
-            continue
+        if mm:
+            sym = mm.group(1)
+            if sym in existing_syms or sym in seen_ep:
+                continue
+            seen_ep.add(sym)
         ep_filtered.append(ln)
-    final_block = "".join(ep_filtered) + code
+    final_block = "".join(ep_filtered) + body_only
 
     new_text = "".join(lines[:replace_start]) + final_block + "".join(lines[inc_line + 1:])
     src_path.write_text(new_text)
