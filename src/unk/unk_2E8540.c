@@ -528,7 +528,61 @@ s32 func_002E9900(void) {
     }
     return 0;
 }
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2E8540", func_002E9970);
+extern s32 func_0022D670(s32, f32);
+
+void func_002E9970(s32 arg0, s32 arg1) {
+    s32 temp_a0;
+    s32 temp_s4;
+    u8 *temp_s3;
+    s32 var_s2;
+    s32 temp_v1;
+    u8 *var_s1;
+    s32 var_s0;
+    var_s2 = 0;
+    var_s1 = NULL;
+    temp_s3 = (unsigned char *)(D_004573C0[arg0] + (arg1 * 0x10));
+    temp_s4 = (s32)gBtlSys;
+    var_s0 = 0;
+    if (*(s32 *)((u8 *)temp_s3 + 0) != -1) {
+        if (0 != *D_005C9F6C) {
+            func_0022D0E0(*D_005C9F6C, 1);
+        }
+        temp_v1 = *(s32 *)(0 + (u8 *)temp_s3);
+        switch (temp_v1) {
+        case 0:
+            var_s1 = *(u8 **)((u8 *)temp_s4 + 0xE68);
+            var_s2 = *(s32 *)((u8 *)temp_s4 + 0xE60);
+            var_s0 = 0x04000000;
+            break;
+        case 1:
+            var_s1 = *(u8 **)((u8 *)temp_s4 + 0xE88);
+            var_s2 = *(s32 *)((u8 *)temp_s4 + 0xE84);
+            var_s0 = 0x04010000;
+            break;
+        case 2:
+            var_s1 = *(u8 **)((u8 *)temp_s4 + 0xE6C);
+            var_s2 = *(s32 *)((u8 *)temp_s4 + 0xE64);
+            var_s0 = 0x04001000;
+            break;
+        }
+        D_00470704 = var_s2;
+        D_00470708 = 0;
+        D_0047070C = var_s0;
+        amModel_SetCurrent(var_s2, var_s0);
+        D_00470238 = 0;
+        temp_a0 = *(s32 *)((u8 *)temp_s3 + 4);
+        switch (temp_a0) {
+        case 0:
+            *D_005C9F6C = func_0022D860(*(s32 *)(*(s32 *)((u8 *)var_s1 + 0x14) + (*(s32 *)((u8 *)temp_s3 + 8) * 4)), 0.0f);
+            break;
+        case 1:
+            *D_005C9F6C = func_0022D670(*(s32 *)(*(s32 *)((u8 *)var_s1 + 0x1C) + (*(s32 *)((u8 *)temp_s3 + 8) * 4)), 0.0f);
+            break;
+        }
+        *D_005C9F60 = arg0;
+        *D_005C9F64 = arg1;
+    }
+}
 void func_002E9B10(s16 *a, s16 *b) {
     s32 i = 0;
     s32 r;

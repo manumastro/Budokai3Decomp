@@ -30,7 +30,7 @@ extern s32 D_0047070C;
 extern s32 D_00470708;
 extern s32 D_00470238;
 void amModel_SetCurrent(s32, s32);
-void func_0022C060(f32);
+void func_0022C060(s32, f32);
 void func_0021B1E0(void);
 
 extern s32 D_0047068C;
@@ -364,43 +364,36 @@ void func_0021B940(void) {
         s0[1] = 0;
     }
 }
-#if 0
 void func_0021B9A0(void) {
-    u8 *bw = gBattle + 0x10000;
-    u8 *sys = gBtlSys;
-    u8 *q;
-    u8 *s1;
-    s32 a;
-    s32 t;
-    s32 u;
-
-    if (*(s32 *)(bw - 0x7714) == 0) {
-        a = *(s32 *)(sys + 0xE64);
-        D_00470704 = a;
-        D_0047070C = 0x4001000;
+    u8 *temp_v1;
+    s32 _arg4;
+    u8 *var_s0;
+    s32 temp_a0;
+    u8 *var_s1;
+    var_s0 = gBtlSys;
+    if (*(s32 *)((u8 *)gBattle + 0x88EC) == 0) {
+        temp_a0 = *(s32 *)(0xE64 + (u8 *)var_s0);
+        D_00470704 = temp_a0;
+        D_0047070C = 0x04001000;
         D_00470708 = 0;
-        amModel_SetCurrent(a, 0x4001000);
+        amModel_SetCurrent(temp_a0, 0x04001000);
         D_00470238 = 0;
-        q = *(u8 **)(sys + 0xEE8);
-        if (q != 0) {
-            t = *(s32 *)(q + 0x30);
-            s1 = q + 0x30;
-            if (t != 0) {
-                func_0022C060(1.0f);
+        temp_v1 = *(u8 **)((u8 *)var_s0 + 0xEE8);
+        if (temp_v1 != NULL) {
+            var_s1 = temp_v1 + 0x30;
+            if (0 != *(s32 *)((s32)(u8 *)temp_v1 + (s16)0x30)) {
+                func_0022C060(*(s32 *)var_s1, 1.0f);
             }
-            u = *(s32 *)(s1 + 4);
-            if (u != 0) {
-                func_0022C060(1.0f);
+            if (*(s32 *)((u8 *)var_s1 + 4) != 0) {
+                _arg4 = *(s32 *)(var_s1 + 4);
+                func_0022C060(_arg4, 1.0f);
             }
         }
-        if (*(s32 *)(sys + 0xDF8) != 0) {
+        if (*(u32 *)((u8 *)var_s0 + 0xDF8) != 0) {
             func_0021B1E0();
         }
     }
 }
-// differs: round 6 (u23e): 6 of 47 differ: the load of the pointer temp goes to v1 instead of a0 and addiu s1 is hoisted above the load (the original fills the branch delay slot with it)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021B9A0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_21B130", func_0021BA60);
 void func_0021BEA0(u8 *a0, s32 a1) {
     u8 *s0;
