@@ -256,7 +256,38 @@ void func_002F9710(u8 *d, u8 *b, s32 idx, s32 flags) {
     *(f32 *)(d + 0x4C) = Y;
 }
 
-INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F9870);
+s32 amAdx_IsStopped(s32);
+s32 amAdx_PlayAfs(s32, s32, s32);
+s32 amAdx_SetVolume(s32, f32);
+extern f32 D_004E0618[4];
+extern void *gTourMap;
+extern void amAdx_Pause();
+
+void func_002F9870(u8 *arg0)
+{
+    s32 temp_s1;
+    u8 *temp_s0;
+    s32 _arg2;
+    temp_s0 = (arg0 + 0x30);
+    if ((*((s32 *)((((u8 *)arg0) + 0x34))) != 0))
+    {
+        if ((amAdx_IsStopped(1) & 5))
+        {
+            *((s16 *)((((u8 *)gTourMap) + 0x5E))) = ((u16)((*((s16 *)((((u8 *)gTourMap) + 0x5E))) + 1)));
+            amTask_Kill(arg0);
+        }
+    }
+    else
+        if ((*((s16 *)((((u8 *)gTourMap) + 0x5E))) == *((s32 *)((((u8 *)temp_s0) + 8)))))
+        {
+            temp_s1 = *((s32 *)((((s32)((u8 *)arg0)) + ((s32)0x30))));
+            amAdx_SetVolume(1, D_004E0618[0]);
+            amAdx_Pause(1, 0);
+            _arg2 = (temp_s1 | 0x20000);
+            amAdx_PlayAfs(1, _arg2, 0);
+            *((s32 *)((((u8 *)temp_s0) + 4))) = 1;
+        }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F9930);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002FAB70);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002FACA0);

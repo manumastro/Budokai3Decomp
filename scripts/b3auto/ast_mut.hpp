@@ -1101,9 +1101,67 @@ inline bool mut_ast_int_to_u8ptr(FuncAST &f, unsigned int &rng) {
     return true;
 }
 
+// Op 27: Fold `r = C1; if (cond) { r = C2; } return r;` <-> `if (cond) { return C2; } return C1;`
+inline bool mut_ast_if_ret_fold(FuncAST &f, unsigned int &rng) {
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    for (Stmt *b : blocks) {
+        for (size_t i = 0; i + 2 < b->stmts.size(); i++) {
+            Stmt *s0 = b->stmts[i].get();
+            Stmt *s1 = b->stmts[i + 1].get();
+            Stmt *s2 = b->stmts[i + 2].get();
+            if (s0->kind == StmtKind::ExprStmt && s0->expr &&
+                s0->expr->kind == ExprKind::Assign && s0->expr->text == "=" &&
+                s0->expr->lhs && s0->expr->lhs->kind == ExprKind::Ident &&
+                s1->kind == StmtKind::If && s1->then_br && !s1->else_br &&
+                s1->then_br->stmts.size() == 1 &&
+                s2->kind == StmtKind::Return && s2->expr && s2->expr->kind == ExprKind::Ident &&
+                s2->expr->text == s0->expr->lhs->text) {
+                Stmt *ts = s1->then_br->stmts[0].get();
+                if (ts->kind == StmtKind::ExprStmt && ts->expr &&
+                    ts->expr->kind == ExprKind::Assign && ts->expr->text == "=" &&
+                    ts->expr->lhs && ts->expr->lhs->kind == ExprKind::Ident &&
+                    ts->expr->lhs->text == s0->expr->lhs->text) {
+                    // Transform to: if (cond) { return C2; } return C1;
+                    auto ret2 = std::make_unique<Stmt>(StmtKind::Return);
+                    ret2->expr = std::move(ts->expr->rhs);
+                    s1->then_br->stmts[0] = std::move(ret2);
+                    s2->expr = std::move(s0->expr->rhs);
+                    b->stmts.erase(b->stmts.begin() + (ptrdiff_t)i);
+                    return true;
+                }
+            }
+        }
+    }
+    (void)rng;
+    return false;
+}
+
+// Op 28: Sink the last statement of `if (cond) { ...; S; }` after the `if`, or hoist the next statement into `if`
+inline bool mut_ast_sink_if_tail(FuncAST &f, unsigned int &rng) {
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    std::vector<std::pair<Stmt *, size_t>> cands;
+    for (Stmt *b : blocks) {
+        for (size_t i = 0; i < b->stmts.size(); i++) {
+            Stmt *s = b->stmts[i].get();
+            if (s->kind == StmtKind::If && s->then_br && !s->else_br && s->then_br->stmts.size() >= 2) {
+                cands.push_back({b, i});
+            }
+        }
+    }
+    if (cands.empty()) return false;
+    auto [b, idx] = cands[rand_r(&rng) % cands.size()];
+    Stmt *ifs = b->stmts[idx].get();
+    StmtPtr tail = std::move(ifs->then_br->stmts.back());
+    ifs->then_br->stmts.pop_back();
+    b->stmts.insert(b->stmts.begin() + (ptrdiff_t)(idx + 1), std::move(tail));
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 27;
+static constexpr int NUM_AST_OPS = 29;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -1115,7 +1173,7 @@ struct OpBandit {
         static const double base_w[NUM_AST_OPS] = {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 5.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
-            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0
+            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 3.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1172,6 +1230,8 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 24: return mut_ast_ptr_scale_fix(cur, rng, focus_ratio);
         case 25: return mut_ast_add_reassoc_cast(cur, rng, focus_ratio);
         case 26: return mut_ast_int_to_u8ptr(cur, rng);
+        case 27: return mut_ast_if_ret_fold(cur, rng);
+        case 28: return mut_ast_sink_if_tail(cur, rng);
         default: return false;
     }
 }
