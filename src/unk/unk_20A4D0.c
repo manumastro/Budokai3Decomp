@@ -4987,13 +4987,17 @@ s32 func_00218690(void) {
     *(s32 *)(D_0046FDD0 + 0x180) = amCdFs_ReadFileId(0x1E7, 0, 1);
     return *(s32 *)(D_0046FDD0 + 0x180);
 }
-#if 0
+extern u8 *gBattle;
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
+extern void amAdx_Stop(s32);
+
 void func_002186D0(u8 *p) {
     u8 *sl;
-    u8 *n;
     u8 *v;
-    f32 t;
     s32 a;
+    f32 t;
+    u8 *n;
 
     t = *(f32 *)(p + 0x3C) / *(f32 *)(p + 0x40);
     v = *(u8 **)(p + 0x30);
@@ -5004,9 +5008,11 @@ void func_002186D0(u8 *p) {
         amAdx_SetVolume(a, *(f32 *)v * *(f32 *)(v + 0x4));
     }
     n = *(u8 **)sl;
-    if (*(s32 *)(n + 0xC) == 2 || *(s32 *)(n + 0xC) == 1) {
-        amAdx_Pause(*(s32 *)(n + 0x8), 0);
-        *(s32 *)(n + 0xC) = 3;
+    if (*(s32 *)(n + 0xC) == 2) {
+        if (*(s32 *)(n + 0xC) == 2 || *(s32 *)(n + 0xC) == 1) {
+            amAdx_Pause(*(s32 *)(n + 0x8), 0);
+            *(s32 *)(n + 0xC) = 3;
+        }
     }
     if (*(f32 *)(sl + 0xC) >= *(f32 *)(sl + 0x10)) {
         if (*(f32 *)(sl + 0x8) <= 0.0f) {
@@ -5032,9 +5038,6 @@ void func_002186D0(u8 *p) {
         *(f32 *)(sl + 0xC) = (*(f32 *)(sl + 0xC) < *(f32 *)(sl + 0x10)) ? *(f32 *)(sl + 0xC) : *(f32 *)(sl + 0x10);
     }
 }
-// differs: all but the top pause check match: the original compiles the (c == 2 || c == 1) test as bne c,2 / beq c,2 / bne c,1 (the nested-if forms gave other layouts); the fade and stop branches are laid out as in the original
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_002186D0);
 extern u8 *gBattle;
 s32 amAdx_IsStopped(s32);
 void amAdx_Stop(s32);

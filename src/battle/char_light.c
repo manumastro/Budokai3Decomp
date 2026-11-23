@@ -801,7 +801,6 @@ void func_00237E00(u8 *a0) {
 }
 
 
-#if 0
 extern u8 D_0058BF24[];
 extern s32 func_00228430(s32);
 extern s32 func_002284D0(s32);
@@ -830,7 +829,7 @@ void func_00237EC0(u8 *a0) {
     t = *(f32 *)a0 + D_00470710;
     *(f32 *)a0 = t;
     if (!(t < 85.0f)) {
-        k = *(s32 *)(a0 + 0xC);
+        k = *(s32 *)(0xC + a0);
         if (D_0047072C != 0) {
             slot = &D_0058BEB0[k];
             if (*slot != 0) {
@@ -870,20 +869,19 @@ void func_00237EC0(u8 *a0) {
     }
     off = *(s32 *)(a0 + 0x20) * 4;
     func_00253690(*(s32 *)(off + (s32)s0 + 0xEC0), *(s32 *)(a0 + 0x24), &ref);
-    h = ref.tbl + *(s32 *)(*(s32 *)(ref.tbl + 0x14) + (s32)ref.tbl + (ref.idx - *(s32 *)(ref.tbl + 0x18)) * 4);
+    h = ref.tbl + *(s32 *)(*(s32 *)(ref.tbl + 0x14) + (s32)ref.tbl + (ref.idx - *(u32 *)(ref.tbl + 0x18)) * 4);
     f20 = *(s16 *)(h + 0x10);
     fp = (f32 *)(*(u8 **)(func_00259CC0(*(s32 *)(a0 + 0x10), 0x84) + 0x30) + 0x38);
     if (*fp > f20) {
         *fp = f20;
     }
-    fp = (f32 *)(*(u8 **)(func_00259CC0(*(s32 *)(a0 + 0x10), 0x85) + 0x30) + 0x20);
-    if (*fp > 36.0f + f20) {
-        *fp = 36.0f + f20;
+    q = (u8 *)func_00259CC0(*(s32 *)(a0 + 0x10), 0x85);
+    m = 36.0f + f20;
+    fp = (f32 *)(*(u8 **)(q + 0x30) + 0x20);
+    if (*fp > m) {
+        *fp = m;
     }
 }
-// differs: 9 of 138: register swaps only (the table index subtraction operands v0/v1, the second clamp pointer v1/a0); ternary/local/cast forms tried
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/char_light", func_00237EC0);
 extern s32 func_00228430(s32);
 extern s32 func_002284D0(s32);
 extern s32 func_0022C060(void *, f32);
