@@ -582,20 +582,22 @@ s32 Scr_CmdCall20E8F0(ScrCtx *ctx, ScrCmd *cmd) {
 }
 
 /* Same as Bscr_DrawMotionPrio but the original keeps gBattle in a1 and the flag in v1; 8 of 52 differ. */
-#if 0
-void func_0025E1A0(ScrFadeTask *task) {
+void func_0025E1A0(ScrFadeTask *task)
+{
     ScrFade *f = &task->fade;
-
-    if (!Scr_IsPaused() && f->end != -1.0f) {
-        f->cur += Scr_GetSpeed();
-        if (!(f->cur < f->end)) {
-            amTask_Kill((ScrTask *)task);
+    if (!Scr_IsPaused())
+    {
+        if ((f->end != -1.0f))
+        {
+            f->cur += Scr_GetSpeed();
+            if (!((f->cur < f->end)))
+            {
+                amTask_Kill(((ScrTask *)task));
+            }
         }
+        func_0020EA70(f->id);
     }
-    func_0020EA70(f->id);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25D740", func_0025E1A0);
 
 s32 Bscr_CmdSetObjCamPos(ScrCtx *ctx, ScrCmd *cmd) {
     ScrArg *a = cmd->args;
