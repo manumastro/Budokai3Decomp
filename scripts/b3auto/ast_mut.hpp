@@ -947,7 +947,8 @@ inline bool mut_ast_deref_cast(FuncAST &f, unsigned int &rng, double focus_ratio
     return true;
 }
 
-// Op 24: Fix double-scaled pointer arithmetic `ptr + (idx * 4)` <-> `ptr + idx` or `(u8 *)ptr + (idx * 4)`
+// Op 24: Fix double-scaled pointer arithmetic `ptr + (idx * K)` (K multiple of 4 or 2)
+// -> `ptr + (idx * (K/4))` or `ptr + idx` or `(u8 *)ptr + (idx * K)`
 inline bool mut_ast_ptr_scale_fix(FuncAST &f, unsigned int &rng, double focus_ratio) {
     auto exprs = collect_weighted_exprs(f, focus_ratio);
     std::vector<std::pair<Expr *, int>> cands;
@@ -956,22 +957,28 @@ inline bool mut_ast_ptr_scale_fix(FuncAST &f, unsigned int &rng, double focus_ra
             Expr *r = we.node->rhs.get();
             while (r->kind == ExprKind::Paren && r->lhs) r = r->lhs.get();
             if (r->kind == ExprKind::Binary && (r->text == "*" || r->text == "<<") &&
-                r->rhs && r->rhs->kind == ExprKind::Num &&
-                (r->rhs->text == "4" || r->rhs->text == "2" || r->rhs->text == "8")) {
-                cands.push_back({we.node, we.weight});
+                r->rhs && r->rhs->kind == ExprKind::Num) {
+                long long v = 0;
+                try { v = std::stoll(r->rhs->text, nullptr, 0); } catch (...) { v = 0; }
+                if ((r->text == "*" && v >= 2 && (v % 2 == 0)) || (r->text == "<<" && v >= 1 && v <= 4)) {
+                    cands.push_back({we.node, we.weight});
+                }
             }
         }
     }
     Expr *b = pick_weighted(cands, rng);
     if (!b) return false;
-    if (rand_r(&rng) & 1) {
-        // Strip the *4 / *2 scaling factor on rhs
-        Expr *r = b->rhs.get();
-        while (r->kind == ExprKind::Paren && r->lhs) r = r->lhs.get();
+    Expr *r = b->rhs.get();
+    while (r->kind == ExprKind::Paren && r->lhs) r = r->lhs.get();
+    long long v = 0;
+    try { v = std::stoll(r->rhs->text, nullptr, 0); } catch (...) { v = 0; }
+    unsigned mode = rand_r(&rng) % 3;
+    if (mode == 0 && r->text == "*" && v > 4 && (v % 4 == 0)) {
+        r->rhs->text = std::to_string(v / 4);
+    } else if (mode == 1) {
         ExprPtr base_idx = std::move(r->lhs);
         b->rhs = std::move(base_idx);
     } else {
-        // Cast lhs to (u8 *) so *4 is byte-scaled
         auto c = std::make_unique<Expr>(ExprKind::Cast, "u8 *");
         c->lhs = std::move(b->lhs);
         b->lhs = std::move(c);

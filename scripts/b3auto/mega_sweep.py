@@ -68,7 +68,7 @@ def collect_active_inc():
     return active
 
 
-def build_jobs(pool, budget, seconds, batch):
+def build_jobs(pool, budget, seconds, batch, max_draft_diff=20):
     active = collect_active_inc()
     preambles = {}
     jobs = []
@@ -137,7 +137,7 @@ def build_jobs(pool, budget, seconds, batch):
                     continue
                 if st not in ("diff", "size"):
                     continue
-                if st == "size" and (not df.isdigit() or int(df) > 20):
+                if st == "size" and (not df.isdigit() or int(df) > max_draft_diff):
                     continue
                 m = re.search(r"\(([^)]+)\)", p[6])
                 if not m:
@@ -257,10 +257,11 @@ def main():
     ap.add_argument("--budget", type=int, default=5000)
     ap.add_argument("--seconds", type=int, default=20)
     ap.add_argument("--batch", type=int, default=64)
+    ap.add_argument("--max-draft-diff", type=int, default=20)
     args = ap.parse_args()
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    jobs = build_jobs(args.pool, args.budget, args.seconds, args.batch)
+    jobs = build_jobs(args.pool, args.budget, args.seconds, args.batch, args.max_draft_diff)
     print(f"MEGA SWEEP v2 ({args.pool}): {len(jobs)} targets ({args.jobs} workers, budget={args.budget}, {args.seconds}s/fn)...")
     t0 = time.time()
     counts = {"MATCH": 0, "IMPROVED": 0, "SAME": 0, "NOCOMPILE": 0}

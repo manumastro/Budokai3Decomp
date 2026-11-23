@@ -562,10 +562,11 @@ void BtbBg_Clear(void) {
 extern s32 D_00470630;
 
 // GIVEN UP: the memset call and the table load match; the original takes the address of D_00470630 once more (an addiu gp that is unused) and is 8 bytes longer (0x60 against 0x58)
-#if 0
-void func_001FA360(s32 stage) {
+extern s32 D_0044AE64[4];
+
+s32 *func_001FA360(s32 arg0)
+{
     memset(&D_00470630, 0, 4);
-    D_00470630 = D_0044AE50[stage].unk14;
+    D_00470630 = *((u32 *)((&D_0044AE64[0] + ((arg0 * 23)))));
+    return &D_00470630;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/btb_main", func_001FA360);
