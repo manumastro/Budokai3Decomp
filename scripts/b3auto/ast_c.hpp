@@ -604,6 +604,17 @@ class Parser {
                 d.suffix += advance().text;
             if (peek().kind == TokKind::RBracket) d.suffix += advance().text;
         }
+        // Preserve trailing __attribute__((...)) on local arrays/vars
+        while (peek().kind == TokKind::Ident && peek().text == "__attribute__") {
+            d.suffix += " " + advance().text;
+            int pd = 0;
+            while (peek().kind != TokKind::Eof) {
+                if (peek().kind == TokKind::LParen) pd++;
+                else if (peek().kind == TokKind::RParen) pd--;
+                d.suffix += advance().text;
+                if (pd <= 0) break;
+            }
+        }
         if (match(TokKind::Eq)) {
             d.init = parse_expr();
         }
@@ -614,6 +625,17 @@ class Parser {
     /* ----- Expressions (C precedence climbing) ----- */
 
     ExprPtr parse_expr() { return parse_assign(); }
+
+    ExprPtr parse_comma() {
+        auto lhs = parse_assign();
+        while (match(TokKind::Comma)) {
+            auto b = std::make_unique<Expr>(ExprKind::Binary, ",");
+            b->lhs = std::move(lhs);
+            b->rhs = parse_assign();
+            lhs = std::move(b);
+        }
+        return lhs;
+    }
 
     ExprPtr parse_assign() {
         auto lhs = parse_ternary();
@@ -846,11 +868,11 @@ class Parser {
             advance();
             match(TokKind::LParen);
             auto s = std::make_unique<Stmt>(StmtKind::For);
-            if (peek().kind != TokKind::Semi) s->init_expr = parse_expr();
+            if (peek().kind != TokKind::Semi) s->init_expr = parse_comma();
             match(TokKind::Semi);
-            if (peek().kind != TokKind::Semi) s->expr = parse_expr();
+            if (peek().kind != TokKind::Semi) s->expr = parse_comma();
             match(TokKind::Semi);
-            if (peek().kind != TokKind::RParen) s->step_expr = parse_expr();
+            if (peek().kind != TokKind::RParen) s->step_expr = parse_comma();
             match(TokKind::RParen);
             s->body = parse_stmt();
             return s;
@@ -905,7 +927,7 @@ class Parser {
             return std::make_unique<Stmt>(StmtKind::ExprStmt);
         }
         auto s = std::make_unique<Stmt>(StmtKind::ExprStmt);
-        s->expr = parse_expr();
+        s->expr = parse_comma();
         match(TokKind::Semi);
         return s;
     }

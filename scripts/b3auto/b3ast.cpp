@@ -423,6 +423,9 @@ int main(int argc, char **argv) {
     evals = 1;
 
     if (!init_vec[0].compiled) {
+        if (getenv("B3AST_DEBUG")) {
+            std::ofstream("/tmp/b3ast_dbg.c") << G.preamble << "\n" << base_ast.print();
+        }
         printf("STATUS=NOCOMPILE func=%s evals=1 compiles=%d time=%.2fs\n",
                G.func_name.c_str(), compile_calls, now_sec() - t0);
         return 1;
