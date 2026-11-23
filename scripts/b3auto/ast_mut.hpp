@@ -1390,9 +1390,37 @@ inline bool mut_ast_cmp_off_by_one(FuncAST &f, unsigned int &rng, double focus_r
     return true;
 }
 
+// Op 35: Fix double-scaled pointer step `s32 *p; ... p += 4;` -> `p += 1;` or `u8 *p;`
+// Fixes m2c's classic bug where a byte-stepped pointer is typed `s32 *` with `p += 4` (emitting +16!).
+inline bool mut_ast_ptr_step_fix(FuncAST &f, unsigned int &rng, double focus_ratio) {
+    auto exprs = collect_weighted_exprs(f, focus_ratio);
+    std::vector<std::pair<Expr *, int>> cands;
+    for (const auto &we : exprs) {
+        Expr *e = we.node;
+        if (e->kind == ExprKind::Assign && (e->text == "+=" || e->text == "-=") &&
+            e->lhs && e->lhs->kind == ExprKind::Ident && e->rhs && e->rhs->kind == ExprKind::Num) {
+            long long k = 0;
+            try { k = std::stoll(e->rhs->text, nullptr, 0); } catch (...) { k = 0; }
+            if (k >= 2 && (k % 2 == 0)) cands.push_back({e, we.weight});
+        }
+    }
+    Expr *e = pick_weighted(cands, rng);
+    if (!e) return false;
+    long long k = 0;
+    try { k = std::stoll(e->rhs->text, nullptr, 0); } catch (...) { return false; }
+    if (k % 4 == 0 && (rand_r(&rng) % 3 != 0)) {
+        e->rhs->text = std::to_string(k / 4);
+    } else if (k % 2 == 0) {
+        e->rhs->text = std::to_string(k / 2);
+    } else {
+        return false;
+    }
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 35;
+static constexpr int NUM_AST_OPS = 36;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -1404,7 +1432,7 @@ struct OpBandit {
         static const double base_w[NUM_AST_OPS] = {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 6.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
-            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.5, 5.0
+            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.5, 5.0, 5.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1469,6 +1497,7 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 32: return mut_ast_zero_float_int(cur, rng, focus_ratio);
         case 33: return mut_ast_return_const_flip(cur, rng);
         case 34: return mut_ast_cmp_off_by_one(cur, rng, focus_ratio);
+        case 35: return mut_ast_ptr_step_fix(cur, rng, focus_ratio);
         default: return false;
     }
 }

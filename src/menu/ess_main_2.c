@@ -69,47 +69,52 @@ void Ess_Start(void) {
     SoundRpc_SendWord(0);
     amAdx_Stop(-1);
 }
-#if 0
-// differs: 7 of 60: the first loop (count in s1, offset in s0) matches; the second loop's registers are swapped (the original keeps the index in s0 and the array pointer in s1) and no declaration order fixed it
-extern s32 D_0058F5D0[];
+extern s32 D_0058F5D0[4];
 extern void StrStatus_Exit(void *);
 extern void Help_Exit();
 extern void Save_Exit();
-extern void amTask_KillGroup(s32, s32, s32);
+extern s32 amTask_KillGroup(s32, s32, s32);
 extern void amCdFs_Close(void *, s32);
-extern void amCdFs_ReleaseCache(s32);
+extern void amCdFs_ReleaseCache(void *);
 
 void func_0026E3B0(void) {
-    s32 i;
-    s32 off;
-    StrStatus_Exit(*(void **)((u8 *)gEssMain + 0x20));
+    s32 var_s1;
+    s32 *var_s0;
+    s32 temp_a0;
+    void *_arg4;
+    u8 *temp_a0_2;
+
+    _arg4 = *(void **)((u8 *)gEssMain + 0x20);
+    StrStatus_Exit(_arg4);
     Help_Exit();
     Save_Exit();
     amTask_KillGroup(0x200, 1, 0);
-    i = 0;
-    off = 0;
+    var_s1 = 0;
+    var_s0 = NULL;
     do {
-        if (*(void **)((u8 *)gEssMain + off) != 0) {
-            amCdFs_Close(*(void **)((u8 *)gEssMain + off), 0);
+        temp_a0 = *(s32 *)((s32)gEssMain + (s32)var_s0);
+        if (temp_a0 != 0) {
+            amCdFs_Close((void *)temp_a0, 0);
         }
-        i++;
-        off += 4;
-    } while (i < 3);
-    i = 0;
+        var_s1 = var_s1 + 1;
+        var_s0 += 1;
+    } while (var_s1 < 3);
+    var_s1 = 0;
     if (0 < D_0058F5D0[0]) {
+        var_s0 = &D_0058F5D0[0];
         do {
-            amCdFs_ReleaseCache(D_0058F5D0[i + 1]);
-            i++;
-        } while (i < D_0058F5D0[0]);
+            amCdFs_ReleaseCache(*(u8 **)((u8 *)var_s0 + 4));
+            var_s1 += 1;
+            var_s0 += 1;
+        } while (var_s1 < D_0058F5D0[0]);
     }
-    if (*(void **)((u8 *)gEssMain + 0x270) != 0) {
-        amHeap_Free(*(void **)((u8 *)gEssMain + 0x270));
+    temp_a0_2 = *(u8 **)((u8 *)gEssMain + 0x270);
+    if (temp_a0_2 != NULL) {
+        amHeap_Free(temp_a0_2);
     }
     amHeap_Free(gEssMain);
-    gEssMain = 0;
+    gEssMain = NULL;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E3B0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E4A0);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E640);
 INCLUDE_ASM("asm/nonmatchings/menu/ess_main_2", func_0026E780);
