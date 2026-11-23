@@ -416,7 +416,7 @@ extern void *gOptionState;
 extern void func_002D2AD0(f32, f32 *, f32 *);
 extern void amTask_Kill(void *);
 extern void func_002E0050(s32);
-extern void func_002E0B70(void);
+extern void func_002E0B70(u8 *);
 
 void func_002E0170(u8 *a0) {
     f32 b[4];
@@ -489,39 +489,34 @@ void func_002E0800(u8 *a0) {
     }
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E08F0);
-#if 0
-// differs: 13 of 45: the constants 40.0f/540.0f/256.0f/1.0f are loaded into the other temporaries ( first here,  first in the original), the store order and the frame already match
-extern void func_002D2AD0(void *, void *, f32);
 extern void func_002E08F0();
 
 void func_002E0B70(u8 *a0) {
     u8 *s0;
-    u8 *s1;
-    f32 b[4];
-    f32 a[4];
     f32 t;
+    f32 b[4];
+    u8 *s1;
+    f32 a[4];
     void *fp;
     s1 = a0;
-    s0 = gOptionWork;
+    s0 = (u8 *)gOptionState;
     b[1] = 40.0f;
     b[0] = 0.0f;
+    b[2] = 1.0f;
     a[0] = 540.0f;
     a[1] = 256.0f;
-    b[2] = 1.0f;
     b[3] = 1.0f;
     a[2] = 1.0f;
     a[3] = 1.0f;
-    func_002D2AD0(b, a, *(f32 *)(s0 + 0xC));
-    t = 0.05f + *(f32 *)(s0 + 0xC);
-    *(f32 *)(s0 + 0xC) = t;
+    func_002D2AD0(*(f32 *)(s0 + 0xC), b, a);
+    *(f32 *)(s0 + 0xC) += 0.05f;
+    t = *(f32 *)(s0 + 0xC);
     if (t > 1.0f) {
         *(f32 *)(s0 + 0xC) = 1.0f;
         fp = (void *)func_002E08F0;
         *(void **)(s1 + 0x1C) = (fp == 0) ? 0 : fp;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002E0B70);
 extern void *gOptionState;
 
 typedef struct OptionState {

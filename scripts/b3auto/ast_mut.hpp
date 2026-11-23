@@ -1522,9 +1522,62 @@ inline bool mut_ast_add_ptr_int_flip(FuncAST &f, unsigned int &rng, double focus
     return true;
 }
 
+// Op 38: `t = X + Y; X = t;` <-> `X += Y; t = X;` (and `-`, `*`)
+// Flips MWCC `add.s` / `addu` operand order on float/int accumulate-and-test idioms.
+inline bool mut_ast_assign_to_compound(FuncAST &f, unsigned int &rng) {
+    if (!f.body) return false;
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    std::vector<std::pair<Stmt *, size_t>> cands;
+    for (Stmt *b : blocks) {
+        if (b->stmts.size() < 2) continue;
+        for (size_t i = 0; i + 1 < b->stmts.size(); i++) {
+            Stmt *s0 = b->stmts[i].get();
+            Stmt *s1 = b->stmts[i + 1].get();
+            if (s0->kind != StmtKind::ExprStmt || s1->kind != StmtKind::ExprStmt) continue;
+            if (!s0->expr || !s1->expr) continue;
+            if (s0->expr->kind == ExprKind::Assign && s0->expr->text == "=" &&
+                s1->expr->kind == ExprKind::Assign && s1->expr->text == "=" &&
+                s0->expr->lhs && s0->expr->lhs->kind == ExprKind::Ident &&
+                s1->expr->rhs && s1->expr->rhs->kind == ExprKind::Ident &&
+                s0->expr->lhs->text == s1->expr->rhs->text &&
+                s0->expr->rhs && s0->expr->rhs->kind == ExprKind::Binary &&
+                (s0->expr->rhs->text == "+" || s0->expr->rhs->text == "-" || s0->expr->rhs->text == "*")) {
+                std::string target_s = s1->expr->lhs->print();
+                std::string l_s = s0->expr->rhs->lhs->print();
+                std::string r_s = s0->expr->rhs->rhs->print();
+                if (target_s == l_s || (s0->expr->rhs->text != "-" && target_s == r_s)) {
+                    cands.push_back({b, i});
+                }
+            }
+        }
+    }
+    if (cands.empty()) return false;
+    auto [b, idx] = cands[rand_r(&rng) % cands.size()];
+    Stmt *s0 = b->stmts[idx].get();
+    Stmt *s1 = b->stmts[idx + 1].get();
+    std::string op = s0->expr->rhs->text;
+    std::string target_s = s1->expr->lhs->print();
+    std::string l_s = s0->expr->rhs->lhs->print();
+    ExprPtr lhs_x = s1->expr->lhs->clone();
+    ExprPtr other = (target_s == l_s) ? s0->expr->rhs->rhs->clone() : s0->expr->rhs->lhs->clone();
+    ExprPtr var_t = s0->expr->lhs->clone();
+    // s0 becomes: X += other;
+    auto comp = std::make_unique<Expr>(ExprKind::Assign, op + "=");
+    comp->lhs = lhs_x->clone();
+    comp->rhs = std::move(other);
+    s0->expr = std::move(comp);
+    // s1 becomes: t = X;
+    auto rd = std::make_unique<Expr>(ExprKind::Assign, "=");
+    rd->lhs = std::move(var_t);
+    rd->rhs = std::move(lhs_x);
+    s1->expr = std::move(rd);
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 38;
+static constexpr int NUM_AST_OPS = 39;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -1537,7 +1590,7 @@ struct OpBandit {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 6.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
             6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.5, 5.0, 5.0,
-            4.5, 5.0
+            4.5, 5.0, 4.5
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1605,6 +1658,7 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 35: return mut_ast_ptr_step_fix(cur, rng, focus_ratio);
         case 36: return mut_ast_ret_var_to_if_ret(cur, rng);
         case 37: return mut_ast_add_ptr_int_flip(cur, rng, focus_ratio);
+        case 38: return mut_ast_assign_to_compound(cur, rng);
         default: return false;
     }
 }
