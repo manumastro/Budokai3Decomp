@@ -381,4 +381,18 @@ void func_00287C60(void) {
     Help_Exit();
 }
 INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00287E60);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_StageSel", func_00288000);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern void *amHeap_Alloc(s32, s32, s32 *, s32);
+extern s32 D_0046B8D8[4];
+
+void func_00288000(void) {
+    u8 *temp_v0;
+
+    temp_v0 = D_0047082C = amHeap_Alloc(0x18, 0, &D_0046B8D8[0], 0xF6);
+    *(s32 *)((u8 *)temp_v0 + 8) = amCdFs_ReadFileId(0xF53, 0, 0);
+    *(s32 *)((u8 *)temp_v0 + 0xC) = amCdFs_ReadFileId(0xF54, 0, 0);
+    *(s32 *)((u8 *)temp_v0 + 0x10) = amCdFs_ReadFileId(0xF52, 0, 0);
+    *(s32 *)((u8 *)temp_v0 + 0) = amCdFs_ReadFileId(0x10830, 0, 0);
+    *(s32 *)((u8 *)temp_v0 + 4) = amCdFs_ReadFileId(0x10831, 0, 0);
+    *(s32 *)((u8 *)temp_v0 + 0x14) = 0;
+}

@@ -1575,9 +1575,46 @@ inline bool mut_ast_assign_to_compound(FuncAST &f, unsigned int &rng) {
     return true;
 }
 
+// Op 39: `v = rhs; G = v;` -> `v = G = rhs;` (chained assignment)
+// Prevents MWCC from sinking the global store `G = v` into a subsequent call's delay slot.
+inline bool mut_ast_chain_assign(FuncAST &f, unsigned int &rng) {
+    if (!f.body) return false;
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    std::vector<std::pair<Stmt *, size_t>> cands;
+    for (Stmt *b : blocks) {
+        if (b->stmts.size() < 2) continue;
+        for (size_t i = 0; i + 1 < b->stmts.size(); i++) {
+            Stmt *s0 = b->stmts[i].get();
+            Stmt *s1 = b->stmts[i + 1].get();
+            if (s0->kind == StmtKind::ExprStmt && s1->kind == StmtKind::ExprStmt &&
+                s0->expr && s1->expr &&
+                s0->expr->kind == ExprKind::Assign && s0->expr->text == "=" &&
+                s1->expr->kind == ExprKind::Assign && s1->expr->text == "=" &&
+                s0->expr->lhs && s0->expr->lhs->kind == ExprKind::Ident &&
+                s1->expr->rhs && s1->expr->rhs->kind == ExprKind::Ident &&
+                s0->expr->lhs->text == s1->expr->rhs->text &&
+                s1->expr->lhs && s1->expr->lhs->print() != s0->expr->lhs->text) {
+                cands.push_back({b, i});
+            }
+        }
+    }
+    if (cands.empty()) return false;
+    auto [b, idx] = cands[rand_r(&rng) % cands.size()];
+    Stmt *s0 = b->stmts[idx].get();
+    Stmt *s1 = b->stmts[idx + 1].get();
+    // Build `v = (G = rhs)`
+    auto inner = std::make_unique<Expr>(ExprKind::Assign, "=");
+    inner->lhs = s1->expr->lhs->clone();
+    inner->rhs = std::move(s0->expr->rhs);
+    s0->expr->rhs = std::move(inner);
+    b->stmts.erase(b->stmts.begin() + (long)(idx + 1));
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 39;
+static constexpr int NUM_AST_OPS = 40;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -1590,7 +1627,7 @@ struct OpBandit {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 6.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
             6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.5, 5.0, 5.0,
-            4.5, 5.0, 4.5
+            4.5, 5.0, 4.5, 4.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1659,6 +1696,7 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 36: return mut_ast_ret_var_to_if_ret(cur, rng);
         case 37: return mut_ast_add_ptr_int_flip(cur, rng, focus_ratio);
         case 38: return mut_ast_assign_to_compound(cur, rng);
+        case 39: return mut_ast_chain_assign(cur, rng);
         default: return false;
     }
 }
