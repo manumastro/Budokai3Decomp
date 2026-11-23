@@ -4273,51 +4273,53 @@ void func_001E7070(char *c, s32 a1) {
     *(s32 *)(c + 0x2C4) = *(s32 *)(q + 0x1DFC);
     *(s32 *)(c + 0x2C8) = *(s32 *)((char *)gBattle + 0x824);
 }
-#if 0
-void func_001E7180(Fighter *c) {
-    Game *g;
+void func_001E7180(Fighter *c)
+{
     char *a3;
-    s32 hi;
-    s32 lo;
     s32 v;
-    f32 sum;
+    Game *g;
+    s32 hi;
     f32 lim;
-
+    s32 lo;
+    f32 sum;
     g = gBattle;
-    if (c->f66C != 0) {
+    if ((c->f66C != 0))
+    {
         return;
     }
-    a3 = (char *)c->f540;
-    if (a3 == NULL) {
+    a3 = ((char *)c->f540);
+    if ((a3 == NULL))
+    {
         return;
     }
-    if (c->f640 < 0) {
+    if ((c->f640 < 0))
+    {
         return;
     }
-    if (g->f88EC == 0) {
-        if (c->f648 == 0) {
+    if ((g->f88EC != 0))
+    {
+        if ((c->f648 == 0))
+        {
             return;
         }
     }
-    lo = c->f640 & 0xFFFF;
-    hi = (c->f640 >> 16) - 1;
-    sum = *(f32 *)&c->f644 + g->f88F0;
-    v = *(s32 *)(*(char **)(*(s32 *)(a3 + hi * 4 + 0x2C) + 0x18) + lo * 16);
-    lim = (f32)(v - 1);
-    *(f32 *)&c->f644 = sum;
-    if (sum < lim) {
+    lo = (c->f640 & 0xFFFF);
+    hi = (((c->f640 >> 16)) - 1);
+    v = *((s32 *)((*((char **)((*((s32 *)((((((u8 *)((hi * 4))) + ((s32)(a3)))) + 0x2C))) + 0x18))) + (lo * 16))));
+    lim = ((f32)((v - 1)));
+    sum = *((f32 *)&c->f644) = (g->f88F0 + *((f32 *)&c->f644));
+    if ((sum < lim))
+    {
         return;
     }
-    if (c->f66C != 0) {
+    if ((c->f66C != 0))
+    {
         return;
     }
     c->f640 = -1;
     c->f644 = 0;
     c->f648 = 0;
 }
-#endif
-// differs: the f88EC test branches the other way (bnez/beqz), the hi/lo reads are scheduled differently, and the float add takes its operands in the other order (9 of 46 instructions differ)
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1D5B30", func_001E7180);
 extern void func_001A5510();
 extern void func_001A5350(void *, f32);
 extern void func_001C9EF0();
