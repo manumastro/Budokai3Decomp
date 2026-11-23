@@ -489,50 +489,67 @@ void func_00227010(s32 *a0, s32 *a1) {
     }
 }
 // differs: 3 of 70 (round 7): the original sets v0=0 (move v0,zero) as the first instruction of the main block and compares the hint with it (bne a2,v0), then binary search when equal; ours compares with -1 (li v0,-1). A literal 0 gives beqz (size 0x110 vs 0x120), a local = 0 is folded the same way; also the pretest slti at vs v0. The table search itself matches.
-#if 0
-s32 func_002270B0(s32 *tbl, s32 n, s32 idx, f32 f) {
+s32 func_002270B0(s32 *tbl, s32 n, s32 idx, f32 f)
+{
     s32 key;
-    s32 step;
     s32 *e;
     s32 t;
-
-    if (f < 1.0f) {
-        return -1;
+    int step;
+    if ((f < 1.0f))
+    {
+        return 0;
     }
-    key = (s32)f;
-    if (idx == -1) {
-        step = (n + 1) >> 1;
-        idx = n >> 1;
-        if (!(step < 2)) {
-            do {
-                if (*(s16 *)&tbl[idx] <= key) {
-                    idx += step >> 1;
-                } else {
-                    idx -= step >> 1;
+    key = ((s32)f);
+    if ((idx == -1))
+    {
+        step = (((n + 1)) >> 1);
+        idx = (n >> 1);
+        if (!((step <= 1)))
+        {
+            do
+            {
+                if ((*((s16 *)&tbl[idx]) <= key))
+                {
+                    idx += (step >> 1);
                 }
-                step = (step + 1) >> 1;
-            } while (!(step < 2));
+                else
+                {
+                    idx -= (step >> 1);
+                }
+                step = (((step + 1)) >> 1);
+            }
+            while (!((step < 2)));
         }
-        if (key < *(s16 *)&tbl[idx]) {
+        if ((key < *((s16 *)&tbl[idx])))
+        {
             idx -= 1;
         }
-    } else {
-        t = n - 1;
-        for (;;) {
+    }
+    else
+    {
+        t = (n - 1);
+        for (; ; )
+        {
             e = &tbl[idx];
-            if (*(s16 *)e <= key) {
-                if (!(*(s16 *)(e + 1) <= key)) {
+            if ((*((s16 *)e) <= key))
+            {
+                if (!((*((s16 *)((e + 1))) <= key)))
+                {
                     break;
                 }
                 idx += 1;
-            } else {
+            }
+            else
+            {
                 idx -= 1;
             }
-            if (idx <= 0) {
+            if ((idx <= 0))
+            {
                 idx = 0;
                 break;
             }
-            if (idx >= t) {
+            if ((idx >= t))
+            {
                 idx = t;
                 break;
             }
@@ -540,8 +557,6 @@ s32 func_002270B0(s32 *tbl, s32 n, s32 idx, f32 f) {
     }
     return idx;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/a2d", func_002270B0);
 extern s32 *D_004706F4;
 extern s32 D_004706FC;
 extern s32 D_00470700;

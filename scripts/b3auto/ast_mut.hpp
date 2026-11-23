@@ -1338,9 +1338,61 @@ inline bool mut_ast_zero_float_int(FuncAST &f, unsigned int &rng, double focus_r
     return true;
 }
 
+// Op 33: Toggle small constant in `return 0;` / `return 1;` / `return -1;`
+inline bool mut_ast_return_const_flip(FuncAST &f, unsigned int &rng) {
+    std::vector<Stmt *> rets;
+    collect_stmts_kind(f.body.get(), StmtKind::Return, rets);
+    std::vector<Stmt *> cands;
+    for (Stmt *s : rets) {
+        if (!s->expr) continue;
+        std::string t = s->expr->print();
+        if (t == "0" || t == "1" || t == "-1" || t == "(-1)") cands.push_back(s);
+    }
+    if (cands.empty()) return false;
+    Stmt *s = cands[rand_r(&rng) % cands.size()];
+    static const char *vals[] = {"0", "1", "-1"};
+    std::string cur = s->expr->print();
+    const char *nv = vals[rand_r(&rng) % 3];
+    if (cur == nv) nv = vals[(rand_r(&rng) + 1) % 3];
+    if (std::string(nv) == "-1") {
+        auto u = std::make_unique<Expr>(ExprKind::Unary, "-");
+        u->lhs = std::make_unique<Expr>(ExprKind::Num, "1");
+        s->expr = std::move(u);
+    } else {
+        s->expr = std::make_unique<Expr>(ExprKind::Num, nv);
+    }
+    return true;
+}
+
+// Op 34: Integer comparison off-by-one (`x >= K` <-> `x > K-1`, `x < K` <-> `x <= K-1`)
+// In MWCC PS2, `x > 1` emits `slti at, x, 2` whereas `x >= 2` emits `slti v0, x, 2`!
+inline bool mut_ast_cmp_off_by_one(FuncAST &f, unsigned int &rng, double focus_ratio) {
+    auto exprs = collect_weighted_exprs(f, focus_ratio);
+    std::vector<std::pair<Expr *, int>> cands;
+    for (const auto &we : exprs) {
+        Expr *e = we.node;
+        if (e->kind == ExprKind::Binary &&
+            (e->text == "<" || e->text == "<=" || e->text == ">" || e->text == ">=") &&
+            e->lhs && e->rhs && e->rhs->kind == ExprKind::Num &&
+            e->rhs->text.find('.') == std::string::npos && e->rhs->text.find('f') == std::string::npos) {
+            cands.push_back({e, we.weight});
+        }
+    }
+    Expr *e = pick_weighted(cands, rng);
+    if (!e) return false;
+    long long k = 0;
+    try { k = std::stoll(e->rhs->text, nullptr, 0); } catch (...) { return false; }
+    if (e->text == ">=") { e->text = ">"; e->rhs->text = std::to_string(k - 1); }
+    else if (e->text == ">") { e->text = ">="; e->rhs->text = std::to_string(k + 1); }
+    else if (e->text == "<") { e->text = "<="; e->rhs->text = std::to_string(k - 1); }
+    else if (e->text == "<=") { e->text = "<"; e->rhs->text = std::to_string(k + 1); }
+    else return false;
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 33;
+static constexpr int NUM_AST_OPS = 35;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -1352,7 +1404,7 @@ struct OpBandit {
         static const double base_w[NUM_AST_OPS] = {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 6.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
-            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0
+            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.5, 5.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1415,6 +1467,8 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 30: return mut_ast_range_to_eq_or(cur, rng, focus_ratio);
         case 31: return mut_ast_hoist_assign_rhs(cur, rng);
         case 32: return mut_ast_zero_float_int(cur, rng, focus_ratio);
+        case 33: return mut_ast_return_const_flip(cur, rng);
+        case 34: return mut_ast_cmp_off_by_one(cur, rng, focus_ratio);
         default: return false;
     }
 }
