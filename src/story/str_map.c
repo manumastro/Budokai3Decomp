@@ -122,10 +122,7 @@ void func_0029A9F0(void) {
     }
     *((s8 *)gStrMap + 0x1BE) = 1;
 }
-#if 0
-// func_0029AAC0: the two for loops take the compare in at (slti at) in the original, v0 here; for, do-while, reversed and != tests tried; the rest matches
 extern void StrBg_FlushDraw(Task *);
-extern void func_0029A1C0(Task *);
 extern char D_0046BB80[];
 extern char D_0046BB90[];
 extern char D_0046BBA0[];
@@ -138,27 +135,25 @@ void func_0029AAC0(s32 a0, s32 a1, s32 a2) {
     gStrMap[0x1C4 / 4] = a1;
     *(s8 *)((char *)gStrMap + 0x1BE) = 0;
     *(s8 *)((char *)gStrMap + 0x1BD) = 0;
-    for (i = 3; i < 0xE; i++) {
+    for (i = 3; i <= 13; i++) {
         if (gStrMap[8 + i] != 0) {
             amTask_Kill((Task *)gStrMap[8 + i]);
             gStrMap[8 + i] = 0;
         }
     }
-    for (i = 1; i < 9; i++) {
+    for (i = 1; i <= 8; i++) {
         if (gStrMap[26 + i] != 0) {
             func_0022D0E0(gStrMap[26 + i], 1);
             gStrMap[26 + i] = 0;
         }
     }
-    r = (s32)amTask_Create(func_0029A1C0, NULL, a0, 2, a1, D_0046BB80);
+    r = (s32)amTask_Create((void (*)(Task *))func_0029A1C0, NULL, a0, 2, a1, D_0046BB80);
     gStrMap[0x2C / 4] = r;
     r = (s32)amTask_Create(StrBg_FlushDraw, NULL, a0 + 5, 2, a1, D_0046BB90);
     gStrMap[0x34 / 4] = r;
     r = (s32)amTask_Create(StrBg_FlushDraw, NULL, a0 + 0xD, 2, a1, D_0046BBA0);
     gStrMap[0x54 / 4] = r;
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_map", func_0029AAC0);
 
 void func_0029AC30(void) {
     s32 s0;
