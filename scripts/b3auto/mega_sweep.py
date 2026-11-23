@@ -267,9 +267,11 @@ def run_one(item):
         pre_clean = re.sub(r"#ifndef M2C_BITWISE.*?#endif\s*", "", pre_clean, flags=re.S)
         pre_txt = pre_clean + "\n" + m2c_draft.MACROS + "\n" + ep_clean + "\n"
     pre_txt, fc_fixed, n_gp = fix_externs.fix_gp_externs(pre_txt, fc)
-    pre_txt, _ = fix_externs.fix_known_sigs(pre_txt, fc_fixed, ROOT)
+    pre_txt, n_sig = fix_externs.fix_known_sigs(pre_txt, fc_fixed, ROOT)
     if n_gp > 0 and ep_clean:
         ep_clean, _, _ = fix_externs.fix_gp_externs(ep_clean, "")
+    if n_sig > 0 and ep_clean:
+        ep_clean, _ = fix_externs.fix_known_sigs(ep_clean, fc_fixed, ROOT)
     pre_f.write_text(pre_txt)
     in_f.write_text(fc_fixed)
     if out_f.exists():
