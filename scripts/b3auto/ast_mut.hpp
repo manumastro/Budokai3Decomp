@@ -1137,25 +1137,36 @@ inline bool mut_ast_if_ret_fold(FuncAST &f, unsigned int &rng) {
     return false;
 }
 
-// Op 28: Sink the last statement of `if (cond) { ...; S; }` after the `if`, or hoist the next statement into `if`
+// Op 28: Sink the last statement of `if (cond) { ...; S; }` after the `if`, OR hoist the next statement into `if`
 inline bool mut_ast_sink_if_tail(FuncAST &f, unsigned int &rng) {
     std::vector<Stmt *> blocks;
     collect_blocks(f.body.get(), blocks);
+    bool do_hoist = (rand_r(&rng) & 1) != 0;
     std::vector<std::pair<Stmt *, size_t>> cands;
     for (Stmt *b : blocks) {
         for (size_t i = 0; i < b->stmts.size(); i++) {
             Stmt *s = b->stmts[i].get();
-            if (s->kind == StmtKind::If && s->then_br && !s->else_br && s->then_br->stmts.size() >= 2) {
-                cands.push_back({b, i});
+            if (s->kind == StmtKind::If && s->then_br && !s->else_br) {
+                if (!do_hoist && s->then_br->stmts.size() >= 2) {
+                    cands.push_back({b, i});
+                } else if (do_hoist && i + 1 < b->stmts.size() && b->stmts[i + 1]->kind == StmtKind::ExprStmt) {
+                    cands.push_back({b, i});
+                }
             }
         }
     }
     if (cands.empty()) return false;
     auto [b, idx] = cands[rand_r(&rng) % cands.size()];
     Stmt *ifs = b->stmts[idx].get();
-    StmtPtr tail = std::move(ifs->then_br->stmts.back());
-    ifs->then_br->stmts.pop_back();
-    b->stmts.insert(b->stmts.begin() + (ptrdiff_t)(idx + 1), std::move(tail));
+    if (!do_hoist) {
+        StmtPtr tail = std::move(ifs->then_br->stmts.back());
+        ifs->then_br->stmts.pop_back();
+        b->stmts.insert(b->stmts.begin() + (ptrdiff_t)(idx + 1), std::move(tail));
+    } else {
+        StmtPtr nxt = std::move(b->stmts[idx + 1]);
+        b->stmts.erase(b->stmts.begin() + (ptrdiff_t)(idx + 1));
+        ifs->then_br->stmts.push_back(std::move(nxt));
+    }
     return true;
 }
 

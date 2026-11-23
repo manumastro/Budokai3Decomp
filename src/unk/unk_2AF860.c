@@ -595,43 +595,49 @@ s32 func_002B1590(u8 *s) {
 // differs: 0x118 against 0x120 bytes (2 instructions short): the first loop (the byte count of the entries until the total reaches the stored value) and the second loop (the byte sum over the first entries) are right; the loop shapes (pointer walk, do-while, a guard) tried: 0x108 to 0x118.
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1590);
-#if 0
-s32 func_002B16B0(u8 *a) {
-    s32 *cnt = (s32 *)(a + 0xB8);
-    s32 n = cnt[0];
-    s32 v0;
+s32 func_002B16B0(u8 *a)
+{
+    s32 *cnt = (((s32 *)(((a + 0xB8)))));
     s32 sum;
-    s32 t0;
     s32 *p;
-    if (n == 0) {
+    s32 t0;
+    s32 v0;
+    s32 n = cnt[0];
+    if (((n == 0)))
+    {
         return 0;
     }
     sum = 0;
     v0 = 0;
-    if (n > 0) {
-        t0 = *(s32 *)(a + 0x20);
+    if (((0 < n)))
+    {
+        t0 = *(((s32 *)(((a + 0x20)))));
         p = cnt;
-        do {
-            sum += D_004E0660[p[1] * 40 + 8] & 7;
-            if (sum == t0) {
+        do
+        {
+            sum += ((D_004E0660[((((1[p] * 40)) + 8))] & 7));
+            if (((sum == t0)))
+            {
                 break;
             }
-            v0++;
             p++;
-        } while (v0 < n);
+            v0++;
+        }
+        while (((v0 < n)));
     }
-    if (v0 > 0) {
-        if (v0 == n) {
-            *(s32 *)(a + 0x20) -= 1;
-        } else {
-            *(s32 *)(a + 0x20) -= D_004E0668[cnt[v0 + 1] * 40] & 7;
+    if (((v0 > 0)))
+    {
+        if (((v0 == n)))
+        {
+            *(((s32 *)(((0x20 + a))))) -= 1;
+        }
+        else
+        {
+            *(((s32 *)(((a + 0x20))))) -= ((7 & D_004E0668[((40 * cnt[((v0 + 1))]))]));
         }
     }
     return v0;
 }
-// differs: a loop over an index list with a 40-byte table; the sum and the element pointer take other registers here (n in t2 against a3 in the original), and the early return for n == 0 is laid out differently
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B16B0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1780);
 extern u8 *gSklEdit;
 extern u8 D_004E0688[];

@@ -377,23 +377,23 @@ void func_002EAAF0(void) {
 #endif
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EAAF0);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EAC30);
-#if 0
-void func_002EAEB0(void) {
+void func_002EAEB0(void)
+{
     u8 *s = D_00470958;
-    while (!((*(s8 *)*(u8 **)(s + 0x18)) & 4)) {
-        *(s32 *)(s + 0x20) += 1;
-        if ((*(s8 *)*(u8 **)(s + 0x18)) & 1) {
-            *(s32 *)(s + 0x48) += 1;
-            *(u8 **)(s + 0x18) += 8;
-            if (*(void **)(*(u8 **)(s + 0x18) + 4) != NULL) {
-                ((void (*)(void))*(void **)(*(u8 **)(s + 0x18) + 4))();
-            }
+    while (!(((*((s8 *)*((u8 **)((s + 0x18))))) & 4)))
+    {
+        *((s32 *)((s + 0x20))) += 1;
+        if (((*((s8 *)*((u8 **)((s + 0x18))))) & 1))
+        {
+            *((s32 *)((s + 0x48))) += 1;
+        }
+        *((u8 **)((s + 0x18))) += 8;
+        if ((*((void **)((*((u8 **)((s + 0x18))) + 4))) != NULL))
+        {
+            (((void (*) (void))*((void **)((*((u8 **)((s + 0x18))) + 4)))))();
         }
     }
 }
-// differs: a loop over a bytecode pointer; the code matches except for one alignment nop that this build does not place before the end of the if block (0xB0 bytes against 0xC0)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2EA0B0", func_002EAEB0);
 #if 0
 // differs: compiles to 0x14C of 0x160; the battle index/CSE order and the join nop differ
 extern void func_001C75D0(void *, s32);
