@@ -220,51 +220,59 @@ INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B3D90);
 /* differs: 3 of 83 (the zeroing of the sum and the pointer setup are scheduled after the cnt > 0 test;
    the original keeps them before it: the same loop as func_002B4AF0 below, with the top check; declaration order
    (q, t1, i, cnt) and `0 < cnt` and `q[1] * 5` found by search). */
-#if 0
-void func_002B4680(SklAct *s) {
+void func_002B4680(SklAct *s)
+{
     SklRec *r;
     SklBody *p;
     s32 *q;
     s32 t1;
     s32 i;
     s32 cnt;
-
     r = &gSklEdit[s->f30];
-    p = (SklBody *)&r->f48;
-    if (func_0022BC30(((s32 *)((SklTop *)gSklEdit)->f10->f1C)[r->f120], (f32)r->f128 * gFrameDelta) == 0xFF) {
+    p = ((SklBody *)&r->f48);
+    if ((func_0022BC30((((s32 *)(((SklTop *)gSklEdit))->f10->f1C))[r->f120], (((f32)r->f128) * gFrameDelta)) == 0xFF))
+    {
+        q = ((s32 *)&p->fB8);
         cnt = p->fB8;
-        q = (s32 *)&p->fB8;
         t1 = 0;
-        if (0 < cnt) {
-            i = 0;
-            for (;;) {
-                if (i >= 8) {
+        i = 0;
+        if ((0 < cnt))
+        {
+            for (; ; )
+            {
+                if ((i >= 8))
+                {
                     break;
                 }
-                t1 += D_004E0660[(q[1] * 5) * 8 + 8] & 7;
+                t1 += (D_004E0660[((((q[1] * 5)) * 8) + 8)] & 7);
                 q++;
                 i++;
-                if (i >= cnt) {
+                if ((i >= cnt))
+                {
                     break;
                 }
             }
         }
-        if (t1 < 7) {
-            p->f20 = t1 + 1;
-        } else {
+        if ((t1 < 7))
+        {
+            p->f20 = (t1 + 1);
+        }
+        else
+        {
             p->f20 = 7;
         }
-        if (p->f14 != 0) {
+        if ((p->f14 != 0))
+        {
             p->fC = 4;
-            s->f1C = (func_002B3D40 == NULL) ? 0 : (s32)func_002B3D40;
-        } else {
+            s->f1C = (((func_002B3D40 == NULL)) ? 0 : ((s32)func_002B3D40));
+        }
+        else
+        {
             p->fC = 5;
-            s->f1C = (func_002B3D90 == NULL) ? 0 : (s32)func_002B3D90;
+            s->f1C = (((func_002B3D90 == NULL)) ? 0 : ((s32)func_002B3D90));
         }
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B4680);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2B2C20", func_002B47D0);
 extern void func_002B47D0(void);
 extern void amFile_Load(s32);

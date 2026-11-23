@@ -313,19 +313,22 @@ inline bool mut_ast_ternary_if(FuncAST &f, unsigned int &rng) {
         s->else_br.reset();
         return true;
     }
-    // Direction B: Ternary -> If
+    // Direction B: Ternary -> If (unwrapping outer Paren!)
     std::vector<Stmt *> estmts;
     collect_stmts_kind(f.body.get(), StmtKind::ExprStmt, estmts);
     std::vector<Stmt *> t_cands;
     for (Stmt *s : estmts) {
-        if (s->expr && s->expr->kind == ExprKind::Assign && s->expr->text == "=" &&
-            s->expr->rhs && s->expr->rhs->kind == ExprKind::Ternary)
-            t_cands.push_back(s);
+        if (s->expr && s->expr->kind == ExprKind::Assign && s->expr->text == "=" && s->expr->rhs) {
+            Expr *r = s->expr->rhs.get();
+            while (r->kind == ExprKind::Paren && r->lhs) r = r->lhs.get();
+            if (r->kind == ExprKind::Ternary) t_cands.push_back(s);
+        }
     }
     if (t_cands.empty()) return false;
     Stmt *s = t_cands[rand_r(&rng) % t_cands.size()];
     Expr *asg = s->expr.get();
     Expr *tern = asg->rhs.get();
+    while (tern->kind == ExprKind::Paren && tern->lhs) tern = tern->lhs.get();
     auto a1 = std::make_unique<Expr>(ExprKind::Assign, "=");
     a1->lhs = asg->lhs->clone(); a1->rhs = std::move(tern->lhs);
     auto a2 = std::make_unique<Expr>(ExprKind::Assign, "=");
@@ -1170,9 +1173,42 @@ inline bool mut_ast_sink_if_tail(FuncAST &f, unsigned int &rng) {
     return true;
 }
 
+// Op 29: Hoist the first statement of `if (cond) { S; ... }` before the `if`, OR sink the preceding statement into `if`
+inline bool mut_ast_hoist_if_head(FuncAST &f, unsigned int &rng) {
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    bool do_hoist = (rand_r(&rng) & 1) != 0;
+    std::vector<std::pair<Stmt *, size_t>> cands;
+    for (Stmt *b : blocks) {
+        for (size_t i = 0; i < b->stmts.size(); i++) {
+            Stmt *s = b->stmts[i].get();
+            if (s->kind == StmtKind::If && s->then_br && !s->else_br) {
+                if (do_hoist && s->then_br->stmts.size() >= 2 && s->then_br->stmts[0]->kind == StmtKind::ExprStmt) {
+                    cands.push_back({b, i});
+                } else if (!do_hoist && i > 0 && b->stmts[i - 1]->kind == StmtKind::ExprStmt) {
+                    cands.push_back({b, i});
+                }
+            }
+        }
+    }
+    if (cands.empty()) return false;
+    auto [b, idx] = cands[rand_r(&rng) % cands.size()];
+    Stmt *ifs = b->stmts[idx].get();
+    if (do_hoist) {
+        StmtPtr head = std::move(ifs->then_br->stmts.front());
+        ifs->then_br->stmts.erase(ifs->then_br->stmts.begin());
+        b->stmts.insert(b->stmts.begin() + (ptrdiff_t)idx, std::move(head));
+    } else {
+        StmtPtr prev = std::move(b->stmts[idx - 1]);
+        b->stmts.erase(b->stmts.begin() + (ptrdiff_t)(idx - 1));
+        ifs->then_br->stmts.insert(ifs->then_br->stmts.begin(), std::move(prev));
+    }
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 29;
+static constexpr int NUM_AST_OPS = 30;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -1182,9 +1218,9 @@ struct OpBandit {
     int pick_op(unsigned int &rng) const {
         // Base weights emphasizing high-yield MWCC ops
         static const double base_w[NUM_AST_OPS] = {
-            18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 5.0,
+            18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 6.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
-            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 3.0
+            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1243,6 +1279,7 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 26: return mut_ast_int_to_u8ptr(cur, rng);
         case 27: return mut_ast_if_ret_fold(cur, rng);
         case 28: return mut_ast_sink_if_tail(cur, rng);
+        case 29: return mut_ast_hoist_if_head(cur, rng);
         default: return false;
     }
 }
