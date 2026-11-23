@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <unordered_map>
+#include <functional>
 
 namespace b3ast {
 
@@ -975,9 +976,134 @@ inline bool mut_ast_ptr_scale_fix(FuncAST &f, unsigned int &rng, double focus_ra
     return true;
 }
 
+// Op 25: Reassociate `(A + B) + C` (const C) -> `((u8 *)(A + C) + B)` or `((u8 *)(B + C) + A)`
+// Flips MWCC addu rs/rt on struct-array indexing like `*(T *)((char *)(q + 0xD6) + i * 20)`.
+inline bool mut_ast_add_reassoc_cast(FuncAST &f, unsigned int &rng, double focus_ratio) {
+    auto exprs = collect_weighted_exprs(f, focus_ratio);
+    std::vector<std::pair<Expr *, int>> cands;
+    for (const auto &we : exprs) {
+        Expr *e = we.node;
+        if (e->kind == ExprKind::Binary && e->text == "+" && e->lhs && e->rhs) {
+            Expr *l = e->lhs.get();
+            while (l->kind == ExprKind::Paren && l->lhs) l = l->lhs.get();
+            if (l->kind == ExprKind::Binary && l->text == "+" && e->rhs->kind == ExprKind::Num) {
+                cands.push_back({e, we.weight});
+            }
+        }
+    }
+    Expr *outer = pick_weighted(cands, rng);
+    if (!outer) return false;
+    Expr *inner = outer->lhs.get();
+    while (inner->kind == ExprKind::Paren && inner->lhs) inner = inner->lhs.get();
+    if (inner->kind != ExprKind::Binary || inner->text != "+") return false;
+    // Strip outer (s32) casts on inner operands if present so (u8 *)(A + C) compiles cleanly
+    auto unwrap_s32 = [](ExprPtr p) -> ExprPtr {
+        while (p && p->kind == ExprKind::Paren && p->lhs) p = std::move(p->lhs);
+        if (p && p->kind == ExprKind::Cast && (p->text == "s32" || p->text == "u32" || p->text == "int") && p->lhs)
+            return std::move(p->lhs);
+        return p;
+    };
+    ExprPtr A = unwrap_s32(std::move(inner->lhs));
+    ExprPtr B = unwrap_s32(std::move(inner->rhs));
+    ExprPtr C = std::move(outer->rhs);
+    if (rand_r(&rng) & 1) std::swap(A, B);
+    auto ac = std::make_unique<Expr>(ExprKind::Binary, "+");
+    ac->lhs = std::move(A);
+    ac->rhs = std::move(C);
+    auto cast = std::make_unique<Expr>(ExprKind::Cast, "u8 *");
+    cast->lhs = std::move(ac);
+    outer->lhs = std::move(cast);
+    outer->rhs = std::move(B);
+    return true;
+}
+
+// Op 26: Promote a local `s32`/`u32` variable holding an address to `u8 *` (or split a reused
+// m2c temp inside an `if`/block into a fresh `u8 *_pN` local so arithmetic uses elsewhere keep compiling).
+inline bool mut_ast_int_to_u8ptr(FuncAST &f, unsigned int &rng) {
+    if (!f.body || f.body->decls.empty()) return false;
+    // Mode A (50%): split `v = rhs; ... *(T *)(v + ...)` inside any block into a fresh `u8 *_pN`
+    if ((rand_r(&rng) & 1) && f.body->decls.size() < 36) {
+        std::vector<Stmt *> blocks;
+        collect_blocks(f.body.get(), blocks);
+        std::vector<std::tuple<Stmt *, size_t, std::string>> cands;
+        for (Stmt *b : blocks) {
+            for (size_t i = 0; i + 1 < b->stmts.size(); i++) {
+                Stmt *st = b->stmts[i].get();
+                if (st->kind == StmtKind::ExprStmt && st->expr &&
+                    st->expr->kind == ExprKind::Assign && st->expr->text == "=" &&
+                    st->expr->lhs && st->expr->lhs->kind == ExprKind::Ident) {
+                    std::string vn = st->expr->lhs->text;
+                    // Check if vn is an int local
+                    bool is_int = false;
+                    for (const auto &d : f.body->decls)
+                        if (d.name == vn && (d.type_str == "s32" || d.type_str == "u32" || d.type_str == "int"))
+                            is_int = true;
+                    if (is_int) cands.push_back({b, i, vn});
+                }
+            }
+        }
+        if (!cands.empty()) {
+            auto [b, idx, vn] = cands[rand_r(&rng) % cands.size()];
+            std::string pname = "_p" + std::to_string(f.body->decls.size());
+            LocalDecl nd;
+            nd.type_str = "u8 *";
+            nd.name = pname;
+            f.body->decls.push_back(std::move(nd));
+            // Replace assignment `vn = rhs` with `pname = (u8 *)(rhs)` and rename uses in following stmts of this block until reassigned
+            Expr *asg = b->stmts[idx]->expr.get();
+            asg->lhs->text = pname;
+            auto c = std::make_unique<Expr>(ExprKind::Cast, "u8 *");
+            c->lhs = std::move(asg->rhs);
+            asg->rhs = std::move(c);
+            std::function<void(Expr *)> ren = [&](Expr *e) {
+                if (!e) return;
+                if (e->kind == ExprKind::Ident && e->text == vn) e->text = pname;
+                ren(e->lhs.get()); ren(e->rhs.get()); ren(e->cond.get());
+                for (auto &a : e->args) ren(a.get());
+            };
+            for (size_t j = idx + 1; j < b->stmts.size(); j++) {
+                Stmt *sj = b->stmts[j].get();
+                if (sj->kind == StmtKind::ExprStmt && sj->expr &&
+                    sj->expr->kind == ExprKind::Assign && sj->expr->lhs &&
+                    sj->expr->lhs->kind == ExprKind::Ident && sj->expr->lhs->text == vn)
+                    break;
+                if (sj->expr) ren(sj->expr.get());
+            }
+            return true;
+        }
+    }
+    // Mode B: whole-function promotion of a single int local to u8 *
+    std::vector<size_t> idxs;
+    for (size_t i = 0; i < f.body->decls.size(); i++) {
+        const auto &d = f.body->decls[i];
+        if (d.raw_line.empty() && (d.type_str == "s32" || d.type_str == "u32" || d.type_str == "int"))
+            idxs.push_back(i);
+    }
+    if (idxs.empty()) return false;
+    size_t pick = idxs[rand_r(&rng) % idxs.size()];
+    std::string vname = f.body->decls[pick].name;
+    f.body->decls[pick].type_str = "u8 *";
+    if (f.body->decls[pick].init) {
+        auto c = std::make_unique<Expr>(ExprKind::Cast, "u8 *");
+        c->lhs = std::move(f.body->decls[pick].init);
+        f.body->decls[pick].init = std::move(c);
+    }
+    auto exprs = collect_weighted_exprs(f, 0.0);
+    for (const auto &we : exprs) {
+        Expr *e = we.node;
+        if (e->kind == ExprKind::Assign && e->text == "=" && e->lhs && e->rhs &&
+            e->lhs->kind == ExprKind::Ident && e->lhs->text == vname) {
+            auto c = std::make_unique<Expr>(ExprKind::Cast, "u8 *");
+            c->lhs = std::move(e->rhs);
+            e->rhs = std::move(c);
+        }
+    }
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 25;
+static constexpr int NUM_AST_OPS = 27;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -989,7 +1115,7 @@ struct OpBandit {
         static const double base_w[NUM_AST_OPS] = {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 5.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
-            6.0, 4.0, 4.0, 4.0, 6.0, 4.0
+            6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1044,6 +1170,8 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 22: return mut_ast_loop_bound_hoist(cur, rng);
         case 23: return mut_ast_deref_cast(cur, rng, focus_ratio);
         case 24: return mut_ast_ptr_scale_fix(cur, rng, focus_ratio);
+        case 25: return mut_ast_add_reassoc_cast(cur, rng, focus_ratio);
+        case 26: return mut_ast_int_to_u8ptr(cur, rng);
         default: return false;
     }
 }

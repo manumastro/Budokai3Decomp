@@ -78,37 +78,37 @@ void func_00308BD0(u8 *a0)
   }
 }
 
-#if 0
-// differs: the indexed store is fixed (D_005C4122[idx] = 0 gives sll 1, as in the original); left: the word/byte load order in the first branch (mine byte first), 8 assignment variants tried, best 2 diffs (round 5 permp)
-void func_00308C40(u8 *a0) {
-    u8 *s1;
-    u8 *s0;
-    s32 a1;
+void func_00308C40(u8 *a0)
+{
     s32 a2;
-
+    s32 a1;
+    u8 *s0;
+    u8 *s1;
+    u8 *_p4;
     s1 = a0;
-    s0 = s1 + 0x30;
-    if (ArenaList_GetF2(*(void **)(a0 + 0x34)) == 1) {
-        a1 = *(s32 *)(s0 + 8);
+    s0 = (s1 + 0x30);
+    if ((ArenaList_GetF2(*((void **)((a0 + 0x34)))) == 1))
+    {
+        _p4 = ((u8 *)*((u32 *)((s0 + 8))));
         a2 = s0[0xD];
-        *(u8 *)(a2 + a1 + 0x11) = 1;
-        *(void **)(s1 + 0x1C) = ((void *)func_00308BD0 == 0) ? 0 : (void *)func_00308BD0;
+        *((u8 *)((((u8 *)(_p4 + 0x11)) + a2))) = 1;
+        *((void **)((s1 + 0x1C))) = (((((void *)func_00308BD0) == 0)) ? 0 : ((void *)func_00308BD0));
         return;
     }
-    if (ArenaList_GetF0(*(void **)(s0 + 4)) == 5) {
+    if ((ArenaList_GetF0(*((void **)((s0 + 4)))) == 5))
+    {
         return;
     }
     a1 = s0[0xD];
-    if ((*(u16 *)(D_00492FCE + a1 * 184) & 0x300) == 0) {
+    if ((((*((u16 *)(((a1 * 184) + D_00492FCE))) & 0x300)) == 0))
+    {
         return;
     }
     s0[0xE] = 0;
-    *(s16 *)(D_005C4122 + s0[0xD] * 2) = 0;
-    func_0030D300(*(void **)(s0 + 4));
-    *(void **)(s1 + 0x1C) = ((void *)func_00308AF0 == 0) ? 0 : (void *)func_00308AF0;
+    *((s16 *)(((((u8 *)(D_005C4122)) + ((s32)((s0[0xD] * 2))))))) = 0;
+    func_0030D300(*((void **)((s0 + 4))));
+    *((void **)((s1 + 0x1C))) = (((0 == ((void *)func_00308AF0))) ? 0 : ((void *)func_00308AF0));
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308C40);
 extern s16 ArenaList_GetF0(void *);
 
 void func_00308D50(u8 *a0) {
@@ -182,39 +182,39 @@ void func_00308E40(u8 *a0)
   }
 }
 
-#if 0
-// differs: same first-branch load order as func_00308C40: the original loads the word at +8 before the byte at +0xD
-void func_00308EB0(u8 *a0) {
-    u8 *s1;
+void func_00308EB0(u8 *a0)
+{
+    u32 a1;
     u8 *s0;
-    s32 a1;
+    u8 *s1;
     s32 a2;
-
+    u8 *_p4;
     s1 = a0;
-    s0 = s1 + 0x30;
-    if (func_0027DAA0(*(void **)(a0 + 0x30)) == 1) {
-        a1 = *(s32 *)(s0 + 8);
+    s0 = (s1 + 0x30);
+    if ((func_0027DAA0(*((void **)((a0 + 0x30)))) == 1))
+    {
+        _p4 = ((u8 *)*((s32 *)((s0 + 8))));
         a2 = s0[0xD];
-        *(u8 *)(a1 + a2 + 0x11) = 1;
-        *(void **)(s1 + 0x1C) = ((void *)func_00308E40 == 0) ? 0 : (void *)func_00308E40;
+        *((u8 *)((((u8 *)(_p4 + 0x11)) + a2))) = 1;
+        *((void **)((s1 + 0x1C))) = (((((void *)func_00308E40) == 0)) ? 0 : ((void *)func_00308E40));
         return;
     }
-    D_005C4126[s0[0xD]] = func_0027DAE0(*(void **)s0);
-    D_005C412A[s0[0xD]] = func_0027DAD0(*(void **)s0);
-    if (func_0027DAB0(*(void **)s0) == 5) {
+    D_005C4126[s0[0xD]] = func_0027DAE0(*((void **)s0));
+    D_005C412A[s0[0xD]] = func_0027DAD0(*((void **)s0));
+    if ((func_0027DAB0(*((void **)s0)) == 5))
+    {
         return;
     }
     a1 = s0[0xD];
-    if ((*(u16 *)(D_00492FCE + a1 * 184) & 0x300) == 0) {
+    if ((((*((u16 *)((D_00492FCE + (a1 * 184)))) & 0x300)) == 0))
+    {
         return;
     }
     s0[0xE] = 1;
     D_005C4122[s0[0xD]] = 1;
-    func_0027DB20(*(void **)s0);
-    *(void **)(s1 + 0x1C) = ((void *)func_00308DA0 == 0) ? 0 : (void *)func_00308DA0;
+    func_0027DB20(*((void **)s0));
+    *((void **)((s1 + 0x1C))) = (((((void *)func_00308DA0) == 0)) ? 0 : ((void *)func_00308DA0));
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/menu/mn_ArenaCharasel_pvsp", func_00308EB0);
 extern s8 func_0027DAB0(void *);
 extern void func_00308EB0();
 

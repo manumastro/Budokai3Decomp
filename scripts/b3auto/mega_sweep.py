@@ -238,7 +238,12 @@ def run_one(item):
     matched = "STATUS=MATCH" in line and out_f.exists()
     if matched:
         MATCH_DIR.mkdir(parents=True, exist_ok=True)
-        (MATCH_DIR / f"{fn}.c").write_text((ep_clean or "") + out_f.read_text())
+        extra_ep = ep_clean or ""
+        if not extra_ep and "#endif" in pre_txt:
+            tail = pre_txt.rsplit("#endif", 1)[1].strip()
+            if tail:
+                extra_ep = tail + "\n\n"
+        (MATCH_DIR / f"{fn}.c").write_text(extra_ep + out_f.read_text())
         (MATCH_DIR / f"{fn}.json").write_text(json.dumps({
             "func": fn, "file": str(rel), "addr": f"0x{addr:08X}", "kind": kind, "line": line
         }, indent=2))

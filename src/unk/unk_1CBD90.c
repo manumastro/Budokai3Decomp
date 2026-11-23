@@ -1489,23 +1489,20 @@ int Scr_CmdFighterSetup8480(void *unused, Arg *a) {
 }
 /* r6 best attempt diff 4 */
 // differs: 4 instructions (register choice for the tbl temporaries, gBattle reloc field). The 5-argument call matches the real callee signature; permuter from base 20 reached best score 10 in 450 s, no score 0.
-#if 0
-int func_001CF600(void *unused, Arg *a) {
+int func_001CF600(void *unused, Arg *a)
+{
     int *p = a->p;
     int i3 = p[3];
     int s0 = p[2];
     int a3v = p[1];
     int t0v = p[0];
     char *t = gBattle->tbl[i3];
-    char *q = *(char **)(t + 0x1CF8);
-    short v = *(short *)(q + s0 * 20 + 0xD6);
+    char *q = *((char **)((t + 0x1CF8)));
+    short v = *((short *)((((u8 *)((q) + 0xD6)) + ((s0 * 20)))));
     func_001C8A50(t, s0, v, a3v, t0v);
     func_001C89A0(t, s0);
     return 1;
 }
-#endif
-// r7a: 4 of 33 (v0/v1 colouring again: sum in v1 and the second chain in v0 in the original). tsweep 403 variants, u32 fields, Big *g, char *g locals: no change.
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CF600);
 int Scr_CmdFighterCall8860(void *unused, Arg *a) {
     int *p = a->p;
     func_001C8860(gBattle->tbl[p[1]], p[0]);

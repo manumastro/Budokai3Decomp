@@ -1351,8 +1351,8 @@ void func_00146F30(void *p);
 void func_00141C30(void *a, void *b, void *c);
 void func_00141CF0(void *a, void *b, void *c);
 
-#if 0
-void func_0020E120(s32 i, s32 j) {
+void func_0020E120(s32 i, s32 j)
+{
     u8 *s0;
     u8 *pa;
     u8 *pb;
@@ -1360,35 +1360,20 @@ void func_0020E120(s32 i, s32 j) {
     Copy16A t2;
     Copy16A t1;
     Copy16A t4;
-
-    s0 = D_00568C90 + i * 0x2140;
-    pa = *(u8 **)(gBattle + j * 4 + 0x8934);
-    pb = *(u8 **)(gBattle + (1 - j) * 4 + 0x8934);
+    s0 = (D_00568C90 + (i * 0x2140));
+    pa = *((u8 **)((((u8 *)(gBattle + 0x8934)) + (j * 4))));
+    pb = *((u8 **)((((((u8 *)((((1 - j)) * 4))) + ((s32)(gBattle)))) + 0x8934)));
     t2.a = 0;
     t2.b = 0x3F800000;
     t2.c = 0;
     t2.d = 0x3F800000;
-    __asm__ volatile (
-        "lqc2 $vf1, 0(%0)\n"
-        "lqc2 $vf2, 0(%1)\n"
-        "vsub.xyz $vf1, $vf1, $vf2\n"
-        "sqc2 $vf1, 0(%2)\n"
-        : : "r"(pb + 0x650), "r"(pa + 0x650), "r"(&t1) : "memory");
+    __asm__ volatile( "lqc2 $vf1, 0(%0)\n" "lqc2 $vf2, 0(%1)\n" "vsub.xyz $vf1, $vf1, $vf2\n" "sqc2 $vf1, 0(%2)\n" : : "r"( pb + 0x650), "r"( pa + 0x650), "r"( & t1) : "memory");
     func_00146F30(&t1);
     func_00141C30(&t3, &t2, &t1);
-    func_0013B160(s0 + 0x40);
-    __asm__ volatile (
-        "sqc2 $vf31, 0(%0)\n"
-        "vmove.xyzw $vf28, $vf24\n"
-        "vmove.xyzw $vf29, $vf25\n"
-        "vmove.xyzw $vf30, $vf26\n"
-        "vmove.xyzw $vf31, $vf27\n"
-        : : "r"(&t4) : "memory");
-    func_00141CF0(s0 + 0x40, &t3, &t4);
+    func_0013B160((s0 + 0x40));
+    __asm__ volatile( "sqc2 $vf31, 0(%0)\n" "vmove.xyzw $vf28, $vf24\n" "vmove.xyzw $vf29, $vf25\n" "vmove.xyzw $vf30, $vf26\n" "vmove.xyzw $vf31, $vf27\n" : : "r"( & t4) : "memory");
+    func_00141CF0((s0 + 0x40), &t3, &t4);
 }
-// differs: the address arithmetic and the loads of the two table pointers are scheduled in another order (about 10 instructions in temporaries); the stack slots and the calls match
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_0020E120);
 void func_0013B160(void *p);
 void func_0020D5C0(void *a, s32 b, void *c, u8 *d);
 
