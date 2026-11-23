@@ -98,42 +98,89 @@ void func_0030F350(s32 *a0) {
         }
     }
 }
-#if 0
-// func_0030F420: the timer block: the original keeps the parameter in s1 and loads it again after the call; the order of the first loads and the a0/v0 choice differ (46 of 82 differ); 3 forms tried
 extern void func_0030F350(s32 *);
-extern void func_0022D0E0(s32, s32);
 extern s32 func_0022D860(s32, f32);
+extern void func_0022D0E0(s32, s32);
+extern s32 func_0022D670(s32, f32);
+extern void func_0030FB00(void);
+extern void amHeap_Free(void *);
+extern void memset(void *, s32, s32);
+extern void func_00310080(Task *);
+extern s32 gSoundState;
+extern void amSound_LoadBank();
+extern void amSound_LoadStream();
+extern void func_00143B50(s32, s32);
+extern void func_00310450(Task *);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern s32 func_00283BF0(void);
+extern void SklSheet_Free(void);
+extern void SklSheet_SetIndex(s16);
+extern void Scene_Request(s32, s32);
+extern void Save_Request(s32, s32, s32);
+extern s32 Save_GetState(void);
+extern void Save_Exit(void);
+extern void func_002E8F90(void *, s32, s32, s32);
+extern void Scene_MarkDone(void);
+extern void func_0030F420(s32 *);
+extern s32 func_0022D860(s32, f32);
+extern void func_0022D0E0(s32, s32);
+extern s32 func_0022D670(s32, f32);
+extern void func_0030FB00(void);
+extern void amHeap_Free(void *);
+extern void memset(void *, s32, s32);
+extern void func_00310080(Task *);
+extern s32 gSoundState;
+extern void amSound_LoadBank();
+extern void amSound_LoadStream();
+extern void func_00143B50(s32, s32);
+extern void func_00310450(Task *);
+extern s32 amCdFs_ReadFileId(s32, s32, s32);
+extern s32 func_00283BF0(void);
+extern void SklSheet_Free(void);
+extern void SklSheet_SetIndex(s16);
+extern void Scene_Request(s32, s32);
+extern void Save_Request(s32, s32, s32);
+extern s32 Save_GetState(void);
+extern void Save_Exit(void);
+extern void func_002E8F90(void *, s32, s32, s32);
+extern void Scene_MarkDone(void);
 
 void func_0030F420(s32 *a0) {
-    s32 *s0 = (s32 *)a0[0x30 / 4];
     s32 *s1 = a0;
+    s32 *s0 = (s32 *)a0[0x30 / 4];
     s32 *s2;
-    f32 t;
-    void *f;
-    t = *(f32 *)&s0[0x10 / 4] - gFrameDelta;
+    f32 t = *(f32 *)&s0[0x10 / 4] - gFrameDelta;
     *(f32 *)&s0[0x10 / 4] = t;
     if (t <= 0.0f) {
         s0[0x10 / 4] = 0x41A00000;
         s2 = (s32 *)D_0047099C;
-        D_00470704 = s2[0xC / 4];
-        D_0047070C = 0x6000;
-        D_00470708 = 0;
-        amModel_SetCurrent(s2[0xC / 4], 0x6000);
+        {
+            s32 v = s2[0xC / 4];
+            D_00470704 = v;
+            D_0047070C = 0x6000;
+            D_00470708 = 0;
+            amModel_SetCurrent(v, 0x6000);
+        }
         D_00470238 = 0;
         if (s0[0] != 0) {
             func_0022D0E0(s0[0], 1);
         }
         s0[0] = func_0022D860(((s32 *)((s32 *)s2[0x8 / 4])[0x14 / 4])[0x14 / 4], 0.0f);
-        f = (void *)func_0030F350;
-        s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        {
+            void *f = func_0030F350;
+            s1[0x1C / 4] = (s32)((f == 0) ? 0 : f);
+        }
     }
-    A2d_FlushList();
     s1 = (s32 *)D_0047099C;
+    A2d_FlushList();
     func_00133B50(0, 0);
-    D_00470704 = s1[0xC / 4];
-    D_0047070C = 0x6000;
-    D_00470708 = 0;
-    amModel_SetCurrent(s1[0xC / 4], 0x6000);
+    {
+        s32 v = s1[0xC / 4];
+        D_00470704 = v;
+        D_0047070C = 0x6000;
+        D_00470708 = 0;
+        amModel_SetCurrent(v, 0x6000);
+    }
     D_00470238 = 0;
     if (s0[0] != 0) {
         func_0022C060(s0[0], 1.0f);
@@ -144,8 +191,6 @@ void func_0030F420(s32 *a0) {
         func_0022CD00(s0[1]);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_0030F420);
 extern void func_0030F420(s32 *);
 void func_0030F560(s32 *a0) {
     s32 *s1;
@@ -408,14 +453,13 @@ void func_0030FF30(s32 *a0) {
         }
     }
 }
-#if 0
-// func_00310080: 2 instructions short (0x148 vs 0x150): the original loads the volume constant D_004E0614 into f12 early (lui at before the byte store) and reloads its address for the compare; ours shares one lui. The model-set block and the task-field order match
 extern void func_0022E0B0(s32);
 extern void amFile_Load(s32);
 extern void SoundRpc_SetVolume(s32, s32, f32);
 extern void SoundRpc_Send3(s32, s32, s32, s32);
-extern f32 D_004E0614;
+extern f32 D_004E0614[4];
 extern void func_0030FF30(s32 *);
+
 void func_00310080(Task *t) {
     s32 *s2 = (s32 *)t;
     s32 *s1 = *(s32 **)((char *)t + 0x30);
@@ -447,8 +491,8 @@ void func_00310080(Task *t) {
     s1[0] = func_0022D860(*(s32 *)(*(s32 *)(s0[0x8 / 4] + 0x14)), 0.0f);
     *((s8 *)s1 + 0xE) = 2;
     s1[0x10 / 4] = 0x41F00000;
-    SoundRpc_SetVolume(0, 0, D_004E0614);
-    if (!(D_004E0614 <= 0.0f)) {
+    SoundRpc_SetVolume(0, 0, D_004E0614[0]);
+    if (!(D_004E0614[0] <= 0.0f)) {
         SoundRpc_Send3(0, 0, 0x15, 0);
     }
     {
@@ -456,8 +500,6 @@ void func_00310080(Task *t) {
         s2[0x1C / 4] = (s32)((f == 0) ? 0 : f);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/story/str_dataerase", func_00310080);
 
 u8 func_003101D0(char *p) {
     return ((u8 *)(*(char **)(p + 0x30)))[0xE];

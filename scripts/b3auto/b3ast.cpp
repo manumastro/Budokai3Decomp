@@ -9,6 +9,7 @@
 #include "ast_mut.hpp"
 
 #include <algorithm>
+#include <atomic>
 #include <cmath>
 #include <cstdint>
 #include <cstdio>
@@ -18,10 +19,12 @@
 #include <fcntl.h>
 #include <fstream>
 #include <iostream>
+#include <mutex>
 #include <numeric>
 #include <string>
 #include <sys/time.h>
 #include <sys/wait.h>
+#include <thread>
 #include <unistd.h>
 #include <unordered_set>
 #include <vector>
@@ -61,6 +64,7 @@ struct Config {
     std::string preamble_path, func_name, input_path, out_path;
     uint32_t addr = 0, orig_size = 0;
     int batch_size = 64;
+    int threads = 1;
     int budget = 4000;
     int max_seconds = 20;
     bool allow_data = false;
@@ -116,12 +120,20 @@ struct EvalResult {
     int nwords = 0;
     int score = 99999999;
     double first_diff_ratio = 0.5;
+    uint64_t asm_hash = 0;
 };
 
 static EvalResult score_words(const uint32_t *words, const uint8_t *reloc, int n) {
     EvalResult r;
     r.compiled = true;
     r.nwords = n;
+    uint64_t ah = 14695981039346656037ULL;
+    for (int i = 0; i < n; i++) {
+        uint32_t mw = mask_word(words[i], reloc[i]);
+        ah ^= mw;
+        ah *= 1099511628211ULL;
+    }
+    r.asm_hash = ah;
     int orig_n = (int)G.orig_words.size();
     bool len_ok = (n <= orig_n && n >= G.orig_trimmed_nwords && (orig_n - n) < 4);
     r.size_diff = std::abs(n - G.orig_trimmed_nwords);
@@ -325,9 +337,10 @@ struct BeamItem {
 
 static void beam_insert(std::vector<BeamItem> &beam, const FuncAST &ast, const EvalResult &res,
                         const std::string &printed) {
+    (void)printed;
     if (!res.compiled) return;
     for (const auto &b : beam) {
-        if (b.res.score == res.score && b.ast.print() == printed) return;
+        if (b.res.asm_hash == res.asm_hash) return;
     }
     auto it = beam.begin();
     while (it != beam.end() && it->res.score <= res.score) ++it;
@@ -351,6 +364,7 @@ int main(int argc, char **argv) {
         else if (a == "--input" && i + 1 < argc) G.input_path = argv[++i];
         else if (a == "--out" && i + 1 < argc) G.out_path = argv[++i];
         else if (a == "--batch" && i + 1 < argc) G.batch_size = std::clamp(atoi(argv[++i]), 1, MAX_BATCH);
+        else if (a == "--threads" && i + 1 < argc) G.threads = std::clamp(atoi(argv[++i]), 1, 32);
         else if (a == "--budget" && i + 1 < argc) G.budget = atoi(argv[++i]);
         else if (a == "--seconds" && i + 1 < argc) G.max_seconds = atoi(argv[++i]);
         else if (a == "--allow-data") G.allow_data = true;
@@ -476,58 +490,184 @@ int main(int argc, char **argv) {
         }
     }
 
-    // Stage 2: Diff-Guided Focused AST Beam Search
-    unsigned int rng = (unsigned int)(getpid() ^ (unsigned int)(t0 * 1e6) ^ G.addr);
-    int stale_rounds = 0;
-
-    while (!matched && evals < G.budget && (now_sec() - t0) < (double)G.max_seconds) {
-        int want = std::min(G.batch_size, G.budget - evals);
+    // Stage 1b: Greedy Decl-Insertion Sweep when n_decls > 5 (O(n^2) single-batch sweep!)
+    if (ndecls > 5 && ndecls <= 16 && !matched) {
         std::vector<FuncAST> batch;
         std::vector<std::string> batch_str;
-        batch.reserve(want);
-        batch_str.reserve(want);
-
-        int attempts = 0;
-        while ((int)batch.size() < want && attempts < want * 6) {
-            attempts++;
-            size_t pidx = 0;
-            if (beam.size() > 1) {
-                int r = (int)(rand_r(&rng) % 100);
-                pidx = (r < 50) ? 0 : (rand_r(&rng) % beam.size());
+        for (size_t i = 0; i < ndecls && !matched; i++) {
+            for (size_t j = 0; j < ndecls && !matched; j++) {
+                if (i == j) continue;
+                FuncAST cand = base_ast.clone();
+                LocalDecl tmp = std::move(cand.body->decls[i]);
+                cand.body->decls.erase(cand.body->decls.begin() + (ptrdiff_t)i);
+                cand.body->decls.insert(cand.body->decls.begin() + (ptrdiff_t)j, std::move(tmp));
+                std::string pr = cand.print();
+                if (!seen.insert(fnv1a(pr)).second) continue;
+                batch.push_back(std::move(cand));
+                batch_str.push_back(std::move(pr));
+                if ((int)batch.size() >= G.batch_size) {
+                    std::vector<EvalResult> bres(batch.size());
+                    eval_batch_range(batch, 0, (int)batch.size(), bres, tmp_base, compile_calls);
+                    evals += (int)batch.size();
+                    for (size_t k = 0; k < batch.size(); k++) {
+                        if (bres[k].compiled) {
+                            beam_insert(beam, batch[k], bres[k], batch_str[k]);
+                            if (bres[k].exact_diffs == 0) matched = true;
+                        }
+                    }
+                    batch.clear(); batch_str.clear();
+                }
             }
-            int steps = (stale_rounds >= 4) ? (2 + (int)(rand_r(&rng) % 3))
-                      : (stale_rounds >= 2) ? (1 + (int)(rand_r(&rng) % 3))
-                      : (1 + (int)(rand_r(&rng) % 2));
-            double focus = beam[pidx].res.first_diff_ratio;
-            FuncAST cand = mutate_ast(beam[pidx].ast, rng, steps, focus);
+        }
+        if (!batch.empty() && !matched) {
+            std::vector<EvalResult> bres(batch.size());
+            eval_batch_range(batch, 0, (int)batch.size(), bres, tmp_base, compile_calls);
+            evals += (int)batch.size();
+            for (size_t k = 0; k < batch.size(); k++) {
+                if (bres[k].compiled) {
+                    beam_insert(beam, batch[k], bres[k], batch_str[k]);
+                    if (bres[k].exact_diffs == 0) matched = true;
+                }
+            }
+        }
+    }
+
+    // Stage 1c: Deterministic 1-edit sweep over every binary commute & bool-ternary on current best (1 batch!)
+    if (!matched && !beam.empty()) {
+        std::vector<FuncAST> batch;
+        std::vector<std::string> batch_str;
+        const FuncAST &seed = beam[0].ast;
+        auto exprs_ref = collect_weighted_exprs(const_cast<FuncAST &>(seed), 0.5);
+        for (size_t ei = 0; ei < exprs_ref.size() && (int)batch.size() < G.batch_size; ei++) {
+            const Expr *re = exprs_ref[ei].node;
+            bool is_comm = (re->kind == ExprKind::Binary &&
+                            (re->text == "+" || re->text == "*" || re->text == "&" || re->text == "|" || re->text == "^"));
+            bool is_btern = (re->kind == ExprKind::Binary && (re->text == "!=" || re->text == "==") &&
+                             re->rhs && re->rhs->kind == ExprKind::Num && re->rhs->text == "0");
+            if (!is_comm && !is_btern) continue;
+            FuncAST cand = seed.clone();
+            auto cexprs = collect_weighted_exprs(cand, 0.5);
+            if (ei >= cexprs.size()) continue;
+            Expr *ce = cexprs[ei].node;
+            if (is_comm) {
+                std::swap(ce->lhs, ce->rhs);
+            } else {
+                bool is_ne = (ce->text == "!=");
+                ExprPtr cond = std::move(ce->lhs);
+                ce->kind = ExprKind::Ternary;
+                ce->text = "?:";
+                ce->cond = std::move(cond);
+                ce->lhs = std::make_unique<Expr>(ExprKind::Num, is_ne ? "1" : "0");
+                ce->rhs = std::make_unique<Expr>(ExprKind::Num, is_ne ? "0" : "1");
+            }
             std::string pr = cand.print();
-            uint64_t h = fnv1a(pr);
-            if (!seen.insert(h).second) continue;
+            if (!seen.insert(fnv1a(pr)).second) continue;
             batch.push_back(std::move(cand));
             batch_str.push_back(std::move(pr));
         }
-        if (batch.empty()) break;
-
-        std::vector<EvalResult> bres(batch.size());
-        eval_batch_range(batch, 0, (int)batch.size(), bres, tmp_base, compile_calls);
-        evals += (int)batch.size();
-
-        int prev_best = beam[0].res.score;
-        for (size_t i = 0; i < batch.size(); i++) {
-            if (bres[i].compiled) {
-                beam_insert(beam, batch[i], bres[i], batch_str[i]);
-                if (bres[i].exact_diffs == 0) matched = true;
+        if (!batch.empty()) {
+            std::vector<EvalResult> bres(batch.size());
+            eval_batch_range(batch, 0, (int)batch.size(), bres, tmp_base, compile_calls);
+            evals += (int)batch.size();
+            for (size_t k = 0; k < batch.size(); k++) {
+                if (bres[k].compiled) {
+                    beam_insert(beam, batch[k], bres[k], batch_str[k]);
+                    if (bres[k].exact_diffs == 0) matched = true;
+                }
             }
         }
-        if (beam[0].res.score < prev_best) stale_rounds = 0;
-        else stale_rounds++;
-
-        if (G.verbose) {
-            fprintf(stderr, "  [AST %s] evals=%d compiles=%d best=%d diffs=%d focus=%.2f (%.0f cands/s)\n",
-                    G.func_name.c_str(), evals, compile_calls, beam[0].res.score, beam[0].res.exact_diffs,
-                    beam[0].res.first_diff_ratio, evals / (now_sec() - t0 + 1e-6));
-        }
     }
+
+    // Stage 2: Multi-threaded Adaptive-Bandit Diff-Guided Focused AST Beam Search (saturates all G.threads cores!)
+    std::mutex mtx;
+    std::atomic<bool> stop_flag{matched};
+    std::atomic<int> total_evals{evals};
+    std::atomic<int> total_compiles{compile_calls};
+    OpBandit bandit;
+    int stale_rounds = 0;
+
+    auto worker = [&](int tid) {
+        std::string tbase = "/dev/shm/b3ast_" + std::to_string((int)getpid()) + "_" + std::to_string(tid);
+        unsigned int rng = (unsigned int)(getpid() ^ (unsigned int)(t0 * 1e6) ^ G.addr ^ (tid * 2654435761u));
+        while (!stop_flag.load(std::memory_order_relaxed) &&
+               total_evals.load(std::memory_order_relaxed) < G.budget &&
+               (now_sec() - t0) < (double)G.max_seconds) {
+            int rem = G.budget - total_evals.load(std::memory_order_relaxed);
+            if (rem <= 0) break;
+            int want = std::min(G.batch_size, rem);
+            std::vector<FuncAST> batch;
+            std::vector<std::string> batch_str;
+            std::vector<int> batch_ops;
+            std::vector<int> batch_pscore;
+            batch.reserve(want); batch_str.reserve(want); batch_ops.reserve(want); batch_pscore.reserve(want);
+
+            {
+                std::lock_guard<std::mutex> lk(mtx);
+                int attempts = 0;
+                while ((int)batch.size() < want && attempts < want * 6) {
+                    attempts++;
+                    size_t pidx = 0;
+                    if (beam.size() > 1) {
+                        int r = (int)(rand_r(&rng) % 100);
+                        pidx = (r < 50) ? 0 : (rand_r(&rng) % beam.size());
+                    }
+                    int steps = (stale_rounds >= 4) ? (2 + (int)(rand_r(&rng) % 3))
+                              : (stale_rounds >= 2) ? (1 + (int)(rand_r(&rng) % 3))
+                              : (1 + (int)(rand_r(&rng) % 2));
+                    double focus = beam[pidx].res.first_diff_ratio;
+                    int pop = -1;
+                    FuncAST cand = mutate_ast(beam[pidx].ast, rng, steps, focus, &bandit, &pop);
+                    std::string pr = cand.print();
+                    uint64_t h = fnv1a(pr);
+                    if (!seen.insert(h).second) continue;
+                    batch.push_back(std::move(cand));
+                    batch_str.push_back(std::move(pr));
+                    batch_ops.push_back(pop);
+                    batch_pscore.push_back(beam[pidx].res.score);
+                }
+            }
+            if (batch.empty()) break;
+
+            std::vector<EvalResult> bres(batch.size());
+            int local_cc = 0;
+            eval_batch_range(batch, 0, (int)batch.size(), bres, tbase, local_cc);
+            int cur_ev = total_evals.fetch_add((int)batch.size()) + (int)batch.size();
+            int cur_cc = total_compiles.fetch_add(local_cc) + local_cc;
+
+            std::lock_guard<std::mutex> lk(mtx);
+            int prev_best = beam[0].res.score;
+            for (size_t i = 0; i < batch.size(); i++) {
+                bool imp = bres[i].compiled && (bres[i].score < batch_pscore[i]);
+                bandit.record(batch_ops[i], bres[i].compiled, imp);
+                if (bres[i].compiled) {
+                    beam_insert(beam, batch[i], bres[i], batch_str[i]);
+                    if (bres[i].exact_diffs == 0) {
+                        matched = true;
+                        stop_flag.store(true, std::memory_order_relaxed);
+                    }
+                }
+            }
+            if (beam[0].res.score < prev_best) stale_rounds = 0;
+            else stale_rounds++;
+
+            if (G.verbose && tid == 0) {
+                fprintf(stderr, "  [AST %s] evals=%d compiles=%d best=%d diffs=%d focus=%.2f (%.0f cands/s)\n",
+                        G.func_name.c_str(), cur_ev, cur_cc, beam[0].res.score, beam[0].res.exact_diffs,
+                        beam[0].res.first_diff_ratio, cur_ev / (now_sec() - t0 + 1e-6));
+            }
+        }
+    };
+
+    if (G.threads <= 1) {
+        worker(0);
+    } else {
+        std::vector<std::thread> pool;
+        pool.reserve(G.threads);
+        for (int t = 0; t < G.threads; t++) pool.emplace_back(worker, t);
+        for (auto &th : pool) th.join();
+    }
+    evals = total_evals.load();
+    compile_calls = total_compiles.load();
 
     if (!G.out_path.empty() && (matched || beam[0].res.score < init_score)) {
         std::ofstream(G.out_path) << beam[0].ast.print();

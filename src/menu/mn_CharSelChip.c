@@ -72,12 +72,68 @@ INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F8C60);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F8DE0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F8EB0);
 INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F9060);
-INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F91B0);
+extern void amHeap_Free(void *);
+extern void amTask_Kill(void *);
+extern void func_001DD680();
+extern void func_001DA4C0(void);
+extern void func_001D9960();
+extern void *D_00470580[2];
+extern void *amTask_Create();
+extern void func_00237000(int, void *);
+extern void func_001D80A0(void *, int);
+#include "battle/battle.h"
+typedef struct Task {
+     u8 unk00[0x30];
+     u8 work[1];
+} Task;
+extern s32 D_00470578;
+extern s32 D_0047057C;
+extern void *D_00470580[2];
+extern u32 func_0012EAE0(s32);
+extern void srand(s32);
+extern void func_001E2510(Fighter *);
+extern void Sp_CallHandler(s32, void *);
+extern s32 func_001DF420(Fighter *, s32, s32);
+extern void Btl_UpdateLimitXY(s32, f32, f32);
+extern void func_001DA4C0(void);
+extern void func_001D8A50(Fighter *);
+extern void PlyScr_Start(Fighter *, s32, s32);
+extern void amTask_Kill(void *);
+extern s32 D_004B41F0[7];
+extern void *amHeap_Alloc(s32 size, s32 flag, char *file, s32 line);
+extern void func_002F8A40(void *);
+extern void func_001E73E0(void *, s32, s32);
+extern void func_001D9EB0(void *, s32);
+extern void func_001E9B00(void *, s32, s32, s32, f32, f32);
+extern void *amTask_Create(void (*update)(Task *), void (*kill)(Task *), s32 prio, s32, s32, char *name);
+extern void memset(void *, s32, s32);
+extern void func_001A3610(s32);
+extern void func_001E11E0(s32, void *);
+extern void func_0021A030(void *, s32, s32, f32);
+extern void func_00237000(s32, void *);
+extern void func_001DD680(Fighter *, s32);
+extern void func_001D9960(Fighter *, s32, s32);
+extern void CharLight_Release(s32);
+extern void CharBody_Release(s32);
+extern void func_001C9840(s32);
+extern void amHeap_Free(void *);
+extern s32 func_001C9A70(s32);
+extern s32 func_001CA130(s32);
+void ScrVib_TaskKill(Task *task);
+void func_001CACB0(Task *task);
+
+void func_002F91B0(s32 *a) {
+    func_002F8A40((void *)a[12]);
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F91C0);
 s32 func_002F92C0(u8 *arg0) {
     return *(s32 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 0x34);
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_CharSelChip", func_002F92D0);
+extern void func_002F8DE0(void *);
+
+void func_002F92D0(s32 *a) {
+    func_002F8DE0((void *)a[12]);
+}
 s8 func_002F92E0(u8 *arg0) {
     return *(s8 *)((u8 *)(*(u8 **)((u8 *)arg0 + 0x30)) + 0xA);
 }

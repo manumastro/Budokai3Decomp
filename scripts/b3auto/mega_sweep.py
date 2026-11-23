@@ -26,6 +26,7 @@ sys.path.insert(0, str(ROOT))
 
 import configure  # noqa: E402
 import fdiff  # noqa: E402
+import fix_externs  # noqa: E402
 import m2c_draft  # noqa: E402
 import sweep_parked  # noqa: E402
 
@@ -178,13 +179,17 @@ def run_one(item):
     out_f = work / "best.c"
 
     if pre_override is not None:
-        pre_f.write_text(pre_override.read_text())
+        pre_txt = pre_override.read_text()
         ep_clean = ""
     else:
         pre_clean, ep_clean = sweep_parked.dedup_externs(preamble_text, ep)
         pre_clean = re.sub(r"#ifndef M2C_BITWISE.*?#endif\s*", "", pre_clean, flags=re.S)
-        pre_f.write_text(pre_clean + "\n" + m2c_draft.MACROS + "\n" + ep_clean + "\n")
-    in_f.write_text(fc)
+        pre_txt = pre_clean + "\n" + m2c_draft.MACROS + "\n" + ep_clean + "\n"
+    pre_txt, fc_fixed, n_gp = fix_externs.fix_gp_externs(pre_txt, fc)
+    if n_gp > 0 and ep_clean:
+        ep_clean, _, _ = fix_externs.fix_gp_externs(ep_clean, "")
+    pre_f.write_text(pre_txt)
+    in_f.write_text(fc_fixed)
     if out_f.exists():
         out_f.unlink()
 
@@ -210,10 +215,10 @@ def run_one(item):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pool", default="all", choices=["all", "parked", "size", "clones", "vu0"])
-    ap.add_argument("--jobs", type=int, default=18)
-    ap.add_argument("--budget", type=int, default=3500)
+    ap.add_argument("--jobs", type=int, default=20)
+    ap.add_argument("--budget", type=int, default=5000)
     ap.add_argument("--seconds", type=int, default=20)
-    ap.add_argument("--batch", type=int, default=32)
+    ap.add_argument("--batch", type=int, default=64)
     args = ap.parse_args()
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -223,11 +228,13 @@ def main():
     counts = {"MATCH": 0, "IMPROVED": 0, "SAME": 0, "NOCOMPILE": 0}
     total_evals = 0
     matches = []
+    all_results = []
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.jobs) as ex:
         futs = [ex.submit(run_one, j) for j in jobs]
         for idx, f in enumerate(concurrent.futures.as_completed(futs), 1):
             r = f.result()
+            all_results.append(r)
             ln = r["line"]
             m_ev = re.search(r"evals=(\d+)", ln)
             if m_ev:
@@ -248,7 +255,7 @@ def main():
 
     dt = time.time() - t0
     print(f"\nMEGA SWEEP DONE in {dt:.1f}s | evals={total_evals} ({total_evals/max(dt,0.1):.0f} cands/s) | {counts}")
-    (OUT_DIR / "summary.json").write_text(json.dumps({"counts": counts, "matches": matches, "seconds": dt, "evals": total_evals}, indent=2))
+    (OUT_DIR / "summary.json").write_text(json.dumps({"counts": counts, "matches": matches, "seconds": dt, "evals": total_evals, "results": all_results}, indent=2))
 
 
 if __name__ == "__main__":

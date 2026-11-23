@@ -52,6 +52,8 @@ static void collect_exprs_in_expr(Expr *e, int w, std::vector<WeightedExpr> &out
 
 static void collect_exprs_in_stmt(Stmt *s, int w, std::vector<WeightedExpr> &out) {
     if (!s) return;
+    for (auto &d : s->decls)
+        if (d.init) collect_exprs_in_expr(d.init.get(), w, out);
     collect_exprs_in_expr(s->expr.get(), w, out);
     collect_exprs_in_expr(s->init_expr.get(), w, out);
     collect_exprs_in_expr(s->step_expr.get(), w, out);
@@ -64,6 +66,8 @@ static void collect_exprs_in_stmt(Stmt *s, int w, std::vector<WeightedExpr> &out
 inline std::vector<WeightedExpr> collect_weighted_exprs(FuncAST &f, double focus_ratio) {
     std::vector<WeightedExpr> out;
     if (!f.body) return out;
+    for (auto &d : f.body->decls)
+        if (d.init) collect_exprs_in_expr(d.init.get(), 4, out);
     size_t n = f.body->stmts.size();
     for (size_t i = 0; i < n; i++) {
         double r = (n > 1) ? (double)i / (double)(n - 1) : 0.5;
@@ -585,30 +589,409 @@ inline bool mut_ast_inline_local(FuncAST &f, unsigned int &rng) {
     return true;
 }
 
-/* ---------- Master AST Mutation Dispatcher ---------- */
+// Op 14: Parameter reuse — replace a local scalar variable with a function parameter name (e.g. arg0)
+inline bool mut_ast_param_reuse(FuncAST &f, unsigned int &rng) {
+    if (f.param_names.empty() || f.body->decls.empty()) return false;
+    std::vector<size_t> cands;
+    for (size_t i = 0; i < f.body->decls.size(); i++) {
+        const auto &d = f.body->decls[i];
+        if (d.raw_line.empty() && d.suffix.empty() &&
+            (d.type_str == "s32" || d.type_str == "u32" || d.type_str == "int"))
+            cands.push_back(i);
+    }
+    if (cands.empty()) return false;
+    size_t di = cands[rand_r(&rng) % cands.size()];
+    std::string old_name = f.body->decls[di].name;
+    std::string new_name = f.param_names[rand_r(&rng) % f.param_names.size()];
+    if (old_name == new_name) return false;
+    auto repl = std::make_unique<Expr>(ExprKind::Ident, new_name);
+    for (auto &st : f.body->stmts) {
+        if (st->expr) replace_ident(st->expr, old_name, *repl);
+    }
+    f.body->decls.erase(f.body->decls.begin() + (ptrdiff_t)di);
+    return true;
+}
 
-inline FuncAST mutate_ast(const FuncAST &base, unsigned int &rng, int steps, double focus_ratio) {
+// Op 15: Repeated subexpression CSE hoist — hoist any expression occurring >= 2 times into a local
+static void count_subexprs(const Expr *e, std::unordered_map<std::string, int> &cnt) {
+    if (!e) return;
+    if (e->kind == ExprKind::Binary || e->kind == ExprKind::Unary || e->kind == ExprKind::Member ||
+        e->kind == ExprKind::Subscript) {
+        std::string s = e->print();
+        if (s.size() >= 6 && s.size() <= 48) cnt[s]++;
+    }
+    count_subexprs(e->cond.get(), cnt);
+    count_subexprs(e->lhs.get(), cnt);
+    count_subexprs(e->rhs.get(), cnt);
+    for (const auto &a : e->args) count_subexprs(a.get(), cnt);
+}
+
+static void count_subexprs_stmt(const Stmt *s, std::unordered_map<std::string, int> &cnt) {
+    if (!s) return;
+    count_subexprs(s->expr.get(), cnt);
+    count_subexprs(s->init_expr.get(), cnt);
+    count_subexprs(s->step_expr.get(), cnt);
+    count_subexprs_stmt(s->then_br.get(), cnt);
+    count_subexprs_stmt(s->else_br.get(), cnt);
+    count_subexprs_stmt(s->body.get(), cnt);
+    for (const auto &st : s->stmts) count_subexprs_stmt(st.get(), cnt);
+}
+
+static void replace_subexpr_str(ExprPtr &e, const std::string &target, const std::string &var_name, ExprPtr &captured) {
+    if (!e) return;
+    if (e->print() == target) {
+        if (!captured) captured = e->clone();
+        e = std::make_unique<Expr>(ExprKind::Ident, var_name);
+        return;
+    }
+    replace_subexpr_str(e->cond, target, var_name, captured);
+    replace_subexpr_str(e->lhs, target, var_name, captured);
+    replace_subexpr_str(e->rhs, target, var_name, captured);
+    for (auto &a : e->args) replace_subexpr_str(a, target, var_name, captured);
+}
+
+static void replace_subexpr_stmt(Stmt *s, const std::string &target, const std::string &var_name, ExprPtr &captured) {
+    if (!s) return;
+    replace_subexpr_str(s->expr, target, var_name, captured);
+    if (s->then_br) replace_subexpr_stmt(s->then_br.get(), target, var_name, captured);
+    if (s->else_br) replace_subexpr_stmt(s->else_br.get(), target, var_name, captured);
+    if (s->body) replace_subexpr_stmt(s->body.get(), target, var_name, captured);
+    for (auto &st : s->stmts) replace_subexpr_stmt(st.get(), target, var_name, captured);
+}
+
+inline bool mut_ast_cse_repeated(FuncAST &f, unsigned int &rng) {
+    if (!f.body || f.body->stmts.empty() || f.body->decls.size() > 36) return false;
+    std::unordered_map<std::string, int> cnt;
+    count_subexprs_stmt(f.body.get(), cnt);
+    std::vector<std::string> reps;
+    for (const auto &kv : cnt) if (kv.second >= 2) reps.push_back(kv.first);
+    if (reps.empty()) return false;
+    std::string target = reps[rand_r(&rng) % reps.size()];
+    std::string tname = "_cse" + std::to_string(f.body->decls.size());
+    ExprPtr captured;
+    for (auto &st : f.body->stmts) replace_subexpr_stmt(st.get(), target, tname, captured);
+    if (!captured) return false;
+    LocalDecl d;
+    d.type_str = (captured->kind == ExprKind::Cast) ? captured->text : "s32";
+    d.name = tname;
+    size_t dpos = f.body->decls.empty() ? 0 : (rand_r(&rng) % (f.body->decls.size() + 1));
+    f.body->decls.insert(f.body->decls.begin() + (ptrdiff_t)dpos, std::move(d));
+    auto init_asg = std::make_unique<Expr>(ExprKind::Assign, "=");
+    init_asg->lhs = std::make_unique<Expr>(ExprKind::Ident, tname);
+    init_asg->rhs = std::move(captured);
+    auto pre = std::make_unique<Stmt>(StmtKind::ExprStmt);
+    pre->expr = std::move(init_asg);
+    f.body->stmts.insert(f.body->stmts.begin(), std::move(pre));
+    return true;
+}
+
+// Op 16: Convert `for (init; cond; step) { body }` -> `init; while (cond) { body; step; }`
+inline bool mut_ast_for_to_while(FuncAST &f, unsigned int &rng) {
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    std::vector<std::pair<Stmt *, size_t>> cands;
+    for (Stmt *b : blocks) {
+        for (size_t i = 0; i < b->stmts.size(); i++) {
+            if (b->stmts[i]->kind == StmtKind::For && b->stmts[i]->expr)
+                cands.push_back({b, i});
+        }
+    }
+    if (cands.empty()) return false;
+    auto [b, idx] = cands[rand_r(&rng) % cands.size()];
+    Stmt *fr = b->stmts[idx].get();
+    StmtPtr init_stmt;
+    if (fr->init_expr) {
+        init_stmt = std::make_unique<Stmt>(StmtKind::ExprStmt);
+        init_stmt->expr = std::move(fr->init_expr);
+    }
+    if (fr->step_expr) {
+        auto step_s = std::make_unique<Stmt>(StmtKind::ExprStmt);
+        step_s->expr = std::move(fr->step_expr);
+        if (fr->body->kind != StmtKind::Block) {
+            auto nb = std::make_unique<Stmt>(StmtKind::Block);
+            nb->stmts.push_back(std::move(fr->body));
+            fr->body = std::move(nb);
+        }
+        fr->body->stmts.push_back(std::move(step_s));
+    }
+    fr->kind = StmtKind::While;
+    if (init_stmt) b->stmts.insert(b->stmts.begin() + (ptrdiff_t)idx, std::move(init_stmt));
+    return true;
+}
+
+// Op 17: Split `if (A && B) { T }` -> `if (A) { if (B) { T } }` (MWCC branch layout!)
+inline bool mut_ast_bool_split(FuncAST &f, unsigned int &rng) {
+    std::vector<Stmt *> ifs;
+    collect_stmts_kind(f.body.get(), StmtKind::If, ifs);
+    std::vector<Stmt *> cands;
+    for (Stmt *s : ifs) {
+        if (!s->else_br && s->expr) {
+            Expr *c = s->expr.get();
+            while (c->kind == ExprKind::Paren) c = c->lhs.get();
+            if (c->kind == ExprKind::Binary && c->text == "&&") cands.push_back(s);
+        }
+    }
+    if (cands.empty()) return false;
+    Stmt *s = cands[rand_r(&rng) % cands.size()];
+    ExprPtr c = std::move(s->expr);
+    while (c->kind == ExprKind::Paren) c = std::move(c->lhs);
+    auto inner_if = std::make_unique<Stmt>(StmtKind::If);
+    inner_if->expr = std::move(c->rhs);
+    inner_if->then_br = std::move(s->then_br);
+    auto blk = std::make_unique<Stmt>(StmtKind::Block);
+    blk->stmts.push_back(std::move(inner_if));
+    s->expr = std::move(c->lhs);
+    s->then_br = std::move(blk);
+    return true;
+}
+
+// Op 18: Early-return toggle at end of void function: `if (C) { A } else { B }` -> `if (C) { A; return; } B`
+inline bool mut_ast_early_return(FuncAST &f, unsigned int &rng) {
+    if (!f.body || f.body->stmts.empty()) return false;
+    if (f.header.rfind("void ", 0) != 0) return false;
+    Stmt *last = f.body->stmts.back().get();
+    if (last->kind != StmtKind::If || !last->else_br) return false;
+    (void)rng;
+    if (last->then_br->kind != StmtKind::Block) {
+        auto nb = std::make_unique<Stmt>(StmtKind::Block);
+        nb->stmts.push_back(std::move(last->then_br));
+        last->then_br = std::move(nb);
+    }
+    last->then_br->stmts.push_back(std::make_unique<Stmt>(StmtKind::Return));
+    StmtPtr eb = std::move(last->else_br);
+    f.body->stmts.push_back(std::move(eb));
+    return true;
+}
+
+// Op 19: MWCC boolean <-> ternary idiom: `(x != 0)` <-> `(x ? 1 : 0)` (sltu vs li 1; movz!)
+inline bool mut_ast_bool_ternary(FuncAST &f, unsigned int &rng) {
+    std::vector<WeightedExpr> exprs;
+    collect_exprs_in_stmt(f.body.get(), 1, exprs);
+    std::vector<Expr *> cands;
+    for (const auto &we : exprs) {
+        Expr *e = we.node;
+        if (e->kind == ExprKind::Binary && (e->text == "!=" || e->text == "==") &&
+            e->rhs && e->rhs->kind == ExprKind::Num && e->rhs->text == "0") {
+            cands.push_back(e);
+        } else if (e->kind == ExprKind::Ternary && e->lhs && e->rhs &&
+                   e->lhs->kind == ExprKind::Num && e->rhs->kind == ExprKind::Num &&
+                   ((e->lhs->text == "1" && e->rhs->text == "0") || (e->lhs->text == "0" && e->rhs->text == "1"))) {
+            cands.push_back(e);
+        }
+    }
+    if (cands.empty()) return false;
+    Expr *e = cands[rand_r(&rng) % cands.size()];
+    if (e->kind == ExprKind::Binary) {
+        bool is_ne = (e->text == "!=");
+        ExprPtr c = std::move(e->lhs);
+        e->kind = ExprKind::Ternary;
+        e->text = "?:";
+        e->cond = std::move(c);
+        e->lhs = std::make_unique<Expr>(ExprKind::Num, is_ne ? "1" : "0");
+        e->rhs = std::make_unique<Expr>(ExprKind::Num, is_ne ? "0" : "1");
+        return true;
+    } else {
+        bool is_ne = (e->lhs->text == "1");
+        ExprPtr c = std::move(e->cond);
+        e->kind = ExprKind::Binary;
+        e->text = is_ne ? "!=" : "==";
+        e->lhs = std::move(c);
+        e->rhs = std::make_unique<Expr>(ExprKind::Num, "0");
+        return true;
+    }
+}
+
+// Op 20: Flip single comparison polarity (`==` <-> `!=`, `<` <-> `>=`, `>` <-> `<=`) in `if` condition
+inline bool mut_ast_cond_flip(FuncAST &f, unsigned int &rng) {
+    std::vector<Stmt *> ifs;
+    collect_stmts_kind(f.body.get(), StmtKind::If, ifs);
+    std::vector<Expr *> cands;
+    for (Stmt *s : ifs) {
+        if (!s->expr) continue;
+        Expr *c = s->expr.get();
+        while (c->kind == ExprKind::Paren) c = c->lhs.get();
+        if (c->kind == ExprKind::Binary &&
+            (c->text == "==" || c->text == "!=" || c->text == "<" || c->text == ">=" || c->text == ">" || c->text == "<=")) {
+            cands.push_back(c);
+        }
+    }
+    if (cands.empty()) return false;
+    Expr *c = cands[rand_r(&rng) % cands.size()];
+    if (c->text == "==") c->text = "!=";
+    else if (c->text == "!=") c->text = "==";
+    else if (c->text == "<") c->text = ">=";
+    else if (c->text == ">=") c->text = "<";
+    else if (c->text == ">") c->text = "<=";
+    else if (c->text == "<=") c->text = ">";
+    return true;
+}
+
+// Op 21: Hoist non-trivial call argument into a temp before the statement (controls jal delay-slot scheduling!)
+inline bool mut_ast_call_arg_hoist(FuncAST &f, unsigned int &rng) {
+    if (!f.body || f.body->decls.size() > 36) return false;
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    struct Target { Stmt *blk; size_t idx; Expr *call; size_t arg_i; };
+    std::vector<Target> cands;
+    for (Stmt *b : blocks) {
+        for (size_t i = 0; i < b->stmts.size(); i++) {
+            Stmt *st = b->stmts[i].get();
+            if (st->kind != StmtKind::ExprStmt || !st->expr) continue;
+            Expr *e = st->expr.get();
+            if (e->kind == ExprKind::Assign && e->rhs && e->rhs->kind == ExprKind::Call) e = e->rhs.get();
+            if (e->kind != ExprKind::Call) continue;
+            for (size_t a = 0; a < e->args.size(); a++) {
+                Expr *ae = e->args[a].get();
+                if (ae && ae->kind != ExprKind::Ident && ae->kind != ExprKind::Num) {
+                    cands.push_back({b, i, e, a});
+                }
+            }
+        }
+    }
+    if (cands.empty()) return false;
+    auto t = cands[rand_r(&rng) % cands.size()];
+    std::string tname = "_arg" + std::to_string(f.body->decls.size());
+    ExprPtr orig = std::move(t.call->args[t.arg_i]);
+    t.call->args[t.arg_i] = std::make_unique<Expr>(ExprKind::Ident, tname);
+    LocalDecl d;
+    d.type_str = (orig->kind == ExprKind::Cast) ? orig->text : "s32";
+    d.name = tname;
+    size_t dpos = f.body->decls.empty() ? 0 : (rand_r(&rng) % (f.body->decls.size() + 1));
+    f.body->decls.insert(f.body->decls.begin() + (ptrdiff_t)dpos, std::move(d));
+    auto asg = std::make_unique<Expr>(ExprKind::Assign, "=");
+    asg->lhs = std::make_unique<Expr>(ExprKind::Ident, tname);
+    asg->rhs = std::move(orig);
+    auto pre = std::make_unique<Stmt>(StmtKind::ExprStmt);
+    pre->expr = std::move(asg);
+    t.blk->stmts.insert(t.blk->stmts.begin() + (ptrdiff_t)t.idx, std::move(pre));
+    return true;
+}
+
+// Op 22: Hoist loop upper bound (`for (...; i < expr; ...)` -> `bnd = expr; for (...; i < bnd; ...)`)
+inline bool mut_ast_loop_bound_hoist(FuncAST &f, unsigned int &rng) {
+    if (!f.body || f.body->decls.size() > 36) return false;
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    std::vector<std::pair<Stmt *, size_t>> cands;
+    for (Stmt *b : blocks) {
+        for (size_t i = 0; i < b->stmts.size(); i++) {
+            Stmt *st = b->stmts[i].get();
+            if ((st->kind == StmtKind::For || st->kind == StmtKind::While) && st->expr) {
+                Expr *c = st->expr.get();
+                while (c->kind == ExprKind::Paren) c = c->lhs.get();
+                if (c->kind == ExprKind::Binary &&
+                    (c->text == "<" || c->text == "<=" || c->text == "!=") &&
+                    c->rhs && c->rhs->kind != ExprKind::Ident && c->rhs->kind != ExprKind::Num) {
+                    cands.push_back({b, i});
+                }
+            }
+        }
+    }
+    if (cands.empty()) return false;
+    auto [b, idx] = cands[rand_r(&rng) % cands.size()];
+    Expr *c = b->stmts[idx]->expr.get();
+    while (c->kind == ExprKind::Paren) c = c->lhs.get();
+    std::string tname = "_bnd" + std::to_string(f.body->decls.size());
+    ExprPtr orig = std::move(c->rhs);
+    c->rhs = std::make_unique<Expr>(ExprKind::Ident, tname);
+    LocalDecl d;
+    d.type_str = "s32";
+    d.name = tname;
+    size_t dpos = f.body->decls.empty() ? 0 : (rand_r(&rng) % (f.body->decls.size() + 1));
+    f.body->decls.insert(f.body->decls.begin() + (ptrdiff_t)dpos, std::move(d));
+    auto asg = std::make_unique<Expr>(ExprKind::Assign, "=");
+    asg->lhs = std::make_unique<Expr>(ExprKind::Ident, tname);
+    asg->rhs = std::move(orig);
+    auto pre = std::make_unique<Stmt>(StmtKind::ExprStmt);
+    pre->expr = std::move(asg);
+    b->stmts.insert(b->stmts.begin() + (ptrdiff_t)idx, std::move(pre));
+    return true;
+}
+
+/* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
+
+static constexpr int NUM_AST_OPS = 23;
+
+struct OpBandit {
+    int attempts[NUM_AST_OPS] = {};
+    int compiled[NUM_AST_OPS] = {};
+    int improved[NUM_AST_OPS] = {};
+
+    int pick_op(unsigned int &rng) const {
+        // Base weights emphasizing high-yield MWCC ops
+        static const double base_w[NUM_AST_OPS] = {
+            18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 5.0,
+            4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
+            6.0, 4.0, 4.0, 4.0
+        };
+        double w[NUM_AST_OPS];
+        double total = 0.0;
+        for (int i = 0; i < NUM_AST_OPS; i++) {
+            double ok_rate = (attempts[i] >= 6) ? ((double)(compiled[i] + 1) / (double)(attempts[i] + 2)) : 1.0;
+            // Strongly penalize operators that cause compile errors on THIS function!
+            double penalty = (ok_rate < 0.35) ? 0.03 : (ok_rate < 0.70 ? 0.25 : 1.0);
+            double boost = 1.0 + 1.5 * (double)improved[i];
+            w[i] = base_w[i] * penalty * boost;
+            total += w[i];
+        }
+        double r = ((double)(rand_r(&rng) % 100000) / 100000.0) * total;
+        for (int i = 0; i < NUM_AST_OPS; i++) {
+            if (r < w[i]) return i;
+            r -= w[i];
+        }
+        return 0;
+    }
+
+    void record(int op, bool ok, bool imp) {
+        if (op < 0 || op >= NUM_AST_OPS) return;
+        attempts[op]++;
+        if (ok) compiled[op]++;
+        if (imp) improved[op]++;
+    }
+};
+
+inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus_ratio) {
+    switch (op) {
+        case 0:  return mut_ast_decl_order(cur, rng, false);
+        case 1:  return mut_ast_decl_order(cur, rng, true);
+        case 2:  return mut_ast_int_type(cur, rng, focus_ratio);
+        case 3:  return mut_ast_commute_or_addu(cur, rng, focus_ratio);
+        case 4:  return mut_ast_subscript_flip(cur, rng, focus_ratio);
+        case 5:  return mut_ast_stmt_swap(cur, rng);
+        case 6:  return mut_ast_idioms(cur, rng, focus_ratio);
+        case 7:  return mut_ast_drop_cast(cur, rng, focus_ratio);
+        case 8:  return mut_ast_if_else_swap(cur, rng);
+        case 9:  return mut_ast_ternary_if(cur, rng);
+        case 10: return mut_ast_loop_shape(cur, rng);
+        case 11: return mut_ast_switch_reorder(cur, rng);
+        case 12: return mut_ast_cse_hoist(cur, rng, focus_ratio);
+        case 13: return mut_ast_inline_local(cur, rng);
+        case 14: return mut_ast_param_reuse(cur, rng);
+        case 15: return mut_ast_cse_repeated(cur, rng);
+        case 16: return mut_ast_for_to_while(cur, rng);
+        case 17: return mut_ast_bool_split(cur, rng);
+        case 18: return mut_ast_early_return(cur, rng);
+        case 19: return mut_ast_bool_ternary(cur, rng);
+        case 20: return mut_ast_cond_flip(cur, rng);
+        case 21: return mut_ast_call_arg_hoist(cur, rng);
+        case 22: return mut_ast_loop_bound_hoist(cur, rng);
+        default: return false;
+    }
+}
+
+inline FuncAST mutate_ast(const FuncAST &base, unsigned int &rng, int steps, double focus_ratio,
+                          const OpBandit *bandit = nullptr, int *primary_op = nullptr) {
     FuncAST cur = base.clone();
+    int first_op = -1;
     for (int st = 0; st < steps; st++) {
         bool ok = false;
         for (int tries = 0; tries < 8 && !ok; tries++) {
-            int op = (int)(rand_r(&rng) % 100);
-            if (op < 20)      ok = mut_ast_decl_order(cur, rng, false);
-            else if (op < 28) ok = mut_ast_decl_order(cur, rng, true);
-            else if (op < 40) ok = mut_ast_int_type(cur, rng, focus_ratio);
-            else if (op < 56) ok = mut_ast_commute_or_addu(cur, rng, focus_ratio);
-            else if (op < 63) ok = mut_ast_subscript_flip(cur, rng, focus_ratio);
-            else if (op < 70) ok = mut_ast_stmt_swap(cur, rng);
-            else if (op < 77) ok = mut_ast_idioms(cur, rng, focus_ratio);
-            else if (op < 82) ok = mut_ast_drop_cast(cur, rng, focus_ratio);
-            else if (op < 87) ok = mut_ast_if_else_swap(cur, rng);
-            else if (op < 91) ok = mut_ast_ternary_if(cur, rng);
-            else if (op < 94) ok = mut_ast_loop_shape(cur, rng);
-            else if (op < 96) ok = mut_ast_switch_reorder(cur, rng);
-            else if (op < 98) ok = mut_ast_cse_hoist(cur, rng, focus_ratio);
-            else              ok = mut_ast_inline_local(cur, rng);
+            int op = bandit ? bandit->pick_op(rng) : (int)(rand_r(&rng) % NUM_AST_OPS);
+            ok = apply_op_by_id(cur, op, rng, focus_ratio);
+            if (ok && first_op < 0) first_op = op;
         }
     }
+    if (primary_op) *primary_op = first_op;
     return cur;
 }
 
