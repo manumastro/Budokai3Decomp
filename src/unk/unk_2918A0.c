@@ -148,7 +148,7 @@ typedef struct Copy16_2918A0 {
 } __attribute__((aligned(16))) Copy16_2918A0;
 extern s32 D_00453E80[];
 extern char D_0046BAF8[];
-extern void func_002928C0(void);
+extern void func_002928C0(Work2918A0 *);
 extern s32 amTask_Create(void *, void *, s32, s32, s32, void *);
 void func_00291AD0(void) {
     s32 blk[6];
@@ -221,24 +221,21 @@ void func_002927E0(Work2918A0 *arg0) {
     func_00139620(0x900, (void *)((s32)arg0 + 0x30), -1, 0x44, 0, 0.0f);
     func_00133780(0, 0);
 }
-#if 0
-// differs: 24 of 55; the original keeps w in s0 and computes w+0x30 after the f40 store (s is a second saved register here); the earlier draft wrongly zeroed f40 on the f < 0 path
 void func_002928C0(Work2918A0 *w) {
     Sub2918A0 *s;
     f32 f;
-
-    f = w->f40 - gFrameDelta;
-    w->f40 = f;
-    s = (Sub2918A0 *)((char *)w + 0x30);
+    s = (Sub2918A0 *)((int)0x30 + (s32)(char *)w);
+    w->f40 -= gFrameDelta;
+    f = w->f40;
     if (f < 0.0f) {
-        s->f10 = 0.0f;
+        *(f32 *)((u8 *)s + 0x10) = 0.0f;
         w->f1C = (func_00292780 == 0) ? 0 : (void (*)(void))func_00292780;
     }
-    if (s->f10 <= 0.0f) {
+    if (*(f32 *)((u8 *)s + 0x10) <= 0.0f) {
         s->fC = 0.75f;
     } else {
-        f = s->fC + (0.75f * gFrameDelta) / s->f10;
-        s->fC = f;
+        s->fC += (0.75f * gFrameDelta) / *(f32 *)((u8 *)s + 0x10);
+        f = s->fC;
         if (f > 0.75f) {
             s->fC = 0.75f;
         }
@@ -247,8 +244,6 @@ void func_002928C0(Work2918A0 *w) {
     func_00139620(0x900, (char *)w + 0x30, -1, 0x44, 0, 0.0f);
     func_00133780(0, 0);
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2918A0", func_002928C0);
 void func_002929A0(Work2918A0 *w) {
     func_00291BF0();
     if (func_002A8F90() == 0) {
