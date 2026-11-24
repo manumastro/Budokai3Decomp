@@ -1785,10 +1785,6 @@ void SceneSw_LoadMenu7(Task *t) {
     }
 }
 
-// differs: 2 of 38 instructions, the store order of gSceneNext and gSceneQueued (the compiler emits the -1 store before the table store, whatever the source order) Round 6 also tried: locals inside the block, -1 via a local, comma-assign of Ready/Done, 0xFFFFFFFF, load order swapped, TASK_SETFUNC before the stores (worse), permuter 100 s (base 20, no gain); round 7: all 720 orders of the 6 statements tried via fdiff, none matched (untried: inline asm); u32/array extern forms conflict with the other extern s32 decls.
-
-#if 0
-
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4B40[];
@@ -1798,12 +1794,12 @@ extern s32 gSceneNext;
 extern s32 gSceneQueued;
 extern void func_001EA740(s32);
 extern void SceneSw_LoadMenu8(Task *);
-extern void func_0030F0E0(s32, s32);
+extern void func_0030F0E0(void);
 
 void func_001ED020(Task *t) {
     s32 v;
-    s32 a0;
     s32 a1;
+    s32 a0;
 
     if (D_004B4BB1[0] != 0) {
         func_001EA740(D_004B4BB2[0]);
@@ -1821,13 +1817,10 @@ void func_001ED020(Task *t) {
             gSceneNext = a0;
             gSceneQueued = -1;
             TASK_SETFUNC(t, SceneSw_LoadMenu8);
-            func_0030F0E0(a0, a1);
+            func_0030F0E0();
         }
     }
 }
-#endif
-
-INCLUDE_ASM("asm/nonmatchings/battle/btb_draw", func_001ED020);
 extern s8 D_004B4BB1[];
 extern s8 D_004B4BB2[];
 extern s8 D_004B4BB0[];

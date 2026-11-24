@@ -146,23 +146,15 @@ typedef struct KKey4 { u16 t; s8 id; s8 flag; char pad[4]; u16 fl; char pad2[6];
 typedef struct KList4 { char pad[2]; s16 n; KKey4 *keys; } KList4;
 extern void func_001D0860();
 extern void func_001D0730();
-// func_001CBD90, func_001CBDF0, func_001CBE80: register and scheduling differences; not matched yet.
-// differs: 17 of 22 instructions at best. The Arg pointer stays in v1 in the original (ours takes a0); the flag -(p[0]==0) is sltu+xori in the original, sltiu in ours.
-/* r6 best attempt diff 7 */
-#if 0
 int func_001CBD90(void *unused, Arg *a) {
-    int *p = a->p;
-    Big *b = gBattle;
-    s32 x0 = p[0];
-    Side *s = (Side *)b->tbl[p[1]];
-    if (s->n > 0) {
-        *(s32 *)((char *)s->blk[0] + s->n * 8 + 8) = -((x0 != 0) ^ 1);
+    s32 v = a->p[0];
+    char *t = gBattle->tbl[a->p[1]];
+    s8 idx = *(s8 *)(t + 0xCC4);
+    if (idx > 0) {
+        *(s32 *)((u8 *)(**(char ***)(0xB88 + t) + 8) + (idx << 3)) = -((v != 0) ^ 1);
     }
     return 1;
 }
-#endif
-// r7a: 7 of 22, only the v0/v1 colouring of the temps (s in v1, flag chain in v0 in the original). Tried: all 720 orders of 6 locals (tsweep), u32 p, blk/flag/n locals, Big *b first.
-INCLUDE_ASM("asm/nonmatchings/unk/unk_1CBD90", func_001CBD90);
 #if 0
 int func_001CBDF0(void *unused, Arg *a) {
     int *p = a->p;

@@ -251,6 +251,9 @@ def sanitize_draft_c(fc):
     fc = re.sub(r"\(\s*void\s*\(\s*\*\s*\)\s*\(\s*\)\s*\)", "(void *)", fc)
     # 5. Fix `(s64) &spXX` / `(s64) spXX` (29% of cerr drafts: MWCC rejects implicit long -> ptr)
     fc = re.sub(r"\(\s*s64\s*\)\s*(&?\s*sp[0-9A-Fa-f]+)\b", r"(s32)\1", fc)
+    # 6. Unwrap sim_clone's direct-call function-pointer casts `((ret (*)(args))fn)(` -> `fn(`
+    #    (MWCC emits lui/addiu/jalr instead of jal for cast function calls!)
+    fc = re.sub(r"\(\s*\(\s*[^()]*\(\s*\*\s*\)\s*\([^()]*\)\s*\)\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)\s*\(", r"\1(", fc)
     return fc
 
 

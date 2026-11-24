@@ -144,25 +144,28 @@ s32 func_001CAA30(s32 *c) {
     return 0;
 }
 INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CAAB0);
-#if 0
-/* Does not match yet: 11 of 23 instructions differ. */
 void func_001CAC10(Task *task) {
     CharColor *w = (CharColor *)task->work;
-    CharColorArg v;
+    s32 d1;
+    s32 d2;
     if (gBattle->unk88EC == 0) {
-        f32 a = w->unk0C;
-        s32 b = w->unk10;
-        s32 c = w->unk04;
-        s32 d = w->unk08;
+        f32 a;
+        s32 b, d, c, id;
+        CharColorArg v;
+        b = w->unk10;
+        a = w->unk0C;
+        d2 = w->unk08;
+        d1 = w->unk04;
+        d = d2;
+        c = d1;
+        id = w->id;
         v.unk00 = a;
         v.unk04 = b;
         v.unk08 = c;
         v.unk0C = d;
-        func_001E11E0(w->id, &v);
+        func_001E11E0(id, &v);
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/battle/character", func_001CAC10);
 void ScrVib_TaskKill(Task *task) {
     CharFlash *w = (CharFlash *)task->work;
     func_001A3610(w->unk04);
