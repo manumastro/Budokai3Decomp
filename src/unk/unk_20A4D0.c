@@ -3132,7 +3132,6 @@ void func_00142100(void *a, void *b);
 extern u8 D_0044B910[];
 void func_00142100(void *a, void *b);
 
-#if 0
 void func_00212050(u8 *p) {
     u8 *s0;
     Copy16A t50;
@@ -3140,17 +3139,17 @@ void func_00212050(u8 *p) {
     Copy16A t30;
 
     t40 = *(Copy16A *)D_0044B910;
+    s0 = p + 0x20;
     if (*(s32 *)(p + 0x10) != 0) {
-        s0 = p + 0x20;
         D_00470238 = 0;
-        if (*(s32 *)(s0 + 0x0) != 0) {
-            amModel_SetCurrent(*(s32 *)(s0 + 0x0), *(s32 *)(s0 + 0x8));
+        if (*(s32 *)(s0 + 0x20) != 0) {
+            amModel_SetCurrent(*(s32 *)(s0 + 0x20), *(s32 *)(s0 + 0x28));
         }
-        if (*(s32 *)(s0 + 0x4) != 0) {
-            func_00208D60(*(s32 *)(s0 + 0x4));
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            func_00208D60(*(s32 *)(s0 + 0x24));
         }
         if ((gBattle != 0 ? *(s32 *)(gBattle + 0x88EC) : 0) == 0) {
-            func_00146ED0(&t50, s0 + 0x10, *(f32 *)(s0 + 0x10));
+            func_00146ED0(&t50, s0 + 0x10, *(f32 *)(s0 + 0x30));
             __asm__ volatile (
                 "lqc2 $vf1, 0(%0)\n"
                 "lqc2 $vf2, 0(%1)\n"
@@ -3165,25 +3164,21 @@ void func_00212050(u8 *p) {
         func_0013B110(1);
     }
 }
-// differs: about 56 instructions differ: the parameter is kept in s1 and the base s0 = p + 0x20 in the second saved register, and the 16-byte stack slots are laid out in another order (the search over the declarations found nothing better)
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212050);
-#if 0
 void func_00212160(u8 *a) {
+    Copy16A t40;
     u8 *p;
     u8 *s0;
     Copy16A t30;
-    Copy16A t40;
 
     p = a;
+    s0 = p + 0x20;
     if (*(s32 *)(p + 0x10) != 0) {
-        s0 = p + 0x20;
         D_00470238 = 0;
-        if (*(s32 *)(s0 + 0x0) != 0) {
-            amModel_SetCurrent(*(s32 *)(s0 + 0x0), *(s32 *)(s0 + 0x8));
+        if (*(s32 *)(s0 + 0x20) != 0) {
+            amModel_SetCurrent(*(s32 *)(s0 + 0x20), *(s32 *)(s0 + 0x28));
         }
-        if (*(s32 *)(s0 + 0x4) != 0) {
-            func_00208D60(*(s32 *)(s0 + 0x4));
+        if (*(s32 *)(s0 + 0x24) != 0) {
+            func_00208D60(*(s32 *)(s0 + 0x24));
         }
         func_0013B0B0(0);
         __asm__ volatile (
@@ -3200,7 +3195,7 @@ void func_00212160(u8 *a) {
             : : "r"(*(u8 **)(gBattle + 0x264)), "r"(s0), "r"(&t30) : "memory");
         func_00209D70(&t30);
         if ((gBattle != 0 ? *(s32 *)(gBattle + 0x88EC) : 0) == 0) {
-            func_00146ED0(&t40, s0 + 0x10, *(f32 *)(s0 + 0x10));
+            func_00146ED0(&t40, s0 + 0x10, *(f32 *)(s0 + 0x30));
             __asm__ volatile (
                 "lqc2 $vf1, 0(%0)\n"
                 "lqc2 $vf2, 0(%1)\n"
@@ -3221,9 +3216,6 @@ void func_00212160(u8 *a) {
         func_00209C50();
     }
 }
-// differs: 16 of 77 instructions differ: the original copies the parameter to s1 at entry (before the first test), this build copies it after the test; the VU0 part and the calls match
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_20A4D0", func_00212160);
 void func_002122A0(u8 *p) {
     u8 *s1;
     u8 *s0;

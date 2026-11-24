@@ -725,33 +725,28 @@ void func_002B1B10(u8 *s, s32 a1) {
 INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1B10);
 extern void func_002B1D70(u8 *);
 extern void func_002B1B10(u8 *, s32);
-#if 0
 s32 func_002B1C60(u8 *s) {
     s32 *q = (s32 *)(s + (*(s32 *)(s + 0x24)) * 28 + 0x48);
-    s16 *hp = (s16 *)((u8 *)q + 0x1A);
     s32 s0 = q[1] + q[0];
-    s32 H = *hp;
+    s32 H = *(s16 *)((u8 *)q + 0x1A);
     if (s0 + 9 < H) {
-        if (s0 + 0x12 < H) {
+        if (s0 + 18 < H) {
             q[0] = q[0] + 9;
         } else {
             q[0] = H - 9;
             q[1] = 9 - (q[0] - s0);
         }
-    } else if (*hp < 9) {
+    } else if (*(s16 *)((u8 *)q + 0x1A) < 9) {
         q[0] = 0;
-        q[1] = hp[0] - 1;
+        q[1] = *(s16 *)((s32)0x1A + (s32)(u8 *)q) - 1;
     } else {
         q[0] = H - 9;
         q[1] = 8;
     }
     func_002B1D70(s);
-    func_002B1B10(s, *(s16 *)((u8 *)q + q[1] * 2 + 8));
-    return s0 != q[0] + q[1];
+    func_002B1B10(s, *(s16 *)((u8 *)(q + 2) + q[1] * 2));
+    return s0 != q[1] + q[0];
 }
-// differs: 8 of 65 instructions differ: the original keeps the halfword field pointer (s1+0x1A) in $a1 from the first compare (delay slot of its beqz); with a pointer declared early or used only in the H<9 arm the compiler folds it into lh 0x1A(s1). Tried 3 variants.
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AF860", func_002B1C60);
 #if 0
 void func_002B1D70(u8 *s) {
     s32 idx = *(s32 *)(s + 0x24);
