@@ -28,9 +28,26 @@ SCALAR_EXT_RE = re.compile(
 )
 
 FUNC_DEF_RE = re.compile(
-    r"^((?:void|s32|u32|s16|u16|s8|u8|f32|f64|int|short|char|float|double|unsigned\s+int|void\s*\*|s32\s*\*|u32\s*\*|u8\s*\*|s8\s*\*|char\s*\*)\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^;\n{}]*)\))\s*\{",
+    r"^((?:const\s+)?(?:[A-Za-z_][A-Za-z0-9_]*\s*\*+|void|s32|u32|s16|u16|s8|u8|f32|f64|int|short|char|float|double|unsigned\s+int)\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^;\n{}]*)\))\s*\{",
     re.M,
 )
+
+_PRIMITIVE_RE = re.compile(
+    r"^(?:const\s+)?(?:void|s32|u32|s16|u16|s8|u8|f32|f64|int|short|char|float|double|unsigned\s+int)(?:\s*\*+)?$"
+)
+
+
+def _norm_portable_type(t: str):
+    """Return a portable C type usable in any TU without custom struct typedefs, or None."""
+    t = t.strip()
+    if _PRIMITIVE_RE.fullmatch(t):
+        return t
+    # Any pointer to a custom struct/typedef (e.g. `ScrCtx *`, `Fighter **`) -> `void *` / `void **`
+    m = re.fullmatch(r"(?:const\s+)?(?:struct\s+)?[A-Za-z_][A-Za-z0-9_]*\s*(\*+)", t)
+    if m:
+        return "void " + m.group(1)
+    return None
+
 
 _SIG_CACHE = None
 
@@ -40,7 +57,7 @@ def is_in_gp(addr: int) -> bool:
 
 
 def get_known_sigs(root: Path = None):
-    """Build {func_name: (ret_and_name, param_types_list, full_extern)} from matched C in src/."""
+    """Build {func_name: (nargs, ret_type, full_extern)} from matched C in src/."""
     global _SIG_CACHE
     if _SIG_CACHE is not None:
         return _SIG_CACHE
@@ -53,31 +70,37 @@ def get_known_sigs(root: Path = None):
         txt = re.sub(r"#if\s+0\b.*?#endif", "", txt, flags=re.S)
         for m in FUNC_DEF_RE.finditer(txt):
             header, name, params = m.group(1).strip(), m.group(2), m.group(3).strip()
-            if name in ("if", "for", "while", "switch", "return"):
+            if name in ("if", "for", "while", "switch", "return", "else", "static"):
+                continue
+            ret_raw = header[:header.find(name)].strip()
+            ret = _norm_portable_type(ret_raw)
+            if not ret:
                 continue
             if params == "" or params == "void":
                 nargs = 0
                 norm_params = "void"
             else:
                 parts = [x.strip() for x in params.split(",") if x.strip()]
-                # Keep only primitive/void* types so the extern compiles in any TU without custom typedefs
                 ok = True
                 ptypes = []
                 for pt in parts:
+                    if pt == "...":
+                        ok = False
+                        break
                     # strip param name at end
                     t = re.sub(r"\b[A-Za-z_][A-Za-z0-9_]*\s*$", "", pt).strip() if not pt.endswith("*") else pt
                     if not t:
                         t = pt
-                    if not re.fullmatch(r"(?:const\s+)?(?:void|s32|u32|s16|u16|s8|u8|f32|f64|int|short|char|float|double|unsigned\s+int)(?:\s*\*+)?", t):
+                    nt = _norm_portable_type(t)
+                    if not nt:
                         ok = False
                         break
-                    ptypes.append(t)
+                    ptypes.append(nt)
                 if not ok:
                     continue
                 nargs = len(ptypes)
                 norm_params = ", ".join(ptypes)
-            ret = header[:header.find(name)].strip()
-            sigs[name] = (nargs, f"extern {ret} {name}({norm_params});")
+            sigs[name] = (nargs, ret, f"extern {ret} {name}({norm_params});")
     _SIG_CACHE = sigs
     return sigs
 
@@ -105,7 +128,7 @@ def fix_gp_externs(preamble: str, func_code: str):
 
 
 def fix_known_sigs(preamble: str, func_code: str, root: Path = None):
-    """Replace vague `extern ... fn();` declarations with verified signatures from src/ when call-site arity matches."""
+    """Replace vague/mismatched extern declarations with verified signatures from src/ when call-site arity matches."""
     sigs = get_known_sigs(root)
     if not sigs:
         return preamble, 0
@@ -117,8 +140,7 @@ def fix_known_sigs(preamble: str, func_code: str, root: Path = None):
         if m and m.group(1) in sigs:
             fn = m.group(1)
             if re.search(rf"\b{re.escape(fn)}\s*\(", func_code):
-                nargs, full_ext = sigs[fn]
-                # Check call site arity roughly matches (don't break varargs or mismatched calls)
+                nargs, ret, full_ext = sigs[fn]
                 cm = re.search(rf"\b{re.escape(fn)}\s*\(([^;()]*)\)", func_code)
                 if cm:
                     arg_s = cm.group(1).strip()
@@ -127,15 +149,24 @@ def fix_known_sigs(preamble: str, func_code: str, root: Path = None):
                         out.append(full_ext)
                         n_fix += 1
                         continue
-        # Also upgrade non-extern/extern prototypes missing f32/f64 args when verified sig has float args & same arity
-        m2 = re.match(r"^\s*(?:extern\s+)?[^(;]+\b([A-Za-z_][A-Za-z0-9_]*)\s*\(([^()]+)\)\s*;\s*$", ln)
-        if m2 and m2.group(1) in sigs:
-            fn = m2.group(1)
-            cur_params = m2.group(2)
-            nargs, full_ext = sigs[fn]
-            if ("f32" in full_ext or "f64" in full_ext or "float" in full_ext) and ("f32" not in cur_params and "float" not in cur_params):
-                cur_n = len([x for x in cur_params.split(",") if x.strip()])
-                if cur_n == nargs and re.search(rf"\b{re.escape(fn)}\s*\(", func_code):
+        # Upgrade non-extern/extern prototypes missing f32/f64 args OR wrong arity when call-site matches verified sig
+        m2 = re.match(r"^\s*(?:extern\s+)?([^(;]+?)\b([A-Za-z_][A-Za-z0-9_]*)\s*\(([^()]+)\)\s*;\s*$", ln)
+        if m2 and m2.group(2) in sigs:
+            cur_ret, fn, cur_params = m2.group(1).strip(), m2.group(2), m2.group(3).strip()
+            nargs, ret, full_ext = sigs[fn]
+            if re.search(rf"\b{re.escape(fn)}\s*\(", func_code):
+                cur_n = 0 if cur_params == "void" else len([x for x in cur_params.split(",") if x.strip()])
+                need_float = ("f32" in full_ext or "f64" in full_ext or "float" in full_ext) and (
+                    "f32" not in cur_params and "float" not in cur_params
+                )
+                need_ret = (cur_ret == "void" and ret != "void" and re.search(rf"=\s*(?:\([^)]*\)\s*)?{re.escape(fn)}\s*\(", func_code))
+                cm = re.search(rf"\b{re.escape(fn)}\s*\(([^;()]*)\)", func_code)
+                call_n = -1
+                if cm:
+                    arg_s = cm.group(1).strip()
+                    call_n = 0 if not arg_s else len([a for a in arg_s.split(",") if a.strip()])
+                need_arity = (cur_n != nargs and call_n == nargs)
+                if (need_float and cur_n == nargs) or need_ret or need_arity:
                     out.append(full_ext)
                     n_fix += 1
                     continue

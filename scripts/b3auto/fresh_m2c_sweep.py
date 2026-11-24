@@ -28,6 +28,7 @@ import configure  # noqa: E402
 import fdiff  # noqa: E402
 import fix_externs  # noqa: E402
 import m2c_draft  # noqa: E402
+import mega_sweep  # noqa: E402
 import sweep_parked  # noqa: E402
 
 B3AST = ROOT / "build" / "b3auto" / "b3ast"
@@ -107,13 +108,16 @@ def run_one(item):
     ep, fc = sweep_parked.split_externs_and_func(c_txt, fn)
     if not fc or "{" not in fc:
         return {"func": fn, "file": str(rel), "size": sz, "status": "nofunc", "detail": ""}
+    fc = mega_sweep.sanitize_draft_c(fc)
     pre_clean, ep_clean = sweep_parked.dedup_externs(pre_raw, ep)
     pre_clean = re.sub(r"#ifndef M2C_BITWISE.*?#endif\s*", "", pre_clean, flags=re.S)
     pre_txt = pre_clean + "\n" + m2c_draft.MACROS + "\n" + ep_clean + "\n"
     pre_txt, fc_fixed, n_gp = fix_externs.fix_gp_externs(pre_txt, fc)
-    pre_txt, _ = fix_externs.fix_known_sigs(pre_txt, fc_fixed, ROOT)
+    pre_txt, n_sig = fix_externs.fix_known_sigs(pre_txt, fc_fixed, ROOT)
     if n_gp > 0 and ep_clean:
         ep_clean, _, _ = fix_externs.fix_gp_externs(ep_clean, "")
+    if n_sig > 0 and ep_clean:
+        ep_clean, _ = fix_externs.fix_known_sigs(ep_clean, fc_fixed, ROOT)
 
     work = OUT_DIR / "work" / fn
     work.mkdir(parents=True, exist_ok=True)

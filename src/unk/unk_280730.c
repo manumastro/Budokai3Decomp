@@ -232,23 +232,19 @@ void func_00280DC0(Ac280 *o) {
     o->f44 = 0.0f;
     o->f1C = (func_002807E0 == NULL) ? NULL : (void *)func_002807E0;
 }
-/* differs: the original loads the float 0.0 into $f0 at the top (mtc1 $zero) and stores it with swc1; ours stores integer zero */
-#if 0
 void func_00280DF0(Ac280 *o, s16 a) {
     Sub280 *q;
 
-    o->f48 = 0;
+    *(f32 *)&o->f48 = 0.0f;
     o->f3E |= 2;
+    q = (Sub280 *)((u8 *)o + 0x30);
     if (o->f40 != a) {
-        q = (Sub280 *)((u8 *)o + 0x30);
         q->fC = 0;
         q->f10 = a;
         q->f14 = 0.0f;
         o->f1C = (func_00280C70 == NULL) ? NULL : (void *)func_00280C70;
     }
 }
-#endif
-INCLUDE_ASM("asm/nonmatchings/unk/unk_280730", func_00280DF0);
 void func_00280E40(Ac280 *o, s16 a) {
     o->f3C = 0;
     o->f40 = a;

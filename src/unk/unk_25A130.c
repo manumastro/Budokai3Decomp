@@ -802,7 +802,31 @@ s32 func_0025B2E0(f32 v) {
 }
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B340);
 INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B4D0);
-INCLUDE_ASM("asm/nonmatchings/unk/unk_25A130", func_0025B6D0);
+extern void func_0020F970(void);
+
+void func_0025B6D0(EffSrc *e) {
+    s32 owner = e->f8->f1350;
+    Eff *f;
+    char *p;
+
+    p = (char *)func_0020D9F0(e->f0);
+    __asm__ volatile ("sqc2 $vf0, 0(%0)" : : "r"(p + 0x10) : "memory");
+    f = func_00215320(owner, 0x80);
+    if (f == NULL) {
+        return;
+    }
+    f->f8 = func_00211650;
+    f->fC = NULL;
+    f->f18 = e->f20;
+    f = func_00215320(owner, 0x100);
+    if (f == NULL) {
+        return;
+    }
+    f->f8 = func_0020F970;
+    f->fC = func_00212560;
+    f->f18 = e->f20;
+    func_00125740(f->f20, e, 0x58);
+}
 void func_0025B790(EffSrc *e) {
     s32 owner = e->f8->f1350;
     Eff *f;

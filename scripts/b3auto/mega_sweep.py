@@ -87,7 +87,7 @@ def build_jobs(pool, budget, seconds, batch, max_draft_diff=20):
                 fn = ent.get("name")
                 if fn not in active or fn in seen:
                     continue
-                if ent.get("status") not in ("diff", "size"):
+                if ent.get("status") not in ("diff", "size", "cerr"):
                     continue
                 ep, fc = sweep_parked.split_externs_and_func(ent.get("c", ""), fn)
                 if fc:
@@ -240,10 +240,17 @@ def sanitize_draft_c(fc):
     fc = re.sub(r"&(func_[0-9A-Fa-f]{8})\s*([+-])", r"(u8 *)\1 \2", fc)
     # 3. Fix illegal explicit conversion from float to pointer: ((u8 *)(*(f32 *)...)) -> ((u8 *)(*(s32 *)...))
     fc = re.sub(r"\(\s*(u8|s8|void|char)\s*\*\s*\)\s*\(\s*\*\s*\(\s*f32\s*\*\s*\)", r"(\1 *)(*(s32 *)", fc)
-    # 4. Simplify m2c function-pointer casts & local decls so b3ast's C parser handles them cleanly
-    fc = re.sub(r"\bvoid\s*\(\s*\*\s*([A-Za-z_]\w*)\s*\)\s*\(\s*\)\s*;", r"void *\1;", fc)
+    # 4. Simplify m2c function-pointer casts & local decls (only when the var is not invoked as a function)
+    def _fp_decl_repl(m):
+        name = m.group(1)
+        if re.search(rf"\b{re.escape(name)}\s*\(", fc):
+            return m.group(0)
+        return f"void *{name};"
+    fc = re.sub(r"\bvoid\s*\(\s*\*\s*([A-Za-z_]\w*)\s*\)\s*\(\s*\)\s*;", _fp_decl_repl, fc)
     fc = re.sub(r"\(\s*void\s*\(\s*\*\*\s*\)\s*\(\s*\)\s*\)", "(void **)", fc)
     fc = re.sub(r"\(\s*void\s*\(\s*\*\s*\)\s*\(\s*\)\s*\)", "(void *)", fc)
+    # 5. Fix `(s64) &spXX` / `(s64) spXX` (29% of cerr drafts: MWCC rejects implicit long -> ptr)
+    fc = re.sub(r"\(\s*s64\s*\)\s*(&?\s*sp[0-9A-Fa-f]+)\b", r"(s32)\1", fc)
     return fc
 
 
@@ -308,11 +315,12 @@ def run_one(item):
                         break
                     cur_fc = sanitize_draft_c(new_fc)
                     if new_ep != cur_ep:
-                        # Update trailing ep lines in cur_pre if possible
+                        new_ep_txt = "\n".join(new_ep) + "\n"
                         if ep_clean and ep_clean in cur_pre:
-                            new_ep_txt = "\n".join(new_ep) + "\n"
                             cur_pre = cur_pre.replace(ep_clean, new_ep_txt, 1)
-                            ep_clean = new_ep_txt
+                        else:
+                            cur_pre = cur_pre + "\n" + new_ep_txt
+                        ep_clean = new_ep_txt
                         cur_ep = new_ep
             if repaired:
                 cur_pre, cur_fc, _ = fix_externs.fix_gp_externs(cur_pre, cur_fc)
@@ -383,6 +391,21 @@ def main():
 
     dt = time.time() - t0
     print(f"\nMEGA SWEEP DONE in {dt:.1f}s | evals={total_evals} ({total_evals/max(dt,0.1):.0f} cands/s) | {counts}")
+    # Auto near-miss leaderboard (1..8 exact MIPS diffs!)
+    nears = []
+    for r in all_results:
+        if r["matched"]:
+            continue
+        md = re.search(r"best_diffs=(\d+)", r["line"])
+        if md:
+            bd = int(md.group(1))
+            if 1 <= bd <= 8:
+                nears.append((bd, r["func"], r["file"], r["kind"], r["line"]))
+    if nears:
+        nears.sort()
+        print(f"NEAR MISSES (1..8 exact diffs): {len(nears)}")
+        for bd, fn, fl, kd, ln in nears[:25]:
+            print(f"  diff={bd:2d} {fn} ({fl}, {kd}) :: {ln}")
     (OUT_DIR / "summary.json").write_text(json.dumps({"counts": counts, "matches": matches, "seconds": dt, "evals": total_evals, "results": all_results}, indent=2))
 
 

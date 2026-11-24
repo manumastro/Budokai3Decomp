@@ -137,7 +137,48 @@ INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249B00);
 // original lays the four type bodies out as 0, 2, 1, 3 behind a beq chain tested 3, 2, 1, 0 (if-chain, reversed
 // if-chain and switch tried); the float constant is 0.1f (0x3DCCCCCD), not 0.2f.
 INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249D50);
-INCLUDE_ASM("asm/nonmatchings/battle/skill_cmd", func_00249F50);
+void func_00249F50(u8 *ob) {
+    u8 *s1 = ob;
+    u8 *s0;
+    s32 side;
+    s32 k;
+    s32 r;
+    s32 t;
+    s32 tmp[4] __attribute__((aligned(16)));
+
+    s0 = *(u8 **)(s1 + 0xC);
+    side = *(s32 *)(*(u8 **)(s1 + 0x8) + 0x1350);
+    r = func_0020B020(side, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22));
+    amModel_SetCurrent(r, func_0020AD30(side, *(s16 *)(s0 + 0x20), *(s16 *)(s0 + 0x22)));
+    k = *(s16 *)(s0 + 0x6C);
+    if (k != 0) {
+        t = func_0020AE80(side, *(s16 *)(s0 + 0x66), k);
+        if (t != 0) {
+            func_00208D60(t);
+        }
+    }
+    func_0013B0B0(0);
+    __asm__ volatile ("lqc2 $vf28, 0x0(%0) ; lqc2 $vf29, 0x10(%0) ; lqc2 $vf30, 0x20(%0) ; lqc2 $vf31, 0x30(%0)"
+        : : "r"((u8 *)gBattle + 0x60));
+    __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; lqc2 $vf2, 0x0(%2) ; vsub.xyz $vf1, $vf1, $vf2 ; sqc2 $vf1, 0x0(%1)"
+        : : "r"(*(u8 **)((u8 *)gBattle + 0x264)), "r"(tmp), "r"(ob + 0x20));
+    func_00209D70(tmp);
+    if (*(s32 *)(ob + 0x54) != 0) {
+        func_0013B060(0);
+        __asm__ volatile ("lqc2 $vf1, 0x0(%0) ; vmulax.xyzw ACC, $vf28, $vf1x ; vmadday.xyzw ACC, $vf29, $vf1y ; vmaddaz.xyzw ACC, $vf30, $vf1z ; vmaddw.xyzw $vf31, $vf31, $vf0w"
+            : : "r"(ob + 0x20));
+        func_00208D70(*(s32 *)(ob + 0x54));
+    }
+    if (*(s32 *)(ob + 0x58) != 0) {
+        s32 *p40;
+        func_0013B060(0);
+        p40 = (s32 *)(ob + 0x40);
+        func_00142100(p40, (s32)(ob + 0x20));
+        func_00208D70(*(s32 *)(ob + 0x58));
+    }
+    func_0013B110(1);
+    func_00209C50();
+}
 /* An object of the battle's skill code: the fighter it belongs to, a flags word (0x4000 set once it
  * is lowered, 0x8000 once its value ran out), a float value and two sub-objects. */
 typedef struct SkillObj {

@@ -1612,9 +1612,91 @@ inline bool mut_ast_chain_assign(FuncAST &f, unsigned int &rng) {
     return true;
 }
 
+// Op 40: Swap an adjacent call statement and an independent local assignment
+// (e.g., `Call(...); w = gGlobal;` <-> `w = gGlobal; Call(...);`) to control $s0..$s7 hoisting across calls.
+inline bool mut_ast_call_assign_swap(FuncAST &f, unsigned int &rng) {
+    if (!f.body) return false;
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    std::vector<std::pair<Stmt *, size_t>> cands;
+    for (Stmt *b : blocks) {
+        if (b->stmts.size() < 2) continue;
+        for (size_t i = 0; i + 1 < b->stmts.size(); i++) {
+            Stmt *s0 = b->stmts[i].get();
+            Stmt *s1 = b->stmts[i + 1].get();
+            if (s0->kind != StmtKind::ExprStmt || s1->kind != StmtKind::ExprStmt || !s0->expr || !s1->expr) continue;
+            bool c0 = (s0->expr->kind == ExprKind::Call);
+            bool c1 = (s1->expr->kind == ExprKind::Call);
+            bool a0 = (s0->expr->kind == ExprKind::Assign && s0->expr->text == "=" &&
+                       s0->expr->lhs && s0->expr->lhs->kind == ExprKind::Ident &&
+                       (!s0->expr->rhs || s0->expr->rhs->kind != ExprKind::Call));
+            bool a1 = (s1->expr->kind == ExprKind::Assign && s1->expr->text == "=" &&
+                       s1->expr->lhs && s1->expr->lhs->kind == ExprKind::Ident &&
+                       (!s1->expr->rhs || s1->expr->rhs->kind != ExprKind::Call));
+            if ((c0 && a1) || (a0 && c1)) {
+                std::string var = a0 ? s0->expr->lhs->text : s1->expr->lhs->text;
+                std::string call_txt = c0 ? s0->expr->print() : s1->expr->print();
+                if (call_txt.find(var) == std::string::npos) {
+                    cands.push_back({b, i});
+                }
+            }
+        }
+    }
+    if (cands.empty()) return false;
+    auto [b, idx] = cands[rand_r(&rng) % cands.size()];
+    std::swap(b->stmts[idx], b->stmts[idx + 1]);
+    return true;
+}
+
+// Op 41: Hoist one operand of `dst = A + B;` into a local `f32` temp (`_ft = B; dst = _ft + A;`)
+// Controls MWCC's Sethi-Ullman `$f1/$f0` load order and `add.s` operand order.
+inline bool mut_ast_float_add_temp(FuncAST &f, unsigned int &rng) {
+    if (!f.body) return false;
+    std::vector<Stmt *> blocks;
+    collect_blocks(f.body.get(), blocks);
+    std::vector<std::pair<Stmt *, size_t>> cands;
+    for (Stmt *b : blocks) {
+        for (size_t i = 0; i < b->stmts.size(); i++) {
+            Stmt *s = b->stmts[i].get();
+            if (s->kind == StmtKind::ExprStmt && s->expr &&
+                s->expr->kind == ExprKind::Assign && s->expr->text == "=" &&
+                s->expr->rhs && s->expr->rhs->kind == ExprKind::Binary &&
+                s->expr->rhs->text == "+" && s->expr->rhs->lhs && s->expr->rhs->rhs) {
+                std::string rs = s->expr->rhs->print();
+                if (rs.find("f32") != std::string::npos || rs.find("0f") != std::string::npos ||
+                    rs.find(".f") != std::string::npos || rs.find("temp_f") != std::string::npos ||
+                    rs.find("var_f") != std::string::npos) {
+                    cands.push_back({b, i});
+                }
+            }
+        }
+    }
+    if (cands.empty()) return false;
+    auto [b, idx] = cands[rand_r(&rng) % cands.size()];
+    std::string vname = "_ft" + std::to_string(f.body->decls.size());
+    f.body->decls.push_back({"f32", vname, nullptr});
+    Stmt *s = b->stmts[idx].get();
+    Expr *add = s->expr->rhs.get();
+    bool take_rhs = (rand_r(&rng) & 1) != 0;
+    auto asn = std::make_unique<Expr>(ExprKind::Assign, "=");
+    asn->lhs = std::make_unique<Expr>(ExprKind::Ident, vname);
+    if (take_rhs) {
+        asn->rhs = std::move(add->rhs);
+        add->rhs = std::move(add->lhs);
+        add->lhs = std::make_unique<Expr>(ExprKind::Ident, vname);
+    } else {
+        asn->rhs = std::move(add->lhs);
+        add->lhs = std::make_unique<Expr>(ExprKind::Ident, vname);
+    }
+    auto ns = std::make_unique<Stmt>(StmtKind::ExprStmt);
+    ns->expr = std::move(asn);
+    b->stmts.insert(b->stmts.begin() + (long)idx, std::move(ns));
+    return true;
+}
+
 /* ---------- Adaptive Operator Bandit (eliminates binary-split waste!) ---------- */
 
-static constexpr int NUM_AST_OPS = 40;
+static constexpr int NUM_AST_OPS = 42;
 
 struct OpBandit {
     int attempts[NUM_AST_OPS] = {};
@@ -1627,7 +1709,7 @@ struct OpBandit {
             18.0, 9.0, 12.0, 14.0, 6.0, 7.0, 7.0, 5.0, 5.0, 6.0,
             4.0, 3.0, 3.0, 3.0, 3.0, 4.0, 3.0, 3.0, 2.0,
             6.0, 4.0, 4.0, 4.0, 6.0, 4.0, 6.0, 5.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 2.5, 5.0, 5.0,
-            4.5, 5.0, 4.5, 4.0
+            4.5, 5.0, 4.5, 4.0, 4.5, 4.0
         };
         double w[NUM_AST_OPS];
         double total = 0.0;
@@ -1697,6 +1779,8 @@ inline bool apply_op_by_id(FuncAST &cur, int op, unsigned int &rng, double focus
         case 37: return mut_ast_add_ptr_int_flip(cur, rng, focus_ratio);
         case 38: return mut_ast_assign_to_compound(cur, rng);
         case 39: return mut_ast_chain_assign(cur, rng);
+        case 40: return mut_ast_call_assign_swap(cur, rng);
+        case 41: return mut_ast_float_add_temp(cur, rng);
         default: return false;
     }
 }
