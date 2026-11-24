@@ -129,7 +129,11 @@ void func_002A0C60(s32 arg0, s32 arg1, s32 arg2, u8 *arg3) {
 void func_002A0CB0(s32 arg0, s32 arg1, s32 arg2) {
     *(s32 *)((u8 *)((u8 *)(arg1 * 0xE0) + (s32)*(s32 *)(*(s32 *)((u8 *)D_004708CC + 0x44) + arg0 * 4)) + 0x30) = arg2;
 }
-INCLUDE_ASM("asm/nonmatchings/sys/cnv_sys", func_002A0CE0);
+void func_002A0CE0(s32 arg0, s32 arg1, u8 *arg2) {
+    u8 *p;
+    p = *(u8 **)(*(s32 *)((u8 *)D_004708CC + 0x44) + arg0 * 4) + arg1 * 0xE0 + 0x20;
+    __asm__ volatile("lqc2 $vf1, 0(%0)\n\tsqc2 $vf1, 0(%1)" : : "r"(arg2), "r"(p) : "memory");
+}
 void func_002A0D20(s32 arg0, s32 arg1, s32 arg2) {
     *(s32 *)(*(s32 *)(*(s32 *)((u8 *)D_004708CC + 0x44) + (arg0 * 4)) + (arg1 * 0xE0)) = arg2;
 }

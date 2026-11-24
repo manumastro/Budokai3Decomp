@@ -327,7 +327,72 @@ void func_002DF6E0(void) {
     }
     A2d_FlushList();
 }
-INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF740);
+typedef struct OptSnd88 {
+    u32 w[34];
+} OptSnd88;
+
+extern OptSnd88 D_00456C80;
+extern f32 D_004E0618[];
+extern void func_002D8D00(void);
+extern void func_002D2E50(s32);
+extern void amAdx_SetVolume(s32, f32);
+extern void amAdx_Pause(s32, s32);
+extern void amAdx_PlayAfs(s32, s32, s32);
+extern void func_002DA310(void);
+extern void func_002D9F80(void);
+extern void func_002D9C20(void);
+extern void Option_ReadSound(void);
+
+typedef struct OptWork740 {
+    u8 pad0[0x320];
+    u8 *f320;
+    u8 pad324[0x20];
+    void (*fn0)(void);
+    void (*fn1)(void);
+    void (*fn2)(void);
+    void (*fn3)(void);
+    void (*fn4)(void);
+    void (*fn5)(void);
+    void (*fn6)(void);
+    void (*fn7)(void);
+    u8 pad364[0x38];
+    f32 f39C;
+    u8 pad3A0[4];
+    f32 f3A4;
+} OptWork740;
+
+void func_002DF740(void) {
+    OptWork740 *w = (OptWork740 *)gOptionWork;
+    f32 dt;
+    A2d_SetMode(*(s16 *)D_004E05F8);
+    if (w->fn7 != NULL) w->fn7();
+    if (w->fn1 != NULL) w->fn1();
+    if (w->fn2 != NULL) w->fn2();
+    if (w->fn3 != NULL) w->fn3();
+    if (w->fn4 != NULL) w->fn4();
+    if (w->fn6 != NULL) w->fn6();
+    func_002D8D00();
+    A2d_FlushList();
+    dt = (D_004703F4 != 3) ? 1.0f : 1.2f;
+    w->f3A4 += dt;
+    if (!(w->f3A4 < 110.0f)) {
+        func_002D2E50(4);
+    }
+    if (!(w->f3A4 < 120.0f)) {
+        OptSnd88 buf = D_00456C80;
+        u8 *a0;
+        amAdx_SetVolume(1, D_004E0618[0]);
+        amAdx_Pause(1, 0);
+        amAdx_PlayAfs(1, buf.w[4] | 0x20000, 0);
+        *(s32 *)&w->f3A4 = 0;
+        w->f39C = 95.0f;
+        w->fn1 = func_002DA310;
+        w->fn2 = func_002D9F80;
+        w->fn3 = func_002D9C20;
+        a0 = w->f320;
+        *(void **)(a0 + 0x1C) = ((void *)Option_ReadSound == 0) ? 0 : (void *)Option_ReadSound;
+    }
+}
 INCLUDE_ASM("asm/nonmatchings/menu/mn_option", func_002DF930);
 extern void func_002DAB30(void);
 extern void func_002DAE10(void);
