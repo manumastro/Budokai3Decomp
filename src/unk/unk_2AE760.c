@@ -41,7 +41,46 @@ extern void func_00227A30(u8 *);
 extern void func_0022C060(f32, s32);
 extern void func_0022CD00(s32);
 
-INCLUDE_ASM("asm/nonmatchings/unk/unk_2AE760", func_002AE760);
+typedef struct UnkObj2AE {
+    s32 *f0;
+    char pad4[0x10];
+    void *f14;
+    char pad18[0x10];
+    s8 f28;
+    s8 f29;
+} UnkObj2AE;
+typedef struct UnkMsg2AE {
+    char pad0[0x2C];
+    s32 *arg;
+} UnkMsg2AE;
+typedef struct UnkSlot2AE {
+    char pad0[0x20D4];
+    s8 f20D4;
+    char pad20D5[3];
+    f32 f20D8;
+    char pad20DC[4];
+} UnkSlot2AE;
+extern u8 D_005ABA80[];
+extern void func_002AE380(void);
+
+s32 func_002AE760(UnkObj2AE *o, UnkMsg2AE *m) {
+    s32 *a = m->arg;
+    UnkSlot2AE *sl = &((UnkSlot2AE (*)[4])D_005ABA80)[*o->f0][a[2]];
+
+    if (a[1] != 0) {
+        o->f14 = func_002AE380;
+        o->f28 = a[2];
+        o->f29 = a[0];
+        sl->f20D4 = 1;
+        sl->f20D8 = 1.0f;
+    } else {
+        if (o->f14 == func_002AE380) {
+            o->f14 = NULL;
+        }
+        sl->f20D4 = 0;
+    }
+    return 1;
+}
 void func_002AE810(u8 *a0) {
     s32 j;
     s32 i;
